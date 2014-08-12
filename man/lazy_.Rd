@@ -27,12 +27,17 @@ can correctly replay it in the future.
 }
 \examples{
 lazy_(quote(a + x), globalenv())
-lazy(a + b / c)
 
+# Lazy is designed to be used inside a function - you should
+# give it the name of a function argument (a promise)
 f <- function(x = b - a) {
   lazy(x)
 }
 f()
 f(a + b / c)
+
+# Lazy works slightly differently when called from the global
+# environment. This makes it a little easier to play with interactively
+lazy(a + b / c)
 }
 
