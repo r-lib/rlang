@@ -37,7 +37,11 @@ lazy <- function(expr, env = parent.frame()) {
     # For interactive
     make_lazy_name_env(quote(expr), environment())
   } else {
-    make_lazy_name_env(substitute(expr), env)
+    expr <- substitute(expr)
+    if (!is.name(expr)) {
+      stop("Please supply an argument name", call. = FALSE)
+    }
+    make_lazy_name_env(, env)
   }
 }
 
