@@ -27,6 +27,23 @@
 #' # Lazy works slightly differently when called from the global
 #' # environment. This makes it a little easier to play with interactively
 #' lazy(a + b / c)
+#'
+#' # By default, lazy will climb all the way back to the initial promise
+#' # This is handy if you have if you have nested functions:
+#' g <- function(y) f(y)
+#' h <- function(z) g(z)
+#' f(a + b)
+#' g(a + b)
+#' h(a + b)
+#'
+#' # To avoid this behavour, set follow_symbols = FALSE
+#' f <- function(x) {
+#'   lazy(x, follow_symbols = FALSE)
+#' }
+#' f(a + b)
+#' g(a + b)
+#' h(a + b)
+#'
 lazy_ <- function(expr, env) {
   stopifnot(is.call(expr) | is.name(expr))
 
@@ -36,16 +53,16 @@ lazy_ <- function(expr, env) {
 #' @rdname lazy_
 #' @export
 #' @useDynLib lazy make_lazy
-lazy <- function(expr, env = parent.frame()) {
+lazy <- function(expr, env = parent.frame(), follow_symbols = TRUE) {
   if (identical(env, topenv(env))) {
     # For interactive
-    .Call(make_lazy, quote(expr), environment())
+    .Call(make_lazy, quote(expr), environment(), follow_symbols)
   } else {
     expr <- substitute(expr)
     if (!is.name(expr)) {
       stop("Please supply an argument name", call. = FALSE)
     }
-    .Call(make_lazy, expr, env)
+    .Call(make_lazy, expr, env, follow_symbols)
   }
 }
 

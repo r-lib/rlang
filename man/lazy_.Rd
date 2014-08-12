@@ -6,7 +6,7 @@
 \usage{
 lazy_(expr, env)
 
-lazy(expr, env = parent.frame())
+lazy(expr, env = parent.frame(), follow_symbols = TRUE)
 }
 \arguments{
 \item{expr}{Expression to capture. For \code{lazy_} must be a name
@@ -39,5 +39,21 @@ f(a + b / c)
 # Lazy works slightly differently when called from the global
 # environment. This makes it a little easier to play with interactively
 lazy(a + b / c)
+
+# By default, lazy will climb all the way back to the initial promise
+# This is handy if you have if you have nested functions:
+g <- function(y) f(y)
+h <- function(z) g(z)
+f(a + b)
+g(a + b)
+h(a + b)
+
+# To avoid this behavour, set follow_symbols = FALSE
+f <- function(x) {
+  lazy(x, follow_symbols = FALSE)
+}
+f(a + b)
+g(a + b)
+h(a + b)
 }
 
