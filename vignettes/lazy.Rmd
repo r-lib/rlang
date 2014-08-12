@@ -11,13 +11,13 @@ knitr::opts_chunk$set(collapse = TRUE, comment = "#>")
 
 This document outlines a new approach to non-standard evaluation. There are three key ideas:
 
-* Instead of using `substitute()`, use `lazy()` to capture both expression
+* Instead of using `substitute()`, use `lazy::lazy()` to capture both expression
   and environment.
   
-* Every function that uses NSE should have a standard evaluation partner
-  that does all the work. This function always ends with `_`.
+* Every function that uses NSE should have a standard evaluation escape hatch
+  that does the actual computation. The SE-function name should end with `_`.
   
-* The SE-partner has a flexible input specification to make it easy for people
+* The SE-function has a flexible input specification to make it easy for people
   to program with.
 
 ## `lazy()`
@@ -92,15 +92,28 @@ With the standard evaluation version in hand, writing the standard evaluation ve
 
 ```{r}
 subset2 <- function(df, condition) {
-  condition <- lazy(condition)
-  subset2_(df, condition)
+  subset2_(df, lazy(condition))
 }
 subset2(mtcars, mpg > 31)
 ```
 
-Because we capture the environment associated with the function argument, this allows us to avoid a subtle scoping bug with `subset()`:
+This standard evaluation escape hatch is very important because it allows us to implement different NSE approaches. For example, we could create a subsetting function that finds all rows where a variable is above a threshold:
+
+```{r}
+above_threshold <- function(df, var, threshold) {
+  cond <- substitute(var > threshold)
+  subset2_(df, cond)
+}
+above_threshold(mtcars, mpg, 31)
+```
+
+(Here the use of `substitute()` is appropriate because `var` is a variable name and `threshold` is a value - the environment in which they are defined is not important.)
+
+## Scoping
+
+Because `lazy()` captures the environment associated with the function argument, we automatically avoid a subtle scoping bug present in `subset()`:
   
-```{r, error = TRUE}
+```{r}
 x <- 31
 f1 <- function(...) {
   x <- 30
@@ -114,3 +127,22 @@ f2 <- function(...) {
 }
 f2(mpg > x)
 ```
+
+`lazy()` has another advantage over `substitute()` - by default, it follows promises across function invovations. This simplifies the casual use of NSE.
+
+```{r, error = TRUE}
+x <- 31
+g1 <- function(comp) {
+  x <- 30
+  subset(mtcars, comp)
+}
+g1(mpg > x)
+
+g2 <- function(comp) {
+  x <- 30
+  subset2(mtcars, comp)
+}
+g2(mpg > x)
+```
+
+Note that `g2()` doesn't have a standard-evaluation escape hatch, so it's not suitable for programming with in the same way that `subset2_()` is.
