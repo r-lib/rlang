@@ -32,9 +32,9 @@ SEXP make_lazy(SEXP name, SEXP env, SEXP follow_symbols_) {
   SET_STRING_ELT(names, 1, mkChar("env"));
 
   setAttrib(lazy, install("names"), names);
-  setAttrib(lazy, install("class"), mkString("lazy"));
+  setAttrib(lazy, install("class"), PROTECT(mkString("lazy")));
 
-  UNPROTECT(2);
+  UNPROTECT(3);
 
   return lazy;
 }
