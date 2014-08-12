@@ -1,8 +1,8 @@
-#include <Rcpp.h>
-using namespace Rcpp;
+#include <R.h>
+#include <Rdefines.h>
 
 // [[Rcpp::export]]
-List make_lazy(Symbol name, Environment env) {
+SEXP make_lazy(SEXP name, SEXP env) {
   SEXP promise = Rf_findVar(name, env);
 
   // recurse until we find the real promise, not a promise of a promise
@@ -21,11 +21,18 @@ List make_lazy(Symbol name, Environment env) {
     }
   }
 
-  List lazy = List::create(
-    _["expr"] = promise,
-    _["env"] = env
-  );
-  lazy.attr("class") = "lazy";
+  SEXP lazy = PROTECT(allocVector(VECSXP, 2));
+  SET_VECTOR_ELT(lazy, 0, promise);
+  SET_VECTOR_ELT(lazy, 1, env);
+
+  SEXP names = PROTECT(allocVector(STRSXP, 2));
+  SET_STRING_ELT(names, 0, mkChar("expr"));
+  SET_STRING_ELT(names, 1, mkChar("env"));
+
+  setAttrib(lazy, install("names"), names);
+  setAttrib(lazy, install("class"), mkString("lazy"));
+
+  UNPROTECT(2);
 
   return lazy;
 }

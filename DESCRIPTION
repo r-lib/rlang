@@ -7,9 +7,6 @@ Depends:
     R (>= 3.1.0)
 License: GPL-3
 LazyData: true
-LinkingTo: Rcpp
-Imports:
-    Rcpp
 Suggests:
     knitr
 VignetteBuilder: knitr

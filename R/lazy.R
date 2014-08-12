@@ -30,18 +30,17 @@ lazy_ <- function(expr, env) {
 
 #' @rdname lazy_
 #' @export
-#' @useDynLib lazy
-#' @importFrom Rcpp sourceCpp
+#' @useDynLib lazy make_lazy
 lazy <- function(expr, env = parent.frame()) {
   if (identical(env, topenv(env))) {
     # For interactive
-    make_lazy(quote(expr), environment())
+    .Call(make_lazy, quote(expr), environment())
   } else {
     expr <- substitute(expr)
     if (!is.name(expr)) {
       stop("Please supply an argument name", call. = FALSE)
     }
-    make_lazy(expr, env)
+    .Call(make_lazy, expr, env)
   }
 }
 
