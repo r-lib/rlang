@@ -41,7 +41,7 @@ lazy <- function(expr, env = parent.frame()) {
     if (!is.name(expr)) {
       stop("Please supply an argument name", call. = FALSE)
     }
-    make_lazy_name_env(, env)
+    make_lazy_name_env(expr, env)
   }
 }
 
