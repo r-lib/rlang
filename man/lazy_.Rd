@@ -52,6 +52,8 @@ h(a + b)
 f <- function(x) {
   lazy(x, follow_symbols = FALSE)
 }
+g <- function(y) f(y)
+h <- function(z) g(z)
 f(a + b)
 g(a + b)
 h(a + b)

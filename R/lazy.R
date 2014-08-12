@@ -40,10 +40,11 @@
 #' f <- function(x) {
 #'   lazy(x, follow_symbols = FALSE)
 #' }
+#' g <- function(y) f(y)
+#' h <- function(z) g(z)
 #' f(a + b)
 #' g(a + b)
 #' h(a + b)
-#'
 lazy_ <- function(expr, env) {
   stopifnot(is.call(expr) | is.name(expr))
 
