@@ -55,8 +55,8 @@ lazy_ <- function(expr, env) {
 #' @useDynLib lazy make_lazy
 lazy <- function(expr, env = parent.frame(), follow_symbols = TRUE) {
   if (identical(env, topenv(env))) {
-    # For interactive
-    .Call(make_lazy, quote(expr), environment(), follow_symbols)
+    # For interactive experimentation
+    lazy_(substitute(expr), env)
   } else {
     expr <- substitute(expr)
     if (!is.name(expr)) {
