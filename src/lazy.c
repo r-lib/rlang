@@ -2,8 +2,9 @@
 #include <Rdefines.h>
 
 // [[Rcpp::export]]
-SEXP make_lazy(SEXP name, SEXP env) {
+SEXP make_lazy(SEXP name, SEXP env, SEXP follow_symbols_) {
   SEXP promise = findVar(name, env);
+  int follow_symbols = asLogical(follow_symbols_);
 
   // recurse until we find the real promise, not a promise of a promise
   while(TYPEOF(promise) == PROMSXP) {
@@ -13,7 +14,7 @@ SEXP make_lazy(SEXP name, SEXP env) {
     // If the promise is threaded through multiple functions, we'll
     // get some symbols along the way. If the symbol is bound to a promise
     // keep going on up
-    if (TYPEOF(promise) == SYMSXP) {
+    if (follow_symbols && TYPEOF(promise) == SYMSXP) {
       SEXP obj = findVar(promise, env);
       if (TYPEOF(obj) == PROMSXP) {
         promise = obj;
