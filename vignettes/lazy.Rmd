@@ -97,3 +97,20 @@ subset2 <- function(df, condition) {
 }
 subset2(mtcars, mpg > 31)
 ```
+
+Because we capture the environment associated with the function argument, this allows us to avoid a subtle scoping bug with `subset()`:
+  
+```{r, error = TRUE}
+x <- 31
+f1 <- function(...) {
+  x <- 30
+  subset(mtcars, ...)
+}
+f1(mpg > x)
+
+f2 <- function(...) {
+  x <- 30
+  subset2(mtcars, ...)
+}
+f2(mpg > x)
+```
