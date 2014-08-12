@@ -5,24 +5,26 @@
 
 ```{r, echo = FALSE}
 knitr::opts_chunk$set(collapse = TRUE, comment = "#>")
+rownames(mtcars) <- NULL
 ```
 
 # Lazy: A new approach to non-standard evalution
 
-This document outlines a new approach to non-standard evaluation. There are three key ideas:
+This document outlines a new approach to non-standard evaluation (NSE). There are three key ideas:
 
 * Instead of using `substitute()`, use `lazy::lazy()` to capture both expression
   and environment.
   
-* Every function that uses NSE should have a standard evaluation escape hatch
-  that does the actual computation. The SE-function name should end with `_`.
+* Every function that uses NSE should have a standard evaluation (SE) escape 
+  hatch that does the actual computation. The SE-function name should end with 
+  `_`.
   
 * The SE-function has a flexible input specification to make it easy for people
   to program with.
 
 ## `lazy()`
 
-The key tool that makes this approach possible is `lazy()`, an equivalent to `substitute()` that captures both expression and environment of the promise associated with a function argument:
+The key tool that makes this approach possible is `lazy()`, an equivalent to `substitute()` that captures both expression and environment associated with a function argument:
 
 ```{r}
 library(lazy)
@@ -51,6 +53,7 @@ lazy_eval(f(), list(a = 1))
 `lazy_eval()` also works with formulas, since they contain the same information as a lazy object: an expression (only the RHS is used by convention) and an environment:
 
 ```{r}
+lazy_eval(~ a + b)
 h <- function(i) {
   ~ 10 + i
 }
@@ -72,7 +75,7 @@ subset2_(mtcars, lazy(mpg > 31))
 subset2_(mtcars, ~mpg > 31)
 ```
 
-To make the NSE version as flexible as possible, use `as.lazy()` to coerce input into a lazy object. In general, this requires an environment, and the `parent.frame()` is a reasonable guess. This allows the user to pass in quoted objects and strings. This is a little risky but provides useful scaffolding when learning how to do NSE the right way.
+To make the NSE version as flexible as possible, use `as.lazy()` to coerce input into a lazy object. In general, this requires an environment, and the `parent.frame()` is a reasonable guess. This allows the user to pass in quoted calls and strings. This is a little risky but provides useful scaffolding when learning how to do NSE the right way.
 
 ```{r}
 subset2_ <- function(df, condition) {
@@ -107,7 +110,7 @@ above_threshold <- function(df, var, threshold) {
 above_threshold(mtcars, mpg, 31)
 ```
 
-(Here the use of `substitute()` is appropriate because `var` is a variable name and `threshold` is a value - the environment in which they are defined is not important.)
+The use of `substitute()` is appropriate here because `var` is a variable name and `threshold` is a value - the environment in which they are defined is not important.
 
 ## Scoping
 
@@ -119,12 +122,14 @@ f1 <- function(...) {
   x <- 30
   subset(mtcars, ...)
 }
+# Uses 30 instead of 31
 f1(mpg > x)
 
 f2 <- function(...) {
   x <- 30
   subset2(mtcars, ...)
 }
+# Correctly uses 31
 f2(mpg > x)
 ```
 
@@ -148,4 +153,5 @@ g2 <- function(comp) {
 g2(mpg > x)
 ```
 
-Note that `g2()` doesn't have a standard-evaluation escape hatch, so it's not suitable for programming with in the same way that `subset2_()` is.
+Note that `g2()` doesn't have a standard-evaluation escape hatch, so it's not suitable for programming with in the same way that `subset2_()` is.  See `vignettes("chained-promises")` for more details on this topic.
+
