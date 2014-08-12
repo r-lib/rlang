@@ -3,7 +3,7 @@
 
 // [[Rcpp::export]]
 SEXP make_lazy(SEXP name, SEXP env) {
-  SEXP promise = Rf_findVar(name, env);
+  SEXP promise = findVar(name, env);
 
   // recurse until we find the real promise, not a promise of a promise
   while(TYPEOF(promise) == PROMSXP) {
@@ -14,13 +14,14 @@ SEXP make_lazy(SEXP name, SEXP env) {
     // get some symbols along the way. If the symbol is bound to a promise
     // keep going on up
     if (TYPEOF(promise) == SYMSXP) {
-      SEXP obj = Rf_findVar(promise, env);
+      SEXP obj = findVar(promise, env);
       if (TYPEOF(obj) == PROMSXP) {
         promise = obj;
       }
     }
   }
 
+  // Make named list for output
   SEXP lazy = PROTECT(allocVector(VECSXP, 2));
   SET_VECTOR_ELT(lazy, 0, promise);
   SET_VECTOR_ELT(lazy, 1, env);
