@@ -57,14 +57,3 @@ print.lazy <- function(x, ...) {
   cat("  code: ", code, "\n", sep = "")
   cat("  env: ", format(x$env), "\n", sep = "")
 }
-
-env_name <- function(x) {
-  name <- environmentName(x)
-  if (name != "") {
-    name
-  } else {
-    address(x)
-  }
-
-}
-
