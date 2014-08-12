@@ -130,14 +130,17 @@ f2(mpg > x)
 
 `lazy()` has another advantage over `substitute()` - by default, it follows promises across function invovations. This simplifies the casual use of NSE.
 
-```{r, error = TRUE}
+```{r, eval = FALSE}
 x <- 31
 g1 <- function(comp) {
   x <- 30
   subset(mtcars, comp)
 }
 g1(mpg > x)
+#> Error: object 'mpg' not found
+```
 
+```{r}
 g2 <- function(comp) {
   x <- 30
   subset2(mtcars, comp)
