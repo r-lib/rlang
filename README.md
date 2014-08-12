@@ -1,5 +1,7 @@
 # lazy
 
+[![Build Status](https://travis-ci.org/hadley/lazy.png?branch=master)](https://travis-ci.org/hadley/lazy)
+
 The lazy package provides the tools necessary to do non-stadard evaluation "right" in R. There are three principles:
 
 * Instead of using `substitute()`, use `lazy()` to capture both expression
