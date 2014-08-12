@@ -19,6 +19,12 @@ or a call.}
 objects; \code{lazy_()} does standard evaluation and is suitable for
 programming.
 }
+\details{
+Use \code{lazy()} like you'd use \code{\link{substitute}()}
+to capture an unevaluated promise. Compared to \code{substitute()} it
+also captures the environment associated with the promise, so that you
+can correctly replay it in the future.
+}
 \examples{
 lazy_(quote(a + x), globalenv())
 lazy(a + b / c)

@@ -4,6 +4,11 @@
 #' objects; \code{lazy_()} does standard evaluation and is suitable for
 #' programming.
 #'
+#' Use \code{lazy()} like you'd use \code{\link{substitute}()}
+#' to capture an unevaluated promise. Compared to \code{substitute()} it
+#' also captures the environment associated with the promise, so that you
+#' can correctly replay it in the future.
+#'
 #' @param expr Expression to capture. For \code{lazy_} must be a name
 #'   or a call.
 #' @param env Environment in which to evaluate expr.
