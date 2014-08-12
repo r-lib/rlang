@@ -49,8 +49,23 @@ is.lazy <- function(x) inherits(x, "lazy")
 
 #' @export
 print.lazy <- function(x, ...) {
+  code <- deparse(x$expr)
+  if (length(code) > 1) {
+    code <- paste(code[[1]], "...")
+  }
+
   cat("<lazy>\n")
-  cat("  code: ", format(x$expr), "\n", sep = "")
-  cat("  env: ", environmentName(x$env), "\n", sep = "")
+  cat("  code: ", code, "\n", sep = "")
+  cat("  env: ", env_name(x$env), "\n", sep = "")
+}
+
+env_name <- function(x) {
+  name <- environmentName(x)
+  if (name != "") {
+    name
+  } else {
+    address(x)
+  }
+
 }
 

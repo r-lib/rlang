@@ -5,6 +5,21 @@
 
 using namespace Rcpp;
 
+// address
+std::string address(SEXP x);
+RcppExport SEXP lazy_address(SEXP xSEXP) {
+BEGIN_RCPP
+    SEXP __sexp_result;
+    {
+        Rcpp::RNGScope __rngScope;
+        Rcpp::traits::input_parameter< SEXP >::type x(xSEXP );
+        std::string __result = address(x);
+        PROTECT(__sexp_result = Rcpp::wrap(__result));
+    }
+    UNPROTECT(1);
+    return __sexp_result;
+END_RCPP
+}
 // make_lazy_sexp
 List make_lazy_sexp(SEXP prom);
 RcppExport SEXP lazy_make_lazy_sexp(SEXP promSEXP) {
