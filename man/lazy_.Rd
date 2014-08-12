@@ -2,11 +2,17 @@
 \name{lazy_}
 \alias{lazy}
 \alias{lazy_}
-\title{Capture expression for later lazy evaluation}
+\title{Capture expression for later lazy evaluation.}
 \usage{
 lazy_(expr, env)
 
-lazy(x, env = parent.frame())
+lazy(expr, env = parent.frame())
+}
+\arguments{
+\item{expr}{Expression to capture. For \code{lazy_} must be a name
+or a call.}
+
+\item{env}{Environment in which to evaluate expr.}
 }
 \description{
 \code{lazy()} uses non-standard evaluation to turn promises into lazy

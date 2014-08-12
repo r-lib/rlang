@@ -1,9 +1,12 @@
-#' Capture expression for later lazy evaluation
+#' Capture expression for later lazy evaluation.
 #'
 #' \code{lazy()} uses non-standard evaluation to turn promises into lazy
 #' objects; \code{lazy_()} does standard evaluation and is suitable for
 #' programming.
 #'
+#' @param expr Expression to capture. For \code{lazy_} must be a name
+#'   or a call.
+#' @param env Environment in which to evaluate expr.
 #' @export
 #' @examples
 #' lazy_(quote(a + x), globalenv())
@@ -15,6 +18,8 @@
 #' f()
 #' f(a + b / c)
 lazy_ <- function(expr, env) {
+  stopifnot(is.call(expr) | is.name(expr))
+
   structure(list(expr = expr, env = env), class = "lazy")
 }
 
@@ -22,12 +27,12 @@ lazy_ <- function(expr, env) {
 #' @export
 #' @useDynLib lazy
 #' @importFrom Rcpp sourceCpp
-lazy <- function(x, env = parent.frame()) {
+lazy <- function(expr, env = parent.frame()) {
   if (identical(env, topenv(env))) {
     # For interactive
-    make_lazy_name_env(quote(x), environment())
+    make_lazy_name_env(quote(expr), environment())
   } else {
-    make_lazy_name_env(substitute(x), env)
+    make_lazy_name_env(substitute(expr), env)
   }
 }
 
