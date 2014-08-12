@@ -12,6 +12,8 @@
 #' @param expr Expression to capture. For \code{lazy_} must be a name
 #'   or a call.
 #' @param env Environment in which to evaluate expr.
+#' @param follow_symbols If \code{TRUE}, the default, follows promises across
+#'   function calls. See \code{vignette("chained-promises")} for details.
 #' @export
 #' @examples
 #' lazy_(quote(a + x), globalenv())
@@ -37,14 +39,7 @@
 #' h(a + b)
 #'
 #' # To avoid this behavour, set follow_symbols = FALSE
-#' f <- function(x) {
-#'   lazy(x, follow_symbols = FALSE)
-#' }
-#' g <- function(y) f(y)
-#' h <- function(z) g(z)
-#' f(a + b)
-#' g(a + b)
-#' h(a + b)
+#' # See vignette("chained-promises") for details
 lazy_ <- function(expr, env) {
   stopifnot(is.call(expr) | is.name(expr))
 

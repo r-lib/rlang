@@ -13,6 +13,9 @@ lazy(expr, env = parent.frame(), follow_symbols = TRUE)
 or a call.}
 
 \item{env}{Environment in which to evaluate expr.}
+
+\item{follow_symbols}{If \code{TRUE}, the default, follows promises across
+function calls. See \code{vignette("chained-promises")} for details.}
 }
 \description{
 \code{lazy()} uses non-standard evaluation to turn promises into lazy
@@ -49,13 +52,6 @@ g(a + b)
 h(a + b)
 
 # To avoid this behavour, set follow_symbols = FALSE
-f <- function(x) {
-  lazy(x, follow_symbols = FALSE)
-}
-g <- function(y) f(y)
-h <- function(z) g(z)
-f(a + b)
-g(a + b)
-h(a + b)
+# See vignette("chained-promises") for details
 }
 

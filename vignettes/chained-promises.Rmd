@@ -1,0 +1,51 @@
+<!-- 
+%\VignetteEngine{knitr::knitr}
+%\VignetteIndexEntry{Chained promises}
+-->
+
+```{r, echo = FALSE}
+knitr::opts_chunk$set(collapse = TRUE, comment = "#>")
+```
+
+# Chained promises
+
+Take the following example:
+
+```{r}
+library(lazy)
+f1 <- function(x) lazy(x)
+g1 <- function(y) f1(y)
+
+g1(a + b)
+```
+
+`lazy()` returns `a + b` because it always tries to find the top-level promise.
+
+In this case the process looks like something like this:
+
+1. Find the object that `x` is bound to.
+2. It's a promise, so find the expr it's bound to (`y`, a symbol) and the 
+   environment in which it should be evaluated (the environment of `g()`).
+3. Since `x` is bound to a symbol, look up its value: it's bound to a promise.
+4. That promise has expression `a + b` and should be evaluated in the global 
+   environment.
+5. The expression is not a symbol, so stop.
+
+Occassionally, you want to avoid this recursive behaviour, so you can use `follow_symbol = FALSE`:
+
+```{r}
+f2 <- function(x) lazy(x, follow_symbols = FALSE)
+g2 <- function(y) f2(y)
+
+g2(a + b)
+```
+
+Either way, if you evaluate the lazy expression you'll get the same result:
+
+```{r}
+a <- 10
+b <- 1
+
+lazy_eval(g1(a + b))
+lazy_eval(g2(a + b))
+```
