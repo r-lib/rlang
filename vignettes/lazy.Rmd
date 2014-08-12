@@ -1,0 +1,99 @@
+<!-- 
+%\VignetteEngine{knitr::knitr}
+%\VignetteIndexEntry{Lazy: a new approach to NSE}
+-->
+
+```{r, echo = FALSE}
+knitr::opts_chunk$set(collapse = TRUE, comment = "#>")
+```
+
+# Lazy: A new approach to non-standard evalution
+
+This document outlines a new approach to non-standard evaluation. There are three key ideas:
+
+* Instead of using `substitute()`, use `lazy()` to capture both expression
+  and environment.
+  
+* Every function that uses NSE should have a standard evaluation partner
+  that does all the work. This function always ends with `_`.
+  
+* The SE-partner has a flexible input specification to make it easy for people
+  to program with.
+
+## `lazy()`
+
+The key tool that makes this approach possible is `lazy()`, an equivalent to `substitute()` that captures both expression and environment of the promise associated with a function argument:
+
+```{r}
+library(lazy)
+f <- function(x = a - b) {
+  lazy(x)
+}
+f()
+f(a + b)
+```
+
+As a complement to `eval()`, the lazy package provides `lazy_eval()` that uses the environment associated with the lazy object:
+
+```{r}
+a <- 10
+b <- 1
+lazy_eval(f())
+lazy_eval(f(a + b))
+```
+
+The second argument to lazy eval is a list or data frame where names should be looked up first:
+
+```{r}
+lazy_eval(f(), list(a = 1))
+```
+
+`lazy_eval()` also works with formulas, since they contain the same information as a lazy object: an expression (only the RHS is used by convention) and an environment:
+
+```{r}
+h <- function(i) {
+  ~ 10 + i
+}
+lazy_eval(h(1))
+```
+
+## Standard evaluation
+
+Whenever we need a function that does non-standard evaluation, always write the standard evaluation version first. For example, let's implement our own version of `subset()`:
+
+```{r}
+subset2_ <- function(df, condition) {
+  r <- lazy_eval(condition, df)
+  r <- r & !is.na(r)
+  df[r, , drop = FALSE]
+} 
+
+subset2_(mtcars, lazy(mpg > 31))
+subset2_(mtcars, ~mpg > 31)
+```
+
+To make the NSE version as flexible as possible, use `as.lazy()` to coerce input into a lazy object. In general, this requires an environment, and the `parent.frame()` is a reasonable guess. This allows the user to pass in quoted objects and strings. This is a little risky but provides useful scaffolding when learning how to do NSE the right way.
+
+```{r}
+subset2_ <- function(df, condition) {
+  condition <- as.lazy(condition, parent.frame())
+  r <- lazy_eval(condition, df)
+  r <- r & !is.na(r)
+  df[r, , drop = FALSE]
+} 
+
+subset2_(mtcars, quote(mpg > 31))
+subset2_(mtcars, "mpg > 31")
+```
+
+## Non-standard evaluation
+
+With the standard evaluation version in hand, writing the standard evaluation version is easy. We just use `lazy()` to capture the unevaluated expression and corresponding environment:
+
+```{r}
+subset2 <- function(df, condition) {
+  condition <- lazy(condition)
+  subset2_(df, condition)
+}
+subset2(mtcars, mpg > 31)
+```

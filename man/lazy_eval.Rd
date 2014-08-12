@@ -6,7 +6,7 @@
 lazy_eval(x, data = NULL)
 }
 \arguments{
-\item{x}{A lazy object.}
+\item{x}{A lazy object or a formula.}
 
 \item{data}{Option, a data frame or list in which to preferentially look
 for variables before using the environment associated with the lazy
