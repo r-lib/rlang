@@ -2,29 +2,30 @@
 using namespace Rcpp;
 
 // [[Rcpp::export]]
-List make_lazy_sexp(SEXP prom) {
-  if (TYPEOF(prom) != PROMSXP) {
-    stop("Not a promise");
-  }
+List make_lazy(Symbol name, Environment env) {
+  SEXP promise = Rf_findVar(name, env);
 
   // recurse until we find the real promise, not a promise of a promise
-  while(true) {
-    SEXP code = PRCODE(prom);
-    if(TYPEOF(code) != PROMSXP) break;
-    prom = code;
+  while(TYPEOF(promise) == PROMSXP) {
+    env = PRENV(promise);
+    promise = PREXPR(promise);
+
+    // If the promise is threaded through multiple functions, we'll
+    // get some symbols along the way. If the symbol is bound to a promise
+    // keep going on up
+    if (TYPEOF(promise) == SYMSXP) {
+      SEXP obj = Rf_findVar(promise, env);
+      if (TYPEOF(obj) == PROMSXP) {
+        promise = obj;
+      }
+    }
   }
 
   List lazy = List::create(
-    _["expr"] = PRCODE(prom),
-    _["env"] = PRENV(prom)
+    _["expr"] = promise,
+    _["env"] = env
   );
   lazy.attr("class") = "lazy";
 
   return lazy;
-}
-
-// [[Rcpp::export]]
-RObject make_lazy_name_env(Symbol name, Environment env) {
-  SEXP prom = Rf_findVar(name, env);
-  return make_lazy_sexp(prom);
 }

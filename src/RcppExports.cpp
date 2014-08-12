@@ -20,31 +20,16 @@ BEGIN_RCPP
     return __sexp_result;
 END_RCPP
 }
-// make_lazy_sexp
-List make_lazy_sexp(SEXP prom);
-RcppExport SEXP lazy_make_lazy_sexp(SEXP promSEXP) {
-BEGIN_RCPP
-    SEXP __sexp_result;
-    {
-        Rcpp::RNGScope __rngScope;
-        Rcpp::traits::input_parameter< SEXP >::type prom(promSEXP );
-        List __result = make_lazy_sexp(prom);
-        PROTECT(__sexp_result = Rcpp::wrap(__result));
-    }
-    UNPROTECT(1);
-    return __sexp_result;
-END_RCPP
-}
-// make_lazy_name_env
-RObject make_lazy_name_env(Symbol name, Environment env);
-RcppExport SEXP lazy_make_lazy_name_env(SEXP nameSEXP, SEXP envSEXP) {
+// make_lazy
+List make_lazy(Symbol name, Environment env);
+RcppExport SEXP lazy_make_lazy(SEXP nameSEXP, SEXP envSEXP) {
 BEGIN_RCPP
     SEXP __sexp_result;
     {
         Rcpp::RNGScope __rngScope;
         Rcpp::traits::input_parameter< Symbol >::type name(nameSEXP );
         Rcpp::traits::input_parameter< Environment >::type env(envSEXP );
-        RObject __result = make_lazy_name_env(name, env);
+        List __result = make_lazy(name, env);
         PROTECT(__sexp_result = Rcpp::wrap(__result));
     }
     UNPROTECT(1);

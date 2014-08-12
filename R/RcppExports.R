@@ -5,11 +5,7 @@ address <- function(x) {
     .Call('lazy_address', PACKAGE = 'lazy', x)
 }
 
-make_lazy_sexp <- function(prom) {
-    .Call('lazy_make_lazy_sexp', PACKAGE = 'lazy', prom)
-}
-
-make_lazy_name_env <- function(name, env) {
-    .Call('lazy_make_lazy_name_env', PACKAGE = 'lazy', name, env)
+make_lazy <- function(name, env) {
+    .Call('lazy_make_lazy', PACKAGE = 'lazy', name, env)
 }
 
