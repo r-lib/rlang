@@ -15,10 +15,12 @@ A named list of \code{\link{lazy}} expressions.
 Capture ... (dots) for later lazy evaluation.
 }
 \examples{
-f <- function(...) {
-  lazy_dots(...)
+lazy_dots(x = 1)
+lazy_dots(a, b, c * 4)
+
+f <- function(x = a + b, ...) {
+  lazy_dots(x = x, y = a + b, ...)
 }
-f(x = 1)
-f(a, b, c)
+f(z = a + b)
 }
 

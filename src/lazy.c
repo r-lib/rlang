@@ -55,17 +55,19 @@ SEXP make_lazy_dots(SEXP env) {
   SEXP lazy_dots = PROTECT(allocVector(VECSXP, n));
 
   // Iterate through all elements of dots, converting promises into lazy exprs
-  SEXP el;
   int i = 0;
-  for(SEXP nxt = dots;
-    nxt != R_NilValue;
-    el = CAR(nxt), nxt = CDR(nxt), i++) {
-    SEXP lazy = promise_as_lazy(el, env, 0);
+  SEXP nxt = dots;
+  while(nxt != R_NilValue) {
+    SEXP promise = CAR(nxt);
+
+    SEXP lazy = promise_as_lazy(promise, env, 0);
     SET_VECTOR_ELT(lazy_dots, i, lazy);
+
+    nxt = CDR(nxt);
+    i++;
   }
 
   UNPROTECT(1);
 
   return lazy_dots;
-
 }
