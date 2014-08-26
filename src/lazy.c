@@ -41,3 +41,31 @@ SEXP make_lazy(SEXP name, SEXP env, SEXP follow_symbols_) {
 
   return promise_as_lazy(promise, env, follow_symbols);
 }
+
+SEXP make_lazy_dots(SEXP env) {
+  SEXP dots = findVar(install("..."), env);
+
+  // Figure out how many elements in dots
+  int n = 0;
+  for(SEXP nxt = dots; nxt != R_NilValue; nxt = CDR(nxt)) {
+    n++;
+  }
+
+  // Allocate list to store results
+  SEXP lazy_dots = PROTECT(allocVector(VECSXP, n));
+
+  // Iterate through all elements of dots, converting promises into lazy exprs
+  SEXP el;
+  int i = 0;
+  for(SEXP nxt = dots;
+    nxt != R_NilValue;
+    el = CAR(nxt), nxt = CDR(nxt), i++) {
+//    SEXP lazy = PROTECT(promise_as_lazy(el, env, 0));
+//    SET_VECTOR_ELT(lazy_dots, i, lazy);
+  }
+
+  UNPROTECT(1);
+
+  return lazy_dots;
+
+}
