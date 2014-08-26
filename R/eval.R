@@ -14,10 +14,16 @@
 #' lazy_eval(f(10))
 #' lazy_eval(f(10), list(x = 100))
 #' lazy_eval(f(10), list(x = 1, z = 1))
+#'
+#' lazy_eval(lazy_dots(a = x, b = z), list(x = 10))
 lazy_eval <- function(x, data = NULL) {
+  if (is.lazy_dots(x)) {
+    return(lapply(x, lazy_eval, data = data))
+  }
   if (inherits(x, "formula")) {
     x <- as.lazy(x)
   }
+
   stopifnot(is.lazy(x))
 
   if (!is.null(data)) {
