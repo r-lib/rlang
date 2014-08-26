@@ -15,3 +15,5 @@
 lazy_dots <- function(...) {
   .Call(make_lazy_dots, environment())
 }
+
+is.lazy_dots <- function(x) inherits(x, "lazy_dots")

@@ -70,8 +70,9 @@ SEXP make_lazy_dots(SEXP env) {
     i++;
   }
   setAttrib(lazy_dots, install("names"), names);
+  setAttrib(lazy_dots, install("class"), PROTECT(mkString("lazy_dots")));
 
-  UNPROTECT(2);
+  UNPROTECT(3);
 
   return lazy_dots;
 }

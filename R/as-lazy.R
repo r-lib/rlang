@@ -1,7 +1,9 @@
-#' Convert an object to a lazy object.
+#' Convert an object to a lazy expression or lazy dots.
 #'
-#' @param x An R object. Current methods convert formulas, character
-#'   vectors, calls and names.
+#' @param x An R object. Current methods for \code{as.lazy()} convert formulas,
+#'   character vectors, calls and names. Methods for \code{as.lazy_dots()}
+#'   convert lists and character vectors (by calling \code{\link{lapply}()}
+#'   with \code{as.lazy()}.)
 #' @param env Environment to use for objects that don't already have
 #'   associated environment.
 #' @export
@@ -9,6 +11,9 @@
 #' as.lazy(~ x + 1)
 #' as.lazy(quote(x + 1), globalenv())
 #' as.lazy("x + 1", globalenv())
+#'
+#' as.lazy_dots(list(~x, y = ~z + 1))
+#' as.lazy_dots(c("a", "b", "c"), globalenv())
 as.lazy <- function(x, env) UseMethod("as.lazy")
 
 #' @export
@@ -25,3 +30,19 @@ as.lazy.call <- function(x, env) lazy_(x, env)
 
 #' @export
 as.lazy.name <- function(x, env) lazy_(x, env)
+
+
+#' @export
+#' @rdname as.lazy
+as.lazy_dots <- function(x, env) UseMethod("as.lazy_dots")
+
+#' @export
+as.lazy_dots.list <- function(x, env) {
+  structure(lapply(x, as.lazy, env = env), class = "lazy_dots")
+}
+
+#' @export
+as.lazy_dots.character <- function(x, env) {
+  structure(lapply(x, as.lazy, env = env), class = "lazy_dots")
+}
+
