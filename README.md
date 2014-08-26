@@ -2,7 +2,7 @@
 
 [![Build Status](https://travis-ci.org/hadley/lazy.png?branch=master)](https://travis-ci.org/hadley/lazy)
 
-The lazy package provides the tools necessary to do non-stadard evaluation "right" in R. There are three principles:
+The lazy package provides the tools necessary to do non-standard evaluation "right" in R. There are three principles:
 
 * Instead of using `substitute()`, use `lazy()` to capture both expression
   and environment. (Or use `lazy_dots()` to capture all promises in `...`)
