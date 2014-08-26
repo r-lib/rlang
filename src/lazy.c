@@ -1,11 +1,7 @@
 #include <R.h>
 #include <Rdefines.h>
 
-// [[Rcpp::export]]
-SEXP make_lazy(SEXP name, SEXP env, SEXP follow_symbols_) {
-  SEXP promise = findVar(name, env);
-  int follow_symbols = asLogical(follow_symbols_);
-
+SEXP promise_as_lazy(SEXP promise, SEXP env, int follow_symbols) {
   // recurse until we find the real promise, not a promise of a promise
   while(TYPEOF(promise) == PROMSXP) {
     env = PRENV(promise);
@@ -37,4 +33,11 @@ SEXP make_lazy(SEXP name, SEXP env, SEXP follow_symbols_) {
   UNPROTECT(3);
 
   return lazy;
+}
+
+SEXP make_lazy(SEXP name, SEXP env, SEXP follow_symbols_) {
+  SEXP promise = findVar(name, env);
+  int follow_symbols = asLogical(follow_symbols_);
+
+  return promise_as_lazy(promise, env, follow_symbols);
 }
