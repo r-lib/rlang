@@ -5,7 +5,7 @@
 The lazy package provides the tools necessary to do non-stadard evaluation "right" in R. There are three principles:
 
 * Instead of using `substitute()`, use `lazy()` to capture both expression
-  and environment.
+  and environment. (Or use `lazy_dots()` to capture all promises in `...`)
   
 * Every function that uses NSE should have a standard evaluation partner
   that does all the work. This function should end with `_`.
