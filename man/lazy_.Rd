@@ -39,8 +39,8 @@ f <- function(x = b - a) {
 f()
 f(a + b / c)
 
-# Lazy works slightly differently when called from the global
-# environment. This makes it a little easier to play with interactively
+# Lazy also works when called from the global environment. This makes
+# easy to play with interactively.
 lazy(a + b / c)
 
 # By default, lazy will climb all the way back to the initial promise

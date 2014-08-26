@@ -26,8 +26,8 @@
 #' f()
 #' f(a + b / c)
 #'
-#' # Lazy works slightly differently when called from the global
-#' # environment. This makes it a little easier to play with interactively
+#' # Lazy also works when called from the global environment. This makes
+#' # easy to play with interactively.
 #' lazy(a + b / c)
 #'
 #' # By default, lazy will climb all the way back to the initial promise
@@ -50,16 +50,7 @@ lazy_ <- function(expr, env) {
 #' @export
 #' @useDynLib lazy make_lazy
 lazy <- function(expr, env = parent.frame(), follow_symbols = TRUE) {
-  if (identical(env, topenv(env))) {
-    # For interactive experimentation
-    lazy_(substitute(expr), env)
-  } else {
-    expr <- substitute(expr)
-    if (!is.name(expr)) {
-      stop("Please supply an argument name", call. = FALSE)
-    }
-    .Call(make_lazy, expr, env, follow_symbols)
-  }
+  .Call(make_lazy, quote(expr), environment(), follow_symbols)
 }
 
 is.lazy <- function(x) inherits(x, "lazy")
