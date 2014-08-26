@@ -60,8 +60,8 @@ SEXP make_lazy_dots(SEXP env) {
   for(SEXP nxt = dots;
     nxt != R_NilValue;
     el = CAR(nxt), nxt = CDR(nxt), i++) {
-//    SEXP lazy = PROTECT(promise_as_lazy(el, env, 0));
-//    SET_VECTOR_ELT(lazy_dots, i, lazy);
+    SEXP lazy = promise_as_lazy(el, env, 0);
+    SET_VECTOR_ELT(lazy_dots, i, lazy);
   }
 
   UNPROTECT(1);
