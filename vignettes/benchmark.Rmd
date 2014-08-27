@@ -1,9 +1,11 @@
-<!-- 
-\VignetteEngine{knitr::knitr}
-\VignetteIndexEntry{Lazy benchmarks}
-\usepackage[utf8]{inputenc}
--->
-  
+---
+output: rmarkdown:: html_vignette
+vignette: >
+  \VignetteEngine{knitr::knitr}
+  \VignetteIndexEntry{Lazy benchmarks}
+  \usepackage[utf8]{inputenc}
+---
+
 ```{r, echo = FALSE}
 knitr::opts_chunk$set(collapse = TRUE, comment = "#>")
 options(digits = 3)

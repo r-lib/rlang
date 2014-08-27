@@ -1,7 +1,10 @@
-<!-- 
-%\VignetteEngine{knitr::knitr}
-%\VignetteIndexEntry{Lazy: a new approach to NSE}
--->
+---
+output: rmarkdown::html_vignette
+vignette: >
+  \VignetteEngine{knitr::knitr}
+  \VignetteIndexEntry{Lazy: a new approach to NSE}
+  \usepackage[utf8]{inputenc}
+---
 
 ```{r, echo = FALSE}
 knitr::opts_chunk$set(collapse = TRUE, comment = "#>")
