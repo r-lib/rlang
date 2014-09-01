@@ -14,6 +14,11 @@
 #'
 #' as.lazy_dots(list(~x, y = ~z + 1))
 #' as.lazy_dots(c("a", "b", "c"), globalenv())
+#' as.lazy_dots(~x)
+#' as.lazy_dots(quote(x), globalenv())
+#' as.lazy_dots(quote(f()), globalenv())
+#' as.lazy_dots(lazy(x))
+#' )
 as.lazy <- function(x, env) UseMethod("as.lazy")
 
 #' @export
@@ -39,6 +44,20 @@ as.lazy_dots <- function(x, env) UseMethod("as.lazy_dots")
 #' @export
 as.lazy_dots.list <- function(x, env) {
   structure(lapply(x, as.lazy, env = env), class = "lazy_dots")
+}
+
+#' @export
+as.lazy_dots.name <- function(x, env) {
+  structure(list(as.lazy(x, env)), class = "lazy_dots")
+}
+#' @export
+as.lazy_dots.formula <- as.lazy_dots.name
+#' @export
+as.lazy_dots.call <- as.lazy_dots.name
+
+#' @export
+as.lazy_dots.lazy <- function(x, env) {
+  structure(list(x), class = "lazy_dots")
 }
 
 #' @export

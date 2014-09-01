@@ -27,5 +27,10 @@ as.lazy("x + 1", globalenv())
 
 as.lazy_dots(list(~x, y = ~z + 1))
 as.lazy_dots(c("a", "b", "c"), globalenv())
+as.lazy_dots(~x)
+as.lazy_dots(quote(x), globalenv())
+as.lazy_dots(quote(f()), globalenv())
+as.lazy_dots(lazy(x))
+)
 }
 
