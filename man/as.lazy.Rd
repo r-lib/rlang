@@ -31,6 +31,5 @@ as.lazy_dots(~x)
 as.lazy_dots(quote(x), globalenv())
 as.lazy_dots(quote(f()), globalenv())
 as.lazy_dots(lazy(x))
-)
 }
 

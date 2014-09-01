@@ -18,7 +18,6 @@
 #' as.lazy_dots(quote(x), globalenv())
 #' as.lazy_dots(quote(f()), globalenv())
 #' as.lazy_dots(lazy(x))
-#' )
 as.lazy <- function(x, env) UseMethod("as.lazy")
 
 #' @export
