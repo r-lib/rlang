@@ -13,6 +13,8 @@
 #' }
 #' f(z = a + b)
 lazy_dots <- function(...) {
+  if (nargs() == 0) return(structure(list(), class = "lazy_dots"))
+
   .Call(make_lazy_dots, environment())
 }
 
