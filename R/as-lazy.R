@@ -46,3 +46,7 @@ as.lazy_dots.character <- function(x, env) {
   structure(lapply(x, as.lazy, env = env), class = "lazy_dots")
 }
 
+#' @export
+as.lazy_dots.lazy_dots <- function(x, env) {
+  x
+}
