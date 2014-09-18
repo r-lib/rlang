@@ -15,8 +15,8 @@ rownames(mtcars) <- NULL
 
 This document outlines a new approach to non-standard evaluation (NSE). There are three key ideas:
 
-* Instead of using `substitute()`, use `lazy::lazy()` to capture both expression
-  and environment. (Or use `lazy::lazy_dots(...)` to capture promises in `...`)
+* Instead of using `substitute()`, use `lazyeval::lazy()` to capture both expression
+  and environment. (Or use `lazyeval::lazy_dots(...)` to capture promises in `...`)
   
 * Every function that uses NSE should have a standard evaluation (SE) escape 
   hatch that does the actual computation. The SE-function name should end with 

@@ -1,8 +1,8 @@
-# lazy
+# lazyeval
 
-[![Build Status](https://travis-ci.org/hadley/lazy.png?branch=master)](https://travis-ci.org/hadley/lazy)
+[![Build Status](https://travis-ci.org/hadley/lazyeval.png?branch=master)](https://travis-ci.org/hadley/lazyeval)
 
-The lazy package provides the tools necessary to do non-standard evaluation "right" in R. There are three principles:
+The lazyeval package provides the tools necessary to do non-standard evaluation "right" in R. There are three principles:
 
 * Instead of using `substitute()`, use `lazy()` to capture both expression
   and environment. (Or use `lazy_dots()` to capture all promises in `...`)
@@ -18,5 +18,5 @@ See the vignette for more details.
 To install:
 
 ```r
-devtools::install_github("hadley/lazy")
+devtools::install_github("hadley/lazyeval")
 ```
