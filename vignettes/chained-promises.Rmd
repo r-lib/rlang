@@ -12,7 +12,7 @@ knitr::opts_chunk$set(collapse = TRUE, comment = "#>")
 Take the following example:
 
 ```{r}
-library(lazy)
+library(lazyeval)
 f1 <- function(x) lazy(x)
 g1 <- function(y) f1(y)
 

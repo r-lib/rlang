@@ -17,7 +17,7 @@ There is some overhead of using `lazy()` instead of `substitute()`, however, on 
 
 ```{r}
 library(microbenchmark)
-library(lazy)
+library(lazyeval)
 
 microbenchmark(
   substitute = substitute(x),

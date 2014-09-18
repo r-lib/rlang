@@ -30,7 +30,7 @@ This document outlines a new approach to non-standard evaluation (NSE). There ar
 The key tool that makes this approach possible is `lazy()`, an equivalent to `substitute()` that captures both expression and environment associated with a function argument:
 
 ```{r}
-library(lazy)
+library(lazyeval)
 f <- function(x = a - b) {
   lazy(x)
 }
