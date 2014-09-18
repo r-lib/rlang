@@ -48,7 +48,7 @@ lazy_ <- function(expr, env) {
 
 #' @rdname lazy_
 #' @export
-#' @useDynLib lazy make_lazy
+#' @useDynLib lazyeval make_lazy
 lazy <- function(expr, env = parent.frame(), follow_symbols = TRUE) {
   .Call(make_lazy, quote(expr), environment(), follow_symbols)
 }

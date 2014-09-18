@@ -3,7 +3,7 @@
 #' @param ... Dots from another function
 #' @return A named list of \code{\link{lazy}} expressions.
 #' @export
-#' @useDynLib lazy make_lazy_dots
+#' @useDynLib lazyeval make_lazy_dots
 #' @examples
 #' lazy_dots(x = 1)
 #' lazy_dots(a, b, c * 4)
