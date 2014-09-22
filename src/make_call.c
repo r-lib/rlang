@@ -5,6 +5,11 @@
 // This is a bit naughty, but there's no other way to create a promise
 SEXP Rf_mkPROMISE(SEXP, SEXP);
 
+SEXP lazy_to_promise(SEXP x) {
+  // arg is a list of length 2 - LANGSXP/SYMSXP, followed by ENVSXP
+  return Rf_mkPROMISE(VECTOR_ELT(x, 0), VECTOR_ELT(x, 1));
+}
+
 SEXP make_call_(SEXP fun, SEXP dots) {
   if (TYPEOF(fun) != SYMSXP && TYPEOF(fun) != LANGSXP) {
     error("fun must be a call or a symbol");
@@ -17,13 +22,16 @@ SEXP make_call_(SEXP fun, SEXP dots) {
   }
 
   int n = length(dots);
+  if (n == 0) {
+    return LCONS(fun, R_NilValue);
+  }
+
   SEXP names = GET_NAMES(dots);
 
   SEXP args = R_NilValue;
   for (int i = n - 1; i >= 0; --i) {
-    // arg is a list of length 2 - LANGSXP/SYMSXP, followed by ENVSXP
     SEXP dot = VECTOR_ELT(dots, i);
-    SEXP prom = PROTECT(Rf_mkPROMISE(VECTOR_ELT(dot, 0), VECTOR_ELT(dot, 1)));
+    SEXP prom = PROTECT(lazy_to_promise(dot));
     args = PROTECT(CONS(prom, args));
     UNPROTECT(1);
     SET_TAG(args, Rf_install(CHAR(STRING_ELT(names, i))));
