@@ -4,6 +4,7 @@
 
 // This is a bit naughty, but there's no other way to create a promise
 SEXP Rf_mkPROMISE(SEXP, SEXP);
+SEXP Rf_installTrChar(SEXP);
 
 SEXP lazy_to_promise(SEXP x) {
   // arg is a list of length 2 - LANGSXP/SYMSXP, followed by ENVSXP
@@ -34,7 +35,11 @@ SEXP make_call_(SEXP fun, SEXP dots) {
     SEXP prom = PROTECT(lazy_to_promise(dot));
     args = PROTECT(CONS(prom, args));
     UNPROTECT(1);
-    SET_TAG(args, Rf_install(CHAR(STRING_ELT(names, i))));
+    if (names != R_NilValue) {
+      SEXP name = STRING_ELT(names, i);
+      if (strlen(CHAR(name)) > 0)
+        SET_TAG(args, Rf_installTrChar(name));
+    }
   }
   UNPROTECT(n);
 
