@@ -32,9 +32,8 @@ SEXP make_call_(SEXP fun, SEXP dots) {
   SEXP args = R_NilValue;
   for (int i = n - 1; i >= 0; --i) {
     SEXP dot = VECTOR_ELT(dots, i);
-    SEXP prom = PROTECT(lazy_to_promise(dot));
+    SEXP prom = lazy_to_promise(dot);
     args = PROTECT(CONS(prom, args));
-    UNPROTECT(1);
     if (names != R_NilValue) {
       SEXP name = STRING_ELT(names, i);
       if (strlen(CHAR(name)) > 0)
