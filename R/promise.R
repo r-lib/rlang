@@ -13,3 +13,6 @@ promise_expr <- function(prom) {
 promise_env <- function(prom) {
   .Call(promise_env_, prom)
 }
+
+#' @export
+as.lazy.promise <- function(x) lazy_(promise_expr(x), promise_env(x))
