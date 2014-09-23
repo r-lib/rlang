@@ -22,5 +22,14 @@ f <- function(x = a + b, ...) {
   lazy_dots(x = x, y = a + b, ...)
 }
 f(z = a + b)
+
+# You can also modify a dots like a list. Anything on the RHS will
+# be coerced to a lazy.
+l <- lazy_dots(x = 1)
+l$y <- quote(f)
+l[c("y", "x")]
+l["z"] <- list(~g)
+
+c(lazy_dots(x = 1), lazy_dots(f))
 }
 

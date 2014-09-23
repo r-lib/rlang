@@ -12,6 +12,15 @@
 #'   lazy_dots(x = x, y = a + b, ...)
 #' }
 #' f(z = a + b)
+#'
+#' # You can also modify a dots like a list. Anything on the RHS will
+#' # be coerced to a lazy.
+#' l <- lazy_dots(x = 1)
+#' l$y <- quote(f)
+#' l[c("y", "x")]
+#' l["z"] <- list(~g)
+#'
+#' c(lazy_dots(x = 1), lazy_dots(f))
 lazy_dots <- function(...) {
   if (nargs() == 0) return(structure(list(), class = "lazy_dots"))
 
@@ -19,3 +28,26 @@ lazy_dots <- function(...) {
 }
 
 is.lazy_dots <- function(x) inherits(x, "lazy_dots")
+
+#' @export
+`[.lazy_dots` <- function(x, i) {
+  structure(NextMethod(), class = "lazy_dots")
+}
+
+#' @export
+`$<-.lazy_dots` <- function(x, i, value) {
+  value <- as.lazy(value, parent.frame())
+  x[[i]] <- value
+  x
+}
+
+#' @export
+`[<-.lazy_dots` <- function(x, i, value) {
+  value <- lapply(value, as.lazy, env = parent.frame())
+  NextMethod()
+}
+
+#' @export
+c.lazy_dots <- function(..., recursive = FALSE) {
+  structure(NextMethod(), class = "lazy_dots")
+}
