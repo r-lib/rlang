@@ -9,6 +9,7 @@ before_install:
 
 install:
   - ./travis-tool.sh install_deps
+  - R CMD install .
 
 script: ./travis-tool.sh run_tests
 
