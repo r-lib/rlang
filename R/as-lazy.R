@@ -68,3 +68,17 @@ as.lazy_dots.character <- function(x, env) {
 as.lazy_dots.lazy_dots <- function(x, env) {
   x
 }
+
+#' Combine explicit and implicit dots.
+#'
+#' @param ... Individual lazy objects
+#' @param .dots A list of lazy objects
+#' @return A \code{\link{lazy_dots}}
+#' @export
+all_dots <- function(.dots, ..., env = parent.frame()) {
+  dots1 <- as.lazy_dots(list(...), env = env)
+  if (missing(.dots)) return(dots1)
+
+  dots2 <- as.lazy_dots(.dots, env = env)
+  c(dots1, dots2)
+}
