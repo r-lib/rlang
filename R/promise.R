@@ -15,4 +15,6 @@ promise_env <- function(prom) {
 }
 
 #' @export
-as.lazy.promise <- function(x) lazy_(promise_expr(x), promise_env(x))
+as.lazy.promise <- function(x, ...) {
+  lazy_(promise_expr(x), promise_env(x))
+}

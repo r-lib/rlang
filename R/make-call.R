@@ -1,7 +1,9 @@
-#' Generate a call.
+#' Evaluate a call with \code{lazy_dots} as argument.
 #'
 #' @param fun Function as symbol or quoted call.
 #' @param dots Arguments to function; must be a \code{lazy_dots} object.
+#' @param env Environment in which to evaluate call. Defaults to
+#'   \code{\link{parent.frame}()}.
 #' @useDynLib lazyeval eval_call_
 #' @export
 #' @examples
