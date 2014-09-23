@@ -9,14 +9,14 @@
 #' @examples
 #' x <- lazy_dots(1 + 2, mean(mpg))
 #' auto_name(x)
-auto_name <- function(x, max_width = 20) {
+auto_name <- function(x, max_width = 40) {
   stopifnot(is.lazy_dots(x))
 
   names(x) <- auto_names(x, max_width = max_width)
   x
 }
 
-auto_names <- function(x, max_width = 20) {
+auto_names <- function(x, max_width = 40) {
   nms <- names(x) %||% rep("", length(x))
 
   missing <- nms == ""
