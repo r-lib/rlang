@@ -3,7 +3,7 @@
 \alias{auto_name}
 \title{Automatically name all components of a lazy dots.}
 \usage{
-auto_name(x, max_width = 20)
+auto_name(x, max_width = 40)
 }
 \arguments{
 \item{x}{A \code{\link{lazy_dots}}}
