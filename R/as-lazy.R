@@ -73,6 +73,7 @@ as.lazy_dots.lazy_dots <- function(x, env) {
 #'
 #' @param ... Individual lazy objects
 #' @param .dots A list of lazy objects
+#' @param env Default environment to use for non-lazy objects
 #' @return A \code{\link{lazy_dots}}
 #' @export
 all_dots <- function(.dots, ..., env = parent.frame()) {

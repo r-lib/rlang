@@ -3,12 +3,17 @@
 \alias{all_dots}
 \title{Combine explicit and implicit dots.}
 \usage{
-all_dots(..., .dots)
+all_dots(.dots, ..., env = parent.frame())
 }
 \arguments{
-\item{...}{}
+\item{.dots}{A list of lazy objects}
 
-\item{.dots}{}
+\item{...}{Individual lazy objects}
+
+\item{env}{Default environment to use for non-lazy objects}
+}
+\value{
+A \code{\link{lazy_dots}}
 }
 \description{
 Combine explicit and implicit dots.
