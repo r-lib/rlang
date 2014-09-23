@@ -9,7 +9,7 @@ before_install:
 
 install:
   - ./travis-tool.sh install_deps
-  - install_github hadley/lazyeval
+  - ./travis-tool.sh install_github hadley/lazyeval
 
 script: ./travis-tool.sh run_tests
 
