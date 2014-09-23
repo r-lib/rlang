@@ -18,3 +18,42 @@
 eval_call <- function(fun, dots, env = parent.frame()) {
   .Call(eval_call_, fun, dots, env)
 }
+
+#' Make a call with \code{lazy_dots} as arguments.
+#'
+#' In order to make a valid call, the environment must be the same for
+#' all of the dots.
+#'
+#' @inheritParams eval_call
+#' @return A list:
+#'   \item{env}{The common environment for all elements}
+#'   \item{expr}{The expression}
+#' @export
+#' @examples
+#' make_call(quote(f), lazy_dots(x = 1, 2))
+make_call <- function(fun, dots) {
+  args <- lapply(dots, "[[", "expr")
+
+  list(
+    env = common_env(dots),
+    expr = as.call(c(fun, args)))
+}
+
+#' Find common environment in list of lazy objects.
+#'
+#' @param dots A list of lazy objects
+#' @keywords internal
+#' @export
+common_env <- function(dots) {
+  if (length(dots) == 0) return(NULL)
+
+  env <- dots[[1]]$env
+  if (length(dots) == 1) return(env)
+
+  for (i in 2:length(dots)) {
+    if (!identical(env, dots[[i]]$env)) {
+      stop("Enviorments not identical.", call. = FALSE)
+    }
+  }
+  env
+}
