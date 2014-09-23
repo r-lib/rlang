@@ -11,7 +11,7 @@ SEXP lazy_to_promise(SEXP x) {
   return Rf_mkPROMISE(VECTOR_ELT(x, 0), VECTOR_ELT(x, 1));
 }
 
-SEXP make_call_(SEXP fun, SEXP dots) {
+SEXP eval_call_(SEXP fun, SEXP dots, SEXP env) {
   if (TYPEOF(fun) != SYMSXP && TYPEOF(fun) != LANGSXP) {
     error("fun must be a call or a symbol");
   }
@@ -20,6 +20,9 @@ SEXP make_call_(SEXP fun, SEXP dots) {
   }
   if (!inherits(dots, "lazy_dots")) {
     error("dots must be of class lazy_dots");
+  }
+  if (TYPEOF(env) != ENVSXP) {
+    error("env must be an environment");
   }
 
   int n = length(dots);
@@ -42,5 +45,7 @@ SEXP make_call_(SEXP fun, SEXP dots) {
   }
   UNPROTECT(n);
 
-  return LCONS(fun, args);
+  SEXP call = LCONS(fun, args);
+
+  return eval(call, env);
 }
