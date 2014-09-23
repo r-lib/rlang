@@ -74,12 +74,23 @@ as.lazy_dots.lazy_dots <- function(x, env) {
 #' @param ... Individual lazy objects
 #' @param .dots A list of lazy objects
 #' @param env Default environment to use for non-lazy objects
+#' @param all_named If \code{TRUE}, uses \code{\link{auto_name}} to ensure
+#'   every component has a name.
 #' @return A \code{\link{lazy_dots}}
 #' @export
-all_dots <- function(.dots, ..., env = parent.frame()) {
-  dots1 <- as.lazy_dots(list(...), env = env)
-  if (missing(.dots)) return(dots1)
+all_dots <- function(.dots, ..., env = parent.frame(), all_named = FALSE) {
+  dots <- as.lazy_dots(list(...), env = env)
+  if (!missing(.dots)) {
+    dots2 <- as.lazy_dots(.dots, env = env)
+    dots <- c(dots, dots2)
+  }
 
-  dots2 <- as.lazy_dots(.dots, env = env)
-  c(dots1, dots2)
+  if (all_named) {
+    dots <- auto_name(dots)
+  }
+
+  dots
+
+
+
 }
