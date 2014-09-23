@@ -1,8 +1,7 @@
 
-#' @useDynLib lazyeval promise_
-promise <- function(expr, env) {
-  .Call(promise_, expr, env)
-}
+# promise <- function(expr, env) {
+#   .Call(promise_, expr, env)
+# }
 
 #' @useDynLib lazyeval promise_expr_
 promise_expr <- function(prom) {

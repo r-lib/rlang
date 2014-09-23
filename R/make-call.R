@@ -4,7 +4,6 @@
 #' @param dots Arguments to function; must be a \code{lazy_dots} object.
 #' @param env Environment in which to evaluate call. Defaults to
 #'   \code{\link{parent.frame}()}.
-#' @useDynLib lazyeval eval_call_
 #' @export
 #' @examples
 #' make_env <- function(...) list2env(list(...), parent = emptyenv())
@@ -16,7 +15,26 @@
 #' a <- 100
 #' eval_call(quote(`+`), args)
 eval_call <- function(fun, dots, env = parent.frame()) {
-  .Call(eval_call_, fun, dots, env)
+
+  vars <- paste0("x", seq_along(dots))
+  names(vars) <- names(dots)
+
+  # Create environment containing promises
+  env <- new.env(parent = env)
+  for(i in seq_along(dots)) {
+    dot <- dots[[i]]
+
+    assign_call <- substitute(
+      delayedAssign(vars[i], expr, dot$env, assign.env = env),
+      list(expr = dot$expr)
+    )
+    eval(assign_call)
+  }
+
+  args <- lapply(vars, as.symbol)
+  call <- as.call(c(fun, args))
+
+  eval(call, env)
 }
 
 #' Make a call with \code{lazy_dots} as arguments.
@@ -32,6 +50,8 @@ eval_call <- function(fun, dots, env = parent.frame()) {
 #' @examples
 #' make_call(quote(f), lazy_dots(x = 1, 2))
 make_call <- function(fun, dots) {
+  env <- new.env()
+
   args <- lapply(dots, "[[", "expr")
 
   list(

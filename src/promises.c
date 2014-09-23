@@ -2,6 +2,8 @@
 #include <R.h>
 #include <Rdefines.h>
 
+/* Fails on Linux --------------------------------------------------------------
+
 SEXP Rf_mkPROMISE(SEXP, SEXP);
 
 SEXP promise_(SEXP expr, SEXP env) {
@@ -14,6 +16,8 @@ SEXP promise_(SEXP expr, SEXP env) {
 
   return Rf_mkPROMISE(expr, env);
 }
+
+*/
 
 SEXP promise_expr_(SEXP prom) {
   if (TYPEOF(prom) != PROMSXP) {
@@ -30,3 +34,4 @@ SEXP promise_env_(SEXP prom) {
 
   return PRENV(prom);
 }
+

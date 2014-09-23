@@ -2,6 +2,8 @@
 #include <R.h>
 #include <Rdefines.h>
 
+/* For now, replace with pure R alternative ------------------------------------
+
 // This is a bit naughty, but there's no other way to create a promise
 SEXP Rf_mkPROMISE(SEXP, SEXP);
 SEXP Rf_installTrChar(SEXP);
@@ -49,3 +51,5 @@ SEXP eval_call_(SEXP fun, SEXP dots, SEXP env) {
 
   return eval(call, env);
 }
+
+*/
