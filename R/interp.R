@@ -93,3 +93,12 @@ all_values <- function(.values, ...) {
     .values
   }
 }
+
+#' Generate a missing argument.
+#'
+#' @export
+#' @examples
+#' interp(~f(x), x = missing_arg())
+missing_arg <- function() {
+  quote(expr = )
+}
