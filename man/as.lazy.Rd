@@ -4,7 +4,7 @@
 \alias{as.lazy_dots}
 \title{Convert an object to a lazy expression or lazy dots.}
 \usage{
-as.lazy(x, env)
+as.lazy(x, env = emptyenv())
 
 as.lazy_dots(x, env)
 }

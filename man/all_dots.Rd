@@ -3,14 +3,12 @@
 \alias{all_dots}
 \title{Combine explicit and implicit dots.}
 \usage{
-all_dots(.dots, ..., env = parent.frame(), all_named = FALSE)
+all_dots(.dots, ..., all_named = FALSE)
 }
 \arguments{
 \item{.dots}{A list of lazy objects}
 
 \item{...}{Individual lazy objects}
-
-\item{env}{Default environment to use for non-lazy objects}
 
 \item{all_named}{If \code{TRUE}, uses \code{\link{auto_name}} to ensure
 every component has a name.}
