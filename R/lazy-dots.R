@@ -13,7 +13,12 @@
 #'   lazy_dots(x = x, y = a + b, ...)
 #' }
 #' f(z = a + b)
-#' f(z = a + b, .follow_symbols = FALSE)
+#' f(z = a + b, .follow_symbols = TRUE)
+#'
+#' # .follow_symbols is off by default because it causes problems
+#' # with lazy loaded objects
+#' lazy_dots(letters)
+#' lazy_dots(letters, .follow_symbols = TRUE)
 #'
 #' # You can also modify a dots like a list. Anything on the RHS will
 #' # be coerced to a lazy.
@@ -23,7 +28,7 @@
 #' l["z"] <- list(~g)
 #'
 #' c(lazy_dots(x = 1), lazy_dots(f))
-lazy_dots <- function(..., .follow_symbols = TRUE) {
+lazy_dots <- function(..., .follow_symbols = FALSE) {
   if (nargs() == 0) return(structure(list(), class = "lazy_dots"))
 
   .Call(make_lazy_dots, environment(), .follow_symbols)
