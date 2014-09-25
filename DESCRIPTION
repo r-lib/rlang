@@ -1,13 +1,16 @@
 Package: lazyeval
-Title: lazy (non-standard) evaluation.
 Version: 0.1.8
-Authors@R: 'Hadley Wickham <h.wickham@gmail.com> [aut,cre]'
+Title: lazy (non-standard) evaluation.
 Description: lazyeval provides a disciplined approach to non-standard
     evaluation.
-Depends:
-    R (>= 3.1.0)
+Authors@R: as.person(c(
+    "Hadley Wickham <hadley@rstudio.com> [aut,cre]",
+    "RStudio [cph]"
+    ))
 License: GPL-3
 LazyData: true
+Depends:
+    R (>= 3.1.0)
 Suggests:
     knitr,
     rmarkdown,
