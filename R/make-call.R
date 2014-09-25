@@ -2,11 +2,11 @@
 #'
 #' In order to exactly replay the original call, the environment must be the
 #' same for all of the dots. This function circumvents that a little,
-#' falling back to the \code{\link{baseenv()}} if all environments aren't
+#' falling back to the \code{\link{baseenv}()} if all environments aren't
 #' the same.
 #'
 #' @param fun Function as symbol or quoted call.
-#' @param dots Arguments to function; must be a \code{lazy_dots} object,
+#' @param args Arguments to function; must be a \code{lazy_dots} object,
 #'   or something \code{\link{as.lazy_dots}()} can coerce..
 #' @return A list:
 #'   \item{env}{The common environment for all elements}
