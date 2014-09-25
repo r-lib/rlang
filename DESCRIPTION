@@ -1,8 +1,9 @@
 Package: lazyeval
-Title: What the package does (short line)
+Title: lazy (non-standard) evaluation.
 Version: 0.1.8
 Authors@R: 'Hadley Wickham <h.wickham@gmail.com> [aut,cre]'
-Description: What the package does (paragraph)
+Description: lazyeval provides a disciplined approach to non-standard
+    evaluation.
 Depends:
     R (>= 3.1.0)
 License: GPL-3
