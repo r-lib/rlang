@@ -89,7 +89,7 @@ Note that quoted called and strings don't have environments associated with them
 
 ## Non-standard evaluation
 
-With the standard evaluation version in hand, writing the standard evaluation version is easy. We just use `lazy()` to capture the unevaluated expression and corresponding environment:
+With the SE version in hand, writing the NSE version is easy. We just use `lazy()` to capture the unevaluated expression and corresponding environment:
 
 ```{r}
 subset2 <- function(df, condition) {
