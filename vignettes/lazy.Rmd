@@ -75,22 +75,17 @@ subset2_ <- function(df, condition) {
 } 
 
 subset2_(mtcars, lazy(mpg > 31))
-subset2_(mtcars, ~mpg > 31)
 ```
 
-To make the NSE version as flexible as possible, use `as.lazy()` to coerce input into a lazy object. In general, this requires an environment, and the `parent.frame()` is a reasonable guess. This allows the user to pass in quoted calls and strings. This is a little risky but provides useful scaffolding when learning how to do NSE the right way.
+`lazy_eval()` will always coerce it's first argument into a lazy object, so a variety of specifications will work:
 
 ```{r}
-subset2_ <- function(df, condition) {
-  condition <- as.lazy(condition, parent.frame())
-  r <- lazy_eval(condition, df)
-  r <- r & !is.na(r)
-  df[r, , drop = FALSE]
-} 
-
+subset2_(mtcars, ~mpg > 31)
 subset2_(mtcars, quote(mpg > 31))
 subset2_(mtcars, "mpg > 31")
 ```
+
+Note that quoted called and strings don't have environments associated with them, so `as.lazy()` defaults to using `baseenv()`. This will work if the expression is self-contained (i.e. doesn't contain any references to variables in the local environment), and will otherwise fail quickly and robustly.
 
 ## Non-standard evaluation
 
@@ -107,13 +102,13 @@ This standard evaluation escape hatch is very important because it allows us to 
 
 ```{r}
 above_threshold <- function(df, var, threshold) {
-  cond <- substitute(var > threshold)
+  cond <- interp(~ var > x, var = lazy(var), x = threshold)
   subset2_(df, cond)
 }
 above_threshold(mtcars, mpg, 31)
 ```
 
-The use of `substitute()` is appropriate here because `var` is a variable name and `threshold` is a value - the environment in which they are defined is not important.
+Here we're using `interp()` to modify a formula. We use the value of `threshold` and the expression in  by `var`.
 
 ## Scoping
 
@@ -156,5 +151,5 @@ g2 <- function(comp) {
 g2(mpg > x)
 ```
 
-Note that `g2()` doesn't have a standard-evaluation escape hatch, so it's not suitable for programming with in the same way that `subset2_()` is.  See `vignettes("chained-promises")` for more details on this topic.
+Note that `g2()` doesn't have a standard-evaluation escape hatch, so it's not suitable for programming with in the same way that `subset2_()` is. 
 

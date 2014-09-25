@@ -44,8 +44,6 @@ as.lazy.numeric <- function(x, env = baseenv()) {
   lazy_(x, env)
 }
 #' @export
-as.lazy.character <- as.lazy.numeric
-#' @export
 as.lazy.logical <- as.lazy.numeric
 
 #' @export

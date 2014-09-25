@@ -20,11 +20,8 @@ lazy_eval <- function(x, data = NULL) {
   if (is.lazy_dots(x)) {
     return(lapply(x, lazy_eval, data = data))
   }
-  if (inherits(x, "formula")) {
-    x <- as.lazy(x)
-  }
 
-  stopifnot(is.lazy(x))
+  x <- as.lazy(x)
 
   if (!is.null(data)) {
     eval(x$expr, data, x$env)

@@ -85,13 +85,18 @@ substitute_ <- function(x, env) {
 
 all_values <- function(.values, ...) {
   if (missing(.values)) {
-    list(...)
+    values <- list(...)
   } else if (identical(.values, globalenv())) {
     # substitute doesn't want to replace in globalenv
-    as.list(globalenv())
+    values <- as.list(globalenv())
   } else {
-    .values
+    values <- .values
   }
+  # Replace lazy objects with their expressions
+  is_lazy <- vapply(values, is.lazy, logical(1))
+  values[is_lazy] <- lapply(values[is_lazy], `[[`, "expr")
+
+  values
 }
 
 #' Generate a missing argument.
