@@ -21,7 +21,7 @@ g1(a + b)
 
 `lazy()` returns `a + b` because it always tries to find the top-level promise.
 
-In this case the process looks like something like this:
+In this case the process looks like this:
 
 1. Find the object that `x` is bound to.
 2. It's a promise, so find the expr it's bound to (`y`, a symbol) and the 
@@ -31,7 +31,7 @@ In this case the process looks like something like this:
    environment.
 5. The expression is not a symbol, so stop.
 
-Occassionally, you want to avoid this recursive behaviour, so you can use `follow_symbol = FALSE`:
+Occasionally, you want to avoid this recursive behaviour, so you can use `follow_symbol = FALSE`:
 
 ```{r}
 f2 <- function(x) lazy(x, follow_symbols = FALSE)
