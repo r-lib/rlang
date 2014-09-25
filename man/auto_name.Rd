@@ -17,5 +17,8 @@ looking at the first \code{max_width} characters of the deparsed expression.
 \examples{
 x <- lazy_dots(1 + 2, mean(mpg))
 auto_name(x)
+
+auto_name(list(~f, quote(x)))
 }
+\keyword{internal}
 

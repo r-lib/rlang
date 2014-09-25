@@ -19,4 +19,5 @@ A \code{\link{lazy_dots}}
 \description{
 Combine explicit and implicit dots.
 }
+\keyword{internal}
 

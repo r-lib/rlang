@@ -88,6 +88,7 @@ as.lazy_dots.lazy_dots <- function(x, env = baseenv()) {
 #' @param all_named If \code{TRUE}, uses \code{\link{auto_name}} to ensure
 #'   every component has a name.
 #' @return A \code{\link{lazy_dots}}
+#' @keywords internal
 #' @export
 all_dots <- function(.dots, ..., all_named = FALSE) {
   dots <- as.lazy_dots(list(...))

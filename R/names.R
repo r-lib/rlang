@@ -5,18 +5,21 @@
 #'
 #' @param x A \code{\link{lazy_dots}}
 #' @param max_width Maximum number of characters to use
+#' @keywords internal
 #' @export
 #' @examples
 #' x <- lazy_dots(1 + 2, mean(mpg))
 #' auto_name(x)
+#'
+#' auto_name(list(~f, quote(x)))
 auto_name <- function(x, max_width = 40) {
-  stopifnot(is.lazy_dots(x))
-
   names(x) <- auto_names(x, max_width = max_width)
   x
 }
 
 auto_names <- function(x, max_width = 40) {
+  x <- as.lazy_dots(x)
+
   nms <- names(x) %||% rep("", length(x))
 
   missing <- nms == ""
