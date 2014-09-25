@@ -11,7 +11,7 @@ knitr::opts_chunk$set(collapse = TRUE, comment = "#>")
 rownames(mtcars) <- NULL
 ```
 
-# Lazy: A new approach to non-standard evalution
+# Lazy: A new approach to non-standard evaluation
 
 This document outlines a new approach to non-standard evaluation (NSE). There are three key ideas:
 
@@ -136,7 +136,7 @@ f2 <- function(...) {
 f2(mpg > x)
 ```
 
-`lazy()` has another advantage over `substitute()` - by default, it follows promises across function invovations. This simplifies the casual use of NSE.
+`lazy()` has another advantage over `substitute()` - by default, it follows promises across function invocations. This simplifies the casual use of NSE.
 
 ```{r, eval = FALSE}
 x <- 31
