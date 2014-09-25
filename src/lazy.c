@@ -61,7 +61,7 @@ SEXP make_lazy_dots(SEXP env) {
   while(nxt != R_NilValue) {
     SEXP promise = CAR(nxt);
 
-    SEXP lazy = promise_as_lazy(promise, env, 0);
+    SEXP lazy = promise_as_lazy(promise, env, 1);
     SET_VECTOR_ELT(lazy_dots, i, lazy);
     if (TAG(nxt) != R_NilValue)
       SET_STRING_ELT(names, i, PRINTNAME(TAG(nxt)));
