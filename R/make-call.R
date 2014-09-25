@@ -72,7 +72,7 @@ common_env <- function(dots) {
 
   for (i in 2:length(dots)) {
     if (!identical(env, dots[[i]]$env)) {
-      stop("Enviorments not identical.", call. = FALSE)
+      return(baseenv())
     }
   }
   env
