@@ -1,44 +1,3 @@
-#' Evaluate a call with \code{lazy_dots} as argument.
-#'
-#' This simulates the original call as closely as possible by creating
-#' a temporary environment where each \code{lazy} object is bound to
-#' a promise by \code{\link{delayedAssign}}.
-#'
-#' @noRd
-#' @param env Environment in which to evaluate call. Defaults to
-#'   \code{\link{parent.frame}()}.
-#' @examples
-#' make_env <- function(...) list2env(list(...), parent = emptyenv())
-#'
-#' f1 <- as.lazy(quote(a()), make_env(a = function() {message("!"); 1}))
-#' f2 <- as.lazy(quote(a), make_env(a = 10))
-#' args <- as.lazy_dots(list(f1, f2))
-#'
-#' a <- 100
-#' eval_call(quote(`+`), args)
-eval_call <- function(fun, dots, env = parent.frame()) {
-
-  vars <- paste0("x", seq_along(dots))
-  names(vars) <- names(dots)
-
-  # Create environment containing promises
-  env <- new.env(parent = env)
-  for(i in seq_along(dots)) {
-    dot <- dots[[i]]
-
-    assign_call <- substitute(
-      delayedAssign(vars[i], expr, dot$env, assign.env = env),
-      list(expr = dot$expr)
-    )
-    eval(assign_call)
-  }
-
-  args <- lapply(vars, as.symbol)
-  call <- as.call(c(fun, args))
-
-  eval(call, env)
-}
-
 #' Make a call with \code{lazy_dots} as arguments.
 #'
 #' In order to exactly replay the original call, the environment must be the
@@ -99,3 +58,47 @@ common_env <- function(dots) {
   }
   env
 }
+
+# ------------------------------------------------------------------------------
+
+#' Evaluate a call with \code{lazy_dots} as argument.
+#'
+#' This simulates the original call as closely as possible by creating
+#' a temporary environment where each \code{lazy} object is bound to
+#' a promise by \code{\link{delayedAssign}}.
+#'
+#' @noRd
+#' @param env Environment in which to evaluate call. Defaults to
+#'   \code{\link{parent.frame}()}.
+#' @examples
+#' make_env <- function(...) list2env(list(...), parent = emptyenv())
+#'
+#' f1 <- as.lazy(quote(a()), make_env(a = function() {message("!"); 1}))
+#' f2 <- as.lazy(quote(a), make_env(a = 10))
+#' args <- as.lazy_dots(list(f1, f2))
+#'
+#' a <- 100
+#' eval_call(quote(`+`), args)
+eval_call <- function(fun, dots, env = parent.frame()) {
+
+  vars <- paste0("x", seq_along(dots))
+  names(vars) <- names(dots)
+
+  # Create environment containing promises
+  env <- new.env(parent = env)
+  for(i in seq_along(dots)) {
+    dot <- dots[[i]]
+
+    assign_call <- substitute(
+      delayedAssign(vars[i], expr, dot$env, assign.env = env),
+      list(expr = dot$expr)
+    )
+    eval(assign_call)
+  }
+
+  args <- lapply(vars, as.symbol)
+  call <- as.call(c(fun, args))
+
+  eval(call, env)
+}
+
