@@ -10,5 +10,6 @@ License: GPL-3
 LazyData: true
 Suggests:
     knitr,
+    rmarkdown,
     microbenchmark
 VignetteBuilder: knitr

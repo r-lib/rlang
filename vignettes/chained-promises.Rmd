@@ -1,13 +1,16 @@
-<!-- 
-%\VignetteEngine{knitr::knitr}
-%\VignetteIndexEntry{Chained promises}
--->
+---
+title: "Chained promises"
+date: "`r Sys.Date()`"
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{Chained promises}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\usepackage[utf8]{inputenc}
+---
 
 ```{r, echo = FALSE}
 knitr::opts_chunk$set(collapse = TRUE, comment = "#>")
 ```
-
-# Chained promises
 
 Take the following example:
 

@@ -1,17 +1,17 @@
 ---
+title: "Lazyeval: a new approach to NSE"
+date: "`r Sys.Date()`"
 output: rmarkdown::html_vignette
 vignette: >
-  \VignetteEngine{knitr::knitr}
-  \VignetteIndexEntry{Lazy: a new approach to NSE}
-  \usepackage[utf8]{inputenc}
+  %\VignetteIndexEntry{Lazyeval: a new approach to NSE}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\usepackage[utf8]{inputenc}
 ---
 
 ```{r, echo = FALSE}
 knitr::opts_chunk$set(collapse = TRUE, comment = "#>")
 rownames(mtcars) <- NULL
 ```
-
-# Lazy: A new approach to non-standard evaluation
 
 This document outlines a new approach to non-standard evaluation (NSE). There are three key ideas:
 
