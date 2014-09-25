@@ -1,5 +1,5 @@
 Package: lazyeval
-Version: 0.1.8
+Version: 0.1.9
 Title: lazy (non-standard) evaluation.
 Description: lazyeval provides a disciplined approach to non-standard
     evaluation.

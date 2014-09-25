@@ -12,7 +12,7 @@
 #' @param expr Expression to capture. For \code{lazy_} must be a name
 #'   or a call.
 #' @param env Environment in which to evaluate expr.
-#' @param follow_symbols If \code{TRUE}, the default, follows promises across
+#' @param .follow_symbols If \code{TRUE}, the default, follows promises across
 #'   function calls. See \code{vignette("chained-promises")} for details.
 #' @export
 #' @examples
@@ -38,7 +38,7 @@
 #' g(a + b)
 #' h(a + b)
 #'
-#' # To avoid this behavour, set follow_symbols = FALSE
+#' # To avoid this behavour, set .follow_symbols = FALSE
 #' # See vignette("chained-promises") for details
 lazy_ <- function(expr, env) {
   stopifnot(is.call(expr) || is.name(expr) || is.atomic(expr))
@@ -49,8 +49,8 @@ lazy_ <- function(expr, env) {
 #' @rdname lazy_
 #' @export
 #' @useDynLib lazyeval make_lazy
-lazy <- function(expr, env = parent.frame(), follow_symbols = TRUE) {
-  .Call(make_lazy, quote(expr), environment(), follow_symbols)
+lazy <- function(expr, env = parent.frame(), .follow_symbols = TRUE) {
+  .Call(make_lazy, quote(expr), environment(), .follow_symbols)
 }
 
 is.lazy <- function(x) inherits(x, "lazy")

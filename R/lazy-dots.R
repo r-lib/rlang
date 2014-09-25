@@ -2,6 +2,7 @@
 #'
 #' @param ... Dots from another function
 #' @return A named list of \code{\link{lazy}} expressions.
+#' @inheritParams lazy
 #' @export
 #' @useDynLib lazyeval make_lazy_dots
 #' @examples
@@ -12,6 +13,7 @@
 #'   lazy_dots(x = x, y = a + b, ...)
 #' }
 #' f(z = a + b)
+#' f(z = a + b, .follow_symbols = FALSE)
 #'
 #' # You can also modify a dots like a list. Anything on the RHS will
 #' # be coerced to a lazy.
@@ -21,10 +23,10 @@
 #' l["z"] <- list(~g)
 #'
 #' c(lazy_dots(x = 1), lazy_dots(f))
-lazy_dots <- function(...) {
+lazy_dots <- function(..., .follow_symbols = TRUE) {
   if (nargs() == 0) return(structure(list(), class = "lazy_dots"))
 
-  .Call(make_lazy_dots, environment())
+  .Call(make_lazy_dots, environment(), .follow_symbols)
 }
 
 is.lazy_dots <- function(x) inherits(x, "lazy_dots")

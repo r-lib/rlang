@@ -42,8 +42,9 @@ SEXP make_lazy(SEXP name, SEXP env, SEXP follow_symbols_) {
   return promise_as_lazy(promise, env, follow_symbols);
 }
 
-SEXP make_lazy_dots(SEXP env) {
+SEXP make_lazy_dots(SEXP env, SEXP follow_symbols_) {
   SEXP dots = findVar(install("..."), env);
+  int follow_symbols = asLogical(follow_symbols_);
 
   // Figure out how many elements in dots
   int n = 0;
@@ -61,7 +62,7 @@ SEXP make_lazy_dots(SEXP env) {
   while(nxt != R_NilValue) {
     SEXP promise = CAR(nxt);
 
-    SEXP lazy = promise_as_lazy(promise, env, 1);
+    SEXP lazy = promise_as_lazy(promise, env, follow_symbols);
     SET_VECTOR_ELT(lazy_dots, i, lazy);
     if (TAG(nxt) != R_NilValue)
       SET_STRING_ELT(names, i, PRINTNAME(TAG(nxt)));

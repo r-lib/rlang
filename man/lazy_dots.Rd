@@ -3,10 +3,13 @@
 \alias{lazy_dots}
 \title{Capture ... (dots) for later lazy evaluation.}
 \usage{
-lazy_dots(...)
+lazy_dots(..., .follow_symbols = TRUE)
 }
 \arguments{
 \item{...}{Dots from another function}
+
+\item{.follow_symbols}{If \code{TRUE}, the default, follows promises across
+function calls. See \code{vignette("chained-promises")} for details.}
 }
 \value{
 A named list of \code{\link{lazy}} expressions.
@@ -22,6 +25,7 @@ f <- function(x = a + b, ...) {
   lazy_dots(x = x, y = a + b, ...)
 }
 f(z = a + b)
+f(z = a + b, .follow_symbols = FALSE)
 
 # You can also modify a dots like a list. Anything on the RHS will
 # be coerced to a lazy.

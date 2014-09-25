@@ -37,7 +37,7 @@ In this case the process looks like this:
 Occasionally, you want to avoid this recursive behaviour, so you can use `follow_symbol = FALSE`:
 
 ```{r}
-f2 <- function(x) lazy(x, follow_symbols = FALSE)
+f2 <- function(x) lazy(x, .follow_symbols = FALSE)
 g2 <- function(y) f2(y)
 
 g2(a + b)
