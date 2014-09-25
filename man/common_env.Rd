@@ -9,7 +9,14 @@ common_env(dots)
 \item{dots}{A list of lazy objects}
 }
 \description{
-Find common environment in list of lazy objects.
+If no common environment is found, will return \code{baseenv()}.
+}
+\examples{
+common_env(lazy_dots(a, b, c))
+
+f <- function(x) ~x
+common_env(list(f(1)))
+common_env(list(f(1), f(2)))
 }
 \keyword{internal}
 

@@ -73,14 +73,22 @@ make_call <- function(fun, args) {
 
 #' Find common environment in list of lazy objects.
 #'
+#' If no common environment is found, will return \code{baseenv()}.
+#'
 #' @param dots A list of lazy objects
 #' @keywords internal
 #' @export
+#' @examples
+#' common_env(lazy_dots(a, b, c))
+#'
+#' f <- function(x) ~x
+#' common_env(list(f(1)))
+#' common_env(list(f(1), f(2)))
 common_env <- function(dots) {
   if (!is.list(dots)) stop("dots must be a list", call. = FALSE)
-  if (!is.lazy_dots(dots)) return(baseenv())
   if (length(dots) == 0) return(baseenv())
 
+  dots <- as.lazy_dots(dots)
   env <- dots[[1]]$env
   if (length(dots) == 1) return(env)
 
@@ -91,16 +99,3 @@ common_env <- function(dots) {
   }
   env
 }
-
-expr <- function(x) UseMethod("expr")
-#' @export
-expr.lazy <- function(x) x$expr
-#' @export
-exprs.formula <- function(x) list(x[[2]])
-#' @export
-exprs.call <- function(x) list(x)
-#' @export
-exprs.name <- function(x) list(x)
-#' @export
-exprs.character <- function(x) list(parse(text = x)[[1]])
-
