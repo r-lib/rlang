@@ -1,10 +1,10 @@
-#' Interpolate values into an expression
+#' Interpolate values into an expression.
 #'
 #' This is useful if you want to build an expression up from a mixture of
 #' constants and variables.
 #'
 #' @param _obj An object to modify: can be a call, name, formula,
-#'   \code{\link{lazy}}, or a string
+#'   \code{\link{lazy}}, or a string.
 #' @param ...,.values Either individual name-value pairs, or a list
 #'   (or environment) of values.
 #' @export
