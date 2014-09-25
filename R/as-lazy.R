@@ -18,22 +18,22 @@
 #' as.lazy_dots(quote(x), globalenv())
 #' as.lazy_dots(quote(f()), globalenv())
 #' as.lazy_dots(lazy(x))
-as.lazy <- function(x, env = emptyenv()) UseMethod("as.lazy")
+as.lazy <- function(x, env = baseenv()) UseMethod("as.lazy")
 
 #' @export
-as.lazy.lazy <- function(x, env = emptyenv()) x
+as.lazy.lazy <- function(x, env = baseenv()) x
 
 #' @export
-as.lazy.formula <- function(x, env = emptyenv()) lazy_(x[[2]], environment(x))
+as.lazy.formula <- function(x, env = baseenv()) lazy_(x[[2]], environment(x))
 
 #' @export
-as.lazy.character <- function(x, env = emptyenv()) lazy_(parse(text = x)[[1]], env)
+as.lazy.character <- function(x, env = baseenv()) lazy_(parse(text = x)[[1]], env)
 
 #' @export
-as.lazy.call <- function(x, env = emptyenv()) lazy_(x, env)
+as.lazy.call <- function(x, env = baseenv()) lazy_(x, env)
 
 #' @export
-as.lazy.name <- function(x, env = emptyenv()) lazy_(x, env)
+as.lazy.name <- function(x, env = baseenv()) lazy_(x, env)
 
 
 #' @export
@@ -41,12 +41,12 @@ as.lazy.name <- function(x, env = emptyenv()) lazy_(x, env)
 as.lazy_dots <- function(x, env) UseMethod("as.lazy_dots")
 
 #' @export
-as.lazy_dots.list <- function(x, env = emptyenv()) {
+as.lazy_dots.list <- function(x, env = baseenv()) {
   structure(lapply(x, as.lazy, env = env), class = "lazy_dots")
 }
 
 #' @export
-as.lazy_dots.name <- function(x, env = emptyenv()) {
+as.lazy_dots.name <- function(x, env = baseenv()) {
   structure(list(as.lazy(x, env)), class = "lazy_dots")
 }
 #' @export
@@ -55,17 +55,17 @@ as.lazy_dots.formula <- as.lazy_dots.name
 as.lazy_dots.call <- as.lazy_dots.name
 
 #' @export
-as.lazy_dots.lazy <- function(x, env = emptyenv()) {
+as.lazy_dots.lazy <- function(x, env = baseenv()) {
   structure(list(x), class = "lazy_dots")
 }
 
 #' @export
-as.lazy_dots.character <- function(x, env = emptyenv()) {
+as.lazy_dots.character <- function(x, env = baseenv()) {
   structure(lapply(x, as.lazy, env = env), class = "lazy_dots")
 }
 
 #' @export
-as.lazy_dots.lazy_dots <- function(x, env = emptyenv()) {
+as.lazy_dots.lazy_dots <- function(x, env = baseenv()) {
   x
 }
 
