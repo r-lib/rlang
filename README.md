@@ -2,18 +2,32 @@
 
 [![Build Status](https://travis-ci.org/hadley/lazyeval.png?branch=master)](https://travis-ci.org/hadley/lazyeval)
 
-The lazyeval package provides the tools necessary to do non-standard evaluation "right" in R. There are three principles:
-
-* Instead of using `substitute()`, use `lazy()` to capture both expression
-  and environment. (Or use `lazy_dots()` to capture all promises in `...`)
+The lazyeval package provides the tools necessary to do non-standard evaluation (NSE) "right" in R. There are three principles:
   
-* Every function that uses NSE should have a standard evaluation partner
-  that does all the work. This function should end with `_`.
+  * Instead of using `substitute()`, use `lazyeval::lazy()` to capture both the 
+    expression and the environment associated with a function argument (aka
+    promise). Or use `lazyeval::lazy_dots(...)` to capture all the promises 
+    in `...`.
+    
+  * Every function that uses NSE should have a SE partner with a name that ends 
+    in `_`. This function should do all the work. The NSE function should look
+    something like this:
   
-* The SE-partner has a flexible input specification to make it easy for people
-  to program with.
+    ```R
+    # If only y needs NSE
+    f <- function(x, y) {
+      f_(x, lazyeval::lazy(y))
+    }
+    ```
+  
+    If needed, make the SE version generic, not the NSE version.
+  
+  * Instead the SE function, use `lazyeval::make_call()` or 
+    `lazyeval::lazy_eval()` to evalute the expression in the right context. The 
 
 See the vignette for more details.
+
+## Installation
 
 To install:
 
