@@ -29,6 +29,6 @@ lazy_eval <- function(x, data = NULL) {
   if (!is.null(data)) {
     eval(x$expr, data, x$env)
   } else {
-    eval(x$expr, x$env)
+    eval(x$expr, x$env, emptenv())
   }
 }

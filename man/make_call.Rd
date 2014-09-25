@@ -3,12 +3,13 @@
 \alias{make_call}
 \title{Make a call with \code{lazy_dots} as arguments.}
 \usage{
-make_call(fun, dots)
+make_call(fun, args)
 }
 \arguments{
 \item{fun}{Function as symbol or quoted call.}
 
-\item{dots}{Arguments to function; must be a \code{lazy_dots} object.}
+\item{dots}{Arguments to function; must be a \code{lazy_dots} object,
+or something \code{\link{as.lazy_dots}()} can coerce..}
 }
 \value{
 A list:
@@ -16,10 +17,17 @@ A list:
   \item{expr}{The expression}
 }
 \description{
-In order to make a valid call, the environment must be the same for
-all of the dots.
+In order to exactly replay the original call, the environment must be the
+same for all of the dots. This function circumvents that a little,
+falling back to the \code{\link{baseenv()}} if all environments aren't
+the same.
 }
 \examples{
 make_call(quote(f), lazy_dots(x = 1, 2))
+make_call(quote(f), list(x = 1, y = ~x))
+make_call(quote(f), ~x)
+
+# If no known or no common environment, fails back to baseenv()
+make_call(quote(f), quote(x))
 }
 

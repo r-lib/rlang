@@ -35,6 +35,18 @@ as.lazy.call <- function(x, env = baseenv()) lazy_(x, env)
 #' @export
 as.lazy.name <- function(x, env = baseenv()) lazy_(x, env)
 
+#' @export
+as.lazy.numeric <- function(x, env = baseenv()) {
+  if (length(x) > 1) {
+    warning("Truncating vector to length 1", call. = FALSE)
+    x <- x[1]
+  }
+  lazy_(x, env)
+}
+#' @export
+as.lazy.character <- as.lazy.numeric
+#' @export
+as.lazy.logical <- as.lazy.numeric
 
 #' @export
 #' @rdname as.lazy

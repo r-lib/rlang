@@ -41,7 +41,7 @@
 #' # To avoid this behavour, set follow_symbols = FALSE
 #' # See vignette("chained-promises") for details
 lazy_ <- function(expr, env) {
-  stopifnot(is.call(expr) | is.name(expr))
+  stopifnot(is.call(expr) || is.name(expr) || is.atomic(expr))
 
   structure(list(expr = expr, env = env), class = "lazy")
 }
