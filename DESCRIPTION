@@ -13,6 +13,6 @@ Depends:
     R (>= 3.1.0)
 Suggests:
     knitr,
-    rmarkdown,
+    rmarkdown (>= 0.2.65),
     microbenchmark
 VignetteBuilder: knitr
