@@ -22,7 +22,7 @@ The lazyeval package provides the tools necessary to do non-standard evaluation 
   
     If needed, make the SE version generic, not the NSE version.
   
-  * Instead the SE function, use `lazyeval::make_call()` or 
+  * Inside the SE function, use `lazyeval::make_call()` or 
     `lazyeval::lazy_eval()` to evalute the expression in the right context. The 
 
 See the `vignette("lazyeval")` for more details.
