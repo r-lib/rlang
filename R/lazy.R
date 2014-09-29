@@ -63,6 +63,6 @@ print.lazy <- function(x, ...) {
   }
 
   cat("<lazy>\n")
-  cat("  code: ", code, "\n", sep = "")
-  cat("  env: ", format(x$env), "\n", sep = "")
+  cat("  expr: ", code, "\n", sep = "")
+  cat("  env:  ", format(x$env), "\n", sep = "")
 }
