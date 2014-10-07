@@ -3,7 +3,9 @@
 
 SEXP promise_as_lazy(SEXP promise, SEXP env, int follow_symbols) {
   // recurse until we find the real promise, not a promise of a promise
-  while(TYPEOF(promise) == PROMSXP) {
+  // never go past the global environment
+  while(TYPEOF(promise) == PROMSXP && env != R_GlobalEnv) {
+
     env = PRENV(promise);
     promise = PREXPR(promise);
 
