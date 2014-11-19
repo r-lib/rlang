@@ -31,6 +31,10 @@ auto_names <- function(x, max_width = 40) {
 }
 
 deparse_trunc <- function(x, width = getOption("width")) {
+  if (is.symbol(x)) {
+    return(as.character(x))
+  }
+
   text <- deparse(x, width.cutoff = width)
   if (length(text) == 1 && nchar(text) < width) return(text)
 
