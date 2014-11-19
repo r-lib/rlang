@@ -1,5 +1,5 @@
 Package: lazyeval
-Version: 0.1.9
+Version: 0.1.9.9000
 Title: Lazy (Non-Standard) Evaluation
 Description: A disciplined approach to non-standard evaluation.
 Authors@R: as.person(c(
