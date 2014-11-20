@@ -51,6 +51,11 @@ as.lazy.logical <- as.lazy.numeric
 as.lazy_dots <- function(x, env) UseMethod("as.lazy_dots")
 
 #' @export
+as.lazy_dots.NULL <- function(x, env = baseenv()) {
+  structure(list(), class = "lazy_dots")
+}
+
+#' @export
 as.lazy_dots.list <- function(x, env = baseenv()) {
   structure(lapply(x, as.lazy, env = env), class = "lazy_dots")
 }
