@@ -1,12 +1,13 @@
-This is a resubmission to tweak title and description.
+## Test environments
 
---------------------------------------------------------------------------------
+* local OS X install, R 3.1.2
+* ubuntu 12.04 (on travis-ci), R 3.1.2
+* win-builder (devel and release)
 
-The following notes were generated across my local OS X install, ubuntu running on travis-ci and win builder. Response to NOTEs across three platforms below.
+## R CMD check results
 
-* This is a new submission.
-  
-* checking re-building of vignette outputs ... NOTE
-  
-  The vignettes use rmarkdown, which requires pandocs.  A fix to knitr
-  is in progress to eliminate this note.
+There were no ERRORs, WARNINGs or NOTEs.
+
+## Downstream dependencies
+
+I ran `R CMD check` on all 7 reverse dependencies (https://github.com/hadley/dplyr/tree/master/revdep/summary.md). As far as I can tell, there are no new problems.
