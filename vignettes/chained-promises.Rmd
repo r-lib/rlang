@@ -27,10 +27,10 @@ g1(a + b)
 In this case the process looks like this:
 
 1. Find the object that `x` is bound to.
-2. It's a promise, so find the expr it's bound to (`y`, a symbol) and the 
+2. It's a promise, so find the expr it's bound to (`y`, a symbol) and the
    environment in which it should be evaluated (the environment of `g()`).
 3. Since `x` is bound to a symbol, look up its value: it's bound to a promise.
-4. That promise has expression `a + b` and should be evaluated in the global 
+4. That promise has expression `a + b` and should be evaluated in the global
    environment.
 5. The expression is not a symbol, so stop.
 
@@ -51,4 +51,18 @@ b <- 1
 
 lazy_eval(g1(a + b))
 lazy_eval(g2(a + b))
+```
+
+Note that the resolution of chained promises only works with unevaluated objects. This is because R deletes the information about the environment associated with a promise when it has been forced, so that the garbage collector is allowed to remove the environment from memory in case it is no longer used. `lazy()` will fail with an error in such situations.
+
+```{r, eval = FALSE}
+var <- 0
+
+f3 <- function(x) {
+  force(x)
+  lazy(x)
+}
+
+f3(var)
+## Error: Promise has already been forced
 ```
