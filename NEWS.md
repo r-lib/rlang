@@ -5,6 +5,9 @@
 * `lazy()` now fails with an informative error when it is applied on
   an object that has already been evaluated (#23, @lionel-).
 
+* `lazy()` no longer follows the expressions of lazily loaded objects
+  (#18, @lionel-).
+
 # lazyeval 0.1.10
 
 * `as.lazy_dots()` gains a method for NULL, returning a zero-length
