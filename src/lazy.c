@@ -2,6 +2,9 @@
 #include <Rdefines.h>
 
 int is_dead_end(SEXP x) {
+  if (TYPEOF(x) != PROMSXP) {
+    return 1;
+  }
   if (TYPEOF(PREXPR(x)) == LANGSXP) {
     const char* name = CHAR(PRINTNAME(CAR(PREXPR(x))));
     if (strcmp(name, "lazyLoadDBfetch") == 0) {
@@ -31,7 +34,7 @@ SEXP promise_as_lazy(SEXP promise, SEXP env, int follow_symbols) {
       SEXP obj = findVar(promise, env);
 
       dead_end = is_dead_end(obj);
-      if (!dead_end && TYPEOF(obj) == PROMSXP) {
+      if (!dead_end) {
         promise = obj;
       }
     }
