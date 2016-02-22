@@ -16,3 +16,4 @@ Suggests:
     microbenchmark,
     testthat
 VignetteBuilder: knitr
+RoxygenNote: 5.0.1
