@@ -96,7 +96,7 @@ all_values <- function(.values, ...) {
     values <- .values
   }
 
-  if (is.list(.values)) {
+  if (is.list(values)) {
     # Replace lazy objects with their expressions
     is_lazy <- vapply(values, is.lazy, logical(1))
     values[is_lazy] <- lapply(values[is_lazy], `[[`, "expr")
