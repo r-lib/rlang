@@ -1,5 +1,7 @@
 # lazyeval 0.1.10.9000
 
+* `lazy_dots()` gains `.ignore_empty` argument to drop extra arguments (#32).
+
 * `interp.formula()` only accepts single-sided formulas (#37).
 
 * `interp()` accepts an environment in `.values` (#35).

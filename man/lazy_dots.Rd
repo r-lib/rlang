@@ -4,13 +4,15 @@
 \alias{lazy_dots}
 \title{Capture ... (dots) for later lazy evaluation.}
 \usage{
-lazy_dots(..., .follow_symbols = FALSE)
+lazy_dots(..., .follow_symbols = FALSE, .ignore_empty = FALSE)
 }
 \arguments{
 \item{...}{Dots from another function}
 
 \item{.follow_symbols}{If \code{TRUE}, the default, follows promises across
 function calls. See \code{vignette("chained-promises")} for details.}
+
+\item{.ignore_empty}{If \code{TRUE}, empty arguments will be ignored.}
 }
 \value{
 A named list of \code{\link{lazy}} expressions.

@@ -1,6 +1,7 @@
 #' Capture ... (dots) for later lazy evaluation.
 #'
 #' @param ... Dots from another function
+#' @param .ignore_empty If \code{TRUE}, empty arguments will be ignored.
 #' @return A named list of \code{\link{lazy}} expressions.
 #' @inheritParams lazy
 #' @export
@@ -28,12 +29,12 @@
 #' l["z"] <- list(~g)
 #'
 #' c(lazy_dots(x = 1), lazy_dots(f))
-lazy_dots <- function(..., .follow_symbols = FALSE) {
+lazy_dots <- function(..., .follow_symbols = FALSE, .ignore_empty = FALSE) {
   if (nargs() == 0 || (nargs() == 1 &&  ! missing(.follow_symbols))) {
     return(structure(list(), class = "lazy_dots"))
   }
 
-  .Call(make_lazy_dots, environment(), .follow_symbols)
+  .Call(make_lazy_dots, environment(), .follow_symbols, .ignore_empty)
 }
 
 is.lazy_dots <- function(x) inherits(x, "lazy_dots")

@@ -57,8 +57,6 @@ SEXP promise_as_lazy(SEXP promise, SEXP env, int follow_symbols) {
   return lazy;
 }
 
-
-
 SEXP make_lazy(SEXP name, SEXP env, SEXP follow_symbols_) {
   SEXP promise = findVar(name, env);
   int follow_symbols = asLogical(follow_symbols_);
@@ -66,13 +64,21 @@ SEXP make_lazy(SEXP name, SEXP env, SEXP follow_symbols_) {
   return promise_as_lazy(promise, env, follow_symbols);
 }
 
-SEXP make_lazy_dots(SEXP env, SEXP follow_symbols_) {
+int is_missing(SEXP x) {
+  return TYPEOF(x) == SYMSXP && x == R_MissingArg;
+}
+
+SEXP make_lazy_dots(SEXP env, SEXP follow_symbols_, SEXP ignore_empty_) {
   SEXP dots = findVar(install("..."), env);
   int follow_symbols = asLogical(follow_symbols_);
+  int ignore_empty = asLogical(ignore_empty_);
 
   // Figure out how many elements in dots
   int n = 0;
   for(SEXP nxt = dots; nxt != R_NilValue; nxt = CDR(nxt)) {
+    if (ignore_empty && is_missing(CAR(nxt)))
+      continue;
+
     n++;
   }
 
@@ -82,16 +88,17 @@ SEXP make_lazy_dots(SEXP env, SEXP follow_symbols_) {
 
   // Iterate through all elements of dots, converting promises into lazy exprs
   int i = 0;
-  SEXP nxt = dots;
-  while(nxt != R_NilValue) {
+  for(SEXP nxt = dots; nxt != R_NilValue; nxt = CDR(nxt)) {
     SEXP promise = CAR(nxt);
+
+    if (ignore_empty && is_missing(promise))
+      continue;
 
     SEXP lazy = promise_as_lazy(promise, env, follow_symbols);
     SET_VECTOR_ELT(lazy_dots, i, lazy);
     if (TAG(nxt) != R_NilValue)
       SET_STRING_ELT(names, i, PRINTNAME(TAG(nxt)));
 
-    nxt = CDR(nxt);
     i++;
   }
   setAttrib(lazy_dots, install("names"), names);
