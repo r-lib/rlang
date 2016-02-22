@@ -74,7 +74,7 @@ interp.character <- function(`_obj`, ..., .values) {
 
   expr1 <- parse(text = `_obj`)[[1]]
   expr2 <- substitute_(expr1, values)
-  deparse(expr2)
+  paste(deparse(expr2), collapse = "\n")
 }
 
 substitute_ <- function(x, env) {

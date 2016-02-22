@@ -1,5 +1,8 @@
 # lazyeval 0.1.10.9000
 
+* `interp.character()` always produes a single string, regardless of
+  input length (#27).
+
 * Fixed an infinite loop in `lazy_dots(.follow_symbols = TRUE)` (#22, #24)
 
 * `lazy()` now fails with an informative error when it is applied on
