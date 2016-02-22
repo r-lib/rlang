@@ -1,10 +1,25 @@
 #include <R.h>
 #include <Rdefines.h>
 
+int is_dead_end(SEXP x) {
+  if (TYPEOF(x) != PROMSXP) {
+    return 1;
+  }
+  if (TYPEOF(PREXPR(x)) == LANGSXP) {
+    const char* name = CHAR(PRINTNAME(CAR(PREXPR(x))));
+    if (strcmp(name, "lazyLoadDBfetch") == 0) {
+      return 1;
+    }
+  }
+  return 0;
+}
+
 SEXP promise_as_lazy(SEXP promise, SEXP env, int follow_symbols) {
   // recurse until we find the real promise, not a promise of a promise
-  // never go past the global environment
-  while(TYPEOF(promise) == PROMSXP && env != R_GlobalEnv) {
+  // stop when we find a lazily loaded object
+  int dead_end = 0;
+
+  while(TYPEOF(promise) == PROMSXP && !dead_end) {
     if (PRENV(promise) == R_NilValue) {
       Rf_error("Promise has already been forced");
     }
@@ -17,7 +32,9 @@ SEXP promise_as_lazy(SEXP promise, SEXP env, int follow_symbols) {
     // keep going on up
     if (follow_symbols && TYPEOF(promise) == SYMSXP) {
       SEXP obj = findVar(promise, env);
-      if (TYPEOF(obj) == PROMSXP) {
+
+      dead_end = is_dead_end(obj);
+      if (!dead_end) {
         promise = obj;
       }
     }
@@ -39,6 +56,8 @@ SEXP promise_as_lazy(SEXP promise, SEXP env, int follow_symbols) {
 
   return lazy;
 }
+
+
 
 SEXP make_lazy(SEXP name, SEXP env, SEXP follow_symbols_) {
   SEXP promise = findVar(name, env);
