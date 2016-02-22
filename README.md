@@ -1,6 +1,7 @@
 # lazyeval
 
 [![Build Status](https://travis-ci.org/hadley/lazyeval.png?branch=master)](https://travis-ci.org/hadley/lazyeval)
+[![Coverage Status](https://img.shields.io/codecov/c/github/hadley/lazyeval/master.svg)](https://codecov.io/github/hadley/lazyeval?branch=master)
 
 The lazyeval package provides the tools necessary to do non-standard evaluation (NSE) "right" in R. There are three principles:
   
