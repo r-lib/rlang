@@ -54,6 +54,9 @@ interp.name <- function(`_obj`, ..., .values) {
 
 #' @export
 interp.formula <- function(`_obj`, ..., .values) {
+  if (length(`_obj`) != 2)
+    stop("Must use one-sided formula.", call. = FALSE)
+
   values <- all_values(.values, ...)
 
   `_obj`[[2]] <- substitute_(`_obj`[[2]], values)

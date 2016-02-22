@@ -1,5 +1,7 @@
 # lazyeval 0.1.10.9000
 
+* `interp.formula()` only accepts single-sided formulas (#37).
+
 * `interp()` accepts an environment in `.values` (#35).
 
 * `interp.character()` always produes a single string, regardless of
