@@ -193,6 +193,17 @@ threshold <- function(df, variable = ~x, threshold = 0) {
 threshold(df, ~x, 4)
 ```
 
+This also provides another way of avoiding the ambiguity problem. For simple, values you can insert them directly into the formula:
+
+```{r}
+threshold <- function(df, variable = ~x, threshold = 0) {
+  subset(df, ~ `$`(.data, ((rhs(variable)))) > ((threshold)))
+}
+threshold(df, ~x, 4)
+```
+
+I'm not yet sure what situations should lead you to favour one approach over the other.
+
 ## Eliminating the formulas
 
 In some situations you might want to eliminate the formula altogether, and allow the user to type regular R expressions. Although I was once much enamoured with this approach (witness ggplot2, dplyr, ...), I now think that it should be used sparingly. The approach outlined above, using formulas, leads to much simpler code, and the explict `~` makes it clear to the user that something unusual is going on.
