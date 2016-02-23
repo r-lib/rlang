@@ -27,6 +27,10 @@ test_that("pronouns resolve ambiguity looks first in `data`", {
   expect_equal(feval(~ .env$x, data), 10)
 })
 
+test_that("pronouns complain about missing values", {
+  expect_error(feval(~ .data$x, list()), "object 'x' not found")
+  expect_error(feval(~ .env$`__`, list()), "object '__' not found")
+})
 
 test_that("feval does quasiquoting", {
   x <- 10
