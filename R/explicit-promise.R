@@ -28,6 +28,7 @@ explicit_promise <- function(x) {
 }
 
 #' @export
+#' @rdname explicit_promise
 explicit_dots <- function(..., .ignore_empty = TRUE) {
   lazies <- .Call(make_lazy_dots, environment(), TRUE, .ignore_empty)
   lapply(lazies, function(x) make_formula(x$expr, x$env))
