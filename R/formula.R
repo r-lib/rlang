@@ -50,3 +50,10 @@ make_formula <- function(expr, env = parent.frame()) {
     .Environment = env
   )
 }
+
+unenclose <- function(f) {
+  stopifnot(is_formula(f))
+
+  e <- environment(f)
+  make_formula(substitute_(rhs(f), e), parent.env(e))
+}
