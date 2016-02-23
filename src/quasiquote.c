@@ -18,6 +18,8 @@ bool is_scalar(SEXP x) {
   return Rf_isVectorAtomic(x) && Rf_length(x) == 1;
 }
 
+// Is a call the write form to be unquoted? ------------------------------------
+
 bool is_parens_call(SEXP x) {
   if (!Rf_isLanguage(x))
     return false;
@@ -48,19 +50,27 @@ bool is_unquote(SEXP x) {
   return true;
 }
 
-SEXP is_unquote_(SEXP x) {
+SEXP is_unquote_c(SEXP x) {
   return Rf_ScalarLogical(is_unquote(x));
 }
+
+// Quasiquotation --------------------------------------------------------------
 
 SEXP quasiquote_walk(SEXP x, SEXP env)  {
   if (!Rf_isLanguage(x))
     return x;
 
+  if (is_parens_call(x))
+    return Rf_eval(x, env);
 
+  // Recursive case
+  for(SEXP cons = x; cons != R_NilValue; cons = CDR(cons)) {
+    SETCAR(cons, quasiquote_walk(CAR(cons), env));
+  }
+  return x;
 }
 
-
-SEXP quasiquote(SEXP x, SEXP env) {
+SEXP quasiquote_c(SEXP x, SEXP env) {
   if (!Rf_isLanguage(x) && !Rf_isSymbol(x) && !is_scalar(x)) {
     Rf_error("`x` must be a call, symbol, or scalar");
   }
