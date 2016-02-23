@@ -1,5 +1,8 @@
 # lazyeval 0.1.10.9000
 
+* `explicit_promise()` and `explicit_dots()` make it easy to turn promises
+  and `...` into formulas. These should be used sparingly.
+
 * `finterp()` unquotes expressions wrapped in `(( ))`.
 
 * Implement formula helpers `is.formula()` and `rhs()`.
