@@ -81,6 +81,10 @@ interp.character <- function(`_obj`, ..., .values) {
 }
 
 substitute_ <- function(x, env) {
+  if (identical(env, globalenv())) {
+    env <- as.list(env)
+  }
+
   call <- substitute(substitute(x, env), list(x = x))
   eval(call)
 }

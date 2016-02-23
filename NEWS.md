@@ -1,5 +1,8 @@
 # lazyeval 0.1.10.9000
 
+* `funwrap()` "unwraps" a formula removing one level from the tree of 
+  parents.
+
 * `explicit_promise()` and `explicit_dots()` make it easy to turn promises
   and `...` into formulas. These should be used sparingly.
 

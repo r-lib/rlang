@@ -51,9 +51,24 @@ make_formula <- function(expr, env = parent.frame()) {
   )
 }
 
-unenclose <- function(f) {
+#' Unwrap a formula
+#'
+#' This interpolates values in the formula that are defined in its environment,
+#' replacing the environment with its parent.
+#'
+#' @export
+#' @param f A formula to unwrap.
+#' @examples
+#' n <- 100
+#' f <- ~ x + n
+#' funwrap(f)
+funwrap <- function(f) {
   stopifnot(is_formula(f))
 
   e <- environment(f)
-  make_formula(substitute_(rhs(f), e), parent.env(e))
+  if (identical(e, emptyenv())) {
+    f
+  } else {
+    make_formula(substitute_(rhs(f), e), parent.env(e))
+  }
 }
