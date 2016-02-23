@@ -19,11 +19,7 @@ bool is_parens_call(SEXP x) {
   return Rf_isSymbol(fun) && fun == parens;
 }
 
-bool is_unquote(SEXP x) {
-  // Language object is a pairlist: first element should be a call to parens
-  if (!is_parens_call(x))
-    return false;
-
+bool has_one_argument(SEXP x) {
   SEXP rest = CDR(x);
   // Must have a first argument
   if (rest == R_NilValue)
@@ -32,8 +28,18 @@ bool is_unquote(SEXP x) {
   if (CDR(rest) != R_NilValue)
     return false;
 
-  // First argument should also be a call to parens
-  if (!is_parens_call(CAR(rest)))
+  return true;
+}
+
+bool is_unquote(SEXP x) {
+  if (!is_parens_call(x))
+    return false;
+
+  if (!has_one_argument(x))
+    return false;
+
+  // CADR(x) = first argument in call
+  if (!is_parens_call(CADR(x)))
     return false;
 
   return true;
