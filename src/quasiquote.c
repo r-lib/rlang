@@ -3,17 +3,6 @@
 #include <Rdefines.h>
 #include <stdbool.h>
 
-// Goal: write quasiquote function
-// 1. Takes call, name, or vector as input.
-//    Names and vectors are returned as is.
-// 2. Walk through calls::
-//    non-calls returned as is.
-//    calls:
-//    1. Check if call to `(` then `(`: if so, eval and replace current node
-//    2. Otherwise recursive
-// 3. Next implement ({ for unquote splice - needs to evaluate, check that
-//     it returns a list and then add to call.
-
 bool is_scalar(SEXP x) {
   return Rf_isVectorAtomic(x) && Rf_length(x) == 1;
 }
