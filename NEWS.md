@@ -1,5 +1,7 @@
 # lazyeval 0.1.10.9000
 
+* Implement formula helpers `is.formula()` and `rhs()`.
+
 * `feval()` evaluate formulas. If supplied, values are first looked for 
   in an optional `data` argument. Pronouns `.data` and `.env` can be
   used to resolve ambiguity in this case.
