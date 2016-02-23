@@ -26,6 +26,9 @@ finterp <- function(f) {
   f
 }
 
+
+# Functions for testing ---------------------------------------------------
+
 quasiquote_ <- function(x, env = parent.frame()) {
   .Call(quasiquote_c, x, env)
 }

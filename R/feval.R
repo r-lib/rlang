@@ -11,7 +11,7 @@
 #' and \code{.env} that throw errors if you try to access non-existant values.
 #'
 #' @param f A one-sided formula. Any expressions wrapped in \code{ (( )) } will
-#'   will be "unquoted", i.e. they will be evaluated, and the results insert
+#'   will be "unquoted", i.e. they will be evaluated, and the results inserted
 #'   back into the formula. See \code{\link{finterp}} for more details.
 #' @param data A list (or data frame). When looking up the value associated
 #'   with a name, \code{feval_data} will first look in this object.

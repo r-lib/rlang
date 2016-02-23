@@ -8,7 +8,7 @@ feval(f, data = NULL)
 }
 \arguments{
 \item{f}{A one-sided formula. Any expressions wrapped in \code{ (( )) } will
-will be "unquoted", i.e. they will be evaluated, and the results insert
+will be "unquoted", i.e. they will be evaluated, and the results inserted
 back into the formula. See \code{\link{finterp}} for more details.}
 
 \item{data}{A list (or data frame). When looking up the value associated
