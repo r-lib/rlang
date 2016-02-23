@@ -1,0 +1,195 @@
+---
+title: "A guide to non-standard evaluation"
+author: "Hadley Wickham"
+date: "`r Sys.Date()`"
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{A guide to non-standard evaluation}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+```{r, include = FALSE}
+library(lazyeval)
+knitr::opts_chunk$set(collapse = TRUE, comment = "#>")
+```
+
+There are three challenges to doing non-standard evaluation correctly in R:
+
+* Extracting the expression and environment associated with a promise
+  (i.e. turning it into an explict object that you can pass around to
+  other functions)
+  
+* Providing a standard way to be explicit about scoping.
+
+* A standard unquoting mechanism so it's straightforward to create a 
+  function that uses non-standard evaluation.
+  
+Lazy eval provides tools to solve each of these 
+
+My recommendations for how to do this have changed substantially over time. I am fairly confident they will not have to change again. This approach and accompanying tools allows you to solve a wide range of problems that you encounter in practice, and are a substantial improvment over the previous generation.
+
+## Use formula
+
+> Bob Loblaw: ...whether or not those promises were made explicit.
+> Tobias: You want me to be explicit?
+
+We'll illustrate these ideas by implementing a version of the `subset` function from base R. 
+
+The easiest way is to insist that the user "quotes" the input using `~`.
+
+```{R}
+subset <- function(df, subset) {
+  rows <- feval(subset, df)
+  if (!is.logical(rows)) {
+    stop("`subset` must be logical.", call. = FALSE)
+  }
+  
+  rows <- rows & !is.na(rows)
+  df[rows, , drop = FALSE]
+}
+
+df <- data.frame(x = 1:5, y = 5:1)
+subset(df, ~ x <= 2)
+```
+
+One nice thing about this approach is that the formula can be created elsewhere from the application of the function. 
+
+```{r}
+f <- ~ x == 2
+subset(df, f)
+```
+
+And indeed, you could even put this in another function:
+
+```{r}
+pick_x <- function(n) {
+  ~ x == n
+}
+subset(df, pick_x(2))
+```
+
+This works because the formula captures the environment where it creates. When `subset()` later uses it, it finds the right `n`.
+
+```{r}
+n <- 5
+subset(df, pick_x(2))
+```
+
+## Be explicit
+
+We could wrap this behaviour up into a (somewhat) more useful function:
+
+```{r}
+threshold_x <- function(df, threshold) {
+  subset(df, ~ x > threshold)
+}
+threshold_x(df, 3)
+```
+
+But there are two ways that this function might fail:
+
+1.  The data frame might not have `x`. This will fail unless there's a variable called
+    `x` hanging around in the global environment:
+    
+    ```{r, error = TRUE}
+    df2 <- data.frame(y = 5:1)
+    
+    # Throws an error
+    threshold_x(df2, 3)
+    
+    # Silently gives the incorrect result!
+    x <- 5
+    threshold_x(df2, 3)
+    ```
+    
+1.  The data frame might have a variable called `threshold`:
+
+    ```{r}
+    df3 <- data.frame(x = 1:5, y = 5:1, threshold = 4)
+    threshold_x(df3, 3)
+    ```
+
+These failures are partiuclarly pernicious because they don't give a useful error message: instead they silently give an incorrect result. Both failures arise because `feval()` looks first in the data frame and then in the environment of the formula. To make this function more reliable, we're going to have to be more explicit. `feval()` provides two pronouns to make this possible:
+
+* `.data` is bound to the data frame.
+* `.env` is bound to the environment of a function.
+
+(They start with `.` to avoid accidentally clobbering existing objects in the environment.)
+
+We can use these objects to prevent the `feval()` for looking in the wrong place accidently:
+
+```{r, error = TRUE}
+threshold_x <- function(df, threshold) {
+  subset(df, ~ .data$x > .env$threshold)
+}
+
+threshold_x(df2, 3)
+threshold_x(df3, 3)
+```
+
+## Interpolation
+
+The `threshold_x` function not very useful because it's bound to a specific variable. It would be more powerful if we could vary the variable used as well. We can do that by taking an additional argument to specify which variable to use: there are two basic alternatives for specifying the variable.
+
+One simple approach that works well here is to use a string, and to switch from `$` to `[[`:
+
+```{r}
+threshold <- function(df, variable, threshold) {
+  stopifnot(is.character(variable), length(variable) == 1)
+  
+  subset(df, ~ .data[[variable]] > .env$threshold)
+}
+threshold(df, "x", 4)
+```
+
+This is a good solution here, but only allows us to use a variable, not an arbitrary expression (e.g. `sqrt(x)`).
+
+A more general solution is to allow the user to supply a formula:
+
+```{r}
+threshold <- function(df, variable = ~x, threshold = 0) {
+  subset(df, ~ ((rhs(variable))) > .env$threshold)
+}
+threshold(df, ~x, 4)
+```
+
+There are two main function that make this work:
+
+1.   `rhs()` extracts the right-hand side of a function:
+
+    ```{r}
+    rhs(~ 1 + 2)
+    rhs(~ mean(x))
+    ```
+    
+1.  `feval()` allows you to interpolate in values if you put them inside 
+    a doubled-pair of parentheses. It's easiest to see what's happening by
+    using the `finterp()` function which `feval()` uses to do the
+    actual interpolation.
+    
+    ```{r}
+    finterp(~ 1 + ((1 + 1)))
+    
+    z <- quote(x + y)
+    finterp(~ mean((z)))
+    ```
+  
+Putting these two together gives us:
+  
+```{r}
+variable <- ~x
+finterp(~ ((rhs(variable))) > .env$threshold)
+```
+
+You typically won't call `finterp()` directly as `feval()` calls it for you, but it's useful for debugging and for seeing what's going on.
+
+If you've been paying attention, you'll have noticed that this threshold function is slightly dangerous because the `variable` isn't explicit scoped to be inside the dataframe.  It's reasonable to argue that this is ok: `threshold()` is designed for interactive use, so generally the user will see right away if something is wrong. If, however, you want to be safer, you need to do something a little tricky. `df$((x))` isn't valid R code, so you'll need to use the _prefix_ form: `` `$`(df, ((x)))``:
+
+```{r}
+threshold <- function(df, variable = ~x, threshold = 0) {
+  subset(df, ~ `$`(.data, ((rhs(variable)))) > .env$threshold)
+}
+threshold(df, ~x, 4)
+```
+
