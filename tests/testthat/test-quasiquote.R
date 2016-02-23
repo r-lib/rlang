@@ -12,7 +12,7 @@ test_that("mixes the two", {
   expect_identical(quasiquote_(quote(1 + ((1 + 1)))), quote(1 + 2))
 })
 
-# unquote detection -------------------------------------------------------
+# unquote/unquote_splice detection -------------------------------------------------------
 
 test_that("unquote detects paired parens", {
   # Obvious negatives
@@ -29,5 +29,23 @@ test_that("unquote detects paired parens", {
 
   # Correct
   out <- is_unquote( ((x)) )
+  expect_true(out)
+})
+
+test_that("unquote_splice detects ( + {", {
+  # Obvious negatives
+  expect_false(is_unquote_splice(10))
+  expect_false(is_unquote_splice(x))
+  expect_false(is_unquote_splice(f()))
+
+  # Nearly correct
+  out <- is_unquote_splice( (x) )
+  expect_false(out)
+
+  out <- is_unquote_splice( ((x)) )
+  expect_false(out)
+
+  # Correct
+  out <- is_unquote_splice( ({x}) )
   expect_true(out)
 })

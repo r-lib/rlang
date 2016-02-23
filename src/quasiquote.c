@@ -19,6 +19,14 @@ bool is_parens_call(SEXP x) {
   return Rf_isSymbol(fun) && fun == parens;
 }
 
+bool is_brace_call(SEXP x) {
+  if (!Rf_isLanguage(x))
+    return false;
+
+  SEXP fun = CAR(x);
+  return Rf_isSymbol(fun) && fun == R_BraceSymbol;
+}
+
 bool has_one_argument(SEXP x) {
   SEXP rest = CDR(x);
   // Must have a first argument
@@ -45,8 +53,27 @@ bool is_unquote(SEXP x) {
   return true;
 }
 
+bool is_unquote_splice(SEXP x) {
+  if (!is_parens_call(x))
+    return false;
+
+  if (!has_one_argument(x))
+    return false;
+
+  // CADR(x) = first argument in call
+  if (!is_brace_call(CADR(x)))
+    return false;
+
+  return true;
+}
+
+
+// Helpers for testing
 SEXP is_unquote_c(SEXP x) {
   return Rf_ScalarLogical(is_unquote(x));
+}
+SEXP is_unquote_splice_c(SEXP x) {
+  return Rf_ScalarLogical(is_unquote_splice(x));
 }
 
 // Quasiquotation --------------------------------------------------------------

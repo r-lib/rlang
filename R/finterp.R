@@ -28,3 +28,7 @@ quasiquote_ <- function(x, env = parent.frame()) {
 is_unquote <- function(x) {
   .Call(is_unquote_c, substitute(x))
 }
+#' @useDynLib lazyeval is_unquote_splice_c
+is_unquote_splice <- function(x) {
+  .Call(is_unquote_splice_c, substitute(x))
+}
