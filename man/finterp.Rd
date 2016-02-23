@@ -11,7 +11,8 @@ finterp(f)
 }
 \description{
 Interpolation replaces sub-expressions of the form \code{(( x ))} with
-the evaluated value of \code{x}.
+the evaluated value of \code{x}, and inlines sub-expressions of
+the form \code{({ x })}.
 }
 \section{Theory}{
 
@@ -23,11 +24,23 @@ like \href{Julia}{} and \href{Racket}{}
 \examples{
 finterp(~ 1 + ((1 + 2 + 3)) + 10)
 
+# Use ({ }) if you want to add multiple arguments to a function
+# It must evaluate to a list
+args <- list(1:10, na.rm = TRUE)
+finterp(~ mean( ({args}) ))
+
+# You can combine the two
+var <- quote(xyz)
+extra_args <- list(trim = 0.9)
+finterp(~ mean( ((var)) , ({extra_args}) ))
+
 foo <- function(n) {
   ~ 1 + ((n))
 }
 f <- foo(10)
 f
 finterp(f)
+
+
 }
 

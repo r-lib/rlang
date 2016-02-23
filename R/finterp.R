@@ -1,7 +1,8 @@
 #' Interpolate a formula
 #'
 #' Interpolation replaces sub-expressions of the form \code{(( x ))} with
-#' the evaluated value of \code{x}.
+#' the evaluated value of \code{x}, and inlines sub-expressions of
+#' the form \code{({ x })}.
 #'
 #' @section Theory:
 #' Formally, \code{finterp} is a quasiquote function, \code{\(\(} is the
@@ -14,12 +15,24 @@
 #' @examples
 #' finterp(~ 1 + ((1 + 2 + 3)) + 10)
 #'
+#' # Use ({ }) if you want to add multiple arguments to a function
+#' # It must evaluate to a list
+#' args <- list(1:10, na.rm = TRUE)
+#' finterp(~ mean( ({args}) ))
+#'
+#' # You can combine the two
+#' var <- quote(xyz)
+#' extra_args <- list(trim = 0.9)
+#' finterp(~ mean( ((var)) , ({extra_args}) ))
+ #'
 #' foo <- function(n) {
 #'   ~ 1 + ((n))
 #' }
 #' f <- foo(10)
 #' f
 #' finterp(f)
+#'
+#'
 #' @useDynLib lazyeval quasiquote_c
 finterp <- function(f) {
   f[[2]] <- .Call(quasiquote_c, rhs(f), environment(f))
@@ -40,4 +53,9 @@ is_unquote <- function(x) {
 #' @useDynLib lazyeval is_unquote_splice_c
 is_unquote_splice <- function(x) {
   .Call(is_unquote_splice_c, substitute(x))
+}
+
+#' @useDynLib lazyeval findLast
+find_last <- function(x) {
+  .Call(findLast, as.pairlist(x))
 }

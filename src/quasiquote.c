@@ -78,6 +78,17 @@ SEXP is_unquote_splice_c(SEXP x) {
 
 // Quasiquotation --------------------------------------------------------------
 
+SEXP findLast(SEXP x) {
+  if (!Rf_isPairList(x))
+    Rf_error("x must be a pairlist");
+
+  SEXP cons = x;
+  while(CDR(cons) != R_NilValue)
+    cons = CDR(cons);
+
+  return cons;
+}
+
 SEXP quasiquote_walk(SEXP x, SEXP env)  {
   if (!Rf_isLanguage(x))
     return x;
@@ -86,8 +97,21 @@ SEXP quasiquote_walk(SEXP x, SEXP env)  {
     return Rf_eval(x, env);
 
   // Recursive case
-  for(SEXP cons = x; cons != R_NilValue; cons = CDR(cons)) {
-    SETCAR(cons, quasiquote_walk(CAR(cons), env));
+  for(SEXP cur = x; cur != R_NilValue; cur = CDR(cur)) {
+    SETCAR(cur, quasiquote_walk(CAR(cur), env));
+
+    SEXP nxt = CDR(cur);
+    if (is_unquote_splice(CAR(nxt))) {
+      SEXP args_list = Rf_eval(CAR(nxt), env);
+      if (!Rf_isNewList(args_list)) {
+        Rf_error("({}) must evaluate to a list, not a %s", Rf_type2char(TYPEOF(args_list)));
+      }
+      SEXP args_pl = Rf_VectorToPairList(args_list);
+      SEXP last_arg = findLast(args_pl);
+
+      SETCDR(last_arg, CDR(nxt));
+      SETCDR(cur, args_pl);
+    }
   }
   return x;
 }
@@ -100,6 +124,6 @@ SEXP quasiquote_c(SEXP x, SEXP env) {
     Rf_error("`env` must be an environment");
   }
 
-  return quasiquote_walk(x, env);
+  return quasiquote_walk(Rf_duplicate(x), env);
 }
 
