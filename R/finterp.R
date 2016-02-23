@@ -3,6 +3,12 @@
 #' Interpolation replaces sub-expressions of the form \code{(( x ))} with
 #' the evaluated value of \code{x}.
 #'
+#' @section Theory:
+#' Formally, \code{finterp} is a quasiquote function, \code{\(\(} is the
+#' unquote operator, and \code{\(\{} is the unquote splice operator.
+#' These terms have a rich history in LISP, and live on in modern languages
+#' like \href{Julia}{} and \href{Racket}{}
+#'
 #' @param f A one-sided formula.
 #' @export
 #' @examples
