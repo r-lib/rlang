@@ -1,5 +1,9 @@
 # lazyeval 0.1.10.9000
 
+* `feval()` evaluate formulas. If supplied, values are first looked for 
+  in an optional `data` argument. Pronouns `.data` and `.env` can be
+  used to resolve ambiguity in this case.
+
 * `lazy_dots()` gains `.ignore_empty` argument to drop extra arguments (#32).
 
 * `interp.formula()` only accepts single-sided formulas (#37).
