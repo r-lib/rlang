@@ -14,6 +14,9 @@ library(lazyeval)
 knitr::opts_chunk$set(collapse = TRUE, comment = "#>")
 ```
 
+This vignette documents my last thinking on doing non-standard evaluation (NSE) in R. You will find this document useful if you want to program with functions from my packages (like dplyr and ggplot2), or you want a principled way of adding NSE to your own package. Somewhat ironically, you'll actually learn relatively little about NSE itself: instead you'll learn about formulas.
+
+
 There are three challenges to doing non-standard evaluation correctly in R:
 
 * Extracting the expression and environment associated with a promise
@@ -29,14 +32,78 @@ Lazy eval provides tools to solve each of these
 
 My recommendations for how to do this have changed substantially over time. I am fairly confident they will not have to change again. This approach and accompanying tools allows you to solve a wide range of problems that you encounter in practice, and are a substantial improvment over the previous generation.
 
-## Use formula
+## Formulas
 
-> Bob Loblaw: ...whether or not those promises were made explicit.
-> Tobias: You want me to be explicit?
+Formulas are most familiar from linear models, but they are a powerful and underused aspect of the R language. A formula is an S3 class built on top of the language type (somewhat more accurately known as a call), with an attribute that captures the environment in which the formula was created:
 
-We'll illustrate these ideas by implementing a version of the `subset` function from base R. 
+```{r}
+f <- ~ x + y + z
+typeof(f)
+attributes(f)
+```
 
-The easiest way is to insist that the user "quotes" the input using `~`.
+In this sense, the formula operator is a general "quoting" operator for R - it allows you to capture the essence of a computation: both the sequence of operations and the environment in which those computations need to be carried out.
+
+```{r}
+# The first element is always ~
+f[[1]]
+# The second element is the call itself
+f[[2]]
+```
+
+R also supports two-sided formulas like `y ~ x`. These are useful for modelling, but not so useful in general, so we'll ignore here. The most reliable way to get to this expression is with `rhs()`, short for right-hand side. This function will raise an error if the input is not a one-sided function.
+
+```{r}
+rhs(f)
+```
+
+The lazyeval package provides a number of functions to make working with formulas easier. For example, the `feval()` function evaluates the formula's expression in the formula's environment.
+
+```{r}
+f <- ~ 1 + 2 + 3
+feval(f)
+```
+
+This is powerful because it allows us to separate the definition of a computation from its evaluation. This is useful because we can computation on the expression itself, or as we'll see shortly, evaluate it in a slightly non-standard way.
+
+Because the formula captures the environment in which it was evaluated, this approach is robust:
+
+```{r}
+foo <- function(x) {
+  ~ 1000 + x
+}
+f <- foo(10)
+f
+x <- 1
+feval(f)
+```
+
+Because the literal values are not shown in the formula (they're looked up in the attached environment), it can be hard to see what's going on. Lazyeval provides a solution for this in the form of `funwrap()`:
+
+```{r}
+f
+funwrap(f)
+```
+
+## Use formulas
+
+> _Bob Loblaw_: ...whether or not those promises were made explicit.
+>
+> _Tobias_: You want me to be explicit?
+
+We'll illustrate these ideas by implementing a version of the `subset` function from base R.  The goal of the `subset()` is to make it easy to select rows matching criteria specified from the columns. It has three advantages over `[`:
+
+1.  If many variables are involved in the expression, you don't need to 
+    repeat the name of the data frame each time, so the result is much more
+    concise.
+
+1.  It drops rows where the condition evaluates to `NA` rather filling
+    them in with `NA`s
+    
+1.  It always returns a data frame so you don't need to remember to do
+    `drop = FALSE` for single column data frames.
+
+The base version uses non-standard evaluation which makes it a little fragile and hard to understand. Instead we'll require the user to provide a formula.
 
 ```{R}
 subset <- function(df, subset) {
@@ -53,28 +120,6 @@ df <- data.frame(x = 1:5, y = 5:1)
 subset(df, ~ x <= 2)
 ```
 
-One nice thing about this approach is that the formula can be created elsewhere from the application of the function. 
-
-```{r}
-f <- ~ x == 2
-subset(df, f)
-```
-
-And indeed, you could even put this in another function:
-
-```{r}
-pick_x <- function(n) {
-  ~ x == n
-}
-subset(df, pick_x(2))
-```
-
-This works because the formula captures the environment where it creates. When `subset()` later uses it, it finds the right `n`.
-
-```{r}
-n <- 5
-subset(df, pick_x(2))
-```
 
 ## Be explicit
 
