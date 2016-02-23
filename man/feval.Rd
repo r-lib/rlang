@@ -7,23 +7,19 @@
 feval(f, data = NULL)
 }
 \arguments{
-\item{f}{A one-sided formula.}
+\item{f}{A one-sided formula. Any expressions wrapped in \code{ (( )) } will
+will be "unquoted", i.e. they will be evaluated, and the results insert
+back into the formula. See \code{\link{finterp}} for more details.}
 
 \item{data}{A list (or data frame). When looking up the value associated
 with a name, \code{feval_data} will first look in this object.}
 }
 \description{
-\code{feval} evaluates the RHS of a formula in its environment.
+\code{feval} evaluates the \code{\link{rhs}} of a formula in its environment.
 If \code{data} is supplied, it will look for the values associated with
 symbols in their first. It also provides two pronouns to make it possible to
 be explicit about where you want values to come from: \code{.env} and
 \code{.data}.
-}
-\section{Interpolating values}{
-
-Any expressions wrapped in \code{ (( )) } will have their values
-interpolated into the formula before it is processed. This makes it
-relatively straightforward to construct expressions programmatically.
 }
 \examples{
 feval(~ 1 + 2 + 3)
@@ -51,6 +47,7 @@ feval(~ mean(cyl), mtcars)
 # How can you change the variable that's being computed?
 # The easiest way is to take advantage of that the fact that anything
 # inside (( )) will be evaluated and literally inserted into formula.
+# See ?finterp for more details
 var <- quote(cyl)
 feval(~ mean( ((var)) ), mtcars)
 

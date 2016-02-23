@@ -1,5 +1,7 @@
 # lazyeval 0.1.10.9000
 
+* `finterp()` unquotes expressions wrapped in `(( ))`.
+
 * Implement formula helpers `is.formula()` and `rhs()`.
 
 * `feval()` evaluate formulas. If supplied, values are first looked for 
