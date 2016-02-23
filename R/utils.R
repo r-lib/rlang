@@ -34,3 +34,22 @@ rhs <- function(f) {
 
   f[[2]]
 }
+
+#' Create a formula object by "hand".
+#'
+#' @param expr A call, name, or atomic vector.
+#' @param env An environment
+#' @return A formula object
+#' @export
+#' @keywords internal
+make_formula <- function(expr, env = parent.frame()) {
+  if (!is.call(expr) && !is.name(expr) && !is.atomic(expr)) {
+    stop("`expr` is not a valid language object", call. = FALSE)
+  }
+
+  structure(
+    call("~", expr),
+    class = "formula",
+    .Environment = env
+  )
+}
