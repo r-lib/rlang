@@ -60,23 +60,3 @@ feval <- function(f, data = NULL) {
 
   eval(expr, data, env)
 }
-
-feval_explicit <- function(f, data) {
-  expr <- rhs(f)
-  expr <- quasiquote_(expr, environment(f))
-
-  if (is.null(data)) {
-    return(eval(expr, environment(f)))
-  }
-
-  if (!is.list(data)) {
-    stop("`data` must be a list or data frame.", call. = FALSE)
-  }
-
-  parent_env <- environment(f)
-  env <- new.env(parent = parent_env)
-  env$.data <- data
-
-  eval(expr, data, env)
-
-}
