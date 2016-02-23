@@ -69,7 +69,7 @@ int is_missing(SEXP x) {
 }
 
 SEXP make_lazy_dots(SEXP env, SEXP follow_symbols_, SEXP ignore_empty_) {
-  SEXP dots = findVar(install("..."), env);
+  SEXP dots = findVar(R_DotsSymbol, env);
   int follow_symbols = asLogical(follow_symbols_);
   int ignore_empty = asLogical(ignore_empty_);
 
