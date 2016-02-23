@@ -11,7 +11,7 @@ test_that("feval uses formula's environment", {
 })
 
 test_that("data needs to be a list", {
-  expect_error(feval(~ x, 10), "must be a list")
+  expect_error(feval(~ x, 10), "must be NULL, a list, or a data frame")
 })
 
 test_that("looks first in `data`", {
@@ -25,4 +25,10 @@ test_that("pronouns resolve ambiguity looks first in `data`", {
   data <- list(x = 100)
   expect_equal(feval(~ .data$x, data), 100)
   expect_equal(feval(~ .env$x, data), 10)
+})
+
+
+test_that("feval does quasiquoting", {
+  x <- 10
+  expect_equal(feval(~ ((quote(x)))), 10)
 })

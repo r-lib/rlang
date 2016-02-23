@@ -6,6 +6,11 @@
 #' be explicit about where you want values to come from: \code{.env} and
 #' \code{.data}.
 #'
+#' @section Interpolating values:
+#' Any expressions wrapped in \code{ (( )) } will have their values
+#' interpolated into the formula before it is processed. This makes it
+#' relatively straightforward to construct expressions programmatically.
+#'
 #' @param f A one-sided formula.
 #' @param data A list (or data frame). When looking up the value associated
 #'   with a name, \code{feval_data} will first look in this object.
@@ -30,9 +35,41 @@
 #' cyl <- 10
 #' feval(~ .data$cyl, mtcars)
 #' feval(~ .env$cyl, mtcars)
+#'
+#' # Imagine you are computing the mean of a variable:
+#' feval(~ mean(cyl), mtcars)
+#' # How can you change the variable that's being computed?
+#' # The easiest way is to take advantage of that the fact that anything
+#' # inside (( )) will be evaluated and literally inserted into formula.
+#' var <- quote(cyl)
+#' feval(~ mean( ((var)) ), mtcars)
+#'
+#' # If you were using this inside a function, you might want to
+#' # take one more step of explicitness. Unfortunately data$((var)) is
+#' # not valid R code, so we need to use the prefix for of `$`.
+#' feval(~ mean( `$`(.data, ((var)) )), mtcars)
 feval <- function(f, data = NULL) {
+  expr <- rhs(f)
+  expr <- quasiquote_(expr, environment(f))
+
+  if (!is.null(data) && !is.list(data)) {
+    stop("`data` must be must be NULL, a list, or a data frame.", call. = FALSE)
+  }
+
+  parent_env <- environment(f)
+  env <- new.env(parent = parent_env)
+  env$.env <- parent_env
+  env$.data <- data
+
+  eval(expr, data, env)
+}
+
+feval_explicit <- function(f, data) {
+  expr <- rhs(f)
+  expr <- quasiquote_(expr, environment(f))
+
   if (is.null(data)) {
-    return(eval(rhs(f), environment(f)))
+    return(eval(expr, environment(f)))
   }
 
   if (!is.list(data)) {
@@ -41,8 +78,8 @@ feval <- function(f, data = NULL) {
 
   parent_env <- environment(f)
   env <- new.env(parent = parent_env)
-  env$.env <- parent_env
   env$.data <- data
 
-  eval(rhs(f), data, env)
+  eval(expr, data, env)
+
 }

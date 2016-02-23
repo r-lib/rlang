@@ -19,6 +19,12 @@ symbols in their first. It also provides two pronouns to make it possible to
 be explicit about where you want values to come from: \code{.env} and
 \code{.data}.
 }
+\section{Interpolating values}{
+
+Any expressions wrapped in \code{ (( )) } will have their values
+interpolated into the formula before it is processed. This makes it
+relatively straightforward to construct expressions programmatically.
+}
 \examples{
 feval(~ 1 + 2 + 3)
 
@@ -39,5 +45,18 @@ feval(~ cyl, mtcars)
 cyl <- 10
 feval(~ .data$cyl, mtcars)
 feval(~ .env$cyl, mtcars)
+
+# Imagine you are computing the mean of a variable:
+feval(~ mean(cyl), mtcars)
+# How can you change the variable that's being computed?
+# The easiest way is to take advantage of that the fact that anything
+# inside (( )) will be evaluated and literally inserted into formula.
+var <- quote(cyl)
+feval(~ mean( ((var)) ), mtcars)
+
+# If you were using this inside a function, you might want to
+# take one more step of explicitness. Unfortunately data$((var)) is
+# not valid R code, so we need to use the prefix for of `$`.
+feval(~ mean( `$`(.data, ((var)) )), mtcars)
 }
 
