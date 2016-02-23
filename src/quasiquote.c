@@ -7,7 +7,7 @@ bool is_scalar(SEXP x) {
   return Rf_isVectorAtomic(x) && Rf_length(x) == 1;
 }
 
-// Is a call the write form to be unquoted? ------------------------------------
+// Is a call the correct form to be unquoted? ------------------------------------
 
 bool is_parens_call(SEXP x) {
   if (!Rf_isLanguage(x))
