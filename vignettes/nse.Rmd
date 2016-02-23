@@ -193,3 +193,44 @@ threshold <- function(df, variable = ~x, threshold = 0) {
 threshold(df, ~x, 4)
 ```
 
+## Eliminating the formulas
+
+In some situations you might want to eliminate the formula altogether, and allow the user to type regular R expressions. Although I was once much enamoured with this approach (witness ggplot2, dplyr, ...), I now think that it should be used sparingly. The approach outlined above, using formulas, leads to much simpler code, and the explict `~` makes it clear to the user that something unusual is going on.
+
+However, lazyeval does provide some tools that allow you to eliminate the use of the formula.  If you're going to take this approach I'd recommend still having a function that uses formulas, and give it the suffix `_`. 
+
+```{r}
+subset_ <- function(df, subset) {
+  rows <- feval(subset, df)
+  if (!is.logical(rows)) {
+    stop("`subset` must be logical.", call. = FALSE)
+  }
+  
+  rows <- rows & !is.na(rows)
+  df[rows, , drop = FALSE]
+}
+```
+
+Once you have this version you can create a NSE verison that doesn't need the explicit formula. The key is the use of `explicit_promise()` which takes an unevaluateed argument (formally called a _promise_) and turns it into a regular formula object:
+
+```{r}
+subset <- function(df, expr) {
+  expr <- explicit_promise(expr)
+  subset_(df, expr)
+}
+subset(df, x == 1)
+```
+
+It's important to have a version that works with formulas, because that function can be more easily called from other functions.
+
+Note, however, that the problems with using `substitute()` don't apply here. `explicit_promise()` is start enough to follow a chain of promises back to the original value, so, for example, this code works fine:
+
+```{r}
+scramble <- function(df) {
+  df[sample(nrow(df)), , drop = FALSE]
+}
+subscramble <- function(df, expr) {
+  scramble(subset(df, expr))
+}
+subscramble(df, x < 4)
+```
