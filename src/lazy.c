@@ -73,6 +73,13 @@ SEXP make_lazy_dots(SEXP env, SEXP follow_symbols_, SEXP ignore_empty_) {
   int follow_symbols = asLogical(follow_symbols_);
   int ignore_empty = asLogical(ignore_empty_);
 
+  if (dots == R_MissingArg) {
+    SEXP out = PROTECT(Rf_allocVector(VECSXP, 0));
+    setAttrib(out, install("class"), PROTECT(mkString("lazy_dots")));
+    UNPROTECT(2);
+    return out;
+  }
+
   // Figure out how many elements in dots
   int n = 0;
   for(SEXP nxt = dots; nxt != R_NilValue; nxt = CDR(nxt)) {

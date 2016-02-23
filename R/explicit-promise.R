@@ -29,10 +29,6 @@ explicit_promise <- function(x) {
 
 #' @export
 explicit_dots <- function(..., .ignore_empty = TRUE) {
-  if (nargs() == 0 || (nargs() == 1 && !missing(.ignore_empty))) {
-    return(structure(list()))
-  }
-
   lazies <- .Call(make_lazy_dots, environment(), TRUE, .ignore_empty)
   lapply(lazies, function(x) make_formula(x$expr, x$env))
 }
