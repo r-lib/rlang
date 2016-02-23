@@ -4,6 +4,10 @@ test_that("evaluates contents of (())", {
   expect_equal(quasiquote_(quote((( 1 + 2)))), 3)
 })
 
+test_that("doesn't evaluate contents of (", {
+  expect_identical(quasiquote_(quote(( 1 + 2))), quote((1 + 2)))
+})
+
 test_that("preserves code outside of (())", {
   expect_identical(quasiquote_(quote(1 + 2)), quote(1 + 2))
 })

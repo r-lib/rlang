@@ -82,7 +82,7 @@ SEXP quasiquote_walk(SEXP x, SEXP env)  {
   if (!Rf_isLanguage(x))
     return x;
 
-  if (is_parens_call(x))
+  if (is_unquote(x))
     return Rf_eval(x, env);
 
   // Recursive case
