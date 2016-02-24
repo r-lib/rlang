@@ -1,7 +1,7 @@
 # lazyeval 0.1.10.9000
 
-* A new system for lazy-eval based on formulas. There are three key
-  components:
+* A new system for lazy-eval based on formulas, this is described in depth in
+  the new `lazyeval` vignette. There are three key components:
   
   * `feval()` evaluates a formula in the environment where it was defined. 
     If supplied, values are first looked for in an optional `data` argument. 
