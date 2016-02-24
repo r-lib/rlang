@@ -4,10 +4,10 @@ Title: Lazy (Non-Standard) Evaluation
 Description: An alternative approach to non-standard evaluation using
     formuals. Provides a full implementation of LISP style 'quasiquotation',
     making it easier to generate code programmatically.
-Authors@R: as.person(c(
-    "Hadley Wickham <hadley@rstudio.com> [aut,cre]",
-    "RStudio [cph]"
-    ))
+Authors@R: c(
+    person("Hadley", "Wickham", ,"hadley@rstudio.com", c("aut", "cre")),
+    person("RStudio", role = "cph")
+    )
 License: GPL-3
 LazyData: true
 Depends:
