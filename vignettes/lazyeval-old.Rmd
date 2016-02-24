@@ -13,7 +13,9 @@ knitr::opts_chunk$set(collapse = TRUE, comment = "#>")
 rownames(mtcars) <- NULL
 ```
 
-This document outlines a new approach to non-standard evaluation (NSE). There are three key ideas:
+This document outlines my previous approach to non-standard evaluation (NSE). You should avoid it unless you are working with an older version of dplyr or tidyr.
+
+There are three key ideas:
 
 * Instead of using `substitute()`, use `lazyeval::lazy()` to capture both expression
   and environment. (Or use `lazyeval::lazy_dots(...)` to capture promises in `...`)
