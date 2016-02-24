@@ -1,5 +1,10 @@
 context("quasiquote")
 
+test_that("checks types of input", {
+  expect_error(quasiquote_(environment(), 10), "must be a call")
+  expect_error(quasiquote_(10, 10), "must be an environment")
+})
+
 test_that("evaluates contents of (())", {
   expect_equal(quasiquote_(quote((( 1 + 2)))), 3)
 })
@@ -40,9 +45,15 @@ test_that("unquote detects paired parens", {
   expect_false(is_unquote(x))
   expect_false(is_unquote(f()))
 
+  # Pathological
+  expect_false(is_unquote(`(`()))
+  expect_false(is_unquote(`(`(1, 2)))
+
   # Nearly correct
   out <- is_unquote( (x) )
   expect_false(out)
+
+  quote(`~`(1, 2, 3))
 
   out <- is_unquote( ({x}) )
   expect_false(out)
@@ -57,6 +68,10 @@ test_that("unquote_splice detects ( + {", {
   expect_false(is_unquote_splice(10))
   expect_false(is_unquote_splice(x))
   expect_false(is_unquote_splice(f()))
+
+  # Pathological
+  expect_false(is_unquote_splice(`(`()))
+  expect_false(is_unquote_splice(`(`(1, 2)))
 
   # Nearly correct
   out <- is_unquote_splice( (x) )
