@@ -1,7 +1,9 @@
 Package: lazyeval
 Version: 0.1.10.9000
 Title: Lazy (Non-Standard) Evaluation
-Description: A disciplined approach to non-standard evaluation.
+Description: An alternative approach to non-standard evaluation using
+    formuals. Provides a full implementation of LISP style 'quasiquotation',
+    making it easier to generate code programmatically.
 Authors@R: as.person(c(
     "Hadley Wickham <hadley@rstudio.com> [aut,cre]",
     "RStudio [cph]"
