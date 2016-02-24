@@ -79,9 +79,6 @@ SEXP is_unquote_splice_c(SEXP x) {
 // Quasiquotation --------------------------------------------------------------
 
 SEXP findLast(SEXP x) {
-  if (!Rf_isPairList(x))
-    Rf_error("x must be a pairlist");
-
   SEXP cons = x;
   while(CDR(cons) != R_NilValue)
     cons = CDR(cons);

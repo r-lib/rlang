@@ -54,8 +54,3 @@ is_unquote <- function(x) {
 is_unquote_splice <- function(x) {
   .Call(is_unquote_splice_c, substitute(x))
 }
-
-#' @useDynLib lazyeval findLast
-find_last <- function(x) {
-  .Call(findLast, as.pairlist(x))
-}
