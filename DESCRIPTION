@@ -15,7 +15,6 @@ Depends:
 Suggests:
     knitr,
     rmarkdown (>= 0.2.65),
-    microbenchmark,
     testthat,
     covr
 VignetteBuilder: knitr
