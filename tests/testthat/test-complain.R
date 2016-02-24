@@ -16,6 +16,12 @@ test_that("can't access non-existent environment components", {
   expect_error(x2$z, "object 'z' not found")
 })
 
+test_that("can't use non-character vectors", {
+  x <- complain(list(y = 1))
+
+  expect_error(x[[1]], "subset with a string")
+  expect_error(x[[c("a", "b")]], "subset with a string")
+})
 
 test_that("complain doesn't taint env class", {
   x1 <- list2env(list(y = 1))
