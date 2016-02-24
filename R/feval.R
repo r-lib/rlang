@@ -2,13 +2,13 @@
 #'
 #' \code{feval} evaluates the \code{\link{rhs}} of a formula in its environment.
 #' If \code{data} is supplied, it will look for the values associated with
-#' symbols in their first.
+#' symbols in there first.
 #'
 #' @section Pronouns:
 #' When used with \code{data}, \code{feval} provides two pronouns to make it
 #' possible to be explicit about where you want values to come from:
 #' \code{.env} and \code{.data}. These are thin wrappers around \code{.data}
-#' and \code{.env} that throw errors if you try to access non-existant values.
+#' and \code{.env} that throw errors if you try to access non-existent values.
 #'
 #' @param f A one-sided formula. Any expressions wrapped in \code{ (( )) } will
 #'   will be "unquoted", i.e. they will be evaluated, and the results inserted
