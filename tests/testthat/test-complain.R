@@ -6,6 +6,7 @@ test_that("can't access non-existent list members", {
 
   expect_equal(x2$y, 1)
   expect_error(x2$z, "object 'z' not found")
+  expect_error(x2[["z"]], "object 'z' not found")
 })
 
 test_that("can't access non-existent environment components", {
@@ -14,6 +15,7 @@ test_that("can't access non-existent environment components", {
 
   expect_equal(x2$y, 1)
   expect_error(x2$z, "object 'z' not found")
+  expect_error(x2[["z"]], "object 'z' not found")
 })
 
 test_that("can't use non-character vectors", {
@@ -28,6 +30,6 @@ test_that("complain doesn't taint env class", {
   x2 <- complain(x1)
 
   expect_equal(class(x1), "environment")
-  expect_equal(class(x2), "complain")
+  expect_equal(class(x2), c("complain", "environment"))
 
 })

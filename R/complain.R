@@ -3,7 +3,7 @@ complain <- function(x) {
     x <- clone_env(x)
   }
 
-  structure(x, class = "complain")
+  structure(x, class = c("complain", class(x)))
 }
 
 clone_env <- function(x) {
@@ -37,5 +37,5 @@ has_name.default <- function(x, name) {
 }
 #' @export
 has_name.environment <- function(x, name) {
-  exists(x, name, inherits = FALSE)
+  exists(name, envir = x, inherits = FALSE)
 }
