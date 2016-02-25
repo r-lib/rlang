@@ -14,16 +14,20 @@ library(lazyeval)
 knitr::opts_chunk$set(collapse = TRUE, comment = "#>")
 ```
 
-Lazy evaluation is a principled way to do non-standard evaluation (NSE) in R. It is centered around formulas, which capture an expression and the current environment. You use lazy evaluation by requiring the user to "quote" specially evaluated arguments with `~`, and then using the lazyeval package to compute on those formulas. It is also possible to eliminate the use of the `~` by converting promises to formulas. This does make programming with such functions a little harder, but it can be worth it in certain situations.
+Lazy evaluation is a principled way to do non-standard evaluation (NSE) in R. It is centered around formulas which capture an expression and the current environment. You use lazy evaluation by requiring the user to "quote" specially evaluated arguments with `~`, and then using the lazyeval package to compute with those formulas. It is also possible to eliminate the use of the `~` by converting promises to formulas. This does make programming with such functions a little harder, but it can be worth it in certain situations.
 
-You'll find vignette helpful if you want to program with functions from my packages (like the development versions of dplyr and ggplot2), or you want a principled way of working with delayed expressions in your own package.
+You should read this vignette if you want to program packages like dplyr and ggplot2[^1], or you want a principled way of working with delayed expressions in your own package.
+
+[^1]: Currently neither ggplot2 nor dplyr actually use this technique since I've only just figured it out. But I'll be working hard to make sure all my packages are consistent in the near future.
 
 There are three challenges to doing non-standard evaluation correctly in R. Each of these challenges is paired with a solution from lazyeval:
 
 * To delay the computation of an expression you must capture both the 
   expression and the current environment. Formulas offer a convenient but
-  explicit way of doing this; lazyeval uses C to extract the expression
-  and environment for any promise.
+  explicit way of doing this. If you want to avoid the single quoting
+  character, lazyeval also offers a way to turn any function argument into
+  a formula by capturing the expression and environment associated with the
+  promise.
   
 * In R, non-standard evaluation is most often used to look first in a data 
   frame, and then in the enclosing environment. This is useful for interactive
@@ -32,15 +36,17 @@ There are three challenges to doing non-standard evaluation correctly in R. Each
   needed.
 
 * R lacks a built-in quasiquotation mechanism which allows you to "unquote"
-  expression in order to mix evaluated and unevaluated components in a single
-  object. Lazyeval provides `finterp()` which implements a full quasi-quotation
-  tool with both unquote and unquote-splice tools.
+  an expression in order to mix evaluated and unevaluated components in a 
+  single call. Lazyeval provides `finterp()` which implements a full 
+  quasi-quotation system with both unquote and unquote-splice components.
   
-My recommendations for how to do this have changed substantially over time. I am fairly confident they will not have to change again. This approach and accompanying tools allows you to solve a wide range of problems that you encounter in practice, and are a substantial improvment over the previous generation.
+My recommendations for how to do this have changed substantially over time. I am fairly confident they will not have to change again. This approach and accompanying tools allows you to solve a wide range of practical problems that were challenging previously and is rooted in [well-standing theory](http://repository.readscheme.org/ftp/papers/pepm99/bawden.pdf).
 
 ## Formula basics
 
-Formulas are most familiar from linear models, but they are a powerful and underused aspect of the R language. A formula is an S3 class built on top of the language type (somewhat more accurately known as a call), with an attribute that captures the environment in which the formula was created:
+Formulas are most familiar from linear models, but they are a powerful general purpose tool. The formula can be thought of as general "quoting" operator, because it captures the unevaluated expression, and the environment in which it would be evaluated.
+
+Formally, a formula is an S3 class built on top of the language type (also known as a quoted expression or a call), with an attribute that stores the environment:
 
 ```{r}
 f <- ~ x + y + z
@@ -48,12 +54,13 @@ typeof(f)
 attributes(f)
 ```
 
-In this sense, the formula operator is a general "quoting" operator for R. The formula allows you to capture the essence of a computation: both the sequence of operations and the environment in which those computations need to be carried out.
+Single-sided formulas have length two:
 
 ```{r}
+length(f)
 # The 1st element is always ~
 f[[1]]
-# The 2nd element is the call itself
+# The 2nd element is the quoted expression
 f[[2]]
 ```
 
@@ -61,6 +68,7 @@ R also supports two-sided formulas like `y ~ x`. These are useful for modelling,
 
 ```{r}
 g <- y ~ x + z
+length(g)
 # The 1st element is still ~
 g[[1]]
 # But now the 2nd element is the LHS
@@ -69,25 +77,27 @@ g[[2]]
 g[[3]]
 ```
 
-To avoid this problem, we'll only ever use the single-sided formula for quoting, and use `rhs()` to access the call.
+To avoid these differences, we'll only ever use singled-singled formulas for quoting. Lazeval provides `rhs()` to access the call. It throws an error if the input is not of the expected type:
 
-```{r, error = TRUE, purl = FALSE}
+```{r, error = TRUE}
 rhs(f)
 rhs(g)
 ```
 
 ## Working with formulas
 
-The lazyeval package provides a number of functions to make working with formulas easier. For example, the `feval()` function evaluates the formula in its environment.
+Once you have a formula, you need some tools to work with it. The goal of lazyeval is provided those tools.
+
+The most important tool is `feval()`: it evaluates the delayed expression captured by the formula:
 
 ```{r}
 f <- ~ 1 + 2 + 3
 feval(f)
 ```
 
-This is powerful because it allows us to separate the definition of a computation from its evaluation. This is useful because we can compute on the expression itself, or as we'll see shortly, evaluate it in a slightly non-standard way. 
+This makes formulas a powerful tool because they allows us to separate the definition of a computation from its evaluation. This allows us to compute on the expression itself, or as we'll see shortly, evaluate it in a non-standard way. 
 
-The formula captures the environment in which it was evaluated, so `feval()` works even when the formula is used in a different place from where it was defined.
+Because the formula captures the enclosing environment, `feval()` is robust. It works even when the formula is used in a different place from where it was defined:
 
 ```{r}
 foo <- function(x) {
@@ -95,28 +105,37 @@ foo <- function(x) {
 }
 f <- foo(10)
 f
-x <- 1
 feval(f)
 ```
 
-Because the literal values are not shown in the formula (they're looked up in the attached environment), it can be hard to see what's going on. Lazyeval provides a solution for this in the form of `funwrap()`:
+It can be hard to see what's going on when looking at a formula because important values are stored in the associated environment. You can use `funwrap()` to replace names with their corresponding values:
 
 ```{r}
 f
 funwrap(f)
 ```
 
-## Use formulas
+`feval()` has an optional second argument: a list (or data frame) that overrides values found in the environment. This allows you to implement the most common form of NSE in R: referring to variables in a data frame as if they are variables in the environment:
 
-> _Bob Loblaw_: ...whether or not those promises were made explicit.
->
-> _Tobias_: You want me to be explicit?
+```{r}
+feval(~ mean(cyl), mtcars)
+```
 
-We'll illustrate these ideas by implementing a version of the `subset` function from base R.  The goal of the `subset()` is to make it easy to select rows matching criteria specified from the columns. It has three advantages over `[`:
+`feval()` has two other important features that you'll learn about in the following sections:
 
-1.  If many variables are involved in the expression, you don't need to 
-    repeat the name of the data frame each time, so the result is much more
-    concise.
+* It provides `.data` and `.env` pronouns to allow you to be explicit 
+  about where variables should come from.
+  
+* It does "quasiquotation" so you can easily generate code using a template.
+
+## A `subset()` function
+
+We'll illustrate these ideas by implementing a version of the `subset()` function from base R (if you're familiar with dplyr, `subset()` is very similar to `filter()`. The goal of `subset()` is to make it easy to select observations matching criteria defined by values of the variables. 
+
+It has three advantages over `[`:
+
+1.  If the criteria uses many variables, `subset()` is much more compact 
+    because you don't need to repeat the name of the data frame each time.
 
 1.  It drops rows where the condition evaluates to `NA` rather filling
     them in with `NA`s
@@ -124,7 +143,9 @@ We'll illustrate these ideas by implementing a version of the `subset` function 
 1.  It always returns a data frame so you don't need to remember to do
     `drop = FALSE` for single column data frames.
 
-The base version uses non-standard evaluation which makes it a little fragile and hard to understand. Instead we'll require the user to provide a formula.
+The base version, `subset.data.frame()` uses classic NSE which makes it a little fragile and hard to understand. 
+
+Instead we'll require the user to provide a formula. This makes implementation straightforward: 
 
 ```{R}
 subset <- function(df, subset) {
@@ -136,15 +157,21 @@ subset <- function(df, subset) {
   rows <- rows & !is.na(rows)
   df[rows, , drop = FALSE]
 }
-
-df <- data.frame(x = 1:5, y = 5:1)
-subset(df, ~ x <= 2)
 ```
 
+We use `feval()` to evaluate the formula in the context of the data frame. Once we have that logical vector, it only remains to replace `NA` with `FALSE`, and to perform the subsetting.
+
+And the results look good:
+
+```{r}
+df <- data.frame(x = 1:5, y = 5:1)
+subset(df, ~ x <= 2)
+subset(df, ~ x == y)
+```
 
 ## Be explicit
 
-We could wrap this behaviour up into a (somewhat) more useful function:
+You might notice yourself using `subset()` again and again in a similar fashion. Instead of copy-and-pasting, you might decided to wrap up the behaviour in a function. For example, imagine you common select rows where `x` is above a certain threshold:
 
 ```{r}
 threshold_x <- function(df, threshold) {
@@ -153,10 +180,12 @@ threshold_x <- function(df, threshold) {
 threshold_x(df, 3)
 ```
 
-But there are two ways that this function might fail:
+(This is admittedly a silly example, but it illustrates all of the important issues you'll need to consider when writing more useful functions.)
 
-1.  The data frame might not have `x`. This will fail unless there's a variable called
-    `x` hanging around in the global environment:
+There are two ways that this function might fail:
+
+1.  The data frame might not have a variable called `x`. This will fail unless
+    there's a variable called `x` hanging around in the global environment:
     
     ```{r, error = TRUE}
     df2 <- data.frame(y = 5:1)
@@ -176,14 +205,14 @@ But there are two ways that this function might fail:
     threshold_x(df3, 3)
     ```
 
-These failures are partiuclarly pernicious because they don't give a useful error message: instead they silently give an incorrect result. Both failures arise because `feval()` looks first in the data frame and then in the environment of the formula. To make this function more reliable, we're going to have to be more explicit. `feval()` provides two pronouns to make this possible:
+These failures are partiuclarly pernicious because they don't throw an error, but silently give an incorrect result. Both failures arise because `feval()` looks in two places for each name: the data frame and formula environment. To make this function more reliable, we need to be more explicit. `feval()` provides two pronouns to make this possible:
 
 * `.data` is bound to the data frame.
-* `.env` is bound to the environment of a function.
+* `.env` is bound to the formula environment.
 
-(They start with `.` to avoid accidentally clobbering existing objects in the environment.)
+(They both start with `.` to minimise the chances of overriding existing variables.)
 
-We can use these objects to prevent the `feval()` for looking in the wrong place accidently:
+We can use these pronouns to prevent `feval()` for looking in the wrong place accidently:
 
 ```{r, error = TRUE}
 threshold_x <- function(df, threshold) {
@@ -194,35 +223,36 @@ threshold_x(df2, 3)
 threshold_x(df3, 3)
 ```
 
-## Interpolation
+## Unquoting
 
-The `threshold_x` function not very useful because it's bound to a specific variable. It would be more powerful if we could vary the variable used as well. We can do that by taking an additional argument to specify which variable to use: there are two basic alternatives for specifying the variable.
+The `threshold_x` function is not very useful because it's bound to a specific variable. It would be more powerful if we could vary the variable as well as the threshold. We can do that by taking an additional argument to specify which variable to use.
 
-One simple approach that works well here is to use a string, and to switch from `$` to `[[`:
+A simple approach that works well in this case, is to use a string and `[[`:
 
 ```{r}
 threshold <- function(df, variable, threshold) {
   stopifnot(is.character(variable), length(variable) == 1)
   
-  subset(df, ~ .data[[variable]] > .env$threshold)
+  subset(df, ~ .data[[.env$variable]] > .env$threshold)
 }
 threshold(df, "x", 4)
 ```
 
-This is a good solution here, but only allows us to use a variable, not an arbitrary expression (e.g. `sqrt(x)`).
+This is a simple and robust solution, but only allows us to use an existing variable, not an arbitrary expression like `sqrt(x)`.
 
 A more general solution is to allow the user to supply a formula:
 
 ```{r}
 threshold <- function(df, variable = ~x, threshold = 0) {
-  subset(df, ~ ((rhs(variable))) > .env$threshold)
+  subset(df, ~ (( rhs(variable) )) > .env$threshold)
 }
-threshold(df, ~x, 4)
+threshold(df, ~ x, 4)
+threshold(df, ~ abs(x - y), 2)
 ```
 
 There are two main function that make this work:
 
-1.   `rhs()` extracts the right-hand side of a function:
+1.   `rhs()` extracts the right-hand side of the formula:
 
     ```{r}
     rhs(~ 1 + 2)
@@ -235,7 +265,7 @@ There are two main function that make this work:
     actual interpolation.
     
     ```{r}
-    finterp(~ 1 + ((1 + 1)))
+    finterp(~ 1 + ((1 + 1)) )
     
     z <- quote(x + y)
     finterp(~ mean((z)))
@@ -248,9 +278,11 @@ variable <- ~x
 finterp(~ ((rhs(variable))) > .env$threshold)
 ```
 
-You typically won't call `finterp()` directly as `feval()` calls it for you, but it's useful for debugging and for seeing what's going on.
+You typically won't call `finterp()` directly as `feval()` calls it for you, but it's useful for understanding and debugging.
 
-If you've been paying attention, you'll have noticed that this threshold function is slightly dangerous because the `variable` isn't explicit scoped to be inside the dataframe.  It's reasonable to argue that this is ok: `threshold()` is designed for interactive use, so generally the user will see right away if something is wrong. If, however, you want to be safer, you need to do something a little tricky. `df$((x))` isn't valid R code, so you'll need to use the _prefix_ form: `` `$`(df, ((x)))``:
+If you've been paying attention, you'll have noticed that this threshold function is slightly dangerous because the `variable` isn't explicit scoped to be inside the dataframe.  It's reasonable to argue that this is ok: `threshold()` is designed for interactive use, so generally the user will see right away if something is wrong.
+
+If, however, you want to be safer, you want to generate `.data$x`. This is challenging because `df$((x))` isn't valid R code, so you have to use the  _prefix_ form: `` `$`(df, ((x)))``:
 
 ```{r}
 threshold <- function(df, variable = ~x, threshold = 0) {
@@ -259,22 +291,18 @@ threshold <- function(df, variable = ~x, threshold = 0) {
 threshold(df, ~x, 4)
 ```
 
-This also provides another way of avoiding the ambiguity problem. For simple, values you can insert them directly into the formula:
+Unquoting is a powerful, but it only allows you to modify a specific argument: it doesn't allow you to add an arbitrary number of arguments. To do that, you'll need "unquote-splice", or `({ })`. This should return a list of arguments to be spliced into the call:
 
 ```{r}
-threshold <- function(df, variable = ~x, threshold = 0) {
-  subset(df, ~ `$`(.data, ((rhs(variable)))) > ((threshold)))
-}
-threshold(df, ~x, 4)
+extra_args <- list(na.rm = TRUE, trim = 0.9)
+finterp(~ mean(x, ({ extra_args }) ))
 ```
-
-I'm not yet sure what situations should lead you to favour one approach over the other.
 
 ## Eliminating the formulas
 
-In some situations you might want to eliminate the formula altogether, and allow the user to type regular R expressions. Although I was once much enamoured with this approach (witness ggplot2, dplyr, ...), I now think that it should be used sparingly. The approach outlined above, using formulas, leads to much simpler code, and the explict `~` makes it clear to the user that something unusual is going on.
+In some situations you might want to eliminate the formula altogether, and allow the user to type regular R expressions. Although I was once much enamoured with this approach (witness ggplot2, dplyr, ...), I now think that it should be used sparingly. Requiring explict quoting with `~`, leads to code, and the explictness  makes it clear to the user that something unusual is going on.
 
-However, lazyeval does provide some tools that allow you to eliminate the use of the formula.  If you're going to take this approach I'd recommend still having a function that uses formulas, and give it the suffix `_`. 
+However, lazyeval does provide tools that allow you to eliminate the use of the formula. If you're going to take this approach I'd recommend still having a function that uses formulas. Give it the suffix `_`:
 
 ```{r}
 subset_ <- function(df, subset) {
@@ -288,7 +316,7 @@ subset_ <- function(df, subset) {
 }
 ```
 
-Once you have this version you can create a NSE verison that doesn't need the explicit formula. The key is the use of `explicit_promise()` which takes an unevaluateed argument (formally called a _promise_) and turns it into a regular formula object:
+Once you have this version you can create a verison that doesn't need the explicit formula. The key is the use of `explicit_promise()` which takes an unevaluateed argument (formally called a _promise_) and turns it into a regular formula object:
 
 ```{r}
 subset <- function(df, expr) {
@@ -300,7 +328,7 @@ subset(df, x == 1)
 
 It's important to have a version that works with formulas, because that function can be more easily called from other functions.
 
-Note, however, that the problems with using `substitute()` don't apply here. `explicit_promise()` is start enough to follow a chain of promises back to the original value, so, for example, this code works fine:
+If you're familiar with `substitute()` you might expect the same drawbacks to apply. However, `explicit_promise()` is start enough to follow a chain of promises back to the original value, so, for example, this code works fine:
 
 ```{r}
 scramble <- function(df) {
