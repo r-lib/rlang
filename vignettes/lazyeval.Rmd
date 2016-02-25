@@ -35,10 +35,11 @@ There are three challenges to doing non-standard evaluation correctly in R. Each
   Lazyeval provides `.data` and `.env` pronouns to eliminate this ambiguity when
   needed.
 
-* R lacks a built-in quasiquotation mechanism which allows you to "unquote"
+* Base R lacks a complete quasiquotation mechanism which allows you to "unquote"
   an expression in order to mix evaluated and unevaluated components in a 
   single call. Lazyeval provides `finterp()` which implements a full 
   quasi-quotation system with both unquote and unquote-splice components.
+  (Base R has `bquote()` but it implements only unquote, not unquote-splice.)
   
 My recommendations for how to do this have changed substantially over time. I am fairly confident they will not have to change again. This approach and accompanying tools allows you to solve a wide range of practical problems that were challenging previously and is rooted in [well-standing theory](http://repository.readscheme.org/ftp/papers/pepm99/bawden.pdf).
 
