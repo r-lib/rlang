@@ -14,25 +14,31 @@ library(lazyeval)
 knitr::opts_chunk$set(collapse = TRUE, comment = "#>")
 ```
 
-This vignette documents my last thinking on doing non-standard evaluation (NSE) in R. You will find this document useful if you want to program with functions from my packages (like dplyr and ggplot2), or you want a principled way of adding NSE to your own package. Somewhat ironically, you'll actually learn relatively little about NSE itself: instead you'll learn about formulas.
+Lazy evaluation is a principled way to do non-standard evaluation (NSE) in R. It is centered around formulas, which capture an expression and the current environment. You use lazy evaluation by requiring the user to "quote" specially evaluated arguments with `~`, and then using the lazyeval package to compute on those formulas. It is also possible to eliminate the use of the `~` by converting promises to formulas. This does make programming with such functions a little harder, but it can be worth it in certain situations.
 
+You'll find vignette helpful if you want to program with functions from my packages (like the development versions of dplyr and ggplot2), or you want a principled way of working with delayed expressions in your own package.
 
-There are three challenges to doing non-standard evaluation correctly in R:
+There are three challenges to doing non-standard evaluation correctly in R. Each of these challenges is paired with a solution from lazyeval:
 
-* Extracting the expression and environment associated with a promise
-  (i.e. turning it into an explict object that you can pass around to
-  other functions)
+* To delay the computation of an expression you must capture both the 
+  expression and the current environment. Formulas offer a convenient but
+  explicit way of doing this; lazyeval uses C to extract the expression
+  and environment for any promise.
   
-* Providing a standard way to be explicit about scoping.
+* In R, non-standard evaluation is most often used to look first in a data 
+  frame, and then in the enclosing environment. This is useful for interactive
+  exploration but introduces potentially dangerous ambiguities when programming.
+  Lazyeval provides `.data` and `.env` pronouns to eliminate this ambiguity when
+  needed.
 
-* A standard unquoting mechanism so it's straightforward to create a 
-  function that uses non-standard evaluation.
+* R lacks a built-in quasiquotation mechanism which allows you to "unquote"
+  expression in order to mix evaluated and unevaluated components in a single
+  object. Lazyeval provides `finterp()` which implements a full quasi-quotation
+  tool with both unquote and unquote-splice tools.
   
-Lazy eval provides tools to solve each of these 
-
 My recommendations for how to do this have changed substantially over time. I am fairly confident they will not have to change again. This approach and accompanying tools allows you to solve a wide range of problems that you encounter in practice, and are a substantial improvment over the previous generation.
 
-## Formulas
+## Formula basics
 
 Formulas are most familiar from linear models, but they are a powerful and underused aspect of the R language. A formula is an S3 class built on top of the language type (somewhat more accurately known as a call), with an attribute that captures the environment in which the formula was created:
 
@@ -42,31 +48,46 @@ typeof(f)
 attributes(f)
 ```
 
-In this sense, the formula operator is a general "quoting" operator for R - it allows you to capture the essence of a computation: both the sequence of operations and the environment in which those computations need to be carried out.
+In this sense, the formula operator is a general "quoting" operator for R. The formula allows you to capture the essence of a computation: both the sequence of operations and the environment in which those computations need to be carried out.
 
 ```{r}
-# The first element is always ~
+# The 1st element is always ~
 f[[1]]
-# The second element is the call itself
+# The 2nd element is the call itself
 f[[2]]
 ```
 
-R also supports two-sided formulas like `y ~ x`. These are useful for modelling, but not so useful in general, so we'll ignore here. The most reliable way to get to this expression is with `rhs()`, short for right-hand side. This function will raise an error if the input is not a one-sided function.
+R also supports two-sided formulas like `y ~ x`. These are useful for modelling, but have a slightly different interface:
 
 ```{r}
-rhs(f)
+g <- y ~ x + z
+# The 1st element is still ~
+g[[1]]
+# But now the 2nd element is the LHS
+g[[2]]
+# And the 3rd element is the RHS
+g[[3]]
 ```
 
-The lazyeval package provides a number of functions to make working with formulas easier. For example, the `feval()` function evaluates the formula's expression in the formula's environment.
+To avoid this problem, we'll only ever use the single-sided formula for quoting, and use `rhs()` to access the call.
+
+```{r, error = TRUE, purl = FALSE}
+rhs(f)
+rhs(g)
+```
+
+## Working with formulas
+
+The lazyeval package provides a number of functions to make working with formulas easier. For example, the `feval()` function evaluates the formula in its environment.
 
 ```{r}
 f <- ~ 1 + 2 + 3
 feval(f)
 ```
 
-This is powerful because it allows us to separate the definition of a computation from its evaluation. This is useful because we can computation on the expression itself, or as we'll see shortly, evaluate it in a slightly non-standard way.
+This is powerful because it allows us to separate the definition of a computation from its evaluation. This is useful because we can compute on the expression itself, or as we'll see shortly, evaluate it in a slightly non-standard way. 
 
-Because the formula captures the environment in which it was evaluated, this approach is robust:
+The formula captures the environment in which it was evaluated, so `feval()` works even when the formula is used in a different place from where it was defined.
 
 ```{r}
 foo <- function(x) {
