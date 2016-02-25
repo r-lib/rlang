@@ -5,13 +5,15 @@
 #' the form \code{({ x })}.
 #'
 #' @section Theory:
-#' Formally, \code{finterp} is a quasiquote function, \code{\(\(} is the
-#' unquote operator, and \code{\(\{} is the unquote splice operator.
+#' Formally, \code{finterp} is a quasiquote function, \code{((} is the
+#' unquote operator, and \code{(\{} is the unquote splice operator.
 #' These terms have a rich history in LISP, and live on in modern languages
-#' like \href{Julia}{} and \href{Racket}{}
+#' like \href{Julia}{http://docs.julialang.org/en/release-0.1/manual/metaprogramming/}
+#' and \href{Racket}{https://docs.racket-lang.org/reference/quasiquote.html}.
 #'
 #' @param f A one-sided formula.
 #' @export
+#' @aliases unquote unquote_splice (\{ ((
 #' @examples
 #' finterp(~ 1 + ((1 + 2 + 3)) + 10)
 #'
@@ -31,8 +33,6 @@
 #' f <- foo(10)
 #' f
 #' finterp(f)
-#'
-#'
 #' @useDynLib lazyeval quasiquote_c
 finterp <- function(f) {
   f[[2]] <- .Call(quasiquote_c, rhs(f), environment(f))

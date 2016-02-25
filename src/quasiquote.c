@@ -9,25 +9,20 @@ bool is_scalar(SEXP x) {
 
 // Is a call the correct form to be unquoted? ------------------------------------
 
-bool is_parens_call(SEXP x) {
+bool is_call_to(SEXP x, const char* f) {
   if (!Rf_isLanguage(x))
     return false;
 
-  SEXP parens = Rf_install("(");
+  SEXP parens = Rf_install(f);
   SEXP fun = CAR(x);
 
   return Rf_isSymbol(fun) && fun == parens;
 }
 
-bool is_brace_call(SEXP x) {
+bool has_one_argument(SEXP x) {
   if (!Rf_isLanguage(x))
     return false;
 
-  SEXP fun = CAR(x);
-  return Rf_isSymbol(fun) && fun == R_BraceSymbol;
-}
-
-bool has_one_argument(SEXP x) {
   SEXP rest = CDR(x);
   // Must have a first argument
   if (rest == R_NilValue)
@@ -40,33 +35,32 @@ bool has_one_argument(SEXP x) {
 }
 
 bool is_unquote(SEXP x) {
-  if (!is_parens_call(x))
-    return false;
-
   if (!has_one_argument(x))
     return false;
 
-  // CADR(x) = first argument in call
-  if (!is_parens_call(CADR(x)))
+  if (is_call_to(x, "(")) {
+    return is_call_to(CADR(x), "(");
+  } else if (is_call_to(x, "unquote")) {
+    return true;
+  } else {
     return false;
+  }
 
-  return true;
 }
 
 bool is_unquote_splice(SEXP x) {
-  if (!is_parens_call(x))
-    return false;
-
   if (!has_one_argument(x))
     return false;
 
-  // CADR(x) = first argument in call
-  if (!is_brace_call(CADR(x)))
+  if (is_call_to(x, "(")) {
+    return is_call_to(CADR(x), "{");
+  } else if (is_call_to(x, "unquote_splice")) {
+    return true;
+  } else {
     return false;
+  }
 
-  return true;
 }
-
 
 // Helpers for testing
 SEXP is_unquote_c(SEXP x) {

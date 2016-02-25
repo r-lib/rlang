@@ -61,6 +61,9 @@ test_that("unquote detects paired parens", {
   # Correct
   out <- is_unquote( ((x)) )
   expect_true(out)
+
+  # Explicit
+  expect_true(is_unquote(unquote(x)))
 })
 
 test_that("unquote_splice detects ( + {", {
@@ -83,4 +86,7 @@ test_that("unquote_splice detects ( + {", {
   # Correct
   out <- is_unquote_splice( ({x}) )
   expect_true(out)
+
+  # Explicit
+  expect_true(is_unquote_splice(unquote_splice(x)))
 })
