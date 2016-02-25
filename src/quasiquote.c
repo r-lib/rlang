@@ -85,7 +85,7 @@ SEXP quasiquote_walk(SEXP x, SEXP env)  {
     return x;
 
   if (is_unquote(x))
-    return Rf_eval(x, env);
+    return Rf_eval(CADR(x), env);
 
   // Recursive case
   for(SEXP cur = x; cur != R_NilValue; cur = CDR(cur)) {
