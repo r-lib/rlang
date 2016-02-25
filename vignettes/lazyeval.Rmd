@@ -1,10 +1,10 @@
 ---
-title: "A guide to non-standard evaluation"
+title: "Lazy evaluation"
 author: "Hadley Wickham"
 date: "`r Sys.Date()`"
 output: rmarkdown::html_vignette
 vignette: >
-  %\VignetteIndexEntry{A guide to non-standard evaluation}
+  %\VignetteIndexEntry{Lazy evaluation}
   %\VignetteEngine{knitr::rmarkdown}
   %\VignetteEncoding{UTF-8}
 ---
