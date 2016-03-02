@@ -5,7 +5,7 @@
 #' the form \code{({ x })}.
 #'
 #' @section Theory:
-#' Formally, \code{finterp} is a quasiquote function, \code{((} is the
+#' Formally, \code{f_interp} is a quasiquote function, \code{((} is the
 #' unquote operator, and \code{(\{} is the unquote splice operator.
 #' These terms have a rich history in LISP, and live on in modern languages
 #' like \href{Julia}{http://docs.julialang.org/en/release-0.1/manual/metaprogramming/}
@@ -15,27 +15,27 @@
 #' @export
 #' @aliases unquote unquote_splice (\{ ((
 #' @examples
-#' finterp(~ 1 + ((1 + 2 + 3)) + 10)
+#' f_interp(~ 1 + ((1 + 2 + 3)) + 10)
 #'
 #' # Use ({ }) if you want to add multiple arguments to a function
 #' # It must evaluate to a list
 #' args <- list(1:10, na.rm = TRUE)
-#' finterp(~ mean( ({args}) ))
+#' f_interp(~ mean( ({args}) ))
 #'
 #' # You can combine the two
 #' var <- quote(xyz)
 #' extra_args <- list(trim = 0.9)
-#' finterp(~ mean( ((var)) , ({extra_args}) ))
+#' f_interp(~ mean( ((var)) , ({extra_args}) ))
  #'
 #' foo <- function(n) {
 #'   ~ 1 + ((n))
 #' }
 #' f <- foo(10)
 #' f
-#' finterp(f)
+#' f_interp(f)
 #' @useDynLib lazyeval quasiquote_c
-finterp <- function(f) {
-  f[[2]] <- .Call(quasiquote_c, rhs(f), environment(f))
+f_interp <- function(f) {
+  f[[2]] <- .Call(quasiquote_c, f_rhs(f), environment(f))
   f
 }
 

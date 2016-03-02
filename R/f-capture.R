@@ -10,26 +10,26 @@
 #' @param .ignore_empty If \code{TRUE}, empty arguments will be silently
 #'    dropped.
 #' @export
-#' @return \code{explicit_promise} returns a formula; \code{explicit_dots}
+#' @return \code{f_capture} returns a formula; \code{dots_capture}
 #'   returns a list of formulas.
 #' @examples
-#' explicit_promise(a + b)
-#' explicit_dots(a + b, c + d, e + f)
+#' f_capture(a + b)
+#' dots_capture(a + b, c + d, e + f)
 #'
 #' # These functions will follow a chain of promises back to the
 #' # original definition
 #' f <- function(x) g(x)
 #' g <- function(y) h(y)
-#' h <- function(z) explicit_promise(z)
+#' h <- function(z) f_capture(z)
 #' f(a + b + c)
-explicit_promise <- function(x) {
+f_capture <- function(x) {
   lazy <- .Call(make_lazy, quote(x), environment(), TRUE)
-  make_formula(lazy$expr, lazy$env)
+  f_new(lazy$expr, lazy$env)
 }
 
 #' @export
-#' @rdname explicit_promise
-explicit_dots <- function(..., .ignore_empty = TRUE) {
+#' @rdname f_capture
+dots_capture <- function(..., .ignore_empty = TRUE) {
   lazies <- .Call(make_lazy_dots, environment(), TRUE, .ignore_empty)
-  lapply(lazies, function(x) make_formula(x$expr, x$env))
+  lapply(lazies, function(x) f_new(x$expr, x$env))
 }

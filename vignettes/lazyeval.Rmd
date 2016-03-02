@@ -79,7 +79,7 @@ There are three challenges to doing non-standard scoping correctly:
   provides `.data` and `.env` pronouns if you need to be explicit.
 
 * You often want to mix evaluated and unevaluated components in a 
-  single call. Lazyeval provides `finterp()` which implements a full 
+  single call. Lazyeval provides `f_interp()` which implements a full 
   quasi-quotation system with both unquote and unquote-splice components.
 
 ## Formulas
@@ -120,8 +120,8 @@ g[[3]]
 To avoid these differences, we'll only ever use singled-singled formulas for quoting. Lazeval provides `rhs()` to access the call. It throws an error if the input is not of the expected type:
 
 ```{r, error = TRUE}
-rhs(f)
-rhs(g)
+f_rhs(f)
+f_rhs(g)
 ```
 
 ## Working with formulas
@@ -130,7 +130,7 @@ Once you have a formula, you need some tools to work with it. The goal of lazyev
 
 ```{r}
 f <- ~ 1 + 2 + 3
-feval(f)
+f_eval(f)
 ```
 
 This allows you to use a formula a way of delaying evaluation: you can capture the expression and its environment, and only evaluate it when you need to. Because the formula captures the enclosing environment, `feval()` is robust, and works even when the formula is used in a different place from where it was defined:
@@ -141,20 +141,20 @@ foo <- function(x) {
 }
 f <- foo(10)
 f
-feval(f)
+f_eval(f)
 ```
 
 It can be hard to see what's going on when looking at a formula because important values are stored in the associated environment. You can use `funwrap()` to replace names with their corresponding values:
 
 ```{r}
 f
-funwrap(f)
+f_unwrap(f)
 ```
 
-`feval()` has an optional second argument: a list (or data frame) that overrides values found in the environment. This allows you to implement non-standard scoping: referring to variables in a data frame as if they are variables in the environment:
+`f_eval()` has an optional second argument: a list (or data frame) that overrides values found in the environment. This allows you to implement non-standard scoping: referring to variables in a data frame as if they are variables in the environment:
 
 ```{r}
-feval(~ mean(cyl), mtcars)
+f_eval(~ mean(cyl), mtcars)
 ```
 
 We can use these ideas to implement a simple version of `base::subset()` (if you're familiar with dplyr, `subset()` is very similar to `filter()`. The goal of `subset()` is to make it easy to select observations matching criteria defined by values of the variables. It has three advantages over `[`:
@@ -172,7 +172,7 @@ Here's a simple version of `subset.data.frame()` that uses lazyeval approach:
 
 ```{R}
 subset <- function(df, subset) {
-  rows <- feval(subset, df)
+  rows <- f_eval(subset, df)
   if (!is.logical(rows)) {
     stop("`subset` must be logical.", call. = FALSE)
   }
@@ -269,11 +269,11 @@ threshold(df, "x", 4)
 
 This is a simple and robust solution, but only allows us to use an existing variable, not an arbitrary expression like `sqrt(x)`.
 
-A more general solution is to allow the user to supply a formula, and use the special `(( ))` invocation. When used with `feval()`, anything inside `(( ))` is replaced with its evaluated value. 
+A more general solution is to allow the user to supply a formula, and use the special `(( ))` invocation. When used with `f_eval()`, anything inside `(( ))` is replaced with its evaluated value. 
 
 ```{r}
 threshold <- function(df, variable = ~x, threshold = 0) {
-  subset(df, ~ (( rhs(variable) )) > .env$threshold)
+  subset(df, ~ (( f_rhs(variable) )) > .env$threshold)
 }
 ```
 
@@ -286,46 +286,46 @@ threshold(df, ~ abs(x - y), 2)
 
 There are two important pieces that make this work:
 
-1.  `rhs()` extracts the right-hand side of the formula to give us the 
+1.  `f_rhs()` extracts the right-hand side of the formula to give us the 
     expression we want to evaluate:
 
     ```{r}
-    rhs(~ 1 + 2)
-    rhs(~ mean(x))
+    f_rhs(~ 1 + 2)
+    f_rhs(~ mean(x))
     ```
     
 1.  `feval()` allows "unquote" and interpolates in evaluated vlaues inside 
-    `(( ))`. It's easiest to see what's happening by using the `finterp()` 
+    `(( ))`. It's easiest to see what's happening by using the `f_interp()` 
     function which `feval()` uses to do the actual interpolation.
     
     ```{r}
-    finterp(~ 1 + ((1 + 1)) )
+    f_interp(~ 1 + ((1 + 1)) )
     
     z <- ~ x + y
-    finterp(~ mean( (( rhs(z) )) ))
+    f_interp(~ mean( (( f_rhs(z) )) ))
     ```
   
 Putting these two together gives us:
   
 ```{r}
 variable <- ~x
-finterp(~ ((rhs(variable))) > .env$threshold)
+f_interp(~ ((f_rhs(variable))) > .env$threshold)
 ```
 
-You typically won't call `finterp()` directly as `feval()` calls it for you, but it's useful for understanding and debugging.
+You typically won't call `f_interp()` directly as `f_eval()` calls it for you, but it's useful for understanding and debugging.
 
 In this case it's the responsibility of the caller to avoid ambiguities:
 
 ```{r}
 variable <- ~ .data$x + .env$y
-finterp(~ ((rhs(variable))) > .env$threshold)
+f_interp(~ ((f_rhs(variable))) > .env$threshold)
 ```
 
 Unquoting is powerful, but it only allows you to modify a specific argument: it doesn't allow you to add an arbitrary number of arguments. To do that, you'll need "unquote-splice", or `({ })`. The code inside `({ })` should return a list of arguments to be spliced into the call:
 
 ```{r}
 extra_args <- list(na.rm = TRUE, trim = 0.9)
-finterp(~ mean(x, ({ extra_args }) ))
+f_interp(~ mean(x, ({ extra_args }) ))
 ```
 
 ## Eliminating the formulas
@@ -336,7 +336,7 @@ That said, lazyeval does allow you to eliminate the `~` if you really want to. Y
 
 ```{r}
 subset_ <- function(df, subset) {
-  rows <- feval(subset, df)
+  rows <- f_eval(subset, df)
   if (!is.logical(rows)) {
     stop("`subset` must be logical.", call. = FALSE)
   }
@@ -346,17 +346,16 @@ subset_ <- function(df, subset) {
 }
 ```
 
-Once you have this version you can create a verison that doesn't need the explicit formula. The key is the use of `explicit_promise()` which takes an unevaluateed argument (formally called a _promise_) and turns it into a regular formula object:
+Once you have this version you can create a verison that doesn't need the explicit formula. The key is the use of `f_capture()` which takes an unevaluated argument and captures it as a formula:
 
 ```{r}
 subset <- function(df, expr) {
-  expr <- explicit_promise(expr)
-  subset_(df, expr)
+  subset_(df, f_capture(expr))
 }
 subset(df, x == 1)
 ```
 
-If you're familiar with `substitute()` you might expect the same drawbacks to apply. However, `explicit_promise()` is start enough to follow a chain of promises back to the original value, so, for example, this code works fine:
+If you're familiar with `substitute()` you might expect the same drawbacks to apply. However, `f_capture()` is start enough to follow a chain of promises back to the original value, so, for example, this code works fine:
 
 ```{r}
 scramble <- function(df) {

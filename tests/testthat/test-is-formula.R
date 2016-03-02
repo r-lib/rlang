@@ -1,4 +1,4 @@
-context("is.formula")
+context("is_formula")
 
 test_that("is.formula works", {
   expect_true(is_formula(~10))

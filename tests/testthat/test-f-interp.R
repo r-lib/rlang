@@ -1,4 +1,4 @@
-context("interp")
+context("f_interp")
 
 test_that("interp produces single string for character inputs", {
   x <- interp("aaaaaaaaaaaaaa + bbbbbbbbbbbbbbb + ccccccccccccccccc + dddddddddddddddd + eeeeeeeeeeeeeee")

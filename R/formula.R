@@ -17,10 +17,10 @@ is_formula <- function(x) {
 #' @export
 #' @return An atomic vector of length 1, a name, or a call.
 #' @examples
-#' rhs(~ 1 + 2 + 3)
-#' rhs(~ x)
-#' rhs(~ "A")
-rhs <- function(f) {
+#' f_rhs(~ 1 + 2 + 3)
+#' f_rhs(~ x)
+#' f_rhs(~ "A")
+f_rhs <- function(f) {
   if (!is_formula(f)) {
     stop("`f` is a not a formula", call. = FALSE)
   }
@@ -39,7 +39,7 @@ rhs <- function(f) {
 #' @return A formula object
 #' @export
 #' @keywords internal
-make_formula <- function(expr, env = parent.frame()) {
+f_new <- function(expr, env = parent.frame()) {
   if (!is.call(expr) && !is.name(expr) && !is.atomic(expr)) {
     stop("`expr` is not a valid language object", call. = FALSE)
   }
@@ -61,14 +61,14 @@ make_formula <- function(expr, env = parent.frame()) {
 #' @examples
 #' n <- 100
 #' f <- ~ x + n
-#' funwrap(f)
-funwrap <- function(f) {
+#' f_unwrap(f)
+f_unwrap <- function(f) {
   stopifnot(is_formula(f))
 
   e <- environment(f)
   if (identical(e, emptyenv())) {
     f
   } else {
-    make_formula(substitute_(rhs(f), e), parent.env(e))
+    f_new(substitute_(f_rhs(f), e), parent.env(e))
   }
 }
