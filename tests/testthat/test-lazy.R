@@ -40,3 +40,8 @@ test_that("lazy() does not unpack lazily loaded objects", {
   expect_identical(embedded_lazy$lazy$expr, as.name("mean"))
   expect_identical(embedded_lazy$lazy$env, embedded_lazy$env)
 })
+
+test_that("lazy() works for double-colon operator", {
+  expect_error(lazy <- lazy_caller(stats::runif(10)), NA)
+  expect_error(nested_lazy <- outer_fun(stats::runif(10)), NA)
+})
