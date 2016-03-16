@@ -6,7 +6,7 @@ int is_dead_end(SEXP x) {
     return 1;
   }
   if (TYPEOF(PREXPR(x)) == LANGSXP) {
-    const char* name = CHAR(PRINTNAME(CAR(PREXPR(x))));
+    const char* name = STRING_VALUE(CAR(PREXPR(x)));
     if (strcmp(name, "lazyLoadDBfetch") == 0) {
       return 1;
     }
