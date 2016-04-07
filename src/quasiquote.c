@@ -21,7 +21,7 @@ bool is_call_to(SEXP x, const char* f) {
 }
 
 SEXP rhs(SEXP f) {
-  if (!Rf_inherits(f, "formula"))
+  if (TYPEOF(f) != LANGSXP || !Rf_inherits(f, "formula"))
     Rf_errorcall(R_NilValue, "`x` is not a formula");
 
   switch (Rf_length(f)) {
