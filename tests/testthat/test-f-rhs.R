@@ -2,9 +2,9 @@ context("f_rhs")
 
 test_that("throws errors for bad inputs", {
   expect_error(f_rhs(1), "not a formula")
-  expect_error(f_rhs(y ~ x), "not a one-sided formula")
+  expect_error(f_rhs(`~`()), "Invalid formula")
+  expect_error(f_rhs(`~`(1, 2, 3)), "Invalid formula")
 })
-
 
 test_that("extracts call, name, or scalar", {
   expect_identical(f_rhs(~ x), quote(x))

@@ -11,7 +11,7 @@ is_formula <- function(x) {
 
 #' Extract the right-hand-side of a formula
 #'
-#' Throws an error if \code{f} is not a formula, or it's not one-sided.
+#' Throws an error if \code{f} is not a formula.
 #'
 #' @param f A formula
 #' @export
@@ -20,16 +20,10 @@ is_formula <- function(x) {
 #' f_rhs(~ 1 + 2 + 3)
 #' f_rhs(~ x)
 #' f_rhs(~ "A")
+#' f_rhs(1 ~ 2)
+#' @useDynLib lazyeval rhs
 f_rhs <- function(f) {
-  if (!is_formula(f)) {
-    stop("`f` is a not a formula", call. = FALSE)
-  }
-
-  if (length(f) != 2) {
-    stop("`f` is not a one-sided formula", call. = FALSE)
-  }
-
-  f[[2]]
+  .Call(rhs, f)
 }
 
 #' Create a formula object by "hand".

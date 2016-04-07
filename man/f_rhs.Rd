@@ -13,11 +13,12 @@ f_rhs(f)
 An atomic vector of length 1, a name, or a call.
 }
 \description{
-Throws an error if \code{f} is not a formula, or it's not one-sided.
+Throws an error if \code{f} is not a formula.
 }
 \examples{
 f_rhs(~ 1 + 2 + 3)
 f_rhs(~ x)
 f_rhs(~ "A")
+f_rhs(1 ~ 2)
 }
 
