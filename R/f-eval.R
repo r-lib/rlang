@@ -10,7 +10,7 @@
 #' \code{.env} and \code{.data}. These are thin wrappers around \code{.data}
 #' and \code{.env} that throw errors if you try to access non-existent values.
 #'
-#' @param f A one-sided formula. Any expressions wrapped in \code{ (( )) } will
+#' @param f A one-sided formula. Any expressions wrapped in \code{ uq() } will
 #'   will be "unquoted", i.e. they will be evaluated, and the results inserted
 #'   back into the formula. See \code{\link{f_interp}} for more details.
 #' @param data A list (or data frame).
@@ -40,15 +40,18 @@
 #' f_eval(~ mean(cyl), mtcars)
 #' # How can you change the variable that's being computed?
 #' # The easiest way is to take advantage of that the fact that anything
-#' # inside (( )) will be evaluated and literally inserted into formula.
+#' # inside uq() will be evaluated and literally inserted into formula.
 #' # See ?f_interp for more details
 #' var <- quote(cyl)
-#' f_eval(~ mean( ((var)) ), mtcars)
+#' f_eval(~ mean( uq(var) ), mtcars)
 #'
 #' # If you were using this inside a function, you might want to
-#' # take one more step of explicitness. Unfortunately data$((var)) is
-#' # not valid R code, so we need to use the prefix for of `$`.
-#' f_eval(~ mean( `$`(.data, ((var)) )), mtcars)
+#' # take one more step of explicitness. Unfortunately data$uq(var) doesn't
+#' # work because it's parsed as (data$uq)(var), not data$(uq(var))
+#' f_interp(~ data$uq(var))
+#'
+#' # Instead we need to use the prefix form of `$`.
+#' f_eval(~ mean( `$`(.data, uq(var) )), mtcars)
 f_eval <- function(f, data = NULL) {
   expr <- f_rhs(f_interp(f))
 

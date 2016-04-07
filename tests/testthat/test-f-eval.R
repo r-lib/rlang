@@ -34,5 +34,5 @@ test_that("pronouns complain about missing values", {
 
 test_that("f_eval does quasiquoting", {
   x <- 10
-  expect_equal(f_eval(~ ((quote(x)))), 10)
+  expect_equal(f_eval(~ uq(quote(x))), 10)
 })

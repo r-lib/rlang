@@ -144,7 +144,7 @@ f
 f_eval(f)
 ```
 
-It can be hard to see what's going on when looking at a formula because important values are stored in the associated environment. You can use `funwrap()` to replace names with their corresponding values:
+It can be hard to see what's going on when looking at a formula because important values are stored in the associated environment. You can use `f_unwrap()` to replace names with their corresponding values:
 
 ```{r}
 f
@@ -157,7 +157,7 @@ f_unwrap(f)
 f_eval(~ mean(cyl), mtcars)
 ```
 
-We can use these ideas to implement a simple version of `base::subset()` (if you're familiar with dplyr, `subset()` is very similar to `filter()`. The goal of `subset()` is to make it easy to select observations matching criteria defined by values of the variables. It has three advantages over `[`:
+We can use these ideas to implement a simple version of `base::subset()` (if you're familiar with dplyr, `subset()` is very similar to `filter()`). The goal of `subset()` is to make it easy to select observations matching criteria defined by values of the variables. It has three advantages over `[`:
 
 1.  If the criteria uses many variables, `subset()` is much more compact 
     because you don't need to repeat the name of the data frame each time.
@@ -168,7 +168,7 @@ We can use these ideas to implement a simple version of `base::subset()` (if you
 1.  It always returns a data frame so you don't need to remember to do
     `drop = FALSE` for single column data frames.
 
-Here's a simple version of `subset.data.frame()` that uses lazyeval approach:
+Here's a simple version of `subset.data.frame()` that uses the lazy eval approach:
 
 ```{R}
 subset <- function(df, subset) {
@@ -186,8 +186,7 @@ subset(df, ~ x <= 2)
 subset(df, ~ x == y)
 ```
 
-There's nothing new here: we require the user to provide a formula and then evaluate it with `feval()`. 
-Once we have the logical vector, it only remains to replace `NA` with `FALSE`, and to perform the subsetting.
+There's nothing new here: we require the user to provide a formula and then evaluate it with `f_eval()`. Once we have the logical vector, it only remains to replace `NA` with `FALSE`, and to perform the subsetting.
 
 ## `.data.` and `.env` pronouns
 
@@ -234,7 +233,7 @@ There are two ways that this function might fail:
     threshold_x(df3, 3)
     ```
 
-These failures are partiuclarly pernicious because they don't throw an error, but silently give an incorrect result. Both failures arise because `feval()` looks in two places for each name: the data frame and formula environment. To make this function more reliable, we need to be more explicit. `feval()` provides two pronouns to make this possible:
+These failures are partiuclarly pernicious because they don't throw an error, but silently give an incorrect result. Both failures arise because `f_eval()` looks in two places for each name: the data frame and formula environment. To make this function more reliable, we need to be more explicit. `f_eval()` provides two pronouns to make this possible:
 
 * `.data` is bound to the data frame.
 * `.env` is bound to the formula environment.
@@ -269,11 +268,11 @@ threshold(df, "x", 4)
 
 This is a simple and robust solution, but only allows us to use an existing variable, not an arbitrary expression like `sqrt(x)`.
 
-A more general solution is to allow the user to supply a formula, and use the special `(( ))` invocation. When used with `f_eval()`, anything inside `(( ))` is replaced with its evaluated value. 
+A more general solution is to allow the user to supply a formula, and use the special `uq()` function. When used with `f_eval()`, anything inside `uq()` is replaced with its evaluated value. 
 
 ```{r}
 threshold <- function(df, variable = ~x, threshold = 0) {
-  subset(df, ~ (( f_rhs(variable) )) > .env$threshold)
+  subset(df, ~ uq(variable) > .env$threshold)
 }
 ```
 
@@ -295,21 +294,21 @@ There are two important pieces that make this work:
     ```
     
 1.  `feval()` allows "unquote" and interpolates in evaluated vlaues inside 
-    `(( ))`. It's easiest to see what's happening by using the `f_interp()` 
+    `uq()`. It's easiest to see what's happening by using the `f_interp()` 
     function which `feval()` uses to do the actual interpolation.
     
     ```{r}
-    f_interp(~ 1 + ((1 + 1)) )
+    f_interp(~ 1 + uq(1 + 1) )
     
     z <- ~ x + y
-    f_interp(~ mean( (( f_rhs(z) )) ))
+    f_interp(~ mean( uq( f_rhs(z) ) ))
     ```
   
 Putting these two together gives us:
   
 ```{r}
 variable <- ~x
-f_interp(~ ((f_rhs(variable))) > .env$threshold)
+f_interp(~ uq(f_rhs(variable)) > .env$threshold)
 ```
 
 You typically won't call `f_interp()` directly as `f_eval()` calls it for you, but it's useful for understanding and debugging.
@@ -318,14 +317,14 @@ In this case it's the responsibility of the caller to avoid ambiguities:
 
 ```{r}
 variable <- ~ .data$x + .env$y
-f_interp(~ ((f_rhs(variable))) > .env$threshold)
+f_interp(~ uq(f_rhs(variable)) > .env$threshold)
 ```
 
-Unquoting is powerful, but it only allows you to modify a specific argument: it doesn't allow you to add an arbitrary number of arguments. To do that, you'll need "unquote-splice", or `({ })`. The code inside `({ })` should return a list of arguments to be spliced into the call:
+Unquoting is powerful, but it only allows you to modify a specific argument: it doesn't allow you to add an arbitrary number of arguments. To do that, you'll need "unquote-splice", or `uqs()`. The first argument to `uqs()` should be a list of arguments to be spliced into the call:
 
 ```{r}
 extra_args <- list(na.rm = TRUE, trim = 0.9)
-f_interp(~ mean(x, ({ extra_args }) ))
+f_interp(~ mean(x, uqs(extra_args)))
 ```
 
 ## Eliminating the formulas
