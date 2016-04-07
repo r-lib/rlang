@@ -268,47 +268,44 @@ threshold(df, "x", 4)
 
 This is a simple and robust solution, but only allows us to use an existing variable, not an arbitrary expression like `sqrt(x)`.
 
-A more general solution is to allow the user to supply a formula, and use the special `uq()` function. When used with `f_eval()`, anything inside `uq()` is replaced with its evaluated value. 
+A more general solution is to allow the user to supply a formula, and use the special `uq()` function:
 
 ```{r}
 threshold <- function(df, variable = ~x, threshold = 0) {
   subset(df, ~ uq(variable) > .env$threshold)
 }
-```
 
-And it indeed works:
-
-```{r}
 threshold(df, ~ x, 4)
 threshold(df, ~ abs(x - y), 2)
 ```
 
-There are two important pieces that make this work:
-
-1.  `f_rhs()` extracts the right-hand side of the formula to give us the 
-    expression we want to evaluate:
-
-    ```{r}
-    f_rhs(~ 1 + 2)
-    f_rhs(~ mean(x))
-    ```
+How does this work? `feval()` lets you escape the quoting, and evaluate, or __unquote__, an expression. It's easiest to see what's happening by using the `f_interp()`  function which `feval()` uses to do the actual interpolation. The first argument to `uq()` is evaluated and inserted into the expression:
     
-1.  `feval()` allows "unquote" and interpolates in evaluated vlaues inside 
-    `uq()`. It's easiest to see what's happening by using the `f_interp()` 
-    function which `feval()` uses to do the actual interpolation.
-    
-    ```{r}
-    f_interp(~ 1 + uq(1 + 1) )
-    
-    z <- ~ x + y
-    f_interp(~ mean( uq( f_rhs(z) ) ))
-    ```
-  
-Putting these two together gives us:
-  
 ```{r}
-variable <- ~x
-f_interp(~ uq(f_rhs(variable)) > .env$threshold)
+f_interp(~ 1 + uq(1 + 1))
+
+x <- 100
+f_interp(~ 1 + uq(x))
+```
+
+If the first argument is a formula, then the right hand side is used:
+
+```{r}
+z <- ~ x + y
+f_interp(~ mean( uq(z) ))
+```
+  
+Of course this makes it difficult to insert literal formulas into a call:
+
+```{r}
+formula <- y ~ x
+f_interp(~ lm(uq(formula), data = df))
+```
+
+So you can instead use `uqf()`:
+
+```{r}
+f_interp(~ lm(uqf(formula), data = df))
 ```
 
 You typically won't call `f_interp()` directly as `f_eval()` calls it for you, but it's useful for understanding and debugging.

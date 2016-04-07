@@ -3,6 +3,7 @@
 \name{f_interp}
 \alias{f_interp}
 \alias{uq}
+\alias{uqf}
 \alias{uqs}
 \title{Interpolate a formula}
 \usage{
@@ -10,12 +11,15 @@ f_interp(f)
 
 uq(x)
 
+uqf(x)
+
 uqs(x)
 }
 \arguments{
 \item{f}{A one-sided formula.}
 
-\item{x}{For}
+\item{x}{For \code{uq} and \code{uqf}, a formula. For \code{uqs}, a
+a vector.}
 }
 \description{
 Interpolation replaces sub-expressions of the form \code{uq(x)} with

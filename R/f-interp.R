@@ -12,7 +12,8 @@
 #' and \href{Racket}{https://docs.racket-lang.org/reference/quasiquote.html}.
 #'
 #' @param f A one-sided formula.
-#' @param x For
+#' @param x For \code{uq} and \code{uqf}, a formula. For \code{uqs}, a
+#'   a vector.
 #' @export
 #' @aliases uq uqs
 #' @examples
@@ -50,6 +51,18 @@ quasiquote_ <- function(x, env = parent.frame()) {
 #' @export
 #' @rdname f_interp
 uq <- function(x) {
+  if (is_formula(x)) {
+    f_rhs(x)
+  } else {
+    x
+  }
+}
+
+#' @export
+#' @rdname f_interp
+uqf <- function(x) {
+  if (!is_formula(x))
+    stop("`x` must be a formula", call. = FALSE)
   x
 }
 
