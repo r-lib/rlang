@@ -14,3 +14,12 @@ test_that("can interpolate from environment", {
   out <- interp(~ f(a), .values = env)
   expect_identical(out, ~f(10))
 })
+
+test_that("unquoted formulas are interpolated first", {
+  f <- function(n) {
+    ~ x + uq(n)
+  }
+  n <- 100
+
+  expect_equal(f_interp(~ uq(f(10))), ~ x + 10)
+})

@@ -52,7 +52,7 @@ quasiquote_ <- function(x, env = parent.frame()) {
 #' @rdname f_interp
 uq <- function(x) {
   if (is_formula(x)) {
-    f_rhs(x)
+    f_rhs(f_interp(x))
   } else {
     x
   }
