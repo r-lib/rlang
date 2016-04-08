@@ -1,4 +1,8 @@
 complain <- function(x) {
+  if (is.null(x)) {
+    return(NULL)
+  }
+
   if (is.environment(x)) {
     x <- clone_env(x)
   }

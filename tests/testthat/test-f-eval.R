@@ -11,7 +11,7 @@ test_that("f_eval uses formula's environment", {
 })
 
 test_that("data needs to be a list", {
-  expect_error(f_eval(~ x, 10), "must be NULL, a list, or a data frame")
+  expect_error(f_eval(~ x, 10), "Do not know how to find data")
 })
 
 test_that("looks first in `data`", {

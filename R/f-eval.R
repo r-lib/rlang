@@ -13,7 +13,11 @@
 #' @param f A one-sided formula. Any expressions wrapped in \code{ uq() } will
 #'   will be "unquoted", i.e. they will be evaluated, and the results inserted
 #'   back into the formula. See \code{\link{f_interp}} for more details.
-#' @param data A list (or data frame).
+#' @param data A list (or data frame). \code{find_data} is a generic used to
+#'   find the data associated with a given object. If you want to make
+#'   \code{f_eval} work for your own objects, you can define a method for this
+#'   generic.
+#' @param x An object for which you want to find associated data.
 #' @export
 #' @examples
 #' f_eval(~ 1 + 2 + 3)
@@ -55,14 +59,28 @@
 f_eval <- function(f, data = NULL) {
   expr <- f_rhs(f_interp(f))
 
-  if (!is.null(data) && !is.list(data)) {
-    stop("`data` must be must be NULL, a list, or a data frame.", call. = FALSE)
-  }
+  data <- find_data(data)
+  env <- environment(f)
 
-  parent_env <- environment(f)
-  env <- new.env(parent = parent_env)
-  env$.env <- complain(parent_env)
-  env$.data <- complain(data)
+  expr_env <- new.env(parent = env)
+  expr_env$.env <- complain(env)
+  expr_env$.data <- complain(data)
 
-  eval(expr, data, env)
+  eval(expr, data, expr_env)
+}
+
+#' @rdname f_eval
+#' @export
+find_data <- function(x) UseMethod("find_data")
+
+#' @export
+find_data.NULL <- function(x) list()
+#' @export
+find_data.list <- function(x) x
+#' @export
+find_data.data.frame <- function(x) x
+
+#' @export
+find_data.default <- function(x) {
+  stop("Do not know how to find data associated with `x`", call. = FALSE)
 }

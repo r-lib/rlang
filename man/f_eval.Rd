@@ -2,16 +2,24 @@
 % Please edit documentation in R/f-eval.R
 \name{f_eval}
 \alias{f_eval}
+\alias{find_data}
 \title{Evaluate a formula}
 \usage{
 f_eval(f, data = NULL)
+
+find_data(x)
 }
 \arguments{
 \item{f}{A one-sided formula. Any expressions wrapped in \code{ uq() } will
 will be "unquoted", i.e. they will be evaluated, and the results inserted
 back into the formula. See \code{\link{f_interp}} for more details.}
 
-\item{data}{A list (or data frame).}
+\item{data}{A list (or data frame). \code{find_data} is a generic used to
+find the data associated with a given object. If you want to make
+\code{f_eval} work for your own objects, you can define a method for this
+generic.}
+
+\item{x}{An object for which you want to find associated data.}
 }
 \description{
 \code{f_eval} evaluates the \code{\link{f_rhs}} of a formula in its environment.
