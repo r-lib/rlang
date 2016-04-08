@@ -13,9 +13,10 @@ SEXP as_name(SEXP x) {
   case SYMSXP:
     return PRINTNAME(x);
   case LANGSXP:
-    if (!is_formula(x))
-      Rf_errorcall(R_NilValue, "LHS must be a formula");
-    return Rf_asChar(rhs(x));
+    if (!is_formula(x) || Rf_length(x) != 2)
+      Rf_errorcall(R_NilValue, "RHS of LHS must be a single-sided formula");
+
+    return as_name(rhs(x));
   default:
     Rf_errorcall(R_NilValue, "LHS must evaluate to a string or name");
   }
@@ -39,14 +40,14 @@ SEXP lhs_name(SEXP x) {
     if (!is_formula(xi) || Rf_length(xi) != 3)
       continue;
 
-    // replace with RHS of formula
-    SET_VECTOR_ELT(x2, i, Rf_lang2(CAR(xi), CADDR(xi)));
-
     // set name
     SEXP name = PROTECT(Rf_eval(lhs(xi), f_env(xi)));
     if (TYPEOF(name) != NILSXP)
       SET_STRING_ELT(names, i, as_name(name));
     UNPROTECT(1);
+
+    // replace with RHS of formula
+    SET_VECTOR_ELT(x2, i, Rf_lang2(CAR(xi), CADDR(xi)));
   }
 
   UNPROTECT(1);
