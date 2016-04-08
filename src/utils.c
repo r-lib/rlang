@@ -25,8 +25,22 @@ bool is_lazy_load(SEXP x) {
   return is_call_to(PREXPR(x), "lazyLoadDBfetch");
 }
 
+SEXP findLast(SEXP x) {
+  SEXP cons = x;
+  while(CDR(cons) != R_NilValue)
+    cons = CDR(cons);
+
+  return cons;
+}
+
+// Formulas --------------------------------------------------------------------
+
+bool is_formula(SEXP x) {
+  return TYPEOF(x) == LANGSXP && Rf_inherits(x, "formula");
+}
+
 SEXP rhs(SEXP f) {
-  if (TYPEOF(f) != LANGSXP || !Rf_inherits(f, "formula"))
+  if (!is_formula(f))
     Rf_errorcall(R_NilValue, "`x` is not a formula");
 
   switch (Rf_length(f)) {
@@ -37,7 +51,7 @@ SEXP rhs(SEXP f) {
 }
 
 SEXP lhs(SEXP f) {
-  if (TYPEOF(f) != LANGSXP || !Rf_inherits(f, "formula"))
+  if (!is_formula(f))
     Rf_errorcall(R_NilValue, "`x` is not a formula");
 
   switch (Rf_length(f)) {
@@ -47,11 +61,9 @@ SEXP lhs(SEXP f) {
   }
 }
 
+SEXP f_env(SEXP f) {
+  if (!is_formula(f))
+    Rf_errorcall(R_NilValue, "`x` is not a formula");
 
-SEXP findLast(SEXP x) {
-  SEXP cons = x;
-  while(CDR(cons) != R_NilValue)
-    cons = CDR(cons);
-
-  return cons;
+  return Rf_getAttrib(f, Rf_install(".Environment"));
 }

@@ -77,3 +77,8 @@ f_unwrap <- function(f) {
     f_new(substitute_(f_rhs(f), e), parent.env(e))
   }
 }
+
+#' @useDynLib lazyeval lhs_name
+f_list <- function(...) {
+  .Call(lhs_name, list(...))
+}
