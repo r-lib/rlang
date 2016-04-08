@@ -14,7 +14,7 @@ library(lazyeval)
 knitr::opts_chunk$set(collapse = TRUE, comment = "#>")
 ```
 
-Lazy evaluation is a principled way to do non-standard evaluation (NSE) in R. It is centered around formulas which capture an unevalted expression and its associated. You use lazy evaluation by requiring the user to "quote" specially evaluated arguments with `~`, and then using the lazyeval package to compute on those formulas. Lazyeval also provides tools to eliminate the use of `~`, and convert unevaluated arguments to formulas. This does make programming with such functions a little harder, but it can be worth when every keystroke matters.
+Lazy evaluation is a principled way to do non-standard evaluation (NSE) in R. It is centered around formulas which capture an unevaluated expression and its associated environment. You use lazy evaluation by requiring the user to "quote" specially evaluated arguments with `~`, and then using the lazyeval package to compute on those formulas. Lazyeval also provides tools to eliminate the use of `~`, and convert unevaluated arguments to formulas. This does make programming with such functions a little harder, but it can be worth when every keystroke matters.
 
 You should read this vignette if you want to program packages like dplyr and ggplot2[^1], or you want a principled way of working with delayed expressions in your own package.
 
@@ -66,7 +66,7 @@ This document will focus on non-standard scoping because it's the most commonly 
 
 ## Why use non-standard scoping?
 
-Non-standard scoping is an important part of R because it makes it makes it possible to write functions that are tailored for interactive data exploration. These functions require less typing, at the expensive of introducing some ambiguity and "magic". This is a good trade-off for interactive data exploration because you want to get ideas out of your head and into the computer as quickly as possible. Because you're working interactively you'll quickly spot if a function makes a bad guess.
+Non-standard scoping is an important part of R because it makes it makes it possible to write functions that are tailored for interactive data exploration. These functions require less typing, at the expense of introducing some ambiguity and "magic". This is a good trade-off for interactive data exploration because you want to get ideas out of your head and into the computer as quickly as possible. Because you're working interactively you'll quickly spot if a function makes a bad guess.
 
 There are three challenges to doing non-standard scoping correctly:
 
@@ -84,7 +84,7 @@ There are three challenges to doing non-standard scoping correctly:
 
 ## Formulas
 
-Formulas are a familiar tool from linear models, but they are actually a powerful general purpose tool. A formula captures two things: unevaluated expression, and the environment in which it would be evaluated. The formula is a single character that allows you to say: "I want capture the meaning of this code, without evaluating it right away". For that reason, the formula can be thought of as general "quoting" operator.
+Formulas are a familiar tool from linear models, but they are actually a powerful general purpose tool. A formula captures two things: an unevaluated expression, and the environment in which it would be evaluated. The formula is a single character that allows you to say: "I want capture the meaning of this code, without evaluating it right away". For that reason, the formula can be thought of as general "quoting" operator.
 
 Technically, a formula is an S3 class built on top of the language type (i.e. an unevaluated expression), with an attribute that stores the environment:
 
@@ -117,7 +117,7 @@ g[[2]]
 g[[3]]
 ```
 
-To avoid these differences, we'll only ever use singled-singled formulas for quoting. Lazeval provides `rhs()` to access the call. It throws an error if the input is not of the expected type:
+To avoid these differences, we'll only ever use singled-singled formulas for quoting. Lazyeval provides `f_rhs()` to access the call. It throws an error if the input is not of the expected type:
 
 ```{r, error = TRUE}
 f_rhs(f)
@@ -126,14 +126,14 @@ f_rhs(g)
 
 ## Working with formulas
 
-Once you have a formula, you need some tools to work with it. The goal of lazyeval is to provide those tools. The first tool is `feval()`; it evaluates the delayed expression captured by the formula.
+Once you have a formula, you need some tools to work with it. The goal of lazyeval is to provide those tools. The first tool is `f_eval()`; it evaluates the delayed expression captured by the formula.
 
 ```{r}
 f <- ~ 1 + 2 + 3
 f_eval(f)
 ```
 
-This allows you to use a formula a way of delaying evaluation: you can capture the expression and its environment, and only evaluate it when you need to. Because the formula captures the enclosing environment, `feval()` is robust, and works even when the formula is used in a different place from where it was defined:
+This allows you to use a formula a way of delaying evaluation: you can capture the expression and its environment, and only evaluate it when you need to. Because the formula captures the enclosing environment, `f_eval()` is robust, and works even when the formula is used in a different place from where it was defined:
 
 ```{r}
 foo <- function(x) {
@@ -162,7 +162,7 @@ We can use these ideas to implement a simple version of `base::subset()` (if you
 1.  If the criteria uses many variables, `subset()` is much more compact 
     because you don't need to repeat the name of the data frame each time.
 
-1.  It drops rows where the condition evaluates to `NA` rather filling
+1.  It drops rows where the condition evaluates to `NA` rather than filling
     them in with `NA`s
     
 1.  It always returns a data frame so you don't need to remember to do
@@ -279,7 +279,7 @@ threshold(df, ~ x, 4)
 threshold(df, ~ abs(x - y), 2)
 ```
 
-How does this work? `feval()` lets you escape the quoting, and evaluate, or __unquote__, an expression. It's easiest to see what's happening by using the `f_interp()`  function which `feval()` uses to do the actual interpolation. The first argument to `uq()` is evaluated and inserted into the expression:
+How does this work? `f_eval()` lets you escape the quoting, and evaluate, or __unquote__, an expression. It's easiest to see what's happening by using the `f_interp()`  function which `f_eval()` uses to do the actual interpolation. The first argument to `uq()` is evaluated and inserted into the expression:
     
 ```{r}
 f_interp(~ 1 + uq(1 + 1))
