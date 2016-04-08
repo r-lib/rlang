@@ -29,6 +29,9 @@
   * Extract the right-hand side with `f_rhs()`. This will throw an error 
     if the object isn't a formula or has two sides.
 
+* `expr_find()` and `expr_label()` make it easy to find the expression 
+  associated with a function argument, and label it for output (#58).
+
 * `lazy_dots()` gains `.ignore_empty` argument to drop extra arguments (#32).
 
 * `interp.formula()` only accepts single-sided formulas (#37).

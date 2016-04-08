@@ -62,7 +62,7 @@ There are a handful of other uses that are often called [metaprogramming](http:/
 1.  `help()` and `library()` use non-standard evaluation so you that you
     don't have to put quotes around package names and help topics.
 
-This document will focus on non-standard scoping because it's the most commonly used and most important, as described below.
+This document will focus on non-standard scoping because it's the most commonly used and most important, as described below. To access the expression associated with an argument, see `expr_find()` and `expr_label()`.
 
 ## Why use non-standard scoping?
 
