@@ -18,6 +18,13 @@ bool is_call_to(SEXP x, const char* f) {
   return fun == Rf_install(f);
 }
 
+bool is_lazy_load(SEXP x) {
+  if (TYPEOF(x) != PROMSXP)
+    return false;
+
+  return is_call_to(PREXPR(x), "lazyLoadDBfetch");
+}
+
 SEXP rhs(SEXP f) {
   if (TYPEOF(f) != LANGSXP || !Rf_inherits(f, "formula"))
     Rf_errorcall(R_NilValue, "`x` is not a formula");
@@ -28,26 +35,6 @@ SEXP rhs(SEXP f) {
   default: Rf_errorcall(R_NilValue, "Invalid formula");
   }
 }
-
-bool is_lazy_load(SEXP x) {
-  if (TYPEOF(x) != PROMSXP)
-    return false;
-
-  SEXP expr = PREXPR(x);
-  if (TYPEOF(expr) != LANGSXP)
-    return false;
-
-  SEXP funname = CAR(expr);
-  if (TYPEOF(funname) != SYMSXP)
-    return false;
-
-  const char* name = CHAR(PRINTNAME(funname));
-  if (strcmp(name, "lazyLoadDBfetch") == 0)
-    return true;
-
-  return false;
-}
-
 
 SEXP findLast(SEXP x) {
   SEXP cons = x;
