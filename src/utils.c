@@ -36,6 +36,18 @@ SEXP rhs(SEXP f) {
   }
 }
 
+SEXP lhs(SEXP f) {
+  if (TYPEOF(f) != LANGSXP || !Rf_inherits(f, "formula"))
+    Rf_errorcall(R_NilValue, "`x` is not a formula");
+
+  switch (Rf_length(f)) {
+  case 2: return R_NilValue;
+  case 3: return CADR(f);
+  default: Rf_errorcall(R_NilValue, "Invalid formula");
+  }
+}
+
+
 SEXP findLast(SEXP x) {
   SEXP cons = x;
   while(CDR(cons) != R_NilValue)

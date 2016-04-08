@@ -21,10 +21,21 @@ is_formula <- function(x) {
 #' f_rhs(~ x)
 #' f_rhs(~ "A")
 #' f_rhs(1 ~ 2)
+#'
+#' f_lhs(~ y)
+#' f_lhs(x ~ y)
 #' @useDynLib lazyeval rhs
 f_rhs <- function(f) {
   .Call(rhs, f)
 }
+
+#' @export
+#' @rdname f_rhs
+#' @useDynLib lazyeval lhs
+f_lhs <- function(f) {
+  .Call(lhs, f)
+}
+
 
 #' Create a formula object by "hand".
 #'
