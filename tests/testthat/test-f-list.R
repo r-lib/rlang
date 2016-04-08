@@ -11,8 +11,19 @@ test_that("output always has names", {
 })
 
 test_that("names taken from LHS of formula", {
-  out <- f_list("x" ~ y)
-  expect_equal(out, list(x = ~y))
+  out1 <- f_list("x" ~ y)
+  out2 <- f_list(quote(x) ~ y)
+
+  var <- ~x
+  out3 <- f_list(var ~ y); out3
+
+  expect_equal(out1, list(x = ~y))
+  expect_equal(out2, list(x = ~y))
+  expect_equal(out3, list(x = ~y))
+})
+
+test_that("null LHS leaves names unchanged", {
+  expect_equal(f_list(x = NULL ~ y), list(x = ~y))
 })
 
 test_that("LHS evaluated in formula environment", {

@@ -3,12 +3,30 @@
 #include <Rinternals.h>
 #include "utils.h"
 
+// Returns a CHARSXP
+SEXP as_name(SEXP x) {
+  switch(TYPEOF(x)) {
+  case STRSXP:
+    if (Rf_length(x) != 1)
+      Rf_errorcall(R_NilValue, "LHS must evaluate to a single string");
+    return STRING_ELT(x, 0);
+  case SYMSXP:
+    return PRINTNAME(x);
+  case LANGSXP:
+    if (!is_formula(x))
+      Rf_errorcall(R_NilValue, "LHS must be a formula");
+    return Rf_asChar(rhs(x));
+  default:
+    Rf_errorcall(R_NilValue, "LHS must evaluate to a string or name");
+  }
+}
+
 SEXP lhs_name(SEXP x) {
   if (TYPEOF(x) != VECSXP)
     Rf_errorcall(R_NilValue, "`x` must be a list (not a %s)", Rf_type2char(TYPEOF(x)));
 
   int n = Rf_length(x);
-  SEXP x2 = Rf_shallow_duplicate(x);
+  SEXP x2 = PROTECT(Rf_shallow_duplicate(x));
 
   SEXP names = Rf_getAttrib(x2, R_NamesSymbol);
   if (names == R_NilValue) {
@@ -21,13 +39,16 @@ SEXP lhs_name(SEXP x) {
     if (!is_formula(xi) || Rf_length(xi) != 3)
       continue;
 
-    SEXP name = Rf_eval(lhs(xi), f_env(xi));
-    if (TYPEOF(name) != STRSXP || Rf_length(name) != 1)
-      Rf_errorcall(R_NilValue, "LHS must evaluate to a single string");
-
+    // replace with RHS of formula
     SET_VECTOR_ELT(x2, i, Rf_lang2(CAR(xi), CADDR(xi)));
-    SET_STRING_ELT(names, i, STRING_ELT(name, 0));
+
+    // set name
+    SEXP name = PROTECT(Rf_eval(lhs(xi), f_env(xi)));
+    if (TYPEOF(name) != NILSXP)
+      SET_STRING_ELT(names, i, as_name(name));
+    UNPROTECT(1);
   }
 
+  UNPROTECT(1);
   return x2;
 }
