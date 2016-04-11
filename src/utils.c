@@ -67,3 +67,12 @@ SEXP f_env(SEXP f) {
 
   return Rf_getAttrib(f, Rf_install(".Environment"));
 }
+
+SEXP make_formula1(SEXP rhs, SEXP env) {
+  SEXP f = PROTECT(Rf_lang2(Rf_install("~"), rhs));
+  Rf_setAttrib(f, R_ClassSymbol, Rf_mkString("formula"));
+  Rf_setAttrib(f, Rf_install(".Environment"), env);
+
+  UNPROTECT(1);
+  return f;
+}

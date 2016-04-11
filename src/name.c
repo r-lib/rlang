@@ -47,7 +47,7 @@ SEXP lhs_name(SEXP x) {
     UNPROTECT(1);
 
     // replace with RHS of formula
-    SET_VECTOR_ELT(x2, i, Rf_lang2(CAR(xi), CADDR(xi)));
+    SET_VECTOR_ELT(x2, i, make_formula1(CADDR(xi), f_env(xi)));
   }
 
   UNPROTECT(1);

@@ -11,3 +11,4 @@ SEXP rhs(SEXP f);
 SEXP lhs(SEXP f);
 SEXP f_env(SEXP f);
 SEXP findLast(SEXP x);
+SEXP make_formula1(SEXP rhs, SEXP env);
