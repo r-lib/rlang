@@ -3,16 +3,24 @@
 #include <Rdefines.h>
 #include "utils.h"
 
-SEXP quasiquote_walk(SEXP x, SEXP env)  {
+SEXP quasiquote_walk(SEXP x, SEXP env, SEXP data)  {
   if (!Rf_isLanguage(x))
     return x;
 
-  if (is_call_to(x, "uq") || is_call_to(x, "uqf"))
+  if (is_call_to(x, "uq")) {
+    SEXP uq_call = PROTECT(Rf_lang3(Rf_install("uq"), CADR(x), data));
+    SEXP res = PROTECT(Rf_eval(uq_call, env));
+    UNPROTECT(2);
+    return res;
+  }
+
+  if (is_call_to(x, "uqf")) {
     return Rf_eval(x, env);
+  }
 
   // Recursive case
   for(SEXP cur = x; cur != R_NilValue; cur = CDR(cur)) {
-    SETCAR(cur, quasiquote_walk(CAR(cur), env));
+    SETCAR(cur, quasiquote_walk(CAR(cur), env, data));
 
     SEXP nxt = CDR(cur);
     if (is_call_to(CAR(nxt), "uqs")) {
@@ -28,13 +36,13 @@ SEXP quasiquote_walk(SEXP x, SEXP env)  {
   return x;
 }
 
-SEXP quasiquote_c(SEXP x, SEXP env) {
+SEXP quasiquote_c(SEXP x, SEXP env, SEXP data) {
   if (!Rf_isLanguage(x))
     return x;
 
   if (!Rf_isEnvironment(env))
     Rf_error("`env` must be an environment");
 
-  return quasiquote_walk(Rf_duplicate(x), env);
+  return quasiquote_walk(Rf_duplicate(x), env, data);
 }
 

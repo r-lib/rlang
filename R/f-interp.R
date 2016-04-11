@@ -36,8 +36,8 @@
 #' f
 #' f_interp(f)
 #' @useDynLib lazyeval quasiquote_c
-f_interp <- function(f) {
-  f[[2]] <- .Call(quasiquote_c, f_rhs(f), environment(f))
+f_interp <- function(f, data = NULL) {
+  f[[2]] <- .Call(quasiquote_c, f_rhs(f), environment(f), data)
   f
 }
 
@@ -50,9 +50,13 @@ quasiquote_ <- function(x, env = parent.frame()) {
 
 #' @export
 #' @rdname f_interp
-uq <- function(x) {
+uq <- function(x, data = NULL) {
   if (is_formula(x)) {
-    f_rhs(f_interp(x))
+    if (is.null(data)) {
+      f_rhs(f_interp(x))
+    } else {
+      f_eval(x, data = data)
+    }
   } else {
     x
   }

@@ -36,3 +36,30 @@ test_that("f_eval does quasiquoting", {
   x <- 10
   expect_equal(f_eval(~ uq(quote(x))), 10)
 })
+
+
+test_that("unquoted formulas look in their own env", {
+  f <- function() {
+    n <- 100
+    ~ n
+  }
+
+  n <- 10
+  expect_equal(f_eval(~ uq(f())), 10)
+})
+
+test_that("unquoted formulas can use data", {
+  f1 <- function() {
+    z <- 100
+    ~ x + z
+  }
+  f2 <- function() {
+    z <- 100
+    ~ .data$x + .env$z
+  }
+
+  z <- 10
+  expect_equal(f_eval(~ uq(f1()), data = list(x = 1)), 101)
+  expect_equal(f_eval(~ uq(f2()), data = list(x = 1)), 101)
+
+})

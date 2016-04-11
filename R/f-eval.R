@@ -57,7 +57,7 @@
 #' # Instead we need to use the prefix form of `$`.
 #' f_eval(~ mean( `$`(.data, uq(var) )), mtcars)
 f_eval <- function(f, data = NULL) {
-  expr <- f_rhs(f_interp(f))
+  expr <- f_rhs(f_interp(f, data = data))
 
   data <- find_data(data)
   env <- environment(f)
