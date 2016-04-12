@@ -14,6 +14,9 @@
   * `f_capture()` and `dots_capture()` make it easy to turn promises
     and `...` into explicit formulas. These should be used sparingly, as
     generally lazy-eval is preferred to non-standard eval.
+    
+  * For functions that work with `...`, `f_list()` and `as_f_list()` make it
+    possible to use the LHS of a formula to name the elements of a list (#59).
 
 * This is accompanied by a number of helper functions for working with
   formuals:

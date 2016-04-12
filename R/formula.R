@@ -78,7 +78,26 @@ f_unwrap <- function(f) {
   }
 }
 
+#' Build a named list from the LHS of formulas
+#'
+#' \code{f_list} makes a new list; \code{as_f_list} takes an existing list.
+#' Both take the LHS of any two-sided formulas and evaluate it, replacing the
+#' current name with the result.
+#'
+#' @param ... Named arguments.
+#' @param x An existing list
+#' @return A named list.
+#' @export
 #' @useDynLib lazyeval lhs_name
+#' @examples
+#' f_list("y" ~ x)
+#' f_list(a = "y" ~ a, ~ b, c = ~c)
 f_list <- function(...) {
   .Call(lhs_name, list(...))
+}
+
+#' @export
+#' @rdname f_list
+as_f_list <- function(x) {
+  .Call(lhs_name, x)
 }
