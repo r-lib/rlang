@@ -32,8 +32,8 @@ test_that("pronouns resolve ambiguity looks first in `data`", {
 })
 
 test_that("pronouns complain about missing values", {
-  expect_error(f_eval(~ .data$x, list()), "object 'x' not found")
-  expect_error(f_eval(~ .env$`__`, list()), "object '__' not found")
+  expect_error(f_eval(~ .data$x, list()), "Variable 'x' not found in data")
+  expect_error(f_eval(~ .env$`__`, list()), "Object '__' not found in environment")
 })
 
 test_that("f_eval does quasiquoting", {

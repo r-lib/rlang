@@ -67,8 +67,8 @@ f_eval <- function(f, data = NULL) {
   env <- environment(f)
 
   expr_env <- new.env(parent = env)
-  expr_env$.env <- complain(env)
-  expr_env$.data <- complain(data)
+  expr_env$.env <- complain(env, "Object '%s' not found in environment")
+  expr_env$.data <- complain(data, "Variable '%s' not found in data")
 
   eval(expr, data, expr_env)
 }

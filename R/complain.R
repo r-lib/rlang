@@ -1,4 +1,4 @@
-complain <- function(x) {
+complain <- function(x, message = "object '%s' not found") {
   if (is.null(x)) {
     return(NULL)
   }
@@ -7,7 +7,7 @@ complain <- function(x) {
     x <- clone_env(x)
   }
 
-  structure(x, class = c("complain", class(x)))
+  structure(x, message = message, class = c("complain", class(x)))
 }
 
 clone_env <- function(x) {
@@ -17,7 +17,7 @@ clone_env <- function(x) {
 #' @export
 `$.complain` <- function(x, name) {
   if (!has_name(x, name)) {
-    stop("object '", name, "' not found", call. = FALSE)
+    stop(sprintf(attr(x, "message"), name), call. = FALSE)
   }
   x[[name]]
 }
@@ -28,7 +28,7 @@ clone_env <- function(x) {
     stop("Must subset with a string", call. = FALSE)
   }
   if (!has_name(x, i)) {
-    stop("object '", i, "' not found", call. = FALSE)
+    stop(sprintf(attr(x, "message"), i), call. = FALSE)
   }
   NextMethod()
 }
