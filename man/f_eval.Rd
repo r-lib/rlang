@@ -10,7 +10,7 @@ f_eval(f, data = NULL)
 find_data(x)
 }
 \arguments{
-\item{f}{A one-sided formula. Any expressions wrapped in \code{ uq() } will
+\item{f}{A formula. Any expressions wrapped in \code{ uq() } will
 will be "unquoted", i.e. they will be evaluated, and the results inserted
 back into the formula. See \code{\link{f_interp}} for more details.}
 

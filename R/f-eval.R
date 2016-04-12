@@ -10,7 +10,7 @@
 #' \code{.env} and \code{.data}. These are thin wrappers around \code{.data}
 #' and \code{.env} that throw errors if you try to access non-existent values.
 #'
-#' @param f A one-sided formula. Any expressions wrapped in \code{ uq() } will
+#' @param f A formula. Any expressions wrapped in \code{ uq() } will
 #'   will be "unquoted", i.e. they will be evaluated, and the results inserted
 #'   back into the formula. See \code{\link{f_interp}} for more details.
 #' @param data A list (or data frame). \code{find_data} is a generic used to
@@ -57,6 +57,10 @@
 #' # Instead we need to use the prefix form of `$`.
 #' f_eval(~ mean( `$`(.data, uq(var) )), mtcars)
 f_eval <- function(f, data = NULL) {
+  if (!is_formula(f)) {
+    stop("`f` is not a formula", call. = FALSE)
+  }
+
   expr <- f_rhs(f_interp(f, data = data))
 
   data <- find_data(data)
