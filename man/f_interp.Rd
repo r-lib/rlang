@@ -7,9 +7,9 @@
 \alias{uqs}
 \title{Interpolate a formula}
 \usage{
-f_interp(f)
+f_interp(f, data = NULL)
 
-uq(x)
+uq(x, data = NULL)
 
 uqf(x)
 
@@ -17,6 +17,10 @@ uqs(x)
 }
 \arguments{
 \item{f}{A one-sided formula.}
+
+\item{data}{When called from inside \code{f_eval}, this is used to pass on
+the data argument so that internal formulas can be evaluated in the
+correct environment.}
 
 \item{x}{For \code{uq} and \code{uqf}, a formula. For \code{uqs}, a
 a vector.}
