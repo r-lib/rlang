@@ -14,7 +14,7 @@ library(lazyeval)
 knitr::opts_chunk$set(collapse = TRUE, comment = "#>")
 ```
 
-Lazy evaluation is a principled way to do non-standard evaluation (NSE) in R. It is centered around formulas which capture an unevaluated expression and its associated environment. You use lazy evaluation by requiring the user to "quote" specially evaluated arguments with `~`, and then using the lazyeval package to compute on those formulas. Lazyeval also provides tools to eliminate the use of `~`, and convert unevaluated arguments to formulas. This does make programming with such functions a little harder, but it can be worth when every keystroke matters.
+Lazy evaluation is a principled way to do non-standard evaluation (NSE) in R. It is centered around formulas, which capture an unevaluated expression and its associated environment. You use lazy evaluation by requiring the user to "quote" specially evaluated arguments with `~`, and then using the lazyeval package to compute on those formulas. Lazyeval also provides tools to eliminate the use of `~`, and convert unevaluated arguments to formulas. This does make programming with such functions a little harder, but it can be worth when every keystroke matters.
 
 You should read this vignette if you want to program packages like dplyr and ggplot2[^1], or you want a principled way of working with delayed expressions in your own package.
 
@@ -24,7 +24,16 @@ My recommendations for how to do this have changed substantially over time. I am
 
 ## What is non-standard evaluation?
 
-As the name suggests, non-standard evaluation (NSE) breaks away from the standard evaluation (SE) rules in order to do something special. There are two common uses of NSE:
+As the name suggests, non-standard evaluation (NSE) breaks away from the standard evaluation (SE) rules in order to do something special. There are three common uses of NSE:
+
+1.  Access the expression used to generate the value for a function argument. 
+    This is often used to create informative labels or informative error 
+    messages:
+    
+    ```{r, fig.width = 3, fig.height = 3}
+    grid <- seq(0, 2 * pi, length = 100)
+    plot(grid, sin(grid))
+    ```
 
 1.  Implement non-standard _scoping_, typically looking for values in a data 
     frame (or list) before the parent environment. This use of NSE includes 
@@ -37,32 +46,63 @@ As the name suggests, non-standard evaluation (NSE) breaks away from the standar
     subset(df, x == y)
     transform(df, z = x + y)
     ```
+1.  The handful of other uses (such as in `bquote()` and `library()`) are often 
+    called [metaprogramming](http://adv-r.had.co.nz/Expressions.html) because 
+    they all involve computing on the unevaluated code in some way.
 
-1.  Access the expression used to generate the value for a function argument. 
-    This is often used to create informative labels or informative error 
-    messages:
+I'll briefly discuss labelling because it's hard to do 100% safely with base R tools, and lazyeval provides some useful helpers. The rest of the vignette will focus on non-standard scoping because it's the most commonly used, most important, and hardest to do correctly. 
+
+## Labelling
+
+In base R, the classic way to turn an argument into a string is to use `deparse(substitute(x))`:
+
+```{r}
+foo <- function(x) deparse(substitute(x))
+foo(x + y)
+```
+
+There are two things you need to be aware of with this approach:
+
+1.  For long expressions, `deparse()` generates a character vector with 
+    length > 1.
     
-    ```{r, fig.width = 3, fig.height = 3}
-    grid <- seq(0, 2 * pi, length = 100)
-    plot(grid, sin(grid))
-    ```
-
-There are a handful of other uses that are often called [metaprogramming](http://adv-r.had.co.nz/Expressions.html). These all involve computing on the unevaluated code in some way. Here are two from base R:
-
-1.  `bquote()` allows you to interpolate values into an expression:
-
     ```{r}
-    x <- 10
-    y <- 100
-    f <- quote(`-`)
-    
-    bquote(.(f)(.(x), .(y)))
+    foo({
+      a + b
+      c + d
+    })
     ```
 
-1.  `help()` and `library()` use non-standard evaluation so you that you
-    don't have to put quotes around package names and help topics.
+1.  `substitute()` only looks one level up, so you lose the original label if 
+    the function isn't called from the top level:
+    
+    ```{r}
+    bar <- function(x) foo(x)
+    bar(a + b)
+    ```
 
-This document will focus on non-standard scoping because it's the most commonly used and most important, as described below. To access the expression associated with an argument, see `expr_find()` and `expr_label()`.
+Both of these problems are resolved by `expr_text()`:
+
+```{r}
+foo <- function(x) expr_text(x)
+bar <- function(x) foo(x)
+   
+foo({
+  a + b
+  c + d
+})
+bar(a + b)
+```
+
+Lazyeval also provides `expr_find()` to find the underlying expression - it works similarly to `substitute()` but will follow a chain of promsies back up to the original expression. `expr_label()` is a customised version of `expr_label()` that produces labels designed to be used in messages to the user:
+
+```{r}
+expr_label(x)
+expr_label(a + b + c)
+expr_label(foo({
+  x + y
+}))
+```
 
 ## Why use non-standard scoping?
 
