@@ -3,18 +3,26 @@
 \name{expr_label}
 \alias{expr_find}
 \alias{expr_label}
+\alias{expr_text}
 \title{Find the expression associated with an argument}
 \usage{
 expr_label(x)
+
+expr_text(x, width = 60L, nlines = Inf)
 
 expr_find(x)
 }
 \arguments{
 \item{x}{A promise (function argument)}
+
+\item{width}{Width of each line}
+
+\item{nlines}{Maximum number of lines to extract.}
 }
 \description{
-\code{expr_find()} finds the full expression; \code{expr_label()} formats it
-nicely for use in output.
+\code{expr_find()} finds the full expression; \code{expr_text()} turns the
+expression into a single string; \code{expr_label()} formats it nicely for
+use in messages.
 }
 \examples{
 # Unlike substitute(), expr_find() finds the original expression

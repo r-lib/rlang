@@ -1,7 +1,8 @@
 #' Find the expression associated with an argument
 #'
-#' \code{expr_find()} finds the full expression; \code{expr_label()} formats it
-#' nicely for use in output.
+#' \code{expr_find()} finds the full expression; \code{expr_text()} turns the
+#' expression into a single string; \code{expr_label()} formats it nicely for
+#' use in messages.
 #'
 #' @param x A promise (function argument)
 #' @export
@@ -41,6 +42,21 @@ expr_label <- function(x) {
     }
     chr
   }
+}
+
+#' @export
+#' @rdname expr_label
+#' @param width Width of each line
+#' @param nlines Maximum number of lines to extract.
+expr_text <- function(x, width = 60L, nlines = Inf) {
+  x <- expr_find(x)
+  str <- deparse(x, width.cutoff = width, nlines = -1)
+
+  if (length(str) > nlines) {
+    str <- c(str[seq_len(nlines - 1)], "...")
+  }
+
+  paste0(str, collapse = "\n")
 }
 
 #' @useDynLib lazyeval find_expr_
