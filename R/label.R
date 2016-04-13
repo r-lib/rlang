@@ -4,6 +4,9 @@
 #' expression into a single string; \code{expr_label()} formats it nicely for
 #' use in messages.
 #'
+#' These functions never force promises, and will work even if a promise has
+#' previously been forced.
+#'
 #' @param x A promise (function argument)
 #' @export
 #' @examples

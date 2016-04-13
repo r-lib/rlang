@@ -24,6 +24,10 @@ expr_find(x)
 expression into a single string; \code{expr_label()} formats it nicely for
 use in messages.
 }
+\details{
+These functions never force promises, and will work even if a promise has
+previously been forced.
+}
 \examples{
 # Unlike substitute(), expr_find() finds the original expression
 f <- function(x) g(x)
