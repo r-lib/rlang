@@ -36,4 +36,8 @@ q3 <- quote(x + 1)
 is_lang(q3)
 is_call(q3)
 }
+\seealso{
+\code{\link{as_name}()} and \code{\link{as_call}()} for coercion
+  functions.
+}
 

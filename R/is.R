@@ -5,6 +5,8 @@
 #' name (aka a symbol), or a call.
 #'
 #' @param x An object to test.
+#' @seealso \code{\link{as_name}()} and \code{\link{as_call}()} for coercion
+#'   functions.
 #' @export
 #' @examples
 #' q1 <- quote(1)
