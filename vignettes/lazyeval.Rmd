@@ -14,11 +14,11 @@ library(lazyeval)
 knitr::opts_chunk$set(collapse = TRUE, comment = "#>")
 ```
 
-This document describes lazyeval, a package that provides tools to perform non-standard evaluation (NSE) in R. As the name suggests, non-standard evaluation breaks away from the standard evaluation (SE) rules in order to do something special. There are three common uses of NSE:
+This document describes lazyeval, a package that provides principled tools to perform non-standard evaluation (NSE) in R. You should read this vignette if you want to program with packages like dplyr and ggplot2[^1], or you want a principled way of working with delayed expressions in your own package. As the name suggests, non-standard evaluation breaks away from the standard evaluation (SE) rules in order to do something special. There are three common uses of NSE:
 
-1.  __Labelling__: it is often useful to generate labels based on the expression 
-    used to generate the value for a function argument. For example, note 
-    the x and y axis labels in this plot:
+1.  __Labelling__ enhances plots and tables by using the expressions
+    supplied to a function, rather than their values. For example, note the
+    axis labels in this plot:
 
     ```{r, fig.width = 4, fig.height = 2.5}
     par(mar = c(4.5, 4.5, 1, 0.5))
@@ -28,8 +28,8 @@ This document describes lazyeval, a package that provides tools to perform non-s
 
 1.  __Non-standard scoping__ looks for objects in places other than the current
     environment. For example, base R provides `with()`, `subset()`, and 
-    `transform()` that look for variables in a data frame (or list) before the 
-    parent environment:
+    `transform()` that look for names in a data frame (or list) before the 
+    current environment:
 
     ```{r}
     df <- data.frame(x = c(1, 5, 4, 2, 3), y = c(2, 1, 5, 4, 3))
@@ -43,13 +43,11 @@ This document describes lazyeval, a package that provides tools to perform non-s
     NSE (such as in `bquote()` and `library()`). Metaprogramming is so called 
     because it involves computing on the unevaluated code in some way.
 
-The lazyeval package provides principled tools to help you correctly implement these techniques in your own code. You should read this vignette if you want to program with packages like dplyr and ggplot2[^1], or you want a principled way of working with delayed expressions in your own package.
-
-[^1]: Currently neither ggplot2 nor dplyr actually use this technique since I've only just figured it out. But I'll be working hard to make sure all my packages are consistent in the near future.
-
-This document is broadly organised according to the three types of non-standard evaluation described above. The main difference is that after [labelling], we'll take a detour to learn more about formulas. You've probably familiar with formulas from linear models (e.g. `lm(mpg ~ displ, data = mtcars)`), but formuals are actually a general way of capturing an unevaluated expression along with the environment in which it should be evaluated. 
+This document is broadly organised according to the three types of non-standard evaluation described above. The main difference is that after [labelling], we'll take a detour to learn more about [formulas]. You've probably familiar with formulas from linear models (e.g. `lm(mpg ~ displ, data = mtcars)`), but formuals are actually a general way of capturing an unevaluated expression along with the environment in which it should be evaluated. 
 
 My recommendations for how to do this have changed substantially over time. I am fairly confident they will not have to change again. This approach and accompanying tools allows you to solve a wide range of practical problems that were challenging previously and is rooted in [well-standing theory](http://repository.readscheme.org/ftp/papers/pepm99/bawden.pdf).
+
+[^1]: Currently neither ggplot2 nor dplyr actually use this technique since I've only just figured it out. But I'll be working hard to make sure all my packages are consistent in the near future.
 
 ## Labelling
 
@@ -131,7 +129,7 @@ Before we can talk about non-standard scoping, we need to take a detour to talk 
 
 ### Definition of a formula
 
-Technically, a formula is a "language" object (i.e. an unevaluated expression) with an S3 class of "formula", and an attribute that stores the environment:
+Technically, a formula is a "language" object (i.e. an unevaluated expression) with an S3 class of "formula" and an attribute that stores the environment:
 
 ```{r}
 f <- ~ x + y + z
@@ -186,7 +184,7 @@ f
 f_eval(f)
 ```
 
-This allows you to use a formula as a robust way of delaying evaluation. Note that this works even when the formula is used in a different place from where it was defined. In the following example, note that the value of `x` inside `add_1000` is used, not the value of `x` at the top level.
+This allows you to use a formula as a robust way of delaying evaluation. This works even when the formula is used in a different place from where it was defined. In the following example, note that the value of `x` inside `add_1000()` is used, not the value of `x` at the top level.
 
 ```{r}
 x <- 1
@@ -201,26 +199,28 @@ f_eval(add_1000(3))
 It can be hard to see what's going on when looking at a formula because important values are stored in the environment, which is largely opaque. You can use `f_unwrap()` to replace names with their corresponding values:
 
 ```{r}
-f <- add_1000(3)
-f
-f_unwrap(f)
+f_unwrap(add_1000(3))
 ```
 
 ### Non-standard scoping
 
-`f_eval()` has an optional second argument: a list (or data frame) that overrides values found in the environment. This makes it very easy to implement non-standard scoping:
+`f_eval()` has an optional second argument: a named list (or data frame) that overrides values found in the formula's environment. This makes it very easy to implement non-standard scoping:
 
 ```{r}
+y <- 100
+f_eval(~ x + y, data = list(x = 10))
+f_eval(~ f(y), data = list(f = function(x) x * 3))
+
 f_eval(~ mean(cyl), data = mtcars)
 ```
 
-One challenge with non-standard scoping is that we've introduced some ambiguity. For example, when we refer to `x` in the code below, does it come the environment of the formula or from `my_data`? You can't know without knowing whether or not `mydata` has a variable called `x`.
+One challenge with non-standard scoping is that we've introduced some ambiguity. For example, in the code below, does `x` come from `mydata` or the environment?
 
 ```{r, eval = FALSE}
 f_eval(~ x, data = mydata)
 ```
 
-To overcome this problem, `f_eval` provides two pronouns:
+You can't know without knowing whether or not `mydata` has a variable called `x`. To overcome this problem, `f_eval` provides two pronouns:
 
 * `.data` is bound to the data frame.
 * `.env` is bound to the formula environment.
@@ -230,24 +230,23 @@ They both start with `.` to minimise the chances of clashing with existing varia
 With these pronouns we can rewrite the previous formula to remove the ambiguity:
 
 ```{r}
-mydata <- data.frame(x = 100, y = 1, z = 3)
+mydata <- data.frame(x = 100, y = 1)
 x <- 10
-f_eval(~ x, data = mydata)
 
 f_eval(~ .env$x, data = mydata)
 f_eval(~ .data$x, data = mydata)
 ```
 
-Note that if the variable/object doesn't exist, you get an informative error:
+If the variable or object doesn't exist, you'll get an informative error:
 
 ```{r, error = TRUE}
-f_eval(~ .env$y, data = mydata)
-f_eval(~ .data$y, data = mydata)
+f_eval(~ .env$z, data = mydata)
+f_eval(~ .data$z, data = mydata)
 ```
 
 ### Unquoting
 
-`f_eval()` has one more useful trick up its sleeve: unquoting. This allows you to write functions where the user can supply some component of the formula. For example, the following function allows you to compute the mean of any column (or any function of a column):
+`f_eval()` has one more useful trick up its sleeve: unquoting. This allows you to write functions where the user supplies part of the formula. For example, the following function allows you to compute the mean of any column (or any function of a column):
 
 ```{r}
 df_mean <- function(df, variable) {
@@ -256,9 +255,12 @@ df_mean <- function(df, variable) {
 
 df_mean(mtcars, ~ cyl)
 df_mean(mtcars, ~ disp * 0.01638)
+df_mean(mtcars, ~ sqrt(mpg))
 ```
 
-To see how this works, we can use `f_interp()` which `f_eval()` calls internally (you shouldn't call it in your own code, but it's useful for debugging). `uq()` evaluates it's first argument and inserts its value into the formula:
+To see how this works, we can use `f_interp()` which `f_eval()` calls internally (you shouldn't call it in your own code, but it's useful for debugging). 
+
+`uq()` evaluates it's first argument and inserts its value into the formula:
     
 ```{r}
 variable <- ~cyl
@@ -283,14 +285,14 @@ f <- ~ mean
 f_interp(~ uq(f)(x))
 ```
 
-Of course this makes it difficult to insert literal formulas into a call:
+Note that `uq()` only takes the RHS of a formula, which makes it difficult to insert literal formulas into a call:
 
 ```{r}
 formula <- y ~ x
 f_interp(~ lm(uq(formula), data = df))
 ```
 
-So you can instead use `uqf()`:
+You can instead use `uqf()` which uses the whole formula, not just the RHS:
 
 ```{r}
 f_interp(~ lm(uqf(formula), data = df))
@@ -318,7 +320,7 @@ There are three challenges to implementing non-standard scoping:
 1.  You need to be to able to mix fix and varying components so that the user
     can specify some components of the formula with arguments to the function.
 
-To illustrate these challenges, I'm going to implement a `sieve()` function that works similarly to `base::subset()` or `dplyr::filter()`. The goal of `sieve()` is to make it easy to select observations matching criteria defined by values of the variables. `sieve()` has three advantages over `[`:
+To illustrate these challenges, I will implement a `sieve()` function that works similarly to `base::subset()` or `dplyr::filter()`. The goal of `sieve()` is to make it easy to select observations that match criteria defined by variable values. `sieve()` has three advantages over `[`:
 
 1.  It is much more compact when the condition uses many variables, because 
     you don't need to repeat the name of the data frame many times.
@@ -328,7 +330,7 @@ To illustrate these challenges, I'm going to implement a `sieve()` function that
     
 1.  It always returns a data frame.
 
-The implementation of `sieve()` is straightforward. We use `f_eval()` to perform NSS. Then we then check that we have a logical vector, replace `NA`s with `FALSE`, and subset.
+The implementation of `sieve()` is straightforward. First we use `f_eval()` to perform NSS. Then we then check that we have a logical vector, replace `NA`s with `FALSE`, and subset with `[`.
 
 ```{R}
 sieve <- function(df, condition) {
@@ -434,15 +436,15 @@ threshold(df, ~ abs(x - y), 2)
 It's not your responsibility to make `variable` robust. If the user wants to distinguish between variables in the data frame and in the environment, they can:
 
 ```{r}
-n <- 100
-threshold(df, ~ .data$x - .env$n, 10)
+x <- 3
+threshold(df, ~ .data$x - .env$x, 0)
 ```
 
 ### Eliminating the formulas
 
-In some situations you might want to eliminate the formula altogether, and allow the user to type regular R expressions. Although I was once much enamoured with this approach (witness ggplot2, dplyr, ...), I now think that it should be used sparingly. Requiring explict quoting with `~`, leads to simpler code, and the explict quoting makes it clear to the user that something special will happen with the argument.
+In some situations you might want to eliminate the formula altogether, and allow the user to type expressions directly. Although I was once much enamoured with this approach (witness ggplot2, dplyr, ...), I now think that it should be used sparingly. Requiring explict quoting with `~`, leads to simpler code, and the explict quoting makes it clear to the user that something special will happen with the argument.
 
-That said, lazyeval does allow you to eliminate the `~` if you really want to. You'll still need a function that works with formula, so give it the suffix `_`:
+That said, lazyeval does allow you to eliminate the `~` if you really want to. You'll still need a function that works with a formula, so give it the suffix `_`:
 
 ```{r}
 sieve_ <- function(df, condition) {
@@ -465,7 +467,7 @@ sieve <- function(df, expr) {
 sieve(df, x == 1)
 ```
 
-If you're familiar with `substitute()` you might expect the same drawbacks to apply. However, `f_capture()` is start enough to follow a chain of promises back to the original value, so, for example, this code works fine:
+If you're familiar with `substitute()` you might expect the same drawbacks to apply. However, `f_capture()` is smart enough to follow a chain of promises back to the original value, so, for example, this code works fine:
 
 ```{r}
 scramble <- function(df) {
@@ -526,7 +528,7 @@ double <- function(df, var) {
     stop("`var` must be a formula", call. = FALSE)
   }
   var_name <- f_rhs(var)
-  if (!is.name(var_name)) {
+  if (!is_name(var_name)) {
     stop("`var` must be of the form `~ var`", call. =
         FALSE)
   }
@@ -535,5 +537,31 @@ double <- function(df, var) {
 }
 double(df, ~ x)
 ```
+
+If you want a version that doesn't require formulas, I recommend that the SE version take a list as an argument. Use `dots_capture()` to capture multiple arguments as a list of formulas:
+
+```{r}
+mutate_ <- function(`_df`, args) {
+  args <- as_f_list(args)
+  
+  for (nm in names(args)) {
+    `_df`[[nm]] <- f_eval(args[[nm]], `_df`)
+  }
+  
+  `_df`
+}
+
+mutate <- function(`_df`, ...) {
+  mutate_(`_df`, dots_capture(...))
+}
+```
+
+### Exercises
+
+1.  Write a function that selects all rows of `df` where `variable` is 
+    greater than its mean.
+
+1.  Recreate `subscramble()` using `base::subset()` instead of `sieve()`.
+    Why does it fail?
 
 ## Metaprogramming
