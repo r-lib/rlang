@@ -49,26 +49,6 @@ f_env <- function(f) {
   .Call(env, f)
 }
 
-
-#' Create a formula object by "hand".
-#'
-#' @param expr A call, name, or atomic vector.
-#' @param env An environment
-#' @return A formula object
-#' @export
-#' @keywords internal
-f_new <- function(expr, env = parent.frame()) {
-  if (!is.call(expr) && !is.name(expr) && !is.atomic(expr)) {
-    stop("`expr` is not a valid language object", call. = FALSE)
-  }
-
-  structure(
-    call("~", expr),
-    class = "formula",
-    .Environment = env
-  )
-}
-
 #' Unwrap a formula
 #'
 #' This interpolates values in the formula that are defined in its environment,
@@ -87,7 +67,7 @@ f_unwrap <- function(f) {
   if (identical(e, emptyenv())) {
     f
   } else {
-    f_new(substitute_(f_rhs(f), e), parent.env(e))
+    new_formula(substitute_(f_rhs(f), e), parent.env(e))
   }
 }
 

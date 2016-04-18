@@ -33,7 +33,7 @@ is_name <- function(x) {
 #' @rdname is_lang
 #' @export
 is_call <- function(x) {
-  typeof(x) == "call"
+  typeof(x) == "language"
 }
 
 #' @rdname is_lang

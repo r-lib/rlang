@@ -1,12 +1,12 @@
-context("f_new")
+context("new_formula")
 
 test_that("expr must be valid type", {
-  expect_error(f_new(list()), "not a valid language object")
+  expect_error(new_formula(list()), "not a valid language object")
 })
 
 test_that("equivalent to ~", {
   f1 <- ~abc
-  f2 <- f_new(quote(abc))
+  f2 <- new_formula(quote(abc))
 
   expect_identical(f1, f2)
 })

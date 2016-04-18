@@ -24,12 +24,12 @@
 #' f(a + b + c)
 f_capture <- function(x) {
   lazy <- .Call(make_lazy, quote(x), environment(), TRUE)
-  f_new(lazy$expr, lazy$env)
+  new_formula(lazy$expr, lazy$env)
 }
 
 #' @export
 #' @rdname f_capture
 dots_capture <- function(..., .ignore_empty = TRUE) {
   lazies <- .Call(make_lazy_dots, environment(), TRUE, .ignore_empty)
-  lapply(lazies, function(x) f_new(x$expr, x$env))
+  lapply(lazies, function(x) new_formula(x$expr, x$env))
 }
