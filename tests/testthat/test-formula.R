@@ -1,4 +1,24 @@
-context("f_rhs")
+context("formula")
+
+# Creation ----------------------------------------------------------------
+
+test_that("expr must be valid type", {
+  expect_error(new_formula(list()), "not a valid language object")
+})
+
+test_that("equivalent to ~", {
+  f1 <- ~abc
+  f2 <- new_formula(quote(abc))
+
+  expect_identical(f1, f2)
+})
+
+test_that("is_formula works", {
+  expect_true(is_formula(~10))
+  expect_false(is_formula(10))
+})
+
+# Getters -----------------------------------------------------------------
 
 test_that("throws errors for bad inputs", {
   expect_error(f_rhs(1), "not a formula")
@@ -12,8 +32,7 @@ test_that("extracts call, name, or scalar", {
   expect_identical(f_rhs(~ 1L), 1L)
 })
 
-
-# Replacement functions ---------------------------------------------------
+# Setters -----------------------------------------------------------------
 
 test_that("can replace RHS of one-sided formula", {
   f <- ~ x1
