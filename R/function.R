@@ -27,10 +27,9 @@
 #' # Now they are:
 #' stopifnot(identical(f, g))
 new_function <- function(args, body, env = parent.frame()) {
-  stopifnot(all(has_names(args)), is_lang(body))
+  stopifnot(all(has_names(args)), is_lang(body), is.environment(env))
 
   args <- as.pairlist(args)
-  env <- to_env(env)
 
   eval(call("function", args, body), env)
 }
