@@ -5,9 +5,9 @@
 #' @return A formula object
 #' @export
 #' @examples
-#' new_formula(quote(a))
-#' new_formula(quote(a), quote(b))
-new_formula <- function(rhs, lhs = NULL, env = parent.frame()) {
+#' f_new(quote(a))
+#' f_new(quote(a), quote(b))
+f_new <- function(rhs, lhs = NULL, env = parent.frame()) {
   if (!is_lang(rhs)) {
     stop("`rhs` is not a valid language object", call. = FALSE)
   }
@@ -19,9 +19,9 @@ new_formula <- function(rhs, lhs = NULL, env = parent.frame()) {
   }
 
   if (is.null(lhs)) {
-    f <- new_call("~", rhs)
+    f <- call_new("~", rhs)
   } else {
-    f <- new_call("~", lhs, rhs)
+    f <- call_new("~", lhs, rhs)
   }
 
   structure(
@@ -73,7 +73,7 @@ f_rhs <- function(f) {
 #' @rdname f_rhs
 `f_rhs<-` <- function(x, value) {
   stopifnot(is_formula(x))
-  new_formula(value, f_lhs(x), f_env(x))
+  f_new(value, f_lhs(x), f_env(x))
 }
 
 #' @export
@@ -87,7 +87,7 @@ f_lhs <- function(f) {
 #' @rdname f_rhs
 `f_lhs<-` <- function(x, value) {
   stopifnot(is_formula(x))
-  new_formula(f_rhs(x), value, f_env(x))
+  f_new(f_rhs(x), value, f_env(x))
 }
 
 #' @export
@@ -101,7 +101,7 @@ f_env <- function(f) {
 #' @rdname f_rhs
 `f_env<-` <- function(x, value) {
   stopifnot(is_formula(x))
-  new_formula(f_rhs(x), f_lhs(x), value)
+  f_new(f_rhs(x), f_lhs(x), value)
 }
 
 
@@ -123,7 +123,7 @@ f_unwrap <- function(f) {
   if (identical(e, emptyenv())) {
     f
   } else {
-    new_formula(substitute_(f_rhs(f), e), f_lhs(f), parent.env(e))
+    f_new(substitute_(f_rhs(f), e), f_lhs(f), parent.env(e))
   }
 }
 

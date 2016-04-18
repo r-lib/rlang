@@ -6,14 +6,14 @@
 #' @export
 #' @examples
 #' # f can either be a string, a symbol or a call
-#' new_call("f", a = 1)
-#' new_call(quote(f), a = 1)
-#' new_call(quote(f()), a = 1)
+#' call_new("f", a = 1)
+#' call_new(quote(f), a = 1)
+#' call_new(quote(f()), a = 1)
 #'
 #' #' Can supply arguments individually or in a list
-#' new_call(quote(f), a = 1, b = 2)
-#' new_call(quote(f), .args = list(a = 1, b = 2))
-new_call <- function(f, ..., .args = list()) {
+#' call_new(quote(f), a = 1, b = 2)
+#' call_new(quote(f), .args = list(a = 1, b = 2))
+call_new <- function(f, ..., .args = list()) {
   if (is.character(f)) {
     if (length(f) != 1) {
       stop("Character `f` must be length 1", call. = FALSE)
@@ -28,7 +28,7 @@ new_call <- function(f, ..., .args = list()) {
 #' Modify the arguments of a call.
 #'
 #' @param call A call to modify. It is first standardised with
-#'   \code{\link{standardise_call}}.
+#'   \code{\link{call_standardise}}.
 #' @param new_args A named list of expressions (constants, names or calls)
 #'   used to modify the call. Use \code{NULL} to remove arguments.
 #' @export
@@ -36,21 +36,21 @@ new_call <- function(f, ..., .args = list()) {
 #' call <- quote(mean(x, na.rm = TRUE))
 #'
 #' # Modify an existing argument
-#' modify_call(call, list(na.rm = FALSE))
-#' modify_call(call, list(x = quote(y)))
+#' call_modify(call, list(na.rm = FALSE))
+#' call_modify(call, list(x = quote(y)))
 #'
 #' # Remove an argument
-#' modify_call(call, list(na.rm = NULL))
+#' call_modify(call, list(na.rm = NULL))
 #'
 #' # Add a new argument
-#' modify_call(call, list(trim = 0.1))
+#' call_modify(call, list(trim = 0.1))
 #'
 #' # Add an explicit missing argument
-#' modify_call(call, list(na.rm = quote(expr = )))
-modify_call <- function(call, new_args) {
+#' call_modify(call, list(na.rm = quote(expr = )))
+call_modify <- function(call, new_args) {
   stopifnot(is.call(call), is.list(new_args))
 
-  call <- standardise_call(call)
+  call <- call_standardise(call)
 
   nms <- names(new_args) %||% rep("", length(new_args))
   if (any(nms == "")) {
@@ -68,7 +68,7 @@ modify_call <- function(call, new_args) {
 #' @param call A call
 #' @param env Environment in which to look up call value.
 #' @export
-standardise_call <- function(call, env = parent.frame()) {
+call_standardise <- function(call, env = parent.frame()) {
   stopifnot(is.call(call))
   f <- eval(call[[1]], env)
   if (is.primitive(f)) return(call)

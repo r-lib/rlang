@@ -94,7 +94,7 @@ as_call <- function(x) {
 
 #' @export
 as_call.name <- function(x) {
-  new_call(x)
+  call_new(x)
 }
 
 #' @export
