@@ -5,6 +5,7 @@
 \alias{is_call}
 \alias{is_lang}
 \alias{is_name}
+\alias{is_pairlist}
 \title{Is an object a language object?}
 \usage{
 is_lang(x)
@@ -12,6 +13,8 @@ is_lang(x)
 is_name(x)
 
 is_call(x)
+
+is_pairlist(x)
 
 is_atomic(x)
 }
@@ -21,7 +24,7 @@ is_atomic(x)
 \description{
 These helpers are consistent wrappers around their base R equivalents.
 A language object is either an atomic vector (typically a scalar), a
-name (aka a symbol), or a call.
+name (aka a symbol), a call, or a pairlist (used for function arguments).
 }
 \examples{
 q1 <- quote(1)

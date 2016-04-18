@@ -2,7 +2,7 @@
 #'
 #' These helpers are consistent wrappers around their base R equivalents.
 #' A language object is either an atomic vector (typically a scalar), a
-#' name (aka a symbol), or a call.
+#' name (aka a symbol), a call, or a pairlist (used for function arguments).
 #'
 #' @param x An object to test.
 #' @seealso \code{\link{as_name}()} and \code{\link{as_call}()} for coercion
@@ -21,7 +21,7 @@
 #' is_lang(q3)
 #' is_call(q3)
 is_lang <- function(x) {
-  is_name(x) || is_call(x) || is_atomic(x)
+  is_call(x) || is_pairlist(x) || is_atomic(x) || is_name(x)
 }
 
 #' @rdname is_lang
@@ -34,6 +34,12 @@ is_name <- function(x) {
 #' @export
 is_call <- function(x) {
   typeof(x) == "language"
+}
+
+#' @rdname is_lang
+#' @export
+is_pairlist <- function(x) {
+  typeof(x) == "pairlist"
 }
 
 #' @rdname is_lang
