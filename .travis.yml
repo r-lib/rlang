@@ -5,4 +5,4 @@ sudo: false
 cache: packages
 
 after_success:
-  - Rscript -e 'covr::codecov(line_exclusions = c("R/lazy.R", "R/lazy-as.R", "R/lazy-dots.R", "R/lazy-names.R", "src/lazy.c"))'
+  - Rscript -e 'covr::codecov(line_exclusions = c("R/lazy.R", "R/lazy-as.R", "R/lazy-dots.R", "R/lazy-names.R", "R/lazy-call.R", "R/lazy-eval.R", "R/lazy-interp.R", "src/lazy.c"))'
