@@ -23,3 +23,14 @@ test_that("unquoted formulas are interpolated first", {
 
   expect_equal(f_interp(~ uq(f(10))), ~ x + 10)
 })
+
+
+# uqf ---------------------------------------------------------------------
+
+test_that("requires formula", {
+  expect_error(f_interp(~ uqf(10)), "must be a formula")
+})
+
+test_that("interpolates formula", {
+  expect_equal(f_interp(~ uqf(x ~ y)), ~ (x ~ y))
+})
