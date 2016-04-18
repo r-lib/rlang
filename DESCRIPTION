@@ -17,5 +17,6 @@ Suggests:
     rmarkdown (>= 0.2.65),
     testthat,
     covr
+Remotes: hadley/testthat
 VignetteBuilder: knitr
 RoxygenNote: 5.0.1
