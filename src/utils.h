@@ -4,7 +4,6 @@
 #include <Rinternals.h>
 
 bool is_lazy_load(SEXP x);
-bool is_scalar(SEXP x);
 bool is_call_to(SEXP x, const char* f);
 bool is_formula(SEXP x);
 SEXP rhs(SEXP f);

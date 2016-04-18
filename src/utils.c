@@ -3,10 +3,6 @@
 #include <Rinternals.h>
 #include <stdbool.h>
 
-bool is_scalar(SEXP x) {
-  return Rf_isVectorAtomic(x) && Rf_length(x) == 1;
-}
-
 bool is_call_to(SEXP x, const char* f) {
   if (!Rf_isLanguage(x))
     return false;
