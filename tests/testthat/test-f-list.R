@@ -1,5 +1,15 @@
 context("f_list")
 
+test_that("input must be a list", {
+  expect_error(as_f_list(1), "must be a list")
+})
+
+test_that("LHS must evaluate to a string", {
+  expect_error(f_list(1 ~ x), "must evaluate to a string or name")
+  expect_error(f_list(letters ~ x), "must evaluate to a single string")
+  expect_error(f_list(x ~ x ~ z), "must be a single-sided formula")
+})
+
 test_that("regular elements are left as is", {
   expect_equal(f_list(x = 1:10), list(x = 1:10))
   expect_equal(f_list(x = ~x), list(x = ~x))
