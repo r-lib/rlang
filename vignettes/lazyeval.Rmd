@@ -43,9 +43,9 @@ This document describes lazyeval, a package that provides principled tools to pe
     NSE (such as in `bquote()` and `library()`). Metaprogramming is so called 
     because it involves computing on the unevaluated code in some way.
 
-This document is broadly organised according to the three types of non-standard evaluation described above. The main difference is that after [labelling], we'll take a detour to learn more about [formulas]. You've probably familiar with formulas from linear models (e.g. `lm(mpg ~ displ, data = mtcars)`), but formuals are actually a general way of capturing an unevaluated expression along with the environment in which it should be evaluated. 
+This document is broadly organised according to the three types of non-standard evaluation described above. The main difference is that after [labelling], we'll take a detour to learn more about [formulas]. You've probably familiar with formulas from linear models (e.g. `lm(mpg ~ displ, data = mtcars)`), but formulas are actually a general way of capturing an unevaluated expression along with the environment in which it should be evaluated. 
 
-My recommendations for how to do this have changed substantially over time. I am fairly confident they will not have to change again. This approach and accompanying tools allows you to solve a wide range of practical problems that were challenging previously and is rooted in [well-standing theory](http://repository.readscheme.org/ftp/papers/pepm99/bawden.pdf).
+The approaches I have recommended for each of these three uses have have changed substantially over time. I am fairly confident they will not have to change substantially again. The current approach and accompanying tools allows you to solve a wide range of practical problems that were previously challenging and is rooted in [long-standing theory](http://repository.readscheme.org/ftp/papers/pepm99/bawden.pdf).
 
 [^1]: Currently neither ggplot2 nor dplyr actually use this technique since I've only just figured it out. But I'll be working hard to make sure all my packages are consistent in the near future.
 
@@ -145,7 +145,7 @@ The structure of the underlying object is slightly different depending on whethe
     length(f)
     # The 1st element is always ~
     f[[1]]
-    # The 2nd element is the quoted expression
+    # The 2nd element is the RHS
     f[[2]]
     ```
 
@@ -440,44 +440,6 @@ x <- 3
 threshold(df, ~ .data$x - .env$x, 0)
 ```
 
-### Eliminating the formulas
-
-In some situations you might want to eliminate the formula altogether, and allow the user to type expressions directly. Although I was once much enamoured with this approach (witness ggplot2, dplyr, ...), I now think that it should be used sparingly. Requiring explict quoting with `~`, leads to simpler code, and the explict quoting makes it clear to the user that something special will happen with the argument.
-
-That said, lazyeval does allow you to eliminate the `~` if you really want to. You'll still need a function that works with a formula, so give it the suffix `_`:
-
-```{r}
-sieve_ <- function(df, condition) {
-  rows <- f_eval(condition, df)
-  if (!is.logical(rows)) {
-    stop("`condition` must be logical.", call. = FALSE)
-  }
-  
-  rows[is.na(rows)] <- FALSE
-  df[rows, , drop = FALSE]
-}
-```
-
-Once you have this version you can create a verison that doesn't need the explicit formula. The key is the use of `f_capture()` which takes an unevaluated argument and captures it as a formula:
-
-```{r}
-sieve <- function(df, expr) {
-  sieve_(df, f_capture(expr))
-}
-sieve(df, x == 1)
-```
-
-If you're familiar with `substitute()` you might expect the same drawbacks to apply. However, `f_capture()` is smart enough to follow a chain of promises back to the original value, so, for example, this code works fine:
-
-```{r}
-scramble <- function(df) {
-  df[sample(nrow(df)), , drop = FALSE]
-}
-subscramble <- function(df, expr) {
-  scramble(sieve(df, expr))
-}
-subscramble(df, x < 4)
-```
 
 ### Dot-dot-dot
 
@@ -538,7 +500,48 @@ double <- function(df, var) {
 double(df, ~ x)
 ```
 
-If you want a version that doesn't require formulas, I recommend that the SE version take a list as an argument. Use `dots_capture()` to capture multiple arguments as a list of formulas:
+## Non-standard evaluation with lazy
+
+In some situations you might want to eliminate the formula altogether, and allow the user to type expressions directly. Although I was once much enamoured with this approach (witness ggplot2, dplyr, ...), I now think that it should be used sparingly. Requiring explict quoting with `~`, leads to simpler code, and the explict quoting makes it clear to the user that something special will happen with the argument.
+
+That said, lazyeval does allow you to eliminate the `~` if you really want to. You'll still need a function that works with a formula, so give it the suffix `_`:
+
+```{r}
+sieve_ <- function(df, condition) {
+  rows <- f_eval(condition, df)
+  if (!is.logical(rows)) {
+    stop("`condition` must be logical.", call. = FALSE)
+  }
+  
+  rows[is.na(rows)] <- FALSE
+  df[rows, , drop = FALSE]
+}
+```
+
+Once you have this version you can create a verison that doesn't need the explicit formula. The key is the use of `f_capture()` which takes an unevaluated argument and captures it as a formula:
+
+```{r}
+sieve <- function(df, expr) {
+  sieve_(df, f_capture(expr))
+}
+sieve(df, x == 1)
+```
+
+If you're familiar with `substitute()` you might expect the same drawbacks to apply. However, `f_capture()` is smart enough to follow a chain of promises back to the original value, so, for example, this code works fine:
+
+```{r}
+scramble <- function(df) {
+  df[sample(nrow(df)), , drop = FALSE]
+}
+subscramble <- function(df, expr) {
+  scramble(sieve(df, expr))
+}
+subscramble(df, x < 4)
+```
+
+### Dot-dot-dot
+
+If you want a `...` function that doesn't require formulas, I recommend that the SE version take a list of arguments. Use `dots_capture()` to capture multiple arguments as a list of formulas:
 
 ```{r}
 mutate_ <- function(`_df`, args) {
@@ -565,3 +568,5 @@ mutate <- function(`_df`, ...) {
     Why does it fail?
 
 ## Metaprogramming
+
+The final use of non-standard evaluation is to do metaprogramming. This is a catch-all term that encompasses any function that does computation on an unevaluated expression. You can learn about metaprogrgramming in <http://adv-r.had.co.nz/Expressions.html>, particularly <http://adv-r.had.co.nz/Expressions.html#ast-funs>. Over time, the goal is to move all useful metaprogramming helper functions into this package, and discuss metaprogramming more here.
