@@ -9,13 +9,17 @@ is_formula <- function(x) {
   typeof(x) == "language" && inherits(x, "formula")
 }
 
-#' Extract the right-hand-side of a formula
+#' Extract the components of a formula.
 #'
-#' Throws an error if \code{f} is not a formula.
+#' \code{f_rhs} extracts the righthand side, \code{f_lhs} extracts the
+#' lefthand side, and \code{f_env} extracts the environment. All functions
+#' throw an error if \code{f} is not a formula.
 #'
 #' @param f A formula
 #' @export
-#' @return An atomic vector of length 1, a name, or a call.
+#' @return \code{f_rhs} and \code{f_lhs} return language objects (i.e.
+#'   atomic vectors of length 1, a name, or a call). \code{f_env}
+#'   returns an environment.
 #' @examples
 #' f_rhs(~ 1 + 2 + 3)
 #' f_rhs(~ x)
@@ -24,6 +28,8 @@ is_formula <- function(x) {
 #'
 #' f_lhs(~ y)
 #' f_lhs(x ~ y)
+#'
+#' f_env(~ x)
 #' @useDynLib lazyeval rhs
 f_rhs <- function(f) {
   .Call(rhs, f)
@@ -34,6 +40,13 @@ f_rhs <- function(f) {
 #' @useDynLib lazyeval lhs
 f_lhs <- function(f) {
   .Call(lhs, f)
+}
+
+#' @export
+#' @rdname f_rhs
+#' @useDynLib lazyeval env
+f_env <- function(f) {
+  .Call(env, f)
 }
 
 
