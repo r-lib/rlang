@@ -1,3 +1,36 @@
+#' Create a formula object by "hand".
+#'
+#' @param lhs,rhs A call, name, or atomic vector.
+#' @param env An environment
+#' @return A formula object
+#' @export
+#' @examples
+#' new_formula(quote(a))
+#' new_formula(quote(a), quote(b))
+new_formula <- function(rhs, lhs = NULL, env = parent.frame()) {
+  if (!is_lang(rhs)) {
+    stop("`rhs` is not a valid language object", call. = FALSE)
+  }
+  if (!is_lang(lhs) && !is.null(lhs)) {
+    stop("`lhs` is not a valid language object", call. = FALSE)
+  }
+  if (!is.environment(env)) {
+    stop("`env` is not an environment", call. = FALSE)
+  }
+
+  if (is.null(lhs)) {
+    f <- new_call("~", rhs)
+  } else {
+    f <- new_call("~", lhs, rhs)
+  }
+
+  structure(
+    f,
+    class = "formula",
+    .Environment = env
+  )
+}
+
 #' Is object a formula?
 #'
 #' @param x Object to test
