@@ -15,6 +15,9 @@
 #' new_call(quote(f), .args = list(a = 1, b = 2))
 new_call <- function(f, ..., .args = list()) {
   if (is.character(f)) {
+    if (length(f) != 1) {
+      stop("Character `f` must be length 1", call. = FALSE)
+    }
     f <- as.name(f)
   }
 
@@ -25,19 +28,32 @@ new_call <- function(f, ..., .args = list()) {
 
 #' Create a formula object by "hand".
 #'
-#' @param expr A call, name, or atomic vector.
+#' @param lhs,rhs A call, name, or atomic vector.
 #' @param env An environment
 #' @return A formula object
 #' @export
 #' @examples
 #' new_formula(quote(a))
-new_formula <- function(expr, env = parent.frame()) {
-  if (!is.call(expr) && !is.name(expr) && !is.atomic(expr)) {
-    stop("`expr` is not a valid language object", call. = FALSE)
+#' new_formula(quote(a), quote(b))
+new_formula <- function(rhs, lhs = NULL, env = parent.frame()) {
+  if (!is_lang(rhs)) {
+    stop("`rhs` is not a valid language object", call. = FALSE)
+  }
+  if (!is_lang(lhs) && !is.null(lhs)) {
+    stop("`lhs` is not a valid language object", call. = FALSE)
+  }
+  if (!is.environment(env)) {
+    stop("`env` is not an environment", call. = FALSE)
+  }
+
+  if (is.null(lhs)) {
+    f <- new_call("~", rhs)
+  } else {
+    f <- new_call("~", lhs, rhs)
   }
 
   structure(
-    call("~", expr),
+    f,
     class = "formula",
     .Environment = env
   )

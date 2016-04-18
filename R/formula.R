@@ -9,13 +9,14 @@ is_formula <- function(x) {
   typeof(x) == "language" && inherits(x, "formula")
 }
 
-#' Extract the components of a formula.
+#' Get/set formula components.
 #'
 #' \code{f_rhs} extracts the righthand side, \code{f_lhs} extracts the
 #' lefthand side, and \code{f_env} extracts the environment. All functions
 #' throw an error if \code{f} is not a formula.
 #'
-#' @param f A formula
+#' @param f,x A formula
+#' @param value The value to replace with.
 #' @export
 #' @return \code{f_rhs} and \code{f_lhs} return language objects (i.e.
 #'   atomic vectors of length 1, a name, or a call). \code{f_env}
@@ -37,9 +38,23 @@ f_rhs <- function(f) {
 
 #' @export
 #' @rdname f_rhs
+`f_rhs<-` <- function(x, value) {
+  stopifnot(is_formula(x))
+  new_formula(value, f_lhs(x), f_env(x))
+}
+
+#' @export
+#' @rdname f_rhs
 #' @useDynLib lazyeval lhs
 f_lhs <- function(f) {
   .Call(lhs, f)
+}
+
+#' @export
+#' @rdname f_rhs
+`f_lhs<-` <- function(x, value) {
+  stopifnot(is_formula(x))
+  new_formula(f_rhs(x), value, f_env(x))
 }
 
 #' @export
@@ -48,6 +63,14 @@ f_lhs <- function(f) {
 f_env <- function(f) {
   .Call(env, f)
 }
+
+#' @export
+#' @rdname f_rhs
+`f_env<-` <- function(x, value) {
+  stopifnot(is_formula(x))
+  new_formula(f_rhs(x), f_lhs(x), value)
+}
+
 
 #' Unwrap a formula
 #'
@@ -67,7 +90,7 @@ f_unwrap <- function(f) {
   if (identical(e, emptyenv())) {
     f
   } else {
-    new_formula(substitute_(f_rhs(f), e), parent.env(e))
+    new_formula(substitute_(f_rhs(f), e), f_lhs(f), parent.env(e))
   }
 }
 

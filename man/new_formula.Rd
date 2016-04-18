@@ -4,10 +4,10 @@
 \alias{new_formula}
 \title{Create a formula object by "hand".}
 \usage{
-new_formula(expr, env = parent.frame())
+new_formula(rhs, lhs = NULL, env = parent.frame())
 }
 \arguments{
-\item{expr}{A call, name, or atomic vector.}
+\item{lhs, rhs}{A call, name, or atomic vector.}
 
 \item{env}{An environment}
 }
@@ -19,5 +19,6 @@ Create a formula object by "hand".
 }
 \examples{
 new_formula(quote(a))
+new_formula(quote(a), quote(b))
 }
 

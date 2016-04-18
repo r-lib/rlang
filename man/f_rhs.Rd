@@ -2,18 +2,29 @@
 % Please edit documentation in R/formula.R
 \name{f_rhs}
 \alias{f_env}
+\alias{f_env<-}
 \alias{f_lhs}
+\alias{f_lhs<-}
 \alias{f_rhs}
-\title{Extract the components of a formula.}
+\alias{f_rhs<-}
+\title{Get/set formula components.}
 \usage{
 f_rhs(f)
 
+f_rhs(x) <- value
+
 f_lhs(f)
 
+f_lhs(x) <- value
+
 f_env(f)
+
+f_env(x) <- value
 }
 \arguments{
-\item{f}{A formula}
+\item{f, x}{A formula}
+
+\item{value}{The value to replace with.}
 }
 \value{
 \code{f_rhs} and \code{f_lhs} return language objects (i.e.
