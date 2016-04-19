@@ -17,6 +17,7 @@ test_that("as_call produces calls", {
   expect_equal(as_call(quote(a)), quote(a()))
   expect_equal(as_call(quote(a())), quote(a()))
   expect_equal(as_call("a()"), quote(a()))
+  expect_equal(as_call(~ a()), quote(a()))
 
   expect_error(as_call(c("a", "b")), "Can not coerce character vector of length > 1")
 })

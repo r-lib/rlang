@@ -66,3 +66,12 @@ test_that("unquoted formulas can use data", {
   expect_equal(f_eval(~ uq(f1()), data = list(x = 1)), 101)
   expect_equal(f_eval(~ uq(f2()), data = list(x = 1)), 101)
 })
+
+
+# find_data ---------------------------------------------------------------
+
+test_that("find data works for NULL, lists, and data frames", {
+  expect_equal(find_data(NULL), list())
+  expect_equal(find_data(list(x = 1)), list(x = 1))
+  expect_equal(find_data(mtcars), mtcars)
+})

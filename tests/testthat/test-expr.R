@@ -23,6 +23,12 @@ test_that("always returns single string", {
   expect_length(out, 1)
 })
 
+test_that("can truncate lines", {
+  out <- expr_text({
+    a + b
+  }, nlines = 2)
+  expect_equal(out, "{\n...")
+})
 
 # expr_label --------------------------------------------------------------
 

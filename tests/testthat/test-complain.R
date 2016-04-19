@@ -1,5 +1,9 @@
 context("complain")
 
+test_that("NULL return unchanged", {
+  expect_identical(complain(NULL), NULL)
+})
+
 test_that("can't access non-existent list members", {
   x1 <- list(y = 1)
   x2 <- complain(x1)
