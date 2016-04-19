@@ -19,8 +19,7 @@ uqs(x)
 \item{f}{A one-sided formula.}
 
 \item{data}{When called from inside \code{f_eval}, this is used to pass on
-the data argument so that internal formulas can be evaluated in the
-correct environment.}
+the data so that nested formulas are evaluated in the correct environment.}
 
 \item{x}{For \code{uq} and \code{uqf}, a formula. For \code{uqs}, a
 a vector.}
@@ -39,7 +38,7 @@ like \href{Julia}{http://docs.julialang.org/en/release-0.1/manual/metaprogrammin
 and \href{Racket}{https://docs.racket-lang.org/reference/quasiquote.html}.
 }
 \examples{
-f_interp(~ 1 + uq(1 + 2 + 3) + 10)
+f_interp(x ~ 1 + uq(1 + 2 + 3) + 10)
 
 # Use uqs() if you want to add multiple arguments to a function
 # It must evaluate to a list

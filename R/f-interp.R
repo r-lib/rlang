@@ -15,12 +15,11 @@
 #' @param x For \code{uq} and \code{uqf}, a formula. For \code{uqs}, a
 #'   a vector.
 #' @param data When called from inside \code{f_eval}, this is used to pass on
-#'   the data argument so that internal formulas can be evaluated in the
-#'   correct environment.
+#'   the data so that nested formulas are evaluated in the correct environment.
 #' @export
 #' @aliases uq uqs
 #' @examples
-#' f_interp(~ 1 + uq(1 + 2 + 3) + 10)
+#' f_interp(x ~ 1 + uq(1 + 2 + 3) + 10)
 #'
 #' # Use uqs() if you want to add multiple arguments to a function
 #' # It must evaluate to a list
@@ -38,17 +37,10 @@
 #' f <- foo(10)
 #' f
 #' f_interp(f)
-#' @useDynLib lazyeval quasiquote_c
+#' @useDynLib lazyeval interp_
 f_interp <- function(f, data = NULL) {
-  f[[2]] <- .Call(quasiquote_c, f_rhs(f), environment(f), data)
+  f_rhs(f) <- .Call(interp_, f_rhs(f), f_env(f), data)
   f
-}
-
-
-# Functions for testing ---------------------------------------------------
-
-quasiquote_ <- function(x, env = parent.frame()) {
-  .Call(quasiquote_c, x, env)
 }
 
 #' @export
