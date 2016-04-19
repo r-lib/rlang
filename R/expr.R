@@ -62,9 +62,9 @@ expr_text <- function(x, width = 60L, nlines = Inf) {
   paste0(str, collapse = "\n")
 }
 
-#' @useDynLib lazyeval find_expr_
+#' @useDynLib lazyeval expr_find_
 #' @export
 #' @rdname expr_label
 expr_find <- function(x) {
-  .Call(find_expr_, quote(x), environment())
+  .Call(expr_find_, quote(x), environment())
 }

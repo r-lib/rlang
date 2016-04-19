@@ -32,7 +32,7 @@ SEXP base_promise(SEXP promise, SEXP env) {
   return promise;
 }
 
-SEXP find_expr_(SEXP name, SEXP env) {
+SEXP expr_find_(SEXP name, SEXP env) {
   SEXP promise = Rf_findVar(name, env);
   return base_promise(promise, env);
 }
