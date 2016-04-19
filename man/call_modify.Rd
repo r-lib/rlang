@@ -2,9 +2,12 @@
 % Please edit documentation in R/call.R
 \name{call_modify}
 \alias{call_modify}
+\alias{call_standardise}
 \title{Modify the arguments of a call.}
 \usage{
-call_modify(call, new_args)
+call_modify(call, new_args, env = parent.frame())
+
+call_standardise(call, env = parent.frame())
 }
 \arguments{
 \item{call}{A call to modify. It is first standardised with
@@ -12,12 +15,15 @@ call_modify(call, new_args)
 
 \item{new_args}{A named list of expressions (constants, names or calls)
 used to modify the call. Use \code{NULL} to remove arguments.}
+
+\item{env}{Environment in which to look up call value.}
 }
 \description{
 Modify the arguments of a call.
 }
 \examples{
 call <- quote(mean(x, na.rm = TRUE))
+call_standardise(call)
 
 # Modify an existing argument
 call_modify(call, list(na.rm = FALSE))

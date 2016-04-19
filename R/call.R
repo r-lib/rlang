@@ -64,7 +64,7 @@ call_modify <- function(call, new_args, env = parent.frame()) {
   call
 }
 
-#' @rdname call_standardise
+#' @rdname call_modify
 #' @export
 call_standardise <- function(call, env = parent.frame()) {
   stopifnot(is_call(call))
