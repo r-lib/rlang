@@ -16,3 +16,22 @@ has_names <- function(x) {
     !(is.na(nms) | nms == "")
   }
 }
+
+substitute_ <- function(x, env) {
+  if (identical(env, globalenv())) {
+    env <- as.list(env)
+  }
+
+  call <- substitute(substitute(x, env), list(x = x))
+  eval(call)
+}
+
+#' Generate a missing argument.
+#'
+#' @export
+#' @examples
+#' f_interp(~f(x = uq(missing_arg())))
+#' f_interp(~f(x = uq(NULL)))
+missing_arg <- function() {
+  quote(expr = )
+}

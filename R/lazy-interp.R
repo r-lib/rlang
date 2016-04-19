@@ -80,16 +80,6 @@ interp.character <- function(`_obj`, ..., .values) {
   paste(deparse(expr2), collapse = "\n")
 }
 
-substitute_ <- function(x, env) {
-  if (identical(env, globalenv())) {
-    env <- as.list(env)
-  }
-
-  call <- substitute(substitute(x, env), list(x = x))
-  eval(call)
-}
-
-
 all_values <- function(.values, ...) {
   if (missing(.values)) {
     values <- list(...)
@@ -107,13 +97,4 @@ all_values <- function(.values, ...) {
   }
 
   values
-}
-
-#' Generate a missing argument.
-#'
-#' @export
-#' @examples
-#' interp(~f(x), x = missing_arg())
-missing_arg <- function() {
-  quote(expr = )
 }

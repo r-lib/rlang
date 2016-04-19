@@ -41,7 +41,8 @@ expr_label <- function(x) {
   } else {
     chr <- deparse(x)
     if (length(chr) > 1) {
-      chr <- paste(deparse(as.call(list(x[[1]], quote(...)))), collapse = "\n")
+      dot_call <- call_new(x[[1]], quote(...))
+      chr <- paste(deparse(dot_call), collapse = "\n")
     }
     chr
   }
@@ -53,7 +54,7 @@ expr_label <- function(x) {
 #' @param nlines Maximum number of lines to extract.
 expr_text <- function(x, width = 60L, nlines = Inf) {
   x <- expr_find(x)
-  str <- deparse(x, width.cutoff = width, nlines = -1)
+  str <- deparse(x, width.cutoff = width)
 
   if (length(str) > nlines) {
     str <- c(str[seq_len(nlines - 1)], "...")
