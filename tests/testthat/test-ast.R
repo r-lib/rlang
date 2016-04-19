@@ -5,10 +5,19 @@ test_that("common cases are as expected", {
     1,
     quote(x),
     quote(a + b),
-    quote(function(x = 1, y = a + b) {
+    quote(function(x = 1, y = a + b, z) {
       c + d
     })
   )
 
   expect_output_file(ast_(x), "ast-sample.txt", update = TRUE)
+})
+
+
+test_that("can print trees that can't be generated from text source", {
+  x <- quote(foo())
+  x[[2]] <- mtcars
+  x[[3]] <- 1:10
+
+  expect_output_file(ast_(x), "ast-irregular.txt", update = TRUE)
 })
