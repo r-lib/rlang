@@ -29,11 +29,13 @@ call_new <- function(f, ..., .args = list()) {
 #'
 #' @param call A call to modify. It is first standardised with
 #'   \code{\link{call_standardise}}.
+#' @param env Environment in which to look up call value.
 #' @param new_args A named list of expressions (constants, names or calls)
 #'   used to modify the call. Use \code{NULL} to remove arguments.
 #' @export
 #' @examples
 #' call <- quote(mean(x, na.rm = TRUE))
+#' call_standardise(call)
 #'
 #' # Modify an existing argument
 #' call_modify(call, list(na.rm = FALSE))
@@ -47,29 +49,26 @@ call_new <- function(f, ..., .args = list()) {
 #'
 #' # Add an explicit missing argument
 #' call_modify(call, list(na.rm = quote(expr = )))
-call_modify <- function(call, new_args) {
+call_modify <- function(call, new_args, env = parent.frame()) {
   stopifnot(is.call(call), is.list(new_args))
 
-  call <- call_standardise(call)
+  call <- call_standardise(call, env)
 
-  nms <- names(new_args) %||% rep("", length(new_args))
-  if (any(nms == "")) {
+  if (!all(has_names(new_args))) {
     stop("All new arguments must be named", call. = FALSE)
   }
 
-  for(nm in nms) {
+  for (nm in names(new_args)) {
     call[[nm]] <- new_args[[nm]]
   }
   call
 }
 
-#' Standardise a function call
-#'
-#' @param call A call
-#' @param env Environment in which to look up call value.
+#' @rdname call_standardise
 #' @export
 call_standardise <- function(call, env = parent.frame()) {
-  stopifnot(is.call(call))
+  stopifnot(is_call(call))
+
   f <- eval(call[[1]], env)
   if (is.primitive(f)) return(call)
 
