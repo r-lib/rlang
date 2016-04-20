@@ -44,7 +44,7 @@ expr_label <- function(x) {
       dot_call <- call_new(x[[1]], quote(...))
       chr <- paste(deparse(dot_call), collapse = "\n")
     }
-    chr
+    paste0("`", chr, "`")
   }
 }
 
