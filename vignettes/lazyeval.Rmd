@@ -27,9 +27,9 @@ This document describes lazyeval, a package that provides principled tools to pe
     ```
 
 1.  __Non-standard scoping__ looks for objects in places other than the current
-    environment. For example, base R provides `with()`, `subset()`, and 
-    `transform()` that look for names in a data frame (or list) before the 
-    current environment:
+    environment. For example, base R has `with()`, `subset()`, and `transform()` 
+    that look for objects in a data frame (or list) before the current 
+    environment:
 
     ```{r}
     df <- data.frame(x = c(1, 5, 4, 2, 3), y = c(2, 1, 5, 4, 3))
@@ -43,11 +43,11 @@ This document describes lazyeval, a package that provides principled tools to pe
     NSE (such as in `bquote()` and `library()`). Metaprogramming is so called 
     because it involves computing on the unevaluated code in some way.
 
-This document is broadly organised according to the three types of non-standard evaluation described above. The main difference is that after [labelling], we'll take a detour to learn more about [formulas]. You've probably familiar with formulas from linear models (e.g. `lm(mpg ~ displ, data = mtcars)`), but formulas are actually a general way of capturing an unevaluated expression along with the environment in which it should be evaluated. 
+This document is broadly organised according to the three types of non-standard evaluation described above. The main difference is that after [labelling], we'll take a detour to learn more about [formulas]. You're probably familiar with formulas from linear models (e.g. `lm(mpg ~ displ, data = mtcars)`) but formulas are more than just a tool for modelling: they are a general way of capturing an unevaluated expression. 
 
-The approaches I have recommended for each of these three uses have have changed substantially over time. I am fairly confident they will not have to change substantially again. The current approach and accompanying tools allows you to solve a wide range of practical problems that were previously challenging and is rooted in [long-standing theory](http://repository.readscheme.org/ftp/papers/pepm99/bawden.pdf).
+The approaches recommended here are quite different to my previous generation of recommendations. I am fairly confident these new approaches are correct, and will not have to change substantially again. The current tools make it easy to solve a number of practical problems that were previously challenging and are rooted in [long-standing theory](http://repository.readscheme.org/ftp/papers/pepm99/bawden.pdf).
 
-[^1]: Currently neither ggplot2 nor dplyr actually use this technique since I've only just figured it out. But I'll be working hard to make sure all my packages are consistent in the near future.
+[^1]: Currently neither ggplot2 nor dplyr actually use these tools since I've only just figured it out. But I'll be working hard to make sure all my packages are consistent in the near future.
 
 ## Labelling
 
@@ -71,7 +71,7 @@ There are two potential problems with this approach:
     ```
 
 1.  `substitute()` only looks one level up, so you lose the original label if 
-    the function isn't called from the top level:
+    the function isn't called directly:
     
     ```{r}
     my_label2 <- function(x) my_label(x)
@@ -115,21 +115,34 @@ There are two variations on the theme of `expr_text()`:
     Write your own wrapper around `plot()` that uses `expr_label()` to compute
     `xlim` and `ylim`.
     
+1.  Create a simple implementation of `mean()` that stops with an informative
+    error message if the argument is not numeric:
+    
+    ```{r, eval = FALSE}
+    x <- c("a", "b", "c")
+    my_mean(x)
+    #> Error: `x` is a not a numeric vector.
+    my_mean(x == "a")
+    #> Error: `x == "a"` is not a numeric vector.
+    my_mean("a")
+    #> Error: "a" is not a numeric vector.
+    ```
+
 1.  Read the source code for `expr_text()`. How does it work? What additional
     arguments to `deparse()` does it use?
 
 ## Formulas
 
-Before we can talk about non-standard scoping, we need to take a detour to talk about formulas. Formulas are a familiar tool from linear models, but they are actually a powerful, general purpose tool. A formula captures two things: 
+Non-standard scoping is probably the most useful NSE tool, but before we can talk about a solid approach, we need to take a detour to talk about formulas. Formulas are a familiar tool from linear models, but their utility is not limited to models. In fact, formulas are a powerful, general purpose tool, because a formula captures two things: 
 
 1. An unevaluated expression.
-1. The environment in which the expression was created.
+1. The context (environment) in which the expression was created.
 
-`~` is a single character that allows you to say: "I want to capture the meaning of this code, without evaluating it right away". For that reason, the formula can be thought of as general "quoting" operator.
+`~` is a single character that allows you to say: "I want to capture the meaning of this code, without evaluating it right away". For that reason, the formula can be thought of as a "quoting" operator.
 
 ### Definition of a formula
 
-Technically, a formula is a "language" object (i.e. an unevaluated expression) with an S3 class of "formula" and an attribute that stores the environment:
+Technically, a formula is a "language" object (i.e. an unevaluated expression) with a class of "formula" and an attribute that stores the environment:
 
 ```{r}
 f <- ~ x + y + z
@@ -162,7 +175,7 @@ The structure of the underlying object is slightly different depending on whethe
     g[[3]]
     ```
 
-To abstract away these differences, lazyeval provides `f_rhs()` and `f_lhs()` to access either side of the formula, and `f_env()` to access the environment:
+To abstract away these differences, lazyeval provides `f_rhs()` and `f_lhs()` to access either side of the formula, and `f_env()` to access its environment:
 
 ```{r}
 f_rhs(f)
@@ -176,7 +189,7 @@ f_env(g)
 
 ### Evaluating a formula
 
-A formula captures the meaning of an expression without evaluating it. To force evaluation, use `f_eval()`:
+A formula captures delays the evaluation of an expression so you can later evaluate it with `f_eval()`:
 
 ```{r}
 f <- ~ 1 + 2 + 3
@@ -184,7 +197,7 @@ f
 f_eval(f)
 ```
 
-This allows you to use a formula as a robust way of delaying evaluation, cleanly separating the creation of the formula from its evaluation. In the following example, note that the value of `x` inside `add_1000()` is used, not the value of `x` at the top level.
+This allows you to use a formula as a robust way of delaying evaluation, cleanly separating the creation of the formula from its evaluation. Because formulas capture the code and context, you get the correct result even when a formula is created and evaluated in different places. In the following example, note that the value of `x` inside `add_1000()` is used:
 
 ```{r}
 x <- 1
@@ -204,13 +217,22 @@ f_unwrap(add_1000(3))
 
 ### Non-standard scoping
 
-`f_eval()` has an optional second argument: a named list (or data frame) that overrides values found in the formula's environment. This makes it very easy to implement non-standard scoping:
+`f_eval()` has an optional second argument: a named list (or data frame) that overrides values found in the formula's environment. 
 
 ```{r}
 y <- 100
-f_eval(~ x + y, data = list(x = 10))
-f_eval(~ f(y), data = list(f = function(x) x * 3))
+f_eval(~ y)
+f_eval(~ y, data = list(y = 10))
 
+# Can mix variables in environment and data argument
+f_eval(~ x + y, data = list(x = 10))
+# Can even supply functions
+f_eval(~ f(y), data = list(f = function(x) x * 3))
+```
+
+This makes it very easy to implement non-standard scoping:
+
+```{r}
 f_eval(~ mean(cyl), data = mtcars)
 ```
 
@@ -246,7 +268,7 @@ f_eval(~ .data$z, data = mydata)
 
 ### Unquoting
 
-`f_eval()` has one more useful trick up its sleeve: unquoting. This allows you to write functions where the user supplies part of the formula. For example, the following function allows you to compute the mean of any column (or any function of a column):
+`f_eval()` has one more useful trick up its sleeve: unquoting. Unquoting allows you to write functions where the user supplies part of the formula. For example, the following function allows you to compute the mean of any column (or any function of a column):
 
 ```{r}
 df_mean <- function(df, variable) {
@@ -258,9 +280,7 @@ df_mean(mtcars, ~ disp * 0.01638)
 df_mean(mtcars, ~ sqrt(mpg))
 ```
 
-To see how this works, we can use `f_interp()` which `f_eval()` calls internally (you shouldn't call it in your own code, but it's useful for debugging). 
-
-`uq()` evaluates its first (and only) argument and inserts the value into the formula:
+To see how this works, we can use `f_interp()` which `f_eval()` calls internally (you shouldn't call it in your own code, but it's useful for debugging). The key is `uq()`: `uq()` evaluates its first (and only) argument and inserts the value into the formula:
     
 ```{r}
 variable <- ~cyl
@@ -270,19 +290,11 @@ variable <- ~ disp * 0.01638
 f_interp(~ mean(uq(variable)))
 ```
 
-This allows you to create code "templates", where you write most of the expression, while still allowing the user to control important components. You can even use `uq()` to change the function being called:
+Unquoting allows you to create code "templates", where you write most of the expression, while still allowing the user to control important components. You can even use `uq()` to change the function being called:
 
 ```{r}
 f <- ~ mean
 f_interp(~ uq(f)(uq(variable)))
-```
-
-Unquoting is powerful, but it only allows you to modify a single argument: it doesn't allow you to add an arbitrary number of arguments. To do that, you'll need "unquote-splice", or `uqs()`. The first (and only) argument to `uqs()` should be a list of arguments to be spliced into the call:
-
-```{r}
-variable <- ~ x
-extra_args <- list(na.rm = TRUE, trim = 0.9)
-f_interp(~ mean(uq(variable), uqs(extra_args)))
 ```
 
 Note that `uq()` only takes the RHS of a formula, which makes it difficult to insert literal formulas into a call:
@@ -298,20 +310,39 @@ You can instead use `uqf()` which uses the whole formula, not just the RHS:
 f_interp(~ lm(uqf(formula), data = df))
 ```
 
+Unquoting is powerful, but it only allows you to modify a single argument: it doesn't allow you to add an arbitrary number of arguments. To do that, you'll need "unquote-splice", or `uqs()`. The first (and only) argument to `uqs()` should be a list of arguments to be spliced into the call:
+
+```{r}
+variable <- ~ x
+extra_args <- list(na.rm = TRUE, trim = 0.9)
+f_interp(~ mean(uq(variable), uqs(extra_args)))
+```
+
 ### Exercises
 
+1.  Create a wrapper around `lm()` that allows the user to supply the 
+    response and predictors as two separate formulas.
+    
 1.  Compare and contrast `f_eval()` with `with()`.
+
+1.  Why does this code work even though `f` is defined in two places? (And
+    one of them is not a function).
+
+    ```{r}
+    f <- function(x) x + 1
+    f_eval(~ f(10), list(f = "a"))
+    ```
 
 ## Non-standard scoping
 
-Non-standard scoping (NSS) is an important part of R because it makes it possible to write functions that are tailored for interactive data exploration. These functions require less typing, at the expense of some ambiguity and "magic". This is a good trade-off for interactive data exploration because you want to get ideas out of your head and into the computer as quickly as possible. If a function does make a bad guess, you'll spot it quickly because you're working interactively.
+Non-standard scoping (NSS) is an important part of R because it makes it easy to write functions tailored for interactive data exploration. These functions require less typing, at the cost of some ambiguity and "magic". This is a good trade-off for interactive data exploration because you want to get ideas out of your head and into the computer as quickly as possible. If a function does make a bad guess, you'll spot it quickly because you're working interactively.
 
 There are three challenges to implementing non-standard scoping:
 
 1.  You must correctly delay the evaluation of a function argument, capturing 
     both the computation (the expression), and the context (the environment).
     I recommend making this explicit by requiring the user to "quote" any NSS
-    arguments with `~`.
+    arguments with `~`, and then evaluating explicit with `f_eval()`.
   
 1.  When writing functions that use NSS-functions, you need some way to
     avoid the automatic lookup and be explicit about where objects should be
@@ -319,9 +350,9 @@ There are three challenges to implementing non-standard scoping:
     pronouns.
 
 1.  You need some way to allow the user to supply parts of a formula. 
-    `f_eval()` solves this through its unquoting tools.
+    `f_eval()` solves this with unquoting.
 
-To illustrate these challenges, I will implement a `sieve()` function that works similarly to `base::subset()` or `dplyr::filter()`. The goal of `sieve()` is to make it easy to select observations that match criteria defined by variable values. `sieve()` has three advantages over `[`:
+To illustrate these challenges, I will implement a `sieve()` function that works similarly to `base::subset()` or `dplyr::filter()`. The goal of `sieve()` is to make it easy to select observations that match criteria defined by a logical expression. `sieve()` has three advantages over `[`:
 
 1.  It is much more compact when the condition uses many variables, because 
     you don't need to repeat the name of the data frame many times.
@@ -395,7 +426,9 @@ There are two ways that this function might fail:
     threshold_x(df3, 3)
     ```
 
-These failures are partiuclarly pernicious because they don't throw an error, but instead silently produce the wrong answer. Both failures arise because `f_eval()` looks in two places for each name: the data frame and formula environment. To make this function more reliable, we need to be more explicit by using the `.data` and `.env` pronouns:
+These failures are partiuclarly pernicious because instead of throwing an error they silently produce the wrong answer. Both failures arise because `f_eval()` introduces ambiguity by looking in two places for each name: the supplied data and formula environment. 
+
+To make `threshold_x()` more reliable, we need to be more explicit by using the `.data` and `.env` pronouns:
 
 ```{r, error = TRUE}
 threshold_x <- function(df, threshold) {
@@ -408,7 +441,7 @@ threshold_x(df3, 3)
 
 Here `.env` is bound to the environment where `~` is evaluated, namely the inside of `threshold_x()`.
 
-### Adding argument
+### Adding arguments
 
 The `threshold_x()` function is not very useful because it's bound to a specific variable. It would be more powerful if we could vary both the threshold and the variable it applies to. We can do that by taking an additional argument to specify which variable to use. 
 
@@ -445,10 +478,10 @@ threshold(df, ~ .data$x - .env$x, 0)
 
 ### Dot-dot-dot
 
-There is one additional tool that you might find useful for functions that take `...`. For example, the code below implements a function similar to `dplyr::mutate()` or `base::transform()` that works with formulas.
+There is one more tool that you might find useful for functions that take `...`. For example, the code below implements a function similar to `dplyr::mutate()` or `base::transform()`.
 
 ```{r}
-transmogrify <- function(`_df`, ...) {
+mogrify <- function(`_df`, ...) {
   args <- list(...)
   
   for (nm in names(args)) {
@@ -465,19 +498,28 @@ transmogrify <- function(`_df`, ...) {
 
 ```{r}
 df <- data.frame(x = 1:5, y = sample(5))
-transmogrify(df, z = ~ x + y, z2 = ~ z * 2)
+mogrify(df, z = ~ x + y, z2 = ~ z * 2)
 ```
 
-One problem with this implementation is that it's hard to specify the names of the generated variables. Lazyeval provides the `f_list()` function to make this a little easier. It takes a list of formulas and evaluates the LHS of each formula (if present) to rename the elements:
+One problem with this implementation is that it's hard to specify the names of the generated variables. Imagine you want a function where the name and expression are in separate variables. This is awkward because the variable name is supplied as an argument name to `mogrify()`:
+
+```{r}
+add_variable <- function(df, name, expr) {
+  do.call("mogrify", c(list(df), setNames(list(expr), name)))
+}
+add_variable(df, "z", ~ x + y)
+```
+
+Lazyeval provides the `f_list()` function to make writing this sort of function a little easier. It takes a list of formulas and evaluates the LHS of each formula (if present) to rename the elements:
 
 ```{r}
 f_list("x" ~ y, z = ~z)
 ```
 
-If we tweak `mutate()` to use `f_list()` instead of `list()`:
+If we tweak `mogrify()` to use `f_list()` instead of `list()`:
 
 ```{r}
-transmogrify <- function(`_df`, ...) {
+mogrify <- function(`_df`, ...) {
   args <- f_list(...)
   
   for (nm in names(args)) {
@@ -488,18 +530,13 @@ transmogrify <- function(`_df`, ...) {
 }
 ```
 
-We can then create a function that allows us to double a variable:
+`add_new()` becomes much simpler:
 
 ```{r}
-double <- function(df, var) {
-  var_name <- f_rhs(var)
-  if (!is_name(var_name)) {
-    stop("`var` must be of the form `~ var`", call. = FALSE)
-  }
-
-  transmogrify(df, paste0(var_name, "2") ~ uq(var) * 2)
+add_variable <- function(df, name, expr) {
+  mogrify(df, name ~ uq(expr))
 }
-double(df, ~ x)
+add_variable(df, "z", ~ x + y)
 ```
 
 ### Exercises
@@ -508,7 +545,7 @@ double(df, ~ x)
     greater than its mean. Make the function more general by allowing the
     user to specify a function to use instead of `mean()` (e.g. `median()`).
 
-1.  Create a version of `transmogrify()` where the first argument is `x`?
+1.  Create a version of `mogrify()` where the first argument is `x`?
     What happens if you try to create a new variable called `x`?
 
 ## Non-standard evaluation
@@ -552,10 +589,10 @@ subscramble(df, x < 4)
 
 ### Dot-dot-dot
 
-If you want a `...` function that doesn't require formulas, I recommend that the SE version take a list of arguments. Use `dots_capture()` to capture multiple arguments as a list of formulas:
+If you want a `...` function that doesn't require formulas, I recommend that the SE version take a list of arguments, and the NSE version uses `dots_capture()` to capture multiple arguments as a list of formulas.
 
 ```{r}
-mutate_ <- function(`_df`, args) {
+mogrify_ <- function(`_df`, args) {
   args <- as_f_list(args)
   
   for (nm in names(args)) {
@@ -565,8 +602,8 @@ mutate_ <- function(`_df`, args) {
   `_df`
 }
 
-mutate <- function(`_df`, ...) {
-  mutate_(`_df`, dots_capture(...))
+mogrify <- function(`_df`, ...) {
+  mogrify_(`_df`, dots_capture(...))
 }
 ```
 
