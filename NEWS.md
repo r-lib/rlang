@@ -1,39 +1,40 @@
 # lazyeval 0.1.10.9000
 
-* A new system for lazy-eval based on formulas, this is described in depth in
-  the new `lazyeval` vignette. There are three key components:
-  
-  * `f_eval()` evaluates a formula in the environment where it was defined. 
-    If supplied, values are first looked for in an optional `data` argument. 
-    Pronouns `.data` and `.env` can be used to resolve ambiguity in this case.
-    (#43)
-    
-  * `f_interp()` provides a full quasiquoting system using `(( ))` for unquote
-    and `({} })` for unquote-splice (#36).
- 
-  * `f_capture()` and `dots_capture()` make it easy to turn promises
-    and `...` into explicit formulas. These should be used sparingly, as
-    generally lazy-eval is preferred to non-standard eval.
-    
-  * For functions that work with `...`, `f_list()` and `as_f_list()` make it
-    possible to use the LHS of a formula to name the elements of a list (#59).
+## Formula-based lazy evaluation
 
-* This is accompanied by a number of helper functions for working with
-  formuals:
-  
-  * Create a formula from a quoted call and an environment with 
-    `f_new()`.
-  
-  * "Unwrap" a formula removing one level from the tree of 
-    parents with `f_unwrap()`.
-    
-  * Identify a formula with `is_formula()`.
-  
-  * Extract the right-hand side with `f_rhs()`. This will throw an error 
-    if the object isn't a formula or has two sides.
+Lazyeval has a  new system for lazy-eval based on formulas, described in depth in the new `lazyeval` vignette. There are three key components:
 
-* `expr_find()`, `expr_text()` and `expr_label()` make it easy to find the 
-  expression associated with a function argument, and label it for output (#58).
+* `f_eval()` evaluates a formula in the environment where it was defined. 
+  If supplied, values are first looked for in an optional `data` argument. 
+  Pronouns `.data` and `.env` can be used to resolve ambiguity in this case.
+  (#43)
+  
+* `f_interp()` provides a full quasiquoting system using `(( ))` for unquote
+  and `({} })` for unquote-splice (#36).
+
+* `f_capture()` and `dots_capture()` make it easy to turn promises
+  and `...` into explicit formulas. These should be used sparingly, as
+  generally lazy-eval is preferred to non-standard eval.
+  
+* For functions that work with `...`, `f_list()` and `as_f_list()` make it
+  possible to use the LHS of a formula to name the elements of a list (#59).
+
+The goal, in the long-term, is to use these tools across all of my packages (ggplot2, tidyr, dplyr, etc). I am fairly confident that this is a robust system that will stand the test of time.
+
+The core components are accompanied by a number of helper functions:
+
+* Create a formula from a quoted call and an environment with `f_new()`.
+
+* "Unwrap" a formula removing one level from the tree of 
+  parents with `f_unwrap()`.
+  
+* Identify a formula with `is_formula()`.
+
+* Either either side of a formula with `f_rhs()` or `f_lhs()`
+
+I've also added `expr_find()`, `expr_text()` and `expr_label()` explicitly to find the expression associated with a function argument, and label it for output (#58). This is one of the primary uses cases for NSE.
+
+## Fixes to existing functions
 
 * `lazy_dots()` gains `.ignore_empty` argument to drop extra arguments (#32).
 
