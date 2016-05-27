@@ -10,4 +10,7 @@ There were no ERRORs, WARNINGs or NOTEs.
 
 ## Downstream dependencies
 
-I ran `R CMD check` on all 7 reverse dependencies (https://github.com/hadley/dplyr/tree/master/revdep/summary.md). As far as I can tell, there are no new problems.
+* I ran `R CMD check` on all 50 reverse dependencies  
+  (https://github.com/hadley/dplyr/tree/master/revdep/). 
+  
+* Authors were notified on May 27.
