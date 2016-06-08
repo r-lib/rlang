@@ -18,10 +18,10 @@ SEXP promise_as_lazy(SEXP promise, SEXP env, int follow_symbols) {
     if (follow_symbols && TYPEOF(promise) == SYMSXP) {
       SEXP obj = findVar(promise, env);
 
-      if (TYPEOF(obj) != PROMSXP)
+      if (obj == R_MissingArg || obj == R_UnboundValue)
         break;
 
-      if (is_lazy_load(obj))
+      if (TYPEOF(obj) == PROMSXP && is_lazy_load(obj))
         break;
 
       promise = obj;
@@ -30,6 +30,8 @@ SEXP promise_as_lazy(SEXP promise, SEXP env, int follow_symbols) {
 
   // Make named list for output
   SEXP lazy = PROTECT(allocVector(VECSXP, 2));
+  if (NAMED(promise) < 2)
+    SET_NAMED(promise, 2);
   SET_VECTOR_ELT(lazy, 0, promise);
   SET_VECTOR_ELT(lazy, 1, env);
 
