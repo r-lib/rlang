@@ -2,7 +2,8 @@
 #'
 #' \code{expr_find()} finds the full expression; \code{expr_text()} turns the
 #' expression into a single string; \code{expr_label()} formats it nicely for
-#' use in messages.
+#' use in messages. \code{expr_env()} finds the environment associated with
+#' the expression.
 #'
 #' These functions never force promises, and will work even if a promise has
 #' previously been forced.
@@ -68,4 +69,23 @@ expr_text <- function(x, width = 60L, nlines = Inf) {
 #' @rdname expr_label
 expr_find <- function(x) {
   .Call(expr_find_, quote(x), environment())
+}
+
+#' @useDynLib lazyeval expr_env_
+#' @param default_env If supplied, \code{expr_env} will return this if the
+#'   promise has already been forced. Otherwise it will throw an error.
+#' @export
+#' @rdname expr_label
+expr_env <- function(x, default_env) {
+  env <- .Call(expr_env_, quote(x), environment())
+
+  if (is.null(env)) {
+    if (missing(default_env)) {
+      stop("Promise has already been forced")
+    } else {
+      default_env
+    }
+  } else {
+    env
+  }
 }

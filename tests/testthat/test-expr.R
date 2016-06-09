@@ -14,6 +14,35 @@ test_that("follows multiple promises", {
   expect_identical(f(x + y), quote(x + y))
 })
 
+
+# expr_env ----------------------------------------------------------------
+
+test_that("follows multiple promises", {
+  f <- function(x) g(x)
+  g <- function(y) h(y)
+  h <- function(z) expr_env(z)
+
+  expect_identical(h(x + y), environment())
+})
+
+test_that("throws error if promise forced", {
+  f <- function(x) {
+    force(x)
+    expr_env(x)
+  }
+  expect_error(f(10), "already been forced")
+})
+
+
+test_that("or can return default env", {
+  env <- new.env(parent = emptyenv())
+  f <- function(x) {
+    force(x)
+    expr_env(x, env)
+  }
+  expect_identical(f(10), env)
+})
+
 # expr_text ---------------------------------------------------------------
 
 test_that("always returns single string", {
