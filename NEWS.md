@@ -1,4 +1,4 @@
-# lazyeval 0.1.10.9000
+# lazyeval 0.2.0
 
 ## Formula-based lazy evaluation
 

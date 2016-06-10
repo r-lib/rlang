@@ -6,24 +6,24 @@
 |:--------|:----------------------------|
 |version  |R version 3.3.0 (2016-05-03) |
 |system   |x86_64, darwin13.4.0         |
-|ui       |RStudio (0.99.1186)          |
+|ui       |X11                          |
 |language |(EN)                         |
 |collate  |en_US.UTF-8                  |
 |tz       |America/Chicago              |
-|date     |2016-05-25                   |
+|date     |2016-06-10                   |
 
 ## Packages
 
-|package   |*  |version     |date       |source                          |
-|:---------|:--|:-----------|:----------|:-------------------------------|
-|covr      |   |2.0.1       |2016-04-06 |CRAN (R 3.3.0)                  |
-|knitr     |   |1.13        |2016-05-09 |CRAN (R 3.3.0)                  |
-|lazyeval  |   |0.1.10.9000 |2016-05-25 |local (hadley/lazyeval@bce211b) |
-|rmarkdown |   |0.9.6       |2016-05-01 |CRAN (R 3.3.0)                  |
-|testthat  |*  |1.0.2       |2016-04-23 |CRAN (R 3.3.0)                  |
+|package   |*  |version     |date       |source                     |
+|:---------|:--|:-----------|:----------|:--------------------------|
+|covr      |   |2.0.1       |2016-04-06 |CRAN (R 3.3.0)             |
+|knitr     |   |1.13        |2016-05-09 |CRAN (R 3.3.0)             |
+|lazyeval  |   |0.1.10.9000 |2016-06-10 |local (hadley/lazyeval@NA) |
+|rmarkdown |   |0.9.6       |2016-05-01 |CRAN (R 3.3.0)             |
+|testthat  |*  |1.0.2.9000  |2016-06-10 |github (hadley/testthat)   |
 
 # Check results
-50 packages
+55 packages
 
 ## alakazam (0.2.3)
 Maintainer: Jason Vander Heiden <jason.vanderheiden@yale.edu>  
@@ -85,25 +85,53 @@ Bug reports: http://github.com/zeehio/condformat/issues
 ## datastepr (0.0.1)
 Maintainer: Brandon Taylor <brandon.taylor221@gmail.com>
 
+0 errors | 1 warning  | 0 notes
+
+```
+checking re-building of vignette outputs ... WARNING
+Error in re-building vignettes:
+  ...
+          recursively.
+
+_E_x_a_m_p_l_e_s:
+
+     step = dataStepClass$new()
+     
+     frame = data.frame(x = 1:10)
+... 8 lines ...
+     }
+     
+     stairs()
+     
+     step$results
+     
+
+Quitting from lines 55-84 (datastepping.Rmd) 
+Error: processing vignette 'datastepping.Rmd' failed with diagnostics:
+incorrect length (2), expecting: 10
+Execution halted
+```
+
+## ddpcr (1.3)
+Maintainer: Dean Attali <daattali@gmail.com>  
+Bug reports: https://github.com/daattali/ddpcr/issues
+
 0 errors | 0 warnings | 0 notes
 
 ## dplyr (0.4.3)
 Maintainer: Hadley Wickham <hadley@rstudio.com>  
 Bug reports: https://github.com/hadley/dplyr/issues
 
-1 error  | 0 warnings | 0 notes
-
-```
-checking package dependencies ... ERROR
-Package required but not available: ‘BH’
-
-See section ‘The DESCRIPTION file’ in the ‘Writing R Extensions’
-manual.
-```
+0 errors | 0 warnings | 0 notes
 
 ## easyformatr (0.1.1)
 Maintainer: Brandon Taylor <brandon.taylor221@gmail.com>  
 Bug reports: https://github.com/bramtayl/easyformatr/issues
+
+0 errors | 0 warnings | 0 notes
+
+## elpatron (0.0.2)
+Maintainer: Jordan Mackie <jmackie@protonmail.com>
 
 0 errors | 0 warnings | 0 notes
 
@@ -192,15 +220,7 @@ Maintainer: Dan Martin <dpmartin42@gmail.com>
 Maintainer: Scott Chamberlain <myrmecocystus@gmail.com>  
 Bug reports: https://github.com/ropensci/jqr/issues
 
-1 error  | 0 warnings | 0 notes
-
-```
-checking package dependencies ... ERROR
-Package required but not available: ‘BH’
-
-See section ‘The DESCRIPTION file’ in the ‘Writing R Extensions’
-manual.
-```
+0 errors | 0 warnings | 0 notes
 
 ## loopr (1.0.1)
 Maintainer: Brandon Taylor <Brandon.Taylor221@gmail.com>
@@ -221,7 +241,26 @@ to your NAMESPACE file.
 ## markmyassignment (0.6.0)
 Maintainer: Mans Magnusson <mons.magnusson@gmail.com>
 
-0 errors | 0 warnings | 0 notes
+1 error  | 0 warnings | 0 notes
+
+```
+checking tests ... ERROR
+Running the tests in ‘tests/testthat.R’ failed.
+Last 13 lines of output:
+  8: make_label(object, label)
+  9: label %||% label(object)
+  10: label(object)
+  11: paste(deparse(as.call(list(x[[1]], quote(...)))), collapse = "\n")
+  12: deparse(as.call(list(x[[1]], quote(...))))
+  
+  testthat results ================================================================
+  OK: 53 SKIPPED: 1 FAILED: 2
+  1. Error: expect_function_self_contained() (@test-expectation.R#8) 
+  2. Error: expect_function_arguments() (@test-expectation.R#22) 
+  
+  Error: testthat unit tests failed
+  Execution halted
+```
 
 ## mosaic (0.13.0)
 Maintainer: Randall Pruim <rpruim@calvin.edu>  
@@ -254,30 +293,6 @@ Calls: MSPE -> gwm -> data.frame -> tally -> <Anonymous> -> .Call
 Execution halted
 ```
 
-## multiplyr (0.1.0)
-Maintainer: Jim Blundell <james.blundell@keble.ox.ac.uk>
-
-1 error  | 0 warnings | 0 notes
-
-```
-checking tests ... ERROR
-Running the tests in ‘tests/testthat.R’ failed.
-Last 13 lines of output:
-  1. Error: arrange() sorts on a single cluster (@test-arrange.R#7) 
-  2. Error: arrange() can sort with multiple levels (@test-arrange.R#27) 
-  3. Error: arrange() sorts on a cluster of size 2 (@test-arrange.R#39) 
-  4. Error: arrange() maintains groups when sorting a grouped data frame (@test-arrange.R#64) 
-  5. Error: arrange() throws an error with undefined columns (@test-arrange.R#78) 
-  6. Error: arrange() can deal with an empty data frame (@test-arrange.R#84) 
-  7. Error: arrange() with no parameters returns data frame unchanged (@test-arrange.R#91) 
-  8. Error: arrange() returns a data frame (@test-arrange.R#97) 
-  9. Error: Multiplyr(x=...) creates the appropriate structure (@test-class.R#8) 
-  1. ...
-  
-  Error: testthat unit tests failed
-  Execution halted
-```
-
 ## ncappc (0.2.1.1)
 Maintainer: Chayan Acharya <chayan.acharya@farmbio.uu.se>
 
@@ -297,6 +312,11 @@ Bug reports: https://github.com/davidcarslaw/openair/issues
 ## photobiologyInOut (0.4.4)
 Maintainer: Pedro J. Aphalo <pedro.aphalo@helsinki.fi>  
 Bug reports: https://bitbucket.org/aphalo/photobiologyinout/
+
+0 errors | 0 warnings | 0 notes
+
+## platetools (0.0.1)
+Maintainer: Scott Warchal <s.warchal@sms.ed.ac.uk>
 
 0 errors | 0 warnings | 0 notes
 
@@ -355,15 +375,12 @@ to your NAMESPACE file.
 Maintainer: Hadley Wickham <hadley@rstudio.com>  
 Bug reports: https://github.com/hadley/purrr/issues
 
-1 error  | 0 warnings | 0 notes
+0 errors | 0 warnings | 0 notes
 
-```
-checking package dependencies ... ERROR
-Package required but not available: ‘BH’
+## R6Frame (0.1.0)
+Maintainer: Kristian D. Olsen <kristian@doingit.no>
 
-See section ‘The DESCRIPTION file’ in the ‘Writing R Extensions’
-manual.
-```
+0 errors | 0 warnings | 0 notes
 
 ## rbokeh (0.4.2)
 Maintainer: Ryan Hafen <rhafen@gmail.com>  
@@ -395,6 +412,23 @@ Bug reports: https://github.com/pierucci/rgho/issues
 
 0 errors | 0 warnings | 0 notes
 
+## riem (0.1.0)
+Maintainer: Maëlle Salmon <maelle.salmon@yahoo.se>  
+Bug reports: http://github.com/ropenscilabs/riem/issues
+
+0 errors | 0 warnings | 1 note 
+
+```
+checking DESCRIPTION meta-information ... NOTE
+Authors@R field gives persons with no valid roles:
+  Brooke Anderson [rev] (Brooke Anderson reviewed the package for rOpenSci, see https://github.com/ropensci/onboarding/issues/39.)
+```
+
+## RmarineHeatWaves (0.13.1)
+Maintainer: Albertus J. Smit <albertus.smit@gmail.com>
+
+0 errors | 0 warnings | 0 notes
+
 ## RNeXML (2.0.6)
 Maintainer: Carl Boettiger <cboettig@gmail.com>  
 Bug reports: https://github.com/ropensci/RNeXML/issues
@@ -406,42 +440,16 @@ checking package dependencies ... NOTE
 Packages suggested but not available for checking: ‘rrdf’ ‘Sxslt’
 ```
 
+## rprev (0.1.0)
+Maintainer: Stuart Lacy <stuart.lacy@york.ac.uk>
+
+0 errors | 0 warnings | 0 notes
+
 ## rscorecard (0.2.5)
 Maintainer: Benjamin Skinner <b.skinner@vanderbilt.edu>  
 Bug reports: http://github.com/btskinner/rscorecard/issues
 
 0 errors | 0 warnings | 0 notes
-
-## SciencesPo (1.3.9)
-Maintainer: Daniel Marcelino <dmarcelino@live.com>  
-Bug reports: http://github.com/danielmarcelino/SciencesPo/issues
-
-0 errors | 1 warning  | 0 notes
-
-```
-checking re-building of vignette outputs ... WARNING
-Error in re-building vignettes:
-  ...
-Units                 Measurement System Units
-bhodrick93            Bekaert's and Hodrick's (1993) Data
-cathedrals            Cathedrals
-cgreene76             Christensen's and Greene's (1976) Data
-galton                Galton's Family Data on Human Stature.
-griliches76           Griliches's (1976) Data
-ltaylor96             Lothian's and Taylor's (1996) Data Set
-... 8 lines ...
-turnout               Turnout Data
-twins                 Burt's twin data
-words                 Word frequencies from Mosteller and Wallace
-
-Loading required package: SciencesPo
-initializing ... done
-
-Quitting from lines 395-399 (SciencesPo.Rmd) 
-Error: processing vignette 'SciencesPo.Rmd' failed with diagnostics:
-polygon edge not found
-Execution halted
-```
 
 ## scrubr (0.1.1)
 Maintainer: Scott Chamberlain <myrmecocystus@gmail.com>  

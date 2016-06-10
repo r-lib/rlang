@@ -6,37 +6,53 @@
 |:--------|:----------------------------|
 |version  |R version 3.3.0 (2016-05-03) |
 |system   |x86_64, darwin13.4.0         |
-|ui       |RStudio (0.99.1186)          |
+|ui       |X11                          |
 |language |(EN)                         |
 |collate  |en_US.UTF-8                  |
 |tz       |America/Chicago              |
-|date     |2016-05-25                   |
+|date     |2016-06-10                   |
 
 ## Packages
 
-|package   |*  |version     |date       |source                          |
-|:---------|:--|:-----------|:----------|:-------------------------------|
-|covr      |   |2.0.1       |2016-04-06 |CRAN (R 3.3.0)                  |
-|knitr     |   |1.13        |2016-05-09 |CRAN (R 3.3.0)                  |
-|lazyeval  |   |0.1.10.9000 |2016-05-25 |local (hadley/lazyeval@bce211b) |
-|rmarkdown |   |0.9.6       |2016-05-01 |CRAN (R 3.3.0)                  |
-|testthat  |*  |1.0.2       |2016-04-23 |CRAN (R 3.3.0)                  |
+|package   |*  |version     |date       |source                     |
+|:---------|:--|:-----------|:----------|:--------------------------|
+|covr      |   |2.0.1       |2016-04-06 |CRAN (R 3.3.0)             |
+|knitr     |   |1.13        |2016-05-09 |CRAN (R 3.3.0)             |
+|lazyeval  |   |0.1.10.9000 |2016-06-10 |local (hadley/lazyeval@NA) |
+|rmarkdown |   |0.9.6       |2016-05-01 |CRAN (R 3.3.0)             |
+|testthat  |*  |1.0.2.9000  |2016-06-10 |github (hadley/testthat)   |
 
 # Check results
-9 packages with problems
+6 packages with problems
 
-## dplyr (0.4.3)
-Maintainer: Hadley Wickham <hadley@rstudio.com>  
-Bug reports: https://github.com/hadley/dplyr/issues
+## datastepr (0.0.1)
+Maintainer: Brandon Taylor <brandon.taylor221@gmail.com>
 
-1 error  | 0 warnings | 0 notes
+0 errors | 1 warning  | 0 notes
 
 ```
-checking package dependencies ... ERROR
-Package required but not available: ‘BH’
+checking re-building of vignette outputs ... WARNING
+Error in re-building vignettes:
+  ...
+          recursively.
 
-See section ‘The DESCRIPTION file’ in the ‘Writing R Extensions’
-manual.
+_E_x_a_m_p_l_e_s:
+
+     step = dataStepClass$new()
+     
+     frame = data.frame(x = 1:10)
+... 8 lines ...
+     }
+     
+     stairs()
+     
+     step$results
+     
+
+Quitting from lines 55-84 (datastepping.Rmd) 
+Error: processing vignette 'datastepping.Rmd' failed with diagnostics:
+incorrect length (2), expecting: 10
+Execution halted
 ```
 
 ## ggvis (0.4.2)
@@ -86,18 +102,28 @@ to your NAMESPACE file (and ensure that your DESCRIPTION Imports field
 contains 'methods').
 ```
 
-## jqr (0.2.3)
-Maintainer: Scott Chamberlain <myrmecocystus@gmail.com>  
-Bug reports: https://github.com/ropensci/jqr/issues
+## markmyassignment (0.6.0)
+Maintainer: Mans Magnusson <mons.magnusson@gmail.com>
 
 1 error  | 0 warnings | 0 notes
 
 ```
-checking package dependencies ... ERROR
-Package required but not available: ‘BH’
-
-See section ‘The DESCRIPTION file’ in the ‘Writing R Extensions’
-manual.
+checking tests ... ERROR
+Running the tests in ‘tests/testthat.R’ failed.
+Last 13 lines of output:
+  8: make_label(object, label)
+  9: label %||% label(object)
+  10: label(object)
+  11: paste(deparse(as.call(list(x[[1]], quote(...)))), collapse = "\n")
+  12: deparse(as.call(list(x[[1]], quote(...))))
+  
+  testthat results ================================================================
+  OK: 53 SKIPPED: 1 FAILED: 2
+  1. Error: expect_function_self_contained() (@test-expectation.R#8) 
+  2. Error: expect_function_arguments() (@test-expectation.R#22) 
+  
+  Error: testthat unit tests failed
+  Execution halted
 ```
 
 ## mosaic (0.13.0)
@@ -129,30 +155,6 @@ The error most likely occurred in:
 Error in lazyeval::lazy(x) : Promise has already been forced
 Calls: MSPE -> gwm -> data.frame -> tally -> <Anonymous> -> .Call
 Execution halted
-```
-
-## multiplyr (0.1.0)
-Maintainer: Jim Blundell <james.blundell@keble.ox.ac.uk>
-
-1 error  | 0 warnings | 0 notes
-
-```
-checking tests ... ERROR
-Running the tests in ‘tests/testthat.R’ failed.
-Last 13 lines of output:
-  1. Error: arrange() sorts on a single cluster (@test-arrange.R#7) 
-  2. Error: arrange() can sort with multiple levels (@test-arrange.R#27) 
-  3. Error: arrange() sorts on a cluster of size 2 (@test-arrange.R#39) 
-  4. Error: arrange() maintains groups when sorting a grouped data frame (@test-arrange.R#64) 
-  5. Error: arrange() throws an error with undefined columns (@test-arrange.R#78) 
-  6. Error: arrange() can deal with an empty data frame (@test-arrange.R#84) 
-  7. Error: arrange() with no parameters returns data frame unchanged (@test-arrange.R#91) 
-  8. Error: arrange() returns a data frame (@test-arrange.R#97) 
-  9. Error: Multiplyr(x=...) creates the appropriate structure (@test-class.R#8) 
-  1. ...
-  
-  Error: testthat unit tests failed
-  Execution halted
 ```
 
 ## poplite (0.99.16)
@@ -204,51 +206,6 @@ Consider adding
   importFrom("stats", "na.omit", "setNames")
   importFrom("utils", "stack")
 to your NAMESPACE file.
-```
-
-## purrr (0.2.1)
-Maintainer: Hadley Wickham <hadley@rstudio.com>  
-Bug reports: https://github.com/hadley/purrr/issues
-
-1 error  | 0 warnings | 0 notes
-
-```
-checking package dependencies ... ERROR
-Package required but not available: ‘BH’
-
-See section ‘The DESCRIPTION file’ in the ‘Writing R Extensions’
-manual.
-```
-
-## SciencesPo (1.3.9)
-Maintainer: Daniel Marcelino <dmarcelino@live.com>  
-Bug reports: http://github.com/danielmarcelino/SciencesPo/issues
-
-0 errors | 1 warning  | 0 notes
-
-```
-checking re-building of vignette outputs ... WARNING
-Error in re-building vignettes:
-  ...
-Units                 Measurement System Units
-bhodrick93            Bekaert's and Hodrick's (1993) Data
-cathedrals            Cathedrals
-cgreene76             Christensen's and Greene's (1976) Data
-galton                Galton's Family Data on Human Stature.
-griliches76           Griliches's (1976) Data
-ltaylor96             Lothian's and Taylor's (1996) Data Set
-... 8 lines ...
-turnout               Turnout Data
-twins                 Burt's twin data
-words                 Word frequencies from Mosteller and Wallace
-
-Loading required package: SciencesPo
-initializing ... done
-
-Quitting from lines 395-399 (SciencesPo.Rmd) 
-Error: processing vignette 'SciencesPo.Rmd' failed with diagnostics:
-polygon edge not found
-Execution halted
 ```
 
 ## tibble (1.0)
