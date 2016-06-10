@@ -67,6 +67,12 @@ test_that("unquoted formulas can use data", {
   expect_equal(f_eval(~ uq(f2()), data = list(x = 1)), 101)
 })
 
+test_that("f_eval_lhs uses lhs", {
+  f <- 1 ~ 2
+
+  expect_equal(f_eval_lhs(f), 1)
+})
+
 
 # find_data ---------------------------------------------------------------
 

@@ -1,8 +1,33 @@
+#' @export
+#' @rdname f_eval
+f_eval_rhs <- function(f, data = NULL) {
+  if (!is_formula(f)) {
+    stop("`f` is not a formula", call. = FALSE)
+  }
+
+  expr <- f_rhs(f_interp(f, data = data))
+  eval_expr(expr, f_env(f), data)
+}
+
+#' @export
+#' @rdname f_eval
+f_eval_lhs <- function(f, data = NULL) {
+  if (!is_formula(f)) {
+    stop("`f` is not a formula", call. = FALSE)
+  }
+
+  expr <- f_lhs(f_interp(f, data = data))
+  eval_expr(expr, f_env(f), data)
+}
+
 #' Evaluate a formula
 #'
-#' \code{f_eval} evaluates the \code{\link{f_rhs}} of a formula in its environment.
-#' If \code{data} is supplied, it will look for the values associated with
-#' symbols in there first.
+#' \code{f_eval_rhs} evaluates the RHS of a formula and \code{f_eval_lhs}
+#' evaluates the LHS. \code{f_eval} is a shortcut for \code{f_eval_rhs} since
+#' that is what you most commonly need.
+#'
+#' If \code{data} is specified, variables will be looked for first in this
+#' object, and if not found in the environment of the formula.
 #'
 #' @section Pronouns:
 #' When used with \code{data}, \code{f_eval} provides two pronouns to make it
@@ -47,15 +72,11 @@
 #' # See ?f_interp for more details
 #' var <- ~ cyl
 #' f_eval(~ mean( uq(var) ), mtcars)
-f_eval <- function(f, data = NULL) {
-  if (!is_formula(f)) {
-    stop("`f` is not a formula", call. = FALSE)
-  }
+f_eval <- f_eval_rhs
 
-  expr <- f_rhs(f_interp(f, data = data))
 
+eval_expr <- function(expr, env, data) {
   data <- find_data(data)
-  env <- environment(f)
 
   expr_env <- new.env(parent = env)
   expr_env$.env <- complain(env, "Object '%s' not found in environment")
@@ -63,6 +84,7 @@ f_eval <- function(f, data = NULL) {
 
   eval(expr, data, expr_env)
 }
+
 
 #' @rdname f_eval
 #' @export

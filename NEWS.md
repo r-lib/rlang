@@ -9,7 +9,8 @@ There are three key components:
 * `f_eval()` evaluates a formula in the environment where it was defined. 
   If supplied, values are first looked for in an optional `data` argument. 
   Pronouns `.data` and `.env` can be used to resolve ambiguity in this case.
-  (#43)
+  (#43). Longer forms `f_eval_rhs()` and `f_eval_lhs()` emphasise the side
+  of the formula that you want to evaluate (#64).
   
 * `f_interp()` provides a full quasiquoting system using `uq()` for unquote
   and `uqs()` for unquote-splice (#36).
