@@ -21,7 +21,7 @@
 #' is_lang(q3)
 #' is_call(q3)
 is_lang <- function(x) {
-  is_call(x) || is_pairlist(x) || is_atomic(x) || is_name(x)
+  is_call(x) || is_pairlist(x) || is_atomic(x) || is_name(x) || is.null(x)
 }
 
 #' @rdname is_lang
