@@ -33,6 +33,8 @@ The core components are accompanied by a number of helper functions:
   
 * Get or set either side of a formula with `f_rhs()` or `f_lhs()`, and
   the environment with `f_env()`.
+  
+* Convert to text/label with `f_text()` and `f_label()`.
 
 I've also added `expr_find()`, `expr_text()` and `expr_label()` explicitly to find the expression associated with a function argument, and label it for output (#58). This is one of the primary uses cases for NSE. `expr_env()` is a similar helper that returns the environment associated with a promise (#67).
 

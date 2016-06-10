@@ -31,8 +31,10 @@
 #'   print(x)
 #' }))
 expr_label <- function(x) {
-  x <- expr_find(x)
+  expr_label_(expr_find(x))
+}
 
+expr_label_ <- function(x) {
   if (is.character(x)) {
     encodeString(x, quote = '"')
   } else if (is.atomic(x)) {
@@ -54,7 +56,10 @@ expr_label <- function(x) {
 #' @param width Width of each line
 #' @param nlines Maximum number of lines to extract.
 expr_text <- function(x, width = 60L, nlines = Inf) {
-  x <- expr_find(x)
+  expr_text_(expr_find(x), width = width, nlines = nlines)
+}
+
+expr_text_ <- function(x, width = 60L, nlines = Inf) {
   str <- deparse(x, width.cutoff = width)
 
   if (length(str) > nlines) {

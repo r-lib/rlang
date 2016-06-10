@@ -104,6 +104,37 @@ f_env <- function(f) {
   f_new(f_rhs(x), f_lhs(x), value)
 }
 
+#' Turn RHS of formula into a string/label.
+#'
+#' Equivalent of \code{\link{expr_text}()} and \code{\link{expr_label}()} for
+#' formulas.
+#'
+#' @param x A formula.
+#' @inheritParams expr_text
+#' @export
+#' @examples
+#' f <- ~ a + b + bc
+#' f_text(f)
+#' f_label(f)
+#'
+#' # Names a quoted with ``
+#' f_label(~ x)
+#' # Strings are encoded
+#' f_label(~ "a\nb")
+#' # Long expressions are collapsed
+#' f_label(~ foo({
+#'   1 + 2
+#'   print(x)
+#' }))
+f_text <- function(x, width = 60L, nlines = Inf) {
+  expr_text_(f_rhs(x), width = width, nlines = nlines)
+}
+
+#' @export
+#' @rdname f_text
+f_label <- function(x) {
+  expr_label_(f_rhs(x))
+}
 
 #' Unwrap a formula
 #'
