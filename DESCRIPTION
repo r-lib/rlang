@@ -1,5 +1,5 @@
 Package: lazyeval
-Version: 0.2.0
+Version: 0.2.0.9000
 Title: Lazy (Non-Standard) Evaluation
 Description: An alternative approach to non-standard evaluation using
     formulas. Provides a full implementation of LISP style 'quasiquotation',
