@@ -8,12 +8,6 @@
 #' f_new(quote(a))
 #' f_new(quote(a), quote(b))
 f_new <- function(rhs, lhs = NULL, env = parent.frame()) {
-  if (!is_lang(rhs)) {
-    stop("`rhs` must be a language object", call. = FALSE)
-  }
-  if (!is_lang(lhs) && !is.null(lhs)) {
-    stop("`lhs` must be a language object", call. = FALSE)
-  }
   if (!is.environment(env)) {
     stop("`env` must be an environment", call. = FALSE)
   }

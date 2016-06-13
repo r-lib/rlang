@@ -2,9 +2,7 @@ context("formula")
 
 # Creation ----------------------------------------------------------------
 
-test_that("expr must be valid type", {
-  expect_error(f_new(list()), "must be a language object")
-  expect_error(f_new(quote(a), list()), "must be a language object")
+test_that("env must be an environment", {
   expect_error(f_new(quote(a), env = list()), "must be an environment")
 })
 

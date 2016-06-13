@@ -1,5 +1,7 @@
 # lazyeval 0.2.0.9000
 
+* No longer check the type of the sides of the formula.
+
 # lazyeval 0.2.0
 
 ## Formula-based lazy evaluation
