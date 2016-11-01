@@ -49,19 +49,20 @@
 #' # The context stacks includes all intervening execution frames. The
 #' # call stack doesn't:
 #' f <- function(x) identity(x)
+#' f(f(ctxt_stack()))
+#' f(f(call_stack()))
+#'
 #' g <- function(cmd) cmd()
 #' f(g(ctxt_stack))
 #' f(g(call_stack))
 #'
-#' #' # When called at top level, the output of ctxt_stack() is
-#' # more consistent than that of sys.parents():
+#' # The lazyeval _stack() functions return a list of frame
+#' # objects. Use purrr::transpose() or index a field with
+#' # purrr::map()'s to extract a particular field from a stack:
 #' if (requireNamespace("purrr", quietly = TRUE)) {
-#'   parents <- identity(identity(identity(sys.parents())))
-#'   stack <- identity(identity(identity(ctxt_stack())))
-#'   callers <- purrr::map_int(stack, "pos")
-#'
-#'   parents
-#'   callers
+#'   stack <- f(f(call_stack()))
+#'   purrr::map(stack, "env")
+#'   purrr::transpose(stack)$expr
 #' }
 NULL
 
