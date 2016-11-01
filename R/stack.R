@@ -194,20 +194,8 @@ ctxt_stack_envs <- function(n = 1) {
   rev(drop_last(envs))
 }
 ctxt_stack_callers <- function() {
-  if (identical(parent.frame(1), globalenv())) {
-    # sys.parents() returns integer(0) at top level. Avoid this
-    # inconsistency with ctxt_caller().
-    #
-    # Note that this cannot be unit-tested because there is no way to
-    # simulate a top-level call from testthat. The following called at
-    # top level should return 0 0 0:
-    #
-    #   identity(identity(identity(ctxt_stack_callers())))
-    rep(0L, sys.nframe() - 1)
-  } else {
-    callers <- sys.parents()
-    rev(drop_last(callers))
-  }
+  callers <- sys.parents()
+  rev(drop_last(callers))
 }
 ctxt_stack_funs <- function() {
   pos <- sys.nframe()
