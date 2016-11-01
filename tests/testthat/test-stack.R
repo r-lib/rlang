@@ -86,36 +86,8 @@ test_that("call_pos() returns correct depth", {
   expect_equal(fixup_call_pos(g()), 2)
 })
 
-test_that("call_stack_trail() ignores irrelevant frames", {
-  f1 <- function(x) f2(x)
-  f2 <- function(x) f3()
-  f3 <- function(x) call_stack_trail()
-
-  trail1 <- f1()
-  expect_equal(fixup_call_trail(trail1), c(3, 2, 1))
-
-  trail2 <- identity(identity(f1()))
-  expect_equal(fixup_call_trail(trail2), c(5, 4, 3))
-})
-
 test_that("call_env() is the same as parent.frame()", {
   expect_identical(call_env(), parent.frame())
-})
-
-test_that("call_stack_envs() gives same result as iterative parent.frame()", {
-  iterative_pf <- function() {
-    pos <- call_pos() - 1
-    out <- vector("list", pos)
-    for (i in seq_len(pos)) {
-      out[[i]] <- parent.frame(i)
-    }
-    out
-  }
-
-  envs1 <- call_stack_envs()
-  envs2 <- iterative_pf()
-
-  expect_identical(envs1, envs2)
 })
 
 test_that("call_expr() gives expression of caller not previous ctxt", {
@@ -130,15 +102,46 @@ test_that("call_expr() gives expression of caller not previous ctxt", {
   expect_equal(g(), quote(g()))
 })
 
-test_that("call_stack_exprs() is in opposite order to sys calls", {
+
+context("call_stack()") # --------------------------------------------
+
+test_that("call_stack() trail ignores irrelevant frames", {
+  f1 <- function(x) f2(x)
+  f2 <- function(x) f3()
+  f3 <- function(x) call_stack()
+
+  stack1 <- f1()
+  trail1 <- purrr::map_int(stack1, "pos")
+  expect_equal(fixup_call_trail(trail1), c(3, 2, 1))
+
+  stack2 <- identity(identity(f1()))
+  trail2 <- purrr::map_int(stack2, "pos")
+  expect_equal(fixup_call_trail(trail2), c(5, 4, 3))
+})
+
+test_that("call_stack() envs give same result as iterative parent.frame()", {
+  iterative_pf <- function() {
+    pos <- call_pos() - 1
+    out <- vector("list", pos)
+    for (i in seq_len(pos)) {
+      out[[i]] <- parent.frame(i)
+    }
+    out
+  }
+
+  stack <- call_stack()
+  envs1 <- purrr::map(stack, "env")
+  envs2 <- iterative_pf()
+
+  expect_identical(envs1, envs2)
+})
+
+test_that("call_stack() exprs is in opposite order to sys calls", {
   syscalls <- sys.calls()
-  exprs <- call_stack_exprs()
+  exprs <- purrr::map(call_stack(), "expr")
   expect_equal(exprs[[length(exprs)]], syscalls[[1]])
   expect_equal(exprs[[1]], syscalls[[length(syscalls)]])
 })
-
-
-context("stack summaries") # -----------------------------------------
 
 test_that("ctxt_stack() and call_stack() agree", {
   call_stack <- call_stack()

@@ -16,8 +16,8 @@ fixup_call_pos <- function(x) {
 }
 
 fixup_call_trail <- function(trail) {
-  cur_trail <- call_stack_trail()
-  cur_trail <- drop_first(cur_trail)
+  ctxt_callers <- ctxt_stack_callers()
+  cur_trail <- make_trail(ctxt_callers)
   cur_pos <- cur_trail[1]
 
   indices <- seq(1, length(trail) - length(cur_trail))

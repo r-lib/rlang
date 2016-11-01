@@ -137,7 +137,9 @@ make_trail <- function(callers, n = NULL) {
 #' @rdname stack
 #' @export
 call_pos <- function() {
-  length(call_stack_trail()) - 1
+  ctxt_callers <- ctxt_stack_callers()
+  trail <- make_trail(ctxt_callers)
+  length(trail)
 }
 #' @rdname stack
 #' @export
@@ -188,9 +190,6 @@ print.frame <- function(x, ...) {
   cat("   env: ", format(x$env), "\n", sep = "")
 }
 
-# TODO: Implement this a little more efficiently by making a call
-# trail only once.
-
 #' @rdname stack
 #' @export
 ctxt_stack <- function() {
@@ -203,24 +202,6 @@ ctxt_stack <- function() {
   )
 
   # Remove ctxt_stack() from stack
-  contexts <- lapply(contexts, drop_first)
-
-  frames <- zip(contexts)
-  lapply(frames, new_frame)
-}
-
-#' @rdname stack
-#' @export
-call_stack <- function() {
-  contexts <- list(
-    expr = call_stack_exprs(),
-    env = call_stack_envs(),
-    pos = call_stack_trail(),
-    caller = call_stack_callers(),
-    fun = call_stack_funs()
-  )
-
-  # Remove call_stack() from stack
   contexts <- lapply(contexts, drop_first)
 
   frames <- zip(contexts)
@@ -261,27 +242,20 @@ ctxt_stack_funs <- function() {
   lapply(ctxt_indices, sys.function)
 }
 
-call_stack_trail <- function() {
-  callers <- ctxt_stack_callers()
-  make_trail(callers)
-}
-call_stack_envs <- function() {
-  trail <- call_stack_trail()
-  trail <- drop_first(trail)
-  lapply(trail, sys.frame)
-}
-call_stack_exprs <- function() {
-  trail <- call_stack_trail()
-  trail <- drop_first(trail)
-  lapply(trail, sys.call)
-}
-call_stack_callers <- function() {
-  trail <- call_stack_trail()
-  trail <- drop_first(trail)
-  c(trail[-1], 0)
-}
-call_stack_funs <- function() {
-  trail <- call_stack_trail()
-  trail <- drop_first(trail)
-  lapply(trail, sys.function)
+#' @rdname stack
+#' @export
+call_stack <- function() {
+  ctxt_callers <- ctxt_stack_callers()
+  trail <- make_trail(ctxt_callers)
+
+  info <- list(
+    expr = lapply(trail, sys.call),
+    env = lapply(trail, sys.frame),
+    pos = trail,
+    caller = c(trail[-1], 0),
+    fun = lapply(trail, sys.function)
+  )
+
+  frames <- zip(info)
+  lapply(frames, new_frame)
 }
