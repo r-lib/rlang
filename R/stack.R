@@ -13,28 +13,23 @@
 #' information.
 #'
 #' \itemize{
-#'   \item The \code{_expr()}, \code{_env()}, \code{_caller()} and
-#'         \code{_fun()} functions report about the call expression,
-#'         the calling environment, and the caller function
-#'         respectively.
+#'   \item The \code{_expr()}, \code{_env()}, and \code{_fun()}
+#'         functions report about the call expression, the calling
+#'         environment, and the caller function respectively.
 #'   \item The \code{_pos()} and \code{_caller()} functions report
 #'         about the callee and caller positions in the stack.
-#'   \item The plural \code{_stack_} functions such as
-#'         \code{call_stack_exprs()} report about the whole call stack
-#'         from the global context to the currently active
-#'         context. The \code{_trail} suffix is the plural of
-#'         \code{_pos} (e.g., \code{call_stack_trail()} is the plural
-#'         of \code{call_pos()}).
 #'   \item Finally, the \code{ctxt_stack()} and \code{call_stack()}
 #'         methods provide a summary of the context and call stacks
-#'         with a handy \code{print()} method.
+#'         with a handy \code{print()} method. They return a S3 object
+#'         containing the following fields: \code{expr}, \code{env},
+#'         \code{pos}, \code{caller} and \code{fun}
 #' }
 #'
 #' The base R functions take two sorts of arguments to indicate which
 #' frame to query: \code{which} and \code{n}. The \code{n} argument is
 #' straightforward: it's the number of frames to go back in the stack,
 #' with \code{n = 1} referring to the current context. The
-#' \code{which} argument are more complicated and changes meaning for
+#' \code{which} argument is more complicated and changes meaning for
 #' values lower than 1. For the sake of consistency, the lazyeval
 #' functions all take the same kind of argument \code{n}. This
 #' argument has a single meaning (the number of frames to go back in
@@ -57,60 +52,21 @@
 #' g <- function(cmd) cmd()
 #' f(g(ctxt_stack))
 #' f(g(call_stack))
+#'
+#' #' # When called at top level, the output of ctxt_stack() is
+#' # more consistent than that of sys.parents():
+#' if (requireNamespace("purrr", quietly = TRUE)) {
+#'   parents <- identity(identity(identity(sys.parents())))
+#'   stack <- identity(identity(identity(ctxt_stack())))
+#'   callers <- purrr::map_int(stack, "pos")
+#'
+#'   parents
+#'   callers
+#' }
 NULL
 
 
 # Context stack ------------------------------------------------------
-
-#' @rdname stack
-#' @export
-ctxt_stack_trail <- function() {
-  pos <- sys.nframe() - 1
-  seq(pos, 1)
-}
-#' @rdname stack
-#' @export
-ctxt_stack_exprs <- function() {
-  exprs <- sys.calls()
-  rev(drop_last(exprs))
-}
-#' @rdname stack
-#' @export
-ctxt_stack_envs <- function(n = 1) {
-  envs <- sys.frames()
-  rev(drop_last(envs))
-}
-#' @rdname stack
-#' @export
-#' @examples
-#'
-#' # When called at top level, the output of ctxt_stack_callers() is
-#' # more consistent than that of sys.parents():
-#' identity(identity(identity(sys.parents())))
-#' identity(identity(identity(ctxt_stack_callers())))
-ctxt_stack_callers <- function() {
-  if (identical(parent.frame(1), globalenv())) {
-    # sys.parents() returns integer(0) at top level. Avoid this
-    # inconsistency with ctxt_caller().
-    #
-    # Note that this cannot be unit-tested because there is no way to
-    # simulate a top-level call from testthat. The following called at
-    # top level should return 0 0 0:
-    #
-    #   identity(identity(identity(ctxt_stack_callers())))
-    rep(0L, sys.nframe() - 1)
-  } else {
-    callers <- sys.parents()
-    rev(drop_last(callers))
-  }
-}
-#' @rdname stack
-#' @export
-ctxt_stack_funs <- function() {
-  pos <- ctxt_pos()
-  ctxt_indices <- seq_len(pos - 1)
-  lapply(ctxt_indices, sys.function)
-}
 
 #' @rdname stack
 #' @export
@@ -179,41 +135,6 @@ make_trail <- function(callers, n = NULL) {
 
 #' @rdname stack
 #' @export
-call_stack_trail <- function() {
-  callers <- ctxt_stack_callers()
-  make_trail(callers)
-}
-#' @rdname stack
-#' @export
-call_stack_envs <- function() {
-  trail <- call_stack_trail()
-  trail <- drop_first(trail)
-  lapply(trail, sys.frame)
-}
-#' @rdname stack
-#' @export
-call_stack_exprs <- function() {
-  trail <- call_stack_trail()
-  trail <- drop_first(trail)
-  lapply(trail, sys.call)
-}
-#' @rdname stack
-#' @export
-call_stack_callers <- function() {
-  trail <- call_stack_trail()
-  trail <- drop_first(trail)
-  c(trail[-1], 0)
-}
-#' @rdname stack
-#' @export
-call_stack_funs <- function() {
-  trail <- call_stack_trail()
-  trail <- drop_first(trail)
-  lapply(trail, sys.function)
-}
-
-#' @rdname stack
-#' @export
 call_pos <- function() {
   length(call_stack_trail()) - 1
 }
@@ -266,6 +187,9 @@ print.frame <- function(x, ...) {
   cat("   env: ", format(x$env), "\n", sep = "")
 }
 
+# TODO: Implement this a little more efficiently by making a call
+# trail only once.
+
 #' @rdname stack
 #' @export
 ctxt_stack <- function() {
@@ -273,7 +197,8 @@ ctxt_stack <- function() {
     expr = ctxt_stack_exprs(),
     env = ctxt_stack_envs(),
     pos = ctxt_stack_trail(),
-    caller = ctxt_stack_callers()
+    caller = ctxt_stack_callers(),
+    fun = ctxt_stack_funs()
   )
 
   # Remove ctxt_stack() from stack
@@ -290,7 +215,8 @@ call_stack <- function() {
     expr = call_stack_exprs(),
     env = call_stack_envs(),
     pos = call_stack_trail(),
-    caller = call_stack_callers()
+    caller = call_stack_callers(),
+    fun = call_stack_funs()
   )
 
   # Remove call_stack() from stack
@@ -298,4 +224,63 @@ call_stack <- function() {
 
   frames <- zip(contexts)
   lapply(frames, new_frame)
+}
+
+ctxt_stack_trail <- function() {
+  pos <- sys.nframe() - 1
+  seq(pos, 1)
+}
+ctxt_stack_exprs <- function() {
+  exprs <- sys.calls()
+  rev(drop_last(exprs))
+}
+ctxt_stack_envs <- function(n = 1) {
+  envs <- sys.frames()
+  rev(drop_last(envs))
+}
+ctxt_stack_callers <- function() {
+  if (identical(parent.frame(1), globalenv())) {
+    # sys.parents() returns integer(0) at top level. Avoid this
+    # inconsistency with ctxt_caller().
+    #
+    # Note that this cannot be unit-tested because there is no way to
+    # simulate a top-level call from testthat. The following called at
+    # top level should return 0 0 0:
+    #
+    #   identity(identity(identity(ctxt_stack_callers())))
+    rep(0L, sys.nframe() - 1)
+  } else {
+    callers <- sys.parents()
+    rev(drop_last(callers))
+  }
+}
+ctxt_stack_funs <- function() {
+  pos <- ctxt_pos()
+  ctxt_indices <- seq_len(pos - 1)
+  lapply(ctxt_indices, sys.function)
+}
+
+call_stack_trail <- function() {
+  callers <- ctxt_stack_callers()
+  make_trail(callers)
+}
+call_stack_envs <- function() {
+  trail <- call_stack_trail()
+  trail <- drop_first(trail)
+  lapply(trail, sys.frame)
+}
+call_stack_exprs <- function() {
+  trail <- call_stack_trail()
+  trail <- drop_first(trail)
+  lapply(trail, sys.call)
+}
+call_stack_callers <- function() {
+  trail <- call_stack_trail()
+  trail <- drop_first(trail)
+  c(trail[-1], 0)
+}
+call_stack_funs <- function() {
+  trail <- call_stack_trail()
+  trail <- drop_first(trail)
+  lapply(trail, sys.function)
 }

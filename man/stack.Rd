@@ -7,35 +7,15 @@
 \alias{call_fun}
 \alias{call_pos}
 \alias{call_stack}
-\alias{call_stack_callers}
-\alias{call_stack_envs}
-\alias{call_stack_exprs}
-\alias{call_stack_funs}
-\alias{call_stack_trail}
 \alias{ctxt_caller}
 \alias{ctxt_env}
 \alias{ctxt_expr}
 \alias{ctxt_fun}
 \alias{ctxt_pos}
 \alias{ctxt_stack}
-\alias{ctxt_stack_callers}
-\alias{ctxt_stack_envs}
-\alias{ctxt_stack_exprs}
-\alias{ctxt_stack_funs}
-\alias{ctxt_stack_trail}
 \alias{stack}
 \title{Call stack information}
 \usage{
-ctxt_stack_trail()
-
-ctxt_stack_exprs()
-
-ctxt_stack_envs(n = 1)
-
-ctxt_stack_callers()
-
-ctxt_stack_funs()
-
 ctxt_pos()
 
 ctxt_expr(n = 1)
@@ -45,16 +25,6 @@ ctxt_env(n = 1)
 ctxt_caller(n = 1)
 
 ctxt_fun(n = 1)
-
-call_stack_trail()
-
-call_stack_envs()
-
-call_stack_exprs()
-
-call_stack_callers()
-
-call_stack_funs()
 
 call_pos()
 
@@ -88,28 +58,23 @@ information.
 }
 \details{
 \itemize{
-  \item The \code{_expr()}, \code{_env()}, \code{_caller()} and
-        \code{_fun()} functions report about the call expression,
-        the calling environment, and the caller function
-        respectively.
+  \item The \code{_expr()}, \code{_env()}, and \code{_fun()}
+        functions report about the call expression, the calling
+        environment, and the caller function respectively.
   \item The \code{_pos()} and \code{_caller()} functions report
         about the callee and caller positions in the stack.
-  \item The plural \code{_stack_} functions such as
-        \code{call_stack_exprs()} report about the whole call stack
-        from the global context to the currently active
-        context. The \code{_trail} suffix is the plural of
-        \code{_pos} (e.g., \code{call_stack_trail()} is the plural
-        of \code{call_pos()}).
   \item Finally, the \code{ctxt_stack()} and \code{call_stack()}
         methods provide a summary of the context and call stacks
-        with a handy \code{print()} method.
+        with a handy \code{print()} method. They return a S3 object
+        containing the following fields: \code{expr}, \code{env},
+        \code{pos}, \code{caller} and \code{fun}
 }
 
 The base R functions take two sorts of arguments to indicate which
 frame to query: \code{which} and \code{n}. The \code{n} argument is
 straightforward: it's the number of frames to go back in the stack,
 with \code{n = 1} referring to the current context. The
-\code{which} argument are more complicated and changes meaning for
+\code{which} argument is more complicated and changes meaning for
 values lower than 1. For the sake of consistency, the lazyeval
 functions all take the same kind of argument \code{n}. This
 argument has a single meaning (the number of frames to go back in
@@ -131,9 +96,15 @@ g <- function(cmd) cmd()
 f(g(ctxt_stack))
 f(g(call_stack))
 
-# When called at top level, the output of ctxt_stack_callers() is
+#' # When called at top level, the output of ctxt_stack() is
 # more consistent than that of sys.parents():
-identity(identity(identity(sys.parents())))
-identity(identity(identity(ctxt_stack_callers())))
+if (requireNamespace("purrr", quietly = TRUE)) {
+  parents <- identity(identity(identity(sys.parents())))
+  stack <- identity(identity(identity(ctxt_stack())))
+  callers <- purrr::map_int(stack, "pos")
+
+  parents
+  callers
+}
 }
 
