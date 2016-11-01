@@ -76,26 +76,17 @@ call_stack()
 \description{
 The \code{ctxt_} and \code{call_} families of functions provide a
 replacement for the base R functions prefixed with \code{sys.}, as
-well as for \code{\link{parent.frame}()}. The context stack
-includes all R-level evaluation contexts. It is linear in terms of
-execution history but due to lazy evaluation it is potentially
-nonlinear in terms of call history. The call stack on the other
-hand is homogeneous in this regard. See the vignette on execution
-contexts for more information. Note that the base \code{sys.___()}
-functions are about the context stack and the only base R function
-for querying the call stack is \code{\link{parent.frame}()}.
+well as for \code{\link{parent.frame}()}. While the base
+\code{sys.___()} functions are all about the context stack,
+\code{\link{parent.frame}()} is the only base R function for
+querying the call stack. The context stack includes all R-level
+evaluation contexts. It is linear in terms of execution history but
+due to lazy evaluation it is potentially nonlinear in terms of call
+history. The call stack on the other hand is homogeneous in this
+regard. See the vignette on execution contexts for more
+information.
 }
 \details{
-The base R functions take two sorts of arguments to indicate which
-frame to query: \code{which} and \code{n}. The \code{n} argument is
-straightforward: it's the number of frames to go back in the stack,
-with \code{n = 1} referring to the current context. The
-\code{which} argument are more complicated and changes meaning for
-values lower than 1. For the sake of consistency, the lazyeval
-functions all take the same kind of argument \code{n}. This
-argument has a single meaning (the number of frames to go back in
-the stack) and cannot be lower than 1.
-
 \itemize{
   \item The \code{_expr()}, \code{_env()}, \code{_caller()} and
         \code{_fun()} functions report about the call expression,
@@ -113,6 +104,16 @@ the stack) and cannot be lower than 1.
         methods provide a summary of the context and call stacks
         with a handy \code{print()} method.
 }
+
+The base R functions take two sorts of arguments to indicate which
+frame to query: \code{which} and \code{n}. The \code{n} argument is
+straightforward: it's the number of frames to go back in the stack,
+with \code{n = 1} referring to the current context. The
+\code{which} argument are more complicated and changes meaning for
+values lower than 1. For the sake of consistency, the lazyeval
+functions all take the same kind of argument \code{n}. This
+argument has a single meaning (the number of frames to go back in
+the stack) and cannot be lower than 1.
 }
 \examples{
 # Expressions within arguments count as contexts
