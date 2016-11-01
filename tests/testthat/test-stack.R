@@ -1,27 +1,4 @@
-context("context stack") # -------------------------------------------
-
-test_that("ctxt_stack_callers() agrees with sys.parents()", {
-  parents <- sys.parents()
-  callers <- ctxt_stack_callers()
-  expect_equal(callers, rev(parents))
-})
-test_that("ctxt_stack_exprs() agrees with sys.call()", {
-  pos <- ctxt_pos()
-  syscalls <- lapply(seq(pos, 1), sys.call)
-  exprs <- ctxt_stack_exprs()
-  expect_identical(exprs, syscalls)
-})
-test_that("ctxt_stack_envs() agrees with sys.frames()", {
-  sysframes <- sys.frames()
-  sysframes <- rev(as.list(sysframes))
-  envs <- ctxt_stack_envs()
-  expect_identical(envs, sysframes)
-})
-test_that("ctxt_stack_trail() returns a vector of size nframe", {
-  trail <- ctxt_stack_trail()
-  n <- sys.nframe()
-  expect_equal(length(trail), n)
-})
+context("evaluation frames") # ---------------------------------------
 
 # Beware some sys.x() take `n` and some take `which`
 test_that("ctxt_caller() agrees with sys.parent()", {
@@ -58,19 +35,6 @@ test_that("context position is correct", {
   expect_equal(pos2, 2)
 })
 
-test_that("ctxt_stack_funs() returns functions in correct order", {
-  f1 <- function(x) f2(x)
-  f2 <- function(x) ctxt_stack_funs()
-
-  funs <- f1()
-  funs <- fixup_ctxts(funs)
-
-  expect_identical(funs, list(f1, f2))
-})
-
-
-context("call stack") # ----------------------------------------------
-
 test_that("call_pos() returns correct depth", {
   pos1 <- identity(call_pos())
   expect_equal(fixup_call_pos(pos1), 0)
@@ -103,7 +67,43 @@ test_that("call_expr() gives expression of caller not previous ctxt", {
 })
 
 
-context("call_stack()") # --------------------------------------------
+context("evaluation stacks") # ---------------------------------------
+
+test_that("ctxt_stack_callers() agrees with sys.parents()", {
+  parents <- sys.parents()
+  callers <- ctxt_stack_callers()
+  expect_equal(callers, rev(parents))
+})
+
+test_that("ctxt_stack_exprs() agrees with sys.call()", {
+  pos <- ctxt_pos()
+  syscalls <- lapply(seq(pos, 1), sys.call)
+  exprs <- ctxt_stack_exprs()
+  expect_identical(exprs, syscalls)
+})
+
+test_that("ctxt_stack_envs() agrees with sys.frames()", {
+  sysframes <- sys.frames()
+  sysframes <- rev(as.list(sysframes))
+  envs <- ctxt_stack_envs()
+  expect_identical(envs, sysframes)
+})
+
+test_that("ctxt_stack_trail() returns a vector of size nframe", {
+  trail <- ctxt_stack_trail()
+  n <- sys.nframe()
+  expect_equal(length(trail), n)
+})
+
+test_that("ctxt_stack_funs() returns functions in correct order", {
+  f1 <- function(x) f2(x)
+  f2 <- function(x) ctxt_stack_funs()
+
+  funs <- f1()
+  funs <- fixup_ctxts(funs)
+
+  expect_identical(funs, list(f1, f2))
+})
 
 test_that("call_stack() trail ignores irrelevant frames", {
   f1 <- function(x) f2(x)
