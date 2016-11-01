@@ -1,18 +1,18 @@
 
 fixup_ctxts <- function(x) {
-  cur_pos <- ctxt_pos() - 1
+  cur_pos <- sys.nframe() - 1
   x[seq(cur_pos + 1, length(x))]
 }
 fixup_calls <- function(x) {
-  cur_pos <- call_pos() - 1
+  cur_pos <- sys.nframe() - 1
   x[seq(n+1, length(x))]
 }
 
-fixup_ctxt_pos <- function(x) {
-  x - (ctxt_pos() - 1)
+fixup_ctxt_depth <- function(x) {
+  x - (sys.nframe() - 1)
 }
-fixup_call_pos <- function(x) {
-  x - (call_pos() - 1)
+fixup_call_depth <- function(x) {
+  x - (call_depth() - 1)
 }
 
 fixup_call_trail <- function(trail) {

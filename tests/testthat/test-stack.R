@@ -1,65 +1,65 @@
 context("evaluation frames") # ---------------------------------------
 
 # Beware some sys.x() take `n` and some take `which`
-test_that("ctxt_caller() agrees with sys.parent()", {
+test_that("ctxt_frame() caller agrees with sys.parent()", {
   parent <- sys.parent(n = 1)
-  caller <- ctxt_caller()
+  caller <- ctxt_frame()$caller
   expect_equal(caller, parent)
 })
 
-test_that("ctxt_expr() agrees with sys.call()", {
+test_that("ctxt_frame() expr agrees with sys.call()", {
   n <- sys.nframe()
   syscall <- sys.call(which = n)
-  expr <- ctxt_expr()
+  expr <- ctxt_frame()$expr
   expect_identical(expr, syscall)
 
-  expr <- identity(ctxt_expr())
-  expect_equal(expr, quote(identity(ctxt_expr())))
+  frame <- identity(ctxt_frame())
+  expect_equal(frame$expr, quote(identity(ctxt_frame())))
 })
 
-test_that("ctxt_env() agrees with sys.frame()", {
+test_that("ctxt_frame() env agrees with sys.frame()", {
   n <- sys.nframe()
   sysframe <- sys.frame(which = n)
-  env <- ctxt_env()
+  env <- ctxt_frame()$env
   expect_identical(env, sysframe)
 })
 
 test_that("context position is correct", {
-  pos1 <- identity(ctxt_pos())
-  pos2 <- identity(identity(ctxt_pos()))
+  pos1 <- identity(ctxt_frame()$pos)
+  pos2 <- identity(identity(ctxt_frame()$pos))
 
-  pos1 <- fixup_ctxt_pos(pos1)
+  pos1 <- fixup_ctxt_depth(pos1)
   expect_equal(pos1, 1)
 
-  pos2 <- fixup_ctxt_pos(pos2)
+  pos2 <- fixup_ctxt_depth(pos2)
   expect_equal(pos2, 2)
 })
 
-test_that("call_pos() returns correct depth", {
-  pos1 <- identity(call_pos())
-  expect_equal(fixup_call_pos(pos1), 0)
+test_that("call_depth() returns correct depth", {
+  depth1 <- identity(call_depth())
+  expect_equal(fixup_call_depth(depth1), 0)
 
-  f <- function() identity(call_pos())
+  f <- function() identity(call_depth())
   g <- function() f()
-  pos2 <- f()
-  pos3 <- g()
-  expect_equal(fixup_call_pos(pos2), 1)
-  expect_equal(fixup_call_pos(pos3), 2)
+  depth2 <- f()
+  depth3 <- g()
+  expect_equal(fixup_call_depth(depth2), 1)
+  expect_equal(fixup_call_depth(depth3), 2)
 
-  expect_equal(fixup_call_pos(f()), 1)
-  expect_equal(fixup_call_pos(g()), 2)
+  expect_equal(fixup_call_depth(f()), 1)
+  expect_equal(fixup_call_depth(g()), 2)
 })
 
 test_that("call_env() is the same as parent.frame()", {
-  expect_identical(call_env(), parent.frame())
+  expect_identical(call_frame()$env, parent.frame())
 })
 
 test_that("call_expr() gives expression of caller not previous ctxt", {
-  expr <- call_expr(1)
+  expr <- call_frame(1)$expr
   expect_equal(expr, sys.call(0))
-  expect_equal(identity(call_expr(1)), sys.call(0))
+  expect_equal(identity(call_frame(1)$expr), sys.call(0))
 
-  f <- function(x = 1) call_expr(x)
+  f <- function(x = 1) call_frame(x)$expr
   expect_equal(f(), quote(f()))
 
   g <- function() identity(f(2))
@@ -76,7 +76,7 @@ test_that("ctxt_stack_callers() agrees with sys.parents()", {
 })
 
 test_that("ctxt_stack_exprs() agrees with sys.call()", {
-  pos <- ctxt_pos()
+  pos <- sys.nframe()
   syscalls <- lapply(seq(pos, 1), sys.call)
   exprs <- ctxt_stack_exprs()
   expect_identical(exprs, syscalls)
@@ -121,7 +121,7 @@ test_that("call_stack() trail ignores irrelevant frames", {
 
 test_that("call_stack() envs give same result as iterative parent.frame()", {
   iterative_pf <- function() {
-    pos <- call_pos() - 1
+    pos <- call_depth() - 1
     out <- vector("list", pos)
     for (i in seq_len(pos)) {
       out[[i]] <- parent.frame(i)
