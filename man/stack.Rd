@@ -4,21 +4,21 @@
 \alias{call_depth}
 \alias{call_frame}
 \alias{call_stack}
-\alias{ctxt_depth}
-\alias{ctxt_frame}
-\alias{ctxt_stack}
+\alias{eval_depth}
+\alias{eval_frame}
+\alias{eval_stack}
 \alias{stack}
 \title{Call stack information}
 \usage{
-ctxt_frame(n = 1)
+eval_frame(n = 1)
 
 call_frame(n = 1)
 
-ctxt_depth()
+eval_depth()
 
 call_depth()
 
-ctxt_stack()
+eval_stack()
 
 call_stack()
 }
@@ -26,7 +26,7 @@ call_stack()
 \item{n}{The number of frames to go back in the stack.}
 }
 \description{
-The \code{ctxt_} and \code{call_} families of functions provide a
+The \code{eval_} and \code{call_} families of functions provide a
 replacement for the base R functions prefixed with \code{sys.}
 (which are all about the context stack), as well as for
 \code{\link{parent.frame}()} (which is the only base R function for
@@ -37,14 +37,14 @@ history. The call stack history, on the other hand, is homogenous.
 See \code{vignette("stack")} for more information.
 }
 \details{
-\code{ctxt_frame()} and \code{call_frame()} return a \code{frame}
+\code{eval_frame()} and \code{call_frame()} return a \code{frame}
 object containing the following fields: \code{expr} and \code{env}
 (call expression and evaluation environment), \code{pos} and
 \code{caller_pos} (position of current frame in the context stack
 and position of the caller), and \code{fun} (function of the
-current frame). \code{ctxt_stack()} and \code{call_stack()} return
+current frame). \code{eval_stack()} and \code{call_stack()} return
 a list of all context or call frames on the stack. Finally,
-\code{ctxt_depth()} and \code{call_depth()} report the current
+\code{eval_depth()} and \code{call_depth()} report the current
 context position or the number of calling frames on the stack.
 
 The base R functions take two sorts of arguments to indicate which
@@ -59,7 +59,7 @@ stack) and cannot be lower than 1.
 }
 \examples{
 # Expressions within arguments count as contexts
-identity(identity(ctxt_depth())) # returns 2
+identity(identity(eval_depth())) # returns 2
 
 # But they are not part of the call stack because arguments are
 # evaluated within the calling function (or the global environment
@@ -69,11 +69,11 @@ identity(identity(call_depth())) # returns 0
 # The context stacks includes all intervening execution frames. The
 # call stack doesn't:
 f <- function(x) identity(x)
-f(f(ctxt_stack()))
+f(f(eval_stack()))
 f(f(call_stack()))
 
 g <- function(cmd) cmd()
-f(g(ctxt_stack))
+f(g(eval_stack))
 f(g(call_stack))
 
 # The lazyeval _stack() functions return a list of frame

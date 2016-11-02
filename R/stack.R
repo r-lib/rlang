@@ -1,6 +1,6 @@
 #' Call stack information
 #'
-#' The \code{ctxt_} and \code{call_} families of functions provide a
+#' The \code{eval_} and \code{call_} families of functions provide a
 #' replacement for the base R functions prefixed with \code{sys.}
 #' (which are all about the context stack), as well as for
 #' \code{\link{parent.frame}()} (which is the only base R function for
@@ -10,14 +10,14 @@
 #' history. The call stack history, on the other hand, is homogenous.
 #' See \code{vignette("stack")} for more information.
 #'
-#' \code{ctxt_frame()} and \code{call_frame()} return a \code{frame}
+#' \code{eval_frame()} and \code{call_frame()} return a \code{frame}
 #' object containing the following fields: \code{expr} and \code{env}
 #' (call expression and evaluation environment), \code{pos} and
 #' \code{caller_pos} (position of current frame in the context stack
 #' and position of the caller), and \code{fun} (function of the
-#' current frame). \code{ctxt_stack()} and \code{call_stack()} return
+#' current frame). \code{eval_stack()} and \code{call_stack()} return
 #' a list of all context or call frames on the stack. Finally,
-#' \code{ctxt_depth()} and \code{call_depth()} report the current
+#' \code{eval_depth()} and \code{call_depth()} report the current
 #' context position or the number of calling frames on the stack.
 #'
 #' The base R functions take two sorts of arguments to indicate which
@@ -34,7 +34,7 @@
 #' @name stack
 #' @examples
 #' # Expressions within arguments count as contexts
-#' identity(identity(ctxt_depth())) # returns 2
+#' identity(identity(eval_depth())) # returns 2
 #'
 #' # But they are not part of the call stack because arguments are
 #' # evaluated within the calling function (or the global environment
@@ -44,11 +44,11 @@
 #' # The context stacks includes all intervening execution frames. The
 #' # call stack doesn't:
 #' f <- function(x) identity(x)
-#' f(f(ctxt_stack()))
+#' f(f(eval_stack()))
 #' f(f(call_stack()))
 #'
 #' g <- function(cmd) cmd()
-#' f(g(ctxt_stack))
+#' f(g(eval_stack))
 #' f(g(call_stack))
 #'
 #' # The lazyeval _stack() functions return a list of frame
@@ -81,7 +81,7 @@ print.frame <- function(x, ...) {
 
 #' @rdname stack
 #' @export
-ctxt_frame <- function(n = 1) {
+eval_frame <- function(n = 1) {
   stopifnot(n > 0)
   pos <- sys.nframe() - n
   if (pos < 1) {
@@ -133,8 +133,8 @@ make_trail <- function(callers, n = NULL) {
 #' @export
 call_frame <- function(n = 1) {
   stopifnot(n > 0)
-  ctxt_callers <- ctxt_stack_callers()
-  trail <- make_trail(ctxt_callers, n)
+  eval_callers <- eval_stack_callers()
+  trail <- make_trail(eval_callers, n)
   pos <- trail[n]
 
   new_frame(list(
@@ -148,14 +148,14 @@ call_frame <- function(n = 1) {
 
 #' @rdname stack
 #' @export
-ctxt_depth <- function() {
+eval_depth <- function() {
   sys.nframe() - 1
 }
 #' @rdname stack
 #' @export
 call_depth <- function() {
-  ctxt_callers <- ctxt_stack_callers()
-  trail <- make_trail(ctxt_callers)
+  eval_callers <- eval_stack_callers()
+  trail <- make_trail(eval_callers)
   length(trail)
 }
 
@@ -164,49 +164,49 @@ call_depth <- function() {
 
 #' @rdname stack
 #' @export
-ctxt_stack <- function() {
+eval_stack <- function() {
   stack_data <- list(
-    pos = ctxt_stack_trail(),
-    caller_pos = ctxt_stack_callers(),
-    expr = ctxt_stack_exprs(),
-    env = ctxt_stack_envs(),
-    fun = ctxt_stack_funs()
+    pos = eval_stack_trail(),
+    caller_pos = eval_stack_callers(),
+    expr = eval_stack_exprs(),
+    env = eval_stack_envs(),
+    fun = eval_stack_funs()
   )
 
-  # Remove ctxt_stack() from stack
+  # Remove eval_stack() from stack
   stack_data <- lapply(stack_data, drop_first)
 
   frames <- zip(stack_data)
   lapply(frames, new_frame)
 }
 
-ctxt_stack_trail <- function() {
+eval_stack_trail <- function() {
   pos <- sys.nframe() - 1
   seq(pos, 1)
 }
-ctxt_stack_exprs <- function() {
+eval_stack_exprs <- function() {
   exprs <- sys.calls()
   rev(drop_last(exprs))
 }
-ctxt_stack_envs <- function(n = 1) {
+eval_stack_envs <- function(n = 1) {
   envs <- sys.frames()
   rev(drop_last(envs))
 }
-ctxt_stack_callers <- function() {
+eval_stack_callers <- function() {
   callers <- sys.parents()
   rev(drop_last(callers))
 }
-ctxt_stack_funs <- function() {
+eval_stack_funs <- function() {
   pos <- sys.nframe()
-  ctxt_indices <- seq_len(pos - 1)
-  lapply(ctxt_indices, sys.function)
+  eval_indices <- seq_len(pos - 1)
+  lapply(eval_indices, sys.function)
 }
 
 #' @rdname stack
 #' @export
 call_stack <- function() {
-  ctxt_callers <- ctxt_stack_callers()
-  trail <- make_trail(ctxt_callers)
+  eval_callers <- eval_stack_callers()
+  trail <- make_trail(eval_callers)
 
   stack_data <- list(
     pos = trail,

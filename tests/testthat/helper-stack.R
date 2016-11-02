@@ -8,7 +8,7 @@ fixup_calls <- function(x) {
   x[seq(n+1, length(x))]
 }
 
-fixup_ctxt_depth <- function(x) {
+fixup_eval_depth <- function(x) {
   x - (sys.nframe() - 1)
 }
 fixup_call_depth <- function(x) {
@@ -16,8 +16,8 @@ fixup_call_depth <- function(x) {
 }
 
 fixup_call_trail <- function(trail) {
-  ctxt_callers <- ctxt_stack_callers()
-  cur_trail <- make_trail(ctxt_callers)
+  eval_callers <- eval_stack_callers()
+  cur_trail <- make_trail(eval_callers)
   cur_pos <- cur_trail[1]
 
   indices <- seq(1, length(trail) - length(cur_trail))
