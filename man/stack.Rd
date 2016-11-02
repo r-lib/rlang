@@ -33,30 +33,29 @@ replacement for the base R functions prefixed with \code{sys.}
 querying the call stack). The context stack includes all R-level
 evaluation contexts. It is linear in terms of execution history but
 due to lazy evaluation it is potentially nonlinear in terms of call
-history. The call stack on the other hand has a homogeneous call
-history. See the vignette on execution contexts for more
-information.
+history. The call stack history, on the other hand, is homogenous.
+See \code{vignette("stack")} for more information.
 }
 \details{
 \code{ctxt_frame()} and \code{call_frame()} return a \code{frame}
 object containing the following fields: \code{expr} and \code{env}
 (call expression and evaluation environment), \code{pos} and
-\code{caller} (position of current frame in the context stack and
-position of the caller), and \code{fun} (function of the current
-frame). \code{ctxt_stack()} and \code{call_stack()} return a list
-of all context or call frames on the stack. Finally,
+\code{caller_pos} (position of current frame in the context stack
+and position of the caller), and \code{fun} (function of the
+current frame). \code{ctxt_stack()} and \code{call_stack()} return
+a list of all context or call frames on the stack. Finally,
 \code{ctxt_depth()} and \code{call_depth()} report the current
 context position or the number of calling frames on the stack.
 
 The base R functions take two sorts of arguments to indicate which
 frame to query: \code{which} and \code{n}. The \code{n} argument is
-straightforward: it's the number of frames to go back in the stack,
+straightforward: it's the number of frames to go down the stack,
 with \code{n = 1} referring to the current context. The
 \code{which} argument is more complicated and changes meaning for
 values lower than 1. For the sake of consistency, the lazyeval
 functions all take the same kind of argument \code{n}. This
-argument has a single meaning (the number of frames to go back in
-the stack) and cannot be lower than 1.
+argument has a single meaning (the number of frames to go down the
+stack) and cannot be lower than 1.
 }
 \examples{
 # Expressions within arguments count as contexts

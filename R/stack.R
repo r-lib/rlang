@@ -7,29 +7,28 @@
 #' querying the call stack). The context stack includes all R-level
 #' evaluation contexts. It is linear in terms of execution history but
 #' due to lazy evaluation it is potentially nonlinear in terms of call
-#' history. The call stack on the other hand has a homogeneous call
-#' history. See the vignette on execution contexts for more
-#' information.
+#' history. The call stack history, on the other hand, is homogenous.
+#' See \code{vignette("stack")} for more information.
 #'
 #' \code{ctxt_frame()} and \code{call_frame()} return a \code{frame}
 #' object containing the following fields: \code{expr} and \code{env}
 #' (call expression and evaluation environment), \code{pos} and
-#' \code{caller} (position of current frame in the context stack and
-#' position of the caller), and \code{fun} (function of the current
-#' frame). \code{ctxt_stack()} and \code{call_stack()} return a list
-#' of all context or call frames on the stack. Finally,
+#' \code{caller_pos} (position of current frame in the context stack
+#' and position of the caller), and \code{fun} (function of the
+#' current frame). \code{ctxt_stack()} and \code{call_stack()} return
+#' a list of all context or call frames on the stack. Finally,
 #' \code{ctxt_depth()} and \code{call_depth()} report the current
 #' context position or the number of calling frames on the stack.
 #'
 #' The base R functions take two sorts of arguments to indicate which
 #' frame to query: \code{which} and \code{n}. The \code{n} argument is
-#' straightforward: it's the number of frames to go back in the stack,
+#' straightforward: it's the number of frames to go down the stack,
 #' with \code{n = 1} referring to the current context. The
 #' \code{which} argument is more complicated and changes meaning for
 #' values lower than 1. For the sake of consistency, the lazyeval
 #' functions all take the same kind of argument \code{n}. This
-#' argument has a single meaning (the number of frames to go back in
-#' the stack) and cannot be lower than 1.
+#' argument has a single meaning (the number of frames to go down the
+#' stack) and cannot be lower than 1.
 #'
 #' @param n The number of frames to go back in the stack.
 #' @name stack
@@ -70,7 +69,7 @@ new_frame <- function(x) {
 }
 #' @export
 print.frame <- function(x, ...) {
-  cat("<frame ", x$pos, "> (", x$caller, ")\n", sep = "")
+  cat("<frame ", x$pos, "> (", x$caller_pos, ")\n", sep = "")
 
   expr <- deparse(x$expr)
   if (length(expr) > 1) {
@@ -91,9 +90,9 @@ ctxt_frame <- function(n = 1) {
 
   new_frame(list(
     pos = pos,
+    caller_pos = sys.parent(n + 1),
     expr = sys.call(-n),
     env = sys.frame(-n),
-    caller = sys.parent(n + 1),
     fun = sys.function(-n)
   ))
 }
@@ -140,9 +139,9 @@ call_frame <- function(n = 1) {
 
   new_frame(list(
     pos = pos,
+    caller_pos = sys.parent(pos),
     expr = sys.call(pos),
     env = parent.frame(n + 1),
-    caller = sys.parent(pos),
     fun = sys.function(pos)
   ))
 }
@@ -166,18 +165,18 @@ call_depth <- function() {
 #' @rdname stack
 #' @export
 ctxt_stack <- function() {
-  contexts <- list(
+  stack_data <- list(
+    pos = ctxt_stack_trail(),
+    caller_pos = ctxt_stack_callers(),
     expr = ctxt_stack_exprs(),
     env = ctxt_stack_envs(),
-    pos = ctxt_stack_trail(),
-    caller = ctxt_stack_callers(),
     fun = ctxt_stack_funs()
   )
 
   # Remove ctxt_stack() from stack
-  contexts <- lapply(contexts, drop_first)
+  stack_data <- lapply(stack_data, drop_first)
 
-  frames <- zip(contexts)
+  frames <- zip(stack_data)
   lapply(frames, new_frame)
 }
 
@@ -209,14 +208,14 @@ call_stack <- function() {
   ctxt_callers <- ctxt_stack_callers()
   trail <- make_trail(ctxt_callers)
 
-  info <- list(
+  stack_data <- list(
+    pos = trail,
+    caller_pos = c(trail[-1], 0),
     expr = lapply(trail, sys.call),
     env = lapply(trail, sys.frame),
-    pos = trail,
-    caller = c(trail[-1], 0),
     fun = lapply(trail, sys.function)
   )
 
-  frames <- zip(info)
+  frames <- zip(stack_data)
   lapply(frames, new_frame)
 }
