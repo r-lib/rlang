@@ -69,17 +69,7 @@ expr_text_ <- function(x, width = 60L, nlines = Inf) {
   paste0(str, collapse = "\n")
 }
 
-match_arg <- function(call, sym) {
-  args <- call[-1]
-  arg_i <- match(as.character(sym), names(args))
-  if (is.na(arg_i)) {
-    NULL
-  } else {
-    args[[arg_i]]
-  }
-}
-
-arg_info <- function(expr) {
+arg_info <- function(expr, n = NULL) {
   stack <- call_stack()
   calls <- lapply(stack, call_standardise, enum_dots = TRUE)
   expr <- quote(expr)
@@ -95,15 +85,11 @@ arg_info <- function(expr) {
       break
     }
 
-    arg <- match_arg(call, expr)
+    arg <- match_arg(call, expr, frame$fn)
     if (is.null(arg)) {
       # Check for default arguments (which are evaluated within the
       # closure's execution environment)
-      default <- default_arg(expr, frame$fn)
-      if (!is.null(default)) {
-        expr <- default
-        env <- frame$env
-      }
+      expr <- default_arg(expr, frame$fun) %||% expr
       break
     }
 
@@ -111,7 +97,28 @@ arg_info <- function(expr) {
     env <- sys.frame(frame$caller_pos)
   }
 
-  list(env = env, expr = expr)
+  list(expr = expr, env = env)
+}
+
+# match.call() replaces dots by enumerated dots (e.g. ..1, ..2, etc).
+# Add such names to arguments so that we can match against those
+args_names <- function(call) {
+  nms <- names2(call[-1])
+
+  empty <- which(nms == "")
+  if (length(empty)) {
+    nms[empty] <- paste0("..", seq_along(empty))
+  }
+
+  nms
+}
+match_arg <- function(call, sym, fun) {
+  arg_i <- match(as.character(sym), args_names(call))
+  if (is.na(arg_i)) {
+    NULL
+  } else {
+    call[[arg_i + 1]]
+  }
 }
 
 default_arg <- function(expr, fn) {

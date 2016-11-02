@@ -14,6 +14,15 @@ test_that("follows multiple levels", {
   expect_identical(f(x + y), quote(x + y))
 })
 
+test_that("follows through dots", {
+  f <- function(...) g(...)
+  g <- function(...) h(...)
+  h <- function(x1, x2) arg_info(x2)
+  info <- f(mtcars, letters)
+
+  expect_identical(info$expr, quote(letters))
+  expect_identical(info$env, environment())
+})
 
 # expr_env ----------------------------------------------------------------
 
