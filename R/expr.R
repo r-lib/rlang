@@ -71,11 +71,16 @@ expr_text_ <- function(x, width = 60L, nlines = Inf) {
 
 arg_info <- function(expr, n = NULL) {
   stack <- call_stack()
-  calls <- lapply(stack, call_standardise, enum_dots = TRUE)
+  if (!is.null(n)) {
+    stopifnot(n > 0)
+    stack <- stack[seq_len(n)]
+  }
   expr <- quote(expr)
+  arg_info_(expr, stack)
+}
 
-  frame <- stack[[11]]
-  call_standardise(stack[[11]], enum_dots = TRUE)
+arg_info_ <- function(expr, stack) {
+  calls <- lapply(stack, call_standardise, enum_dots = TRUE)
 
   for (i in seq_along(calls)) {
     frame <- stack[[i]]
