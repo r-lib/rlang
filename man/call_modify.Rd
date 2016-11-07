@@ -5,13 +5,13 @@
 \alias{call_standardise}
 \title{Modify the arguments of a call.}
 \usage{
-call_modify(call, new_args, env = parent.frame())
 
 call_standardise(call, env = parent.frame())
+call_modify(call = NULL, new_args, env = NULL)
 }
 \arguments{
 \item{call}{A call to modify. It is first standardised with
-\code{\link{call_standardise}}.}
+\code{\link{call_standardise}()}.}
 
 \item{new_args}{A named list of expressions (constants, names or calls)
 used to modify the call. Use \code{NULL} to remove arguments.}
@@ -37,5 +37,9 @@ call_modify(call, list(trim = 0.1))
 
 # Add an explicit missing argument
 call_modify(call, list(na.rm = quote(expr = )))
+
+# If the call is missing, the parent frame is used instead.
+f <- function(bool = TRUE) call_modify(new_args = list(bool = FALSE))
+f()
 }
 

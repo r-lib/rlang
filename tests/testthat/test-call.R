@@ -43,6 +43,11 @@ test_that("new args replace old", {
   expect_equal(out, quote(matrix(data = 3)))
 })
 
+test_that("can modify without supplying `call`", {
+  f <- function() call_modify(new_args = list(bool = FALSE))
+  expect_identical(f(), quote(f(bool = FALSE)))
+})
+
 # Utils --------------------------------------------------------------
 
 test_that("call_fn() handles namespaced calls", {

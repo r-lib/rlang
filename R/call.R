@@ -28,7 +28,7 @@ call_new <- function(f, ..., .args = list()) {
 #' Modify the arguments of a call.
 #'
 #' @param call A call to modify. It is first standardised with
-#'   \code{\link{call_standardise}}.
+#'   \code{\link{call_standardise}()}.
 #' @param env Environment in which to look up call value.
 #' @param new_args A named list of expressions (constants, names or calls)
 #'   used to modify the call. Use \code{NULL} to remove arguments.
@@ -49,8 +49,13 @@ call_new <- function(f, ..., .args = list()) {
 #'
 #' # Add an explicit missing argument
 #' call_modify(call, list(na.rm = quote(expr = )))
-call_modify <- function(call, new_args, env = parent.frame()) {
+#'
+#' # If the call is missing, the parent frame is used instead.
+#' f <- function(bool = TRUE) call_modify(new_args = list(bool = FALSE))
+#' f()
+call_modify <- function(call = NULL, new_args, env = NULL) {
   stopifnot(is.list(new_args))
+  call <- call %||% call_frame(2)
   call <- call_standardise(call, env)
 
   if (!all(has_names(new_args))) {
