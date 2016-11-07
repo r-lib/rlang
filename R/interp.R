@@ -4,14 +4,13 @@
 #' constants and variables.
 #'
 #' @param _obj An object to modify: can be a call, name, formula,
-#'   \code{\link{lazy}}, or a string.
+#'   \code{lazy}, or a string.
 #' @param ...,.values Either individual name-value pairs, or a list
 #'   (or environment) of values.
 #' @export
 #' @examples
 #' # Interp works with formulas, lazy objects, quoted calls and strings
 #' interp(~ x + y, x = 10)
-#' interp(lazy(x + y), x = 10)
 #' interp(quote(x + y), x = 10)
 #' interp("x + y", x = 10)
 #'
@@ -92,7 +91,7 @@ all_values <- function(.values, ...) {
 
   if (is.list(values)) {
     # Replace lazy objects with their expressions
-    is_lazy <- vapply(values, is.lazy, logical(1))
+    is_lazy <- vapply(values, inherits, logical(1), "lazy")
     values[is_lazy] <- lapply(values[is_lazy], `[[`, "expr")
   }
 

@@ -35,3 +35,7 @@ substitute_ <- function(x, env) {
 missing_arg <- function() {
   quote(expr = )
 }
+
+#' @useDynLib rlang make_lazy
+#' @useDynLib rlang make_lazy_dots
+NULL
