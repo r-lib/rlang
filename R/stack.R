@@ -100,7 +100,8 @@ eval_frame <- function(n = 1) {
     caller_pos = sys.parent(n + 1),
     expr = sys.call(-n),
     env = sys.frame(-n),
-    fn = sys.function(-n)
+    fn = sys.function(-n),
+    fn_name = call_fn(sys.call(-n))
   ))
 }
 
@@ -149,7 +150,8 @@ call_frame <- function(n = 1) {
     caller_pos = sys.parent(pos),
     expr = sys.call(pos),
     env = parent.frame(n + 1),
-    fn = sys.function(pos)
+    fn = sys.function(pos),
+    fn_name = call_fn(sys.call(pos))
   ))
 }
 
@@ -179,6 +181,7 @@ eval_stack <- function() {
     env = eval_stack_envs(),
     fn = eval_stack_fns()
   )
+  stack_data$fn_name <- lapply(stack_data$expr, call_fn)
 
   # Remove eval_stack() from stack
   stack_data <- lapply(stack_data, drop_first)
@@ -222,6 +225,7 @@ call_stack <- function() {
     env = lapply(trail, sys.frame),
     fn = lapply(trail, sys.function)
   )
+  stack_data$fn_name <- lapply(stack_data$expr, call_fn)
 
   frames <- zip(stack_data)
   lapply(frames, new_frame)
