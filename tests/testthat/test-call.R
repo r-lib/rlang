@@ -42,3 +42,11 @@ test_that("new args replace old", {
   out <- call_modify(call, list(data = 3))
   expect_equal(out, quote(matrix(data = 3)))
 })
+
+# Utils --------------------------------------------------------------
+
+test_that("call_fn() handles namespaced calls", {
+  expect_equal(call_fn(quote(foo::bar())), "bar")
+  expect_equal(call_fn(quote(foo$bar())), "bar")
+  expect_equal(call_fn(quote(foo::bar@baz())), "baz")
+})

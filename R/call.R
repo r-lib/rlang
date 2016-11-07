@@ -74,3 +74,20 @@ call_standardise <- function(call, env = parent.frame()) {
 
   match.call(f, call)
 }
+
+#' Function name of a call
+#'
+#' @param call A call from which to extract the function name.
+#' @return A string with the function name.
+#' @export
+call_fn <- function(call) {
+  stopifnot(is.call(call))
+  fn <- call[[1]]
+
+  # Handle namespaced calls: foo::bar(), foo@bar(), foo$bar()
+  if (is.call(fn)) {
+    fn <- fn[[3]]
+  }
+
+  as.character(fn)
+}
