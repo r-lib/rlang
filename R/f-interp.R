@@ -37,7 +37,7 @@
 #' f <- foo(10)
 #' f
 #' f_interp(f)
-#' @useDynLib lazyeval interp_
+#' @useDynLib rlang interp_
 f_interp <- function(f, data = NULL) {
   f_rhs(f) <- .Call(interp_, f_rhs(f), f_env(f), data)
   f

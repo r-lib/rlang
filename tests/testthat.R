@@ -1,4 +1,4 @@
 library(testthat)
-library(lazyeval)
+library(rlang)
 
-test_check("lazyeval")
+test_check("rlang")

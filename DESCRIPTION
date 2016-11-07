@@ -1,11 +1,11 @@
-Package: lazyeval
-Version: 0.2.0.9000
-Title: Lazy (Non-Standard) Evaluation
-Description: An alternative approach to non-standard evaluation using
-    formulas. Provides a full implementation of LISP style 'quasiquotation',
-    making it easier to generate code with other code.
+Package: rlang
+Version: 0.0.0.9000
+Title: Tools for Language Objects and Evaluation
+Description: A toolbox for working with calls, unevaluated code, and
+    anything related to evaluation in R.
 Authors@R: c(
     person("Hadley", "Wickham", ,"hadley@rstudio.com", c("aut", "cre")),
+    person("Lionel", "Henry", ,"lionel@rstudio.com", "aut"),
     person("RStudio", role = "cph")
     )
 License: GPL-3

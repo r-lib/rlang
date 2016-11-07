@@ -1,3 +1,8 @@
+
+# rlang 0.0.0.9000
+
+* Fork rlang from lazyeval.
+
 # lazyeval 0.2.0.9000
 
 * No longer check the type of the sides of the formula.
@@ -10,21 +15,21 @@ Lazyeval has a  new system for lazy-eval based on formulas, described in depth i
 
 There are three key components:
 
-* `f_eval()` evaluates a formula in the environment where it was defined. 
-  If supplied, values are first looked for in an optional `data` argument. 
+* `f_eval()` evaluates a formula in the environment where it was defined.
+  If supplied, values are first looked for in an optional `data` argument.
   Pronouns `.data` and `.env` can be used to resolve ambiguity in this case.
   (#43). Longer forms `f_eval_rhs()` and `f_eval_lhs()` emphasise the side
   of the formula that you want to evaluate (#64).
-  
+
 * `f_interp()` provides a full quasiquoting system using `uq()` for unquote
   and `uqs()` for unquote-splice (#36).
 
 * `f_capture()` and `dots_capture()` make it easy to turn promises
   and `...` into explicit formulas. These should be used sparingly, as
   generally lazy-eval is preferred to non-standard eval.
-  
+
 * For functions that work with `...`, `f_list()` and `as_f_list()` make it
-  possible to use the evaluated LHS of a formula to name the elements of a 
+  possible to use the evaluated LHS of a formula to name the elements of a
   list (#59).
 
 The core components are accompanied by a number of helper functions:
@@ -33,12 +38,12 @@ The core components are accompanied by a number of helper functions:
 
 * Create a formula from a quoted call and an environment with `f_new()`.
 
-* "Unwrap" a formula removing one level from the stack of parent environments 
+* "Unwrap" a formula removing one level from the stack of parent environments
   with `f_unwrap()`.
-  
+
 * Get or set either side of a formula with `f_rhs()` or `f_lhs()`, and
   the environment with `f_env()`.
-  
+
 * Convert to text/label with `f_text()` and `f_label()`.
 
 I've also added `expr_find()`, `expr_text()` and `expr_label()` explicitly to find the expression associated with a function argument, and label it for output (#58). This is one of the primary uses cases for NSE. `expr_env()` is a similar helper that returns the environment associated with a promise (#67).
