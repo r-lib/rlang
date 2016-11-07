@@ -81,6 +81,7 @@ arg_info <- function(expr, n = NULL) {
 
 arg_info_ <- function(expr, stack) {
   calls <- lapply(stack, call_standardise, enum_dots = TRUE)
+  missing <- FALSE
 
   for (i in seq_along(calls)) {
     frame <- stack[[i]]
@@ -92,17 +93,32 @@ arg_info_ <- function(expr, stack) {
 
     arg <- match_arg(call, expr, frame$fn)
     if (is.null(arg)) {
-      # Check for default arguments (which are evaluated within the
-      # closure's execution environment)
-      expr <- default_arg(expr, frame$fun) %||% expr
+      # Check for default arguments
+      expr <- arg_default(expr, frame$fun)
+
+      # If no default argument, mark argument as missing
+      if (is.null(expr)) {
+        missing <- TRUE
+      }
+
+      # Since this is a missing argument, the environment in which the
+      # expression is evaluated (the closure's execution environment)
+      # and the caller environment are different
+      calling_frame <- stack[[i + 1]]
       break
     }
 
     expr <- arg
     env <- sys.frame(frame$caller_pos)
+    calling_frame <- frame
   }
 
-  list(expr = expr, env = env)
+  list(
+    expr = expr,
+    env = env,
+    missing = missing,
+    calling_frame = calling_frame
+  )
 }
 
 # match.call() replaces dots by enumerated dots (e.g. ..1, ..2, etc).
@@ -133,7 +149,7 @@ match_arg <- function(call, sym, fun) {
   }
 }
 
-default_arg <- function(expr, fn) {
+arg_default <- function(expr, fn) {
   if (is.symbol(expr)) {
     sym <- as.character(expr)
     args <- formals(fn)
