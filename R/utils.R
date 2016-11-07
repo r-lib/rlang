@@ -30,6 +30,17 @@ substitute_ <- function(x, env) {
 #' @useDynLib rlang make_lazy_dots
 NULL
 
+get_env <- function(x) {
+  if (is_frame(x)) {
+    x <- x$env
+  } else if (is_formula(x)) {
+    x <- environment(x)
+  }
+  stopifnot(is.environment(x))
+
+  x
+}
+
 drop_last <- function(x) {
   x[-length(x)]
 }
