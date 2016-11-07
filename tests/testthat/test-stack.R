@@ -95,14 +95,14 @@ test_that("eval_stack_trail() returns a vector of size nframe", {
   expect_equal(length(trail), n)
 })
 
-test_that("eval_stack_funs() returns functions in correct order", {
+test_that("eval_stack_fns() returns functions in correct order", {
   f1 <- function(x) f2(x)
-  f2 <- function(x) eval_stack_funs()
+  f2 <- function(x) eval_stack_fns()
 
-  funs <- f1()
-  funs <- fixup_ctxts(funs)
+  fns <- f1()
+  fns <- fixup_ctxts(fns)
 
-  expect_identical(funs, list(f1, f2))
+  expect_identical(fns, list(f1, f2))
 })
 
 test_that("call_stack() trail ignores irrelevant frames", {
