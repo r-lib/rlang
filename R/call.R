@@ -50,8 +50,7 @@ call_new <- function(f, ..., .args = list()) {
 #' # Add an explicit missing argument
 #' call_modify(call, list(na.rm = quote(expr = )))
 call_modify <- function(call, new_args, env = parent.frame()) {
-  stopifnot(is.call(call), is.list(new_args))
-
+  stopifnot(is.list(new_args))
   call <- call_standardise(call, env)
 
   if (!all(has_names(new_args))) {
