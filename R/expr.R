@@ -102,18 +102,25 @@ arg_info <- function(expr, n = NULL) {
 
 # match.call() replaces dots by enumerated dots (e.g. ..1, ..2, etc).
 # Add such names to arguments so that we can match against those
-args_names <- function(call) {
-  nms <- names2(call[-1])
+dots_names <- function(nms, fun) {
+  is_dot <- which(!nms %in% names(formals(fun)))
 
-  empty <- which(nms == "")
-  if (length(empty)) {
-    nms[empty] <- paste0("..", seq_along(empty))
+  if (length(is_dot)) {
+    nms[is_dot] <- paste0("..", seq_along(is_dot))
   }
 
   nms
 }
+is_dot <- function(sym) {
+  grepl("^\\.\\.[0-9]+$", as.character(sym))
+}
 match_arg <- function(call, sym, fun) {
-  arg_i <- match(as.character(sym), args_names(call))
+  nms <- names2(call[-1])
+  if (is_dot(sym)) {
+    nms <- dots_names(nms, fun)
+  }
+
+  arg_i <- match(as.character(sym), nms)
   if (is.na(arg_i)) {
     NULL
   } else {
