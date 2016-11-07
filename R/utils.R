@@ -26,16 +26,6 @@ substitute_ <- function(x, env) {
   eval(call)
 }
 
-#' Generate a missing argument.
-#'
-#' @export
-#' @examples
-#' f_interp(~f(x = uq(missing_arg())))
-#' f_interp(~f(x = uq(NULL)))
-missing_arg <- function() {
-  quote(expr = )
-}
-
 #' @useDynLib rlang make_lazy
 #' @useDynLib rlang make_lazy_dots
 NULL
