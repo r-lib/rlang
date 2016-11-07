@@ -78,6 +78,13 @@ print.frame <- function(x, ...) {
   cat("  expr: ", expr, "\n", sep = "")
   cat("   env: ", format(x$env), "\n", sep = "")
 }
+#' Is object a frame?
+#'
+#' @param x Object to test
+#' @export
+is_frame <- function(x) {
+  inherits(x, "frame")
+}
 
 #' @rdname stack
 #' @export
