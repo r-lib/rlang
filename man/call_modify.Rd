@@ -2,21 +2,22 @@
 % Please edit documentation in R/call.R
 \name{call_modify}
 \alias{call_modify}
-\alias{call_standardise}
 \title{Modify the arguments of a call.}
 \usage{
-
-call_standardise(call, env = parent.frame())
 call_modify(call = NULL, new_args, env = NULL)
 }
 \arguments{
-\item{call}{A call to modify. It is first standardised with
-\code{\link{call_standardise}()}.}
+\item{call}{Can be a call, a formula quoting a call in the
+right-hand side, or a frame object from which to extract the call
+expression. If not supplied, the calling frame is used.}
 
 \item{new_args}{A named list of expressions (constants, names or calls)
 used to modify the call. Use \code{NULL} to remove arguments.}
 
-\item{env}{Environment in which to look up call value.}
+\item{env}{Environment in which to look up call the function
+definition and the contents of \code{...}. If not supplied, it is
+retrieved from \code{call} if the latter is a frame object or a
+formula.}
 }
 \description{
 Modify the arguments of a call.

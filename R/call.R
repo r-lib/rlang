@@ -25,11 +25,171 @@ call_new <- function(f, ..., .args = list()) {
   as.call(c(f, args))
 }
 
+#' Standardise a call against formal arguments
+#'
+#' Compared to \code{\link{match.call}()}, \code{call_standardise()}:
+#' \itemize{
+#'   \item Always report dotted arguments as such: \code{call(..1, ..2)}.
+#'         In comparison, \code{match.call()} inlines literals:
+#'         \code{call("foo", 10)}.
+#'   \item Provides an argument \code{enum_dots} to impose
+#'         enumerated names on dotted arguments. This produces
+#'         \code{call(..1 = x, ..2 = ..3)} instead of
+#'         \code{call(foo = x, ..3)}.
+#'   \item Does not sort arguments according to the order of
+#'         appearance in the function definition.
+#'   \item Does not partial-match arguments.
+#' }
+#' @param call Can be a call, a formula quoting a call in the
+#'   right-hand side, or a frame object from which to extract the call
+#'   expression. If not supplied, the calling frame is used.
+#' @param env Environment in which to look up call the function
+#'   definition and the contents of \code{...}. If not supplied, it is
+#'   retrieved from \code{call} if the latter is a frame object or a
+#'   formula.
+#' @param fn The function against which to standardise the call. It is
+#'   lookep up in \code{env} if not supplied, or retrieved from
+#'   \code{call} if it is a frame.
+#' @param enum_dots Whether to standardise the names of dotted
+#'   arguments. If \code{TRUE}, this produces calls such as
+#'   \code{f(..1 = ..2)} instead of \code{f(..2)}. The first form is
+#'   mostly intended for code analysis tools as it makes it easier to
+#'   climb arguments through nested calls. The latter form (the
+#'   default) is more faithful to the actual call and is ready to be
+#'   evaluated.
+#' @export
+call_standardise <- function(call = NULL, env = NULL, fn = NULL,
+                             enum_dots = FALSE) {
+  call <- call %||% call_frame(2)
+  if (is_frame(call)) {
+    fn <- fn %||% call$fn
+    env <- env %||% sys.frame(call$caller_pos)
+    call <- call$expr
+  } else if (is_formula(call)) {
+    env <- env %||% environment(call)
+    call <- f_rhs(call)
+  } else {
+    env <- env %||% parent.frame()
+  }
+  stopifnot(is.call(call))
+  stopifnot(is.environment(env))
+
+  fn <- call_standardise_fn(call, env, fn)
+
+  call <- call_inline_dots(call, env, enum_dots)
+  call_validate_args(call, fn)
+  call_match(call, fn, enum_dots)
+}
+
+primitive_eval <- eval(quote(sys.function(0)))
+
+# This predicate handles the fake primitive eval function produced
+# when evaluating code with eval()
+is_primitive <- function(x) {
+  is.primitive(x) || identical(x, primitive_eval)
+}
+
+call_standardise_fn <- function(call, env, fn) {
+  fn <- fn %||% eval(call[[1]], env)
+
+  if (is_primitive(fn)) {
+    fn_chr <- as.character(call[[1]])
+    if (fn_chr == "eval") {
+      # do_eval() starts a context with a fake primitive function as
+      # function definition. We replace it here with the .Internal()
+      # wrapper of eval() so we can match the arguments.
+      fn <- base::eval
+    } else {
+      fn <- .ArgsEnv[[fn_chr]] %||% .GenericArgsEnv[[fn_chr]]
+    }
+  }
+  if (typeof(fn) != "closure") {
+    stop("`fn` is not a valid function", call. = FALSE)
+  }
+
+  fn
+}
+
+call_inline_dots <- function(call, env, enum_dots) {
+  d <- lsp_walk_nonnull(call, function(arg) {
+    if (identical(cadr(arg), quote(...))) arg
+  })
+
+  if (!is.null(d)) {
+    dots <- dots_get(env)
+    dots <- dots_enumerate_args(dots)
+    if (enum_dots) {
+      dots <- dots_enumerate_argnames(dots)
+    }
+
+    # Attach remaining args to expanded dots
+    remaining_args <- cddr(d)
+    lsp_walk_nonnull(dots, function(arg) {
+      if (is.null(cdr(arg))) set_cdr(arg, remaining_args)
+    })
+
+    # Replace dots symbol with actual dots and remaining args
+    set_cdr(d, dots)
+  }
+
+  call
+}
+
+call_validate_args <- function(call, fn) {
+  body(fn) <- NULL
+  call[[1]] <- quote(fn)
+
+  # Delegate to R the task of validating arguments
+  eval(call)
+}
+
+is_arg_matched <- function(arg, formals, enum_dots) {
+  is_empty <- arg == ""
+  if (enum_dots) {
+    !is_empty && arg %in% formals
+  } else {
+    !is_empty
+  }
+}
+
+call_match <- function(call, fn, enum_dots) {
+  args <- call[-1]
+  args_nms <- names2(args)
+  formals_nms <- names2(formals(fn))
+
+  is_matched <- vapply_lgl(args_nms, is_arg_matched, formals_nms, enum_dots)
+  candidates <- setdiff(formals_nms, args_nms[is_matched])
+  n_actuals <- sum(!is_matched)
+
+  dots_i <- which(candidates == "...")
+  n_dots <- max(0, n_actuals - dots_i + 1)
+  if (length(dots_i) && n_dots) {
+    # Ignore everything on the right of dots
+    candidates <- candidates[seq(1, dots_i)]
+
+    # Expand dots names
+    if (enum_dots) {
+      dots_nms <- paste0("..", seq_len(n_dots))
+    } else {
+      dots_nms <- rep("", n_dots)
+    }
+
+    candidates[dots_i] <- dots_nms[1]
+    candidates <- append(candidates, dots_nms[-1], after = dots_i)
+  }
+
+  n_formals <- length(candidates)
+  stopifnot(n_formals >= n_actuals)
+
+  args_nms[!is_matched] <- candidates[seq_len(n_actuals)]
+  names(call) <- c("", args_nms)
+
+  call
+}
+
 #' Modify the arguments of a call.
 #'
-#' @param call A call to modify. It is first standardised with
-#'   \code{\link{call_standardise}()}.
-#' @param env Environment in which to look up call value.
+#' @inheritParams call_standardise
 #' @param new_args A named list of expressions (constants, names or calls)
 #'   used to modify the call. Use \code{NULL} to remove arguments.
 #' @export
@@ -66,17 +226,6 @@ call_modify <- function(call = NULL, new_args, env = NULL) {
     call[[nm]] <- new_args[[nm]]
   }
   call
-}
-
-#' @rdname call_modify
-#' @export
-call_standardise <- function(call, env = parent.frame()) {
-  stopifnot(is_call(call))
-
-  f <- eval(call[[1]], env)
-  if (is.primitive(f)) return(call)
-
-  match.call(f, call)
 }
 
 #' Function name of a call

@@ -62,6 +62,16 @@ zip <- function(.l) {
 set_names <- function(x, nm = x) {
   stats::setNames(x, nm)
 }
+vapply_ <- function(.x, .f, .mold, ...) {
+  out <- vapply(.x, .f, .mold, ..., USE.NAMES = FALSE)
+  set_names(out, names(.x))
+}
 vapply_int <- function(.x, .f, ...) {
-  vapply(.x, .f, integer(1), ...)
+  vapply_(.x, .f, integer(1), ...)
+}
+vapply_lgl <- function(.x, .f, ...) {
+  vapply_(.x, .f, logical(1), ...)
+}
+names2 <- function(x) {
+  names(x) %||% rep("", length(x))
 }
