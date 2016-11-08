@@ -105,8 +105,26 @@ eval_frame <- function(n = 1) {
   ))
 }
 
+trail_next_caller <- function(callers, i) {
+  i <- callers[i]
+
+  # Skip over the fake context created by eval()
+  while (length(i) && is_primitive_eval(sys.function(i))) {
+    n_ctxt <- length(callers)
+    i <- n_ctxt - i + 1
+
+    if (n_ctxt < i) {
+      i <- 0
+    } else {
+      i <- callers[i]
+    }
+  }
+
+  i
+}
+
 # Positions of frames in the call stack up to `n`
-make_trail <- function(callers, n = NULL) {
+make_trail <- function(callers, n = NULL, trim_global = TRUE) {
   n_ctxt <- length(callers)
   if (is.null(n)) {
     n <- n_ctxt
@@ -117,7 +135,7 @@ make_trail <- function(callers, n = NULL) {
     stop("not that many frames on the stack", call. = FALSE)
   }
 
-  i <- callers[1]
+  i <- trail_next_caller(callers, 1)
   j <- 1
   if (!length(i) || i == 0) {
     return(integer(0))
@@ -129,12 +147,15 @@ make_trail <- function(callers, n = NULL) {
 
   while (i != 0 && j < n) {
     j <- j + 1
-    i <- callers[n_ctxt - i + 1]
+    i <- trail_next_caller(callers, n_ctxt - i + 1)
     out[j] <- i
   }
 
-  # Return relevant subset, ignoring global frame
-  out[seq_len(j - 1)]
+  # Return relevant subset
+  if (trim_global) {
+    j <- j - 1
+  }
+  out[seq_len(j)]
 }
 
 #' @rdname stack
@@ -142,14 +163,14 @@ make_trail <- function(callers, n = NULL) {
 call_frame <- function(n = 1) {
   stopifnot(n > 0)
   eval_callers <- eval_stack_callers()
-  trail <- make_trail(eval_callers, n)
+  trail <- make_trail(eval_callers, n + 1, trim_global = FALSE)
   pos <- trail[n]
 
   new_frame(list(
     pos = pos,
-    caller_pos = sys.parent(pos),
+    caller_pos = trail[n + 1],
     expr = sys.call(pos),
-    env = parent.frame(n + 1),
+    env = sys.frame(pos),
     fn = sys.function(pos),
     fn_name = call_fn(sys.call(pos))
   ))

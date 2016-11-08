@@ -50,11 +50,17 @@ test_that("call_depth() returns correct depth", {
   expect_equal(fixup_call_depth(g()), 2)
 })
 
-test_that("call_env() is the same as parent.frame()", {
-  expect_identical(call_frame()$env, parent.frame())
+test_that("call_frame()$env is the same as parent.frame()", {
+  env1 <- call_frame(1)$env
+  env1_base <- parent.frame(1)
+  expect_identical(env1, env1_base)
+
+  env2 <- call_frame(2)$env
+  env2_base <- parent.frame(2)
+  expect_identical(env2, env2_base)
 })
 
-test_that("call_expr() gives expression of caller not previous ctxt", {
+test_that("call_frame()$expr gives expression of caller not previous ctxt", {
   expr <- call_frame(1)$expr
   expect_equal(expr, sys.call(0))
   expect_equal(identity(call_frame(1)$expr), sys.call(0))
@@ -117,23 +123,6 @@ test_that("call_stack() trail ignores irrelevant frames", {
   stack2 <- identity(identity(f1()))
   trail2 <- purrr::map_int(stack2, "pos")
   expect_equal(fixup_call_trail(trail2), c(5, 4, 3))
-})
-
-test_that("call_stack() envs give same result as iterative parent.frame()", {
-  iterative_pf <- function() {
-    pos <- call_depth() - 1
-    out <- vector("list", pos)
-    for (i in seq_len(pos)) {
-      out[[i]] <- parent.frame(i)
-    }
-    out
-  }
-
-  stack <- call_stack()
-  envs1 <- purrr::map(stack, "env")
-  envs2 <- iterative_pf()
-
-  expect_identical(envs1, envs2)
 })
 
 test_that("call_stack() exprs is in opposite order to sys calls", {

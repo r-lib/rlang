@@ -82,11 +82,12 @@ call_standardise <- function(call = NULL, env = NULL, fn = NULL,
 }
 
 primitive_eval <- eval(quote(sys.function(0)))
+is_primitive_eval <- function(x) identical(x, primitive_eval)
 
 # This predicate handles the fake primitive eval function produced
 # when evaluating code with eval()
 is_primitive <- function(x) {
-  is.primitive(x) || identical(x, primitive_eval)
+  is.primitive(x) || is_primitive_eval(x)
 }
 
 call_standardise_fn <- function(call, env, fn) {
