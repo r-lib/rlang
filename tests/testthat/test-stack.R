@@ -63,10 +63,6 @@ test_that("call_frame()$env is the same as parent.frame()", {
 })
 
 test_that("call_frame()$expr gives expression of caller not previous ctxt", {
-  expr <- call_frame(1)$expr
-  expect_equal(expr, sys.call(0))
-  expect_equal(identity(call_frame(1)$expr), sys.call(0))
-
   f <- function(x = 1) call_frame(x)$expr
   expect_equal(f(), quote(f()))
 
@@ -127,9 +123,10 @@ test_that("call_stack() trail ignores irrelevant frames", {
   expect_equal(fixup_call_trail(trail2), c(5, 4, 3))
 })
 
-test_that("call_stack() exprs is in opposite order to sys calls", {
+test_that("eval_stack() exprs is in opposite order to sys calls", {
   syscalls <- sys.calls()
-  exprs <- purrr::map(call_stack(), "expr")
+  stack <- eval_stack()
+  exprs <- purrr::map(stack, "expr")
   expect_equal(exprs[[length(exprs)]], syscalls[[1]])
   expect_equal(exprs[[1]], syscalls[[length(syscalls)]])
 })
