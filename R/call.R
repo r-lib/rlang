@@ -229,12 +229,36 @@ call_modify <- function(call = NULL, new_args, env = NULL) {
   call
 }
 
+get_call <- function(call) {
+  if (is_frame(call)) {
+    call$expr
+  } else if (is_formula(call)) {
+    f_rhs(call)
+  } else {
+    call
+  }
+}
+
 #' Function name of a call
 #'
-#' @param call A call from which to extract the function name.
+#' @inheritParams call_standardise
 #' @return A string with the function name.
 #' @export
-call_fn <- function(call) {
+#' @examples
+#' # Extract the function name from quoted calls:
+#' call_fn(~foo(bar))
+#' call_fn(quote(foo(bar)))
+#'
+#' # The calling expression is used as default:
+#' foo <- function(bar) call_fn()
+#' foo(bar)
+#'
+#' # Namespaced calls are correctly handled:
+#' call_fn(~foo::bar(baz))
+#' call_fn(~foo$bar(baz))
+call_fn <- function(call = NULL) {
+  call <- call %||% call_frame(2)
+  call <- get_call(call)
   stopifnot(is.call(call))
   fn <- call[[1]]
 

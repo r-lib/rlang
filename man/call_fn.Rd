@@ -4,15 +4,30 @@
 \alias{call_fn}
 \title{Function name of a call}
 \usage{
-call_fn(call)
+call_fn(call = NULL)
 }
 \arguments{
-\item{call}{A call from which to extract the function name.}
+\item{call}{Can be a call, a formula quoting a call in the
+right-hand side, or a frame object from which to extract the call
+expression. If not supplied, the calling frame is used.}
 }
 \value{
 A string with the function name.
 }
 \description{
 Function name of a call
+}
+\examples{
+# Extract the function name from quoted calls:
+call_fn(~foo(bar))
+call_fn(quote(foo(bar)))
+
+# The calling expression is used as default:
+foo <- function(bar) call_fn()
+foo(bar)
+
+# Namespaced calls are correctly handled:
+call_fn(~foo::bar(baz))
+call_fn(~foo$bar(baz))
 }
 
