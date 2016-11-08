@@ -65,6 +65,13 @@ test_that("can standardise formulas", {
   expect_equal(call_standardise(~f(x, y, z)), quote(f(data = x, nrow = y, ncol = z)))
 })
 
+test_that("empty dots do not throw an error", {
+  f <- function() g()
+  g <- function(...) h(...)
+  h <- function(...) call_standardise(enum_dots = TRUE)
+  expect_error(f(), NA)
+})
+
 # Modification ------------------------------------------------------------
 
 test_that("all args must be named", {

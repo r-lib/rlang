@@ -10,7 +10,9 @@ dots_enumerate_args <- function(dots) {
   dots
 }
 dots_enumerate_argnames <- function(dots) {
-  names(dots) <- paste0("..", seq_along(dots))
+  if (length(dots)) {
+    names(dots) <- paste0("..", seq_along(dots))
+  }
   dots
 }
 
