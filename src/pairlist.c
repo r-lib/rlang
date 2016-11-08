@@ -1,5 +1,3 @@
-#define R_NO_REMAP
-#include <R.h>
 #include <Rinternals.h>
 
 SEXP car_(SEXP x) {
@@ -14,6 +12,7 @@ SEXP cadr_(SEXP x) {
 SEXP cddr_(SEXP x) {
   return CDDR(x);
 }
+
 SEXP set_car_(SEXP x, SEXP newcar) {
   SETCAR(x, newcar);
   return x;
@@ -30,4 +29,12 @@ SEXP set_cddr_(SEXP x, SEXP newcdr) {
   SEXP cdr = CDR(x);
   SETCDR(cdr, newcdr);
   return x;
+}
+
+SEXP cons_(SEXP car, SEXP cdr) {
+  return CONS(car, cdr);
+}
+
+SEXP duplicate_(SEXP x) {
+  return Rf_duplicate(x);
 }

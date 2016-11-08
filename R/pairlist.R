@@ -33,6 +33,7 @@ cadr <- function(x) {
 cddr <- function(x) {
   .Call(cddr_, x)
 }
+
 #' @useDynLib rlang set_car_
 set_car <- function(x, newcar) {
   .Call(set_car_, x, newcar)
@@ -48,4 +49,14 @@ set_cadr <- function(x, newcar) {
 #' @useDynLib rlang set_cddr_
 set_cddr <- function(x, newcdr) {
   .Call(set_cddr_, x, newcdr)
+}
+
+#' @useDynLib rlang cons_
+cons <- function(car, cdr) {
+  .Call(cons_, car, cdr)
+}
+
+#' @useDynLib rlang duplicate_
+duplicate <- function(x) {
+  .Call(duplicate_, x)
 }

@@ -76,7 +76,9 @@ call_standardise <- function(call = NULL, env = NULL, fn = NULL,
 
   fn <- call_get_fn(call, env, fn)
 
+  call <- duplicate(call)
   call <- call_inline_dots(call, env, enum_dots)
+
   call_validate_args(call, fn)
   call_match(call, fn, enum_dots)
 }

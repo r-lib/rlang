@@ -46,6 +46,14 @@ test_that("names of dotted arguments are enumerated", {
   expect_equal(g_enum, quote(f(dots = dots, ..1 = ..1, ..2 = ..2, ..3 = ..3, ..4 = ..4)))
 })
 
+test_that("call is not modified in place", {
+  f <- function(...) g(...)
+  g <- function(...) call_stack()[1:2]
+  stack <- f(foo)
+  call_standardise(stack[[1]]$expr, stack[[2]]$env, enum_dots = TRUE)
+  expect_equal(stack[[1]]$expr, quote(g(...)))
+})
+
 test_that("can standardise without specifying `call`", {
   f <- function(...) call_standardise()
   expect_identical(f(arg), quote(f(arg)))
