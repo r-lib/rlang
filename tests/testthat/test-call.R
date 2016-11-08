@@ -27,8 +27,9 @@ test_that("args are standardised", {
 
 test_that("arg validation is delegated to R", {
   f <- function(x, y) list(NULL)
-  expect_error(call_validate_args(quote(f(x = NULL, x = NULL)), f), "matched by multiple")
-  expect_error(call_validate_args(quote(f(NULL, NULL, NULL)), f), "unused argument")
+  env <- environment()
+  expect_error(call_validate_args(quote(f(x = NULL, x = NULL)), env, f), "matched by multiple")
+  expect_error(call_validate_args(quote(f(NULL, NULL, NULL)), env, f), "unused argument")
 })
 
 test_that("names of dotted arguments are enumerated", {

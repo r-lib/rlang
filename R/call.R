@@ -75,11 +75,11 @@ call_standardise <- function(call = NULL, env = NULL, fn = NULL,
   stopifnot(is.environment(env))
 
   fn <- call_get_fn(call, env, fn)
+  call_validate_args(call, env, fn)
 
   call <- duplicate(call)
   call <- call_inline_dots(call, env, enum_dots)
 
-  call_validate_args(call, fn)
   call_match(call, fn, enum_dots)
 }
 
@@ -138,11 +138,15 @@ call_inline_dots <- function(call, env, enum_dots) {
   call
 }
 
-call_validate_args <- function(call, fn) {
+call_validate_args <- function(call, env, fn) {
   body(fn) <- NULL
   call[[1]] <- quote(fn)
 
+  # Forward dots here
+  assign("...", env$`...`)
+
   # Delegate to R the task of validating arguments
+  # This does not force promises since we evaluate a bodyless fn
   eval(call)
 }
 
