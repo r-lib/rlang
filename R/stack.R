@@ -105,26 +105,23 @@ eval_frame <- function(n = 1) {
   ))
 }
 
-trail_next_caller <- function(callers, i) {
+trail_next <- function(callers, i) {
+  if (i == 0) return(list(callers = callers, i = 0L))
   i <- callers[i]
 
-  # Skip over the fake context created by eval()
-  while (length(i) && is_primitive_eval(sys.function(i))) {
+  # The R-level eval() creates two contexts. We skip the second one
+  if (length(i) && is_primitive_eval(sys.function(i))) {
     n_ctxt <- length(callers)
-    i <- n_ctxt - i + 1
-
-    if (n_ctxt < i) {
-      i <- 0
-    } else {
-      i <- callers[i]
-    }
+    special_eval_pos <- n_ctxt - i + 1
+    callers <- callers[-special_eval_pos]
+    i <- i - 1L
   }
 
-  i
+  list(callers = callers, i = i)
 }
 
 # Positions of frames in the call stack up to `n`
-make_trail <- function(callers, n = NULL, trim_global = TRUE) {
+trail_make <- function(callers, n = NULL, trim_global = TRUE) {
   n_ctxt <- length(callers)
   if (is.null(n)) {
     n <- n_ctxt
@@ -135,20 +132,23 @@ make_trail <- function(callers, n = NULL, trim_global = TRUE) {
     stop("not that many frames on the stack", call. = FALSE)
   }
 
-  i <- trail_next_caller(callers, 1)
-  j <- 1
-  if (!length(i) || i == 0) {
-    return(integer(0))
+  state <- trail_next(callers, 1)
+  if (!length(state$i) || state$i == 0) {
+    i <- if (trim_global) integer(0) else 0
+    return(i)
   }
+  j <- 1
 
   # Preallocate a sufficiently large vector
   out <- integer(n)
-  out[j] <- i
+  out[j] <- state$i
 
-  while (i != 0 && j < n) {
+  while (state$i != 0 && j < n) {
     j <- j + 1
-    i <- trail_next_caller(callers, n_ctxt - i + 1)
-    out[j] <- i
+    n_ctxt <- length(state$callers)
+    next_pos <- n_ctxt - state$i + 1
+    state <- trail_next(state$callers, next_pos)
+    out[j] <- state$i
   }
 
   # Return relevant subset
@@ -163,10 +163,10 @@ make_trail <- function(callers, n = NULL, trim_global = TRUE) {
 call_frame <- function(n = 1) {
   stopifnot(n > 0)
   eval_callers <- eval_stack_callers()
-  trail <- make_trail(eval_callers, n + 1, trim_global = FALSE)
+  trail <- trail_make(eval_callers, n + 1, trim_global = FALSE)
   pos <- trail[n]
 
-  new_frame(list(
+  frame <- new_frame(list(
     pos = pos,
     caller_pos = trail[n + 1],
     expr = sys.call(pos),
@@ -174,6 +174,7 @@ call_frame <- function(n = 1) {
     fn = sys.function(pos),
     fn_name = call_fn_name(sys.call(pos))
   ))
+  frame_fixup_eval(frame)
 }
 
 #' @rdname stack
@@ -185,7 +186,7 @@ eval_depth <- function() {
 #' @export
 call_depth <- function() {
   eval_callers <- eval_stack_callers()
-  trail <- make_trail(eval_callers)
+  trail <- trail_make(eval_callers)
   length(trail)
 }
 
@@ -237,7 +238,7 @@ eval_stack_fns <- function() {
 #' @export
 call_stack <- function() {
   eval_callers <- eval_stack_callers()
-  trail <- make_trail(eval_callers)
+  trail <- trail_make(eval_callers)
 
   stack_data <- list(
     pos = trail,
@@ -248,6 +249,19 @@ call_stack <- function() {
   )
   stack_data$fn_name <- lapply(stack_data$expr, call_fn_name)
 
-  frames <- zip(stack_data)
-  lapply(frames, new_frame)
+  stack <- zip(stack_data)
+  stack <- lapply(stack, new_frame)
+  stack <- lapply(stack, frame_fixup_eval)
+  stack
+}
+
+frame_fixup_eval <- function(frame) {
+  if (identical(frame$fn, base::eval)) {
+    # Use the environment from the context created in do_eval()
+    # (the context with the fake primitive call)
+    stopifnot(is_primitive_eval(sys.function(frame$pos + 1)))
+    frame$env <- sys.frame(frame$pos + 1)
+  }
+
+  frame
 }

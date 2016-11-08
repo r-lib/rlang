@@ -51,13 +51,15 @@ test_that("call_depth() returns correct depth", {
 })
 
 test_that("call_frame()$env is the same as parent.frame()", {
-  env1 <- call_frame(1)$env
-  env1_base <- parent.frame(1)
+  f <- function(n) call_frame(n + 1)$env
+  f_base <- function(n) parent.frame(n)
+  env1 <- f(1)
+  env1_base <- f_base(1)
   expect_identical(env1, env1_base)
 
-  env2 <- call_frame(2)$env
-  env2_base <- parent.frame(2)
-  expect_identical(env2, env2_base)
+  g <- function(n) list(f(n), f_base(n))
+  envs <- g(1)
+  expect_identical(envs[[1]], envs[[2]])
 })
 
 test_that("call_frame()$expr gives expression of caller not previous ctxt", {
@@ -143,7 +145,11 @@ test_that("eval_stack() and call_stack() agree", {
   eval_exprs <- lapply(eval_stack, `[[`, "expr")
   expect_identical(call_exprs, eval_exprs)
 
-  call_envs <- lapply(call_stack, `[[`, "env")
-  eval_envs <- lapply(eval_stack, `[[`, "env")
+  is_eval <- vapply_lgl(call_stack, function(frame) {
+    identical(frame$fn, base::eval)
+  })
+
+  call_envs <- lapply(call_stack[!is_eval], `[[`, "env")
+  eval_envs <- lapply(eval_stack[!is_eval], `[[`, "env")
   expect_identical(call_envs, eval_envs)
 })
