@@ -74,7 +74,7 @@ call_standardise <- function(call = NULL, env = NULL, fn = NULL,
   stopifnot(is.call(call))
   stopifnot(is.environment(env))
 
-  fn <- call_standardise_fn(call, env, fn)
+  fn <- call_get_fn(call, env, fn)
 
   call <- call_inline_dots(call, env, enum_dots)
   call_validate_args(call, fn)
@@ -90,7 +90,7 @@ is_primitive <- function(x) {
   is.primitive(x) || is_primitive_eval(x)
 }
 
-call_standardise_fn <- function(call, env, fn) {
+call_get_fn <- function(call, env, fn) {
   fn <- fn %||% eval(call[[1]], env)
 
   if (is_primitive(fn)) {
@@ -246,17 +246,17 @@ get_call <- function(call) {
 #' @export
 #' @examples
 #' # Extract the function name from quoted calls:
-#' call_fn(~foo(bar))
-#' call_fn(quote(foo(bar)))
+#' call_fn_name(~foo(bar))
+#' call_fn_name(quote(foo(bar)))
 #'
 #' # The calling expression is used as default:
-#' foo <- function(bar) call_fn()
+#' foo <- function(bar) call_fn_name()
 #' foo(bar)
 #'
 #' # Namespaced calls are correctly handled:
-#' call_fn(~foo::bar(baz))
-#' call_fn(~foo$bar(baz))
-call_fn <- function(call = NULL) {
+#' call_fn_name(~base::matrix(baz))
+#' call_fn_name(~foo$bar(baz))
+call_fn_name <- function(call = NULL) {
   call <- call %||% call_frame(2)
   call <- get_call(call)
   stopifnot(is.call(call))

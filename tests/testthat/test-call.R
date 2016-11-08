@@ -82,8 +82,8 @@ test_that("can modify without supplying `call`", {
 
 # Utils --------------------------------------------------------------
 
-test_that("call_fn() handles namespaced calls", {
-  expect_equal(call_fn(quote(foo::bar())), "bar")
-  expect_equal(call_fn(quote(foo$bar())), "bar")
-  expect_equal(call_fn(quote(foo::bar@baz())), "baz")
+test_that("call_fn_name() handles namespaced calls", {
+  expect_equal(call_fn_name(quote(foo::bar())), "bar")
+  expect_equal(call_fn_name(quote(foo$bar())), "bar")
+  expect_equal(call_fn_name(quote(foo::bar@baz())), "baz")
 })
