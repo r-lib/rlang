@@ -6,7 +6,7 @@ test_that("doesn't go pass lazy loaded objects", {
   expect_identical(expr_find(mtcars), quote(mtcars))
 })
 
-test_that("follows multiple promises", {
+test_that("follows multiple levels", {
   f <- function(x) g(x)
   g <- function(y) h(y)
   h <- function(z) expr_find(z)
@@ -17,31 +17,22 @@ test_that("follows multiple promises", {
 
 # expr_env ----------------------------------------------------------------
 
-test_that("follows multiple promises", {
-  f <- function(x) g(x)
-  g <- function(y) h(y)
-  h <- function(z) expr_env(z)
+test_that("expression is scoped in calling env", {
+  f <- function(x) expr_env(x)
+  g <- function(x) f(x)
 
-  expect_identical(h(x + y), environment())
+  expect_identical(g(mtcars), environment())
+  expect_identical(g(list(mtcars)), environment())
 })
 
-test_that("throws error if promise forced", {
-  f <- function(x) {
-    force(x)
-    expr_env(x)
-  }
-  expect_error(f(10), "already been forced")
+test_that("missing arguments are scoped in execution env", {
+  f <- function(x = list(mtcars)) list(environment(), expr_env(x))
+  g <- function() f()
+
+  envs <- g()
+  expect_identical(envs[[1]], envs[[2]])
 })
 
-
-test_that("or can return default env", {
-  env <- new.env(parent = emptyenv())
-  f <- function(x) {
-    force(x)
-    expr_env(x, env)
-  }
-  expect_identical(f(10), env)
-})
 
 # expr_text ---------------------------------------------------------------
 
@@ -58,6 +49,7 @@ test_that("can truncate lines", {
   }, nlines = 2)
   expect_equal(out, "{\n...")
 })
+
 
 # expr_label --------------------------------------------------------------
 
@@ -77,4 +69,3 @@ test_that("converts atomics to strings", {
 test_that("truncates long calls", {
   expect_equal(expr_label({ a + b }), "`{\n    ...\n}`")
 })
-

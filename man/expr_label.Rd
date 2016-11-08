@@ -22,8 +22,9 @@ expr_env(x, default_env)
 
 \item{nlines}{Maximum number of lines to extract.}
 
-\item{default_env}{If supplied, \code{expr_env} will return this if the
-promise has already been forced. Otherwise it will throw an error.}
+\item{default_env}{This argument is now deprecated and has no
+longer any effect since \code{expr_env()} will always return an
+environment.}
 }
 \description{
 \code{expr_find()} finds the full expression; \code{expr_text()} turns the

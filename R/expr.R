@@ -69,30 +69,78 @@ expr_text_ <- function(x, width = 60L, nlines = Inf) {
   paste0(str, collapse = "\n")
 }
 
-#' @useDynLib rlang expr_find_
+match_arg <- function(call, sym) {
+  args <- call[-1]
+  arg_i <- match(as.character(sym), names(args))
+  if (is.na(arg_i)) {
+    NULL
+  } else {
+    args[[arg_i]]
+  }
+}
+
+arg_info <- function(expr) {
+  stack <- call_stack()
+  calls <- lapply(stack, call_standardise, enum_dots = TRUE)
+  expr <- quote(expr)
+
+  frame <- stack[[11]]
+  call_standardise(stack[[11]], enum_dots = TRUE)
+
+  for (i in seq_along(calls)) {
+    frame <- stack[[i]]
+    call <- calls[[i]]
+
+    if (!is.symbol(expr)) {
+      break
+    }
+
+    arg <- match_arg(call, expr)
+    if (is.null(arg)) {
+      # Check for default arguments (which are evaluated within the
+      # closure's execution environment)
+      default <- default_arg(expr, frame$fn)
+      if (!is.null(default)) {
+        expr <- default
+        env <- frame$env
+      }
+      break
+    }
+
+    expr <- arg
+    env <- sys.frame(frame$caller_pos)
+  }
+
+  list(env = env, expr = expr)
+}
+
+default_arg <- function(expr, fn) {
+  if (is.symbol(expr)) {
+    sym <- as.character(expr)
+    args <- formals(fn)
+    default <- args[[sym]]
+
+    if (!missing(default)) {
+      return(default)
+    }
+  }
+
+  NULL
+}
+
 #' @export
 #' @rdname expr_label
 expr_find <- function(x) {
-  .Call(expr_find_, quote(x), environment())
+  arg_info(x)$expr
 }
 
-#' @useDynLib rlang expr_env_
-#' @param default_env If supplied, \code{expr_env} will return this if the
-#'   promise has already been forced. Otherwise it will throw an error.
-#' @export
 #' @rdname expr_label
+#' @param default_env This argument is now deprecated and has no
+#'   longer any effect since \code{expr_env()} will always return an
+#'   environment.
+#' @export
 expr_env <- function(x, default_env) {
-  env <- .Call(expr_env_, quote(x), environment())
-
-  if (is.null(env)) {
-    if (missing(default_env)) {
-      stop("Promise has already been forced")
-    } else {
-      default_env
-    }
-  } else {
-    env
-  }
+  arg_info(x)$env
 }
 
 #' Generate a missing argument.
