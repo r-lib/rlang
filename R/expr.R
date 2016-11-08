@@ -86,81 +86,72 @@ arg_info_ <- function(expr, stack) {
   for (i in seq_along(calls)) {
     frame <- stack[[i]]
     call <- calls[[i]]
+    env <- frame$env
 
     if (!is.symbol(expr)) {
       break
     }
 
-    arg <- match_arg(call, expr, frame$fn)
+    arg <- arg_match(call, expr, frame$fn)
     if (is.null(arg)) {
       # Check for default arguments
-      expr <- arg_default(expr, frame$fun)
+      arg <- arg_default(expr, frame$fn)
 
       # If no default argument, mark argument as missing
-      if (is.null(expr)) {
+      if (identical(arg, quote(`__missing`))) {
         missing <- TRUE
+        expr <- NULL
+      } else if (!is.null(arg)) {
+        expr <- arg
+      } else {
+        break
       }
 
       # Since this is a missing argument, the environment in which the
       # expression is evaluated (the closure's execution environment)
       # and the caller environment are different
-      calling_frame <- stack[[i + 1]]
+      if (length(stack) < i + 1){
+        # TODO: Should we have a global frame object?
+        frame <- NULL
+      } else {
+        frame <- stack[[i + 1]]
+      }
       break
     }
 
     expr <- arg
-    env <- sys.frame(frame$caller_pos)
-    calling_frame <- frame
   }
 
   list(
     expr = expr,
     env = env,
     missing = missing,
-    calling_frame = calling_frame
+    calling_frame = frame
   )
 }
 
-# match.call() replaces dots by enumerated dots (e.g. ..1, ..2, etc).
-# Add such names to arguments so that we can match against those
-dots_names <- function(nms, fun) {
-  is_dot <- which(!nms %in% names(formals(fun)))
-
-  if (length(is_dot)) {
-    nms[is_dot] <- paste0("..", seq_along(is_dot))
-  }
-
-  nms
-}
-is_dot <- function(sym) {
-  grepl("^\\.\\.[0-9]+$", as.character(sym))
-}
-match_arg <- function(call, sym, fun) {
+arg_match <- function(call, sym, fun) {
+  args <- cdr(call)
   nms <- names2(call[-1])
-  if (is_dot(sym)) {
-    nms <- dots_names(nms, fun)
-  }
 
   arg_i <- match(as.character(sym), nms)
-  if (is.na(arg_i)) {
-    NULL
-  } else {
-    call[[arg_i + 1]]
-  }
+  args[[arg_i]]
 }
 
 arg_default <- function(expr, fn) {
-  if (is.symbol(expr)) {
-    sym <- as.character(expr)
-    args <- formals(fn)
-    default <- args[[sym]]
-
-    if (!missing(default)) {
-      return(default)
-    }
+  if (!is.symbol(expr)) {
+    return(NULL)
   }
 
-  NULL
+  sym <- as.character(expr)
+  args <- formals(fn)
+  default <- args[[sym]]
+
+  if (missing(default)) {
+    quote(`__missing`)
+  } else {
+    default
+  }
 }
 
 #' @export
