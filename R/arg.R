@@ -1,8 +1,8 @@
 #' Find the expression associated with an argument
 #'
-#' \code{expr_find()} finds the full expression; \code{expr_text()} turns the
-#' expression into a single string; \code{expr_label()} formats it nicely for
-#' use in messages. \code{expr_env()} finds the environment associated with
+#' \code{arg_find()} finds the full expression; \code{arg_text()} turns the
+#' expression into a single string; \code{arg_label()} formats it nicely for
+#' use in messages. \code{arg_env()} finds the environment associated with
 #' the expression.
 #'
 #' These functions never force promises, and will work even if a promise has
@@ -11,30 +11,30 @@
 #' @param x A promise (function argument)
 #' @export
 #' @examples
-#' # Unlike substitute(), expr_find() finds the original expression
+#' # Unlike substitute(), arg_find() finds the original expression
 #' f <- function(x) g(x)
 #' g <- function(y) h(y)
-#' h <- function(z) list(substitute(z), expr_find(z))
+#' h <- function(z) list(substitute(z), arg_find(z))
 #'
 #' f(1 + 2 + 3)
 #'
-#' expr_label(10)
+#' arg_label(10)
 #' # Names a quoted with ``
-#' expr_label(x)
+#' arg_label(x)
 #' # Strings are encoded
-#' expr_label("a\nb")
+#' arg_label("a\nb")
 #' # Expressions are captured
-#' expr_label(a + b + c)
+#' arg_label(a + b + c)
 #' # Long expressions are collapsed
-#' expr_label(foo({
+#' arg_label(foo({
 #'   1 + 2
 #'   print(x)
 #' }))
-expr_label <- function(x) {
-  expr_label_(expr_find(x))
+arg_label <- function(x) {
+  arg_label_(arg_find(x))
 }
 
-expr_label_ <- function(x) {
+arg_label_ <- function(x) {
   if (is.character(x)) {
     encodeString(x, quote = '"')
   } else if (is.atomic(x)) {
@@ -52,14 +52,14 @@ expr_label_ <- function(x) {
 }
 
 #' @export
-#' @rdname expr_label
+#' @rdname arg_label
 #' @param width Width of each line
 #' @param nlines Maximum number of lines to extract.
-expr_text <- function(x, width = 60L, nlines = Inf) {
-  expr_text_(expr_find(x), width = width, nlines = nlines)
+arg_text <- function(x, width = 60L, nlines = Inf) {
+  arg_text_(arg_find(x), width = width, nlines = nlines)
 }
 
-expr_text_ <- function(x, width = 60L, nlines = Inf) {
+arg_text_ <- function(x, width = 60L, nlines = Inf) {
   str <- deparse(x, width.cutoff = width)
 
   if (length(str) > nlines) {
@@ -155,17 +155,17 @@ arg_default <- function(expr, fn) {
 }
 
 #' @export
-#' @rdname expr_label
-expr_find <- function(x) {
+#' @rdname arg_label
+arg_find <- function(x) {
   arg_info(x)$expr
 }
 
-#' @rdname expr_label
+#' @rdname arg_label
 #' @param default_env This argument is now deprecated and has no
-#'   longer any effect since \code{expr_env()} will always return an
+#'   longer any effect since \code{arg_env()} will always return an
 #'   environment.
 #' @export
-expr_env <- function(x, default_env) {
+arg_env <- function(x, default_env) {
   arg_info(x)$env
 }
 

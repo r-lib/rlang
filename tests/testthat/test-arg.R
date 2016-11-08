@@ -1,15 +1,15 @@
-context("expr")
+context("arg")
 
-# expr_find ---------------------------------------------------------------
+# arg_find -----------------------------------------------------------------
 
 test_that("doesn't go pass lazy loaded objects", {
-  expect_identical(expr_find(mtcars), quote(mtcars))
+  expect_identical(arg_find(mtcars), quote(mtcars))
 })
 
 test_that("follows multiple levels", {
   f <- function(x) g(x)
   g <- function(y) h(y)
-  h <- function(z) expr_find(z)
+  h <- function(z) arg_find(z)
 
   expect_identical(f(x + y), quote(x + y))
 })
@@ -24,10 +24,10 @@ test_that("follows through dots", {
   expect_identical(info$env, environment())
 })
 
-# expr_env ----------------------------------------------------------------
+# arg_env -----------------------------------------------------------------
 
 test_that("expression is scoped in calling env", {
-  f <- function(x) expr_env(x)
+  f <- function(x) arg_env(x)
   g <- function(x) f(x)
 
   expect_identical(g(mtcars), environment())
@@ -72,38 +72,38 @@ test_that("arguments are scoped in calling env", {
 })
 
 
-# expr_text ---------------------------------------------------------------
+# arg_text ----------------------------------------------------------------
 
 test_that("always returns single string", {
-  out <- expr_text({
+  out <- arg_text({
     a + b
   })
   expect_length(out, 1)
 })
 
 test_that("can truncate lines", {
-  out <- expr_text({
+  out <- arg_text({
     a + b
   }, nlines = 2)
   expect_equal(out, "{\n...")
 })
 
 
-# expr_label --------------------------------------------------------------
+# arg_label ---------------------------------------------------------------
 
 test_that("quotes strings", {
-  expect_equal(expr_label("a"), '"a"')
-  expect_equal(expr_label("\n"), '"\\n"')
+  expect_equal(arg_label("a"), '"a"')
+  expect_equal(arg_label("\n"), '"\\n"')
 })
 
 test_that("backquotes names", {
-  expect_equal(expr_label(x), "`x`")
+  expect_equal(arg_label(x), "`x`")
 })
 
 test_that("converts atomics to strings", {
-  expect_equal(expr_label(0.5), "0.5")
+  expect_equal(arg_label(0.5), "0.5")
 })
 
 test_that("truncates long calls", {
-  expect_equal(expr_label({ a + b }), "`{\n    ...\n}`")
+  expect_equal(arg_label({ a + b }), "`{\n    ...\n}`")
 })
