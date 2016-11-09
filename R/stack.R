@@ -110,7 +110,7 @@ trail_next <- function(callers, i) {
   i <- callers[i]
 
   # The R-level eval() creates two contexts. We skip the second one
-  if (length(i) && is_primitive_eval(sys.function(i))) {
+  if (length(i) && is_prim_eval(sys.function(i))) {
     n_ctxt <- length(callers)
     special_eval_pos <- n_ctxt - i + 1
     callers <- callers[-special_eval_pos]
@@ -259,7 +259,7 @@ frame_fixup_eval <- function(frame) {
   if (identical(frame$fn, base::eval)) {
     # Use the environment from the context created in do_eval()
     # (the context with the fake primitive call)
-    stopifnot(is_primitive_eval(sys.function(frame$pos + 1)))
+    stopifnot(is_prim_eval(sys.function(frame$pos + 1)))
     frame$env <- sys.frame(frame$pos + 1)
   }
 

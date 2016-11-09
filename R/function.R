@@ -33,3 +33,24 @@ function_new <- function(args, body, env = parent.frame()) {
 
   eval(call("function", args, body), env)
 }
+
+prim_eval <- eval(quote(sys.function(0)))
+is_prim_eval <- function(x) identical(x, prim_eval)
+
+# This predicate handles the fake primitive eval function produced
+# when evaluating code with eval()
+is_primitive <- function(x) {
+  is.primitive(x) || is_prim_eval(x)
+}
+
+#' Name of a primitive function
+#' @param prim A primitive function such as \code{base::c}.
+prim_name <- function(prim) {
+  stopifnot(is_primitive(prim))
+
+  # Workaround because R_FunTab is not public
+  name <- format(prim)
+  name <- sub("^.Primitive\\(\"", "", name)
+  name <- sub("\"\\)$", "", name)
+  name
+}
