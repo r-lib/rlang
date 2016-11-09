@@ -63,12 +63,12 @@ prim_name <- function(prim) {
 #' @export
 #' @examples
 #' # Extract from current call:
-#' fn <- function(a = 1, b = 2) fn_args()
+#' fn <- function(a = 1, b = 2) fn_args_defaults()
 #' fn()
 #'
 #' # Works with primitive functions:
-#' fn_args(base::switch)
-fn_args <- function(fn = NULL) {
+#' fn_args_defaults(base::switch)
+fn_args_defaults <- function(fn = NULL) {
   fn <- fn %||% call_frame(2)$fn
 
   if (is_primitive(fn)) {

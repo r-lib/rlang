@@ -112,7 +112,7 @@ is_arg_matched <- function(arg, formals, enum_dots) {
 call_match <- function(call, fn, enum_dots) {
   args <- call[-1]
   args_nms <- names2(args)
-  formals_nms <- names2(fn_args(fn))
+  formals_nms <- names2(fn_args_defaults(fn))
 
   is_matched <- vapply_lgl(args_nms, is_arg_matched, formals_nms, enum_dots)
   candidates <- setdiff(formals_nms, args_nms[is_matched])
