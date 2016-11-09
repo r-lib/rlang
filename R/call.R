@@ -61,57 +61,34 @@ call_new <- function(.fn, ..., .args = list()) {
 #' @export
 call_standardise <- function(call = NULL, env = NULL, fn = NULL,
                              enum_dots = FALSE) {
-  call <- call %||% call_frame(2)
+  info <- call_info(call, env, call_frame(2))
+  fn <- call_fn(info$call, info$env)
+
+  stopifnot(is.environment(info$env))
+  call_validate_args(info$call, info$env, fn)
+
+  call <- duplicate(info$call)
+  call <- call_inline_dots(call, info$env, enum_dots)
+
+  call_match(call, fn, enum_dots)
+}
+
+call_info <- function(call, env, frame) {
+  call <- call %||% frame
   if (is_frame(call)) {
-    fn <- fn %||% call$fn
-    env <- env %||% sys.frame(call$caller_pos)
+    env <- env %||% call$env
     call <- call$expr
   } else if (is_formula(call)) {
     env <- env %||% environment(call)
     call <- f_rhs(call)
   } else {
-    env <- env %||% parent.frame()
-  }
-  stopifnot(is.call(call))
-  stopifnot(is.environment(env))
-
-  fn <- call_get_fn(call, env, fn)
-  call_validate_args(call, env, fn)
-
-  call <- duplicate(call)
-  call <- call_inline_dots(call, env, enum_dots)
-
-  call_match(call, fn, enum_dots)
-}
-
-primitive_eval <- eval(quote(sys.function(0)))
-is_primitive_eval <- function(x) identical(x, primitive_eval)
-
-# This predicate handles the fake primitive eval function produced
-# when evaluating code with eval()
-is_primitive <- function(x) {
-  is.primitive(x) || is_primitive_eval(x)
-}
-
-call_get_fn <- function(call, env, fn) {
-  fn <- fn %||% eval(call[[1]], env)
-
-  if (is_primitive(fn)) {
-    fn_chr <- as.character(call[[1]])
-    if (fn_chr == "eval") {
-      # do_eval() starts a context with a fake primitive function as
-      # function definition. We replace it here with the .Internal()
-      # wrapper of eval() so we can match the arguments.
-      fn <- base::eval
-    } else {
-      fn <- .ArgsEnv[[fn_chr]] %||% .GenericArgsEnv[[fn_chr]]
-    }
-  }
-  if (typeof(fn) != "closure") {
-    stop("`fn` is not a valid function", call. = FALSE)
+    env <- env %||% parent.frame(2)
   }
 
-  fn
+  list(
+    call = call,
+    env = env
+  )
 }
 
 call_inline_dots <- function(call, env, enum_dots) {
@@ -269,10 +246,10 @@ get_call <- function(call) {
 #' call_fn_name(~foo[[bar]]())
 #' call_fn_name(~foo()())
 call_fn_name <- function(call = NULL) {
-  call <- call %||% call_frame(2)
-  call <- get_call(call)
-  stopifnot(is.call(call))
-  fn <- call[[1]]
+  info <- call_info(call, NULL, call_frame(2))
+  stopifnot(is.call(info$call))
+
+  fn <- info$call[[1]]
 
   if (is.call(fn)) {
     if (identical(fn[[1]], quote(`::`)) ||
