@@ -4,11 +4,12 @@
 \alias{call_new}
 \title{Create a call by "hand"}
 \usage{
-call_new(f, ..., .args = list())
+call_new(.fn, ..., .args = list())
 }
 \arguments{
-\item{f}{Function to call. For \code{make_call}, either a string, a symbol
-or a quoted call. For \code{do_call}, a bare function name or call.}
+\item{.fn}{Function to call. For \code{make_call}, either a string,
+a symbol or a quoted call. For \code{do_call}, a bare function
+name or call.}
 
 \item{..., .args}{Arguments to the call either in or out of a list}
 }
@@ -16,7 +17,7 @@ or a quoted call. For \code{do_call}, a bare function name or call.}
 Create a call by "hand"
 }
 \examples{
-# f can either be a string, a symbol or a call
+# fn can either be a string, a symbol or a call
 call_new("f", a = 1)
 call_new(quote(f), a = 1)
 call_new(quote(f()), a = 1)

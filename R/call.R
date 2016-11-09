@@ -1,11 +1,12 @@
 #' Create a call by "hand"
 #'
-#' @param f Function to call. For \code{make_call}, either a string, a symbol
-#'   or a quoted call. For \code{do_call}, a bare function name or call.
+#' @param .fn Function to call. For \code{make_call}, either a string,
+#'   a symbol or a quoted call. For \code{do_call}, a bare function
+#'   name or call.
 #' @param ...,.args Arguments to the call either in or out of a list
 #' @export
 #' @examples
-#' # f can either be a string, a symbol or a call
+#' # fn can either be a string, a symbol or a call
 #' call_new("f", a = 1)
 #' call_new(quote(f), a = 1)
 #' call_new(quote(f()), a = 1)
@@ -13,16 +14,16 @@
 #' #' Can supply arguments individually or in a list
 #' call_new(quote(f), a = 1, b = 2)
 #' call_new(quote(f), .args = list(a = 1, b = 2))
-call_new <- function(f, ..., .args = list()) {
-  if (is.character(f)) {
-    if (length(f) != 1) {
-      stop("Character `f` must be length 1", call. = FALSE)
+call_new <- function(.fn, ..., .args = list()) {
+  if (is.character(.fn)) {
+    if (length(.fn) != 1) {
+      stop("Character `.fn` must be length 1", call. = FALSE)
     }
-    f <- as.name(f)
+    .fn <- as.name(.fn)
   }
 
   args <- c(list(...), as.list(.args))
-  as.call(c(f, args))
+  as.call(c(.fn, args))
 }
 
 #' Standardise a call against formal arguments
