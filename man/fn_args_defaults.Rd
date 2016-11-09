@@ -9,14 +9,18 @@ fn_args_defaults(fn = NULL)
 
 fn_args_names(fn = NULL)
 }
+\arguments{
+\item{fn}{A function. It is lookep up in the calling frame if not
+supplied.}
+}
 \description{
-\code{fn_defaults()} returns a list of default
-arguments. \code{fn_args_names()} returns the names of the arguments.
+\code{fn_defaults()} returns a named list of default
+arguments. \code{fn_args_names()} returns the names of the
+arguments.
 }
 \details{
 Contrarily to \code{formals()}, these helpers also work with
-primitive functions. If no argument is named,
-\code{fn_args_names()} returns a vector of empty strings.
+primitive functions.
 }
 \examples{
 # Extract from current call:

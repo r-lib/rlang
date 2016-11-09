@@ -57,9 +57,17 @@ prim_name <- function(prim) {
 
 #' Extract arguments from a function
 #'
-#' Contrarily to \code{formals()}, \code{fn_args()} also works with
+#' \code{fn_defaults()} returns a named list of default
+#' arguments. \code{fn_args_names()} returns the names of the
+#' arguments.
+#'
+#' Contrarily to \code{formals()}, these helpers also work with
 #' primitive functions.
 #'
+#' @param fn A function. It is lookep up in the calling frame if not
+#'   supplied.
+#' @seealso \code{\link{call_args}()} and
+#'   \code{\link{call_args_names}()}
 #' @export
 #' @examples
 #' # Extract from current call:
@@ -84,4 +92,12 @@ fn_args_defaults <- function(fn = NULL) {
   }
 
   formals(fn)
+}
+
+#' @rdname fn_args_defaults
+#' @export
+fn_args_names <- function(fn = NULL) {
+  fn <- fn %||% call_frame(2)$fn
+  args <- fn_args_defaults(fn)
+  names(args)
 }
