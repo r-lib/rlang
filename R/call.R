@@ -245,10 +245,11 @@ get_call <- function(call) {
   }
 }
 
-#' Function name of a call
+#' Extract function name of a call
 #'
 #' @inheritParams call_standardise
-#' @return A string with the function name.
+#' @return A string with the function name, or \code{NULL} if the
+#'   function is anonymous.
 #' @export
 #' @examples
 #' # Extract the function name from quoted calls:
@@ -261,16 +262,27 @@ get_call <- function(call) {
 #'
 #' # Namespaced calls are correctly handled:
 #' call_fn_name(~base::matrix(baz))
-#' call_fn_name(~foo$bar(baz))
+#'
+#' # Anonymous and subsetted functions return NULL:
+#' call_fn_name(~foo$bar())
+#' call_fn_name(~foo[[bar]]())
+#' call_fn_name(~foo()())
 call_fn_name <- function(call = NULL) {
   call <- call %||% call_frame(2)
   call <- get_call(call)
   stopifnot(is.call(call))
   fn <- call[[1]]
 
-  # Handle namespaced calls: foo::bar(), foo@bar(), foo$bar()
   if (is.call(fn)) {
-    fn <- fn[[3]]
+    if (identical(fn[[1]], quote(`::`)) ||
+        identical(fn[[1]], quote(`:::`))) {
+      # Namespaced calls: foo::bar(), foo:::bar()
+      fn <- fn[[3]]
+    } else {
+      # Subsetted calls: foo@bar(), foo$bar()
+      # Anomymous calls: foo[[bar]](), foo()()
+      return(NULL)
+    }
   }
 
   as.character(fn)

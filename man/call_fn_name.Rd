@@ -2,7 +2,7 @@
 % Please edit documentation in R/call.R
 \name{call_fn_name}
 \alias{call_fn_name}
-\title{Function name of a call}
+\title{Extract function name of a call}
 \usage{
 call_fn_name(call = NULL)
 }
@@ -12,10 +12,11 @@ right-hand side, or a frame object from which to extract the call
 expression. If not supplied, the calling frame is used.}
 }
 \value{
-A string with the function name.
+A string with the function name, or \code{NULL} if the
+  function is anonymous.
 }
 \description{
-Function name of a call
+Extract function name of a call
 }
 \examples{
 # Extract the function name from quoted calls:
@@ -28,6 +29,10 @@ foo(bar)
 
 # Namespaced calls are correctly handled:
 call_fn_name(~base::matrix(baz))
-call_fn_name(~foo$bar(baz))
+
+# Anonymous and subsetted functions return NULL:
+call_fn_name(~foo$bar())
+call_fn_name(~foo[[bar]]())
+call_fn_name(~foo()())
 }
 
