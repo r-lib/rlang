@@ -13,7 +13,7 @@
 #' @export
 #' @examples
 #' f <- function(x) x + 3
-#' g <- function_new(alist(x = ), quote(x + 3))
+#' g <- fn_new(alist(x = ), quote(x + 3))
 #'
 #' # The components of the functions are identical
 #' identical(formals(f), formals(g))
@@ -26,7 +26,7 @@
 #' attr(f, "srcref") <- NULL
 #' # Now they are:
 #' stopifnot(identical(f, g))
-function_new <- function(args, body, env = parent.frame()) {
+fn_new <- function(args, body, env = parent.frame()) {
   stopifnot(all(has_names(args)), is_lang(body), is.environment(env))
 
   args <- as.pairlist(args)
