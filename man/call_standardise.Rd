@@ -40,7 +40,6 @@ Compared to \code{\link{match.call}()}, \code{call_standardise()}:
         \code{call(foo = x, ..3)}.
   \item Does not sort arguments according to the order of
         appearance in the function definition.
-  \item Does not partial-match arguments.
 }
 }
 

@@ -13,9 +13,9 @@ test_that("args can be specified individually or as list", {
 
 # Standardisation ---------------------------------------------------------
 
-test_that("no partial matching", {
+test_that("args are partial matched", {
   out <- call_standardise(quote(matrix(nro = 3, 1:9)))
-  expect_equal(out, quote(matrix(nro = 3, data = 1:9)))
+  expect_equal(out, quote(matrix(nrow = 3, data = 1:9)))
 })
 
 test_that("args are standardised", {
@@ -23,13 +23,6 @@ test_that("args are standardised", {
   expect_equal(call_standardise(quote(f(3))), quote(f(x = 3)))
   expect_equal(call_standardise(quote(f(3, 3))), quote(f(x = 3, y = 3)))
   expect_equal(call_standardise(quote(f(y = 3))), quote(f(y = 3)))
-})
-
-test_that("arg validation is delegated to R", {
-  f <- function(x, y) list(NULL)
-  env <- environment()
-  expect_error(call_validate_args(quote(f(x = NULL, x = NULL)), env, f), "matched by multiple")
-  expect_error(call_validate_args(quote(f(NULL, NULL, NULL)), env, f), "unused argument")
 })
 
 test_that("names of dotted arguments are enumerated", {
@@ -70,6 +63,30 @@ test_that("empty dots do not throw an error", {
   g <- function(...) h(...)
   h <- function(...) call_standardise(enum_dots = TRUE)
   expect_error(f(), NA)
+})
+
+test_that("arguments are partially matched", {
+  fn <- function(abc, abcd) NULL
+  expect_equal(call_match_partial(quote(fn()), fn), quote(fn()))
+  expect_equal(call_match_partial(quote(fn(ab = 1, abc = 2)), fn), quote(fn(abcd = 1, abc = 2)))
+  expect_equal(call_match_partial(quote(matrix(nro = 3, 1:9)), matrix), quote(matrix(nrow = 3, 1:9)))
+})
+
+test_that("multiple formal matches throw", {
+  fn <- function(abc, abcd) NULL
+  expect_error(call_match_partial(quote(fn(a = 1, a = 2)), fn), "matched by multiple")
+  expect_error(call_match_partial(quote(fn(a = 1, ab = 2)), fn), "matched by multiple")
+})
+
+test_that("multiple actual matches throw", {
+  fn <- function(abc, abcd) NULL
+  expect_error(call_match_partial(quote(fn(a = 2)), fn), "matches multiple")
+})
+
+test_that("redundant args throw", {
+  fn <- function(x, y) NULL
+  expect_error(call_standardise(quote(fn(x = NULL, x = NULL))), "matched by multiple")
+  expect_error(call_standardise(quote(fn(NULL, NULL, NULL))), "unused argument")
 })
 
 # Modification ------------------------------------------------------------

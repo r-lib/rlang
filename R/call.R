@@ -11,7 +11,6 @@
 #'         \code{call(foo = x, ..3)}.
 #'   \item Does not sort arguments according to the order of
 #'         appearance in the function definition.
-#'   \item Does not partial-match arguments.
 #' }
 #' @param call Can be a call, a formula quoting a call in the
 #'   right-hand side, or a frame object from which to extract the call
@@ -35,17 +34,66 @@ call_standardise <- function(call = NULL, env = NULL, fn = NULL,
                              enum_dots = FALSE) {
   info <- call_info(call, env, call_frame(2))
   fn <- call_fn(info$call, info$env)
-
   stopifnot(is.environment(info$env))
-  call_validate_args(info$call, info$env, fn)
 
-  call <- duplicate(info$call)
+  actuals_nms <- call_args_names(call)
+  is_dup <- duplicated(actuals_nms) & actuals_nms != ""
+  if (any(is_dup)) {
+    dups_nms <- actuals_nms[which(is_dup)]
+    stop(call. = FALSE,
+      "formal arguments matched by multiple actual arguments: ",
+      paste0(dups_nms, collapse = ", "))
+  }
+
+  formals_nms <- fn_args_names(fn)
+  if (is.na(match("...", formals_nms)) &&
+      length(actuals_nms) > length(formals_nms)) {
+    stop("unused arguments", call. = FALSE)
+  }
+
+  call <- call_match_partial(info$call, fn)
+  call <- duplicate(call)
   call <- call_inline_dots(call, info$env, enum_dots)
-
   call_match(call, fn, enum_dots)
 }
 
+call_match_partial <- function(call, fn) {
+  actuals_nms <- call_args_names(call)
+  if (!length(actuals_nms)) {
+    return(call)
+  }
 
+  formals_nms <- fn_args_names(fn)
+  formals_pool <- setdiff(formals_nms, actuals_nms)
+
+  is_matched <- actuals_nms %in% formals_nms
+  is_empty <- actuals_nms == ""
+  actuals_re <- paste0("^", actuals_nms)
+  actuals_re[is_matched | is_empty] <- "^$"
+
+  matched <- list()
+  for (formal in formals_pool) {
+    matched_pos <- which(vapply_lgl(actuals_re, grepl, formal))
+
+    if (length(matched_pos) > 1) {
+      stop(call. = FALSE,
+        "formal argument `", formal,
+        "` matched by multiple actual arguments")
+    }
+    if (length(matched_pos) && matched_pos %in% matched) {
+      re <- actuals_re[matched_pos]
+      nm <- substr(re, 2, nchar(re))
+      stop(call. = FALSE,
+        "actual argument `", nm,
+        "` matches multiple formal arguments")
+    }
+
+    matched <- append(matched, matched_pos)
+    actuals_nms[matched_pos] <- formal
+  }
+
+  names(call) <- c("", actuals_nms)
+  call
 }
 
 call_info <- function(call, env, frame) {
@@ -89,18 +137,6 @@ call_inline_dots <- function(call, env, enum_dots) {
   }
 
   call
-}
-
-call_validate_args <- function(call, env, fn) {
-  body(fn) <- NULL
-  call[[1]] <- quote(fn)
-
-  # Forward dots here
-  assign("...", env$`...`)
-
-  # Delegate to R the task of validating arguments
-  # This does not force promises since we evaluate a bodyless fn
-  eval(call)
 }
 
 is_arg_matched <- function(arg, formals, enum_dots) {
