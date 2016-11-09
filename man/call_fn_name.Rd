@@ -35,4 +35,7 @@ call_fn_name(~foo$bar())
 call_fn_name(~foo[[bar]]())
 call_fn_name(~foo()())
 }
+\seealso{
+\code{\link{call_fn}}()
+}
 

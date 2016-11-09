@@ -213,13 +213,25 @@ call_modify <- function(call = NULL, new_args, env = NULL) {
   call
 }
 
-get_call <- function(call) {
+#' Extract function from a call
+#'
+#' @inheritParams call_standardise
+#' @export
+#' @seealso \code{\link{call_fn_name}}()
+#' @examples
+#' # Extract from a quoted call:
+#' call_fn(~matrix())
+#' call_fn(quote(matrix()))
+#'
+#' # Extract the calling function
+#' test <- function() call_fn()
+#' test()
+call_fn <- function(call = NULL, env = NULL) {
   if (is_frame(call)) {
-    call$expr
-  } else if (is_formula(call)) {
-    f_rhs(call)
+    call$fn
   } else {
-    call
+    info <- call_info(call, env, call_frame(2))
+    eval(info$call[[1]], info$env)
   }
 }
 
@@ -228,6 +240,7 @@ get_call <- function(call) {
 #' @inheritParams call_standardise
 #' @return A string with the function name, or \code{NULL} if the
 #'   function is anonymous.
+#' @seealso \code{\link{call_fn}}()
 #' @export
 #' @examples
 #' # Extract the function name from quoted calls:

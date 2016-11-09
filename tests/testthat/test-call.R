@@ -109,3 +109,8 @@ test_that("call_fn_name() handles namespaced and anonymous calls", {
   expect_null(call_fn_name(quote(foo::bar()())))
   expect_null(call_fn_name(quote((function() NULL)())))
 })
+
+test_that("call_fn() extracts function", {
+  fn <- function() call_fn()
+  expect_identical(fn(), fn)
+})
