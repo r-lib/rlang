@@ -45,6 +45,9 @@ call_standardise <- function(call = NULL, env = NULL, fn = NULL,
   call_match(call, fn, enum_dots)
 }
 
+
+}
+
 call_info <- function(call, env, frame) {
   call <- call %||% frame
   if (is_frame(call)) {
@@ -291,4 +294,35 @@ call_fn_name <- function(call = NULL) {
   }
 
   as.character(fn)
+}
+
+#' Extract arguments from a call
+#'
+#' @inheritParams call_standardise
+#' @seealso \code{\link{fn_args_defaults}()} and
+#'   \code{\link{fn_args_names}()}
+#' @export
+#' @examples
+#' call <- quote(f(a, b))
+#'
+#' # Subsetting a call returns the arguments in a language pairlist:
+#' call[-1]
+#'
+#' # Whereas call_args() returns a list:
+#' call_args(call)
+#'
+#' # When the call arguments are supplied without names, a vector of
+#' # empty strings is supplied (rather than NULL):
+#' call_args_names(call)
+call_args <- function(call = NULL) {
+  call <- call_info(call, NULL, call_frame(2))$call
+  args <- as.list(call[-1])
+  set_names(args, names2(args))
+}
+
+#' @rdname call_args
+#' @export
+call_args_names <- function(call = NULL) {
+  call <- call_info(call, NULL, call_frame(2))$call
+  names(call_args(call))
 }

@@ -114,3 +114,10 @@ test_that("call_fn() extracts function", {
   fn <- function() call_fn()
   expect_identical(fn(), fn)
 })
+
+test_that("call_args() and call_args_names()", {
+  expect_identical(call_args(~fn(a, b)), set_names(list(quote(a), quote(b)), c("", "")))
+
+  fn <- function(a, b) call_args_names()
+  expect_identical(fn(a = foo, b = bar), c("a", "b"))
+})

@@ -30,4 +30,8 @@ fn()
 # Works with primitive functions:
 fn_args_defaults(base::switch)
 }
+\seealso{
+\code{\link{call_args}()} and
+  \code{\link{call_args_names}()}
+}
 
