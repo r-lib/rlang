@@ -54,3 +54,34 @@ prim_name <- function(prim) {
   name <- sub("\"\\)$", "", name)
   name
 }
+
+#' Extract arguments from a function
+#'
+#' Contrarily to \code{formals()}, \code{fn_args()} also works with
+#' primitive functions.
+#'
+#' @export
+#' @examples
+#' # Extract from current call:
+#' fn <- function(a = 1, b = 2) fn_args()
+#' fn()
+#'
+#' # Works with primitive functions:
+#' fn_args(base::switch)
+fn_args <- function(fn = NULL) {
+  fn <- fn %||% call_frame(2)$fn
+
+  if (is_primitive(fn)) {
+    fn_name <- prim_name(fn)
+    if (fn_name == "eval") {
+      # do_eval() starts a context with a fake primitive function as
+      # function definition. We replace it here with the .Internal()
+      # wrapper of eval() so we can match the arguments.
+      fn <- base::eval
+    } else {
+      fn <- .ArgsEnv[[fn_name]] %||% .GenericArgsEnv[[fn_name]]
+    }
+  }
+
+  formals(fn)
+}
