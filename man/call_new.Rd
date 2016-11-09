@@ -26,4 +26,7 @@ call_new(quote(f()), a = 1)
 call_new(quote(f), a = 1, b = 2)
 call_new(quote(f), .args = list(a = 1, b = 2))
 }
+\seealso{
+call_modify
+}
 

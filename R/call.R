@@ -1,31 +1,3 @@
-#' Create a call by "hand"
-#'
-#' @param .fn Function to call. For \code{make_call}, either a string,
-#'   a symbol or a quoted call. For \code{do_call}, a bare function
-#'   name or call.
-#' @param ...,.args Arguments to the call either in or out of a list
-#' @export
-#' @examples
-#' # fn can either be a string, a symbol or a call
-#' call_new("f", a = 1)
-#' call_new(quote(f), a = 1)
-#' call_new(quote(f()), a = 1)
-#'
-#' #' Can supply arguments individually or in a list
-#' call_new(quote(f), a = 1, b = 2)
-#' call_new(quote(f), .args = list(a = 1, b = 2))
-call_new <- function(.fn, ..., .args = list()) {
-  if (is.character(.fn)) {
-    if (length(.fn) != 1) {
-      stop("Character `.fn` must be length 1", call. = FALSE)
-    }
-    .fn <- as.name(.fn)
-  }
-
-  args <- c(list(...), as.list(.args))
-  as.call(c(.fn, args))
-}
-
 #' Standardise a call against formal arguments
 #'
 #' Compared to \code{\link{match.call}()}, \code{call_standardise()}:
@@ -172,43 +144,85 @@ call_match <- function(call, fn, enum_dots) {
   call
 }
 
+#' Create a call by "hand"
+#'
+#' @param .fn Function to call. For \code{make_call}, either a string,
+#'   a symbol or a quoted call. For \code{do_call}, a bare function
+#'   name or call.
+#' @param ...,.args Arguments to the call either in or out of a list
+#' @seealso call_modify
+#' @export
+#' @examples
+#' # fn can either be a string, a symbol or a call
+#' call_new("f", a = 1)
+#' call_new(quote(f), a = 1)
+#' call_new(quote(f()), a = 1)
+#'
+#' #' Can supply arguments individually or in a list
+#' call_new(quote(f), a = 1, b = 2)
+#' call_new(quote(f), .args = list(a = 1, b = 2))
+call_new <- function(.fn, ..., .args = list()) {
+  if (is.character(.fn)) {
+    if (length(.fn) != 1) {
+      stop("Character `.fn` must be length 1", call. = FALSE)
+    }
+    .fn <- as.name(.fn)
+  }
+
+  args <- c(list(...), as.list(.args))
+  as.call(c(.fn, args))
+}
+
 #' Modify the arguments of a call.
 #'
-#' @inheritParams call_standardise
-#' @param new_args A named list of expressions (constants, names or calls)
-#'   used to modify the call. Use \code{NULL} to remove arguments.
+#' @param .call Can be a call, a formula quoting a call in the
+#'   right-hand side, or a frame object from which to extract the call
+#'   expression. If not supplied, the calling frame is used.
+#' @param .env Environment in which to look up call the function
+#'   definition and the contents of \code{...}. If not supplied, it is
+#'   retrieved from \code{call} if the latter is a frame object or a
+#'   formula.
+#' @param ...,.args Named expressions (constants, names or
+#'   calls) used to modify the call. Use \code{NULL} to remove
+#'   arguments.
+#' @seealso call_new
 #' @export
 #' @examples
 #' call <- quote(mean(x, na.rm = TRUE))
-#' call_standardise(call)
 #'
 #' # Modify an existing argument
-#' call_modify(call, list(na.rm = FALSE))
-#' call_modify(call, list(x = quote(y)))
+#' call_modify(call, na.rm = FALSE)
+#' call_modify(call, x = quote(y))
 #'
 #' # Remove an argument
-#' call_modify(call, list(na.rm = NULL))
+#' call_modify(call, na.rm = NULL)
 #'
 #' # Add a new argument
-#' call_modify(call, list(trim = 0.1))
+#' call_modify(call, trim = 0.1)
 #'
 #' # Add an explicit missing argument
-#' call_modify(call, list(na.rm = quote(expr = )))
+#' call_modify(call, na.rm = quote(expr = ))
+#'
+#' # Supply a list of new arguments with .args
+#' newargs <- list(na.rm = NULL, trim = 0.1)
+#' call_modify(call, .args = newargs)
 #'
 #' # If the call is missing, the parent frame is used instead.
-#' f <- function(bool = TRUE) call_modify(new_args = list(bool = FALSE))
+#' f <- function(bool = TRUE) call_modify(.args = list(bool = FALSE))
 #' f()
-call_modify <- function(call = NULL, new_args, env = NULL) {
-  stopifnot(is.list(new_args))
-  call <- call %||% call_frame(2)
-  call <- call_standardise(call, env)
+call_modify <- function(.call = NULL, ..., .args = list(), .env = NULL) {
+  stopifnot(is.list(.args))
+  args <- c(list(...), .args)
 
-  if (!all(has_names(new_args))) {
+  call <- .call %||% call_frame(2)
+  call <- call_standardise(call, .env)
+
+  if (!all(has_names(args))) {
     stop("All new arguments must be named", call. = FALSE)
   }
 
-  for (nm in names(new_args)) {
-    call[[nm]] <- new_args[[nm]]
+  for (nm in names(args)) {
+    call[[nm]] <- args[[nm]]
   }
   call
 }

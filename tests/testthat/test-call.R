@@ -76,23 +76,23 @@ test_that("empty dots do not throw an error", {
 
 test_that("all args must be named", {
   call <- quote(matrix(1:10))
-  expect_error(call_modify(call, list(1)), "must be named")
+  expect_error(call_modify(call, 1), "must be named")
 })
 
 test_that("new args inserted at end", {
   call <- quote(matrix(1:10))
-  out <- call_modify(call, list(nrow = 3))
+  out <- call_modify(call, nrow = 3)
   expect_equal(out, quote(matrix(data = 1:10, nrow = 3)))
 })
 
 test_that("new args replace old", {
   call <- quote(matrix(1:10))
-  out <- call_modify(call, list(data = 3))
+  out <- call_modify(call, data = 3)
   expect_equal(out, quote(matrix(data = 3)))
 })
 
 test_that("can modify without supplying `call`", {
-  f <- function() call_modify(new_args = list(bool = FALSE))
+  f <- function() call_modify(.args = list(bool = FALSE))
   expect_identical(f(), quote(f(bool = FALSE)))
 })
 
