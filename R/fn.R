@@ -58,7 +58,7 @@ prim_name <- function(prim) {
 #' Extract arguments from a function
 #'
 #' \code{fn_defaults()} returns a named list of default
-#' arguments. \code{fn_args_names()} returns the names of the
+#' arguments. \code{fn_fmls_names()} returns the names of the
 #' arguments.
 #'
 #' Contrarily to \code{formals()}, these helpers also work with
@@ -71,12 +71,12 @@ prim_name <- function(prim) {
 #' @export
 #' @examples
 #' # Extract from current call:
-#' fn <- function(a = 1, b = 2) fn_args_defaults()
+#' fn <- function(a = 1, b = 2) fn_fmls()
 #' fn()
 #'
 #' # Works with primitive functions:
-#' fn_args_defaults(base::switch)
-fn_args_defaults <- function(fn = NULL) {
+#' fn_fmls(base::switch)
+fn_fmls <- function(fn = NULL) {
   fn <- fn %||% call_frame(2)$fn
 
   if (is_primitive(fn)) {
@@ -94,10 +94,10 @@ fn_args_defaults <- function(fn = NULL) {
   formals(fn)
 }
 
-#' @rdname fn_args_defaults
+#' @rdname fn_fmls
 #' @export
-fn_args_names <- function(fn = NULL) {
+fn_fmls_names <- function(fn = NULL) {
   fn <- fn %||% call_frame(2)$fn
-  args <- fn_args_defaults(fn)
+  args <- fn_fmls(fn)
   names(args)
 }

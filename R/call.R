@@ -93,7 +93,7 @@ call_match_partial <- function(call, fn) {
       paste0(dups_nms, collapse = ", "))
   }
 
-  formals_nms <- fn_args_names(fn)
+  formals_nms <- fn_fmls_names(fn)
   dots_pos <- match("...", formals_nms)
 
   # No partial-matching of args after dots
@@ -182,7 +182,7 @@ is_arg_matched <- function(arg, formals, enum_dots) {
 call_match <- function(call, fn, enum_dots) {
   args <- call[-1]
   args_nms <- names2(args)
-  formals_nms <- names2(fn_args_defaults(fn))
+  formals_nms <- names2(fn_fmls(fn))
 
   is_matched <- vapply_lgl(args_nms, is_arg_matched, formals_nms, enum_dots)
   candidates <- setdiff(formals_nms, args_nms[is_matched])
@@ -368,8 +368,8 @@ call_fn_name <- function(call = NULL) {
 #' Extract arguments from a call
 #'
 #' @inheritParams call_standardise
-#' @seealso \code{\link{fn_args_defaults}()} and
-#'   \code{\link{fn_args_names}()}
+#' @seealso \code{\link{fn_fmls}()} and
+#'   \code{\link{fn_fmls_names}()}
 #' @export
 #' @examples
 #' call <- quote(f(a, b))

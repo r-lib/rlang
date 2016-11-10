@@ -31,7 +31,7 @@ call_args(call)
 call_args_names(call)
 }
 \seealso{
-\code{\link{fn_args_defaults}()} and
-  \code{\link{fn_args_names}()}
+\code{\link{fn_fmls}()} and
+  \code{\link{fn_fmls_names}()}
 }
 
