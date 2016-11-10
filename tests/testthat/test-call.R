@@ -95,6 +95,12 @@ test_that("crazy args partial-match", {
   expect_error(call_standardise(~fn(`\\` = 1, `\\[` = 2)), "matched by multiple")
 })
 
+test_that("dotted args are not partial-matched", {
+  fn <- function(...) call_standardise()
+  g <- function(...) fn(...)
+  expect_equal(g(a = 1), quote(fn(a = ..1)))
+})
+
 # Modification ------------------------------------------------------------
 
 test_that("all args must be named", {
