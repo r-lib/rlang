@@ -127,6 +127,7 @@ call_match_partial <- function(call, fn) {
 
   if (is.na(dots_pos)) {
     is_unused <- !actuals_nms %in% c(formals_nms, "")
+    is_unused <- is_unused & !vapply_lgl(actuals_nms, is_dot_nm)
     if (any(is_unused)) {
       stop(call. = FALSE,
         "unused arguments: ",
@@ -316,7 +317,7 @@ call_fn <- function(call = NULL, env = NULL) {
   if (is_frame(call)) {
     call$fn
   } else {
-    info <- call_info(call, env)
+    info <- call_info(call, NULL)
     eval(info$call[[1]], info$env)
   }
 }

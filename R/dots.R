@@ -21,3 +21,7 @@ dots_get <- function(env) {
   dots <- substitute(alist(...), env)
   cdr(dots)
 }
+
+is_dot_nm <- function(nm) {
+  grepl("\\.\\.[0-9]+$", nm)
+}

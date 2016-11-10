@@ -116,6 +116,13 @@ test_that("args after dots are not partial-matched", {
   expect_equal(g(a = 1), quote(fn(ab = ..1)))
 })
 
+test_that("enumerated dots are ignored when checking unused args", {
+  fn <- function(x) call_standardise(enum_dots = TRUE)
+  g <- function(...) fn(...)
+  h <- function(...) g(...)
+  expect_error(h(a), NA)
+})
+
 # Modification ------------------------------------------------------------
 
 test_that("all args must be named", {
