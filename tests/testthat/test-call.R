@@ -44,7 +44,7 @@ test_that("call is not modified in place", {
   f <- function(...) g(...)
   g <- function(...) call_stack()[1:2]
   stack <- f(foo)
-  call_standardise(stack[[1]]$expr, stack[[2]]$env, enum_dots = TRUE)
+  call_standardise(stack[[1]]$expr, g, stack[[2]]$env, enum_dots = TRUE)
   expect_equal(stack[[1]]$expr, quote(g(...)))
 })
 
@@ -63,6 +63,12 @@ test_that("empty dots do not throw an error", {
   g <- function(...) h(...)
   h <- function(...) call_standardise(enum_dots = TRUE)
   expect_error(f(), NA)
+})
+
+test_that("matching dots without caller_env throws", {
+  fn <- function(...) call_standardise(quote(fn(...)))
+  g <- function(...) fn(...)
+  expect_error(g(), "must be supplied to match dots")
 })
 
 test_that("arguments are partially matched", {

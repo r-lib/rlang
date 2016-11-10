@@ -15,13 +15,14 @@
 #' @param call Can be a call, a formula quoting a call in the
 #'   right-hand side, or a frame object from which to extract the call
 #'   expression. If not supplied, the calling frame is used.
-#' @param env Environment in which to look up call the function
-#'   definition and the contents of \code{...}. If not supplied, it is
-#'   retrieved from \code{call} if the latter is a frame object or a
-#'   formula.
-#' @param fn The function against which to standardise the call. It is
-#'   lookep up in \code{env} if not supplied, or retrieved from
-#'   \code{call} if it is a frame.
+#' @param fn The function against which to standardise the call. If
+#'   not supplied, it is either retrieved from \code{call} if the
+#'   latter is frame or formula (by looking up the formula's
+#'   environment). Alternatively, it is lookep up in the calling frame
+#'   if not supplied.
+#' @param caller_env Parent frame in which to look up call the
+#'   contents of \code{...}. If not supplied and \code{call} is a
+#'   frame object, it is retrieved from \code{call}.
 #' @param enum_dots Whether to standardise the names of dotted
 #'   arguments. If \code{TRUE}, this produces calls such as
 #'   \code{f(..1 = ..2)} instead of \code{f(..2)}. The first form is
@@ -30,16 +31,41 @@
 #'   default) is more faithful to the actual call and is ready to be
 #'   evaluated.
 #' @export
-call_standardise <- function(call = NULL, env = NULL, fn = NULL,
+call_standardise <- function(call = NULL, fn = NULL,
+                             caller_env = NULL,
                              enum_dots = FALSE) {
-  info <- call_info(call, env, call_frame(2))
-  fn <- call_fn(info$call, info$env)
+  info <- call_info(call, caller_env)
+  fn <- fn %||% info$fn %||% call_fn(info$call, info$env)
   stopifnot(is.environment(info$env))
+  call_standardise_(info$call, fn, info$caller_env, enum_dots)
+}
 
+call_info <- function(call, caller_env) {
+  # Assume call_info() is never called directly
+  call <- call %||% call_frame(3)
+  fn <- NULL
+
+  if (is_frame(call)) {
+    env <- call$env
+    caller_env <- caller_env %||% sys.frame(call$caller_pos)
+    fn <- call$fn
+    call <- call$expr
+  } else if (is_formula(call)) {
+    env <- environment(call)
+    call <- f_rhs(call)
+  } else {
+    env <- parent.frame(3)
   }
 
-  }
+  list(
+    call = call,
+    env = env,
+    fn = fn,
+    caller_env = caller_env
+  )
+}
 
+call_standardise_ <- function(call, fn, caller_env, enum_dots) {
   call <- duplicate(call)
   call <- call_inline_dots(call, caller_env, enum_dots)
   call <- call_match_partial(call, fn)
@@ -104,24 +130,6 @@ call_match_partial <- function(call, fn) {
 
   names(call) <- c("", actuals_nms)
   call
-}
-
-call_info <- function(call, env, frame) {
-  call <- call %||% frame
-  if (is_frame(call)) {
-    env <- env %||% call$env
-    call <- call$expr
-  } else if (is_formula(call)) {
-    env <- env %||% environment(call)
-    call <- f_rhs(call)
-  } else {
-    env <- env %||% parent.frame(2)
-  }
-
-  list(
-    call = call,
-    env = env
-  )
 }
 
 call_inline_dots <- function(call, caller_env, enum_dots) {
@@ -283,6 +291,8 @@ call_modify <- function(.call = NULL, ..., .args = list(), .env = NULL) {
 #' Extract function from a call
 #'
 #' @inheritParams call_standardise
+#' @param env Environment in which to look up the function. The
+#'   default is the calling frame.
 #' @export
 #' @seealso \code{\link{call_fn_name}}()
 #' @examples
@@ -297,7 +307,7 @@ call_fn <- function(call = NULL, env = NULL) {
   if (is_frame(call)) {
     call$fn
   } else {
-    info <- call_info(call, env, call_frame(2))
+    info <- call_info(call, env)
     eval(info$call[[1]], info$env)
   }
 }
@@ -326,7 +336,7 @@ call_fn <- function(call = NULL, env = NULL) {
 #' call_fn_name(~foo[[bar]]())
 #' call_fn_name(~foo()())
 call_fn_name <- function(call = NULL) {
-  info <- call_info(call, NULL, call_frame(2))
+  info <- call_info(call, NULL)
   stopifnot(is.call(info$call))
 
   fn <- info$call[[1]]
@@ -365,7 +375,7 @@ call_fn_name <- function(call = NULL) {
 #' # empty strings is supplied (rather than NULL):
 #' call_args_names(call)
 call_args <- function(call = NULL) {
-  call <- call_info(call, NULL, call_frame(2))$call
+  call <- call_info(call, NULL)$call
   args <- as.list(call[-1])
   set_names(args, names2(args))
 }
@@ -373,6 +383,6 @@ call_args <- function(call = NULL) {
 #' @rdname call_args
 #' @export
 call_args_names <- function(call = NULL) {
-  call <- call_info(call, NULL, call_frame(2))$call
+  call <- call_info(call, NULL)$call
   names(call_args(call))
 }

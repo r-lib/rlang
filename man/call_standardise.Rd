@@ -4,21 +4,23 @@
 \alias{call_standardise}
 \title{Standardise a call against formal arguments}
 \usage{
-call_standardise(call = NULL, env = NULL, fn = NULL, enum_dots = FALSE)
+call_standardise(call = NULL, fn = NULL, caller_env = NULL,
+  enum_dots = FALSE)
 }
 \arguments{
 \item{call}{Can be a call, a formula quoting a call in the
 right-hand side, or a frame object from which to extract the call
 expression. If not supplied, the calling frame is used.}
 
-\item{env}{Environment in which to look up call the function
-definition and the contents of \code{...}. If not supplied, it is
-retrieved from \code{call} if the latter is a frame object or a
-formula.}
+\item{fn}{The function against which to standardise the call. If
+not supplied, it is either retrieved from \code{call} if the
+latter is frame or formula (by looking up the formula's
+environment). Alternatively, it is lookep up in the calling frame
+if not supplied.}
 
-\item{fn}{The function against which to standardise the call. It is
-lookep up in \code{env} if not supplied, or retrieved from
-\code{call} if it is a frame.}
+\item{caller_env}{Parent frame in which to look up call the
+contents of \code{...}. If not supplied and \code{call} is a
+frame object, it is retrieved from \code{call}.}
 
 \item{enum_dots}{Whether to standardise the names of dotted
 arguments. If \code{TRUE}, this produces calls such as
