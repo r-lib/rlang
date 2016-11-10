@@ -95,6 +95,11 @@ test_that("redundant args throw", {
   expect_error(call_standardise(quote(fn(NULL, NULL, NULL))), "unused argument")
 })
 
+test_that("unused args throw", {
+  fn <- function(x, y) NULL
+  expect_error(call_standardise(~fn(x = 1, z = 2)), "unused arguments: z")
+})
+
 test_that("crazy args partial-match", {
   fn <- function(`\\[]`, `[]\\`) NULL
   expect_equal(call_standardise(~fn(`[]` = 1, `\\` = 2)), quote(fn(`[]\\` = 1, `\\[]` = 2)))

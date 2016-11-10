@@ -95,9 +95,6 @@ call_match_partial <- function(call, fn) {
 
   formals_nms <- fn_args_names(fn)
   dots_pos <- match("...", formals_nms)
-  if (is.na(dots_pos) && length(actuals_nms) > length(formals_nms)) {
-    stop("unused arguments", call. = FALSE)
-  }
 
   # No partial-matching of args after dots
   if (!is.na(dots_pos)) {
@@ -126,6 +123,18 @@ call_match_partial <- function(call, fn) {
 
     matched <- append(matched, matched_pos)
     actuals_nms[matched_pos] <- formal
+  }
+
+  if (is.na(dots_pos)) {
+    is_unused <- !actuals_nms %in% c(formals_nms, "")
+    if (any(is_unused)) {
+      stop(call. = FALSE,
+        "unused arguments: ",
+        paste0(actuals_nms[is_unused], collapse = ", "))
+    }
+    if (length(actuals_nms) > length(formals_nms)) {
+      stop("unused arguments", call. = FALSE)
+    }
   }
 
   names(call) <- c("", actuals_nms)
