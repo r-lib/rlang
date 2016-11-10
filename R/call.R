@@ -57,6 +57,11 @@ call_standardise <- function(call = NULL, env = NULL, fn = NULL,
   call_match(call, fn, enum_dots)
 }
 
+arg_match_partial <- function(arg, formal) {
+  pos <- stringi::stri_locate_first_fixed(formal, arg)[[1]]
+  !is.na(pos) && pos == 1
+}
+
 call_match_partial <- function(call, fn) {
   actuals_nms <- call_args_names(call)
   if (!length(actuals_nms)) {
@@ -68,12 +73,12 @@ call_match_partial <- function(call, fn) {
 
   is_matched <- actuals_nms %in% formals_nms
   is_empty <- actuals_nms == ""
-  actuals_re <- paste0("^", actuals_nms)
-  actuals_re[is_matched | is_empty] <- "^$"
+  actuals_pat <- actuals_nms
+  actuals_pat[is_matched | is_empty] <- NA
 
   matched <- list()
   for (formal in formals_pool) {
-    matched_pos <- which(vapply_lgl(actuals_re, grepl, formal))
+    matched_pos <- which(vapply_lgl(actuals_pat, arg_match_partial, formal))
 
     if (length(matched_pos) > 1) {
       stop(call. = FALSE,
@@ -81,10 +86,8 @@ call_match_partial <- function(call, fn) {
         "` matched by multiple actual arguments")
     }
     if (length(matched_pos) && matched_pos %in% matched) {
-      re <- actuals_re[matched_pos]
-      nm <- substr(re, 2, nchar(re))
       stop(call. = FALSE,
-        "actual argument `", nm,
+        "actual argument `", actuals_pat[matched_pos],
         "` matches multiple formal arguments")
     }
 

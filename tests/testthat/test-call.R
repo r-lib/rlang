@@ -89,6 +89,12 @@ test_that("redundant args throw", {
   expect_error(call_standardise(quote(fn(NULL, NULL, NULL))), "unused argument")
 })
 
+test_that("crazy args partial-match", {
+  fn <- function(`\\[]`, `[]\\`) NULL
+  expect_equal(call_standardise(~fn(`[]` = 1, `\\` = 2)), quote(fn(`[]\\` = 1, `\\[]` = 2)))
+  expect_error(call_standardise(~fn(`\\` = 1, `\\[` = 2)), "matched by multiple")
+})
+
 # Modification ------------------------------------------------------------
 
 test_that("all args must be named", {
