@@ -94,3 +94,13 @@ expr_env <- function(x, default_env) {
     env
   }
 }
+
+#' Generate a missing argument.
+#'
+#' @export
+#' @examples
+#' f_interp(~f(x = uq(arg_missing())))
+#' f_interp(~f(x = uq(NULL)))
+arg_missing <- function() {
+  quote(expr = )
+}

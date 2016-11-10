@@ -26,19 +26,20 @@ substitute_ <- function(x, env) {
   eval(call)
 }
 
-#' Generate a missing argument.
-#'
-#' @export
-#' @examples
-#' f_interp(~f(x = uq(missing_arg())))
-#' f_interp(~f(x = uq(NULL)))
-missing_arg <- function() {
-  quote(expr = )
-}
-
 #' @useDynLib rlang make_lazy
 #' @useDynLib rlang make_lazy_dots
 NULL
+
+get_env <- function(x) {
+  if (is_frame(x)) {
+    x <- x$env
+  } else if (is_formula(x)) {
+    x <- environment(x)
+  }
+  stopifnot(is.environment(x))
+
+  x
+}
 
 drop_last <- function(x) {
   x[-length(x)]
@@ -61,6 +62,16 @@ zip <- function(.l) {
 set_names <- function(x, nm = x) {
   stats::setNames(x, nm)
 }
+vapply_ <- function(.x, .f, .mold, ...) {
+  out <- vapply(.x, .f, .mold, ..., USE.NAMES = FALSE)
+  set_names(out, names(.x))
+}
 vapply_int <- function(.x, .f, ...) {
-  vapply(.x, .f, integer(1), ...)
+  vapply_(.x, .f, integer(1), ...)
+}
+vapply_lgl <- function(.x, .f, ...) {
+  vapply_(.x, .f, logical(1), ...)
+}
+names2 <- function(x) {
+  names(x) %||% rep("", length(x))
 }

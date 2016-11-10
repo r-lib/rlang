@@ -50,20 +50,32 @@ test_that("call_depth() returns correct depth", {
   expect_equal(fixup_call_depth(g()), 2)
 })
 
-test_that("call_env() is the same as parent.frame()", {
-  expect_identical(call_frame()$env, parent.frame())
+test_that("call_frame()$env is the same as parent.frame()", {
+  f <- function(n) call_frame(n + 1)$env
+  f_base <- function(n) parent.frame(n)
+  env1 <- f(1)
+  env1_base <- f_base(1)
+  expect_identical(env1, env1_base)
+
+  g <- function(n) list(f(n), f_base(n))
+  envs <- g(1)
+  expect_identical(envs[[1]], envs[[2]])
 })
 
-test_that("call_expr() gives expression of caller not previous ctxt", {
-  expr <- call_frame(1)$expr
-  expect_equal(expr, sys.call(0))
-  expect_equal(identity(call_frame(1)$expr), sys.call(0))
-
+test_that("call_frame()$expr gives expression of caller not previous ctxt", {
   f <- function(x = 1) call_frame(x)$expr
   expect_equal(f(), quote(f()))
 
   g <- function() identity(f(2))
   expect_equal(g(), quote(g()))
+})
+
+test_that("call_frame(n) throws at correct level", {
+  n <- call_depth()
+  frame <- call_frame(n)
+  stack_frame <- call_stack()[[n]]
+  expect_identical(frame, stack_frame)
+  expect_error(call_frame(n + 1), "not that many frames")
 })
 
 
@@ -95,14 +107,14 @@ test_that("eval_stack_trail() returns a vector of size nframe", {
   expect_equal(length(trail), n)
 })
 
-test_that("eval_stack_funs() returns functions in correct order", {
+test_that("eval_stack_fns() returns functions in correct order", {
   f1 <- function(x) f2(x)
-  f2 <- function(x) eval_stack_funs()
+  f2 <- function(x) eval_stack_fns()
 
-  funs <- f1()
-  funs <- fixup_ctxts(funs)
+  fns <- f1()
+  fns <- fixup_ctxts(fns)
 
-  expect_identical(funs, list(f1, f2))
+  expect_identical(fns, list(f1, f2))
 })
 
 test_that("call_stack() trail ignores irrelevant frames", {
@@ -119,26 +131,10 @@ test_that("call_stack() trail ignores irrelevant frames", {
   expect_equal(fixup_call_trail(trail2), c(5, 4, 3))
 })
 
-test_that("call_stack() envs give same result as iterative parent.frame()", {
-  iterative_pf <- function() {
-    pos <- call_depth() - 1
-    out <- vector("list", pos)
-    for (i in seq_len(pos)) {
-      out[[i]] <- parent.frame(i)
-    }
-    out
-  }
-
-  stack <- call_stack()
-  envs1 <- purrr::map(stack, "env")
-  envs2 <- iterative_pf()
-
-  expect_identical(envs1, envs2)
-})
-
-test_that("call_stack() exprs is in opposite order to sys calls", {
+test_that("eval_stack() exprs is in opposite order to sys calls", {
   syscalls <- sys.calls()
-  exprs <- purrr::map(call_stack(), "expr")
+  stack <- eval_stack()
+  exprs <- purrr::map(stack, "expr")
   expect_equal(exprs[[length(exprs)]], syscalls[[1]])
   expect_equal(exprs[[1]], syscalls[[length(syscalls)]])
 })
@@ -154,7 +150,39 @@ test_that("eval_stack() and call_stack() agree", {
   eval_exprs <- lapply(eval_stack, `[[`, "expr")
   expect_identical(call_exprs, eval_exprs)
 
-  call_envs <- lapply(call_stack, `[[`, "env")
-  eval_envs <- lapply(eval_stack, `[[`, "env")
+  is_eval <- vapply_lgl(call_stack, function(frame) {
+    identical(frame$fn, base::eval)
+  })
+
+  call_envs <- lapply(call_stack[!is_eval], `[[`, "env")
+  eval_envs <- lapply(eval_stack[!is_eval], `[[`, "env")
   expect_identical(call_envs, eval_envs)
+})
+
+test_that("eval_stack() subsets n frames", {
+  stack <- eval_stack()
+  stack_2 <- eval_stack(2)
+  expect_identical(stack_2, stack[1:2])
+
+  n <- eval_depth()
+  stack_n <- eval_stack(n)
+  expect_identical(stack_n, stack)
+
+  # Get correct eval depth within expect_error()
+  expect_error({ n <- eval_depth(); stop() })
+  expect_error(eval_stack(n + 1), "not that many frames")
+})
+
+test_that("call_stack() subsets n frames", {
+  stack <- call_stack()
+  stack_2 <- call_stack(2)
+  expect_identical(stack_2, stack[1:2])
+
+  n <- call_depth()
+  stack_n <- call_stack(n)
+  expect_identical(stack_n, stack)
+
+  # Get correct eval depth within expect_error()
+  expect_error({ n <- call_depth(); stop() })
+  expect_error(call_stack(n + 1), "not that many frames")
 })

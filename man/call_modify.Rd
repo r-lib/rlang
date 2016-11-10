@@ -2,40 +2,52 @@
 % Please edit documentation in R/call.R
 \name{call_modify}
 \alias{call_modify}
-\alias{call_standardise}
 \title{Modify the arguments of a call.}
 \usage{
-call_modify(call, new_args, env = parent.frame())
-
-call_standardise(call, env = parent.frame())
+call_modify(.call = NULL, ..., .args = list(), .env = NULL)
 }
 \arguments{
-\item{call}{A call to modify. It is first standardised with
-\code{\link{call_standardise}}.}
+\item{.call}{Can be a call, a formula quoting a call in the
+right-hand side, or a frame object from which to extract the call
+expression. If not supplied, the calling frame is used.}
 
-\item{new_args}{A named list of expressions (constants, names or calls)
-used to modify the call. Use \code{NULL} to remove arguments.}
+\item{..., .args}{Named expressions (constants, names or
+calls) used to modify the call. Use \code{NULL} to remove
+arguments.}
 
-\item{env}{Environment in which to look up call value.}
+\item{.env}{Environment in which to look up call the function
+definition and the contents of \code{...}. If not supplied, it is
+retrieved from \code{call} if the latter is a frame object or a
+formula.}
 }
 \description{
 Modify the arguments of a call.
 }
 \examples{
 call <- quote(mean(x, na.rm = TRUE))
-call_standardise(call)
 
 # Modify an existing argument
-call_modify(call, list(na.rm = FALSE))
-call_modify(call, list(x = quote(y)))
+call_modify(call, na.rm = FALSE)
+call_modify(call, x = quote(y))
 
 # Remove an argument
-call_modify(call, list(na.rm = NULL))
+call_modify(call, na.rm = NULL)
 
 # Add a new argument
-call_modify(call, list(trim = 0.1))
+call_modify(call, trim = 0.1)
 
 # Add an explicit missing argument
-call_modify(call, list(na.rm = quote(expr = )))
+call_modify(call, na.rm = quote(expr = ))
+
+# Supply a list of new arguments with .args
+newargs <- list(na.rm = NULL, trim = 0.1)
+call_modify(call, .args = newargs)
+
+# If the call is missing, the parent frame is used instead.
+f <- function(bool = TRUE) call_modify(.args = list(bool = FALSE))
+f()
+}
+\seealso{
+call_new
 }
 
