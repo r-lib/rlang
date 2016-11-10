@@ -18,9 +18,9 @@ eval_depth()
 
 call_depth()
 
-eval_stack()
+eval_stack(n = NULL)
 
-call_stack()
+call_stack(n = NULL)
 }
 \arguments{
 \item{n}{The number of frames to go back in the stack.}

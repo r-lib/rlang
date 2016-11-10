@@ -158,3 +158,31 @@ test_that("eval_stack() and call_stack() agree", {
   eval_envs <- lapply(eval_stack[!is_eval], `[[`, "env")
   expect_identical(call_envs, eval_envs)
 })
+
+test_that("eval_stack() subsets n frames", {
+  stack <- eval_stack()
+  stack_2 <- eval_stack(2)
+  expect_identical(stack_2, stack[1:2])
+
+  n <- eval_depth()
+  stack_n <- eval_stack(n)
+  expect_identical(stack_n, stack)
+
+  # Get correct eval depth within expect_error()
+  expect_error({ n <- eval_depth(); stop() })
+  expect_error(eval_stack(n + 1), "not that many frames")
+})
+
+test_that("call_stack() subsets n frames", {
+  stack <- call_stack()
+  stack_2 <- call_stack(2)
+  expect_identical(stack_2, stack[1:2])
+
+  n <- call_depth()
+  stack_n <- call_stack(n)
+  expect_identical(stack_n, stack)
+
+  # Get correct eval depth within expect_error()
+  expect_error({ n <- call_depth(); stop() })
+  expect_error(call_stack(n + 1), "not that many frames")
+})

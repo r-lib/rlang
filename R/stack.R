@@ -125,13 +125,13 @@ trail_next <- function(callers, i) {
 }
 
 # Positions of frames in the call stack up to `n`
-trail_make <- function(callers, n = NULL, trim_global = TRUE) {
+trail_make <- function(callers, n = NULL) {
   n_ctxt <- length(callers)
   if (is.null(n)) {
     n_max <- n_ctxt
   } else {
     n <- n + 1
-    if (n > n_ctxt + !trim_global) {
+    if (n > n_ctxt) {
       stop("not that many frames on the evaluation stack", call. = FALSE)
     }
     n_max <- n
@@ -139,8 +139,7 @@ trail_make <- function(callers, n = NULL, trim_global = TRUE) {
 
   state <- trail_next(callers, 1)
   if (!length(state$i) || state$i == 0) {
-    i <- if (trim_global) integer(0) else 0
-    return(i)
+    return(0L)
   }
   j <- 1
 
@@ -157,10 +156,8 @@ trail_make <- function(callers, n = NULL, trim_global = TRUE) {
   }
 
   # Return relevant subset
-  if (trim_global) {
-    j <- j - 1
-  }
-  if (!is.null(n) && n > j + !trim_global) {
+  j <- j
+  if (!is.null(n) && n > j) {
     stop("not that many frames on the call stack", call. = FALSE)
   }
   out[seq_len(j)]
@@ -171,7 +168,7 @@ trail_make <- function(callers, n = NULL, trim_global = TRUE) {
 call_frame <- function(n = 1) {
   stopifnot(n > 0)
   eval_callers <- eval_stack_callers()
-  trail <- trail_make(eval_callers, n + 1, trim_global = FALSE)
+  trail <- trail_make(eval_callers, n)
   pos <- trail[n]
 
   frame <- new_frame(list(
@@ -195,7 +192,7 @@ eval_depth <- function() {
 call_depth <- function() {
   eval_callers <- eval_stack_callers()
   trail <- trail_make(eval_callers)
-  length(trail)
+  length(trail) - 1
 }
 
 
@@ -203,7 +200,7 @@ call_depth <- function() {
 
 #' @rdname stack
 #' @export
-eval_stack <- function() {
+eval_stack <- function(n = NULL) {
   stack_data <- list(
     pos = eval_stack_trail(),
     caller_pos = eval_stack_callers(),
@@ -211,10 +208,12 @@ eval_stack <- function() {
     env = eval_stack_envs(),
     fn = eval_stack_fns()
   )
-  stack_data$fn_name <- lapply(stack_data$expr, call_fn_name)
 
   # Remove eval_stack() from stack
   stack_data <- lapply(stack_data, drop_first)
+
+  stack_data <- stack_subset(stack_data, n)
+  stack_data$fn_name <- lapply(stack_data$expr, call_fn_name)
 
   frames <- zip(stack_data)
   lapply(frames, new_frame)
@@ -242,15 +241,26 @@ eval_stack_fns <- function() {
   lapply(eval_indices, sys.function)
 }
 
+stack_subset <- function(stack_data, n) {
+  if (!is.null(n)) {
+    stopifnot(n > 0)
+    if (n > length(stack_data[[1]])) {
+      stop(call. = FALSE, "not that many frames on the stack")
+    }
+    stack_data <- lapply(stack_data, `[`, seq_len(n))
+  }
+  stack_data
+}
+
 #' @rdname stack
 #' @export
-call_stack <- function() {
+call_stack <- function(n = NULL) {
   eval_callers <- eval_stack_callers()
-  trail <- trail_make(eval_callers)
+  trail <- trail_make(eval_callers, n)
 
   stack_data <- list(
-    pos = trail,
-    caller_pos = c(trail[-1], 0),
+    pos = drop_last(trail),
+    caller_pos = drop_first(trail),
     expr = lapply(trail, sys.call),
     env = lapply(trail, sys.frame),
     fn = lapply(trail, sys.function)
