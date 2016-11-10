@@ -153,7 +153,7 @@ call_inline_dots <- function(call, caller_env, enum_dots) {
     stop(call. = FALSE, "`caller_env` must be supplied to match dots")
   }
 
-  dots <- dots_get(caller_env)
+  dots <- frame_dots_lsp(caller_env)
   dots <- dots_enumerate_args(dots)
   if (enum_dots) {
     dots <- dots_enumerate_argnames(dots)
