@@ -28,7 +28,11 @@
 #' values lower than 1. For the sake of consistency, the lazyeval
 #' functions all take the same kind of argument \code{n}. This
 #' argument has a single meaning (the number of frames to go down the
-#' stack) and cannot be lower than 1.
+#' stack) and cannot be lower than 1. Note finally that
+#' \code{parent.frame(1)} corresponds to \code{call_frame(2)$env}, as
+#' \code{n = 1} always refers to the current frame. This makes the
+#' \code{_frame()} and \code{_stack()} functions consistent:
+#' \code{eval_frame(2)} is the same as \code{eval_stack()[[2]]}.
 #'
 #' @param n The number of frames to go back in the stack.
 #' @name stack
@@ -124,12 +128,13 @@ trail_next <- function(callers, i) {
 trail_make <- function(callers, n = NULL, trim_global = TRUE) {
   n_ctxt <- length(callers)
   if (is.null(n)) {
-    n <- n_ctxt
+    n_max <- n_ctxt
   } else {
     n <- n + 1
-  }
-  if (n > n_ctxt) {
-    stop("not that many frames on the stack", call. = FALSE)
+    if (n > n_ctxt + !trim_global) {
+      stop("not that many frames on the evaluation stack", call. = FALSE)
+    }
+    n_max <- n
   }
 
   state <- trail_next(callers, 1)
@@ -140,10 +145,10 @@ trail_make <- function(callers, n = NULL, trim_global = TRUE) {
   j <- 1
 
   # Preallocate a sufficiently large vector
-  out <- integer(n)
+  out <- integer(n_max)
   out[j] <- state$i
 
-  while (state$i != 0 && j < n) {
+  while (state$i != 0 && j < n_max) {
     j <- j + 1
     n_ctxt <- length(state$callers)
     next_pos <- n_ctxt - state$i + 1
@@ -154,6 +159,9 @@ trail_make <- function(callers, n = NULL, trim_global = TRUE) {
   # Return relevant subset
   if (trim_global) {
     j <- j - 1
+  }
+  if (!is.null(n) && n > j + !trim_global) {
+    stop("not that many frames on the call stack", call. = FALSE)
   }
   out[seq_len(j)]
 }

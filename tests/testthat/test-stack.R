@@ -70,6 +70,14 @@ test_that("call_frame()$expr gives expression of caller not previous ctxt", {
   expect_equal(g(), quote(g()))
 })
 
+test_that("call_frame(n) throws at correct level", {
+  n <- call_depth()
+  frame <- call_frame(n)
+  stack_frame <- call_stack()[[n]]
+  expect_identical(frame, stack_frame)
+  expect_error(call_frame(n + 1), "not that many frames")
+})
+
 
 context("evaluation stacks") # ---------------------------------------
 

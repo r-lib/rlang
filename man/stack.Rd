@@ -55,7 +55,11 @@ with \code{n = 1} referring to the current context. The
 values lower than 1. For the sake of consistency, the lazyeval
 functions all take the same kind of argument \code{n}. This
 argument has a single meaning (the number of frames to go down the
-stack) and cannot be lower than 1.
+stack) and cannot be lower than 1. Note finally that
+\code{parent.frame(1)} corresponds to \code{call_frame(2)$env}, as
+\code{n = 1} always refers to the current frame. This makes the
+\code{_frame()} and \code{_stack()} functions consistent:
+\code{eval_frame(2)} is the same as \code{eval_stack()[[2]]}.
 }
 \examples{
 # Expressions within arguments count as contexts
