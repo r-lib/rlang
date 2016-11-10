@@ -74,8 +74,8 @@ call_standardise_ <- function(call, fn, caller_env, enum_dots) {
 }
 
 arg_match_partial <- function(arg, formal) {
-  pos <- stringi::stri_locate_first_fixed(formal, arg)[[1]]
-  !is.na(pos) && pos == 1
+  formal <- substr(formal, 1, nchar(arg))
+  arg == formal
 }
 
 call_match_partial <- function(call, fn) {
