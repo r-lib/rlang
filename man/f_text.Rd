@@ -12,7 +12,7 @@ f_label(x)
 \arguments{
 \item{x}{A formula.}
 
-\item{width}{Width of each line}
+\item{width}{Width of each line.}
 
 \item{nlines}{Maximum number of lines to extract.}
 }

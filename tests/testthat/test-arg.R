@@ -3,7 +3,6 @@ context("arg")
 # arg_expr -----------------------------------------------------------------
 
 test_that("doesn't go pass lazy loaded objects", {
-  browser()
   expect_identical(arg_expr(mtcars), quote(mtcars))
 })
 
@@ -43,7 +42,7 @@ test_that("default arguments are scoped in execution env", {
   expected_env <- out[[2]]
 
   expect_identical(info$env, expected_env)
-  expect_identical(info$calling_frame$env, environment()) # FIXME
+  expect_identical(info$caller_frame$env, environment())
   expect_false(info$missing)
 })
 
@@ -55,7 +54,7 @@ test_that("missing arguments are scoped in execution env", {
   expected_env <- out[[2]]
 
   expect_identical(info$env, expected_env)
-  expect_identical(info$calling_frame$env, environment()) # FIXME
+  expect_identical(info$caller_frame$env, environment())
   expect_true(info$missing)
 })
 
@@ -68,7 +67,7 @@ test_that("arguments are scoped in calling env", {
   expected_env <- out[[2]]
 
   expect_identical(info$env, expected_env)
-  expect_identical(info$calling_frame$env, expected_env)
+  expect_identical(info$caller_frame$env, expected_env)
   expect_false(info$missing)
 })
 
