@@ -1,15 +1,16 @@
 context("arg")
 
-# arg_find -----------------------------------------------------------------
+# arg_expr -----------------------------------------------------------------
 
 test_that("doesn't go pass lazy loaded objects", {
-  expect_identical(arg_find(mtcars), quote(mtcars))
+  browser()
+  expect_identical(arg_expr(mtcars), quote(mtcars))
 })
 
 test_that("follows multiple levels", {
   f <- function(x) g(x)
   g <- function(y) h(y)
-  h <- function(z) arg_find(z)
+  h <- function(z) arg_expr(z)
 
   expect_identical(f(x + y), quote(x + y))
 })

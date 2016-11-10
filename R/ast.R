@@ -29,7 +29,7 @@ ast_ <- function(x, width = getOption("width")) {
 
 #' @rdname ast_
 #' @export
-ast <- function(x) ast_(arg_find(x))
+ast <- function(x) ast_(arg_expr(x))
 
 tree <- function(x, level = 1, width = getOption("width"), branch = "\u2517 ") {
   if (is_atomic(x) && length(x) == 1) {

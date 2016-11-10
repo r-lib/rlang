@@ -2,7 +2,7 @@
 % Please edit documentation in R/arg.R
 \name{arg_label}
 \alias{arg_env}
-\alias{arg_find}
+\alias{arg_expr}
 \alias{arg_label}
 \alias{arg_text}
 \title{Find the expression associated with an argument}
@@ -11,7 +11,7 @@ arg_label(x)
 
 arg_text(x, width = 60L, nlines = Inf)
 
-arg_find(x)
+arg_expr(x)
 
 arg_env(x, default_env)
 }
@@ -27,7 +27,7 @@ longer any effect since \code{arg_env()} will always return an
 environment.}
 }
 \description{
-\code{arg_find()} finds the full expression; \code{arg_text()} turns the
+\code{arg_expr()} finds the full expression; \code{arg_text()} turns the
 expression into a single string; \code{arg_label()} formats it nicely for
 use in messages. \code{arg_env()} finds the environment associated with
 the expression.
@@ -37,10 +37,10 @@ These functions never force promises, and will work even if a promise has
 previously been forced.
 }
 \examples{
-# Unlike substitute(), arg_find() finds the original expression
+# Unlike substitute(), arg_expr() finds the original expression
 f <- function(x) g(x)
 g <- function(y) h(y)
-h <- function(z) list(substitute(z), arg_find(z))
+h <- function(z) list(substitute(z), arg_expr(z))
 
 f(1 + 2 + 3)
 
