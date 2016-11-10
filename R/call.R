@@ -36,25 +36,15 @@ call_standardise <- function(call = NULL, env = NULL, fn = NULL,
   fn <- call_fn(info$call, info$env)
   stopifnot(is.environment(info$env))
 
-  actuals_nms <- call_args_names(call)
-  is_dup <- duplicated(actuals_nms) & actuals_nms != ""
-  if (any(is_dup)) {
-    dups_nms <- actuals_nms[which(is_dup)]
-    stop(call. = FALSE,
-      "formal arguments matched by multiple actual arguments: ",
-      paste0(dups_nms, collapse = ", "))
   }
 
-  formals_nms <- fn_args_names(fn)
-  if (is.na(match("...", formals_nms)) &&
-      length(actuals_nms) > length(formals_nms)) {
-    stop("unused arguments", call. = FALSE)
   }
 
-  call <- call_match_partial(info$call, fn)
   call <- duplicate(call)
-  call <- call_inline_dots(call, info$env, enum_dots)
-  call_match(call, fn, enum_dots)
+  call <- call_inline_dots(call, caller_env, enum_dots)
+  call <- call_match_partial(call, fn)
+  call <- call_match(call, fn, enum_dots)
+  call
 }
 
 arg_match_partial <- function(arg, formal) {
@@ -68,11 +58,28 @@ call_match_partial <- function(call, fn) {
     return(call)
   }
 
+  is_empty <- actuals_nms == ""
+  is_dup <- duplicated(actuals_nms) & !is_empty
+  if (any(is_dup)) {
+    dups_nms <- actuals_nms[which(is_dup)]
+    stop(call. = FALSE,
+      "formal arguments matched by multiple actual arguments: ",
+      paste0(dups_nms, collapse = ", "))
+  }
+
   formals_nms <- fn_args_names(fn)
+  dots_pos <- match("...", formals_nms)
+  if (is.na(dots_pos) && length(actuals_nms) > length(formals_nms)) {
+    stop("unused arguments", call. = FALSE)
+  }
+
+  # No partial-matching of args after dots
+  if (!is.na(dots_pos)) {
+    formals_nms <- formals_nms[seq_len(dots_pos) - 1]
+  }
   formals_pool <- setdiff(formals_nms, actuals_nms)
 
   is_matched <- actuals_nms %in% formals_nms
-  is_empty <- actuals_nms == ""
   actuals_pat <- actuals_nms
   actuals_pat[is_matched | is_empty] <- NA
 
@@ -117,27 +124,31 @@ call_info <- function(call, env, frame) {
   )
 }
 
-call_inline_dots <- function(call, env, enum_dots) {
+call_inline_dots <- function(call, caller_env, enum_dots) {
   d <- lsp_walk_nonnull(call, function(arg) {
     if (identical(cadr(arg), quote(...))) arg
   })
-
-  if (!is.null(d)) {
-    dots <- dots_get(env)
-    dots <- dots_enumerate_args(dots)
-    if (enum_dots) {
-      dots <- dots_enumerate_argnames(dots)
-    }
-
-    # Attach remaining args to expanded dots
-    remaining_args <- cddr(d)
-    lsp_walk_nonnull(dots, function(arg) {
-      if (is.null(cdr(arg))) set_cdr(arg, remaining_args)
-    })
-
-    # Replace dots symbol with actual dots and remaining args
-    set_cdr(d, dots)
+  if (is.null(d)) {
+    return(call)
   }
+  if (is.null(caller_env)) {
+    stop(call. = FALSE, "`caller_env` must be supplied to match dots")
+  }
+
+  dots <- dots_get(caller_env)
+  dots <- dots_enumerate_args(dots)
+  if (enum_dots) {
+    dots <- dots_enumerate_argnames(dots)
+  }
+
+  # Attach remaining args to expanded dots
+  remaining_args <- cddr(d)
+  lsp_walk_nonnull(dots, function(arg) {
+    if (is.null(cdr(arg))) set_cdr(arg, remaining_args)
+  })
+
+  # Replace dots symbol with actual dots and remaining args
+  set_cdr(d, dots)
 
   call
 }

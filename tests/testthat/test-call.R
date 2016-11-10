@@ -95,10 +95,14 @@ test_that("crazy args partial-match", {
   expect_error(call_standardise(~fn(`\\` = 1, `\\[` = 2)), "matched by multiple")
 })
 
-test_that("dotted args are not partial-matched", {
-  fn <- function(...) call_standardise()
+test_that("args after dots are not partial-matched", {
+  fn <- function(..., abc) call_standardise()
   g <- function(...) fn(...)
   expect_equal(g(a = 1), quote(fn(a = ..1)))
+
+  fn <- function(ab, ..., abc) call_standardise()
+  g <- function(...) fn(...)
+  expect_equal(g(a = 1), quote(fn(ab = ..1)))
 })
 
 # Modification ------------------------------------------------------------
