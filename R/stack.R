@@ -215,8 +215,9 @@ eval_stack <- function(n = NULL) {
   stack_data <- stack_subset(stack_data, n)
   stack_data$fn_name <- lapply(stack_data$expr, call_fn_name)
 
-  frames <- zip(stack_data)
-  lapply(frames, new_frame)
+  stack <- zip(stack_data)
+  stack <- lapply(stack, new_frame)
+  structure(stack, class = c("eval_stack", "stack"))
 }
 
 eval_stack_trail <- function() {
@@ -270,7 +271,7 @@ call_stack <- function(n = NULL) {
   stack <- zip(stack_data)
   stack <- lapply(stack, new_frame)
   stack <- lapply(stack, frame_fixup_eval)
-  stack
+  structure(stack, class = c("call_stack", "stack"))
 }
 
 frame_fixup_eval <- function(frame) {
@@ -282,4 +283,22 @@ frame_fixup_eval <- function(frame) {
   }
 
   frame
+}
+
+#' Is object a stack?
+#' @param x An object to test
+#' @export
+is_stack <- function(x) inherits(x, "stack")
+
+#' @rdname is_stack
+#' @export
+is_eval_stack <- function(x) inherits(x, "eval_stack")
+
+#' @rdname is_stack
+#' @export
+is_call_stack <- function(x) inherits(x, "call_stack")
+
+#' @export
+`[.stack` <- function(x, i) {
+  structure(NextMethod(), class = class(x))
 }
