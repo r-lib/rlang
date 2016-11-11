@@ -53,6 +53,39 @@ arg_dots_lsp <- function(...) {
   }
 }
 
+#' Inspect dots
+#'
+#' Runs \code{\link{arg_info}()} for each dots element, and return the
+#' results in a list.
+#'
+#' \code{dots_info_()} is the standard evaluation version of
+#' \code{dots_info()} and takes a list of dots as captured by
+#' \code{\link{frame_dots}()} or \code{\link{arg_dots}()}, and a call
+#' stack as returned by \code{\link{call_stack}()}.
+#'
+#' @param ... Dots to inspect.
+#' @seealso \code{\link{arg_info}()}
+#' @export
+dots_info <- function(...) {
+  dots <- arg_dots(...)
+  stack <- call_stack()
+  dots_info_(dots, stack)
+}
+
+#' @rdname dots_info
+#' @inheritParams arg_info_
+#' @param dots Dots to inspect.
+#' @export
+dots_info_ <- function(dots, stack) {
+  dots_syms <- dots_enumerate_sym(dots)
+  dots_syms <- set_names(dots_syms, names(dots))
+  lapply(dots_syms, arg_info_, stack)
+}
+
+dots_enumerate_sym <- function(dots) {
+  nms <- paste0("..", seq_along(dots))
+  lapply(nms, as.name)
+}
 dots_enumerate_args <- function(dots) {
   i <- 1
   lsp_walk(dots, function(dot) {

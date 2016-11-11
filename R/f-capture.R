@@ -30,6 +30,6 @@ f_capture <- function(x) {
 #' @export
 #' @rdname f_capture
 dots_capture <- function(..., .ignore_empty = TRUE) {
-  lazies <- .Call(make_lazy_dots, environment(), TRUE, .ignore_empty)
-  lapply(lazies, function(x) f_new(x$expr, env = x$env))
+  info <- dots_info(...)
+  lapply(info, function(x) f_new(x$expr, env = x$eval_frame$env))
 }
