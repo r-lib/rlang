@@ -1,18 +1,25 @@
-#' Extract dots from a frame
+#' Extract dots
 #'
-#' \code{frame_dots_lsp()} returns a pairlist that is ready to be
-#' spliced into a call, while \code{frame_dots()} returns a regular
+#' \code{frame_dots()} extracts dots from a frame and
+#' \code{arg_dots()} extracts dots from its arguments. The
+#' \code{_lsp()} versions return a pairlist that is ready to be
+#' spliced into a call, while the regular versions return a regular
 #' list that is usually easier to work with.
+#'
+#' \code{frame_dots()} and \code{frame_dots_lsp()} never fail, even if
+#' the frame does not contain dots. Instead they return an empty list
+#' or \code{NULL} respectively.
 #'
 #' @param frame The environment from which the dots should be
 #'   retrieved. Can be a frame, an environment, or a formula from
 #'   which to retrieve an environment. If not supplied, the calling
 #'   frame is used.
+#' @param ... Arguments to extract. Can be both forwarded dots and
+#'   direct arguments.
 #' @export
 frame_dots <- function(frame = NULL) {
   frame <- frame %||% call_frame(2)
-  dots <- frame_dots_lsp(frame)
-  as.list(dots)
+  as.list(frame_dots_lsp(frame))
 }
 
 #' @rdname frame_dots
@@ -21,9 +28,24 @@ frame_dots_lsp <- function(frame = NULL) {
   frame <- frame %||% call_frame(2)
   env <- get_env(frame)
 
-  dots <- substitute(alist(...), env)
-  dots <- cdr(dots)
+  dots <- cdr(substitute(alist(...), env))
+  if (is.language(dots)) {
+    NULL
+  } else {
+    dots
+  }
+}
 
+#' @rdname frame_dots
+#' @export
+arg_dots <- function(...) {
+  eval(substitute(alist(...)))
+}
+
+#' @rdname frame_dots
+#' @export
+arg_dots_lsp <- function(...) {
+  dots <- cdr(substitute(alist(...)))
   if (is.language(dots)) {
     NULL
   } else {
