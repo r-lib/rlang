@@ -1,4 +1,4 @@
-#' Introspect an argument
+#' Inspect an argument
 #'
 #' \code{arg_info()} and \code{arg_info_()} are the workhorses of all
 #' functions providing information about the evaluation context of an
@@ -10,32 +10,26 @@
 #' \code{arg_info_()} is the standard-evaluation version of
 #' \code{arg_info()} and takes a symbol and a call stack object.
 #'
-#' @param x An argument of a function.
+#' @param x An argument to a function.
 #' @return A list containing:
-#' \itemize{
-#'   \item \code{expr}, the expression provided in the original
-#'     call. If the argument was missing, \code{expr} is the default
-#'     argument of the function; if there was no default, \code{expr}
-#'     is \code{NULL}.
+#'   \item{expr}{The expression provided in the original call. If the
+#'     argument was missing, \code{expr} is the default argument of
+#'     the function; if there was no default, \code{expr} is
+#'     \code{NULL}.}
 #'
-#'   \item \code{env}, the environment in which \code{expr} should be
-#'     evaluated. This is either the environment of the original
-#'     calling frame, or the execution frame of the first function
-#'     that was called in case the argument was missing. The
-#'     difference reflects the evaluation rules of R, where default
-#'     arguments are scoped within the called function.
+#'   \item{eval_frame}{The frame providing the scope for \code{expr},
+#'     which should normally be evaluated in \code{eval_frame$env}.
+#'     This is either the original calling frame, or the execution
+#'     frame of the function that was called if the argument was
+#'     missing. The difference reflects the evaluation rules of R,
+#'     where default arguments are scoped within the called function
+#'     rather than the calling frame.}
 #'
-#'   \item \code{caller_frame}, the original calling frame. The
-#'     environment of this frame is the same as \code{env} unless the
-#'     argument was not supplied in the original call. In this case,
-#'     \code{caller_frame$env} is the environment in which the
-#'     argument would have been evaluated, had it been supplied.
-#'
-#'   \item \code{missing}, a boolean indicating whether the argument
-#'     was not supplied there was no default argument. This allows you
-#'     to differentiate an actual \code{NULL} argument from a missing
-#'     one, without having to compare \code{env} and \code{caller_env}.
-#' }
+#'   \item{caller_frame}{The original calling frame. This is the same
+#'     as \code{eval_frame} unless no argument was supplied in the
+#'     original call. In this case, \code{caller_frame$env} is the
+#'     environment in which the argument would have been evaluated,
+#'     had it been supplied.}
 #' @seealso \code{\link{arg_label}()}, \code{\link{arg_expr}()},
 #'   \code{\link{arg_env}()}.
 #' @export
@@ -47,60 +41,64 @@ arg_info <- function(x) {
 
 #' @rdname arg_info
 #' @param expr A quoted symbol giving the name of the argument to
-#'   introspect.
+#'   inspect.
 #' @param stack A \code{call_stack} object as returned by
 #'   \code{\link{call_stack}()}.
 #' @export
 arg_info_ <- function(expr, stack) {
   stopifnot(is_call_stack(stack))
-
-  calls <- lapply(stack, call_standardise, enum_dots = TRUE)
-  missing <- FALSE
+  stopifnot(length(stack) > 1)
+  calls <- lapply(drop_last(stack), call_standardise, enum_dots = TRUE)
 
   for (i in seq_along(calls)) {
-    frame <- stack[[i]]
+    eval_frame <- caller_frame <- stack[[i]]
     call <- calls[[i]]
-    env <- frame$env
 
+    # If expr is a complex expression, we know that (a) we reached the
+    # caller frame, and (b) there is no default argument
     if (!is.symbol(expr)) {
       break
     }
 
-    arg <- arg_match(call, expr, frame$fn)
-    if (is.null(arg)) {
-      # Check for default arguments
-      arg <- arg_default(expr, frame$fn)
 
-      # If no default argument, mark argument as missing
-      if (identical(arg, quote(`__missing`))) {
-        missing <- TRUE
-        expr <- NULL
-      } else if (!is.null(arg)) {
-        expr <- arg
-      } else {
+    caller_arg <- arg_match(call, expr, eval_frame$fn)
+
+    # If we found a match in the caller signature, record expression
+    # and move on to next frame up the call stack
+    if (!missing(caller_arg) && !is.null(caller_arg)) {
+      expr <- caller_arg
+      next
+    }
+
+    # We've reached the caller frame. We have to check if there is a
+    # default argument or if the argument is missing. In those cases
+    # the evaluation frame of the argument is not the same as the
+    # caller frame, it's the execution environment of the called
+    # closure.
+    if (missing(caller_arg) || is.null(caller_arg)) {
+      default <- fml_default(expr, eval_frame$fn)
+
+      # No missing or default argument: the caller frame and the eval
+      # frame are the same. The expression found in the previous frame
+      # was the right one.
+      if (is.null(maybe_missing(default))) {
         break
       }
 
-      # Since this is a missing argument, the environment in which the
-      # expression is evaluated (the closure's execution environment)
-      # and the caller environment are different
-      if (length(stack) < i + 1){
-        # TODO: Should we have a global frame object?
-        frame <- NULL
-      } else {
-        frame <- stack[[i + 1]]
-      }
+      # The expression is the missing or default argument and the
+      # caller frame is the next frame up the stack.
+      expr <- maybe_missing(default)
+      caller_frame <- stack[[i + 1]]
       break
     }
 
-    expr <- arg
+    stop("rlang error: unexpected state while climbing call stack")
   }
 
   list(
-    expr = expr,
-    env = env,
-    missing = missing,
-    caller_frame = frame
+    expr = maybe_missing(expr),
+    eval_frame = eval_frame,
+    caller_frame = caller_frame
   )
 }
 
@@ -111,21 +109,12 @@ arg_match <- function(call, sym, fun) {
   arg_i <- match(as.character(sym), nms)
   args[[arg_i]]
 }
-
-arg_default <- function(expr, fn) {
-  if (!is.symbol(expr)) {
-    return(NULL)
-  }
-
+fml_default <- function(expr, fn) {
   sym <- as.character(expr)
   args <- formals(fn)
   default <- args[[sym]]
 
-  if (missing(default)) {
-    quote(`__missing`)
-  } else {
-    default
-  }
+  maybe_missing(default)
 }
 
 #' @export
@@ -140,7 +129,7 @@ arg_expr <- function(x) {
 #'   environment.
 #' @export
 arg_env <- function(x, default_env) {
-  arg_info(x)$env
+  arg_info(x)$eval_frame$env
 }
 
 #' Find the expression associated with an argument

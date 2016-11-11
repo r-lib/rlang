@@ -10,7 +10,7 @@
 #' @param .ignore_empty If \code{TRUE}, empty arguments will be silently
 #'    dropped.
 #' @export
-#' @return \code{f_capture} returns a formula; \code{dots_capture}
+#' @return \code{f_capture()} returns a formula; \code{dots_capture()}
 #'   returns a list of formulas.
 #' @examples
 #' f_capture(a + b)
@@ -23,8 +23,8 @@
 #' h <- function(z) f_capture(z)
 #' f(a + b + c)
 f_capture <- function(x) {
-  lazy <- .Call(make_lazy, quote(x), environment(), TRUE)
-  f_new(lazy$expr, env = lazy$env)
+  info <- arg_info(x)
+  f_new(info$expr, env = info$eval_frame$env)
 }
 
 #' @export

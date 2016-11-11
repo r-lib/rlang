@@ -3,47 +3,41 @@
 \name{arg_info}
 \alias{arg_info}
 \alias{arg_info_}
-\title{Introspect an argument}
+\title{Inspect an argument}
 \usage{
 arg_info(x)
 
 arg_info_(expr, stack)
 }
 \arguments{
-\item{x}{An argument of a function.}
+\item{x}{An argument to a function.}
 
 \item{expr}{A quoted symbol giving the name of the argument to
-introspect.}
+inspect.}
 
 \item{stack}{A \code{call_stack} object as returned by
 \code{\link{call_stack}()}.}
 }
 \value{
 A list containing:
-\itemize{
-  \item \code{expr}, the expression provided in the original
-    call. If the argument was missing, \code{expr} is the default
-    argument of the function; if there was no default, \code{expr}
-    is \code{NULL}.
+  \item{expr}{The expression provided in the original call. If the
+    argument was missing, \code{expr} is the default argument of
+    the function; if there was no default, \code{expr} is
+    \code{NULL}.}
 
-  \item \code{env}, the environment in which \code{expr} should be
-    evaluated. This is either the environment of the original
-    calling frame, or the execution frame of the first function
-    that was called in case the argument was missing. The
-    difference reflects the evaluation rules of R, where default
-    arguments are scoped within the called function.
+  \item{eval_frame}{The frame providing the scope for \code{expr},
+    which should normally be evaluated in \code{eval_frame$env}.
+    This is either the original calling frame, or the execution
+    frame of the function that was called if the argument was
+    missing. The difference reflects the evaluation rules of R,
+    where default arguments are scoped within the called function
+    rather than the calling frame.}
 
-  \item \code{caller_frame}, the original calling frame. The
-    environment of this frame is the same as \code{env} unless the
-    argument was not supplied in the original call. In this case,
-    \code{caller_frame$env} is the environment in which the
-    argument would have been evaluated, had it been supplied.
-
-  \item \code{missing}, a boolean indicating whether the argument
-    was not supplied there was no default argument. This allows you
-    to differentiate an actual \code{NULL} argument from a missing
-    one, without having to compare \code{env} and \code{caller_env}.
-}
+  \item{caller_frame}{The original calling frame. This is the same
+    as \code{eval_frame} unless no argument was supplied in the
+    original call. In this case, \code{caller_frame$env} is the
+    environment in which the argument would have been evaluated,
+    had it been supplied.}
 }
 \description{
 \code{arg_info()} and \code{arg_info_()} are the workhorses of all

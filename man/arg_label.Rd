@@ -16,7 +16,7 @@ arg_label(x)
 arg_text(x, width = 60L, nlines = Inf)
 }
 \arguments{
-\item{x}{An argument of a function.}
+\item{x}{An argument to a function.}
 
 \item{default_env}{This argument is now deprecated and has no
 longer any effect since \code{arg_env()} will always return an

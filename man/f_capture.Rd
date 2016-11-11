@@ -16,7 +16,7 @@ dots_capture(..., .ignore_empty = TRUE)
 dropped.}
 }
 \value{
-\code{f_capture} returns a formula; \code{dots_capture}
+\code{f_capture()} returns a formula; \code{dots_capture()}
   returns a list of formulas.
 }
 \description{

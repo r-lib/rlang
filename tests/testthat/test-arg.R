@@ -7,68 +7,84 @@ test_that("doesn't go pass lazy loaded objects", {
 })
 
 test_that("follows multiple levels", {
-  f <- function(x) g(x)
+  fn <- function(x) g(x)
   g <- function(y) h(y)
   h <- function(z) arg_expr(z)
 
-  expect_identical(f(x + y), quote(x + y))
+  expect_identical(fn(x + y), quote(x + y))
 })
 
 test_that("follows through dots", {
-  f <- function(...) g(...)
+  fn <- function(...) g(...)
   g <- function(...) h(...)
   h <- function(x1, x2) arg_info(x2)
-  info <- f(mtcars, letters)
-
+  info <- fn(mtcars, letters)
   expect_identical(info$expr, quote(letters))
-  expect_identical(info$env, environment())
+  expect_identical(info$eval_frame, call_frame())
 })
+
+test_that("empty argument are reported", {
+  fn <- function(x, y) list(info = arg_info(x), env = environment())
+  out <- fn(, )
+  info <- out$info
+  expect_true(is_missing(info$expr))
+  expect_identical(info$eval_frame$env, out$env)
+  expect_identical(info$caller_frame$env, environment())
+
+  g <- function(x) list(info = fn(x), env = environment())
+  out <- g()
+  info <- out$info$info
+  expect_true(is_missing(info$expr))
+  expect_identical(info$eval_frame$env, out$env)
+  expect_identical(info$caller_frame$env, environment())
+})
+
 
 # arg_env -----------------------------------------------------------------
 
 test_that("expression is scoped in calling env", {
-  f <- function(x) arg_env(x)
-  g <- function(x) f(x)
+  fn <- function(x) arg_env(x)
+  g <- function(x) fn(x)
 
   expect_identical(g(mtcars), environment())
   expect_identical(g(list(mtcars)), environment())
 })
 
 test_that("default arguments are scoped in execution env", {
-  f <- function(x = default()) list(g(x), environment())
+  fn <- function(x = default()) list(info = g(x), env = environment())
   g <- function(x) arg_info(x)
-  out <- f()
-  info <- out[[1]]
-  expected_env <- out[[2]]
+  out <- fn()
+  info <- out$info
+  fn_env <- out$env
 
-  expect_identical(info$env, expected_env)
+  expect_identical(info$eval_frame$env, fn_env)
   expect_identical(info$caller_frame$env, environment())
-  expect_false(info$missing)
+  expect_equal(info$expr, quote(default()))
 })
 
 test_that("missing arguments are scoped in execution env", {
-  f <- function(x) list(g(x), environment())
+  fn <- function(x) list(info = g(x), env = environment())
   g <- function(x) arg_info(x)
-  out <- f()
-  info <- out[[1]]
-  expected_env <- out[[2]]
+  out <- fn()
+  info <- out$info
+  fn_env <- out$env
 
-  expect_identical(info$env, expected_env)
+  expect_identical(info$eval_frame$env, fn_env)
   expect_identical(info$caller_frame$env, environment())
-  expect_true(info$missing)
+  expect_true(is_missing(info$expr))
 })
 
 test_that("arguments are scoped in calling env", {
-  f <- function() list(g(foo), environment())
+  fn <- function() list(info = g(foo), env = environment())
   g <- function(x) h(x)
   h <- function(x) arg_info(x)
-  out <- f()
-  info <- out[[1]]
-  expected_env <- out[[2]]
+  out <- fn()
+  info <- out$info
+  fn_env <- out$env
 
-  expect_identical(info$env, expected_env)
-  expect_identical(info$caller_frame$env, expected_env)
-  expect_false(info$missing)
+  expect_identical(info$eval_frame$env, fn_env)
+  expect_identical(info$caller_frame$env, fn_env)
+  expect_equal(info$expr, quote(foo))
 })
 
 
