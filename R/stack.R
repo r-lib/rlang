@@ -28,11 +28,18 @@
 #' values lower than 1. For the sake of consistency, the lazyeval
 #' functions all take the same kind of argument \code{n}. This
 #' argument has a single meaning (the number of frames to go down the
-#' stack) and cannot be lower than 1. Note finally that
-#' \code{parent.frame(1)} corresponds to \code{call_frame(2)$env}, as
-#' \code{n = 1} always refers to the current frame. This makes the
-#' \code{_frame()} and \code{_stack()} functions consistent:
-#' \code{eval_frame(2)} is the same as \code{eval_stack()[[2]]}.
+#' stack) and cannot be lower than 1.
+#'
+#' Note finally that \code{parent.frame(1)} corresponds to
+#' \code{call_frame(2)$env}, as \code{n = 1} always refers to the
+#' current frame. This makes the \code{_frame()} and \code{_stack()}
+#' functions consistent: \code{eval_frame(2)} is the same as
+#' \code{eval_stack()[[2]]}. Also, \code{eval_depth()} returns one
+#' more frame than \code{\link[base]{sys.nframe}()} because it counts
+#' the global frame. That is consistent with the \code{_stack()}
+#' functions which return the global frame as well. This way,
+#' \code{call_stack(call_depth())} is the same as
+#' \code{global_frame()}.
 #'
 #' @param n The number of frames to go back in the stack.
 #' @name stack
@@ -73,7 +80,12 @@ new_frame <- function(x) {
 }
 #' @export
 print.frame <- function(x, ...) {
-  cat("<frame ", x$pos, "> (", x$caller_pos, ")\n", sep = "")
+  cat("<frame ", x$pos, ">", sep = "")
+  if (!x$pos) {
+    cat(" [global]\n")
+  } else {
+    cat(" (", x$caller_pos, ")\n", sep = "")
+  }
 
   expr <- deparse(x$expr)
   if (length(expr) > 1) {
@@ -92,10 +104,26 @@ is_frame <- function(x) {
 
 #' @rdname stack
 #' @export
+global_frame <- function() {
+  new_frame(list(
+    pos = 0L,
+    caller_pos = NA_integer_,
+    expr = NULL,
+    env = globalenv(),
+    fn = NULL,
+    fn_name = NULL
+  ))
+}
+
+#' @rdname stack
+#' @export
 eval_frame <- function(n = 1) {
   stopifnot(n > 0)
   pos <- sys.nframe() - n
-  if (pos < 1) {
+
+  if (pos == 0) {
+    return(global_frame())
+  } else if (pos < 1) {
     stop("not that many frames on the stack", call. = FALSE)
   }
 
@@ -109,32 +137,16 @@ eval_frame <- function(n = 1) {
   ))
 }
 
-trail_next <- function(callers, i) {
-  if (i == 0) return(list(callers = callers, i = 0L))
-  i <- callers[i]
-
-  # The R-level eval() creates two contexts. We skip the second one
-  if (length(i) && is_prim_eval(sys.function(i))) {
-    n_ctxt <- length(callers)
-    special_eval_pos <- n_ctxt - i + 1
-    callers <- callers[-special_eval_pos]
-    i <- i - 1L
-  }
-
-  list(callers = callers, i = i)
-}
-
 # Positions of frames in the call stack up to `n`
 trail_make <- function(callers, n = NULL) {
   n_ctxt <- length(callers)
   if (is.null(n)) {
     n_max <- n_ctxt
   } else {
-    n <- n + 1
     if (n > n_ctxt) {
       stop("not that many frames on the evaluation stack", call. = FALSE)
     }
-    n_max <- n
+    n_max <- n + 1
   }
 
   state <- trail_next(callers, 1)
@@ -156,20 +168,39 @@ trail_make <- function(callers, n = NULL) {
   }
 
   # Return relevant subset
-  j <- j
   if (!is.null(n) && n > j) {
     stop("not that many frames on the call stack", call. = FALSE)
   }
   out[seq_len(j)]
 }
 
+trail_next <- function(callers, i) {
+  if (i == 0) return(list(callers = callers, i = 0L))
+  i <- callers[i]
+
+  # The R-level eval() creates two contexts. We skip the second one
+  if (length(i) && is_prim_eval(sys.function(i))) {
+    n_ctxt <- length(callers)
+    special_eval_pos <- n_ctxt - i + 1
+    callers <- callers[-special_eval_pos]
+    i <- i - 1L
+  }
+
+  list(callers = callers, i = i)
+}
+
 #' @rdname stack
 #' @export
 call_frame <- function(n = 1) {
   stopifnot(n > 0)
+
   eval_callers <- eval_stack_callers()
   trail <- trail_make(eval_callers, n)
   pos <- trail[n]
+
+  if (identical(pos, 0L)) {
+    return(global_frame())
+  }
 
   frame <- new_frame(list(
     pos = pos,
@@ -182,17 +213,19 @@ call_frame <- function(n = 1) {
   frame_fixup_eval(frame)
 }
 
+# The _depth() functions count the global frame as well
+
 #' @rdname stack
 #' @export
 eval_depth <- function() {
-  sys.nframe() - 1
+  sys.nframe()
 }
 #' @rdname stack
 #' @export
 call_depth <- function() {
   eval_callers <- eval_stack_callers()
   trail <- trail_make(eval_callers)
-  length(trail) - 1
+  length(trail)
 }
 
 
@@ -217,6 +250,11 @@ eval_stack <- function(n = NULL) {
 
   stack <- zip(stack_data)
   stack <- lapply(stack, new_frame)
+
+  if (is.null(n) || (length(n) && n > length(stack))) {
+    stack <- c(stack, list(global_frame()))
+  }
+
   structure(stack, class = c("eval_stack", "stack"))
 }
 
@@ -243,10 +281,14 @@ eval_stack_fns <- function() {
 }
 
 stack_subset <- function(stack_data, n) {
-  if (!is.null(n)) {
+  if (length(n)) {
     stopifnot(n > 0)
-    if (n > length(stack_data[[1]])) {
-      stop(call. = FALSE, "not that many frames on the stack")
+    n_stack <- length(stack_data[[1]])
+    if (n == n_stack + 1) {
+      # We'll add the global frame later
+      n <- n <- n - 1
+    } else if (n > n_stack + 1) {
+      stop("not that many frames on the stack", call. = FALSE)
     }
     stack_data <- lapply(stack_data, `[`, seq_len(n))
   }
@@ -271,6 +313,11 @@ call_stack <- function(n = NULL) {
   stack <- zip(stack_data)
   stack <- lapply(stack, new_frame)
   stack <- lapply(stack, frame_fixup_eval)
+
+  if (trail[length(trail)] == 0L) {
+    stack <- c(stack, list(global_frame()))
+  }
+
   structure(stack, class = c("call_stack", "stack"))
 }
 
