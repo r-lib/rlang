@@ -214,12 +214,79 @@ arg_text_ <- function(x, width = 60L, nlines = Inf) {
   paste0(str, collapse = "\n")
 }
 
-#' Generate a missing argument.
+#' Generate or handle a missing argument
 #'
+#' These functions help using the missing argument as a regular R
+#' object. It is valid to generate a missing argument and assign it in
+#' the current environment or in a list. However, once assigned in the
+#' environment, the missing argument normally cannot be
+#' touched. \code{maybe_missing()} checks whether the object is the
+#' missing argument, and regenerate it if needed to prevent R from
+#' throwing a missing error. In addition, \code{is_missing()} lets you
+#' check for a missing argument in a larger range of situations than
+#' \code{\link[base]{missing}()} (see examples).
+#' @param x An object that might be the missing argument.
 #' @export
 #' @examples
+#' # The missing argument can be useful to generate calls
 #' f_interp(~f(x = uq(arg_missing())))
 #' f_interp(~f(x = uq(NULL)))
+#'
+#'
+#' # It is perfectly valid to generate and assign the missing
+#' # argument.
+#' x <- arg_missing()
+#' l <- list(arg_missing())
+#'
+#' # Note that accessing a missing argument contained in a list does
+#' # not trigger an error:
+#' l[[1]]
+#' is.null(l[[1]])
+#'
+#' # But if the missing argument is assigned in the current
+#' # environment, it is no longer possible to touch it. The following
+#' # lines would all return errors:
+#' #> x
+#' #> is.null(x)
+#'
+#' # In these cases, you can use maybe_missing() to manipulate an
+#' # object that might be the missing argument without triggering a
+#' # missing error:
+#' maybe_missing(x)
+#' is.null(maybe_missing(x))
+#' is_missing(maybe_missing(x))
+#'
+#'
+#' # base::missing() does not work well if you supply an
+#' # expression. The following lines would throw an error:
+#'
+#' #> missing(arg_missing())
+#' #> missing(l[[1]])
+#'
+#' # while is_missing() will work as expected:
+#' is_missing(arg_missing())
+#' is_missing(l[[1]])
 arg_missing <- function() {
   quote(expr = )
+}
+
+#' @rdname arg_missing
+#' @export
+is_missing <- function(x) {
+  expr <- substitute(x)
+  if (is.symbol(expr) && missing(x)) {
+    TRUE
+  } else {
+    identical(x, arg_missing())
+  }
+}
+
+#' @rdname arg_missing
+#' @export
+maybe_missing <- function(x) {
+  if (is_missing(x)) {
+    arg_missing()
+  } else {
+    x
+  }
 }

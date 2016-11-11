@@ -107,3 +107,20 @@ test_that("converts atomics to strings", {
 test_that("truncates long calls", {
   expect_equal(arg_label({ a + b }), "`{\n    ...\n}`")
 })
+
+
+# arg_missing --------------------------------------------------------
+
+test_that("is_missing() works with symbols", {
+  x <- arg_missing()
+  expect_true(is_missing(x))
+})
+
+
+test_that("is_missing() works with non-symbols", {
+  expect_true(is_missing(arg_missing()))
+
+  l <- list(arg_missing())
+  expect_true(is_missing(l[[1]]))
+  expect_error(missing(l[[1]]), "invalid use")
+})
