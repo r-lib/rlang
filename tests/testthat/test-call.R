@@ -108,6 +108,21 @@ test_that("unused args throw", {
   expect_error(call_standardise(~fn(x = 1, z = 2)), "unused arguments: z")
 })
 
+test_that("multiple matches are allowed within dots", {
+  fn <- function(x, ...) call_standardise()
+  expect_error(fn(x = 1, x = 2), "matched by multiple actual")
+
+  fn <- function(...) call_standardise()
+  expect_equal(fn(x = 1, x = 2), quote(fn(x = 1, x = 2)))
+})
+
+test_that("multiple dots are allowed in a call?", {
+  # Is this important to fix?
+  fn <- function(...) list(call_standardise(), ...)
+  h <- function(...) fn(..., ...)
+  h(1)
+})
+
 test_that("crazy args partial-match", {
   fn <- function(`\\[]`, `[]\\`) NULL
   expect_equal(call_standardise(~fn(`[]` = 1, `\\` = 2)), quote(fn(`[]\\` = 1, `\\[]` = 2)))

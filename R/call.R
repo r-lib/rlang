@@ -85,8 +85,10 @@ call_match_partial <- function(call, fn) {
     return(call)
   }
 
+  formals_nms <- fn_fmls_names(fn)
   is_empty <- actuals_nms == ""
   is_dup <- duplicated(actuals_nms) & !is_empty
+  is_dup <- is_dup & actuals_nms %in% formals_nms
   if (any(is_dup)) {
     dups_nms <- actuals_nms[which(is_dup)]
     stop(call. = FALSE,
@@ -94,7 +96,6 @@ call_match_partial <- function(call, fn) {
       paste0(dups_nms, collapse = ", "))
   }
 
-  formals_nms <- fn_fmls_names(fn)
   dots_pos <- match("...", formals_nms)
 
   # No partial-matching of args after dots
