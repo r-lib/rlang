@@ -38,6 +38,14 @@ test_that("names of dotted arguments are enumerated", {
   g_enum <- g(TRUE, foo, foo = bar, , "foobar")
   expect_equal(g_default, quote(f(dots = dots, ..1, foo = ..2, ..3, ..4)))
   expect_equal(g_enum, quote(f(dots = dots, ..1 = ..1, ..2 = ..2, ..3 = ..3, ..4 = ..4)))
+
+  enum <- FALSE
+  f <- function(...) h(...)
+  h <- function(x1, x2) call_standardise(enum_dots = enum)
+  expect_equal(f(a, b), quote(h(x1 = ..1, x2 = ..2)))
+
+  enum <- TRUE
+  expect_equal(f(a, b), quote(h(x1 = ..1, x2 = ..2)))
 })
 
 test_that("call is not modified in place", {
@@ -121,6 +129,26 @@ test_that("enumerated dots are ignored when checking unused args", {
   g <- function(...) fn(...)
   h <- function(...) g(...)
   expect_error(h(a), NA)
+})
+
+test_that("dots are not confused with formals", {
+  enum <- TRUE
+  fn <- function(x, ...) call_standardise(enum_dots = enum)
+  expect_equal(fn(z = foo), quote(fn(..1 = foo)))
+  expect_equal(fn(z = foo, bar, baz), quote(fn(..1 = foo, x = bar, ..2 = baz)))
+  expect_equal(fn(z = foo, x = bar, baz), quote(fn(..1 = foo, x = bar, ..2 = baz)))
+
+  enum <- FALSE
+  expect_equal(fn(z = foo), quote(fn(z = foo)))
+  expect_equal(fn(z = foo, bar, baz), quote(fn(z = foo, x = bar, baz)))
+  expect_equal(fn(z = foo, bar, x = baz), quote(fn(z = foo, bar, x = baz)))
+
+  enum <- TRUE
+  fn <- function(x, y, ...) call_standardise(enum_dots = enum)
+  expect_equal(fn(z = foo, bar, x = baz, bam), quote(fn(..1 = foo, y = bar, x = baz, ..2 = bam)))
+
+  enum <- FALSE
+  expect_equal(fn(z = foo, bar, x = baz, bam), quote(fn(z = foo, y = bar, x = baz, bam)))
 })
 
 # Modification ------------------------------------------------------------

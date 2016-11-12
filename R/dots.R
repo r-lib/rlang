@@ -95,12 +95,6 @@ dots_enumerate_args <- function(dots) {
   })
   dots
 }
-dots_enumerate_argnames <- function(dots) {
-  if (length(dots)) {
-    names(dots) <- paste0("..", seq_along(dots))
-  }
-  dots
-}
 
 is_dot_nm <- function(nm) {
   grepl("\\.\\.[0-9]+$", nm)

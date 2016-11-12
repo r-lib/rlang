@@ -36,6 +36,7 @@ call_standardise <- function(call = NULL, fn = NULL,
                              enum_dots = FALSE) {
   info <- call_info(call, caller_env)
   fn <- fn %||% info$fn %||% call_fn(info$call, info$env)
+  stopifnot(is.call(info$call))
   stopifnot(is.environment(info$env))
   call_standardise_(info$call, fn, info$caller_env, enum_dots)
 }
@@ -155,9 +156,6 @@ call_inline_dots <- function(call, caller_env, enum_dots) {
 
   dots <- frame_dots_lsp(caller_env)
   dots <- dots_enumerate_args(dots)
-  if (enum_dots) {
-    dots <- dots_enumerate_argnames(dots)
-  }
 
   # Attach remaining args to expanded dots
   remaining_args <- cddr(d)
@@ -171,48 +169,53 @@ call_inline_dots <- function(call, caller_env, enum_dots) {
   call
 }
 
-is_arg_matched <- function(arg, formals, enum_dots) {
-  is_empty <- arg == ""
-  if (enum_dots) {
-    !is_empty && arg %in% formals
-  } else {
-    !is_empty
-  }
-}
-
 call_match <- function(call, fn, enum_dots) {
   args <- call[-1]
   args_nms <- names2(args)
-  formals_nms <- names2(fn_fmls(fn))
+  fmls_nms <- names2(fn_fmls(fn))
 
-  is_matched <- vapply_lgl(args_nms, is_arg_matched, formals_nms, enum_dots)
-  candidates <- setdiff(formals_nms, args_nms[is_matched])
-  n_actuals <- sum(!is_matched)
-
-  dots_i <- which(candidates == "...")
-  n_dots <- max(0, n_actuals - dots_i + 1)
-  if (length(dots_i) && n_dots) {
-    # Ignore everything on the right of dots
-    candidates <- candidates[seq(1, dots_i)]
-
-    # Expand dots names
-    if (enum_dots) {
-      dots_nms <- paste0("..", seq_len(n_dots))
-    } else {
-      dots_nms <- rep("", n_dots)
-    }
-
-    candidates[dots_i] <- dots_nms[1]
-    candidates <- append(candidates, dots_nms[-1], after = dots_i)
+  dots_i <- which(fmls_nms == "...")
+  if (length(dots_i)) {
+    args_nms <- call_match_dotted(args_nms, fmls_nms, dots_i, enum_dots)
+  } else {
+    args_nms <- call_match_args(args_nms, fmls_nms)
   }
 
-  n_formals <- length(candidates)
-  stopifnot(n_formals >= n_actuals)
-
-  args_nms[!is_matched] <- candidates[seq_len(n_actuals)]
   names(call) <- c("", args_nms)
-
   call
+}
+
+call_match_dotted <- function(args_nms, fmls_nms, dots_i, enum_dots) {
+  # First match formals on the left of dots
+  is_unmatched <- vapply_lgl(args_nms, `==`, "")
+  candidates <- fmls_nms[seq_len(dots_i - 1)]
+  candidates <- setdiff(candidates, args_nms[!is_unmatched])
+  args_nms[is_unmatched] <- call_match_args(args_nms[is_unmatched], candidates)
+
+  if (enum_dots) {
+    is_matched <- vapply_lgl(args_nms, `%in%`, fmls_nms)
+    n_dots <- sum(!is_matched)
+    args_nms[!is_matched] <- paste0("..", seq_len(n_dots))
+  }
+
+  args_nms
+}
+
+call_match_args <- function(args_nms, fmls_nms) {
+  is_unmatched <- vapply_lgl(args_nms, `==`, "")
+
+  # Only match up to the number of formals
+  n_fmls <- length(setdiff(fmls_nms, "..."))
+  n_args <- length(args_nms)
+  if (n_args > n_fmls) {
+    is_ignored <- rep(TRUE, n_args)
+    is_ignored[seq_len(n_fmls)] <- FALSE
+    is_unmatched <- is_unmatched & !is_ignored
+  }
+
+  candidates <- setdiff(fmls_nms, args_nms[!is_unmatched])
+  args_nms[is_unmatched] <- candidates[seq_len(sum(is_unmatched))]
+  args_nms
 }
 
 #' Create a call by "hand"
