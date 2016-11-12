@@ -87,6 +87,16 @@ test_that("arguments are scoped in calling env", {
   expect_equal(info$expr, quote(foo))
 })
 
+test_that("dots_capture() produces correct formulas", {
+  fn <- function(x = a + b, ...) {
+    list(dots = dots_capture(x = x, y = a + b, ...), env = environment())
+  }
+  out <- fn(z = a + b)
+
+  expect_identical(out$dots$x, f_new(quote(a + b), env = out$env))
+  expect_identical(out$dots$y, f_new(quote(a + b), env = out$env))
+  expect_identical(out$dots$z, f_new(quote(a + b), env = environment()))
+})
 
 # arg_text ----------------------------------------------------------------
 

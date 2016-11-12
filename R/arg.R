@@ -48,73 +48,80 @@ arg_info <- function(x) {
 arg_info_ <- function(expr, stack) {
   stopifnot(is_call_stack(stack))
   stopifnot(length(stack) > 1)
-  calls <- lapply(drop_last(stack), call_standardise, enum_dots = TRUE)
 
+  calls <- lapply(drop_last(stack), call_standardise, enum_dots = TRUE)
+  caller_frame <- stack[[1]]
+  eval_frame <- stack[[1]]
+  prev_expr <- expr
+
+  # In this loop `prev_expr` is the argument of the frame just before
+  # the current `i`th frame, the tentative caller frame
   for (i in seq_along(calls)) {
-    eval_frame <- caller_frame <- stack[[i]]
     call <- calls[[i]]
 
-    # If expr is a complex expression, we know that (a) we reached the
-    # caller frame, and (b) there is no default argument
-    if (!is.symbol(expr)) {
+    # If `prev_expr` is a complex expression, we know that (a) we have
+    # reached the caller frame, and (b) there is no default argument
+    if (!is.symbol(maybe_missing(prev_expr))) {
       break
     }
 
 
-    caller_arg <- arg_match(call, expr, eval_frame$fn)
-
-    # If we found a match in the caller signature, record expression
-    # and move on to next frame up the call stack
-    if (!missing(caller_arg) && !is.null(caller_arg)) {
-      expr <- caller_arg
-      next
+    if (missing(prev_expr)) {
+      arg_i <- NA
+    } else {
+      arg_i <- arg_match(prev_expr, call)
     }
 
-    # We've reached the caller frame. We have to check if there is a
-    # default argument or if the argument is missing. In those cases
-    # the evaluation frame of the argument is not the same as the
-    # caller frame, it's the execution environment of the called
-    # closure.
-    if (missing(caller_arg) || is.null(caller_arg)) {
-      default <- fml_default(expr, eval_frame$fn)
-
-      # No missing or default argument: the caller frame and the eval
-      # frame are the same. The expression found in the previous frame
-      # was the right one.
-      if (is.null(maybe_missing(default))) {
-        break
+    # If no match in the call, we have reached the caller frame
+    if (is.na(arg_i)) {
+      if (!missing(prev_expr)) {
+        # Check for default argument
+        fml_i <- fml_match(prev_expr, eval_frame$fn)
+        if (!is.na(fml_i)) {
+          prev_expr <- fml_default(prev_expr, eval_frame$fn) %||% prev_expr
+          caller_frame <- stack[[i + 1]]
+        }
       }
 
-      # The expression is the missing or default argument and the
-      # caller frame is the next frame up the stack.
-      expr <- maybe_missing(default)
+      break
+    }
+
+    caller_arg <- call[[arg_i]]
+
+    # The matched argument is missing. Check for default arguments.
+    # The caller frame is the next frame.
+    if (missing(caller_arg)) {
+      prev_expr <- fml_default(prev_expr, eval_frame$fn) %||% prev_expr
       caller_frame <- stack[[i + 1]]
       break
     }
 
-    stop("rlang error: unexpected state while climbing call stack")
+    # If one argument in the caller signature matches, record
+    # corresponding expression and move on to next frame
+    prev_expr <- caller_arg
+    caller_frame <- stack[[i + 1]]
+    eval_frame <- stack[[i + 1]]
   }
 
   list(
-    expr = maybe_missing(expr),
+    expr = maybe_missing(prev_expr),
     eval_frame = eval_frame,
     caller_frame = caller_frame
   )
 }
 
-arg_match <- function(call, sym, fun) {
-  args <- cdr(call)
-  nms <- names2(call[-1])
-
-  arg_i <- match(as.character(sym), nms)
-  args[[arg_i]]
+arg_match <- function(sym, call) {
+  arg_nm <- as.character(sym)
+  match(arg_nm, names2(call))
+}
+fml_match <- function(sym, fn) {
+  arg_nm <- as.character(sym)
+  match(arg_nm, names(formals(fn)))
 }
 fml_default <- function(expr, fn) {
-  sym <- as.character(expr)
-  args <- formals(fn)
-  default <- args[[sym]]
-
-  maybe_missing(default)
+  nm <- as.character(expr)
+  fmls <- formals(fn)
+  fmls[[nm]]
 }
 
 #' @export
