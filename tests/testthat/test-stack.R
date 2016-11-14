@@ -35,6 +35,13 @@ test_that("context position is correct", {
   expect_equal(pos2, 2)
 })
 
+test_that("eval_frame(n_depth) returns global frame", {
+  n_depth <- eval_depth()
+  frame <- eval_frame(n_depth)
+  global <- global_frame()
+  expect_identical(frame, global)
+})
+
 test_that("call_depth() returns correct depth", {
   depth1 <- identity(call_depth())
   expect_equal(fixup_call_depth(depth1), 0)
@@ -70,11 +77,13 @@ test_that("call_frame()$expr gives expression of caller not previous ctxt", {
   expect_equal(g(), quote(g()))
 })
 
+test_that("call_frame(n_depth) returns global frame", {
+  n_depth <- call_depth()
+  expect_identical(call_frame(n_depth), global_frame())
+})
+
 test_that("call_frame(n) throws at correct level", {
   n <- call_depth()
-  frame <- call_frame(n)
-  stack_frame <- call_stack()[[n]]
-  expect_identical(frame, stack_frame)
   expect_error(call_frame(n + 1), "not that many frames")
 })
 
@@ -134,6 +143,7 @@ test_that("call_stack() trail ignores irrelevant frames", {
 test_that("eval_stack() exprs is in opposite order to sys calls", {
   syscalls <- sys.calls()
   stack <- eval_stack()
+  stack <- drop_last(stack) # global frame
   exprs <- purrr::map(stack, "expr")
   expect_equal(exprs[[length(exprs)]], syscalls[[1]])
   expect_equal(exprs[[1]], syscalls[[length(syscalls)]])
@@ -141,9 +151,11 @@ test_that("eval_stack() exprs is in opposite order to sys calls", {
 
 test_that("eval_stack() and call_stack() agree", {
   call_stack <- call_stack()
+  call_stack <- drop_last(call_stack) # global frame
   positions <- vapply_int(call_stack, `[[`, "pos")
 
   eval_stack <- eval_stack()
+  eval_stack <- drop_last(eval_stack) # global frame
   eval_stack <- rev(eval_stack)[positions]
 
   call_exprs <- lapply(call_stack, `[[`, "expr")

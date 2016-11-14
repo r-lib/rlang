@@ -7,9 +7,12 @@
 \alias{eval_depth}
 \alias{eval_frame}
 \alias{eval_stack}
+\alias{global_frame}
 \alias{stack}
 \title{Call stack information}
 \usage{
+global_frame()
+
 eval_frame(n = 1)
 
 call_frame(n = 1)
@@ -55,11 +58,18 @@ with \code{n = 1} referring to the current context. The
 values lower than 1. For the sake of consistency, the lazyeval
 functions all take the same kind of argument \code{n}. This
 argument has a single meaning (the number of frames to go down the
-stack) and cannot be lower than 1. Note finally that
-\code{parent.frame(1)} corresponds to \code{call_frame(2)$env}, as
-\code{n = 1} always refers to the current frame. This makes the
-\code{_frame()} and \code{_stack()} functions consistent:
-\code{eval_frame(2)} is the same as \code{eval_stack()[[2]]}.
+stack) and cannot be lower than 1.
+
+Note finally that \code{parent.frame(1)} corresponds to
+\code{call_frame(2)$env}, as \code{n = 1} always refers to the
+current frame. This makes the \code{_frame()} and \code{_stack()}
+functions consistent: \code{eval_frame(2)} is the same as
+\code{eval_stack()[[2]]}. Also, \code{eval_depth()} returns one
+more frame than \code{\link[base]{sys.nframe}()} because it counts
+the global frame. That is consistent with the \code{_stack()}
+functions which return the global frame as well. This way,
+\code{call_stack(call_depth())} is the same as
+\code{global_frame()}.
 }
 \examples{
 # Expressions within arguments count as contexts

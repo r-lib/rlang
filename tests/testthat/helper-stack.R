@@ -17,7 +17,7 @@ fixup_call_depth <- function(x) {
 
 fixup_call_trail <- function(trail) {
   eval_callers <- eval_stack_callers()
-  cur_trail <- drop_last(trail_make(eval_callers))
+  cur_trail <- trail_make(eval_callers)
   cur_pos <- eval_callers[1]
 
   indices <- seq(1, length(trail) - length(cur_trail))

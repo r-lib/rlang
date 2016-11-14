@@ -26,10 +26,6 @@ substitute_ <- function(x, env) {
   eval(call)
 }
 
-#' @useDynLib rlang make_lazy
-#' @useDynLib rlang make_lazy_dots
-NULL
-
 get_env <- function(x) {
   if (is_frame(x)) {
     x <- x$env
