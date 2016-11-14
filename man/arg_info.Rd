@@ -20,24 +20,23 @@ inspect.}
 }
 \value{
 A list containing:
+  \item{caller_frame}{The original calling frame. This is the frame
+    in which \code{expr} should be evaluated, unless the argument is
+    missing (see below).}
+
   \item{expr}{The expression provided in the original call. If the
     argument was missing, \code{expr} is the default argument of
-    the function; if there was no default, \code{expr} is
-    \code{NULL}.}
+    the function; if there was no default, \code{expr} is the
+    missing argument (see \code{\link{arg_missing}()}).}
 
   \item{eval_frame}{The frame providing the scope for \code{expr},
     which should normally be evaluated in \code{eval_frame$env}.
-    This is either the original calling frame, or the execution
-    frame of the function that was called if the argument was
-    missing. The difference reflects the evaluation rules of R,
-    where default arguments are scoped within the called function
-    rather than the calling frame.}
-
-  \item{caller_frame}{The original calling frame. This is the same
-    as \code{eval_frame} unless no argument was supplied in the
-    original call. In this case, \code{caller_frame$env} is the
-    environment in which the argument would have been evaluated,
-    had it been supplied.}
+    This is normally the original calling frame, unless the
+    argument was missing. In that case, \code{eval_frame} is the
+    evaluation frame of the called function. The difference
+    reflects the evaluation rules of R, where default arguments are
+    scoped within the called function rather than the calling
+    frame.}
 }
 \description{
 \code{arg_info()} and \code{arg_info_()} are the workhorses of all
