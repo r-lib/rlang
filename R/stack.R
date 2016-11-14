@@ -121,20 +121,20 @@ eval_frame <- function(n = 1) {
   stopifnot(n > 0)
   pos <- sys.nframe() - n
 
-  if (pos == 0) {
-    return(global_frame())
-  } else if (pos < 1) {
+  if (pos < 0L) {
     stop("not that many frames on the stack", call. = FALSE)
+  } else if (pos == 0L) {
+    global_frame()
+  } else {
+    new_frame(list(
+      pos = pos,
+      caller_pos = sys.parent(n + 1),
+      expr = sys.call(-n),
+      env = sys.frame(-n),
+      fn = sys.function(-n),
+      fn_name = call_fn_name(sys.call(-n))
+    ))
   }
-
-  new_frame(list(
-    pos = pos,
-    caller_pos = sys.parent(n + 1),
-    expr = sys.call(-n),
-    env = sys.frame(-n),
-    fn = sys.function(-n),
-    fn_name = call_fn_name(sys.call(-n))
-  ))
 }
 
 # Positions of frames in the call stack up to `n`
