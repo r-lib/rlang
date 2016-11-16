@@ -83,6 +83,9 @@ dots_info_ <- function(dots, stack) {
 }
 
 dots_enumerate_sym <- function(dots) {
+  if (!length(dots)) {
+    return(dots)
+  }
   nms <- paste0("..", seq_along(dots))
   lapply(nms, as.name)
 }

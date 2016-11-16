@@ -49,3 +49,8 @@ test_that("unmatched dots return arg_missing()", {
   expect_equal(out[[1]]$expr, arg_missing())
   expect_equal(out[[2]]$expr, arg_missing())
 })
+
+test_that("empty dots return list()", {
+  fn <- function(...) dots_info(...)
+  expect_equal(fn(), list())
+})
