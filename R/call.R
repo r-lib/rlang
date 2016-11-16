@@ -370,12 +370,17 @@ call_fn_name <- function(call = NULL) {
     if (identical(fn[[1]], quote(`::`)) ||
         identical(fn[[1]], quote(`:::`))) {
       # Namespaced calls: foo::bar(), foo:::bar()
-      fn <- fn[[3]]
+      return(as.character(fn[[3]]))
     } else {
       # Subsetted calls: foo@bar(), foo$bar()
       # Anomymous calls: foo[[bar]](), foo()()
       return(NULL)
     }
+  }
+
+  if (!is.symbol(fn)) {
+    # Inlined closures: (function() {})()
+    return(NULL)
   }
 
   as.character(fn)

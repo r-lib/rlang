@@ -214,6 +214,12 @@ test_that("call_fn() extracts function", {
   expect_identical(fn(), fn)
 })
 
+test_that("Inlined functions return NULL name", {
+  call <- quote(fn())
+  call[[1]] <- function() {}
+  expect_null(call_fn_name(call))
+})
+
 test_that("call_args() and call_args_names()", {
   expect_identical(call_args(~fn(a, b)), set_names(list(quote(a), quote(b)), c("", "")))
 
