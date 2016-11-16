@@ -11,6 +11,8 @@
 #'         \code{call(foo = x, ..3)}.
 #'   \item Does not sort arguments according to the order of
 #'         appearance in the function definition.
+#'   \item Standardises missing arguments as well if you specify
+#'         \code{add_missings}: \code{call(x = , y = , )}.
 #' }
 #' @param call Can be a call, a formula quoting a call in the
 #'   right-hand side, or a frame object from which to extract the call
@@ -30,15 +32,17 @@
 #'   climb arguments through nested calls. The latter form (the
 #'   default) is more faithful to the actual call and is ready to be
 #'   evaluated.
+#' @param add_missings Whether to standardise missing arguments.
 #' @export
 call_standardise <- function(call = NULL, fn = NULL,
                              caller_env = NULL,
-                             enum_dots = FALSE) {
+                             enum_dots = FALSE,
+                             add_missings = FALSE) {
   info <- call_info(call, caller_env)
   fn <- fn %||% info$fn %||% call_fn(info$call, info$env)
   stopifnot(is.call(info$call))
   stopifnot(is.environment(info$env))
-  call_standardise_(info$call, fn, info$caller_env, enum_dots)
+  call_standardise_(info$call, fn, info$caller_env, enum_dots, add_missings)
 }
 
 call_info <- function(call, caller_env) {
@@ -66,11 +70,11 @@ call_info <- function(call, caller_env) {
   )
 }
 
-call_standardise_ <- function(call, fn, caller_env, enum_dots) {
+call_standardise_ <- function(call, fn, caller_env, enum_dots, add_missings) {
   call <- duplicate(call)
   call <- call_inline_dots(call, caller_env, enum_dots)
   call <- call_match_partial(call, fn)
-  call <- call_match(call, fn, enum_dots)
+  call <- call_match(call, fn, enum_dots, add_missings)
   call
 }
 
@@ -170,7 +174,7 @@ call_inline_dots <- function(call, caller_env, enum_dots) {
   call
 }
 
-call_match <- function(call, fn, enum_dots) {
+call_match <- function(call, fn, enum_dots, add_missings) {
   args <- call[-1]
   args_nms <- names2(args)
   fmls_nms <- names2(fn_fmls(fn))
@@ -181,8 +185,15 @@ call_match <- function(call, fn, enum_dots) {
   } else {
     args_nms <- call_match_args(args_nms, fmls_nms)
   }
-
   names(call) <- c("", args_nms)
+
+  if (add_missings) {
+    missing_nms <- setdiff(fmls_nms, args_nms)
+    missing_args <- rep(list(arg_missing()), length(missing_nms))
+    missing_args <- as.pairlist(set_names(missing_args, missing_nms))
+    call <- lsp_append(call, missing_args)
+  }
+
   call
 }
 

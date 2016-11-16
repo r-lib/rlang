@@ -166,6 +166,11 @@ test_that("dots are not confused with formals", {
   expect_equal(fn(z = foo, bar, x = baz, bam), quote(fn(z = foo, y = bar, x = baz, bam)))
 })
 
+test_that("missing arguments are matched as well", {
+  fn <- function(x, y, z) call_standardise(add_missings = TRUE)
+  expect_equal(fn(y = foo), quote(fn(y = foo, x = , z = )))
+})
+
 # Modification ------------------------------------------------------------
 
 test_that("all args must be named", {
