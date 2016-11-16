@@ -113,7 +113,11 @@ arg_match <- function(sym, call) {
 fml_default <- function(expr, fn) {
   nm <- as.character(expr)
   fmls <- formals(fn)
-  fmls[[nm]]
+  if (nm %in% names(fmls)) {
+    fmls[[nm]]
+  } else {
+    arg_missing()
+  }
 }
 
 #' @export

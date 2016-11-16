@@ -36,3 +36,16 @@ test_that("dots_info() inspects dots", {
   expect_identical(info$foo$eval_frame$env, out$env)
   expect_identical(info[[2]]$eval_frame$env, out$env)
 })
+
+test_that("unmatched dots return arg_missing()", {
+  # Only occurs with partial stack climbing. Necessary for lazyeval
+  # compatibility
+  fn <- function(...) {
+    dots <- arg_dots(...)
+    stack <- call_stack(2)
+    dots_info_(dots, stack)
+  }
+  out <- fn(, )
+  expect_equal(out[[1]]$expr, arg_missing())
+  expect_equal(out[[2]]$expr, arg_missing())
+})
