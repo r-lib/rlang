@@ -49,61 +49,58 @@ arg_info_ <- function(expr, stack) {
   stopifnot(length(stack) > 1)
 
   calls <- lapply(drop_last(stack), call_standardise, enum_dots = TRUE)
-  caller_frame <- stack[[1]]
-  eval_frame <- stack[[1]]
-  prev_expr <- expr
 
-  # In this loop `prev_expr` is the argument of the frame just before
+  # In this loop `expr` is the argument of the frame just before
   # the current `i`th frame, the tentative caller frame
   for (i in seq_along(calls)) {
+    caller_frame <- stack[[i]]
+    eval_frame <- stack[[i]]
     call <- calls[[i]]
 
-    # If `prev_expr` is a complex expression, we know that (a) we have
-    # reached the caller frame, and (b) there is no default argument
-    if (!is.symbol(maybe_missing(prev_expr))) {
-      break
-    }
+    arg_i <- arg_match(expr, call)
 
-
-    if (missing(prev_expr)) {
-      arg_i <- NA
-    } else {
-      arg_i <- arg_match(prev_expr, call)
-    }
-
-    # If no match in the call, we have reached the caller frame
+    # If no match in the call, either (a) we have reached the callee frame
+    # and the argument is missing, or (b) we have reached the caller frame.
     if (is.na(arg_i)) {
-      if (!missing(prev_expr)) {
-        # Check for default argument
-        fml_i <- fml_match(prev_expr, eval_frame$fn)
-        if (!is.na(fml_i)) {
-          prev_expr <- fml_default(prev_expr, eval_frame$fn) %||% prev_expr
-          caller_frame <- stack[[i + 1]]
-        }
+
+      fml_i <- fml_match(expr, eval_frame$fn)
+      if (!is.na(fml_i)) {
+        # We have a matching formal argument, so this is scenario (a)
+        expr <- fml_default(expr, eval_frame$fn)
+        caller_frame <- stack[[i + 1]]
       }
 
       break
     }
 
-    caller_arg <- call[[arg_i]]
+
+    caller_expr <- call[[arg_i]]
 
     # The matched argument is missing. Check for default arguments.
     # The caller frame is the next frame.
-    if (missing(caller_arg)) {
-      prev_expr <- fml_default(prev_expr, eval_frame$fn) %||% prev_expr
+    if (missing(caller_expr)) {
+      expr <- fml_default(expr, eval_frame$fn) %||% expr
       caller_frame <- stack[[i + 1]]
       break
     }
 
-    # If one argument in the caller signature matches, record
-    # corresponding expression and move on to next frame
-    prev_expr <- caller_arg
-    caller_frame <- stack[[i + 1]]
-    eval_frame <- stack[[i + 1]]
+    # If `caller_expr` is a complex expression, we know that we have
+    # reached the called frame, and the next frame is both the caller
+    # and evaluation frame
+    if (!is.symbol(caller_expr)) {
+      expr <- caller_expr
+      caller_frame <- stack[[i + 1]]
+      eval_frame <- stack[[i + 1]]
+      break
+    }
+
+    # If the argument matched in the caller signature is another
+    # symbol, record it and move on to next frame
+    expr <- caller_expr
   }
 
   list(
-    expr = maybe_missing(prev_expr),
+    expr = maybe_missing(expr),
     eval_frame = eval_frame,
     caller_frame = caller_frame
   )
