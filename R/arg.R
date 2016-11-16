@@ -48,7 +48,8 @@ arg_info_ <- function(expr, stack) {
   stopifnot(is_call_stack(stack))
   stopifnot(length(stack) > 1)
 
-  calls <- lapply(drop_last(stack), call_standardise, enum_dots = TRUE)
+  calls <- lapply(drop_last(stack), call_standardise,
+    enum_dots = TRUE, add_missings = TRUE)
 
   # In this loop `expr` is the argument of the frame just before
   # the current `i`th frame, the tentative caller frame
@@ -57,36 +58,28 @@ arg_info_ <- function(expr, stack) {
     eval_frame <- stack[[i]]
     call <- calls[[i]]
 
+    # The `caller_expr` is always matched and valid during the first
+    # iteration of the loop
     arg_i <- arg_match(expr, call)
+    caller_expr <- call[[arg_i]]
 
-    # If no match in the call, either (a) we have reached the callee frame
-    # and the argument is missing, or (b) we have reached the caller frame.
+    # If no match in the call, we have reached the caller frame.
     if (is.na(arg_i)) {
-
-      fml_i <- fml_match(expr, eval_frame$fn)
-      if (!is.na(fml_i)) {
-        # We have a matching formal argument, so this is scenario (a)
-        expr <- fml_default(expr, eval_frame$fn)
-        caller_frame <- stack[[i + 1]]
-      }
-
       break
     }
 
-
-    caller_expr <- call[[arg_i]]
-
-    # The matched argument is missing. Check for default arguments.
-    # The caller frame is the next frame.
+    # The matched argument is missing, either implicitely or
+    # explicitely. The evaluation frame of missing arguments is the
+    # current frame, but the caller is the next one
     if (missing(caller_expr)) {
-      expr <- fml_default(expr, eval_frame$fn) %||% expr
+      expr <- fml_default(expr, eval_frame$fn)
       caller_frame <- stack[[i + 1]]
       break
     }
 
-    # If `caller_expr` is a complex expression, we know that we have
-    # reached the called frame, and the next frame is both the caller
-    # and evaluation frame
+    # If `caller_expr` is a complex expression, we have reached the
+    # callee frame, and the next frame is both the caller and
+    # evaluation frame
     if (!is.symbol(caller_expr)) {
       expr <- caller_expr
       caller_frame <- stack[[i + 1]]
@@ -109,10 +102,6 @@ arg_info_ <- function(expr, stack) {
 arg_match <- function(sym, call) {
   arg_nm <- as.character(sym)
   match(arg_nm, names2(call))
-}
-fml_match <- function(sym, fn) {
-  arg_nm <- as.character(sym)
-  match(arg_nm, names(formals(fn)))
 }
 fml_default <- function(expr, fn) {
   nm <- as.character(expr)
