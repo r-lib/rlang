@@ -21,6 +21,9 @@
 #'     the function; if there was no default, \code{expr} is the
 #'     missing argument (see \code{\link{arg_missing}()}).}
 #'
+#'   \item{name}{The name of the formal argument to which \code{expr}
+#'     was originally supplied.}
+#'
 #'   \item{eval_frame}{The frame providing the scope for \code{expr},
 #'     which should normally be evaluated in \code{eval_frame$env}.
 #'     This is normally the original calling frame, unless the
@@ -72,6 +75,7 @@ arg_info_ <- function(expr, stack) {
     # explicitely. The evaluation frame of missing arguments is the
     # current frame, but the caller is the next one
     if (missing(caller_expr)) {
+      formal_name <- as.character(expr)
       expr <- fml_default(expr, eval_frame$fn)
       caller_frame <- stack[[i + 1]]
       break
@@ -81,6 +85,7 @@ arg_info_ <- function(expr, stack) {
     # callee frame, and the next frame is both the caller and
     # evaluation frame
     if (!is.symbol(caller_expr)) {
+      formal_name <- as.character(expr)
       expr <- caller_expr
       caller_frame <- stack[[i + 1]]
       eval_frame <- stack[[i + 1]]
@@ -89,11 +94,13 @@ arg_info_ <- function(expr, stack) {
 
     # If the argument matched in the caller signature is another
     # symbol, record it and move on to next frame
+    formal_name <- as.character(expr)
     expr <- caller_expr
   }
 
   list(
     expr = maybe_missing(expr),
+    name = formal_name,
     eval_frame = eval_frame,
     caller_frame = caller_frame
   )

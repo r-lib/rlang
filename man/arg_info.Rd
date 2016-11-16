@@ -29,6 +29,9 @@ A list containing:
     the function; if there was no default, \code{expr} is the
     missing argument (see \code{\link{arg_missing}()}).}
 
+  \item{name}{The name of the formal argument to which \code{expr}
+    was originally supplied.}
+
   \item{eval_frame}{The frame providing the scope for \code{expr},
     which should normally be evaluated in \code{eval_frame$env}.
     This is normally the original calling frame, unless the

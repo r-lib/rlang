@@ -39,6 +39,16 @@ test_that("empty argument are reported", {
   expect_identical(info$caller_frame$env, environment())
 })
 
+test_that("formals names are recorded", {
+  fn <- function(foo) arg_info(foo)
+  expect_equal(fn()$name, "foo")
+
+  g <- function() fn(bar)
+  expect_equal(g()$name, "foo")
+
+  g <- function() fn(foo(bar))
+  expect_equal(g()$name, "foo")
+})
 
 # arg_env -----------------------------------------------------------------
 
@@ -141,7 +151,6 @@ test_that("is_missing() works with symbols", {
   x <- arg_missing()
   expect_true(is_missing(x))
 })
-
 
 test_that("is_missing() works with non-symbols", {
   expect_true(is_missing(arg_missing()))
