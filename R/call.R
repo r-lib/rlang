@@ -188,7 +188,7 @@ call_match <- function(call, fn, enum_dots, add_missings) {
   names(call) <- c("", args_nms)
 
   if (add_missings) {
-    missing_nms <- setdiff(fmls_nms, args_nms)
+    missing_nms <- setdiff(fmls_nms, c(args_nms, "..."))
     missing_args <- rep(list(arg_missing()), length(missing_nms))
     missing_args <- as.pairlist(set_names(missing_args, missing_nms))
     call <- lsp_append(call, missing_args)

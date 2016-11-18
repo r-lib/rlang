@@ -171,6 +171,12 @@ test_that("missing arguments are matched as well", {
   expect_equal(fn(y = foo), quote(fn(y = foo, x = , z = )))
 })
 
+test_that("dots are not treated as missing arg", {
+  fn <- function(x, ...) call_standardise(add_missings = TRUE)
+  expect_equal(fn(), quote(fn(x = )))
+})
+
+
 # Modification ------------------------------------------------------------
 
 test_that("all args must be named", {
