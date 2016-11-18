@@ -87,11 +87,8 @@ arg_match_partial <- function(arg, formal) {
 
 call_match_partial <- function(call, fn) {
   actuals_nms <- call_args_names(call)
-  if (!length(actuals_nms)) {
-    return(call)
-  }
-
   formals_nms <- fn_fmls_names(fn)
+
   is_empty <- actuals_nms == ""
   is_dup <- duplicated(actuals_nms) & !is_empty
   is_dup <- is_dup & actuals_nms %in% formals_nms
@@ -391,6 +388,8 @@ call_fn_name <- function(call = NULL) {
 #' Extract arguments from a call
 #'
 #' @inheritParams call_standardise
+#' @return A named list of arguments. The \code{_lsp} version returns
+#'   a named pairlist.
 #' @seealso \code{\link{fn_fmls}()} and
 #'   \code{\link{fn_fmls_names}()}
 #' @export
@@ -408,13 +407,21 @@ call_fn_name <- function(call = NULL) {
 #' call_args_names(call)
 call_args <- function(call = NULL) {
   call <- call_info(call, NULL)$call
-  args <- as.list(call[-1])
-  set_names(args, names2(args))
+  args <- as.list(call_args_lsp(call))
+  set_names((args), names2(args))
+}
+
+#' @rdname call_args
+#' @export
+call_args_lsp <- function(call = NULL) {
+  call <- call_info(call, NULL)$call
+  stopifnot(is.call(call))
+  cdr(call)
 }
 
 #' @rdname call_args
 #' @export
 call_args_names <- function(call = NULL) {
   call <- call_info(call, NULL)$call
-  names(call_args(call))
+  names2(call_args_lsp(call))
 }
