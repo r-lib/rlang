@@ -236,3 +236,33 @@ test_that("call_args() and call_args_names()", {
   fn <- function(a, b) call_args_names()
   expect_identical(fn(a = foo, b = bar), c("a", "b"))
 })
+
+
+# call_stack() consolidation -----------------------------------------
+
+test_that("Recall() does not mess up call history", {
+  counter <- 2L
+  fn <- function(x) {
+    if (counter) {
+      counter <<- counter - 1L
+      Recall(x)
+    } else {
+      counter <<- 2L
+      call_stack()
+    }
+  }
+
+  stack <- fn(foo)
+  trail <- vapply_int(stack, function(x) x$pos)
+  expect_equal(fixup_call_trail(trail), 5:1)
+
+  calls <- lapply(stack, call_standardise, enum_dots = TRUE, add_missings = TRUE)
+  expected_calls <- alist(
+    fn(x = ..1),
+    Recall(..1 = x),
+    fn(x = ..1),
+    Recall(..1 = x),
+    fn(x = foo)
+  )
+  expect_equal(calls[1:5], expected_calls)
+})

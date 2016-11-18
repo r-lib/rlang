@@ -174,3 +174,25 @@ test_that("is_missing() works with non-symbols", {
   expect_true(is_missing(l[[1]]))
   expect_error(missing(l[[1]]), "invalid use")
 })
+
+
+# special cases ------------------------------------------------------
+
+test_that("Recall() does not mess up arg_info()", {
+  quit <- FALSE
+  fn_Recall <- function(x, y) {
+    if (quit) {
+      quit <<- FALSE
+      list(y = arg_info(y), x = arg_info(x))
+    } else {
+      quit <<- TRUE
+      Recall()
+    }
+  }
+  info <- fn_Recall(y = foo(bar), bar(foo))
+
+  expect_identical(info$x$expr, quote(bar(foo)))
+  expect_identical(info$y$expr, quote(foo(bar)))
+  expect_identical(info$x$eval_frame$env, environment())
+  expect_identical(info$x$caller_frame$env, environment())
+})

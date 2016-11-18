@@ -82,12 +82,20 @@ dots_info_ <- function(dots, stack) {
   lapply(dots_syms, arg_info_, stack)
 }
 
-dots_enumerate_sym <- function(dots) {
+dots_enumerate <- function(dots) {
   if (!length(dots)) {
-    return(dots)
+    character(0)
+  } else {
+    paste0("..", seq_along(dots))
   }
-  nms <- paste0("..", seq_along(dots))
-  lapply(nms, as.name)
+}
+dots_enumerate_sym <- function(dots) {
+  nms <- dots_enumerate(dots)
+  if (!length(nms)) {
+    dots
+  } else {
+    lapply(nms, as.name)
+  }
 }
 dots_enumerate_args <- function(dots) {
   i <- 1
