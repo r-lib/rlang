@@ -56,9 +56,9 @@ arg_info_ <- function(expr, stack) {
 
   # In this loop `expr` is the argument of the frame just before
   # the current `i`th frame, the tentative caller frame
+  caller_frame <- stack[[1]]
+  eval_frame <- stack[[1]]
   for (i in seq_along(calls)) {
-    caller_frame <- stack[[i]]
-    eval_frame <- stack[[i]]
     call <- calls[[i]]
 
     # The `caller_expr` is always matched and valid during the first
@@ -96,6 +96,9 @@ arg_info_ <- function(expr, stack) {
     # symbol, record it and move on to next frame
     formal_name <- as.character(expr)
     expr <- caller_expr
+
+    caller_frame <- stack[[i + 1]]
+    eval_frame <- stack[[i + 1]]
   }
 
   list(

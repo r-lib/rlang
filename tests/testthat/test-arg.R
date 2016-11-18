@@ -108,6 +108,21 @@ test_that("dots_capture() produces correct formulas", {
   expect_identical(out$dots$z, f_new(quote(a + b), env = environment()))
 })
 
+test_that("global_frame() is reported with top-level calls", {
+  fn <- function(x) {
+    # Emulate top-level call
+    stack <- call_stack(2)
+    stack[[2]] <- global_frame()
+    arg_info_(quote(x), stack)
+  }
+  info <- fn(foo)
+
+  expect_identical(info$expr, quote(foo))
+  expect_identical(info$eval_frame$env, globalenv())
+  expect_identical(info$caller_frame$env, globalenv())
+})
+
+
 # arg_text ----------------------------------------------------------------
 
 test_that("always returns single string", {
