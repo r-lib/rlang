@@ -196,3 +196,17 @@ test_that("Recall() does not mess up arg_info()", {
   expect_identical(info$x$eval_frame$env, environment())
   expect_identical(info$x$caller_frame$env, environment())
 })
+
+test_that("magrittr works", {
+  if (utils::packageVersion("magrittr") > "1.5") {
+    `%>%` <- magrittr::`%>%`
+    info <- letters %>% toupper() %>% .[[1]] %>% arg_info()
+    expect_equal(info$expr, quote(.))
+    expect_equal(eval(info$expr, info$eval_frame$env), "A")
+
+    info <- letters %>% toupper() %>% .[[1]] %>% dots_info()
+    info <- info[[1]]
+    expect_equal(info$expr, quote(.))
+    expect_equal(eval(info$expr, info$eval_frame$env), "A")
+  }
+})
