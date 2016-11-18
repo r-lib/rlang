@@ -39,6 +39,8 @@ call_standardise <- function(call = NULL, fn = NULL,
                              enum_dots = FALSE,
                              add_missings = FALSE) {
   info <- call_info(call, caller_env)
+  if (is.null(info$call)) return(NULL)
+
   fn <- fn %||% info$fn %||% call_fn(info$call, info$env)
   stopifnot(is.call(info$call))
   stopifnot(is.environment(info$env))
@@ -52,7 +54,7 @@ call_info <- function(call, caller_env) {
 
   if (is_frame(call)) {
     env <- call$env
-    caller_env <- caller_env %||% sys.frame(call$caller_pos)
+    caller_env <- caller_env %||% sys_frame(call$caller_pos)
     fn <- call$fn
     call <- call$expr
   } else if (is_formula(call)) {

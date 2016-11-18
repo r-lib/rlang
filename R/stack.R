@@ -349,3 +349,12 @@ is_call_stack <- function(x) inherits(x, "call_stack")
 `[.stack` <- function(x, i) {
   structure(NextMethod(), class = class(x))
 }
+
+# Handles global_frame() whose `caller_pos` is NA
+sys_frame <- function(n) {
+  if (is.na(n)) {
+    NULL
+  } else {
+    sys.frame(n)
+  }
+}
