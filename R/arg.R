@@ -51,15 +51,15 @@ arg_info_ <- function(expr, stack) {
   stopifnot(is_call_stack(stack))
   stopifnot(length(stack) > 1)
 
-  calls <- lapply(drop_last(stack), call_standardise,
-    enum_dots = TRUE, add_missings = TRUE)
-
   # In this loop `expr` is the argument of the frame just before
   # the current `i`th frame, the tentative caller frame
   caller_frame <- stack[[1]]
   eval_frame <- stack[[1]]
-  for (i in seq_along(calls)) {
-    call <- calls[[i]]
+
+  for (i in seq_len(length(stack) - 1)) {
+
+    call <- call_standardise(stack[[i]],
+      enum_dots = TRUE, add_missings = TRUE)
 
     # The `caller_expr` is always matched and valid during the first
     # iteration of the loop
