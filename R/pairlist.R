@@ -72,3 +72,12 @@ cons <- function(car, cdr) {
 duplicate <- function(x) {
   .Call(duplicate_, x)
 }
+
+#' @useDynLib rlang tag_
+tag <- function(x) {
+  .Call(tag_, x)
+}
+#' @useDynLib rlang set_tag_
+set_tag <- function(x, tag) {
+  .Call(set_tag_, x, tag)
+}
