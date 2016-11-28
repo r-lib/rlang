@@ -25,17 +25,6 @@ f_new <- function(rhs, lhs = NULL, env = parent.frame()) {
   )
 }
 
-#' Is object a formula?
-#'
-#' @param x Object to test
-#' @export
-#' @examples
-#' is_formula(~ 10)
-#' is_formula(10)
-is_formula <- function(x) {
-  typeof(x) == "language" && inherits(x, "formula")
-}
-
 #' Get/set formula components.
 #'
 #' \code{f_rhs} extracts the righthand side, \code{f_lhs} extracts the
