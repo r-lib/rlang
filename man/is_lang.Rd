@@ -3,6 +3,7 @@
 \name{is_lang}
 \alias{is_call}
 \alias{is_lang}
+\alias{is_literal}
 \alias{is_name}
 \alias{is_pairlist}
 \title{Is an object a language object?}
@@ -14,6 +15,8 @@ is_name(x)
 is_call(x)
 
 is_pairlist(x)
+
+is_literal(x)
 }
 \arguments{
 \item{x}{An object to test.}
@@ -35,6 +38,11 @@ is_name(q2)
 q3 <- quote(x + 1)
 is_lang(q3)
 is_call(q3)
+
+# A literal is either a scalar atomic vector or a name:
+is_literal("string")
+is_literal(letters)
+is_literal(quote(name))
 }
 \seealso{
 \code{\link{as_name}()} and \code{\link{as_call}()} for coercion
