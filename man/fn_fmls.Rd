@@ -20,7 +20,8 @@ arguments.
 }
 \details{
 Contrarily to \code{formals()}, these helpers also work with
-primitive functions.
+primitive functions. See \code{\link{is_function}()} for a
+discussion of primitive and closure functions.
 }
 \examples{
 # Extract from current call:

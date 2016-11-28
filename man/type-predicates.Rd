@@ -4,7 +4,6 @@
 \alias{is_atomic}
 \alias{is_character}
 \alias{is_double}
-\alias{is_function}
 \alias{is_integer}
 \alias{is_list}
 \alias{is_logical}
@@ -31,8 +30,6 @@ is_character(x)
 is_logical(x)
 
 is_null(x)
-
-is_function(x)
 }
 \arguments{
 \item{x}{object to be tested.}

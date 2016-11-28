@@ -37,12 +37,6 @@ fn_new <- function(args, body, env = parent.frame()) {
 prim_eval <- eval(quote(sys.function(0)))
 is_prim_eval <- function(x) identical(x, prim_eval)
 
-# This predicate handles the fake primitive eval function produced
-# when evaluating code with eval()
-is_primitive <- function(x) {
-  is.primitive(x) || is_prim_eval(x)
-}
-
 #' Name of a primitive function
 #' @param prim A primitive function such as \code{base::c}.
 prim_name <- function(prim) {
@@ -62,7 +56,8 @@ prim_name <- function(prim) {
 #' arguments.
 #'
 #' Contrarily to \code{formals()}, these helpers also work with
-#' primitive functions.
+#' primitive functions. See \code{\link{is_function}()} for a
+#' discussion of primitive and closure functions.
 #'
 #' @param fn A function. It is lookep up in the calling frame if not
 #'   supplied.
@@ -100,4 +95,122 @@ fn_fmls_names <- function(fn = NULL) {
   fn <- fn %||% call_frame(2)$fn
   args <- fn_fmls(fn)
   names(args)
+}
+
+
+#' Is object a function?
+#'
+#' The R language defines two different types of functions: primitive
+#' functions, which are low-level, and closures, which are the regular
+#' kind of functions.
+#'
+#' Closures are functions written in R, named after the way their
+#' arguments are scoped within nested environments (see
+#' \url{https://en.wikipedia.org/wiki/Closure_(computer_programming)}).
+#' The root environment of the closure is called the closure
+#' environment. When closures are evaluated, a new environment called
+#' the evaluation frame is created with the closure environment as
+#' parent. This is where the body of the closure is evaluated. These
+#' closure frames appear on the evaluation stack (see
+#' \code{\link{eval_stack}()}), as opposed to primitive functions
+#' which do not necessarily have their own evaluation frame and never
+#' appear on the stack.
+#'
+#' Primitive functions are more efficient than closures for two
+#' reasons. First, they are written entirely in fast low-level
+#' code. Secondly, the mechanism by which they are passed arguments is
+#' more efficient because they often do not need the full procedure of
+#' argument matching (dealing with positional versus named arguments,
+#' partial matching, etc). One practical consequence of the special
+#' way in which primitives are passed arguments this is that they
+#' technically do not have formal arguments, and
+#' \code{\link{formals}()} will return \code{NULL} if called on a
+#' primitive function. See \code{\link{fn_fmls}()} for a function that
+#' returns a representation of formal arguments for primitive
+#' functions. Finally, primitive functions can either take arguments
+#' lazily, as R expressions, or evaluate them eagerly. The former kind
+#' of primitives are called "special" in R terminology, while the
+#' latter is referred to as "builtin".  \code{is_primitive_eager()}
+#' and \code{is_primitive_lazy()} allow you to check whether a
+#' primitive function is lazy or eager.
+#'
+#' You will also encounter the distinction between primitive and
+#' internal functions in technical documentation. Like primitive
+#' functions, internal functions are defined at a low level and
+#' written in C. However, internal functions have no representation in
+#' the R language. Instead, they are called via a call to
+#' \code{\link[base]{.Internal}()} within a regular closure. This
+#' ensures that they appear as normal R function objects: they obey
+#' all the usual rules of argument passing, and they appear on the
+#' evaluation stack as any other closures. As a result,
+#' \code{\link{fn_fmls}()} does not need to look in the
+#' \code{.ArgsEnv} environment to obtain a representation of their
+#' arguments, and there is no way of querying from R whether they are
+#' lazy ('special' in R terminology) or eager ('builtin').
+#'
+#' You can call primitive functions with \code{\link{.Primitive}()}
+#' and internal functions with \code{\link{.Internal}()}. However,
+#' calling internal functions in a package is forbidden by CRAN's
+#' policy because they are considered part of the private API. They
+#' often assume that they have been called with correctly formed
+#' arguments, and may cause R to crash if you call them with
+#' unexpected objects.
+#'
+#' @inheritParams type-predicates
+#' @export
+#' @examples
+#' # Primitive functions are not closures:
+#' is_closure(base::c)
+#' is_primitive(base::c)
+#'
+#' # On the other hand, internal functions are wrapped in a closure
+#' # and appear as such from the R side:
+#' is_closure(base::eval)
+#'
+#' # Both closures and primitives are functions:
+#' is_function(base::c)
+#' is_function(base::eval)
+#'
+#' # Primitive functions never appear in evaluation stacks:
+#' is_primitive(base::`[[`)
+#' is_primitive(base::list)
+#' list(eval_stack())[[1]]
+#'
+#' # While closures do:
+#' identity(identity(eval_stack()))
+is_function <- function(x) {
+  is_closure(x) || is_primitive(x)
+}
+
+#' @export
+#' @rdname is_function
+is_closure <- function(x) {
+  typeof(x) == "closure"
+}
+
+#' @export
+#' @rdname is_function
+is_primitive <- function(x) {
+  typeof(x) %in% c("builtin", "special")
+}
+#' @export
+#' @rdname is_function
+#' @examples
+#'
+#' # Many primitive functions evaluate arguments eagerly:
+#' is_eager_primitive(base::c)
+#' is_eager_primitive(base::list)
+#' is_eager_primitive(base::`+`)
+is_eager_primitive <- function(x) {
+  typeof(x) == "builtin"
+}
+#' @export
+#' @rdname is_function
+#' @examples
+#'
+#' # However, primitives that operate on expressions, like quote(),
+#' # are lazy:
+#' is_lazy_primitive(base::quote)
+is_lazy_primitive <- function(x) {
+  typeof(x) == "special"
 }

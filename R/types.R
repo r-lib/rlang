@@ -75,12 +75,6 @@ is_null <- function(x) {
   typeof(x) == "NULL"
 }
 
-#' @export
-#' @rdname type-predicates
-is_function <- function(x) {
-  typeof(x) == "closure"
-}
-
 #' Scalar type predicates
 #'
 #' These predicates check for a given type and whether the vector is
