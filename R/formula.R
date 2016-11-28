@@ -75,9 +75,11 @@ f_lhs <- function(f) {
 
 #' @export
 #' @rdname f_rhs
-#' @useDynLib rlang env
 f_env <- function(f) {
-  .Call(env, f)
+  if(!is_formula(f)) {
+    stop("`f` is not a formula", call. = FALSE)
+  }
+  attr(f, ".Environment")
 }
 
 #' @export
