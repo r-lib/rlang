@@ -1,3 +1,4 @@
+context("environments")
 
 test_that("env_new() has correct parent", {
   env <- env_new(emptyenv())
