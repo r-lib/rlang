@@ -117,13 +117,13 @@ env_sees(env, "lapply")
 
 
 # Get the parent environment with env_next():
-env_next(env_scope_global())
+env_next(env_global())
 
 # Or the tail environment with env_tail():
-env_tail(env_scope_global())
+env_tail(env_global())
 }
 \seealso{
-\link{env_scope}, \code{\link{env_has}()},
+\link{env_scoped}, \code{\link{env_has}()},
   \code{\link{env_assign}()}.
 }
 

@@ -19,6 +19,6 @@ environments, which contain all the functions imported from other
 packages.
 }
 \seealso{
-\code{\link{env_scope_package}()}
+\code{\link{env_package}()}
 }
 

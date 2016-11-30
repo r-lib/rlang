@@ -20,5 +20,5 @@ test_that("env_next() reports correct parent", {
 })
 
 test_that("env_tail() climbs env chain", {
-  expect_identical(env_tail(env_scope_global()), env_scope_base())
+  expect_identical(env_tail(env_global()), env_base())
 })

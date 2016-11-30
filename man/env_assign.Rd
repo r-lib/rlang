@@ -46,7 +46,7 @@ function is modified in place.
 \examples{
 # Create a function that uses undefined bindings:
 fn <- function() list(a, b, c, d, e)
-env(fn) <- env_new(env_scope_base())
+env(fn) <- env_new(env_base())
 
 # This would throw a scoping error if run:
 # fn()

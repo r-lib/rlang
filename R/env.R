@@ -31,7 +31,7 @@
 #' @param dict A vector with unique names which defines bindings
 #'   (pairs of name and value). See \code{\link{is_dict}()}.
 #' @param n The number of generations to go through.
-#' @seealso \link{env_scope}, \code{\link{env_has}()},
+#' @seealso \link{env_scoped}, \code{\link{env_has}()},
 #'   \code{\link{env_assign}()}.
 #' @export
 #' @examples
@@ -67,10 +67,10 @@
 #'
 #'
 #' # Get the parent environment with env_next():
-#' env_next(env_scope_global())
+#' env_next(env_global())
 #'
 #' # Or the tail environment with env_tail():
-#' env_tail(env_scope_global())
+#' env_tail(env_global())
 env <- function(env) {
   UseMethod("env")
 }
@@ -202,7 +202,7 @@ env_tail <- function(env) {
 #' @examples
 #' # Create a function that uses undefined bindings:
 #' fn <- function() list(a, b, c, d, e)
-#' env(fn) <- env_new(env_scope_base())
+#' env(fn) <- env_new(env_base())
 #'
 #' # This would throw a scoping error if run:
 #' # fn()
@@ -251,7 +251,7 @@ env_define <- function(env, ...) {
 #' @return An object associated with the new environment.
 #' @export
 #' @examples
-#' scope <- env_new(env_scope_base(), list(a = 10))
+#' scope <- env_new(env_base(), list(a = 10))
 #' fn <- function() a
 #' env(fn) <- scope
 #'
@@ -409,72 +409,71 @@ env_fetch <- function(env, nm) {
 #' everything you define at top-level ends up, is pinned as the head
 #' of the linked list. Likewise, the base package environment is
 #' always the tail of the chain. You can obtain those environments
-#' with \code{env_scope_global()} and \code{env_scope_base()}
-#' respectively.
+#' with \code{env_global()} and \code{env_base()} respectively.
 #'
 #' You can list all scoped environments with
-#' \code{env_scope_names()}. With \code{is_scoped()} you can check
+#' \code{env_scoped_names()}. With \code{is_scoped()} you can check
 #' whether a named environment is on the search
-#' path. \code{env_scope_package()} returns the scope environment of
+#' path. \code{env_package()} returns the scope environment of
 #' packages if they are attached to the search path, and throws an
 #' error otherwise.
 #'
-#' @param env_nm The name of an environment attached to the search
+#' @param nm The name of an environment attached to the search
 #'   path. Call \code{\link[base]{search}()} to see what is currently
 #'   on the path.
 #' @export
 #' @examples
 #' # List the names of scoped environments:
-#' nms <- env_scope_names()
+#' nms <- env_scoped_names()
 #' nms
 #'
 #' # The global environment is always the first in the chain:
-#' env_scope(nms[[1]])
+#' env_scoped(nms[[1]])
 #'
-#' # And the scope environment of the base package is always the last:
-#' env_scope(nms[[length(nms)]])
+#' # And the scoped environment of the base package is always the last:
+#' env_scoped(nms[[length(nms)]])
 #'
-#' # These environments have their own shortcuts:
-#' env_scope_global()
-#' env_scope_base()
+#' # These two environments have their own shortcuts:
+#' env_global()
+#' env_base()
 #'
-#' # Get the scope environment of a package:
-#' env_scope_package("utils")
-env_scope <- function(env_nm) {
-  if (!is_scoped(env_nm)) {
-    stop(paste0(env_nm, " is not in scope"), call. = FALSE)
+#' # Get the scoped environment of a package:
+#' env_package("utils")
+env_scoped <- function(nm) {
+  if (!is_scoped(nm)) {
+    stop(paste0(nm, " is not in scope"), call. = FALSE)
   }
-  as.environment(env_nm)
+  as.environment(nm)
 }
-#' @rdname env_scope
+#' @rdname env_scoped
 #' @param pkg The name of a package.
 #' @export
-env_scope_package <- function(pkg) {
+env_package <- function(pkg) {
   pkg_name <- paste0("package:", pkg)
-  env_scope(pkg_name)
+  env_scoped(pkg_name)
 }
 
-#' @rdname env_scope
+#' @rdname env_scoped
 #' @export
-env_scope_names <- function() {
+env_scoped_names <- function() {
   search()
 }
 
-#' @rdname env_scope
+#' @rdname env_scoped
 #' @export
-is_scoped <- function(env_nm) {
-  if (!is_scalar_character(env_nm)) {
-    stop("`env_nm` must be a string", call. = FALSE)
+is_scoped <- function(nm) {
+  if (!is_scalar_character(nm)) {
+    stop("`nm` must be a string", call. = FALSE)
   }
-  env_nm %in% env_scope_names()
+  nm %in% env_scoped_names()
 }
 
-#' @rdname env_scope
+#' @rdname env_scoped
 #' @export
-env_scope_base <- baseenv
-#' @rdname env_scope
+env_base <- baseenv
+#' @rdname env_scoped
 #' @export
-env_scope_global <- globalenv
+env_global <- globalenv
 
 
 #' Get the namespace of a package.
@@ -484,7 +483,7 @@ env_scope_global <- globalenv
 #' environments, which contain all the functions imported from other
 #' packages.
 #' @param pkg The name of a package.
-#' @seealso \code{\link{env_scope_package}()}
+#' @seealso \code{\link{env_package}()}
 #' @export
 env_namespace <- function(pkg) {
   asNamespace(pkg)
