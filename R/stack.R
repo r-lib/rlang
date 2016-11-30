@@ -42,6 +42,9 @@
 #' \code{global_frame()}.
 #'
 #' @param n The number of frames to go back in the stack.
+#' @param clean Whether to post-process the call stack to clean
+#'   non-standard frames. If \code{TRUE}, the two frames created by
+#'   the base function \code{\link[base]{eval}()} are merged together.
 #' @name stack
 #' @examples
 #' # Expressions within arguments count as contexts
@@ -138,7 +141,7 @@ eval_frame <- function(n = 1) {
 }
 
 # Positions of frames in the call stack up to `n`
-trail_make <- function(callers, n = NULL) {
+trail_make <- function(callers, n = NULL, clean = TRUE) {
   n_ctxt <- length(callers)
   if (is.null(n)) {
     n_max <- n_ctxt
@@ -149,7 +152,7 @@ trail_make <- function(callers, n = NULL) {
     n_max <- n + 1
   }
 
-  state <- trail_next(callers, 1)
+  state <- trail_next(callers, 1, clean)
   if (!length(state$i) || state$i == 0) {
     return(0L)
   }
@@ -163,7 +166,7 @@ trail_make <- function(callers, n = NULL) {
     j <- j + 1
     n_ctxt <- length(state$callers)
     next_pos <- n_ctxt - state$i + 1
-    state <- trail_next(state$callers, next_pos)
+    state <- trail_next(state$callers, next_pos, clean)
     out[j] <- state$i
   }
 
@@ -174,25 +177,28 @@ trail_make <- function(callers, n = NULL) {
   out[seq_len(j)]
 }
 
-trail_next <- function(callers, i) {
+trail_next <- function(callers, i, clean) {
   if (i == 0L) {
     return(list(callers = callers, i = 0L))
   }
 
   i <- callers[i]
 
-  # base::Recall() creates a custom context with the wrong sys.parent()
-  if (identical(sys.function(i - 1L), base::Recall)) {
-    i_pos <- trail_index(callers, i)
-    callers[i_pos] <- i - 1L
-  }
+  if (clean) {
+    # base::Recall() creates a custom context with the wrong sys.parent()
+    if (identical(sys.function(i - 1L), base::Recall)) {
+      i_pos <- trail_index(callers, i)
+      callers[i_pos] <- i - 1L
+    }
 
-  # The R-level eval() creates two contexts. We skip the second one
-  if (length(i) && is_prim_eval(sys.function(i))) {
-    n_ctxt <- length(callers)
-    special_eval_pos <- trail_index(callers, i)
-    callers <- callers[-special_eval_pos]
-    i <- i - 1L
+    # The R-level eval() creates two contexts. We skip the second one
+    if (length(i) && is_prim_eval(sys.function(i))) {
+      n_ctxt <- length(callers)
+      special_eval_pos <- trail_index(callers, i)
+      callers <- callers[-special_eval_pos]
+      i <- i - 1L
+    }
+
   }
 
   list(callers = callers, i = i)
@@ -205,11 +211,11 @@ trail_index <- function(callers, i) {
 
 #' @rdname stack
 #' @export
-call_frame <- function(n = 1) {
+call_frame <- function(n = 1, clean = TRUE) {
   stopifnot(n > 0)
 
   eval_callers <- eval_stack_callers()
-  trail <- trail_make(eval_callers, n)
+  trail <- trail_make(eval_callers, n, clean = clean)
   pos <- trail[n]
 
   if (identical(pos, 0L)) {
@@ -224,7 +230,11 @@ call_frame <- function(n = 1) {
     fn = sys.function(pos),
     fn_name = call_fn_name(sys.call(pos))
   ))
-  frame_fixup_eval(frame)
+
+  if (clean) {
+    frame <- frame_clean_eval(frame)
+  }
+  frame
 }
 
 # The _depth() functions count the global frame as well
@@ -310,9 +320,9 @@ stack_subset <- function(stack_data, n) {
 
 #' @rdname stack
 #' @export
-call_stack <- function(n = NULL) {
+call_stack <- function(n = NULL, clean = TRUE) {
   eval_callers <- eval_stack_callers()
-  trail <- trail_make(eval_callers, n)
+  trail <- trail_make(eval_callers, n, clean = clean)
 
   stack_data <- list(
     pos = drop_last(trail),
@@ -325,8 +335,10 @@ call_stack <- function(n = NULL) {
 
   stack <- zip(stack_data)
   stack <- lapply(stack, new_frame)
-  stack <- lapply(stack, frame_fixup_eval)
-  stack <- lapply_around(stack, "right", frame_fixup_Recall)
+  if (clean) {
+    stack <- lapply(stack, frame_clean_eval)
+    stack <- lapply_around(stack, "right", frame_clean_Recall)
+  }
 
   if (trail[length(trail)] == 0L) {
     stack <- c(stack, list(global_frame()))
@@ -335,7 +347,7 @@ call_stack <- function(n = NULL) {
   structure(stack, class = c("call_stack", "stack"))
 }
 
-frame_fixup_eval <- function(frame) {
+frame_clean_eval <- function(frame) {
   if (identical(frame$fn, base::eval)) {
     # Use the environment from the context created in do_eval()
     # (the context with the fake primitive call)
@@ -345,7 +357,7 @@ frame_fixup_eval <- function(frame) {
 
   frame
 }
-frame_fixup_Recall <- function(frame, next_frame) {
+frame_clean_Recall <- function(frame, next_frame) {
   if (!is_missing(next_frame) && identical(next_frame$fn, base::Recall)) {
     call_recalled <- call_standardise(frame, enum_dots = TRUE, add_missings = TRUE)
     args_recalled <- call_args(call_recalled)

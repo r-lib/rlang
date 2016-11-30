@@ -15,7 +15,7 @@ global_frame()
 
 eval_frame(n = 1)
 
-call_frame(n = 1)
+call_frame(n = 1, clean = TRUE)
 
 eval_depth()
 
@@ -23,10 +23,14 @@ call_depth()
 
 eval_stack(n = NULL)
 
-call_stack(n = NULL)
+call_stack(n = NULL, clean = TRUE)
 }
 \arguments{
 \item{n}{The number of frames to go back in the stack.}
+
+\item{clean}{Whether to post-process the call stack to clean
+non-standard frames. If \code{TRUE}, the two frames created by
+the base function \code{\link[base]{eval}()} are merged together.}
 }
 \description{
 The \code{eval_} and \code{call_} families of functions provide a

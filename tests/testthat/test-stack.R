@@ -87,6 +87,14 @@ test_that("call_frame(n) throws at correct level", {
   expect_error(call_frame(n + 1), "not that many frames")
 })
 
+test_that("call frames are cleaned", {
+  eval_frame_messy <- eval(quote(call_frame(clean = FALSE)), new.env())
+  expect_identical(eval_frame_messy$fn, prim_eval)
+
+  eval_frame_clean <- eval(quote(call_frame(clean = TRUE)), new.env())
+  expect_identical(eval_frame_clean$fn, base::eval)
+})
+
 
 context("evaluation stacks") # ---------------------------------------
 
@@ -206,4 +214,13 @@ test_that("call_stack() subsets n frames", {
   # Get correct eval depth within expect_error()
   expect_error({ n <- call_depth(); stop() })
   expect_error(call_stack(n + 1), "not that many frames")
+})
+
+test_that("call stacks are cleaned", {
+  stack_messy <- eval(quote(call_stack(clean = FALSE)), new.env())[1:2]
+  expect_identical(stack_messy[[1]]$fn, prim_eval)
+  expect_identical(stack_messy[[2]]$fn, base::eval)
+
+  stack_clean <- eval(quote(call_stack(clean = TRUE)), new.env())
+  expect_identical(stack_clean[[1]]$fn, base::eval)
 })
