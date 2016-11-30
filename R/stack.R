@@ -289,9 +289,8 @@ eval_stack_callers <- function() {
   rev(drop_last(callers))
 }
 eval_stack_fns <- function() {
-  pos <- sys.nframe()
-  eval_indices <- seq_len(pos - 1)
-  lapply(eval_indices, sys.function)
+  pos <- sys.nframe() - 1
+  lapply(seq(pos, 1), sys.function)
 }
 
 stack_subset <- function(stack_data, n) {

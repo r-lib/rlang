@@ -119,12 +119,21 @@ test_that("eval_stack_trail() returns a vector of size nframe", {
 test_that("eval_stack_fns() returns functions in correct order", {
   f1 <- function(x) f2(x)
   f2 <- function(x) eval_stack_fns()
-
-  fns <- f1()
-  fns <- fixup_ctxts(fns)
-
-  expect_identical(fns, list(f1, f2))
+  expect_identical(f1()[1:2], list(f2, f1))
 })
+
+test_that("eval_stack_fns() handles intervening frames", {
+  fns <- eval_stack_fns()
+  intervened_fns <- identity(identity(eval_stack_fns()))
+  expect_identical(c(identity, identity, fns), intervened_fns)
+})
+
+test_that("eval_stack() handles intervening frames", {
+  stack <- eval_stack()
+  intervened_stack <- identity(eval_stack())[-1]
+  expect_identical(intervened_stack, stack)
+})
+
 
 test_that("call_stack() trail ignores irrelevant frames", {
   f1 <- function(x) f2(x)
