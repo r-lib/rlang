@@ -7,7 +7,7 @@
 env_caller()
 }
 \description{
-This is a shortcut for \code{\link{call_frame}()$env}.
+This is a shortcut for \code{\link{call_frame}(2)$env}.
 }
 \seealso{
 \code{\link{call_frame}()}

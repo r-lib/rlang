@@ -508,7 +508,7 @@ env_empty <- emptyenv
 
 #' Get the environment of the caller frame.
 #'
-#' This is a shortcut for \code{\link{call_frame}()$env}.
+#' This is a shortcut for \code{\link{call_frame}(2)$env}.
 #' @seealso \code{\link{call_frame}()}
 #' @export
 env_caller <- function() {
