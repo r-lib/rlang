@@ -536,3 +536,53 @@ stack_trim <- function(stack, n = 1) {
   n_skip <- n_frames - caller_pos
   stack[seq(n_skip, n_frames)]
 }
+
+
+#' Jump to or from a frame.
+#'
+#' While \code{\link[base]{return}()} can only return from the current
+#' local frame, these two functions will return from any frame on the
+#' current evaluation stack, between the global and the currently
+#' active context. They provide a way of performing arbitrary
+#' non-local jumps out of the function currently under evaluation.
+#'
+#' \code{return_from()} will jump out of
+#' \code{frame}. \code{return_to()} is a bit trickier. It will jump
+#' out of the frame located just before \code{frame} in the evaluation
+#' stack, so that control flow ends up in \code{frame}, at the
+#' location where the previous frame was called from.
+#'
+#' These functions should only be used rarely. These sort of non-local
+#' gotos can be hard to reason about in casual code, though they can
+#' sometimes be useful. Also, consider to use the condition system to
+#' perform non-local jumps.
+#'
+#' @param frame An environment, a frame object, or any object with an
+#'   \code{\link{env}()} method. The environment should be an
+#'   evaluation environment currently on the stack.
+#' @param value The return value.
+#' @export
+return_from <- function(frame, value = NULL) {
+  if (is_numeric(frame)) {
+    frame <- eval_frame(frame)
+  }
+  exit_env <- env(frame)
+
+  f <- f_interp(~return(uq(value)))
+  with_env_(exit_env, f)
+}
+
+#' @rdname return_from
+#' @export
+return_to <- function(frame, value = NULL) {
+  if (is_numeric(frame)) {
+    prev_pos <- frame - 1
+  } else {
+    env <- env(frame)
+    distance <- frame_distance(env)
+    prev_pos <- distance - 1
+  }
+
+  prev_frame <- eval_frame(prev_pos)
+  return_from(prev_frame, value)
+}

@@ -264,3 +264,37 @@ test_that("evaluation stack is trimmed from layers of calls", {
   trimmed_stack <- identity(stack_trim(identity(eval_stack())))
   expect_identical(stack, trimmed_stack)
 })
+
+test_that("can return from frame", {
+  fn <- function() {
+    val <- g()
+    paste(val, "to fn()")
+  }
+  g <- function(env) {
+    h(environment())
+    stop("g!\n")
+  }
+  h <- function(env) {
+    return_from(env, "returned from h()")
+    stop("h!\n")
+  }
+
+  expect_equal(fn(), "returned from h() to fn()")
+})
+
+test_that("can return to frame", {
+  fn <- function() {
+    val <- identity(g(environment()))
+    paste(val, "to fn()")
+  }
+  g <- function(env) {
+    h(env)
+    stop("g!\n")
+  }
+  h <- function(env) {
+    return_to(env, "returned from h()")
+    stop("h!\n")
+  }
+
+  expect_equal(fn(), "returned from h() to fn()")
+})
