@@ -23,3 +23,17 @@ test_that("env_next() reports correct parent", {
 test_that("env_tail() climbs env chain", {
   expect_identical(env_tail(env_global()), env_base())
 })
+
+test_that("promises are created", {
+  env <- env_new()
+
+  env_assign_lazily(env, "foo", bar <- "bar")
+  expect_false(env_has(env(), "bar"))
+
+  force(env$foo)
+  expect_true(env_has(env(), "bar"))
+
+  f <- ~stop("forced")
+  env_assign_lazily_(env, "stop", f)
+  expect_error(env$stop, "forced")
+})

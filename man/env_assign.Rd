@@ -39,9 +39,9 @@ dictionary (\code{env_bind()}). See \code{\link{is_dict}()} for
 the definition of a dictionary.
 }
 \details{
-Functions prefixed with \code{env_} operate by side effect. If you
-assign bindings to a closure function, the environment of the
-function is modified in place.
+These functions operate by side effect. For example, if you assign
+bindings to a closure function, the environment of the function is
+modified in place.
 }
 \examples{
 # Create a function that uses undefined bindings:

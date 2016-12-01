@@ -187,9 +187,9 @@ env_tail <- function(env) {
 #' dictionary (\code{env_bind()}). See \code{\link{is_dict}()} for
 #' the definition of a dictionary.
 #'
-#' Functions prefixed with \code{env_} operate by side effect. If you
-#' assign bindings to a closure function, the environment of the
-#' function is modified in place.
+#' These functions operate by side effect. For example, if you assign
+#' bindings to a closure function, the environment of the function is
+#' modified in place.
 #'
 #' @inheritParams env
 #' @param nm The name of the binding.
@@ -239,6 +239,60 @@ env_bind <- function(env, dict = list()) {
 #' @export
 env_define <- function(env, ...) {
   env_bind(env, list(...))
+}
+
+#' Assign a promise to an environment.
+#'
+#' These functions let you create a promise in an environment. Such
+#' promises behave just like lazily evaluated arguments. They are
+#' evaluated whenever they are touched by code, but not when they are
+#' passed as arguments.
+#'
+#' @inheritParams env_assign
+#' @param expr An expression to capture for
+#'   \code{env_assign_lazily()}, or a captured expression (either
+#'   quoted or a formula) for the standard evaluation version
+#'   \code{env_assign_lazily_()}. This expression is used to create a
+#'   promise in \code{env}.
+#' @param eval_env The environment where the promise will be evaluated
+#'   when the promise gets forced. If \code{expr} is a formula, its
+#'   environment is used instead. If not a formula and \code{eval_env}
+#'   is not supplied, the promise is evaluated in the environment
+#'   where \code{env_assign_lazily()} (or the underscore version) was
+#'   called.
+#' @seealso \code{\link{env_assign}()}
+#' @export
+#' @examples
+#' env <- env_new()
+#' env_assign_lazily(env, "name", cat("forced!\n"))
+#' env$name
+#'
+#' # Use the standard evaluation version with quoted expressions:
+#' f <- ~message("forced!")
+#' env_assign_lazily_(env, "name2", f)
+#' env$name2
+env_assign_lazily <- function(env, nm, expr, eval_env = NULL) {
+  expr <- substitute(expr)
+  eval_env <- eval_env %||% env_caller()
+  env_assign_lazily_(env, nm, expr, eval_env)
+}
+#' @rdname env_assign_lazily
+#' @export
+env_assign_lazily_ <- function(env, nm, expr, eval_env = NULL) {
+  if (is_formula(expr)) {
+    eval_env <- env(expr)
+    expr <- f_rhs(expr)
+  } else {
+    eval_env <- eval_env %||% env_caller()
+  }
+
+  args <- list(
+    x = nm,
+    value = expr,
+    eval.env = eval_env,
+    assign.env = env
+  )
+  do.call("delayedAssign", args)
 }
 
 #' Bury bindings and define objects in new scope.
