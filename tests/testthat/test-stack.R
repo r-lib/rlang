@@ -224,3 +224,37 @@ test_that("call stacks are cleaned", {
   stack_clean <- eval(quote(call_stack(clean = TRUE)), new.env())
   expect_identical(stack_clean[[1]]$fn, base::eval)
 })
+
+
+context("frame utils") # ---------------------------------------------
+
+test_that("frame_position() returns correct position", {
+  fn <- function() {
+    env <- environment()
+    pos <- eval_frame()$pos
+    g(env, pos)
+  }
+  g <- function(env, fn_pos) {
+    pos <- frame_position(env)
+    expect_identical(pos, fn_pos)
+
+    burried_pos <- identity(identity(frame_position(env)))
+    expect_identical(burried_pos, pos)
+  }
+  fn()
+})
+
+test_that("frame_distance() computes distance from a frame", {
+  fn <- function() {
+    g(environment())
+  }
+  g <- function(env) {
+    distance <- frame_distance(env)
+    frame <- eval_frame(distance)
+    expect_identical(frame$env, env)
+
+    burried_distance <- identity(frame_distance(env))
+    expect_equal(distance, burried_distance)
+  }
+  fn()
+})
