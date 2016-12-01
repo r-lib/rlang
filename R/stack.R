@@ -486,3 +486,53 @@ frame_distance <- function(frame) {
   caller_pos <- call_frame(2)$pos
   caller_pos - pos + 1
 }
+
+
+#' Trim top call layers from the evaluation stack.
+#'
+#' \code{\link{eval_stack}()} can be tricky to use in real code
+#' because all intervening frames are returned with the stack,
+#' including those at \code{eval_stack()} own call
+#' site. \code{stack_trim()} makes it easy to remove layers of
+#' intervening calls.
+#'
+#' @param stack An evaluation stack.
+#' @param n The number of call frames (not eval frames) to trim off
+#'   the top of the stack. In other words, the number of layers of
+#'   intervening frames to trim.
+#' @export
+#' @examples
+#' # Intervening frames appear on the evaluation stack:
+#' identity(identity(eval_stack()))
+#'
+#' # stack_trim() will trim the first n layers of calls:
+#' stack_trim(identity(identity(eval_stack())))
+#'
+#' # Note that it also takes care of calls intervening at its own call
+#' # site:
+#' identity(identity(
+#'   stack_trim(identity(identity(eval_stack())))
+#' ))
+#'
+#' # It is especially useful when used within a function that needs to
+#' # inspect the evaluation stack but should nonetheless be callable
+#' # within nested calls without side effects:
+#' stack_util <- function() {
+#'   # n = 2 means that two layers of intervening calls should be removed
+#'   stack <- stack_trim(eval_stack(), n = 2)
+#'   stack
+#' }
+#' user_fn <- function() {
+#'   # A user calls your stack utility with intervening frames:
+#'   identity(identity(stack_util()))
+#' }
+#' # These intervening frames won't appear in the evaluation stack
+#' identity(user_fn())
+stack_trim <- function(stack, n = 1) {
+  # Add 1 to discard stack_trim()'s own intervening frames
+  caller_pos <- call_frame(n + 1, clean = FALSE)$pos
+
+  n_frames <- length(stack)
+  n_skip <- n_frames - caller_pos
+  stack[seq(n_skip, n_frames)]
+}

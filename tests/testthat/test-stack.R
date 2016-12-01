@@ -258,3 +258,9 @@ test_that("frame_distance() computes distance from a frame", {
   }
   fn()
 })
+
+test_that("evaluation stack is trimmed from layers of calls", {
+  stack <- eval_stack()
+  trimmed_stack <- identity(stack_trim(identity(eval_stack())))
+  expect_identical(stack, trimmed_stack)
+})
