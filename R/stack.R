@@ -175,18 +175,32 @@ trail_make <- function(callers, n = NULL) {
 }
 
 trail_next <- function(callers, i) {
-  if (i == 0) return(list(callers = callers, i = 0L))
+  if (i == 0L) {
+    return(list(callers = callers, i = 0L))
+  }
+
   i <- callers[i]
+
+  # base::Recall() creates a custom context with the wrong sys.parent()
+  if (identical(sys.function(i - 1L), base::Recall)) {
+    i_pos <- trail_index(callers, i)
+    callers[i_pos] <- i - 1L
+  }
 
   # The R-level eval() creates two contexts. We skip the second one
   if (length(i) && is_prim_eval(sys.function(i))) {
     n_ctxt <- length(callers)
-    special_eval_pos <- n_ctxt - i + 1
+    special_eval_pos <- trail_index(callers, i)
     callers <- callers[-special_eval_pos]
     i <- i - 1L
   }
 
   list(callers = callers, i = i)
+}
+
+trail_index <- function(callers, i) {
+  n_ctxt <- length(callers)
+  n_ctxt - i + 1L
 }
 
 #' @rdname stack
@@ -313,6 +327,7 @@ call_stack <- function(n = NULL) {
   stack <- zip(stack_data)
   stack <- lapply(stack, new_frame)
   stack <- lapply(stack, frame_fixup_eval)
+  stack <- lapply_around(stack, "right", frame_fixup_Recall)
 
   if (trail[length(trail)] == 0L) {
     stack <- c(stack, list(global_frame()))
@@ -327,6 +342,24 @@ frame_fixup_eval <- function(frame) {
     # (the context with the fake primitive call)
     stopifnot(is_prim_eval(sys.function(frame$pos + 1)))
     frame$env <- sys.frame(frame$pos + 1)
+  }
+
+  frame
+}
+frame_fixup_Recall <- function(frame, next_frame) {
+  if (!is_missing(next_frame) && identical(next_frame$fn, base::Recall)) {
+    call_recalled <- call_standardise(frame, enum_dots = TRUE, add_missings = TRUE)
+    args_recalled <- call_args(call_recalled)
+    args_Recall <- call_args(next_frame)
+
+    if (!length(args_Recall)) {
+      args_Recall <- lapply(names(args_recalled), as.symbol)
+      names(args_Recall) <- dots_enumerate(args_Recall)
+      set_cdr(next_frame$expr, as.pairlist(args_Recall))
+    }
+
+    args_recalled <- dots_enumerate_args(as.pairlist(args_recalled))
+    set_cdr(frame$expr, args_recalled)
   }
 
   frame
@@ -348,4 +381,13 @@ is_call_stack <- function(x) inherits(x, "call_stack")
 #' @export
 `[.stack` <- function(x, i) {
   structure(NextMethod(), class = class(x))
+}
+
+# Handles global_frame() whose `caller_pos` is NA
+sys_frame <- function(n) {
+  if (is.na(n)) {
+    NULL
+  } else {
+    sys.frame(n)
+  }
 }

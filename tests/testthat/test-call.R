@@ -166,6 +166,21 @@ test_that("dots are not confused with formals", {
   expect_equal(fn(z = foo, bar, x = baz, bam), quote(fn(z = foo, y = bar, x = baz, bam)))
 })
 
+test_that("missing arguments are matched as well", {
+  fn <- function(x, y, z) call_standardise(add_missings = TRUE)
+  expect_equal(fn(y = foo), quote(fn(y = foo, x = , z = )))
+})
+
+test_that("dots are not treated as missing arg", {
+  fn <- function(x, ...) call_standardise(add_missings = TRUE)
+  expect_equal(fn(), quote(fn(x = )))
+})
+
+test_that("global_frame() can be standardised", {
+  expect_null(call_standardise(global_frame()))
+})
+
+
 # Modification ------------------------------------------------------------
 
 test_that("all args must be named", {
@@ -209,9 +224,45 @@ test_that("call_fn() extracts function", {
   expect_identical(fn(), fn)
 })
 
+test_that("Inlined functions return NULL name", {
+  call <- quote(fn())
+  call[[1]] <- function() {}
+  expect_null(call_fn_name(call))
+})
+
 test_that("call_args() and call_args_names()", {
   expect_identical(call_args(~fn(a, b)), set_names(list(quote(a), quote(b)), c("", "")))
 
   fn <- function(a, b) call_args_names()
   expect_identical(fn(a = foo, b = bar), c("a", "b"))
+})
+
+
+# call_stack() consolidation -----------------------------------------
+
+test_that("Recall() does not mess up call history", {
+  counter <- 2L
+  fn <- function(x) {
+    if (counter) {
+      counter <<- counter - 1L
+      Recall(x)
+    } else {
+      counter <<- 2L
+      call_stack()
+    }
+  }
+
+  stack <- fn(foo)
+  trail <- vapply_int(stack, function(x) x$pos)
+  expect_equal(fixup_call_trail(trail), 5:1)
+
+  calls <- lapply(stack, call_standardise, enum_dots = TRUE, add_missings = TRUE)
+  expected_calls <- alist(
+    fn(x = ..1),
+    Recall(..1 = x),
+    fn(x = ..1),
+    Recall(..1 = x),
+    fn(x = foo)
+  )
+  expect_equal(calls[1:5], expected_calls)
 })

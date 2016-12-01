@@ -11,6 +11,8 @@
 #'         \code{call(foo = x, ..3)}.
 #'   \item Does not sort arguments according to the order of
 #'         appearance in the function definition.
+#'   \item Standardises missing arguments as well if you specify
+#'         \code{add_missings}: \code{call(x = , y = , )}.
 #' }
 #' @param call Can be a call, a formula quoting a call in the
 #'   right-hand side, or a frame object from which to extract the call
@@ -30,15 +32,19 @@
 #'   climb arguments through nested calls. The latter form (the
 #'   default) is more faithful to the actual call and is ready to be
 #'   evaluated.
+#' @param add_missings Whether to standardise missing arguments.
 #' @export
 call_standardise <- function(call = NULL, fn = NULL,
                              caller_env = NULL,
-                             enum_dots = FALSE) {
+                             enum_dots = FALSE,
+                             add_missings = FALSE) {
   info <- call_info(call, caller_env)
+  if (is.null(info$call)) return(NULL)
+
   fn <- fn %||% info$fn %||% call_fn(info$call, info$env)
   stopifnot(is.call(info$call))
   stopifnot(is.environment(info$env))
-  call_standardise_(info$call, fn, info$caller_env, enum_dots)
+  call_standardise_(info$call, fn, info$caller_env, enum_dots, add_missings)
 }
 
 call_info <- function(call, caller_env) {
@@ -48,7 +54,7 @@ call_info <- function(call, caller_env) {
 
   if (is_frame(call)) {
     env <- call$env
-    caller_env <- caller_env %||% sys.frame(call$caller_pos)
+    caller_env <- caller_env %||% sys_frame(call$caller_pos)
     fn <- call$fn
     call <- call$expr
   } else if (is_formula(call)) {
@@ -66,11 +72,11 @@ call_info <- function(call, caller_env) {
   )
 }
 
-call_standardise_ <- function(call, fn, caller_env, enum_dots) {
+call_standardise_ <- function(call, fn, caller_env, enum_dots, add_missings) {
   call <- duplicate(call)
   call <- call_inline_dots(call, caller_env, enum_dots)
   call <- call_match_partial(call, fn)
-  call <- call_match(call, fn, enum_dots)
+  call <- call_match(call, fn, enum_dots, add_missings)
   call
 }
 
@@ -81,11 +87,8 @@ arg_match_partial <- function(arg, formal) {
 
 call_match_partial <- function(call, fn) {
   actuals_nms <- call_args_names(call)
-  if (!length(actuals_nms)) {
-    return(call)
-  }
-
   formals_nms <- fn_fmls_names(fn)
+
   is_empty <- actuals_nms == ""
   is_dup <- duplicated(actuals_nms) & !is_empty
   is_dup <- is_dup & actuals_nms %in% formals_nms
@@ -170,7 +173,7 @@ call_inline_dots <- function(call, caller_env, enum_dots) {
   call
 }
 
-call_match <- function(call, fn, enum_dots) {
+call_match <- function(call, fn, enum_dots, add_missings) {
   args <- call[-1]
   args_nms <- names2(args)
   fmls_nms <- names2(fn_fmls(fn))
@@ -181,8 +184,15 @@ call_match <- function(call, fn, enum_dots) {
   } else {
     args_nms <- call_match_args(args_nms, fmls_nms)
   }
-
   names(call) <- c("", args_nms)
+
+  if (add_missings) {
+    missing_nms <- setdiff(fmls_nms, c(args_nms, "..."))
+    missing_args <- rep(list(arg_missing()), length(missing_nms))
+    missing_args <- as.pairlist(set_names(missing_args, missing_nms))
+    call <- lsp_append(call, missing_args)
+  }
+
   call
 }
 
@@ -359,12 +369,17 @@ call_fn_name <- function(call = NULL) {
     if (identical(fn[[1]], quote(`::`)) ||
         identical(fn[[1]], quote(`:::`))) {
       # Namespaced calls: foo::bar(), foo:::bar()
-      fn <- fn[[3]]
+      return(as.character(fn[[3]]))
     } else {
       # Subsetted calls: foo@bar(), foo$bar()
       # Anomymous calls: foo[[bar]](), foo()()
       return(NULL)
     }
+  }
+
+  if (!is.symbol(fn)) {
+    # Inlined closures: (function() {})()
+    return(NULL)
   }
 
   as.character(fn)
@@ -373,6 +388,8 @@ call_fn_name <- function(call = NULL) {
 #' Extract arguments from a call
 #'
 #' @inheritParams call_standardise
+#' @return A named list of arguments. The \code{_lsp} version returns
+#'   a named pairlist.
 #' @seealso \code{\link{fn_fmls}()} and
 #'   \code{\link{fn_fmls_names}()}
 #' @export
@@ -390,13 +407,21 @@ call_fn_name <- function(call = NULL) {
 #' call_args_names(call)
 call_args <- function(call = NULL) {
   call <- call_info(call, NULL)$call
-  args <- as.list(call[-1])
-  set_names(args, names2(args))
+  args <- as.list(call_args_lsp(call))
+  set_names((args), names2(args))
+}
+
+#' @rdname call_args
+#' @export
+call_args_lsp <- function(call = NULL) {
+  call <- call_info(call, NULL)$call
+  stopifnot(is.call(call))
+  cdr(call)
 }
 
 #' @rdname call_args
 #' @export
 call_args_names <- function(call = NULL) {
   call <- call_info(call, NULL)$call
-  names(call_args(call))
+  names2(call_args_lsp(call))
 }

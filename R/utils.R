@@ -71,3 +71,36 @@ vapply_lgl <- function(.x, .f, ...) {
 names2 <- function(x) {
   names(x) %||% rep("", length(x))
 }
+
+lapply_around <- function(.x, .neighbour = c("right", "left"), .f, ...) {
+  where <- match.arg(.neighbour)
+  n <- length(.x)
+  out <- vector("list", n)
+
+  if (n == 0) {
+    return(.x)
+  }
+
+  if (n == 1) {
+    out[[1]] <- .f(.x[[1]], arg_missing(), ...)
+    return(out)
+  }
+
+  if (n > 1 && where == "right") {
+    neighbours <- .x[seq(2, n)]
+    idx <- seq_len(n - 1)
+    out[idx] <- Map(.f, .x[idx], neighbours, ...)
+    out[[n]] <- .f(.x[[n]], arg_missing(), ...)
+    return(out)
+  }
+
+  if (n > 1 && where == "left") {
+    neighbours <- .x[seq(1, n - 1)]
+    idx <- seq(2, n)
+    out[idx] <- Map(.f, .x[idx], neighbours, ...)
+    out[[1]] <- .f(.x[[1]], arg_missing(), ...)
+    return(out)
+  }
+
+  stop("unimplemented")
+}

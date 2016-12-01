@@ -5,7 +5,7 @@
 \title{Standardise a call against formal arguments}
 \usage{
 call_standardise(call = NULL, fn = NULL, caller_env = NULL,
-  enum_dots = FALSE)
+  enum_dots = FALSE, add_missings = FALSE)
 }
 \arguments{
 \item{call}{Can be a call, a formula quoting a call in the
@@ -29,6 +29,8 @@ mostly intended for code analysis tools as it makes it easier to
 climb arguments through nested calls. The latter form (the
 default) is more faithful to the actual call and is ready to be
 evaluated.}
+
+\item{add_missings}{Whether to standardise missing arguments.}
 }
 \description{
 Compared to \code{\link{match.call}()}, \code{call_standardise()}:
@@ -42,6 +44,8 @@ Compared to \code{\link{match.call}()}, \code{call_standardise()}:
         \code{call(foo = x, ..3)}.
   \item Does not sort arguments according to the order of
         appearance in the function definition.
+  \item Standardises missing arguments as well if you specify
+        \code{add_missings}: \code{call(x = , y = , )}.
 }
 }
 

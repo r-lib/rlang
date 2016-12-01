@@ -39,6 +39,16 @@ test_that("empty argument are reported", {
   expect_identical(info$caller_frame$env, environment())
 })
 
+test_that("formals names are recorded", {
+  fn <- function(foo) arg_info(foo)
+  expect_equal(fn()$name, "foo")
+
+  g <- function() fn(bar)
+  expect_equal(g()$name, "foo")
+
+  g <- function() fn(foo(bar))
+  expect_equal(g()$name, "foo")
+})
 
 # arg_env -----------------------------------------------------------------
 
@@ -98,6 +108,21 @@ test_that("dots_capture() produces correct formulas", {
   expect_identical(out$dots$z, f_new(quote(a + b), env = environment()))
 })
 
+test_that("global_frame() is reported with top-level calls", {
+  fn <- function(x) {
+    # Emulate top-level call
+    stack <- call_stack(2)
+    stack[[2]] <- global_frame()
+    arg_info_(quote(x), stack)
+  }
+  info <- fn(foo)
+
+  expect_identical(info$expr, quote(foo))
+  expect_identical(info$eval_frame$env, globalenv())
+  expect_identical(info$caller_frame$env, globalenv())
+})
+
+
 # arg_text ----------------------------------------------------------------
 
 test_that("always returns single string", {
@@ -142,11 +167,46 @@ test_that("is_missing() works with symbols", {
   expect_true(is_missing(x))
 })
 
-
 test_that("is_missing() works with non-symbols", {
   expect_true(is_missing(arg_missing()))
 
   l <- list(arg_missing())
   expect_true(is_missing(l[[1]]))
   expect_error(missing(l[[1]]), "invalid use")
+})
+
+
+# special cases ------------------------------------------------------
+
+test_that("Recall() does not mess up arg_info()", {
+  quit <- FALSE
+  fn_Recall <- function(x, y) {
+    if (quit) {
+      quit <<- FALSE
+      list(y = arg_info(y), x = arg_info(x))
+    } else {
+      quit <<- TRUE
+      Recall()
+    }
+  }
+  info <- fn_Recall(y = foo(bar), bar(foo))
+
+  expect_identical(info$x$expr, quote(bar(foo)))
+  expect_identical(info$y$expr, quote(foo(bar)))
+  expect_identical(info$x$eval_frame$env, environment())
+  expect_identical(info$x$caller_frame$env, environment())
+})
+
+test_that("magrittr works", {
+  if (utils::packageVersion("magrittr") > "1.5") {
+    `%>%` <- magrittr::`%>%`
+    info <- letters %>% toupper() %>% .[[1]] %>% arg_info()
+    expect_equal(info$expr, quote(.))
+    expect_equal(eval(info$expr, info$eval_frame$env), "A")
+
+    info <- letters %>% toupper() %>% .[[1]] %>% dots_info()
+    info <- info[[1]]
+    expect_equal(info$expr, quote(.))
+    expect_equal(eval(info$expr, info$eval_frame$env), "A")
+  }
 })

@@ -16,6 +16,18 @@ lsp_walk_nonnull <- function(.x, .f, ...) {
   }
   out
 }
+lsp_walk_last <- function(.x, .f, ...) {
+  cur <- .x
+  while(!is.null(cdr(cur))) {
+    cur <- cdr(cur)
+  }
+  .f(cur, ...)
+}
+
+lsp_append <- function(.x, .y) {
+  lsp_walk_last(.x, function(l) set_cdr(l, .y))
+  .x
+}
 
 #' @useDynLib rlang car_
 car <- function(x) {

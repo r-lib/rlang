@@ -21,6 +21,9 @@
 #'     the function; if there was no default, \code{expr} is the
 #'     missing argument (see \code{\link{arg_missing}()}).}
 #'
+#'   \item{name}{The name of the formal argument to which \code{expr}
+#'     was originally supplied.}
+#'
 #'   \item{eval_frame}{The frame providing the scope for \code{expr},
 #'     which should normally be evaluated in \code{eval_frame$env}.
 #'     This is normally the original calling frame, unless the
@@ -48,62 +51,59 @@ arg_info_ <- function(expr, stack) {
   stopifnot(is_call_stack(stack))
   stopifnot(length(stack) > 1)
 
-  calls <- lapply(drop_last(stack), call_standardise, enum_dots = TRUE)
+  # In this loop `expr` is the argument of the frame just before
+  # the current `i`th frame, the tentative caller frame
   caller_frame <- stack[[1]]
   eval_frame <- stack[[1]]
-  prev_expr <- expr
 
-  # In this loop `prev_expr` is the argument of the frame just before
-  # the current `i`th frame, the tentative caller frame
-  for (i in seq_along(calls)) {
-    call <- calls[[i]]
+  for (i in seq_len(length(stack) - 1)) {
 
-    # If `prev_expr` is a complex expression, we know that (a) we have
-    # reached the caller frame, and (b) there is no default argument
-    if (!is.symbol(maybe_missing(prev_expr))) {
-      break
-    }
+    call <- call_standardise(stack[[i]],
+      enum_dots = TRUE, add_missings = TRUE)
 
+    # The `caller_expr` is always matched and valid during the first
+    # iteration of the loop
+    arg_i <- arg_match(expr, call)
+    caller_expr <- call[[arg_i]]
 
-    if (missing(prev_expr)) {
-      arg_i <- NA
-    } else {
-      arg_i <- arg_match(prev_expr, call)
-    }
-
-    # If no match in the call, we have reached the caller frame
+    # If no match in the call, we have reached the caller frame.
     if (is.na(arg_i)) {
-      if (!missing(prev_expr)) {
-        # Check for default argument
-        fml_i <- fml_match(prev_expr, eval_frame$fn)
-        if (!is.na(fml_i)) {
-          prev_expr <- fml_default(prev_expr, eval_frame$fn) %||% prev_expr
-          caller_frame <- stack[[i + 1]]
-        }
-      }
-
       break
     }
 
-    caller_arg <- call[[arg_i]]
-
-    # The matched argument is missing. Check for default arguments.
-    # The caller frame is the next frame.
-    if (missing(caller_arg)) {
-      prev_expr <- fml_default(prev_expr, eval_frame$fn) %||% prev_expr
+    # The matched argument is missing, either implicitely or
+    # explicitely. The evaluation frame of missing arguments is the
+    # current frame, but the caller is the next one
+    if (missing(caller_expr)) {
+      formal_name <- as.character(expr)
+      expr <- fml_default(expr, eval_frame$fn)
       caller_frame <- stack[[i + 1]]
       break
     }
 
-    # If one argument in the caller signature matches, record
-    # corresponding expression and move on to next frame
-    prev_expr <- caller_arg
+    # If `caller_expr` is a complex expression, we have reached the
+    # callee frame, and the next frame is both the caller and
+    # evaluation frame
+    if (!is.symbol(caller_expr)) {
+      formal_name <- as.character(expr)
+      expr <- caller_expr
+      caller_frame <- stack[[i + 1]]
+      eval_frame <- stack[[i + 1]]
+      break
+    }
+
+    # If the argument matched in the caller signature is another
+    # symbol, record it and move on to next frame
+    formal_name <- as.character(expr)
+    expr <- caller_expr
+
     caller_frame <- stack[[i + 1]]
     eval_frame <- stack[[i + 1]]
   }
 
   list(
-    expr = maybe_missing(prev_expr),
+    expr = maybe_missing(expr),
+    name = formal_name,
     eval_frame = eval_frame,
     caller_frame = caller_frame
   )
@@ -113,14 +113,14 @@ arg_match <- function(sym, call) {
   arg_nm <- as.character(sym)
   match(arg_nm, names2(call))
 }
-fml_match <- function(sym, fn) {
-  arg_nm <- as.character(sym)
-  match(arg_nm, names(formals(fn)))
-}
 fml_default <- function(expr, fn) {
   nm <- as.character(expr)
   fmls <- formals(fn)
-  fmls[[nm]]
+  if (nm %in% names(fmls)) {
+    fmls[[nm]]
+  } else {
+    arg_missing()
+  }
 }
 
 #' @export

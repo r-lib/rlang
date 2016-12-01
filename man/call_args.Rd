@@ -2,10 +2,13 @@
 % Please edit documentation in R/call.R
 \name{call_args}
 \alias{call_args}
+\alias{call_args_lsp}
 \alias{call_args_names}
 \title{Extract arguments from a call}
 \usage{
 call_args(call = NULL)
+
+call_args_lsp(call = NULL)
 
 call_args_names(call = NULL)
 }
@@ -13,6 +16,10 @@ call_args_names(call = NULL)
 \item{call}{Can be a call, a formula quoting a call in the
 right-hand side, or a frame object from which to extract the call
 expression. If not supplied, the calling frame is used.}
+}
+\value{
+A named list of arguments. The \code{_lsp} version returns
+  a named pairlist.
 }
 \description{
 Extract arguments from a call
