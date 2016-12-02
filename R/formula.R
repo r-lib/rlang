@@ -166,3 +166,71 @@ f_list <- function(...) {
 as_f_list <- function(x) {
   .Call(lhs_name, x)
 }
+
+#' Coerce quoted expressions to quoted formula.
+#'
+#' Creates a formula from an expression and an environment. This
+#' function is a helper for tools that work with captured
+#' expressions. It makes your tools callable with either an expression
+#' or a formula, and with an optional environment. When not supplied,
+#' the calling environment of the function that called
+#' \code{as_quoted_f()} is taken as default.
+#'
+#' Compared to taking a default argument \code{env = env_caller()} at
+#' every step, taking \code{env = NULL} and calling
+#' \code{as_quoted_f()} at every step allows the user to optionally
+#' override the formula environment. With the former approach, there
+#' is no easy way of percolating the optional nature of \code{env}.
+#'
+#' @param expr A quoted expression or a formula.
+#' @param env The environment of the returned formula. If \code{expr}
+#'   is a formula and if \code{env} is supplied, the formula
+#'   environment is changed to \code{env}. If \code{expr} is a quoted
+#'   expression and \code{env} is not supplied, the environment is
+#'   taken from the frame of the function that called the function
+#'   that called \code{as_quoted_f()} (the grand-parent frame).
+#' @export
+#' @examples
+#' # as_quoted_f() is meant to be called at every step of the way, so
+#' # that each function can figure out a good default for `env`:
+#' api_function <- function(expr, env = NULL) {
+#'   f <- as_quoted_f(expr, env)
+#'   expr_tool(f)
+#' }
+#' expr_tool <- function(expr, env = NULL) {
+#'   f <- as_quoted_f(expr, env)
+#'   # *** Do something useful with f ***
+#'   f
+#' }
+#'
+#' # Then the user can supply an expression or a formula. If an
+#' # expression, and no environment is supplied, the caller
+#' # environment is taken as default:
+#' f <- api_function(quote(foobar))
+#' env(f)
+#'
+#' # The user can supply her own environment:
+#' env <- env_new()
+#' f <- api_function(quote(foobar), env)
+#' identical(env(f), env)
+#'
+#' # With a formula, the default is to take the formula environment
+#' # rather than the caller environment:
+#' my_f <- env_set(~expr, env)
+#' f <- api_function(my_f)
+#' identical(env(f), env)
+#'
+#' # But the user can choose to provide her own environment as well:
+#' f <- api_function(my_f, env_base())
+#' identical(env(f), env_base())
+as_quoted_f <- function(expr, env = NULL) {
+  if (is_formula(expr)) {
+    if (!is_null(env)) {
+      f_env(expr) <- env
+    }
+    expr
+  } else {
+    env <- env %||% env_caller(2)
+    f_new(expr, env = env)
+  }
+}
