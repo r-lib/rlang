@@ -65,3 +65,14 @@ test_that("formula env is overridden by eval_env", {
   expect_true(env_has(env, "new_within_env"))
   expect_equal(env$new_within_env, "new")
 })
+
+test_that("with_env() evaluates within correct environment", {
+  fn <- function() {
+    g(env())
+    "normal return"
+  }
+  g <- function(env) {
+    with_env(env, return("early return"))
+  }
+  expect_equal(fn(), "early return")
+})

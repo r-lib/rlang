@@ -594,3 +594,64 @@ env_empty <- emptyenv
 env_caller <- function(n = 1) {
   parent.frame(n + 1)
 }
+
+
+#' Evaluate an expression within a given environment.
+#'
+#' These functions evaluate \code{expr} within \code{env}. The
+#' difference with \code{\link[base]{eval}()} is that \code{expr} is
+#' wrapped in an artifical promise. This is a lighter evaluation
+#' mechanism which also has some subtle implications (see details).
+#'
+#' When \code{env} is an evaluation environment of a stack frame (see
+#' \code{\link{eval_stack}()}), using \code{with_env()} rather than
+#' \code{eval()} has subtle implications. The base function
+#' \code{eval()} creates a new evaluation context with \code{env} as
+#' frame environment. This means that when \code{expr} is executed,
+#' there are actually two contexts with the same evaluation
+#' environment on the stack. Thus, any command that looks up frames on
+#' the stack may find the frame set up by \code{eval()} rather than
+#' the original frame of \code{env}. This affects functions like
+#' \code{\link[base]{return}()}, \code{\link[base]{parent.frame}()},
+#' \code{\link[base]{sys.calls}()}, etc.
+#'
+#' @param env An environment within which to evaluate \code{expr}. Can
+#'   be an object with an \code{\link{env}()} method.
+#' @param expr An expression to evaluate. The underscored version
+#'   \code{with_env_()} takes either a quoted expression or a formula
+#'   from which the right-hand side will be extracted.
+#' @seealso \code{\link{env_assign_lazily}()}
+#' @export
+#' @examples
+#' env <- env_new(env_package("rlang"))
+#'
+#' # This function is basically a shortcut for assigning a promise and
+#' # evaluating it right away:
+#' env_assign_lazily(env, "promise", cat("promise forced!\n"))
+#' env$promise
+#'
+#' with_env(env, cat("promise forced!\n"))
+#'
+#' # It is handy to create formulas with a given environment:
+#' f <- with_env(env, ~new_formula())
+#' identical(f_env(f), env)
+#'
+#' # Unlike eval() it doesn't create duplicates on the evaluation
+#' # stack. You can thus use it e.g. to create non-local returns:
+#' fn <- function() {
+#'   g(env())
+#'   "normal return"
+#' }
+#' g <- function(env) {
+#'   with_env(env, return("early return"))
+#' }
+#' fn()
+with_env <- function(env, expr) {
+  with_env_(env, substitute(expr))
+}
+with_env_ <- function(env, expr) {
+  f <- as_quoted_f(expr)
+  env_assign_lazily_(env(), "promise", f_rhs(f), rlang::env(env))
+  promise
+}
+globalVariables("promise")
