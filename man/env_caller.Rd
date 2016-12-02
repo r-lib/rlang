@@ -4,7 +4,12 @@
 \alias{env_caller}
 \title{Get the environment of the caller frame.}
 \usage{
-env_caller()
+env_caller(n = 1)
+}
+\arguments{
+\item{n}{The number of generation to go back. Note that contrarily
+to \code{\link{call_frame}()}, 1 represents the parent frame
+rather than the current frame.}
 }
 \description{
 This is a shortcut for \code{\link{call_frame}(2)$env}.

@@ -592,8 +592,11 @@ env_empty <- emptyenv
 #' Get the environment of the caller frame.
 #'
 #' This is a shortcut for \code{\link{call_frame}(2)$env}.
+#' @param n The number of generation to go back. Note that contrarily
+#'   to \code{\link{call_frame}()}, 1 represents the parent frame
+#'   rather than the current frame.
 #' @seealso \code{\link{call_frame}()}
 #' @export
-env_caller <- function() {
-  parent.frame(2)
+env_caller <- function(n = 1) {
+  parent.frame(n + 1)
 }
