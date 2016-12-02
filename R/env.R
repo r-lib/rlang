@@ -301,24 +301,18 @@ env_define <- function(env, ...) {
 #' env_assign_lazily_(env, "name2", f)
 #' env$name2
 env_assign_lazily <- function(env, nm, expr, eval_env = NULL) {
-  expr <- substitute(expr)
-  eval_env <- eval_env %||% env_caller()
-  env_assign_lazily_(env, nm, expr, eval_env)
+  f <- as_quoted_f(substitute(expr), eval_env)
+  env_assign_lazily_(env, nm, f)
 }
 #' @rdname env_assign_lazily
 #' @export
 env_assign_lazily_ <- function(env, nm, expr, eval_env = NULL) {
-  if (is_formula(expr)) {
-    eval_env <- env(expr)
-    expr <- f_rhs(expr)
-  } else {
-    eval_env <- eval_env %||% env_caller()
-  }
+  f <- as_quoted_f(expr, eval_env)
 
   args <- list(
     x = nm,
-    value = expr,
-    eval.env = eval_env,
+    value = f_rhs(f),
+    eval.env = f_env(f),
     assign.env = env
   )
   do.call("delayedAssign", args)

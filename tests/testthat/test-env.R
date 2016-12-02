@@ -37,3 +37,31 @@ test_that("promises are created", {
   env_assign_lazily_(env, "stop", f)
   expect_error(env$stop, "forced")
 })
+
+test_that("lazies are evaluated in correct environment", {
+  env <- env_new(env_base())
+
+  env_assign_lazily(env, "test_captured", test_captured <- letters)
+  env_assign_lazily_(env, "test_expr", quote(test_expr <- LETTERS))
+  env_assign_lazily_(env, "test_formula", ~ (test_formula <- mtcars))
+  expect_false(any(env_has(env(), c("test_captured", "test_expr", "test_formula"))))
+
+  force(env$test_captured)
+  force(env$test_expr)
+  force(env$test_formula)
+  expect_true(all(env_has(env(), c("test_captured", "test_expr", "test_formula"))))
+
+  expect_equal(test_captured, letters)
+  expect_equal(test_expr, LETTERS)
+  expect_equal(test_formula, mtcars)
+})
+
+test_that("formula env is overridden by eval_env", {
+  env <- env_new(env_base())
+  env_assign_lazily_(env, "within_env", ~ (new_within_env <- "new"), env)
+  force(env$within_env)
+
+  expect_false(env_has(env(), "new_within_env"))
+  expect_true(env_has(env, "new_within_env"))
+  expect_equal(env$new_within_env, "new")
+})
