@@ -10,9 +10,8 @@ env_has(env, nms)
 env_sees(env, nms)
 }
 \arguments{
-\item{env}{An environment or an object associated with an
-environment (i.e., an object with an \code{env()} method
-defined).}
+\item{env}{An environment or an object with a S3 method for
+\code{env()}.}
 
 \item{nms}{A character vector containing the names of the bindings
 to remove.}

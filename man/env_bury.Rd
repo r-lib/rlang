@@ -7,9 +7,8 @@
 env_bury(env, dict = list())
 }
 \arguments{
-\item{env}{An environment or an object associated with an
-environment (i.e., an object with an \code{env()} method
-defined).}
+\item{env}{An environment or an object with a S3 method for
+\code{env()}.}
 
 \item{dict}{A vector with unique names which defines bindings
 (pairs of name and value). See \code{\link{is_dict}()}.}

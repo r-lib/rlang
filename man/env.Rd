@@ -46,9 +46,8 @@ env_next(env, n = 1)
 env_tail(env)
 }
 \arguments{
-\item{env}{An environment or an object associated with an
-environment (i.e., an object with an \code{env()} method
-defined).}
+\item{env}{An environment or an object with a S3 method for
+\code{env()}.}
 
 \item{new_env}{An environment to replace \code{env}.}
 
@@ -85,11 +84,12 @@ searches through the parents for the one which hase
 \code{\link{env_empty}()} as parent.
 }
 \examples{
-# Get the environment of frame objects:
+# Get the environment of frame objects. If no argument is supplied,
+# the current frame is used:
 fn <- function() {
   list(
     env(call_frame()),
-    environment()
+    env()
   )
 }
 fn()
@@ -98,21 +98,48 @@ fn()
 env(fn)
 
 # There is also an assignment operator:
-env(fn) <- baseenv()
+env(fn) <- env_base()
 env(fn)
 
-# Or equivalently:
-fn <- env_set(fn, globalenv())
+# You can also use env_set() to change the associated environment:
+fn <- env_set(fn, env_global())
 env(fn)
 
 
-# Create a new environment with a given scope by setting a parent:
-env <- env_new(parent = baseenv())
+# env_new() creates by default an environment whose parent is the
+# current environment. Here we return a new environment that has
+# the evaluation environment (or frame environment) of a function
+# as parent:
+fn <- function() {
+  my_object <- "A"
+  env_new()
+}
+frame_env <- fn()
+
+# The new environment is empty:
+env_has(frame_env, "my_object")
+
+# But sees objects defined inside fn() by inheriting from its
+# parent:
+env_sees(frame_env, "my_object")
+
+
+# Create a new environment with a particular scope by setting a
+# parent. When inheriting from the empty environment, the
+# environment will have no object in scope at all:
+env <- env_new(env_empty())
 env_sees(env, "lapply")
 
-# Use the empty environment if the environment should not have
-# anything in scope:
-env <- env_new(parent = env_empty())
+# The base package environment is often a good default choice for a
+# parent environment because it contains all standard base
+# functions:
+env <- env_new(env_base())
+env_sees(env, "lapply")
+
+# Note that all other package environments inherit from env_base()
+# as well:
+env <- env_new(env_package("rlang"))
+env_sees(env, "env_sees")
 env_sees(env, "lapply")
 
 

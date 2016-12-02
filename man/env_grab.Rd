@@ -10,9 +10,8 @@ env_grab(env, nm)
 env_fetch(env, nm)
 }
 \arguments{
-\item{env}{An environment or an object associated with an
-environment (i.e., an object with an \code{env()} method
-defined).}
+\item{env}{An environment or an object with a S3 method for
+\code{env()}.}
 
 \item{nm}{The name of a binding.}
 }
