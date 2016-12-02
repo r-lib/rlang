@@ -23,10 +23,12 @@
 #' searches through the parents for the one which hase
 #' \code{\link{env_empty}()} as parent.
 #'
-#' @param new_env An environment to replace \code{env}.
-#' @param parent A parent environment.
 #' @param env An environment or an object with a S3 method for
 #'   \code{env()}.
+#' @param new_env An environment to replace \code{env} with. Can be an
+#'   object with an S method for \code{env()}.
+#' @param parent A parent environment. Can be an object with a S3
+#'   method for \code{env()}.
 #' @param dict A vector with unique names which defines bindings
 #'   (pairs of name and value). See \code{\link{is_dict}()}.
 #' @param n The number of generations to go through.
@@ -148,7 +150,7 @@ env_set <- function(env, new_env) {
 #' @rdname env
 #' @export
 env_set.function <- function(env, new_env) {
-  environment(env) <- new_env
+  environment(env) <- rlang::env(new_env)
   env
 }
 #' @rdname env
@@ -157,14 +159,14 @@ env_set.formula <- env_set.function
 #' @rdname env
 #' @export
 env_set.environment <- function(env, new_env) {
-  new_env
+  rlang::env(new_env)
 }
 
 #' @rdname env
 #' @export
 env_set_next <- function(env, parent) {
   env_ <- rlang::env(env)
-  parent.env(env_) <- parent
+  parent.env(env_) <- rlang::env(parent)
   env
 }
 

@@ -49,9 +49,11 @@ env_tail(env)
 \item{env}{An environment or an object with a S3 method for
 \code{env()}.}
 
-\item{new_env}{An environment to replace \code{env}.}
+\item{new_env}{An environment to replace \code{env} with. Can be an
+object with an S method for \code{env()}.}
 
-\item{parent}{A parent environment.}
+\item{parent}{A parent environment. Can be an object with a S3
+method for \code{env()}.}
 
 \item{dict}{A vector with unique names which defines bindings
 (pairs of name and value). See \code{\link{is_dict}()}.}
