@@ -106,3 +106,12 @@ lapply_around <- function(.x, .neighbour = c("right", "left"), .f, ...) {
 pluck <- function(.x, .f) {
   lapply(.x, `[[`, .f)
 }
+keep <- function(.x, .f, ...) {
+  .x[vapply_lgl(.x, .f, ...)]
+}
+set_names2 <- function(x, nms = names2(x)) {
+  empty <- nms == ""
+  nms[empty] <- x[empty]
+  names(x) <- nms
+  x
+}
