@@ -41,11 +41,18 @@ env <- env_new(env_package("rlang"))
 env_assign_lazily(env, "promise", cat("promise forced!\\n"))
 env$promise
 
+# Or equivalently:
 with_env(env, cat("promise forced!\\n"))
+
 
 # It is handy to create formulas with a given environment:
 f <- with_env(env, ~new_formula())
 identical(f_env(f), env)
+
+# Or functions with a given enclosure:
+fn <- with_env(env, function() NULL)
+identical(env(fn), env)
+
 
 # Unlike eval() it doesn't create duplicates on the evaluation
 # stack. You can thus use it e.g. to create non-local returns:

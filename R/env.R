@@ -630,11 +630,18 @@ env_caller <- function(n = 1) {
 #' env_assign_lazily(env, "promise", cat("promise forced!\n"))
 #' env$promise
 #'
+#' # Or equivalently:
 #' with_env(env, cat("promise forced!\n"))
+#'
 #'
 #' # It is handy to create formulas with a given environment:
 #' f <- with_env(env, ~new_formula())
 #' identical(f_env(f), env)
+#'
+#' # Or functions with a given enclosure:
+#' fn <- with_env(env, function() NULL)
+#' identical(env(fn), env)
+#'
 #'
 #' # Unlike eval() it doesn't create duplicates on the evaluation
 #' # stack. You can thus use it e.g. to create non-local returns:
@@ -651,7 +658,7 @@ with_env <- function(env, expr) {
 }
 with_env_ <- function(env, expr) {
   f <- as_quoted_f(expr)
-  env_assign_lazily_(env(), "promise", f_rhs(f), rlang::env(env))
+  env_assign_lazily_(environment(), "promise", f_rhs(f), rlang::env(env))
   promise
 }
 globalVariables("promise")
