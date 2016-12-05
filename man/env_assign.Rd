@@ -6,15 +6,16 @@
 \alias{env_define}
 \title{Assign objects to an environment.}
 \usage{
-env_assign(env, nm, x)
+env_assign(env = env_caller(), nm, x)
 
-env_bind(env, dict = list())
+env_bind(env = env_caller(), dict = list())
 
-env_define(env, ...)
+env_define(env = env_caller(), ...)
 }
 \arguments{
 \item{env}{An environment or an object with a S3 method for
-\code{env()}.}
+\code{env()}. If missing, the environment of the current
+evaluation frame is returned.}
 
 \item{nm}{The name of the binding.}
 

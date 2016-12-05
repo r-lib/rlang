@@ -4,11 +4,12 @@
 \alias{env_bury}
 \title{Bury bindings and define objects in new scope.}
 \usage{
-env_bury(env, dict = list())
+env_bury(env = env_caller(), dict = list())
 }
 \arguments{
 \item{env}{An environment or an object with a S3 method for
-\code{env()}.}
+\code{env()}. If missing, the environment of the current
+evaluation frame is returned.}
 
 \item{dict}{A vector with unique names which defines bindings
 (pairs of name and value). See \code{\link{is_dict}()}.}

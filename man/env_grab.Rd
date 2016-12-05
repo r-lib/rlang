@@ -5,13 +5,14 @@
 \alias{env_grab}
 \title{Get an object from a scope.}
 \usage{
-env_grab(env, nm)
+env_grab(env = env_caller(), nm)
 
-env_fetch(env, nm)
+env_fetch(env = env_caller(), nm)
 }
 \arguments{
 \item{env}{An environment or an object with a S3 method for
-\code{env()}.}
+\code{env()}. If missing, the environment of the current
+evaluation frame is returned.}
 
 \item{nm}{The name of a binding.}
 }

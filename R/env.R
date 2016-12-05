@@ -1,32 +1,32 @@
-#' Get or set an environment.
+#' Get an environment.
 #'
 #' Environments are objects that create a scope for evaluation of R
-#' code. The reification of scope is one of the most powerful feature
-#' of the R language. It allows you to change what a function or
-#' expression sees when it is evaluated. Each environment is defined
-#' with a parent environment. An environment and its grand-parents
-#' form together a linear hierarchy: the objects within the
-#' grand-parents are in scope unless they are eclipsed by bindings
-#' with the same names in child environments.
+#' code. Reification of scope is one of the most powerful feature of
+#' the R language: it allows you to change what objects a function or
+#' expression sees when it is evaluated. In R, scope is hierarchical:
+#' each environment is defined with a parent environment. An
+#' environment and its grand-parents form together a linear
+#' hierarchy. All objects within the grand-parents are in scope unless
+#' they are eclipsed by synonyms (other bindings with the same names)
+#' in child environments.
 #'
-#' \code{env()} and \code{env_set()} are s3 generics. Methods are
-#' provided for functions, formulas and frames. They also work with
-#' environments as this can simplify code in some situations.
-#' \code{env_set()} does not work by side effect. The input is copied
-#' before being assigned an environment, and left unchanged. However,
-#' \code{env_set_next()} operates the inner environment which has a
-#' side effect.
+#' \code{env()} is a s3 generic. Methods are provided for functions,
+#' formulas and frames. If called with a missing argument, the
+#' environment of the current evaluation frame (see
+#' \code{\link{eval_stack}()}) is returned. If you call \code{env()}
+#' with an environment, it acts as the identity function and the
+#' environment is simply returned (this helps simplifying code when
+#' writing generic functions).
 #'
 #' \code{env_new()} creates a new environment. \code{env_next()}
 #' returns the parent environment of \code{env} if called with \code{n
 #' = 1}, the grand-parent with \code{n = 2}, etc. \code{env_tail()}
-#' searches through the parents for the one which hase
+#' searches through the parents and returns the one which has
 #' \code{\link{env_empty}()} as parent.
 #'
 #' @param env An environment or an object with a S3 method for
-#'   \code{env()}.
-#' @param new_env An environment to replace \code{env} with. Can be an
-#'   object with an S method for \code{env()}.
+#'   \code{env()}. If missing, the environment of the current
+#'   evaluation frame is returned.
 #' @param parent A parent environment. Can be an object with a S3
 #'   method for \code{env()}.
 #' @param dict A vector with unique names which defines bindings
@@ -51,10 +51,6 @@
 #'
 #' # There is also an assignment operator:
 #' env(fn) <- env_base()
-#' env(fn)
-#'
-#' # You can also use env_set() to change the associated environment:
-#' fn <- env_set(fn, env_global())
 #' env(fn)
 #'
 #'
@@ -100,35 +96,50 @@
 #'
 #' # Or the tail environment with env_tail():
 #' env_tail(env_global())
-env <- function(env) {
+#'
+#'
+#' # By default, env_next() returns the parent environment of the
+#' # current evaluation frame. If called at top-level (the global
+#' # frame), the following two expressions are equivalent:
+#' env_next()
+#' env_next(env_global())
+#'
+#' # This default is more handy when called within a function. In this
+#' # case, the enclosure environment of the function is returned
+#' # (since it is the parent of the evaluation frame):
+#' enclos_env <- env_new()
+#' fn <- with_env(enclos_env, function() env_next())
+#' identical(enclos_env, fn())
+env <- function(env = env_caller()) {
   UseMethod("env")
 }
 
 #' @rdname env
 #' @export
-env.function <- function(env) {
+env.function <- function(env = env_caller()) {
   environment(env)
 }
 #' @rdname env
 #' @export
-env.formula <- function(env) {
+env.formula <- function(env = env_caller()) {
   attr(env, ".Environment")
 }
 #' @rdname env
 #' @export
-env.frame <- function(env) {
+env.frame <- function(env = env_caller()) {
   env$env
 }
 #' @rdname env
 #' @export
-env.environment <- function(env) {
+env.environment <- function(env = env_caller()) {
   env
 }
 #' @rdname env
 #' @export
-env.default <- function(env) {
-  if (missing(env)) {
-    arg_info(env)$caller_frame$env
+env.default <- function(env = env_caller()) {
+  # Default argument env_caller() gets dispatched here:
+  if (is_env(env)) {
+    env
   } else {
     stop("No applicable method for 'env'", call. = FALSE)
   }
@@ -144,34 +155,6 @@ env.default <- function(env) {
 
 #' @rdname env
 #' @export
-env_set <- function(env, new_env) {
-  UseMethod("env_set")
-}
-#' @rdname env
-#' @export
-env_set.function <- function(env, new_env) {
-  environment(env) <- rlang::env(new_env)
-  env
-}
-#' @rdname env
-#' @export
-env_set.formula <- env_set.function
-#' @rdname env
-#' @export
-env_set.environment <- function(env, new_env) {
-  rlang::env(new_env)
-}
-
-#' @rdname env
-#' @export
-env_set_next <- function(env, parent) {
-  env_ <- rlang::env(env)
-  parent.env(env_) <- rlang::env(parent)
-  env
-}
-
-#' @rdname env
-#' @export
 env_new <- function(parent = env_caller(), dict = list()) {
   env <- new.env(parent = parent)
   env_bind(env, dict)
@@ -179,7 +162,7 @@ env_new <- function(parent = env_caller(), dict = list()) {
 
 #' @rdname env
 #' @export
-env_next <- function(env, n = 1) {
+env_next <- function(env = env_caller(), n = 1) {
   env_ <- rlang::env(env)
 
   while (n > 0) {
@@ -195,7 +178,7 @@ env_next <- function(env, n = 1) {
 
 #' @rdname env
 #' @export
-env_tail <- function(env) {
+env_tail <- function(env = env_caller()) {
   env_ <- rlang::env(env)
   next_env <- parent.env(env_)
 
@@ -205,6 +188,61 @@ env_tail <- function(env) {
   }
 
   env_
+}
+
+
+#' Set an environment.
+#'
+#' \code{env_set()} does not work by side effect. The input is copied
+#' before being assigned an environment, and left unchanged. However,
+#' \code{env_set_next()} operates on the inner environment and does
+#' have a side effect.
+#'
+#' @param env An environment or an object with a S3 method for
+#'   \code{env_set()}.
+#' @param new_env An environment to replace \code{env} with. Can be an
+#'   object with an S method for \code{env()}.
+#' @export
+#' @examples
+#' # Create a function with a given environment:
+#' env <- env_new()
+#' fn <- with_env(env, function() NULL)
+#' identical(env(fn), env)
+#'
+#' # env_set() does not work by side effect. Setting a new environment
+#' # for fn has no effect on the original function:
+#' other_env <- env_new()
+#' env_set(fn, other_env)
+#' identical(env(fn), other_env)
+#'
+#' # env_set() returns a new function with a different environment, so
+#' # you need to assign the returned function to the `fn` name:
+#' fn <- env_set(fn, other_env)
+#' identical(env(fn), other_env)
+env_set <- function(env, new_env) {
+  UseMethod("env_set")
+}
+#' @rdname env_set
+#' @export
+env_set.function <- function(env, new_env) {
+  environment(env) <- rlang::env(new_env)
+  env
+}
+#' @rdname env_set
+#' @export
+env_set.formula <- env_set.function
+#' @rdname env_set
+#' @export
+env_set.environment <- function(env, new_env) {
+  rlang::env(new_env)
+}
+
+#' @rdname env_set
+#' @export
+env_set_next <- function(env, new_env) {
+  env_ <- rlang::env(env)
+  parent.env(env_) <- rlang::env(new_env)
+  env
 }
 
 
@@ -246,14 +284,14 @@ env_tail <- function(env) {
 #' fn <- env_assign(fn, "a", "1")
 #' fn <- env_define(fn, b = "2", c = "3")
 #' fn()
-env_assign <- function(env, nm, x) {
+env_assign <- function(env = env_caller(), nm, x) {
   env_ <- rlang::env(env)
   base::assign(nm, x, envir = env_)
   env
 }
 #' @rdname env_assign
 #' @export
-env_bind <- function(env, dict = list()) {
+env_bind <- function(env = env_caller(), dict = list()) {
   stopifnot(is_dict(dict))
   nms <- names(dict)
 
@@ -266,7 +304,7 @@ env_bind <- function(env, dict = list()) {
 }
 #' @rdname env_assign
 #' @export
-env_define <- function(env, ...) {
+env_define <- function(env = env_caller(), ...) {
   env_bind(env, list(...))
 }
 
@@ -300,20 +338,20 @@ env_define <- function(env, ...) {
 #' f <- ~message("forced!")
 #' env_assign_lazily_(env, "name2", f)
 #' env$name2
-env_assign_lazily <- function(env, nm, expr, eval_env = NULL) {
+env_assign_lazily <- function(env = env_caller(), nm, expr, eval_env = NULL) {
   f <- as_quoted_f(substitute(expr), eval_env)
   env_assign_lazily_(env, nm, f)
 }
 #' @rdname env_assign_lazily
 #' @export
-env_assign_lazily_ <- function(env, nm, expr, eval_env = NULL) {
+env_assign_lazily_ <- function(env = env_caller(), nm, expr, eval_env = NULL) {
   f <- as_quoted_f(expr, eval_env)
 
   args <- list(
     x = nm,
     value = f_rhs(f),
     eval.env = f_env(f),
-    assign.env = env
+    assign.env = rlang::env(env)
   )
   do.call("delayedAssign", args)
 }
@@ -339,7 +377,7 @@ env_assign_lazily_ <- function(env, nm, expr, eval_env = NULL) {
 #' # environment:
 #' fn <- env_bury(fn, list(a = 1000))
 #' fn()
-env_bury <- function(env, dict = list()) {
+env_bury <- function(env = env_caller(), dict = list()) {
   env_ <- rlang::env(env)
   env_ <- new.env(parent = env_)
 
@@ -375,14 +413,14 @@ env_bury <- function(env, dict = list()) {
 #' env <- env_new(parent, list(foo = "b"))
 #' env_eliminate(env, "foo")
 #' env_sees(env, "foo")
-env_unbind <- function(env, nms) {
+env_unbind <- function(env = env_caller(), nms) {
   env_ <- rlang::env(env)
   rm(list = nms, envir = env)
   env
 }
 #' @rdname env_unbind
 #' @export
-env_eliminate <- function(env, nms) {
+env_eliminate <- function(env = env_caller(), nms) {
   env_ <- rlang::env(env)
   while(any(env_sees(env_, nms))) {
     rm(list = nms, envir = env, inherits = TRUE)
@@ -425,13 +463,13 @@ is_dict <- function(x) {
 #' # env does not own `foo` but sees it in its parent environment:
 #' env_has(env, "foo")
 #' env_sees(env, "foo")
-env_has <- function(env, nms) {
+env_has <- function(env = env_caller(), nms) {
   env_ <- rlang::env(env)
   vapply_lgl(nms, exists, envir = env_, inherits = FALSE)
 }
 #' @rdname env_has
 #' @export
-env_sees <- function(env, nms) {
+env_sees <- function(env = env_caller(), nms) {
   env_ <- rlang::env(env)
   vapply_lgl(nms, exists, envir = env_, inherits = TRUE)
 }
@@ -455,13 +493,13 @@ env_sees <- function(env, nms) {
 #'
 #' # However `foo` can be fetched in the parent environment:
 #' env_fetch(env, "foo")
-env_grab <- function(env, nm) {
+env_grab <- function(env = env_caller(), nm) {
   env_ <- rlang::env(env)
   get(nm, envir = env, inherits = FALSE)
 }
 #' @rdname env_grab
 #' @export
-env_fetch <- function(env, nm) {
+env_fetch <- function(env = env_caller(), nm) {
   env_ <- rlang::env(env)
   get(nm, envir = env, inherits = TRUE)
 }

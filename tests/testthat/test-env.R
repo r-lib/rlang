@@ -1,5 +1,16 @@
 context("environments")
 
+test_that("env() returns current frame by default", {
+  fn <- function() expect_identical(env(), environment())
+  fn()
+})
+
+test_that("env_next() returns enclosure frame by default", {
+  enclos_env <- env_new()
+  fn <- with_env(enclos_env, function() env_next())
+  expect_identical(fn(), enclos_env)
+})
+
 test_that("env_new() has correct parent", {
   env <- env_new(emptyenv())
   expect_false(env_sees(env, "list"))

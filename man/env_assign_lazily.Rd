@@ -5,13 +5,14 @@
 \alias{env_assign_lazily_}
 \title{Assign a promise to an environment.}
 \usage{
-env_assign_lazily(env, nm, expr, eval_env = NULL)
+env_assign_lazily(env = env_caller(), nm, expr, eval_env = NULL)
 
-env_assign_lazily_(env, nm, expr, eval_env = NULL)
+env_assign_lazily_(env = env_caller(), nm, expr, eval_env = NULL)
 }
 \arguments{
 \item{env}{An environment or an object with a S3 method for
-\code{env()}.}
+\code{env()}. If missing, the environment of the current
+evaluation frame is returned.}
 
 \item{nm}{The name of the binding.}
 

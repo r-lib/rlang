@@ -5,13 +5,14 @@
 \alias{env_unbind}
 \title{Remove bindings from an environment.}
 \usage{
-env_unbind(env, nms)
+env_unbind(env = env_caller(), nms)
 
-env_eliminate(env, nms)
+env_eliminate(env = env_caller(), nms)
 }
 \arguments{
 \item{env}{An environment or an object with a S3 method for
-\code{env()}.}
+\code{env()}. If missing, the environment of the current
+evaluation frame is returned.}
 
 \item{nms}{A character vector containing the names of the bindings
 to remove.}

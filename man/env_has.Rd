@@ -5,13 +5,14 @@
 \alias{env_sees}
 \title{Does an environment have or see bindings?}
 \usage{
-env_has(env, nms)
+env_has(env = env_caller(), nms)
 
-env_sees(env, nms)
+env_sees(env = env_caller(), nms)
 }
 \arguments{
 \item{env}{An environment or an object with a S3 method for
-\code{env()}.}
+\code{env()}. If missing, the environment of the current
+evaluation frame is returned.}
 
 \item{nms}{A character vector containing the names of the bindings
 to remove.}

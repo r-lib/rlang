@@ -9,48 +9,31 @@
 \alias{env.function}
 \alias{env_new}
 \alias{env_next}
-\alias{env_set}
-\alias{env_set.environment}
-\alias{env_set.formula}
-\alias{env_set.function}
-\alias{env_set_next}
 \alias{env_tail}
-\title{Get or set an environment.}
+\title{Get an environment.}
 \usage{
-env(env)
+env(env = env_caller())
 
-\method{env}{function}(env)
+\method{env}{function}(env = env_caller())
 
-\method{env}{formula}(env)
+\method{env}{formula}(env = env_caller())
 
-\method{env}{frame}(env)
+\method{env}{frame}(env = env_caller())
 
-\method{env}{environment}(env)
+\method{env}{environment}(env = env_caller())
 
-\method{env}{default}(env)
-
-env_set(env, new_env)
-
-\method{env_set}{function}(env, new_env)
-
-\method{env_set}{formula}(env, new_env)
-
-\method{env_set}{environment}(env, new_env)
-
-env_set_next(env, parent)
+\method{env}{default}(env = env_caller())
 
 env_new(parent = env_caller(), dict = list())
 
-env_next(env, n = 1)
+env_next(env = env_caller(), n = 1)
 
-env_tail(env)
+env_tail(env = env_caller())
 }
 \arguments{
 \item{env}{An environment or an object with a S3 method for
-\code{env()}.}
-
-\item{new_env}{An environment to replace \code{env} with. Can be an
-object with an S method for \code{env()}.}
+\code{env()}. If missing, the environment of the current
+evaluation frame is returned.}
 
 \item{parent}{A parent environment. Can be an object with a S3
 method for \code{env()}.}
@@ -62,27 +45,28 @@ method for \code{env()}.}
 }
 \description{
 Environments are objects that create a scope for evaluation of R
-code. The reification of scope is one of the most powerful feature
-of the R language. It allows you to change what a function or
-expression sees when it is evaluated. Each environment is defined
-with a parent environment. An environment and its grand-parents
-form together a linear hierarchy: the objects within the
-grand-parents are in scope unless they are eclipsed by bindings
-with the same names in child environments.
+code. Reification of scope is one of the most powerful feature of
+the R language: it allows you to change what objects a function or
+expression sees when it is evaluated. In R, scope is hierarchical:
+each environment is defined with a parent environment. An
+environment and its grand-parents form together a linear
+hierarchy. All objects within the grand-parents are in scope unless
+they are eclipsed by synonyms (other bindings with the same names)
+in child environments.
 }
 \details{
-\code{env()} and \code{env_set()} are s3 generics. Methods are
-provided for functions, formulas and frames. They also work with
-environments as this can simplify code in some situations.
-\code{env_set()} does not work by side effect. The input is copied
-before being assigned an environment, and left unchanged. However,
-\code{env_set_next()} operates the inner environment which has a
-side effect.
+\code{env()} is a s3 generic. Methods are provided for functions,
+formulas and frames. If called with a missing argument, the
+environment of the current evaluation frame (see
+\code{\link{eval_stack}()}) is returned. If you call \code{env()}
+with an environment, it acts as the identity function and the
+environment is simply returned (this helps simplifying code when
+writing generic functions).
 
 \code{env_new()} creates a new environment. \code{env_next()}
 returns the parent environment of \code{env} if called with \code{n
 = 1}, the grand-parent with \code{n = 2}, etc. \code{env_tail()}
-searches through the parents for the one which hase
+searches through the parents and returns the one which has
 \code{\link{env_empty}()} as parent.
 }
 \examples{
@@ -101,10 +85,6 @@ env(fn)
 
 # There is also an assignment operator:
 env(fn) <- env_base()
-env(fn)
-
-# You can also use env_set() to change the associated environment:
-fn <- env_set(fn, env_global())
 env(fn)
 
 
@@ -150,6 +130,20 @@ env_next(env_global())
 
 # Or the tail environment with env_tail():
 env_tail(env_global())
+
+
+# By default, env_next() returns the parent environment of the
+# current evaluation frame. If called at top-level (the global
+# frame), the following two expressions are equivalent:
+env_next()
+env_next(env_global())
+
+# This default is more handy when called within a function. In this
+# case, the enclosure environment of the function is returned
+# (since it is the parent of the evaluation frame):
+enclos_env <- env_new()
+fn <- with_env(enclos_env, function() env_next())
+identical(enclos_env, fn())
 }
 \seealso{
 \link{env_scoped}, \code{\link{env_has}()},
