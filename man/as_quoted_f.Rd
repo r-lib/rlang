@@ -25,11 +25,13 @@ the calling environment of the function that called
 \code{as_quoted_f()} is taken as default.
 }
 \details{
-Compared to taking a default argument \code{env = env_caller()} at
-every step, taking \code{env = NULL} and calling
-\code{as_quoted_f()} at every step allows the user to optionally
-override the formula environment. With the former approach, there
-is no easy way of percolating the optional nature of \code{env}.
+\code{as_quoted_f()} makes it straightforward to take an optional
+environment to associate with a quoted expression. An alternative
+would be to specify a default environment at each step,
+e.g. \code{env = env_caller()}. In that case however, there is no
+easy way of communicating the optional nature of \code{env}. This
+is necessary to avoid overriding the environment of formulas
+supplied as \code{expr} with the optional default.
 }
 \examples{
 # as_quoted_f() is meant to be called at every step of the way, so

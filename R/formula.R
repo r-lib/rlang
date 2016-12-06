@@ -176,11 +176,13 @@ as_f_list <- function(x) {
 #' the calling environment of the function that called
 #' \code{as_quoted_f()} is taken as default.
 #'
-#' Compared to taking a default argument \code{env = env_caller()} at
-#' every step, taking \code{env = NULL} and calling
-#' \code{as_quoted_f()} at every step allows the user to optionally
-#' override the formula environment. With the former approach, there
-#' is no easy way of percolating the optional nature of \code{env}.
+#' \code{as_quoted_f()} makes it straightforward to take an optional
+#' environment to associate with a quoted expression. An alternative
+#' would be to specify a default environment at each step,
+#' e.g. \code{env = env_caller()}. In that case however, there is no
+#' easy way of communicating the optional nature of \code{env}. This
+#' is necessary to avoid overriding the environment of formulas
+#' supplied as \code{expr} with the optional default.
 #'
 #' @param expr A quoted expression or a formula.
 #' @param env The environment of the returned formula. If \code{expr}
