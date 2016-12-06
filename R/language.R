@@ -20,8 +20,13 @@
 #' q3 <- quote(x + 1)
 #' is_lang(q3)
 #' is_call(q3)
+#'
+#' # A literal is either a scalar atomic vector or a name:
+#' is_literal("string")
+#' is_literal(letters)
+#' is_literal(quote(name))
 is_lang <- function(x) {
-  is_call(x) || is_pairlist(x) || is_atomic(x) || is_name(x) || is.null(x)
+  is_call(x) || is_pairlist(x) || is_literal(x) || is_null(x)
 }
 
 #' @rdname is_lang
@@ -42,10 +47,10 @@ is_pairlist <- function(x) {
   typeof(x) == "pairlist"
 }
 
-#' @rdname is_lang
 #' @export
-is_atomic <- function(x) {
-  typeof(x) %in% c("logical", "integer", "double", "complex", "character", "raw")
+#' @rdname is_lang
+is_literal <- function(x) {
+  is_name(x) || is_scalar_atomic(x)
 }
 
 
