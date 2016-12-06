@@ -37,7 +37,9 @@ identity(identity(
 # inspect the evaluation stack but should nonetheless be callable
 # within nested calls without side effects:
 stack_util <- function() {
-  # n = 2 means that two layers of intervening calls should be removed
+  # n = 2 means that two layers of intervening calls should be
+  # removed: The layer at eval_stack()'s call site (including the
+  # stack_trim() call), and the layer at stack_util()'s call.
   stack <- stack_trim(eval_stack(), n = 2)
   stack
 }

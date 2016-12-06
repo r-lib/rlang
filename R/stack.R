@@ -43,8 +43,12 @@
 #'
 #' @param n The number of frames to go back in the stack.
 #' @param clean Whether to post-process the call stack to clean
-#'   non-standard frames. If \code{TRUE}, the two frames created by
-#'   the base function \code{\link[base]{eval}()} are merged together.
+#'   non-standard frames. If \code{TRUE}, suboptimal call-stack
+#'   entries by \code{\link[base]{eval}()} and
+#'   \code{\link[base]{Recall}()} will be cleaned up: \code{Recall()}
+#'   frames will be assigned the correct parent and \code{eval()}
+#'   frames are merged together (as \code{eval()} creates a duplicate
+#'   frame).
 #' @name stack
 #' @examples
 #' # Expressions within arguments count as contexts
@@ -449,7 +453,7 @@ frame_position <- function(frame) {
     i <- i + 1
   }
 
-  stop("this environment is not on the stack", call. = FALSE)
+  panic("`frame` not found on evaluation stack")
 }
 
 #' Compute the distance between a frame and the current context.
@@ -518,7 +522,9 @@ frame_distance <- function(frame) {
 #' # inspect the evaluation stack but should nonetheless be callable
 #' # within nested calls without side effects:
 #' stack_util <- function() {
-#'   # n = 2 means that two layers of intervening calls should be removed
+#'   # n = 2 means that two layers of intervening calls should be
+#'   # removed: The layer at eval_stack()'s call site (including the
+#'   # stack_trim() call), and the layer at stack_util()'s call.
 #'   stack <- stack_trim(eval_stack(), n = 2)
 #'   stack
 #' }

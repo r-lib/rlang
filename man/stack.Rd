@@ -29,8 +29,12 @@ call_stack(n = NULL, clean = TRUE)
 \item{n}{The number of frames to go back in the stack.}
 
 \item{clean}{Whether to post-process the call stack to clean
-non-standard frames. If \code{TRUE}, the two frames created by
-the base function \code{\link[base]{eval}()} are merged together.}
+non-standard frames. If \code{TRUE}, suboptimal call-stack
+entries by \code{\link[base]{eval}()} and
+\code{\link[base]{Recall}()} will be cleaned up: \code{Recall()}
+frames will be assigned the correct parent and \code{eval()}
+frames are merged together (as \code{eval()} creates a duplicate
+frame).}
 }
 \description{
 The \code{eval_} and \code{call_} families of functions provide a
