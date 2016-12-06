@@ -244,16 +244,16 @@ test_that("frame_position() returns correct position", {
   fn()
 })
 
-test_that("frame_distance() computes distance from a frame", {
+test_that("frame_position_current() computes distance from a frame", {
   fn <- function() {
     g(environment())
   }
   g <- function(env) {
-    distance <- frame_distance(env)
+    distance <- frame_position(env, from = "current")
     frame <- eval_frame(distance)
     expect_identical(frame$env, env)
 
-    burried_distance <- identity(frame_distance(env))
+    burried_distance <- identity(frame_position(env, from = "current"))
     expect_equal(distance, burried_distance)
   }
   fn()

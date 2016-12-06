@@ -2,21 +2,26 @@
 % Please edit documentation in R/stack.R
 \name{frame_position}
 \alias{frame_position}
-\title{Find the position of a frame on the evaluation stack.}
+\title{Find the position or distance of a frame on the evaluation stack.}
 \usage{
-frame_position(frame)
+frame_position(frame, from = c("global", "current"))
 }
 \arguments{
 \item{frame}{The environment of a frame. Can be any object with a
-\code{\link{env}()} method. Note that for frame objects, this
-simply returns \code{frame$pos}.}
+\code{\link{env}()} method. Note that for frame objects, the
+position from the global frame is simply \code{frame$pos}.
+Alternatively, \code{frame} can be an integer that represents the
+position on the stack (and is thus returned as is if \code{from}
+is "global".}
+
+\item{from}{Whether to compute distance from the global frame (the
+bottom of the evaluation stack), or from the current frame (the
+top of the evaluation stack).}
 }
 \description{
-The position is the number of frames on the evaluation stack
-(\code{\link{eval_stack}()}), counting from the global frame (whose
-position is zero). See also \code{\link{frame_distance}()} for a
-function that counts frames from the opposite side (the current
-context).
+The frame position on the stack can be computed by counting frames
+from the global frame (the bottom of the stack, the default) or
+from the current frame (the top of the stack).
 }
 \details{
 While this function returns the position of the frame on the
@@ -35,8 +40,12 @@ identity(identity(fn()))
 # can safely nest it within other calls:
 g <- function(env) identity(identity(frame_position(env)))
 fn()
-}
-\seealso{
-\code{\link{frame_distance}()}
+
+# You can also ask for the position from the current frame rather
+# than the global frame:
+fn <- function() g(environment())
+g <- function(env) h(env)
+h <- function(env) frame_position(env, from = "current")
+fn()
 }
 

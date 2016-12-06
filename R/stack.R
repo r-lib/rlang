@@ -407,22 +407,25 @@ sys_frame <- function(n) {
   }
 }
 
-#' Find the position of a frame on the evaluation stack.
+#' Find the position or distance of a frame on the evaluation stack.
 #'
-#' The position is the number of frames on the evaluation stack
-#' (\code{\link{eval_stack}()}), counting from the global frame (whose
-#' position is zero). See also \code{\link{frame_distance}()} for a
-#' function that counts frames from the opposite side (the current
-#' context).
+#' The frame position on the stack can be computed by counting frames
+#' from the global frame (the bottom of the stack, the default) or
+#' from the current frame (the top of the stack).
 #'
 #' While this function returns the position of the frame on the
 #' evaluation stack, it can safely be called with intervening frames
 #' as those will be discarded.
 #'
 #' @param frame The environment of a frame. Can be any object with a
-#'   \code{\link{env}()} method. Note that for frame objects, this
-#'   simply returns \code{frame$pos}.
-#' @seealso \code{\link{frame_distance}()}
+#'   \code{\link{env}()} method. Note that for frame objects, the
+#'   position from the global frame is simply \code{frame$pos}.
+#'   Alternatively, \code{frame} can be an integer that represents the
+#'   position on the stack (and is thus returned as is if \code{from}
+#'   is "global".
+#' @param from Whether to compute distance from the global frame (the
+#'   bottom of the evaluation stack), or from the current frame (the
+#'   top of the evaluation stack).
 #' @export
 #' @examples
 #' fn <- function() g(environment())
@@ -436,13 +439,33 @@ sys_frame <- function(n) {
 #' # can safely nest it within other calls:
 #' g <- function(env) identity(identity(frame_position(env)))
 #' fn()
-frame_position <- function(frame) {
+#'
+#' # You can also ask for the position from the current frame rather
+#' # than the global frame:
+#' fn <- function() g(environment())
+#' g <- function(env) h(env)
+#' h <- function(env) frame_position(env, from = "current")
+#' fn()
+frame_position <- function(frame, from = c("global", "current")) {
+  stack <- stack_trim(eval_stack(), n = 2)
+
+  if (match.arg(from) == "global") {
+    frame_position_global(frame, stack)
+  } else {
+    caller_pos <- call_frame(2)$pos
+    frame_position_current(frame, stack, caller_pos)
+  }
+}
+
+frame_position_global <- function(frame, stack = NULL) {
   if (is_frame(frame)) {
     return(frame$pos)
+  } else if (is_numeric(frame)) {
+    return(frame)
   }
-  frame <- env(frame)
 
-  stack <- stack_trim(eval_stack(), n = 2)
+  frame <- env(frame)
+  stack <- stack %||% stack_trim(eval_stack(), n = 2)
   envs <- pluck(stack, "env")
 
   i <- 1
@@ -456,38 +479,15 @@ frame_position <- function(frame) {
   panic("`frame` not found on evaluation stack")
 }
 
-#' Compute the distance between a frame and the current context.
-#'
-#' Whereas \code{\link{frame_position}()} returns the number of
-#' evaluation contexts counting from the global frame,
-#' \code{frame_distance()} counts from the currently active frame. The
-#' returned distance can be directly supplied to
-#' \code{\link{eval_frame}()} to get the corresponding frame object.
-#'
-#' @param frame Either a frame object whose \code{pos} field will be
-#'   extracted, an object with an \code{\link{env}()} method whose
-#'   environment will be looked up on the evaluation stack with
-#'   \code{\link{frame_position}()}, or an integer representing the
-#'   position of the frame on the stack.
-#' @seealso \code{\link{frame_position}()}
-#' @export
-#' @examples
-#' fn <- function() g(environment())
-#' g <- function(env) h(env)
-#' h <- function(env) frame_distance(env)
-#' fn()
-#'
-#' # frame_distance() takes care of intervening contexts and can be
-#' # safely nested in other calls:
-#' h <- function(env) identity(identity(frame_distance(env)))
-#' fn()
-frame_distance <- function(frame) {
+frame_position_current <- function(frame, stack = NULL,
+                                   caller_pos = NULL) {
   if (is_numeric(frame)) {
     pos <- frame
   } else {
-    pos <- frame_position(frame)
+    stack <- stack %||% stack_trim(eval_stack(), n = 2)
+    pos <- frame_position_global(frame, stack)
   }
-  caller_pos <- call_frame(2)$pos
+  caller_pos <- caller_pos %||% call_frame(2)$pos
   caller_pos - pos + 1
 }
 
@@ -602,7 +602,7 @@ return_to <- function(frame, value = NULL) {
     prev_pos <- frame - 1
   } else {
     env <- env(frame)
-    distance <- frame_distance(env)
+    distance <- frame_position_current(env)
     prev_pos <- distance - 1
   }
 
