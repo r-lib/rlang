@@ -2,17 +2,14 @@ context("arg")
 
 # arg_expr -----------------------------------------------------------------
 
-test_that("doesn't go pass lazy loaded objects", {
-  expect_identical(arg_expr(mtcars), quote(mtcars))
+test_that("arg_expr() returns correct expression", {
+  fn <- function(x) g(foo(x))
+  g <- function(y) arg_expr(y)
+  expect_equal(fn(mtcars), quote(foo(x)))
 })
 
-test_that("follows multiple levels", {
-  fn <- function(x) g(x)
-  g <- function(y) h(y)
-  h <- function(z) arg_expr(z)
 
-  expect_identical(fn(x + y), quote(x + y))
-})
+# arg_info -----------------------------------------------------------------
 
 test_that("follows through dots", {
   fn <- function(...) g(...)
@@ -50,10 +47,8 @@ test_that("formals names are recorded", {
   expect_equal(g()$name, "foo")
 })
 
-# arg_env -----------------------------------------------------------------
-
 test_that("expression is scoped in calling env", {
-  fn <- function(x) arg_env(x)
+  fn <- function(x) arg_info(x)$caller_frame$env
   g <- function(x) fn(x)
 
   expect_identical(g(mtcars), environment())
@@ -95,17 +90,6 @@ test_that("arguments are scoped in calling env", {
   expect_identical(info$eval_frame$env, fn_env)
   expect_identical(info$caller_frame$env, fn_env)
   expect_equal(info$expr, quote(foo))
-})
-
-test_that("dots_capture() produces correct formulas", {
-  fn <- function(x = a + b, ...) {
-    list(dots = dots_capture(x = x, y = a + b, ...), env = environment())
-  }
-  out <- fn(z = a + b)
-
-  expect_identical(out$dots$x, f_new(quote(a + b), env = out$env))
-  expect_identical(out$dots$y, f_new(quote(a + b), env = out$env))
-  expect_identical(out$dots$z, f_new(quote(a + b), env = environment()))
 })
 
 test_that("global_frame() is reported with top-level calls", {
@@ -210,3 +194,43 @@ test_that("magrittr works", {
     expect_equal(eval(info$expr, info$eval_frame$env), "A")
   }
 })
+
+
+# arg_capture --------------------------------------------------------------
+
+test_that("explicit promise makes a formula", {
+  f1 <- arg_capture(1 + 2 + 3)
+  f2 <- ~ 1 + 2 + 3
+
+  expect_equal(f1, f2)
+})
+
+test_that("explicit promise works only one level deep", {
+  f <- function(x) list(env = env(), f = g(x))
+  g <- function(y) arg_capture(y)
+  out <- f(1 + 2 + 3)
+  expected_f <- with_env(out$env, ~x)
+
+  expect_identical(out$f, expected_f)
+})
+
+test_that("explicit dots makes a list of formulas", {
+  fs <- dots_capture(x = 1 + 2, y = 2 + 3)
+  f1 <- ~ 1 + 2
+  f2 <- ~ 2 + 3
+
+  expect_equal(fs$x, f1)
+  expect_equal(fs$y, f2)
+})
+
+test_that("dots_capture() produces correct formulas", {
+  fn <- function(x = a + b, ...) {
+    list(dots = dots_capture(x = x, y = a + b, ...), env = environment())
+  }
+  out <- fn(z = a + b)
+
+  expect_identical(out$dots$x, with_env(out$env, ~x))
+  expect_identical(out$dots$y, with_env(out$env, ~a + b))
+  expect_identical(out$dots$z, ~a + b)
+})
+

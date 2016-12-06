@@ -42,19 +42,32 @@ A list containing:
     frame.}
 }
 \description{
-\code{arg_info()} and \code{arg_info_()} are the workhorses of all
-functions providing information about the evaluation context of an
-argument (e.g., \code{\link{arg_expr}()}, \code{\link{arg_env}()},
-etc). These functions climb the call stack to find where an
-argument was first supplied, with which expression, in which
-evaluation environment.
-}
-\details{
+\code{arg_info()} provides argument introspection in the context of
+lazy evaluation. Compared to \code{\link{arg_capture}()}, the
+returned information is more complete and takes R's lazy evaluation
+semantics into account: if an argument is passed around without
+being evaluated, \code{arg_info()} is able to return the expression
+at the original call site as well as the relevant scoping
+environment in which this expression is supposed to be evaluated
+when the argument is forced. To accomplish this, \code{arg_info()}
+climbs the call stack to find where an argument was first supplied,
+with which expression, in which evaluation environment.
 \code{arg_info_()} is the standard-evaluation version of
 \code{arg_info()} and takes a symbol and a call stack object.
 }
+\details{
+\code{arg_info()} should be used with two caveats in mind. First,
+it is slower than \code{\link{arg_capture}()} and
+\code{lazyeval::lazy()}. Thus you should probably avoid using it in
+functions that might be used in tight loops (such as a loop over
+the rows of data frame). Second, \code{arg_info()} ignores all
+reassignment of arguments. It has no way of detecting that an
+inspected argument got reassigned along the way, and will continue
+to climb the calls looking for an earlier call site. These two
+limitations are inherent to the stack climbing approach that powers
+this function.
+}
 \seealso{
-\code{\link{arg_label}()}, \code{\link{arg_expr}()},
-  \code{\link{arg_env}()}.
+\code{\link{arg_label}()}, \code{\link{arg_expr}()}.
 }
 

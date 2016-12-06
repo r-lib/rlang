@@ -110,3 +110,11 @@ dots_enumerate_args <- function(dots) {
 is_dot_nm <- function(nm) {
   grepl("\\.\\.[0-9]+$", nm)
 }
+
+#' @rdname arg_capture
+#' @useDynLib rlang inspect_dots
+#' @export
+dots_capture <- function(...) {
+  info <- .Call(inspect_dots, environment())
+  lapply(info, function(x) f_new(x$expr, env = x$env))
+}
