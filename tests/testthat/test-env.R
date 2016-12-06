@@ -26,9 +26,9 @@ test_that("env_next() reports correct parent", {
     list(obj = "a")
   )
 
-  expect_identical(env_next(env, 1)$obj, "b")
-  expect_identical(env_next(env, 2), env_empty())
-  expect_error(env_next(env, 3), "not enough environments")
+  expect_identical(env_parent(env, 1)$obj, "b")
+  expect_identical(env_parent(env, 2), env_empty())
+  expect_error(env_parent(env, 3), "Not enough environments")
 })
 
 test_that("env_tail() climbs env chain", {

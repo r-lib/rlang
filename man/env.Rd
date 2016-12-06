@@ -49,8 +49,8 @@ code. Reification of scope is one of the most powerful feature of
 the R language: it allows you to change what objects a function or
 expression sees when it is evaluated. In R, scope is hierarchical:
 each environment is defined with a parent environment. An
-environment and its grand-parents form together a linear
-hierarchy. All objects within the grand-parents are in scope unless
+environment and its grandparents form together a linear
+hierarchy. All objects within the grandparents are in scope unless
 they are eclipsed by synonyms (other bindings with the same names)
 in child environments.
 }
@@ -65,7 +65,7 @@ writing generic functions).
 
 \code{env_new()} creates a new environment. \code{env_next()}
 returns the parent environment of \code{env} if called with \code{n
-= 1}, the grand-parent with \code{n = 2}, etc. \code{env_tail()}
+= 1}, the grandparent with \code{n = 2}, etc. \code{env_tail()}
 searches through the parents and returns the one which has
 \code{\link{env_empty}()} as parent.
 }

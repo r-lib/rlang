@@ -5,8 +5,8 @@
 #' the R language: it allows you to change what objects a function or
 #' expression sees when it is evaluated. In R, scope is hierarchical:
 #' each environment is defined with a parent environment. An
-#' environment and its grand-parents form together a linear
-#' hierarchy. All objects within the grand-parents are in scope unless
+#' environment and its grandparents form together a linear
+#' hierarchy. All objects within the grandparents are in scope unless
 #' they are eclipsed by synonyms (other bindings with the same names)
 #' in child environments.
 #'
@@ -20,7 +20,7 @@
 #'
 #' \code{env_new()} creates a new environment. \code{env_next()}
 #' returns the parent environment of \code{env} if called with \code{n
-#' = 1}, the grand-parent with \code{n = 2}, etc. \code{env_tail()}
+#' = 1}, the grandparent with \code{n = 2}, etc. \code{env_tail()}
 #' searches through the parents and returns the one which has
 #' \code{\link{env_empty}()} as parent.
 #'
@@ -167,7 +167,7 @@ env_next <- function(env = env_caller(), n = 1) {
 
   while (n > 0) {
     if (identical(env_, env_empty())) {
-      stop("not enough environments in scope", call. = FALSE)
+      stop("Not enough environments in scope", call. = FALSE)
     }
     n <- n - 1
     env_ <- parent.env(env_)
