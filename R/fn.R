@@ -131,9 +131,9 @@ fn_fmls_names <- function(fn = NULL) {
 #' lazily, like R closures do, or evaluate them eagerly before being
 #' passed on to the C code. The former kind of primitives are called
 #' "special" in R terminology, while the latter is referred to as
-#' "builtin". \code{is_eager_prim()} and \code{is_lazy_prim()} allow
-#' you to check whether a primitive function evaluates arguments
-#' eagerly or lazily.
+#' "builtin". \code{is_primitive_eager()} and
+#' \code{is_primitive_lazy()} allow you to check whether a primitive
+#' function evaluates arguments eagerly or lazily.
 #'
 #' You will also encounter the distinction between primitive and
 #' internal functions in technical documentation. Like primitive
@@ -199,10 +199,10 @@ is_primitive <- function(x) {
 #' @examples
 #'
 #' # Many primitive functions evaluate arguments eagerly:
-#' is_eager_prim(base::c)
-#' is_eager_prim(base::list)
-#' is_eager_prim(base::`+`)
-is_eager_prim <- function(x) {
+#' is_primitive_eager(base::c)
+#' is_primitive_eager(base::list)
+#' is_primitive_eager(base::`+`)
+is_primitive_eager <- function(x) {
   typeof(x) == "builtin"
 }
 #' @export
@@ -211,8 +211,8 @@ is_eager_prim <- function(x) {
 #'
 #' # However, primitives that operate on expressions, like quote() or
 #' # substitute(), are lazy:
-#' is_lazy_prim(base::quote)
-#' is_lazy_prim(base::substitute)
-is_lazy_prim <- function(x) {
+#' is_primitive_lazy(base::quote)
+#' is_primitive_lazy(base::substitute)
+is_primitive_lazy <- function(x) {
   typeof(x) == "special"
 }

@@ -2,10 +2,10 @@
 % Please edit documentation in R/fn.R
 \name{is_function}
 \alias{is_closure}
-\alias{is_eager_prim}
 \alias{is_function}
-\alias{is_lazy_prim}
 \alias{is_primitive}
+\alias{is_primitive_eager}
+\alias{is_primitive_lazy}
 \title{Is object a function?}
 \usage{
 is_function(x)
@@ -14,9 +14,9 @@ is_closure(x)
 
 is_primitive(x)
 
-is_eager_prim(x)
+is_primitive_eager(x)
 
-is_lazy_prim(x)
+is_primitive_lazy(x)
 }
 \arguments{
 \item{x}{object to be tested.}
@@ -54,9 +54,9 @@ functions. Finally, primitive functions can either take arguments
 lazily, like R closures do, or evaluate them eagerly before being
 passed on to the C code. The former kind of primitives are called
 "special" in R terminology, while the latter is referred to as
-"builtin". \code{is_eager_prim()} and \code{is_lazy_prim()} allow
-you to check whether a primitive function evaluates arguments
-eagerly or lazily.
+"builtin". \code{is_primitive_eager()} and
+\code{is_primitive_lazy()} allow you to check whether a primitive
+function evaluates arguments eagerly or lazily.
 
 You will also encounter the distinction between primitive and
 internal functions in technical documentation. Like primitive
@@ -102,13 +102,13 @@ list(eval_stack())[[1]]
 identity(identity(eval_stack()))
 
 # Many primitive functions evaluate arguments eagerly:
-is_eager_prim(base::c)
-is_eager_prim(base::list)
-is_eager_prim(base::`+`)
+is_primitive_eager(base::c)
+is_primitive_eager(base::list)
+is_primitive_eager(base::`+`)
 
 # However, primitives that operate on expressions, like quote() or
 # substitute(), are lazy:
-is_lazy_prim(base::quote)
-is_lazy_prim(base::substitute)
+is_primitive_lazy(base::quote)
+is_primitive_lazy(base::substitute)
 }
 
