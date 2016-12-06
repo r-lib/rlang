@@ -54,7 +54,7 @@ forward named arguments across function calls (see below). See
   most immediate call site is captured. For this reason, named
   arguments should be captured by an NSE function at the outermost
   level, and then passed around to SE versions that handle
-  pre-captured arguments. See \code{\link{arg_info}()} for another
+  pre-captured arguments. See \code{\link{arg_inspect}()} for another
   approach to introspecting arguments with which it is possible to
   capture expressions at the outermost call site. This approach may
   be harder to reason about and has some limitations.

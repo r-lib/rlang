@@ -35,7 +35,7 @@
 #'   most immediate call site is captured. For this reason, named
 #'   arguments should be captured by an NSE function at the outermost
 #'   level, and then passed around to SE versions that handle
-#'   pre-captured arguments. See \code{\link{arg_info}()} for another
+#'   pre-captured arguments. See \code{\link{arg_inspect}()} for another
 #'   approach to introspecting arguments with which it is possible to
 #'   capture expressions at the outermost call site. This approach may
 #'   be harder to reason about and has some limitations.
@@ -167,24 +167,24 @@ arg_text_ <- function(x, width = 60L, nlines = Inf) {
 
 #' Inspect an argument
 #'
-#' \code{arg_info()} provides argument introspection in the context of
+#' \code{arg_inspect()} provides argument introspection in the context of
 #' lazy evaluation. Compared to \code{\link{arg_capture}()}, the
 #' returned information is more complete and takes R's lazy evaluation
 #' semantics into account: if an argument is passed around without
-#' being evaluated, \code{arg_info()} is able to return the expression
+#' being evaluated, \code{arg_inspect()} is able to return the expression
 #' at the original call site as well as the relevant scoping
 #' environment in which this expression is supposed to be evaluated
-#' when the argument is forced. To accomplish this, \code{arg_info()}
+#' when the argument is forced. To accomplish this, \code{arg_inspect()}
 #' climbs the call stack to find where an argument was first supplied,
 #' with which expression, in which evaluation environment.
-#' \code{arg_info_()} is the standard-evaluation version of
-#' \code{arg_info()} and takes a symbol and a call stack object.
+#' \code{arg_inspect_()} is the standard-evaluation version of
+#' \code{arg_inspect()} and takes a symbol and a call stack object.
 #'
-#' \code{arg_info()} should be used with two caveats in mind. First,
+#' \code{arg_inspect()} should be used with two caveats in mind. First,
 #' it is slower than \code{\link{arg_capture}()} and
 #' \code{lazyeval::lazy()}. Thus you should probably avoid using it in
 #' functions that might be used in tight loops (such as a loop over
-#' the rows of data frame). Second, \code{arg_info()} ignores all
+#' the rows of data frame). Second, \code{arg_inspect()} ignores all
 #' reassignment of arguments. It has no way of detecting that an
 #' inspected argument got reassigned along the way, and will continue
 #' to climb the calls looking for an earlier call site. These two
@@ -215,19 +215,19 @@ arg_text_ <- function(x, width = 60L, nlines = Inf) {
 #'     frame.}
 #' @seealso \code{\link{arg_label}()}, \code{\link{arg_expr}()}.
 #' @export
-arg_info <- function(x) {
+arg_inspect <- function(x) {
   stack <- call_stack()
   expr <- quote(x)
-  arg_info_(expr, stack)
+  arg_inspect_(expr, stack)
 }
 
-#' @rdname arg_info
+#' @rdname arg_inspect
 #' @param expr A quoted symbol giving the name of the argument to
 #'   inspect.
 #' @param stack A \code{call_stack} object as returned by
 #'   \code{\link{call_stack}()}.
 #' @export
-arg_info_ <- function(expr, stack) {
+arg_inspect_ <- function(expr, stack) {
   stopifnot(is_call_stack(stack))
   stopifnot(length(stack) > 1)
 

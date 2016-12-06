@@ -35,22 +35,22 @@ SEXP inspect_dots_(SEXP env) {
     return Rf_allocVector(VECSXP, 0);
   }
 
-  SEXP dots_info = PROTECT(allocVector(VECSXP, n));
+  SEXP dots_inspect = PROTECT(allocVector(VECSXP, n));
   SEXP names = PROTECT(allocVector(STRSXP, n));
 
   int i = 0;
   for(SEXP nxt = dots; nxt != R_NilValue; nxt = CDR(nxt)) {
     SEXP dot = CAR(nxt);
 
-    SET_VECTOR_ELT(dots_info, i, inspect_dot(dot, env));
+    SET_VECTOR_ELT(dots_inspect, i, inspect_dot(dot, env));
 
     if (TAG(nxt) != R_NilValue)
       SET_STRING_ELT(names, i, PRINTNAME(TAG(nxt)));
 
     i++;
   }
-  setAttrib(dots_info, install("names"), names);
+  setAttrib(dots_inspect, install("names"), names);
 
   UNPROTECT(2);
-  return dots_info;
+  return dots_inspect;
 }

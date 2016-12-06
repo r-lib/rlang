@@ -55,31 +55,31 @@ arg_dots_lsp <- function(...) {
 
 #' Inspect dots
 #'
-#' Runs \code{\link{arg_info}()} for each dots element, and return the
+#' Runs \code{\link{arg_inspect}()} for each dots element, and return the
 #' results in a list.
 #'
-#' \code{dots_info_()} is the standard evaluation version of
-#' \code{dots_info()} and takes a list of dots as captured by
+#' \code{dots_inspect_()} is the standard evaluation version of
+#' \code{dots_inspect()} and takes a list of dots as captured by
 #' \code{\link{frame_dots}()} or \code{\link{arg_dots}()}, and a call
 #' stack as returned by \code{\link{call_stack}()}.
 #'
 #' @param ... Dots to inspect.
-#' @seealso \code{\link{arg_info}()}
+#' @seealso \code{\link{arg_inspect}()}
 #' @export
-dots_info <- function(...) {
+dots_inspect <- function(...) {
   dots <- arg_dots(...)
   stack <- call_stack()
-  dots_info_(dots, stack)
+  dots_inspect_(dots, stack)
 }
 
-#' @rdname dots_info
-#' @inheritParams arg_info_
+#' @rdname dots_inspect
+#' @inheritParams arg_inspect_
 #' @param dots Dots to inspect.
 #' @export
-dots_info_ <- function(dots, stack) {
+dots_inspect_ <- function(dots, stack) {
   dots_syms <- dots_enumerate_sym(dots)
   dots_syms <- set_names(dots_syms, names(dots))
-  lapply(dots_syms, arg_info_, stack)
+  lapply(dots_syms, arg_inspect_, stack)
 }
 
 dots_enumerate <- function(dots) {

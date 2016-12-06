@@ -9,19 +9,19 @@ test_that("arg_expr() returns correct expression", {
 })
 
 
-# arg_info -----------------------------------------------------------------
+# arg_inspect -----------------------------------------------------------------
 
 test_that("follows through dots", {
   fn <- function(...) g(...)
   g <- function(...) h(...)
-  h <- function(x1, x2) arg_info(x2)
+  h <- function(x1, x2) arg_inspect(x2)
   info <- fn(mtcars, letters)
   expect_identical(info$expr, quote(letters))
   expect_identical(info$eval_frame, call_frame())
 })
 
 test_that("empty argument are reported", {
-  fn <- function(x, y) list(info = arg_info(x), env = environment())
+  fn <- function(x, y) list(info = arg_inspect(x), env = environment())
   out <- fn(, )
   info <- out$info
   expect_true(is_missing(info$expr))
@@ -37,7 +37,7 @@ test_that("empty argument are reported", {
 })
 
 test_that("formals names are recorded", {
-  fn <- function(foo) arg_info(foo)
+  fn <- function(foo) arg_inspect(foo)
   expect_equal(fn()$name, "foo")
 
   g <- function() fn(bar)
@@ -48,7 +48,7 @@ test_that("formals names are recorded", {
 })
 
 test_that("expression is scoped in calling env", {
-  fn <- function(x) arg_info(x)$caller_frame$env
+  fn <- function(x) arg_inspect(x)$caller_frame$env
   g <- function(x) fn(x)
 
   expect_identical(g(mtcars), environment())
@@ -57,7 +57,7 @@ test_that("expression is scoped in calling env", {
 
 test_that("default arguments are scoped in execution env", {
   fn <- function(x = default()) list(info = g(x), env = environment())
-  g <- function(x) arg_info(x)
+  g <- function(x) arg_inspect(x)
   out <- fn()
   info <- out$info
   fn_env <- out$env
@@ -69,7 +69,7 @@ test_that("default arguments are scoped in execution env", {
 
 test_that("missing arguments are scoped in execution env", {
   fn <- function(x) list(info = g(x), env = environment())
-  g <- function(x) arg_info(x)
+  g <- function(x) arg_inspect(x)
   out <- fn()
   info <- out$info
   fn_env <- out$env
@@ -82,7 +82,7 @@ test_that("missing arguments are scoped in execution env", {
 test_that("arguments are scoped in calling env", {
   fn <- function() list(info = g(foo), env = environment())
   g <- function(x) h(x)
-  h <- function(x) arg_info(x)
+  h <- function(x) arg_inspect(x)
   out <- fn()
   info <- out$info
   fn_env <- out$env
@@ -97,7 +97,7 @@ test_that("global_frame() is reported with top-level calls", {
     # Emulate top-level call
     stack <- call_stack(2)
     stack[[2]] <- global_frame()
-    arg_info_(quote(x), stack)
+    arg_inspect_(quote(x), stack)
   }
   info <- fn(foo)
 
@@ -162,12 +162,12 @@ test_that("is_missing() works with non-symbols", {
 
 # special cases ------------------------------------------------------
 
-test_that("Recall() does not mess up arg_info()", {
+test_that("Recall() does not mess up arg_inspect()", {
   quit <- FALSE
   fn_Recall <- function(x, y) {
     if (quit) {
       quit <<- FALSE
-      list(y = arg_info(y), x = arg_info(x))
+      list(y = arg_inspect(y), x = arg_inspect(x))
     } else {
       quit <<- TRUE
       Recall()
@@ -184,11 +184,11 @@ test_that("Recall() does not mess up arg_info()", {
 test_that("magrittr works", {
   if (utils::packageVersion("magrittr") > "1.5") {
     `%>%` <- magrittr::`%>%`
-    info <- letters %>% toupper() %>% .[[1]] %>% arg_info()
+    info <- letters %>% toupper() %>% .[[1]] %>% arg_inspect()
     expect_equal(info$expr, quote(.))
     expect_equal(eval(info$expr, info$eval_frame$env), "A")
 
-    info <- letters %>% toupper() %>% .[[1]] %>% dots_info()
+    info <- letters %>% toupper() %>% .[[1]] %>% dots_inspect()
     info <- info[[1]]
     expect_equal(info$expr, quote(.))
     expect_equal(eval(info$expr, info$eval_frame$env), "A")
