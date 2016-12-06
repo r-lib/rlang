@@ -2,12 +2,9 @@
 % Please edit documentation in R/env.R
 \name{env_has}
 \alias{env_has}
-\alias{env_sees}
 \title{Does an environment have or see bindings?}
 \usage{
-env_has(env = env_caller(), nms)
-
-env_sees(env = env_caller(), nms)
+env_has(env = env_caller(), nms, inherit = FALSE)
 }
 \arguments{
 \item{env}{An environment or an object with a S3 method for
@@ -16,15 +13,18 @@ evaluation frame is returned.}
 
 \item{nms}{A character vector containing the names of the bindings
 to remove.}
+
+\item{inherit}{Whether to look for bindings in the parent
+environments.}
 }
 \value{
 A logical vector as long as \code{nms}.
 }
 \description{
-These functions are vectorised predicates. \code{env_has()} queries
-whether an environment owns bindings personally, while
-\code{env_sees()} will also return \code{TRUE} for the bindings
-that are owned by one of the parent environments.
+\code{env_has()} is a vectorised predicate that queries whether an
+environment owns bindings personally (with \code{inherit} set to
+\code{FALSE}, the default), or sees them in its own environment or
+in any of its parents (with \code{inherit = TRUE}).
 }
 \examples{
 parent <- env_new(env_empty(), list(foo = "foo"))
@@ -32,6 +32,6 @@ env <- env_new(parent, list(bar = "bar"))
 
 # env does not own `foo` but sees it in its parent environment:
 env_has(env, "foo")
-env_sees(env, "foo")
+env_has(env, "foo", inherit = TRUE)
 }
 

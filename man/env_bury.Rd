@@ -20,7 +20,7 @@ An object associated with the new environment.
 \description{
 \code{env_bury()} is like \code{env_bind()} but it creates the
 bindings in a new child environment. Note that this function does
-not work by side effect.
+not modify its inputs.
 }
 \examples{
 scope <- env_new(env_base(), list(a = 10))

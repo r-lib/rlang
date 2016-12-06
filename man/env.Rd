@@ -103,14 +103,14 @@ env_has(frame_env, "my_object")
 
 # But sees objects defined inside fn() by inheriting from its
 # parent:
-env_sees(frame_env, "my_object")
+env_has(frame_env, "my_object", inherit = TRUE)
 
 
 # Create a new environment with a particular scope by setting a
 # parent. When inheriting from the empty environment, the
 # environment will have no object in scope at all:
 env <- env_new(env_empty())
-env_sees(env, "lapply")
+env_has(env, "lapply", inherit = TRUE)
 
 # The base package environment is often a good default choice for a
 # parent environment because it contains all standard base
@@ -118,13 +118,13 @@ env_sees(env, "lapply")
 # package environments since R keeps the base package at the tail
 # of the search path:
 env <- env_new(env_base())
-env_sees(env, "lapply")
+env_has(env, "lapply", inherit = TRUE)
 
 # Note that all other package environments inherit from env_base()
 # as well:
 env <- env_new(env_package("rlang"))
-env_sees(env, "env_sees")
-env_sees(env, "lapply")
+env_has(env, "env_has", inherit = TRUE)
+env_has(env, "lapply", inherit = TRUE)
 
 
 # Get the parent environment with env_parent():

@@ -13,7 +13,7 @@ test_that("env_parent() returns enclosure frame by default", {
 
 test_that("env_new() has correct parent", {
   env <- env_new(emptyenv())
-  expect_false(env_sees(env, "list"))
+  expect_false(env_has(env, "list", inherit = TRUE))
 
   fn <- function() list(new = env_new(), env = environment())
   out <- fn()

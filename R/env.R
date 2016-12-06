@@ -69,14 +69,14 @@
 #'
 #' # But sees objects defined inside fn() by inheriting from its
 #' # parent:
-#' env_sees(frame_env, "my_object")
+#' env_has(frame_env, "my_object", inherit = TRUE)
 #'
 #'
 #' # Create a new environment with a particular scope by setting a
 #' # parent. When inheriting from the empty environment, the
 #' # environment will have no object in scope at all:
 #' env <- env_new(env_empty())
-#' env_sees(env, "lapply")
+#' env_has(env, "lapply", inherit = TRUE)
 #'
 #' # The base package environment is often a good default choice for a
 #' # parent environment because it contains all standard base
@@ -84,13 +84,13 @@
 #' # package environments since R keeps the base package at the tail
 #' # of the search path:
 #' env <- env_new(env_base())
-#' env_sees(env, "lapply")
+#' env_has(env, "lapply", inherit = TRUE)
 #'
 #' # Note that all other package environments inherit from env_base()
 #' # as well:
 #' env <- env_new(env_package("rlang"))
-#' env_sees(env, "env_sees")
-#' env_sees(env, "lapply")
+#' env_has(env, "env_has", inherit = TRUE)
+#' env_has(env, "lapply", inherit = TRUE)
 #'
 #'
 #' # Get the parent environment with env_parent():
@@ -362,7 +362,7 @@ env_assign_lazily_ <- function(env = env_caller(), nm, expr, eval_env = NULL) {
 #'
 #' \code{env_bury()} is like \code{env_bind()} but it creates the
 #' bindings in a new child environment. Note that this function does
-#' not work by side effect.
+#' not modify its inputs.
 #'
 #' @inheritParams env_bind
 #' @return An object associated with the new environment.
@@ -391,13 +391,14 @@ env_bury <- function(env = env_caller(), dict = list()) {
 #'
 #' \code{env_unbind()} is the complement of
 #' \code{\link{env_bind}()}. Like \code{env_has()}, it ignores the
-#' parent environments of \code{env}. On the other hand,
-#' \code{env_eliminate()} is akin to \code{env_sees()} and will track
-#' down bindings in parent environments.
+#' parent environments of \code{env} by default. Set \code{inherit} to
+#' \code{TRUE} to track down bindings in parent environments.
 #'
 #' @inheritParams env_assign
 #' @param nms A character vector containing the names of the bindings
 #'   to remove.
+#' @param inherit Whether to look for bindings in the parent
+#'   environments.
 #' @return The input object \code{env}, with its associated
 #'   environment modified in place.
 #' @export
@@ -406,26 +407,24 @@ env_bury <- function(env = env_caller(), dict = list()) {
 #' env_bind(environment(), dict)
 #' env_has(environment(), letters)
 #'
-#' # env_unbind() will remove bindings:
+#' # env_unbind() removes bindings:
 #' env_unbind(environment(), letters)
 #' env_has(environment(), letters)
 #'
-#' # env_eliminate() removes all bindings:
+#' # With inherit = TRUE, it removes bindings in parent environments
+#' # as well:
 #' parent <- env_new(env_empty(), list(foo = "a"))
 #' env <- env_new(parent, list(foo = "b"))
-#' env_eliminate(env, "foo")
-#' env_sees(env, "foo")
-env_unbind <- function(env = env_caller(), nms) {
+#' env_unbind(env, "foo", inherit = TRUE)
+#' env_has(env, "foo", inherit = TRUE)
+env_unbind <- function(env = env_caller(), nms, inherit = FALSE) {
   env_ <- rlang::env(env)
-  rm(list = nms, envir = env)
-  env
-}
-#' @rdname env_unbind
-#' @export
-env_eliminate <- function(env = env_caller(), nms) {
-  env_ <- rlang::env(env)
-  while(any(env_sees(env_, nms))) {
-    rm(list = nms, envir = env, inherits = TRUE)
+  if (inherit) {
+    while(any(env_has(env_, nms, inherit = TRUE))) {
+      rm(list = nms, envir = env, inherits = TRUE)
+    }
+  } else {
+    rm(list = nms, envir = env)
   }
   env
 }
@@ -450,10 +449,10 @@ is_dict <- function(x) {
 
 #' Does an environment have or see bindings?
 #'
-#' These functions are vectorised predicates. \code{env_has()} queries
-#' whether an environment owns bindings personally, while
-#' \code{env_sees()} will also return \code{TRUE} for the bindings
-#' that are owned by one of the parent environments.
+#' \code{env_has()} is a vectorised predicate that queries whether an
+#' environment owns bindings personally (with \code{inherit} set to
+#' \code{FALSE}, the default), or sees them in its own environment or
+#' in any of its parents (with \code{inherit = TRUE}).
 #'
 #' @inheritParams env_unbind
 #' @return A logical vector as long as \code{nms}.
@@ -464,46 +463,34 @@ is_dict <- function(x) {
 #'
 #' # env does not own `foo` but sees it in its parent environment:
 #' env_has(env, "foo")
-#' env_sees(env, "foo")
-env_has <- function(env = env_caller(), nms) {
+#' env_has(env, "foo", inherit = TRUE)
+env_has <- function(env = env_caller(), nms, inherit = FALSE) {
   env_ <- rlang::env(env)
-  vapply_lgl(nms, exists, envir = env_, inherits = FALSE)
-}
-#' @rdname env_has
-#' @export
-env_sees <- function(env = env_caller(), nms) {
-  env_ <- rlang::env(env)
-  vapply_lgl(nms, exists, envir = env_, inherits = TRUE)
+  vapply_lgl(nms, exists, envir = env_, inherits = inherit)
 }
 
-#' Get an object from a scope.
+#' Get an object from an environment.
 #'
-#' \code{env_grab()} looks up an object binded in \code{env} without
-#' looking in its parent. \code{env_fetch()} will return objects from
-#' the parents as well. In that respect, \code{env_grab()} is like
-#' \code{env_has()} and \code{env_fetch()} is like \code{env_sees()}.
+#' \code{env_get()} extracts an object from an enviroment \code{env}.
+#' By default, it does not look in the parent environments.
 #'
 #' @inheritParams env
+#' @inheritParams env_has
 #' @param nm The name of a binding.
 #' @return An object if it exists. Otherwise, throws an error.
+#' @export
 #' @examples
 #' parent <- env_new(env_empty(), list(foo = "foo"))
 #' env <- env_new(parent, list(bar = "bar"))
 #'
 #' # This throws an error because `foo` is not directly defined in env:
-#' # env_grab(env, "foo")
+#' # env_get(env, "foo")
 #'
 #' # However `foo` can be fetched in the parent environment:
-#' env_fetch(env, "foo")
-env_grab <- function(env = env_caller(), nm) {
+#' env_get(env, "foo", inherit = TRUE)
+env_get <- function(env = env_caller(), nm, inherit = FALSE) {
   env_ <- rlang::env(env)
-  get(nm, envir = env, inherits = FALSE)
-}
-#' @rdname env_grab
-#' @export
-env_fetch <- function(env = env_caller(), nm) {
-  env_ <- rlang::env(env)
-  get(nm, envir = env, inherits = TRUE)
+  get(nm, envir = env, inherits = inherit)
 }
 
 
