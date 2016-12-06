@@ -5,7 +5,7 @@
 \alias{env_set.environment}
 \alias{env_set.formula}
 \alias{env_set.function}
-\alias{env_set_next}
+\alias{env_set_parent}
 \title{Set an environment.}
 \usage{
 env_set(env, new_env)
@@ -16,7 +16,7 @@ env_set(env, new_env)
 
 \method{env_set}{environment}(env, new_env)
 
-env_set_next(env, new_env)
+env_set_parent(env, new_env)
 }
 \arguments{
 \item{env}{An environment or an object with a S3 method for
@@ -28,7 +28,7 @@ object with an S method for \code{env()}.}
 \description{
 \code{env_set()} does not work by side effect. The input is copied
 before being assigned an environment, and left unchanged. However,
-\code{env_set_next()} operates on the inner environment and does
+\code{env_set_parent()} operates on the inner environment and does
 have a side effect.
 }
 \examples{

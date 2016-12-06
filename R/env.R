@@ -18,7 +18,7 @@
 #' environment is simply returned (this helps simplifying code when
 #' writing generic functions).
 #'
-#' \code{env_new()} creates a new environment. \code{env_next()}
+#' \code{env_new()} creates a new environment. \code{env_parent()}
 #' returns the parent environment of \code{env} if called with \code{n
 #' = 1}, the grandparent with \code{n = 2}, etc. \code{env_tail()}
 #' searches through the parents and returns the one which has
@@ -91,24 +91,24 @@
 #' env_sees(env, "lapply")
 #'
 #'
-#' # Get the parent environment with env_next():
-#' env_next(env_global())
+#' # Get the parent environment with env_parent():
+#' env_parent(env_global())
 #'
 #' # Or the tail environment with env_tail():
 #' env_tail(env_global())
 #'
 #'
-#' # By default, env_next() returns the parent environment of the
+#' # By default, env_parent() returns the parent environment of the
 #' # current evaluation frame. If called at top-level (the global
 #' # frame), the following two expressions are equivalent:
-#' env_next()
-#' env_next(env_global())
+#' env_parent()
+#' env_parent(env_global())
 #'
 #' # This default is more handy when called within a function. In this
 #' # case, the enclosure environment of the function is returned
 #' # (since it is the parent of the evaluation frame):
 #' enclos_env <- env_new()
-#' fn <- with_env(enclos_env, function() env_next())
+#' fn <- with_env(enclos_env, function() env_parent())
 #' identical(enclos_env, fn())
 env <- function(env = env_caller()) {
   UseMethod("env")
@@ -162,7 +162,7 @@ env_new <- function(parent = env_caller(), dict = list()) {
 
 #' @rdname env
 #' @export
-env_next <- function(env = env_caller(), n = 1) {
+env_parent <- function(env = env_caller(), n = 1) {
   env_ <- rlang::env(env)
 
   while (n > 0) {
@@ -195,7 +195,7 @@ env_tail <- function(env = env_caller()) {
 #'
 #' \code{env_set()} does not work by side effect. The input is copied
 #' before being assigned an environment, and left unchanged. However,
-#' \code{env_set_next()} operates on the inner environment and does
+#' \code{env_set_parent()} operates on the inner environment and does
 #' have a side effect.
 #'
 #' @param env An environment or an object with a S3 method for
@@ -239,7 +239,7 @@ env_set.environment <- function(env, new_env) {
 
 #' @rdname env_set
 #' @export
-env_set_next <- function(env, new_env) {
+env_set_parent <- function(env, new_env) {
   env_ <- rlang::env(env)
   parent.env(env_) <- rlang::env(new_env)
   env
@@ -606,7 +606,7 @@ env_namespace <- function(pkg) {
 #' @rdname env_namespace
 #' @export
 env_imports <- function(pkg) {
-  env_next(env_namespace(pkg))
+  env_parent(env_namespace(pkg))
 }
 
 #' Get the empty environment.

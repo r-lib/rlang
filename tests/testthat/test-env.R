@@ -5,9 +5,9 @@ test_that("env() returns current frame by default", {
   fn()
 })
 
-test_that("env_next() returns enclosure frame by default", {
+test_that("env_parent() returns enclosure frame by default", {
   enclos_env <- env_new()
-  fn <- with_env(enclos_env, function() env_next())
+  fn <- with_env(enclos_env, function() env_parent())
   expect_identical(fn(), enclos_env)
 })
 
@@ -20,7 +20,7 @@ test_that("env_new() has correct parent", {
   expect_identical(parent.env(out$new), out$env)
 })
 
-test_that("env_next() reports correct parent", {
+test_that("env_parent() reports correct parent", {
   env <- env_new(
     env_new(env_empty(), list(obj = "b")),
     list(obj = "a")
