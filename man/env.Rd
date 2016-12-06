@@ -114,7 +114,9 @@ env_sees(env, "lapply")
 
 # The base package environment is often a good default choice for a
 # parent environment because it contains all standard base
-# functions:
+# functions. Also note that it will never inherit from other loaded
+# package environments since R keeps the base package at the tail
+# of the search path:
 env <- env_new(env_base())
 env_sees(env, "lapply")
 
