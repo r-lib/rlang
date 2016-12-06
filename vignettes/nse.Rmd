@@ -12,6 +12,9 @@ vignette: >
 ```{r, include = FALSE}
 library(rlang)
 knitr::opts_chunk$set(collapse = TRUE, comment = "#>")
+
+# TODO: switch vignette to new approach
+knitr::opts_chunk$set(eval = FALSE)
 ```
 
 This document describes rlang's tool for working with non-standard evaluation (NSE) in R. You should read this vignette if you want to program with packages like dplyr and ggplot2[^1], or you want a principled way of working with delayed expressions in your own package. As the name suggests, non-standard evaluation breaks away from the standard evaluation (SE) rules in order to do something special. There are three common uses of NSE:
