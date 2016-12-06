@@ -568,6 +568,23 @@ stack_trim <- function(stack, n = 1) {
 #'   evaluation environment currently on the stack.
 #' @param value The return value.
 #' @export
+#' @examples
+#' # Passing fn() evaluation frame to g():
+#' fn <- function() {
+#'   val <- g(env())
+#'   cat("g returned:", val, "\n")
+#'   "normal return"
+#' }
+#' g <- function(env) h(env)
+#'
+#' # Here we return from fn() with a new return value:
+#' h <- function(env) return_from(env, "early return")
+#' fn()
+#'
+#' # Here we return to fn(). The call stack unwinds until the last frame
+#' # called by fn(), which is g() in that case.
+#' h <- function(env) return_to(env, "early return")
+#' fn()
 return_from <- function(frame, value = NULL) {
   if (is_numeric(frame)) {
     frame <- eval_frame(frame)

@@ -35,4 +35,22 @@ gotos can be hard to reason about in casual code, though they can
 sometimes be useful. Also, consider to use the condition system to
 perform non-local jumps.
 }
+\examples{
+# Passing fn() evaluation frame to g():
+fn <- function() {
+  val <- g(env())
+  cat("g returned:", val, "\\n")
+  "normal return"
+}
+g <- function(env) h(env)
+
+# Here we return from fn() with a new return value:
+h <- function(env) return_from(env, "early return")
+fn()
+
+# Here we return to fn(). The call stack unwinds until the last frame
+# called by fn(), which is g() in that case.
+h <- function(env) return_to(env, "early return")
+fn()
+}
 
