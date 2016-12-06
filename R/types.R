@@ -221,3 +221,19 @@ is_empty <- function(x) length(x) == 0
 is_formula <- function(x) {
   typeof(x) == "language" && inherits(x, "formula")
 }
+
+#' Is object an environment?
+#'
+#' \code{is_bare_env()} tests whether \code{x} is an environment
+#' without a s3 or s4 class.
+#'
+#' @inheritParams is_empty
+#' @export
+is_env <- function(x) {
+  typeof(x) == "environment"
+}
+#' @rdname is_env
+#' @export
+is_bare_env <- function(x) {
+  !is.object(x) && typeof(x) == "environment"
+}
