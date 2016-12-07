@@ -5,12 +5,14 @@
 \alias{env_namespace}
 \title{Get the namespace of a package.}
 \usage{
-env_namespace(pkg)
+env_namespace(pkg = NULL)
 
-env_imports(pkg)
+env_imports(pkg = NULL)
 }
 \arguments{
-\item{pkg}{The name of a package.}
+\item{pkg}{The name of a package. If \code{NULL}, the surrounding
+namespace is returned, or an error is issued if not called within
+a namespace.}
 }
 \description{
 Namespaces are the environment where all the functions of a package

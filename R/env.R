@@ -586,15 +586,25 @@ env_global <- globalenv
 #' live. The parent environments of namespaces are the \code{imports}
 #' environments, which contain all the functions imported from other
 #' packages.
-#' @param pkg The name of a package.
+#' @param pkg The name of a package. If \code{NULL}, the surrounding
+#'   namespace is returned, or an error is issued if not called within
+#'   a namespace.
 #' @seealso \code{\link{env_package}()}
 #' @export
-env_namespace <- function(pkg) {
-  asNamespace(pkg)
+env_namespace <- function(pkg = NULL) {
+  if (!is_null(pkg)) {
+    return(asNamespace(pkg))
+  }
+
+  bottom <- topenv(env_caller())
+  if (!isNamespace(bottom)) {
+    stop("not in a namespace", call. = FALSE)
+  }
+  bottom
 }
 #' @rdname env_namespace
 #' @export
-env_imports <- function(pkg) {
+env_imports <- function(pkg = NULL) {
   env_parent(env_namespace(pkg))
 }
 
