@@ -7,13 +7,13 @@
 \alias{cnd_warning}
 \title{Create a condition object.}
 \usage{
-cnd_new(.type = NULL, ..., .msg = NULL, .call = NULL)
+cnd_new(.type = NULL, ..., .msg = NULL)
 
-cnd_error(.type = NULL, ..., .msg = NULL, .call = NULL)
+cnd_error(.type = NULL, ..., .msg = NULL)
 
-cnd_warning(.type = NULL, ..., .msg = NULL, .call = NULL)
+cnd_warning(.type = NULL, ..., .msg = NULL)
 
-cnd_message(.type = NULL, ..., .msg = NULL, .call = NULL)
+cnd_message(.type = NULL, ..., .msg = NULL)
 }
 \arguments{
 \item{.type}{The condition subclass.}
@@ -22,8 +22,6 @@ cnd_message(.type = NULL, ..., .msg = NULL, .call = NULL)
 
 \item{.msg}{A default message to inform the user about the
 condition when it is signalled.}
-
-\item{.call}{The default call within which the condition occurred.}
 }
 \description{
 These constructors make it easy to create subclassed conditions.

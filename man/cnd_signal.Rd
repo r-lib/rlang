@@ -18,7 +18,11 @@ new condition will be created.}
 
 \item{.msg}{A string to override the condition's default message.}
 
-\item{.call}{Whether to override the condition's default call.}
+\item{.call}{Whether to display the call of the frame in which the
+condition is signalled. If \code{TRUE}, the call is stored in the
+\code{call} field of the condition object: this field is
+displayed by R when an error is issued. The call information is
+also stored in the \code{.call} field in all cases.}
 
 \item{.mufflable}{Whether to signal the condition with a muffling
 restart. This is useful to let \code{\link{inplace}()} handlers

@@ -1,10 +1,8 @@
 context("conditions") # ----------------------------------------------
 
 test_that("cnd_new() constructs all fields", {
-  cond <- cnd_new("cnd_class", .msg = "cnd message", .call = quote(cnd_call(arg)))
-
+  cond <- cnd_new("cnd_class", .msg = "cnd message")
   expect_equal(conditionMessage(cond), "cnd message")
-  expect_equal(conditionCall(cond), quote(cnd_call(arg)))
   expect_is(cond, "cnd_class")
 })
 
@@ -19,6 +17,37 @@ test_that("cnd_signal() creates muffle restarts", {
       expect_is(c, "mufflable")
     }
   )
+})
+
+test_that("cnd_signal() include call info", {
+  cnd <- cnd_new("cnd", .call = quote(foo(bar)))
+  fn <- function(...) cnd_signal(cnd, .call = call)
+
+  call <- FALSE
+  with_handlers(fn(foo(bar)), cnd = inplace(function(c) {
+    expect_identical(c$.call, quote(fn(foo(bar))))
+    expect_null(conditionCall(c))
+  }))
+
+  call <- TRUE
+  with_handlers(fn(foo(bar)), cnd = inplace(function(c) {
+    expect_identical(conditionCall(c), quote(fn(foo(bar))))
+  }))
+})
+
+test_that("abort() includes call info", {
+  fn <- function(...) abort("abort", "cnd", call = call)
+
+  call <- FALSE
+  with_handlers(fn(foo(bar)), cnd = thrown(function(c) {
+    expect_identical(c$.call, quote(fn(foo(bar))))
+    expect_null(conditionCall(c))
+  }))
+
+  call <- TRUE
+  with_handlers(fn(foo(bar)), cnd = thrown(function(c) {
+    expect_identical(conditionCall(c), quote(fn(foo(bar))))
+  }))
 })
 
 

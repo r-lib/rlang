@@ -15,10 +15,10 @@ condition is signalled. They are useful for two non-exclusive
 purposes: muffling signalling functions and muffling conditions. In
 the first case, \code{rst_muffle()} prevents any further side
 effects of a signalling function (a warning or message from being
-displayed, a abort jump to top level, etc). In the second case, the
-muffling jump prevents a condition from being passed on to other
-handlers. In both cases, execution resumes normally from the point
-where the condition was signalled.
+displayed, an aborting jump to top level, etc). In the second case,
+the muffling jump prevents a condition from being passed on to
+other handlers. In both cases, execution resumes normally from the
+point where the condition was signalled.
 }
 \examples{
 side_effect <- function() cat("side effect!\\n")

@@ -18,7 +18,6 @@
 #' @param ... Named data fields stored inside the condition object.
 #' @param .msg A default message to inform the user about the
 #'   condition when it is signalled.
-#' @param .call The default call within which the condition occurred.
 #' @seealso \code{\link{cnd_signal}()}, \code{\link{with_handlers}()}.
 #' @export
 #' @examples
@@ -44,33 +43,33 @@
 #' # you need to use stop() to signal a critical condition that should
 #' # terminate the program if not handled:
 #' # stop(cnd_error("my_error"))
-cnd_new <- function(.type = NULL, ..., .msg = NULL, .call = NULL) {
+cnd_new <- function(.type = NULL, ..., .msg = NULL) {
   data <- list(...)
-  if (any(names(data) %in% c("message", "call"))) {
-    stop("conditions cannot have `message` or `call` data fields", call. = FALSE)
+  if (any(names(data) %in% "message")) {
+    stop("conditions cannot have a `message` data field", call. = FALSE)
   }
   if (any(names2(data) == "")) {
     stop("conditions must have named data fields", call. = FALSE)
   }
 
-  cnd <- c(list(message = .msg, call = .call), data)
+  cnd <- c(list(message = .msg), data)
   structure(cnd, class = c(.type, "condition"))
 }
 
 #' @rdname cnd_new
 #' @export
-cnd_error <- function(.type = NULL, ..., .msg = NULL, .call = NULL) {
-  cnd_new(c(.type, "error"), ..., .msg = .msg, .call = .call)
+cnd_error <- function(.type = NULL, ..., .msg = NULL) {
+  cnd_new(c(.type, "error"), ..., .msg = .msg)
 }
 #' @rdname cnd_new
 #' @export
-cnd_warning <- function(.type = NULL, ..., .msg = NULL, .call = NULL) {
-  cnd_new(c(.type, "warning"), ..., .msg = .msg, .call = .call)
+cnd_warning <- function(.type = NULL, ..., .msg = NULL) {
+  cnd_new(c(.type, "warning"), ..., .msg = .msg)
 }
 #' @rdname cnd_new
 #' @export
-cnd_message <- function(.type = NULL, ..., .msg = NULL, .call = NULL) {
-  cnd_new(c(.type, "message"), ..., .msg = .msg, .call = .call)
+cnd_message <- function(.type = NULL, ..., .msg = NULL) {
+  cnd_new(c(.type, "message"), ..., .msg = .msg)
 }
 
 #' Is object a condition?
@@ -118,7 +117,11 @@ is_condition <- function(x) {
 #'   \code{\link{cnd_new}()}), or the name of a s3 class from which a
 #'   new condition will be created.
 #' @param .msg A string to override the condition's default message.
-#' @param .call Whether to override the condition's default call.
+#' @param .call Whether to display the call of the frame in which the
+#'   condition is signalled. If \code{TRUE}, the call is stored in the
+#'   \code{call} field of the condition object: this field is
+#'   displayed by R when an error is issued. The call information is
+#'   also stored in the \code{.call} field in all cases.
 #' @param .mufflable Whether to signal the condition with a muffling
 #'   restart. This is useful to let \code{\link{inplace}()} handlers
 #'   muffle a condition. It stops the condition from being passed to
@@ -193,29 +196,33 @@ is_condition <- function(x) {
 #' # condition.
 cnd_signal <- function(.cnd, ..., .msg = NULL, .call = FALSE,
                        .mufflable = TRUE) {
-  call <- if (.call) sys.call(-1) else NULL
-  cnd <- make_cnd(.cnd, ..., .msg = .msg, .call = call)
+  cnd <- make_cnd(.cnd, ..., .msg = .msg, .call = sys.call(-1), .show_call = .call)
   cnd_signal_(cnd, base::signalCondition, .mufflable)
 }
 #' @rdname cnd_signal
 #' @export
 cnd_abort <- function(.cnd, ..., .msg = NULL, .call = FALSE,
                       .mufflable = FALSE) {
-  call <- if (.call) sys.call(-1) else NULL
-  cnd <- make_cnd(.cnd, ..., .msg = .msg, .call = call)
+  cnd <- make_cnd(.cnd, ..., .msg = .msg, .call = sys.call(-1), .show_call = .call)
   cnd_signal_(cnd, base::stop, .mufflable)
 }
 
-make_cnd <- function(.cnd, ..., .msg, .call) {
+make_cnd <- function(.cnd, ..., .msg, .call, .show_call) {
   if (is_scalar_character(.cnd)) {
     .cnd <- cnd_new(.cnd, ...)
   } else {
     stopifnot(is_condition(.cnd))
   }
 
-  # Override default fields if supplied
+  # Override default field if supplied
   .cnd$message <- .msg %||% .cnd$message %||% ""
-  .cnd$call <- .call %||% .cnd$call
+
+  # The `call` field is displayed by stop().
+  # But record call in `.call` in all cases.
+  .cnd$.call <- .call
+  if (.show_call) {
+    .cnd$call <- .cnd$.call
+  }
 
   .cnd
 }
@@ -266,22 +273,28 @@ cnd_signal_ <- function(cnd, signal, mufflable) {
 #'
 #' @export
 abort <- function(msg, type = NULL, call = FALSE) {
-  call <- if (call) sys.call(-1) else NULL
-  cnd <- cnd_error(type, .msg = msg, .call = call)
+  cnd <- cnd_error(type, .msg = msg, .call = sys.call(-1))
+  if (call) {
+    cnd$call <- cnd$.call
+  }
   stop(cnd)
 }
 #' @rdname abort
 #' @export
 warn <- function(msg, type = NULL, call = FALSE) {
-  call <- if (call) sys.call(-1) else NULL
-  cnd <- cnd_warning(type, .msg = msg, .call = call)
+  cnd <- cnd_warning(type, .msg = msg, .call = sys.call(-1))
+  if (call) {
+    cnd$call <- cnd$.call
+  }
   warning(cnd)
 }
 #' @rdname abort
 #' @export
 inform <- function(msg, type = NULL, call = FALSE) {
-  call <- if (call) sys.call(-1) else NULL
-  cnd <- cnd_message(type, .msg = msg, .call = call)
+  cnd <- cnd_message(type, .msg = msg, .call = sys.call(-1))
+  if (call) {
+    cnd$call <- cnd$.call
+  }
   message(cnd)
 }
 
