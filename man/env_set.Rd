@@ -33,7 +33,7 @@ have a side effect.
 }
 \examples{
 # Create a function with a given environment:
-env <- env_new()
+env <- env_new(env_base())
 fn <- with_env(env, function() NULL)
 identical(env(fn), env)
 

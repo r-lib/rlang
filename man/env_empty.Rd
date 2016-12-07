@@ -12,7 +12,7 @@ is always used as the tail of a scope chain such as the search
 path.
 }
 \examples{
-# Create environments with nothing in scope:
+# Create environments with nothing in scope (the default):
 env_new(parent = env_empty())
 }
 

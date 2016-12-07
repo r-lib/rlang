@@ -24,7 +24,7 @@ env(env = env_caller())
 
 \method{env}{default}(env = env_caller())
 
-env_new(parent = env_caller(), dict = list())
+env_new(parent = env_empty(), dict = list())
 
 env_parent(env = env_caller(), n = 1)
 
@@ -89,12 +89,12 @@ env(fn)
 
 
 # env_new() creates by default an environment whose parent is the
-# current environment. Here we return a new environment that has
+# empty environment. Here we return a new environment that has
 # the evaluation environment (or frame environment) of a function
 # as parent:
 fn <- function() {
   my_object <- "A"
-  env_new()
+  env_new(env())
 }
 frame_env <- fn()
 
@@ -107,9 +107,9 @@ env_has(frame_env, "my_object", inherit = TRUE)
 
 
 # Create a new environment with a particular scope by setting a
-# parent. When inheriting from the empty environment, the
-# environment will have no object in scope at all:
-env <- env_new(env_empty())
+# parent. When inheriting from the empty environment (the default),
+# the environment will have no object in scope at all:
+env <- env_new()
 env_has(env, "lapply", inherit = TRUE)
 
 # The base package environment is often a good default choice for a
@@ -143,7 +143,7 @@ env_parent(env_global())
 # This default is more handy when called within a function. In this
 # case, the enclosure environment of the function is returned
 # (since it is the parent of the evaluation frame):
-enclos_env <- env_new()
+enclos_env <- env_new(env_package("rlang"))
 fn <- with_env(enclos_env, function() env_parent())
 identical(enclos_env, fn())
 }

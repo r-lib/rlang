@@ -55,12 +55,12 @@
 #'
 #'
 #' # env_new() creates by default an environment whose parent is the
-#' # current environment. Here we return a new environment that has
+#' # empty environment. Here we return a new environment that has
 #' # the evaluation environment (or frame environment) of a function
 #' # as parent:
 #' fn <- function() {
 #'   my_object <- "A"
-#'   env_new()
+#'   env_new(env())
 #' }
 #' frame_env <- fn()
 #'
@@ -73,9 +73,9 @@
 #'
 #'
 #' # Create a new environment with a particular scope by setting a
-#' # parent. When inheriting from the empty environment, the
-#' # environment will have no object in scope at all:
-#' env <- env_new(env_empty())
+#' # parent. When inheriting from the empty environment (the default),
+#' # the environment will have no object in scope at all:
+#' env <- env_new()
 #' env_has(env, "lapply", inherit = TRUE)
 #'
 #' # The base package environment is often a good default choice for a
@@ -109,7 +109,7 @@
 #' # This default is more handy when called within a function. In this
 #' # case, the enclosure environment of the function is returned
 #' # (since it is the parent of the evaluation frame):
-#' enclos_env <- env_new()
+#' enclos_env <- env_new(env_package("rlang"))
 #' fn <- with_env(enclos_env, function() env_parent())
 #' identical(enclos_env, fn())
 env <- function(env = env_caller()) {
@@ -157,7 +157,7 @@ env.default <- function(env = env_caller()) {
 
 #' @rdname env
 #' @export
-env_new <- function(parent = env_caller(), dict = list()) {
+env_new <- function(parent = env_empty(), dict = list()) {
   env <- new.env(parent = parent)
   env_bind(env, dict)
 }
@@ -207,7 +207,7 @@ env_tail <- function(env = env_caller()) {
 #' @export
 #' @examples
 #' # Create a function with a given environment:
-#' env <- env_new()
+#' env <- env_new(env_base())
 #' fn <- with_env(env, function() NULL)
 #' identical(env(fn), env)
 #'
@@ -606,7 +606,7 @@ env_imports <- function(pkg) {
 #'
 #' @export
 #' @examples
-#' # Create environments with nothing in scope:
+#' # Create environments with nothing in scope (the default):
 #' env_new(parent = env_empty())
 env_empty <- emptyenv
 

@@ -6,18 +6,18 @@ test_that("env() returns current frame by default", {
 })
 
 test_that("env_parent() returns enclosure frame by default", {
-  enclos_env <- env_new()
+  enclos_env <- env_new(env_package("rlang"))
   fn <- with_env(enclos_env, function() env_parent())
   expect_identical(fn(), enclos_env)
 })
 
 test_that("env_new() has correct parent", {
-  env <- env_new(emptyenv())
+  env <- env_new(env_empty())
   expect_false(env_has(env, "list", inherit = TRUE))
 
-  fn <- function() list(new = env_new(), env = environment())
+  fn <- function() list(new = env_new(env()), env = environment())
   out <- fn()
-  expect_identical(parent.env(out$new), out$env)
+  expect_identical(env_parent(out$new), out$env)
 })
 
 test_that("env_parent() reports correct parent", {
