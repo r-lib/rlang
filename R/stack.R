@@ -476,7 +476,7 @@ frame_position_global <- function(frame, stack = NULL) {
     i <- i + 1
   }
 
-  panic("`frame` not found on evaluation stack")
+  abort("`frame` not found on evaluation stack")
 }
 
 frame_position_current <- function(frame, stack = NULL,

@@ -30,7 +30,7 @@ A subtle point in the R language is that conditions are not thrown,
 handlers are. \code{\link[base]{tryCatch}()} and
 \code{\link{with_handlers}()} actually catch handlers rather than
 conditions. When a critical condition signalled with
-\code{\link[base]{stop}()} or \code{\link{panic}()}, R inspects the
+\code{\link[base]{stop}()} or \code{\link{abort}()}, R inspects the
 handler stack and looks for a handler that can deal with the
 condition. If it finds a throwable handler, it throws it to the
 function that established it (\code{\link{with_handlers}()}). If R

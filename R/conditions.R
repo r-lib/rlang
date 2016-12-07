@@ -85,7 +85,7 @@ is_condition <- function(x) {
 #' stack. Conditions signalled with \code{cnd_signal()} are assumed to
 #' be benign. Control flow can resume normally once the conditions has
 #' been signalled (if no handler jumped somewhere else on the
-#' evaluation stack). On the other hand, \code{cnd_panic()} treats the
+#' evaluation stack). On the other hand, \code{cnd_abort()} treats the
 #' condition as critical and will jump out of the distressed call
 #' frame (see \code{\link{rst_abort}()}), unless a handler can deal
 #' with the condition.
@@ -126,7 +126,7 @@ is_condition <- function(x) {
 #'   elsewhere. \code{TRUE} by default for benign conditions, but
 #'   \code{FALSE} for critical ones, since in those cases execution
 #'   should probably not be allowed to continue normally.
-#' @seealso \code{\link{panic}()}, \code{\link{warn}()} and
+#' @seealso \code{\link{abort}()}, \code{\link{warn}()} and
 #'   \code{\link{inform}()} for signalling typical R conditions. See
 #'   \code{\link{with_handlers}()} for establishing condition
 #'   handlers.
@@ -162,32 +162,32 @@ is_condition <- function(x) {
 #'   }))
 #'
 #'
-#' # You can signal a critical condition with cnd_panic(). Unlike
+#' # You can signal a critical condition with cnd_abort(). Unlike
 #' # cnd_signal() which has no side effect besides signalling the
-#' # condition, cnd_panic() makes the program terminate with an error
+#' # condition, cnd_abort() makes the program terminate with an error
 #' # unless a handler can deal with the condition:
 #' \dontrun{
-#' cnd_panic(cnd)
+#' cnd_abort(cnd)
 #' }
 #'
 #' # If you don't specify a .msg or .call, the default message/call
 #' # (supplied to cnd_new()) are displayed. Otherwise, the ones
-#' # supplied to cnd_panic() and cnd_signal() take precedence:
+#' # supplied to cnd_abort() and cnd_signal() take precedence:
 #' \dontrun{
 #' critical <- cnd_new("my_error",
 #'   .msg = "default 'my_error' msg",
 #'   .call = quote(default(call))
 #' )
-#' cnd_panic(critical)
-#' cnd_panic(critical, .msg = "overridden msg")
+#' cnd_abort(critical)
+#' cnd_abort(critical, .msg = "overridden msg")
 #'
 #' fn <- function(...) {
-#'   cnd_panic(critical, .call = TRUE)
+#'   cnd_abort(critical, .call = TRUE)
 #' }
 #' fn(arg = foo(bar))
 #' }
 #'
-#' # Note that by default a condition signalled with cnd_panic() does
+#' # Note that by default a condition signalled with cnd_abort() does
 #' # not have a muffle restart. That is because in most cases,
 #' # execution should not continue after signalling a critical
 #' # condition.
@@ -199,7 +199,7 @@ cnd_signal <- function(.cnd, ..., .msg = NULL, .call = FALSE,
 }
 #' @rdname cnd_signal
 #' @export
-cnd_panic <- function(.cnd, ..., .msg = NULL, .call = FALSE,
+cnd_abort <- function(.cnd, ..., .msg = NULL, .call = FALSE,
                       .mufflable = FALSE) {
   call <- if (.call) sys.call(-1) else NULL
   cnd <- make_cnd(.cnd, ..., .msg = .msg, .call = call)
@@ -238,7 +238,7 @@ cnd_signal_ <- function(cnd, signal, mufflable) {
 #' \code{call. = FALSE} to make error messages cleaner within package
 #' functions.
 #'
-#' Like \code{stop()} and \code{\link{cnd_panic}()}, \code{panic()}
+#' Like \code{stop()} and \code{\link{cnd_abort}()}, \code{abort()}
 #' signals a critical condition and interrupts execution by jumping to
 #' top level (see \code{\link{rst_abort}()}). Only a handler of the
 #' relevant type can prevent this jump by making another jump to a
@@ -265,19 +265,19 @@ cnd_signal_ <- function(cnd, signal, mufflable) {
 #' @param call Whether to display the call.
 #'
 #' @export
-panic <- function(msg, type = NULL, call = FALSE) {
+abort <- function(msg, type = NULL, call = FALSE) {
   call <- if (call) sys.call(-1) else NULL
   cnd <- cnd_error(type, .msg = msg, .call = call)
   stop(cnd)
 }
-#' @rdname panic
+#' @rdname abort
 #' @export
 warn <- function(msg, type = NULL, call = FALSE) {
   call <- if (call) sys.call(-1) else NULL
   cnd <- cnd_warning(type, .msg = msg, .call = call)
   warning(cnd)
 }
-#' @rdname panic
+#' @rdname abort
 #' @export
 inform <- function(msg, type = NULL, call = FALSE) {
   call <- if (call) sys.call(-1) else NULL
@@ -330,11 +330,11 @@ rst_maybe_jump <- function(.restart, ..., .args = list()) {
 #'
 #' The abort restart is the only restart that is established at top
 #' level. It is used by R as a top-level target, most notably when an
-#' error is issued (see \code{\link{panic}()}) that no handler is able
+#' error is issued (see \code{\link{abort}()}) that no handler is able
 #' to deal with (see \code{\link{with_handlers}()}).
 #'
-#' @seealso \code{\link{rst_jump}()}, \code{\link{panic}()} and
-#'   \code{\link{cnd_panic}()}.
+#' @seealso \code{\link{rst_jump}()}, \code{\link{abort}()} and
+#'   \code{\link{cnd_abort}()}.
 #' @export
 #' @examples
 #' # The `abort` restart is a bit special in that it is always
@@ -360,7 +360,7 @@ rst_maybe_jump <- function(.restart, ..., .args = list()) {
 #' # level when critical errors are signalled:
 #' \dontrun{
 #' {
-#'   panic("error")
+#'   abort("error")
 #'   cat("This is never called\n")
 #' }
 #' }
@@ -370,7 +370,7 @@ rst_maybe_jump <- function(.restart, ..., .args = list()) {
 #' \dontrun{
 #' out <- NULL
 #' {
-#'   out <- with_restarts(panic("error"), abort = function() "restart!")
+#'   out <- with_restarts(abort("error"), abort = function() "restart!")
 #'   cat("This is called\n")
 #' }
 #' cat("`out` has now become:", out, "\n")
@@ -386,10 +386,10 @@ rst_abort <- function() {
 #' purposes: muffling signalling functions and muffling conditions. In
 #' the first case, \code{rst_muffle()} prevents any further side
 #' effects of a signalling function (a warning or message from being
-#' displayed, a panic jump to top level, etc). In the second case, the
-#' muffling jump prevents a condition from being passed on to other
-#' handlers. In both cases, execution resumes normally from the point
-#' where the condition was signalled.
+#' displayed, an aborting jump to top level, etc). In the second case,
+#' the muffling jump prevents a condition from being passed on to
+#' other handlers. In both cases, execution resumes normally from the
+#' point where the condition was signalled.
 #'
 #' @param c A condition to muffle.
 #' @seealso The \code{muffle} argument of \code{\link{inplace}()}, and
@@ -445,7 +445,7 @@ rst_muffle <- function(c) {
 }
 #' @export
 rst_muffle.default <- function(c) {
-  panic("No muffle restart defined for this condition", "control")
+  abort("No muffle restart defined for this condition", "control")
 }
 #' @export
 rst_muffle.simpleMessage <- function(c) {
@@ -597,7 +597,7 @@ with_restarts_ <- function(.expr, .restarts = list(), .env = NULL) {
 #' handlers are. \code{\link[base]{tryCatch}()} and
 #' \code{\link{with_handlers}()} actually catch handlers rather than
 #' conditions. When a critical condition signalled with
-#' \code{\link[base]{stop}()} or \code{\link{panic}()}, R inspects the
+#' \code{\link[base]{stop}()} or \code{\link{abort}()}, R inspects the
 #' handler stack and looks for a handler that can deal with the
 #' condition. If it finds a throwable handler, it throws it to the
 #' function that established it (\code{\link{with_handlers}()}). If R
@@ -710,7 +710,7 @@ restarting <- function(.restart, ..., .fields = NULL, .args = list()) {
 #' Condition handlers are functions established on the evaluation
 #' stack (see \code{\link{eval_stack}()}) that are called by R when a
 #' condition is signalled (see \code{\link{cnd_signal}()} and
-#' \code{\link{panic}()} for two common signal functions). They come
+#' \code{\link{abort}()} for two common signal functions). They come
 #' in two types: thrown handlers, which jump out of the signalling
 #' context and are transferred to \code{with_handlers()} before being
 #' executed. And inplace handlers, which are executed within the
@@ -797,7 +797,7 @@ with_handlers_ <- function(.expr, .handlers = list(), .env = NULL) {
   thrown <- keep(.handlers, inherits, "thrown")
 
   if (length(.handlers) > length(thrown) + length(inplace)) {
-    panic("all handlers should inherit from `thrown` or `inplace`")
+    abort("all handlers should inherit from `thrown` or `inplace`")
   }
 
   f <- interp_handlers(f, inplace = inplace, thrown = thrown)

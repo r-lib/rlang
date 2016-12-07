@@ -9,7 +9,7 @@ rst_abort()
 \description{
 The abort restart is the only restart that is established at top
 level. It is used by R as a top-level target, most notably when an
-error is issued (see \code{\link{panic}()}) that no handler is able
+error is issued (see \code{\link{abort}()}) that no handler is able
 to deal with (see \code{\link{with_handlers}()}).
 }
 \examples{
@@ -36,7 +36,7 @@ fn <- function() {
 # level when critical errors are signalled:
 \dontrun{
 {
-  panic("error")
+  abort("error")
   cat("This is never called\\n")
 }
 }
@@ -46,14 +46,14 @@ fn <- function() {
 \dontrun{
 out <- NULL
 {
-  out <- with_restarts(panic("error"), abort = function() "restart!")
+  out <- with_restarts(abort("error"), abort = function() "restart!")
   cat("This is called\\n")
 }
 cat("`out` has now become:", out, "\\n")
 }
 }
 \seealso{
-\code{\link{rst_jump}()}, \code{\link{panic}()} and
-  \code{\link{cnd_panic}()}.
+\code{\link{rst_jump}()}, \code{\link{abort}()} and
+  \code{\link{cnd_abort}()}.
 }
 

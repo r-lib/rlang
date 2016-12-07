@@ -25,7 +25,7 @@ expression or a quoted formula.}
 Condition handlers are functions established on the evaluation
 stack (see \code{\link{eval_stack}()}) that are called by R when a
 condition is signalled (see \code{\link{cnd_signal}()} and
-\code{\link{panic}()} for two common signal functions). They come
+\code{\link{abort}()} for two common signal functions). They come
 in two types: thrown handlers, which jump out of the signalling
 context and are transferred to \code{with_handlers()} before being
 executed. And inplace handlers, which are executed within the
