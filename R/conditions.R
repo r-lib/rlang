@@ -4,7 +4,7 @@
 #' Create a condition object.
 #'
 #' These constructors make it easy to create subclassed conditions.
-#' Conditions are objects powering the error system in R. They can
+#' Conditions are objects that power the error system in R. They can
 #' also be used for passing messages to pre-established handlers. See
 #' \code{vignette("conditions")} for more information on how to use
 #' the condition system.
