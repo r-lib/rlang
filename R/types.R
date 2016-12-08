@@ -237,3 +237,24 @@ is_env <- function(x) {
 is_bare_env <- function(x) {
   !is.object(x) && typeof(x) == "environment"
 }
+
+#' Is object identical to TRUE or FALSE?
+#'
+#' These functions bypass R's automatic conversion rules and check
+#' that \code{x} is literally \code{TRUE} or \code{FALSE}.
+#' @inheritParams is_empty
+#' @export
+#' @examples
+#' is_true(TRUE)
+#' is_true(1)
+#'
+#' is_false(FALSE)
+#' is_false(0)
+is_true <- function(x) {
+  identical(x, TRUE)
+}
+#' @rdname is_true
+#' @export
+is_false <- function(x) {
+  identical(x, FALSE)
+}
