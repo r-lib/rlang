@@ -78,11 +78,7 @@ as_name.symbol <- function(x) x
 
 #' @export
 as_name.character <- function(x) {
-  if (length(x) > 1) {
-    stop("Can not coerce character vector of length > 1 to name", call. = FALSE)
-  }
-
-  as.name(x)
+  as.name(read_validate(x))
 }
 
 #' @export
@@ -111,11 +107,7 @@ as_call.call <- function(x) {
 
 #' @export
 as_call.character <- function(x) {
-  if (length(x) > 1) {
-    stop("Can not coerce character vector of length > 1 to name", call. = FALSE)
-  }
-
-  parse(text = x)[[1]]
+  read(x)
 }
 
 #' @export
