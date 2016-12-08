@@ -144,3 +144,31 @@ names2 <- function(x) {
 length_ <- function(x) {
   .Call(length__, x)
 }
+
+#' How long is an object?
+#'
+#' This is a function for the common task of testing the length of an
+#' object. It checks the length of an object in a non-generic way:
+#' \code{\link[base]{length}()} methods are ignored.
+#'
+#' @inheritParams length_
+#' @param n A specific length to test \code{x} with. If \code{NULL},
+#'   \code{has_length()} returns \code{TRUE} if \code{x} has length
+#'   greater than zero, and \code{FALSE} otherwise.
+#' @export
+#' @examples
+#' has_length(list())
+#' has_length(list(), 0)
+#'
+#' has_length(letters)
+#' has_length(letters, 20)
+#' has_length(letters, 26)
+has_length <- function(x, n = NULL) {
+  len <- .Call(length__, x)
+
+  if (is_null(n)) {
+    as.logical(len)
+  } else {
+    len == n
+  }
+}
