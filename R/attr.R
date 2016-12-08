@@ -124,3 +124,23 @@ set_names <- function(x, nm = x) {
 names2 <- function(x) {
   names(x) %||% rep("", length(x))
 }
+
+#' Get length of an object.
+#'
+#' Unlike \code{\link[base]{length}()}, this function is not a s3
+#' generic and will always return the actual length of an object.
+#'
+#' @param x A R object.
+#' @useDynLib rlang length__
+#' @export
+#' @examples
+#' # s3 objects can have a length() method:
+#' x <- structure(letters, class = "foo")
+#' length.foo <- function(x) 100
+#' length(x)
+#'
+#' # length_() will always reveal the true length of the object:
+#' length_(x)
+length_ <- function(x) {
+  .Call(length__, x)
+}
