@@ -5,7 +5,8 @@
 #' name (aka a symbol), a call, or a pairlist (used for function arguments).
 #'
 #' @param x An object to test.
-#' @seealso \code{\link{as_name}()} and \code{\link{as_call}()} for coercion
+#' @seealso \code{\link{is_call}()} for a call predicate.
+#'   \code{\link{as_name}()} and \code{\link{as_call}()} for coercion
 #'   functions.
 #' @export
 #' @examples
@@ -28,29 +29,97 @@
 is_lang <- function(x) {
   is_call(x) || is_pairlist(x) || is_literal(x) || is_null(x)
 }
-
 #' @rdname is_lang
 #' @export
 is_name <- function(x) {
   typeof(x) == "symbol"
 }
-
-#' @rdname is_lang
-#' @export
-is_call <- function(x) {
-  typeof(x) == "language"
-}
-
 #' @rdname is_lang
 #' @export
 is_pairlist <- function(x) {
   typeof(x) == "pairlist"
 }
-
 #' @export
 #' @rdname is_lang
 is_literal <- function(x) {
   is_name(x) || is_scalar_atomic(x)
+}
+
+#' Is object a call?
+#'
+#' This function tests if \code{x} is a call. This is a
+#' pattern-matching predicate that will return \code{FALSE} if
+#' \code{name} and \code{n} are supplied and the call does not match
+#' these properties. \code{is_unary_call()} and
+#' \code{is_binary_call()} hardcode \code{n} to 1 and 2.
+#'
+#' @param x An object to test. If a formula, the right-hand side is
+#'   extracted.
+#' @param name An optional name that the call should match. It is
+#'   passed to \code{\link{as_name}()} before matching.
+#' @param n An optional number of arguments that the call should
+#'   match.
+#' @seealso \code{\link{is_lang}()}
+#' @export
+#' @examples
+#' is_call(quote(foo(bar)))
+#'
+#' # Right-hand sides are extracted from formulas:
+#' is_call(~foo(bar))
+#'
+#' # You can pattern-match the call with additional arguments:
+#' is_call(~foo(bar), "foo")
+#' is_call(~foo(bar), "bar")
+#' is_call(~foo(bar), quote(foo))
+#'
+#' # Match the number of arguments with is_call():
+#' is_call(~foo(bar), "foo", 1)
+#' is_call(~foo(bar), "foo", 2)
+#'
+#' # Or more specifically:
+#' is_unary_call(~foo(bar))
+#' is_unary_call(~ +3)
+#' is_unary_call(~ 1 + 3)
+#' is_binary_call(~ 1 + 3)
+#'
+#' # Namespaced calls are a bit tricky. Strings won't work because
+#' # as_name("base::list") returns a symbol rather than a namespace
+#' # call:
+#' is_call(~base::list(baz), "base::list")
+#'
+#' # However you can use the fact that as_name(quote(base::list()))
+#' # extracts the function identifier as is, and thus returns the call
+#' # base::list:
+#' is_call(~base::list(baz), ~base::list(), 1)
+is_call <- function(x, name = NULL, n = NULL) {
+  if (is_formula(x)) {
+    x <- f_rhs(x)
+  }
+
+  if (!typeof(x) == "language") {
+    return(FALSE)
+  }
+
+  if (!is_null(name) && !identical(x[[1]], as_name(name))) {
+    return(FALSE)
+  }
+
+  if (!is_null(n) && !has_length(x, n + 1L)) {
+    return(FALSE)
+  }
+
+  TRUE
+}
+
+#' @rdname is_call
+#' @export
+is_unary_call <- function(x, name = NULL) {
+  is_call(x, name, n = 1L)
+}
+#' @rdname is_call
+#' @export
+is_binary_call <- function(x, name = NULL) {
+  is_call(x, name, n = 2L)
 }
 
 

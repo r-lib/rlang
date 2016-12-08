@@ -4,6 +4,24 @@ test_that("NULL is a valid language object", {
   expect_true(is_lang(NULL))
 })
 
+test_that("is_call() pattern-matches", {
+  expect_true(is_call(quote(foo(bar)), "foo"))
+  expect_false(is_call(quote(foo(bar)), "bar"))
+  expect_true(is_call(quote(foo(bar)), quote(foo)))
+
+  expect_true(is_call(~foo(bar), "foo", n = 1))
+  expect_false(is_call(~foo(bar), "foo", n = 2))
+
+  expect_true(is_call(~foo::bar()), quote(foo::bar()))
+
+  expect_false(is_call(~1))
+  expect_false(is_call(~NULL))
+
+  expect_true(is_unary_call(~ +3))
+  expect_true(is_binary_call(~ 3 + 3))
+})
+
+
 # coercion ----------------------------------------------------------------
 
 test_that("as_name() produces names", {
