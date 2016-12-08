@@ -507,24 +507,6 @@ env_unbind <- function(env = env_caller(), nms, inherit = FALSE) {
   env
 }
 
-#' Is an object a dictionary?
-#'
-#' @param x An object to test.
-#' @export
-is_dict <- function(x) {
-  if (!length(x)) {
-    return(!is.null(x))
-  }
-
-  nms <- names(x)
-  if (is.null(nms)) {
-    return(FALSE)
-  }
-
-  is_bad_nm <- is.na(nms) | nms == "" | duplicated(nms)
-  !any(is_bad_nm)
-}
-
 #' Does an environment have or see bindings?
 #'
 #' \code{env_has()} is a vectorised predicate that queries whether an

@@ -1,5 +1,82 @@
+#' Is object named?
+#'
+#' \code{is_named()} checks that \code{x} has names attributes, and
+#' that none of the names are missing or empty (\code{NA} or
+#' \code{""}). \code{is_dict()} checks that an object is a dictionary:
+#' that it has actual names and in addition that there are no
+#' duplicated names. \code{has_names()} is a vectorised version of
+#' \code{is_named()}.
+#'
+#' @param x An object to test.
+#' @return \code{is_named()} and \code{is_dict()} are scalar
+#'   predicates and return \code{TRUE} or \code{FALSE}.
+#'   \code{has_names()} is vectorised and returns a logical vector as
+#'   long as the input.
+#' @export
+#' @examples
+#' # A data frame usually has valid, unique names
+#' is_named(mtcars)
+#' has_names(mtcars)
+#' is_dict(mtcars)
+#'
+#' # But data frames can also have duplicated columns:
+#' dups <- cbind(mtcars, cyl = seq_len(nrow(mtcars)))
+#' is_dict(dups)
+#'
+#' # The names are still valid:
+#' is_named(dups)
+#' has_names(dups)
+#'
+#'
+#' # For empty objects the semantics are slightly different.
+#' # is_dict() returns TRUE for empty objects:
+#' is_dict(list())
+#'
+#' # But is_named() will only return TRUE if there is a names
+#' # attribute (a zero-length character vector in this case):
+#' x <- set_names(list(), character(0))
+#' is_named(x)
+#'
+#'
+#' # Empty and missing names are invalid:
+#' invalid <- dups
+#' names(invalid)[2] <- ""
+#' names(invalid)[5] <- NA
+#'
+#' # is_named() performs a global check while has_names() can show you
+#' # where the problem is:
+#' is_named(invalid)
+#' has_names(invalid)
+#'
+#' # has_names() will work even with vectors that don't have a names
+#' # attribute:
+#' has_names(letters)
+is_named <- function(x) {
+  nms <- names(x)
 
+  if (is_null(nms)) {
+    return(FALSE)
+  }
 
+  if (any(nms == "" | is.na(nms))) {
+    return(FALSE)
+  }
+
+  TRUE
+}
+
+#' @rdname is_named
+#' @export
+is_dict <- function(x) {
+  if (!length(x)) {
+    return(!is.null(x))
+  }
+
+  is_named(x) && !any(duplicated(names(x)))
+}
+
+#' @rdname is_named
+#' @export
 has_names <- function(x) {
   nms <- names(x)
   if (is.null(nms)) {
