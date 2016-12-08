@@ -18,6 +18,9 @@ test_that("env_new() has correct parent", {
   fn <- function() list(new = env_new(env()), env = environment())
   out <- fn()
   expect_identical(env_parent(out$new), out$env)
+
+  expect_identical(env_parent(env_new()), env_empty())
+  expect_identical(env_parent(env_new("base")), env_base())
 })
 
 test_that("env_parent() reports correct parent", {
@@ -94,4 +97,15 @@ test_that("env_namespace() returns current namespace", {
 
 test_that("env_imports() returns imports env", {
   expect_identical(with_env(env_namespace("rlang"), env_imports()), env_parent(env(rlang::env)))
+})
+
+test_that("as_env() dispatches correctly", {
+  expect_identical(as_env("base"), env_base())
+  expect_false(env_has(as_env(set_names(letters)), "lapply"))
+
+  expect_identical(as_env(NULL), env_empty())
+
+  expect_true(all(env_has(as_env(mtcars), names(mtcars))))
+  expect_identical(env_parent(as_env(mtcars)), env_empty())
+  expect_identical(env_parent(as_env(mtcars, env_base())), env_base())
 })

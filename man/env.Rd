@@ -24,7 +24,7 @@ env(env = env_caller())
 
 \method{env}{default}(env = env_caller())
 
-env_new(parent = env_empty(), dict = list())
+env_new(parent = NULL, dict = list())
 
 env_parent(env = env_caller(), n = 1)
 
@@ -36,7 +36,7 @@ env_tail(env = env_caller())
 evaluation frame is returned.}
 
 \item{parent}{A parent environment. Can be an object with a S3
-method for \code{env()}.}
+method for \code{as_env()}.}
 
 \item{dict}{A vector with unique names which defines bindings
 (pairs of name and value). See \code{\link{is_dict}()}.}
@@ -125,6 +125,12 @@ env_has(env, "lapply", inherit = TRUE)
 env <- env_new(env_package("rlang"))
 env_has(env, "env_has", inherit = TRUE)
 env_has(env, "lapply", inherit = TRUE)
+
+
+# The parent argument of env_new() is passed to as_env() to provide
+# handy shortcuts:
+env <- env_new("rlang")
+identical(env_parent(env), env_package("rlang"))
 
 
 # Get the parent environment with env_parent():

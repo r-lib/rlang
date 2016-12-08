@@ -28,7 +28,7 @@
 #'   \code{env()}. If missing, the environment of the current
 #'   evaluation frame is returned.
 #' @param parent A parent environment. Can be an object with a S3
-#'   method for \code{env()}.
+#'   method for \code{as_env()}.
 #' @param dict A vector with unique names which defines bindings
 #'   (pairs of name and value). See \code{\link{is_dict}()}.
 #' @param n The number of generations to go through.
@@ -91,6 +91,12 @@
 #' env <- env_new(env_package("rlang"))
 #' env_has(env, "env_has", inherit = TRUE)
 #' env_has(env, "lapply", inherit = TRUE)
+#'
+#'
+#' # The parent argument of env_new() is passed to as_env() to provide
+#' # handy shortcuts:
+#' env <- env_new("rlang")
+#' identical(env_parent(env), env_package("rlang"))
 #'
 #'
 #' # Get the parent environment with env_parent():
@@ -157,8 +163,8 @@ env.default <- function(env = env_caller()) {
 
 #' @rdname env
 #' @export
-env_new <- function(parent = env_empty(), dict = list()) {
-  env <- new.env(parent = parent)
+env_new <- function(parent = NULL, dict = list()) {
+  env <- new.env(parent = as_env(parent))
   env_bind(env, dict)
 }
 
@@ -190,6 +196,78 @@ env_tail <- function(env = env_caller()) {
   }
 
   env_
+}
+
+
+#' Coerce to an environment.
+#'
+#' This is a s3 generic. The default method coerces named vectors
+#' (including lists) to an environment. It first checks that \code{x}
+#' is a dictionary (see \code{\link{is_dict}()}). The method for
+#' strings returns the corresponding package environment (see
+#' \code{\link{env_package}()}).
+#'
+#' @param x An object to coerce.
+#' @param parent A parent environment, \code{\link{env_empty}()} by
+#'   default. Can be ignored with a warning for methods where it does
+#'   not make sense to change the parent.
+#' @export
+#' @examples
+#' # Coerce a named vector to an environment:
+#' env <- as_env(mtcars)
+#'
+#' # By default it gets the empty environment as parent:
+#' identical(env_parent(env), env_empty())
+#'
+#'
+#' # With strings it is a handy shortcut for env_package():
+#' as_env("base")
+#' as_env("rlang")
+#'
+#' # With NULL it returns the empty environment:
+#' as_env(NULL)
+as_env <- function(x, parent = NULL) {
+  UseMethod("as_env")
+}
+
+#' @rdname as_env
+#' @export
+as_env.NULL <- function(x, parent = NULL) {
+  if (!is_null(parent)) {
+    warning("`parent` ignored for empty environment", call. = FALSE)
+  }
+  env_empty()
+}
+
+#' @rdname as_env
+#' @export
+as_env.environment <- function(x, parent = NULL) {
+  if (!is_null(parent)) {
+    env_set_parent(x, parent)
+  }
+  x
+}
+
+#' @rdname as_env
+#' @export
+as_env.character <- function(x, parent = NULL) {
+  if (!is_scalar_character(x)) {
+    return(NextMethod())
+  }
+  if (!is_null(parent)) {
+    warning("`parent` ignored for named environments", call. = FALSE)
+  }
+  env_package(x)
+}
+
+#' @rdname as_env
+#' @export
+as_env.default <- function(x, parent = NULL) {
+  stopifnot(is_dict(x))
+  if (is_atomic(x)) {
+    x <- as.list(x)
+  }
+  list2env(x, parent = parent %||% env_empty())
 }
 
 
