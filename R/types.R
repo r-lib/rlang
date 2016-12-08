@@ -6,67 +6,88 @@
 #'
 #' Compare to base R functions:
 #' \itemize{
+
+#'   \item The predicates for vectors include the \code{n} argument
+#'     for pattern-matching on the vector length.
 #'   \item Unlike \code{is.atomic()}, \code{is_atomic()} does not
-#'      return \code{TRUE} for \code{NULL}.
+#'     return \code{TRUE} for \code{NULL}.
 #'   \item Unlike \code{is.vector()}, \code{is_vector()} test if an
-#'         object is an atomic vector or a list. \code{is.vector}
-#'         checks for the presence of attributes (other than name).
+#'     object is an atomic vector or a list. \code{is.vector} checks
+#'     for the presence of attributes (other than name).
 #'   \item \code{is_numeric()} is not generic so, (e.g.) dates and date times
 #'     are \code{TRUE}, not \code{FALSE}.
 #'   \item \code{is_function()} returns \code{TRUE} only for regular
 #'     functions, not special or primitive functions.
 #' }
-#' @param x object to be tested.
+#' @param x Object to be tested.
+#' @param n Expected length of a vector.
 #' @seealso \link{bare-type-predicates} \link{scalar-type-predicates}
 #' @name type-predicates
 NULL
 
 #' @export
 #' @rdname type-predicates
-is_list <- function(x) {
-  typeof(x) == "list"
+is_list <- function(x, n = NULL) {
+  if (typeof(x) != "list") return(FALSE)
+  if (!is_null(n) && length(x) != n) return(FALSE)
+  TRUE
+}
+
+atomic_types <- c(
+  "logical", "integer", "double", "complex", "character", "raw"
+)
+#' @export
+#' @rdname type-predicates
+is_atomic <- function(x, n = NULL) {
+  if (!typeof(x) %in% atomic_types) return(FALSE)
+  if (!is_null(n) && length(x) != n) return(FALSE)
+  TRUE
 }
 
 #' @export
 #' @rdname type-predicates
-is_atomic <- function(x) {
-  typeof(x) %in% c("logical", "integer", "double", "complex", "character", "raw")
+is_vector <- function(x, n = NULL) {
+  is_atomic(x, n) || is_list(x, n)
 }
 
 #' @export
 #' @rdname type-predicates
-is_vector <- function(x) {
-  is_atomic(x) || is.list(x)
+is_numeric <- function(x, n = NULL) {
+  if (!typeof(x) %in% c("integer", "double")) return(FALSE)
+  if (!is_null(n) && length(x) != n) return(FALSE)
+  TRUE
 }
 
 #' @export
 #' @rdname type-predicates
-is_numeric <- function(x) {
-  typeof(x) %in% c("integer", "double")
+is_integer <- function(x, n = NULL) {
+  if (typeof(x) != "integer")
+  if (!is_null(n) && length(x) != n) return(FALSE)
+  TRUE
 }
 
 #' @export
 #' @rdname type-predicates
-is_integer <- function(x) {
-  typeof(x) == "integer"
+is_double <- function(x, n = NULL) {
+  if (typeof(x) != "double") return(FALSE)
+  if (!is_null(n) && length(x) != n) return(FALSE)
+  TRUE
 }
 
 #' @export
 #' @rdname type-predicates
-is_double <- function(x) {
-  typeof(x) == "double"
+is_character <- function(x, n = NULL) {
+  if (typeof(x) != "character") return(FALSE)
+  if (!is_null(n) && length(x) != n) return(FALSE)
+  TRUE
 }
 
 #' @export
 #' @rdname type-predicates
-is_character <- function(x) {
-  typeof(x) == "character"
-}
-
-#' @export
-#' @rdname type-predicates
-is_logical <- function(x) {
-  typeof(x) == "logical"
+is_logical <- function(x, n = NULL) {
+  if (typeof(x) != "logical") return(FALSE)
+  if (!is_null(n) && length(x) != n) return(FALSE)
+  TRUE
 }
 
 #' @export
@@ -139,64 +160,67 @@ is_scalar_logical <- function(x) {
 #' example, a data frame is a list, but not a bare list.
 #'
 #' \itemize{
+#'   \item The predicates for vectors include the \code{n} argument
+#'     for pattern-matching on the vector length.
 #'   \item Like \code{\link{is_atomic}()} and unlike base R
-#'         \code{is.atomic()}, \code{is_bare_atomic()} does not return
-#'         \code{TRUE} for \code{NULL}.
+#'     \code{is.atomic()}, \code{is_bare_atomic()} does not return
+#'     \code{TRUE} for \code{NULL}.
 #'   \item Unlike base R \code{is.numeric()}, \code{is_bare_double()}
-#'         only returns \code{TRUE} for floating point numbers.
+#'     only returns \code{TRUE} for floating point numbers.
 #' }
-#' @param x object to be tested.
+#' @inheritParams type-predicates
 #' @seealso \link{type-predicates} \link{scalar-type-predicates}
 #' @name bare-type-predicates
 NULL
 
 #' @export
 #' @rdname bare-type-predicates
-is_bare_list <- function(x) {
-  !is.object(x) && is_list(x)
+is_bare_list <- function(x, n = NULL) {
+  !is.object(x) && is_list(x, n)
 }
 
 #' @export
 #' @rdname bare-type-predicates
-is_bare_atomic <- function(x) {
-  !is.object(x) && is_atomic(x)
+is_bare_atomic <- function(x, n = NULL) {
+  !is.object(x) && is_atomic(x, n)
 }
 
 #' @export
 #' @rdname bare-type-predicates
-is_bare_vector <- function(x) {
-  is_bare_atomic(x) || is_bare_list(x)
+is_bare_vector <- function(x, n = NULL) {
+  is_bare_atomic(x) || is_bare_list(x, n)
 }
 
 #' @export
 #' @rdname bare-type-predicates
-is_bare_double <- function(x) {
-  !is.object(x) && is_double(x)
+is_bare_double <- function(x, n = NULL) {
+  !is.object(x) && is_double(x, n)
 }
 
 #' @export
 #' @rdname bare-type-predicates
-is_bare_integer <- function(x) {
-  !is.object(x) && is_integer(x)
+is_bare_integer <- function(x, n = NULL) {
+  !is.object(x) && is_integer(x, n)
 }
 
 #' @export
 #' @rdname bare-type-predicates
-is_bare_numeric <- function(x) {
-  !is.object(x) && is_numeric(x)
+is_bare_numeric <- function(x, n = NULL) {
+  !is.object(x) && is_numeric(x, n)
 }
 
 #' @export
 #' @rdname bare-type-predicates
-is_bare_character <- function(x) {
-  !is.object(x) && is_character(x)
+is_bare_character <- function(x, n = NULL) {
+  !is.object(x) && is_character(x, n)
 }
 
 #' @export
 #' @rdname bare-type-predicates
-is_bare_logical <- function(x) {
-  !is.object(x) && is_logical(x)
+is_bare_logical <- function(x, n = NULL) {
+  !is.object(x) && is_logical(x, n)
 }
+
 
 #' Is object an empty vector or NULL?
 #'

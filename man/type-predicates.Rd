@@ -13,26 +13,28 @@
 \alias{type-predicates}
 \title{Type predicates}
 \usage{
-is_list(x)
+is_list(x, n = NULL)
 
-is_atomic(x)
+is_atomic(x, n = NULL)
 
-is_vector(x)
+is_vector(x, n = NULL)
 
-is_numeric(x)
+is_numeric(x, n = NULL)
 
-is_integer(x)
+is_integer(x, n = NULL)
 
-is_double(x)
+is_double(x, n = NULL)
 
-is_character(x)
+is_character(x, n = NULL)
 
-is_logical(x)
+is_logical(x, n = NULL)
 
 is_null(x)
 }
 \arguments{
-\item{x}{object to be tested.}
+\item{x}{Object to be tested.}
+
+\item{n}{Expected length of a vector.}
 }
 \description{
 These type predicates aim to make type testing in R more
@@ -42,11 +44,13 @@ operate at a level beneath S3/S4 etc.
 \details{
 Compare to base R functions:
 \itemize{
+  \item The predicates for vectors include the \code{n} argument
+    for pattern-matching on the vector length.
   \item Unlike \code{is.atomic()}, \code{is_atomic()} does not
-     return \code{TRUE} for \code{NULL}.
+    return \code{TRUE} for \code{NULL}.
   \item Unlike \code{is.vector()}, \code{is_vector()} test if an
-        object is an atomic vector or a list. \code{is.vector}
-        checks for the presence of attributes (other than name).
+    object is an atomic vector or a list. \code{is.vector} checks
+    for the presence of attributes (other than name).
   \item \code{is_numeric()} is not generic so, (e.g.) dates and date times
     are \code{TRUE}, not \code{FALSE}.
   \item \code{is_function()} returns \code{TRUE} only for regular
