@@ -22,12 +22,23 @@
 #' is_lang(q3)
 #' is_call(q3)
 #'
-#' # A literal is either a scalar atomic vector or a name:
-#' is_literal("string")
-#' is_literal(letters)
-#' is_literal(quote(name))
+#'
+#' # Atomic language objects are the terminating nodes of a call
+#' # tree. They are either a scalar atomic vector, a name, or NULL:
+#' is_atomic_lang("string")
+#' is_atomic_lang(quote(name))
+#' is_atomic_lang(NULL)
+#'
+#' is_atomic_lang(letters)
+#' is_atomic_lang(quote(call()))
+#'
+#' # With the exception of names, atomic language objects have the
+#' # property of being self-quoting:
+#' identical("foo", quote("foo"))
+#' identical(1L, quote(1L))
+#' identical(NULL, quote(NULL))
 is_lang <- function(x) {
-  is_call(x) || is_pairlist(x) || is_literal(x) || is_null(x)
+  is_call(x) || is_pairlist(x) || is_atomic_lang(x)
 }
 #' @rdname is_lang
 #' @export
@@ -41,8 +52,8 @@ is_pairlist <- function(x) {
 }
 #' @export
 #' @rdname is_lang
-is_literal <- function(x) {
-  is_name(x) || is_scalar_atomic(x)
+is_atomic_lang <- function(x) {
+  is_null(x) || is_name(x) || is_scalar_atomic(x)
 }
 
 #' Is object a call?
@@ -138,16 +149,17 @@ is_binary_call <- function(x, name = NULL) {
 #'
 #' as_call(~ f)
 #' as_name(~ f())
-as_name <- function(x) UseMethod("as_name")
-
+as_name <- function(x) {
+  UseMethod("as_name")
+}
 #' @export
-as_name.name <- function(x) x
-
+as_name.name <- function(x) {
+  x
+}
 #' @export
 as_name.character <- function(x) {
   as.name(read_validate(x))
 }
-
 #' @export
 as_name.call <- function(x) {
   if (is_prefixed_name(x)) {
@@ -166,22 +178,18 @@ as_name.formula <- function(x) {
 as_call <- function(x) {
   UseMethod("as_call")
 }
-
 #' @export
 as_call.name <- function(x) {
   call_new(x)
 }
-
 #' @export
 as_call.call <- function(x) {
   x
 }
-
 #' @export
 as_call.character <- function(x) {
   read(x)
 }
-
 #' @export
 as_call.formula <- function(x) {
   as_call(f_rhs(x))
