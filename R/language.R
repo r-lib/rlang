@@ -73,8 +73,6 @@ as_name <- function(x) UseMethod("as_name")
 
 #' @export
 as_name.name <- function(x) x
-#' @export
-as_name.symbol <- function(x) x
 
 #' @export
 as_name.character <- function(x) {
@@ -82,8 +80,13 @@ as_name.character <- function(x) {
 }
 
 #' @export
-as_name.call <- function(x) x[[1]]
-
+as_name.call <- function(x) {
+  if (is_prefixed_name(x)) {
+    x
+  } else {
+    as_name(x[[1]])
+  }
+}
 #' @export
 as_name.formula <- function(x) {
   as_name(f_rhs(x))
@@ -113,4 +116,13 @@ as_call.character <- function(x) {
 #' @export
 as_call.formula <- function(x) {
   as_call(f_rhs(x))
+}
+
+is_prefixed_name <- function(x) {
+  fn <- x[[1]]
+  if (is_name(fn)) {
+    as.character(fn) %in% c("::", ":::", "$", "@")
+  } else {
+    FALSE
+  }
 }
