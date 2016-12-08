@@ -2,6 +2,7 @@
 % Please edit documentation in R/env.R
 \name{env}
 \alias{env}
+\alias{env.character}
 \alias{env.default}
 \alias{env.environment}
 \alias{env.formula}
@@ -23,6 +24,8 @@ env(env = env_caller())
 \method{env}{environment}(env = env_caller())
 
 \method{env}{default}(env = env_caller())
+
+\method{env}{character}(env = env_caller())
 
 env_new(parent = NULL, dict = list())
 

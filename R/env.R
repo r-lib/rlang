@@ -152,6 +152,11 @@ env.default <- function(env = env_caller()) {
     stop("No applicable method for 'env'", call. = FALSE)
   }
 }
+#' @rdname env
+#' @export
+env.character <- function(env = env_caller()) {
+  env_package(env)
+}
 
 #' Assignment operator for environments.
 #' @param x An object with an \code{env_set} method.
@@ -750,6 +755,11 @@ env_caller <- function(n = 1) {
 #'   with_env(env, return("early return"))
 #' }
 #' fn()
+#'
+#'
+#' # Since env is passed to env(), it can be any object with an env()
+#' # method. For strings, the env_package() is returned:
+#' with_env("base", ~mtcars)
 with_env <- function(env, expr) {
   with_env_(env, substitute(expr))
 }

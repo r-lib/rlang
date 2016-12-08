@@ -64,6 +64,11 @@ g <- function(env) {
   with_env(env, return("early return"))
 }
 fn()
+
+
+# Since env is passed to env(), it can be any object with an env()
+# method. For strings, the env_package() is returned:
+with_env("base", ~mtcars)
 }
 \seealso{
 \code{\link{env_assign_lazily}()}
