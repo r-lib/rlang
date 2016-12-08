@@ -73,6 +73,8 @@ as_name <- function(x) UseMethod("as_name")
 
 #' @export
 as_name.name <- function(x) x
+#' @export
+as_name.symbol <- function(x) x
 
 #' @export
 as_name.character <- function(x) {
