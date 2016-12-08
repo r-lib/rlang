@@ -1,7 +1,4 @@
 
-names2 <- function(x) {
-  names(x) %||% rep("", length(x))
-}
 
 has_names <- function(x) {
   nms <- names(x)
@@ -35,4 +32,18 @@ set_names <- function(x, nm = x) {
 
   names(x) <- nm
   x
+}
+
+#' Get names of a vector.
+#'
+#' This names getter always returns a character vector, even when an
+#' object does not have a \code{names} attribute. In this case, it
+#' returns a vector of empty names \code{""}.
+#'
+#' @param x A vector.
+#' @export
+#' @examples
+#' names2(letters)
+names2 <- function(x) {
+  names(x) %||% rep("", length(x))
 }
