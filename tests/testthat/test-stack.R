@@ -87,6 +87,14 @@ test_that("call_frame(n) throws at correct level", {
   expect_error(call_frame(n + 1), "not that many frames")
 })
 
+test_that("call frames are cleaned", {
+  eval_frame_messy <- eval(quote(call_frame(clean = FALSE)), new.env())
+  expect_identical(eval_frame_messy$fn, prim_eval)
+
+  eval_frame_clean <- eval(quote(call_frame(clean = TRUE)), new.env())
+  expect_identical(eval_frame_clean$fn, base::eval)
+})
+
 
 context("evaluation stacks") # ---------------------------------------
 
@@ -119,12 +127,21 @@ test_that("eval_stack_trail() returns a vector of size nframe", {
 test_that("eval_stack_fns() returns functions in correct order", {
   f1 <- function(x) f2(x)
   f2 <- function(x) eval_stack_fns()
-
-  fns <- f1()
-  fns <- fixup_ctxts(fns)
-
-  expect_identical(fns, list(f1, f2))
+  expect_identical(f1()[1:2], list(f2, f1))
 })
+
+test_that("eval_stack_fns() handles intervening frames", {
+  fns <- eval_stack_fns()
+  intervened_fns <- identity(identity(eval_stack_fns()))
+  expect_identical(c(identity, identity, fns), intervened_fns)
+})
+
+test_that("eval_stack() handles intervening frames", {
+  stack <- eval_stack()
+  intervened_stack <- identity(eval_stack())[-1]
+  expect_identical(intervened_stack, stack)
+})
+
 
 test_that("call_stack() trail ignores irrelevant frames", {
   f1 <- function(x) f2(x)
@@ -197,4 +214,87 @@ test_that("call_stack() subsets n frames", {
   # Get correct eval depth within expect_error()
   expect_error({ n <- call_depth(); stop() })
   expect_error(call_stack(n + 1), "not that many frames")
+})
+
+test_that("call stacks are cleaned", {
+  stack_messy <- eval(quote(call_stack(clean = FALSE)), new.env())[1:2]
+  expect_identical(stack_messy[[1]]$fn, prim_eval)
+  expect_identical(stack_messy[[2]]$fn, base::eval)
+
+  stack_clean <- eval(quote(call_stack(clean = TRUE)), new.env())
+  expect_identical(stack_clean[[1]]$fn, base::eval)
+})
+
+
+context("frame utils") # ---------------------------------------------
+
+test_that("frame_position() returns correct position", {
+  fn <- function() {
+    env <- environment()
+    pos <- eval_frame()$pos
+    g(env, pos)
+  }
+  g <- function(env, fn_pos) {
+    pos <- frame_position(env)
+    expect_identical(pos, fn_pos)
+
+    burried_pos <- identity(identity(frame_position(env)))
+    expect_identical(burried_pos, pos)
+  }
+  fn()
+})
+
+test_that("frame_position_current() computes distance from a frame", {
+  fn <- function() {
+    g(environment())
+  }
+  g <- function(env) {
+    distance <- frame_position(env, from = "current")
+    frame <- eval_frame(distance)
+    expect_identical(frame$env, env)
+
+    burried_distance <- identity(frame_position(env, from = "current"))
+    expect_equal(distance, burried_distance)
+  }
+  fn()
+})
+
+test_that("evaluation stack is trimmed from layers of calls", {
+  stack <- eval_stack()
+  trimmed_stack <- identity(stack_trim(identity(eval_stack())))
+  expect_identical(stack, trimmed_stack)
+})
+
+test_that("can return from frame", {
+  fn <- function() {
+    val <- g()
+    paste(val, "to fn()")
+  }
+  g <- function(env) {
+    h(environment())
+    stop("g!\n")
+  }
+  h <- function(env) {
+    return_from(env, "returned from h()")
+    stop("h!\n")
+  }
+
+  expect_equal(fn(), "returned from h() to fn()")
+})
+
+test_that("can return to frame", {
+  fn <- function() {
+    val <- identity(g(environment()))
+    paste(val, "to fn()")
+  }
+  g <- function(env) {
+    h(env)
+    stop("g!\n")
+  }
+  h <- function(env) {
+    return_to(env, "returned from h()")
+    stop("h!\n")
+  }
+
+  expect_equal(fn(), "returned from h() to fn()")
 })

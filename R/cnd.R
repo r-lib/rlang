@@ -1,0 +1,296 @@
+#' Create a condition object.
+#'
+#' These constructors make it easy to create subclassed conditions.
+#' Conditions are objects that power the error system in R. They can
+#' also be used for passing messages to pre-established handlers. See
+#' \code{vignette("conditions")} for more information on how to use
+#' the condition system.
+#'
+#' \code{cnd_new()} creates objects inheriting from
+#' \code{condition}. Conditions created with \code{cnd_error()},
+#' \code{cnd_warning()} and \code{cnd_message()} inherit from
+#' \code{error}, \code{warning} or \code{message}.
+#'
+#' @param .type The condition subclass.
+#' @param ... Named data fields stored inside the condition object.
+#' @param .msg A default message to inform the user about the
+#'   condition when it is signalled.
+#' @seealso \code{\link{cnd_signal}()}, \code{\link{with_handlers}()}.
+#' @export
+#' @examples
+#' # Create a condition inheriting from the s3 type "foo":
+#' cnd <- cnd_new("foo")
+#'
+#' # Signal the condition to potential handlers. This has no effect if no
+#' # handler is registered to deal with conditions of type "foo":
+#' cnd_signal(cnd)
+#'
+#' # If a relevant handler is on the current evaluation stack, it will be
+#' # called by cnd_signal():
+#' with_handlers(cnd_signal(cnd), foo = exiting(function(c) "caught!"))
+#'
+#' # Handlers can be thrown or executed inplace. See with_handlers()
+#' # documentation for more on this.
+#'
+#'
+#' # Note that merely signalling a condition inheriting of "error" is
+#' # not sufficient to stop a program:
+#' cnd_signal(cnd_error("my_error"))
+#'
+#' # you need to use stop() to signal a critical condition that should
+#' # terminate the program if not handled:
+#' # stop(cnd_error("my_error"))
+cnd_new <- function(.type = NULL, ..., .msg = NULL) {
+  data <- list(...)
+  if (any(names(data) %in% "message")) {
+    stop("conditions cannot have a `message` data field", call. = FALSE)
+  }
+  if (any(names2(data) == "")) {
+    stop("conditions must have named data fields", call. = FALSE)
+  }
+
+  cnd <- c(list(message = .msg), data)
+  structure(cnd, class = c(.type, "condition"))
+}
+
+#' @rdname cnd_new
+#' @export
+cnd_error <- function(.type = NULL, ..., .msg = NULL) {
+  cnd_new(c(.type, "error"), ..., .msg = .msg)
+}
+#' @rdname cnd_new
+#' @export
+cnd_warning <- function(.type = NULL, ..., .msg = NULL) {
+  cnd_new(c(.type, "warning"), ..., .msg = .msg)
+}
+#' @rdname cnd_new
+#' @export
+cnd_message <- function(.type = NULL, ..., .msg = NULL) {
+  cnd_new(c(.type, "message"), ..., .msg = .msg)
+}
+
+#' Is object a condition?
+#' @param x An object to test.
+is_condition <- function(x) {
+  inherits(x, "condition")
+}
+
+#' Signal a condition.
+#'
+#' Signal a condition to handlers that have been established on the
+#' stack. Conditions signalled with \code{cnd_signal()} are assumed to
+#' be benign. Control flow can resume normally once the conditions has
+#' been signalled (if no handler jumped somewhere else on the
+#' evaluation stack). On the other hand, \code{cnd_abort()} treats the
+#' condition as critical and will jump out of the distressed call
+#' frame (see \code{\link{rst_abort}()}), unless a handler can deal
+#' with the condition.
+#'
+#' If \code{.critical} is \code{FALSE}, this function has no side
+#' effects beyond calling handlers. In particular, execution will
+#' continue normally after signalling the condition (unless a handler
+#' jumped somewhere else via \code{\link{rst_jump}()} or by being
+#' \code{\link{exiting}()}). If \code{.critical} is \code{TRUE}, the
+#' condition is signalled via \code{\link[base]{stop}()} and the
+#' program will terminate if no handler dealt with the condition by
+#' jumping out of the distressed call frame.
+#'
+#' \code{\link{inplace}()} handlers are called in turn when they
+#' decline to handle the condition by returning normally. However, it
+#' is sometimes useful for an inplace handler to produce a side effect
+#' (signalling another condition, displaying a message, logging
+#' something, etc), prevent the condition from being passed to other
+#' handlers, and resume execution from the place where the condition
+#' was signalled. The easiest way to accomplish this is by jumping to
+#' a restart point (see \code{\link{with_restarts}()}) established by
+#' the signalling function. If \code{.mufflable} is \code{TRUE}, a
+#' muffle restart is established. This allows inplace handler to
+#' muffle a signalled condition. See \code{\link{rst_muffle}()} to
+#' jump to a muffling restart, and the \code{muffle} argument of
+#' \code{\link{inplace}()} for creating a muffling handler.
+#'
+#' @inheritParams cnd_new
+#' @param .cnd Either a condition object (see
+#'   \code{\link{cnd_new}()}), or the name of a s3 class from which a
+#'   new condition will be created.
+#' @param .msg A string to override the condition's default message.
+#' @param .call Whether to display the call of the frame in which the
+#'   condition is signalled. If \code{TRUE}, the call is stored in the
+#'   \code{call} field of the condition object: this field is
+#'   displayed by R when an error is issued. The call information is
+#'   also stored in the \code{.call} field in all cases.
+#' @param .mufflable Whether to signal the condition with a muffling
+#'   restart. This is useful to let \code{\link{inplace}()} handlers
+#'   muffle a condition. It stops the condition from being passed to
+#'   other handlers when the inplace handler did not jump
+#'   elsewhere. \code{TRUE} by default for benign conditions, but
+#'   \code{FALSE} for critical ones, since in those cases execution
+#'   should probably not be allowed to continue normally.
+#' @seealso \code{\link{abort}()}, \code{\link{warn}()} and
+#'   \code{\link{inform}()} for signalling typical R conditions. See
+#'   \code{\link{with_handlers}()} for establishing condition
+#'   handlers.
+#' @export
+#' @examples
+#' # Creating a condition of type "foo"
+#' cnd <- cnd_new("foo")
+#'
+#' # If no handler capable of dealing with "foo" is established on the
+#' # stack, signalling the condition has no effect:
+#' cnd_signal(cnd)
+#'
+#' # To learn more about establishing condition handlers, see
+#' # documentation for with_handlers(), exiting() and inplace():
+#' with_handlers(cnd_signal(cnd),
+#'   foo = inplace(function(c) cat("side effect!\n"))
+#' )
+#'
+#'
+#' # By default, cnd_signal() creates a muffling restart which allows
+#' # inplace handlers to prevent a condition from being passed on to
+#' # other handlers and to resume execution:
+#' undesirable_handler <- inplace(function(c) cat("please don't call me\n"))
+#' muffling_handler <- inplace(function(c) {
+#'   cat("muffling foo...\n")
+#'   rst_muffle(c)
+#' })
+#'
+#' with_handlers(foo = undesirable_handler,
+#'   with_handlers(foo = muffling_handler, {
+#'     cnd_signal("foo")
+#'     "return value"
+#'   }))
+#'
+#'
+#' # You can signal a critical condition with cnd_abort(). Unlike
+#' # cnd_signal() which has no side effect besides signalling the
+#' # condition, cnd_abort() makes the program terminate with an error
+#' # unless a handler can deal with the condition:
+#' \dontrun{
+#' cnd_abort(cnd)
+#' }
+#'
+#' # If you don't specify a .msg or .call, the default message/call
+#' # (supplied to cnd_new()) are displayed. Otherwise, the ones
+#' # supplied to cnd_abort() and cnd_signal() take precedence:
+#' \dontrun{
+#' critical <- cnd_new("my_error",
+#'   .msg = "default 'my_error' msg",
+#'   .call = quote(default(call))
+#' )
+#' cnd_abort(critical)
+#' cnd_abort(critical, .msg = "overridden msg")
+#'
+#' fn <- function(...) {
+#'   cnd_abort(critical, .call = TRUE)
+#' }
+#' fn(arg = foo(bar))
+#' }
+#'
+#' # Note that by default a condition signalled with cnd_abort() does
+#' # not have a muffle restart. That is because in most cases,
+#' # execution should not continue after signalling a critical
+#' # condition.
+cnd_signal <- function(.cnd, ..., .msg = NULL, .call = FALSE,
+                       .mufflable = TRUE) {
+  cnd <- make_cnd(.cnd, ..., .msg = .msg, .call = sys.call(-1), .show_call = .call)
+  cnd_signal_(cnd, base::signalCondition, .mufflable)
+}
+#' @rdname cnd_signal
+#' @export
+cnd_abort <- function(.cnd, ..., .msg = NULL, .call = FALSE,
+                      .mufflable = FALSE) {
+  cnd <- make_cnd(.cnd, ..., .msg = .msg, .call = sys.call(-1), .show_call = .call)
+  cnd_signal_(cnd, base::stop, .mufflable)
+}
+
+make_cnd <- function(.cnd, ..., .msg, .call, .show_call) {
+  if (is_scalar_character(.cnd)) {
+    .cnd <- cnd_new(.cnd, ...)
+  } else {
+    stopifnot(is_condition(.cnd))
+  }
+
+  # Override default field if supplied
+  .cnd$message <- .msg %||% .cnd$message %||% ""
+
+  # The `call` field is displayed by stop().
+  # But record call in `.call` in all cases.
+  .cnd$.call <- .call
+  if (.show_call) {
+    .cnd$call <- .cnd$.call
+  }
+
+  .cnd
+}
+cnd_signal_ <- function(cnd, signal, mufflable) {
+  if (mufflable) {
+    class(cnd) <- c("mufflable", class(cnd))
+    withRestarts(signal(cnd), muffle = function(...) NULL)
+  } else {
+    signal(cnd)
+  }
+}
+
+#' Signal an error, warning, or message.
+#'
+#' These functions are equivalent to base functions
+#' \code{\link[base]{stop}()}, \code{\link[base]{warning}()} and
+#' \code{\link[base]{message}()}, but the \code{type} argument makes
+#' it easy to create subclassed conditions. They also don't include
+#' call information by default. This saves you from typing
+#' \code{call. = FALSE} to make error messages cleaner within package
+#' functions.
+#'
+#' Like \code{stop()} and \code{\link{cnd_abort}()}, \code{abort()}
+#' signals a critical condition and interrupts execution by jumping to
+#' top level (see \code{\link{rst_abort}()}). Only a handler of the
+#' relevant type can prevent this jump by making another jump to a
+#' different target on the stack (see \code{\link{with_handlers}()}).
+#'
+#' \code{warn()} and \code{inform()} both have the side effect of
+#' displaying a message. These messages will not be displayed if a
+#' handler transfers control. Transfer can be achieved by establishing
+#' an exiting handler that transfers control to
+#' \code{\link{with_handlers}()}). In this case, the current function
+#' stops and execution resumes at the point where handlers were
+#' established.
+#'
+#' Since it is often desirable to continue normally after a message or
+#' warning, both \code{warn()} and \code{inform()} (and their base R
+#' equivalent) establish a muffle restart where handlers can jump to
+#' prevent the message from being displayed. Execution resumes
+#' normally after that. See \code{\link{rst_muffle}()} to jump to a
+#' muffling restart, and the \code{muffle} argument of
+#' \code{\link{inplace}()} for creating a muffling handler.
+#'
+#' @param msg A message to display.
+#' @param type Subclass of the condition to signal.
+#' @param call Whether to display the call.
+#'
+#' @export
+abort <- function(msg, type = NULL, call = FALSE) {
+  cnd <- cnd_error(type, .msg = msg, .call = sys.call(-1))
+  if (call) {
+    cnd$call <- cnd$.call
+  }
+  stop(cnd)
+}
+#' @rdname abort
+#' @export
+warn <- function(msg, type = NULL, call = FALSE) {
+  cnd <- cnd_warning(type, .msg = msg, .call = sys.call(-1))
+  if (call) {
+    cnd$call <- cnd$.call
+  }
+  warning(cnd)
+}
+#' @rdname abort
+#' @export
+inform <- function(msg, type = NULL, call = FALSE) {
+  cnd <- cnd_message(type, .msg = msg, .call = sys.call(-1))
+  if (call) {
+    cnd$call <- cnd$.call
+  }
+  message(cnd)
+}

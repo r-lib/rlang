@@ -1,8 +1,4 @@
 
-fixup_ctxts <- function(x) {
-  cur_pos <- sys.nframe() - 1
-  x[seq(cur_pos + 1, length(x))]
-}
 fixup_calls <- function(x) {
   cur_pos <- sys.nframe() - 1
   x[seq(n+1, length(x))]

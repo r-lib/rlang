@@ -42,6 +42,13 @@
 #' \code{global_frame()}.
 #'
 #' @param n The number of frames to go back in the stack.
+#' @param clean Whether to post-process the call stack to clean
+#'   non-standard frames. If \code{TRUE}, suboptimal call-stack
+#'   entries by \code{\link[base]{eval}()} and
+#'   \code{\link[base]{Recall}()} will be cleaned up: \code{Recall()}
+#'   frames will be assigned the correct parent and \code{eval()}
+#'   frames are merged together (as \code{eval()} creates a duplicate
+#'   frame).
 #' @name stack
 #' @examples
 #' # Expressions within arguments count as contexts
@@ -138,7 +145,7 @@ eval_frame <- function(n = 1) {
 }
 
 # Positions of frames in the call stack up to `n`
-trail_make <- function(callers, n = NULL) {
+trail_make <- function(callers, n = NULL, clean = TRUE) {
   n_ctxt <- length(callers)
   if (is.null(n)) {
     n_max <- n_ctxt
@@ -149,7 +156,7 @@ trail_make <- function(callers, n = NULL) {
     n_max <- n + 1
   }
 
-  state <- trail_next(callers, 1)
+  state <- trail_next(callers, 1, clean)
   if (!length(state$i) || state$i == 0) {
     return(0L)
   }
@@ -163,7 +170,7 @@ trail_make <- function(callers, n = NULL) {
     j <- j + 1
     n_ctxt <- length(state$callers)
     next_pos <- n_ctxt - state$i + 1
-    state <- trail_next(state$callers, next_pos)
+    state <- trail_next(state$callers, next_pos, clean)
     out[j] <- state$i
   }
 
@@ -174,25 +181,28 @@ trail_make <- function(callers, n = NULL) {
   out[seq_len(j)]
 }
 
-trail_next <- function(callers, i) {
+trail_next <- function(callers, i, clean) {
   if (i == 0L) {
     return(list(callers = callers, i = 0L))
   }
 
   i <- callers[i]
 
-  # base::Recall() creates a custom context with the wrong sys.parent()
-  if (identical(sys.function(i - 1L), base::Recall)) {
-    i_pos <- trail_index(callers, i)
-    callers[i_pos] <- i - 1L
-  }
+  if (clean) {
+    # base::Recall() creates a custom context with the wrong sys.parent()
+    if (identical(sys.function(i - 1L), base::Recall)) {
+      i_pos <- trail_index(callers, i)
+      callers[i_pos] <- i - 1L
+    }
 
-  # The R-level eval() creates two contexts. We skip the second one
-  if (length(i) && is_prim_eval(sys.function(i))) {
-    n_ctxt <- length(callers)
-    special_eval_pos <- trail_index(callers, i)
-    callers <- callers[-special_eval_pos]
-    i <- i - 1L
+    # The R-level eval() creates two contexts. We skip the second one
+    if (length(i) && is_prim_eval(sys.function(i))) {
+      n_ctxt <- length(callers)
+      special_eval_pos <- trail_index(callers, i)
+      callers <- callers[-special_eval_pos]
+      i <- i - 1L
+    }
+
   }
 
   list(callers = callers, i = i)
@@ -205,11 +215,11 @@ trail_index <- function(callers, i) {
 
 #' @rdname stack
 #' @export
-call_frame <- function(n = 1) {
+call_frame <- function(n = 1, clean = TRUE) {
   stopifnot(n > 0)
 
   eval_callers <- eval_stack_callers()
-  trail <- trail_make(eval_callers, n)
+  trail <- trail_make(eval_callers, n, clean = clean)
   pos <- trail[n]
 
   if (identical(pos, 0L)) {
@@ -224,7 +234,11 @@ call_frame <- function(n = 1) {
     fn = sys.function(pos),
     fn_name = call_fn_name(sys.call(pos))
   ))
-  frame_fixup_eval(frame)
+
+  if (clean) {
+    frame <- frame_clean_eval(frame)
+  }
+  frame
 }
 
 # The _depth() functions count the global frame as well
@@ -289,9 +303,8 @@ eval_stack_callers <- function() {
   rev(drop_last(callers))
 }
 eval_stack_fns <- function() {
-  pos <- sys.nframe()
-  eval_indices <- seq_len(pos - 1)
-  lapply(eval_indices, sys.function)
+  pos <- sys.nframe() - 1
+  lapply(seq(pos, 1), sys.function)
 }
 
 stack_subset <- function(stack_data, n) {
@@ -311,9 +324,9 @@ stack_subset <- function(stack_data, n) {
 
 #' @rdname stack
 #' @export
-call_stack <- function(n = NULL) {
+call_stack <- function(n = NULL, clean = TRUE) {
   eval_callers <- eval_stack_callers()
-  trail <- trail_make(eval_callers, n)
+  trail <- trail_make(eval_callers, n, clean = clean)
 
   stack_data <- list(
     pos = drop_last(trail),
@@ -326,8 +339,10 @@ call_stack <- function(n = NULL) {
 
   stack <- zip(stack_data)
   stack <- lapply(stack, new_frame)
-  stack <- lapply(stack, frame_fixup_eval)
-  stack <- lapply_around(stack, "right", frame_fixup_Recall)
+  if (clean) {
+    stack <- lapply(stack, frame_clean_eval)
+    stack <- lapply_around(stack, "right", frame_clean_Recall)
+  }
 
   if (trail[length(trail)] == 0L) {
     stack <- c(stack, list(global_frame()))
@@ -336,7 +351,7 @@ call_stack <- function(n = NULL) {
   structure(stack, class = c("call_stack", "stack"))
 }
 
-frame_fixup_eval <- function(frame) {
+frame_clean_eval <- function(frame) {
   if (identical(frame$fn, base::eval)) {
     # Use the environment from the context created in do_eval()
     # (the context with the fake primitive call)
@@ -346,7 +361,7 @@ frame_fixup_eval <- function(frame) {
 
   frame
 }
-frame_fixup_Recall <- function(frame, next_frame) {
+frame_clean_Recall <- function(frame, next_frame) {
   if (!is_missing(next_frame) && identical(next_frame$fn, base::Recall)) {
     call_recalled <- call_standardise(frame, enum_dots = TRUE, add_missings = TRUE)
     args_recalled <- call_args(call_recalled)
@@ -390,4 +405,207 @@ sys_frame <- function(n) {
   } else {
     sys.frame(n)
   }
+}
+
+#' Find the position or distance of a frame on the evaluation stack.
+#'
+#' The frame position on the stack can be computed by counting frames
+#' from the global frame (the bottom of the stack, the default) or
+#' from the current frame (the top of the stack).
+#'
+#' While this function returns the position of the frame on the
+#' evaluation stack, it can safely be called with intervening frames
+#' as those will be discarded.
+#'
+#' @param frame The environment of a frame. Can be any object with a
+#'   \code{\link{env}()} method. Note that for frame objects, the
+#'   position from the global frame is simply \code{frame$pos}.
+#'   Alternatively, \code{frame} can be an integer that represents the
+#'   position on the stack (and is thus returned as is if \code{from}
+#'   is "global".
+#' @param from Whether to compute distance from the global frame (the
+#'   bottom of the evaluation stack), or from the current frame (the
+#'   top of the evaluation stack).
+#' @export
+#' @examples
+#' fn <- function() g(environment())
+#' g <- function(env) frame_position(env)
+#'
+#' # frame_position() returns the position of the frame on the evaluation stack:
+#' fn()
+#' identity(identity(fn()))
+#'
+#' # Note that it trims off intervening calls before counting so you
+#' # can safely nest it within other calls:
+#' g <- function(env) identity(identity(frame_position(env)))
+#' fn()
+#'
+#' # You can also ask for the position from the current frame rather
+#' # than the global frame:
+#' fn <- function() g(environment())
+#' g <- function(env) h(env)
+#' h <- function(env) frame_position(env, from = "current")
+#' fn()
+frame_position <- function(frame, from = c("global", "current")) {
+  stack <- stack_trim(eval_stack(), n = 2)
+
+  if (match.arg(from) == "global") {
+    frame_position_global(frame, stack)
+  } else {
+    caller_pos <- call_frame(2)$pos
+    frame_position_current(frame, stack, caller_pos)
+  }
+}
+
+frame_position_global <- function(frame, stack = NULL) {
+  if (is_frame(frame)) {
+    return(frame$pos)
+  } else if (is_numeric(frame)) {
+    return(frame)
+  }
+
+  frame <- env(frame)
+  stack <- stack %||% stack_trim(eval_stack(), n = 2)
+  envs <- pluck(stack, "env")
+
+  i <- 1
+  for (env in envs) {
+    if (identical(env, frame)) {
+      return(length(envs) - i)
+    }
+    i <- i + 1
+  }
+
+  abort("`frame` not found on evaluation stack")
+}
+
+frame_position_current <- function(frame, stack = NULL,
+                                   caller_pos = NULL) {
+  if (is_numeric(frame)) {
+    pos <- frame
+  } else {
+    stack <- stack %||% stack_trim(eval_stack(), n = 2)
+    pos <- frame_position_global(frame, stack)
+  }
+  caller_pos <- caller_pos %||% call_frame(2)$pos
+  caller_pos - pos + 1
+}
+
+
+#' Trim top call layers from the evaluation stack.
+#'
+#' \code{\link{eval_stack}()} can be tricky to use in real code
+#' because all intervening frames are returned with the stack,
+#' including those at \code{eval_stack()} own call
+#' site. \code{stack_trim()} makes it easy to remove layers of
+#' intervening calls.
+#'
+#' @param stack An evaluation stack.
+#' @param n The number of call frames (not eval frames) to trim off
+#'   the top of the stack. In other words, the number of layers of
+#'   intervening frames to trim.
+#' @export
+#' @examples
+#' # Intervening frames appear on the evaluation stack:
+#' identity(identity(eval_stack()))
+#'
+#' # stack_trim() will trim the first n layers of calls:
+#' stack_trim(identity(identity(eval_stack())))
+#'
+#' # Note that it also takes care of calls intervening at its own call
+#' # site:
+#' identity(identity(
+#'   stack_trim(identity(identity(eval_stack())))
+#' ))
+#'
+#' # It is especially useful when used within a function that needs to
+#' # inspect the evaluation stack but should nonetheless be callable
+#' # within nested calls without side effects:
+#' stack_util <- function() {
+#'   # n = 2 means that two layers of intervening calls should be
+#'   # removed: The layer at eval_stack()'s call site (including the
+#'   # stack_trim() call), and the layer at stack_util()'s call.
+#'   stack <- stack_trim(eval_stack(), n = 2)
+#'   stack
+#' }
+#' user_fn <- function() {
+#'   # A user calls your stack utility with intervening frames:
+#'   identity(identity(stack_util()))
+#' }
+#' # These intervening frames won't appear in the evaluation stack
+#' identity(user_fn())
+stack_trim <- function(stack, n = 1) {
+  # Add 1 to discard stack_trim()'s own intervening frames
+  caller_pos <- call_frame(n + 1, clean = FALSE)$pos
+
+  n_frames <- length(stack)
+  n_skip <- n_frames - caller_pos
+  stack[seq(n_skip, n_frames)]
+}
+
+
+#' Jump to or from a frame.
+#'
+#' While \code{\link[base]{return}()} can only return from the current
+#' local frame, these two functions will return from any frame on the
+#' current evaluation stack, between the global and the currently
+#' active context. They provide a way of performing arbitrary
+#' non-local jumps out of the function currently under evaluation.
+#'
+#' \code{return_from()} will jump out of
+#' \code{frame}. \code{return_to()} is a bit trickier. It will jump
+#' out of the frame located just before \code{frame} in the evaluation
+#' stack, so that control flow ends up in \code{frame}, at the
+#' location where the previous frame was called from.
+#'
+#' These functions should only be used rarely. These sort of non-local
+#' gotos can be hard to reason about in casual code, though they can
+#' sometimes be useful. Also, consider to use the condition system to
+#' perform non-local jumps.
+#'
+#' @param frame An environment, a frame object, or any object with an
+#'   \code{\link{env}()} method. The environment should be an
+#'   evaluation environment currently on the stack.
+#' @param value The return value.
+#' @export
+#' @examples
+#' # Passing fn() evaluation frame to g():
+#' fn <- function() {
+#'   val <- g(env())
+#'   cat("g returned:", val, "\n")
+#'   "normal return"
+#' }
+#' g <- function(env) h(env)
+#'
+#' # Here we return from fn() with a new return value:
+#' h <- function(env) return_from(env, "early return")
+#' fn()
+#'
+#' # Here we return to fn(). The call stack unwinds until the last frame
+#' # called by fn(), which is g() in that case.
+#' h <- function(env) return_to(env, "early return")
+#' fn()
+return_from <- function(frame, value = NULL) {
+  if (is_numeric(frame)) {
+    frame <- eval_frame(frame)
+  }
+  exit_env <- env(frame)
+
+  f <- f_interp(~return(uq(value)))
+  with_env_(exit_env, f)
+}
+
+#' @rdname return_from
+#' @export
+return_to <- function(frame, value = NULL) {
+  if (is_numeric(frame)) {
+    prev_pos <- frame - 1
+  } else {
+    env <- env(frame)
+    distance <- frame_position_current(env)
+    prev_pos <- distance - 1
+  }
+
+  prev_frame <- eval_frame(prev_pos)
+  return_from(prev_frame, value)
 }
