@@ -65,6 +65,6 @@ with_handlers(fn(), foo = restart_bar)
 with_handlers(fn(), foo = restarting("rst_baz"))
 }
 \seealso{
-\code{\link{inplace}()} and \code{\link{thrown}()}.
+\code{\link{inplace}()} and \code{\link{exiting}()}.
 }
 

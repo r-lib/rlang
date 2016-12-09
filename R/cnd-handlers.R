@@ -4,12 +4,12 @@
 #' stack (see \code{\link{eval_stack}()}) that are called by R when a
 #' condition is signalled (see \code{\link{cnd_signal}()} and
 #' \code{\link{abort}()} for two common signal functions). They come
-#' in two types: thrown handlers, which jump out of the signalling
+#' in two types: exiting handlers, which jump out of the signalling
 #' context and are transferred to \code{with_handlers()} before being
 #' executed. And inplace handlers, which are executed within the
 #' signal functions.
 #'
-#' A thrown handler is taking charge of the condition. No other
+#' An exiting handler is taking charge of the condition. No other
 #' handler on the stack gets a chance to handle the condition. The
 #' handler is executed and \code{with_handlers()} returns the return
 #' value of that handler. On the other hand, in place handlers do not
@@ -25,8 +25,8 @@
 #' \code{\link{inplace}()} and the \code{mufflable} argument of
 #' \code{\link{cnd_signal}()}.
 #'
-#' Thrown handlers are established first by \code{with_handlers()},
-#' and in place handlers are only installed after that. The latter
+#' Exiting handlers are established first by \code{with_handlers()},
+#' and in place handlers are installed in second place. The latter
 #' handlers thus take precedence over the former.
 #'
 #' @inheritParams with_restarts
@@ -34,9 +34,9 @@
 #'   handlers are established. The underscored version takes a quoted
 #'   expression or a quoted formula.
 #' @param ...,.handlers Named handlers. Handlers should inherit from
-#'   \code{thrown} or \code{inplace}. See \code{\link{thrown}()} and
+#'   \code{exiting} or \code{inplace}. See \code{\link{exiting}()} and
 #'   \code{\link{inplace}()} for constructing such handlers.
-#' @seealso \code{\link{thrown}()}, \code{\link{inplace}()}.
+#' @seealso \code{\link{exiting}()}, \code{\link{inplace}()}.
 #' @export
 #' @examples
 #' # Signal a condition with cnd_signal():
@@ -54,10 +54,10 @@
 #'   cat("called?\n")
 #' }
 #'
-#' # Thrown handlers jump to with_handlers() before being
+#' # Exiting handlers jump to with_handlers() before being
 #' # executed. Their return value is handed over:
 #' handler <- function(c) "handler return value"
-#' with_handlers(fn(), foo = thrown(handler))
+#' with_handlers(fn(), foo = exiting(handler))
 #'
 #' # In place handlers are called in turn and their return value is
 #' # ignored. Returning just means they are declining to take charge of
@@ -87,19 +87,19 @@ with_handlers_ <- function(.expr, .handlers = list(), .env = NULL) {
   f <- as_quoted_f(.expr, .env)
 
   inplace <- keep(.handlers, inherits, "inplace")
-  thrown <- keep(.handlers, inherits, "thrown")
+  exiting <- keep(.handlers, inherits, "exiting")
 
-  if (length(.handlers) > length(thrown) + length(inplace)) {
-    abort("all handlers should inherit from `thrown` or `inplace`")
+  if (length(.handlers) > length(exiting) + length(inplace)) {
+    abort("all handlers should inherit from `exiting` or `inplace`")
   }
 
-  f <- interp_handlers(f, inplace = inplace, thrown = thrown)
+  f <- interp_handlers(f, inplace = inplace, exiting = exiting)
   f_eval(f)
 }
 
-interp_handlers <- function(f, inplace, thrown) {
-  if (length(thrown)) {
-    f <- env_set(f_interp(~tryCatch(uq(f), uqs(thrown))), f)
+interp_handlers <- function(f, inplace, exiting) {
+  if (length(exiting)) {
+    f <- env_set(f_interp(~tryCatch(uq(f), uqs(exiting))), f)
   }
   if (length(inplace)) {
     f <- env_set(f_interp(~withCallingHandlers(uq(f), uqs(inplace))), f)
@@ -108,13 +108,13 @@ interp_handlers <- function(f, inplace, thrown) {
 }
 
 
-#' Create a thrown or in place handler.
+#' Create an exiting or in place handler.
 #'
 #' There are two types of condition handlers: exiting handlers, which
 #' are thrown to the place where they have been established (e.g.,
 #' \code{\link{with_handlers}()}'s evaluation frame), and local
 #' handlers, which are executed in place (e.g., where the condition
-#' has been signalled). \code{thrown()} and \code{inplace()} create
+#' has been signalled). \code{exiting()} and \code{inplace()} create
 #' handlers suitable for \code{\link{with_handlers}()}.
 #'
 #' A subtle point in the R language is that conditions are not thrown,
@@ -123,11 +123,20 @@ interp_handlers <- function(f, inplace, thrown) {
 #' conditions. When a critical condition signalled with
 #' \code{\link[base]{stop}()} or \code{\link{abort}()}, R inspects the
 #' handler stack and looks for a handler that can deal with the
-#' condition. If it finds a throwable handler, it throws it to the
-#' function that established it (\code{\link{with_handlers}()}). If R
-#' finds an inplace handler, it executes it locally. Only if no
-#' handler can deal with the critical condition will R jump to
-#' top-level (see \code{\link{rst_abort}()}).
+#' condition. If it finds an exiting handler, it throws it to the
+#' function that established it (\code{\link{with_handlers}()}). That
+#' is, it interrupts the normal course of evaluation and jumps to
+#' \code{with_handlers()} evaluation frame (see
+#' \code{\link{eval_stack}()}), and only then and there the handler is
+#' called. On the other hand, if R finds an inplace handler, it
+#' executes it locally. The inplace handler can choose to handle the
+#' condition by jumping out of the frame (see \code{\link{rst_jump}()}
+#' or \code{\link{return_from}()}). If it returns locally, it declines
+#' to handle the condition which is passed to the next relevant
+#' handler on the stack. If no handler is found or is able to deal
+#' with the critical condition (by jumping out of the frame), R will
+#' then jump out of the faulty evaluation frame to top-level, via the
+#' abort restart (see \code{\link{rst_abort}()}).
 #'
 #' @param handler A handler function that takes a condition as
 #'   argument.
@@ -137,10 +146,10 @@ interp_handlers <- function(f, inplace, thrown) {
 #' @seealso \code{\link{with_handlers}()} for examples,
 #'   \code{\link{restarting}()} for another kind of inplace handler.
 #' @export
-thrown <- function(handler) {
-  structure(handler, class = c("thrown", "handler"))
+exiting <- function(handler) {
+  structure(handler, class = c("exiting", "handler"))
 }
-#' @rdname thrown
+#' @rdname exiting
 #' @export
 inplace <- function(handler, muffle = FALSE) {
   if (muffle) {
@@ -180,7 +189,7 @@ inplace <- function(handler, muffle = FALSE) {
 #'   immediately, when creating the restarting handler.
 #'
 #' @export
-#' @seealso \code{\link{inplace}()} and \code{\link{thrown}()}.
+#' @seealso \code{\link{inplace}()} and \code{\link{exiting}()}.
 #' @examples
 #' # This is a restart that takes a data frame and names as arguments
 #' rst_bar <- function(df, nms) {

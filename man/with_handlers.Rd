@@ -15,7 +15,7 @@ handlers are established. The underscored version takes a quoted
 expression or a quoted formula.}
 
 \item{..., .handlers}{Named handlers. Handlers should inherit from
-\code{thrown} or \code{inplace}. See \code{\link{thrown}()} and
+\code{exiting} or \code{inplace}. See \code{\link{exiting}()} and
 \code{\link{inplace}()} for constructing such handlers.}
 
 \item{.env}{The environment in which to evaluate a captured
@@ -26,13 +26,13 @@ Condition handlers are functions established on the evaluation
 stack (see \code{\link{eval_stack}()}) that are called by R when a
 condition is signalled (see \code{\link{cnd_signal}()} and
 \code{\link{abort}()} for two common signal functions). They come
-in two types: thrown handlers, which jump out of the signalling
+in two types: exiting handlers, which jump out of the signalling
 context and are transferred to \code{with_handlers()} before being
 executed. And inplace handlers, which are executed within the
 signal functions.
 }
 \details{
-A thrown handler is taking charge of the condition. No other
+An exiting handler is taking charge of the condition. No other
 handler on the stack gets a chance to handle the condition. The
 handler is executed and \code{with_handlers()} returns the return
 value of that handler. On the other hand, in place handlers do not
@@ -48,8 +48,8 @@ signalled, which allows execution to resume normally. See
 \code{\link{inplace}()} and the \code{mufflable} argument of
 \code{\link{cnd_signal}()}.
 
-Thrown handlers are established first by \code{with_handlers()},
-and in place handlers are only installed after that. The latter
+Exiting handlers are established first by \code{with_handlers()},
+and in place handlers are installed in second place. The latter
 handlers thus take precedence over the former.
 }
 \examples{
@@ -68,10 +68,10 @@ h <- function() {
   cat("called?\\n")
 }
 
-# Thrown handlers jump to with_handlers() before being
+# Exiting handlers jump to with_handlers() before being
 # executed. Their return value is handed over:
 handler <- function(c) "handler return value"
-with_handlers(fn(), foo = thrown(handler))
+with_handlers(fn(), foo = exiting(handler))
 
 # In place handlers are called in turn and their return value is
 # ignored. Returning just means they are declining to take charge of
@@ -93,6 +93,6 @@ fn2 <- function() {
 with_handlers(fn2(), foo = inplace(exiting_handler), foo = inplace(other_handler))
 }
 \seealso{
-\code{\link{thrown}()}, \code{\link{inplace}()}.
+\code{\link{exiting}()}, \code{\link{inplace}()}.
 }
 

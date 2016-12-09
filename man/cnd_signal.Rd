@@ -47,7 +47,7 @@ If \code{.critical} is \code{FALSE}, this function has no side
 effects beyond calling handlers. In particular, execution will
 continue normally after signalling the condition (unless a handler
 jumped somewhere else via \code{\link{rst_jump}()} or by being
-\code{\link{thrown}()}). If \code{.critical} is \code{TRUE}, the
+\code{\link{exiting}()}). If \code{.critical} is \code{TRUE}, the
 condition is signalled via \code{\link[base]{stop}()} and the
 program will terminate if no handler dealt with the condition by
 jumping out of the distressed call frame.
@@ -75,7 +75,7 @@ cnd <- cnd_new("foo")
 cnd_signal(cnd)
 
 # To learn more about establishing condition handlers, see
-# documentation for with_handlers(), thrown() and inplace():
+# documentation for with_handlers(), exiting() and inplace():
 with_handlers(cnd_signal(cnd),
   foo = inplace(function(c) cat("side effect!\\n"))
 )

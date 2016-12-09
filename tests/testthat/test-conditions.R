@@ -39,13 +39,13 @@ test_that("abort() includes call info", {
   fn <- function(...) abort("abort", "cnd", call = call)
 
   call <- FALSE
-  with_handlers(fn(foo(bar)), cnd = thrown(function(c) {
+  with_handlers(fn(foo(bar)), cnd = exiting(function(c) {
     expect_identical(c$.call, quote(fn(foo(bar))))
     expect_null(conditionCall(c))
   }))
 
   call <- TRUE
-  with_handlers(fn(foo(bar)), cnd = thrown(function(c) {
+  with_handlers(fn(foo(bar)), cnd = exiting(function(c) {
     expect_identical(conditionCall(c), quote(fn(foo(bar))))
   }))
 })
@@ -80,13 +80,13 @@ test_that("Local handlers can muffle mufflable conditions", {
 
 test_that("with_handlers() constructs correct expression", {
   inplace <- list(foo = function(c) "foo", bar = function(c) "bar")
-  thrown <- list(baz = function(c) "baz", bam = function(c) "bam")
-  f <- interp_handlers(~expr(), inplace = inplace, thrown = thrown)
+  exiting <- list(baz = function(c) "baz", bam = function(c) "bam")
+  f <- interp_handlers(~expr(), inplace = inplace, exiting = exiting)
 
   expected_expr <- bquote(withCallingHandlers(
     tryCatch(expr(),
-      baz = .(thrown$baz),
-      bam = .(thrown$bam)
+      baz = .(exiting$baz),
+      bam = .(exiting$bam)
     ),
     foo = .(inplace$foo),
     bar = .(inplace$bar)
@@ -95,10 +95,10 @@ test_that("with_handlers() constructs correct expression", {
   expect_identical(f_rhs(f), expected_expr)
 })
 
-test_that("with_handlers() establishes inplace and thrown handlers", {
+test_that("with_handlers() establishes inplace and exiting handlers", {
   handlers <- list(
-    error = thrown(function(c) "caught error"),
-    message = thrown(function(c) "caught message"),
+    error = exiting(function(c) "caught error"),
+    message = exiting(function(c) "caught message"),
     warning = inplace(function(c) "warning"),
     foobar = inplace(function(c) cat("foobar"))
   )

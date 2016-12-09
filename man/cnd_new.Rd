@@ -46,7 +46,7 @@ cnd_signal(cnd)
 
 # If a relevant handler is on the current evaluation stack, it will be
 # called by cnd_signal():
-with_handlers(cnd_signal(cnd), foo = thrown(function(c) "caught!"))
+with_handlers(cnd_signal(cnd), foo = exiting(function(c) "caught!"))
 
 # Handlers can be thrown or executed inplace. See with_handlers()
 # documentation for more on this.

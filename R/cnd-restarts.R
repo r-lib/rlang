@@ -97,10 +97,10 @@
 #' fn(FALSE)
 #'
 #' # Change the default value if you need an empty character vector by
-#' # defining an inplace handler that jumps to the restart. It has to be
-#' # inplace because thrown handlers jump to the place where they are
-#' # established before being executed, and the restart is not defined
-#' # anymore at that point:
+#' # defining an inplace handler that jumps to the restart. It has to
+#' # be inplace because exiting handlers jump to the place where they
+#' # are established before being executed, and the restart is not
+#' # defined anymore at that point:
 #' rst_handler <- inplace(function(c) rst_jump("rst_empty_chr"))
 #' with_handlers(fn(FALSE), default_empty_string = rst_handler)
 #'
@@ -250,12 +250,12 @@ rst_abort <- function() {
 #' with_handlers(fn(message, "some message"), message = muffling_handler)
 #' with_handlers(fn(warning, "some warning"), warning = muffling_handler)
 #'
-#' # Note that thrown handlers are thrown to the establishing point
+#' # Note that exiting handlers are thrown to the establishing point
 #' # before being executed. At that point, the restart (established
 #' # within the signalling function) does not exist anymore:
 #' \dontrun{
 #' with_handlers(fn(warning, "some warning"),
-#'   warning = thrown(function(c) rst_muffle(c)))
+#'   warning = exiting(function(c) rst_muffle(c)))
 #' }
 #'
 #'

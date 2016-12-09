@@ -38,7 +38,7 @@ different target on the stack (see \code{\link{with_handlers}()}).
 \code{warn()} and \code{inform()} both have the side effect of
 displaying a message. These messages will not be displayed if a
 handler transfers control. Transfer can be achieved by establishing
-a thrown handler that transfers control to
+an exiting handler that transfers control to
 \code{\link{with_handlers}()}). In this case, the current function
 stops and execution resumes at the point where handlers were
 established.
