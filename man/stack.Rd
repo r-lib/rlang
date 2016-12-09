@@ -24,7 +24,7 @@ eval_depth()
 
 call_depth()
 
-eval_stack(n = NULL)
+eval_stack(n = NULL, trim = 0)
 
 call_stack(n = NULL, clean = TRUE)
 }
@@ -38,6 +38,9 @@ entries by \code{\link[base]{eval}()} and
 frames will be assigned the correct parent and \code{eval()}
 frames are merged together (as \code{eval()} creates a duplicate
 frame).}
+
+\item{trim}{The number of layers of intervening frames to trim off
+the stack. See \code{\link{stack_trim}()} and examples.}
 }
 \description{
 The \code{eval_} and \code{call_} families of functions provide a
@@ -121,5 +124,27 @@ fn <- function() {
   eval_frame(n)
 }
 identical(fn(), frame_global())
+
+
+# eval_stack() returns a stack with all intervening frames. You can
+# trim layers of intervening frames with the trim argument:
+identity(identity(eval_stack()))
+identity(identity(eval_stack(trim = 1)))
+
+# eval_stack() is called within fn() with intervening frames:
+fn <- function(trim) identity(identity(eval_stack(trim = trim)))
+fn(0)
+
+# We can trim the first layer of those:
+fn(1)
+
+# The outside intervening frames (at the fn() call site) are still
+# returned, but can be trimmed as well:
+identity(identity(fn(1)))
+identity(identity(fn(2)))
+
+g <- function(trim) identity(identity(fn(trim)))
+g(2)
+g(3)
 }
 

@@ -49,6 +49,8 @@
 #'   frames will be assigned the correct parent and \code{eval()}
 #'   frames are merged together (as \code{eval()} creates a duplicate
 #'   frame).
+#' @param trim The number of layers of intervening frames to trim off
+#'   the stack. See \code{\link{stack_trim}()} and examples.
 #' @name stack
 #' @examples
 #' # Expressions within arguments count as contexts
@@ -89,6 +91,28 @@
 #'   eval_frame(n)
 #' }
 #' identical(fn(), frame_global())
+#'
+#'
+#' # eval_stack() returns a stack with all intervening frames. You can
+#' # trim layers of intervening frames with the trim argument:
+#' identity(identity(eval_stack()))
+#' identity(identity(eval_stack(trim = 1)))
+#'
+#' # eval_stack() is called within fn() with intervening frames:
+#' fn <- function(trim) identity(identity(eval_stack(trim = trim)))
+#' fn(0)
+#'
+#' # We can trim the first layer of those:
+#' fn(1)
+#'
+#' # The outside intervening frames (at the fn() call site) are still
+#' # returned, but can be trimmed as well:
+#' identity(identity(fn(1)))
+#' identity(identity(fn(2)))
+#'
+#' g <- function(trim) identity(identity(fn(trim)))
+#' g(2)
+#' g(3)
 NULL
 
 
@@ -278,7 +302,7 @@ call_depth <- function() {
 
 #' @rdname stack
 #' @export
-eval_stack <- function(n = NULL) {
+eval_stack <- function(n = NULL, trim = 0) {
   stack_data <- list(
     pos = eval_stack_trail(),
     caller_pos = eval_stack_callers(),
@@ -298,6 +322,9 @@ eval_stack <- function(n = NULL) {
 
   if (is.null(n) || (length(n) && n > length(stack))) {
     stack <- c(stack, list(frame_global()))
+  }
+  if (trim > 0) {
+    stack <- stack_trim(stack, n = trim + 1)
   }
 
   structure(stack, class = c("eval_stack", "stack"))
@@ -552,6 +579,10 @@ frame_position_current <- function(frame, stack = NULL,
 #' # These intervening frames won't appear in the evaluation stack
 #' identity(user_fn())
 stack_trim <- function(stack, n = 1) {
+  if (n < 1) {
+    return(stack)
+  }
+
   # Add 1 to discard stack_trim()'s own intervening frames
   caller_pos <- call_frame(n + 1, clean = FALSE)$pos
 

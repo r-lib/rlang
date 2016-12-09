@@ -225,6 +225,15 @@ test_that("call stacks are cleaned", {
   expect_identical(stack_clean[[1]]$fn, base::eval)
 })
 
+test_that("eval_stack() trims layers of calls", {
+  current_stack <- eval_stack()
+  expect_identical(identity(identity(eval_stack(trim = 1))), current_stack)
+
+  fn <- function(trim) identity(identity(eval_stack(trim = trim)))
+  stack <- identity(identity(fn(2)))
+  expect_identical(stack, current_stack)
+})
+
 
 context("frame utils") # ---------------------------------------------
 
