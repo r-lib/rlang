@@ -38,7 +38,7 @@ test_that("context position is correct", {
 test_that("eval_frame(n_depth) returns global frame", {
   n_depth <- eval_depth()
   frame <- eval_frame(n_depth)
-  global <- global_frame()
+  global <- frame_global()
   expect_identical(frame, global)
 })
 
@@ -79,7 +79,7 @@ test_that("call_frame()$expr gives expression of caller not previous ctxt", {
 
 test_that("call_frame(n_depth) returns global frame", {
   n_depth <- call_depth()
-  expect_identical(call_frame(n_depth), global_frame())
+  expect_identical(call_frame(n_depth), frame_global())
 })
 
 test_that("call_frame(n) throws at correct level", {

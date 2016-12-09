@@ -7,11 +7,14 @@
 \alias{eval_depth}
 \alias{eval_frame}
 \alias{eval_stack}
-\alias{global_frame}
+\alias{frame_current}
+\alias{frame_global}
 \alias{stack}
 \title{Call stack information}
 \usage{
-global_frame()
+frame_global()
+
+frame_current()
 
 eval_frame(n = 1)
 
@@ -77,7 +80,7 @@ more frame than \code{\link[base]{sys.nframe}()} because it counts
 the global frame. That is consistent with the \code{_stack()}
 functions which return the global frame as well. This way,
 \code{call_stack(call_depth())} is the same as
-\code{global_frame()}.
+\code{frame_global()}.
 }
 \examples{
 # Expressions within arguments count as contexts
@@ -106,5 +109,17 @@ if (requireNamespace("purrr", quietly = TRUE)) {
   purrr::map(stack, "env")
   purrr::transpose(stack)$expr
 }
+
+# frame_current() is an alias for eval_frame(1)
+fn <- function() list(current = frame_current(), first = eval_frame(1))
+fn()
+
+# While frame_current() is the top of the stack, frame_global() is
+# the bottom:
+fn <- function() {
+  n <- eval_depth()
+  eval_frame(n)
+}
+identical(fn(), frame_global())
 }
 
