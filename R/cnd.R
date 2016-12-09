@@ -1,6 +1,3 @@
-
-# conditions ---------------------------------------------------------
-
 #' Create a condition object.
 #'
 #' These constructors make it easy to create subclassed conditions.
