@@ -92,3 +92,10 @@ set_names2 <- function(x, nms = names2(x)) {
   names(x) <- nms
   x
 }
+lapply_if <- function(.x, .p, .f, ...) {
+  if (!is.logical(.p)) {
+    .p <- vapply_lgl(.x, .p)
+  }
+  .x[.p] <- lapply(.x[.p], .f, ...)
+  .x
+}
