@@ -21,8 +21,8 @@ test_that("dots are retrieved from arguments", {
   expect_identical(g(arg_dots_lsp, a = 1, foo = bar), pairlist(a = 1, foo = quote(bar)))
 })
 
-test_that("dots_info() inspects dots", {
-  fn <- function(...) dots_info(...)
+test_that("dots_inspect() inspects dots", {
+  fn <- function(...) dots_inspect(...)
   g <-  function(...) fn(...)
   h <- function() list(
     info = g(foo = bar, "foo"),
@@ -43,7 +43,7 @@ test_that("unmatched dots return arg_missing()", {
   fn <- function(...) {
     dots <- arg_dots(...)
     stack <- call_stack(2)
-    dots_info_(dots, stack)
+    dots_inspect_(dots, stack)
   }
   out <- fn(, )
   expect_equal(out[[1]]$expr, arg_missing())
@@ -51,6 +51,6 @@ test_that("unmatched dots return arg_missing()", {
 })
 
 test_that("empty dots return list()", {
-  fn <- function(...) dots_info(...)
+  fn <- function(...) dots_inspect(...)
   expect_equal(fn(), list())
 })
