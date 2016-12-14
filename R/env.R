@@ -209,7 +209,7 @@ env_tail <- function(env = env_caller()) {
 #' This is a S3 generic. The default method coerces named vectors
 #' (including lists) to an environment. It first checks that \code{x}
 #' is a dictionary (see \code{\link{is_dictionary}()}). The method for
-#' strings returns the corresponding package environment (see
+#' unnamed strings returns the corresponding package environment (see
 #' \code{\link{env_package}()}).
 #'
 #' If \code{x} is an environment and \code{parent} is not \code{NULL},
@@ -260,8 +260,8 @@ as_env.environment <- function(x, parent = NULL) {
 #' @rdname as_env
 #' @export
 as_env.character <- function(x, parent = NULL) {
-  if (!is_scalar_character(x)) {
-    return(NextMethod())
+  if (length(x) > 1 || is_named(x)) {
+    return(as_env.default(x, parent))
   }
   if (!is_null(parent)) {
     warning("`parent` ignored for named environments", call. = FALSE)

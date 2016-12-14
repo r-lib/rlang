@@ -29,7 +29,7 @@ not make sense to change the parent.}
 This is a S3 generic. The default method coerces named vectors
 (including lists) to an environment. It first checks that \code{x}
 is a dictionary (see \code{\link{is_dictionary}()}). The method for
-strings returns the corresponding package environment (see
+unnamed strings returns the corresponding package environment (see
 \code{\link{env_package}()}).
 }
 \details{
