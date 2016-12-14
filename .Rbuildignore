@@ -5,3 +5,4 @@
 ^revdep$
 ^vignettes/rsconnect$
 ^\.httr-oauth$
+^codecov\.yml$
