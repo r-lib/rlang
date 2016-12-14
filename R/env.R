@@ -30,7 +30,7 @@
 #' @param parent A parent environment. Can be an object with a S3
 #'   method for \code{as_env()}.
 #' @param dict A vector with unique names which defines bindings
-#'   (pairs of name and value). See \code{\link{is_dict}()}.
+#'   (pairs of name and value). See \code{\link{is_dictionary}()}.
 #' @param n The number of generations to go through.
 #' @seealso \link{env_scoped}, \code{\link{env_has}()},
 #'   \code{\link{env_assign}()}.
@@ -208,7 +208,7 @@ env_tail <- function(env = env_caller()) {
 #'
 #' This is a s3 generic. The default method coerces named vectors
 #' (including lists) to an environment. It first checks that \code{x}
-#' is a dictionary (see \code{\link{is_dict}()}). The method for
+#' is a dictionary (see \code{\link{is_dictionary}()}). The method for
 #' strings returns the corresponding package environment (see
 #' \code{\link{env_package}()}).
 #'
@@ -268,7 +268,7 @@ as_env.character <- function(x, parent = NULL) {
 #' @rdname as_env
 #' @export
 as_env.default <- function(x, parent = NULL) {
-  stopifnot(is_dict(x))
+  stopifnot(is_dictionary(x))
   if (is_atomic(x)) {
     x <- as.list(x)
   }
@@ -336,7 +336,7 @@ env_set_parent <- function(env, new_env) {
 #' These functions create bindings in the specified environment. The
 #' bindings are supplied as pairs of names and values, either directly
 #' (\code{env_assign()}), in dots (\code{env_define()}), or from a
-#' dictionary (\code{env_bind()}). See \code{\link{is_dict}()} for
+#' dictionary (\code{env_bind()}). See \code{\link{is_dictionary}()} for
 #' the definition of a dictionary.
 #'
 #' These functions operate by side effect. For example, if you assign
@@ -377,7 +377,7 @@ env_assign <- function(env = env_caller(), nm, x) {
 #' @rdname env_assign
 #' @export
 env_bind <- function(env = env_caller(), dict = list()) {
-  stopifnot(is_dict(dict))
+  stopifnot(is_dictionary(dict))
   nms <- names(dict)
 
   env_ <- rlang::env(env)

@@ -2,13 +2,13 @@
 % Please edit documentation in R/attr.R
 \name{is_named}
 \alias{has_names}
-\alias{is_dict}
+\alias{is_dictionary}
 \alias{is_named}
 \title{Is object named?}
 \usage{
 is_named(x)
 
-is_dict(x)
+is_dictionary(x)
 
 has_names(x)
 }
@@ -16,7 +16,7 @@ has_names(x)
 \item{x}{An object to test.}
 }
 \value{
-\code{is_named()} and \code{is_dict()} are scalar
+\code{is_named()} and \code{is_dictionary()} are scalar
   predicates and return \code{TRUE} or \code{FALSE}.
   \code{has_names()} is vectorised and returns a logical vector as
   long as the input.
@@ -24,20 +24,20 @@ has_names(x)
 \description{
 \code{is_named()} checks that \code{x} has names attributes, and
 that none of the names are missing or empty (\code{NA} or
-\code{""}). \code{is_dict()} checks that an object is a dictionary:
-that it has actual names and in addition that there are no
-duplicated names. \code{has_names()} is a vectorised version of
+\code{""}). \code{is_dictionary()} checks that an object is a
+dictionary: that it has actual names and in addition that there are
+no duplicated names. \code{has_names()} is a vectorised version of
 \code{is_named()}.
 }
 \examples{
 # A data frame usually has valid, unique names
 is_named(mtcars)
 has_names(mtcars)
-is_dict(mtcars)
+is_dictionary(mtcars)
 
 # But data frames can also have duplicated columns:
 dups <- cbind(mtcars, cyl = seq_len(nrow(mtcars)))
-is_dict(dups)
+is_dictionary(dups)
 
 # The names are still valid:
 is_named(dups)
@@ -45,8 +45,8 @@ has_names(dups)
 
 
 # For empty objects the semantics are slightly different.
-# is_dict() returns TRUE for empty objects:
-is_dict(list())
+# is_dictionary() returns TRUE for empty objects:
+is_dictionary(list())
 
 # But is_named() will only return TRUE if there is a names
 # attribute (a zero-length character vector in this case):

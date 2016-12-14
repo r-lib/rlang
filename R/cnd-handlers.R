@@ -224,7 +224,7 @@ restarting <- function(.restart, ..., .fields = NULL, .args = list()) {
 
   if (!is_null(.fields)) {
     .fields <- set_names2(.fields)
-    stopifnot(is_character(.fields) && is_dict(.fields))
+    stopifnot(is_character(.fields) && is_dictionary(.fields))
   }
   args <- c(list(...), .args)
 

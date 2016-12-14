@@ -7,8 +7,6 @@
 has_length(x, n = NULL)
 }
 \arguments{
-\item{x}{A R object.}
-
 \item{n}{A specific length to test \code{x} with. If \code{NULL},
 \code{has_length()} returns \code{TRUE} if \code{x} has length
 greater than zero, and \code{FALSE} otherwise.}
