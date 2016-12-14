@@ -158,7 +158,10 @@ as_name.name <- function(x) {
 }
 #' @export
 as_name.character <- function(x) {
-  as.name(read_validate(x))
+  if (!is_scalar_character(x)) {
+    stop("Cannot parse character vector of length > 1", call. = FALSE)
+  }
+  as.name(x)
 }
 #' @export
 as_name.call <- function(x) {
@@ -188,7 +191,10 @@ as_call.call <- function(x) {
 }
 #' @export
 as_call.character <- function(x) {
-  read(x)
+  if (!is_scalar_character(x)) {
+    stop("Cannot parse character vector of length > 1", call. = FALSE)
+  }
+  parse_expr(x)
 }
 #' @export
 as_call.formula <- function(x) {

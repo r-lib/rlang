@@ -1,12 +1,12 @@
-context("read")
+context("parse")
 
-test_that("f_read() etc return correct formulas", {
-  expect_identical(f_read("foo(bar)", "base"), with_env("base", ~foo(bar)))
-  expect_identical(f_read_list("foo(bar)\n mtcars", "base"), with_env("base", list(~foo(bar), ~mtcars)))
+test_that("f_parse_expr() etc return correct formulas", {
+  expect_identical(f_parse_expr("foo(bar)", "base"), with_env("base", ~foo(bar)))
+  expect_identical(f_parse_exprs("foo(bar)\n mtcars", "base"), with_env("base", list(~foo(bar), ~mtcars)))
 })
 
-test_that("read() requires scalar character", {
-  expect_error(read(letters), "length > 1")
+test_that("parse() requires scalar character", {
+  expect_error(parse_expr(letters), "`x` must be a string or a R connection")
 })
 
 
