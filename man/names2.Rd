@@ -12,9 +12,14 @@ names2(x)
 \description{
 This names getter always returns a character vector, even when an
 object does not have a \code{names} attribute. In this case, it
-returns a vector of empty names \code{""}.
+returns a vector of empty names \code{""}. It also standardises
+missing names to \code{""}.
 }
 \examples{
 names2(letters)
+
+# It also takes care of standardising missing names:
+x <- set_names(1:3, c("a", NA, "b"))
+names2(x)
 }
 

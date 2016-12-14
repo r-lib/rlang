@@ -115,14 +115,24 @@ set_names <- function(x, nm = x) {
 #'
 #' This names getter always returns a character vector, even when an
 #' object does not have a \code{names} attribute. In this case, it
-#' returns a vector of empty names \code{""}.
+#' returns a vector of empty names \code{""}. It also standardises
+#' missing names to \code{""}.
 #'
 #' @param x A vector.
 #' @export
 #' @examples
 #' names2(letters)
+#'
+#' # It also takes care of standardising missing names:
+#' x <- set_names(1:3, c("a", NA, "b"))
+#' names2(x)
 names2 <- function(x) {
-  names(x) %||% rep("", length(x))
+  nms <- names(x)
+  if (is_null(nms)) {
+    rep("", length(x))
+  } else {
+    nms %|% ""
+  }
 }
 
 #' @useDynLib rlang length__
