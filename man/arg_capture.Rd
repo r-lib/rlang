@@ -60,7 +60,7 @@ forward named arguments across function calls (see below). See
   be harder to reason about and has some limitations.
 
   Dots are different from named arguments in that they are
-  implicitely forwarded. Forwarding dots does not create a new call
+  implicitly forwarded. Forwarding dots does not create a new call
   site. The expression is passed on as is. That's why you can
   easily capture them with \code{\link[base]{substitute}()}. By the
   same token, you don't need to capture dots before passing them
