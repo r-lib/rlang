@@ -212,6 +212,10 @@ env_tail <- function(env = env_caller()) {
 #' strings returns the corresponding package environment (see
 #' \code{\link{env_package}()}).
 #'
+#' If \code{x} is an environment and \code{parent} is not \code{NULL},
+#' the environment is duplicated before being set a new parent. The
+#' return value is therefore a different environment than \code{x}.
+#'
 #' @param x An object to coerce.
 #' @param parent A parent environment, \code{\link{env_empty}()} by
 #'   default. Can be ignored with a warning for methods where it does
@@ -248,7 +252,7 @@ as_env.NULL <- function(x, parent = NULL) {
 #' @export
 as_env.environment <- function(x, parent = NULL) {
   if (!is_null(parent)) {
-    env_set_parent(x, parent)
+    x <- list2env(as.list(x), parent = parent)
   }
   x
 }

@@ -32,6 +32,11 @@ is a dictionary (see \code{\link{is_dictionary}()}). The method for
 strings returns the corresponding package environment (see
 \code{\link{env_package}()}).
 }
+\details{
+If \code{x} is an environment and \code{parent} is not \code{NULL},
+the environment is duplicated before being set a new parent. The
+return value is therefore a different environment than \code{x}.
+}
 \examples{
 # Coerce a named vector to an environment:
 env <- as_env(mtcars)
