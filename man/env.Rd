@@ -58,7 +58,7 @@ they are eclipsed by synonyms (other bindings with the same names)
 in child environments.
 }
 \details{
-\code{env()} is a s3 generic. Methods are provided for functions,
+\code{env()} is a S3 generic. Methods are provided for functions,
 formulas and frames. If called with a missing argument, the
 environment of the current evaluation frame (see
 \code{\link{eval_stack}()}) is returned. If you call \code{env()}

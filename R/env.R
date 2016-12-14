@@ -10,7 +10,7 @@
 #' they are eclipsed by synonyms (other bindings with the same names)
 #' in child environments.
 #'
-#' \code{env()} is a s3 generic. Methods are provided for functions,
+#' \code{env()} is a S3 generic. Methods are provided for functions,
 #' formulas and frames. If called with a missing argument, the
 #' environment of the current evaluation frame (see
 #' \code{\link{eval_stack}()}) is returned. If you call \code{env()}
@@ -206,7 +206,7 @@ env_tail <- function(env = env_caller()) {
 
 #' Coerce to an environment.
 #'
-#' This is a s3 generic. The default method coerces named vectors
+#' This is a S3 generic. The default method coerces named vectors
 #' (including lists) to an environment. It first checks that \code{x}
 #' is a dictionary (see \code{\link{is_dictionary}()}). The method for
 #' strings returns the corresponding package environment (see

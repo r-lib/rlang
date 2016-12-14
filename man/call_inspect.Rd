@@ -13,7 +13,8 @@ call_inspect(...)
 This function is useful for quick testing and debugging when you
 manipulate expressions and calls. It lets you check that a function
 is called with the right arguments. This can be useful in unit
-tests for instance.
+tests for instance. Note that this is just a simple wrapper around
+\code{\link[base]{match.call}()}.
 }
 \examples{
 call_inspect(foo(bar), "" \%>\% identity())
