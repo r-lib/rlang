@@ -17,7 +17,10 @@ is_binary_call(x, name = NULL)
 extracted.}
 
 \item{name}{An optional name that the call should match. It is
-passed to \code{\link{as_name}()} before matching.}
+passed to \code{\link{as_name}()} before matching. This argument
+is vectorised and you can supply a vector of names to match. In
+this case, \code{is_call()} returns \code{TRUE} if at least one
+name matches.}
 
 \item{n}{An optional number of arguments that the call should
 match.}
@@ -59,6 +62,13 @@ is_call(~base::list(baz), "base::list")
 # extracts the function identifier as is, and thus returns the call
 # base::list:
 is_call(~base::list(baz), ~base::list(), 1)
+
+
+# The name argument is vectorised so you can supply a list of names
+# to match with:
+is_call(~foo(bar), c("bar", "baz"))
+is_call(~foo(bar), c("bar", "foo"))
+is_call(~base::list, c("::", ":::", "$", "@"))
 }
 \seealso{
 \code{\link{is_lang}()}

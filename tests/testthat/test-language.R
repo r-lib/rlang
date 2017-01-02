@@ -21,6 +21,15 @@ test_that("is_call() pattern-matches", {
   expect_true(is_binary_call(~ 3 + 3))
 })
 
+test_that("is_call() vectorises name", {
+  expect_false(is_call(~foo::bar, c("fn", "fn2")))
+  expect_true(is_call(~foo::bar, c("fn", "::")))
+
+  expect_true(is_call(~foo::bar, quote(`::`)))
+  expect_true(is_call(~foo::bar, list(quote(`@`), quote(`::`))))
+  expect_false(is_call(~foo::bar, list(quote(`@`), quote(`:::`))))
+})
+
 
 # coercion ----------------------------------------------------------------
 

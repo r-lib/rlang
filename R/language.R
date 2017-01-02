@@ -89,7 +89,10 @@ is_atomic_lang <- function(x) {
 #' @param x An object to test. If a formula, the right-hand side is
 #'   extracted.
 #' @param name An optional name that the call should match. It is
-#'   passed to \code{\link{as_name}()} before matching.
+#'   passed to \code{\link{as_name}()} before matching. This argument
+#'   is vectorised and you can supply a vector of names to match. In
+#'   this case, \code{is_call()} returns \code{TRUE} if at least one
+#'   name matches.
 #' @param n An optional number of arguments that the call should
 #'   match.
 #' @seealso \code{\link{is_lang}()}
@@ -124,17 +127,39 @@ is_atomic_lang <- function(x) {
 #' # extracts the function identifier as is, and thus returns the call
 #' # base::list:
 #' is_call(~base::list(baz), ~base::list(), 1)
+#'
+#'
+#' # The name argument is vectorised so you can supply a list of names
+#' # to match with:
+#' is_call(~foo(bar), c("bar", "baz"))
+#' is_call(~foo(bar), c("bar", "foo"))
+#' is_call(~base::list, c("::", ":::", "$", "@"))
 is_call <- function(x, name = NULL, n = NULL) {
   if (is_formula(x)) {
     x <- f_rhs(x)
   }
 
-  if (!typeof(x) == "language") {
+  if (typeof(x) != "language") {
     return(FALSE)
   }
 
-  if (!is_null(name) && !identical(x[[1]], as_name(name))) {
-    return(FALSE)
+  if (!is_null(name)) {
+    # Wrap language objects in a list
+    if (!is_vector(name)) {
+      name <- list(name)
+    }
+
+    unmatched <- TRUE
+    for (elt in name) {
+      if (identical(x[[1]], as_name(elt))) {
+        unmatched <- FALSE
+        break
+      }
+    }
+
+    if (unmatched) {
+      return(FALSE)
+    }
   }
 
   if (!is_null(n) && !has_length(x, n + 1L)) {
