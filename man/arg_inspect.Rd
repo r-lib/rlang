@@ -7,7 +7,7 @@
 \usage{
 arg_inspect(x)
 
-arg_inspect_(expr, stack)
+arg_inspect_(expr, stack, only_dots = FALSE)
 }
 \arguments{
 \item{x}{An argument to a function.}
@@ -17,6 +17,11 @@ inspect.}
 
 \item{stack}{A \code{call_stack} object as returned by
 \code{\link{call_stack}()}.}
+
+\item{only_dots}{Whether to stop introspection once
+forwarded dots have been climbed. Setting this to \code{TRUE} is
+only useful for inspecting dots (cf. \code{\link{dots_capture}()}
+which does not follow symbols).}
 }
 \value{
 A list containing:
