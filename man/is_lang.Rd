@@ -19,9 +19,26 @@ is_atomic_lang(x)
 \item{x}{An object to test.}
 }
 \description{
-These helpers are consistent wrappers around their base R equivalents.
-A language object is either an atomic vector (typically a scalar), a
-name (aka a symbol), a call, or a pairlist (used for function arguments).
+These helpers are consistent wrappers around their base R
+equivalents. A language object is either an atomic vector
+(typically a scalar), a name (aka a symbol), a call, or a pairlist
+(used for function arguments).
+}
+\details{
+\code{is_atomic_lang()} is a predicate that returns \code{TRUE} for
+terminating nodes in a parse tree. These nodes are either symbols
+or the subset of literals that are created by R when parsing text
+(see \code{\link{parse_expr}()}). A literal is any R object that
+evaluates to itself. Literals can thus be evaluated in the empty
+environment. For instance, \code{quote(c(1, 2))} is not a literal,
+but the result of evaluating it in \code{\link{env_base}()} is a
+literal, in this case an atomic vector. Technically, language
+expressions can contain arbitrary inlined objects. If your function
+accepts arbitrary expressions, it should account for that
+possibility with a catch-all branch. On the other hand, if your
+function only gets expressions created from a parse,
+\code{quote()}, or \code{\link{arg_capture}()}, then you can check
+for literals with \code{\link{is_atomic_lang}()}
 }
 \examples{
 q1 <- quote(1)
@@ -47,10 +64,16 @@ is_atomic_lang(letters)
 is_atomic_lang(quote(call()))
 
 # With the exception of names, atomic language objects have the
-# property of being self-quoting:
+# property of being self-quoting literals:
 identical("foo", quote("foo"))
 identical(1L, quote(1L))
 identical(NULL, quote(NULL))
+
+# These can be evaluated within the empty environment:
+eval(quote(1L), env_empty())
+
+# Whereas it would fail for non-atomic language objects:
+# eval(quote(c(1L, 2L)), env_empty())
 }
 \seealso{
 \code{\link{is_call}()} for a call predicate.
