@@ -131,7 +131,6 @@ dots_inspect_ <- function(dots, stack, only_dots = FALSE) {
 }
 
 #' @rdname arg_capture
-#' @useDynLib rlang inspect_dots
 #' @export
 dots_capture <- function(...) {
   info <- dots_inspect(..., .only_dots = TRUE)
