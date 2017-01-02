@@ -15,9 +15,6 @@ test_that("temporary connections are closed", {
   conn <- file(path)
 
   parse_exprs(conn)
-  expect_error(summary(conn), NA)
-
-  parse_exprs(temporary(conn))
   expect_error(summary(conn), "invalid connection")
 })
 

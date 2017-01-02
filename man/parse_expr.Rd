@@ -18,9 +18,8 @@ parse_exprs_f(x, env = env_caller())
 \arguments{
 \item{x}{Text containing expressions to parse_expr for
 \code{parse_expr()} and \code{parse_exprs()}. Can also be an R
-connection, for instance to a file. If the connection is marked
-as temporary (see \code{\link{temporary}()}), it will be
-automatically closed.}
+connection, for instance to a file. If the supplied connection is
+not open, it will be automatically closed and destroyed.}
 
 \item{env}{The environment for the formulas. Defaults to the
 context in which the parse_expr function was called. Can be any object
@@ -69,15 +68,8 @@ parse_exprs_f("identity(letters); mtcars", env = "base")
 path <- tempfile("my-file.R")
 cat("1; 2; mtcars", file = path)
 
-# This file can be parsed by first opening a connection.
-# The connection needs to be closed afterwards.
-conn <- file(path)
-parse_exprs(conn)
-close(conn)
-
-# You can also signal that the connection should be closed
-# automatically by supplying a temporary connection:
-parse_exprs(temporary(file(path)))
+# We can now parse it by supplying a connection:
+parse_exprs(file(path))
 }
 \seealso{
 \code{\link[base]{parse}()}

@@ -17,9 +17,8 @@
 #'
 #' @param x Text containing expressions to parse_expr for
 #'   \code{parse_expr()} and \code{parse_exprs()}. Can also be an R
-#'   connection, for instance to a file. If the connection is marked
-#'   as temporary (see \code{\link{temporary}()}), it will be
-#'   automatically closed.
+#'   connection, for instance to a file. If the supplied connection is
+#'   not open, it will be automatically closed and destroyed.
 #' @param env The environment for the formulas. Defaults to the
 #'   context in which the parse_expr function was called. Can be any object
 #'   with a \code{as_env()} method.
@@ -49,15 +48,8 @@
 #' path <- tempfile("my-file.R")
 #' cat("1; 2; mtcars", file = path)
 #'
-#' # This file can be parsed by first opening a connection.
-#' # The connection needs to be closed afterwards.
-#' conn <- file(path)
-#' parse_exprs(conn)
-#' close(conn)
-#'
-#' # You can also signal that the connection should be closed
-#' # automatically by supplying a temporary connection:
-#' parse_exprs(temporary(file(path)))
+#' # We can now parse it by supplying a connection:
+#' parse_exprs(file(path))
 parse_expr <- function(x) {
   exprs <- parse_exprs(x)
 
@@ -74,8 +66,11 @@ parse_expr <- function(x) {
 #' @export
 parse_exprs <- function(x) {
   if (inherits(x, "connection")) {
+    if (!isOpen(x)) {
+      open(x)
+      on.exit(close(x))
+    }
     exprs <- parse(file = x)
-    maybe_close(x)
   } else if (is_scalar_character(x)) {
     exprs <- parse(text = x)
   } else {
