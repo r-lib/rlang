@@ -1,7 +1,7 @@
 #' Extract dots
 #'
 #' \code{frame_dots()} extracts dots from a frame and
-#' \code{arg_dots()} extracts dots from its arguments. The
+#' \code{dots()} extracts dots from its arguments. The
 #' \code{_lsp()} versions return a pairlist that is ready to be
 #' spliced into a call, while the regular versions return a regular
 #' list that is usually easier to work with.
@@ -38,13 +38,13 @@ frame_dots_lsp <- function(frame = NULL) {
 
 #' @rdname frame_dots
 #' @export
-arg_dots <- function(...) {
+dots <- function(...) {
   eval(substitute(alist(...)))
 }
 
 #' @rdname frame_dots
 #' @export
-arg_dots_lsp <- function(...) {
+dots_lsp <- function(...) {
   dots <- cdr(substitute(alist(...)))
   if (is.language(dots)) {
     NULL
@@ -60,14 +60,14 @@ arg_dots_lsp <- function(...) {
 #'
 #' \code{dots_inspect_()} is the standard evaluation version of
 #' \code{dots_inspect()} and takes a list of dots as captured by
-#' \code{\link{frame_dots}()} or \code{\link{arg_dots}()}, and a call
+#' \code{\link{frame_dots}()} or \code{\link{dots}()}, and a call
 #' stack as returned by \code{\link{call_stack}()}.
 #'
 #' @param ... Dots to inspect.
 #' @seealso \code{\link{arg_inspect}()}
 #' @export
 dots_inspect <- function(...) {
-  dots <- arg_dots(...)
+  dots <- dots(...)
   stack <- call_stack()
   dots_inspect_(dots, stack)
 }

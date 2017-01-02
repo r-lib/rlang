@@ -24,7 +24,7 @@ results in a list.
 \details{
 \code{dots_inspect_()} is the standard evaluation version of
 \code{dots_inspect()} and takes a list of dots as captured by
-\code{\link{frame_dots}()} or \code{\link{arg_dots}()}, and a call
+\code{\link{frame_dots}()} or \code{\link{dots}()}, and a call
 stack as returned by \code{\link{call_stack}()}.
 }
 \seealso{
