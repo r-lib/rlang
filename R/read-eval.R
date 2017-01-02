@@ -1,24 +1,25 @@
 #' Parse R code.
 #'
-#' These functions parse_expr and transform text into R expressions.
-#' This is the first step of interpreting or evaluating a piece of
-#' code written by a programmer.
+#' These functions parse and transform text into R expressions. This
+#' is the first step to interpret or evaluate a piece of R code
+#' written by a programmer.
 #'
 #' \code{parse_expr()} returns one expression. If the text contains
 #' more than one expression (separated by colons or new lines), an
 #' error is issued. On the other hand \code{parse_exprs()} can handle
 #' multiple expressions. It always returns a list of expressions
-#' (compare to \code{\link[base]{parse}()} which returns an obsolete
-#' expression vector). All functions also support R connections (and
-#' will close the connection after parsing).
+#' (compare to \code{\link[base]{parse}()} which returns an
+#' \link[base]{expression} vector). All functions also support R
+#' connections.
 #'
 #' The versions prefixed with \code{f_} return expressions quoted in
 #' formulas rather than raw expressions.
 #'
 #' @param x Text containing expressions to parse_expr for
 #'   \code{parse_expr()} and \code{parse_exprs()}. Can also be an R
-#'   connection, for instance to a file. Note that the connection will
-#'   be closed as side effect.
+#'   connection, for instance to a file. If the connection is marked
+#'   as temporary (see \code{\link{temporary}()}), it will be
+#'   automatically closed.
 #' @param env The environment for the formulas. Defaults to the
 #'   context in which the parse_expr function was called. Can be any object
 #'   with a \code{as_env()} method.
@@ -49,8 +50,14 @@
 #' cat("1; 2; mtcars", file = path)
 #'
 #' # This file can be parsed by first opening a connection.
-#' # Note that the connection is automatically closed after usage.
-#' parse_exprs(file(path))
+#' # The connection needs to be closed afterwards.
+#' conn <- file(path)
+#' parse_exprs(conn)
+#' close(conn)
+#'
+#' # You can also signal that the connection should be closed
+#' # automatically by supplying a temporary connection:
+#' parse_exprs(temporary(file(path)))
 parse_expr <- function(x) {
   exprs <- parse_exprs(x)
 
@@ -68,7 +75,7 @@ parse_expr <- function(x) {
 parse_exprs <- function(x) {
   if (inherits(x, "connection")) {
     exprs <- parse(file = x)
-    close(x)
+    maybe_close(x)
   } else if (is_scalar_character(x)) {
     exprs <- parse(text = x)
   } else {

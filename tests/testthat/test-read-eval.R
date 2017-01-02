@@ -9,6 +9,18 @@ test_that("parse() requires scalar character", {
   expect_error(parse_expr(letters), "`x` must be a string or a R connection")
 })
 
+test_that("temporary connections are closed", {
+  path <- tempfile("file")
+  cat("1; 2; mtcars", file = path)
+  conn <- file(path)
+
+  parse_exprs(conn)
+  expect_error(summary(conn), NA)
+
+  parse_exprs(temporary(conn))
+  expect_error(summary(conn), "invalid connection")
+})
+
 
 context("eval")
 
