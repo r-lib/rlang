@@ -107,14 +107,16 @@ dots_enumerate_args <- function(dots) {
   dots
 }
 
-is_dot_nm <- function(nm) {
-  grepl("\\.\\.[0-9]+$", nm)
+#' Is object a ..n symbol?
+#' @param x An object to test.
+#' @export
+#' @examples
+#' is_dot_symbol(quote(..2))
+#' is_dot_symbol(quote(sym))
+is_dot_symbol <- function(x) {
+  is_symbol(x) && grepl("\\.\\.[0-9]+$", as.character(x))
 }
 
-#' @rdname arg_capture
-#' @useDynLib rlang inspect_dots
-#' @export
-dots_capture <- function(...) {
-  info <- .Call(inspect_dots, environment())
-  lapply(info, function(x) f_new(x$expr, env = x$env))
+is_dot_nm <- function(nm) {
+  grepl("\\.\\.[0-9]+$", nm)
 }

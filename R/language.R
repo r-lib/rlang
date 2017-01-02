@@ -89,6 +89,9 @@ is_name <- function(x) {
 }
 #' @rdname is_lang
 #' @export
+is_symbol <- is_name
+#' @rdname is_lang
+#' @export
 is_pairlist <- function(x) {
   typeof(x) == "pairlist"
 }
