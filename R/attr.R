@@ -167,3 +167,29 @@ has_length <- function(x, n = NULL) {
     len == n
   }
 }
+
+
+#' Add temporary attribute
+#'
+#' This is a simple wrapper that sets the \code{tmp} attribute of an
+#' object to \code{TRUE}.
+#'
+#' This is used for instance in \code{\link{maybe_close}()} to detect
+#' a transient connection that should be automatically closed. This
+#' verb could be used in a similar way in other contexts.
+#'
+#' @param x An object to add the temporary attribute or check for the
+#'   attribute.
+#' @export
+#' @examples
+#' is_temporary(letters)
+#' is_temporary(temporary(letters))
+temporary <- function(x) {
+  structure(x, tmp = TRUE)
+}
+
+#' @rdname temporary
+#' @export
+is_temporary <- function(x) {
+  is_true(attr(x, "tmp"))
+}
