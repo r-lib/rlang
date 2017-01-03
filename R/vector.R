@@ -62,3 +62,32 @@ prepend <- function(x, values, before = 1) {
     c(x[1:(before - 1)], values, x[before:n])
   }
 }
+
+#' Modify a vector.
+#'
+#' This function merges a list of arguments into a vector. It always
+#' returns a list.
+#'
+#' @param .x A vector to modify.
+#' @param ...,.elts List of elements to merge into \code{.x}.
+#' @return A modified vector upcasted to a list.
+#' @export
+#' @examples
+#' modify(c(1, b = 2, 3), 4, b = "foo")
+#'
+#' x <- list(a = 1, b = 2)
+#' y <- list(b = 3, c = 4)
+#' modify(x, .elts = y)
+modify <- function(.x, ..., .elts = list()) {
+  out <- as.list(.x)
+  args <- c(list(...), .elts)
+
+  args_nms <- names(args)
+  exists <- has_names(args) & args_nms %in% names(out)
+
+  for (nm in args_nms[exists]) {
+    out[[nm]] <- args[[nm]]
+  }
+
+  c(out, args[!exists])
+}
