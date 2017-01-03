@@ -4,7 +4,7 @@
 \alias{fn_new}
 \title{Create a function by "hand"}
 \usage{
-fn_new(args, body, env = caller_env())
+fn_new(args, body, env = env_caller())
 }
 \arguments{
 \item{args}{A named list of default arguments.  Note that if you want

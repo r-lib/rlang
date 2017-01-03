@@ -5,7 +5,7 @@ f_eval_rhs <- function(f, data = NULL) {
     stop("`f` is not a formula", call. = FALSE)
   }
 
-  expr <- f_rhs(f_interp(f, data = data))
+  expr <- f_rhs(interp(f, data = data))
   eval_expr(expr, f_env(f), data)
 }
 
@@ -16,7 +16,7 @@ f_eval_lhs <- function(f, data = NULL) {
     stop("`f` is not a formula", call. = FALSE)
   }
 
-  expr <- f_lhs(f_interp(f, data = data))
+  expr <- f_lhs(interp(f, data = data))
   eval_expr(expr, f_env(f), data)
 }
 
@@ -37,7 +37,7 @@ f_eval_lhs <- function(f, data = NULL) {
 #'
 #' @param f A formula. Any expressions wrapped in \code{ UQ() } will
 #'   will be "unquoted", i.e. they will be evaluated, and the results inserted
-#'   back into the formula. See \code{\link{f_interp}} for more details.
+#'   back into the formula. See \code{\link{interp}} for more details.
 #' @param data A list (or data frame). \code{find_data} is a generic used to
 #'   find the data associated with a given object. If you want to make
 #'   \code{f_eval} work for your own objects, you can define a method for this
@@ -69,7 +69,7 @@ f_eval_lhs <- function(f, data = NULL) {
 #' f_eval(~ mean(cyl), mtcars)
 #' # How can you change the variable that's being computed?
 #' # The easiest way is "unquote" with UQ()
-#' # See ?f_interp for more details
+#' # See ?interp for more details
 #' var <- ~ cyl
 #' f_eval(~ mean( UQ(var) ), mtcars)
 f_eval <- f_eval_rhs

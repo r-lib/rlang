@@ -99,10 +99,10 @@ with_handlers_ <- function(.expr, .handlers = list(), .env = NULL) {
 
 interp_handlers <- function(f, inplace, exiting) {
   if (length(exiting)) {
-    f <- env_set(f_interp(~tryCatch(UQ(f), UQS(exiting))), f)
+    f <- env_set(interp(~tryCatch(UQ(f), UQS(exiting))), f)
   }
   if (length(inplace)) {
-    f <- env_set(f_interp(~withCallingHandlers(UQ(f), UQS(inplace))), f)
+    f <- env_set(interp(~withCallingHandlers(UQ(f), UQS(inplace))), f)
   }
   f
 }

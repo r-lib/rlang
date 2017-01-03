@@ -5,7 +5,7 @@
 #' the form \code{UQS(x)}.
 #'
 #' @section Theory:
-#' Formally, \code{f_interp} is a quasiquote function, \code{UQ()} is the
+#' Formally, \code{interp} is a quasiquote function, \code{UQ()} is the
 #' unquote operator, and \code{UQS()} is the unquote splice operator.
 #' These terms have a rich history in LISP, and live on in modern languages
 #' like \href{Julia}{http://docs.julialang.org/en/release-0.1/manual/metaprogramming/}
@@ -19,36 +19,36 @@
 #' @export
 #' @aliases UQ UQS
 #' @examples
-#' f_interp(x ~ 1 + UQ(1 + 2 + 3) + 10)
+#' interp(x ~ 1 + UQ(1 + 2 + 3) + 10)
 #'
 #' # Use UQS() if you want to add multiple arguments to a function
 #' # It must evaluate to a list
 #' args <- list(1:10, na.rm = TRUE)
-#' f_interp(~ mean( UQS(args) ))
+#' interp(~ mean( UQS(args) ))
 #'
 #' # You can combine the two
 #' var <- quote(xyz)
 #' extra_args <- list(trim = 0.9)
-#' f_interp(~ mean( UQ(var) , UQS(extra_args) ))
+#' interp(~ mean( UQ(var) , UQS(extra_args) ))
 #'
 #' foo <- function(n) {
 #'   ~ 1 + UQ(n)
 #' }
 #' f <- foo(10)
 #' f
-#' f_interp(f)
+#' interp(f)
 #' @useDynLib rlang interp_
-f_interp <- function(f, data = NULL) {
+interp <- function(f, data = NULL) {
   f_rhs(f) <- .Call(interp_, f_rhs(f), f_env(f), data)
   f
 }
 
 #' @export
-#' @rdname f_interp
+#' @rdname interp
 UQ <- function(x, data = NULL) {
   if (is_formula(x)) {
     if (is.null(data)) {
-      f_rhs(f_interp(x))
+      f_rhs(interp(x))
     } else {
       f_eval(x, data = data)
     }
@@ -58,7 +58,7 @@ UQ <- function(x, data = NULL) {
 }
 
 #' @export
-#' @rdname f_interp
+#' @rdname interp
 UQF <- function(x) {
   if (!is_formula(x))
     stop("`x` must be a formula", call. = FALSE)
@@ -66,7 +66,7 @@ UQF <- function(x) {
 }
 
 #' @export
-#' @rdname f_interp
+#' @rdname interp
 UQS <- function(x) {
   if (!is_vector(x)) {
     stop("`x` must be a vector")

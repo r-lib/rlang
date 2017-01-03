@@ -283,34 +283,34 @@ df_mean(mtcars, ~ disp * 0.01638)
 df_mean(mtcars, ~ sqrt(mpg))
 ```
 
-To see how this works, we can use `f_interp()` which `f_eval()` calls internally (you shouldn't call it in your own code, but it's useful for debugging). The key is `UQ()`: `UQ()` evaluates its first (and only) argument and inserts the value into the formula:
+To see how this works, we can use `interp()` which `f_eval()` calls internally (you shouldn't call it in your own code, but it's useful for debugging). The key is `UQ()`: `UQ()` evaluates its first (and only) argument and inserts the value into the formula:
 
 ```{r}
 variable <- ~cyl
-f_interp(~ mean(UQ(variable)))
+interp(~ mean(UQ(variable)))
 
 variable <- ~ disp * 0.01638
-f_interp(~ mean(UQ(variable)))
+interp(~ mean(UQ(variable)))
 ```
 
 Unquoting allows you to create code "templates", where you write most of the expression, while still allowing the user to control important components. You can even use `UQ()` to change the function being called:
 
 ```{r}
 f <- ~ mean
-f_interp(~ UQ(f)(UQ(variable)))
+interp(~ UQ(f)(UQ(variable)))
 ```
 
 Note that `UQ()` only takes the RHS of a formula, which makes it difficult to insert literal formulas into a call:
 
 ```{r}
 formula <- y ~ x
-f_interp(~ lm(UQ(formula), data = df))
+interp(~ lm(UQ(formula), data = df))
 ```
 
 You can instead use `UQF()` which uses the whole formula, not just the RHS:
 
 ```{r}
-f_interp(~ lm(UQF(formula), data = df))
+interp(~ lm(UQF(formula), data = df))
 ```
 
 Unquoting is powerful, but it only allows you to modify a single argument: it doesn't allow you to add an arbitrary number of arguments. To do that, you'll need "unquote-splice", or `UQS()`. The first (and only) argument to `UQS()` should be a list of arguments to be spliced into the call:
@@ -318,7 +318,7 @@ Unquoting is powerful, but it only allows you to modify a single argument: it do
 ```{r}
 variable <- ~ x
 extra_args <- list(na.rm = TRUE, trim = 0.9)
-f_interp(~ mean(UQ(variable), UQS(extra_args)))
+interp(~ mean(UQ(variable), UQS(extra_args)))
 ```
 
 ### Exercises
