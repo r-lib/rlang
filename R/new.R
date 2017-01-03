@@ -72,47 +72,47 @@ rep_along <- function(.x, .y, ..., .attrs = list()) {
 #' @inheritParams with_attributes
 #' @param .n The vector length.
 #' @examples
-#' new_list(10)
+#' list_until(10)
 #'
 #' # Add attributes, including the S3 class:
-#' new_integer(0, index = 1)
-#' new_double(10, class = "my_class")
+#' integer_until(0, index = 1)
+#' double_until(10, class = "my_class")
 #' @name new-vectors
 #' @seealso along
 NULL
 
 #' @export
 #' @rdname new-vectors
-new_logical <- function(.n = 0, ..., .attrs = list()) {
+logical_until <- function(.n = 0, ..., .attrs = list()) {
   with_attributes(vector("logical", .n), ..., .attrs = .attrs)
 }
 #' @export
 #' @rdname new-vectors
-new_integer <- function(.n = 0, ..., .attrs = list()) {
+integer_until <- function(.n = 0, ..., .attrs = list()) {
   with_attributes(vector("integer", .n), ..., .attrs = .attrs)
 }
 #' @export
 #' @rdname new-vectors
-new_double <- function(.n = 0, ..., .attrs = list()) {
+double_until <- function(.n = 0, ..., .attrs = list()) {
   with_attributes(vector("double", .n), ..., .attrs = .attrs)
 }
 #' @export
 #' @rdname new-vectors
-new_character <- function(.n = 0, ..., .attrs = list()) {
+character_until <- function(.n = 0, ..., .attrs = list()) {
   with_attributes(vector("character", .n), ..., .attrs = .attrs)
 }
 #' @export
 #' @rdname new-vectors
-new_list <- function(.n = 0, ..., .attrs = list()) {
+list_until <- function(.n = 0, ..., .attrs = list()) {
   with_attributes(vector("list", .n), ..., .attrs = .attrs)
 }
 #' @export
 #' @rdname new-vectors
-new_complex <- function(.n = 0, ..., .attrs = list()) {
+complex_until <- function(.n = 0, ..., .attrs = list()) {
   with_attributes(vector("complex", .n), ..., .attrs = .attrs)
 }
 #' @export
 #' @rdname new-vectors
-new_raw <- function(.n = 0, ..., .attrs = list()) {
+raw_until <- function(.n = 0, ..., .attrs = list()) {
   with_attributes(vector("raw", .n), ..., .attrs = .attrs)
 }
