@@ -6,23 +6,8 @@ test_that("protected against bad inputs", {
   expect_error(f_interp(f), "must be an environment")
 })
 
-test_that("interp produces single string for character inputs", {
-  x <- interp("aaaaaaaaaaaaaa + bbbbbbbbbbbbbbb + ccccccccccccccccc + dddddddddddddddd + eeeeeeeeeeeeeee")
-  expect_is(x, "character")
-  expect_equal(length(x), 1)
-})
 
-
-test_that("can interpolate from environment", {
-  env <- new.env(parent = emptyenv())
-  env$a <- 10
-
-  out <- interp(~ f(a), .values = env)
-  expect_identical(out, ~f(10))
-})
-
-
-# uq ----------------------------------------------------------------------
+# UQ ----------------------------------------------------------------------
 
 test_that("evaluates contents of uq()", {
   expect_equal(f_interp(~ uq(1 + 2)), ~ 3)
