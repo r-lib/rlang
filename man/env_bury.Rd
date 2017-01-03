@@ -12,7 +12,7 @@ env_bury(env = env_caller(), dict = list())
 evaluation frame is returned.}
 
 \item{dict}{A vector with unique names which defines bindings
-(pairs of name and value). See \code{\link{is_dict}()}.}
+(pairs of name and value). See \code{\link{is_dictionary}()}.}
 }
 \value{
 An object associated with the new environment.

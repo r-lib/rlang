@@ -29,6 +29,10 @@ SEXP findLast(SEXP x) {
   return cons;
 }
 
+SEXP length__(SEXP x) {
+  return Rf_ScalarInteger(Rf_length(x));
+}
+
 // Formulas --------------------------------------------------------------------
 
 bool is_formula(SEXP x) {

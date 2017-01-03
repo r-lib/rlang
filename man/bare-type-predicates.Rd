@@ -12,24 +12,26 @@
 \alias{is_bare_vector}
 \title{Bare type predicates}
 \usage{
-is_bare_list(x)
+is_bare_list(x, n = NULL)
 
-is_bare_atomic(x)
+is_bare_atomic(x, n = NULL)
 
-is_bare_vector(x)
+is_bare_vector(x, n = NULL)
 
-is_bare_double(x)
+is_bare_double(x, n = NULL)
 
-is_bare_integer(x)
+is_bare_integer(x, n = NULL)
 
-is_bare_numeric(x)
+is_bare_numeric(x, n = NULL)
 
-is_bare_character(x)
+is_bare_character(x, n = NULL)
 
-is_bare_logical(x)
+is_bare_logical(x, n = NULL)
 }
 \arguments{
-\item{x}{object to be tested.}
+\item{x}{Object to be tested.}
+
+\item{n}{Expected length of a vector.}
 }
 \description{
 These predicates check for a given type but only return \code{TRUE}
@@ -38,11 +40,13 @@ example, a data frame is a list, but not a bare list.
 }
 \details{
 \itemize{
+  \item The predicates for vectors include the \code{n} argument
+    for pattern-matching on the vector length.
   \item Like \code{\link{is_atomic}()} and unlike base R
-        \code{is.atomic()}, \code{is_bare_atomic()} does not return
-        \code{TRUE} for \code{NULL}.
+    \code{is.atomic()}, \code{is_bare_atomic()} does not return
+    \code{TRUE} for \code{NULL}.
   \item Unlike base R \code{is.numeric()}, \code{is_bare_double()}
-        only returns \code{TRUE} for floating point numbers.
+    only returns \code{TRUE} for floating point numbers.
 }
 }
 \seealso{

@@ -10,7 +10,7 @@
 #' they are eclipsed by synonyms (other bindings with the same names)
 #' in child environments.
 #'
-#' \code{env()} is a s3 generic. Methods are provided for functions,
+#' \code{env()} is a S3 generic. Methods are provided for functions,
 #' formulas and frames. If called with a missing argument, the
 #' environment of the current evaluation frame (see
 #' \code{\link{eval_stack}()}) is returned. If you call \code{env()}
@@ -28,9 +28,9 @@
 #'   \code{env()}. If missing, the environment of the current
 #'   evaluation frame is returned.
 #' @param parent A parent environment. Can be an object with a S3
-#'   method for \code{env()}.
+#'   method for \code{as_env()}.
 #' @param dict A vector with unique names which defines bindings
-#'   (pairs of name and value). See \code{\link{is_dict}()}.
+#'   (pairs of name and value). See \code{\link{is_dictionary}()}.
 #' @param n The number of generations to go through.
 #' @seealso \link{env_scoped}, \code{\link{env_has}()},
 #'   \code{\link{env_assign}()}.
@@ -93,6 +93,12 @@
 #' env_has(env, "lapply", inherit = TRUE)
 #'
 #'
+#' # The parent argument of env_new() is passed to as_env() to provide
+#' # handy shortcuts:
+#' env <- env_new("rlang")
+#' identical(env_parent(env), env_package("rlang"))
+#'
+#'
 #' # Get the parent environment with env_parent():
 #' env_parent(env_global())
 #'
@@ -146,6 +152,11 @@ env.default <- function(env = env_caller()) {
     stop("No applicable method for 'env'", call. = FALSE)
   }
 }
+#' @rdname env
+#' @export
+env.character <- function(env = env_caller()) {
+  env_package(env)
+}
 
 #' Assignment operator for environments.
 #' @param x An object with an \code{env_set} method.
@@ -157,8 +168,8 @@ env.default <- function(env = env_caller()) {
 
 #' @rdname env
 #' @export
-env_new <- function(parent = env_empty(), dict = list()) {
-  env <- new.env(parent = parent)
+env_new <- function(parent = NULL, dict = list()) {
+  env <- new.env(parent = as_env(parent))
   env_bind(env, dict)
 }
 
@@ -190,6 +201,82 @@ env_tail <- function(env = env_caller()) {
   }
 
   env_
+}
+
+
+#' Coerce to an environment.
+#'
+#' This is a S3 generic. The default method coerces named vectors
+#' (including lists) to an environment. It first checks that \code{x}
+#' is a dictionary (see \code{\link{is_dictionary}()}). The method for
+#' unnamed strings returns the corresponding package environment (see
+#' \code{\link{env_package}()}).
+#'
+#' If \code{x} is an environment and \code{parent} is not \code{NULL},
+#' the environment is duplicated before being set a new parent. The
+#' return value is therefore a different environment than \code{x}.
+#'
+#' @param x An object to coerce.
+#' @param parent A parent environment, \code{\link{env_empty}()} by
+#'   default. Can be ignored with a warning for methods where it does
+#'   not make sense to change the parent.
+#' @export
+#' @examples
+#' # Coerce a named vector to an environment:
+#' env <- as_env(mtcars)
+#'
+#' # By default it gets the empty environment as parent:
+#' identical(env_parent(env), env_empty())
+#'
+#'
+#' # With strings it is a handy shortcut for env_package():
+#' as_env("base")
+#' as_env("rlang")
+#'
+#' # With NULL it returns the empty environment:
+#' as_env(NULL)
+as_env <- function(x, parent = NULL) {
+  UseMethod("as_env")
+}
+
+#' @rdname as_env
+#' @export
+as_env.NULL <- function(x, parent = NULL) {
+  if (!is_null(parent)) {
+    warning("`parent` ignored for empty environment", call. = FALSE)
+  }
+  env_empty()
+}
+
+#' @rdname as_env
+#' @export
+as_env.environment <- function(x, parent = NULL) {
+  if (!is_null(parent)) {
+    x <- list2env(as.list(x), parent = parent)
+  }
+  x
+}
+
+#' @rdname as_env
+#' @export
+as_env.character <- function(x, parent = NULL) {
+  if (length(x) > 1 || is_named(x)) {
+    return(as_env.default(x, parent))
+  }
+  if (!is_null(parent)) {
+    warning("`parent` ignored for named environments", call. = FALSE)
+  }
+  env_package(x)
+}
+
+#' @rdname as_env
+#' @export
+as_env.default <- function(x, parent = NULL) {
+  stopifnot(is_dictionary(x))
+  if (is_atomic(x)) {
+    x <- as.list(x)
+  }
+  list2env(x, parent = parent %||% env_empty())
 }
 
 
@@ -253,7 +340,7 @@ env_set_parent <- function(env, new_env) {
 #' These functions create bindings in the specified environment. The
 #' bindings are supplied as pairs of names and values, either directly
 #' (\code{env_assign()}), in dots (\code{env_define()}), or from a
-#' dictionary (\code{env_bind()}). See \code{\link{is_dict}()} for
+#' dictionary (\code{env_bind()}). See \code{\link{is_dictionary}()} for
 #' the definition of a dictionary.
 #'
 #' These functions operate by side effect. For example, if you assign
@@ -294,7 +381,7 @@ env_assign <- function(env = env_caller(), nm, x) {
 #' @rdname env_assign
 #' @export
 env_bind <- function(env = env_caller(), dict = list()) {
-  stopifnot(is_dict(dict))
+  stopifnot(is_dictionary(dict))
   nms <- names(dict)
 
   env_ <- rlang::env(env)
@@ -427,24 +514,6 @@ env_unbind <- function(env = env_caller(), nms, inherit = FALSE) {
     rm(list = nms, envir = env)
   }
   env
-}
-
-#' Is an object a dictionary?
-#'
-#' @param x An object to test.
-#' @export
-is_dict <- function(x) {
-  if (!length(x)) {
-    return(!is.null(x))
-  }
-
-  nms <- names(x)
-  if (is.null(nms)) {
-    return(FALSE)
-  }
-
-  is_bad_nm <- is.na(nms) | nms == "" | duplicated(nms)
-  !any(is_bad_nm)
 }
 
 #' Does an environment have or see bindings?
@@ -586,15 +655,25 @@ env_global <- globalenv
 #' live. The parent environments of namespaces are the \code{imports}
 #' environments, which contain all the functions imported from other
 #' packages.
-#' @param pkg The name of a package.
+#' @param pkg The name of a package. If \code{NULL}, the surrounding
+#'   namespace is returned, or an error is issued if not called within
+#'   a namespace.
 #' @seealso \code{\link{env_package}()}
 #' @export
-env_namespace <- function(pkg) {
-  asNamespace(pkg)
+env_namespace <- function(pkg = NULL) {
+  if (!is_null(pkg)) {
+    return(asNamespace(pkg))
+  }
+
+  bottom <- topenv(env_caller())
+  if (!isNamespace(bottom)) {
+    stop("not in a namespace", call. = FALSE)
+  }
+  bottom
 }
 #' @rdname env_namespace
 #' @export
-env_imports <- function(pkg) {
+env_imports <- function(pkg = NULL) {
   env_parent(env_namespace(pkg))
 }
 
@@ -680,6 +759,11 @@ env_caller <- function(n = 1) {
 #'   with_env(env, return("early return"))
 #' }
 #' fn()
+#'
+#'
+#' # Since env is passed to env(), it can be any object with an env()
+#' # method. For strings, the env_package() is returned:
+#' with_env("base", ~mtcars)
 with_env <- function(env, expr) {
   with_env_(env, substitute(expr))
 }

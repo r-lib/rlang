@@ -2,6 +2,7 @@
 % Please edit documentation in R/env.R
 \name{env}
 \alias{env}
+\alias{env.character}
 \alias{env.default}
 \alias{env.environment}
 \alias{env.formula}
@@ -24,7 +25,9 @@ env(env = env_caller())
 
 \method{env}{default}(env = env_caller())
 
-env_new(parent = env_empty(), dict = list())
+\method{env}{character}(env = env_caller())
+
+env_new(parent = NULL, dict = list())
 
 env_parent(env = env_caller(), n = 1)
 
@@ -36,10 +39,10 @@ env_tail(env = env_caller())
 evaluation frame is returned.}
 
 \item{parent}{A parent environment. Can be an object with a S3
-method for \code{env()}.}
+method for \code{as_env()}.}
 
 \item{dict}{A vector with unique names which defines bindings
-(pairs of name and value). See \code{\link{is_dict}()}.}
+(pairs of name and value). See \code{\link{is_dictionary}()}.}
 
 \item{n}{The number of generations to go through.}
 }
@@ -55,7 +58,7 @@ they are eclipsed by synonyms (other bindings with the same names)
 in child environments.
 }
 \details{
-\code{env()} is a s3 generic. Methods are provided for functions,
+\code{env()} is a S3 generic. Methods are provided for functions,
 formulas and frames. If called with a missing argument, the
 environment of the current evaluation frame (see
 \code{\link{eval_stack}()}) is returned. If you call \code{env()}
@@ -125,6 +128,12 @@ env_has(env, "lapply", inherit = TRUE)
 env <- env_new(env_package("rlang"))
 env_has(env, "env_has", inherit = TRUE)
 env_has(env, "lapply", inherit = TRUE)
+
+
+# The parent argument of env_new() is passed to as_env() to provide
+# handy shortcuts:
+env <- env_new("rlang")
+identical(env_parent(env), env_package("rlang"))
 
 
 # Get the parent environment with env_parent():

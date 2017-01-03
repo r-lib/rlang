@@ -22,7 +22,7 @@ evaluation frame is returned.}
 \item{x}{The value of the binding.}
 
 \item{dict}{A vector with unique names which defines bindings
-(pairs of name and value). See \code{\link{is_dict}()}.}
+(pairs of name and value). See \code{\link{is_dictionary}()}.}
 
 \item{...}{Pairs of unique names and R objects used to define new
 bindings.}
@@ -35,7 +35,7 @@ The input object \code{env}, with its associated
 These functions create bindings in the specified environment. The
 bindings are supplied as pairs of names and values, either directly
 (\code{env_assign()}), in dots (\code{env_define()}), or from a
-dictionary (\code{env_bind()}). See \code{\link{is_dict}()} for
+dictionary (\code{env_bind()}). See \code{\link{is_dictionary}()} for
 the definition of a dictionary.
 }
 \details{

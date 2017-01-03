@@ -176,8 +176,8 @@ test_that("dots are not treated as missing arg", {
   expect_equal(fn(), quote(fn(x = )))
 })
 
-test_that("global_frame() can be standardised", {
-  expect_null(call_standardise(global_frame()))
+test_that("frame_global() can be standardised", {
+  expect_null(call_standardise(frame_global()))
 })
 
 

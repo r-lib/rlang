@@ -19,7 +19,7 @@ is_primitive_eager(x)
 is_primitive_lazy(x)
 }
 \arguments{
-\item{x}{object to be tested.}
+\item{x}{Object to be tested.}
 }
 \description{
 The R language defines two different types of functions: primitive

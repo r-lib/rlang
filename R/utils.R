@@ -1,21 +1,3 @@
-"%||%" <- function(x, y) if(is.null(x)) y else x
-
-is_atomic <- function(x) {
-  typeof(x) %in% c("logical", "integer", "double", "complex", "character", "raw")
-}
-
-is_vector <- function(x) {
-  is_atomic(x) || is.list(x)
-}
-
-has_names <- function(x) {
-  nms <- names(x)
-  if (is.null(nms)) {
-    rep(FALSE, length(x))
-  } else {
-    !(is.na(nms) | nms == "")
-  }
-}
 
 substitute_ <- function(x, env) {
   if (identical(env, globalenv())) {
@@ -55,9 +37,6 @@ zip <- function(.l) {
     lapply(.l, .subset2, i)
   })
 }
-set_names <- function(x, nm = x) {
-  stats::setNames(x, nm)
-}
 vapply_ <- function(.x, .f, .mold, ...) {
   out <- vapply(.x, .f, .mold, ..., USE.NAMES = FALSE)
   set_names(out, names(.x))
@@ -68,9 +47,7 @@ vapply_int <- function(.x, .f, ...) {
 vapply_lgl <- function(.x, .f, ...) {
   vapply_(.x, .f, logical(1), ...)
 }
-names2 <- function(x) {
-  names(x) %||% rep("", length(x))
-}
+
 lapply_around <- function(.x, .neighbour = c("right", "left"), .f, ...) {
   where <- match.arg(.neighbour)
   n <- length(.x)

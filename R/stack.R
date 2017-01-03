@@ -39,7 +39,7 @@
 #' the global frame. That is consistent with the \code{_stack()}
 #' functions which return the global frame as well. This way,
 #' \code{call_stack(call_depth())} is the same as
-#' \code{global_frame()}.
+#' \code{frame_global()}.
 #'
 #' @param n The number of frames to go back in the stack.
 #' @param clean Whether to post-process the call stack to clean
@@ -49,6 +49,8 @@
 #'   frames will be assigned the correct parent and \code{eval()}
 #'   frames are merged together (as \code{eval()} creates a duplicate
 #'   frame).
+#' @param trim The number of layers of intervening frames to trim off
+#'   the stack. See \code{\link{stack_trim}()} and examples.
 #' @name stack
 #' @examples
 #' # Expressions within arguments count as contexts
@@ -77,6 +79,40 @@
 #'   purrr::map(stack, "env")
 #'   purrr::transpose(stack)$expr
 #' }
+#'
+#' # frame_current() is an alias for eval_frame(1)
+#' fn <- function() list(current = frame_current(), first = eval_frame(1))
+#' fn()
+#'
+#' # While frame_current() is the top of the stack, frame_global() is
+#' # the bottom:
+#' fn <- function() {
+#'   n <- eval_depth()
+#'   eval_frame(n)
+#' }
+#' identical(fn(), frame_global())
+#'
+#'
+#' # eval_stack() returns a stack with all intervening frames. You can
+#' # trim layers of intervening frames with the trim argument:
+#' identity(identity(eval_stack()))
+#' identity(identity(eval_stack(trim = 1)))
+#'
+#' # eval_stack() is called within fn() with intervening frames:
+#' fn <- function(trim) identity(identity(eval_stack(trim = trim)))
+#' fn(0)
+#'
+#' # We can trim the first layer of those:
+#' fn(1)
+#'
+#' # The outside intervening frames (at the fn() call site) are still
+#' # returned, but can be trimmed as well:
+#' identity(identity(fn(1)))
+#' identity(identity(fn(2)))
+#'
+#' g <- function(trim) identity(identity(fn(trim)))
+#' g(2)
+#' g(3)
 NULL
 
 
@@ -111,7 +147,7 @@ is_frame <- function(x) {
 
 #' @rdname stack
 #' @export
-global_frame <- function() {
+frame_global <- function() {
   new_frame(list(
     pos = 0L,
     caller_pos = NA_integer_,
@@ -120,6 +156,11 @@ global_frame <- function() {
     fn = NULL,
     fn_name = NULL
   ))
+}
+#' @rdname stack
+#' @export
+frame_current <- function() {
+  eval_frame(2)
 }
 
 #' @rdname stack
@@ -131,7 +172,7 @@ eval_frame <- function(n = 1) {
   if (pos < 0L) {
     stop("not that many frames on the stack", call. = FALSE)
   } else if (pos == 0L) {
-    global_frame()
+    frame_global()
   } else {
     new_frame(list(
       pos = pos,
@@ -223,7 +264,7 @@ call_frame <- function(n = 1, clean = TRUE) {
   pos <- trail[n]
 
   if (identical(pos, 0L)) {
-    return(global_frame())
+    return(frame_global())
   }
 
   frame <- new_frame(list(
@@ -261,7 +302,7 @@ call_depth <- function() {
 
 #' @rdname stack
 #' @export
-eval_stack <- function(n = NULL) {
+eval_stack <- function(n = NULL, trim = 0) {
   stack_data <- list(
     pos = eval_stack_trail(),
     caller_pos = eval_stack_callers(),
@@ -280,7 +321,10 @@ eval_stack <- function(n = NULL) {
   stack <- lapply(stack, new_frame)
 
   if (is.null(n) || (length(n) && n > length(stack))) {
-    stack <- c(stack, list(global_frame()))
+    stack <- c(stack, list(frame_global()))
+  }
+  if (trim > 0) {
+    stack <- stack_trim(stack, n = trim + 1)
   }
 
   structure(stack, class = c("eval_stack", "stack"))
@@ -345,7 +389,7 @@ call_stack <- function(n = NULL, clean = TRUE) {
   }
 
   if (trail[length(trail)] == 0L) {
-    stack <- c(stack, list(global_frame()))
+    stack <- c(stack, list(frame_global()))
   }
 
   structure(stack, class = c("call_stack", "stack"))
@@ -398,7 +442,7 @@ is_call_stack <- function(x) inherits(x, "call_stack")
   structure(NextMethod(), class = class(x))
 }
 
-# Handles global_frame() whose `caller_pos` is NA
+# Handles frame_global() whose `caller_pos` is NA
 sys_frame <- function(n) {
   if (is.na(n)) {
     NULL
@@ -535,6 +579,10 @@ frame_position_current <- function(frame, stack = NULL,
 #' # These intervening frames won't appear in the evaluation stack
 #' identity(user_fn())
 stack_trim <- function(stack, n = 1) {
+  if (n < 1) {
+    return(stack)
+  }
+
   # Add 1 to discard stack_trim()'s own intervening frames
   caller_pos <- call_frame(n + 1, clean = FALSE)$pos
 

@@ -425,3 +425,18 @@ call_args_names <- function(call = NULL) {
   call <- call_info(call, NULL)$call
   names2(call_args_lsp(call))
 }
+
+#' Inspect a call.
+#'
+#' This function is useful for quick testing and debugging when you
+#' manipulate expressions and calls. It lets you check that a function
+#' is called with the right arguments. This can be useful in unit
+#' tests for instance. Note that this is just a simple wrapper around
+#' \code{\link[base]{match.call}()}.
+#'
+#' @param ... Arguments to display in the returned call.
+#' @export
+#' @examples
+#' call_inspect(foo(bar), "" %>% identity())
+#' invoke(call_inspect, list(a = mtcars, b = letters))
+call_inspect <- function(...) match.call()
