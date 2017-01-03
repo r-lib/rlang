@@ -22,6 +22,16 @@
 #' \code{\link{arg_capture}()}, then you can check for literals with
 #' \code{is_literal()}.
 #'
+#' Finally, pairlists can also be language objects. This is the data
+#' structure for function arguments. They usually do not arise from R
+#' code because subsetting a call is a type-preserving
+#' operation. However, you can obtain the pairlist of arguments by
+#' taking the CDR of the call object from C code. The rlang function
+#' \code{\link{call_args_lsp}()} will do it from R. Another way
+#' in which pairlist of arguments arise is by extracting the argument
+#' list of a closure with \code{\link[base]{formals}()} or
+#' \code{\link{fn_fmls}()}.
+#'
 #' @param x An object to test.
 #' @seealso \code{\link{is_call}()} for a call predicate.
 #'   \code{\link{as_name}()} and \code{\link{as_call}()} for coercion
@@ -59,6 +69,16 @@
 #'
 #' # Whereas it would fail for non-atomic language objects:
 #' # eval(quote(c(1L, 2L)), env_empty())
+#'
+#'
+#' # Pairlists are also language objects representing argument lists.
+#' # You will usually encounter them with extracted formals:
+#' fmls <- formals(is_lang)
+#' typeof(fmls)
+#' is_lang(fmls)
+#'
+#' # You can also extract call arguments as a pairlist:
+#' call_args_lsp(quote(fn(arg1, arg2 = "foo")))
 is_lang <- function(x) {
   is_call(x) || is_pairlist(x) || is_name(x) || is_literal(x)
 }
