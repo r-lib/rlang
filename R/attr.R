@@ -167,3 +167,17 @@ has_length <- function(x, n = NULL) {
     len == n
   }
 }
+
+#' Add attributes to an object.
+#'
+#' @param .x An object to decorate with attributes.
+#' @param ...,.attrs A list of named attributes.
+#' @export
+#' @examples
+#' with_attributes(letters, class = "my_chr", names = 1:26)
+#'
+#' attrs <- list(class = "my_chr", names = 1:26)
+#' with_attributes(letters, .attrs = attrs)
+with_attributes <- function(.x, ..., .attrs = list()) {
+  invoke("structure", c(list(.Data = .x, ...), .attrs))
+}
