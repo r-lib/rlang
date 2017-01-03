@@ -37,9 +37,26 @@
 #' f <- foo(10)
 #' f
 #' interp(f)
+#'
+#'
+#' # You can also interpolate a closure's body. This is useful to
+#' # inline a function within another:
+#' other_fn <- function(x) toupper(x)
+#' fn <- interp(function(x) {
+#'   x <- paste0(x, "_suffix")
+#'   UQS(body(other_fn))
+#' })
+#' fn
+#' fn("foo")
 #' @useDynLib rlang interp_
 interp <- function(f, data = NULL) {
-  f_rhs(f) <- .Call(interp_, f_rhs(f), f_env(f), data)
+  if (is_formula(f)) {
+    f_rhs(f) <- .Call(interp_, f_rhs(f), f_env(f), data)
+  } else if (is_closure(f)) {
+    body(f) <- .Call(interp_, body(f), fn_env(f), NULL)
+  } else {
+    abort("`f` must be a formula or a closure")
+  }
   f
 }
 
@@ -47,7 +64,7 @@ interp <- function(f, data = NULL) {
 #' @rdname interp
 UQ <- function(x, data = NULL) {
   if (is_formula(x)) {
-    if (is.null(data)) {
+    if (is_null(data)) {
       f_rhs(interp(x))
     } else {
       f_eval(x, data = data)
@@ -60,17 +77,24 @@ UQ <- function(x, data = NULL) {
 #' @export
 #' @rdname interp
 UQF <- function(x) {
-  if (!is_formula(x))
-    stop("`x` must be a formula", call. = FALSE)
+  if (!is_formula(x)) {
+    abort("`x` must be a formula")
+  }
   x
 }
 
 #' @export
 #' @rdname interp
 UQS <- function(x) {
-  if (!is_vector(x)) {
-    stop("`x` must be a vector")
+  if (is_pairlist(x)) {
+    x
+  } else if (inherits(x, "{")) {
+    cdr(x)
+  } else if (is_lang(x)) {
+    pairlist(x)
+  } else if (is_vector(x)) {
+    as.pairlist(x)
+  } else {
+    abort("`x` must be a vector or a language object")
   }
-
-  as.pairlist(x)
 }

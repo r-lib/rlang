@@ -26,7 +26,7 @@ test_that("unquoted formulas are interpolated first", {
 
 # UQS ---------------------------------------------------------------------
 
-test_that("contents of UQS() must be a vector", {
+test_that("contents of UQS() must be a vector or language object", {
   expr <- ~ 1 + UQS(environment())
   expect_error(interp(expr), "`x` must be a vector")
 })
@@ -39,6 +39,11 @@ test_that("values of UQS() spliced into expression", {
 test_that("names within UQS() are preseved", {
   expr <- ~ f(UQS(list(a = quote(b))))
   expect_identical(interp(expr), ~ f(a = b))
+})
+
+test_that("UQS() handles language objects", {
+  expect_identical(interp(~list(UQS(quote(foo)))), ~list(foo))
+  expect_identical(interp(~list(UQS(quote({ foo })))), ~list(foo))
 })
 
 
