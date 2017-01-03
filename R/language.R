@@ -5,20 +5,22 @@
 #' (typically a scalar), a name (aka a symbol), a call, or a pairlist
 #' (used for function arguments).
 #'
-#' \code{is_atomic_lang()} is a predicate that returns \code{TRUE} for
-#' terminating nodes in a parse tree. These nodes are either symbols
-#' or the subset of literals that are created by R when parsing text
-#' (see \code{\link{parse_expr}()}). A literal is any R object that
-#' evaluates to itself. Literals can thus be evaluated in the empty
-#' environment. For instance, \code{quote(c(1, 2))} is not a literal,
-#' but the result of evaluating it in \code{\link{env_base}()} is a
-#' literal, in this case an atomic vector. Technically, language
-#' expressions can contain arbitrary inlined objects. If your function
-#' accepts arbitrary expressions, it should account for that
-#' possibility with a catch-all branch. On the other hand, if your
-#' function only gets expressions created from a parse,
-#' \code{quote()}, or \code{\link{arg_capture}()}, then you can check
-#' for literals with \code{\link{is_atomic_lang}()}
+#' \code{is_literal()} is a predicate that returns \code{TRUE} for the
+#' subset of literals that are created by R when parsing text (see
+#' \code{\link{parse_expr}()}): numbers, strings and \code{NULL}.
+#' Along with symbols, these literals are the terminating nodes in a
+#' parse tree. Note that in the most general sense, a literal is any R
+#' object that evaluates to itself and that can be evaluated in the
+#' empty environment. For instance, \code{quote(c(1, 2))} is not a
+#' literal, but the result of evaluating it in
+#' \code{\link{env_base}()} is (in this case an atomic vector).
+#' Technically, this sort of literal objects can be inlined in
+#' language expressions. If your function accepts arbitrary
+#' expressions, it should thus account for that possibility with a
+#' catch-all branch. On the other hand, if your function only gets
+#' expressions created from a parse, \code{quote()}, or
+#' \code{\link{arg_capture}()}, then you can check for literals with
+#' \code{is_literal()}.
 #'
 #' @param x An object to test.
 #' @seealso \code{\link{is_call}()} for a call predicate.
@@ -40,27 +42,25 @@
 #'
 #'
 #' # Atomic language objects are the terminating nodes of a call
-#' # tree. They are either a scalar atomic vector, a name, or NULL:
-#' is_atomic_lang("string")
-#' is_atomic_lang(quote(name))
-#' is_atomic_lang(NULL)
+#' # tree: NULL or a scalar atomic vector:
+#' is_literal("string")
+#' is_literal(NULL)
 #'
-#' is_atomic_lang(letters)
-#' is_atomic_lang(quote(call()))
+#' is_literal(letters)
+#' is_literal(quote(call()))
 #'
-#' # With the exception of names, atomic language objects have the
-#' # property of being self-quoting literals:
+#' # Literals have the property of being self-quoting:
 #' identical("foo", quote("foo"))
 #' identical(1L, quote(1L))
 #' identical(NULL, quote(NULL))
 #'
-#' # These can be evaluated within the empty environment:
+#' # They can be evaluated within the empty environment:
 #' eval(quote(1L), env_empty())
 #'
 #' # Whereas it would fail for non-atomic language objects:
 #' # eval(quote(c(1L, 2L)), env_empty())
 is_lang <- function(x) {
-  is_call(x) || is_pairlist(x) || is_atomic_lang(x)
+  is_call(x) || is_pairlist(x) || is_name(x) || is_literal(x)
 }
 #' @rdname is_lang
 #' @export
@@ -74,8 +74,8 @@ is_pairlist <- function(x) {
 }
 #' @export
 #' @rdname is_lang
-is_atomic_lang <- function(x) {
-  is_null(x) || is_name(x) || is_scalar_atomic(x)
+is_literal <- function(x) {
+  typeof(x) %in% c("NULL", parsable_atomic_types)
 }
 
 #' Is object a call?

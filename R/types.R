@@ -33,9 +33,8 @@ is_list <- function(x, n = NULL) {
   TRUE
 }
 
-atomic_types <- c(
-  "logical", "integer", "double", "complex", "character", "raw"
-)
+parsable_atomic_types <- c("logical", "integer", "double", "complex", "character")
+atomic_types <- c(parsable_atomic_types, "raw")
 #' @export
 #' @rdname type-predicates
 is_atomic <- function(x, n = NULL) {
