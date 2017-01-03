@@ -5,8 +5,7 @@
 #' values (\code{rep_along}). The dots are forwarded to
 #' \code{\link[base]{structure}()} to make it easy to add attributes.
 #'
-#' @param ... Optional attributes for the vector. These are passed to
-#'   \code{\link[base]{structure}()}.
+#' @inheritParams with_attributes
 #' @param .x A vector.
 #' @param .y Values to repeat.
 #' @examples
@@ -24,44 +23,44 @@ NULL
 
 #' @export
 #' @rdname along
-logical_along <- function(.x, ...) {
-  structure(vector("logical", length(.x)), ...)
+logical_along <- function(.x, ..., .attrs = list()) {
+  with_attributes(vector("logical", length(.x)), ..., .attrs = .attrs)
 }
 #' @export
 #' @rdname along
-integer_along <- function(.x, ...) {
-  structure(vector("integer", length(.x)), ...)
+integer_along <- function(.x, ..., .attrs = list()) {
+  with_attributes(vector("integer", length(.x)), ..., .attrs = .attrs)
 }
 #' @export
 #' @rdname along
-double_along <- function(.x, ...) {
-  structure(vector("double", length(.x)), ...)
+double_along <- function(.x, ..., .attrs = list()) {
+  with_attributes(vector("double", length(.x)), ..., .attrs = .attrs)
 }
 #' @export
 #' @rdname along
-character_along <- function(.x, ...) {
-  structure(vector("character", length(.x)), ...)
+character_along <- function(.x, ..., .attrs = list()) {
+  with_attributes(vector("character", length(.x)), ..., .attrs = .attrs)
 }
 #' @export
 #' @rdname along
-list_along <- function(.x, ...) {
-  structure(vector("list", length(.x)), ...)
+list_along <- function(.x, ..., .attrs = list()) {
+  with_attributes(vector("list", length(.x)), ..., .attrs = .attrs)
 }
 #' @export
 #' @rdname along
-complex_along <- function(.x, ...) {
-  structure(vector("complex", length(.x)), ...)
+complex_along <- function(.x, ..., .attrs = list()) {
+  with_attributes(vector("complex", length(.x)), ..., .attrs = .attrs)
 }
 #' @export
 #' @rdname along
-raw_along <- function(.x, ...) {
-  structure(vector("raw", length(.x)), ...)
+raw_along <- function(.x, ..., .attrs = list()) {
+  with_attributes(vector("raw", length(.x)), ..., .attrs = .attrs)
 }
 
 #' @export
 #' @rdname along
-rep_along <- function(.x, .y, ...) {
-  structure(rep(.y, length.out = length(.x)), ...)
+rep_along <- function(.x, .y, ..., .attrs = list()) {
+  with_attributes(rep(.y, length.out = length(.x)), ..., .attrs = .attrs)
 }
 
 
@@ -70,7 +69,7 @@ rep_along <- function(.x, .y, ...) {
 #' These functions construct vectors of given length, with attributes
 #' specified via dots.
 #'
-#' @inheritParams along
+#' @inheritParams with_attributes
 #' @param .n The vector length.
 #' @examples
 #' new_list(10)
@@ -84,36 +83,36 @@ NULL
 
 #' @export
 #' @rdname new-vectors
-new_logical <- function(.n = 0, ...) {
-  structure(vector("logical", .n), ...)
+new_logical <- function(.n = 0, ..., .attrs = list()) {
+  with_attributes(vector("logical", .n), ..., .attrs = .attrs)
 }
 #' @export
 #' @rdname new-vectors
-new_integer <- function(.n = 0, ...) {
-  structure(vector("integer", .n), ...)
+new_integer <- function(.n = 0, ..., .attrs = list()) {
+  with_attributes(vector("integer", .n), ..., .attrs = .attrs)
 }
 #' @export
 #' @rdname new-vectors
-new_double <- function(.n = 0, ...) {
-  structure(vector("double", .n), ...)
+new_double <- function(.n = 0, ..., .attrs = list()) {
+  with_attributes(vector("double", .n), ..., .attrs = .attrs)
 }
 #' @export
 #' @rdname new-vectors
-new_character <- function(.n = 0, ...) {
-  structure(vector("character", .n), ...)
+new_character <- function(.n = 0, ..., .attrs = list()) {
+  with_attributes(vector("character", .n), ..., .attrs = .attrs)
 }
 #' @export
 #' @rdname new-vectors
-new_list <- function(.n = 0, ...) {
-  structure(vector("list", .n), ...)
+new_list <- function(.n = 0, ..., .attrs = list()) {
+  with_attributes(vector("list", .n), ..., .attrs = .attrs)
 }
 #' @export
 #' @rdname new-vectors
-new_complex <- function(.n = 0, ...) {
-  structure(vector("complex", .n), ...)
+new_complex <- function(.n = 0, ..., .attrs = list()) {
+  with_attributes(vector("complex", .n), ..., .attrs = .attrs)
 }
 #' @export
 #' @rdname new-vectors
-new_raw <- function(.n = 0, ...) {
-  structure(vector("raw", .n), ...)
+new_raw <- function(.n = 0, ..., .attrs = list()) {
+  with_attributes(vector("raw", .n), ..., .attrs = .attrs)
 }
