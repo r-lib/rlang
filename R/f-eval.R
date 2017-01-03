@@ -35,7 +35,7 @@ f_eval_lhs <- function(f, data = NULL) {
 #' \code{.env} and \code{.data}. These are thin wrappers around \code{.data}
 #' and \code{.env} that throw errors if you try to access non-existent values.
 #'
-#' @param f A formula. Any expressions wrapped in \code{ uq() } will
+#' @param f A formula. Any expressions wrapped in \code{ UQ() } will
 #'   will be "unquoted", i.e. they will be evaluated, and the results inserted
 #'   back into the formula. See \code{\link{f_interp}} for more details.
 #' @param data A list (or data frame). \code{find_data} is a generic used to
@@ -68,10 +68,10 @@ f_eval_lhs <- function(f, data = NULL) {
 #' # Imagine you are computing the mean of a variable:
 #' f_eval(~ mean(cyl), mtcars)
 #' # How can you change the variable that's being computed?
-#' # The easiest way is "unquote" with uq()
+#' # The easiest way is "unquote" with UQ()
 #' # See ?f_interp for more details
 #' var <- ~ cyl
-#' f_eval(~ mean( uq(var) ), mtcars)
+#' f_eval(~ mean( UQ(var) ), mtcars)
 f_eval <- f_eval_rhs
 
 

@@ -23,22 +23,22 @@ SEXP interp_walk(SEXP x, SEXP env, SEXP data)  {
     return x;
 
   int bang = is_bang(x);
-  if (bang == 3 || is_call_to(x, "uqs"))
+  if (bang == 3 || is_call_to(x, "UQS"))
     Rf_error("Cannot splice at top-level");
 
   if (bang == 2) {
     x = CADR(x);
-    SETCAR(x, Rf_install("uq"));
+    SETCAR(x, Rf_install("UQ"));
   }
 
-  if (is_call_to(x, "uq")) {
-    SEXP uq_call = PROTECT(Rf_lang3(Rf_install("uq"), CADR(x), data));
+  if (is_call_to(x, "UQ")) {
+    SEXP uq_call = PROTECT(Rf_lang3(Rf_install("UQ"), CADR(x), data));
     SEXP res = PROTECT(Rf_eval(uq_call, env));
     UNPROTECT(2);
     return res;
   }
 
-  if (is_call_to(x, "uqf")) {
+  if (is_call_to(x, "UQF")) {
     return Rf_eval(x, env);
   }
 
@@ -50,12 +50,12 @@ SEXP interp_walk(SEXP x, SEXP env, SEXP data)  {
     if (is_bang(CAR(nxt)) == 3) {
       nxt = CDAR(nxt);
       nxt = CDAR(nxt);
-      SETCAR(CAR(nxt), Rf_install("uqs"));
+      SETCAR(CAR(nxt), Rf_install("UQS"));
       SETCDR(nxt, CDR(CDR(cur)));
     }
 
-    if (is_call_to(CAR(nxt), "uqs")) {
-      // uqs() does error checking and returns a pair list
+    if (is_call_to(CAR(nxt), "UQS")) {
+      // UQS() does error checking and returns a pair list
       SEXP args_lsp = Rf_eval(CAR(nxt), env);
 
       // Insert args_lsp into existing pairlist of args

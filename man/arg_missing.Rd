@@ -28,8 +28,8 @@ check for a missing argument in a larger range of situations than
 }
 \examples{
 # The missing argument can be useful to generate calls
-f_interp(~f(x = uq(arg_missing())))
-f_interp(~f(x = uq(NULL)))
+f_interp(~f(x = UQ(arg_missing())))
+f_interp(~f(x = UQ(NULL)))
 
 
 # It is perfectly valid to generate and assign the missing

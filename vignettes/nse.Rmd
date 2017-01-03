@@ -275,7 +275,7 @@ f_eval(~ .data$z, data = mydata)
 
 ```{r}
 df_mean <- function(df, variable) {
-  f_eval(~ mean(uq(variable)), data = df)
+  f_eval(~ mean(UQ(variable)), data = df)
 }
 
 df_mean(mtcars, ~ cyl)
@@ -283,42 +283,42 @@ df_mean(mtcars, ~ disp * 0.01638)
 df_mean(mtcars, ~ sqrt(mpg))
 ```
 
-To see how this works, we can use `f_interp()` which `f_eval()` calls internally (you shouldn't call it in your own code, but it's useful for debugging). The key is `uq()`: `uq()` evaluates its first (and only) argument and inserts the value into the formula:
+To see how this works, we can use `f_interp()` which `f_eval()` calls internally (you shouldn't call it in your own code, but it's useful for debugging). The key is `UQ()`: `UQ()` evaluates its first (and only) argument and inserts the value into the formula:
 
 ```{r}
 variable <- ~cyl
-f_interp(~ mean(uq(variable)))
+f_interp(~ mean(UQ(variable)))
 
 variable <- ~ disp * 0.01638
-f_interp(~ mean(uq(variable)))
+f_interp(~ mean(UQ(variable)))
 ```
 
-Unquoting allows you to create code "templates", where you write most of the expression, while still allowing the user to control important components. You can even use `uq()` to change the function being called:
+Unquoting allows you to create code "templates", where you write most of the expression, while still allowing the user to control important components. You can even use `UQ()` to change the function being called:
 
 ```{r}
 f <- ~ mean
-f_interp(~ uq(f)(uq(variable)))
+f_interp(~ UQ(f)(UQ(variable)))
 ```
 
-Note that `uq()` only takes the RHS of a formula, which makes it difficult to insert literal formulas into a call:
+Note that `UQ()` only takes the RHS of a formula, which makes it difficult to insert literal formulas into a call:
 
 ```{r}
 formula <- y ~ x
-f_interp(~ lm(uq(formula), data = df))
+f_interp(~ lm(UQ(formula), data = df))
 ```
 
-You can instead use `uqf()` which uses the whole formula, not just the RHS:
+You can instead use `UQF()` which uses the whole formula, not just the RHS:
 
 ```{r}
-f_interp(~ lm(uqf(formula), data = df))
+f_interp(~ lm(UQF(formula), data = df))
 ```
 
-Unquoting is powerful, but it only allows you to modify a single argument: it doesn't allow you to add an arbitrary number of arguments. To do that, you'll need "unquote-splice", or `uqs()`. The first (and only) argument to `uqs()` should be a list of arguments to be spliced into the call:
+Unquoting is powerful, but it only allows you to modify a single argument: it doesn't allow you to add an arbitrary number of arguments. To do that, you'll need "unquote-splice", or `UQS()`. The first (and only) argument to `UQS()` should be a list of arguments to be spliced into the call:
 
 ```{r}
 variable <- ~ x
 extra_args <- list(na.rm = TRUE, trim = 0.9)
-f_interp(~ mean(uq(variable), uqs(extra_args)))
+f_interp(~ mean(UQ(variable), UQS(extra_args)))
 ```
 
 ### Exercises
@@ -465,14 +465,14 @@ A more general solution is to allow the user to supply a formula, and use unquot
 
 ```{r}
 threshold <- function(df, variable = ~x, threshold = 0) {
-  sieve(df, ~ uq(variable) > .env$threshold)
+  sieve(df, ~ UQ(variable) > .env$threshold)
 }
 
 threshold(df, ~ x, 4)
 threshold(df, ~ abs(x - y), 2)
 ```
 
-In this case, it's the responsibility of the user to ensure the `variable` is specified unambiguously. `f_eval()` is designed so that `.data` and `.env` work even when evaluated inside of `uq()`:
+In this case, it's the responsibility of the user to ensure the `variable` is specified unambiguously. `f_eval()` is designed so that `.data` and `.env` work even when evaluated inside of `UQ()`:
 
 ```{r}
 x <- 3
@@ -537,7 +537,7 @@ mogrify <- function(`_df`, ...) {
 
 ```{r}
 add_variable <- function(df, name, expr) {
-  mogrify(df, name ~ uq(expr))
+  mogrify(df, name ~ UQ(expr))
 }
 add_variable(df, "z", ~ x + y)
 ```

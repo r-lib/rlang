@@ -2,26 +2,26 @@
 % Please edit documentation in R/f-interp.R
 \name{f_interp}
 \alias{f_interp}
-\alias{uq}
-\alias{uqf}
-\alias{uqs}
 \title{Interpolate a formula}
+\name{UQ}
+\alias{UQ}
+\alias{UQF}
+\alias{UQS}
 \usage{
 f_interp(f, data = NULL)
+UQ(x, data = NULL)
 
-uq(x, data = NULL)
+UQF(x)
 
-uqf(x)
 
-uqs(x)
 }
 \arguments{
-\item{f}{A one-sided formula.}
+\item{f}{A one-sided formula or a function.}
 
 \item{data}{When called from inside \code{f_eval}, this is used to pass on
 the data so that nested formulas are evaluated in the correct environment.}
 
-\item{x}{For \code{uq} and \code{uqf}, a formula. For \code{uqs}, a
+\item{x}{For \code{UQ} and \code{UQF}, a formula. For \code{UQS}, a
 a vector.}
 }
 \description{
@@ -56,5 +56,6 @@ foo <- function(n) {
 f <- foo(10)
 f
 f_interp(f)
+UQS(x)
 }
 
