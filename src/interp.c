@@ -67,14 +67,16 @@ SEXP unquote(SEXP x, SEXP env, SEXP data) {
   return res;
 }
 
-SEXP splice(SEXP cur, SEXP nxt, SEXP env) {
+SEXP splice_nxt(SEXP cur, SEXP nxt, SEXP env) {
   // UQS() does error checking and returns a pair list
-  SEXP args_lsp = Rf_eval(CAR(nxt), env);
+  SEXP args_lsp = PROTECT(Rf_eval(CAR(nxt), env));
 
   // Insert args_lsp into existing pairlist of args
   SEXP last_arg = findLast(args_lsp);
   SETCDR(last_arg, CDR(nxt));
   SETCDR(cur, args_lsp);
+
+  UNPROTECT(1);
   return cur;
 }
 
@@ -110,7 +112,7 @@ SEXP interp_arguments(SEXP x, SEXP env, SEXP data) {
 
     nxt = replace_triple_bang(nxt, cur);
     if (is_splice(CAR(nxt)))
-      cur = splice(cur, nxt, env);
+      cur = splice_nxt(cur, nxt, env);
   }
 
   return x;
