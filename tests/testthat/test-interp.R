@@ -56,3 +56,20 @@ test_that("requires formula", {
 test_that("interpolates formula", {
   expect_equal(interp(~ UQF(x ~ y)), ~ (x ~ y))
 })
+
+
+# bang ---------------------------------------------------------------
+
+test_that("single ! is not treated as shortcut", {
+  expect_identical(interp(~!foo), ~!foo)
+})
+
+test_that("double and triple ! are treated as syntactic shortcuts", {
+  expect_identical(interp(~!! ~foo), ~foo)
+  expect_identical(interp(~list(!!! letters[1:3])), ~list("a", "b", "c"))
+})
+
+test_that("`!!` works in prefixed calls", {
+  expect_identical(interp(~foo$`!!`(~bar)), ~foo$bar)
+  expect_identical(interp(~foo::`!!`(~bar)(baz)), ~foo::bar(baz))
+})

@@ -1,8 +1,10 @@
 #' Interpolate a formula
 #'
-#' Interpolation replaces sub-expressions of the form \code{UQ(x)} with
-#' the evaluated value of \code{x}, and inlines sub-expressions of
-#' the form \code{UQS(x)}.
+#' Interpolation replaces sub-expressions of the form \code{UQ(x)}
+#' with the evaluated value of \code{x}, and inlines sub-expressions
+#' of the form \code{UQS(x)}. Syntactic shortcuts are provided for
+#' unquoting and unquote-splicing by prefixing with \code{!!} and
+#' \code{!!!}.
 #'
 #' @section Theory:
 #' Formally, \code{interp} is a quasiquote function, \code{UQ()} is the
@@ -14,8 +16,9 @@
 #' @param f A one-sided formula or a function.
 #' @param x For \code{UQ} and \code{UQF}, a formula. For \code{UQS}, a
 #'   a vector.
-#' @param data When called from inside \code{f_eval}, this is used to pass on
-#'   the data so that nested formulas are evaluated in the correct environment.
+#' @param data When called from inside \code{\link{f_eval}()}, this is
+#'   used to pass on the data so that nested formulas are evaluated in
+#'   the correct environment.
 #' @export
 #' @aliases UQ UQS
 #' @examples
@@ -39,12 +42,26 @@
 #' interp(f)
 #'
 #'
+#' # You can also unquote and splice syntactically with bang operators:
+#' interp(~mean(!!! args))
+#'
+#' # However you need to be a bit careful with operator precedence.
+#' # All arithmetic and comparison operators bind more tightly than `!`:
+#' interp(x ~ 1 +  !! (1 + 2 + 3) + 10)
+#' interp(x ~ 1 + (!! (1 + 2 + 3)) + 10)
+#'
+#' # Finally, `!!`() is also treated as a shortcut. It is meant for
+#' # situations where the bang operator would not parse:
+#' var <- ~cyl
+#' interp(~mtcars$`!!`(var))
+#'
+#'
 #' # You can also interpolate a closure's body. This is useful to
 #' # inline a function within another:
 #' other_fn <- function(x) toupper(x)
 #' fn <- interp(function(x) {
 #'   x <- paste0(x, "_suffix")
-#'   UQS(body(other_fn))
+#'   !!! body(other_fn)
 #' })
 #' fn
 #' fn("foo")
@@ -88,12 +105,12 @@ UQF <- function(x) {
 UQS <- function(x) {
   if (is_pairlist(x)) {
     x
+  } else if (is_vector(x)) {
+    as.pairlist(x)
   } else if (inherits(x, "{")) {
     cdr(x)
   } else if (is_lang(x)) {
     pairlist(x)
-  } else if (is_vector(x)) {
-    as.pairlist(x)
   } else {
     abort("`x` must be a vector or a language object")
   }

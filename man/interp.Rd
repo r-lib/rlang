@@ -18,16 +18,19 @@ UQS(x)
 \arguments{
 \item{f}{A one-sided formula or a function.}
 
-\item{data}{When called from inside \code{f_eval}, this is used to pass on
-the data so that nested formulas are evaluated in the correct environment.}
+\item{data}{When called from inside \code{\link{f_eval}()}, this is
+used to pass on the data so that nested formulas are evaluated in
+the correct environment.}
 
 \item{x}{For \code{UQ} and \code{UQF}, a formula. For \code{UQS}, a
 a vector.}
 }
 \description{
-Interpolation replaces sub-expressions of the form \code{UQ(x)} with
-the evaluated value of \code{x}, and inlines sub-expressions of
-the form \code{UQS(x)}.
+Interpolation replaces sub-expressions of the form \code{UQ(x)}
+with the evaluated value of \code{x}, and inlines sub-expressions
+of the form \code{UQS(x)}. Syntactic shortcuts are provided for
+unquoting and unquote-splicing by prefixing with \code{!!} and
+\code{!!!}.
 }
 \section{Theory}{
 
@@ -56,5 +59,30 @@ foo <- function(n) {
 f <- foo(10)
 f
 interp(f)
+
+
+# You can also unquote and splice syntactically with bang operators:
+interp(~mean(!!! args))
+
+# However you need to be a bit careful with operator precedence.
+# All arithmetic and comparison operators bind more tightly than `!`:
+interp(x ~ 1 +  !! (1 + 2 + 3) + 10)
+interp(x ~ 1 + (!! (1 + 2 + 3)) + 10)
+
+# Finally, `!!`() is also treated as a shortcut. It is meant for
+# situations where the bang operator would not parse:
+var <- ~cyl
+interp(~mtcars$`!!`(var))
+
+
+# You can also interpolate a closure's body. This is useful to
+# inline a function within another:
+other_fn <- function(x) toupper(x)
+fn <- interp(function(x) {
+  x <- paste0(x, "_suffix")
+  !!! body(other_fn)
+})
+fn
+fn("foo")
 }
 
