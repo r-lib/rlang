@@ -11,7 +11,8 @@ inplace(handler, muffle = FALSE)
 }
 \arguments{
 \item{handler}{A handler function that takes a condition as
-argument.}
+argument. This is passed to \code{\link{as_function}()} and can
+thus be a formula describing a lambda function.}
 
 \item{muffle}{Whether to muffle the condition after executing an
 inplace handler. The signalling function must have established a
@@ -46,6 +47,17 @@ handler on the stack. If no handler is found or is able to deal
 with the critical condition (by jumping out of the frame), R will
 then jump out of the faulty evaluation frame to top-level, via the
 abort restart (see \code{\link{rst_abort}()}).
+}
+\examples{
+# You can supply a function taking a condition as argument:
+hnd <- exiting(function(c) cat("handled foo\\n"))
+with_handlers(cnd_signal("foo"), foo = hnd)
+
+# Or a lambda-formula where "." is bound to the condition:
+with_handlers(foo = inplace(~cat("hello", .$attr, "\\n")), {
+  cnd_signal("foo", attr = "there")
+  "foo"
+})
 }
 \seealso{
 \code{\link{with_handlers}()} for examples,
