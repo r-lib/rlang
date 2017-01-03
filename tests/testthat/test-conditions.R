@@ -134,3 +134,19 @@ test_that("restarting() handlers pass along all requested arguments", {
   }
   with_restarts(fn(), rst_foo = rst_foo)
 })
+
+
+test_that("Methods are redispatched", {
+  foo <- structure(NULL, class = "foo")
+
+  first <- function(x) UseMethod("first")
+  first.default <- function(x) dispatch_miss("first", x)
+
+  expect_error(first(foo), "No `first` method for object of type `foo`")
+
+  alt <- function(x) UseMethod("alt")
+  alt.foo <- function(x) "alt.foo"
+
+  expect_identical(with_redispatch(first(foo), first = "alt"), alt(foo))
+  expect_identical(with_redispatch(first(foo), first = alt), alt(foo))
+})

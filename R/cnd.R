@@ -205,7 +205,7 @@ cnd_abort <- function(.cnd, ..., .msg = NULL, .call = FALSE,
 }
 
 make_cnd <- function(.cnd, ..., .msg, .call, .show_call) {
-  if (is_scalar_character(.cnd)) {
+  if (is_character(.cnd)) {
     .cnd <- cnd_new(.cnd, ...)
   } else {
     stopifnot(is_condition(.cnd))
