@@ -36,7 +36,7 @@
   .Call(replace_na, x, y)
 }
 
-#' Infix attribute accessor
+#' Infix attribute accessor.
 #'
 #' @param x Object
 #' @param name Attribute name
@@ -47,4 +47,39 @@
 #' mtcars %@% "class"
 `%@%` <- function(x, name) {
   attr(x, name, exact = TRUE)
+}
+
+#' Quoting assignment operator.
+#'
+#' The colon-equals operator is typically used in DSL packages like
+#' \code{ggvis} and \code{data.table}. It is exported in rlang as a
+#' alias to \code{~}. This makes it a quoting operator that can be
+#' shared between packages for computing on the language. Since it
+#' effectively creates formulas, it is immediately compatible with
+#' rlang's formulas and interpolation features.
+#'
+#' @export
+#' @examples
+#' # This is useful to provide an alternative way of specifying
+#' # arguments in DSLs:
+#' fn <- function(...) ..1
+#' f <- fn(arg := foo(bar) + baz)
+#'
+#' is_formula(f)
+#' f_lhs(f)
+#' f_rhs(f)
+#' @name op-colon-equals
+`:=` <- `~`
+
+#' @rdname op-colon-equals
+#' @param x An object to test.
+#' @export
+#' @examples
+#'
+#' # A predicate is provided to distinguish formulas from the
+#' # colon-equals operator:
+#' is_colon_equals(a := b)
+#' is_colon_equals(a ~ b)
+is_colon_equals <- function(x) {
+  is_formula(x) && identical(x[[1]], quote(`:=`))
 }
