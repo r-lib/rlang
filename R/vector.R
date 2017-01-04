@@ -156,11 +156,11 @@ na_cpl <- NA_complex_
 #' Helper to create vectors with matching length.
 #'
 #' These functions take the idea of \code{\link{seq_along}} and
-#' generalise it to creating lists (\code{list_along}) and repeating
-#' values (\code{rep_along}). The dots are forwarded to
-#' \code{\link[base]{structure}()} to make it easy to add attributes.
-#' Except for \code{list_along()} and \code{raw_along()}, the empty
-#' vectors are filled with typed \link{missing} values.
+#' generalise it to creating lists (\code{lst_along}) and repeating
+#' values (\code{rep_along}). The dots and \code{.attrs} are forwarded
+#' to \code{\link{with_attributes}()} to make it easy to add
+#' attributes. Except for \code{lst_along()} and \code{raw_along()},
+#' the empty vectors are filled with typed \link{missing} values.
 #'
 #' @inheritParams with_attributes
 #' @param .x A vector.
@@ -169,43 +169,43 @@ na_cpl <- NA_complex_
 #' x <- 0:5
 #' rep_along(x, 1:2)
 #' rep_along(x, 1)
-#' list_along(x)
+#' lst_along(x)
 #'
 #' # You can also add attributes with additional arguments:
 #' rep_along(x, 1, class = "my_class")
-#' double_along(x, class = "my_class")
+#' dbl_along(x, class = "my_class")
 #' @name along
 #' @seealso new-vectors
 NULL
 
 #' @export
 #' @rdname along
-logical_along <- function(.x, ..., .attrs = list()) {
+lgl_along <- function(.x, ..., .attrs = list()) {
   with_attributes(rep_len(na_lgl, length(.x)), ..., .attrs = .attrs)
 }
 #' @export
 #' @rdname along
-integer_along <- function(.x, ..., .attrs = list()) {
+int_along <- function(.x, ..., .attrs = list()) {
   with_attributes(rep_len(na_int, length(.x)), ..., .attrs = .attrs)
 }
 #' @export
 #' @rdname along
-double_along <- function(.x, ..., .attrs = list()) {
+dbl_along <- function(.x, ..., .attrs = list()) {
   with_attributes(rep_len(na_dbl, length(.x)), ..., .attrs = .attrs)
 }
 #' @export
 #' @rdname along
-character_along <- function(.x, ..., .attrs = list()) {
+chr_along <- function(.x, ..., .attrs = list()) {
   with_attributes(rep_len(na_chr, length(.x)), ..., .attrs = .attrs)
 }
 #' @export
 #' @rdname along
-list_along <- function(.x, ..., .attrs = list()) {
+lst_along <- function(.x, ..., .attrs = list()) {
   with_attributes(vector("list", length(.x)), ..., .attrs = .attrs)
 }
 #' @export
 #' @rdname along
-complex_along <- function(.x, ..., .attrs = list()) {
+cpl_along <- function(.x, ..., .attrs = list()) {
   with_attributes(rep_len(na_cpl, length(.x)), ..., .attrs = .attrs)
 }
 #' @export

@@ -2,27 +2,27 @@
 % Please edit documentation in R/vector.R
 \name{along}
 \alias{along}
-\alias{character_along}
-\alias{complex_along}
-\alias{double_along}
-\alias{integer_along}
-\alias{list_along}
-\alias{logical_along}
+\alias{chr_along}
+\alias{cpl_along}
+\alias{dbl_along}
+\alias{int_along}
+\alias{lgl_along}
+\alias{lst_along}
 \alias{raw_along}
 \alias{rep_along}
 \title{Helper to create vectors with matching length.}
 \usage{
-logical_along(.x, ..., .attrs = list())
+lgl_along(.x, ..., .attrs = list())
 
-integer_along(.x, ..., .attrs = list())
+int_along(.x, ..., .attrs = list())
 
-double_along(.x, ..., .attrs = list())
+dbl_along(.x, ..., .attrs = list())
 
-character_along(.x, ..., .attrs = list())
+chr_along(.x, ..., .attrs = list())
 
-list_along(.x, ..., .attrs = list())
+lst_along(.x, ..., .attrs = list())
 
-complex_along(.x, ..., .attrs = list())
+cpl_along(.x, ..., .attrs = list())
 
 raw_along(.x, ..., .attrs = list())
 
@@ -39,21 +39,21 @@ rep_along(.x, .y, ..., .attrs = list())
 }
 \description{
 These functions take the idea of \code{\link{seq_along}} and
-generalise it to creating lists (\code{list_along}) and repeating
-values (\code{rep_along}). The dots are forwarded to
-\code{\link[base]{structure}()} to make it easy to add attributes.
-Except for \code{list_along()} and \code{raw_along()}, the empty
-vectors are filled with typed \link{missing} values.
+generalise it to creating lists (\code{lst_along}) and repeating
+values (\code{rep_along}). The dots and \code{.attrs} are forwarded
+to \code{\link{with_attributes}()} to make it easy to add
+attributes. Except for \code{lst_along()} and \code{raw_along()},
+the empty vectors are filled with typed \link{missing} values.
 }
 \examples{
 x <- 0:5
 rep_along(x, 1:2)
 rep_along(x, 1)
-list_along(x)
+lst_along(x)
 
 # You can also add attributes with additional arguments:
 rep_along(x, 1, class = "my_class")
-double_along(x, class = "my_class")
+dbl_along(x, class = "my_class")
 }
 \seealso{
 new-vectors
