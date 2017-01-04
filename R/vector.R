@@ -96,6 +96,63 @@ modify <- function(.x, ..., .elts = list()) {
 }
 
 
+#' Missing values.
+#'
+#' Missing values are represented in R with the general symbol
+#' \code{NA}. They can be inserted in almost all data containers: all
+#' atomic vectors except raw vectors can contain missing values. To
+#' achieve this, R automatically converts the general \code{NA} symbol
+#' to a typed missing value appropriate for the target vector. The
+#' objects provided here are aliases for those typed \code{NA}
+#' objects.
+#'
+#' Typed missing values are necessary because R needs sentinel values
+#' of the same type (i.e. the same machine representation of the data)
+#' as the containers into which they are inserted. The official typed
+#' missing values are \code{NA_integer_}, \code{NA_real_},
+#' \code{NA_character_} and \code{NA_complex_}. The missing value for
+#' logical vectors is simply the default \code{NA}. The aliases
+#' provided in rlang are consistently named and thus simpler to
+#' remember. Also, \code{na_lgl} is provided as an alias to \code{NA}
+#' that makes intent clearer.
+#'
+#' Since \code{na_lgl} is the default \code{NA}, expressions such as
+#' \code{c(NA, NA)} yield logical vectors as no data is available to
+#' give a clue of the target type. In the same way, since lists and
+#' environments can contain any types, expressions like
+#' \code{list(NA)} store a logical \code{NA}.
+#'
+#' @seealso The \code{\link{along}} family to create typed vectors
+#'   filled with missing values.
+#' @examples
+#' typeof(NA)
+#' typeof(na_lgl)
+#' typeof(na_int)
+#'
+#' # Note that while the base R missing symbols cannot be overwritten,
+#' # that's not the case for rlang's aliases:
+#' na_dbl <- NA
+#' typeof(na_dbl)
+#' @name missing
+NULL
+
+#' @rdname missing
+#' @export
+na_lgl <- NA
+#' @rdname missing
+#' @export
+na_int <- NA_integer_
+#' @rdname missing
+#' @export
+na_dbl <- NA_real_
+#' @rdname missing
+#' @export
+na_chr <- NA_character_
+#' @rdname missing
+#' @export
+na_cpl <- NA_complex_
+
+
 #' Helper to create vectors with matching length.
 #'
 #' These functions take the idea of \code{\link{seq_along}} and
