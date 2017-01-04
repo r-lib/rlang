@@ -34,7 +34,10 @@ raw_until(.n = 0, ..., .attrs = list())
 }
 \description{
 These functions construct vectors of given length, with attributes
-specified via dots.
+specified via dots. Except for \code{list_until()} and
+\code{raw_until()}, the empty vectors are filled with typed
+\link{missing} values. This is in contrast to the base function
+\code{\link[base]{vector}()} which creates zero-filled vectors.
 }
 \examples{
 list_until(10)

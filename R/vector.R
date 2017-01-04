@@ -159,6 +159,8 @@ na_cpl <- NA_complex_
 #' generalise it to creating lists (\code{list_along}) and repeating
 #' values (\code{rep_along}). The dots are forwarded to
 #' \code{\link[base]{structure}()} to make it easy to add attributes.
+#' Except for \code{list_along()} and \code{raw_along()}, the empty
+#' vectors are filled with typed \link{missing} values.
 #'
 #' @inheritParams with_attributes
 #' @param .x A vector.
@@ -179,22 +181,22 @@ NULL
 #' @export
 #' @rdname along
 logical_along <- function(.x, ..., .attrs = list()) {
-  with_attributes(vector("logical", length(.x)), ..., .attrs = .attrs)
+  with_attributes(rep_len(na_lgl, length(.x)), ..., .attrs = .attrs)
 }
 #' @export
 #' @rdname along
 integer_along <- function(.x, ..., .attrs = list()) {
-  with_attributes(vector("integer", length(.x)), ..., .attrs = .attrs)
+  with_attributes(rep_len(na_int, length(.x)), ..., .attrs = .attrs)
 }
 #' @export
 #' @rdname along
 double_along <- function(.x, ..., .attrs = list()) {
-  with_attributes(vector("double", length(.x)), ..., .attrs = .attrs)
+  with_attributes(rep_len(na_dbl, length(.x)), ..., .attrs = .attrs)
 }
 #' @export
 #' @rdname along
 character_along <- function(.x, ..., .attrs = list()) {
-  with_attributes(vector("character", length(.x)), ..., .attrs = .attrs)
+  with_attributes(rep_len(na_chr, length(.x)), ..., .attrs = .attrs)
 }
 #' @export
 #' @rdname along
@@ -204,7 +206,7 @@ list_along <- function(.x, ..., .attrs = list()) {
 #' @export
 #' @rdname along
 complex_along <- function(.x, ..., .attrs = list()) {
-  with_attributes(vector("complex", length(.x)), ..., .attrs = .attrs)
+  with_attributes(rep_len(na_cpl, length(.x)), ..., .attrs = .attrs)
 }
 #' @export
 #' @rdname along
@@ -222,7 +224,10 @@ rep_along <- function(.x, .y, ..., .attrs = list()) {
 #' Create new vectors.
 #'
 #' These functions construct vectors of given length, with attributes
-#' specified via dots.
+#' specified via dots. Except for \code{list_until()} and
+#' \code{raw_until()}, the empty vectors are filled with typed
+#' \link{missing} values. This is in contrast to the base function
+#' \code{\link[base]{vector}()} which creates zero-filled vectors.
 #'
 #' @inheritParams with_attributes
 #' @param .n The vector length.
@@ -239,22 +244,22 @@ NULL
 #' @export
 #' @rdname new-vectors
 logical_until <- function(.n = 0, ..., .attrs = list()) {
-  with_attributes(vector("logical", .n), ..., .attrs = .attrs)
+  with_attributes(rep_len(na_lgl, .n), ..., .attrs = .attrs)
 }
 #' @export
 #' @rdname new-vectors
 integer_until <- function(.n = 0, ..., .attrs = list()) {
-  with_attributes(vector("integer", .n), ..., .attrs = .attrs)
+  with_attributes(rep_len(na_int, .n), ..., .attrs = .attrs)
 }
 #' @export
 #' @rdname new-vectors
 double_until <- function(.n = 0, ..., .attrs = list()) {
-  with_attributes(vector("double", .n), ..., .attrs = .attrs)
+  with_attributes(rep_len(na_dbl, .n), ..., .attrs = .attrs)
 }
 #' @export
 #' @rdname new-vectors
 character_until <- function(.n = 0, ..., .attrs = list()) {
-  with_attributes(vector("character", .n), ..., .attrs = .attrs)
+  with_attributes(rep_len(na_chr, .n), ..., .attrs = .attrs)
 }
 #' @export
 #' @rdname new-vectors
@@ -264,7 +269,7 @@ list_until <- function(.n = 0, ..., .attrs = list()) {
 #' @export
 #' @rdname new-vectors
 complex_until <- function(.n = 0, ..., .attrs = list()) {
-  with_attributes(vector("complex", .n), ..., .attrs = .attrs)
+  with_attributes(rep_len(na_cpl, .n), ..., .attrs = .attrs)
 }
 #' @export
 #' @rdname new-vectors

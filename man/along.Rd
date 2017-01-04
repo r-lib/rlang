@@ -42,6 +42,8 @@ These functions take the idea of \code{\link{seq_along}} and
 generalise it to creating lists (\code{list_along}) and repeating
 values (\code{rep_along}). The dots are forwarded to
 \code{\link[base]{structure}()} to make it easy to add attributes.
+Except for \code{list_along()} and \code{raw_along()}, the empty
+vectors are filled with typed \link{missing} values.
 }
 \examples{
 x <- 0:5
