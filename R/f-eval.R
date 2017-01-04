@@ -68,10 +68,10 @@ f_eval_lhs <- function(f, data = NULL) {
 #' # Imagine you are computing the mean of a variable:
 #' f_eval(~ mean(cyl), mtcars)
 #' # How can you change the variable that's being computed?
-#' # The easiest way is "unquote" with UQ()
+#' # The easiest way is "unquote" with !!
 #' # See ?interp for more details
 #' var <- ~ cyl
-#' f_eval(~ mean( UQ(var) ), mtcars)
+#' f_eval(~ mean( !!var ), mtcars)
 f_eval <- f_eval_rhs
 
 
