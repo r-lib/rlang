@@ -224,55 +224,55 @@ rep_along <- function(.x, .y, ..., .attrs = list()) {
 #' Create new vectors.
 #'
 #' These functions construct vectors of given length, with attributes
-#' specified via dots. Except for \code{list_until()} and
-#' \code{raw_until()}, the empty vectors are filled with typed
+#' specified via dots. Except for \code{lst_new()} and
+#' \code{raw_new()}, the empty vectors are filled with typed
 #' \link{missing} values. This is in contrast to the base function
 #' \code{\link[base]{vector}()} which creates zero-filled vectors.
 #'
 #' @inheritParams with_attributes
 #' @param .n The vector length.
 #' @examples
-#' list_until(10)
+#' lst_new(10)
 #'
 #' # Add attributes, including the S3 class:
-#' integer_until(0, index = 1)
-#' double_until(10, class = "my_class")
+#' int_new(0, index = 1)
+#' dbl_new(10, class = "my_class")
 #' @name new-vectors
 #' @seealso along
 NULL
 
 #' @export
 #' @rdname new-vectors
-logical_until <- function(.n = 0, ..., .attrs = list()) {
+lgl_new <- function(.n = 0, ..., .attrs = list()) {
   with_attributes(rep_len(na_lgl, .n), ..., .attrs = .attrs)
 }
 #' @export
 #' @rdname new-vectors
-integer_until <- function(.n = 0, ..., .attrs = list()) {
+int_new <- function(.n = 0, ..., .attrs = list()) {
   with_attributes(rep_len(na_int, .n), ..., .attrs = .attrs)
 }
 #' @export
 #' @rdname new-vectors
-double_until <- function(.n = 0, ..., .attrs = list()) {
+dbl_new <- function(.n = 0, ..., .attrs = list()) {
   with_attributes(rep_len(na_dbl, .n), ..., .attrs = .attrs)
 }
 #' @export
 #' @rdname new-vectors
-character_until <- function(.n = 0, ..., .attrs = list()) {
+chr_new <- function(.n = 0, ..., .attrs = list()) {
   with_attributes(rep_len(na_chr, .n), ..., .attrs = .attrs)
 }
 #' @export
 #' @rdname new-vectors
-list_until <- function(.n = 0, ..., .attrs = list()) {
+lst_new <- function(.n = 0, ..., .attrs = list()) {
   with_attributes(vector("list", .n), ..., .attrs = .attrs)
 }
 #' @export
 #' @rdname new-vectors
-complex_until <- function(.n = 0, ..., .attrs = list()) {
+cpl_new <- function(.n = 0, ..., .attrs = list()) {
   with_attributes(rep_len(na_cpl, .n), ..., .attrs = .attrs)
 }
 #' @export
 #' @rdname new-vectors
-raw_until <- function(.n = 0, ..., .attrs = list()) {
+raw_new <- function(.n = 0, ..., .attrs = list()) {
   with_attributes(vector("raw", .n), ..., .attrs = .attrs)
 }
