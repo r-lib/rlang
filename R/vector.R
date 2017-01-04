@@ -69,7 +69,10 @@ prepend <- function(x, values, before = 1) {
 #' returns a list.
 #'
 #' @param .x A vector to modify.
-#' @param ...,.elts List of elements to merge into \code{.x}.
+#' @param ...,.elts List of elements to merge into \code{.x}. Named
+#'   elements already existing in \code{.x} are used as
+#'   replacements. Elements that have new or no names are inserted at
+#'   the end.
 #' @return A modified vector upcasted to a list.
 #' @export
 #' @examples
