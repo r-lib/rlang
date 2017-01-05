@@ -108,15 +108,11 @@ complain <- function(x, message = "object '%s' not found") {
     return(NULL)
   }
 
-  if (is.environment(x)) {
-    x <- clone_env(x)
+  if (is_env(x)) {
+    x <- env_clone(x)
   }
 
   structure(x, message = message, class = c("complain", class(x)))
-}
-
-clone_env <- function(x) {
-  list2env(as.list(x, all.names = TRUE), parent = parent.env(x))
 }
 
 #' @export

@@ -252,7 +252,7 @@ as_env.NULL <- function(x, parent = NULL) {
 #' @export
 as_env.environment <- function(x, parent = NULL) {
   if (!is_null(parent)) {
-    x <- list2env(as.list(x), parent = parent)
+    x <- env_clone(x, parent = parent)
   }
   x
 }
@@ -560,6 +560,21 @@ env_has <- function(env = env_caller(), nms, inherit = FALSE) {
 env_get <- function(env = env_caller(), nm, inherit = FALSE) {
   env_ <- rlang::env(env)
   get(nm, envir = env, inherits = inherit)
+}
+
+#' Clone an environment.
+#'
+#' This creates a new environment containing exactly the same objects.
+#'
+#' @param x An environment to clone.
+#' @param parent The parent of the cloned environment.
+#' @export
+#' @examples
+#' env <- env_new(dict = mtcars)
+#' clone <- env_clone(env)
+#' identical(env$cyl, clone$cyl)
+env_clone <- function(x, parent = env_parent(x)) {
+  list2env(as.list(x, all.names = TRUE), parent = parent)
 }
 
 
