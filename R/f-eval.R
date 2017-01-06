@@ -1,25 +1,3 @@
-#' @export
-#' @rdname f_eval
-f_eval_rhs <- function(f, data = NULL) {
-  if (!is_formula(f)) {
-    stop("`f` is not a formula", call. = FALSE)
-  }
-
-  expr <- f_rhs(interp(f, data = data))
-  eval_expr(expr, f_env(f), data)
-}
-
-#' @export
-#' @rdname f_eval
-f_eval_lhs <- function(f, data = NULL) {
-  if (!is_formula(f)) {
-    stop("`f` is not a formula", call. = FALSE)
-  }
-
-  expr <- f_lhs(interp(f, data = data))
-  eval_expr(expr, f_env(f), data)
-}
-
 #' Evaluate a formula
 #'
 #' \code{f_eval_rhs} evaluates the RHS of a formula and \code{f_eval_lhs}
@@ -72,10 +50,29 @@ f_eval_lhs <- function(f, data = NULL) {
 #' # See ?interp for more details
 #' var <- ~ cyl
 #' f_eval(~ mean( !!var ), mtcars)
-f_eval <- f_eval_rhs
+f_eval <- function(f, data = NULL) {
+  f_eval_(f, f_rhs, data)
+}
 
+#' @rdname f_eval
+#' @export
+f_eval_rhs <- function(f, data = NULL) {
+  f_eval_(f, f_rhs, data)
+}
 
-eval_expr <- function(expr, env, data) {
+#' @rdname f_eval
+#' @export
+f_eval_lhs <- function(f, data = NULL) {
+  f_eval_(f, f_lhs, data)
+}
+
+f_eval_ <- function(f, expr_getter, data) {
+  if (!is_formula(f)) {
+    stop("`f` is not a formula", call. = FALSE)
+  }
+
+  env <- f_env(f)
+  expr <- expr_getter(interp(f, data = data))
   data <- data_source(data)
 
   eval_env <- env_new(env)
