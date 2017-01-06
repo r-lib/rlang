@@ -1,4 +1,4 @@
-context("f_eval")
+context("f_eval") # --------------------------------------------------
 
 test_that("first argument must be a function", {
   expect_error(f_eval(10), "`f` is not a formula")
@@ -14,8 +14,8 @@ test_that("f_eval uses formula's environment", {
   expect_equal(f_eval(f), 110)
 })
 
-test_that("data needs to be a list", {
-  expect_error(f_eval(~ x, 10), "Do not know how to find data")
+test_that("data must be a dictionary", {
+  expect_error(f_eval(~ x, 10), "Data source must be a dictionary")
 })
 
 test_that("looks first in `data`", {
@@ -32,7 +32,8 @@ test_that("pronouns resolve ambiguity looks first in `data`", {
 })
 
 test_that("pronouns complain about missing values", {
-  expect_error(f_eval(~ .data$x, list()), "Variable 'x' not found in data")
+  expect_error(f_eval(~ .data$x, list()), "Object 'x' not found in pronoun")
+  expect_error(f_eval(~ .data$x, data.frame()), "Variable 'x' not found in data")
   expect_error(f_eval(~ .env$`__`, list()), "Object '__' not found in environment")
 })
 
@@ -68,16 +69,45 @@ test_that("unquoted formulas can use data", {
 })
 
 test_that("f_eval_lhs uses lhs", {
-  f <- 1 ~ 2
-
-  expect_equal(f_eval_lhs(f), 1)
+  expect_equal(f_eval_lhs(1 ~ 2), 1)
 })
 
 
-# find_data ---------------------------------------------------------------
+context("data_source") # ---------------------------------------------
 
-test_that("find data works for NULL, lists, and data frames", {
-  expect_equal(find_data(NULL), list())
-  expect_equal(find_data(list(x = 1)), list(x = 1))
-  expect_equal(find_data(mtcars), mtcars)
+test_that("NULL return unchanged", {
+  expect_identical(data_source(NULL), NULL)
+})
+
+test_that("can't access non-existent list members", {
+  x1 <- list(y = 1)
+  x2 <- data_source(x1)
+
+  expect_equal(x2$y, 1)
+  expect_error(x2$z, "Object 'z' not found in pronoun")
+  expect_error(x2[["z"]], "Object 'z' not found in pronoun")
+})
+
+test_that("can't access non-existent environment components", {
+  x1 <- list2env(list(y = 1))
+  x2 <- data_source(x1)
+
+  expect_equal(x2$y, 1)
+  expect_error(x2$z, "Object 'z' not found in environment")
+  expect_error(x2[["z"]], "Object 'z' not found in environment")
+})
+
+test_that("can't use non-character vectors", {
+  x <- data_source(list(y = 1))
+
+  expect_error(x[[1]], "subset with a string")
+  expect_error(x[[c("a", "b")]], "subset with a string")
+})
+
+test_that("data_source doesn't taint env class", {
+  x1 <- list2env(list(y = 1))
+  x2 <- data_source(x1)
+
+  expect_equal(class(x1), "environment")
+  expect_equal(class(x2), c("data_source", "environment"))
 })
