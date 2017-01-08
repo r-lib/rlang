@@ -50,7 +50,7 @@ test_that("unquoted formulas look in their own env", {
   }
 
   n <- 10
-  expect_equal(f_eval(~ UQ(f())), 10)
+  expect_equal(f_eval(~ UQ(f())), 100)
 })
 
 test_that("unquoted formulas can use data", {
@@ -70,6 +70,65 @@ test_that("unquoted formulas can use data", {
 
 test_that("f_eval_lhs uses lhs", {
   expect_equal(f_eval_lhs(1 ~ 2), 1)
+})
+
+test_that("guarded formulas are not evaluated", {
+  f <- local(~x)
+  expect_identical(f_eval(~ UQF(!!f)), f)
+
+  f <- a ~ b
+  fn <- function() ~UQF(f)
+  expect_identical(f_eval(~!!fn()), f)
+  expect_identical(f_eval(~UQF(f)), f)
+})
+
+test_that("fpromises are not evaluated if not forced", {
+  fn <- function(arg, force) {
+    if (force) arg else "bar"
+  }
+  f <- ~fn(!! ~stop("forced!"), force = FALSE)
+  f_forced <- ~fn(!! ~stop("forced!"), force = TRUE)
+
+  expect_identical(f_eval(f), "bar")
+  expect_error(f_eval(f_forced), "forced!")
+})
+
+test_that("can unquote captured arguments", {
+  var <- ~cyl
+  fn <- function(arg) f_eval(arg_capture(arg), mtcars)
+  expect_identical(fn(var), ~cyl)
+  expect_identical(fn(!!var), mtcars$cyl)
+})
+
+test_that("fpromises are evaluated recursively", {
+  foo <- "bar"
+  expect_identical(f_eval(~foo), "bar")
+  expect_identical(f_eval(~~~foo), "bar")
+})
+
+test_that("fpromises have lazy semantics", {
+  fn <- function(arg) "unforced"
+  expect_identical(f_eval(~fn(~stop())), "unforced")
+})
+
+test_that("can unquote hygienically within captured arg", {
+  fn <- function(df, arg) f_eval(arg_capture(arg), df)
+
+  foo <- "bar"; var <- ~foo
+  expect_identical(fn(mtcars, list(var, !!var)), list(~foo, "bar"))
+
+  var <- ~cyl
+  expect_identical(fn(mtcars, (!!var) > 4), mtcars$cyl > 4)
+  expect_identical(fn(mtcars, list(var, !!var)), list(~cyl, mtcars$cyl))
+  expect_identical(fn(mtcars, list(~var, ~!!var)), list(~cyl, mtcars$cyl))
+  expect_identical(fn(mtcars, list(~~var, ~!!~var, ~~!!var)), list(~cyl, ~cyl, mtcars$cyl))
+})
+
+test_that("can unquote for old-style NSE functions", {
+  var <- ~foo
+  fn <- function(x) substitute(x)
+  expect_identical(interp(~fn(!!f_rhs(var))), ~fn(foo))
+  expect_identical(f_eval(~fn(!!f_rhs(var))), quote(foo))
 })
 
 

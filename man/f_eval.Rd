@@ -7,11 +7,11 @@
 \alias{f_eval_rhs}
 \title{Evaluate a formula}
 \usage{
-f_eval(f, data = NULL)
-
 f_eval_rhs(f, data = NULL)
 
 f_eval_lhs(f, data = NULL)
+
+f_eval(f, data = NULL)
 
 data_source(x, lookup_msg = NULL)
 }
@@ -26,6 +26,9 @@ find the data associated with a given object. If you want to make
 generic.}
 
 \item{x}{An object for which you want to find associated data.}
+
+\item{lookup_msg}{An error message when your data source is
+accessed inappropriately (by position rather than name).}
 }
 \description{
 \code{f_eval_rhs} evaluates the RHS of a formula and \code{f_eval_lhs}

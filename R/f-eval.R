@@ -20,7 +20,6 @@
 #'   find the data associated with a given object. If you want to make
 #'   \code{f_eval} work for your own objects, you can define a method for this
 #'   generic.
-#' @param x An object for which you want to find associated data.
 #' @export
 #' @examples
 #' f_eval(~ 1 + 2 + 3)
@@ -50,51 +49,70 @@
 #' # See ?interp for more details
 #' var <- ~ cyl
 #' f_eval(~ mean( !!var ), mtcars)
-f_eval <- function(f, data = NULL) {
-  f_eval_(f, f_rhs, data)
-}
-
-#' @rdname f_eval
-#' @export
+#' @name f_eval
 f_eval_rhs <- function(f, data = NULL) {
-  f_eval_(f, f_rhs, data)
+  f_eval(f, data)
 }
-
 #' @rdname f_eval
 #' @export
 f_eval_lhs <- function(f, data = NULL) {
-  f_eval_(f, f_lhs, data)
+  f <- f_new(f_lhs(f), env = f_env(f))
+  f_eval(f, data)
 }
-
-f_eval_ <- function(f, expr_getter, data) {
+#' @rdname f_eval
+#' @export
+f_eval <- function(f, data = NULL) {
   if (!is_formula(f)) {
-    stop("`f` is not a formula", call. = FALSE)
+    abort("`f` is not a formula")
   }
 
-  env <- f_env(f)
-  expr <- expr_getter(interp(f, data = data))
-  data <- data_source(data)
-
-  eval_env <- env_new(env)
-  eval_env$.env <- data_source(env)
-  eval_env$.data <- data
-
-  eval(expr, data, eval_env)
+  env <- eval_env(f_env(f), data)
+  expr <- .Call(interp_, f_rhs(f), env, TRUE)
+  eval(expr, envir = env)
 }
 
+eval_env <- function(env, data) {
+  if (is_null(data)) {
+    # Derive a child because we're going to add bindings
+    data_src <- NULL
+    eval_env <- env_new(env)
+  } else {
+    # Emulate dynamic scope for established data
+    data_src <- data_source(data)
+    eval_env <- env_bury(env, data)
+  }
+
+  # Install pronouns
+  eval_env$.data <- data_src
+  eval_env$.env <- data_source(env)
+
+  # Install fguards and fpromises. Make sure the latter propagate `data`.
+  eval_env$`_F` <- function(f) f
+  eval_env$`_P` <- function(f) f_eval(f, data)
+
+  # Make unquoting and guarding operators available even when not imported
+  eval_env$`UQ` <- rlang::UQ
+  eval_env$`UQS` <- rlang::UQS
+  eval_env$`UQE` <- rlang::UQE
+  eval_env$`UQF` <- rlang::UQF
+
+  eval_env
+}
 
 #' @rdname f_eval
+#' @param x An object for which you want to find associated data.
+#' @param lookup_msg An error message when your data source is
+#'   accessed inappropriately (by position rather than name).
 #' @export
 data_source <- function(x, lookup_msg = NULL) {
   UseMethod("data_source")
 }
 #' @export
 data_source.default <- function(x, lookup_msg = NULL) {
-  if (is_dictionary(x)) {
-    data_source_new(as.list(x), lookup_msg)
-  } else {
+  if (!is_dictionary(x)) {
     abort("Data source must be a dictionary")
   }
+  data_source_new(as.list(x), lookup_msg)
 }
 #' @export
 data_source.data_source <- function(x, lookup_msg = NULL) {
@@ -166,11 +184,11 @@ has_binding.environment <- function(x, name) {
 print.data_source <- function(x, ...) {
   print(unclass_src(x), ...)
 }
+#' @importFrom utils str
 #' @export
 str.data_source <- function(object, ...) {
   str(unclass_src(object), ...)
 }
-
 unclass_src <- function(x) {
   i <- match("data_source", class(x))
   class(x) <- class(x)[-i]

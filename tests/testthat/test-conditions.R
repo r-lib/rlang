@@ -78,23 +78,6 @@ test_that("Local handlers can muffle mufflable conditions", {
     }))
 })
 
-test_that("with_handlers() constructs correct expression", {
-  inplace <- list(foo = function(c) "foo", bar = function(c) "bar")
-  exiting <- list(baz = function(c) "baz", bam = function(c) "bam")
-  f <- interp_handlers(~expr(), inplace = inplace, exiting = exiting)
-
-  expected_expr <- bquote(withCallingHandlers(
-    tryCatch(expr(),
-      baz = .(exiting$baz),
-      bam = .(exiting$bam)
-    ),
-    foo = .(inplace$foo),
-    bar = .(inplace$bar)
-  ))
-
-  expect_identical(f_rhs(f), expected_expr)
-})
-
 test_that("with_handlers() establishes inplace and exiting handlers", {
   handlers <- list(
     error = exiting(function(c) "caught error"),

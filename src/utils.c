@@ -3,7 +3,7 @@
 #include <Rinternals.h>
 #include <stdbool.h>
 
-bool is_call_to(SEXP x, const char* f) {
+bool is_call(SEXP x, const char* f) {
   if (!(Rf_isLanguage(x) || TYPEOF(x) == LISTSXP))
     return false;
 
@@ -18,28 +18,38 @@ bool is_lazy_load(SEXP x) {
   if (TYPEOF(x) != PROMSXP)
     return false;
 
-  return is_call_to(PREXPR(x), "lazyLoadDBfetch");
+  return is_call(PREXPR(x), "lazyLoadDBfetch");
 }
 
-SEXP findLast(SEXP x) {
-  SEXP cons = x;
-  while(CDR(cons) != R_NilValue)
-    cons = CDR(cons);
-
-  return cons;
+SEXP last_cons(SEXP x) {
+  while(CDR(x) != R_NilValue)
+    x = CDR(x);
+  return x;
 }
 
 SEXP length__(SEXP x) {
   return Rf_ScalarInteger(Rf_length(x));
 }
 
+int is_lang(SEXP x) {
+  return TYPEOF(x) == LANGSXP || TYPEOF(x) == SYMSXP;
+}
+
+int is_true(SEXP x) {
+  if (!IS_SCALAR(x, LGLSXP))
+    Rf_error("`x` must be a boolean");
+
+  int value = LOGICAL(x)[0];
+  return value == NA_LOGICAL ? 0 : value;
+}
+
 // Formulas --------------------------------------------------------------------
 
 bool is_formula(SEXP x) {
-  return TYPEOF(x) == LANGSXP && Rf_inherits(x, "formula");
+  return TYPEOF(x) == LANGSXP && CAR(x) == Rf_install("~");
 }
 
-SEXP rhs(SEXP f) {
+SEXP f_rhs_(SEXP f) {
   if (!is_formula(f))
     Rf_errorcall(R_NilValue, "`x` is not a formula");
 
@@ -50,7 +60,7 @@ SEXP rhs(SEXP f) {
   }
 }
 
-SEXP lhs(SEXP f) {
+SEXP f_lhs_(SEXP f) {
   if (!is_formula(f))
     Rf_errorcall(R_NilValue, "`x` is not a formula");
 
@@ -61,7 +71,7 @@ SEXP lhs(SEXP f) {
   }
 }
 
-SEXP env(SEXP f) {
+SEXP f_env(SEXP f) {
   if (!is_formula(f))
     Rf_errorcall(R_NilValue, "`x` is not a formula");
 
