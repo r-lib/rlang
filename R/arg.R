@@ -87,6 +87,8 @@ arg_capture <- function(x) {
 
   arg_expr <- substitute_(x_expr, x_env)
   arg_env <- env_caller(2)
+
+  arg_expr <- .Call(interp_, arg_expr, arg_env, TRUE)
   f_new(arg_expr, env = arg_env)
 }
 
@@ -319,8 +321,8 @@ fml_default <- function(expr, fn) {
 #' @export
 #' @examples
 #' # The missing argument can be useful to generate calls
-#' interp(~f(x = !! arg_missing()))
-#' interp(~f(x = !! NULL))
+#' f_quote(f(x = !! arg_missing()))
+#' f_quote(f(x = !! NULL))
 #'
 #'
 #' # It is perfectly valid to generate and assign the missing

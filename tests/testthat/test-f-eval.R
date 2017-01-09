@@ -39,7 +39,7 @@ test_that("pronouns complain about missing values", {
 
 test_that("f_eval does quasiquoting", {
   x <- 10
-  expect_equal(f_eval(~ UQ(quote(x))), 10)
+  expect_equal(f_eval(f_quote(UQ(quote(x)))), 10)
 })
 
 
@@ -50,22 +50,22 @@ test_that("unquoted formulas look in their own env", {
   }
 
   n <- 10
-  expect_equal(f_eval(~ UQ(f())), 100)
+  expect_equal(f_eval(f_quote(UQ(f()))), 100)
 })
 
 test_that("unquoted formulas can use data", {
   f1 <- function() {
     z <- 100
-    ~ x + z
+    f_quote(x + z)
   }
   f2 <- function() {
     z <- 100
-    ~ .data$x + .env$z
+    f_quote(.data$x + .env$z)
   }
 
   z <- 10
-  expect_equal(f_eval(~ UQ(f1()), data = list(x = 1)), 101)
-  expect_equal(f_eval(~ UQ(f2()), data = list(x = 1)), 101)
+  expect_equal(f_eval(f_quote(UQ(f1())), data = list(x = 1)), 101)
+  expect_equal(f_eval(f_quote(UQ(f2())), data = list(x = 1)), 101)
 })
 
 test_that("f_eval_lhs uses lhs", {
@@ -74,23 +74,28 @@ test_that("f_eval_lhs uses lhs", {
 
 test_that("guarded formulas are not evaluated", {
   f <- local(~x)
-  expect_identical(f_eval(~ UQF(!!f)), f)
+  expect_identical(f_eval(f_quote(UQF(f))), f)
 
   f <- a ~ b
   fn <- function() ~UQF(f)
-  expect_identical(f_eval(~!!fn()), f)
-  expect_identical(f_eval(~UQF(f)), f)
+  expect_identical(f_eval(f_quote(!!fn())), f)
+  expect_identical(f_eval(f_quote(UQF(f))), f)
 })
 
 test_that("fpromises are not evaluated if not forced", {
   fn <- function(arg, force) {
     if (force) arg else "bar"
   }
-  f <- ~fn(!! ~stop("forced!"), force = FALSE)
-  f_forced <- ~fn(!! ~stop("forced!"), force = TRUE)
 
-  expect_identical(f_eval(f), "bar")
-  expect_error(f_eval(f_forced), "forced!")
+  f1 <- f_quote(fn(!! ~stop("forced!"), force = FALSE))
+  f2 <- f_quote(fn(!! local(~stop("forced!")), force = FALSE))
+  expect_identical(f_eval(f1), "bar")
+  expect_identical(f_eval(f2), "bar")
+
+  f_forced1 <- f_quote(fn(!! ~stop("forced!"), force = TRUE))
+  f_forced2 <- f_quote(fn(!! local(~stop("forced!")), force = TRUE))
+  expect_error(f_eval(f_forced1), "forced!")
+  expect_error(f_eval(f_forced2), "forced!")
 })
 
 test_that("can unquote captured arguments", {
@@ -102,13 +107,13 @@ test_that("can unquote captured arguments", {
 
 test_that("fpromises are evaluated recursively", {
   foo <- "bar"
-  expect_identical(f_eval(~foo), "bar")
-  expect_identical(f_eval(~~~foo), "bar")
+  expect_identical(f_eval(f_quote(foo)), "bar")
+  expect_identical(f_eval(f_quote(~~foo)), "bar")
 })
 
 test_that("fpromises have lazy semantics", {
   fn <- function(arg) "unforced"
-  expect_identical(f_eval(~fn(~stop())), "unforced")
+  expect_identical(f_eval(f_quote(fn(~stop()))), "unforced")
 })
 
 test_that("can unquote hygienically within captured arg", {
@@ -127,8 +132,8 @@ test_that("can unquote hygienically within captured arg", {
 test_that("can unquote for old-style NSE functions", {
   var <- ~foo
   fn <- function(x) substitute(x)
-  expect_identical(interp(~fn(!!f_rhs(var))), ~fn(foo))
-  expect_identical(f_eval(~fn(!!f_rhs(var))), quote(foo))
+  expect_identical(f_quote(fn(!!f_rhs(var))), ~fn(foo))
+  expect_identical(f_eval(f_quote(fn(!!f_rhs(var)))), quote(foo))
 })
 
 

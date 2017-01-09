@@ -79,7 +79,7 @@ SEXP f_lhs_(SEXP f) {
   }
 }
 
-SEXP f_env(SEXP f) {
+SEXP f_env_(SEXP f) {
   if (!is_formula(f))
     Rf_errorcall(R_NilValue, "`x` is not a formula");
 
