@@ -639,7 +639,7 @@ return_from <- function(frame, value = NULL) {
   }
   exit_env <- env(frame)
 
-  f <- interp(~return(UQ(value)))
+  f <- f_quote(return(UQ(value)))
   with_env_(exit_env, f)
 }
 

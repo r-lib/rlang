@@ -99,10 +99,10 @@ with_handlers_ <- function(.expr, .handlers = list(), .env = NULL) {
 
 interp_handlers <- function(f, inplace, exiting) {
   if (length(exiting)) {
-    f <- interp(~tryCatch(!! f, !!! exiting))
+    f <- f_quote(tryCatch(!! f, !!! exiting))
   }
   if (length(inplace)) {
-    f <- interp(~withCallingHandlers(!! f, !!! inplace))
+    f <- f_quote(withCallingHandlers(!! f, !!! inplace))
   }
   f
 }
