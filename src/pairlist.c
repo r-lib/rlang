@@ -38,3 +38,11 @@ SEXP cons_(SEXP car, SEXP cdr) {
 SEXP duplicate_(SEXP x) {
   return Rf_duplicate(x);
 }
+
+SEXP tag_(SEXP x) {
+  return TAG(x);
+}
+SEXP set_tag_(SEXP x, SEXP tag) {
+  SET_TAG(x, tag);
+  return x;
+}

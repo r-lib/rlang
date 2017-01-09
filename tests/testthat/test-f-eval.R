@@ -38,7 +38,7 @@ test_that("pronouns complain about missing values", {
 
 test_that("f_eval does quasiquoting", {
   x <- 10
-  expect_equal(f_eval(~ uq(quote(x))), 10)
+  expect_equal(f_eval(~ UQ(quote(x))), 10)
 })
 
 
@@ -49,7 +49,7 @@ test_that("unquoted formulas look in their own env", {
   }
 
   n <- 10
-  expect_equal(f_eval(~ uq(f())), 10)
+  expect_equal(f_eval(~ UQ(f())), 10)
 })
 
 test_that("unquoted formulas can use data", {
@@ -63,8 +63,8 @@ test_that("unquoted formulas can use data", {
   }
 
   z <- 10
-  expect_equal(f_eval(~ uq(f1()), data = list(x = 1)), 101)
-  expect_equal(f_eval(~ uq(f2()), data = list(x = 1)), 101)
+  expect_equal(f_eval(~ UQ(f1()), data = list(x = 1)), 101)
+  expect_equal(f_eval(~ UQ(f2()), data = list(x = 1)), 101)
 })
 
 test_that("f_eval_lhs uses lhs", {

@@ -16,9 +16,9 @@ f_eval(f, data = NULL)
 find_data(x)
 }
 \arguments{
-\item{f}{A formula. Any expressions wrapped in \code{ uq() } will
+\item{f}{A formula. Any expressions wrapped in \code{ UQ() } will
 will be "unquoted", i.e. they will be evaluated, and the results inserted
-back into the formula. See \code{\link{f_interp}} for more details.}
+back into the formula. See \code{\link{interp}} for more details.}
 
 \item{data}{A list (or data frame). \code{find_data} is a generic used to
 find the data associated with a given object. If you want to make
@@ -67,9 +67,9 @@ f_eval(~ .env$cyl, mtcars)
 # Imagine you are computing the mean of a variable:
 f_eval(~ mean(cyl), mtcars)
 # How can you change the variable that's being computed?
-# The easiest way is "unquote" with uq()
-# See ?f_interp for more details
+# The easiest way is "unquote" with !!
+# See ?interp for more details
 var <- ~ cyl
-f_eval(~ mean( uq(var) ), mtcars)
+f_eval(~ mean( !!var ), mtcars)
 }
 

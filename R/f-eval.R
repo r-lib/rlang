@@ -5,7 +5,7 @@ f_eval_rhs <- function(f, data = NULL) {
     stop("`f` is not a formula", call. = FALSE)
   }
 
-  expr <- f_rhs(f_interp(f, data = data))
+  expr <- f_rhs(interp(f, data = data))
   eval_expr(expr, f_env(f), data)
 }
 
@@ -16,7 +16,7 @@ f_eval_lhs <- function(f, data = NULL) {
     stop("`f` is not a formula", call. = FALSE)
   }
 
-  expr <- f_lhs(f_interp(f, data = data))
+  expr <- f_lhs(interp(f, data = data))
   eval_expr(expr, f_env(f), data)
 }
 
@@ -35,9 +35,9 @@ f_eval_lhs <- function(f, data = NULL) {
 #' \code{.env} and \code{.data}. These are thin wrappers around \code{.data}
 #' and \code{.env} that throw errors if you try to access non-existent values.
 #'
-#' @param f A formula. Any expressions wrapped in \code{ uq() } will
+#' @param f A formula. Any expressions wrapped in \code{ UQ() } will
 #'   will be "unquoted", i.e. they will be evaluated, and the results inserted
-#'   back into the formula. See \code{\link{f_interp}} for more details.
+#'   back into the formula. See \code{\link{interp}} for more details.
 #' @param data A list (or data frame). \code{find_data} is a generic used to
 #'   find the data associated with a given object. If you want to make
 #'   \code{f_eval} work for your own objects, you can define a method for this
@@ -68,10 +68,10 @@ f_eval_lhs <- function(f, data = NULL) {
 #' # Imagine you are computing the mean of a variable:
 #' f_eval(~ mean(cyl), mtcars)
 #' # How can you change the variable that's being computed?
-#' # The easiest way is "unquote" with uq()
-#' # See ?f_interp for more details
+#' # The easiest way is "unquote" with !!
+#' # See ?interp for more details
 #' var <- ~ cyl
-#' f_eval(~ mean( uq(var) ), mtcars)
+#' f_eval(~ mean( !!var ), mtcars)
 f_eval <- f_eval_rhs
 
 
@@ -100,4 +100,51 @@ find_data.data.frame <- function(x) x
 #' @export
 find_data.default <- function(x) {
   stop("Do not know how to find data associated with `x`", call. = FALSE)
+}
+
+
+complain <- function(x, message = "object '%s' not found") {
+  if (is.null(x)) {
+    return(NULL)
+  }
+
+  if (is.environment(x)) {
+    x <- clone_env(x)
+  }
+
+  structure(x, message = message, class = c("complain", class(x)))
+}
+
+clone_env <- function(x) {
+  list2env(as.list(x, all.names = TRUE), parent = parent.env(x))
+}
+
+#' @export
+`$.complain` <- function(x, name) {
+  if (!has_name(x, name)) {
+    stop(sprintf(attr(x, "message"), name), call. = FALSE)
+  }
+  x[[name]]
+}
+
+#' @export
+`[[.complain` <- function(x, i, ...) {
+  if (!is_scalar_character(i)) {
+    stop("Must subset with a string", call. = FALSE)
+  }
+  if (!has_name(x, i)) {
+    stop(sprintf(attr(x, "message"), i), call. = FALSE)
+  }
+  NextMethod()
+}
+has_name <- function(x, name) {
+  UseMethod("has_name")
+}
+#' @export
+has_name.default <- function(x, name) {
+  name %in% names(x)
+}
+#' @export
+has_name.environment <- function(x, name) {
+  exists(name, envir = x, inherits = FALSE)
 }

@@ -26,11 +26,10 @@
 #' attr(f, "srcref") <- NULL
 #' # Now they are:
 #' stopifnot(identical(f, g))
-fn_new <- function(args, body, env = parent.frame()) {
-  stopifnot(all(has_names(args)), is_lang(body), is.environment(env))
+fn_new <- function(args, body, env = env_caller()) {
+  stopifnot(all(has_names(args)), is_lang(body), is_env(env))
 
   args <- as.pairlist(args)
-
   eval(call("function", args, body), env)
 }
 
@@ -215,6 +214,47 @@ is_primitive_eager <- function(x) {
 #' is_primitive_lazy(base::substitute)
 is_primitive_lazy <- function(x) {
   typeof(x) == "special"
+}
+
+
+#' Return the closure environment of a function.
+#'
+#' Closure environments define the scope of functions (see
+#' \code{\link{env}()}). When a function call is evaluated, R creates
+#' an evaluation frame (see \code{\link{eval_stack}()}) that inherits
+#' from the closure environment. This makes all objects defined in the
+#' closure environment and all its parents available to code executed
+#' within the function.
+#'
+#' \code{fn_env()} returns the closure environment of \code{fn}. There
+#' is also an assignment method to set a new closure environment.
+#'
+#' @param fn,x A function.
+#' @param value A new closure environment for the function.
+#' @export
+#' @examples
+#' env <- env_new("base")
+#' fn <- with_env(env, function() NULL)
+#' identical(fn_env(fn), env)
+#'
+#' other_env <- env_new("base")
+#' fn_env(fn) <- other_env
+#' identical(fn_env(fn), other_env)
+fn_env <- function(fn) {
+  if(!is_function(fn)) {
+    abort("`fn` is not a function", "type")
+  }
+  environment(fn)
+}
+
+#' @export
+#' @rdname fn_env
+`fn_env<-` <- function(x, value) {
+  if(!is_function(x)) {
+    abort("`fn` is not a function", "type")
+  }
+  environment(x) <- value
+  x
 }
 
 

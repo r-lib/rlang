@@ -319,8 +319,8 @@ fml_default <- function(expr, fn) {
 #' @export
 #' @examples
 #' # The missing argument can be useful to generate calls
-#' f_interp(~f(x = uq(arg_missing())))
-#' f_interp(~f(x = uq(NULL)))
+#' interp(~f(x = !! arg_missing()))
+#' interp(~f(x = !! NULL))
 #'
 #'
 #' # It is perfectly valid to generate and assign the missing

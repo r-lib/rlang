@@ -4,7 +4,7 @@
 #include <stdbool.h>
 
 bool is_call_to(SEXP x, const char* f) {
-  if (!Rf_isLanguage(x))
+  if (!(Rf_isLanguage(x) || TYPEOF(x) == LISTSXP))
     return false;
 
   SEXP fun = CAR(x);
