@@ -6,6 +6,13 @@ test_that("protected against bad inputs", {
   expect_error(interp(f), "must be an environment")
 })
 
+test_that("interpolation does not recurse over spliced arguments", {
+  var1 <- quote(!! stop())
+  var2 <- quote({foo; !! stop(); bar})
+  expect_error(quote_f(list(!!! var1)), NA)
+  expect_error(quote_expr(list(!!! var2)), NA)
+})
+
 
 # UQ ----------------------------------------------------------------------
 
@@ -19,16 +26,16 @@ test_that("evaluates contents of UQ()", {
   expect_equal(interp(~ UQ(1 + 2)), ~ 3)
 })
 
-test_that("layers of unquote are peeled off recursively by interp()", {
+test_that("layers of unquote are not peeled off recursively by interp()", {
   var1 <- ~letters
   var2 <- ~!!var1
   var3 <- ~!!var2
-  expect_identical(interp(var3), ~letters)
+  expect_identical(interp(var3), ~!!var1)
 
   var1 <- local(~letters)
   var2 <- local(~!!var1)
   var3 <- local(~!!var2)
-  nested_promises <- make_P(make_P(var1, env = f_env(var2)), env = f_env(var3))
+  nested_promises <- make_P(var2, env = f_env(var3))
   expect_identical(interp(var3), nested_promises)
 })
 
