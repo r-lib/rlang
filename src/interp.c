@@ -93,11 +93,9 @@ SEXP unquote_sym(SEXP sym) {
 SEXP unquote(SEXP x, SEXP env, int make_promises, SEXP uq_sym) {
   uq_sym = unquote_sym(uq_sym);
   SEXP uq_call = PROTECT(Rf_lang2(uq_sym, x));
-
   SEXP res = PROTECT(Rf_eval(uq_call, env));
-  res = interp_walk(res, env, make_promises);
-  UNPROTECT(2);
 
+  UNPROTECT(2);
   return res;
 }
 
@@ -166,11 +164,13 @@ SEXP interp_walk(SEXP x, SEXP env, int make_promises)  {
 SEXP interp_arguments(SEXP x, SEXP env, int make_promises) {
   for(SEXP cur = x; cur != R_NilValue; cur = CDR(cur)) {
     SETCAR(cur, interp_walk(CAR(cur), env, make_promises));
-    SEXP nxt = CDR(cur);
 
+    SEXP nxt = CDR(cur);
     nxt = replace_triple_bang(nxt, cur);
-    if (is_splice(CAR(nxt)))
+    if (is_splice(CAR(nxt))) {
       cur = splice_nxt(cur, nxt, env);
+      cur = nxt; // Don't interpolate unquoted stuff
+    }
   }
 
   return x;
