@@ -139,19 +139,32 @@ interp_handlers <- function(f, inplace, exiting) {
 #' abort restart (see \code{\link{rst_abort}()}).
 #'
 #' @param handler A handler function that takes a condition as
-#'   argument.
+#'   argument. This is passed to \code{\link{as_function}()} and can
+#'   thus be a formula describing a lambda function.
 #' @param muffle Whether to muffle the condition after executing an
 #'   inplace handler. The signalling function must have established a
 #'   muffling restart. Otherwise, an error will be issued.
 #' @seealso \code{\link{with_handlers}()} for examples,
 #'   \code{\link{restarting}()} for another kind of inplace handler.
 #' @export
+#' @examples
+#' # You can supply a function taking a condition as argument:
+#' hnd <- exiting(function(c) cat("handled foo\n"))
+#' with_handlers(cnd_signal("foo"), foo = hnd)
+#'
+#' # Or a lambda-formula where "." is bound to the condition:
+#' with_handlers(foo = inplace(~cat("hello", .$attr, "\n")), {
+#'   cnd_signal("foo", attr = "there")
+#'   "foo"
+#' })
 exiting <- function(handler) {
+  handler <- as_function(handler)
   structure(handler, class = c("exiting", "handler"))
 }
 #' @rdname exiting
 #' @export
 inplace <- function(handler, muffle = FALSE) {
+  handler <- as_function(handler)
   if (muffle) {
     handler_ <- function(c) {
       handler(c)

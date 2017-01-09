@@ -216,3 +216,42 @@ is_primitive_eager <- function(x) {
 is_primitive_lazy <- function(x) {
   typeof(x) == "special"
 }
+
+
+#' Coerce to function.
+#'
+#' This generic transforms objects to functions. It is especially
+#' useful with formulas to create lambdas on the fly.
+#'
+#' @param .f A function or formula.
+#'
+#'   If a \strong{function}, it is used as is.
+#'
+#'   If a \strong{formula}, e.g. \code{~ .x + 2}, it is converted to a
+#'   function with two arguments, \code{.x} or \code{.} and
+#'   \code{.y}. This allows you to create very compact anonymous
+#'   functions with up to two inputs.
+#' @param ... Additional arguments passed on to methods. Currently
+#'   unused in rlang.
+#' @export
+#' @examples
+#' f <- as_function(~ . + 1)
+#' f(10)
+as_function <- function(.f, ...) {
+  UseMethod("as_function")
+}
+
+#' @export
+as_function.function <- function(.f, ...) {
+  .f
+}
+
+#' @export
+as_function.formula <- function(.f, ...) {
+  .x <- NULL # hush R CMD check NOTE
+
+  if (length(.f) != 2) {
+    stop("Formula must be one sided", call. = FALSE)
+  }
+  fn_new(alist(.x = , .y = , . = .x), .f[[2]], environment(.f))
+}

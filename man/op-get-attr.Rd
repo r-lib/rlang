@@ -3,7 +3,7 @@
 \name{op-get-attr}
 \alias{\%@\%}
 \alias{op-get-attr}
-\title{Infix attribute accessor}
+\title{Infix attribute accessor.}
 \usage{
 x \%@\% name
 }
@@ -13,7 +13,7 @@ x \%@\% name
 \item{name}{Attribute name}
 }
 \description{
-Infix attribute accessor
+Infix attribute accessor.
 }
 \examples{
 factor(1:3) \%@\% "levels"
