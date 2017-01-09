@@ -15,7 +15,7 @@
 #'
 #' @param f A formula. Any expressions wrapped in \code{ UQ() } will
 #'   will be "unquoted", i.e. they will be evaluated, and the results inserted
-#'   back into the formula. See \code{\link{interp}} for more details.
+#'   back into the formula. See \code{\link{f_quote}()} for more details.
 #' @param data A list (or data frame). \code{data_source} is a generic used to
 #'   find the data associated with a given object. If you want to make
 #'   \code{f_eval} work for your own objects, you can define a method for this
@@ -46,9 +46,9 @@
 #' f_eval(~ mean(cyl), mtcars)
 #' # How can you change the variable that's being computed?
 #' # The easiest way is "unquote" with !!
-#' # See ?interp for more details
+#' # See ?f_quote for more details
 #' var <- ~ cyl
-#' f_eval(~ mean( !!var ), mtcars)
+#' f_eval(f_quote(mean( !!var )), mtcars)
 #' @name f_eval
 f_eval_rhs <- function(f, data = NULL) {
   f_eval(f, data)
@@ -67,8 +67,7 @@ f_eval <- function(f, data = NULL) {
   }
 
   env <- eval_env(f_env(f), data)
-  expr <- .Call(interp_, f_rhs(f), env, TRUE)
-  eval(expr, envir = env)
+  eval(f_rhs(f), envir = env)
 }
 
 eval_env <- function(env, data) {
@@ -86,8 +85,7 @@ eval_env <- function(env, data) {
   eval_env$.data <- data_src
   eval_env$.env <- data_source(env)
 
-  # Install fguards and fpromises. Make sure the latter propagate `data`.
-  eval_env$`_F` <- function(f) f
+  # Install fpromises and sure to propagate `data`.
   eval_env$`_P` <- function(f) f_eval(f, data)
 
   # Make unquoting and guarding operators available even when not imported

@@ -18,7 +18,7 @@ data_source(x, lookup_msg = NULL)
 \arguments{
 \item{f}{A formula. Any expressions wrapped in \code{ UQ() } will
 will be "unquoted", i.e. they will be evaluated, and the results inserted
-back into the formula. See \code{\link{interp}} for more details.}
+back into the formula. See \code{\link{f_quote}()} for more details.}
 
 \item{data}{A list (or data frame). \code{data_source} is a generic used to
 find the data associated with a given object. If you want to make
@@ -71,8 +71,8 @@ f_eval(~ .env$cyl, mtcars)
 f_eval(~ mean(cyl), mtcars)
 # How can you change the variable that's being computed?
 # The easiest way is "unquote" with !!
-# See ?interp for more details
+# See ?f_quote for more details
 var <- ~ cyl
-f_eval(~ mean( !!var ), mtcars)
+f_eval(f_quote(mean( !!var )), mtcars)
 }
 
