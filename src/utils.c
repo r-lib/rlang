@@ -46,7 +46,15 @@ int is_true(SEXP x) {
 // Formulas --------------------------------------------------------------------
 
 bool is_formula(SEXP x) {
-  return TYPEOF(x) == LANGSXP && CAR(x) == Rf_install("~");
+  if (TYPEOF(x) != LANGSXP)
+    return 0;
+
+  SEXP head = CAR(x);
+  if (TYPEOF(head) != SYMSXP)
+    return 0;
+
+  const char* nm =  CHAR(PRINTNAME(head));
+  return strcmp(nm, "~") == 0 || strcmp(nm, ":=") == 0;
 }
 
 SEXP f_rhs_(SEXP f) {
