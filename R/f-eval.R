@@ -85,16 +85,39 @@ eval_env <- function(env, data) {
   eval_env$.data <- data_src
   eval_env$.env <- data_source(env)
 
-  # Install fpromises and sure to propagate `data`.
-  eval_env$`_P` <- function(f) f_eval(f, data)
+  # Install fpromises and make sure to propagate `data`.
+  eval_env$`~` <- f_self_eval(data, eval_env)
+
+  # Guarded formulas are wrapped in another call to make sure they
+  # don't self-evaluate.
+  eval_env$`_F` <- unguard_formula
 
   # Make unquoting and guarding operators available even when not imported
-  eval_env$`UQ` <- rlang::UQ
-  eval_env$`UQS` <- rlang::UQS
-  eval_env$`UQE` <- rlang::UQE
-  eval_env$`UQF` <- rlang::UQF
+  eval_env$UQ <- rlang::UQ
+  eval_env$UQS <- rlang::UQS
+  eval_env$UQE <- rlang::UQE
+  eval_env$UQF <- rlang::UQF
 
   eval_env
+}
+
+f_self_eval <- function(`_data`, `_orig_eval_env`) {
+  function(...) {
+    f <- sys.call()
+
+    # Take care of degenerate formulas (e.g. created with ~~letters)
+    if (is_null(f_env(f))) {
+      f_env(f) <- `_orig_eval_env`
+    }
+
+    eval_env <- eval_env(f_env(f), `_data`)
+    eval(f_rhs(f), eval_env)
+  }
+}
+unguard_formula <- function(...) {
+  tilde <- sys.call()
+  tilde[[1]] <- quote(`~`)
+  tilde
 }
 
 #' @rdname f_eval

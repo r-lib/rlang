@@ -5,6 +5,7 @@
 
 SEXP interp_walk(SEXP x, SEXP env, int make_promises);
 SEXP interp_arguments(SEXP x, SEXP env, int make_promises);
+int is_informative(SEXP f, SEXP env);
 SEXP as_fpromise(SEXP f, SEXP env, int make_promises);
 
 
@@ -100,7 +101,7 @@ SEXP unquote(SEXP x, SEXP env, int make_promises, SEXP uq_sym) {
   PROTECT_WITH_INDEX(res, &ipx);
 
   if (make_promises) {
-    while(is_formula(res)) {
+    while(is_formula(res) && !is_informative(res, env)) {
       REPROTECT(res = as_fpromise(res, env, make_promises), ipx);
     }
   }
@@ -118,14 +119,17 @@ SEXP unquote(SEXP x, SEXP env, int make_promises, SEXP uq_sym) {
 // supplied during argument capture (including a double quote ~~foo).
 // It makes sense to treat those as having the same scope as
 // surrounding formula.
+int is_informative(SEXP f, SEXP env) {
+  return is_lang(f_rhs_(f)) && f_env_(f) != env;
+}
 SEXP as_fpromise(SEXP f, SEXP env, int make_promises) {
   SEXP f_env = f_env_(f);
 
   int scoped = Rf_isEnvironment(f_env) && f_env != R_EmptyEnv && f_env != R_NilValue;
-  int informative = is_lang(f_rhs_(f)) && f_env != env;
+  int informative = is_informative(f, env);
 
   if (make_promises && informative && scoped)
-    return Rf_lang2(Rf_install("_P"), f);
+    return f;
   else
     return f_rhs_(f);
 }
@@ -143,6 +147,13 @@ SEXP splice_nxt(SEXP cur, SEXP nxt, SEXP env) {
   return cur;
 }
 
+// Change call name to prevent the formula from self-evaluating
+SEXP guard_formula(SEXP f) {
+  SEXP guard = PROTECT(LCONS(Rf_install("_F"), CDR(f)));
+  Rf_copyMostAttrib(f, guard);
+  UNPROTECT(1);
+  return guard;
+}
 
 SEXP interp_walk(SEXP x, SEXP env, int make_promises)  {
   if (!Rf_isLanguage(x))
@@ -150,9 +161,6 @@ SEXP interp_walk(SEXP x, SEXP env, int make_promises)  {
 
   PROTECT_INDEX ipx;
   PROTECT_WITH_INDEX(x, &ipx);
-
-  // Whether to treat formulas literally
-  int guarded = 0;
 
   x = replace_double_bang(x);
 
@@ -168,13 +176,13 @@ SEXP interp_walk(SEXP x, SEXP env, int make_promises)  {
     REPROTECT(x = unquote(CADR(x), env, make_promises, uq_sym), ipx);
   } else if (is_call(x, "UQF")) {
     REPROTECT(x = Rf_eval(x, env), ipx);
-    guarded = 1;
+    REPROTECT(x = guard_formula(x), ipx);
   } else {
     x = interp_arguments(x, env, make_promises);
   }
 
   // Deal with fpromises
-  if (!guarded && is_formula(x))
+  if (is_formula(x))
     x = as_fpromise(x, env, make_promises);
 
   UNPROTECT(1);
