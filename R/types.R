@@ -242,7 +242,16 @@ is_empty <- function(x) length(x) == 0
 #' is_formula(~ 10)
 #' is_formula(10)
 is_formula <- function(x) {
-  typeof(x) == "language" && inherits(x, "formula")
+  if(typeof(x) != "language") {
+    return(FALSE)
+  }
+
+  head <- x[[1]]
+  if (!is_name(head)) {
+    return(FALSE)
+  }
+
+  as.character(head) %in% c("~", ":=")
 }
 
 #' Is object an environment?
