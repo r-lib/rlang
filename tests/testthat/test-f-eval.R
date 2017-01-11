@@ -136,6 +136,21 @@ test_that("can unquote for old-style NSE functions", {
   expect_identical(f_eval(f_quote(fn(!!f_rhs(var)))), quote(foo))
 })
 
+test_that("formulas with empty environments are scoped in surrounding formula", {
+  var <- local(~letters)
+  f <- f_new(var, env = env_new(env()))
+  expect_identical(f_eval(f), letters)
+
+  expect_identical(f_eval(~~letters), letters)
+})
+
+test_that("all fpromises in the call are evaluated", {
+  foobar <- function(x) paste0("foo", x)
+  x <- f_new(call("foobar", local({ bar <- "bar"; ~bar })))
+  f <- f_new(call("identity", x))
+  expect_identical(f_eval(f), "foobar")
+})
+
 
 context("data_source") # ---------------------------------------------
 

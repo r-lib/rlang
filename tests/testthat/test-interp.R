@@ -16,7 +16,7 @@ test_that("interpolation does not recurse over spliced arguments", {
 test_that("formulas are always inlined with expr_quote()", {
   var1 <- ~bar
   var2 <- local(~baz)
-  f <- f_new(bquote(foo + bar + .(f_rhs(make_P(var2)))))
+  f <- f_new(bquote(foo + bar + .(f_rhs(f_new(var2)))))
   expect_identical(f_quote(foo + UQ(var1) + UQ(var2)), f)
   expect_identical(expr_quote(foo + UQ(var1) + UQ(var2)), quote(foo + bar + baz))
 })
@@ -35,7 +35,7 @@ test_that("layers of unquote are not peeled off recursively upon interpolation",
 
   var1 <- local(~letters)
   var2 <- local(~!!var1)
-  expect_identical(f_quote(!!var2), make_P(var2))
+  expect_identical(f_quote(!!var2), f_new(var2))
 })
 
 test_that("formulas are promised recursively during unquote", {
@@ -43,7 +43,7 @@ test_that("formulas are promised recursively during unquote", {
   expect_identical(f_quote(!!var), f_quote(~~letters))
 
   var <- f_new(local(~letters), env = env_new(env()))
-  expect_identical(f_quote(!!var), make_P(var))
+  expect_identical(f_quote(!!var), f_new(var))
 })
 
 
@@ -71,9 +71,15 @@ test_that("UQS() handles language objects", {
 
 # UQF and UQE --------------------------------------------------------
 
-test_that("UQF() unquotes literally", {
-  f <- local(~x)
-  expect_identical(f_quote(UQF(f)), f_new(f))
+test_that("UQF() guards formulas", {
+  f <- local({ x <- "foo"; ~x })
+
+  guarded <- call_new("_F", .args = f[-1])
+  attributes(guarded) <- attributes(f)
+
+  expected_f <- f_new(guarded)
+  expect_identical(f_quote(UQF(f)), expected_f)
+  expect_identical(f_eval(expected_f), f)
 })
 
 test_that("UQE() extracts right-hand side", {
@@ -91,7 +97,7 @@ test_that("single ! is not treated as shortcut", {
 
 test_that("double and triple ! are treated as syntactic shortcuts", {
   var <- local(~foo)
-  expect_identical(f_quote(!! var), make_P(var))
+  expect_identical(f_quote(!! var), f_new(var))
   expect_identical(f_quote(!! ~foo), ~foo)
   expect_identical(f_quote(list(!!! letters[1:3])), ~list("a", "b", "c"))
 })
@@ -111,11 +117,11 @@ test_that("fpromises are created for all informative formulas", {
   bar <- local(~bar)
 
   interpolated <- local(f_quote(list(!!foo, !!bar)))
-  expected <- f_new(bquote(list(.(f_rhs(make_P(foo))), .(f_rhs(make_P(bar))))), env = env(interpolated))
+  expected <- f_new(bquote(list(.(f_rhs(f_new(foo))), .(f_rhs(f_new(bar))))), env = env(interpolated))
   expect_identical(interpolated, expected)
 
   interpolated <- f_quote(!!interpolated)
-  expected <- make_P(expected)
+  expected <- f_new(expected)
   expect_identical(interpolated, expected)
 })
 
