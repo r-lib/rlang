@@ -1,11 +1,5 @@
 context("interp")
 
-test_that("formulas with bad inputs are inlined", {
-  var <- ~x + 1
-  attr(var, ".Environment") <- 10
-  expect_identical(f_quote(!!var), ~x + 1)
-})
-
 test_that("interpolation does not recurse over spliced arguments", {
   var1 <- quote(!! stop())
   var2 <- quote({foo; !! stop(); bar})
@@ -16,9 +10,15 @@ test_that("interpolation does not recurse over spliced arguments", {
 test_that("formulas are always inlined with expr_quote()", {
   var1 <- ~bar
   var2 <- local(~baz)
-  f <- f_new(bquote(foo + bar + .(f_rhs(f_new(var2)))))
+  f <- f_new(bquote(foo + .(var1) + .(var2)))
   expect_identical(f_quote(foo + UQ(var1) + UQ(var2)), f)
   expect_identical(expr_quote(foo + UQ(var1) + UQ(var2)), quote(foo + bar + baz))
+})
+
+test_that("interpolation does not revisit unquoted formulas", {
+  f <- ~list(!!~!!stop("should not interpolate within formulas"))
+  f <- interp(f)
+  expect_identical(interp(f), f)
 })
 
 
@@ -31,16 +31,16 @@ test_that("evaluates contents of UQ()", {
 test_that("layers of unquote are not peeled off recursively upon interpolation", {
   var1 <- ~letters
   var2 <- ~!!var1
-  expect_identical(f_quote(!!var2), ~!!var1)
+  expect_identical(f_quote(!!var2), f_new(~!!var1))
 
   var1 <- local(~letters)
   var2 <- local(~!!var1)
-  expect_identical(f_quote(!!var2), f_new(var2))
+  expect_identical(interp(~!!var2), f_new(var2))
 })
 
 test_that("formulas are promised recursively during unquote", {
   var <- ~~letters
-  expect_identical(f_quote(!!var), f_quote(~~letters))
+  expect_identical(f_quote(!!var), f_new(f_new(quote(~letters))))
 
   var <- f_new(local(~letters), env = env_new(env()))
   expect_identical(f_quote(!!var), f_new(var))
@@ -98,15 +98,15 @@ test_that("single ! is not treated as shortcut", {
 test_that("double and triple ! are treated as syntactic shortcuts", {
   var <- local(~foo)
   expect_identical(f_quote(!! var), f_new(var))
-  expect_identical(f_quote(!! ~foo), ~foo)
+  expect_identical(f_quote(!! ~foo), f_new(~foo))
   expect_identical(f_quote(list(!!! letters[1:3])), ~list("a", "b", "c"))
 })
 
 test_that("`!!` works in prefixed calls", {
   var <- ~cyl
-  expect_identical(f_quote(~mtcars$`!!`(var)), ~mtcars$cyl)
-  expect_identical(f_quote(~foo$`!!`(quote(bar))), ~foo$bar)
-  expect_identical(f_quote(~base::`!!`(~list)()), ~base::list())
+  expect_identical(interp(~mtcars$`!!`(var)), ~mtcars$cyl)
+  expect_identical(interp(~foo$`!!`(quote(bar))), ~foo$bar)
+  expect_identical(interp(~base::`!!`(~list)()), ~base::list())
 })
 
 
@@ -123,15 +123,4 @@ test_that("fpromises are created for all informative formulas", {
   interpolated <- f_quote(!!interpolated)
   expected <- f_new(expected)
   expect_identical(interpolated, expected)
-})
-
-test_that("formulas with NULL environment are inlined in surrounding formula", {
-  # Here ~foo will have NULL f_env because it is supplied during
-  # argument capture.
-  expect_identical(f_quote(~foo), ~foo)
-  expect_identical(f_quote(~~~foo), ~foo)
-
-  # Inner formula also has NULL f_env
-  var <- ~~foo
-  expect_identical(f_quote(!!var), ~foo)
 })
