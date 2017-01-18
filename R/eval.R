@@ -131,98 +131,89 @@ unguard_formula <- function(...) {
   tilde
 }
 
-#' @rdname f_eval
-#' @param x An object for which you want to find associated data.
-#' @param lookup_msg An error message when your data source is
-#'   accessed inappropriately (by position rather than name).
-#' @export
-data_source <- function(x, lookup_msg = NULL) {
-  UseMethod("data_source")
-}
-#' @export
-data_source.default <- function(x, lookup_msg = NULL) {
-  if (!is_dictionary(x)) {
-    abort("Data source must be a dictionary")
-  }
-  data_source_new(as.list(x), lookup_msg)
-}
-#' @export
-data_source.data_source <- function(x, lookup_msg = NULL) {
-  if (!is_null(lookup_msg)) {
-    attr(x, "lookup_msg") <- lookup_msg
-  }
-  x
-}
-#' @export
-data_source.NULL <- function(x, lookup_msg = NULL) {
-  NULL
-}
-#' @export
-data_source.environment <- function(x, lookup_msg = NULL) {
-  lookup_msg <- lookup_msg %||% "Object '%s' not found in environment"
-  if (!identical(x, env_global())) {
-    x <- env_clone(x)
-  }
-  data_source_new(x, lookup_msg)
-}
-#' @export
-data_source.data.frame <- function(x, lookup_msg = NULL) {
-  lookup_msg <- lookup_msg %||% "Variable '%s' not found in data"
-  data_source_new(x, lookup_msg)
-}
 
-data_source_new <- function(x, lookup_msg) {
-  msg <- lookup_msg %||% "Object '%s' not found in pronoun"
-  class <- c("data_source", class(x))
-  structure(list(src = x), lookup_msg = msg, class = class)
-}
-
+#' Invoke a function with a list of arguments.
+#'
+#' Normally, you invoke a R function by typing arguments manually. A
+#' powerful alternative is to call a function with a list of arguments
+#' assembled programmatically. This is the purpose of \code{invoke()}.
+#'
+#' \code{invoke()} is basically a version of
+#' \code{\link[base]{do.call}()} that creates cleaner call traces
+#' because it does not inline the function and the arguments in the
+#' call (see examples). To achieve this, \code{invoke()} creates a
+#' child environment of \code{.env} with \code{.fn} and all arguments
+#' bound to new symbols (see \code{\link{env_bury}()}). It then builds
+#' a call with those symbols and evaluates it in a forged promise (see
+#' \code{\link{with_env}()}).
+#'
+#' @param .fn A function to invoke. Can be a function object or the
+#'   name of a function in scope of \code{.env}.
+#' @param .args,... List of arguments (possibly named) to be passed to
+#'   \code{.fn}.
+#' @param .env The environment in which to call \code{.fn}.
+#' @param .bury A character vector of length 2. The first string
+#'   specifies which name should the function have in the call
+#'   recorded in the evaluation stack. The second string specifies a
+#'   prefix for the argument names. Set \code{.bury} to FALSE if you
+#'   prefer to inline the function and its arguments in the call.
 #' @export
-`$.data_source` <- function(x, name) {
-  src <- .subset2(x, "src")
-  if (!has_binding(src, name)) {
-    abort(sprintf(attr(x, "lookup_msg"), name))
+#' @examples
+#' # invoke() has the same purpose as do.call():
+#' invoke(paste, letters)
+#'
+#' # But it creates much cleaner calls:
+#' invoke(call_inspect, mtcars)
+#'
+#' # and stacktraces:
+#' fn <- function(...) sys.calls()
+#' invoke(fn, list(mtcars))
+#'
+#' # Compare to do.call():
+#' do.call(call_inspect, mtcars)
+#' do.call(fn, list(mtcars))
+#'
+#'
+#' # Specify the function name either by supplying a string
+#' # identifying the function (it should be visible in .env):
+#' invoke("call_inspect", letters)
+#'
+#' # Or by changing the .bury argument, with which you can also change
+#' # the argument prefix:
+#' invoke(call_inspect, mtcars, .bury = c("inspect!", "col"))
+invoke <- function(.fn, .args = list(), ...,
+                   .env = env_caller(), .bury = c(".fn", "")) {
+  args <- c(.args, list(...))
+
+  if (is_false(.bury) || !length(args)) {
+    # Evaluate with a promise rather than do.call() to keep eval stack clean
+    if (is_scalar_character(.fn)) {
+      .fn <- env_get(.env, .fn, inherit = TRUE)
+    }
+    call <- as.call(c(.fn, args))
+    env_assign_lazily_(env(), "promise", call, .env)
+    return(promise)
   }
-  src[[name]]
-}
-#' @export
-`[[.data_source` <- function(x, i, ...) {
-  if (!is_scalar_character(i)) {
-    abort("Must subset with a string")
+
+
+  if (!is_character(.bury, 2)) {
+    stop(".bury must be a character vector of length 2", call. = FALSE)
   }
-  src <- .subset2(x, "src")
-  if (!has_binding(src, i)) {
-    abort(sprintf(attr(x, "lookup_msg"), i))
+  arg_prefix <- .bury[[2]]
+  fn_nm <- .bury[[1]]
+
+  buried_nms <- paste0(arg_prefix, seq_along(.args))
+  buried_args <- set_names(.args, buried_nms)
+  .env <- env_bury(.env, buried_args)
+  .args <- set_names(buried_nms, names(.args))
+  .args <- lapply(.args, as.name)
+
+  if (is_function(.fn)) {
+    env_assign(.env, fn_nm, .fn)
+    .fn <- fn_nm
   }
-  src[[i, ...]]
-}
 
-has_binding <- function(x, name) {
-  UseMethod("has_binding")
-}
-#' @export
-has_binding.default <- function(x, name) {
-  name %in% names(x)
-}
-#' @export
-has_binding.environment <- function(x, name) {
-  env_has(x, name)
-}
-
-# Unclassing before print() or str() is necessary because default
-# methods index objects with integers
-
-#' @export
-print.data_source <- function(x, ...) {
-  print(unclass_src(x), ...)
-}
-#' @importFrom utils str
-#' @export
-str.data_source <- function(object, ...) {
-  str(unclass_src(object), ...)
-}
-unclass_src <- function(x) {
-  i <- match("data_source", class(x))
-  class(x) <- class(x)[-i]
-  x
+  call <- as.call(c(as_name(.fn), .args))
+  env_assign_lazily_(env(), "promise", call, .env)
+  promise
 }
