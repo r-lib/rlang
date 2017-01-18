@@ -75,13 +75,13 @@ f_eval <- function(f, data = NULL) {
 }
 
 eval_env <- function(env, data) {
-  if (is_null(data)) {
+  data_src <- data_source(data)
+
+  if (!length(data)) {
     # Derive a child because we're going to add bindings
-    data_src <- NULL
     eval_env <- env_new(env)
   } else {
     # Emulate dynamic scope for established data
-    data_src <- data_source(data)
     eval_env <- env_bury(env, data)
   }
 

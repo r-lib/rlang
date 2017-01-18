@@ -163,10 +163,6 @@ test_that("scope info is propagated in quoted formulas", {
 
 context("data_source") # ---------------------------------------------
 
-test_that("NULL return unchanged", {
-  expect_identical(data_source(NULL), NULL)
-})
-
 test_that("can't access non-existent list members", {
   x1 <- list(y = 1)
   x2 <- data_source(x1)
@@ -198,6 +194,11 @@ test_that("data_source doesn't taint env class", {
 
   expect_equal(class(x1), "environment")
   expect_equal(class(x2), c("data_source", "environment"))
+})
+
+test_that("subsetting .data pronoun fails when not supplied", {
+  f <- f_quote(.data$foo)
+  expect_error(f_eval(f), "not found in pronoun")
 })
 
 

@@ -22,7 +22,7 @@ data_source.data_source <- function(x, lookup_msg = NULL) {
 }
 #' @export
 data_source.NULL <- function(x, lookup_msg = NULL) {
-  NULL
+  data_source(list(), lookup_msg = lookup_msg)
 }
 #' @export
 data_source.environment <- function(x, lookup_msg = NULL) {
