@@ -149,7 +149,7 @@ SEXP interp_walk(SEXP x, SEXP env, int make_promises)  {
     x = interp_arguments(x, env, make_promises);
   }
 
-  if (is_formula(x) && !make_promises)
+  if (is_fpromise(x) && !make_promises)
     x = f_rhs_(x);
 
   UNPROTECT(1);

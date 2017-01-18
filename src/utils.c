@@ -57,6 +57,10 @@ bool is_formula(SEXP x) {
   return strcmp(nm, "~") == 0 || strcmp(nm, ":=") == 0;
 }
 
+bool is_fpromise(SEXP x) {
+  return is_formula(x) && Rf_isNull(CDDR(x));
+}
+
 SEXP f_rhs_(SEXP f) {
   if (!is_formula(f))
     Rf_errorcall(R_NilValue, "`x` is not a formula");
