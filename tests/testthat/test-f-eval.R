@@ -125,8 +125,8 @@ test_that("can unquote hygienically within captured arg", {
   var <- ~cyl
   expect_identical(fn(mtcars, (!!var) > 4), mtcars$cyl > 4)
   expect_identical(fn(mtcars, list(var, !!var)), list(~cyl, mtcars$cyl))
-  expect_identical(fn(mtcars, list(~var, ~!!var)), list(~cyl, mtcars$cyl))
-  expect_identical(fn(mtcars, list(~~var, ~!!~var, ~~!!var)), list(~cyl, ~cyl, mtcars$cyl))
+  expect_identical(fn(mtcars, list(~var, !!var)), list(~cyl, mtcars$cyl))
+  expect_identical(fn(mtcars, list(~~var, !!~var, !!~~var)), list(~cyl, ~cyl, ~cyl))
 })
 
 test_that("can unquote for old-style NSE functions", {
