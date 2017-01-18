@@ -62,12 +62,16 @@ f_eval_lhs <- function(f, data = NULL) {
 #' @rdname f_eval
 #' @export
 f_eval <- function(f, data = NULL) {
-  if (!is_formula(f)) {
-    abort("`f` is not a formula")
+  if (is_formula(f)) {
+    expr <- f_rhs(f)
+    env <- f_env(f)
+  } else {
+    expr <- f
+    env <- parent.frame()
   }
 
-  env <- eval_env(f_env(f), data)
-  eval(f_rhs(f), envir = env)
+  env <- eval_env(env, data)
+  eval(expr, envir = env)
 }
 
 eval_env <- function(env, data) {

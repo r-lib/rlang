@@ -1,7 +1,8 @@
 context("f_eval") # --------------------------------------------------
 
-test_that("first argument must be a function", {
-  expect_error(f_eval(10), "`f` is not a formula")
+test_that("accepts expressions", {
+  expect_identical(f_eval(10), 10)
+  expect_identical(f_eval(quote(letters)), letters)
 })
 
 test_that("f_eval uses formula's environment", {
