@@ -124,6 +124,19 @@ expr_quote <- function(expr) {
   expr <- substitute(expr)
   .Call(interp_, expr, parent.frame(), FALSE)
 }
+#' @rdname f_quote
+#' @export
+interp <- function(x) {
+  if (is_formula(x)) {
+    f_rhs(x) <- .Call(interp_, f_rhs(x), f_env(x), TRUE)
+  } else if (is_closure(x)) {
+    body(x) <- .Call(interp_, body(x), fn_env(x), FALSE)
+  } else {
+    x <- .Call(interp_, x, parent.frame(), FALSE)
+  }
+  x
+}
+
 
 #' @export
 #' @rdname f_quote

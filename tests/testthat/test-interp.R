@@ -15,6 +15,19 @@ test_that("formulas are always inlined with expr_quote()", {
   expect_identical(expr_quote(foo + UQ(var1) + UQ(var2)), quote(foo + bar + baz))
 })
 
+test_that("formulas containing unquote operators are interpolated", {
+  var1 <- ~foo
+  var2 <- local({ foo <- "baz"; ~foo })
+
+  f <- interp(~list(!!var1, !!var2))
+  expect_identical(f, f_new(bquote(list(.(var1), .(var2)))))
+})
+
+test_that("interpolation is carried out in the right environment", {
+  f <- local({ foo <- "foo"; ~!!foo })
+  expect_identical(interp(f), f_new("foo", env = f_env(f)))
+})
+
 test_that("interpolation does not revisit unquoted formulas", {
   f <- ~list(!!~!!stop("should not interpolate within formulas"))
   f <- interp(f)

@@ -8,10 +8,13 @@
 \alias{expr_quote}
 \alias{f_quote}
 \title{Capture an expression with interpolation.}
+\alias{interp}
 \usage{
 f_quote(expr)
 
 expr_quote(expr)
+
+interp(x)
 
 UQ(x)
 
