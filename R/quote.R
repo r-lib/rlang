@@ -176,10 +176,13 @@
 #' # Sometimes you would like to unquote an object containing a
 #' # formula but include it as is rather than treating it as a
 #' # promise. You can use UQF() for this purpose:
-#' var <- disp ~ am
-#' f <- f_quote(lm(UQF(var), mtcars))
+#' var <- ~letters[1:2]
+#' f <- f_quote(list(!!var, UQF(var)))
 #' f
 #' f_eval(f)
+#'
+#' # Note that two-sided formulas are never treated as fpromises:
+#' f_eval(f_quote(a ~ b))
 #'
 #'
 #' # Finally, you can also interpolate a closure's body. This is

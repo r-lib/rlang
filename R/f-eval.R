@@ -90,7 +90,7 @@ eval_env <- function(env, data) {
   eval_env$.env <- data_source(env)
 
   # Install fpromises and make sure to propagate `data`.
-  eval_env$`~` <- f_self_eval(data, eval_env)
+  eval_env$`~` <- f_self_eval(data, env, eval_env)
 
   # Guarded formulas are wrapped in another call to make sure they
   # don't self-evaluate.
@@ -105,9 +105,16 @@ eval_env <- function(env, data) {
   eval_env
 }
 
-f_self_eval <- function(`_data`, `_orig_eval_env`) {
+f_self_eval <- function(`_data`, `_orig_env`, `_orig_eval_env`) {
   function(...) {
     f <- sys.call()
+
+    # Two-sided formulas are not fpromises
+    if (length(f) > 2) {
+      # Make sure to propagate scope info when formula is quoted:
+      f <- eval(f, `_orig_env`)
+      return(f)
+    }
 
     # Take care of degenerate formulas (e.g. created with ~~letters)
     if (is_null(f_env(f))) {

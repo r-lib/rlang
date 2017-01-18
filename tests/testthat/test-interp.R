@@ -34,6 +34,10 @@ test_that("interpolation does not revisit unquoted formulas", {
   expect_identical(interp(f), f)
 })
 
+test_that("two-sided formulas are not treated as fpromises", {
+  expect_identical(expr_quote(a ~ b), quote(a ~ b))
+})
+
 
 # UQ ----------------------------------------------------------------------
 

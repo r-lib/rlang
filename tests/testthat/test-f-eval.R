@@ -152,6 +152,14 @@ test_that("all fpromises in the call are evaluated", {
   expect_identical(f_eval(f), "foobar")
 })
 
+test_that("two-sided formulas are not treated as fpromises", {
+  expect_identical(f_eval(f_new(a ~ b)), a ~ b)
+})
+
+test_that("scope info is propagated in quoted formulas", {
+  expect_identical(f_eval(~ (a ~ b)), a ~ b)
+})
+
 
 context("data_source") # ---------------------------------------------
 
