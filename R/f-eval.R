@@ -1,25 +1,3 @@
-#' @export
-#' @rdname f_eval
-f_eval_rhs <- function(f, data = NULL) {
-  if (!is_formula(f)) {
-    stop("`f` is not a formula", call. = FALSE)
-  }
-
-  expr <- f_rhs(interp(f, data = data))
-  eval_expr(expr, f_env(f), data)
-}
-
-#' @export
-#' @rdname f_eval
-f_eval_lhs <- function(f, data = NULL) {
-  if (!is_formula(f)) {
-    stop("`f` is not a formula", call. = FALSE)
-  }
-
-  expr <- f_lhs(interp(f, data = data))
-  eval_expr(expr, f_env(f), data)
-}
-
 #' Evaluate a formula
 #'
 #' \code{f_eval_rhs} evaluates the RHS of a formula and \code{f_eval_lhs}
@@ -38,11 +16,10 @@ f_eval_lhs <- function(f, data = NULL) {
 #' @param f A formula. Any expressions wrapped in \code{ UQ() } will
 #'   will be "unquoted", i.e. they will be evaluated, and the results inserted
 #'   back into the formula. See \code{\link{interp}} for more details.
-#' @param data A list (or data frame). \code{find_data} is a generic used to
+#' @param data A list (or data frame). \code{data_source} is a generic used to
 #'   find the data associated with a given object. If you want to make
 #'   \code{f_eval} work for your own objects, you can define a method for this
 #'   generic.
-#' @param x An object for which you want to find associated data.
 #' @export
 #' @examples
 #' f_eval(~ 1 + 2 + 3)
@@ -72,79 +49,148 @@ f_eval_lhs <- function(f, data = NULL) {
 #' # See ?interp for more details
 #' var <- ~ cyl
 #' f_eval(~ mean( !!var ), mtcars)
-f_eval <- f_eval_rhs
-
-
-eval_expr <- function(expr, env, data) {
-  data <- find_data(data)
-
-  arg_env <- new.env(parent = env)
-  arg_env$.env <- complain(env, "Object '%s' not found in environment")
-  arg_env$.data <- complain(data, "Variable '%s' not found in data")
-
-  eval(expr, data, arg_env)
+#' @name f_eval
+f_eval_rhs <- function(f, data = NULL) {
+  f_eval(f, data)
 }
-
-
 #' @rdname f_eval
 #' @export
-find_data <- function(x) UseMethod("find_data")
-
-#' @export
-find_data.NULL <- function(x) list()
-#' @export
-find_data.list <- function(x) x
-#' @export
-find_data.data.frame <- function(x) x
-
-#' @export
-find_data.default <- function(x) {
-  stop("Do not know how to find data associated with `x`", call. = FALSE)
+f_eval_lhs <- function(f, data = NULL) {
+  f <- f_new(f_lhs(f), env = f_env(f))
+  f_eval(f, data)
 }
-
-
-complain <- function(x, message = "object '%s' not found") {
-  if (is.null(x)) {
-    return(NULL)
+#' @rdname f_eval
+#' @export
+f_eval <- function(f, data = NULL) {
+  if (!is_formula(f)) {
+    abort("`f` is not a formula")
   }
 
-  if (is.environment(x)) {
-    x <- clone_env(x)
-  }
-
-  structure(x, message = message, class = c("complain", class(x)))
+  env <- eval_env(f_env(f), data)
+  expr <- .Call(interp_, f_rhs(f), env, TRUE)
+  eval(expr, envir = env)
 }
 
-clone_env <- function(x) {
-  list2env(as.list(x, all.names = TRUE), parent = parent.env(x))
+eval_env <- function(env, data) {
+  if (is_null(data)) {
+    # Derive a child because we're going to add bindings
+    data_src <- NULL
+    eval_env <- env_new(env)
+  } else {
+    # Emulate dynamic scope for established data
+    data_src <- data_source(data)
+    eval_env <- env_bury(env, data)
+  }
+
+  # Install pronouns
+  eval_env$.data <- data_src
+  eval_env$.env <- data_source(env)
+
+  # Install fguards and fpromises. Make sure the latter propagate `data`.
+  eval_env$`_F` <- function(f) f
+  eval_env$`_P` <- function(f) f_eval(f, data)
+
+  # Make unquoting and guarding operators available even when not imported
+  eval_env$`UQ` <- rlang::UQ
+  eval_env$`UQS` <- rlang::UQS
+  eval_env$`UQE` <- rlang::UQE
+  eval_env$`UQF` <- rlang::UQF
+
+  eval_env
+}
+
+#' @rdname f_eval
+#' @param x An object for which you want to find associated data.
+#' @param lookup_msg An error message when your data source is
+#'   accessed inappropriately (by position rather than name).
+#' @export
+data_source <- function(x, lookup_msg = NULL) {
+  UseMethod("data_source")
+}
+#' @export
+data_source.default <- function(x, lookup_msg = NULL) {
+  if (!is_dictionary(x)) {
+    abort("Data source must be a dictionary")
+  }
+  data_source_new(as.list(x), lookup_msg)
+}
+#' @export
+data_source.data_source <- function(x, lookup_msg = NULL) {
+  if (!is_null(lookup_msg)) {
+    attr(x, "lookup_msg") <- lookup_msg
+  }
+  x
+}
+#' @export
+data_source.NULL <- function(x, lookup_msg = NULL) {
+  NULL
+}
+#' @export
+data_source.environment <- function(x, lookup_msg = NULL) {
+  lookup_msg <- lookup_msg %||% "Object '%s' not found in environment"
+  if (!identical(x, env_global())) {
+    x <- env_clone(x)
+  }
+  data_source_new(x, lookup_msg)
+}
+#' @export
+data_source.data.frame <- function(x, lookup_msg = NULL) {
+  lookup_msg <- lookup_msg %||% "Variable '%s' not found in data"
+  data_source_new(x, lookup_msg)
+}
+
+data_source_new <- function(x, lookup_msg) {
+  msg <- lookup_msg %||% "Object '%s' not found in pronoun"
+  class <- c("data_source", class(x))
+  structure(list(src = x), lookup_msg = msg, class = class)
 }
 
 #' @export
-`$.complain` <- function(x, name) {
-  if (!has_name(x, name)) {
-    stop(sprintf(attr(x, "message"), name), call. = FALSE)
+`$.data_source` <- function(x, name) {
+  src <- .subset2(x, "src")
+  if (!has_binding(src, name)) {
+    abort(sprintf(attr(x, "lookup_msg"), name))
   }
-  x[[name]]
+  src[[name]]
 }
-
 #' @export
-`[[.complain` <- function(x, i, ...) {
+`[[.data_source` <- function(x, i, ...) {
   if (!is_scalar_character(i)) {
-    stop("Must subset with a string", call. = FALSE)
+    abort("Must subset with a string")
   }
-  if (!has_name(x, i)) {
-    stop(sprintf(attr(x, "message"), i), call. = FALSE)
+  src <- .subset2(x, "src")
+  if (!has_binding(src, i)) {
+    abort(sprintf(attr(x, "lookup_msg"), i))
   }
-  NextMethod()
+  src[[i, ...]]
 }
-has_name <- function(x, name) {
-  UseMethod("has_name")
+
+has_binding <- function(x, name) {
+  UseMethod("has_binding")
 }
 #' @export
-has_name.default <- function(x, name) {
+has_binding.default <- function(x, name) {
   name %in% names(x)
 }
 #' @export
-has_name.environment <- function(x, name) {
-  exists(name, envir = x, inherits = FALSE)
+has_binding.environment <- function(x, name) {
+  env_has(x, name)
+}
+
+# Unclassing before print() or str() is necessary because default
+# methods index objects with integers
+
+#' @export
+print.data_source <- function(x, ...) {
+  print(unclass_src(x), ...)
+}
+#' @importFrom utils str
+#' @export
+str.data_source <- function(object, ...) {
+  str(unclass_src(object), ...)
+}
+unclass_src <- function(x) {
+  i <- match("data_source", class(x))
+  class(x) <- class(x)[-i]
+  x
 }

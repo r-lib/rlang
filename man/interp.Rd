@@ -2,14 +2,17 @@
 % Please edit documentation in R/interp.R
 \name{interp}
 \alias{UQ}
+\alias{UQE}
 \alias{UQF}
 \alias{UQS}
 \alias{interp}
 \title{Interpolate a formula}
 \usage{
-interp(f, data = NULL)
+interp(f)
 
-UQ(x, data = NULL)
+UQ(x)
+
+UQE(x)
 
 UQF(x)
 
@@ -17,10 +20,6 @@ UQS(x)
 }
 \arguments{
 \item{f}{A one-sided formula or a function.}
-
-\item{data}{When called from inside \code{\link{f_eval}()}, this is
-used to pass on the data so that nested formulas are evaluated in
-the correct environment.}
 
 \item{x}{For \code{UQ} and \code{UQF}, a formula. For \code{UQS}, a
 a vector.}
@@ -69,14 +68,61 @@ interp(~mean(!!! args))
 interp(x ~ 1 +  !! (1 + 2 + 3) + 10)
 interp(x ~ 1 + (!! (1 + 2 + 3)) + 10)
 
-# Finally, `!!`() is also treated as a shortcut. It is meant for
-# situations where the bang operator would not parse:
+
+# When a formula is unquoted, interp() checks whether its
+# environment is informative. It is not informative when the object
+# within the formula is a constant (for example, a string) or when
+# the environment recorded in the formula is the same as the outer
+# formula in which it is unquoted. In those cases, the formula is
+# embedded as is:
+var <- ~letters
+interp(~toupper(!!var))
+
+# On the other hand, if the environment is informative (i.e., if
+# the symbols within the inner formula could represent other
+# objects than in the outer formula because they have different
+# scopes), it is embedded as a promise:
+var <- local(~letters)
+interp(~toupper(!!var))
+
+
+# The formula-promise representation is necessary to preserve scope
+# information and make sure objects are looked up in the right
+# place. However, there are situations where it can get in the way.
+# This is the case when you deal with non-tidy NSE functions that do
+# not understand formulas. You can inline the RHS of a formula in a
+# call thanks to the UQE() operator:
+nse_function <- function(arg) substitute(arg)
+var <- ~foo(bar)
+interp(~nse_function(UQE(var)))
+
+# This is equivalent to unquoting and taking the RHS:
+interp(~nse_function(!! f_rhs(var)))
+
+# One of the most important old-style NSE function is the dollar
+# operator. You need to use UQE() for subsetting with dollar:
+var <- ~cyl
+interp(~mtcars$UQE(var))
+
+# `!!`() is also treated as a shortcut. It is meant for situations
+# where the bang operator would not parse, such as subsetting with
+# $. Since that's its main purpose, we've made it a shortcut for
+# UQE() rather than UQ():
 var <- ~cyl
 interp(~mtcars$`!!`(var))
 
 
-# You can also interpolate a closure's body. This is useful to
-# inline a function within another:
+# Sometimes you would like to unquote an object containing a
+# formula but include it as is rather than treating it as a
+# promise. You can use UQF() for this purpose:
+var <- disp ~ am
+interp(~lm(!!var, mtcars))
+interp(~lm(UQF(var), mtcars))
+f_eval(~lm(UQF(var), mtcars))
+
+
+# Finally, you can also interpolate a closure's body. This is
+# useful to inline a function within another:
 other_fn <- function(x) toupper(x)
 fn <- interp(function(x) {
   x <- paste0(x, "_suffix")

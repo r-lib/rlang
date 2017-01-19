@@ -16,7 +16,7 @@ SEXP as_name(SEXP x) {
     if (!is_formula(x) || Rf_length(x) != 2)
       Rf_errorcall(R_NilValue, "RHS of LHS must be a single-sided formula");
 
-    return as_name(rhs(x));
+    return as_name(f_rhs_(x));
   default:
     Rf_errorcall(R_NilValue, "LHS must evaluate to a string or name");
   }
@@ -41,13 +41,13 @@ SEXP lhs_name(SEXP x) {
       continue;
 
     // set name
-    SEXP name = PROTECT(Rf_eval(lhs(xi), env(xi)));
+    SEXP name = PROTECT(Rf_eval(f_lhs_(xi), f_env(xi)));
     if (TYPEOF(name) != NILSXP)
       SET_STRING_ELT(names, i, as_name(name));
     UNPROTECT(1);
 
     // replace with RHS of formula
-    SET_VECTOR_ELT(x2, i, make_formula1(CADDR(xi), env(xi)));
+    SET_VECTOR_ELT(x2, i, make_formula1(CADDR(xi), f_env(xi)));
   }
 
   UNPROTECT(1);

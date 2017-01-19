@@ -47,9 +47,9 @@ f_new <- function(rhs, lhs = NULL, env = parent.frame()) {
 #' f_lhs(x ~ y)
 #'
 #' f_env(~ x)
-#' @useDynLib rlang rhs
+#' @useDynLib rlang f_rhs_
 f_rhs <- function(f) {
-  .Call(rhs, f)
+  .Call(f_rhs_, f)
 }
 
 #' @export
@@ -61,9 +61,9 @@ f_rhs <- function(f) {
 
 #' @export
 #' @rdname f_rhs
-#' @useDynLib rlang lhs
+#' @useDynLib rlang f_lhs_
 f_lhs <- function(f) {
-  .Call(lhs, f)
+  .Call(f_lhs_, f)
 }
 
 #' @export
