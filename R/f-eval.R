@@ -15,7 +15,7 @@
 #'
 #' @param f A formula. Any expressions wrapped in \code{ UQ() } will
 #'   will be "unquoted", i.e. they will be evaluated, and the results inserted
-#'   back into the formula. See \code{\link{interp}} for more details.
+#'   back into the formula. See \code{\link{f_quote}()} for more details.
 #' @param data A list (or data frame). \code{data_source} is a generic used to
 #'   find the data associated with a given object. If you want to make
 #'   \code{f_eval} work for your own objects, you can define a method for this
@@ -46,9 +46,9 @@
 #' f_eval(~ mean(cyl), mtcars)
 #' # How can you change the variable that's being computed?
 #' # The easiest way is "unquote" with !!
-#' # See ?interp for more details
+#' # See ?f_quote for more details
 #' var <- ~ cyl
-#' f_eval(~ mean( !!var ), mtcars)
+#' f_eval(f_quote(mean( !!var )), mtcars)
 #' @name f_eval
 f_eval_rhs <- function(f, data = NULL) {
   f_eval(f, data)
@@ -67,8 +67,7 @@ f_eval <- function(f, data = NULL) {
   }
 
   env <- eval_env(f_env(f), data)
-  expr <- .Call(interp_, f_rhs(f), env, TRUE)
-  eval(expr, envir = env)
+  eval(f_rhs(f), envir = env)
 }
 
 eval_env <- function(env, data) {
@@ -86,17 +85,39 @@ eval_env <- function(env, data) {
   eval_env$.data <- data_src
   eval_env$.env <- data_source(env)
 
-  # Install fguards and fpromises. Make sure the latter propagate `data`.
-  eval_env$`_F` <- function(f) f
-  eval_env$`_P` <- function(f) f_eval(f, data)
+  # Install fpromises and make sure to propagate `data`.
+  eval_env$`~` <- f_self_eval(data, eval_env)
+
+  # Guarded formulas are wrapped in another call to make sure they
+  # don't self-evaluate.
+  eval_env$`_F` <- unguard_formula
 
   # Make unquoting and guarding operators available even when not imported
-  eval_env$`UQ` <- rlang::UQ
-  eval_env$`UQS` <- rlang::UQS
-  eval_env$`UQE` <- rlang::UQE
-  eval_env$`UQF` <- rlang::UQF
+  eval_env$UQ <- rlang::UQ
+  eval_env$UQS <- rlang::UQS
+  eval_env$UQE <- rlang::UQE
+  eval_env$UQF <- rlang::UQF
 
   eval_env
+}
+
+f_self_eval <- function(`_data`, `_orig_eval_env`) {
+  function(...) {
+    f <- sys.call()
+
+    # Take care of degenerate formulas (e.g. created with ~~letters)
+    if (is_null(f_env(f))) {
+      f_env(f) <- `_orig_eval_env`
+    }
+
+    eval_env <- eval_env(f_env(f), `_data`)
+    eval(f_rhs(f), eval_env)
+  }
+}
+unguard_formula <- function(...) {
+  tilde <- sys.call()
+  tilde[[1]] <- quote(`~`)
+  tilde
 }
 
 #' @rdname f_eval
