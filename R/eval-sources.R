@@ -15,10 +15,10 @@ data_source.default <- function(x, lookup_msg = NULL) {
 }
 #' @export
 data_source.data_source <- function(x, lookup_msg = NULL) {
-  if (!is_null(lookup_msg)) {
-    attr(x, "lookup_msg") <- lookup_msg
-  }
-  x
+  classes <- class(x)
+  x <- unclass(x)
+  x$lookup_msg <- lookup_msg %||% x$lookup_msg
+  structure(x, class = classes)
 }
 #' @export
 data_source.NULL <- function(x, lookup_msg = NULL) {
@@ -41,14 +41,14 @@ data_source.data.frame <- function(x, lookup_msg = NULL) {
 data_source_new <- function(x, lookup_msg) {
   msg <- lookup_msg %||% "Object '%s' not found in pronoun"
   class <- c("data_source", class(x))
-  structure(list(src = x), lookup_msg = msg, class = class)
+  structure(list(src = x, lookup_msg = msg), class = class)
 }
 
 #' @export
 `$.data_source` <- function(x, name) {
   src <- .subset2(x, "src")
   if (!has_binding(src, name)) {
-    abort(sprintf(attr(x, "lookup_msg"), name))
+    abort(sprintf(.subset2(x, "lookup_msg"), name))
   }
   src[[name]]
 }
@@ -59,9 +59,17 @@ data_source_new <- function(x, lookup_msg) {
   }
   src <- .subset2(x, "src")
   if (!has_binding(src, i)) {
-    abort(sprintf(attr(x, "lookup_msg"), i))
+    abort(sprintf(.subset2(x, "lookup_msg"), i))
   }
   src[[i, ...]]
+}
+#' @export
+names.data_source <- function(x) {
+  names(x$src)
+}
+#' @export
+length.data_source <- function(x) {
+  length(x$src)
 }
 
 has_binding <- function(x, name) {
