@@ -564,7 +564,8 @@ env_get <- function(env = env_caller(), nm, inherit = FALSE) {
 
 #' Clone an environment.
 #'
-#' This creates a new environment containing exactly the same objects.
+#' This creates a new environment containing exactly the same objects,
+#' optionally with a new parent.
 #'
 #' @param x An environment to clone.
 #' @param parent The parent of the cloned environment.
