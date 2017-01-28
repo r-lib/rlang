@@ -14,31 +14,40 @@
 #' \code{dots_capture()} make it easy to record this information
 #' within formulas.
 #'
-#' The two main purposes for capturing arguments are labelling and
-#' rescoping. With labelling, the normal R evaluation rules are kept
-#' unchanged. The captured expression is only used to provide default
-#' names (or labels) to output elements, such as column names for a
-#' function that manipulates data frames or axis labels for a function
-#' that creates graphics. In the case of rescoping however, evaluation
-#' rules are altered. Functions that capture and rescope arguments are
-#' said to use non-standard evaluation, or NSE. The approach we
-#' recommend in rlang is to always create two versions of such
-#' functions: a NSE version that captures arguments, and another that
-#' work with captured arguments with standard evaluation rules (see
-#' \code{decorate_nse()}). Providing a standard evaluation
-#' version simplifies programming tasks. Also, it makes it possible to
-#' forward named arguments across function calls (see below). See
-#' \code{vignette("nse")} for more information on NSE.
+#' @section Non-standard evaluation:
 #'
-#' @section Forwarding arguments: You have to be a bit careful when
-#'   you pass arguments between introspective functions as only the
-#'   most immediate call site is captured. For this reason, named
-#'   arguments should be captured by an NSE function at the outermost
-#'   level, and then passed around to SE versions that handle
-#'   pre-captured arguments. See \code{\link{arg_inspect}()} for another
-#'   approach to introspecting arguments with which it is possible to
-#'   capture expressions at the outermost call site. This approach may
-#'   be harder to reason about and has some limitations.
+#'   The two main purposes for capturing arguments are labelling and
+#'   rescoping. With labelling, the normal R evaluation rules are kept
+#'   unchanged. The captured expression is only used to provide
+#'   default names (or labels) to output elements, such as column
+#'   names for a function that manipulates data frames or axis labels
+#'   for a function that creates graphics. In the case of rescoping
+#'   however, evaluation rules are altered. Functions that capture and
+#'   rescope arguments are said to use non-standard evaluation, or
+#'   NSE. The approach we recommend in rlang is to always create two
+#'   versions of such functions: a NSE version that captures
+#'   arguments, and another that work with captured arguments with
+#'   standard evaluation rules (see \code{decorate_nse()}). Providing
+#'   a standard evaluation version simplifies programming tasks. Also,
+#'   it makes it possible to forward named arguments across function
+#'   calls (see below). See \code{vignette("nse")} for more
+#'   information on NSE.
+#'
+#'   In addition, note that \code{arg_capture()} always interpolates
+#'   its input to facilitate programming with NSE functions. See
+#'   \code{\link{interp}()} and \code{\link{f_quote}()}.
+#'
+#' @section Forwarding arguments:
+#'
+#'   You have to be a bit careful when you pass arguments between
+#'   introspective functions as only the most immediate call site is
+#'   captured. For this reason, named arguments should be captured by
+#'   an NSE function at the outermost level, and then passed around to
+#'   SE versions that handle pre-captured arguments. See
+#'   \code{\link{arg_inspect}()} for another approach to introspecting
+#'   arguments with which it is possible to capture expressions at the
+#'   outermost call site. This approach may be harder to reason about
+#'   and has some limitations.
 #'
 #'   Dots are different from named arguments in that they are
 #'   implicitly forwarded. Forwarding dots does not create a new call
