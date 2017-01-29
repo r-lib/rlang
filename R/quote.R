@@ -19,10 +19,12 @@
 #' @section Tidy manipulation of expressions:
 #'
 #'   Interpolating an expression allows you to inline any value within
-#'   the expression. You can thus transform a quoted expression by
-#'   unquoting another quoted expression, as the latter will be
-#'   inlined within the former. This mechanism allows you to easily
-#'   program with NSE functions.
+#'   the expression. In particular, you can transform a quoted
+#'   expression by unquoting another quoted expression into it. The
+#'   latter expression gets inlined within the former. This mechanism
+#'   allows you to easily program with NSE functions. E.g. \code{var
+#'   <- ~baz; f_quote(foo(bar, !! var))} produces the formula-quote
+#'   \code{~foo(bar, baz)}.
 #'
 #' @section Tidy evaluation of expressions:
 #'
@@ -60,6 +62,12 @@
 #'   first-class objects: you can pass a formula around and use it to
 #'   transform another formula or expression. Formulas are thus
 #'   treated as reified promises.
+#'
+#'   Being able to manipulate a formula has important practical
+#'   purposes: you can create them, inspect them interactively, and
+#'   modify them (see previous section). Taken together, tidy
+#'   modification and tidy evaluation of formulas provide a powerful
+#'   mechanism for metaprogramming and programming with DSLs.
 #'
 #' @section Theory: Formally, \code{f_quote()} and \code{expr_quote()}
 #'   are quasiquote functions, \code{UQ()} is the unquote operator,
