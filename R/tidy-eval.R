@@ -51,13 +51,18 @@
 #' tidy_eval(tidy_quote(mean( !!var )), mtcars)
 #' @name tidy_eval
 tidy_eval_rhs <- function(f, data = NULL) {
-  tidy_eval(f, data)
+  rhs <- f_new(f_rhs(f), env = f_env(f))
+  rhs <- tidy_eval(rhs, data)
+  f_rhs(f) <- rhs
+  f
 }
 #' @rdname tidy_eval
 #' @export
 tidy_eval_lhs <- function(f, data = NULL) {
-  f <- f_new(f_lhs(f), env = f_env(f))
-  tidy_eval(f, data)
+  lhs <- f_new(f_lhs(f), env = f_env(f))
+  lhs <- tidy_eval(lhs, data)
+  f_lhs(f) <- lhs
+  f
 }
 #' @rdname tidy_eval
 #' @export

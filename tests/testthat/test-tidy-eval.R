@@ -69,10 +69,6 @@ test_that("unquoted formulas can use data", {
   expect_equal(tidy_eval(tidy_quote(UQ(f2())), data = list(x = 1)), 101)
 })
 
-test_that("tidy_eval_lhs uses lhs", {
-  expect_equal(tidy_eval_lhs(1 ~ 2), 1)
-})
-
 test_that("guarded formulas are not evaluated", {
   f <- local(~x)
   expect_identical(tidy_eval(tidy_quote(UQF(f))), f)
@@ -158,6 +154,11 @@ test_that("two-sided formulas are not treated as fpromises", {
 
 test_that("scope info is propagated in quoted formulas", {
   expect_identical(tidy_eval(~ (a ~ b)), a ~ b)
+})
+
+test_that("evaluating a side preserves the other side", {
+  expect_identical(tidy_eval_lhs(1 + 2 ~ 1 + 2), 3 ~ 1 + 2)
+  expect_identical(tidy_eval_rhs(1 + 2 ~ 1 + 2), 1 + 2 ~ 3)
 })
 
 
