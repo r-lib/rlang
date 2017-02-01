@@ -1,7 +1,7 @@
 #' Extract dots
 #'
 #' \code{frame_dots()} extracts dots from a frame and
-#' \code{arg_dots()} extracts dots from its arguments. The
+#' \code{dots()} extracts dots from its arguments. The
 #' \code{_lsp()} versions return a pairlist that is ready to be
 #' spliced into a call, while the regular versions return a regular
 #' list that is usually easier to work with.
@@ -38,13 +38,13 @@ frame_dots_lsp <- function(frame = NULL) {
 
 #' @rdname frame_dots
 #' @export
-arg_dots <- function(...) {
+dots <- function(...) {
   eval(substitute(alist(...)))
 }
 
 #' @rdname frame_dots
 #' @export
-arg_dots_lsp <- function(...) {
+dots_lsp <- function(...) {
   dots <- cdr(substitute(alist(...)))
   if (is.language(dots)) {
     NULL
@@ -58,28 +58,83 @@ arg_dots_lsp <- function(...) {
 #' Runs \code{\link{arg_inspect}()} for each dots element, and return the
 #' results in a list.
 #'
+#' \code{only_dots} controls whether dotted arguments should be fully
+#' or partially inspected. When \code{TRUE}, only forwarded dots are
+#' climbed. Symbols bound to a promise are not. See the example
+#' section.
+#'
 #' \code{dots_inspect_()} is the standard evaluation version of
 #' \code{dots_inspect()} and takes a list of dots as captured by
-#' \code{\link{frame_dots}()} or \code{\link{arg_dots}()}, and a call
+#' \code{\link{frame_dots}()} or \code{\link{dots}()}, and a call
 #' stack as returned by \code{\link{call_stack}()}.
 #'
 #' @param ... Dots to inspect.
+#' @param .only_dots,only_dots Whether to stop introspection once
+#'   forwarded dots have been climbed. Setting this to \code{TRUE} is
+#'   only useful for inspecting dots (cf. \code{\link{dots_capture}()}
+#'   which does not follow symbols).
 #' @seealso \code{\link{arg_inspect}()}
 #' @export
-dots_inspect <- function(...) {
-  dots <- arg_dots(...)
+#' @examples
+#' # The following example focuses on the difference between full and
+#' # partial introspection of dots, which can be difficult to grasp.
+#'
+#' h <- function(...) {
+#'   # Let's parameterise `only_dots` with a global variable
+#'   dots_inspect(..., .only_dots = only_dots)
+#' }
+#'
+#' g <- function(...) {
+#'   # Here dots are forwarded from g to h. The first node of `...` in
+#'   # h's frame environment is bound to a promise, pledging to evaluate
+#'   # `..1` in g's frame environment.
+#'   h(...)
+#' }
+#'
+#' f <- function(arg) {
+#'   # Here the first node of `...` in g's frame environment is bound to
+#'   # a promise, pledging to evaluate `arg` in f's frame environment.
+#'   g(arg)
+#' }
+#'
+#' # Here `arg` is bound to a promise, pledging to evaluate `foo(bar)`
+#' # in the global environment. We request full
+#' # introspection. Arguments are climbed beyond forwarded dots and
+#' # introspection is given the same scope as lazy
+#' # evaluation. dots_inspect() thus returns information about `arg`
+#' only_dots <- FALSE
+#' f(foo(bar))
+#'
+#' # Here, while `arg` is bound to a promise just like in the last
+#' # call, argument instrospection is not given the same scope as lazy
+#' # evaluation. dots_inspect() does not follow symbols bound to a
+#' # promise and thus returns information about ..1, the expression
+#' # supplied at the first call site (before forwarding dots). The
+#' # expression is `arg` (a symbol that is bound to a promise), to be
+#' # evaluated in f's call frame.
+#' only_dots <- TRUE
+#' f(foo(bar))
+dots_inspect <- function(..., .only_dots = FALSE) {
+  dots <- dots(...)
   stack <- call_stack()
-  dots_inspect_(dots, stack)
+  dots_inspect_(dots, stack, only_dots = .only_dots)
 }
 
 #' @rdname dots_inspect
 #' @inheritParams arg_inspect_
 #' @param dots Dots to inspect.
 #' @export
-dots_inspect_ <- function(dots, stack) {
+dots_inspect_ <- function(dots, stack, only_dots = FALSE) {
   dots_syms <- dots_enumerate_sym(dots)
   dots_syms <- set_names(dots_syms, names(dots))
-  lapply(dots_syms, arg_inspect_, stack)
+  lapply(dots_syms, arg_inspect_, stack, only_dots = only_dots)
+}
+
+#' @rdname arg_capture
+#' @export
+dots_capture <- function(...) {
+  info <- dots_inspect(..., .only_dots = TRUE)
+  lapply(info, function(x) f_new(x$expr, env = x$eval_frame$env))
 }
 
 dots_enumerate <- function(dots) {
@@ -107,14 +162,16 @@ dots_enumerate_args <- function(dots) {
   dots
 }
 
-is_dot_nm <- function(nm) {
-  grepl("\\.\\.[0-9]+$", nm)
+#' Is object a ..n symbol?
+#' @param x An object to test.
+#' @export
+#' @examples
+#' is_dot_symbol(quote(..2))
+#' is_dot_symbol(quote(sym))
+is_dot_symbol <- function(x) {
+  is_symbol(x) && is_dot_nm(as.character(x))
 }
 
-#' @rdname arg_capture
-#' @useDynLib rlang inspect_dots
-#' @export
-dots_capture <- function(...) {
-  info <- .Call(inspect_dots, environment())
-  lapply(info, function(x) f_new(x$expr, env = x$env))
+is_dot_nm <- function(nm) {
+  grepl("^\\.\\.[0-9]+$", nm)
 }

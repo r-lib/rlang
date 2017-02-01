@@ -213,23 +213,3 @@ test_that("explicit promise works only one level deep", {
 
   expect_identical(out$f, expected_f)
 })
-
-test_that("explicit dots makes a list of formulas", {
-  fs <- dots_capture(x = 1 + 2, y = 2 + 3)
-  f1 <- ~ 1 + 2
-  f2 <- ~ 2 + 3
-
-  expect_equal(fs$x, f1)
-  expect_equal(fs$y, f2)
-})
-
-test_that("dots_capture() produces correct formulas", {
-  fn <- function(x = a + b, ...) {
-    list(dots = dots_capture(x = x, y = a + b, ...), env = environment())
-  }
-  out <- fn(z = a + b)
-
-  expect_identical(out$dots$x, with_env(out$env, ~x))
-  expect_identical(out$dots$y, with_env(out$env, ~a + b))
-  expect_identical(out$dots$z, ~a + b)
-})

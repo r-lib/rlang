@@ -5,11 +5,14 @@
 \alias{is_literal}
 \alias{is_name}
 \alias{is_pairlist}
+\alias{is_symbol}
 \title{Is an object a language object?}
 \usage{
 is_lang(x)
 
 is_name(x)
+
+is_symbol(x)
 
 is_pairlist(x)
 

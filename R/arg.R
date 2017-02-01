@@ -222,12 +222,13 @@ arg_inspect <- function(x) {
 }
 
 #' @rdname arg_inspect
+#' @inheritParams dots_inspect
 #' @param expr A quoted symbol giving the name of the argument to
 #'   inspect.
 #' @param stack A \code{call_stack} object as returned by
 #'   \code{\link{call_stack}()}.
 #' @export
-arg_inspect_ <- function(expr, stack) {
+arg_inspect_ <- function(expr, stack, only_dots = FALSE) {
   stopifnot(is_call_stack(stack))
   stopifnot(length(stack) > 1)
 
@@ -235,18 +236,30 @@ arg_inspect_ <- function(expr, stack) {
   # the current `i`th frame, the tentative caller frame
   caller_frame <- stack[[1]]
   eval_frame <- stack[[1]]
+  formal_name <- NULL
 
   for (i in seq_len(length(stack) - 1)) {
 
     call <- call_standardise(stack[[i]],
       enum_dots = TRUE, add_missings = TRUE)
 
+    # If argument introspection does not have lazy evaluation scope,
+    # we've necessarily reached the call site unless we are dealing
+    # with a ..n symbol (which is always the case during the first
+    # iteration).
+    if (only_dots &&  !is_null(formal_name) && !is_dot_symbol(expr)) {
+      if (is_dot_nm(formal_name)) {
+        formal_name <- NA_character_
+      }
+      break
+    }
+
     # The `caller_expr` is always matched and valid during the first
     # iteration of the loop
     arg_i <- arg_match(expr, call)
     caller_expr <- call[[arg_i]]
 
-    # If no match in the call, we have reached the caller frame.
+    # If no match in the call, we have reached the call site.
     if (is.na(arg_i)) {
       break
     }
