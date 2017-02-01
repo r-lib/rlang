@@ -1,4 +1,4 @@
-context("interp")
+context("unquote")
 
 test_that("interpolation does not recurse over spliced arguments", {
   var1 <- quote(!! stop())
