@@ -69,9 +69,6 @@
 #'   \href{Racket}{https://docs.racket-lang.org/reference/quasiquote.html}.
 #'
 #' @param expr An expression.
-#' @param x A function, raw expression, or formula to interpolate.
-#'   When interpolating a formula, other formulas are treated as
-#'   promises (see section on tidy evaluation).
 #' @return A formula whose right-hand side contains the quoted
 #'   expression supplied as argument.
 #' @seealso \code{\link{expr_quote}()} for quoting a raw expression
@@ -86,39 +83,31 @@
 #' # function. It allows you to quote an expression and interpolate
 #' # unquoted parts:
 #' tidy_quote(foo(bar))
-#' tidy_quote(!! 1 + 2)
+#' tidy_quote(1 + 2)
 #' tidy_quote(paste0(!! letters[1:2], "foo"))
 #'
-#' # Alternatively you can interpolate a formula that is already
-#' # constructed:
-#' tidy_interp(~!! 1 + 2)
-#' f <- ~paste0(!! letters[1:2], "foo")
-#' tidy_interp(f)
-#'
-#' # The !! operator is a syntactic shortcut for unquoting. However
-#' # you need to be a bit careful with operator precedence. All
-#' # arithmetic and comparison operators bind more tightly than `!`:
-#' tidy_interp(x ~ 1 +  !! (1 + 2 + 3) + 10)
+#' # The !! operator is a syntactic shortcut for unquoting with UQ().
+#' # However you need to be a bit careful with operator
+#' # precedence. All arithmetic and comparison operators bind more
+#' # tightly than `!`:
+#' tidy_quote(1 +  !! (1 + 2 + 3) + 10)
 #'
 #' # For this reason you should always wrap the unquoted expression
 #' # with parentheses when operators are involved:
-#' tidy_interp(x ~ 1 + (!! 1 + 2 + 3) + 10)
+#' tidy_quote(1 + (!! 1 + 2 + 3) + 10)
 #'
 #' # Or you can use the explicit unquote function:
-#' tidy_interp(x ~ 1 + UQ(1 + 2 + 3) + 10)
-#'
+#' tidy_quote(1 + UQ(1 + 2 + 3) + 10)
 #'
 #' # Use !!! or UQS() if you want to add multiple arguments to a
 #' # function It must evaluate to a list
 #' args <- list(1:10, na.rm = TRUE)
-#' tidy_interp(~mean(!!! args))
 #' tidy_quote(mean( UQS(args) ))
 #'
 #' # You can combine the two
 #' var <- quote(xyz)
 #' extra_args <- list(trim = 0.9, na.rm = TRUE)
 #' tidy_quote(mean(UQ(var) , UQS(extra_args)))
-#' tidy_interp(~mean(!!var , !!!extra_args))
 #'
 #'
 #' # Unquoting is especially useful for transforming a captured
@@ -190,12 +179,46 @@
 #'
 #' # Note that two-sided formulas are never treated as fpromises:
 #' tidy_eval(tidy_quote(a ~ b))
+#' @useDynLib rlang interp_
+tidy_quote <- function(expr) {
+  arg_capture(expr)
+}
+
+#' Process unquote operators in a captured expression.
+#'
+#' While all capturing functions in the tidy evaluation framework
+#' perform unquote on capture (most notably
+#' \code{\link{tidy_quote}()}), \code{tidy_interp()} manually
+#' processes unquoting operators in expressions that are already
+#' captured. \code{tidy_interp()} should be called in all user-facing
+#' functions expecting a formula as argument to provide the same
+#' quasiquotation functionality as NSE functions.
+#'
+#' @param x A function, raw expression, or formula to interpolate.
+#'   When interpolating a formula, other formulas are treated as
+#'   promises (see section on tidy evaluation).
+#' @export
+#' @examples
+#' # All tidy NSE functions like tidy_quote() unquote on capture:
+#' tidy_quote(list(!! 1 + 2))
+#'
+#' # tidy_interp() is meant to provide the same functionality when you
+#' # have a formula or expression that might contain unquoting
+#' # operators:
+#' f <- ~list(!! 1 + 2)
+#' tidy_interp(f)
+#'
+#' # Note that only the outer formula is unquoted (which is a reason
+#' # to use tidy_interp() as early as possible in all user-facing
+#' # functions):
+#' f <- ~list(~!! 1 + 2, !! 1 + 2)
+#' tidy_interp(f)
 #'
 #'
-#' # Finally, you can also interpolate a closure's body. This is
-#' # useful to inline a function within another. The important
-#' # limitation is that all formal arguments of the inlined function
-#' # should be defined in the receiving function:
+#' # Another purpose for tidy_interp() is to interpolate a closure's
+#' # body. This is useful to inline a function within another. The
+#' # important limitation is that all formal arguments of the inlined
+#' # function should be defined in the receiving function:
 #' other_fn <- function(x) toupper(x)
 #'
 #' fn <- tidy_interp(function(x) {
@@ -204,13 +227,7 @@
 #' })
 #' fn
 #' fn("foo")
-#' @useDynLib rlang interp_
-tidy_quote <- function(expr) {
-  arg_capture(expr)
-}
-#' @rdname tidy_quote
-#' @export
-tidy_interp <- function(x) {
+tidy_interp <- function(x, promised = NULL) {
   if (is_formula(x)) {
     f_rhs(x) <- .Call(interp_, f_rhs(x), f_env(x))
   } else if (is_closure(x)) {

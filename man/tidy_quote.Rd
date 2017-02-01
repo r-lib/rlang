@@ -5,13 +5,10 @@
 \alias{UQE}
 \alias{UQF}
 \alias{UQS}
-\alias{tidy_interp}
 \alias{tidy_quote}
 \title{Tidy quotation of an expression.}
 \usage{
 tidy_quote(expr)
-
-tidy_interp(x)
 
 UQ(x)
 
@@ -23,10 +20,6 @@ UQS(x)
 }
 \arguments{
 \item{expr}{An expression.}
-
-\item{x}{A function, raw expression, or formula to interpolate.
-When interpolating a formula, other formulas are treated as
-promises (see section on tidy evaluation).}
 }
 \value{
 A formula whose right-hand side contains the quoted
@@ -114,39 +107,31 @@ shortcuts for unquoting and unquote-splicing (see examples).
 # function. It allows you to quote an expression and interpolate
 # unquoted parts:
 tidy_quote(foo(bar))
-tidy_quote(!! 1 + 2)
+tidy_quote(1 + 2)
 tidy_quote(paste0(!! letters[1:2], "foo"))
 
-# Alternatively you can interpolate a formula that is already
-# constructed:
-tidy_interp(~!! 1 + 2)
-f <- ~paste0(!! letters[1:2], "foo")
-tidy_interp(f)
-
-# The !! operator is a syntactic shortcut for unquoting. However
-# you need to be a bit careful with operator precedence. All
-# arithmetic and comparison operators bind more tightly than `!`:
-tidy_interp(x ~ 1 +  !! (1 + 2 + 3) + 10)
+# The !! operator is a syntactic shortcut for unquoting with UQ().
+# However you need to be a bit careful with operator
+# precedence. All arithmetic and comparison operators bind more
+# tightly than `!`:
+tidy_quote(1 +  !! (1 + 2 + 3) + 10)
 
 # For this reason you should always wrap the unquoted expression
 # with parentheses when operators are involved:
-tidy_interp(x ~ 1 + (!! 1 + 2 + 3) + 10)
+tidy_quote(1 + (!! 1 + 2 + 3) + 10)
 
 # Or you can use the explicit unquote function:
-tidy_interp(x ~ 1 + UQ(1 + 2 + 3) + 10)
-
+tidy_quote(1 + UQ(1 + 2 + 3) + 10)
 
 # Use !!! or UQS() if you want to add multiple arguments to a
 # function It must evaluate to a list
 args <- list(1:10, na.rm = TRUE)
-tidy_interp(~mean(!!! args))
 tidy_quote(mean( UQS(args) ))
 
 # You can combine the two
 var <- quote(xyz)
 extra_args <- list(trim = 0.9, na.rm = TRUE)
 tidy_quote(mean(UQ(var) , UQS(extra_args)))
-tidy_interp(~mean(!!var , !!!extra_args))
 
 
 # Unquoting is especially useful for transforming a captured
@@ -218,20 +203,7 @@ tidy_eval(f)
 
 # Note that two-sided formulas are never treated as fpromises:
 tidy_eval(tidy_quote(a ~ b))
-
-
-# Finally, you can also interpolate a closure's body. This is
-# useful to inline a function within another. The important
-# limitation is that all formal arguments of the inlined function
-# should be defined in the receiving function:
-other_fn <- function(x) toupper(x)
-
-fn <- tidy_interp(function(x) {
-  x <- paste0(x, "_suffix")
-  !!! body(other_fn)
-})
-fn
-fn("foo")
+}
 \seealso{
 \code{\link{expr_quote}()} for quoting a raw expression
   with quasiquotation, and \code{\link{tidy_interp}()} for
