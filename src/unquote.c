@@ -3,8 +3,8 @@
 #include <Rinternals.h>
 #include "utils.h"
 
-SEXP interp_walk(SEXP x, SEXP env, int make_promises);
-SEXP interp_arguments(SEXP x, SEXP env, int make_promises);
+SEXP interp_walk(SEXP x, SEXP env);
+SEXP interp_arguments(SEXP x, SEXP env);
 
 
 int bang_level(SEXP x) {
@@ -47,7 +47,7 @@ int is_prefixed_call(SEXP x, const char* fn) {
   SEXP sym = CADR(args);
   return sym == Rf_install(fn);
 }
-int is_prefixed_uq(SEXP x, int* make_promises) {
+int is_prefixed_uq(SEXP x) {
   if (!is_prefixed_call(x, NULL))
     return 0;
 
@@ -56,7 +56,6 @@ int is_prefixed_uq(SEXP x, int* make_promises) {
   const char* nm =  CHAR(PRINTNAME(sym));
 
   if (strcmp(nm, "!!") == 0 || strcmp(nm, "UQE") == 0) {
-    *make_promises = 0;
     return 1;
   } else {
     return strcmp(nm, "UQ") == 0;
@@ -90,7 +89,7 @@ SEXP unquote_sym(SEXP sym) {
   else
     return sym;
 }
-SEXP unquote(SEXP x, SEXP env, int make_promises, SEXP uq_sym) {
+SEXP unquote(SEXP x, SEXP env, SEXP uq_sym) {
   uq_sym = unquote_sym(uq_sym);
   SEXP uq_call = PROTECT(Rf_lang2(uq_sym, x));
 
@@ -123,8 +122,8 @@ SEXP guard_formula(SEXP f) {
   return guard;
 }
 
-SEXP interp_walk(SEXP x, SEXP env, int make_promises)  {
-  if (!Rf_isLanguage(x) || (is_formula(x) && make_promises))
+SEXP interp_walk(SEXP x, SEXP env)  {
+  if (!Rf_isLanguage(x) || (is_formula(x)))
     return x;
 
   PROTECT_INDEX ipx;
@@ -133,32 +132,29 @@ SEXP interp_walk(SEXP x, SEXP env, int make_promises)  {
   x = replace_double_bang(x);
 
   // Deal with unquoting
-  if (is_prefixed_uq(x, &make_promises)) {
+  if (is_prefixed_uq(x)) {
     SEXP uq_sym = CADR(CDAR(x));
-    SEXP unquoted = PROTECT(unquote(CADR(x), env, make_promises, uq_sym));
+    SEXP unquoted = PROTECT(unquote(CADR(x), env, uq_sym));
     SETCDR(CDAR(x), CONS(unquoted, R_NilValue));
     UNPROTECT(1);
     x = CAR(x);
   } else if (is_unquote(x)) {
     SEXP uq_sym = CAR(x);
-    REPROTECT(x = unquote(CADR(x), env, make_promises, uq_sym), ipx);
+    REPROTECT(x = unquote(CADR(x), env, uq_sym), ipx);
   } else if (is_call(x, "UQF")) {
     REPROTECT(x = Rf_eval(x, env), ipx);
     REPROTECT(x = guard_formula(x), ipx);
   } else {
-    x = interp_arguments(x, env, make_promises);
+    x = interp_arguments(x, env);
   }
-
-  if (is_fpromise(x) && !make_promises)
-    x = f_rhs_(x);
 
   UNPROTECT(1);
   return x;
 }
 
-SEXP interp_arguments(SEXP x, SEXP env, int make_promises) {
+SEXP interp_arguments(SEXP x, SEXP env) {
   for(SEXP cur = x; cur != R_NilValue; cur = CDR(cur)) {
-    SETCAR(cur, interp_walk(CAR(cur), env, make_promises));
+    SETCAR(cur, interp_walk(CAR(cur), env));
 
     SEXP nxt = CDR(cur);
     nxt = replace_triple_bang(nxt, cur);
@@ -171,14 +167,14 @@ SEXP interp_arguments(SEXP x, SEXP env, int make_promises) {
   return x;
 }
 
-SEXP interp_(SEXP x, SEXP env, SEXP make_promises) {
+SEXP interp_(SEXP x, SEXP env) {
   if (!Rf_isLanguage(x))
     return x;
   if (!Rf_isEnvironment(env))
     Rf_error("`env` must be an environment");
 
   x = PROTECT(Rf_duplicate(x));
-  x = interp_walk(x, env, is_true(make_promises));
+  x = interp_walk(x, env);
 
   UNPROTECT(1);
   return x;

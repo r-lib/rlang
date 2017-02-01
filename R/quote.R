@@ -212,11 +212,11 @@ tidy_quote <- function(expr) {
 #' @export
 tidy_interp <- function(x) {
   if (is_formula(x)) {
-    f_rhs(x) <- .Call(interp_, f_rhs(x), f_env(x), TRUE)
+    f_rhs(x) <- .Call(interp_, f_rhs(x), f_env(x))
   } else if (is_closure(x)) {
-    body(x) <- .Call(interp_, body(x), fn_env(x), FALSE)
+    body(x) <- .Call(interp_, body(x), fn_env(x))
   } else {
-    x <- .Call(interp_, x, parent.frame(), FALSE)
+    x <- .Call(interp_, x, parent.frame())
   }
   x
 }

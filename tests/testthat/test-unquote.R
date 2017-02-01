@@ -7,14 +7,6 @@ test_that("interpolation does not recurse over spliced arguments", {
   expect_error(expr_quote(list(!!! var2)), NA)
 })
 
-test_that("formulas are always inlined with expr_quote()", {
-  var1 <- ~bar
-  var2 <- local(~baz)
-  f <- f_new(bquote(foo + .(var1) + .(var2)))
-  expect_identical(tidy_quote(foo + UQ(var1) + UQ(var2)), f)
-  expect_identical(expr_quote(foo + UQ(var1) + UQ(var2)), quote(foo + bar + baz))
-})
-
 test_that("formulas containing unquote operators are interpolated", {
   var1 <- ~foo
   var2 <- local({ foo <- "baz"; ~foo })
