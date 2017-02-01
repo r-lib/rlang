@@ -637,10 +637,10 @@ return_from <- function(frame, value = NULL) {
   if (is_numeric(frame)) {
     frame <- eval_frame(frame)
   }
-  exit_env <- env(frame)
 
-  f <- tidy_quote(return(UQ(value)))
-  with_env_(exit_env, f)
+  exit_env <- env(frame)
+  expr <- expr_quote(return(!!value))
+  expr_eval(expr, exit_env)
 }
 
 #' @rdname return_from

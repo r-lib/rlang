@@ -57,18 +57,21 @@ expr_quote <- function(expr) {
 #' function \code{Rf_eval()}.
 #'
 #' \code{base::eval()} inserts two call frames in the stack, the
-#' second of which has the supplied environment as frame
+#' second of which features the \code{envir} parameter as frame
 #' environment. This may unnecessarily clutter the evaluation stack
-#' and it can change base R semantics when evaluating stack sensitive
-#' functions like \code{return()} or \code{parent.frame()}. This is
-#' because these functions search through the stack for the first
-#' occurrence of the environment in which they are evaluated (it is
-#' not necessarily the parent frame because of lazy evaluation
-#' semantics, see \code{\link{eval_stack}()} and
-#' \code{\link{call_stack}()} for more on that distinction). One
-#' consequence is that code evaluated with \code{base::eval()} does
-#' not have the property of stack consistency, and stack sensitive
-#' functions may return misleading results.
+#' and it can change evaluation semantics with stack sensitive
+#' functions in the case where \code{env} is an evaluation environment
+#' of a stack frame (see \code{\link{eval_stack}()}). Since the base
+#' function \code{eval()} creates a new evaluation context with
+#' \code{env} as frame environment there are actually two contexts
+#' with the same evaluation environment on the stack when \code{expr}
+#' is evaluated. Thus, any command that looks up frames on the stack
+#' (stack sensitive functions) may find the parasite frame set up by
+#' \code{eval()} rather than the original frame targetted by
+#' \code{env}. As a result, code evaluated with \code{base::eval()}
+#' does not have the property of stack consistency, and stack
+#' sensitive functions like \code{\link[base]{return}()},
+#' \code{\link[base]{parent.frame}()} may return misleading results.
 #'
 #' @param expr An expression to evaluate.
 #' @param env The environment in which to evaluate the expression.
