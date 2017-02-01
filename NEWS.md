@@ -21,7 +21,7 @@ There are three key components:
   (#43). Longer forms `f_eval_rhs()` and `f_eval_lhs()` emphasise the side
   of the formula that you want to evaluate (#64).
 
-* `f_interp()` provides a full quasiquoting system using `uq()` for unquote
+* `tidy_interp()` provides a full quasiquoting system using `uq()` for unquote
   and `uqs()` for unquote-splice (#36).
 
 * `f_capture()` and `dots_capture()` make it easy to turn promises
@@ -52,11 +52,11 @@ I've also added `expr_find()`, `expr_text()` and `expr_label()` explicitly to fi
 
 * `lazy_dots()` gains `.ignore_empty` argument to drop extra arguments (#32).
 
-* `interp.formula()` only accepts single-sided formulas (#37).
+* `tidy_interp.formula()` only accepts single-sided formulas (#37).
 
-* `interp()` accepts an environment in `.values` (#35).
+* `tidy_interp()` accepts an environment in `.values` (#35).
 
-* `interp.character()` always produes a single string, regardless of
+* `tidy_interp.character()` always produes a single string, regardless of
   input length (#27).
 
 * Fixed an infinite loop in `lazy_dots(.follow_symbols = TRUE)` (#22, #24)

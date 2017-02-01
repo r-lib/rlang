@@ -19,19 +19,19 @@ test_that("formulas containing unquote operators are interpolated", {
   var1 <- ~foo
   var2 <- local({ foo <- "baz"; ~foo })
 
-  f <- interp(~list(!!var1, !!var2))
+  f <- tidy_interp(~list(!!var1, !!var2))
   expect_identical(f, f_new(bquote(list(.(var1), .(var2)))))
 })
 
 test_that("interpolation is carried out in the right environment", {
   f <- local({ foo <- "foo"; ~!!foo })
-  expect_identical(interp(f), f_new("foo", env = f_env(f)))
+  expect_identical(tidy_interp(f), f_new("foo", env = f_env(f)))
 })
 
 test_that("interpolation does not revisit unquoted formulas", {
   f <- ~list(!!~!!stop("should not interpolate within formulas"))
-  f <- interp(f)
-  expect_identical(interp(f), f)
+  f <- tidy_interp(f)
+  expect_identical(tidy_interp(f), f)
 })
 
 test_that("two-sided formulas are not treated as fpromises", {
@@ -52,7 +52,7 @@ test_that("layers of unquote are not peeled off recursively upon interpolation",
 
   var1 <- local(~letters)
   var2 <- local(~!!var1)
-  expect_identical(interp(~!!var2), f_new(var2))
+  expect_identical(tidy_interp(~!!var2), f_new(var2))
 })
 
 test_that("formulas are promised recursively during unquote", {
@@ -121,9 +121,9 @@ test_that("double and triple ! are treated as syntactic shortcuts", {
 
 test_that("`!!` works in prefixed calls", {
   var <- ~cyl
-  expect_identical(interp(~mtcars$`!!`(var)), ~mtcars$cyl)
-  expect_identical(interp(~foo$`!!`(quote(bar))), ~foo$bar)
-  expect_identical(interp(~base::`!!`(~list)()), ~base::list())
+  expect_identical(tidy_interp(~mtcars$`!!`(var)), ~mtcars$cyl)
+  expect_identical(tidy_interp(~foo$`!!`(quote(bar))), ~foo$bar)
+  expect_identical(tidy_interp(~base::`!!`(~list)()), ~base::list())
 })
 
 

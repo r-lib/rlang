@@ -6,7 +6,7 @@
 #' expression. Like all capturing functions in the tidy evaluation
 #' framework, the expression is interpolated on capture (see
 #' \code{\link{arg_capture}()}) and \code{vignette("tidy-eval")}.
-#' Alternatively, \code{interp()} allows you to interpolate manually
+#' Alternatively, \code{tidy_interp()} allows you to interpolate manually
 #' when you have constructed a raw expression or formula by yourself.
 #'
 #' When an expression is interpolated, all sub-expressions within
@@ -39,11 +39,11 @@
 #'   one-sided formula: bundling an expression and a scope.
 #'
 #'   In the general case, i.e. interpolating a function with
-#'   \code{interp()} or capturing a raw expression with
+#'   \code{tidy_interp()} or capturing a raw expression with
 #'   \code{expr_quote()}, interpolation evaluates unquoted expressions
 #'   in the calling environment. While useful, raw interpolation does
 #'   not allow you to keep track of the scope of an expression.
-#'   Interpolating a formula with \code{interp()} (or during capture
+#'   Interpolating a formula with \code{tidy_interp()} (or during capture
 #'   by NSE functions or \code{tidy_quote()}) provides a much more
 #'   powerful mechanism. The key is to unquote formulas rather than
 #'   raw expressions. The formulas are inlined in the expression and
@@ -97,34 +97,34 @@
 #'
 #' # Alternatively you can interpolate a formula that is already
 #' # constructed:
-#' interp(~!! 1 + 2)
+#' tidy_interp(~!! 1 + 2)
 #' f <- ~paste0(!! letters[1:2], "foo")
-#' interp(f)
+#' tidy_interp(f)
 #'
 #' # The !! operator is a syntactic shortcut for unquoting. However
 #' # you need to be a bit careful with operator precedence. All
 #' # arithmetic and comparison operators bind more tightly than `!`:
-#' interp(x ~ 1 +  !! (1 + 2 + 3) + 10)
+#' tidy_interp(x ~ 1 +  !! (1 + 2 + 3) + 10)
 #'
 #' # For this reason you should always wrap the unquoted expression
 #' # with parentheses when operators are involved:
-#' interp(x ~ 1 + (!! 1 + 2 + 3) + 10)
+#' tidy_interp(x ~ 1 + (!! 1 + 2 + 3) + 10)
 #'
 #' # Or you can use the explicit unquote function:
-#' interp(x ~ 1 + UQ(1 + 2 + 3) + 10)
+#' tidy_interp(x ~ 1 + UQ(1 + 2 + 3) + 10)
 #'
 #'
 #' # Use !!! or UQS() if you want to add multiple arguments to a
 #' # function It must evaluate to a list
 #' args <- list(1:10, na.rm = TRUE)
-#' interp(~mean(!!! args))
+#' tidy_interp(~mean(!!! args))
 #' tidy_quote(mean( UQS(args) ))
 #'
 #' # You can combine the two
 #' var <- quote(xyz)
 #' extra_args <- list(trim = 0.9, na.rm = TRUE)
 #' tidy_quote(mean(UQ(var) , UQS(extra_args)))
-#' interp(~mean(!!var , !!!extra_args))
+#' tidy_interp(~mean(!!var , !!!extra_args))
 #'
 #'
 #' # Unquoting is especially useful for transforming a captured
@@ -199,7 +199,7 @@
 #' # should be defined in the receiving function:
 #' other_fn <- function(x) toupper(x)
 #'
-#' fn <- interp(function(x) {
+#' fn <- tidy_interp(function(x) {
 #'   x <- paste0(x, "_suffix")
 #'   !!! body(other_fn)
 #' })
@@ -217,7 +217,7 @@ expr_quote <- function(expr) {
 }
 #' @rdname tidy_quote
 #' @export
-interp <- function(x) {
+tidy_interp <- function(x) {
   if (is_formula(x)) {
     f_rhs(x) <- .Call(interp_, f_rhs(x), f_env(x), TRUE)
   } else if (is_closure(x)) {
