@@ -676,7 +676,7 @@ env_global <- globalenv
 #'   a namespace.
 #' @seealso \code{\link{env_package}()}
 #' @export
-env_namespace <- function(pkg = NULL) {
+ns_env <- function(pkg = NULL) {
   if (!is_null(pkg)) {
     return(asNamespace(pkg))
   }
@@ -687,10 +687,10 @@ env_namespace <- function(pkg = NULL) {
   }
   bottom
 }
-#' @rdname env_namespace
+#' @rdname ns_env
 #' @export
-env_imports <- function(pkg = NULL) {
-  env_parent(env_namespace(pkg))
+ns_imports_env <- function(pkg = NULL) {
+  env_parent(ns_env(pkg))
 }
 
 #' Get the empty environment.

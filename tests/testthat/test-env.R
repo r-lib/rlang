@@ -91,12 +91,12 @@ test_that("with_env() evaluates within correct environment", {
   expect_equal(fn(), "early return")
 })
 
-test_that("env_namespace() returns current namespace", {
-  expect_identical(with_env(env_namespace("rlang"), env_namespace()), env(rlang::env))
+test_that("ns_env() returns current namespace", {
+  expect_identical(with_env(ns_env("rlang"), ns_env()), env(rlang::env))
 })
 
-test_that("env_imports() returns imports env", {
-  expect_identical(with_env(env_namespace("rlang"), env_imports()), env_parent(env(rlang::env)))
+test_that("ns_imports_env() returns imports env", {
+  expect_identical(with_env(ns_env("rlang"), ns_imports_env()), env_parent(env(rlang::env)))
 })
 
 test_that("as_env() dispatches correctly", {
