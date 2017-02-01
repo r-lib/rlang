@@ -72,7 +72,4 @@ to climb the calls looking for an earlier call site. These two
 limitations are inherent to the stack climbing approach that powers
 this function.
 }
-\seealso{
-\code{\link{arg_label}()}, \code{\link{arg_expr}()}.
-}
 

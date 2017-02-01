@@ -68,9 +68,8 @@
 #' @export
 #' @return \code{arg_capture()} returns a formula; \code{dots_capture()}
 #'   returns a list of formulas, one for each dotted argument.
-#' @seealso \code{\link{arg_expr}()}, \code{\link{arg_label}()} and
-#'   \code{\link{arg_text}()} provide labelling information in
-#'   alternative forms.
+#' @seealso \code{\link{arg_label}()} and \code{\link{arg_text}()}
+#'   for capturing labelling information.
 #' @examples
 #' # arg_capture() returns a formula:
 #' fn <- function(foo) arg_capture(foo)
@@ -104,8 +103,6 @@ arg_capture <- function(x) {
 
 #' Find the expression associated with an argument
 #'
-#' \code{arg_expr()} returns the full expression ans is equivalent to
-#' the base function \code{\link[base]{substitute}()};
 #' \code{arg_text()} turns the expression into a single string;
 #' \code{arg_label()} formats it nicely for use in messages.
 #'
@@ -128,12 +125,6 @@ arg_capture <- function(x) {
 #'   1 + 2
 #'   print(x)
 #' }))
-arg_expr <- function(x) {
-  x_expr <- substitute(x)
-  x_env <- env_caller(1)
-  substitute_(x_expr, x_env)
-}
-
 #' @export
 #' @rdname arg_expr
 arg_label <- function(x) {
@@ -224,7 +215,6 @@ arg_text_ <- function(x, width = 60L, nlines = Inf) {
 #'     reflects the evaluation rules of R, where default arguments are
 #'     scoped within the called function rather than the calling
 #'     frame.}
-#' @seealso \code{\link{arg_label}()}, \code{\link{arg_expr}()}.
 #' @export
 arg_inspect <- function(x) {
   stack <- call_stack()

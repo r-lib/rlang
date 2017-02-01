@@ -1,14 +1,5 @@
 context("arg")
 
-# arg_expr -----------------------------------------------------------------
-
-test_that("arg_expr() returns correct expression", {
-  fn <- function(x) g(foo(x))
-  g <- function(y) arg_expr(y)
-  expect_equal(fn(mtcars), quote(foo(x)))
-})
-
-
 # arg_inspect -----------------------------------------------------------------
 
 test_that("follows through dots", {

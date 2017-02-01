@@ -94,22 +94,16 @@ my_label({
 my_label2(a + b)
 ```
 
-There are two variations on the theme of `arg_text()`:
+`arg_label()` is a customised version of `arg_text()` that produces
+labels designed to be used in messages to the user:
 
-*   `arg_expr()` find the underlying expression. It works similarly to
-    `substitute()` but will follow a chain of promises back up to the original
-    expression. This is often useful for [metaprogramming].
-
-*   `arg_label()` is a customised version of `arg_text()` that produces
-    labels designed to be used in messages to the user:
-
-    ```{r}
-    arg_label(x)
-    arg_label(a + b + c)
-    arg_label(foo({
-      x + y
-    }))
-    ```
+```{r}
+arg_label(x)
+arg_label(a + b + c)
+arg_label(foo({
+  x + y
+}))
+```
 
 ### Exercises
 
