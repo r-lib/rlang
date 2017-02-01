@@ -6,7 +6,7 @@ test_that("env() returns current frame by default", {
 })
 
 test_that("env_parent() returns enclosure frame by default", {
-  enclos_env <- env_new(env_package("rlang"))
+  enclos_env <- env_new(pkg_env("rlang"))
   fn <- with_env(enclos_env, function() env_parent())
   expect_identical(fn(), enclos_env)
 })

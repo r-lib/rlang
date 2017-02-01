@@ -125,7 +125,7 @@ env_has(env, "lapply", inherit = TRUE)
 
 # Note that all other package environments inherit from base_env()
 # as well:
-env <- env_new(env_package("rlang"))
+env <- env_new(pkg_env("rlang"))
 env_has(env, "env_has", inherit = TRUE)
 env_has(env, "lapply", inherit = TRUE)
 
@@ -133,7 +133,7 @@ env_has(env, "lapply", inherit = TRUE)
 # The parent argument of env_new() is passed to as_env() to provide
 # handy shortcuts:
 env <- env_new("rlang")
-identical(env_parent(env), env_package("rlang"))
+identical(env_parent(env), pkg_env("rlang"))
 
 
 # Get the parent environment with env_parent():
@@ -152,12 +152,12 @@ env_parent(global_env())
 # This default is more handy when called within a function. In this
 # case, the enclosure environment of the function is returned
 # (since it is the parent of the evaluation frame):
-enclos_env <- env_new(env_package("rlang"))
+enclos_env <- env_new(pkg_env("rlang"))
 fn <- with_env(enclos_env, function() env_parent())
 identical(enclos_env, fn())
 }
 \seealso{
-\link{env_scoped}, \code{\link{env_has}()},
+\link{scoped_env}, \code{\link{env_has}()},
   \code{\link{env_assign}()}.
 }
 

@@ -30,7 +30,7 @@ This is a S3 generic. The default method coerces named vectors
 (including lists) to an environment. It first checks that \code{x}
 is a dictionary (see \code{\link{is_dictionary}()}). The method for
 unnamed strings returns the corresponding package environment (see
-\code{\link{env_package}()}).
+\code{\link{pkg_env}()}).
 }
 \details{
 If \code{x} is an environment and \code{parent} is not \code{NULL},
@@ -45,7 +45,7 @@ env <- as_env(mtcars)
 identical(env_parent(env), empty_env())
 
 
-# With strings it is a handy shortcut for env_package():
+# With strings it is a handy shortcut for pkg_env():
 as_env("base")
 as_env("rlang")
 
