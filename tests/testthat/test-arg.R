@@ -98,43 +98,6 @@ test_that("frame_global() is reported with top-level calls", {
 })
 
 
-# arg_text ----------------------------------------------------------------
-
-test_that("always returns single string", {
-  out <- arg_text({
-    a + b
-  })
-  expect_length(out, 1)
-})
-
-test_that("can truncate lines", {
-  out <- arg_text({
-    a + b
-  }, nlines = 2)
-  expect_equal(out, "{\n...")
-})
-
-
-# arg_label ---------------------------------------------------------------
-
-test_that("quotes strings", {
-  expect_equal(arg_label("a"), '"a"')
-  expect_equal(arg_label("\n"), '"\\n"')
-})
-
-test_that("backquotes names", {
-  expect_equal(arg_label(x), "`x`")
-})
-
-test_that("converts atomics to strings", {
-  expect_equal(arg_label(0.5), "0.5")
-})
-
-test_that("truncates long calls", {
-  expect_equal(arg_label({ a + b }), "`{\n    ...\n}`")
-})
-
-
 # arg_missing --------------------------------------------------------
 
 test_that("is_missing() works with symbols", {

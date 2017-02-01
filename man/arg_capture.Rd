@@ -105,7 +105,7 @@ fn <- function(x = a + b) dots_capture(x = x)
 fn()
 }
 \seealso{
-\code{\link{arg_label}()} and \code{\link{arg_text}()}
+\code{\link{expr_label}()} and \code{\link{expr_text}()}
   for capturing labelling information.
 }
 

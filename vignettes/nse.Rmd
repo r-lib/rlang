@@ -81,10 +81,10 @@ There are two potential problems with this approach:
     my_label2(a + b)
     ```
 
-Both of these problems are resolved by `rlang::arg_text()`:
+Both of these problems are resolved by `rlang::expr_text()`:
 
 ```{r}
-my_label <- function(x) arg_text(x)
+my_label <- function(x) expr_text(x)
 my_label2 <- function(x) my_label(x)
 
 my_label({
@@ -94,13 +94,13 @@ my_label({
 my_label2(a + b)
 ```
 
-`arg_label()` is a customised version of `arg_text()` that produces
+`expr_label()` is a customised version of `expr_text()` that produces
 labels designed to be used in messages to the user:
 
 ```{r}
-arg_label(x)
-arg_label(a + b + c)
-arg_label(foo({
+expr_label(x)
+expr_label(a + b + c)
+expr_label(foo({
   x + y
 }))
 ```
@@ -109,7 +109,7 @@ arg_label(foo({
 
 1.  `plot()` uses `deparse(substitute(x))` to generate labels for the x and y
     axes. Can you generate input that causes it to display bad labels?
-    Write your own wrapper around `plot()` that uses `arg_label()` to compute
+    Write your own wrapper around `plot()` that uses `expr_label()` to compute
     `xlim` and `ylim`.
 
 1.  Create a simple implementation of `mean()` that stops with an informative
@@ -125,7 +125,7 @@ arg_label(foo({
     #> Error: "a" is not a numeric vector.
     ```
 
-1.  Read the source code for `arg_text()`. How does it work? What additional
+1.  Read the source code for `expr_text()`. How does it work? What additional
     arguments to `deparse()` does it use?
 
 ## Formulas

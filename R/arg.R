@@ -68,7 +68,7 @@
 #' @export
 #' @return \code{arg_capture()} returns a formula; \code{dots_capture()}
 #'   returns a list of formulas, one for each dotted argument.
-#' @seealso \code{\link{arg_label}()} and \code{\link{arg_text}()}
+#' @seealso \code{\link{expr_label}()} and \code{\link{expr_text}()}
 #'   for capturing labelling information.
 #' @examples
 #' # arg_capture() returns a formula:
@@ -98,72 +98,6 @@ arg_capture <- function(x) {
 
   arg_expr <- .Call(interp_, arg_expr, arg_env, TRUE)
   f_new(arg_expr, env = arg_env)
-}
-
-
-#' Find the expression associated with an argument
-#'
-#' \code{arg_text()} turns the expression into a single string;
-#' \code{arg_label()} formats it nicely for use in messages.
-#'
-#' @param x Argument to capture.
-#' @export
-#' @examples
-#' arg_label(10)
-#'
-#' # Names a quoted with ``
-#' arg_label(x)
-#'
-#' # Strings are encoded
-#' arg_label("a\nb")
-#'
-#' # Expressions are captured
-#' arg_label(a + b + c)
-#'
-#' # Long expressions are collapsed
-#' arg_label(foo({
-#'   1 + 2
-#'   print(x)
-#' }))
-#' @export
-#' @rdname arg_expr
-arg_label <- function(x) {
-  arg_label_(arg_expr(x))
-}
-
-arg_label_ <- function(x) {
-  if (is.character(x)) {
-    encodeString(x, quote = '"')
-  } else if (is.atomic(x)) {
-    format(x)
-  } else if (is.name(x)) {
-    paste0("`", as.character(x), "`")
-  } else {
-    chr <- deparse(x)
-    if (length(chr) > 1) {
-      dot_call <- call_new(x[[1]], quote(...))
-      chr <- paste(deparse(dot_call), collapse = "\n")
-    }
-    paste0("`", chr, "`")
-  }
-}
-
-#' @export
-#' @rdname arg_expr
-#' @param width Width of each line.
-#' @param nlines Maximum number of lines to extract.
-arg_text <- function(x, width = 60L, nlines = Inf) {
-  arg_text_(arg_expr(x), width = width, nlines = nlines)
-}
-
-arg_text_ <- function(x, width = 60L, nlines = Inf) {
-  str <- deparse(x, width.cutoff = width)
-
-  if (length(str) > nlines) {
-    str <- c(str[seq_len(nlines - 1)], "...")
-  }
-
-  paste0(str, collapse = "\n")
 }
 
 

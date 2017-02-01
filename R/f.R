@@ -91,11 +91,11 @@ f_env <- function(f) {
 
 #' Turn RHS of formula into a string/label.
 #'
-#' Equivalent of \code{\link{arg_text}()} and \code{\link{arg_label}()} for
+#' Equivalent of \code{\link{expr_text}()} and \code{\link{expr_label}()} for
 #' formulas.
 #'
 #' @param x A formula.
-#' @inheritParams arg_text
+#' @inheritParams expr_text
 #' @export
 #' @examples
 #' f <- ~ a + b + bc
@@ -112,13 +112,13 @@ f_env <- function(f) {
 #'   print(x)
 #' }))
 f_text <- function(x, width = 60L, nlines = Inf) {
-  arg_text_(f_rhs(x), width = width, nlines = nlines)
+  expr_text(f_rhs(x), width = width, nlines = nlines)
 }
 
 #' @export
 #' @rdname f_text
 f_label <- function(x) {
-  arg_label_(f_rhs(x))
+  expr_label(f_rhs(x))
 }
 
 #' Unwrap a formula
