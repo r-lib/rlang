@@ -5,14 +5,11 @@
 \alias{UQE}
 \alias{UQF}
 \alias{UQS}
-\alias{expr_quote}
 \alias{tidy_interp}
 \alias{tidy_quote}
-\title{Interpolate a quoted expression.}
+\title{Tidy quotation of an expression.}
 \usage{
 tidy_quote(expr)
-
-expr_quote(expr)
 
 tidy_interp(x)
 
@@ -32,24 +29,28 @@ When interpolating a formula, other formulas are treated as
 promises (see section on tidy evaluation).}
 }
 \value{
-For \code{tidy_quote()}, a formula (which contains information
-  about where to find the objects mentioned in the formula). For
-  \code{expr_quote()}, a raw quoted expression.
+A formula whose right-hand side contains the quoted
+  expression supplied as argument.
 }
 \description{
-\code{tidy_quote()} and \code{expr_quote()} return their arguments as
-an unevaluated expression. The former returns a formula, which
-bundles an expression and a scope, while the latter returns a raw
-expression. Like all capturing functions in the tidy evaluation
-framework, the expression is interpolated on capture (see
-\code{\link{arg_capture}()}) and \code{vignette("tidy-eval")}.
-Alternatively, \code{tidy_interp()} allows you to interpolate manually
-when you have constructed a raw expression or formula by yourself.
+\code{tidy_quote()} captures its argument as an unevaluated
+expression and returns it as a formula. Formulas are a key part of
+the tidy evaluation framework because they bundle an expression and
+a scope (the environment in which \code{tidy_quote()} was called).
+This means that you can pass a formula around while keeping track
+of the context where it was created. The symbols quoted in the
+formula will be evaluated in the right context (where they are
+likely defined) by \code{\link{tidy_eval}()}.
 }
 \details{
-When an expression is interpolated, all sub-expressions within
-unquoting operators (like \code{UQ(x)} and \code{UQS(x)}) are
-evaluated and inlined. This provides a powerful mechanism for
+Like all capturing functions in the tidy evaluation framework,
+\code{tidy_quote()} interpolates on capture (see
+\code{\link{arg_capture}()}) and \code{vignette("tidy-eval")}.
+Alternatively, \code{tidy_interp()} allows you to interpolate
+manually when you have constructed a raw expression or formula by
+yourself. When an expression is interpolated, all sub-expressions
+within unquoting operators (like \code{UQ(x)} and \code{UQS(x)})
+are evaluated and inlined. This provides a powerful mechanism for
 manipulating expressions. Since unquoting is such an important
 operation, \code{!!} and \code{!!!} are provided as syntactic
 shortcuts for unquoting and unquote-splicing (see examples).
@@ -79,29 +80,16 @@ shortcuts for unquoting and unquote-splicing (see examples).
   bundled with the expression. That is exactly the purpose of a
   one-sided formula: bundling an expression and a scope.
 
-  In the general case, i.e. interpolating a function with
-  \code{tidy_interp()} or capturing a raw expression with
-  \code{expr_quote()}, interpolation evaluates unquoted expressions
-  in the calling environment. While useful, raw interpolation does
-  not allow you to keep track of the scope of an expression.
-  Interpolating a formula with \code{tidy_interp()} (or during capture
-  by NSE functions or \code{tidy_quote()}) provides a much more
-  powerful mechanism. The key is to unquote formulas rather than
-  raw expressions. The formulas are inlined in the expression and
-  carry their scope. While such formulas would confuse the base R
-  function \code{\link[base]{eval}()}, they become self-evaluating
-  expressions when passed to \code{\link{tidy_eval}()}.
-
-  To sum up, one-sided formulas are very much similar to promises
-  in the tidy evaluation framework. Promises are R objects bound to
-  function arguments. They make lazy evaluation in R possible: they
+  In a way, one-sided formulas are very much similar to promises in
+  the tidy evaluation framework. Promises are R objects bound to
+  function arguments which make lazy evaluation in R possible: they
   bundle an expression (the argument supplied by the caller of the
   function) and an environment (the original call site of the
   function), and they self-evaluate to return a value as soon as
   you touch them. Similarly, formulas self-evaluate when called
-  within \code{\link{tidy_eval}()}. However, unlike promises, they are
-  first-class objects: you can pass a formula around and use it to
-  transform another formula or expression. Formulas are thus
+  within \code{\link{tidy_eval}()}. However, unlike promises, they
+  are first-class objects: you can pass a formula around and use it
+  to transform another formula or expression. Formulas are thus
   treated as reified promises.
 
   Being able to manipulate a formula has important practical
@@ -163,22 +151,27 @@ tidy_interp(~mean(!!var , !!!extra_args))
 
 # Unquoting is especially useful for transforming a captured
 # expression:
-expr <- quote(foo(bar))
-expr <- expr_quote(inner(!! expr, arg1))
-expr <- expr_quote(outer(!! expr, !!! lapply(letters[1:3], as.symbol)))
-expr
+f <- ~foo(bar)
+f <- tidy_quote(inner(!! f, arg1))
+f <- tidy_quote(outer(!! f, !!! lapply(letters[1:3], as.symbol)))
+f
 
-# Quasiquotation of formulas is much more powerful. Formulas carry
-# scope information about the inner expression inlined in the outer
-# expression upon unquoting. Let's create a formula that quotes a
-# symbol that only exists in a local scope (a child environment of
-# the current environment):
+# Note that it's fine to unquote formulas as long as you evaluate
+# with tidy_eval():
+f <- ~letters
+f <- tidy_quote(toupper(!! f))
+tidy_eval(f)
+
+# Formulas carry scope information about the inner expression
+# inlined in the outer expression upon unquoting. To see this,
+# let's create a formula that quotes a symbol that only exists in a
+# local scope (a child environment of the current environment):
 f1 <- local({ foo <- "foo"; ~foo })
 
 # You can evaluate that expression with tidy_eval():
 tidy_eval(f1)
 
-# But you can also inline it in another expression before
+# And you can also inline it in another expression before
 # evaluation:
 f2 <- local({ bar <- "bar"; ~toupper(bar)})
 f3 <- tidy_quote(paste(!!f1, !!f2, "!"))
@@ -239,5 +232,9 @@ fn <- tidy_interp(function(x) {
 })
 fn
 fn("foo")
+\seealso{
+\code{\link{expr_quote}()} for quoting a raw expression
+  with quasiquotation, and \code{\link{tidy_interp}()} for
+  unquoting an already quoted expression or an existing formula.
 }
 
