@@ -77,7 +77,7 @@ f_lhs <- function(f) {
 #' @rdname f_rhs
 f_env <- function(f) {
   if(!is_formula(f)) {
-    stop("`f` is not a formula", call. = FALSE)
+    abort("`f` is not a formula")
   }
   attr(f, ".Environment")
 }
@@ -226,7 +226,7 @@ as_f_list <- function(x) {
 #' f <- api_function(my_f, env_base())
 #' identical(env(f), env_base())
 as_quoted_f <- function(expr, env = NULL) {
-  if (is_formula(expr)) {
+  if (is_formula(expr) && !is_null(f_env(expr))) {
     if (!is_null(env)) {
       f_env(expr) <- env
     }

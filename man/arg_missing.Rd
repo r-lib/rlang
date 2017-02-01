@@ -28,8 +28,8 @@ check for a missing argument in a larger range of situations than
 }
 \examples{
 # The missing argument can be useful to generate calls
-interp(~f(x = !! arg_missing()))
-interp(~f(x = !! NULL))
+f_quote(f(x = !! arg_missing()))
+f_quote(f(x = !! NULL))
 
 
 # It is perfectly valid to generate and assign the missing

@@ -41,13 +41,13 @@ SEXP lhs_name(SEXP x) {
       continue;
 
     // set name
-    SEXP name = PROTECT(Rf_eval(f_lhs_(xi), f_env(xi)));
+    SEXP name = PROTECT(Rf_eval(f_lhs_(xi), f_env_(xi)));
     if (TYPEOF(name) != NILSXP)
       SET_STRING_ELT(names, i, as_name(name));
     UNPROTECT(1);
 
     // replace with RHS of formula
-    SET_VECTOR_ELT(x2, i, make_formula1(CADDR(xi), f_env(xi)));
+    SET_VECTOR_ELT(x2, i, make_formula1(CADDR(xi), f_env_(xi)));
   }
 
   UNPROTECT(1);
