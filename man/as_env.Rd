@@ -21,7 +21,7 @@ as_env(x, parent = NULL)
 \arguments{
 \item{x}{An object to coerce.}
 
-\item{parent}{A parent environment, \code{\link{env_empty}()} by
+\item{parent}{A parent environment, \code{\link{empty_env}()} by
 default. Can be ignored with a warning for methods where it does
 not make sense to change the parent.}
 }
@@ -42,7 +42,7 @@ return value is therefore a different environment than \code{x}.
 env <- as_env(mtcars)
 
 # By default it gets the empty environment as parent:
-identical(env_parent(env), env_empty())
+identical(env_parent(env), empty_env())
 
 
 # With strings it is a handy shortcut for env_package():

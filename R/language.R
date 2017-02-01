@@ -13,7 +13,7 @@
 #' object that evaluates to itself and that can be evaluated in the
 #' empty environment. For instance, \code{quote(c(1, 2))} is not a
 #' literal, but the result of evaluating it in
-#' \code{\link{env_base}()} is (in this case an atomic vector).
+#' \code{\link{base_env}()} is (in this case an atomic vector).
 #' Technically, this sort of literal objects can be inlined in
 #' language expressions. If your function accepts arbitrary
 #' expressions, it should thus account for that possibility with a
@@ -65,10 +65,10 @@
 #' identical(NULL, quote(NULL))
 #'
 #' # They can be evaluated within the empty environment:
-#' eval(quote(1L), env_empty())
+#' eval(quote(1L), empty_env())
 #'
 #' # Whereas it would fail for non-atomic language objects:
-#' # eval(quote(c(1L, 2L)), env_empty())
+#' # eval(quote(c(1L, 2L)), empty_env())
 #'
 #'
 #' # Pairlists are also language objects representing argument lists.

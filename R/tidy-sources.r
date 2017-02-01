@@ -27,7 +27,7 @@ data_source.NULL <- function(x, lookup_msg = NULL) {
 #' @export
 data_source.environment <- function(x, lookup_msg = NULL) {
   lookup_msg <- lookup_msg %||% "Object '%s' not found in environment"
-  if (!identical(x, env_global())) {
+  if (!identical(x, global_env())) {
     x <- env_clone(x)
   }
   data_source_new(x, lookup_msg)

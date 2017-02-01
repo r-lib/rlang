@@ -38,7 +38,7 @@ env_has(environment(), letters)
 
 # With inherit = TRUE, it removes bindings in parent environments
 # as well:
-parent <- env_new(env_empty(), list(foo = "a"))
+parent <- env_new(empty_env(), list(foo = "a"))
 env <- env_new(parent, list(foo = "b"))
 env_unbind(env, "foo", inherit = TRUE)
 env_has(env, "foo", inherit = TRUE)

@@ -59,7 +59,7 @@ parse_exprs_f("1; 2; mtcars")
 
 # The env argument is passed to as_env(). It can be e.g. a string
 # representing a scoped package environment:
-parse_expr_f("identity(letters)", env = env_empty())
+parse_expr_f("identity(letters)", env = empty_env())
 parse_exprs_f("identity(letters); mtcars", env = "base")
 
 

@@ -64,7 +64,7 @@ f <- api_function(my_f)
 identical(env(f), env)
 
 # But the user can choose to provide her own environment as well:
-f <- api_function(my_f, env_base())
-identical(env(f), env_base())
+f <- api_function(my_f, base_env())
+identical(env(f), base_env())
 }
 

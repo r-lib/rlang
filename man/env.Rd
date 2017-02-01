@@ -70,7 +70,7 @@ writing generic functions).
 returns the parent environment of \code{env} if called with \code{n
 = 1}, the grandparent with \code{n = 2}, etc. \code{env_tail()}
 searches through the parents and returns the one which has
-\code{\link{env_empty}()} as parent.
+\code{\link{empty_env}()} as parent.
 }
 \examples{
 # Get the environment of frame objects. If no argument is supplied,
@@ -87,7 +87,7 @@ fn()
 env(fn)
 
 # There is also an assignment operator:
-env(fn) <- env_base()
+env(fn) <- base_env()
 env(fn)
 
 
@@ -120,10 +120,10 @@ env_has(env, "lapply", inherit = TRUE)
 # functions. Also note that it will never inherit from other loaded
 # package environments since R keeps the base package at the tail
 # of the search path:
-env <- env_new(env_base())
+env <- env_new(base_env())
 env_has(env, "lapply", inherit = TRUE)
 
-# Note that all other package environments inherit from env_base()
+# Note that all other package environments inherit from base_env()
 # as well:
 env <- env_new(env_package("rlang"))
 env_has(env, "env_has", inherit = TRUE)
@@ -137,17 +137,17 @@ identical(env_parent(env), env_package("rlang"))
 
 
 # Get the parent environment with env_parent():
-env_parent(env_global())
+env_parent(global_env())
 
 # Or the tail environment with env_tail():
-env_tail(env_global())
+env_tail(global_env())
 
 
 # By default, env_parent() returns the parent environment of the
 # current evaluation frame. If called at top-level (the global
 # frame), the following two expressions are equivalent:
 env_parent()
-env_parent(env_global())
+env_parent(global_env())
 
 # This default is more handy when called within a function. In this
 # case, the enclosure environment of the function is returned

@@ -24,7 +24,7 @@ An object if it exists. Otherwise, throws an error.
 By default, it does not look in the parent environments.
 }
 \examples{
-parent <- env_new(env_empty(), list(foo = "foo"))
+parent <- env_new(empty_env(), list(foo = "foo"))
 env <- env_new(parent, list(bar = "bar"))
 
 # This throws an error because `foo` is not directly defined in env:

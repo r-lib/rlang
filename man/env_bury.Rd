@@ -23,7 +23,7 @@ bindings in a new child environment. Note that this function does
 not modify its inputs.
 }
 \examples{
-scope <- env_new(env_base(), list(a = 10))
+scope <- env_new(base_env(), list(a = 10))
 fn <- function() a
 env(fn) <- scope
 

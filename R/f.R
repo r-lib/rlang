@@ -219,8 +219,8 @@ as_f_list <- function(x) {
 #' identical(env(f), env)
 #'
 #' # But the user can choose to provide her own environment as well:
-#' f <- api_function(my_f, env_base())
-#' identical(env(f), env_base())
+#' f <- api_function(my_f, base_env())
+#' identical(env(f), base_env())
 as_quoted_f <- function(expr, env = NULL) {
   if (is_formula(expr) && !is_null(f_env(expr))) {
     if (!is_null(env)) {
