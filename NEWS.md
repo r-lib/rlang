@@ -15,10 +15,10 @@ Lazyeval has a  new system for lazy-eval based on formulas, described in depth i
 
 There are three key components:
 
-* `f_eval()` evaluates a formula in the environment where it was defined.
+* `tidy_eval()` evaluates a formula in the environment where it was defined.
   If supplied, values are first looked for in an optional `data` argument.
   Pronouns `.data` and `.env` can be used to resolve ambiguity in this case.
-  (#43). Longer forms `f_eval_rhs()` and `f_eval_lhs()` emphasise the side
+  (#43). Longer forms `tidy_eval_rhs()` and `tidy_eval_lhs()` emphasise the side
   of the formula that you want to evaluate (#64).
 
 * `tidy_interp()` provides a full quasiquoting system using `uq()` for unquote

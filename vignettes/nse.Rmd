@@ -192,12 +192,12 @@ f_env(g)
 
 ### Evaluating a formula
 
-A formula captures delays the evaluation of an expression so you can later evaluate it with `f_eval()`:
+A formula captures delays the evaluation of an expression so you can later evaluate it with `tidy_eval()`:
 
 ```{r}
 f <- ~ 1 + 2 + 3
 f
-f_eval(f)
+tidy_eval(f)
 ```
 
 This allows you to use a formula as a robust way of delaying evaluation, cleanly separating the creation of the formula from its evaluation. Because formulas capture the code and context, you get the correct result even when a formula is created and evaluated in different places. In the following example, note that the value of `x` inside `add_1000()` is used:
@@ -209,7 +209,7 @@ add_1000 <- function(x) {
 }
 
 add_1000(3)
-f_eval(add_1000(3))
+tidy_eval(add_1000(3))
 ```
 
 It can be hard to see what's going on when looking at a formula because important values are stored in the environment, which is largely opaque. You can use `f_unwrap()` to replace names with their corresponding values:
@@ -220,32 +220,32 @@ f_unwrap(add_1000(3))
 
 ### Non-standard scoping
 
-`f_eval()` has an optional second argument: a named list (or data frame) that overrides values found in the formula's environment.
+`tidy_eval()` has an optional second argument: a named list (or data frame) that overrides values found in the formula's environment.
 
 ```{r}
 y <- 100
-f_eval(~ y)
-f_eval(~ y, data = list(y = 10))
+tidy_eval(~ y)
+tidy_eval(~ y, data = list(y = 10))
 
 # Can mix variables in environment and data argument
-f_eval(~ x + y, data = list(x = 10))
+tidy_eval(~ x + y, data = list(x = 10))
 # Can even supply functions
-f_eval(~ f(y), data = list(f = function(x) x * 3))
+tidy_eval(~ f(y), data = list(f = function(x) x * 3))
 ```
 
 This makes it very easy to implement non-standard scoping:
 
 ```{r}
-f_eval(~ mean(cyl), data = mtcars)
+tidy_eval(~ mean(cyl), data = mtcars)
 ```
 
 One challenge with non-standard scoping is that we've introduced some ambiguity. For example, in the code below does `x` come from `mydata` or the environment?
 
 ```{r, eval = FALSE}
-f_eval(~ x, data = mydata)
+tidy_eval(~ x, data = mydata)
 ```
 
-You can't tell without knowing whether or not `mydata` has a variable called `x`. To overcome this problem, `f_eval()` provides two pronouns:
+You can't tell without knowing whether or not `mydata` has a variable called `x`. To overcome this problem, `tidy_eval()` provides two pronouns:
 
 * `.data` is bound to the data frame.
 * `.env` is bound to the formula environment.
@@ -258,24 +258,24 @@ With these pronouns we can rewrite the previous formula to remove the ambiguity:
 mydata <- data.frame(x = 100, y = 1)
 x <- 10
 
-f_eval(~ .env$x, data = mydata)
-f_eval(~ .data$x, data = mydata)
+tidy_eval(~ .env$x, data = mydata)
+tidy_eval(~ .data$x, data = mydata)
 ```
 
 If the variable or object doesn't exist, you'll get an informative error:
 
 ```{r, error = TRUE}
-f_eval(~ .env$z, data = mydata)
-f_eval(~ .data$z, data = mydata)
+tidy_eval(~ .env$z, data = mydata)
+tidy_eval(~ .data$z, data = mydata)
 ```
 
 ### Unquoting
 
-`f_eval()` has one more useful trick up its sleeve: unquoting. Unquoting allows you to write functions where the user supplies part of the formula. For example, the following function allows you to compute the mean of any column (or any function of a column):
+`tidy_eval()` has one more useful trick up its sleeve: unquoting. Unquoting allows you to write functions where the user supplies part of the formula. For example, the following function allows you to compute the mean of any column (or any function of a column):
 
 ```{r}
 df_mean <- function(df, variable) {
-  f_eval(~ mean(UQ(variable)), data = df)
+  tidy_eval(~ mean(UQ(variable)), data = df)
 }
 
 df_mean(mtcars, ~ cyl)
@@ -283,7 +283,7 @@ df_mean(mtcars, ~ disp * 0.01638)
 df_mean(mtcars, ~ sqrt(mpg))
 ```
 
-To see how this works, we can use `tidy_interp()` which `f_eval()` calls internally (you shouldn't call it in your own code, but it's useful for debugging). The key is `UQ()`: `UQ()` evaluates its first (and only) argument and inserts the value into the formula:
+To see how this works, we can use `tidy_interp()` which `tidy_eval()` calls internally (you shouldn't call it in your own code, but it's useful for debugging). The key is `UQ()`: `UQ()` evaluates its first (and only) argument and inserts the value into the formula:
 
 ```{r}
 variable <- ~cyl
@@ -326,14 +326,14 @@ tidy_interp(~ mean(UQ(variable), UQS(extra_args)))
 1.  Create a wrapper around `lm()` that allows the user to supply the
     response and predictors as two separate formulas.
 
-1.  Compare and contrast `f_eval()` with `with()`.
+1.  Compare and contrast `tidy_eval()` with `with()`.
 
 1.  Why does this code work even though `f` is defined in two places? (And
     one of them is not a function).
 
     ```{r}
     f <- function(x) x + 1
-    f_eval(~ f(10), list(f = "a"))
+    tidy_eval(~ f(10), list(f = "a"))
     ```
 
 ## Non-standard scoping
@@ -345,15 +345,15 @@ There are three challenges to implementing non-standard scoping:
 1.  You must correctly delay the evaluation of a function argument, capturing
     both the computation (the expression), and the context (the environment).
     I recommend making this explicit by requiring the user to "quote" any NSS
-    arguments with `~`, and then evaluating explicit with `f_eval()`.
+    arguments with `~`, and then evaluating explicit with `tidy_eval()`.
 
 1.  When writing functions that use NSS-functions, you need some way to
     avoid the automatic lookup and be explicit about where objects should be
-    found. `f_eval()` solves this problem with the `.data.` and `.env`
+    found. `tidy_eval()` solves this problem with the `.data.` and `.env`
     pronouns.
 
 1.  You need some way to allow the user to supply parts of a formula.
-    `f_eval()` solves this with unquoting.
+    `tidy_eval()` solves this with unquoting.
 
 To illustrate these challenges, I will implement a `sieve()` function that works similarly to `base::subset()` or `dplyr::filter()`. The goal of `sieve()` is to make it easy to select observations that match criteria defined by a logical expression. `sieve()` has three advantages over `[`:
 
@@ -365,11 +365,11 @@ To illustrate these challenges, I will implement a `sieve()` function that works
 
 1.  It always returns a data frame.
 
-The implementation of `sieve()` is straightforward. First we use `f_eval()` to perform NSS. Then we then check that we have a logical vector, replace `NA`s with `FALSE`, and subset with `[`.
+The implementation of `sieve()` is straightforward. First we use `tidy_eval()` to perform NSS. Then we then check that we have a logical vector, replace `NA`s with `FALSE`, and subset with `[`.
 
 ```{R}
 sieve <- function(df, condition) {
-  rows <- f_eval(condition, df)
+  rows <- tidy_eval(condition, df)
   if (!is.logical(rows)) {
     stop("`condition` must be logical.", call. = FALSE)
   }
@@ -429,7 +429,7 @@ There are two ways that this function might fail:
     threshold_x(df3, 3)
     ```
 
-These failures are partiuclarly pernicious because instead of throwing an error they silently produce the wrong answer. Both failures arise because `f_eval()` introduces ambiguity by looking in two places for each name: the supplied data and formula environment.
+These failures are partiuclarly pernicious because instead of throwing an error they silently produce the wrong answer. Both failures arise because `tidy_eval()` introduces ambiguity by looking in two places for each name: the supplied data and formula environment.
 
 To make `threshold_x()` more reliable, we need to be more explicit by using the `.data` and `.env` pronouns:
 
@@ -472,7 +472,7 @@ threshold(df, ~ x, 4)
 threshold(df, ~ abs(x - y), 2)
 ```
 
-In this case, it's the responsibility of the user to ensure the `variable` is specified unambiguously. `f_eval()` is designed so that `.data` and `.env` work even when evaluated inside of `UQ()`:
+In this case, it's the responsibility of the user to ensure the `variable` is specified unambiguously. `tidy_eval()` is designed so that `.data` and `.env` work even when evaluated inside of `UQ()`:
 
 ```{r}
 x <- 3
@@ -488,7 +488,7 @@ mogrify <- function(`_df`, ...) {
   args <- list(...)
 
   for (nm in names(args)) {
-    `_df`[[nm]] <- f_eval(args[[nm]], `_df`)
+    `_df`[[nm]] <- tidy_eval(args[[nm]], `_df`)
   }
 
   `_df`
@@ -526,7 +526,7 @@ mogrify <- function(`_df`, ...) {
   args <- f_list(...)
 
   for (nm in names(args)) {
-    `_df`[[nm]] <- f_eval(args[[nm]], `_df`)
+    `_df`[[nm]] <- tidy_eval(args[[nm]], `_df`)
   }
 
   `_df`
@@ -559,7 +559,7 @@ That said, rlang does allow you to eliminate the `~` if you really want to. In t
 
 ```{r}
 sieve_ <- function(df, condition) {
-  rows <- f_eval(condition, df)
+  rows <- tidy_eval(condition, df)
   if (!is.logical(rows)) {
     stop("`condition` must be logical.", call. = FALSE)
   }
@@ -599,7 +599,7 @@ mogrify_ <- function(`_df`, args) {
   args <- as_f_list(args)
 
   for (nm in names(args)) {
-    `_df`[[nm]] <- f_eval(args[[nm]], `_df`)
+    `_df`[[nm]] <- tidy_eval(args[[nm]], `_df`)
   }
 
   `_df`

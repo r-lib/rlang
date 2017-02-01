@@ -49,7 +49,7 @@
 #'   raw expressions. The formulas are inlined in the expression and
 #'   carry their scope. While such formulas would confuse the base R
 #'   function \code{\link[base]{eval}()}, they become self-evaluating
-#'   expressions when passed to \code{\link{f_eval}()}.
+#'   expressions when passed to \code{\link{tidy_eval}()}.
 #'
 #'   To sum up, one-sided formulas are very much similar to promises
 #'   in the tidy evaluation framework. Promises are R objects bound to
@@ -58,7 +58,7 @@
 #'   function) and an environment (the original call site of the
 #'   function), and they self-evaluate to return a value as soon as
 #'   you touch them. Similarly, formulas self-evaluate when called
-#'   within \code{\link{f_eval}()}. However, unlike promises, they are
+#'   within \code{\link{tidy_eval}()}. However, unlike promises, they are
 #'   first-class objects: you can pass a formula around and use it to
 #'   transform another formula or expression. Formulas are thus
 #'   treated as reified promises.
@@ -141,8 +141,8 @@
 #' # the current environment):
 #' f1 <- local({ foo <- "foo"; ~foo })
 #'
-#' # You can evaluate that expression with f_eval():
-#' f_eval(f1)
+#' # You can evaluate that expression with tidy_eval():
+#' tidy_eval(f1)
 #'
 #' # But you can also inline it in another expression before
 #' # evaluation:
@@ -150,8 +150,8 @@
 #' f3 <- tidy_quote(paste(!!f1, !!f2, "!"))
 #' f3
 #'
-#' # f_eval() treats one-sided formulas like promises to be evaluated:
-#' f_eval(f3)
+#' # tidy_eval() treats one-sided formulas like promises to be evaluated:
+#' tidy_eval(f3)
 #'
 #'
 #' # The formula-promise representation is necessary to preserve scope
@@ -187,10 +187,10 @@
 #' var <- ~letters[1:2]
 #' f <- tidy_quote(list(!!var, UQF(var)))
 #' f
-#' f_eval(f)
+#' tidy_eval(f)
 #'
 #' # Note that two-sided formulas are never treated as fpromises:
-#' f_eval(tidy_quote(a ~ b))
+#' tidy_eval(tidy_quote(a ~ b))
 #'
 #'
 #' # Finally, you can also interpolate a closure's body. This is

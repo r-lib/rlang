@@ -1,4 +1,4 @@
-#' @rdname f_eval
+#' @rdname tidy_eval
 #' @param x An object for which you want to find associated data.
 #' @param lookup_msg An error message when your data source is
 #'   accessed inappropriately (by position rather than name).

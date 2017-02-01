@@ -96,7 +96,7 @@ test_that("UQF() guards formulas", {
 
   expected_f <- f_new(guarded)
   expect_identical(tidy_quote(UQF(f)), expected_f)
-  expect_identical(f_eval(expected_f), f)
+  expect_identical(tidy_eval(expected_f), f)
 })
 
 test_that("UQE() extracts right-hand side", {
