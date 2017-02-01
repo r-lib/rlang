@@ -1,6 +1,6 @@
 #' Interpolate a quoted expression.
 #'
-#' \code{f_quote()} and \code{expr_quote()} return their arguments as
+#' \code{tidy_quote()} and \code{expr_quote()} return their arguments as
 #' an unevaluated expression. The former returns a formula, which
 #' bundles an expression and a scope, while the latter returns a raw
 #' expression. Like all capturing functions in the tidy evaluation
@@ -23,7 +23,7 @@
 #'   expression by unquoting another quoted expression into it. The
 #'   latter expression gets inlined within the former. This mechanism
 #'   allows you to easily program with NSE functions. E.g. \code{var
-#'   <- ~baz; f_quote(foo(bar, !! var))} produces the formula-quote
+#'   <- ~baz; tidy_quote(foo(bar, !! var))} produces the formula-quote
 #'   \code{~foo(bar, baz)}.
 #'
 #' @section Tidy evaluation of expressions:
@@ -44,7 +44,7 @@
 #'   in the calling environment. While useful, raw interpolation does
 #'   not allow you to keep track of the scope of an expression.
 #'   Interpolating a formula with \code{interp()} (or during capture
-#'   by NSE functions or \code{f_quote()}) provides a much more
+#'   by NSE functions or \code{tidy_quote()}) provides a much more
 #'   powerful mechanism. The key is to unquote formulas rather than
 #'   raw expressions. The formulas are inlined in the expression and
 #'   carry their scope. While such formulas would confuse the base R
@@ -69,7 +69,7 @@
 #'   modification and tidy evaluation of formulas provide a powerful
 #'   mechanism for metaprogramming and programming with DSLs.
 #'
-#' @section Theory: Formally, \code{f_quote()} and \code{expr_quote()}
+#' @section Theory: Formally, \code{tidy_quote()} and \code{expr_quote()}
 #'   are quasiquote functions, \code{UQ()} is the unquote operator,
 #'   and \code{UQS()} is the unquote splice operator. These terms
 #'   have a rich history in LISP, and live on in modern languages like
@@ -80,20 +80,20 @@
 #' @param x A function, raw expression, or formula to interpolate.
 #'   When interpolating a formula, other formulas are treated as
 #'   promises (see section on tidy evaluation).
-#' @return For \code{f_quote()}, a formula (which contains information
+#' @return For \code{tidy_quote()}, a formula (which contains information
 #'   about where to find the objects mentioned in the formula). For
 #'   \code{expr_quote()}, a raw quoted expression.
 #' @export
 #' @aliases UQ UQE UQF UQS
 #' @examples
 #' # When a tidyeval function captures an argument, it is wrapped in a
-#' # formula and interpolated. f_quote() is a simple wrapper around
+#' # formula and interpolated. tidy_quote() is a simple wrapper around
 #' # arg_capture() and as such is the fundamental tidyeval
 #' # function. It allows you to quote an expression and interpolate
 #' # unquoted parts:
-#' f_quote(foo(bar))
-#' f_quote(!! 1 + 2)
-#' f_quote(paste0(!! letters[1:2], "foo"))
+#' tidy_quote(foo(bar))
+#' tidy_quote(!! 1 + 2)
+#' tidy_quote(paste0(!! letters[1:2], "foo"))
 #'
 #' # Alternatively you can interpolate a formula that is already
 #' # constructed:
@@ -118,12 +118,12 @@
 #' # function It must evaluate to a list
 #' args <- list(1:10, na.rm = TRUE)
 #' interp(~mean(!!! args))
-#' f_quote(mean( UQS(args) ))
+#' tidy_quote(mean( UQS(args) ))
 #'
 #' # You can combine the two
 #' var <- quote(xyz)
 #' extra_args <- list(trim = 0.9, na.rm = TRUE)
-#' f_quote(mean(UQ(var) , UQS(extra_args)))
+#' tidy_quote(mean(UQ(var) , UQS(extra_args)))
 #' interp(~mean(!!var , !!!extra_args))
 #'
 #'
@@ -147,7 +147,7 @@
 #' # But you can also inline it in another expression before
 #' # evaluation:
 #' f2 <- local({ bar <- "bar"; ~toupper(bar)})
-#' f3 <- f_quote(paste(!!f1, !!f2, "!"))
+#' f3 <- tidy_quote(paste(!!f1, !!f2, "!"))
 #' f3
 #'
 #' # f_eval() treats one-sided formulas like promises to be evaluated:
@@ -162,35 +162,35 @@
 #' # call thanks to the UQE() operator:
 #' nse_function <- function(arg) substitute(arg)
 #' var <- local(~foo(bar))
-#' f_quote(nse_function(UQ(var)))
-#' f_quote(nse_function(UQE(var)))
+#' tidy_quote(nse_function(UQ(var)))
+#' tidy_quote(nse_function(UQE(var)))
 #'
 #' # This is equivalent to unquoting and taking the RHS:
-#' f_quote(nse_function(!! f_rhs(var)))
+#' tidy_quote(nse_function(!! f_rhs(var)))
 #'
 #' # One of the most important old-style NSE function is the dollar
 #' # operator. You need to use UQE() for subsetting with dollar:
 #' var <- ~cyl
-#' f_quote(mtcars$UQE(var))
+#' tidy_quote(mtcars$UQE(var))
 #'
 #' # `!!`() is also treated as a shortcut. It is meant for situations
 #' # where the bang operator would not parse, such as subsetting with
 #' # $. Since that's its main purpose, we've made it a shortcut for
 #' # UQE() rather than UQ():
 #' var <- ~cyl
-#' f_quote(mtcars$`!!`(var))
+#' tidy_quote(mtcars$`!!`(var))
 #'
 #'
 #' # Sometimes you would like to unquote an object containing a
 #' # formula but include it as is rather than treating it as a
 #' # promise. You can use UQF() for this purpose:
 #' var <- ~letters[1:2]
-#' f <- f_quote(list(!!var, UQF(var)))
+#' f <- tidy_quote(list(!!var, UQF(var)))
 #' f
 #' f_eval(f)
 #'
 #' # Note that two-sided formulas are never treated as fpromises:
-#' f_eval(f_quote(a ~ b))
+#' f_eval(tidy_quote(a ~ b))
 #'
 #'
 #' # Finally, you can also interpolate a closure's body. This is
@@ -206,16 +206,16 @@
 #' fn
 #' fn("foo")
 #' @useDynLib rlang interp_
-f_quote <- function(expr) {
+tidy_quote <- function(expr) {
   arg_capture(expr)
 }
-#' @rdname f_quote
+#' @rdname tidy_quote
 #' @export
 expr_quote <- function(expr) {
   expr <- substitute(expr)
   .Call(interp_, expr, parent.frame(), FALSE)
 }
-#' @rdname f_quote
+#' @rdname tidy_quote
 #' @export
 interp <- function(x) {
   if (is_formula(x)) {
@@ -230,12 +230,12 @@ interp <- function(x) {
 
 
 #' @export
-#' @rdname f_quote
+#' @rdname tidy_quote
 UQ <- function(x) {
   x
 }
 #' @export
-#' @rdname f_quote
+#' @rdname tidy_quote
 UQE <- function(x) {
   if (is_formula(x)) {
     f_rhs(x)
@@ -244,13 +244,13 @@ UQE <- function(x) {
   }
 }
 #' @export
-#' @rdname f_quote
+#' @rdname tidy_quote
 UQF <- function(x) {
   x
 }
 
 #' @export
-#' @rdname f_quote
+#' @rdname tidy_quote
 UQS <- function(x) {
   if (is_pairlist(x)) {
     x

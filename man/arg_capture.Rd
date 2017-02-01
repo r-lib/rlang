@@ -53,7 +53,7 @@ within formulas.
 
   In addition, note that \code{arg_capture()} always interpolates
   its input to facilitate programming with NSE functions. See
-  \code{\link{interp}()} and \code{\link{f_quote}()}.
+  \code{\link{interp}()} and \code{\link{tidy_quote}()}.
 }
 
 \section{Forwarding arguments}{

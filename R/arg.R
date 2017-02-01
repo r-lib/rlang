@@ -35,7 +35,7 @@
 #'
 #'   In addition, note that \code{arg_capture()} always interpolates
 #'   its input to facilitate programming with NSE functions. See
-#'   \code{\link{interp}()} and \code{\link{f_quote}()}.
+#'   \code{\link{interp}()} and \code{\link{tidy_quote}()}.
 #'
 #' @section Forwarding arguments:
 #'
@@ -343,8 +343,8 @@ fml_default <- function(expr, fn) {
 #' @export
 #' @examples
 #' # The missing argument can be useful to generate calls
-#' f_quote(f(x = !! arg_missing()))
-#' f_quote(f(x = !! NULL))
+#' tidy_quote(f(x = !! arg_missing()))
+#' tidy_quote(f(x = !! NULL))
 #'
 #'
 #' # It is perfectly valid to generate and assign the missing
