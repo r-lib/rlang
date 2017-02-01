@@ -241,6 +241,10 @@ test_that("call_args() and call_args_names()", {
 # call_stack() consolidation -----------------------------------------
 
 test_that("Recall() does not mess up call history", {
+  if (utils::packageVersion("base") < "3.3.0") {
+    skip("test for Recall() depends on internal implementation")
+  }
+
   counter <- 2L
   fn <- function(x) {
     if (counter) {

@@ -83,6 +83,9 @@ lapply_around <- function(.x, .neighbour = c("right", "left"), .f, ...) {
 pluck <- function(.x, .f) {
   lapply(.x, `[[`, .f)
 }
+pluck_int <- function(.x, .f) {
+  vapply_int(.x, `[[`, .f)
+}
 keep <- function(.x, .f, ...) {
   .x[vapply_lgl(.x, .f, ...)]
 }
