@@ -86,7 +86,7 @@ modify <- function(.x, ..., .elts = list()) {
   args <- c(list(...), .elts)
 
   args_nms <- names(args)
-  exists <- has_names(args) & args_nms %in% names(out)
+  exists <- has_name(args) & args_nms %in% names(out)
 
   for (nm in args_nms[exists]) {
     out[[nm]] <- args[[nm]]
