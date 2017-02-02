@@ -96,7 +96,7 @@ shortcuts for unquoting and unquote-splicing (see examples).
 }
 
 \section{Theory}{
- Formally, \code{tidy_quote()} and \code{expr_quote()}
+ Formally, \code{tidy_quote()} and \code{tidy_quote_expr()}
   are quasiquote functions, \code{UQ()} is the unquote operator,
   and \code{UQS()} is the unquote splice operator. These terms
   have a rich history in LISP, and live on in modern languages like
@@ -208,7 +208,7 @@ tidy_eval(f)
 tidy_eval(tidy_quote(a ~ b))
 }
 \seealso{
-\code{\link{expr_quote}()} for quoting a raw expression
+\code{\link{tidy_quote_expr}()} for quoting a raw expression
   with quasiquotation, and \code{\link{tidy_interp}()} for
   unquoting an already quoted expression or an existing formula.
 }

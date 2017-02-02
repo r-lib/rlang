@@ -61,7 +61,7 @@
 #'   modification and tidy evaluation of formulas provide a powerful
 #'   mechanism for metaprogramming and programming with DSLs.
 #'
-#' @section Theory: Formally, \code{tidy_quote()} and \code{expr_quote()}
+#' @section Theory: Formally, \code{tidy_quote()} and \code{tidy_quote_expr()}
 #'   are quasiquote functions, \code{UQ()} is the unquote operator,
 #'   and \code{UQS()} is the unquote splice operator. These terms
 #'   have a rich history in LISP, and live on in modern languages like
@@ -73,7 +73,7 @@
 #'   environment and inlined in the expression.
 #' @return A formula whose right-hand side contains the quoted
 #'   expression supplied as argument.
-#' @seealso \code{\link{expr_quote}()} for quoting a raw expression
+#' @seealso \code{\link{tidy_quote_expr}()} for quoting a raw expression
 #'   with quasiquotation, and \code{\link{tidy_interp}()} for
 #'   unquoting an already quoted expression or an existing formula.
 #' @export
@@ -185,6 +185,57 @@
 tidy_quote <- function(expr) {
   tidy_capture(expr)
 }
+
+#' Untidy quotation of an expression.
+#'
+#' Unlike \code{\link{tidy_quote}()}, \code{tidy_quote_expr()} returns a
+#' raw expression instead of a formula. As a result,
+#' \code{tidy_quote_expr()} is untidy in the sense that it does not
+#' preserve scope information for the quoted expression. It can still
+#' be useful in certain cases. Compared to base R's
+#' \code{\link[base]{quote}()}, it unquotes the expression on capture,
+#' and compared to \code{\link{tidy_quote}()}, the quoted expression
+#' is directly compatible with the base R \code{\link[base]{eval}()}
+#' function.
+#'
+#' @inheritParams tidy_quote
+#' @seealso See \code{\link{tidy_quote}()} and
+#'   \code{\link{tidy_interp}()} for more explanation on tidy
+#'   quotation.
+#' @return The raw expression supplied as argument.
+#' @export
+#' @examples
+#' # The advantage of tidy_quote_expr() over quote() is that it unquotes on
+#' # capture:
+#' tidy_quote_expr(list(1, !! 3 + 10))
+#'
+#' # Unquoting can be especially useful for successive transformation
+#' # of a captured expression:
+#' (expr <- quote(foo(bar)))
+#' (expr <- tidy_quote_expr(inner(!! expr, arg1)))
+#' (expr <- tidy_quote_expr(outer(!! expr, !!! lapply(letters[1:3], as.symbol))))
+#'
+#' # Unlike tidy_quote(), tidy_quote_expr() produces expressions that can
+#' # be evaluated with base::eval():
+#' e <- quote(letters)
+#' e <- tidy_quote_expr(toupper(!!e))
+#' eval(e)
+#'
+#' # Be careful if you unquote a formula-quote: you need to take the
+#' # RHS (and lose the scope information) to evaluate with eval():
+#' f <- ~letters
+#' e <- tidy_quote_expr(toupper(!! f_rhs(f)))
+#' eval(e)
+#'
+#' # However it's fine to unquote formulas if you evaluate with tidy_eval():
+#' f <- ~letters
+#' e <- tidy_quote_expr(toupper(!! f))
+#' tidy_eval(e)
+tidy_quote_expr <- function(expr) {
+  expr <- substitute(expr)
+  .Call(interp_, expr, parent.frame())
+}
+
 
 #' Process unquote operators in a captured expression.
 #'

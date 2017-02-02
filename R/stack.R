@@ -639,7 +639,7 @@ return_from <- function(frame, value = NULL) {
   }
 
   exit_env <- env(frame)
-  expr <- expr_quote(return(!!value))
+  expr <- tidy_quote_expr(return(!!value))
   expr_eval(expr, exit_env)
 }
 
