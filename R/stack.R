@@ -39,7 +39,7 @@
 #' the global frame. That is consistent with the \code{_stack()}
 #' functions which return the global frame as well. This way,
 #' \code{call_stack(call_depth())} is the same as
-#' \code{frame_global()}.
+#' \code{global_frame()}.
 #'
 #' @param n The number of frames to go back in the stack.
 #' @param clean Whether to post-process the call stack to clean
@@ -80,17 +80,17 @@
 #'   purrr::transpose(stack)$expr
 #' }
 #'
-#' # frame_current() is an alias for eval_frame(1)
-#' fn <- function() list(current = frame_current(), first = eval_frame(1))
+#' # current_frame() is an alias for eval_frame(1)
+#' fn <- function() list(current = current_frame(), first = eval_frame(1))
 #' fn()
 #'
-#' # While frame_current() is the top of the stack, frame_global() is
+#' # While current_frame() is the top of the stack, global_frame() is
 #' # the bottom:
 #' fn <- function() {
 #'   n <- eval_depth()
 #'   eval_frame(n)
 #' }
-#' identical(fn(), frame_global())
+#' identical(fn(), global_frame())
 #'
 #'
 #' # eval_stack() returns a stack with all intervening frames. You can
@@ -147,7 +147,7 @@ is_frame <- function(x) {
 
 #' @rdname stack
 #' @export
-frame_global <- function() {
+global_frame <- function() {
   new_frame(list(
     pos = 0L,
     caller_pos = NA_integer_,
@@ -159,7 +159,7 @@ frame_global <- function() {
 }
 #' @rdname stack
 #' @export
-frame_current <- function() {
+current_frame <- function() {
   eval_frame(2)
 }
 
@@ -172,7 +172,7 @@ eval_frame <- function(n = 1) {
   if (pos < 0L) {
     stop("not that many frames on the stack", call. = FALSE)
   } else if (pos == 0L) {
-    frame_global()
+    global_frame()
   } else {
     new_frame(list(
       pos = pos,
@@ -264,7 +264,7 @@ call_frame <- function(n = 1, clean = TRUE) {
   pos <- trail[n]
 
   if (identical(pos, 0L)) {
-    return(frame_global())
+    return(global_frame())
   }
 
   frame <- new_frame(list(
@@ -321,7 +321,7 @@ eval_stack <- function(n = NULL, trim = 0) {
   stack <- lapply(stack, new_frame)
 
   if (is.null(n) || (length(n) && n > length(stack))) {
-    stack <- c(stack, list(frame_global()))
+    stack <- c(stack, list(global_frame()))
   }
   if (trim > 0) {
     stack <- stack_trim(stack, n = trim + 1)
@@ -389,7 +389,7 @@ call_stack <- function(n = NULL, clean = TRUE) {
   }
 
   if (trail[length(trail)] == 0L) {
-    stack <- c(stack, list(frame_global()))
+    stack <- c(stack, list(global_frame()))
   }
 
   structure(stack, class = c("call_stack", "stack"))
@@ -442,7 +442,7 @@ is_call_stack <- function(x) inherits(x, "call_stack")
   structure(NextMethod(), class = class(x))
 }
 
-# Handles frame_global() whose `caller_pos` is NA
+# Handles global_frame() whose `caller_pos` is NA
 sys_frame <- function(n) {
   if (is.na(n)) {
     NULL
