@@ -143,14 +143,14 @@ unguard_formula <- function(...) {
 #' powerful alternative is to call a function with a list of arguments
 #' assembled programmatically. This is the purpose of \code{invoke()}.
 #'
-#' \code{invoke()} is basically a version of
+#' Technically, \code{invoke()} is basically a version of
 #' \code{\link[base]{do.call}()} that creates cleaner call traces
 #' because it does not inline the function and the arguments in the
 #' call (see examples). To achieve this, \code{invoke()} creates a
 #' child environment of \code{.env} with \code{.fn} and all arguments
-#' bound to new symbols (see \code{\link{env_bury}()}). It then builds
-#' a call with those symbols and evaluates it in a forged promise (see
-#' \code{\link{with_env}()}).
+#' bound to new symbols (see \code{\link{env_bury}()}). It then uses
+#' the same strategy as \code{\link{expr_eval}()} to evaluate with
+#' minimal noise.
 #'
 #' @param .fn A function to invoke. Can be a function object or the
 #'   name of a function in scope of \code{.env}.
@@ -191,13 +191,11 @@ invoke <- function(.fn, .args = list(), ...,
   args <- c(.args, list(...))
 
   if (is_false(.bury) || !length(args)) {
-    # Evaluate with a promise rather than do.call() to keep eval stack clean
     if (is_scalar_character(.fn)) {
       .fn <- env_get(.env, .fn, inherit = TRUE)
     }
     call <- as.call(c(.fn, args))
-    env_assign_lazily_(env(), "promise", call, .env)
-    return(promise)
+    return(.Call(rlang_eval, call, .env))
   }
 
 
@@ -219,6 +217,5 @@ invoke <- function(.fn, .args = list(), ...,
   }
 
   call <- as.call(c(as_name(.fn), .args))
-  env_assign_lazily_(env(), "promise", call, .env)
-  promise
+  .Call(rlang_eval, call, .env)
 }
