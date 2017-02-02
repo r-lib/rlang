@@ -3,11 +3,11 @@ context("call")
 # Creation ----------------------------------------------------------------
 
 test_that("character vector must be length 1", {
-  expect_error(call_new(letters), "must be length 1")
+  expect_error(new_call(letters), "must be length 1")
 })
 
 test_that("args can be specified individually or as list", {
-  out <- call_new("f", a = 1, .args = list(b = 2))
+  out <- new_call("f", a = 1, .args = list(b = 2))
   expect_equal(out, quote(f(a = 1, b = 2)))
 })
 

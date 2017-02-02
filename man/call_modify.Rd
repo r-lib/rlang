@@ -48,6 +48,6 @@ f <- function(bool = TRUE) call_modify(.args = list(bool = FALSE))
 f()
 }
 \seealso{
-call_new
+new_call
 }
 

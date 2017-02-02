@@ -13,9 +13,9 @@ f_new <- function(rhs, lhs = NULL, env = parent.frame()) {
   }
 
   if (is.null(lhs)) {
-    f <- call_new("~", rhs)
+    f <- new_call("~", rhs)
   } else {
-    f <- call_new("~", lhs, rhs)
+    f <- new_call("~", lhs, rhs)
   }
 
   structure(f, class = "formula", .Environment = env)

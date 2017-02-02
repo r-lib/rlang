@@ -239,14 +239,14 @@ call_match_args <- function(args_nms, fmls_nms) {
 #' @export
 #' @examples
 #' # fn can either be a string, a symbol or a call
-#' call_new("f", a = 1)
-#' call_new(quote(f), a = 1)
-#' call_new(quote(f()), a = 1)
+#' new_call("f", a = 1)
+#' new_call(quote(f), a = 1)
+#' new_call(quote(f()), a = 1)
 #'
 #' #' Can supply arguments individually or in a list
-#' call_new(quote(f), a = 1, b = 2)
-#' call_new(quote(f), .args = list(a = 1, b = 2))
-call_new <- function(.fn, ..., .args = list()) {
+#' new_call(quote(f), a = 1, b = 2)
+#' new_call(quote(f), .args = list(a = 1, b = 2))
+new_call <- function(.fn, ..., .args = list()) {
   if (is.character(.fn)) {
     if (length(.fn) != 1) {
       stop("Character `.fn` must be length 1", call. = FALSE)
@@ -270,7 +270,7 @@ call_new <- function(.fn, ..., .args = list()) {
 #' @param ...,.args Named expressions (constants, names or
 #'   calls) used to modify the call. Use \code{NULL} to remove
 #'   arguments.
-#' @seealso call_new
+#' @seealso new_call
 #' @export
 #' @examples
 #' call <- quote(mean(x, na.rm = TRUE))
