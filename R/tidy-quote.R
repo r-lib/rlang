@@ -69,6 +69,8 @@
 #'   \href{Racket}{https://docs.racket-lang.org/reference/quasiquote.html}.
 #'
 #' @param expr An expression.
+#' @param x An expression to unquote. It is evaluated in the current
+#'   environment and inlined in the expression.
 #' @return A formula whose right-hand side contains the quoted
 #'   expression supplied as argument.
 #' @seealso \code{\link{expr_quote}()} for quoting a raw expression
@@ -195,8 +197,6 @@ tidy_quote <- function(expr) {
 #' quasiquotation functionality as NSE functions.
 #'
 #' @param x A function, raw expression, or formula to interpolate.
-#'   When interpolating a formula, other formulas are treated as
-#'   promises (see section on tidy evaluation).
 #' @export
 #' @examples
 #' # All tidy NSE functions like tidy_quote() unquote on capture:
@@ -227,7 +227,7 @@ tidy_quote <- function(expr) {
 #' })
 #' fn
 #' fn("foo")
-tidy_interp <- function(x, promised = NULL) {
+tidy_interp <- function(x) {
   if (is_formula(x)) {
     f_rhs(x) <- .Call(interp_, f_rhs(x), f_env(x))
   } else if (is_closure(x)) {

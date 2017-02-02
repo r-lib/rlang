@@ -20,6 +20,9 @@ UQS(x)
 }
 \arguments{
 \item{expr}{An expression.}
+
+\item{x}{An expression to unquote. It is evaluated in the current
+environment and inlined in the expression.}
 }
 \value{
 A formula whose right-hand side contains the quoted

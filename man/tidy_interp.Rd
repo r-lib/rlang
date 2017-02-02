@@ -4,12 +4,10 @@
 \alias{tidy_interp}
 \title{Process unquote operators in a captured expression.}
 \usage{
-tidy_interp(x, promised = NULL)
+tidy_interp(x)
 }
 \arguments{
-\item{x}{A function, raw expression, or formula to interpolate.
-When interpolating a formula, other formulas are treated as
-promises (see section on tidy evaluation).}
+\item{x}{A function, raw expression, or formula to interpolate.}
 }
 \description{
 While all capturing functions in the tidy evaluation framework
