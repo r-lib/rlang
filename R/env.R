@@ -406,34 +406,34 @@ env_define <- function(env = caller_env(), ...) {
 #'
 #' @inheritParams env_assign
 #' @param expr An expression to capture for
-#'   \code{env_assign_lazily()}, or a captured expression (either
+#'   \code{env_assign_promise()}, or a captured expression (either
 #'   quoted or a formula) for the standard evaluation version
-#'   \code{env_assign_lazily_()}. This expression is used to create a
+#'   \code{env_assign_promise_()}. This expression is used to create a
 #'   promise in \code{env}.
 #' @param eval_env The environment where the promise will be evaluated
 #'   when the promise gets forced. If \code{expr} is a formula, its
 #'   environment is used instead. If not a formula and \code{eval_env}
 #'   is not supplied, the promise is evaluated in the environment
-#'   where \code{env_assign_lazily()} (or the underscore version) was
+#'   where \code{env_assign_promise()} (or the underscore version) was
 #'   called.
 #' @seealso \code{\link{env_assign}()}
 #' @export
 #' @examples
 #' env <- env_new()
-#' env_assign_lazily(env, "name", cat("forced!\n"))
+#' env_assign_promise(env, "name", cat("forced!\n"))
 #' env$name
 #'
 #' # Use the standard evaluation version with quoted expressions:
 #' f <- ~message("forced!")
-#' env_assign_lazily_(env, "name2", f)
+#' env_assign_promise_(env, "name2", f)
 #' env$name2
-env_assign_lazily <- function(env = caller_env(), nm, expr, eval_env = NULL) {
+env_assign_promise <- function(env = caller_env(), nm, expr, eval_env = NULL) {
   f <- as_quoted_f(substitute(expr), eval_env)
-  env_assign_lazily_(env, nm, f)
+  env_assign_promise_(env, nm, f)
 }
-#' @rdname env_assign_lazily
+#' @rdname env_assign_promise
 #' @export
-env_assign_lazily_ <- function(env = caller_env(), nm, expr, eval_env = NULL) {
+env_assign_promise_ <- function(env = caller_env(), nm, expr, eval_env = NULL) {
   f <- as_quoted_f(expr, eval_env)
 
   args <- list(

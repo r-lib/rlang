@@ -41,23 +41,23 @@ test_that("env_tail() climbs env chain", {
 test_that("promises are created", {
   env <- env_new()
 
-  env_assign_lazily(env, "foo", bar <- "bar")
+  env_assign_promise(env, "foo", bar <- "bar")
   expect_false(env_has(env(), "bar"))
 
   force(env$foo)
   expect_true(env_has(env(), "bar"))
 
   f <- ~stop("forced")
-  env_assign_lazily_(env, "stop", f)
+  env_assign_promise_(env, "stop", f)
   expect_error(env$stop, "forced")
 })
 
 test_that("lazies are evaluated in correct environment", {
   env <- env_new(base_env())
 
-  env_assign_lazily(env, "test_captured", test_captured <- letters)
-  env_assign_lazily_(env, "test_expr", quote(test_expr <- LETTERS))
-  env_assign_lazily_(env, "test_formula", ~ (test_formula <- mtcars))
+  env_assign_promise(env, "test_captured", test_captured <- letters)
+  env_assign_promise_(env, "test_expr", quote(test_expr <- LETTERS))
+  env_assign_promise_(env, "test_formula", ~ (test_formula <- mtcars))
   expect_false(any(env_has(env(), c("test_captured", "test_expr", "test_formula"))))
 
   force(env$test_captured)
@@ -72,7 +72,7 @@ test_that("lazies are evaluated in correct environment", {
 
 test_that("formula env is overridden by eval_env", {
   env <- env_new(base_env())
-  env_assign_lazily_(env, "within_env", ~ (new_within_env <- "new"), env)
+  env_assign_promise_(env, "within_env", ~ (new_within_env <- "new"), env)
   force(env$within_env)
 
   expect_false(env_has(env(), "new_within_env"))
