@@ -21,6 +21,7 @@ functions (see help for \code{\link{expr_eval}()}).
 }
 \examples{
 # with_env() is handy to create formulas with a given environment:
+env <- env_new("rlang")
 f <- with_env(env, ~new_formula())
 identical(f_env(f), env)
 

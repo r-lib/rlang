@@ -14,3 +14,6 @@ SEXP last_cons(SEXP x);
 SEXP make_formula1(SEXP rhs, SEXP env);
 int is_lang(SEXP x);
 int is_true(SEXP x);
+int is_sym(SEXP sym, const char* string);
+int is_prefixed_call(SEXP x, const char* fn);
+SEXP rlang_fun(SEXP sym);

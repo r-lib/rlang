@@ -732,7 +732,7 @@ env_caller <- function(n = 1) {
 #' @export
 #' @examples
 #' # with_env() is handy to create formulas with a given environment:
-#' env <- env_new(pkg_env("rlang"))
+#' env <- env_new("rlang")
 #' f <- with_env(env, ~new_formula())
 #' identical(f_env(f), env)
 #'

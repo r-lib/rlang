@@ -45,7 +45,7 @@
 #' tidy_eval(e)
 expr_quote <- function(expr) {
   expr <- substitute(expr)
-  .Call(interp_, expr, parent.frame(), FALSE)
+  .Call(interp_, expr, parent.frame())
 }
 
 #' Evaluate an expression in an environment.

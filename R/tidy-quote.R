@@ -197,6 +197,9 @@ tidy_quote <- function(expr) {
 #' quasiquotation functionality as NSE functions.
 #'
 #' @param x A function, raw expression, or formula to interpolate.
+#' @param env The environment in which unquoted expressions should be
+#'   evaluated. By default, the formula or closure environment if a
+#'   formula or a function, or the current environment otherwise.
 #' @export
 #' @examples
 #' # All tidy NSE functions like tidy_quote() unquote on capture:
@@ -227,17 +230,17 @@ tidy_quote <- function(expr) {
 #' })
 #' fn
 #' fn("foo")
-tidy_interp <- function(x) {
+tidy_interp <- function(x, env = NULL) {
   if (is_formula(x)) {
-    f_rhs(x) <- .Call(interp_, f_rhs(x), f_env(x))
+    f_rhs(x) <- .Call(interp_, f_rhs(x), env %||% f_env(x))
   } else if (is_closure(x)) {
-    body(x) <- .Call(interp_, body(x), fn_env(x))
+    body(x) <- .Call(interp_, body(x), env %||% fn_env(x))
   } else {
-    x <- .Call(interp_, x, parent.frame())
+    x <- .Call(interp_, x, env %||% parent.frame())
   }
+
   x
 }
-
 
 #' @export
 #' @rdname tidy_quote

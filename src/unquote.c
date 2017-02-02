@@ -22,43 +22,43 @@ int bang_level(SEXP x) {
   return 3;
 }
 
-int is_unquote(SEXP x) {
-  return
-    is_call(x, "UQ") ||
-    is_call(x, "UQE") ||
-    is_call(x, "!!");
+int is_uq_sym(SEXP x) {
+  if (TYPEOF(x) != SYMSXP)
+    return 0;
+  else
+    return is_sym(x, "UQ") || is_sym(x, "UQE") || is_sym(x, "!!");
 }
+
+int is_unquote(SEXP x) {
+  if (TYPEOF(x) != LANGSXP)
+    return false;
+
+  if (is_uq_sym(CAR(x))) {
+    return true;
+  } else if (is_prefixed_call(x, NULL)) {
+    SEXP args = CDAR(x);
+    SEXP head = CADR(args);
+    return is_uq_sym(head);
+  } else {
+    return false;
+  }
+}
+
 int is_splice(SEXP x) {
   return is_call(x, "UQS") || is_call(x, "!!!");
 }
 
-int is_prefixed_call(SEXP x, const char* fn) {
-  SEXP head = CAR(x);
-  if (!(is_call(head, "$") ||
-        is_call(head, "@") ||
-        is_call(head, "::") ||
-        is_call(head, ":::")))
-    return 0;
-
-  if (fn == NULL)
-    return 1;
-
-  SEXP args = CDAR(x);
-  SEXP sym = CADR(args);
-  return sym == Rf_install(fn);
-}
 int is_prefixed_uq(SEXP x) {
   if (!is_prefixed_call(x, NULL))
     return 0;
 
   SEXP args = CDAR(x);
   SEXP sym = CADR(args);
-  const char* nm =  CHAR(PRINTNAME(sym));
 
-  if (strcmp(nm, "!!") == 0 || strcmp(nm, "UQE") == 0) {
+  if (is_sym(sym, "!!") || is_sym(sym, "UQE")) {
     return 1;
   } else {
-    return strcmp(nm, "UQ") == 0;
+    return is_sym(sym, "UQ");
   }
 }
 
@@ -83,21 +83,22 @@ SEXP replace_triple_bang(SEXP nxt, SEXP cur) {
 }
 
 SEXP unquote_sym(SEXP sym) {
-  const char* nm = CHAR(PRINTNAME(sym));
-  if (strcmp(nm, "!!") == 0)
+  if (is_sym(sym, "!!"))
     return Rf_install("UQE");
   else
     return sym;
 }
 SEXP unquote(SEXP x, SEXP env, SEXP uq_sym) {
   uq_sym = unquote_sym(uq_sym);
-  SEXP uq_call = PROTECT(Rf_lang2(uq_sym, x));
 
+  // Inline unquote function before evaluation because even `::` might
+  // not be available in interpolation environment.
+  SEXP uq_fun = rlang_fun(uq_sym);
+
+  SEXP uq_call = PROTECT(Rf_lang2(uq_fun, x));
   SEXP res = Rf_eval(uq_call, env);
-  PROTECT_INDEX ipx;
-  PROTECT_WITH_INDEX(res, &ipx);
 
-  UNPROTECT(2);
+  UNPROTECT(1);
   return res;
 }
 

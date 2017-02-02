@@ -113,12 +113,6 @@ tidy_eval_env <- function(env = env_empty(), data = NULL) {
   # don't self-evaluate.
   eval_env$`_F` <- unguard_formula
 
-  # Make unquoting and guarding operators available even when not imported
-  eval_env$UQ <- rlang::UQ
-  eval_env$UQS <- rlang::UQS
-  eval_env$UQE <- rlang::UQE
-  eval_env$UQF <- rlang::UQF
-
   eval_env
 }
 

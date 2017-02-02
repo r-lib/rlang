@@ -4,10 +4,14 @@
 \alias{tidy_interp}
 \title{Process unquote operators in a captured expression.}
 \usage{
-tidy_interp(x)
+tidy_interp(x, env = NULL)
 }
 \arguments{
 \item{x}{A function, raw expression, or formula to interpolate.}
+
+\item{env}{The environment in which unquoted expressions should be
+evaluated. By default, the formula or closure environment if a
+formula or a function, or the current environment otherwise.}
 }
 \description{
 While all capturing functions in the tidy evaluation framework

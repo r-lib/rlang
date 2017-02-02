@@ -8,7 +8,7 @@
 #' f_new(quote(a))
 #' f_new(quote(a), quote(b))
 f_new <- function(rhs, lhs = NULL, env = parent.frame()) {
-  if (!is.environment(env)) {
+  if (!is.environment(env) && !is_null(env)) {
     stop("`env` must be an environment", call. = FALSE)
   }
 
@@ -18,11 +18,7 @@ f_new <- function(rhs, lhs = NULL, env = parent.frame()) {
     f <- call_new("~", lhs, rhs)
   }
 
-  structure(
-    f,
-    class = "formula",
-    .Environment = env
-  )
+  structure(f, class = "formula", .Environment = env)
 }
 
 #' Get/set formula components.

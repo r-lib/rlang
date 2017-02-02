@@ -36,6 +36,13 @@ test_that("unquote operators are always in scope", {
   expect_identical(tidy_interp(f), with_env(env, ~"bar"))
 })
 
+test_that("can interpolate in specific env", {
+  foo <- "bar"
+  env <- env_new(NULL, list(foo = "foo"))
+  expect_identical(tidy_interp(~UQ(foo)), ~"bar")
+  expect_identical(tidy_interp(~UQ(foo), env), ~"foo")
+})
+
 
 # UQ ----------------------------------------------------------------------
 
