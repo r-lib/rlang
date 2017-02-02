@@ -56,6 +56,12 @@ test_that("can qualify operators with namespace", {
   expect_identical(tidy_quote(other::UQF(~foo)), tidy_quote(other::UQF(~foo)))
 })
 
+test_that("unquoting is frame-consistent", {
+  defun <- quote(!! function() NULL)
+  env <- env_new("base")
+  expect_identical(fn_env(tidy_interp(defun, env)), env)
+})
+
 
 # UQ ----------------------------------------------------------------------
 
