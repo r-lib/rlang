@@ -180,7 +180,7 @@ env_parent <- function(env = env_caller(), n = 1) {
 
   while (n > 0) {
     if (identical(env_, env_empty())) {
-      stop("Not enough environments in scope", call. = FALSE)
+      return(env_)
     }
     n <- n - 1
     env_ <- parent.env(env_)
