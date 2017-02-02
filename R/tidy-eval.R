@@ -76,6 +76,8 @@ tidy_eval <- function(f, data = NULL) {
   }
 
   env <- tidy_eval_env(env, data)
+  on.exit(tidy_eval_env_cleanup(env))
+
   .Call(rlang_eval, expr, env)
 }
 
@@ -88,10 +90,30 @@ tidy_eval <- function(f, data = NULL) {
 #' \code{\link{tidy_eval}()} and \code{\link{tidy_quote}()} for more
 #' information.
 #'
+#' Once an expression has been evaluated in the tidy environment, it's
+#' a good idea to clean up the definitions that make self-evaluation
+#' of formulas possible \code{tidy_eval_env_cleanup()}. Otherwise your
+#' users may face unexpected results in specific corner cases (see
+#' examples).
+#'
 #' @param env The original scope.
 #' @param data Additional data to put in scope.
 #' @export
-tidy_eval_env <- function(env = env_empty(), data = NULL) {
+#' @examples
+#' # Evaluating in a tidy evaluation environment enables all tidy
+#' # features:
+#' env <- tidy_eval_env(data = mtcars)
+#' eval(quote(list(.data$cyl, ~letters)), env)
+#'
+#' # However you need to cleanup the environment after
+#' # evaluation. Otherwise the leftover definitions for self-evaluation
+#' # of formulas might cause unexpected results:
+#' fn <- eval(quote(function() ~letters), env)
+#' fn()
+#'
+#' tidy_eval_env_cleanup(env)
+#' fn()
+tidy_eval_env <- function(env = env_base(), data = NULL) {
   data_src <- data_source(data)
 
   if (!length(data)) {
@@ -113,6 +135,13 @@ tidy_eval_env <- function(env = env_empty(), data = NULL) {
   # don't self-evaluate.
   eval_env$`_F` <- unguard_formula
 
+  eval_env
+}
+#' @rdname tidy_eval_env
+#' @param eval_env A tidy evaluation env to clean up.
+#' @export
+tidy_eval_env_cleanup <- function(eval_env) {
+  env_unbind(eval_env, c("~", "_F"))
   eval_env
 }
 

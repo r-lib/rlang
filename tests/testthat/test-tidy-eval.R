@@ -161,6 +161,13 @@ test_that("evaluating a side preserves the other side", {
   expect_identical(tidy_eval_rhs(1 + 2 ~ 1 + 2), 1 + 2 ~ 3)
 })
 
+test_that("evaluation env is cleaned up", {
+  f <- local(~function() list(f = ~letters, env = environment()))
+  fn <- tidy_eval(f)
+  out <- fn()
+  expect_identical(out$f, f_new(quote(letters), env = out$env))
+})
+
 
 context("data_source") # ---------------------------------------------
 

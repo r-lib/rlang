@@ -2,14 +2,19 @@
 % Please edit documentation in R/tidy-eval.R
 \name{tidy_eval_env}
 \alias{tidy_eval_env}
+\alias{tidy_eval_env_cleanup}
 \title{Create a tidy evaluation environment.}
 \usage{
-tidy_eval_env(env = env_empty(), data = NULL)
+tidy_eval_env(env = env_base(), data = NULL)
+
+tidy_eval_env_cleanup(eval_env)
 }
 \arguments{
 \item{env}{The original scope.}
 
 \item{data}{Additional data to put in scope.}
+
+\item{eval_env}{A tidy evaluation env to clean up.}
 }
 \description{
 This is useful when want to use the tidy evaluation framework in
@@ -18,5 +23,27 @@ elements of \code{data} in scope, the \code{.env} and \code{.data}
 pronouns, and treats formulas as self-evaluating promises. See
 \code{\link{tidy_eval}()} and \code{\link{tidy_quote}()} for more
 information.
+}
+\details{
+Once an expression has been evaluated in the tidy environment, it's
+a good idea to clean up the definitions that make self-evaluation
+of formulas possible \code{tidy_eval_env_cleanup()}. Otherwise your
+users may face unexpected results in specific corner cases (see
+examples).
+}
+\examples{
+# Evaluating in a tidy evaluation environment enables all tidy
+# features:
+env <- tidy_eval_env(data = mtcars)
+eval(quote(list(.data$cyl, ~letters)), env)
+
+# However you need to cleanup the environment after
+# evaluation. Otherwise the leftover definitions for self-evaluation
+# of formulas might cause unexpected results:
+fn <- eval(quote(function() ~letters), env)
+fn()
+
+tidy_eval_env_cleanup(env)
+fn()
 }
 
