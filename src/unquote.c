@@ -28,43 +28,22 @@ int is_uq_sym(SEXP x) {
   else
     return is_sym(x, "UQ") || is_sym(x, "UQE") || is_sym(x, "!!");
 }
-
-int is_unquote(SEXP x) {
-  if (TYPEOF(x) != LANGSXP)
-    return false;
-
-  if (is_uq_sym(CAR(x))) {
-    return true;
-  } else if (is_prefixed_call(x, NULL)) {
-    SEXP args = CDAR(x);
-    SEXP head = CADR(args);
-    return is_uq_sym(head);
-  } else {
-    return false;
-  }
-}
-
-int is_splice(SEXP x) {
-  return is_call(x, "UQS") || is_call(x, "!!!");
-}
-
-int is_prefixed_uq(SEXP x) {
-  if (!is_prefixed_call(x, NULL))
+int is_uqf_sym(SEXP x) {
+  if (TYPEOF(x) != SYMSXP)
     return 0;
-
-  SEXP args = CDAR(x);
-  SEXP sym = CADR(args);
-
-  if (is_sym(sym, "!!") || is_sym(sym, "UQE")) {
-    return 1;
-  } else {
-    return is_sym(sym, "UQ");
-  }
+  else
+    return is_sym(x, "UQF");
+}
+int is_splice_sym(SEXP x) {
+  if (TYPEOF(x) != SYMSXP)
+    return 0;
+  else
+    return is_sym(x, "UQS") || is_sym(x, "!!!");
 }
 
 SEXP replace_double_bang(SEXP x) {
   int bang = bang_level(x);
-  if (bang == 3 || is_splice(x))
+  if (bang == 3 || is_any_call(x, is_splice_sym))
     Rf_error("Cannot splice at top-level");
   else if (bang == 2) {
     x = CADR(x);
@@ -82,14 +61,17 @@ SEXP replace_triple_bang(SEXP nxt, SEXP cur) {
   return nxt;
 }
 
-SEXP unquote_sym(SEXP sym) {
-  if (is_sym(sym, "!!"))
-    return Rf_install("UQE");
-  else
-    return sym;
+// Change call name to prevent the formula from self-evaluating
+SEXP guard_formula(SEXP f) {
+  SEXP guard = PROTECT(LCONS(Rf_install("_F"), CDR(f)));
+  Rf_copyMostAttrib(f, guard);
+  UNPROTECT(1);
+  return guard;
 }
+
 SEXP unquote(SEXP x, SEXP env, SEXP uq_sym) {
-  uq_sym = unquote_sym(uq_sym);
+  if (is_sym(uq_sym, "!!"))
+    uq_sym = Rf_install("UQE");
 
   // Inline unquote function before evaluation because even `::` might
   // not be available in interpolation environment.
@@ -101,8 +83,31 @@ SEXP unquote(SEXP x, SEXP env, SEXP uq_sym) {
   UNPROTECT(1);
   return res;
 }
-
+SEXP unquote_prefixed_uq(SEXP x, SEXP env) {
+  SEXP uq_sym = CADR(CDAR(x));
+  SEXP unquoted = PROTECT(unquote(CADR(x), env, uq_sym));
+  SETCDR(CDAR(x), CONS(unquoted, R_NilValue));
+  UNPROTECT(1);
+  if (is_rlang_prefixed(x, NULL))
+    x = CADR(CDAR(x));
+  else
+    x = CAR(x);
+  return x;
+}
+SEXP unquote_prefixed_uqf(SEXP x, SEXP env) {
+  SEXP uqf_sym = CADR(CDAR(x));
+  SEXP uqf_fun = rlang_fun(uqf_sym);
+  SEXP uqf_call = PROTECT(Rf_lang2(uqf_fun, CADR(x)));
+  SEXP unquoted = PROTECT(Rf_eval(uqf_call, env));
+  SETCDR(CDAR(x), CONS(unquoted, R_NilValue));
+  x = CADR(CDAR(x));
+  x = guard_formula(x);
+  UNPROTECT(2);
+  return x;
+}
 SEXP splice_nxt(SEXP cur, SEXP nxt, SEXP env) {
+  SETCAR(CAR(nxt), rlang_fun(Rf_install("UQS")));
+
   // UQS() does error checking and returns a pair list
   SEXP args_lsp = PROTECT(Rf_eval(CAR(nxt), env));
 
@@ -115,14 +120,6 @@ SEXP splice_nxt(SEXP cur, SEXP nxt, SEXP env) {
   return cur;
 }
 
-// Change call name to prevent the formula from self-evaluating
-SEXP guard_formula(SEXP f) {
-  SEXP guard = PROTECT(LCONS(Rf_install("_F"), CDR(f)));
-  Rf_copyMostAttrib(f, guard);
-  UNPROTECT(1);
-  return guard;
-}
-
 SEXP interp_walk(SEXP x, SEXP env)  {
   if (!Rf_isLanguage(x) || (is_formula(x)))
     return x;
@@ -133,15 +130,13 @@ SEXP interp_walk(SEXP x, SEXP env)  {
   x = replace_double_bang(x);
 
   // Deal with unquoting
-  if (is_prefixed_uq(x)) {
-    SEXP uq_sym = CADR(CDAR(x));
-    SEXP unquoted = PROTECT(unquote(CADR(x), env, uq_sym));
-    SETCDR(CDAR(x), CONS(unquoted, R_NilValue));
-    UNPROTECT(1);
-    x = CAR(x);
-  } else if (is_unquote(x)) {
+  if (is_prefixed_call(x, is_uq_sym)) {
+    REPROTECT(x = unquote_prefixed_uq(x, env), ipx);
+  } else if (is_any_call(x, is_uq_sym)) {
     SEXP uq_sym = CAR(x);
     REPROTECT(x = unquote(CADR(x), env, uq_sym), ipx);
+  } else if (is_rlang_prefixed(x, is_uqf_sym)) {
+    REPROTECT(x = unquote_prefixed_uqf(x, env), ipx);
   } else if (is_call(x, "UQF")) {
     REPROTECT(x = Rf_eval(x, env), ipx);
     REPROTECT(x = guard_formula(x), ipx);
@@ -159,7 +154,7 @@ SEXP interp_arguments(SEXP x, SEXP env) {
 
     SEXP nxt = CDR(cur);
     nxt = replace_triple_bang(nxt, cur);
-    if (is_splice(CAR(nxt))) {
+    if (is_rlang_call(CAR(nxt), is_splice_sym)) {
       cur = splice_nxt(cur, nxt, env);
       cur = nxt; // Don't interpolate unquoted stuff
     }

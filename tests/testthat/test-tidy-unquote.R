@@ -43,6 +43,19 @@ test_that("can interpolate in specific env", {
   expect_identical(tidy_interp(~UQ(foo), env), ~"foo")
 })
 
+test_that("can qualify operators with namespace", {
+  # Should remove prefix only if rlang-qualified:
+  expect_identical(tidy_quote(rlang::UQ(toupper("a"))), ~"A")
+  expect_identical(tidy_quote(list(rlang::UQS(list(a = 1, b = 2)))), ~list(a = 1, b = 2))
+  expect_identical(tidy_quote(rlang::UQF(~foo)), tidy_quote(UQF(~foo)))
+
+  # Should keep prefix otherwise:
+  expect_identical(tidy_quote(other::UQ(toupper("a"))), ~other::"A")
+  expect_identical(tidy_quote(x$UQ(toupper("a"))), ~x$"A")
+  expect_error(tidy_quote(list(other::UQS(list(a = 1, b = 2)))), "Cannot splice at top-level")
+  expect_identical(tidy_quote(other::UQF(~foo)), tidy_quote(other::UQF(~foo)))
+})
+
 
 # UQ ----------------------------------------------------------------------
 
