@@ -18,13 +18,13 @@ test_that("is_formula works", {
   expect_false(is_formula(10))
 })
 
-test_that("as_quoted_f() uses correct env", {
+test_that("as_fquote() uses correct env", {
   fn <- function(expr, env = NULL) {
-    f <- as_quoted_f(expr, env)
+    f <- as_fquote(expr, env)
     list(env = env(), f = g(f))
   }
   g <- function(expr, env = NULL) {
-    as_quoted_f(expr, env)
+    as_fquote(expr, env)
   }
   f_env <- env_new()
   f <- env_set(~expr, f_env)
