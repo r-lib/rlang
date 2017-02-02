@@ -13,25 +13,25 @@
 \alias{env_tail}
 \title{Get an environment.}
 \usage{
-env(env = env_caller())
+env(env = caller_env())
 
-\method{env}{function}(env = env_caller())
+\method{env}{function}(env = caller_env())
 
-\method{env}{formula}(env = env_caller())
+\method{env}{formula}(env = caller_env())
 
-\method{env}{frame}(env = env_caller())
+\method{env}{frame}(env = caller_env())
 
-\method{env}{environment}(env = env_caller())
+\method{env}{environment}(env = caller_env())
 
-\method{env}{default}(env = env_caller())
+\method{env}{default}(env = caller_env())
 
-\method{env}{character}(env = env_caller())
+\method{env}{character}(env = caller_env())
 
 env_new(parent = NULL, dict = list())
 
-env_parent(env = env_caller(), n = 1)
+env_parent(env = caller_env(), n = 1)
 
-env_tail(env = env_caller())
+env_tail(env = caller_env())
 }
 \arguments{
 \item{env}{An environment or an object with a S3 method for

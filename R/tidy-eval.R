@@ -222,7 +222,7 @@ unguard_formula <- function(...) {
 #' # the argument prefix:
 #' invoke(call_inspect, mtcars, .bury = c("inspect!", "col"))
 invoke <- function(.fn, .args = list(), ...,
-                   .env = env_caller(), .bury = c(".fn", "")) {
+                   .env = caller_env(), .bury = c(".fn", "")) {
   args <- c(.args, list(...))
 
   if (is_false(.bury) || !length(args)) {

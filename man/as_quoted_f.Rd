@@ -28,7 +28,7 @@ the calling environment of the function that called
 \code{as_quoted_f()} makes it straightforward to take an optional
 environment to associate with a quoted expression. An alternative
 would be to specify a default environment at each step,
-e.g. \code{env = env_caller()}. In that case however, there is no
+e.g. \code{env = caller_env()}. In that case however, there is no
 easy way of communicating the optional nature of \code{env}. This
 is necessary to avoid overriding the environment of formulas
 supplied as \code{expr} with the optional default.

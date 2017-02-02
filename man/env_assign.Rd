@@ -6,11 +6,11 @@
 \alias{env_define}
 \title{Assign objects to an environment.}
 \usage{
-env_assign(env = env_caller(), nm, x)
+env_assign(env = caller_env(), nm, x)
 
-env_bind(env = env_caller(), dict = list())
+env_bind(env = caller_env(), dict = list())
 
-env_define(env = env_caller(), ...)
+env_define(env = caller_env(), ...)
 }
 \arguments{
 \item{env}{An environment or an object with a S3 method for

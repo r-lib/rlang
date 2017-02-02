@@ -4,7 +4,7 @@
 \alias{env_get}
 \title{Get an object from an environment.}
 \usage{
-env_get(env = env_caller(), nm, inherit = FALSE)
+env_get(env = caller_env(), nm, inherit = FALSE)
 }
 \arguments{
 \item{env}{An environment or an object with a S3 method for

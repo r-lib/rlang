@@ -81,11 +81,11 @@ parse_exprs <- function(x) {
 
 #' @rdname parse_expr
 #' @export
-parse_expr_f <- function(x, env = env_caller()) {
+parse_expr_f <- function(x, env = caller_env()) {
   f_new(parse_expr(x), env = as_env(env))
 }
 #' @rdname parse_expr
 #' @export
-parse_exprs_f <- function(x, env = env_caller()) {
+parse_exprs_f <- function(x, env = caller_env()) {
   lapply(parse_exprs(x), f_new, env = as_env(env))
 }

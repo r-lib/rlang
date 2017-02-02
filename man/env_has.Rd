@@ -4,7 +4,7 @@
 \alias{env_has}
 \title{Does an environment have or see bindings?}
 \usage{
-env_has(env = env_caller(), nms, inherit = FALSE)
+env_has(env = caller_env(), nms, inherit = FALSE)
 }
 \arguments{
 \item{env}{An environment or an object with a S3 method for

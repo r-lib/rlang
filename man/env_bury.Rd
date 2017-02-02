@@ -4,7 +4,7 @@
 \alias{env_bury}
 \title{Bury bindings and define objects in new scope.}
 \usage{
-env_bury(env = env_caller(), dict = list())
+env_bury(env = caller_env(), dict = list())
 }
 \arguments{
 \item{env}{An environment or an object with a S3 method for

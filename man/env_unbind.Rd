@@ -4,7 +4,7 @@
 \alias{env_unbind}
 \title{Remove bindings from an environment.}
 \usage{
-env_unbind(env = env_caller(), nms, inherit = FALSE)
+env_unbind(env = caller_env(), nms, inherit = FALSE)
 }
 \arguments{
 \item{env}{An environment or an object with a S3 method for

@@ -11,9 +11,9 @@ parse_expr(x)
 
 parse_exprs(x)
 
-parse_expr_f(x, env = env_caller())
+parse_expr_f(x, env = caller_env())
 
-parse_exprs_f(x, env = env_caller())
+parse_exprs_f(x, env = caller_env())
 }
 \arguments{
 \item{x}{Text containing expressions to parse_expr for

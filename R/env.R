@@ -118,34 +118,34 @@
 #' enclos_env <- env_new(pkg_env("rlang"))
 #' fn <- with_env(enclos_env, function() env_parent())
 #' identical(enclos_env, fn())
-env <- function(env = env_caller()) {
+env <- function(env = caller_env()) {
   UseMethod("env")
 }
 
 #' @rdname env
 #' @export
-env.function <- function(env = env_caller()) {
+env.function <- function(env = caller_env()) {
   environment(env)
 }
 #' @rdname env
 #' @export
-env.formula <- function(env = env_caller()) {
+env.formula <- function(env = caller_env()) {
   attr(env, ".Environment")
 }
 #' @rdname env
 #' @export
-env.frame <- function(env = env_caller()) {
+env.frame <- function(env = caller_env()) {
   env$env
 }
 #' @rdname env
 #' @export
-env.environment <- function(env = env_caller()) {
+env.environment <- function(env = caller_env()) {
   env
 }
 #' @rdname env
 #' @export
-env.default <- function(env = env_caller()) {
-  # Default argument env_caller() gets dispatched here:
+env.default <- function(env = caller_env()) {
+  # Default argument caller_env() gets dispatched here:
   if (is_env(env)) {
     env
   } else {
@@ -154,7 +154,7 @@ env.default <- function(env = env_caller()) {
 }
 #' @rdname env
 #' @export
-env.character <- function(env = env_caller()) {
+env.character <- function(env = caller_env()) {
   pkg_env(env)
 }
 
@@ -175,7 +175,7 @@ env_new <- function(parent = NULL, dict = list()) {
 
 #' @rdname env
 #' @export
-env_parent <- function(env = env_caller(), n = 1) {
+env_parent <- function(env = caller_env(), n = 1) {
   env_ <- rlang::env(env)
 
   while (n > 0) {
@@ -191,7 +191,7 @@ env_parent <- function(env = env_caller(), n = 1) {
 
 #' @rdname env
 #' @export
-env_tail <- function(env = env_caller()) {
+env_tail <- function(env = caller_env()) {
   env_ <- rlang::env(env)
   next_env <- parent.env(env_)
 
@@ -373,14 +373,14 @@ env_set_parent <- function(env, new_env) {
 #' fn <- env_assign(fn, "a", "1")
 #' fn <- env_define(fn, b = "2", c = "3")
 #' fn()
-env_assign <- function(env = env_caller(), nm, x) {
+env_assign <- function(env = caller_env(), nm, x) {
   env_ <- rlang::env(env)
   base::assign(nm, x, envir = env_)
   env
 }
 #' @rdname env_assign
 #' @export
-env_bind <- function(env = env_caller(), dict = list()) {
+env_bind <- function(env = caller_env(), dict = list()) {
   stopifnot(is_dictionary(dict))
   nms <- names(dict)
 
@@ -393,7 +393,7 @@ env_bind <- function(env = env_caller(), dict = list()) {
 }
 #' @rdname env_assign
 #' @export
-env_define <- function(env = env_caller(), ...) {
+env_define <- function(env = caller_env(), ...) {
   env_bind(env, list(...))
 }
 
@@ -427,13 +427,13 @@ env_define <- function(env = env_caller(), ...) {
 #' f <- ~message("forced!")
 #' env_assign_lazily_(env, "name2", f)
 #' env$name2
-env_assign_lazily <- function(env = env_caller(), nm, expr, eval_env = NULL) {
+env_assign_lazily <- function(env = caller_env(), nm, expr, eval_env = NULL) {
   f <- as_quoted_f(substitute(expr), eval_env)
   env_assign_lazily_(env, nm, f)
 }
 #' @rdname env_assign_lazily
 #' @export
-env_assign_lazily_ <- function(env = env_caller(), nm, expr, eval_env = NULL) {
+env_assign_lazily_ <- function(env = caller_env(), nm, expr, eval_env = NULL) {
   f <- as_quoted_f(expr, eval_env)
 
   args <- list(
@@ -466,7 +466,7 @@ env_assign_lazily_ <- function(env = env_caller(), nm, expr, eval_env = NULL) {
 #' # environment:
 #' fn <- env_bury(fn, list(a = 1000))
 #' fn()
-env_bury <- function(env = env_caller(), dict = list()) {
+env_bury <- function(env = caller_env(), dict = list()) {
   env_ <- rlang::env(env)
   env_ <- new.env(parent = env_)
 
@@ -504,7 +504,7 @@ env_bury <- function(env = env_caller(), dict = list()) {
 #' env <- env_new(parent, list(foo = "b"))
 #' env_unbind(env, "foo", inherit = TRUE)
 #' env_has(env, "foo", inherit = TRUE)
-env_unbind <- function(env = env_caller(), nms, inherit = FALSE) {
+env_unbind <- function(env = caller_env(), nms, inherit = FALSE) {
   env_ <- rlang::env(env)
   if (inherit) {
     while(any(env_has(env_, nms, inherit = TRUE))) {
@@ -533,7 +533,7 @@ env_unbind <- function(env = env_caller(), nms, inherit = FALSE) {
 #' # env does not own `foo` but sees it in its parent environment:
 #' env_has(env, "foo")
 #' env_has(env, "foo", inherit = TRUE)
-env_has <- function(env = env_caller(), nms, inherit = FALSE) {
+env_has <- function(env = caller_env(), nms, inherit = FALSE) {
   env_ <- rlang::env(env)
   vapply_lgl(nms, exists, envir = env_, inherits = inherit)
 }
@@ -557,7 +557,7 @@ env_has <- function(env = env_caller(), nms, inherit = FALSE) {
 #'
 #' # However `foo` can be fetched in the parent environment:
 #' env_get(env, "foo", inherit = TRUE)
-env_get <- function(env = env_caller(), nm, inherit = FALSE) {
+env_get <- function(env = caller_env(), nm, inherit = FALSE) {
   env_ <- rlang::env(env)
   get(nm, envir = env, inherits = inherit)
 }
@@ -706,7 +706,7 @@ ns_env <- function(pkg = NULL) {
     return(asNamespace(pkg))
   }
 
-  bottom <- topenv(env_caller())
+  bottom <- topenv(caller_env())
   if (!isNamespace(bottom)) {
     stop("not in a namespace", call. = FALSE)
   }
@@ -716,18 +716,6 @@ ns_env <- function(pkg = NULL) {
 #' @export
 ns_imports_env <- function(pkg = NULL) {
   env_parent(ns_env(pkg))
-}
-
-#' Get the environment of the caller frame.
-#'
-#' This is a shortcut for \code{\link{call_frame}(2)$env}.
-#' @param n The number of generation to go back. Note that contrarily
-#'   to \code{\link{call_frame}()}, 1 represents the parent frame
-#'   rather than the current frame.
-#' @seealso \code{\link{call_frame}()}
-#' @export
-env_caller <- function(n = 1) {
-  parent.frame(n + 1)
 }
 
 
