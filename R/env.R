@@ -604,7 +604,7 @@ env_clone <- function(x, parent = env_parent(x)) {
 #' \code{\link{eval_stack}()}.
 #'
 #' You can list all scoped environments with
-#' \code{scoped_list()}. With \code{is_scoped()} you can check
+#' \code{scoped_names()}. With \code{is_scoped()} you can check
 #' whether a named environment is on the search
 #' path. \code{pkg_env()} returns the scope environment of
 #' packages if they are attached to the search path, and throws an
@@ -616,7 +616,7 @@ env_clone <- function(x, parent = env_parent(x)) {
 #' @export
 #' @examples
 #' # List the names of scoped environments:
-#' nms <- scoped_list()
+#' nms <- scoped_names()
 #' nms
 #'
 #' # The global environment is always the first in the chain:
@@ -658,7 +658,7 @@ pkg_label <- function(pkg) {
 
 #' @rdname scoped_env
 #' @export
-scoped_list <- function() {
+scoped_names <- function() {
   search()
 }
 
@@ -668,7 +668,7 @@ is_scoped <- function(nm) {
   if (!is_scalar_character(nm)) {
     stop("`nm` must be a string", call. = FALSE)
   }
-  nm %in% scoped_list()
+  nm %in% scoped_names()
 }
 
 #' @rdname scoped_env
@@ -682,7 +682,7 @@ global_env <- globalenv
 #'
 #' The empty environment is the only one that does not have a
 #' parent. It is always used as the tail of a scope chain such as the
-#' search path (see \code{\link{scoped_list}()}).
+#' search path (see \code{\link{scoped_names}()}).
 #'
 #' @export
 #' @examples

@@ -7,7 +7,7 @@
 \alias{pkg_env}
 \alias{pkg_label}
 \alias{scoped_env}
-\alias{scoped_list}
+\alias{scoped_names}
 \title{Scope environments}
 \usage{
 scoped_env(nm)
@@ -16,7 +16,7 @@ pkg_env(pkg)
 
 pkg_label(pkg)
 
-scoped_list()
+scoped_names()
 
 is_scoped(nm)
 
@@ -56,7 +56,7 @@ evaluation frame on the stack, see \code{\link{global_frame}()} and
 \code{\link{eval_stack}()}.
 
 You can list all scoped environments with
-\code{scoped_list()}. With \code{is_scoped()} you can check
+\code{scoped_names()}. With \code{is_scoped()} you can check
 whether a named environment is on the search
 path. \code{pkg_env()} returns the scope environment of
 packages if they are attached to the search path, and throws an
@@ -64,7 +64,7 @@ error otherwise.
 }
 \examples{
 # List the names of scoped environments:
-nms <- scoped_list()
+nms <- scoped_names()
 nms
 
 # The global environment is always the first in the chain:
