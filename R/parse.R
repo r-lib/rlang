@@ -33,14 +33,14 @@
 #' # A string can contain several expressions separated by ; or \n
 #' parse_exprs("NULL; list()\n foo(bar)")
 #'
-#' # The versions prefixed with f_ return formulas:
-#' parse_expr_f("foo %>% bar()")
-#' parse_exprs_f("1; 2; mtcars")
+#' # The versions suffixed with _f return formulas:
+#' parse_f("foo %>% bar()")
+#' parse_fs("1; 2; mtcars")
 #'
 #' # The env argument is passed to as_env(). It can be e.g. a string
 #' # representing a scoped package environment:
-#' parse_expr_f("identity(letters)", env = empty_env())
-#' parse_exprs_f("identity(letters); mtcars", env = "base")
+#' parse_f("identity(letters)", env = empty_env())
+#' parse_fs("identity(letters); mtcars", env = "base")
 #'
 #'
 #' # You can also parse source files by passing a R connection. Let's
@@ -81,11 +81,11 @@ parse_exprs <- function(x) {
 
 #' @rdname parse_expr
 #' @export
-parse_expr_f <- function(x, env = caller_env()) {
+parse_f <- function(x, env = caller_env()) {
   f_new(parse_expr(x), env = as_env(env))
 }
 #' @rdname parse_expr
 #' @export
-parse_exprs_f <- function(x, env = caller_env()) {
+parse_fs <- function(x, env = caller_env()) {
   lapply(parse_exprs(x), f_new, env = as_env(env))
 }
