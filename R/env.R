@@ -29,7 +29,7 @@
 #'   evaluation frame is returned.
 #' @param parent A parent environment. Can be an object with a S3
 #'   method for \code{as_env()}.
-#' @param dict A vector with unique names which defines bindings
+#' @param data A vector with unique names which defines bindings
 #'   (pairs of name and value). See \code{\link{is_dictionary}()}.
 #' @param n The number of generations to go through.
 #' @seealso \link{scoped_env}, \code{\link{env_has}()},
@@ -168,9 +168,9 @@ env.character <- function(env = caller_env()) {
 
 #' @rdname env
 #' @export
-env_new <- function(parent = NULL, dict = list()) {
+env_new <- function(parent = NULL, data = list()) {
   env <- new.env(parent = as_env(parent))
-  env_bind(env, dict)
+  env_bind(env, data)
 }
 
 #' @rdname env
@@ -363,8 +363,8 @@ env_set_parent <- function(env, new_env) {
 #' # This would throw a scoping error if run:
 #' # fn()
 #'
-#' dict <- stats::setNames(letters, letters)
-#' env_bind(fn, dict)
+#' data <- stats::setNames(letters, letters)
+#' env_bind(fn, data)
 #'
 #' # fn() now sees the objects
 #' fn()
@@ -380,13 +380,13 @@ env_assign <- function(env = caller_env(), nm, x) {
 }
 #' @rdname env_assign
 #' @export
-env_bind <- function(env = caller_env(), dict = list()) {
-  stopifnot(is_dictionary(dict))
-  nms <- names(dict)
+env_bind <- function(env = caller_env(), data = list()) {
+  stopifnot(is_dictionary(data))
+  nms <- names(data)
 
   env_ <- rlang::env(env)
-  for (i in seq_along(dict)) {
-    base::assign(nms[[i]], dict[[i]], envir = env_)
+  for (i in seq_along(data)) {
+    base::assign(nms[[i]], data[[i]], envir = env_)
   }
 
   env
@@ -466,11 +466,11 @@ env_assign_lazily_ <- function(env = caller_env(), nm, expr, eval_env = NULL) {
 #' # environment:
 #' fn <- env_bury(fn, list(a = 1000))
 #' fn()
-env_bury <- function(env = caller_env(), dict = list()) {
+env_bury <- function(env = caller_env(), data = list()) {
   env_ <- rlang::env(env)
   env_ <- new.env(parent = env_)
 
-  env_bind(env_, dict)
+  env_bind(env_, data)
   env_set(env, env_)
 }
 
@@ -490,8 +490,8 @@ env_bury <- function(env = caller_env(), dict = list()) {
 #'   environment modified in place.
 #' @export
 #' @examples
-#' dict <- stats::setNames(letters, letters)
-#' env_bind(environment(), dict)
+#' data <- stats::setNames(letters, letters)
+#' env_bind(environment(), data)
 #' env_has(environment(), letters)
 #'
 #' # env_unbind() removes bindings:
@@ -571,7 +571,7 @@ env_get <- function(env = caller_env(), nm, inherit = FALSE) {
 #' @param parent The parent of the cloned environment.
 #' @export
 #' @examples
-#' env <- env_new(dict = mtcars)
+#' env <- env_new(data = mtcars)
 #' clone <- env_clone(env)
 #' identical(env$cyl, clone$cyl)
 env_clone <- function(x, parent = env_parent(x)) {

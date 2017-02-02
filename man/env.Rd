@@ -27,7 +27,7 @@ env(env = caller_env())
 
 \method{env}{character}(env = caller_env())
 
-env_new(parent = NULL, dict = list())
+env_new(parent = NULL, data = list())
 
 env_parent(env = caller_env(), n = 1)
 
@@ -41,7 +41,7 @@ evaluation frame is returned.}
 \item{parent}{A parent environment. Can be an object with a S3
 method for \code{as_env()}.}
 
-\item{dict}{A vector with unique names which defines bindings
+\item{data}{A vector with unique names which defines bindings
 (pairs of name and value). See \code{\link{is_dictionary}()}.}
 
 \item{n}{The number of generations to go through.}

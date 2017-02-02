@@ -28,8 +28,8 @@ parent environments of \code{env} by default. Set \code{inherit} to
 \code{TRUE} to track down bindings in parent environments.
 }
 \examples{
-dict <- stats::setNames(letters, letters)
-env_bind(environment(), dict)
+data <- stats::setNames(letters, letters)
+env_bind(environment(), data)
 env_has(environment(), letters)
 
 # env_unbind() removes bindings:

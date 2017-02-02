@@ -8,7 +8,7 @@
 \usage{
 env_assign(env = caller_env(), nm, x)
 
-env_bind(env = caller_env(), dict = list())
+env_bind(env = caller_env(), data = list())
 
 env_define(env = caller_env(), ...)
 }
@@ -21,7 +21,7 @@ evaluation frame is returned.}
 
 \item{x}{The value of the binding.}
 
-\item{dict}{A vector with unique names which defines bindings
+\item{data}{A vector with unique names which defines bindings
 (pairs of name and value). See \code{\link{is_dictionary}()}.}
 
 \item{...}{Pairs of unique names and R objects used to define new
@@ -51,8 +51,8 @@ env(fn) <- env_new(base_env())
 # This would throw a scoping error if run:
 # fn()
 
-dict <- stats::setNames(letters, letters)
-env_bind(fn, dict)
+data <- stats::setNames(letters, letters)
+env_bind(fn, data)
 
 # fn() now sees the objects
 fn()
