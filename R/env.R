@@ -18,7 +18,7 @@
 #' environment is simply returned (this helps simplifying code when
 #' writing generic functions).
 #'
-#' \code{env_new()} creates a new environment. \code{env_parent()}
+#' \code{new_env()} creates a new environment. \code{env_parent()}
 #' returns the parent environment of \code{env} if called with \code{n
 #' = 1}, the grandparent with \code{n = 2}, etc. \code{env_tail()}
 #' searches through the parents and returns the one which has
@@ -54,13 +54,13 @@
 #' env(fn)
 #'
 #'
-#' # env_new() creates by default an environment whose parent is the
+#' # new_env() creates by default an environment whose parent is the
 #' # empty environment. Here we return a new environment that has
 #' # the evaluation environment (or frame environment) of a function
 #' # as parent:
 #' fn <- function() {
 #'   my_object <- "A"
-#'   env_new(env())
+#'   new_env(env())
 #' }
 #' frame_env <- fn()
 #'
@@ -75,7 +75,7 @@
 #' # Create a new environment with a particular scope by setting a
 #' # parent. When inheriting from the empty environment (the default),
 #' # the environment will have no object in scope at all:
-#' env <- env_new()
+#' env <- new_env()
 #' env_has(env, "lapply", inherit = TRUE)
 #'
 #' # The base package environment is often a good default choice for a
@@ -83,19 +83,19 @@
 #' # functions. Also note that it will never inherit from other loaded
 #' # package environments since R keeps the base package at the tail
 #' # of the search path:
-#' env <- env_new(base_env())
+#' env <- new_env(base_env())
 #' env_has(env, "lapply", inherit = TRUE)
 #'
 #' # Note that all other package environments inherit from base_env()
 #' # as well:
-#' env <- env_new(pkg_env("rlang"))
+#' env <- new_env(pkg_env("rlang"))
 #' env_has(env, "env_has", inherit = TRUE)
 #' env_has(env, "lapply", inherit = TRUE)
 #'
 #'
-#' # The parent argument of env_new() is passed to as_env() to provide
+#' # The parent argument of new_env() is passed to as_env() to provide
 #' # handy shortcuts:
-#' env <- env_new("rlang")
+#' env <- new_env("rlang")
 #' identical(env_parent(env), pkg_env("rlang"))
 #'
 #'
@@ -115,7 +115,7 @@
 #' # This default is more handy when called within a function. In this
 #' # case, the enclosure environment of the function is returned
 #' # (since it is the parent of the evaluation frame):
-#' enclos_env <- env_new(pkg_env("rlang"))
+#' enclos_env <- new_env(pkg_env("rlang"))
 #' fn <- with_env(enclos_env, function() env_parent())
 #' identical(enclos_env, fn())
 env <- function(env = caller_env()) {
@@ -168,7 +168,7 @@ env.character <- function(env = caller_env()) {
 
 #' @rdname env
 #' @export
-env_new <- function(parent = NULL, data = list()) {
+new_env <- function(parent = NULL, data = list()) {
   env <- new.env(parent = as_env(parent))
   env_bind(env, data)
 }
@@ -294,13 +294,13 @@ as_env.default <- function(x, parent = NULL) {
 #' @export
 #' @examples
 #' # Create a function with a given environment:
-#' env <- env_new(base_env())
+#' env <- new_env(base_env())
 #' fn <- with_env(env, function() NULL)
 #' identical(env(fn), env)
 #'
 #' # env_set() does not work by side effect. Setting a new environment
 #' # for fn has no effect on the original function:
-#' other_env <- env_new()
+#' other_env <- new_env()
 #' env_set(fn, other_env)
 #' identical(env(fn), other_env)
 #'
@@ -358,7 +358,7 @@ env_set_parent <- function(env, new_env) {
 #' @examples
 #' # Create a function that uses undefined bindings:
 #' fn <- function() list(a, b, c, d, e)
-#' env(fn) <- env_new(base_env())
+#' env(fn) <- new_env(base_env())
 #'
 #' # This would throw a scoping error if run:
 #' # fn()
@@ -419,7 +419,7 @@ env_define <- function(env = caller_env(), ...) {
 #' @seealso \code{\link{env_assign}()}
 #' @export
 #' @examples
-#' env <- env_new()
+#' env <- new_env()
 #' env_assign_promise(env, "name", cat("forced!\n"))
 #' env$name
 #'
@@ -455,7 +455,7 @@ env_assign_promise_ <- function(env = caller_env(), nm, expr, eval_env = NULL) {
 #' @return An object associated with the new environment.
 #' @export
 #' @examples
-#' scope <- env_new(base_env(), list(a = 10))
+#' scope <- new_env(base_env(), list(a = 10))
 #' fn <- function() a
 #' env(fn) <- scope
 #'
@@ -500,8 +500,8 @@ env_bury <- function(env = caller_env(), data = list()) {
 #'
 #' # With inherit = TRUE, it removes bindings in parent environments
 #' # as well:
-#' parent <- env_new(empty_env(), list(foo = "a"))
-#' env <- env_new(parent, list(foo = "b"))
+#' parent <- new_env(empty_env(), list(foo = "a"))
+#' env <- new_env(parent, list(foo = "b"))
 #' env_unbind(env, "foo", inherit = TRUE)
 #' env_has(env, "foo", inherit = TRUE)
 env_unbind <- function(env = caller_env(), nms, inherit = FALSE) {
@@ -527,8 +527,8 @@ env_unbind <- function(env = caller_env(), nms, inherit = FALSE) {
 #' @return A logical vector as long as \code{nms}.
 #' @export
 #' @examples
-#' parent <- env_new(empty_env(), list(foo = "foo"))
-#' env <- env_new(parent, list(bar = "bar"))
+#' parent <- new_env(empty_env(), list(foo = "foo"))
+#' env <- new_env(parent, list(bar = "bar"))
 #'
 #' # env does not own `foo` but sees it in its parent environment:
 #' env_has(env, "foo")
@@ -549,8 +549,8 @@ env_has <- function(env = caller_env(), nms, inherit = FALSE) {
 #' @return An object if it exists. Otherwise, throws an error.
 #' @export
 #' @examples
-#' parent <- env_new(empty_env(), list(foo = "foo"))
-#' env <- env_new(parent, list(bar = "bar"))
+#' parent <- new_env(empty_env(), list(foo = "foo"))
+#' env <- new_env(parent, list(bar = "bar"))
 #'
 #' # This throws an error because `foo` is not directly defined in env:
 #' # env_get(env, "foo")
@@ -571,7 +571,7 @@ env_get <- function(env = caller_env(), nm, inherit = FALSE) {
 #' @param parent The parent of the cloned environment.
 #' @export
 #' @examples
-#' env <- env_new(data = mtcars)
+#' env <- new_env(data = mtcars)
 #' clone <- env_clone(env)
 #' identical(env$cyl, clone$cyl)
 env_clone <- function(x, parent = env_parent(x)) {
@@ -687,7 +687,7 @@ global_env <- globalenv
 #' @export
 #' @examples
 #' # Create environments with nothing in scope (the default):
-#' env_new(parent = empty_env())
+#' new_env(parent = empty_env())
 empty_env <- emptyenv
 
 #' Get the namespace of a package.
@@ -733,7 +733,7 @@ ns_imports_env <- function(pkg = NULL) {
 #' @export
 #' @examples
 #' # with_env() is handy to create formulas with a given environment:
-#' env <- env_new("rlang")
+#' env <- new_env("rlang")
 #' f <- with_env(env, ~new_formula())
 #' identical(f_env(f), env)
 #'

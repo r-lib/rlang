@@ -31,14 +31,14 @@ test_that("two-sided formulas are not treated as fpromises", {
 })
 
 test_that("unquote operators are always in scope", {
-  env <- env_new("base", list(foo = "bar"))
+  env <- new_env("base", list(foo = "bar"))
   f <- with_env(env, ~UQ(foo))
   expect_identical(tidy_interp(f), with_env(env, ~"bar"))
 })
 
 test_that("can interpolate in specific env", {
   foo <- "bar"
-  env <- env_new(NULL, list(foo = "foo"))
+  env <- new_env(NULL, list(foo = "foo"))
   expect_identical(tidy_interp(~UQ(foo)), ~"bar")
   expect_identical(tidy_interp(~UQ(foo), env), ~"foo")
 })
@@ -58,7 +58,7 @@ test_that("can qualify operators with namespace", {
 
 test_that("unquoting is frame-consistent", {
   defun <- quote(!! function() NULL)
-  env <- env_new("base")
+  env <- new_env("base")
   expect_identical(fn_env(tidy_interp(defun, env)), env)
 })
 
@@ -83,7 +83,7 @@ test_that("formulas are promised recursively during unquote", {
   var <- ~~letters
   expect_identical(tidy_quote(!!var), f_new(f_new(quote(~letters))))
 
-  var <- f_new(local(~letters), env = env_new(env()))
+  var <- f_new(local(~letters), env = new_env(env()))
   expect_identical(tidy_quote(!!var), f_new(var))
 })
 

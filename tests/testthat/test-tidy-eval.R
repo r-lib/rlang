@@ -135,7 +135,7 @@ test_that("can unquote for old-style NSE functions", {
 
 test_that("formulas with empty environments are scoped in surrounding formula", {
   var <- local(~letters)
-  f <- f_new(var, env = env_new(env()))
+  f <- f_new(var, env = new_env(env()))
   expect_identical(tidy_eval(f), letters)
 
   expect_identical(tidy_eval(~~letters), letters)

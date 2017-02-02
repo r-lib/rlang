@@ -33,13 +33,13 @@ have a side effect.
 }
 \examples{
 # Create a function with a given environment:
-env <- env_new(base_env())
+env <- new_env(base_env())
 fn <- with_env(env, function() NULL)
 identical(env(fn), env)
 
 # env_set() does not work by side effect. Setting a new environment
 # for fn has no effect on the original function:
-other_env <- env_new()
+other_env <- new_env()
 env_set(fn, other_env)
 identical(env(fn), other_env)
 

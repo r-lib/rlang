@@ -8,9 +8,9 @@
 \alias{env.formula}
 \alias{env.frame}
 \alias{env.function}
-\alias{env_new}
 \alias{env_parent}
 \alias{env_tail}
+\alias{new_env}
 \title{Get an environment.}
 \usage{
 env(env = caller_env())
@@ -27,7 +27,7 @@ env(env = caller_env())
 
 \method{env}{character}(env = caller_env())
 
-env_new(parent = NULL, data = list())
+new_env(parent = NULL, data = list())
 
 env_parent(env = caller_env(), n = 1)
 
@@ -66,7 +66,7 @@ with an environment, it acts as the identity function and the
 environment is simply returned (this helps simplifying code when
 writing generic functions).
 
-\code{env_new()} creates a new environment. \code{env_parent()}
+\code{new_env()} creates a new environment. \code{env_parent()}
 returns the parent environment of \code{env} if called with \code{n
 = 1}, the grandparent with \code{n = 2}, etc. \code{env_tail()}
 searches through the parents and returns the one which has
@@ -91,13 +91,13 @@ env(fn) <- base_env()
 env(fn)
 
 
-# env_new() creates by default an environment whose parent is the
+# new_env() creates by default an environment whose parent is the
 # empty environment. Here we return a new environment that has
 # the evaluation environment (or frame environment) of a function
 # as parent:
 fn <- function() {
   my_object <- "A"
-  env_new(env())
+  new_env(env())
 }
 frame_env <- fn()
 
@@ -112,7 +112,7 @@ env_has(frame_env, "my_object", inherit = TRUE)
 # Create a new environment with a particular scope by setting a
 # parent. When inheriting from the empty environment (the default),
 # the environment will have no object in scope at all:
-env <- env_new()
+env <- new_env()
 env_has(env, "lapply", inherit = TRUE)
 
 # The base package environment is often a good default choice for a
@@ -120,19 +120,19 @@ env_has(env, "lapply", inherit = TRUE)
 # functions. Also note that it will never inherit from other loaded
 # package environments since R keeps the base package at the tail
 # of the search path:
-env <- env_new(base_env())
+env <- new_env(base_env())
 env_has(env, "lapply", inherit = TRUE)
 
 # Note that all other package environments inherit from base_env()
 # as well:
-env <- env_new(pkg_env("rlang"))
+env <- new_env(pkg_env("rlang"))
 env_has(env, "env_has", inherit = TRUE)
 env_has(env, "lapply", inherit = TRUE)
 
 
-# The parent argument of env_new() is passed to as_env() to provide
+# The parent argument of new_env() is passed to as_env() to provide
 # handy shortcuts:
-env <- env_new("rlang")
+env <- new_env("rlang")
 identical(env_parent(env), pkg_env("rlang"))
 
 
@@ -152,7 +152,7 @@ env_parent(global_env())
 # This default is more handy when called within a function. In this
 # case, the enclosure environment of the function is returned
 # (since it is the parent of the evaluation frame):
-enclos_env <- env_new(pkg_env("rlang"))
+enclos_env <- new_env(pkg_env("rlang"))
 fn <- with_env(enclos_env, function() env_parent())
 identical(enclos_env, fn())
 }

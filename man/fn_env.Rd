@@ -27,11 +27,11 @@ within the function.
 is also an assignment method to set a new closure environment.
 }
 \examples{
-env <- env_new("base")
+env <- new_env("base")
 fn <- with_env(env, function() NULL)
 identical(fn_env(fn), env)
 
-other_env <- env_new("base")
+other_env <- new_env("base")
 fn_env(fn) <- other_env
 identical(fn_env(fn), other_env)
 }
