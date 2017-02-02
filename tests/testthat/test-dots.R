@@ -56,7 +56,7 @@ test_that("empty dots return list()", {
 })
 
 test_that("explicit dots make a list of formulas", {
-  fs <- dots_capture(x = 1 + 2, y = 2 + 3)
+  fs <- tidy_dots(x = 1 + 2, y = 2 + 3)
   f1 <- ~ 1 + 2
   f2 <- ~ 2 + 3
 
@@ -64,9 +64,9 @@ test_that("explicit dots make a list of formulas", {
   expect_identical(fs$y, f2)
 })
 
-test_that("dots_capture() produces correct formulas", {
+test_that("tidy_dots() produces correct formulas", {
   fn <- function(x = a + b, ...) {
-    list(dots = dots_capture(x = x, y = a + b, ...), env = environment())
+    list(dots = tidy_dots(x = x, y = a + b, ...), env = environment())
   }
   out <- fn(z = a + b)
 

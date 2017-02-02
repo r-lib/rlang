@@ -11,7 +11,7 @@
 #'
 #' Like all capturing functions in the tidy evaluation framework,
 #' \code{tidy_quote()} interpolates on capture (see
-#' \code{\link{arg_capture}()}) and \code{vignette("tidy-eval")}.
+#' \code{\link{tidy_capture}()}) and \code{vignette("tidy-eval")}.
 #' Alternatively, \code{tidy_interp()} allows you to interpolate
 #' manually when you have constructed a raw expression or formula by
 #' yourself. When an expression is interpolated, all sub-expressions
@@ -81,7 +81,7 @@
 #' @examples
 #' # When a tidyeval function captures an argument, it is wrapped in a
 #' # formula and interpolated. tidy_quote() is a simple wrapper around
-#' # arg_capture() and as such is the fundamental tidyeval
+#' # tidy_capture() and as such is the fundamental tidyeval
 #' # function. It allows you to quote an expression and interpolate
 #' # unquoted parts:
 #' tidy_quote(foo(bar))
@@ -183,7 +183,7 @@
 #' tidy_eval(tidy_quote(a ~ b))
 #' @useDynLib rlang interp_
 tidy_quote <- function(expr) {
-  arg_capture(expr)
+  tidy_capture(expr)
 }
 
 #' Process unquote operators in a captured expression.

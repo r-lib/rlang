@@ -71,7 +71,7 @@ dots_lsp <- function(...) {
 #' @param ... Dots to inspect.
 #' @param .only_dots,only_dots Whether to stop introspection once
 #'   forwarded dots have been climbed. Setting this to \code{TRUE} is
-#'   only useful for inspecting dots (cf. \code{\link{dots_capture}()}
+#'   only useful for inspecting dots (cf. \code{\link{tidy_dots}()}
 #'   which does not follow symbols).
 #' @seealso \code{\link{arg_inspect}()}
 #' @export
@@ -128,13 +128,6 @@ dots_inspect_ <- function(dots, stack, only_dots = FALSE) {
   dots_syms <- dots_enumerate_sym(dots)
   dots_syms <- set_names(dots_syms, names(dots))
   lapply(dots_syms, arg_inspect_, stack, only_dots = only_dots)
-}
-
-#' @rdname arg_capture
-#' @export
-dots_capture <- function(...) {
-  info <- dots_inspect(..., .only_dots = TRUE)
-  lapply(info, function(x) f_new(x$expr, env = x$eval_frame$env))
 }
 
 dots_enumerate <- function(dots) {

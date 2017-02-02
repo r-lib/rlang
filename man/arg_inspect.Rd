@@ -20,7 +20,7 @@ inspect.}
 
 \item{only_dots}{Whether to stop introspection once
 forwarded dots have been climbed. Setting this to \code{TRUE} is
-only useful for inspecting dots (cf. \code{\link{dots_capture}()}
+only useful for inspecting dots (cf. \code{\link{tidy_dots}()}
 which does not follow symbols).}
 }
 \value{
@@ -48,7 +48,7 @@ A list containing:
 }
 \description{
 \code{arg_inspect()} provides argument introspection in the context of
-lazy evaluation. Compared to \code{\link{arg_capture}()}, the
+lazy evaluation. Compared to \code{\link{tidy_capture}()}, the
 returned information is more complete and takes R's lazy evaluation
 semantics into account: if an argument is passed around without
 being evaluated, \code{arg_inspect()} is able to return the expression
@@ -62,7 +62,7 @@ with which expression, in which evaluation environment.
 }
 \details{
 \code{arg_inspect()} should be used with two caveats in mind. First,
-it is slower than \code{\link{arg_capture}()} and
+it is slower than \code{\link{tidy_capture}()} and
 \code{lazyeval::lazy()}. Thus you should probably avoid using it in
 functions that might be used in tight loops (such as a loop over
 the rows of data frame). Second, \code{arg_inspect()} ignores all

@@ -563,16 +563,16 @@ sieve_ <- function(df, condition) {
 }
 ```
 
-Then create the NSE version which doesn't need the explicit formula. The key is the use of `arg_capture()` which takes an unevaluated argument (a promise) and captures it as a formula:
+Then create the NSE version which doesn't need the explicit formula. The key is the use of `tidy_capture()` which takes an unevaluated argument (a promise) and captures it as a formula:
 
 ```{r}
 sieve <- function(df, expr) {
-  sieve_(df, arg_capture(expr))
+  sieve_(df, tidy_capture(expr))
 }
 sieve(df, x == 1)
 ```
 
-If you're familiar with `substitute()` you might expect the same drawbacks to apply. However, `arg_capture()` is smart enough to follow a chain of promises back to the original value, so, for example, this code works fine:
+If you're familiar with `substitute()` you might expect the same drawbacks to apply. However, `tidy_capture()` is smart enough to follow a chain of promises back to the original value, so, for example, this code works fine:
 
 ```{r}
 scramble <- function(df) {
@@ -586,7 +586,7 @@ subscramble(df, x < 4)
 
 ### Dot-dot-dot
 
-If you want a `...` function that doesn't require formulas, I recommend that the SE version take a list of arguments, and the NSE version uses `dots_capture()` to capture multiple arguments as a list of formulas.
+If you want a `...` function that doesn't require formulas, I recommend that the SE version take a list of arguments, and the NSE version uses `tidy_dots()` to capture multiple arguments as a list of formulas.
 
 ```{r}
 mogrify_ <- function(`_df`, args) {
@@ -600,7 +600,7 @@ mogrify_ <- function(`_df`, args) {
 }
 
 mogrify <- function(`_df`, ...) {
-  mogrify_(`_df`, dots_capture(...))
+  mogrify_(`_df`, tidy_dots(...))
 }
 ```
 

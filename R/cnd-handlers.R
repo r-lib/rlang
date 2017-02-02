@@ -79,7 +79,7 @@
 #' with_handlers(fn2(), foo = inplace(exiting_handler), foo = inplace(other_handler))
 with_handlers <- function(.expr, ..., .handlers = list()) {
   handlers <- c(list(...), .handlers)
-  with_handlers_(arg_capture(.expr), handlers)
+  with_handlers_(tidy_capture(.expr), handlers)
 }
 #' @rdname with_handlers
 #' @export

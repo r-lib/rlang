@@ -150,10 +150,10 @@ test_that("magrittr works", {
 })
 
 
-# arg_capture --------------------------------------------------------------
+# tidy_capture -------------------------------------------------------
 
 test_that("explicit promise makes a formula", {
-  f1 <- arg_capture(1 + 2 + 3)
+  f1 <- tidy_capture(1 + 2 + 3)
   f2 <- ~ 1 + 2 + 3
 
   expect_equal(f1, f2)
@@ -161,7 +161,7 @@ test_that("explicit promise makes a formula", {
 
 test_that("explicit promise works only one level deep", {
   f <- function(x) list(env = env(), f = g(x))
-  g <- function(y) arg_capture(y)
+  g <- function(y) tidy_capture(y)
   out <- f(1 + 2 + 3)
   expected_f <- with_env(out$env, ~x)
 
