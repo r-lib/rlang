@@ -3,12 +3,12 @@ context("formula")
 # Creation ----------------------------------------------------------------
 
 test_that("env must be an environment", {
-  expect_error(f_new(quote(a), env = list()), "must be an environment")
+  expect_error(new_f(quote(a), env = list()), "must be an environment")
 })
 
 test_that("equivalent to ~", {
   f1 <- ~abc
-  f2 <- f_new(quote(abc))
+  f2 <- new_f(quote(abc))
 
   expect_identical(f1, f2)
 })
