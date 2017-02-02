@@ -30,6 +30,12 @@ test_that("two-sided formulas are not treated as fpromises", {
   expect_identical(expr_quote(a ~ b), quote(a ~ b))
 })
 
+test_that("unquote operators are always in scope", {
+  env <- env_new("base", list(foo = "bar"))
+  f <- with_env(env, ~UQ(foo))
+  expect_identical(tidy_interp(f), with_env(env, ~"bar"))
+})
+
 
 # UQ ----------------------------------------------------------------------
 

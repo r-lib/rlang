@@ -75,11 +75,23 @@ tidy_eval <- function(f, data = NULL) {
     env <- parent.frame()
   }
 
-  env <- eval_env(env, data)
+  env <- tidy_eval_env(env, data)
   .Call(rlang_eval, expr, env)
 }
 
-eval_env <- function(env, data) {
+#' Create a tidy evaluation environment.
+#'
+#' This is useful when want to use the tidy evaluation framework in
+#' your own evaluating functions. The returned environment has
+#' elements of \code{data} in scope, the \code{.env} and \code{.data}
+#' pronouns, and treats formulas as self-evaluating promises. See
+#' \code{\link{tidy_eval}()} and \code{\link{tidy_quote}()} for more
+#' information.
+#'
+#' @param env The original scope.
+#' @param data Additional data to put in scope.
+#' @export
+tidy_eval_env <- function(env = env_empty(), data = NULL) {
   data_src <- data_source(data)
 
   if (!length(data)) {
@@ -126,7 +138,7 @@ f_self_eval <- function(`_data`, `_orig_env`, `_orig_eval_env`) {
       f_env(f) <- `_orig_eval_env`
     }
 
-    eval_env <- eval_env(f_env(f), `_data`)
+    eval_env <- tidy_eval_env(f_env(f), `_data`)
     .Call(rlang_eval, f_rhs(f), eval_env)
   }
 }
