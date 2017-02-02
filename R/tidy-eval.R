@@ -76,7 +76,7 @@ tidy_eval <- function(f, data = NULL) {
   }
 
   env <- eval_env(env, data)
-  eval(expr, envir = env)
+  .Call(rlang_eval, expr, env)
 }
 
 eval_env <- function(env, data) {
@@ -127,7 +127,7 @@ f_self_eval <- function(`_data`, `_orig_env`, `_orig_eval_env`) {
     }
 
     eval_env <- eval_env(f_env(f), `_data`)
-    eval(f_rhs(f), eval_env)
+    .Call(rlang_eval, f_rhs(f), eval_env)
   }
 }
 unguard_formula <- function(...) {

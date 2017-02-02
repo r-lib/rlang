@@ -39,7 +39,7 @@ frame_dots_lsp <- function(frame = NULL) {
 #' @rdname frame_dots
 #' @export
 dots <- function(...) {
-  eval(substitute(alist(...)))
+  expr_eval(substitute(alist(...)))
 }
 
 #' @rdname frame_dots
