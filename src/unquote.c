@@ -94,22 +94,12 @@ SEXP unquote(SEXP x, SEXP env, int make_promises, SEXP uq_sym) {
   uq_sym = unquote_sym(uq_sym);
   SEXP uq_call = PROTECT(Rf_lang2(uq_sym, x));
 
-  SEXP res = PROTECT(Rf_eval(uq_call, env));
-  res = interp_walk(res, env, make_promises);
+  SEXP res = Rf_eval(uq_call, env);
+  PROTECT_INDEX ipx;
+  PROTECT_WITH_INDEX(res, &ipx);
+
   UNPROTECT(2);
-
   return res;
-}
-
-// Formulas are inlined when their closure environment is not
-// informative: when it is the same as the surrounding context, if the
-// closure env is the empty environment, or when they contain a
-// constant literal. Otherwise a promise operator is created.
-SEXP as_fpromise(SEXP f, SEXP env) {
-  if (f_env(f) == env || f_env(f) == R_EmptyEnv || !is_lang(f_rhs_(f)))
-    return f_rhs_(f);
-  else
-    return Rf_lang2(Rf_install("_P"), f);
 }
 
 SEXP splice_nxt(SEXP cur, SEXP nxt, SEXP env) {
@@ -125,11 +115,16 @@ SEXP splice_nxt(SEXP cur, SEXP nxt, SEXP env) {
   return cur;
 }
 
+// Change call name to prevent the formula from self-evaluating
+SEXP guard_formula(SEXP f) {
+  SEXP guard = PROTECT(LCONS(Rf_install("_F"), CDR(f)));
+  Rf_copyMostAttrib(f, guard);
+  UNPROTECT(1);
+  return guard;
+}
 
 SEXP interp_walk(SEXP x, SEXP env, int make_promises)  {
-  if (!Rf_isLanguage(x))
-    return x;
-  else if (is_call(x, "_P") || is_call(x, "_F"))
+  if (!Rf_isLanguage(x) || (is_formula(x) && make_promises))
     return x;
 
   PROTECT_INDEX ipx;
@@ -148,16 +143,14 @@ SEXP interp_walk(SEXP x, SEXP env, int make_promises)  {
     SEXP uq_sym = CAR(x);
     REPROTECT(x = unquote(CADR(x), env, make_promises, uq_sym), ipx);
   } else if (is_call(x, "UQF")) {
-    x = interp_arguments(x, env, 0);
     REPROTECT(x = Rf_eval(x, env), ipx);
-    make_promises = 0;
+    REPROTECT(x = guard_formula(x), ipx);
   } else {
     x = interp_arguments(x, env, make_promises);
   }
 
-  // Deal with evaluation of fpromises
-  if (make_promises && is_formula(x))
-    x = as_fpromise(x, env);
+  if (is_fpromise(x) && !make_promises)
+    x = f_rhs_(x);
 
   UNPROTECT(1);
   return x;
@@ -166,11 +159,13 @@ SEXP interp_walk(SEXP x, SEXP env, int make_promises)  {
 SEXP interp_arguments(SEXP x, SEXP env, int make_promises) {
   for(SEXP cur = x; cur != R_NilValue; cur = CDR(cur)) {
     SETCAR(cur, interp_walk(CAR(cur), env, make_promises));
-    SEXP nxt = CDR(cur);
 
+    SEXP nxt = CDR(cur);
     nxt = replace_triple_bang(nxt, cur);
-    if (is_splice(CAR(nxt)))
+    if (is_splice(CAR(nxt))) {
       cur = splice_nxt(cur, nxt, env);
+      cur = nxt; // Don't interpolate unquoted stuff
+    }
   }
 
   return x;

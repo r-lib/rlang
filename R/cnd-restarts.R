@@ -114,7 +114,7 @@ with_restarts <- function(.expr, ..., .restarts = list()) {
 #' @export
 with_restarts_ <- function(.expr, .restarts = list(), .env = NULL) {
   f <- as_quoted_f(.expr, .env)
-  f <- interp(~withRestarts(!! f, !!! .restarts))
+  f <- f_quote(withRestarts(!! f, !!! .restarts))
   f_eval(f)
 }
 

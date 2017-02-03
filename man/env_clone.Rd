@@ -12,7 +12,8 @@ env_clone(x, parent = env_parent(x))
 \item{parent}{The parent of the cloned environment.}
 }
 \description{
-This creates a new environment containing exactly the same objects.
+This creates a new environment containing exactly the same objects,
+optionally with a new parent.
 }
 \examples{
 env <- env_new(dict = mtcars)
