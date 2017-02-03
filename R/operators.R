@@ -49,9 +49,9 @@
   attr(x, name, exact = TRUE)
 }
 
-#' Quoting assignment operator.
+#' Pattern operator.
 #'
-#' The colon-equals operator is typically used in DSL packages like
+#' The pattern operator is typically used in DSL packages like
 #' \code{ggvis} and \code{data.table}. It is exported in rlang as a
 #' alias to \code{~}. This makes it a quoting operator that can be
 #' shared between packages for computing on the language. Since it
@@ -68,18 +68,18 @@
 #' is_formula(f)
 #' f_lhs(f)
 #' f_rhs(f)
-#' @name op-colon-equals
+#' @name op-pattern
 `:=` <- `~`
 
-#' @rdname op-colon-equals
+#' @rdname op-pattern
 #' @param x An object to test.
 #' @export
 #' @examples
 #'
 #' # A predicate is provided to distinguish formulas from the
 #' # colon-equals operator:
-#' is_colon_equals(a := b)
-#' is_colon_equals(a ~ b)
-is_colon_equals <- function(x) {
+#' is_pattern(a := b)
+#' is_pattern(a ~ b)
+is_pattern <- function(x) {
   is_formula(x) && identical(x[[1]], quote(`:=`))
 }
