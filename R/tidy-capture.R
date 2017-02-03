@@ -129,7 +129,7 @@ is_bang <- function(expr) {
   identical(car(expr), quote(`!`))
 }
 is_splice <- function(expr) {
-  if (identical(car(expr), quote(UQS))) {
+  if (identical(car(expr), quote(UQS)) || identical(car(expr), quote(rlang::UQS))) {
     return(TRUE)
   }
 

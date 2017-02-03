@@ -56,6 +56,13 @@ test_that("dots capture is stack-consistent", {
   expect_identical(fn(foo(baz)), list(~foo(baz)))
 })
 
+test_that("splice is consistently recognised", {
+  expect_true(is_splice(quote(!!! list())))
+  expect_true(is_splice(quote(UQS(list()))))
+  expect_true(is_splice(quote(rlang::UQS(list()))))
+  expect_false(is_splice(quote(ns::UQS(list()))))
+})
+
 test_that("dots can be spliced in", {
   fn <- function(...) {
     var <- "var"
