@@ -52,7 +52,8 @@ f_rhs <- function(f) {
 #' @rdname f_rhs
 `f_rhs<-` <- function(x, value) {
   stopifnot(is_formula(x))
-  new_f(value, f_lhs(x), f_env(x))
+  f <- new_f(value, f_lhs(x), f_env(x))
+  maybe_pattern(f, x)
 }
 
 #' @export
@@ -66,7 +67,13 @@ f_lhs <- function(f) {
 #' @rdname f_rhs
 `f_lhs<-` <- function(x, value) {
   stopifnot(is_formula(x))
-  new_f(f_rhs(x), value, f_env(x))
+  f <- new_f(f_rhs(x), value, f_env(x))
+  maybe_pattern(f, x)
+}
+
+maybe_pattern <- function(f, x) {
+  f[[1]] <- x[[1]]
+  f
 }
 
 #' @export
@@ -82,7 +89,8 @@ f_env <- function(f) {
 #' @rdname f_rhs
 `f_env<-` <- function(x, value) {
   stopifnot(is_formula(x))
-  new_f(f_rhs(x), f_lhs(x), value)
+  f <- new_f(f_rhs(x), f_lhs(x), value)
+  maybe_pattern(f, x)
 }
 
 #' Turn RHS of formula into a string/label.
