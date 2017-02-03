@@ -42,3 +42,38 @@ test_that("dots are interpolated", {
   expect_identical(lapply(dots, deparse), list("~toupper(~foo)", "~toupper(~bar)", "~toupper(~baz)"))
   expect_identical(lapply(dots, tidy_eval), list("FOO", "BAR", "BAZ"))
 })
+
+test_that("dots capture is stack-consistent", {
+  fn <- function(...) {
+    g(tidy_dots(...))
+  }
+  g <- function(dots) {
+    h(dots, foo(bar))
+  }
+  h <- function(dots, ...) {
+    dots
+  }
+  expect_identical(fn(foo(baz)), list(~foo(baz)))
+})
+
+test_that("dots can be spliced in", {
+  fn <- function(...) {
+    var <- "var"
+    list(
+      out = g(!!! tidy_dots(...), bar(baz), !!! list(a = var, b = ~foo)),
+      env = env()
+    )
+  }
+  g <- function(...) {
+    tidy_dots(...)
+  }
+
+  out <- fn(foo(bar))
+  expected <- list(
+    ~foo(bar),
+    with_env(out$env, ~bar(baz)),
+    a = "var",
+    b = with_env(out$env, ~foo)
+  )
+  expect_identical(out$out, expected)
+})

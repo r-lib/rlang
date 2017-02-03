@@ -104,9 +104,38 @@ tidy_capture <- function(x) {
 #' @export
 tidy_dots <- function(...) {
   info <- dots_inspect(..., .only_dots = TRUE)
-  lapply(info, function(x) {
-    env <- x$eval_frame$env
-    expr <- .Call(interp_, x$expr, env)
-    new_f(expr, env = env)
-  })
+  dots <- lapply(info, dot_f)
+
+  # Flatten possibly spliced dots
+  unlist(dots, FALSE)
+}
+
+dot_f <- function(dot) {
+  env <- dot$eval_frame$env
+  expr <- dot$expr
+
+  # Allow unquote-splice in dots
+  if (is_splice(expr)) {
+    expr <- call("alist", expr)
+    expr <- .Call(interp_, expr, env)
+    expr_eval(expr)
+  } else {
+    expr <- .Call(interp_, expr, env)
+    list(new_f(expr, env = env))
+  }
+}
+
+is_bang <- function(expr) {
+  identical(car(expr), quote(`!`))
+}
+is_splice <- function(expr) {
+  if (identical(car(expr), quote(UQS))) {
+    return(TRUE)
+  }
+
+  if (is_bang(expr) && is_bang(cadr(expr)) && is_bang(cadr(cadr(expr)))) {
+    return(TRUE)
+  }
+
+  FALSE
 }
