@@ -31,6 +31,24 @@ set_names2 <- function(x, nms = names2(x)) {
   names(x) <- nms
   x
 }
+vapply_chr <- function(.x, .f, ...) {
+  vapply_(.x, .f, character(1), ...)
+}
+lapply2 <- function(.x, .y, .f, ...) {
+  Map(.f, .x, .y, ...)
+}
+lapply2_chr <- function(.x, .y, .f, ...) {
+  as.vector(lapply2(.x, .y, .f, ...), "character")
+}
+imap <- function(.x, .f, ...) {
+  idx <- names(.x) %||% seq_along(.x)
+  out <- Map(.f, idx, .x, ...)
+  names(out) <- names(.x)
+  out
+}
+imap_chr <- function(.x, .f, ...) {
+  as.vector(imap(.x, .f, ...), "character")
+}
 
 lapply_around <- function(.x, .neighbour = c("right", "left"), .f, ...) {
   where <- match.arg(.neighbour)

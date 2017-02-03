@@ -101,13 +101,23 @@ tidy_capture <- function(x) {
 }
 
 #' @rdname tidy_capture
+#' @param .patterned Whether to evaluate LHS of pattern expressions
+#'   (of the type \code{name := expr}) supplied as dots. The evaluated
+#'   LHS will serve as dot name (and should thus evaluate to a string
+#'   or symbol.
 #' @export
-tidy_dots <- function(...) {
+tidy_dots <- function(..., .patterned = TRUE) {
   info <- dots_inspect(..., .only_dots = TRUE)
   dots <- lapply(info, dot_f)
 
   # Flatten possibly spliced dots
-  unlist(dots, FALSE)
+  dots <- unlist(dots, FALSE)
+
+  if (.patterned) {
+    dots <- dots_eval_names(dots)
+  }
+
+  dots
 }
 
 dot_f <- function(dot) {
@@ -138,4 +148,51 @@ is_splice <- function(expr) {
   }
 
   FALSE
+}
+
+dots_eval_names <- function(dots) {
+  orig_names <- names(dots)
+  names <- names2(dots)
+  interpolated <- FALSE
+
+  for (i in seq_along(dots)) {
+    dot <- dot_eval_name(orig_names[[i]], dots[[i]])
+    dots[[i]] <- dot[[1]]
+    name <- names(dot)
+
+    # Make sure unnamed dots remain unnamed
+    if (!is_null(name)) {
+      interpolated <- TRUE
+      names[[i]] <- name
+    }
+  }
+
+  if (interpolated) {
+    names(dots) <- names
+  }
+
+  dots
+}
+
+dot_eval_name <- function(name, dot) {
+  if (!is_formula(dot) || !is_pattern(f_rhs(dot))) {
+    return(set_names(list(dot), name))
+  }
+
+  if (!is_null(name)) {
+    warn("name ignored because a LHS was supplied")
+  }
+
+  expr <- f_rhs(dot)
+  name <- expr_eval(f_lhs(expr), f_env(dot))
+
+  if (is_name(name)) {
+    name <- as.character(name)
+  }
+  if (!is_scalar_character(name)) {
+    abort("LHS must evaluate to a name")
+  }
+
+  dot <- new_f(f_rhs(expr), env = f_env(dot))
+  set_names(list(dot), name)
 }

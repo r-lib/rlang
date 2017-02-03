@@ -7,10 +7,15 @@
 \usage{
 tidy_capture(x)
 
-tidy_dots(...)
+tidy_dots(..., .patterned = TRUE)
 }
 \arguments{
 \item{x, ...}{Arguments to capture.}
+
+\item{.patterned}{Whether to evaluate LHS of pattern expressions
+(of the type \code{name := expr}) supplied as dots. The evaluated
+LHS will serve as dot name (and should thus evaluate to a string
+or symbol.}
 }
 \value{
 \code{tidy_capture()} returns a formula; \code{tidy_dots()}

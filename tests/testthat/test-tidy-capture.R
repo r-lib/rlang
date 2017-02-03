@@ -84,3 +84,23 @@ test_that("dots can be spliced in", {
   )
   expect_identical(out$out, expected)
 })
+
+test_that("dot names are interpolated", {
+  var <- "baz"
+  expect_identical(tidy_dots(var := foo, toupper(var) := bar), list(baz = ~foo, BAZ = ~bar))
+  expect_identical(tidy_dots(var := foo, bar), list(baz = ~foo, ~bar))
+
+  var <- quote(baz)
+  expect_identical(tidy_dots(var := foo), list(baz = ~foo))
+
+  pattern <- var := foo
+  expect_identical(tidy_dots(!! pattern), list(baz = ~foo))
+})
+
+test_that("corner cases are handled when interpolating dot names", {
+    var <- na_chr
+    expect_identical(names(tidy_dots(var := NULL)), na_chr)
+
+    var <- NULL
+    expect_error(tidy_dots(var := NULL), "must evaluate to a name")
+})
