@@ -104,3 +104,14 @@ test_that("corner cases are handled when interpolating dot names", {
     var <- NULL
     expect_error(tidy_dots(var := NULL), "must evaluate to a name")
 })
+
+test_that("patterns are interpolated", {
+  var1 <- ~foo
+  var2 <- ~bar
+  pats <- tidy_patterns(pattern = foo(!!var1) := bar(!!var2))
+
+  pat <- new_f(call("bar", ~bar), call("foo", ~foo))
+  pat[[1]] <- quote(`:=`)
+
+  expect_identical(pats, list(pattern = pat))
+})

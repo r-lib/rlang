@@ -196,3 +196,38 @@ dot_eval_name <- function(name, dot) {
   dot <- new_f(f_rhs(expr), env = f_env(dot))
   set_names(list(dot), name)
 }
+
+#' Capture patterns.
+#'
+#' This is like \code{\link{tidy_dots}()} but patterns are returned as
+#' is. Unquote operators are processed on capture, in both the LHS and
+#' the RHS.
+#'
+#' @param ... Dots that may contain patterns (see \link{op-pattern}).
+#'   The LHS and RHS of patterns are interpolated on capture.
+#' @seealso \code{\link{tidy_dots}()}, \link{op-pattern}
+#' @export
+#' @examples
+#' fn <- function(...) {
+#'   tidy_patterns(...)
+#' }
+#' fn(var = foo(baz) := bar(baz))
+tidy_patterns <- function(...) {
+  info <- dots_inspect(..., .only_dots = TRUE)
+  dots <- lapply(info, dot_f)
+
+  # Flatten possibly spliced dots
+  dots <- unlist(dots, FALSE)
+
+  lapply(dots, maybe_as_pattern)
+}
+
+maybe_as_pattern <- function(dot) {
+  if (is_pattern(f_rhs(dot))) {
+    dot <- structure(f_rhs(dot), .Environment = f_env(dot))
+    f_lhs(dot) <- .Call(interp_, f_lhs(dot), f_env(dot))
+    f_rhs(dot) <- .Call(interp_, f_rhs(dot), f_env(dot))
+  }
+
+  dot
+}
