@@ -104,5 +104,9 @@ tidy_capture <- function(x) {
 #' @export
 tidy_dots <- function(...) {
   info <- dots_inspect(..., .only_dots = TRUE)
-  lapply(info, function(x) new_f(x$expr, env = x$eval_frame$env))
+  lapply(info, function(x) {
+    env <- x$eval_frame$env
+    expr <- .Call(interp_, x$expr, env)
+    new_f(expr, env = env)
+  })
 }
