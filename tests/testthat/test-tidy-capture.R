@@ -79,30 +79,35 @@ test_that("dots can be spliced in", {
   expected <- list(
     ~foo(bar),
     with_env(out$env, ~bar(baz)),
-    a = "var",
+    a = with_env(out$env, ~"var"),
     b = with_env(out$env, ~foo)
   )
   expect_identical(out$out, expected)
 })
 
+test_that("spliced dots are wrapped in formulas", {
+  args <- alist(x = var, y = ~var)
+  expect_identical(tidy_dots(!!! args), list(x = ~var, y = ~var))
+})
+
 test_that("dot names are interpolated", {
   var <- "baz"
-  expect_identical(tidy_dots(var := foo, toupper(var) := bar), list(baz = ~foo, BAZ = ~bar))
-  expect_identical(tidy_dots(var := foo, bar), list(baz = ~foo, ~bar))
+  expect_identical(tidy_dots(!!var := foo, !!toupper(var) := bar), list(baz = ~foo, BAZ = ~bar))
+  expect_identical(tidy_dots(!!var := foo, bar), list(baz = ~foo, ~bar))
 
   var <- quote(baz)
-  expect_identical(tidy_dots(var := foo), list(baz = ~foo))
+  expect_identical(tidy_dots(!!var := foo), list(baz = ~foo))
 
-  pattern <- var := foo
+  pattern <- !!var := foo
   expect_identical(tidy_dots(!! pattern), list(baz = ~foo))
 })
 
 test_that("corner cases are handled when interpolating dot names", {
     var <- na_chr
-    expect_identical(names(tidy_dots(var := NULL)), na_chr)
+    expect_identical(names(tidy_dots(!!var := NULL)), na_chr)
 
     var <- NULL
-    expect_error(tidy_dots(var := NULL), "must evaluate to a name")
+    expect_error(tidy_dots(!!var := NULL), "must be a name or string")
 })
 
 test_that("patterns are interpolated", {
@@ -110,8 +115,6 @@ test_that("patterns are interpolated", {
   var2 <- ~bar
   pats <- tidy_patterns(pattern = foo(!!var1) := bar(!!var2))
 
-  pat <- new_f(call("bar", ~bar), call("foo", ~foo))
-  pat[[1]] <- quote(`:=`)
-
+  pat <- new_pattern(call("foo", ~foo), call("bar", ~bar))
   expect_identical(pats, list(pattern = pat))
 })

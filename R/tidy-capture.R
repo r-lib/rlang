@@ -68,8 +68,9 @@
 #' @export
 #' @return \code{tidy_capture()} returns a formula; \code{tidy_dots()}
 #'   returns a list of formulas, one for each dotted argument.
-#' @seealso \code{\link{expr_label}()} and \code{\link{expr_text}()}
-#'   for capturing labelling information.
+#' @seealso \code{\link{tidy_dots}()} for capturing dots,
+#'   \code{\link{expr_label}()} and \code{\link{expr_text}()} for
+#'   capturing labelling information.
 #' @examples
 #' # tidy_capture() returns a formula:
 #' fn <- function(foo) tidy_capture(foo)
@@ -78,17 +79,6 @@
 #' # Capturing an argument only works for the most direct call:
 #' g <- function(bar) fn(bar)
 #' g(a + b)
-#'
-#'
-#' # Dots on the other hand are forwarded all the way to
-#' # tidy_dots() and can be captured across levels:
-#' fn <- function(...) tidy_dots(y = a + b, ...)
-#' fn(z = a + b)
-#'
-#' # Note that if you pass a named argument in dots, only the
-#' # expression at the dots call site is captured:
-#' fn <- function(x = a + b) tidy_dots(x = x)
-#' fn()
 tidy_capture <- function(x) {
   x_expr <- substitute(x)
   x_env <- caller_env(1)
@@ -100,35 +90,107 @@ tidy_capture <- function(x) {
   new_f(expr, env = arg_env)
 }
 
-#' @rdname tidy_capture
-#' @param .patterned Whether to evaluate LHS of pattern expressions
-#'   (of the type \code{name := expr}) supplied as dots. The evaluated
-#'   LHS will serve as dot name (and should thus evaluate to a string
-#'   or symbol.
+#' Capture dots.
+#'
+#' This set of functions are like \code{\link{tidy_capture}()} but for
+#' \code{...} arguments. They capture expressions passed through dots
+#' along their dynamic environments, and return them bundled as a set
+#' of formulas. They differ in their treatment of pattern expressions
+#' of the type \code{var := expr}.
+#'
+#'\describe{
+#'  \item{\code{tidy_dots()}}{
+#'    When \code{:=} patterns are supplied to \code{tidy_dots()}, they
+#'    are treated as a synonym of argument assignment \code{=}. On the
+#'    other hand, they allow unquoting operators on the left-hand side,
+#'    which makes it easy to assign names programmatically.}
+#'  \item{\code{tidy_dots_alt()}}{
+#'    It behaves similarly to \code{tidy_dots()} but returns the tidy
+#'    quotes in a list with two components: \code{dots} and
+#'    \code{alts}. Expressions supplied with \code{=} are returned in
+#'    \code{dots} while those specified with \code{:=} end up in
+#'    \code{alts}. This is useful for DSLs that treat patterns with a
+#'    special meaning, such as ggvis. A downside of this approach is
+#'    that non-patterned expressions cannot have their LHS
+#'    interpolated.}
+#'  \item{\code{tidy_patterns()}}{
+#'    This dots capturing function returns patterns as is. Unquote
+#'    operators are processed on capture, in both the LHS and the
+#'    RHS. Unlike \code{tidy_dots()} and \code{tidy_dots_alt()},
+#'    \code{tidy_patterns()} allows named patterns.}
+#' }
+#' @inheritParams tidy_capture
 #' @export
-tidy_dots <- function(..., .patterned = TRUE) {
+#' @examples
+#' # While tidy_capture() only work for the most direct calls, that's
+#' # not the case for tidy_dots(). Dots are forwarded all the way to
+#' # tidy_dots() and can be captured across multiple layers of calls:
+#' fn <- function(...) tidy_dots(y = a + b, ...)
+#' fn(z = a + b)
+#'
+#' # However if you pass a named argument in dots, only the expression
+#' # at the innermost call site is captured:
+#' fn <- function(...) tidy_dots(x = x)
+#' fn(x = a + b)
+#'
+#'
+#' # Dots can be spliced in:
+#' args <- list(x = 1:3, y = ~var)
+#' tidy_dots(!!! args, z = 10L)
+#'
+#' # Raw expressions are turned to formulas:
+#' args <- alist(x = foo, y = bar)
+#' tidy_dots(!!! args)
+#'
+#'
+#' # Patterns are treated similarly to named arguments:
+#' tidy_dots(x := expr, y = expr)
+#'
+#' # However, the LHS of patterns can be unquoted. The return value
+#' # must be a symbol or a string:
+#' var <- "foo"
+#' tidy_dots(!!var := expr)
+#'
+#' # If your DSL treats patterns specially, you can use
+#' # tidy_dots_alt(). It also interpolates the LHS, but it returns a
+#' # list of dots and alternatives:
+#' tidy_dots_alt(!!var := expr, x := expr, y = expr)
+#'
+#' # If you need the full LHS expression, use tidy_patterns():
+#' tidy_patterns(var = foo(baz) := bar(baz))
+tidy_dots <- function(...) {
+  dots <- capture_dots(...)
+  dots_interp_lhs(dots)
+}
+
+#' @rdname tidy_dots
+#' @export
+tidy_dots_alt <- function(...) {
+  dots <- capture_dots(...)
+
+  patterned <- vapply_lgl(dots, is_call, quote(`:=`))
+  alts <- dots_interp_lhs(dots[patterned])
+
+  list(dots = dots[!patterned], alts = alts)
+}
+
+capture_dots <- function(...) {
   info <- dots_inspect(..., .only_dots = TRUE)
   dots <- lapply(info, dot_f)
 
   # Flatten possibly spliced dots
-  dots <- unlist(dots, FALSE)
-
-  if (.patterned) {
-    dots <- dots_eval_names(dots)
-  }
-
-  dots
+  unlist(dots, FALSE)
 }
-
 dot_f <- function(dot) {
   env <- dot$eval_frame$env
   expr <- dot$expr
 
   # Allow unquote-splice in dots
   if (is_splice(expr)) {
-    expr <- call("alist", expr)
-    expr <- .Call(interp_, expr, env)
-    expr_eval(expr)
+    dots <- call("alist", expr)
+    dots <- .Call(interp_, dots, env)
+    dots <- expr_eval(dots)
+    lapply(dots, as_tidy_quote, env)
   } else {
     expr <- .Call(interp_, expr, env)
     list(new_f(expr, env = env))
@@ -136,9 +198,13 @@ dot_f <- function(dot) {
 }
 
 is_bang <- function(expr) {
-  identical(car(expr), quote(`!`))
+  is.call(expr) && identical(car(expr), quote(`!`))
 }
 is_splice <- function(expr) {
+  if (!is.call(expr)) {
+    return(FALSE)
+  }
+
   if (identical(car(expr), quote(UQS)) || identical(car(expr), quote(rlang::UQS))) {
     return(TRUE)
   }
@@ -150,20 +216,19 @@ is_splice <- function(expr) {
   FALSE
 }
 
-dots_eval_names <- function(dots) {
+dots_interp_lhs <- function(dots) {
   orig_names <- names(dots)
   names <- names2(dots)
   interpolated <- FALSE
 
   for (i in seq_along(dots)) {
-    dot <- dot_eval_name(orig_names[[i]], dots[[i]])
-    dots[[i]] <- dot[[1]]
-    name <- names(dot)
+    dot <- dot_interp_lhs(orig_names[[i]], dots[[i]])
+    dots[[i]] <- dot$dot
 
     # Make sure unnamed dots remain unnamed
-    if (!is_null(name)) {
+    if (!is_null(dot$name)) {
       interpolated <- TRUE
-      names[[i]] <- name
+      names[[i]] <- dot$name
     }
   }
 
@@ -173,52 +238,32 @@ dots_eval_names <- function(dots) {
 
   dots
 }
-
-dot_eval_name <- function(name, dot) {
+dot_interp_lhs <- function(name, dot) {
   if (!is_formula(dot) || !is_pattern(f_rhs(dot))) {
-    return(set_names(list(dot), name))
+    return(list(name = name, dot = dot))
   }
 
-  if (!is_null(name)) {
+  if (!is_null(name) && name != "") {
     warn("name ignored because a LHS was supplied")
   }
 
-  expr <- f_rhs(dot)
-  name <- expr_eval(f_lhs(expr), f_env(dot))
+  rhs <- new_f(f_rhs(f_rhs(dot)), env = f_env(dot))
+  lhs <- .Call(interp_, f_lhs(f_rhs(dot)), f_env(dot))
 
-  if (is_name(name)) {
-    name <- as.character(name)
-  }
-  if (!is_scalar_character(name)) {
-    abort("LHS must evaluate to a name")
+  if (is_name(lhs)) {
+    lhs <- as.character(lhs)
+  } else if (!is_scalar_character(lhs)) {
+    abort("LHS must be a name or string")
   }
 
-  dot <- new_f(f_rhs(expr), env = f_env(dot))
-  set_names(list(dot), name)
+  list(name = lhs, dot = rhs)
 }
 
-#' Capture patterns.
-#'
-#' This is like \code{\link{tidy_dots}()} but patterns are returned as
-#' is. Unquote operators are processed on capture, in both the LHS and
-#' the RHS.
-#'
-#' @param ... Dots that may contain patterns (see \link{op-pattern}).
-#'   The LHS and RHS of patterns are interpolated on capture.
-#' @seealso \code{\link{tidy_dots}()}, \link{op-pattern}
+
+#' @rdname tidy_capture
 #' @export
-#' @examples
-#' fn <- function(...) {
-#'   tidy_patterns(...)
-#' }
-#' fn(var = foo(baz) := bar(baz))
 tidy_patterns <- function(...) {
-  info <- dots_inspect(..., .only_dots = TRUE)
-  dots <- lapply(info, dot_f)
-
-  # Flatten possibly spliced dots
-  dots <- unlist(dots, FALSE)
-
+  dots <- capture_dots(...)
   lapply(dots, maybe_as_pattern)
 }
 

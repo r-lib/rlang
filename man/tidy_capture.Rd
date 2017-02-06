@@ -2,20 +2,15 @@
 % Please edit documentation in R/tidy-capture.R
 \name{tidy_capture}
 \alias{tidy_capture}
-\alias{tidy_dots}
+\alias{tidy_patterns}
 \title{Capture an expression and evaluation environment.}
 \usage{
 tidy_capture(x)
 
-tidy_dots(..., .patterned = TRUE)
+tidy_patterns(...)
 }
 \arguments{
 \item{x, ...}{Arguments to capture.}
-
-\item{.patterned}{Whether to evaluate LHS of pattern expressions
-(of the type \code{name := expr}) supplied as dots. The evaluated
-LHS will serve as dot name (and should thus evaluate to a string
-or symbol.}
 }
 \value{
 \code{tidy_capture()} returns a formula; \code{tidy_dots()}
@@ -97,20 +92,10 @@ fn(a + b)
 # Capturing an argument only works for the most direct call:
 g <- function(bar) fn(bar)
 g(a + b)
-
-
-# Dots on the other hand are forwarded all the way to
-# tidy_dots() and can be captured across levels:
-fn <- function(...) tidy_dots(y = a + b, ...)
-fn(z = a + b)
-
-# Note that if you pass a named argument in dots, only the
-# expression at the dots call site is captured:
-fn <- function(x = a + b) tidy_dots(x = x)
-fn()
 }
 \seealso{
-\code{\link{expr_label}()} and \code{\link{expr_text}()}
-  for capturing labelling information.
+\code{\link{tidy_dots}()} for capturing dots,
+  \code{\link{expr_label}()} and \code{\link{expr_text}()} for
+  capturing labelling information.
 }
 
