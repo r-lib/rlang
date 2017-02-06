@@ -62,6 +62,7 @@ test_that("extracts call, name, or scalar", {
   expect_identical(f_rhs(~ 1L), 1L)
 })
 
+
 # Setters -----------------------------------------------------------------
 
 test_that("can replace RHS of one-sided formula", {
@@ -92,4 +93,25 @@ test_that("can modify environment", {
   f_env(f) <- env
 
   expect_equal(f_env(f), env)
+})
+
+
+# Utils --------------------------------------------------------------
+
+test_that("f_unwrap() substitutes values", {
+  n <- 100
+  f1 <- f_unwrap(~ x + n)
+  f2 <- new_f(quote(x + 100), env = parent.env(environment()))
+
+  expect_identical(f1, f2)
+})
+
+test_that("f_unwrap() substitutes even in globalenv", {
+  .GlobalEnv$`__1` <- 1
+  expect_equal(f_rhs(f_unwrap(new_f(quote(`__1`), env = globalenv()))), 1)
+})
+
+test_that("f_unwrap() doesn't go past empty env", {
+  f <- new_f(quote(x == y), env = emptyenv())
+  expect_equal(f_unwrap(f), f)
 })
