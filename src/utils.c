@@ -3,22 +3,75 @@
 #include <Rinternals.h>
 #include <stdbool.h>
 
+int is_sym(SEXP x, const char* string) {
+  if (TYPEOF(x) != SYMSXP)
+    return false;
+  else
+    return strcmp(CHAR(PRINTNAME(x)), string) == 0;
+}
+
+int is_lang(SEXP x) {
+  return TYPEOF(x) == LANGSXP || TYPEOF(x) == SYMSXP;
+}
+
 bool is_call(SEXP x, const char* f) {
-  if (!(Rf_isLanguage(x) || TYPEOF(x) == LISTSXP))
+  if (!is_lang(x) && TYPEOF(x) != LISTSXP)
     return false;
 
   SEXP fun = CAR(x);
-  if (!Rf_isSymbol(fun))
-    return false;
-
-  return fun == Rf_install(f);
+  return is_sym(fun, f);
 }
 
-bool is_lazy_load(SEXP x) {
-  if (TYPEOF(x) != PROMSXP)
-    return false;
+int is_prefixed_call(SEXP x, int (*sym_predicate)(SEXP)) {
+  if (TYPEOF(x) != LANGSXP)
+    return 0;
 
-  return is_call(PREXPR(x), "lazyLoadDBfetch");
+  SEXP head = CAR(x);
+  if (!(is_call(head, "$") ||
+        is_call(head, "@") ||
+        is_call(head, "::") ||
+        is_call(head, ":::")))
+    return 0;
+
+  if (sym_predicate == NULL)
+    return 1;
+
+  SEXP args = CDAR(x);
+  SEXP sym = CADR(args);
+  return sym_predicate(sym);
+}
+
+int is_any_call(SEXP x, int (*sym_predicate)(SEXP)) {
+  if (TYPEOF(x) != LANGSXP)
+    return false;
+  else
+    return sym_predicate(CAR(x)) || is_prefixed_call(x, sym_predicate);
+}
+
+int is_rlang_prefixed(SEXP x, int (*sym_predicate)(SEXP)) {
+  if (TYPEOF(x) != LANGSXP)
+    return 0;
+
+  if (!is_call(CAR(x), "::"))
+    return 0;
+
+  SEXP args = CDAR(x);
+  SEXP ns_sym = CAR(args);
+  if (!is_sym(ns_sym, "rlang"))
+    return 0;
+
+  if (sym_predicate) {
+    SEXP sym = CADR(args);
+    return sym_predicate(sym);
+  }
+
+  return 1;
+}
+int is_rlang_call(SEXP x, int (*sym_predicate)(SEXP)) {
+  if (TYPEOF(x) != LANGSXP)
+    return false;
+  else
+    return sym_predicate(CAR(x)) || is_rlang_prefixed(x, sym_predicate);
 }
 
 SEXP last_cons(SEXP x) {
@@ -29,10 +82,6 @@ SEXP last_cons(SEXP x) {
 
 SEXP length__(SEXP x) {
   return Rf_ScalarInteger(Rf_length(x));
-}
-
-int is_lang(SEXP x) {
-  return TYPEOF(x) == LANGSXP || TYPEOF(x) == SYMSXP;
 }
 
 int is_true(SEXP x) {
@@ -53,8 +102,7 @@ bool is_formula(SEXP x) {
   if (TYPEOF(head) != SYMSXP)
     return 0;
 
-  const char* nm =  CHAR(PRINTNAME(head));
-  return strcmp(nm, "~") == 0 || strcmp(nm, ":=") == 0;
+  return is_sym(head, "~") || is_sym(head, ":=");
 }
 
 bool is_fpromise(SEXP x) {
@@ -97,4 +145,11 @@ SEXP make_formula1(SEXP rhs, SEXP env) {
 
   UNPROTECT(1);
   return f;
+}
+
+SEXP rlang_fun(SEXP sym) {
+  SEXP prefixed_sym = PROTECT(Rf_lang3(Rf_install("::"), Rf_install("rlang"), sym));
+  SEXP fun = Rf_eval(prefixed_sym, R_BaseEnv);
+  UNPROTECT(1);
+  return fun;
 }

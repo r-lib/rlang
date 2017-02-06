@@ -108,14 +108,14 @@
 #' with_handlers(fn(FALSE), default_empty_string = restarting("rst_null"))
 with_restarts <- function(.expr, ..., .restarts = list()) {
   restarts <- c(list(...), .restarts)
-  with_restarts_(arg_capture(.expr), restarts)
+  with_restarts_(tidy_capture(.expr), restarts)
 }
 #' @rdname with_restarts
 #' @export
 with_restarts_ <- function(.expr, .restarts = list(), .env = NULL) {
   f <- as_quoted_f(.expr, .env)
-  f <- f_quote(withRestarts(!! f, !!! .restarts))
-  f_eval(f)
+  f <- tidy_quote(withRestarts(!! f, !!! .restarts))
+  tidy_eval(f)
 }
 
 

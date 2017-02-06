@@ -19,7 +19,7 @@
 #' expressions, it should thus account for that possibility with a
 #' catch-all branch. On the other hand, if your function only gets
 #' expressions created from a parse, \code{quote()}, or
-#' \code{\link{arg_capture}()}, then you can check for literals with
+#' \code{\link{tidy_capture}()}, then you can check for literals with
 #' \code{is_literal()}.
 #'
 #' Finally, pairlists can also be language objects. This is the data

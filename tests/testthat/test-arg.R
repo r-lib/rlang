@@ -1,14 +1,5 @@
 context("arg")
 
-# arg_expr -----------------------------------------------------------------
-
-test_that("arg_expr() returns correct expression", {
-  fn <- function(x) g(foo(x))
-  g <- function(y) arg_expr(y)
-  expect_equal(fn(mtcars), quote(foo(x)))
-})
-
-
 # arg_inspect -----------------------------------------------------------------
 
 test_that("follows through dots", {
@@ -107,43 +98,6 @@ test_that("frame_global() is reported with top-level calls", {
 })
 
 
-# arg_text ----------------------------------------------------------------
-
-test_that("always returns single string", {
-  out <- arg_text({
-    a + b
-  })
-  expect_length(out, 1)
-})
-
-test_that("can truncate lines", {
-  out <- arg_text({
-    a + b
-  }, nlines = 2)
-  expect_equal(out, "{\n...")
-})
-
-
-# arg_label ---------------------------------------------------------------
-
-test_that("quotes strings", {
-  expect_equal(arg_label("a"), '"a"')
-  expect_equal(arg_label("\n"), '"\\n"')
-})
-
-test_that("backquotes names", {
-  expect_equal(arg_label(x), "`x`")
-})
-
-test_that("converts atomics to strings", {
-  expect_equal(arg_label(0.5), "0.5")
-})
-
-test_that("truncates long calls", {
-  expect_equal(arg_label({ a + b }), "`{\n    ...\n}`")
-})
-
-
 # arg_missing --------------------------------------------------------
 
 test_that("is_missing() works with symbols", {
@@ -196,10 +150,10 @@ test_that("magrittr works", {
 })
 
 
-# arg_capture --------------------------------------------------------------
+# tidy_capture -------------------------------------------------------
 
 test_that("explicit promise makes a formula", {
-  f1 <- arg_capture(1 + 2 + 3)
+  f1 <- tidy_capture(1 + 2 + 3)
   f2 <- ~ 1 + 2 + 3
 
   expect_equal(f1, f2)
@@ -207,7 +161,7 @@ test_that("explicit promise makes a formula", {
 
 test_that("explicit promise works only one level deep", {
   f <- function(x) list(env = env(), f = g(x))
-  g <- function(y) arg_capture(y)
+  g <- function(y) tidy_capture(y)
   out <- f(1 + 2 + 3)
   expected_f <- with_env(out$env, ~x)
 

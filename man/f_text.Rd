@@ -17,7 +17,7 @@ f_label(x)
 \item{nlines}{Maximum number of lines to extract.}
 }
 \description{
-Equivalent of \code{\link{arg_text}()} and \code{\link{arg_label}()} for
+Equivalent of \code{\link{expr_text}()} and \code{\link{expr_label}()} for
 formulas.
 }
 \examples{

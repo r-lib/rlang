@@ -10,42 +10,18 @@ with_env(env, expr)
 \item{env}{An environment within which to evaluate \code{expr}. Can
 be an object with an \code{\link{env}()} method.}
 
-\item{expr}{An expression to evaluate. The underscored version
-\code{with_env_()} takes either a quoted expression or a formula
-from which the right-hand side will be extracted.}
+\item{expr}{An expression to evaluate.}
 }
 \description{
-These functions evaluate \code{expr} within \code{env}. The
-difference with \code{\link[base]{eval}()} is that \code{expr} is
-wrapped in an artifical promise. This is a lighter evaluation
-mechanism which also has some subtle implications (see details).
-}
-\details{
-When \code{env} is an evaluation environment of a stack frame (see
-\code{\link{eval_stack}()}), using \code{with_env()} rather than
-\code{eval()} has subtle implications. The base function
-\code{eval()} creates a new evaluation context with \code{env} as
-frame environment. This means that when \code{expr} is executed,
-there are actually two contexts with the same evaluation
-environment on the stack. Thus, any command that looks up frames on
-the stack may find the frame set up by \code{eval()} rather than
-the original frame of \code{env}. This affects functions like
-\code{\link[base]{return}()}, \code{\link[base]{parent.frame}()},
-\code{\link[base]{sys.calls}()}, etc.
+This function evaluate \code{expr} within \code{env}. It uses
+\code{\link{expr_eval}()} which features a lighter evaluation
+mechanism than base R \code{\link[base]{eval}()}, and which also
+has some subtle implications when evaluting stack sensitive
+functions (see help for \code{\link{expr_eval}()}).
 }
 \examples{
-env <- env_new(env_package("rlang"))
-
-# This function is basically a shortcut for assigning a promise and
-# evaluating it right away:
-env_assign_lazily(env, "promise", cat("promise forced!\\n"))
-env$promise
-
-# Or equivalently:
-with_env(env, cat("promise forced!\\n"))
-
-
-# It is handy to create formulas with a given environment:
+# with_env() is handy to create formulas with a given environment:
+env <- env_new("rlang")
 f <- with_env(env, ~new_formula())
 identical(f_env(f), env)
 
@@ -69,8 +45,5 @@ fn()
 # Since env is passed to env(), it can be any object with an env()
 # method. For strings, the env_package() is returned:
 with_env("base", ~mtcars)
-}
-\seealso{
-\code{\link{env_assign_lazily}()}
 }
 

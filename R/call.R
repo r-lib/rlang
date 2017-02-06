@@ -332,7 +332,7 @@ call_fn <- function(call = NULL, env = NULL) {
     call$fn
   } else {
     info <- call_info(call, NULL)
-    eval(info$call[[1]], info$env)
+    expr_eval(info$call[[1]], info$env)
   }
 }
 

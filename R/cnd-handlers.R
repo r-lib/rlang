@@ -79,7 +79,7 @@
 #' with_handlers(fn2(), foo = inplace(exiting_handler), foo = inplace(other_handler))
 with_handlers <- function(.expr, ..., .handlers = list()) {
   handlers <- c(list(...), .handlers)
-  with_handlers_(arg_capture(.expr), handlers)
+  with_handlers_(tidy_capture(.expr), handlers)
 }
 #' @rdname with_handlers
 #' @export
@@ -94,15 +94,15 @@ with_handlers_ <- function(.expr, .handlers = list(), .env = NULL) {
   }
 
   f <- interp_handlers(f, inplace = inplace, exiting = exiting)
-  f_eval(f)
+  tidy_eval(f)
 }
 
 interp_handlers <- function(f, inplace, exiting) {
   if (length(exiting)) {
-    f <- f_quote(tryCatch(!! f, !!! exiting))
+    f <- tidy_quote(tryCatch(!! f, !!! exiting))
   }
   if (length(inplace)) {
-    f <- f_quote(withCallingHandlers(!! f, !!! inplace))
+    f <- tidy_quote(withCallingHandlers(!! f, !!! inplace))
   }
   f
 }

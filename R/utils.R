@@ -5,7 +5,7 @@ substitute_ <- function(x, env) {
   }
 
   call <- substitute(substitute(x, env), list(x = x))
-  eval(call)
+  expr_eval(call)
 }
 
 get_env <- function(x) {
