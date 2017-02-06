@@ -11,7 +11,7 @@ cnd_abort(.cnd, ..., .msg = NULL, .call = FALSE, .mufflable = FALSE)
 }
 \arguments{
 \item{.cnd}{Either a condition object (see
-\code{\link{cnd_new}()}), or the name of a s3 class from which a
+\code{\link{new_cnd}()}), or the name of a s3 class from which a
 new condition will be created.}
 
 \item{...}{Named data fields stored inside the condition object.}
@@ -68,7 +68,7 @@ jump to a muffling restart, and the \code{muffle} argument of
 }
 \examples{
 # Creating a condition of type "foo"
-cnd <- cnd_new("foo")
+cnd <- new_cnd("foo")
 
 # If no handler capable of dealing with "foo" is established on the
 # stack, signalling the condition has no effect:
@@ -106,10 +106,10 @@ cnd_abort(cnd)
 }
 
 # If you don't specify a .msg or .call, the default message/call
-# (supplied to cnd_new()) are displayed. Otherwise, the ones
+# (supplied to new_cnd()) are displayed. Otherwise, the ones
 # supplied to cnd_abort() and cnd_signal() take precedence:
 \dontrun{
-critical <- cnd_new("my_error",
+critical <- new_cnd("my_error",
   .msg = "default 'my_error' msg",
   .call = quote(default(call))
 )

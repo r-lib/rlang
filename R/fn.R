@@ -13,7 +13,7 @@
 #' @export
 #' @examples
 #' f <- function(x) x + 3
-#' g <- fn_new(alist(x = ), quote(x + 3))
+#' g <- new_fn(alist(x = ), quote(x + 3))
 #'
 #' # The components of the functions are identical
 #' identical(formals(f), formals(g))
@@ -26,7 +26,7 @@
 #' attr(f, "srcref") <- NULL
 #' # Now they are:
 #' stopifnot(identical(f, g))
-fn_new <- function(args, body, env = caller_env()) {
+new_fn <- function(args, body, env = caller_env()) {
   stopifnot(all(has_name(args)), is_lang(body), is_env(env))
 
   args <- as.pairlist(args)
@@ -233,11 +233,11 @@ is_primitive_lazy <- function(x) {
 #' @param value A new closure environment for the function.
 #' @export
 #' @examples
-#' env <- env_new("base")
+#' env <- new_env("base")
 #' fn <- with_env(env, function() NULL)
 #' identical(fn_env(fn), env)
 #'
-#' other_env <- env_new("base")
+#' other_env <- new_env("base")
 #' fn_env(fn) <- other_env
 #' identical(fn_env(fn), other_env)
 fn_env <- function(fn) {
@@ -293,5 +293,5 @@ as_function.formula <- function(.f, ...) {
   if (length(.f) != 2) {
     stop("Formula must be one sided", call. = FALSE)
   }
-  fn_new(alist(.x = , .y = , . = .x), .f[[2]], environment(.f))
+  new_fn(alist(.x = , .y = , . = .x), .f[[2]], environment(.f))
 }

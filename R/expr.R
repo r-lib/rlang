@@ -30,7 +30,7 @@
 #' @export
 #' @examples
 #' # expr_eval() works just like base::eval():
-#' env <- env_new(data = list(foo = "bar"))
+#' env <- new_env(data = list(foo = "bar"))
 #' expr <- quote(foo)
 #' expr_eval(expr, env)
 #'
@@ -104,7 +104,7 @@ expr_label <- function(expr) {
   } else {
     chr <- deparse(expr)
     if (length(chr) > 1) {
-      dot_call <- call_new(expr[[1]], quote(...))
+      dot_call <- new_call(expr[[1]], quote(...))
       chr <- paste(deparse(dot_call), collapse = "\n")
     }
     paste0("`", chr, "`")

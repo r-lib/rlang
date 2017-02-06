@@ -36,7 +36,7 @@ The core components are accompanied by a number of helper functions:
 
 * Identify a formula with `is_formula()`.
 
-* Create a formula from a quoted call and an environment with `f_new()`.
+* Create a formula from a quoted call and an environment with `new_f()`.
 
 * "Unwrap" a formula removing one level from the stack of parent environments
   with `f_unwrap()`.

@@ -6,7 +6,7 @@
 #' \code{vignette("conditions")} for more information on how to use
 #' the condition system.
 #'
-#' \code{cnd_new()} creates objects inheriting from
+#' \code{new_cnd()} creates objects inheriting from
 #' \code{condition}. Conditions created with \code{cnd_error()},
 #' \code{cnd_warning()} and \code{cnd_message()} inherit from
 #' \code{error}, \code{warning} or \code{message}.
@@ -19,7 +19,7 @@
 #' @export
 #' @examples
 #' # Create a condition inheriting from the s3 type "foo":
-#' cnd <- cnd_new("foo")
+#' cnd <- new_cnd("foo")
 #'
 #' # Signal the condition to potential handlers. This has no effect if no
 #' # handler is registered to deal with conditions of type "foo":
@@ -40,7 +40,7 @@
 #' # you need to use stop() to signal a critical condition that should
 #' # terminate the program if not handled:
 #' # stop(cnd_error("my_error"))
-cnd_new <- function(.type = NULL, ..., .msg = NULL) {
+new_cnd <- function(.type = NULL, ..., .msg = NULL) {
   data <- list(...)
   if (any(names(data) %in% "message")) {
     stop("conditions cannot have a `message` data field", call. = FALSE)
@@ -53,20 +53,20 @@ cnd_new <- function(.type = NULL, ..., .msg = NULL) {
   structure(cnd, class = c(.type, "condition"))
 }
 
-#' @rdname cnd_new
+#' @rdname new_cnd
 #' @export
 cnd_error <- function(.type = NULL, ..., .msg = NULL) {
-  cnd_new(c(.type, "error"), ..., .msg = .msg)
+  new_cnd(c(.type, "error"), ..., .msg = .msg)
 }
-#' @rdname cnd_new
+#' @rdname new_cnd
 #' @export
 cnd_warning <- function(.type = NULL, ..., .msg = NULL) {
-  cnd_new(c(.type, "warning"), ..., .msg = .msg)
+  new_cnd(c(.type, "warning"), ..., .msg = .msg)
 }
-#' @rdname cnd_new
+#' @rdname new_cnd
 #' @export
 cnd_message <- function(.type = NULL, ..., .msg = NULL) {
-  cnd_new(c(.type, "message"), ..., .msg = .msg)
+  new_cnd(c(.type, "message"), ..., .msg = .msg)
 }
 
 #' Is object a condition?
@@ -109,9 +109,9 @@ is_condition <- function(x) {
 #' jump to a muffling restart, and the \code{muffle} argument of
 #' \code{\link{inplace}()} for creating a muffling handler.
 #'
-#' @inheritParams cnd_new
+#' @inheritParams new_cnd
 #' @param .cnd Either a condition object (see
-#'   \code{\link{cnd_new}()}), or the name of a s3 class from which a
+#'   \code{\link{new_cnd}()}), or the name of a s3 class from which a
 #'   new condition will be created.
 #' @param .msg A string to override the condition's default message.
 #' @param .call Whether to display the call of the frame in which the
@@ -133,7 +133,7 @@ is_condition <- function(x) {
 #' @export
 #' @examples
 #' # Creating a condition of type "foo"
-#' cnd <- cnd_new("foo")
+#' cnd <- new_cnd("foo")
 #'
 #' # If no handler capable of dealing with "foo" is established on the
 #' # stack, signalling the condition has no effect:
@@ -171,10 +171,10 @@ is_condition <- function(x) {
 #' }
 #'
 #' # If you don't specify a .msg or .call, the default message/call
-#' # (supplied to cnd_new()) are displayed. Otherwise, the ones
+#' # (supplied to new_cnd()) are displayed. Otherwise, the ones
 #' # supplied to cnd_abort() and cnd_signal() take precedence:
 #' \dontrun{
-#' critical <- cnd_new("my_error",
+#' critical <- new_cnd("my_error",
 #'   .msg = "default 'my_error' msg",
 #'   .call = quote(default(call))
 #' )
@@ -206,7 +206,7 @@ cnd_abort <- function(.cnd, ..., .msg = NULL, .call = FALSE,
 
 make_cnd <- function(.cnd, ..., .msg, .call, .show_call) {
   if (is_scalar_character(.cnd)) {
-    .cnd <- cnd_new(.cnd, ...)
+    .cnd <- new_cnd(.cnd, ...)
   } else {
     stopifnot(is_condition(.cnd))
   }

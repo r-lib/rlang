@@ -12,12 +12,12 @@ test_that("formulas containing unquote operators are interpolated", {
   var2 <- local({ foo <- "baz"; ~foo })
 
   f <- tidy_interp(~list(!!var1, !!var2))
-  expect_identical(f, f_new(bquote(list(.(var1), .(var2)))))
+  expect_identical(f, new_f(bquote(list(.(var1), .(var2)))))
 })
 
 test_that("interpolation is carried out in the right environment", {
   f <- local({ foo <- "foo"; ~!!foo })
-  expect_identical(tidy_interp(f), f_new("foo", env = f_env(f)))
+  expect_identical(tidy_interp(f), new_f("foo", env = f_env(f)))
 })
 
 test_that("interpolation does not revisit unquoted formulas", {
@@ -31,14 +31,14 @@ test_that("two-sided formulas are not treated as fpromises", {
 })
 
 test_that("unquote operators are always in scope", {
-  env <- env_new("base", list(foo = "bar"))
+  env <- new_env("base", list(foo = "bar"))
   f <- with_env(env, ~UQ(foo))
   expect_identical(tidy_interp(f), with_env(env, ~"bar"))
 })
 
 test_that("can interpolate in specific env", {
   foo <- "bar"
-  env <- env_new(NULL, list(foo = "foo"))
+  env <- new_env(NULL, list(foo = "foo"))
   expect_identical(tidy_interp(~UQ(foo)), ~"bar")
   expect_identical(tidy_interp(~UQ(foo), env), ~"foo")
 })
@@ -58,7 +58,7 @@ test_that("can qualify operators with namespace", {
 
 test_that("unquoting is frame-consistent", {
   defun <- quote(!! function() NULL)
-  env <- env_new("base")
+  env <- new_env("base")
   expect_identical(fn_env(tidy_interp(defun, env)), env)
 })
 
@@ -72,19 +72,19 @@ test_that("evaluates contents of UQ()", {
 test_that("layers of unquote are not peeled off recursively upon interpolation", {
   var1 <- ~letters
   var2 <- ~!!var1
-  expect_identical(tidy_quote(!!var2), f_new(~!!var1))
+  expect_identical(tidy_quote(!!var2), new_f(~!!var1))
 
   var1 <- local(~letters)
   var2 <- local(~!!var1)
-  expect_identical(tidy_interp(~!!var2), f_new(var2))
+  expect_identical(tidy_interp(~!!var2), new_f(var2))
 })
 
 test_that("formulas are promised recursively during unquote", {
   var <- ~~letters
-  expect_identical(tidy_quote(!!var), f_new(f_new(quote(~letters))))
+  expect_identical(tidy_quote(!!var), new_f(new_f(quote(~letters))))
 
-  var <- f_new(local(~letters), env = env_new(env()))
-  expect_identical(tidy_quote(!!var), f_new(var))
+  var <- new_f(local(~letters), env = new_env(env()))
+  expect_identical(tidy_quote(!!var), new_f(var))
 })
 
 
@@ -115,10 +115,10 @@ test_that("UQS() handles language objects", {
 test_that("UQF() guards formulas", {
   f <- local({ x <- "foo"; ~x })
 
-  guarded <- call_new("_F", .args = f[-1])
+  guarded <- new_call("_F", .args = f[-1])
   attributes(guarded) <- attributes(f)
 
-  expected_f <- f_new(guarded)
+  expected_f <- new_f(guarded)
   expect_identical(tidy_quote(UQF(f)), expected_f)
   expect_identical(tidy_eval(expected_f), f)
 })
@@ -138,8 +138,8 @@ test_that("single ! is not treated as shortcut", {
 
 test_that("double and triple ! are treated as syntactic shortcuts", {
   var <- local(~foo)
-  expect_identical(tidy_quote(!! var), f_new(var))
-  expect_identical(tidy_quote(!! ~foo), f_new(~foo))
+  expect_identical(tidy_quote(!! var), new_f(var))
+  expect_identical(tidy_quote(!! ~foo), new_f(~foo))
   expect_identical(tidy_quote(list(!!! letters[1:3])), ~list("a", "b", "c"))
 })
 
@@ -158,10 +158,10 @@ test_that("fpromises are created for all informative formulas", {
   bar <- local(~bar)
 
   interpolated <- local(tidy_quote(list(!!foo, !!bar)))
-  expected <- f_new(bquote(list(.(f_rhs(f_new(foo))), .(f_rhs(f_new(bar))))), env = env(interpolated))
+  expected <- new_f(bquote(list(.(f_rhs(new_f(foo))), .(f_rhs(new_f(bar))))), env = env(interpolated))
   expect_identical(interpolated, expected)
 
   interpolated <- tidy_quote(!!interpolated)
-  expected <- f_new(expected)
+  expected <- new_f(expected)
   expect_identical(interpolated, expected)
 })

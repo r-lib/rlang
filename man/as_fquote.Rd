@@ -53,7 +53,7 @@ f <- api_function(quote(foobar))
 env(f)
 
 # The user can supply her own environment:
-env <- env_new()
+env <- new_env()
 f <- api_function(quote(foobar), env)
 identical(env(f), env)
 

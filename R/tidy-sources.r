@@ -11,7 +11,7 @@ data_source.default <- function(x, lookup_msg = NULL) {
   if (!is_dictionary(x)) {
     abort("Data source must be a dictionary")
   }
-  data_source_new(as.list(x), lookup_msg)
+  new_data_source(as.list(x), lookup_msg)
 }
 #' @export
 data_source.data_source <- function(x, lookup_msg = NULL) {
@@ -30,15 +30,15 @@ data_source.environment <- function(x, lookup_msg = NULL) {
   if (!identical(x, global_env())) {
     x <- env_clone(x)
   }
-  data_source_new(x, lookup_msg)
+  new_data_source(x, lookup_msg)
 }
 #' @export
 data_source.data.frame <- function(x, lookup_msg = NULL) {
   lookup_msg <- lookup_msg %||% "Variable '%s' not found in data"
-  data_source_new(x, lookup_msg)
+  new_data_source(x, lookup_msg)
 }
 
-data_source_new <- function(x, lookup_msg) {
+new_data_source <- function(x, lookup_msg) {
   msg <- lookup_msg %||% "Object '%s' not found in pronoun"
   class <- c("data_source", class(x))
   structure(list(src = x, lookup_msg = msg), class = class)

@@ -97,12 +97,12 @@ tidy_capture <- function(x) {
   arg_env <- caller_env(2)
 
   expr <- .Call(interp_, arg_expr, arg_env)
-  f_new(expr, env = arg_env)
+  new_f(expr, env = arg_env)
 }
 
 #' @rdname tidy_capture
 #' @export
 tidy_dots <- function(...) {
   info <- dots_inspect(..., .only_dots = TRUE)
-  lapply(info, function(x) f_new(x$expr, env = x$eval_frame$env))
+  lapply(info, function(x) new_f(x$expr, env = x$eval_frame$env))
 }

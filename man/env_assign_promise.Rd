@@ -36,7 +36,7 @@ evaluated whenever they are touched by code, but not when they are
 passed as arguments.
 }
 \examples{
-env <- env_new()
+env <- new_env()
 env_assign_promise(env, "name", cat("forced!\\n"))
 env$name
 

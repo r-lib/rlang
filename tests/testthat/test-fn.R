@@ -1,12 +1,12 @@
 context("function")
 
-test_that("fn_new equivalent to regular function", {
+test_that("new_fn equivalent to regular function", {
   f1 <- function(x = a + b, y) {
     x + y
   }
   attr(f1, "srcref") <- NULL
 
-  f2 <- fn_new(alist(x = a + b, y =), quote({x + y}))
+  f2 <- new_fn(alist(x = a + b, y =), quote({x + y}))
 
   expect_equal(f1, f2)
 })
