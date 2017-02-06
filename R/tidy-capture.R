@@ -157,7 +157,8 @@ tidy_capture <- function(x) {
 #' tidy_dots_alt(!!var := expr, x := expr, y = expr)
 #'
 #' # If you need the full LHS expression, use tidy_patterns():
-#' tidy_patterns(var = foo(baz) := bar(baz))
+#' dots <- tidy_patterns(var = foo(baz) := bar(baz))
+#' dots$patterns
 tidy_dots <- function(...) {
   dots <- capture_dots(...)
   dots_interp_lhs(dots)
@@ -168,7 +169,7 @@ tidy_dots <- function(...) {
 tidy_dots_alt <- function(...) {
   dots <- capture_dots(...)
 
-  patterned <- vapply_lgl(dots, is_call, quote(`:=`))
+  patterned <- vapply_lgl(dots, is_pattern)
   alts <- dots_interp_lhs(dots[patterned])
 
   list(dots = dots[!patterned], alts = alts)
@@ -260,19 +261,26 @@ dot_interp_lhs <- function(name, dot) {
 }
 
 
-#' @rdname tidy_capture
+#' @rdname tidy_dots
 #' @export
 tidy_patterns <- function(...) {
   dots <- capture_dots(...)
-  lapply(dots, maybe_as_pattern)
+
+  patterned <- vapply_lgl(dots, function(dot) is_pattern(f_rhs(dot)))
+  patterns <- lapply(dots[patterned], as_pattern)
+
+  list(dots = dots[!patterned], patterns = patterns)
 }
 
-maybe_as_pattern <- function(dot) {
-  if (is_pattern(f_rhs(dot))) {
-    dot <- structure(f_rhs(dot), .Environment = f_env(dot))
-    f_lhs(dot) <- .Call(interp_, f_lhs(dot), f_env(dot))
-    f_rhs(dot) <- .Call(interp_, f_rhs(dot), f_env(dot))
-  }
+as_pattern <- function(dot) {
+  env <- f_env(dot)
+  pat <- f_rhs(dot)
 
-  dot
+  lhs <- .Call(interp_, f_lhs(pat), env)
+  rhs <- .Call(interp_, f_rhs(pat), env)
+
+  list(
+    lhs = new_f(lhs, env = env),
+    rhs = new_f(rhs, env = env)
+  )
 }

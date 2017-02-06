@@ -2,12 +2,9 @@
 % Please edit documentation in R/tidy-capture.R
 \name{tidy_capture}
 \alias{tidy_capture}
-\alias{tidy_patterns}
 \title{Capture an expression and evaluation environment.}
 \usage{
 tidy_capture(x)
-
-tidy_patterns(...)
 }
 \arguments{
 \item{x, ...}{Arguments to capture.}

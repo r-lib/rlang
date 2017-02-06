@@ -3,11 +3,14 @@
 \name{tidy_dots}
 \alias{tidy_dots}
 \alias{tidy_dots_alt}
+\alias{tidy_patterns}
 \title{Capture dots.}
 \usage{
 tidy_dots(...)
 
 tidy_dots_alt(...)
+
+tidy_patterns(...)
 }
 \arguments{
 \item{...}{Arguments to capture.}
@@ -78,6 +81,7 @@ tidy_dots(!!var := expr)
 tidy_dots_alt(!!var := expr, x := expr, y = expr)
 
 # If you need the full LHS expression, use tidy_patterns():
-tidy_patterns(var = foo(baz) := bar(baz))
+dots <- tidy_patterns(var = foo(baz) := bar(baz))
+dots$patterns
 }
 
