@@ -4,7 +4,7 @@
 \alias{env_unbind}
 \title{Remove bindings from an environment.}
 \usage{
-env_unbind(env = env_caller(), nms, inherit = FALSE)
+env_unbind(env = caller_env(), nms, inherit = FALSE)
 }
 \arguments{
 \item{env}{An environment or an object with a S3 method for
@@ -28,8 +28,8 @@ parent environments of \code{env} by default. Set \code{inherit} to
 \code{TRUE} to track down bindings in parent environments.
 }
 \examples{
-dict <- stats::setNames(letters, letters)
-env_bind(environment(), dict)
+data <- stats::setNames(letters, letters)
+env_bind(environment(), data)
 env_has(environment(), letters)
 
 # env_unbind() removes bindings:
@@ -38,7 +38,7 @@ env_has(environment(), letters)
 
 # With inherit = TRUE, it removes bindings in parent environments
 # as well:
-parent <- env_new(env_empty(), list(foo = "a"))
+parent <- env_new(empty_env(), list(foo = "a"))
 env <- env_new(parent, list(foo = "b"))
 env_unbind(env, "foo", inherit = TRUE)
 env_has(env, "foo", inherit = TRUE)

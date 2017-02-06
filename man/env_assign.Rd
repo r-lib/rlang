@@ -6,11 +6,11 @@
 \alias{env_define}
 \title{Assign objects to an environment.}
 \usage{
-env_assign(env = env_caller(), nm, x)
+env_assign(env = caller_env(), nm, x)
 
-env_bind(env = env_caller(), dict = list())
+env_bind(env = caller_env(), data = list())
 
-env_define(env = env_caller(), ...)
+env_define(env = caller_env(), ...)
 }
 \arguments{
 \item{env}{An environment or an object with a S3 method for
@@ -21,7 +21,7 @@ evaluation frame is returned.}
 
 \item{x}{The value of the binding.}
 
-\item{dict}{A vector with unique names which defines bindings
+\item{data}{A vector with unique names which defines bindings
 (pairs of name and value). See \code{\link{is_dictionary}()}.}
 
 \item{...}{Pairs of unique names and R objects used to define new
@@ -46,13 +46,13 @@ modified in place.
 \examples{
 # Create a function that uses undefined bindings:
 fn <- function() list(a, b, c, d, e)
-env(fn) <- env_new(env_base())
+env(fn) <- env_new(base_env())
 
 # This would throw a scoping error if run:
 # fn()
 
-dict <- stats::setNames(letters, letters)
-env_bind(fn, dict)
+data <- stats::setNames(letters, letters)
+env_bind(fn, data)
 
 # fn() now sees the objects
 fn()

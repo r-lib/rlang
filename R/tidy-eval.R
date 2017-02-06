@@ -113,7 +113,7 @@ tidy_eval <- function(f, data = NULL) {
 #'
 #' tidy_eval_env_cleanup(env)
 #' fn()
-tidy_eval_env <- function(env = env_base(), data = NULL) {
+tidy_eval_env <- function(env = base_env(), data = NULL) {
   data_src <- data_source(data)
 
   if (!length(data)) {
@@ -222,7 +222,7 @@ unguard_formula <- function(...) {
 #' # the argument prefix:
 #' invoke(call_inspect, mtcars, .bury = c("inspect!", "col"))
 invoke <- function(.fn, .args = list(), ...,
-                   .env = env_caller(), .bury = c(".fn", "")) {
+                   .env = caller_env(), .bury = c(".fn", "")) {
   args <- c(.args, list(...))
 
   if (is_false(.bury) || !length(args)) {

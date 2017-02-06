@@ -38,7 +38,7 @@ sensitive functions like \code{\link[base]{return}()},
 }
 \examples{
 # expr_eval() works just like base::eval():
-env <- env_new(dict = list(foo = "bar"))
+env <- env_new(data = list(foo = "bar"))
 expr <- quote(foo)
 expr_eval(expr, env)
 

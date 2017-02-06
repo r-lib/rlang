@@ -13,25 +13,25 @@
 \alias{env_tail}
 \title{Get an environment.}
 \usage{
-env(env = env_caller())
+env(env = caller_env())
 
-\method{env}{function}(env = env_caller())
+\method{env}{function}(env = caller_env())
 
-\method{env}{formula}(env = env_caller())
+\method{env}{formula}(env = caller_env())
 
-\method{env}{frame}(env = env_caller())
+\method{env}{frame}(env = caller_env())
 
-\method{env}{environment}(env = env_caller())
+\method{env}{environment}(env = caller_env())
 
-\method{env}{default}(env = env_caller())
+\method{env}{default}(env = caller_env())
 
-\method{env}{character}(env = env_caller())
+\method{env}{character}(env = caller_env())
 
-env_new(parent = NULL, dict = list())
+env_new(parent = NULL, data = list())
 
-env_parent(env = env_caller(), n = 1)
+env_parent(env = caller_env(), n = 1)
 
-env_tail(env = env_caller())
+env_tail(env = caller_env())
 }
 \arguments{
 \item{env}{An environment or an object with a S3 method for
@@ -41,7 +41,7 @@ evaluation frame is returned.}
 \item{parent}{A parent environment. Can be an object with a S3
 method for \code{as_env()}.}
 
-\item{dict}{A vector with unique names which defines bindings
+\item{data}{A vector with unique names which defines bindings
 (pairs of name and value). See \code{\link{is_dictionary}()}.}
 
 \item{n}{The number of generations to go through.}
@@ -70,7 +70,7 @@ writing generic functions).
 returns the parent environment of \code{env} if called with \code{n
 = 1}, the grandparent with \code{n = 2}, etc. \code{env_tail()}
 searches through the parents and returns the one which has
-\code{\link{env_empty}()} as parent.
+\code{\link{empty_env}()} as parent.
 }
 \examples{
 # Get the environment of frame objects. If no argument is supplied,
@@ -87,7 +87,7 @@ fn()
 env(fn)
 
 # There is also an assignment operator:
-env(fn) <- env_base()
+env(fn) <- base_env()
 env(fn)
 
 
@@ -120,12 +120,12 @@ env_has(env, "lapply", inherit = TRUE)
 # functions. Also note that it will never inherit from other loaded
 # package environments since R keeps the base package at the tail
 # of the search path:
-env <- env_new(env_base())
+env <- env_new(base_env())
 env_has(env, "lapply", inherit = TRUE)
 
-# Note that all other package environments inherit from env_base()
+# Note that all other package environments inherit from base_env()
 # as well:
-env <- env_new(env_package("rlang"))
+env <- env_new(pkg_env("rlang"))
 env_has(env, "env_has", inherit = TRUE)
 env_has(env, "lapply", inherit = TRUE)
 
@@ -133,31 +133,31 @@ env_has(env, "lapply", inherit = TRUE)
 # The parent argument of env_new() is passed to as_env() to provide
 # handy shortcuts:
 env <- env_new("rlang")
-identical(env_parent(env), env_package("rlang"))
+identical(env_parent(env), pkg_env("rlang"))
 
 
 # Get the parent environment with env_parent():
-env_parent(env_global())
+env_parent(global_env())
 
 # Or the tail environment with env_tail():
-env_tail(env_global())
+env_tail(global_env())
 
 
 # By default, env_parent() returns the parent environment of the
 # current evaluation frame. If called at top-level (the global
 # frame), the following two expressions are equivalent:
 env_parent()
-env_parent(env_global())
+env_parent(global_env())
 
 # This default is more handy when called within a function. In this
 # case, the enclosure environment of the function is returned
 # (since it is the parent of the evaluation frame):
-enclos_env <- env_new(env_package("rlang"))
+enclos_env <- env_new(pkg_env("rlang"))
 fn <- with_env(enclos_env, function() env_parent())
 identical(enclos_env, fn())
 }
 \seealso{
-\link{env_scoped}, \code{\link{env_has}()},
+\link{scoped_env}, \code{\link{env_has}()},
   \code{\link{env_assign}()}.
 }
 

@@ -60,7 +60,7 @@
 #'   frame. In general, the call site of argument passed through dots
 #'   can be anywhere between the current and global frames. For this
 #'   reason, it is recommended to always use \code{tidy_dots()}
-#'   rather than \code{substitute()} and \code{env_caller()} or
+#'   rather than \code{substitute()} and \code{caller_env()} or
 #'   \code{parent.frame()}, since the former will encode the
 #'   appropriate evaluation environments within the formulas.
 #'
@@ -91,10 +91,10 @@
 #' fn()
 tidy_capture <- function(x) {
   x_expr <- substitute(x)
-  x_env <- env_caller(1)
+  x_env <- caller_env(1)
 
   arg_expr <- substitute_(x_expr, x_env)
-  arg_env <- env_caller(2)
+  arg_env <- caller_env(2)
 
   expr <- .Call(interp_, arg_expr, arg_env)
   f_new(expr, env = arg_env)

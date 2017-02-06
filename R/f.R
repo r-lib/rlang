@@ -170,12 +170,12 @@ as_f_list <- function(x) {
 #' expressions. It makes your tools callable with either an expression
 #' or a formula, and with an optional environment. When not supplied,
 #' the calling environment of the function that called
-#' \code{as_quoted_f()} is taken as default.
+#' \code{as_fquote()} is taken as default.
 #'
-#' \code{as_quoted_f()} makes it straightforward to take an optional
+#' \code{as_fquote()} makes it straightforward to take an optional
 #' environment to associate with a quoted expression. An alternative
 #' would be to specify a default environment at each step,
-#' e.g. \code{env = env_caller()}. In that case however, there is no
+#' e.g. \code{env = caller_env()}. In that case however, there is no
 #' easy way of communicating the optional nature of \code{env}. This
 #' is necessary to avoid overriding the environment of formulas
 #' supplied as \code{expr} with the optional default.
@@ -186,17 +186,17 @@ as_f_list <- function(x) {
 #'   environment is changed to \code{env}. If \code{expr} is a quoted
 #'   expression and \code{env} is not supplied, the environment is
 #'   taken from the frame of the function that called the function
-#'   that called \code{as_quoted_f()} (the grand-parent frame).
+#'   that called \code{as_fquote()} (the grand-parent frame).
 #' @export
 #' @examples
-#' # as_quoted_f() is meant to be called at every step of the way, so
+#' # as_fquote() is meant to be called at every step of the way, so
 #' # that each function can figure out a good default for `env`:
 #' api_function <- function(expr, env = NULL) {
-#'   f <- as_quoted_f(expr, env)
+#'   f <- as_fquote(expr, env)
 #'   expr_tool(f)
 #' }
 #' expr_tool <- function(expr, env = NULL) {
-#'   f <- as_quoted_f(expr, env)
+#'   f <- as_fquote(expr, env)
 #'   # *** Do something useful with f ***
 #'   f
 #' }
@@ -219,16 +219,16 @@ as_f_list <- function(x) {
 #' identical(env(f), env)
 #'
 #' # But the user can choose to provide her own environment as well:
-#' f <- api_function(my_f, env_base())
-#' identical(env(f), env_base())
-as_quoted_f <- function(expr, env = NULL) {
+#' f <- api_function(my_f, base_env())
+#' identical(env(f), base_env())
+as_fquote <- function(expr, env = NULL) {
   if (is_formula(expr) && !is_null(f_env(expr))) {
     if (!is_null(env)) {
       f_env(expr) <- env
     }
     expr
   } else {
-    env <- env %||% env_caller(2)
+    env <- env %||% caller_env(2)
     f_new(expr, env = env)
   }
 }

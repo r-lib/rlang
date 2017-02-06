@@ -43,7 +43,7 @@ fn()
 
 
 # Since env is passed to env(), it can be any object with an env()
-# method. For strings, the env_package() is returned:
+# method. For strings, the pkg_env() is returned:
 with_env("base", ~mtcars)
 }
 

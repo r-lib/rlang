@@ -22,17 +22,17 @@
 #' returns the parent environment of \code{env} if called with \code{n
 #' = 1}, the grandparent with \code{n = 2}, etc. \code{env_tail()}
 #' searches through the parents and returns the one which has
-#' \code{\link{env_empty}()} as parent.
+#' \code{\link{empty_env}()} as parent.
 #'
 #' @param env An environment or an object with a S3 method for
 #'   \code{env()}. If missing, the environment of the current
 #'   evaluation frame is returned.
 #' @param parent A parent environment. Can be an object with a S3
 #'   method for \code{as_env()}.
-#' @param dict A vector with unique names which defines bindings
+#' @param data A vector with unique names which defines bindings
 #'   (pairs of name and value). See \code{\link{is_dictionary}()}.
 #' @param n The number of generations to go through.
-#' @seealso \link{env_scoped}, \code{\link{env_has}()},
+#' @seealso \link{scoped_env}, \code{\link{env_has}()},
 #'   \code{\link{env_assign}()}.
 #' @export
 #' @examples
@@ -50,7 +50,7 @@
 #' env(fn)
 #'
 #' # There is also an assignment operator:
-#' env(fn) <- env_base()
+#' env(fn) <- base_env()
 #' env(fn)
 #'
 #'
@@ -83,12 +83,12 @@
 #' # functions. Also note that it will never inherit from other loaded
 #' # package environments since R keeps the base package at the tail
 #' # of the search path:
-#' env <- env_new(env_base())
+#' env <- env_new(base_env())
 #' env_has(env, "lapply", inherit = TRUE)
 #'
-#' # Note that all other package environments inherit from env_base()
+#' # Note that all other package environments inherit from base_env()
 #' # as well:
-#' env <- env_new(env_package("rlang"))
+#' env <- env_new(pkg_env("rlang"))
 #' env_has(env, "env_has", inherit = TRUE)
 #' env_has(env, "lapply", inherit = TRUE)
 #'
@@ -96,56 +96,56 @@
 #' # The parent argument of env_new() is passed to as_env() to provide
 #' # handy shortcuts:
 #' env <- env_new("rlang")
-#' identical(env_parent(env), env_package("rlang"))
+#' identical(env_parent(env), pkg_env("rlang"))
 #'
 #'
 #' # Get the parent environment with env_parent():
-#' env_parent(env_global())
+#' env_parent(global_env())
 #'
 #' # Or the tail environment with env_tail():
-#' env_tail(env_global())
+#' env_tail(global_env())
 #'
 #'
 #' # By default, env_parent() returns the parent environment of the
 #' # current evaluation frame. If called at top-level (the global
 #' # frame), the following two expressions are equivalent:
 #' env_parent()
-#' env_parent(env_global())
+#' env_parent(global_env())
 #'
 #' # This default is more handy when called within a function. In this
 #' # case, the enclosure environment of the function is returned
 #' # (since it is the parent of the evaluation frame):
-#' enclos_env <- env_new(env_package("rlang"))
+#' enclos_env <- env_new(pkg_env("rlang"))
 #' fn <- with_env(enclos_env, function() env_parent())
 #' identical(enclos_env, fn())
-env <- function(env = env_caller()) {
+env <- function(env = caller_env()) {
   UseMethod("env")
 }
 
 #' @rdname env
 #' @export
-env.function <- function(env = env_caller()) {
+env.function <- function(env = caller_env()) {
   environment(env)
 }
 #' @rdname env
 #' @export
-env.formula <- function(env = env_caller()) {
+env.formula <- function(env = caller_env()) {
   attr(env, ".Environment")
 }
 #' @rdname env
 #' @export
-env.frame <- function(env = env_caller()) {
+env.frame <- function(env = caller_env()) {
   env$env
 }
 #' @rdname env
 #' @export
-env.environment <- function(env = env_caller()) {
+env.environment <- function(env = caller_env()) {
   env
 }
 #' @rdname env
 #' @export
-env.default <- function(env = env_caller()) {
-  # Default argument env_caller() gets dispatched here:
+env.default <- function(env = caller_env()) {
+  # Default argument caller_env() gets dispatched here:
   if (is_env(env)) {
     env
   } else {
@@ -154,8 +154,8 @@ env.default <- function(env = env_caller()) {
 }
 #' @rdname env
 #' @export
-env.character <- function(env = env_caller()) {
-  env_package(env)
+env.character <- function(env = caller_env()) {
+  pkg_env(env)
 }
 
 #' Assignment operator for environments.
@@ -168,18 +168,18 @@ env.character <- function(env = env_caller()) {
 
 #' @rdname env
 #' @export
-env_new <- function(parent = NULL, dict = list()) {
+env_new <- function(parent = NULL, data = list()) {
   env <- new.env(parent = as_env(parent))
-  env_bind(env, dict)
+  env_bind(env, data)
 }
 
 #' @rdname env
 #' @export
-env_parent <- function(env = env_caller(), n = 1) {
+env_parent <- function(env = caller_env(), n = 1) {
   env_ <- rlang::env(env)
 
   while (n > 0) {
-    if (identical(env_, env_empty())) {
+    if (identical(env_, empty_env())) {
       return(env_)
     }
     n <- n - 1
@@ -191,11 +191,11 @@ env_parent <- function(env = env_caller(), n = 1) {
 
 #' @rdname env
 #' @export
-env_tail <- function(env = env_caller()) {
+env_tail <- function(env = caller_env()) {
   env_ <- rlang::env(env)
   next_env <- parent.env(env_)
 
-  while(!identical(next_env, env_empty())) {
+  while(!identical(next_env, empty_env())) {
     env_ <- next_env
     next_env <- parent.env(next_env)
   }
@@ -210,14 +210,14 @@ env_tail <- function(env = env_caller()) {
 #' (including lists) to an environment. It first checks that \code{x}
 #' is a dictionary (see \code{\link{is_dictionary}()}). The method for
 #' unnamed strings returns the corresponding package environment (see
-#' \code{\link{env_package}()}).
+#' \code{\link{pkg_env}()}).
 #'
 #' If \code{x} is an environment and \code{parent} is not \code{NULL},
 #' the environment is duplicated before being set a new parent. The
 #' return value is therefore a different environment than \code{x}.
 #'
 #' @param x An object to coerce.
-#' @param parent A parent environment, \code{\link{env_empty}()} by
+#' @param parent A parent environment, \code{\link{empty_env}()} by
 #'   default. Can be ignored with a warning for methods where it does
 #'   not make sense to change the parent.
 #' @export
@@ -226,10 +226,10 @@ env_tail <- function(env = env_caller()) {
 #' env <- as_env(mtcars)
 #'
 #' # By default it gets the empty environment as parent:
-#' identical(env_parent(env), env_empty())
+#' identical(env_parent(env), empty_env())
 #'
 #'
-#' # With strings it is a handy shortcut for env_package():
+#' # With strings it is a handy shortcut for pkg_env():
 #' as_env("base")
 #' as_env("rlang")
 #'
@@ -245,7 +245,7 @@ as_env.NULL <- function(x, parent = NULL) {
   if (!is_null(parent)) {
     warning("`parent` ignored for empty environment", call. = FALSE)
   }
-  env_empty()
+  empty_env()
 }
 
 #' @rdname as_env
@@ -266,7 +266,7 @@ as_env.character <- function(x, parent = NULL) {
   if (!is_null(parent)) {
     warning("`parent` ignored for named environments", call. = FALSE)
   }
-  env_package(x)
+  pkg_env(x)
 }
 
 #' @rdname as_env
@@ -276,7 +276,7 @@ as_env.default <- function(x, parent = NULL) {
   if (is_atomic(x)) {
     x <- as.list(x)
   }
-  list2env(x, parent = parent %||% env_empty())
+  list2env(x, parent = parent %||% empty_env())
 }
 
 
@@ -294,7 +294,7 @@ as_env.default <- function(x, parent = NULL) {
 #' @export
 #' @examples
 #' # Create a function with a given environment:
-#' env <- env_new(env_base())
+#' env <- env_new(base_env())
 #' fn <- with_env(env, function() NULL)
 #' identical(env(fn), env)
 #'
@@ -358,13 +358,13 @@ env_set_parent <- function(env, new_env) {
 #' @examples
 #' # Create a function that uses undefined bindings:
 #' fn <- function() list(a, b, c, d, e)
-#' env(fn) <- env_new(env_base())
+#' env(fn) <- env_new(base_env())
 #'
 #' # This would throw a scoping error if run:
 #' # fn()
 #'
-#' dict <- stats::setNames(letters, letters)
-#' env_bind(fn, dict)
+#' data <- stats::setNames(letters, letters)
+#' env_bind(fn, data)
 #'
 #' # fn() now sees the objects
 #' fn()
@@ -373,27 +373,27 @@ env_set_parent <- function(env, new_env) {
 #' fn <- env_assign(fn, "a", "1")
 #' fn <- env_define(fn, b = "2", c = "3")
 #' fn()
-env_assign <- function(env = env_caller(), nm, x) {
+env_assign <- function(env = caller_env(), nm, x) {
   env_ <- rlang::env(env)
   base::assign(nm, x, envir = env_)
   env
 }
 #' @rdname env_assign
 #' @export
-env_bind <- function(env = env_caller(), dict = list()) {
-  stopifnot(is_dictionary(dict))
-  nms <- names(dict)
+env_bind <- function(env = caller_env(), data = list()) {
+  stopifnot(is_dictionary(data))
+  nms <- names(data)
 
   env_ <- rlang::env(env)
-  for (i in seq_along(dict)) {
-    base::assign(nms[[i]], dict[[i]], envir = env_)
+  for (i in seq_along(data)) {
+    base::assign(nms[[i]], data[[i]], envir = env_)
   }
 
   env
 }
 #' @rdname env_assign
 #' @export
-env_define <- function(env = env_caller(), ...) {
+env_define <- function(env = caller_env(), ...) {
   env_bind(env, list(...))
 }
 
@@ -406,35 +406,35 @@ env_define <- function(env = env_caller(), ...) {
 #'
 #' @inheritParams env_assign
 #' @param expr An expression to capture for
-#'   \code{env_assign_lazily()}, or a captured expression (either
+#'   \code{env_assign_promise()}, or a captured expression (either
 #'   quoted or a formula) for the standard evaluation version
-#'   \code{env_assign_lazily_()}. This expression is used to create a
+#'   \code{env_assign_promise_()}. This expression is used to create a
 #'   promise in \code{env}.
 #' @param eval_env The environment where the promise will be evaluated
 #'   when the promise gets forced. If \code{expr} is a formula, its
 #'   environment is used instead. If not a formula and \code{eval_env}
 #'   is not supplied, the promise is evaluated in the environment
-#'   where \code{env_assign_lazily()} (or the underscore version) was
+#'   where \code{env_assign_promise()} (or the underscore version) was
 #'   called.
 #' @seealso \code{\link{env_assign}()}
 #' @export
 #' @examples
 #' env <- env_new()
-#' env_assign_lazily(env, "name", cat("forced!\n"))
+#' env_assign_promise(env, "name", cat("forced!\n"))
 #' env$name
 #'
 #' # Use the standard evaluation version with quoted expressions:
 #' f <- ~message("forced!")
-#' env_assign_lazily_(env, "name2", f)
+#' env_assign_promise_(env, "name2", f)
 #' env$name2
-env_assign_lazily <- function(env = env_caller(), nm, expr, eval_env = NULL) {
-  f <- as_quoted_f(substitute(expr), eval_env)
-  env_assign_lazily_(env, nm, f)
+env_assign_promise <- function(env = caller_env(), nm, expr, eval_env = NULL) {
+  f <- as_fquote(substitute(expr), eval_env)
+  env_assign_promise_(env, nm, f)
 }
-#' @rdname env_assign_lazily
+#' @rdname env_assign_promise
 #' @export
-env_assign_lazily_ <- function(env = env_caller(), nm, expr, eval_env = NULL) {
-  f <- as_quoted_f(expr, eval_env)
+env_assign_promise_ <- function(env = caller_env(), nm, expr, eval_env = NULL) {
+  f <- as_fquote(expr, eval_env)
 
   args <- list(
     x = nm,
@@ -455,7 +455,7 @@ env_assign_lazily_ <- function(env = env_caller(), nm, expr, eval_env = NULL) {
 #' @return An object associated with the new environment.
 #' @export
 #' @examples
-#' scope <- env_new(env_base(), list(a = 10))
+#' scope <- env_new(base_env(), list(a = 10))
 #' fn <- function() a
 #' env(fn) <- scope
 #'
@@ -466,11 +466,11 @@ env_assign_lazily_ <- function(env = env_caller(), nm, expr, eval_env = NULL) {
 #' # environment:
 #' fn <- env_bury(fn, list(a = 1000))
 #' fn()
-env_bury <- function(env = env_caller(), dict = list()) {
+env_bury <- function(env = caller_env(), data = list()) {
   env_ <- rlang::env(env)
   env_ <- new.env(parent = env_)
 
-  env_bind(env_, dict)
+  env_bind(env_, data)
   env_set(env, env_)
 }
 
@@ -490,8 +490,8 @@ env_bury <- function(env = env_caller(), dict = list()) {
 #'   environment modified in place.
 #' @export
 #' @examples
-#' dict <- stats::setNames(letters, letters)
-#' env_bind(environment(), dict)
+#' data <- stats::setNames(letters, letters)
+#' env_bind(environment(), data)
 #' env_has(environment(), letters)
 #'
 #' # env_unbind() removes bindings:
@@ -500,11 +500,11 @@ env_bury <- function(env = env_caller(), dict = list()) {
 #'
 #' # With inherit = TRUE, it removes bindings in parent environments
 #' # as well:
-#' parent <- env_new(env_empty(), list(foo = "a"))
+#' parent <- env_new(empty_env(), list(foo = "a"))
 #' env <- env_new(parent, list(foo = "b"))
 #' env_unbind(env, "foo", inherit = TRUE)
 #' env_has(env, "foo", inherit = TRUE)
-env_unbind <- function(env = env_caller(), nms, inherit = FALSE) {
+env_unbind <- function(env = caller_env(), nms, inherit = FALSE) {
   env_ <- rlang::env(env)
   if (inherit) {
     while(any(env_has(env_, nms, inherit = TRUE))) {
@@ -527,13 +527,13 @@ env_unbind <- function(env = env_caller(), nms, inherit = FALSE) {
 #' @return A logical vector as long as \code{nms}.
 #' @export
 #' @examples
-#' parent <- env_new(env_empty(), list(foo = "foo"))
+#' parent <- env_new(empty_env(), list(foo = "foo"))
 #' env <- env_new(parent, list(bar = "bar"))
 #'
 #' # env does not own `foo` but sees it in its parent environment:
 #' env_has(env, "foo")
 #' env_has(env, "foo", inherit = TRUE)
-env_has <- function(env = env_caller(), nms, inherit = FALSE) {
+env_has <- function(env = caller_env(), nms, inherit = FALSE) {
   env_ <- rlang::env(env)
   vapply_lgl(nms, exists, envir = env_, inherits = inherit)
 }
@@ -549,7 +549,7 @@ env_has <- function(env = env_caller(), nms, inherit = FALSE) {
 #' @return An object if it exists. Otherwise, throws an error.
 #' @export
 #' @examples
-#' parent <- env_new(env_empty(), list(foo = "foo"))
+#' parent <- env_new(empty_env(), list(foo = "foo"))
 #' env <- env_new(parent, list(bar = "bar"))
 #'
 #' # This throws an error because `foo` is not directly defined in env:
@@ -557,7 +557,7 @@ env_has <- function(env = env_caller(), nms, inherit = FALSE) {
 #'
 #' # However `foo` can be fetched in the parent environment:
 #' env_get(env, "foo", inherit = TRUE)
-env_get <- function(env = env_caller(), nm, inherit = FALSE) {
+env_get <- function(env = caller_env(), nm, inherit = FALSE) {
   env_ <- rlang::env(env)
   get(nm, envir = env, inherits = inherit)
 }
@@ -571,7 +571,7 @@ env_get <- function(env = env_caller(), nm, inherit = FALSE) {
 #' @param parent The parent of the cloned environment.
 #' @export
 #' @examples
-#' env <- env_new(dict = mtcars)
+#' env <- env_new(data = mtcars)
 #' clone <- env_clone(env)
 #' identical(env$cyl, clone$cyl)
 env_clone <- function(x, parent = env_parent(x)) {
@@ -598,12 +598,15 @@ env_clone <- function(x, parent = env_parent(x)) {
 #' everything you define at top-level ends up, is pinned as the head
 #' of the linked list. Likewise, the base package environment is
 #' always the tail of the chain. You can obtain those environments
-#' with \code{env_global()} and \code{env_base()} respectively.
+#' with \code{global_env()} and \code{base_env()} respectively. The
+#' global environment is always the environment of the very first
+#' evaluation frame on the stack, see \code{\link{global_frame}()} and
+#' \code{\link{eval_stack}()}.
 #'
 #' You can list all scoped environments with
-#' \code{env_scoped_names()}. With \code{is_scoped()} you can check
+#' \code{scoped_names()}. With \code{is_scoped()} you can check
 #' whether a named environment is on the search
-#' path. \code{env_package()} returns the scope environment of
+#' path. \code{pkg_env()} returns the scope environment of
 #' packages if they are attached to the search path, and throws an
 #' error otherwise.
 #'
@@ -613,57 +616,79 @@ env_clone <- function(x, parent = env_parent(x)) {
 #' @export
 #' @examples
 #' # List the names of scoped environments:
-#' nms <- env_scoped_names()
+#' nms <- scoped_names()
 #' nms
 #'
 #' # The global environment is always the first in the chain:
-#' env_scoped(nms[[1]])
+#' scoped_env(nms[[1]])
 #'
 #' # And the scoped environment of the base package is always the last:
-#' env_scoped(nms[[length(nms)]])
+#' scoped_env(nms[[length(nms)]])
 #'
 #' # These two environments have their own shortcuts:
-#' env_global()
-#' env_base()
+#' global_env()
+#' base_env()
 #'
-#' # Get the scoped environment of a package:
-#' env_package("utils")
-env_scoped <- function(nm) {
+#' # Packages appear in the search path with a special name. Use
+#' # pkg_label() to create that name:
+#' pkg_label("rlang")
+#' scoped_env(pkg_label("rlang"))
+#'
+#' # Alternatively, get the scoped environment of a package with
+#' # pkg_env():
+#' pkg_env("utils")
+scoped_env <- function(nm) {
   if (!is_scoped(nm)) {
     stop(paste0(nm, " is not in scope"), call. = FALSE)
   }
   as.environment(nm)
 }
-#' @rdname env_scoped
+#' @rdname scoped_env
 #' @param pkg The name of a package.
 #' @export
-env_package <- function(pkg) {
-  pkg_name <- paste0("package:", pkg)
-  env_scoped(pkg_name)
+pkg_env <- function(pkg) {
+  pkg_name <- pkg_label(pkg)
+  scoped_env(pkg_name)
+}
+#' @rdname scoped_env
+#' @export
+pkg_label <- function(pkg) {
+  paste0("package:", pkg)
 }
 
-#' @rdname env_scoped
+#' @rdname scoped_env
 #' @export
-env_scoped_names <- function() {
+scoped_names <- function() {
   search()
 }
 
-#' @rdname env_scoped
+#' @rdname scoped_env
 #' @export
 is_scoped <- function(nm) {
   if (!is_scalar_character(nm)) {
     stop("`nm` must be a string", call. = FALSE)
   }
-  nm %in% env_scoped_names()
+  nm %in% scoped_names()
 }
 
-#' @rdname env_scoped
+#' @rdname scoped_env
 #' @export
-env_base <- baseenv
-#' @rdname env_scoped
+base_env <- baseenv
+#' @rdname scoped_env
 #' @export
-env_global <- globalenv
+global_env <- globalenv
 
+#' Get the empty environment.
+#'
+#' The empty environment is the only one that does not have a
+#' parent. It is always used as the tail of a scope chain such as the
+#' search path (see \code{\link{scoped_names}()}).
+#'
+#' @export
+#' @examples
+#' # Create environments with nothing in scope (the default):
+#' env_new(parent = empty_env())
+empty_env <- emptyenv
 
 #' Get the namespace of a package.
 #'
@@ -674,47 +699,23 @@ env_global <- globalenv
 #' @param pkg The name of a package. If \code{NULL}, the surrounding
 #'   namespace is returned, or an error is issued if not called within
 #'   a namespace.
-#' @seealso \code{\link{env_package}()}
+#' @seealso \code{\link{pkg_env}()}
 #' @export
-env_namespace <- function(pkg = NULL) {
+ns_env <- function(pkg = NULL) {
   if (!is_null(pkg)) {
     return(asNamespace(pkg))
   }
 
-  bottom <- topenv(env_caller())
+  bottom <- topenv(caller_env())
   if (!isNamespace(bottom)) {
     stop("not in a namespace", call. = FALSE)
   }
   bottom
 }
-#' @rdname env_namespace
+#' @rdname ns_env
 #' @export
-env_imports <- function(pkg = NULL) {
-  env_parent(env_namespace(pkg))
-}
-
-#' Get the empty environment.
-#'
-#' The empty environment is the only that does not have a parent. It
-#' is always used as the tail of a scope chain such as the search
-#' path.
-#'
-#' @export
-#' @examples
-#' # Create environments with nothing in scope (the default):
-#' env_new(parent = env_empty())
-env_empty <- emptyenv
-
-#' Get the environment of the caller frame.
-#'
-#' This is a shortcut for \code{\link{call_frame}(2)$env}.
-#' @param n The number of generation to go back. Note that contrarily
-#'   to \code{\link{call_frame}()}, 1 represents the parent frame
-#'   rather than the current frame.
-#' @seealso \code{\link{call_frame}()}
-#' @export
-env_caller <- function(n = 1) {
-  parent.frame(n + 1)
+ns_imports_env <- function(pkg = NULL) {
+  env_parent(ns_env(pkg))
 }
 
 
@@ -754,7 +755,7 @@ env_caller <- function(n = 1) {
 #'
 #'
 #' # Since env is passed to env(), it can be any object with an env()
-#' # method. For strings, the env_package() is returned:
+#' # method. For strings, the pkg_env() is returned:
 #' with_env("base", ~mtcars)
 with_env <- function(env, expr) {
   .Call(rlang_eval, substitute(expr), rlang::env(env))

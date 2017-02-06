@@ -26,8 +26,8 @@
 #' attr(f, "srcref") <- NULL
 #' # Now they are:
 #' stopifnot(identical(f, g))
-fn_new <- function(args, body, env = env_caller()) {
-  stopifnot(all(has_names(args)), is_lang(body), is_env(env))
+fn_new <- function(args, body, env = caller_env()) {
+  stopifnot(all(has_name(args)), is_lang(body), is_env(env))
 
   args <- as.pairlist(args)
   expr_eval(call("function", args, body), env)

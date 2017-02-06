@@ -5,7 +5,7 @@
 \alias{tidy_eval_env_cleanup}
 \title{Create a tidy evaluation environment.}
 \usage{
-tidy_eval_env(env = env_base(), data = NULL)
+tidy_eval_env(env = base_env(), data = NULL)
 
 tidy_eval_env_cleanup(eval_env)
 }

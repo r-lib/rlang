@@ -4,7 +4,7 @@
 \alias{env_get}
 \title{Get an object from an environment.}
 \usage{
-env_get(env = env_caller(), nm, inherit = FALSE)
+env_get(env = caller_env(), nm, inherit = FALSE)
 }
 \arguments{
 \item{env}{An environment or an object with a S3 method for
@@ -24,7 +24,7 @@ An object if it exists. Otherwise, throws an error.
 By default, it does not look in the parent environments.
 }
 \examples{
-parent <- env_new(env_empty(), list(foo = "foo"))
+parent <- env_new(empty_env(), list(foo = "foo"))
 env <- env_new(parent, list(bar = "bar"))
 
 # This throws an error because `foo` is not directly defined in env:

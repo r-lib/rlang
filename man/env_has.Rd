@@ -4,7 +4,7 @@
 \alias{env_has}
 \title{Does an environment have or see bindings?}
 \usage{
-env_has(env = env_caller(), nms, inherit = FALSE)
+env_has(env = caller_env(), nms, inherit = FALSE)
 }
 \arguments{
 \item{env}{An environment or an object with a S3 method for
@@ -27,7 +27,7 @@ environment owns bindings personally (with \code{inherit} set to
 in any of its parents (with \code{inherit = TRUE}).
 }
 \examples{
-parent <- env_new(env_empty(), list(foo = "foo"))
+parent <- env_new(empty_env(), list(foo = "foo"))
 env <- env_new(parent, list(bar = "bar"))
 
 # env does not own `foo` but sees it in its parent environment:

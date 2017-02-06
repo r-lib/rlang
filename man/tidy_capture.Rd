@@ -80,7 +80,7 @@ within formulas.
   frame. In general, the call site of argument passed through dots
   can be anywhere between the current and global frames. For this
   reason, it is recommended to always use \code{tidy_dots()}
-  rather than \code{substitute()} and \code{env_caller()} or
+  rather than \code{substitute()} and \code{caller_env()} or
   \code{parent.frame()}, since the former will encode the
   appropriate evaluation environments within the formulas.
 }

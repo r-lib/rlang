@@ -6,58 +6,58 @@ test_that("env() returns current frame by default", {
 })
 
 test_that("env_parent() returns enclosure frame by default", {
-  enclos_env <- env_new(env_package("rlang"))
+  enclos_env <- env_new(pkg_env("rlang"))
   fn <- with_env(enclos_env, function() env_parent())
   expect_identical(fn(), enclos_env)
 })
 
 test_that("env_new() has correct parent", {
-  env <- env_new(env_empty())
+  env <- env_new(empty_env())
   expect_false(env_has(env, "list", inherit = TRUE))
 
   fn <- function() list(new = env_new(env()), env = environment())
   out <- fn()
   expect_identical(env_parent(out$new), out$env)
 
-  expect_identical(env_parent(env_new()), env_empty())
-  expect_identical(env_parent(env_new("base")), env_base())
+  expect_identical(env_parent(env_new()), empty_env())
+  expect_identical(env_parent(env_new("base")), base_env())
 })
 
 test_that("env_parent() reports correct parent", {
   env <- env_new(
-    env_new(env_empty(), list(obj = "b")),
+    env_new(empty_env(), list(obj = "b")),
     list(obj = "a")
   )
 
   expect_identical(env_parent(env, 1)$obj, "b")
-  expect_identical(env_parent(env, 2), env_empty())
-  expect_identical(env_parent(env, 3), env_empty())
+  expect_identical(env_parent(env, 2), empty_env())
+  expect_identical(env_parent(env, 3), empty_env())
 })
 
 test_that("env_tail() climbs env chain", {
-  expect_identical(env_tail(env_global()), env_base())
+  expect_identical(env_tail(global_env()), base_env())
 })
 
 test_that("promises are created", {
   env <- env_new()
 
-  env_assign_lazily(env, "foo", bar <- "bar")
+  env_assign_promise(env, "foo", bar <- "bar")
   expect_false(env_has(env(), "bar"))
 
   force(env$foo)
   expect_true(env_has(env(), "bar"))
 
   f <- ~stop("forced")
-  env_assign_lazily_(env, "stop", f)
+  env_assign_promise_(env, "stop", f)
   expect_error(env$stop, "forced")
 })
 
 test_that("lazies are evaluated in correct environment", {
-  env <- env_new(env_base())
+  env <- env_new(base_env())
 
-  env_assign_lazily(env, "test_captured", test_captured <- letters)
-  env_assign_lazily_(env, "test_expr", quote(test_expr <- LETTERS))
-  env_assign_lazily_(env, "test_formula", ~ (test_formula <- mtcars))
+  env_assign_promise(env, "test_captured", test_captured <- letters)
+  env_assign_promise_(env, "test_expr", quote(test_expr <- LETTERS))
+  env_assign_promise_(env, "test_formula", ~ (test_formula <- mtcars))
   expect_false(any(env_has(env(), c("test_captured", "test_expr", "test_formula"))))
 
   force(env$test_captured)
@@ -71,8 +71,8 @@ test_that("lazies are evaluated in correct environment", {
 })
 
 test_that("formula env is overridden by eval_env", {
-  env <- env_new(env_base())
-  env_assign_lazily_(env, "within_env", ~ (new_within_env <- "new"), env)
+  env <- env_new(base_env())
+  env_assign_promise_(env, "within_env", ~ (new_within_env <- "new"), env)
   force(env$within_env)
 
   expect_false(env_has(env(), "new_within_env"))
@@ -91,21 +91,21 @@ test_that("with_env() evaluates within correct environment", {
   expect_equal(fn(), "early return")
 })
 
-test_that("env_namespace() returns current namespace", {
-  expect_identical(with_env(env_namespace("rlang"), env_namespace()), env(rlang::env))
+test_that("ns_env() returns current namespace", {
+  expect_identical(with_env(ns_env("rlang"), ns_env()), env(rlang::env))
 })
 
-test_that("env_imports() returns imports env", {
-  expect_identical(with_env(env_namespace("rlang"), env_imports()), env_parent(env(rlang::env)))
+test_that("ns_imports_env() returns imports env", {
+  expect_identical(with_env(ns_env("rlang"), ns_imports_env()), env_parent(env(rlang::env)))
 })
 
 test_that("as_env() dispatches correctly", {
-  expect_identical(as_env("base"), env_base())
+  expect_identical(as_env("base"), base_env())
   expect_false(env_has(as_env(set_names(letters)), "lapply"))
 
-  expect_identical(as_env(NULL), env_empty())
+  expect_identical(as_env(NULL), empty_env())
 
   expect_true(all(env_has(as_env(mtcars), names(mtcars))))
-  expect_identical(env_parent(as_env(mtcars)), env_empty())
-  expect_identical(env_parent(as_env(mtcars, env_base())), env_base())
+  expect_identical(env_parent(as_env(mtcars)), empty_env())
+  expect_identical(env_parent(as_env(mtcars, base_env())), base_env())
 })

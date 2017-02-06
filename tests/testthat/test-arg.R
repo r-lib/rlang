@@ -83,11 +83,11 @@ test_that("arguments are scoped in calling env", {
   expect_equal(info$expr, quote(foo))
 })
 
-test_that("frame_global() is reported with top-level calls", {
+test_that("global_frame() is reported with top-level calls", {
   fn <- function(x) {
     # Emulate top-level call
     stack <- call_stack(2)
-    stack[[2]] <- frame_global()
+    stack[[2]] <- global_frame()
     arg_inspect_(quote(x), stack)
   }
   info <- fn(foo)
