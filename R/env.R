@@ -427,14 +427,16 @@ env_define <- function(env = caller_env(), ...) {
 #' f <- ~message("forced!")
 #' env_assign_promise_(env, "name2", f)
 #' env$name2
-env_assign_promise <- function(env = caller_env(), nm, expr, eval_env = NULL) {
-  f <- as_fquote(substitute(expr), eval_env)
+env_assign_promise <- function(env = caller_env(), nm, expr,
+                               eval_env = caller_env()) {
+  f <- as_tidy_quote(substitute(expr), eval_env)
   env_assign_promise_(env, nm, f)
 }
 #' @rdname env_assign_promise
 #' @export
-env_assign_promise_ <- function(env = caller_env(), nm, expr, eval_env = NULL) {
-  f <- as_fquote(expr, eval_env)
+env_assign_promise_ <- function(env = caller_env(), nm, expr,
+                                eval_env = caller_env()) {
+  f <- as_tidy_quote(expr, eval_env)
 
   args <- list(
     x = nm,

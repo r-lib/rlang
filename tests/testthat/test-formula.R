@@ -18,13 +18,13 @@ test_that("is_formula works", {
   expect_false(is_formula(10))
 })
 
-test_that("as_fquote() uses correct env", {
-  fn <- function(expr, env = NULL) {
-    f <- as_fquote(expr, env)
+test_that("as_tidy_quote() uses correct env", {
+  fn <- function(expr, env = caller_env()) {
+    f <- as_tidy_quote(expr, env)
     list(env = env(), f = g(f))
   }
-  g <- function(expr, env = NULL) {
-    as_fquote(expr, env)
+  g <- function(expr, env = caller_env()) {
+    as_tidy_quote(expr, env)
   }
   f_env <- new_env()
   f <- env_set(~expr, f_env)
@@ -38,7 +38,7 @@ test_that("as_fquote() uses correct env", {
   out_expr <- fn(quote(expr), user_env)
   out_f <- fn(f, user_env)
   expect_identical(f_env(out_expr$f), user_env)
-  expect_identical(f_env(out_f$f), user_env)
+  expect_identical(out_f$f, f)
 })
 
 
