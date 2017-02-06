@@ -83,3 +83,13 @@
 is_pattern <- function(x) {
   is_formula(x) && identical(x[[1]], quote(`:=`))
 }
+
+#' @rdname op-pattern
+#' @export
+#' @param lhs,rhs Expressions for the LHS and RHS of the pattern.
+#' @param env The evaluation environment bundled with the pattern.
+new_pattern <- function(lhs, rhs, env = caller_env()) {
+  pat <- new_f(lhs = lhs, rhs = rhs, env = env)
+  pat[[1]] <- quote(`:=`)
+  pat
+}

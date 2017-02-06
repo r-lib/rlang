@@ -3,15 +3,22 @@
 \name{op-pattern}
 \alias{:=}
 \alias{is_pattern}
+\alias{new_pattern}
 \alias{op-pattern}
 \title{Pattern operator.}
 \usage{
 ":="()
 
 is_pattern(x)
+
+new_pattern(lhs, rhs, env = caller_env())
 }
 \arguments{
 \item{x}{An object to test.}
+
+\item{lhs, rhs}{Expressions for the LHS and RHS of the pattern.}
+
+\item{env}{The evaluation environment bundled with the pattern.}
 }
 \description{
 The pattern operator is typically used in DSL packages like
