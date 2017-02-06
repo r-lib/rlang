@@ -302,7 +302,7 @@ call_modify <- function(.call = NULL, ..., .args = list(), .env = NULL) {
   call <- .call %||% call_frame(2)
   call <- call_standardise(call, .env)
 
-  if (!all(has_name(args))) {
+  if (!is_named(args)) {
     stop("All new arguments must be named", call. = FALSE)
   }
 
