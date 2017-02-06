@@ -69,7 +69,7 @@ flatten <- function(.x) {
   unlist(.x, FALSE, FALSE)
 }
 compact <- function(.x) {
-  Filter(length, x)
+  Filter(length, .x)
 }
 
 zip <- function(.l) {
