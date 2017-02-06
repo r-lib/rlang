@@ -6,8 +6,8 @@
 #' @export
 #' @examples
 #' new_f(quote(a))
-#' new_f(quote(a), quote(b))
-new_f <- function(rhs, lhs = NULL, env = parent.frame()) {
+#' new_f(quote(a), lhs = quote(b))
+new_f <- function(rhs, env = caller_env(), lhs = NULL) {
   if (!is.environment(env) && !is_null(env)) {
     stop("`env` must be an environment", call. = FALSE)
   }
@@ -52,7 +52,7 @@ f_rhs <- function(f) {
 #' @rdname f_rhs
 `f_rhs<-` <- function(x, value) {
   stopifnot(is_formula(x))
-  f <- new_f(value, f_lhs(x), f_env(x))
+  f <- new_f(value, f_env(x), f_lhs(x))
   maybe_pattern(f, x)
 }
 
@@ -67,7 +67,7 @@ f_lhs <- function(f) {
 #' @rdname f_rhs
 `f_lhs<-` <- function(x, value) {
   stopifnot(is_formula(x))
-  f <- new_f(f_rhs(x), value, f_env(x))
+  f <- new_f(f_rhs(x), f_env(x), value)
   maybe_pattern(f, x)
 }
 
@@ -89,7 +89,7 @@ f_env <- function(f) {
 #' @rdname f_rhs
 `f_env<-` <- function(x, value) {
   stopifnot(is_formula(x))
-  f <- new_f(f_rhs(x), f_lhs(x), value)
+  f <- new_f(f_rhs(x), value, f_lhs(x))
   maybe_pattern(f, x)
 }
 
@@ -143,6 +143,6 @@ f_unwrap <- function(f) {
   if (identical(e, emptyenv())) {
     f
   } else {
-    new_f(substitute_(f_rhs(f), e), f_lhs(f), parent.env(e))
+    new_f(substitute_(f_rhs(f), e), parent.env(e), f_lhs(f))
   }
 }
