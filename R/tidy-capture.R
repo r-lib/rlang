@@ -105,20 +105,10 @@ tidy_capture <- function(x) {
 #'    \code{=}. On the other hand, they allow unquoting operators on
 #'    the left-hand side, which makes it easy to assign names
 #'    programmatically.}
-#'  \item{\code{tidy_dots_alt()}}{
-#'    It behaves similarly to \code{tidy_dots()} but returns the tidy
-#'    quotes in a list with two components: \code{dots} and
-#'    \code{alts}. Expressions supplied with \code{=} are returned in
-#'    \code{dots} while those specified with \code{:=} end up in
-#'    \code{alts}. This is useful for DSLs that treat definitions with
-#'    a special meaning, such as ggvis. A downside of this approach is
-#'    that non-definition expressions cannot have their LHS
-#'    interpolated.}
 #'  \item{\code{tidy_defs()}}{
 #'    This dots capturing function returns definitions as is. Unquote
 #'    operators are processed on capture, in both the LHS and the
-#'    RHS. Unlike \code{tidy_dots()} and \code{tidy_dots_alt()},
-#'    \code{tidy_defs()} allows named definitions.}
+#'    RHS. Unlike \code{tidy_dots()}, it allows named definitions.}
 #' }
 #' @inheritParams tidy_capture
 #' @export
@@ -152,28 +142,12 @@ tidy_capture <- function(x) {
 #' var <- "foo"
 #' tidy_dots(!!var := expr)
 #'
-#' # If your DSL treats definitions specially, you can use
-#' # tidy_dots_alt(). It also interpolates the LHS, but it returns a
-#' # list of dots and alternatives:
-#' tidy_dots_alt(!!var := expr, x := expr, y = expr)
-#'
 #' # If you need the full LHS expression, use tidy_defs():
 #' dots <- tidy_defs(var = foo(baz) := bar(baz))
 #' dots$defs
 tidy_dots <- function(...) {
   dots <- capture_dots(...)
   dots_interp_lhs(dots)
-}
-
-#' @rdname tidy_dots
-#' @export
-tidy_dots_alt <- function(...) {
-  dots <- capture_dots(...)
-
-  defined <- vapply_lgl(dots, is_definition)
-  alts <- dots_interp_lhs(dots[defined])
-
-  list(dots = dots[!defined], alts = alts)
 }
 
 capture_dots <- function(...) {
