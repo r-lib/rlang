@@ -189,11 +189,11 @@ dot_f <- function(dot) {
   # Allow unquote-splice in dots
   if (is_splice(expr)) {
     dots <- call("alist", expr)
-    dots <- .Call(interp_, dots, env)
+    dots <- .Call(rlang_interp, dots, env)
     dots <- expr_eval(dots)
     lapply(dots, as_tidy_quote, env)
   } else {
-    expr <- .Call(interp_, expr, env)
+    expr <- .Call(rlang_interp, expr, env)
     list(new_f(expr, env = env))
   }
 }
@@ -249,7 +249,7 @@ dot_interp_lhs <- function(name, dot) {
   }
 
   rhs <- new_f(f_rhs(f_rhs(dot)), env = f_env(dot))
-  lhs <- .Call(interp_, f_lhs(f_rhs(dot)), f_env(dot))
+  lhs <- .Call(rlang_interp, f_lhs(f_rhs(dot)), f_env(dot))
 
   if (is_name(lhs)) {
     lhs <- as.character(lhs)
@@ -276,8 +276,8 @@ as_pattern <- function(dot) {
   env <- f_env(dot)
   pat <- f_rhs(dot)
 
-  lhs <- .Call(interp_, f_lhs(pat), env)
-  rhs <- .Call(interp_, f_rhs(pat), env)
+  lhs <- .Call(rlang_interp, f_lhs(pat), env)
+  rhs <- .Call(rlang_interp, f_rhs(pat), env)
 
   list(
     lhs = new_f(lhs, env = env),
