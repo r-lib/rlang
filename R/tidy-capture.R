@@ -95,29 +95,30 @@ tidy_capture <- function(x) {
 #' This set of functions are like \code{\link{tidy_capture}()} but for
 #' \code{...} arguments. They capture expressions passed through dots
 #' along their dynamic environments, and return them bundled as a set
-#' of formulas. They differ in their treatment of pattern expressions
-#' of the type \code{var := expr}.
+#' of formulas. They differ in their treatment of definition
+#' expressions of the type \code{var := expr}.
 #'
 #'\describe{
 #'  \item{\code{tidy_dots()}}{
-#'    When \code{:=} patterns are supplied to \code{tidy_dots()}, they
-#'    are treated as a synonym of argument assignment \code{=}. On the
-#'    other hand, they allow unquoting operators on the left-hand side,
-#'    which makes it easy to assign names programmatically.}
+#'    When \code{:=} definitions are supplied to \code{tidy_dots()},
+#'    they are treated as a synonym of argument assignment
+#'    \code{=}. On the other hand, they allow unquoting operators on
+#'    the left-hand side, which makes it easy to assign names
+#'    programmatically.}
 #'  \item{\code{tidy_dots_alt()}}{
 #'    It behaves similarly to \code{tidy_dots()} but returns the tidy
 #'    quotes in a list with two components: \code{dots} and
 #'    \code{alts}. Expressions supplied with \code{=} are returned in
 #'    \code{dots} while those specified with \code{:=} end up in
-#'    \code{alts}. This is useful for DSLs that treat patterns with a
-#'    special meaning, such as ggvis. A downside of this approach is
-#'    that non-patterned expressions cannot have their LHS
+#'    \code{alts}. This is useful for DSLs that treat definitions with
+#'    a special meaning, such as ggvis. A downside of this approach is
+#'    that non-definition expressions cannot have their LHS
 #'    interpolated.}
-#'  \item{\code{tidy_patterns()}}{
-#'    This dots capturing function returns patterns as is. Unquote
+#'  \item{\code{tidy_definitions()}}{
+#'    This dots capturing function returns definitions as is. Unquote
 #'    operators are processed on capture, in both the LHS and the
 #'    RHS. Unlike \code{tidy_dots()} and \code{tidy_dots_alt()},
-#'    \code{tidy_patterns()} allows named patterns.}
+#'    \code{tidy_definitions()} allows named definitions.}
 #' }
 #' @inheritParams tidy_capture
 #' @export
@@ -143,22 +144,22 @@ tidy_capture <- function(x) {
 #' tidy_dots(!!! args)
 #'
 #'
-#' # Patterns are treated similarly to named arguments:
+#' # Definitions are treated similarly to named arguments:
 #' tidy_dots(x := expr, y = expr)
 #'
-#' # However, the LHS of patterns can be unquoted. The return value
+#' # However, the LHS of definitions can be unquoted. The return value
 #' # must be a symbol or a string:
 #' var <- "foo"
 #' tidy_dots(!!var := expr)
 #'
-#' # If your DSL treats patterns specially, you can use
+#' # If your DSL treats definitions specially, you can use
 #' # tidy_dots_alt(). It also interpolates the LHS, but it returns a
 #' # list of dots and alternatives:
 #' tidy_dots_alt(!!var := expr, x := expr, y = expr)
 #'
-#' # If you need the full LHS expression, use tidy_patterns():
-#' dots <- tidy_patterns(var = foo(baz) := bar(baz))
-#' dots$patterns
+#' # If you need the full LHS expression, use tidy_definitions():
+#' dots <- tidy_definitions(var = foo(baz) := bar(baz))
+#' dots$defs
 tidy_dots <- function(...) {
   dots <- capture_dots(...)
   dots_interp_lhs(dots)
@@ -169,10 +170,10 @@ tidy_dots <- function(...) {
 tidy_dots_alt <- function(...) {
   dots <- capture_dots(...)
 
-  patterned <- vapply_lgl(dots, is_pattern)
-  alts <- dots_interp_lhs(dots[patterned])
+  defined <- vapply_lgl(dots, is_definition)
+  alts <- dots_interp_lhs(dots[defined])
 
-  list(dots = dots[!patterned], alts = alts)
+  list(dots = dots[!defined], alts = alts)
 }
 
 capture_dots <- function(...) {
@@ -240,7 +241,7 @@ dots_interp_lhs <- function(dots) {
   dots
 }
 dot_interp_lhs <- function(name, dot) {
-  if (!is_formula(dot) || !is_pattern(f_rhs(dot))) {
+  if (!is_formula(dot) || !is_definition(f_rhs(dot))) {
     return(list(name = name, dot = dot))
   }
 
@@ -263,16 +264,16 @@ dot_interp_lhs <- function(name, dot) {
 
 #' @rdname tidy_dots
 #' @export
-tidy_patterns <- function(...) {
+tidy_definitions <- function(...) {
   dots <- capture_dots(...)
 
-  patterned <- vapply_lgl(dots, function(dot) is_pattern(f_rhs(dot)))
-  patterns <- lapply(dots[patterned], as_pattern)
+  defined <- vapply_lgl(dots, function(dot) is_definition(f_rhs(dot)))
+  defs <- lapply(dots[defined], as_definition)
 
-  list(dots = dots[!patterned], patterns = patterns)
+  list(dots = dots[!defined], defs = defs)
 }
 
-as_pattern <- function(dot) {
+as_definition <- function(dot) {
   env <- f_env(dot)
   pat <- f_rhs(dot)
 

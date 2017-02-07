@@ -49,7 +49,7 @@
   attr(x, name, exact = TRUE)
 }
 
-#' Pattern operator.
+#' Definition operator.
 #'
 #' The pattern operator is typically used in DSL packages like
 #' \code{ggvis} and \code{data.table}. It is exported in rlang as a
@@ -68,27 +68,27 @@
 #' is_formula(f)
 #' f_lhs(f)
 #' f_rhs(f)
-#' @name op-pattern
+#' @name op-definition
 `:=` <- `~`
 
-#' @rdname op-pattern
+#' @rdname op-definition
 #' @param x An object to test.
 #' @export
 #' @examples
 #'
 #' # A predicate is provided to distinguish formulas from the
 #' # colon-equals operator:
-#' is_pattern(a := b)
-#' is_pattern(a ~ b)
-is_pattern <- function(x) {
+#' is_definition(a := b)
+#' is_definition(a ~ b)
+is_definition <- function(x) {
   is_formula(x) && identical(x[[1]], quote(`:=`))
 }
 
-#' @rdname op-pattern
+#' @rdname op-definition
 #' @export
 #' @param lhs,rhs Expressions for the LHS and RHS of the pattern.
 #' @param env The evaluation environment bundled with the pattern.
-new_pattern <- function(lhs, rhs, env = caller_env()) {
+new_definition <- function(lhs, rhs, env = caller_env()) {
   pat <- new_f(lhs = lhs, rhs = rhs, env = env)
   pat[[1]] <- quote(`:=`)
   pat

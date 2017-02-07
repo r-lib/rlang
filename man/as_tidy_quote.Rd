@@ -15,7 +15,7 @@ is_tidy_quote(x)
 \item{env}{The environment for the returned tidy quote.}
 }
 \description{
-A tidy quote is a formula or pattern (see \code{\link{op-pattern}})
+A tidy quote is a formula or pattern (see \code{\link{op-definition}})
 that bundles an expression and an environment. In some situations a
 formula will not be a tidy quote because it does not carry
 environment information. That happens for instance when you quote a
