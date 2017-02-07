@@ -14,8 +14,12 @@ if (utils::packageVersion("base") < "3.2.0") {
     vapply_lgl(paths, dir_exists)
   }
 
-  names.environment <- function(x) {
-    ls(x, all.names = TRUE, sorted = FALSE)
+  names <- function(x) {
+    if (is.environment(x)) {
+      ls(x, all.names = TRUE)
+    } else {
+      base::names(x)
+    }
   }
 
 }
