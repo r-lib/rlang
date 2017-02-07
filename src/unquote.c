@@ -163,7 +163,7 @@ SEXP interp_arguments(SEXP x, SEXP env) {
   return x;
 }
 
-SEXP interp_(SEXP x, SEXP env) {
+SEXP rlang_interp(SEXP x, SEXP env) {
   if (!Rf_isLanguage(x))
     return x;
   if (!Rf_isEnvironment(env))

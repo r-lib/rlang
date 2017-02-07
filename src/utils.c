@@ -80,12 +80,12 @@ SEXP last_cons(SEXP x) {
   return x;
 }
 
-SEXP length__(SEXP x) {
+SEXP rlang_length(SEXP x) {
   return Rf_ScalarInteger(Rf_length(x));
 }
 
 int is_true(SEXP x) {
-  if (!IS_SCALAR(x, LGLSXP))
+  if (TYPEOF(x) != LGLSXP || Rf_length(x) != 1)
     Rf_error("`x` must be a boolean");
 
   int value = LOGICAL(x)[0];

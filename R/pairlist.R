@@ -29,55 +29,55 @@ lsp_append <- function(.x, .y) {
   .x
 }
 
-#' @useDynLib rlang car_
+#' @useDynLib rlang rlang_car
 car <- function(x) {
-  .Call(car_, x)
+  .Call(rlang_car, x)
 }
-#' @useDynLib rlang cdr_
+#' @useDynLib rlang rlang_cdr
 cdr <- function(x) {
-  .Call(cdr_, x)
+  .Call(rlang_cdr, x)
 }
-#' @useDynLib rlang cadr_
+#' @useDynLib rlang rlang_cadr
 cadr <- function(x) {
-  .Call(cadr_, x)
+  .Call(rlang_cadr, x)
 }
-#' @useDynLib rlang cddr_
+#' @useDynLib rlang rlang_cddr
 cddr <- function(x) {
-  .Call(cddr_, x)
+  .Call(rlang_cddr, x)
 }
 
-#' @useDynLib rlang set_car_
+#' @useDynLib rlang rlang_set_car
 set_car <- function(x, newcar) {
-  .Call(set_car_, x, newcar)
+  .Call(rlang_set_car, x, newcar)
 }
-#' @useDynLib rlang set_cdr_
+#' @useDynLib rlang rlang_set_cdr
 set_cdr <- function(x, newcdr) {
-  .Call(set_cdr_, x, newcdr)
+  .Call(rlang_set_cdr, x, newcdr)
 }
-#' @useDynLib rlang set_cadr_
+#' @useDynLib rlang rlang_set_cadr
 set_cadr <- function(x, newcar) {
-  .Call(set_cadr_, x, newcar)
+  .Call(rlang_set_cadr, x, newcar)
 }
-#' @useDynLib rlang set_cddr_
+#' @useDynLib rlang rlang_set_cddr
 set_cddr <- function(x, newcdr) {
-  .Call(set_cddr_, x, newcdr)
+  .Call(rlang_set_cddr, x, newcdr)
 }
 
-#' @useDynLib rlang cons_
+#' @useDynLib rlang rlang_cons
 cons <- function(car, cdr) {
-  .Call(cons_, car, cdr)
+  .Call(rlang_cons, car, cdr)
 }
 
-#' @useDynLib rlang duplicate_
+#' @useDynLib rlang rlang_duplicate
 duplicate <- function(x) {
-  .Call(duplicate_, x)
+  .Call(rlang_duplicate, x)
 }
 
-#' @useDynLib rlang tag_
+#' @useDynLib rlang rlang_tag
 tag <- function(x) {
-  .Call(tag_, x)
+  .Call(rlang_tag, x)
 }
-#' @useDynLib rlang set_tag_
+#' @useDynLib rlang rlang_set_tag
 set_tag <- function(x, tag) {
-  .Call(set_tag_, x, tag)
+  .Call(rlang_set_tag, x, tag)
 }

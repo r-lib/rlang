@@ -117,6 +117,10 @@ test_that("is_missing() works with non-symbols", {
 # special cases ------------------------------------------------------
 
 test_that("Recall() does not mess up arg_inspect()", {
+  if (utils::packageVersion("base") < "3.3.0") {
+    skip("test for Recall() depends on internal implementation")
+  }
+
   quit <- FALSE
   fn_Recall <- function(x, y) {
     if (quit) {

@@ -44,11 +44,11 @@
 #' fn("foo")
 tidy_interp <- function(x, env = NULL) {
   if (is_formula(x)) {
-    f_rhs(x) <- .Call(interp_, f_rhs(x), env %||% f_env(x))
+    f_rhs(x) <- .Call(rlang_interp, f_rhs(x), env %||% f_env(x))
   } else if (is_closure(x)) {
-    body(x) <- .Call(interp_, body(x), env %||% fn_env(x))
+    body(x) <- .Call(rlang_interp, body(x), env %||% fn_env(x))
   } else {
-    x <- .Call(interp_, x, env %||% parent.frame())
+    x <- .Call(rlang_interp, x, env %||% parent.frame())
   }
   x
 }
