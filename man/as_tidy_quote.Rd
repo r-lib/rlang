@@ -15,17 +15,18 @@ is_tidy_quote(x)
 \item{env}{The environment for the returned tidy quote.}
 }
 \description{
-A tidy quote is a formula or pattern (see \code{\link{op-definition}})
-that bundles an expression and an environment. In some situations a
-formula will not be a tidy quote because it does not carry
-environment information. That happens for instance when you quote a
-formula, e.g. in this snippet the outer formula is a tidy quote but
-not the inner one: \code{~~expr}. \code{\link{is_formula}()} will
-return \code{TRUE} for those degenerate formulas but
-\code{is_tidy_quote()} will return \code{FALSE}. Note that in the
-tidy evaluation framework (see \code{\link{tidy_eval}()}), untidy
-formulas are automatically given the environment of the outer
-formula and do not require special actions on your part.
+A tidy quote is a formula or definition (see
+\code{\link{op-definition}}) that bundles an expression and an
+environment. In some situations a formula will not be a tidy quote
+because it does not carry environment information. That happens for
+instance when you quote a formula, e.g. in this snippet the outer
+formula is a tidy quote but not the inner one:
+\code{~~expr}. \code{\link{is_formula}()} will return \code{TRUE}
+for those degenerate formulas but \code{is_tidy_quote()} will
+return \code{FALSE}. Note that in the tidy evaluation framework
+(see \code{\link{tidy_eval}()}), untidy formulas are automatically
+given the environment of the outer formula and do not require
+special actions on your part.
 }
 \details{
 \code{as_tidy_quote()} is useful for SE functions that expect a

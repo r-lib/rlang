@@ -16,12 +16,12 @@ new_definition(lhs, rhs, env = caller_env())
 \arguments{
 \item{x}{An object to test.}
 
-\item{lhs, rhs}{Expressions for the LHS and RHS of the pattern.}
+\item{lhs, rhs}{Expressions for the LHS and RHS of the definition.}
 
-\item{env}{The evaluation environment bundled with the pattern.}
+\item{env}{The evaluation environment bundled with the definition.}
 }
 \description{
-The pattern operator is typically used in DSL packages like
+The definition operator is typically used in DSL packages like
 \code{ggvis} and \code{data.table}. It is exported in rlang as a
 alias to \code{~}. This makes it a quoting operator that can be
 shared between packages for computing on the language. Since it

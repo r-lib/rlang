@@ -51,7 +51,7 @@
 
 #' Definition operator.
 #'
-#' The pattern operator is typically used in DSL packages like
+#' The definition operator is typically used in DSL packages like
 #' \code{ggvis} and \code{data.table}. It is exported in rlang as a
 #' alias to \code{~}. This makes it a quoting operator that can be
 #' shared between packages for computing on the language. Since it
@@ -86,8 +86,8 @@ is_definition <- function(x) {
 
 #' @rdname op-definition
 #' @export
-#' @param lhs,rhs Expressions for the LHS and RHS of the pattern.
-#' @param env The evaluation environment bundled with the pattern.
+#' @param lhs,rhs Expressions for the LHS and RHS of the definition.
+#' @param env The evaluation environment bundled with the definition.
 new_definition <- function(lhs, rhs, env = caller_env()) {
   pat <- new_f(lhs = lhs, rhs = rhs, env = env)
   pat[[1]] <- quote(`:=`)

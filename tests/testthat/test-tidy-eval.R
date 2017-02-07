@@ -161,7 +161,7 @@ test_that("evaluating a side preserves the other side", {
   expect_identical(tidy_eval_rhs(1 + 2 ~ 1 + 2), 1 + 2 ~ 3)
 })
 
-test_that("can evaluate patterns", {
+test_that("can evaluate definitions", {
   expect_identical(tidy_eval_lhs(1 + 2 := 1 + 2), 3 := 1 + 2)
   expect_identical(tidy_eval_rhs(1 + 2 := 1 + 2), 1 + 2 := 3)
 })

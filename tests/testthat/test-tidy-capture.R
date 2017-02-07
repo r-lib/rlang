@@ -98,8 +98,8 @@ test_that("dot names are interpolated", {
   var <- quote(baz)
   expect_identical(tidy_dots(!!var := foo), list(baz = ~foo))
 
-  pattern <- !!var := foo
-  expect_identical(tidy_dots(!! pattern), list(baz = ~foo))
+  def <- !!var := foo
+  expect_identical(tidy_dots(!! def), list(baz = ~foo))
 })
 
 test_that("corner cases are handled when interpolating dot names", {
@@ -110,7 +110,7 @@ test_that("corner cases are handled when interpolating dot names", {
     expect_error(tidy_dots(!!var := NULL), "must be a name or string")
 })
 
-test_that("patterns are interpolated", {
+test_that("definitions are interpolated", {
   var1 <- "foo"
   var2 <- "bar"
   dots <- tidy_defs(def = foo(!!var1) := bar(!!var2))
