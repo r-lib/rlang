@@ -114,11 +114,11 @@ tidy_capture <- function(x) {
 #'    a special meaning, such as ggvis. A downside of this approach is
 #'    that non-definition expressions cannot have their LHS
 #'    interpolated.}
-#'  \item{\code{tidy_definitions()}}{
+#'  \item{\code{tidy_defs()}}{
 #'    This dots capturing function returns definitions as is. Unquote
 #'    operators are processed on capture, in both the LHS and the
 #'    RHS. Unlike \code{tidy_dots()} and \code{tidy_dots_alt()},
-#'    \code{tidy_definitions()} allows named definitions.}
+#'    \code{tidy_defs()} allows named definitions.}
 #' }
 #' @inheritParams tidy_capture
 #' @export
@@ -157,8 +157,8 @@ tidy_capture <- function(x) {
 #' # list of dots and alternatives:
 #' tidy_dots_alt(!!var := expr, x := expr, y = expr)
 #'
-#' # If you need the full LHS expression, use tidy_definitions():
-#' dots <- tidy_definitions(var = foo(baz) := bar(baz))
+#' # If you need the full LHS expression, use tidy_defs():
+#' dots <- tidy_defs(var = foo(baz) := bar(baz))
 #' dots$defs
 tidy_dots <- function(...) {
   dots <- capture_dots(...)
@@ -264,7 +264,7 @@ dot_interp_lhs <- function(name, dot) {
 
 #' @rdname tidy_dots
 #' @export
-tidy_definitions <- function(...) {
+tidy_defs <- function(...) {
   dots <- capture_dots(...)
 
   defined <- vapply_lgl(dots, function(dot) is_definition(f_rhs(dot)))

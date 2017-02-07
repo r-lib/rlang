@@ -113,7 +113,7 @@ test_that("corner cases are handled when interpolating dot names", {
 test_that("patterns are interpolated", {
   var1 <- "foo"
   var2 <- "bar"
-  dots <- tidy_definitions(def = foo(!!var1) := bar(!!var2))
+  dots <- tidy_defs(def = foo(!!var1) := bar(!!var2))
 
   pat <- list(lhs = ~foo("foo"), rhs = ~bar("bar"))
   expect_identical(dots$defs$def, pat)
