@@ -1,48 +1,48 @@
 #include <Rinternals.h>
 
-SEXP car_(SEXP x) {
+SEXP rlang_car(SEXP x) {
   return CAR(x);
 }
-SEXP cdr_(SEXP x) {
+SEXP rlang_cdr(SEXP x) {
   return CDR(x);
 }
-SEXP cadr_(SEXP x) {
+SEXP rlang_cadr(SEXP x) {
   return CADR(x);
 }
-SEXP cddr_(SEXP x) {
+SEXP rlang_cddr(SEXP x) {
   return CDDR(x);
 }
 
-SEXP set_car_(SEXP x, SEXP newcar) {
+SEXP rlang_set_car(SEXP x, SEXP newcar) {
   SETCAR(x, newcar);
   return x;
 }
-SEXP set_cdr_(SEXP x, SEXP newcdr) {
+SEXP rlang_set_cdr(SEXP x, SEXP newcdr) {
   SETCDR(x, newcdr);
   return x;
 }
-SEXP set_cadr_(SEXP x, SEXP newcar) {
+SEXP rlang_set_cadr(SEXP x, SEXP newcar) {
   SETCADR(x, newcar);
   return x;
 }
-SEXP set_cddr_(SEXP x, SEXP newcdr) {
+SEXP rlang_set_cddr(SEXP x, SEXP newcdr) {
   SEXP cdr = CDR(x);
   SETCDR(cdr, newcdr);
   return x;
 }
 
-SEXP cons_(SEXP car, SEXP cdr) {
+SEXP rlang_cons(SEXP car, SEXP cdr) {
   return CONS(car, cdr);
 }
 
-SEXP duplicate_(SEXP x) {
+SEXP rlang_duplicate(SEXP x) {
   return Rf_duplicate(x);
 }
 
-SEXP tag_(SEXP x) {
+SEXP rlang_tag(SEXP x) {
   return TAG(x);
 }
-SEXP set_tag_(SEXP x, SEXP tag) {
+SEXP rlang_set_tag(SEXP x, SEXP tag) {
   SET_TAG(x, tag);
   return x;
 }

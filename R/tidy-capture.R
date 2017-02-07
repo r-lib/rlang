@@ -96,7 +96,7 @@ tidy_capture <- function(x) {
   arg_expr <- substitute_(x_expr, x_env)
   arg_env <- caller_env(2)
 
-  expr <- .Call(interp_, arg_expr, arg_env)
+  expr <- .Call(rlang_interp, arg_expr, arg_env)
   new_f(expr, env = arg_env)
 }
 

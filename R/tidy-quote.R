@@ -181,7 +181,7 @@
 #'
 #' # Note that two-sided formulas are never treated as fpromises:
 #' tidy_eval(tidy_quote(a ~ b))
-#' @useDynLib rlang interp_
+#' @useDynLib rlang rlang_interp
 tidy_quote <- function(expr) {
   tidy_capture(expr)
 }
@@ -233,5 +233,5 @@ tidy_quote <- function(expr) {
 #' tidy_eval(e)
 tidy_quote_expr <- function(expr) {
   expr <- substitute(expr)
-  .Call(interp_, expr, parent.frame())
+  .Call(rlang_interp, expr, parent.frame())
 }

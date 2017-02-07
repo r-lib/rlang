@@ -80,7 +80,7 @@ SEXP last_cons(SEXP x) {
   return x;
 }
 
-SEXP length__(SEXP x) {
+SEXP rlang_length(SEXP x) {
   return Rf_ScalarInteger(Rf_length(x));
 }
 

@@ -135,9 +135,9 @@ names2 <- function(x) {
   }
 }
 
-#' @useDynLib rlang length__
+#' @useDynLib rlang rlang_length
 length_ <- function(x) {
-  .Call(length__, x)
+  .Call(rlang_length, x)
 }
 
 #' How long is an object?
@@ -159,7 +159,7 @@ length_ <- function(x) {
 #' has_length(letters, 20)
 #' has_length(letters, 26)
 has_length <- function(x, n = NULL) {
-  len <- .Call(length__, x)
+  len <- .Call(rlang_length, x)
 
   if (is_null(n)) {
     as.logical(len)
