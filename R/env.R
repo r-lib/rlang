@@ -632,9 +632,9 @@ env_clone <- function(x, parent = env_parent(x)) {
 #' base_env()
 #'
 #' # Packages appear in the search path with a special name. Use
-#' # pkg_label() to create that name:
-#' pkg_label("rlang")
-#' scoped_env(pkg_label("rlang"))
+#' # pkg_env_name() to create that name:
+#' pkg_env_name("rlang")
+#' scoped_env(pkg_env_name("rlang"))
 #'
 #' # Alternatively, get the scoped environment of a package with
 #' # pkg_env():
@@ -649,12 +649,12 @@ scoped_env <- function(nm) {
 #' @param pkg The name of a package.
 #' @export
 pkg_env <- function(pkg) {
-  pkg_name <- pkg_label(pkg)
+  pkg_name <- pkg_env_name(pkg)
   scoped_env(pkg_name)
 }
 #' @rdname scoped_env
 #' @export
-pkg_label <- function(pkg) {
+pkg_env_name <- function(pkg) {
   paste0("package:", pkg)
 }
 
