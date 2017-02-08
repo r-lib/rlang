@@ -700,24 +700,41 @@ empty_env <- emptyenv
 #' packages.
 #' @param pkg The name of a package. If \code{NULL}, the surrounding
 #'   namespace is returned, or an error is issued if not called within
-#'   a namespace.
+#'   a namespace. If a function, the enclosure of that function is
+#'   checked.
 #' @seealso \code{\link{pkg_env}()}
 #' @export
 ns_env <- function(pkg = NULL) {
-  if (!is_null(pkg)) {
-    return(asNamespace(pkg))
+  if (is_null(pkg)) {
+    bottom <- topenv(caller_env())
+    if (!isNamespace(bottom)) abort("not in a namespace")
+    bottom
+  } else if (is_function(pkg)) {
+    env <- env_parent(pkg)
+    if (isNamespace(env)) {
+      env
+    } else {
+      NULL
+    }
+  } else {
+    asNamespace(pkg)
   }
-
-  bottom <- topenv(caller_env())
-  if (!isNamespace(bottom)) {
-    stop("not in a namespace", call. = FALSE)
-  }
-  bottom
 }
 #' @rdname ns_env
 #' @export
 ns_imports_env <- function(pkg = NULL) {
   env_parent(ns_env(pkg))
+}
+
+#' @rdname ns_env
+#' @export
+ns_env_name <- function(pkg = NULL) {
+  if (is_null(pkg)) {
+    pkg <- with_env(caller_env(), ns_env())
+  } else if (is_function(pkg)) {
+    pkg <- env(pkg)
+  }
+  unname(getNamespaceName(pkg))
 }
 
 
