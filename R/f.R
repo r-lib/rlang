@@ -1,18 +1,19 @@
 #' Create a formula object by "hand".
 #'
 #' @param lhs,rhs A call, name, or atomic vector.
-#' @param env An environment
-#' @return A formula object
+#' @param env An environment.
+#' @return A formula object.
+#' @seealso \code{\link{new_tidy_quote}()}
 #' @export
 #' @examples
-#' new_f(quote(a))
-#' new_f(quote(a), lhs = quote(b))
-new_f <- function(rhs, env = caller_env(), lhs = NULL) {
-  if (!is.environment(env) && !is_null(env)) {
-    stop("`env` must be an environment", call. = FALSE)
+#' new_formula(quote(a), quote(b))
+#' new_formula(NULL, quote(b))
+new_formula <- function(lhs, rhs, env = caller_env()) {
+  if (!is_env(env) && !is_null(env)) {
+    abort("`env` must be an environment")
   }
 
-  if (is.null(lhs)) {
+  if (is_null(lhs)) {
     f <- new_call("~", rhs)
   } else {
     f <- new_call("~", lhs, rhs)
@@ -20,6 +21,8 @@ new_f <- function(rhs, env = caller_env(), lhs = NULL) {
 
   structure(f, class = "formula", .Environment = env)
 }
+
+as_formula <- NULL
 
 #' Get/set formula components.
 #'
@@ -52,7 +55,7 @@ f_rhs <- function(f) {
 #' @rdname f_rhs
 `f_rhs<-` <- function(x, value) {
   stopifnot(is_formula(x))
-  f <- new_f(value, f_env(x), f_lhs(x))
+  f <- new_formula(f_lhs(x), value, f_env(x))
   copy_call_name(f, x)
 }
 
@@ -67,7 +70,7 @@ f_lhs <- function(f) {
 #' @rdname f_rhs
 `f_lhs<-` <- function(x, value) {
   stopifnot(is_formula(x))
-  f <- new_f(f_rhs(x), f_env(x), value)
+  f <- new_formula(value, f_rhs(x), f_env(x))
   copy_call_name(f, x)
 }
 
@@ -89,7 +92,7 @@ f_env <- function(f) {
 #' @rdname f_rhs
 `f_env<-` <- function(x, value) {
   stopifnot(is_formula(x))
-  f <- new_f(f_rhs(x), value, f_lhs(x))
+  f <- new_formula(f_lhs(x), f_rhs(x), value)
   copy_call_name(f, x)
 }
 
@@ -140,9 +143,9 @@ f_unwrap <- function(f) {
   stopifnot(is_formula(f))
 
   e <- environment(f)
-  if (identical(e, emptyenv())) {
+  if (identical(e, empty_env())) {
     f
   } else {
-    new_f(substitute_(f_rhs(f), e), parent.env(e), f_lhs(f))
+    new_formula(f_lhs(f), substitute_(f_rhs(f), e), env_parent(e))
   }
 }

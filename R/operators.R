@@ -89,7 +89,7 @@ is_definition <- function(x) {
 #' @param lhs,rhs Expressions for the LHS and RHS of the definition.
 #' @param env The evaluation environment bundled with the definition.
 new_definition <- function(lhs, rhs, env = caller_env()) {
-  pat <- new_f(lhs = lhs, rhs = rhs, env = env)
+  pat <- new_formula(lhs, rhs, env)
   pat[[1]] <- quote(`:=`)
   pat
 }

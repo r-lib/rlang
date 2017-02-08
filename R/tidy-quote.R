@@ -236,6 +236,21 @@ tidy_quote_expr <- function(expr) {
   .Call(rlang_interp, expr, parent.frame())
 }
 
+#' Create a tidy quote by hand.
+#'
+#' This is similar to \code{\link{new_formula}()} but for one-sided
+#' formulas. See \code{\link{tidy_quote}()} for the role played by
+#' such formulas in the tidy evaluation framework.
+#'
+#' @inheritParams new_formula
+#' @export
+#' @examples
+#' f <- new_tidy_quote(quote(mtcars), env("datasets"))
+#' f
+#' tidy_eval(f)
+new_tidy_quote <- function(rhs, env = caller_env()) {
+  new_formula(NULL, rhs, env)
+}
 
 #' Coerce expressions to a tidy formula quote.
 #'
@@ -288,7 +303,7 @@ as_tidy_quote <- function(x, env) {
     }
     x
   } else {
-    new_f(x, env = env)
+    new_tidy_quote(x, env)
   }
 }
 

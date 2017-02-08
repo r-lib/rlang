@@ -87,7 +87,7 @@ tidy_capture <- function(x) {
   arg_env <- caller_env(2)
 
   expr <- .Call(rlang_interp, arg_expr, arg_env)
-  new_f(expr, env = arg_env)
+  new_tidy_quote(expr, arg_env)
 }
 
 #' Capture dots.
@@ -169,7 +169,7 @@ dot_f <- function(dot) {
     lapply(dots, as_tidy_quote, env)
   } else {
     expr <- .Call(rlang_interp, expr, env)
-    list(new_f(expr, env = env))
+    list(new_tidy_quote(expr, env))
   }
 }
 
@@ -223,7 +223,7 @@ dot_interp_lhs <- function(name, dot) {
     warn("name ignored because a LHS was supplied")
   }
 
-  rhs <- new_f(f_rhs(f_rhs(dot)), env = f_env(dot))
+  rhs <- new_tidy_quote(f_rhs(f_rhs(dot)), env = f_env(dot))
   lhs <- .Call(rlang_interp, f_lhs(f_rhs(dot)), f_env(dot))
 
   if (is_name(lhs)) {
@@ -255,7 +255,7 @@ as_definition <- function(dot) {
   rhs <- .Call(rlang_interp, f_rhs(pat), env)
 
   list(
-    lhs = new_f(lhs, env = env),
-    rhs = new_f(rhs, env = env)
+    lhs = new_tidy_quote(lhs, env),
+    rhs = new_tidy_quote(rhs, env)
   )
 }
