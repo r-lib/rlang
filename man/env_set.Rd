@@ -2,9 +2,9 @@
 % Please edit documentation in R/env.R
 \name{env_set}
 \alias{env_set}
-\alias{env_set.environment}
-\alias{env_set.formula}
 \alias{env_set.function}
+\alias{env_set.formula}
+\alias{env_set.environment}
 \alias{env_set_parent}
 \title{Set an environment.}
 \usage{
@@ -48,4 +48,3 @@ identical(env(fn), other_env)
 fn <- env_set(fn, other_env)
 identical(env(fn), other_env)
 }
-

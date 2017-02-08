@@ -2,14 +2,14 @@
 % Please edit documentation in R/types.R
 \name{bare-type-predicates}
 \alias{bare-type-predicates}
+\alias{is_bare_list}
 \alias{is_bare_atomic}
-\alias{is_bare_character}
+\alias{is_bare_vector}
 \alias{is_bare_double}
 \alias{is_bare_integer}
-\alias{is_bare_list}
-\alias{is_bare_logical}
 \alias{is_bare_numeric}
-\alias{is_bare_vector}
+\alias{is_bare_character}
+\alias{is_bare_logical}
 \title{Bare type predicates}
 \usage{
 is_bare_list(x, n = NULL)
@@ -52,4 +52,3 @@ example, a data frame is a list, but not a bare list.
 \seealso{
 \link{type-predicates} \link{scalar-type-predicates}
 }
-

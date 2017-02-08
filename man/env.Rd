@@ -2,15 +2,15 @@
 % Please edit documentation in R/env.R
 \name{env}
 \alias{env}
-\alias{env.character}
-\alias{env.default}
-\alias{env.environment}
+\alias{env.function}
 \alias{env.formula}
 \alias{env.frame}
-\alias{env.function}
+\alias{env.environment}
+\alias{env.default}
+\alias{env.character}
+\alias{new_env}
 \alias{env_parent}
 \alias{env_tail}
-\alias{new_env}
 \title{Get an environment.}
 \usage{
 env(env = caller_env())
@@ -160,4 +160,3 @@ identical(enclos_env, fn())
 \link{scoped_env}, \code{\link{env_has}()},
   \code{\link{env_assign}()}.
 }
-

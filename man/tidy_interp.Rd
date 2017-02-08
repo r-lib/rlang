@@ -52,4 +52,3 @@ fn <- tidy_interp(function(x) {
 fn
 fn("foo")
 }
-

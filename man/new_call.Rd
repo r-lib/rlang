@@ -29,4 +29,3 @@ new_call(quote(f), .args = list(a = 1, b = 2))
 \seealso{
 call_modify
 }
-

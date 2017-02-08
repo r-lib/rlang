@@ -12,4 +12,3 @@ is_frame(x)
 \description{
 Is object a frame?
 }
-

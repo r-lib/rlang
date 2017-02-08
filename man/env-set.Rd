@@ -14,4 +14,3 @@ env(x) <- value
 \description{
 Assignment operator for environments.
 }
-

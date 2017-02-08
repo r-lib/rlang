@@ -61,4 +61,3 @@ invoke("call_inspect", letters)
 # the argument prefix:
 invoke(call_inspect, mtcars, .bury = c("inspect!", "col"))
 }
-

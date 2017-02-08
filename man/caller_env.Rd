@@ -17,4 +17,3 @@ This is a shortcut for \code{\link{call_frame}(2)$env}.
 \seealso{
 \code{\link{call_frame}()}
 }
-

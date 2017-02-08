@@ -35,4 +35,3 @@ other_env <- new_env("base")
 fn_env(fn) <- other_env
 identical(fn_env(fn), other_env)
 }
-

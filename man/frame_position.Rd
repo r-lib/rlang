@@ -48,4 +48,3 @@ g <- function(env) h(env)
 h <- function(env) frame_position(env, from = "current")
 fn()
 }
-

@@ -48,4 +48,3 @@ env$name2
 \seealso{
 \code{\link{env_assign}()}
 }
-

@@ -2,12 +2,12 @@
 % Please edit documentation in R/vector.R
 \name{new-vectors}
 \alias{new-vectors}
-\alias{new_chr}
-\alias{new_cpl}
-\alias{new_dbl}
-\alias{new_int}
 \alias{new_lgl}
+\alias{new_int}
+\alias{new_dbl}
+\alias{new_chr}
 \alias{new_lst}
+\alias{new_cpl}
 \alias{new_raw}
 \title{Create new vectors.}
 \usage{
@@ -49,4 +49,3 @@ new_dbl(10, class = "my_class")
 \seealso{
 along
 }
-

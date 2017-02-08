@@ -50,4 +50,3 @@ user_fn <- function() {
 # These intervening frames won't appear in the evaluation stack
 identity(user_fn())
 }
-

@@ -19,4 +19,3 @@ is_formula(x)
 is_formula(~ 10)
 is_formula(10)
 }
-

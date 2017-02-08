@@ -56,4 +56,3 @@ as_tidy_quote(inner_f, base_env())
 as_tidy_quote(quote(expr), env())
 as_tidy_quote(10L, env())
 }
-

@@ -21,4 +21,3 @@ str(splice(inputs, arg3 = c("c1", "c2")))
 str(list(inputs, arg3 = c("c1", "c2")))
 str(c(inputs, arg3 = c("c1", "c2")))
 }
-

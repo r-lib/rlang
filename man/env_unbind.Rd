@@ -43,4 +43,3 @@ env <- new_env(parent, list(foo = "b"))
 env_unbind(env, "foo", inherit = TRUE)
 env_has(env, "foo", inherit = TRUE)
 }
-

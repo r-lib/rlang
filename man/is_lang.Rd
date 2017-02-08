@@ -2,10 +2,10 @@
 % Please edit documentation in R/language.R
 \name{is_lang}
 \alias{is_lang}
-\alias{is_literal}
 \alias{is_name}
-\alias{is_pairlist}
 \alias{is_symbol}
+\alias{is_pairlist}
+\alias{is_literal}
 \title{Is an object a language object?}
 \usage{
 is_lang(x)
@@ -103,4 +103,3 @@ call_args_lsp(quote(fn(arg1, arg2 = "foo")))
   \code{\link{as_name}()} and \code{\link{as_call}()} for coercion
   functions.
 }
-

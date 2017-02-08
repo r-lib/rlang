@@ -95,4 +95,3 @@ with_handlers(fn2(), foo = inplace(exiting_handler), foo = inplace(other_handler
 \seealso{
 \code{\link{exiting}()}, \code{\link{inplace}()}.
 }
-

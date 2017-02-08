@@ -2,12 +2,12 @@
 % Please edit documentation in R/vector.R
 \name{along}
 \alias{along}
-\alias{chr_along}
-\alias{cpl_along}
-\alias{dbl_along}
-\alias{int_along}
 \alias{lgl_along}
+\alias{int_along}
+\alias{dbl_along}
+\alias{chr_along}
 \alias{lst_along}
+\alias{cpl_along}
 \alias{raw_along}
 \alias{rep_along}
 \title{Helper to create vectors with matching length.}
@@ -58,4 +58,3 @@ dbl_along(x, class = "my_class")
 \seealso{
 new-vectors
 }
-

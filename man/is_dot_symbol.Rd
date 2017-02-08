@@ -16,4 +16,3 @@ Is object a ..n symbol?
 is_dot_symbol(quote(..2))
 is_dot_symbol(quote(sym))
 }
-

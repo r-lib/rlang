@@ -23,4 +23,3 @@ packages.
 \seealso{
 \code{\link{pkg_env}()}
 }
-

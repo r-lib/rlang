@@ -26,4 +26,3 @@ has_length(letters)
 has_length(letters, 20)
 has_length(letters, 26)
 }
-

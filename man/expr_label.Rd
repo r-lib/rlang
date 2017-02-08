@@ -39,4 +39,3 @@ expr_label(quote(foo({
   print(x)
 })))
 }
-

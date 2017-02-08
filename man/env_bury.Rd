@@ -35,4 +35,3 @@ fn()
 fn <- env_bury(fn, list(a = 1000))
 fn()
 }
-

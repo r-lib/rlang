@@ -21,4 +21,3 @@ f <- new_tidy_quote(quote(mtcars), env("datasets"))
 f
 tidy_eval(f)
 }
-

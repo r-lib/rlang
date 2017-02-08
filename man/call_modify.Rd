@@ -50,4 +50,3 @@ f()
 \seealso{
 new_call
 }
-

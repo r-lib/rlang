@@ -56,4 +56,3 @@ See \code{\link{tidy_quote}()} and
   \code{\link{tidy_interp}()} for more explanation on tidy
   quotation.
 }
-

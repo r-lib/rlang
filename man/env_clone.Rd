@@ -20,4 +20,3 @@ env <- new_env(data = mtcars)
 clone <- env_clone(env)
 identical(env$cyl, clone$cyl)
 }
-

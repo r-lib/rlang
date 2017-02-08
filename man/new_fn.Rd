@@ -37,4 +37,3 @@ attr(f, "srcref") <- NULL
 # Now they are:
 stopifnot(identical(f, g))
 }
-

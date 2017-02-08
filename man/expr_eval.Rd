@@ -76,4 +76,3 @@ eval(get_stack)
 \seealso{
 with_env
 }
-

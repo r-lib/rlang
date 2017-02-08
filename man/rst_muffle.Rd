@@ -70,4 +70,3 @@ with_handlers(foo = undesirable_handler,
 The \code{muffle} argument of \code{\link{inplace}()}, and
   the \code{mufflable} argument of \code{\link{cnd_signal}()}.
 }
-

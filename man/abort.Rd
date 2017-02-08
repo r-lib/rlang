@@ -2,8 +2,8 @@
 % Please edit documentation in R/cnd.R
 \name{abort}
 \alias{abort}
-\alias{inform}
 \alias{warn}
+\alias{inform}
 \title{Signal an error, warning, or message.}
 \usage{
 abort(msg, type = NULL, call = FALSE)
@@ -51,4 +51,3 @@ normally after that. See \code{\link{rst_muffle}()} to jump to a
 muffling restart, and the \code{muffle} argument of
 \code{\link{inplace}()} for creating a muffling handler.
 }
-

@@ -56,4 +56,3 @@ cat("`out` has now become:", out, "\\n")
 \code{\link{rst_jump}()}, \code{\link{abort}()} and
   \code{\link{cnd_abort}()}.
 }
-

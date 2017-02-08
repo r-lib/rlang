@@ -3,11 +3,11 @@
 \docType{data}
 \name{missing}
 \alias{missing}
+\alias{na_lgl}
+\alias{na_int}
+\alias{na_dbl}
 \alias{na_chr}
 \alias{na_cpl}
-\alias{na_dbl}
-\alias{na_int}
-\alias{na_lgl}
 \title{Missing values.}
 \format{An object of class \code{logical} of length 1.}
 \usage{
@@ -62,4 +62,3 @@ The \code{\link{along}} family to create typed vectors
   filled with missing values.
 }
 \keyword{datasets}
-

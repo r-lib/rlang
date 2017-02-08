@@ -62,4 +62,3 @@ fn <- env_assign(fn, "a", "1")
 fn <- env_define(fn, b = "2", c = "3")
 fn()
 }
-

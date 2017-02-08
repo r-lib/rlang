@@ -27,4 +27,3 @@ useful with formulas to create lambdas on the fly.
 f <- as_function(~ . + 1)
 f(10)
 }
-

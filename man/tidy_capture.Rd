@@ -81,6 +81,7 @@ within formulas.
   \code{parent.frame()}, since the former will encode the
   appropriate evaluation environments within the formulas.
 }
+
 \examples{
 # tidy_capture() returns a formula:
 fn <- function(foo) tidy_capture(foo)
@@ -95,4 +96,3 @@ g(a + b)
   \code{\link{expr_label}()} and \code{\link{expr_text}()} for
   capturing labelling information.
 }
-

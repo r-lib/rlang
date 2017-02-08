@@ -20,4 +20,3 @@ with_attributes(letters, class = "my_chr", names = 1:26)
 attrs <- list(class = "my_chr", names = 1:26)
 with_attributes(letters, .attrs = attrs)
 }
-

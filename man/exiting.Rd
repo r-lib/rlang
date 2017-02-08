@@ -63,4 +63,3 @@ with_handlers(foo = inplace(~cat("hello", .$attr, "\\n")), {
 \code{\link{with_handlers}()} for examples,
   \code{\link{restarting}()} for another kind of inplace handler.
 }
-

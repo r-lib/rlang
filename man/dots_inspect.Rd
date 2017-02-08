@@ -80,4 +80,3 @@ f(foo(bar))
 \seealso{
 \code{\link{arg_inspect}()}
 }
-

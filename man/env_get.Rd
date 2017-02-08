@@ -33,4 +33,3 @@ env <- new_env(parent, list(bar = "bar"))
 # However `foo` can be fetched in the parent environment:
 env_get(env, "foo", inherit = TRUE)
 }
-

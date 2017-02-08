@@ -22,4 +22,3 @@ names2(letters)
 x <- set_names(1:3, c("a", NA, "b"))
 names2(x)
 }
-

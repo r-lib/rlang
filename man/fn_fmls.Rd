@@ -35,4 +35,3 @@ fn_fmls(base::switch)
 \code{\link{call_args}()} and
   \code{\link{call_args_names}()}
 }
-

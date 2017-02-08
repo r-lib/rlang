@@ -67,4 +67,3 @@ with_handlers(fn(), foo = restarting("rst_baz"))
 \seealso{
 \code{\link{inplace}()} and \code{\link{exiting}()}.
 }
-

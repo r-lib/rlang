@@ -3,9 +3,9 @@
 \name{as_env}
 \alias{as_env}
 \alias{as_env.NULL}
+\alias{as_env.environment}
 \alias{as_env.character}
 \alias{as_env.default}
-\alias{as_env.environment}
 \title{Coerce to an environment.}
 \usage{
 as_env(x, parent = NULL)
@@ -52,4 +52,3 @@ as_env("rlang")
 # With NULL it returns the empty environment:
 as_env(NULL)
 }
-

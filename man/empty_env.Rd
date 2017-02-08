@@ -15,4 +15,3 @@ search path (see \code{\link{scoped_names}()}).
 # Create environments with nothing in scope (the default):
 new_env(parent = empty_env())
 }
-
