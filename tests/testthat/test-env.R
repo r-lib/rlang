@@ -91,6 +91,12 @@ test_that("with_env() evaluates within correct environment", {
   expect_equal(fn(), "early return")
 })
 
+test_that("locally() evaluates within correct environment", {
+  env <- new_env("rlang")
+  local_env <- with_env(env, locally(env()))
+  expect_identical(env_parent(local_env), env)
+})
+
 test_that("ns_env() returns current namespace", {
   expect_identical(with_env(ns_env("rlang"), ns_env()), env(rlang::env))
 })

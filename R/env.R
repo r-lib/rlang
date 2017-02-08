@@ -723,11 +723,18 @@ ns_imports_env <- function(pkg = NULL) {
 
 #' Evaluate an expression within a given environment.
 #'
-#' This function evaluate \code{expr} within \code{env}. It uses
+#' These functions evaluate \code{expr} within a given environment
+#' (\code{env} for \code{with_env()}, or the child of the current
+#' environment for \code{locally}). They rely on
 #' \code{\link{expr_eval}()} which features a lighter evaluation
 #' mechanism than base R \code{\link[base]{eval}()}, and which also
 #' has some subtle implications when evaluting stack sensitive
 #' functions (see help for \code{\link{expr_eval}()}).
+#'
+#' \code{locally()} is equivalent to the base function
+#' \code{\link[base]{local}()} but it produces a much cleaner
+#' evaluation stack, and has stack-consistent semantics. It is thus
+#' more suited for experimenting with the R language.
 #'
 #' @inheritParams expr_eval
 #' @param env An environment within which to evaluate \code{expr}. Can
@@ -761,4 +768,10 @@ ns_imports_env <- function(pkg = NULL) {
 #' with_env("base", ~mtcars)
 with_env <- function(env, expr) {
   .Call(rlang_eval, substitute(expr), rlang::env(env))
+}
+
+#' @rdname with_env
+#' @export
+locally <- function(expr) {
+  .Call(rlang_eval, substitute(expr), new_env(caller_env()))
 }
