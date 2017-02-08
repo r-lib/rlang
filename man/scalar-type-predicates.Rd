@@ -7,7 +7,6 @@
 \alias{is_scalar_integer}
 \alias{is_scalar_list}
 \alias{is_scalar_logical}
-\alias{is_scalar_numeric}
 \alias{is_scalar_vector}
 \alias{scalar-type-predicates}
 \title{Scalar type predicates}
@@ -17,8 +16,6 @@ is_scalar_list(x)
 is_scalar_atomic(x)
 
 is_scalar_vector(x)
-
-is_scalar_numeric(x)
 
 is_scalar_integer(x)
 

@@ -14,8 +14,6 @@
 #'   \item Unlike \code{is.vector()}, \code{is_vector()} test if an
 #'     object is an atomic vector or a list. \code{is.vector} checks
 #'     for the presence of attributes (other than name).
-#'   \item \code{is_numeric()} is not generic so, (e.g.) dates and date times
-#'     are \code{TRUE}, not \code{FALSE}.
 #'   \item \code{is_function()} returns \code{TRUE} only for regular
 #'     functions, not special or primitive functions.
 #' }
@@ -47,14 +45,6 @@ is_atomic <- function(x, n = NULL) {
 #' @rdname type-predicates
 is_vector <- function(x, n = NULL) {
   is_atomic(x, n) || is_list(x, n)
-}
-
-#' @export
-#' @rdname type-predicates
-is_numeric <- function(x, n = NULL) {
-  if (!typeof(x) %in% c("integer", "double")) return(FALSE)
-  if (!is_null(n) && length(x) != n) return(FALSE)
-  TRUE
 }
 
 #' @export
@@ -120,12 +110,6 @@ is_scalar_atomic <- function(x) {
 #' @rdname scalar-type-predicates
 is_scalar_vector <- function(x) {
   is_vector(x) && length(x) == 1
-}
-
-#' @export
-#' @rdname scalar-type-predicates
-is_scalar_numeric <- function(x) {
-  is_numeric(x) && length(x) == 1
 }
 
 #' @export
@@ -205,7 +189,8 @@ is_bare_integer <- function(x, n = NULL) {
 #' @export
 #' @rdname bare-type-predicates
 is_bare_numeric <- function(x, n = NULL) {
-  !is.object(x) && is_numeric(x, n)
+  if (!is_null(n) && length(x) != n) return(FALSE)
+  !is.object(x) && typeof(x) %in% c("double", "integer")
 }
 
 #' @export
@@ -289,4 +274,33 @@ is_true <- function(x) {
 #' @export
 is_false <- function(x) {
   identical(x, FALSE)
+}
+
+#' Is a vector integer-like?
+#'
+#' These predicates check whether R considers a number vector to be
+#' integer-like, according to its own tolerance check (which is in
+#' fact delegated to the C library). This function is not adapted to
+#' data analysis, see the help for \code{\link[base]{is.integer}()}
+#' for examples of how to check for whole numbers.
+#'
+#' @seealso \code{\link{is_bare_numeric}()} for testing whether an
+#'   object is a base numeric type (a bare double or integer vector).
+#' @inheritParams type-predicates
+#' @export
+#' @examples
+#' is_integerish(10L)
+#' is_integerish(10.0)
+#' is_integerish(10.000001)
+#' is_integerish(TRUE)
+is_integerish <- function(x, n = NULL) {
+  if (typeof(x) == "integer") return(TRUE)
+  if (typeof(x) != "double") return(FALSE)
+  if (!is_null(n) && length(x) != n) return(FALSE)
+  all(x == as.integer(x))
+}
+#' @rdname is_integerish
+#' @export
+is_bare_integerish <- function(x, n = NULL) {
+  !is.object(x) && is_integerish(x, n)
 }

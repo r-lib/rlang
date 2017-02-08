@@ -517,7 +517,7 @@ frame_position <- function(frame, from = c("global", "current")) {
 frame_position_global <- function(frame, stack = NULL) {
   if (is_frame(frame)) {
     return(frame$pos)
-  } else if (is_numeric(frame)) {
+  } else if (is_integerish(frame)) {
     return(frame)
   }
 
@@ -538,7 +538,7 @@ frame_position_global <- function(frame, stack = NULL) {
 
 frame_position_current <- function(frame, stack = NULL,
                                    caller_pos = NULL) {
-  if (is_numeric(frame)) {
+  if (is_integerish(frame)) {
     pos <- frame
   } else {
     stack <- stack %||% stack_trim(eval_stack(), n = 2)
@@ -647,7 +647,7 @@ stack_trim <- function(stack, n = 1) {
 #' h <- function(env) return_to(env, "early return")
 #' fn()
 return_from <- function(frame, value = NULL) {
-  if (is_numeric(frame)) {
+  if (is_integerish(frame)) {
     frame <- eval_frame(frame)
   }
 
@@ -659,7 +659,7 @@ return_from <- function(frame, value = NULL) {
 #' @rdname return_from
 #' @export
 return_to <- function(frame, value = NULL) {
-  if (is_numeric(frame)) {
+  if (is_integerish(frame)) {
     prev_pos <- frame - 1
   } else {
     env <- env(frame)
