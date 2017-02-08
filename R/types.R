@@ -304,3 +304,8 @@ is_integerish <- function(x, n = NULL) {
 is_bare_integerish <- function(x, n = NULL) {
   !is.object(x) && is_integerish(x, n)
 }
+#' @rdname is_integerish
+#' @export
+is_scalar_integerish <- function(x) {
+  !is.object(x) && is_integerish(x, 1L)
+}

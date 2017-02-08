@@ -3,11 +3,14 @@
 \name{is_integerish}
 \alias{is_bare_integerish}
 \alias{is_integerish}
+\alias{is_scalar_integerish}
 \title{Is a vector integer-like?}
 \usage{
 is_integerish(x, n = NULL)
 
 is_bare_integerish(x, n = NULL)
+
+is_scalar_integerish(x)
 }
 \arguments{
 \item{x}{Object to be tested.}
