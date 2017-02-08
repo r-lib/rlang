@@ -53,7 +53,7 @@ test_that("promises are created", {
 })
 
 test_that("lazies are evaluated in correct environment", {
-  env <- new_env(base_env())
+  env <- new_env("base")
 
   env_assign_promise(env, "test_captured", test_captured <- letters)
   env_assign_promise_(env, "test_expr", quote(test_expr <- LETTERS))
@@ -71,8 +71,8 @@ test_that("lazies are evaluated in correct environment", {
 })
 
 test_that("formula env is overridden by eval_env", {
-  env <- new_env(base_env())
-  env_assign_promise_(env, "within_env", ~ (new_within_env <- "new"), env)
+  env <- new_env("base")
+  env_assign_promise_(env, "within_env", quote(new_within_env <- "new"), env)
   force(env$within_env)
 
   expect_false(env_has(env(), "new_within_env"))
@@ -89,6 +89,12 @@ test_that("with_env() evaluates within correct environment", {
     with_env(env, return("early return"))
   }
   expect_equal(fn(), "early return")
+})
+
+test_that("locally() evaluates within correct environment", {
+  env <- new_env("rlang")
+  local_env <- with_env(env, locally(env()))
+  expect_identical(env_parent(local_env), env)
 })
 
 test_that("ns_env() returns current namespace", {

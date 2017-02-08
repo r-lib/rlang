@@ -43,6 +43,25 @@ pluck_cpl <- function(.x, .f) {
   vapply_cpl(.x, `[[`, .f)
 }
 
+lapply2 <- function(.x, .y, .f, ...) {
+  Map(.f, .x, .y, ...)
+}
+lapply2_lgl <- function(.x, .y, .f, ...) {
+  as.vector(lapply2(.x, .y, .f, ...), "logical")
+}
+lapply2_int <- function(.x, .y, .f, ...) {
+  as.vector(lapply2(.x, .y, .f, ...), "integer")
+}
+lapply2_dbl <- function(.x, .y, .f, ...) {
+  as.vector(lapply2(.x, .y, .f, ...), "double")
+}
+lapply2_chr <- function(.x, .y, .f, ...) {
+  as.vector(lapply2(.x, .y, .f, ...), "character")
+}
+lapply2_cpl <- function(.x, .y, .f, ...) {
+  as.vector(lapply2(.x, .y, .f, ...), "complex")
+}
+
 probe <- function(.x, .p, ...) {
   if (is_logical(.p)) {
     stopifnot(length(.p) == length(.x))

@@ -12,12 +12,12 @@ test_that("formulas containing unquote operators are interpolated", {
   var2 <- local({ foo <- "baz"; ~foo })
 
   f <- tidy_interp(~list(!!var1, !!var2))
-  expect_identical(f, new_f(bquote(list(.(var1), .(var2)))))
+  expect_identical(f, new_tidy_quote(bquote(list(.(var1), .(var2)))))
 })
 
 test_that("interpolation is carried out in the right environment", {
   f <- local({ foo <- "foo"; ~!!foo })
-  expect_identical(tidy_interp(f), new_f("foo", env = f_env(f)))
+  expect_identical(tidy_interp(f), new_tidy_quote("foo", env = f_env(f)))
 })
 
 test_that("interpolation does not revisit unquoted formulas", {
@@ -72,19 +72,19 @@ test_that("evaluates contents of UQ()", {
 test_that("layers of unquote are not peeled off recursively upon interpolation", {
   var1 <- ~letters
   var2 <- ~!!var1
-  expect_identical(tidy_quote(!!var2), new_f(~!!var1))
+  expect_identical(tidy_quote(!!var2), new_tidy_quote(~!!var1))
 
   var1 <- local(~letters)
   var2 <- local(~!!var1)
-  expect_identical(tidy_interp(~!!var2), new_f(var2))
+  expect_identical(tidy_interp(~!!var2), new_tidy_quote(var2))
 })
 
 test_that("formulas are promised recursively during unquote", {
   var <- ~~letters
-  expect_identical(tidy_quote(!!var), new_f(new_f(quote(~letters))))
+  expect_identical(tidy_quote(!!var), new_tidy_quote(new_tidy_quote(quote(~letters))))
 
-  var <- new_f(local(~letters), env = new_env(env()))
-  expect_identical(tidy_quote(!!var), new_f(var))
+  var <- new_tidy_quote(local(~letters), env = new_env(env()))
+  expect_identical(tidy_quote(!!var), new_tidy_quote(var))
 })
 
 
@@ -118,7 +118,7 @@ test_that("UQF() guards formulas", {
   guarded <- new_call("_F", .args = f[-1])
   attributes(guarded) <- attributes(f)
 
-  expected_f <- new_f(guarded)
+  expected_f <- new_tidy_quote(guarded)
   expect_identical(tidy_quote(UQF(f)), expected_f)
   expect_identical(tidy_eval(expected_f), f)
 })
@@ -138,8 +138,8 @@ test_that("single ! is not treated as shortcut", {
 
 test_that("double and triple ! are treated as syntactic shortcuts", {
   var <- local(~foo)
-  expect_identical(tidy_quote(!! var), new_f(var))
-  expect_identical(tidy_quote(!! ~foo), new_f(~foo))
+  expect_identical(tidy_quote(!! var), new_tidy_quote(var))
+  expect_identical(tidy_quote(!! ~foo), new_tidy_quote(~foo))
   expect_identical(tidy_quote(list(!!! letters[1:3])), ~list("a", "b", "c"))
 })
 
@@ -158,10 +158,10 @@ test_that("fpromises are created for all informative formulas", {
   bar <- local(~bar)
 
   interpolated <- local(tidy_quote(list(!!foo, !!bar)))
-  expected <- new_f(bquote(list(.(f_rhs(new_f(foo))), .(f_rhs(new_f(bar))))), env = env(interpolated))
+  expected <- new_tidy_quote(bquote(list(.(f_rhs(new_tidy_quote(foo))), .(f_rhs(new_tidy_quote(bar))))), env = env(interpolated))
   expect_identical(interpolated, expected)
 
   interpolated <- tidy_quote(!!interpolated)
-  expected <- new_f(expected)
+  expected <- new_tidy_quote(expected)
   expect_identical(interpolated, expected)
 })

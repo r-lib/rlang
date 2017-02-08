@@ -5,7 +5,7 @@
 \alias{global_env}
 \alias{is_scoped}
 \alias{pkg_env}
-\alias{pkg_label}
+\alias{pkg_env_name}
 \alias{scoped_env}
 \alias{scoped_names}
 \title{Scope environments}
@@ -14,7 +14,7 @@ scoped_env(nm)
 
 pkg_env(pkg)
 
-pkg_label(pkg)
+pkg_env_name(pkg)
 
 scoped_names()
 
@@ -78,9 +78,9 @@ global_env()
 base_env()
 
 # Packages appear in the search path with a special name. Use
-# pkg_label() to create that name:
-pkg_label("rlang")
-scoped_env(pkg_label("rlang"))
+# pkg_env_name() to create that name:
+pkg_env_name("rlang")
+scoped_env(pkg_env_name("rlang"))
 
 # Alternatively, get the scoped environment of a package with
 # pkg_env():

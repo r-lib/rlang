@@ -68,8 +68,9 @@
 #' @export
 #' @return \code{tidy_capture()} returns a formula; \code{tidy_dots()}
 #'   returns a list of formulas, one for each dotted argument.
-#' @seealso \code{\link{expr_label}()} and \code{\link{expr_text}()}
-#'   for capturing labelling information.
+#' @seealso \code{\link{tidy_dots}()} for capturing dots,
+#'   \code{\link{expr_label}()} and \code{\link{expr_text}()} for
+#'   capturing labelling information.
 #' @examples
 #' # tidy_capture() returns a formula:
 #' fn <- function(foo) tidy_capture(foo)
@@ -78,17 +79,6 @@
 #' # Capturing an argument only works for the most direct call:
 #' g <- function(bar) fn(bar)
 #' g(a + b)
-#'
-#'
-#' # Dots on the other hand are forwarded all the way to
-#' # tidy_dots() and can be captured across levels:
-#' fn <- function(...) tidy_dots(y = a + b, ...)
-#' fn(z = a + b)
-#'
-#' # Note that if you pass a named argument in dots, only the
-#' # expression at the dots call site is captured:
-#' fn <- function(x = a + b) tidy_dots(x = x)
-#' fn()
 tidy_capture <- function(x) {
   x_expr <- substitute(x)
   x_env <- caller_env(1)
@@ -97,12 +87,175 @@ tidy_capture <- function(x) {
   arg_env <- caller_env(2)
 
   expr <- .Call(rlang_interp, arg_expr, arg_env)
-  new_f(expr, env = arg_env)
+  new_tidy_quote(expr, arg_env)
 }
 
-#' @rdname tidy_capture
+#' Capture dots.
+#'
+#' This set of functions are like \code{\link{tidy_capture}()} but for
+#' \code{...} arguments. They capture expressions passed through dots
+#' along their dynamic environments, and return them bundled as a set
+#' of formulas. They differ in their treatment of definition
+#' expressions of the type \code{var := expr}.
+#'
+#'\describe{
+#'  \item{\code{tidy_dots()}}{
+#'    When \code{:=} definitions are supplied to \code{tidy_dots()},
+#'    they are treated as a synonym of argument assignment
+#'    \code{=}. On the other hand, they allow unquoting operators on
+#'    the left-hand side, which makes it easy to assign names
+#'    programmatically.}
+#'  \item{\code{tidy_defs()}}{
+#'    This dots capturing function returns definitions as is. Unquote
+#'    operators are processed on capture, in both the LHS and the
+#'    RHS. Unlike \code{tidy_dots()}, it allows named definitions.}
+#' }
+#' @inheritParams tidy_capture
 #' @export
+#' @examples
+#' # While tidy_capture() only work for the most direct calls, that's
+#' # not the case for tidy_dots(). Dots are forwarded all the way to
+#' # tidy_dots() and can be captured across multiple layers of calls:
+#' fn <- function(...) tidy_dots(y = a + b, ...)
+#' fn(z = a + b)
+#'
+#' # However if you pass a named argument in dots, only the expression
+#' # at the innermost call site is captured:
+#' fn <- function(...) tidy_dots(x = x)
+#' fn(x = a + b)
+#'
+#'
+#' # Dots can be spliced in:
+#' args <- list(x = 1:3, y = ~var)
+#' tidy_dots(!!! args, z = 10L)
+#'
+#' # Raw expressions are turned to formulas:
+#' args <- alist(x = foo, y = bar)
+#' tidy_dots(!!! args)
+#'
+#'
+#' # Definitions are treated similarly to named arguments:
+#' tidy_dots(x := expr, y = expr)
+#'
+#' # However, the LHS of definitions can be unquoted. The return value
+#' # must be a symbol or a string:
+#' var <- "foo"
+#' tidy_dots(!!var := expr)
+#'
+#' # If you need the full LHS expression, use tidy_defs():
+#' dots <- tidy_defs(var = foo(baz) := bar(baz))
+#' dots$defs
 tidy_dots <- function(...) {
+  dots <- capture_dots(...)
+  dots_interp_lhs(dots)
+}
+
+capture_dots <- function(...) {
   info <- dots_inspect(..., .only_dots = TRUE)
-  lapply(info, function(x) new_f(x$expr, env = x$eval_frame$env))
+  dots <- lapply(info, dot_f)
+
+  # Flatten possibly spliced dots
+  unlist(dots, FALSE)
+}
+dot_f <- function(dot) {
+  env <- dot$eval_frame$env
+  expr <- dot$expr
+
+  # Allow unquote-splice in dots
+  if (is_splice(expr)) {
+    dots <- call("alist", expr)
+    dots <- .Call(rlang_interp, dots, env)
+    dots <- expr_eval(dots)
+    lapply(dots, as_tidy_quote, env)
+  } else {
+    expr <- .Call(rlang_interp, expr, env)
+    list(new_tidy_quote(expr, env))
+  }
+}
+
+is_bang <- function(expr) {
+  is.call(expr) && identical(car(expr), quote(`!`))
+}
+is_splice <- function(expr) {
+  if (!is.call(expr)) {
+    return(FALSE)
+  }
+
+  if (identical(car(expr), quote(UQS)) || identical(car(expr), quote(rlang::UQS))) {
+    return(TRUE)
+  }
+
+  if (is_bang(expr) && is_bang(cadr(expr)) && is_bang(cadr(cadr(expr)))) {
+    return(TRUE)
+  }
+
+  FALSE
+}
+
+dots_interp_lhs <- function(dots) {
+  orig_names <- names(dots)
+  names <- names2(dots)
+  interpolated <- FALSE
+
+  for (i in seq_along(dots)) {
+    dot <- dot_interp_lhs(orig_names[[i]], dots[[i]])
+    dots[[i]] <- dot$dot
+
+    # Make sure unnamed dots remain unnamed
+    if (!is_null(dot$name)) {
+      interpolated <- TRUE
+      names[[i]] <- dot$name
+    }
+  }
+
+  if (interpolated) {
+    names(dots) <- names
+  }
+
+  dots
+}
+dot_interp_lhs <- function(name, dot) {
+  if (!is_formula(dot) || !is_definition(f_rhs(dot))) {
+    return(list(name = name, dot = dot))
+  }
+
+  if (!is_null(name) && name != "") {
+    warn("name ignored because a LHS was supplied")
+  }
+
+  rhs <- new_tidy_quote(f_rhs(f_rhs(dot)), env = f_env(dot))
+  lhs <- .Call(rlang_interp, f_lhs(f_rhs(dot)), f_env(dot))
+
+  if (is_name(lhs)) {
+    lhs <- as.character(lhs)
+  } else if (!is_scalar_character(lhs)) {
+    abort("LHS must be a name or string")
+  }
+
+  list(name = lhs, dot = rhs)
+}
+
+
+#' @rdname tidy_dots
+#' @export
+tidy_defs <- function(...) {
+  dots <- capture_dots(...)
+
+  defined <- vapply_lgl(dots, function(dot) is_definition(f_rhs(dot)))
+  defs <- lapply(dots[defined], as_definition)
+
+  list(dots = dots[!defined], defs = defs)
+}
+
+as_definition <- function(dot) {
+  env <- f_env(dot)
+  pat <- f_rhs(dot)
+
+  lhs <- .Call(rlang_interp, f_lhs(pat), env)
+  rhs <- .Call(rlang_interp, f_rhs(pat), env)
+
+  list(
+    lhs = new_tidy_quote(lhs, env),
+    rhs = new_tidy_quote(rhs, env)
+  )
 }

@@ -84,7 +84,7 @@ with_handlers <- function(.expr, ..., .handlers = list()) {
 #' @rdname with_handlers
 #' @export
 with_handlers_ <- function(.expr, .handlers = list(), .env = NULL) {
-  f <- as_fquote(.expr, .env)
+  f <- as_tidy_quote(.expr, .env)
 
   inplace <- keep(.handlers, inherits, "inplace")
   exiting <- keep(.handlers, inherits, "exiting")

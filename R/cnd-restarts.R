@@ -113,7 +113,7 @@ with_restarts <- function(.expr, ..., .restarts = list()) {
 #' @rdname with_restarts
 #' @export
 with_restarts_ <- function(.expr, .restarts = list(), .env = NULL) {
-  f <- as_fquote(.expr, .env)
+  f <- as_tidy_quote(.expr, .env)
   f <- tidy_quote(withRestarts(!! f, !!! .restarts))
   tidy_eval(f)
 }

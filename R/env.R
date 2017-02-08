@@ -427,14 +427,16 @@ env_define <- function(env = caller_env(), ...) {
 #' f <- ~message("forced!")
 #' env_assign_promise_(env, "name2", f)
 #' env$name2
-env_assign_promise <- function(env = caller_env(), nm, expr, eval_env = NULL) {
-  f <- as_fquote(substitute(expr), eval_env)
+env_assign_promise <- function(env = caller_env(), nm, expr,
+                               eval_env = caller_env()) {
+  f <- as_tidy_quote(substitute(expr), eval_env)
   env_assign_promise_(env, nm, f)
 }
 #' @rdname env_assign_promise
 #' @export
-env_assign_promise_ <- function(env = caller_env(), nm, expr, eval_env = NULL) {
-  f <- as_fquote(expr, eval_env)
+env_assign_promise_ <- function(env = caller_env(), nm, expr,
+                                eval_env = caller_env()) {
+  f <- as_tidy_quote(expr, eval_env)
 
   args <- list(
     x = nm,
@@ -630,9 +632,9 @@ env_clone <- function(x, parent = env_parent(x)) {
 #' base_env()
 #'
 #' # Packages appear in the search path with a special name. Use
-#' # pkg_label() to create that name:
-#' pkg_label("rlang")
-#' scoped_env(pkg_label("rlang"))
+#' # pkg_env_name() to create that name:
+#' pkg_env_name("rlang")
+#' scoped_env(pkg_env_name("rlang"))
 #'
 #' # Alternatively, get the scoped environment of a package with
 #' # pkg_env():
@@ -647,12 +649,12 @@ scoped_env <- function(nm) {
 #' @param pkg The name of a package.
 #' @export
 pkg_env <- function(pkg) {
-  pkg_name <- pkg_label(pkg)
+  pkg_name <- pkg_env_name(pkg)
   scoped_env(pkg_name)
 }
 #' @rdname scoped_env
 #' @export
-pkg_label <- function(pkg) {
+pkg_env_name <- function(pkg) {
   paste0("package:", pkg)
 }
 
@@ -721,11 +723,18 @@ ns_imports_env <- function(pkg = NULL) {
 
 #' Evaluate an expression within a given environment.
 #'
-#' This function evaluate \code{expr} within \code{env}. It uses
+#' These functions evaluate \code{expr} within a given environment
+#' (\code{env} for \code{with_env()}, or the child of the current
+#' environment for \code{locally}). They rely on
 #' \code{\link{expr_eval}()} which features a lighter evaluation
 #' mechanism than base R \code{\link[base]{eval}()}, and which also
 #' has some subtle implications when evaluting stack sensitive
 #' functions (see help for \code{\link{expr_eval}()}).
+#'
+#' \code{locally()} is equivalent to the base function
+#' \code{\link[base]{local}()} but it produces a much cleaner
+#' evaluation stack, and has stack-consistent semantics. It is thus
+#' more suited for experimenting with the R language.
 #'
 #' @inheritParams expr_eval
 #' @param env An environment within which to evaluate \code{expr}. Can
@@ -759,4 +768,10 @@ ns_imports_env <- function(pkg = NULL) {
 #' with_env("base", ~mtcars)
 with_env <- function(env, expr) {
   .Call(rlang_eval, substitute(expr), rlang::env(env))
+}
+
+#' @rdname with_env
+#' @export
+locally <- function(expr) {
+  .Call(rlang_eval, substitute(expr), new_env(caller_env()))
 }

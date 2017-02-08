@@ -5,9 +5,9 @@
 \alias{env_assign_promise_}
 \title{Assign a promise to an environment.}
 \usage{
-env_assign_promise(env = caller_env(), nm, expr, eval_env = NULL)
+env_assign_promise(env = caller_env(), nm, expr, eval_env = caller_env())
 
-env_assign_promise_(env = caller_env(), nm, expr, eval_env = NULL)
+env_assign_promise_(env = caller_env(), nm, expr, eval_env = caller_env())
 }
 \arguments{
 \item{env}{An environment or an object with a S3 method for
