@@ -8,7 +8,6 @@
 \alias{is_list}
 \alias{is_logical}
 \alias{is_null}
-\alias{is_numeric}
 \alias{is_vector}
 \alias{type-predicates}
 \title{Type predicates}
@@ -18,8 +17,6 @@ is_list(x, n = NULL)
 is_atomic(x, n = NULL)
 
 is_vector(x, n = NULL)
-
-is_numeric(x, n = NULL)
 
 is_integer(x, n = NULL)
 
@@ -51,8 +48,6 @@ Compare to base R functions:
   \item Unlike \code{is.vector()}, \code{is_vector()} test if an
     object is an atomic vector or a list. \code{is.vector} checks
     for the presence of attributes (other than name).
-  \item \code{is_numeric()} is not generic so, (e.g.) dates and date times
-    are \code{TRUE}, not \code{FALSE}.
   \item \code{is_function()} returns \code{TRUE} only for regular
     functions, not special or primitive functions.
 }
