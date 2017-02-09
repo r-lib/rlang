@@ -2,11 +2,12 @@
 # This file serves as a reference for compatibility functions for
 # purrr. They are not drop-in replacements but allow a similar style
 # of programming. This is useful in cases where purrr is too heavy a
-# package to depend on.
+# package to depend on. Please find the most recent version in rlang's
+# repository.
 
 vapply_ <- function(.x, .f, .mold, ...) {
   out <- vapply(.x, .f, .mold, ..., USE.NAMES = FALSE)
-  set_names(out, names(.x))
+  rlang::set_names(out, names(.x))
 }
 vapply_lgl <- function(.x, .f, ...) {
   vapply_(.x, .f, logical(1), ...)
@@ -62,6 +63,25 @@ lapply2_cpl <- function(.x, .y, .f, ...) {
   as.vector(lapply2(.x, .y, .f, ...), "complex")
 }
 
+args_recycle <- function(args) {
+  lengths <- map_int(args, length)
+  n <- max(lengths)
+
+  stopifnot(all(lengths == 1L | lengths == n))
+  to_recycle <- lengths == 1L
+  args[to_recycle] <- lapply(args[to_recycle], function(x) rep.int(x, n))
+
+  args
+}
+papply <- function(.l, .f, ...) {
+  args <- args_recycle(.l)
+  do.call("mapply", c(
+    FUN = list(quote(.f)),
+    args, MoreArgs = quote(list(...)),
+    SIMPLIFY = FALSE, USE.NAMES = FALSE
+  ))
+}
+
 probe <- function(.x, .p, ...) {
   if (is_logical(.p)) {
     stopifnot(length(.p) == length(.x))
@@ -102,4 +122,37 @@ zip <- function(.l) {
   lapply(fields, function(i) {
     lapply(.l, .subset2, i)
   })
+}
+
+every <- function(.x, .p, ...) {
+  for (i in seq_along(.x)) {
+    if (!rlang::is_true(.p(.x[[i]], ...))) return(FALSE)
+  }
+  TRUE
+}
+some <- function(.x, .p, ...) {
+  for (i in seq_along(.x)) {
+    if (rlang::is_true(.p(.x[[i]], ...))) return(TRUE)
+  }
+  FALSE
+}
+negate <- function(.p) {
+  function(...) !.p(...)
+}
+
+reduce <- function(.x, .f, ..., .init) {
+  f <- function(x, y) .f(x, y, ...)
+  Reduce(f, .x, init = .init)
+}
+reduce_right <- function(.x, .f, ..., .init) {
+  f <- function(x, y) .f(y, x, ...)
+  Reduce(f, .x, init = .init, right = TRUE)
+}
+accumulate <- function(.x, .f, ..., .init) {
+  f <- function(x, y) .f(x, y, ...)
+  Reduce(f, .x, init = .init, accumulate = TRUE)
+}
+accumulate_right <- function(.x, .f, ..., .init) {
+  f <- function(x, y) .f(y, x, ...)
+  Reduce(f, .x, init = .init, right = TRUE, accumulate = TRUE)
 }
