@@ -330,7 +330,7 @@ eval_stack <- function(n = NULL, trim = 0) {
   stack_data <- stack_subset(stack_data, n)
   stack_data$fn_name <- lapply(stack_data$expr, call_fn_name)
 
-  stack <- zip(stack_data)
+  stack <- transpose(stack_data)
   stack <- lapply(stack, new_frame)
 
   if (is.null(n) || (length(n) && n > length(stack))) {
@@ -394,7 +394,7 @@ call_stack <- function(n = NULL, clean = TRUE) {
   )
   stack_data$fn_name <- lapply(stack_data$expr, call_fn_name)
 
-  stack <- zip(stack_data)
+  stack <- transpose(stack_data)
   stack <- lapply(stack, new_frame)
   if (clean) {
     stack <- lapply(stack, frame_clean_eval)

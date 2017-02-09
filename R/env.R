@@ -537,7 +537,7 @@ env_unbind <- function(env = caller_env(), nms, inherit = FALSE) {
 #' env_has(env, "foo", inherit = TRUE)
 env_has <- function(env = caller_env(), nms, inherit = FALSE) {
   env_ <- rlang::env(env)
-  vapply_lgl(nms, exists, envir = env_, inherits = inherit)
+  map_lgl(nms, exists, envir = env_, inherits = inherit)
 }
 
 #' Get an object from an environment.

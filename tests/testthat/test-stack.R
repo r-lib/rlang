@@ -169,7 +169,7 @@ test_that("eval_stack() exprs is in opposite order to sys calls", {
 test_that("eval_stack() and call_stack() agree", {
   call_stack <- call_stack()
   call_stack <- drop_last(call_stack) # global frame
-  positions <- vapply_int(call_stack, `[[`, "pos")
+  positions <- map_int(call_stack, `[[`, "pos")
 
   eval_stack <- eval_stack()
   eval_stack <- drop_last(eval_stack) # global frame
@@ -179,7 +179,7 @@ test_that("eval_stack() and call_stack() agree", {
   eval_exprs <- lapply(eval_stack, `[[`, "expr")
   expect_identical(call_exprs, eval_exprs)
 
-  is_eval <- vapply_lgl(call_stack, function(frame) {
+  is_eval <- map_lgl(call_stack, function(frame) {
     identical(frame$fn, base::eval)
   })
 

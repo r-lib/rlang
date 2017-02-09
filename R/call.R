@@ -113,7 +113,7 @@ call_match_partial <- function(call, fn) {
 
   matched <- list()
   for (formal in formals_pool) {
-    matched_pos <- which(vapply_lgl(actuals_pat, arg_match_partial, formal))
+    matched_pos <- which(map_lgl(actuals_pat, arg_match_partial, formal))
 
     if (length(matched_pos) > 1) {
       stop(call. = FALSE,
@@ -132,7 +132,7 @@ call_match_partial <- function(call, fn) {
 
   if (is.na(dots_pos)) {
     is_unused <- !actuals_nms %in% c(formals_nms, "")
-    is_unused <- is_unused & !vapply_lgl(actuals_nms, is_dot_nm)
+    is_unused <- is_unused & !map_lgl(actuals_nms, is_dot_nm)
     if (any(is_unused)) {
       stop(call. = FALSE,
         "unused arguments: ",
@@ -198,13 +198,13 @@ call_match <- function(call, fn, enum_dots, add_missings) {
 
 call_match_dotted <- function(args_nms, fmls_nms, dots_i, enum_dots) {
   # First match formals on the left of dots
-  is_unmatched <- vapply_lgl(args_nms, `==`, "")
+  is_unmatched <- map_lgl(args_nms, `==`, "")
   candidates <- fmls_nms[seq_len(dots_i - 1)]
   candidates <- setdiff(candidates, args_nms[!is_unmatched])
   args_nms[is_unmatched] <- call_match_args(args_nms[is_unmatched], candidates)
 
   if (enum_dots) {
-    is_matched <- vapply_lgl(args_nms, `%in%`, fmls_nms)
+    is_matched <- map_lgl(args_nms, `%in%`, fmls_nms)
     n_dots <- sum(!is_matched)
     args_nms[!is_matched] <- paste0("..", seq_len(n_dots))
   }
@@ -213,7 +213,7 @@ call_match_dotted <- function(args_nms, fmls_nms, dots_i, enum_dots) {
 }
 
 call_match_args <- function(args_nms, fmls_nms) {
-  is_unmatched <- vapply_lgl(args_nms, `==`, "")
+  is_unmatched <- map_lgl(args_nms, `==`, "")
 
   # Only match up to the number of formals
   n_fmls <- length(setdiff(fmls_nms, "..."))

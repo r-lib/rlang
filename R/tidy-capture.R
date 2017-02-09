@@ -241,7 +241,7 @@ dot_interp_lhs <- function(name, dot) {
 tidy_defs <- function(...) {
   dots <- capture_dots(...)
 
-  defined <- vapply_lgl(dots, function(dot) is_definition(f_rhs(dot)))
+  defined <- map_lgl(dots, function(dot) is_definition(f_rhs(dot)))
   defs <- lapply(dots[defined], as_definition)
 
   list(dots = dots[!defined], defs = defs)

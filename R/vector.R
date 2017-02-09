@@ -26,7 +26,7 @@ splice <- function(...) {
   }, dots, names2(dots))
   names <- unlist(names, recursive = FALSE)
 
-  is_not_list <- vapply_lgl(dots, function(x) !is_bare_list(x))
+  is_not_list <- map_lgl(dots, function(x) !is_bare_list(x))
   dots[is_not_list] <- lapply(dots[is_not_list], list)
 
   out <- unlist(dots, recursive = FALSE)

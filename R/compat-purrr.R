@@ -5,62 +5,62 @@
 # package to depend on. Please find the most recent version in rlang's
 # repository.
 
-vapply_ <- function(.x, .f, .mold, ...) {
+map_ <- function(.x, .f, .mold, ...) {
   out <- vapply(.x, .f, .mold, ..., USE.NAMES = FALSE)
   rlang::set_names(out, names(.x))
 }
-vapply_lgl <- function(.x, .f, ...) {
-  vapply_(.x, .f, logical(1), ...)
+map_lgl <- function(.x, .f, ...) {
+  map_(.x, .f, logical(1), ...)
 }
-vapply_int <- function(.x, .f, ...) {
-  vapply_(.x, .f, integer(1), ...)
+map_int <- function(.x, .f, ...) {
+  map_(.x, .f, integer(1), ...)
 }
-vapply_dbl <- function(.x, .f, ...) {
-  vapply_(.x, .f, double(1), ...)
+map_dbl <- function(.x, .f, ...) {
+  map_(.x, .f, double(1), ...)
 }
-vapply_chr <- function(.x, .f, ...) {
-  vapply_(.x, .f, character(1), ...)
+map_chr <- function(.x, .f, ...) {
+  map_(.x, .f, character(1), ...)
 }
-vapply_cpl <- function(.x, .f, ...) {
-  vapply_(.x, .f, complex(1), ...)
+map_cpl <- function(.x, .f, ...) {
+  map_(.x, .f, complex(1), ...)
 }
 
 pluck <- function(.x, .f) {
   lapply(.x, `[[`, .f)
 }
 pluck_lgl <- function(.x, .f) {
-  vapply_lgl(.x, `[[`, .f)
+  map_lgl(.x, `[[`, .f)
 }
 pluck_int <- function(.x, .f) {
-  vapply_int(.x, `[[`, .f)
+  map_int(.x, `[[`, .f)
 }
 pluck_dbl <- function(.x, .f) {
-  vapply_dbl(.x, `[[`, .f)
+  map_dbl(.x, `[[`, .f)
 }
 pluck_chr <- function(.x, .f) {
-  vapply_chr(.x, `[[`, .f)
+  map_chr(.x, `[[`, .f)
 }
 pluck_cpl <- function(.x, .f) {
-  vapply_cpl(.x, `[[`, .f)
+  map_cpl(.x, `[[`, .f)
 }
 
-lapply2 <- function(.x, .y, .f, ...) {
+map2 <- function(.x, .y, .f, ...) {
   Map(.f, .x, .y, ...)
 }
-lapply2_lgl <- function(.x, .y, .f, ...) {
-  as.vector(lapply2(.x, .y, .f, ...), "logical")
+map2_lgl <- function(.x, .y, .f, ...) {
+  as.vector(map2(.x, .y, .f, ...), "logical")
 }
-lapply2_int <- function(.x, .y, .f, ...) {
-  as.vector(lapply2(.x, .y, .f, ...), "integer")
+map2_int <- function(.x, .y, .f, ...) {
+  as.vector(map2(.x, .y, .f, ...), "integer")
 }
-lapply2_dbl <- function(.x, .y, .f, ...) {
-  as.vector(lapply2(.x, .y, .f, ...), "double")
+map2_dbl <- function(.x, .y, .f, ...) {
+  as.vector(map2(.x, .y, .f, ...), "double")
 }
-lapply2_chr <- function(.x, .y, .f, ...) {
-  as.vector(lapply2(.x, .y, .f, ...), "character")
+map2_chr <- function(.x, .y, .f, ...) {
+  as.vector(map2(.x, .y, .f, ...), "character")
 }
-lapply2_cpl <- function(.x, .y, .f, ...) {
-  as.vector(lapply2(.x, .y, .f, ...), "complex")
+map2_cpl <- function(.x, .y, .f, ...) {
+  as.vector(map2(.x, .y, .f, ...), "complex")
 }
 
 args_recycle <- function(args) {
@@ -73,7 +73,7 @@ args_recycle <- function(args) {
 
   args
 }
-papply <- function(.l, .f, ...) {
+pmap <- function(.l, .f, ...) {
   args <- args_recycle(.l)
   do.call("mapply", c(
     FUN = list(quote(.f)),
@@ -87,7 +87,7 @@ probe <- function(.x, .p, ...) {
     stopifnot(length(.p) == length(.x))
     .p
   } else {
-    vapply_lgl(.x, .p, ...)
+    map_lgl(.x, .p, ...)
   }
 }
 
@@ -111,7 +111,7 @@ compact <- function(.x) {
   Filter(length, .x)
 }
 
-zip <- function(.l) {
+transpose <- function(.l) {
   inner_names <- names(.l[[1]])
   if (is.null(inner_names)) {
     fields <- seq_along(.l[[1]])
