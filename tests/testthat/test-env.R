@@ -105,6 +105,11 @@ test_that("ns_imports_env() returns imports env", {
   expect_identical(with_env(ns_env("rlang"), ns_imports_env()), env_parent(env(rlang::env)))
 })
 
+test_that("ns_env_name() returns namespace name", {
+  expect_identical(with_env(ns_env("base"), ns_env_name()), "base")
+  expect_identical(ns_env_name(rlang::env), "rlang")
+})
+
 test_that("as_env() dispatches correctly", {
   expect_identical(as_env("base"), base_env())
   expect_false(env_has(as_env(set_names(letters)), "map"))

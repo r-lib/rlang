@@ -111,6 +111,11 @@ tidy_capture <- function(x) {
 #'    RHS. Unlike \code{tidy_dots()}, it allows named definitions.}
 #' }
 #' @inheritParams tidy_capture
+#' @param .named Whether to ensure all dots are named. Unnamed
+#'   elements are processed with \code{\link{expr_text}()} to figure
+#'   out a default name. If an integer, it is passed to the
+#'   \code{width} argument of \code{expr_text()}, if \code{TRUE}, the
+#'   default width is used.
 #' @export
 #' @examples
 #' # While tidy_capture() only work for the most direct calls, that's
@@ -145,17 +150,31 @@ tidy_capture <- function(x) {
 #' # If you need the full LHS expression, use tidy_defs():
 #' dots <- tidy_defs(var = foo(baz) := bar(baz))
 #' dots$defs
-tidy_dots <- function(...) {
-  dots <- capture_dots(...)
+tidy_dots <- function(..., .named = FALSE) {
+  dots <- capture_dots(..., .named = .named)
   dots_interp_lhs(dots)
 }
 
-capture_dots <- function(...) {
+capture_dots <- function(..., .named) {
   info <- dots_inspect(..., .only_dots = TRUE)
   dots <- map(info, dot_f)
 
   # Flatten possibly spliced dots
-  unlist(dots, FALSE)
+  dots <- unlist(dots, FALSE)
+
+  if (.named) {
+    if (is_true(.named)) {
+      width <- formals(expr_text)$width
+    } else if (is_scalar_integerish(.named)) {
+      width <- .named
+    } else {
+      abort("`.named` must be a scalar logical or a numeric")
+    }
+    have_names <- have_names(dots)
+    names(dots)[!have_names] <- map_chr(dots[!have_names], f_text, width = width)
+  }
+
+  dots
 }
 dot_f <- function(dot) {
   env <- dot$eval_frame$env
@@ -238,8 +257,8 @@ dot_interp_lhs <- function(name, dot) {
 
 #' @rdname tidy_dots
 #' @export
-tidy_defs <- function(...) {
-  dots <- capture_dots(...)
+tidy_defs <- function(..., .named = FALSE) {
+  dots <- capture_dots(..., .named = FALSE)
 
   defined <- map_lgl(dots, function(dot) is_definition(f_rhs(dot)))
   defs <- map(dots[defined], as_definition)

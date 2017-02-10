@@ -3,16 +3,20 @@
 \name{ns_env}
 \alias{ns_env}
 \alias{ns_imports_env}
+\alias{ns_env_name}
 \title{Get the namespace of a package.}
 \usage{
 ns_env(pkg = NULL)
 
 ns_imports_env(pkg = NULL)
+
+ns_env_name(pkg = NULL)
 }
 \arguments{
 \item{pkg}{The name of a package. If \code{NULL}, the surrounding
 namespace is returned, or an error is issued if not called within
-a namespace.}
+a namespace. If a function, the enclosure of that function is
+checked.}
 }
 \description{
 Namespaces are the environment where all the functions of a package
