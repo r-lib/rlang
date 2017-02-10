@@ -5,12 +5,18 @@
 \alias{tidy_defs}
 \title{Capture dots.}
 \usage{
-tidy_dots(...)
+tidy_dots(..., .named = FALSE)
 
-tidy_defs(...)
+tidy_defs(..., .named = FALSE)
 }
 \arguments{
 \item{...}{Arguments to capture.}
+
+\item{.named}{Whether to ensure all dots are named. Unnamed
+elements are processed with \code{\link{expr_text}()} to figure
+out a default name. If an integer, it is passed to the
+\code{width} argument of \code{expr_text()}, if \code{TRUE}, the
+default width is used.}
 }
 \description{
 This set of functions are like \code{\link{tidy_capture}()} but for
