@@ -170,8 +170,8 @@ capture_dots <- function(..., .named) {
     } else {
       abort("`.named` must be a scalar logical or a numeric")
     }
-    has_names <- has_names(dots)
-    names(dots)[!has_names] <- map_chr(dots[!has_names], f_text, width = width)
+    have_names <- have_names(dots)
+    names(dots)[!have_names] <- map_chr(dots[!have_names], f_text, width = width)
   }
 
   dots
