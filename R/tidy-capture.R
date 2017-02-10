@@ -152,7 +152,7 @@ tidy_dots <- function(...) {
 
 capture_dots <- function(...) {
   info <- dots_inspect(..., .only_dots = TRUE)
-  dots <- lapply(info, dot_f)
+  dots <- map(info, dot_f)
 
   # Flatten possibly spliced dots
   unlist(dots, FALSE)
@@ -166,7 +166,7 @@ dot_f <- function(dot) {
     dots <- call("alist", expr)
     dots <- .Call(rlang_interp, dots, env)
     dots <- expr_eval(dots)
-    lapply(dots, as_tidy_quote, env)
+    map(dots, as_tidy_quote, env)
   } else {
     expr <- .Call(rlang_interp, expr, env)
     list(new_tidy_quote(expr, env))
@@ -242,7 +242,7 @@ tidy_defs <- function(...) {
   dots <- capture_dots(...)
 
   defined <- map_lgl(dots, function(dot) is_definition(f_rhs(dot)))
-  defs <- lapply(dots[defined], as_definition)
+  defs <- map(dots[defined], as_definition)
 
   list(dots = dots[!defined], defs = defs)
 }

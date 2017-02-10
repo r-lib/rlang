@@ -244,7 +244,7 @@ invoke <- function(.fn, .args = list(), ...,
   buried_args <- set_names(.args, buried_nms)
   .env <- env_bury(.env, buried_args)
   .args <- set_names(buried_nms, names(.args))
-  .args <- lapply(.args, as.name)
+  .args <- map(.args, as.name)
 
   if (is_function(.fn)) {
     env_assign(.env, fn_nm, .fn)

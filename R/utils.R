@@ -42,7 +42,7 @@ imap_chr <- function(.x, .f, ...) {
   as.vector(imap(.x, .f, ...), "character")
 }
 
-lapply_around <- function(.x, .neighbour = c("right", "left"), .f, ...) {
+map_around <- function(.x, .neighbour = c("right", "left"), .f, ...) {
   where <- match.arg(.neighbour)
   n <- length(.x)
   out <- vector("list", n)

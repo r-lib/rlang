@@ -106,7 +106,7 @@ test_that("eval_stack_callers() agrees with sys.parents()", {
 
 test_that("eval_stack_exprs() agrees with sys.call()", {
   pos <- sys.nframe()
-  syscalls <- lapply(seq(pos, 1), sys.call)
+  syscalls <- map(seq(pos, 1), sys.call)
   exprs <- eval_stack_exprs()
   expect_identical(exprs, syscalls)
 })
@@ -175,16 +175,16 @@ test_that("eval_stack() and call_stack() agree", {
   eval_stack <- drop_last(eval_stack) # global frame
   eval_stack <- rev(eval_stack)[positions]
 
-  call_exprs <- lapply(call_stack, `[[`, "expr")
-  eval_exprs <- lapply(eval_stack, `[[`, "expr")
+  call_exprs <- map(call_stack, `[[`, "expr")
+  eval_exprs <- map(eval_stack, `[[`, "expr")
   expect_identical(call_exprs, eval_exprs)
 
   is_eval <- map_lgl(call_stack, function(frame) {
     identical(frame$fn, base::eval)
   })
 
-  call_envs <- lapply(call_stack[!is_eval], `[[`, "env")
-  eval_envs <- lapply(eval_stack[!is_eval], `[[`, "env")
+  call_envs <- map(call_stack[!is_eval], `[[`, "env")
+  eval_envs <- map(eval_stack[!is_eval], `[[`, "env")
   expect_identical(call_envs, eval_envs)
 })
 

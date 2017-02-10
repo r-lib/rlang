@@ -325,13 +325,13 @@ eval_stack <- function(n = NULL, trim = 0) {
   )
 
   # Remove eval_stack() from stack
-  stack_data <- lapply(stack_data, drop_first)
+  stack_data <- map(stack_data, drop_first)
 
   stack_data <- stack_subset(stack_data, n)
-  stack_data$fn_name <- lapply(stack_data$expr, call_fn_name)
+  stack_data$fn_name <- map(stack_data$expr, call_fn_name)
 
   stack <- transpose(stack_data)
-  stack <- lapply(stack, new_frame)
+  stack <- map(stack, new_frame)
 
   if (is.null(n) || (length(n) && n > length(stack))) {
     stack <- c(stack, list(global_frame()))
@@ -361,7 +361,7 @@ eval_stack_callers <- function() {
 }
 eval_stack_fns <- function() {
   pos <- sys.nframe() - 1
-  lapply(seq(pos, 1), sys.function)
+  map(seq(pos, 1), sys.function)
 }
 
 stack_subset <- function(stack_data, n) {
@@ -374,7 +374,7 @@ stack_subset <- function(stack_data, n) {
     } else if (n > n_stack + 1) {
       stop("not that many frames on the stack", call. = FALSE)
     }
-    stack_data <- lapply(stack_data, `[`, seq_len(n))
+    stack_data <- map(stack_data, `[`, seq_len(n))
   }
   stack_data
 }
@@ -388,17 +388,17 @@ call_stack <- function(n = NULL, clean = TRUE) {
   stack_data <- list(
     pos = drop_last(trail),
     caller_pos = drop_first(trail),
-    expr = lapply(trail, sys.call),
-    env = lapply(trail, sys.frame),
-    fn = lapply(trail, sys.function)
+    expr = map(trail, sys.call),
+    env = map(trail, sys.frame),
+    fn = map(trail, sys.function)
   )
-  stack_data$fn_name <- lapply(stack_data$expr, call_fn_name)
+  stack_data$fn_name <- map(stack_data$expr, call_fn_name)
 
   stack <- transpose(stack_data)
-  stack <- lapply(stack, new_frame)
+  stack <- map(stack, new_frame)
   if (clean) {
-    stack <- lapply(stack, frame_clean_eval)
-    stack <- lapply_around(stack, "right", frame_clean_Recall)
+    stack <- map(stack, frame_clean_eval)
+    stack <- map_around(stack, "right", frame_clean_Recall)
   }
 
   if (trail[length(trail)] == 0L) {
@@ -425,7 +425,7 @@ frame_clean_Recall <- function(frame, next_frame) {
     args_Recall <- call_args(next_frame)
 
     if (!length(args_Recall)) {
-      args_Recall <- lapply(names(args_recalled), as.symbol)
+      args_Recall <- map(names(args_recalled), as.symbol)
       names(args_Recall) <- dots_enumerate(args_Recall)
       set_cdr(next_frame$expr, as.pairlist(args_Recall))
     }

@@ -127,7 +127,7 @@ dots_inspect <- function(..., .only_dots = FALSE) {
 dots_inspect_ <- function(dots, stack, only_dots = FALSE) {
   dots_syms <- dots_enumerate_sym(dots)
   dots_syms <- set_names(dots_syms, names(dots))
-  lapply(dots_syms, arg_inspect_, stack, only_dots = only_dots)
+  map(dots_syms, arg_inspect_, stack, only_dots = only_dots)
 }
 
 dots_enumerate <- function(dots) {
@@ -142,7 +142,7 @@ dots_enumerate_sym <- function(dots) {
   if (!length(nms)) {
     dots
   } else {
-    lapply(nms, as.name)
+    map(nms, as.name)
   }
 }
 dots_enumerate_args <- function(dots) {

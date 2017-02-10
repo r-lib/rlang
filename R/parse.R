@@ -87,5 +87,5 @@ parse_f <- function(x, env = caller_env()) {
 #' @rdname parse_expr
 #' @export
 parse_fs <- function(x, env = caller_env()) {
-  lapply(parse_exprs(x), new_tidy_quote, env = as_env(env))
+  map(parse_exprs(x), new_tidy_quote, env = as_env(env))
 }

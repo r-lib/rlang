@@ -107,7 +107,7 @@ test_that("ns_imports_env() returns imports env", {
 
 test_that("as_env() dispatches correctly", {
   expect_identical(as_env("base"), base_env())
-  expect_false(env_has(as_env(set_names(letters)), "lapply"))
+  expect_false(env_has(as_env(set_names(letters)), "map"))
 
   expect_identical(as_env(NULL), empty_env())
 

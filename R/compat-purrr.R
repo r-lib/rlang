@@ -5,28 +5,31 @@
 # package to depend on. Please find the most recent version in rlang's
 # repository.
 
-map_ <- function(.x, .f, .mold, ...) {
+map <- function(.x, .f, ...) {
+  lapply(.x, .f, ...)
+}
+map_mold <- function(.x, .f, .mold, ...) {
   out <- vapply(.x, .f, .mold, ..., USE.NAMES = FALSE)
   rlang::set_names(out, names(.x))
 }
 map_lgl <- function(.x, .f, ...) {
-  map_(.x, .f, logical(1), ...)
+  map_mold(.x, .f, logical(1), ...)
 }
 map_int <- function(.x, .f, ...) {
-  map_(.x, .f, integer(1), ...)
+  map_mold(.x, .f, integer(1), ...)
 }
 map_dbl <- function(.x, .f, ...) {
-  map_(.x, .f, double(1), ...)
+  map_mold(.x, .f, double(1), ...)
 }
 map_chr <- function(.x, .f, ...) {
-  map_(.x, .f, character(1), ...)
+  map_mold(.x, .f, character(1), ...)
 }
 map_cpl <- function(.x, .f, ...) {
-  map_(.x, .f, complex(1), ...)
+  map_mold(.x, .f, complex(1), ...)
 }
 
 pluck <- function(.x, .f) {
-  lapply(.x, `[[`, .f)
+  map(.x, `[[`, .f)
 }
 pluck_lgl <- function(.x, .f) {
   map_lgl(.x, `[[`, .f)
@@ -69,7 +72,7 @@ args_recycle <- function(args) {
 
   stopifnot(all(lengths == 1L | lengths == n))
   to_recycle <- lengths == 1L
-  args[to_recycle] <- lapply(args[to_recycle], function(x) rep.int(x, n))
+  args[to_recycle] <- map(args[to_recycle], function(x) rep.int(x, n))
 
   args
 }
@@ -98,9 +101,9 @@ discard <- function(.x, .p, ...) {
   sel <- probe(.x, .p, ...)
   .x[is.na(sel) | !sel]
 }
-lapply_if <- function(.x, .p, .f, ...) {
+map_if <- function(.x, .p, .f, ...) {
   matches <- probe(.x, .p)
-  .x[matches] <- lapply(.x[matches], .f, ...)
+  .x[matches] <- map(.x[matches], .f, ...)
   .x
 }
 
@@ -119,8 +122,8 @@ transpose <- function(.l) {
     fields <- set_names(inner_names)
   }
 
-  lapply(fields, function(i) {
-    lapply(.l, .subset2, i)
+  map(fields, function(i) {
+    map(.l, .subset2, i)
   })
 }
 

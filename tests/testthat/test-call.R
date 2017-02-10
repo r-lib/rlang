@@ -260,7 +260,7 @@ test_that("Recall() does not mess up call history", {
   trail <- map_int(stack, function(x) x$pos)
   expect_equal(fixup_call_trail(trail), 5:1)
 
-  calls <- lapply(stack, call_standardise, enum_dots = TRUE, add_missings = TRUE)
+  calls <- map(stack, call_standardise, enum_dots = TRUE, add_missings = TRUE)
   expected_calls <- alist(
     fn(x = ..1),
     Recall(..1 = x),

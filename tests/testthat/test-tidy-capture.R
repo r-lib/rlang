@@ -39,8 +39,8 @@ test_that("dots are interpolated", {
   var <- ~bar
   dots <- fn(toupper(!!var))
 
-  expect_identical(lapply(dots, deparse), list("~toupper(~foo)", "~toupper(~bar)", "~toupper(~baz)"))
-  expect_identical(lapply(dots, tidy_eval), list("FOO", "BAR", "BAZ"))
+  expect_identical(map(dots, deparse), list("~toupper(~foo)", "~toupper(~bar)", "~toupper(~baz)"))
+  expect_identical(map(dots, tidy_eval), list("FOO", "BAR", "BAZ"))
 })
 
 test_that("dots capture is stack-consistent", {
