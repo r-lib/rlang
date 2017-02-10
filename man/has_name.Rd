@@ -12,7 +12,7 @@ has_name(x, name)
 \item{name}{Element name(s) to check}
 }
 \value{
-A logical vector of the same length as `name`
+A logical vector of the same length as \code{name}
 }
 \description{
 This function returns a logical value that indicates if a data frame or
@@ -20,7 +20,7 @@ another named object contains an element with a specific name.
 }
 \details{
 Unnamed objects are treated as if all names are empty strings.
-`NA` input gives `FALSE` as output.
+\code{NA} input gives \code{FALSE} as output.
 }
 \examples{
 has_name(iris, "Species")
