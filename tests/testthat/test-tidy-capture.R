@@ -39,8 +39,8 @@ test_that("dots are interpolated", {
   var <- ~bar
   dots <- fn(toupper(!!var))
 
-  expect_identical(map(dots, deparse), list("~toupper(~foo)", "~toupper(~bar)", "~toupper(~baz)"))
-  expect_identical(map(dots, tidy_eval), list("FOO", "BAR", "BAZ"))
+  expect_identical(map(dots, deparse), named(list("~toupper(~foo)", "~toupper(~bar)", "~toupper(~baz)")))
+  expect_identical(map(dots, tidy_eval), named(list("FOO", "BAR", "BAZ")))
 })
 
 test_that("dots capture is stack-consistent", {
@@ -53,7 +53,7 @@ test_that("dots capture is stack-consistent", {
   h <- function(dots, ...) {
     dots
   }
-  expect_identical(fn(foo(baz)), list(~foo(baz)))
+  expect_identical(fn(foo(baz)), named(list(~foo(baz))))
 })
 
 test_that("splice is consistently recognised", {

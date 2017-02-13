@@ -80,14 +80,9 @@
 #' g <- function(bar) fn(bar)
 #' g(a + b)
 tidy_capture <- function(x) {
-  x_expr <- substitute(x)
-  x_env <- caller_env(1)
-
-  arg_expr <- substitute_(x_expr, x_env)
-  arg_env <- caller_env(2)
-
-  expr <- .Call(rlang_interp, arg_expr, arg_env)
-  new_tidy_quote(expr, arg_env)
+  arg <- expr_eval(call("captureArg", substitute(x)), caller_env())
+  expr <- .Call(rlang_interp, arg$expr, arg$env)
+  new_tidy_quote(expr, arg$env)
 }
 
 #' Capture dots.
@@ -156,7 +151,7 @@ tidy_dots <- function(..., .named = FALSE) {
 }
 
 capture_dots <- function(..., .named) {
-  info <- dots_inspect(..., .only_dots = TRUE)
+  info <- captureDots()
   dots <- map(info, dot_f)
 
   # Flatten possibly spliced dots
@@ -177,7 +172,7 @@ capture_dots <- function(..., .named) {
   dots
 }
 dot_f <- function(dot) {
-  env <- dot$eval_frame$env
+  env <- dot$env
   expr <- dot$expr
 
   # Allow unquote-splice in dots
