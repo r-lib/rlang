@@ -118,3 +118,22 @@ test_that("definitions are interpolated", {
   pat <- list(lhs = ~foo("foo"), rhs = ~bar("bar"))
   expect_identical(dots$defs$def, pat)
 })
+
+test_that("dots are forwarded to named arguments", {
+  outer <- function(...) inner(...)
+  inner <- function(...) fn(...)
+  fn <- function(x) tidy_capture(x)
+
+  env <- new_env(env())
+  expect_identical(with_env(env, outer(foo(bar))), new_tidy_quote(quote(foo(bar)), env))
+})
+
+test_that("pronouns are scoped throughout nested captures", {
+  outer <- function(data, ...) tidy_eval(tidy_dots(...)[[1]], data = data)
+  inner <- function(...) map(tidy_dots(...), tidy_eval)
+
+  data <- list(foo = "bar", baz = "baz")
+  baz <- "bazz"
+
+  expect_identical(outer(data, inner(foo, baz)), set_names(list("bar", "baz"), c("", "")))
+})
