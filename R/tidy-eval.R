@@ -14,12 +14,15 @@
 #' and \code{.env} that throw errors if you try to access non-existent values.
 #'
 #' @param f A formula. Any expressions wrapped in \code{ UQ() } will
-#'   will be "unquoted", i.e. they will be evaluated, and the results inserted
-#'   back into the formula. See \code{\link{tidy_quote}()} for more details.
-#' @param data A list (or data frame). \code{data_source} is a generic used to
-#'   find the data associated with a given object. If you want to make
-#'   \code{tidy_eval} work for your own objects, you can define a method for this
-#'   generic.
+#'   will be "unquoted", i.e. they will be evaluated, and the results
+#'   inserted back into the formula. See \code{\link{tidy_quote}()}
+#'   for more details. If a list of formulas, \code{tidy_eval()} is
+#'   applied to each of them in turn and the list of results is
+#'   returned.
+#' @param data A list (or data frame). \code{data_source} is a generic
+#'   used to find the data associated with a given object. If you want
+#'   to make \code{tidy_eval} work for your own objects, you can
+#'   define a method for this generic.
 #' @export
 #' @examples
 #' tidy_eval(~ 1 + 2 + 3)
@@ -67,6 +70,10 @@ tidy_eval_lhs <- function(f, data = NULL) {
 #' @rdname tidy_eval
 #' @export
 tidy_eval <- function(f, data = NULL) {
+  if (is_list(f)) {
+    return(map(f, tidy_eval, data = data))
+  }
+
   if (is_formula(f)) {
     expr <- f_rhs(f)
     env <- f_env(f)
