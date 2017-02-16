@@ -10,6 +10,9 @@
 \alias{is_bare_numeric}
 \alias{is_bare_character}
 \alias{is_bare_logical}
+\alias{is_bare_raw}
+\alias{is_bare_string}
+\alias{is_bare_bytes}
 \title{Bare type predicates}
 \usage{
 is_bare_list(x, n = NULL)
@@ -27,6 +30,12 @@ is_bare_numeric(x, n = NULL)
 is_bare_character(x, n = NULL)
 
 is_bare_logical(x, n = NULL)
+
+is_bare_raw(x, n = NULL)
+
+is_bare_string(x, n = NULL)
+
+is_bare_bytes(x, n = NULL)
 }
 \arguments{
 \item{x}{Object to be tested.}
