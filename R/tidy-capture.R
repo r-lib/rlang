@@ -80,7 +80,8 @@
 #' g <- function(bar) fn(bar)
 #' g(a + b)
 tidy_capture <- function(x) {
-  arg <- expr_eval(call("captureArg", substitute(x)), caller_env())
+  capture <- new_call(captureArg, substitute(x))
+  arg <- expr_eval(capture, caller_env())
   expr <- .Call(rlang_interp, arg$expr, arg$env)
   new_tidy_quote(expr, arg$env)
 }
