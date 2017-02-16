@@ -8,6 +8,7 @@
 \alias{is_scalar_integer}
 \alias{is_scalar_double}
 \alias{is_scalar_character}
+\alias{is_string}
 \alias{is_scalar_logical}
 \title{Scalar type predicates}
 \usage{
@@ -22,6 +23,8 @@ is_scalar_integer(x)
 is_scalar_double(x)
 
 is_scalar_character(x)
+
+is_string(x)
 
 is_scalar_logical(x)
 }

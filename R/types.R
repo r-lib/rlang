@@ -129,6 +129,9 @@ is_scalar_double <- function(x) {
 is_scalar_character <- function(x) {
   is_character(x) && length(x) == 1
 }
+#' @export
+#' @rdname scalar-type-predicates
+is_string <- is_scalar_character
 
 #' @export
 #' @rdname scalar-type-predicates
