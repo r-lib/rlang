@@ -41,11 +41,7 @@ string <- function(x, encoding = NULL) {
     abort("`x` must be a string or raw vector")
   }
 
-  if (!is_null(encoding)) {
-    x <- chr_set_encoding(x, encoding)
-  }
-
-  x
+  chr_set_encoding(x, encoding)
 }
 #' @rdname string
 #' @export
@@ -53,11 +49,7 @@ chr <- function(x, encoding = NULL) {
   if (!is_character(x)) {
     x <- map_chr(x, string)
   }
-  if (!is_null(encoding)) {
-    x <- chr_set_encoding(x, encoding)
-  }
-
-  x
+  chr_set_encoding(x, encoding)
 }
 
 #' Coerce to a character vector.
@@ -96,12 +88,7 @@ chr <- function(x, encoding = NULL) {
 #' }
 as_character <- function(x, encoding = NULL) {
   x <- as.character(unclass(x))
-
-  if (!is_null(encoding)) {
-    chr_set_encoding(x, encoding)
-  }
-
-  x
+  chr_set_encoding(x, encoding)
 }
 #' @rdname as_character
 #' @export
@@ -193,7 +180,9 @@ as_native_string <- function(x) {
 #' str_bytes(names(c(bad)))
 #' }
 chr_set_encoding <- function(x, encoding = c("unknown", "UTF-8", "latin1", "bytes")) {
-  Encoding(x) <- match.arg(encoding)
+  if (!is_null(encoding)) {
+    Encoding(x) <- match.arg(encoding)
+  }
   x
 }
 #' @rdname chr_set_encoding
