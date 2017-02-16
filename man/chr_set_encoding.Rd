@@ -29,7 +29,7 @@ mostly matters for internal conversions. Thanks to this support,
 you can reencode strings to UTF-8 or latin1 for internal
 processing, and return these strings without having to convert them
 back to the native encoding. However, it is important to make sure
-the encoding mark has not been lost in the process. Otherwise the
+the encoding mark has not been lost in the process, otherwise the
 output will be treated as if encoded according to the current
 locale (see \code{\link{set_utf8_locale}()} for documentation about
 locale codesets), which is not appropriate if it does not coincide

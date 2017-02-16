@@ -20,9 +20,9 @@ has specific internal support for latin1 (single-byte encoding) and
 UTF-8 (multi-bytes variable-width encoding) strings. If the locale
 codeset is latin1 or UTF-8, the parser will mark all strings with
 the corresponding encoding. It is important for strings to have
-consistent encoding markers, as they determine a number of side
-effects in the handling of strings (see
-\code{\link{str_set_encoding}()}).
+consistent encoding markers, as they determine a number of internal
+encoding conversions when R or packages handle strings (see
+\code{\link{str_set_encoding}()} for some examples).
 }
 \details{
 UTF-8 is the only variable-width encoding supported in R.

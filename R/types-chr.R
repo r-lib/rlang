@@ -129,7 +129,7 @@ as_native_string <- function(x) {
 #' you can reencode strings to UTF-8 or latin1 for internal
 #' processing, and return these strings without having to convert them
 #' back to the native encoding. However, it is important to make sure
-#' the encoding mark has not been lost in the process. Otherwise the
+#' the encoding mark has not been lost in the process, otherwise the
 #' output will be treated as if encoded according to the current
 #' locale (see \code{\link{set_utf8_locale}()} for documentation about
 #' locale codesets), which is not appropriate if it does not coincide
@@ -212,9 +212,9 @@ str_encoding <- function(x) {
 #' UTF-8 (multi-bytes variable-width encoding) strings. If the locale
 #' codeset is latin1 or UTF-8, the parser will mark all strings with
 #' the corresponding encoding. It is important for strings to have
-#' consistent encoding markers, as they determine a number of side
-#' effects in the handling of strings (see
-#' \code{\link{str_set_encoding}()}).
+#' consistent encoding markers, as they determine a number of internal
+#' encoding conversions when R or packages handle strings (see
+#' \code{\link{str_set_encoding}()} for some examples).
 #'
 #' UTF-8 is the only variable-width encoding supported in R.
 #' Multi-byte fixed-width encodings like UCS-2 are supported by R, but
@@ -238,7 +238,7 @@ set_utf8_locale <- function() {
   if (.Platform$OS.type == "windows") {
     warn("UTF-8 is not supported on Windows")
   } else {
-    cat("Locale codeset is now UTF-8\n")
+    inform("Locale codeset is now UTF-8")
     invisible(Sys.setlocale("LC_CTYPE", locale = "en_US.UTF-8"))
   }
 }
@@ -250,7 +250,7 @@ set_latin1_locale <- function() {
   } else {
     locale <- "en_US.ISO8859-1"
   }
-  cat("Locale codeset is now latin1\n")
+  inform("Locale codeset is now latin1")
   invisible(Sys.setlocale("LC_CTYPE", locale = locale))
 }
 #' @rdname set_utf8_locale
@@ -261,7 +261,7 @@ set_mbcs_locale <- function() {
   } else {
     locale <- "ja_JP.SJIS"
   }
-  cat("Locale codeset is now of non-UTF-8 MBCS type\n")
+  inform("Locale codeset is now of non-UTF-8 MBCS type")
   invisible(Sys.setlocale("LC_CTYPE", locale = locale))
 }
 
