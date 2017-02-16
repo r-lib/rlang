@@ -40,7 +40,7 @@ data_source.data.frame <- function(x, lookup_msg = NULL) {
 
 new_data_source <- function(x, lookup_msg) {
   msg <- lookup_msg %||% "Object '%s' not found in pronoun"
-  class <- c("data_source", class(x))
+  class <- "data_source"
   structure(list(src = x, lookup_msg = msg), class = class)
 }
 
@@ -65,11 +65,11 @@ new_data_source <- function(x, lookup_msg) {
 }
 #' @export
 names.data_source <- function(x) {
-  names(x$src)
+  names(unclass(x)$src)
 }
 #' @export
 length.data_source <- function(x) {
-  length(x$src)
+  length(unclass(x)$src)
 }
 
 has_binding <- function(x, name) {

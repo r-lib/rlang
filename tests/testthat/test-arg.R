@@ -157,7 +157,8 @@ test_that("magrittr works", {
 # tidy_capture -------------------------------------------------------
 
 test_that("explicit promise makes a formula", {
-  f1 <- tidy_capture(1 + 2 + 3)
+  capture <- function(x) tidy_capture(x)
+  f1 <- capture(1 + 2 + 3)
   f2 <- ~ 1 + 2 + 3
 
   expect_equal(f1, f2)
