@@ -40,7 +40,6 @@ is_atomic <- function(x, n = NULL) {
   if (!is_null(n) && length(x) != n) return(FALSE)
   TRUE
 }
-
 #' @export
 #' @rdname type-predicates
 is_vector <- function(x, n = NULL) {
@@ -54,7 +53,6 @@ is_integer <- function(x, n = NULL) {
   if (!is_null(n) && length(x) != n) return(FALSE)
   TRUE
 }
-
 #' @export
 #' @rdname type-predicates
 is_double <- function(x, n = NULL) {
@@ -62,7 +60,6 @@ is_double <- function(x, n = NULL) {
   if (!is_null(n) && length(x) != n) return(FALSE)
   TRUE
 }
-
 #' @export
 #' @rdname type-predicates
 is_character <- function(x, n = NULL) {
@@ -70,11 +67,17 @@ is_character <- function(x, n = NULL) {
   if (!is_null(n) && length(x) != n) return(FALSE)
   TRUE
 }
-
 #' @export
 #' @rdname type-predicates
 is_logical <- function(x, n = NULL) {
   if (typeof(x) != "logical") return(FALSE)
+  if (!is_null(n) && length(x) != n) return(FALSE)
+  TRUE
+}
+#' @export
+#' @rdname type-predicates
+is_raw <- function(x, n = NULL) {
+  if (typeof(x) != "raw") return(FALSE)
   if (!is_null(n) && length(x) != n) return(FALSE)
   TRUE
 }

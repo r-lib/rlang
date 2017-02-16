@@ -9,6 +9,7 @@
 \alias{is_double}
 \alias{is_character}
 \alias{is_logical}
+\alias{is_raw}
 \alias{is_null}
 \title{Type predicates}
 \usage{
@@ -25,6 +26,8 @@ is_double(x, n = NULL)
 is_character(x, n = NULL)
 
 is_logical(x, n = NULL)
+
+is_raw(x, n = NULL)
 
 is_null(x)
 }
