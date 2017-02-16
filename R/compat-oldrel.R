@@ -7,7 +7,7 @@
 # their way to the next R version) -----------------------------------
 
 #' @useDynLib rlang rlang_capturearg rlang_capturedots
-if (utils::packageVersion("base") < "3.4.0") {
+if (TRUE || utils::packageVersion("base") < "3.4.0") {
 
   captureArg <- function(x) {
     caller_env <- parent.frame()
