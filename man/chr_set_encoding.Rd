@@ -42,7 +42,9 @@ str_encoding(str_set_encoding("cafe", "UTF-8"))
 
 # You can specify the encoding of strings containing non-ASCII
 # characters:
-str_encoding(str_set_encoding("café", "UTF-8"))
+cafe <- string(c(0x63, 0x61, 0x66, 0xC3, 0xE9))
+str_encoding(cafe)
+str_encoding(str_set_encoding(cafe, "UTF-8"))
 
 
 # It is important to consistently mark the encoding of strings

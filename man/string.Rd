@@ -27,21 +27,21 @@ string version checks that the input contains a scalar string.
 # escapes. The characters corresponding to Unicode codepoints will
 # be encoded in UTF-8, and the string will be marked as UTF-8
 # automatically:
-bar <- string("caf\\uE9")
-str_encoding(bar)
-str_bytes(bar)
+cafe <- string("caf\\uE9")
+str_encoding(cafe)
+str_bytes(cafe)
 
 # In addition, string() provides useful conversions to let
 # programmers control how the string is represented in memory. For
 # encodings other than UTF-8, you'll need to supply the bytes in
 # hexadecimal form. If it is a latin1 encoding, you can mark the
 # string explicitly:
-baz <- string(c(0x63, 0x61, 0x66, 0xE9), "latin1")
-str_encoding(baz)
-str_bytes(baz)
+cafe_latin1 <- string(c(0x63, 0x61, 0x66, 0xE9), "latin1")
+str_encoding(cafe_latin1)
+str_bytes(cafe_latin1)
 
 # chr() accepts lists and will apply string() to each element:
-chr(list("café", c(0x63, 0x61, 0x66, 0xE9)))
+chr(list(cafe, c(0x63, 0x61, 0x66, 0xE9)))
 }
 \seealso{
 \code{\link{chr_set_encoding}()} for more information

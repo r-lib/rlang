@@ -42,19 +42,3 @@ language and region of the locale. They have permanent side effects
 and should not be used in package examples, unit tests, or in the
 course of a data analysis.
 }
-\examples{
-\dontrun{
-# The first effect of setting a locale codeset is how R marks
-# parsed strings with an encoding. In case of an UTF-8 or latin1
-# locale, R marks the strings accordingly:
-set_utf8_locale()
-str_encoding("café")
-
-set_latin1_locale()
-str_encoding("café")
-
-# For any other kind of locale, the string is left unmarked:
-set_mbcs_locale()
-str_encoding("café")
-}
-}
