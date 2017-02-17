@@ -25,9 +25,9 @@ bytes <- function(x) {
 #' @return A raw vector of bytes.
 #' @export
 as_bytes <- function(x) {
-  if (is_bytes(x)) {
-    return(x)
-  }
-  stopifnot(is_string(x))
-  charToRaw(x)
+  switch(typeof(x),
+    raw = return(x),
+    character = if (is_string(x)) return(charToRaw(x))
+  )
+  abort("`x` must be a string or raw vector")
 }
