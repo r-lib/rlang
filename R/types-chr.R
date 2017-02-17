@@ -19,7 +19,7 @@
 #' # automatically:
 #' cafe <- string("caf\uE9")
 #' str_encoding(cafe)
-#' str_bytes(cafe)
+#' as_bytes(cafe)
 #'
 #' # In addition, string() provides useful conversions to let
 #' # programmers control how the string is represented in memory. For
@@ -28,7 +28,7 @@
 #' # string explicitly:
 #' cafe_latin1 <- string(c(0x63, 0x61, 0x66, 0xE9), "latin1")
 #' str_encoding(cafe_latin1)
-#' str_bytes(cafe_latin1)
+#' as_bytes(cafe_latin1)
 #'
 #' # chr() accepts lists and will apply string() to each element:
 #' chr(list(cafe, c(0x63, 0x61, 0x66, 0xE9)))
@@ -76,7 +76,7 @@ chr <- function(x, encoding = NULL) {
 #' # Unicode escaping in the string):
 #' utf8 <- "caf\uE9"
 #' str_encoding(utf8)
-#' str_bytes(utf8)
+#' as_bytes(utf8)
 #'
 #' # It can then be converted to a native encoding, that is, the
 #' # encoding specified in the current locale:
@@ -84,7 +84,7 @@ chr <- function(x, encoding = NULL) {
 #' set_latin1_locale()
 #' latin1 <- as_native_string(utf8)
 #' str_encoding(latin1)
-#' str_bytes(latin1)
+#' as_bytes(latin1)
 #' }
 as_character <- function(x, encoding = NULL) {
   x <- as.character(unclass(x))
@@ -167,7 +167,7 @@ as_native_string <- function(x) {
 #'
 #' # However the names are converted to UTF-8 by the c() function:
 #' str_encoding(names(c(latin1)))
-#' str_bytes(names(c(latin1)))
+#' as_bytes(names(c(latin1)))
 #'
 #' # Bad things happen when the encoding marker is lost and R performs
 #' # a conversion. R will assume that the string is encoded according
@@ -177,7 +177,7 @@ as_native_string <- function(x) {
 #' set_utf8_locale()
 #'
 #' str_encoding(names(c(bad)))
-#' str_bytes(names(c(bad)))
+#' as_bytes(names(c(bad)))
 #' }
 chr_set_encoding <- function(x, encoding = c("unknown", "UTF-8", "latin1", "bytes")) {
   if (!is_null(encoding)) {
@@ -270,16 +270,4 @@ set_ctype <- function(x) {
   old <- Sys.getlocale("LC_CTYPE")
   Sys.setlocale("LC_CTYPE", locale = x)
   invisible(old)
-}
-
-#' Return a string as a raw vector.
-#'
-#' These helpers return the hexadecimal representation of a string.
-#'
-#' @param x A string or character vector.
-#' @return A raw vector of bytes.
-#' @export
-str_bytes <- function(x) {
-  stopifnot(is_string(x))
-  charToRaw(x)
 }

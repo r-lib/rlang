@@ -15,3 +15,19 @@ bytes <- function(x) {
     abort("`x` should be integerish")
   }
 }
+
+#' Coerce to a raw vector.
+#'
+#' This currently only works with strings, and returns its hexadecimal
+#' representation.
+#'
+#' @param x A string.
+#' @return A raw vector of bytes.
+#' @export
+as_bytes <- function(x) {
+  if (is_bytes(x)) {
+    return(x)
+  }
+  stopifnot(is_string(x))
+  charToRaw(x)
+}

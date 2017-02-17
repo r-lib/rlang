@@ -42,7 +42,7 @@ vector and attempt encoding conversion.
 # Unicode escaping in the string):
 utf8 <- "caf\\uE9"
 str_encoding(utf8)
-str_bytes(utf8)
+as_bytes(utf8)
 
 # It can then be converted to a native encoding, that is, the
 # encoding specified in the current locale:
@@ -50,7 +50,7 @@ str_bytes(utf8)
 set_latin1_locale()
 latin1 <- as_native_string(utf8)
 str_encoding(latin1)
-str_bytes(latin1)
+as_bytes(latin1)
 }
 }
 \seealso{

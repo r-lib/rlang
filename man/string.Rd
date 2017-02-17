@@ -29,7 +29,7 @@ string version checks that the input contains a scalar string.
 # automatically:
 cafe <- string("caf\\uE9")
 str_encoding(cafe)
-str_bytes(cafe)
+as_bytes(cafe)
 
 # In addition, string() provides useful conversions to let
 # programmers control how the string is represented in memory. For
@@ -38,7 +38,7 @@ str_bytes(cafe)
 # string explicitly:
 cafe_latin1 <- string(c(0x63, 0x61, 0x66, 0xE9), "latin1")
 str_encoding(cafe_latin1)
-str_bytes(cafe_latin1)
+as_bytes(cafe_latin1)
 
 # chr() accepts lists and will apply string() to each element:
 chr(list(cafe, c(0x63, 0x61, 0x66, 0xE9)))

@@ -58,7 +58,7 @@ str_encoding(names(latin1))
 
 # However the names are converted to UTF-8 by the c() function:
 str_encoding(names(c(latin1)))
-str_bytes(names(c(latin1)))
+as_bytes(names(c(latin1)))
 
 # Bad things happen when the encoding marker is lost and R performs
 # a conversion. R will assume that the string is encoded according
@@ -68,7 +68,7 @@ bad <- set_names(str_set_encoding(latin1, "unknown"))
 set_utf8_locale()
 
 str_encoding(names(c(bad)))
-str_bytes(names(c(bad)))
+as_bytes(names(c(bad)))
 }
 }
 \seealso{
