@@ -233,13 +233,14 @@ str_encoding <- function(x) {
 #' and should not be used in package examples, unit tests, or in the
 #' course of a data analysis.
 #'
+#' @return The previous locale (invisibly).
 #' @export
 set_utf8_locale <- function() {
   if (.Platform$OS.type == "windows") {
     warn("UTF-8 is not supported on Windows")
   } else {
     inform("Locale codeset is now UTF-8")
-    invisible(Sys.setlocale("LC_CTYPE", locale = "en_US.UTF-8"))
+    set_ctype("en_US.UTF-8")
   }
 }
 #' @rdname set_utf8_locale
@@ -251,7 +252,7 @@ set_latin1_locale <- function() {
     locale <- "en_US.ISO8859-1"
   }
   inform("Locale codeset is now latin1")
-  invisible(Sys.setlocale("LC_CTYPE", locale = locale))
+  set_ctype(locale)
 }
 #' @rdname set_utf8_locale
 #' @export
@@ -262,7 +263,13 @@ set_mbcs_locale <- function() {
     locale <- "ja_JP.SJIS"
   }
   inform("Locale codeset is now of non-UTF-8 MBCS type")
-  invisible(Sys.setlocale("LC_CTYPE", locale = locale))
+  set_ctype(locale)
+}
+set_ctype <- function(x) {
+  # Workaround bug in Sys.setlocale()
+  old <- Sys.getlocale("LC_CTYPE")
+  Sys.setlocale("LC_CTYPE", locale = x)
+  invisible(old)
 }
 
 #' Return a string as a raw vector.

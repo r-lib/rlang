@@ -12,6 +12,9 @@ set_latin1_locale()
 
 set_mbcs_locale()
 }
+\value{
+The previous locale (invisibly).
+}
 \description{
 Setting a locale's codeset (specifically, the \code{LC_CTYPE}
 category) produces side effects in R's handling of strings. The
