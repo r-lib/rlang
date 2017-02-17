@@ -13,7 +13,7 @@ test_that("predicates match definitions", {
 test_that("can bypass string serialisation", {
   bar <- chr(list("cafe", c(0x63, 0x61, 0x66, 0xE9)), "latin1")
   bytes <- list(bytes(c(0x63, 0x61, 0x66, 0x65)), bytes(c(0x63, 0x61, 0x66, 0xE9)))
-  expect_identical(chr_bytes(bar), bytes)
+  expect_identical(map(bar, as_bytes), bytes)
   expect_identical(str_encoding(bar[[2]]), "latin1")
 })
 

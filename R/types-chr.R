@@ -277,15 +277,9 @@ set_ctype <- function(x) {
 #' These helpers return the hexadecimal representation of a string.
 #'
 #' @param x A string or character vector.
-#' @return A raw vector for \code{str_bytes()} or a list of raw
-#'   vectors for \code{chr_bytes()}.
+#' @return A raw vector of bytes.
 #' @export
 str_bytes <- function(x) {
   stopifnot(is_string(x))
   charToRaw(x)
-}
-#' @rdname str_bytes
-#' @export
-chr_bytes <- function(x) {
-  map(x, charToRaw)
 }

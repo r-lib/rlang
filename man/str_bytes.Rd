@@ -2,19 +2,15 @@
 % Please edit documentation in R/types-chr.R
 \name{str_bytes}
 \alias{str_bytes}
-\alias{chr_bytes}
 \title{Return a string as a raw vector.}
 \usage{
 str_bytes(x)
-
-chr_bytes(x)
 }
 \arguments{
 \item{x}{A string or character vector.}
 }
 \value{
-A raw vector for \code{str_bytes()} or a list of raw
-  vectors for \code{chr_bytes()}.
+A raw vector of bytes.
 }
 \description{
 These helpers return the hexadecimal representation of a string.
