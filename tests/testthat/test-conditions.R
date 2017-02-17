@@ -50,6 +50,10 @@ test_that("abort() includes call info", {
   }))
 })
 
+test_that("error when msg is not a string", {
+  expect_error(warn(letters), "must be a string")
+})
+
 
 context("restarts") # ------------------------------------------------
 
