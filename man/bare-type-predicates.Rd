@@ -42,7 +42,8 @@ is_bare_bytes(x, n = NULL)
 
 \item{n}{Expected length of a vector.}
 
-\item{encoding}{Expected encoding of a string or character vector.}
+\item{encoding}{Expected encoding of a string or character
+vector. One of \code{UTF-8}, \code{latin1}, or \code{unknown}.}
 }
 \description{
 These predicates check for a given type but only return \code{TRUE}

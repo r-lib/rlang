@@ -19,7 +19,8 @@
 #' }
 #' @param x Object to be tested.
 #' @param n Expected length of a vector.
-#' @param encoding Expected encoding of a string or character vector.
+#' @param encoding Expected encoding of a string or character
+#'   vector. One of \code{UTF-8}, \code{latin1}, or \code{unknown}.
 #' @seealso \link{bare-type-predicates} \link{scalar-type-predicates}
 #' @name type-predicates
 NULL

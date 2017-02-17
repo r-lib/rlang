@@ -37,7 +37,8 @@ is_scalar_bytes(x)
 \arguments{
 \item{x}{object to be tested.}
 
-\item{encoding}{Expected encoding of a string or character vector.}
+\item{encoding}{Expected encoding of a string or character
+vector. One of \code{UTF-8}, \code{latin1}, or \code{unknown}.}
 }
 \description{
 These predicates check for a given type and whether the vector is

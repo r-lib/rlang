@@ -39,7 +39,8 @@ is_null(x)
 
 \item{n}{Expected length of a vector.}
 
-\item{encoding}{Expected encoding of a string or character vector.}
+\item{encoding}{Expected encoding of a string or character
+vector. One of \code{UTF-8}, \code{latin1}, or \code{unknown}.}
 }
 \description{
 These type predicates aim to make type testing in R more
