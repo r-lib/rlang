@@ -24,7 +24,7 @@ is_integer(x, n = NULL)
 
 is_double(x, n = NULL)
 
-is_character(x, n = NULL)
+is_character(x, n = NULL, encoding = NULL)
 
 is_logical(x, n = NULL)
 
@@ -38,6 +38,8 @@ is_null(x)
 \item{x}{Object to be tested.}
 
 \item{n}{Expected length of a vector.}
+
+\item{encoding}{Expected encoding of a string or character vector.}
 }
 \description{
 These type predicates aim to make type testing in R more

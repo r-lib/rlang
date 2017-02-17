@@ -19,6 +19,7 @@
 #' }
 #' @param x Object to be tested.
 #' @param n Expected length of a vector.
+#' @param encoding Expected encoding of a string or character vector.
 #' @seealso \link{bare-type-predicates} \link{scalar-type-predicates}
 #' @name type-predicates
 NULL
@@ -62,9 +63,11 @@ is_double <- function(x, n = NULL) {
 }
 #' @export
 #' @rdname type-predicates
-is_character <- function(x, n = NULL) {
+is_character <- function(x, n = NULL, encoding = NULL) {
   if (typeof(x) != "character") return(FALSE)
   if (!is_null(n) && length(x) != n) return(FALSE)
+  stopifnot(typeof(encoding) %in% c("character", "NULL"))
+  if (!is_null(encoding) && !all(chr_encoding(x) %in% encoding)) return(FALSE)
   TRUE
 }
 #' @export
@@ -95,6 +98,7 @@ is_null <- function(x) {
 #'
 #' These predicates check for a given type and whether the vector is
 #' "scalar", that is, of length 1.
+#' @inheritParams type-predicates
 #' @param x object to be tested.
 #' @seealso \link{type-predicates} \link{bare-type-predicates}
 #' @name scalar-type-predicates
@@ -127,8 +131,8 @@ is_scalar_double <- function(x) {
 }
 #' @export
 #' @rdname scalar-type-predicates
-is_scalar_character <- function(x) {
-  is_character(x) && length(x) == 1
+is_scalar_character <- function(x, encoding = NULL) {
+  is_character(x, encoding = encoding) && length(x) == 1
 }
 #' @export
 #' @rdname scalar-type-predicates
@@ -200,8 +204,8 @@ is_bare_numeric <- function(x, n = NULL) {
 }
 #' @export
 #' @rdname bare-type-predicates
-is_bare_character <- function(x, n = NULL) {
-  !is.object(x) && is_character(x, n)
+is_bare_character <- function(x, n = NULL, encoding = NULL) {
+  !is.object(x) && is_character(x, n, encoding = encoding)
 }
 #' @export
 #' @rdname bare-type-predicates

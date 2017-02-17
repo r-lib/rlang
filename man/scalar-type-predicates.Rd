@@ -24,18 +24,20 @@ is_scalar_integer(x)
 
 is_scalar_double(x)
 
-is_scalar_character(x)
+is_scalar_character(x, encoding = NULL)
 
 is_scalar_logical(x)
 
 is_scalar_raw(x)
 
-is_string(x)
+is_string(x, encoding = NULL)
 
 is_scalar_bytes(x)
 }
 \arguments{
 \item{x}{object to be tested.}
+
+\item{encoding}{Expected encoding of a string or character vector.}
 }
 \description{
 These predicates check for a given type and whether the vector is
