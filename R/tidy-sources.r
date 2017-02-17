@@ -8,6 +8,7 @@ data_source <- function(x, lookup_msg = NULL) {
 }
 #' @export
 data_source.default <- function(x, lookup_msg = NULL) {
+  x <- discard_unnamed(x)
   if (!is_dictionary(x)) {
     abort("Data source must be a dictionary")
   }

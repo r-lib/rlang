@@ -16,7 +16,7 @@ test_that("tidy_eval uses formula's environment", {
 })
 
 test_that("data must be a dictionary", {
-  expect_error(tidy_eval(~ x, 10), "Data source must be a dictionary")
+  expect_error(tidy_eval(~ x, list(x = 10, x = 11)), "Data source must be a dictionary")
 })
 
 test_that("looks first in `data`", {

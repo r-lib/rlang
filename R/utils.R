@@ -74,3 +74,7 @@ map_around <- function(.x, .neighbour = c("right", "left"), .f, ...) {
 
   stop("unimplemented")
 }
+
+discard_unnamed <- function(x) {
+  discard(x, names2(x) == "")
+}

@@ -128,7 +128,7 @@ tidy_eval_env <- function(env = base_env(), data = NULL) {
     eval_env <- child_env(env)
   } else {
     # Emulate dynamic scope for established data
-    eval_env <- env_bury(env, data)
+    eval_env <- env_bury(env, discard_unnamed(data))
   }
 
   # Install pronouns
@@ -159,7 +159,7 @@ f_self_eval <- function(`_data`, `_orig_env`, `_orig_eval_env`) {
     # Two-sided formulas are not fpromises
     if (length(f) > 2) {
       # Make sure to propagate scope info when formula is quoted:
-      f <- eval(f, `_orig_env`)
+      f <- expr_eval(f, `_orig_env`)
       return(f)
     }
 
