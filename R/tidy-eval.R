@@ -123,24 +123,20 @@ tidy_eval <- function(f, data = NULL) {
 tidy_eval_env <- function(env = base_env(), data = NULL) {
   data_src <- data_source(data)
 
-  if (!length(data)) {
-    # Derive a child because we're going to add bindings
-    eval_env <- child_env(env)
-  } else {
-    # Emulate dynamic scope for established data
-    eval_env <- env_bury(env, discard_unnamed(data))
+  # Mark the environment so we can rechain it to other lexical
+  # enclosures when evaluating formula-promises.
+  top_env <- eval_env <- child_env(env)
+
+  # Emulate dynamic scope for established data
+  if (length(data)) {
+    eval_env <- env_bury(eval_env, discard_unnamed(data))
   }
 
-  # Install pronouns
+  # Install pronouns, fpromises and fguards
   eval_env$.data <- data_src
   eval_env$.env <- data_source(env)
-
-  # Install fpromises and make sure to propagate `data`.
-  eval_env$`~` <- f_self_eval(data, env, eval_env)
-
-  # Guarded formulas are wrapped in another call to make sure they
-  # don't self-evaluate.
-  eval_env$`_F` <- unguard_formula
+  eval_env$`~` <- f_self_eval(env, eval_env, top_env)
+  eval_env$`_F` <- f_unguard
 
   eval_env
 }
@@ -152,27 +148,31 @@ tidy_eval_env_cleanup <- function(eval_env) {
   eval_env
 }
 
-f_self_eval <- function(`_data`, `_orig_env`, `_orig_eval_env`) {
+f_self_eval <- function(env, eval_env, top_env) {
   function(...) {
     f <- sys.call()
 
     # Two-sided formulas are not fpromises
     if (length(f) > 2) {
       # Make sure to propagate scope info when formula is quoted:
-      f <- expr_eval(f, `_orig_env`)
+      f <- expr_eval(f, env)
       return(f)
     }
 
     # Take care of degenerate formulas (e.g. created with ~~letters)
     if (is_null(f_env(f))) {
-      f_env(f) <- `_orig_eval_env`
+      f_env(f) <- env
     }
 
-    eval_env <- tidy_eval_env(f_env(f), `_data`)
+    # Swap enclosures
+    prev_enclosure <- env_parent(top_env)
+    env_parent(top_env) <- f_env(f) %||% env
+    on.exit(env_parent(top_env) <- prev_enclosure)
+
     .Call(rlang_eval, f_rhs(f), eval_env)
   }
 }
-unguard_formula <- function(...) {
+f_unguard <- function(...) {
   tilde <- sys.call()
   tilde[[1]] <- quote(`~`)
   tilde

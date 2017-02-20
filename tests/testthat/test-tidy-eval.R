@@ -57,6 +57,7 @@ test_that("unquoted formulas look in their own env", {
 test_that("unquoted formulas can use data", {
   f1 <- function() {
     z <- 100
+    x <- 2
     tidy_quote(x + z)
   }
   f2 <- function() {
@@ -65,8 +66,8 @@ test_that("unquoted formulas can use data", {
   }
 
   z <- 10
-  expect_equal(tidy_eval(tidy_quote(UQ(f1())), data = list(x = 1)), 101)
-  expect_equal(tidy_eval(tidy_quote(UQ(f2())), data = list(x = 1)), 101)
+  expect_equal(tidy_eval(tidy_quote(!! f1()), data = list(x = 1)), 101)
+  expect_equal(tidy_eval(tidy_quote(!! f2()), data = list(x = 1)), 11)
 })
 
 test_that("guarded formulas are not evaluated", {
@@ -171,6 +172,19 @@ test_that("evaluation env is cleaned up", {
   fn <- tidy_eval(f)
   out <- fn()
   expect_identical(out$f, new_tidy_quote(quote(letters), env = out$env))
+})
+
+test_that("inner formulas are rechained to evaluation env", {
+  env <- child_env()
+  f1 <- tidy_quote(env$eval_env1 <- env())
+  f2 <- tidy_quote({
+    !! f1
+    env$eval_env2 <- env()
+  })
+
+  tidy_eval(f2, mtcars)
+  expect_identical(env$eval_env1, env$eval_env2)
+  expect_identical(env_parent(env$eval_env2, 2), env(f2))
 })
 
 
