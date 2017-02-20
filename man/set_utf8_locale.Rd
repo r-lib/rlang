@@ -28,20 +28,13 @@ encoding conversions when R or packages handle strings (see
 \code{\link{str_set_encoding}()} for some examples).
 }
 \details{
-UTF-8 is the only variable-width encoding supported in R.
-Multi-byte fixed-width encodings like UCS-2 are supported by R, but
-supplying UTF-16 strings (the default Unicode encoding on Windows)
-will cause the parser to choke on the character delimiters (though
-you may not see that behaviour in Windows IDEs if they translate
-inputs to another encoding for you). Note finally that
-\code{set_utf8_locale()} will not work on Windows as only latin1
-and MBCS locales are supported on this OS.
-
 Note that these helpers are only provided for testing interactively
 the effects of changing locale codeset. They let you quickly change
 the default text encoding to latin1, UTF-8, or non-UTF-8 MBCS. They
 are not widely tested and do not provide a way of setting the
 language and region of the locale. They have permanent side effects
 and should not be used in package examples, unit tests, or in the
-course of a data analysis.
+course of a data analysis. Note finally that
+\code{set_utf8_locale()} will not work on Windows as only latin1
+and MBCS locales are supported on this OS.
 }
