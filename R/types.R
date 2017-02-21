@@ -332,10 +332,11 @@ is_scalar_integerish <- function(x) {
   !is.object(x) && is_integerish(x, 1L)
 }
 
-switchpatch <- function(x, ...) {
-  switch(typeof(x), ..., abort_switchpatch(x))
-}
-abort_switchpatch <- function(x) {
-  msg <- paste0("Cannot convert objects of type `", typeof(x), "` to symbol")
-  abort(msg, "rlang_switchpatch")
+switchpatch <- function(.x, ..., .to) {
+  if (missing(.to)) {
+    switch(typeof(.x), ...)
+  } else {
+    msg <- paste0("Cannot convert objects of type `", typeof(.x), "` to ", .to)
+    switch(typeof(.x), ..., abort(msg))
+  }
 }
