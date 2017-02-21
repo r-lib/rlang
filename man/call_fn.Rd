@@ -27,5 +27,5 @@ test <- function() call_fn()
 test()
 }
 \seealso{
-\code{\link{call_fn_name}}()
+\code{\link{call_name}}()
 }

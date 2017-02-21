@@ -318,7 +318,7 @@ call_modify <- function(.call = NULL, ..., .args = list(), .env = NULL) {
 #' @param env Environment in which to look up the function. The
 #'   default is the calling frame.
 #' @export
-#' @seealso \code{\link{call_fn_name}}()
+#' @seealso \code{\link{call_name}}()
 #' @examples
 #' # Extract from a quoted call:
 #' call_fn(~matrix())
@@ -345,21 +345,21 @@ call_fn <- function(call = NULL, env = NULL) {
 #' @export
 #' @examples
 #' # Extract the function name from quoted calls:
-#' call_fn_name(~foo(bar))
-#' call_fn_name(quote(foo(bar)))
+#' call_name(~foo(bar))
+#' call_name(quote(foo(bar)))
 #'
 #' # The calling expression is used as default:
-#' foo <- function(bar) call_fn_name()
+#' foo <- function(bar) call_name()
 #' foo(bar)
 #'
 #' # Namespaced calls are correctly handled:
-#' call_fn_name(~base::matrix(baz))
+#' call_name(~base::matrix(baz))
 #'
 #' # Anonymous and subsetted functions return NULL:
-#' call_fn_name(~foo$bar())
-#' call_fn_name(~foo[[bar]]())
-#' call_fn_name(~foo()())
-call_fn_name <- function(call = NULL) {
+#' call_name(~foo$bar())
+#' call_name(~foo[[bar]]())
+#' call_name(~foo()())
+call_name <- function(call = NULL) {
   info <- call_info(call, NULL)
   stopifnot(is.call(info$call))
 

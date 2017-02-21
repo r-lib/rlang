@@ -207,16 +207,16 @@ test_that("can modify without supplying `call`", {
 
 # Utils --------------------------------------------------------------
 
-test_that("call_fn_name() handles namespaced and anonymous calls", {
-  expect_equal(call_fn_name(quote(foo::bar())), "bar")
-  expect_equal(call_fn_name(quote(foo:::bar())), "bar")
+test_that("call_name() handles namespaced and anonymous calls", {
+  expect_equal(call_name(quote(foo::bar())), "bar")
+  expect_equal(call_name(quote(foo:::bar())), "bar")
 
-  expect_null(call_fn_name(quote(foo@bar())))
-  expect_null(call_fn_name(quote(foo$bar())))
-  expect_null(call_fn_name(quote(foo[[bar]]())))
-  expect_null(call_fn_name(quote(foo()())))
-  expect_null(call_fn_name(quote(foo::bar()())))
-  expect_null(call_fn_name(quote((function() NULL)())))
+  expect_null(call_name(quote(foo@bar())))
+  expect_null(call_name(quote(foo$bar())))
+  expect_null(call_name(quote(foo[[bar]]())))
+  expect_null(call_name(quote(foo()())))
+  expect_null(call_name(quote(foo::bar()())))
+  expect_null(call_name(quote((function() NULL)())))
 })
 
 test_that("call_fn() extracts function", {
@@ -227,7 +227,7 @@ test_that("call_fn() extracts function", {
 test_that("Inlined functions return NULL name", {
   call <- quote(fn())
   call[[1]] <- function() {}
-  expect_null(call_fn_name(call))
+  expect_null(call_name(call))
 })
 
 test_that("call_args() and call_args_names()", {
