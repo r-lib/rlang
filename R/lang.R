@@ -1,23 +1,24 @@
 #' Is an object a language object?
 #'
 #' These helpers are consistent wrappers around their base R
-#' equivalents. A language object is either a scalar atomic vector a
-#' name (aka a symbol) or a call. Formally, \code{is_lang()} (and its
-#' alias \code{is_language()}) returns \code{\link{TRUE}} for the set
-#' of R objects that you can obtain from parsing a string or R source
-#' file.
+#' equivalents. \code{is_lang()} and its alias \code{is_language()}
+#' test for language objects, the set of objects that can be obtained
+#' from parsing R code. A language object can be one of two things:
+#' either a symbolic object (for which \code{is_symbolic()} returns
+#' \code{TRUE}), or a parsable literal (testable with
+#' \code{is_parsable_literal()}).
 #'
-#' \code{is_literal()} is a predicate that returns \code{TRUE} for the
-#' subset of literals that are created by R when parsing text (see
-#' \code{\link{parse_expr}()}): numbers, strings and \code{NULL}.
-#' Along with symbols, these literals are the terminating nodes in a
-#' parse tree. Note that in the most general sense, a literal is any R
-#' object that evaluates to itself and that can be evaluated in the
-#' empty environment. For instance, \code{quote(c(1, 2))} is not a
-#' literal, but the result of evaluating it in
-#' \code{\link{base_env}()} is (in this case an atomic vector).
-#' Technically, this sort of literal objects can be inlined in
-#' language expressions. If your function accepts arbitrary
+#' Literals are the set of R objects that evaluate to themselves when
+#' supplied to \code{eval()}. Non-literal objects are called symbolic.
+#' Only symbols and calls are symbolic. They form the backbone of an
+#' expression, and their values are looked up by the R interpreter
+#' when the expression is evaluated. By contrast, literals are
+#' returned as is. Scalar strings, numbers, booleans, and the
+#' \code{NULL} object form a special subset of literals. They are the
+#' only non-symbolic objects that can arise from parsing a string or
+#' an R source file (e.g. from using \code{\link{parse_expr}()}). You
+#' can test for them with \code{is_parsable_literal()}.
+#'
 #' \code{is_parsable_literal()} is a predicate that returns
 #' \code{TRUE} for the subset of literals that are created by R when
 #' parsing text (see \code{\link{parse_expr}()}): numbers, strings and
