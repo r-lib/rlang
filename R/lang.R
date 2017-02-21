@@ -273,7 +273,7 @@ as_name.name <- function(x) {
 }
 #' @export
 as_name.character <- function(x) {
-  if (!is_scalar_character(x)) {
+  if (!is_string(x)) {
     abort("Cannot parse character vector of length > 1")
   }
   symbol(x)
@@ -306,7 +306,7 @@ as_call.call <- function(x) {
 }
 #' @export
 as_call.character <- function(x) {
-  if (!is_scalar_character(x)) {
+  if (!is_string(x)) {
     abort("Cannot parse character vector of length > 1")
   }
   parse_expr(x)
@@ -319,7 +319,7 @@ as_call.formula <- function(x) {
 is_prefixed_name <- function(x) {
   fn <- x[[1]]
   if (is_name(fn)) {
-    as.character(fn) %in% c("::", ":::", "$", "@")
+    as_character(fn) %in% c("::", ":::", "$", "@")
   } else {
     FALSE
   }
