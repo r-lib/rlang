@@ -265,30 +265,24 @@ is_binary_call <- function(x, name = NULL) {
 #' as_call(~ f)
 #' as_symbol(~ f())
 as_symbol <- function(x) {
-  UseMethod("as_symbol")
-}
-#' @export
-as_symbol.name <- function(x) {
-  x
-}
-#' @export
-as_symbol.character <- function(x) {
-  if (!is_string(x)) {
-    abort("Cannot parse character vector of length > 1")
-  }
-  symbol(x)
-}
-#' @export
-as_symbol.call <- function(x) {
-  if (is_prefixed_name(x)) {
-    x
-  } else {
-    as_symbol(x[[1]])
-  }
-}
-#' @export
-as_symbol.formula <- function(x) {
-  as_symbol(f_rhs(x))
+  switch(typeof(x),
+    symbol = x,
+    character =
+      if (length(x) == 1) {
+        symbol(x)
+      } else {
+        abort("Cannot parse character vector of length > 1")
+      },
+    language =
+      if (is_formula(x)) {
+        as_symbol(f_rhs(x))
+      } else if (is_prefixed_name(x)) {
+        x
+      } else {
+        as_symbol(x[[1]])
+      },
+    abort_switchpatch(x)
+  )
 }
 #' @export
 #' @rdname as_symbol
