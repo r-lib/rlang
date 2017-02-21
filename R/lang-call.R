@@ -1,6 +1,8 @@
-#' Standardise a call against formal arguments
+#' Standardise a call against formal arguments.
 #'
-#' Compared to \code{\link{match.call}()}, \code{call_standardise()}:
+#' This is a slower but more thorough version of
+#' \code{\link{call_standardise}()}. Compared to
+#' \code{\link{match.call}()}, \code{call_homogenise()}:
 #' \itemize{
 #'   \item Always report dotted arguments as such: \code{call(..1, ..2)}.
 #'         In comparison, \code{match.call()} inlines literals:
@@ -14,6 +16,7 @@
 #'   \item Standardises missing arguments as well if you specify
 #'         \code{add_missings}: \code{call(x = , y = , )}.
 #' }
+#'
 #' @param call Can be a call, a formula quoting a call in the
 #'   right-hand side, or a frame object from which to extract the call
 #'   expression. If not supplied, the calling frame is used.
@@ -34,7 +37,7 @@
 #'   evaluated.
 #' @param add_missings Whether to standardise missing arguments.
 #' @export
-call_standardise <- function(call = NULL, fn = NULL,
+call_homogenise <- function(call = NULL, fn = NULL,
                              caller_env = NULL,
                              enum_dots = FALSE,
                              add_missings = FALSE) {
@@ -44,7 +47,7 @@ call_standardise <- function(call = NULL, fn = NULL,
   fn <- fn %||% info$fn %||% call_fn(info$call, info$env)
   stopifnot(is.call(info$call))
   stopifnot(is.environment(info$env))
-  call_standardise_(info$call, fn, info$caller_env, enum_dots, add_missings)
+  call_homogenise_(info$call, fn, info$caller_env, enum_dots, add_missings)
 }
 
 call_info <- function(call, caller_env) {
@@ -72,7 +75,7 @@ call_info <- function(call, caller_env) {
   )
 }
 
-call_standardise_ <- function(call, fn, caller_env, enum_dots, add_missings) {
+call_homogenise_ <- function(call, fn, caller_env, enum_dots, add_missings) {
   call <- duplicate(call)
   call <- call_inline_dots(call, caller_env, enum_dots)
   call <- call_match_partial(call, fn)
@@ -326,7 +329,7 @@ call_modify <- function(.call = caller_frame(), ..., .args = list()) {
 
 #' Extract function from a call
 #'
-#' @inheritParams call_standardise
+#' @inheritParams call_homogenise
 #' @param env Environment in which to look up the function. The
 #'   default is the calling frame.
 #' @export
@@ -350,7 +353,7 @@ call_fn <- function(call = NULL, env = NULL) {
 
 #' Extract function name of a call
 #'
-#' @inheritParams call_standardise
+#' @inheritParams call_homogenise
 #' @return A string with the function name, or \code{NULL} if the
 #'   function is anonymous.
 #' @seealso \code{\link{call_fn}}()
@@ -408,7 +411,7 @@ call_name <- function(call = NULL) {
 
 #' Extract arguments from a call
 #'
-#' @inheritParams call_standardise
+#' @inheritParams call_homogenise
 #' @return A named list of arguments. The \code{_lsp} version returns
 #'   a named pairlist.
 #' @seealso \code{\link{fn_fmls}()} and

@@ -14,20 +14,20 @@ test_that("args can be specified individually or as list", {
 # Standardisation ---------------------------------------------------------
 
 test_that("args are partial matched", {
-  out <- call_standardise(quote(matrix(nro = 3, 1:9)))
+  out <- call_homogenise(quote(matrix(nro = 3, 1:9)))
   expect_equal(out, quote(matrix(nrow = 3, data = 1:9)))
 })
 
 test_that("args are standardised", {
   f <- function(x, y) NULL
-  expect_equal(call_standardise(quote(f(3))), quote(f(x = 3)))
-  expect_equal(call_standardise(quote(f(3, 3))), quote(f(x = 3, y = 3)))
-  expect_equal(call_standardise(quote(f(y = 3))), quote(f(y = 3)))
+  expect_equal(call_homogenise(quote(f(3))), quote(f(x = 3)))
+  expect_equal(call_homogenise(quote(f(3, 3))), quote(f(x = 3, y = 3)))
+  expect_equal(call_homogenise(quote(f(y = 3))), quote(f(y = 3)))
 })
 
 test_that("names of dotted arguments are enumerated", {
   g <- function(dots, ...) f(dots = dots, ...)
-  f <- function(dots, ...) call_standardise(enum_dots = dots)
+  f <- function(dots, ...) call_homogenise(enum_dots = dots)
 
   f_default <- f(FALSE, foo, foo = bar, , "foobar")
   f_enum <- f(TRUE, foo, foo = bar, , "foobar")
@@ -41,7 +41,7 @@ test_that("names of dotted arguments are enumerated", {
 
   enum <- FALSE
   f <- function(...) h(...)
-  h <- function(x1, x2) call_standardise(enum_dots = enum)
+  h <- function(x1, x2) call_homogenise(enum_dots = enum)
   expect_equal(f(a, b), quote(h(x1 = ..1, x2 = ..2)))
 
   enum <- TRUE
@@ -52,29 +52,29 @@ test_that("call is not modified in place", {
   f <- function(...) g(...)
   g <- function(...) call_stack()[1:2]
   stack <- f(foo)
-  call_standardise(stack[[1]]$expr, g, stack[[2]]$env, enum_dots = TRUE)
+  call_homogenise(stack[[1]]$expr, g, stack[[2]]$env, enum_dots = TRUE)
   expect_equal(stack[[1]]$expr, quote(g(...)))
 })
 
 test_that("can standardise without specifying `call`", {
-  f <- function(...) call_standardise()
+  f <- function(...) call_homogenise()
   expect_identical(f(arg), quote(f(arg)))
 })
 
 test_that("can standardise formulas", {
   f <- matrix
-  expect_equal(call_standardise(~f(x, y, z)), quote(f(data = x, nrow = y, ncol = z)))
+  expect_equal(call_homogenise(~f(x, y, z)), quote(f(data = x, nrow = y, ncol = z)))
 })
 
 test_that("empty dots do not throw an error", {
   f <- function() g()
   g <- function(...) h(...)
-  h <- function(...) call_standardise(enum_dots = TRUE)
+  h <- function(...) call_homogenise(enum_dots = TRUE)
   expect_error(f(), NA)
 })
 
 test_that("matching dots without caller_env throws", {
-  fn <- function(...) call_standardise(quote(fn(...)))
+  fn <- function(...) call_homogenise(quote(fn(...)))
   g <- function(...) fn(...)
   expect_error(g(), "must be supplied to match dots")
 })
@@ -99,48 +99,48 @@ test_that("multiple actual matches throw", {
 
 test_that("redundant args throw", {
   fn <- function(x, y) NULL
-  expect_error(call_standardise(quote(fn(x = NULL, x = NULL))), "matched by multiple")
-  expect_error(call_standardise(quote(fn(NULL, NULL, NULL))), "unused argument")
+  expect_error(call_homogenise(quote(fn(x = NULL, x = NULL))), "matched by multiple")
+  expect_error(call_homogenise(quote(fn(NULL, NULL, NULL))), "unused argument")
 })
 
 test_that("unused args throw", {
   fn <- function(x, y) NULL
-  expect_error(call_standardise(~fn(x = 1, z = 2)), "unused arguments: z")
+  expect_error(call_homogenise(~fn(x = 1, z = 2)), "unused arguments: z")
 })
 
 test_that("multiple matches are allowed within dots", {
-  fn <- function(x, ...) call_standardise()
+  fn <- function(x, ...) call_homogenise()
   expect_error(fn(x = 1, x = 2), "matched by multiple actual")
 
-  fn <- function(...) call_standardise()
+  fn <- function(...) call_homogenise()
   expect_equal(fn(x = 1, x = 2), quote(fn(x = 1, x = 2)))
 })
 
 test_that("multiple dots are allowed in a call?", {
   # Is this important to fix?
-  fn <- function(...) list(call_standardise(), ...)
+  fn <- function(...) list(call_homogenise(), ...)
   h <- function(...) fn(..., ...)
   h(1)
 })
 
 test_that("crazy args partial-match", {
   fn <- function(`\\[]`, `[]\\`) NULL
-  expect_equal(call_standardise(~fn(`[]` = 1, `\\` = 2)), quote(fn(`[]\\` = 1, `\\[]` = 2)))
-  expect_error(call_standardise(~fn(`\\` = 1, `\\[` = 2)), "matched by multiple")
+  expect_equal(call_homogenise(~fn(`[]` = 1, `\\` = 2)), quote(fn(`[]\\` = 1, `\\[]` = 2)))
+  expect_error(call_homogenise(~fn(`\\` = 1, `\\[` = 2)), "matched by multiple")
 })
 
 test_that("args after dots are not partial-matched", {
-  fn <- function(..., abc) call_standardise()
+  fn <- function(..., abc) call_homogenise()
   g <- function(...) fn(...)
   expect_equal(g(a = 1), quote(fn(a = ..1)))
 
-  fn <- function(ab, ..., abc) call_standardise()
+  fn <- function(ab, ..., abc) call_homogenise()
   g <- function(...) fn(...)
   expect_equal(g(a = 1), quote(fn(ab = ..1)))
 })
 
 test_that("enumerated dots are ignored when checking unused args", {
-  fn <- function(x) call_standardise(enum_dots = TRUE)
+  fn <- function(x) call_homogenise(enum_dots = TRUE)
   g <- function(...) fn(...)
   h <- function(...) g(...)
   expect_error(h(a), NA)
@@ -148,7 +148,7 @@ test_that("enumerated dots are ignored when checking unused args", {
 
 test_that("dots are not confused with formals", {
   enum <- TRUE
-  fn <- function(x, ...) call_standardise(enum_dots = enum)
+  fn <- function(x, ...) call_homogenise(enum_dots = enum)
   expect_equal(fn(z = foo), quote(fn(..1 = foo)))
   expect_equal(fn(z = foo, bar, baz), quote(fn(..1 = foo, x = bar, ..2 = baz)))
   expect_equal(fn(z = foo, x = bar, baz), quote(fn(..1 = foo, x = bar, ..2 = baz)))
@@ -159,7 +159,7 @@ test_that("dots are not confused with formals", {
   expect_equal(fn(z = foo, bar, x = baz), quote(fn(z = foo, bar, x = baz)))
 
   enum <- TRUE
-  fn <- function(x, y, ...) call_standardise(enum_dots = enum)
+  fn <- function(x, y, ...) call_homogenise(enum_dots = enum)
   expect_equal(fn(z = foo, bar, x = baz, bam), quote(fn(..1 = foo, y = bar, x = baz, ..2 = bam)))
 
   enum <- FALSE
@@ -167,17 +167,17 @@ test_that("dots are not confused with formals", {
 })
 
 test_that("missing arguments are matched as well", {
-  fn <- function(x, y, z) call_standardise(add_missings = TRUE)
+  fn <- function(x, y, z) call_homogenise(add_missings = TRUE)
   expect_equal(fn(y = foo), quote(fn(y = foo, x = , z = )))
 })
 
 test_that("dots are not treated as missing arg", {
-  fn <- function(x, ...) call_standardise(add_missings = TRUE)
+  fn <- function(x, ...) call_homogenise(add_missings = TRUE)
   expect_equal(fn(), quote(fn(x = )))
 })
 
 test_that("global_frame() can be standardised", {
-  expect_null(call_standardise(global_frame()))
+  expect_null(call_homogenise(global_frame()))
 })
 
 
@@ -276,7 +276,7 @@ test_that("Recall() does not mess up call history", {
   trail <- map_int(stack, function(x) x$pos)
   expect_equal(fixup_call_trail(trail), 5:1)
 
-  calls <- map(stack, call_standardise, enum_dots = TRUE, add_missings = TRUE)
+  calls <- map(stack, call_homogenise, enum_dots = TRUE, add_missings = TRUE)
   expected_calls <- alist(
     fn(x = ..1),
     Recall(..1 = x),

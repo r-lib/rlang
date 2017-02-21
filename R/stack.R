@@ -428,7 +428,7 @@ frame_clean_eval <- function(frame) {
 }
 frame_clean_Recall <- function(frame, next_frame) {
   if (!is_missing(next_frame) && identical(next_frame$fn, base::Recall)) {
-    call_recalled <- call_standardise(frame, enum_dots = TRUE, add_missings = TRUE)
+    call_recalled <- call_homogenise(frame, enum_dots = TRUE, add_missings = TRUE)
     args_recalled <- call_args(call_recalled)
     args_Recall <- call_args(next_frame)
 
