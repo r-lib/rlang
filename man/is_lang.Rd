@@ -5,7 +5,7 @@
 \alias{is_name}
 \alias{is_symbol}
 \alias{is_pairlist}
-\alias{is_literal}
+\alias{is_parsable_literal}
 \title{Is an object a language object?}
 \usage{
 is_lang(x)
@@ -16,7 +16,7 @@ is_symbol(x)
 
 is_pairlist(x)
 
-is_literal(x)
+is_parsable_literal(x)
 }
 \arguments{
 \item{x}{An object to test.}
@@ -39,11 +39,23 @@ literal, but the result of evaluating it in
 \code{\link{base_env}()} is (in this case an atomic vector).
 Technically, this sort of literal objects can be inlined in
 language expressions. If your function accepts arbitrary
+
+\code{is_parsable_literal()} is a predicate that returns
+\code{TRUE} for the subset of literals that are created by R when
+parsing text (see \code{\link{parse_expr}()}): numbers, strings and
+\code{NULL}. Along with symbols, these literals are the
+terminating nodes in a parse tree. Note that in the most general
+sense, a literal is any R object that evaluates to itself and that
+can be evaluated in the empty environment. For instance,
+\code{quote(c(1, 2))} is not a literal, but the result of
+evaluating it in \code{\link{base_env}()} is (in this case an
+atomic vector).  Technically, this sort of literal objects can be
+inlined in language expressions. If your function accepts arbitrary
 expressions, it should thus account for that possibility with a
 catch-all branch. On the other hand, if your function only gets
 expressions created from a parse, \code{quote()}, or
 \code{\link{tidy_capture}()}, then you can check for literals with
-\code{is_literal()}.
+\code{is_parsable_literal()}.
 
 Finally, pairlists can also be language objects. This is the data
 structure for function arguments. They usually do not arise from R
@@ -58,7 +70,7 @@ list of a closure with \code{\link[base]{formals}()} or
 \examples{
 q1 <- quote(1)
 is_lang(q1)
-is_atomic(q1)
+is_parsable_literal(q1)
 
 q2 <- quote(x)
 is_lang(q2)
@@ -71,21 +83,22 @@ is_call(q3)
 
 # Atomic language objects are the terminating nodes of a call
 # tree: NULL or a scalar atomic vector:
-is_literal("string")
-is_literal(NULL)
+is_parsable_literal("string")
+is_parsable_literal(NULL)
 
-is_literal(letters)
-is_literal(quote(call()))
+is_parsable_literal(letters)
+is_parsable_literal(quote(call()))
 
-# Literals have the property of being self-quoting:
+# Parsable literals have the property of being self-quoting:
 identical("foo", quote("foo"))
 identical(1L, quote(1L))
 identical(NULL, quote(NULL))
 
-# They can be evaluated within the empty environment:
+# Like any literals, they can be evaluated within the empty
+# environment:
 eval(quote(1L), empty_env())
 
-# Whereas it would fail for non-atomic language objects:
+# Whereas it would fail for symbolic language objects:
 # eval(quote(c(1L, 2L)), empty_env())
 
 
