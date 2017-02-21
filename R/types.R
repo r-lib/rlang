@@ -19,6 +19,8 @@
 #' }
 #' @param x Object to be tested.
 #' @param n Expected length of a vector.
+#' @param encoding Expected encoding of a string or character
+#'   vector. One of \code{UTF-8}, \code{latin1}, or \code{unknown}.
 #' @seealso \link{bare-type-predicates} \link{scalar-type-predicates}
 #' @name type-predicates
 NULL
@@ -40,7 +42,6 @@ is_atomic <- function(x, n = NULL) {
   if (!is_null(n) && length(x) != n) return(FALSE)
   TRUE
 }
-
 #' @export
 #' @rdname type-predicates
 is_vector <- function(x, n = NULL) {
@@ -54,7 +55,6 @@ is_integer <- function(x, n = NULL) {
   if (!is_null(n) && length(x) != n) return(FALSE)
   TRUE
 }
-
 #' @export
 #' @rdname type-predicates
 is_double <- function(x, n = NULL) {
@@ -62,15 +62,15 @@ is_double <- function(x, n = NULL) {
   if (!is_null(n) && length(x) != n) return(FALSE)
   TRUE
 }
-
 #' @export
 #' @rdname type-predicates
-is_character <- function(x, n = NULL) {
+is_character <- function(x, n = NULL, encoding = NULL) {
   if (typeof(x) != "character") return(FALSE)
   if (!is_null(n) && length(x) != n) return(FALSE)
+  stopifnot(typeof(encoding) %in% c("character", "NULL"))
+  if (!is_null(encoding) && !all(chr_encoding(x) %in% encoding)) return(FALSE)
   TRUE
 }
-
 #' @export
 #' @rdname type-predicates
 is_logical <- function(x, n = NULL) {
@@ -78,6 +78,16 @@ is_logical <- function(x, n = NULL) {
   if (!is_null(n) && length(x) != n) return(FALSE)
   TRUE
 }
+#' @export
+#' @rdname type-predicates
+is_raw <- function(x, n = NULL) {
+  if (typeof(x) != "raw") return(FALSE)
+  if (!is_null(n) && length(x) != n) return(FALSE)
+  TRUE
+}
+#' @export
+#' @rdname type-predicates
+is_bytes <- is_raw
 
 #' @export
 #' @rdname type-predicates
@@ -89,6 +99,7 @@ is_null <- function(x) {
 #'
 #' These predicates check for a given type and whether the vector is
 #' "scalar", that is, of length 1.
+#' @inheritParams type-predicates
 #' @param x object to be tested.
 #' @seealso \link{type-predicates} \link{bare-type-predicates}
 #' @name scalar-type-predicates
@@ -99,42 +110,47 @@ NULL
 is_scalar_list <- function(x) {
   is_list(x) && length(x) == 1
 }
-
 #' @export
 #' @rdname scalar-type-predicates
 is_scalar_atomic <- function(x) {
   is_atomic(x) && length(x) == 1
 }
-
 #' @export
 #' @rdname scalar-type-predicates
 is_scalar_vector <- function(x) {
   is_vector(x) && length(x) == 1
 }
-
 #' @export
 #' @rdname scalar-type-predicates
 is_scalar_integer <- function(x) {
   is_integer(x) && length(x) == 1
 }
-
 #' @export
 #' @rdname scalar-type-predicates
 is_scalar_double <- function(x) {
   is_double(x) && length(x) == 1
 }
-
 #' @export
 #' @rdname scalar-type-predicates
-is_scalar_character <- function(x) {
-  is_character(x) && length(x) == 1
+is_scalar_character <- function(x, encoding = NULL) {
+  is_character(x, encoding = encoding) && length(x) == 1
 }
-
 #' @export
 #' @rdname scalar-type-predicates
 is_scalar_logical <- function(x) {
   is_logical(x) && length(x) == 1
 }
+#' @export
+#' @rdname scalar-type-predicates
+is_scalar_raw <- function(x) {
+  is_raw(x) && length(x) == 1
+}
+#' @export
+#' @rdname scalar-type-predicates
+is_string <- is_scalar_character
+#' @export
+#' @rdname scalar-type-predicates
+is_scalar_bytes <- is_scalar_raw
 
 #' Bare type predicates
 #'
@@ -161,49 +177,55 @@ NULL
 is_bare_list <- function(x, n = NULL) {
   !is.object(x) && is_list(x, n)
 }
-
 #' @export
 #' @rdname bare-type-predicates
 is_bare_atomic <- function(x, n = NULL) {
   !is.object(x) && is_atomic(x, n)
 }
-
 #' @export
 #' @rdname bare-type-predicates
 is_bare_vector <- function(x, n = NULL) {
   is_bare_atomic(x) || is_bare_list(x, n)
 }
-
 #' @export
 #' @rdname bare-type-predicates
 is_bare_double <- function(x, n = NULL) {
   !is.object(x) && is_double(x, n)
 }
-
 #' @export
 #' @rdname bare-type-predicates
 is_bare_integer <- function(x, n = NULL) {
   !is.object(x) && is_integer(x, n)
 }
-
 #' @export
 #' @rdname bare-type-predicates
 is_bare_numeric <- function(x, n = NULL) {
   if (!is_null(n) && length(x) != n) return(FALSE)
   !is.object(x) && typeof(x) %in% c("double", "integer")
 }
-
 #' @export
 #' @rdname bare-type-predicates
-is_bare_character <- function(x, n = NULL) {
-  !is.object(x) && is_character(x, n)
+is_bare_character <- function(x, n = NULL, encoding = NULL) {
+  !is.object(x) && is_character(x, n, encoding = encoding)
 }
-
 #' @export
 #' @rdname bare-type-predicates
 is_bare_logical <- function(x, n = NULL) {
   !is.object(x) && is_logical(x, n)
 }
+#' @export
+#' @rdname bare-type-predicates
+is_bare_raw <- function(x, n = NULL) {
+  !is.object(x) && is_raw(x, n)
+}
+#' @export
+#' @rdname bare-type-predicates
+is_bare_string <- function(x, n = NULL) {
+  !is.object(x) && is_string(x, n)
+}
+#' @export
+#' @rdname bare-type-predicates
+is_bare_bytes <- is_bare_raw
 
 
 #' Is object an empty vector or NULL?

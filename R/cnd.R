@@ -288,6 +288,7 @@ warn <- function(msg, type = NULL, call = FALSE) {
 #' @rdname abort
 #' @export
 inform <- function(msg, type = NULL, call = FALSE) {
+  msg <- paste0(msg, "\n")
   cnd <- cnd_message(type, .msg = msg, .call = sys.call(-1))
   if (call) {
     cnd$call <- cnd$.call

@@ -9,6 +9,9 @@
 \alias{is_scalar_double}
 \alias{is_scalar_character}
 \alias{is_scalar_logical}
+\alias{is_scalar_raw}
+\alias{is_string}
+\alias{is_scalar_bytes}
 \title{Scalar type predicates}
 \usage{
 is_scalar_list(x)
@@ -21,12 +24,21 @@ is_scalar_integer(x)
 
 is_scalar_double(x)
 
-is_scalar_character(x)
+is_scalar_character(x, encoding = NULL)
 
 is_scalar_logical(x)
+
+is_scalar_raw(x)
+
+is_string(x, encoding = NULL)
+
+is_scalar_bytes(x)
 }
 \arguments{
 \item{x}{object to be tested.}
+
+\item{encoding}{Expected encoding of a string or character
+vector. One of \code{UTF-8}, \code{latin1}, or \code{unknown}.}
 }
 \description{
 These predicates check for a given type and whether the vector is

@@ -229,9 +229,9 @@ as_name.name <- function(x) {
 #' @export
 as_name.character <- function(x) {
   if (!is_scalar_character(x)) {
-    stop("Cannot parse character vector of length > 1", call. = FALSE)
+    abort("Cannot parse character vector of length > 1")
   }
-  as.name(x)
+  symbol(x)
 }
 #' @export
 as_name.call <- function(x) {
