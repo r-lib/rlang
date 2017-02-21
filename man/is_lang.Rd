@@ -3,7 +3,6 @@
 \name{is_lang}
 \alias{is_lang}
 \alias{is_language}
-\alias{is_name}
 \alias{is_symbol}
 \alias{is_parsable_literal}
 \alias{is_symbolic}
@@ -13,8 +12,6 @@
 is_lang(x)
 
 is_language(x)
-
-is_name(x)
 
 is_symbol(x)
 
@@ -87,7 +84,7 @@ is_parsable_literal(q1)
 
 q2 <- quote(x)
 is_lang(q2)
-is_name(q2)
+is_symbol(q2)
 
 q3 <- quote(x + 1)
 is_lang(q3)
@@ -97,9 +94,9 @@ is_call(q3)
 # Since tidy quotes are an important way of representing
 # expressions in R, all language predicates will test the RHS of
 # the formula if you supply one:
-is_name(~foo)
+is_symbol(~foo)
 is_call(~foo)
-is_name(~foo(bar))
+is_symbol(~foo(bar))
 is_call(~foo(bar))
 
 

@@ -254,7 +254,7 @@ is_formula <- function(x) {
   }
 
   head <- x[[1]]
-  if (!is_name(head)) {
+  if (!is_symbol(head)) {
     return(FALSE)
   }
 

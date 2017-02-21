@@ -63,7 +63,7 @@
 #'
 #' q2 <- quote(x)
 #' is_lang(q2)
-#' is_name(q2)
+#' is_symbol(q2)
 #'
 #' q3 <- quote(x + 1)
 #' is_lang(q3)
@@ -73,9 +73,9 @@
 #' # Since tidy quotes are an important way of representing
 #' # expressions in R, all language predicates will test the RHS of
 #' # the formula if you supply one:
-#' is_name(~foo)
+#' is_symbol(~foo)
 #' is_call(~foo)
-#' is_name(~foo(bar))
+#' is_symbol(~foo(bar))
 #' is_call(~foo(bar))
 #'
 #'
@@ -122,13 +122,10 @@ is_lang <- function(x) {
 is_language <- is_lang
 #' @rdname is_lang
 #' @export
-is_name <- function(x) {
+is_symbol <- function(x) {
   x <- expr(x)
   typeof(x) == "symbol"
 }
-#' @rdname is_lang
-#' @export
-is_symbol <- is_name
 #' @export
 #' @rdname is_lang
 is_parsable_literal <- function(x) {
@@ -318,7 +315,7 @@ as_call.formula <- function(x) {
 
 is_prefixed_name <- function(x) {
   fn <- x[[1]]
-  if (is_name(fn)) {
+  if (is_symbol(fn)) {
     as_character(fn) %in% c("::", ":::", "$", "@")
   } else {
     FALSE
