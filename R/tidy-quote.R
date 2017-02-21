@@ -312,3 +312,8 @@ as_tidy_quote <- function(x, env) {
 is_tidy_quote <- function(x) {
   is_formula(x) && is_env(f_env(x))
 }
+
+# A slimmer and more permissive predicate for internal use
+is_tidy_quote_ <- function(x) {
+  typeof(x) == "language" && identical(car(x), quote(`~`))
+}

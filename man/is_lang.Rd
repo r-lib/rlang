@@ -25,7 +25,9 @@ is_symbolic(x)
 is_pairlist(x)
 }
 \arguments{
-\item{x}{An object to test.}
+\item{x}{An object to test. When you supply a tidy quote (see
+\code{\link{tidy_quote}()}) to any of the language predicates,
+they will perform their test on the RHS of the formula.}
 }
 \description{
 These helpers are consistent wrappers around their base R
@@ -90,6 +92,15 @@ is_name(q2)
 q3 <- quote(x + 1)
 is_lang(q3)
 is_call(q3)
+
+
+# Since tidy quotes are an important way of representing
+# expressions in R, all language predicates will test the RHS of
+# the formula if you supply one:
+is_name(~foo)
+is_call(~foo)
+is_name(~foo(bar))
+is_call(~foo(bar))
 
 
 # Atomic language objects are the terminating nodes of a call

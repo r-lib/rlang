@@ -49,7 +49,9 @@
 #' list of a closure with \code{\link[base]{formals}()} or
 #' \code{\link{fn_fmls}()}.
 #'
-#' @param x An object to test.
+#' @param x An object to test. When you supply a tidy quote (see
+#'   \code{\link{tidy_quote}()}) to any of the language predicates,
+#'   they will perform their test on the RHS of the formula.
 #' @seealso \code{\link{is_call}()} for a call predicate.
 #'   \code{\link{as_name}()} and \code{\link{as_call}()} for coercion
 #'   functions.
@@ -66,6 +68,15 @@
 #' q3 <- quote(x + 1)
 #' is_lang(q3)
 #' is_call(q3)
+#'
+#'
+#' # Since tidy quotes are an important way of representing
+#' # expressions in R, all language predicates will test the RHS of
+#' # the formula if you supply one:
+#' is_name(~foo)
+#' is_call(~foo)
+#' is_name(~foo(bar))
+#' is_call(~foo(bar))
 #'
 #'
 #' # Atomic language objects are the terminating nodes of a call
@@ -103,6 +114,7 @@
 #' # Note that you can also extract call arguments as a pairlist:
 #' call_args_lsp(quote(fn(arg1, arg2 = "foo")))
 is_lang <- function(x) {
+  x <- expr(x)
   is_symbolic(x) || is_parsable_literal(x)
 }
 #' @rdname is_lang
@@ -111,6 +123,7 @@ is_language <- is_lang
 #' @rdname is_lang
 #' @export
 is_name <- function(x) {
+  x <- expr(x)
   typeof(x) == "symbol"
 }
 #' @rdname is_lang
@@ -119,11 +132,13 @@ is_symbol <- is_name
 #' @export
 #' @rdname is_lang
 is_parsable_literal <- function(x) {
+  x <- expr(x)
   typeof(x) == "NULL" || (length(x) == 1 && typeof(x) %in% parsable_atomic_types)
 }
 #' @export
 #' @rdname is_lang
 is_symbolic <- function(x) {
+  x <- expr(x)
   typeof(x) %in% c("language", "symbol")
 }
 
@@ -190,9 +205,7 @@ is_pairlist <- function(x) {
 #' is_call(~foo(bar), c("bar", "foo"))
 #' is_call(~base::list, c("::", ":::", "$", "@"))
 is_call <- function(x, name = NULL, n = NULL) {
-  if (is_formula(x)) {
-    x <- f_rhs(x)
-  }
+  x <- expr(x)
 
   if (typeof(x) != "language") {
     return(FALSE)
@@ -294,7 +307,7 @@ as_call.call <- function(x) {
 #' @export
 as_call.character <- function(x) {
   if (!is_scalar_character(x)) {
-    stop("Cannot parse character vector of length > 1", call. = FALSE)
+    abort("Cannot parse character vector of length > 1")
   }
   parse_expr(x)
 }
@@ -310,4 +323,8 @@ is_prefixed_name <- function(x) {
   } else {
     FALSE
   }
+}
+
+expr <- function(x) {
+  if (is_tidy_quote_(x)) f_rhs(x) else x
 }
