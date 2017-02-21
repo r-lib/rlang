@@ -4,7 +4,7 @@
 \alias{call_modify}
 \title{Modify the arguments of a call.}
 \usage{
-call_modify(.call = NULL, ..., .args = list(), .env = NULL)
+call_modify(.call = caller_frame(), ..., .args = list())
 }
 \arguments{
 \item{.call}{Can be a call, a formula quoting a call in the
@@ -14,11 +14,6 @@ expression. If not supplied, the calling frame is used.}
 \item{..., .args}{Named expressions (constants, names or
 calls) used to modify the call. Use \code{NULL} to remove
 arguments.}
-
-\item{.env}{Environment in which to look up call the function
-definition and the contents of \code{...}. If not supplied, it is
-retrieved from \code{call} if the latter is a frame object or a
-formula.}
 }
 \description{
 Modify the arguments of a call.

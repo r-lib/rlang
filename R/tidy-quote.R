@@ -304,6 +304,8 @@ as_tidy_quote <- function(x, env) {
       f_env(x) <- env
     }
     x
+  } else if (is_frame(x)) {
+    new_tidy_quote(x$expr, x$env)
   } else {
     new_tidy_quote(x, env)
   }

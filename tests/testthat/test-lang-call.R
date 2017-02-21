@@ -1,4 +1,4 @@
-context("call")
+context("lang-call")
 
 # Creation ----------------------------------------------------------------
 
@@ -205,6 +205,15 @@ test_that("can modify without supplying `call`", {
   expect_identical(f(), quote(f(bool = FALSE)))
 })
 
+test_that("can modify calls for primitive functions", {
+  expect_identical(call_modify(~list(), foo = "bar"), quote(list(foo = "bar")))
+})
+
+test_that("can modify calls for functions containing dots", {
+  expect_identical(call_modify(~mean(), na.rm = TRUE), quote(mean(na.rm = TRUE)))
+})
+
+
 # Utils --------------------------------------------------------------
 
 test_that("call_name() handles namespaced and anonymous calls", {
@@ -219,8 +228,11 @@ test_that("call_name() handles namespaced and anonymous calls", {
   expect_null(call_name(quote((function() NULL)())))
 })
 
-test_that("call_name() handles formulas", {
+test_that("call_name() handles formulas and frames", {
   expect_identical(call_name(~foo(baz)), "foo")
+
+  fn <- function() call_name()
+  expect_identical(fn(), "fn")
 })
 
 test_that("call_fn() extracts function", {

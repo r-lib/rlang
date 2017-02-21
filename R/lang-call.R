@@ -263,10 +263,6 @@ new_call <- function(.fn, ..., .args = list()) {
 #' @param .call Can be a call, a formula quoting a call in the
 #'   right-hand side, or a frame object from which to extract the call
 #'   expression. If not supplied, the calling frame is used.
-#' @param .env Environment in which to look up call the function
-#'   definition and the contents of \code{...}. If not supplied, it is
-#'   retrieved from \code{call} if the latter is a frame object or a
-#'   formula.
 #' @param ...,.args Named expressions (constants, names or
 #'   calls) used to modify the call. Use \code{NULL} to remove
 #'   arguments.
@@ -295,16 +291,32 @@ new_call <- function(.fn, ..., .args = list()) {
 #' # If the call is missing, the parent frame is used instead.
 #' f <- function(bool = TRUE) call_modify(.args = list(bool = FALSE))
 #' f()
-call_modify <- function(.call = NULL, ..., .args = list(), .env = NULL) {
-  stopifnot(is.list(.args))
+call_modify <- function(.call = caller_frame(), ..., .args = list()) {
+  stopifnot(is_list(.args))
   args <- c(list(...), .args)
-
-  call <- .call %||% call_frame(2)
-  call <- call_standardise(call, .env)
-
   if (!is_named(args)) {
-    stop("All new arguments must be named", call. = FALSE)
+    abort("All new arguments must be named")
   }
+
+  call <- as_tidy_quote(.call, caller_env())
+
+  expr <- f_rhs(call)
+  expr <- switchpatch(expr,
+    symbol = new_call(expr),
+    language = expr,
+    abort("`.call` must be a call or symbol")
+  )
+
+  # The call name might be a literal, not necessarily a symbol
+  fn <- call_name(expr)
+  fn <- switchpatch(fn,
+    character = get(fn, envir = f_env(call), mode = "function", inherits = TRUE),
+    builtin = ,
+    special = ,
+    closure = fn,
+    abort("Cannot extract a function to compare the call to")
+  )
+  call <- match.call(as_closure(fn), expr(call))
 
   for (nm in names(args)) {
     call[[nm]] <- args[[nm]]
@@ -360,12 +372,17 @@ call_fn <- function(call = NULL, env = NULL) {
 #' call_name(~foo[[bar]]())
 #' call_name(~foo()())
 call_name <- function(call = NULL) {
-  if (!is_call(call)) {
+  call <- switchpatch(call,
+    `NULL` =
+      caller_frame()$expr,
+    language =
+      if (is_tidy_quote(call)) {
+        f_rhs(call)
+      } else {
+        call
+      },
     abort("`call` must be a call or a tidy quote of a call")
-  }
-  if (is_tidy_quote_(call)) {
-    call <- f_rhs(call)
-  }
+  )
 
   fn <- car(call)
 
@@ -381,7 +398,7 @@ call_name <- function(call = NULL) {
     }
   }
 
-  if (!is.symbol(fn)) {
+  if (!is_symbol(fn)) {
     # Inlined closures: (function() {})()
     return(NULL)
   }

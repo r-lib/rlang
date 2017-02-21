@@ -1,4 +1,4 @@
-context("language")
+context("lang")
 
 test_that("NULL is a valid language object", {
   expect_true(is_expr(NULL))
