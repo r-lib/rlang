@@ -219,6 +219,10 @@ test_that("call_name() handles namespaced and anonymous calls", {
   expect_null(call_name(quote((function() NULL)())))
 })
 
+test_that("call_name() handles formulas", {
+  expect_identical(call_name(~foo(baz)), "foo")
+})
+
 test_that("call_fn() extracts function", {
   fn <- function() call_fn()
   expect_identical(fn(), fn)

@@ -360,16 +360,20 @@ call_fn <- function(call = NULL, env = NULL) {
 #' call_name(~foo[[bar]]())
 #' call_name(~foo()())
 call_name <- function(call = NULL) {
-  info <- call_info(call, NULL)
-  stopifnot(is.call(info$call))
+  if (!is_call(call)) {
+    abort("`call` must be a call or a tidy quote of a call")
+  }
+  if (is_tidy_quote_(call)) {
+    call <- f_rhs(call)
+  }
 
-  fn <- info$call[[1]]
+  fn <- car(call)
 
   if (is.call(fn)) {
     if (identical(fn[[1]], quote(`::`)) ||
         identical(fn[[1]], quote(`:::`))) {
       # Namespaced calls: foo::bar(), foo:::bar()
-      return(as.character(fn[[3]]))
+      return(as_character(fn[[3]]))
     } else {
       # Subsetted calls: foo@bar(), foo$bar()
       # Anomymous calls: foo[[bar]](), foo()()
@@ -382,7 +386,7 @@ call_name <- function(call = NULL) {
     return(NULL)
   }
 
-  as.character(fn)
+  as_character(fn)
 }
 
 #' Extract arguments from a call
