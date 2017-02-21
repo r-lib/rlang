@@ -72,19 +72,7 @@ prim_name <- function(prim) {
 #' fn_fmls(base::switch)
 fn_fmls <- function(fn = NULL) {
   fn <- fn %||% call_frame(2)$fn
-
-  if (is_primitive(fn)) {
-    fn_name <- prim_name(fn)
-    if (fn_name == "eval") {
-      # do_eval() starts a context with a fake primitive function as
-      # function definition. We replace it here with the .Internal()
-      # wrapper of eval() so we can match the arguments.
-      fn <- base::eval
-    } else {
-      fn <- .ArgsEnv[[fn_name]] %||% .GenericArgsEnv[[fn_name]]
-    }
-  }
-
+  fn <- as_closure(fn)
   formals(fn)
 }
 
@@ -186,6 +174,41 @@ is_function <- function(x) {
 #' @rdname is_function
 is_closure <- function(x) {
   typeof(x) == "closure"
+}
+#' Convert to closure.
+#'
+#' Convert an object to a closure. This is especially useful to
+#' normalise primitive functions to a proper closure (see
+#' \code{\link{is_function}()} about primitive functions).
+#'
+#' @param x A function or a string. In the latter case, the function
+#'   is looked up in the calling environment.
+#' @export
+#' @examples
+#' as_closure(list)
+as_closure <- function(x) {
+  switchpatch(x, .to = "closure",
+    closure =
+      x,
+    builtin =,
+    special = {
+      fn_name <- prim_name(x)
+      if (fn_name == "eval") {
+        # do_eval() starts a context with a fake primitive function as
+        # function definition. We replace it here with the .Internal()
+        # wrapper of eval() so we can match the arguments.
+        base::eval
+      } else {
+        .ArgsEnv[[fn_name]] %||% .GenericArgsEnv[[fn_name]]
+      }
+    },
+    character =
+      if (length(x) == 1) {
+        as_closure(get(x, envir = caller_env(), x, mode = "function"))
+      } else {
+        abort("Character vectors must be scalar for coercion to a closure")
+      }
+  )
 }
 
 #' @export
