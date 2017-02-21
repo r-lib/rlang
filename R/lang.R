@@ -1,9 +1,11 @@
 #' Is an object a language object?
 #'
 #' These helpers are consistent wrappers around their base R
-#' equivalents. A language object is either an atomic vector
-#' (typically a scalar), a name (aka a symbol), a call, or a pairlist
-#' (used for function arguments).
+#' equivalents. A language object is either a scalar atomic vector a
+#' name (aka a symbol) or a call. Formally, \code{is_lang()} (and its
+#' alias \code{is_language()}) returns \code{\link{TRUE}} for the set
+#' of R objects that you can obtain from parsing a string or R source
+#' file.
 #'
 #' \code{is_literal()} is a predicate that returns \code{TRUE} for the
 #' subset of literals that are created by R when parsing text (see
@@ -33,13 +35,16 @@
 #' \code{\link{tidy_capture}()}, then you can check for literals with
 #' \code{is_parsable_literal()}.
 #'
-#' Finally, pairlists can also be language objects. This is the data
-#' structure for function arguments. They usually do not arise from R
-#' code because subsetting a call is a type-preserving
+#' Finally, pairlists can also be language objects. However, since
+#' they are mostly an internal data structure, \code{is_lang()}
+#' returns \code{FALSE} for pairlists. You can use
+#' \code{is_pairlist()} to explicitly check for them. Pairlists are
+#' the data structure for function arguments. They usually do not
+#' arise from R code because subsetting a call is a type-preserving
 #' operation. However, you can obtain the pairlist of arguments by
 #' taking the CDR of the call object from C code. The rlang function
-#' \code{\link{call_args_lsp}()} will do it from R. Another way
-#' in which pairlist of arguments arise is by extracting the argument
+#' \code{\link{call_args_lsp}()} will do it from R. Another way in
+#' which pairlist of arguments arise is by extracting the argument
 #' list of a closure with \code{\link[base]{formals}()} or
 #' \code{\link{fn_fmls}()}.
 #'
@@ -87,12 +92,17 @@
 #' # You will usually encounter them with extracted formals:
 #' fmls <- formals(is_lang)
 #' typeof(fmls)
-#' is_lang(fmls)
 #'
-#' # You can also extract call arguments as a pairlist:
+#' # Since they are mostly an internal data structure, is_lang()
+#' # returns FALSE for pairlists, so you will have to check explicitly
+#' # for them:
+#' is_lang(fmls)
+#' is_pairlist(fmls)
+#'
+#' # Note that you can also extract call arguments as a pairlist:
 #' call_args_lsp(quote(fn(arg1, arg2 = "foo")))
 is_lang <- function(x) {
-  is_symbolic(x) || is_pairlist(x) || is_parsable_literal(x)
+  is_symbolic(x) || is_parsable_literal(x)
 }
 #' @rdname is_lang
 #' @export
@@ -105,11 +115,6 @@ is_name <- function(x) {
 #' @rdname is_lang
 #' @export
 is_symbol <- is_name
-#' @rdname is_lang
-#' @export
-is_pairlist <- function(x) {
-  typeof(x) == "pairlist"
-}
 #' @export
 #' @rdname is_lang
 is_parsable_literal <- function(x) {
@@ -119,6 +124,12 @@ is_parsable_literal <- function(x) {
 #' @rdname is_lang
 is_symbolic <- function(x) {
   typeof(x) %in% c("language", "symbol")
+}
+
+#' @rdname is_lang
+#' @export
+is_pairlist <- function(x) {
+  typeof(x) == "pairlist"
 }
 
 #' Is object a call?
