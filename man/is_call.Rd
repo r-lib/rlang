@@ -17,7 +17,7 @@ is_binary_call(x, name = NULL)
 extracted.}
 
 \item{name}{An optional name that the call should match. It is
-passed to \code{\link{as_name}()} before matching. This argument
+passed to \code{\link{as_symbol}()} before matching. This argument
 is vectorised and you can supply a vector of names to match. In
 this case, \code{is_call()} returns \code{TRUE} if at least one
 name matches.}
@@ -54,11 +54,11 @@ is_unary_call(~ 1 + 3)
 is_binary_call(~ 1 + 3)
 
 # Namespaced calls are a bit tricky. Strings won't work because
-# as_name("base::list") returns a symbol rather than a namespace
+# as_symbol("base::list") returns a symbol rather than a namespace
 # call:
 is_call(~base::list(baz), "base::list")
 
-# However you can use the fact that as_name(quote(base::list()))
+# However you can use the fact that as_symbol(quote(base::list()))
 # extracts the function identifier as is, and thus returns the call
 # base::list:
 is_call(~base::list(baz), ~base::list(), 1)

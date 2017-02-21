@@ -137,6 +137,6 @@ call_args_lsp(quote(fn(arg1, arg2 = "foo")))
 }
 \seealso{
 \code{\link{is_call}()} for a call predicate.
-  \code{\link{as_name}()} and \code{\link{as_call}()} for coercion
+  \code{\link{as_symbol}()} and \code{\link{as_call}()} for coercion
   functions.
 }

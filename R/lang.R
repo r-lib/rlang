@@ -53,7 +53,7 @@
 #'   \code{\link{tidy_quote}()}) to any of the language predicates,
 #'   they will perform their test on the RHS of the formula.
 #' @seealso \code{\link{is_call}()} for a call predicate.
-#'   \code{\link{as_name}()} and \code{\link{as_call}()} for coercion
+#'   \code{\link{as_symbol}()} and \code{\link{as_call}()} for coercion
 #'   functions.
 #' @export
 #' @examples
@@ -156,7 +156,7 @@ is_pairlist <- function(x) {
 #' @param x An object to test. If a formula, the right-hand side is
 #'   extracted.
 #' @param name An optional name that the call should match. It is
-#'   passed to \code{\link{as_name}()} before matching. This argument
+#'   passed to \code{\link{as_symbol}()} before matching. This argument
 #'   is vectorised and you can supply a vector of names to match. In
 #'   this case, \code{is_call()} returns \code{TRUE} if at least one
 #'   name matches.
@@ -186,11 +186,11 @@ is_pairlist <- function(x) {
 #' is_binary_call(~ 1 + 3)
 #'
 #' # Namespaced calls are a bit tricky. Strings won't work because
-#' # as_name("base::list") returns a symbol rather than a namespace
+#' # as_symbol("base::list") returns a symbol rather than a namespace
 #' # call:
 #' is_call(~base::list(baz), "base::list")
 #'
-#' # However you can use the fact that as_name(quote(base::list()))
+#' # However you can use the fact that as_symbol(quote(base::list()))
 #' # extracts the function identifier as is, and thus returns the call
 #' # base::list:
 #' is_call(~base::list(baz), ~base::list(), 1)
@@ -216,7 +216,7 @@ is_call <- function(x, name = NULL, n = NULL) {
 
     unmatched <- TRUE
     for (elt in name) {
-      if (identical(x[[1]], as_name(elt))) {
+      if (identical(x[[1]], as_symbol(elt))) {
         unmatched <- FALSE
         break
       }
@@ -256,40 +256,40 @@ is_binary_call <- function(x, name = NULL) {
 #' @param x An object to coerce
 #' @export
 #' @examples
-#' as_name("x + y")
+#' as_symbol("x + y")
 #' as_call("x + y")
 #'
 #' as_call(~ f)
-#' as_name(~ f())
-as_name <- function(x) {
-  UseMethod("as_name")
+#' as_symbol(~ f())
+as_symbol <- function(x) {
+  UseMethod("as_symbol")
 }
 #' @export
-as_name.name <- function(x) {
+as_symbol.name <- function(x) {
   x
 }
 #' @export
-as_name.character <- function(x) {
+as_symbol.character <- function(x) {
   if (!is_string(x)) {
     abort("Cannot parse character vector of length > 1")
   }
   symbol(x)
 }
 #' @export
-as_name.call <- function(x) {
+as_symbol.call <- function(x) {
   if (is_prefixed_name(x)) {
     x
   } else {
-    as_name(x[[1]])
+    as_symbol(x[[1]])
   }
 }
 #' @export
-as_name.formula <- function(x) {
-  as_name(f_rhs(x))
+as_symbol.formula <- function(x) {
+  as_symbol(f_rhs(x))
 }
 
 #' @export
-#' @rdname as_name
+#' @rdname as_symbol
 as_call <- function(x) {
   UseMethod("as_call")
 }
