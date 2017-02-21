@@ -7,6 +7,7 @@
 \alias{is_symbol}
 \alias{is_pairlist}
 \alias{is_parsable_literal}
+\alias{is_symbolic}
 \title{Is an object a language object?}
 \usage{
 is_lang(x)
@@ -20,6 +21,8 @@ is_symbol(x)
 is_pairlist(x)
 
 is_parsable_literal(x)
+
+is_symbolic(x)
 }
 \arguments{
 \item{x}{An object to test.}

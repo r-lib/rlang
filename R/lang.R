@@ -115,6 +115,10 @@ is_pairlist <- function(x) {
 is_parsable_literal <- function(x) {
   typeof(x) == "NULL" || (length(x) == 1 && typeof(x) %in% parsable_atomic_types)
 }
+#' @export
+#' @rdname is_lang
+is_symbolic <- function(x) {
+  typeof(x) %in% c("language", "symbol")
 }
 
 #' Is object a call?
