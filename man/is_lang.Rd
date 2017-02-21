@@ -2,6 +2,7 @@
 % Please edit documentation in R/lang.R
 \name{is_lang}
 \alias{is_lang}
+\alias{is_language}
 \alias{is_name}
 \alias{is_symbol}
 \alias{is_pairlist}
@@ -9,6 +10,8 @@
 \title{Is an object a language object?}
 \usage{
 is_lang(x)
+
+is_language(x)
 
 is_name(x)
 

@@ -96,6 +96,9 @@ is_lang <- function(x) {
 }
 #' @rdname is_lang
 #' @export
+is_language <- is_lang
+#' @rdname is_lang
+#' @export
 is_name <- function(x) {
   typeof(x) == "symbol"
 }
