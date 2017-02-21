@@ -216,13 +216,19 @@ str_encoding <- function(x) {
 #' encoding conversions when R or packages handle strings (see
 #' \code{\link{str_set_encoding}()} for some examples).
 #'
+#' If you are changing the locale encoding for testing purposes, you
+#' need to be aware that R caches strings and symbols to save
+#' memory. If you change the locale during an R session, it can lead
+#' to surprising and difficult to reproduce results. In doubt, restart
+#' your R session.
+#'
 #' Note that these helpers are only provided for testing interactively
 #' the effects of changing locale codeset. They let you quickly change
 #' the default text encoding to latin1, UTF-8, or non-UTF-8 MBCS. They
 #' are not widely tested and do not provide a way of setting the
 #' language and region of the locale. They have permanent side effects
-#' and should not be used in package examples, unit tests, or in the
-#' course of a data analysis. Note finally that
+#' and should probably not be used in package examples, unit tests, or
+#' in the course of a data analysis. Note finally that
 #' \code{set_utf8_locale()} will not work on Windows as only latin1
 #' and MBCS locales are supported on this OS.
 #'
