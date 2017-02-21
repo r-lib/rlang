@@ -331,3 +331,11 @@ is_bare_integerish <- function(x, n = NULL) {
 is_scalar_integerish <- function(x) {
   !is.object(x) && is_integerish(x, 1L)
 }
+
+switchpatch <- function(x, ...) {
+  switch(typeof(x), ..., abort_switchpatch(x))
+}
+abort_switchpatch <- function(x) {
+  msg <- paste0("Cannot convert objects of type `", typeof(x), "` to symbol")
+  abort(msg, "rlang_switchpatch")
+}

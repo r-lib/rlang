@@ -295,9 +295,3 @@ inform <- function(msg, type = NULL, call = FALSE) {
   }
   message(cnd)
 }
-
-
-abort_switchpatch <- function(x) {
-  msg <- paste0("Cannot convert objects of type `", typeof(x), "` to symbol")
-  abort(msg, "rlang_dispatch")
-}

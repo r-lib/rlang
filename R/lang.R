@@ -265,7 +265,7 @@ is_binary_call <- function(x, name = NULL) {
 #' as_call(~ f)
 #' as_symbol(~ f())
 as_symbol <- function(x) {
-  switch(typeof(x),
+  switchpatch(x,
     symbol = x,
     character =
       if (length(x) == 1) {
@@ -280,8 +280,7 @@ as_symbol <- function(x) {
         x
       } else {
         as_symbol(x[[1]])
-      },
-    abort_switchpatch(x)
+      }
   )
 }
 #' @export
