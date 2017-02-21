@@ -716,6 +716,22 @@ ns_env_name <- function(pkg = NULL) {
   unname(getNamespaceName(pkg))
 }
 
+#' Is a package installed in the library?
+#'
+#' This checks that a package is installed with minimal side effects.
+#' If installed, the package will be loaded but not attached.
+#'
+#' @param pkg The name of a package.
+#' @return \code{TRUE} if the package is installed, \code{FALSE}
+#'   otherwise.
+#' @export
+#' @examples
+#' is_installed("utils")
+#' is_installed("ggplot5")
+is_installed <- function(pkg) {
+  is_true(requireNamespace(pkg, quietly = TRUE))
+}
+
 
 #' Evaluate an expression within a given environment.
 #'
