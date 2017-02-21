@@ -250,11 +250,11 @@ call_match_args <- function(args_nms, fmls_nms) {
 #' new_call(quote(f), a = 1, b = 2)
 #' new_call(quote(f), .args = list(a = 1, b = 2))
 new_call <- function(.fn, ..., .args = list()) {
-  if (is.character(.fn)) {
+  if (is_character(.fn)) {
     if (length(.fn) != 1) {
-      stop("Character `.fn` must be length 1", call. = FALSE)
+      abort("Character `.fn` must be length 1")
     }
-    .fn <- as.name(.fn)
+    .fn <- as_symbol(.fn)
   }
 
   args <- c(list(...), as.list(.args))
@@ -302,24 +302,14 @@ call_modify <- function(.call = caller_frame(), ..., .args = list()) {
   }
 
   call <- as_tidy_quote(.call, caller_env())
-
   expr <- f_rhs(call)
-  expr <- switchpatch(expr,
+  f_rhs(call) <- switchpatch(expr,
     symbol = new_call(expr),
     language = expr,
-    abort("`.call` must be a call or symbol")
+    abort("`.call` must be a quote of a call or symbol")
   )
 
-  # The call name might be a literal, not necessarily a symbol
-  fn <- call_name(expr)
-  fn <- switchpatch(fn,
-    character = get(fn, envir = f_env(call), mode = "function", inherits = TRUE),
-    builtin = ,
-    special = ,
-    closure = fn,
-    abort("Cannot extract a function to compare the call to")
-  )
-  call <- match.call(as_closure(fn), expr(call))
+  call <- call_standardise(call)
 
   for (nm in names(args)) {
     call[[nm]] <- args[[nm]]
@@ -327,9 +317,36 @@ call_modify <- function(.call = caller_frame(), ..., .args = list()) {
   call
 }
 
+#' Standardise a call.
+#'
+#' This is essentially equivalent to \code{\link[base]{match.call}()},
+#' but handles primitive functions more gracefully.
+#'
+#' @param call Can be a call, a formula quoting a call in the
+#'   right-hand side, or a frame object from which to extract the call
+#'   expression. If not supplied, the calling frame is used.
+#' @seealso \code{\link{call_homogenise}()} for a version more
+#'   suitable to language analysis.
+#' @export
+call_standardise <- function(call = caller_frame()) {
+  call <- as_tidy_quote(call, caller_env())
+
+  # The call name might be a literal, not necessarily a symbol
+  fn <- call_name(call)
+  fn <- switchpatch(fn,
+    character = get(fn, envir = f_env(call), mode = "function", inherits = TRUE),
+    builtin = ,
+    special = ,
+    closure = fn,
+    abort("Cannot extract a function to compare the call to")
+  )
+
+  match.call(as_closure(fn), expr(call))
+}
+
 #' Extract function from a call
 #'
-#' @inheritParams call_homogenise
+#' @inheritParams call_standardise
 #' @param env Environment in which to look up the function. The
 #'   default is the calling frame.
 #' @export
@@ -353,7 +370,7 @@ call_fn <- function(call = NULL, env = NULL) {
 
 #' Extract function name of a call
 #'
-#' @inheritParams call_homogenise
+#' @inheritParams call_standardise
 #' @return A string with the function name, or \code{NULL} if the
 #'   function is anonymous.
 #' @seealso \code{\link{call_fn}}()
