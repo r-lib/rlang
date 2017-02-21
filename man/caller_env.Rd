@@ -2,9 +2,12 @@
 % Please edit documentation in R/stack.R
 \name{caller_env}
 \alias{caller_env}
+\alias{caller_frame}
 \title{Get the environment of the caller frame.}
 \usage{
 caller_env(n = 1)
+
+caller_frame(n = 1)
 }
 \arguments{
 \item{n}{The number of generation to go back. Note that contrarily
@@ -12,7 +15,9 @@ to \code{\link{call_frame}()}, 1 represents the parent frame
 rather than the current frame.}
 }
 \description{
-This is a shortcut for \code{\link{call_frame}(2)$env}.
+\code{caller_frame()} is a shortcut for \code{\link{call_frame}(2)}
+and \code{caller_env()} is a shortcut for
+\code{\link{call_frame}(2)$env}.
 }
 \seealso{
 \code{\link{call_frame}()}
