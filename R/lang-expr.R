@@ -125,10 +125,15 @@ expr_text <- function(expr, width = 60L, nlines = Inf) {
   paste0(str, collapse = "\n")
 }
 
-
-# Should accept same inputs as tidy_quote(), but return an expression
+# The idea is that this transforms the input to an object capable of
+# behaving generically wrt the expr type. In practice we can just
+# extract from frames though.
 as_expr <- function(x) {
-  if (is_frame(x)) x$expr else get_expr(x)
+  if (is_frame(x)) {
+    x$expr
+  } else {
+    x
+  }
 }
 set_expr <- function(x, value) {
   if (is_fquote(x)) {
@@ -141,6 +146,8 @@ set_expr <- function(x, value) {
 get_expr <- function(x) {
   if (is_fquote(x)) {
     f_rhs(x)
+  } else if (inherits(x, "frame")) {
+    x$expr
   } else {
     x
   }

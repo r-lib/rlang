@@ -75,20 +75,14 @@ call_modify <- function(.call = caller_frame(), ..., .args = list(),
                        .standardise = FALSE) {
   stopifnot(is_list(.args))
   args <- c(list(...), .args)
-  orig <- .call
+  orig <- as_expr(.call)
 
   if (.standardise) {
     call <- as_tidy_quote(.call, caller_env())
   } else {
-    call <- as_expr(.call)
+    call <- get_expr(.call)
   }
-
-  expr <- get_expr(call)
-  call <- set_expr(call, switchpatch(expr,
-    symbol = new_call(expr),
-    language = expr,
-    abort("`.call` must be a quote of a call or symbol")
-  ))
+  call <- as_call(call)
 
   if (.standardise) {
     call <- call_standardise(call)
@@ -128,6 +122,7 @@ call_modify <- function(.call = caller_frame(), ..., .args = list(),
 #'   otherwise.
 #' @export
 call_standardise <- function(call = caller_frame()) {
+  orig <- as_expr(call)
   quote <- as_tidy_quote(call, caller_env())
 
   # The call name might be a literal, not necessarily a symbol
@@ -141,7 +136,7 @@ call_standardise <- function(call = caller_frame()) {
   )
 
   matched <- match.call(as_closure(fn), get_expr(quote))
-  set_expr(call, matched)
+  set_expr(orig, matched)
 }
 
 #' Extract function from a call
@@ -198,7 +193,7 @@ call_fn <- function(call = caller_frame()) {
 #' call_name(~foo[[bar]]())
 #' call_name(~foo()())
 call_name <- function(call = caller_frame()) {
-  call <- as_expr(call)
+  call <- get_expr(call)
 
   if (!is_call(call)) {
     abort("`call` must be a call or a tidy quote of a call")
@@ -244,7 +239,7 @@ call_name <- function(call = caller_frame()) {
 #' # empty strings is supplied (rather than NULL):
 #' call_args_names(call)
 call_args <- function(call = caller_frame()) {
-  call <- as_expr(call)
+  call <- get_expr(call)
   args <- as.list(call_args_lsp(call))
   set_names((args), names2(args))
 }
@@ -252,7 +247,7 @@ call_args <- function(call = caller_frame()) {
 #' @rdname call_args
 #' @export
 call_args_lsp <- function(call = caller_frame()) {
-  call <- as_expr(call)
+  call <- get_expr(call)
   stopifnot(is_call(call))
   cdr(call)
 }
@@ -260,7 +255,7 @@ call_args_lsp <- function(call = caller_frame()) {
 #' @rdname call_args
 #' @export
 call_args_names <- function(call = caller_frame()) {
-  call <- as_expr(call)
+  call <- get_expr(call)
   names2(call_args_lsp(call))
 }
 
