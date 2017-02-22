@@ -330,3 +330,7 @@ is_fquote <- function(x) {
     identical(car(x), quote(`~`)) &&
     length(x) == 2L
 }
+# Should accept same inputs as tidy_quote(), but return an expression
+as_expr <- function(x) {
+  if (is_frame(x)) x$expr else expr(x)
+}

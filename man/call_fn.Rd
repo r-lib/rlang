@@ -4,18 +4,16 @@
 \alias{call_fn}
 \title{Extract function from a call}
 \usage{
-call_fn(call = NULL, env = NULL)
+call_fn(call = caller_frame())
 }
 \arguments{
 \item{call}{Can be a call, a formula quoting a call in the
 right-hand side, or a frame object from which to extract the call
 expression. If not supplied, the calling frame is used.}
-
-\item{env}{Environment in which to look up the function. The
-default is the calling frame.}
 }
 \description{
-Extract function from a call
+If a frame or formula, the function will be retrieved from their
+environment. Otherwise, it is looked up in the calling frame.
 }
 \examples{
 # Extract from a quoted call:

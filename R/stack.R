@@ -285,8 +285,8 @@ call_frame <- function(n = 1, clean = TRUE) {
 #' Get the environment of the caller frame.
 #'
 #' \code{caller_frame()} is a shortcut for \code{\link{call_frame}(2)}
-#' and \code{caller_env()} is a shortcut for
-#' \code{\link{call_frame}(2)$env}.
+#' and \code{caller_fn()} and \code{caller_env()} are shortcuts for
+#' \code{call_frame(2)$env} \code{call_frame(2)$fn}.
 #'
 #' @param n The number of generation to go back. Note that contrarily
 #'   to \code{\link{call_frame}()}, 1 represents the parent frame
@@ -300,6 +300,11 @@ caller_env <- function(n = 1) {
 #' @export
 caller_frame <- function(n = 1) {
   call_frame(n + 2)
+}
+#' @rdname caller_env
+#' @export
+caller_fn <- function(n = 1) {
+  call_frame(n + 2)$fn
 }
 
 

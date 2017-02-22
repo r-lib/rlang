@@ -6,11 +6,11 @@
 \alias{call_args_names}
 \title{Extract arguments from a call}
 \usage{
-call_args(call = NULL)
+call_args(call = caller_frame())
 
-call_args_lsp(call = NULL)
+call_args_lsp(call = caller_frame())
 
-call_args_names(call = NULL)
+call_args_names(call = caller_frame())
 }
 \arguments{
 \item{call}{Can be a call, a formula quoting a call in the

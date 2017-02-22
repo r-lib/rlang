@@ -4,7 +4,7 @@
 \alias{call_name}
 \title{Extract function name of a call}
 \usage{
-call_name(call = NULL)
+call_name(call = caller_frame())
 }
 \arguments{
 \item{call}{Can be a call, a formula quoting a call in the

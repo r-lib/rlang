@@ -70,16 +70,14 @@ prim_name <- function(prim) {
 #'
 #' # Works with primitive functions:
 #' fn_fmls(base::switch)
-fn_fmls <- function(fn = NULL) {
-  fn <- fn %||% call_frame(2)$fn
+fn_fmls <- function(fn = caller_fn()) {
   fn <- as_closure(fn)
   formals(fn)
 }
 
 #' @rdname fn_fmls
 #' @export
-fn_fmls_names <- function(fn = NULL) {
-  fn <- fn %||% call_frame(2)$fn
+fn_fmls_names <- function(fn = caller_fn()) {
   args <- fn_fmls(fn)
   names(args)
 }

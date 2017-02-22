@@ -346,9 +346,10 @@ call_standardise <- function(call = caller_frame()) {
 
 #' Extract function from a call
 #'
+#' If a frame or formula, the function will be retrieved from their
+#' environment. Otherwise, it is looked up in the calling frame.
+#'
 #' @inheritParams call_standardise
-#' @param env Environment in which to look up the function. The
-#'   default is the calling frame.
 #' @export
 #' @seealso \code{\link{call_name}}()
 #' @examples
@@ -359,13 +360,18 @@ call_standardise <- function(call = caller_frame()) {
 #' # Extract the calling function
 #' test <- function() call_fn()
 #' test()
-call_fn <- function(call = NULL, env = NULL) {
+call_fn <- function(call = caller_frame()) {
   if (is_frame(call)) {
-    call$fn
-  } else {
-    info <- call_info(call, NULL)
-    expr_eval(info$call[[1]], info$env)
+    return(call$fn)
   }
+
+  call <- as_tidy_quote(call, caller_env())
+  expr <- f_rhs(call)
+
+  switchpatch(expr,
+    language = expr_eval(car(expr), f_env(call)),
+    abort("`call` must quote a call")
+  )
 }
 
 #' Extract function name of a call
@@ -391,39 +397,30 @@ call_fn <- function(call = NULL, env = NULL) {
 #' call_name(~foo$bar())
 #' call_name(~foo[[bar]]())
 #' call_name(~foo()())
-call_name <- function(call = NULL) {
-  call <- switchpatch(call,
-    `NULL` =
-      caller_frame()$expr,
-    language =
-      if (is_tidy_quote(call)) {
-        f_rhs(call)
-      } else {
-        call
-      },
+call_name <- function(call = caller_frame()) {
+  call <- as_expr(call)
+
+  if (!is_call(call)) {
     abort("`call` must be a call or a tidy quote of a call")
-  )
+  }
 
   fn <- car(call)
 
-  if (is.call(fn)) {
-    if (identical(fn[[1]], quote(`::`)) ||
-        identical(fn[[1]], quote(`:::`))) {
-      # Namespaced calls: foo::bar(), foo:::bar()
-      return(as_character(fn[[3]]))
-    } else {
-      # Subsetted calls: foo@bar(), foo$bar()
-      # Anomymous calls: foo[[bar]](), foo()()
-      return(NULL)
-    }
-  }
-
-  if (!is_symbol(fn)) {
-    # Inlined closures: (function() {})()
-    return(NULL)
-  }
-
-  as_character(fn)
+  switchpatch(fn,
+    symbol =
+      as_character(fn),
+    language =
+      if (identical(fn[[1]], quote(`::`)) ||
+          identical(fn[[1]], quote(`:::`))) {
+        # Namespaced calls: foo::bar(), foo:::bar()
+        as_character(fn[[3]])
+      } else {
+        # Subsetted calls: foo@bar(), foo$bar()
+        # Anomymous calls: foo[[bar]](), foo()()
+        NULL
+      },
+    NULL # Some calls have a literal as CAR
+  )
 }
 
 #' Extract arguments from a call
@@ -446,24 +443,24 @@ call_name <- function(call = NULL) {
 #' # When the call arguments are supplied without names, a vector of
 #' # empty strings is supplied (rather than NULL):
 #' call_args_names(call)
-call_args <- function(call = NULL) {
-  call <- call_info(call, NULL)$call
+call_args <- function(call = caller_frame()) {
+  call <- as_expr(call)
   args <- as.list(call_args_lsp(call))
   set_names((args), names2(args))
 }
 
 #' @rdname call_args
 #' @export
-call_args_lsp <- function(call = NULL) {
-  call <- call_info(call, NULL)$call
-  stopifnot(is.call(call))
+call_args_lsp <- function(call = caller_frame()) {
+  call <- as_expr(call)
+  stopifnot(is_call(call))
   cdr(call)
 }
 
 #' @rdname call_args
 #' @export
-call_args_names <- function(call = NULL) {
-  call <- call_info(call, NULL)$call
+call_args_names <- function(call = caller_frame()) {
+  call <- as_expr(call)
   names2(call_args_lsp(call))
 }
 

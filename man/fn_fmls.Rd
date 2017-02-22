@@ -5,9 +5,9 @@
 \alias{fn_fmls_names}
 \title{Extract arguments from a function}
 \usage{
-fn_fmls(fn = NULL)
+fn_fmls(fn = caller_fn())
 
-fn_fmls_names(fn = NULL)
+fn_fmls_names(fn = caller_fn())
 }
 \arguments{
 \item{fn}{A function. It is lookep up in the calling frame if not
