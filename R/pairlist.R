@@ -69,8 +69,13 @@ cons <- function(car, cdr) {
 }
 
 #' @useDynLib rlang rlang_duplicate
-duplicate <- function(x) {
-  .Call(rlang_duplicate, x)
+#' @useDynLib rlang rlang_shallow_duplicate
+duplicate <- function(x, shallow = FALSE) {
+  if (shallow) {
+    .Call(rlang_shallow_duplicate, x)
+  } else {
+    .Call(rlang_duplicate, x)
+  }
 }
 
 #' @useDynLib rlang rlang_tag

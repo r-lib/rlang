@@ -32,7 +32,7 @@ new_call <- function(.fn, ..., .args = list()) {
 #' @param .call Can be a call, a formula quoting a call in the
 #'   right-hand side, or a frame object from which to extract the call
 #'   expression. If not supplied, the calling frame is used.
-#' @param ...,.args Named expressions (constants, names or
+#' @param ...,.args Named or unnamed expressions (constants, names or
 #'   calls) used to modify the call. Use \code{NULL} to remove
 #'   arguments.
 #' @seealso new_call
@@ -63,9 +63,6 @@ new_call <- function(.fn, ..., .args = list()) {
 call_modify <- function(.call = caller_frame(), ..., .args = list()) {
   stopifnot(is_list(.args))
   args <- c(list(...), .args)
-  if (!is_named(args)) {
-    abort("All new arguments must be named")
-  }
 
   call <- as_tidy_quote(.call, caller_env())
   expr <- f_rhs(call)
@@ -77,9 +74,22 @@ call_modify <- function(.call = caller_frame(), ..., .args = list()) {
 
   call <- call_standardise(call)
 
-  for (nm in names(args)) {
+  # Named arguments can be spliced by R
+  named <- have_names(args)
+  for (nm in names(args)[named]) {
     call[[nm]] <- args[[nm]]
   }
+
+  if (any(!named)) {
+    # Duplicate list structure in case it wasn't before
+    if (!any(named)) {
+      call <- duplicate(call, shallow = TRUE)
+    }
+
+    remaining_args <- as.pairlist(args[!named])
+    call <- lsp_append(call, remaining_args)
+  }
+
   call
 }
 

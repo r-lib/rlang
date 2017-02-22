@@ -38,6 +38,9 @@ SEXP rlang_cons(SEXP car, SEXP cdr) {
 SEXP rlang_duplicate(SEXP x) {
   return Rf_duplicate(x);
 }
+SEXP rlang_shallow_duplicate(SEXP x) {
+  return Rf_shallow_duplicate(x);
+}
 
 SEXP rlang_tag(SEXP x) {
   return TAG(x);

@@ -11,7 +11,7 @@ call_modify(.call = caller_frame(), ..., .args = list())
 right-hand side, or a frame object from which to extract the call
 expression. If not supplied, the calling frame is used.}
 
-\item{..., .args}{Named expressions (constants, names or
+\item{..., .args}{Named or unnamed expressions (constants, names or
 calls) used to modify the call. Use \code{NULL} to remove
 arguments.}
 }
