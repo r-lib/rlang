@@ -32,6 +32,6 @@ fn()
 fn_fmls(base::switch)
 }
 \seealso{
-\code{\link{call_args}()} and
-  \code{\link{call_args_names}()}
+\code{\link{lang_args}()} and
+  \code{\link{lang_args_names}()}
 }

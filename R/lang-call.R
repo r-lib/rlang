@@ -4,18 +4,18 @@
 #'   a symbol or a quoted call. For \code{do_call}, a bare function
 #'   name or call.
 #' @param ...,.args Arguments to the call either in or out of a list
-#' @seealso call_modify
+#' @seealso lang_modify
 #' @export
 #' @examples
 #' # fn can either be a string, a symbol or a call
-#' new_call("f", a = 1)
-#' new_call(quote(f), a = 1)
-#' new_call(quote(f()), a = 1)
+#' new_lang("f", a = 1)
+#' new_lang(quote(f), a = 1)
+#' new_lang(quote(f()), a = 1)
 #'
 #' #' Can supply arguments individually or in a list
-#' new_call(quote(f), a = 1, b = 2)
-#' new_call(quote(f), .args = list(a = 1, b = 2))
-new_call <- function(.fn, ..., .args = list()) {
+#' new_lang(quote(f), a = 1, b = 2)
+#' new_lang(quote(f), .args = list(a = 1, b = 2))
+new_lang <- function(.fn, ..., .args = list()) {
   if (is_character(.fn)) {
     if (length(.fn) != 1) {
       abort("Character `.fn` must be length 1")
@@ -41,38 +41,38 @@ new_call <- function(.fn, ..., .args = list()) {
 #'   replacing original unnamed arguments.
 #' @return A tidy quote if \code{.call} is a tidy quote, a call
 #'   otherwise.
-#' @seealso new_call
+#' @seealso new_lang
 #' @export
 #' @examples
 #' call <- quote(mean(x, na.rm = TRUE))
 #'
 #' # Modify an existing argument
-#' call_modify(call, na.rm = FALSE)
-#' call_modify(call, x = quote(y))
+#' lang_modify(call, na.rm = FALSE)
+#' lang_modify(call, x = quote(y))
 #'
 #' # Remove an argument
-#' call_modify(call, na.rm = NULL)
+#' lang_modify(call, na.rm = NULL)
 #'
 #' # Add a new argument
-#' call_modify(call, trim = 0.1)
+#' lang_modify(call, trim = 0.1)
 #'
 #' # Add an explicit missing argument
-#' call_modify(call, na.rm = quote(expr = ))
+#' lang_modify(call, na.rm = quote(expr = ))
 #'
 #' # Supply a list of new arguments with .args
 #' newargs <- list(na.rm = NULL, trim = 0.1)
-#' call_modify(call, .args = newargs)
+#' lang_modify(call, .args = newargs)
 #'
 #' # If the call is missing, the parent frame is used instead.
-#' f <- function(bool = TRUE) call_modify(.args = list(bool = FALSE))
+#' f <- function(bool = TRUE) lang_modify(.args = list(bool = FALSE))
 #' f()
 #'
 #'
 #' # You can also modify a tidy quote inplace:
 #' f <- ~matrix(bar)
-#' call_modify(f, quote(foo))
-call_modify <- function(.call = caller_frame(), ..., .args = list(),
-                       .standardise = FALSE) {
+#' lang_modify(f, quote(foo))
+lang_modify <- function(.call = caller_frame(), ..., .args = list(),
+                        .standardise = FALSE) {
   stopifnot(is_list(.args))
   args <- c(list(...), .args)
   orig <- as_expr(.call)
@@ -85,7 +85,7 @@ call_modify <- function(.call = caller_frame(), ..., .args = list(),
   call <- as_call(call)
 
   if (.standardise) {
-    call <- call_standardise(call)
+    call <- lang_standardise(call)
   }
   expr <- get_expr(call)
 
@@ -116,17 +116,17 @@ call_modify <- function(.call = caller_frame(), ..., .args = list(),
 #' @param call Can be a call, a formula quoting a call in the
 #'   right-hand side, or a frame object from which to extract the call
 #'   expression. If not supplied, the calling frame is used.
-#' @seealso \code{\link{call_homogenise}()} for a version more
+#' @seealso \code{\link{lang_homogenise}()} for a version more
 #'   suitable to language analysis.
 #' @return A tidy quote if \code{.call} is a tidy quote, a call
 #'   otherwise.
 #' @export
-call_standardise <- function(call = caller_frame()) {
+lang_standardise <- function(call = caller_frame()) {
   orig <- as_expr(call)
   quote <- as_tidy_quote(call, caller_env())
 
   # The call name might be a literal, not necessarily a symbol
-  fn <- call_name(quote)
+  fn <- lang_name(quote)
   fn <- switchpatch(fn,
     character = get(fn, envir = f_env(quote), mode = "function", inherits = TRUE),
     builtin = ,
@@ -144,18 +144,18 @@ call_standardise <- function(call = caller_frame()) {
 #' If a frame or formula, the function will be retrieved from their
 #' environment. Otherwise, it is looked up in the calling frame.
 #'
-#' @inheritParams call_standardise
+#' @inheritParams lang_standardise
 #' @export
-#' @seealso \code{\link{call_name}}()
+#' @seealso \code{\link{lang_name}}()
 #' @examples
 #' # Extract from a quoted call:
-#' call_fn(~matrix())
-#' call_fn(quote(matrix()))
+#' lang_fn(~matrix())
+#' lang_fn(quote(matrix()))
 #'
 #' # Extract the calling function
-#' test <- function() call_fn()
+#' test <- function() lang_fn()
 #' test()
-call_fn <- function(call = caller_frame()) {
+lang_fn <- function(call = caller_frame()) {
   if (is_frame(call)) {
     return(call$fn)
   }
@@ -171,31 +171,31 @@ call_fn <- function(call = caller_frame()) {
 
 #' Extract function name of a call
 #'
-#' @inheritParams call_standardise
+#' @inheritParams lang_standardise
 #' @return A string with the function name, or \code{NULL} if the
 #'   function is anonymous.
-#' @seealso \code{\link{call_fn}}()
+#' @seealso \code{\link{lang_fn}}()
 #' @export
 #' @examples
 #' # Extract the function name from quoted calls:
-#' call_name(~foo(bar))
-#' call_name(quote(foo(bar)))
+#' lang_name(~foo(bar))
+#' lang_name(quote(foo(bar)))
 #'
 #' # The calling expression is used as default:
-#' foo <- function(bar) call_name()
+#' foo <- function(bar) lang_name()
 #' foo(bar)
 #'
 #' # Namespaced calls are correctly handled:
-#' call_name(~base::matrix(baz))
+#' lang_name(~base::matrix(baz))
 #'
 #' # Anonymous and subsetted functions return NULL:
-#' call_name(~foo$bar())
-#' call_name(~foo[[bar]]())
-#' call_name(~foo()())
-call_name <- function(call = caller_frame()) {
+#' lang_name(~foo$bar())
+#' lang_name(~foo[[bar]]())
+#' lang_name(~foo()())
+lang_name <- function(call = caller_frame()) {
   call <- get_expr(call)
 
-  if (!is_call(call)) {
+  if (!is_lang(call)) {
     abort("`call` must be a call or a tidy quote of a call")
   }
 
@@ -220,7 +220,7 @@ call_name <- function(call = caller_frame()) {
 
 #' Extract arguments from a call
 #'
-#' @inheritParams call_standardise
+#' @inheritParams lang_standardise
 #' @return A named list of arguments. The \code{_lsp} version returns
 #'   a named pairlist.
 #' @seealso \code{\link{fn_fmls}()} and
@@ -232,44 +232,29 @@ call_name <- function(call = caller_frame()) {
 #' # Subsetting a call returns the arguments in a language pairlist:
 #' call[-1]
 #'
-#' # Whereas call_args() returns a list:
-#' call_args(call)
+#' # Whereas lang_args() returns a list:
+#' lang_args(call)
 #'
 #' # When the call arguments are supplied without names, a vector of
 #' # empty strings is supplied (rather than NULL):
-#' call_args_names(call)
-call_args <- function(call = caller_frame()) {
+#' lang_args_names(call)
+lang_args <- function(call = caller_frame()) {
   call <- get_expr(call)
-  args <- as.list(call_args_lsp(call))
+  args <- as.list(lang_args_lsp(call))
   set_names((args), names2(args))
 }
 
-#' @rdname call_args
+#' @rdname lang_args
 #' @export
-call_args_lsp <- function(call = caller_frame()) {
+lang_args_lsp <- function(call = caller_frame()) {
   call <- get_expr(call)
-  stopifnot(is_call(call))
+  stopifnot(is_lang(call))
   cdr(call)
 }
 
-#' @rdname call_args
+#' @rdname lang_args
 #' @export
-call_args_names <- function(call = caller_frame()) {
+lang_args_names <- function(call = caller_frame()) {
   call <- get_expr(call)
-  names2(call_args_lsp(call))
+  names2(lang_args_lsp(call))
 }
-
-#' Inspect a call.
-#'
-#' This function is useful for quick testing and debugging when you
-#' manipulate expressions and calls. It lets you check that a function
-#' is called with the right arguments. This can be useful in unit
-#' tests for instance. Note that this is just a simple wrapper around
-#' \code{\link[base]{match.call}()}.
-#'
-#' @param ... Arguments to display in the returned call.
-#' @export
-#' @examples
-#' call_inspect(foo(bar), "" %>% identity())
-#' invoke(call_inspect, list(a = mtcars, b = letters))
-call_inspect <- function(...) match.call()

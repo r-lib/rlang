@@ -134,7 +134,7 @@ is_expr(fmls)
 is_pairlist(fmls)
 
 # Note that you can also extract call arguments as a pairlist:
-call_args_lsp(quote(fn(arg1, arg2 = "foo")))
+lang_args_lsp(quote(fn(arg1, arg2 = "foo")))
 }
 \seealso{
 \code{\link{is_lang}()} for a call predicate.

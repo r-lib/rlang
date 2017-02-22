@@ -120,7 +120,7 @@
 #' is_pairlist(fmls)
 #'
 #' # Note that you can also extract call arguments as a pairlist:
-#' call_args_lsp(quote(fn(arg1, arg2 = "foo")))
+#' lang_args_lsp(quote(fn(arg1, arg2 = "foo")))
 is_expr <- function(x) {
   x <- get_expr(x)
   is_symbolic(x) || is_parsable_literal(x)
@@ -304,7 +304,7 @@ as_name <- function(x) {
 #' @rdname as_symbol
 as_call <- function(x) {
   coerce_type(x, "language",
-    symbol = new_call(x),
+    symbol = new_lang(x),
     quote = as_call(f_rhs(x)),
     language = x,
     string = parse_expr(x)

@@ -60,8 +60,8 @@ prim_name <- function(prim) {
 #'
 #' @param fn A function. It is lookep up in the calling frame if not
 #'   supplied.
-#' @seealso \code{\link{call_args}()} and
-#'   \code{\link{call_args_names}()}
+#' @seealso \code{\link{lang_args}()} and
+#'   \code{\link{lang_args_names}()}
 #' @export
 #' @examples
 #' # Extract from current call:

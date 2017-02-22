@@ -14,9 +14,9 @@ new_formula <- function(lhs, rhs, env = caller_env()) {
   }
 
   if (is_null(lhs)) {
-    f <- new_call("~", rhs)
+    f <- new_lang("~", rhs)
   } else {
-    f <- new_call("~", lhs, rhs)
+    f <- new_lang("~", lhs, rhs)
   }
 
   structure(f, class = "formula", .Environment = env)
@@ -56,7 +56,7 @@ f_rhs <- function(f) {
 `f_rhs<-` <- function(x, value) {
   stopifnot(is_formula(x))
   f <- new_formula(f_lhs(x), value, f_env(x))
-  copy_call_name(f, x)
+  copy_lang_name(f, x)
 }
 
 #' @export
@@ -71,10 +71,10 @@ f_lhs <- function(f) {
 `f_lhs<-` <- function(x, value) {
   stopifnot(is_formula(x))
   f <- new_formula(value, f_rhs(x), f_env(x))
-  copy_call_name(f, x)
+  copy_lang_name(f, x)
 }
 
-copy_call_name <- function(f, x) {
+copy_lang_name <- function(f, x) {
   f[[1]] <- x[[1]]
   f
 }
@@ -93,7 +93,7 @@ f_env <- function(f) {
 `f_env<-` <- function(x, value) {
   stopifnot(is_formula(x))
   f <- new_formula(f_lhs(x), f_rhs(x), value)
-  copy_call_name(f, x)
+  copy_lang_name(f, x)
 }
 
 #' Turn RHS of formula into a string/label.

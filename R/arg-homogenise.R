@@ -1,8 +1,8 @@
 #' Standardise a call against formal arguments.
 #'
 #' This is a slower but more thorough version of
-#' \code{\link{call_standardise}()}. Compared to
-#' \code{\link{match.call}()}, \code{call_homogenise()}:
+#' \code{\link{lang_standardise}()}. Compared to
+#' \code{\link{match.call}()}, \code{lang_homogenise()}:
 #' \itemize{
 #'   \item Always report dotted arguments as such: \code{call(..1, ..2)}.
 #'         In comparison, \code{match.call()} inlines literals:
@@ -20,7 +20,7 @@
 #' @param call Can be a call, a formula quoting a call in the
 #'   right-hand side, or a frame object from which to extract the call
 #'   expression. If not supplied, the calling frame is used. Note that
-#'   \code{call_homogenise} needs access to the actual function
+#'   \code{lang_homogenise} needs access to the actual function
 #'   corresponding to the call. It will retrieve it from the tidy
 #'   quote or frame environment, or in the calling context.
 #' @param dots_env Calling frame in which to look up call the contents
@@ -35,7 +35,7 @@
 #'   evaluated.
 #' @param add_missings Whether to standardise missing arguments.
 #' @export
-call_homogenise <- function(call = caller_frame(),
+lang_homogenise <- function(call = caller_frame(),
                             dots_env = NULL,
                             enum_dots = FALSE,
                             add_missings = FALSE) {
@@ -52,12 +52,12 @@ call_homogenise <- function(call = caller_frame(),
   }
 
   call <- as_tidy_quote(call, caller_env())
-  fn <- fn %||% call_fn(call)
+  fn <- fn %||% lang_fn(call)
 
-  call_homogenise_(f_rhs(call), fn, dots_env, enum_dots, add_missings)
+  lang_homogenise_(f_rhs(call), fn, dots_env, enum_dots, add_missings)
 }
 
-call_homogenise_ <- function(call, fn, dots_env, enum_dots, add_missings) {
+lang_homogenise_ <- function(call, fn, dots_env, enum_dots, add_missings) {
   call <- duplicate(call)
   call <- call_inline_dots(call, dots_env, enum_dots)
   call <- call_match_partial(call, fn)
@@ -71,7 +71,7 @@ arg_match_partial <- function(arg, formal) {
 }
 
 call_match_partial <- function(call, fn) {
-  actuals_nms <- call_args_names(call)
+  actuals_nms <- lang_args_names(call)
   formals_nms <- fn_fmls_names(fn)
 
   is_empty <- actuals_nms == ""

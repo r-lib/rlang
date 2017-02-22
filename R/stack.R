@@ -180,7 +180,7 @@ eval_frame <- function(n = 1) {
       expr = sys.call(-n),
       env = sys.frame(-n),
       fn = sys.function(-n),
-      fn_name = call_name(sys.call(-n))
+      fn_name = lang_name(sys.call(-n))
     ))
   }
 }
@@ -273,7 +273,7 @@ call_frame <- function(n = 1, clean = TRUE) {
     expr = sys.call(pos),
     env = sys.frame(pos),
     fn = sys.function(pos),
-    fn_name = call_name(sys.call(pos))
+    fn_name = lang_name(sys.call(pos))
   ))
 
   if (clean) {
@@ -341,7 +341,7 @@ eval_stack <- function(n = NULL, trim = 0) {
   stack_data <- map(stack_data, drop_first)
 
   stack_data <- stack_subset(stack_data, n)
-  stack_data$fn_name <- map(stack_data$expr, call_name)
+  stack_data$fn_name <- map(stack_data$expr, lang_name)
 
   stack <- transpose(stack_data)
   stack <- map(stack, new_frame)
@@ -405,7 +405,7 @@ call_stack <- function(n = NULL, clean = TRUE) {
     env = map(trail, sys.frame),
     fn = map(trail, sys.function)
   )
-  stack_data$fn_name <- map(stack_data$expr, call_name)
+  stack_data$fn_name <- map(stack_data$expr, lang_name)
 
   stack <- transpose(stack_data)
   stack <- map(stack, new_frame)
@@ -433,9 +433,9 @@ frame_clean_eval <- function(frame) {
 }
 frame_clean_Recall <- function(frame, next_frame) {
   if (!is_missing(next_frame) && identical(next_frame$fn, base::Recall)) {
-    call_recalled <- call_homogenise(frame, enum_dots = TRUE, add_missings = TRUE)
-    args_recalled <- call_args(call_recalled)
-    args_Recall <- call_args(next_frame)
+    call_recalled <- lang_homogenise(frame, enum_dots = TRUE, add_missings = TRUE)
+    args_recalled <- lang_args(call_recalled)
+    args_Recall <- lang_args(next_frame)
 
     if (!length(args_Recall)) {
       args_Recall <- map(names(args_recalled), as.symbol)
@@ -683,3 +683,19 @@ return_to <- function(frame, value = NULL) {
   prev_frame <- eval_frame(prev_pos)
   return_from(prev_frame, value)
 }
+
+
+#' Inspect a call.
+#'
+#' This function is useful for quick testing and debugging when you
+#' manipulate expressions and calls. It lets you check that a function
+#' is called with the right arguments. This can be useful in unit
+#' tests for instance. Note that this is just a simple wrapper around
+#' \code{\link[base]{match.call}()}.
+#'
+#' @param ... Arguments to display in the returned call.
+#' @export
+#' @examples
+#' call_inspect(foo(bar), "" %>% identity())
+#' invoke(call_inspect, list(a = mtcars, b = letters))
+call_inspect <- function(...) match.call()
