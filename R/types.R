@@ -516,7 +516,7 @@ switchlang <- function(.x, ...) {
 #' @rdname switchlang
 #' @export
 lang_type_of <- function(x) {
-  x <- expr(x)
+  x <- get_expr(x)
   stopifnot(typeof(x) == "language")
 
   type <- typeof(car(x))

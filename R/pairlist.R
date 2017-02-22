@@ -37,9 +37,17 @@ car <- function(x) {
 cdr <- function(x) {
   .Call(rlang_cdr, x)
 }
+#' @useDynLib rlang rlang_caar
+caar <- function(x) {
+  .Call(rlang_caar, x)
+}
 #' @useDynLib rlang rlang_cadr
 cadr <- function(x) {
   .Call(rlang_cadr, x)
+}
+#' @useDynLib rlang rlang_cdar
+cdar <- function(x) {
+  .Call(rlang_cdar, x)
 }
 #' @useDynLib rlang rlang_cddr
 cddr <- function(x) {
@@ -54,9 +62,17 @@ set_car <- function(x, newcar) {
 set_cdr <- function(x, newcdr) {
   .Call(rlang_set_cdr, x, newcdr)
 }
+#' @useDynLib rlang rlang_set_caar
+set_caar <- function(x) {
+  .Call(rlang_set_caar, x)
+}
 #' @useDynLib rlang rlang_set_cadr
 set_cadr <- function(x, newcar) {
   .Call(rlang_set_cadr, x, newcar)
+}
+#' @useDynLib rlang rlang_set_cdar
+set_cdar <- function(x) {
+  .Call(rlang_set_cdar, x)
 }
 #' @useDynLib rlang rlang_set_cddr
 set_cddr <- function(x, newcdr) {

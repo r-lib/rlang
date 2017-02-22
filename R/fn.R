@@ -188,8 +188,7 @@ as_closure <- function(x) {
   switchpatch(x, .to = "closure",
     closure =
       x,
-    builtin =,
-    special = {
+    primitive = {
       fn_name <- prim_name(x)
       if (fn_name == "eval") {
         # do_eval() starts a context with a fake primitive function as
@@ -200,12 +199,8 @@ as_closure <- function(x) {
         .ArgsEnv[[fn_name]] %||% .GenericArgsEnv[[fn_name]]
       }
     },
-    character =
-      if (length(x) == 1) {
-        as_closure(get(x, envir = caller_env(), x, mode = "function"))
-      } else {
-        abort("Character vectors must be scalar for coercion to a closure")
-      }
+    string =
+      as_closure(get(x, envir = caller_env(), x, mode = "function"))
   )
 }
 

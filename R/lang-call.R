@@ -125,9 +125,8 @@ lang_standardise <- function(call = caller_frame()) {
   # The call name might be a literal, not necessarily a symbol
   fn <- lang_name(quote)
   fn <- switchpatch(fn,
-    character = get(fn, envir = f_env(quote), mode = "function", inherits = TRUE),
-    builtin = ,
-    special = ,
+    string = get(fn, envir = f_env(quote), mode = "function"),
+    primitive = ,
     closure = fn,
     abort("Cannot extract a function to compare the call to")
   )
@@ -191,27 +190,14 @@ lang_fn <- function(call = caller_frame()) {
 #' lang_name(~foo()())
 lang_name <- function(call = caller_frame()) {
   call <- get_expr(call)
-
   if (!is_lang(call)) {
     abort("`call` must be a call or a tidy quote of a call")
   }
 
-  fn <- car(call)
-
-  switchpatch(fn,
-    symbol =
-      as_character(fn),
-    language =
-      if (identical(fn[[1]], quote(`::`)) ||
-          identical(fn[[1]], quote(`:::`))) {
-        # Namespaced calls: foo::bar(), foo:::bar()
-        as_character(fn[[3]])
-      } else {
-        # Subsetted calls: foo@bar(), foo$bar()
-        # Anomymous calls: foo[[bar]](), foo()()
-        NULL
-      },
-    NULL # Some calls have a literal as CAR
+  switchlang(call,
+    named = as_character(car(call)),
+    namespaced = as_character(cadr(cdar(call))),
+    NULL
   )
 }
 
