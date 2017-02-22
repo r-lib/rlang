@@ -305,7 +305,7 @@ as_tidy_quote <- function(x, env) {
     }
     x
   } else if (is_frame(x)) {
-    new_tidy_quote(x$expr, x$env)
+    new_tidy_quote(x$expr, sys_frame(x$caller_pos))
   } else {
     new_tidy_quote(x, env)
   }

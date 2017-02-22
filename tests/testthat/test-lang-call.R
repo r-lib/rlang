@@ -203,8 +203,11 @@ test_that("new args replace old", {
 })
 
 test_that("can modify without supplying `call`", {
-  f <- function() lang_modify(.args = list(bool = FALSE), .standardise = TRUE)
-  expect_identical(f(), quote(f(bool = FALSE)))
+  locally({
+    f <- function(std) lang_modify(.args = list(bool = FALSE), .standardise = std)
+    expect_identical(f(TRUE), quote(f(std = TRUE, bool = FALSE)))
+    expect_identical(f(FALSE), quote(f(FALSE, bool = FALSE)))
+  })
 })
 
 test_that("can modify calls for primitive functions", {

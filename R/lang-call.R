@@ -78,34 +78,31 @@ lang_modify <- function(.call = caller_frame(), ..., .args = list(),
   orig <- as_expr(.call)
 
   if (.standardise) {
-    call <- as_tidy_quote(.call, caller_env())
+    quote <- as_tidy_quote(.call, caller_env())
+    quote <- set_expr(quote, as_call(quote))
+    quote <- lang_standardise(quote)
+    call <- get_expr(quote)
   } else {
-    call <- get_expr(.call)
+    call <- as_call(get_expr(.call))
   }
-  call <- as_call(call)
-
-  if (.standardise) {
-    call <- lang_standardise(call)
-  }
-  expr <- get_expr(call)
 
   # Named arguments can be spliced by R
   named <- have_names(args)
   for (nm in names(args)[named]) {
-    expr[[nm]] <- args[[nm]]
+    call[[nm]] <- args[[nm]]
   }
 
   if (any(!named)) {
     # Duplicate list structure in case it wasn't before
     if (!any(named)) {
-      expr <- duplicate(expr, shallow = TRUE)
+      call <- duplicate(call, shallow = TRUE)
     }
 
     remaining_args <- as.pairlist(args[!named])
-    expr <- lsp_append(expr, remaining_args)
+    call <- lsp_append(call, remaining_args)
   }
 
-  set_expr(orig, expr)
+  set_expr(orig, call)
 }
 
 #' Standardise a call.
