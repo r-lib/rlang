@@ -334,18 +334,36 @@ is_scalar_integerish <- function(x) {
 
 #' Base type of an object.
 #'
-#' This is equivalent to \code{\link[base]{typeof}()} but also returns
-#' the rlang base types. Currently, only tidy quotes have been added
-#' to \code{type_of()}. Their rlang type is "quote".
+#' This is equivalent to [base::typeof()] with a few differences that
+#' make dispatching easier:
+#' * The type of one-sided formulas is "quote".
+#' * The type of character vectors of length 1 is "string".
+#' * The type of special and builtin functions is "primitive".
 #'
 #' @param x An R object.
 #' @export
 #' @examples
 #' type_of(10L)
 #' type_of(~10L)
+#' typeof(~10L)
+#'
+#' type_of(letters)
+#' type_of(letters[[1]])
+#'
+#' typeof(list)
+#' typeof(`$`)
+#' type_of(list)
+#' type_of(`$`)
+#'
+#' type_of(quote(base::list()))
+#' @md
 type_of <- function(x) {
   if (is_quote(x)) {
     "quote"
+  } else if (typeof(x) == "character" && length(x) == 1) {
+    "string"
+  } else if (typeof(x) %in% c("builtin", "special")) {
+    "primitive"
   } else {
     typeof(x)
   }
@@ -358,7 +376,7 @@ type_of <- function(x) {
 #'
 #' @param .x An object from which to dispatch.
 #' @param ... Named clauses. The names should be types as returned by
-#'   \code{\link[base]{typeof}()}.
+#'   [type_of()].
 #' @param .to This is useful when you switchpatch in a coercing
 #'   function. If supplied, this should be a string indicating the
 #'   target type. A catch-all clause is then added to signal an error
@@ -370,11 +388,44 @@ type_of <- function(x) {
 #'   integer = "bar",
 #'   "default"
 #' )
+#'
+#' # Strings have their own type:
+#' switchpatch("string",
+#'   character = "foo",
+#'   string = "bar",
+#'   "default"
+#' )
+#'
+#' # Use a fallthrough clause if you need to dispatch on all character
+#' # vectors, including strings:
+#' switchpatch("string",
+#'   string = ,
+#'   character = "foo",
+#'   "default"
+#' )
+#'
+#' # special and builtin functions are treated as primitive, since
+#' # there is usually no reason to treat them differently:
+#' switchpatch(base::list,
+#'   primitive = "foo",
+#'   "default"
+#' )
+#' switchpatch(base::`$`,
+#'   primitive = "foo",
+#'   "default"
+#' )
+#'
+#' # closures are not primitives:
+#' switchpatch(rlang::switchpatch,
+#'   primitive = "foo",
+#'   "default"
+#' )
+#' @md
 switchpatch <- function(.x, ..., .to) {
   if (missing(.to)) {
     switch(type_of(.x), ...)
   } else {
-    msg <- paste0("Cannot convert objects of type `", type_of(.x), "` to ", .to)
+    msg <- paste0("Cannot convert objects of type `", type_of(.x), "` to `", .to, "`")
     switch(type_of(.x), ..., abort(msg))
   }
 }

@@ -10,7 +10,7 @@ switchpatch(.x, ..., .to)
 \item{.x}{An object from which to dispatch.}
 
 \item{...}{Named clauses. The names should be types as returned by
-\code{\link[base]{typeof}()}.}
+\code{\link[=type_of]{type_of()}}.}
 
 \item{.to}{This is useful when you switchpatch in a coercing
 function. If supplied, this should be a string indicating the
@@ -25,6 +25,38 @@ This is equivalent to
 switchpatch(3L,
   double = "foo",
   integer = "bar",
+  "default"
+)
+
+# Strings have their own type:
+switchpatch("string",
+  character = "foo",
+  string = "bar",
+  "default"
+)
+
+# Use a fallthrough clause if you need to dispatch on all character
+# vectors, including strings:
+switchpatch("string",
+  string = ,
+  character = "foo",
+  "default"
+)
+
+# special and builtin functions are treated as primitive, since
+# there is usually no reason to treat them differently:
+switchpatch(base::list,
+  primitive = "foo",
+  "default"
+)
+switchpatch(base::`$`,
+  primitive = "foo",
+  "default"
+)
+
+# closures are not primitives:
+switchpatch(rlang::switchpatch,
+  primitive = "foo",
   "default"
 )
 }

@@ -10,11 +10,26 @@ type_of(x)
 \item{x}{An R object.}
 }
 \description{
-This is equivalent to \code{\link[base]{typeof}()} but also returns
-the rlang base types. Currently, only tidy quotes have been added
-to \code{type_of()}. Their rlang type is "quote".
+This is equivalent to \code{\link[base:typeof]{base::typeof()}} with a few differences that
+make dispatching easier:
+\itemize{
+\item The type of one-sided formulas is "quote".
+\item The type of character vectors of length 1 is "string".
+\item The type of special and builtin functions is "primitive".
+}
 }
 \examples{
 type_of(10L)
 type_of(~10L)
+typeof(~10L)
+
+type_of(letters)
+type_of(letters[[1]])
+
+typeof(list)
+typeof(`$`)
+type_of(list)
+type_of(`$`)
+
+type_of(quote(base::list()))
 }
