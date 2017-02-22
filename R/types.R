@@ -332,6 +332,25 @@ is_scalar_integerish <- function(x) {
   !is.object(x) && is_integerish(x, 1L)
 }
 
+#' Base type of an object.
+#'
+#' This is equivalent to \code{\link[base]{typeof}()} but also returns
+#' the rlang base types. Currently, only tidy quotes have been added
+#' to \code{type_of()}. Their rlang type is "quote".
+#'
+#' @param x An R object.
+#' @export
+#' @examples
+#' type_of(10L)
+#' type_of(~10L)
+type_of <- function(x) {
+  if (is_quote(x)) {
+    "quote"
+  } else {
+    typeof(x)
+  }
+}
+
 #' Dispatch on base types.
 #'
 #' This is equivalent to
@@ -353,9 +372,9 @@ is_scalar_integerish <- function(x) {
 #' )
 switchpatch <- function(.x, ..., .to) {
   if (missing(.to)) {
-    switch(typeof(.x), ...)
+    switch(type_of(.x), ...)
   } else {
-    msg <- paste0("Cannot convert objects of type `", typeof(.x), "` to ", .to)
-    switch(typeof(.x), ..., abort(msg))
+    msg <- paste0("Cannot convert objects of type `", type_of(.x), "` to ", .to)
+    switch(type_of(.x), ..., abort(msg))
   }
 }

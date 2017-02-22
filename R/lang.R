@@ -274,10 +274,10 @@ as_symbol <- function(x) {
       } else {
         abort("Cannot parse character vector of length > 1")
       },
+    quote =
+      as_symbol(f_rhs(x)),
     language =
-      if (is_formula(x)) {
-        as_symbol(f_rhs(x))
-      } else if (is_prefixed_name(x)) {
+      if (is_prefixed_name(x)) {
         x
       } else {
         as_symbol(x[[1]])
@@ -300,12 +300,10 @@ as_call <- function(x) {
   switchpatch(x, .to = "language",
     symbol =
       new_call(x),
+    quote =
+      as_call(f_rhs(x)),
     language =
-      if (is_formula(x)) {
-        as_call(f_rhs(x))
-      } else {
-        x
-      },
+      x,
     character =
       if (length(x) != 1) {
         abort("Cannot parse character vector of length > 1")
@@ -325,5 +323,12 @@ is_prefixed_name <- function(x) {
 }
 
 expr <- function(x) {
-  if (is_tidy_quote_(x)) f_rhs(x) else x
+  if (is_quote(x)) f_rhs(x) else x
+}
+
+# More permissive than is_tidy_quote()
+is_quote <- function(x) {
+  typeof(x) == "language" &&
+    identical(car(x), quote(`~`)) &&
+    length(x) == 2L
 }
