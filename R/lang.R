@@ -248,13 +248,16 @@ is_binary_call <- function(x, name = NULL) {
 
 #' Coerce an object to a name or call.
 #'
-#' These are a S3 generics with built-in methods for names, calls, formuals,
-#' and strings. The distinction between a name and a call is particularly
-#' important when coercing from a string. Coercing to a call will parse the
-#' string, coercing to a name will create a (potentially) non-syntactic name.
+#' These coercing functions can transform names, calls, formulas, and
+#' strings. The distinction between a name and a call is particularly
+#' important when coercing from a string. Coercing to a call will
+#' parse the string, coercing to a name will create a (potentially)
+#' non-syntactic name.
 #'
 #' @param x An object to coerce
 #' @export
+#' @return \code{as_symbol()} and \code{as_call()} return a symbol or
+#'   a call. \code{as_name()} returns a string.
 #' @examples
 #' as_symbol("x + y")
 #' as_call("x + y")
@@ -286,6 +289,15 @@ as_symbol.call <- function(x) {
 #' @export
 as_symbol.formula <- function(x) {
   as_symbol(f_rhs(x))
+}
+#' @export
+#' @rdname as_symbol
+as_name <- function(x) {
+  if (is_string(x)) {
+    x
+  } else {
+    as_string(as_symbol(x))
+  }
 }
 
 #' @export
