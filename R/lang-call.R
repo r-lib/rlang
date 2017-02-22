@@ -35,6 +35,8 @@ new_call <- function(.fn, ..., .args = list()) {
 #' @param ...,.args Named or unnamed expressions (constants, names or
 #'   calls) used to modify the call. Use \code{NULL} to remove
 #'   arguments.
+#' @return A tidy quote if \code{.call} is a tidy quote, a call
+#'   otherwise.
 #' @seealso new_call
 #' @export
 #' @examples
@@ -60,37 +62,42 @@ new_call <- function(.fn, ..., .args = list()) {
 #' # If the call is missing, the parent frame is used instead.
 #' f <- function(bool = TRUE) call_modify(.args = list(bool = FALSE))
 #' f()
+#'
+#'
+#' # You can also modify a tidy quote inplace:
+#' f <- ~matrix()
+#' call_modify(f, quote(foo))
 call_modify <- function(.call = caller_frame(), ..., .args = list()) {
   stopifnot(is_list(.args))
   args <- c(list(...), .args)
 
-  call <- as_tidy_quote(.call, caller_env())
-  expr <- f_rhs(call)
-  f_rhs(call) <- switchpatch(expr,
+  quote <- as_tidy_quote(.call, caller_env())
+  expr <- f_rhs(quote)
+  f_rhs(quote) <- switchpatch(expr,
     symbol = new_call(expr),
     language = expr,
     abort("`.call` must be a quote of a call or symbol")
   )
 
-  call <- call_standardise(call)
+  expr <- expr(call_standardise(quote))
 
   # Named arguments can be spliced by R
   named <- have_names(args)
   for (nm in names(args)[named]) {
-    call[[nm]] <- args[[nm]]
+    expr[[nm]] <- args[[nm]]
   }
 
   if (any(!named)) {
     # Duplicate list structure in case it wasn't before
     if (!any(named)) {
-      call <- duplicate(call, shallow = TRUE)
+      expr <- duplicate(expr, shallow = TRUE)
     }
 
     remaining_args <- as.pairlist(args[!named])
-    call <- lsp_append(call, remaining_args)
+    expr <- lsp_append(expr, remaining_args)
   }
 
-  call
+  set_expr(.call, expr)
 }
 
 #' Standardise a call.
@@ -103,21 +110,24 @@ call_modify <- function(.call = caller_frame(), ..., .args = list()) {
 #'   expression. If not supplied, the calling frame is used.
 #' @seealso \code{\link{call_homogenise}()} for a version more
 #'   suitable to language analysis.
+#' @return A tidy quote if \code{.call} is a tidy quote, a call
+#'   otherwise.
 #' @export
 call_standardise <- function(call = caller_frame()) {
-  call <- as_tidy_quote(call, caller_env())
+  quote <- as_tidy_quote(call, caller_env())
 
   # The call name might be a literal, not necessarily a symbol
-  fn <- call_name(call)
+  fn <- call_name(quote)
   fn <- switchpatch(fn,
-    character = get(fn, envir = f_env(call), mode = "function", inherits = TRUE),
+    character = get(fn, envir = f_env(quote), mode = "function", inherits = TRUE),
     builtin = ,
     special = ,
     closure = fn,
     abort("Cannot extract a function to compare the call to")
   )
 
-  match.call(as_closure(fn), expr(call))
+  matched <- match.call(as_closure(fn), expr(quote))
+  set_expr(call, matched)
 }
 
 #' Extract function from a call

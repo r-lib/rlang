@@ -15,6 +15,10 @@ expression. If not supplied, the calling frame is used.}
 calls) used to modify the call. Use \code{NULL} to remove
 arguments.}
 }
+\value{
+A tidy quote if \code{.call} is a tidy quote, a call
+  otherwise.
+}
 \description{
 Modify the arguments of a call.
 }
@@ -41,6 +45,11 @@ call_modify(call, .args = newargs)
 # If the call is missing, the parent frame is used instead.
 f <- function(bool = TRUE) call_modify(.args = list(bool = FALSE))
 f()
+
+
+# You can also modify a tidy quote inplace:
+f <- ~matrix()
+call_modify(f, quote(foo))
 }
 \seealso{
 new_call

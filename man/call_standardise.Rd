@@ -11,6 +11,10 @@ call_standardise(call = caller_frame())
 right-hand side, or a frame object from which to extract the call
 expression. If not supplied, the calling frame is used.}
 }
+\value{
+A tidy quote if \code{.call} is a tidy quote, a call
+  otherwise.
+}
 \description{
 This is essentially equivalent to \code{\link[base]{match.call}()},
 but handles primitive functions more gracefully.

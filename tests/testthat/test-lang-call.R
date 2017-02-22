@@ -182,6 +182,10 @@ test_that("global_frame() can be standardised", {
 
 # Modification ------------------------------------------------------------
 
+test_that("can modify formulas inplace", {
+  expect_identical(call_modify(~matrix(bar), quote(foo)), ~matrix(data = bar, foo))
+})
+
 test_that("new args inserted at end", {
   call <- quote(matrix(1:10))
   out <- call_modify(call, nrow = 3)
@@ -200,17 +204,17 @@ test_that("can modify without supplying `call`", {
 })
 
 test_that("can modify calls for primitive functions", {
-  expect_identical(call_modify(~list(), foo = "bar"), quote(list(foo = "bar")))
+  expect_identical(call_modify(~list(), foo = "bar"), ~list(foo = "bar"))
 })
 
 test_that("can modify calls for functions containing dots", {
-  expect_identical(call_modify(~mean(), na.rm = TRUE), quote(mean(na.rm = TRUE)))
+  expect_identical(call_modify(~mean(), na.rm = TRUE), ~mean(na.rm = TRUE))
 })
 
 test_that("accepts unnamed arguments", {
   expect_identical(
     call_modify(~get(), "foo", envir = "bar", "baz"),
-    quote(get(envir = "bar", "foo", "baz"))
+    ~get(envir = "bar", "foo", "baz")
   )
 })
 

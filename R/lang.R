@@ -334,3 +334,11 @@ is_fquote <- function(x) {
 as_expr <- function(x) {
   if (is_frame(x)) x$expr else expr(x)
 }
+set_expr <- function(x, value) {
+  if (is_tidy_quote(x)) {
+    f_rhs(x) <- value
+    x
+  } else {
+    value
+  }
+}
