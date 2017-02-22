@@ -332,6 +332,25 @@ is_scalar_integerish <- function(x) {
   !is.object(x) && is_integerish(x, 1L)
 }
 
+#' Dispatch on base types.
+#'
+#' This is equivalent to
+#' \code{\link[base]{switch}(\link[base]{typeof}(x, ...))}.
+#'
+#' @param .x An object from which to dispatch.
+#' @param ... Named clauses. The names should be types as returned by
+#'   \code{\link[base]{typeof}()}.
+#' @param .to This is useful when you switchpatch in a coercing
+#'   function. If supplied, this should be a string indicating the
+#'   target type. A catch-all clause is then added to signal an error
+#'   stating the conversion failure.
+#' @export
+#' @examples
+#' switchpatch(3L,
+#'   double = "foo",
+#'   integer = "bar",
+#'   "default"
+#' )
 switchpatch <- function(.x, ..., .to) {
   if (missing(.to)) {
     switch(typeof(.x), ...)
