@@ -19,15 +19,13 @@
 #'
 #' @param call Can be a call, a formula quoting a call in the
 #'   right-hand side, or a frame object from which to extract the call
-#'   expression. If not supplied, the calling frame is used.
-#' @param fn The function against which to standardise the call. If
-#'   not supplied, it is either retrieved from \code{call} if the
-#'   latter is frame or formula (by looking up the formula's
-#'   environment). Alternatively, it is lookep up in the calling frame
-#'   if not supplied.
-#' @param caller_env Parent frame in which to look up call the
-#'   contents of \code{...}. If not supplied and \code{call} is a
-#'   frame object, it is retrieved from \code{call}.
+#'   expression. If not supplied, the calling frame is used. Note that
+#'   \code{call_homogenise} needs access to the actual function
+#'   corresponding to the call. It will retrieve it from the tidy
+#'   quote or frame environment, or in the calling context.
+#' @param dots_env Calling frame in which to look up call the contents
+#'   of \code{...}. If not supplied and \code{call} is a frame object,
+#'   it is retrieved from \code{call}.
 #' @param enum_dots Whether to standardise the names of dotted
 #'   arguments. If \code{TRUE}, this produces calls such as
 #'   \code{f(..1 = ..2)} instead of \code{f(..2)}. The first form is
@@ -37,47 +35,31 @@
 #'   evaluated.
 #' @param add_missings Whether to standardise missing arguments.
 #' @export
-call_homogenise <- function(call = NULL, fn = NULL,
-                             caller_env = NULL,
-                             enum_dots = FALSE,
-                             add_missings = FALSE) {
-  info <- call_info(call, caller_env)
-  if (is.null(info$call)) return(NULL)
-
-  fn <- fn %||% info$fn %||% call_fn(info$call, info$env)
-  stopifnot(is.call(info$call))
-  stopifnot(is.environment(info$env))
-  call_homogenise_(info$call, fn, info$caller_env, enum_dots, add_missings)
-}
-
-call_info <- function(call, caller_env) {
-  # Assume call_info() is never called directly
-  call <- call %||% call_frame(3)
-  fn <- NULL
+call_homogenise <- function(call = caller_frame(),
+                            dots_env = NULL,
+                            enum_dots = FALSE,
+                            add_missings = FALSE) {
 
   if (is_frame(call)) {
-    env <- call$env
-    caller_env <- caller_env %||% sys_frame(call$caller_pos)
+    # Check for global frame
+    if (call$pos == 0) {
+      return(NULL)
+    }
+    dots_env <- sys_frame(call$caller_pos)
     fn <- call$fn
-    call <- call$expr
-  } else if (is_formula(call)) {
-    env <- environment(call)
-    call <- f_rhs(call)
   } else {
-    env <- parent.frame(3)
+    fn <- NULL
   }
 
-  list(
-    call = call,
-    env = env,
-    fn = fn,
-    caller_env = caller_env
-  )
+  call <- as_tidy_quote(call, caller_env())
+  fn <- fn %||% call_fn(call)
+
+  call_homogenise_(f_rhs(call), fn, dots_env, enum_dots, add_missings)
 }
 
-call_homogenise_ <- function(call, fn, caller_env, enum_dots, add_missings) {
+call_homogenise_ <- function(call, fn, dots_env, enum_dots, add_missings) {
   call <- duplicate(call)
-  call <- call_inline_dots(call, caller_env, enum_dots)
+  call <- call_inline_dots(call, dots_env, enum_dots)
   call <- call_match_partial(call, fn)
   call <- call_match(call, fn, enum_dots, add_missings)
   call
@@ -97,9 +79,10 @@ call_match_partial <- function(call, fn) {
   is_dup <- is_dup & actuals_nms %in% formals_nms
   if (any(is_dup)) {
     dups_nms <- actuals_nms[which(is_dup)]
-    stop(call. = FALSE,
+    abort(paste0(
       "formal arguments matched by multiple actual arguments: ",
-      paste0(dups_nms, collapse = ", "))
+      paste0(dups_nms, collapse = ", ")
+    ))
   }
 
   dots_pos <- match("...", formals_nms)
@@ -119,14 +102,16 @@ call_match_partial <- function(call, fn) {
     matched_pos <- which(map_lgl(actuals_pat, arg_match_partial, formal))
 
     if (length(matched_pos) > 1) {
-      stop(call. = FALSE,
+      abort(paste0(
         "formal argument `", formal,
-        "` matched by multiple actual arguments")
+        "` matched by multiple actual arguments"
+      ))
     }
     if (length(matched_pos) && matched_pos %in% matched) {
-      stop(call. = FALSE,
+      abort(paste0(
         "actual argument `", actuals_pat[matched_pos],
-        "` matches multiple formal arguments")
+        "` matches multiple formal arguments"
+      ))
     }
 
     matched <- append(matched, matched_pos)
@@ -137,12 +122,13 @@ call_match_partial <- function(call, fn) {
     is_unused <- !actuals_nms %in% c(formals_nms, "")
     is_unused <- is_unused & !map_lgl(actuals_nms, is_dot_nm)
     if (any(is_unused)) {
-      stop(call. = FALSE,
+      abort(paste0(
         "unused arguments: ",
-        paste0(actuals_nms[is_unused], collapse = ", "))
+        paste0(actuals_nms[is_unused], collapse = ", ")
+      ))
     }
     if (length(actuals_nms) > length(formals_nms)) {
-      stop("unused arguments", call. = FALSE)
+      abort("unused arguments")
     }
   }
 
@@ -150,24 +136,24 @@ call_match_partial <- function(call, fn) {
   call
 }
 
-call_inline_dots <- function(call, caller_env, enum_dots) {
+call_inline_dots <- function(call, dots_env, enum_dots) {
   d <- lsp_walk_nonnull(call, function(arg) {
     if (identical(cadr(arg), quote(...))) arg
   })
-  if (is.null(d)) {
+  if (is_null(d)) {
     return(call)
   }
-  if (is.null(caller_env)) {
-    stop(call. = FALSE, "`caller_env` must be supplied to match dots")
+  if (is_null(dots_env)) {
+    abort("`dots_env` must be supplied to match dots")
   }
 
-  dots <- frame_dots_lsp(caller_env)
+  dots <- frame_dots_lsp(dots_env)
   dots <- dots_enumerate_args(dots)
 
   # Attach remaining args to expanded dots
   remaining_args <- cddr(d)
   lsp_walk_nonnull(dots, function(arg) {
-    if (is.null(cdr(arg))) set_cdr(arg, remaining_args)
+    if (is_null(cdr(arg))) set_cdr(arg, remaining_args)
   })
 
   # Replace dots symbol with actual dots and remaining args
@@ -425,7 +411,7 @@ call_name <- function(call = caller_frame()) {
 
 #' Extract arguments from a call
 #'
-#' @inheritParams call_homogenise
+#' @inheritParams call_standardise
 #' @return A named list of arguments. The \code{_lsp} version returns
 #'   a named pairlist.
 #' @seealso \code{\link{fn_fmls}()} and

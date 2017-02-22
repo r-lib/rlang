@@ -4,23 +4,20 @@
 \alias{call_homogenise}
 \title{Standardise a call against formal arguments.}
 \usage{
-call_homogenise(call = NULL, fn = NULL, caller_env = NULL,
-  enum_dots = FALSE, add_missings = FALSE)
+call_homogenise(call = caller_frame(), dots_env = NULL, enum_dots = FALSE,
+  add_missings = FALSE)
 }
 \arguments{
 \item{call}{Can be a call, a formula quoting a call in the
 right-hand side, or a frame object from which to extract the call
-expression. If not supplied, the calling frame is used.}
+expression. If not supplied, the calling frame is used. Note that
+\code{call_homogenise} needs access to the actual function
+corresponding to the call. It will retrieve it from the tidy
+quote or frame environment, or in the calling context.}
 
-\item{fn}{The function against which to standardise the call. If
-not supplied, it is either retrieved from \code{call} if the
-latter is frame or formula (by looking up the formula's
-environment). Alternatively, it is lookep up in the calling frame
-if not supplied.}
-
-\item{caller_env}{Parent frame in which to look up call the
-contents of \code{...}. If not supplied and \code{call} is a
-frame object, it is retrieved from \code{call}.}
+\item{dots_env}{Calling frame in which to look up call the contents
+of \code{...}. If not supplied and \code{call} is a frame object,
+it is retrieved from \code{call}.}
 
 \item{enum_dots}{Whether to standardise the names of dotted
 arguments. If \code{TRUE}, this produces calls such as

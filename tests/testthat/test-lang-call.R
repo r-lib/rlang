@@ -20,9 +20,9 @@ test_that("args are partial matched", {
 
 test_that("args are standardised", {
   f <- function(x, y) NULL
-  expect_equal(call_homogenise(quote(f(3))), quote(f(x = 3)))
-  expect_equal(call_homogenise(quote(f(3, 3))), quote(f(x = 3, y = 3)))
-  expect_equal(call_homogenise(quote(f(y = 3))), quote(f(y = 3)))
+  expect_equal(call_homogenise(~f(3)), quote(f(x = 3)))
+  expect_equal(call_homogenise(~f(3, 3)), quote(f(x = 3, y = 3)))
+  expect_equal(call_homogenise(~f(y = 3)), quote(f(y = 3)))
 })
 
 test_that("names of dotted arguments are enumerated", {
@@ -52,7 +52,6 @@ test_that("call is not modified in place", {
   f <- function(...) g(...)
   g <- function(...) call_stack()[1:2]
   stack <- f(foo)
-  call_homogenise(stack[[1]]$expr, g, stack[[2]]$env, enum_dots = TRUE)
   expect_equal(stack[[1]]$expr, quote(g(...)))
 })
 
@@ -238,6 +237,8 @@ test_that("call_name() handles formulas and frames", {
 test_that("call_fn() extracts function", {
   fn <- function() call_fn()
   expect_identical(fn(), fn)
+
+  expect_identical(call_fn(~matrix()), matrix)
 })
 
 test_that("Inlined functions return NULL name", {
