@@ -26,3 +26,39 @@ test_that("pattern match on string encoding", {
   expect_false(is_character(chr, encoding = "unknown"))
   expect_true(is_character(chr, encoding = c("unknown", "UTF-8")))
 })
+
+test_that("UTF-8 string roundtrips to symbol with intact encoding", {
+  skip_on_cran() # portability
+  skip_on_travis() # SJIS locale non-available
+
+  old_locale <- suppressMessages(set_mbcs_locale())
+
+  sjis <- string(c(0x90, 0xac, 0x8c, 0xf0, 0x93, 0xfa, 0x8a, 0xfa))
+  utf8 <- iconv(sjis, from = "SJIS", to = "UTF-8")
+  roundtrip <- function(x, f) as.character(f(x))
+
+  # SJIS roundtrip:
+  expect_identical(as_bytes(roundtrip(sjis, symbol)), as_bytes(sjis))
+  expect_identical(str_encoding(roundtrip(sjis, symbol)), "unknown")
+
+  # UTF-8 string has correct tag after roundtrip:
+  expect_identical(as_bytes(roundtrip(utf8, symbol)), as_bytes(utf8))
+  expect_identical(str_encoding(roundtrip(utf8, symbol)), "UTF-8")
+
+  # And now as.name() works too because of symbol caching:
+  expect_identical(str_encoding(roundtrip(utf8, as.name)), "UTF-8")
+
+
+  # Let's create a new uncached string:
+  sjis <- string(c(0x90, 0xac, 0x8c, 0xf0, 0x93, 0xfa, 0x8a, 0xfa, 0x8a, 0xfa))
+  utf8 <- iconv(sjis, from = "SJIS", to = "UTF-8")
+
+  # as.name() will create a symbol with untagged CHARSXP:
+  expect_identical(as_bytes(roundtrip(utf8, as.name)), as_bytes(utf8))
+  expect_identical(str_encoding(roundtrip(utf8, as.name)), "unknown")
+
+  # And now symbol() fails again because the bad symbol is cached:
+  expect_identical(str_encoding(roundtrip(utf8, symbol)), "unknown")
+
+  Sys.setlocale("LC_CTYPE", old_locale)
+})
