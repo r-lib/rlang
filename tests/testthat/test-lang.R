@@ -1,7 +1,7 @@
 context("language")
 
 test_that("NULL is a valid language object", {
-  expect_true(is_lang(NULL))
+  expect_true(is_expr(NULL))
 })
 
 test_that("is_call() pattern-matches", {

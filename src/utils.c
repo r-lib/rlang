@@ -10,12 +10,12 @@ int is_sym(SEXP x, const char* string) {
     return strcmp(CHAR(PRINTNAME(x)), string) == 0;
 }
 
-int is_lang(SEXP x) {
+int is_symbolic(SEXP x) {
   return TYPEOF(x) == LANGSXP || TYPEOF(x) == SYMSXP;
 }
 
 bool is_call(SEXP x, const char* f) {
-  if (!is_lang(x) && TYPEOF(x) != LISTSXP)
+  if (!is_symbolic(x) && TYPEOF(x) != LISTSXP)
     return false;
 
   SEXP fun = CAR(x);

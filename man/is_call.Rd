@@ -71,5 +71,5 @@ is_call(~foo(bar), c("bar", "foo"))
 is_call(~base::list, c("::", ":::", "$", "@"))
 }
 \seealso{
-\code{\link{is_lang}()}
+\code{\link{is_expr}()}
 }

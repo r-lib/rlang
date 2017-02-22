@@ -1,16 +1,15 @@
-#' Is an object a language object?
+#' Is an object an expression?
 #'
 #' These helpers are consistent wrappers around their base R
-#' equivalents. \code{is_lang()} and its alias \code{is_language()}
-#' test for language objects, the set of objects that can be obtained
-#' from parsing R code. A language object can be one of two things:
-#' either a symbolic object (for which \code{is_symbolic()} returns
-#' \code{TRUE}), or a parsable literal (testable with
-#' \code{is_parsable_literal()}).
+#' equivalents. \code{is_expr()} tests for expressions, the set of
+#' objects that can be obtained from parsing R code. An expression
+#' can be one of two things: either a symbolic object (for which
+#' \code{is_symbolic()} returns \code{TRUE}), or a parsable literal
+#' (testable with \code{is_parsable_literal()}).
 #'
 #' Literals are the set of R objects that evaluate to themselves when
-#' supplied to \code{eval()}. Non-literal objects are called symbolic.
-#' Only symbols and calls are symbolic. They form the backbone of an
+#' supplied to \code{eval()}. Non-literal objects like symbols and
+#' calls are called symbolic. They form the backbone of an
 #' expression, and their values are looked up by the R interpreter
 #' when the expression is evaluated. By contrast, literals are
 #' returned as is. Scalar strings, numbers, booleans, and the
@@ -36,8 +35,8 @@
 #' \code{\link{tidy_capture}()}, then you can check for literals with
 #' \code{is_parsable_literal()}.
 #'
-#' Finally, pairlists can also be language objects. However, since
-#' they are mostly an internal data structure, \code{is_lang()}
+#' Finally, pairlists are also a kind of language objects. However,
+#' since they are mostly an internal data structure, \code{is_expr()}
 #' returns \code{FALSE} for pairlists. You can use
 #' \code{is_pairlist()} to explicitly check for them. Pairlists are
 #' the data structure for function arguments. They usually do not
@@ -50,7 +49,7 @@
 #' \code{\link{fn_fmls}()}.
 #'
 #' @param x An object to test. When you supply a tidy quote (see
-#'   \code{\link{tidy_quote}()}) to any of the language predicates,
+#'   \code{\link{tidy_quote}()}) to any of the expression predicates,
 #'   they will perform their test on the RHS of the formula.
 #' @seealso \code{\link{is_call}()} for a call predicate.
 #'   \code{\link{as_symbol}()} and \code{\link{as_call}()} for coercion
@@ -58,20 +57,20 @@
 #' @export
 #' @examples
 #' q1 <- quote(1)
-#' is_lang(q1)
+#' is_expr(q1)
 #' is_parsable_literal(q1)
 #'
 #' q2 <- quote(x)
-#' is_lang(q2)
+#' is_expr(q2)
 #' is_symbol(q2)
 #'
 #' q3 <- quote(x + 1)
-#' is_lang(q3)
+#' is_expr(q3)
 #' is_call(q3)
 #'
 #'
 #' # Since tidy quotes are an important way of representing
-#' # expressions in R, all language predicates will test the RHS of
+#' # expressions in R, all expression predicates will test the RHS of
 #' # the formula if you supply one:
 #' is_symbol(~foo)
 #' is_call(~foo)
@@ -79,8 +78,8 @@
 #' is_call(~foo(bar))
 #'
 #'
-#' # Atomic language objects are the terminating nodes of a call
-#' # tree: NULL or a scalar atomic vector:
+#' # Atomic expressions are the terminating nodes of a call tree:
+#' # NULL or a scalar atomic vector:
 #' is_parsable_literal("string")
 #' is_parsable_literal(NULL)
 #'
@@ -96,50 +95,47 @@
 #' # environment:
 #' eval(quote(1L), empty_env())
 #'
-#' # Whereas it would fail for symbolic language objects:
+#' # Whereas it would fail for symbolic expressions:
 #' # eval(quote(c(1L, 2L)), empty_env())
 #'
 #'
 #' # Pairlists are also language objects representing argument lists.
 #' # You will usually encounter them with extracted formals:
-#' fmls <- formals(is_lang)
+#' fmls <- formals(is_expr)
 #' typeof(fmls)
 #'
-#' # Since they are mostly an internal data structure, is_lang()
+#' # Since they are mostly an internal data structure, is_expr()
 #' # returns FALSE for pairlists, so you will have to check explicitly
 #' # for them:
-#' is_lang(fmls)
+#' is_expr(fmls)
 #' is_pairlist(fmls)
 #'
 #' # Note that you can also extract call arguments as a pairlist:
 #' call_args_lsp(quote(fn(arg1, arg2 = "foo")))
-is_lang <- function(x) {
+is_expr <- function(x) {
   x <- expr(x)
   is_symbolic(x) || is_parsable_literal(x)
 }
-#' @rdname is_lang
-#' @export
-is_language <- is_lang
-#' @rdname is_lang
+#' @rdname is_expr
 #' @export
 is_symbol <- function(x) {
   x <- expr(x)
   typeof(x) == "symbol"
 }
 #' @export
-#' @rdname is_lang
+#' @rdname is_expr
 is_parsable_literal <- function(x) {
   x <- expr(x)
   typeof(x) == "NULL" || (length(x) == 1 && typeof(x) %in% parsable_atomic_types)
 }
 #' @export
-#' @rdname is_lang
+#' @rdname is_expr
 is_symbolic <- function(x) {
   x <- expr(x)
   typeof(x) %in% c("language", "symbol")
 }
 
-#' @rdname is_lang
+#' @rdname is_expr
 #' @export
 is_pairlist <- function(x) {
   typeof(x) == "pairlist"
@@ -162,7 +158,7 @@ is_pairlist <- function(x) {
 #'   name matches.
 #' @param n An optional number of arguments that the call should
 #'   match.
-#' @seealso \code{\link{is_lang}()}
+#' @seealso \code{\link{is_expr}()}
 #' @export
 #' @examples
 #' is_call(quote(foo(bar)))

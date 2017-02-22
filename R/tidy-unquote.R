@@ -82,7 +82,7 @@ UQS <- function(x) {
     as.pairlist(x)
   } else if (inherits(x, "{")) {
     cdr(x)
-  } else if (is_lang(x)) {
+  } else if (is_expr(x)) {
     pairlist(x)
   } else {
     abort("`x` must be a vector or a language object")
