@@ -124,3 +124,31 @@ expr_text <- function(expr, width = 60L, nlines = Inf) {
 
   paste0(str, collapse = "\n")
 }
+
+
+# Should accept same inputs as tidy_quote(), but return an expression
+as_expr <- function(x) {
+  if (is_frame(x)) x$expr else get_expr(x)
+}
+set_expr <- function(x, value) {
+  if (is_fquote(x)) {
+    f_rhs(x) <- value
+    x
+  } else {
+    value
+  }
+}
+get_expr <- function(x) {
+  if (is_fquote(x)) {
+    f_rhs(x)
+  } else {
+    x
+  }
+}
+
+# More permissive than is_tidy_quote()
+is_fquote <- function(x) {
+  typeof(x) == "language" &&
+    identical(car(x), quote(`~`)) &&
+    length(x) == 2L
+}

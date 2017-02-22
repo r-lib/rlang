@@ -83,7 +83,7 @@ call_modify <- function(.call = caller_frame(), ..., .args = list(),
     call <- as_expr(.call)
   }
 
-  expr <- expr(call)
+  expr <- get_expr(call)
   call <- set_expr(call, switchpatch(expr,
     symbol = new_call(expr),
     language = expr,
@@ -93,7 +93,7 @@ call_modify <- function(.call = caller_frame(), ..., .args = list(),
   if (.standardise) {
     call <- call_standardise(call)
   }
-  expr <- expr(call)
+  expr <- get_expr(call)
 
   # Named arguments can be spliced by R
   named <- have_names(args)
@@ -140,7 +140,7 @@ call_standardise <- function(call = caller_frame()) {
     abort("Cannot extract a function to compare the call to")
   )
 
-  matched <- match.call(as_closure(fn), expr(quote))
+  matched <- match.call(as_closure(fn), get_expr(quote))
   set_expr(call, matched)
 }
 

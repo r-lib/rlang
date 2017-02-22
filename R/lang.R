@@ -122,25 +122,25 @@
 #' # Note that you can also extract call arguments as a pairlist:
 #' call_args_lsp(quote(fn(arg1, arg2 = "foo")))
 is_expr <- function(x) {
-  x <- expr(x)
+  x <- get_expr(x)
   is_symbolic(x) || is_parsable_literal(x)
 }
 #' @rdname is_expr
 #' @export
 is_symbol <- function(x) {
-  x <- expr(x)
+  x <- get_expr(x)
   typeof(x) == "symbol"
 }
 #' @export
 #' @rdname is_expr
 is_parsable_literal <- function(x) {
-  x <- expr(x)
+  x <- get_expr(x)
   typeof(x) == "NULL" || (length(x) == 1 && typeof(x) %in% parsable_atomic_types)
 }
 #' @export
 #' @rdname is_expr
 is_symbolic <- function(x) {
-  x <- expr(x)
+  x <- get_expr(x)
   typeof(x) %in% c("language", "symbol")
 }
 
@@ -213,7 +213,7 @@ is_pairlist <- function(x) {
 #' is_lang(~foo(bar), c("bar", "foo"))
 #' is_lang(~base::list, c("::", ":::", "$", "@"))
 is_lang <- function(x, name = NULL, n = NULL) {
-  x <- expr(x)
+  x <- get_expr(x)
 
   if (typeof(x) != "language") {
     return(FALSE)
@@ -317,28 +317,5 @@ is_prefixed_name <- function(x) {
     as_character(fn) %in% c("::", ":::", "$", "@")
   } else {
     FALSE
-  }
-}
-
-expr <- function(x) {
-  if (is_fquote(x)) f_rhs(x) else x
-}
-
-# More permissive than is_tquote()
-is_fquote <- function(x) {
-  typeof(x) == "language" &&
-    identical(car(x), quote(`~`)) &&
-    length(x) == 2L
-}
-# Should accept same inputs as tidy_quote(), but return an expression
-as_expr <- function(x) {
-  if (is_frame(x)) x$expr else expr(x)
-}
-set_expr <- function(x, value) {
-  if (is_tidy_quote(x)) {
-    f_rhs(x) <- value
-    x
-  } else {
-    value
   }
 }
