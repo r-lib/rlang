@@ -35,6 +35,10 @@ new_call <- function(.fn, ..., .args = list()) {
 #' @param ...,.args Named or unnamed expressions (constants, names or
 #'   calls) used to modify the call. Use \code{NULL} to remove
 #'   arguments.
+#' @param .standardise If \code{TRUE}, the call is standardised before
+#'   hand to match existing unnamed arguments to their argument
+#'   names. This prevents new named arguments from accidentally
+#'   replacing original unnamed arguments.
 #' @return A tidy quote if \code{.call} is a tidy quote, a call
 #'   otherwise.
 #' @seealso new_call
@@ -65,21 +69,31 @@ new_call <- function(.fn, ..., .args = list()) {
 #'
 #'
 #' # You can also modify a tidy quote inplace:
-#' f <- ~matrix()
+#' f <- ~matrix(bar)
 #' call_modify(f, quote(foo))
-call_modify <- function(.call = caller_frame(), ..., .args = list()) {
+call_modify <- function(.call = caller_frame(), ..., .args = list(),
+                       .standardise = FALSE) {
   stopifnot(is_list(.args))
   args <- c(list(...), .args)
+  orig <- .call
 
-  quote <- as_tidy_quote(.call, caller_env())
-  expr <- f_rhs(quote)
-  f_rhs(quote) <- switchpatch(expr,
+  if (.standardise) {
+    call <- as_tidy_quote(.call, caller_env())
+  } else {
+    call <- as_expr(.call)
+  }
+
+  expr <- expr(call)
+  call <- set_expr(call, switchpatch(expr,
     symbol = new_call(expr),
     language = expr,
     abort("`.call` must be a quote of a call or symbol")
-  )
+  ))
 
-  expr <- expr(call_standardise(quote))
+  if (.standardise) {
+    call <- call_standardise(call)
+  }
+  expr <- expr(call)
 
   # Named arguments can be spliced by R
   named <- have_names(args)
@@ -97,7 +111,7 @@ call_modify <- function(.call = caller_frame(), ..., .args = list()) {
     expr <- lsp_append(expr, remaining_args)
   }
 
-  set_expr(.call, expr)
+  set_expr(orig, expr)
 }
 
 #' Standardise a call.

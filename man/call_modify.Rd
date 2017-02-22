@@ -4,7 +4,8 @@
 \alias{call_modify}
 \title{Modify the arguments of a call.}
 \usage{
-call_modify(.call = caller_frame(), ..., .args = list())
+call_modify(.call = caller_frame(), ..., .args = list(),
+  .standardise = FALSE)
 }
 \arguments{
 \item{.call}{Can be a call, a formula quoting a call in the
@@ -14,6 +15,11 @@ expression. If not supplied, the calling frame is used.}
 \item{..., .args}{Named or unnamed expressions (constants, names or
 calls) used to modify the call. Use \code{NULL} to remove
 arguments.}
+
+\item{.standardise}{If \code{TRUE}, the call is standardised before
+hand to match existing unnamed arguments to their argument
+names. This prevents new named arguments from accidentally
+replacing original unnamed arguments.}
 }
 \value{
 A tidy quote if \code{.call} is a tidy quote, a call
@@ -48,7 +54,7 @@ f()
 
 
 # You can also modify a tidy quote inplace:
-f <- ~matrix()
+f <- ~matrix(bar)
 call_modify(f, quote(foo))
 }
 \seealso{
