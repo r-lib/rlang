@@ -89,16 +89,16 @@ is_symbol(q2)
 
 q3 <- quote(x + 1)
 is_expr(q3)
-is_call(q3)
+is_lang(q3)
 
 
 # Since tidy quotes are an important way of representing
 # expressions in R, all expression predicates will test the RHS of
 # the formula if you supply one:
 is_symbol(~foo)
-is_call(~foo)
+is_lang(~foo)
 is_symbol(~foo(bar))
-is_call(~foo(bar))
+is_lang(~foo(bar))
 
 
 # Atomic expressions are the terminating nodes of a call tree:
@@ -137,7 +137,7 @@ is_pairlist(fmls)
 call_args_lsp(quote(fn(arg1, arg2 = "foo")))
 }
 \seealso{
-\code{\link{is_call}()} for a call predicate.
+\code{\link{is_lang}()} for a call predicate.
   \code{\link{as_symbol}()} and \code{\link{as_call}()} for coercion
   functions.
 }

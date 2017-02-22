@@ -8,15 +8,15 @@ SEXP interp_arguments(SEXP x, SEXP env);
 
 
 int bang_level(SEXP x) {
-  if (!is_call(x, "!"))
+  if (!is_lang(x, "!"))
     return 0;
 
   SEXP arg = CDR(x);
-  if (TYPEOF(arg) == NILSXP || !is_call(CAR(arg), "!"))
+  if (TYPEOF(arg) == NILSXP || !is_lang(CAR(arg), "!"))
     return 1;
 
   arg = CDR(CAR(arg));
-  if (TYPEOF(arg) == NILSXP || !is_call(CAR(arg), "!"))
+  if (TYPEOF(arg) == NILSXP || !is_lang(CAR(arg), "!"))
     return 2;
 
   return 3;
@@ -137,7 +137,7 @@ SEXP interp_walk(SEXP x, SEXP env)  {
     REPROTECT(x = unquote(CADR(x), env, uq_sym), ipx);
   } else if (is_rlang_prefixed(x, is_uqf_sym)) {
     REPROTECT(x = unquote_prefixed_uqf(x, env), ipx);
-  } else if (is_call(x, "UQF")) {
+  } else if (is_lang(x, "UQF")) {
     REPROTECT(x = Rf_eval(x, env), ipx);
     REPROTECT(x = guard_formula(x), ipx);
   } else {

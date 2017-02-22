@@ -4,30 +4,30 @@ test_that("NULL is a valid language object", {
   expect_true(is_expr(NULL))
 })
 
-test_that("is_call() pattern-matches", {
-  expect_true(is_call(quote(foo(bar)), "foo"))
-  expect_false(is_call(quote(foo(bar)), "bar"))
-  expect_true(is_call(quote(foo(bar)), quote(foo)))
+test_that("is_lang() pattern-matches", {
+  expect_true(is_lang(quote(foo(bar)), "foo"))
+  expect_false(is_lang(quote(foo(bar)), "bar"))
+  expect_true(is_lang(quote(foo(bar)), quote(foo)))
 
-  expect_true(is_call(~foo(bar), "foo", n = 1))
-  expect_false(is_call(~foo(bar), "foo", n = 2))
+  expect_true(is_lang(~foo(bar), "foo", n = 1))
+  expect_false(is_lang(~foo(bar), "foo", n = 2))
 
-  expect_true(is_call(~foo::bar()), quote(foo::bar()))
+  expect_true(is_lang(~foo::bar()), quote(foo::bar()))
 
-  expect_false(is_call(~1))
-  expect_false(is_call(~NULL))
+  expect_false(is_lang(~1))
+  expect_false(is_lang(~NULL))
 
-  expect_true(is_unary_call(~ +3))
-  expect_true(is_binary_call(~ 3 + 3))
+  expect_true(is_unary_lang(~ +3))
+  expect_true(is_binary_lang(~ 3 + 3))
 })
 
-test_that("is_call() vectorises name", {
-  expect_false(is_call(~foo::bar, c("fn", "fn2")))
-  expect_true(is_call(~foo::bar, c("fn", "::")))
+test_that("is_lang() vectorises name", {
+  expect_false(is_lang(~foo::bar, c("fn", "fn2")))
+  expect_true(is_lang(~foo::bar, c("fn", "::")))
 
-  expect_true(is_call(~foo::bar, quote(`::`)))
-  expect_true(is_call(~foo::bar, list(quote(`@`), quote(`::`))))
-  expect_false(is_call(~foo::bar, list(quote(`@`), quote(`:::`))))
+  expect_true(is_lang(~foo::bar, quote(`::`)))
+  expect_true(is_lang(~foo::bar, list(quote(`@`), quote(`::`))))
+  expect_false(is_lang(~foo::bar, list(quote(`@`), quote(`:::`))))
 })
 
 

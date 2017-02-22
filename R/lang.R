@@ -60,7 +60,7 @@
 #' @param x An object to test. When you supply a tidy quote (see
 #'   \code{\link{tidy_quote}()}) to any of the expression predicates,
 #'   they will perform their test on the RHS of the formula.
-#' @seealso \code{\link{is_call}()} for a call predicate.
+#' @seealso \code{\link{is_lang}()} for a call predicate.
 #'   \code{\link{as_symbol}()} and \code{\link{as_call}()} for coercion
 #'   functions.
 #' @export
@@ -75,16 +75,16 @@
 #'
 #' q3 <- quote(x + 1)
 #' is_expr(q3)
-#' is_call(q3)
+#' is_lang(q3)
 #'
 #'
 #' # Since tidy quotes are an important way of representing
 #' # expressions in R, all expression predicates will test the RHS of
 #' # the formula if you supply one:
 #' is_symbol(~foo)
-#' is_call(~foo)
+#' is_lang(~foo)
 #' is_symbol(~foo(bar))
-#' is_call(~foo(bar))
+#' is_lang(~foo(bar))
 #'
 #'
 #' # Atomic expressions are the terminating nodes of a call tree:
@@ -150,63 +150,69 @@ is_pairlist <- function(x) {
   typeof(x) == "pairlist"
 }
 
-#' Is object a call?
+#' Is object a call (language type)?
 #'
 #' This function tests if \code{x} is a call. This is a
 #' pattern-matching predicate that will return \code{FALSE} if
 #' \code{name} and \code{n} are supplied and the call does not match
-#' these properties. \code{is_unary_call()} and
-#' \code{is_binary_call()} hardcode \code{n} to 1 and 2.
+#' these properties. \code{is_unary_lang()} and
+#' \code{is_binary_lang()} hardcode \code{n} to 1 and 2.
+#'
+#' Note that the base type of calls is \code{language}, while
+#' \code{call} is the old S mode. While it is usually better to avoid
+#' using S terminology, it would probably be even more confusing to
+#' refer to "calls" as "language". We still use \code{lang} as prefix
+#' or suffix for consistency.
 #'
 #' @param x An object to test. If a formula, the right-hand side is
 #'   extracted.
 #' @param name An optional name that the call should match. It is
 #'   passed to \code{\link{as_symbol}()} before matching. This argument
 #'   is vectorised and you can supply a vector of names to match. In
-#'   this case, \code{is_call()} returns \code{TRUE} if at least one
+#'   this case, \code{is_lang()} returns \code{TRUE} if at least one
 #'   name matches.
 #' @param n An optional number of arguments that the call should
 #'   match.
 #' @seealso \code{\link{is_expr}()}
 #' @export
 #' @examples
-#' is_call(quote(foo(bar)))
+#' is_lang(quote(foo(bar)))
 #'
 #' # Right-hand sides are extracted from formulas:
-#' is_call(~foo(bar))
+#' is_lang(~foo(bar))
 #'
 #' # You can pattern-match the call with additional arguments:
-#' is_call(~foo(bar), "foo")
-#' is_call(~foo(bar), "bar")
-#' is_call(~foo(bar), quote(foo))
+#' is_lang(~foo(bar), "foo")
+#' is_lang(~foo(bar), "bar")
+#' is_lang(~foo(bar), quote(foo))
 #'
-#' # Match the number of arguments with is_call():
-#' is_call(~foo(bar), "foo", 1)
-#' is_call(~foo(bar), "foo", 2)
+#' # Match the number of arguments with is_lang():
+#' is_lang(~foo(bar), "foo", 1)
+#' is_lang(~foo(bar), "foo", 2)
 #'
 #' # Or more specifically:
-#' is_unary_call(~foo(bar))
-#' is_unary_call(~ +3)
-#' is_unary_call(~ 1 + 3)
-#' is_binary_call(~ 1 + 3)
+#' is_unary_lang(~foo(bar))
+#' is_unary_lang(~ +3)
+#' is_unary_lang(~ 1 + 3)
+#' is_binary_lang(~ 1 + 3)
 #'
 #' # Namespaced calls are a bit tricky. Strings won't work because
 #' # as_symbol("base::list") returns a symbol rather than a namespace
 #' # call:
-#' is_call(~base::list(baz), "base::list")
+#' is_lang(~base::list(baz), "base::list")
 #'
 #' # However you can use the fact that as_symbol(quote(base::list()))
 #' # extracts the function identifier as is, and thus returns the call
 #' # base::list:
-#' is_call(~base::list(baz), ~base::list(), 1)
+#' is_lang(~base::list(baz), ~base::list(), 1)
 #'
 #'
 #' # The name argument is vectorised so you can supply a list of names
 #' # to match with:
-#' is_call(~foo(bar), c("bar", "baz"))
-#' is_call(~foo(bar), c("bar", "foo"))
-#' is_call(~base::list, c("::", ":::", "$", "@"))
-is_call <- function(x, name = NULL, n = NULL) {
+#' is_lang(~foo(bar), c("bar", "baz"))
+#' is_lang(~foo(bar), c("bar", "foo"))
+#' is_lang(~base::list, c("::", ":::", "$", "@"))
+is_lang <- function(x, name = NULL, n = NULL) {
   x <- expr(x)
 
   if (typeof(x) != "language") {
@@ -238,16 +244,19 @@ is_call <- function(x, name = NULL, n = NULL) {
 
   TRUE
 }
+#' @rdname is_lang
+#' @export
+is_language <- is_lang
 
-#' @rdname is_call
+#' @rdname is_lang
 #' @export
-is_unary_call <- function(x, name = NULL) {
-  is_call(x, name, n = 1L)
+is_unary_lang <- function(x, name = NULL) {
+  is_lang(x, name, n = 1L)
 }
-#' @rdname is_call
+#' @rdname is_lang
 #' @export
-is_binary_call <- function(x, name = NULL) {
-  is_call(x, name, n = 2L)
+is_binary_lang <- function(x, name = NULL) {
+  is_lang(x, name, n = 2L)
 }
 
 
