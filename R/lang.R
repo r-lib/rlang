@@ -284,11 +284,12 @@ as_symbol <- function(x) {
     string = symbol(x),
     quote = as_symbol(f_rhs(x)),
     language =
-      if (is_prefixed_name(x)) {
-        x
-      } else {
-        as_symbol(x[[1]])
-      }
+      switchlang(x,
+        namespaced = car(x),
+        literal = abort("the call head is literal"),
+        recursive = abort("the call head is recursive"),
+        as_symbol(car(x))
+      )
   )
 }
 #' @export
@@ -306,16 +307,37 @@ as_call <- function(x) {
   coerce_type(x, "language",
     symbol = new_lang(x),
     quote = as_call(f_rhs(x)),
-    language = x,
-    string = parse_expr(x)
+    string = parse_expr(x),
+    language = x
   )
 }
 
-is_prefixed_name <- function(x) {
-  fn <- x[[1]]
-  if (is_symbol(fn)) {
-    as_character(fn) %in% c("::", ":::", "$", "@")
-  } else {
-    FALSE
-  }
+is_qualified_lang <- function(x) {
+  if (typeof(x) != "language") return(FALSE)
+  is_qualified_symbol(car(x))
+}
+is_namespaced_lang <- function(x) {
+  if (typeof(x) != "language") return(FALSE)
+  is_namespaced_symbol(car(x))
+}
+
+# Qualified and namespaced symbols are actually calls
+is_qualified_symbol <- function(x) {
+  if (typeof(x) != "language") return(FALSE)
+
+  head <- cadr(cdr(x))
+  if (typeof(head) != "symbol") return(FALSE)
+
+  qualifier <- car(x)
+  identical(qualifier, sym_namespace) ||
+    identical(qualifier, sym_namespace2) ||
+    identical(qualifier, sym_dollar) ||
+    identical(qualifier, sym_at)
+}
+is_namespaced_symbol <- function(x) {
+  if (typeof(x) != "language") return(FALSE)
+
+  qualifier <- car(x)
+  identical(qualifier, sym_namespace) ||
+    identical(qualifier, sym_namespace2)
 }

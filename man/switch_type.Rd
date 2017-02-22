@@ -74,3 +74,6 @@ switch_type(rlang::switch_type,
   "default"
 )
 }
+\seealso{
+\code{\link[=switchlang]{switchlang()}}
+}

@@ -54,5 +54,16 @@ test_that("as_call() produces calls", {
 
 test_that("as_symbol() handles prefixed call names", {
   expect_identical(as_symbol(quote(foo::bar())), quote(foo::bar))
-  expect_identical(as_symbol(~foo@bar()), quote(foo@bar))
+  expect_error(as_symbol(~foo@bar()), "recursive")
+})
+
+# misc -------------------------------------------------------------------
+
+test_that("qualified and namespaced symbols are recognised", {
+  expect_true(is_qualified_lang(quote(foo@baz())))
+  expect_true(is_qualified_lang(quote(foo::bar())))
+  expect_false(is_qualified_lang(quote(foo()())))
+
+  expect_false(is_namespaced_lang(quote(foo@bar())))
+  expect_true(is_namespaced_lang(quote(foo::bar())))
 })

@@ -358,14 +358,15 @@ is_scalar_integerish <- function(x) {
 #' type_of(quote(base::list()))
 #' @md
 type_of <- function(x) {
+  type <- typeof(x)
   if (is_fquote(x)) {
     "quote"
-  } else if (typeof(x) == "character" && length(x) == 1) {
-    "string"
-  } else if (typeof(x) %in% c("builtin", "special")) {
+  } else if (type == "character") {
+    if (length(x) == 1) "string" else "character"
+  } else if (type %in% c("builtin", "special")) {
     "primitive"
   } else {
-    typeof(x)
+    type
   }
 }
 
@@ -382,6 +383,7 @@ type_of <- function(x) {
 #'   function. If supplied, this should be a string indicating the
 #'   target type. A catch-all clause is then added to signal an error
 #'   stating the conversion failure.
+#' @seealso [switchlang()]
 #' @export
 #' @examples
 #' switch_type(3L,
@@ -440,4 +442,93 @@ switch_type <- function(.x, ...) {
 coerce_type <- function(.x, .to, ...) {
   msg <- paste0("Cannot convert objects of type `", type_of(.x), "` to `", .to, "`")
   switch(type_of(.x), ..., abort(msg))
+}
+
+#' Dispatch on call type.
+#'
+#' `switchlang()` dispatches clauses based on the subtype of call, as
+#' determined by `lang_type_of()`. The subtypes are based on the type
+#' of call head (see details).
+#'
+#' Calls (objects of type `language`) do not necessarily call a named
+#' function. They can also call an anonymous function or the result of
+#' some other expression. The language subtypes are organised around
+#' the kind of object being called:
+#'
+#' * For regular calls to named function, `switchlang()` returns
+#'   "named".
+#'
+#' * Sometimes the function being called is the result of another
+#'   function call, e.g. `foo()()`, or the result of another
+#'   subsetting call, e.g. `foo$bar()` or `foo@bar()`. In this case,
+#'   the call head is not a symbol, it is another call (e.g. to the
+#'   infix functions `$` or `@`). The call subtype is said to be
+#'   "recursive".
+#'
+#' * A special subset of recursive calls are namespaced calls like
+#'   `foo::bar()`. `switchlang()` returns "namespaced" for these
+#'   calls. It is generally a good idea if your function treats
+#'   `bar()` and `foo::bar()` similarly.
+#'
+#' * Finally, it is possible to have a literal (see [is_expr()] for a
+#'   definition of literals) as call head. In most cases, this will be
+#'   a function inlined in the call (this is sometimes an expedient
+#'   way of dealing with scoping issues). For calls with a literal
+#'   node head, `switchlang()` returns "inlined". Note that if a call
+#'   head contains a literal that is not function, something went
+#'   wrong and using that object will probably make R crash.
+#'   `switchlang()` issues an error in this case.
+#'
+#' The reason we use the term _node head_ is because calls are
+#' structured as tree objects. This makes sense because the best
+#' representation for language code is a parse tree. The hierarchy of
+#' the tree is determined by the order of operations. Borrowing from
+#' lisp terminology, each node of the tree has a CAR (the head of the
+#' node) and a CDR (the tail). You will encounter these terms when
+#' reading R's source code.
+#'
+#' @param .x,x A language object (a call). If a formula quote, the RHS
+#'   is extracted first.
+#' @param ... Named clauses. The names should be types as returned by
+#'   `lang_type_of()`.
+#' @examples
+#' # Named calls:
+#' lang_type_of(~foo())
+#'
+#' # Recursive calls:
+#' lang_type_of(~foo$bar())
+#' lang_type_of(~foo()())
+#'
+#' # Namespaced calls:
+#' lang_type_of(~base::list())
+#'
+#' # For an inlined call, let's inline a function in the head node:
+#' call <- quote(foo(letters))
+#' call[[1]] <- base::toupper
+#'
+#' call
+#' lang_type_of(call)
+#' @md
+switchlang <- function(.x, ...) {
+  switch(lang_type_of(.x), ...)
+}
+
+#' @rdname switchlang
+#' @export
+lang_type_of <- function(x) {
+  x <- expr(x)
+  stopifnot(typeof(x) == "language")
+
+  type <- typeof(car(x))
+  if (type == "symbol") {
+    "named"
+  } else if (is_namespaced_symbol(car(x))) {
+    "namespaced"
+  } else if (type == "language") {
+    "recursive"
+  } else if (type %in% c("closure", "builtin", "special")) {
+    "inlined"
+  } else {
+    abort("corrupt language object")
+  }
 }
