@@ -14,9 +14,9 @@ new_formula <- function(lhs, rhs, env = caller_env()) {
   }
 
   if (is_null(lhs)) {
-    f <- new_lang("~", rhs)
+    f <- lang("~", rhs)
   } else {
-    f <- new_lang("~", lhs, rhs)
+    f <- lang("~", lhs, rhs)
   }
 
   structure(f, class = "formula", .Environment = env)

@@ -111,7 +111,7 @@ is_binary_lang <- function(x, name = NULL) {
 #' @rdname as_symbol
 as_lang <- function(x) {
   switchpatch(x, .to = "language",
-    symbol = new_lang(x),
+    symbol = lang(x),
     quote = as_lang(f_rhs(x)),
     string = parse_expr(x),
     language = x
@@ -128,14 +128,14 @@ as_lang <- function(x) {
 #' @export
 #' @examples
 #' # fn can either be a string, a symbol or a call
-#' new_lang("f", a = 1)
-#' new_lang(quote(f), a = 1)
-#' new_lang(quote(f()), a = 1)
+#' lang("f", a = 1)
+#' lang(quote(f), a = 1)
+#' lang(quote(f()), a = 1)
 #'
 #' #' Can supply arguments individually or in a list
-#' new_lang(quote(f), a = 1, b = 2)
-#' new_lang(quote(f), .args = list(a = 1, b = 2))
-new_lang <- function(.fn, ..., .args = list()) {
+#' lang(quote(f), a = 1, b = 2)
+#' lang(quote(f), .args = list(a = 1, b = 2))
+lang <- function(.fn, ..., .args = list()) {
   if (is_character(.fn)) {
     if (length(.fn) != 1) {
       abort("Character `.fn` must be length 1")
@@ -161,7 +161,7 @@ new_lang <- function(.fn, ..., .args = list()) {
 #'   replacing original unnamed arguments.
 #' @return A tidy quote if \code{.call} is a tidy quote, a call
 #'   otherwise.
-#' @seealso new_lang
+#' @seealso lang
 #' @export
 #' @examples
 #' call <- quote(mean(x, na.rm = TRUE))

@@ -58,5 +58,5 @@ f <- ~matrix(bar)
 lang_modify(f, quote(foo))
 }
 \seealso{
-new_lang
+lang
 }
