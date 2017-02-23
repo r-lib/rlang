@@ -138,6 +138,6 @@ lang_args_lsp(quote(fn(arg1, arg2 = "foo")))
 }
 \seealso{
 \code{\link{is_lang}()} for a call predicate.
-  \code{\link{as_symbol}()} and \code{\link{as_call}()} for coercion
+  \code{\link{as_symbol}()} and \code{\link{as_lang}()} for coercion
   functions.
 }

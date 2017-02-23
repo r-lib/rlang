@@ -43,13 +43,13 @@ test_that("as_symbol() produces names", {
   expect_error(as_symbol(c("a", "b")), "Cannot convert objects of type `character` to `symbol`")
 })
 
-test_that("as_call() produces calls", {
-  expect_equal(as_call(quote(a)), quote(a()))
-  expect_equal(as_call(quote(a())), quote(a()))
-  expect_equal(as_call("a()"), quote(a()))
-  expect_equal(as_call(~ a()), quote(a()))
+test_that("as_lang() produces calls", {
+  expect_equal(as_lang(quote(a)), quote(a()))
+  expect_equal(as_lang(quote(a())), quote(a()))
+  expect_equal(as_lang("a()"), quote(a()))
+  expect_equal(as_lang(~ a()), quote(a()))
 
-  expect_error(as_call(c("a", "b")), "Cannot convert objects of type `character` to `language`")
+  expect_error(as_lang(c("a", "b")), "Cannot convert objects of type `character` to `language`")
 })
 
 test_that("as_symbol() handles prefixed call names", {
