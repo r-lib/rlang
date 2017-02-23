@@ -2,10 +2,13 @@
 #'
 #' These helpers are consistent wrappers around their base R
 #' equivalents. \code{is_expr()} tests for expressions, the set of
-#' objects that can be obtained from parsing R code. An expression
-#' can be one of two things: either a symbolic object (for which
+#' objects that can be obtained from parsing R code. An expression can
+#' be one of two things: either a symbolic object (for which
 #' \code{is_symbolic()} returns \code{TRUE}), or a parsable literal
-#' (testable with \code{is_parsable_literal()}).
+#' (testable with \code{is_parsable_literal()}). Note that we are
+#' using the term expression in its colloquial sense and not to refer
+#' to \code{\link{expression}()} vectors, a data type that wraps
+#' expressions in a vector and which has not much use in R.
 #'
 #' Literals are the set of R objects that evaluate to themselves when
 #' supplied to \code{eval()}. Non-literal objects like symbols and
