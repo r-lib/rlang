@@ -3,11 +3,14 @@
 \name{as_tidy_quote}
 \alias{as_tidy_quote}
 \alias{is_tidy_quote}
+\alias{is_tquote}
 \title{Coerce expressions to a tidy formula quote.}
 \usage{
 as_tidy_quote(x, env)
 
 is_tidy_quote(x)
+
+is_tquote(x)
 }
 \arguments{
 \item{x}{An object to test or convert.}

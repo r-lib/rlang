@@ -358,7 +358,7 @@ is_scalar_integerish <- function(x) {
 #' type_of(quote(base::list()))
 #' @md
 type_of <- function(x) {
-  if (is_quote(x)) {
+  if (is_fquote(x)) {
     "quote"
   } else if (typeof(x) == "character" && length(x) == 1) {
     "string"

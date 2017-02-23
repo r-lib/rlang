@@ -312,3 +312,6 @@ as_tidy_quote <- function(x, env) {
 is_tidy_quote <- function(x) {
   is_formula(x) && is_env(f_env(x))
 }
+#' @rdname as_tidy_quote
+#' @export
+is_tquote <- is_tidy_quote

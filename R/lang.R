@@ -312,11 +312,11 @@ is_prefixed_name <- function(x) {
 }
 
 expr <- function(x) {
-  if (is_quote(x)) f_rhs(x) else x
+  if (is_fquote(x)) f_rhs(x) else x
 }
 
-# More permissive than is_tidy_quote()
-is_quote <- function(x) {
+# More permissive than is_tquote()
+is_fquote <- function(x) {
   typeof(x) == "language" &&
     identical(car(x), quote(`~`)) &&
     length(x) == 2L
