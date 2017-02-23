@@ -279,9 +279,16 @@ lang_fn <- function(call = caller_frame()) {
   call <- as_tidy_quote(call, caller_env())
   expr <- f_rhs(call)
 
-  switchpatch(expr,
-    language = expr_eval(car(expr), f_env(call)),
+  if (!is_lang(expr)) {
     abort("`call` must quote a call")
+  }
+
+  switchlang(expr,
+    recursive = abort("`call` does not call a named or inlined function"),
+    inlined = car(expr),
+    named = ,
+    namespaced = ,
+    expr_eval(car(expr), f_env(call))
   )
 }
 
