@@ -26,7 +26,7 @@ test_that("as_tidy_quote() uses correct env", {
   g <- function(expr, env = caller_env()) {
     as_tidy_quote(expr, env)
   }
-  f_env <- new_env()
+  f_env <- child_env()
   f <- env_set(~expr, f_env)
 
   out_expr_default <- fn(quote(expr))
@@ -34,7 +34,7 @@ test_that("as_tidy_quote() uses correct env", {
   expect_identical(f_env(out_expr_default$f), env())
   expect_identical(f_env(out_f_default$f), f_env)
 
-  user_env <- new_env()
+  user_env <- child_env()
   out_expr <- fn(quote(expr), user_env)
   out_f <- fn(f, user_env)
   expect_identical(f_env(out_expr$f), user_env)
