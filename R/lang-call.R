@@ -328,11 +328,54 @@ lang_name <- function(call = caller_frame()) {
   )
 }
 
+#' Return the head or tail of a call object.
+#'
+#' @description
+#'
+#' Internally, calls are structured as a tree of expressions (see
+#' [switchlang()] documentation). A `lang` object is the top level
+#' node of the tree. `lang_head()` and `lang_tail()` allow you to
+#' retrieve the node components.
+#'
+#' * `lang_head()` Its head (the CAR of the node) usually contains a
+#'   symbol in case of a call to a named function. However it could be
+#'   other things, like another call (e.g. `foo()()`). Thus it is like
+#'   [lang_name()], but returns the head without any type checking or
+#'   conversion (whereas `lang_name()` checks that the head is a
+#'   symbol and converts it to a string).
+#'
+#' * The second component of the tree node contains the arguments. The
+#'   type of arguments is _pairlist_. Pairlists are actually
+#'   equivalent to `language` objects (calls), they just have a
+#'   different name. `lang_tail()` returns the pairlist of arguments
+#'   ([lang_args()] returns the same object converted to a regular
+#'   list).
+#'
+#' @inheritParams lang_standardise
+#' @export
+#' @examples
+#' lang <- quote(foo(bar, baz))
+#' lang_head(lang)
+#' lang_tail(lang)
+#' @md
+lang_head <- function(call = caller_frame()) {
+  call <- get_expr(call)
+  stopifnot(is_lang(call))
+  car(call)
+}
+#' @rdname lang_head
+#' @export
+lang_tail <- function(call = caller_frame()) {
+  call <- get_expr(call)
+  stopifnot(is_lang(call))
+  cdr(call)
+}
+
 #' Extract arguments from a call
 #'
 #' @inheritParams lang_standardise
-#' @return A named list of arguments. The \code{_lsp} version returns
-#'   a named pairlist.
+#' @return A named list of arguments. The \code{lang_tail()} version
+#'   returns a named pairlist (the CDR of the call).
 #' @seealso \code{\link{fn_fmls}()} and
 #'   \code{\link{fn_fmls_names}()}
 #' @export
@@ -350,23 +393,15 @@ lang_name <- function(call = caller_frame()) {
 #' lang_args_names(call)
 lang_args <- function(call = caller_frame()) {
   call <- get_expr(call)
-  args <- as.list(lang_args_lsp(call))
+  args <- as.list(lang_tail(call))
   set_names((args), names2(args))
-}
-
-#' @rdname lang_args
-#' @export
-lang_args_lsp <- function(call = caller_frame()) {
-  call <- get_expr(call)
-  stopifnot(is_lang(call))
-  cdr(call)
 }
 
 #' @rdname lang_args
 #' @export
 lang_args_names <- function(call = caller_frame()) {
   call <- get_expr(call)
-  names2(lang_args_lsp(call))
+  names2(lang_tail(call))
 }
 
 is_qualified_lang <- function(x) {

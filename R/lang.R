@@ -51,11 +51,10 @@
 #' function arguments. They usually do not arise from R code because
 #' subsetting a call is a type-preserving operation. However, you can
 #' obtain the pairlist of arguments by taking the CDR of the call
-#' object from C code. The rlang function
-#' \code{\link{call_args_lsp}()} will do it from R. Another way in
-#' which pairlist of arguments arise is by extracting the argument
-#' list of a closure with \code{\link[base]{formals}()} or
-#' \code{\link{fn_fmls}()}.
+#' object from C code. The rlang function \code{\link{lang_tail}()}
+#' will do it from R. Another way in which pairlist of arguments arise
+#' is by extracting the argument list of a closure with
+#' \code{\link[base]{formals}()} or \code{\link{fn_fmls}()}.
 #'
 #' @param x An object to test. When you supply a tidy quote (see
 #'   \code{\link{tidy_quote}()}) to any of the expression predicates,
@@ -120,7 +119,7 @@
 #' is_pairlist(fmls)
 #'
 #' # Note that you can also extract call arguments as a pairlist:
-#' lang_args_lsp(quote(fn(arg1, arg2 = "foo")))
+#' lang_tail(quote(fn(arg1, arg2 = "foo")))
 is_expr <- function(x) {
   x <- get_expr(x)
   is_symbolic(x) || is_parsable_literal(x)

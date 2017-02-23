@@ -2,13 +2,10 @@
 % Please edit documentation in R/lang-call.R
 \name{lang_args}
 \alias{lang_args}
-\alias{lang_args_lsp}
 \alias{lang_args_names}
 \title{Extract arguments from a call}
 \usage{
 lang_args(call = caller_frame())
-
-lang_args_lsp(call = caller_frame())
 
 lang_args_names(call = caller_frame())
 }
@@ -18,8 +15,8 @@ right-hand side, or a frame object from which to extract the call
 expression. If not supplied, the calling frame is used.}
 }
 \value{
-A named list of arguments. The \code{_lsp} version returns
-  a named pairlist.
+A named list of arguments. The \code{lang_tail()} version
+  returns a named pairlist (the CDR of the call).
 }
 \description{
 Extract arguments from a call
