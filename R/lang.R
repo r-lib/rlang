@@ -1,5 +1,7 @@
 #' Is an object an expression?
 #'
+#' @description
+#'
 #' These helpers are consistent wrappers around their base R
 #' equivalents. \code{is_expr()} tests for expressions, the set of
 #' objects that can be obtained from parsing R code. An expression can
@@ -10,42 +12,46 @@
 #' to \code{\link{expression}()} vectors, a data type that wraps
 #' expressions in a vector and which has not much use in R.
 #'
-#' Literals are the set of R objects that evaluate to themselves when
-#' supplied to \code{eval()}. Non-literal objects like symbols and
-#' calls are called symbolic. They form the backbone of an
-#' expression, and their values are looked up by the R interpreter
-#' when the expression is evaluated. By contrast, literals are
-#' returned as is. Scalar strings, numbers, booleans, and the
-#' \code{NULL} object form a special subset of literals. They are the
-#' only non-symbolic objects that can arise from parsing a string or
-#' an R source file (e.g. from using \code{\link{parse_expr}()}). You
-#' can test for them with \code{is_parsable_literal()}.
+#' Technically, a call can contain any R object, not necessarily
+#' language objects. However, this only happens in artificial
+#' situations. Expressions as we define them only contain numbers,
+#' strings, \code{NULL}, symbols, and calls: this is the complete set
+#' of R objects that are created when R parses source code (e.g. from
+#' using \code{\link{parse_expr}()}). These objects can be classified
+#' as literals and symbolic objects. Symbolic objects like symbols and
+#' calls are treated specially when R evaluates an expression. When a
+#' symbol is evaluated, it is looked up and replaced by its
+#' value. When a call is evaluated, its arguments are recursively
+#' evaluated, and the corresponding function is called, and the call
+#' is replaced by the returned value. On the other hand, literal
+#' objects, such as numbers and strings, just return their own
+#' value. To sum up, an expression can either be symbolic or a
+#' parsable literal.
 #'
-#' \code{is_parsable_literal()} is a predicate that returns
-#' \code{TRUE} for the subset of literals that are created by R when
-#' parsing text (see \code{\link{parse_expr}()}): numbers, strings and
-#' \code{NULL}. Along with symbols, these literals are the
-#' terminating nodes in a parse tree. Note that in the most general
-#' sense, a literal is any R object that evaluates to itself and that
-#' can be evaluated in the empty environment. For instance,
-#' \code{quote(c(1, 2))} is not a literal, but the result of
-#' evaluating it in \code{\link{base_env}()} is (in this case an
-#' atomic vector).  Technically, this sort of literal objects can be
-#' inlined in language expressions. If your function accepts arbitrary
-#' expressions, it should thus account for that possibility with a
-#' catch-all branch. On the other hand, if your function only gets
-#' expressions created from a parse, \code{quote()}, or
-#' \code{\link{tidy_capture}()}, then you can check for literals with
-#' \code{is_parsable_literal()}.
+#' @details
 #'
-#' Finally, pairlists are also a kind of language objects. However,
-#' since they are mostly an internal data structure, \code{is_expr()}
-#' returns \code{FALSE} for pairlists. You can use
-#' \code{is_pairlist()} to explicitly check for them. Pairlists are
-#' the data structure for function arguments. They usually do not
-#' arise from R code because subsetting a call is a type-preserving
-#' operation. However, you can obtain the pairlist of arguments by
-#' taking the CDR of the call object from C code. The rlang function
+#' \code{is_symbolic()} returns \code{TRUE} for symbols and calls
+#' (objects with type \code{language}). Literals are the complement of
+#' symbolic objects. \code{is_parsable_literal()} is a predicate that
+#' returns \code{TRUE} for the subset of literals that are created by
+#' R when parsing text (see \code{\link{parse_expr}()}): numbers,
+#' strings and \code{NULL}. Along with symbols, these literals are the
+#' terminating nodes in a parse tree.
+#'
+#' Note that in the most general sense, a literal is any R object that
+#' evaluates to itself and that can be evaluated in the empty
+#' environment. For instance, \code{quote(c(1, 2))} is not a literal,
+#' it is a call.  However, the result of evaluating it in
+#' \code{\link{base_env}()} is a literal(in this case an atomic vector).
+#'
+#' Pairlists are also a kind of language objects. However, since they
+#' are mostly an internal data structure, \code{is_expr()} returns
+#' \code{FALSE} for pairlists. You can use \code{is_pairlist()} to
+#' explicitly check for them. Pairlists are the data structure for
+#' function arguments. They usually do not arise from R code because
+#' subsetting a call is a type-preserving operation. However, you can
+#' obtain the pairlist of arguments by taking the CDR of the call
+#' object from C code. The rlang function
 #' \code{\link{call_args_lsp}()} will do it from R. Another way in
 #' which pairlist of arguments arise is by extracting the argument
 #' list of a closure with \code{\link[base]{formals}()} or
