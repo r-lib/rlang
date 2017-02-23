@@ -57,6 +57,14 @@ test_that("as_symbol() handles prefixed call names", {
   expect_error(as_symbol(~foo@bar()), "recursive")
 })
 
+test_that("as_symbol() handles bad calls", {
+  call <- quote(foo())
+  set_car(call, base::list)
+  expect_error(as_symbol(call), "inlined call")
+  expect_error(as_symbol(~foo()()), "recursive call")
+})
+
+
 # misc -------------------------------------------------------------------
 
 test_that("qualified and namespaced symbols are recognised", {

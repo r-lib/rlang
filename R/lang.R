@@ -176,8 +176,8 @@ as_symbol <- function(x) {
     language =
       switchlang(x,
         namespaced = car(x),
-        literal = abort("the call head is literal"),
-        recursive = abort("the call head is recursive"),
+        inlined = abort("Cannot create symbol from inlined call"),
+        recursive = abort("cannot create symbol from recursive call"),
         as_symbol(car(x))
       )
   )
