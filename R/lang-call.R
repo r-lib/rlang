@@ -195,7 +195,7 @@ lang_modify <- function(.call = caller_frame(), ..., .args = list(),
                         .standardise = FALSE) {
   stopifnot(is_list(.args))
   args <- c(list(...), .args)
-  orig <- as_expr(.call)
+  orig <- as_generic_expr(.call)
 
   if (.standardise) {
     quote <- as_tidy_quote(.call, caller_env())
@@ -239,7 +239,7 @@ lang_modify <- function(.call = caller_frame(), ..., .args = list(),
 #'   otherwise.
 #' @export
 lang_standardise <- function(call = caller_frame()) {
-  orig <- as_expr(call)
+  orig <- as_generic_expr(call)
   quote <- as_tidy_quote(call, caller_env())
 
   # The call name might be a literal, not necessarily a symbol

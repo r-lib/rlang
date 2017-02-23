@@ -125,16 +125,48 @@ expr_text <- function(expr, width = 60L, nlines = Inf) {
   paste0(str, collapse = "\n")
 }
 
-# The idea is that this transforms the input to an object capable of
-# behaving generically wrt the expr type. In practice we can just
-# extract from frames though.
-as_expr <- function(x) {
-  if (is_frame(x)) {
-    x$expr
-  } else {
-    x
-  }
-}
+#' Set and get an expression.
+#'
+#' These helpers are useful to make your function work generically
+#' with tidy quotes and raw expressions. First call `get_expr()` to
+#' extract an expression. Once you're done processing the expression,
+#' call `set_expr()` on the original object to update the expression.
+#' You can return the result of `set_expr()`, either a formula or an
+#' expression depending on the input type. Note that `set_expr()` does
+#' not change its input, it creates a new object.
+#'
+#' `as_generic_expr()` is helpful when your function accepts frames as
+#' input but should be able to call `set_expr()` at the
+#' end. `set_expr()` does not work on frames because it does not make
+#' sense to modify this kind of object. In this case, first call
+#' `as_generic_expr()` to transform the input to an object that
+#' supports `set_expr()`. It transforms frame objects to a raw
+#' expression, and return formula quotes and raw expressions without
+#' changes.
+#'
+#' @param x An expression or one-sided formula. In addition,
+#'   `set_expr()` and `as_generic_expr()` accept frames.
+#' @param value An updated expression.
+#' @return The updated original input for `set_expr()`. A raw
+#'   expression for `get_expr()`. `as_generic_expr()` returns an
+#'   expression or formula quote.
+#' @export
+#' @examples
+#' f <- ~foo(bar)
+#' e <- quote(foo(bar))
+#' frame <- identity(identity(eval_frame()))
+#'
+#' get_expr(f)
+#' get_expr(e)
+#' get_expr(frame)
+#'
+#' as_generic_expr(f)
+#' as_generic_expr(e)
+#' as_generic_expr(frame)
+#'
+#' set_expr(f, quote(baz))
+#' set_expr(e, quote(baz))
+#' @md
 set_expr <- function(x, value) {
   if (is_fquote(x)) {
     f_rhs(x) <- value
@@ -143,10 +175,21 @@ set_expr <- function(x, value) {
     value
   }
 }
+#' @rdname set_expr
+#' @export
 get_expr <- function(x) {
   if (is_fquote(x)) {
     f_rhs(x)
   } else if (inherits(x, "frame")) {
+    x$expr
+  } else {
+    x
+  }
+}
+#' @rdname set_expr
+#' @export
+as_generic_expr <- function(x) {
+  if (is_frame(x)) {
     x$expr
   } else {
     x
