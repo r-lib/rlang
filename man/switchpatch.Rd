@@ -19,7 +19,7 @@ stating the conversion failure.}
 }
 \description{
 This is equivalent to
-\code{\link[base]{switch}(\link[base]{typeof}(x, ...))}.
+\code{\link[base]{switch}(\link{type_of}(x, ...))}.
 }
 \examples{
 switchpatch(3L,

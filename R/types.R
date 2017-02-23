@@ -372,7 +372,7 @@ type_of <- function(x) {
 #' Dispatch on base types.
 #'
 #' This is equivalent to
-#' \code{\link[base]{switch}(\link[base]{typeof}(x, ...))}.
+#' \code{\link[base]{switch}(\link{type_of}(x, ...))}.
 #'
 #' @param .x An object from which to dispatch.
 #' @param ... Named clauses. The names should be types as returned by
