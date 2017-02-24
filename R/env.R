@@ -119,43 +119,15 @@
 #' fn <- with_env(enclos_env, function() env_parent())
 #' identical(enclos_env, fn())
 env <- function(env = caller_env()) {
-  UseMethod("env")
-}
-
-#' @rdname env
-#' @export
-env.function <- function(env = caller_env()) {
-  environment(env)
-}
-#' @rdname env
-#' @export
-env.formula <- function(env = caller_env()) {
-  attr(env, ".Environment")
-}
-#' @rdname env
-#' @export
-env.frame <- function(env = caller_env()) {
-  env$env
-}
-#' @rdname env
-#' @export
-env.environment <- function(env = caller_env()) {
-  env
-}
-#' @rdname env
-#' @export
-env.default <- function(env = caller_env()) {
-  # Default argument caller_env() gets dispatched here:
-  if (is_env(env)) {
-    env
-  } else {
-    stop("No applicable method for 'env'", call. = FALSE)
-  }
-}
-#' @rdname env
-#' @export
-env.character <- function(env = caller_env()) {
-  pkg_env(env)
+  target <- "environment"
+  switchpatch(env, .to = target,
+    environment = env,
+    quote = attr(env, ".Environment"),
+    primitive = base_env(),
+    closure = environment(env),
+    string = pkg_env(env),
+    list = switch_class(env, .to = target, frame = env$env)
+  )
 }
 
 #' Assignment operator for environments.

@@ -2,30 +2,12 @@
 % Please edit documentation in R/env.R
 \name{env}
 \alias{env}
-\alias{env.function}
-\alias{env.formula}
-\alias{env.frame}
-\alias{env.environment}
-\alias{env.default}
-\alias{env.character}
 \alias{child_env}
 \alias{env_parent}
 \alias{env_tail}
 \title{Get an environment.}
 \usage{
 env(env = caller_env())
-
-\method{env}{function}(env = caller_env())
-
-\method{env}{formula}(env = caller_env())
-
-\method{env}{frame}(env = caller_env())
-
-\method{env}{environment}(env = caller_env())
-
-\method{env}{default}(env = caller_env())
-
-\method{env}{character}(env = caller_env())
 
 child_env(parent = NULL, data = list())
 

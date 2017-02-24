@@ -441,7 +441,19 @@ switch_type <- function(.x, ...) {
 #' @export
 coerce_type <- function(.x, .to, ...) {
   msg <- paste0("Cannot convert objects of type `", type_of(.x), "` to `", .to, "`")
-  switch(type_of(.x), ..., abort(msg))
+  switch(type_of(.x), ..., abort_coercion(.x, .to))
+}
+switch_class <- function(.x, ..., .to) {
+  if (missing(.to)) {
+    switch(class(.x), ...)
+  } else {
+    switch(class(.x), ..., abort_coercion(.x, .to))
+  }
+}
+abort_coercion <- function(x, to) {
+  abort(paste0(
+    "Cannot convert objects of type `", type_of(x), "` to `", to, "`"
+  ))
 }
 
 #' Dispatch on call type.
