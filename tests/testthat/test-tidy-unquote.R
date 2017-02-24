@@ -109,6 +109,12 @@ test_that("UQS() handles language objects", {
   expect_identical(tidy_quote(list(UQS(quote({ foo })))), ~list(foo))
 })
 
+test_that("splicing an empty vector works", {
+  expect_identical(tidy_interp(~list(!!! list())), ~list())
+  expect_identical(tidy_interp(~list(!!! character(0))), ~list())
+  expect_identical(tidy_interp(~list(!!! NULL)), ~list())
+})
+
 
 # UQF and UQE --------------------------------------------------------
 

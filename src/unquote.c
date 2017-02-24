@@ -111,10 +111,14 @@ SEXP splice_nxt(SEXP cur, SEXP nxt, SEXP env) {
   // UQS() does error checking and returns a pair list
   SEXP args_lsp = PROTECT(Rf_eval(CAR(nxt), env));
 
-  // Insert args_lsp into existing pairlist of args
-  SEXP last_arg = last_cons(args_lsp);
-  SETCDR(last_arg, CDR(nxt));
-  SETCDR(cur, args_lsp);
+  if (args_lsp == R_NilValue) {
+    SETCDR(cur, CDR(nxt));
+  } else {
+    // Insert args_lsp into existing pairlist of args
+    SEXP last_arg = last_cons(args_lsp);
+    SETCDR(last_arg, CDR(nxt));
+    SETCDR(cur, args_lsp);
+  }
 
   UNPROTECT(1);
   return cur;
