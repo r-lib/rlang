@@ -3,6 +3,13 @@
 \docType{data}
 \name{missing}
 \alias{missing}
+\alias{are_na}
+\alias{is_na}
+\alias{is_lgl_na}
+\alias{is_int_na}
+\alias{is_dbl_na}
+\alias{is_chr_na}
+\alias{is_cpl_na}
 \alias{na_lgl}
 \alias{na_int}
 \alias{na_dbl}
@@ -11,6 +18,20 @@
 \title{Missing values.}
 \format{An object of class \code{logical} of length 1.}
 \usage{
+are_na()
+
+is_na(x)
+
+is_lgl_na(x)
+
+is_int_na(x)
+
+is_dbl_na(x)
+
+is_chr_na(x)
+
+is_cpl_na(x)
+
 na_lgl
 
 na_int
@@ -20,6 +41,9 @@ na_dbl
 na_chr
 
 na_cpl
+}
+\arguments{
+\item{x}{An object to test.}
 }
 \description{
 Missing values are represented in R with the general symbol
@@ -56,6 +80,19 @@ typeof(na_int)
 # that's not the case for rlang's aliases:
 na_dbl <- NA
 typeof(na_dbl)
+
+# are_na() is vectorised and works regardless of the type
+are_na(c(1, 2, NA))
+are_na(c(1L, NA, 3L))
+
+# is_na() checks for scalar input and works for all types
+is_na(NA)
+is_na(na_dbl)
+is_na(character(0))
+
+# There are typed versions as well:
+is_lgl_na(NA)
+is_lgl_na(na_dbl)
 }
 \seealso{
 The \code{\link{along}} family to create typed vectors

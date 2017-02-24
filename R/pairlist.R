@@ -193,6 +193,21 @@ set_node_tag <- function(x, newtag) {
   .Call(rlang_set_tag, x, newtag)
 }
 
+#' Coerce to pairlist.
+#'
+#' This transforms vector objects to a linked pairlist of nodes. See
+#' [pairlist] for information about the pairlist type.
+#'
+#' @param x An object to coerce.
+#' @seealso [pairlist]
+#' @export
+as_pairlist <- function(x) {
+  if (!is_vector(x)) {
+    abort_coercion(x, "pairlist")
+  }
+  as.vector(x, "pairlist")
+}
+
 #' Duplicate an R object.
 #'
 #' In R semantics, objects are copied by value. This means that
