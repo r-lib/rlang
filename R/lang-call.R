@@ -192,6 +192,10 @@ lang_modify <- function(.call = caller_frame(), ..., .args = list(),
                         .standardise = FALSE) {
   stopifnot(is_list(.args))
   args <- c(list(...), .args)
+  if (any(duplicated(names(args)) & names(args) != "")) {
+    abort("Duplicate arguments")
+  }
+
   orig <- as_generic_expr(.call)
 
   if (.standardise) {
