@@ -330,9 +330,9 @@ lang_name <- function(call = caller_frame()) {
 #' @description
 #'
 #' Internally, calls are structured as a tree of expressions (see
-#' [switch_lang()] documentation). A `lang` object is the top level
-#' node of the tree. `lang_head()` and `lang_tail()` allow you to
-#' retrieve the node components.
+#' [switch_lang()] and [pairlist] documentation pages). A `lang` object
+#' is the top level node of the tree. `lang_head()` and `lang_tail()`
+#' allow you to retrieve the node components.
 #'
 #' * `lang_head()` Its head (the CAR of the node) usually contains a
 #'   symbol in case of a call to a named function. However it could be
@@ -349,6 +349,7 @@ lang_name <- function(call = caller_frame()) {
 #'   list).
 #'
 #' @inheritParams lang_standardise
+#' @seealso [pairlist]
 #' @export
 #' @examples
 #' lang <- quote(foo(bar, baz))

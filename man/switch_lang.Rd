@@ -59,11 +59,9 @@ wrong and using that object will probably make R crash.
 
 The reason we use the term \emph{node head} is because calls are
 structured as tree objects. This makes sense because the best
-representation for language code is a parse tree. The hierarchy of
-the tree is determined by the order of operations. Borrowing from
-lisp terminology, each node of the tree has a CAR (the head of the
-node) and a CDR (the tail). You will encounter these terms when
-reading R's source code.
+representation for language code is a parse tree, with the tree
+hierarchy determined by the order of operations. See \link{pairlist} for
+more on this.
 }
 \examples{
 # Named calls:
