@@ -1,7 +1,7 @@
 context("tidy capture")
 
 test_that("explicit dots make a list of formulas", {
-  fs <- tidy_dots(x = 1 + 2, y = 2 + 3)
+  fs <- tidy_quotes(x = 1 + 2, y = 2 + 3)
   f1 <- ~ 1 + 2
   f2 <- ~ 2 + 3
 
@@ -9,9 +9,9 @@ test_that("explicit dots make a list of formulas", {
   expect_identical(fs$y, f2)
 })
 
-test_that("tidy_dots() produces correct formulas", {
+test_that("tidy_quotes() produces correct formulas", {
   fn <- function(x = a + b, ...) {
-    list(dots = tidy_dots(x = x, y = a + b, ...), env = environment())
+    list(dots = tidy_quotes(x = x, y = a + b, ...), env = environment())
   }
   out <- fn(z = a + b)
 
@@ -32,7 +32,7 @@ test_that("dots are interpolated", {
     h(toupper(!! g_var), ...)
   }
   h <- function(...) {
-    tidy_dots(...)
+    tidy_quotes(...)
   }
 
   bar <- "bar"
@@ -45,7 +45,7 @@ test_that("dots are interpolated", {
 
 test_that("dots capture is stack-consistent", {
   fn <- function(...) {
-    g(tidy_dots(...))
+    g(tidy_quotes(...))
   }
   g <- function(dots) {
     h(dots, foo(bar))
@@ -67,12 +67,12 @@ test_that("dots can be spliced in", {
   fn <- function(...) {
     var <- "var"
     list(
-      out = g(!!! tidy_dots(...), bar(baz), !!! list(a = var, b = ~foo)),
+      out = g(!!! tidy_quotes(...), bar(baz), !!! list(a = var, b = ~foo)),
       env = env()
     )
   }
   g <- function(...) {
-    tidy_dots(...)
+    tidy_quotes(...)
   }
 
   out <- fn(foo(bar))
@@ -87,27 +87,27 @@ test_that("dots can be spliced in", {
 
 test_that("spliced dots are wrapped in formulas", {
   args <- alist(x = var, y = ~var)
-  expect_identical(tidy_dots(!!! args), list(x = ~var, y = ~var))
+  expect_identical(tidy_quotes(!!! args), list(x = ~var, y = ~var))
 })
 
 test_that("dot names are interpolated", {
   var <- "baz"
-  expect_identical(tidy_dots(!!var := foo, !!toupper(var) := bar), list(baz = ~foo, BAZ = ~bar))
-  expect_identical(tidy_dots(!!var := foo, bar), list(baz = ~foo, ~bar))
+  expect_identical(tidy_quotes(!!var := foo, !!toupper(var) := bar), list(baz = ~foo, BAZ = ~bar))
+  expect_identical(tidy_quotes(!!var := foo, bar), list(baz = ~foo, ~bar))
 
   var <- quote(baz)
-  expect_identical(tidy_dots(!!var := foo), list(baz = ~foo))
+  expect_identical(tidy_quotes(!!var := foo), list(baz = ~foo))
 
   def <- !!var := foo
-  expect_identical(tidy_dots(!! def), list(baz = ~foo))
+  expect_identical(tidy_quotes(!! def), list(baz = ~foo))
 })
 
 test_that("corner cases are handled when interpolating dot names", {
     var <- na_chr
-    expect_identical(names(tidy_dots(!!var := NULL)), na_chr)
+    expect_identical(names(tidy_quotes(!!var := NULL)), na_chr)
 
     var <- NULL
-    expect_error(tidy_dots(!!var := NULL), "must be a name or string")
+    expect_error(tidy_quotes(!!var := NULL), "must be a name or string")
 })
 
 test_that("definitions are interpolated", {
@@ -129,8 +129,8 @@ test_that("dots are forwarded to named arguments", {
 })
 
 test_that("pronouns are scoped throughout nested captures", {
-  outer <- function(data, ...) tidy_eval(tidy_dots(...)[[1]], data = data)
-  inner <- function(...) map(tidy_dots(...), tidy_eval)
+  outer <- function(data, ...) tidy_eval(tidy_quotes(...)[[1]], data = data)
+  inner <- function(...) map(tidy_quotes(...), tidy_eval)
 
   data <- list(foo = "bar", baz = "baz")
   baz <- "bazz"

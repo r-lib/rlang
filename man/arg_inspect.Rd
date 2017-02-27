@@ -20,7 +20,7 @@ inspect.}
 
 \item{only_dots}{Whether to stop introspection once
 forwarded dots have been climbed. Setting this to \code{TRUE} is
-only useful for inspecting dots (cf. \code{\link{tidy_dots}()}
+only useful for inspecting dots (cf. \code{\link{tidy_quotes}()}
 which does not follow symbols).}
 }
 \value{

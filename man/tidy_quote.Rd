@@ -213,7 +213,9 @@ tidy_eval(f)
 tidy_eval(tidy_quote(a ~ b))
 }
 \seealso{
-\code{\link{tidy_quote_expr}()} for quoting a raw expression
-  with quasiquotation, and \code{\link{tidy_interp}()} for
-  unquoting an already quoted expression or an existing formula.
+\code{\link{tidy_quotes}()} for capturing several
+  expressions, including from dots; \code{\link{tidy_quote_expr}()}
+  for quoting a raw expression with quasiquotation; and
+  \code{\link{tidy_interp}()} for unquoting an already quoted
+  expression or an existing formula.
 }

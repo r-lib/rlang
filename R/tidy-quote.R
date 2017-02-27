@@ -73,9 +73,11 @@
 #'   environment and inlined in the expression.
 #' @return A formula whose right-hand side contains the quoted
 #'   expression supplied as argument.
-#' @seealso \code{\link{tidy_quote_expr}()} for quoting a raw expression
-#'   with quasiquotation, and \code{\link{tidy_interp}()} for
-#'   unquoting an already quoted expression or an existing formula.
+#' @seealso \code{\link{tidy_quotes}()} for capturing several
+#'   expressions, including from dots; \code{\link{tidy_quote_expr}()}
+#'   for quoting a raw expression with quasiquotation; and
+#'   \code{\link{tidy_interp}()} for unquoting an already quoted
+#'   expression or an existing formula.
 #' @export
 #' @aliases UQ UQE UQF UQS
 #' @examples
@@ -315,3 +317,98 @@ is_tidy_quote <- function(x) {
 #' @rdname as_tidy_quote
 #' @export
 is_tquote <- is_tidy_quote
+
+
+#' Tidy quotation of multiple expressions and dots.
+#'
+#' `tidy_quotes()` quotes its arguments and returns them as a list of
+#' tidy quotes. It is especially useful to "capture" arguments
+#' forwarded through `...`.
+#'
+#' Both `tidy_quotes` and `tidy_defs()` have specific support for
+#' definition expressions of the type `var := expr`, with some
+#' differences:
+#'
+#'\describe{
+#'  \item{`tidy_quotes()`}{
+#'    When `:=` definitions are supplied to `tidy_quotes()`,
+#'    they are treated as a synonym of argument assignment
+#'    `=`. On the other hand, they allow unquoting operators on
+#'    the left-hand side, which makes it easy to assign names
+#'    programmatically.}
+#'  \item{`tidy_defs()`}{
+#'    This dots capturing function returns definitions as is. Unquote
+#'    operators are processed on capture, in both the LHS and the
+#'    RHS. Unlike `tidy_quotes()`, it allows named definitions.}
+#' }
+#' @inheritParams tidy_capture
+#' @param .named Whether to ensure all dots are named. Unnamed
+#'   elements are processed with [expr_text()] to figure out a default
+#'   name. If an integer, it is passed to the `width` argument of
+#'   `expr_text()`, if `TRUE`, the default width is used.
+#' @export
+#' @examples
+#' # tidy_quotes() is like the singular version but allows quoting
+#' # several arguments:
+#' tidy_quotes(foo(), bar(baz), letters[1:2], !! letters[1:2])
+#'
+#' # It is most useful when used with dots. This allows quoting
+#' # expressions across different levels of function calls:
+#' fn <- function(...) tidy_quotes(...)
+#' fn(foo(bar), baz)
+#'
+#' # Note that tidy_quotes() does not check for duplicate named
+#' # arguments:
+#' fn <- function(...) tidy_quotes(x = x, ...)
+#' fn(x = a + b)
+#'
+#'
+#' # Dots can be spliced in:
+#' args <- list(x = 1:3, y = ~var)
+#' tidy_quotes(!!! args, z = 10L)
+#'
+#' # Raw expressions are turned to formulas:
+#' args <- alist(x = foo, y = bar)
+#' tidy_quotes(!!! args)
+#'
+#'
+#' # Definitions are treated similarly to named arguments:
+#' tidy_quotes(x := expr, y = expr)
+#'
+#' # However, the LHS of definitions can be unquoted. The return value
+#' # must be a symbol or a string:
+#' var <- "foo"
+#' tidy_quotes(!!var := expr)
+#'
+#' # If you need the full LHS expression, use tidy_defs():
+#' dots <- tidy_defs(var = foo(baz) := bar(baz))
+#' dots$defs
+#' @md
+tidy_quotes <- function(..., .named = FALSE) {
+  dots <- tidy_capture_dots(..., .named = .named)
+  dots_interp_lhs(dots)
+}
+
+#' @rdname tidy_quotes
+#' @export
+tidy_defs <- function(..., .named = FALSE) {
+  dots <- tidy_capture_dots(..., .named = FALSE)
+
+  defined <- map_lgl(dots, function(dot) is_definition(f_rhs(dot)))
+  defs <- map(dots[defined], as_definition)
+
+  list(dots = dots[!defined], defs = defs)
+}
+
+as_definition <- function(dot) {
+  env <- f_env(dot)
+  pat <- f_rhs(dot)
+
+  lhs <- .Call(rlang_interp, f_lhs(pat), env)
+  rhs <- .Call(rlang_interp, f_rhs(pat), env)
+
+  list(
+    lhs = new_tidy_quote(lhs, env),
+    rhs = new_tidy_quote(rhs, env)
+  )
+}
