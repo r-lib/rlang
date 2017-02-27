@@ -146,3 +146,7 @@ test_that("Can supply := with LHS even if .named = TRUE", {
     tidy_quotes(foobar = !!"nm" := 2, .named = TRUE), list(nm = ~2)
   ))
 })
+
+test_that("RHS of tidy defs are unquoted", {
+  expect_identical(tidy_quotes(foo := !!"bar"), list(foo = ~"bar"))
+})

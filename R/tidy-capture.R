@@ -96,7 +96,8 @@ tidy_capture_dots <- function(...) {
 }
 dot_f <- function(dot) {
   env <- dot$env
-  expr <- dot$expr
+  orig <- dot$expr
+  expr <- get_expr(orig)
 
   # Allow unquote-splice in dots
   if (is_splice(expr)) {
@@ -106,7 +107,8 @@ dot_f <- function(dot) {
     map(dots, as_tidy_quote, env)
   } else {
     expr <- .Call(rlang_interp, expr, env)
-    list(new_tidy_quote(expr, env))
+    orig <- set_expr(orig, expr)
+    list(new_tidy_quote(orig, env))
   }
 }
 
