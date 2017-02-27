@@ -185,7 +185,7 @@ as_symbol <- function(x) {
 #' @export
 #' @rdname as_symbol
 as_name <- function(x) {
-  coerce_type(x, "name",
+  switch_type(x,
     string = x,
     as_string(as_symbol(x))
   )

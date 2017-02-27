@@ -64,6 +64,10 @@ test_that("as_symbol() handles bad calls", {
   expect_error(as_symbol(~foo()()), "recursive call")
 })
 
+test_that("as_name() returns symbol as string", {
+  expect_identical(as_name(~foo(bar)), "foo")
+})
+
 
 # misc -------------------------------------------------------------------
 
