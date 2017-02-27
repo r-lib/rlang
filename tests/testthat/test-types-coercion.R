@@ -29,10 +29,17 @@ test_that("as_list() bypasses environment method and leaves input intact", {
   y <- as_list(x)
 
   expect_is(x, "foo")
-  expect_identical(y, list())
+  expect_identical(y, set_names(list(), character(0)))
 })
 
 test_that("as_integer() and as_logical() require integerish input", {
   expect_error(as_integer(1.5), "fractional `double`")
   expect_error(as_logical(1.5), "fractional `double`")
+})
+
+test_that("names are preserved", {
+  nms <- as.character(1:3)
+  x <- set_names(1:3, nms)
+  expect_identical(names(as_double(x)), nms)
+  expect_identical(names(as_list(x)), nms)
 })

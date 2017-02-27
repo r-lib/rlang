@@ -40,6 +40,8 @@ methods. They only attempt to coerce the base type of their
 input. In addition, they have stricter implicit coercion rules and
 will never attempt any kind of parsing. E.g. they will not try to
 figure out if a character vector represents integers or booleans.
+Finally, they have treat attributes consistently, unlike the base R
+functions: all attributes except names are removed.
 }
 \section{Coercion to logical and numeric atomic vectors}{
 
@@ -76,7 +78,7 @@ extra type check.
 
 \code{as_list()} only coerces vector and dictionary types (environments
 are an example of dictionary type). Unlike \code{\link[base:as.list]{base::as.list()}},
-\code{as_list()} removes all attributes.
+\code{as_list()} removes all attributes except names.
 }
 
 \section{Effects of removing attributes}{
