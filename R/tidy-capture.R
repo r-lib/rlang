@@ -241,7 +241,7 @@ dot_interp_lhs <- function(name, dot) {
   rhs <- new_tidy_quote(f_rhs(f_rhs(dot)), env = f_env(dot))
   lhs <- .Call(rlang_interp, f_lhs(f_rhs(dot)), f_env(dot))
 
-  if (is_name(lhs)) {
+  if (is_symbol(lhs)) {
     lhs <- as.character(lhs)
   } else if (!is_scalar_character(lhs)) {
     abort("LHS must be a name or string")

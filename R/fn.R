@@ -27,7 +27,7 @@
 #' # Now they are:
 #' stopifnot(identical(f, g))
 new_fn <- function(args, body, env = caller_env()) {
-  stopifnot(all(have_names(args)), is_lang(body), is_env(env))
+  stopifnot(all(have_names(args)), is_expr(body), is_env(env))
 
   args <- as.pairlist(args)
   expr_eval(call("function", args, body), env)

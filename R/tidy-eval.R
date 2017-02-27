@@ -258,6 +258,6 @@ invoke <- function(.fn, .args = list(), ...,
     .fn <- fn_nm
   }
 
-  call <- as.call(c(as_name(.fn), .args))
+  call <- as.call(c(as_symbol(.fn), .args))
   .Call(rlang_eval, call, .env)
 }

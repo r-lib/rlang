@@ -13,7 +13,7 @@ SEXP f_env_(SEXP f);
 SEXP last_cons(SEXP x);
 SEXP make_formula1(SEXP rhs, SEXP env);
 SEXP rlang_fun(SEXP sym);
-int is_lang(SEXP x);
+int is_symbolic(SEXP x);
 int is_true(SEXP x);
 int is_sym(SEXP sym, const char* string);
 int is_rlang_prefixed(SEXP x, int (*sym_predicate)(SEXP));

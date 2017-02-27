@@ -254,7 +254,7 @@ is_formula <- function(x) {
   }
 
   head <- x[[1]]
-  if (!is_name(head)) {
+  if (!is_symbol(head)) {
     return(FALSE)
   }
 
@@ -330,4 +330,114 @@ is_bare_integerish <- function(x, n = NULL) {
 #' @export
 is_scalar_integerish <- function(x) {
   !is.object(x) && is_integerish(x, 1L)
+}
+
+#' Base type of an object.
+#'
+#' This is equivalent to [base::typeof()] with a few differences that
+#' make dispatching easier:
+#' * The type of one-sided formulas is "quote".
+#' * The type of character vectors of length 1 is "string".
+#' * The type of special and builtin functions is "primitive".
+#'
+#' @param x An R object.
+#' @export
+#' @examples
+#' type_of(10L)
+#' type_of(~10L)
+#' typeof(~10L)
+#'
+#' type_of(letters)
+#' type_of(letters[[1]])
+#'
+#' typeof(list)
+#' typeof(`$`)
+#' type_of(list)
+#' type_of(`$`)
+#'
+#' type_of(quote(base::list()))
+#' @md
+type_of <- function(x) {
+  if (is_fquote(x)) {
+    "quote"
+  } else if (typeof(x) == "character" && length(x) == 1) {
+    "string"
+  } else if (typeof(x) %in% c("builtin", "special")) {
+    "primitive"
+  } else {
+    typeof(x)
+  }
+}
+
+#' Dispatch on base types.
+#'
+#' This is equivalent to \code{\link[base]{switch}(\link{type_of}(x,
+#' ...))}. The `coerce_` versions are intended for type conversion and
+#' provide a standard error message when conversion fails.
+#'
+#' @param .x An object from which to dispatch.
+#' @param ... Named clauses. The names should be types as returned by
+#'   [type_of()].
+#' @param .to This is useful when you switchpatch within a coercing
+#'   function. If supplied, this should be a string indicating the
+#'   target type. A catch-all clause is then added to signal an error
+#'   stating the conversion failure.
+#' @export
+#' @examples
+#' switch_type(3L,
+#'   double = "foo",
+#'   integer = "bar",
+#'   "default"
+#' )
+#'
+#' # Use the coerce_ version to get standardised error handling when no
+#' # type matches:
+#' to_chr <- function(x) {
+#'   coerce_type(x, "chr",
+#'     integer = as.character(x),
+#'     double = as.character(x)
+#'   )
+#' }
+#' to_chr(3L)
+#'
+#' # Strings have their own type:
+#' switch_type("str",
+#'   character = "foo",
+#'   string = "bar",
+#'   "default"
+#' )
+#'
+#' # Use a fallthrough clause if you need to dispatch on all character
+#' # vectors, including strings:
+#' switch_type("str",
+#'   string = ,
+#'   character = "foo",
+#'   "default"
+#' )
+#'
+#' # special and builtin functions are treated as primitive, since
+#' # there is usually no reason to treat them differently:
+#' switch_type(base::list,
+#'   primitive = "foo",
+#'   "default"
+#' )
+#' switch_type(base::`$`,
+#'   primitive = "foo",
+#'   "default"
+#' )
+#'
+#' # closures are not primitives:
+#' switch_type(rlang::switch_type,
+#'   primitive = "foo",
+#'   "default"
+#' )
+#' @md
+switch_type <- function(.x, ...) {
+    switch(type_of(.x), ...)
+}
+#' @rdname switch_type
+#' @export
+coerce_type <- function(.x, .to, ...) {
+  msg <- paste0("Cannot convert objects of type `", type_of(.x), "` to `", .to, "`")
+  switch(type_of(.x), ..., abort(msg))
 }

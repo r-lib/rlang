@@ -1,7 +1,7 @@
 context("language")
 
 test_that("NULL is a valid language object", {
-  expect_true(is_lang(NULL))
+  expect_true(is_expr(NULL))
 })
 
 test_that("is_call() pattern-matches", {
@@ -33,14 +33,14 @@ test_that("is_call() vectorises name", {
 
 # coercion ----------------------------------------------------------------
 
-test_that("as_name() produces names", {
-  expect_equal(as_name("a"), quote(a))
-  expect_equal(as_name(quote(a)), quote(a))
-  expect_equal(as_name(quote(a())), quote(a))
-  expect_equal(as_name(~ a), quote(a))
-  expect_equal(as_name(~ a()), quote(a))
+test_that("as_symbol() produces names", {
+  expect_equal(as_symbol("a"), quote(a))
+  expect_equal(as_symbol(quote(a)), quote(a))
+  expect_equal(as_symbol(quote(a())), quote(a))
+  expect_equal(as_symbol(~ a), quote(a))
+  expect_equal(as_symbol(~ a()), quote(a))
 
-  expect_error(as_name(c("a", "b")), "Cannot parse character vector of length > 1")
+  expect_error(as_symbol(c("a", "b")), "Cannot convert objects of type `character` to `symbol`")
 })
 
 test_that("as_call() produces calls", {
@@ -49,10 +49,10 @@ test_that("as_call() produces calls", {
   expect_equal(as_call("a()"), quote(a()))
   expect_equal(as_call(~ a()), quote(a()))
 
-  expect_error(as_call(c("a", "b")), "Cannot parse character vector of length > 1")
+  expect_error(as_call(c("a", "b")), "Cannot convert objects of type `character` to `language`")
 })
 
-test_that("as_name() handles prefixed call names", {
-  expect_identical(as_name(quote(foo::bar())), quote(foo::bar))
-  expect_identical(as_name(~foo@bar()), quote(foo@bar))
+test_that("as_symbol() handles prefixed call names", {
+  expect_identical(as_symbol(quote(foo::bar())), quote(foo::bar))
+  expect_identical(as_symbol(~foo@bar()), quote(foo@bar))
 })
