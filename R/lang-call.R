@@ -110,7 +110,7 @@ is_binary_lang <- function(x, name = NULL) {
 #' @export
 #' @rdname as_symbol
 as_lang <- function(x) {
-  switchpatch(x, .to = "language",
+  coerce_type(x, "language",
     symbol = lang(x),
     quote = as_lang(f_rhs(x)),
     string = parse_expr(x),
@@ -244,7 +244,7 @@ lang_standardise <- function(call = caller_frame()) {
 
   # The call name might be a literal, not necessarily a symbol
   fn <- lang_name(quote)
-  fn <- switchpatch(fn,
+  fn <- switch_type(fn,
     string = get(fn, envir = f_env(quote), mode = "function"),
     primitive = ,
     closure = fn,

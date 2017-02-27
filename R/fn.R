@@ -185,7 +185,7 @@ is_closure <- function(x) {
 #' @examples
 #' as_closure(list)
 as_closure <- function(x) {
-  switchpatch(x, .to = "closure",
+  coerce_type(x, "closure",
     closure =
       x,
     primitive = {
