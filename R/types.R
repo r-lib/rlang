@@ -487,6 +487,7 @@ coerce_type <- function(.x, .to, ...) {
 #' node) and a CDR (the tail). You will encounter these terms when
 #' reading R's source code.
 #'
+#' @inheritParams switch_type
 #' @param .x,x A language object (a call). If a formula quote, the RHS
 #'   is extracted first.
 #' @param ... Named clauses. The names should be types as returned by
@@ -512,7 +513,12 @@ coerce_type <- function(.x, .to, ...) {
 switch_lang <- function(.x, ...) {
   switch(lang_type_of(.x), ...)
 }
-
+#' @rdname switch_lang
+#' @export
+coerce_lang <- function(.x, .to, ...) {
+  msg <- paste0("Cannot convert objects of type `", type_of(.x), "` to `", .to, "`")
+  switch(lang_type_of(.x), ..., abort(msg))
+}
 #' @rdname switch_lang
 #' @export
 lang_type_of <- function(x) {

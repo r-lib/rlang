@@ -2,10 +2,13 @@
 % Please edit documentation in R/types.R
 \name{switch_lang}
 \alias{switch_lang}
+\alias{coerce_lang}
 \alias{lang_type_of}
 \title{Dispatch on call type.}
 \usage{
 switch_lang(.x, ...)
+
+coerce_lang(.x, .to, ...)
 
 lang_type_of(x)
 }
@@ -15,6 +18,11 @@ is extracted first.}
 
 \item{...}{Named clauses. The names should be types as returned by
 \code{lang_type_of()}.}
+
+\item{.to}{This is useful when you switchpatch within a coercing
+function. If supplied, this should be a string indicating the
+target type. A catch-all clause is then added to signal an error
+stating the conversion failure.}
 }
 \description{
 \code{switch_lang()} dispatches clauses based on the subtype of call, as
