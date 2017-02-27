@@ -137,3 +137,12 @@ test_that("pronouns are scoped throughout nested captures", {
 
   expect_identical(outer(data, inner(foo, baz)), set_names(list("bar", "baz"), c("", "")))
 })
+
+test_that("Can supply := with LHS even if .named = TRUE", {
+  expect_warning(regexp = NA, expect_identical(
+    tidy_quotes(!!"nm" := 2, .named = TRUE), list(nm = ~2)
+  ))
+  expect_warning(regexp = "name ignored", expect_identical(
+    tidy_quotes(foobar = !!"nm" := 2, .named = TRUE), list(nm = ~2)
+  ))
+})

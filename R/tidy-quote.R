@@ -118,7 +118,7 @@
 #' # expression:
 #' f <- ~foo(bar)
 #' f <- tidy_quote(inner(!! f, arg1))
-#' f <- tidy_quote(outer(!! f, !!! lapply(letters[1:3], as.symbol)))
+#' f <- tidy_quote(outer(!! f, !!! lapply(letters[1:3], as_symbol)))
 #' f
 #'
 #' # Note that it's fine to unquote formulas as long as you evaluate
@@ -387,14 +387,21 @@ is_tquote <- is_tidy_quote
 #' dots$defs
 #' @md
 tidy_quotes <- function(..., .named = FALSE) {
-  dots <- tidy_capture_dots(..., .named = .named)
-  dots_interp_lhs(dots)
+  dots <- tidy_capture_dots(...)
+  dots <- dots_interp_lhs(dots)
+  if (.named) {
+    dots <- tquotes_ensure_names(dots, .named)
+  }
+  dots
 }
 
 #' @rdname tidy_quotes
 #' @export
 tidy_defs <- function(..., .named = FALSE) {
-  dots <- tidy_capture_dots(..., .named = FALSE)
+  dots <- tidy_capture_dots(...)
+  if (.named) {
+    dots <- tquotes_ensure_names(dots, .named)
+  }
 
   defined <- map_lgl(dots, function(dot) is_definition(f_rhs(dot)))
   defs <- map(dots[defined], as_definition)
@@ -413,4 +420,17 @@ as_definition <- function(dot) {
     lhs = new_tidy_quote(lhs, env),
     rhs = new_tidy_quote(rhs, env)
   )
+}
+
+tquotes_ensure_names <- function(dots, named) {
+  if (is_true(named)) {
+    width <- formals(expr_text)$width
+  } else if (is_scalar_integerish(named)) {
+    width <- named
+  } else {
+    abort("`.named` must be a scalar logical or a numeric")
+  }
+  have_names <- have_names(dots)
+  names(dots)[!have_names] <- map_chr(dots[!have_names], f_text, width = width)
+  dots
 }

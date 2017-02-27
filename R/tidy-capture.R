@@ -86,25 +86,12 @@ tidy_capture <- function(x) {
   new_tidy_quote(expr, arg$env)
 }
 
-tidy_capture_dots <- function(..., .named) {
+tidy_capture_dots <- function(...) {
   info <- captureDots()
   dots <- map(info, dot_f)
 
   # Flatten possibly spliced dots
   dots <- unlist(dots, FALSE)
-
-  if (.named) {
-    if (is_true(.named)) {
-      width <- formals(expr_text)$width
-    } else if (is_scalar_integerish(.named)) {
-      width <- .named
-    } else {
-      abort("`.named` must be a scalar logical or a numeric")
-    }
-    have_names <- have_names(dots)
-    names(dots)[!have_names] <- map_chr(dots[!have_names], f_text, width = width)
-  }
-
   dots
 }
 dot_f <- function(dot) {
