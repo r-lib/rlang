@@ -270,7 +270,7 @@ is_binary_call <- function(x, name = NULL) {
 #' as_call(~ f)
 #' as_symbol(~ f())
 as_symbol <- function(x) {
-  switchpatch(x, .to = "symbol",
+  coerce_type(x, "symbol",
     symbol = x,
     string = symbol(x),
     quote = as_symbol(f_rhs(x)),
@@ -285,7 +285,7 @@ as_symbol <- function(x) {
 #' @export
 #' @rdname as_symbol
 as_name <- function(x) {
-  switchpatch(x,
+  coerce_type(x, "name",
     string = x,
     as_string(as_symbol(x))
   )
@@ -294,7 +294,7 @@ as_name <- function(x) {
 #' @export
 #' @rdname as_symbol
 as_call <- function(x) {
-  switchpatch(x, .to = "language",
+  coerce_type(x, "language",
     symbol = new_call(x),
     quote = as_call(f_rhs(x)),
     language = x,

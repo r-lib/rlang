@@ -371,26 +371,37 @@ type_of <- function(x) {
 
 #' Dispatch on base types.
 #'
-#' This is equivalent to
-#' \code{\link[base]{switch}(\link{type_of}(x, ...))}.
+#' This is equivalent to \code{\link[base]{switch}(\link{type_of}(x,
+#' ...))}. The `coerce_` versions are intended for type conversion and
+#' provide a standard error message when conversion fails.
 #'
 #' @param .x An object from which to dispatch.
 #' @param ... Named clauses. The names should be types as returned by
 #'   [type_of()].
-#' @param .to This is useful when you switchpatch in a coercing
+#' @param .to This is useful when you switchpatch within a coercing
 #'   function. If supplied, this should be a string indicating the
 #'   target type. A catch-all clause is then added to signal an error
 #'   stating the conversion failure.
 #' @export
 #' @examples
-#' switchpatch(3L,
+#' switch_type(3L,
 #'   double = "foo",
 #'   integer = "bar",
 #'   "default"
 #' )
 #'
+#' # Use the coerce_ version to get standardised error handling when no
+#' # type matches:
+#' to_chr <- function(x) {
+#'   coerce_type(x, "chr",
+#'     integer = as.character(x),
+#'     double = as.character(x)
+#'   )
+#' }
+#' to_chr(3L)
+#'
 #' # Strings have their own type:
-#' switchpatch("string",
+#' switch_type("str",
 #'   character = "foo",
 #'   string = "bar",
 #'   "default"
@@ -398,7 +409,7 @@ type_of <- function(x) {
 #'
 #' # Use a fallthrough clause if you need to dispatch on all character
 #' # vectors, including strings:
-#' switchpatch("string",
+#' switch_type("str",
 #'   string = ,
 #'   character = "foo",
 #'   "default"
@@ -406,26 +417,27 @@ type_of <- function(x) {
 #'
 #' # special and builtin functions are treated as primitive, since
 #' # there is usually no reason to treat them differently:
-#' switchpatch(base::list,
+#' switch_type(base::list,
 #'   primitive = "foo",
 #'   "default"
 #' )
-#' switchpatch(base::`$`,
+#' switch_type(base::`$`,
 #'   primitive = "foo",
 #'   "default"
 #' )
 #'
 #' # closures are not primitives:
-#' switchpatch(rlang::switchpatch,
+#' switch_type(rlang::switch_type,
 #'   primitive = "foo",
 #'   "default"
 #' )
 #' @md
-switchpatch <- function(.x, ..., .to) {
-  if (missing(.to)) {
+switch_type <- function(.x, ...) {
     switch(type_of(.x), ...)
-  } else {
-    msg <- paste0("Cannot convert objects of type `", type_of(.x), "` to `", .to, "`")
-    switch(type_of(.x), ..., abort(msg))
-  }
+}
+#' @rdname switch_type
+#' @export
+coerce_type <- function(.x, .to, ...) {
+  msg <- paste0("Cannot convert objects of type `", type_of(.x), "` to `", .to, "`")
+  switch(type_of(.x), ..., abort(msg))
 }
