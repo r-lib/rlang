@@ -16,7 +16,7 @@ expression. If not supplied, the calling frame is used.}
 }
 \description{
 Internally, calls are structured as a tree of expressions (see
-\code{\link[=switchlang]{switchlang()}} documentation). A \code{lang} object is the top level
+\code{\link[=switch_lang]{switch_lang()}} documentation). A \code{lang} object is the top level
 node of the tree. \code{lang_head()} and \code{lang_tail()} allow you to
 retrieve the node components.
 \itemize{

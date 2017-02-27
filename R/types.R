@@ -383,7 +383,7 @@ type_of <- function(x) {
 #'   function. If supplied, this should be a string indicating the
 #'   target type. A catch-all clause is then added to signal an error
 #'   stating the conversion failure.
-#' @seealso [switchlang()]
+#' @seealso [switch_lang()]
 #' @export
 #' @examples
 #' switch_type(3L,
@@ -446,7 +446,7 @@ coerce_type <- function(.x, .to, ...) {
 
 #' Dispatch on call type.
 #'
-#' `switchlang()` dispatches clauses based on the subtype of call, as
+#' `switch_lang()` dispatches clauses based on the subtype of call, as
 #' determined by `lang_type_of()`. The subtypes are based on the type
 #' of call head (see details).
 #'
@@ -455,7 +455,7 @@ coerce_type <- function(.x, .to, ...) {
 #' some other expression. The language subtypes are organised around
 #' the kind of object being called:
 #'
-#' * For regular calls to named function, `switchlang()` returns
+#' * For regular calls to named function, `switch_lang()` returns
 #'   "named".
 #'
 #' * Sometimes the function being called is the result of another
@@ -466,7 +466,7 @@ coerce_type <- function(.x, .to, ...) {
 #'   "recursive".
 #'
 #' * A special subset of recursive calls are namespaced calls like
-#'   `foo::bar()`. `switchlang()` returns "namespaced" for these
+#'   `foo::bar()`. `switch_lang()` returns "namespaced" for these
 #'   calls. It is generally a good idea if your function treats
 #'   `bar()` and `foo::bar()` similarly.
 #'
@@ -474,10 +474,10 @@ coerce_type <- function(.x, .to, ...) {
 #'   definition of literals) as call head. In most cases, this will be
 #'   a function inlined in the call (this is sometimes an expedient
 #'   way of dealing with scoping issues). For calls with a literal
-#'   node head, `switchlang()` returns "inlined". Note that if a call
+#'   node head, `switch_lang()` returns "inlined". Note that if a call
 #'   head contains a literal that is not function, something went
 #'   wrong and using that object will probably make R crash.
-#'   `switchlang()` issues an error in this case.
+#'   `switch_lang()` issues an error in this case.
 #'
 #' The reason we use the term _node head_ is because calls are
 #' structured as tree objects. This makes sense because the best
@@ -509,11 +509,11 @@ coerce_type <- function(.x, .to, ...) {
 #' call
 #' lang_type_of(call)
 #' @md
-switchlang <- function(.x, ...) {
+switch_lang <- function(.x, ...) {
   switch(lang_type_of(.x), ...)
 }
 
-#' @rdname switchlang
+#' @rdname switch_lang
 #' @export
 lang_type_of <- function(x) {
   x <- get_expr(x)

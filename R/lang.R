@@ -174,7 +174,7 @@ as_symbol <- function(x) {
     string = symbol(x),
     quote = as_symbol(f_rhs(x)),
     language =
-      switchlang(x,
+      switch_lang(x,
         namespaced = car(x),
         inlined = abort("Cannot create symbol from inlined call"),
         recursive = abort("cannot create symbol from recursive call"),

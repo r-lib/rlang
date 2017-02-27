@@ -283,7 +283,7 @@ lang_fn <- function(call = caller_frame()) {
     abort("`call` must quote a call")
   }
 
-  switchlang(expr,
+  switch_lang(expr,
     recursive = abort("`call` does not call a named or inlined function"),
     inlined = car(expr),
     named = ,
@@ -321,7 +321,7 @@ lang_name <- function(call = caller_frame()) {
     abort("`call` must be a call or a tidy quote of a call")
   }
 
-  switchlang(call,
+  switch_lang(call,
     named = as_character(car(call)),
     namespaced = as_character(cadr(cdar(call))),
     NULL
@@ -333,7 +333,7 @@ lang_name <- function(call = caller_frame()) {
 #' @description
 #'
 #' Internally, calls are structured as a tree of expressions (see
-#' [switchlang()] documentation). A `lang` object is the top level
+#' [switch_lang()] documentation). A `lang` object is the top level
 #' node of the tree. `lang_head()` and `lang_tail()` allow you to
 #' retrieve the node components.
 #'
