@@ -3,7 +3,7 @@
 \name{tidy_quotes}
 \alias{tidy_quotes}
 \alias{tidy_defs}
-\title{Capture dots.}
+\title{Tidy quotation of multiple expressions and dots.}
 \usage{
 tidy_quotes(..., .named = FALSE)
 
@@ -13,42 +13,46 @@ tidy_defs(..., .named = FALSE)
 \item{...}{Arguments to capture.}
 
 \item{.named}{Whether to ensure all dots are named. Unnamed
-elements are processed with \code{\link{expr_text}()} to figure
-out a default name. If an integer, it is passed to the
-\code{width} argument of \code{expr_text()}, if \code{TRUE}, the
-default width is used.}
+elements are processed with \code{\link[=expr_text]{expr_text()}} to figure out a default
+name. If an integer, it is passed to the \code{width} argument of
+\code{expr_text()}, if \code{TRUE}, the default width is used.}
 }
 \description{
-This set of functions are like \code{\link{tidy_capture}()} but for
-\code{...} arguments. They capture expressions passed through dots
-along their dynamic environments, and return them bundled as a set
-of formulas. They differ in their treatment of definition
-expressions of the type \code{var := expr}.
+\code{tidy_quotes()} quotes its arguments and returns them as a list of
+tidy quotes. It is especially useful to "capture" arguments
+forwarded through \code{...}.
 }
 \details{
+Both \code{tidy_quotes} and \code{tidy_defs()} have specific support for
+definition expressions of the type \code{var := expr}, with some
+differences:
+
 \describe{
- \item{\code{tidy_quotes()}}{
-   When \code{:=} definitions are supplied to \code{tidy_quotes()},
-   they are treated as a synonym of argument assignment
-   \code{=}. On the other hand, they allow unquoting operators on
-   the left-hand side, which makes it easy to assign names
-   programmatically.}
- \item{\code{tidy_defs()}}{
-   This dots capturing function returns definitions as is. Unquote
-   operators are processed on capture, in both the LHS and the
-   RHS. Unlike \code{tidy_quotes()}, it allows named definitions.}
+\item{\code{tidy_quotes()}}{
+When \code{:=} definitions are supplied to \code{tidy_quotes()},
+they are treated as a synonym of argument assignment
+\code{=}. On the other hand, they allow unquoting operators on
+the left-hand side, which makes it easy to assign names
+programmatically.}
+\item{\code{tidy_defs()}}{
+This dots capturing function returns definitions as is. Unquote
+operators are processed on capture, in both the LHS and the
+RHS. Unlike \code{tidy_quotes()}, it allows named definitions.}
 }
 }
 \examples{
-# While tidy_capture() only work for the most direct calls, that's
-# not the case for tidy_quotes(). Dots are forwarded all the way to
-# tidy_quotes() and can be captured across multiple layers of calls:
-fn <- function(...) tidy_quotes(y = a + b, ...)
-fn(z = a + b)
+# tidy_quotes() is like the singular version but allows quoting
+# several arguments:
+tidy_quotes(foo(), bar(baz), letters[1:2], !! letters[1:2])
 
-# However if you pass a named argument in dots, only the expression
-# at the innermost call site is captured:
-fn <- function(...) tidy_quotes(x = x)
+# It is most useful when used with dots. This allows quoting
+# expressions across different levels of function calls:
+fn <- function(...) tidy_quotes(...)
+fn(foo(bar), baz)
+
+# Note that tidy_quotes() does not check for duplicate named
+# arguments:
+fn <- function(...) tidy_quotes(x = x, ...)
 fn(x = a + b)
 
 

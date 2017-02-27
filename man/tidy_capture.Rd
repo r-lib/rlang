@@ -10,8 +10,8 @@ tidy_capture(x)
 \item{x, ...}{Arguments to capture.}
 }
 \value{
-\code{tidy_capture()} returns a formula; \code{tidy_quotes()}
-  returns a list of formulas, one for each dotted argument.
+\code{tidy_capture()} returns a formula; see also
+  \code{tidy_quotes()} for "capturing" dots as a list of formulas.
 }
 \description{
 A powerful feature in R is the ability of capturing the expression

@@ -66,8 +66,8 @@
 #'
 #' @param x,... Arguments to capture.
 #' @export
-#' @return \code{tidy_capture()} returns a formula; \code{tidy_quotes()}
-#'   returns a list of formulas, one for each dotted argument.
+#' @return \code{tidy_capture()} returns a formula; see also
+#'   \code{tidy_quotes()} for "capturing" dots as a list of formulas.
 #' @seealso \code{\link{tidy_quotes}()} for capturing dots,
 #'   \code{\link{expr_label}()} and \code{\link{expr_text}()} for
 #'   capturing labelling information.

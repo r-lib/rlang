@@ -73,9 +73,11 @@
 #'   environment and inlined in the expression.
 #' @return A formula whose right-hand side contains the quoted
 #'   expression supplied as argument.
-#' @seealso \code{\link{tidy_quote_expr}()} for quoting a raw expression
-#'   with quasiquotation, and \code{\link{tidy_interp}()} for
-#'   unquoting an already quoted expression or an existing formula.
+#' @seealso \code{\link{tidy_quotes}()} for capturing several
+#'   expressions, including from dots; \code{\link{tidy_quote_expr}()}
+#'   for quoting a raw expression with quasiquotation; and
+#'   \code{\link{tidy_interp}()} for unquoting an already quoted
+#'   expression or an existing formula.
 #' @export
 #' @aliases UQ UQE UQF UQS
 #' @examples
@@ -317,43 +319,47 @@ is_tidy_quote <- function(x) {
 is_tquote <- is_tidy_quote
 
 
-#' Capture dots.
+#' Tidy quotation of multiple expressions and dots.
 #'
-#' This set of functions are like \code{\link{tidy_capture}()} but for
-#' \code{...} arguments. They capture expressions passed through dots
-#' along their dynamic environments, and return them bundled as a set
-#' of formulas. They differ in their treatment of definition
-#' expressions of the type \code{var := expr}.
+#' `tidy_quotes()` quotes its arguments and returns them as a list of
+#' tidy quotes. It is especially useful to "capture" arguments
+#' forwarded through `...`.
+#'
+#' Both `tidy_quotes` and `tidy_defs()` have specific support for
+#' definition expressions of the type `var := expr`, with some
+#' differences:
 #'
 #'\describe{
-#'  \item{\code{tidy_quotes()}}{
-#'    When \code{:=} definitions are supplied to \code{tidy_quotes()},
+#'  \item{`tidy_quotes()`}{
+#'    When `:=` definitions are supplied to `tidy_quotes()`,
 #'    they are treated as a synonym of argument assignment
-#'    \code{=}. On the other hand, they allow unquoting operators on
+#'    `=`. On the other hand, they allow unquoting operators on
 #'    the left-hand side, which makes it easy to assign names
 #'    programmatically.}
-#'  \item{\code{tidy_defs()}}{
+#'  \item{`tidy_defs()`}{
 #'    This dots capturing function returns definitions as is. Unquote
 #'    operators are processed on capture, in both the LHS and the
-#'    RHS. Unlike \code{tidy_quotes()}, it allows named definitions.}
+#'    RHS. Unlike `tidy_quotes()`, it allows named definitions.}
 #' }
 #' @inheritParams tidy_capture
 #' @param .named Whether to ensure all dots are named. Unnamed
-#'   elements are processed with \code{\link{expr_text}()} to figure
-#'   out a default name. If an integer, it is passed to the
-#'   \code{width} argument of \code{expr_text()}, if \code{TRUE}, the
-#'   default width is used.
+#'   elements are processed with [expr_text()] to figure out a default
+#'   name. If an integer, it is passed to the `width` argument of
+#'   `expr_text()`, if `TRUE`, the default width is used.
 #' @export
 #' @examples
-#' # While tidy_capture() only work for the most direct calls, that's
-#' # not the case for tidy_quotes(). Dots are forwarded all the way to
-#' # tidy_quotes() and can be captured across multiple layers of calls:
-#' fn <- function(...) tidy_quotes(y = a + b, ...)
-#' fn(z = a + b)
+#' # tidy_quotes() is like the singular version but allows quoting
+#' # several arguments:
+#' tidy_quotes(foo(), bar(baz), letters[1:2], !! letters[1:2])
 #'
-#' # However if you pass a named argument in dots, only the expression
-#' # at the innermost call site is captured:
-#' fn <- function(...) tidy_quotes(x = x)
+#' # It is most useful when used with dots. This allows quoting
+#' # expressions across different levels of function calls:
+#' fn <- function(...) tidy_quotes(...)
+#' fn(foo(bar), baz)
+#'
+#' # Note that tidy_quotes() does not check for duplicate named
+#' # arguments:
+#' fn <- function(...) tidy_quotes(x = x, ...)
 #' fn(x = a + b)
 #'
 #'
@@ -377,6 +383,7 @@ is_tquote <- is_tidy_quote
 #' # If you need the full LHS expression, use tidy_defs():
 #' dots <- tidy_defs(var = foo(baz) := bar(baz))
 #' dots$defs
+#' @md
 tidy_quotes <- function(..., .named = FALSE) {
   dots <- tidy_capture_dots(..., .named = .named)
   dots_interp_lhs(dots)
