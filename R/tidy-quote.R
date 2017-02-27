@@ -315,3 +315,93 @@ is_tidy_quote <- function(x) {
 #' @rdname as_tidy_quote
 #' @export
 is_tquote <- is_tidy_quote
+
+
+#' Capture dots.
+#'
+#' This set of functions are like \code{\link{tidy_capture}()} but for
+#' \code{...} arguments. They capture expressions passed through dots
+#' along their dynamic environments, and return them bundled as a set
+#' of formulas. They differ in their treatment of definition
+#' expressions of the type \code{var := expr}.
+#'
+#'\describe{
+#'  \item{\code{tidy_quotes()}}{
+#'    When \code{:=} definitions are supplied to \code{tidy_quotes()},
+#'    they are treated as a synonym of argument assignment
+#'    \code{=}. On the other hand, they allow unquoting operators on
+#'    the left-hand side, which makes it easy to assign names
+#'    programmatically.}
+#'  \item{\code{tidy_defs()}}{
+#'    This dots capturing function returns definitions as is. Unquote
+#'    operators are processed on capture, in both the LHS and the
+#'    RHS. Unlike \code{tidy_quotes()}, it allows named definitions.}
+#' }
+#' @inheritParams tidy_capture
+#' @param .named Whether to ensure all dots are named. Unnamed
+#'   elements are processed with \code{\link{expr_text}()} to figure
+#'   out a default name. If an integer, it is passed to the
+#'   \code{width} argument of \code{expr_text()}, if \code{TRUE}, the
+#'   default width is used.
+#' @export
+#' @examples
+#' # While tidy_capture() only work for the most direct calls, that's
+#' # not the case for tidy_quotes(). Dots are forwarded all the way to
+#' # tidy_quotes() and can be captured across multiple layers of calls:
+#' fn <- function(...) tidy_quotes(y = a + b, ...)
+#' fn(z = a + b)
+#'
+#' # However if you pass a named argument in dots, only the expression
+#' # at the innermost call site is captured:
+#' fn <- function(...) tidy_quotes(x = x)
+#' fn(x = a + b)
+#'
+#'
+#' # Dots can be spliced in:
+#' args <- list(x = 1:3, y = ~var)
+#' tidy_quotes(!!! args, z = 10L)
+#'
+#' # Raw expressions are turned to formulas:
+#' args <- alist(x = foo, y = bar)
+#' tidy_quotes(!!! args)
+#'
+#'
+#' # Definitions are treated similarly to named arguments:
+#' tidy_quotes(x := expr, y = expr)
+#'
+#' # However, the LHS of definitions can be unquoted. The return value
+#' # must be a symbol or a string:
+#' var <- "foo"
+#' tidy_quotes(!!var := expr)
+#'
+#' # If you need the full LHS expression, use tidy_defs():
+#' dots <- tidy_defs(var = foo(baz) := bar(baz))
+#' dots$defs
+tidy_quotes <- function(..., .named = FALSE) {
+  dots <- tidy_capture_dots(..., .named = .named)
+  dots_interp_lhs(dots)
+}
+
+#' @rdname tidy_quotes
+#' @export
+tidy_defs <- function(..., .named = FALSE) {
+  dots <- tidy_capture_dots(..., .named = FALSE)
+
+  defined <- map_lgl(dots, function(dot) is_definition(f_rhs(dot)))
+  defs <- map(dots[defined], as_definition)
+
+  list(dots = dots[!defined], defs = defs)
+}
+
+as_definition <- function(dot) {
+  env <- f_env(dot)
+  pat <- f_rhs(dot)
+
+  lhs <- .Call(rlang_interp, f_lhs(pat), env)
+  rhs <- .Call(rlang_interp, f_rhs(pat), env)
+
+  list(
+    lhs = new_tidy_quote(lhs, env),
+    rhs = new_tidy_quote(rhs, env)
+  )
+}

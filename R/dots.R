@@ -71,7 +71,7 @@ dots_lsp <- function(...) {
 #' @param ... Dots to inspect.
 #' @param .only_dots,only_dots Whether to stop introspection once
 #'   forwarded dots have been climbed. Setting this to \code{TRUE} is
-#'   only useful for inspecting dots (cf. \code{\link{tidy_dots}()}
+#'   only useful for inspecting dots (cf. \code{\link{tidy_quotes}()}
 #'   which does not follow symbols).
 #' @seealso \code{\link{arg_inspect}()}
 #' @export

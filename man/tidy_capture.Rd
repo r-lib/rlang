@@ -10,7 +10,7 @@ tidy_capture(x)
 \item{x, ...}{Arguments to capture.}
 }
 \value{
-\code{tidy_capture()} returns a formula; \code{tidy_dots()}
+\code{tidy_capture()} returns a formula; \code{tidy_quotes()}
   returns a list of formulas, one for each dotted argument.
 }
 \description{
@@ -25,7 +25,7 @@ at the call site are available when the expression gets
 evaluated. It is thus necessary to capture not only the R
 expression supplied as argument in a function call, but also the
 evaluation environment of the call site. \code{tidy_capture()} and
-\code{tidy_dots()} make it easy to record this information
+\code{tidy_quotes()} make it easy to record this information
 within formulas.
 }
 \section{Non-standard evaluation}{
@@ -76,7 +76,7 @@ within formulas.
   those expressions were not necessarily supplied in the last call
   frame. In general, the call site of argument passed through dots
   can be anywhere between the current and global frames. For this
-  reason, it is recommended to always use \code{tidy_dots()}
+  reason, it is recommended to always use \code{tidy_quotes()}
   rather than \code{substitute()} and \code{caller_env()} or
   \code{parent.frame()}, since the former will encode the
   appropriate evaluation environments within the formulas.
@@ -92,7 +92,7 @@ g <- function(bar) fn(bar)
 g(a + b)
 }
 \seealso{
-\code{\link{tidy_dots}()} for capturing dots,
+\code{\link{tidy_quotes}()} for capturing dots,
   \code{\link{expr_label}()} and \code{\link{expr_text}()} for
   capturing labelling information.
 }
