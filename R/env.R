@@ -120,7 +120,7 @@
 #' identical(enclos_env, fn())
 env <- function(env = caller_env()) {
   target <- "environment"
-  switchpatch(env, .to = target,
+  coerce_type(env, target,
     environment = env,
     quote = attr(env, ".Environment"),
     primitive = base_env(),

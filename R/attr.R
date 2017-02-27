@@ -202,7 +202,7 @@ with_attributes <- function(.x, ..., .attrs = list()) {
 }
 
 zap_attributes <- function(x) {
-  switchpatch(x,
+  switch_type(x,
     char = ,
     symbol = ,
     environment = abort(paste0(

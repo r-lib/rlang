@@ -151,7 +151,7 @@ as_character <- function(x, encoding = NULL) {
 #' @rdname coercion
 #' @export
 as_string <- function(x, encoding = NULL) {
-  x <- switchpatch(x, .to = "string",
+  x <- coerce_type(x, .to = "string",
     symbol = as.character(x),
     string = zap_attributes(x)
   )
