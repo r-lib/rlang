@@ -74,18 +74,39 @@ tidy_eval <- function(f, data = NULL) {
     return(map(f, tidy_eval, data = data))
   }
 
-  if (is_formula(f)) {
-    expr <- f_rhs(f)
-    env <- f_env(f)
-  } else {
-    expr <- f
-    env <- caller_env()
+  expr <- get_expr(f)
+  lexical_env <- if (is_formula(f)) f_env(f) else caller_env()
+
+  eval_env <- tidy_eval_env(lexical_env, data)
+  on.exit(tidy_eval_env_uninstall(eval_env))
+
+  .Call(rlang_eval, expr, eval_env)
+}
+
+#' Tidy evaluation in a custom environment.
+#'
+#' We recommend using [tidy_eval()] in your DSLs as much as possible
+#' to ensure some consistency across packages (`.data` and `.env`
+#' pronouns, etc). However, some DSLs might need a different
+#' evaluation environment. In this case, you can call
+#' `tidy_eval_custom()` with the bottom and the top of your custom
+#' dynamic scope (see [tidy_eval_env()] for more information).
+#'
+#' @inheritParams tidy_eval
+#' @inheritParams tidy_eval_env
+tidy_eval_custom <- function(f, bottom_env, top_env = NULL) {
+  if (is_list(f)) {
+    return(map(f, tidy_eval_custom, bottom_env, top_env))
   }
 
-  env <- tidy_eval_env(env, data)
-  on.exit(tidy_eval_env_cleanup(env))
+  expr <- get_expr(f)
+  lexical_env <- if (is_formula(f)) f_env(f) else caller_env()
 
-  .Call(rlang_eval, expr, env)
+  top_env <- top_env %||% bottom_env
+  tidy_eval_env_install(bottom_env, top_env, lexical_env)
+  on.exit(tidy_eval_env_uninstall(bottom_env))
+
+  .Call(rlang_eval, expr, lexical_env)
 }
 
 #' Create a tidy evaluation environment.
@@ -99,11 +120,12 @@ tidy_eval <- function(f, data = NULL) {
 #'
 #' Once an expression has been evaluated in the tidy environment, it's
 #' a good idea to clean up the definitions that make self-evaluation
-#' of formulas possible \code{tidy_eval_env_cleanup()}. Otherwise your
-#' users may face unexpected results in specific corner cases (see
-#' examples).
+#' of formulas possible \code{tidy_eval_env_uninstall()}. Otherwise
+#' your users may face unexpected results in specific corner cases
+#' (e.g. when the evaluation environment is leaked, see examples).
 #'
-#' @param env The original scope.
+#' @param lexical_env The original lexical scope. Usually the
+#'   environment bundled with the outermost tidy quote.
 #' @param data Additional data to put in scope.
 #' @export
 #' @examples
@@ -118,58 +140,74 @@ tidy_eval <- function(f, data = NULL) {
 #' fn <- eval(quote(function() ~letters), env)
 #' fn()
 #'
-#' tidy_eval_env_cleanup(env)
+#' tidy_eval_env_uninstall(env)
 #' fn()
-tidy_eval_env <- function(env = base_env(), data = NULL) {
+#' @md
+tidy_eval_env <- function(lexical_env = base_env(), data = NULL) {
   data_src <- data_source(data)
 
-  # Mark the environment so we can rechain it to other lexical
-  # enclosures when evaluating formula-promises.
-  top_env <- eval_env <- child_env(env)
+  # Create top and bottom environments, pre-chained to the lexical scope.
+  top_env <- bottom_env <- child_env(lexical_env)
 
   # Emulate dynamic scope for established data
   if (length(data)) {
-    eval_env <- env_bury(eval_env, discard_unnamed(data))
+    bottom_env <- env_bury(bottom_env, discard_unnamed(data))
   }
 
-  # Install pronouns, fpromises and fguards
-  eval_env$.data <- data_src
-  eval_env$.env <- data_source(env)
-  eval_env$`~` <- f_self_eval(env, eval_env, top_env)
-  eval_env$`_F` <- f_unguard
+  # Install pronouns
+  bottom_env$.data <- data_src
+  bottom_env$.env <- data_source(lexical_env)
 
-  eval_env
+  tidy_eval_env_install(bottom_env, top_env, lexical_env)
+}
+
+#' @rdname tidy_eval_env
+#' @param bottom_env This is the environment in which formula-promises
+#'   are evaluated. This environment typically contains pronouns and
+#'   its direct parents contain the rescoping bindings. The last one
+#'   of these parents is the `top_env`.
+#' @param top_env The top environment of the dynamic scope is chained
+#'   and rechained to lexical enclosures of self-evaluating formulas
+#'   (or formula-promises). This ensures hygienic scoping: the
+#'   bindings in the dynamic scope have precedence, but the bindings
+#'   in the dynamic environment where the tidy quotes were created are
+#'   in scope as well.
+#' @export
+tidy_eval_env_install <- function(bottom_env, top_env, lexical_env) {
+  bottom_env$`~` <- f_self_eval(lexical_env, bottom_env, top_env)
+  bottom_env$`_F` <- f_unguard
+  bottom_env$.top_env <- top_env
+  bottom_env
 }
 #' @rdname tidy_eval_env
-#' @param eval_env A tidy evaluation env to clean up.
 #' @export
-tidy_eval_env_cleanup <- function(eval_env) {
-  env_unbind(eval_env, c("~", "_F"))
-  eval_env
+tidy_eval_env_uninstall <- function(bottom_env) {
+  env_unbind(bottom_env, c("~", "_F", ".top_env"))
+  bottom_env
 }
 
-f_self_eval <- function(env, eval_env, top_env) {
+f_self_eval <- function(lexical_env, bottom_env, top_env) {
   function(...) {
     f <- sys.call()
 
     # Two-sided formulas are not fpromises
     if (length(f) > 2) {
       # Make sure to propagate scope info when formula is quoted:
-      f <- expr_eval(f, env)
+      f <- expr_eval(f, lexical_env)
       return(f)
     }
 
     # Take care of degenerate formulas (e.g. created with ~~letters)
     if (is_null(f_env(f))) {
-      f_env(f) <- env
+      f_env(f) <- lexical_env
     }
 
-    # Swap enclosures
-    prev_enclosure <- env_parent(top_env)
-    env_parent(top_env) <- f_env(f) %||% env
-    on.exit(env_parent(top_env) <- prev_enclosure)
+    # Swap enclosures temporarily by rechaining the top of the dynamic
+    # scope to the enclosure of the new formula, if it has one.
+    env_parent(top_env) <- f_env(f) %||% lexical_env
+    on.exit(env_parent(top_env) <- lexical_env)
 
-    .Call(rlang_eval, f_rhs(f), eval_env)
+    .Call(rlang_eval, f_rhs(f), bottom_env)
   }
 }
 f_unguard <- function(...) {
@@ -241,8 +279,8 @@ invoke <- function(.fn, .args = list(), ...,
   }
 
 
-  if (!is_character(.bury, 2)) {
-    stop(".bury must be a character vector of length 2", call. = FALSE)
+  if (!is_character(.bury, 2L)) {
+    abort("`.bury` must be a character vector of length 2")
   }
   arg_prefix <- .bury[[2]]
   fn_nm <- .bury[[1]]

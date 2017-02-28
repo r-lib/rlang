@@ -2,19 +2,33 @@
 % Please edit documentation in R/tidy-eval.R
 \name{tidy_eval_env}
 \alias{tidy_eval_env}
-\alias{tidy_eval_env_cleanup}
+\alias{tidy_eval_env_install}
+\alias{tidy_eval_env_uninstall}
 \title{Create a tidy evaluation environment.}
 \usage{
-tidy_eval_env(env = base_env(), data = NULL)
+tidy_eval_env(lexical_env = base_env(), data = NULL)
 
-tidy_eval_env_cleanup(eval_env)
+tidy_eval_env_install(bottom_env, top_env, lexical_env)
+
+tidy_eval_env_uninstall(bottom_env)
 }
 \arguments{
-\item{env}{The original scope.}
+\item{lexical_env}{The original lexical scope. Usually the
+environment bundled with the outermost tidy quote.}
 
 \item{data}{Additional data to put in scope.}
 
-\item{eval_env}{A tidy evaluation env to clean up.}
+\item{bottom_env}{This is the environment in which formula-promises
+are evaluated. This environment typically contains pronouns and
+its direct parents contain the rescoping bindings. The last one
+of these parents is the `top_env`.}
+
+\item{top_env}{The top environment of the dynamic scope is chained
+and rechained to lexical enclosures of self-evaluating formulas
+(or formula-promises). This ensures hygienic scoping: the
+bindings in the dynamic scope have precedence, but the bindings
+in the dynamic environment where the tidy quotes were created are
+in scope as well.}
 }
 \description{
 This is useful when want to use the tidy evaluation framework in
@@ -27,9 +41,9 @@ information.
 \details{
 Once an expression has been evaluated in the tidy environment, it's
 a good idea to clean up the definitions that make self-evaluation
-of formulas possible \code{tidy_eval_env_cleanup()}. Otherwise your
-users may face unexpected results in specific corner cases (see
-examples).
+of formulas possible \code{tidy_eval_env_uninstall()}. Otherwise
+your users may face unexpected results in specific corner cases
+(e.g. when the evaluation environment is leaked, see examples).
 }
 \examples{
 # Evaluating in a tidy evaluation environment enables all tidy
@@ -43,6 +57,6 @@ eval(quote(list(.data$cyl, ~letters)), env)
 fn <- eval(quote(function() ~letters), env)
 fn()
 
-tidy_eval_env_cleanup(env)
+tidy_eval_env_uninstall(env)
 fn()
 }
