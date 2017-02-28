@@ -26,7 +26,7 @@ compat_lazy <- function(lazy, env = caller_env(), warn = TRUE) {
       parse_f(lazy, env)
     },
     list =
-      switch_class(lazy, .to = "tidy_quote",
+      coerce_class(lazy, "tidy_quote",
         lazy = new_tidy_quote(lazy$expr, lazy$env)
       )
   )

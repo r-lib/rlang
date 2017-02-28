@@ -372,9 +372,11 @@ type_of <- function(x) {
 
 #' Dispatch on base types.
 #'
-#' This is equivalent to \code{\link[base]{switch}(\link{type_of}(x,
-#' ...))}. The `coerce_` versions are intended for type conversion and
-#' provide a standard error message when conversion fails.
+#' `switch_type()` is equivalent to
+#' \code{\link[base]{switch}(\link{type_of}(x, ...))}, while
+#' `switch_class()` switchpatches based on `class(x)`. The `coerce_`
+#' versions are intended for type conversion and provide a standard
+#' error message when conversion fails.
 #'
 #' @param .x An object from which to dispatch.
 #' @param ... Named clauses. The names should be types as returned by
@@ -443,12 +445,15 @@ coerce_type <- function(.x, .to, ...) {
   msg <- paste0("Cannot convert objects of type `", type_of(.x), "` to `", .to, "`")
   switch(type_of(.x), ..., abort_coercion(.x, .to))
 }
-switch_class <- function(.x, ..., .to) {
-  if (missing(.to)) {
-    switch(class(.x), ...)
-  } else {
-    switch(class(.x), ..., abort_coercion(.x, .to))
-  }
+#' @rdname switch_type
+#' @export
+switch_class <- function(.x, ...) {
+  switch(class(.x), ...)
+}
+#' @rdname switch_type
+#' @export
+coerce_class <- function(.x, .to, ...) {
+  switch(class(.x), ..., abort_coercion(.x, .to))
 }
 abort_coercion <- function(x, to) {
   abort(paste0(

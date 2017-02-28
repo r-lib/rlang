@@ -3,11 +3,17 @@
 \name{switch_type}
 \alias{switch_type}
 \alias{coerce_type}
+\alias{switch_class}
+\alias{coerce_class}
 \title{Dispatch on base types.}
 \usage{
 switch_type(.x, ...)
 
 coerce_type(.x, .to, ...)
+
+switch_class(.x, ...)
+
+coerce_class(.x, .to, ...)
 }
 \arguments{
 \item{.x}{An object from which to dispatch.}
@@ -21,9 +27,11 @@ target type. A catch-all clause is then added to signal an error
 stating the conversion failure.}
 }
 \description{
-This is equivalent to \code{\link[base]{switch}(\link{type_of}(x,
-...))}. The \code{coerce_} versions are intended for type conversion and
-provide a standard error message when conversion fails.
+\code{switch_type()} is equivalent to
+\code{\link[base]{switch}(\link{type_of}(x, ...))}, while
+\code{switch_class()} switchpatches based on \code{class(x)}. The \code{coerce_}
+versions are intended for type conversion and provide a standard
+error message when conversion fails.
 }
 \examples{
 switch_type(3L,

@@ -126,7 +126,7 @@ env <- function(env = caller_env()) {
     primitive = base_env(),
     closure = environment(env),
     string = pkg_env(env),
-    list = switch_class(env, .to = target, frame = env$env)
+    list = coerce_class(env, target, frame = env$env)
   )
 }
 
