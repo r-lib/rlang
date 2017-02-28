@@ -18,8 +18,9 @@ warn_text_se <- function() {
 compat_lazy <- function(lazy, env = caller_env(), warn = TRUE) {
   if (warn) warn_underscored()
 
-  switch_type(lazy, "tidy_quote",
+  coerce_type(lazy, "tidy_quote",
     quote = lazy,
+    symbol = ,
     language = new_tidy_quote(lazy, env),
     string = {
       if (warn) warn_text_se()

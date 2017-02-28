@@ -22,6 +22,11 @@ test_that("lazy objects are converted to tidy quotes", {
   expect_warning(regex = "underscored versions are deprecated",
     expect_identical(compat_lazy(lazy_lang), ~foo(bar))
   )
+
+  lazy_sym <- quote(foo)
+  expect_warning(regex = "underscored versions are deprecated",
+    expect_identical(compat_lazy(lazy_sym), ~foo)
+  )
 })
 
 test_that("lazy_dots objects are converted to tidy quotes", {
