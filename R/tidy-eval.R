@@ -77,8 +77,8 @@ tidy_eval <- function(f, data = NULL) {
   expr <- get_expr(f)
   lexical_env <- if (is_formula(f)) f_env(f) else caller_env()
 
-  eval_env <- tidy_eval_env(lexical_env, data)
-  on.exit(tidy_eval_env_uninstall(eval_env))
+  eval_env <- dyn_scope_env(lexical_env, data)
+  on.exit(dyn_scope_clean(eval_env))
 
   .Call(rlang_eval, expr, eval_env)
 }
@@ -90,10 +90,10 @@ tidy_eval <- function(f, data = NULL) {
 #' pronouns, etc). However, some DSLs might need a different
 #' evaluation environment. In this case, you can call
 #' `tidy_eval_custom()` with the bottom and the top of your custom
-#' dynamic scope (see [tidy_eval_env()] for more information).
+#' dynamic scope (see [dyn_scope_env()] for more information).
 #'
 #' @inheritParams tidy_eval
-#' @inheritParams tidy_eval_env
+#' @inheritParams dyn_scope_env
 tidy_eval_custom <- function(f, bottom_env, top_env = NULL) {
   if (is_list(f)) {
     return(map(f, tidy_eval_custom, bottom_env, top_env))
@@ -103,8 +103,8 @@ tidy_eval_custom <- function(f, bottom_env, top_env = NULL) {
   lexical_env <- if (is_formula(f)) f_env(f) else caller_env()
 
   top_env <- top_env %||% bottom_env
-  tidy_eval_env_install(bottom_env, top_env, lexical_env)
-  on.exit(tidy_eval_env_uninstall(bottom_env))
+  dyn_scope_install(bottom_env, top_env, lexical_env)
+  on.exit(dyn_scope_clean(bottom_env))
 
   .Call(rlang_eval, expr, lexical_env)
 }
@@ -120,7 +120,7 @@ tidy_eval_custom <- function(f, bottom_env, top_env = NULL) {
 #'
 #' Once an expression has been evaluated in the tidy environment, it's
 #' a good idea to clean up the definitions that make self-evaluation
-#' of formulas possible \code{tidy_eval_env_uninstall()}. Otherwise
+#' of formulas possible \code{dyn_scope_clean()}. Otherwise
 #' your users may face unexpected results in specific corner cases
 #' (e.g. when the evaluation environment is leaked, see examples).
 #'
@@ -131,7 +131,7 @@ tidy_eval_custom <- function(f, bottom_env, top_env = NULL) {
 #' @examples
 #' # Evaluating in a tidy evaluation environment enables all tidy
 #' # features:
-#' env <- tidy_eval_env(data = mtcars)
+#' env <- dyn_scope_env(data = mtcars)
 #' eval(quote(list(.data$cyl, ~letters)), env)
 #'
 #' # However you need to cleanup the environment after
@@ -140,10 +140,10 @@ tidy_eval_custom <- function(f, bottom_env, top_env = NULL) {
 #' fn <- eval(quote(function() ~letters), env)
 #' fn()
 #'
-#' tidy_eval_env_uninstall(env)
+#' dyn_scope_clean(env)
 #' fn()
 #' @md
-tidy_eval_env <- function(lexical_env = base_env(), data = NULL) {
+dyn_scope_env <- function(lexical_env = base_env(), data = NULL) {
   data_src <- data_source(data)
 
   # Create top and bottom environments, pre-chained to the lexical scope.
@@ -158,10 +158,10 @@ tidy_eval_env <- function(lexical_env = base_env(), data = NULL) {
   bottom_env$.data <- data_src
   bottom_env$.env <- data_source(lexical_env)
 
-  tidy_eval_env_install(bottom_env, top_env, lexical_env)
+  dyn_scope_install(bottom_env, top_env, lexical_env)
 }
 
-#' @rdname tidy_eval_env
+#' @rdname dyn_scope_env
 #' @param bottom_env This is the environment in which formula-promises
 #'   are evaluated. This environment typically contains pronouns and
 #'   its direct parents contain the rescoping bindings. The last one
@@ -173,15 +173,15 @@ tidy_eval_env <- function(lexical_env = base_env(), data = NULL) {
 #'   in the dynamic environment where the tidy quotes were created are
 #'   in scope as well.
 #' @export
-tidy_eval_env_install <- function(bottom_env, top_env, lexical_env) {
+dyn_scope_install <- function(bottom_env, top_env, lexical_env) {
   bottom_env$`~` <- f_self_eval(lexical_env, bottom_env, top_env)
   bottom_env$`_F` <- f_unguard
   bottom_env$.top_env <- top_env
   bottom_env
 }
-#' @rdname tidy_eval_env
+#' @rdname dyn_scope_env
 #' @export
-tidy_eval_env_uninstall <- function(bottom_env) {
+dyn_scope_clean <- function(bottom_env) {
   env_unbind(bottom_env, c("~", "_F", ".top_env"))
   bottom_env
 }

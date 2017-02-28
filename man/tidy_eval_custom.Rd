@@ -32,5 +32,5 @@ to ensure some consistency across packages (`.data` and `.env`
 pronouns, etc). However, some DSLs might need a different
 evaluation environment. In this case, you can call
 `tidy_eval_custom()` with the bottom and the top of your custom
-dynamic scope (see [tidy_eval_env()] for more information).
+dynamic scope (see [dyn_scope_env()] for more information).
 }
