@@ -89,14 +89,14 @@ tidy_eval <- function(f, data = NULL) {
 #' to ensure some consistency across packages (`.data` and `.env`
 #' pronouns, etc). However, some DSLs might need a different
 #' evaluation environment. In this case, you can call
-#' `tidy_eval_custom()` with the bottom and the top of your custom
+#' `tidy_dyn_eval()` with the bottom and the top of your custom
 #' dynamic scope (see [dyn_scope_env()] for more information).
 #'
 #' @inheritParams tidy_eval
 #' @inheritParams dyn_scope_env
-tidy_eval_custom <- function(f, bottom_env, top_env = NULL) {
+tidy_dyn_eval <- function(f, bottom_env, top_env = NULL) {
   if (is_list(f)) {
-    return(map(f, tidy_eval_custom, bottom_env, top_env))
+    return(map(f, tidy_dyn_eval, bottom_env, top_env))
   }
 
   expr <- get_expr(f)
@@ -129,7 +129,7 @@ tidy_eval_custom <- function(f, bottom_env, top_env = NULL) {
 #' let you create a custom dynamic scope. That is, a set of chained
 #' environments whose bottom serves as evaluation environment and
 #' whose top is rechained to the current lexical enclosure. But most
-#' of the time, you can just use [tidy_eval_custom()] as it will take
+#' of the time, you can just use [tidy_dyn_eval()] as it will take
 #' care of installing the tidyeval components in your custom dynamic
 #' scope.
 #'
@@ -141,11 +141,11 @@ tidy_eval_custom <- function(f, bottom_env, top_env = NULL) {
 #'   `data` in new environments.
 #'
 #' * `dyn_scope_install()` is called by `dyn_scope_env()` and
-#'   [tidy_eval_custom()]. It installs the definitions for making
+#'   [tidy_dyn_eval()]. It installs the definitions for making
 #'   formulas self-evaluate and for formula-guards. It also installs
 #'   the pronoun `.top_env` that helps keeping track of the boundary
 #'   of the dynamic scope. If you evaluate a tidy quote with
-#'   [tidy_eval_custom()], you don't need to use this.
+#'   [tidy_dyn_eval()], you don't need to use this.
 #'
 #' * Once an expression has been evaluated in the tidy environment,
 #'   it's a good idea to clean up the definitions that make
@@ -153,7 +153,7 @@ tidy_eval_custom <- function(f, bottom_env, top_env = NULL) {
 #'   Otherwise your users may face unexpected results in specific
 #'   corner cases (e.g. when the evaluation environment is leaked, see
 #'   examples). Note that this function is automatically called by
-#'   [tidy_eval_custom()].
+#'   [tidy_dyn_eval()].
 #'
 #' @param lexical_env The original lexical scope. Usually the
 #'   environment bundled with the outermost tidy quote.

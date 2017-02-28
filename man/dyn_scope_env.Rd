@@ -50,7 +50,7 @@ framework in your own DSLs with your own evaluating function. They
 let you create a custom dynamic scope. That is, a set of chained
 environments whose bottom serves as evaluation environment and
 whose top is rechained to the current lexical enclosure. But most
-of the time, you can just use \code{\link[=tidy_eval_custom]{tidy_eval_custom()}} as it will take
+of the time, you can just use \code{\link[=tidy_dyn_eval]{tidy_dyn_eval()}} as it will take
 care of installing the tidyeval components in your custom dynamic
 scope.
 \itemize{
@@ -61,18 +61,18 @@ for tidy evaluation. In this case, it creates pronouns \code{.data}
 and \code{.env} and buries all dynamic bindings from the supplied
 \code{data} in new environments.
 \item \code{dyn_scope_install()} is called by \code{dyn_scope_env()} and
-\code{\link[=tidy_eval_custom]{tidy_eval_custom()}}. It installs the definitions for making
+\code{\link[=tidy_dyn_eval]{tidy_dyn_eval()}}. It installs the definitions for making
 formulas self-evaluate and for formula-guards. It also installs
 the pronoun \code{.top_env} that helps keeping track of the boundary
 of the dynamic scope. If you evaluate a tidy quote with
-\code{\link[=tidy_eval_custom]{tidy_eval_custom()}}, you don't need to use this.
+\code{\link[=tidy_dyn_eval]{tidy_dyn_eval()}}, you don't need to use this.
 \item Once an expression has been evaluated in the tidy environment,
 it's a good idea to clean up the definitions that make
 self-evaluation of formulas possible \code{dyn_scope_clean()}.
 Otherwise your users may face unexpected results in specific
 corner cases (e.g. when the evaluation environment is leaked, see
 examples). Note that this function is automatically called by
-\code{\link[=tidy_eval_custom]{tidy_eval_custom()}}.
+\code{\link[=tidy_dyn_eval]{tidy_dyn_eval()}}.
 }
 }
 \examples{
