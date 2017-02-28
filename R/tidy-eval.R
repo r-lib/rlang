@@ -99,6 +99,7 @@ tidy_eval <- function(f, data = NULL) {
 #'
 #' @inheritParams tidy_eval
 #' @inheritParams dyn_scope_env
+#' @export tidy_dyn_eval
 tidy_dyn_eval <- function(f, bottom_env, top_env = NULL) {
   if (is_list(f)) {
     return(map(f, tidy_dyn_eval, bottom_env, top_env))
