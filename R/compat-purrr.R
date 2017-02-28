@@ -1,4 +1,4 @@
-# nocov
+# nocov - compat-purrr (rlang 0.0.0.9000)
 
 # This file serves as a reference for compatibility functions for
 # purrr. They are not drop-in replacements but allow a similar style
