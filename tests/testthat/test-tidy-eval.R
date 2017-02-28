@@ -175,7 +175,7 @@ test_that("evaluation env is cleaned up", {
 })
 
 test_that("inner formulas are rechained to evaluation env", {
-  env <- child_env()
+  env <- child_env(NULL)
   f1 <- tidy_quote(env$eval_env1 <- env())
   f2 <- tidy_quote({
     !! f1
@@ -184,7 +184,12 @@ test_that("inner formulas are rechained to evaluation env", {
 
   tidy_eval(f2, mtcars)
   expect_identical(env$eval_env1, env$eval_env2)
-  expect_identical(env_parent(env$eval_env2, 2), env(f2))
+  expect_true(env_inherits(env$eval_env2, env(f2)))
+})
+
+test_that("dyn scope is chained to lexical env", {
+  foo <- "bar"
+  expect_identical(tidy_dyn_eval(~foo, child_env(NULL)), "bar")
 })
 
 

@@ -107,15 +107,12 @@ tidy_dyn_eval <- function(f, bottom_env, top_env = NULL) {
 
   expr <- get_expr(f)
   lexical_env <- if (is_formula(f)) f_env(f) else caller_env()
-
   top_env <- top_env %||% bottom_env
-  dyn_scope_install(bottom_env, top_env, lexical_env)
+
+  bottom_env <- dyn_scope_install(bottom_env, top_env, lexical_env)
   on.exit(dyn_scope_clean(bottom_env))
 
-  # Install the .env pronoun
-  bottom_env$.env <- data_source(lexical_env)
-
-  .Call(rlang_eval, expr, lexical_env)
+  .Call(rlang_eval, expr, bottom_env)
 }
 
 #' Create a dynamic scope for tidy evaluation.
@@ -194,9 +191,8 @@ dyn_scope_env <- function(lexical_env = base_env(), data = NULL) {
     bottom_env <- env_bury(bottom_env, discard_unnamed(data))
   }
 
-  # Install pronouns
+  # Install data pronoun
   bottom_env$.data <- data_src
-  bottom_env$.env <- data_source(lexical_env)
 
   dyn_scope_install(bottom_env, top_env, lexical_env)
 }
@@ -214,15 +210,21 @@ dyn_scope_env <- function(lexical_env = base_env(), data = NULL) {
 #'   in scope as well.
 #' @export
 dyn_scope_install <- function(bottom_env, top_env, lexical_env) {
+  env_parent(top_env) <- lexical_env
+
   # Create a child because we don't know what might be in bottom_env.
   # This way we can just remove all bindings between the parent of
   # `bottom_env` and `top_env`. We don't want to clean everything in
   # `bottom_env` in case the environment is leaked, e.g. through a
   # closure that might rely on some local bindings installed by the
   # user.
+  bottom_env <- child_env(bottom_env)
+
   bottom_env$`~` <- f_self_eval(lexical_env, bottom_env, top_env)
   bottom_env$`_F` <- f_unguard
   bottom_env$.top_env <- top_env
+  bottom_env$.env <- data_source(lexical_env)
+
   bottom_env
 }
 #' @rdname dyn_scope_env
