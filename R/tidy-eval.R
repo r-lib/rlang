@@ -92,6 +92,11 @@ tidy_eval <- function(f, data = NULL) {
 #' `tidy_dyn_eval()` with the bottom and the top of your custom
 #' dynamic scope (see [dyn_scope_env()] for more information).
 #'
+#' Note that `tidy_dyn_eval()` always installs a `.env` pronoun in the
+#' bottom environment of your dynamic scope. This pronoun provides a
+#' shortcut to the original lexical enclosure (typically, the dynamic
+#' environment of a captured argument, see [tidy_capture()]).
+#'
 #' @inheritParams tidy_eval
 #' @inheritParams dyn_scope_env
 tidy_dyn_eval <- function(f, bottom_env, top_env = NULL) {
@@ -105,6 +110,9 @@ tidy_dyn_eval <- function(f, bottom_env, top_env = NULL) {
   top_env <- top_env %||% bottom_env
   dyn_scope_install(bottom_env, top_env, lexical_env)
   on.exit(dyn_scope_clean(bottom_env))
+
+  # Install the .env pronoun
+  bottom_env$.env <- data_source(lexical_env)
 
   .Call(rlang_eval, expr, lexical_env)
 }
@@ -205,6 +213,12 @@ dyn_scope_env <- function(lexical_env = base_env(), data = NULL) {
 #'   in scope as well.
 #' @export
 dyn_scope_install <- function(bottom_env, top_env, lexical_env) {
+  # Create a child because we don't know what might be in bottom_env.
+  # This way we can just remove all bindings between the parent of
+  # `bottom_env` and `top_env`. We don't want to clean everything in
+  # `bottom_env` in case the environment is leaked, e.g. through a
+  # closure that might rely on some local bindings installed by the
+  # user.
   bottom_env$`~` <- f_self_eval(lexical_env, bottom_env, top_env)
   bottom_env$`_F` <- f_unguard
   bottom_env$.top_env <- top_env
@@ -213,7 +227,7 @@ dyn_scope_install <- function(bottom_env, top_env, lexical_env) {
 #' @rdname dyn_scope_env
 #' @export
 dyn_scope_clean <- function(bottom_env) {
-  env_unbind(bottom_env, c("~", "_F", ".top_env"))
+  env_unbind(bottom_env, c("~", "_F", ".top_env", ".env"))
   bottom_env
 }
 

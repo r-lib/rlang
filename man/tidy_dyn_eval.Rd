@@ -34,3 +34,9 @@ evaluation environment. In this case, you can call
 `tidy_dyn_eval()` with the bottom and the top of your custom
 dynamic scope (see [dyn_scope_env()] for more information).
 }
+\details{
+Note that `tidy_dyn_eval()` always installs a `.env` pronoun in the
+bottom environment of your dynamic scope. This pronoun provides a
+shortcut to the original lexical enclosure (typically, the dynamic
+environment of a captured argument, see [tidy_capture()]).
+}
