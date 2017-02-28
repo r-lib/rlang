@@ -507,6 +507,7 @@ abort_coercion <- function(x, to) {
 #'   is extracted first.
 #' @param ... Named clauses. The names should be types as returned by
 #'   `lang_type_of()`.
+#' @export
 #' @examples
 #' # Named calls:
 #' lang_type_of(~foo())
