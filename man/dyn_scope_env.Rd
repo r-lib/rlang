@@ -4,7 +4,7 @@
 \alias{dyn_scope_env}
 \alias{dyn_scope_install}
 \alias{dyn_scope_clean}
-\title{Create a tidy evaluation environment.}
+\title{Create a dynamic scope for tidy evaluation.}
 \usage{
 dyn_scope_env(lexical_env = base_env(), data = NULL)
 
@@ -31,19 +31,49 @@ in the dynamic environment where the tidy quotes were created are
 in scope as well.}
 }
 \description{
-This is useful when want to use the tidy evaluation framework in
-your own evaluating functions. The returned environment has
-elements of \code{data} in scope, the \code{.env} and \code{.data}
-pronouns, and treats formulas as self-evaluating promises. See
-\code{\link{tidy_eval}()} and \code{\link{tidy_quote}()} for more
-information.
+Tidy evaluation works by rescoping a set of symbols (column names
+of a data frame for example) to custom bindings. While doing this,
+it is important to keep the original environment of captured
+expressions in scope. The gist of tidy evaluation is to create a
+dynamic scope containing custom bindings that should have
+precedence when expressions are evaluated, and chain this scope
+(set of linked environments) to the lexical enclosure of formulas
+under evaluation. During tidy evaluation, formulas are transformed
+into formula-promises and will self-evaluate their RHS as soon as
+they are called. The main trick of tidyeval is to consistently
+rechain the dynamic scope to the lexical enclosure of each tidy
+quote under evaluation.
 }
 \details{
-Once an expression has been evaluated in the tidy environment, it's
-a good idea to clean up the definitions that make self-evaluation
-of formulas possible \code{dyn_scope_clean()}. Otherwise
-your users may face unexpected results in specific corner cases
-(e.g. when the evaluation environment is leaked, see examples).
+These functions are useful for embedding the tidy evaluation
+framework in your own DSLs with your own evaluating function. They
+let you create a custom dynamic scope. That is, a set of chained
+environments whose bottom serves as evaluation environment and
+whose top is rechained to the current lexical enclosure. But most
+of the time, you can just use \code{\link[=tidy_eval_custom]{tidy_eval_custom()}} as it will take
+care of installing the tidyeval components in your custom dynamic
+scope.
+\itemize{
+\item \code{dyn_scope_env()} is the function that powers \code{\link[=tidy_eval]{tidy_eval()}}. It
+could be useful if you cannot use \code{tidy_eval()} for some reason,
+but serves mostly as an example of how to build a dynamic scope
+for tidy evaluation. In this case, it creates pronouns \code{.data}
+and \code{.env} and buries all dynamic bindings from the supplied
+\code{data} in new environments.
+\item \code{dyn_scope_install()} is called by \code{dyn_scope_env()} and
+\code{\link[=tidy_eval_custom]{tidy_eval_custom()}}. It installs the definitions for making
+formulas self-evaluate and for formula-guards. It also installs
+the pronoun \code{.top_env} that helps keeping track of the boundary
+of the dynamic scope. If you evaluate a tidy quote with
+\code{\link[=tidy_eval_custom]{tidy_eval_custom()}}, you don't need to use this.
+\item Once an expression has been evaluated in the tidy environment,
+it's a good idea to clean up the definitions that make
+self-evaluation of formulas possible \code{dyn_scope_clean()}.
+Otherwise your users may face unexpected results in specific
+corner cases (e.g. when the evaluation environment is leaked, see
+examples). Note that this function is automatically called by
+\code{\link[=tidy_eval_custom]{tidy_eval_custom()}}.
+}
 }
 \examples{
 # Evaluating in a tidy evaluation environment enables all tidy
@@ -51,9 +81,9 @@ your users may face unexpected results in specific corner cases
 env <- dyn_scope_env(data = mtcars)
 eval(quote(list(.data$cyl, ~letters)), env)
 
-# However you need to cleanup the environment after
-# evaluation. Otherwise the leftover definitions for self-evaluation
-# of formulas might cause unexpected results:
+# However you need to cleanup the environment after evaluation.
+# Otherwise the leftover definitions for self-evaluation of
+# formulas might cause unexpected results:
 fn <- eval(quote(function() ~letters), env)
 fn()
 
