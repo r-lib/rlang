@@ -120,3 +120,12 @@ test_that("as_env() dispatches correctly", {
   expect_identical(env_parent(as_env(mtcars)), empty_env())
   expect_identical(env_parent(as_env(mtcars, base_env())), base_env())
 })
+
+test_that("env_inherits() finds ancestor", {
+  env <- child_env(env())
+  env <- child_env(env)
+  expect_true(env_inherits(env, env()))
+  expect_false(env_inherits(env, ns_env("utils")))
+
+  expect_true(env_inherits(empty_env(), empty_env()))
+})
