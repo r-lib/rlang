@@ -347,7 +347,8 @@ is_tquote <- is_tidy_quote
 #' @param .named Whether to ensure all dots are named. Unnamed
 #'   elements are processed with [expr_text()] to figure out a default
 #'   name. If an integer, it is passed to the `width` argument of
-#'   `expr_text()`, if `TRUE`, the default width is used.
+#'   `expr_text()`, if `TRUE`, the default width is used. See
+#'   [exprs_auto_name()].
 #' @export
 #' @examples
 #' # tidy_quotes() is like the singular version but allows quoting
@@ -390,9 +391,19 @@ tidy_quotes <- function(..., .named = FALSE) {
   dots <- tidy_capture_dots(...)
   dots <- dots_interp_lhs(dots)
   if (.named) {
-    dots <- tquotes_ensure_names(dots, .named)
+    width <- tquotes_names_width(.named)
+    dots <- exprs_auto_name(dots, width)
   }
   dots
+}
+tquotes_names_width <- function(named) {
+  if (is_true(named)) {
+    60L
+  } else if (is_scalar_integerish(named)) {
+    named
+  } else {
+    abort("`.named` must be a scalar logical or a numeric")
+  }
 }
 
 #' @rdname tidy_quotes
@@ -400,7 +411,8 @@ tidy_quotes <- function(..., .named = FALSE) {
 tidy_defs <- function(..., .named = FALSE) {
   dots <- tidy_capture_dots(...)
   if (.named) {
-    dots <- tquotes_ensure_names(dots, .named)
+    width <- tquotes_names_width(.named)
+    dots <- exprs_auto_name(dots, width)
   }
 
   defined <- map_lgl(dots, function(dot) is_definition(f_rhs(dot)))
@@ -422,15 +434,25 @@ as_definition <- function(dot) {
   )
 }
 
-tquotes_ensure_names <- function(dots, named) {
-  if (is_true(named)) {
-    width <- formals(expr_text)$width
-  } else if (is_scalar_integerish(named)) {
-    width <- named
-  } else {
-    abort("`.named` must be a scalar logical or a numeric")
+
+#' Ensure that list of expressions are all named.
+#'
+#' This gives default names to unnamed elements of a list of
+#' expressions (or expression wrappers such as formulas or tidy
+#' quotes). The expressions are deparsed with [expr_text()].
+#'
+#' @param exprs A list of expressions or expression wrappers,
+#'   e.g. tidy quotes.
+#' @param width Maximum width of names.
+#' @export
+exprs_auto_name <- function(exprs, width = 60L) {
+  have_names <- have_names(exprs)
+
+  if (any(!have_names)) {
+    exprs_ <- map(exprs[!have_names], get_expr)
+    nms <- map_chr(exprs_, expr_text, width = width)
+    names(exprs)[!have_names] <- nms
   }
-  have_names <- have_names(dots)
-  names(dots)[!have_names] <- map_chr(dots[!have_names], f_text, width = width)
-  dots
+
+  exprs
 }

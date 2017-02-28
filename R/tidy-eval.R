@@ -218,7 +218,7 @@ dyn_scope_install <- function(bottom_env, top_env, lexical_env) {
   # `bottom_env` in case the environment is leaked, e.g. through a
   # closure that might rely on some local bindings installed by the
   # user.
-  bottom_env <- child_env(bottom_env)
+  bottom_env <- child_env(bottom_env) # Not compatible with bindr
 
   bottom_env$`~` <- f_self_eval(lexical_env, bottom_env, top_env)
   bottom_env$`_F` <- f_unguard
