@@ -395,7 +395,7 @@ env_define <- function(env = caller_env(), ...) {
 #'   is not supplied, the promise is evaluated in the environment
 #'   where \code{env_assign_promise()} (or the underscore version) was
 #'   called.
-#' @seealso \code{\link{env_assign}()}
+#' @seealso \code{\link{env_assign}()}, \code{\link{env_assign_active}()}
 #' @export
 #' @examples
 #' env <- child_env()
@@ -424,6 +424,42 @@ env_assign_promise_ <- function(env = caller_env(), nm, expr,
     assign.env = rlang::env(env)
   )
   do.call("delayedAssign", args)
+}
+
+#' Assign an active binding to an environment.
+#'
+#' While the expression assigned with [env_assign_promise()] is
+#' evaluated only once, the function assigned by `env_assign_active()`
+#' is evaluated each time the binding is accessed in `env`.
+#'
+#' @inheritParams env_assign
+#' @param fn A function that will be executed each time the binding
+#'   designated by `nm` is accessed in `env`. As all closures, this
+#'   function is lexically scoped and can rely on data that are not in
+#'   scope for expressions evaluated in `env`. This allows creative
+#'   solutions to difficult problems.
+#' @seealso [env_assign_promise()]
+#' @export
+#' @examples
+#' # Some bindings for the lexical enclosure of `fn`:
+#' data <- "foo"
+#' counter <- 0
+#'
+#' # Create an active binding in a new environment:
+#' env <- child_env()
+#' env_assign_active(env, "symbol", function() {
+#'   counter <<- counter + 1
+#'   paste(data, counter)
+#' })
+#'
+#' # `fn` is executed each time `symbol` is accessed from `env`:
+#' env$symbol
+#' env$symbol
+#' expr_eval(quote(symbol), env)
+#' expr_eval(quote(symbol), env)
+#' @md
+env_assign_active <- function(env = caller_env(), nm, fn) {
+  makeActiveBinding(nm, fn, env)
 }
 
 #' Bury bindings and define objects in new scope.
