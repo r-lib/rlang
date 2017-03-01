@@ -2,7 +2,7 @@
 % Please edit documentation in R/pairlist.R
 \name{pairlist}
 \alias{pairlist}
-\alias{cons}
+\alias{node}
 \alias{car}
 \alias{cdr}
 \alias{caar}
@@ -19,7 +19,7 @@
 \alias{set_tag}
 \title{Helpers for pairlist and language nodes.}
 \usage{
-cons(newcar, newcdr)
+node(newcar, newcdr)
 
 car(x)
 
@@ -81,7 +81,7 @@ access.
 \item \code{tag()} and \code{set_tag()} access or change the tag of a node. This
 is meant for argument names and should only contain symbols (not
 strings).
-\item \code{cons()} creates a new node from two components.
+\item \code{node()} creates a new node from two components.
 }
 }
 \details{
@@ -131,7 +131,7 @@ copy <- lang
 
 # Now we change the argument pairlist of `copy`, making sure the new
 # arguments are NULL-terminated:
-set_cdr(copy, cons(quote(BAZ), NULL))
+set_cdr(copy, node(quote(BAZ), NULL))
 
 # Or equivalently:
 set_cdr(copy, pairlist(quote(BAZ)))

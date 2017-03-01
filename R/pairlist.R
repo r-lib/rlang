@@ -28,7 +28,7 @@
 #'   is meant for argument names and should only contain symbols (not
 #'   strings).
 #'
-#' * `cons()` creates a new node from two components.
+#' * `node()` creates a new node from two components.
 #'
 #' @details
 #'
@@ -87,7 +87,7 @@
 #'
 #' # Now we change the argument pairlist of `copy`, making sure the new
 #' # arguments are NULL-terminated:
-#' set_cdr(copy, cons(quote(BAZ), NULL))
+#' set_cdr(copy, node(quote(BAZ), NULL))
 #'
 #' # Or equivalently:
 #' set_cdr(copy, pairlist(quote(BAZ)))
@@ -102,7 +102,7 @@ NULL
 #' @rdname pairlist
 #' @useDynLib rlang rlang_cons
 #' @export
-cons <- function(newcar, newcdr) {
+node <- function(newcar, newcdr) {
   .Call(rlang_cons, newcar, newcdr)
 }
 
