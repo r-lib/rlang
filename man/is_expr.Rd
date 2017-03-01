@@ -72,11 +72,10 @@ explicitly check for them. Pairlists are the data structure for
 function arguments. They usually do not arise from R code because
 subsetting a call is a type-preserving operation. However, you can
 obtain the pairlist of arguments by taking the CDR of the call
-object from C code. The rlang function
-\code{\link{call_args_lsp}()} will do it from R. Another way in
-which pairlist of arguments arise is by extracting the argument
-list of a closure with \code{\link[base]{formals}()} or
-\code{\link{fn_fmls}()}.
+object from C code. The rlang function \code{\link{lang_tail}()}
+will do it from R. Another way in which pairlist of arguments arise
+is by extracting the argument list of a closure with
+\code{\link[base]{formals}()} or \code{\link{fn_fmls}()}.
 }
 \examples{
 q1 <- quote(1)
@@ -89,16 +88,16 @@ is_symbol(q2)
 
 q3 <- quote(x + 1)
 is_expr(q3)
-is_call(q3)
+is_lang(q3)
 
 
 # Since tidy quotes are an important way of representing
 # expressions in R, all expression predicates will test the RHS of
 # the formula if you supply one:
 is_symbol(~foo)
-is_call(~foo)
+is_lang(~foo)
 is_symbol(~foo(bar))
-is_call(~foo(bar))
+is_lang(~foo(bar))
 
 
 # Atomic expressions are the terminating nodes of a call tree:
@@ -134,10 +133,10 @@ is_expr(fmls)
 is_pairlist(fmls)
 
 # Note that you can also extract call arguments as a pairlist:
-call_args_lsp(quote(fn(arg1, arg2 = "foo")))
+lang_tail(quote(fn(arg1, arg2 = "foo")))
 }
 \seealso{
-\code{\link{is_call}()} for a call predicate.
-  \code{\link{as_symbol}()} and \code{\link{as_call}()} for coercion
+\code{\link{is_lang}()} for a call predicate.
+  \code{\link{as_symbol}()} and \code{\link{as_lang}()} for coercion
   functions.
 }

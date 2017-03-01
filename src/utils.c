@@ -14,7 +14,7 @@ int is_symbolic(SEXP x) {
   return TYPEOF(x) == LANGSXP || TYPEOF(x) == SYMSXP;
 }
 
-bool is_call(SEXP x, const char* f) {
+bool is_lang(SEXP x, const char* f) {
   if (!is_symbolic(x) && TYPEOF(x) != LISTSXP)
     return false;
 
@@ -27,10 +27,10 @@ int is_prefixed_call(SEXP x, int (*sym_predicate)(SEXP)) {
     return 0;
 
   SEXP head = CAR(x);
-  if (!(is_call(head, "$") ||
-        is_call(head, "@") ||
-        is_call(head, "::") ||
-        is_call(head, ":::")))
+  if (!(is_lang(head, "$") ||
+        is_lang(head, "@") ||
+        is_lang(head, "::") ||
+        is_lang(head, ":::")))
     return 0;
 
   if (sym_predicate == NULL)
@@ -52,7 +52,7 @@ int is_rlang_prefixed(SEXP x, int (*sym_predicate)(SEXP)) {
   if (TYPEOF(x) != LANGSXP)
     return 0;
 
-  if (!is_call(CAR(x), "::"))
+  if (!is_lang(CAR(x), "::"))
     return 0;
 
   SEXP args = CDAR(x);

@@ -20,3 +20,9 @@ symbol <- function(x) {
 symbols <- function(x) {
   map(x, symbol)
 }
+
+sym_namespace <- quote(`::`)
+sym_namespace2 <- quote(`:::`)
+sym_dollar <- quote(`$`)
+sym_at <- quote(`@`)
+sym_tilde <- quote(`~`)

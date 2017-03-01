@@ -72,7 +72,7 @@ arg_inspect_ <- function(expr, stack, only_dots = FALSE) {
 
   for (i in seq_len(length(stack) - 1)) {
 
-    call <- call_standardise(stack[[i]],
+    call <- lang_homogenise(stack[[i]],
       enum_dots = TRUE, add_missings = TRUE)
 
     # If argument introspection does not have lazy evaluation scope,

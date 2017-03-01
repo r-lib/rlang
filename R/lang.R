@@ -51,17 +51,16 @@
 #' function arguments. They usually do not arise from R code because
 #' subsetting a call is a type-preserving operation. However, you can
 #' obtain the pairlist of arguments by taking the CDR of the call
-#' object from C code. The rlang function
-#' \code{\link{call_args_lsp}()} will do it from R. Another way in
-#' which pairlist of arguments arise is by extracting the argument
-#' list of a closure with \code{\link[base]{formals}()} or
-#' \code{\link{fn_fmls}()}.
+#' object from C code. The rlang function \code{\link{lang_tail}()}
+#' will do it from R. Another way in which pairlist of arguments arise
+#' is by extracting the argument list of a closure with
+#' \code{\link[base]{formals}()} or \code{\link{fn_fmls}()}.
 #'
 #' @param x An object to test. When you supply a tidy quote (see
 #'   \code{\link{tidy_quote}()}) to any of the expression predicates,
 #'   they will perform their test on the RHS of the formula.
-#' @seealso \code{\link{is_call}()} for a call predicate.
-#'   \code{\link{as_symbol}()} and \code{\link{as_call}()} for coercion
+#' @seealso \code{\link{is_lang}()} for a call predicate.
+#'   \code{\link{as_symbol}()} and \code{\link{as_lang}()} for coercion
 #'   functions.
 #' @export
 #' @examples
@@ -75,16 +74,16 @@
 #'
 #' q3 <- quote(x + 1)
 #' is_expr(q3)
-#' is_call(q3)
+#' is_lang(q3)
 #'
 #'
 #' # Since tidy quotes are an important way of representing
 #' # expressions in R, all expression predicates will test the RHS of
 #' # the formula if you supply one:
 #' is_symbol(~foo)
-#' is_call(~foo)
+#' is_lang(~foo)
 #' is_symbol(~foo(bar))
-#' is_call(~foo(bar))
+#' is_lang(~foo(bar))
 #'
 #'
 #' # Atomic expressions are the terminating nodes of a call tree:
@@ -120,27 +119,27 @@
 #' is_pairlist(fmls)
 #'
 #' # Note that you can also extract call arguments as a pairlist:
-#' call_args_lsp(quote(fn(arg1, arg2 = "foo")))
+#' lang_tail(quote(fn(arg1, arg2 = "foo")))
 is_expr <- function(x) {
-  x <- expr(x)
+  x <- get_expr(x)
   is_symbolic(x) || is_parsable_literal(x)
 }
 #' @rdname is_expr
 #' @export
 is_symbol <- function(x) {
-  x <- expr(x)
+  x <- get_expr(x)
   typeof(x) == "symbol"
 }
 #' @export
 #' @rdname is_expr
 is_parsable_literal <- function(x) {
-  x <- expr(x)
+  x <- get_expr(x)
   typeof(x) == "NULL" || (length(x) == 1 && typeof(x) %in% parsable_atomic_types)
 }
 #' @export
 #' @rdname is_expr
 is_symbolic <- function(x) {
-  x <- expr(x)
+  x <- get_expr(x)
   typeof(x) %in% c("language", "symbol")
 }
 
@@ -148,106 +147,6 @@ is_symbolic <- function(x) {
 #' @export
 is_pairlist <- function(x) {
   typeof(x) == "pairlist"
-}
-
-#' Is object a call?
-#'
-#' This function tests if \code{x} is a call. This is a
-#' pattern-matching predicate that will return \code{FALSE} if
-#' \code{name} and \code{n} are supplied and the call does not match
-#' these properties. \code{is_unary_call()} and
-#' \code{is_binary_call()} hardcode \code{n} to 1 and 2.
-#'
-#' @param x An object to test. If a formula, the right-hand side is
-#'   extracted.
-#' @param name An optional name that the call should match. It is
-#'   passed to \code{\link{as_symbol}()} before matching. This argument
-#'   is vectorised and you can supply a vector of names to match. In
-#'   this case, \code{is_call()} returns \code{TRUE} if at least one
-#'   name matches.
-#' @param n An optional number of arguments that the call should
-#'   match.
-#' @seealso \code{\link{is_expr}()}
-#' @export
-#' @examples
-#' is_call(quote(foo(bar)))
-#'
-#' # Right-hand sides are extracted from formulas:
-#' is_call(~foo(bar))
-#'
-#' # You can pattern-match the call with additional arguments:
-#' is_call(~foo(bar), "foo")
-#' is_call(~foo(bar), "bar")
-#' is_call(~foo(bar), quote(foo))
-#'
-#' # Match the number of arguments with is_call():
-#' is_call(~foo(bar), "foo", 1)
-#' is_call(~foo(bar), "foo", 2)
-#'
-#' # Or more specifically:
-#' is_unary_call(~foo(bar))
-#' is_unary_call(~ +3)
-#' is_unary_call(~ 1 + 3)
-#' is_binary_call(~ 1 + 3)
-#'
-#' # Namespaced calls are a bit tricky. Strings won't work because
-#' # as_symbol("base::list") returns a symbol rather than a namespace
-#' # call:
-#' is_call(~base::list(baz), "base::list")
-#'
-#' # However you can use the fact that as_symbol(quote(base::list()))
-#' # extracts the function identifier as is, and thus returns the call
-#' # base::list:
-#' is_call(~base::list(baz), ~base::list(), 1)
-#'
-#'
-#' # The name argument is vectorised so you can supply a list of names
-#' # to match with:
-#' is_call(~foo(bar), c("bar", "baz"))
-#' is_call(~foo(bar), c("bar", "foo"))
-#' is_call(~base::list, c("::", ":::", "$", "@"))
-is_call <- function(x, name = NULL, n = NULL) {
-  x <- expr(x)
-
-  if (typeof(x) != "language") {
-    return(FALSE)
-  }
-
-  if (!is_null(name)) {
-    # Wrap language objects in a list
-    if (!is_vector(name)) {
-      name <- list(name)
-    }
-
-    unmatched <- TRUE
-    for (elt in name) {
-      if (identical(x[[1]], as_symbol(elt))) {
-        unmatched <- FALSE
-        break
-      }
-    }
-
-    if (unmatched) {
-      return(FALSE)
-    }
-  }
-
-  if (!is_null(n) && !has_length(x, n + 1L)) {
-    return(FALSE)
-  }
-
-  TRUE
-}
-
-#' @rdname is_call
-#' @export
-is_unary_call <- function(x, name = NULL) {
-  is_call(x, name, n = 1L)
-}
-#' @rdname is_call
-#' @export
-is_binary_call <- function(x, name = NULL) {
-  is_call(x, name, n = 2L)
 }
 
 
@@ -261,13 +160,13 @@ is_binary_call <- function(x, name = NULL) {
 #'
 #' @param x An object to coerce
 #' @export
-#' @return \code{as_symbol()} and \code{as_call()} return a symbol or
+#' @return \code{as_symbol()} and \code{as_lang()} return a symbol or
 #'   a call. \code{as_name()} returns a string.
 #' @examples
 #' as_symbol("x + y")
-#' as_call("x + y")
+#' as_lang("x + y")
 #'
-#' as_call(~ f)
+#' as_lang(~ f)
 #' as_symbol(~ f())
 as_symbol <- function(x) {
   coerce_type(x, "symbol",
@@ -275,49 +174,19 @@ as_symbol <- function(x) {
     string = symbol(x),
     quote = as_symbol(f_rhs(x)),
     language =
-      if (is_prefixed_name(x)) {
-        x
-      } else {
-        as_symbol(x[[1]])
-      }
+      switch_lang(x,
+        namespaced = car(x),
+        inlined = abort("Cannot create symbol from inlined call"),
+        recursive = abort("cannot create symbol from recursive call"),
+        as_symbol(car(x))
+      )
   )
 }
 #' @export
 #' @rdname as_symbol
 as_name <- function(x) {
-  coerce_type(x, "name",
+  switch_type(x,
     string = x,
     as_string(as_symbol(x))
   )
-}
-
-#' @export
-#' @rdname as_symbol
-as_call <- function(x) {
-  coerce_type(x, "language",
-    symbol = new_call(x),
-    quote = as_call(f_rhs(x)),
-    language = x,
-    string = parse_expr(x)
-  )
-}
-
-is_prefixed_name <- function(x) {
-  fn <- x[[1]]
-  if (is_symbol(fn)) {
-    as_character(fn) %in% c("::", ":::", "$", "@")
-  } else {
-    FALSE
-  }
-}
-
-expr <- function(x) {
-  if (is_fquote(x)) f_rhs(x) else x
-}
-
-# More permissive than is_tquote()
-is_fquote <- function(x) {
-  typeof(x) == "language" &&
-    identical(car(x), quote(`~`)) &&
-    length(x) == 2L
 }

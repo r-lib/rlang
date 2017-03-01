@@ -5,9 +5,9 @@
 \alias{fn_fmls_names}
 \title{Extract arguments from a function}
 \usage{
-fn_fmls(fn = NULL)
+fn_fmls(fn = caller_fn())
 
-fn_fmls_names(fn = NULL)
+fn_fmls_names(fn = caller_fn())
 }
 \arguments{
 \item{fn}{A function. It is lookep up in the calling frame if not
@@ -32,6 +32,6 @@ fn()
 fn_fmls(base::switch)
 }
 \seealso{
-\code{\link{call_args}()} and
-  \code{\link{call_args_names}()}
+\code{\link{lang_args}()} and
+  \code{\link{lang_args_names}()}
 }

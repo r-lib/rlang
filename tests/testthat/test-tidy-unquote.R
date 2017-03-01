@@ -115,7 +115,7 @@ test_that("UQS() handles language objects", {
 test_that("UQF() guards formulas", {
   f <- local({ x <- "foo"; ~x })
 
-  guarded <- new_call("_F", .args = f[-1])
+  guarded <- lang("_F", .args = f[-1])
   attributes(guarded) <- attributes(f)
 
   expected_f <- new_tidy_quote(guarded)

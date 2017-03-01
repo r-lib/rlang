@@ -15,3 +15,8 @@ test_that("prim_name() extracts names", {
   expect_equal(prim_name(c), "c")
   expect_equal(prim_name(prim_eval), "eval")
 })
+
+test_that("as_closure() returns closure", {
+  expect_identical(typeof(as_closure(list)), "closure")
+  expect_identical(typeof(as_closure("list")), "closure")
+})

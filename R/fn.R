@@ -60,8 +60,8 @@ prim_name <- function(prim) {
 #'
 #' @param fn A function. It is lookep up in the calling frame if not
 #'   supplied.
-#' @seealso \code{\link{call_args}()} and
-#'   \code{\link{call_args_names}()}
+#' @seealso \code{\link{lang_args}()} and
+#'   \code{\link{lang_args_names}()}
 #' @export
 #' @examples
 #' # Extract from current call:
@@ -70,28 +70,14 @@ prim_name <- function(prim) {
 #'
 #' # Works with primitive functions:
 #' fn_fmls(base::switch)
-fn_fmls <- function(fn = NULL) {
-  fn <- fn %||% call_frame(2)$fn
-
-  if (is_primitive(fn)) {
-    fn_name <- prim_name(fn)
-    if (fn_name == "eval") {
-      # do_eval() starts a context with a fake primitive function as
-      # function definition. We replace it here with the .Internal()
-      # wrapper of eval() so we can match the arguments.
-      fn <- base::eval
-    } else {
-      fn <- .ArgsEnv[[fn_name]] %||% .GenericArgsEnv[[fn_name]]
-    }
-  }
-
+fn_fmls <- function(fn = caller_fn()) {
+  fn <- as_closure(fn)
   formals(fn)
 }
 
 #' @rdname fn_fmls
 #' @export
-fn_fmls_names <- function(fn = NULL) {
-  fn <- fn %||% call_frame(2)$fn
+fn_fmls_names <- function(fn = caller_fn()) {
   args <- fn_fmls(fn)
   names(args)
 }
@@ -186,6 +172,36 @@ is_function <- function(x) {
 #' @rdname is_function
 is_closure <- function(x) {
   typeof(x) == "closure"
+}
+#' Convert to closure.
+#'
+#' Convert an object to a closure. This is especially useful to
+#' normalise primitive functions to a proper closure (see
+#' \code{\link{is_function}()} about primitive functions).
+#'
+#' @param x A function or a string. In the latter case, the function
+#'   is looked up in the calling environment.
+#' @export
+#' @examples
+#' as_closure(list)
+as_closure <- function(x) {
+  coerce_type(x, "closure",
+    closure =
+      x,
+    primitive = {
+      fn_name <- prim_name(x)
+      if (fn_name == "eval") {
+        # do_eval() starts a context with a fake primitive function as
+        # function definition. We replace it here with the .Internal()
+        # wrapper of eval() so we can match the arguments.
+        base::eval
+      } else {
+        .ArgsEnv[[fn_name]] %||% .GenericArgsEnv[[fn_name]]
+      }
+    },
+    string =
+      as_closure(get(x, envir = caller_env(), x, mode = "function"))
+  )
 }
 
 #' @export

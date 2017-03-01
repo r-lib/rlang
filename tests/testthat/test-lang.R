@@ -1,33 +1,33 @@
-context("language")
+context("lang")
 
 test_that("NULL is a valid language object", {
   expect_true(is_expr(NULL))
 })
 
-test_that("is_call() pattern-matches", {
-  expect_true(is_call(quote(foo(bar)), "foo"))
-  expect_false(is_call(quote(foo(bar)), "bar"))
-  expect_true(is_call(quote(foo(bar)), quote(foo)))
+test_that("is_lang() pattern-matches", {
+  expect_true(is_lang(quote(foo(bar)), "foo"))
+  expect_false(is_lang(quote(foo(bar)), "bar"))
+  expect_true(is_lang(quote(foo(bar)), quote(foo)))
 
-  expect_true(is_call(~foo(bar), "foo", n = 1))
-  expect_false(is_call(~foo(bar), "foo", n = 2))
+  expect_true(is_lang(~foo(bar), "foo", n = 1))
+  expect_false(is_lang(~foo(bar), "foo", n = 2))
 
-  expect_true(is_call(~foo::bar()), quote(foo::bar()))
+  expect_true(is_lang(~foo::bar()), quote(foo::bar()))
 
-  expect_false(is_call(~1))
-  expect_false(is_call(~NULL))
+  expect_false(is_lang(~1))
+  expect_false(is_lang(~NULL))
 
-  expect_true(is_unary_call(~ +3))
-  expect_true(is_binary_call(~ 3 + 3))
+  expect_true(is_unary_lang(~ +3))
+  expect_true(is_binary_lang(~ 3 + 3))
 })
 
-test_that("is_call() vectorises name", {
-  expect_false(is_call(~foo::bar, c("fn", "fn2")))
-  expect_true(is_call(~foo::bar, c("fn", "::")))
+test_that("is_lang() vectorises name", {
+  expect_false(is_lang(~foo::bar, c("fn", "fn2")))
+  expect_true(is_lang(~foo::bar, c("fn", "::")))
 
-  expect_true(is_call(~foo::bar, quote(`::`)))
-  expect_true(is_call(~foo::bar, list(quote(`@`), quote(`::`))))
-  expect_false(is_call(~foo::bar, list(quote(`@`), quote(`:::`))))
+  expect_true(is_lang(~foo::bar, quote(`::`)))
+  expect_true(is_lang(~foo::bar, list(quote(`@`), quote(`::`))))
+  expect_false(is_lang(~foo::bar, list(quote(`@`), quote(`:::`))))
 })
 
 
@@ -43,16 +43,39 @@ test_that("as_symbol() produces names", {
   expect_error(as_symbol(c("a", "b")), "Cannot convert objects of type `character` to `symbol`")
 })
 
-test_that("as_call() produces calls", {
-  expect_equal(as_call(quote(a)), quote(a()))
-  expect_equal(as_call(quote(a())), quote(a()))
-  expect_equal(as_call("a()"), quote(a()))
-  expect_equal(as_call(~ a()), quote(a()))
+test_that("as_lang() produces calls", {
+  expect_equal(as_lang(quote(a)), quote(a()))
+  expect_equal(as_lang(quote(a())), quote(a()))
+  expect_equal(as_lang("a()"), quote(a()))
+  expect_equal(as_lang(~ a()), quote(a()))
 
-  expect_error(as_call(c("a", "b")), "Cannot convert objects of type `character` to `language`")
+  expect_error(as_lang(c("a", "b")), "Cannot convert objects of type `character` to `language`")
 })
 
 test_that("as_symbol() handles prefixed call names", {
   expect_identical(as_symbol(quote(foo::bar())), quote(foo::bar))
-  expect_identical(as_symbol(~foo@bar()), quote(foo@bar))
+  expect_error(as_symbol(~foo@bar()), "recursive")
+})
+
+test_that("as_symbol() handles bad calls", {
+  call <- quote(foo())
+  set_car(call, base::list)
+  expect_error(as_symbol(call), "inlined call")
+  expect_error(as_symbol(~foo()()), "recursive call")
+})
+
+test_that("as_name() returns symbol as string", {
+  expect_identical(as_name(~foo(bar)), "foo")
+})
+
+
+# misc -------------------------------------------------------------------
+
+test_that("qualified and namespaced symbols are recognised", {
+  expect_true(is_qualified_lang(quote(foo@baz())))
+  expect_true(is_qualified_lang(quote(foo::bar())))
+  expect_false(is_qualified_lang(quote(foo()())))
+
+  expect_false(is_namespaced_lang(quote(foo@bar())))
+  expect_true(is_namespaced_lang(quote(foo::bar())))
 })
