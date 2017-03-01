@@ -238,22 +238,27 @@ f_self_eval <- function(lexical_env, bottom_env, top_env) {
   function(...) {
     f <- sys.call()
 
+    if (is_null(f_env(f))) {
+      # Take care of degenerate formulas (e.g. created with ~~letters).
+      # We assign them in `bottom_env` rather than `lexical_env` so that
+      # things like case_when() within mutate() work out.
+      f <- as_tidy_quote(f, bottom_env)
+      fixup <- TRUE
+    } else {
+      fixup <- FALSE
+    }
+
     # Two-sided formulas are not fpromises
     if (length(f) > 2) {
-      # Make sure to propagate scope info when formula is quoted:
-      f <- expr_eval(f, lexical_env)
       return(f)
     }
 
-    # Take care of degenerate formulas (e.g. created with ~~letters)
-    if (is_null(f_env(f))) {
-      f_env(f) <- lexical_env
+    if (!fixup) {
+      # Swap enclosures temporarily by rechaining the top of the dynamic
+      # scope to the enclosure of the new formula, if it has one.
+      env_parent(top_env) <- f_env(f) %||% lexical_env
+      on.exit(env_parent(top_env) <- lexical_env)
     }
-
-    # Swap enclosures temporarily by rechaining the top of the dynamic
-    # scope to the enclosure of the new formula, if it has one.
-    env_parent(top_env) <- f_env(f) %||% lexical_env
-    on.exit(env_parent(top_env) <- lexical_env)
 
     .Call(rlang_eval, f_rhs(f), bottom_env)
   }

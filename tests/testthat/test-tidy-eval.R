@@ -153,8 +153,9 @@ test_that("two-sided formulas are not treated as fpromises", {
   expect_identical(tidy_eval(new_tidy_quote(a ~ b)), a ~ b)
 })
 
-test_that("scope info is propagated in quoted formulas", {
-  expect_identical(tidy_eval(~ (a ~ b)), a ~ b)
+test_that("formulas are evaluated in evaluation environment", {
+  f <- tidy_eval(~(foo ~ bar), list(foo = "bar"))
+  expect_identical(env_get(f_env(f), "foo", inherit = TRUE), "bar")
 })
 
 test_that("evaluating a side preserves the other side", {
