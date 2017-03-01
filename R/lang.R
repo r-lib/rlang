@@ -175,10 +175,10 @@ as_symbol <- function(x) {
     quote = as_symbol(f_rhs(x)),
     language =
       switch_lang(x,
-        namespaced = car(x),
+        namespaced = node_car(x),
         inlined = abort("Cannot create symbol from inlined call"),
         recursive = abort("cannot create symbol from recursive call"),
-        as_symbol(car(x))
+        as_symbol(node_car(x))
       )
   )
 }

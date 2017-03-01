@@ -28,7 +28,7 @@ frame_dots_lsp <- function(frame = NULL) {
   frame <- frame %||% call_frame(2)
   env <- get_env(frame)
 
-  dots <- cdr(substitute(alist(...), env))
+  dots <- node_cdr(substitute(alist(...), env))
   if (is.language(dots)) {
     NULL
   } else {
@@ -45,7 +45,7 @@ dots <- function(...) {
 #' @rdname frame_dots
 #' @export
 dots_lsp <- function(...) {
-  dots <- cdr(substitute(alist(...)))
+  dots <- node_cdr(substitute(alist(...)))
   if (is.language(dots)) {
     NULL
   } else {
@@ -149,7 +149,7 @@ dots_enumerate_args <- function(dots) {
   i <- 1
   lsp_walk(dots, function(dot) {
     dot_name <- as.symbol(paste0("..", i))
-    set_car(dot, dot_name)
+    set_node_car(dot, dot_name)
     i <<- i + 1
   })
   dots

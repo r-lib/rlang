@@ -523,10 +523,10 @@ lang_type_of <- function(x) {
   x <- get_expr(x)
   stopifnot(typeof(x) == "language")
 
-  type <- typeof(car(x))
+  type <- typeof(node_car(x))
   if (type == "symbol") {
     "named"
-  } else if (is_namespaced_symbol(car(x))) {
+  } else if (is_namespaced_symbol(node_car(x))) {
     "namespaced"
   } else if (type == "language") {
     "recursive"

@@ -141,7 +141,7 @@ call_match_partial <- function(call, fn) {
 
 call_inline_dots <- function(call, dots_env, enum_dots) {
   d <- lsp_walk_nonnull(call, function(arg) {
-    if (identical(cadr(arg), quote(...))) arg
+    if (identical(node_cadr(arg), quote(...))) arg
   })
   if (is_null(d)) {
     return(call)
@@ -154,13 +154,13 @@ call_inline_dots <- function(call, dots_env, enum_dots) {
   dots <- dots_enumerate_args(dots)
 
   # Attach remaining args to expanded dots
-  remaining_args <- cddr(d)
+  remaining_args <- node_cddr(d)
   lsp_walk_nonnull(dots, function(arg) {
-    if (is_null(cdr(arg))) set_cdr(arg, remaining_args)
+    if (is_null(node_cdr(arg))) set_node_cdr(arg, remaining_args)
   })
 
   # Replace dots symbol with actual dots and remaining args
-  set_cdr(d, dots)
+  set_node_cdr(d, dots)
 
   call
 }

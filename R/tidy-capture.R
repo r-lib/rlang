@@ -124,18 +124,18 @@ dot_f <- function(dot) {
 }
 
 is_bang <- function(expr) {
-  is.call(expr) && identical(car(expr), quote(`!`))
+  is.call(expr) && identical(node_car(expr), quote(`!`))
 }
 is_splice <- function(expr) {
   if (!is.call(expr)) {
     return(FALSE)
   }
 
-  if (identical(car(expr), quote(UQS)) || identical(car(expr), quote(rlang::UQS))) {
+  if (identical(node_car(expr), quote(UQS)) || identical(node_car(expr), quote(rlang::UQS))) {
     return(TRUE)
   }
 
-  if (is_bang(expr) && is_bang(cadr(expr)) && is_bang(cadr(cadr(expr)))) {
+  if (is_bang(expr) && is_bang(node_cadr(expr)) && is_bang(node_cadr(node_cadr(expr)))) {
     return(TRUE)
   }
 

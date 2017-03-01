@@ -12,17 +12,17 @@
 #' subsetting operators have builtin support for indexing into these
 #' trees and replacing elements, it is sometimes useful to manipulate
 #' the nodes more directly. This is the purpose of functions like
-#' `car()` and `set_car()`. They are particularly useful to prototype
-#' algorithms for your C-level functions.
+#' `node_car()` and `set_node_car()`. They are particularly useful to
+#' prototype algorithms for your C-level functions.
 #'
-#' * `car()` and `set_car()` access or change the head of a node.
+#' * `node_car()` and `set_node_car()` access or change the head of a node.
 #'
-#' * `cdr()` and `set_cdr()` access or change the tail of a node.
+#' * `node_cdr()` and `set_node_cdr()` access or change the tail of a node.
 #'
-#' * Variants like `caar()` or `set_cdar()` deal with the CAR of the
-#'   CAR of a node or the CDR of the CAR of a node respectively. The
-#'   letters in the middle indicate the type (CAR or CDR) and order of
-#'   access.
+#' * Variants like `node_caar()` or `set_node_cdar()` deal with the
+#'   CAR of the CAR of a node or the CDR of the CAR of a node
+#'   respectively. The letters in the middle indicate the type (CAR or
+#'   CDR) and order of access.
 #'
 #' * `tag()` and `set_tag()` access or change the tag of a node. This
 #'   is meant for argument names and should only contain symbols (not
@@ -87,10 +87,10 @@
 #'
 #' # Now we change the argument pairlist of `copy`, making sure the new
 #' # arguments are NULL-terminated:
-#' set_cdr(copy, node(quote(BAZ), NULL))
+#' set_node_cdr(copy, node(quote(BAZ), NULL))
 #'
 #' # Or equivalently:
-#' set_cdr(copy, pairlist(quote(BAZ)))
+#' set_node_cdr(copy, pairlist(quote(BAZ)))
 #' copy
 #'
 #' # The original object has been changed in place:
@@ -109,74 +109,74 @@ node <- function(newcar, newcdr) {
 #' @rdname pairlist
 #' @useDynLib rlang rlang_car
 #' @export
-car <- function(x) {
+node_car <- function(x) {
   .Call(rlang_car, x)
 }
 #' @rdname pairlist
 #' @useDynLib rlang rlang_cdr
 #' @export
-cdr <- function(x) {
+node_cdr <- function(x) {
   .Call(rlang_cdr, x)
 }
 #' @rdname pairlist
 #' @useDynLib rlang rlang_caar
 #' @export
-caar <- function(x) {
+node_caar <- function(x) {
   .Call(rlang_caar, x)
 }
 #' @rdname pairlist
 #' @useDynLib rlang rlang_cadr
 #' @export
-cadr <- function(x) {
+node_cadr <- function(x) {
   .Call(rlang_cadr, x)
 }
 #' @rdname pairlist
 #' @useDynLib rlang rlang_cdar
 #' @export
-cdar <- function(x) {
+node_cdar <- function(x) {
   .Call(rlang_cdar, x)
 }
 #' @rdname pairlist
 #' @useDynLib rlang rlang_cddr
 #' @export
-cddr <- function(x) {
+node_cddr <- function(x) {
   .Call(rlang_cddr, x)
 }
 
 #' @rdname pairlist
 #' @useDynLib rlang rlang_set_car
 #' @export
-set_car <- function(x, newcar) {
+set_node_car <- function(x, newcar) {
   .Call(rlang_set_car, x, newcar)
 }
 #' @rdname pairlist
 #' @useDynLib rlang rlang_set_cdr
 #' @export
-set_cdr <- function(x, newcdr) {
+set_node_cdr <- function(x, newcdr) {
   .Call(rlang_set_cdr, x, newcdr)
 }
 #' @rdname pairlist
 #' @useDynLib rlang rlang_set_caar
 #' @export
-set_caar <- function(x) {
+set_node_caar <- function(x) {
   .Call(rlang_set_caar, x)
 }
 #' @rdname pairlist
 #' @useDynLib rlang rlang_set_cadr
 #' @export
-set_cadr <- function(x, newcar) {
+set_node_cadr <- function(x, newcar) {
   .Call(rlang_set_cadr, x, newcar)
 }
 #' @rdname pairlist
 #' @useDynLib rlang rlang_set_cdar
 #' @export
-set_cdar <- function(x) {
+set_node_cdar <- function(x) {
   .Call(rlang_set_cdar, x)
 }
 #' @rdname pairlist
 #' @useDynLib rlang rlang_set_cddr
 #' @export
-set_cddr <- function(x, newcdr) {
+set_node_cddr <- function(x, newcdr) {
   .Call(rlang_set_cddr, x, newcdr)
 }
 
@@ -199,10 +199,10 @@ set_tag <- function(x, newtag) {
 #' modifying the copy leaves the original object intact. Since,
 #' copying data in memory is an expensive operation, copies in R are
 #' as lazy as possible. They only happen when the new object is
-#' actually modified. However, some operations (like [set_car()] or
-#' [set_cdr()]) do not support copy-on-write. In those cases, it is
-#' necessary to duplicate the object manually in order to preserve
-#' copy-by-value semantics.
+#' actually modified. However, some operations (like [set_node_car()]
+#' or [set_node_cdr()]) do not support copy-on-write. In those cases,
+#' it is necessary to duplicate the object manually in order to
+#' preserve copy-by-value semantics.
 #'
 #' Some objects are not duplicable, like symbols and environments.
 #' `duplicate()` returns its input for these unique objects.
@@ -231,7 +231,7 @@ lsp_walk <- function(.x, .f, ...) {
   cur <- .x
   while(!is.null(cur)) {
     .f(cur, ...)
-    cur <- cdr(cur)
+    cur <- node_cdr(cur)
   }
   NULL
 }
@@ -240,19 +240,19 @@ lsp_walk_nonnull <- function(.x, .f, ...) {
   out <- NULL
   while(!is.null(cur) && is.null(out)) {
     out <- .f(cur, ...)
-    cur <- cdr(cur)
+    cur <- node_cdr(cur)
   }
   out
 }
 lsp_walk_last <- function(.x, .f, ...) {
   cur <- .x
-  while(!is.null(cdr(cur))) {
-    cur <- cdr(cur)
+  while(!is.null(node_cdr(cur))) {
+    cur <- node_cdr(cur)
   }
   .f(cur, ...)
 }
 
 lsp_append <- function(.x, .y) {
-  lsp_walk_last(.x, function(l) set_cdr(l, .y))
+  lsp_walk_last(.x, function(l) set_node_cdr(l, .y))
   .x
 }
