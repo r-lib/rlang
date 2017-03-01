@@ -440,11 +440,11 @@ frame_clean_Recall <- function(frame, next_frame) {
     if (!length(args_Recall)) {
       args_Recall <- map(names(args_recalled), as.symbol)
       names(args_Recall) <- dots_enumerate(args_Recall)
-      set_cdr(next_frame$expr, as.pairlist(args_Recall))
+      set_node_cdr(next_frame$expr, as.pairlist(args_Recall))
     }
 
     args_recalled <- dots_enumerate_args(as.pairlist(args_recalled))
-    set_cdr(frame$expr, args_recalled)
+    set_node_cdr(frame$expr, args_recalled)
   }
 
   frame

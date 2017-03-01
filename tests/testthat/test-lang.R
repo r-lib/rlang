@@ -59,7 +59,7 @@ test_that("as_symbol() handles prefixed call names", {
 
 test_that("as_symbol() handles bad calls", {
   call <- quote(foo())
-  set_car(call, base::list)
+  set_node_car(call, base::list)
   expect_error(as_symbol(call), "inlined call")
   expect_error(as_symbol(~foo()()), "recursive call")
 })

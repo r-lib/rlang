@@ -81,7 +81,7 @@ UQS <- function(x) {
   } else if (is_vector(x)) {
     as.pairlist(x)
   } else if (inherits(x, "{")) {
-    cdr(x)
+    node_cdr(x)
   } else if (is_expr(x)) {
     pairlist(x)
   } else {

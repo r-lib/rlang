@@ -199,6 +199,6 @@ as_generic_expr <- function(x) {
 # More permissive than is_tidy_quote()
 is_fquote <- function(x) {
   typeof(x) == "language" &&
-    identical(car(x), quote(`~`)) &&
+    identical(node_car(x), quote(`~`)) &&
     length(x) == 2L
 }

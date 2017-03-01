@@ -481,11 +481,9 @@ coerce_type <- function(.x, .to, ...) {
 #'
 #' The reason we use the term _node head_ is because calls are
 #' structured as tree objects. This makes sense because the best
-#' representation for language code is a parse tree. The hierarchy of
-#' the tree is determined by the order of operations. Borrowing from
-#' lisp terminology, each node of the tree has a CAR (the head of the
-#' node) and a CDR (the tail). You will encounter these terms when
-#' reading R's source code.
+#' representation for language code is a parse tree, with the tree
+#' hierarchy determined by the order of operations. See [pairlist] for
+#' more on this.
 #'
 #' @inheritParams switch_type
 #' @param .x,x A language object (a call). If a formula quote, the RHS
@@ -525,10 +523,10 @@ lang_type_of <- function(x) {
   x <- get_expr(x)
   stopifnot(typeof(x) == "language")
 
-  type <- typeof(car(x))
+  type <- typeof(node_car(x))
   if (type == "symbol") {
     "named"
-  } else if (is_namespaced_symbol(car(x))) {
+  } else if (is_namespaced_symbol(node_car(x))) {
     "namespaced"
   } else if (type == "language") {
     "recursive"

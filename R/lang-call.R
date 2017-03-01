@@ -216,7 +216,7 @@ lang_modify <- function(.call = caller_frame(), ..., .args = list(),
     }
 
     remaining_args <- as.pairlist(args[!named])
-    call <- lsp_append(call, remaining_args)
+    call <- node_append(call, remaining_args)
   }
 
   set_expr(orig, call)
@@ -282,10 +282,10 @@ lang_fn <- function(call = caller_frame()) {
 
   switch_lang(expr,
     recursive = abort("`call` does not call a named or inlined function"),
-    inlined = car(expr),
+    inlined = node_car(expr),
     named = ,
     namespaced = ,
-    expr_eval(car(expr), f_env(call))
+    expr_eval(node_car(expr), f_env(call))
   )
 }
 
@@ -319,8 +319,8 @@ lang_name <- function(call = caller_frame()) {
   }
 
   switch_lang(call,
-    named = as_character(car(call)),
-    namespaced = as_character(cadr(cdar(call))),
+    named = as_character(node_car(call)),
+    namespaced = as_character(node_cadr(node_cdar(call))),
     NULL
   )
 }
@@ -330,9 +330,9 @@ lang_name <- function(call = caller_frame()) {
 #' @description
 #'
 #' Internally, calls are structured as a tree of expressions (see
-#' [switch_lang()] documentation). A `lang` object is the top level
-#' node of the tree. `lang_head()` and `lang_tail()` allow you to
-#' retrieve the node components.
+#' [switch_lang()] and [pairlist] documentation pages). A `lang` object
+#' is the top level node of the tree. `lang_head()` and `lang_tail()`
+#' allow you to retrieve the node components.
 #'
 #' * `lang_head()` Its head (the CAR of the node) usually contains a
 #'   symbol in case of a call to a named function. However it could be
@@ -349,6 +349,7 @@ lang_name <- function(call = caller_frame()) {
 #'   list).
 #'
 #' @inheritParams lang_standardise
+#' @seealso [pairlist]
 #' @export
 #' @examples
 #' lang <- quote(foo(bar, baz))
@@ -358,14 +359,14 @@ lang_name <- function(call = caller_frame()) {
 lang_head <- function(call = caller_frame()) {
   call <- get_expr(call)
   stopifnot(is_lang(call))
-  car(call)
+  node_car(call)
 }
 #' @rdname lang_head
 #' @export
 lang_tail <- function(call = caller_frame()) {
   call <- get_expr(call)
   stopifnot(is_lang(call))
-  cdr(call)
+  node_cdr(call)
 }
 
 #' Extract arguments from a call
@@ -403,21 +404,21 @@ lang_args_names <- function(call = caller_frame()) {
 
 is_qualified_lang <- function(x) {
   if (typeof(x) != "language") return(FALSE)
-  is_qualified_symbol(car(x))
+  is_qualified_symbol(node_car(x))
 }
 is_namespaced_lang <- function(x) {
   if (typeof(x) != "language") return(FALSE)
-  is_namespaced_symbol(car(x))
+  is_namespaced_symbol(node_car(x))
 }
 
 # Qualified and namespaced symbols are actually calls
 is_qualified_symbol <- function(x) {
   if (typeof(x) != "language") return(FALSE)
 
-  head <- cadr(cdr(x))
+  head <- node_cadr(node_cdr(x))
   if (typeof(head) != "symbol") return(FALSE)
 
-  qualifier <- car(x)
+  qualifier <- node_car(x)
   identical(qualifier, sym_namespace) ||
     identical(qualifier, sym_namespace2) ||
     identical(qualifier, sym_dollar) ||
@@ -426,7 +427,7 @@ is_qualified_symbol <- function(x) {
 is_namespaced_symbol <- function(x) {
   if (typeof(x) != "language") return(FALSE)
 
-  qualifier <- car(x)
+  qualifier <- node_car(x)
   identical(qualifier, sym_namespace) ||
     identical(qualifier, sym_namespace2)
 }

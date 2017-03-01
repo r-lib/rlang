@@ -2,18 +2,18 @@
 % Please edit documentation in R/dots.R
 \name{frame_dots}
 \alias{frame_dots}
-\alias{frame_dots_lsp}
+\alias{frame_dots_node}
 \alias{dots}
-\alias{dots_lsp}
+\alias{dots_node}
 \title{Extract dots}
 \usage{
 frame_dots(frame = NULL)
 
-frame_dots_lsp(frame = NULL)
+frame_dots_node(frame = NULL)
 
 dots(...)
 
-dots_lsp(...)
+dots_node(...)
 }
 \arguments{
 \item{frame}{The environment from which the dots should be
@@ -27,12 +27,12 @@ direct arguments.}
 \description{
 \code{frame_dots()} extracts dots from a frame and
 \code{dots()} extracts dots from its arguments. The
-\code{_lsp()} versions return a pairlist that is ready to be
+\code{_node()} versions return a pairlist that is ready to be
 spliced into a call, while the regular versions return a regular
 list that is usually easier to work with.
 }
 \details{
-\code{frame_dots()} and \code{frame_dots_lsp()} never fail, even if
+\code{frame_dots()} and \code{frame_dots_node()} never fail, even if
 the frame does not contain dots. Instead they return an empty list
 or \code{NULL} respectively.
 }
