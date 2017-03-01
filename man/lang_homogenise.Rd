@@ -31,7 +31,11 @@ evaluated.}
 }
 \description{
 This is a slower but more thorough version of
-\code{\link{lang_standardise}()}. Compared to
+\code{\link{lang_standardise}()}. It is useful for tracing
+arguments across a call stack (see [arg_inspect()] for an example).
+}
+\details{
+Compared to
 \code{\link{match.call}()}, \code{lang_homogenise()}:
 \itemize{
   \item Always report dotted arguments as such: \code{call(..1, ..2)}.
