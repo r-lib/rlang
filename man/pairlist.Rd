@@ -15,8 +15,8 @@
 \alias{set_node_cadr}
 \alias{set_node_cdar}
 \alias{set_node_cddr}
-\alias{tag}
-\alias{set_tag}
+\alias{node_tag}
+\alias{set_node_tag}
 \title{Helpers for pairlist and language nodes.}
 \usage{
 node(newcar, newcdr)
@@ -45,9 +45,9 @@ set_node_cdar(x)
 
 set_node_cddr(x, newcdr)
 
-tag(x)
+node_tag(x)
 
-set_tag(x, newtag)
+set_node_tag(x, newtag)
 }
 \arguments{
 \item{newcar, newcdr}{The new CAR or CDR for the node. These can be
@@ -78,9 +78,9 @@ prototype algorithms for your C-level functions.
 CAR of the CAR of a node or the CDR of the CAR of a node
 respectively. The letters in the middle indicate the type (CAR or
 CDR) and order of access.
-\item \code{tag()} and \code{set_tag()} access or change the tag of a node. This
-is meant for argument names and should only contain symbols (not
-strings).
+\item \code{node_tag()} and \code{set_node_tag()} access or change the tag of a
+node. This is meant for argument names and should only contain
+symbols (not strings).
 \item \code{node()} creates a new node from two components.
 }
 }

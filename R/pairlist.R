@@ -24,9 +24,9 @@
 #'   respectively. The letters in the middle indicate the type (CAR or
 #'   CDR) and order of access.
 #'
-#' * `tag()` and `set_tag()` access or change the tag of a node. This
-#'   is meant for argument names and should only contain symbols (not
-#'   strings).
+#' * `node_tag()` and `set_node_tag()` access or change the tag of a
+#'   node. This is meant for argument names and should only contain
+#'   symbols (not strings).
 #'
 #' * `node()` creates a new node from two components.
 #'
@@ -183,13 +183,13 @@ set_node_cddr <- function(x, newcdr) {
 #' @rdname pairlist
 #' @useDynLib rlang rlang_tag
 #' @export
-tag <- function(x) {
+node_tag <- function(x) {
   .Call(rlang_tag, x)
 }
 #' @rdname pairlist
 #' @useDynLib rlang rlang_set_tag
 #' @export
-set_tag <- function(x, newtag) {
+set_node_tag <- function(x, newtag) {
   .Call(rlang_set_tag, x, newtag)
 }
 
