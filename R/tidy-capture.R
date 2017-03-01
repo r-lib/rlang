@@ -91,7 +91,7 @@ tidy_capture_dots <- function(...) {
   dots <- map(info, dot_f)
 
   # Flatten possibly spliced dots
-  dots <- unlist(dots, FALSE)
+  dots <- unlist(dots, FALSE) %||% list()
   dots
 }
 dot_f <- function(dot) {

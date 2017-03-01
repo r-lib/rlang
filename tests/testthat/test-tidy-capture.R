@@ -150,3 +150,8 @@ test_that("Can supply := with LHS even if .named = TRUE", {
 test_that("RHS of tidy defs are unquoted", {
   expect_identical(tidy_quotes(foo := !!"bar"), list(foo = ~"bar"))
 })
+
+test_that("can capture empty list of dots", {
+  fn <- function(...) tidy_quotes(...)
+  expect_identical(fn(), list())
+})
