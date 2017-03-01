@@ -2,14 +2,11 @@
 % Please edit documentation in R/lang-call.R
 \name{is_lang}
 \alias{is_lang}
-\alias{is_language}
 \alias{is_unary_lang}
 \alias{is_binary_lang}
 \title{Is object a call (language type)?}
 \usage{
 is_lang(x, name = NULL, n = NULL)
-
-is_language(x, name = NULL, n = NULL)
 
 is_unary_lang(x, name = NULL)
 

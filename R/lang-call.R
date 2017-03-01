@@ -94,9 +94,6 @@ is_lang <- function(x, name = NULL, n = NULL) {
 }
 #' @rdname is_lang
 #' @export
-is_language <- is_lang
-#' @rdname is_lang
-#' @export
 is_unary_lang <- function(x, name = NULL) {
   is_lang(x, name, n = 1L)
 }
