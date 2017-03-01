@@ -223,7 +223,7 @@ dyn_scope_install <- function(bottom_env, top_env, lexical_env) {
   bottom_env$`~` <- f_self_eval(lexical_env, bottom_env, top_env)
   bottom_env$`_F` <- f_unguard
   bottom_env$.top_env <- top_env
-  bottom_env$.env <- data_source(lexical_env)
+  bottom_env$.env <- lexical_env
 
   bottom_env
 }
