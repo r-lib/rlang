@@ -140,7 +140,7 @@ call_match_partial <- function(call, fn) {
 }
 
 call_inline_dots <- function(call, dots_env, enum_dots) {
-  d <- lsp_walk_nonnull(call, function(arg) {
+  d <- node_walk_nonnull(call, function(arg) {
     if (identical(node_cadr(arg), quote(...))) arg
   })
   if (is_null(d)) {
@@ -150,12 +150,12 @@ call_inline_dots <- function(call, dots_env, enum_dots) {
     abort("`dots_env` must be supplied to match dots")
   }
 
-  dots <- frame_dots_lsp(dots_env)
+  dots <- frame_dots_node(dots_env)
   dots <- dots_enumerate_args(dots)
 
   # Attach remaining args to expanded dots
   remaining_args <- node_cddr(d)
-  lsp_walk_nonnull(dots, function(arg) {
+  node_walk_nonnull(dots, function(arg) {
     if (is_null(node_cdr(arg))) set_node_cdr(arg, remaining_args)
   })
 
@@ -182,7 +182,7 @@ call_match <- function(call, fn, enum_dots, add_missings) {
     missing_nms <- setdiff(fmls_nms, c(args_nms, "..."))
     missing_args <- rep(list(arg_missing()), length(missing_nms))
     missing_args <- as.pairlist(set_names(missing_args, missing_nms))
-    call <- lsp_append(call, missing_args)
+    call <- node_append(call, missing_args)
   }
 
   call

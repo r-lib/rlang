@@ -2,11 +2,11 @@
 #'
 #' \code{frame_dots()} extracts dots from a frame and
 #' \code{dots()} extracts dots from its arguments. The
-#' \code{_lsp()} versions return a pairlist that is ready to be
+#' \code{_node()} versions return a pairlist that is ready to be
 #' spliced into a call, while the regular versions return a regular
 #' list that is usually easier to work with.
 #'
-#' \code{frame_dots()} and \code{frame_dots_lsp()} never fail, even if
+#' \code{frame_dots()} and \code{frame_dots_node()} never fail, even if
 #' the frame does not contain dots. Instead they return an empty list
 #' or \code{NULL} respectively.
 #'
@@ -19,12 +19,12 @@
 #' @export
 frame_dots <- function(frame = NULL) {
   frame <- frame %||% call_frame(2)
-  as.list(frame_dots_lsp(frame))
+  as.list(frame_dots_node(frame))
 }
 
 #' @rdname frame_dots
 #' @export
-frame_dots_lsp <- function(frame = NULL) {
+frame_dots_node <- function(frame = NULL) {
   frame <- frame %||% call_frame(2)
   env <- get_env(frame)
 
@@ -44,7 +44,7 @@ dots <- function(...) {
 
 #' @rdname frame_dots
 #' @export
-dots_lsp <- function(...) {
+dots_node <- function(...) {
   dots <- node_cdr(substitute(alist(...)))
   if (is.language(dots)) {
     NULL
@@ -147,7 +147,7 @@ dots_enumerate_sym <- function(dots) {
 }
 dots_enumerate_args <- function(dots) {
   i <- 1
-  lsp_walk(dots, function(dot) {
+  node_walk(dots, function(dot) {
     dot_name <- as.symbol(paste0("..", i))
     set_node_car(dot, dot_name)
     i <<- i + 1

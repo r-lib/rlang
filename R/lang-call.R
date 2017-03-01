@@ -216,7 +216,7 @@ lang_modify <- function(.call = caller_frame(), ..., .args = list(),
     }
 
     remaining_args <- as.pairlist(args[!named])
-    call <- lsp_append(call, remaining_args)
+    call <- node_append(call, remaining_args)
   }
 
   set_expr(orig, call)

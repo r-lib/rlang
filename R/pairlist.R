@@ -227,7 +227,7 @@ duplicate <- function(x, shallow = FALSE) {
 }
 
 
-lsp_walk <- function(.x, .f, ...) {
+node_walk <- function(.x, .f, ...) {
   cur <- .x
   while(!is.null(cur)) {
     .f(cur, ...)
@@ -235,7 +235,7 @@ lsp_walk <- function(.x, .f, ...) {
   }
   NULL
 }
-lsp_walk_nonnull <- function(.x, .f, ...) {
+node_walk_nonnull <- function(.x, .f, ...) {
   cur <- .x
   out <- NULL
   while(!is.null(cur) && is.null(out)) {
@@ -244,7 +244,7 @@ lsp_walk_nonnull <- function(.x, .f, ...) {
   }
   out
 }
-lsp_walk_last <- function(.x, .f, ...) {
+node_walk_last <- function(.x, .f, ...) {
   cur <- .x
   while(!is.null(node_cdr(cur))) {
     cur <- node_cdr(cur)
@@ -252,7 +252,7 @@ lsp_walk_last <- function(.x, .f, ...) {
   .f(cur, ...)
 }
 
-lsp_append <- function(.x, .y) {
-  lsp_walk_last(.x, function(l) set_node_cdr(l, .y))
+node_append <- function(.x, .y) {
+  node_walk_last(.x, function(l) set_node_cdr(l, .y))
   .x
 }
