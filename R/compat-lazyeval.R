@@ -34,6 +34,9 @@ compat_lazy <- function(lazy, env = caller_env(), warn = TRUE) {
 }
 
 compat_lazy_dots <- function(dots, env, ..., .named = TRUE) {
+  if (missing(dots)) {
+    dots <- list()
+  }
   dots <- c(unclass(dots), list(...))
   dots <- as_list(dots)
 
