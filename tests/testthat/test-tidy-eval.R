@@ -190,7 +190,7 @@ test_that("inner formulas are rechained to evaluation env", {
 test_that("dyn scope is chained to lexical env", {
   foo <- "bar"
   dyn_scope <- child_env(NULL)
-  expect_identical(tidy_dyn_eval(~foo, dyn_scope), "bar")
+  expect_identical(dyn_scope_eval(~foo, dyn_scope), "bar")
 })
 
 
