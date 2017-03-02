@@ -3,12 +3,15 @@
 \name{dyn_scope_env}
 \alias{dyn_scope_env}
 \alias{dyn_scope_install}
+\alias{dyn_scope_next}
 \alias{dyn_scope_clean}
 \title{Create a dynamic scope for tidy evaluation.}
 \usage{
 dyn_scope_env(lexical_env = base_env(), data = NULL)
 
-dyn_scope_install(bottom_env, top_env, lexical_env)
+dyn_scope_install(bottom_env, top_env = NULL, lexical_env = base_env())
+
+dyn_scope_next(f, bottom_env)
 
 dyn_scope_clean(bottom_env)
 }
@@ -29,6 +32,13 @@ and rechained to lexical enclosures of self-evaluating formulas
 bindings in the dynamic scope have precedence, but the bindings
 in the dynamic environment where the tidy quotes were created are
 in scope as well.}
+
+\item{f}{A formula. Any expressions wrapped in \code{ UQ() } will
+will be "unquoted", i.e. they will be evaluated, and the results
+inserted back into the formula. See \code{\link{tidy_quote}()}
+for more details. If a list of formulas, \code{tidy_eval()} is
+applied to each of them in turn and the list of results is
+returned.}
 }
 \description{
 Tidy evaluation works by rescoping a set of symbols (column names
@@ -66,6 +76,10 @@ formulas self-evaluate and for formula-guards. It also installs
 the pronoun \code{.top_env} that helps keeping track of the boundary
 of the dynamic scope. If you evaluate a tidy quote with
 \code{\link[=dyn_scope_eval]{dyn_scope_eval()}}, you don't need to use this.
+\item \code{dyn_scope_next()} is useful when you have several quosures to
+evaluate in a same dynamic scope. That's a simple wrapper around
+\code{\link[=expr_eval]{expr_eval()}} that updates the \code{.env} pronoun and rechains the
+dynamic scope to the new formula enclosure to evaluate.
 \item Once an expression has been evaluated in the tidy environment,
 it's a good idea to clean up the definitions that make
 self-evaluation of formulas possible \code{dyn_scope_clean()}.

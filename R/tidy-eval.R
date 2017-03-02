@@ -153,6 +153,11 @@ dyn_scope_eval <- function(f, bottom_env, top_env = NULL) {
 #'   of the dynamic scope. If you evaluate a tidy quote with
 #'   [dyn_scope_eval()], you don't need to use this.
 #'
+#' * `dyn_scope_next()` is useful when you have several quosures to
+#'   evaluate in a same dynamic scope. That's a simple wrapper around
+#'   [expr_eval()] that updates the `.env` pronoun and rechains the
+#'   dynamic scope to the new formula enclosure to evaluate.
+#'
 #' * Once an expression has been evaluated in the tidy environment,
 #'   it's a good idea to clean up the definitions that make
 #'   self-evaluation of formulas possible `dyn_scope_clean()`.
@@ -209,7 +214,9 @@ dyn_scope_env <- function(lexical_env = base_env(), data = NULL) {
 #'   in the dynamic environment where the tidy quotes were created are
 #'   in scope as well.
 #' @export
-dyn_scope_install <- function(bottom_env, top_env, lexical_env) {
+dyn_scope_install <- function(bottom_env, top_env = NULL,
+                              lexical_env = base_env()) {
+  top_env <- top_env %||% bottom_env
   env_parent(top_env) <- lexical_env
 
   # Create a child because we don't know what might be in bottom_env.
@@ -220,12 +227,23 @@ dyn_scope_install <- function(bottom_env, top_env, lexical_env) {
   # user.
   bottom_env <- child_env(bottom_env)
 
-  bottom_env$`~` <- f_self_eval(lexical_env, bottom_env, top_env)
+  bottom_env$`~` <- f_self_eval(bottom_env, top_env)
   bottom_env$`_F` <- f_unguard
   bottom_env$.top_env <- top_env
   bottom_env$.env <- lexical_env
 
   bottom_env
+}
+#' @rdname dyn_scope_env
+#' @inheritParams tidy_eval
+#' @export
+dyn_scope_next <- function(f, bottom_env) {
+  lexical_env <- f_env(f)
+
+  bottom_env$.env <- lexical_env
+  env_set_parent(bottom_env$.top_env, lexical_env)
+
+  .Call(rlang_eval, f_rhs(f), bottom_env)
 }
 #' @rdname dyn_scope_env
 #' @export
@@ -244,7 +262,7 @@ dyn_scope_clean <- function(bottom_env) {
   bottom_env
 }
 
-f_self_eval <- function(lexical_env, bottom_env, top_env) {
+f_self_eval <- function(bottom_env, top_env) {
   function(...) {
     f <- sys.call()
 
@@ -266,8 +284,8 @@ f_self_eval <- function(lexical_env, bottom_env, top_env) {
     if (!fixup) {
       # Swap enclosures temporarily by rechaining the top of the dynamic
       # scope to the enclosure of the new formula, if it has one.
-      env_parent(top_env) <- f_env(f) %||% lexical_env
-      on.exit(env_parent(top_env) <- lexical_env)
+      env_parent(top_env) <- f_env(f) %||% bottom_env$.env
+      on.exit(env_parent(top_env) <- bottom_env$.env)
     }
 
     .Call(rlang_eval, f_rhs(f), bottom_env)
