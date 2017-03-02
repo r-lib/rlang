@@ -44,7 +44,7 @@ test_that("lazy_dots objects are converted to tidy quotes", {
   )
 
   expect_warning(regex = "underscored versions are deprecated",
-    expect_identical(compat_lazy_dots(lazy_dots, env(), "foo(bar)", .named = FALSE), expected)
+    expect_identical(compat_lazy_dots(lazy_dots, env(), "foo(bar)"), expected)
   )
 })
 
@@ -59,8 +59,9 @@ test_that("unnamed lazy_dots are given default names", {
     `foo(bar)` = ~foo(bar),
     foobarbaz = ~foo(barbaz)
   )
-
   expect_warning(regex = "underscored versions are deprecated",
-    expect_identical(compat_lazy_dots(lazy_dots, env(), foobarbaz = "foo(barbaz)"), expected)
+    dots <- compat_lazy_dots(lazy_dots, env(), foobarbaz = "foo(barbaz)", .named = TRUE)
   )
+
+  expect_identical(dots, expected)
 })

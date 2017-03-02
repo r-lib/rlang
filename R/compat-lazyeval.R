@@ -33,7 +33,7 @@ compat_lazy <- function(lazy, env = caller_env(), warn = TRUE) {
   )
 }
 
-compat_lazy_dots <- function(dots, env, ..., .named = TRUE) {
+compat_lazy_dots <- function(dots, env, ..., .named = FALSE) {
   if (missing(dots)) {
     dots <- list()
   }
