@@ -154,7 +154,7 @@ test_that("two-sided formulas are not treated as fpromises", {
 
 test_that("formulas are evaluated in evaluation environment", {
   f <- tidy_eval(~(foo ~ bar), list(foo = "bar"))
-  expect_identical(env_get(f_env(f), "foo", inherit = TRUE), "bar")
+  expect_true(!identical(f_env(f), env()))
 })
 
 test_that("evaluating a side preserves the other side", {
@@ -191,6 +191,25 @@ test_that("dyn scope is chained to lexical env", {
   foo <- "bar"
   dyn_scope <- child_env(NULL)
   expect_identical(dyn_scope_eval(~foo, dyn_scope), "bar")
+})
+
+test_that("whole scope is purged", {
+  outside <- child_env(NULL, list(important = TRUE))
+  top <- child_env(outside, list(foo = "bar", hunoz = 1))
+  mid <- child_env(top, list(bar = "baz", hunoz = 2))
+  bottom <- child_env(mid, list(
+    .top_env = top,
+    .env = 1,
+    `~` = 2,
+    `_F` = 3
+  ))
+
+  dyn_scope_clean(bottom)
+
+  expect_identical(names(bottom), character(0))
+  expect_identical(names(mid), character(0))
+  expect_identical(names(top), character(0))
+  expect_identical(names(outside), "important")
 })
 
 

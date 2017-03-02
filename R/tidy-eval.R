@@ -218,7 +218,7 @@ dyn_scope_install <- function(bottom_env, top_env, lexical_env) {
   # `bottom_env` in case the environment is leaked, e.g. through a
   # closure that might rely on some local bindings installed by the
   # user.
-  bottom_env <- child_env(bottom_env) # Not compatible with bindr
+  bottom_env <- child_env(bottom_env)
 
   bottom_env$`~` <- f_self_eval(lexical_env, bottom_env, top_env)
   bottom_env$`_F` <- f_unguard
@@ -230,7 +230,17 @@ dyn_scope_install <- function(bottom_env, top_env, lexical_env) {
 #' @rdname dyn_scope_env
 #' @export
 dyn_scope_clean <- function(bottom_env) {
+  cur_env <- env_parent(bottom_env)
+  top_env <- bottom_env$.top_env %||% cur_env
+
+  # At this level we only want to remove what we have installed
   env_unbind(bottom_env, c("~", "_F", ".top_env", ".env"))
+
+  while(!identical(cur_env, env_parent(top_env))) {
+    env_unbind(cur_env, names(cur_env))
+    cur_env <- env_parent(cur_env)
+  }
+
   bottom_env
 }
 
