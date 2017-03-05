@@ -77,8 +77,8 @@ tidy_eval <- function(f, data = NULL) {
   expr <- get_expr(f)
   lexical_env <- if (is_formula(f)) f_env(f) else caller_env()
 
-  eval_env <- dyn_scope_env(lexical_env, data)
-  on.exit(dyn_scope_clean(eval_env))
+  eval_env <- overscope_env(lexical_env, data)
+  on.exit(overscope_clean(eval_env))
 
   .Call(rlang_eval, expr, eval_env)
 }
@@ -89,28 +89,28 @@ tidy_eval <- function(f, data = NULL) {
 #' to ensure some consistency across packages (`.data` and `.env`
 #' pronouns, etc). However, some DSLs might need a different
 #' evaluation environment. In this case, you can call
-#' `dyn_scope_eval()` with the bottom and the top of your custom
-#' dynamic scope (see [dyn_scope_env()] for more information).
+#' `overscope_eval()` with the bottom and the top of your custom
+#' dynamic scope (see [overscope_env()] for more information).
 #'
-#' Note that `dyn_scope_eval()` always installs a `.env` pronoun in the
+#' Note that `overscope_eval()` always installs a `.env` pronoun in the
 #' bottom environment of your dynamic scope. This pronoun provides a
 #' shortcut to the original lexical enclosure (typically, the dynamic
 #' environment of a captured argument, see [tidy_capture()]).
 #'
 #' @inheritParams tidy_eval
-#' @inheritParams dyn_scope_env
-#' @export dyn_scope_eval
-dyn_scope_eval <- function(f, bottom_env, top_env = NULL) {
+#' @inheritParams overscope_env
+#' @export overscope_eval
+overscope_eval <- function(f, bottom_env, top_env = NULL) {
   if (is_list(f)) {
-    return(map(f, dyn_scope_eval, bottom_env, top_env))
+    return(map(f, overscope_eval, bottom_env, top_env))
   }
 
   expr <- get_expr(f)
   lexical_env <- if (is_formula(f)) f_env(f) else caller_env()
   top_env <- top_env %||% bottom_env
 
-  bottom_env <- dyn_scope_install(bottom_env, top_env, lexical_env)
-  on.exit(dyn_scope_clean(bottom_env))
+  bottom_env <- overscope_install(bottom_env, top_env, lexical_env)
+  on.exit(overscope_clean(bottom_env))
 
   .Call(rlang_eval, expr, bottom_env)
 }
@@ -135,36 +135,36 @@ dyn_scope_eval <- function(f, bottom_env, top_env = NULL) {
 #' let you create a custom dynamic scope. That is, a set of chained
 #' environments whose bottom serves as evaluation environment and
 #' whose top is rechained to the current lexical enclosure. But most
-#' of the time, you can just use [dyn_scope_eval()] as it will take
+#' of the time, you can just use [overscope_eval()] as it will take
 #' care of installing the tidyeval components in your custom dynamic
 #' scope.
 #'
-#' * `dyn_scope_env()` is the function that powers [tidy_eval()]. It
+#' * `overscope_env()` is the function that powers [tidy_eval()]. It
 #'   could be useful if you cannot use `tidy_eval()` for some reason,
 #'   but serves mostly as an example of how to build a dynamic scope
 #'   for tidy evaluation. In this case, it creates pronouns `.data`
 #'   and `.env` and buries all dynamic bindings from the supplied
 #'   `data` in new environments.
 #'
-#' * `dyn_scope_install()` is called by `dyn_scope_env()` and
-#'   [dyn_scope_eval()]. It installs the definitions for making
+#' * `overscope_install()` is called by `overscope_env()` and
+#'   [overscope_eval()]. It installs the definitions for making
 #'   formulas self-evaluate and for formula-guards. It also installs
 #'   the pronoun `.top_env` that helps keeping track of the boundary
 #'   of the dynamic scope. If you evaluate a tidy quote with
-#'   [dyn_scope_eval()], you don't need to use this.
+#'   [overscope_eval()], you don't need to use this.
 #'
-#' * `dyn_scope_next()` is useful when you have several quosures to
+#' * `overscope_next()` is useful when you have several quosures to
 #'   evaluate in a same dynamic scope. That's a simple wrapper around
 #'   [expr_eval()] that updates the `.env` pronoun and rechains the
 #'   dynamic scope to the new formula enclosure to evaluate.
 #'
 #' * Once an expression has been evaluated in the tidy environment,
 #'   it's a good idea to clean up the definitions that make
-#'   self-evaluation of formulas possible `dyn_scope_clean()`.
+#'   self-evaluation of formulas possible `overscope_clean()`.
 #'   Otherwise your users may face unexpected results in specific
 #'   corner cases (e.g. when the evaluation environment is leaked, see
 #'   examples). Note that this function is automatically called by
-#'   [dyn_scope_eval()].
+#'   [overscope_eval()].
 #'
 #' @param lexical_env The original lexical scope. Usually the
 #'   environment bundled with the outermost tidy quote.
@@ -173,7 +173,7 @@ dyn_scope_eval <- function(f, bottom_env, top_env = NULL) {
 #' @examples
 #' # Evaluating in a tidy evaluation environment enables all tidy
 #' # features:
-#' env <- dyn_scope_env(data = mtcars)
+#' env <- overscope_env(data = mtcars)
 #' eval(quote(list(.data$cyl, ~letters)), env)
 #'
 #' # However you need to cleanup the environment after evaluation.
@@ -182,10 +182,10 @@ dyn_scope_eval <- function(f, bottom_env, top_env = NULL) {
 #' fn <- eval(quote(function() ~letters), env)
 #' fn()
 #'
-#' dyn_scope_clean(env)
+#' overscope_clean(env)
 #' fn()
 #' @md
-dyn_scope_env <- function(lexical_env = base_env(), data = NULL) {
+overscope_env <- function(lexical_env = base_env(), data = NULL) {
   data_src <- data_source(data)
 
   # Create top and bottom environments, pre-chained to the lexical scope.
@@ -199,10 +199,10 @@ dyn_scope_env <- function(lexical_env = base_env(), data = NULL) {
   # Install data pronoun
   bottom_env$.data <- data_src
 
-  dyn_scope_install(bottom_env, top_env, lexical_env)
+  overscope_install(bottom_env, top_env, lexical_env)
 }
 
-#' @rdname dyn_scope_env
+#' @rdname overscope_env
 #' @param bottom_env This is the environment in which formula-promises
 #'   are evaluated. This environment typically contains pronouns and
 #'   its direct parents contain the rescoping bindings. The last one
@@ -214,7 +214,7 @@ dyn_scope_env <- function(lexical_env = base_env(), data = NULL) {
 #'   in the dynamic environment where the tidy quotes were created are
 #'   in scope as well.
 #' @export
-dyn_scope_install <- function(bottom_env, top_env = NULL,
+overscope_install <- function(bottom_env, top_env = NULL,
                               lexical_env = base_env()) {
   top_env <- top_env %||% bottom_env
   env_parent(top_env) <- lexical_env
@@ -234,10 +234,10 @@ dyn_scope_install <- function(bottom_env, top_env = NULL,
 
   bottom_env
 }
-#' @rdname dyn_scope_env
+#' @rdname overscope_env
 #' @inheritParams tidy_eval
 #' @export
-dyn_scope_next <- function(f, bottom_env) {
+overscope_next <- function(f, bottom_env) {
   lexical_env <- f_env(f)
 
   bottom_env$.env <- lexical_env
@@ -245,9 +245,9 @@ dyn_scope_next <- function(f, bottom_env) {
 
   .Call(rlang_eval, f_rhs(f), bottom_env)
 }
-#' @rdname dyn_scope_env
+#' @rdname overscope_env
 #' @export
-dyn_scope_clean <- function(bottom_env) {
+overscope_clean <- function(bottom_env) {
   cur_env <- env_parent(bottom_env)
   top_env <- bottom_env$.top_env %||% cur_env
 
