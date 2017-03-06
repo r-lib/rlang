@@ -2,15 +2,12 @@
 % Please edit documentation in R/quosure.R
 \name{as_quosure}
 \alias{as_quosure}
-\alias{is_tidy_quote}
-\alias{is_tquote}
+\alias{is_quosure}
 \title{Coerce expressions to a tidy formula quote.}
 \usage{
 as_quosure(x, env)
 
-is_tidy_quote(x)
-
-is_tquote(x)
+is_quosure(x)
 }
 \arguments{
 \item{x}{An object to test or convert.}
@@ -25,7 +22,7 @@ because it does not carry environment information. That happens for
 instance when you quote a formula, e.g. in this snippet the outer
 formula is a tidy quote but not the inner one:
 \code{~~expr}. \code{\link{is_formula}()} will return \code{TRUE}
-for those degenerate formulas but \code{is_tidy_quote()} will
+for those degenerate formulas but \code{is_quosure()} will
 return \code{FALSE}. Note that in the tidy evaluation framework
 (see \code{\link{tidy_eval}()}), untidy formulas are automatically
 given the environment of the outer formula and do not require
@@ -46,11 +43,11 @@ degenerate formula, it turns it into a tidy quote by adding
 f <- ~~expr
 
 # The outer formula has been evaluated and is a tidy quote:
-is_tidy_quote(f)
+is_quosure(f)
 
 # But the inner formula is not:
 inner_f <- f_rhs(f)
-is_tidy_quote(inner_f)
+is_quosure(inner_f)
 
 # You can use as_quosure() to add the environment information:
 as_quosure(inner_f, base_env())

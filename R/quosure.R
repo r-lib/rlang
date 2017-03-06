@@ -23,7 +23,7 @@ quosure <- function(rhs, env = caller_env()) {
 #' instance when you quote a formula, e.g. in this snippet the outer
 #' formula is a tidy quote but not the inner one:
 #' \code{~~expr}. \code{\link{is_formula}()} will return \code{TRUE}
-#' for those degenerate formulas but \code{is_tidy_quote()} will
+#' for those degenerate formulas but \code{is_quosure()} will
 #' return \code{FALSE}. Note that in the tidy evaluation framework
 #' (see \code{\link{tidy_eval}()}), untidy formulas are automatically
 #' given the environment of the outer formula and do not require
@@ -46,11 +46,11 @@ quosure <- function(rhs, env = caller_env()) {
 #' f <- ~~expr
 #'
 #' # The outer formula has been evaluated and is a tidy quote:
-#' is_tidy_quote(f)
+#' is_quosure(f)
 #'
 #' # But the inner formula is not:
 #' inner_f <- f_rhs(f)
-#' is_tidy_quote(inner_f)
+#' is_quosure(inner_f)
 #'
 #' # You can use as_quosure() to add the environment information:
 #' as_quosure(inner_f, base_env())
@@ -73,9 +73,6 @@ as_quosure <- function(x, env) {
 
 #' @rdname as_quosure
 #' @export
-is_tidy_quote <- function(x) {
+is_quosure <- function(x) {
   is_formula(x) && is_env(f_env(x))
 }
-#' @rdname as_quosure
-#' @export
-is_tquote <- is_tidy_quote

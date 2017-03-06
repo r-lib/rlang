@@ -196,7 +196,7 @@ as_generic_expr <- function(x) {
   }
 }
 
-# More permissive than is_tidy_quote()
+# More permissive than is_quosure()
 is_fquote <- function(x) {
   typeof(x) == "language" &&
     identical(node_car(x), quote(`~`)) &&
