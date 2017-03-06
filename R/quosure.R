@@ -1,81 +1,56 @@
-#' Create a quosure by hand.
+#' Is an object a quosure or quosure-like?
 #'
-#' This is similar to \code{\link{new_formula}()} but for one-sided
-#' formulas. See \code{\link{tidy_quote}()} for the role played by
-#' such formulas in the tidy evaluation framework.
+#' @description
 #'
-#' @inheritParams new_formula
-#' @export
-#' @examples
-#' f <- quosure(quote(mtcars), env("datasets"))
-#' f
-#' tidy_eval(f)
-quosure <- function(rhs, env = caller_env()) {
-  new_formula(NULL, rhs, env)
-}
-
-#' Coerce expressions to a tidy formula quote.
+#' These predicates test for [quosure][quosure] objects.
 #'
-#' A tidy quote is a formula or definition (see
-#' \code{\link{op-definition}}) that bundles an expression and an
-#' environment. In some situations a formula will not be a tidy quote
-#' because it does not carry environment information. That happens for
-#' instance when you quote a formula, e.g. in this snippet the outer
-#' formula is a tidy quote but not the inner one:
-#' \code{~~expr}. \code{\link{is_formula}()} will return \code{TRUE}
-#' for those degenerate formulas but \code{is_quosure()} will
-#' return \code{FALSE}. Note that in the tidy evaluation framework
-#' (see \code{\link{tidy_eval}()}), untidy formulas are automatically
-#' given the environment of the outer formula and do not require
-#' special actions on your part.
+#' - `is_quosure()` tests for the canonical R quosure: the one-sided
+#'   "formula".
 #'
-#' \code{as_quosure()} is useful for SE functions that expect a
-#' tidy formula quote but allow specifying a raw expression as
-#' well. It has two possible effects: if \code{x} is not a formula, it
-#' wraps it into a formula with \code{env}. If \code{x} is a
-#' degenerate formula, it turns it into a tidy quote by adding
-#' \code{env}. Finally, if \code{x} is a tidy quote, it is left alone
-#' (even if \code{env} is not the same as the formula environment).
+#' - `is_quosureish()` tests for general R quosure objects: quosures,
+#'   two-sided formulas, and [definitions][op-definition].
 #'
-#' @param x An object to test or convert.
-#' @param env The environment for the returned tidy quote.
+#'
+#' @details
+#'
+#' The `scoped` argument patterns-match on whether the scoped bundled
+#' with the quosure is valid or not. Invalid scopes may happen in
+#' nested quotations like `~~expr`, where the outer quosure is validly
+#' scoped but not the inner one. This is because `~` saves the
+#' environment when it is evaluated, and quoted quosures are by
+#' definition not evaluated. Note that in the [tidy evaluation
+#' framework][tidy_eval], unscoped quosures are automatically given
+#' the environment of the outer quosure during the evaluation process.
+#'
+#' @param x An object to test.
 #' @param scoped Whether the quosure is scoped, that is, has a valid
-#'   environment attribute. If \code{NULL}, the quosure scope is not
+#'   environment attribute. If `NULL`, the quosure scope is not
 #'   inspected.
+#' @seealso [as_quosure()][quosure] and [quosure()] for creating
+#'   quosures, and [tidy_quote()] or [tidy_eval()] for information
+#'   about the role of quosures in the tidy evaluation framework.
 #' @export
 #' @examples
-#' # Degenerate formulas are often created by quoting, since `~`
+#' # Degenerate quosures are often created by quoting, since `~`
 #' # records the environment when it is evaluated the first time:
 #' f <- ~~expr
 #'
-#' # The outer formula has been evaluated and is a tidy quote:
-#' is_quosure(f)
+#' # The outer quosure has been evaluated and is scoped:
+#' is_quosure(f, scoped = TRUE)
 #'
 #' # But the inner formula is not:
 #' inner_f <- f_rhs(f)
-#' is_quosure(inner_f)
+#' is_quosure(inner_f, scoped = TRUE)
 #'
-#' # You can use as_quosure() to add the environment information:
-#' as_quosure(inner_f, base_env())
 #'
-#' # Or turn expressions or any R object in a tidy quote:
-#' as_quosure(quote(expr), env())
-#' as_quosure(10L, env())
-as_quosure <- function(x, env) {
-  if (is_formula(x)) {
-    if (is_null(f_env(x))) {
-      f_env(x) <- env
-    }
-    x
-  } else if (is_frame(x)) {
-    quosure(x$expr, sys_frame(x$caller_pos))
-  } else {
-    quosure(x, env)
-  }
-}
-
-#' @rdname as_quosure
-#' @export
+#' # Formulas and definitions are not quosures:
+#' is_quosure(a := b)
+#' is_quosure(a ~ b)
+#'
+#' # But they are quosureish objects:
+#' is_quosureish(a := b)
+#' is_quosureish(a ~ b)
+#' @md
 is_quosure <- function(x, scoped = NULL) {
   if (!is_one_sided(x)) {
     return(FALSE)
@@ -85,7 +60,7 @@ is_quosure <- function(x, scoped = NULL) {
   }
   TRUE
 }
-#' @rdname as_quosure
+#' @rdname is_quosure
 #' @export
 is_quosureish <- function(x, scoped = NULL) {
   if (!is_formula(x)) {
@@ -100,4 +75,92 @@ is_one_sided <- function(x, lang_sym = sym_tilde) {
   typeof(x) == "language" &&
     identical(node_car(x), lang_sym) &&
     is_null(node_cadr(node_cdr(x)))
+}
+
+
+#' Create quosures.
+#'
+#' @description
+#'
+#' Quosure objects wrap an [expression][is_expr] with a [lexical
+#' enclosure][env]. This is a powerful quoting (see [base::quote()]
+#' and [tidy_quote()]) mechanism that makes it possible to carry and
+#' manipulate expressions while making sure that its symbolic content
+#' (symbols and named calls, see [is_symbolic()]) is correctly looked
+#' up during evaluation.
+#'
+#' - `quosure()` creates a quosure from a raw expression and an
+#'   environment.
+#'
+#' - `as_quosure()` is useful for functions that expect quosures but
+#'   allow specifying a raw expression as well. It has two possible
+#'   effects: if `x` is not a quosure, it wraps it into a quosure
+#'   bundling `env` as scope. If `x` is an unscoped quosure (see
+#'   [is_quosure()]), `env` is used as a default scope. On the other
+#'   hand if `x` has a valid enclosure, it is returned as is (even if
+#'   `env` is not the same as the formula environment).
+#'
+#' - While `as_quosure()` always returns a quosure (a one-sided
+#'   formula), even when its input is a [formula][new_formula] or a
+#'   [definition][op-definition], `as_quosureish()` returns quosureish
+#'   inputs as is.
+#'
+#' @inheritParams new_formula
+#' @param x An object to convert.
+#' @param env An environment specifying the lexical enclosure of the
+#'   quosure.
+#' @seealso [is_quosure()]
+#' @export
+#' @examples
+#' f <- quosure(quote(mtcars), env("datasets"))
+#' f
+#' tidy_eval(f)
+#'
+#'
+#' # Sometimes you get unscoped quosures because of quotation:
+#' f <- ~~expr
+#' inner_f <- f_rhs(f)
+#' inner_f
+#' is_quosure(inner_f, scoped = TRUE)
+#'
+#' # You can use as_quosure() to provide a default environment:
+#' as_quosure(inner_f, base_env())
+#'
+#' # Or convert expressions or any R object to a validly scoped quosure:
+#' as_quosure(quote(expr), base_env())
+#' as_quosure(10L, base_env())
+#'
+#'
+#' # While as_quosure() always returns a quosure (one-sided formula),
+#' # as_quosureish() returns quosureish objects:
+#' as_quosure(a := b)
+#' as_quosureish(a := b)
+#' as_quosureish(10L)
+#' @md
+quosure <- function(rhs, env = caller_env()) {
+  new_formula(NULL, rhs, env)
+}
+#' @rdname quosure
+#' @export
+as_quosure <- function(x, env = caller_env()) {
+  if (is_quosureish(x)) {
+    env <- f_env(x) %||% env
+    quosure(f_rhs(x), env)
+  } else if (is_frame(x)) {
+    quosure(x$expr, sys_frame(x$caller_pos))
+  } else {
+    quosure(x, env)
+  }
+}
+#' @rdname quosure
+#' @export
+as_quosureish <- function(x, env = caller_env()) {
+  if (is_quosureish(x)) {
+    f_env(x) <- f_env(x) %||% env
+    x
+  } else if (is_frame(x)) {
+    quosure(x$expr, sys_frame(x$caller_pos))
+  } else {
+    quosure(x, env)
+  }
 }

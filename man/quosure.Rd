@@ -2,22 +2,73 @@
 % Please edit documentation in R/quosure.R
 \name{quosure}
 \alias{quosure}
-\title{Create a quosure by hand.}
+\alias{as_quosure}
+\alias{as_quosureish}
+\title{Create quosures.}
 \usage{
 quosure(rhs, env = caller_env())
+
+as_quosure(x, env = caller_env())
+
+as_quosureish(x, env = caller_env())
 }
 \arguments{
 \item{rhs}{A call, name, or atomic vector.}
 
-\item{env}{An environment.}
+\item{env}{An environment specifying the lexical enclosure of the
+quosure.}
+
+\item{x}{An object to convert.}
 }
 \description{
-This is similar to \code{\link{new_formula}()} but for one-sided
-formulas. See \code{\link{tidy_quote}()} for the role played by
-such formulas in the tidy evaluation framework.
+Quosure objects wrap an \link[=is_expr]{expression} with a \link[=env]{lexical
+enclosure}. This is a powerful quoting (see \code{\link[base:quote]{base::quote()}}
+and \code{\link[=tidy_quote]{tidy_quote()}}) mechanism that makes it possible to carry and
+manipulate expressions while making sure that its symbolic content
+(symbols and named calls, see \code{\link[=is_symbolic]{is_symbolic()}}) is correctly looked
+up during evaluation.
+\itemize{
+\item \code{quosure()} creates a quosure from a raw expression and an
+environment.
+\item \code{as_quosure()} is useful for functions that expect quosures but
+allow specifying a raw expression as well. It has two possible
+effects: if \code{x} is not a quosure, it wraps it into a quosure
+bundling \code{env} as scope. If \code{x} is an unscoped quosure (see
+\code{\link[=is_quosure]{is_quosure()}}), \code{env} is used as a default scope. On the other
+hand if \code{x} has a valid enclosure, it is returned as is (even if
+\code{env} is not the same as the formula environment).
+\item While \code{as_quosure()} always returns a quosure (a one-sided
+formula), even when its input is a \link[=new_formula]{formula} or a
+\link[=op-definition]{definition}, \code{as_quosureish()} returns quosureish
+inputs as is.
+}
 }
 \examples{
 f <- quosure(quote(mtcars), env("datasets"))
 f
 tidy_eval(f)
+
+
+# Sometimes you get unscoped quosures because of quotation:
+f <- ~~expr
+inner_f <- f_rhs(f)
+inner_f
+is_quosure(inner_f, scoped = TRUE)
+
+# You can use as_quosure() to provide a default environment:
+as_quosure(inner_f, base_env())
+
+# Or convert expressions or any R object to a validly scoped quosure:
+as_quosure(quote(expr), base_env())
+as_quosure(10L, base_env())
+
+
+# While as_quosure() always returns a quosure (one-sided formula),
+# as_quosureish() returns quosureish objects:
+as_quosure(a := b)
+as_quosureish(a := b)
+as_quosureish(10L)
+}
+\seealso{
+\code{\link[=is_quosure]{is_quosure()}}
 }
