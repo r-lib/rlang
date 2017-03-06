@@ -203,6 +203,7 @@ with_attributes <- function(.x, ..., .attrs = list()) {
 
 zap_attributes <- function(x) {
   switch_type(x,
+    NULL = ,
     char = ,
     symbol = ,
     environment = abort(paste0(
