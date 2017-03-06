@@ -124,7 +124,7 @@ test_that("dots are forwarded to named arguments", {
   inner <- function(...) fn(...)
   fn <- function(x) tidy_capture(x)
 
-  env <- new_env(env())
+  env <- child_env(env())
   expect_identical(with_env(env, outer(foo(bar))), new_tidy_quote(quote(foo(bar)), env))
 })
 

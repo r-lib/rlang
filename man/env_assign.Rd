@@ -46,7 +46,7 @@ modified in place.
 \examples{
 # Create a function that uses undefined bindings:
 fn <- function() list(a, b, c, d, e)
-env(fn) <- new_env(base_env())
+env(fn) <- child_env(base_env())
 
 # This would throw a scoping error if run:
 # fn()

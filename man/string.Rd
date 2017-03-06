@@ -13,8 +13,9 @@ chr(x, encoding = NULL)
 \item{x}{A character vector or a vector or list of string-like
 objects.}
 
-\item{encoding}{If non-null, passed to
-\code{\link{chr_set_encoding}()} to add an encoding mark.}
+\item{encoding}{If non-null, passed to \code{\link[=chr_set_encoding]{chr_set_encoding()}} to add
+an encoding mark. This is only declarative, no encoding
+conversion is performed.}
 }
 \description{
 These base-type constructors allow more control over the creation
@@ -44,6 +45,6 @@ as_bytes(cafe_latin1)
 chr(list(cafe, c(0x63, 0x61, 0x66, 0xE9)))
 }
 \seealso{
-\code{\link{chr_set_encoding}()} for more information
-  about encodings in R.
+\code{chr_set_encoding()} for more information
+about encodings in R.
 }

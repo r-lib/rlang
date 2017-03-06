@@ -125,7 +125,7 @@ tidy_eval_env <- function(env = base_env(), data = NULL) {
 
   if (!length(data)) {
     # Derive a child because we're going to add bindings
-    eval_env <- new_env(env)
+    eval_env <- child_env(env)
   } else {
     # Emulate dynamic scope for established data
     eval_env <- env_bury(env, data)

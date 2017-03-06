@@ -13,5 +13,5 @@ search path (see \code{\link{scoped_names}()}).
 }
 \examples{
 # Create environments with nothing in scope (the default):
-new_env(parent = empty_env())
+child_env(parent = empty_env())
 }

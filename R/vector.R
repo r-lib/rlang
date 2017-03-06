@@ -153,6 +153,75 @@ na_chr <- NA_character_
 na_cpl <- NA_complex_
 
 
+#' Test for missing values.
+#'
+#' `are_na()` checks for missing values in a vector and is equivalent
+#' to [base::is.na()]. It is a vectorised predicate, meaning that its
+#' output is always the same length as its input. On the other hand,
+#' `is_na()` is a scalar predicate and always returns a scalar
+#' boolean, `TRUE` or `FALSE`. If its input is not scalar, it returns
+#' `FALSE`. Finally, there are typed versions that check for
+#' particular [missing types][missing].
+#'
+#' The scalar predicates accept non-vector inputs. They are equivalent
+#' to [is_null()] in that respect. In contrast the vectorised
+#' predicate `are_na()` requires a vector input since it is defined
+#' over vector values.
+#'
+#' @param x An object to test
+#' @export
+#' @examples
+#' # are_na() is vectorised and works regardless of the type
+#' are_na(c(1, 2, NA))
+#' are_na(c(1L, NA, 3L))
+#'
+#' # is_na() checks for scalar input and works for all types
+#' is_na(NA)
+#' is_na(na_dbl)
+#' is_na(character(0))
+#'
+#' # There are typed versions as well:
+#' is_lgl_na(NA)
+#' is_lgl_na(na_dbl)
+are_na <- function(x) {
+  if (!is_vector(x)) {
+    abort("`x` must be a vector")
+  }
+  is.na(x)
+}
+#' @rdname are_na
+#' @export
+is_na <- function(x) {
+  is_scalar_vector(x) && is.na(x)
+}
+
+#' @rdname are_na
+#' @export
+is_lgl_na <- function(x) {
+  identical(x, na_lgl)
+}
+#' @rdname are_na
+#' @export
+is_int_na <- function(x) {
+  identical(x, na_int)
+}
+#' @rdname are_na
+#' @export
+is_dbl_na <- function(x) {
+  identical(x, na_dbl)
+}
+#' @rdname are_na
+#' @export
+is_chr_na <- function(x) {
+  identical(x, na_chr)
+}
+#' @rdname are_na
+#' @export
+is_cpl_na <- function(x) {
+  identical(x, na_cpl)
+}
+
+
 #' Helper to create vectors with matching length.
 #'
 #' These functions take the idea of \code{\link{seq_along}} and

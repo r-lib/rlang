@@ -7,9 +7,10 @@
 #'
 #' @param x A character vector or a vector or list of string-like
 #'   objects.
-#' @param encoding If non-null, passed to
-#'   \code{\link{chr_set_encoding}()} to add an encoding mark.
-#' @seealso \code{\link{chr_set_encoding}()} for more information
+#' @param encoding If non-null, passed to [chr_set_encoding()] to add
+#'   an encoding mark. This is only declarative, no encoding
+#'   conversion is performed.
+#' @seealso `chr_set_encoding()` for more information
 #'   about encodings in R.
 #' @export
 #' @examples
@@ -32,6 +33,7 @@
 #'
 #' # chr() accepts lists and will apply string() to each element:
 #' chr(list(cafe, c(0x63, 0x61, 0x66, 0xE9)))
+#' @md
 string <- function(x, encoding = NULL) {
   if (is_integerish(x)) {
     x <- rawToChar(as.raw(x))
@@ -52,23 +54,28 @@ chr <- function(x, encoding = NULL) {
   chr_set_encoding(x, encoding)
 }
 
-#' Coerce to a character vector.
+#' Coerce to a character vector and attempt encoding conversion.
 #'
-#' The input is coerced to a string character vector, bypassing method
-#' dispatch. \code{as_character()} and \code{string()} have an
-#' optional \code{encoding} argument to specify the encoding. R uses
-#' this information for internal handling of strings and character
-#' vectors. Note that this is only declarative, no encoding conversion
-#' is attempted. See \code{\link{as_utf8_character}()} and
-#' \code{\link{as_native_character}()} for coercing to a character
-#' vector and attempt encoding conversion.
+#' @description
 #'
-#' @seealso \code{\link{chr_set_encoding}()} and
-#'   \code{\link{set_utf8_locale}()} for information about encodings
-#'   and locales in R, and \code{\link{string}()} and
-#'   \code{\link{chr}()} for other ways of creating strings and
-#'   character vectors.
-#' @inheritParams string
+#' Unlike specifying the `encoding` argument in `as_string()` and
+#' `as_character()`, which is only declarative, these functions
+#' actually attempt to convert the encoding of their input. There are
+#' two possible cases:
+#'
+#' * The string is tagged as UTF-8 or latin1, the only two encodings
+#'   for which R has specific support. In this case, converting to the
+#'   same encoding is a no-op, and converting to native always works
+#'   as expected, as long as the native encoding, the one specified by
+#'   the `LC_CTYPE` locale (see [set_utf8_locale()]) has support for
+#'   all characters occurring in the strings. Unrepresentable
+#'   characters are serialised as unicode points: "<U+xxxx>".
+#'
+#' * The string is not tagged. R assumes that it is encoded in the
+#'   native encoding. Conversion to native is a no-op, and conversion
+#'   to UTF-8 should work as long as the string is actually encoded in
+#'   the locale codeset.
+#'
 #' @param x An object to coerce.
 #' @export
 #' @examples
@@ -86,40 +93,29 @@ chr <- function(x, encoding = NULL) {
 #' str_encoding(latin1)
 #' as_bytes(latin1)
 #' }
-as_character <- function(x, encoding = NULL) {
-  x <- as.character(unclass(x))
-  chr_set_encoding(x, encoding)
-}
-#' @rdname as_character
-#' @export
 as_utf8_character <- function(x) {
   enc2utf8(as_character(x))
 }
-#' @rdname as_character
+#' @rdname as_utf8_character
 #' @export
 as_native_character <- function(x) {
   enc2native(as_character(x))
 }
-#' @rdname as_character
-#' @export
-as_string <- function(x, encoding = NULL) {
-  x <- as_character(x, encoding)
-  stopifnot(is_string(x))
-  x
-}
-#' @rdname as_character
+#' @rdname as_utf8_character
 #' @export
 as_utf8_string <- function(x) {
-  x <- as_utf8_character(x)
-  stopifnot(is_string(x))
-  x
+  coerce_type(x, "string",
+    symbol = ,
+    string = enc2utf8(as_string(x))
+  )
 }
-#' @rdname as_character
+#' @rdname as_utf8_character
 #' @export
 as_native_string <- function(x) {
-  x <- as_native_character(x)
-  stopifnot(is_string(x))
-  x
+  coerce_type(x, "string",
+    symbol = ,
+    string = enc2native(as_string(x))
+  )
 }
 
 #' Set encoding of a string or character vector.

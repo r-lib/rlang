@@ -32,7 +32,7 @@ more suited for experimenting with the R language.
 }
 \examples{
 # with_env() is handy to create formulas with a given environment:
-env <- new_env("rlang")
+env <- child_env("rlang")
 f <- with_env(env, ~new_formula())
 identical(f_env(f), env)
 

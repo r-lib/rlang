@@ -200,3 +200,16 @@ has_length <- function(x, n = NULL) {
 with_attributes <- function(.x, ..., .attrs = list()) {
   invoke("structure", c(list(.Data = .x, ...), .attrs))
 }
+
+zap_attributes <- function(x) {
+  switch_type(x,
+    NULL = ,
+    char = ,
+    symbol = ,
+    environment = abort(paste0(
+      "Cannot change attributes of uncopyable type `", type_of(x), "`"
+    ))
+  )
+  attributes(x) <- NULL
+  x
+}

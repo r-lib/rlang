@@ -6,26 +6,26 @@ test_that("env() returns current frame by default", {
 })
 
 test_that("env_parent() returns enclosure frame by default", {
-  enclos_env <- new_env(pkg_env("rlang"))
+  enclos_env <- child_env(pkg_env("rlang"))
   fn <- with_env(enclos_env, function() env_parent())
   expect_identical(fn(), enclos_env)
 })
 
-test_that("new_env() has correct parent", {
-  env <- new_env(empty_env())
+test_that("child_env() has correct parent", {
+  env <- child_env(empty_env())
   expect_false(env_has(env, "list", inherit = TRUE))
 
-  fn <- function() list(new = new_env(env()), env = environment())
+  fn <- function() list(new = child_env(env()), env = environment())
   out <- fn()
   expect_identical(env_parent(out$new), out$env)
 
-  expect_identical(env_parent(new_env()), empty_env())
-  expect_identical(env_parent(new_env("base")), base_env())
+  expect_identical(env_parent(child_env()), empty_env())
+  expect_identical(env_parent(child_env("base")), base_env())
 })
 
 test_that("env_parent() reports correct parent", {
-  env <- new_env(
-    new_env(empty_env(), list(obj = "b")),
+  env <- child_env(
+    child_env(empty_env(), list(obj = "b")),
     list(obj = "a")
   )
 
@@ -39,7 +39,7 @@ test_that("env_tail() climbs env chain", {
 })
 
 test_that("promises are created", {
-  env <- new_env()
+  env <- child_env()
 
   env_assign_promise(env, "foo", bar <- "bar")
   expect_false(env_has(env(), "bar"))
@@ -53,7 +53,7 @@ test_that("promises are created", {
 })
 
 test_that("lazies are evaluated in correct environment", {
-  env <- new_env("base")
+  env <- child_env("base")
 
   env_assign_promise(env, "test_captured", test_captured <- letters)
   env_assign_promise_(env, "test_expr", quote(test_expr <- LETTERS))
@@ -71,7 +71,7 @@ test_that("lazies are evaluated in correct environment", {
 })
 
 test_that("formula env is overridden by eval_env", {
-  env <- new_env("base")
+  env <- child_env("base")
   env_assign_promise_(env, "within_env", quote(new_within_env <- "new"), env)
   force(env$within_env)
 
@@ -92,7 +92,7 @@ test_that("with_env() evaluates within correct environment", {
 })
 
 test_that("locally() evaluates within correct environment", {
-  env <- new_env("rlang")
+  env <- child_env("rlang")
   local_env <- with_env(env, locally(env()))
   expect_identical(env_parent(local_env), env)
 })

@@ -319,8 +319,8 @@ lang_name <- function(call = caller_frame()) {
   }
 
   switch_lang(call,
-    named = as_character(node_car(call)),
-    namespaced = as_character(node_cadr(node_cdar(call))),
+    named = as_string(node_car(call)),
+    namespaced = as_string(node_cadr(node_cdar(call))),
     NULL
   )
 }

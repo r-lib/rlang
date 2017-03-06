@@ -30,7 +30,7 @@
 #' @export
 #' @examples
 #' # expr_eval() works just like base::eval():
-#' env <- new_env(data = list(foo = "bar"))
+#' env <- child_env(data = list(foo = "bar"))
 #' expr <- quote(foo)
 #' expr_eval(expr, env)
 #'

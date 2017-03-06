@@ -2,32 +2,14 @@
 % Please edit documentation in R/env.R
 \name{env}
 \alias{env}
-\alias{env.function}
-\alias{env.formula}
-\alias{env.frame}
-\alias{env.environment}
-\alias{env.default}
-\alias{env.character}
-\alias{new_env}
+\alias{child_env}
 \alias{env_parent}
 \alias{env_tail}
 \title{Get an environment.}
 \usage{
 env(env = caller_env())
 
-\method{env}{function}(env = caller_env())
-
-\method{env}{formula}(env = caller_env())
-
-\method{env}{frame}(env = caller_env())
-
-\method{env}{environment}(env = caller_env())
-
-\method{env}{default}(env = caller_env())
-
-\method{env}{character}(env = caller_env())
-
-new_env(parent = NULL, data = list())
+child_env(parent = NULL, data = list())
 
 env_parent(env = caller_env(), n = 1)
 
@@ -66,7 +48,7 @@ with an environment, it acts as the identity function and the
 environment is simply returned (this helps simplifying code when
 writing generic functions).
 
-\code{new_env()} creates a new environment. \code{env_parent()}
+\code{child_env()} creates a new environment. \code{env_parent()}
 returns the parent environment of \code{env} if called with \code{n
 = 1}, the grandparent with \code{n = 2}, etc. \code{env_tail()}
 searches through the parents and returns the one which has
@@ -91,13 +73,13 @@ env(fn) <- base_env()
 env(fn)
 
 
-# new_env() creates by default an environment whose parent is the
+# child_env() creates by default an environment whose parent is the
 # empty environment. Here we return a new environment that has
 # the evaluation environment (or frame environment) of a function
 # as parent:
 fn <- function() {
   my_object <- "A"
-  new_env(env())
+  child_env(env())
 }
 frame_env <- fn()
 
@@ -112,7 +94,7 @@ env_has(frame_env, "my_object", inherit = TRUE)
 # Create a new environment with a particular scope by setting a
 # parent. When inheriting from the empty environment (the default),
 # the environment will have no object in scope at all:
-env <- new_env()
+env <- child_env()
 env_has(env, "lapply", inherit = TRUE)
 
 # The base package environment is often a good default choice for a
@@ -120,19 +102,19 @@ env_has(env, "lapply", inherit = TRUE)
 # functions. Also note that it will never inherit from other loaded
 # package environments since R keeps the base package at the tail
 # of the search path:
-env <- new_env(base_env())
+env <- child_env(base_env())
 env_has(env, "lapply", inherit = TRUE)
 
 # Note that all other package environments inherit from base_env()
 # as well:
-env <- new_env(pkg_env("rlang"))
+env <- child_env(pkg_env("rlang"))
 env_has(env, "env_has", inherit = TRUE)
 env_has(env, "lapply", inherit = TRUE)
 
 
-# The parent argument of new_env() is passed to as_env() to provide
+# The parent argument of child_env() is passed to as_env() to provide
 # handy shortcuts:
-env <- new_env("rlang")
+env <- child_env("rlang")
 identical(env_parent(env), pkg_env("rlang"))
 
 
@@ -152,7 +134,7 @@ env_parent(global_env())
 # This default is more handy when called within a function. In this
 # case, the enclosure environment of the function is returned
 # (since it is the parent of the evaluation frame):
-enclos_env <- new_env(pkg_env("rlang"))
+enclos_env <- child_env(pkg_env("rlang"))
 fn <- with_env(enclos_env, function() env_parent())
 identical(enclos_env, fn())
 }

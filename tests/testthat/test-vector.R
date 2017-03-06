@@ -15,3 +15,8 @@ test_that("vector is modified", {
   out <- modify(x, 5, b = 20, .elts = list(6, c = "30"))
   expect_equal(out, list(1, b = 20, c = "30", 4, 5, 6))
 })
+
+test_that("are_na() requires vector input but not is_na()", {
+  expect_error(are_na(base::eval), "must be a vector")
+  expect_false(is_na(base::eval))
+})
