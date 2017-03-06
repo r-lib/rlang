@@ -74,13 +74,12 @@ tidy_eval <- function(f, data = NULL) {
     return(map(f, tidy_eval, data = data))
   }
 
-  expr <- get_expr(f)
-  lexical_env <- if (is_formula(f)) f_env(f) else caller_env()
+  f <- as_tidy_quote(f, caller_env())
+  overscope <- tidy_overscope(f, data)
+  on.exit(overscope_clean(overscope))
 
-  eval_env <- overscope_env(lexical_env, data)
-  on.exit(overscope_clean(eval_env))
-
-  .Call(rlang_eval, expr, eval_env)
+  f <- as_tidy_quote(f, caller_env())
+  overscope_eval(overscope, f)
 }
 
 #' Tidy evaluation in a custom environment.
@@ -88,31 +87,31 @@ tidy_eval <- function(f, data = NULL) {
 #' We recommend using [tidy_eval()] in your DSLs as much as possible
 #' to ensure some consistency across packages (`.data` and `.env`
 #' pronouns, etc). However, some DSLs might need a different
-#' evaluation environment. In this case, you can call
-#' `overscope_eval()` with the bottom and the top of your custom
-#' dynamic scope (see [overscope_env()] for more information).
+#' evaluation environment. In this case, you can call `tidy_eval_()`
+#' with the bottom and the top of your custom overscope (see
+#' [tidy_overscope()] for more information).
 #'
-#' Note that `overscope_eval()` always installs a `.env` pronoun in the
+#' Note that `tidy_eval_()` always installs a `.env` pronoun in the
 #' bottom environment of your dynamic scope. This pronoun provides a
 #' shortcut to the original lexical enclosure (typically, the dynamic
-#' environment of a captured argument, see [tidy_capture()]).
+#' environment of a captured argument, see [tidy_capture()]). It also
+#' cleans up the overscope after evaluation. See [overscope_eval()]
+#' for evaluating several quosures in the same overscope.
 #'
 #' @inheritParams tidy_eval
-#' @inheritParams overscope_env
-#' @export overscope_eval
-overscope_eval <- function(f, bottom_env, top_env = NULL) {
+#' @inheritParams tidy_overscope
+#' @export
+tidy_eval_ <- function(f, bottom, top = NULL) {
   if (is_list(f)) {
-    return(map(f, overscope_eval, bottom_env, top_env))
+    return(map(f, tidy_eval_, bottom, top))
   }
 
-  expr <- get_expr(f)
-  lexical_env <- if (is_formula(f)) f_env(f) else caller_env()
-  top_env <- top_env %||% bottom_env
+  top <- top %||% bottom
+  overscope <- new_overscope(bottom, top)
+  on.exit(overscope_clean(overscope))
 
-  bottom_env <- overscope_install(bottom_env, top_env, lexical_env)
-  on.exit(overscope_clean(bottom_env))
-
-  .Call(rlang_eval, expr, bottom_env)
+  f <- as_tidy_quote(f, caller_env())
+  overscope_eval(overscope, f)
 }
 
 #' Create a dynamic scope for tidy evaluation.
@@ -135,25 +134,25 @@ overscope_eval <- function(f, bottom_env, top_env = NULL) {
 #' let you create a custom dynamic scope. That is, a set of chained
 #' environments whose bottom serves as evaluation environment and
 #' whose top is rechained to the current lexical enclosure. But most
-#' of the time, you can just use [overscope_eval()] as it will take
+#' of the time, you can just use [tidy_eval_()] as it will take
 #' care of installing the tidyeval components in your custom dynamic
 #' scope.
 #'
-#' * `overscope_env()` is the function that powers [tidy_eval()]. It
+#' * `tidy_overscope()` is the function that powers [tidy_eval()]. It
 #'   could be useful if you cannot use `tidy_eval()` for some reason,
 #'   but serves mostly as an example of how to build a dynamic scope
 #'   for tidy evaluation. In this case, it creates pronouns `.data`
 #'   and `.env` and buries all dynamic bindings from the supplied
 #'   `data` in new environments.
 #'
-#' * `overscope_install()` is called by `overscope_env()` and
-#'   [overscope_eval()]. It installs the definitions for making
+#' * `new_overscope()` is called by `tidy_overscope()` and
+#'   [tidy_eval_()]. It installs the definitions for making
 #'   formulas self-evaluate and for formula-guards. It also installs
 #'   the pronoun `.top_env` that helps keeping track of the boundary
 #'   of the dynamic scope. If you evaluate a tidy quote with
-#'   [overscope_eval()], you don't need to use this.
+#'   [tidy_eval_()], you don't need to use this.
 #'
-#' * `overscope_next()` is useful when you have several quosures to
+#' * `tidy_eval_()` is useful when you have several quosures to
 #'   evaluate in a same dynamic scope. That's a simple wrapper around
 #'   [expr_eval()] that updates the `.env` pronoun and rechains the
 #'   dynamic scope to the new formula enclosure to evaluate.
@@ -164,113 +163,123 @@ overscope_eval <- function(f, bottom_env, top_env = NULL) {
 #'   Otherwise your users may face unexpected results in specific
 #'   corner cases (e.g. when the evaluation environment is leaked, see
 #'   examples). Note that this function is automatically called by
-#'   [overscope_eval()].
+#'   [tidy_eval_()].
 #'
-#' @param lexical_env The original lexical scope. Usually the
-#'   environment bundled with the outermost tidy quote.
+#' @param f A quosure whose enclosure captures the original lexical
+#'   scope.
 #' @param data Additional data to put in scope.
+#' @return An overscope environment.
 #' @export
 #' @examples
 #' # Evaluating in a tidy evaluation environment enables all tidy
 #' # features:
-#' env <- overscope_env(data = mtcars)
-#' eval(quote(list(.data$cyl, ~letters)), env)
+#' expr <- quote(list(.data$cyl, ~letters))
+#' f <- as_quosure(expr)
+#' overscope <- tidy_overscope(f, data = mtcars)
+#' tidy_eval_(overscope, f)
 #'
 #' # However you need to cleanup the environment after evaluation.
 #' # Otherwise the leftover definitions for self-evaluation of
 #' # formulas might cause unexpected results:
-#' fn <- eval(quote(function() ~letters), env)
+#' fn <- tidy_eval_(overscope, ~function() ~letters)
 #' fn()
 #'
-#' overscope_clean(env)
+#' overscope_clean(overscope)
 #' fn()
 #' @md
-overscope_env <- function(lexical_env = base_env(), data = NULL) {
+tidy_overscope <- function(f, data = NULL) {
   data_src <- data_source(data)
+  enclosure <- f_env(f) %||% base_env()
 
-  # Create top and bottom environments, pre-chained to the lexical scope.
-  top_env <- bottom_env <- child_env(lexical_env)
+  # Create overscope environment pre-chained to the lexical scope
+  overscope <- child_env(enclosure)
 
   # Emulate dynamic scope for established data
   if (length(data)) {
-    bottom_env <- env_bury(bottom_env, discard_unnamed(data))
+    overscope <- env_bury(overscope, discard_unnamed(data))
   }
 
   # Install data pronoun
-  bottom_env$.data <- data_src
+  overscope$.data <- data_src
 
-  overscope_install(bottom_env, top_env, lexical_env)
+  new_overscope(overscope)
 }
 
-#' @rdname overscope_env
-#' @param bottom_env This is the environment in which formula-promises
-#'   are evaluated. This environment typically contains pronouns and
-#'   its direct parents contain the rescoping bindings. The last one
-#'   of these parents is the `top_env`.
-#' @param top_env The top environment of the dynamic scope is chained
-#'   and rechained to lexical enclosures of self-evaluating formulas
-#'   (or formula-promises). This ensures hygienic scoping: the
-#'   bindings in the dynamic scope have precedence, but the bindings
-#'   in the dynamic environment where the tidy quotes were created are
-#'   in scope as well.
+
+#' @rdname tidy_overscope
+#' @param bottom This is the environment (or the bottom of a set of
+#'   environments) containing definitions for overscoped symbols. The
+#'   bottom environment typically contains pronouns (like `.data`)
+#'   while its direct parents contain the overscoping bindings. The
+#'   last one of these parents is the `top`.
+#' @param top The top environment of the overscope. During tidy
+#'   evaluation, this environment is chained and rechained to lexical
+#'   enclosures of self-evaluating formulas (or quosures). This is the
+#'   mechanism that ensures hygienic scoping: the bindings in the
+#'   overscope have precedence, but the bindings in the dynamic
+#'   environment where the tidy quotes were created in the first place
+#'   are in scope as well.
+#' @return A valid overscope: a child environment of `bottom`
+#'   containing the definitions enabling tidy evaluation
+#'   (self-evaluating quosures, formula-unguarding, ...).
 #' @export
-overscope_install <- function(bottom_env, top_env = NULL,
-                              lexical_env = base_env()) {
-  top_env <- top_env %||% bottom_env
-  env_parent(top_env) <- lexical_env
+new_overscope <- function(bottom, top = NULL) {
+  top <- top %||% bottom
 
   # Create a child because we don't know what might be in bottom_env.
   # This way we can just remove all bindings between the parent of
-  # `bottom_env` and `top_env`. We don't want to clean everything in
-  # `bottom_env` in case the environment is leaked, e.g. through a
+  # `overscope` and `overscope_top`. We don't want to clean everything in
+  # `overscope` in case the environment is leaked, e.g. through a
   # closure that might rely on some local bindings installed by the
   # user.
-  bottom_env <- child_env(bottom_env)
+  overscope <- child_env(bottom)
 
-  bottom_env$`~` <- f_self_eval(bottom_env, top_env)
-  bottom_env$`_F` <- f_unguard
-  bottom_env$.top_env <- top_env
-  bottom_env$.env <- lexical_env
+  overscope$`~` <- f_self_eval(overscope, top)
+  overscope$`_F` <- f_unguard
+  overscope$.top_env <- top
 
-  bottom_env
+  overscope
 }
-#' @rdname overscope_env
+#' @rdname tidy_overscope
 #' @inheritParams tidy_eval
+#' @param overscope A valid overscope containing bindings for `~`,
+#'   `.top_env` and `_F` and whose parents contain overscoped bindings
+#'   for tidy evaluation.
 #' @export
-overscope_next <- function(f, bottom_env) {
-  lexical_env <- f_env(f)
+overscope_eval <- function(overscope, f) {
+  lexical_env <- f_env(f) %||% base_env()
 
-  bottom_env$.env <- lexical_env
-  env_set_parent(bottom_env$.top_env, lexical_env)
+  overscope$.env <- lexical_env
+  env_set_parent(overscope$.top_env, lexical_env)
 
-  .Call(rlang_eval, f_rhs(f), bottom_env)
+  .Call(rlang_eval, f_rhs(f), overscope)
 }
-#' @rdname overscope_env
+#' @rdname tidy_overscope
 #' @export
-overscope_clean <- function(bottom_env) {
-  cur_env <- env_parent(bottom_env)
-  top_env <- bottom_env$.top_env %||% cur_env
+overscope_clean <- function(overscope) {
+  cur_env <- env_parent(overscope)
+  top_env <- overscope$.top_env %||% cur_env
 
   # At this level we only want to remove what we have installed
-  env_unbind(bottom_env, c("~", "_F", ".top_env", ".env"))
+  env_unbind(overscope, c("~", "_F", ".top_env", ".env"))
 
   while(!identical(cur_env, env_parent(top_env))) {
     env_unbind(cur_env, names(cur_env))
     cur_env <- env_parent(cur_env)
   }
 
-  bottom_env
+  overscope
 }
 
-f_self_eval <- function(bottom_env, top_env) {
+f_self_eval <- function(overscope, overscope_top) {
   function(...) {
     f <- sys.call()
 
     if (is_null(f_env(f))) {
       # Take care of degenerate formulas (e.g. created with ~~letters).
-      # We assign them in `bottom_env` rather than `lexical_env` so that
+      # We assign them in `overscope` rather than `lexical_env` so that
       # things like case_when() within mutate() work out.
-      f <- as_tidy_quote(f, bottom_env)
+      f <- as_tidy_quote(f, overscope)
       fixup <- TRUE
     } else {
       fixup <- FALSE
@@ -284,11 +293,11 @@ f_self_eval <- function(bottom_env, top_env) {
     if (!fixup) {
       # Swap enclosures temporarily by rechaining the top of the dynamic
       # scope to the enclosure of the new formula, if it has one.
-      env_parent(top_env) <- f_env(f) %||% bottom_env$.env
-      on.exit(env_parent(top_env) <- bottom_env$.env)
+      env_parent(overscope_top) <- f_env(f) %||% overscope$.env
+      on.exit(env_parent(overscope_top) <- overscope$.env)
     }
 
-    .Call(rlang_eval, f_rhs(f), bottom_env)
+    .Call(rlang_eval, f_rhs(f), overscope)
   }
 }
 f_unguard <- function(...) {

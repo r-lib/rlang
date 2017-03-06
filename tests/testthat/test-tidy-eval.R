@@ -190,7 +190,7 @@ test_that("inner formulas are rechained to evaluation env", {
 test_that("dyn scope is chained to lexical env", {
   foo <- "bar"
   overscope <- child_env(NULL)
-  expect_identical(overscope_eval(~foo, overscope), "bar")
+  expect_identical(tidy_eval_(~foo, overscope), "bar")
 })
 
 test_that("whole scope is purged", {
