@@ -83,7 +83,7 @@ tidy_capture <- function(x) {
   capture <- lang(captureArg, substitute(x))
   arg <- expr_eval(capture, caller_env())
   expr <- .Call(rlang_interp, arg$expr, arg$env)
-  new_tidy_quote(expr, arg$env)
+  quosure(expr, arg$env)
 }
 
 tidy_capture_dots <- function(...) {
@@ -108,7 +108,7 @@ dot_f <- function(dot) {
   } else {
     expr <- .Call(rlang_interp, expr, env)
     orig <- set_expr(orig, expr)
-    list(new_tidy_quote(orig, env))
+    list(quosure(orig, env))
   }
 }
 
@@ -162,7 +162,7 @@ dot_interp_lhs <- function(name, dot) {
     warn("name ignored because a LHS was supplied")
   }
 
-  rhs <- new_tidy_quote(f_rhs(f_rhs(dot)), env = f_env(dot))
+  rhs <- quosure(f_rhs(f_rhs(dot)), env = f_env(dot))
   lhs <- .Call(rlang_interp, f_lhs(f_rhs(dot)), f_env(dot))
 
   if (is_symbol(lhs)) {

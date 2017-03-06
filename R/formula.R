@@ -3,7 +3,7 @@
 #' @param lhs,rhs A call, name, or atomic vector.
 #' @param env An environment.
 #' @return A formula object.
-#' @seealso \code{\link{new_tidy_quote}()}
+#' @seealso \code{\link{quosure}()}
 #' @export
 #' @examples
 #' new_formula(quote(a), quote(b))

@@ -346,8 +346,8 @@ as_definition <- function(dot) {
   rhs <- .Call(rlang_interp, f_rhs(pat), env)
 
   list(
-    lhs = new_tidy_quote(lhs, env),
-    rhs = new_tidy_quote(rhs, env)
+    lhs = quosure(lhs, env),
+    rhs = quosure(rhs, env)
   )
 }
 

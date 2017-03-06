@@ -22,5 +22,5 @@ new_formula(quote(a), quote(b))
 new_formula(NULL, quote(b))
 }
 \seealso{
-\code{\link{new_tidy_quote}()}
+\code{\link{quosure}()}
 }

@@ -7,10 +7,10 @@
 #' @inheritParams new_formula
 #' @export
 #' @examples
-#' f <- new_tidy_quote(quote(mtcars), env("datasets"))
+#' f <- quosure(quote(mtcars), env("datasets"))
 #' f
 #' tidy_eval(f)
-new_tidy_quote <- function(rhs, env = caller_env()) {
+quosure <- function(rhs, env = caller_env()) {
   new_formula(NULL, rhs, env)
 }
 
@@ -65,9 +65,9 @@ as_tidy_quote <- function(x, env) {
     }
     x
   } else if (is_frame(x)) {
-    new_tidy_quote(x$expr, sys_frame(x$caller_pos))
+    quosure(x$expr, sys_frame(x$caller_pos))
   } else {
-    new_tidy_quote(x, env)
+    quosure(x, env)
   }
 }
 

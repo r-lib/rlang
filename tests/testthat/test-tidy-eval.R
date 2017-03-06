@@ -135,7 +135,7 @@ test_that("can unquote for old-style NSE functions", {
 
 test_that("formulas with empty environments are scoped in surrounding formula", {
   var <- local(~letters)
-  f <- new_tidy_quote(var, env = child_env(env()))
+  f <- quosure(var, env = child_env(env()))
   expect_identical(tidy_eval(f), letters)
 
   expect_identical(tidy_eval(~~letters), letters)
@@ -143,13 +143,13 @@ test_that("formulas with empty environments are scoped in surrounding formula", 
 
 test_that("all fpromises in the call are evaluated", {
   foobar <- function(x) paste0("foo", x)
-  x <- new_tidy_quote(call("foobar", local({ bar <- "bar"; ~bar })))
-  f <- new_tidy_quote(call("identity", x))
+  x <- quosure(call("foobar", local({ bar <- "bar"; ~bar })))
+  f <- quosure(call("identity", x))
   expect_identical(tidy_eval(f), "foobar")
 })
 
 test_that("two-sided formulas are not treated as fpromises", {
-  expect_identical(tidy_eval(new_tidy_quote(a ~ b)), a ~ b)
+  expect_identical(tidy_eval(quosure(a ~ b)), a ~ b)
 })
 
 test_that("formulas are evaluated in evaluation environment", {
@@ -171,7 +171,7 @@ test_that("evaluation env is cleaned up", {
   f <- local(~function() list(f = ~letters, env = environment()))
   fn <- tidy_eval(f)
   out <- fn()
-  expect_identical(out$f, new_tidy_quote(quote(letters), env = out$env))
+  expect_identical(out$f, quosure(quote(letters), env = out$env))
 })
 
 test_that("inner formulas are rechained to evaluation env", {

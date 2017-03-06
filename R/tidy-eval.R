@@ -54,7 +54,7 @@
 #' tidy_eval(tidy_quote(mean( !!var )), mtcars)
 #' @name tidy_eval
 tidy_eval_rhs <- function(f, data = NULL) {
-  rhs <- new_tidy_quote(f_rhs(f), f_env(f))
+  rhs <- quosure(f_rhs(f), f_env(f))
   rhs <- tidy_eval(rhs, data)
   f_rhs(f) <- rhs
   f
@@ -62,7 +62,7 @@ tidy_eval_rhs <- function(f, data = NULL) {
 #' @rdname tidy_eval
 #' @export
 tidy_eval_lhs <- function(f, data = NULL) {
-  lhs <- new_tidy_quote(f_lhs(f), f_env(f))
+  lhs <- quosure(f_lhs(f), f_env(f))
   lhs <- tidy_eval(lhs, data)
   f_lhs(f) <- lhs
   f
