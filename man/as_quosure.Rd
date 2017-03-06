@@ -3,16 +3,23 @@
 \name{as_quosure}
 \alias{as_quosure}
 \alias{is_quosure}
+\alias{is_quosureish}
 \title{Coerce expressions to a tidy formula quote.}
 \usage{
 as_quosure(x, env)
 
-is_quosure(x)
+is_quosure(x, scoped = NULL)
+
+is_quosureish(x, scoped = NULL)
 }
 \arguments{
 \item{x}{An object to test or convert.}
 
 \item{env}{The environment for the returned tidy quote.}
+
+\item{scoped}{Whether the quosure is scoped, that is, has a valid
+environment attribute. If \code{NULL}, the quosure scope is not
+inspected.}
 }
 \description{
 A tidy quote is a formula or definition (see

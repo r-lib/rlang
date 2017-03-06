@@ -39,6 +39,9 @@ quosure <- function(rhs, env = caller_env()) {
 #'
 #' @param x An object to test or convert.
 #' @param env The environment for the returned tidy quote.
+#' @param scoped Whether the quosure is scoped, that is, has a valid
+#'   environment attribute. If \code{NULL}, the quosure scope is not
+#'   inspected.
 #' @export
 #' @examples
 #' # Degenerate formulas are often created by quoting, since `~`
@@ -73,6 +76,28 @@ as_quosure <- function(x, env) {
 
 #' @rdname as_quosure
 #' @export
-is_quosure <- function(x) {
-  is_formula(x) && is_env(f_env(x))
+is_quosure <- function(x, scoped = NULL) {
+  if (!is_one_sided(x)) {
+    return(FALSE)
+  }
+  if (!is_null(scoped) && scoped != is_env(f_env(x))) {
+    return(FALSE)
+  }
+  TRUE
+}
+#' @rdname as_quosure
+#' @export
+is_quosureish <- function(x, scoped = NULL) {
+  if (!is_formula(x)) {
+    return(FALSE)
+  }
+  if (!is_null(scoped) && scoped != is_env(f_env(x))) {
+    return(FALSE)
+  }
+  TRUE
+}
+is_one_sided <- function(x, lang_sym = sym_tilde) {
+  typeof(x) == "language" &&
+    identical(node_car(x), lang_sym) &&
+    is_null(node_cadr(node_cdr(x)))
 }

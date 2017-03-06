@@ -253,12 +253,12 @@ is_formula <- function(x) {
     return(FALSE)
   }
 
-  head <- x[[1]]
-  if (!is_symbol(head)) {
+  head <- node_car(x)
+  if (typeof(head) != "symbol") {
     return(FALSE)
   }
 
-  as.character(head) %in% c("~", ":=")
+  identical(head, sym_tilde) || identical(head, sym_def)
 }
 
 #' Is object an environment?
@@ -359,7 +359,7 @@ is_scalar_integerish <- function(x) {
 #' @md
 type_of <- function(x) {
   type <- typeof(x)
-  if (is_fquote(x)) {
+  if (is_quosure(x)) {
     "quote"
   } else if (type == "character") {
     if (length(x) == 1) "string" else "character"

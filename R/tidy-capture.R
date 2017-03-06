@@ -166,8 +166,8 @@ dot_interp_lhs <- function(name, dot) {
   lhs <- .Call(rlang_interp, f_lhs(f_rhs(dot)), f_env(dot))
 
   if (is_symbol(lhs)) {
-    lhs <- as.character(lhs)
-  } else if (!is_scalar_character(lhs)) {
+    lhs <- as_string(lhs)
+  } else if (!is_string(lhs)) {
     abort("LHS must be a name or string")
   }
 
