@@ -240,18 +240,22 @@ new_overscope <- function(bottom, top = NULL) {
   overscope
 }
 #' @rdname tidy_overscope
-#' @inheritParams tidy_eval
 #' @param overscope A valid overscope containing bindings for `~`,
 #'   `.top_env` and `_F` and whose parents contain overscoped bindings
 #'   for tidy evaluation.
+#' @param quo A quosure or quote to evaluate within the overscope.
+#' @param env The lexical enclosure in case `quo` is not a validly
+#'   scoped quosure. This is the [base environment][base_env] by
+#'   default.
 #' @export
-overscope_eval <- function(overscope, f) {
-  lexical_env <- f_env(f) %||% base_env()
+overscope_eval <- function(overscope, quo, env = base_env()) {
+  quo <- as_quosureish(quo, env)
+  lexical_env <- f_env(quo)
 
   overscope$.env <- lexical_env
   env_set_parent(overscope$.top_env, lexical_env)
 
-  .Call(rlang_eval, f_rhs(f), overscope)
+  .Call(rlang_eval, f_rhs(quo), overscope)
 }
 #' @rdname tidy_overscope
 #' @export

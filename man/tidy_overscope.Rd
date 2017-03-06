@@ -11,7 +11,7 @@ tidy_overscope(f, data = NULL)
 
 new_overscope(bottom, top = NULL)
 
-overscope_eval(overscope, f)
+overscope_eval(overscope, quo, env = base_env())
 
 overscope_clean(overscope)
 }
@@ -38,6 +38,12 @@ are in scope as well.}
 \item{overscope}{A valid overscope containing bindings for `~`,
 `.top_env` and `_F` and whose parents contain overscoped bindings
 for tidy evaluation.}
+
+\item{quo}{A quosure or quote to evaluate within the overscope.}
+
+\item{env}{The lexical enclosure in case `quo` is not a validly
+scoped quosure. This is the [base environment][base_env] by
+default.}
 }
 \value{
 An overscope environment.
