@@ -199,7 +199,7 @@ lang_modify <- function(.call = caller_frame(), ..., .args = list(),
   orig <- as_generic_expr(.call)
 
   if (.standardise) {
-    quote <- as_tidy_quote(.call, caller_env())
+    quote <- as_quosure(.call, caller_env())
     quote <- set_expr(quote, as_lang(quote))
     quote <- lang_standardise(quote)
     call <- get_expr(quote)
@@ -241,7 +241,7 @@ lang_modify <- function(.call = caller_frame(), ..., .args = list(),
 #' @export
 lang_standardise <- function(call = caller_frame()) {
   orig <- as_generic_expr(call)
-  quote <- as_tidy_quote(call, caller_env())
+  quote <- as_quosure(call, caller_env())
 
   # The call name might be a literal, not necessarily a symbol
   fn <- lang_name(quote)
@@ -277,7 +277,7 @@ lang_fn <- function(call = caller_frame()) {
     return(call$fn)
   }
 
-  call <- as_tidy_quote(call, caller_env())
+  call <- as_quosure(call, caller_env())
   expr <- f_rhs(call)
 
   if (!is_lang(expr)) {

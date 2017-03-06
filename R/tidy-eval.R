@@ -74,11 +74,11 @@ tidy_eval <- function(f, data = NULL) {
     return(map(f, tidy_eval, data = data))
   }
 
-  f <- as_tidy_quote(f, caller_env())
+  f <- as_quosure(f, caller_env())
   overscope <- tidy_overscope(f, data)
   on.exit(overscope_clean(overscope))
 
-  f <- as_tidy_quote(f, caller_env())
+  f <- as_quosure(f, caller_env())
   overscope_eval(overscope, f)
 }
 
@@ -110,7 +110,7 @@ tidy_eval_ <- function(f, bottom, top = NULL) {
   overscope <- new_overscope(bottom, top)
   on.exit(overscope_clean(overscope))
 
-  f <- as_tidy_quote(f, caller_env())
+  f <- as_quosure(f, caller_env())
   overscope_eval(overscope, f)
 }
 
@@ -279,7 +279,7 @@ f_self_eval <- function(overscope, overscope_top) {
       # Take care of degenerate formulas (e.g. created with ~~letters).
       # We assign them in `overscope` rather than `lexical_env` so that
       # things like case_when() within mutate() work out.
-      f <- as_tidy_quote(f, overscope)
+      f <- as_quosure(f, overscope)
       fixup <- TRUE
     } else {
       fixup <- FALSE

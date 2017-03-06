@@ -18,13 +18,13 @@ test_that("is_formula works", {
   expect_false(is_formula(10))
 })
 
-test_that("as_tidy_quote() uses correct env", {
+test_that("as_quosure() uses correct env", {
   fn <- function(expr, env = caller_env()) {
-    f <- as_tidy_quote(expr, env)
+    f <- as_quosure(expr, env)
     list(env = env(), f = g(f))
   }
   g <- function(expr, env = caller_env()) {
-    as_tidy_quote(expr, env)
+    as_quosure(expr, env)
   }
   f_env <- child_env()
   f <- env_set(~expr, f_env)

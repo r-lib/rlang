@@ -29,7 +29,7 @@ quosure <- function(rhs, env = caller_env()) {
 #' given the environment of the outer formula and do not require
 #' special actions on your part.
 #'
-#' \code{as_tidy_quote()} is useful for SE functions that expect a
+#' \code{as_quosure()} is useful for SE functions that expect a
 #' tidy formula quote but allow specifying a raw expression as
 #' well. It has two possible effects: if \code{x} is not a formula, it
 #' wraps it into a formula with \code{env}. If \code{x} is a
@@ -52,13 +52,13 @@ quosure <- function(rhs, env = caller_env()) {
 #' inner_f <- f_rhs(f)
 #' is_tidy_quote(inner_f)
 #'
-#' # You can use as_tidy_quote() to add the environment information:
-#' as_tidy_quote(inner_f, base_env())
+#' # You can use as_quosure() to add the environment information:
+#' as_quosure(inner_f, base_env())
 #'
 #' # Or turn expressions or any R object in a tidy quote:
-#' as_tidy_quote(quote(expr), env())
-#' as_tidy_quote(10L, env())
-as_tidy_quote <- function(x, env) {
+#' as_quosure(quote(expr), env())
+#' as_quosure(10L, env())
+as_quosure <- function(x, env) {
   if (is_formula(x)) {
     if (is_null(f_env(x))) {
       f_env(x) <- env
@@ -71,11 +71,11 @@ as_tidy_quote <- function(x, env) {
   }
 }
 
-#' @rdname as_tidy_quote
+#' @rdname as_quosure
 #' @export
 is_tidy_quote <- function(x) {
   is_formula(x) && is_env(f_env(x))
 }
-#' @rdname as_tidy_quote
+#' @rdname as_quosure
 #' @export
 is_tquote <- is_tidy_quote

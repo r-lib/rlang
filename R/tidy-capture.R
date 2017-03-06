@@ -104,7 +104,7 @@ dot_f <- function(dot) {
     dots <- call("alist", expr)
     dots <- .Call(rlang_interp, dots, env)
     dots <- expr_eval(dots)
-    map(dots, as_tidy_quote, env)
+    map(dots, as_quosure, env)
   } else {
     expr <- .Call(rlang_interp, expr, env)
     orig <- set_expr(orig, expr)

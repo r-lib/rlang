@@ -54,7 +54,7 @@ lang_homogenise <- function(call = caller_frame(),
     fn <- NULL
   }
 
-  call <- as_tidy_quote(call, caller_env())
+  call <- as_quosure(call, caller_env())
   fn <- fn %||% lang_fn(call)
 
   lang_homogenise_(f_rhs(call), fn, dots_env, enum_dots, add_missings)
