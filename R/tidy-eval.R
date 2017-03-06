@@ -175,12 +175,12 @@ tidy_eval_ <- function(f, bottom, top = NULL) {
 #' expr <- quote(list(.data$cyl, ~letters))
 #' f <- as_quosure(expr)
 #' overscope <- tidy_overscope(f, data = mtcars)
-#' tidy_eval_(overscope, f)
+#' overscope_eval(overscope, f)
 #'
 #' # However you need to cleanup the environment after evaluation.
 #' # Otherwise the leftover definitions for self-evaluation of
 #' # formulas might cause unexpected results:
-#' fn <- tidy_eval_(overscope, ~function() ~letters)
+#' fn <- overscope_eval(overscope, ~function() ~letters)
 #' fn()
 #'
 #' overscope_clean(overscope)
@@ -190,18 +190,18 @@ tidy_overscope <- function(f, data = NULL) {
   data_src <- data_source(data)
   enclosure <- f_env(f) %||% base_env()
 
-  # Create overscope environment pre-chained to the lexical scope
-  overscope <- child_env(enclosure)
+  # Create bottom environment pre-chained to the lexical scope
+  bottom <- child_env(enclosure)
 
   # Emulate dynamic scope for established data
   if (length(data)) {
-    overscope <- env_bury(overscope, discard_unnamed(data))
+    bottom <- env_bury(bottom, discard_unnamed(data))
   }
 
   # Install data pronoun
-  overscope$.data <- data_src
+  bottom$.data <- data_src
 
-  new_overscope(overscope)
+  new_overscope(bottom)
 }
 
 

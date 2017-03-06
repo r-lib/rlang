@@ -107,12 +107,12 @@ examples). Note that this function is automatically called by
 expr <- quote(list(.data$cyl, ~letters))
 f <- as_quosure(expr)
 overscope <- tidy_overscope(f, data = mtcars)
-tidy_eval_(overscope, f)
+overscope_eval(overscope, f)
 
 # However you need to cleanup the environment after evaluation.
 # Otherwise the leftover definitions for self-evaluation of
 # formulas might cause unexpected results:
-fn <- tidy_eval_(overscope, ~function() ~letters)
+fn <- overscope_eval(overscope, ~function() ~letters)
 fn()
 
 overscope_clean(overscope)
