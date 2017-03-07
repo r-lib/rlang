@@ -12,9 +12,9 @@ is_quosureish(x, scoped = NULL)
 \arguments{
 \item{x}{An object to test.}
 
-\item{scoped}{A boolean indicating whether the quosure is scoped,
-that is, has a valid environment attribute. If \code{NULL}, the
-quosure scope is not inspected.}
+\item{scoped}{A boolean indicating whether the quosure or formula
+is scoped, that is, has a valid environment attribute. If \code{NULL},
+the scope is not inspected.}
 }
 \description{
 These predicates test for \link{quosure} objects.

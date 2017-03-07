@@ -23,9 +23,9 @@
 #' the environment of the outer quosure during the evaluation process.
 #'
 #' @param x An object to test.
-#' @param scoped A boolean indicating whether the quosure is scoped,
-#'   that is, has a valid environment attribute. If `NULL`, the
-#'   quosure scope is not inspected.
+#' @param scoped A boolean indicating whether the quosure or formula
+#'   is scoped, that is, has a valid environment attribute. If `NULL`,
+#'   the scope is not inspected.
 #' @seealso [as_quosure()][quosure] and [quosure()] for creating
 #'   quosures, and [tidy_quote()] or [tidy_eval()] for information
 #'   about the role of quosures in the tidy evaluation framework.

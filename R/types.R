@@ -238,29 +238,6 @@ is_bare_bytes <- is_bare_raw
 #' is_empty(list(NULL))
 is_empty <- function(x) length(x) == 0
 
-#' Is object a formula?
-#'
-#' @inheritParams is_empty
-#' @export
-#' @examples
-#' x <- disp ~ am
-#' is_formula(x)
-#'
-#' is_formula(~ 10)
-#' is_formula(10)
-is_formula <- function(x) {
-  if(typeof(x) != "language") {
-    return(FALSE)
-  }
-
-  head <- node_car(x)
-  if (typeof(head) != "symbol") {
-    return(FALSE)
-  }
-
-  identical(head, sym_tilde) || identical(head, sym_def)
-}
-
 #' Is object an environment?
 #'
 #' \code{is_bare_env()} tests whether \code{x} is an environment

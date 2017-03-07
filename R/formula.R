@@ -22,7 +22,38 @@ new_formula <- function(lhs, rhs, env = caller_env()) {
   structure(f, class = "formula", .Environment = env)
 }
 
-as_formula <- NULL
+#' Is object a formula?
+#'
+#' @inheritParams is_quosure
+#' @seealso [is_quosure()]
+#' @export
+#' @examples
+#' x <- disp ~ am
+#' is_formula(x)
+#'
+#' is_formula(~ 10)
+#' is_formula(10)
+#' @md
+is_formula <- function(x, scoped = NULL) {
+  if(typeof(x) != "language") {
+    return(FALSE)
+  }
+
+  head <- node_car(x)
+  if (typeof(head) != "symbol") {
+    return(FALSE)
+  }
+
+  if (!identical(head, sym_tilde) && !identical(head, sym_def)) {
+    return(FALSE)
+  }
+
+  if (!is_null(scoped) && scoped != is_env(attr(x, ".Environment"))) {
+    return(FALSE)
+  }
+
+  TRUE
+}
 
 #' Get/set formula components.
 #'
