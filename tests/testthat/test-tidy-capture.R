@@ -155,3 +155,8 @@ test_that("can capture empty list of dots", {
   fn <- function(...) tidy_quotes(...)
   expect_identical(fn(), list())
 })
+
+test_that("quosures are spliced before serialisation", {
+  quosures <- tidy_quotes(~foo(~bar), .named = TRUE)
+  expect_identical(names(quosures), "foo(bar)")
+})
