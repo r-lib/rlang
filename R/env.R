@@ -279,21 +279,17 @@ as_env.default <- function(x, parent = NULL) {
 #' fn <- env_set(fn, other_env)
 #' identical(env(fn), other_env)
 env_set <- function(env, new_env) {
-  UseMethod("env_set")
-}
-#' @rdname env_set
-#' @export
-env_set.function <- function(env, new_env) {
-  environment(env) <- rlang::env(new_env)
-  env
-}
-#' @rdname env_set
-#' @export
-env_set.formula <- env_set.function
-#' @rdname env_set
-#' @export
-env_set.environment <- function(env, new_env) {
-  rlang::env(new_env)
+  switch_type(env,
+    quote = ,
+    closure = {
+      environment(env) <- rlang::env(new_env)
+      env
+    },
+    environment = rlang::env(new_env),
+    abort(paste0(
+      "Cannot set environment for object of type`", type_of(env), "`"
+    ))
+  )
 }
 
 env_set_parent <- function(env, new_env) {
