@@ -13,12 +13,12 @@ rst_muffle(c)
 Muffle restarts are established at the same location as where a
 condition is signalled. They are useful for two non-exclusive
 purposes: muffling signalling functions and muffling conditions. In
-the first case, \code{rst_muffle()} prevents any further side
-effects of a signalling function (a warning or message from being
-displayed, an aborting jump to top level, etc). In the second case,
-the muffling jump prevents a condition from being passed on to
-other handlers. In both cases, execution resumes normally from the
-point where the condition was signalled.
+the first case, \code{rst_muffle()} prevents any further side effects of
+a signalling function (a warning or message from being displayed,
+an aborting jump to top level, etc). In the second case, the
+muffling jump prevents a condition from being passed on to other
+handlers. In both cases, execution resumes normally from the point
+where the condition was signalled.
 }
 \examples{
 side_effect <- function() cat("side effect!\\n")
@@ -67,6 +67,6 @@ with_handlers(foo = undesirable_handler,
 # See the `mufflable` argument of cnd_signal() for more on this point
 }
 \seealso{
-The \code{muffle} argument of \code{\link{inplace}()}, and
-  the \code{mufflable} argument of \code{\link{cnd_signal}()}.
+The \code{muffle} argument of \code{\link[=inplace]{inplace()}}, and the \code{mufflable}
+argument of \code{\link[=cnd_signal]{cnd_signal()}}.
 }

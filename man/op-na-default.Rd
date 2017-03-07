@@ -8,14 +8,12 @@
 x \%|\% y
 }
 \arguments{
-\item{x, y}{\code{y} for elements of \code{x} that are NA;
-otherwise, \code{x}.}
+\item{x, y}{\code{y} for elements of \code{x} that are NA; otherwise, \code{x}.}
 }
 \description{
 This infix function is similar to \code{\%||\%} but is vectorised
 and provides a default value for missing elements. It is faster
-than using \code{\link[base]{ifelse}()} and does not perform type
-conversions.
+than using \code{\link[base:ifelse]{base::ifelse()}} and does not perform type conversions.
 }
 \examples{
 c("a", "b", NA, "c") \%|\% "default"

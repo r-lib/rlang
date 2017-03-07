@@ -12,14 +12,13 @@ right-hand side, or a frame object from which to extract the call
 expression. If not supplied, the calling frame is used.}
 }
 \value{
-A tidy quote if \code{.call} is a tidy quote, a call
-  otherwise.
+A tidy quote if \code{.call} is a tidy quote, a call otherwise.
 }
 \description{
-This is essentially equivalent to \code{\link[base]{match.call}()},
-but handles primitive functions more gracefully.
+This is essentially equivalent to \code{\link[base:match.call]{base::match.call()}}, but handles
+primitive functions more gracefully.
 }
 \seealso{
-\code{\link{lang_homogenise}()} for a version more
-  suitable to language analysis.
+\code{\link[=lang_homogenise]{lang_homogenise()}} for a version more suitable to
+language analysis.
 }

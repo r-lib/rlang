@@ -7,18 +7,17 @@
 tidy_eval_(f, bottom, top = NULL)
 }
 \arguments{
-\item{f}{A formula. Any expressions wrapped in \code{ UQ() } will
-will be "unquoted", i.e. they will be evaluated, and the results
-inserted back into the formula. See \code{\link{tidy_quote}()}
-for more details. If a list of formulas, \code{tidy_eval()} is
-applied to each of them in turn and the list of results is
-returned.}
+\item{f}{A formula. Any expressions wrapped in \code{UQ()} will will be
+"unquoted", i.e. they will be evaluated, and the results inserted
+back into the formula. See \code{\link[=tidy_quote]{tidy_quote()}} for more details. If a
+list of formulas, \code{tidy_eval()} is applied to each of them in
+turn and the list of results is returned.}
 
 \item{bottom}{This is the environment (or the bottom of a set of
 environments) containing definitions for overscoped symbols. The
-bottom environment typically contains pronouns (like `.data`)
+bottom environment typically contains pronouns (like \code{.data})
 while its direct parents contain the overscoping bindings. The
-last one of these parents is the `top`.}
+last one of these parents is the \code{top}.}
 
 \item{top}{The top environment of the overscope. During tidy
 evaluation, this environment is chained and rechained to lexical
@@ -29,18 +28,18 @@ environment where the tidy quotes were created in the first place
 are in scope as well.}
 }
 \description{
-We recommend using [tidy_eval()] in your DSLs as much as possible
-to ensure some consistency across packages (`.data` and `.env`
+We recommend using \code{\link[=tidy_eval]{tidy_eval()}} in your DSLs as much as possible
+to ensure some consistency across packages (\code{.data} and \code{.env}
 pronouns, etc). However, some DSLs might need a different
-evaluation environment. In this case, you can call `tidy_eval_()`
+evaluation environment. In this case, you can call \code{tidy_eval_()}
 with the bottom and the top of your custom overscope (see
-[tidy_overscope()] for more information).
+\code{\link[=tidy_overscope]{tidy_overscope()}} for more information).
 }
 \details{
-Note that `tidy_eval_()` always installs a `.env` pronoun in the
+Note that \code{tidy_eval_()} always installs a \code{.env} pronoun in the
 bottom environment of your dynamic scope. This pronoun provides a
 shortcut to the original lexical enclosure (typically, the dynamic
-environment of a captured argument, see [tidy_capture()]). It also
-cleans up the overscope after evaluation. See [overscope_eval()]
+environment of a captured argument, see \code{\link[=tidy_capture]{tidy_capture()}}). It also
+cleans up the overscope after evaluation. See \code{\link[=overscope_eval]{overscope_eval()}}
 for evaluating several quosures in the same overscope.
 }

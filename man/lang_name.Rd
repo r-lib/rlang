@@ -12,8 +12,8 @@ right-hand side, or a frame object from which to extract the call
 expression. If not supplied, the calling frame is used.}
 }
 \value{
-A string with the function name, or \code{NULL} if the
-  function is anonymous.
+A string with the function name, or \code{NULL} if the function
+is anonymous.
 }
 \description{
 Extract function name of a call
@@ -36,5 +36,5 @@ lang_name(~foo[[bar]]())
 lang_name(~foo()())
 }
 \seealso{
-\code{\link{lang_fn}}()
+\code{\link[=lang_fn]{lang_fn()}}
 }

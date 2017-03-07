@@ -20,34 +20,31 @@ inform(msg, type = NULL, call = FALSE)
 \item{call}{Whether to display the call.}
 }
 \description{
-These functions are equivalent to base functions
-\code{\link[base]{stop}()}, \code{\link[base]{warning}()} and
-\code{\link[base]{message}()}, but the \code{type} argument makes
-it easy to create subclassed conditions. They also don't include
-call information by default. This saves you from typing
+These functions are equivalent to base functions \code{\link[base:stop]{base::stop()}},
+\code{\link[base:warning]{base::warning()}} and \code{\link[base:message]{base::message()}}, but the \code{type} argument
+makes it easy to create subclassed conditions. They also don't
+include call information by default. This saves you from typing
 \code{call. = FALSE} to make error messages cleaner within package
 functions.
 }
 \details{
-Like \code{stop()} and \code{\link{cnd_abort}()}, \code{abort()}
-signals a critical condition and interrupts execution by jumping to
-top level (see \code{\link{rst_abort}()}). Only a handler of the
-relevant type can prevent this jump by making another jump to a
-different target on the stack (see \code{\link{with_handlers}()}).
+Like \code{stop()} and \code{\link[=cnd_abort]{cnd_abort()}}, \code{abort()} signals a critical
+condition and interrupts execution by jumping to top level (see
+\code{\link[=rst_abort]{rst_abort()}}). Only a handler of the relevant type can prevent
+this jump by making another jump to a different target on the stack
+(see \code{\link[=with_handlers]{with_handlers()}}).
 
-\code{warn()} and \code{inform()} both have the side effect of
-displaying a message. These messages will not be displayed if a
-handler transfers control. Transfer can be achieved by establishing
-an exiting handler that transfers control to
-\code{\link{with_handlers}()}). In this case, the current function
-stops and execution resumes at the point where handlers were
-established.
+\code{warn()} and \code{inform()} both have the side effect of displaying a
+message. These messages will not be displayed if a handler
+transfers control. Transfer can be achieved by establishing an
+exiting handler that transfers control to \code{\link[=with_handlers]{with_handlers()}}). In
+this case, the current function stops and execution resumes at the
+point where handlers were established.
 
 Since it is often desirable to continue normally after a message or
-warning, both \code{warn()} and \code{inform()} (and their base R
-equivalent) establish a muffle restart where handlers can jump to
-prevent the message from being displayed. Execution resumes
-normally after that. See \code{\link{rst_muffle}()} to jump to a
-muffling restart, and the \code{muffle} argument of
-\code{\link{inplace}()} for creating a muffling handler.
+warning, both \code{warn()} and \code{inform()} (and their base R equivalent)
+establish a muffle restart where handlers can jump to prevent the
+message from being displayed. Execution resumes normally after
+that. See \code{\link[=rst_muffle]{rst_muffle()}} to jump to a muffling restart, and the
+\code{muffle} argument of \code{\link[=inplace]{inplace()}} for creating a muffling handler.
 }

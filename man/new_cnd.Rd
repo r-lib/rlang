@@ -31,10 +31,9 @@ also be used for passing messages to pre-established handlers. See
 the condition system.
 }
 \details{
-\code{new_cnd()} creates objects inheriting from
-\code{condition}. Conditions created with \code{cnd_error()},
-\code{cnd_warning()} and \code{cnd_message()} inherit from
-\code{error}, \code{warning} or \code{message}.
+\code{new_cnd()} creates objects inheriting from \code{condition}. Conditions
+created with \code{cnd_error()}, \code{cnd_warning()} and \code{cnd_message()}
+inherit from \code{error}, \code{warning} or \code{message}.
 }
 \examples{
 # Create a condition inheriting from the s3 type "foo":
@@ -61,5 +60,5 @@ cnd_signal(cnd_error("my_error"))
 # stop(cnd_error("my_error"))
 }
 \seealso{
-\code{\link{cnd_signal}()}, \code{\link{with_handlers}()}.
+\code{\link[=cnd_signal]{cnd_signal()}}, \code{\link[=with_handlers]{with_handlers()}}.
 }

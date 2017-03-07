@@ -16,16 +16,16 @@ set_mbcs_locale()
 The previous locale (invisibly).
 }
 \description{
-Setting a locale's codeset (specifically, the \code{LC_CTYPE}
-category) produces side effects in R's handling of strings. The
-most important of these affects how the R parser marks strings. R
-has specific internal support for latin1 (single-byte encoding) and
+Setting a locale's codeset (specifically, the \code{LC_CTYPE} category)
+produces side effects in R's handling of strings. The most
+important of these affects how the R parser marks strings. R has
+specific internal support for latin1 (single-byte encoding) and
 UTF-8 (multi-bytes variable-width encoding) strings. If the locale
 codeset is latin1 or UTF-8, the parser will mark all strings with
 the corresponding encoding. It is important for strings to have
 consistent encoding markers, as they determine a number of internal
 encoding conversions when R or packages handle strings (see
-\code{\link{str_set_encoding}()} for some examples).
+\code{\link[=str_set_encoding]{str_set_encoding()}} for some examples).
 }
 \details{
 If you are changing the locale encoding for testing purposes, you
@@ -41,6 +41,6 @@ are not widely tested and do not provide a way of setting the
 language and region of the locale. They have permanent side effects
 and should probably not be used in package examples, unit tests, or
 in the course of a data analysis. Note finally that
-\code{set_utf8_locale()} will not work on Windows as only latin1
-and MBCS locales are supported on this OS.
+\code{set_utf8_locale()} will not work on Windows as only latin1 and
+MBCS locales are supported on this OS.
 }

@@ -3,7 +3,7 @@
 #' @param lhs,rhs A call, name, or atomic vector.
 #' @param env An environment.
 #' @return A formula object.
-#' @seealso \code{\link{quosure}()}
+#' @seealso [quosure()]
 #' @export
 #' @examples
 #' new_formula(quote(a), quote(b))
@@ -33,7 +33,6 @@ new_formula <- function(lhs, rhs, env = caller_env()) {
 #'
 #' is_formula(~ 10)
 #' is_formula(10)
-#' @md
 is_formula <- function(x, scoped = NULL) {
   if(typeof(x) != "language") {
     return(FALSE)
@@ -57,16 +56,16 @@ is_formula <- function(x, scoped = NULL) {
 
 #' Get/set formula components.
 #'
-#' \code{f_rhs} extracts the righthand side, \code{f_lhs} extracts the
-#' lefthand side, and \code{f_env} extracts the environment. All functions
-#' throw an error if \code{f} is not a formula.
+#' `f_rhs` extracts the righthand side, `f_lhs` extracts the lefthand
+#' side, and `f_env` extracts the environment. All functions throw an
+#' error if `f` is not a formula.
 #'
 #' @param f,x A formula
 #' @param value The value to replace with.
 #' @export
-#' @return \code{f_rhs} and \code{f_lhs} return language objects (i.e.
-#'   atomic vectors of length 1, a name, or a call). \code{f_env}
-#'   returns an environment.
+#' @return `f_rhs` and `f_lhs` return language objects (i.e.  atomic
+#'   vectors of length 1, a name, or a call). `f_env` returns an
+#'   environment.
 #' @examples
 #' f_rhs(~ 1 + 2 + 3)
 #' f_rhs(~ x)
@@ -129,8 +128,7 @@ f_env <- function(f) {
 
 #' Turn RHS of formula into a string/label.
 #'
-#' Equivalent of \code{\link{expr_text}()} and \code{\link{expr_label}()} for
-#' formulas.
+#' Equivalent of [expr_text()] and [expr_label()] for formulas.
 #'
 #' @param x A formula.
 #' @inheritParams expr_text
@@ -161,8 +159,8 @@ f_label <- function(x) {
 
 #' Unwrap a formula
 #'
-#' This interpolates values in the formula that are defined in its environment,
-#' replacing the environment with its parent.
+#' This interpolates values in the formula that are defined in its
+#' environment, replacing the environment with its parent.
 #'
 #' @export
 #' @param f A formula to unwrap.

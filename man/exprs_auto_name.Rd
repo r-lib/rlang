@@ -15,5 +15,5 @@ e.g. tidy quotes.}
 \description{
 This gives default names to unnamed elements of a list of
 expressions (or expression wrappers such as formulas or tidy
-quotes). The expressions are deparsed with [expr_text()].
+quotes). The expressions are deparsed with \code{\link[=expr_text]{expr_text()}}.
 }

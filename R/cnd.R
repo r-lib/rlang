@@ -3,19 +3,18 @@
 #' These constructors make it easy to create subclassed conditions.
 #' Conditions are objects that power the error system in R. They can
 #' also be used for passing messages to pre-established handlers. See
-#' \code{vignette("conditions")} for more information on how to use
+#' `vignette("conditions")` for more information on how to use
 #' the condition system.
 #'
-#' \code{new_cnd()} creates objects inheriting from
-#' \code{condition}. Conditions created with \code{cnd_error()},
-#' \code{cnd_warning()} and \code{cnd_message()} inherit from
-#' \code{error}, \code{warning} or \code{message}.
+#' `new_cnd()` creates objects inheriting from `condition`. Conditions
+#' created with `cnd_error()`, `cnd_warning()` and `cnd_message()`
+#' inherit from `error`, `warning` or `message`.
 #'
 #' @param .type The condition subclass.
 #' @param ... Named data fields stored inside the condition object.
 #' @param .msg A default message to inform the user about the
 #'   condition when it is signalled.
-#' @seealso \code{\link{cnd_signal}()}, \code{\link{with_handlers}()}.
+#' @seealso [cnd_signal()], [with_handlers()].
 #' @export
 #' @examples
 #' # Create a condition inheriting from the s3 type "foo":
@@ -81,57 +80,54 @@ is_condition <- function(x) {
 #' Signal a condition.
 #'
 #' Signal a condition to handlers that have been established on the
-#' stack. Conditions signalled with \code{cnd_signal()} are assumed to
-#' be benign. Control flow can resume normally once the conditions has
+#' stack. Conditions signalled with `cnd_signal()` are assumed to be
+#' benign. Control flow can resume normally once the conditions has
 #' been signalled (if no handler jumped somewhere else on the
-#' evaluation stack). On the other hand, \code{cnd_abort()} treats the
+#' evaluation stack). On the other hand, `cnd_abort()` treats the
 #' condition as critical and will jump out of the distressed call
-#' frame (see \code{\link{rst_abort}()}), unless a handler can deal
-#' with the condition.
+#' frame (see [rst_abort()]), unless a handler can deal with the
+#' condition.
 #'
-#' If \code{.critical} is \code{FALSE}, this function has no side
-#' effects beyond calling handlers. In particular, execution will
-#' continue normally after signalling the condition (unless a handler
-#' jumped somewhere else via \code{\link{rst_jump}()} or by being
-#' \code{\link{exiting}()}). If \code{.critical} is \code{TRUE}, the
-#' condition is signalled via \code{\link[base]{stop}()} and the
+#' If `.critical` is `FALSE`, this function has no side effects beyond
+#' calling handlers. In particular, execution will continue normally
+#' after signalling the condition (unless a handler jumped somewhere
+#' else via [rst_jump()] or by being [exiting()]). If `.critical` is
+#' `TRUE`, the condition is signalled via [base::stop()] and the
 #' program will terminate if no handler dealt with the condition by
 #' jumping out of the distressed call frame.
 #'
-#' \code{\link{inplace}()} handlers are called in turn when they
-#' decline to handle the condition by returning normally. However, it
-#' is sometimes useful for an inplace handler to produce a side effect
-#' (signalling another condition, displaying a message, logging
-#' something, etc), prevent the condition from being passed to other
-#' handlers, and resume execution from the place where the condition
-#' was signalled. The easiest way to accomplish this is by jumping to
-#' a restart point (see \code{\link{with_restarts}()}) established by
-#' the signalling function. If \code{.mufflable} is \code{TRUE}, a
-#' muffle restart is established. This allows inplace handler to
-#' muffle a signalled condition. See \code{\link{rst_muffle}()} to
-#' jump to a muffling restart, and the \code{muffle} argument of
-#' \code{\link{inplace}()} for creating a muffling handler.
+#' [inplace()] handlers are called in turn when they decline to handle
+#' the condition by returning normally. However, it is sometimes
+#' useful for an inplace handler to produce a side effect (signalling
+#' another condition, displaying a message, logging something, etc),
+#' prevent the condition from being passed to other handlers, and
+#' resume execution from the place where the condition was
+#' signalled. The easiest way to accomplish this is by jumping to a
+#' restart point (see [with_restarts()]) established by the signalling
+#' function. If `.mufflable` is `TRUE`, a muffle restart is
+#' established. This allows inplace handler to muffle a signalled
+#' condition. See [rst_muffle()] to jump to a muffling restart, and
+#' the `muffle` argument of [inplace()] for creating a muffling
+#' handler.
 #'
 #' @inheritParams new_cnd
-#' @param .cnd Either a condition object (see
-#'   \code{\link{new_cnd}()}), or the name of a s3 class from which a
-#'   new condition will be created.
+#' @param .cnd Either a condition object (see [new_cnd()]), or the
+#'   name of a s3 class from which a new condition will be created.
 #' @param .msg A string to override the condition's default message.
 #' @param .call Whether to display the call of the frame in which the
-#'   condition is signalled. If \code{TRUE}, the call is stored in the
-#'   \code{call} field of the condition object: this field is
-#'   displayed by R when an error is issued. The call information is
-#'   also stored in the \code{.call} field in all cases.
+#'   condition is signalled. If `TRUE`, the call is stored in the
+#'   `call` field of the condition object: this field is displayed by
+#'   R when an error is issued. The call information is also stored in
+#'   the `.call` field in all cases.
 #' @param .mufflable Whether to signal the condition with a muffling
-#'   restart. This is useful to let \code{\link{inplace}()} handlers
-#'   muffle a condition. It stops the condition from being passed to
-#'   other handlers when the inplace handler did not jump
-#'   elsewhere. \code{TRUE} by default for benign conditions, but
-#'   \code{FALSE} for critical ones, since in those cases execution
-#'   should probably not be allowed to continue normally.
-#' @seealso \code{\link{abort}()}, \code{\link{warn}()} and
-#'   \code{\link{inform}()} for signalling typical R conditions. See
-#'   \code{\link{with_handlers}()} for establishing condition
+#'   restart. This is useful to let [inplace()] handlers muffle a
+#'   condition. It stops the condition from being passed to other
+#'   handlers when the inplace handler did not jump elsewhere. `TRUE`
+#'   by default for benign conditions, but `FALSE` for critical ones,
+#'   since in those cases execution should probably not be allowed to
+#'   continue normally.
+#' @seealso [abort()], [warn()] and [inform()] for signalling typical
+#'   R conditions. See [with_handlers()] for establishing condition
 #'   handlers.
 #' @export
 #' @examples
@@ -237,35 +233,32 @@ cnd_signal_ <- function(cnd, signal, mufflable) {
 
 #' Signal an error, warning, or message.
 #'
-#' These functions are equivalent to base functions
-#' \code{\link[base]{stop}()}, \code{\link[base]{warning}()} and
-#' \code{\link[base]{message}()}, but the \code{type} argument makes
-#' it easy to create subclassed conditions. They also don't include
-#' call information by default. This saves you from typing
-#' \code{call. = FALSE} to make error messages cleaner within package
+#' These functions are equivalent to base functions [base::stop()],
+#' [base::warning()] and [base::message()], but the `type` argument
+#' makes it easy to create subclassed conditions. They also don't
+#' include call information by default. This saves you from typing
+#' `call. = FALSE` to make error messages cleaner within package
 #' functions.
 #'
-#' Like \code{stop()} and \code{\link{cnd_abort}()}, \code{abort()}
-#' signals a critical condition and interrupts execution by jumping to
-#' top level (see \code{\link{rst_abort}()}). Only a handler of the
-#' relevant type can prevent this jump by making another jump to a
-#' different target on the stack (see \code{\link{with_handlers}()}).
+#' Like `stop()` and [cnd_abort()], `abort()` signals a critical
+#' condition and interrupts execution by jumping to top level (see
+#' [rst_abort()]). Only a handler of the relevant type can prevent
+#' this jump by making another jump to a different target on the stack
+#' (see [with_handlers()]).
 #'
-#' \code{warn()} and \code{inform()} both have the side effect of
-#' displaying a message. These messages will not be displayed if a
-#' handler transfers control. Transfer can be achieved by establishing
-#' an exiting handler that transfers control to
-#' \code{\link{with_handlers}()}). In this case, the current function
-#' stops and execution resumes at the point where handlers were
-#' established.
+#' `warn()` and `inform()` both have the side effect of displaying a
+#' message. These messages will not be displayed if a handler
+#' transfers control. Transfer can be achieved by establishing an
+#' exiting handler that transfers control to [with_handlers()]). In
+#' this case, the current function stops and execution resumes at the
+#' point where handlers were established.
 #'
 #' Since it is often desirable to continue normally after a message or
-#' warning, both \code{warn()} and \code{inform()} (and their base R
-#' equivalent) establish a muffle restart where handlers can jump to
-#' prevent the message from being displayed. Execution resumes
-#' normally after that. See \code{\link{rst_muffle}()} to jump to a
-#' muffling restart, and the \code{muffle} argument of
-#' \code{\link{inplace}()} for creating a muffling handler.
+#' warning, both `warn()` and `inform()` (and their base R equivalent)
+#' establish a muffle restart where handlers can jump to prevent the
+#' message from being displayed. Execution resumes normally after
+#' that. See [rst_muffle()] to jump to a muffling restart, and the
+#' `muffle` argument of [inplace()] for creating a muffling handler.
 #'
 #' @param msg A message to display.
 #' @param type Subclass of the condition to signal.

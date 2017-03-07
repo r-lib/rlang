@@ -25,5 +25,5 @@ environments, which contain all the functions imported from other
 packages.
 }
 \seealso{
-\code{\link{pkg_env}()}
+\code{\link[=pkg_env]{pkg_env()}}
 }

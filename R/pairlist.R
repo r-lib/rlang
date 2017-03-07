@@ -95,7 +95,6 @@
 #'
 #' # The original object has been changed in place:
 #' lang
-#' @md
 #' @name pairlist
 NULL
 
@@ -232,7 +231,6 @@ as_pairlist <- function(x) {
 #' @export
 #' @useDynLib rlang rlang_duplicate
 #' @useDynLib rlang rlang_shallow_duplicate
-#' @md
 duplicate <- function(x, shallow = FALSE) {
   if (shallow) {
     .Call(rlang_shallow_duplicate, x)

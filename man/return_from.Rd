@@ -11,24 +11,23 @@ return_to(frame, value = NULL)
 }
 \arguments{
 \item{frame}{An environment, a frame object, or any object with an
-\code{\link{env}()} method. The environment should be an
-evaluation environment currently on the stack.}
+\code{\link[=env]{env()}} method. The environment should be an evaluation
+environment currently on the stack.}
 
 \item{value}{The return value.}
 }
 \description{
-While \code{\link[base]{return}()} can only return from the current
-local frame, these two functions will return from any frame on the
+While \code{\link[base:return]{base::return()}} can only return from the current local
+frame, these two functions will return from any frame on the
 current evaluation stack, between the global and the currently
 active context. They provide a way of performing arbitrary
 non-local jumps out of the function currently under evaluation.
 }
 \details{
-\code{return_from()} will jump out of
-\code{frame}. \code{return_to()} is a bit trickier. It will jump
-out of the frame located just before \code{frame} in the evaluation
-stack, so that control flow ends up in \code{frame}, at the
-location where the previous frame was called from.
+\code{return_from()} will jump out of \code{frame}. \code{return_to()} is a bit
+trickier. It will jump out of the frame located just before \code{frame}
+in the evaluation stack, so that control flow ends up in \code{frame},
+at the location where the previous frame was called from.
 
 These functions should only be used rarely. These sort of non-local
 gotos can be hard to reason about in casual code, though they can

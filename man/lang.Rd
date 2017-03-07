@@ -7,9 +7,9 @@
 lang(.fn, ..., .args = list())
 }
 \arguments{
-\item{.fn}{Function to call. For \code{make_call}, either a string,
-a symbol or a quoted call. For \code{do_call}, a bare function
-name or call.}
+\item{.fn}{Function to call. For \code{make_call}, either a string, a
+symbol or a quoted call. For \code{do_call}, a bare function name or
+call.}
 
 \item{..., .args}{Arguments to the call either in or out of a list}
 }

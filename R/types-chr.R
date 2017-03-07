@@ -33,7 +33,6 @@
 #'
 #' # chr() accepts lists and will apply string() to each element:
 #' chr(list(cafe, c(0x63, 0x61, 0x66, 0xE9)))
-#' @md
 string <- function(x, encoding = NULL) {
   if (is_integerish(x)) {
     x <- rawToChar(as.raw(x))
@@ -127,19 +126,18 @@ as_native_string <- function(x) {
 #' back to the native encoding. However, it is important to make sure
 #' the encoding mark has not been lost in the process, otherwise the
 #' output will be treated as if encoded according to the current
-#' locale (see \code{\link{set_utf8_locale}()} for documentation about
-#' locale codesets), which is not appropriate if it does not coincide
-#' with the actual encoding. In those situations, you can use these
+#' locale (see [set_utf8_locale()] for documentation about locale
+#' codesets), which is not appropriate if it does not coincide with
+#' the actual encoding. In those situations, you can use these
 #' functions to ensure an encoding mark in your strings.
 #'
 #' @param x A string or character vector.
 #' @param encoding Either an encoding specially handled by R
-#'   (\code{"UTF-8"} or \code{"latin1"}), \code{"bytes"} to inhibit
-#'   all encoding conversions, or \code{"unknown"} if the string
-#'   should be treated as encoded in the current locale codeset.
-#' @seealso \code{\link{set_utf8_locale}()} about the effects of the
-#'   locale, and \code{\link{as_utf8_string}()} about encoding
-#'   conversion.
+#'   (`"UTF-8"` or `"latin1"`), `"bytes"` to inhibit all encoding
+#'   conversions, or `"unknown"` if the string should be treated as
+#'   encoded in the current locale codeset.
+#' @seealso [set_utf8_locale()] about the effects of the locale, and
+#'   [as_utf8_string()] about encoding conversion.
 #' @export
 #' @examples
 #' # Encoding marks are always ignored on ASCII strings:
@@ -201,16 +199,16 @@ str_encoding <- function(x) {
 
 #' Set the locale's codeset for testing.
 #'
-#' Setting a locale's codeset (specifically, the \code{LC_CTYPE}
-#' category) produces side effects in R's handling of strings. The
-#' most important of these affects how the R parser marks strings. R
-#' has specific internal support for latin1 (single-byte encoding) and
+#' Setting a locale's codeset (specifically, the `LC_CTYPE` category)
+#' produces side effects in R's handling of strings. The most
+#' important of these affects how the R parser marks strings. R has
+#' specific internal support for latin1 (single-byte encoding) and
 #' UTF-8 (multi-bytes variable-width encoding) strings. If the locale
 #' codeset is latin1 or UTF-8, the parser will mark all strings with
 #' the corresponding encoding. It is important for strings to have
 #' consistent encoding markers, as they determine a number of internal
 #' encoding conversions when R or packages handle strings (see
-#' \code{\link{str_set_encoding}()} for some examples).
+#' [str_set_encoding()] for some examples).
 #'
 #' If you are changing the locale encoding for testing purposes, you
 #' need to be aware that R caches strings and symbols to save
@@ -225,8 +223,8 @@ str_encoding <- function(x) {
 #' language and region of the locale. They have permanent side effects
 #' and should probably not be used in package examples, unit tests, or
 #' in the course of a data analysis. Note finally that
-#' \code{set_utf8_locale()} will not work on Windows as only latin1
-#' and MBCS locales are supported on this OS.
+#' `set_utf8_locale()` will not work on Windows as only latin1 and
+#' MBCS locales are supported on this OS.
 #'
 #' @return The previous locale (invisibly).
 #' @export

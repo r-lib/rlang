@@ -13,17 +13,15 @@ right-hand side, or a frame object from which to extract the call
 expression. If not supplied, the calling frame is used.}
 
 \item{..., .args}{Named or unnamed expressions (constants, names or
-calls) used to modify the call. Use \code{NULL} to remove
-arguments.}
+calls) used to modify the call. Use \code{NULL} to remove arguments.}
 
-\item{.standardise}{If \code{TRUE}, the call is standardised before
-hand to match existing unnamed arguments to their argument
-names. This prevents new named arguments from accidentally
-replacing original unnamed arguments.}
+\item{.standardise}{If \code{TRUE}, the call is standardised before hand
+to match existing unnamed arguments to their argument names. This
+prevents new named arguments from accidentally replacing original
+unnamed arguments.}
 }
 \value{
-A tidy quote if \code{.call} is a tidy quote, a call
-  otherwise.
+A tidy quote if \code{.call} is a tidy quote, a call otherwise.
 }
 \description{
 Modify the arguments of a call.

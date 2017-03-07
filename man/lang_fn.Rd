@@ -25,5 +25,5 @@ test <- function() lang_fn()
 test()
 }
 \seealso{
-\code{\link{lang_name}}()
+\code{\link[=lang_name]{lang_name()}}
 }

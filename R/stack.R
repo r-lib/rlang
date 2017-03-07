@@ -1,56 +1,53 @@
 #' Call stack information
 #'
-#' The \code{eval_} and \code{call_} families of functions provide a
-#' replacement for the base R functions prefixed with \code{sys.}
-#' (which are all about the context stack), as well as for
-#' \code{\link{parent.frame}()} (which is the only base R function for
-#' querying the call stack). The context stack includes all R-level
-#' evaluation contexts. It is linear in terms of execution history but
-#' due to lazy evaluation it is potentially nonlinear in terms of call
-#' history. The call stack history, on the other hand, is homogenous.
-#' See \code{vignette("stack")} for more information.
+#' The `eval_` and `call_` families of functions provide a replacement
+#' for the base R functions prefixed with `sys.` (which are all about
+#' the context stack), as well as for [parent.frame()] (which is the
+#' only base R function for querying the call stack). The context
+#' stack includes all R-level evaluation contexts. It is linear in
+#' terms of execution history but due to lazy evaluation it is
+#' potentially nonlinear in terms of call history. The call stack
+#' history, on the other hand, is homogenous. See `vignette("stack")`
+#' for more information.
 #'
-#' \code{eval_frame()} and \code{call_frame()} return a \code{frame}
-#' object containing the following fields: \code{expr} and \code{env}
-#' (call expression and evaluation environment), \code{pos} and
-#' \code{caller_pos} (position of current frame in the context stack
-#' and position of the caller), and \code{fun} (function of the
-#' current frame). \code{eval_stack()} and \code{call_stack()} return
-#' a list of all context or call frames on the stack. Finally,
-#' \code{eval_depth()} and \code{call_depth()} report the current
-#' context position or the number of calling frames on the stack.
+#' `eval_frame()` and `call_frame()` return a `frame` object
+#' containing the following fields: `expr` and `env` (call expression
+#' and evaluation environment), `pos` and `caller_pos` (position of
+#' current frame in the context stack and position of the caller), and
+#' `fun` (function of the current frame). `eval_stack()` and
+#' `call_stack()` return a list of all context or call frames on the
+#' stack. Finally, `eval_depth()` and `call_depth()` report the
+#' current context position or the number of calling frames on the
+#' stack.
 #'
 #' The base R functions take two sorts of arguments to indicate which
-#' frame to query: \code{which} and \code{n}. The \code{n} argument is
+#' frame to query: `which` and `n`. The `n` argument is
 #' straightforward: it's the number of frames to go down the stack,
-#' with \code{n = 1} referring to the current context. The
-#' \code{which} argument is more complicated and changes meaning for
-#' values lower than 1. For the sake of consistency, the lazyeval
-#' functions all take the same kind of argument \code{n}. This
-#' argument has a single meaning (the number of frames to go down the
-#' stack) and cannot be lower than 1.
+#' with `n = 1` referring to the current context. The `which` argument
+#' is more complicated and changes meaning for values lower than
+#' 1. For the sake of consistency, the lazyeval functions all take the
+#' same kind of argument `n`. This argument has a single meaning (the
+#' number of frames to go down the stack) and cannot be lower than 1.
 #'
-#' Note finally that \code{parent.frame(1)} corresponds to
-#' \code{call_frame(2)$env}, as \code{n = 1} always refers to the
-#' current frame. This makes the \code{_frame()} and \code{_stack()}
-#' functions consistent: \code{eval_frame(2)} is the same as
-#' \code{eval_stack()[[2]]}. Also, \code{eval_depth()} returns one
-#' more frame than \code{\link[base]{sys.nframe}()} because it counts
-#' the global frame. That is consistent with the \code{_stack()}
-#' functions which return the global frame as well. This way,
-#' \code{call_stack(call_depth())} is the same as
-#' \code{global_frame()}.
+#' Note finally that `parent.frame(1)` corresponds to
+#' `call_frame(2)$env`, as `n = 1` always refers to the current
+#' frame. This makes the `_frame()` and `_stack()` functions
+#' consistent: `eval_frame(2)` is the same as `eval_stack()[[2]]`.
+#' Also, `eval_depth()` returns one more frame than
+#' [base::sys.nframe()] because it counts the global frame. That is
+#' consistent with the `_stack()` functions which return the global
+#' frame as well. This way, `call_stack(call_depth())` is the same as
+#' `global_frame()`.
 #'
 #' @param n The number of frames to go back in the stack.
 #' @param clean Whether to post-process the call stack to clean
-#'   non-standard frames. If \code{TRUE}, suboptimal call-stack
-#'   entries by \code{\link[base]{eval}()} and
-#'   \code{\link[base]{Recall}()} will be cleaned up: \code{Recall()}
-#'   frames will be assigned the correct parent and \code{eval()}
-#'   frames are merged together (as \code{eval()} creates a duplicate
-#'   frame).
+#'   non-standard frames. If `TRUE`, suboptimal call-stack entries by
+#'   [base::eval()] and [base::Recall()] will be cleaned up:
+#'   `Recall()` frames will be assigned the correct parent and
+#'   `eval()` frames are merged together (as `eval()` creates a
+#'   duplicate frame).
 #' @param trim The number of layers of intervening frames to trim off
-#'   the stack. See \code{\link{stack_trim}()} and examples.
+#'   the stack. See [stack_trim()] and examples.
 #' @name stack
 #' @examples
 #' # Expressions within arguments count as contexts
@@ -284,14 +281,14 @@ call_frame <- function(n = 1, clean = TRUE) {
 
 #' Get the environment of the caller frame.
 #'
-#' \code{caller_frame()} is a shortcut for \code{\link{call_frame}(2)}
-#' and \code{caller_fn()} and \code{caller_env()} are shortcuts for
-#' \code{call_frame(2)$env} \code{call_frame(2)$fn}.
+#' `caller_frame()` is a shortcut for `call_frame(2)` and
+#' `caller_fn()` and `caller_env()` are shortcuts for
+#' `call_frame(2)$env` `call_frame(2)$fn`.
 #'
 #' @param n The number of generation to go back. Note that contrarily
-#'   to \code{\link{call_frame}()}, 1 represents the parent frame
-#'   rather than the current frame.
-#' @seealso \code{\link{call_frame}()}
+#'   to [call_frame()], 1 represents the parent frame rather than the
+#'   current frame.
+#' @seealso [call_frame()]
 #' @export
 caller_env <- function(n = 1) {
   parent.frame(n + 1)
@@ -488,11 +485,10 @@ sys_frame <- function(n) {
 #' as those will be discarded.
 #'
 #' @param frame The environment of a frame. Can be any object with a
-#'   \code{\link{env}()} method. Note that for frame objects, the
-#'   position from the global frame is simply \code{frame$pos}.
-#'   Alternatively, \code{frame} can be an integer that represents the
-#'   position on the stack (and is thus returned as is if \code{from}
-#'   is "global".
+#'   [env()] method. Note that for frame objects, the position from
+#'   the global frame is simply `frame$pos`. Alternatively, `frame`
+#'   can be an integer that represents the position on the stack (and
+#'   is thus returned as is if `from` is "global".
 #' @param from Whether to compute distance from the global frame (the
 #'   bottom of the evaluation stack), or from the current frame (the
 #'   top of the evaluation stack).
@@ -564,11 +560,10 @@ frame_position_current <- function(frame, stack = NULL,
 
 #' Trim top call layers from the evaluation stack.
 #'
-#' \code{\link{eval_stack}()} can be tricky to use in real code
-#' because all intervening frames are returned with the stack,
-#' including those at \code{eval_stack()} own call
-#' site. \code{stack_trim()} makes it easy to remove layers of
-#' intervening calls.
+#' [eval_stack()] can be tricky to use in real code because all
+#' intervening frames are returned with the stack, including those at
+#' `eval_stack()` own call site. `stack_trim()` makes it easy to
+#' remove layers of intervening calls.
 #'
 #' @param stack An evaluation stack.
 #' @param n The number of call frames (not eval frames) to trim off
@@ -620,17 +615,16 @@ stack_trim <- function(stack, n = 1) {
 
 #' Jump to or from a frame.
 #'
-#' While \code{\link[base]{return}()} can only return from the current
-#' local frame, these two functions will return from any frame on the
+#' While [base::return()] can only return from the current local
+#' frame, these two functions will return from any frame on the
 #' current evaluation stack, between the global and the currently
 #' active context. They provide a way of performing arbitrary
 #' non-local jumps out of the function currently under evaluation.
 #'
-#' \code{return_from()} will jump out of
-#' \code{frame}. \code{return_to()} is a bit trickier. It will jump
-#' out of the frame located just before \code{frame} in the evaluation
-#' stack, so that control flow ends up in \code{frame}, at the
-#' location where the previous frame was called from.
+#' `return_from()` will jump out of `frame`. `return_to()` is a bit
+#' trickier. It will jump out of the frame located just before `frame`
+#' in the evaluation stack, so that control flow ends up in `frame`,
+#' at the location where the previous frame was called from.
 #'
 #' These functions should only be used rarely. These sort of non-local
 #' gotos can be hard to reason about in casual code, though they can
@@ -638,8 +632,8 @@ stack_trim <- function(stack, n = 1) {
 #' perform non-local jumps.
 #'
 #' @param frame An environment, a frame object, or any object with an
-#'   \code{\link{env}()} method. The environment should be an
-#'   evaluation environment currently on the stack.
+#'   [env()] method. The environment should be an evaluation
+#'   environment currently on the stack.
 #' @param value The return value.
 #' @export
 #' @examples
@@ -691,7 +685,7 @@ return_to <- function(frame, value = NULL) {
 #' manipulate expressions and calls. It lets you check that a function
 #' is called with the right arguments. This can be useful in unit
 #' tests for instance. Note that this is just a simple wrapper around
-#' \code{\link[base]{match.call}()}.
+#' [base::match.call()].
 #'
 #' @param ... Arguments to display in the returned call.
 #' @export

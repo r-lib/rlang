@@ -21,15 +21,14 @@ rst_maybe_jump(.restart, ..., .args = list())
 \item{..., .args}{Arguments passed on to the restart function.}
 }
 \description{
-Restarts are named jumping points established by
-\code{\link{with_restarts}()}. \code{rst_list()} returns the names
-of all restarts currently established. \code{rst_exists()} checks
-if a given restart is established. \code{rst_jump()} stops
-execution of the current function and jumps to a restart point. If
-the restart does not exist, an error is thrown.
-\code{rst_maybe_jump()} first checks that a restart exists before
-jumping.
+Restarts are named jumping points established by \code{\link[=with_restarts]{with_restarts()}}.
+\code{rst_list()} returns the names of all restarts currently
+established. \code{rst_exists()} checks if a given restart is
+established. \code{rst_jump()} stops execution of the current function
+and jumps to a restart point. If the restart does not exist, an
+error is thrown.  \code{rst_maybe_jump()} first checks that a restart
+exists before jumping.
 }
 \seealso{
-\code{\link{with_restarts}()}, \code{\link{rst_muffle}()}.
+\code{\link[=with_restarts]{with_restarts()}}, \code{\link[=rst_muffle]{rst_muffle()}}.
 }

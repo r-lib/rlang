@@ -11,7 +11,7 @@ bytes(x)
 }
 \description{
 This is a convenient raw vector constructor. It takes integerish
-input (see \code{\link{is_integerish}()}).
+input (see \code{\link[=is_integerish]{is_integerish()}}).
 }
 \examples{
 bytes(1:10)

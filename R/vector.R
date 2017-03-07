@@ -36,10 +36,10 @@ splice <- function(...) {
 
 #' Prepend a vector.
 #'
-#' This is a companion to \code{\link[base]{append}()} to help merging
-#' two lists or atomic vectors. \code{prepend()} is a clearer semantic
-#' signal than `c()` that a vector is to be merged at the beginning of
-#' another, especially in a pipe chain.
+#' This is a companion to [base::append()] to help merging two lists
+#' or atomic vectors. `prepend()` is a clearer semantic signal than
+#' `c()` that a vector is to be merged at the beginning of another,
+#' especially in a pipe chain.
 #'
 #' @param x the vector to be modified.
 #' @param values to be included in the modified vector.
@@ -69,10 +69,9 @@ prepend <- function(x, values, before = 1) {
 #' returns a list.
 #'
 #' @param .x A vector to modify.
-#' @param ...,.elts List of elements to merge into \code{.x}. Named
-#'   elements already existing in \code{.x} are used as
-#'   replacements. Elements that have new or no names are inserted at
-#'   the end.
+#' @param ...,.elts List of elements to merge into `.x`. Named
+#'   elements already existing in `.x` are used as replacements.
+#'   Elements that have new or no names are inserted at the end.
 #' @return A modified vector upcasted to a list.
 #' @export
 #' @examples
@@ -99,31 +98,29 @@ modify <- function(.x, ..., .elts = list()) {
 #' Missing values.
 #'
 #' Missing values are represented in R with the general symbol
-#' \code{NA}. They can be inserted in almost all data containers: all
+#' `NA`. They can be inserted in almost all data containers: all
 #' atomic vectors except raw vectors can contain missing values. To
-#' achieve this, R automatically converts the general \code{NA} symbol
-#' to a typed missing value appropriate for the target vector. The
-#' objects provided here are aliases for those typed \code{NA}
-#' objects.
+#' achieve this, R automatically converts the general `NA` symbol to a
+#' typed missing value appropriate for the target vector. The objects
+#' provided here are aliases for those typed `NA` objects.
 #'
 #' Typed missing values are necessary because R needs sentinel values
 #' of the same type (i.e. the same machine representation of the data)
 #' as the containers into which they are inserted. The official typed
-#' missing values are \code{NA_integer_}, \code{NA_real_},
-#' \code{NA_character_} and \code{NA_complex_}. The missing value for
-#' logical vectors is simply the default \code{NA}. The aliases
-#' provided in rlang are consistently named and thus simpler to
-#' remember. Also, \code{na_lgl} is provided as an alias to \code{NA}
-#' that makes intent clearer.
+#' missing values are `NA_integer_`, `NA_real_`, `NA_character_` and
+#' `NA_complex_`. The missing value for logical vectors is simply the
+#' default `NA`. The aliases provided in rlang are consistently named
+#' and thus simpler to remember. Also, `na_lgl` is provided as an
+#' alias to `NA` that makes intent clearer.
 #'
-#' Since \code{na_lgl} is the default \code{NA}, expressions such as
-#' \code{c(NA, NA)} yield logical vectors as no data is available to
-#' give a clue of the target type. In the same way, since lists and
-#' environments can contain any types, expressions like
-#' \code{list(NA)} store a logical \code{NA}.
+#' Since `na_lgl` is the default `NA`, expressions such as `c(NA, NA)`
+#' yield logical vectors as no data is available to give a clue of the
+#' target type. In the same way, since lists and environments can
+#' contain any types, expressions like `list(NA)` store a logical
+#' `NA`.
 #'
-#' @seealso The \code{\link{along}} family to create typed vectors
-#'   filled with missing values.
+#' @seealso The [along] family to create typed vectors filled with
+#'   missing values.
 #' @examples
 #' typeof(NA)
 #' typeof(na_lgl)
@@ -224,12 +221,12 @@ is_cpl_na <- function(x) {
 
 #' Helper to create vectors with matching length.
 #'
-#' These functions take the idea of \code{\link{seq_along}} and
-#' generalise it to creating lists (\code{lst_along}) and repeating
-#' values (\code{rep_along}). The dots and \code{.attrs} are forwarded
-#' to \code{\link{with_attributes}()} to make it easy to add
-#' attributes. Except for \code{lst_along()} and \code{raw_along()},
-#' the empty vectors are filled with typed \link{missing} values.
+#' These functions take the idea of [seq_along()] and generalise it to
+#' creating lists (`lst_along`) and repeating values (`rep_along`).
+#' The dots and `.attrs` are forwarded to [with_attributes()] to make
+#' it easy to add attributes. Except for `lst_along()` and
+#' `raw_along()`, the empty vectors are filled with typed `missing`
+#' values.
 #'
 #' @inheritParams with_attributes
 #' @param .x A vector.
@@ -293,10 +290,10 @@ rep_along <- function(.x, .y, ..., .attrs = list()) {
 #' Create new vectors.
 #'
 #' These functions construct vectors of given length, with attributes
-#' specified via dots. Except for \code{new_lst()} and
-#' \code{new_raw()}, the empty vectors are filled with typed
-#' \link{missing} values. This is in contrast to the base function
-#' \code{\link[base]{vector}()} which creates zero-filled vectors.
+#' specified via dots. Except for `new_lst()` and `new_raw()`, the
+#' empty vectors are filled with typed [missing] values. This is in
+#' contrast to the base function [base::vector()] which creates
+#' zero-filled vectors.
 #'
 #' @inheritParams with_attributes
 #' @param .n The vector length.

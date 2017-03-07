@@ -3,65 +3,61 @@
 #' @description
 #'
 #' These helpers are consistent wrappers around their base R
-#' equivalents. \code{is_expr()} tests for expressions, the set of
-#' objects that can be obtained from parsing R code. An expression can
-#' be one of two things: either a symbolic object (for which
-#' \code{is_symbolic()} returns \code{TRUE}), or a parsable literal
-#' (testable with \code{is_parsable_literal()}). Note that we are
-#' using the term expression in its colloquial sense and not to refer
-#' to \code{\link{expression}()} vectors, a data type that wraps
-#' expressions in a vector and which has not much use in R.
+#' equivalents. `is_expr()` tests for expressions, the set of objects
+#' that can be obtained from parsing R code. An expression can be one
+#' of two things: either a symbolic object (for which `is_symbolic()`
+#' returns `TRUE`), or a parsable literal (testable with
+#' `is_parsable_literal()`). Note that we are using the term
+#' expression in its colloquial sense and not to refer to
+#' [expression()] vectors, a data type that wraps expressions in a
+#' vector and which has not much use in R.
 #'
 #' Technically, a call can contain any R object, not necessarily
 #' language objects. However, this only happens in artificial
 #' situations. Expressions as we define them only contain numbers,
-#' strings, \code{NULL}, symbols, and calls: this is the complete set
-#' of R objects that are created when R parses source code (e.g. from
-#' using \code{\link{parse_expr}()}). These objects can be classified
-#' as literals and symbolic objects. Symbolic objects like symbols and
-#' calls are treated specially when R evaluates an expression. When a
-#' symbol is evaluated, it is looked up and replaced by its
-#' value. When a call is evaluated, its arguments are recursively
-#' evaluated, and the corresponding function is called, and the call
-#' is replaced by the returned value. On the other hand, literal
-#' objects, such as numbers and strings, just return their own
-#' value. To sum up, an expression can either be symbolic or a
-#' parsable literal.
+#' strings, `NULL`, symbols, and calls: this is the complete set of R
+#' objects that are created when R parses source code (e.g. from using
+#' [parse_expr()]). These objects can be classified as literals and
+#' symbolic objects. Symbolic objects like symbols and calls are
+#' treated specially when R evaluates an expression. When a symbol is
+#' evaluated, it is looked up and replaced by its value. When a call
+#' is evaluated, its arguments are recursively evaluated, and the
+#' corresponding function is called, and the call is replaced by the
+#' returned value. On the other hand, literal objects, such as numbers
+#' and strings, just return their own value. To sum up, an expression
+#' can either be symbolic or a parsable literal.
 #'
 #' @details
 #'
-#' \code{is_symbolic()} returns \code{TRUE} for symbols and calls
-#' (objects with type \code{language}). Literals are the complement of
-#' symbolic objects. \code{is_parsable_literal()} is a predicate that
-#' returns \code{TRUE} for the subset of literals that are created by
-#' R when parsing text (see \code{\link{parse_expr}()}): numbers,
-#' strings and \code{NULL}. Along with symbols, these literals are the
-#' terminating nodes in a parse tree.
+#' `is_symbolic()` returns `TRUE` for symbols and calls (objects with
+#' type `language`). Literals are the complement of symbolic
+#' objects. `is_parsable_literal()` is a predicate that returns `TRUE`
+#' for the subset of literals that are created by R when parsing text
+#' (see [parse_expr()]): numbers, strings and `NULL`. Along with
+#' symbols, these literals are the terminating nodes in a parse tree.
 #'
 #' Note that in the most general sense, a literal is any R object that
 #' evaluates to itself and that can be evaluated in the empty
-#' environment. For instance, \code{quote(c(1, 2))} is not a literal,
-#' it is a call.  However, the result of evaluating it in
-#' \code{\link{base_env}()} is a literal(in this case an atomic vector).
+#' environment. For instance, `quote(c(1, 2))` is not a literal, it is
+#' a call. However, the result of evaluating it in [base_env()] is a
+#' literal(in this case an atomic vector).
 #'
 #' Pairlists are also a kind of language objects. However, since they
-#' are mostly an internal data structure, \code{is_expr()} returns
-#' \code{FALSE} for pairlists. You can use \code{is_pairlist()} to
-#' explicitly check for them. Pairlists are the data structure for
-#' function arguments. They usually do not arise from R code because
-#' subsetting a call is a type-preserving operation. However, you can
-#' obtain the pairlist of arguments by taking the CDR of the call
-#' object from C code. The rlang function \code{\link{lang_tail}()}
-#' will do it from R. Another way in which pairlist of arguments arise
-#' is by extracting the argument list of a closure with
-#' \code{\link[base]{formals}()} or \code{\link{fn_fmls}()}.
+#' are mostly an internal data structure, `is_expr()` returns `FALSE`
+#' for pairlists. You can use `is_pairlist()` to explicitly check for
+#' them. Pairlists are the data structure for function arguments. They
+#' usually do not arise from R code because subsetting a call is a
+#' type-preserving operation. However, you can obtain the pairlist of
+#' arguments by taking the CDR of the call object from C code. The
+#' rlang function [lang_tail()] will do it from R. Another way in
+#' which pairlist of arguments arise is by extracting the argument
+#' list of a closure with [base::formals()] or [fn_fmls()].
 #'
 #' @param x An object to test. When you supply a tidy quote (see
-#'   \code{\link{tidy_quote}()}) to any of the expression predicates,
-#'   they will perform their test on the RHS of the formula.
-#' @seealso \code{\link{is_lang}()} for a call predicate.
-#'   \code{\link{as_symbol}()} and \code{\link{as_lang}()} for coercion
-#'   functions.
+#'   [tidy_quote()]) to any of the expression predicates, they will
+#'   perform their test on the RHS of the formula.
+#' @seealso [is_lang()] for a call predicate; [as_symbol()] and
+#'   [as_lang()] for coercion functions.
 #' @export
 #' @examples
 #' q1 <- quote(1)
@@ -160,8 +156,8 @@ is_pairlist <- function(x) {
 #'
 #' @param x An object to coerce
 #' @export
-#' @return \code{as_symbol()} and \code{as_lang()} return a symbol or
-#'   a call. \code{as_name()} returns a string.
+#' @return `as_symbol()` and `as_lang()` return a symbol or a
+#'   call. `as_name()` returns a string.
 #' @examples
 #' as_symbol("x + y")
 #' as_lang("x + y")

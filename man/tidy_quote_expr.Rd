@@ -13,15 +13,13 @@ tidy_quote_expr(expr)
 The raw expression supplied as argument.
 }
 \description{
-Unlike \code{\link{tidy_quote}()}, \code{tidy_quote_expr()} returns a
-raw expression instead of a formula. As a result,
-\code{tidy_quote_expr()} is untidy in the sense that it does not
-preserve scope information for the quoted expression. It can still
-be useful in certain cases. Compared to base R's
-\code{\link[base]{quote}()}, it unquotes the expression on capture,
-and compared to \code{\link{tidy_quote}()}, the quoted expression
-is directly compatible with the base R \code{\link[base]{eval}()}
-function.
+Unlike \code{\link[=tidy_quote]{tidy_quote()}}, \code{tidy_quote_expr()} returns a raw expression
+instead of a formula. As a result, \code{tidy_quote_expr()} is untidy in
+the sense that it does not preserve scope information for the
+quoted expression. It can still be useful in certain cases.
+Compared to base R's \code{\link[base:quote]{base::quote()}}, it unquotes the expression on
+capture, and compared to \code{\link[=tidy_quote]{tidy_quote()}}, the quoted expression is
+directly compatible with the base R \code{\link[base:eval]{base::eval()}} function.
 }
 \examples{
 # The advantage of tidy_quote_expr() over quote() is that it unquotes on
@@ -52,7 +50,6 @@ e <- tidy_quote_expr(toupper(!! f))
 tidy_eval(e)
 }
 \seealso{
-See \code{\link{tidy_quote}()} and
-  \code{\link{tidy_interp}()} for more explanation on tidy
-  quotation.
+See \code{\link[=tidy_quote]{tidy_quote()}} and \code{\link[=tidy_interp]{tidy_interp()}} for more
+explanation on tidy quotation.
 }

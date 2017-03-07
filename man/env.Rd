@@ -17,14 +17,14 @@ env_tail(env = caller_env())
 }
 \arguments{
 \item{env}{An environment or an object with a S3 method for
-\code{env()}. If missing, the environment of the current
-evaluation frame is returned.}
+\code{env()}. If missing, the environment of the current evaluation
+frame is returned.}
 
 \item{parent}{A parent environment. Can be an object with a S3
 method for \code{as_env()}.}
 
 \item{data}{A vector with unique names which defines bindings
-(pairs of name and value). See \code{\link{is_dictionary}()}.}
+(pairs of name and value). See \code{\link[=is_dictionary]{is_dictionary()}}.}
 
 \item{n}{The number of generations to go through.}
 }
@@ -42,17 +42,15 @@ in child environments.
 \details{
 \code{env()} is a S3 generic. Methods are provided for functions,
 formulas and frames. If called with a missing argument, the
-environment of the current evaluation frame (see
-\code{\link{eval_stack}()}) is returned. If you call \code{env()}
-with an environment, it acts as the identity function and the
-environment is simply returned (this helps simplifying code when
-writing generic functions).
+environment of the current evaluation frame (see \code{\link[=eval_stack]{eval_stack()}}) is
+returned. If you call \code{env()} with an environment, it acts as the
+identity function and the environment is simply returned (this
+helps simplifying code when writing generic functions).
 
-\code{child_env()} creates a new environment. \code{env_parent()}
-returns the parent environment of \code{env} if called with \code{n
-= 1}, the grandparent with \code{n = 2}, etc. \code{env_tail()}
-searches through the parents and returns the one which has
-\code{\link{empty_env}()} as parent.
+\code{child_env()} creates a new environment. \code{env_parent()} returns the
+parent environment of \code{env} if called with \code{n = 1}, the grandparent
+with \code{n = 2}, etc. \code{env_tail()} searches through the parents and
+returns the one which has \code{\link[=empty_env]{empty_env()}} as parent.
 }
 \examples{
 # Get the environment of frame objects. If no argument is supplied,
@@ -139,6 +137,5 @@ fn <- with_env(enclos_env, function() env_parent())
 identical(enclos_env, fn())
 }
 \seealso{
-\link{scoped_env}, \code{\link{env_has}()},
-  \code{\link{env_assign}()}.
+\code{scoped_env}, \code{\link[=env_has]{env_has()}}, \code{\link[=env_assign]{env_assign()}}.
 }

@@ -1,18 +1,17 @@
 #' Establish handlers on the stack.
 #'
 #' Condition handlers are functions established on the evaluation
-#' stack (see \code{\link{eval_stack}()}) that are called by R when a
-#' condition is signalled (see \code{\link{cnd_signal}()} and
-#' \code{\link{abort}()} for two common signal functions). They come
-#' in two types: exiting handlers, which jump out of the signalling
-#' context and are transferred to \code{with_handlers()} before being
-#' executed. And inplace handlers, which are executed within the
-#' signal functions.
+#' stack (see [eval_stack()]) that are called by R when a condition is
+#' signalled (see [cnd_signal()] and [abort()] for two common signal
+#' functions). They come in two types: exiting handlers, which jump
+#' out of the signalling context and are transferred to
+#' `with_handlers()` before being executed. And inplace handlers,
+#' which are executed within the signal functions.
 #'
 #' An exiting handler is taking charge of the condition. No other
 #' handler on the stack gets a chance to handle the condition. The
-#' handler is executed and \code{with_handlers()} returns the return
-#' value of that handler. On the other hand, in place handlers do not
+#' handler is executed and `with_handlers()` returns the return value
+#' of that handler. On the other hand, in place handlers do not
 #' necessarily take charge. If they return normally, they decline to
 #' handle the condition, and R looks for other handlers established on
 #' the evaluation stack. Only by jumping to an earlier call frame can
@@ -21,22 +20,21 @@
 #' established for the purpose of jumping out of the signalling
 #' function but not out of the context where the condition was
 #' signalled, which allows execution to resume normally. See
-#' \code{\link{rst_muffle}()} the \code{muffle} argument of
-#' \code{\link{inplace}()} and the \code{mufflable} argument of
-#' \code{\link{cnd_signal}()}.
+#' [rst_muffle()] the `muffle` argument of [inplace()] and the
+#' `mufflable` argument of [cnd_signal()].
 #'
-#' Exiting handlers are established first by \code{with_handlers()},
-#' and in place handlers are installed in second place. The latter
-#' handlers thus take precedence over the former.
+#' Exiting handlers are established first by `with_handlers()`, and in
+#' place handlers are installed in second place. The latter handlers
+#' thus take precedence over the former.
 #'
 #' @inheritParams with_restarts
 #' @param .expr An expression to execute in a context where new
 #'   handlers are established. The underscored version takes a quoted
 #'   expression or a quoted formula.
 #' @param ...,.handlers Named handlers. Handlers should inherit from
-#'   \code{exiting} or \code{inplace}. See \code{\link{exiting}()} and
-#'   \code{\link{inplace}()} for constructing such handlers.
-#' @seealso \code{\link{exiting}()}, \code{\link{inplace}()}.
+#'   `exiting` or `inplace`. See [exiting()] and [inplace()] for
+#'   constructing such handlers.
+#' @seealso [exiting()], [inplace()].
 #' @export
 #' @examples
 #' # Signal a condition with cnd_signal():
@@ -112,40 +110,38 @@ interp_handlers <- function(f, inplace, exiting) {
 #'
 #' There are two types of condition handlers: exiting handlers, which
 #' are thrown to the place where they have been established (e.g.,
-#' \code{\link{with_handlers}()}'s evaluation frame), and local
-#' handlers, which are executed in place (e.g., where the condition
-#' has been signalled). \code{exiting()} and \code{inplace()} create
-#' handlers suitable for \code{\link{with_handlers}()}.
+#' [with_handlers()]'s evaluation frame), and local handlers, which
+#' are executed in place (e.g., where the condition has been
+#' signalled). `exiting()` and `inplace()` create handlers suitable
+#' for [with_handlers()].
 #'
 #' A subtle point in the R language is that conditions are not thrown,
-#' handlers are. \code{\link[base]{tryCatch}()} and
-#' \code{\link{with_handlers}()} actually catch handlers rather than
-#' conditions. When a critical condition signalled with
-#' \code{\link[base]{stop}()} or \code{\link{abort}()}, R inspects the
-#' handler stack and looks for a handler that can deal with the
-#' condition. If it finds an exiting handler, it throws it to the
-#' function that established it (\code{\link{with_handlers}()}). That
-#' is, it interrupts the normal course of evaluation and jumps to
-#' \code{with_handlers()} evaluation frame (see
-#' \code{\link{eval_stack}()}), and only then and there the handler is
-#' called. On the other hand, if R finds an inplace handler, it
-#' executes it locally. The inplace handler can choose to handle the
-#' condition by jumping out of the frame (see \code{\link{rst_jump}()}
-#' or \code{\link{return_from}()}). If it returns locally, it declines
-#' to handle the condition which is passed to the next relevant
-#' handler on the stack. If no handler is found or is able to deal
-#' with the critical condition (by jumping out of the frame), R will
-#' then jump out of the faulty evaluation frame to top-level, via the
-#' abort restart (see \code{\link{rst_abort}()}).
+#' handlers are. [base::tryCatch()] and [with_handlers()] actually
+#' catch handlers rather than conditions. When a critical condition
+#' signalled with [base::stop()] or [abort()], R inspects the handler
+#' stack and looks for a handler that can deal with the condition. If
+#' it finds an exiting handler, it throws it to the function that
+#' established it ([with_handlers()]). That is, it interrupts the
+#' normal course of evaluation and jumps to `with_handlers()`
+#' evaluation frame (see [eval_stack()]), and only then and there the
+#' handler is called. On the other hand, if R finds an inplace
+#' handler, it executes it locally. The inplace handler can choose to
+#' handle the condition by jumping out of the frame (see [rst_jump()]
+#' or [return_from()]). If it returns locally, it declines to handle
+#' the condition which is passed to the next relevant handler on the
+#' stack. If no handler is found or is able to deal with the critical
+#' condition (by jumping out of the frame), R will then jump out of
+#' the faulty evaluation frame to top-level, via the abort restart
+#' (see [rst_abort()]).
 #'
 #' @param handler A handler function that takes a condition as
-#'   argument. This is passed to \code{\link{as_function}()} and can
-#'   thus be a formula describing a lambda function.
+#'   argument. This is passed to [as_function()] and can thus be a
+#'   formula describing a lambda function.
 #' @param muffle Whether to muffle the condition after executing an
 #'   inplace handler. The signalling function must have established a
 #'   muffling restart. Otherwise, an error will be issued.
-#' @seealso \code{\link{with_handlers}()} for examples,
-#'   \code{\link{restarting}()} for another kind of inplace handler.
+#' @seealso [with_handlers()] for examples, [restarting()] for another
+#'   kind of inplace handler.
 #' @export
 #' @examples
 #' # You can supply a function taking a condition as argument:
@@ -179,22 +175,21 @@ inplace <- function(handler, muffle = FALSE) {
 #' Create a restarting handler.
 #'
 #' This constructor automates the common task of creating an
-#' \code{\link{inplace}()} handler that invokes a restart.
+#' [inplace()] handler that invokes a restart.
 #'
 #' Jumping to a restart point from an inplace handler has two
 #' effects. First, the control flow jumps to wherever the restart was
-#' established, and the restart function is called (with \code{...},
-#' \code{.args} or \code{.fields} as arguments). Execution resumes
-#' from the \code{\link{with_restarts}()} call. Secondly, the transfer
-#' of the control flow out of the function that signalled the
-#' condition means that the handler has dealt with the condition. Thus
-#' the condition will not be passed on to other potential handlers
-#' established on the stack.
+#' established, and the restart function is called (with `...`,
+#' `.args` or `.fields` as arguments). Execution resumes from the
+#' [with_restarts()] call. Secondly, the transfer of the control flow
+#' out of the function that signalled the condition means that the
+#' handler has dealt with the condition. Thus the condition will not
+#' be passed on to other potential handlers established on the stack.
 #'
 #' @param .restart The name of a restart.
 #' @param .fields A character vector specifying the fields of the
 #'   condition that should be passed as arguments to the restart. If
-#'   named, the names (except empty names \code{""}) are used as
+#'   named, the names (except empty names `""`) are used as
 #'   argument names for calling the restart function. Otherwise the
 #'   the fields themselves are used as argument names.
 #' @param ...,.args Additional arguments passed on the restart
@@ -202,7 +197,7 @@ inplace <- function(handler, muffle = FALSE) {
 #'   immediately, when creating the restarting handler.
 #'
 #' @export
-#' @seealso \code{\link{inplace}()} and \code{\link{exiting}()}.
+#' @seealso [inplace()] and [exiting()].
 #' @examples
 #' # This is a restart that takes a data frame and names as arguments
 #' rst_bar <- function(df, nms) {

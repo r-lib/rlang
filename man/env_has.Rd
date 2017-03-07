@@ -8,8 +8,8 @@ env_has(env = caller_env(), nms, inherit = FALSE)
 }
 \arguments{
 \item{env}{An environment or an object with a S3 method for
-\code{env()}. If missing, the environment of the current
-evaluation frame is returned.}
+\code{env()}. If missing, the environment of the current evaluation
+frame is returned.}
 
 \item{nms}{A character vector containing the names of the bindings
 to remove.}
@@ -23,8 +23,8 @@ A logical vector as long as \code{nms}.
 \description{
 \code{env_has()} is a vectorised predicate that queries whether an
 environment owns bindings personally (with \code{inherit} set to
-\code{FALSE}, the default), or sees them in its own environment or
-in any of its parents (with \code{inherit = TRUE}).
+\code{FALSE}, the default), or sees them in its own environment or in
+any of its parents (with \code{inherit = TRUE}).
 }
 \examples{
 parent <- child_env(empty_env(), list(foo = "foo"))

@@ -10,13 +10,13 @@ has_length(x, n = NULL)
 \item{x}{A R object.}
 
 \item{n}{A specific length to test \code{x} with. If \code{NULL},
-\code{has_length()} returns \code{TRUE} if \code{x} has length
-greater than zero, and \code{FALSE} otherwise.}
+\code{has_length()} returns \code{TRUE} if \code{x} has length greater than
+zero, and \code{FALSE} otherwise.}
 }
 \description{
 This is a function for the common task of testing the length of an
 object. It checks the length of an object in a non-generic way:
-\code{\link[base]{length}()} methods are ignored.
+\code{\link[base:length]{base::length()}} methods are ignored.
 }
 \examples{
 has_length(list())

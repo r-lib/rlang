@@ -15,8 +15,7 @@ right-hand side, or a frame object from which to extract the call
 expression. If not supplied, the calling frame is used.}
 }
 \value{
-A named list of arguments. The \code{lang_tail()} version
-  returns a named pairlist (the CDR of the call).
+A named list of arguments.
 }
 \description{
 Extract arguments from a call
@@ -35,6 +34,5 @@ lang_args(call)
 lang_args_names(call)
 }
 \seealso{
-\code{\link{fn_fmls}()} and
-  \code{\link{fn_fmls_names}()}
+\code{\link[=lang_tail]{lang_tail()}}, \code{\link[=fn_fmls]{fn_fmls()}} and \code{\link[=fn_fmls_names]{fn_fmls_names()}}
 }

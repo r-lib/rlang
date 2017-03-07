@@ -10,9 +10,8 @@ cnd_signal(.cnd, ..., .msg = NULL, .call = FALSE, .mufflable = TRUE)
 cnd_abort(.cnd, ..., .msg = NULL, .call = FALSE, .mufflable = FALSE)
 }
 \arguments{
-\item{.cnd}{Either a condition object (see
-\code{\link{new_cnd}()}), or the name of a s3 class from which a
-new condition will be created.}
+\item{.cnd}{Either a condition object (see \code{\link[=new_cnd]{new_cnd()}}), or the
+name of a s3 class from which a new condition will be created.}
 
 \item{...}{Named data fields stored inside the condition object.}
 
@@ -20,51 +19,50 @@ new condition will be created.}
 
 \item{.call}{Whether to display the call of the frame in which the
 condition is signalled. If \code{TRUE}, the call is stored in the
-\code{call} field of the condition object: this field is
-displayed by R when an error is issued. The call information is
-also stored in the \code{.call} field in all cases.}
+\code{call} field of the condition object: this field is displayed by
+R when an error is issued. The call information is also stored in
+the \code{.call} field in all cases.}
 
 \item{.mufflable}{Whether to signal the condition with a muffling
-restart. This is useful to let \code{\link{inplace}()} handlers
-muffle a condition. It stops the condition from being passed to
-other handlers when the inplace handler did not jump
-elsewhere. \code{TRUE} by default for benign conditions, but
-\code{FALSE} for critical ones, since in those cases execution
-should probably not be allowed to continue normally.}
+restart. This is useful to let \code{\link[=inplace]{inplace()}} handlers muffle a
+condition. It stops the condition from being passed to other
+handlers when the inplace handler did not jump elsewhere. \code{TRUE}
+by default for benign conditions, but \code{FALSE} for critical ones,
+since in those cases execution should probably not be allowed to
+continue normally.}
 }
 \description{
 Signal a condition to handlers that have been established on the
-stack. Conditions signalled with \code{cnd_signal()} are assumed to
-be benign. Control flow can resume normally once the conditions has
+stack. Conditions signalled with \code{cnd_signal()} are assumed to be
+benign. Control flow can resume normally once the conditions has
 been signalled (if no handler jumped somewhere else on the
 evaluation stack). On the other hand, \code{cnd_abort()} treats the
 condition as critical and will jump out of the distressed call
-frame (see \code{\link{rst_abort}()}), unless a handler can deal
-with the condition.
+frame (see \code{\link[=rst_abort]{rst_abort()}}), unless a handler can deal with the
+condition.
 }
 \details{
-If \code{.critical} is \code{FALSE}, this function has no side
-effects beyond calling handlers. In particular, execution will
-continue normally after signalling the condition (unless a handler
-jumped somewhere else via \code{\link{rst_jump}()} or by being
-\code{\link{exiting}()}). If \code{.critical} is \code{TRUE}, the
-condition is signalled via \code{\link[base]{stop}()} and the
+If \code{.critical} is \code{FALSE}, this function has no side effects beyond
+calling handlers. In particular, execution will continue normally
+after signalling the condition (unless a handler jumped somewhere
+else via \code{\link[=rst_jump]{rst_jump()}} or by being \code{\link[=exiting]{exiting()}}). If \code{.critical} is
+\code{TRUE}, the condition is signalled via \code{\link[base:stop]{base::stop()}} and the
 program will terminate if no handler dealt with the condition by
 jumping out of the distressed call frame.
 
-\code{\link{inplace}()} handlers are called in turn when they
-decline to handle the condition by returning normally. However, it
-is sometimes useful for an inplace handler to produce a side effect
-(signalling another condition, displaying a message, logging
-something, etc), prevent the condition from being passed to other
-handlers, and resume execution from the place where the condition
-was signalled. The easiest way to accomplish this is by jumping to
-a restart point (see \code{\link{with_restarts}()}) established by
-the signalling function. If \code{.mufflable} is \code{TRUE}, a
-muffle restart is established. This allows inplace handler to
-muffle a signalled condition. See \code{\link{rst_muffle}()} to
-jump to a muffling restart, and the \code{muffle} argument of
-\code{\link{inplace}()} for creating a muffling handler.
+\code{\link[=inplace]{inplace()}} handlers are called in turn when they decline to handle
+the condition by returning normally. However, it is sometimes
+useful for an inplace handler to produce a side effect (signalling
+another condition, displaying a message, logging something, etc),
+prevent the condition from being passed to other handlers, and
+resume execution from the place where the condition was
+signalled. The easiest way to accomplish this is by jumping to a
+restart point (see \code{\link[=with_restarts]{with_restarts()}}) established by the signalling
+function. If \code{.mufflable} is \code{TRUE}, a muffle restart is
+established. This allows inplace handler to muffle a signalled
+condition. See \code{\link[=rst_muffle]{rst_muffle()}} to jump to a muffling restart, and
+the \code{muffle} argument of \code{\link[=inplace]{inplace()}} for creating a muffling
+handler.
 }
 \examples{
 # Creating a condition of type "foo"
@@ -128,8 +126,7 @@ fn(arg = foo(bar))
 # condition.
 }
 \seealso{
-\code{\link{abort}()}, \code{\link{warn}()} and
-  \code{\link{inform}()} for signalling typical R conditions. See
-  \code{\link{with_handlers}()} for establishing condition
-  handlers.
+\code{\link[=abort]{abort()}}, \code{\link[=warn]{warn()}} and \code{\link[=inform]{inform()}} for signalling typical
+R conditions. See \code{\link[=with_handlers]{with_handlers()}} for establishing condition
+handlers.
 }

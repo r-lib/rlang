@@ -10,30 +10,27 @@
 #' they are eclipsed by synonyms (other bindings with the same names)
 #' in child environments.
 #'
-#' \code{env()} is a S3 generic. Methods are provided for functions,
+#' `env()` is a S3 generic. Methods are provided for functions,
 #' formulas and frames. If called with a missing argument, the
-#' environment of the current evaluation frame (see
-#' \code{\link{eval_stack}()}) is returned. If you call \code{env()}
-#' with an environment, it acts as the identity function and the
-#' environment is simply returned (this helps simplifying code when
-#' writing generic functions).
+#' environment of the current evaluation frame (see [eval_stack()]) is
+#' returned. If you call `env()` with an environment, it acts as the
+#' identity function and the environment is simply returned (this
+#' helps simplifying code when writing generic functions).
 #'
-#' \code{child_env()} creates a new environment. \code{env_parent()}
-#' returns the parent environment of \code{env} if called with \code{n
-#' = 1}, the grandparent with \code{n = 2}, etc. \code{env_tail()}
-#' searches through the parents and returns the one which has
-#' \code{\link{empty_env}()} as parent.
+#' `child_env()` creates a new environment. `env_parent()` returns the
+#' parent environment of `env` if called with `n = 1`, the grandparent
+#' with `n = 2`, etc. `env_tail()` searches through the parents and
+#' returns the one which has [empty_env()] as parent.
 #'
 #' @param env An environment or an object with a S3 method for
-#'   \code{env()}. If missing, the environment of the current
-#'   evaluation frame is returned.
+#'   `env()`. If missing, the environment of the current evaluation
+#'   frame is returned.
 #' @param parent A parent environment. Can be an object with a S3
-#'   method for \code{as_env()}.
+#'   method for `as_env()`.
 #' @param data A vector with unique names which defines bindings
-#'   (pairs of name and value). See \code{\link{is_dictionary}()}.
+#'   (pairs of name and value). See [is_dictionary()].
 #' @param n The number of generations to go through.
-#' @seealso \link{scoped_env}, \code{\link{env_has}()},
-#'   \code{\link{env_assign}()}.
+#' @seealso `scoped_env`, [env_has()], [env_assign()].
 #' @export
 #' @examples
 #' # Get the environment of frame objects. If no argument is supplied,
@@ -131,7 +128,7 @@ env <- function(env = caller_env()) {
 }
 
 #' Assignment operator for environments.
-#' @param x An object with an \code{env_set} method.
+#' @param x An object with an `env_set` method.
 #' @param value The new environment.
 #' @export
 `env<-` <- function(x, value) {
@@ -179,19 +176,18 @@ env_tail <- function(env = caller_env()) {
 #' Coerce to an environment.
 #'
 #' This is a S3 generic. The default method coerces named vectors
-#' (including lists) to an environment. It first checks that \code{x}
-#' is a dictionary (see \code{\link{is_dictionary}()}). The method for
-#' unnamed strings returns the corresponding package environment (see
-#' \code{\link{pkg_env}()}).
+#' (including lists) to an environment. It first checks that `x` is a
+#' dictionary (see [is_dictionary()]). The method for unnamed strings
+#' returns the corresponding package environment (see [pkg_env()]).
 #'
-#' If \code{x} is an environment and \code{parent} is not \code{NULL},
-#' the environment is duplicated before being set a new parent. The
-#' return value is therefore a different environment than \code{x}.
+#' If `x` is an environment and `parent` is not `NULL`, the
+#' environment is duplicated before being set a new parent. The return
+#' value is therefore a different environment than `x`.
 #'
 #' @param x An object to coerce.
-#' @param parent A parent environment, \code{\link{empty_env}()} by
-#'   default. Can be ignored with a warning for methods where it does
-#'   not make sense to change the parent.
+#' @param parent A parent environment, [empty_env()] by default. Can
+#'   be ignored with a warning for methods where it does not make
+#'   sense to change the parent.
 #' @export
 #' @examples
 #' # Coerce a named vector to an environment:
@@ -254,13 +250,13 @@ as_env.default <- function(x, parent = NULL) {
 
 #' Set an environment.
 #'
-#' \code{env_set()} does not work by side effect. The input is copied
+#' `env_set()` does not work by side effect. The input is copied
 #' before being assigned an environment, and left unchanged.
 #'
 #' @param env An environment or an object with a S3 method for
-#'   \code{env_set()}.
-#' @param new_env An environment to replace \code{env} with. Can be an
-#'   object with an S method for \code{env()}.
+#'   `env_set()`.
+#' @param new_env An environment to replace `env` with. Can be an
+#'   object with an S method for `env()`.
 #' @export
 #' @examples
 #' # Create a function with a given environment:
@@ -308,9 +304,9 @@ env_set_parent <- function(env, new_env) {
 #'
 #' These functions create bindings in the specified environment. The
 #' bindings are supplied as pairs of names and values, either directly
-#' (\code{env_assign()}), in dots (\code{env_define()}), or from a
-#' dictionary (\code{env_bind()}). See \code{\link{is_dictionary}()} for
-#' the definition of a dictionary.
+#' (`env_assign()`), in dots (`env_define()`), or from a dictionary
+#' (`env_bind()`). See [is_dictionary()] for the definition of a
+#' dictionary.
 #'
 #' These functions operate by side effect. For example, if you assign
 #' bindings to a closure function, the environment of the function is
@@ -321,8 +317,8 @@ env_set_parent <- function(env, new_env) {
 #' @param x The value of the binding.
 #' @param ... Pairs of unique names and R objects used to define new
 #'   bindings.
-#' @return The input object \code{env}, with its associated
-#'   environment modified in place.
+#' @return The input object `env`, with its associated environment
+#'   modified in place.
 #' @export
 #' @examples
 #' # Create a function that uses undefined bindings:
@@ -375,17 +371,16 @@ env_define <- function(env = caller_env(), ...) {
 #'
 #' @inheritParams env_assign
 #' @param expr An expression to capture for
-#'   \code{env_assign_promise()}, or a captured expression (either
+#'   `env_assign_promise()`, or a captured expression (either
 #'   quoted or a formula) for the standard evaluation version
-#'   \code{env_assign_promise_()}. This expression is used to create a
-#'   promise in \code{env}.
+#'   `env_assign_promise_()`. This expression is used to create a
+#'   promise in `env`.
 #' @param eval_env The environment where the promise will be evaluated
-#'   when the promise gets forced. If \code{expr} is a formula, its
-#'   environment is used instead. If not a formula and \code{eval_env}
-#'   is not supplied, the promise is evaluated in the environment
-#'   where \code{env_assign_promise()} (or the underscore version) was
-#'   called.
-#' @seealso \code{\link{env_assign}()}, \code{\link{env_assign_active}()}
+#'   when the promise gets forced. If `expr` is a formula, its
+#'   environment is used instead. If not a formula and `eval_env` is
+#'   not supplied, the promise is evaluated in the environment where
+#'   `env_assign_promise()` (or the underscore version) was called.
+#' @seealso [env_assign()], [env_assign_active()]
 #' @export
 #' @examples
 #' env <- child_env()
@@ -447,16 +442,15 @@ env_assign_promise_ <- function(env = caller_env(), nm, expr,
 #' env$symbol
 #' expr_eval(quote(symbol), env)
 #' expr_eval(quote(symbol), env)
-#' @md
 env_assign_active <- function(env = caller_env(), nm, fn) {
   makeActiveBinding(nm, fn, env)
 }
 
 #' Bury bindings and define objects in new scope.
 #'
-#' \code{env_bury()} is like \code{env_bind()} but it creates the
-#' bindings in a new child environment. Note that this function does
-#' not modify its inputs.
+#' `env_bury()` is like `env_bind()` but it creates the bindings in a
+#' new child environment. Note that this function does not modify its
+#' inputs.
 #'
 #' @inheritParams env_bind
 #' @return An object associated with the new environment.
@@ -483,17 +477,16 @@ env_bury <- function(env = caller_env(), data = list()) {
 
 #' Remove bindings from an environment.
 #'
-#' \code{env_unbind()} is the complement of
-#' \code{\link{env_bind}()}. Like \code{env_has()}, it ignores the
-#' parent environments of \code{env} by default. Set \code{inherit} to
-#' \code{TRUE} to track down bindings in parent environments.
+#' `env_unbind()` is the complement of [env_bind()]. Like `env_has()`,
+#' it ignores the parent environments of `env` by default. Set
+#' `inherit` to `TRUE` to track down bindings in parent environments.
 #'
 #' @inheritParams env_assign
 #' @param nms A character vector containing the names of the bindings
 #'   to remove.
 #' @param inherit Whether to look for bindings in the parent
 #'   environments.
-#' @return The input object \code{env}, with its associated
+#' @return The input object `env`, with its associated
 #'   environment modified in place.
 #' @export
 #' @examples
@@ -525,13 +518,13 @@ env_unbind <- function(env = caller_env(), nms, inherit = FALSE) {
 
 #' Does an environment have or see bindings?
 #'
-#' \code{env_has()} is a vectorised predicate that queries whether an
-#' environment owns bindings personally (with \code{inherit} set to
-#' \code{FALSE}, the default), or sees them in its own environment or
-#' in any of its parents (with \code{inherit = TRUE}).
+#' `env_has()` is a vectorised predicate that queries whether an
+#' environment owns bindings personally (with `inherit` set to
+#' `FALSE`, the default), or sees them in its own environment or in
+#' any of its parents (with `inherit = TRUE`).
 #'
 #' @inheritParams env_unbind
-#' @return A logical vector as long as \code{nms}.
+#' @return A logical vector as long as `nms`.
 #' @export
 #' @examples
 #' parent <- child_env(empty_env(), list(foo = "foo"))
@@ -547,8 +540,8 @@ env_has <- function(env = caller_env(), nms, inherit = FALSE) {
 
 #' Get an object from an environment.
 #'
-#' \code{env_get()} extracts an object from an enviroment \code{env}.
-#' By default, it does not look in the parent environments.
+#' `env_get()` extracts an object from an enviroment `env`. By
+#' default, it does not look in the parent environments.
 #'
 #' @inheritParams env
 #' @inheritParams env_has
@@ -608,38 +601,35 @@ env_inherits <- function(x, ancestor) {
 
 #' Scope environments
 #'
-#' Scope environments are named environments which form a
-#' parent-child hierarchy called the search path. They define what
-#' objects you can see (are in scope) from your workspace. They
-#' typically are package environments, i.e. special environments
-#' containing all exported functions from a package (and whose parent
-#' environment is the package namespace, which also contains
-#' unexported functions). Package environments are attached to the
-#' search path with \code{\link[base]{library}()}. Note however that
-#' any environment can be attached to the search path, for example
-#' with the unrecommended \code{\link[base]{attach}()} base function
-#' which transforms vectors to scoped environments.
+#' Scope environments are named environments which form a parent-child
+#' hierarchy called the search path. They define what objects you can
+#' see (are in scope) from your workspace. They typically are package
+#' environments, i.e. special environments containing all exported
+#' functions from a package (and whose parent environment is the
+#' package namespace, which also contains unexported
+#' functions). Package environments are attached to the search path
+#' with [base::library()]. Note however that any environment can be
+#' attached to the search path, for example with the unrecommended
+#' [base::attach()] base function which transforms vectors to scoped
+#' environments.
 #'
 #' Scope environments form a chain with newly attached environments as
 #' the childs of earlier ones. However, the global environment, where
 #' everything you define at top-level ends up, is pinned as the head
 #' of the linked list. Likewise, the base package environment is
 #' always the tail of the chain. You can obtain those environments
-#' with \code{global_env()} and \code{base_env()} respectively. The
-#' global environment is always the environment of the very first
-#' evaluation frame on the stack, see \code{\link{global_frame}()} and
-#' \code{\link{eval_stack}()}.
+#' with `global_env()` and `base_env()` respectively. The global
+#' environment is always the environment of the very first evaluation
+#' frame on the stack, see [global_frame()] and [eval_stack()].
 #'
-#' You can list all scoped environments with
-#' \code{scoped_names()}. With \code{is_scoped()} you can check
-#' whether a named environment is on the search
-#' path. \code{pkg_env()} returns the scope environment of
-#' packages if they are attached to the search path, and throws an
-#' error otherwise.
+#' You can list all scoped environments with `scoped_names()`. With
+#' `is_scoped()` you can check whether a named environment is on the
+#' search path. `pkg_env()` returns the scope environment of packages
+#' if they are attached to the search path, and throws an error
+#' otherwise.
 #'
 #' @param nm The name of an environment attached to the search
-#'   path. Call \code{\link[base]{search}()} to see what is currently
-#'   on the path.
+#'   path. Call [base::search()] to see what is currently on the path.
 #' @export
 #' @examples
 #' # List the names of scoped environments:
@@ -707,9 +697,9 @@ global_env <- globalenv
 
 #' Get the empty environment.
 #'
-#' The empty environment is the only one that does not have a
-#' parent. It is always used as the tail of a scope chain such as the
-#' search path (see \code{\link{scoped_names}()}).
+#' The empty environment is the only one that does not have a parent.
+#' It is always used as the tail of a scope chain such as the search
+#' path (see [scoped_names()]).
 #'
 #' @export
 #' @examples
@@ -720,14 +710,14 @@ empty_env <- emptyenv
 #' Get the namespace of a package.
 #'
 #' Namespaces are the environment where all the functions of a package
-#' live. The parent environments of namespaces are the \code{imports}
+#' live. The parent environments of namespaces are the `imports`
 #' environments, which contain all the functions imported from other
 #' packages.
-#' @param pkg The name of a package. If \code{NULL}, the surrounding
+#' @param pkg The name of a package. If `NULL`, the surrounding
 #'   namespace is returned, or an error is issued if not called within
 #'   a namespace. If a function, the enclosure of that function is
 #'   checked.
-#' @seealso \code{\link{pkg_env}()}
+#' @seealso [pkg_env()]
 #' @export
 ns_env <- function(pkg = NULL) {
   if (is_null(pkg)) {
@@ -768,8 +758,7 @@ ns_env_name <- function(pkg = NULL) {
 #' If installed, the package will be loaded but not attached.
 #'
 #' @param pkg The name of a package.
-#' @return \code{TRUE} if the package is installed, \code{FALSE}
-#'   otherwise.
+#' @return `TRUE` if the package is installed, `FALSE` otherwise.
 #' @export
 #' @examples
 #' is_installed("utils")
@@ -781,22 +770,21 @@ is_installed <- function(pkg) {
 
 #' Evaluate an expression within a given environment.
 #'
-#' These functions evaluate \code{expr} within a given environment
-#' (\code{env} for \code{with_env()}, or the child of the current
-#' environment for \code{locally}). They rely on
-#' \code{\link{expr_eval}()} which features a lighter evaluation
-#' mechanism than base R \code{\link[base]{eval}()}, and which also
-#' has some subtle implications when evaluting stack sensitive
-#' functions (see help for \code{\link{expr_eval}()}).
+#' These functions evaluate `expr` within a given environment (`env`
+#' for `with_env()`, or the child of the current environment for
+#' `locally`). They rely on [expr_eval()] which features a lighter
+#' evaluation mechanism than base R [base::eval()], and which also has
+#' some subtle implications when evaluting stack sensitive functions
+#' (see help for [expr_eval()]).
 #'
-#' \code{locally()} is equivalent to the base function
-#' \code{\link[base]{local}()} but it produces a much cleaner
+#' `locally()` is equivalent to the base function
+#' [base::local()] but it produces a much cleaner
 #' evaluation stack, and has stack-consistent semantics. It is thus
 #' more suited for experimenting with the R language.
 #'
 #' @inheritParams expr_eval
-#' @param env An environment within which to evaluate \code{expr}. Can
-#'   be an object with an \code{\link{env}()} method.
+#' @param env An environment within which to evaluate `expr`. Can be
+#'   an object with an [env()] method.
 #' @export
 #' @examples
 #' # with_env() is handy to create formulas with a given environment:

@@ -19,9 +19,9 @@ str_encoding(x)
 \item{x}{A string or character vector.}
 
 \item{encoding}{Either an encoding specially handled by R
-(\code{"UTF-8"} or \code{"latin1"}), \code{"bytes"} to inhibit
-all encoding conversions, or \code{"unknown"} if the string
-should be treated as encoded in the current locale codeset.}
+(\code{"UTF-8"} or \code{"latin1"}), \code{"bytes"} to inhibit all encoding
+conversions, or \code{"unknown"} if the string should be treated as
+encoded in the current locale codeset.}
 }
 \description{
 R has specific support for UTF-8 and latin1 encoded strings. This
@@ -31,9 +31,9 @@ processing, and return these strings without having to convert them
 back to the native encoding. However, it is important to make sure
 the encoding mark has not been lost in the process, otherwise the
 output will be treated as if encoded according to the current
-locale (see \code{\link{set_utf8_locale}()} for documentation about
-locale codesets), which is not appropriate if it does not coincide
-with the actual encoding. In those situations, you can use these
+locale (see \code{\link[=set_utf8_locale]{set_utf8_locale()}} for documentation about locale
+codesets), which is not appropriate if it does not coincide with
+the actual encoding. In those situations, you can use these
 functions to ensure an encoding mark in your strings.
 }
 \examples{
@@ -72,7 +72,6 @@ as_bytes(names(c(bad)))
 }
 }
 \seealso{
-\code{\link{set_utf8_locale}()} about the effects of the
-  locale, and \code{\link{as_utf8_string}()} about encoding
-  conversion.
+\code{\link[=set_utf8_locale]{set_utf8_locale()}} about the effects of the locale, and
+\code{\link[=as_utf8_string]{as_utf8_string()}} about encoding conversion.
 }

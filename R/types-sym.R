@@ -1,14 +1,13 @@
 #' Create a symbol or list of symbols.
 #'
 #' These functions take strings as input and turn them into symbols.
-#' Contrarily to \code{as.name()}, they convert the strings to the
-#' native encoding beforehand. This is necessary because symbols
-#' remove silently the encoding mark of strings (see
-#' \code{\link{str_set_encoding}()}).
+#' Contrarily to `as.name()`, they convert the strings to the native
+#' encoding beforehand. This is necessary because symbols remove
+#' silently the encoding mark of strings (see [str_set_encoding()]).
 #'
 #' @param x A string or list of strings.
-#' @return A symbol for \code{symbol()} and a list of symbols for
-#'   \code{symbols()}.
+#' @return A symbol for `symbol()` and a list of symbols for
+#'   `symbols()`.
 #' @useDynLib rlang rlang_symbol
 #' @export
 symbol <- function(x) {

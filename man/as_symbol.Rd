@@ -16,8 +16,8 @@ as_name(x)
 \item{x}{An object to coerce}
 }
 \value{
-\code{as_symbol()} and \code{as_lang()} return a symbol or
-  a call. \code{as_name()} returns a string.
+\code{as_symbol()} and \code{as_lang()} return a symbol or a
+call. \code{as_name()} returns a string.
 }
 \description{
 These coercing functions can transform names, calls, formulas, and

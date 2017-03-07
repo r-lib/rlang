@@ -14,29 +14,29 @@ env_define(env = caller_env(), ...)
 }
 \arguments{
 \item{env}{An environment or an object with a S3 method for
-\code{env()}. If missing, the environment of the current
-evaluation frame is returned.}
+\code{env()}. If missing, the environment of the current evaluation
+frame is returned.}
 
 \item{nm}{The name of the binding.}
 
 \item{x}{The value of the binding.}
 
 \item{data}{A vector with unique names which defines bindings
-(pairs of name and value). See \code{\link{is_dictionary}()}.}
+(pairs of name and value). See \code{\link[=is_dictionary]{is_dictionary()}}.}
 
 \item{...}{Pairs of unique names and R objects used to define new
 bindings.}
 }
 \value{
-The input object \code{env}, with its associated
-  environment modified in place.
+The input object \code{env}, with its associated environment
+modified in place.
 }
 \description{
 These functions create bindings in the specified environment. The
 bindings are supplied as pairs of names and values, either directly
-(\code{env_assign()}), in dots (\code{env_define()}), or from a
-dictionary (\code{env_bind()}). See \code{\link{is_dictionary}()} for
-the definition of a dictionary.
+(\code{env_assign()}), in dots (\code{env_define()}), or from a dictionary
+(\code{env_bind()}). See \code{\link[=is_dictionary]{is_dictionary()}} for the definition of a
+dictionary.
 }
 \details{
 These functions operate by side effect. For example, if you assign

@@ -40,5 +40,5 @@ lang_head(lang)
 lang_tail(lang)
 }
 \seealso{
-\link{pairlist}
+\link{pairlist}, \code{\link[=lang_args]{lang_args()}}
 }

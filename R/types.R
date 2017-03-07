@@ -1,27 +1,29 @@
 #' Type predicates
 #'
 #' These type predicates aim to make type testing in R more
-#' consistent. They are wrappers around \code{\link{typeof}}, so
-#' operate at a level beneath S3/S4 etc.
+#' consistent. They are wrappers around [base::typeof()], so operate
+#' at a level beneath S3/S4 etc.
 #'
-#' Compare to base R functions:
-#' \itemize{
-
-#'   \item The predicates for vectors include the \code{n} argument
-#'     for pattern-matching on the vector length.
-#'   \item Unlike \code{is.atomic()}, \code{is_atomic()} does not
-#'     return \code{TRUE} for \code{NULL}.
-#'   \item Unlike \code{is.vector()}, \code{is_vector()} test if an
-#'     object is an atomic vector or a list. \code{is.vector} checks
-#'     for the presence of attributes (other than name).
-#'   \item \code{is_function()} returns \code{TRUE} only for regular
-#'     functions, not special or primitive functions.
-#' }
+#' Compared to base R functions:
+#'
+#' * The predicates for vectors include the `n` argument for
+#'   pattern-matching on the vector length.
+#'
+#' * Unlike `is.atomic()`, `is_atomic()` does not return `TRUE` for
+#'   `NULL`.
+#'
+#' * Unlike `is.vector()`, `is_vector()` test if an object is an
+#'   atomic vector or a list. `is.vector` checks for the presence of
+#'   attributes (other than name).
+#'
+#' * `is_function()` returns `TRUE` only for regular functions, not
+#'   special or primitive functions.
+#'
 #' @param x Object to be tested.
 #' @param n Expected length of a vector.
 #' @param encoding Expected encoding of a string or character
-#'   vector. One of \code{UTF-8}, \code{latin1}, or \code{unknown}.
-#' @seealso \link{bare-type-predicates} \link{scalar-type-predicates}
+#'   vector. One of `UTF-8`, `latin1`, or `unknown`.
+#' @seealso [bare-type-predicates] [scalar-type-predicates]
 #' @name type-predicates
 NULL
 
@@ -101,7 +103,7 @@ is_null <- function(x) {
 #' "scalar", that is, of length 1.
 #' @inheritParams type-predicates
 #' @param x object to be tested.
-#' @seealso \link{type-predicates} \link{bare-type-predicates}
+#' @seealso [type-predicates], [bare-type-predicates]
 #' @name scalar-type-predicates
 NULL
 
@@ -154,21 +156,20 @@ is_scalar_bytes <- is_scalar_raw
 
 #' Bare type predicates
 #'
-#' These predicates check for a given type but only return \code{TRUE}
-#' for bare R objects. Bare objects have no class attributes. For
-#' example, a data frame is a list, but not a bare list.
+#' These predicates check for a given type but only return `TRUE` for
+#' bare R objects. Bare objects have no class attributes. For example,
+#' a data frame is a list, but not a bare list.
 #'
-#' \itemize{
-#'   \item The predicates for vectors include the \code{n} argument
-#'     for pattern-matching on the vector length.
-#'   \item Like \code{\link{is_atomic}()} and unlike base R
-#'     \code{is.atomic()}, \code{is_bare_atomic()} does not return
-#'     \code{TRUE} for \code{NULL}.
-#'   \item Unlike base R \code{is.numeric()}, \code{is_bare_double()}
-#'     only returns \code{TRUE} for floating point numbers.
-#' }
+#' * The predicates for vectors include the `n` argument for
+#'   pattern-matching on the vector length.
+#'
+#' * Like [is_atomic()] and unlike base R `is.atomic()`,
+#'   `is_bare_atomic()` does not return `TRUE` for `NULL`.
+#'
+#' * Unlike base R `is.numeric()`, `is_bare_double()` only returns
+#'   `TRUE` for floating point numbers.
 #' @inheritParams type-predicates
-#' @seealso \link{type-predicates} \link{scalar-type-predicates}
+#' @seealso [type-predicates], [scalar-type-predicates]
 #' @name bare-type-predicates
 NULL
 
@@ -240,8 +241,8 @@ is_empty <- function(x) length(x) == 0
 
 #' Is object an environment?
 #'
-#' \code{is_bare_env()} tests whether \code{x} is an environment
-#' without a s3 or s4 class.
+#' `is_bare_env()` tests whether `x` is an environment without a s3 or
+#' s4 class.
 #'
 #' @inheritParams is_empty
 #' @export
@@ -257,7 +258,7 @@ is_bare_env <- function(x) {
 #' Is object identical to TRUE or FALSE?
 #'
 #' These functions bypass R's automatic conversion rules and check
-#' that \code{x} is literally \code{TRUE} or \code{FALSE}.
+#' that `x` is literally `TRUE` or `FALSE`.
 #' @inheritParams is_empty
 #' @export
 #' @examples
@@ -280,11 +281,11 @@ is_false <- function(x) {
 #' These predicates check whether R considers a number vector to be
 #' integer-like, according to its own tolerance check (which is in
 #' fact delegated to the C library). This function is not adapted to
-#' data analysis, see the help for \code{\link[base]{is.integer}()}
-#' for examples of how to check for whole numbers.
+#' data analysis, see the help for [base::is.integer()] for examples
+#' of how to check for whole numbers.
 #'
-#' @seealso \code{\link{is_bare_numeric}()} for testing whether an
-#'   object is a base numeric type (a bare double or integer vector).
+#' @seealso [is_bare_numeric()] for testing whether an object is a
+#'   base numeric type (a bare double or integer vector).
 #' @inheritParams type-predicates
 #' @export
 #' @examples
@@ -333,7 +334,6 @@ is_scalar_integerish <- function(x) {
 #' type_of(`$`)
 #'
 #' type_of(quote(base::list()))
-#' @md
 type_of <- function(x) {
   type <- typeof(x)
   if (is_quosure(x)) {
@@ -412,7 +412,6 @@ type_of <- function(x) {
 #'   primitive = "foo",
 #'   "default"
 #' )
-#' @md
 switch_type <- function(.x, ...) {
     switch(type_of(.x), ...)
 }
@@ -502,7 +501,6 @@ abort_coercion <- function(x, to) {
 #'
 #' call
 #' lang_type_of(call)
-#' @md
 switch_lang <- function(.x, ...) {
   switch(lang_type_of(.x), ...)
 }

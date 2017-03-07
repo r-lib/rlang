@@ -17,27 +17,25 @@ is_binary_lang(x, name = NULL)
 extracted.}
 
 \item{name}{An optional name that the call should match. It is
-passed to \code{\link{as_symbol}()} before matching. This argument
-is vectorised and you can supply a vector of names to match. In
-this case, \code{is_lang()} returns \code{TRUE} if at least one
-name matches.}
+passed to \code{\link[=as_symbol]{as_symbol()}} before matching. This argument is
+vectorised and you can supply a vector of names to match. In this
+case, \code{is_lang()} returns \code{TRUE} if at least one name matches.}
 
 \item{n}{An optional number of arguments that the call should
 match.}
 }
 \description{
-This function tests if \code{x} is a call. This is a
-pattern-matching predicate that will return \code{FALSE} if
-\code{name} and \code{n} are supplied and the call does not match
-these properties. \code{is_unary_lang()} and
+This function tests if \code{x} is a call. This is a pattern-matching
+predicate that will return \code{FALSE} if \code{name} and \code{n} are supplied
+and the call does not match these properties. \code{is_unary_lang()} and
 \code{is_binary_lang()} hardcode \code{n} to 1 and 2.
 }
 \details{
-Note that the base type of calls is \code{language}, while
-\code{call} is the old S mode. While it is usually better to avoid
-using S terminology, it would probably be even more confusing to
-refer to "calls" as "language". We still use \code{lang} as prefix
-or suffix for consistency.
+Note that the base type of calls is \code{language}, while \code{call} is the
+old S mode. While it is usually better to avoid using S
+terminology, it would probably be even more confusing to refer to
+"calls" as "language". We still use \code{lang} as prefix or suffix for
+consistency.
 }
 \examples{
 is_lang(quote(foo(bar)))
@@ -78,5 +76,5 @@ is_lang(~foo(bar), c("bar", "foo"))
 is_lang(~base::list, c("::", ":::", "$", "@"))
 }
 \seealso{
-\code{\link{is_expr}()}
+\code{\link[=is_expr]{is_expr()}}
 }

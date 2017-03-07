@@ -1,7 +1,7 @@
 #' Create a raw vector.
 #'
 #' This is a convenient raw vector constructor. It takes integerish
-#' input (see \code{\link{is_integerish}()}).
+#' input (see [is_integerish()]).
 #'
 #' @param x An integerish vector of bytes.
 #' @export

@@ -19,7 +19,7 @@ name of a function in scope of \code{.env}.}
 \item{.bury}{A character vector of length 2. The first string
 specifies which name should the function have in the call
 recorded in the evaluation stack. The second string specifies a
-prefix for the argument names. Set \code{.bury} to FALSE if you
+prefix for the argument names. Set \code{.bury} to \code{FALSE} if you
 prefer to inline the function and its arguments in the call.}
 }
 \description{
@@ -28,14 +28,13 @@ powerful alternative is to call a function with a list of arguments
 assembled programmatically. This is the purpose of \code{invoke()}.
 }
 \details{
-Technically, \code{invoke()} is basically a version of
-\code{\link[base]{do.call}()} that creates cleaner call traces
-because it does not inline the function and the arguments in the
-call (see examples). To achieve this, \code{invoke()} creates a
-child environment of \code{.env} with \code{.fn} and all arguments
-bound to new symbols (see \code{\link{env_bury}()}). It then uses
-the same strategy as \code{\link{expr_eval}()} to evaluate with
-minimal noise.
+Technically, \code{invoke()} is basically a version of \code{\link[base:do.call]{base::do.call()}}
+that creates cleaner call traces because it does not inline the
+function and the arguments in the call (see examples). To achieve
+this, \code{invoke()} creates a child environment of \code{.env} with \code{.fn}
+and all arguments bound to new symbols (see \code{\link[=env_bury]{env_bury()}}). It then
+uses the same strategy as \code{\link[=expr_eval]{expr_eval()}} to evaluate with minimal
+noise.
 }
 \examples{
 # invoke() has the same purpose as do.call():

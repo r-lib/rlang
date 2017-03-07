@@ -8,8 +8,8 @@ env_get(env = caller_env(), nm, inherit = FALSE)
 }
 \arguments{
 \item{env}{An environment or an object with a S3 method for
-\code{env()}. If missing, the environment of the current
-evaluation frame is returned.}
+\code{env()}. If missing, the environment of the current evaluation
+frame is returned.}
 
 \item{nm}{The name of a binding.}
 
@@ -20,8 +20,8 @@ environments.}
 An object if it exists. Otherwise, throws an error.
 }
 \description{
-\code{env_get()} extracts an object from an enviroment \code{env}.
-By default, it does not look in the parent environments.
+\code{env_get()} extracts an object from an enviroment \code{env}. By
+default, it does not look in the parent environments.
 }
 \examples{
 parent <- child_env(empty_env(), list(foo = "foo"))

@@ -12,8 +12,8 @@ set_names(x, nm = x)
 \item{nm}{Vector of names, the same length as \code{x}.}
 }
 \description{
-This is a snake case wrapper for \code{\link[stats]{setNames}},
-with tweaked defaults, and stricter argument checking.
+This is a snake case wrapper for \code{\link[stats:setNames]{stats::setNames()}}, with tweaked
+defaults, and stricter argument checking.
 }
 \examples{
 set_names(1:4, c("a", "b", "c", "d"))

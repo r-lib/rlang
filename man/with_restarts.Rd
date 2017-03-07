@@ -16,22 +16,20 @@ on the stack.}
 \item{..., .restarts}{Named restart functions. The name is taken as
 the restart name and the function is executed after the jump.}
 
-\item{.env}{The environment in which to evaluate a captured
-\code{expr}.}
+\item{.env}{The environment in which to evaluate a captured \code{expr}.}
 }
 \description{
 Restart points are named functions that are established with
-\code{with_restarts()}. Once established, you can interrupt the
-normal execution of R code, jump to the restart, and resume
-execution from there. Each restart is established along with a
-restart function that is executed after the jump and that provides
-a return value from the establishing point (i.e., a return value
-for \code{with_restarts()}).
+\code{with_restarts()}. Once established, you can interrupt the normal
+execution of R code, jump to the restart, and resume execution from
+there. Each restart is established along with a restart function
+that is executed after the jump and that provides a return value
+from the establishing point (i.e., a return value for
+\code{with_restarts()}).
 }
 \details{
 Restarts are not the only way of jumping to a previous call frame
-(see \code{\link{return_from}()} or
-\code{\link{return_to}()}). However, they have the advantage of
+(see \code{\link[=return_from]{return_from()}} or \code{\link[=return_to]{return_to()}}). However, they have the advantage of
 being callable by name once established.
 }
 \examples{
@@ -119,7 +117,6 @@ with_handlers(fn(FALSE), default_empty_string = rst_handler)
 with_handlers(fn(FALSE), default_empty_string = restarting("rst_null"))
 }
 \seealso{
-\code{\link{return_from}()} and \code{\link{return_to}()}
-  for a more flexible way of performing a non-local jump to an
-  arbitrary call frame.
+\code{\link[=return_from]{return_from()}} and \code{\link[=return_to]{return_to()}} for a more flexible way
+of performing a non-local jump to an arbitrary call frame.
 }
