@@ -13,7 +13,7 @@ is looked up in the calling environment.}
 \description{
 Convert an object to a closure. This is especially useful to
 normalise primitive functions to a proper closure (see
-\code{\link{is_function}()} about primitive functions).
+\code{\link[=is_function]{is_function()}} about primitive functions).
 }
 \examples{
 as_closure(list)

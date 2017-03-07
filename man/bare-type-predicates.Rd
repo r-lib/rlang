@@ -46,21 +46,20 @@ is_bare_bytes(x, n = NULL)
 vector. One of \code{UTF-8}, \code{latin1}, or \code{unknown}.}
 }
 \description{
-These predicates check for a given type but only return \code{TRUE}
-for bare R objects. Bare objects have no class attributes. For
-example, a data frame is a list, but not a bare list.
+These predicates check for a given type but only return \code{TRUE} for
+bare R objects. Bare objects have no class attributes. For example,
+a data frame is a list, but not a bare list.
 }
 \details{
 \itemize{
-  \item The predicates for vectors include the \code{n} argument
-    for pattern-matching on the vector length.
-  \item Like \code{\link{is_atomic}()} and unlike base R
-    \code{is.atomic()}, \code{is_bare_atomic()} does not return
-    \code{TRUE} for \code{NULL}.
-  \item Unlike base R \code{is.numeric()}, \code{is_bare_double()}
-    only returns \code{TRUE} for floating point numbers.
+\item The predicates for vectors include the \code{n} argument for
+pattern-matching on the vector length.
+\item Like \code{\link[=is_atomic]{is_atomic()}} and unlike base R \code{is.atomic()},
+\code{is_bare_atomic()} does not return \code{TRUE} for \code{NULL}.
+\item Unlike base R \code{is.numeric()}, \code{is_bare_double()} only returns
+\code{TRUE} for floating point numbers.
 }
 }
 \seealso{
-\link{type-predicates} \link{scalar-type-predicates}
+\link{type-predicates}, \link{scalar-type-predicates}
 }

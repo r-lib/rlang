@@ -9,8 +9,8 @@ rst_abort()
 \description{
 The abort restart is the only restart that is established at top
 level. It is used by R as a top-level target, most notably when an
-error is issued (see \code{\link{abort}()}) that no handler is able
-to deal with (see \code{\link{with_handlers}()}).
+error is issued (see \code{\link[=abort]{abort()}}) that no handler is able
+to deal with (see \code{\link[=with_handlers]{with_handlers()}}).
 }
 \examples{
 # The `abort` restart is a bit special in that it is always
@@ -53,6 +53,5 @@ cat("`out` has now become:", out, "\\n")
 }
 }
 \seealso{
-\code{\link{rst_jump}()}, \code{\link{abort}()} and
-  \code{\link{cnd_abort}()}.
+\code{\link[=rst_jump]{rst_jump()}}, \code{\link[=abort]{abort()}} and \code{\link[=cnd_abort]{cnd_abort()}}.
 }

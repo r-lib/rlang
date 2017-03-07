@@ -34,10 +34,10 @@ new_raw(.n = 0, ..., .attrs = list())
 }
 \description{
 These functions construct vectors of given length, with attributes
-specified via dots. Except for \code{new_lst()} and
-\code{new_raw()}, the empty vectors are filled with typed
-\link{missing} values. This is in contrast to the base function
-\code{\link[base]{vector}()} which creates zero-filled vectors.
+specified via dots. Except for \code{new_lst()} and \code{new_raw()}, the
+empty vectors are filled with typed \link{missing} values. This is in
+contrast to the base function \code{\link[base:vector]{base::vector()}} which creates
+zero-filled vectors.
 }
 \examples{
 new_lst(10)

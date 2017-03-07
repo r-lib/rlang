@@ -27,14 +27,14 @@ f_env(x) <- value
 \item{value}{The value to replace with.}
 }
 \value{
-\code{f_rhs} and \code{f_lhs} return language objects (i.e.
-  atomic vectors of length 1, a name, or a call). \code{f_env}
-  returns an environment.
+\code{f_rhs} and \code{f_lhs} return language objects (i.e.  atomic
+vectors of length 1, a name, or a call). \code{f_env} returns an
+environment.
 }
 \description{
-\code{f_rhs} extracts the righthand side, \code{f_lhs} extracts the
-lefthand side, and \code{f_env} extracts the environment. All functions
-throw an error if \code{f} is not a formula.
+\code{f_rhs} extracts the righthand side, \code{f_lhs} extracts the lefthand
+side, and \code{f_env} extracts the environment. All functions throw an
+error if \code{f} is not a formula.
 }
 \examples{
 f_rhs(~ 1 + 2 + 3)

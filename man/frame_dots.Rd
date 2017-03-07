@@ -25,14 +25,13 @@ frame is used.}
 direct arguments.}
 }
 \description{
-\code{frame_dots()} extracts dots from a frame and
-\code{dots()} extracts dots from its arguments. The
-\code{_node()} versions return a pairlist that is ready to be
-spliced into a call, while the regular versions return a regular
-list that is usually easier to work with.
+\code{frame_dots()} extracts dots from a frame and \code{dots()} extracts
+dots from its arguments. The \code{_node()} versions return a pairlist
+that is ready to be spliced into a call, while the regular versions
+return a regular list that is usually easier to work with.
 }
 \details{
-\code{frame_dots()} and \code{frame_dots_node()} never fail, even if
-the frame does not contain dots. Instead they return an empty list
-or \code{NULL} respectively.
+\code{frame_dots()} and \code{frame_dots_node()} never fail, even if the
+frame does not contain dots. Instead they return an empty list or
+\code{NULL} respectively.
 }

@@ -10,8 +10,7 @@ is_installed(pkg)
 \item{pkg}{The name of a package.}
 }
 \value{
-\code{TRUE} if the package is installed, \code{FALSE}
-  otherwise.
+\code{TRUE} if the package is installed, \code{FALSE} otherwise.
 }
 \description{
 This checks that a package is installed with minimal side effects.

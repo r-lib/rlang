@@ -1,27 +1,24 @@
 #' Establish a restart point on the stack.
 #'
 #' Restart points are named functions that are established with
-#' \code{with_restarts()}. Once established, you can interrupt the
-#' normal execution of R code, jump to the restart, and resume
-#' execution from there. Each restart is established along with a
-#' restart function that is executed after the jump and that provides
-#' a return value from the establishing point (i.e., a return value
-#' for \code{with_restarts()}).
+#' `with_restarts()`. Once established, you can interrupt the normal
+#' execution of R code, jump to the restart, and resume execution from
+#' there. Each restart is established along with a restart function
+#' that is executed after the jump and that provides a return value
+#' from the establishing point (i.e., a return value for
+#' `with_restarts()`).
 #'
 #' Restarts are not the only way of jumping to a previous call frame
-#' (see \code{\link{return_from}()} or
-#' \code{\link{return_to}()}). However, they have the advantage of
+#' (see [return_from()] or [return_to()]). However, they have the advantage of
 #' being callable by name once established.
 #'
 #' @param .expr An expression to execute with new restarts established
 #'   on the stack.
 #' @param ...,.restarts Named restart functions. The name is taken as
 #'   the restart name and the function is executed after the jump.
-#' @param .env The environment in which to evaluate a captured
-#'   \code{expr}.
-#' @seealso \code{\link{return_from}()} and \code{\link{return_to}()}
-#'   for a more flexible way of performing a non-local jump to an
-#'   arbitrary call frame.
+#' @param .env The environment in which to evaluate a captured `expr`.
+#' @seealso [return_from()] and [return_to()] for a more flexible way
+#'   of performing a non-local jump to an arbitrary call frame.
 #' @export
 #' @examples
 #' # Restarts are not the only way to jump to a previous frame, but
@@ -121,18 +118,17 @@ with_restarts_ <- function(.expr, .restarts = list(), .env = NULL) {
 
 #' Restarts utilities.
 #'
-#' Restarts are named jumping points established by
-#' \code{\link{with_restarts}()}. \code{rst_list()} returns the names
-#' of all restarts currently established. \code{rst_exists()} checks
-#' if a given restart is established. \code{rst_jump()} stops
-#' execution of the current function and jumps to a restart point. If
-#' the restart does not exist, an error is thrown.
-#' \code{rst_maybe_jump()} first checks that a restart exists before
-#' jumping.
+#' Restarts are named jumping points established by [with_restarts()].
+#' `rst_list()` returns the names of all restarts currently
+#' established. `rst_exists()` checks if a given restart is
+#' established. `rst_jump()` stops execution of the current function
+#' and jumps to a restart point. If the restart does not exist, an
+#' error is thrown.  `rst_maybe_jump()` first checks that a restart
+#' exists before jumping.
 #'
 #' @param .restart The name of a restart.
 #' @param ...,.args Arguments passed on to the restart function.
-#' @seealso \code{\link{with_restarts}()}, \code{\link{rst_muffle}()}.
+#' @seealso [with_restarts()], [rst_muffle()].
 #' @export
 rst_list <- function() {
   computeRestarts()
@@ -161,11 +157,10 @@ rst_maybe_jump <- function(.restart, ..., .args = list()) {
 #'
 #' The abort restart is the only restart that is established at top
 #' level. It is used by R as a top-level target, most notably when an
-#' error is issued (see \code{\link{abort}()}) that no handler is able
-#' to deal with (see \code{\link{with_handlers}()}).
+#' error is issued (see [abort()]) that no handler is able
+#' to deal with (see [with_handlers()]).
 #'
-#' @seealso \code{\link{rst_jump}()}, \code{\link{abort}()} and
-#'   \code{\link{cnd_abort}()}.
+#' @seealso [rst_jump()], [abort()] and [cnd_abort()].
 #' @export
 #' @examples
 #' # The `abort` restart is a bit special in that it is always
@@ -215,16 +210,16 @@ rst_abort <- function() {
 #' Muffle restarts are established at the same location as where a
 #' condition is signalled. They are useful for two non-exclusive
 #' purposes: muffling signalling functions and muffling conditions. In
-#' the first case, \code{rst_muffle()} prevents any further side
-#' effects of a signalling function (a warning or message from being
-#' displayed, an aborting jump to top level, etc). In the second case,
-#' the muffling jump prevents a condition from being passed on to
-#' other handlers. In both cases, execution resumes normally from the
-#' point where the condition was signalled.
+#' the first case, `rst_muffle()` prevents any further side effects of
+#' a signalling function (a warning or message from being displayed,
+#' an aborting jump to top level, etc). In the second case, the
+#' muffling jump prevents a condition from being passed on to other
+#' handlers. In both cases, execution resumes normally from the point
+#' where the condition was signalled.
 #'
 #' @param c A condition to muffle.
-#' @seealso The \code{muffle} argument of \code{\link{inplace}()}, and
-#'   the \code{mufflable} argument of \code{\link{cnd_signal}()}.
+#' @seealso The `muffle` argument of [inplace()], and the `mufflable`
+#'   argument of [cnd_signal()].
 #' @export
 #' @examples
 #' side_effect <- function() cat("side effect!\n")

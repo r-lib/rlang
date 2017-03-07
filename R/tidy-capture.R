@@ -10,9 +10,9 @@
 #' at the call site are available when the expression gets
 #' evaluated. It is thus necessary to capture not only the R
 #' expression supplied as argument in a function call, but also the
-#' evaluation environment of the call site. \code{tidy_capture()} and
-#' \code{tidy_quotes()} make it easy to record this information
-#' within formulas.
+#' evaluation environment of the call site. `tidy_capture()` and
+#' `tidy_quotes()` make it easy to record this information within
+#' formulas.
 #'
 #' @section Non-standard evaluation:
 #'
@@ -27,15 +27,15 @@
 #'   NSE. The approach we recommend in rlang is to always create two
 #'   versions of such functions: a NSE version that captures
 #'   arguments, and another that work with captured arguments with
-#'   standard evaluation rules (see \code{decorate_nse()}). Providing
-#'   a standard evaluation version simplifies programming tasks. Also,
+#'   standard evaluation rules (see `decorate_nse()`). Providing a
+#'   standard evaluation version simplifies programming tasks. Also,
 #'   it makes it possible to forward named arguments across function
-#'   calls (see below). See \code{vignette("nse")} for more
-#'   information on NSE.
+#'   calls (see below). See `vignette("nse")` for more information on
+#'   NSE.
 #'
-#'   In addition, note that \code{tidy_capture()} always interpolates
-#'   its input to facilitate programming with NSE functions. See
-#'   \code{\link{tidy_interp}()} and \code{\link{tidy_quote}()}.
+#'   In addition, note that `tidy_capture()` always interpolates its
+#'   input to facilitate programming with NSE functions. See
+#'   [tidy_interp()] and [tidy_quote()].
 #'
 #' @section Forwarding arguments:
 #'
@@ -44,33 +44,32 @@
 #'   captured. For this reason, named arguments should be captured by
 #'   an NSE function at the outermost level, and then passed around to
 #'   SE versions that handle pre-captured arguments. See
-#'   \code{\link{arg_inspect}()} for another approach to introspecting
-#'   arguments with which it is possible to capture expressions at the
-#'   outermost call site. This approach may be harder to reason about
-#'   and has some limitations.
+#'   [arg_inspect()] for another approach to introspecting arguments
+#'   with which it is possible to capture expressions at the outermost
+#'   call site. This approach may be harder to reason about and has
+#'   some limitations.
 #'
 #'   Dots are different from named arguments in that they are
 #'   implicitly forwarded. Forwarding dots does not create a new call
 #'   site. The expression is passed on as is. That's why you can
-#'   easily capture them with \code{\link[base]{substitute}()}. By the
-#'   same token, you don't need to capture dots before passing them
-#'   along in another introspective function. You do need to be a bit
-#'   careful when you rescope expressions captured from dots because
-#'   those expressions were not necessarily supplied in the last call
+#'   easily capture them with [base::substitute()]. By the same token,
+#'   you don't need to capture dots before passing them along in
+#'   another introspective function. You do need to be a bit careful
+#'   when you rescope expressions captured from dots because those
+#'   expressions were not necessarily supplied in the last call
 #'   frame. In general, the call site of argument passed through dots
 #'   can be anywhere between the current and global frames. For this
-#'   reason, it is recommended to always use \code{tidy_quotes()}
-#'   rather than \code{substitute()} and \code{caller_env()} or
-#'   \code{parent.frame()}, since the former will encode the
-#'   appropriate evaluation environments within the formulas.
+#'   reason, it is recommended to always use `tidy_quotes()` rather
+#'   than `substitute()` and `caller_env()` or `parent.frame()`, since
+#'   the former will encode the appropriate evaluation environments
+#'   within the formulas.
 #'
 #' @param x,... Arguments to capture.
 #' @export
-#' @return \code{tidy_capture()} returns a formula; see also
-#'   \code{tidy_quotes()} for "capturing" dots as a list of formulas.
-#' @seealso \code{\link{tidy_quotes}()} for capturing dots,
-#'   \code{\link{expr_label}()} and \code{\link{expr_text}()} for
-#'   capturing labelling information.
+#' @return `tidy_capture()` returns a formula; see also
+#'   `tidy_quotes()` for "capturing" dots as a list of formulas.
+#' @seealso [tidy_quotes()] for capturing dots, [expr_label()] and
+#'   [expr_text()] for capturing labelling information.
 #' @examples
 #' # tidy_capture() returns a formula:
 #' fn <- function(foo) tidy_capture(foo)

@@ -1,27 +1,26 @@
 #' Evaluate an expression in an environment.
 #'
-#' \code{expr_eval()} is a lightweight version of the base function
-#' \code{\link[base]{eval}()}. It does not accept supplementary data,
-#' but it is more efficient and does not clutter the evaluation stack.
-#' Technically, \code{expr_eval()} is a simple wrapper around the C
-#' function \code{Rf_eval()}.
+#' `expr_eval()` is a lightweight version of the base function
+#' [base::eval()]. It does not accept supplementary data, but it is
+#' more efficient and does not clutter the evaluation stack.
+#' Technically, `expr_eval()` is a simple wrapper around the C
+#' function `Rf_eval()`.
 #'
-#' \code{base::eval()} inserts two call frames in the stack, the
-#' second of which features the \code{envir} parameter as frame
-#' environment. This may unnecessarily clutter the evaluation stack
-#' and it can change evaluation semantics with stack sensitive
-#' functions in the case where \code{env} is an evaluation environment
-#' of a stack frame (see \code{\link{eval_stack}()}). Since the base
-#' function \code{eval()} creates a new evaluation context with
-#' \code{env} as frame environment there are actually two contexts
-#' with the same evaluation environment on the stack when \code{expr}
-#' is evaluated. Thus, any command that looks up frames on the stack
-#' (stack sensitive functions) may find the parasite frame set up by
-#' \code{eval()} rather than the original frame targetted by
-#' \code{env}. As a result, code evaluated with \code{base::eval()}
+#' `base::eval()` inserts two call frames in the stack, the second of
+#' which features the `envir` parameter as frame environment. This may
+#' unnecessarily clutter the evaluation stack and it can change
+#' evaluation semantics with stack sensitive functions in the case
+#' where `env` is an evaluation environment of a stack frame (see
+#' [eval_stack()]). Since the base function `eval()` creates a new
+#' evaluation context with `env` as frame environment there are
+#' actually two contexts with the same evaluation environment on the
+#' stack when `expr` is evaluated. Thus, any command that looks up
+#' frames on the stack (stack sensitive functions) may find the
+#' parasite frame set up by `eval()` rather than the original frame
+#' targetted by `env`. As a result, code evaluated with `base::eval()`
 #' does not have the property of stack consistency, and stack
-#' sensitive functions like \code{\link[base]{return}()},
-#' \code{\link[base]{parent.frame}()} may return misleading results.
+#' sensitive functions like [base::return()], [base::parent.frame()]
+#' may return misleading results.
 #'
 #' @param expr An expression to evaluate.
 #' @param env The environment in which to evaluate the expression.
@@ -71,8 +70,8 @@ expr_eval <- function(expr, env = parent.frame()) {
 
 #' Turn an expression to a label.
 #'
-#' \code{expr_text()} turns the expression into a single string;
-#' \code{expr_label()} formats it nicely for use in messages.
+#' `expr_text()` turns the expression into a single string;
+#' `expr_label()` formats it nicely for use in messages.
 #'
 #' @param expr An expression to labellise.
 #' @export
@@ -166,7 +165,6 @@ expr_text <- function(expr, width = 60L, nlines = Inf) {
 #'
 #' set_expr(f, quote(baz))
 #' set_expr(e, quote(baz))
-#' @md
 set_expr <- function(x, value) {
   if (is_quosureish(x)) {
     f_rhs(x) <- value

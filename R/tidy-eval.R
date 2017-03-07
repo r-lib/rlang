@@ -1,28 +1,29 @@
-#' Evaluate a formula
+#' Evaluate a quosure.
 #'
-#' \code{tidy_eval_rhs} evaluates the RHS of a formula and \code{tidy_eval_lhs}
-#' evaluates the LHS. \code{tidy_eval} is a shortcut for \code{tidy_eval_rhs} since
-#' that is what you most commonly need.
+#' `tidy_eval_rhs` evaluates the RHS of a formula and
+#' `tidy_eval_lhs()` evaluates the LHS. `tidy_eval()` is a shortcut
+#' for `tidy_eval_rhs()` since that is what you most commonly need.
 #'
-#' If \code{data} is specified, variables will be looked for first in this
+#' If `data` is specified, variables will be looked for first in this
 #' object, and if not found in the environment of the formula.
 #'
 #' @section Pronouns:
-#' When used with \code{data}, \code{tidy_eval} provides two pronouns to make it
-#' possible to be explicit about where you want values to come from:
-#' \code{.env} and \code{.data}. These are thin wrappers around \code{.data}
-#' and \code{.env} that throw errors if you try to access non-existent values.
 #'
-#' @param f A formula. Any expressions wrapped in \code{ UQ() } will
-#'   will be "unquoted", i.e. they will be evaluated, and the results
-#'   inserted back into the formula. See \code{\link{tidy_quote}()}
-#'   for more details. If a list of formulas, \code{tidy_eval()} is
-#'   applied to each of them in turn and the list of results is
-#'   returned.
-#' @param data A list (or data frame). \code{data_source} is a generic
-#'   used to find the data associated with a given object. If you want
-#'   to make \code{tidy_eval} work for your own objects, you can
-#'   define a method for this generic.
+#'   When used with `data`, `tidy_eval()` provides two pronouns to
+#'   make it possible to be explicit about where you want values to
+#'   come from: `.env` and `.data`. These are thin wrappers around
+#'   `.data` and `.env` that throw errors if you try to access
+#'   non-existent values.
+#'
+#' @param f A formula. Any expressions wrapped in `UQ()` will will be
+#'   "unquoted", i.e. they will be evaluated, and the results inserted
+#'   back into the formula. See [tidy_quote()] for more details. If a
+#'   list of formulas, `tidy_eval()` is applied to each of them in
+#'   turn and the list of results is returned.
+#' @param data A list (or data frame). `data_source` is a generic used
+#'   to find the data associated with a given object. If you want to
+#'   make `tidy_eval` work for your own objects, you can define a
+#'   method for this generic.
 #' @export
 #' @examples
 #' tidy_eval(~ 1 + 2 + 3)
@@ -185,7 +186,6 @@ tidy_eval_ <- function(f, bottom, top = NULL) {
 #'
 #' overscope_clean(overscope)
 #' fn()
-#' @md
 tidy_overscope <- function(f, data = NULL) {
   data_src <- data_source(data)
   enclosure <- f_env(f) %||% base_env()
@@ -314,26 +314,25 @@ f_unguard <- function(...) {
 #'
 #' Normally, you invoke a R function by typing arguments manually. A
 #' powerful alternative is to call a function with a list of arguments
-#' assembled programmatically. This is the purpose of \code{invoke()}.
+#' assembled programmatically. This is the purpose of `invoke()`.
 #'
-#' Technically, \code{invoke()} is basically a version of
-#' \code{\link[base]{do.call}()} that creates cleaner call traces
-#' because it does not inline the function and the arguments in the
-#' call (see examples). To achieve this, \code{invoke()} creates a
-#' child environment of \code{.env} with \code{.fn} and all arguments
-#' bound to new symbols (see \code{\link{env_bury}()}). It then uses
-#' the same strategy as \code{\link{expr_eval}()} to evaluate with
-#' minimal noise.
+#' Technically, `invoke()` is basically a version of [base::do.call()]
+#' that creates cleaner call traces because it does not inline the
+#' function and the arguments in the call (see examples). To achieve
+#' this, `invoke()` creates a child environment of `.env` with `.fn`
+#' and all arguments bound to new symbols (see [env_bury()]). It then
+#' uses the same strategy as [expr_eval()] to evaluate with minimal
+#' noise.
 #'
 #' @param .fn A function to invoke. Can be a function object or the
-#'   name of a function in scope of \code{.env}.
+#'   name of a function in scope of `.env`.
 #' @param .args,... List of arguments (possibly named) to be passed to
-#'   \code{.fn}.
-#' @param .env The environment in which to call \code{.fn}.
+#'   `.fn`.
+#' @param .env The environment in which to call `.fn`.
 #' @param .bury A character vector of length 2. The first string
 #'   specifies which name should the function have in the call
 #'   recorded in the evaluation stack. The second string specifies a
-#'   prefix for the argument names. Set \code{.bury} to FALSE if you
+#'   prefix for the argument names. Set `.bury` to `FALSE` if you
 #'   prefer to inline the function and its arguments in the call.
 #' @export
 #' @examples

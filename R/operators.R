@@ -1,11 +1,10 @@
-#' Default value for \code{NULL}.
+#' Default value for `NULL`.
 #'
-#' This infix function makes it easy to replace \code{NULL}s with a
-#' default value. It's inspired by the way that Ruby's or operation
-#' (\code{||}) works.
+#' This infix function makes it easy to replace `NULL`s with a default
+#' value. It's inspired by the way that Ruby's or operation (`||`)
+#' works.
 #'
-#' @param x,y If \code{x} is NULL, will return \code{y}; otherwise
-#'   returns \code{x}.
+#' @param x,y If `x` is NULL, will return `y`; otherwise returns `x`.
 #' @export
 #' @name op-null-default
 #' @examples
@@ -19,15 +18,13 @@
 #'
 #' This infix function is similar to \code{\%||\%} but is vectorised
 #' and provides a default value for missing elements. It is faster
-#' than using \code{\link[base]{ifelse}()} and does not perform type
-#' conversions.
+#' than using [base::ifelse()] and does not perform type conversions.
 #'
-#' @param x,y \code{y} for elements of \code{x} that are NA;
-#'   otherwise, \code{x}.
+#' @param x,y `y` for elements of `x` that are NA; otherwise, `x`.
 #' @useDynLib rlang replace_na
 #' @export
 #' @name op-na-default
-#' @seealso \link{op-null-default}
+#' @seealso [op-null-default]
 #' @examples
 #' c("a", "b", NA, "c") %|% "default"
 `%|%` <- function(x, y) {
@@ -52,11 +49,11 @@
 #' Definition operator.
 #'
 #' The definition operator is typically used in DSL packages like
-#' \code{ggvis} and \code{data.table}. It is exported in rlang as a
-#' alias to \code{~}. This makes it a quoting operator that can be
-#' shared between packages for computing on the language. Since it
-#' effectively creates formulas, it is immediately compatible with
-#' rlang's formulas and interpolation features.
+#' `ggvis` and `data.table`. It is exported in rlang as a alias to
+#' `~`. This makes it a quoting operator that can be shared between
+#' packages for computing on the language. Since it effectively
+#' creates formulas, it is immediately compatible with rlang's
+#' formulas and interpolation features.
 #'
 #' @export
 #' @examples

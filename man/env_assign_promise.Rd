@@ -11,8 +11,8 @@ env_assign_promise_(env = caller_env(), nm, expr, eval_env = caller_env())
 }
 \arguments{
 \item{env}{An environment or an object with a S3 method for
-\code{env()}. If missing, the environment of the current
-evaluation frame is returned.}
+\code{env()}. If missing, the environment of the current evaluation
+frame is returned.}
 
 \item{nm}{The name of the binding.}
 
@@ -24,10 +24,9 @@ promise in \code{env}.}
 
 \item{eval_env}{The environment where the promise will be evaluated
 when the promise gets forced. If \code{expr} is a formula, its
-environment is used instead. If not a formula and \code{eval_env}
-is not supplied, the promise is evaluated in the environment
-where \code{env_assign_promise()} (or the underscore version) was
-called.}
+environment is used instead. If not a formula and \code{eval_env} is
+not supplied, the promise is evaluated in the environment where
+\code{env_assign_promise()} (or the underscore version) was called.}
 }
 \description{
 These functions let you create a promise in an environment. Such
@@ -46,5 +45,5 @@ env_assign_promise_(env, "name2", f)
 env$name2
 }
 \seealso{
-\code{\link{env_assign}()}, \code{\link{env_assign_active}()}
+\code{\link[=env_assign]{env_assign()}}, \code{\link[=env_assign_active]{env_assign_active()}}
 }

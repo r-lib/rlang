@@ -13,6 +13,6 @@ is_bare_env(x)
 \item{x}{object to test}
 }
 \description{
-\code{is_bare_env()} tests whether \code{x} is an environment
-without a s3 or s4 class.
+\code{is_bare_env()} tests whether \code{x} is an environment without a s3 or
+s4 class.
 }

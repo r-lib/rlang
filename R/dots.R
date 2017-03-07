@@ -1,14 +1,13 @@
 #' Extract dots
 #'
-#' \code{frame_dots()} extracts dots from a frame and
-#' \code{dots()} extracts dots from its arguments. The
-#' \code{_node()} versions return a pairlist that is ready to be
-#' spliced into a call, while the regular versions return a regular
-#' list that is usually easier to work with.
+#' `frame_dots()` extracts dots from a frame and `dots()` extracts
+#' dots from its arguments. The `_node()` versions return a pairlist
+#' that is ready to be spliced into a call, while the regular versions
+#' return a regular list that is usually easier to work with.
 #'
-#' \code{frame_dots()} and \code{frame_dots_node()} never fail, even if
-#' the frame does not contain dots. Instead they return an empty list
-#' or \code{NULL} respectively.
+#' `frame_dots()` and `frame_dots_node()` never fail, even if the
+#' frame does not contain dots. Instead they return an empty list or
+#' `NULL` respectively.
 #'
 #' @param frame The environment from which the dots should be
 #'   retrieved. Can be a frame, an environment, or a formula from
@@ -55,25 +54,25 @@ dots_node <- function(...) {
 
 #' Inspect dots
 #'
-#' Runs \code{\link{arg_inspect}()} for each dots element, and return the
-#' results in a list.
+#' Runs [arg_inspect()] for each dots element, and return the results
+#' in a list.
 #'
-#' \code{only_dots} controls whether dotted arguments should be fully
-#' or partially inspected. When \code{TRUE}, only forwarded dots are
+#' `only_dots` controls whether dotted arguments should be fully or
+#' partially inspected. When `TRUE`, only forwarded dots are
 #' climbed. Symbols bound to a promise are not. See the example
 #' section.
 #'
-#' \code{dots_inspect_()} is the standard evaluation version of
-#' \code{dots_inspect()} and takes a list of dots as captured by
-#' \code{\link{frame_dots}()} or \code{\link{dots}()}, and a call
-#' stack as returned by \code{\link{call_stack}()}.
+#' `dots_inspect_()` is the standard evaluation version of
+#' `dots_inspect()` and takes a list of dots as captured by
+#' [frame_dots()] or [dots()], and a call stack as returned by
+#' [call_stack()].
 #'
 #' @param ... Dots to inspect.
 #' @param .only_dots,only_dots Whether to stop introspection once
-#'   forwarded dots have been climbed. Setting this to \code{TRUE} is
-#'   only useful for inspecting dots (cf. \code{\link{tidy_quotes}()}
-#'   which does not follow symbols).
-#' @seealso \code{\link{arg_inspect}()}
+#'   forwarded dots have been climbed. Setting this to `TRUE` is only
+#'   useful for inspecting dots (cf. [tidy_quotes()] which does not
+#'   follow symbols).
+#' @seealso [arg_inspect()]
 #' @export
 #' @examples
 #' # The following example focuses on the difference between full and

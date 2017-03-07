@@ -14,14 +14,13 @@ fn_fmls_names(fn = caller_fn())
 supplied.}
 }
 \description{
-\code{fn_defaults()} returns a named list of default
-arguments. \code{fn_fmls_names()} returns the names of the
-arguments.
+\code{fn_defaults()} returns a named list of default arguments.
+\code{fn_fmls_names()} returns the names of the arguments.
 }
 \details{
-Contrarily to \code{formals()}, these helpers also work with
-primitive functions. See \code{\link{is_function}()} for a
-discussion of primitive and closure functions.
+Contrarily to \code{formals()}, these helpers also work with primitive
+functions. See \code{\link[=is_function]{is_function()}} for a discussion of primitive and
+closure functions.
 }
 \examples{
 # Extract from current call:
@@ -32,6 +31,5 @@ fn()
 fn_fmls(base::switch)
 }
 \seealso{
-\code{\link{lang_args}()} and
-  \code{\link{lang_args_names}()}
+\code{\link[=lang_args]{lang_args()}} and \code{\link[=lang_args_names]{lang_args_names()}}
 }

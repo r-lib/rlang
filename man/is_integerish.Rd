@@ -21,8 +21,8 @@ is_scalar_integerish(x)
 These predicates check whether R considers a number vector to be
 integer-like, according to its own tolerance check (which is in
 fact delegated to the C library). This function is not adapted to
-data analysis, see the help for \code{\link[base]{is.integer}()}
-for examples of how to check for whole numbers.
+data analysis, see the help for \code{\link[base:is.integer]{base::is.integer()}} for examples
+of how to check for whole numbers.
 }
 \examples{
 is_integerish(10L)
@@ -31,6 +31,6 @@ is_integerish(10.000001)
 is_integerish(TRUE)
 }
 \seealso{
-\code{\link{is_bare_numeric}()} for testing whether an
-  object is a base numeric type (a bare double or integer vector).
+\code{\link[=is_bare_numeric]{is_bare_numeric()}} for testing whether an object is a
+base numeric type (a bare double or integer vector).
 }

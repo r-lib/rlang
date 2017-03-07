@@ -16,18 +16,16 @@ have_names(x)
 \item{x}{An object to test.}
 }
 \value{
-\code{is_named()} and \code{is_dictionary()} are scalar
-  predicates and return \code{TRUE} or \code{FALSE}.
-  \code{have_names()} is vectorised and returns a logical vector as
-  long as the input.
+\code{is_named()} and \code{is_dictionary()} are scalar predicates
+and return \code{TRUE} or \code{FALSE}. \code{have_names()} is vectorised and
+returns a logical vector as long as the input.
 }
 \description{
-\code{is_named()} checks that \code{x} has names attributes, and
-that none of the names are missing or empty (\code{NA} or
-\code{""}). \code{is_dictionary()} checks that an object is a
-dictionary: that it has actual names and in addition that there are
-no duplicated names. \code{have_names()} is a vectorised version of
-\code{is_named()}.
+\code{is_named()} checks that \code{x} has names attributes, and that none of
+the names are missing or empty (\code{NA} or \code{""}). \code{is_dictionary()}
+checks that an object is a dictionary: that it has actual names and
+in addition that there are no duplicated names. \code{have_names()}
+is a vectorised version of \code{is_named()}.
 }
 \examples{
 # A data frame usually has valid, unique names

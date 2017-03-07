@@ -1,41 +1,39 @@
 #' Standardise a call against formal arguments.
 #'
 #' This is a slower but more thorough version of
-#' \code{\link{lang_standardise}()}. It is useful for tracing
-#' arguments across a call stack (see [arg_inspect()] for an example).
+#' [lang_standardise()]. It is useful for tracing arguments across a
+#' call stack (see [arg_inspect()] for an example).
 #'
-#' Compared to
-#' \code{\link{match.call}()}, \code{lang_homogenise()}:
-#' \itemize{
-#'   \item Always report dotted arguments as such: \code{call(..1, ..2)}.
-#'         In comparison, \code{match.call()} inlines literals:
-#'         \code{call("foo", 10)}.
-#'   \item Provides an argument \code{enum_dots} to impose
-#'         enumerated names on dotted arguments. This produces
-#'         \code{call(..1 = x, ..2 = ..3)} instead of
-#'         \code{call(foo = x, ..3)}.
-#'   \item Does not sort arguments according to the order of
-#'         appearance in the function definition.
-#'   \item Standardises missing arguments as well if you specify
-#'         \code{add_missings}: \code{call(x = , y = , )}.
-#' }
+#' Compared to [match.call()], `lang_homogenise()`:
+#'
+#' * Always report dotted arguments as such: `call(..1, ..2)`.  In
+#'   comparison, `match.call()` inlines literals: `call("foo", 10)`.
+#'
+#' * Provides an argument `enum_dots` to impose enumerated names on
+#'   dotted arguments. This produces `call(..1 = x, ..2 = ..3)`
+#'   instead of `call(foo = x, ..3)`.
+#'
+#' * Does not sort arguments according to the order of appearance in
+#'   the function definition.
+#'
+#' * Standardises missing arguments as well if you specify
+#'   `add_missings`: `call(x = , y = , )`.
 #'
 #' @param call Can be a call, a formula quoting a call in the
 #'   right-hand side, or a frame object from which to extract the call
 #'   expression. If not supplied, the calling frame is used. Note that
-#'   \code{lang_homogenise} needs access to the actual function
+#'   [lang_homogenise()] needs access to the actual function
 #'   corresponding to the call. It will retrieve it from the tidy
 #'   quote or frame environment, or in the calling context.
 #' @param dots_env Calling frame in which to look up call the contents
-#'   of \code{...}. If not supplied and \code{call} is a frame object,
-#'   it is retrieved from \code{call}.
+#'   of `...`. If not supplied and `call` is a frame object, it is
+#'   retrieved from `call`.
 #' @param enum_dots Whether to standardise the names of dotted
-#'   arguments. If \code{TRUE}, this produces calls such as
-#'   \code{f(..1 = ..2)} instead of \code{f(..2)}. The first form is
-#'   mostly intended for code analysis tools as it makes it easier to
-#'   climb arguments through nested calls. The latter form (the
-#'   default) is more faithful to the actual call and is ready to be
-#'   evaluated.
+#'   arguments. If `TRUE`, this produces calls such as `f(..1 = ..2)`
+#'   instead of `f(..2)`. The first form is mostly intended for code
+#'   analysis tools as it makes it easier to climb arguments through
+#'   nested calls. The latter form (the default) is more faithful to
+#'   the actual call and is ready to be evaluated.
 #' @param add_missings Whether to standardise missing arguments.
 #' @export
 lang_homogenise <- function(call = caller_frame(),

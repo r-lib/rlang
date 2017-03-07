@@ -99,7 +99,6 @@
 #' as.list.foobar <- function(x) abort("dont call me")
 #' as_list(x)
 #' @name coercion
-#' @md
 NULL
 
 #' @rdname coercion

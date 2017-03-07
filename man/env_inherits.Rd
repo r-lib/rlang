@@ -9,8 +9,8 @@ env_inherits(x, ancestor)
 \arguments{
 \item{x}{An environment.}
 
-\item{ancestor}{Another environment from which `x` might inherit.}
+\item{ancestor}{Another environment from which \code{x} might inherit.}
 }
 \description{
-This returns `TRUE` if `x` has `ancestor` among its parents.
+This returns \code{TRUE} if \code{x} has \code{ancestor} among its parents.
 }

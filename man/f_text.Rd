@@ -17,8 +17,7 @@ f_label(x)
 \item{nlines}{Maximum number of lines to extract.}
 }
 \description{
-Equivalent of \code{\link{expr_text}()} and \code{\link{expr_label}()} for
-formulas.
+Equivalent of \code{\link[=expr_text]{expr_text()}} and \code{\link[=expr_label]{expr_label()}} for formulas.
 }
 \examples{
 f <- ~ a + b + bc

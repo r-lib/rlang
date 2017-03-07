@@ -25,27 +25,25 @@ na_cpl
 Missing values are represented in R with the general symbol
 \code{NA}. They can be inserted in almost all data containers: all
 atomic vectors except raw vectors can contain missing values. To
-achieve this, R automatically converts the general \code{NA} symbol
-to a typed missing value appropriate for the target vector. The
-objects provided here are aliases for those typed \code{NA}
-objects.
+achieve this, R automatically converts the general \code{NA} symbol to a
+typed missing value appropriate for the target vector. The objects
+provided here are aliases for those typed \code{NA} objects.
 }
 \details{
 Typed missing values are necessary because R needs sentinel values
 of the same type (i.e. the same machine representation of the data)
 as the containers into which they are inserted. The official typed
-missing values are \code{NA_integer_}, \code{NA_real_},
-\code{NA_character_} and \code{NA_complex_}. The missing value for
-logical vectors is simply the default \code{NA}. The aliases
-provided in rlang are consistently named and thus simpler to
-remember. Also, \code{na_lgl} is provided as an alias to \code{NA}
-that makes intent clearer.
+missing values are \code{NA_integer_}, \code{NA_real_}, \code{NA_character_} and
+\code{NA_complex_}. The missing value for logical vectors is simply the
+default \code{NA}. The aliases provided in rlang are consistently named
+and thus simpler to remember. Also, \code{na_lgl} is provided as an
+alias to \code{NA} that makes intent clearer.
 
-Since \code{na_lgl} is the default \code{NA}, expressions such as
-\code{c(NA, NA)} yield logical vectors as no data is available to
-give a clue of the target type. In the same way, since lists and
-environments can contain any types, expressions like
-\code{list(NA)} store a logical \code{NA}.
+Since \code{na_lgl} is the default \code{NA}, expressions such as \code{c(NA, NA)}
+yield logical vectors as no data is available to give a clue of the
+target type. In the same way, since lists and environments can
+contain any types, expressions like \code{list(NA)} store a logical
+\code{NA}.
 }
 \examples{
 typeof(NA)
@@ -58,7 +56,7 @@ na_dbl <- NA
 typeof(na_dbl)
 }
 \seealso{
-The \code{\link{along}} family to create typed vectors
-  filled with missing values.
+The \link{along} family to create typed vectors filled with
+missing values.
 }
 \keyword{datasets}

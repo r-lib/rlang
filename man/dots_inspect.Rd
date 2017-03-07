@@ -13,29 +13,28 @@ dots_inspect_(dots, stack, only_dots = FALSE)
 \item{...}{Dots to inspect.}
 
 \item{.only_dots, only_dots}{Whether to stop introspection once
-forwarded dots have been climbed. Setting this to \code{TRUE} is
-only useful for inspecting dots (cf. \code{\link{tidy_quotes}()}
-which does not follow symbols).}
+forwarded dots have been climbed. Setting this to \code{TRUE} is only
+useful for inspecting dots (cf. \code{\link[=tidy_quotes]{tidy_quotes()}} which does not
+follow symbols).}
 
 \item{dots}{Dots to inspect.}
 
-\item{stack}{A \code{call_stack} object as returned by
-\code{\link{call_stack}()}.}
+\item{stack}{A \code{call_stack} object as returned by \code{\link[=call_stack]{call_stack()}}.}
 }
 \description{
-Runs \code{\link{arg_inspect}()} for each dots element, and return the
-results in a list.
+Runs \code{\link[=arg_inspect]{arg_inspect()}} for each dots element, and return the results
+in a list.
 }
 \details{
-\code{only_dots} controls whether dotted arguments should be fully
-or partially inspected. When \code{TRUE}, only forwarded dots are
+\code{only_dots} controls whether dotted arguments should be fully or
+partially inspected. When \code{TRUE}, only forwarded dots are
 climbed. Symbols bound to a promise are not. See the example
 section.
 
 \code{dots_inspect_()} is the standard evaluation version of
 \code{dots_inspect()} and takes a list of dots as captured by
-\code{\link{frame_dots}()} or \code{\link{dots}()}, and a call
-stack as returned by \code{\link{call_stack}()}.
+\code{\link[=frame_dots]{frame_dots()}} or \code{\link[=dots]{dots()}}, and a call stack as returned by
+\code{\link[=call_stack]{call_stack()}}.
 }
 \examples{
 # The following example focuses on the difference between full and
@@ -78,5 +77,5 @@ only_dots <- TRUE
 f(foo(bar))
 }
 \seealso{
-\code{\link{arg_inspect}()}
+\code{\link[=arg_inspect]{arg_inspect()}}
 }

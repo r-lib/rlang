@@ -1,24 +1,23 @@
 #' Tidy quotation of an expression.
 #'
-#' \code{tidy_quote()} captures its argument as an unevaluated
-#' expression and returns it as a formula. Formulas are a key part of
-#' the tidy evaluation framework because they bundle an expression and
-#' a scope (the environment in which \code{tidy_quote()} was called).
-#' This means that you can pass a formula around while keeping track
-#' of the context where it was created. The symbols quoted in the
-#' formula will be evaluated in the right context (where they are
-#' likely defined) by \code{\link{tidy_eval}()}.
+#' `tidy_quote()` captures its argument as an unevaluated expression
+#' and returns it as a formula. Formulas are a key part of the tidy
+#' evaluation framework because they bundle an expression and a scope
+#' (the environment in which `tidy_quote()` was called).  This means
+#' that you can pass a formula around while keeping track of the
+#' context where it was created. The symbols quoted in the formula
+#' will be evaluated in the right context (where they are likely
+#' defined) by [tidy_eval()].
 #'
 #' Like all capturing functions in the tidy evaluation framework,
-#' \code{tidy_quote()} interpolates on capture (see
-#' \code{\link{tidy_capture}()}) and \code{vignette("tidy-eval")}.
-#' Alternatively, \code{tidy_interp()} allows you to interpolate
-#' manually when you have constructed a raw expression or formula by
-#' yourself. When an expression is interpolated, all sub-expressions
-#' within unquoting operators (like \code{UQ(x)} and \code{UQS(x)})
-#' are evaluated and inlined. This provides a powerful mechanism for
-#' manipulating expressions. Since unquoting is such an important
-#' operation, \code{!!} and \code{!!!} are provided as syntactic
+#' `tidy_quote()` interpolates on capture (see [tidy_capture()]) and
+#' `vignette("tidy-eval")`. Alternatively, `tidy_interp()` allows you
+#' to interpolate manually when you have constructed a raw expression
+#' or formula by yourself. When an expression is interpolated, all
+#' sub-expressions within unquoting operators (like `UQ(x)` and
+#' `UQS(x)`) are evaluated and inlined. This provides a powerful
+#' mechanism for manipulating expressions. Since unquoting is such an
+#' important operation, `!!` and `!!!` are provided as syntactic
 #' shortcuts for unquoting and unquote-splicing (see examples).
 #'
 #' @section Tidy manipulation of expressions:
@@ -27,9 +26,9 @@
 #'   the expression. In particular, you can transform a quoted
 #'   expression by unquoting another quoted expression into it. The
 #'   latter expression gets inlined within the former. This mechanism
-#'   allows you to easily program with NSE functions. E.g. \code{var
-#'   <- ~baz; tidy_quote(foo(bar, !! var))} produces the formula-quote
-#'   \code{~foo(bar, baz)}.
+#'   allows you to easily program with NSE functions. E.g. `var <-
+#'   ~baz; tidy_quote(foo(bar, !! var))` produces the formula-quote
+#'   `~foo(bar, baz)`.
 #'
 #' @section Tidy evaluation of expressions:
 #'
@@ -50,9 +49,9 @@
 #'   function) and an environment (the original call site of the
 #'   function), and they self-evaluate to return a value as soon as
 #'   you touch them. Similarly, formulas self-evaluate when called
-#'   within \code{\link{tidy_eval}()}. However, unlike promises, they
-#'   are first-class objects: you can pass a formula around and use it
-#'   to transform another formula or expression. Formulas are thus
+#'   within [tidy_eval()]. However, unlike promises, they are
+#'   first-class objects: you can pass a formula around and use it to
+#'   transform another formula or expression. Formulas are thus
 #'   treated as reified promises.
 #'
 #'   Being able to manipulate a formula has important practical
@@ -61,23 +60,22 @@
 #'   modification and tidy evaluation of formulas provide a powerful
 #'   mechanism for metaprogramming and programming with DSLs.
 #'
-#' @section Theory: Formally, \code{tidy_quote()} and \code{tidy_quote_expr()}
-#'   are quasiquote functions, \code{UQ()} is the unquote operator,
-#'   and \code{UQS()} is the unquote splice operator. These terms
-#'   have a rich history in LISP, and live on in modern languages like
-#'   \href{Julia}{http://docs.julialang.org/en/release-0.1/manual/metaprogramming/} and
-#'   \href{Racket}{https://docs.racket-lang.org/reference/quasiquote.html}.
+#' @section Theory: Formally, `tidy_quote()` and `tidy_quote_expr()`
+#'   are quasiquote functions, `UQ()` is the unquote operator, and
+#'   `UQS()` is the unquote splice operator. These terms have a rich
+#'   history in LISP, and live on in modern languages like
+#'   [Julia](http://docs.julialang.org/en/release-0.1/manual/metaprogramming/)
+#'   and [Racket](https://docs.racket-lang.org/reference/quasiquote.html).
 #'
 #' @param expr An expression.
 #' @param x An expression to unquote. It is evaluated in the current
 #'   environment and inlined in the expression.
 #' @return A formula whose right-hand side contains the quoted
 #'   expression supplied as argument.
-#' @seealso \code{\link{tidy_quotes}()} for capturing several
-#'   expressions, including from dots; \code{\link{tidy_quote_expr}()}
-#'   for quoting a raw expression with quasiquotation; and
-#'   \code{\link{tidy_interp}()} for unquoting an already quoted
-#'   expression or an existing formula.
+#' @seealso [tidy_quotes()] for capturing several expressions,
+#'   including from dots; [tidy_quote_expr()] for quoting a raw
+#'   expression with quasiquotation; and [tidy_interp()] for unquoting
+#'   an already quoted expression or an existing formula.
 #' @export
 #' @aliases UQ UQE UQF UQS
 #' @examples
@@ -190,20 +188,17 @@ tidy_quote <- function(expr) {
 
 #' Untidy quotation of an expression.
 #'
-#' Unlike \code{\link{tidy_quote}()}, \code{tidy_quote_expr()} returns a
-#' raw expression instead of a formula. As a result,
-#' \code{tidy_quote_expr()} is untidy in the sense that it does not
-#' preserve scope information for the quoted expression. It can still
-#' be useful in certain cases. Compared to base R's
-#' \code{\link[base]{quote}()}, it unquotes the expression on capture,
-#' and compared to \code{\link{tidy_quote}()}, the quoted expression
-#' is directly compatible with the base R \code{\link[base]{eval}()}
-#' function.
+#' Unlike [tidy_quote()], `tidy_quote_expr()` returns a raw expression
+#' instead of a formula. As a result, `tidy_quote_expr()` is untidy in
+#' the sense that it does not preserve scope information for the
+#' quoted expression. It can still be useful in certain cases.
+#' Compared to base R's [base::quote()], it unquotes the expression on
+#' capture, and compared to [tidy_quote()], the quoted expression is
+#' directly compatible with the base R [base::eval()] function.
 #'
 #' @inheritParams tidy_quote
-#' @seealso See \code{\link{tidy_quote}()} and
-#'   \code{\link{tidy_interp}()} for more explanation on tidy
-#'   quotation.
+#' @seealso See [tidy_quote()] and [tidy_interp()] for more
+#'   explanation on tidy quotation.
 #' @return The raw expression supplied as argument.
 #' @export
 #' @examples
@@ -303,7 +298,6 @@ tidy_quote_expr <- function(expr) {
 #' # If you need the full LHS expression, use tidy_defs():
 #' dots <- tidy_defs(var = foo(baz) := bar(baz))
 #' dots$defs
-#' @md
 tidy_quotes <- function(..., .named = FALSE) {
   dots <- tidy_capture_dots(...)
   dots <- dots_interp_lhs(dots)

@@ -45,5 +45,5 @@ These predicates check for a given type and whether the vector is
 "scalar", that is, of length 1.
 }
 \seealso{
-\link{type-predicates} \link{bare-type-predicates}
+\link{type-predicates}, \link{bare-type-predicates}
 }

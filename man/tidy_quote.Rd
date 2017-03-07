@@ -30,82 +30,80 @@ environment and inlined in the expression.}
 }
 \value{
 A formula whose right-hand side contains the quoted
-  expression supplied as argument.
+expression supplied as argument.
 }
 \description{
-\code{tidy_quote()} captures its argument as an unevaluated
-expression and returns it as a formula. Formulas are a key part of
-the tidy evaluation framework because they bundle an expression and
-a scope (the environment in which \code{tidy_quote()} was called).
-This means that you can pass a formula around while keeping track
-of the context where it was created. The symbols quoted in the
-formula will be evaluated in the right context (where they are
-likely defined) by \code{\link{tidy_eval}()}.
+\code{tidy_quote()} captures its argument as an unevaluated expression
+and returns it as a formula. Formulas are a key part of the tidy
+evaluation framework because they bundle an expression and a scope
+(the environment in which \code{tidy_quote()} was called).  This means
+that you can pass a formula around while keeping track of the
+context where it was created. The symbols quoted in the formula
+will be evaluated in the right context (where they are likely
+defined) by \code{\link[=tidy_eval]{tidy_eval()}}.
 }
 \details{
 Like all capturing functions in the tidy evaluation framework,
-\code{tidy_quote()} interpolates on capture (see
-\code{\link{tidy_capture}()}) and \code{vignette("tidy-eval")}.
-Alternatively, \code{tidy_interp()} allows you to interpolate
-manually when you have constructed a raw expression or formula by
-yourself. When an expression is interpolated, all sub-expressions
-within unquoting operators (like \code{UQ(x)} and \code{UQS(x)})
-are evaluated and inlined. This provides a powerful mechanism for
-manipulating expressions. Since unquoting is such an important
-operation, \code{!!} and \code{!!!} are provided as syntactic
+\code{tidy_quote()} interpolates on capture (see \code{\link[=tidy_capture]{tidy_capture()}}) and
+\code{vignette("tidy-eval")}. Alternatively, \code{tidy_interp()} allows you
+to interpolate manually when you have constructed a raw expression
+or formula by yourself. When an expression is interpolated, all
+sub-expressions within unquoting operators (like \code{UQ(x)} and
+\code{UQS(x)}) are evaluated and inlined. This provides a powerful
+mechanism for manipulating expressions. Since unquoting is such an
+important operation, \code{!!} and \code{!!!} are provided as syntactic
 shortcuts for unquoting and unquote-splicing (see examples).
 }
 \section{Tidy manipulation of expressions}{
 
 
-  Interpolating an expression allows you to inline any value within
-  the expression. In particular, you can transform a quoted
-  expression by unquoting another quoted expression into it. The
-  latter expression gets inlined within the former. This mechanism
-  allows you to easily program with NSE functions. E.g. \code{var
-  <- ~baz; tidy_quote(foo(bar, !! var))} produces the formula-quote
-  \code{~foo(bar, baz)}.
+Interpolating an expression allows you to inline any value within
+the expression. In particular, you can transform a quoted
+expression by unquoting another quoted expression into it. The
+latter expression gets inlined within the former. This mechanism
+allows you to easily program with NSE functions. E.g. \code{var <- ~baz; tidy_quote(foo(bar, !! var))} produces the formula-quote
+\code{~foo(bar, baz)}.
 }
 
 \section{Tidy evaluation of expressions}{
 
 
-  The purpose of a quoted expression is to be eventually evaluated
-  in a modified scope (e.g. a scope where the columns of a data
-  frame are directly accessible). While interpolation allows you to
-  easily manipulate expressions, you need to be a bit careful with
-  the scope of transplanted subexpressions. If they refer to
-  variables and functions that are only available in a given
-  environment (in a given scope), that environment should be
-  bundled with the expression. That is exactly the purpose of a
-  one-sided formula: bundling an expression and a scope.
+The purpose of a quoted expression is to be eventually evaluated
+in a modified scope (e.g. a scope where the columns of a data
+frame are directly accessible). While interpolation allows you to
+easily manipulate expressions, you need to be a bit careful with
+the scope of transplanted subexpressions. If they refer to
+variables and functions that are only available in a given
+environment (in a given scope), that environment should be
+bundled with the expression. That is exactly the purpose of a
+one-sided formula: bundling an expression and a scope.
 
-  In a way, one-sided formulas are very much similar to promises in
-  the tidy evaluation framework. Promises are R objects bound to
-  function arguments which make lazy evaluation in R possible: they
-  bundle an expression (the argument supplied by the caller of the
-  function) and an environment (the original call site of the
-  function), and they self-evaluate to return a value as soon as
-  you touch them. Similarly, formulas self-evaluate when called
-  within \code{\link{tidy_eval}()}. However, unlike promises, they
-  are first-class objects: you can pass a formula around and use it
-  to transform another formula or expression. Formulas are thus
-  treated as reified promises.
+In a way, one-sided formulas are very much similar to promises in
+the tidy evaluation framework. Promises are R objects bound to
+function arguments which make lazy evaluation in R possible: they
+bundle an expression (the argument supplied by the caller of the
+function) and an environment (the original call site of the
+function), and they self-evaluate to return a value as soon as
+you touch them. Similarly, formulas self-evaluate when called
+within \code{\link[=tidy_eval]{tidy_eval()}}. However, unlike promises, they are
+first-class objects: you can pass a formula around and use it to
+transform another formula or expression. Formulas are thus
+treated as reified promises.
 
-  Being able to manipulate a formula has important practical
-  purposes: you can create them, inspect them interactively, and
-  modify them (see previous section). Taken together, tidy
-  modification and tidy evaluation of formulas provide a powerful
-  mechanism for metaprogramming and programming with DSLs.
+Being able to manipulate a formula has important practical
+purposes: you can create them, inspect them interactively, and
+modify them (see previous section). Taken together, tidy
+modification and tidy evaluation of formulas provide a powerful
+mechanism for metaprogramming and programming with DSLs.
 }
 
 \section{Theory}{
  Formally, \code{tidy_quote()} and \code{tidy_quote_expr()}
-  are quasiquote functions, \code{UQ()} is the unquote operator,
-  and \code{UQS()} is the unquote splice operator. These terms
-  have a rich history in LISP, and live on in modern languages like
-  \href{Julia}{http://docs.julialang.org/en/release-0.1/manual/metaprogramming/} and
-  \href{Racket}{https://docs.racket-lang.org/reference/quasiquote.html}.
+are quasiquote functions, \code{UQ()} is the unquote operator, and
+\code{UQS()} is the unquote splice operator. These terms have a rich
+history in LISP, and live on in modern languages like
+\href{http://docs.julialang.org/en/release-0.1/manual/metaprogramming/}{Julia}
+and \href{https://docs.racket-lang.org/reference/quasiquote.html}{Racket}.
 }
 
 \examples{
@@ -213,9 +211,8 @@ tidy_eval(f)
 tidy_eval(tidy_quote(a ~ b))
 }
 \seealso{
-\code{\link{tidy_quotes}()} for capturing several
-  expressions, including from dots; \code{\link{tidy_quote_expr}()}
-  for quoting a raw expression with quasiquotation; and
-  \code{\link{tidy_interp}()} for unquoting an already quoted
-  expression or an existing formula.
+\code{\link[=tidy_quotes]{tidy_quotes()}} for capturing several expressions,
+including from dots; \code{\link[=tidy_quote_expr]{tidy_quote_expr()}} for quoting a raw
+expression with quasiquotation; and \code{\link[=tidy_interp]{tidy_interp()}} for unquoting
+an already quoted expression or an existing formula.
 }

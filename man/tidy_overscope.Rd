@@ -23,9 +23,9 @@ scope.}
 
 \item{bottom}{This is the environment (or the bottom of a set of
 environments) containing definitions for overscoped symbols. The
-bottom environment typically contains pronouns (like `.data`)
+bottom environment typically contains pronouns (like \code{.data})
 while its direct parents contain the overscoping bindings. The
-last one of these parents is the `top`.}
+last one of these parents is the \code{top}.}
 
 \item{top}{The top environment of the overscope. During tidy
 evaluation, this environment is chained and rechained to lexical
@@ -35,22 +35,22 @@ overscope have precedence, but the bindings in the dynamic
 environment where the tidy quotes were created in the first place
 are in scope as well.}
 
-\item{overscope}{A valid overscope containing bindings for `~`,
-`.top_env` and `_F` and whose parents contain overscoped bindings
+\item{overscope}{A valid overscope containing bindings for \code{~},
+\code{.top_env} and \code{_F} and whose parents contain overscoped bindings
 for tidy evaluation.}
 
 \item{quo}{A quosure or quote to evaluate within the overscope.}
 
-\item{env}{The lexical enclosure in case `quo` is not a validly
-scoped quosure. This is the [base environment][base_env] by
+\item{env}{The lexical enclosure in case \code{quo} is not a validly
+scoped quosure. This is the \link[=base_env]{base environment} by
 default.}
 }
 \value{
 An overscope environment.
 
-A valid overscope: a child environment of `bottom`
-  containing the definitions enabling tidy evaluation
-  (self-evaluating quosures, formula-unguarding, ...).
+A valid overscope: a child environment of \code{bottom}
+containing the definitions enabling tidy evaluation
+(self-evaluating quosures, formula-unguarding, ...).
 }
 \description{
 Tidy evaluation works by rescoping a set of symbols (column names

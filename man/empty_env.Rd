@@ -7,9 +7,9 @@
 empty_env()
 }
 \description{
-The empty environment is the only one that does not have a
-parent. It is always used as the tail of a scope chain such as the
-search path (see \code{\link{scoped_names}()}).
+The empty environment is the only one that does not have a parent.
+It is always used as the tail of a scope chain such as the search
+path (see \code{\link[=scoped_names]{scoped_names()}}).
 }
 \examples{
 # Create environments with nothing in scope (the default):

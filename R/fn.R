@@ -3,13 +3,14 @@
 #' This constructs a new function given it's three components:
 #' list of arguments, body code and parent environment.
 #'
-#' @param args A named list of default arguments.  Note that if you want
-#'  arguments that don't have defaults, you'll need to use the special function
-#'  \code{\link{alist}}, e.g. \code{alist(a = , b = 1)}
-#' @param body A language object representing the code inside the function.
-#'   Usually this will be most easily generated with \code{\link{quote}}
-#' @param env The parent environment of the function, defaults to the calling
-#'  environment of \code{make_function}
+#' @param args A named list of default arguments.  Note that if you
+#'   want arguments that don't have defaults, you'll need to use the
+#'   special function [alist], e.g. `alist(a = , b = 1)`
+#' @param body A language object representing the code inside the
+#'   function. Usually this will be most easily generated with
+#'   [base::quote()]
+#' @param env The parent environment of the function, defaults to the
+#'   calling environment of `make_function`
 #' @export
 #' @examples
 #' f <- function(x) x + 3
@@ -37,7 +38,7 @@ prim_eval <- eval(quote(sys.function(0)))
 is_prim_eval <- function(x) identical(x, prim_eval)
 
 #' Name of a primitive function
-#' @param prim A primitive function such as \code{base::c}.
+#' @param prim A primitive function such as [base::c()].
 prim_name <- function(prim) {
   stopifnot(is_primitive(prim))
 
@@ -50,18 +51,16 @@ prim_name <- function(prim) {
 
 #' Extract arguments from a function
 #'
-#' \code{fn_defaults()} returns a named list of default
-#' arguments. \code{fn_fmls_names()} returns the names of the
-#' arguments.
+#' `fn_defaults()` returns a named list of default arguments.
+#' `fn_fmls_names()` returns the names of the arguments.
 #'
-#' Contrarily to \code{formals()}, these helpers also work with
-#' primitive functions. See \code{\link{is_function}()} for a
-#' discussion of primitive and closure functions.
+#' Contrarily to `formals()`, these helpers also work with primitive
+#' functions. See [is_function()] for a discussion of primitive and
+#' closure functions.
 #'
 #' @param fn A function. It is lookep up in the calling frame if not
 #'   supplied.
-#' @seealso \code{\link{lang_args}()} and
-#'   \code{\link{lang_args_names}()}
+#' @seealso [lang_args()] and [lang_args_names()]
 #' @export
 #' @examples
 #' # Extract from current call:
@@ -91,15 +90,14 @@ fn_fmls_names <- function(fn = caller_fn()) {
 #'
 #' Closures are functions written in R, named after the way their
 #' arguments are scoped within nested environments (see
-#' \url{https://en.wikipedia.org/wiki/Closure_(computer_programming)}).
-#' The root environment of the closure is called the closure
+#' https://en.wikipedia.org/wiki/Closure_(computer_programming)).  The
+#' root environment of the closure is called the closure
 #' environment. When closures are evaluated, a new environment called
 #' the evaluation frame is created with the closure environment as
 #' parent. This is where the body of the closure is evaluated. These
-#' closure frames appear on the evaluation stack (see
-#' \code{\link{eval_stack}()}), as opposed to primitive functions
-#' which do not necessarily have their own evaluation frame and never
-#' appear on the stack.
+#' closure frames appear on the evaluation stack (see [eval_stack()]),
+#' as opposed to primitive functions which do not necessarily have
+#' their own evaluation frame and never appear on the stack.
 #'
 #' Primitive functions are more efficient than closures for two
 #' reasons. First, they are written entirely in fast low-level
@@ -108,39 +106,36 @@ fn_fmls_names <- function(fn = caller_fn()) {
 #' argument matching (dealing with positional versus named arguments,
 #' partial matching, etc). One practical consequence of the special
 #' way in which primitives are passed arguments this is that they
-#' technically do not have formal arguments, and
-#' \code{\link{formals}()} will return \code{NULL} if called on a
-#' primitive function. See \code{\link{fn_fmls}()} for a function that
-#' returns a representation of formal arguments for primitive
-#' functions. Finally, primitive functions can either take arguments
-#' lazily, like R closures do, or evaluate them eagerly before being
-#' passed on to the C code. The former kind of primitives are called
-#' "special" in R terminology, while the latter is referred to as
-#' "builtin". \code{is_primitive_eager()} and
-#' \code{is_primitive_lazy()} allow you to check whether a primitive
-#' function evaluates arguments eagerly or lazily.
+#' technically do not have formal arguments, and [formals()] will
+#' return `NULL` if called on a primitive function. See [fn_fmls()]
+#' for a function that returns a representation of formal arguments
+#' for primitive functions. Finally, primitive functions can either
+#' take arguments lazily, like R closures do, or evaluate them eagerly
+#' before being passed on to the C code. The former kind of primitives
+#' are called "special" in R terminology, while the latter is referred
+#' to as "builtin". `is_primitive_eager()` and `is_primitive_lazy()`
+#' allow you to check whether a primitive function evaluates arguments
+#' eagerly or lazily.
 #'
 #' You will also encounter the distinction between primitive and
 #' internal functions in technical documentation. Like primitive
 #' functions, internal functions are defined at a low level and
 #' written in C. However, internal functions have no representation in
 #' the R language. Instead, they are called via a call to
-#' \code{\link[base]{.Internal}()} within a regular closure. This
-#' ensures that they appear as normal R function objects: they obey
-#' all the usual rules of argument passing, and they appear on the
-#' evaluation stack as any other closures. As a result,
-#' \code{\link{fn_fmls}()} does not need to look in the
-#' \code{.ArgsEnv} environment to obtain a representation of their
-#' arguments, and there is no way of querying from R whether they are
-#' lazy ('special' in R terminology) or eager ('builtin').
+#' [base::.Internal()] within a regular closure. This ensures that
+#' they appear as normal R function objects: they obey all the usual
+#' rules of argument passing, and they appear on the evaluation stack
+#' as any other closures. As a result, [fn_fmls()] does not need to
+#' look in the `.ArgsEnv` environment to obtain a representation of
+#' their arguments, and there is no way of querying from R whether
+#' they are lazy ('special' in R terminology) or eager ('builtin').
 #'
-#' You can call primitive functions with \code{\link{.Primitive}()}
-#' and internal functions with \code{\link{.Internal}()}. However,
-#' calling internal functions in a package is forbidden by CRAN's
-#' policy because they are considered part of the private API. They
-#' often assume that they have been called with correctly formed
-#' arguments, and may cause R to crash if you call them with
-#' unexpected objects.
+#' You can call primitive functions with [.Primitive()] and internal
+#' functions with [.Internal()]. However, calling internal functions
+#' in a package is forbidden by CRAN's policy because they are
+#' considered part of the private API. They often assume that they
+#' have been called with correctly formed arguments, and may cause R
+#' to crash if you call them with unexpected objects.
 #'
 #' @inheritParams type-predicates
 #' @export
@@ -177,7 +172,7 @@ is_closure <- function(x) {
 #'
 #' Convert an object to a closure. This is especially useful to
 #' normalise primitive functions to a proper closure (see
-#' \code{\link{is_function}()} about primitive functions).
+#' [is_function()] about primitive functions).
 #'
 #' @param x A function or a string. In the latter case, the function
 #'   is looked up in the calling environment.
@@ -235,15 +230,14 @@ is_primitive_lazy <- function(x) {
 
 #' Return the closure environment of a function.
 #'
-#' Closure environments define the scope of functions (see
-#' \code{\link{env}()}). When a function call is evaluated, R creates
-#' an evaluation frame (see \code{\link{eval_stack}()}) that inherits
-#' from the closure environment. This makes all objects defined in the
-#' closure environment and all its parents available to code executed
-#' within the function.
+#' Closure environments define the scope of functions (see [env()]).
+#' When a function call is evaluated, R creates an evaluation frame
+#' (see [eval_stack()]) that inherits from the closure environment.
+#' This makes all objects defined in the closure environment and all
+#' its parents available to code executed within the function.
 #'
-#' \code{fn_env()} returns the closure environment of \code{fn}. There
-#' is also an assignment method to set a new closure environment.
+#' `fn_env()` returns the closure environment of `fn`. There is also
+#' an assignment method to set a new closure environment.
 #'
 #' @param fn,x A function.
 #' @param value A new closure environment for the function.
@@ -281,12 +275,11 @@ fn_env <- function(fn) {
 #'
 #' @param .f A function or formula.
 #'
-#'   If a \strong{function}, it is used as is.
+#'   If a **function**, it is used as is.
 #'
-#'   If a \strong{formula}, e.g. \code{~ .x + 2}, it is converted to a
-#'   function with two arguments, \code{.x} or \code{.} and
-#'   \code{.y}. This allows you to create very compact anonymous
-#'   functions with up to two inputs.
+#'   If a **formula**, e.g. `~ .x + 2`, it is converted to a function
+#'   with two arguments, `.x` or `.` and `.y`. This allows you to
+#'   create very compact anonymous functions with up to two inputs.
 #' @param ... Additional arguments passed on to methods. Currently
 #'   unused in rlang.
 #' @export

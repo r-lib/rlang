@@ -19,12 +19,12 @@ maybe_missing(x)
 These functions help using the missing argument as a regular R
 object. It is valid to generate a missing argument and assign it in
 the current environment or in a list. However, once assigned in the
-environment, the missing argument normally cannot be
-touched. \code{maybe_missing()} checks whether the object is the
-missing argument, and regenerate it if needed to prevent R from
-throwing a missing error. In addition, \code{is_missing()} lets you
-check for a missing argument in a larger range of situations than
-\code{\link[base]{missing}()} (see examples).
+environment, the missing argument normally cannot be touched.
+\code{maybe_missing()} checks whether the object is the missing
+argument, and regenerate it if needed to prevent R from throwing a
+missing error. In addition, \code{is_missing()} lets you check for a
+missing argument in a larger range of situations than
+\code{\link[base:missing]{base::missing()}} (see examples).
 }
 \examples{
 # The missing argument can be useful to generate calls

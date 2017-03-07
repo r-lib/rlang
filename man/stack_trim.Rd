@@ -14,11 +14,10 @@ the top of the stack. In other words, the number of layers of
 intervening frames to trim.}
 }
 \description{
-\code{\link{eval_stack}()} can be tricky to use in real code
-because all intervening frames are returned with the stack,
-including those at \code{eval_stack()} own call
-site. \code{stack_trim()} makes it easy to remove layers of
-intervening calls.
+\code{\link[=eval_stack]{eval_stack()}} can be tricky to use in real code because all
+intervening frames are returned with the stack, including those at
+\code{eval_stack()} own call site. \code{stack_trim()} makes it easy to
+remove layers of intervening calls.
 }
 \examples{
 # Intervening frames appear on the evaluation stack:

@@ -9,12 +9,11 @@ as_function(.f, ...)
 \arguments{
 \item{.f}{A function or formula.
 
-  If a \strong{function}, it is used as is.
+If a \strong{function}, it is used as is.
 
-  If a \strong{formula}, e.g. \code{~ .x + 2}, it is converted to a
-  function with two arguments, \code{.x} or \code{.} and
-  \code{.y}. This allows you to create very compact anonymous
-  functions with up to two inputs.}
+If a \strong{formula}, e.g. \code{~ .x + 2}, it is converted to a function
+with two arguments, \code{.x} or \code{.} and \code{.y}. This allows you to
+create very compact anonymous functions with up to two inputs.}
 
 \item{...}{Additional arguments passed on to methods. Currently
 unused in rlang.}

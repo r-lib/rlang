@@ -7,7 +7,7 @@
 prim_name(prim)
 }
 \arguments{
-\item{prim}{A primitive function such as \code{base::c}.}
+\item{prim}{A primitive function such as \code{\link[base:c]{base::c()}}.}
 }
 \description{
 Name of a primitive function

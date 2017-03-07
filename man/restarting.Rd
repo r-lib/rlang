@@ -21,18 +21,17 @@ the fields themselves are used as argument names.}
 }
 \description{
 This constructor automates the common task of creating an
-\code{\link{inplace}()} handler that invokes a restart.
+\code{\link[=inplace]{inplace()}} handler that invokes a restart.
 }
 \details{
 Jumping to a restart point from an inplace handler has two
 effects. First, the control flow jumps to wherever the restart was
 established, and the restart function is called (with \code{...},
-\code{.args} or \code{.fields} as arguments). Execution resumes
-from the \code{\link{with_restarts}()} call. Secondly, the transfer
-of the control flow out of the function that signalled the
-condition means that the handler has dealt with the condition. Thus
-the condition will not be passed on to other potential handlers
-established on the stack.
+\code{.args} or \code{.fields} as arguments). Execution resumes from the
+\code{\link[=with_restarts]{with_restarts()}} call. Secondly, the transfer of the control flow
+out of the function that signalled the condition means that the
+handler has dealt with the condition. Thus the condition will not
+be passed on to other potential handlers established on the stack.
 }
 \examples{
 # This is a restart that takes a data frame and names as arguments
@@ -65,5 +64,5 @@ with_handlers(fn(), foo = restart_bar)
 with_handlers(fn(), foo = restarting("rst_baz"))
 }
 \seealso{
-\code{\link{inplace}()} and \code{\link{exiting}()}.
+\code{\link[=inplace]{inplace()}} and \code{\link[=exiting]{exiting()}}.
 }

@@ -11,9 +11,9 @@ names2(x)
 }
 \description{
 This names getter always returns a character vector, even when an
-object does not have a \code{names} attribute. In this case, it
-returns a vector of empty names \code{""}. It also standardises
-missing names to \code{""}.
+object does not have a \code{names} attribute. In this case, it returns
+a vector of empty names \code{""}. It also standardises missing names to
+\code{""}.
 }
 \examples{
 names2(letters)

@@ -21,21 +21,20 @@ as_env(x, parent = NULL)
 \arguments{
 \item{x}{An object to coerce.}
 
-\item{parent}{A parent environment, \code{\link{empty_env}()} by
-default. Can be ignored with a warning for methods where it does
-not make sense to change the parent.}
+\item{parent}{A parent environment, \code{\link[=empty_env]{empty_env()}} by default. Can
+be ignored with a warning for methods where it does not make
+sense to change the parent.}
 }
 \description{
 This is a S3 generic. The default method coerces named vectors
-(including lists) to an environment. It first checks that \code{x}
-is a dictionary (see \code{\link{is_dictionary}()}). The method for
-unnamed strings returns the corresponding package environment (see
-\code{\link{pkg_env}()}).
+(including lists) to an environment. It first checks that \code{x} is a
+dictionary (see \code{\link[=is_dictionary]{is_dictionary()}}). The method for unnamed strings
+returns the corresponding package environment (see \code{\link[=pkg_env]{pkg_env()}}).
 }
 \details{
-If \code{x} is an environment and \code{parent} is not \code{NULL},
-the environment is duplicated before being set a new parent. The
-return value is therefore a different environment than \code{x}.
+If \code{x} is an environment and \code{parent} is not \code{NULL}, the
+environment is duplicated before being set a new parent. The return
+value is therefore a different environment than \code{x}.
 }
 \examples{
 # Coerce a named vector to an environment:

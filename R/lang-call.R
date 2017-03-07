@@ -1,27 +1,25 @@
 #' Is object a call (language type)?
 #'
-#' This function tests if \code{x} is a call. This is a
-#' pattern-matching predicate that will return \code{FALSE} if
-#' \code{name} and \code{n} are supplied and the call does not match
-#' these properties. \code{is_unary_lang()} and
-#' \code{is_binary_lang()} hardcode \code{n} to 1 and 2.
+#' This function tests if `x` is a call. This is a pattern-matching
+#' predicate that will return `FALSE` if `name` and `n` are supplied
+#' and the call does not match these properties. `is_unary_lang()` and
+#' `is_binary_lang()` hardcode `n` to 1 and 2.
 #'
-#' Note that the base type of calls is \code{language}, while
-#' \code{call} is the old S mode. While it is usually better to avoid
-#' using S terminology, it would probably be even more confusing to
-#' refer to "calls" as "language". We still use \code{lang} as prefix
-#' or suffix for consistency.
+#' Note that the base type of calls is `language`, while `call` is the
+#' old S mode. While it is usually better to avoid using S
+#' terminology, it would probably be even more confusing to refer to
+#' "calls" as "language". We still use `lang` as prefix or suffix for
+#' consistency.
 #'
 #' @param x An object to test. If a formula, the right-hand side is
 #'   extracted.
 #' @param name An optional name that the call should match. It is
-#'   passed to \code{\link{as_symbol}()} before matching. This argument
-#'   is vectorised and you can supply a vector of names to match. In
-#'   this case, \code{is_lang()} returns \code{TRUE} if at least one
-#'   name matches.
+#'   passed to [as_symbol()] before matching. This argument is
+#'   vectorised and you can supply a vector of names to match. In this
+#'   case, `is_lang()` returns `TRUE` if at least one name matches.
 #' @param n An optional number of arguments that the call should
 #'   match.
-#' @seealso \code{\link{is_expr}()}
+#' @seealso [is_expr()]
 #' @export
 #' @examples
 #' is_lang(quote(foo(bar)))
@@ -117,9 +115,9 @@ as_lang <- function(x) {
 
 #' Create a call by "hand"
 #'
-#' @param .fn Function to call. For \code{make_call}, either a string,
-#'   a symbol or a quoted call. For \code{do_call}, a bare function
-#'   name or call.
+#' @param .fn Function to call. For `make_call`, either a string, a
+#'   symbol or a quoted call. For `do_call`, a bare function name or
+#'   call.
 #' @param ...,.args Arguments to the call either in or out of a list
 #' @seealso lang_modify
 #' @export
@@ -150,14 +148,12 @@ lang <- function(.fn, ..., .args = list()) {
 #'   right-hand side, or a frame object from which to extract the call
 #'   expression. If not supplied, the calling frame is used.
 #' @param ...,.args Named or unnamed expressions (constants, names or
-#'   calls) used to modify the call. Use \code{NULL} to remove
-#'   arguments.
-#' @param .standardise If \code{TRUE}, the call is standardised before
-#'   hand to match existing unnamed arguments to their argument
-#'   names. This prevents new named arguments from accidentally
-#'   replacing original unnamed arguments.
-#' @return A tidy quote if \code{.call} is a tidy quote, a call
-#'   otherwise.
+#'   calls) used to modify the call. Use `NULL` to remove arguments.
+#' @param .standardise If `TRUE`, the call is standardised before hand
+#'   to match existing unnamed arguments to their argument names. This
+#'   prevents new named arguments from accidentally replacing original
+#'   unnamed arguments.
+#' @return A tidy quote if `.call` is a tidy quote, a call otherwise.
 #' @seealso lang
 #' @export
 #' @examples
@@ -228,16 +224,15 @@ lang_modify <- function(.call = caller_frame(), ..., .args = list(),
 
 #' Standardise a call.
 #'
-#' This is essentially equivalent to \code{\link[base]{match.call}()},
-#' but handles primitive functions more gracefully.
+#' This is essentially equivalent to [base::match.call()], but handles
+#' primitive functions more gracefully.
 #'
 #' @param call Can be a call, a formula quoting a call in the
 #'   right-hand side, or a frame object from which to extract the call
 #'   expression. If not supplied, the calling frame is used.
-#' @seealso \code{\link{lang_homogenise}()} for a version more
-#'   suitable to language analysis.
-#' @return A tidy quote if \code{.call} is a tidy quote, a call
-#'   otherwise.
+#' @seealso [lang_homogenise()] for a version more suitable to
+#'   language analysis.
+#' @return A tidy quote if `.call` is a tidy quote, a call otherwise.
 #' @export
 lang_standardise <- function(call = caller_frame()) {
   orig <- as_generic_expr(call)
@@ -263,7 +258,7 @@ lang_standardise <- function(call = caller_frame()) {
 #'
 #' @inheritParams lang_standardise
 #' @export
-#' @seealso \code{\link{lang_name}}()
+#' @seealso [lang_name()]
 #' @examples
 #' # Extract from a quoted call:
 #' lang_fn(~matrix())
@@ -296,9 +291,9 @@ lang_fn <- function(call = caller_frame()) {
 #' Extract function name of a call
 #'
 #' @inheritParams lang_standardise
-#' @return A string with the function name, or \code{NULL} if the
-#'   function is anonymous.
-#' @seealso \code{\link{lang_fn}}()
+#' @return A string with the function name, or `NULL` if the function
+#'   is anonymous.
+#' @seealso [lang_fn()]
 #' @export
 #' @examples
 #' # Extract the function name from quoted calls:
@@ -353,13 +348,12 @@ lang_name <- function(call = caller_frame()) {
 #'   list).
 #'
 #' @inheritParams lang_standardise
-#' @seealso [pairlist]
+#' @seealso [pairlist], [lang_args()]
 #' @export
 #' @examples
 #' lang <- quote(foo(bar, baz))
 #' lang_head(lang)
 #' lang_tail(lang)
-#' @md
 lang_head <- function(call = caller_frame()) {
   call <- get_expr(call)
   stopifnot(is_lang(call))
@@ -376,10 +370,8 @@ lang_tail <- function(call = caller_frame()) {
 #' Extract arguments from a call
 #'
 #' @inheritParams lang_standardise
-#' @return A named list of arguments. The \code{lang_tail()} version
-#'   returns a named pairlist (the CDR of the call).
-#' @seealso \code{\link{fn_fmls}()} and
-#'   \code{\link{fn_fmls_names}()}
+#' @return A named list of arguments.
+#' @seealso [lang_tail()], [fn_fmls()] and [fn_fmls_names()]
 #' @export
 #' @examples
 #' call <- quote(f(a, b))

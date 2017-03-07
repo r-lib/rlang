@@ -19,23 +19,23 @@ as_native_string(x)
 \item{x}{An object to coerce.}
 }
 \description{
-Unlike specifying the `encoding` argument in `as_string()` and
-`as_character()`, which is only declarative, these functions
+Unlike specifying the \code{encoding} argument in \code{as_string()} and
+\code{as_character()}, which is only declarative, these functions
 actually attempt to convert the encoding of their input. There are
 two possible cases:
-
-* The string is tagged as UTF-8 or latin1, the only two encodings
-  for which R has specific support. In this case, converting to the
-  same encoding is a no-op, and converting to native always works
-  as expected, as long as the native encoding, the one specified by
-  the `LC_CTYPE` locale (see [set_utf8_locale()]) has support for
-  all characters occurring in the strings. Unrepresentable
-  characters are serialised as unicode points: "<U+xxxx>".
-
-* The string is not tagged. R assumes that it is encoded in the
-  native encoding. Conversion to native is a no-op, and conversion
-  to UTF-8 should work as long as the string is actually encoded in
-  the locale codeset.
+\itemize{
+\item The string is tagged as UTF-8 or latin1, the only two encodings
+for which R has specific support. In this case, converting to the
+same encoding is a no-op, and converting to native always works
+as expected, as long as the native encoding, the one specified by
+the \code{LC_CTYPE} locale (see \code{\link[=set_utf8_locale]{set_utf8_locale()}}) has support for
+all characters occurring in the strings. Unrepresentable
+characters are serialised as unicode points: "<U+xxxx>".
+\item The string is not tagged. R assumes that it is encoded in the
+native encoding. Conversion to native is a no-op, and conversion
+to UTF-8 should work as long as the string is actually encoded in
+the locale codeset.
+}
 }
 \examples{
 # Let's create a string marked as UTF-8 (which is guaranteed by the

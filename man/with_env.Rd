@@ -10,23 +10,22 @@ with_env(env, expr)
 locally(expr)
 }
 \arguments{
-\item{env}{An environment within which to evaluate \code{expr}. Can
-be an object with an \code{\link{env}()} method.}
+\item{env}{An environment within which to evaluate \code{expr}. Can be
+an object with an \code{\link[=env]{env()}} method.}
 
 \item{expr}{An expression to evaluate.}
 }
 \description{
-These functions evaluate \code{expr} within a given environment
-(\code{env} for \code{with_env()}, or the child of the current
-environment for \code{locally}). They rely on
-\code{\link{expr_eval}()} which features a lighter evaluation
-mechanism than base R \code{\link[base]{eval}()}, and which also
-has some subtle implications when evaluting stack sensitive
-functions (see help for \code{\link{expr_eval}()}).
+These functions evaluate \code{expr} within a given environment (\code{env}
+for \code{with_env()}, or the child of the current environment for
+\code{locally}). They rely on \code{\link[=expr_eval]{expr_eval()}} which features a lighter
+evaluation mechanism than base R \code{\link[base:eval]{base::eval()}}, and which also has
+some subtle implications when evaluting stack sensitive functions
+(see help for \code{\link[=expr_eval]{expr_eval()}}).
 }
 \details{
 \code{locally()} is equivalent to the base function
-\code{\link[base]{local}()} but it produces a much cleaner
+\code{\link[base:local]{base::local()}} but it produces a much cleaner
 evaluation stack, and has stack-consistent semantics. It is thus
 more suited for experimenting with the R language.
 }

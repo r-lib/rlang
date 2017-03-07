@@ -7,15 +7,16 @@
 new_fn(args, body, env = caller_env())
 }
 \arguments{
-\item{args}{A named list of default arguments.  Note that if you want
-arguments that don't have defaults, you'll need to use the special function
-\code{\link{alist}}, e.g. \code{alist(a = , b = 1)}}
+\item{args}{A named list of default arguments.  Note that if you
+want arguments that don't have defaults, you'll need to use the
+special function \link{alist}, e.g. \code{alist(a = , b = 1)}}
 
-\item{body}{A language object representing the code inside the function.
-Usually this will be most easily generated with \code{\link{quote}}}
+\item{body}{A language object representing the code inside the
+function. Usually this will be most easily generated with
+\code{\link[base:quote]{base::quote()}}}
 
-\item{env}{The parent environment of the function, defaults to the calling
-environment of \code{make_function}}
+\item{env}{The parent environment of the function, defaults to the
+calling environment of \code{make_function}}
 }
 \description{
 This constructs a new function given it's three components:

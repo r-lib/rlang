@@ -8,8 +8,8 @@ env_unbind(env = caller_env(), nms, inherit = FALSE)
 }
 \arguments{
 \item{env}{An environment or an object with a S3 method for
-\code{env()}. If missing, the environment of the current
-evaluation frame is returned.}
+\code{env()}. If missing, the environment of the current evaluation
+frame is returned.}
 
 \item{nms}{A character vector containing the names of the bindings
 to remove.}
@@ -19,13 +19,12 @@ environments.}
 }
 \value{
 The input object \code{env}, with its associated
-  environment modified in place.
+environment modified in place.
 }
 \description{
-\code{env_unbind()} is the complement of
-\code{\link{env_bind}()}. Like \code{env_has()}, it ignores the
-parent environments of \code{env} by default. Set \code{inherit} to
-\code{TRUE} to track down bindings in parent environments.
+\code{env_unbind()} is the complement of \code{\link[=env_bind]{env_bind()}}. Like \code{env_has()},
+it ignores the parent environments of \code{env} by default. Set
+\code{inherit} to \code{TRUE} to track down bindings in parent environments.
 }
 \examples{
 data <- stats::setNames(letters, letters)

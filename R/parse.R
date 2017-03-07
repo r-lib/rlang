@@ -4,27 +4,26 @@
 #' is the first step to interpret or evaluate a piece of R code
 #' written by a programmer.
 #'
-#' \code{parse_expr()} returns one expression. If the text contains
-#' more than one expression (separated by colons or new lines), an
-#' error is issued. On the other hand \code{parse_exprs()} can handle
-#' multiple expressions. It always returns a list of expressions
-#' (compare to \code{\link[base]{parse}()} which returns an
-#' \link[base]{expression} vector). All functions also support R
-#' connections.
+#' `parse_expr()` returns one expression. If the text contains more
+#' than one expression (separated by colons or new lines), an error is
+#' issued. On the other hand `parse_exprs()` can handle multiple
+#' expressions. It always returns a list of expressions (compare to
+#' [base::parse()] which returns an base::expression vector). All
+#' functions also support R connections.
 #'
-#' The versions prefixed with \code{f_} return expressions quoted in
+#' The versions prefixed with `f_` return expressions quoted in
 #' formulas rather than raw expressions.
 #'
 #' @param x Text containing expressions to parse_expr for
-#'   \code{parse_expr()} and \code{parse_exprs()}. Can also be an R
-#'   connection, for instance to a file. If the supplied connection is
-#'   not open, it will be automatically closed and destroyed.
+#'   `parse_expr()` and `parse_exprs()`. Can also be an R connection,
+#'   for instance to a file. If the supplied connection is not open,
+#'   it will be automatically closed and destroyed.
 #' @param env The environment for the formulas. Defaults to the
-#'   context in which the parse_expr function was called. Can be any object
-#'   with a \code{as_env()} method.
-#' @return \code{parse_expr()} returns a formula, \code{parse_exprs()}
-#'   returns a list of formulas.
-#' @seealso \code{\link[base]{parse}()}
+#'   context in which the parse_expr function was called. Can be any
+#'   object with a `as_env()` method.
+#' @return `parse_expr()` returns a formula, `parse_exprs()` returns a
+#'   list of formulas.
+#' @seealso [base::parse()]
 #' @export
 #' @examples
 #' # parse_expr() can parse_expr any R expression:

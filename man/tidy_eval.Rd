@@ -6,7 +6,7 @@
 \alias{tidy_eval_lhs}
 \alias{tidy_eval}
 \alias{data_source}
-\title{Evaluate a formula}
+\title{Evaluate a quosure.}
 \usage{
 tidy_eval_rhs(f, data = NULL)
 
@@ -17,17 +17,16 @@ tidy_eval(f, data = NULL)
 data_source(x, lookup_msg = NULL)
 }
 \arguments{
-\item{f}{A formula. Any expressions wrapped in \code{ UQ() } will
-will be "unquoted", i.e. they will be evaluated, and the results
-inserted back into the formula. See \code{\link{tidy_quote}()}
-for more details. If a list of formulas, \code{tidy_eval()} is
-applied to each of them in turn and the list of results is
-returned.}
+\item{f}{A formula. Any expressions wrapped in \code{UQ()} will will be
+"unquoted", i.e. they will be evaluated, and the results inserted
+back into the formula. See \code{\link[=tidy_quote]{tidy_quote()}} for more details. If a
+list of formulas, \code{tidy_eval()} is applied to each of them in
+turn and the list of results is returned.}
 
-\item{data}{A list (or data frame). \code{data_source} is a generic
-used to find the data associated with a given object. If you want
-to make \code{tidy_eval} work for your own objects, you can
-define a method for this generic.}
+\item{data}{A list (or data frame). \code{data_source} is a generic used
+to find the data associated with a given object. If you want to
+make \code{tidy_eval} work for your own objects, you can define a
+method for this generic.}
 
 \item{x}{An object for which you want to find associated data.}
 
@@ -35,9 +34,9 @@ define a method for this generic.}
 accessed inappropriately (by position rather than name).}
 }
 \description{
-\code{tidy_eval_rhs} evaluates the RHS of a formula and \code{tidy_eval_lhs}
-evaluates the LHS. \code{tidy_eval} is a shortcut for \code{tidy_eval_rhs} since
-that is what you most commonly need.
+\code{tidy_eval_rhs} evaluates the RHS of a formula and
+\code{tidy_eval_lhs()} evaluates the LHS. \code{tidy_eval()} is a shortcut
+for \code{tidy_eval_rhs()} since that is what you most commonly need.
 }
 \details{
 If \code{data} is specified, variables will be looked for first in this
@@ -45,10 +44,12 @@ object, and if not found in the environment of the formula.
 }
 \section{Pronouns}{
 
-When used with \code{data}, \code{tidy_eval} provides two pronouns to make it
-possible to be explicit about where you want values to come from:
-\code{.env} and \code{.data}. These are thin wrappers around \code{.data}
-and \code{.env} that throw errors if you try to access non-existent values.
+
+When used with \code{data}, \code{tidy_eval()} provides two pronouns to
+make it possible to be explicit about where you want values to
+come from: \code{.env} and \code{.data}. These are thin wrappers around
+\code{.data} and \code{.env} that throw errors if you try to access
+non-existent values.
 }
 
 \examples{

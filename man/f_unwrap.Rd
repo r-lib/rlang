@@ -10,8 +10,8 @@ f_unwrap(f)
 \item{f}{A formula to unwrap.}
 }
 \description{
-This interpolates values in the formula that are defined in its environment,
-replacing the environment with its parent.
+This interpolates values in the formula that are defined in its
+environment, replacing the environment with its parent.
 }
 \examples{
 n <- 100

@@ -38,12 +38,12 @@ rep_along(.x, .y, ..., .attrs = list())
 \item{.y}{Values to repeat.}
 }
 \description{
-These functions take the idea of \code{\link{seq_along}} and
-generalise it to creating lists (\code{lst_along}) and repeating
-values (\code{rep_along}). The dots and \code{.attrs} are forwarded
-to \code{\link{with_attributes}()} to make it easy to add
-attributes. Except for \code{lst_along()} and \code{raw_along()},
-the empty vectors are filled with typed \link{missing} values.
+These functions take the idea of \code{\link[=seq_along]{seq_along()}} and generalise it to
+creating lists (\code{lst_along}) and repeating values (\code{rep_along}).
+The dots and \code{.attrs} are forwarded to \code{\link[=with_attributes]{with_attributes()}} to make
+it easy to add attributes. Except for \code{lst_along()} and
+\code{raw_along()}, the empty vectors are filled with typed \code{missing}
+values.
 }
 \examples{
 x <- 0:5

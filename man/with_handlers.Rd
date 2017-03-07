@@ -15,27 +15,25 @@ handlers are established. The underscored version takes a quoted
 expression or a quoted formula.}
 
 \item{..., .handlers}{Named handlers. Handlers should inherit from
-\code{exiting} or \code{inplace}. See \code{\link{exiting}()} and
-\code{\link{inplace}()} for constructing such handlers.}
+\code{exiting} or \code{inplace}. See \code{\link[=exiting]{exiting()}} and \code{\link[=inplace]{inplace()}} for
+constructing such handlers.}
 
-\item{.env}{The environment in which to evaluate a captured
-\code{expr}.}
+\item{.env}{The environment in which to evaluate a captured \code{expr}.}
 }
 \description{
 Condition handlers are functions established on the evaluation
-stack (see \code{\link{eval_stack}()}) that are called by R when a
-condition is signalled (see \code{\link{cnd_signal}()} and
-\code{\link{abort}()} for two common signal functions). They come
-in two types: exiting handlers, which jump out of the signalling
-context and are transferred to \code{with_handlers()} before being
-executed. And inplace handlers, which are executed within the
-signal functions.
+stack (see \code{\link[=eval_stack]{eval_stack()}}) that are called by R when a condition is
+signalled (see \code{\link[=cnd_signal]{cnd_signal()}} and \code{\link[=abort]{abort()}} for two common signal
+functions). They come in two types: exiting handlers, which jump
+out of the signalling context and are transferred to
+\code{with_handlers()} before being executed. And inplace handlers,
+which are executed within the signal functions.
 }
 \details{
 An exiting handler is taking charge of the condition. No other
 handler on the stack gets a chance to handle the condition. The
-handler is executed and \code{with_handlers()} returns the return
-value of that handler. On the other hand, in place handlers do not
+handler is executed and \code{with_handlers()} returns the return value
+of that handler. On the other hand, in place handlers do not
 necessarily take charge. If they return normally, they decline to
 handle the condition, and R looks for other handlers established on
 the evaluation stack. Only by jumping to an earlier call frame can
@@ -44,13 +42,12 @@ signalling process. Sometimes, a muffling restart has been
 established for the purpose of jumping out of the signalling
 function but not out of the context where the condition was
 signalled, which allows execution to resume normally. See
-\code{\link{rst_muffle}()} the \code{muffle} argument of
-\code{\link{inplace}()} and the \code{mufflable} argument of
-\code{\link{cnd_signal}()}.
+\code{\link[=rst_muffle]{rst_muffle()}} the \code{muffle} argument of \code{\link[=inplace]{inplace()}} and the
+\code{mufflable} argument of \code{\link[=cnd_signal]{cnd_signal()}}.
 
-Exiting handlers are established first by \code{with_handlers()},
-and in place handlers are installed in second place. The latter
-handlers thus take precedence over the former.
+Exiting handlers are established first by \code{with_handlers()}, and in
+place handlers are installed in second place. The latter handlers
+thus take precedence over the former.
 }
 \examples{
 # Signal a condition with cnd_signal():
@@ -93,5 +90,5 @@ fn2 <- function() {
 with_handlers(fn2(), foo = inplace(exiting_handler), foo = inplace(other_handler))
 }
 \seealso{
-\code{\link{exiting}()}, \code{\link{inplace}()}.
+\code{\link[=exiting]{exiting()}}, \code{\link[=inplace]{inplace()}}.
 }

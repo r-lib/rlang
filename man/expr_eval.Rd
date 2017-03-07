@@ -13,28 +13,27 @@ expr_eval(expr, env = parent.frame())
 }
 \description{
 \code{expr_eval()} is a lightweight version of the base function
-\code{\link[base]{eval}()}. It does not accept supplementary data,
-but it is more efficient and does not clutter the evaluation stack.
+\code{\link[base:eval]{base::eval()}}. It does not accept supplementary data, but it is
+more efficient and does not clutter the evaluation stack.
 Technically, \code{expr_eval()} is a simple wrapper around the C
 function \code{Rf_eval()}.
 }
 \details{
-\code{base::eval()} inserts two call frames in the stack, the
-second of which features the \code{envir} parameter as frame
-environment. This may unnecessarily clutter the evaluation stack
-and it can change evaluation semantics with stack sensitive
-functions in the case where \code{env} is an evaluation environment
-of a stack frame (see \code{\link{eval_stack}()}). Since the base
-function \code{eval()} creates a new evaluation context with
-\code{env} as frame environment there are actually two contexts
-with the same evaluation environment on the stack when \code{expr}
-is evaluated. Thus, any command that looks up frames on the stack
-(stack sensitive functions) may find the parasite frame set up by
-\code{eval()} rather than the original frame targetted by
-\code{env}. As a result, code evaluated with \code{base::eval()}
+\code{base::eval()} inserts two call frames in the stack, the second of
+which features the \code{envir} parameter as frame environment. This may
+unnecessarily clutter the evaluation stack and it can change
+evaluation semantics with stack sensitive functions in the case
+where \code{env} is an evaluation environment of a stack frame (see
+\code{\link[=eval_stack]{eval_stack()}}). Since the base function \code{eval()} creates a new
+evaluation context with \code{env} as frame environment there are
+actually two contexts with the same evaluation environment on the
+stack when \code{expr} is evaluated. Thus, any command that looks up
+frames on the stack (stack sensitive functions) may find the
+parasite frame set up by \code{eval()} rather than the original frame
+targetted by \code{env}. As a result, code evaluated with \code{base::eval()}
 does not have the property of stack consistency, and stack
-sensitive functions like \code{\link[base]{return}()},
-\code{\link[base]{parent.frame}()} may return misleading results.
+sensitive functions like \code{\link[base:return]{base::return()}}, \code{\link[base:parent.frame]{base::parent.frame()}}
+may return misleading results.
 }
 \examples{
 # expr_eval() works just like base::eval():

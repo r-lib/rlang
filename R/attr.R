@@ -1,17 +1,15 @@
 #' Is object named?
 #'
-#' \code{is_named()} checks that \code{x} has names attributes, and
-#' that none of the names are missing or empty (\code{NA} or
-#' \code{""}). \code{is_dictionary()} checks that an object is a
-#' dictionary: that it has actual names and in addition that there are
-#' no duplicated names. \code{have_names()} is a vectorised version of
-#' \code{is_named()}.
+#' `is_named()` checks that `x` has names attributes, and that none of
+#' the names are missing or empty (`NA` or `""`). `is_dictionary()`
+#' checks that an object is a dictionary: that it has actual names and
+#' in addition that there are no duplicated names. `have_names()`
+#' is a vectorised version of `is_named()`.
 #'
 #' @param x An object to test.
-#' @return \code{is_named()} and \code{is_dictionary()} are scalar
-#'   predicates and return \code{TRUE} or \code{FALSE}.
-#'   \code{have_names()} is vectorised and returns a logical vector as
-#'   long as the input.
+#' @return `is_named()` and `is_dictionary()` are scalar predicates
+#'   and return `TRUE` or `FALSE`. `have_names()` is vectorised and
+#'   returns a logical vector as long as the input.
 #' @export
 #' @examples
 #' # A data frame usually has valid, unique names
@@ -91,12 +89,12 @@ have_names <- function(x) {
 #' This function returns a logical value that indicates if a data frame or
 #' another named object contains an element with a specific name.
 #'
-#' Unnamed objects are treated as if all names are empty strings.
-#' \code{NA} input gives \code{FALSE} as output.
+#' Unnamed objects are treated as if all names are empty strings. `NA`
+#' input gives `FALSE` as output.
 #'
 #' @param x A data frame or another named object
 #' @param name Element name(s) to check
-#' @return A logical vector of the same length as \code{name}
+#' @return A logical vector of the same length as `name`
 #' @examples
 #' has_name(iris, "Species")
 #' has_name(mtcars, "gears")
@@ -107,11 +105,11 @@ has_name <- function(x, name) {
 
 #' Set names of a vector.
 #'
-#' This is a snake case wrapper for \code{\link[stats]{setNames}},
-#' with tweaked defaults, and stricter argument checking.
+#' This is a snake case wrapper for [stats::setNames()], with tweaked
+#' defaults, and stricter argument checking.
 #'
 #' @param x Vector to name.
-#' @param nm Vector of names, the same length as \code{x}.
+#' @param nm Vector of names, the same length as `x`.
 #' @export
 #' @examples
 #' set_names(1:4, c("a", "b", "c", "d"))
@@ -133,9 +131,9 @@ set_names <- function(x, nm = x) {
 #' Get names of a vector.
 #'
 #' This names getter always returns a character vector, even when an
-#' object does not have a \code{names} attribute. In this case, it
-#' returns a vector of empty names \code{""}. It also standardises
-#' missing names to \code{""}.
+#' object does not have a `names` attribute. In this case, it returns
+#' a vector of empty names `""`. It also standardises missing names to
+#' `""`.
 #'
 #' @param x A vector.
 #' @export
@@ -163,12 +161,12 @@ length_ <- function(x) {
 #'
 #' This is a function for the common task of testing the length of an
 #' object. It checks the length of an object in a non-generic way:
-#' \code{\link[base]{length}()} methods are ignored.
+#' [base::length()] methods are ignored.
 #'
 #' @param x A R object.
-#' @param n A specific length to test \code{x} with. If \code{NULL},
-#'   \code{has_length()} returns \code{TRUE} if \code{x} has length
-#'   greater than zero, and \code{FALSE} otherwise.
+#' @param n A specific length to test `x` with. If `NULL`,
+#'   `has_length()` returns `TRUE` if `x` has length greater than
+#'   zero, and `FALSE` otherwise.
 #' @export
 #' @examples
 #' has_length(list())

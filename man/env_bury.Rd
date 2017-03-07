@@ -8,19 +8,19 @@ env_bury(env = caller_env(), data = list())
 }
 \arguments{
 \item{env}{An environment or an object with a S3 method for
-\code{env()}. If missing, the environment of the current
-evaluation frame is returned.}
+\code{env()}. If missing, the environment of the current evaluation
+frame is returned.}
 
 \item{data}{A vector with unique names which defines bindings
-(pairs of name and value). See \code{\link{is_dictionary}()}.}
+(pairs of name and value). See \code{\link[=is_dictionary]{is_dictionary()}}.}
 }
 \value{
 An object associated with the new environment.
 }
 \description{
-\code{env_bury()} is like \code{env_bind()} but it creates the
-bindings in a new child environment. Note that this function does
-not modify its inputs.
+\code{env_bury()} is like \code{env_bind()} but it creates the bindings in a
+new child environment. Note that this function does not modify its
+inputs.
 }
 \examples{
 scope <- child_env(base_env(), list(a = 10))

@@ -50,7 +50,6 @@
 #' # But they are quosureish objects:
 #' is_quosureish(a := b)
 #' is_quosureish(a ~ b)
-#' @md
 is_quosure <- function(x, scoped = NULL) {
   if (!is_one_sided(x)) {
     return(FALSE)
@@ -136,7 +135,6 @@ is_one_sided <- function(x, lang_sym = sym_tilde) {
 #' as_quosure(a := b)
 #' as_quosureish(a := b)
 #' as_quosureish(10L)
-#' @md
 quosure <- function(rhs, env = caller_env()) {
   new_formula(NULL, rhs, env)
 }

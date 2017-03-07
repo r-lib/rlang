@@ -1,51 +1,50 @@
 #' Inspect an argument
 #'
-#' \code{arg_inspect()} provides argument introspection in the context of
-#' lazy evaluation. Compared to \code{\link{tidy_capture}()}, the
-#' returned information is more complete and takes R's lazy evaluation
+#' `arg_inspect()` provides argument introspection in the context of
+#' lazy evaluation. Compared to [tidy_capture()], the returned
+#' information is more complete and takes R's lazy evaluation
 #' semantics into account: if an argument is passed around without
-#' being evaluated, \code{arg_inspect()} is able to return the expression
+#' being evaluated, `arg_inspect()` is able to return the expression
 #' at the original call site as well as the relevant scoping
 #' environment in which this expression is supposed to be evaluated
-#' when the argument is forced. To accomplish this, \code{arg_inspect()}
+#' when the argument is forced. To accomplish this, `arg_inspect()`
 #' climbs the call stack to find where an argument was first supplied,
 #' with which expression, in which evaluation environment.
-#' \code{arg_inspect_()} is the standard-evaluation version of
-#' \code{arg_inspect()} and takes a symbol and a call stack object.
+#' `arg_inspect_()` is the standard-evaluation version of
+#' `arg_inspect()` and takes a symbol and a call stack object.
 #'
-#' \code{arg_inspect()} should be used with two caveats in mind. First,
-#' it is slower than \code{\link{tidy_capture}()} and
-#' \code{lazyeval::lazy()}. Thus you should probably avoid using it in
-#' functions that might be used in tight loops (such as a loop over
-#' the rows of data frame). Second, \code{arg_inspect()} ignores all
-#' reassignment of arguments. It has no way of detecting that an
-#' inspected argument got reassigned along the way, and will continue
-#' to climb the calls looking for an earlier call site. These two
-#' limitations are inherent to the stack climbing approach that powers
-#' this function.
+#' `arg_inspect()` should be used with two caveats in mind. First, it
+#' is slower than [tidy_capture()] and `lazyeval::lazy()`. Thus you
+#' should probably avoid using it in functions that might be used in
+#' tight loops (such as a loop over the rows of data frame). Second,
+#' `arg_inspect()` ignores all reassignment of arguments. It has no
+#' way of detecting that an inspected argument got reassigned along
+#' the way, and will continue to climb the calls looking for an
+#' earlier call site. These two limitations are inherent to the stack
+#' climbing approach that powers this function.
 #'
 #' @param x An argument to a function.
 #' @return A list containing:
+#'
 #'   \item{caller_frame}{The original calling frame. This is the frame
-#'     in which \code{expr} should be evaluated, unless the argument is
+#'     in which `expr` should be evaluated, unless the argument is
 #'     missing (see below).}
 #'
 #'   \item{expr}{The expression provided in the original call. If the
-#'     argument was missing, \code{expr} is the default argument of
-#'     the function; if there was no default, \code{expr} is the
-#'     missing argument (see \code{\link{arg_missing}()}).}
+#'     argument was missing, `expr` is the default argument of the
+#'     function; if there was no default, `expr` is the missing
+#'     argument (see [arg_missing()]).}
 #'
-#'   \item{name}{The name of the formal argument to which \code{expr}
-#'     was originally supplied.}
+#'   \item{name}{The name of the formal argument to which `expr` was
+#'     originally supplied.}
 #'
-#'   \item{eval_frame}{The frame providing the scope for \code{expr},
-#'     which should normally be evaluated in \code{eval_frame$env}.
-#'     This is normally the original calling frame, unless the
-#'     argument was missing. In that case, \code{eval_frame} is the
-#'     evaluation frame of the called function. The difference
-#'     reflects the evaluation rules of R, where default arguments are
-#'     scoped within the called function rather than the calling
-#'     frame.}
+#'   \item{eval_frame}{The frame providing the scope for `expr`, which
+#'     should normally be evaluated in `eval_frame$env`.  This is
+#'     normally the original calling frame, unless the argument was
+#'     missing. In that case, `eval_frame` is the evaluation frame of
+#'     the called function. The difference reflects the evaluation
+#'     rules of R, where default arguments are scoped within the
+#'     called function rather than the calling frame.}
 #' @export
 arg_inspect <- function(x) {
   stack <- call_stack()
@@ -57,8 +56,7 @@ arg_inspect <- function(x) {
 #' @inheritParams dots_inspect
 #' @param expr A quoted symbol giving the name of the argument to
 #'   inspect.
-#' @param stack A \code{call_stack} object as returned by
-#'   \code{\link{call_stack}()}.
+#' @param stack A `call_stack` object as returned by [call_stack()].
 #' @export
 arg_inspect_ <- function(expr, stack, only_dots = FALSE) {
   stopifnot(is_call_stack(stack))
@@ -154,12 +152,12 @@ fml_default <- function(expr, fn) {
 #' These functions help using the missing argument as a regular R
 #' object. It is valid to generate a missing argument and assign it in
 #' the current environment or in a list. However, once assigned in the
-#' environment, the missing argument normally cannot be
-#' touched. \code{maybe_missing()} checks whether the object is the
-#' missing argument, and regenerate it if needed to prevent R from
-#' throwing a missing error. In addition, \code{is_missing()} lets you
-#' check for a missing argument in a larger range of situations than
-#' \code{\link[base]{missing}()} (see examples).
+#' environment, the missing argument normally cannot be touched.
+#' `maybe_missing()` checks whether the object is the missing
+#' argument, and regenerate it if needed to prevent R from throwing a
+#' missing error. In addition, `is_missing()` lets you check for a
+#' missing argument in a larger range of situations than
+#' [base::missing()] (see examples).
 #' @param x An object that might be the missing argument.
 #' @export
 #' @examples
