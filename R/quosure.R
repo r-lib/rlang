@@ -162,3 +162,55 @@ as_quosureish <- function(x, env = caller_env()) {
     quosure(x, env)
   }
 }
+
+#' Splice a quosure and format it into string or label.
+#'
+#' `quo_expr()` flattens all quosures within an expression. I.e., it
+#' turns `~foo(~bar(), ~baz)` to `foo(bar(), baz)`. `quo_text()` and
+#' `quo_label()` are equivalent to [f_text()], [expr_label()], etc,
+#' but they first splice their argument using `quo_expr()`.
+#'
+#' @inheritParams expr_label
+#' @param quo A quosure or expression.
+#' @export
+#' @seealso [expr_label()], [f_label()]
+#' @examples
+#' quo_expr(~foo(~bar))
+#' quo_text(~foo(~bar))
+quo_expr <- function(quo) {
+  quo_splice(duplicate(quo))
+}
+#' @rdname quo_expr
+#' @export
+quo_label <- function(quo) {
+  expr_label(quo_expr(quo))
+}
+#' @rdname quo_expr
+#' @export
+quo_text <- function(quo, width = 60L, nlines = Inf) {
+  expr_text(quo_expr(quo), width = width, nlines = nlines)
+}
+
+quo_splice <- function(x, parent = NULL) {
+  switch_expr(x,
+    language = {
+      if (is_quosure(x)) {
+        x <- f_rhs(x)
+        if (!is_null(parent)) {
+          set_node_car(parent, x)
+        }
+        quo_splice(x, parent)
+      } else {
+        quo_splice(node_cdr(x))
+      }
+    },
+    pairlist = {
+      while(!is_null(x)) {
+        quo_splice(node_car(x), x)
+        x <- node_cdr(x)
+      }
+    }
+  )
+
+  x
+}

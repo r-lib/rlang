@@ -329,3 +329,16 @@ as_generic_expr <- function(x) {
     x
   }
 }
+
+
+expr_type_of <- function(x) {
+  type <- typeof(x)
+  if (type %in% c("symbol", "language", "pairlist", "NULL")) {
+    type
+  } else {
+    "literal"
+  }
+}
+switch_expr <- function(.x, ...) {
+  switch(expr_type_of(.x), ...)
+}
