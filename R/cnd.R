@@ -43,10 +43,13 @@
 new_cnd <- function(.type = NULL, ..., .msg = NULL) {
   data <- list(...)
   if (any(names(data) %in% "message")) {
-    stop("conditions cannot have a `message` data field", call. = FALSE)
+    stop("Conditions cannot have a `message` data field", call. = FALSE)
   }
   if (any(names2(data) == "")) {
-    stop("conditions must have named data fields", call. = FALSE)
+    stop("Conditions must have named data fields", call. = FALSE)
+  }
+  if (!is_null(.msg) && !is_string(.msg)) {
+    stop("Condition message must be a string", call. = FALSE)
   }
 
   cnd <- c(list(message = .msg), data)

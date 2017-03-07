@@ -146,7 +146,7 @@ tidy_quote(mean(UQ(var) , UQS(extra_args)))
 # expression:
 f <- ~foo(bar)
 f <- tidy_quote(inner(!! f, arg1))
-f <- tidy_quote(outer(!! f, !!! lapply(letters[1:3], as.symbol)))
+f <- tidy_quote(outer(!! f, !!! lapply(letters[1:3], as_symbol)))
 f
 
 # Note that it's fine to unquote formulas as long as you evaluate

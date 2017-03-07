@@ -225,6 +225,11 @@ test_that("accepts unnamed arguments", {
   )
 })
 
+test_that("fails with duplicated arguments", {
+  expect_error(lang_modify(~mean(), na.rm = TRUE, na.rm = FALSE), "Duplicate arguments")
+  expect_error(lang_modify(~mean(), TRUE, FALSE), NA)
+})
+
 
 # Utils --------------------------------------------------------------
 

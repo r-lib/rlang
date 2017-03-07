@@ -46,5 +46,5 @@ env_assign_promise_(env, "name2", f)
 env$name2
 }
 \seealso{
-\code{\link{env_assign}()}
+\code{\link{env_assign}()}, \code{\link{env_assign_active}()}
 }

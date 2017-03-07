@@ -126,7 +126,7 @@ env <- function(env = caller_env()) {
     primitive = base_env(),
     closure = environment(env),
     string = pkg_env(env),
-    list = switch_class(env, .to = target, frame = env$env)
+    list = coerce_class(env, target, frame = env$env)
   )
 }
 
@@ -255,9 +255,7 @@ as_env.default <- function(x, parent = NULL) {
 #' Set an environment.
 #'
 #' \code{env_set()} does not work by side effect. The input is copied
-#' before being assigned an environment, and left unchanged. However,
-#' \code{env_set_parent()} operates on the inner environment and does
-#' have a side effect.
+#' before being assigned an environment, and left unchanged.
 #'
 #' @param env An environment or an object with a S3 method for
 #'   \code{env_set()}.
@@ -281,29 +279,28 @@ as_env.default <- function(x, parent = NULL) {
 #' fn <- env_set(fn, other_env)
 #' identical(env(fn), other_env)
 env_set <- function(env, new_env) {
-  UseMethod("env_set")
-}
-#' @rdname env_set
-#' @export
-env_set.function <- function(env, new_env) {
-  environment(env) <- rlang::env(new_env)
-  env
-}
-#' @rdname env_set
-#' @export
-env_set.formula <- env_set.function
-#' @rdname env_set
-#' @export
-env_set.environment <- function(env, new_env) {
-  rlang::env(new_env)
+  switch_type(env,
+    quote = ,
+    closure = {
+      environment(env) <- rlang::env(new_env)
+      env
+    },
+    environment = rlang::env(new_env),
+    abort(paste0(
+      "Cannot set environment for object of type`", type_of(env), "`"
+    ))
+  )
 }
 
-#' @rdname env_set
-#' @export
 env_set_parent <- function(env, new_env) {
   env_ <- rlang::env(env)
   parent.env(env_) <- rlang::env(new_env)
   env
+}
+`env_parent<-` <- function(x, value) {
+  env_ <- rlang::env(x)
+  parent.env(env_) <- rlang::env(value)
+  x
 }
 
 
@@ -388,7 +385,7 @@ env_define <- function(env = caller_env(), ...) {
 #'   is not supplied, the promise is evaluated in the environment
 #'   where \code{env_assign_promise()} (or the underscore version) was
 #'   called.
-#' @seealso \code{\link{env_assign}()}
+#' @seealso \code{\link{env_assign}()}, \code{\link{env_assign_active}()}
 #' @export
 #' @examples
 #' env <- child_env()
@@ -401,14 +398,14 @@ env_define <- function(env = caller_env(), ...) {
 #' env$name2
 env_assign_promise <- function(env = caller_env(), nm, expr,
                                eval_env = caller_env()) {
-  f <- as_tidy_quote(substitute(expr), eval_env)
+  f <- as_quosure(substitute(expr), eval_env)
   env_assign_promise_(env, nm, f)
 }
 #' @rdname env_assign_promise
 #' @export
 env_assign_promise_ <- function(env = caller_env(), nm, expr,
                                 eval_env = caller_env()) {
-  f <- as_tidy_quote(expr, eval_env)
+  f <- as_quosure(expr, eval_env)
 
   args <- list(
     x = nm,
@@ -417,6 +414,42 @@ env_assign_promise_ <- function(env = caller_env(), nm, expr,
     assign.env = rlang::env(env)
   )
   do.call("delayedAssign", args)
+}
+
+#' Assign an active binding to an environment.
+#'
+#' While the expression assigned with [env_assign_promise()] is
+#' evaluated only once, the function assigned by `env_assign_active()`
+#' is evaluated each time the binding is accessed in `env`.
+#'
+#' @inheritParams env_assign
+#' @param fn A function that will be executed each time the binding
+#'   designated by `nm` is accessed in `env`. As all closures, this
+#'   function is lexically scoped and can rely on data that are not in
+#'   scope for expressions evaluated in `env`. This allows creative
+#'   solutions to difficult problems.
+#' @seealso [env_assign_promise()]
+#' @export
+#' @examples
+#' # Some bindings for the lexical enclosure of `fn`:
+#' data <- "foo"
+#' counter <- 0
+#'
+#' # Create an active binding in a new environment:
+#' env <- child_env()
+#' env_assign_active(env, "symbol", function() {
+#'   counter <<- counter + 1
+#'   paste(data, counter)
+#' })
+#'
+#' # `fn` is executed each time `symbol` is accessed from `env`:
+#' env$symbol
+#' env$symbol
+#' expr_eval(quote(symbol), env)
+#' expr_eval(quote(symbol), env)
+#' @md
+env_assign_active <- function(env = caller_env(), nm, fn) {
+  makeActiveBinding(nm, fn, env)
 }
 
 #' Bury bindings and define objects in new scope.
@@ -550,6 +583,26 @@ env_get <- function(env = caller_env(), nm, inherit = FALSE) {
 #' identical(env$cyl, clone$cyl)
 env_clone <- function(x, parent = env_parent(x)) {
   list2env(as.list(x, all.names = TRUE), parent = parent)
+}
+
+#' Does environment inherits from another environment?
+#'
+#' This returns `TRUE` if `x` has `ancestor` among its parents.
+#'
+#' @param x An environment.
+#' @param ancestor Another environment from which `x` might inherit.
+#' @export
+env_inherits <- function(x, ancestor) {
+  stopifnot(is_env(ancestor) && is_env(x))
+
+  while(!identical(env_parent(x), empty_env())) {
+    x <- env_parent(x)
+    if (identical(x, ancestor)) {
+      return(TRUE)
+    }
+  }
+
+  identical(x, empty_env())
 }
 
 
@@ -707,6 +760,22 @@ ns_env_name <- function(pkg = NULL) {
     pkg <- env(pkg)
   }
   unname(getNamespaceName(pkg))
+}
+
+#' Is a package installed in the library?
+#'
+#' This checks that a package is installed with minimal side effects.
+#' If installed, the package will be loaded but not attached.
+#'
+#' @param pkg The name of a package.
+#' @return \code{TRUE} if the package is installed, \code{FALSE}
+#'   otherwise.
+#' @export
+#' @examples
+#' is_installed("utils")
+#' is_installed("ggplot5")
+is_installed <- function(pkg) {
+  is_true(requireNamespace(pkg, quietly = TRUE))
 }
 
 

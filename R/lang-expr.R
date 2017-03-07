@@ -168,7 +168,7 @@ expr_text <- function(expr, width = 60L, nlines = Inf) {
 #' set_expr(e, quote(baz))
 #' @md
 set_expr <- function(x, value) {
-  if (is_fquote(x)) {
+  if (is_quosureish(x)) {
     f_rhs(x) <- value
     x
   } else {
@@ -178,7 +178,7 @@ set_expr <- function(x, value) {
 #' @rdname set_expr
 #' @export
 get_expr <- function(x) {
-  if (is_fquote(x)) {
+  if (is_quosureish(x)) {
     f_rhs(x)
   } else if (inherits(x, "frame")) {
     x$expr
@@ -194,11 +194,4 @@ as_generic_expr <- function(x) {
   } else {
     x
   }
-}
-
-# More permissive than is_tidy_quote()
-is_fquote <- function(x) {
-  typeof(x) == "language" &&
-    identical(node_car(x), quote(`~`)) &&
-    length(x) == 2L
 }

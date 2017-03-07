@@ -125,7 +125,7 @@ test_that("dots are forwarded to named arguments", {
   fn <- function(x) tidy_capture(x)
 
   env <- child_env(env())
-  expect_identical(with_env(env, outer(foo(bar))), new_tidy_quote(quote(foo(bar)), env))
+  expect_identical(with_env(env, outer(foo(bar))), quosure(quote(foo(bar)), env))
 })
 
 test_that("pronouns are scoped throughout nested captures", {
@@ -136,4 +136,22 @@ test_that("pronouns are scoped throughout nested captures", {
   baz <- "bazz"
 
   expect_identical(outer(data, inner(foo, baz)), set_names(list("bar", "baz"), c("", "")))
+})
+
+test_that("Can supply := with LHS even if .named = TRUE", {
+  expect_warning(regexp = NA, expect_identical(
+    tidy_quotes(!!"nm" := 2, .named = TRUE), list(nm = ~2)
+  ))
+  expect_warning(regexp = "name ignored", expect_identical(
+    tidy_quotes(foobar = !!"nm" := 2, .named = TRUE), list(nm = ~2)
+  ))
+})
+
+test_that("RHS of tidy defs are unquoted", {
+  expect_identical(tidy_quotes(foo := !!"bar"), list(foo = ~"bar"))
+})
+
+test_that("can capture empty list of dots", {
+  fn <- function(...) tidy_quotes(...)
+  expect_identical(fn(), list())
 })

@@ -83,43 +83,32 @@ tidy_capture <- function(x) {
   capture <- lang(captureArg, substitute(x))
   arg <- expr_eval(capture, caller_env())
   expr <- .Call(rlang_interp, arg$expr, arg$env)
-  new_tidy_quote(expr, arg$env)
+  quosure(expr, arg$env)
 }
 
-tidy_capture_dots <- function(..., .named) {
+tidy_capture_dots <- function(...) {
   info <- captureDots()
   dots <- map(info, dot_f)
 
   # Flatten possibly spliced dots
-  dots <- unlist(dots, FALSE)
-
-  if (.named) {
-    if (is_true(.named)) {
-      width <- formals(expr_text)$width
-    } else if (is_scalar_integerish(.named)) {
-      width <- .named
-    } else {
-      abort("`.named` must be a scalar logical or a numeric")
-    }
-    have_names <- have_names(dots)
-    names(dots)[!have_names] <- map_chr(dots[!have_names], f_text, width = width)
-  }
-
+  dots <- unlist(dots, FALSE) %||% list()
   dots
 }
 dot_f <- function(dot) {
   env <- dot$env
-  expr <- dot$expr
+  orig <- dot$expr
+  expr <- get_expr(orig)
 
   # Allow unquote-splice in dots
   if (is_splice(expr)) {
     dots <- call("alist", expr)
     dots <- .Call(rlang_interp, dots, env)
     dots <- expr_eval(dots)
-    map(dots, as_tidy_quote, env)
+    map(dots, as_quosure, env)
   } else {
     expr <- .Call(rlang_interp, expr, env)
-    list(new_tidy_quote(expr, env))
+    orig <- set_expr(orig, expr)
+    list(quosure(orig, env))
   }
 }
 
@@ -173,12 +162,12 @@ dot_interp_lhs <- function(name, dot) {
     warn("name ignored because a LHS was supplied")
   }
 
-  rhs <- new_tidy_quote(f_rhs(f_rhs(dot)), env = f_env(dot))
+  rhs <- quosure(f_rhs(f_rhs(dot)), env = f_env(dot))
   lhs <- .Call(rlang_interp, f_lhs(f_rhs(dot)), f_env(dot))
 
   if (is_symbol(lhs)) {
-    lhs <- as.character(lhs)
-  } else if (!is_scalar_character(lhs)) {
+    lhs <- as_string(lhs)
+  } else if (!is_string(lhs)) {
     abort("LHS must be a name or string")
   }
 

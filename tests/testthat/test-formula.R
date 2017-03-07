@@ -3,12 +3,12 @@ context("formula")
 # Creation ----------------------------------------------------------------
 
 test_that("env must be an environment", {
-  expect_error(new_tidy_quote(quote(a), env = list()), "must be an environment")
+  expect_error(quosure(quote(a), env = list()), "must be an environment")
 })
 
 test_that("equivalent to ~", {
   f1 <- ~abc
-  f2 <- new_tidy_quote(quote(abc))
+  f2 <- quosure(quote(abc))
 
   expect_identical(f1, f2)
 })
@@ -18,13 +18,13 @@ test_that("is_formula works", {
   expect_false(is_formula(10))
 })
 
-test_that("as_tidy_quote() uses correct env", {
+test_that("as_quosure() uses correct env", {
   fn <- function(expr, env = caller_env()) {
-    f <- as_tidy_quote(expr, env)
+    f <- as_quosure(expr, env)
     list(env = env(), f = g(f))
   }
   g <- function(expr, env = caller_env()) {
-    as_tidy_quote(expr, env)
+    as_quosure(expr, env)
   }
   f_env <- child_env()
   f <- env_set(~expr, f_env)
@@ -101,17 +101,17 @@ test_that("can modify environment", {
 test_that("f_unwrap() substitutes values", {
   n <- 100
   f1 <- f_unwrap(~ x + n)
-  f2 <- new_tidy_quote(quote(x + 100), env_parent(env()))
+  f2 <- quosure(quote(x + 100), env_parent(env()))
 
   expect_identical(f1, f2)
 })
 
 test_that("f_unwrap() substitutes even in globalenv", {
   .GlobalEnv$`__1` <- 1
-  expect_equal(f_rhs(f_unwrap(new_tidy_quote(quote(`__1`), env = globalenv()))), 1)
+  expect_equal(f_rhs(f_unwrap(quosure(quote(`__1`), env = globalenv()))), 1)
 })
 
 test_that("f_unwrap() doesn't go past empty env", {
-  f <- new_tidy_quote(quote(x == y), env = empty_env())
+  f <- quosure(quote(x == y), env = empty_env())
   expect_equal(f_unwrap(f), f)
 })

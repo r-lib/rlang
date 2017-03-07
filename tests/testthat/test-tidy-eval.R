@@ -16,7 +16,7 @@ test_that("tidy_eval uses formula's environment", {
 })
 
 test_that("data must be a dictionary", {
-  expect_error(tidy_eval(~ x, 10), "Data source must be a dictionary")
+  expect_error(tidy_eval(~ x, list(x = 10, x = 11)), "Data source must be a dictionary")
 })
 
 test_that("looks first in `data`", {
@@ -35,7 +35,6 @@ test_that("pronouns resolve ambiguity looks first in `data`", {
 test_that("pronouns complain about missing values", {
   expect_error(tidy_eval(~ .data$x, list()), "Object 'x' not found in pronoun")
   expect_error(tidy_eval(~ .data$x, data.frame()), "Variable 'x' not found in data")
-  expect_error(tidy_eval(~ .env$`__`, list()), "Object '__' not found in environment")
 })
 
 test_that("tidy_eval does quasiquoting", {
@@ -57,6 +56,7 @@ test_that("unquoted formulas look in their own env", {
 test_that("unquoted formulas can use data", {
   f1 <- function() {
     z <- 100
+    x <- 2
     tidy_quote(x + z)
   }
   f2 <- function() {
@@ -65,8 +65,8 @@ test_that("unquoted formulas can use data", {
   }
 
   z <- 10
-  expect_equal(tidy_eval(tidy_quote(UQ(f1())), data = list(x = 1)), 101)
-  expect_equal(tidy_eval(tidy_quote(UQ(f2())), data = list(x = 1)), 101)
+  expect_equal(tidy_eval(tidy_quote(!! f1()), data = list(x = 1)), 101)
+  expect_equal(tidy_eval(tidy_quote(!! f2()), data = list(x = 1)), 11)
 })
 
 test_that("guarded formulas are not evaluated", {
@@ -135,7 +135,7 @@ test_that("can unquote for old-style NSE functions", {
 
 test_that("formulas with empty environments are scoped in surrounding formula", {
   var <- local(~letters)
-  f <- new_tidy_quote(var, env = child_env(env()))
+  f <- quosure(var, env = child_env(env()))
   expect_identical(tidy_eval(f), letters)
 
   expect_identical(tidy_eval(~~letters), letters)
@@ -143,17 +143,18 @@ test_that("formulas with empty environments are scoped in surrounding formula", 
 
 test_that("all fpromises in the call are evaluated", {
   foobar <- function(x) paste0("foo", x)
-  x <- new_tidy_quote(call("foobar", local({ bar <- "bar"; ~bar })))
-  f <- new_tidy_quote(call("identity", x))
+  x <- quosure(call("foobar", local({ bar <- "bar"; ~bar })))
+  f <- quosure(call("identity", x))
   expect_identical(tidy_eval(f), "foobar")
 })
 
 test_that("two-sided formulas are not treated as fpromises", {
-  expect_identical(tidy_eval(new_tidy_quote(a ~ b)), a ~ b)
+  expect_identical(tidy_eval(quosure(a ~ b)), a ~ b)
 })
 
-test_that("scope info is propagated in quoted formulas", {
-  expect_identical(tidy_eval(~ (a ~ b)), a ~ b)
+test_that("formulas are evaluated in evaluation environment", {
+  f <- tidy_eval(~(foo ~ bar), list(foo = "bar"))
+  expect_true(!identical(f_env(f), env()))
 })
 
 test_that("evaluating a side preserves the other side", {
@@ -170,7 +171,45 @@ test_that("evaluation env is cleaned up", {
   f <- local(~function() list(f = ~letters, env = environment()))
   fn <- tidy_eval(f)
   out <- fn()
-  expect_identical(out$f, new_tidy_quote(quote(letters), env = out$env))
+  expect_identical(out$f, quosure(quote(letters), env = out$env))
+})
+
+test_that("inner formulas are rechained to evaluation env", {
+  env <- child_env(NULL)
+  f1 <- tidy_quote(env$eval_env1 <- env())
+  f2 <- tidy_quote({
+    !! f1
+    env$eval_env2 <- env()
+  })
+
+  tidy_eval(f2, mtcars)
+  expect_identical(env$eval_env1, env$eval_env2)
+  expect_true(env_inherits(env$eval_env2, env(f2)))
+})
+
+test_that("dyn scope is chained to lexical env", {
+  foo <- "bar"
+  overscope <- child_env(NULL)
+  expect_identical(tidy_eval_(~foo, overscope), "bar")
+})
+
+test_that("whole scope is purged", {
+  outside <- child_env(NULL, list(important = TRUE))
+  top <- child_env(outside, list(foo = "bar", hunoz = 1))
+  mid <- child_env(top, list(bar = "baz", hunoz = 2))
+  bottom <- child_env(mid, list(
+    .top_env = top,
+    .env = 1,
+    `~` = 2,
+    `_F` = 3
+  ))
+
+  overscope_clean(bottom)
+
+  expect_identical(names(bottom), character(0))
+  expect_identical(names(mid), character(0))
+  expect_identical(names(top), character(0))
+  expect_identical(names(outside), "important")
 })
 
 

@@ -15,7 +15,8 @@ tidy_defs(..., .named = FALSE)
 \item{.named}{Whether to ensure all dots are named. Unnamed
 elements are processed with \code{\link[=expr_text]{expr_text()}} to figure out a default
 name. If an integer, it is passed to the \code{width} argument of
-\code{expr_text()}, if \code{TRUE}, the default width is used.}
+\code{expr_text()}, if \code{TRUE}, the default width is used. See
+\code{\link[=exprs_auto_name]{exprs_auto_name()}}.}
 }
 \description{
 \code{tidy_quotes()} quotes its arguments and returns them as a list of

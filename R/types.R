@@ -238,29 +238,6 @@ is_bare_bytes <- is_bare_raw
 #' is_empty(list(NULL))
 is_empty <- function(x) length(x) == 0
 
-#' Is object a formula?
-#'
-#' @inheritParams is_empty
-#' @export
-#' @examples
-#' x <- disp ~ am
-#' is_formula(x)
-#'
-#' is_formula(~ 10)
-#' is_formula(10)
-is_formula <- function(x) {
-  if(typeof(x) != "language") {
-    return(FALSE)
-  }
-
-  head <- x[[1]]
-  if (!is_symbol(head)) {
-    return(FALSE)
-  }
-
-  as.character(head) %in% c("~", ":=")
-}
-
 #' Is object an environment?
 #'
 #' \code{is_bare_env()} tests whether \code{x} is an environment
@@ -359,7 +336,7 @@ is_scalar_integerish <- function(x) {
 #' @md
 type_of <- function(x) {
   type <- typeof(x)
-  if (is_fquote(x)) {
+  if (is_quosure(x)) {
     "quote"
   } else if (type == "character") {
     if (length(x) == 1) "string" else "character"
@@ -372,9 +349,11 @@ type_of <- function(x) {
 
 #' Dispatch on base types.
 #'
-#' This is equivalent to \code{\link[base]{switch}(\link{type_of}(x,
-#' ...))}. The `coerce_` versions are intended for type conversion and
-#' provide a standard error message when conversion fails.
+#' `switch_type()` is equivalent to
+#' \code{\link[base]{switch}(\link{type_of}(x, ...))}, while
+#' `switch_class()` switchpatches based on `class(x)`. The `coerce_`
+#' versions are intended for type conversion and provide a standard
+#' error message when conversion fails.
 #'
 #' @param .x An object from which to dispatch.
 #' @param ... Named clauses. The names should be types as returned by
@@ -443,12 +422,15 @@ coerce_type <- function(.x, .to, ...) {
   msg <- paste0("Cannot convert objects of type `", type_of(.x), "` to `", .to, "`")
   switch(type_of(.x), ..., abort_coercion(.x, .to))
 }
-switch_class <- function(.x, ..., .to) {
-  if (missing(.to)) {
-    switch(class(.x), ...)
-  } else {
-    switch(class(.x), ..., abort_coercion(.x, .to))
-  }
+#' @rdname switch_type
+#' @export
+switch_class <- function(.x, ...) {
+  switch(class(.x), ...)
+}
+#' @rdname switch_type
+#' @export
+coerce_class <- function(.x, .to, ...) {
+  switch(class(.x), ..., abort_coercion(.x, .to))
 }
 abort_coercion <- function(x, to) {
   abort(paste0(
@@ -502,6 +484,7 @@ abort_coercion <- function(x, to) {
 #'   is extracted first.
 #' @param ... Named clauses. The names should be types as returned by
 #'   `lang_type_of()`.
+#' @export
 #' @examples
 #' # Named calls:
 #' lang_type_of(~foo())
