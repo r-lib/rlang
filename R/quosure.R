@@ -195,7 +195,9 @@ quo_splice <- function(x, parent = NULL) {
   switch_expr(x,
     language = {
       if (is_quosure(x)) {
-        x <- f_rhs(x)
+        while (is_quosure(x)) {
+          x <- f_rhs(x)
+        }
         if (!is_null(parent)) {
           set_node_car(parent, x)
         }

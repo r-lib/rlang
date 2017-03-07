@@ -302,12 +302,12 @@ tidy_quotes <- function(..., .named = FALSE) {
   dots <- tidy_capture_dots(...)
   dots <- dots_interp_lhs(dots)
   if (.named) {
-    width <- tquotes_names_width(.named)
+    width <- quo_names_width(.named)
     dots <- exprs_auto_name(dots, width)
   }
   dots
 }
-tquotes_names_width <- function(named) {
+quo_names_width <- function(named) {
   if (is_true(named)) {
     60L
   } else if (is_scalar_integerish(named)) {
@@ -322,7 +322,7 @@ tquotes_names_width <- function(named) {
 tidy_defs <- function(..., .named = FALSE) {
   dots <- tidy_capture_dots(...)
   if (.named) {
-    width <- tquotes_names_width(.named)
+    width <- quo_names_width(.named)
     dots <- exprs_auto_name(dots, width)
   }
 
@@ -360,8 +360,7 @@ exprs_auto_name <- function(exprs, width = 60L) {
   have_names <- have_names(exprs)
 
   if (any(!have_names)) {
-    exprs_ <- map(exprs[!have_names], get_expr)
-    nms <- map_chr(exprs_, expr_text, width = width)
+    nms <- map_chr(exprs[!have_names], quo_text, width = width)
     names(exprs)[!have_names] <- nms
   }
 
