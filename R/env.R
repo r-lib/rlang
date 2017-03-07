@@ -255,14 +255,12 @@ as_env.default <- function(x, parent = NULL) {
 #' Set an environment.
 #'
 #' \code{env_set()} does not work by side effect. The input is copied
-#' before being assigned an environment, and left unchanged. However,
-#' \code{env_set_parent()} operates on the inner environment and does
-#' have a side effect.
+#' before being assigned an environment, and left unchanged.
 #'
-#' @param env,x An environment or an object with a S3 method for
+#' @param env An environment or an object with a S3 method for
 #'   \code{env_set()}.
-#' @param new_env,value An environment to replace \code{env} with. Can
-#'   be an object with an S method for \code{env()}.
+#' @param new_env An environment to replace \code{env} with. Can be an
+#'   object with an S method for \code{env()}.
 #' @export
 #' @examples
 #' # Create a function with a given environment:
@@ -298,15 +296,11 @@ env_set.environment <- function(env, new_env) {
   rlang::env(new_env)
 }
 
-#' @rdname env_set
-#' @export
 env_set_parent <- function(env, new_env) {
   env_ <- rlang::env(env)
   parent.env(env_) <- rlang::env(new_env)
   env
 }
-#' @rdname env_set
-#' @export
 `env_parent<-` <- function(x, value) {
   env_ <- rlang::env(x)
   parent.env(env_) <- rlang::env(value)
