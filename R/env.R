@@ -578,7 +578,7 @@ env_clone <- function(x, parent = env_parent(x)) {
   list2env(as.list(x, all.names = TRUE), parent = parent)
 }
 
-#' Does environment inherits from another environment?
+#' Does environment inherit from another environment?
 #'
 #' This returns `TRUE` if `x` has `ancestor` among its parents.
 #'

@@ -2,7 +2,7 @@
 % Please edit documentation in R/env.R
 \name{env_inherits}
 \alias{env_inherits}
-\title{Does environment inherits from another environment?}
+\title{Does environment inherit from another environment?}
 \usage{
 env_inherits(x, ancestor)
 }
