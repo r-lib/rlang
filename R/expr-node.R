@@ -207,6 +207,13 @@ as_pairlist <- function(x) {
   as.vector(x, "pairlist")
 }
 
+#' @rdname is_expr
+#' @export
+is_pairlist <- function(x) {
+  typeof(x) == "pairlist"
+}
+
+
 #' Duplicate an R object.
 #'
 #' In R semantics, objects are copied by value. This means that

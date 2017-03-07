@@ -133,12 +133,6 @@ is_symbolic <- function(x) {
   typeof(x) %in% c("language", "symbol")
 }
 
-#' @rdname is_expr
-#' @export
-is_pairlist <- function(x) {
-  typeof(x) == "pairlist"
-}
-
 
 #' Evaluate an expression in an environment.
 #'
