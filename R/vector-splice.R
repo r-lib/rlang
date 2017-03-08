@@ -33,3 +33,19 @@ splice <- function(...) {
   set_names(out, names)
 }
 
+#' @useDynLib rlang rlang_splice
+splice_chr <- function(...) {
+  .Call(rlang_splice, list(...), "character")
+}
+splice_int <- function(...) {
+  dots <- dots_node(...)
+  .Call(rlang_splice, list(...), "integer")
+}
+splice_lgl <- function(...) {
+  dots <- dots_node(...)
+  .Call(rlang_splice, list(...), "logical")
+}
+splice_list <- function(...) {
+  dots <- dots_node(...)
+  .Call(rlang_splice, list(...), "list")
+}

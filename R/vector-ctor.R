@@ -1,3 +1,49 @@
+#' Construct new vectors.
+#'
+#' @param ... Components of the new vector. Bare lists and explicitly
+#'   spliced lists are spliced.
+#' @name vector-ctors
+NULL
+
+#' @useDynLib rlang rlang_splice
+#' @rdname vector-ctors
+#' @export
+lgl <- function(...) {
+  .Call(rlang_splice, list(...), "logical", bare = TRUE)
+}
+#' @rdname vector-ctors
+#' @export
+int <- function(...) {
+  .Call(rlang_splice, list(...), "integer", bare = TRUE)
+}
+#' @rdname vector-ctors
+#' @export
+dbl <- function(...) {
+  .Call(rlang_splice, list(...), "double", bare = TRUE)
+}
+#' @rdname vector-ctors
+#' @export
+cpl <- function(...) {
+  .Call(rlang_splice, list(...), "complex", bare = TRUE)
+}
+# Use mk_ prefix for now because of name clashes
+#' @rdname vector-ctors
+#' @export
+mk_chr <- function(...) {
+  .Call(rlang_splice, list(...), "character", bare = TRUE)
+}
+#' @rdname vector-ctors
+#' @export
+mk_raw <- function(...) {
+  .Call(rlang_splice, list(...), "raw", bare = TRUE)
+}
+#' @rdname vector-ctors
+#' @export
+mk_list <- function(...) {
+  .Call(rlang_splice, list(...), "list", bare = TRUE)
+}
+
+
 #' Helper to create vectors with matching length.
 #'
 #' These functions take the idea of [seq_along()] and generalise it to
