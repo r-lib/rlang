@@ -26,11 +26,15 @@ dbl <- function(...) {
 cpl <- function(...) {
   .Call(rlang_splice, list(...), "complex", bare = TRUE)
 }
-# Use mk_ prefix for now because of name clashes
 #' @rdname vector-ctors
 #' @export
-mk_chr <- function(...) {
-  .Call(rlang_splice, list(...), "character", bare = TRUE)
+#' @param .encoding If non-null, passed to [chr_set_encoding()] to add
+#'   an encoding mark. This is only declarative, no encoding
+#'   conversion is performed.
+#' @export
+chr <- function(..., .encoding = NULL) {
+  out <- .Call(rlang_splice, list(...), "character", bare = TRUE)
+  chr_set_encoding(out, .encoding)
 }
 #' @rdname vector-ctors
 #' @export

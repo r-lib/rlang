@@ -6,7 +6,7 @@
 \alias{int}
 \alias{dbl}
 \alias{cpl}
-\alias{mk_chr}
+\alias{chr}
 \alias{mk_raw}
 \alias{mk_list}
 \title{Construct new vectors.}
@@ -19,7 +19,7 @@ dbl(...)
 
 cpl(...)
 
-mk_chr(...)
+chr(..., .encoding = NULL)
 
 mk_raw(...)
 
@@ -28,6 +28,10 @@ mk_list(...)
 \arguments{
 \item{...}{Components of the new vector. Bare lists and explicitly
 spliced lists are spliced.}
+
+\item{.encoding}{If non-null, passed to \code{\link[=chr_set_encoding]{chr_set_encoding()}} to add
+an encoding mark. This is only declarative, no encoding
+conversion is performed.}
 }
 \description{
 Construct new vectors.
