@@ -3,7 +3,7 @@
 \name{frame_dots}
 \alias{frame_dots}
 \alias{frame_dots_node}
-\alias{dots}
+\alias{dots_exprs}
 \alias{dots_node}
 \title{Extract dots}
 \usage{
@@ -11,7 +11,7 @@ frame_dots(frame = NULL)
 
 frame_dots_node(frame = NULL)
 
-dots(...)
+dots_exprs(...)
 
 dots_node(...)
 }

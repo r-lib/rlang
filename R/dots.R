@@ -37,7 +37,7 @@ frame_dots_node <- function(frame = NULL) {
 
 #' @rdname frame_dots
 #' @export
-dots <- function(...) {
+dots_exprs <- function(...) {
   expr_eval(substitute(alist(...)))
 }
 
@@ -64,7 +64,7 @@ dots_node <- function(...) {
 #'
 #' `dots_inspect_()` is the standard evaluation version of
 #' `dots_inspect()` and takes a list of dots as captured by
-#' [frame_dots()] or [dots()], and a call stack as returned by
+#' [frame_dots()] or [dots_exprs()], and a call stack as returned by
 #' [call_stack()].
 #'
 #' @param ... Dots to inspect.
@@ -114,7 +114,7 @@ dots_node <- function(...) {
 #' only_dots <- TRUE
 #' f(foo(bar))
 dots_inspect <- function(..., .only_dots = FALSE) {
-  dots <- dots(...)
+  dots <- dots_exprs(...)
   stack <- call_stack()
   dots_inspect_(dots, stack, only_dots = .only_dots)
 }
