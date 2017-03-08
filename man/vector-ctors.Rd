@@ -7,7 +7,7 @@
 \alias{dbl}
 \alias{cpl}
 \alias{chr}
-\alias{mk_raw}
+\alias{bytes}
 \alias{mk_list}
 \title{Construct new vectors.}
 \usage{
@@ -21,7 +21,7 @@ cpl(...)
 
 chr(..., .encoding = NULL)
 
-mk_raw(...)
+bytes(...)
 
 mk_list(...)
 }
@@ -35,4 +35,10 @@ conversion is performed.}
 }
 \description{
 Construct new vectors.
+}
+\examples{
+
+# bytes() accepts integerish inputs
+bytes(1:10)
+bytes(0x01, 0xff, c(0x03, 0x05), list(10, 20, 30L))
 }

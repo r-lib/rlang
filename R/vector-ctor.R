@@ -38,8 +38,20 @@ chr <- function(..., .encoding = NULL) {
 }
 #' @rdname vector-ctors
 #' @export
-mk_raw <- function(...) {
-  .Call(rlang_splice, list(...), "raw", bare = TRUE)
+#' @examples
+#'
+#' # bytes() accepts integerish inputs
+#' bytes(1:10)
+#' bytes(0x01, 0xff, c(0x03, 0x05), list(10, 20, 30L))
+bytes <- function(...) {
+  dots <- map(list(...), function(dot) {
+    if (is_bare_list(dot) || is_spliced(dot)) {
+      map(dot, new_bytes)
+    } else {
+      new_bytes(dot)
+    }
+  })
+  .Call(rlang_splice, dots, "raw", bare = TRUE)
 }
 #' @rdname vector-ctors
 #' @export
@@ -47,6 +59,9 @@ mk_list <- function(...) {
   .Call(rlang_splice, list(...), "list", bare = TRUE)
 }
 
+is_spliced <- function(x) {
+  inherits(x, "spliced")
+}
 
 #' Helper to create vectors with matching length.
 #'
