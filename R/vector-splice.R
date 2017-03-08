@@ -32,3 +32,4 @@ splice <- function(...) {
   out <- unlist(dots, recursive = FALSE)
   set_names(out, names)
 }
+
