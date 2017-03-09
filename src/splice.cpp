@@ -12,7 +12,7 @@ r::size_t splice_size_list(sexp* x) {
   sexp* cur;
 
   while (i != sxp::length(x)) {
-    cur = list_get(x, i);
+    cur = list::get(x, i);
     if (sxp::kind(cur) == Kind)
       count = count + sxp::length(cur);
     else
@@ -30,7 +30,7 @@ r::size_t splice_size(sexp* dots, bool bare) {
   sexp* cur;
 
   while (i != sxp::length(dots)) {
-    cur = list_get(dots, i);
+    cur = list::get(dots, i);
     switch (sxp::kind(cur)) {
     case Kind: {
       count += sxp::length(cur);
@@ -60,11 +60,11 @@ void splice_list(sexp* x, sexp* out, r::size_t* count) {
   r::size_t size = sxp::length(x);
   sexp* cur;
   while (i != size) {
-    cur = list_get(x, i);
+    cur = list::get(x, i);
 
     if (sxp::kind(cur) == Kind) {
       r::size_t n = sxp::length(cur);
-      vec_copy_n<Kind>(cur, n, out, *count);
+      vec::copy_n<Kind>(cur, n, out, *count);
       *count += n;
     } else {
       r::abort("Internal error: Incompatible type");
@@ -77,18 +77,18 @@ void splice_list(sexp* x, sexp* out, r::size_t* count) {
 template <sexp_e Kind>
 sexp* splice(sexp* dots, bool bare) {
   r::size_t size = splice_size<Kind>(dots, bare);
-  sexp* out = PROTECT(vec_alloc(Kind, size));
+  sexp* out = PROTECT(vec::alloc(Kind, size));
 
   r::size_t i = 0;
   r::size_t count = 0;
   sexp* cur;
   while (count != size) {
-    cur = list_get(dots, i);
+    cur = list::get(dots, i);
 
     switch (sxp::kind(cur)) {
     case Kind: {
       r::size_t n = sxp::length(cur);
-      vec_copy_n<Kind>(cur, n, out, count);
+      vec::copy_n<Kind>(cur, n, out, count);
       count += n;
       break;
     }
@@ -118,7 +118,7 @@ r::size_t splice_size<r::list_t>(sexp* dots, bool bare) {
   sexp* cur;
 
   while (i != sxp::length(dots)) {
-    cur = list_get(dots, i);
+    cur = list::get(dots, i);
     switch (sxp::kind(cur)) {
     case r::list_t: {
       if (sxp::inherits(cur, "spliced") || (bare && !sxp::is_object(cur)))
@@ -141,25 +141,25 @@ r::size_t splice_size<r::list_t>(sexp* dots, bool bare) {
 template <>
 sexp* splice<r::list_t>(sexp* dots, bool bare) {
   r::size_t size = splice_size<r::list_t>(dots, bare);
-  sexp* out = PROTECT(vec_alloc(r::list_t, size));
+  sexp* out = PROTECT(vec::alloc(r::list_t, size));
 
   r::size_t i = 0;
   r::size_t count = 0;
   sexp* cur;
   while (count != size) {
-    cur = list_get(dots, i);
+    cur = list::get(dots, i);
 
     switch (sxp::kind(cur)) {
     case r::list_t: {
       if (sxp::inherits(cur, "spliced") || (bare && !sxp::is_object(cur))) {
         r::size_t n = sxp::length(cur);
-        vec_copy_n<r::list_t>(cur, n, out, count);
+        vec::copy_n<r::list_t>(cur, n, out, count);
         count += n;
         break;
       } // else fallthrough
     }
     default: {
-      list_set(out, count, cur);
+      list::set(out, count, cur);
       count += 1;
       break;
     }}
@@ -176,9 +176,9 @@ sexp* splice<r::list_t>(sexp* dots, bool bare) {
 
 extern "C"
 sexp* rlang_splice(sexp* dots, sexp* type, sexp* bare) {
-  bool splice_bare = as_bool(bare);
+  bool splice_bare = sxp::as_bool(bare);
 
-  switch (sxp::kind(str_pointer(type))) {
+  switch (sxp::kind(str::pointer(type))) {
   case r::logical_t: return splice<r::logical_t>(dots, splice_bare);
   case r::integer_t: return splice<r::integer_t>(dots, splice_bare);
   case r::double_t: return splice<r::double_t>(dots, splice_bare);

@@ -2,19 +2,21 @@
 #define RLANG_NODE_H
 
 namespace rlang {
+namespace node {
 
 
 inline
-sexp* node_car(sexp* x) {
+sexp* car(sexp* x) {
   return CAR(x);
 }
 
 inline
-sexp* node_cdr(sexp* x) {
+sexp* cdr(sexp* x) {
   return CDR(x);
 }
 
 
+} // namespace node
 } // namespace rlang
 
 #endif
