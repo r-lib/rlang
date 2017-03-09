@@ -10,6 +10,10 @@ inline
 void abort(const char* msg) {
   Rf_error(msg);
 }
+inline
+void warn(const char* msg) {
+  Rf_warning(msg);
+}
 
 inline
 void printf(const char* msg) {

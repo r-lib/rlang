@@ -58,3 +58,22 @@ test_that("objects are not spliced", {
 test_that("explicitly spliced lists are spliced", {
   expect_identical(lgl(FALSE, structure(list(TRUE, TRUE), class = "spliced")), c(FALSE, TRUE, TRUE))
 })
+
+test_that("splicing uses inner names", {
+  expect_identical(lgl(c(a = TRUE, b = FALSE)), c(a = TRUE, b = FALSE))
+  expect_identical(lgl(list(c(a = TRUE, b = FALSE))), c(a = TRUE, b = FALSE))
+})
+
+test_that("splicing uses outer names when scalar", {
+  expect_identical(lgl(a = TRUE, b = FALSE), c(a = TRUE, b = FALSE))
+  expect_identical(lgl(list(a = TRUE, b = FALSE)), c(a = TRUE, b = FALSE))
+})
+
+test_that("when outer names conflict with inner names, use the latter and warn", {
+  expect_warning(regexp = "Conflicting",
+    expect_identical(lgl(a = c(A = TRUE), b = c(B = FALSE)), c(A = TRUE, B = FALSE))
+  )
+  expect_warning(regexp = "Conflicting",
+    expect_identical(lgl(list(a = c(A = TRUE), b = c(B = FALSE))), c(A = TRUE, B = FALSE))
+  )
+})
