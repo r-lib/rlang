@@ -160,7 +160,8 @@ inline
 bool as_bool(sexp* x) {
   if (sxp::kind(x) != r::logical_t || sxp::length(x) != 1)
     r::abort("Expected a scalar boolean");
-  return vec::pointer<r::logical_t>(x);
+  int* xp = (int*) vec::pointer<r::logical_t>(x);
+  return *xp;
 }
 
 } // namespace lgl
