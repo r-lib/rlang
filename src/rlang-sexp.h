@@ -16,10 +16,19 @@ sexp_e kind(const char* x) {
 }
 
 inline
+sexp* attrs(sexp* x) {
+  return ATTRIB(x);
+}
+
+inline
 r::size_t length(sexp* x) {
   return Rf_length(x);
 }
 
+inline
+bool is_null(sexp* x) {
+  return x == r::null;
+}
 inline
 bool is_object(sexp* x) {
   return OBJECT(x) != 0;
