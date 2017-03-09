@@ -122,6 +122,32 @@ void copy_n<r::list_t>(sexp* src, r::size_t n, sexp* dest,
 }
 
 
+template <sexp_e Kind>
+void copy_coerce_n(sexp* src, r::size_t n, sexp* dest,
+                   r::size_t offset_dest = 0,
+                   r::size_t offset_src = 0) {
+  copy_n<Kind>(src, n, dest, offset_dest, offset_src);
+}
+
+template <>
+void copy_coerce_n<r::logical_t>(sexp* src, r::size_t n, sexp* dest,
+                                 r::size_t offset_dest,
+                                 r::size_t offset_src) {
+  NULL;
+}
+
+template <sexp_e Kind>
+sexp* coerce(sexp* x) {
+  r::size_t n = sxp::length(x);
+
+  sexp* out = PROTECT(vec::alloc(Kind, n));
+  copy_coerce_n<Kind>(x, n, out);
+
+  UNPROTECT(1);
+  return out;
+}
+
+
 inline
 sexp* names(sexp* x) {
   return Rf_getAttrib(x, sym::names);
