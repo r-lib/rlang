@@ -103,9 +103,6 @@ r::size_t splice_list(sexp* x, sexp* out, r::size_t count,
 
       if (named)
         splice_names(x, cur, out, i, count, warned);
-
-    } else {
-      r::abort("Internal error: Incompatible type");
     }
 
     count += n;
@@ -148,9 +145,9 @@ sexp* splice(sexp* dots, bool bare) {
       count = splice_list<Kind>(cur, out, count, info.named, &warned);
       break;
     }
-    default: {
-      r::abort("todo error");
-    }}
+    default:
+      break;
+    }
 
     ++i;
   }
