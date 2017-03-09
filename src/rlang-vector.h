@@ -32,16 +32,6 @@ void set(sexp* x, r::size_t index, sexp* elt) {
 } // namespace chr
 
 
-namespace str {
-
-inline
-const char* pointer(sexp* chr) {
-  return CHAR(STRING_ELT(chr, 0));
-}
-
-} // namespace str
-
-
 namespace vec {
 
 template <sexp_e K> struct traits { };

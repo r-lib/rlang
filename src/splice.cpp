@@ -187,7 +187,7 @@ extern "C"
 sexp* rlang_splice(sexp* dots, sexp* type, sexp* bare) {
   bool splice_bare = lgl::as_bool(bare);
 
-  switch (sxp::kind(str::pointer(type))) {
+  switch (sxp::kind(chr::as_c_string(type))) {
   case r::logical_t: return splice<r::logical_t>(dots, splice_bare);
   case r::integer_t: return splice<r::integer_t>(dots, splice_bare);
   case r::double_t: return splice<r::double_t>(dots, splice_bare);

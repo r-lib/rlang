@@ -10,5 +10,6 @@
 #include "rlang-node.h"
 #include "rlang-utils.h"
 #include "rlang-vector.h"
+#include "rlang-string.h"
 
 #endif
