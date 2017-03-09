@@ -3,10 +3,18 @@
 using namespace rlang;
 
 
+struct splice_info_t {
+  r::size_t size;
+  bool named;
+  splice_info_t() : size(0), named(false)
+  { }
+};
+
+
 // Typed splicing ----------------------------------------------------
 
 template <sexp_e Kind>
-r::size_t splice_size_list(sexp* x) {
+r::size_t splice_info_list(sexp* x) {
   r::size_t i = 0;
   r::size_t count = 0;
   sexp* cur;
@@ -24,8 +32,8 @@ r::size_t splice_size_list(sexp* x) {
 }
 
 template <sexp_e Kind>
-r::size_t splice_size(sexp* dots, bool bare) {
-  r::size_t count = 0;
+splice_info_t splice_info(sexp* dots, bool bare) {
+  splice_info_t info;
   r::size_t i = 0;
   sexp* cur;
 
@@ -33,7 +41,7 @@ r::size_t splice_size(sexp* dots, bool bare) {
     cur = list::get(dots, i);
     switch (sxp::kind(cur)) {
     case Kind: {
-      count += sxp::length(cur);
+      info.size += sxp::length(cur);
       break;
     }
     case r::list_t: {
@@ -42,7 +50,7 @@ r::size_t splice_size(sexp* dots, bool bare) {
         r::abort("Bare lists cannot be spliced");
       if (sxp::is_object(cur) && !is_spliced)
         r::abort("Objects cannot be spliced");
-      count += splice_size_list<Kind>(cur);
+      info.size += splice_info_list<Kind>(cur);
       break;
     }
     default: r::abort("Cannot splice a `TODO` within a `TODO`");
@@ -51,7 +59,7 @@ r::size_t splice_size(sexp* dots, bool bare) {
     ++i;
   }
 
-  return count;
+  return info;
 }
 
 template <sexp_e Kind>
@@ -76,13 +84,13 @@ void splice_list(sexp* x, sexp* out, r::size_t* count) {
 
 template <sexp_e Kind>
 sexp* splice(sexp* dots, bool bare) {
-  r::size_t size = splice_size<Kind>(dots, bare);
-  sexp* out = PROTECT(vec::alloc(Kind, size));
+  splice_info_t info = splice_info<Kind>(dots, bare);
+  sexp* out = PROTECT(vec::alloc(Kind, info.size));
 
   r::size_t i = 0;
   r::size_t count = 0;
   sexp* cur;
-  while (count != size) {
+  while (count != info.size) {
     cur = list::get(dots, i);
 
     switch (sxp::kind(cur)) {
@@ -112,8 +120,9 @@ sexp* splice(sexp* dots, bool bare) {
 // List splicing -----------------------------------------------------
 
 template <>
-r::size_t splice_size<r::list_t>(sexp* dots, bool bare) {
-  r::size_t count = 0;
+splice_info_t splice_info<r::list_t>(sexp* dots, bool bare) {
+  splice_info_t info;
+
   r::size_t i = 0;
   sexp* cur;
 
@@ -122,31 +131,31 @@ r::size_t splice_size<r::list_t>(sexp* dots, bool bare) {
     switch (sxp::kind(cur)) {
     case r::list_t: {
       if (sxp::inherits(cur, "spliced") || (bare && !sxp::is_object(cur)))
-        count += sxp::length(cur);
+        info.size += sxp::length(cur);
       else
-        count += 1;
+        info.size += 1;
       break;
     }
     default: {
-      count += 1;
+      info.size += 1;
       break;
     }}
 
     ++i;
   }
 
-  return count;
+  return info;
 }
 
 template <>
 sexp* splice<r::list_t>(sexp* dots, bool bare) {
-  r::size_t size = splice_size<r::list_t>(dots, bare);
-  sexp* out = PROTECT(vec::alloc(r::list_t, size));
+  splice_info_t info = splice_info<r::list_t>(dots, bare);
+  sexp* out = PROTECT(vec::alloc(r::list_t, info.size));
 
   r::size_t i = 0;
   r::size_t count = 0;
   sexp* cur;
-  while (count != size) {
+  while (count != info.size) {
     cur = list::get(dots, i);
 
     switch (sxp::kind(cur)) {
