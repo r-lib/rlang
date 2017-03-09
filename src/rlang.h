@@ -5,6 +5,7 @@
 #include <Rinternals.h>
 
 #include "rlang-types.h"
+#include "rlang-symbol.h"
 #include "rlang-sexp.h"
 #include "rlang-node.h"
 #include "rlang-utils.h"
