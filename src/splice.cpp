@@ -35,7 +35,7 @@ splice_info_t& splice_info_list(sexp* x, splice_info_t& info) {
 template <sexp_e Kind>
 splice_info_t splice_info(sexp* dots, bool bare) {
   splice_info_t info;
-  info.named = !sxp::is_null(vec::names(dots));
+  info.named = sxp::is_character(vec::names(dots));
 
   r::size_t i = 0;
   sexp* cur;
@@ -73,7 +73,7 @@ void splice_names(sexp* outer, sexp* inner, sexp* out,
                   bool* warned) {
   sexp* out_names = vec::names(out);
 
-  if (!sxp::is_null(vec::names(inner))) {
+  if (sxp::is_character(vec::names(inner))) {
     vec::copy_n<r::character_t>(vec::names(inner),
                                 sxp::length(inner),
                                 out_names, count);

@@ -39,6 +39,35 @@ bool is_object(sexp* x) {
 }
 
 inline
+bool is_logical(sexp* x) {
+  return TYPEOF(x) == r::logical_t;
+}
+inline
+bool is_integer(sexp* x) {
+  return TYPEOF(x) == r::integer_t;
+}
+inline
+bool is_double(sexp* x) {
+  return TYPEOF(x) == r::double_t;
+}
+inline
+bool is_complex(sexp* x) {
+  return TYPEOF(x) == r::complex_t;
+}
+inline
+bool is_character(sexp* x) {
+  return TYPEOF(x) == r::character_t;
+}
+inline
+bool is_bytes(sexp* x) {
+  return TYPEOF(x) == r::bytes_t;
+}
+inline
+bool is_list(sexp* x) {
+  return TYPEOF(x) == r::list_t;
+}
+
+inline
 bool inherits(sexp* x, const char* c) {
   return Rf_inherits(x, c);
 }

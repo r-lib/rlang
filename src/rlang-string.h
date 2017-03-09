@@ -41,7 +41,7 @@ namespace vec {
 inline
 bool has_name_at(sexp* x, r::size_t i) {
   sexp* nms = vec::names(x);
-  return !sxp::is_null(nms) && !str::is_empty(chr::get(nms, i));
+  return sxp::is_character(nms) && !str::is_empty(chr::get(nms, i));
 }
 
 } // namespace sxp
