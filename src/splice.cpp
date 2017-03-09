@@ -20,7 +20,7 @@ splice_info_t& splice_info_list(sexp* x, splice_info_t& info) {
 
   while (i != sxp::length(x)) {
     cur = list::get(x, i);
-    info.named = info.named || !sxp::is_null(vec::names(cur));
+    info.named = info.named || sxp::is_character(vec::names(cur));
 
     if (sxp::kind(cur) == Kind)
       info.size += sxp::length(cur);
@@ -42,7 +42,7 @@ splice_info_t splice_info(sexp* dots, bool bare) {
 
   while (i != sxp::length(dots)) {
     cur = list::get(dots, i);
-    info.named = info.named || !sxp::is_null(vec::names(cur));
+    info.named = info.named || sxp::is_character(vec::names(cur));
 
     switch (sxp::kind(cur)) {
     case Kind: {
