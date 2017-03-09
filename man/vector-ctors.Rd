@@ -8,7 +8,7 @@
 \alias{cpl}
 \alias{chr}
 \alias{bytes}
-\alias{mk_list}
+\alias{splice}
 \title{Construct new vectors.}
 \usage{
 lgl(...)
@@ -23,7 +23,7 @@ chr(..., .encoding = NULL)
 
 bytes(...)
 
-mk_list(...)
+splice(...)
 }
 \arguments{
 \item{...}{Components of the new vector. Bare lists and explicitly

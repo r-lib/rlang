@@ -38,7 +38,7 @@ test_that("can create empty vectors", {
   expect_identical(cpl(), complex(0))
   expect_identical(chr(), character(0))
   expect_identical(bytes(), raw(0))
-  expect_identical(mk_list(), list())
+  expect_identical(splice(), list())
 })
 
 test_that("objects are not spliced", {
@@ -65,5 +65,17 @@ test_that("when outer names conflict with inner names, use the latter and warn",
   )
   expect_warning(regexp = "Conflicting",
     expect_identical(lgl(list(a = c(A = TRUE), b = c(B = FALSE))), c(A = TRUE, B = FALSE))
+  )
+})
+
+test_that("splice() splices names", {
+  expect_identical(splice(a = TRUE, b = FALSE), list(a = TRUE, b = FALSE))
+  expect_identical(splice(c(A = TRUE), c(B = FALSE)), list(c(A = TRUE), c(B = FALSE)))
+  expect_identical(splice(a = c(A = TRUE), b = c(B = FALSE)), list(a = c(A = TRUE), b = c(B = FALSE)))
+  expect_warning(regexp = "Conflicting",
+    expect_identical(
+      splice(a = list(A = TRUE), b = list(B = FALSE)),
+      list(A = TRUE, B = FALSE)
+    )
   )
 })

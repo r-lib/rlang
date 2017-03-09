@@ -55,7 +55,7 @@ bytes <- function(...) {
 }
 #' @rdname vector-ctors
 #' @export
-mk_list <- function(...) {
+splice <- function(...) {
   .Call(rlang_splice, list(...), "list", bare = TRUE)
 }
 

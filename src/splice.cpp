@@ -162,18 +162,22 @@ sexp* splice(sexp* dots, bool bare) {
 template <>
 splice_info_t splice_info<r::list_t>(sexp* dots, bool bare) {
   splice_info_t info;
+  info.named = sxp::is_character(vec::names(dots));
 
   r::size_t i = 0;
   sexp* cur;
 
   while (i != sxp::length(dots)) {
     cur = list::get(dots, i);
+
     switch (sxp::kind(cur)) {
     case r::list_t: {
-      if (sxp::inherits(cur, "spliced") || (bare && !sxp::is_object(cur)))
+      if (sxp::inherits(cur, "spliced") || (bare && !sxp::is_object(cur))) {
         info.size += sxp::length(cur);
-      else
+        info.named = info.named || sxp::is_character(vec::names(cur));
+      } else {
         info.size += 1;
+      }
       break;
     }
     default: {
@@ -192,6 +196,12 @@ sexp* splice<r::list_t>(sexp* dots, bool bare) {
   splice_info_t info = splice_info<r::list_t>(dots, bare);
   sexp* out = PROTECT(vec::alloc(r::list_t, info.size));
 
+  if (info.named) {
+    vec::set_names(out, vec::alloc(r::character_t, info.size));
+  }
+  sexp* out_names = vec::names(out);
+
+  bool warned = false;
   r::size_t i = 0;
   r::size_t count = 0;
   sexp* cur;
@@ -204,12 +214,20 @@ sexp* splice<r::list_t>(sexp* dots, bool bare) {
       if (sxp::inherits(cur, "spliced") || (bare && !sxp::is_object(cur))) {
         r::size_t n = sxp::length(cur);
         vec::copy_n<r::list_t>(cur, n, out, count);
+
+        if (info.named)
+          splice_names(dots, cur, out, i, count, &warned);
+
         count += n;
         break;
       } // else fallthrough
     }
     default: {
       list::set(out, count, cur);
+      if (info.named && sxp::is_character(vec::names(dots))) {
+        sexp* name = chr::get(vec::names(dots), i);
+        chr::set(out_names, count, name);
+      }
       count += 1;
       break;
     }}
