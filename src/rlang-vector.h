@@ -121,6 +121,16 @@ void copy_n<r::list_t>(sexp* src, r::size_t n, sexp* dest,
   }
 }
 
+
+inline
+sexp* names(sexp* x) {
+  return Rf_getAttrib(x, sym::names);
+}
+inline
+sexp* set_names(sexp* x, sexp* names) {
+  return Rf_setAttrib(x, sym::names, names);
+}
+
 } // namespace vec
 
 

@@ -23,14 +23,6 @@ inline
 sexp* attr(sexp* x, sexp* attr_sym) {
   return Rf_getAttrib(x, attr_sym);
 }
-inline
-sexp* names(sexp* x) {
-  return Rf_getAttrib(x, sym::names);
-}
-inline
-sexp* set_names(sexp* x, sexp* names) {
-  return Rf_setAttrib(x, sym::names, names);
-}
 
 inline
 r::size_t length(sexp* x) {

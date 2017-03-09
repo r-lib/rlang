@@ -20,7 +20,7 @@ splice_info_t& splice_info_list(sexp* x, splice_info_t& info) {
 
   while (i != sxp::length(x)) {
     cur = list::get(x, i);
-    info.named = info.named || !sxp::is_null(sxp::names(cur));
+    info.named = info.named || !sxp::is_null(vec::names(cur));
 
     if (sxp::kind(cur) == Kind)
       info.size += sxp::length(cur);
@@ -35,14 +35,14 @@ splice_info_t& splice_info_list(sexp* x, splice_info_t& info) {
 template <sexp_e Kind>
 splice_info_t splice_info(sexp* dots, bool bare) {
   splice_info_t info;
-  info.named = !sxp::is_null(sxp::names(dots));
+  info.named = !sxp::is_null(vec::names(dots));
 
   r::size_t i = 0;
   sexp* cur;
 
   while (i != sxp::length(dots)) {
     cur = list::get(dots, i);
-    info.named = info.named || !sxp::is_null(sxp::names(cur));
+    info.named = info.named || !sxp::is_null(vec::names(cur));
 
     switch (sxp::kind(cur)) {
     case Kind: {
@@ -71,19 +71,19 @@ splice_info_t splice_info(sexp* dots, bool bare) {
 void splice_names(sexp* outer, sexp* inner, sexp* out,
                   r::size_t i, r::size_t count,
                   bool* warned) {
-  sexp* out_names = sxp::names(out);
+  sexp* out_names = vec::names(out);
 
-  if (!sxp::is_null(sxp::names(inner))) {
-    vec::copy_n<r::character_t>(sxp::names(inner),
+  if (!sxp::is_null(vec::names(inner))) {
+    vec::copy_n<r::character_t>(vec::names(inner),
                                 sxp::length(inner),
                                 out_names, count);
     // Warn if outer names also present
-    if (!(*warned) && sxp::has_name_at(outer, i)) {
+    if (!(*warned) && vec::has_name_at(outer, i)) {
       r::warn("Conflicting outer and inner names while splicing");
       *warned = true;
     }
-  } else if (sxp::length(inner) == 1 && sxp::has_name_at(outer, i)) {
-    chr::set(out_names, count, chr::get(sxp::names(outer), i));
+  } else if (sxp::length(inner) == 1 && vec::has_name_at(outer, i)) {
+    chr::set(out_names, count, chr::get(vec::names(outer), i));
   }
 }
 
@@ -118,7 +118,7 @@ sexp* splice(sexp* dots, bool bare) {
   sexp* out = PROTECT(vec::alloc(Kind, info.size));
 
   if (info.named) {
-    sxp::set_names(out, vec::alloc(r::character_t, info.size));
+    vec::set_names(out, vec::alloc(r::character_t, info.size));
   }
 
   bool warned = false;

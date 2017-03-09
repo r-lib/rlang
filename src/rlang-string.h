@@ -36,11 +36,11 @@ const char* as_c_string(sexp* chr) {
 } // namespace chr
 
 
-namespace sxp {
+namespace vec {
 
 inline
 bool has_name_at(sexp* x, r::size_t i) {
-  sexp* nms = sxp::names(x);
+  sexp* nms = vec::names(x);
   return !sxp::is_null(nms) && !str::is_empty(chr::get(nms, i));
 }
 
