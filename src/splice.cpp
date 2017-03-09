@@ -179,12 +179,12 @@ sexp* rlang_splice(sexp* dots, sexp* type, sexp* bare) {
   bool splice_bare = as_bool(bare);
 
   switch (sxp::kind(str_pointer(type))) {
-  case r::lgl_t: return splice<r::lgl_t>(dots, splice_bare);
-  case r::int_t: return splice<r::int_t>(dots, splice_bare);
-  case r::dbl_t: return splice<r::dbl_t>(dots, splice_bare);
-  case r::cpl_t: return splice<r::cpl_t>(dots, splice_bare);
-  case r::chr_t: return splice<r::chr_t>(dots, splice_bare);
-  case r::raw_t: return splice<r::raw_t>(dots, splice_bare);
+  case r::logical_t: return splice<r::logical_t>(dots, splice_bare);
+  case r::integer_t: return splice<r::integer_t>(dots, splice_bare);
+  case r::double_t: return splice<r::double_t>(dots, splice_bare);
+  case r::complex_t: return splice<r::complex_t>(dots, splice_bare);
+  case r::character_t: return splice<r::character_t>(dots, splice_bare);
+  case r::bytes_t: return splice<r::bytes_t>(dots, splice_bare);
   case r::list_t: return splice<r::list_t>(dots, splice_bare);
   default:
     r::abort("Splicing is not implemented for this type");

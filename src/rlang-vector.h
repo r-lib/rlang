@@ -5,12 +5,12 @@ namespace rlang {
 
 
 template <sexp_e K> struct vec_traits { };
-template <> struct vec_traits<r::lgl_t> { typedef int type; };
-template <> struct vec_traits<r::int_t> { typedef int type; };
-template <> struct vec_traits<r::dbl_t> { typedef double type ; };
-template <> struct vec_traits<r::cpl_t> { typedef Rcomplex type; };
-// template <> struct vec_traits<r::chr_t> { typedef const char** type; };
-template <> struct vec_traits<r::raw_t> { typedef Rbyte type; };
+template <> struct vec_traits<r::logical_t> { typedef int type; };
+template <> struct vec_traits<r::integer_t> { typedef int type; };
+template <> struct vec_traits<r::double_t> { typedef double type ; };
+template <> struct vec_traits<r::complex_t> { typedef Rcomplex type; };
+// template <> struct vec_traits<r::character_t> { typedef const char** type; };
+template <> struct vec_traits<r::bytes_t> { typedef Rbyte type; };
 template <> struct vec_traits<r::list_t> { typedef sexp* type ; };
 
 // FIXME: Typed return as soon as we switch to C++11 (need default
@@ -20,27 +20,27 @@ void* vec_pointer(sexp* x) {
   r::abort("Internal error: vec_pointer() not implemented for this type");
 }
 template <> inline
-void* vec_pointer<r::lgl_t>(sexp* x) {
+void* vec_pointer<r::logical_t>(sexp* x) {
   return LOGICAL(x);
 }
 template <> inline
-void* vec_pointer<r::int_t>(sexp* x) {
+void* vec_pointer<r::integer_t>(sexp* x) {
   return INTEGER(x);
 }
 template <> inline
-void* vec_pointer<r::dbl_t>(sexp* x) {
+void* vec_pointer<r::double_t>(sexp* x) {
   return REAL(x);
 }
 template <> inline
-void* vec_pointer<r::cpl_t>(sexp* x) {
+void* vec_pointer<r::complex_t>(sexp* x) {
   return COMPLEX(x);
 }
 template <> inline
-void* vec_pointer<r::raw_t>(sexp* x) {
+void* vec_pointer<r::bytes_t>(sexp* x) {
   return RAW(x);
 }
 template <> inline
-void* vec_pointer<r::chr_t>(sexp* x) {
+void* vec_pointer<r::character_t>(sexp* x) {
   return STRING_PTR(x);
 }
 template <> inline
@@ -60,20 +60,20 @@ sexp* vec_alloc(sexp_e kind, r::size_t n) {
 
 inline
 bool as_bool(sexp* x) {
-  if (sxp::kind(x) != r::lgl_t || sxp::length(x) != 1)
+  if (sxp::kind(x) != r::logical_t || sxp::length(x) != 1)
     r::abort("Expected a scalar boolean");
-  return vec_pointer<r::lgl_t>(x);
+  return vec_pointer<r::logical_t>(x);
 }
 
 inline
 bool is_atomic(sexp* x) {
   switch (sxp::kind(x)) {
-  case r::lgl_t:
-  case r::int_t:
-  case r::dbl_t:
-  case r::cpl_t:
-  case r::chr_t:
-  case r::raw_t:
+  case r::logical_t:
+  case r::integer_t:
+  case r::double_t:
+  case r::complex_t:
+  case r::character_t:
+  case r::bytes_t:
     return true;
   default:
     return false;
@@ -113,7 +113,7 @@ void vec_copy_n(sexp* src, r::size_t n, sexp* dest,
 }
 
 template <> inline
-void vec_copy_n<r::chr_t>(sexp* src, r::size_t n, sexp* dest,
+void vec_copy_n<r::character_t>(sexp* src, r::size_t n, sexp* dest,
                           r::size_t offset_dest,
                           r::size_t offset_src) {
   sexp* elt;
