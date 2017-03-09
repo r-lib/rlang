@@ -176,7 +176,7 @@ sexp* splice<r::list_t>(sexp* dots, bool bare) {
 
 extern "C"
 sexp* rlang_splice(sexp* dots, sexp* type, sexp* bare) {
-  bool splice_bare = sxp::as_bool(bare);
+  bool splice_bare = lgl::as_bool(bare);
 
   switch (sxp::kind(str::pointer(type))) {
   case r::logical_t: return splice<r::logical_t>(dots, splice_bare);

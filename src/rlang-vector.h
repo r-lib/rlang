@@ -151,6 +151,11 @@ bool is_atomic(sexp* x) {
   }
 }
 
+} // namespace sxp
+
+
+namespace lgl {
+
 inline
 bool as_bool(sexp* x) {
   if (sxp::kind(x) != r::logical_t || sxp::length(x) != 1)
@@ -158,7 +163,7 @@ bool as_bool(sexp* x) {
   return vec::pointer<r::logical_t>(x);
 }
 
-} // namespace sxp
+} // namespace lgl
 
 
 } // namespace rlang
