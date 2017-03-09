@@ -23,7 +23,7 @@ chr(..., .encoding = NULL)
 
 bytes(...)
 
-splice(...)
+splice(..., .bare = TRUE)
 }
 \arguments{
 \item{...}{Components of the new vector. Bare lists and explicitly
@@ -32,6 +32,9 @@ spliced lists are spliced.}
 \item{.encoding}{If non-null, passed to \code{\link[=chr_set_encoding]{chr_set_encoding()}} to add
 an encoding mark. This is only declarative, no encoding
 conversion is performed.}
+
+\item{.bare}{Whether to splice bare lists. If \code{FALSE}, only lists
+inheriting from \code{"spliced"} are spliced.}
 }
 \description{
 Construct new vectors.

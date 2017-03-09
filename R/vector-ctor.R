@@ -54,11 +54,16 @@ bytes <- function(...) {
   .Call(rlang_splice, dots, "raw", bare = TRUE)
 }
 #' @rdname vector-ctors
+#' @param .bare Whether to splice bare lists. If `FALSE`, only lists
+#'   inheriting from `"spliced"` are spliced.
 #' @export
-splice <- function(...) {
-  .Call(rlang_splice, list(...), "list", bare = TRUE)
+splice <- function(..., .bare = TRUE) {
+  .Call(rlang_splice, list(...), "list", bare = .bare)
 }
 
+spliced <- function(x) {
+  structure(x, class = "spliced")
+}
 is_spliced <- function(x) {
   inherits(x, "spliced")
 }
