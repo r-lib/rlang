@@ -68,6 +68,11 @@ test_that("when outer names conflict with inner names, use the latter and warn",
   )
 })
 
+test_that("warn when spliced lists have outer name", {
+  expect_warning(lgl(C = list(c = FALSE)), "Outer names of spliced list")
+  expect_warning(lgl(C = list(FALSE)), "Outer names of spliced list")
+})
+
 test_that("splice() splices names", {
   expect_identical(splice(a = TRUE, b = FALSE), list(a = TRUE, b = FALSE))
   expect_identical(splice(c(A = TRUE), c(B = FALSE)), list(c(A = TRUE), c(B = FALSE)))

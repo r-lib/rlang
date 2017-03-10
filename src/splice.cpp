@@ -129,6 +129,8 @@ SEXP atm_splice(SEXP dots, bool bare) {
       count += n;
     } else if (is_list(cur)) {
       // Lists are valid since already checked during first pass
+      if (info.named && !warned && has_name_at(dots, i))
+        Rf_warning("Outer names of spliced lists are ignored");
       count = atm_splice_list<Kind>(cur, out, count, info.named, &warned);
     }
 
