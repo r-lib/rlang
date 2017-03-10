@@ -75,10 +75,16 @@ test_that("splice() splices names", {
   expect_identical(splice(a = TRUE, b = FALSE), list(a = TRUE, b = FALSE))
   expect_identical(splice(c(A = TRUE), c(B = FALSE)), list(c(A = TRUE), c(B = FALSE)))
   expect_identical(splice(a = c(A = TRUE), b = c(B = FALSE)), list(a = c(A = TRUE), b = c(B = FALSE)))
-  expect_warning(regexp = "Conflicting",
+  expect_warning(regexp = "Outer names",
     expect_identical(
-      splice(a = list(A = TRUE), b = list(B = FALSE)),
+      splice(a = list(A = TRUE), b = list(B = FALSE)) ,
       list(A = TRUE, B = FALSE)
+    )
+  )
+  expect_warning(regexp = "Outer names",
+    expect_identical(
+      splice(a = list(TRUE), b = list(FALSE)) ,
+      list(TRUE, FALSE)
     )
   )
 })

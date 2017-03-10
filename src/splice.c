@@ -8,18 +8,9 @@ typedef struct {
   bool warned;
 } splice_info_t;
 
-void splice_names(SEXP outer, SEXP inner, SEXP out,
-                  R_len_t i, R_len_t count) {
-  SEXP out_names = names(out);
-
-  if (is_character(names(inner))) {
-    vec_copy_n(names(inner), Rf_length(inner), out_names, count, 0);
-
-  } else if (Rf_length(inner) == 1 && has_name_at(outer, i)) {
-    SET_STRING_ELT(out_names, count, STRING_ELT(names(outer), i));
-  }
+void splice_warn_names(void) {
+  Rf_warning("Outer names are only allowed for unnamed scalar atomic inputs");
 }
-
 
 // Atomic splicing ---------------------------------------------------
 
@@ -28,11 +19,11 @@ void atom_splice_check_names(splice_info_t* info, SEXP inner, SEXP outer, R_len_
     if (is_scalar_atomic(inner)) {
       info->named = true;
       if (!info->warned && is_character(names(inner))) {
-        Rf_warning("Outer names are only allowed for unnamed scalar atomic inputs");
+        splice_warn_names();
         info->warned = true;
       }
     } else if (!info->warned) {
-      Rf_warning("Outer names are only allowed for unnamed scalar atomic inputs");
+      splice_warn_names();
       info->warned = true;
     }
   }
@@ -85,6 +76,7 @@ R_len_t atom_splice_list(SEXP outer, SEXP out, R_len_t count,
                          bool named, bool recurse) {
   R_len_t i = 0;
   SEXP x;
+  SEXP out_names = names(out);
 
   while (i != Rf_length(outer)) {
     x = VECTOR_ELT(outer, i);
@@ -93,8 +85,12 @@ R_len_t atom_splice_list(SEXP outer, SEXP out, R_len_t count,
       R_len_t n = Rf_length(x);
       vec_copy_coerce_n(x, n, out, count, 0);
 
-      if (named)
-        splice_names(outer, x, out, i, count);
+      if (named) {
+        if (is_character(names(x)))
+          vec_copy_n(names(x), n, out_names, count, 0);
+        else if (Rf_length(x) == 1 && has_name_at(outer, i))
+          SET_STRING_ELT(out_names, count, STRING_ELT(names(outer), i));
+      }
 
       count += n;
     } else if (is_list(x) && recurse) {
@@ -132,7 +128,8 @@ SEXP atom_splice(SEXPTYPE kind, SEXP dots, bool bare) {
 splice_info_t list_splice_info(SEXP dots, bool bare) {
   splice_info_t info;
   info.size = 0;
-  info.named = is_character(names(dots));
+  info.named = false;
+  info.warned = false;
 
   R_len_t i = 0;
   SEXP cur;
@@ -143,7 +140,12 @@ splice_info_t list_splice_info(SEXP dots, bool bare) {
     if (is_list(cur) && (Rf_inherits(cur, "spliced") || (bare && !is_object(cur)))) {
       info.size += Rf_length(cur);
       info.named = info.named || is_character(names(cur));
+      if (has_name_at(dots, i) && !info.warned) {
+        splice_warn_names();
+        info.warned = true;
+      }
     } else {
+      info.named = info.named || has_name_at(dots, i);
       info.size += 1;
     }
 
@@ -164,21 +166,21 @@ SEXP list_splice(SEXP dots, bool bare) {
 
   R_len_t i = 0;
   R_len_t count = 0;
-  SEXP cur;
+  SEXP x;
 
   while (count != info.size) {
-    cur = VECTOR_ELT(dots, i);
+    x = VECTOR_ELT(dots, i);
 
-    if (is_list(cur) && (Rf_inherits(cur, "spliced") || (bare && !is_object(cur)))) {
-      R_len_t n = Rf_length(cur);
-      vec_copy_n(cur, n, out, count, 0);
+    if (is_list(x) && (Rf_inherits(x, "spliced") || (bare && !is_object(x)))) {
+      R_len_t n = Rf_length(x);
+      vec_copy_n(x, n, out, count, 0);
 
-      if (info.named)
-        splice_names(dots, cur, out, i, count);
+      if (info.named && is_character(names(x)))
+        vec_copy_n(names(x), n, out_names, count, 0);
 
       count += n;
     } else {
-      SET_VECTOR_ELT(out, count, cur);
+      SET_VECTOR_ELT(out, count, x);
 
       if (info.named && is_character(names(dots))) {
         SEXP name = STRING_ELT(names(dots), i);
