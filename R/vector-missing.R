@@ -22,8 +22,8 @@
 #' contain any types, expressions like `list(NA)` store a logical
 #' `NA`.
 #'
-#' @seealso The [along] family to create typed vectors filled with
-#'   missing values.
+#' @seealso The [vector-along] family to create typed vectors filled
+#'   with missing values.
 #' @examples
 #' typeof(NA)
 #' typeof(na_lgl)

@@ -147,48 +147,48 @@ is_spliced <- function(x) {
 #' # You can also add attributes with additional arguments:
 #' rep_along(x, 1, class = "my_class")
 #' dbl_along(x, class = "my_class")
-#' @name along
-#' @seealso new-vectors
+#' @name vector-along
+#' @seealso vector-len
 NULL
 
 #' @export
-#' @rdname along
+#' @rdname vector-along
 lgl_along <- function(.x, ..., .attrs = list()) {
   with_attributes(rep_len(na_lgl, length(.x)), ..., .attrs = .attrs)
 }
 #' @export
-#' @rdname along
+#' @rdname vector-along
 int_along <- function(.x, ..., .attrs = list()) {
   with_attributes(rep_len(na_int, length(.x)), ..., .attrs = .attrs)
 }
 #' @export
-#' @rdname along
+#' @rdname vector-along
 dbl_along <- function(.x, ..., .attrs = list()) {
   with_attributes(rep_len(na_dbl, length(.x)), ..., .attrs = .attrs)
 }
 #' @export
-#' @rdname along
+#' @rdname vector-along
 chr_along <- function(.x, ..., .attrs = list()) {
   with_attributes(rep_len(na_chr, length(.x)), ..., .attrs = .attrs)
 }
 #' @export
-#' @rdname along
+#' @rdname vector-along
 lst_along <- function(.x, ..., .attrs = list()) {
   with_attributes(vector("list", length(.x)), ..., .attrs = .attrs)
 }
 #' @export
-#' @rdname along
+#' @rdname vector-along
 cpl_along <- function(.x, ..., .attrs = list()) {
   with_attributes(rep_len(na_cpl, length(.x)), ..., .attrs = .attrs)
 }
 #' @export
-#' @rdname along
+#' @rdname vector-along
 raw_along <- function(.x, ..., .attrs = list()) {
   with_attributes(vector("raw", length(.x)), ..., .attrs = .attrs)
 }
 
 #' @export
-#' @rdname along
+#' @rdname vector-along
 rep_along <- function(.x, .y, ..., .attrs = list()) {
   with_attributes(rep(.y, length.out = length(.x)), ..., .attrs = .attrs)
 }
@@ -210,42 +210,42 @@ rep_along <- function(.x, .y, ..., .attrs = list()) {
 #' # Add attributes, including the S3 class:
 #' int_len(0, index = 1)
 #' dbl_len(10, class = "my_class")
-#' @name new-vectors
-#' @seealso along
+#' @name vector-len
+#' @seealso vector-along
 NULL
 
 #' @export
-#' @rdname new-vectors
+#' @rdname vector-len
 lgl_len <- function(.n = 0, ..., .attrs = list()) {
   with_attributes(rep_len(na_lgl, .n), ..., .attrs = .attrs)
 }
 #' @export
-#' @rdname new-vectors
+#' @rdname vector-len
 int_len <- function(.n = 0, ..., .attrs = list()) {
   with_attributes(rep_len(na_int, .n), ..., .attrs = .attrs)
 }
 #' @export
-#' @rdname new-vectors
+#' @rdname vector-len
 dbl_len <- function(.n = 0, ..., .attrs = list()) {
   with_attributes(rep_len(na_dbl, .n), ..., .attrs = .attrs)
 }
 #' @export
-#' @rdname new-vectors
+#' @rdname vector-len
 chr_len <- function(.n = 0, ..., .attrs = list()) {
   with_attributes(rep_len(na_chr, .n), ..., .attrs = .attrs)
 }
 #' @export
-#' @rdname new-vectors
+#' @rdname vector-len
 cpl_len <- function(.n = 0, ..., .attrs = list()) {
   with_attributes(rep_len(na_cpl, .n), ..., .attrs = .attrs)
 }
 #' @export
-#' @rdname new-vectors
+#' @rdname vector-len
 bytes_len <- function(.n = 0, ..., .attrs = list()) {
   with_attributes(vector("raw", .n), ..., .attrs = .attrs)
 }
 #' @export
-#' @rdname new-vectors
+#' @rdname vector-len
 list_len <- function(.n = 0, ..., .attrs = list()) {
   with_attributes(vector("list", .n), ..., .attrs = .attrs)
 }
