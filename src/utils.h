@@ -29,6 +29,8 @@ SEXP names(SEXP x);
 bool has_name_at(SEXP x, R_len_t i);
 bool is_str_empty(SEXP str);
 bool is_object(SEXP x);
+bool is_atomic(SEXP x);
+bool is_list(SEXP x);
 SEXP set_names(SEXP x, SEXP nms);
 
 #ifdef __cplusplus

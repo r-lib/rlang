@@ -84,3 +84,11 @@ test_that("splice() with `.bare = FALSE` doesn't splice bare lists", {
   expect_identical(splice(list(1, 2), .bare = FALSE), list(list(1, 2)))
   expect_identical(splice(spliced(list(1, 2)), .bare = FALSE), list(1, 2))
 })
+
+test_that("atomic inputs are implicitly coerced", {
+  expect_identical(lgl(10L, FALSE, list(TRUE, 0L, 0)), c(TRUE, FALSE, TRUE, FALSE, FALSE))
+  expect_identical(dbl(10L, 10, TRUE, list(10L, 0, TRUE)), c(10, 10, 1, 10, 0, 1))
+
+  expect_error(lgl("foo"), "Cannot convert objects of type")
+  expect_error(chr(10), "Cannot convert objects of type")
+})

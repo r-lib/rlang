@@ -39,10 +39,11 @@ splice_info_t& atm_splice_info_list(SEXP x, splice_info_t& info) {
     cur = VECTOR_ELT(x, i);
     info.named = info.named || is_character(names(cur));
 
-    if (TYPEOF(cur) == Kind)
+    if (is_atomic(cur))
       info.size += Rf_length(cur);
     else
-      Rf_error("Cannot splice a `TODO` within a `TODO`");
+      Rf_error("Cannot splice a `%s` within a `%s`",
+               Rf_type2str(TYPEOF(cur)), Rf_type2str(Kind));
     i++;
   }
 
@@ -61,22 +62,15 @@ splice_info_t atm_splice_info(SEXP dots, bool bare) {
     cur = VECTOR_ELT(dots, i);
     info.named = info.named || is_character(names(cur));
 
-    switch (TYPEOF(cur)) {
-    case Kind: {
-      info.size += Rf_length(cur);
-      break;
-    }
-    case VECSXP: {
+    if (is_list(cur)) {
       bool is_spliced = Rf_inherits(cur, "spliced");
       if (!bare && !is_spliced)
         Rf_error("Bare lists cannot be spliced");
       if (is_object(cur) && !is_spliced)
         Rf_error("Objects cannot be spliced");
       info = atm_splice_info_list<Kind>(cur, info);
-      break;
-    }
-    default:
-      Rf_error("Cannot splice a `TODO` within a `TODO`");
+    } else {
+      info.size += Rf_length(cur);
     }
 
     ++i;
@@ -96,12 +90,10 @@ R_len_t atm_splice_list(SEXP x, SEXP out, R_len_t count,
     cur = VECTOR_ELT(x, i);
     R_len_t n = Rf_length(cur);
 
-    if (TYPEOF(cur) == Kind) {
-      vec_copy_n<Kind>(cur, n, out, count);
+    vec_copy_coerce_n<Kind>(cur, n, out, count);
 
-      if (named)
-        splice_names(x, cur, out, i, count, warned);
-    }
+    if (named)
+      splice_names(x, cur, out, i, count, warned);
 
     count += n;
     i++;
@@ -127,24 +119,17 @@ SEXP atm_splice(SEXP dots, bool bare) {
   while (count != info.size) {
     cur = VECTOR_ELT(dots, i);
 
-    switch (TYPEOF(cur)) {
-    case Kind: {
+    if (is_atomic(cur)) {
       R_len_t n = Rf_length(cur);
-      vec_copy_n<Kind>(cur, n, out, count);
+      vec_copy_coerce_n<Kind>(cur, n, out, count);
 
       if (info.named)
         splice_names(dots, cur, out, i, count, &warned);
 
       count += n;
-      break;
-    }
-    case VECSXP: {
+    } else if (is_list(cur)) {
       // Lists are valid since already checked during first pass
       count = atm_splice_list<Kind>(cur, out, count, info.named, &warned);
-      break;
-    }
-    default:
-      break;
     }
 
     ++i;
@@ -167,20 +152,12 @@ splice_info_t list_splice_info(SEXP dots, bool bare) {
   while (i != Rf_length(dots)) {
     cur = VECTOR_ELT(dots, i);
 
-    switch (TYPEOF(cur)) {
-    case VECSXP: {
-      if (Rf_inherits(cur, "spliced") || (bare && !is_object(cur))) {
-        info.size += Rf_length(cur);
-        info.named = info.named || is_character(names(cur));
-      } else {
-        info.size += 1;
-      }
-      break;
-    }
-    default: {
+    if (is_list(cur) && (Rf_inherits(cur, "spliced") || (bare && !is_object(cur)))) {
+      info.size += Rf_length(cur);
+      info.named = info.named || is_character(names(cur));
+    } else {
       info.size += 1;
-      break;
-    }}
+    }
 
     ++i;
   }
@@ -205,28 +182,24 @@ SEXP list_splice(SEXP dots, bool bare) {
   while (count != info.size) {
     cur = VECTOR_ELT(dots, i);
 
-    switch (TYPEOF(cur)) {
-    case VECSXP: {
-      if (Rf_inherits(cur, "spliced") || (bare && !is_object(cur))) {
-        R_len_t n = Rf_length(cur);
-        vec_copy_n<VECSXP>(cur, n, out, count);
+    if (is_list(cur) && (Rf_inherits(cur, "spliced") || (bare && !is_object(cur)))) {
+      R_len_t n = Rf_length(cur);
+      vec_copy_n<VECSXP>(cur, n, out, count);
 
-        if (info.named)
-          splice_names(dots, cur, out, i, count, &warned);
+      if (info.named)
+        splice_names(dots, cur, out, i, count, &warned);
 
-        count += n;
-        break;
-      } // else fallthrough
-    }
-    default: {
+      count += n;
+    } else {
       SET_VECTOR_ELT(out, count, cur);
+
       if (info.named && is_character(names(dots))) {
         SEXP name = STRING_ELT(names(dots), i);
         SET_STRING_ELT(out_names, count, name);
       }
+
       count += 1;
-      break;
-    }}
+    }
 
     ++i;
   }

@@ -25,6 +25,22 @@ SEXP set_names(SEXP x, SEXP nms) {
 bool is_object(SEXP x) {
   return OBJECT(x) != 0;
 }
+bool is_atomic(SEXP x) {
+  switch(TYPEOF(x)) {
+  case LGLSXP:
+  case INTSXP:
+  case REALSXP:
+  case CPLXSXP:
+  case STRSXP:
+  case RAWSXP:
+    return true;
+  default:
+    return false;
+  }
+}
+bool is_list(SEXP x) {
+  return TYPEOF(x) == VECSXP;
+}
 
 int is_sym(SEXP x, const char* string) {
   if (TYPEOF(x) != SYMSXP)
