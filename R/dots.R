@@ -62,7 +62,7 @@ dots_splice <- function(...) {
 #' list of expressions while the latter returns a [pairlist].
 #'
 #' @param ... Arguments to extract.
-#' @seealso [frame_dots()]
+#' @seealso [frame_dots_exprs()]
 #' @export
 dots_exprs <- function(...) {
   expr_eval(substitute(alist(...)))
@@ -85,7 +85,7 @@ dots_node <- function(...) {
 #' pairlist that is ready to be spliced into a call, while the regular
 #' version return a regular list that is usually easier to work with.
 #'
-#' `frame_dots()` and `frame_dots_node()` never fail, even if the
+#' `frame_dots_exprs()` and `frame_dots_node()` never fail, even if the
 #' frame does not contain dots. Instead they return an empty list or
 #' `NULL` respectively.
 #'
@@ -96,12 +96,12 @@ dots_node <- function(...) {
 #' @param ... Arguments to extract. Can be both forwarded dots and
 #'   direct arguments.
 #' @export
-frame_dots <- function(frame = NULL) {
+frame_dots_exprs <- function(frame = NULL) {
   frame <- frame %||% call_frame(2)
   as.list(frame_dots_node(frame))
 }
 
-#' @rdname frame_dots
+#' @rdname frame_dots_exprs
 #' @export
 frame_dots_node <- function(frame = NULL) {
   frame <- frame %||% call_frame(2)
@@ -127,7 +127,7 @@ frame_dots_node <- function(frame = NULL) {
 #'
 #' `dots_inspect_()` is the standard evaluation version of
 #' `dots_inspect()` and takes a list of dots as captured by
-#' [frame_dots()] or [dots_exprs()], and a call stack as returned by
+#' [frame_dots_exprs()] or [dots_exprs()], and a call stack as returned by
 #' [call_stack()].
 #'
 #' @param ... Dots to inspect.

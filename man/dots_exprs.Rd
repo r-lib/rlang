@@ -19,5 +19,5 @@ Contrarily to \code{\link[=dots_list]{dots_list()}} and \code{\link[=dots_splice
 list of expressions while the latter returns a \link{pairlist}.
 }
 \seealso{
-\code{\link[=frame_dots]{frame_dots()}}
+\code{\link[=frame_dots_exprs]{frame_dots_exprs()}}
 }
