@@ -1,3 +1,59 @@
+#' Extract dots with explicit splicing.
+#'
+#' `dots_list()` evaluates all arguments contained in `...` and returns
+#' them as a list. It splices lists that are explicitly marked for
+#' [splicing][splice] with the [spliced()] adjective. See
+#' [dots_splice()] for a version that splices bare lists as well.
+#'
+#' `dots_list()` and `dots_splice()` are simple aliases to
+#' [splice()]. Their main purpose is to provide documentation for the
+#' `...` argument that developers can inherit from in their packages.
+#'
+#' @param ... Arguments with explicit splicing semantics. Arguments
+#'   marked with [rlang::spliced()] are spliced in the returned list.
+#' @seealso [dots_splice()] for full splicing semantics, and
+#'   [dots_exprs()] for extracting dots without evaluation.
+#' @export
+#' @examples
+#' # Compared to simply using list(...) to capture dots, dots_list()
+#' # splices explicitly:
+#' x <- list(1, 2)
+#' dots_list(spliced(x), 3)
+#'
+#' # Unlike dots_splice(), it doesn't splice bare lists:
+#' dots_list(x, 3)
+dots_list <- function(...) {
+  splice(..., .bare = FALSE)
+}
+
+#' Extract dots with full splicing.
+#'
+#' Like [dots_list()], `dots_splice()` evaluates all arguments
+#' contained in `...` and returns them as a list. It has full splicing
+#' semantics: in addition to lists marked explicitly for splicing,
+#' [bare lists][is_bare_list] are spliced as well. See [dots_list()]
+#' for a version that only splices explicitly.
+#'
+#' `dots_list()` and `dots_splice()` are simple aliases to
+#' [splice()]. Their main purpose is to provide documentation for the
+#' `...` argument that developers can inherit from in their packages.
+#'
+#' @param ... Arguments with full splicing semantics. [Bare
+#'   lists][is_bare_list] and arguments marked with [rlang::spliced()]
+#'   are spliced in the returned list.
+#' @seealso [dots_list()] for explicit splicing semantics, and
+#'   [dots_exprs()] for extracting dots without evaluation.
+#' @export
+#' @examples
+#' # dots_splice() splices lists marked with spliced() as well as bare
+#' # lists:
+#' x <- list(1, 2)
+#' dots_splice(spliced(x), 3)
+#' dots_splice(x, 3)
+dots_splice <- function(...) {
+  splice(..., .bare = TRUE)
+}
+
 #' Extract dots forwarded as arguments.
 #'
 #' These functions return the arguments forwarded through `...`.
