@@ -116,12 +116,23 @@ splice <- function(..., .bare = TRUE) {
   .Call(rlang_splice, list(...), "list", bare = .bare)
 }
 
+#' Splice a list within a vector.
+#'
+#' This adjective signals to functions taking dots that `x` should be
+#' spliced in a surrounding vector. Examples of functions that support
+#' splicing are [spliced()], [chr()], etc.
+#'
+#' @param x A list to splice.
+#' @seealso [splice()], [vector-construction]
+#' @export
 spliced <- function(x) {
   if (!is_list(x)) {
     abort("Only lists can be spliced")
   }
   structure(x, class = "spliced")
 }
+#' @rdname spliced
+#' @export
 is_spliced <- function(x) {
   inherits(x, "spliced")
 }
