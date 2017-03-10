@@ -8,8 +8,7 @@
 \alias{cpl}
 \alias{chr}
 \alias{bytes}
-\alias{splice}
-\title{Construct new vectors.}
+\title{Construct new atomic vectors.}
 \usage{
 lgl(...)
 
@@ -22,8 +21,6 @@ cpl(...)
 chr(..., .encoding = NULL)
 
 bytes(...)
-
-splice(..., .bare = TRUE)
 }
 \arguments{
 \item{...}{Components of the new vector. Bare lists and explicitly
@@ -32,9 +29,6 @@ spliced lists are spliced.}
 \item{.encoding}{If non-null, passed to \code{\link[=chr_set_encoding]{chr_set_encoding()}} to add
 an encoding mark. This is only declarative, no encoding
 conversion is performed.}
-
-\item{.bare}{Whether to splice bare lists. If \code{FALSE}, only lists
-inheriting from \code{"spliced"} are spliced.}
 }
 \description{
 These vector constructors are equivalent to \code{\link[=c]{c()}} but with explicit
@@ -75,4 +69,7 @@ dbl(list(a = c(A = 1)))
 # bytes() accepts integerish inputs
 bytes(1:10)
 bytes(0x01, 0xff, c(0x03, 0x05), list(10, 20, 30L))
+}
+\seealso{
+\code{\link[=splice]{splice()}}
 }

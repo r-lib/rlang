@@ -1,4 +1,4 @@
-#' Construct new vectors.
+#' Construct new atomic vectors.
 #'
 #' These vector constructors are equivalent to [c()] but with explicit
 #' output types. Implicit coercions (e.g. from integer to logical)
@@ -9,6 +9,7 @@
 #' @param ... Components of the new vector. Bare lists and explicitly
 #'   spliced lists are spliced.
 #' @name vector-construction
+#' @seealso [splice()]
 #' @examples
 #' # These constructors are like a typed version of c():
 #' c(TRUE, FALSE)
@@ -87,15 +88,38 @@ bytes <- function(...) {
   })
   .Call(rlang_splice, dots, "raw", bare = TRUE)
 }
-#' @rdname vector-construction
+
+#' Construct a list with splicing.
+#' @param ... Components of the new vector. Explicitly spliced lists
+#'   are always spliced. Bare lists are spliced depending on the value
+#'   of `.bare`.
 #' @param .bare Whether to splice bare lists. If `FALSE`, only lists
 #'   inheriting from `"spliced"` are spliced.
 #' @export
+#' @examples
+#' # splice() is like the atomic vector constructors but for lists:
+#' dbl(1, list(1, 2))
+#' splice(1, list(1, 2))
+#'
+#' # Only bare lists are spliced. Objects like data frames are not spliced:
+#' splice(1, mtcars)
+#'
+#' # Use the spliced() adjective to splice objects:
+#' splice(1, spliced(mtcars))
+#'
+#' # You can chose not to splice bare lists with `.bare`:
+#' splice(list(1, 2), .bare = FALSE)
+#'
+#' # Note that explicitly spliced lists are always spliced:
+#' splice(spliced(list(1, 2)), .bare = FALSE)
 splice <- function(..., .bare = TRUE) {
   .Call(rlang_splice, list(...), "list", bare = .bare)
 }
 
 spliced <- function(x) {
+  if (!is_list(x)) {
+    abort("Only lists can be spliced")
+  }
   structure(x, class = "spliced")
 }
 is_spliced <- function(x) {
