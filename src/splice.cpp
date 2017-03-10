@@ -3,6 +3,10 @@
 using namespace rlang;
 
 
+
+namespace rlang {
+
+
 struct splice_info_t {
   r::size_t size;
   bool named;
@@ -10,8 +14,28 @@ struct splice_info_t {
   { }
 };
 
+void splice_names(sexp* outer, sexp* inner, sexp* out,
+                  r::size_t i, r::size_t count,
+                  bool* warned) {
+  sexp* out_names = vec::names(out);
 
-// Typed splicing ----------------------------------------------------
+  if (sxp::is_character(vec::names(inner))) {
+    vec::copy_n<r::character_t>(vec::names(inner),
+                                sxp::length(inner),
+                                out_names, count);
+    // Warn if outer names also present
+    if (!(*warned) && vec::has_name_at(outer, i)) {
+      r::warn("Conflicting outer and inner names while splicing");
+      *warned = true;
+    }
+  } else if (sxp::length(inner) == 1 && vec::has_name_at(outer, i)) {
+    chr::set(out_names, count, chr::get(vec::names(outer), i));
+  }
+}
+
+
+
+namespace atm {
 
 template <sexp_e Kind>
 splice_info_t& splice_info_list(sexp* x, splice_info_t& info) {
@@ -66,25 +90,6 @@ splice_info_t splice_info(sexp* dots, bool bare) {
   }
 
   return info;
-}
-
-void splice_names(sexp* outer, sexp* inner, sexp* out,
-                  r::size_t i, r::size_t count,
-                  bool* warned) {
-  sexp* out_names = vec::names(out);
-
-  if (sxp::is_character(vec::names(inner))) {
-    vec::copy_n<r::character_t>(vec::names(inner),
-                                sxp::length(inner),
-                                out_names, count);
-    // Warn if outer names also present
-    if (!(*warned) && vec::has_name_at(outer, i)) {
-      r::warn("Conflicting outer and inner names while splicing");
-      *warned = true;
-    }
-  } else if (sxp::length(inner) == 1 && vec::has_name_at(outer, i)) {
-    chr::set(out_names, count, chr::get(vec::names(outer), i));
-  }
 }
 
 template <sexp_e Kind>
@@ -156,11 +161,12 @@ sexp* splice(sexp* dots, bool bare) {
   return out;
 }
 
+} // namespace atm
 
-// List splicing -----------------------------------------------------
 
-template <>
-splice_info_t splice_info<r::list_t>(sexp* dots, bool bare) {
+namespace list {
+
+splice_info_t splice_info(sexp* dots, bool bare) {
   splice_info_t info;
   info.named = sxp::is_character(vec::names(dots));
 
@@ -191,9 +197,8 @@ splice_info_t splice_info<r::list_t>(sexp* dots, bool bare) {
   return info;
 }
 
-template <>
-sexp* splice<r::list_t>(sexp* dots, bool bare) {
-  splice_info_t info = splice_info<r::list_t>(dots, bare);
+sexp* splice(sexp* dots, bool bare) {
+  splice_info_t info = splice_info(dots, bare);
   sexp* out = PROTECT(vec::alloc(r::list_t, info.size));
 
   if (info.named) {
@@ -239,6 +244,9 @@ sexp* splice<r::list_t>(sexp* dots, bool bare) {
   return out;
 }
 
+} // namespace list
+} // namespace rlang
+
 
 // Export ------------------------------------------------------------
 
@@ -247,13 +255,13 @@ sexp* rlang_splice(sexp* dots, sexp* type, sexp* bare) {
   bool splice_bare = lgl::as_bool(bare);
 
   switch (sxp::kind(chr::as_c_string(type))) {
-  case r::logical_t: return splice<r::logical_t>(dots, splice_bare);
-  case r::integer_t: return splice<r::integer_t>(dots, splice_bare);
-  case r::double_t: return splice<r::double_t>(dots, splice_bare);
-  case r::complex_t: return splice<r::complex_t>(dots, splice_bare);
-  case r::character_t: return splice<r::character_t>(dots, splice_bare);
-  case r::bytes_t: return splice<r::bytes_t>(dots, splice_bare);
-  case r::list_t: return splice<r::list_t>(dots, splice_bare);
+  case r::logical_t: return atm::splice<r::logical_t>(dots, splice_bare);
+  case r::integer_t: return atm::splice<r::integer_t>(dots, splice_bare);
+  case r::double_t: return atm::splice<r::double_t>(dots, splice_bare);
+  case r::complex_t: return atm::splice<r::complex_t>(dots, splice_bare);
+  case r::character_t: return atm::splice<r::character_t>(dots, splice_bare);
+  case r::bytes_t: return atm::splice<r::bytes_t>(dots, splice_bare);
+  case r::list_t: return list::splice(dots, splice_bare);
   default:
     r::abort("Splicing is not implemented for this type");
     return r::null;
