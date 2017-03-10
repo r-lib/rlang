@@ -3,6 +3,29 @@
 #include <Rinternals.h>
 #include <stdbool.h>
 
+bool is_character(SEXP x) {
+  return TYPEOF(x) == STRSXP;
+}
+bool is_str_empty(SEXP str) {
+  const char* c_str = CHAR(str);
+  return strcmp(c_str, "") == 0;
+}
+
+SEXP names(SEXP x) {
+  return Rf_getAttrib(x, R_NamesSymbol);
+}
+bool has_name_at(SEXP x, R_len_t i) {
+  SEXP nms = names(x);
+  return is_character(nms) && !is_str_empty(STRING_ELT(nms, i));
+}
+SEXP set_names(SEXP x, SEXP nms) {
+  return Rf_setAttrib(x, R_NamesSymbol, nms);
+}
+
+bool is_object(SEXP x) {
+  return OBJECT(x) != 0;
+}
+
 int is_sym(SEXP x, const char* string) {
   if (TYPEOF(x) != SYMSXP)
     return false;

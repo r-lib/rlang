@@ -3,6 +3,10 @@
 #include <R.h>
 #include <Rinternals.h>
 
+#ifdef __cplusplus
+extern "C" {
+#endif
+
 bool is_lazy_load(SEXP x);
 bool is_lang(SEXP x, const char* f);
 bool is_formula(SEXP x);
@@ -20,3 +24,13 @@ int is_rlang_prefixed(SEXP x, int (*sym_predicate)(SEXP));
 int is_any_call(SEXP x, int (*sym_predicate)(SEXP));
 int is_prefixed_call(SEXP x, int (*sym_predicate)(SEXP));
 int is_rlang_call(SEXP x, int (*sym_predicate)(SEXP));
+bool is_character(SEXP x);
+SEXP names(SEXP x);
+bool has_name_at(SEXP x, R_len_t i);
+bool is_str_empty(SEXP str);
+bool is_object(SEXP x);
+SEXP set_names(SEXP x, SEXP nms);
+
+#ifdef __cplusplus
+}
+#endif

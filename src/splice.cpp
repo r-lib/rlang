@@ -1,83 +1,82 @@
-#include "rlang.h"
-
-using namespace rlang;
+#include "utils.h"
+#include "vector.h"
 
 
 struct splice_info_t {
-  r::size_t size;
+  R_len_t size;
   bool named;
   splice_info_t() : size(0), named(false)
   { }
 };
 
-void splice_names(sexp* outer, sexp* inner, sexp* out,
-                  r::size_t i, r::size_t count,
+void splice_names(SEXP outer, SEXP inner, SEXP out,
+                  R_len_t i, R_len_t count,
                   bool* warned) {
-  sexp* out_names = vec::names(out);
+  SEXP out_names = names(out);
 
-  if (sxp::is_character(vec::names(inner))) {
-    vec::copy_n<r::character_t>(vec::names(inner),
-                                sxp::length(inner),
-                                out_names, count);
+  if (is_character(names(inner))) {
+    vec_copy_n<STRSXP>(names(inner), Rf_length(inner), out_names, count);
+
     // Warn if outer names also present
-    if (!(*warned) && vec::has_name_at(outer, i)) {
-      r::warn("Conflicting outer and inner names while splicing");
+    if (!(*warned) && has_name_at(outer, i)) {
+      Rf_warning("Conflicting outer and inner names while splicing");
       *warned = true;
     }
-  } else if (sxp::length(inner) == 1 && vec::has_name_at(outer, i)) {
-    chr::set(out_names, count, chr::get(vec::names(outer), i));
+  } else if (Rf_length(inner) == 1 && has_name_at(outer, i)) {
+    SET_STRING_ELT(out_names, count, STRING_ELT(names(outer), i));
   }
 }
 
 
+// Atomic splicing ---------------------------------------------------
 
-template <sexp_e Kind>
-splice_info_t& atm_splice_info_list(sexp* x, splice_info_t& info) {
-  r::size_t i = 0;
-  sexp* cur;
+template <SEXPTYPE Kind>
+splice_info_t& atm_splice_info_list(SEXP x, splice_info_t& info) {
+  R_len_t i = 0;
+  SEXP cur;
 
-  while (i != sxp::length(x)) {
-    cur = list::get(x, i);
-    info.named = info.named || sxp::is_character(vec::names(cur));
+  while (i != Rf_length(x)) {
+    cur = VECTOR_ELT(x, i);
+    info.named = info.named || is_character(names(cur));
 
-    if (sxp::kind(cur) == Kind)
-      info.size += sxp::length(cur);
+    if (TYPEOF(cur) == Kind)
+      info.size += Rf_length(cur);
     else
-      r::abort("Cannot splice a `TODO` within a `TODO`");
+      Rf_error("Cannot splice a `TODO` within a `TODO`");
     i++;
   }
 
   return info;
 }
 
-template <sexp_e Kind>
-splice_info_t atm_splice_info(sexp* dots, bool bare) {
+template <SEXPTYPE Kind>
+splice_info_t atm_splice_info(SEXP dots, bool bare) {
   splice_info_t info;
-  info.named = sxp::is_character(vec::names(dots));
+  info.named = is_character(names(dots));
 
-  r::size_t i = 0;
-  sexp* cur;
+  R_len_t i = 0;
+  SEXP cur;
 
-  while (i != sxp::length(dots)) {
-    cur = list::get(dots, i);
-    info.named = info.named || sxp::is_character(vec::names(cur));
+  while (i != Rf_length(dots)) {
+    cur = VECTOR_ELT(dots, i);
+    info.named = info.named || is_character(names(cur));
 
-    switch (sxp::kind(cur)) {
+    switch (TYPEOF(cur)) {
     case Kind: {
-      info.size += sxp::length(cur);
+      info.size += Rf_length(cur);
       break;
     }
-    case r::list_t: {
-      bool is_spliced = sxp::inherits(cur, "spliced");
+    case VECSXP: {
+      bool is_spliced = Rf_inherits(cur, "spliced");
       if (!bare && !is_spliced)
-        r::abort("Bare lists cannot be spliced");
-      if (sxp::is_object(cur) && !is_spliced)
-        r::abort("Objects cannot be spliced");
+        Rf_error("Bare lists cannot be spliced");
+      if (is_object(cur) && !is_spliced)
+        Rf_error("Objects cannot be spliced");
       info = atm_splice_info_list<Kind>(cur, info);
       break;
     }
     default:
-      r::abort("Cannot splice a `TODO` within a `TODO`");
+      Rf_error("Cannot splice a `TODO` within a `TODO`");
     }
 
     ++i;
@@ -86,19 +85,19 @@ splice_info_t atm_splice_info(sexp* dots, bool bare) {
   return info;
 }
 
-template <sexp_e Kind>
-r::size_t atm_splice_list(sexp* x, sexp* out, r::size_t count,
-                          bool named, bool* warned) {
-  r::size_t i = 0;
-  r::size_t size = sxp::length(x);
-  sexp* cur;
+template <SEXPTYPE Kind>
+R_len_t atm_splice_list(SEXP x, SEXP out, R_len_t count,
+                        bool named, bool* warned) {
+  R_len_t i = 0;
+  R_len_t size = Rf_length(x);
+  SEXP cur;
 
   while (i != size) {
-    cur = list::get(x, i);
-    r::size_t n = sxp::length(cur);
+    cur = VECTOR_ELT(x, i);
+    R_len_t n = Rf_length(cur);
 
-    if (sxp::kind(cur) == Kind) {
-      vec::copy_n<Kind>(cur, n, out, count);
+    if (TYPEOF(cur) == Kind) {
+      vec_copy_n<Kind>(cur, n, out, count);
 
       if (named)
         splice_names(x, cur, out, i, count, warned);
@@ -111,27 +110,27 @@ r::size_t atm_splice_list(sexp* x, sexp* out, r::size_t count,
   return count;
 }
 
-template <sexp_e Kind>
-sexp* atm_splice(sexp* dots, bool bare) {
+template <SEXPTYPE Kind>
+SEXP atm_splice(SEXP dots, bool bare) {
   splice_info_t info = atm_splice_info<Kind>(dots, bare);
-  sexp* out = PROTECT(vec::alloc(Kind, info.size));
+  SEXP out = PROTECT(Rf_allocVector(Kind, info.size));
 
   if (info.named) {
-    vec::set_names(out, vec::alloc(r::character_t, info.size));
+    set_names(out, Rf_allocVector(STRSXP, info.size));
   }
 
   bool warned = false;
-  r::size_t i = 0;
-  r::size_t count = 0;
-  sexp* cur;
+  R_len_t i = 0;
+  R_len_t count = 0;
+  SEXP cur;
 
   while (count != info.size) {
-    cur = list::get(dots, i);
+    cur = VECTOR_ELT(dots, i);
 
-    switch (sxp::kind(cur)) {
+    switch (TYPEOF(cur)) {
     case Kind: {
-      r::size_t n = sxp::length(cur);
-      vec::copy_n<Kind>(cur, n, out, count);
+      R_len_t n = Rf_length(cur);
+      vec_copy_n<Kind>(cur, n, out, count);
 
       if (info.named)
         splice_names(dots, cur, out, i, count, &warned);
@@ -139,7 +138,7 @@ sexp* atm_splice(sexp* dots, bool bare) {
       count += n;
       break;
     }
-    case r::list_t: {
+    case VECSXP: {
       // Lists are valid since already checked during first pass
       count = atm_splice_list<Kind>(cur, out, count, info.named, &warned);
       break;
@@ -156,21 +155,23 @@ sexp* atm_splice(sexp* dots, bool bare) {
 }
 
 
-splice_info_t list_splice_info(sexp* dots, bool bare) {
+// List splicing -----------------------------------------------------
+
+splice_info_t list_splice_info(SEXP dots, bool bare) {
   splice_info_t info;
-  info.named = sxp::is_character(vec::names(dots));
+  info.named = is_character(names(dots));
 
-  r::size_t i = 0;
-  sexp* cur;
+  R_len_t i = 0;
+  SEXP cur;
 
-  while (i != sxp::length(dots)) {
-    cur = list::get(dots, i);
+  while (i != Rf_length(dots)) {
+    cur = VECTOR_ELT(dots, i);
 
-    switch (sxp::kind(cur)) {
-    case r::list_t: {
-      if (sxp::inherits(cur, "spliced") || (bare && !sxp::is_object(cur))) {
-        info.size += sxp::length(cur);
-        info.named = info.named || sxp::is_character(vec::names(cur));
+    switch (TYPEOF(cur)) {
+    case VECSXP: {
+      if (Rf_inherits(cur, "spliced") || (bare && !is_object(cur))) {
+        info.size += Rf_length(cur);
+        info.named = info.named || is_character(names(cur));
       } else {
         info.size += 1;
       }
@@ -187,28 +188,28 @@ splice_info_t list_splice_info(sexp* dots, bool bare) {
   return info;
 }
 
-sexp* list_splice(sexp* dots, bool bare) {
+SEXP list_splice(SEXP dots, bool bare) {
   splice_info_t info = list_splice_info(dots, bare);
-  sexp* out = PROTECT(vec::alloc(r::list_t, info.size));
+  SEXP out = PROTECT(Rf_allocVector(VECSXP, info.size));
 
   if (info.named) {
-    vec::set_names(out, vec::alloc(r::character_t, info.size));
+    set_names(out, Rf_allocVector(STRSXP, info.size));
   }
-  sexp* out_names = vec::names(out);
+  SEXP out_names = names(out);
 
   bool warned = false;
-  r::size_t i = 0;
-  r::size_t count = 0;
-  sexp* cur;
+  R_len_t i = 0;
+  R_len_t count = 0;
+  SEXP cur;
 
   while (count != info.size) {
-    cur = list::get(dots, i);
+    cur = VECTOR_ELT(dots, i);
 
-    switch (sxp::kind(cur)) {
-    case r::list_t: {
-      if (sxp::inherits(cur, "spliced") || (bare && !sxp::is_object(cur))) {
-        r::size_t n = sxp::length(cur);
-        vec::copy_n<r::list_t>(cur, n, out, count);
+    switch (TYPEOF(cur)) {
+    case VECSXP: {
+      if (Rf_inherits(cur, "spliced") || (bare && !is_object(cur))) {
+        R_len_t n = Rf_length(cur);
+        vec_copy_n<VECSXP>(cur, n, out, count);
 
         if (info.named)
           splice_names(dots, cur, out, i, count, &warned);
@@ -218,10 +219,10 @@ sexp* list_splice(sexp* dots, bool bare) {
       } // else fallthrough
     }
     default: {
-      list::set(out, count, cur);
-      if (info.named && sxp::is_character(vec::names(dots))) {
-        sexp* name = chr::get(vec::names(dots), i);
-        chr::set(out_names, count, name);
+      SET_VECTOR_ELT(out, count, cur);
+      if (info.named && is_character(names(dots))) {
+        SEXP name = STRING_ELT(names(dots), i);
+        SET_STRING_ELT(out_names, count, name);
       }
       count += 1;
       break;
@@ -238,7 +239,7 @@ sexp* list_splice(sexp* dots, bool bare) {
 // Export ------------------------------------------------------------
 
 extern "C"
-sexp* rlang_splice(sexp* dots, sexp* type, sexp* bare) {
+SEXP rlang_splice(SEXP dots, SEXP type, SEXP bare) {
   bool splice_bare = *(LOGICAL(bare));
 
   switch (Rf_str2type(CHAR(STRING_ELT(type, 0)))) {
