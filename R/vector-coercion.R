@@ -98,10 +98,10 @@
 #' x <- structure(as_env(mtcars[1:2]), class = "foobar")
 #' as.list.foobar <- function(x) abort("dont call me")
 #' as_list(x)
-#' @name coercion
+#' @name vector-coercion
 NULL
 
-#' @rdname coercion
+#' @rdname vector-coercion
 #' @export
 as_logical <- function(x) {
   coerce_type_vec(x, "logical",
@@ -111,7 +111,7 @@ as_logical <- function(x) {
   )
 }
 
-#' @rdname coercion
+#' @rdname vector-coercion
 #' @export
 as_integer <- function(x) {
   coerce_type_vec(x, "integer",
@@ -120,7 +120,7 @@ as_integer <- function(x) {
     double = as_integerish_type(x, as.integer, "integer")
   )
 }
-#' @rdname coercion
+#' @rdname vector-coercion
 #' @export
 as_double <- function(x) {
   coerce_type_vec(x, "double",
@@ -129,7 +129,7 @@ as_double <- function(x) {
     double = zap_attributes(x)
   )
 }
-#' @rdname coercion
+#' @rdname vector-coercion
 #' @export
 as_complex <- function(x) {
   coerce_type_vec(x, "complex",
@@ -139,7 +139,7 @@ as_complex <- function(x) {
     complex = zap_attributes(x)
   )
 }
-#' @rdname coercion
+#' @rdname vector-coercion
 #' @export
 as_character <- function(x, encoding = NULL) {
   x <- coerce_type_vec(x, "character",
@@ -147,7 +147,7 @@ as_character <- function(x, encoding = NULL) {
   )
   chr_set_encoding(x, encoding)
 }
-#' @rdname coercion
+#' @rdname vector-coercion
 #' @export
 as_string <- function(x, encoding = NULL) {
   x <- coerce_type(x, .to = "string",
@@ -156,7 +156,7 @@ as_string <- function(x, encoding = NULL) {
   )
   chr_set_encoding(x, encoding)
 }
-#' @rdname coercion
+#' @rdname vector-coercion
 #' @export
 as_list <- function(x) {
   coerce_type_vec(x, "list",
