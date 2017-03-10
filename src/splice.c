@@ -2,12 +2,10 @@
 #include "vector.h"
 
 
-struct splice_info_t {
+typedef struct {
   R_len_t size;
   bool named;
-  splice_info_t() : size(0), named(false)
-  { }
-};
+} splice_info_t;
 
 void splice_names(SEXP outer, SEXP inner, SEXP out,
                   R_len_t i, R_len_t count,
@@ -15,7 +13,7 @@ void splice_names(SEXP outer, SEXP inner, SEXP out,
   SEXP out_names = names(out);
 
   if (is_character(names(inner))) {
-    vec_copy_n(names(inner), Rf_length(inner), out_names, count);
+    vec_copy_n(names(inner), Rf_length(inner), out_names, count, 0);
 
     // Warn if outer names also present
     if (!(*warned) && has_name_at(outer, i)) {
@@ -30,8 +28,8 @@ void splice_names(SEXP outer, SEXP inner, SEXP out,
 
 // Atomic splicing ---------------------------------------------------
 
-splice_info_t& atm_splice_info_list(SEXPTYPE kind, SEXP x,
-                                    splice_info_t& info) {
+splice_info_t atm_splice_info_list(SEXPTYPE kind, SEXP x,
+                                   splice_info_t info) {
   R_len_t i = 0;
   SEXP cur;
 
@@ -52,6 +50,7 @@ splice_info_t& atm_splice_info_list(SEXPTYPE kind, SEXP x,
 
 splice_info_t atm_splice_info(SEXPTYPE kind, SEXP dots, bool bare) {
   splice_info_t info;
+  info.size = 0;
   info.named = is_character(names(dots));
 
   R_len_t i = 0;
@@ -88,7 +87,7 @@ R_len_t atm_splice_list(SEXP x, SEXP out, R_len_t count,
     cur = VECTOR_ELT(x, i);
     R_len_t n = Rf_length(cur);
 
-    vec_copy_coerce_n(cur, n, out, count);
+    vec_copy_coerce_n(cur, n, out, count, 0);
 
     if (named)
       splice_names(x, cur, out, i, count, warned);
@@ -118,7 +117,7 @@ SEXP atm_splice(SEXPTYPE kind, SEXP dots, bool bare) {
 
     if (is_atomic(cur)) {
       R_len_t n = Rf_length(cur);
-      vec_copy_coerce_n(cur, n, out, count);
+      vec_copy_coerce_n(cur, n, out, count, 0);
 
       if (info.named)
         splice_names(dots, cur, out, i, count, &warned);
@@ -143,6 +142,7 @@ SEXP atm_splice(SEXPTYPE kind, SEXP dots, bool bare) {
 
 splice_info_t list_splice_info(SEXP dots, bool bare) {
   splice_info_t info;
+  info.size = 0;
   info.named = is_character(names(dots));
 
   R_len_t i = 0;
@@ -183,7 +183,7 @@ SEXP list_splice(SEXP dots, bool bare) {
 
     if (is_list(cur) && (Rf_inherits(cur, "spliced") || (bare && !is_object(cur)))) {
       R_len_t n = Rf_length(cur);
-      vec_copy_n(cur, n, out, count);
+      vec_copy_n(cur, n, out, count, 0);
 
       if (info.named)
         splice_names(dots, cur, out, i, count, &warned);
@@ -210,7 +210,6 @@ SEXP list_splice(SEXP dots, bool bare) {
 
 // Export ------------------------------------------------------------
 
-extern "C"
 SEXP rlang_splice(SEXP dots, SEXP type, SEXP bare) {
   bool splice_bare = *(LOGICAL(bare));
   SEXPTYPE kind = Rf_str2type(CHAR(STRING_ELT(type, 0)));

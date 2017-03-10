@@ -3,10 +3,6 @@
 #include <R.h>
 #include <Rinternals.h>
 
-#ifdef __cplusplus
-extern "C" {
-#endif
-
 bool is_lazy_load(SEXP x);
 bool is_lang(SEXP x, const char* f);
 bool is_formula(SEXP x);
@@ -32,7 +28,3 @@ bool is_object(SEXP x);
 bool is_atomic(SEXP x);
 bool is_list(SEXP x);
 SEXP set_names(SEXP x, SEXP nms);
-
-#ifdef __cplusplus
-}
-#endif

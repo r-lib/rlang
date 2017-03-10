@@ -2,35 +2,12 @@
 #include <Rinternals.h>
 #include <stdbool.h>
 
-template <SEXPTYPE K> struct vec_traits { };
-template <> struct vec_traits<LGLSXP> { typedef int type; };
-template <> struct vec_traits<INTSXP> { typedef int type; };
-template <> struct vec_traits<REALSXP> { typedef double type ; };
-template <> struct vec_traits<CPLXSXP> { typedef Rcomplex type; };
-template <> struct vec_traits<RAWSXP> { typedef Rbyte type; };
-
-
-// FIXME: Typed return as soon as we switch to C++11 (need default
-// template parameter) so compiler can propagate type information
-template <SEXPTYPE Kind> inline
-void* vec_begin(SEXP x) {
-  Rf_error("Internal error: vec_begin() not implemented for this type");
-}
-
-template <> inline void* vec_begin<LGLSXP>(SEXP x) { return LOGICAL(x); }
-template <> inline void* vec_begin<INTSXP>(SEXP x) { return INTEGER(x); }
-template <> inline void* vec_begin<REALSXP>(SEXP x) { return REAL(x); }
-template <> inline void* vec_begin<CPLXSXP>(SEXP x) { return COMPLEX(x); }
-template <> inline void* vec_begin<RAWSXP>(SEXP x) { return RAW(x); }
-template <> inline void* vec_begin<STRSXP>(SEXP x) { return STRING_PTR(x); }
-template <> inline void* vec_begin<VECSXP>(SEXP x) { return VECTOR_PTR(x); }
-
 
 // Copy --------------------------------------------------------------
 
 void vec_copy_n(SEXP src, R_len_t n, SEXP dest,
-                R_len_t offset_dest = 0,
-                R_len_t offset_src = 0) {
+                R_len_t offset_dest,
+                R_len_t offset_src) {
   switch (TYPEOF(dest)) {
   case LGLSXP: {
     int* src_data = LOGICAL(src);
@@ -92,7 +69,9 @@ void vec_copy_n(SEXP src, R_len_t n, SEXP dest,
 // Coercion ----------------------------------------------------------
 
 SEXP namespace_rlang_sym(SEXP sym) {
-  static SEXP rlang_sym = Rf_install("rlang");
+  static SEXP rlang_sym = NULL;
+  if (!rlang_sym)
+    rlang_sym = Rf_install("rlang");
   return(Rf_lang3(R_DoubleColonSymbol, rlang_sym, sym));
 }
 
@@ -109,8 +88,8 @@ SEXP vec_coercer_sym(SEXP dest) {
 }
 
 void vec_copy_coerce_n(SEXP src, R_len_t n, SEXP dest,
-                       R_len_t offset_dest = 0,
-                       R_len_t offset_src = 0) {
+                       R_len_t offset_dest,
+                       R_len_t offset_src) {
   if (TYPEOF(src) != TYPEOF(dest)) {
     // FIXME: This callbacks to rlang R coercers with an extra copy.
     PROTECT_INDEX ipx;
