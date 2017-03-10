@@ -30,9 +30,6 @@
 #' cafe_latin1 <- string(c(0x63, 0x61, 0x66, 0xE9), "latin1")
 #' str_encoding(cafe_latin1)
 #' as_bytes(cafe_latin1)
-#'
-#' # chr() accepts lists and will apply string() to each element:
-#' chr(list(cafe, c(0x63, 0x61, 0x66, 0xE9)))
 string <- function(x, encoding = NULL) {
   if (is_integerish(x)) {
     x <- rawToChar(as.raw(x))
@@ -42,14 +39,6 @@ string <- function(x, encoding = NULL) {
     abort("`x` must be a string or raw vector")
   }
 
-  chr_set_encoding(x, encoding)
-}
-#' @rdname string
-#' @export
-chr <- function(x, encoding = NULL) {
-  if (!is_character(x)) {
-    x <- map_chr(x, string)
-  }
   chr_set_encoding(x, encoding)
 }
 

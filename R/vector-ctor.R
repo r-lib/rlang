@@ -1,3 +1,73 @@
+#' Construct new vectors.
+#'
+#' @param ... Components of the new vector. Bare lists and explicitly
+#'   spliced lists are spliced.
+#' @name vector-ctors
+NULL
+
+#' @useDynLib rlang rlang_splice
+#' @rdname vector-ctors
+#' @export
+lgl <- function(...) {
+  .Call(rlang_splice, list(...), "logical", bare = TRUE)
+}
+#' @rdname vector-ctors
+#' @export
+int <- function(...) {
+  .Call(rlang_splice, list(...), "integer", bare = TRUE)
+}
+#' @rdname vector-ctors
+#' @export
+dbl <- function(...) {
+  .Call(rlang_splice, list(...), "double", bare = TRUE)
+}
+#' @rdname vector-ctors
+#' @export
+cpl <- function(...) {
+  .Call(rlang_splice, list(...), "complex", bare = TRUE)
+}
+#' @rdname vector-ctors
+#' @export
+#' @param .encoding If non-null, passed to [chr_set_encoding()] to add
+#'   an encoding mark. This is only declarative, no encoding
+#'   conversion is performed.
+#' @export
+chr <- function(..., .encoding = NULL) {
+  out <- .Call(rlang_splice, list(...), "character", bare = TRUE)
+  chr_set_encoding(out, .encoding)
+}
+#' @rdname vector-ctors
+#' @export
+#' @examples
+#'
+#' # bytes() accepts integerish inputs
+#' bytes(1:10)
+#' bytes(0x01, 0xff, c(0x03, 0x05), list(10, 20, 30L))
+bytes <- function(...) {
+  dots <- map(list(...), function(dot) {
+    if (is_bare_list(dot) || is_spliced(dot)) {
+      map(dot, new_bytes)
+    } else {
+      new_bytes(dot)
+    }
+  })
+  .Call(rlang_splice, dots, "raw", bare = TRUE)
+}
+#' @rdname vector-ctors
+#' @param .bare Whether to splice bare lists. If `FALSE`, only lists
+#'   inheriting from `"spliced"` are spliced.
+#' @export
+splice <- function(..., .bare = TRUE) {
+  .Call(rlang_splice, list(...), "list", bare = .bare)
+}
+
+spliced <- function(x) {
+  structure(x, class = "spliced")
+}
+is_spliced <- function(x) {
+  inherits(x, "spliced")
+}
+
 #' Helper to create vectors with matching length.
 #'
 #' These functions take the idea of [seq_along()] and generalise it to
@@ -69,7 +139,7 @@ rep_along <- function(.x, .y, ..., .attrs = list()) {
 #' Create new vectors.
 #'
 #' These functions construct vectors of given length, with attributes
-#' specified via dots. Except for `new_lst()` and `new_raw()`, the
+#' specified via dots. Except for `list_len()` and `bytes_len()`, the
 #' empty vectors are filled with typed [missing] values. This is in
 #' contrast to the base function [base::vector()] which creates
 #' zero-filled vectors.
@@ -77,47 +147,47 @@ rep_along <- function(.x, .y, ..., .attrs = list()) {
 #' @inheritParams with_attributes
 #' @param .n The vector length.
 #' @examples
-#' new_lst(10)
+#' list_len(10)
 #'
 #' # Add attributes, including the S3 class:
-#' new_int(0, index = 1)
-#' new_dbl(10, class = "my_class")
+#' int_len(0, index = 1)
+#' dbl_len(10, class = "my_class")
 #' @name new-vectors
 #' @seealso along
 NULL
 
 #' @export
 #' @rdname new-vectors
-new_lgl <- function(.n = 0, ..., .attrs = list()) {
+lgl_len <- function(.n = 0, ..., .attrs = list()) {
   with_attributes(rep_len(na_lgl, .n), ..., .attrs = .attrs)
 }
 #' @export
 #' @rdname new-vectors
-new_int <- function(.n = 0, ..., .attrs = list()) {
+int_len <- function(.n = 0, ..., .attrs = list()) {
   with_attributes(rep_len(na_int, .n), ..., .attrs = .attrs)
 }
 #' @export
 #' @rdname new-vectors
-new_dbl <- function(.n = 0, ..., .attrs = list()) {
+dbl_len <- function(.n = 0, ..., .attrs = list()) {
   with_attributes(rep_len(na_dbl, .n), ..., .attrs = .attrs)
 }
 #' @export
 #' @rdname new-vectors
-new_chr <- function(.n = 0, ..., .attrs = list()) {
+chr_len <- function(.n = 0, ..., .attrs = list()) {
   with_attributes(rep_len(na_chr, .n), ..., .attrs = .attrs)
 }
 #' @export
 #' @rdname new-vectors
-new_lst <- function(.n = 0, ..., .attrs = list()) {
-  with_attributes(vector("list", .n), ..., .attrs = .attrs)
-}
-#' @export
-#' @rdname new-vectors
-new_cpl <- function(.n = 0, ..., .attrs = list()) {
+cpl_len <- function(.n = 0, ..., .attrs = list()) {
   with_attributes(rep_len(na_cpl, .n), ..., .attrs = .attrs)
 }
 #' @export
 #' @rdname new-vectors
-new_raw <- function(.n = 0, ..., .attrs = list()) {
+bytes_len <- function(.n = 0, ..., .attrs = list()) {
   with_attributes(vector("raw", .n), ..., .attrs = .attrs)
+}
+#' @export
+#' @rdname new-vectors
+list_len <- function(.n = 0, ..., .attrs = list()) {
+  with_attributes(vector("list", .n), ..., .attrs = .attrs)
 }

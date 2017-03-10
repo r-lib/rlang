@@ -2,28 +2,28 @@
 % Please edit documentation in R/vector-ctor.R
 \name{new-vectors}
 \alias{new-vectors}
-\alias{new_lgl}
-\alias{new_int}
-\alias{new_dbl}
-\alias{new_chr}
-\alias{new_lst}
-\alias{new_cpl}
-\alias{new_raw}
+\alias{lgl_len}
+\alias{int_len}
+\alias{dbl_len}
+\alias{chr_len}
+\alias{cpl_len}
+\alias{bytes_len}
+\alias{list_len}
 \title{Create new vectors.}
 \usage{
-new_lgl(.n = 0, ..., .attrs = list())
+lgl_len(.n = 0, ..., .attrs = list())
 
-new_int(.n = 0, ..., .attrs = list())
+int_len(.n = 0, ..., .attrs = list())
 
-new_dbl(.n = 0, ..., .attrs = list())
+dbl_len(.n = 0, ..., .attrs = list())
 
-new_chr(.n = 0, ..., .attrs = list())
+chr_len(.n = 0, ..., .attrs = list())
 
-new_lst(.n = 0, ..., .attrs = list())
+cpl_len(.n = 0, ..., .attrs = list())
 
-new_cpl(.n = 0, ..., .attrs = list())
+bytes_len(.n = 0, ..., .attrs = list())
 
-new_raw(.n = 0, ..., .attrs = list())
+list_len(.n = 0, ..., .attrs = list())
 }
 \arguments{
 \item{.n}{The vector length.}
@@ -34,17 +34,17 @@ new_raw(.n = 0, ..., .attrs = list())
 }
 \description{
 These functions construct vectors of given length, with attributes
-specified via dots. Except for \code{new_lst()} and \code{new_raw()}, the
+specified via dots. Except for \code{list_len()} and \code{bytes_len()}, the
 empty vectors are filled with typed \link{missing} values. This is in
 contrast to the base function \code{\link[base:vector]{base::vector()}} which creates
 zero-filled vectors.
 }
 \examples{
-new_lst(10)
+list_len(10)
 
 # Add attributes, including the S3 class:
-new_int(0, index = 1)
-new_dbl(10, class = "my_class")
+int_len(0, index = 1)
+dbl_len(10, class = "my_class")
 }
 \seealso{
 along

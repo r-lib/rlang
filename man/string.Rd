@@ -2,12 +2,9 @@
 % Please edit documentation in R/vector-chr.R
 \name{string}
 \alias{string}
-\alias{chr}
 \title{Construct a character vector or a string.}
 \usage{
 string(x, encoding = NULL)
-
-chr(x, encoding = NULL)
 }
 \arguments{
 \item{x}{A character vector or a vector or list of string-like
@@ -40,9 +37,6 @@ as_bytes(cafe)
 cafe_latin1 <- string(c(0x63, 0x61, 0x66, 0xE9), "latin1")
 str_encoding(cafe_latin1)
 as_bytes(cafe_latin1)
-
-# chr() accepts lists and will apply string() to each element:
-chr(list(cafe, c(0x63, 0x61, 0x66, 0xE9)))
 }
 \seealso{
 \code{chr_set_encoding()} for more information
