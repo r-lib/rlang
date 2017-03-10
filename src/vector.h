@@ -28,39 +28,63 @@ template <> inline void* vec_begin<VECSXP>(SEXP x) { return VECTOR_PTR(x); }
 
 // Copy --------------------------------------------------------------
 
-template <SEXPTYPE Kind> inline
 void vec_copy_n(SEXP src, R_len_t n, SEXP dest,
                 R_len_t offset_dest = 0,
                 R_len_t offset_src = 0) {
-  typedef typename vec_traits<Kind>::type T;
-
-  T* src_data = (T*) vec_begin<Kind>(src);
-  T* dest_data = (T*) vec_begin<Kind>(dest);
-
-  for (R_len_t i = 0; i != n; ++i) {
-    dest_data[i + offset_dest] = src_data[i + offset_src];
+  switch (TYPEOF(dest)) {
+  case LGLSXP: {
+    int* src_data = LOGICAL(src);
+    int* dest_data = LOGICAL(dest);
+    for (R_len_t i = 0; i != n; ++i)
+      dest_data[i + offset_dest] = src_data[i + offset_src];
+    break;
   }
-}
-
-template <> inline
-void vec_copy_n<STRSXP>(SEXP src, R_len_t n, SEXP dest,
-                        R_len_t offset_dest,
-                        R_len_t offset_src) {
-  SEXP elt;
-  for (R_len_t i = 0; i != n; ++i) {
-    elt = STRING_ELT(src, i + offset_src);
-    SET_STRING_ELT(dest, i + offset_dest, elt);
+  case INTSXP: {
+    int* src_data = INTEGER(src);
+    int* dest_data = INTEGER(dest);
+    for (R_len_t i = 0; i != n; ++i)
+      dest_data[i + offset_dest] = src_data[i + offset_src];
+    break;
   }
-}
-
-template <> inline
-void vec_copy_n<VECSXP>(SEXP src, R_len_t n, SEXP dest,
-                        R_len_t offset_dest,
-                        R_len_t offset_src) {
-  SEXP elt;
-  for (R_len_t i = 0; i != n; ++i) {
-    elt = VECTOR_ELT(src, i + offset_src);
-    SET_VECTOR_ELT(dest, i + offset_dest, elt);
+  case REALSXP: {
+    double* src_data = REAL(src);
+    double* dest_data = REAL(dest);
+    for (R_len_t i = 0; i != n; ++i)
+      dest_data[i + offset_dest] = src_data[i + offset_src];
+    break;
+  }
+  case CPLXSXP: {
+    Rcomplex* src_data = COMPLEX(src);
+    Rcomplex* dest_data = COMPLEX(dest);
+    for (R_len_t i = 0; i != n; ++i)
+      dest_data[i + offset_dest] = src_data[i + offset_src];
+    break;
+  }
+  case RAWSXP: {
+    Rbyte* src_data = RAW(src);
+    Rbyte* dest_data = RAW(dest);
+    for (R_len_t i = 0; i != n; ++i)
+      dest_data[i + offset_dest] = src_data[i + offset_src];
+    break;
+  }
+  case STRSXP: {
+    SEXP elt;
+    for (R_len_t i = 0; i != n; ++i) {
+      elt = STRING_ELT(src, i + offset_src);
+      SET_STRING_ELT(dest, i + offset_dest, elt);
+    }
+    break;
+  }
+  case VECSXP: {
+    SEXP elt;
+    for (R_len_t i = 0; i != n; ++i) {
+      elt = VECTOR_ELT(src, i + offset_src);
+      SET_VECTOR_ELT(dest, i + offset_dest, elt);
+    }
+    break;
+  }
+  default:
+    Rf_error("Copy requires vectors");
   }
 }
 
@@ -112,9 +136,9 @@ void vec_copy_coerce_n(SEXP src, R_len_t n, SEXP dest,
     PROTECT_WITH_INDEX(call = vec_coercer_sym<Kind>(), &ipx);
     REPROTECT(call = Rf_lang2(call, src), ipx);
     REPROTECT(coerced = Rf_eval(call, R_BaseEnv), ipx);
-    vec_copy_n<Kind>(coerced, n, dest, offset_dest, offset_src);
+    vec_copy_n(coerced, n, dest, offset_dest, offset_src);
     UNPROTECT(1);
   } else {
-    vec_copy_n<Kind>(src, n, dest, offset_dest, offset_src);
+    vec_copy_n(src, n, dest, offset_dest, offset_src);
   }
 }

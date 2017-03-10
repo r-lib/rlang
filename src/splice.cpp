@@ -15,7 +15,7 @@ void splice_names(SEXP outer, SEXP inner, SEXP out,
   SEXP out_names = names(out);
 
   if (is_character(names(inner))) {
-    vec_copy_n<STRSXP>(names(inner), Rf_length(inner), out_names, count);
+    vec_copy_n(names(inner), Rf_length(inner), out_names, count);
 
     // Warn if outer names also present
     if (!(*warned) && has_name_at(outer, i)) {
@@ -186,7 +186,7 @@ SEXP list_splice(SEXP dots, bool bare) {
 
     if (is_list(cur) && (Rf_inherits(cur, "spliced") || (bare && !is_object(cur)))) {
       R_len_t n = Rf_length(cur);
-      vec_copy_n<VECSXP>(cur, n, out, count);
+      vec_copy_n(cur, n, out, count);
 
       if (info.named)
         splice_names(dots, cur, out, i, count, &warned);
