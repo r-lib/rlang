@@ -80,22 +80,29 @@ void atm_splice_info(splice_info_t* info, SEXPTYPE kind, SEXP dots, bool bare) {
   }
 }
 
-R_len_t atm_splice_list(SEXP x, SEXP out, R_len_t count, bool named) {
+R_len_t atm_splice_list(SEXP outer, SEXP out, R_len_t count,
+                        bool named, bool recurse) {
   R_len_t i = 0;
-  R_len_t size = Rf_length(x);
-  SEXP cur;
+  SEXP x;
 
-  while (i != size) {
-    cur = VECTOR_ELT(x, i);
-    R_len_t n = Rf_length(cur);
+  while (i != Rf_length(outer)) {
+    x = VECTOR_ELT(outer, i);
 
-    vec_copy_coerce_n(cur, n, out, count, 0);
+    if (is_atomic(x)) {
+      R_len_t n = Rf_length(x);
+      vec_copy_coerce_n(x, n, out, count, 0);
 
-    if (named)
-      splice_names(x, cur, out, i, count);
+      if (named)
+        splice_names(outer, x, out, i, count);
 
-    count += n;
-    i++;
+      count += n;
+    } else if (is_list(x) && recurse) {
+      count = atm_splice_list(x, out, count, named, false);
+    } else {
+      Rf_error("Internal error");
+    }
+
+    ++i;
   }
 
   return count;
@@ -112,27 +119,7 @@ SEXP atm_splice(SEXPTYPE kind, SEXP dots, bool bare) {
   if (info.named)
     set_names(out, Rf_allocVector(STRSXP, info.size));
 
-  R_len_t i = 0;
-  R_len_t count = 0;
-  SEXP cur;
-
-  while (count != info.size) {
-    cur = VECTOR_ELT(dots, i);
-
-    if (is_atomic(cur)) {
-      R_len_t n = Rf_length(cur);
-      vec_copy_coerce_n(cur, n, out, count, 0);
-
-      if (info.named)
-        splice_names(dots, cur, out, i, count);
-
-      count += n;
-    } else if (is_list(cur)) {
-      count = atm_splice_list(cur, out, count, info.named);
-    }
-
-    ++i;
-  }
+  atm_splice_list(dots, out, 0, info.named, true);
 
   UNPROTECT(1);
   return out;
