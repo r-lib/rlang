@@ -59,18 +59,16 @@ test_that("splicing uses outer names when scalar", {
   expect_identical(lgl(list(a = TRUE, b = FALSE)), c(a = TRUE, b = FALSE))
 })
 
-test_that("when outer names conflict with inner names, use the latter and warn", {
-  expect_warning(regexp = "Conflicting",
-    expect_identical(lgl(a = c(A = TRUE), b = c(B = FALSE)), c(A = TRUE, B = FALSE))
-  )
-  expect_warning(regexp = "Conflicting",
-    expect_identical(lgl(list(a = c(A = TRUE), b = c(B = FALSE))), c(A = TRUE, B = FALSE))
-  )
+test_that("warn when outer names unless input is unnamed scalar atomic", {
+  expect_warning(expect_identical(dbl(a = c(1, 2)), c(1, 2)), "Outer names")
+  expect_warning(expect_identical(dbl(list(a = c(1, 2))), c(1, 2)), "Outer names")
+  expect_warning(expect_identical(dbl(a = c(A = 1)), c(A = 1)), "Outer names")
+  expect_warning(expect_identical(dbl(list(a = c(A = 1))), c(A = 1)), "Outer names")
 })
 
 test_that("warn when spliced lists have outer name", {
-  expect_warning(lgl(C = list(c = FALSE)), "Outer names of spliced list")
-  expect_warning(lgl(C = list(FALSE)), "Outer names of spliced list")
+  expect_warning(lgl(C = list(c = FALSE)), "Outer names")
+  expect_warning(lgl(C = list(FALSE)), "Outer names")
 })
 
 test_that("splice() splices names", {

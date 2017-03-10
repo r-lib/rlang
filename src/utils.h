@@ -28,3 +28,4 @@ bool is_object(SEXP x);
 bool is_atomic(SEXP x);
 bool is_list(SEXP x);
 SEXP set_names(SEXP x, SEXP nms);
+bool is_scalar_atomic(SEXP x);

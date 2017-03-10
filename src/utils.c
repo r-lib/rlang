@@ -38,6 +38,9 @@ bool is_atomic(SEXP x) {
     return false;
   }
 }
+bool is_scalar_atomic(SEXP x) {
+  return Rf_length(x) == 1 && is_atomic(x);
+}
 bool is_list(SEXP x) {
   return TYPEOF(x) == VECSXP;
 }

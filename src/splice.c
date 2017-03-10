@@ -5,21 +5,16 @@
 typedef struct {
   R_len_t size;
   bool named;
+  bool warned;
 } splice_info_t;
 
 void splice_names(SEXP outer, SEXP inner, SEXP out,
-                  R_len_t i, R_len_t count,
-                  bool* warned) {
+                  R_len_t i, R_len_t count) {
   SEXP out_names = names(out);
 
   if (is_character(names(inner))) {
     vec_copy_n(names(inner), Rf_length(inner), out_names, count, 0);
 
-    // Warn if outer names also present
-    if (!(*warned) && has_name_at(outer, i)) {
-      Rf_warning("Conflicting outer and inner names while splicing");
-      *warned = true;
-    }
   } else if (Rf_length(inner) == 1 && has_name_at(outer, i)) {
     SET_STRING_ELT(out_names, count, STRING_ELT(names(outer), i));
   }
@@ -28,37 +23,47 @@ void splice_names(SEXP outer, SEXP inner, SEXP out,
 
 // Atomic splicing ---------------------------------------------------
 
-splice_info_t atm_splice_info_list(SEXPTYPE kind, SEXP x,
-                                   splice_info_t info) {
-  R_len_t i = 0;
-  SEXP cur;
-
-  while (i != Rf_length(x)) {
-    cur = VECTOR_ELT(x, i);
-    info.named = info.named || is_character(names(cur));
-
-    if (is_atomic(cur))
-      info.size += Rf_length(cur);
-    else
-      Rf_error("Cannot splice a `%s` within a `%s`",
-               Rf_type2str(TYPEOF(cur)), Rf_type2str(kind));
-    i++;
+void atm_splice_check_names(splice_info_t* info, SEXP inner, SEXP outer, R_len_t i) {
+  if (has_name_at(outer, i)) {
+    if (is_scalar_atomic(inner)) {
+      info->named = true;
+      if (!info->warned && is_character(names(inner))) {
+        Rf_warning("Outer names are only allowed for unnamed scalar atomic inputs");
+        info->warned = true;
+      }
+    } else if (!info->warned) {
+      Rf_warning("Outer names are only allowed for unnamed scalar atomic inputs");
+      info->warned = true;
+    }
   }
-
-  return info;
+  if (is_atomic(inner) && is_character(names(inner)))
+    info->named = true;
 }
 
-splice_info_t atm_splice_info(SEXPTYPE kind, SEXP dots, bool bare) {
-  splice_info_t info;
-  info.size = 0;
-  info.named = is_character(names(dots));
+void atm_splice_info_list(splice_info_t* info, SEXPTYPE kind, SEXP outer) {
+  R_len_t i = 0;
+  SEXP inner;
 
+  while (i != Rf_length(outer)) {
+    inner = VECTOR_ELT(outer, i);
+    atm_splice_check_names(info, inner, outer, i);
+
+    if (is_atomic(inner))
+      info->size += Rf_length(inner);
+    else
+      Rf_error("Cannot splice a `%s` within a `%s`",
+               Rf_type2str(TYPEOF(inner)), Rf_type2str(kind));
+    i++;
+  }
+}
+
+void atm_splice_info(splice_info_t* info, SEXPTYPE kind, SEXP dots, bool bare) {
   R_len_t i = 0;
   SEXP cur;
 
   while (i != Rf_length(dots)) {
     cur = VECTOR_ELT(dots, i);
-    info.named = info.named || is_character(names(cur));
+    atm_splice_check_names(info, cur, dots, i);
 
     if (is_list(cur)) {
       bool is_spliced = Rf_inherits(cur, "spliced");
@@ -66,19 +71,16 @@ splice_info_t atm_splice_info(SEXPTYPE kind, SEXP dots, bool bare) {
         Rf_error("Bare lists cannot be spliced");
       if (is_object(cur) && !is_spliced)
         Rf_error("Objects cannot be spliced");
-      info = atm_splice_info_list(kind, cur, info);
+      atm_splice_info_list(info, kind, cur);
     } else {
-      info.size += Rf_length(cur);
+      info->size += Rf_length(cur);
     }
 
     ++i;
   }
-
-  return info;
 }
 
-R_len_t atm_splice_list(SEXP x, SEXP out, R_len_t count,
-                        bool named, bool* warned) {
+R_len_t atm_splice_list(SEXP x, SEXP out, R_len_t count, bool named) {
   R_len_t i = 0;
   R_len_t size = Rf_length(x);
   SEXP cur;
@@ -90,7 +92,7 @@ R_len_t atm_splice_list(SEXP x, SEXP out, R_len_t count,
     vec_copy_coerce_n(cur, n, out, count, 0);
 
     if (named)
-      splice_names(x, cur, out, i, count, warned);
+      splice_names(x, cur, out, i, count);
 
     count += n;
     i++;
@@ -100,14 +102,16 @@ R_len_t atm_splice_list(SEXP x, SEXP out, R_len_t count,
 }
 
 SEXP atm_splice(SEXPTYPE kind, SEXP dots, bool bare) {
-  splice_info_t info = atm_splice_info(kind, dots, bare);
+  splice_info_t info;
+  info.size = 0;
+  info.named = false;
+  info.warned = false;
+  atm_splice_info(&info, kind, dots, bare);
+
   SEXP out = PROTECT(Rf_allocVector(kind, info.size));
-
-  if (info.named) {
+  if (info.named)
     set_names(out, Rf_allocVector(STRSXP, info.size));
-  }
 
-  bool warned = false;
   R_len_t i = 0;
   R_len_t count = 0;
   SEXP cur;
@@ -120,14 +124,11 @@ SEXP atm_splice(SEXPTYPE kind, SEXP dots, bool bare) {
       vec_copy_coerce_n(cur, n, out, count, 0);
 
       if (info.named)
-        splice_names(dots, cur, out, i, count, &warned);
+        splice_names(dots, cur, out, i, count);
 
       count += n;
     } else if (is_list(cur)) {
-      // Lists are valid since already checked during first pass
-      if (info.named && !warned && has_name_at(dots, i))
-        Rf_warning("Outer names of spliced lists are ignored");
-      count = atm_splice_list(cur, out, count, info.named, &warned);
+      count = atm_splice_list(cur, out, count, info.named);
     }
 
     ++i;
@@ -173,7 +174,6 @@ SEXP list_splice(SEXP dots, bool bare) {
   }
   SEXP out_names = names(out);
 
-  bool warned = false;
   R_len_t i = 0;
   R_len_t count = 0;
   SEXP cur;
@@ -186,7 +186,7 @@ SEXP list_splice(SEXP dots, bool bare) {
       vec_copy_n(cur, n, out, count, 0);
 
       if (info.named)
-        splice_names(dots, cur, out, i, count, &warned);
+        splice_names(dots, cur, out, i, count);
 
       count += n;
     } else {
