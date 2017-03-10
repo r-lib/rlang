@@ -1,32 +1,66 @@
 #' Construct new vectors.
 #'
+#' These vector constructors are equivalent to [c()] but with explicit
+#' output types. Implicit coercions (e.g. from integer to logical)
+#' follow the rules described in [vector-coercion]. If you supply
+#' [bare lists][is_bare_list] or explicitly spliced lists, their
+#' contents are spliced into the output vectors.
+#'
 #' @param ... Components of the new vector. Bare lists and explicitly
 #'   spliced lists are spliced.
-#' @name vector-ctors
+#' @name vector-construction
+#' @examples
+#' # These constructors are like a typed version of c():
+#' c(TRUE, FALSE)
+#' lgl(TRUE, FALSE)
+#'
+#' # They follow a restricted set of coercion rules:
+#' int(TRUE, FALSE, 20)
+#'
+#' # Lists can be spliced:
+#' dbl(10, list(1, 2L), TRUE)
+#'
+#'
+#' # They splice names a bit differently than c(). The latter
+#' # automatically composes inner and outer names:
+#' c(a = c(A = 10), b = c(B = 20, C = 30))
+#'
+#' # On the other hand, rlang's ctors use the inner names and issue a
+#' # warning to inform the user that the outer names are ignored:
+#' dbl(a = c(A = 10), b = c(B = 20, C = 30))
+#' dbl(a = c(1, 2))
+#'
+#' # As an exception, it is allowed to provide an outer name when the
+#' # inner vector is an unnamed scalar atomic:
+#' dbl(a = 1)
+#'
+#' # Spliced lists behave the same way:
+#' dbl(list(a = 1))
+#' dbl(list(a = c(A = 1)))
 NULL
 
 #' @useDynLib rlang rlang_splice
-#' @rdname vector-ctors
+#' @rdname vector-construction
 #' @export
 lgl <- function(...) {
   .Call(rlang_splice, list(...), "logical", bare = TRUE)
 }
-#' @rdname vector-ctors
+#' @rdname vector-construction
 #' @export
 int <- function(...) {
   .Call(rlang_splice, list(...), "integer", bare = TRUE)
 }
-#' @rdname vector-ctors
+#' @rdname vector-construction
 #' @export
 dbl <- function(...) {
   .Call(rlang_splice, list(...), "double", bare = TRUE)
 }
-#' @rdname vector-ctors
+#' @rdname vector-construction
 #' @export
 cpl <- function(...) {
   .Call(rlang_splice, list(...), "complex", bare = TRUE)
 }
-#' @rdname vector-ctors
+#' @rdname vector-construction
 #' @export
 #' @param .encoding If non-null, passed to [chr_set_encoding()] to add
 #'   an encoding mark. This is only declarative, no encoding
@@ -36,7 +70,7 @@ chr <- function(..., .encoding = NULL) {
   out <- .Call(rlang_splice, list(...), "character", bare = TRUE)
   chr_set_encoding(out, .encoding)
 }
-#' @rdname vector-ctors
+#' @rdname vector-construction
 #' @export
 #' @examples
 #'
@@ -53,7 +87,7 @@ bytes <- function(...) {
   })
   .Call(rlang_splice, dots, "raw", bare = TRUE)
 }
-#' @rdname vector-ctors
+#' @rdname vector-construction
 #' @param .bare Whether to splice bare lists. If `FALSE`, only lists
 #'   inheriting from `"spliced"` are spliced.
 #' @export
