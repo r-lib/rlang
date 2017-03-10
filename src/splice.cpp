@@ -3,10 +3,6 @@
 using namespace rlang;
 
 
-
-namespace rlang {
-
-
 struct splice_info_t {
   r::size_t size;
   bool named;
@@ -35,10 +31,8 @@ void splice_names(sexp* outer, sexp* inner, sexp* out,
 
 
 
-namespace atm {
-
 template <sexp_e Kind>
-splice_info_t& splice_info_list(sexp* x, splice_info_t& info) {
+splice_info_t& atm_splice_info_list(sexp* x, splice_info_t& info) {
   r::size_t i = 0;
   sexp* cur;
 
@@ -57,7 +51,7 @@ splice_info_t& splice_info_list(sexp* x, splice_info_t& info) {
 }
 
 template <sexp_e Kind>
-splice_info_t splice_info(sexp* dots, bool bare) {
+splice_info_t atm_splice_info(sexp* dots, bool bare) {
   splice_info_t info;
   info.named = sxp::is_character(vec::names(dots));
 
@@ -79,7 +73,7 @@ splice_info_t splice_info(sexp* dots, bool bare) {
         r::abort("Bare lists cannot be spliced");
       if (sxp::is_object(cur) && !is_spliced)
         r::abort("Objects cannot be spliced");
-      info = splice_info_list<Kind>(cur, info);
+      info = atm_splice_info_list<Kind>(cur, info);
       break;
     }
     default:
@@ -93,8 +87,8 @@ splice_info_t splice_info(sexp* dots, bool bare) {
 }
 
 template <sexp_e Kind>
-r::size_t splice_list(sexp* x, sexp* out, r::size_t count,
-                      bool named, bool* warned) {
+r::size_t atm_splice_list(sexp* x, sexp* out, r::size_t count,
+                          bool named, bool* warned) {
   r::size_t i = 0;
   r::size_t size = sxp::length(x);
   sexp* cur;
@@ -118,8 +112,8 @@ r::size_t splice_list(sexp* x, sexp* out, r::size_t count,
 }
 
 template <sexp_e Kind>
-sexp* splice(sexp* dots, bool bare) {
-  splice_info_t info = splice_info<Kind>(dots, bare);
+sexp* atm_splice(sexp* dots, bool bare) {
+  splice_info_t info = atm_splice_info<Kind>(dots, bare);
   sexp* out = PROTECT(vec::alloc(Kind, info.size));
 
   if (info.named) {
@@ -147,7 +141,7 @@ sexp* splice(sexp* dots, bool bare) {
     }
     case r::list_t: {
       // Lists are valid since already checked during first pass
-      count = splice_list<Kind>(cur, out, count, info.named, &warned);
+      count = atm_splice_list<Kind>(cur, out, count, info.named, &warned);
       break;
     }
     default:
@@ -161,12 +155,8 @@ sexp* splice(sexp* dots, bool bare) {
   return out;
 }
 
-} // namespace atm
 
-
-namespace list {
-
-splice_info_t splice_info(sexp* dots, bool bare) {
+splice_info_t list_splice_info(sexp* dots, bool bare) {
   splice_info_t info;
   info.named = sxp::is_character(vec::names(dots));
 
@@ -197,8 +187,8 @@ splice_info_t splice_info(sexp* dots, bool bare) {
   return info;
 }
 
-sexp* splice(sexp* dots, bool bare) {
-  splice_info_t info = splice_info(dots, bare);
+sexp* list_splice(sexp* dots, bool bare) {
+  splice_info_t info = list_splice_info(dots, bare);
   sexp* out = PROTECT(vec::alloc(r::list_t, info.size));
 
   if (info.named) {
@@ -244,26 +234,30 @@ sexp* splice(sexp* dots, bool bare) {
   return out;
 }
 
-} // namespace list
-} // namespace rlang
-
 
 // Export ------------------------------------------------------------
 
 extern "C"
 sexp* rlang_splice(sexp* dots, sexp* type, sexp* bare) {
-  bool splice_bare = lgl::as_bool(bare);
+  bool splice_bare = *(LOGICAL(bare));
 
-  switch (sxp::kind(chr::as_c_string(type))) {
-  case r::logical_t: return atm::splice<r::logical_t>(dots, splice_bare);
-  case r::integer_t: return atm::splice<r::integer_t>(dots, splice_bare);
-  case r::double_t: return atm::splice<r::double_t>(dots, splice_bare);
-  case r::complex_t: return atm::splice<r::complex_t>(dots, splice_bare);
-  case r::character_t: return atm::splice<r::character_t>(dots, splice_bare);
-  case r::bytes_t: return atm::splice<r::bytes_t>(dots, splice_bare);
-  case r::list_t: return list::splice(dots, splice_bare);
+  switch (Rf_str2type(CHAR(STRING_ELT(type, 0)))) {
+  case LGLSXP:
+    return atm_splice<LGLSXP>(dots, splice_bare);
+  case INTSXP:
+    return atm_splice<INTSXP>(dots, splice_bare);
+  case REALSXP:
+    return atm_splice<REALSXP>(dots, splice_bare);
+  case CPLXSXP:
+    return atm_splice<CPLXSXP>(dots, splice_bare);
+  case STRSXP:
+    return atm_splice<STRSXP>(dots, splice_bare);
+  case RAWSXP:
+    return atm_splice<RAWSXP>(dots, splice_bare);
+  case VECSXP:
+    return list_splice(dots, splice_bare);
   default:
-    r::abort("Splicing is not implemented for this type");
-    return r::null;
+    Rf_error("Splicing is not implemented for this type");
+    return R_NilValue;
   }
 }
