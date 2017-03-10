@@ -1,9 +1,33 @@
-#' Extract dots
+#' Extract dots forwarded as arguments.
 #'
-#' `frame_dots()` extracts dots from a frame and `dots()` extracts
-#' dots from its arguments. The `_node()` versions return a pairlist
-#' that is ready to be spliced into a call, while the regular versions
-#' return a regular list that is usually easier to work with.
+#' These functions return the arguments forwarded through `...`.
+#' Contrarily to [dots_list()] and [dots_splice()], `dots_exprs()` and
+#' `dots_node()` do not evaluate the arguments. The former returns a
+#' list of expressions while the latter returns a [pairlist].
+#'
+#' @param ... Arguments to extract.
+#' @seealso [frame_dots()]
+#' @export
+dots_exprs <- function(...) {
+  expr_eval(substitute(alist(...)))
+}
+#' @rdname dots_exprs
+#' @export
+dots_node <- function(...) {
+  dots <- node_cdr(substitute(alist(...)))
+  if (is_symbolic(dots)) {
+    NULL
+  } else {
+    dots
+  }
+}
+
+#' Extract dots from a frame.
+#'
+#' These functions extract dots from a frame environment on the
+#' [evaluation stack][eval_stack]. The `_node()` version return a
+#' pairlist that is ready to be spliced into a call, while the regular
+#' version return a regular list that is usually easier to work with.
 #'
 #' `frame_dots()` and `frame_dots_node()` never fail, even if the
 #' frame does not contain dots. Instead they return an empty list or
@@ -28,24 +52,7 @@ frame_dots_node <- function(frame = NULL) {
   env <- get_env(frame)
 
   dots <- node_cdr(substitute(alist(...), env))
-  if (is.language(dots)) {
-    NULL
-  } else {
-    dots
-  }
-}
-
-#' @rdname frame_dots
-#' @export
-dots_exprs <- function(...) {
-  expr_eval(substitute(alist(...)))
-}
-
-#' @rdname frame_dots
-#' @export
-dots_node <- function(...) {
-  dots <- node_cdr(substitute(alist(...)))
-  if (is.language(dots)) {
+  if (is_symbolic(dots)) {
     NULL
   } else {
     dots

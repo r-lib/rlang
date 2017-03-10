@@ -3,17 +3,11 @@
 \name{frame_dots}
 \alias{frame_dots}
 \alias{frame_dots_node}
-\alias{dots_exprs}
-\alias{dots_node}
-\title{Extract dots}
+\title{Extract dots from a frame.}
 \usage{
 frame_dots(frame = NULL)
 
 frame_dots_node(frame = NULL)
-
-dots_exprs(...)
-
-dots_node(...)
 }
 \arguments{
 \item{frame}{The environment from which the dots should be
@@ -25,10 +19,10 @@ frame is used.}
 direct arguments.}
 }
 \description{
-\code{frame_dots()} extracts dots from a frame and \code{dots()} extracts
-dots from its arguments. The \code{_node()} versions return a pairlist
-that is ready to be spliced into a call, while the regular versions
-return a regular list that is usually easier to work with.
+These functions extract dots from a frame environment on the
+\link[=eval_stack]{evaluation stack}. The \code{_node()} version return a
+pairlist that is ready to be spliced into a call, while the regular
+version return a regular list that is usually easier to work with.
 }
 \details{
 \code{frame_dots()} and \code{frame_dots_node()} never fail, even if the
