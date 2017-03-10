@@ -90,7 +90,7 @@ R_len_t atm_splice_list(SEXP x, SEXP out, R_len_t count,
     cur = VECTOR_ELT(x, i);
     R_len_t n = Rf_length(cur);
 
-    vec_copy_coerce_n<Kind>(cur, n, out, count);
+    vec_copy_coerce_n(cur, n, out, count);
 
     if (named)
       splice_names(x, cur, out, i, count, warned);
@@ -121,7 +121,7 @@ SEXP atm_splice(SEXP dots, bool bare) {
 
     if (is_atomic(cur)) {
       R_len_t n = Rf_length(cur);
-      vec_copy_coerce_n<Kind>(cur, n, out, count);
+      vec_copy_coerce_n(cur, n, out, count);
 
       if (info.named)
         splice_names(dots, cur, out, i, count, &warned);

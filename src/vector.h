@@ -96,44 +96,26 @@ SEXP namespace_rlang_sym(SEXP sym) {
   return(Rf_lang3(R_DoubleColonSymbol, rlang_sym, sym));
 }
 
-template <SEXPTYPE Kind>
-SEXP vec_coercer_sym(void) {
-  Rf_error("No coercion implemented for `%s`", Rf_type2str(Kind));
-}
-template <> SEXP vec_coercer_sym<LGLSXP>() {
-  static SEXP sym = Rf_install("as_logical");
-  return namespace_rlang_sym(sym);
-}
-template <> SEXP vec_coercer_sym<INTSXP>() {
-  static SEXP sym = Rf_install("as_integer");
-  return namespace_rlang_sym(sym);
-}
-template <> SEXP vec_coercer_sym<REALSXP>() {
-  static SEXP sym = Rf_install("as_double");
-  return namespace_rlang_sym(sym);
-}
-template <> SEXP vec_coercer_sym<CPLXSXP>() {
-  static SEXP sym = Rf_install("as_complex");
-  return namespace_rlang_sym(sym);
-}
-template <> SEXP vec_coercer_sym<STRSXP>() {
-  static SEXP sym = Rf_install("as_character");
-  return namespace_rlang_sym(sym);
-}
-template <> SEXP vec_coercer_sym<RAWSXP>() {
-  static SEXP sym = Rf_install("as_bytes");
-  return namespace_rlang_sym(sym);
+SEXP vec_coercer_sym(SEXP dest) {
+  switch(TYPEOF(dest)) {
+  case LGLSXP: return namespace_rlang_sym(Rf_install("as_logical"));
+  case INTSXP: return namespace_rlang_sym(Rf_install("as_integer"));
+  case REALSXP: return namespace_rlang_sym(Rf_install("as_double"));
+  case CPLXSXP: return namespace_rlang_sym(Rf_install("as_complex"));
+  case STRSXP: return namespace_rlang_sym(Rf_install("as_character"));
+  case RAWSXP: return namespace_rlang_sym(Rf_install("as_bytes"));
+  default: Rf_error("No coercion implemented for `%s`", Rf_type2str(TYPEOF(dest)));
+  }
 }
 
-template <SEXPTYPE Kind>
 void vec_copy_coerce_n(SEXP src, R_len_t n, SEXP dest,
                        R_len_t offset_dest = 0,
                        R_len_t offset_src = 0) {
-  if (TYPEOF(src) != Kind) {
+  if (TYPEOF(src) != TYPEOF(dest)) {
     // FIXME: This callbacks to rlang R coercers with an extra copy.
     PROTECT_INDEX ipx;
     SEXP call, coerced;
-    PROTECT_WITH_INDEX(call = vec_coercer_sym<Kind>(), &ipx);
+    PROTECT_WITH_INDEX(call = vec_coercer_sym(dest), &ipx);
     REPROTECT(call = Rf_lang2(call, src), ipx);
     REPROTECT(coerced = Rf_eval(call, R_BaseEnv), ipx);
     vec_copy_n(coerced, n, dest, offset_dest, offset_src);
