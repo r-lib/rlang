@@ -120,7 +120,7 @@ splice <- function(..., .bare = TRUE) {
 #'
 #' This adjective signals to functions taking dots that `x` should be
 #' spliced in a surrounding vector. Examples of functions that support
-#' splicing are [spliced()], [chr()], etc.
+#' such explicit splicing are [splice()], [chr()], etc.
 #'
 #' @param x A list to splice.
 #' @seealso [splice()], [vector-construction]

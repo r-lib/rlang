@@ -15,7 +15,7 @@ is_spliced(x)
 \description{
 This adjective signals to functions taking dots that \code{x} should be
 spliced in a surrounding vector. Examples of functions that support
-splicing are \code{\link[=spliced]{spliced()}}, \code{\link[=chr]{chr()}}, etc.
+such explicit splicing are \code{\link[=splice]{splice()}}, \code{\link[=chr]{chr()}}, etc.
 }
 \seealso{
 \code{\link[=splice]{splice()}}, \link{vector-construction}
