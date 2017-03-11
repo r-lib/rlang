@@ -205,3 +205,7 @@ const char* kind_c_str(SEXPTYPE kind) {
   SEXP str = Rf_type2str(kind);
   return CHAR(str);
 }
+
+bool is_empty(SEXP x) {
+  return Rf_length(x) == 0;
+}

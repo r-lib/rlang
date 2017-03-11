@@ -18,11 +18,11 @@ void atom_splice_check_names(splice_info_t* info, SEXP inner, SEXP outer, R_len_
   if (has_name_at(outer, i)) {
     if (is_scalar_atomic(inner)) {
       info->named = true;
-      if (!info->warned && is_character(names(inner))) {
+      if (!info->warned && is_character(names(inner)) && !is_empty(inner)) {
         splice_warn_names();
         info->warned = true;
       }
-    } else if (!info->warned) {
+    } else if (!info->warned && !is_empty(inner)) {
       splice_warn_names();
       info->warned = true;
     }
@@ -41,7 +41,7 @@ void atom_splice_info_list(splice_info_t* info, SEXPTYPE kind, SEXP outer) {
 
     if (is_atomic(inner)) {
       info->size += Rf_length(inner);
-    } else {
+    } else if (inner != R_NilValue) {
       Rf_error("Cannot splice objects of type `%s` within a `%s`",
                kind_c_str(TYPEOF(inner)), kind_c_str(kind));
     }
@@ -96,7 +96,7 @@ R_len_t atom_splice_list(SEXP outer, SEXP out, R_len_t count,
       count += n;
     } else if (is_list(x) && recurse) {
       count = atom_splice_list(x, out, count, named, false);
-    } else {
+    } else if (x != R_NilValue) {
       Rf_error("Cannot splice objects of type `%s` within a `%s`",
                kind_c_str(TYPEOF(x)), kind_c_str(TYPEOF(outer)));
     }

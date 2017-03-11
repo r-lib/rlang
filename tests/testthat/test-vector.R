@@ -112,4 +112,5 @@ test_that("type errors are handled", {
 
 test_that("empty inputs are spliced", {
   expect_identical(lgl(NULL, lgl(), list(NULL, lgl())), lgl())
+  expect_warning(regexp = NA, expect_identical(lgl(a = NULL, a = lgl(), list(a = NULL, a = lgl())), lgl()))
 })
