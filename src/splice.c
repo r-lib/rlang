@@ -39,11 +39,12 @@ void atom_splice_info_list(splice_info_t* info, SEXPTYPE kind, SEXP outer) {
     inner = VECTOR_ELT(outer, i);
     atom_splice_check_names(info, inner, outer, i);
 
-    if (is_atomic(inner))
+    if (is_atomic(inner)) {
       info->size += Rf_length(inner);
-    else
-      Rf_error("Cannot splice a `%s` within a `%s`",
-               Rf_type2str(TYPEOF(inner)), Rf_type2str(kind));
+    } else {
+      Rf_error("Cannot splice objects of type `%s` within a `%s`",
+               kind_c_str(TYPEOF(inner)), kind_c_str(kind));
+    }
     i++;
   }
 }
@@ -96,7 +97,8 @@ R_len_t atom_splice_list(SEXP outer, SEXP out, R_len_t count,
     } else if (is_list(x) && recurse) {
       count = atom_splice_list(x, out, count, named, false);
     } else {
-      Rf_error("Internal error");
+      Rf_error("Cannot splice objects of type `%s` within a `%s`",
+               kind_c_str(TYPEOF(x)), kind_c_str(TYPEOF(outer)));
     }
 
     ++i;
