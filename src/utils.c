@@ -44,6 +44,23 @@ bool is_scalar_atomic(SEXP x) {
 bool is_list(SEXP x) {
   return TYPEOF(x) == VECSXP;
 }
+bool is_vector(SEXP x) {
+  switch(TYPEOF(x)) {
+  case LGLSXP:
+  case INTSXP:
+  case REALSXP:
+  case CPLXSXP:
+  case STRSXP:
+  case RAWSXP:
+  case VECSXP:
+    return true;
+  default:
+    return false;
+  }
+}
+bool is_null(SEXP x) {
+  return x == R_NilValue;
+}
 
 int is_sym(SEXP x, const char* string) {
   if (TYPEOF(x) != SYMSXP)
