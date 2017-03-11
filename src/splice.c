@@ -33,17 +33,17 @@ void atom_splice_check_names(splice_info_t* info, SEXP inner, SEXP outer, R_len_
 
 void atom_splice_info_list(splice_info_t* info, SEXPTYPE kind, SEXP outer) {
   R_len_t i = 0;
-  SEXP inner;
+  SEXP x;
 
   while (i != Rf_length(outer)) {
-    inner = VECTOR_ELT(outer, i);
-    atom_splice_check_names(info, inner, outer, i);
+    x = VECTOR_ELT(outer, i);
+    atom_splice_check_names(info, x, outer, i);
 
-    if (is_atomic(inner)) {
-      info->size += Rf_length(inner);
-    } else if (inner != R_NilValue) {
+    if (is_atomic(x)) {
+      info->size += Rf_length(x);
+    } else if (x != R_NilValue) {
       Rf_error("Cannot splice objects of type `%s` within a `%s`",
-               kind_c_str(TYPEOF(inner)), kind_c_str(kind));
+               kind_c_str(TYPEOF(x)), kind_c_str(kind));
     }
     i++;
   }
@@ -52,21 +52,21 @@ void atom_splice_info_list(splice_info_t* info, SEXPTYPE kind, SEXP outer) {
 void atom_splice_info(splice_info_t* info, SEXPTYPE kind,
                       SEXP dots, bool bare) {
   R_len_t i = 0;
-  SEXP cur;
+  SEXP x;
 
   while (i != Rf_length(dots)) {
-    cur = VECTOR_ELT(dots, i);
-    atom_splice_check_names(info, cur, dots, i);
+    x = VECTOR_ELT(dots, i);
+    atom_splice_check_names(info, x, dots, i);
 
-    if (is_list(cur)) {
-      bool is_spliced = Rf_inherits(cur, "spliced");
+    if (is_list(x)) {
+      bool is_spliced = Rf_inherits(x, "spliced");
       if (!bare && !is_spliced)
         Rf_error("Bare lists cannot be spliced");
-      if (is_object(cur) && !is_spliced)
+      if (is_object(x) && !is_spliced)
         Rf_error("Objects cannot be spliced");
-      atom_splice_info_list(info, kind, cur);
+      atom_splice_info_list(info, kind, x);
     } else {
-      info->size += Rf_length(cur);
+      info->size += Rf_length(x);
     }
 
     ++i;
@@ -134,14 +134,14 @@ splice_info_t list_splice_info(SEXP dots, bool bare) {
   info.warned = false;
 
   R_len_t i = 0;
-  SEXP cur;
+  SEXP x;
 
   while (i != Rf_length(dots)) {
-    cur = VECTOR_ELT(dots, i);
+    x = VECTOR_ELT(dots, i);
 
-    if (is_list(cur) && (Rf_inherits(cur, "spliced") || (bare && !is_object(cur)))) {
-      info.size += Rf_length(cur);
-      info.named = info.named || is_character(names(cur));
+    if (is_list(x) && (Rf_inherits(x, "spliced") || (bare && !is_object(x)))) {
+      info.size += Rf_length(x);
+      info.named = info.named || is_character(names(x));
       if (has_name_at(dots, i) && !info.warned) {
         splice_warn_names();
         info.warned = true;
