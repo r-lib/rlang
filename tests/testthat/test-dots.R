@@ -41,3 +41,7 @@ test_that("empty dots return list()", {
   fn <- function(...) dots_inspect(...)
   expect_equal(fn(), list())
 })
+
+test_that("dots_exprs() captures empty arguments", {
+  expect_identical(dots_exprs(, ), set_names(list(arg_missing(), arg_missing()), c("", "")))
+})
