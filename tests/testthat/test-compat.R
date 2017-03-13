@@ -9,24 +9,16 @@ test_that("lazy objects are converted to tidy quotes", {
   env <- child_env(env())
 
   lazy <- structure(list(expr = quote(foo(bar)), env = env), class = "lazy")
-  expect_warning(regex = "underscored versions are deprecated",
-    expect_identical(compat_lazy(lazy), with_env(env, ~foo(bar)))
-  )
+  expect_identical(compat_lazy(lazy), with_env(env, ~foo(bar)))
 
   lazy_str <- "foo(bar)"
-  expect_warning(regex = "Text parsing is deprecated",
-    expect_identical(compat_lazy(lazy_str), ~foo(bar))
-  )
+  expect_identical(compat_lazy(lazy_str), ~foo(bar))
 
   lazy_lang <- quote(foo(bar))
-  expect_warning(regex = "underscored versions are deprecated",
-    expect_identical(compat_lazy(lazy_lang), ~foo(bar))
-  )
+  expect_identical(compat_lazy(lazy_lang), ~foo(bar))
 
   lazy_sym <- quote(foo)
-  expect_warning(regex = "underscored versions are deprecated",
-    expect_identical(compat_lazy(lazy_sym), ~foo)
-  )
+  expect_identical(compat_lazy(lazy_sym), ~foo)
 })
 
 test_that("lazy_dots objects are converted to tidy quotes", {
@@ -43,9 +35,7 @@ test_that("lazy_dots objects are converted to tidy quotes", {
     ~foo(bar)
   )
 
-  expect_warning(regex = "underscored versions are deprecated",
-    expect_identical(compat_lazy_dots(lazy_dots, env(), "foo(bar)"), expected)
-  )
+  expect_identical(compat_lazy_dots(lazy_dots, env(), "foo(bar)"), expected)
 })
 
 test_that("unnamed lazy_dots are given default names", {
@@ -59,9 +49,7 @@ test_that("unnamed lazy_dots are given default names", {
     `foo(bar)` = ~foo(bar),
     foobarbaz = ~foo(barbaz)
   )
-  expect_warning(regex = "underscored versions are deprecated",
-    dots <- compat_lazy_dots(lazy_dots, env(), foobarbaz = "foo(barbaz)", .named = TRUE)
-  )
+  dots <- compat_lazy_dots(lazy_dots, env(), foobarbaz = "foo(barbaz)", .named = TRUE)
 
   expect_identical(dots, expected)
 })
