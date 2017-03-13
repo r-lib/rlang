@@ -1,18 +1,24 @@
-#' Extract dots with explicit splicing.
+#' Extract dots with splicing semantics.
 #'
-#' `dots_list()` evaluates all arguments contained in `...` and returns
-#' them as a list. It splices lists that are explicitly marked for
-#' [splicing][splice] with the [spliced()] adjective. See
-#' [dots_splice()] for a version that splices bare lists as well.
+#' These functions evaluate all arguments contained in `...` and
+#' return them as a list. They both splice their arguments if they
+#' qualify for splicing. See [splice()] for information about splicing
+#' and below for the kind of arguments that qualify for splicing.
 #'
-#' `dots_list()` and `dots_splice()` are simple aliases to
-#' [splice()]. Their main purpose is to provide documentation for the
-#' `...` argument that developers can inherit from in their packages.
+#' `dots_list()` has _explicit splicing semantics_: it splices lists
+#' that are explicitly marked for [splicing][splice] with the
+#' [spliced()] adjective. `dots_splice()` on the other hand has _list
+#' splicing semantics_: in addition to lists marked explicitly for
+#' splicing, [bare][is_bare_list] lists are spliced as well.
 #'
-#' @param ... Arguments with explicit splicing semantics. Arguments
-#'   marked with [rlang::spliced()] are spliced in the returned list.
-#' @seealso [dots_splice()] for full splicing semantics, and
-#'   [dots_exprs()] for extracting dots without evaluation.
+#' Note that `dots_list()` and `dots_splice()` are simple aliases to
+#' [splice()]. Their main purpose is to provide more explicit
+#' documentation for functions capturing dots.
+#'
+#' @param ... Arguments with explicit (`dots_list()`) or list
+#'   (`dots_splice()`) splicing semantics. The contents of spliced
+#'   arguments are embedded in the returned list.
+#' @seealso [dots_exprs()] for extracting dots without evaluation.
 #' @export
 #' @examples
 #' # Compared to simply using list(...) to capture dots, dots_list()
@@ -23,35 +29,19 @@
 #' # Unlike dots_splice(), it doesn't splice bare lists:
 #' dots_list(x, 3)
 dots_list <- function(...) {
-  splice(..., .bare = FALSE)
+  .Call(rlang_splice, list(...), "list", bare = FALSE)
 }
-
-#' Extract dots with full splicing.
-#'
-#' Like [dots_list()], `dots_splice()` evaluates all arguments
-#' contained in `...` and returns them as a list. It has full splicing
-#' semantics: in addition to lists marked explicitly for splicing,
-#' [bare lists][is_bare_list] are spliced as well. See [dots_list()]
-#' for a version that only splices explicitly.
-#'
-#' `dots_list()` and `dots_splice()` are simple aliases to
-#' [splice()]. Their main purpose is to provide documentation for the
-#' `...` argument that developers can inherit from in their packages.
-#'
-#' @param ... Arguments with full splicing semantics. [Bare
-#'   lists][is_bare_list] and arguments marked with [rlang::spliced()]
-#'   are spliced in the returned list.
-#' @seealso [dots_list()] for explicit splicing semantics, and
-#'   [dots_exprs()] for extracting dots without evaluation.
+#' @rdname dots_list
 #' @export
 #' @examples
+#'
 #' # dots_splice() splices lists marked with spliced() as well as bare
 #' # lists:
 #' x <- list(1, 2)
 #' dots_splice(spliced(x), 3)
 #' dots_splice(x, 3)
 dots_splice <- function(...) {
-  splice(..., .bare = TRUE)
+  .Call(rlang_splice, list(...), "list", bare = TRUE)
 }
 
 #' Extract dots forwarded as arguments.

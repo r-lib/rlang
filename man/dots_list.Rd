@@ -2,24 +2,34 @@
 % Please edit documentation in R/dots.R
 \name{dots_list}
 \alias{dots_list}
-\title{Extract dots with explicit splicing.}
+\alias{dots_splice}
+\title{Extract dots with splicing semantics.}
 \usage{
 dots_list(...)
+
+dots_splice(...)
 }
 \arguments{
-\item{...}{Arguments with explicit splicing semantics. Arguments
-marked with \code{\link[rlang:spliced]{rlang::spliced()}} are spliced in the returned list.}
+\item{...}{Arguments with explicit (\code{dots_list()}) or list
+(\code{dots_splice()}) splicing semantics. The contents of spliced
+arguments are embedded in the returned list.}
 }
 \description{
-\code{dots_list()} evaluates all arguments contained in \code{...} and returns
-them as a list. It splices lists that are explicitly marked for
-\link[=splice]{splicing} with the \code{\link[=spliced]{spliced()}} adjective. See
-\code{\link[=dots_splice]{dots_splice()}} for a version that splices bare lists as well.
+These functions evaluate all arguments contained in \code{...} and
+return them as a list. They both splice their arguments if they
+qualify for splicing. See \code{\link[=splice]{splice()}} for information about splicing
+and below for the kind of arguments that qualify for splicing.
 }
 \details{
-\code{dots_list()} and \code{dots_splice()} are simple aliases to
-\code{\link[=splice]{splice()}}. Their main purpose is to provide documentation for the
-\code{...} argument that developers can inherit from in their packages.
+\code{dots_list()} has \emph{explicit splicing semantics}: it splices lists
+that are explicitly marked for \link[=splice]{splicing} with the
+\code{\link[=spliced]{spliced()}} adjective. \code{dots_splice()} on the other hand has \emph{list
+splicing semantics}: in addition to lists marked explicitly for
+splicing, \link[=is_bare_list]{bare} lists are spliced as well.
+
+Note that \code{dots_list()} and \code{dots_splice()} are simple aliases to
+\code{\link[=splice]{splice()}}. Their main purpose is to provide more explicit
+documentation for functions capturing dots.
 }
 \examples{
 # Compared to simply using list(...) to capture dots, dots_list()
@@ -29,8 +39,13 @@ dots_list(spliced(x), 3)
 
 # Unlike dots_splice(), it doesn't splice bare lists:
 dots_list(x, 3)
+
+# dots_splice() splices lists marked with spliced() as well as bare
+# lists:
+x <- list(1, 2)
+dots_splice(spliced(x), 3)
+dots_splice(x, 3)
 }
 \seealso{
-\code{\link[=dots_splice]{dots_splice()}} for full splicing semantics, and
 \code{\link[=dots_exprs]{dots_exprs()}} for extracting dots without evaluation.
 }
