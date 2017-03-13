@@ -8,7 +8,8 @@
 \alias{cpl}
 \alias{chr}
 \alias{bytes}
-\title{Construct new atomic vectors.}
+\alias{splice}
+\title{Construct new vectors.}
 \usage{
 lgl(...)
 
@@ -21,6 +22,8 @@ cpl(...)
 chr(..., .encoding = NULL)
 
 bytes(...)
+
+splice(..., .bare = TRUE)
 }
 \arguments{
 \item{...}{Components of the new vector. Bare lists and explicitly
@@ -29,14 +32,43 @@ spliced lists are spliced.}
 \item{.encoding}{If non-null, passed to \code{\link[=chr_set_encoding]{chr_set_encoding()}} to add
 an encoding mark. This is only declarative, no encoding
 conversion is performed.}
+
+\item{.bare}{Whether to splice bare lists. If \code{FALSE}, only lists
+inheriting from \code{"spliced"} are spliced. This is called explicit
+splicing. If \code{TRUE}, \link[=is_bare_list]{bare lists} (pure lists with
+no \code{class} attribute) are spliced as well.}
 }
 \description{
-These vector constructors are equivalent to \code{\link[=c]{c()}} but with explicit
-output types. Implicit coercions (e.g. from integer to logical)
-follow the rules described in \link{vector-coercion}. If you supply
-\link[=is_bare_list]{bare lists} or explicitly spliced lists, their
-contents are spliced into the output vectors.
+The atomic vector constructors are equivalent to \code{\link[=c]{c()}} but allow
+you to be more explicit about the output type. Implicit coercions
+(e.g. from integer to logical) follow the rules described in
+\link{vector-coercion}. In addition, all constructors support splicing:
+if you supply \link[=is_bare_list]{bare} lists or \link[=is_spliced]{explicitly
+spliced} lists, their contents are spliced into the
+output vectors (see below for details). \code{splice()} is a list
+constructor similar to \code{\link[base:list]{base::list()}} but with splicing semantics.
 }
+\section{Splicing}{
+
+
+Splicing is an operation similar to flattening one level of nested
+lists, e.g. with \code{\link[=unlist]{base::unlist(x, recursive =
+FALSE)}} or \code{purrr::flatten()}. \code{splice()} returns its
+arguments as a list, just like \code{list()} would, but inner lists
+qualifying for splicing are flattened. That is, their contents are
+embedded in the surrounding list. Similarly, \code{chr()} concatenates
+its arguments and returns them as a single character vector, but
+inner lists are flattened before concatenation.
+
+Whether an inner list qualifies for splicing is determined by the
+type of splicing semantics. All the atomic constructors like
+\code{chr()} have \emph{list splicing} semantics: \link[=is_bare_list]{bare} lists
+and \link[=is_spliced]{explicitly spliced} lists are spliced. Likewise,
+\code{splice()} has list splicing semantics by default. If you set
+\code{.bare} to \code{FALSE}, it restricts splicing to lists marked with
+\code{\link[=spliced]{spliced()}}. This is called \emph{explicit splicing}.
+}
+
 \examples{
 # These constructors are like a typed version of c():
 c(TRUE, FALSE)
@@ -69,6 +101,22 @@ dbl(list(a = c(A = 1)))
 # bytes() accepts integerish inputs
 bytes(1:10)
 bytes(0x01, 0xff, c(0x03, 0x05), list(10, 20, 30L))
+
+# splice() is like the atomic vector constructors but for lists:
+dbl(1, list(1, 2))
+splice(1, list(1, 2))
+
+# Only bare lists are spliced. Objects like data frames are not spliced:
+splice(1, mtcars)
+
+# Use the spliced() adjective to splice objects:
+splice(1, spliced(mtcars))
+
+# You can chose not to splice bare lists with `.bare`:
+splice(list(1, 2), .bare = FALSE)
+
+# Note that explicitly spliced lists are always spliced:
+splice(spliced(list(1, 2)), .bare = FALSE)
 }
 \seealso{
 \code{\link[=splice]{splice()}}

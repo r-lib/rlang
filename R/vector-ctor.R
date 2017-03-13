@@ -1,10 +1,32 @@
-#' Construct new atomic vectors.
+#' Construct new vectors.
 #'
-#' These vector constructors are equivalent to [c()] but with explicit
-#' output types. Implicit coercions (e.g. from integer to logical)
-#' follow the rules described in [vector-coercion]. If you supply
-#' [bare lists][is_bare_list] or explicitly spliced lists, their
-#' contents are spliced into the output vectors.
+#' The atomic vector constructors are equivalent to [c()] but allow
+#' you to be more explicit about the output type. Implicit coercions
+#' (e.g. from integer to logical) follow the rules described in
+#' [vector-coercion]. In addition, all constructors support splicing:
+#' if you supply [bare][is_bare_list] lists or [explicitly
+#' spliced][is_spliced] lists, their contents are spliced into the
+#' output vectors (see below for details). `splice()` is a list
+#' constructor similar to [base::list()] but with splicing semantics.
+#'
+#' @section Splicing:
+#'
+#' Splicing is an operation similar to flattening one level of nested
+#' lists, e.g. with \code{\link[=unlist]{base::unlist(x, recursive =
+#' FALSE)}} or `purrr::flatten()`. `splice()` returns its
+#' arguments as a list, just like `list()` would, but inner lists
+#' qualifying for splicing are flattened. That is, their contents are
+#' embedded in the surrounding list. Similarly, `chr()` concatenates
+#' its arguments and returns them as a single character vector, but
+#' inner lists are flattened before concatenation.
+#'
+#' Whether an inner list qualifies for splicing is determined by the
+#' type of splicing semantics. All the atomic constructors like
+#' `chr()` have _list splicing_ semantics: [bare][is_bare_list] lists
+#' and [explicitly spliced][is_spliced] lists are spliced. Likewise,
+#' `splice()` has list splicing semantics by default. If you set
+#' `.bare` to `FALSE`, it restricts splicing to lists marked with
+#' [spliced()]. This is called _explicit splicing_.
 #'
 #' @param ... Components of the new vector. Bare lists and explicitly
 #'   spliced lists are spliced.
@@ -89,14 +111,14 @@ bytes <- function(...) {
   .Call(rlang_splice, dots, "raw", bare = TRUE)
 }
 
-#' Construct a list with splicing.
-#' @param ... Components of the new vector. Explicitly spliced lists
-#'   are always spliced. Bare lists are spliced depending on the value
-#'   of `.bare`.
+#' @rdname vector-construction
 #' @param .bare Whether to splice bare lists. If `FALSE`, only lists
-#'   inheriting from `"spliced"` are spliced.
+#'   inheriting from `"spliced"` are spliced. This is called explicit
+#'   splicing. If `TRUE`, [bare lists][is_bare_list] (pure lists with
+#'   no `class` attribute) are spliced as well.
 #' @export
 #' @examples
+#'
 #' # splice() is like the atomic vector constructors but for lists:
 #' dbl(1, list(1, 2))
 #' splice(1, list(1, 2))
