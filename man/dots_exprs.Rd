@@ -18,6 +18,12 @@ Contrarily to \code{\link[=dots_list]{dots_list()}} and \code{\link[=dots_splice
 \code{dots_node()} do not evaluate the arguments. The former returns a
 list of expressions while the latter returns a \link{pairlist}.
 }
+\details{
+\code{dots_exprs()} performs call-splicing and is compatible with
+\link[=UQ]{unquote operators}, including unquote-splicing. \code{dots_node()}
+is more bare bones and returns the pairlist as is, without
+unquoting.
+}
 \seealso{
 \code{\link[=frame_dots_exprs]{frame_dots_exprs()}}
 }
