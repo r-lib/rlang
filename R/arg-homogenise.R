@@ -148,7 +148,11 @@ call_inline_dots <- function(call, dots_env, enum_dots) {
     abort("`dots_env` must be supplied to match dots")
   }
 
-  dots <- frame_dots_node(dots_env)
+  if (env_has(dots_env, "...")) {
+    dots <- node_cdr(substitute(alist(...), dots_env))
+  } else {
+    dots <- pairlist()
+  }
   dots <- dots_enumerate_args(dots)
 
   # Attach remaining args to expanded dots

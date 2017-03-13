@@ -57,59 +57,9 @@ dots_splice <- function(...) {
 #' unquoting.
 #'
 #' @param ... Arguments to extract.
-#' @seealso [frame_dots_exprs()]
 #' @export
 dots_exprs <- function(...) {
   map(tidy_quotes(...), f_rhs)
-}
-#' @rdname dots_exprs
-#' @export
-dots_node <- function(...) {
-  dots <- node_cdr(substitute(alist(...)))
-  if (is_symbolic(dots)) {
-    NULL
-  } else {
-    dots
-  }
-}
-
-#' Extract dots from a frame.
-#'
-#' These functions extract dots from a frame environment on the
-#' [evaluation stack][eval_stack]. The `_node()` version return a
-#' pairlist that is ready to be spliced into a call, while the regular
-#' version return a regular list that is usually easier to work with.
-#'
-#' `frame_dots_exprs()` and `frame_dots_node()` never fail, even if
-#' the frame does not contain dots. Instead they return an empty list
-#' or `NULL` respectively. `frame_dots_exprs()` processes
-#' [unquote][UQ] and [unquote-splice][UQS] operators.
-#'
-#' @param frame The environment from which the dots should be
-#'   retrieved. Can be a frame, an environment, or a formula from
-#'   which to retrieve an environment. If not supplied, the calling
-#'   frame is used.
-#' @param ... Arguments to extract. Can be both forwarded dots and
-#'   direct arguments.
-#' @export
-frame_dots_exprs <- function(frame = NULL) {
-  frame <- frame %||% call_frame(2)
-  dots <- as_list(frame_dots_node(frame))
-  map(dots, f_rhs)
-}
-
-#' @rdname frame_dots_exprs
-#' @export
-frame_dots_node <- function(frame = NULL) {
-  frame <- frame %||% call_frame(2)
-  env <- get_env(frame)
-
-  dots <- node_cdr(substitute(alist(...), env))
-  if (is_symbolic(dots)) {
-    NULL
-  } else {
-    dots
-  }
 }
 
 #' Inspect dots
@@ -124,7 +74,7 @@ frame_dots_node <- function(frame = NULL) {
 #'
 #' `dots_inspect_()` is the standard evaluation version of
 #' `dots_inspect()` and takes a list of dots as captured by
-#' [frame_dots_exprs()] or [dots_exprs()], and a call stack as returned by
+#' [dots_exprs()], and a call stack as returned by
 #' [call_stack()].
 #'
 #' @param ... Dots to inspect.

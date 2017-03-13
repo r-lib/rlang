@@ -1,24 +1,11 @@
 context("dots")
 
-test_that("dots are retrieved from frame", {
-  fn <- function(f) f()
-  expect_identical(fn(frame_dots_exprs), list())
-  expect_identical(fn(frame_dots_node), NULL)
-
-  fn <- function(f, ...) f()
-  g <- function(f, ...) fn(f, ...)
-  expect_identical(g(frame_dots_exprs, a = 1, foo = bar), list(a = 1, foo = quote(bar)))
-  expect_identical(g(frame_dots_node, a = 1, foo = bar), pairlist(a = 1, foo = quote(bar)))
-})
-
 test_that("dots are retrieved from arguments", {
   fn <- function(f, ...) f(...)
   expect_identical(fn(dots_exprs), list())
-  expect_identical(fn(dots_node), NULL)
 
   g <- function(f, ...) fn(f, ...)
   expect_identical(g(dots_exprs, a = 1, foo = bar), list(a = 1, foo = quote(bar)))
-  expect_identical(g(dots_node, a = 1, foo = bar), pairlist(a = 1, foo = quote(bar)))
 })
 
 test_that("dots_inspect() inspects dots", {

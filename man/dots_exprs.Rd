@@ -2,12 +2,9 @@
 % Please edit documentation in R/dots.R
 \name{dots_exprs}
 \alias{dots_exprs}
-\alias{dots_node}
 \title{Extract dots forwarded as arguments.}
 \usage{
 dots_exprs(...)
-
-dots_node(...)
 }
 \arguments{
 \item{...}{Arguments to extract.}
@@ -23,7 +20,4 @@ list of expressions while the latter returns a \link{pairlist}.
 \link[=UQ]{unquote operators}, including unquote-splicing. \code{dots_node()}
 is more bare bones and returns the pairlist as is, without
 unquoting.
-}
-\seealso{
-\code{\link[=frame_dots_exprs]{frame_dots_exprs()}}
 }
