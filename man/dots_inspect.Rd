@@ -33,7 +33,7 @@ section.
 
 \code{dots_inspect_()} is the standard evaluation version of
 \code{dots_inspect()} and takes a list of dots as captured by
-\code{\link[=frame_dots]{frame_dots()}} or \code{\link[=dots]{dots()}}, and a call stack as returned by
+\code{\link[=dots_exprs]{dots_exprs()}}, and a call stack as returned by
 \code{\link[=call_stack]{call_stack()}}.
 }
 \examples{

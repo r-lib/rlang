@@ -94,6 +94,10 @@ tidy_capture_dots <- function(...) {
   dots
 }
 dot_f <- function(dot) {
+  if (is_missing(dot$expr)) {
+    return(quosure(arg_missing(), empty_env()))
+  }
+
   env <- dot$env
   orig <- dot$expr
   expr <- get_expr(orig)

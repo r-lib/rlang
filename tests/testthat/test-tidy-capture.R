@@ -160,3 +160,8 @@ test_that("quosures are spliced before serialisation", {
   quosures <- tidy_quotes(~foo(~bar), .named = TRUE)
   expect_identical(names(quosures), "foo(bar)")
 })
+
+test_that("tidy_quotes() captures missing arguments", {
+  q <- quosure(arg_missing(), empty_env())
+  expect_identical(tidy_quotes(, ), set_names(list(q, q), c("", "")))
+})

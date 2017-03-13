@@ -1,55 +1,65 @@
-#' Extract dots
+#' Extract dots with splicing semantics.
 #'
-#' `frame_dots()` extracts dots from a frame and `dots()` extracts
-#' dots from its arguments. The `_node()` versions return a pairlist
-#' that is ready to be spliced into a call, while the regular versions
-#' return a regular list that is usually easier to work with.
+#' These functions evaluate all arguments contained in `...` and
+#' return them as a list. They both splice their arguments if they
+#' qualify for splicing. See [splice()] for information about splicing
+#' and below for the kind of arguments that qualify for splicing.
 #'
-#' `frame_dots()` and `frame_dots_node()` never fail, even if the
-#' frame does not contain dots. Instead they return an empty list or
-#' `NULL` respectively.
+#' `dots_list()` has _explicit splicing semantics_: it splices lists
+#' that are explicitly marked for [splicing][splice] with the
+#' [spliced()] adjective. `dots_splice()` on the other hand has _list
+#' splicing semantics_: in addition to lists marked explicitly for
+#' splicing, [bare][is_bare_list] lists are spliced as well.
 #'
-#' @param frame The environment from which the dots should be
-#'   retrieved. Can be a frame, an environment, or a formula from
-#'   which to retrieve an environment. If not supplied, the calling
-#'   frame is used.
-#' @param ... Arguments to extract. Can be both forwarded dots and
-#'   direct arguments.
+#' Note that `dots_list()` and `dots_splice()` are simple aliases to
+#' [splice()]. Their main purpose is to provide more explicit
+#' documentation for functions capturing dots.
+#'
+#' @param ... Arguments with explicit (`dots_list()`) or list
+#'   (`dots_splice()`) splicing semantics. The contents of spliced
+#'   arguments are embedded in the returned list.
+#' @seealso [dots_exprs()] for extracting dots without evaluation.
 #' @export
-frame_dots <- function(frame = NULL) {
-  frame <- frame %||% call_frame(2)
-  as.list(frame_dots_node(frame))
+#' @examples
+#' # Compared to simply using list(...) to capture dots, dots_list()
+#' # splices explicitly:
+#' x <- list(1, 2)
+#' dots_list(spliced(x), 3)
+#'
+#' # Unlike dots_splice(), it doesn't splice bare lists:
+#' dots_list(x, 3)
+dots_list <- function(...) {
+  .Call(rlang_splice, list(...), "list", bare = FALSE)
+}
+#' @rdname dots_list
+#' @export
+#' @examples
+#'
+#' # dots_splice() splices lists marked with spliced() as well as bare
+#' # lists:
+#' x <- list(1, 2)
+#' dots_splice(spliced(x), 3)
+#' dots_splice(x, 3)
+dots_splice <- function(...) {
+  .Call(rlang_splice, list(...), "list", bare = TRUE)
 }
 
-#' @rdname frame_dots
+#' Extract dots forwarded as arguments.
+#'
+#' These functions return the arguments forwarded through `...`.
+#' Contrarily to [dots_list()] and [dots_splice()], `dots_exprs()` and
+#' `dots_node()` do not evaluate the arguments. The former returns a
+#' list of expressions while the latter returns a [pairlist].
+#'
+#' `dots_exprs()` performs call-splicing and is compatible with
+#' [unquote operators][UQ], including unquote-splicing. `dots_node()`
+#' is more bare bones and returns the pairlist as is, without
+#' unquoting.
+#'
+#' @param ... Arguments to extract.
 #' @export
-frame_dots_node <- function(frame = NULL) {
-  frame <- frame %||% call_frame(2)
-  env <- get_env(frame)
-
-  dots <- node_cdr(substitute(alist(...), env))
-  if (is.language(dots)) {
-    NULL
-  } else {
-    dots
-  }
-}
-
-#' @rdname frame_dots
-#' @export
-dots <- function(...) {
-  expr_eval(substitute(alist(...)))
-}
-
-#' @rdname frame_dots
-#' @export
-dots_node <- function(...) {
-  dots <- node_cdr(substitute(alist(...)))
-  if (is.language(dots)) {
-    NULL
-  } else {
-    dots
-  }
+dots_exprs <- function(...) {
+  map(tidy_quotes(...), f_rhs)
 }
 
 #' Inspect dots
@@ -64,7 +74,7 @@ dots_node <- function(...) {
 #'
 #' `dots_inspect_()` is the standard evaluation version of
 #' `dots_inspect()` and takes a list of dots as captured by
-#' [frame_dots()] or [dots()], and a call stack as returned by
+#' [dots_exprs()], and a call stack as returned by
 #' [call_stack()].
 #'
 #' @param ... Dots to inspect.
@@ -114,7 +124,7 @@ dots_node <- function(...) {
 #' only_dots <- TRUE
 #' f(foo(bar))
 dots_inspect <- function(..., .only_dots = FALSE) {
-  dots <- dots(...)
+  dots <- dots_exprs(...)
   stack <- call_stack()
   dots_inspect_(dots, stack, only_dots = .only_dots)
 }

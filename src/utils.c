@@ -3,6 +3,65 @@
 #include <Rinternals.h>
 #include <stdbool.h>
 
+bool is_character(SEXP x) {
+  return TYPEOF(x) == STRSXP;
+}
+bool is_str_empty(SEXP str) {
+  const char* c_str = CHAR(str);
+  return strcmp(c_str, "") == 0;
+}
+
+SEXP names(SEXP x) {
+  return Rf_getAttrib(x, R_NamesSymbol);
+}
+bool has_name_at(SEXP x, R_len_t i) {
+  SEXP nms = names(x);
+  return is_character(nms) && !is_str_empty(STRING_ELT(nms, i));
+}
+SEXP set_names(SEXP x, SEXP nms) {
+  return Rf_setAttrib(x, R_NamesSymbol, nms);
+}
+
+bool is_object(SEXP x) {
+  return OBJECT(x) != 0;
+}
+bool is_atomic(SEXP x) {
+  switch(TYPEOF(x)) {
+  case LGLSXP:
+  case INTSXP:
+  case REALSXP:
+  case CPLXSXP:
+  case STRSXP:
+  case RAWSXP:
+    return true;
+  default:
+    return false;
+  }
+}
+bool is_scalar_atomic(SEXP x) {
+  return Rf_length(x) == 1 && is_atomic(x);
+}
+bool is_list(SEXP x) {
+  return TYPEOF(x) == VECSXP;
+}
+bool is_vector(SEXP x) {
+  switch(TYPEOF(x)) {
+  case LGLSXP:
+  case INTSXP:
+  case REALSXP:
+  case CPLXSXP:
+  case STRSXP:
+  case RAWSXP:
+  case VECSXP:
+    return true;
+  default:
+    return false;
+  }
+}
+bool is_null(SEXP x) {
+  return x == R_NilValue;
+}
+
 int is_sym(SEXP x, const char* string) {
   if (TYPEOF(x) != SYMSXP)
     return false;
@@ -86,7 +145,7 @@ SEXP rlang_length(SEXP x) {
 
 int is_true(SEXP x) {
   if (TYPEOF(x) != LGLSXP || Rf_length(x) != 1)
-    Rf_error("`x` must be a boolean");
+    Rf_errorcall(R_NilValue, "`x` must be a boolean");
 
   int value = LOGICAL(x)[0];
   return value == NA_LOGICAL ? 0 : value;
@@ -157,4 +216,13 @@ SEXP rlang_fun(SEXP sym) {
 SEXP rlang_symbol(SEXP chr) {
   SEXP string = STRING_ELT(chr, 0);
   return Rf_install(Rf_translateChar(string));
+}
+
+const char* kind_c_str(SEXPTYPE kind) {
+  SEXP str = Rf_type2str(kind);
+  return CHAR(str);
+}
+
+bool is_empty(SEXP x) {
+  return Rf_length(x) == 0;
 }
