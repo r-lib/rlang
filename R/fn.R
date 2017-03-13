@@ -186,14 +186,22 @@ as_closure <- function(x) {
       x,
     primitive = {
       fn_name <- prim_name(x)
+
       if (fn_name == "eval") {
         # do_eval() starts a context with a fake primitive function as
         # function definition. We replace it here with the .Internal()
         # wrapper of eval() so we can match the arguments.
-        base::eval
+        fmls <- formals(base::eval)
       } else {
-        .ArgsEnv[[fn_name]] %||% .GenericArgsEnv[[fn_name]]
+        fmls <- formals(.ArgsEnv[[fn_name]] %||% .GenericArgsEnv[[fn_name]])
       }
+
+      args <- symbols(names(fmls))
+      args <- set_names(args)
+      names(args)[(names(args) == "...")] <- ""
+
+      prim_call <- lang(fn_name, .args = args)
+      new_fn(fmls, prim_call, base_env())
     },
     string =
       as_closure(get(x, envir = caller_env(), x, mode = "function"))
@@ -293,7 +301,11 @@ as_function <- function(.f, ...) {
 
 #' @export
 as_function.function <- function(.f, ...) {
-  .f
+  if (is_primitive(.f)) {
+    as_closure(.f)
+  } else {
+    .f
+  }
 }
 
 #' @export

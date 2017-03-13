@@ -20,3 +20,10 @@ test_that("as_closure() returns closure", {
   expect_identical(typeof(as_closure(list)), "closure")
   expect_identical(typeof(as_closure("list")), "closure")
 })
+
+test_that("as_closure() handles primitive functions", {
+  expect_identical(as_closure(`-`)(e2 = 10, e1 = 5), -5)
+  expect_identical(as_closure(`c`)(1, 3, 5), c(1, 3, 5))
+  expect_identical(as_closure(is.null)(1), FALSE)
+  expect_identical(as_closure(is.null)(NULL), TRUE)
+})
