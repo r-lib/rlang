@@ -44,7 +44,7 @@ int is_splice_sym(SEXP x) {
 SEXP replace_double_bang(SEXP x) {
   int bang = bang_level(x);
   if (bang == 3 || is_any_call(x, is_splice_sym))
-    Rf_error("Cannot splice at top-level");
+    Rf_errorcall(R_NilValue, "Cannot splice at top-level");
   else if (bang == 2) {
     x = CADR(x);
     SETCAR(x, Rf_install("UQ"));
@@ -171,7 +171,7 @@ SEXP rlang_interp(SEXP x, SEXP env) {
   if (!Rf_isLanguage(x))
     return x;
   if (!Rf_isEnvironment(env))
-    Rf_error("`env` must be an environment");
+    Rf_errorcall(R_NilValue, "`env` must be an environment");
 
   x = PROTECT(Rf_duplicate(x));
   x = interp_walk(x, env);

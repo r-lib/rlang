@@ -61,7 +61,7 @@ void vec_copy_n(SEXP src, R_len_t n, SEXP dest,
     break;
   }
   default:
-    Rf_error("Copy requires vectors");
+    Rf_errorcall(R_NilValue, "Copy requires vectors");
   }
 }
 
@@ -83,7 +83,7 @@ SEXP vec_coercer_sym(SEXP dest) {
   case CPLXSXP: return namespace_rlang_sym(Rf_install("as_complex"));
   case STRSXP: return namespace_rlang_sym(Rf_install("as_character"));
   case RAWSXP: return namespace_rlang_sym(Rf_install("as_bytes"));
-  default: Rf_error("No coercion implemented for `%s`", Rf_type2str(TYPEOF(dest)));
+  default: Rf_errorcall(R_NilValue, "No coercion implemented for `%s`", Rf_type2str(TYPEOF(dest)));
   }
 }
 

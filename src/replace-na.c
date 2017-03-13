@@ -54,7 +54,7 @@ SEXP replace_na(SEXP x, SEXP replacement) {
   }
 
   default: {
-    Rf_error("Don't know how to handle object of type", Rf_type2char(TYPEOF(x)));
+    Rf_errorcall(R_NilValue, "Don't know how to handle object of type", Rf_type2char(TYPEOF(x)));
   }
   }
 
@@ -120,7 +120,7 @@ SEXP replace_na_(SEXP x, SEXP replacement, int i) {
   }
 
   default: {
-    Rf_error("Don't know how to handle object of type", Rf_type2char(TYPEOF(x)));
+    Rf_errorcall(R_NilValue, "Don't know how to handle object of type", Rf_type2char(TYPEOF(x)));
   }
   }
 

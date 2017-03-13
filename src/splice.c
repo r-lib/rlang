@@ -9,7 +9,7 @@ typedef struct {
 } splice_info_t;
 
 void splice_warn_names(void) {
-  Rf_warning("Outer names are only allowed for unnamed scalar atomic inputs");
+  Rf_warningcall(R_NilValue, "Outer names are only allowed for unnamed scalar atomic inputs");
 }
 
 // Atomic splicing ---------------------------------------------------
@@ -42,8 +42,9 @@ void atom_splice_info_list(splice_info_t* info, SEXPTYPE kind, SEXP outer) {
     if (is_atomic(x)) {
       info->size += Rf_length(x);
     } else if (x != R_NilValue) {
-      Rf_error("Cannot splice objects of type `%s` within a `%s`",
-               kind_c_str(TYPEOF(x)), kind_c_str(kind));
+      Rf_errorcall(R_NilValue,
+                   "Cannot splice objects of type `%s` within a `%s`",
+                   kind_c_str(TYPEOF(x)), kind_c_str(kind));
     }
     ++i;
   }
@@ -61,13 +62,14 @@ void atom_splice_info(splice_info_t* info, SEXPTYPE kind,
     if (is_list(x)) {
       bool is_spliced = Rf_inherits(x, "spliced");
       if (!bare && !is_spliced)
-        Rf_error("Bare lists cannot be spliced");
+        Rf_errorcall(R_NilValue, "Bare lists cannot be spliced");
       if (is_object(x) && !is_spliced)
-        Rf_error("Objects cannot be spliced");
+        Rf_errorcall(R_NilValue, "Objects cannot be spliced");
       atom_splice_info_list(info, kind, x);
     } else if (!(is_vector(x) || is_null(x))) {
-      Rf_error("Cannot splice objects of type `%s` within a `%s`",
-               kind_c_str(TYPEOF(x)), kind_c_str(kind));
+      Rf_errorcall(R_NilValue,
+                   "Cannot splice objects of type `%s` within a `%s`",
+                   kind_c_str(TYPEOF(x)), kind_c_str(kind));
     }  else {
       info->size += Rf_length(x);
     }
@@ -217,7 +219,7 @@ SEXP rlang_splice(SEXP dots, SEXP type, SEXP bare) {
   case VECSXP:
     return list_splice(dots, splice_bare);
   default:
-    Rf_error("Splicing is not implemented for this type");
+    Rf_errorcall(R_NilValue, "Splicing is not implemented for this type");
     return R_NilValue;
   }
 }
