@@ -53,7 +53,7 @@ is_vector <- function(x, n = NULL) {
 #' @export
 #' @rdname type-predicates
 is_integer <- function(x, n = NULL) {
-  if (typeof(x) != "integer")
+  if (typeof(x) != "integer") return(FALSE)
   if (!is_null(n) && length(x) != n) return(FALSE)
   TRUE
 }
@@ -413,7 +413,7 @@ type_of <- function(x) {
 #'   "default"
 #' )
 switch_type <- function(.x, ...) {
-    switch(type_of(.x), ...)
+  switch(type_of(.x), ...)
 }
 #' @rdname switch_type
 #' @export
