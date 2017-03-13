@@ -310,10 +310,9 @@ as_function.function <- function(.f, ...) {
 
 #' @export
 as_function.formula <- function(.f, ...) {
-  .x <- NULL # hush R CMD check NOTE
-
-  if (length(.f) != 2) {
-    stop("Formula must be one sided", call. = FALSE)
+  if (!is_quosure(.f)) {
+    abort("Formula must be one sided")
   }
-  new_fn(alist(.x = , .y = , . = .x), .f[[2]], environment(.f))
+  args <- list(... = arg_missing(), .x = quote(..1), .y = quote(..2), . = quote(..1))
+  new_fn(args, f_rhs(.f), f_env(.f))
 }

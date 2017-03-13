@@ -27,3 +27,7 @@ test_that("as_closure() handles primitive functions", {
   expect_identical(as_closure(is.null)(1), FALSE)
   expect_identical(as_closure(is.null)(NULL), TRUE)
 })
+
+test_that("lambda shortcut handles positional arguments", {
+  expect_identical(as_function(~ ..1 + ..3)(1, 2, 3), 4)
+})
