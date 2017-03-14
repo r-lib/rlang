@@ -64,7 +64,7 @@ f <- foo(1)
 f
 eval_tidy(f)
 
-# If you supply data, eval_tidy will look their first:
+# If you supply data, eval_tidy() will look there first:
 eval_tidy(~ cyl, mtcars)
 
 # To avoid ambiguity, you can use .env and .data pronouns to be
