@@ -276,3 +276,39 @@ node_append <- function(.x, .y) {
   node_walk_last(.x, function(l) set_node_cdr(l, .y))
   .x
 }
+
+#' Modify a call or pairlist.
+#'
+#' This merges a list of arguments into a pairlist or call.
+#'
+#' @param node A call (language object) or pairlist.
+#' @param ... New named or unnamed elements. These dots have [explicit
+#'   splicing semantics][dots_list]: the contents of arguments marked
+#'   with [spliced()] are embedded in surrounding dots list. Unnamed
+#'   elements are appended to named elements.
+#' @seealso [lang_modify()] for a version that optionally standardises
+#'   arguments and handles quosures transparently.
+#' @export
+node_modify <- function(node, ...) {
+  stopifnot(is_lang(node) || is_pairlist(node))
+  dots <- dots_list(...)
+
+  # We can let R splice named elements
+  named <- have_names(dots)
+  for (nm in names(dots)[named]) {
+    node[[nm]] <- dots[[nm]]
+  }
+
+  # FIXME: this doesn't remove NULL unnamed arguments
+  if (any(!named)) {
+    # Duplicate list structure in case it wasn't before
+    if (!any(named)) {
+      node <- duplicate(node, shallow = TRUE)
+    }
+
+    remaining_args <- as_pairlist(dots[!named])
+    node <- node_append(node, remaining_args)
+  }
+
+  node
+}
