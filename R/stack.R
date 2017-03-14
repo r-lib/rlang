@@ -71,11 +71,10 @@
 #' # The lazyeval _stack() functions return a list of frame
 #' # objects. Use purrr::transpose() or index a field with
 #' # purrr::map()'s to extract a particular field from a stack:
-#' if (requireNamespace("purrr", quietly = TRUE)) {
-#'   stack <- f(f(call_stack()))
-#'   purrr::map(stack, "env")
-#'   purrr::transpose(stack)$expr
-#' }
+#'
+#' # stack <- f(f(call_stack()))
+#' # purrr::map(stack, "env")
+#' # purrr::transpose(stack)$expr
 #'
 #' # current_frame() is an alias for eval_frame(1)
 #' fn <- function() list(current = current_frame(), first = eval_frame(1))

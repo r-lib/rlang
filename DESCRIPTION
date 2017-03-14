@@ -17,7 +17,6 @@ Suggests:
     rmarkdown (>= 0.2.65),
     testthat,
     covr,
-    purrr,
     magrittr
 VignetteBuilder: knitr
 RoxygenNote: 6.0.1
