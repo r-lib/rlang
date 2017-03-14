@@ -37,7 +37,7 @@
 #' f
 #' tidy_eval(f)
 #'
-#' # If you supply data, tidy_eval will look their first:
+#' # If you supply data, tidy_eval will look there first:
 #' tidy_eval(~ cyl, mtcars)
 #'
 #' # To avoid ambiguity, you can use .env and .data pronouns to be
