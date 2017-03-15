@@ -39,7 +39,7 @@ test_that("pronouns complain about missing values", {
 
 test_that("tidy_eval does quasiquoting", {
   x <- 10
-  expect_equal(tidy_eval(tidy_quote(UQ(quote(x)))), 10)
+  expect_equal(tidy_eval(quosure(UQ(quote(x)))), 10)
 })
 
 
@@ -50,33 +50,33 @@ test_that("unquoted formulas look in their own env", {
   }
 
   n <- 10
-  expect_equal(tidy_eval(tidy_quote(UQ(f()))), 100)
+  expect_equal(tidy_eval(quosure(UQ(f()))), 100)
 })
 
 test_that("unquoted formulas can use data", {
   f1 <- function() {
     z <- 100
     x <- 2
-    tidy_quote(x + z)
+    quosure(x + z)
   }
   f2 <- function() {
     z <- 100
-    tidy_quote(.data$x + .env$z)
+    quosure(.data$x + .env$z)
   }
 
   z <- 10
-  expect_equal(tidy_eval(tidy_quote(!! f1()), data = list(x = 1)), 101)
-  expect_equal(tidy_eval(tidy_quote(!! f2()), data = list(x = 1)), 11)
+  expect_equal(tidy_eval(quosure(!! f1()), data = list(x = 1)), 101)
+  expect_equal(tidy_eval(quosure(!! f2()), data = list(x = 1)), 11)
 })
 
 test_that("guarded formulas are not evaluated", {
   f <- local(~x)
-  expect_identical(tidy_eval(tidy_quote(UQF(f))), f)
+  expect_identical(tidy_eval(quosure(UQF(f))), f)
 
   f <- a ~ b
   fn <- function() ~UQF(f)
-  expect_identical(tidy_eval(tidy_quote(!!fn())), f)
-  expect_identical(tidy_eval(tidy_quote(UQF(f))), f)
+  expect_identical(tidy_eval(quosure(!!fn())), f)
+  expect_identical(tidy_eval(quosure(UQF(f))), f)
 })
 
 test_that("fpromises are not evaluated if not forced", {
@@ -84,13 +84,13 @@ test_that("fpromises are not evaluated if not forced", {
     if (force) arg else "bar"
   }
 
-  f1 <- tidy_quote(fn(!! ~stop("forced!"), force = FALSE))
-  f2 <- tidy_quote(fn(!! local(~stop("forced!")), force = FALSE))
+  f1 <- quosure(fn(!! ~stop("forced!"), force = FALSE))
+  f2 <- quosure(fn(!! local(~stop("forced!")), force = FALSE))
   expect_identical(tidy_eval(f1), "bar")
   expect_identical(tidy_eval(f2), "bar")
 
-  f_forced1 <- tidy_quote(fn(!! ~stop("forced!"), force = TRUE))
-  f_forced2 <- tidy_quote(fn(!! local(~stop("forced!")), force = TRUE))
+  f_forced1 <- quosure(fn(!! ~stop("forced!"), force = TRUE))
+  f_forced2 <- quosure(fn(!! local(~stop("forced!")), force = TRUE))
   expect_error(tidy_eval(f_forced1), "forced!")
   expect_error(tidy_eval(f_forced2), "forced!")
 })
@@ -104,13 +104,13 @@ test_that("can unquote captured arguments", {
 
 test_that("fpromises are evaluated recursively", {
   foo <- "bar"
-  expect_identical(tidy_eval(tidy_quote(foo)), "bar")
-  expect_identical(tidy_eval(tidy_quote(~~foo)), "bar")
+  expect_identical(tidy_eval(quosure(foo)), "bar")
+  expect_identical(tidy_eval(quosure(~~foo)), "bar")
 })
 
 test_that("fpromises have lazy semantics", {
   fn <- function(arg) "unforced"
-  expect_identical(tidy_eval(tidy_quote(fn(~stop()))), "unforced")
+  expect_identical(tidy_eval(quosure(fn(~stop()))), "unforced")
 })
 
 test_that("can unquote hygienically within captured arg", {
@@ -129,8 +129,8 @@ test_that("can unquote hygienically within captured arg", {
 test_that("can unquote for old-style NSE functions", {
   var <- ~foo
   fn <- function(x) substitute(x)
-  expect_identical(tidy_quote(fn(!!f_rhs(var))), ~fn(foo))
-  expect_identical(tidy_eval(tidy_quote(fn(!!f_rhs(var)))), quote(foo))
+  expect_identical(quosure(fn(!!f_rhs(var))), ~fn(foo))
+  expect_identical(tidy_eval(quosure(fn(!!f_rhs(var)))), quote(foo))
 })
 
 test_that("formulas with empty environments are scoped in surrounding formula", {
@@ -176,8 +176,8 @@ test_that("evaluation env is cleaned up", {
 
 test_that("inner formulas are rechained to evaluation env", {
   env <- child_env(NULL)
-  f1 <- tidy_quote(env$eval_env1 <- get_env())
-  f2 <- tidy_quote({
+  f1 <- quosure(env$eval_env1 <- get_env())
+  f2 <- quosure({
     !! f1
     env$eval_env2 <- get_env()
   })

@@ -1,16 +1,16 @@
 #' Tidy quotation of an expression.
 #'
-#' `tidy_quote()` captures its argument as an unevaluated expression
+#' `quosure()` captures its argument as an unevaluated expression
 #' and returns it as a formula. Formulas are a key part of the tidy
 #' evaluation framework because they bundle an expression and a scope
-#' (the environment in which `tidy_quote()` was called).  This means
+#' (the environment in which `quosure()` was called).  This means
 #' that you can pass a formula around while keeping track of the
 #' context where it was created. The symbols quoted in the formula
 #' will be evaluated in the right context (where they are likely
 #' defined) by [tidy_eval()].
 #'
 #' Like all capturing functions in the tidy evaluation framework,
-#' `tidy_quote()` interpolates on capture (see [tidy_capture()]) and
+#' `quosure()` interpolates on capture (see [tidy_capture()]) and
 #' `vignette("tidy-eval")`. Alternatively, `tidy_interp()` allows you
 #' to interpolate manually when you have constructed a raw expression
 #' or formula by yourself. When an expression is interpolated, all
@@ -27,7 +27,7 @@
 #'   expression by unquoting another quoted expression into it. The
 #'   latter expression gets inlined within the former. This mechanism
 #'   allows you to easily program with NSE functions. E.g. `var <-
-#'   ~baz; tidy_quote(foo(bar, !! var))` produces the formula-quote
+#'   ~baz; quosure(foo(bar, !! var))` produces the formula-quote
 #'   `~foo(bar, baz)`.
 #'
 #' @section Tidy evaluation of expressions:
@@ -60,7 +60,7 @@
 #'   modification and tidy evaluation of formulas provide a powerful
 #'   mechanism for metaprogramming and programming with DSLs.
 #'
-#' @section Theory: Formally, `tidy_quote()` and `tidy_quote_expr()`
+#' @section Theory: Formally, `quosure()` and `tidy_quote_expr()`
 #'   are quasiquote functions, `UQ()` is the unquote operator, and
 #'   `UQS()` is the unquote splice operator. These terms have a rich
 #'   history in LISP, and live on in modern languages like
@@ -80,49 +80,49 @@
 #' @aliases UQ UQE UQF UQS
 #' @examples
 #' # When a tidyeval function captures an argument, it is wrapped in a
-#' # formula and interpolated. tidy_quote() is a simple wrapper around
+#' # formula and interpolated. quosure() is a simple wrapper around
 #' # tidy_capture() and as such is the fundamental tidyeval
 #' # function. It allows you to quote an expression and interpolate
 #' # unquoted parts:
-#' tidy_quote(foo(bar))
-#' tidy_quote(1 + 2)
-#' tidy_quote(paste0(!! letters[1:2], "foo"))
+#' quosure(foo(bar))
+#' quosure(1 + 2)
+#' quosure(paste0(!! letters[1:2], "foo"))
 #'
 #' # The !! operator is a syntactic shortcut for unquoting with UQ().
 #' # However you need to be a bit careful with operator
 #' # precedence. All arithmetic and comparison operators bind more
 #' # tightly than `!`:
-#' tidy_quote(1 +  !! (1 + 2 + 3) + 10)
+#' quosure(1 +  !! (1 + 2 + 3) + 10)
 #'
 #' # For this reason you should always wrap the unquoted expression
 #' # with parentheses when operators are involved:
-#' tidy_quote(1 + (!! 1 + 2 + 3) + 10)
+#' quosure(1 + (!! 1 + 2 + 3) + 10)
 #'
 #' # Or you can use the explicit unquote function:
-#' tidy_quote(1 + UQ(1 + 2 + 3) + 10)
+#' quosure(1 + UQ(1 + 2 + 3) + 10)
 #'
 #' # Use !!! or UQS() if you want to add multiple arguments to a
 #' # function It must evaluate to a list
 #' args <- list(1:10, na.rm = TRUE)
-#' tidy_quote(mean( UQS(args) ))
+#' quosure(mean( UQS(args) ))
 #'
 #' # You can combine the two
 #' var <- quote(xyz)
 #' extra_args <- list(trim = 0.9, na.rm = TRUE)
-#' tidy_quote(mean(UQ(var) , UQS(extra_args)))
+#' quosure(mean(UQ(var) , UQS(extra_args)))
 #'
 #'
 #' # Unquoting is especially useful for transforming a captured
 #' # expression:
 #' f <- ~foo(bar)
-#' f <- tidy_quote(inner(!! f, arg1))
-#' f <- tidy_quote(outer(!! f, !!! lapply(letters[1:3], as_symbol)))
+#' f <- quosure(inner(!! f, arg1))
+#' f <- quosure(outer(!! f, !!! lapply(letters[1:3], as_symbol)))
 #' f
 #'
 #' # Note that it's fine to unquote formulas as long as you evaluate
 #' # with tidy_eval():
 #' f <- ~letters
-#' f <- tidy_quote(toupper(!! f))
+#' f <- quosure(toupper(!! f))
 #' tidy_eval(f)
 #'
 #' # Formulas carry scope information about the inner expression
@@ -137,7 +137,7 @@
 #' # And you can also inline it in another expression before
 #' # evaluation:
 #' f2 <- local({ bar <- "bar"; ~toupper(bar)})
-#' f3 <- tidy_quote(paste(!!f1, !!f2, "!"))
+#' f3 <- quosure(paste(!!f1, !!f2, "!"))
 #' f3
 #'
 #' # tidy_eval() treats one-sided formulas like promises to be evaluated:
@@ -152,52 +152,52 @@
 #' # call thanks to the UQE() operator:
 #' nse_function <- function(arg) substitute(arg)
 #' var <- local(~foo(bar))
-#' tidy_quote(nse_function(UQ(var)))
-#' tidy_quote(nse_function(UQE(var)))
+#' quosure(nse_function(UQ(var)))
+#' quosure(nse_function(UQE(var)))
 #'
 #' # This is equivalent to unquoting and taking the RHS:
-#' tidy_quote(nse_function(!! f_rhs(var)))
+#' quosure(nse_function(!! f_rhs(var)))
 #'
 #' # One of the most important old-style NSE function is the dollar
 #' # operator. You need to use UQE() for subsetting with dollar:
 #' var <- ~cyl
-#' tidy_quote(mtcars$UQE(var))
+#' quosure(mtcars$UQE(var))
 #'
 #' # `!!`() is also treated as a shortcut. It is meant for situations
 #' # where the bang operator would not parse, such as subsetting with
 #' # $. Since that's its main purpose, we've made it a shortcut for
 #' # UQE() rather than UQ():
 #' var <- ~cyl
-#' tidy_quote(mtcars$`!!`(var))
+#' quosure(mtcars$`!!`(var))
 #'
 #'
 #' # Sometimes you would like to unquote an object containing a
 #' # formula but include it as is rather than treating it as a
 #' # promise. You can use UQF() for this purpose:
 #' var <- ~letters[1:2]
-#' f <- tidy_quote(list(!!var, UQF(var)))
+#' f <- quosure(list(!!var, UQF(var)))
 #' f
 #' tidy_eval(f)
 #'
 #' # Note that two-sided formulas are never treated as fpromises:
-#' tidy_eval(tidy_quote(a ~ b))
+#' tidy_eval(quosure(a ~ b))
 #' @useDynLib rlang rlang_interp
-tidy_quote <- function(expr) {
+quosure <- function(expr) {
   tidy_capture(expr)
 }
 
 #' Untidy quotation of an expression.
 #'
-#' Unlike [tidy_quote()], `tidy_quote_expr()` returns a raw expression
+#' Unlike [quosure()], `tidy_quote_expr()` returns a raw expression
 #' instead of a formula. As a result, `tidy_quote_expr()` is untidy in
 #' the sense that it does not preserve scope information for the
 #' quoted expression. It can still be useful in certain cases.
 #' Compared to base R's [base::quote()], it unquotes the expression on
-#' capture, and compared to [tidy_quote()], the quoted expression is
+#' capture, and compared to [quosure()], the quoted expression is
 #' directly compatible with the base R [base::eval()] function.
 #'
-#' @inheritParams tidy_quote
-#' @seealso See [tidy_quote()] and [tidy_interp()] for more
+#' @inheritParams quosure
+#' @seealso See [quosure()] and [tidy_interp()] for more
 #'   explanation on tidy quotation.
 #' @return The raw expression supplied as argument.
 #' @export
@@ -212,7 +212,7 @@ tidy_quote <- function(expr) {
 #' (expr <- tidy_quote_expr(inner(!! expr, arg1)))
 #' (expr <- tidy_quote_expr(outer(!! expr, !!! lapply(letters[1:3], as.symbol))))
 #'
-#' # Unlike tidy_quote(), tidy_quote_expr() produces expressions that can
+#' # Unlike quosure(), tidy_quote_expr() produces expressions that can
 #' # be evaluated with base::eval():
 #' e <- quote(letters)
 #' e <- tidy_quote_expr(toupper(!!e))

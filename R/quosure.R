@@ -27,7 +27,7 @@
 #'   is scoped, that is, has a valid environment attribute. If `NULL`,
 #'   the scope is not inspected.
 #' @seealso [as_quosure()][new_quosure] and [new_quosure()] for creating
-#'   quosures, and [tidy_quote()] or [tidy_eval()] for information
+#'   quosures, and [quosure()] or [tidy_eval()] for information
 #'   about the role of quosures in the tidy evaluation framework.
 #' @export
 #' @examples
@@ -83,7 +83,7 @@ is_one_sided <- function(x, lang_sym = sym_tilde) {
 #'
 #' Quosure objects wrap an [expression][is_expr] with a [lexical
 #' enclosure][env]. This is a powerful quoting (see [base::quote()]
-#' and [tidy_quote()]) mechanism that makes it possible to carry and
+#' and [quosure()]) mechanism that makes it possible to carry and
 #' manipulate expressions while making sure that its symbolic content
 #' (symbols and named calls, see [is_symbolic()]) is correctly looked
 #' up during evaluation.

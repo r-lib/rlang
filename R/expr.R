@@ -54,7 +54,7 @@
 #' list of a closure with [base::formals()] or [fn_fmls()].
 #'
 #' @param x An object to test. When you supply a tidy quote (see
-#'   [tidy_quote()]) to any of the expression predicates, they will
+#'   [quosure()]) to any of the expression predicates, they will
 #'   perform their test on the RHS of the formula.
 #' @seealso [is_lang()] for a call predicate; [as_symbol()] and
 #'   [as_lang()] for coercion functions.

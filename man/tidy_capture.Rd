@@ -50,7 +50,7 @@ NSE.
 
 In addition, note that \code{tidy_capture()} always interpolates its
 input to facilitate programming with NSE functions. See
-\code{\link[=tidy_interp]{tidy_interp()}} and \code{\link[=tidy_quote]{tidy_quote()}}.
+\code{\link[=tidy_interp]{tidy_interp()}} and \code{\link[=quosure]{quosure()}}.
 }
 
 \section{Forwarding arguments}{

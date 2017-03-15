@@ -111,7 +111,7 @@ with_restarts <- function(.expr, ..., .restarts = list()) {
 #' @export
 with_restarts_ <- function(.expr, .restarts = list(), .env = NULL) {
   f <- as_quosure(.expr, .env)
-  f <- tidy_quote(withRestarts(!! f, !!! .restarts))
+  f <- quosure(withRestarts(!! f, !!! .restarts))
   tidy_eval(f)
 }
 

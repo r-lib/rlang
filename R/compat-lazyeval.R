@@ -9,7 +9,7 @@ warn_underscored <- function() {
   warn(paste(
     "The underscored versions are deprecated in favour of",
     "tidy evaluation idioms. Please see the documentation",
-    "for `tidy_quote()` in rlang"
+    "for `quosure()` in rlang"
   ))
 }
 warn_text_se <- function() {
@@ -20,7 +20,7 @@ warn_text_se <- function() {
 compat_lazy <- function(lazy, env = caller_env(), warn = TRUE) {
   if (warn) warn_underscored()
 
-  coerce_type(lazy, "tidy_quote",
+  coerce_type(lazy, "quosure",
     quote = lazy,
     symbol = ,
     language = new_quosure(lazy, env),
@@ -29,7 +29,7 @@ compat_lazy <- function(lazy, env = caller_env(), warn = TRUE) {
       parse_f(lazy, env)
     },
     list =
-      coerce_class(lazy, "tidy_quote",
+      coerce_class(lazy, "quosure",
         lazy = new_quosure(lazy$expr, lazy$env)
       )
   )

@@ -17,7 +17,7 @@
 #'
 #' @param f A formula. Any expressions wrapped in `UQ()` will will be
 #'   "unquoted", i.e. they will be evaluated, and the results inserted
-#'   back into the formula. See [tidy_quote()] for more details. If a
+#'   back into the formula. See [quosure()] for more details. If a
 #'   list of formulas, `tidy_eval()` is applied to each of them in
 #'   turn and the list of results is returned.
 #' @param data A list (or data frame). `data_source` is a generic used
@@ -50,9 +50,9 @@
 #' tidy_eval(~ mean(cyl), mtcars)
 #' # How can you change the variable that's being computed?
 #' # The easiest way is "unquote" with !!
-#' # See ?tidy_quote for more details
+#' # See ?quosure for more details
 #' var <- ~ cyl
-#' tidy_eval(tidy_quote(mean( !!var )), mtcars)
+#' tidy_eval(quosure(mean( !!var )), mtcars)
 #' @name tidy_eval
 tidy_eval_rhs <- function(f, data = NULL) {
   rhs <- new_quosure(f_rhs(f), f_env(f))

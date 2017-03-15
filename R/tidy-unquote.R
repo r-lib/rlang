@@ -1,7 +1,7 @@
 #' Process unquote operators in a captured expression.
 #'
 #' While all capturing functions in the tidy evaluation framework
-#' perform unquote on capture (most notably [tidy_quote()]),
+#' perform unquote on capture (most notably [quosure()]),
 #' `tidy_interp()` manually processes unquoting operators in
 #' expressions that are already captured. `tidy_interp()` should be
 #' called in all user-facing functions expecting a formula as argument
@@ -13,8 +13,8 @@
 #'   formula or a function, or the current environment otherwise.
 #' @export
 #' @examples
-#' # All tidy NSE functions like tidy_quote() unquote on capture:
-#' tidy_quote(list(!! 1 + 2))
+#' # All tidy NSE functions like quosure() unquote on capture:
+#' quosure(list(!! 1 + 2))
 #'
 #' # tidy_interp() is meant to provide the same functionality when you
 #' # have a formula or expression that might contain unquoting
@@ -53,12 +53,12 @@ tidy_interp <- function(x, env = NULL) {
 }
 
 #' @export
-#' @rdname tidy_quote
+#' @rdname quosure
 UQ <- function(x) {
   x
 }
 #' @export
-#' @rdname tidy_quote
+#' @rdname quosure
 UQE <- function(x) {
   if (is_formula(x)) {
     f_rhs(x)
@@ -67,13 +67,13 @@ UQE <- function(x) {
   }
 }
 #' @export
-#' @rdname tidy_quote
+#' @rdname quosure
 UQF <- function(x) {
   x
 }
 
 #' @export
-#' @rdname tidy_quote
+#' @rdname quosure
 UQS <- function(x) {
   if (is_pairlist(x)) {
     x

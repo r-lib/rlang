@@ -35,7 +35,7 @@
 #'
 #'   In addition, note that `tidy_capture()` always interpolates its
 #'   input to facilitate programming with NSE functions. See
-#'   [tidy_interp()] and [tidy_quote()].
+#'   [tidy_interp()] and [quosure()].
 #'
 #' @section Forwarding arguments:
 #'

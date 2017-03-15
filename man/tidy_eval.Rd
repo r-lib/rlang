@@ -19,7 +19,7 @@ data_source(x, lookup_msg = NULL)
 \arguments{
 \item{f}{A formula. Any expressions wrapped in \code{UQ()} will will be
 "unquoted", i.e. they will be evaluated, and the results inserted
-back into the formula. See \code{\link[=tidy_quote]{tidy_quote()}} for more details. If a
+back into the formula. See \code{\link[=quosure]{quosure()}} for more details. If a
 list of formulas, \code{tidy_eval()} is applied to each of them in
 turn and the list of results is returned.}
 
@@ -77,7 +77,7 @@ tidy_eval(~ .env$cyl, mtcars)
 tidy_eval(~ mean(cyl), mtcars)
 # How can you change the variable that's being computed?
 # The easiest way is "unquote" with !!
-# See ?tidy_quote for more details
+# See ?quosure for more details
 var <- ~ cyl
-tidy_eval(tidy_quote(mean( !!var )), mtcars)
+tidy_eval(quosure(mean( !!var )), mtcars)
 }

@@ -58,6 +58,6 @@ is_quosureish(a ~ b)
 }
 \seealso{
 \link[=new_quosure]{as_quosure()} and \code{\link[=new_quosure]{new_quosure()}} for creating
-quosures, and \code{\link[=tidy_quote]{tidy_quote()}} or \code{\link[=tidy_eval]{tidy_eval()}} for information
+quosures, and \code{\link[=quosure]{quosure()}} or \code{\link[=tidy_eval]{tidy_eval()}} for information
 about the role of quosures in the tidy evaluation framework.
 }

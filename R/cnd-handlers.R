@@ -97,10 +97,10 @@ with_handlers_ <- function(.expr, .handlers = list(), .env = NULL) {
 
 interp_handlers <- function(f, inplace, exiting) {
   if (length(exiting)) {
-    f <- tidy_quote(tryCatch(!! f, !!! exiting))
+    f <- quosure(tryCatch(!! f, !!! exiting))
   }
   if (length(inplace)) {
-    f <- tidy_quote(withCallingHandlers(!! f, !!! inplace))
+    f <- quosure(withCallingHandlers(!! f, !!! inplace))
   }
   f
 }
