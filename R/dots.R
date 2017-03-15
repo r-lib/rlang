@@ -62,10 +62,11 @@ dots_splice <- function(...) {
 #' is more bare bones and returns the pairlist as is, without
 #' unquoting.
 #'
+#' @inheritParams dots_quosures
 #' @param ... Arguments to extract.
 #' @export
-dots_exprs <- function(...) {
-  map(dots_quos(...), f_rhs)
+dots_exprs <- function(..., .ignore_empty = "trailing") {
+  map(dots_quos(..., .ignore_empty = .ignore_empty), f_rhs)
 }
 
 #' Inspect dots

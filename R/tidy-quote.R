@@ -262,8 +262,11 @@ expr <- function(expr) {
 #'   name. If an integer, it is passed to the `width` argument of
 #'   `expr_text()`, if `TRUE`, the default width is used. See
 #'   [exprs_auto_name()].
-#' @return A list of quosures with class `quosures`.
-#' @name quosures
+#' @param .ignore_empty Whether to ignore empty arguments. If `TRUE`,
+#'   all empty arguments are ignored. If the string `"trailing"`, only
+#'   the last argument is ignored if it is empty. If `FALSE`, empty
+#'   arguments are returned as a quosure containing the [missing
+#'   argument][missing_arg].
 #' @export
 #' @examples
 #' # dots_quos() is like the singular version but allows quoting
@@ -301,9 +304,23 @@ expr <- function(expr) {
 #' # If you need the full LHS expression, use dots_definitions():
 #' dots <- dots_definitions(var = foo(baz) := bar(baz))
 #' dots$defs
-dots_quos <- function(..., .named = FALSE) {
+dots_quos <- function(..., .named = FALSE, .ignore_empty = "trailing") {
   dots <- dots_capture(...)
   dots <- dots_interp_lhs(dots)
+
+  n_dots <- length(dots)
+  if (n_dots && !is_false(.ignore_empty)) {
+    if (identical(.ignore_empty, "trailing")) {
+      if (is_quo_missing(dots[[n_dots]])) {
+        dots[[n_dots]] <- NULL
+      }
+    } else if (is_true(.ignore_empty)) {
+      dots <- discard(dots, is_quo_missing)
+    } else {
+      abort("`.ignore_empty` must be a boolean or the string `trailing`")
+    }
+  }
+
   if (.named) {
     width <- quo_names_width(.named)
     dots <- exprs_auto_name(dots, width)
@@ -336,6 +353,9 @@ quo_names_width <- function(named) {
   } else {
     abort("`.named` must be a scalar logical or a numeric")
   }
+}
+is_quo_missing <- function(quo) {
+  is_missing(f_rhs(quo))
 }
 
 #' @rdname quosures

@@ -4,10 +4,16 @@
 \alias{dots_exprs}
 \title{Extract dots forwarded as arguments.}
 \usage{
-dots_exprs(...)
+dots_exprs(..., .ignore_empty = "trailing")
 }
 \arguments{
 \item{...}{Arguments to extract.}
+
+\item{.ignore_empty}{Whether to ignore empty arguments. If \code{TRUE},
+all empty arguments are ignored. If the string \code{"trailing"}, only
+the last argument is ignored if it is empty. If \code{FALSE}, empty
+arguments are returned as a quosure containing the \link[=missing_arg]{missing
+argument}.}
 }
 \description{
 These functions return the arguments forwarded through \code{...}.

@@ -168,7 +168,13 @@ test_that("quosures are spliced before serialisation", {
 
 test_that("dots_quos() captures missing arguments", {
   q <- new_quosure(missing_arg(), empty_env())
-  expect_identical(dots_quos(, ), quos_list(q, q))
+  expect_identical(dots_quos(, , .ignore_empty = FALSE), set_names(list(q, q), c("", "")))
+})
+
+test_that("dots_quosures() ignore missing arguments", {
+  quo_missing <- new_quosure(missing_arg(), empty_env())
+  expect_identical(dots_quos(, , "foo", ), dots_list(quo_missing, quo_missing, ~"foo"))
+  expect_identical(dots_quos(, , "foo", , .ignore_empty = TRUE), dots_list(~"foo"))
 })
 
 test_that("formulas are guarded on capture", {

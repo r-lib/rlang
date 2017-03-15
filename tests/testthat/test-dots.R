@@ -28,7 +28,7 @@ test_that("unmatched dots return missing_arg()", {
   # Only occurs with partial stack climbing. Necessary for lazyeval
   # compatibility
   fn <- function(...) {
-    dots <- dots_exprs(...)
+    dots <- dots_exprs(..., .ignore_empty = FALSE)
     stack <- call_stack(2)
     dots_inspect_(dots, stack)
   }
@@ -43,7 +43,7 @@ test_that("empty dots return list()", {
 })
 
 test_that("dots_exprs() captures empty arguments", {
-  expect_identical(dots_exprs(, ), set_names(list(missing_arg(), missing_arg()), c("", "")))
+  expect_identical(dots_exprs(, , .ignore_empty = FALSE), set_names(list(missing_arg(), missing_arg()), c("", "")))
 })
 
 test_that("dots are always named", {
