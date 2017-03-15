@@ -26,7 +26,7 @@ compat_lazy <- function(lazy, env = caller_env(), warn = TRUE) {
     language = new_quosure(lazy, env),
     string = {
       if (warn) warn_text_se()
-      parse_f(lazy, env)
+      parse_quosure(lazy, env)
     },
     list =
       coerce_class(lazy, "quosure",
