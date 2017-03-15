@@ -68,7 +68,7 @@ test_that("dots can be spliced in", {
     var <- "var"
     list(
       out = g(!!! tidy_quotes(...), bar(baz), !!! list(a = var, b = ~foo)),
-      env = env()
+      env = get_env()
     )
   }
   g <- function(...) {
@@ -124,7 +124,7 @@ test_that("dots are forwarded to named arguments", {
   inner <- function(...) fn(...)
   fn <- function(x) tidy_capture(x)
 
-  env <- child_env(env())
+  env <- child_env(get_env())
   expect_identical(with_env(env, outer(foo(bar))), new_quosure(quote(foo(bar)), env))
 })
 

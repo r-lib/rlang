@@ -11,7 +11,7 @@ env_set(env, new_env)
 \code{env_set()}.}
 
 \item{new_env}{An environment to replace \code{env} with. Can be an
-object with an S method for \code{env()}.}
+object with an S method for \code{get_env()}.}
 }
 \description{
 \code{env_set()} does not work by side effect. The input is copied
@@ -21,16 +21,16 @@ before being assigned an environment, and left unchanged.
 # Create a function with a given environment:
 env <- child_env(base_env())
 fn <- with_env(env, function() NULL)
-identical(env(fn), env)
+identical(get_env(fn), env)
 
 # env_set() does not work by side effect. Setting a new environment
 # for fn has no effect on the original function:
 other_env <- child_env()
 env_set(fn, other_env)
-identical(env(fn), other_env)
+identical(get_env(fn), other_env)
 
 # env_set() returns a new function with a different environment, so
 # you need to assign the returned function to the `fn` name:
 fn <- env_set(fn, other_env)
-identical(env(fn), other_env)
+identical(get_env(fn), other_env)
 }

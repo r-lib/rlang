@@ -8,7 +8,7 @@ env_bury(env = caller_env(), data = list())
 }
 \arguments{
 \item{env}{An environment or an object with a S3 method for
-\code{env()}. If missing, the environment of the current evaluation
+\code{get_env()}. If missing, the environment of the current evaluation
 frame is returned.}
 
 \item{data}{A vector with unique names which defines bindings
@@ -24,8 +24,7 @@ inputs.
 }
 \examples{
 scope <- child_env(base_env(), list(a = 10))
-fn <- function() a
-env(fn) <- scope
+fn <- with_env(scope, function() a)
 
 # fn() sees a = 10:
 fn()

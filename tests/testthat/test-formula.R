@@ -21,7 +21,7 @@ test_that("is_formula works", {
 test_that("as_quosure() uses correct env", {
   fn <- function(expr, env = caller_env()) {
     f <- as_quosure(expr, env)
-    list(env = env(), f = g(f))
+    list(env = get_env(), f = g(f))
   }
   g <- function(expr, env = caller_env()) {
     as_quosure(expr, env)
@@ -31,7 +31,7 @@ test_that("as_quosure() uses correct env", {
 
   out_expr_default <- fn(quote(expr))
   out_f_default <- fn(f)
-  expect_identical(f_env(out_expr_default$f), env())
+  expect_identical(f_env(out_expr_default$f), get_env())
   expect_identical(f_env(out_f_default$f), f_env)
 
   user_env <- child_env()
@@ -101,7 +101,7 @@ test_that("can modify environment", {
 test_that("f_unwrap() substitutes values", {
   n <- 100
   f1 <- f_unwrap(~ x + n)
-  f2 <- new_quosure(quote(x + 100), env_parent(env()))
+  f2 <- new_quosure(quote(x + 100), env_parent(get_env()))
 
   expect_identical(f1, f2)
 })

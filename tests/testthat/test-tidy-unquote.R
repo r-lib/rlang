@@ -83,7 +83,7 @@ test_that("formulas are promised recursively during unquote", {
   var <- ~~letters
   expect_identical(tidy_quote(!!var), new_quosure(new_quosure(quote(~letters))))
 
-  var <- new_quosure(local(~letters), env = child_env(env()))
+  var <- new_quosure(local(~letters), env = child_env(get_env()))
   expect_identical(tidy_quote(!!var), new_quosure(var))
 })
 
@@ -164,7 +164,7 @@ test_that("fpromises are created for all informative formulas", {
   bar <- local(~bar)
 
   interpolated <- local(tidy_quote(list(!!foo, !!bar)))
-  expected <- new_quosure(bquote(list(.(f_rhs(new_quosure(foo))), .(f_rhs(new_quosure(bar))))), env = env(interpolated))
+  expected <- new_quosure(bquote(list(.(f_rhs(new_quosure(foo))), .(f_rhs(new_quosure(bar))))), env = get_env(interpolated))
   expect_identical(interpolated, expected)
 
   interpolated <- tidy_quote(!!interpolated)

@@ -11,7 +11,7 @@ env_assign_promise_(env = caller_env(), nm, expr, eval_env = caller_env())
 }
 \arguments{
 \item{env}{An environment or an object with a S3 method for
-\code{env()}. If missing, the environment of the current evaluation
+\code{get_env()}. If missing, the environment of the current evaluation
 frame is returned.}
 
 \item{nm}{The name of the binding.}

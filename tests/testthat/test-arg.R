@@ -165,7 +165,7 @@ test_that("explicit promise makes a formula", {
 })
 
 test_that("explicit promise works only one level deep", {
-  f <- function(x) list(env = env(), f = g(x))
+  f <- function(x) list(env = get_env(), f = g(x))
   g <- function(y) tidy_capture(y)
   out <- f(1 + 2 + 3)
   expected_f <- with_env(out$env, ~x)

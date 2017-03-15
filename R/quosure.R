@@ -82,7 +82,7 @@ is_one_sided <- function(x, lang_sym = sym_tilde) {
 #' @description
 #'
 #' Quosure objects wrap an [expression][is_expr] with a [lexical
-#' enclosure][env]. This is a powerful quoting (see [base::quote()]
+#' enclosure][get_env]. This is a powerful quoting (see [base::quote()]
 #' and [tidy_quote()]) mechanism that makes it possible to carry and
 #' manipulate expressions while making sure that its symbolic content
 #' (symbols and named calls, see [is_symbolic()]) is correctly looked
@@ -111,7 +111,7 @@ is_one_sided <- function(x, lang_sym = sym_tilde) {
 #' @seealso [is_quosure()]
 #' @export
 #' @examples
-#' f <- new_quosure(quote(mtcars), env("datasets"))
+#' f <- new_quosure(quote(mtcars), get_env("datasets"))
 #' f
 #' tidy_eval(f)
 #'

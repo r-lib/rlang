@@ -8,7 +8,7 @@ frame_position(frame, from = c("global", "current"))
 }
 \arguments{
 \item{frame}{The environment of a frame. Can be any object with a
-\code{\link[=env]{env()}} method. Note that for frame objects, the position from
+\code{\link[=get_env]{get_env()}} method. Note that for frame objects, the position from
 the global frame is simply \code{frame$pos}. Alternatively, \code{frame}
 can be an integer that represents the position on the stack (and
 is thus returned as is if \code{from} is "global".}

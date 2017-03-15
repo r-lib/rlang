@@ -239,7 +239,7 @@ is_primitive_lazy <- function(x) {
 
 #' Return the closure environment of a function.
 #'
-#' Closure environments define the scope of functions (see [env()]).
+#' Closure environments define the scope of functions (see [get_env()]).
 #' When a function call is evaluated, R creates an evaluation frame
 #' (see [eval_stack()]) that inherits from the closure environment.
 #' This makes all objects defined in the closure environment and all

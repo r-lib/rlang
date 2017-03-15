@@ -135,7 +135,7 @@ test_that("can unquote for old-style NSE functions", {
 
 test_that("formulas with empty environments are scoped in surrounding formula", {
   var <- local(~letters)
-  f <- new_quosure(var, env = child_env(env()))
+  f <- new_quosure(var, env = child_env(get_env()))
   expect_identical(tidy_eval(f), letters)
 
   expect_identical(tidy_eval(~~letters), letters)
@@ -154,7 +154,7 @@ test_that("two-sided formulas are not treated as fpromises", {
 
 test_that("formulas are evaluated in evaluation environment", {
   f <- tidy_eval(~(foo ~ bar), list(foo = "bar"))
-  expect_true(!identical(f_env(f), env()))
+  expect_true(!identical(f_env(f), get_env()))
 })
 
 test_that("evaluating a side preserves the other side", {
@@ -176,15 +176,15 @@ test_that("evaluation env is cleaned up", {
 
 test_that("inner formulas are rechained to evaluation env", {
   env <- child_env(NULL)
-  f1 <- tidy_quote(env$eval_env1 <- env())
+  f1 <- tidy_quote(env$eval_env1 <- get_env())
   f2 <- tidy_quote({
     !! f1
-    env$eval_env2 <- env()
+    env$eval_env2 <- get_env()
   })
 
   tidy_eval(f2, mtcars)
   expect_identical(env$eval_env1, env$eval_env2)
-  expect_true(env_inherits(env$eval_env2, env(f2)))
+  expect_true(env_inherits(env$eval_env2, get_env(f2)))
 })
 
 test_that("dyn scope is chained to lexical env", {

@@ -15,7 +15,7 @@ fn_env(x) <- value
 \item{value}{A new closure environment for the function.}
 }
 \description{
-Closure environments define the scope of functions (see \code{\link[=env]{env()}}).
+Closure environments define the scope of functions (see \code{\link[=get_env]{get_env()}}).
 When a function call is evaluated, R creates an evaluation frame
 (see \code{\link[=eval_stack]{eval_stack()}}) that inherits from the closure environment.
 This makes all objects defined in the closure environment and all

@@ -10,10 +10,10 @@
 #' they are eclipsed by synonyms (other bindings with the same names)
 #' in child environments.
 #'
-#' `env()` is a S3 generic. Methods are provided for functions,
+#' `get_env()` is a S3 generic. Methods are provided for functions,
 #' formulas and frames. If called with a missing argument, the
 #' environment of the current evaluation frame (see [eval_stack()]) is
-#' returned. If you call `env()` with an environment, it acts as the
+#' returned. If you call `get_env()` with an environment, it acts as the
 #' identity function and the environment is simply returned (this
 #' helps simplifying code when writing generic functions).
 #'
@@ -23,7 +23,7 @@
 #' returns the one which has [empty_env()] as parent.
 #'
 #' @param env An environment or an object with a S3 method for
-#'   `env()`. If missing, the environment of the current evaluation
+#'   `get_env()`. If missing, the environment of the current evaluation
 #'   frame is returned.
 #' @param parent A parent environment. Can be an object with a S3
 #'   method for `as_env()`.
@@ -37,18 +37,14 @@
 #' # the current frame is used:
 #' fn <- function() {
 #'   list(
-#'     env(call_frame()),
-#'     env()
+#'     get_env(call_frame()),
+#'     get_env()
 #'   )
 #' }
 #' fn()
 #'
 #' # Environment of closure functions:
-#' env(fn)
-#'
-#' # There is also an assignment operator:
-#' env(fn) <- base_env()
-#' env(fn)
+#' get_env(fn)
 #'
 #'
 #' # child_env() creates by default an environment whose parent is the
@@ -57,7 +53,7 @@
 #' # as parent:
 #' fn <- function() {
 #'   my_object <- "A"
-#'   child_env(env())
+#'   child_env(get_env())
 #' }
 #' frame_env <- fn()
 #'
@@ -115,7 +111,7 @@
 #' enclos_env <- child_env(pkg_env("rlang"))
 #' fn <- with_env(enclos_env, function() env_parent())
 #' identical(enclos_env, fn())
-env <- function(env = caller_env()) {
+get_env <- function(env = caller_env()) {
   target <- "environment"
   coerce_type(env, target,
     environment = env,
@@ -127,25 +123,17 @@ env <- function(env = caller_env()) {
   )
 }
 
-#' Assignment operator for environments.
-#' @param x An object with an `env_set` method.
-#' @param value The new environment.
-#' @export
-`env<-` <- function(x, value) {
-  env_set(x, value)
-}
-
-#' @rdname env
+#' @rdname get_env
 #' @export
 child_env <- function(parent = NULL, data = list()) {
   env <- new.env(parent = as_env(parent))
   env_bind(env, data)
 }
 
-#' @rdname env
+#' @rdname get_env
 #' @export
 env_parent <- function(env = caller_env(), n = 1) {
-  env_ <- rlang::env(env)
+  env_ <- get_env(env)
 
   while (n > 0) {
     if (identical(env_, empty_env())) {
@@ -158,10 +146,10 @@ env_parent <- function(env = caller_env(), n = 1) {
   env_
 }
 
-#' @rdname env
+#' @rdname get_env
 #' @export
 env_tail <- function(env = caller_env()) {
-  env_ <- rlang::env(env)
+  env_ <- get_env(env)
   next_env <- parent.env(env_)
 
   while(!identical(next_env, empty_env())) {
@@ -256,32 +244,32 @@ as_env.default <- function(x, parent = NULL) {
 #' @param env An environment or an object with a S3 method for
 #'   `env_set()`.
 #' @param new_env An environment to replace `env` with. Can be an
-#'   object with an S method for `env()`.
+#'   object with an S method for `get_env()`.
 #' @export
 #' @examples
 #' # Create a function with a given environment:
 #' env <- child_env(base_env())
 #' fn <- with_env(env, function() NULL)
-#' identical(env(fn), env)
+#' identical(get_env(fn), env)
 #'
 #' # env_set() does not work by side effect. Setting a new environment
 #' # for fn has no effect on the original function:
 #' other_env <- child_env()
 #' env_set(fn, other_env)
-#' identical(env(fn), other_env)
+#' identical(get_env(fn), other_env)
 #'
 #' # env_set() returns a new function with a different environment, so
 #' # you need to assign the returned function to the `fn` name:
 #' fn <- env_set(fn, other_env)
-#' identical(env(fn), other_env)
+#' identical(get_env(fn), other_env)
 env_set <- function(env, new_env) {
   switch_type(env,
     quote = ,
     closure = {
-      environment(env) <- rlang::env(new_env)
+      environment(env) <- get_env(new_env)
       env
     },
-    environment = rlang::env(new_env),
+    environment = get_env(new_env),
     abort(paste0(
       "Cannot set environment for object of type`", type_of(env), "`"
     ))
@@ -289,13 +277,13 @@ env_set <- function(env, new_env) {
 }
 
 env_set_parent <- function(env, new_env) {
-  env_ <- rlang::env(env)
-  parent.env(env_) <- rlang::env(new_env)
+  env_ <- get_env(env)
+  parent.env(env_) <- get_env(new_env)
   env
 }
 `env_parent<-` <- function(x, value) {
-  env_ <- rlang::env(x)
-  parent.env(env_) <- rlang::env(value)
+  env_ <- get_env(x)
+  parent.env(env_) <- get_env(value)
   x
 }
 
@@ -312,7 +300,7 @@ env_set_parent <- function(env, new_env) {
 #' bindings to a closure function, the environment of the function is
 #' modified in place.
 #'
-#' @inheritParams env
+#' @inheritParams get_env
 #' @param nm The name of the binding.
 #' @param x The value of the binding.
 #' @param ... Pairs of unique names and R objects used to define new
@@ -322,13 +310,12 @@ env_set_parent <- function(env, new_env) {
 #' @export
 #' @examples
 #' # Create a function that uses undefined bindings:
-#' fn <- function() list(a, b, c, d, e)
-#' env(fn) <- child_env(base_env())
+#' fn <- with_env(child_env("base"), function() list(a, b, c, d, e))
 #'
 #' # This would throw a scoping error if run:
 #' # fn()
 #'
-#' data <- stats::setNames(letters, letters)
+#' data <- set_names(letters, letters)
 #' env_bind(fn, data)
 #'
 #' # fn() now sees the objects
@@ -339,7 +326,7 @@ env_set_parent <- function(env, new_env) {
 #' fn <- env_define(fn, b = "2", c = "3")
 #' fn()
 env_assign <- function(env = caller_env(), nm, x) {
-  env_ <- rlang::env(env)
+  env_ <- get_env(env)
   base::assign(nm, x, envir = env_)
   env
 }
@@ -349,7 +336,7 @@ env_bind <- function(env = caller_env(), data = list()) {
   stopifnot(is_dictionary(data))
   nms <- names(data)
 
-  env_ <- rlang::env(env)
+  env_ <- get_env(env)
   for (i in seq_along(data)) {
     base::assign(nms[[i]], data[[i]], envir = env_)
   }
@@ -406,7 +393,7 @@ env_assign_promise_ <- function(env = caller_env(), nm, expr,
     x = nm,
     value = f_rhs(f),
     eval.env = f_env(f),
-    assign.env = rlang::env(env)
+    assign.env = get_env(env)
   )
   do.call("delayedAssign", args)
 }
@@ -457,8 +444,7 @@ env_assign_active <- function(env = caller_env(), nm, fn) {
 #' @export
 #' @examples
 #' scope <- child_env(base_env(), list(a = 10))
-#' fn <- function() a
-#' env(fn) <- scope
+#' fn <- with_env(scope, function() a)
 #'
 #' # fn() sees a = 10:
 #' fn()
@@ -468,7 +454,7 @@ env_assign_active <- function(env = caller_env(), nm, fn) {
 #' fn <- env_bury(fn, list(a = 1000))
 #' fn()
 env_bury <- function(env = caller_env(), data = list()) {
-  env_ <- rlang::env(env)
+  env_ <- get_env(env)
   env_ <- new.env(parent = env_)
 
   env_bind(env_, data)
@@ -490,7 +476,7 @@ env_bury <- function(env = caller_env(), data = list()) {
 #'   environment modified in place.
 #' @export
 #' @examples
-#' data <- stats::setNames(letters, letters)
+#' data <- set_names(letters, letters)
 #' env_bind(environment(), data)
 #' env_has(environment(), letters)
 #'
@@ -505,7 +491,7 @@ env_bury <- function(env = caller_env(), data = list()) {
 #' env_unbind(env, "foo", inherit = TRUE)
 #' env_has(env, "foo", inherit = TRUE)
 env_unbind <- function(env = caller_env(), nms, inherit = FALSE) {
-  env_ <- rlang::env(env)
+  env_ <- get_env(env)
   if (inherit) {
     while(any(env_has(env_, nms, inherit = TRUE))) {
       rm(list = nms, envir = env, inherits = TRUE)
@@ -534,7 +520,7 @@ env_unbind <- function(env = caller_env(), nms, inherit = FALSE) {
 #' env_has(env, "foo")
 #' env_has(env, "foo", inherit = TRUE)
 env_has <- function(env = caller_env(), nms, inherit = FALSE) {
-  env_ <- rlang::env(env)
+  env_ <- get_env(env)
   map_lgl(nms, exists, envir = env_, inherits = inherit)
 }
 
@@ -543,7 +529,7 @@ env_has <- function(env = caller_env(), nms, inherit = FALSE) {
 #' `env_get()` extracts an object from an enviroment `env`. By
 #' default, it does not look in the parent environments.
 #'
-#' @inheritParams env
+#' @inheritParams get_env
 #' @inheritParams env_has
 #' @param nm The name of a binding.
 #' @return An object if it exists. Otherwise, throws an error.
@@ -558,7 +544,7 @@ env_has <- function(env = caller_env(), nms, inherit = FALSE) {
 #' # However `foo` can be fetched in the parent environment:
 #' env_get(env, "foo", inherit = TRUE)
 env_get <- function(env = caller_env(), nm, inherit = FALSE) {
-  env_ <- rlang::env(env)
+  env_ <- get_env(env)
   get(nm, envir = env, inherits = inherit)
 }
 
@@ -747,7 +733,7 @@ ns_env_name <- function(pkg = NULL) {
   if (is_null(pkg)) {
     pkg <- with_env(caller_env(), ns_env())
   } else if (is_function(pkg)) {
-    pkg <- env(pkg)
+    pkg <- get_env(pkg)
   }
   unname(getNamespaceName(pkg))
 }
@@ -784,7 +770,7 @@ is_installed <- function(pkg) {
 #'
 #' @inheritParams expr_eval
 #' @param env An environment within which to evaluate `expr`. Can be
-#'   an object with an [env()] method.
+#'   an object with an [get_env()] method.
 #' @export
 #' @examples
 #' # with_env() is handy to create formulas with a given environment:
@@ -794,13 +780,13 @@ is_installed <- function(pkg) {
 #'
 #' # Or functions with a given enclosure:
 #' fn <- with_env(env, function() NULL)
-#' identical(env(fn), env)
+#' identical(get_env(fn), env)
 #'
 #'
 #' # Unlike eval() it doesn't create duplicates on the evaluation
 #' # stack. You can thus use it e.g. to create non-local returns:
 #' fn <- function() {
-#'   g(env())
+#'   g(get_env())
 #'   "normal return"
 #' }
 #' g <- function(env) {
@@ -809,11 +795,11 @@ is_installed <- function(pkg) {
 #' fn()
 #'
 #'
-#' # Since env is passed to env(), it can be any object with an env()
-#' # method. For strings, the pkg_env() is returned:
+#' # Since env is passed to get_env(), it can be any object with a
+#' # get_env() method. For strings, the pkg_env() is returned:
 #' with_env("base", ~mtcars)
 with_env <- function(env, expr) {
-  .Call(rlang_eval, substitute(expr), rlang::env(env))
+  .Call(rlang_eval, substitute(expr), get_env(env))
 }
 
 #' @rdname with_env

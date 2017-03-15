@@ -8,7 +8,7 @@ env_assign_active(env = caller_env(), nm, fn)
 }
 \arguments{
 \item{env}{An environment or an object with a S3 method for
-\code{env()}. If missing, the environment of the current evaluation
+\code{get_env()}. If missing, the environment of the current evaluation
 frame is returned.}
 
 \item{nm}{The name of the binding.}

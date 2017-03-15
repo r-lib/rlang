@@ -8,7 +8,7 @@ env_unbind(env = caller_env(), nms, inherit = FALSE)
 }
 \arguments{
 \item{env}{An environment or an object with a S3 method for
-\code{env()}. If missing, the environment of the current evaluation
+\code{get_env()}. If missing, the environment of the current evaluation
 frame is returned.}
 
 \item{nms}{A character vector containing the names of the bindings
@@ -27,7 +27,7 @@ it ignores the parent environments of \code{env} by default. Set
 \code{inherit} to \code{TRUE} to track down bindings in parent environments.
 }
 \examples{
-data <- stats::setNames(letters, letters)
+data <- set_names(letters, letters)
 env_bind(environment(), data)
 env_has(environment(), letters)
 

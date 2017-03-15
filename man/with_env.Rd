@@ -11,7 +11,7 @@ locally(expr)
 }
 \arguments{
 \item{env}{An environment within which to evaluate \code{expr}. Can be
-an object with an \code{\link[=env]{env()}} method.}
+an object with an \code{\link[=get_env]{get_env()}} method.}
 
 \item{expr}{An expression to evaluate.}
 }
@@ -37,13 +37,13 @@ identical(f_env(f), env)
 
 # Or functions with a given enclosure:
 fn <- with_env(env, function() NULL)
-identical(env(fn), env)
+identical(get_env(fn), env)
 
 
 # Unlike eval() it doesn't create duplicates on the evaluation
 # stack. You can thus use it e.g. to create non-local returns:
 fn <- function() {
-  g(env())
+  g(get_env())
   "normal return"
 }
 g <- function(env) {
@@ -52,7 +52,7 @@ g <- function(env) {
 fn()
 
 
-# Since env is passed to env(), it can be any object with an env()
-# method. For strings, the pkg_env() is returned:
+# Since env is passed to get_env(), it can be any object with a
+# get_env() method. For strings, the pkg_env() is returned:
 with_env("base", ~mtcars)
 }

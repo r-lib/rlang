@@ -14,7 +14,7 @@ env_define(env = caller_env(), ...)
 }
 \arguments{
 \item{env}{An environment or an object with a S3 method for
-\code{env()}. If missing, the environment of the current evaluation
+\code{get_env()}. If missing, the environment of the current evaluation
 frame is returned.}
 
 \item{nm}{The name of the binding.}
@@ -45,13 +45,12 @@ modified in place.
 }
 \examples{
 # Create a function that uses undefined bindings:
-fn <- function() list(a, b, c, d, e)
-env(fn) <- child_env(base_env())
+fn <- with_env(child_env("base"), function() list(a, b, c, d, e))
 
 # This would throw a scoping error if run:
 # fn()
 
-data <- stats::setNames(letters, letters)
+data <- set_names(letters, letters)
 env_bind(fn, data)
 
 # fn() now sees the objects

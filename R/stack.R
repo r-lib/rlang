@@ -484,7 +484,7 @@ sys_frame <- function(n) {
 #' as those will be discarded.
 #'
 #' @param frame The environment of a frame. Can be any object with a
-#'   [env()] method. Note that for frame objects, the position from
+#'   [get_env()] method. Note that for frame objects, the position from
 #'   the global frame is simply `frame$pos`. Alternatively, `frame`
 #'   can be an integer that represents the position on the stack (and
 #'   is thus returned as is if `from` is "global".
@@ -529,7 +529,7 @@ frame_position_global <- function(frame, stack = NULL) {
     return(frame)
   }
 
-  frame <- env(frame)
+  frame <- get_env(frame)
   stack <- stack %||% stack_trim(eval_stack(), n = 2)
   envs <- pluck(stack, "env")
 
@@ -631,14 +631,14 @@ stack_trim <- function(stack, n = 1) {
 #' perform non-local jumps.
 #'
 #' @param frame An environment, a frame object, or any object with an
-#'   [env()] method. The environment should be an evaluation
+#'   [get_env()] method. The environment should be an evaluation
 #'   environment currently on the stack.
 #' @param value The return value.
 #' @export
 #' @examples
 #' # Passing fn() evaluation frame to g():
 #' fn <- function() {
-#'   val <- g(env())
+#'   val <- g(get_env())
 #'   cat("g returned:", val, "\n")
 #'   "normal return"
 #' }
@@ -657,7 +657,7 @@ return_from <- function(frame, value = NULL) {
     frame <- eval_frame(frame)
   }
 
-  exit_env <- env(frame)
+  exit_env <- get_env(frame)
   expr <- tidy_quote_expr(return(!!value))
   expr_eval(expr, exit_env)
 }
@@ -668,7 +668,7 @@ return_to <- function(frame, value = NULL) {
   if (is_integerish(frame)) {
     prev_pos <- frame - 1
   } else {
-    env <- env(frame)
+    env <- get_env(frame)
     distance <- frame_position_current(env)
     prev_pos <- distance - 1
   }

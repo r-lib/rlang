@@ -49,11 +49,11 @@ expr_eval(expr, env)
 fn <- function(eval_fn) {
   list(
     returned_env = middle(eval_fn),
-    actual_env = env()
+    actual_env = get_env()
   )
 }
 middle <- function(eval_fn) {
-  deep(eval_fn, env())
+  deep(eval_fn, get_env())
 }
 deep <- function(eval_fn, eval_env) {
   expr <- quote(parent.frame())

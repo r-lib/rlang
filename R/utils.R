@@ -8,17 +8,6 @@ substitute_ <- function(x, env) {
   expr_eval(call)
 }
 
-get_env <- function(x) {
-  if (is_frame(x)) {
-    x <- x$env
-  } else if (is_formula(x)) {
-    x <- environment(x)
-  }
-  stopifnot(is.environment(x))
-
-  x
-}
-
 drop_last <- function(x) {
   x[-length(x)]
 }
