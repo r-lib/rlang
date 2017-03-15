@@ -107,7 +107,7 @@ is_binary_lang <- function(x, name = NULL) {
 as_lang <- function(x) {
   coerce_type(x, "language",
     symbol = new_language(x),
-    quote = as_lang(f_rhs(x)),
+    quosure = as_lang(f_rhs(x)),
     string = parse_expr(x),
     language = x
   )

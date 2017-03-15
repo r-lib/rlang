@@ -21,7 +21,7 @@ compat_lazy <- function(lazy, env = caller_env(), warn = TRUE) {
   if (warn) warn_underscored()
 
   coerce_type(lazy, "quosure",
-    quote = lazy,
+    quosure = lazy,
     symbol = ,
     language = new_quosure(lazy, env),
     string = {

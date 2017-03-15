@@ -33,7 +33,7 @@ test_that("type_of() returns correct type", {
   expect_identical(type_of(base::`$`), "primitive")
   expect_identical(type_of(base::list), "primitive")
   expect_identical(type_of(base::eval), "closure")
-  expect_identical(type_of(~foo), "quote")
+  expect_identical(type_of(~foo), "quosure")
   expect_identical(type_of(quote(foo())), "language")
 })
 
