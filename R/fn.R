@@ -14,7 +14,7 @@
 #' @export
 #' @examples
 #' f <- function(x) x + 3
-#' g <- new_fn(alist(x = ), quote(x + 3))
+#' g <- new_function(alist(x = ), quote(x + 3))
 #'
 #' # The components of the functions are identical
 #' identical(formals(f), formals(g))
@@ -27,7 +27,7 @@
 #' attr(f, "srcref") <- NULL
 #' # Now they are:
 #' stopifnot(identical(f, g))
-new_fn <- function(args, body, env = caller_env()) {
+new_function <- function(args, body, env = caller_env()) {
   stopifnot(all(have_names(args)), is_expr(body), is_env(env))
 
   args <- as.pairlist(args)
@@ -201,7 +201,7 @@ as_closure <- function(x) {
       names(args)[(names(args) == "...")] <- ""
 
       prim_call <- lang(fn_name, .args = args)
-      new_fn(fmls, prim_call, base_env())
+      new_function(fmls, prim_call, base_env())
     },
     string =
       as_closure(get(x, envir = caller_env(), x, mode = "function"))
@@ -314,5 +314,5 @@ as_function.formula <- function(.f, ...) {
     abort("Formula must be one sided")
   }
   args <- list(... = arg_missing(), .x = quote(..1), .y = quote(..2), . = quote(..1))
-  new_fn(args, f_rhs(.f), f_env(.f))
+  new_function(args, f_rhs(.f), f_env(.f))
 }
