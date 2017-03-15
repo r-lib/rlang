@@ -21,8 +21,8 @@ frame is returned.}
 
 \item{x}{The value of the binding.}
 
-\item{data}{A vector with unique names which defines bindings
-(pairs of name and value). See \code{\link[=is_dictionary]{is_dictionary()}}.}
+\item{data}{Uniquely named bindings. See \code{\link[=is_dictionary]{is_dictionary()}}.
+Dots have \link[=dots_list]{explicit-splicing semantics}.}
 
 \item{...}{Pairs of unique names and R objects used to define new
 bindings.}

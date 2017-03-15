@@ -21,7 +21,7 @@ quosure.}
 \item{x}{An object to convert.}
 }
 \description{
-Quosure objects wrap an \link[=is_expr]{expression} with a \link[=get_env]{lexical
+Quosure objects wrap an \link[=is_expr]{expression} with a \link[=env]{lexical
 enclosure}. This is a powerful quoting (see \code{\link[base:quote]{base::quote()}}
 and \code{\link[=tidy_quote]{tidy_quote()}}) mechanism that makes it possible to carry and
 manipulate expressions while making sure that its symbolic content

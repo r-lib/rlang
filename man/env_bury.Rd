@@ -11,8 +11,8 @@ env_bury(env = caller_env(), data = list())
 \code{get_env()}. If missing, the environment of the current evaluation
 frame is returned.}
 
-\item{data}{A vector with unique names which defines bindings
-(pairs of name and value). See \code{\link[=is_dictionary]{is_dictionary()}}.}
+\item{data}{Uniquely named bindings. See \code{\link[=is_dictionary]{is_dictionary()}}.
+Dots have \link[=dots_list]{explicit-splicing semantics}.}
 }
 \value{
 An object associated with the new environment.

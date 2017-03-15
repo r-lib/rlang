@@ -129,3 +129,9 @@ test_that("env_inherits() finds ancestor", {
 
   expect_true(env_inherits(empty_env(), empty_env()))
 })
+
+test_that("env() creates child of current environment", {
+  env <- env(a = 1, b = "foo")
+  expect_identical(env_parent(env), get_env())
+  expect_identical(env$b, "foo")
+})

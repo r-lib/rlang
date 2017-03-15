@@ -1,4 +1,4 @@
-#' Get an environment.
+#' Get or create an environment.
 #'
 #' Environments are objects that create a scope for evaluation of R
 #' code. Reification of scope is one of the most powerful feature of
@@ -10,14 +10,17 @@
 #' they are eclipsed by synonyms (other bindings with the same names)
 #' in child environments.
 #'
-#' `get_env()` is a S3 generic. Methods are provided for functions,
-#' formulas and frames. If called with a missing argument, the
-#' environment of the current evaluation frame (see [eval_stack()]) is
-#' returned. If you call `get_env()` with an environment, it acts as the
-#' identity function and the environment is simply returned (this
-#' helps simplifying code when writing generic functions).
+#' `get_env()` dispatches internally. Methods are provided for
+#' functions, formulas and frames. If called with a missing argument,
+#' the environment of the current evaluation frame (see
+#' [eval_stack()]) is returned. If you call `get_env()` with an
+#' environment, it acts as the identity function and the environment
+#' is simply returned (this helps simplifying code when writing
+#' generic functions).
 #'
-#' `child_env()` creates a new environment. `env_parent()` returns the
+#' `env()` and `child_env()` create new environments. While `env()`
+#' always creates a child of the current environment, `child_env()`
+#' lets you choose a parent environment. `env_parent()` returns the
 #' parent environment of `env` if called with `n = 1`, the grandparent
 #' with `n = 2`, etc. `env_tail()` searches through the parents and
 #' returns the one which has [empty_env()] as parent.
@@ -27,8 +30,8 @@
 #'   frame is returned.
 #' @param parent A parent environment. Can be an object with a S3
 #'   method for `as_env()`.
-#' @param data A vector with unique names which defines bindings
-#'   (pairs of name and value). See [is_dictionary()].
+#' @param ...,data Uniquely named bindings. See [is_dictionary()].
+#'   Dots have [explicit-splicing semantics][dots_list].
 #' @param n The number of generations to go through.
 #' @seealso `scoped_env`, [env_has()], [env_assign()].
 #' @export
@@ -46,6 +49,10 @@
 #' # Environment of closure functions:
 #' get_env(fn)
 #'
+#' # env() creates a new environment which has the current environment
+#' # as parent. It takes dots with explicit splicing:
+#' env(a = 1, b = "foo")
+#' env(a = 1, spliced(list(b = "foo", c = "bar")))
 #'
 #' # child_env() creates by default an environment whose parent is the
 #' # empty environment. Here we return a new environment that has
@@ -111,6 +118,19 @@
 #' enclos_env <- child_env(pkg_env("rlang"))
 #' fn <- with_env(enclos_env, function() env_parent())
 #' identical(enclos_env, fn())
+env <- function(...) {
+  env <- new.env(parent = caller_env())
+  env_bind(env, dots_list(...))
+}
+#' @rdname env
+#' @export
+child_env <- function(parent = NULL, data = list()) {
+  env <- new.env(parent = as_env(parent))
+  env_bind(env, data)
+}
+
+#' @rdname env
+#' @export
 get_env <- function(env = caller_env()) {
   target <- "environment"
   coerce_type(env, target,
@@ -123,14 +143,7 @@ get_env <- function(env = caller_env()) {
   )
 }
 
-#' @rdname get_env
-#' @export
-child_env <- function(parent = NULL, data = list()) {
-  env <- new.env(parent = as_env(parent))
-  env_bind(env, data)
-}
-
-#' @rdname get_env
+#' @rdname env
 #' @export
 env_parent <- function(env = caller_env(), n = 1) {
   env_ <- get_env(env)
@@ -146,7 +159,7 @@ env_parent <- function(env = caller_env(), n = 1) {
   env_
 }
 
-#' @rdname get_env
+#' @rdname env
 #' @export
 env_tail <- function(env = caller_env()) {
   env_ <- get_env(env)
