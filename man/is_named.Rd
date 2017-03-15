@@ -3,34 +3,34 @@
 \name{is_named}
 \alias{is_named}
 \alias{is_dictionary}
-\alias{have_names}
+\alias{have_name}
 \title{Is object named?}
 \usage{
 is_named(x)
 
 is_dictionary(x)
 
-have_names(x)
+have_name(x)
 }
 \arguments{
 \item{x}{An object to test.}
 }
 \value{
 \code{is_named()} and \code{is_dictionary()} are scalar predicates
-and return \code{TRUE} or \code{FALSE}. \code{have_names()} is vectorised and
+and return \code{TRUE} or \code{FALSE}. \code{have_name()} is vectorised and
 returns a logical vector as long as the input.
 }
 \description{
 \code{is_named()} checks that \code{x} has names attributes, and that none of
 the names are missing or empty (\code{NA} or \code{""}). \code{is_dictionary()}
 checks that an object is a dictionary: that it has actual names and
-in addition that there are no duplicated names. \code{have_names()}
+in addition that there are no duplicated names. \code{have_name()}
 is a vectorised version of \code{is_named()}.
 }
 \examples{
 # A data frame usually has valid, unique names
 is_named(mtcars)
-have_names(mtcars)
+have_name(mtcars)
 is_dictionary(mtcars)
 
 # But data frames can also have duplicated columns:
@@ -39,7 +39,7 @@ is_dictionary(dups)
 
 # The names are still valid:
 is_named(dups)
-have_names(dups)
+have_name(dups)
 
 
 # For empty objects the semantics are slightly different.
@@ -57,12 +57,12 @@ invalid <- dups
 names(invalid)[2] <- ""
 names(invalid)[5] <- NA
 
-# is_named() performs a global check while have_names() can show you
+# is_named() performs a global check while have_name() can show you
 # where the problem is:
 is_named(invalid)
-have_names(invalid)
+have_name(invalid)
 
-# have_names() will work even with vectors that don't have a names
+# have_name() will work even with vectors that don't have a names
 # attribute:
-have_names(letters)
+have_name(letters)
 }

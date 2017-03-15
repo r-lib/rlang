@@ -204,7 +204,7 @@ lang_modify <- function(.call = caller_frame(), ..., .args = list(),
   }
 
   # Named arguments can be spliced by R
-  named <- have_names(args)
+  named <- have_name(args)
   for (nm in names(args)[named]) {
     call[[nm]] <- args[[nm]]
   }

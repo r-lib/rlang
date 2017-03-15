@@ -48,7 +48,7 @@ compat_lazy_dots <- function(dots, env, ..., .named = FALSE) {
     warn <- FALSE
   }
 
-  named <- have_names(dots)
+  named <- have_name(dots)
   if (.named && any(!named)) {
     nms <- map_chr(dots[!named], f_text)
     names(dots)[!named] <- nms

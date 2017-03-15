@@ -357,11 +357,11 @@ as_definition <- function(dot) {
 #' @param width Maximum width of names.
 #' @export
 exprs_auto_name <- function(exprs, width = 60L) {
-  have_names <- have_names(exprs)
+  have_name <- have_name(exprs)
 
-  if (any(!have_names)) {
-    nms <- map_chr(exprs[!have_names], quo_text, width = width)
-    names(exprs)[!have_names] <- nms
+  if (any(!have_name)) {
+    nms <- map_chr(exprs[!have_name], quo_text, width = width)
+    names(exprs)[!have_name] <- nms
   }
 
   exprs
