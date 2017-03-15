@@ -11,7 +11,7 @@
 #' evaluated. It is thus necessary to capture not only the R
 #' expression supplied as argument in a function call, but also the
 #' evaluation environment of the call site. `tidy_capture()` and
-#' `tidy_quotes()` make it easy to record this information within
+#' `dots_quosures()` make it easy to record this information within
 #' formulas.
 #'
 #' @section Non-standard evaluation:
@@ -59,7 +59,7 @@
 #'   expressions were not necessarily supplied in the last call
 #'   frame. In general, the call site of argument passed through dots
 #'   can be anywhere between the current and global frames. For this
-#'   reason, it is recommended to always use `tidy_quotes()` rather
+#'   reason, it is recommended to always use `dots_quosures()` rather
 #'   than `substitute()` and `caller_env()` or `parent.frame()`, since
 #'   the former will encode the appropriate evaluation environments
 #'   within the formulas.
@@ -67,8 +67,8 @@
 #' @param x,... Arguments to capture.
 #' @export
 #' @return `tidy_capture()` returns a formula; see also
-#'   `tidy_quotes()` for "capturing" dots as a list of formulas.
-#' @seealso [tidy_quotes()] for capturing dots, [expr_label()] and
+#'   `dots_quosures()` for "capturing" dots as a list of formulas.
+#' @seealso [dots_quosures()] for capturing dots, [expr_label()] and
 #'   [expr_text()] for capturing labelling information.
 #' @examples
 #' # tidy_capture() returns a formula:
@@ -85,7 +85,7 @@ tidy_capture <- function(x) {
   new_quosure(expr, arg$env)
 }
 
-tidy_capture_dots <- function(...) {
+dots_capture <- function(...) {
   info <- captureDots()
   dots <- map(info, dot_f)
 

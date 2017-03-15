@@ -72,7 +72,7 @@
 #'   environment and inlined in the expression.
 #' @return A formula whose right-hand side contains the quoted
 #'   expression supplied as argument.
-#' @seealso [tidy_quotes()] for capturing several expressions,
+#' @seealso [dots_quosures()] for capturing several expressions,
 #'   including from dots; [expr()] for quoting a raw
 #'   expression with quasiquotation; and [tidy_interp()] for unquoting
 #'   an already quoted expression or an existing formula.
@@ -235,17 +235,17 @@ expr <- function(expr) {
 
 #' Tidy quotation of multiple expressions and dots.
 #'
-#' `tidy_quotes()` quotes its arguments and returns them as a list of
+#' `dots_quosures()` quotes its arguments and returns them as a list of
 #' tidy quotes. It is especially useful to "capture" arguments
 #' forwarded through `...`.
 #'
-#' Both `tidy_quotes` and `tidy_defs()` have specific support for
+#' Both `dots_quosures` and `tidy_defs()` have specific support for
 #' definition expressions of the type `var := expr`, with some
 #' differences:
 #'
 #'\describe{
-#'  \item{`tidy_quotes()`}{
-#'    When `:=` definitions are supplied to `tidy_quotes()`,
+#'  \item{`dots_quosures()`}{
+#'    When `:=` definitions are supplied to `dots_quosures()`,
 #'    they are treated as a synonym of argument assignment
 #'    `=`. On the other hand, they allow unquoting operators on
 #'    the left-hand side, which makes it easy to assign names
@@ -253,7 +253,7 @@ expr <- function(expr) {
 #'  \item{`tidy_defs()`}{
 #'    This dots capturing function returns definitions as is. Unquote
 #'    operators are processed on capture, in both the LHS and the
-#'    RHS. Unlike `tidy_quotes()`, it allows named definitions.}
+#'    RHS. Unlike `dots_quosures()`, it allows named definitions.}
 #' }
 #' @inheritParams tidy_capture
 #' @param .named Whether to ensure all dots are named. Unnamed
@@ -263,43 +263,43 @@ expr <- function(expr) {
 #'   [exprs_auto_name()].
 #' @export
 #' @examples
-#' # tidy_quotes() is like the singular version but allows quoting
+#' # dots_quosures() is like the singular version but allows quoting
 #' # several arguments:
-#' tidy_quotes(foo(), bar(baz), letters[1:2], !! letters[1:2])
+#' dots_quosures(foo(), bar(baz), letters[1:2], !! letters[1:2])
 #'
 #' # It is most useful when used with dots. This allows quoting
 #' # expressions across different levels of function calls:
-#' fn <- function(...) tidy_quotes(...)
+#' fn <- function(...) dots_quosures(...)
 #' fn(foo(bar), baz)
 #'
-#' # Note that tidy_quotes() does not check for duplicate named
+#' # Note that dots_quosures() does not check for duplicate named
 #' # arguments:
-#' fn <- function(...) tidy_quotes(x = x, ...)
+#' fn <- function(...) dots_quosures(x = x, ...)
 #' fn(x = a + b)
 #'
 #'
 #' # Dots can be spliced in:
 #' args <- list(x = 1:3, y = ~var)
-#' tidy_quotes(!!! args, z = 10L)
+#' dots_quosures(!!! args, z = 10L)
 #'
 #' # Raw expressions are turned to formulas:
 #' args <- alist(x = foo, y = bar)
-#' tidy_quotes(!!! args)
+#' dots_quosures(!!! args)
 #'
 #'
 #' # Definitions are treated similarly to named arguments:
-#' tidy_quotes(x := expr, y = expr)
+#' dots_quosures(x := expr, y = expr)
 #'
 #' # However, the LHS of definitions can be unquoted. The return value
 #' # must be a symbol or a string:
 #' var <- "foo"
-#' tidy_quotes(!!var := expr)
+#' dots_quosures(!!var := expr)
 #'
 #' # If you need the full LHS expression, use tidy_defs():
 #' dots <- tidy_defs(var = foo(baz) := bar(baz))
 #' dots$defs
-tidy_quotes <- function(..., .named = FALSE) {
-  dots <- tidy_capture_dots(...)
+dots_quosures <- function(..., .named = FALSE) {
+  dots <- dots_capture(...)
   dots <- dots_interp_lhs(dots)
   if (.named) {
     width <- quo_names_width(.named)
@@ -317,10 +317,10 @@ quo_names_width <- function(named) {
   }
 }
 
-#' @rdname tidy_quotes
+#' @rdname dots_quosures
 #' @export
 tidy_defs <- function(..., .named = FALSE) {
-  dots <- tidy_capture_dots(...)
+  dots <- dots_capture(...)
   if (.named) {
     width <- quo_names_width(.named)
     dots <- exprs_auto_name(dots, width)

@@ -1,7 +1,7 @@
 context("tidy capture")
 
 test_that("explicit dots make a list of formulas", {
-  fs <- tidy_quotes(x = 1 + 2, y = 2 + 3)
+  fs <- dots_quosures(x = 1 + 2, y = 2 + 3)
   f1 <- ~ 1 + 2
   f2 <- ~ 2 + 3
 
@@ -9,9 +9,9 @@ test_that("explicit dots make a list of formulas", {
   expect_identical(fs$y, f2)
 })
 
-test_that("tidy_quotes() produces correct formulas", {
+test_that("dots_quosures() produces correct formulas", {
   fn <- function(x = a + b, ...) {
-    list(dots = tidy_quotes(x = x, y = a + b, ...), env = environment())
+    list(dots = dots_quosures(x = x, y = a + b, ...), env = environment())
   }
   out <- fn(z = a + b)
 
@@ -32,7 +32,7 @@ test_that("dots are interpolated", {
     h(toupper(!! g_var), ...)
   }
   h <- function(...) {
-    tidy_quotes(...)
+    dots_quosures(...)
   }
 
   bar <- "bar"
@@ -45,7 +45,7 @@ test_that("dots are interpolated", {
 
 test_that("dots capture is stack-consistent", {
   fn <- function(...) {
-    g(tidy_quotes(...))
+    g(dots_quosures(...))
   }
   g <- function(dots) {
     h(dots, foo(bar))
@@ -67,12 +67,12 @@ test_that("dots can be spliced in", {
   fn <- function(...) {
     var <- "var"
     list(
-      out = g(!!! tidy_quotes(...), bar(baz), !!! list(a = var, b = ~foo)),
+      out = g(!!! dots_quosures(...), bar(baz), !!! list(a = var, b = ~foo)),
       env = get_env()
     )
   }
   g <- function(...) {
-    tidy_quotes(...)
+    dots_quosures(...)
   }
 
   out <- fn(foo(bar))
@@ -87,27 +87,27 @@ test_that("dots can be spliced in", {
 
 test_that("spliced dots are wrapped in formulas", {
   args <- alist(x = var, y = ~var)
-  expect_identical(tidy_quotes(!!! args), list(x = ~var, y = ~var))
+  expect_identical(dots_quosures(!!! args), list(x = ~var, y = ~var))
 })
 
 test_that("dot names are interpolated", {
   var <- "baz"
-  expect_identical(tidy_quotes(!!var := foo, !!toupper(var) := bar), list(baz = ~foo, BAZ = ~bar))
-  expect_identical(tidy_quotes(!!var := foo, bar), list(baz = ~foo, ~bar))
+  expect_identical(dots_quosures(!!var := foo, !!toupper(var) := bar), list(baz = ~foo, BAZ = ~bar))
+  expect_identical(dots_quosures(!!var := foo, bar), list(baz = ~foo, ~bar))
 
   var <- quote(baz)
-  expect_identical(tidy_quotes(!!var := foo), list(baz = ~foo))
+  expect_identical(dots_quosures(!!var := foo), list(baz = ~foo))
 
   def <- !!var := foo
-  expect_identical(tidy_quotes(!! def), list(baz = ~foo))
+  expect_identical(dots_quosures(!! def), list(baz = ~foo))
 })
 
 test_that("corner cases are handled when interpolating dot names", {
     var <- na_chr
-    expect_identical(names(tidy_quotes(!!var := NULL)), na_chr)
+    expect_identical(names(dots_quosures(!!var := NULL)), na_chr)
 
     var <- NULL
-    expect_error(tidy_quotes(!!var := NULL), "must be a name or string")
+    expect_error(dots_quosures(!!var := NULL), "must be a name or string")
 })
 
 test_that("definitions are interpolated", {
@@ -129,8 +129,8 @@ test_that("dots are forwarded to named arguments", {
 })
 
 test_that("pronouns are scoped throughout nested captures", {
-  outer <- function(data, ...) tidy_eval(tidy_quotes(...)[[1]], data = data)
-  inner <- function(...) map(tidy_quotes(...), tidy_eval)
+  outer <- function(data, ...) tidy_eval(dots_quosures(...)[[1]], data = data)
+  inner <- function(...) map(dots_quosures(...), tidy_eval)
 
   data <- list(foo = "bar", baz = "baz")
   baz <- "bazz"
@@ -140,28 +140,28 @@ test_that("pronouns are scoped throughout nested captures", {
 
 test_that("Can supply := with LHS even if .named = TRUE", {
   expect_warning(regexp = NA, expect_identical(
-    tidy_quotes(!!"nm" := 2, .named = TRUE), list(nm = ~2)
+    dots_quosures(!!"nm" := 2, .named = TRUE), list(nm = ~2)
   ))
   expect_warning(regexp = "name ignored", expect_identical(
-    tidy_quotes(foobar = !!"nm" := 2, .named = TRUE), list(nm = ~2)
+    dots_quosures(foobar = !!"nm" := 2, .named = TRUE), list(nm = ~2)
   ))
 })
 
 test_that("RHS of tidy defs are unquoted", {
-  expect_identical(tidy_quotes(foo := !!"bar"), list(foo = ~"bar"))
+  expect_identical(dots_quosures(foo := !!"bar"), list(foo = ~"bar"))
 })
 
 test_that("can capture empty list of dots", {
-  fn <- function(...) tidy_quotes(...)
+  fn <- function(...) dots_quosures(...)
   expect_identical(fn(), list())
 })
 
 test_that("quosures are spliced before serialisation", {
-  quosures <- tidy_quotes(~foo(~bar), .named = TRUE)
+  quosures <- dots_quosures(~foo(~bar), .named = TRUE)
   expect_identical(names(quosures), "foo(bar)")
 })
 
-test_that("tidy_quotes() captures missing arguments", {
+test_that("dots_quosures() captures missing arguments", {
   q <- new_quosure(arg_missing(), empty_env())
-  expect_identical(tidy_quotes(, ), set_names(list(q, q), c("", "")))
+  expect_identical(dots_quosures(, ), set_names(list(q, q), c("", "")))
 })
