@@ -45,3 +45,9 @@ test_that("empty dots return list()", {
 test_that("dots_exprs() captures empty arguments", {
   expect_identical(dots_exprs(, ), set_names(list(missing_arg(), missing_arg()), c("", "")))
 })
+
+test_that("dots are always named", {
+  expect_identical(dots_list("foo"), set_names(list("foo"), ""))
+  expect_identical(dots_splice("foo", list("bar")), set_names(list("foo", "bar"), c("", "")))
+  expect_identical(dots_exprs(foo, bar), set_names(list(quote(foo), quote(bar)), c("", "")))
+})

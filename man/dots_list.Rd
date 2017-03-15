@@ -14,6 +14,10 @@ dots_splice(...)
 (\code{dots_splice()}) splicing semantics. The contents of spliced
 arguments are embedded in the returned list.}
 }
+\value{
+A list of arguments. This list is always named: unnamed
+arguments are named with the empty string \code{""}.
+}
 \description{
 These functions evaluate all arguments contained in \code{...} and
 return them as a list. They both splice their arguments if they
