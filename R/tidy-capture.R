@@ -79,7 +79,7 @@
 #' g <- function(bar) fn(bar)
 #' g(a + b)
 tidy_capture <- function(x) {
-  capture <- lang(captureArg, substitute(x))
+  capture <- new_language(captureArg, substitute(x))
   arg <- expr_eval(capture, caller_env())
   expr <- .Call(rlang_interp, arg$expr, arg$env)
   new_quosure(expr, arg$env)

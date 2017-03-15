@@ -16,7 +16,7 @@ expression. If not supplied, the calling frame is used.}
 }
 \description{
 Internally, calls are structured as a tree of expressions (see
-\code{\link[=switch_lang]{switch_lang()}} and \link{pairlist} documentation pages). A \code{lang} object
+\code{\link[=switch_lang]{switch_lang()}} and \link{pairlist} documentation pages). A \code{new_language} object
 is the top level node of the tree. \code{lang_head()} and \code{lang_tail()}
 allow you to retrieve the node components.
 \itemize{

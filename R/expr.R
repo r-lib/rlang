@@ -239,7 +239,7 @@ expr_label <- function(expr) {
   } else {
     chr <- deparse(expr)
     if (length(chr) > 1) {
-      dot_call <- lang(expr[[1]], quote(...))
+      dot_call <- new_language(expr[[1]], quote(...))
       chr <- paste(deparse(dot_call), collapse = "\n")
     }
     paste0("`", chr, "`")
