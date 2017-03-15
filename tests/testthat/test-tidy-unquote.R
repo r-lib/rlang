@@ -12,12 +12,12 @@ test_that("formulas containing unquote operators are interpolated", {
   var2 <- local({ foo <- "baz"; ~foo })
 
   f <- tidy_interp(~list(!!var1, !!var2))
-  expect_identical(f, quosure(bquote(list(.(var1), .(var2)))))
+  expect_identical(f, new_quosure(bquote(list(.(var1), .(var2)))))
 })
 
 test_that("interpolation is carried out in the right environment", {
   f <- local({ foo <- "foo"; ~!!foo })
-  expect_identical(tidy_interp(f), quosure("foo", env = f_env(f)))
+  expect_identical(tidy_interp(f), new_quosure("foo", env = f_env(f)))
 })
 
 test_that("interpolation does not revisit unquoted formulas", {
@@ -72,19 +72,19 @@ test_that("evaluates contents of UQ()", {
 test_that("layers of unquote are not peeled off recursively upon interpolation", {
   var1 <- ~letters
   var2 <- ~!!var1
-  expect_identical(tidy_quote(!!var2), quosure(~!!var1))
+  expect_identical(tidy_quote(!!var2), new_quosure(~!!var1))
 
   var1 <- local(~letters)
   var2 <- local(~!!var1)
-  expect_identical(tidy_interp(~!!var2), quosure(var2))
+  expect_identical(tidy_interp(~!!var2), new_quosure(var2))
 })
 
 test_that("formulas are promised recursively during unquote", {
   var <- ~~letters
-  expect_identical(tidy_quote(!!var), quosure(quosure(quote(~letters))))
+  expect_identical(tidy_quote(!!var), new_quosure(new_quosure(quote(~letters))))
 
-  var <- quosure(local(~letters), env = child_env(env()))
-  expect_identical(tidy_quote(!!var), quosure(var))
+  var <- new_quosure(local(~letters), env = child_env(env()))
+  expect_identical(tidy_quote(!!var), new_quosure(var))
 })
 
 
@@ -124,7 +124,7 @@ test_that("UQF() guards formulas", {
   guarded <- lang("_F", .args = f[-1])
   attributes(guarded) <- attributes(f)
 
-  expected_f <- quosure(guarded)
+  expected_f <- new_quosure(guarded)
   expect_identical(tidy_quote(UQF(f)), expected_f)
   expect_identical(tidy_eval(expected_f), f)
 })
@@ -144,8 +144,8 @@ test_that("single ! is not treated as shortcut", {
 
 test_that("double and triple ! are treated as syntactic shortcuts", {
   var <- local(~foo)
-  expect_identical(tidy_quote(!! var), quosure(var))
-  expect_identical(tidy_quote(!! ~foo), quosure(~foo))
+  expect_identical(tidy_quote(!! var), new_quosure(var))
+  expect_identical(tidy_quote(!! ~foo), new_quosure(~foo))
   expect_identical(tidy_quote(list(!!! letters[1:3])), ~list("a", "b", "c"))
 })
 
@@ -164,10 +164,10 @@ test_that("fpromises are created for all informative formulas", {
   bar <- local(~bar)
 
   interpolated <- local(tidy_quote(list(!!foo, !!bar)))
-  expected <- quosure(bquote(list(.(f_rhs(quosure(foo))), .(f_rhs(quosure(bar))))), env = env(interpolated))
+  expected <- new_quosure(bquote(list(.(f_rhs(new_quosure(foo))), .(f_rhs(new_quosure(bar))))), env = env(interpolated))
   expect_identical(interpolated, expected)
 
   interpolated <- tidy_quote(!!interpolated)
-  expected <- quosure(expected)
+  expected <- new_quosure(expected)
   expect_identical(interpolated, expected)
 })

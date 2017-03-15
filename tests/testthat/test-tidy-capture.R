@@ -125,7 +125,7 @@ test_that("dots are forwarded to named arguments", {
   fn <- function(x) tidy_capture(x)
 
   env <- child_env(env())
-  expect_identical(with_env(env, outer(foo(bar))), quosure(quote(foo(bar)), env))
+  expect_identical(with_env(env, outer(foo(bar))), new_quosure(quote(foo(bar)), env))
 })
 
 test_that("pronouns are scoped throughout nested captures", {
@@ -162,6 +162,6 @@ test_that("quosures are spliced before serialisation", {
 })
 
 test_that("tidy_quotes() captures missing arguments", {
-  q <- quosure(arg_missing(), empty_env())
+  q <- new_quosure(arg_missing(), empty_env())
   expect_identical(tidy_quotes(, ), set_names(list(q, q), c("", "")))
 })

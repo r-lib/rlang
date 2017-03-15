@@ -2,7 +2,7 @@
 #'
 #' @description
 #'
-#' These predicates test for [quosure][quosure] objects.
+#' These predicates test for [quosure][new_quosure] objects.
 #'
 #' - `is_quosure()` tests for the canonical R quosure: the one-sided
 #'   "formula".
@@ -26,7 +26,7 @@
 #' @param scoped A boolean indicating whether the quosure or formula
 #'   is scoped, that is, has a valid environment attribute. If `NULL`,
 #'   the scope is not inspected.
-#' @seealso [as_quosure()][quosure] and [quosure()] for creating
+#' @seealso [as_quosure()][new_quosure] and [new_quosure()] for creating
 #'   quosures, and [tidy_quote()] or [tidy_eval()] for information
 #'   about the role of quosures in the tidy evaluation framework.
 #' @export
@@ -88,7 +88,7 @@ is_one_sided <- function(x, lang_sym = sym_tilde) {
 #' (symbols and named calls, see [is_symbolic()]) is correctly looked
 #' up during evaluation.
 #'
-#' - `quosure()` creates a quosure from a raw expression and an
+#' - `new_quosure()` creates a quosure from a raw expression and an
 #'   environment.
 #'
 #' - `as_quosure()` is useful for functions that expect quosures but
@@ -111,7 +111,7 @@ is_one_sided <- function(x, lang_sym = sym_tilde) {
 #' @seealso [is_quosure()]
 #' @export
 #' @examples
-#' f <- quosure(quote(mtcars), env("datasets"))
+#' f <- new_quosure(quote(mtcars), env("datasets"))
 #' f
 #' tidy_eval(f)
 #'
@@ -135,31 +135,31 @@ is_one_sided <- function(x, lang_sym = sym_tilde) {
 #' as_quosure(a := b)
 #' as_quosureish(a := b)
 #' as_quosureish(10L)
-quosure <- function(rhs, env = caller_env()) {
+new_quosure <- function(rhs, env = caller_env()) {
   new_formula(NULL, rhs, env)
 }
-#' @rdname quosure
+#' @rdname new_quosure
 #' @export
 as_quosure <- function(x, env = caller_env()) {
   if (is_quosureish(x)) {
     env <- f_env(x) %||% env
-    quosure(f_rhs(x), env)
+    new_quosure(f_rhs(x), env)
   } else if (is_frame(x)) {
-    quosure(x$expr, sys_frame(x$caller_pos))
+    new_quosure(x$expr, sys_frame(x$caller_pos))
   } else {
-    quosure(x, env)
+    new_quosure(x, env)
   }
 }
-#' @rdname quosure
+#' @rdname new_quosure
 #' @export
 as_quosureish <- function(x, env = caller_env()) {
   if (is_quosureish(x)) {
     f_env(x) <- f_env(x) %||% env
     x
   } else if (is_frame(x)) {
-    quosure(x$expr, sys_frame(x$caller_pos))
+    new_quosure(x$expr, sys_frame(x$caller_pos))
   } else {
-    quosure(x, env)
+    new_quosure(x, env)
   }
 }
 

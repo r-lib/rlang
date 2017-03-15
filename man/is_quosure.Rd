@@ -17,7 +17,7 @@ is scoped, that is, has a valid environment attribute. If \code{NULL},
 the scope is not inspected.}
 }
 \description{
-These predicates test for \link{quosure} objects.
+These predicates test for \link[=new_quosure]{quosure} objects.
 \itemize{
 \item \code{is_quosure()} tests for the canonical R quosure: the one-sided
 "formula".
@@ -57,7 +57,7 @@ is_quosureish(a := b)
 is_quosureish(a ~ b)
 }
 \seealso{
-\link[=quosure]{as_quosure()} and \code{\link[=quosure]{quosure()}} for creating
+\link[=new_quosure]{as_quosure()} and \code{\link[=new_quosure]{new_quosure()}} for creating
 quosures, and \code{\link[=tidy_quote]{tidy_quote()}} or \code{\link[=tidy_eval]{tidy_eval()}} for information
 about the role of quosures in the tidy evaluation framework.
 }

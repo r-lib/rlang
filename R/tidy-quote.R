@@ -340,8 +340,8 @@ as_definition <- function(dot) {
   rhs <- .Call(rlang_interp, f_rhs(pat), env)
 
   list(
-    lhs = quosure(lhs, env),
-    rhs = quosure(rhs, env)
+    lhs = new_quosure(lhs, env),
+    rhs = new_quosure(rhs, env)
   )
 }
 
