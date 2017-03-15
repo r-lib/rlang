@@ -2,12 +2,12 @@
 % Please edit documentation in R/tidy-quote.R
 \name{dots_quosures}
 \alias{dots_quosures}
-\alias{tidy_defs}
+\alias{dots_definitions}
 \title{Tidy quotation of multiple expressions and dots.}
 \usage{
 dots_quosures(..., .named = FALSE)
 
-tidy_defs(..., .named = FALSE)
+dots_definitions(..., .named = FALSE)
 }
 \arguments{
 \item{...}{Arguments to capture.}
@@ -24,7 +24,7 @@ tidy quotes. It is especially useful to "capture" arguments
 forwarded through \code{...}.
 }
 \details{
-Both \code{dots_quosures} and \code{tidy_defs()} have specific support for
+Both \code{dots_quosures} and \code{dots_definitions()} have specific support for
 definition expressions of the type \code{var := expr}, with some
 differences:
 
@@ -35,7 +35,7 @@ they are treated as a synonym of argument assignment
 \code{=}. On the other hand, they allow unquoting operators on
 the left-hand side, which makes it easy to assign names
 programmatically.}
-\item{\code{tidy_defs()}}{
+\item{\code{dots_definitions()}}{
 This dots capturing function returns definitions as is. Unquote
 operators are processed on capture, in both the LHS and the
 RHS. Unlike \code{dots_quosures()}, it allows named definitions.}
@@ -74,7 +74,7 @@ dots_quosures(x := expr, y = expr)
 var <- "foo"
 dots_quosures(!!var := expr)
 
-# If you need the full LHS expression, use tidy_defs():
-dots <- tidy_defs(var = foo(baz) := bar(baz))
+# If you need the full LHS expression, use dots_definitions():
+dots <- dots_definitions(var = foo(baz) := bar(baz))
 dots$defs
 }
