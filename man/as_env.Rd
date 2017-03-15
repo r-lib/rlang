@@ -2,21 +2,9 @@
 % Please edit documentation in R/env.R
 \name{as_env}
 \alias{as_env}
-\alias{as_env.NULL}
-\alias{as_env.environment}
-\alias{as_env.character}
-\alias{as_env.default}
 \title{Coerce to an environment.}
 \usage{
 as_env(x, parent = NULL)
-
-\method{as_env}{NULL}(x, parent = NULL)
-
-\method{as_env}{environment}(x, parent = NULL)
-
-\method{as_env}{character}(x, parent = NULL)
-
-\method{as_env}{default}(x, parent = NULL)
 }
 \arguments{
 \item{x}{An object to coerce.}
@@ -26,10 +14,10 @@ be ignored with a warning for methods where it does not make
 sense to change the parent.}
 }
 \description{
-This is a S3 generic. The default method coerces named vectors
-(including lists) to an environment. It first checks that \code{x} is a
-dictionary (see \code{\link[=is_dictionary]{is_dictionary()}}). The method for unnamed strings
-returns the corresponding package environment (see \code{\link[=pkg_env]{pkg_env()}}).
+\code{as_env()} coerces named vectors (including lists) to an
+environment. It first checks that \code{x} is a dictionary (see
+\code{\link[=is_dictionary]{is_dictionary()}}). If supplied an unnamed string, it returns the
+corresponding package environment (see \code{\link[=pkg_env]{pkg_env()}}).
 }
 \details{
 If \code{x} is an environment and \code{parent} is not \code{NULL}, the

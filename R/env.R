@@ -176,10 +176,10 @@ env_tail <- function(env = caller_env()) {
 
 #' Coerce to an environment.
 #'
-#' This is a S3 generic. The default method coerces named vectors
-#' (including lists) to an environment. It first checks that `x` is a
-#' dictionary (see [is_dictionary()]). The method for unnamed strings
-#' returns the corresponding package environment (see [pkg_env()]).
+#' `as_env()` coerces named vectors (including lists) to an
+#' environment. It first checks that `x` is a dictionary (see
+#' [is_dictionary()]). If supplied an unnamed string, it returns the
+#' corresponding package environment (see [pkg_env()]).
 #'
 #' If `x` is an environment and `parent` is not `NULL`, the
 #' environment is duplicated before being set a new parent. The return
@@ -205,45 +205,42 @@ env_tail <- function(env = caller_env()) {
 #' # With NULL it returns the empty environment:
 #' as_env(NULL)
 as_env <- function(x, parent = NULL) {
-  UseMethod("as_env")
+  coerce_type(x, "environment",
+    NULL = {
+      if (!is_null(parent)) {
+        warn("`parent` ignored for empty environment")
+      }
+      empty_env()
+    },
+    environment = {
+      if (!is_null(parent)) {
+        x <- env_clone(x, parent = parent)
+      }
+      x
+    },
+    string = {
+      if (length(x) > 1 || is_named(x)) {
+        return(as_env_(x, parent))
+      }
+      if (!is_null(parent)) {
+        warn("`parent` ignored for named environments")
+      }
+      pkg_env(x)
+    },
+    logical = ,
+    integer = ,
+    double = ,
+    complex = ,
+    character = ,
+    raw = ,
+    list =
+      as_env_(x, parent)
+  )
 }
-
-#' @rdname as_env
-#' @export
-as_env.NULL <- function(x, parent = NULL) {
-  if (!is_null(parent)) {
-    warning("`parent` ignored for empty environment", call. = FALSE)
-  }
-  empty_env()
-}
-
-#' @rdname as_env
-#' @export
-as_env.environment <- function(x, parent = NULL) {
-  if (!is_null(parent)) {
-    x <- env_clone(x, parent = parent)
-  }
-  x
-}
-
-#' @rdname as_env
-#' @export
-as_env.character <- function(x, parent = NULL) {
-  if (length(x) > 1 || is_named(x)) {
-    return(as_env.default(x, parent))
-  }
-  if (!is_null(parent)) {
-    warning("`parent` ignored for named environments", call. = FALSE)
-  }
-  pkg_env(x)
-}
-
-#' @rdname as_env
-#' @export
-as_env.default <- function(x, parent = NULL) {
+as_env_ <- function(x, parent = NULL) {
   stopifnot(is_dictionary(x))
   if (is_atomic(x)) {
-    x <- as.list(x)
+    x <- as_list(x)
   }
   list2env(x, parent = parent %||% empty_env())
 }
