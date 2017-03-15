@@ -60,7 +60,7 @@
 #'   modification and tidy evaluation of formulas provide a powerful
 #'   mechanism for metaprogramming and programming with DSLs.
 #'
-#' @section Theory: Formally, `quosure()` and `tidy_quote_expr()`
+#' @section Theory: Formally, `quosure()` and `expr()`
 #'   are quasiquote functions, `UQ()` is the unquote operator, and
 #'   `UQS()` is the unquote splice operator. These terms have a rich
 #'   history in LISP, and live on in modern languages like
@@ -73,7 +73,7 @@
 #' @return A formula whose right-hand side contains the quoted
 #'   expression supplied as argument.
 #' @seealso [tidy_quotes()] for capturing several expressions,
-#'   including from dots; [tidy_quote_expr()] for quoting a raw
+#'   including from dots; [expr()] for quoting a raw
 #'   expression with quasiquotation; and [tidy_interp()] for unquoting
 #'   an already quoted expression or an existing formula.
 #' @export
@@ -188,8 +188,8 @@ quosure <- function(expr) {
 
 #' Untidy quotation of an expression.
 #'
-#' Unlike [quosure()], `tidy_quote_expr()` returns a raw expression
-#' instead of a formula. As a result, `tidy_quote_expr()` is untidy in
+#' Unlike [quosure()], `expr()` returns a raw expression
+#' instead of a formula. As a result, `expr()` is untidy in
 #' the sense that it does not preserve scope information for the
 #' quoted expression. It can still be useful in certain cases.
 #' Compared to base R's [base::quote()], it unquotes the expression on
@@ -202,33 +202,33 @@ quosure <- function(expr) {
 #' @return The raw expression supplied as argument.
 #' @export
 #' @examples
-#' # The advantage of tidy_quote_expr() over quote() is that it unquotes on
+#' # The advantage of expr() over quote() is that it unquotes on
 #' # capture:
-#' tidy_quote_expr(list(1, !! 3 + 10))
+#' expr(list(1, !! 3 + 10))
 #'
 #' # Unquoting can be especially useful for successive transformation
 #' # of a captured expression:
 #' (expr <- quote(foo(bar)))
-#' (expr <- tidy_quote_expr(inner(!! expr, arg1)))
-#' (expr <- tidy_quote_expr(outer(!! expr, !!! lapply(letters[1:3], as.symbol))))
+#' (expr <- expr(inner(!! expr, arg1)))
+#' (expr <- expr(outer(!! expr, !!! lapply(letters[1:3], as.symbol))))
 #'
-#' # Unlike quosure(), tidy_quote_expr() produces expressions that can
+#' # Unlike quosure(), expr() produces expressions that can
 #' # be evaluated with base::eval():
 #' e <- quote(letters)
-#' e <- tidy_quote_expr(toupper(!!e))
+#' e <- expr(toupper(!!e))
 #' eval(e)
 #'
 #' # Be careful if you unquote a formula-quote: you need to take the
 #' # RHS (and lose the scope information) to evaluate with eval():
 #' f <- ~letters
-#' e <- tidy_quote_expr(toupper(!! f_rhs(f)))
+#' e <- expr(toupper(!! f_rhs(f)))
 #' eval(e)
 #'
 #' # However it's fine to unquote formulas if you evaluate with tidy_eval():
 #' f <- ~letters
-#' e <- tidy_quote_expr(toupper(!! f))
+#' e <- expr(toupper(!! f))
 #' tidy_eval(e)
-tidy_quote_expr <- function(expr) {
+expr <- function(expr) {
   expr <- substitute(expr)
   .Call(rlang_interp, expr, parent.frame())
 }

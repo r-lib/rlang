@@ -98,7 +98,7 @@ mechanism for metaprogramming and programming with DSLs.
 }
 
 \section{Theory}{
- Formally, \code{quosure()} and \code{tidy_quote_expr()}
+ Formally, \code{quosure()} and \code{expr()}
 are quasiquote functions, \code{UQ()} is the unquote operator, and
 \code{UQS()} is the unquote splice operator. These terms have a rich
 history in LISP, and live on in modern languages like
@@ -212,7 +212,7 @@ tidy_eval(quosure(a ~ b))
 }
 \seealso{
 \code{\link[=tidy_quotes]{tidy_quotes()}} for capturing several expressions,
-including from dots; \code{\link[=tidy_quote_expr]{tidy_quote_expr()}} for quoting a raw
+including from dots; \code{\link[=expr]{expr()}} for quoting a raw
 expression with quasiquotation; and \code{\link[=tidy_interp]{tidy_interp()}} for unquoting
 an already quoted expression or an existing formula.
 }

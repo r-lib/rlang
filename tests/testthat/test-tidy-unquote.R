@@ -4,7 +4,7 @@ test_that("interpolation does not recurse over spliced arguments", {
   var1 <- quote(!! stop())
   var2 <- quote({foo; !! stop(); bar})
   expect_error(quosure(list(!!! var1)), NA)
-  expect_error(tidy_quote_expr(list(!!! var2)), NA)
+  expect_error(expr(list(!!! var2)), NA)
 })
 
 test_that("formulas containing unquote operators are interpolated", {
@@ -27,7 +27,7 @@ test_that("interpolation does not revisit unquoted formulas", {
 })
 
 test_that("two-sided formulas are not treated as fpromises", {
-  expect_identical(tidy_quote_expr(a ~ b), quote(a ~ b))
+  expect_identical(expr(a ~ b), quote(a ~ b))
 })
 
 test_that("unquote operators are always in scope", {

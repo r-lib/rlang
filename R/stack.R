@@ -658,7 +658,7 @@ return_from <- function(frame, value = NULL) {
   }
 
   exit_env <- get_env(frame)
-  expr <- tidy_quote_expr(return(!!value))
+  expr <- expr(return(!!value))
   expr_eval(expr, exit_env)
 }
 
