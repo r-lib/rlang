@@ -94,7 +94,7 @@ tidy_eval <- function(f, data = NULL) {
 #' Note that `tidy_eval_()` always installs a `.env` pronoun in the
 #' bottom environment of your dynamic scope. This pronoun provides a
 #' shortcut to the original lexical enclosure (typically, the dynamic
-#' environment of a captured argument, see [tidy_capture()]). It also
+#' environment of a captured argument, see [arg_quosure()]). It also
 #' cleans up the overscope after evaluation. See [overscope_eval()]
 #' for evaluating several quosures in the same overscope.
 #'

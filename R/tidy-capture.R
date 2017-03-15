@@ -10,7 +10,7 @@
 #' at the call site are available when the expression gets
 #' evaluated. It is thus necessary to capture not only the R
 #' expression supplied as argument in a function call, but also the
-#' evaluation environment of the call site. `tidy_capture()` and
+#' evaluation environment of the call site. `arg_quosure()` and
 #' `dots_quosures()` make it easy to record this information within
 #' formulas.
 #'
@@ -33,7 +33,7 @@
 #'   calls (see below). See `vignette("nse")` for more information on
 #'   NSE.
 #'
-#'   In addition, note that `tidy_capture()` always interpolates its
+#'   In addition, note that `arg_quosure()` always interpolates its
 #'   input to facilitate programming with NSE functions. See
 #'   [tidy_interp()] and [quosure()].
 #'
@@ -66,19 +66,19 @@
 #'
 #' @param x,... Arguments to capture.
 #' @export
-#' @return `tidy_capture()` returns a formula; see also
+#' @return `arg_quosure()` returns a formula; see also
 #'   `dots_quosures()` for "capturing" dots as a list of formulas.
 #' @seealso [dots_quosures()] for capturing dots, [expr_label()] and
 #'   [expr_text()] for capturing labelling information.
 #' @examples
-#' # tidy_capture() returns a formula:
-#' fn <- function(foo) tidy_capture(foo)
+#' # arg_quosure() returns a formula:
+#' fn <- function(foo) arg_quosure(foo)
 #' fn(a + b)
 #'
 #' # Capturing an argument only works for the most direct call:
 #' g <- function(bar) fn(bar)
 #' g(a + b)
-tidy_capture <- function(x) {
+arg_quosure <- function(x) {
   capture <- new_language(captureArg, substitute(x))
   arg <- expr_eval(capture, caller_env())
   expr <- .Call(rlang_interp, arg$expr, arg$env)

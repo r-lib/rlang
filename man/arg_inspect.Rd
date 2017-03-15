@@ -47,7 +47,7 @@ called function rather than the calling frame.}
 }
 \description{
 \code{arg_inspect()} provides argument introspection in the context of
-lazy evaluation. Compared to \code{\link[=tidy_capture]{tidy_capture()}}, the returned
+lazy evaluation. Compared to \code{\link[=arg_quosure]{arg_quosure()}}, the returned
 information is more complete and takes R's lazy evaluation
 semantics into account: if an argument is passed around without
 being evaluated, \code{arg_inspect()} is able to return the expression
@@ -61,7 +61,7 @@ with which expression, in which evaluation environment.
 }
 \details{
 \code{arg_inspect()} should be used with two caveats in mind. First, it
-is slower than \code{\link[=tidy_capture]{tidy_capture()}} and \code{lazyeval::lazy()}. Thus you
+is slower than \code{\link[=arg_quosure]{arg_quosure()}} and \code{lazyeval::lazy()}. Thus you
 should probably avoid using it in functions that might be used in
 tight loops (such as a loop over the rows of data frame). Second,
 \code{arg_inspect()} ignores all reassignment of arguments. It has no

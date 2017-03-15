@@ -10,7 +10,7 @@
 #' defined) by [tidy_eval()].
 #'
 #' Like all capturing functions in the tidy evaluation framework,
-#' `quosure()` interpolates on capture (see [tidy_capture()]) and
+#' `quosure()` interpolates on capture (see [arg_quosure()]) and
 #' `vignette("tidy-eval")`. Alternatively, `tidy_interp()` allows you
 #' to interpolate manually when you have constructed a raw expression
 #' or formula by yourself. When an expression is interpolated, all
@@ -81,7 +81,7 @@
 #' @examples
 #' # When a tidyeval function captures an argument, it is wrapped in a
 #' # formula and interpolated. quosure() is a simple wrapper around
-#' # tidy_capture() and as such is the fundamental tidyeval
+#' # arg_quosure() and as such is the fundamental tidyeval
 #' # function. It allows you to quote an expression and interpolate
 #' # unquoted parts:
 #' quosure(foo(bar))
@@ -183,7 +183,7 @@
 #' tidy_eval(quosure(a ~ b))
 #' @useDynLib rlang rlang_interp
 quosure <- function(expr) {
-  tidy_capture(expr)
+  arg_quosure(expr)
 }
 
 #' Untidy quotation of an expression.
@@ -255,7 +255,7 @@ expr <- function(expr) {
 #'    operators are processed on capture, in both the LHS and the
 #'    RHS. Unlike `dots_quosures()`, it allows named definitions.}
 #' }
-#' @inheritParams tidy_capture
+#' @inheritParams arg_quosure
 #' @param .named Whether to ensure all dots are named. Unnamed
 #'   elements are processed with [expr_text()] to figure out a default
 #'   name. If an integer, it is passed to the `width` argument of

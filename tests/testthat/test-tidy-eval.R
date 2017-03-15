@@ -97,7 +97,7 @@ test_that("fpromises are not evaluated if not forced", {
 
 test_that("can unquote captured arguments", {
   var <- ~cyl
-  fn <- function(arg) tidy_eval(tidy_capture(arg), mtcars)
+  fn <- function(arg) tidy_eval(arg_quosure(arg), mtcars)
   expect_identical(fn(var), ~cyl)
   expect_identical(fn(!!var), mtcars$cyl)
 })
@@ -114,7 +114,7 @@ test_that("fpromises have lazy semantics", {
 })
 
 test_that("can unquote hygienically within captured arg", {
-  fn <- function(df, arg) tidy_eval(tidy_capture(arg), df)
+  fn <- function(df, arg) tidy_eval(arg_quosure(arg), df)
 
   foo <- "bar"; var <- ~foo
   expect_identical(fn(mtcars, list(var, !!var)), list(~foo, "bar"))
