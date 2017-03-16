@@ -52,6 +52,10 @@ expr_interp <- function(x, env = NULL) {
   x
 }
 
+#' Quasiquotation.
+#' @name quasiquotation
+NULL
+
 #' @export
 #' @rdname quosure
 UQ <- function(x) {
