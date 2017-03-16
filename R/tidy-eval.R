@@ -155,7 +155,7 @@ eval_tidy_ <- function(f, bottom, top = NULL) {
 #'
 #' * `eval_tidy_()` is useful when you have several quosures to
 #'   evaluate in a same dynamic scope. That's a simple wrapper around
-#'   [expr_eval()] that updates the `.env` pronoun and rechains the
+#'   [eval_bare()] that updates the `.env` pronoun and rechains the
 #'   dynamic scope to the new formula enclosure to evaluate.
 #'
 #' * Once an expression has been evaluated in the tidy environment,
@@ -319,7 +319,7 @@ f_unguard <- function(...) {
 #' function and the arguments in the call (see examples). To achieve
 #' this, `invoke()` creates a child environment of `.env` with `.fn`
 #' and all arguments bound to new symbols (see [env_bury()]). It then
-#' uses the same strategy as [expr_eval()] to evaluate with minimal
+#' uses the same strategy as [eval_bare()] to evaluate with minimal
 #' noise.
 #'
 #' @param .fn A function to invoke. Can be a function object or the

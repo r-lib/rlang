@@ -284,7 +284,7 @@ lang_fn <- function(call = caller_frame()) {
     inlined = node_car(expr),
     named = ,
     namespaced = ,
-    expr_eval(node_car(expr), f_env(call))
+    eval_bare(node_car(expr), f_env(call))
   )
 }
 

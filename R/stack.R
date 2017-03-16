@@ -659,7 +659,7 @@ return_from <- function(frame, value = NULL) {
 
   exit_env <- get_env(frame)
   expr <- expr(return(!!value))
-  expr_eval(expr, exit_env)
+  eval_bare(expr, exit_env)
 }
 
 #' @rdname return_from

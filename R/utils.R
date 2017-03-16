@@ -5,7 +5,7 @@ substitute_ <- function(x, env) {
   }
 
   call <- substitute(substitute(x, env), list(x = x))
-  expr_eval(call)
+  eval_bare(call)
 }
 
 drop_last <- function(x) {

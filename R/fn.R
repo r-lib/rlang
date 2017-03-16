@@ -31,7 +31,7 @@ new_function <- function(args, body, env = caller_env()) {
   stopifnot(all(have_name(args)), is_expr(body), is_env(env))
 
   args <- as.pairlist(args)
-  expr_eval(call("function", args, body), env)
+  eval_bare(call("function", args, body), env)
 }
 
 prim_eval <- eval(quote(sys.function(0)))

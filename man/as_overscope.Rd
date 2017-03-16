@@ -87,7 +87,7 @@ of the dynamic scope. If you evaluate a tidy quote with
 \code{\link[=eval_tidy_]{eval_tidy_()}}, you don't need to use this.
 \item \code{eval_tidy_()} is useful when you have several quosures to
 evaluate in a same dynamic scope. That's a simple wrapper around
-\code{\link[=expr_eval]{expr_eval()}} that updates the \code{.env} pronoun and rechains the
+\code{\link[=eval_bare]{eval_bare()}} that updates the \code{.env} pronoun and rechains the
 dynamic scope to the new formula enclosure to evaluate.
 \item Once an expression has been evaluated in the tidy environment,
 it's a good idea to clean up the definitions that make

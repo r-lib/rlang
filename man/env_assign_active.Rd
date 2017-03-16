@@ -39,8 +39,8 @@ env_assign_active(env, "symbol", function() {
 # `fn` is executed each time `symbol` is accessed from `env`:
 env$symbol
 env$symbol
-expr_eval(quote(symbol), env)
-expr_eval(quote(symbol), env)
+eval_bare(quote(symbol), env)
+eval_bare(quote(symbol), env)
 }
 \seealso{
 \code{\link[=env_assign_promise]{env_assign_promise()}}

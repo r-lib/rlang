@@ -18,10 +18,10 @@ an object with an \code{\link[=get_env]{get_env()}} method.}
 \description{
 These functions evaluate \code{expr} within a given environment (\code{env}
 for \code{with_env()}, or the child of the current environment for
-\code{locally}). They rely on \code{\link[=expr_eval]{expr_eval()}} which features a lighter
+\code{locally}). They rely on \code{\link[=eval_bare]{eval_bare()}} which features a lighter
 evaluation mechanism than base R \code{\link[base:eval]{base::eval()}}, and which also has
 some subtle implications when evaluting stack sensitive functions
-(see help for \code{\link[=expr_eval]{expr_eval()}}).
+(see help for \code{\link[=eval_bare]{eval_bare()}}).
 }
 \details{
 \code{locally()} is equivalent to the base function

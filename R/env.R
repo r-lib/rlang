@@ -437,8 +437,8 @@ env_assign_promise_ <- function(env = caller_env(), nm, expr,
 #' # `fn` is executed each time `symbol` is accessed from `env`:
 #' env$symbol
 #' env$symbol
-#' expr_eval(quote(symbol), env)
-#' expr_eval(quote(symbol), env)
+#' eval_bare(quote(symbol), env)
+#' eval_bare(quote(symbol), env)
 env_assign_active <- function(env = caller_env(), nm, fn) {
   makeActiveBinding(nm, fn, env)
 }
@@ -768,17 +768,17 @@ is_installed <- function(pkg) {
 #'
 #' These functions evaluate `expr` within a given environment (`env`
 #' for `with_env()`, or the child of the current environment for
-#' `locally`). They rely on [expr_eval()] which features a lighter
+#' `locally`). They rely on [eval_bare()] which features a lighter
 #' evaluation mechanism than base R [base::eval()], and which also has
 #' some subtle implications when evaluting stack sensitive functions
-#' (see help for [expr_eval()]).
+#' (see help for [eval_bare()]).
 #'
 #' `locally()` is equivalent to the base function
 #' [base::local()] but it produces a much cleaner
 #' evaluation stack, and has stack-consistent semantics. It is thus
 #' more suited for experimenting with the R language.
 #'
-#' @inheritParams expr_eval
+#' @inheritParams eval_bare
 #' @param env An environment within which to evaluate `expr`. Can be
 #'   an object with an [get_env()] method.
 #' @export

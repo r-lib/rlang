@@ -80,7 +80,7 @@
 #' g(a + b)
 arg_quosure <- function(x) {
   capture <- new_language(captureArg, substitute(x))
-  arg <- expr_eval(capture, caller_env())
+  arg <- eval_bare(capture, caller_env())
   expr <- .Call(rlang_interp, arg$expr, arg$env)
   new_quosure(expr, arg$env)
 }
@@ -106,7 +106,7 @@ dot_f <- function(dot) {
   if (is_splice(expr)) {
     dots <- call("alist", expr)
     dots <- .Call(rlang_interp, dots, env)
-    dots <- expr_eval(dots)
+    dots <- eval_bare(dots)
     map(dots, as_quosure, env)
   } else {
     expr <- .Call(rlang_interp, expr, env)

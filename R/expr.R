@@ -136,10 +136,10 @@ is_symbolic <- function(x) {
 
 #' Evaluate an expression in an environment.
 #'
-#' `expr_eval()` is a lightweight version of the base function
+#' `eval_bare()` is a lightweight version of the base function
 #' [base::eval()]. It does not accept supplementary data, but it is
 #' more efficient and does not clutter the evaluation stack.
-#' Technically, `expr_eval()` is a simple wrapper around the C
+#' Technically, `eval_bare()` is a simple wrapper around the C
 #' function `Rf_eval()`.
 #'
 #' `base::eval()` inserts two call frames in the stack, the second of
@@ -164,10 +164,10 @@ is_symbolic <- function(x) {
 #' @seealso with_env
 #' @export
 #' @examples
-#' # expr_eval() works just like base::eval():
+#' # eval_bare() works just like base::eval():
 #' env <- child_env(data = list(foo = "bar"))
 #' expr <- quote(foo)
-#' expr_eval(expr, env)
+#' eval_bare(expr, env)
 #'
 #' # To explore the consequences of stack inconsistent semantics, let's
 #' # create a function that evaluates `parent.frame()` deep in the call
@@ -188,18 +188,18 @@ is_symbolic <- function(x) {
 #'   eval_fn(expr, eval_env)
 #' }
 #'
-#' # With expr_eval(), we do get the expected environment:
-#' fn(rlang::expr_eval)
+#' # With eval_bare(), we do get the expected environment:
+#' fn(rlang::eval_bare)
 #'
 #' # But that's not the case with base::eval():
 #' fn(base::eval)
 #'
-#' # Another difference of expr_eval() compared to base::eval() is
+#' # Another difference of eval_bare() compared to base::eval() is
 #' # that it does not insert parasite frames in the evaluation stack:
 #' get_stack <- quote(identity(eval_stack()))
-#' expr_eval(get_stack)
+#' eval_bare(get_stack)
 #' eval(get_stack)
-expr_eval <- function(expr, env = parent.frame()) {
+eval_bare <- function(expr, env = parent.frame()) {
   .Call(rlang_eval, expr, env)
 }
 
