@@ -212,6 +212,11 @@ test_that("whole scope is purged", {
   expect_identical(names(outside), "important")
 })
 
+test_that("empty quosure self-evaluates", {
+  quo <- quosure(is_missing(!! quosure()))
+  expect_true(eval_tidy(quo))
+})
+
 
 context("invoke") # --------------------------------------------------
 

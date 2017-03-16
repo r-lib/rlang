@@ -207,7 +207,7 @@ missing_arg <- function() {
 #' @export
 is_missing <- function(x) {
   expr <- substitute(x)
-  if (is_symbol(expr) && missing(x)) {
+  if (typeof(expr) == "symbol" && missing(x)) {
     TRUE
   } else {
     identical(x, missing_arg())
