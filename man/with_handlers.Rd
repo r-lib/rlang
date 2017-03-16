@@ -22,7 +22,7 @@ constructing such handlers.}
 }
 \description{
 Condition handlers are functions established on the evaluation
-stack (see \code{\link[=eval_stack]{eval_stack()}}) that are called by R when a condition is
+stack (see \code{\link[=ctxt_stack]{ctxt_stack()}}) that are called by R when a condition is
 signalled (see \code{\link[=cnd_signal]{cnd_signal()}} and \code{\link[=abort]{abort()}} for two common signal
 functions). They come in two types: exiting handlers, which jump
 out of the signalling context and are transferred to

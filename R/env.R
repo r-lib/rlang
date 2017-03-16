@@ -13,7 +13,7 @@
 #' `get_env()` dispatches internally. Methods are provided for
 #' functions, formulas and frames. If called with a missing argument,
 #' the environment of the current evaluation frame (see
-#' [eval_stack()]) is returned. If you call `get_env()` with an
+#' [ctxt_stack()]) is returned. If you call `get_env()` with an
 #' environment, it acts as the identity function and the environment
 #' is simply returned (this helps simplifying code when writing
 #' generic functions).
@@ -616,7 +616,7 @@ env_inherits <- function(x, ancestor) {
 #' always the tail of the chain. You can obtain those environments
 #' with `global_env()` and `base_env()` respectively. The global
 #' environment is always the environment of the very first evaluation
-#' frame on the stack, see [global_frame()] and [eval_stack()].
+#' frame on the stack, see [global_frame()] and [ctxt_stack()].
 #'
 #' You can list all scoped environments with `scoped_names()`. With
 #' `is_scoped()` you can check whether a named environment is on the

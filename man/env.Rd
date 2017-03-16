@@ -46,7 +46,7 @@ in child environments.
 \code{get_env()} dispatches internally. Methods are provided for
 functions, formulas and frames. If called with a missing argument,
 the environment of the current evaluation frame (see
-\code{\link[=eval_stack]{eval_stack()}}) is returned. If you call \code{get_env()} with an
+\code{\link[=ctxt_stack]{ctxt_stack()}}) is returned. If you call \code{get_env()} with an
 environment, it acts as the identity function and the environment
 is simply returned (this helps simplifying code when writing
 generic functions).

@@ -4,11 +4,11 @@
 \alias{stack}
 \alias{global_frame}
 \alias{current_frame}
-\alias{eval_frame}
+\alias{ctxt_frame}
 \alias{call_frame}
-\alias{eval_depth}
+\alias{ctxt_depth}
 \alias{call_depth}
-\alias{eval_stack}
+\alias{ctxt_stack}
 \alias{call_stack}
 \title{Call stack information}
 \usage{
@@ -16,15 +16,15 @@ global_frame()
 
 current_frame()
 
-eval_frame(n = 1)
+ctxt_frame(n = 1)
 
 call_frame(n = 1, clean = TRUE)
 
-eval_depth()
+ctxt_depth()
 
 call_depth()
 
-eval_stack(n = NULL, trim = 0)
+ctxt_stack(n = NULL, trim = 0)
 
 call_stack(n = NULL, clean = TRUE)
 }
@@ -53,13 +53,13 @@ history, on the other hand, is homogenous. See \code{vignette("stack")}
 for more information.
 }
 \details{
-\code{eval_frame()} and \code{call_frame()} return a \code{frame} object
+\code{ctxt_frame()} and \code{call_frame()} return a \code{frame} object
 containing the following fields: \code{expr} and \code{env} (call expression
 and evaluation environment), \code{pos} and \code{caller_pos} (position of
 current frame in the context stack and position of the caller), and
-\code{fun} (function of the current frame). \code{eval_stack()} and
+\code{fun} (function of the current frame). \code{ctxt_stack()} and
 \code{call_stack()} return a list of all context or call frames on the
-stack. Finally, \code{eval_depth()} and \code{call_depth()} report the
+stack. Finally, \code{ctxt_depth()} and \code{call_depth()} report the
 current context position or the number of calling frames on the
 stack.
 
@@ -77,8 +77,8 @@ number of frames to go down the stack) and cannot be lower than 1.
 Note finally that \code{parent.frame(1)} corresponds to
 \code{call_frame(2)$env}, as \code{n = 1} always refers to the current
 frame. This makes the \code{_frame()} and \code{_stack()} functions
-consistent: \code{eval_frame(2)} is the same as \code{eval_stack()[[2]]}.
-Also, \code{eval_depth()} returns one more frame than
+consistent: \code{ctxt_frame(2)} is the same as \code{ctxt_stack()[[2]]}.
+Also, \code{ctxt_depth()} returns one more frame than
 [base::sys.nframe()] because it counts the global frame. That is
 consistent with the \code{_stack()} functions which return the global
 frame as well. This way, \code{call_stack(call_depth())} is the same as
@@ -89,7 +89,7 @@ frame as well. This way, \code{call_stack(call_depth())} is the same as
 }
 \examples{
 # Expressions within arguments count as contexts
-identity(identity(eval_depth())) # returns 2
+identity(identity(ctxt_depth())) # returns 2
 
 # But they are not part of the call stack because arguments are
 # evaluated within the calling function (or the global environment
@@ -99,11 +99,11 @@ identity(identity(call_depth())) # returns 0
 # The context stacks includes all intervening execution frames. The
 # call stack doesn't:
 f <- function(x) identity(x)
-f(f(eval_stack()))
+f(f(ctxt_stack()))
 f(f(call_stack()))
 
 g <- function(cmd) cmd()
-f(g(eval_stack))
+f(g(ctxt_stack))
 f(g(call_stack))
 
 # The lazyeval _stack() functions return a list of frame
@@ -114,26 +114,26 @@ f(g(call_stack))
 # purrr::map(stack, "env")
 # purrr::transpose(stack)$expr
 
-# current_frame() is an alias for eval_frame(1)
-fn <- function() list(current = current_frame(), first = eval_frame(1))
+# current_frame() is an alias for ctxt_frame(1)
+fn <- function() list(current = current_frame(), first = ctxt_frame(1))
 fn()
 
 # While current_frame() is the top of the stack, global_frame() is
 # the bottom:
 fn <- function() {
-  n <- eval_depth()
-  eval_frame(n)
+  n <- ctxt_depth()
+  ctxt_frame(n)
 }
 identical(fn(), global_frame())
 
 
-# eval_stack() returns a stack with all intervening frames. You can
+# ctxt_stack() returns a stack with all intervening frames. You can
 # trim layers of intervening frames with the trim argument:
-identity(identity(eval_stack()))
-identity(identity(eval_stack(trim = 1)))
+identity(identity(ctxt_stack()))
+identity(identity(ctxt_stack(trim = 1)))
 
-# eval_stack() is called within fn() with intervening frames:
-fn <- function(trim) identity(identity(eval_stack(trim = trim)))
+# ctxt_stack() is called within fn() with intervening frames:
+fn <- function(trim) identity(identity(ctxt_stack(trim = trim)))
 fn(0)
 
 # We can trim the first layer of those:

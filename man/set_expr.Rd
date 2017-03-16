@@ -45,7 +45,7 @@ changes.
 \examples{
 f <- ~foo(bar)
 e <- quote(foo(bar))
-frame <- identity(identity(eval_frame()))
+frame <- identity(identity(ctxt_frame()))
 
 get_expr(f)
 get_expr(e)

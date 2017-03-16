@@ -37,10 +37,10 @@ argument (see \code{\link[=arg_missing]{arg_missing()}}).}
 \item{name}{The name of the formal argument to which \code{expr} was
 originally supplied.}
 
-\item{eval_frame}{The frame providing the scope for \code{expr}, which
-should normally be evaluated in \code{eval_frame$env}.  This is
+\item{ctxt_frame}{The frame providing the scope for \code{expr}, which
+should normally be evaluated in \code{ctxt_frame$env}.  This is
 normally the original calling frame, unless the argument was
-missing. In that case, \code{eval_frame} is the evaluation frame of
+missing. In that case, \code{ctxt_frame} is the evaluation frame of
 the called function. The difference reflects the evaluation
 rules of R, where default arguments are scoped within the
 called function rather than the calling frame.}

@@ -38,10 +38,10 @@
 #'   \item{name}{The name of the formal argument to which `expr` was
 #'     originally supplied.}
 #'
-#'   \item{eval_frame}{The frame providing the scope for `expr`, which
-#'     should normally be evaluated in `eval_frame$env`.  This is
+#'   \item{ctxt_frame}{The frame providing the scope for `expr`, which
+#'     should normally be evaluated in `ctxt_frame$env`.  This is
 #'     normally the original calling frame, unless the argument was
-#'     missing. In that case, `eval_frame` is the evaluation frame of
+#'     missing. In that case, `ctxt_frame` is the evaluation frame of
 #'     the called function. The difference reflects the evaluation
 #'     rules of R, where default arguments are scoped within the
 #'     called function rather than the calling frame.}
@@ -65,7 +65,7 @@ arg_inspect_ <- function(expr, stack, only_dots = FALSE) {
   # In this loop `expr` is the argument of the frame just before
   # the current `i`th frame, the tentative caller frame
   caller_frame <- stack[[1]]
-  eval_frame <- stack[[1]]
+  ctxt_frame <- stack[[1]]
   formal_name <- NULL
 
   for (i in seq_len(length(stack) - 1)) {
@@ -99,7 +99,7 @@ arg_inspect_ <- function(expr, stack, only_dots = FALSE) {
     # current frame, but the caller is the next one
     if (missing(caller_expr)) {
       formal_name <- as.character(expr)
-      expr <- fml_default(expr, eval_frame$fn)
+      expr <- fml_default(expr, ctxt_frame$fn)
       caller_frame <- stack[[i + 1]]
       break
     }
@@ -111,7 +111,7 @@ arg_inspect_ <- function(expr, stack, only_dots = FALSE) {
       formal_name <- as.character(expr)
       expr <- caller_expr
       caller_frame <- stack[[i + 1]]
-      eval_frame <- stack[[i + 1]]
+      ctxt_frame <- stack[[i + 1]]
       break
     }
 
@@ -121,13 +121,13 @@ arg_inspect_ <- function(expr, stack, only_dots = FALSE) {
     expr <- caller_expr
 
     caller_frame <- stack[[i + 1]]
-    eval_frame <- stack[[i + 1]]
+    ctxt_frame <- stack[[i + 1]]
   }
 
   list(
     expr = maybe_missing(expr),
     name = formal_name,
-    eval_frame = eval_frame,
+    ctxt_frame = ctxt_frame,
     caller_frame = caller_frame
   )
 }

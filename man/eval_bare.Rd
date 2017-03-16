@@ -24,7 +24,7 @@ which features the \code{envir} parameter as frame environment. This may
 unnecessarily clutter the evaluation stack and it can change
 evaluation semantics with stack sensitive functions in the case
 where \code{env} is an evaluation environment of a stack frame (see
-\code{\link[=eval_stack]{eval_stack()}}). Since the base function \code{eval()} creates a new
+\code{\link[=ctxt_stack]{ctxt_stack()}}). Since the base function \code{eval()} creates a new
 evaluation context with \code{env} as frame environment there are
 actually two contexts with the same evaluation environment on the
 stack when \code{expr} is evaluated. Thus, any command that looks up
@@ -68,7 +68,7 @@ fn(base::eval)
 
 # Another difference of eval_bare() compared to base::eval() is
 # that it does not insert parasite frames in the evaluation stack:
-get_stack <- quote(identity(eval_stack()))
+get_stack <- quote(identity(ctxt_stack()))
 eval_bare(get_stack)
 eval(get_stack)
 }

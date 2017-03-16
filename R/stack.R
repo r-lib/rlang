@@ -10,13 +10,13 @@
 #' history, on the other hand, is homogenous. See `vignette("stack")`
 #' for more information.
 #'
-#' `eval_frame()` and `call_frame()` return a `frame` object
+#' `ctxt_frame()` and `call_frame()` return a `frame` object
 #' containing the following fields: `expr` and `env` (call expression
 #' and evaluation environment), `pos` and `caller_pos` (position of
 #' current frame in the context stack and position of the caller), and
-#' `fun` (function of the current frame). `eval_stack()` and
+#' `fun` (function of the current frame). `ctxt_stack()` and
 #' `call_stack()` return a list of all context or call frames on the
-#' stack. Finally, `eval_depth()` and `call_depth()` report the
+#' stack. Finally, `ctxt_depth()` and `call_depth()` report the
 #' current context position or the number of calling frames on the
 #' stack.
 #'
@@ -32,8 +32,8 @@
 #' Note finally that `parent.frame(1)` corresponds to
 #' `call_frame(2)$env`, as `n = 1` always refers to the current
 #' frame. This makes the `_frame()` and `_stack()` functions
-#' consistent: `eval_frame(2)` is the same as `eval_stack()[[2]]`.
-#' Also, `eval_depth()` returns one more frame than
+#' consistent: `ctxt_frame(2)` is the same as `ctxt_stack()[[2]]`.
+#' Also, `ctxt_depth()` returns one more frame than
 #' [base::sys.nframe()] because it counts the global frame. That is
 #' consistent with the `_stack()` functions which return the global
 #' frame as well. This way, `call_stack(call_depth())` is the same as
@@ -51,7 +51,7 @@
 #' @name stack
 #' @examples
 #' # Expressions within arguments count as contexts
-#' identity(identity(eval_depth())) # returns 2
+#' identity(identity(ctxt_depth())) # returns 2
 #'
 #' # But they are not part of the call stack because arguments are
 #' # evaluated within the calling function (or the global environment
@@ -61,11 +61,11 @@
 #' # The context stacks includes all intervening execution frames. The
 #' # call stack doesn't:
 #' f <- function(x) identity(x)
-#' f(f(eval_stack()))
+#' f(f(ctxt_stack()))
 #' f(f(call_stack()))
 #'
 #' g <- function(cmd) cmd()
-#' f(g(eval_stack))
+#' f(g(ctxt_stack))
 #' f(g(call_stack))
 #'
 #' # The lazyeval _stack() functions return a list of frame
@@ -76,26 +76,26 @@
 #' # purrr::map(stack, "env")
 #' # purrr::transpose(stack)$expr
 #'
-#' # current_frame() is an alias for eval_frame(1)
-#' fn <- function() list(current = current_frame(), first = eval_frame(1))
+#' # current_frame() is an alias for ctxt_frame(1)
+#' fn <- function() list(current = current_frame(), first = ctxt_frame(1))
 #' fn()
 #'
 #' # While current_frame() is the top of the stack, global_frame() is
 #' # the bottom:
 #' fn <- function() {
-#'   n <- eval_depth()
-#'   eval_frame(n)
+#'   n <- ctxt_depth()
+#'   ctxt_frame(n)
 #' }
 #' identical(fn(), global_frame())
 #'
 #'
-#' # eval_stack() returns a stack with all intervening frames. You can
+#' # ctxt_stack() returns a stack with all intervening frames. You can
 #' # trim layers of intervening frames with the trim argument:
-#' identity(identity(eval_stack()))
-#' identity(identity(eval_stack(trim = 1)))
+#' identity(identity(ctxt_stack()))
+#' identity(identity(ctxt_stack(trim = 1)))
 #'
-#' # eval_stack() is called within fn() with intervening frames:
-#' fn <- function(trim) identity(identity(eval_stack(trim = trim)))
+#' # ctxt_stack() is called within fn() with intervening frames:
+#' fn <- function(trim) identity(identity(ctxt_stack(trim = trim)))
 #' fn(0)
 #'
 #' # We can trim the first layer of those:
@@ -156,12 +156,12 @@ global_frame <- function() {
 #' @rdname stack
 #' @export
 current_frame <- function() {
-  eval_frame(2)
+  ctxt_frame(2)
 }
 
 #' @rdname stack
 #' @export
-eval_frame <- function(n = 1) {
+ctxt_frame <- function(n = 1) {
   stopifnot(n > 0)
   pos <- sys.nframe() - n
 
@@ -255,7 +255,7 @@ trail_index <- function(callers, i) {
 call_frame <- function(n = 1, clean = TRUE) {
   stopifnot(n > 0)
 
-  eval_callers <- eval_stack_callers()
+  eval_callers <- ctxt_stack_callers()
   trail <- trail_make(eval_callers, n, clean = clean)
   pos <- trail[n]
 
@@ -308,13 +308,13 @@ caller_fn <- function(n = 1) {
 
 #' @rdname stack
 #' @export
-eval_depth <- function() {
+ctxt_depth <- function() {
   sys.nframe()
 }
 #' @rdname stack
 #' @export
 call_depth <- function() {
-  eval_callers <- eval_stack_callers()
+  eval_callers <- ctxt_stack_callers()
   trail <- trail_make(eval_callers)
   length(trail)
 }
@@ -324,16 +324,16 @@ call_depth <- function() {
 
 #' @rdname stack
 #' @export
-eval_stack <- function(n = NULL, trim = 0) {
+ctxt_stack <- function(n = NULL, trim = 0) {
   stack_data <- list(
-    pos = eval_stack_trail(),
-    caller_pos = eval_stack_callers(),
-    expr = eval_stack_exprs(),
-    env = eval_stack_envs(),
-    fn = eval_stack_fns()
+    pos = ctxt_stack_trail(),
+    caller_pos = ctxt_stack_callers(),
+    expr = ctxt_stack_exprs(),
+    env = ctxt_stack_envs(),
+    fn = ctxt_stack_fns()
   )
 
-  # Remove eval_stack() from stack
+  # Remove ctxt_stack() from stack
   stack_data <- map(stack_data, drop_first)
 
   stack_data <- stack_subset(stack_data, n)
@@ -349,26 +349,26 @@ eval_stack <- function(n = NULL, trim = 0) {
     stack <- stack_trim(stack, n = trim + 1)
   }
 
-  structure(stack, class = c("eval_stack", "stack"))
+  structure(stack, class = c("ctxt_stack", "stack"))
 }
 
-eval_stack_trail <- function() {
+ctxt_stack_trail <- function() {
   pos <- sys.nframe() - 1
   seq(pos, 1)
 }
-eval_stack_exprs <- function() {
+ctxt_stack_exprs <- function() {
   exprs <- sys.calls()
   rev(drop_last(exprs))
 }
-eval_stack_envs <- function(n = 1) {
+ctxt_stack_envs <- function(n = 1) {
   envs <- sys.frames()
   rev(drop_last(envs))
 }
-eval_stack_callers <- function() {
+ctxt_stack_callers <- function() {
   callers <- sys.parents()
   rev(drop_last(callers))
 }
-eval_stack_fns <- function() {
+ctxt_stack_fns <- function() {
   pos <- sys.nframe() - 1
   map(seq(pos, 1), sys.function)
 }
@@ -391,7 +391,7 @@ stack_subset <- function(stack_data, n) {
 #' @rdname stack
 #' @export
 call_stack <- function(n = NULL, clean = TRUE) {
-  eval_callers <- eval_stack_callers()
+  eval_callers <- ctxt_stack_callers()
   trail <- trail_make(eval_callers, n, clean = clean)
 
   stack_data <- list(
@@ -453,7 +453,7 @@ is_stack <- function(x) inherits(x, "stack")
 
 #' @rdname is_stack
 #' @export
-is_eval_stack <- function(x) inherits(x, "eval_stack")
+is_eval_stack <- function(x) inherits(x, "ctxt_stack")
 
 #' @rdname is_stack
 #' @export
@@ -512,7 +512,7 @@ sys_frame <- function(n) {
 #' h <- function(env) frame_position(env, from = "current")
 #' fn()
 frame_position <- function(frame, from = c("global", "current")) {
-  stack <- stack_trim(eval_stack(), n = 2)
+  stack <- stack_trim(ctxt_stack(), n = 2)
 
   if (match.arg(from) == "global") {
     frame_position_global(frame, stack)
@@ -530,7 +530,7 @@ frame_position_global <- function(frame, stack = NULL) {
   }
 
   frame <- get_env(frame)
-  stack <- stack %||% stack_trim(eval_stack(), n = 2)
+  stack <- stack %||% stack_trim(ctxt_stack(), n = 2)
   envs <- pluck(stack, "env")
 
   i <- 1
@@ -549,7 +549,7 @@ frame_position_current <- function(frame, stack = NULL,
   if (is_integerish(frame)) {
     pos <- frame
   } else {
-    stack <- stack %||% stack_trim(eval_stack(), n = 2)
+    stack <- stack %||% stack_trim(ctxt_stack(), n = 2)
     pos <- frame_position_global(frame, stack)
   }
   caller_pos <- caller_pos %||% call_frame(2)$pos
@@ -559,9 +559,9 @@ frame_position_current <- function(frame, stack = NULL,
 
 #' Trim top call layers from the evaluation stack.
 #'
-#' [eval_stack()] can be tricky to use in real code because all
+#' [ctxt_stack()] can be tricky to use in real code because all
 #' intervening frames are returned with the stack, including those at
-#' `eval_stack()` own call site. `stack_trim()` makes it easy to
+#' `ctxt_stack()` own call site. `stack_trim()` makes it easy to
 #' remove layers of intervening calls.
 #'
 #' @param stack An evaluation stack.
@@ -571,15 +571,15 @@ frame_position_current <- function(frame, stack = NULL,
 #' @export
 #' @examples
 #' # Intervening frames appear on the evaluation stack:
-#' identity(identity(eval_stack()))
+#' identity(identity(ctxt_stack()))
 #'
 #' # stack_trim() will trim the first n layers of calls:
-#' stack_trim(identity(identity(eval_stack())))
+#' stack_trim(identity(identity(ctxt_stack())))
 #'
 #' # Note that it also takes care of calls intervening at its own call
 #' # site:
 #' identity(identity(
-#'   stack_trim(identity(identity(eval_stack())))
+#'   stack_trim(identity(identity(ctxt_stack())))
 #' ))
 #'
 #' # It is especially useful when used within a function that needs to
@@ -587,9 +587,9 @@ frame_position_current <- function(frame, stack = NULL,
 #' # within nested calls without side effects:
 #' stack_util <- function() {
 #'   # n = 2 means that two layers of intervening calls should be
-#'   # removed: The layer at eval_stack()'s call site (including the
+#'   # removed: The layer at ctxt_stack()'s call site (including the
 #'   # stack_trim() call), and the layer at stack_util()'s call.
-#'   stack <- stack_trim(eval_stack(), n = 2)
+#'   stack <- stack_trim(ctxt_stack(), n = 2)
 #'   stack
 #' }
 #' user_fn <- function() {
@@ -654,7 +654,7 @@ stack_trim <- function(stack, n = 1) {
 #' fn()
 return_from <- function(frame, value = NULL) {
   if (is_integerish(frame)) {
-    frame <- eval_frame(frame)
+    frame <- ctxt_frame(frame)
   }
 
   exit_env <- get_env(frame)
@@ -673,7 +673,7 @@ return_to <- function(frame, value = NULL) {
     prev_pos <- distance - 1
   }
 
-  prev_frame <- eval_frame(prev_pos)
+  prev_frame <- ctxt_frame(prev_pos)
   return_from(prev_frame, value)
 }
 

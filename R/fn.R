@@ -96,7 +96,7 @@ fn_fmls_names <- function(fn = caller_fn()) {
 #' environment. When closures are evaluated, a new environment called
 #' the evaluation frame is created with the closure environment as
 #' parent. This is where the body of the closure is evaluated. These
-#' closure frames appear on the evaluation stack (see [eval_stack()]),
+#' closure frames appear on the evaluation stack (see [ctxt_stack()]),
 #' as opposed to primitive functions which do not necessarily have
 #' their own evaluation frame and never appear on the stack.
 #'
@@ -156,10 +156,10 @@ fn_fmls_names <- function(fn = caller_fn()) {
 #' # Primitive functions never appear in evaluation stacks:
 #' is_primitive(base::`[[`)
 #' is_primitive(base::list)
-#' list(eval_stack())[[1]]
+#' list(ctxt_stack())[[1]]
 #'
 #' # While closures do:
-#' identity(identity(eval_stack()))
+#' identity(identity(ctxt_stack()))
 is_function <- function(x) {
   is_closure(x) || is_primitive(x)
 }
@@ -241,7 +241,7 @@ is_primitive_lazy <- function(x) {
 #'
 #' Closure environments define the scope of functions (see [env()]).
 #' When a function call is evaluated, R creates an evaluation frame
-#' (see [eval_stack()]) that inherits from the closure environment.
+#' (see [ctxt_stack()]) that inherits from the closure environment.
 #' This makes all objects defined in the closure environment and all
 #' its parents available to code executed within the function.
 #'

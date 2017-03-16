@@ -147,7 +147,7 @@ is_symbolic <- function(x) {
 #' unnecessarily clutter the evaluation stack and it can change
 #' evaluation semantics with stack sensitive functions in the case
 #' where `env` is an evaluation environment of a stack frame (see
-#' [eval_stack()]). Since the base function `eval()` creates a new
+#' [ctxt_stack()]). Since the base function `eval()` creates a new
 #' evaluation context with `env` as frame environment there are
 #' actually two contexts with the same evaluation environment on the
 #' stack when `expr` is evaluated. Thus, any command that looks up
@@ -196,7 +196,7 @@ is_symbolic <- function(x) {
 #'
 #' # Another difference of eval_bare() compared to base::eval() is
 #' # that it does not insert parasite frames in the evaluation stack:
-#' get_stack <- quote(identity(eval_stack()))
+#' get_stack <- quote(identity(ctxt_stack()))
 #' eval_bare(get_stack)
 #' eval(get_stack)
 eval_bare <- function(expr, env = parent.frame()) {
@@ -289,7 +289,7 @@ expr_text <- function(expr, width = 60L, nlines = Inf) {
 #' @examples
 #' f <- ~foo(bar)
 #' e <- quote(foo(bar))
-#' frame <- identity(identity(eval_frame()))
+#' frame <- identity(identity(ctxt_frame()))
 #'
 #' get_expr(f)
 #' get_expr(e)

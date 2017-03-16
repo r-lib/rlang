@@ -20,8 +20,8 @@ test_that("dots_inspect() inspects dots", {
 
   expect_identical(info$foo$expr, quote(bar))
   expect_identical(info[[2]]$expr, "foo")
-  expect_identical(info$foo$eval_frame$env, out$env)
-  expect_identical(info[[2]]$eval_frame$env, out$env)
+  expect_identical(info$foo$ctxt_frame$env, out$env)
+  expect_identical(info[[2]]$ctxt_frame$env, out$env)
 })
 
 test_that("unmatched dots return arg_missing()", {

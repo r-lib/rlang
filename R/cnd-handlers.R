@@ -1,7 +1,7 @@
 #' Establish handlers on the stack.
 #'
 #' Condition handlers are functions established on the evaluation
-#' stack (see [eval_stack()]) that are called by R when a condition is
+#' stack (see [ctxt_stack()]) that are called by R when a condition is
 #' signalled (see [cnd_signal()] and [abort()] for two common signal
 #' functions). They come in two types: exiting handlers, which jump
 #' out of the signalling context and are transferred to
@@ -123,7 +123,7 @@ interp_handlers <- function(f, inplace, exiting) {
 #' it finds an exiting handler, it throws it to the function that
 #' established it ([with_handlers()]). That is, it interrupts the
 #' normal course of evaluation and jumps to `with_handlers()`
-#' evaluation frame (see [eval_stack()]), and only then and there the
+#' evaluation frame (see [ctxt_stack()]), and only then and there the
 #' handler is called. On the other hand, if R finds an inplace
 #' handler, it executes it locally. The inplace handler can choose to
 #' handle the condition by jumping out of the frame (see [rst_jump()]
