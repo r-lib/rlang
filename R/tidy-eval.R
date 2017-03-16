@@ -76,7 +76,7 @@ eval_tidy <- function(f, data = NULL) {
   }
 
   f <- as_quosure(f, caller_env())
-  overscope <- tidy_overscope(f, data)
+  overscope <- as_overscope(f, data)
   on.exit(overscope_clean(overscope))
 
   overscope_eval(overscope, f)
@@ -89,7 +89,7 @@ eval_tidy <- function(f, data = NULL) {
 #' pronouns, etc). However, some DSLs might need a different
 #' evaluation environment. In this case, you can call `eval_tidy_()`
 #' with the bottom and the top of your custom overscope (see
-#' [tidy_overscope()] for more information).
+#' [as_overscope()] for more information).
 #'
 #' Note that `eval_tidy_()` always installs a `.env` pronoun in the
 #' bottom environment of your dynamic scope. This pronoun provides a
@@ -99,7 +99,7 @@ eval_tidy <- function(f, data = NULL) {
 #' for evaluating several quosures in the same overscope.
 #'
 #' @inheritParams eval_tidy
-#' @inheritParams tidy_overscope
+#' @inheritParams as_overscope
 #' @export
 eval_tidy_ <- function(f, bottom, top = NULL) {
   if (is_list(f)) {
@@ -113,6 +113,7 @@ eval_tidy_ <- function(f, bottom, top = NULL) {
   f <- as_quosure(f, caller_env())
   overscope_eval(overscope, f)
 }
+
 
 #' Create a dynamic scope for tidy evaluation.
 #'
@@ -138,14 +139,14 @@ eval_tidy_ <- function(f, bottom, top = NULL) {
 #' care of installing the tidyeval components in your custom dynamic
 #' scope.
 #'
-#' * `tidy_overscope()` is the function that powers [eval_tidy()]. It
+#' * `as_overscope()` is the function that powers [eval_tidy()]. It
 #'   could be useful if you cannot use `eval_tidy()` for some reason,
 #'   but serves mostly as an example of how to build a dynamic scope
 #'   for tidy evaluation. In this case, it creates pronouns `.data`
 #'   and `.env` and buries all dynamic bindings from the supplied
 #'   `data` in new environments.
 #'
-#' * `new_overscope()` is called by `tidy_overscope()` and
+#' * `new_overscope()` is called by `as_overscope()` and
 #'   [eval_tidy_()]. It installs the definitions for making
 #'   formulas self-evaluate and for formula-guards. It also installs
 #'   the pronoun `.top_env` that helps keeping track of the boundary
@@ -165,8 +166,7 @@ eval_tidy_ <- function(f, bottom, top = NULL) {
 #'   examples). Note that this function is automatically called by
 #'   [eval_tidy_()].
 #'
-#' @param f A quosure whose enclosure captures the original lexical
-#'   scope.
+#' @param quo A [quosure].
 #' @param data Additional data to put in scope.
 #' @return An overscope environment.
 #' @export
@@ -175,7 +175,7 @@ eval_tidy_ <- function(f, bottom, top = NULL) {
 #' # features:
 #' expr <- quote(list(.data$cyl, ~letters))
 #' f <- as_quosure(expr)
-#' overscope <- tidy_overscope(f, data = mtcars)
+#' overscope <- as_overscope(f, data = mtcars)
 #' overscope_eval(overscope, f)
 #'
 #' # However you need to cleanup the environment after evaluation.
@@ -186,9 +186,9 @@ eval_tidy_ <- function(f, bottom, top = NULL) {
 #'
 #' overscope_clean(overscope)
 #' fn()
-tidy_overscope <- function(f, data = NULL) {
+as_overscope <- function(quo, data = NULL) {
   data_src <- data_source(data)
-  enclosure <- f_env(f) %||% base_env()
+  enclosure <- f_env(quo) %||% base_env()
 
   # Create bottom environment pre-chained to the lexical scope
   bottom <- child_env(enclosure)
@@ -204,8 +204,7 @@ tidy_overscope <- function(f, data = NULL) {
   new_overscope(bottom)
 }
 
-
-#' @rdname tidy_overscope
+#' @rdname as_overscope
 #' @param bottom This is the environment (or the bottom of a set of
 #'   environments) containing definitions for overscoped symbols. The
 #'   bottom environment typically contains pronouns (like `.data`)
@@ -239,11 +238,10 @@ new_overscope <- function(bottom, top = NULL) {
 
   overscope
 }
-#' @rdname tidy_overscope
+#' @rdname as_overscope
 #' @param overscope A valid overscope containing bindings for `~`,
 #'   `.top_env` and `_F` and whose parents contain overscoped bindings
 #'   for tidy evaluation.
-#' @param quo A quosure or quote to evaluate within the overscope.
 #' @param env The lexical enclosure in case `quo` is not a validly
 #'   scoped quosure. This is the [base environment][base_env] by
 #'   default.
@@ -257,7 +255,7 @@ overscope_eval <- function(overscope, quo, env = base_env()) {
 
   .Call(rlang_eval, f_rhs(quo), overscope)
 }
-#' @rdname tidy_overscope
+#' @rdname as_overscope
 #' @export
 overscope_clean <- function(overscope) {
   cur_env <- env_parent(overscope)

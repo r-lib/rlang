@@ -33,7 +33,7 @@ to ensure some consistency across packages (\code{.data} and \code{.env}
 pronouns, etc). However, some DSLs might need a different
 evaluation environment. In this case, you can call \code{eval_tidy_()}
 with the bottom and the top of your custom overscope (see
-\code{\link[=tidy_overscope]{tidy_overscope()}} for more information).
+\code{\link[=as_overscope]{as_overscope()}} for more information).
 }
 \details{
 Note that \code{eval_tidy_()} always installs a \code{.env} pronoun in the
