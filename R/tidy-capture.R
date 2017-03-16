@@ -89,7 +89,9 @@ enquo <- function(x) {
   forward_quosure(expr, arg$env)
 }
 forward_quosure <- function(expr, env) {
-  if (is_symbolic(expr)) {
+  if (is_empty_quosure(expr)) {
+    expr
+  } else if (is_symbolic(expr)) {
     new_quosure(expr, env)
   } else {
     as_quosure(expr, empty_env())
