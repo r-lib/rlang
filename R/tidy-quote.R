@@ -311,11 +311,11 @@ dots_quos <- function(..., .named = FALSE, .ignore_empty = "trailing") {
   n_dots <- length(dots)
   if (n_dots && !is_false(.ignore_empty)) {
     if (identical(.ignore_empty, "trailing")) {
-      if (is_quo_missing(dots[[n_dots]])) {
+      if (is_empty_quosure(dots[[n_dots]])) {
         dots[[n_dots]] <- NULL
       }
     } else if (is_true(.ignore_empty)) {
-      dots <- discard(dots, is_quo_missing)
+      dots <- discard(dots, is_empty_quosure)
     } else {
       abort("`.ignore_empty` must be a boolean or the string `trailing`")
     }
@@ -353,9 +353,6 @@ quo_names_width <- function(named) {
   } else {
     abort("`.named` must be a scalar logical or a numeric")
   }
-}
-is_quo_missing <- function(quo) {
-  is_missing(f_rhs(quo))
 }
 
 #' @rdname quosures

@@ -10,9 +10,7 @@
 \usage{
 dots_quos(..., .named = FALSE, .ignore_empty = "trailing")
 
-quos(..., .named = FALSE)
-
-is_quosures(x)
+quos(..., .named = FALSE, .ignore_empty = "trailing")
 
 dots_definitions(..., .named = FALSE)
 }

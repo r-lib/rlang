@@ -76,6 +76,25 @@ is_one_sided <- function(x, lang_sym = sym_tilde) {
     is_null(node_cadr(node_cdr(x)))
 }
 
+#' Is a quosure empty?
+#'
+#' When missing arguments are captured as quosures, either through
+#' [catch_quosure()] or [dots_quosures()], they are returned as the
+#' empty quosure. These quosures contain the [missing
+#' argument][missing_arg] and typically have the [empty
+#' environment][empty_env] as enclosure.
+#'
+#' @param quo A quosure.
+#' @export
+#' @examples
+#' quo <- quosure()
+#' is_empty_quosure(quo)
+#' is_missing(f_rhs(quo))
+#' @rdname empty_quosure
+#' @export
+is_empty_quosure <- function(quo) {
+  is_quosure(quo) && is_missing(f_rhs(quo))
+}
 
 #' Create quosures.
 #'
