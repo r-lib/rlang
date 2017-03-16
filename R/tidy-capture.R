@@ -79,6 +79,10 @@
 #' g <- function(bar) fn(bar)
 #' g(a + b)
 enquo <- function(x) {
+  if (missing(x)) {
+    return(new_quosure(missing_arg(), empty_env()))
+  }
+
   capture <- new_language(captureArg, substitute(x))
   arg <- eval_bare(capture, caller_env())
   expr <- .Call(rlang_interp, arg$expr, arg$env)
