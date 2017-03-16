@@ -4,7 +4,7 @@ test_that("quosures are spliced", {
   q <- ~foo(~bar, ~baz(~baz, 3))
   expect_identical(quo_text(q), "foo(bar, baz(baz, 3))")
 
-  q <- tidy_interp(~foo::bar(!! function(x) ...))
+  q <- expr_interp(~foo::bar(!! function(x) ...))
   expect_identical(quo_text(q), "foo::bar(function (x) \n...)")
 
   q <- ~~~foo(~~bar(~~~baz))

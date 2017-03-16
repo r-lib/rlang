@@ -50,6 +50,6 @@ e <- expr(toupper(!! f))
 tidy_eval(e)
 }
 \seealso{
-See \code{\link[=quosure]{quosure()}} and \code{\link[=tidy_interp]{tidy_interp()}} for more
+See \code{\link[=quosure]{quosure()}} and \code{\link[=expr_interp]{expr_interp()}} for more
 explanation on tidy quotation.
 }

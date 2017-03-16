@@ -11,7 +11,7 @@
 #'
 #' Like all capturing functions in the tidy evaluation framework,
 #' `quosure()` interpolates on capture (see [arg_quosure()]) and
-#' `vignette("tidy-eval")`. Alternatively, `tidy_interp()` allows you
+#' `vignette("tidy-eval")`. Alternatively, `expr_interp()` allows you
 #' to interpolate manually when you have constructed a raw expression
 #' or formula by yourself. When an expression is interpolated, all
 #' sub-expressions within unquoting operators (like `UQ(x)` and
@@ -74,7 +74,7 @@
 #'   expression supplied as argument.
 #' @seealso [dots_quosures()] for capturing several expressions,
 #'   including from dots; [expr()] for quoting a raw
-#'   expression with quasiquotation; and [tidy_interp()] for unquoting
+#'   expression with quasiquotation; and [expr_interp()] for unquoting
 #'   an already quoted expression or an existing formula.
 #' @export
 #' @aliases UQ UQE UQF UQS
@@ -197,7 +197,7 @@ quosure <- function(expr) {
 #' directly compatible with the base R [base::eval()] function.
 #'
 #' @inheritParams quosure
-#' @seealso See [quosure()] and [tidy_interp()] for more
+#' @seealso See [quosure()] and [expr_interp()] for more
 #'   explanation on tidy quotation.
 #' @return The raw expression supplied as argument.
 #' @export

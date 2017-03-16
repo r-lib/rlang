@@ -35,7 +35,7 @@
 #'
 #'   In addition, note that `arg_quosure()` always interpolates its
 #'   input to facilitate programming with NSE functions. See
-#'   [tidy_interp()] and [quosure()].
+#'   [expr_interp()] and [quosure()].
 #'
 #' @section Forwarding arguments:
 #'

@@ -45,7 +45,7 @@ defined) by \code{\link[=tidy_eval]{tidy_eval()}}.
 \details{
 Like all capturing functions in the tidy evaluation framework,
 \code{quosure()} interpolates on capture (see \code{\link[=arg_quosure]{arg_quosure()}}) and
-\code{vignette("tidy-eval")}. Alternatively, \code{tidy_interp()} allows you
+\code{vignette("tidy-eval")}. Alternatively, \code{expr_interp()} allows you
 to interpolate manually when you have constructed a raw expression
 or formula by yourself. When an expression is interpolated, all
 sub-expressions within unquoting operators (like \code{UQ(x)} and
@@ -213,6 +213,6 @@ tidy_eval(quosure(a ~ b))
 \seealso{
 \code{\link[=dots_quosures]{dots_quosures()}} for capturing several expressions,
 including from dots; \code{\link[=expr]{expr()}} for quoting a raw
-expression with quasiquotation; and \code{\link[=tidy_interp]{tidy_interp()}} for unquoting
+expression with quasiquotation; and \code{\link[=expr_interp]{expr_interp()}} for unquoting
 an already quoted expression or an existing formula.
 }

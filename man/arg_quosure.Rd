@@ -50,7 +50,7 @@ NSE.
 
 In addition, note that \code{arg_quosure()} always interpolates its
 input to facilitate programming with NSE functions. See
-\code{\link[=tidy_interp]{tidy_interp()}} and \code{\link[=quosure]{quosure()}}.
+\code{\link[=expr_interp]{expr_interp()}} and \code{\link[=quosure]{quosure()}}.
 }
 
 \section{Forwarding arguments}{
