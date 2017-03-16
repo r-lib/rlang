@@ -19,7 +19,7 @@
 #' scoped but not the inner one. This is because `~` saves the
 #' environment when it is evaluated, and quoted quosures are by
 #' definition not evaluated. Note that in the [tidy evaluation
-#' framework][tidy_eval], unscoped quosures are automatically given
+#' framework][eval_tidy], unscoped quosures are automatically given
 #' the environment of the outer quosure during the evaluation process.
 #'
 #' @param x An object to test.
@@ -27,7 +27,7 @@
 #'   is scoped, that is, has a valid environment attribute. If `NULL`,
 #'   the scope is not inspected.
 #' @seealso [as_quosure()][new_quosure] and [new_quosure()] for creating
-#'   quosures, and [quosure()] or [tidy_eval()] for information
+#'   quosures, and [quosure()] or [eval_tidy()] for information
 #'   about the role of quosures in the tidy evaluation framework.
 #' @export
 #' @examples
@@ -113,7 +113,7 @@ is_one_sided <- function(x, lang_sym = sym_tilde) {
 #' @examples
 #' f <- new_quosure(quote(mtcars), get_env("datasets"))
 #' f
-#' tidy_eval(f)
+#' eval_tidy(f)
 #'
 #'
 #' # Sometimes you get unscoped quosures because of quotation:

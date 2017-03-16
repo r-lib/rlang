@@ -112,7 +112,7 @@ with_restarts <- function(.expr, ..., .restarts = list()) {
 with_restarts_ <- function(.expr, .restarts = list(), .env = NULL) {
   f <- as_quosure(.expr, .env)
   f <- quosure(withRestarts(!! f, !!! .restarts))
-  tidy_eval(f)
+  eval_tidy(f)
 }
 
 

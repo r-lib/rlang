@@ -40,7 +40,7 @@ evaluation framework because they bundle an expression and a scope
 that you can pass a formula around while keeping track of the
 context where it was created. The symbols quoted in the formula
 will be evaluated in the right context (where they are likely
-defined) by \code{\link[=tidy_eval]{tidy_eval()}}.
+defined) by \code{\link[=eval_tidy]{eval_tidy()}}.
 }
 \details{
 Like all capturing functions in the tidy evaluation framework,
@@ -85,7 +85,7 @@ bundle an expression (the argument supplied by the caller of the
 function) and an environment (the original call site of the
 function), and they self-evaluate to return a value as soon as
 you touch them. Similarly, formulas self-evaluate when called
-within \code{\link[=tidy_eval]{tidy_eval()}}. However, unlike promises, they are
+within \code{\link[=eval_tidy]{eval_tidy()}}. However, unlike promises, they are
 first-class objects: you can pass a formula around and use it to
 transform another formula or expression. Formulas are thus
 treated as reified promises.
@@ -148,10 +148,10 @@ f <- quosure(outer(!! f, !!! lapply(letters[1:3], as_symbol)))
 f
 
 # Note that it's fine to unquote formulas as long as you evaluate
-# with tidy_eval():
+# with eval_tidy():
 f <- ~letters
 f <- quosure(toupper(!! f))
-tidy_eval(f)
+eval_tidy(f)
 
 # Formulas carry scope information about the inner expression
 # inlined in the outer expression upon unquoting. To see this,
@@ -159,8 +159,8 @@ tidy_eval(f)
 # local scope (a child environment of the current environment):
 f1 <- local({ foo <- "foo"; ~foo })
 
-# You can evaluate that expression with tidy_eval():
-tidy_eval(f1)
+# You can evaluate that expression with eval_tidy():
+eval_tidy(f1)
 
 # And you can also inline it in another expression before
 # evaluation:
@@ -168,8 +168,8 @@ f2 <- local({ bar <- "bar"; ~toupper(bar)})
 f3 <- quosure(paste(!!f1, !!f2, "!"))
 f3
 
-# tidy_eval() treats one-sided formulas like promises to be evaluated:
-tidy_eval(f3)
+# eval_tidy() treats one-sided formulas like promises to be evaluated:
+eval_tidy(f3)
 
 
 # The formula-promise representation is necessary to preserve scope
@@ -205,10 +205,10 @@ quosure(mtcars$`!!`(var))
 var <- ~letters[1:2]
 f <- quosure(list(!!var, UQF(var)))
 f
-tidy_eval(f)
+eval_tidy(f)
 
 # Note that two-sided formulas are never treated as fpromises:
-tidy_eval(quosure(a ~ b))
+eval_tidy(quosure(a ~ b))
 }
 \seealso{
 \code{\link[=dots_quosures]{dots_quosures()}} for capturing several expressions,

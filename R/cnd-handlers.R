@@ -92,7 +92,7 @@ with_handlers_ <- function(.expr, .handlers = list(), .env = NULL) {
   }
 
   f <- interp_handlers(f, inplace = inplace, exiting = exiting)
-  tidy_eval(f)
+  eval_tidy(f)
 }
 
 interp_handlers <- function(f, inplace, exiting) {

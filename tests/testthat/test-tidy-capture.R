@@ -40,7 +40,7 @@ test_that("dots are interpolated", {
   dots <- fn(toupper(!!var))
 
   expect_identical(map(dots, deparse), named(list("~toupper(~foo)", "~toupper(~bar)", "~toupper(~baz)")))
-  expect_identical(map(dots, tidy_eval), named(list("FOO", "BAR", "BAZ")))
+  expect_identical(map(dots, eval_tidy), named(list("FOO", "BAR", "BAZ")))
 })
 
 test_that("dots capture is stack-consistent", {
@@ -129,8 +129,8 @@ test_that("dots are forwarded to named arguments", {
 })
 
 test_that("pronouns are scoped throughout nested captures", {
-  outer <- function(data, ...) tidy_eval(dots_quosures(...)[[1]], data = data)
-  inner <- function(...) map(dots_quosures(...), tidy_eval)
+  outer <- function(data, ...) eval_tidy(dots_quosures(...)[[1]], data = data)
+  inner <- function(...) map(dots_quosures(...), eval_tidy)
 
   data <- list(foo = "bar", baz = "baz")
   baz <- "bazz"

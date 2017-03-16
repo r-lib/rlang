@@ -44,10 +44,10 @@ f <- ~letters
 e <- expr(toupper(!! f_rhs(f)))
 eval(e)
 
-# However it's fine to unquote formulas if you evaluate with tidy_eval():
+# However it's fine to unquote formulas if you evaluate with eval_tidy():
 f <- ~letters
 e <- expr(toupper(!! f))
-tidy_eval(e)
+eval_tidy(e)
 }
 \seealso{
 See \code{\link[=quosure]{quosure()}} and \code{\link[=expr_interp]{expr_interp()}} for more

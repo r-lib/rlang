@@ -126,7 +126,7 @@ test_that("UQF() guards formulas", {
 
   expected_f <- new_quosure(guarded)
   expect_identical(quosure(UQF(f)), expected_f)
-  expect_identical(tidy_eval(expected_f), f)
+  expect_identical(eval_tidy(expected_f), f)
 })
 
 test_that("UQE() extracts right-hand side", {

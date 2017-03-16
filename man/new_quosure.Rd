@@ -46,7 +46,7 @@ inputs as is.
 \examples{
 f <- new_quosure(quote(mtcars), get_env("datasets"))
 f
-tidy_eval(f)
+eval_tidy(f)
 
 
 # Sometimes you get unscoped quosures because of quotation:

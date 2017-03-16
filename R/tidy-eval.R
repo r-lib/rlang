@@ -1,15 +1,15 @@
 #' Evaluate a quosure.
 #'
-#' `tidy_eval_rhs` evaluates the RHS of a formula and
-#' `tidy_eval_lhs()` evaluates the LHS. `tidy_eval()` is a shortcut
-#' for `tidy_eval_rhs()` since that is what you most commonly need.
+#' `eval_tidy_rhs` evaluates the RHS of a formula and
+#' `eval_tidy_lhs()` evaluates the LHS. `eval_tidy()` is a shortcut
+#' for `eval_tidy_rhs()` since that is what you most commonly need.
 #'
 #' If `data` is specified, variables will be looked for first in this
 #' object, and if not found in the environment of the formula.
 #'
 #' @section Pronouns:
 #'
-#'   When used with `data`, `tidy_eval()` provides two pronouns to
+#'   When used with `data`, `eval_tidy()` provides two pronouns to
 #'   make it possible to be explicit about where you want values to
 #'   come from: `.env` and `.data`. These are thin wrappers around
 #'   `.data` and `.env` that throw errors if you try to access
@@ -18,15 +18,15 @@
 #' @param f A formula. Any expressions wrapped in `UQ()` will will be
 #'   "unquoted", i.e. they will be evaluated, and the results inserted
 #'   back into the formula. See [quosure()] for more details. If a
-#'   list of formulas, `tidy_eval()` is applied to each of them in
+#'   list of formulas, `eval_tidy()` is applied to each of them in
 #'   turn and the list of results is returned.
 #' @param data A list (or data frame). `data_source` is a generic used
 #'   to find the data associated with a given object. If you want to
-#'   make `tidy_eval` work for your own objects, you can define a
+#'   make `eval_tidy` work for your own objects, you can define a
 #'   method for this generic.
 #' @export
 #' @examples
-#' tidy_eval(~ 1 + 2 + 3)
+#' eval_tidy(~ 1 + 2 + 3)
 #'
 #' # formulas automatically capture their enclosing environment
 #' foo <- function(x) {
@@ -35,44 +35,44 @@
 #' }
 #' f <- foo(1)
 #' f
-#' tidy_eval(f)
+#' eval_tidy(f)
 #'
-#' # If you supply data, tidy_eval will look their first:
-#' tidy_eval(~ cyl, mtcars)
+#' # If you supply data, eval_tidy will look their first:
+#' eval_tidy(~ cyl, mtcars)
 #'
 #' # To avoid ambiguity, you can use .env and .data pronouns to be
 #' # explicit:
 #' cyl <- 10
-#' tidy_eval(~ .data$cyl, mtcars)
-#' tidy_eval(~ .env$cyl, mtcars)
+#' eval_tidy(~ .data$cyl, mtcars)
+#' eval_tidy(~ .env$cyl, mtcars)
 #'
 #' # Imagine you are computing the mean of a variable:
-#' tidy_eval(~ mean(cyl), mtcars)
+#' eval_tidy(~ mean(cyl), mtcars)
 #' # How can you change the variable that's being computed?
 #' # The easiest way is "unquote" with !!
 #' # See ?quosure for more details
 #' var <- ~ cyl
-#' tidy_eval(quosure(mean( !!var )), mtcars)
-#' @name tidy_eval
-tidy_eval_rhs <- function(f, data = NULL) {
+#' eval_tidy(quosure(mean( !!var )), mtcars)
+#' @name eval_tidy
+eval_tidy_rhs <- function(f, data = NULL) {
   rhs <- new_quosure(f_rhs(f), f_env(f))
-  rhs <- tidy_eval(rhs, data)
+  rhs <- eval_tidy(rhs, data)
   f_rhs(f) <- rhs
   f
 }
-#' @rdname tidy_eval
+#' @rdname eval_tidy
 #' @export
-tidy_eval_lhs <- function(f, data = NULL) {
+eval_tidy_lhs <- function(f, data = NULL) {
   lhs <- new_quosure(f_lhs(f), f_env(f))
-  lhs <- tidy_eval(lhs, data)
+  lhs <- eval_tidy(lhs, data)
   f_lhs(f) <- lhs
   f
 }
-#' @rdname tidy_eval
+#' @rdname eval_tidy
 #' @export
-tidy_eval <- function(f, data = NULL) {
+eval_tidy <- function(f, data = NULL) {
   if (is_list(f)) {
-    return(map(f, tidy_eval, data = data))
+    return(map(f, eval_tidy, data = data))
   }
 
   f <- as_quosure(f, caller_env())
@@ -84,26 +84,26 @@ tidy_eval <- function(f, data = NULL) {
 
 #' Tidy evaluation in a custom environment.
 #'
-#' We recommend using [tidy_eval()] in your DSLs as much as possible
+#' We recommend using [eval_tidy()] in your DSLs as much as possible
 #' to ensure some consistency across packages (`.data` and `.env`
 #' pronouns, etc). However, some DSLs might need a different
-#' evaluation environment. In this case, you can call `tidy_eval_()`
+#' evaluation environment. In this case, you can call `eval_tidy_()`
 #' with the bottom and the top of your custom overscope (see
 #' [tidy_overscope()] for more information).
 #'
-#' Note that `tidy_eval_()` always installs a `.env` pronoun in the
+#' Note that `eval_tidy_()` always installs a `.env` pronoun in the
 #' bottom environment of your dynamic scope. This pronoun provides a
 #' shortcut to the original lexical enclosure (typically, the dynamic
 #' environment of a captured argument, see [arg_quosure()]). It also
 #' cleans up the overscope after evaluation. See [overscope_eval()]
 #' for evaluating several quosures in the same overscope.
 #'
-#' @inheritParams tidy_eval
+#' @inheritParams eval_tidy
 #' @inheritParams tidy_overscope
 #' @export
-tidy_eval_ <- function(f, bottom, top = NULL) {
+eval_tidy_ <- function(f, bottom, top = NULL) {
   if (is_list(f)) {
-    return(map(f, tidy_eval_, bottom, top))
+    return(map(f, eval_tidy_, bottom, top))
   }
 
   top <- top %||% bottom
@@ -134,25 +134,25 @@ tidy_eval_ <- function(f, bottom, top = NULL) {
 #' let you create a custom dynamic scope. That is, a set of chained
 #' environments whose bottom serves as evaluation environment and
 #' whose top is rechained to the current lexical enclosure. But most
-#' of the time, you can just use [tidy_eval_()] as it will take
+#' of the time, you can just use [eval_tidy_()] as it will take
 #' care of installing the tidyeval components in your custom dynamic
 #' scope.
 #'
-#' * `tidy_overscope()` is the function that powers [tidy_eval()]. It
-#'   could be useful if you cannot use `tidy_eval()` for some reason,
+#' * `tidy_overscope()` is the function that powers [eval_tidy()]. It
+#'   could be useful if you cannot use `eval_tidy()` for some reason,
 #'   but serves mostly as an example of how to build a dynamic scope
 #'   for tidy evaluation. In this case, it creates pronouns `.data`
 #'   and `.env` and buries all dynamic bindings from the supplied
 #'   `data` in new environments.
 #'
 #' * `new_overscope()` is called by `tidy_overscope()` and
-#'   [tidy_eval_()]. It installs the definitions for making
+#'   [eval_tidy_()]. It installs the definitions for making
 #'   formulas self-evaluate and for formula-guards. It also installs
 #'   the pronoun `.top_env` that helps keeping track of the boundary
 #'   of the dynamic scope. If you evaluate a tidy quote with
-#'   [tidy_eval_()], you don't need to use this.
+#'   [eval_tidy_()], you don't need to use this.
 #'
-#' * `tidy_eval_()` is useful when you have several quosures to
+#' * `eval_tidy_()` is useful when you have several quosures to
 #'   evaluate in a same dynamic scope. That's a simple wrapper around
 #'   [expr_eval()] that updates the `.env` pronoun and rechains the
 #'   dynamic scope to the new formula enclosure to evaluate.
@@ -163,7 +163,7 @@ tidy_eval_ <- function(f, bottom, top = NULL) {
 #'   Otherwise your users may face unexpected results in specific
 #'   corner cases (e.g. when the evaluation environment is leaked, see
 #'   examples). Note that this function is automatically called by
-#'   [tidy_eval_()].
+#'   [eval_tidy_()].
 #'
 #' @param f A quosure whose enclosure captures the original lexical
 #'   scope.

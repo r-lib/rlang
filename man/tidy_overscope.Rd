@@ -72,23 +72,23 @@ framework in your own DSLs with your own evaluating function. They
 let you create a custom dynamic scope. That is, a set of chained
 environments whose bottom serves as evaluation environment and
 whose top is rechained to the current lexical enclosure. But most
-of the time, you can just use \code{\link[=tidy_eval_]{tidy_eval_()}} as it will take
+of the time, you can just use \code{\link[=eval_tidy_]{eval_tidy_()}} as it will take
 care of installing the tidyeval components in your custom dynamic
 scope.
 \itemize{
-\item \code{tidy_overscope()} is the function that powers \code{\link[=tidy_eval]{tidy_eval()}}. It
-could be useful if you cannot use \code{tidy_eval()} for some reason,
+\item \code{tidy_overscope()} is the function that powers \code{\link[=eval_tidy]{eval_tidy()}}. It
+could be useful if you cannot use \code{eval_tidy()} for some reason,
 but serves mostly as an example of how to build a dynamic scope
 for tidy evaluation. In this case, it creates pronouns \code{.data}
 and \code{.env} and buries all dynamic bindings from the supplied
 \code{data} in new environments.
 \item \code{new_overscope()} is called by \code{tidy_overscope()} and
-\code{\link[=tidy_eval_]{tidy_eval_()}}. It installs the definitions for making
+\code{\link[=eval_tidy_]{eval_tidy_()}}. It installs the definitions for making
 formulas self-evaluate and for formula-guards. It also installs
 the pronoun \code{.top_env} that helps keeping track of the boundary
 of the dynamic scope. If you evaluate a tidy quote with
-\code{\link[=tidy_eval_]{tidy_eval_()}}, you don't need to use this.
-\item \code{tidy_eval_()} is useful when you have several quosures to
+\code{\link[=eval_tidy_]{eval_tidy_()}}, you don't need to use this.
+\item \code{eval_tidy_()} is useful when you have several quosures to
 evaluate in a same dynamic scope. That's a simple wrapper around
 \code{\link[=expr_eval]{expr_eval()}} that updates the \code{.env} pronoun and rechains the
 dynamic scope to the new formula enclosure to evaluate.
@@ -98,7 +98,7 @@ self-evaluation of formulas possible \code{overscope_clean()}.
 Otherwise your users may face unexpected results in specific
 corner cases (e.g. when the evaluation environment is leaked, see
 examples). Note that this function is automatically called by
-\code{\link[=tidy_eval_]{tidy_eval_()}}.
+\code{\link[=eval_tidy_]{eval_tidy_()}}.
 }
 }
 \examples{
