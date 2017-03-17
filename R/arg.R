@@ -107,7 +107,7 @@ arg_inspect_ <- function(expr, stack, only_dots = FALSE) {
     # If `caller_expr` is a complex expression, we have reached the
     # callee frame, and the next frame is both the caller and
     # evaluation frame
-    if (!is.symbol(caller_expr)) {
+    if (!is_symbol(caller_expr)) {
       formal_name <- as.character(expr)
       expr <- caller_expr
       caller_frame <- stack[[i + 1]]
@@ -207,7 +207,7 @@ arg_missing <- function() {
 #' @export
 is_missing <- function(x) {
   expr <- substitute(x)
-  if (is.symbol(expr) && missing(x)) {
+  if (is_symbol(expr) && missing(x)) {
     TRUE
   } else {
     identical(x, arg_missing())

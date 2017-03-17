@@ -6,11 +6,10 @@
 #' silently the encoding mark of strings (see [str_set_encoding()]).
 #'
 #' @param x A string or list of strings.
-#' @return A symbol for `symbol()` and a list of symbols for
-#'   `symbols()`.
+#' @return A symbol for `sym()` and a list of symbols for `syms()`.
 #' @useDynLib rlang rlang_symbol
 #' @export
-symbol <- function(x) {
+sym <- function(x) {
   if (is_symbol(x)) {
     return(x)
   }
@@ -19,10 +18,10 @@ symbol <- function(x) {
   }
   .Call(rlang_symbol, x)
 }
-#' @rdname symbol
+#' @rdname sym
 #' @export
-symbols <- function(x) {
-  map(x, symbol)
+syms <- function(x) {
+  map(x, sym)
 }
 
 #' Coerce an object to a name or call.
@@ -46,7 +45,7 @@ symbols <- function(x) {
 as_symbol <- function(x) {
   coerce_type(x, "symbol",
     symbol = x,
-    string = symbol(x),
+    string = sym(x),
     quosure = as_symbol(f_rhs(x)),
     language =
       switch_lang(x,

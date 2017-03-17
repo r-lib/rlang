@@ -196,7 +196,7 @@ as_closure <- function(x) {
         fmls <- formals(.ArgsEnv[[fn_name]] %||% .GenericArgsEnv[[fn_name]])
       }
 
-      args <- symbols(names(fmls))
+      args <- syms(names(fmls))
       args <- set_names(args)
       names(args)[(names(args) == "...")] <- ""
 
