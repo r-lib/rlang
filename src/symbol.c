@@ -9,6 +9,7 @@
 extern Rboolean utf8locale;
 
 SEXP recode_symbol(const char* src);
+bool has_unicode_escape(const char* chr);
 int unescape_unicode(char* chr);
 int unescape_unicode_found(char* chr);
 int process_byte(char* tgt, char* const src, int* len_processed);
@@ -35,6 +36,17 @@ SEXP attribute_hidden recode_symbol(const char* src) {
   int len = unescape_unicode(tmp);
   SEXP chrsxp = Rf_mkCharLenCE(tmp, len, CE_UTF8);
   return Rf_ScalarString(chrsxp);
+}
+
+bool attribute_hidden has_unicode_escape(const char* chr) {
+  while (*chr) {
+    if (has_codepoint(chr)) {
+      return true;
+    }
+    ++chr;
+  }
+
+  return false;
 }
 
 int attribute_hidden unescape_unicode(char* chr) {
