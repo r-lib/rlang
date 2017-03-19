@@ -6,9 +6,7 @@
 
 #define attribute_hidden
 
-extern Rboolean utf8locale;
-
-SEXP recode_symbol(const char* src);
+SEXP recode_sexp(SEXP name);
 bool has_unicode_escape(const char* chr);
 int unescape_unicode(char* chr);
 int unescape_unicode_found(char* chr);
@@ -22,20 +20,31 @@ SEXP rlang_symbol(SEXP chr) {
 }
 
 SEXP rlang_symbol_to_character(SEXP chr) {
-  const char* src = CHAR(PRINTNAME(chr));
-  if (utf8locale) return Rf_ScalarString(Rf_mkCharCE(src, CE_UTF8));
-  else return recode_symbol(src);
+  SEXP name = PRINTNAME(chr);
+  return Rf_ScalarString(recode_sexp(name));
 }
 
-SEXP attribute_hidden recode_symbol(const char* src) {
-  const char* re_enc = Rf_reEnc(src, CE_NATIVE, CE_UTF8, 0);
+SEXP attribute_hidden recode_sexp(SEXP name) {
+  int ce = Rf_getCharCE(name);
+  const char* src = CHAR(name);
+  const char* re_enc = Rf_reEnc(src, ce, CE_UTF8, 0);
 
-  // We know that the string has been copied, so it's safe to use it as buffer
-  char* tmp = (char*)re_enc;
+  char* tmp;
+  if (re_enc != src) {
+    // If the string has been copied, it's safe to use as buffer
+    tmp = (char*)re_enc;
+  }
+  else {
+    // If not, we're in a UTF-8 locale
+    // Need to check first if the string has any UTF-8 escapes
+    if (!has_unicode_escape(src)) return name;
+    int orig_len = strlen(re_enc);
+    tmp = alloca(orig_len + 1);
+    memcpy(tmp, re_enc, orig_len + 1);
+  }
 
   int len = unescape_unicode(tmp);
-  SEXP chrsxp = Rf_mkCharLenCE(tmp, len, CE_UTF8);
-  return Rf_ScalarString(chrsxp);
+  return Rf_mkCharLenCE(tmp, len, CE_UTF8);
 }
 
 bool attribute_hidden has_unicode_escape(const char* chr) {
