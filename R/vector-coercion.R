@@ -140,6 +140,7 @@ as_complex <- function(x) {
   )
 }
 #' @rdname vector-coercion
+#' @useDynLib rlang rlang_symbol_to_character
 #' @export
 as_character <- function(x, encoding = NULL) {
   coerce_type_vec(x, "character",
