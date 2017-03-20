@@ -4,10 +4,13 @@
 \alias{env_inherits}
 \title{Does environment inherit from another environment?}
 \usage{
-env_inherits(x, ancestor)
+env_inherits(env, ancestor)
 }
 \arguments{
-\item{x}{An environment.}
+\item{env}{An environment or an object bundling an environment:
+either a \link{quosure} or a \link[=is_closure]{closure}. If
+missing, the environment of the current evaluation frame is
+returned.}
 
 \item{ancestor}{Another environment from which \code{x} might inherit.}
 }

@@ -562,35 +562,37 @@ env_get <- function(env = caller_env(), nm, inherit = FALSE) {
 #' This creates a new environment containing exactly the same objects,
 #' optionally with a new parent.
 #'
-#' @param x An environment to clone.
+#' @inheritParams env
 #' @param parent The parent of the cloned environment.
 #' @export
 #' @examples
 #' env <- child_env(data = mtcars)
 #' clone <- env_clone(env)
 #' identical(env$cyl, clone$cyl)
-env_clone <- function(x, parent = env_parent(x)) {
-  list2env(as.list(x, all.names = TRUE), parent = parent)
+env_clone <- function(env, parent = env_parent(env)) {
+  env <- get_env(env)
+  list2env(as.list(env, all.names = TRUE), parent = parent)
 }
 
 #' Does environment inherit from another environment?
 #'
 #' This returns `TRUE` if `x` has `ancestor` among its parents.
 #'
-#' @param x An environment.
+#' @inheritParams env
 #' @param ancestor Another environment from which `x` might inherit.
 #' @export
-env_inherits <- function(x, ancestor) {
-  stopifnot(is_env(ancestor) && is_env(x))
+env_inherits <- function(env, ancestor) {
+  env <- get_env(env)
+  stopifnot(is_env(ancestor) && is_env(env))
 
-  while(!identical(env_parent(x), empty_env())) {
-    x <- env_parent(x)
-    if (identical(x, ancestor)) {
+  while(!identical(env_parent(env), empty_env())) {
+    env <- env_parent(env)
+    if (identical(env, ancestor)) {
       return(TRUE)
     }
   }
 
-  identical(x, empty_env())
+  identical(env, empty_env())
 }
 
 
