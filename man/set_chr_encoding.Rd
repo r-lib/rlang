@@ -31,7 +31,7 @@ processing, and return these strings without having to convert them
 back to the native encoding. However, it is important to make sure
 the encoding mark has not been lost in the process, otherwise the
 output will be treated as if encoded according to the current
-locale (see \code{\link[=set_utf8_locale]{set_utf8_locale()}} for documentation about locale
+locale (see \code{\link[=mut_utf8_locale]{mut_utf8_locale()}} for documentation about locale
 codesets), which is not appropriate if it does not coincide with
 the actual encoding. In those situations, you can use these
 functions to ensure an encoding mark in your strings.
@@ -65,13 +65,13 @@ as_bytes(names(c(latin1)))
 # to the current locale:
 \dontrun{
 bad <- set_names(set_str_encoding(latin1, "unknown"))
-set_utf8_locale()
+mut_utf8_locale()
 
 str_encoding(names(c(bad)))
 as_bytes(names(c(bad)))
 }
 }
 \seealso{
-\code{\link[=set_utf8_locale]{set_utf8_locale()}} about the effects of the locale, and
+\code{\link[=mut_utf8_locale]{mut_utf8_locale()}} about the effects of the locale, and
 \code{\link[=as_utf8_string]{as_utf8_string()}} about encoding conversion.
 }

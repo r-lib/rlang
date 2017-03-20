@@ -64,7 +64,7 @@ is only declarative, no encoding conversion is attempted. See
 \code{\link[=as_utf8_character]{as_utf8_character()}} and \code{\link[=as_native_character]{as_native_character()}} for coercing to a
 character vector and attempt encoding conversion.
 
-See also \code{\link[=set_chr_encoding]{set_chr_encoding()}} and \code{\link[=set_utf8_locale]{set_utf8_locale()}} for
+See also \code{\link[=set_chr_encoding]{set_chr_encoding()}} and \code{\link[=mut_utf8_locale]{mut_utf8_locale()}} for
 information about encodings and locales in R, and \code{\link[=string]{string()}} and
 \code{\link[=chr]{chr()}} for other ways of creating strings and character vectors.
 

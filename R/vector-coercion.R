@@ -29,7 +29,7 @@
 #' [as_utf8_character()] and [as_native_character()] for coercing to a
 #' character vector and attempt encoding conversion.
 #'
-#' See also [set_chr_encoding()] and [set_utf8_locale()] for
+#' See also [set_chr_encoding()] and [mut_utf8_locale()] for
 #' information about encodings and locales in R, and [string()] and
 #' [chr()] for other ways of creating strings and character vectors.
 #'
