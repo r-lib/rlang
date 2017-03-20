@@ -199,7 +199,7 @@ quo_splice <- function(x, parent = NULL) {
           x <- f_rhs(x)
         }
         if (!is_null(parent)) {
-          set_node_car(parent, x)
+          mut_node_car(parent, x)
         }
         quo_splice(x, parent)
       } else {

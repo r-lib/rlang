@@ -9,14 +9,14 @@
 \alias{node_cadr}
 \alias{node_cdar}
 \alias{node_cddr}
-\alias{set_node_car}
-\alias{set_node_cdr}
-\alias{set_node_caar}
-\alias{set_node_cadr}
-\alias{set_node_cdar}
-\alias{set_node_cddr}
+\alias{mut_node_car}
+\alias{mut_node_cdr}
+\alias{mut_node_caar}
+\alias{mut_node_cadr}
+\alias{mut_node_cdar}
+\alias{mut_node_cddr}
 \alias{node_tag}
-\alias{set_node_tag}
+\alias{mut_node_tag}
 \title{Helpers for pairlist and language nodes.}
 \usage{
 node(newcar, newcdr)
@@ -33,21 +33,21 @@ node_cdar(x)
 
 node_cddr(x)
 
-set_node_car(x, newcar)
+mut_node_car(x, newcar)
 
-set_node_cdr(x, newcdr)
+mut_node_cdr(x, newcdr)
 
-set_node_caar(x)
+mut_node_caar(x)
 
-set_node_cadr(x, newcar)
+mut_node_cadr(x, newcar)
 
-set_node_cdar(x)
+mut_node_cdar(x)
 
-set_node_cddr(x, newcdr)
+mut_node_cddr(x, newcdr)
 
 node_tag(x)
 
-set_node_tag(x, newtag)
+mut_node_tag(x, newtag)
 }
 \arguments{
 \item{newcar, newcdr}{The new CAR or CDR for the node. These can be
@@ -69,16 +69,16 @@ called the CDR (pronounced \emph{car} and \emph{cou-der}). While R's ordinary
 subsetting operators have builtin support for indexing into these
 trees and replacing elements, it is sometimes useful to manipulate
 the nodes more directly. This is the purpose of functions like
-\code{node_car()} and \code{set_node_car()}. They are particularly useful to
+\code{node_car()} and \code{mut_node_car()}. They are particularly useful to
 prototype algorithms for your C-level functions.
 \itemize{
-\item \code{node_car()} and \code{set_node_car()} access or change the head of a node.
-\item \code{node_cdr()} and \code{set_node_cdr()} access or change the tail of a node.
-\item Variants like \code{node_caar()} or \code{set_node_cdar()} deal with the
+\item \code{node_car()} and \code{mut_node_car()} access or change the head of a node.
+\item \code{node_cdr()} and \code{mut_node_cdr()} access or change the tail of a node.
+\item Variants like \code{node_caar()} or \code{mut_node_cdar()} deal with the
 CAR of the CAR of a node or the CDR of the CAR of a node
 respectively. The letters in the middle indicate the type (CAR or
 CDR) and order of access.
-\item \code{node_tag()} and \code{set_node_tag()} access or change the tag of a
+\item \code{node_tag()} and \code{mut_node_tag()} access or change the tag of a
 node. This is meant for argument names and should only contain
 symbols (not strings).
 \item \code{node()} creates a new node from two components.
@@ -131,10 +131,10 @@ copy <- lang
 
 # Now we change the argument pairlist of `copy`, making sure the new
 # arguments are NULL-terminated:
-set_node_cdr(copy, node(quote(BAZ), NULL))
+mut_node_cdr(copy, node(quote(BAZ), NULL))
 
 # Or equivalently:
-set_node_cdr(copy, pairlist(quote(BAZ)))
+mut_node_cdr(copy, pairlist(quote(BAZ)))
 copy
 
 # The original object has been changed in place:

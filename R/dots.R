@@ -158,7 +158,7 @@ dots_enumerate_args <- function(dots) {
   i <- 1
   node_walk(dots, function(dot) {
     dot_name <- sym(paste0("..", i))
-    set_node_car(dot, dot_name)
+    mut_node_car(dot, dot_name)
     i <<- i + 1
   })
   dots
