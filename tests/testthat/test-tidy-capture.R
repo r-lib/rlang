@@ -187,9 +187,9 @@ test_that("dots_quosures() captures missing arguments", {
   expect_identical(quos(, , .ignore_empty = FALSE), set_names(list(q, q), c("", "")))
 })
 
-test_that("dots_quosures() ignore missing arguments", {
-  expect_identical(quos(, , "foo", ), dots_list(quo(), quo(), ~"foo"))
-  expect_identical(quos(, , "foo", , .ignore_empty = TRUE), dots_list(~"foo"))
+test_that("dots_quosures() ignores missing arguments", {
+  expect_identical(quos(, , "foo", ), dots_list(quo(), quo(), new_quosure("foo", empty_env())))
+  expect_identical(quos(, , "foo", , .ignore_empty = TRUE), dots_list(new_quosure("foo", empty_env())))
 })
 
 test_that("formulas are guarded on capture", {
