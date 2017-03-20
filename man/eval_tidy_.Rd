@@ -39,7 +39,7 @@ with the bottom and the top of your custom overscope (see
 Note that \code{eval_tidy_()} always installs a \code{.env} pronoun in the
 bottom environment of your dynamic scope. This pronoun provides a
 shortcut to the original lexical enclosure (typically, the dynamic
-environment of a captured argument, see \code{\link[=arg_quosure]{arg_quosure()}}). It also
+environment of a captured argument, see \code{\link[=catch_quosure]{catch_quosure()}}). It also
 cleans up the overscope after evaluation. See \code{\link[=overscope_eval]{overscope_eval()}}
 for evaluating several quosures in the same overscope.
 }

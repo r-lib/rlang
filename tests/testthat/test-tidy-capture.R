@@ -122,7 +122,7 @@ test_that("definitions are interpolated", {
 test_that("dots are forwarded to named arguments", {
   outer <- function(...) inner(...)
   inner <- function(...) fn(...)
-  fn <- function(x) arg_quosure(x)
+  fn <- function(x) catch_quosure(x)
 
   env <- child_env(get_env())
   expect_identical(with_env(env, outer(foo(bar))), new_quosure(quote(foo(bar)), env))

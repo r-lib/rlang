@@ -105,7 +105,7 @@
 #' with_handlers(fn(FALSE), default_empty_string = restarting("rst_null"))
 with_restarts <- function(.expr, ..., .restarts = list()) {
   restarts <- c(list(...), .restarts)
-  with_restarts_(arg_quosure(.expr), restarts)
+  with_restarts_(catch_quosure(.expr), restarts)
 }
 #' @rdname with_restarts
 #' @export
