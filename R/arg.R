@@ -33,7 +33,7 @@
 #'   \item{expr}{The expression provided in the original call. If the
 #'     argument was missing, `expr` is the default argument of the
 #'     function; if there was no default, `expr` is the missing
-#'     argument (see [arg_missing()]).}
+#'     argument (see [missing_arg()]).}
 #'
 #'   \item{name}{The name of the formal argument to which `expr` was
 #'     originally supplied.}
@@ -142,7 +142,7 @@ fml_default <- function(expr, fn) {
   if (nm %in% names(fmls)) {
     fmls[[nm]]
   } else {
-    arg_missing()
+    missing_arg()
   }
 }
 
@@ -162,14 +162,14 @@ fml_default <- function(expr, fn) {
 #' @export
 #' @examples
 #' # The missing argument can be useful to generate calls
-#' quosure(f(x = !! arg_missing()))
+#' quosure(f(x = !! missing_arg()))
 #' quosure(f(x = !! NULL))
 #'
 #'
 #' # It is perfectly valid to generate and assign the missing
 #' # argument.
-#' x <- arg_missing()
-#' l <- list(arg_missing())
+#' x <- missing_arg()
+#' l <- list(missing_arg())
 #'
 #' # Note that accessing a missing argument contained in a list does
 #' # not trigger an error:
@@ -193,32 +193,32 @@ fml_default <- function(expr, fn) {
 #' # base::missing() does not work well if you supply an
 #' # expression. The following lines would throw an error:
 #'
-#' #> missing(arg_missing())
+#' #> missing(missing_arg())
 #' #> missing(l[[1]])
 #'
 #' # while is_missing() will work as expected:
-#' is_missing(arg_missing())
+#' is_missing(missing_arg())
 #' is_missing(l[[1]])
-arg_missing <- function() {
+missing_arg <- function() {
   quote(expr = )
 }
 
-#' @rdname arg_missing
+#' @rdname missing_arg
 #' @export
 is_missing <- function(x) {
   expr <- substitute(x)
   if (is_symbol(expr) && missing(x)) {
     TRUE
   } else {
-    identical(x, arg_missing())
+    identical(x, missing_arg())
   }
 }
 
-#' @rdname arg_missing
+#' @rdname missing_arg
 #' @export
 maybe_missing <- function(x) {
   if (is_missing(x)) {
-    arg_missing()
+    missing_arg()
   } else {
     x
   }

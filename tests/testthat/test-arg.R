@@ -98,17 +98,17 @@ test_that("global_frame() is reported with top-level calls", {
 })
 
 
-# arg_missing --------------------------------------------------------
+# missing_arg --------------------------------------------------------
 
 test_that("is_missing() works with symbols", {
-  x <- arg_missing()
+  x <- missing_arg()
   expect_true(is_missing(x))
 })
 
 test_that("is_missing() works with non-symbols", {
-  expect_true(is_missing(arg_missing()))
+  expect_true(is_missing(missing_arg()))
 
-  l <- list(arg_missing())
+  l <- list(missing_arg())
   expect_true(is_missing(l[[1]]))
   expect_error(missing(l[[1]]), "invalid use")
 })

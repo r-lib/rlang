@@ -95,7 +95,7 @@ dots_capture <- function(...) {
 }
 dot_f <- function(dot) {
   if (is_missing(dot$expr)) {
-    return(new_quosure(arg_missing(), empty_env()))
+    return(new_quosure(missing_arg(), empty_env()))
   }
 
   env <- dot$env

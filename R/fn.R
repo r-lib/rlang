@@ -313,6 +313,6 @@ as_function.formula <- function(.f, ...) {
   if (!is_quosure(.f)) {
     abort("Formula must be one sided")
   }
-  args <- list(... = arg_missing(), .x = quote(..1), .y = quote(..2), . = quote(..1))
+  args <- list(... = missing_arg(), .x = quote(..1), .y = quote(..2), . = quote(..1))
   new_function(args, f_rhs(.f), f_env(.f))
 }

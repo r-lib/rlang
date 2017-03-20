@@ -182,7 +182,7 @@ call_match <- function(call, fn, enum_dots, add_missings) {
 
   if (add_missings) {
     missing_nms <- setdiff(fmls_nms, c(args_nms, "..."))
-    missing_args <- rep(list(arg_missing()), length(missing_nms))
+    missing_args <- rep(list(missing_arg()), length(missing_nms))
     missing_args <- as.pairlist(set_names(missing_args, missing_nms))
     call <- node_append(call, missing_args)
   }

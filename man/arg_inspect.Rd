@@ -32,7 +32,7 @@ missing (see below).}
 \item{expr}{The expression provided in the original call. If the
 argument was missing, \code{expr} is the default argument of the
 function; if there was no default, \code{expr} is the missing
-argument (see \code{\link[=arg_missing]{arg_missing()}}).}
+argument (see \code{\link[=missing_arg]{missing_arg()}}).}
 
 \item{name}{The name of the formal argument to which \code{expr} was
 originally supplied.}

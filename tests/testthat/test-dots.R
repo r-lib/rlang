@@ -24,7 +24,7 @@ test_that("dots_inspect() inspects dots", {
   expect_identical(info[[2]]$ctxt_frame$env, out$env)
 })
 
-test_that("unmatched dots return arg_missing()", {
+test_that("unmatched dots return missing_arg()", {
   # Only occurs with partial stack climbing. Necessary for lazyeval
   # compatibility
   fn <- function(...) {
@@ -33,8 +33,8 @@ test_that("unmatched dots return arg_missing()", {
     dots_inspect_(dots, stack)
   }
   out <- fn(, )
-  expect_equal(out[[1]]$expr, arg_missing())
-  expect_equal(out[[2]]$expr, arg_missing())
+  expect_equal(out[[1]]$expr, missing_arg())
+  expect_equal(out[[2]]$expr, missing_arg())
 })
 
 test_that("empty dots return list()", {
@@ -43,5 +43,5 @@ test_that("empty dots return list()", {
 })
 
 test_that("dots_exprs() captures empty arguments", {
-  expect_identical(dots_exprs(, ), set_names(list(arg_missing(), arg_missing()), c("", "")))
+  expect_identical(dots_exprs(, ), set_names(list(missing_arg(), missing_arg()), c("", "")))
 })

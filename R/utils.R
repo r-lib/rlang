@@ -41,7 +41,7 @@ map_around <- function(.x, .neighbour = c("right", "left"), .f, ...) {
   }
 
   if (n == 1) {
-    out[[1]] <- .f(.x[[1]], arg_missing(), ...)
+    out[[1]] <- .f(.x[[1]], missing_arg(), ...)
     return(out)
   }
 
@@ -49,7 +49,7 @@ map_around <- function(.x, .neighbour = c("right", "left"), .f, ...) {
     neighbours <- .x[seq(2, n)]
     idx <- seq_len(n - 1)
     out[idx] <- Map(.f, .x[idx], neighbours, ...)
-    out[[n]] <- .f(.x[[n]], arg_missing(), ...)
+    out[[n]] <- .f(.x[[n]], missing_arg(), ...)
     return(out)
   }
 
@@ -57,7 +57,7 @@ map_around <- function(.x, .neighbour = c("right", "left"), .f, ...) {
     neighbours <- .x[seq(1, n - 1)]
     idx <- seq(2, n)
     out[idx] <- Map(.f, .x[idx], neighbours, ...)
-    out[[1]] <- .f(.x[[1]], arg_missing(), ...)
+    out[[1]] <- .f(.x[[1]], missing_arg(), ...)
     return(out)
   }
 

@@ -162,6 +162,6 @@ test_that("quosures are spliced before serialisation", {
 })
 
 test_that("dots_quosures() captures missing arguments", {
-  q <- new_quosure(arg_missing(), empty_env())
+  q <- new_quosure(missing_arg(), empty_env())
   expect_identical(dots_quosures(, ), set_names(list(q, q), c("", "")))
 })
