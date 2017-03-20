@@ -8,7 +8,8 @@
 
 // Interface functions ---------------------------------------------------------
 
-SEXP unescape_sexp_and_fix_na(SEXP name);
+void copy_character(SEXP tgt, SEXP src, R_xlen_t len);
+R_xlen_t unescape_character_and_fix_na_in_copy(SEXP tgt, SEXP src, R_xlen_t i);
 SEXP unescape_sexp(SEXP name);
 
 SEXP rlang_symbol(SEXP chr) {
@@ -22,42 +23,50 @@ SEXP rlang_symbol_to_character(SEXP chr) {
 }
 
 SEXP rlang_unescape_character_and_fix_na(SEXP chr) {
-  R_xlen_t len = Rf_length(chr);
-  R_xlen_t i;
-  SEXP new_elt;
-  for (i = 0; i < len; ++i) {
-    SEXP old_elt = STRING_ELT(chr, i);
-    new_elt = unescape_sexp_and_fix_na(old_elt);
-    if (old_elt != new_elt) break;
-  }
-
+  R_xlen_t len = Rf_xlength(chr);
+  R_xlen_t i = unescape_character_and_fix_na_in_copy(R_NilValue, chr, 0);
   if (i == len) return chr;
 
-  SEXP ret = Rf_allocVector(STRSXP, len);
-  PROTECT(ret);
-  for (int j = 0; j < i; ++j) {
-    SET_STRING_ELT(ret, j, STRING_ELT(chr, j));
-  }
-
-  SET_STRING_ELT(ret, i, new_elt);
-
-  for (++i; i < len; ++i) {
-    SEXP old_elt = STRING_ELT(chr, i);
-    SET_STRING_ELT(ret, i, unescape_sexp_and_fix_na(old_elt));
-  }
-
+  SEXP ret = PROTECT(Rf_allocVector(STRSXP, len));
+  copy_character(ret, chr, i);
+  unescape_character_and_fix_na_in_copy(ret, chr, i);
   UNPROTECT(1);
   return ret;
 }
 
 // Private functions -----------------------------------------------------------
 
+SEXP unescape_sexp_and_fix_na(SEXP name);
 bool has_unicode_escape(const char* chr);
 int unescape_char(char* chr);
 int unescape_char_found(char* chr);
 int process_byte(char* tgt, char* const src, int* len_processed);
 bool has_codepoint(const char* src);
 bool is_hex(const char chr);
+
+void copy_character(SEXP tgt, SEXP src, R_xlen_t len) {
+  for (int i = 0; i < len; ++i) {
+    SET_STRING_ELT(tgt, i, STRING_ELT(src, i));
+  }
+}
+
+R_xlen_t attribute_hidden unescape_character_and_fix_na_in_copy(SEXP tgt, SEXP src, R_xlen_t i) {
+  R_xlen_t len = Rf_length(src);
+  int dry_run = Rf_isNull(tgt);
+
+  for (; i < len; ++i) {
+    SEXP old_elt = STRING_ELT(src, i);
+    SEXP new_elt = unescape_sexp_and_fix_na(old_elt);
+    if (dry_run) {
+      if (old_elt != new_elt) return i;
+    }
+    else {
+      SET_STRING_ELT(tgt, i, new_elt);
+    }
+  }
+
+  return i;
+}
 
 SEXP attribute_hidden unescape_sexp_and_fix_na(SEXP name) {
   if (name == R_NaString) return R_BlankString;
