@@ -25,9 +25,10 @@
 #' with `n = 2`, etc. `env_tail()` searches through the parents and
 #' returns the one which has [empty_env()] as parent.
 #'
-#' @param env An environment or an object with a S3 method for
-#'   `get_env()`. If missing, the environment of the current evaluation
-#'   frame is returned.
+#' @param env An environment or an object bundling an environment:
+#'   either a [quosure][quosure] or a [closure][is_closure]. If
+#'   missing, the environment of the current evaluation frame is
+#'   returned.
 #' @param parent A parent environment. Can be an object with a S3
 #'   method for `as_env()`.
 #' @param ...,data Uniquely named bindings. See [is_dictionary()].

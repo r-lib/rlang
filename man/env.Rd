@@ -25,9 +25,10 @@ Dots have \link[=dots_list]{explicit-splicing semantics}.}
 \item{parent}{A parent environment. Can be an object with a S3
 method for \code{as_env()}.}
 
-\item{env}{An environment or an object with a S3 method for
-\code{get_env()}. If missing, the environment of the current evaluation
-frame is returned.}
+\item{env}{An environment or an object bundling an environment:
+either a \link{quosure} or a \link[=is_closure]{closure}. If
+missing, the environment of the current evaluation frame is
+returned.}
 
 \item{n}{The number of generations to go through.}
 }
