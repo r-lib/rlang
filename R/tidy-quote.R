@@ -307,6 +307,10 @@ dots_quosures <- function(..., .named = FALSE) {
   }
   dots
 }
+#' @rdname dots_quosures
+#' @export
+quosures <- dots_quosures
+
 quo_names_width <- function(named) {
   if (is_true(named)) {
     60L

@@ -2,10 +2,13 @@
 % Please edit documentation in R/tidy-quote.R
 \name{dots_quosures}
 \alias{dots_quosures}
+\alias{quosures}
 \alias{dots_definitions}
 \title{Tidy quotation of multiple expressions and dots.}
 \usage{
 dots_quosures(..., .named = FALSE)
+
+quosures(..., .named = FALSE)
 
 dots_definitions(..., .named = FALSE)
 }
