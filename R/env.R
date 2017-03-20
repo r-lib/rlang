@@ -530,8 +530,7 @@ env_unbind <- function(env = caller_env(), nms, inherit = FALSE) {
 #' env_has(env, "foo")
 #' env_has(env, "foo", inherit = TRUE)
 env_has <- function(env = caller_env(), nms, inherit = FALSE) {
-  env_ <- get_env(env)
-  map_lgl(nms, exists, envir = env_, inherits = inherit)
+  map_lgl(nms, exists, envir = get_env(env), inherits = inherit)
 }
 
 #' Get an object from an environment.
@@ -554,8 +553,7 @@ env_has <- function(env = caller_env(), nms, inherit = FALSE) {
 #' # However `foo` can be fetched in the parent environment:
 #' env_get(env, "foo", inherit = TRUE)
 env_get <- function(env = caller_env(), nm, inherit = FALSE) {
-  env_ <- get_env(env)
-  get(nm, envir = env, inherits = inherit)
+  get(nm, envir = get_env(env), inherits = inherit)
 }
 
 #' Clone an environment.
