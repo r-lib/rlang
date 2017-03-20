@@ -145,6 +145,13 @@ set_names <- function(x, nm = x) {
 #' names2(x)
 #' @useDynLib rlang rlang_unescape_character_and_fix_na
 names2 <- function(x) {
+  switch_type(x,
+    environment = abort("Use env_names() for environments."),
+    names2_default(x)
+  )
+}
+
+names2_default <- function(x) {
   nms <- names(x)
   if (is_null(nms)) {
     rep("", length(x))
