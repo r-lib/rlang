@@ -557,6 +557,24 @@ env_get <- function(env = caller_env(), nm, inherit = FALSE) {
   get(nm, envir = get_env(env), inherits = inherit)
 }
 
+#' List object names in an environment.
+#'
+#' `env_names()` returns object names from an enviroment `env` as a character
+#' vector.
+#' All names are returned, even those starting with a dot.
+#'
+#' @inheritParams env
+#' @return A character vector of object names.
+#' @export
+#' @examples
+#' env_names()
+#' @useDynLib rlang rlang_unescape_character
+env_names <- function(env = caller_env()) {
+  env_ <- get_env(env)
+  x <- names(env_)
+  .Call(rlang_unescape_character, x)
+}
+
 #' Clone an environment.
 #'
 #' This creates a new environment containing exactly the same objects,

@@ -213,11 +213,6 @@ SEXP rlang_fun(SEXP sym) {
   return fun;
 }
 
-SEXP rlang_symbol(SEXP chr) {
-  SEXP string = STRING_ELT(chr, 0);
-  return Rf_install(Rf_translateChar(string));
-}
-
 const char* kind_c_str(SEXPTYPE kind) {
   SEXP str = Rf_type2str(kind);
   return CHAR(str);
