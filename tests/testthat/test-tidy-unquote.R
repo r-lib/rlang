@@ -46,7 +46,7 @@ test_that("can interpolate in specific env", {
 
 test_that("can qualify operators with namespace", {
   # Should remove prefix only if rlang-qualified:
-  expect_identical(quosure(rlang::UQ(toupper("a"))), ~"A")
+  expect_identical(quosure(rlang::UQ(toupper("a"))), new_quosure("A", empty_env()))
   expect_identical(quosure(list(rlang::UQS(list(a = 1, b = 2)))), ~list(a = 1, b = 2))
   expect_identical(quosure(rlang::UQF(~foo)), quosure(UQF(~foo)))
 

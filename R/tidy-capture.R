@@ -82,7 +82,14 @@ catch_quosure <- function(x) {
   capture <- new_language(captureArg, substitute(x))
   arg <- eval_bare(capture, caller_env())
   expr <- .Call(rlang_interp, arg$expr, arg$env)
-  new_quosure(expr, arg$env)
+  forward_quosure(expr, arg$env)
+}
+forward_quosure <- function(expr, env) {
+  if (is_symbolic(expr)) {
+    new_quosure(expr, env)
+  } else {
+    as_quosure(expr, empty_env())
+  }
 }
 
 dots_capture <- function(...) {
@@ -111,9 +118,11 @@ dot_f <- function(dot) {
   } else {
     expr <- .Call(rlang_interp, expr, env)
     if (is_definition(orig)) {
-      expr <- set_expr(orig, expr)
+      orig <- set_expr(orig, expr)
+      list(new_quosure(orig, env))
+    } else {
+      list(forward_quosure(expr, env))
     }
-    list(new_quosure(expr, env))
   }
 }
 

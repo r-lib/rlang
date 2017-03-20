@@ -97,9 +97,6 @@ test_that("dot names are interpolated", {
 
   var <- quote(baz)
   expect_identical(dots_quosures(!!var := foo), list(baz = ~foo))
-
-  def <- !!var := foo
-  expect_identical(dots_quosures(!! def), list(baz = ~foo))
 })
 
 test_that("corner cases are handled when interpolating dot names", {
@@ -181,4 +178,10 @@ test_that("formulas are not guarded if unquoted", {
   quo <- quosure(foo(bar))
   quo <- quosure(baz(!! quo))
   expect_equal(quo, ~baz(~foo(bar)))
+})
+
+test_that("quosured literals are forwarded as is", {
+  expect_identical(quosure(!! ~NULL), ~NULL)
+  expect_identical(quosure(!! quosure(NULL)), new_quosure(NULL, empty_env()))
+  expect_identical(dots_quosures(!! ~10L), set_names(list(~10L), ""))
 })
