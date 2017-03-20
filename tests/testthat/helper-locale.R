@@ -28,18 +28,18 @@ get_alien_lang_string <- function() {
   lang_strings$different[[1L]]
 }
 
-with_non_utf8_encoding <- function(code) {
-  old_encoding <- set_non_utf8_encoding()
-  on.exit(set_ctype(old_encoding), add = TRUE)
+with_non_utf8_locale <- function(code) {
+  old_locale <- set_non_utf8_locale()
+  on.exit(set_ctype(old_locale), add = TRUE)
   code
 }
 
-set_non_utf8_encoding <- function() {
+set_non_utf8_locale <- function() {
   if (.Platform$OS.type == "windows") return(NULL)
   tryCatch(
     locale <- set_ctype("en_US.ISO88591"),
     warning = function(e) {
-      testthat::skip("Cannot set latin-1 encoding")
+      testthat::skip("Cannot set latin-1 locale")
     }
   )
   locale
