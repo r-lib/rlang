@@ -559,7 +559,7 @@ env_has <- function(env = caller_env(), nms, inherit = FALSE) {
 #' env_get(env, "foo", inherit = TRUE)
 env_get <- function(env = caller_env(), nm, inherit = FALSE) {
   env_ <- rlang::env(env)
-  get(nm, envir = env, inherits = inherit)
+  get(nm, envir = env_, inherits = inherit)
 }
 
 #' Clone an environment.
