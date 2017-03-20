@@ -3,6 +3,9 @@
 #define attribute_hidden
 #define _(string) (string)
 
+// from symbol.c
+SEXP unescape_sexp(SEXP chr);
+
 
 SEXP attribute_hidden capture_arg(SEXP x, SEXP env) {
     static SEXP nms = NULL;
@@ -82,7 +85,7 @@ SEXP attribute_hidden rlang_capturedots(SEXP call, SEXP op, SEXP args, SEXP rho)
         SET_VECTOR_ELT(captured, i, dot);
 
         if (TAG(dots) != R_NilValue)
-            SET_STRING_ELT(names, i, PRINTNAME(TAG(dots)));
+            SET_STRING_ELT(names, i, unescape_sexp(PRINTNAME(TAG(dots))));
 
         ++i;
         dots = CDR(dots);

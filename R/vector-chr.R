@@ -248,6 +248,7 @@ set_mbcs_locale <- function() {
   set_ctype(locale)
 }
 set_ctype <- function(x) {
+  if (is_null(x)) return(x)
   # Workaround bug in Sys.setlocale()
   old <- Sys.getlocale("LC_CTYPE")
   Sys.setlocale("LC_CTYPE", locale = x)

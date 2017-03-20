@@ -144,6 +144,7 @@ set_names <- function(x, nm = x) {
 #' x <- set_names(1:3, c("a", NA, "b"))
 #' names2(x)
 names2 <- function(x) {
+  if (type_of(x) == "environment") abort("Use env_names() for environments.")
   nms <- names(x)
   if (is_null(nms)) {
     rep("", length(x))

@@ -140,18 +140,23 @@ as_complex <- function(x) {
   )
 }
 #' @rdname vector-coercion
+#' @useDynLib rlang rlang_symbol_to_character
 #' @export
 as_character <- function(x, encoding = NULL) {
-  x <- coerce_type_vec(x, "character",
-    character = zap_attributes(x)
+  coerce_type_vec(x, "character",
+    character = chr_set_encoding(zap_attributes(x), encoding)
   )
-  chr_set_encoding(x, encoding)
 }
 #' @rdname vector-coercion
 #' @export
 as_string <- function(x, encoding = NULL) {
   x <- coerce_type(x, .to = "string",
-    symbol = as.character(x),
+    symbol = {
+      if (!is.null(encoding)) {
+        warn("`encoding` argument ignored for symbols")
+      }
+      .Call(rlang_symbol_to_character, x)
+    },
     string = zap_attributes(x)
   )
   chr_set_encoding(x, encoding)
@@ -159,14 +164,27 @@ as_string <- function(x, encoding = NULL) {
 #' @rdname vector-coercion
 #' @export
 as_list <- function(x) {
+  switch_type(x,
+    environment = as_list_env(x),
+    as_list_other(x)
+  )
+}
+
+#' @useDynLib rlang rlang_unescape_character
+as_list_env <- function(x) {
+  names_x <- names(x)
+  x <- as_base_type(x, as.list)
+  set_names(x, .Call(rlang_unescape_character, names_x))
+}
+
+as_list_other <- function(x) {
   coerce_type_vec(x, "list",
     logical = ,
     integer = ,
     double = ,
     character = ,
     complex = ,
-    raw = ,
-    environment = as_base_type(x, as.list),
+    raw = as_base_type(x, as.list),
     list = zap_attributes(x)
   )
 }
