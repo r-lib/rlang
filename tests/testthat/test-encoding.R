@@ -3,7 +3,7 @@ context("encoding")
 test_that("can roundtrip symbols in non-UTF8 locale", {
   with_non_utf8_locale({
     expect_identical(
-      as_character(symbol(get_alien_lang_string())),
+      as_string(symbol(get_alien_lang_string())),
       get_alien_lang_string()
     )
   })
@@ -11,7 +11,7 @@ test_that("can roundtrip symbols in non-UTF8 locale", {
 
 test_that("Unicode escapes are always converted to UTF8 characters on roundtrip", {
   expect_identical(
-    as_character(symbol("<U+5E78><U+798F>")),
+    as_string(symbol("<U+5E78><U+798F>")),
     "\u5E78\u798F"
   )
 })

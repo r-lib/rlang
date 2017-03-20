@@ -144,20 +144,19 @@ as_complex <- function(x) {
 #' @export
 as_character <- function(x, encoding = NULL) {
   coerce_type_vec(x, "character",
-    character = chr_set_encoding(zap_attributes(x), encoding),
-    symbol = {
-      if (!is.null(encoding)) {
-        warn("`encoding` argument ignored for symbols")
-      }
-      .Call(rlang_symbol_to_character, x)
-    }
+    character = chr_set_encoding(zap_attributes(x), encoding)
   )
 }
 #' @rdname vector-coercion
 #' @export
 as_string <- function(x, encoding = NULL) {
   x <- coerce_type(x, .to = "string",
-    symbol = as.character(x),
+    symbol = {
+      if (!is.null(encoding)) {
+        warn("`encoding` argument ignored for symbols")
+      }
+      .Call(rlang_symbol_to_character, x)
+    },
     string = zap_attributes(x)
   )
   chr_set_encoding(x, encoding)
