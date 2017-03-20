@@ -85,13 +85,13 @@ cpl <- function(...) {
 }
 #' @rdname vector-construction
 #' @export
-#' @param .encoding If non-null, passed to [chr_set_encoding()] to add
+#' @param .encoding If non-null, passed to [set_chr_encoding()] to add
 #'   an encoding mark. This is only declarative, no encoding
 #'   conversion is performed.
 #' @export
 chr <- function(..., .encoding = NULL) {
   out <- .Call(rlang_splice, list(...), "character", bare = TRUE)
-  chr_set_encoding(out, .encoding)
+  set_chr_encoding(out, .encoding)
 }
 #' @rdname vector-construction
 #' @export

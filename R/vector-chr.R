@@ -7,10 +7,10 @@
 #'
 #' @param x A character vector or a vector or list of string-like
 #'   objects.
-#' @param encoding If non-null, passed to [chr_set_encoding()] to add
+#' @param encoding If non-null, passed to [set_chr_encoding()] to add
 #'   an encoding mark. This is only declarative, no encoding
 #'   conversion is performed.
-#' @seealso `chr_set_encoding()` for more information
+#' @seealso `set_chr_encoding()` for more information
 #'   about encodings in R.
 #' @export
 #' @examples
@@ -39,7 +39,7 @@ string <- function(x, encoding = NULL) {
     abort("`x` must be a string or raw vector")
   }
 
-  chr_set_encoding(x, encoding)
+  set_chr_encoding(x, encoding)
 }
 
 #' Coerce to a character vector and attempt encoding conversion.
@@ -130,13 +130,13 @@ as_native_string <- function(x) {
 #' @export
 #' @examples
 #' # Encoding marks are always ignored on ASCII strings:
-#' str_encoding(str_set_encoding("cafe", "UTF-8"))
+#' str_encoding(set_str_encoding("cafe", "UTF-8"))
 #'
 #' # You can specify the encoding of strings containing non-ASCII
 #' # characters:
 #' cafe <- string(c(0x63, 0x61, 0x66, 0xC3, 0xE9))
 #' str_encoding(cafe)
-#' str_encoding(str_set_encoding(cafe, "UTF-8"))
+#' str_encoding(set_str_encoding(cafe, "UTF-8"))
 #'
 #'
 #' # It is important to consistently mark the encoding of strings
@@ -156,30 +156,30 @@ as_native_string <- function(x) {
 #' # a conversion. R will assume that the string is encoded according
 #' # to the current locale:
 #' \dontrun{
-#' bad <- set_names(str_set_encoding(latin1, "unknown"))
+#' bad <- set_names(set_str_encoding(latin1, "unknown"))
 #' set_utf8_locale()
 #'
 #' str_encoding(names(c(bad)))
 #' as_bytes(names(c(bad)))
 #' }
-chr_set_encoding <- function(x, encoding = c("unknown", "UTF-8", "latin1", "bytes")) {
+set_chr_encoding <- function(x, encoding = c("unknown", "UTF-8", "latin1", "bytes")) {
   if (!is_null(encoding)) {
     Encoding(x) <- match.arg(encoding)
   }
   x
 }
-#' @rdname chr_set_encoding
+#' @rdname set_chr_encoding
 #' @export
 chr_encoding <- function(x) {
   Encoding(x)
 }
-#' @rdname chr_set_encoding
+#' @rdname set_chr_encoding
 #' @export
-str_set_encoding <- function(x, encoding = c("unknown", "UTF-8", "latin1", "bytes")) {
+set_str_encoding <- function(x, encoding = c("unknown", "UTF-8", "latin1", "bytes")) {
   stopifnot(is_string(x))
-  chr_set_encoding(x, encoding)
+  set_chr_encoding(x, encoding)
 }
-#' @rdname chr_set_encoding
+#' @rdname set_chr_encoding
 #' @export
 str_encoding <- function(x) {
   stopifnot(is_string(x))
@@ -197,7 +197,7 @@ str_encoding <- function(x) {
 #' the corresponding encoding. It is important for strings to have
 #' consistent encoding markers, as they determine a number of internal
 #' encoding conversions when R or packages handle strings (see
-#' [str_set_encoding()] for some examples).
+#' [set_str_encoding()] for some examples).
 #'
 #' If you are changing the locale encoding for testing purposes, you
 #' need to be aware that R caches strings and symbols to save
