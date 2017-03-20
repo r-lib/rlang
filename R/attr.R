@@ -143,13 +143,15 @@ set_names <- function(x, nm = x) {
 #' # It also takes care of standardising missing names:
 #' x <- set_names(1:3, c("a", NA, "b"))
 #' names2(x)
+#' @useDynLib rlang rlang_unescape_character
 names2 <- function(x) {
   nms <- names(x)
   if (is_null(nms)) {
-    rep("", length(x))
+    nms <- rep("", length(x))
   } else {
-    nms %|% ""
+    nms <- nms %|% ""
   }
+  .Call(rlang_unescape_character, nms)
 }
 
 #' @useDynLib rlang rlang_length

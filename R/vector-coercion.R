@@ -163,7 +163,6 @@ as_string <- function(x, encoding = NULL) {
   chr_set_encoding(x, encoding)
 }
 #' @rdname vector-coercion
-#' @useDynLib rlang rlang_unescape_names
 #' @export
 as_list <- function(x) {
   coerce_type_vec(x, "list",
@@ -173,10 +172,7 @@ as_list <- function(x) {
     character = ,
     complex = ,
     raw = ,
-    environment = {
-      x <- as_base_type(x, as.list)
-      .Call(rlang_unescape_names, x)
-    },
+    environment = as_base_type(x, as.list),
     list = zap_attributes(x)
   )
 }
