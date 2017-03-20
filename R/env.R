@@ -574,10 +574,11 @@ env_get <- function(env = caller_env(), nm, inherit = FALSE) {
 #' @export
 #' @examples
 #' env_names()
+#' @useDynLib rlang rlang_unescape_character
 env_names <- function(env = caller_env()) {
   env_ <- rlang::env(env)
   x <- ls(envir = env_, all.names = TRUE, sorted = FALSE)
-  .Call(rlang_unescape_character_and_fix_na, x)
+  .Call(rlang_unescape_character, x)
 }
 
 #' Clone an environment.

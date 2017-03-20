@@ -143,7 +143,6 @@ set_names <- function(x, nm = x) {
 #' # It also takes care of standardising missing names:
 #' x <- set_names(1:3, c("a", NA, "b"))
 #' names2(x)
-#' @useDynLib rlang rlang_unescape_character_and_fix_na
 names2 <- function(x) {
   switch_type(x,
     environment = abort("Use env_names() for environments."),
