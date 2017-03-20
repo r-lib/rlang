@@ -100,7 +100,7 @@ dot_f <- function(dot) {
 
   env <- dot$env
   orig <- dot$expr
-  expr <- get_expr(orig)
+  expr <- if (is_definition(orig)) f_rhs(orig) else orig
 
   # Allow unquote-splice in dots
   if (is_splice(expr)) {
@@ -110,8 +110,10 @@ dot_f <- function(dot) {
     map(dots, as_quosure, env)
   } else {
     expr <- .Call(rlang_interp, expr, env)
-    orig <- set_expr(orig, expr)
-    list(new_quosure(orig, env))
+    if (is_definition(orig)) {
+      expr <- set_expr(orig, expr)
+    }
+    list(new_quosure(expr, env))
   }
 }
 

@@ -79,7 +79,7 @@ test_that("guarded formulas are not evaluated", {
   expect_identical(eval_tidy(quosure(UQF(f))), f)
 })
 
-test_that("fpromises are not evaluated if not forced", {
+test_that("quosures are not evaluated if not forced", {
   fn <- function(arg, force) {
     if (force) arg else "bar"
   }
@@ -102,13 +102,13 @@ test_that("can unquote captured arguments", {
   expect_identical(fn(!!var), mtcars$cyl)
 })
 
-test_that("fpromises are evaluated recursively", {
+test_that("quosures are evaluated recursively", {
   foo <- "bar"
   expect_identical(eval_tidy(quosure(foo)), "bar")
-  expect_identical(eval_tidy(quosure(~~foo)), "bar")
+  expect_identical(eval_tidy(quosure(!!~~foo)), "bar")
 })
 
-test_that("fpromises have lazy semantics", {
+test_that("quosures have lazy semantics", {
   fn <- function(arg) "unforced"
   expect_identical(eval_tidy(quosure(fn(~stop()))), "unforced")
 })
@@ -122,8 +122,8 @@ test_that("can unquote hygienically within captured arg", {
   var <- ~cyl
   expect_identical(fn(mtcars, (!!var) > 4), mtcars$cyl > 4)
   expect_identical(fn(mtcars, list(var, !!var)), list(~cyl, mtcars$cyl))
-  expect_identical(fn(mtcars, list(~var, !!var)), list(~cyl, mtcars$cyl))
-  expect_identical(fn(mtcars, list(~~var, !!~var, !!~~var)), list(~cyl, ~cyl, ~cyl))
+  expect_equal(fn(mtcars, list(~var, !!var)), list(~var, mtcars$cyl))
+  expect_equal(fn(mtcars, list(~~var, !!~var, !!~~var)), list(new_quosure(new_language("_F", quote(var))), ~cyl, ~cyl))
 })
 
 test_that("can unquote for old-style NSE functions", {
@@ -141,14 +141,14 @@ test_that("formulas with empty environments are scoped in surrounding formula", 
   expect_identical(eval_tidy(~~letters), letters)
 })
 
-test_that("all fpromises in the call are evaluated", {
+test_that("all quosures in the call are evaluated", {
   foobar <- function(x) paste0("foo", x)
   x <- new_quosure(call("foobar", local({ bar <- "bar"; ~bar })))
   f <- new_quosure(call("identity", x))
   expect_identical(eval_tidy(f), "foobar")
 })
 
-test_that("two-sided formulas are not treated as fpromises", {
+test_that("two-sided formulas are not treated as quosures", {
   expect_identical(eval_tidy(new_quosure(a ~ b)), a ~ b)
 })
 

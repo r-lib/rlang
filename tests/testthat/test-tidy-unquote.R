@@ -20,14 +20,15 @@ test_that("interpolation is carried out in the right environment", {
   expect_identical(expr_interp(f), new_quosure("foo", env = f_env(f)))
 })
 
-test_that("interpolation does not revisit unquoted formulas", {
+test_that("interpolation now revisits unquoted formulas", {
   f <- ~list(!!~!!stop("should not interpolate within formulas"))
   f <- expr_interp(f)
-  expect_identical(expr_interp(f), f)
+  # This used to be idempotent:
+  expect_error(expect_false(identical(expr_interp(f), f)), "interpolate within formulas")
 })
 
 test_that("two-sided formulas are not treated as fpromises", {
-  expect_identical(expr(a ~ b), quote(a ~ b))
+  expect_identical(expr(a ~ b), quote(`_F`(a, b)))
 })
 
 test_that("unquote operators are always in scope", {
