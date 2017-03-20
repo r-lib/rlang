@@ -567,7 +567,6 @@ env_get <- function(env = caller_env(), nm, inherit = FALSE) {
 #' `env_names()` returns object names from an enviroment `env` as a character
 #' vector.
 #' All names are returned, even those starting with a dot.
-#' The object names are not sorted.
 #'
 #' @inheritParams env
 #' @return A character vector of object names.
@@ -577,7 +576,7 @@ env_get <- function(env = caller_env(), nm, inherit = FALSE) {
 #' @useDynLib rlang rlang_unescape_character
 env_names <- function(env = caller_env()) {
   env_ <- rlang::env(env)
-  x <- ls(envir = env_, all.names = TRUE, sorted = FALSE)
+  x <- names(env_)
   .Call(rlang_unescape_character, x)
 }
 

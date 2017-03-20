@@ -18,7 +18,6 @@ A character vector of object names.
 \code{env_names()} returns object names from an enviroment \code{env} as a character
 vector.
 All names are returned, even those starting with a dot.
-The object names are not sorted.
 }
 \examples{
 env_names()
