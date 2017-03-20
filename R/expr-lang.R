@@ -203,22 +203,7 @@ lang_modify <- function(.call = caller_frame(), ..., .args = list(),
     call <- as_lang(get_expr(.call))
   }
 
-  # Named arguments can be spliced by R
-  named <- have_names(args)
-  for (nm in names(args)[named]) {
-    call[[nm]] <- args[[nm]]
-  }
-
-  if (any(!named)) {
-    # Duplicate list structure in case it wasn't before
-    if (!any(named)) {
-      call <- duplicate(call, shallow = TRUE)
-    }
-
-    remaining_args <- as.pairlist(args[!named])
-    call <- node_append(call, remaining_args)
-  }
-
+  call <- node_modify(call, spliced(args))
   set_expr(orig, call)
 }
 
