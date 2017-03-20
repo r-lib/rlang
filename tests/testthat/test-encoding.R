@@ -25,12 +25,10 @@ test_that("Unicode escapes are always converted to UTF8 characters in as_list()"
   })
 })
 
-test_that("Unicode escapes are always converted to UTF8 characters with names2()", {
+test_that("Unicode escapes are always converted to UTF8 characters with env_names()", {
   with_non_utf8_encoding({
     env <- child_env(empty_env())
     env_assign(env, get_alien_lang_string(), NULL)
-    expect_identical(names2(env), get_alien_lang_string())
-    list <- as_list(env)
-    expect_identical(names2(list), get_alien_lang_string())
+    expect_identical(env_names(env), get_alien_lang_string())
   })
 })

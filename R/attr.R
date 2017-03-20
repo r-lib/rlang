@@ -149,7 +149,7 @@ names2 <- function(x) {
   if (is_null(nms)) {
     rep("", length(x))
   } else {
-    .Call(rlang_unescape_character_and_fix_na, nms)
+    nms %|% ""
   }
 }
 
