@@ -36,6 +36,7 @@ SEXP rlang_unescape_character(SEXP chr) {
 
 // Private functions -----------------------------------------------------------
 
+SEXP unescape_char_to_sexp(char* tmp);
 bool has_unicode_escape(const char* chr);
 int unescape_char(char* chr);
 int unescape_char_found(char* chr);
@@ -72,20 +73,23 @@ SEXP attribute_hidden unescape_sexp(SEXP name) {
   const char* src = CHAR(name);
   const char* re_enc = Rf_reEnc(src, ce, CE_UTF8, 0);
 
-  char* tmp;
   if (re_enc != src) {
     // If the string has been copied, it's safe to use as buffer
-    tmp = (char*)re_enc;
+    char* tmp = (char*)re_enc;
+    return unescape_char_to_sexp(tmp);
   }
   else {
     // If not, we're in a UTF-8 locale
     // Need to check first if the string has any UTF-8 escapes
     if (!has_unicode_escape(src)) return name;
     int orig_len = strlen(re_enc);
-    tmp = alloca(orig_len + 1);
+    char tmp[orig_len + 1];
     memcpy(tmp, re_enc, orig_len + 1);
+    return unescape_char_to_sexp(tmp);
   }
+}
 
+SEXP attribute_hidden unescape_char_to_sexp(char* tmp) {
   int len = unescape_char(tmp);
   return Rf_mkCharLenCE(tmp, len, CE_UTF8);
 }
