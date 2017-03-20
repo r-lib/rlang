@@ -54,7 +54,7 @@
 #' list of a closure with [base::formals()] or [fn_fmls()].
 #'
 #' @param x An object to test. When you supply a tidy quote (see
-#'   [tidy_quote()]) to any of the expression predicates, they will
+#'   [quosure()]) to any of the expression predicates, they will
 #'   perform their test on the RHS of the formula.
 #' @seealso [is_lang()] for a call predicate; [as_symbol()] and
 #'   [as_lang()] for coercion functions.
@@ -136,10 +136,10 @@ is_symbolic <- function(x) {
 
 #' Evaluate an expression in an environment.
 #'
-#' `expr_eval()` is a lightweight version of the base function
+#' `eval_bare()` is a lightweight version of the base function
 #' [base::eval()]. It does not accept supplementary data, but it is
 #' more efficient and does not clutter the evaluation stack.
-#' Technically, `expr_eval()` is a simple wrapper around the C
+#' Technically, `eval_bare()` is a simple wrapper around the C
 #' function `Rf_eval()`.
 #'
 #' `base::eval()` inserts two call frames in the stack, the second of
@@ -147,7 +147,7 @@ is_symbolic <- function(x) {
 #' unnecessarily clutter the evaluation stack and it can change
 #' evaluation semantics with stack sensitive functions in the case
 #' where `env` is an evaluation environment of a stack frame (see
-#' [eval_stack()]). Since the base function `eval()` creates a new
+#' [ctxt_stack()]). Since the base function `eval()` creates a new
 #' evaluation context with `env` as frame environment there are
 #' actually two contexts with the same evaluation environment on the
 #' stack when `expr` is evaluated. Thus, any command that looks up
@@ -164,10 +164,10 @@ is_symbolic <- function(x) {
 #' @seealso with_env
 #' @export
 #' @examples
-#' # expr_eval() works just like base::eval():
+#' # eval_bare() works just like base::eval():
 #' env <- child_env(data = list(foo = "bar"))
 #' expr <- quote(foo)
-#' expr_eval(expr, env)
+#' eval_bare(expr, env)
 #'
 #' # To explore the consequences of stack inconsistent semantics, let's
 #' # create a function that evaluates `parent.frame()` deep in the call
@@ -177,29 +177,29 @@ is_symbolic <- function(x) {
 #' fn <- function(eval_fn) {
 #'   list(
 #'     returned_env = middle(eval_fn),
-#'     actual_env = env()
+#'     actual_env = get_env()
 #'   )
 #' }
 #' middle <- function(eval_fn) {
-#'   deep(eval_fn, env())
+#'   deep(eval_fn, get_env())
 #' }
 #' deep <- function(eval_fn, eval_env) {
 #'   expr <- quote(parent.frame())
 #'   eval_fn(expr, eval_env)
 #' }
 #'
-#' # With expr_eval(), we do get the expected environment:
-#' fn(rlang::expr_eval)
+#' # With eval_bare(), we do get the expected environment:
+#' fn(rlang::eval_bare)
 #'
 #' # But that's not the case with base::eval():
 #' fn(base::eval)
 #'
-#' # Another difference of expr_eval() compared to base::eval() is
+#' # Another difference of eval_bare() compared to base::eval() is
 #' # that it does not insert parasite frames in the evaluation stack:
-#' get_stack <- quote(identity(eval_stack()))
-#' expr_eval(get_stack)
+#' get_stack <- quote(identity(ctxt_stack()))
+#' eval_bare(get_stack)
 #' eval(get_stack)
-expr_eval <- function(expr, env = parent.frame()) {
+eval_bare <- function(expr, env = parent.frame()) {
   .Call(rlang_eval, expr, env)
 }
 
@@ -239,7 +239,7 @@ expr_label <- function(expr) {
   } else {
     chr <- deparse(expr)
     if (length(chr) > 1) {
-      dot_call <- lang(expr[[1]], quote(...))
+      dot_call <- new_language(expr[[1]], quote(...))
       chr <- paste(deparse(dot_call), collapse = "\n")
     }
     paste0("`", chr, "`")
@@ -289,7 +289,7 @@ expr_text <- function(expr, width = 60L, nlines = Inf) {
 #' @examples
 #' f <- ~foo(bar)
 #' e <- quote(foo(bar))
-#' frame <- identity(identity(eval_frame()))
+#' frame <- identity(identity(ctxt_frame()))
 #'
 #' get_expr(f)
 #' get_expr(e)

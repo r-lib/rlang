@@ -1,7 +1,7 @@
 #' Inspect an argument
 #'
 #' `arg_inspect()` provides argument introspection in the context of
-#' lazy evaluation. Compared to [tidy_capture()], the returned
+#' lazy evaluation. Compared to [catch_quosure()], the returned
 #' information is more complete and takes R's lazy evaluation
 #' semantics into account: if an argument is passed around without
 #' being evaluated, `arg_inspect()` is able to return the expression
@@ -14,7 +14,7 @@
 #' `arg_inspect()` and takes a symbol and a call stack object.
 #'
 #' `arg_inspect()` should be used with two caveats in mind. First, it
-#' is slower than [tidy_capture()] and `lazyeval::lazy()`. Thus you
+#' is slower than [catch_quosure()] and `lazyeval::lazy()`. Thus you
 #' should probably avoid using it in functions that might be used in
 #' tight loops (such as a loop over the rows of data frame). Second,
 #' `arg_inspect()` ignores all reassignment of arguments. It has no
@@ -33,15 +33,15 @@
 #'   \item{expr}{The expression provided in the original call. If the
 #'     argument was missing, `expr` is the default argument of the
 #'     function; if there was no default, `expr` is the missing
-#'     argument (see [arg_missing()]).}
+#'     argument (see [missing_arg()]).}
 #'
 #'   \item{name}{The name of the formal argument to which `expr` was
 #'     originally supplied.}
 #'
-#'   \item{eval_frame}{The frame providing the scope for `expr`, which
-#'     should normally be evaluated in `eval_frame$env`.  This is
+#'   \item{ctxt_frame}{The frame providing the scope for `expr`, which
+#'     should normally be evaluated in `ctxt_frame$env`.  This is
 #'     normally the original calling frame, unless the argument was
-#'     missing. In that case, `eval_frame` is the evaluation frame of
+#'     missing. In that case, `ctxt_frame` is the evaluation frame of
 #'     the called function. The difference reflects the evaluation
 #'     rules of R, where default arguments are scoped within the
 #'     called function rather than the calling frame.}
@@ -65,7 +65,7 @@ arg_inspect_ <- function(expr, stack, only_dots = FALSE) {
   # In this loop `expr` is the argument of the frame just before
   # the current `i`th frame, the tentative caller frame
   caller_frame <- stack[[1]]
-  eval_frame <- stack[[1]]
+  ctxt_frame <- stack[[1]]
   formal_name <- NULL
 
   for (i in seq_len(length(stack) - 1)) {
@@ -99,7 +99,7 @@ arg_inspect_ <- function(expr, stack, only_dots = FALSE) {
     # current frame, but the caller is the next one
     if (missing(caller_expr)) {
       formal_name <- as.character(expr)
-      expr <- fml_default(expr, eval_frame$fn)
+      expr <- fml_default(expr, ctxt_frame$fn)
       caller_frame <- stack[[i + 1]]
       break
     }
@@ -107,11 +107,11 @@ arg_inspect_ <- function(expr, stack, only_dots = FALSE) {
     # If `caller_expr` is a complex expression, we have reached the
     # callee frame, and the next frame is both the caller and
     # evaluation frame
-    if (!is.symbol(caller_expr)) {
+    if (!is_symbol(caller_expr)) {
       formal_name <- as.character(expr)
       expr <- caller_expr
       caller_frame <- stack[[i + 1]]
-      eval_frame <- stack[[i + 1]]
+      ctxt_frame <- stack[[i + 1]]
       break
     }
 
@@ -121,13 +121,13 @@ arg_inspect_ <- function(expr, stack, only_dots = FALSE) {
     expr <- caller_expr
 
     caller_frame <- stack[[i + 1]]
-    eval_frame <- stack[[i + 1]]
+    ctxt_frame <- stack[[i + 1]]
   }
 
   list(
     expr = maybe_missing(expr),
     name = formal_name,
-    eval_frame = eval_frame,
+    ctxt_frame = ctxt_frame,
     caller_frame = caller_frame
   )
 }
@@ -142,7 +142,7 @@ fml_default <- function(expr, fn) {
   if (nm %in% names(fmls)) {
     fmls[[nm]]
   } else {
-    arg_missing()
+    missing_arg()
   }
 }
 
@@ -162,14 +162,14 @@ fml_default <- function(expr, fn) {
 #' @export
 #' @examples
 #' # The missing argument can be useful to generate calls
-#' tidy_quote(f(x = !! arg_missing()))
-#' tidy_quote(f(x = !! NULL))
+#' quosure(f(x = !! missing_arg()))
+#' quosure(f(x = !! NULL))
 #'
 #'
 #' # It is perfectly valid to generate and assign the missing
 #' # argument.
-#' x <- arg_missing()
-#' l <- list(arg_missing())
+#' x <- missing_arg()
+#' l <- list(missing_arg())
 #'
 #' # Note that accessing a missing argument contained in a list does
 #' # not trigger an error:
@@ -193,32 +193,32 @@ fml_default <- function(expr, fn) {
 #' # base::missing() does not work well if you supply an
 #' # expression. The following lines would throw an error:
 #'
-#' #> missing(arg_missing())
+#' #> missing(missing_arg())
 #' #> missing(l[[1]])
 #'
 #' # while is_missing() will work as expected:
-#' is_missing(arg_missing())
+#' is_missing(missing_arg())
 #' is_missing(l[[1]])
-arg_missing <- function() {
+missing_arg <- function() {
   quote(expr = )
 }
 
-#' @rdname arg_missing
+#' @rdname missing_arg
 #' @export
 is_missing <- function(x) {
   expr <- substitute(x)
-  if (is.symbol(expr) && missing(x)) {
+  if (is_symbol(expr) && missing(x)) {
     TRUE
   } else {
-    identical(x, arg_missing())
+    identical(x, missing_arg())
   }
 }
 
-#' @rdname arg_missing
+#' @rdname missing_arg
 #' @export
 maybe_missing <- function(x) {
   if (is_missing(x)) {
-    arg_missing()
+    missing_arg()
   } else {
     x
   }

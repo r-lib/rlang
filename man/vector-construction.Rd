@@ -29,7 +29,7 @@ splice(..., .bare = TRUE)
 \item{...}{Components of the new vector. Bare lists and explicitly
 spliced lists are spliced.}
 
-\item{.encoding}{If non-null, passed to \code{\link[=chr_set_encoding]{chr_set_encoding()}} to add
+\item{.encoding}{If non-null, passed to \code{\link[=set_chr_encoding]{set_chr_encoding()}} to add
 an encoding mark. This is only declarative, no encoding
 conversion is performed.}
 

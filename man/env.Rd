@@ -3,28 +3,32 @@
 \name{env}
 \alias{env}
 \alias{child_env}
+\alias{get_env}
 \alias{env_parent}
 \alias{env_tail}
-\title{Get an environment.}
+\title{Get or create an environment.}
 \usage{
-env(env = caller_env())
+env(...)
 
 child_env(parent = NULL, data = list())
+
+get_env(env = caller_env())
 
 env_parent(env = caller_env(), n = 1)
 
 env_tail(env = caller_env())
 }
 \arguments{
-\item{env}{An environment or an object with a S3 method for
-\code{env()}. If missing, the environment of the current evaluation
-frame is returned.}
+\item{..., data}{Uniquely named bindings. See \code{\link[=is_dictionary]{is_dictionary()}}.
+Dots have \link[=dots_list]{explicit-splicing semantics}.}
 
 \item{parent}{A parent environment. Can be an object with a S3
 method for \code{as_env()}.}
 
-\item{data}{A vector with unique names which defines bindings
-(pairs of name and value). See \code{\link[=is_dictionary]{is_dictionary()}}.}
+\item{env}{An environment or an object bundling an environment:
+either a \link{quosure} or a \link[=is_closure]{closure}. If
+missing, the environment of the current evaluation frame is
+returned.}
 
 \item{n}{The number of generations to go through.}
 }
@@ -40,14 +44,17 @@ they are eclipsed by synonyms (other bindings with the same names)
 in child environments.
 }
 \details{
-\code{env()} is a S3 generic. Methods are provided for functions,
-formulas and frames. If called with a missing argument, the
-environment of the current evaluation frame (see \code{\link[=eval_stack]{eval_stack()}}) is
-returned. If you call \code{env()} with an environment, it acts as the
-identity function and the environment is simply returned (this
-helps simplifying code when writing generic functions).
+\code{get_env()} dispatches internally. Methods are provided for
+functions, formulas and frames. If called with a missing argument,
+the environment of the current evaluation frame (see
+\code{\link[=ctxt_stack]{ctxt_stack()}}) is returned. If you call \code{get_env()} with an
+environment, it acts as the identity function and the environment
+is simply returned (this helps simplifying code when writing
+generic functions).
 
-\code{child_env()} creates a new environment. \code{env_parent()} returns the
+\code{env()} and \code{child_env()} create new environments. While \code{env()}
+always creates a child of the current environment, \code{child_env()}
+lets you choose a parent environment. \code{env_parent()} returns the
 parent environment of \code{env} if called with \code{n = 1}, the grandparent
 with \code{n = 2}, etc. \code{env_tail()} searches through the parents and
 returns the one which has \code{\link[=empty_env]{empty_env()}} as parent.
@@ -57,19 +64,19 @@ returns the one which has \code{\link[=empty_env]{empty_env()}} as parent.
 # the current frame is used:
 fn <- function() {
   list(
-    env(call_frame()),
-    env()
+    get_env(call_frame()),
+    get_env()
   )
 }
 fn()
 
 # Environment of closure functions:
-env(fn)
+get_env(fn)
 
-# There is also an assignment operator:
-env(fn) <- base_env()
-env(fn)
-
+# env() creates a new environment which has the current environment
+# as parent. It takes dots with explicit splicing:
+env(a = 1, b = "foo")
+env(a = 1, spliced(list(b = "foo", c = "bar")))
 
 # child_env() creates by default an environment whose parent is the
 # empty environment. Here we return a new environment that has
@@ -77,7 +84,7 @@ env(fn)
 # as parent:
 fn <- function() {
   my_object <- "A"
-  child_env(env())
+  child_env(get_env())
 }
 frame_env <- fn()
 

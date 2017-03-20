@@ -28,7 +28,7 @@ two possible cases:
 for which R has specific support. In this case, converting to the
 same encoding is a no-op, and converting to native always works
 as expected, as long as the native encoding, the one specified by
-the \code{LC_CTYPE} locale (see \code{\link[=set_utf8_locale]{set_utf8_locale()}}) has support for
+the \code{LC_CTYPE} locale (see \code{\link[=mut_utf8_locale]{mut_utf8_locale()}}) has support for
 all characters occurring in the strings. Unrepresentable
 characters are serialised as unicode points: "<U+xxxx>".
 \item The string is not tagged. R assumes that it is encoded in the
@@ -47,7 +47,7 @@ as_bytes(utf8)
 # It can then be converted to a native encoding, that is, the
 # encoding specified in the current locale:
 \dontrun{
-set_latin1_locale()
+mut_latin1_locale()
 latin1 <- as_native_string(utf8)
 str_encoding(latin1)
 as_bytes(latin1)

@@ -59,7 +59,7 @@ dots_splice <- function(...) {
 #' @param ... Arguments to extract.
 #' @export
 dots_exprs <- function(...) {
-  map(tidy_quotes(...), f_rhs)
+  map(dots_quosures(...), f_rhs)
 }
 
 #' Inspect dots
@@ -80,7 +80,7 @@ dots_exprs <- function(...) {
 #' @param ... Dots to inspect.
 #' @param .only_dots,only_dots Whether to stop introspection once
 #'   forwarded dots have been climbed. Setting this to `TRUE` is only
-#'   useful for inspecting dots (cf. [tidy_quotes()] which does not
+#'   useful for inspecting dots (cf. [dots_quosures()] which does not
 #'   follow symbols).
 #' @seealso [arg_inspect()]
 #' @export
@@ -157,8 +157,8 @@ dots_enumerate_sym <- function(dots) {
 dots_enumerate_args <- function(dots) {
   i <- 1
   node_walk(dots, function(dot) {
-    dot_name <- as.symbol(paste0("..", i))
-    set_node_car(dot, dot_name)
+    dot_name <- sym(paste0("..", i))
+    mut_node_car(dot, dot_name)
     i <<- i + 1
   })
   dots

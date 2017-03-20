@@ -14,7 +14,7 @@ dots_inspect_(dots, stack, only_dots = FALSE)
 
 \item{.only_dots, only_dots}{Whether to stop introspection once
 forwarded dots have been climbed. Setting this to \code{TRUE} is only
-useful for inspecting dots (cf. \code{\link[=tidy_quotes]{tidy_quotes()}} which does not
+useful for inspecting dots (cf. \code{\link[=dots_quosures]{dots_quosures()}} which does not
 follow symbols).}
 
 \item{dots}{Dots to inspect.}

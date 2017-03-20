@@ -1,8 +1,8 @@
 context("parse")
 
-test_that("parse_f() etc return correct formulas", {
-  expect_identical(parse_f("foo(bar)", "base"), with_env("base", ~foo(bar)))
-  expect_identical(parse_fs("foo(bar)\n mtcars", "base"), with_env("base", list(~foo(bar), ~mtcars)))
+test_that("parse_quosure() etc return correct formulas", {
+  expect_identical(parse_quosure("foo(bar)", "base"), with_env("base", ~foo(bar)))
+  expect_identical(parse_quosures("foo(bar)\n mtcars", "base"), with_env("base", list(~foo(bar), ~mtcars)))
 })
 
 test_that("parse() requires scalar character", {

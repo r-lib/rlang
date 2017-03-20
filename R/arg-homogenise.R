@@ -158,11 +158,11 @@ call_inline_dots <- function(call, dots_env, enum_dots) {
   # Attach remaining args to expanded dots
   remaining_args <- node_cddr(d)
   node_walk_nonnull(dots, function(arg) {
-    if (is_null(node_cdr(arg))) set_node_cdr(arg, remaining_args)
+    if (is_null(node_cdr(arg))) mut_node_cdr(arg, remaining_args)
   })
 
   # Replace dots symbol with actual dots and remaining args
-  set_node_cdr(d, dots)
+  mut_node_cdr(d, dots)
 
   call
 }
@@ -182,7 +182,7 @@ call_match <- function(call, fn, enum_dots, add_missings) {
 
   if (add_missings) {
     missing_nms <- setdiff(fmls_nms, c(args_nms, "..."))
-    missing_args <- rep(list(arg_missing()), length(missing_nms))
+    missing_args <- rep(list(missing_arg()), length(missing_nms))
     missing_args <- as.pairlist(set_names(missing_args, missing_nms))
     call <- node_append(call, missing_args)
   }

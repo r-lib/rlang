@@ -14,22 +14,22 @@ the top of the stack. In other words, the number of layers of
 intervening frames to trim.}
 }
 \description{
-\code{\link[=eval_stack]{eval_stack()}} can be tricky to use in real code because all
+\code{\link[=ctxt_stack]{ctxt_stack()}} can be tricky to use in real code because all
 intervening frames are returned with the stack, including those at
-\code{eval_stack()} own call site. \code{stack_trim()} makes it easy to
+\code{ctxt_stack()} own call site. \code{stack_trim()} makes it easy to
 remove layers of intervening calls.
 }
 \examples{
 # Intervening frames appear on the evaluation stack:
-identity(identity(eval_stack()))
+identity(identity(ctxt_stack()))
 
 # stack_trim() will trim the first n layers of calls:
-stack_trim(identity(identity(eval_stack())))
+stack_trim(identity(identity(ctxt_stack())))
 
 # Note that it also takes care of calls intervening at its own call
 # site:
 identity(identity(
-  stack_trim(identity(identity(eval_stack())))
+  stack_trim(identity(identity(ctxt_stack())))
 ))
 
 # It is especially useful when used within a function that needs to
@@ -37,9 +37,9 @@ identity(identity(
 # within nested calls without side effects:
 stack_util <- function() {
   # n = 2 means that two layers of intervening calls should be
-  # removed: The layer at eval_stack()'s call site (including the
+  # removed: The layer at ctxt_stack()'s call site (including the
   # stack_trim() call), and the layer at stack_util()'s call.
-  stack <- stack_trim(eval_stack(), n = 2)
+  stack <- stack_trim(ctxt_stack(), n = 2)
   stack
 }
 user_fn <- function() {

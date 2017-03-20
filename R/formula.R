@@ -3,7 +3,7 @@
 #' @param lhs,rhs A call, name, or atomic vector.
 #' @param env An environment.
 #' @return A formula object.
-#' @seealso [quosure()]
+#' @seealso [new_quosure()]
 #' @export
 #' @examples
 #' new_formula(quote(a), quote(b))
@@ -14,9 +14,9 @@ new_formula <- function(lhs, rhs, env = caller_env()) {
   }
 
   if (is_null(lhs)) {
-    f <- lang("~", rhs)
+    f <- new_language("~", rhs)
   } else {
-    f <- lang("~", lhs, rhs)
+    f <- new_language("~", lhs, rhs)
   }
 
   structure(f, class = "formula", .Environment = env)

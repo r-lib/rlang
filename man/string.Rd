@@ -10,7 +10,7 @@ string(x, encoding = NULL)
 \item{x}{A character vector or a vector or list of string-like
 objects.}
 
-\item{encoding}{If non-null, passed to \code{\link[=chr_set_encoding]{chr_set_encoding()}} to add
+\item{encoding}{If non-null, passed to \code{\link[=set_chr_encoding]{set_chr_encoding()}} to add
 an encoding mark. This is only declarative, no encoding
 conversion is performed.}
 }
@@ -39,6 +39,6 @@ str_encoding(cafe_latin1)
 as_bytes(cafe_latin1)
 }
 \seealso{
-\code{chr_set_encoding()} for more information
+\code{set_chr_encoding()} for more information
 about encodings in R.
 }

@@ -7,9 +7,10 @@
 env_has(env = caller_env(), nms, inherit = FALSE)
 }
 \arguments{
-\item{env}{An environment or an object with a S3 method for
-\code{env()}. If missing, the environment of the current evaluation
-frame is returned.}
+\item{env}{An environment or an object bundling an environment:
+either a \link{quosure} or a \link[=is_closure]{closure}. If
+missing, the environment of the current evaluation frame is
+returned.}
 
 \item{nms}{A character vector containing the names of the bindings
 to remove.}

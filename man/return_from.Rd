@@ -11,7 +11,7 @@ return_to(frame, value = NULL)
 }
 \arguments{
 \item{frame}{An environment, a frame object, or any object with an
-\code{\link[=env]{env()}} method. The environment should be an evaluation
+\code{\link[=get_env]{get_env()}} method. The environment should be an evaluation
 environment currently on the stack.}
 
 \item{value}{The return value.}
@@ -37,7 +37,7 @@ perform non-local jumps.
 \examples{
 # Passing fn() evaluation frame to g():
 fn <- function() {
-  val <- g(env())
+  val <- g(get_env())
   cat("g returned:", val, "\\n")
   "normal return"
 }

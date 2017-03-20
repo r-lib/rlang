@@ -1,7 +1,7 @@
 #' Establish handlers on the stack.
 #'
 #' Condition handlers are functions established on the evaluation
-#' stack (see [eval_stack()]) that are called by R when a condition is
+#' stack (see [ctxt_stack()]) that are called by R when a condition is
 #' signalled (see [cnd_signal()] and [abort()] for two common signal
 #' functions). They come in two types: exiting handlers, which jump
 #' out of the signalling context and are transferred to
@@ -77,7 +77,7 @@
 #' with_handlers(fn2(), foo = inplace(exiting_handler), foo = inplace(other_handler))
 with_handlers <- function(.expr, ..., .handlers = list()) {
   handlers <- c(list(...), .handlers)
-  with_handlers_(tidy_capture(.expr), handlers)
+  with_handlers_(catch_quosure(.expr), handlers)
 }
 #' @rdname with_handlers
 #' @export
@@ -92,15 +92,15 @@ with_handlers_ <- function(.expr, .handlers = list(), .env = NULL) {
   }
 
   f <- interp_handlers(f, inplace = inplace, exiting = exiting)
-  tidy_eval(f)
+  eval_tidy(f)
 }
 
 interp_handlers <- function(f, inplace, exiting) {
   if (length(exiting)) {
-    f <- tidy_quote(tryCatch(!! f, !!! exiting))
+    f <- quosure(tryCatch(!! f, !!! exiting))
   }
   if (length(inplace)) {
-    f <- tidy_quote(withCallingHandlers(!! f, !!! inplace))
+    f <- quosure(withCallingHandlers(!! f, !!! inplace))
   }
   f
 }
@@ -123,7 +123,7 @@ interp_handlers <- function(f, inplace, exiting) {
 #' it finds an exiting handler, it throws it to the function that
 #' established it ([with_handlers()]). That is, it interrupts the
 #' normal course of evaluation and jumps to `with_handlers()`
-#' evaluation frame (see [eval_stack()]), and only then and there the
+#' evaluation frame (see [ctxt_stack()]), and only then and there the
 #' handler is called. On the other hand, if R finds an inplace
 #' handler, it executes it locally. The inplace handler can choose to
 #' handle the condition by jumping out of the frame (see [rst_jump()]

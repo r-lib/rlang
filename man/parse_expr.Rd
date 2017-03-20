@@ -3,17 +3,17 @@
 \name{parse_expr}
 \alias{parse_expr}
 \alias{parse_exprs}
-\alias{parse_f}
-\alias{parse_fs}
+\alias{parse_quosure}
+\alias{parse_quosures}
 \title{Parse R code.}
 \usage{
 parse_expr(x)
 
 parse_exprs(x)
 
-parse_f(x, env = caller_env())
+parse_quosure(x, env = caller_env())
 
-parse_fs(x, env = caller_env())
+parse_quosures(x, env = caller_env())
 }
 \arguments{
 \item{x}{Text containing expressions to parse_expr for
@@ -53,13 +53,13 @@ parse_expr("mtcars \%>\% dplyr::mutate(cyl_prime = cyl / sd(cyl))")
 parse_exprs("NULL; list()\\n foo(bar)")
 
 # The versions suffixed with _f return formulas:
-parse_f("foo \%>\% bar()")
-parse_fs("1; 2; mtcars")
+parse_quosure("foo \%>\% bar()")
+parse_quosures("1; 2; mtcars")
 
 # The env argument is passed to as_env(). It can be e.g. a string
 # representing a scoped package environment:
-parse_f("identity(letters)", env = empty_env())
-parse_fs("identity(letters); mtcars", env = "base")
+parse_quosure("identity(letters)", env = empty_env())
+parse_quosures("identity(letters); mtcars", env = "base")
 
 
 # You can also parse source files by passing a R connection. Let's

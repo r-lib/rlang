@@ -17,7 +17,7 @@ is scoped, that is, has a valid environment attribute. If \code{NULL},
 the scope is not inspected.}
 }
 \description{
-These predicates test for \link{quosure} objects.
+These predicates test for \link[=new_quosure]{quosure} objects.
 \itemize{
 \item \code{is_quosure()} tests for the canonical R quosure: the one-sided
 "formula".
@@ -31,7 +31,7 @@ with the quosure is valid or not. Invalid scopes may happen in
 nested quotations like \code{~~expr}, where the outer quosure is validly
 scoped but not the inner one. This is because \code{~} saves the
 environment when it is evaluated, and quoted quosures are by
-definition not evaluated. Note that in the \link[=tidy_eval]{tidy evaluation
+definition not evaluated. Note that in the \link[=eval_tidy]{tidy evaluation
 framework}, unscoped quosures are automatically given
 the environment of the outer quosure during the evaluation process.
 }
@@ -57,7 +57,7 @@ is_quosureish(a := b)
 is_quosureish(a ~ b)
 }
 \seealso{
-\link[=quosure]{as_quosure()} and \code{\link[=quosure]{quosure()}} for creating
-quosures, and \code{\link[=tidy_quote]{tidy_quote()}} or \code{\link[=tidy_eval]{tidy_eval()}} for information
+\link[=new_quosure]{as_quosure()} and \code{\link[=new_quosure]{new_quosure()}} for creating
+quosures, and \code{\link[=quosure]{quosure()}} or \code{\link[=eval_tidy]{eval_tidy()}} for information
 about the role of quosures in the tidy evaluation framework.
 }

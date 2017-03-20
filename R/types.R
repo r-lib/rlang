@@ -337,7 +337,7 @@ is_scalar_integerish <- function(x) {
 type_of <- function(x) {
   type <- typeof(x)
   if (is_quosure(x)) {
-    "quote"
+    "quosure"
   } else if (type == "character") {
     if (length(x) == 1) "string" else "character"
   } else if (type %in% c("builtin", "special")) {

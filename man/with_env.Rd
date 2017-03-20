@@ -11,17 +11,17 @@ locally(expr)
 }
 \arguments{
 \item{env}{An environment within which to evaluate \code{expr}. Can be
-an object with an \code{\link[=env]{env()}} method.}
+an object with an \code{\link[=get_env]{get_env()}} method.}
 
 \item{expr}{An expression to evaluate.}
 }
 \description{
 These functions evaluate \code{expr} within a given environment (\code{env}
 for \code{with_env()}, or the child of the current environment for
-\code{locally}). They rely on \code{\link[=expr_eval]{expr_eval()}} which features a lighter
+\code{locally}). They rely on \code{\link[=eval_bare]{eval_bare()}} which features a lighter
 evaluation mechanism than base R \code{\link[base:eval]{base::eval()}}, and which also has
 some subtle implications when evaluting stack sensitive functions
-(see help for \code{\link[=expr_eval]{expr_eval()}}).
+(see help for \code{\link[=eval_bare]{eval_bare()}}).
 }
 \details{
 \code{locally()} is equivalent to the base function
@@ -37,13 +37,13 @@ identical(f_env(f), env)
 
 # Or functions with a given enclosure:
 fn <- with_env(env, function() NULL)
-identical(env(fn), env)
+identical(get_env(fn), env)
 
 
 # Unlike eval() it doesn't create duplicates on the evaluation
 # stack. You can thus use it e.g. to create non-local returns:
 fn <- function() {
-  g(env())
+  g(get_env())
   "normal return"
 }
 g <- function(env) {
@@ -52,7 +52,7 @@ g <- function(env) {
 fn()
 
 
-# Since env is passed to env(), it can be any object with an env()
-# method. For strings, the pkg_env() is returned:
+# Since env is passed to get_env(), it can be any object with a
+# get_env() method. For strings, the pkg_env() is returned:
 with_env("base", ~mtcars)
 }

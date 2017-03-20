@@ -3,18 +3,18 @@
 #' `is_named()` checks that `x` has names attributes, and that none of
 #' the names are missing or empty (`NA` or `""`). `is_dictionary()`
 #' checks that an object is a dictionary: that it has actual names and
-#' in addition that there are no duplicated names. `have_names()`
+#' in addition that there are no duplicated names. `have_name()`
 #' is a vectorised version of `is_named()`.
 #'
 #' @param x An object to test.
 #' @return `is_named()` and `is_dictionary()` are scalar predicates
-#'   and return `TRUE` or `FALSE`. `have_names()` is vectorised and
+#'   and return `TRUE` or `FALSE`. `have_name()` is vectorised and
 #'   returns a logical vector as long as the input.
 #' @export
 #' @examples
 #' # A data frame usually has valid, unique names
 #' is_named(mtcars)
-#' have_names(mtcars)
+#' have_name(mtcars)
 #' is_dictionary(mtcars)
 #'
 #' # But data frames can also have duplicated columns:
@@ -23,7 +23,7 @@
 #'
 #' # The names are still valid:
 #' is_named(dups)
-#' have_names(dups)
+#' have_name(dups)
 #'
 #'
 #' # For empty objects the semantics are slightly different.
@@ -41,14 +41,14 @@
 #' names(invalid)[2] <- ""
 #' names(invalid)[5] <- NA
 #'
-#' # is_named() performs a global check while have_names() can show you
+#' # is_named() performs a global check while have_name() can show you
 #' # where the problem is:
 #' is_named(invalid)
-#' have_names(invalid)
+#' have_name(invalid)
 #'
-#' # have_names() will work even with vectors that don't have a names
+#' # have_name() will work even with vectors that don't have a names
 #' # attribute:
-#' have_names(letters)
+#' have_name(letters)
 is_named <- function(x) {
   nms <- names(x)
 
@@ -75,7 +75,7 @@ is_dictionary <- function(x) {
 
 #' @rdname is_named
 #' @export
-have_names <- function(x) {
+have_name <- function(x) {
   nms <- names(x)
   if (is.null(nms)) {
     rep(FALSE, length(x))

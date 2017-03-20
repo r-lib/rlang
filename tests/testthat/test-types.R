@@ -33,7 +33,7 @@ test_that("type_of() returns correct type", {
   expect_identical(type_of(base::`$`), "primitive")
   expect_identical(type_of(base::list), "primitive")
   expect_identical(type_of(base::eval), "closure")
-  expect_identical(type_of(~foo), "quote")
+  expect_identical(type_of(~foo), "quosure")
   expect_identical(type_of(quote(foo())), "language")
 })
 
@@ -43,9 +43,9 @@ test_that("lang_type_of() returns correct lang subtype", {
   expect_identical(lang_type_of(quote(foo@bar())), "recursive")
 
   lang <- quote(foo())
-  set_node_car(lang, 10)
+  mut_node_car(lang, 10)
   expect_error(lang_type_of(lang), "corrupt")
 
-  set_node_car(lang, base::list)
+  mut_node_car(lang, base::list)
   expect_identical(lang_type_of(lang), "inlined")
 })

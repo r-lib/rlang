@@ -6,7 +6,7 @@ test_that("names() dispatches on environment", {
 })
 
 test_that("lazy objects are converted to tidy quotes", {
-  env <- child_env(env())
+  env <- child_env(get_env())
 
   lazy <- structure(list(expr = quote(foo(bar)), env = env), class = "lazy")
   expect_identical(compat_lazy(lazy), with_env(env, ~foo(bar)))
@@ -22,7 +22,7 @@ test_that("lazy objects are converted to tidy quotes", {
 })
 
 test_that("lazy_dots objects are converted to tidy quotes", {
-  env <- child_env(env())
+  env <- child_env(get_env())
 
   lazy_dots <- structure(class = "lazy_dots", list(
     lazy = structure(list(expr = quote(foo(bar)), env = env), class = "lazy"),
@@ -35,7 +35,7 @@ test_that("lazy_dots objects are converted to tidy quotes", {
     ~foo(bar)
   )
 
-  expect_identical(compat_lazy_dots(lazy_dots, env(), "foo(bar)"), expected)
+  expect_identical(compat_lazy_dots(lazy_dots, get_env(), "foo(bar)"), expected)
 })
 
 test_that("unnamed lazy_dots are given default names", {
@@ -49,7 +49,7 @@ test_that("unnamed lazy_dots are given default names", {
     `foo(bar)` = ~foo(bar),
     foobarbaz = ~foo(barbaz)
   )
-  dots <- compat_lazy_dots(lazy_dots, env(), foobarbaz = "foo(barbaz)", .named = TRUE)
+  dots <- compat_lazy_dots(lazy_dots, get_env(), foobarbaz = "foo(barbaz)", .named = TRUE)
 
   expect_identical(dots, expected)
 })

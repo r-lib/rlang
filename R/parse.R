@@ -33,13 +33,13 @@
 #' parse_exprs("NULL; list()\n foo(bar)")
 #'
 #' # The versions suffixed with _f return formulas:
-#' parse_f("foo %>% bar()")
-#' parse_fs("1; 2; mtcars")
+#' parse_quosure("foo %>% bar()")
+#' parse_quosures("1; 2; mtcars")
 #'
 #' # The env argument is passed to as_env(). It can be e.g. a string
 #' # representing a scoped package environment:
-#' parse_f("identity(letters)", env = empty_env())
-#' parse_fs("identity(letters); mtcars", env = "base")
+#' parse_quosure("identity(letters)", env = empty_env())
+#' parse_quosures("identity(letters); mtcars", env = "base")
 #'
 #'
 #' # You can also parse source files by passing a R connection. Let's
@@ -54,9 +54,9 @@ parse_expr <- function(x) {
 
   n <- length(exprs)
   if (n == 0) {
-    stop("No expression to parse_expr", call. = FALSE)
+    abort("No expression to parse_expr")
   } else if (n > 1) {
-    stop("More than one expression parsed_expr", call. = FALSE)
+    abort("More than one expression parsed_expr")
   }
 
   exprs[[1]]
@@ -80,11 +80,11 @@ parse_exprs <- function(x) {
 
 #' @rdname parse_expr
 #' @export
-parse_f <- function(x, env = caller_env()) {
-  quosure(parse_expr(x), as_env(env))
+parse_quosure <- function(x, env = caller_env()) {
+  new_quosure(parse_expr(x), as_env(env))
 }
 #' @rdname parse_expr
 #' @export
-parse_fs <- function(x, env = caller_env()) {
-  map(parse_exprs(x), quosure, env = as_env(env))
+parse_quosures <- function(x, env = caller_env()) {
+  map(parse_exprs(x), new_quosure, env = as_env(env))
 }

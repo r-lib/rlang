@@ -10,8 +10,8 @@
 #' at the call site are available when the expression gets
 #' evaluated. It is thus necessary to capture not only the R
 #' expression supplied as argument in a function call, but also the
-#' evaluation environment of the call site. `tidy_capture()` and
-#' `tidy_quotes()` make it easy to record this information within
+#' evaluation environment of the call site. `catch_quosure()` and
+#' `dots_quosures()` make it easy to record this information within
 #' formulas.
 #'
 #' @section Non-standard evaluation:
@@ -33,9 +33,9 @@
 #'   calls (see below). See `vignette("nse")` for more information on
 #'   NSE.
 #'
-#'   In addition, note that `tidy_capture()` always interpolates its
+#'   In addition, note that `catch_quosure()` always interpolates its
 #'   input to facilitate programming with NSE functions. See
-#'   [tidy_interp()] and [tidy_quote()].
+#'   [expr_interp()] and [quosure()].
 #'
 #' @section Forwarding arguments:
 #'
@@ -59,33 +59,33 @@
 #'   expressions were not necessarily supplied in the last call
 #'   frame. In general, the call site of argument passed through dots
 #'   can be anywhere between the current and global frames. For this
-#'   reason, it is recommended to always use `tidy_quotes()` rather
+#'   reason, it is recommended to always use `dots_quosures()` rather
 #'   than `substitute()` and `caller_env()` or `parent.frame()`, since
 #'   the former will encode the appropriate evaluation environments
 #'   within the formulas.
 #'
 #' @param x,... Arguments to capture.
 #' @export
-#' @return `tidy_capture()` returns a formula; see also
-#'   `tidy_quotes()` for "capturing" dots as a list of formulas.
-#' @seealso [tidy_quotes()] for capturing dots, [expr_label()] and
+#' @return `catch_quosure()` returns a formula; see also
+#'   `dots_quosures()` for "capturing" dots as a list of formulas.
+#' @seealso [dots_quosures()] for capturing dots, [expr_label()] and
 #'   [expr_text()] for capturing labelling information.
 #' @examples
-#' # tidy_capture() returns a formula:
-#' fn <- function(foo) tidy_capture(foo)
+#' # catch_quosure() returns a formula:
+#' fn <- function(foo) catch_quosure(foo)
 #' fn(a + b)
 #'
 #' # Capturing an argument only works for the most direct call:
 #' g <- function(bar) fn(bar)
 #' g(a + b)
-tidy_capture <- function(x) {
-  capture <- lang(captureArg, substitute(x))
-  arg <- expr_eval(capture, caller_env())
+catch_quosure <- function(x) {
+  capture <- new_language(captureArg, substitute(x))
+  arg <- eval_bare(capture, caller_env())
   expr <- .Call(rlang_interp, arg$expr, arg$env)
-  quosure(expr, arg$env)
+  new_quosure(expr, arg$env)
 }
 
-tidy_capture_dots <- function(...) {
+dots_capture <- function(...) {
   info <- captureDots()
   dots <- map(info, dot_f)
 
@@ -95,7 +95,7 @@ tidy_capture_dots <- function(...) {
 }
 dot_f <- function(dot) {
   if (is_missing(dot$expr)) {
-    return(quosure(arg_missing(), empty_env()))
+    return(new_quosure(missing_arg(), empty_env()))
   }
 
   env <- dot$env
@@ -106,12 +106,12 @@ dot_f <- function(dot) {
   if (is_splice(expr)) {
     dots <- call("alist", expr)
     dots <- .Call(rlang_interp, dots, env)
-    dots <- expr_eval(dots)
+    dots <- eval_bare(dots)
     map(dots, as_quosure, env)
   } else {
     expr <- .Call(rlang_interp, expr, env)
     orig <- set_expr(orig, expr)
-    list(quosure(orig, env))
+    list(new_quosure(orig, env))
   }
 }
 
@@ -165,7 +165,7 @@ dot_interp_lhs <- function(name, dot) {
     warn("name ignored because a LHS was supplied")
   }
 
-  rhs <- quosure(f_rhs(f_rhs(dot)), env = f_env(dot))
+  rhs <- new_quosure(f_rhs(f_rhs(dot)), env = f_env(dot))
   lhs <- .Call(rlang_interp, f_lhs(f_rhs(dot)), f_env(dot))
 
   if (is_symbol(lhs)) {

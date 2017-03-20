@@ -13,16 +13,17 @@ env_bind(env = caller_env(), data = list())
 env_define(env = caller_env(), ...)
 }
 \arguments{
-\item{env}{An environment or an object with a S3 method for
-\code{env()}. If missing, the environment of the current evaluation
-frame is returned.}
+\item{env}{An environment or an object bundling an environment:
+either a \link{quosure} or a \link[=is_closure]{closure}. If
+missing, the environment of the current evaluation frame is
+returned.}
 
 \item{nm}{The name of the binding.}
 
 \item{x}{The value of the binding.}
 
-\item{data}{A vector with unique names which defines bindings
-(pairs of name and value). See \code{\link[=is_dictionary]{is_dictionary()}}.}
+\item{data}{Uniquely named bindings. See \code{\link[=is_dictionary]{is_dictionary()}}.
+Dots have \link[=dots_list]{explicit-splicing semantics}.}
 
 \item{...}{Pairs of unique names and R objects used to define new
 bindings.}
@@ -45,13 +46,12 @@ modified in place.
 }
 \examples{
 # Create a function that uses undefined bindings:
-fn <- function() list(a, b, c, d, e)
-env(fn) <- child_env(base_env())
+fn <- with_env(child_env("base"), function() list(a, b, c, d, e))
 
 # This would throw a scoping error if run:
 # fn()
 
-data <- stats::setNames(letters, letters)
+data <- set_names(letters, letters)
 env_bind(fn, data)
 
 # fn() now sees the objects

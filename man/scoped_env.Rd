@@ -51,7 +51,7 @@ of the linked list. Likewise, the base package environment is
 always the tail of the chain. You can obtain those environments
 with \code{global_env()} and \code{base_env()} respectively. The global
 environment is always the environment of the very first evaluation
-frame on the stack, see \code{\link[=global_frame]{global_frame()}} and \code{\link[=eval_stack]{eval_stack()}}.
+frame on the stack, see \code{\link[=global_frame]{global_frame()}} and \code{\link[=ctxt_stack]{ctxt_stack()}}.
 
 You can list all scoped environments with \code{scoped_names()}. With
 \code{is_scoped()} you can check whether a named environment is on the

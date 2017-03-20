@@ -29,7 +29,7 @@
 #' [as_utf8_character()] and [as_native_character()] for coercing to a
 #' character vector and attempt encoding conversion.
 #'
-#' See also [chr_set_encoding()] and [set_utf8_locale()] for
+#' See also [set_chr_encoding()] and [mut_utf8_locale()] for
 #' information about encodings and locales in R, and [string()] and
 #' [chr()] for other ways of creating strings and character vectors.
 #'
@@ -144,7 +144,7 @@ as_complex <- function(x) {
 #' @export
 as_character <- function(x, encoding = NULL) {
   coerce_type_vec(x, "character",
-    character = chr_set_encoding(zap_attributes(x), encoding)
+    character = set_chr_encoding(zap_attributes(x), encoding)
   )
 }
 #' @rdname vector-coercion
@@ -159,7 +159,7 @@ as_string <- function(x, encoding = NULL) {
     },
     string = zap_attributes(x)
   )
-  chr_set_encoding(x, encoding)
+  set_chr_encoding(x, encoding)
 }
 #' @rdname vector-coercion
 #' @export

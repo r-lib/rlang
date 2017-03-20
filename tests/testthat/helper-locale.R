@@ -29,15 +29,15 @@ get_alien_lang_string <- function() {
 }
 
 with_non_utf8_locale <- function(code) {
-  old_locale <- set_non_utf8_locale()
-  on.exit(set_ctype(old_locale), add = TRUE)
+  old_locale <- mut_non_utf8_locale()
+  on.exit(mut_ctype(old_locale), add = TRUE)
   code
 }
 
-set_non_utf8_locale <- function() {
+mut_non_utf8_locale <- function() {
   if (.Platform$OS.type == "windows") return(NULL)
   tryCatch(
-    locale <- set_ctype("en_US.ISO88591"),
+    locale <- mut_ctype("en_US.ISO8859-1"),
     warning = function(e) {
       testthat::skip("Cannot set latin-1 locale")
     }

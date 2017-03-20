@@ -19,7 +19,7 @@ inspect.}
 
 \item{only_dots}{Whether to stop introspection once
 forwarded dots have been climbed. Setting this to \code{TRUE} is only
-useful for inspecting dots (cf. \code{\link[=tidy_quotes]{tidy_quotes()}} which does not
+useful for inspecting dots (cf. \code{\link[=dots_quosures]{dots_quosures()}} which does not
 follow symbols).}
 }
 \value{
@@ -32,22 +32,22 @@ missing (see below).}
 \item{expr}{The expression provided in the original call. If the
 argument was missing, \code{expr} is the default argument of the
 function; if there was no default, \code{expr} is the missing
-argument (see \code{\link[=arg_missing]{arg_missing()}}).}
+argument (see \code{\link[=missing_arg]{missing_arg()}}).}
 
 \item{name}{The name of the formal argument to which \code{expr} was
 originally supplied.}
 
-\item{eval_frame}{The frame providing the scope for \code{expr}, which
-should normally be evaluated in \code{eval_frame$env}.  This is
+\item{ctxt_frame}{The frame providing the scope for \code{expr}, which
+should normally be evaluated in \code{ctxt_frame$env}.  This is
 normally the original calling frame, unless the argument was
-missing. In that case, \code{eval_frame} is the evaluation frame of
+missing. In that case, \code{ctxt_frame} is the evaluation frame of
 the called function. The difference reflects the evaluation
 rules of R, where default arguments are scoped within the
 called function rather than the calling frame.}
 }
 \description{
 \code{arg_inspect()} provides argument introspection in the context of
-lazy evaluation. Compared to \code{\link[=tidy_capture]{tidy_capture()}}, the returned
+lazy evaluation. Compared to \code{\link[=catch_quosure]{catch_quosure()}}, the returned
 information is more complete and takes R's lazy evaluation
 semantics into account: if an argument is passed around without
 being evaluated, \code{arg_inspect()} is able to return the expression
@@ -61,7 +61,7 @@ with which expression, in which evaluation environment.
 }
 \details{
 \code{arg_inspect()} should be used with two caveats in mind. First, it
-is slower than \code{\link[=tidy_capture]{tidy_capture()}} and \code{lazyeval::lazy()}. Thus you
+is slower than \code{\link[=catch_quosure]{catch_quosure()}} and \code{lazyeval::lazy()}. Thus you
 should probably avoid using it in functions that might be used in
 tight loops (such as a loop over the rows of data frame). Second,
 \code{arg_inspect()} ignores all reassignment of arguments. It has no

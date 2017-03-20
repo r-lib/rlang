@@ -30,7 +30,7 @@
 #'
 #' # Whereas a non-local return requires to manually pass the calling
 #' # frame to the return function:
-#' fn <- function() g(env())
+#' fn <- function() g(get_env())
 #' g <- function(env) h(env)
 #' h <- function(env) { return_from(env, "returned"); "not returned" }
 #' fn()
@@ -105,14 +105,14 @@
 #' with_handlers(fn(FALSE), default_empty_string = restarting("rst_null"))
 with_restarts <- function(.expr, ..., .restarts = list()) {
   restarts <- c(list(...), .restarts)
-  with_restarts_(tidy_capture(.expr), restarts)
+  with_restarts_(catch_quosure(.expr), restarts)
 }
 #' @rdname with_restarts
 #' @export
 with_restarts_ <- function(.expr, .restarts = list(), .env = NULL) {
   f <- as_quosure(.expr, .env)
-  f <- tidy_quote(withRestarts(!! f, !!! .restarts))
-  tidy_eval(f)
+  f <- quosure(withRestarts(!! f, !!! .restarts))
+  eval_tidy(f)
 }
 
 

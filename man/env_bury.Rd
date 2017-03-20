@@ -7,12 +7,13 @@
 env_bury(env = caller_env(), data = list())
 }
 \arguments{
-\item{env}{An environment or an object with a S3 method for
-\code{env()}. If missing, the environment of the current evaluation
-frame is returned.}
+\item{env}{An environment or an object bundling an environment:
+either a \link{quosure} or a \link[=is_closure]{closure}. If
+missing, the environment of the current evaluation frame is
+returned.}
 
-\item{data}{A vector with unique names which defines bindings
-(pairs of name and value). See \code{\link[=is_dictionary]{is_dictionary()}}.}
+\item{data}{Uniquely named bindings. See \code{\link[=is_dictionary]{is_dictionary()}}.
+Dots have \link[=dots_list]{explicit-splicing semantics}.}
 }
 \value{
 An object associated with the new environment.
@@ -24,8 +25,7 @@ inputs.
 }
 \examples{
 scope <- child_env(base_env(), list(a = 10))
-fn <- function() a
-env(fn) <- scope
+fn <- with_env(scope, function() a)
 
 # fn() sees a = 10:
 fn()

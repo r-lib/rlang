@@ -106,8 +106,8 @@ test_that("type errors are handled", {
   expect_error(lgl(chr()), "Cannot convert objects of type `character`")
   expect_error(lgl(list(chr())), "Cannot convert objects of type `character`")
 
-  expect_error(lgl(env()), "Cannot splice objects of type `environment`")
-  expect_error(lgl(list(env())), "Cannot splice objects of type `environment`")
+  expect_error(lgl(get_env()), "Cannot splice objects of type `environment`")
+  expect_error(lgl(list(get_env())), "Cannot splice objects of type `environment`")
 })
 
 test_that("empty inputs are spliced", {

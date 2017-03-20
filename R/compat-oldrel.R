@@ -20,7 +20,7 @@ if (TRUE || utils::packageVersion("base") < "3.4.0") {
       stop("argument \"x\" is missing")
     }
 
-    .Call(rlang_capturearg, NULL, NULL, pairlist(caller_env), env())
+    .Call(rlang_capturearg, NULL, NULL, pairlist(caller_env), get_env())
   }
 
   captureDots <- function() {
@@ -30,7 +30,7 @@ if (TRUE || utils::packageVersion("base") < "3.4.0") {
       stop("must be called in a function where dots exist")
     }
 
-    .Call(rlang_capturedots, NULL, NULL, pairlist(caller_env), env())
+    .Call(rlang_capturedots, NULL, NULL, pairlist(caller_env), get_env())
   }
 
 }

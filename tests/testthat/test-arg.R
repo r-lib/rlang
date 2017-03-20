@@ -8,7 +8,7 @@ test_that("follows through dots", {
   h <- function(x1, x2) arg_inspect(x2)
   info <- fn(mtcars, letters)
   expect_identical(info$expr, quote(letters))
-  expect_identical(info$eval_frame, call_frame())
+  expect_identical(info$ctxt_frame, call_frame())
 })
 
 test_that("empty argument are reported", {
@@ -16,14 +16,14 @@ test_that("empty argument are reported", {
   out <- fn(, )
   info <- out$info
   expect_true(is_missing(info$expr))
-  expect_identical(info$eval_frame$env, out$env)
+  expect_identical(info$ctxt_frame$env, out$env)
   expect_identical(info$caller_frame$env, environment())
 
   g <- function(x) list(info = fn(x), env = environment())
   out <- g()
   info <- out$info$info
   expect_true(is_missing(info$expr))
-  expect_identical(info$eval_frame$env, out$env)
+  expect_identical(info$ctxt_frame$env, out$env)
   expect_identical(info$caller_frame$env, environment())
 })
 
@@ -53,7 +53,7 @@ test_that("default arguments are scoped in execution env", {
   info <- out$info
   fn_env <- out$env
 
-  expect_identical(info$eval_frame$env, fn_env)
+  expect_identical(info$ctxt_frame$env, fn_env)
   expect_identical(info$caller_frame$env, environment())
   expect_equal(info$expr, quote(default()))
 })
@@ -65,7 +65,7 @@ test_that("missing arguments are scoped in execution env", {
   info <- out$info
   fn_env <- out$env
 
-  expect_identical(info$eval_frame$env, fn_env)
+  expect_identical(info$ctxt_frame$env, fn_env)
   expect_identical(info$caller_frame$env, environment())
   expect_true(is_missing(info$expr))
 })
@@ -78,7 +78,7 @@ test_that("arguments are scoped in calling env", {
   info <- out$info
   fn_env <- out$env
 
-  expect_identical(info$eval_frame$env, fn_env)
+  expect_identical(info$ctxt_frame$env, fn_env)
   expect_identical(info$caller_frame$env, fn_env)
   expect_equal(info$expr, quote(foo))
 })
@@ -93,22 +93,22 @@ test_that("global_frame() is reported with top-level calls", {
   info <- fn(foo)
 
   expect_identical(info$expr, quote(foo))
-  expect_identical(info$eval_frame$env, globalenv())
+  expect_identical(info$ctxt_frame$env, globalenv())
   expect_identical(info$caller_frame$env, globalenv())
 })
 
 
-# arg_missing --------------------------------------------------------
+# missing_arg --------------------------------------------------------
 
 test_that("is_missing() works with symbols", {
-  x <- arg_missing()
+  x <- missing_arg()
   expect_true(is_missing(x))
 })
 
 test_that("is_missing() works with non-symbols", {
-  expect_true(is_missing(arg_missing()))
+  expect_true(is_missing(missing_arg()))
 
-  l <- list(arg_missing())
+  l <- list(missing_arg())
   expect_true(is_missing(l[[1]]))
   expect_error(missing(l[[1]]), "invalid use")
 })
@@ -135,7 +135,7 @@ test_that("Recall() does not mess up arg_inspect()", {
 
   expect_identical(info$x$expr, quote(bar(foo)))
   expect_identical(info$y$expr, quote(foo(bar)))
-  expect_identical(info$x$eval_frame$env, environment())
+  expect_identical(info$x$ctxt_frame$env, environment())
   expect_identical(info$x$caller_frame$env, environment())
 })
 
@@ -144,20 +144,20 @@ test_that("magrittr works", {
     `%>%` <- magrittr::`%>%`
     info <- letters %>% toupper() %>% .[[1]] %>% arg_inspect()
     expect_equal(info$expr, quote(.))
-    expect_equal(eval(info$expr, info$eval_frame$env), "A")
+    expect_equal(eval(info$expr, info$ctxt_frame$env), "A")
 
     info <- letters %>% toupper() %>% .[[1]] %>% dots_inspect()
     info <- info[[1]]
     expect_equal(info$expr, quote(.))
-    expect_equal(eval(info$expr, info$eval_frame$env), "A")
+    expect_equal(eval(info$expr, info$ctxt_frame$env), "A")
   }
 })
 
 
-# tidy_capture -------------------------------------------------------
+# catch_quosure -------------------------------------------------------
 
 test_that("explicit promise makes a formula", {
-  capture <- function(x) tidy_capture(x)
+  capture <- function(x) catch_quosure(x)
   f1 <- capture(1 + 2 + 3)
   f2 <- ~ 1 + 2 + 3
 
@@ -165,8 +165,8 @@ test_that("explicit promise makes a formula", {
 })
 
 test_that("explicit promise works only one level deep", {
-  f <- function(x) list(env = env(), f = g(x))
-  g <- function(y) tidy_capture(y)
+  f <- function(x) list(env = get_env(), f = g(x))
+  g <- function(y) catch_quosure(y)
   out <- f(1 + 2 + 3)
   expected_f <- with_env(out$env, ~x)
 
