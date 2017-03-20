@@ -32,3 +32,8 @@ test_that("Unicode escapes are always converted to UTF8 characters with env_name
     expect_identical(env_names(env), get_alien_lang_string())
   })
 })
+
+test_that("Unicode escapes are always converted to UTF8 in tidy_quotes()", {
+  q <- tidy_quotes(`<U+5E78><U+798F>` = 1)
+  expect_identical(names(q), "\u5e78\u798f")
+})
