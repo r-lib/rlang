@@ -165,14 +165,26 @@ as_string <- function(x, encoding = NULL) {
 #' @rdname vector-coercion
 #' @export
 as_list <- function(x) {
+  switch_type(x,
+    environment = as_list_env(x),
+    as_list_other(x)
+  )
+}
+
+as_list_env <- function(x) {
+  x <- as_base_type(x, as.list)
+  names(x) <- .Call(rlang_unescape_character_and_fix_na, names(x))
+  x
+}
+
+as_list_other <- function(x) {
   coerce_type_vec(x, "list",
     logical = ,
     integer = ,
     double = ,
     character = ,
     complex = ,
-    raw = ,
-    environment = as_base_type(x, as.list),
+    raw = as_base_type(x, as.list),
     list = zap_attributes(x)
   )
 }
