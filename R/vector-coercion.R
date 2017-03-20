@@ -172,9 +172,9 @@ as_list <- function(x) {
 }
 
 as_list_env <- function(x) {
+  names_x <- names(x)
   x <- as_base_type(x, as.list)
-  names(x) <- .Call(rlang_unescape_character_and_fix_na, names(x))
-  x
+  set_names(x, .Call(rlang_unescape_character_and_fix_na, names_x))
 }
 
 as_list_other <- function(x) {
