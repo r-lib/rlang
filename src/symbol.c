@@ -6,14 +6,10 @@
 
 #define attribute_hidden
 
-SEXP recode_sexp_and_fix_na(SEXP name);
-SEXP recode_sexp(SEXP name);
-bool has_unicode_escape(const char* chr);
-int unescape_unicode(char* chr);
-int unescape_unicode_found(char* chr);
-int process_byte(char* tgt, char* const src, int* len_processed);
-bool has_codepoint(const char* src);
-bool is_hex(const char chr);
+// Interface functions ---------------------------------------------------------
+
+SEXP unescape_sexp_and_fix_na(SEXP name);
+SEXP unescape_sexp(SEXP name);
 
 SEXP rlang_symbol(SEXP chr) {
   SEXP string = STRING_ELT(chr, 0);
@@ -22,7 +18,7 @@ SEXP rlang_symbol(SEXP chr) {
 
 SEXP rlang_symbol_to_character(SEXP chr) {
   SEXP name = PRINTNAME(chr);
-  return Rf_ScalarString(recode_sexp(name));
+  return Rf_ScalarString(unescape_sexp(name));
 }
 
 SEXP rlang_unescape_character_and_fix_na(SEXP chr) {
@@ -31,7 +27,7 @@ SEXP rlang_unescape_character_and_fix_na(SEXP chr) {
   SEXP new_elt;
   for (i = 0; i < len; ++i) {
     SEXP old_elt = STRING_ELT(chr, i);
-    new_elt = recode_sexp_and_fix_na(old_elt);
+    new_elt = unescape_sexp_and_fix_na(old_elt);
     if (old_elt != new_elt) break;
   }
 
@@ -47,19 +43,28 @@ SEXP rlang_unescape_character_and_fix_na(SEXP chr) {
 
   for (++i; i < len; ++i) {
     SEXP old_elt = STRING_ELT(chr, i);
-    SET_STRING_ELT(ret, i, recode_sexp_and_fix_na(old_elt));
+    SET_STRING_ELT(ret, i, unescape_sexp_and_fix_na(old_elt));
   }
 
   UNPROTECT(1);
   return ret;
 }
 
-SEXP attribute_hidden recode_sexp_and_fix_na(SEXP name) {
+// Private functions -----------------------------------------------------------
+
+bool has_unicode_escape(const char* chr);
+int unescape_char(char* chr);
+int unescape_char_found(char* chr);
+int process_byte(char* tgt, char* const src, int* len_processed);
+bool has_codepoint(const char* src);
+bool is_hex(const char chr);
+
+SEXP attribute_hidden unescape_sexp_and_fix_na(SEXP name) {
   if (name == R_NaString) return R_BlankString;
-  return recode_sexp(name);
+  return unescape_sexp(name);
 }
 
-SEXP attribute_hidden recode_sexp(SEXP name) {
+SEXP attribute_hidden unescape_sexp(SEXP name) {
   int ce = Rf_getCharCE(name);
   const char* src = CHAR(name);
   const char* re_enc = Rf_reEnc(src, ce, CE_UTF8, 0);
@@ -78,7 +83,7 @@ SEXP attribute_hidden recode_sexp(SEXP name) {
     memcpy(tmp, re_enc, orig_len + 1);
   }
 
-  int len = unescape_unicode(tmp);
+  int len = unescape_char(tmp);
   return Rf_mkCharLenCE(tmp, len, CE_UTF8);
 }
 
@@ -93,12 +98,12 @@ bool attribute_hidden has_unicode_escape(const char* chr) {
   return false;
 }
 
-int attribute_hidden unescape_unicode(char* chr) {
+int attribute_hidden unescape_char(char* chr) {
   int len = 0;
 
   while (*chr) {
     if (has_codepoint(chr)) {
-      return len + unescape_unicode_found(chr);
+      return len + unescape_char_found(chr);
     }
     else {
       ++chr;
@@ -109,7 +114,7 @@ int attribute_hidden unescape_unicode(char* chr) {
   return len;
 }
 
-int attribute_hidden unescape_unicode_found(char* chr) {
+int attribute_hidden unescape_char_found(char* chr) {
   char* source = chr;
   char* target = chr;
   int len = 0;
