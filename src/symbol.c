@@ -59,8 +59,7 @@ R_xlen_t attribute_hidden unescape_character_in_copy(SEXP tgt, SEXP src, R_xlen_
     SEXP new_elt = unescape_sexp(old_elt);
     if (dry_run) {
       if (old_elt != new_elt) return i;
-    }
-    else {
+    } else {
       SET_STRING_ELT(tgt, i, new_elt);
     }
   }
@@ -77,8 +76,7 @@ SEXP attribute_hidden unescape_sexp(SEXP name) {
     // If the string has been copied, it's safe to use as buffer
     char* tmp = (char*)re_enc;
     return unescape_char_to_sexp(tmp);
-  }
-  else {
+  } else {
     // If not, we're in a UTF-8 locale
     // Need to check first if the string has any UTF-8 escapes
     if (!has_unicode_escape(src)) return name;
@@ -111,8 +109,7 @@ int attribute_hidden unescape_char(char* chr) {
   while (*chr) {
     if (has_codepoint(chr)) {
       return len + unescape_char_found(chr);
-    }
-    else {
+    } else {
       ++chr;
       ++len;
     }
