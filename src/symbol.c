@@ -143,7 +143,7 @@ int attribute_hidden process_byte(char* tgt, char* const src, int* len_processed
     return 1;
   }
 
-  int codepoint = strtol(src + strlen("<U+"), NULL, 16);
+  unsigned int codepoint = strtoul(src + strlen("<U+"), NULL, 16);
   *len_processed = strlen("<U+xxxx>");
 
   // We have 8 bytes space, codepoints occupy less than that:
