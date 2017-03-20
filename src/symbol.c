@@ -6,6 +6,7 @@
 
 #define attribute_hidden
 
+SEXP recode_sexp_and_fix_na(SEXP name);
 SEXP recode_sexp(SEXP name);
 bool has_unicode_escape(const char* chr);
 int unescape_unicode(char* chr);
@@ -24,12 +25,13 @@ SEXP rlang_symbol_to_character(SEXP chr) {
   return Rf_ScalarString(recode_sexp(name));
 }
 
-SEXP rlang_unescape_character(SEXP chr) {
+SEXP rlang_unescape_character_and_fix_na(SEXP chr) {
   R_xlen_t len = Rf_length(chr);
   R_xlen_t i;
+  SEXP new_elt;
   for (i = 0; i < len; ++i) {
     SEXP old_elt = STRING_ELT(chr, i);
-    SEXP new_elt = recode_sexp(old_elt);
+    new_elt = recode_sexp_and_fix_na(old_elt);
     if (old_elt != new_elt) break;
   }
 
@@ -40,13 +42,21 @@ SEXP rlang_unescape_character(SEXP chr) {
   for (int j = 0; j < i; ++j) {
     SET_STRING_ELT(ret, j, STRING_ELT(chr, j));
   }
-  for (; i < len; ++i) {
-    SEXP new_elt = recode_sexp(STRING_ELT(chr, i));
-    SET_STRING_ELT(ret, i, new_elt);
+
+  SET_STRING_ELT(ret, i, new_elt);
+
+  for (++i; i < len; ++i) {
+    SEXP old_elt = STRING_ELT(chr, i);
+    SET_STRING_ELT(ret, i, recode_sexp_and_fix_na(old_elt));
   }
 
   UNPROTECT(1);
   return ret;
+}
+
+SEXP attribute_hidden recode_sexp_and_fix_na(SEXP name) {
+  if (name == R_NaString) return R_BlankString;
+  return recode_sexp(name);
 }
 
 SEXP attribute_hidden recode_sexp(SEXP name) {
