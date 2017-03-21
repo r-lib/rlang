@@ -97,9 +97,6 @@ test_that("dot names are interpolated", {
 
   var <- quote(baz)
   expect_identical(dots_quosures(!!var := foo), list(baz = ~foo))
-
-  def <- !!var := foo
-  expect_identical(dots_quosures(!! def), list(baz = ~foo))
 })
 
 test_that("corner cases are handled when interpolating dot names", {
@@ -157,11 +154,34 @@ test_that("can capture empty list of dots", {
 })
 
 test_that("quosures are spliced before serialisation", {
-  quosures <- dots_quosures(~foo(~bar), .named = TRUE)
+  quosures <- dots_quosures(!! ~foo(~bar), .named = TRUE)
   expect_identical(names(quosures), "foo(bar)")
 })
 
 test_that("dots_quosures() captures missing arguments", {
   q <- new_quosure(missing_arg(), empty_env())
   expect_identical(dots_quosures(, ), set_names(list(q, q), c("", "")))
+})
+
+test_that("formulas are guarded on capture", {
+  expect_identical(
+    quosure(~foo(~bar, ~~baz())),
+    quosure(`_F`(foo(`_F`(bar), `_F`(`_F`(baz())))))
+  )
+})
+
+test_that("formulas are not guarded if unquoted", {
+  expect_identical(
+    quosure(!! ~foo(~bar, ~~baz())),
+    new_quosure(~foo(~bar, ~~baz()))
+  )
+  quo <- quosure(foo(bar))
+  quo <- quosure(baz(!! quo))
+  expect_equal(quo, ~baz(~foo(bar)))
+})
+
+test_that("quosured literals are forwarded as is", {
+  expect_identical(quosure(!! ~NULL), ~NULL)
+  expect_identical(quosure(!! quosure(NULL)), new_quosure(NULL, empty_env()))
+  expect_identical(dots_quosures(!! ~10L), set_names(list(~10L), ""))
 })

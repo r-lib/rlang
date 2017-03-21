@@ -303,7 +303,17 @@ f_self_eval <- function(overscope, overscope_top) {
 }
 f_unguard <- function(...) {
   tilde <- sys.call()
-  tilde[[1]] <- quote(`~`)
+  tilde[[1]] <- sym_tilde
+
+  # Formulas explicitly supplied by the user are guarded but not
+  # unquoted. We evaluate them now to get the right environment.
+  if (is_null(attr(tilde, ".Environment"))) {
+    tilde <- structure(tilde,
+      class = "formula",
+      .Environment = caller_env()
+    )
+  }
+
   tilde
 }
 

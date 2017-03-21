@@ -125,7 +125,7 @@ SEXP splice_nxt(SEXP cur, SEXP nxt, SEXP env) {
 }
 
 SEXP interp_walk(SEXP x, SEXP env)  {
-  if (!Rf_isLanguage(x) || (is_formula(x)))
+  if (!Rf_isLanguage(x))
     return x;
 
   PROTECT_INDEX ipx;
@@ -133,7 +133,6 @@ SEXP interp_walk(SEXP x, SEXP env)  {
 
   x = replace_double_bang(x);
 
-  // Deal with unquoting
   if (is_prefixed_call(x, is_uq_sym)) {
     REPROTECT(x = unquote_prefixed_uq(x, env), ipx);
   } else if (is_any_call(x, is_uq_sym)) {
@@ -141,7 +140,13 @@ SEXP interp_walk(SEXP x, SEXP env)  {
     REPROTECT(x = unquote(CADR(x), env, uq_sym), ipx);
   } else if (is_rlang_prefixed(x, is_uqf_sym)) {
     REPROTECT(x = unquote_prefixed_uqf(x, env), ipx);
+  } else if (is_formula(x)) {
+    // Guard but don't unquote: environment should be recorded in the
+    // formula lazily
+    REPROTECT(x = guard_formula(x), ipx);
+    x = interp_arguments(x, env);
   } else if (is_lang(x, "UQF")) {
+    // Guard and unquote: environment is recorded here
     REPROTECT(x = Rf_eval(x, env), ipx);
     REPROTECT(x = guard_formula(x), ipx);
   } else {
