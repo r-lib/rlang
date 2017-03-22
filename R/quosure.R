@@ -141,7 +141,12 @@ new_quosure <- function(rhs, env = caller_env()) {
 #' @rdname new_quosure
 #' @export
 as_quosure <- function(x, env = caller_env()) {
-  if (is_quosureish(x)) {
+  if (is_quosure(x)) {
+    if (!is_env(f_env(x))) {
+      f_env(x) <- env
+    }
+    x
+  } else if (is_quosureish(x)) {
     env <- f_env(x) %||% env
     new_quosure(f_rhs(x), env)
   } else if (is_frame(x)) {
@@ -153,7 +158,12 @@ as_quosure <- function(x, env = caller_env()) {
 #' @rdname new_quosure
 #' @export
 as_quosureish <- function(x, env = caller_env()) {
-  if (is_quosureish(x)) {
+  if (is_quosure(x)) {
+    if (!is_env(f_env(x))) {
+      f_env(x) <- env
+    }
+    x
+  } else if (is_quosureish(x)) {
     f_env(x) <- f_env(x) %||% env
     x
   } else if (is_frame(x)) {
