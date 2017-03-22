@@ -201,7 +201,7 @@ as_overscope <- function(quo, data = NULL) {
   # Install data pronoun
   bottom$.data <- data_src
 
-  new_overscope(bottom)
+  new_overscope(bottom, enclosure = enclosure)
 }
 
 #' @rdname as_overscope
@@ -217,11 +217,14 @@ as_overscope <- function(quo, data = NULL) {
 #'   overscope have precedence, but the bindings in the dynamic
 #'   environment where the tidy quotes were created in the first place
 #'   are in scope as well.
+#' @param enclosure The default enclosure. After a quosure is done
+#'   self-evaluating, the overscope is rechained to the default
+#'   enclosure.
 #' @return A valid overscope: a child environment of `bottom`
 #'   containing the definitions enabling tidy evaluation
 #'   (self-evaluating quosures, formula-unguarding, ...).
 #' @export
-new_overscope <- function(bottom, top = NULL) {
+new_overscope <- function(bottom, top = NULL, enclosure = base_env()) {
   top <- top %||% bottom
 
   # Create a child because we don't know what might be in bottom_env.
@@ -235,6 +238,7 @@ new_overscope <- function(bottom, top = NULL) {
   overscope$`~` <- f_self_eval(overscope, top)
   overscope$`_F` <- f_unguard
   overscope$.top_env <- top
+  overscope$.env <- enclosure
 
   overscope
 }

@@ -9,7 +9,7 @@
 \usage{
 as_overscope(quo, data = NULL)
 
-new_overscope(bottom, top = NULL)
+new_overscope(bottom, top = NULL, enclosure = base_env())
 
 overscope_eval(overscope, quo, env = base_env())
 
@@ -33,6 +33,10 @@ mechanism that ensures hygienic scoping: the bindings in the
 overscope have precedence, but the bindings in the dynamic
 environment where the tidy quotes were created in the first place
 are in scope as well.}
+
+\item{enclosure}{The default enclosure. After a quosure is done
+self-evaluating, the overscope is rechained to the default
+enclosure.}
 
 \item{overscope}{A valid overscope containing bindings for \code{~},
 \code{.top_env} and \code{_F} and whose parents contain overscoped bindings
