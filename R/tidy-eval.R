@@ -79,7 +79,7 @@ eval_tidy <- function(f, data = NULL) {
   overscope <- as_overscope(f, data)
   on.exit(overscope_clean(overscope))
 
-  overscope_eval(overscope, f)
+  overscope_eval_next(overscope, f)
 }
 
 #' Tidy evaluation in a custom environment.
@@ -95,7 +95,7 @@ eval_tidy <- function(f, data = NULL) {
 #' bottom environment of your dynamic scope. This pronoun provides a
 #' shortcut to the original lexical enclosure (typically, the dynamic
 #' environment of a captured argument, see [catch_quosure()]). It also
-#' cleans up the overscope after evaluation. See [overscope_eval()]
+#' cleans up the overscope after evaluation. See [overscope_eval_next()]
 #' for evaluating several quosures in the same overscope.
 #'
 #' @inheritParams eval_tidy
@@ -111,7 +111,7 @@ eval_tidy_ <- function(f, bottom, top = NULL) {
   on.exit(overscope_clean(overscope))
 
   f <- as_quosure(f, caller_env())
-  overscope_eval(overscope, f)
+  overscope_eval_next(overscope, f)
 }
 
 
@@ -176,12 +176,12 @@ eval_tidy_ <- function(f, bottom, top = NULL) {
 #' expr <- quote(list(.data$cyl, ~letters))
 #' f <- as_quosure(expr)
 #' overscope <- as_overscope(f, data = mtcars)
-#' overscope_eval(overscope, f)
+#' overscope_eval_next(overscope, f)
 #'
 #' # However you need to cleanup the environment after evaluation.
 #' # Otherwise the leftover definitions for self-evaluation of
 #' # formulas might cause unexpected results:
-#' fn <- overscope_eval(overscope, ~function() ~letters)
+#' fn <- overscope_eval_next(overscope, ~function() ~letters)
 #' fn()
 #'
 #' overscope_clean(overscope)
@@ -201,7 +201,7 @@ as_overscope <- function(quo, data = NULL) {
   # Install data pronoun
   bottom$.data <- data_src
 
-  new_overscope(bottom)
+  new_overscope(bottom, enclosure = enclosure)
 }
 
 #' @rdname as_overscope
@@ -217,11 +217,14 @@ as_overscope <- function(quo, data = NULL) {
 #'   overscope have precedence, but the bindings in the dynamic
 #'   environment where the tidy quotes were created in the first place
 #'   are in scope as well.
+#' @param enclosure The default enclosure. After a quosure is done
+#'   self-evaluating, the overscope is rechained to the default
+#'   enclosure.
 #' @return A valid overscope: a child environment of `bottom`
 #'   containing the definitions enabling tidy evaluation
 #'   (self-evaluating quosures, formula-unguarding, ...).
 #' @export
-new_overscope <- function(bottom, top = NULL) {
+new_overscope <- function(bottom, top = NULL, enclosure = base_env()) {
   top <- top %||% bottom
 
   # Create a child because we don't know what might be in bottom_env.
@@ -235,6 +238,7 @@ new_overscope <- function(bottom, top = NULL) {
   overscope$`~` <- f_self_eval(overscope, top)
   overscope$`_F` <- f_unguard
   overscope$.top_env <- top
+  overscope$.env <- enclosure
 
   overscope
 }
@@ -246,7 +250,7 @@ new_overscope <- function(bottom, top = NULL) {
 #'   scoped quosure. This is the [base environment][base_env] by
 #'   default.
 #' @export
-overscope_eval <- function(overscope, quo, env = base_env()) {
+overscope_eval_next <- function(overscope, quo, env = base_env()) {
   quo <- as_quosureish(quo, env)
   lexical_env <- f_env(quo)
 
@@ -272,6 +276,7 @@ overscope_clean <- function(overscope) {
   overscope
 }
 
+#' @useDynLib rlang rlang_set_parent
 f_self_eval <- function(overscope, overscope_top) {
   function(...) {
     f <- sys.call()
@@ -292,10 +297,13 @@ f_self_eval <- function(overscope, overscope_top) {
     }
 
     if (!fixup) {
-      # Swap enclosures temporarily by rechaining the top of the dynamic
-      # scope to the enclosure of the new formula, if it has one.
-      env_parent(overscope_top) <- f_env(f) %||% overscope$.env
-      on.exit(env_parent(overscope_top) <- overscope$.env)
+      # Swap enclosures temporarily by rechaining the top of the
+      # dynamic scope to the enclosure of the new formula, if it has
+      # one. We do it at C level to avoid GC adjustments when changing
+      # the parent. This should be safe since we reset everything
+      # afterwards.
+      .Call(rlang_set_parent, overscope_top, f_env(f) %||% overscope$.env)
+      on.exit(.Call(rlang_set_parent, overscope_top, overscope$.env))
     }
 
     .Call(rlang_eval, f_rhs(f), overscope)

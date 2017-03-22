@@ -3,15 +3,15 @@
 \name{as_overscope}
 \alias{as_overscope}
 \alias{new_overscope}
-\alias{overscope_eval}
+\alias{overscope_eval_next}
 \alias{overscope_clean}
 \title{Create a dynamic scope for tidy evaluation.}
 \usage{
 as_overscope(quo, data = NULL)
 
-new_overscope(bottom, top = NULL)
+new_overscope(bottom, top = NULL, enclosure = base_env())
 
-overscope_eval(overscope, quo, env = base_env())
+overscope_eval_next(overscope, quo, env = base_env())
 
 overscope_clean(overscope)
 }
@@ -33,6 +33,10 @@ mechanism that ensures hygienic scoping: the bindings in the
 overscope have precedence, but the bindings in the dynamic
 environment where the tidy quotes were created in the first place
 are in scope as well.}
+
+\item{enclosure}{The default enclosure. After a quosure is done
+self-evaluating, the overscope is rechained to the default
+enclosure.}
 
 \item{overscope}{A valid overscope containing bindings for \code{~},
 \code{.top_env} and \code{_F} and whose parents contain overscoped bindings
@@ -104,12 +108,12 @@ examples). Note that this function is automatically called by
 expr <- quote(list(.data$cyl, ~letters))
 f <- as_quosure(expr)
 overscope <- as_overscope(f, data = mtcars)
-overscope_eval(overscope, f)
+overscope_eval_next(overscope, f)
 
 # However you need to cleanup the environment after evaluation.
 # Otherwise the leftover definitions for self-evaluation of
 # formulas might cause unexpected results:
-fn <- overscope_eval(overscope, ~function() ~letters)
+fn <- overscope_eval_next(overscope, ~function() ~letters)
 fn()
 
 overscope_clean(overscope)
