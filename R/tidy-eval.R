@@ -79,7 +79,7 @@ eval_tidy <- function(f, data = NULL) {
   overscope <- as_overscope(f, data)
   on.exit(overscope_clean(overscope))
 
-  overscope_eval(overscope, f)
+  overscope_eval_next(overscope, f)
 }
 
 #' Tidy evaluation in a custom environment.
@@ -95,7 +95,7 @@ eval_tidy <- function(f, data = NULL) {
 #' bottom environment of your dynamic scope. This pronoun provides a
 #' shortcut to the original lexical enclosure (typically, the dynamic
 #' environment of a captured argument, see [catch_quosure()]). It also
-#' cleans up the overscope after evaluation. See [overscope_eval()]
+#' cleans up the overscope after evaluation. See [overscope_eval_next()]
 #' for evaluating several quosures in the same overscope.
 #'
 #' @inheritParams eval_tidy
@@ -111,7 +111,7 @@ eval_tidy_ <- function(f, bottom, top = NULL) {
   on.exit(overscope_clean(overscope))
 
   f <- as_quosure(f, caller_env())
-  overscope_eval(overscope, f)
+  overscope_eval_next(overscope, f)
 }
 
 
@@ -176,12 +176,12 @@ eval_tidy_ <- function(f, bottom, top = NULL) {
 #' expr <- quote(list(.data$cyl, ~letters))
 #' f <- as_quosure(expr)
 #' overscope <- as_overscope(f, data = mtcars)
-#' overscope_eval(overscope, f)
+#' overscope_eval_next(overscope, f)
 #'
 #' # However you need to cleanup the environment after evaluation.
 #' # Otherwise the leftover definitions for self-evaluation of
 #' # formulas might cause unexpected results:
-#' fn <- overscope_eval(overscope, ~function() ~letters)
+#' fn <- overscope_eval_next(overscope, ~function() ~letters)
 #' fn()
 #'
 #' overscope_clean(overscope)
@@ -250,7 +250,7 @@ new_overscope <- function(bottom, top = NULL, enclosure = base_env()) {
 #'   scoped quosure. This is the [base environment][base_env] by
 #'   default.
 #' @export
-overscope_eval <- function(overscope, quo, env = base_env()) {
+overscope_eval_next <- function(overscope, quo, env = base_env()) {
   quo <- as_quosureish(quo, env)
   lexical_env <- f_env(quo)
 

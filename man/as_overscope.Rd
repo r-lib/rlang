@@ -3,7 +3,7 @@
 \name{as_overscope}
 \alias{as_overscope}
 \alias{new_overscope}
-\alias{overscope_eval}
+\alias{overscope_eval_next}
 \alias{overscope_clean}
 \title{Create a dynamic scope for tidy evaluation.}
 \usage{
@@ -11,7 +11,7 @@ as_overscope(quo, data = NULL)
 
 new_overscope(bottom, top = NULL, enclosure = base_env())
 
-overscope_eval(overscope, quo, env = base_env())
+overscope_eval_next(overscope, quo, env = base_env())
 
 overscope_clean(overscope)
 }
@@ -108,12 +108,12 @@ examples). Note that this function is automatically called by
 expr <- quote(list(.data$cyl, ~letters))
 f <- as_quosure(expr)
 overscope <- as_overscope(f, data = mtcars)
-overscope_eval(overscope, f)
+overscope_eval_next(overscope, f)
 
 # However you need to cleanup the environment after evaluation.
 # Otherwise the leftover definitions for self-evaluation of
 # formulas might cause unexpected results:
-fn <- overscope_eval(overscope, ~function() ~letters)
+fn <- overscope_eval_next(overscope, ~function() ~letters)
 fn()
 
 overscope_clean(overscope)
