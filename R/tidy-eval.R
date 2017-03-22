@@ -276,6 +276,7 @@ overscope_clean <- function(overscope) {
   overscope
 }
 
+#' @useDynLib rlang rlang_set_parent
 f_self_eval <- function(overscope, overscope_top) {
   function(...) {
     f <- sys.call()
@@ -296,10 +297,13 @@ f_self_eval <- function(overscope, overscope_top) {
     }
 
     if (!fixup) {
-      # Swap enclosures temporarily by rechaining the top of the dynamic
-      # scope to the enclosure of the new formula, if it has one.
-      env_parent(overscope_top) <- f_env(f) %||% overscope$.env
-      on.exit(env_parent(overscope_top) <- overscope$.env)
+      # Swap enclosures temporarily by rechaining the top of the
+      # dynamic scope to the enclosure of the new formula, if it has
+      # one. We do it at C level to avoid GC adjustments when changing
+      # the parent. This should be safe since we reset everything
+      # afterwards.
+      .Call(rlang_set_parent, overscope_top, f_env(f) %||% overscope$.env)
+      on.exit(.Call(rlang_set_parent, overscope_top, overscope$.env))
     }
 
     .Call(rlang_eval, f_rhs(f), overscope)
