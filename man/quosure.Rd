@@ -44,7 +44,7 @@ defined) by \code{\link[=eval_tidy]{eval_tidy()}}.
 }
 \details{
 Like all capturing functions in the tidy evaluation framework,
-\code{quosure()} interpolates on capture (see \code{\link[=catch_quosure]{catch_quosure()}}) and
+\code{quosure()} interpolates on capture (see \code{\link[=enquo]{enquo()}}) and
 \code{vignette("tidy-eval")}. Alternatively, \code{expr_interp()} allows you
 to interpolate manually when you have constructed a raw expression
 or formula by yourself. When an expression is interpolated, all
@@ -109,7 +109,7 @@ and \href{https://docs.racket-lang.org/reference/quasiquote.html}{Racket}.
 \examples{
 # When a tidyeval function captures an argument, it is wrapped in a
 # formula and interpolated. quosure() is a simple wrapper around
-# catch_quosure() and as such is the fundamental tidyeval
+# enquo() and as such is the fundamental tidyeval
 # function. It allows you to quote an expression and interpolate
 # unquoted parts:
 quosure(foo(bar))

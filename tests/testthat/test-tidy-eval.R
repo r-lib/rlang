@@ -97,7 +97,7 @@ test_that("quosures are not evaluated if not forced", {
 
 test_that("can unquote captured arguments", {
   var <- ~cyl
-  fn <- function(arg) eval_tidy(catch_quosure(arg), mtcars)
+  fn <- function(arg) eval_tidy(enquo(arg), mtcars)
   expect_identical(fn(var), ~cyl)
   expect_identical(fn(!!var), mtcars$cyl)
 })
@@ -114,7 +114,7 @@ test_that("quosures have lazy semantics", {
 })
 
 test_that("can unquote hygienically within captured arg", {
-  fn <- function(df, arg) eval_tidy(catch_quosure(arg), df)
+  fn <- function(df, arg) eval_tidy(enquo(arg), df)
 
   foo <- "bar"; var <- ~foo
   expect_identical(fn(mtcars, list(var, !!var)), list(~foo, "bar"))

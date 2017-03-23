@@ -77,7 +77,7 @@
 #' with_handlers(fn2(), foo = inplace(exiting_handler), foo = inplace(other_handler))
 with_handlers <- function(.expr, ..., .handlers = list()) {
   handlers <- c(list(...), .handlers)
-  with_handlers_(catch_quosure(.expr), handlers)
+  with_handlers_(enquo(.expr), handlers)
 }
 #' @rdname with_handlers
 #' @export

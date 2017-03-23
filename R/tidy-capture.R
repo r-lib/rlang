@@ -10,7 +10,7 @@
 #' at the call site are available when the expression gets
 #' evaluated. It is thus necessary to capture not only the R
 #' expression supplied as argument in a function call, but also the
-#' evaluation environment of the call site. `catch_quosure()` and
+#' evaluation environment of the call site. `enquo()` and
 #' `dots_quos()` make it easy to record this information within
 #' formulas.
 #'
@@ -33,7 +33,7 @@
 #'   calls (see below). See `vignette("nse")` for more information on
 #'   NSE.
 #'
-#'   In addition, note that `catch_quosure()` always interpolates its
+#'   In addition, note that `enquo()` always interpolates its
 #'   input to facilitate programming with NSE functions. See
 #'   [expr_interp()] and [quosure()].
 #'
@@ -66,19 +66,19 @@
 #'
 #' @param x,... Arguments to capture.
 #' @export
-#' @return `catch_quosure()` returns a formula; see also
+#' @return `enquo()` returns a formula; see also
 #'   `dots_quos()` for "capturing" dots as a list of formulas.
 #' @seealso [dots_quos()] for capturing dots, [expr_label()] and
 #'   [expr_text()] for capturing labelling information.
 #' @examples
-#' # catch_quosure() returns a formula:
-#' fn <- function(foo) catch_quosure(foo)
+#' # enquo() returns a formula:
+#' fn <- function(foo) enquo(foo)
 #' fn(a + b)
 #'
 #' # Capturing an argument only works for the most direct call:
 #' g <- function(bar) fn(bar)
 #' g(a + b)
-catch_quosure <- function(x) {
+enquo <- function(x) {
   capture <- new_language(captureArg, substitute(x))
   arg <- eval_bare(capture, caller_env())
   expr <- .Call(rlang_interp, arg$expr, arg$env)

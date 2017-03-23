@@ -154,10 +154,10 @@ test_that("magrittr works", {
 })
 
 
-# catch_quosure -------------------------------------------------------
+# enquo -------------------------------------------------------
 
 test_that("explicit promise makes a formula", {
-  capture <- function(x) catch_quosure(x)
+  capture <- function(x) enquo(x)
   f1 <- capture(1 + 2 + 3)
   f2 <- ~ 1 + 2 + 3
 
@@ -166,7 +166,7 @@ test_that("explicit promise makes a formula", {
 
 test_that("explicit promise works only one level deep", {
   f <- function(x) list(env = get_env(), f = g(x))
-  g <- function(y) catch_quosure(y)
+  g <- function(y) enquo(y)
   out <- f(1 + 2 + 3)
   expected_f <- with_env(out$env, as_quosure(~x))
 
