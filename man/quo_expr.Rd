@@ -4,6 +4,7 @@
 \alias{quo_expr}
 \alias{quo_label}
 \alias{quo_text}
+\alias{quo_name}
 \title{Splice a quosure and format it into string or label.}
 \usage{
 quo_expr(quo)
@@ -11,6 +12,8 @@ quo_expr(quo)
 quo_label(quo)
 
 quo_text(quo, width = 60L, nlines = Inf)
+
+quo_name(quo)
 }
 \arguments{
 \item{quo}{A quosure or expression.}

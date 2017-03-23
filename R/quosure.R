@@ -217,6 +217,7 @@ quo_label <- function(quo) {
 quo_text <- function(quo, width = 60L, nlines = Inf) {
   expr_text(quo_expr(quo), width = width, nlines = nlines)
 }
+#' @rdname quo_expr
 #' @export
 quo_name <- function(quo) {
   if (!is_symbol(quo)) {
