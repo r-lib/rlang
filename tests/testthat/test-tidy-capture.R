@@ -15,8 +15,8 @@ test_that("dots_quos() produces correct formulas", {
   }
   out <- fn(z = a + b)
 
-  expect_identical(out$dots$x, env_set(quo(x), out$env))
-  expect_identical(out$dots$y, env_set(quo(a + b), out$env))
+  expect_identical(out$dots$x, set_env(quo(x), out$env))
+  expect_identical(out$dots$y, set_env(quo(a + b), out$env))
   expect_identical(out$dots$z, quo(a + b))
 })
 
@@ -78,9 +78,9 @@ test_that("dots can be spliced in", {
   out <- fn(foo(bar))
   expected <- list(
     quo(foo(bar)),
-    env_set(quo(bar(baz)), out$env),
-    a = env_set(quo("var"), out$env),
-    b = env_set(quo(foo), out$env)
+    set_env(quo(bar(baz)), out$env),
+    a = set_env(quo("var"), out$env),
+    b = set_env(quo(foo), out$env)
   )
   expect_identical(out$out, expected)
 })

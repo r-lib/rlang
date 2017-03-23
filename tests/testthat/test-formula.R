@@ -101,7 +101,7 @@ test_that("can modify environment", {
 test_that("f_unwrap() substitutes values", {
   n <- 100
   f1 <- f_unwrap(~ x + n)
-  f2 <- env_set(~x + 100, env_parent(get_env()))
+  f2 <- set_env(~x + 100, env_parent(get_env()))
 
   expect_identical(f1, f2)
 })
