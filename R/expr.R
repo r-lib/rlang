@@ -240,11 +240,7 @@ expr_label <- function(expr) {
   } else if (is.name(expr)) {
     paste0("`", as.character(expr), "`")
   } else {
-    chr <- deparse(expr)
-    if (length(chr) > 1) {
-      dot_call <- new_language(expr[[1]], quote(...))
-      chr <- paste(deparse(dot_call), collapse = "\n")
-    }
+    chr <- deparse_one(expr)
     paste0("`", chr, "`")
   }
 }
@@ -255,7 +251,7 @@ expr_name <- function(expr) {
     symbol = as_name(expr),
     quosure = ,
     language = {
-      expr_text <- deparse(expr)
+      expr_text <- deparse_one(expr)
       paste0("(", expr_text, ")")
     },
     logical = ,
@@ -288,6 +284,14 @@ expr_text <- function(expr, width = 60L, nlines = Inf) {
   }
 
   paste0(str, collapse = "\n")
+}
+deparse_one <- function(expr) {
+  chr <- deparse(expr)
+  if (length(chr) > 1) {
+    dot_call <- new_language(expr[[1]], quote(...))
+    chr <- paste(deparse(dot_call), collapse = "\n")
+  }
+  chr
 }
 
 #' Set and get an expression.
