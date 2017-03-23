@@ -63,6 +63,11 @@ test_that("unquoting is frame-consistent", {
   expect_identical(fn_env(expr_interp(defun, env)), env)
 })
 
+test_that("unquoted quosure has S3 class", {
+  quo <- quosure(!! ~quo)
+  expect_is(f_rhs(quo), "quosure")
+})
+
 
 # UQ ----------------------------------------------------------------------
 

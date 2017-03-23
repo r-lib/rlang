@@ -136,7 +136,8 @@ is_one_sided <- function(x, lang_sym = sym_tilde) {
 #' as_quosureish(a := b)
 #' as_quosureish(10L)
 new_quosure <- function(rhs, env = caller_env()) {
-  new_formula(NULL, rhs, env)
+  quo <- new_formula(NULL, rhs, env)
+  struct(quo, class = c("quosure", "formula"))
 }
 #' @rdname new_quosure
 #' @export
@@ -145,9 +146,11 @@ as_quosure <- function(x, env = caller_env()) {
     if (!is_env(f_env(x))) {
       f_env(x) <- env
     }
-    x
+    struct(x, class = c("quosure", "formula"))
   } else if (is_quosureish(x)) {
-    env <- f_env(x) %||% env
+    if (!is_env(f_env(x))) {
+      f_env(x) <- env
+    }
     new_quosure(f_rhs(x), env)
   } else if (is_frame(x)) {
     new_quosure(x$expr, sys_frame(x$caller_pos))
@@ -155,6 +158,12 @@ as_quosure <- function(x, env = caller_env()) {
     new_quosure(x, env)
   }
 }
+#' @export
+print.quosure <- function(x, ...) {
+  x <- struct(x, class = "formula")
+  NextMethod()
+}
+
 #' @rdname new_quosure
 #' @export
 as_quosureish <- function(x, env = caller_env()) {
@@ -164,7 +173,9 @@ as_quosureish <- function(x, env = caller_env()) {
     }
     x
   } else if (is_quosureish(x)) {
-    f_env(x) <- f_env(x) %||% env
+    if (!is_env(f_env(x))) {
+      f_env(x) <- env
+    }
     x
   } else if (is_frame(x)) {
     new_quosure(x$expr, sys_frame(x$caller_pos))

@@ -16,4 +16,3 @@ test_that("splicing does not affect original quosure", {
   quo_text(f)
   expect_identical(f, ~foo(~bar))
 })
-

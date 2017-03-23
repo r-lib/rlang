@@ -80,6 +80,16 @@ SEXP unquote(SEXP x, SEXP env, SEXP uq_sym) {
   SEXP uq_call = PROTECT(Rf_lang2(uq_fun, x));
   SEXP res = Rf_eval(uq_call, env);
 
+  if (is_formula(res)) {
+    static SEXP quo_classes = NULL;
+    if (!quo_classes) {
+      quo_classes = Rf_allocVector(STRSXP, 2);
+      SET_STRING_ELT(quo_classes, 0, Rf_mkChar("quosure"));
+      SET_STRING_ELT(quo_classes, 1, Rf_mkChar("formula"));
+    }
+    Rf_setAttrib(res, R_ClassSymbol, quo_classes);
+  }
+
   UNPROTECT(1);
   return res;
 }
