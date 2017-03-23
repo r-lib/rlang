@@ -190,6 +190,10 @@ as_quosureish <- function(x, env = caller_env()) {
 #' turns `~foo(~bar(), ~baz)` to `foo(bar(), baz)`. `quo_text()` and
 #' `quo_label()` are equivalent to [f_text()], [expr_label()], etc,
 #' but they first splice their argument using `quo_expr()`.
+#' `quo_name()` transforms a quoted symbol to a string. It adds a bit
+#' more intent and type checking than simply calling `quo_text()` on
+#' the quoted symbol (which will work but won't return an error if not
+#' a symbol).
 #'
 #' @inheritParams expr_label
 #' @param quo A quosure or expression.
@@ -198,6 +202,8 @@ as_quosureish <- function(x, env = caller_env()) {
 #' @examples
 #' quo_expr(~foo(~bar))
 #' quo_text(~foo(~bar))
+#'
+#' quo_name(~sym)
 quo_expr <- function(quo) {
   quo_splice(duplicate(quo))
 }
@@ -210,6 +216,13 @@ quo_label <- function(quo) {
 #' @export
 quo_text <- function(quo, width = 60L, nlines = Inf) {
   expr_text(quo_expr(quo), width = width, nlines = nlines)
+}
+#' @export
+quo_name <- function(quo) {
+  if (!is_symbol(quo)) {
+    abort("`quo` must quote a symbol")
+  }
+  as_name(quo)
 }
 
 quo_splice <- function(x, parent = NULL) {
