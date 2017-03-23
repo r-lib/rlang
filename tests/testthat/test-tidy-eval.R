@@ -117,12 +117,12 @@ test_that("can unquote hygienically within captured arg", {
   fn <- function(df, arg) eval_tidy(enquo(arg), df)
 
   foo <- "bar"; var <- ~foo
-  expect_identical(fn(mtcars, list(var, !!var)), list(quo(foo), "bar"))
+  expect_identical(fn(mtcars, list(var, !!var)), list(~foo, "bar"))
 
   var <- ~cyl
   expect_identical(fn(mtcars, (!!var) > 4), mtcars$cyl > 4)
-  expect_identical(fn(mtcars, list(var, !!var)), list(quo(cyl), mtcars$cyl))
-  expect_equal(fn(mtcars, list(~var, !!var)), list(quo(var), mtcars$cyl))
+  expect_identical(fn(mtcars, list(var, !!var)), list(~cyl, mtcars$cyl))
+  expect_equal(fn(mtcars, list(~var, !!var)), list(~var, mtcars$cyl))
   expect_equal(fn(mtcars, list(~~var, !!~var, !!~~var)), list(new_quosure(new_language("_F", quote(var))), ~cyl, ~cyl))
 })
 

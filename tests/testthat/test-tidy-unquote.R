@@ -87,7 +87,7 @@ test_that("layers of unquote are not peeled off recursively upon interpolation",
 
   var1 <- local(~letters)
   var2 <- local(~!!var1)
-  expect_identical(expr_interp(~!!var2), new_quosure(var2))
+  expect_identical(expr_interp(~!!var2), new_quosure(as_quosure(var2)))
 })
 
 test_that("formulas are promised recursively during unquote", {
@@ -155,7 +155,7 @@ test_that("single ! is not treated as shortcut", {
 
 test_that("double and triple ! are treated as syntactic shortcuts", {
   var <- local(~foo)
-  expect_identical(quo(!! var), new_quosure(var))
+  expect_identical(quo(!! var), new_quosure(as_quosure(var)))
   expect_identical(quo(!! ~foo), new_quosure(quo(foo)))
   expect_identical(quo(list(!!! letters[1:3])), quo(list("a", "b", "c")))
 })
@@ -175,7 +175,7 @@ test_that("fpromises are created for all informative formulas", {
   bar <- local(~bar)
 
   interpolated <- local(quo(list(!!foo, !!bar)))
-  expected <- new_quosure(bquote(list(.(f_rhs(new_quosure(foo))), .(f_rhs(new_quosure(bar))))), env = get_env(interpolated))
+  expected <- new_quosure(new_language("list", as_quosure(foo), as_quosure(bar)), env = get_env(interpolated))
   expect_identical(interpolated, expected)
 
   interpolated <- quo(!!interpolated)
