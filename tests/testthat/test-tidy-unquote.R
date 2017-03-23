@@ -68,6 +68,11 @@ test_that("unquoted quosure has S3 class", {
   expect_is(f_rhs(quo), "quosure")
 })
 
+test_that("unquoted quosures are not guarded", {
+  quo <- eval_tidy(quosure(quosure(!! ~quo)))
+  expect_true(is_quosure(f_rhs(quo)))
+})
+
 
 # UQ ----------------------------------------------------------------------
 

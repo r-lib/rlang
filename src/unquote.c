@@ -150,7 +150,7 @@ SEXP interp_walk(SEXP x, SEXP env)  {
     REPROTECT(x = unquote(CADR(x), env, uq_sym), ipx);
   } else if (is_rlang_prefixed(x, is_uqf_sym)) {
     REPROTECT(x = unquote_prefixed_uqf(x, env), ipx);
-  } else if (is_formula(x)) {
+  } else if (is_formula(x) && !Rf_inherits(x, "quosure")) {
     // Guard but don't unquote: environment should be recorded in the
     // formula lazily
     REPROTECT(x = guard_formula(x), ipx);
