@@ -1,7 +1,7 @@
 #' Process unquote operators in a captured expression.
 #'
 #' While all capturing functions in the tidy evaluation framework
-#' perform unquote on capture (most notably [quosure()]),
+#' perform unquote on capture (most notably [quo()]),
 #' `expr_interp()` manually processes unquoting operators in
 #' expressions that are already captured. `expr_interp()` should be
 #' called in all user-facing functions expecting a formula as argument
@@ -13,8 +13,8 @@
 #'   formula or a function, or the current environment otherwise.
 #' @export
 #' @examples
-#' # All tidy NSE functions like quosure() unquote on capture:
-#' quosure(list(!! 1 + 2))
+#' # All tidy NSE functions like quo() unquote on capture:
+#' quo(list(!! 1 + 2))
 #'
 #' # expr_interp() is meant to provide the same functionality when you
 #' # have a formula or expression that might contain unquoting

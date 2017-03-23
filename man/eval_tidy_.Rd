@@ -9,7 +9,7 @@ eval_tidy_(f, bottom, top = NULL)
 \arguments{
 \item{f}{A formula. Any expressions wrapped in \code{UQ()} will will be
 "unquoted", i.e. they will be evaluated, and the results inserted
-back into the formula. See \code{\link[=quosure]{quosure()}} for more details. If a
+back into the formula. See \code{\link[=quo]{quo()}} for more details. If a
 list of formulas, \code{eval_tidy()} is applied to each of them in
 turn and the list of results is returned.}
 

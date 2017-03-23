@@ -9,7 +9,7 @@ warn_underscored <- function() {
   warn(paste(
     "The underscored versions are deprecated in favour of",
     "tidy evaluation idioms. Please see the documentation",
-    "for `quosure()` in rlang"
+    "for `quo()` in rlang"
   ))
 }
 warn_text_se <- function() {

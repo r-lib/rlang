@@ -162,8 +162,8 @@ fml_default <- function(expr, fn) {
 #' @export
 #' @examples
 #' # The missing argument can be useful to generate calls
-#' quosure(f(x = !! missing_arg()))
-#' quosure(f(x = !! NULL))
+#' quo(f(x = !! missing_arg()))
+#' quo(f(x = !! NULL))
 #'
 #'
 #' # It is perfectly valid to generate and assign the missing

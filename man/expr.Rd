@@ -13,13 +13,13 @@ expr(expr)
 The raw expression supplied as argument.
 }
 \description{
-Unlike \code{\link[=quosure]{quosure()}}, \code{expr()} returns a raw expression
-instead of a formula. As a result, \code{expr()} is untidy in
-the sense that it does not preserve scope information for the
-quoted expression. It can still be useful in certain cases.
-Compared to base R's \code{\link[base:quote]{base::quote()}}, it unquotes the expression on
-capture, and compared to \code{\link[=quosure]{quosure()}}, the quoted expression is
-directly compatible with the base R \code{\link[base:eval]{base::eval()}} function.
+Unlike \code{\link[=quo]{quo()}}, \code{expr()} returns a raw expression instead of a
+formula. As a result, \code{expr()} is untidy in the sense that it does
+not preserve scope information for the quoted expression. It can
+still be useful in certain cases.  Compared to base R's
+\code{\link[base:quote]{base::quote()}}, it unquotes the expression on capture, and
+compared to \code{\link[=quo]{quo()}}, the quoted expression is directly compatible
+with the base R \code{\link[base:eval]{base::eval()}} function.
 }
 \examples{
 # The advantage of expr() over quote() is that it unquotes on
@@ -32,7 +32,7 @@ expr(list(1, !! 3 + 10))
 (expr <- expr(inner(!! expr, arg1)))
 (expr <- expr(outer(!! expr, !!! lapply(letters[1:3], as.symbol))))
 
-# Unlike quosure(), expr() produces expressions that can
+# Unlike quo(), expr() produces expressions that can
 # be evaluated with base::eval():
 e <- quote(letters)
 e <- expr(toupper(!!e))
@@ -50,6 +50,6 @@ e <- expr(toupper(!! f))
 eval_tidy(e)
 }
 \seealso{
-See \code{\link[=quosure]{quosure()}} and \code{\link[=expr_interp]{expr_interp()}} for more
+See \code{\link[=quo]{quo()}} and \code{\link[=expr_interp]{expr_interp()}} for more
 explanation on tidy quotation.
 }

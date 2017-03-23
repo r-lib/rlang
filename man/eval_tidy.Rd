@@ -19,7 +19,7 @@ data_source(x, lookup_msg = NULL)
 \arguments{
 \item{f}{A formula. Any expressions wrapped in \code{UQ()} will will be
 "unquoted", i.e. they will be evaluated, and the results inserted
-back into the formula. See \code{\link[=quosure]{quosure()}} for more details. If a
+back into the formula. See \code{\link[=quo]{quo()}} for more details. If a
 list of formulas, \code{eval_tidy()} is applied to each of them in
 turn and the list of results is returned.}
 
@@ -79,5 +79,5 @@ eval_tidy(~ mean(cyl), mtcars)
 # The easiest way is "unquote" with !!
 # See ?quosure for more details
 var <- ~ cyl
-eval_tidy(quosure(mean( !!var )), mtcars)
+eval_tidy(quo(mean( !!var )), mtcars)
 }

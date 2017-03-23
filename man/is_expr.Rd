@@ -20,7 +20,7 @@ is_symbolic(x)
 }
 \arguments{
 \item{x}{An object to test. When you supply a tidy quote (see
-\code{\link[=quosure]{quosure()}}) to any of the expression predicates, they will
+\code{\link[=quo]{quo()}}) to any of the expression predicates, they will
 perform their test on the RHS of the formula.}
 }
 \description{

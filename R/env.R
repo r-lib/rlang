@@ -26,7 +26,7 @@
 #' returns the one which has [empty_env()] as parent.
 #'
 #' @param env An environment or an object bundling an environment:
-#'   either a [quosure][quosure] or a [closure][is_closure]. If
+#'   either a [quosure] or a [closure][is_closure]. If
 #'   missing, the environment of the current evaluation frame is
 #'   returned.
 #' @param parent A parent environment. Can be an object with a S3

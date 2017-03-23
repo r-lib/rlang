@@ -35,7 +35,7 @@
 #'
 #'   In addition, note that `enquo()` always interpolates its
 #'   input to facilitate programming with NSE functions. See
-#'   [expr_interp()] and [quosure()].
+#'   [expr_interp()] and [quo()].
 #'
 #' @section Forwarding arguments:
 #'

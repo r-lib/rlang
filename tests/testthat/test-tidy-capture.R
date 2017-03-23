@@ -15,9 +15,9 @@ test_that("dots_quos() produces correct formulas", {
   }
   out <- fn(z = a + b)
 
-  expect_identical(out$dots$x, env_set(quosure(x), out$env))
-  expect_identical(out$dots$y, env_set(quosure(a + b), out$env))
-  expect_identical(out$dots$z, quosure(a + b))
+  expect_identical(out$dots$x, env_set(quo(x), out$env))
+  expect_identical(out$dots$y, env_set(quo(a + b), out$env))
+  expect_identical(out$dots$z, quo(a + b))
 })
 
 test_that("dots are interpolated", {
@@ -53,7 +53,7 @@ test_that("dots capture is stack-consistent", {
   h <- function(dots, ...) {
     dots
   }
-  expect_identical(fn(foo(baz)), named(list(quosure(foo(baz)))))
+  expect_identical(fn(foo(baz)), named(list(quo(foo(baz)))))
 })
 
 test_that("splice is consistently recognised", {
@@ -77,26 +77,26 @@ test_that("dots can be spliced in", {
 
   out <- fn(foo(bar))
   expected <- list(
-    quosure(foo(bar)),
-    env_set(quosure(bar(baz)), out$env),
-    a = env_set(quosure("var"), out$env),
-    b = env_set(quosure(foo), out$env)
+    quo(foo(bar)),
+    env_set(quo(bar(baz)), out$env),
+    a = env_set(quo("var"), out$env),
+    b = env_set(quo(foo), out$env)
   )
   expect_identical(out$out, expected)
 })
 
 test_that("spliced dots are wrapped in formulas", {
   args <- alist(x = var, y = ~var)
-  expect_identical(dots_quos(!!! args), list(x = quosure(var), y = quosure(var)))
+  expect_identical(dots_quos(!!! args), list(x = quo(var), y = quo(var)))
 })
 
 test_that("dot names are interpolated", {
   var <- "baz"
-  expect_identical(dots_quos(!!var := foo, !!toupper(var) := bar), list(baz = quosure(foo), BAZ = quosure(bar)))
-  expect_identical(dots_quos(!!var := foo, bar), list(baz = quosure(foo), quosure(bar)))
+  expect_identical(dots_quos(!!var := foo, !!toupper(var) := bar), list(baz = quo(foo), BAZ = quo(bar)))
+  expect_identical(dots_quos(!!var := foo, bar), list(baz = quo(foo), quo(bar)))
 
   var <- quote(baz)
-  expect_identical(dots_quos(!!var := foo), list(baz = quosure(foo)))
+  expect_identical(dots_quos(!!var := foo), list(baz = quo(foo)))
 })
 
 test_that("corner cases are handled when interpolating dot names", {
@@ -112,7 +112,7 @@ test_that("definitions are interpolated", {
   var2 <- "bar"
   dots <- dots_definitions(def = foo(!!var1) := bar(!!var2))
 
-  pat <- list(lhs = quosure(foo("foo")), rhs = quosure(bar("bar")))
+  pat <- list(lhs = quo(foo("foo")), rhs = quo(bar("bar")))
   expect_identical(dots$defs$def, pat)
 })
 
@@ -165,23 +165,23 @@ test_that("dots_quos() captures missing arguments", {
 
 test_that("formulas are guarded on capture", {
   expect_identical(
-    quosure(~foo(~bar, ~~baz())),
-    quosure(`_F`(foo(`_F`(bar), `_F`(`_F`(baz())))))
+    quo(~foo(~bar, ~~baz())),
+    quo(`_F`(foo(`_F`(bar), `_F`(`_F`(baz())))))
   )
 })
 
 test_that("formulas are not guarded if unquoted", {
   expect_identical(
-    quosure(!! ~foo(~bar, ~~baz())),
+    quo(!! ~foo(~bar, ~~baz())),
     new_quosure(~foo(~bar, ~~baz()))
   )
-  quo <- quosure(foo(bar))
-  quo <- quosure(baz(!! quo))
+  quo <- quo(foo(bar))
+  quo <- quo(baz(!! quo))
   expect_equal(quo, ~baz(~foo(bar)))
 })
 
 test_that("quosured literals are forwarded as is", {
-  expect_identical(quosure(!! ~NULL), ~NULL)
-  expect_identical(quosure(!! quosure(NULL)), new_quosure(NULL, empty_env()))
+  expect_identical(quo(!! ~NULL), ~NULL)
+  expect_identical(quo(!! quo(NULL)), new_quosure(NULL, empty_env()))
   expect_identical(dots_quos(!! ~10L), set_names(list(~10L), ""))
 })

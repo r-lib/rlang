@@ -3,7 +3,7 @@ context("unquote")
 test_that("interpolation does not recurse over spliced arguments", {
   var1 <- quote(!! stop())
   var2 <- quote({foo; !! stop(); bar})
-  expect_error(quosure(list(!!! var1)), NA)
+  expect_error(quo(list(!!! var1)), NA)
   expect_error(expr(list(!!! var2)), NA)
 })
 
@@ -46,15 +46,15 @@ test_that("can interpolate in specific env", {
 
 test_that("can qualify operators with namespace", {
   # Should remove prefix only if rlang-qualified:
-  expect_identical(quosure(rlang::UQ(toupper("a"))), new_quosure("A", empty_env()))
-  expect_identical(quosure(list(rlang::UQS(list(a = 1, b = 2)))), ~list(a = 1, b = 2))
-  expect_identical(quosure(rlang::UQF(~foo)), quosure(UQF(~foo)))
+  expect_identical(quo(rlang::UQ(toupper("a"))), new_quosure("A", empty_env()))
+  expect_identical(quo(list(rlang::UQS(list(a = 1, b = 2)))), ~list(a = 1, b = 2))
+  expect_identical(quo(rlang::UQF(~foo)), quo(UQF(~foo)))
 
   # Should keep prefix otherwise:
-  expect_identical(quosure(other::UQ(toupper("a"))), ~other::"A")
-  expect_identical(quosure(x$UQ(toupper("a"))), ~x$"A")
-  expect_error(quosure(list(other::UQS(list(a = 1, b = 2)))), "Cannot splice at top-level")
-  expect_identical(quosure(other::UQF(~foo)), quosure(other::UQF(~foo)))
+  expect_identical(quo(other::UQ(toupper("a"))), ~other::"A")
+  expect_identical(quo(x$UQ(toupper("a"))), ~x$"A")
+  expect_error(quo(list(other::UQS(list(a = 1, b = 2)))), "Cannot splice at top-level")
+  expect_identical(quo(other::UQF(~foo)), quo(other::UQF(~foo)))
 })
 
 test_that("unquoting is frame-consistent", {
@@ -64,12 +64,12 @@ test_that("unquoting is frame-consistent", {
 })
 
 test_that("unquoted quosure has S3 class", {
-  quo <- quosure(!! ~quo)
+  quo <- quo(!! ~quo)
   expect_is(f_rhs(quo), "quosure")
 })
 
 test_that("unquoted quosures are not guarded", {
-  quo <- eval_tidy(quosure(quosure(!! ~quo)))
+  quo <- eval_tidy(quo(quo(!! ~quo)))
   expect_true(is_quosure(f_rhs(quo)))
 })
 
@@ -77,13 +77,13 @@ test_that("unquoted quosures are not guarded", {
 # UQ ----------------------------------------------------------------------
 
 test_that("evaluates contents of UQ()", {
-  expect_equal(quosure(UQ(1 + 2)), ~ 3)
+  expect_equal(quo(UQ(1 + 2)), ~ 3)
 })
 
 test_that("layers of unquote are not peeled off recursively upon interpolation", {
   var1 <- ~letters
   var2 <- ~!!var1
-  expect_identical(quosure(!!var2), new_quosure(~!!var1))
+  expect_identical(quo(!!var2), new_quosure(~!!var1))
 
   var1 <- local(~letters)
   var2 <- local(~!!var1)
@@ -92,32 +92,32 @@ test_that("layers of unquote are not peeled off recursively upon interpolation",
 
 test_that("formulas are promised recursively during unquote", {
   var <- ~~letters
-  expect_identical(quosure(!!var), new_quosure(new_quosure(quote(~letters))))
+  expect_identical(quo(!!var), new_quosure(new_quosure(quote(~letters))))
 
   var <- new_quosure(local(~letters), env = child_env(get_env()))
-  expect_identical(quosure(!!var), new_quosure(var))
+  expect_identical(quo(!!var), new_quosure(var))
 })
 
 
 # UQS ---------------------------------------------------------------------
 
 test_that("contents of UQS() must be a vector or language object", {
-  expect_error(quosure(1 + UQS(environment())), "`x` must be a vector")
+  expect_error(quo(1 + UQS(environment())), "`x` must be a vector")
 })
 
 test_that("values of UQS() spliced into expression", {
-  f <- quosure(f(a, UQS(list(quote(b), quote(c))), d))
+  f <- quo(f(a, UQS(list(quote(b), quote(c))), d))
   expect_identical(f, ~f(a, b, c, d))
 })
 
 test_that("names within UQS() are preseved", {
-  f <- quosure(f(UQS(list(a = quote(b)))))
+  f <- quo(f(UQS(list(a = quote(b)))))
   expect_identical(f, ~f(a = b))
 })
 
 test_that("UQS() handles language objects", {
-  expect_identical(quosure(list(UQS(quote(foo)))), ~list(foo))
-  expect_identical(quosure(list(UQS(quote({ foo })))), ~list(foo))
+  expect_identical(quo(list(UQS(quote(foo)))), ~list(foo))
+  expect_identical(quo(list(UQS(quote({ foo })))), ~list(foo))
 })
 
 test_that("splicing an empty vector works", {
@@ -136,28 +136,28 @@ test_that("UQF() guards formulas", {
   attributes(guarded) <- attributes(f)
 
   expected_f <- new_quosure(guarded)
-  expect_identical(quosure(UQF(f)), expected_f)
+  expect_identical(quo(UQF(f)), expected_f)
   expect_identical(eval_tidy(expected_f), f)
 })
 
 test_that("UQE() extracts right-hand side", {
   var <- ~cyl
-  expect_identical(quosure(mtcars$UQE(var)), ~mtcars$cyl)
-  expect_identical(quosure(mtcars$`!!`(var)), ~mtcars$cyl)
+  expect_identical(quo(mtcars$UQE(var)), ~mtcars$cyl)
+  expect_identical(quo(mtcars$`!!`(var)), ~mtcars$cyl)
 })
 
 
 # bang ---------------------------------------------------------------
 
 test_that("single ! is not treated as shortcut", {
-  expect_identical(quosure(!foo), ~!foo)
+  expect_identical(quo(!foo), ~!foo)
 })
 
 test_that("double and triple ! are treated as syntactic shortcuts", {
   var <- local(~foo)
-  expect_identical(quosure(!! var), new_quosure(var))
-  expect_identical(quosure(!! ~foo), new_quosure(~foo))
-  expect_identical(quosure(list(!!! letters[1:3])), ~list("a", "b", "c"))
+  expect_identical(quo(!! var), new_quosure(var))
+  expect_identical(quo(!! ~foo), new_quosure(~foo))
+  expect_identical(quo(list(!!! letters[1:3])), ~list("a", "b", "c"))
 })
 
 test_that("`!!` works in prefixed calls", {
@@ -174,11 +174,11 @@ test_that("fpromises are created for all informative formulas", {
   foo <- local(~foo)
   bar <- local(~bar)
 
-  interpolated <- local(quosure(list(!!foo, !!bar)))
+  interpolated <- local(quo(list(!!foo, !!bar)))
   expected <- new_quosure(bquote(list(.(f_rhs(new_quosure(foo))), .(f_rhs(new_quosure(bar))))), env = get_env(interpolated))
   expect_identical(interpolated, expected)
 
-  interpolated <- quosure(!!interpolated)
+  interpolated <- quo(!!interpolated)
   expected <- new_quosure(expected)
   expect_identical(interpolated, expected)
 })

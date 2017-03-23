@@ -23,7 +23,7 @@ quosure.}
 \description{
 Quosure objects wrap an \link[=is_expr]{expression} with a \link[=env]{lexical
 enclosure}. This is a powerful quoting (see \code{\link[base:quote]{base::quote()}}
-and \code{\link[=quosure]{quosure()}}) mechanism that makes it possible to carry and
+and \code{\link[=quo]{quo()}}) mechanism that makes it possible to carry and
 manipulate expressions while making sure that its symbolic content
 (symbols and named calls, see \code{\link[=is_symbolic]{is_symbolic()}}) is correctly looked
 up during evaluation.

@@ -26,7 +26,7 @@ test_that("can't use non-character vectors", {
 })
 
 test_that("subsetting .data pronoun fails when not supplied", {
-  f <- quosure(.data$foo)
+  f <- quo(.data$foo)
   expect_error(eval_tidy(f), "not found in pronoun")
 })
 
