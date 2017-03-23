@@ -10,8 +10,8 @@
 #' at the call site are available when the expression gets
 #' evaluated. It is thus necessary to capture not only the R
 #' expression supplied as argument in a function call, but also the
-#' evaluation environment of the call site. `catch_quosure()` and
-#' `dots_quosures()` make it easy to record this information within
+#' evaluation environment of the call site. `enquo()` and
+#' `dots_quos()` make it easy to record this information within
 #' formulas.
 #'
 #' @section Non-standard evaluation:
@@ -33,9 +33,9 @@
 #'   calls (see below). See `vignette("nse")` for more information on
 #'   NSE.
 #'
-#'   In addition, note that `catch_quosure()` always interpolates its
+#'   In addition, note that `enquo()` always interpolates its
 #'   input to facilitate programming with NSE functions. See
-#'   [expr_interp()] and [quosure()].
+#'   [expr_interp()] and [quo()].
 #'
 #' @section Forwarding arguments:
 #'
@@ -59,26 +59,26 @@
 #'   expressions were not necessarily supplied in the last call
 #'   frame. In general, the call site of argument passed through dots
 #'   can be anywhere between the current and global frames. For this
-#'   reason, it is recommended to always use `dots_quosures()` rather
+#'   reason, it is recommended to always use `dots_quos()` rather
 #'   than `substitute()` and `caller_env()` or `parent.frame()`, since
 #'   the former will encode the appropriate evaluation environments
 #'   within the formulas.
 #'
 #' @param x,... Arguments to capture.
 #' @export
-#' @return `catch_quosure()` returns a formula; see also
-#'   `dots_quosures()` for "capturing" dots as a list of formulas.
-#' @seealso [dots_quosures()] for capturing dots, [expr_label()] and
+#' @return `enquo()` returns a formula; see also
+#'   `dots_quos()` for "capturing" dots as a list of formulas.
+#' @seealso [quos()][quosures] for capturing dots, [expr_label()] and
 #'   [expr_text()] for capturing labelling information.
 #' @examples
-#' # catch_quosure() returns a formula:
-#' fn <- function(foo) catch_quosure(foo)
+#' # enquo() returns a formula:
+#' fn <- function(foo) enquo(foo)
 #' fn(a + b)
 #'
 #' # Capturing an argument only works for the most direct call:
 #' g <- function(bar) fn(bar)
 #' g(a + b)
-catch_quosure <- function(x) {
+enquo <- function(x) {
   capture <- new_language(captureArg, substitute(x))
   arg <- eval_bare(capture, caller_env())
   expr <- .Call(rlang_interp, arg$expr, arg$env)

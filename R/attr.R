@@ -189,18 +189,20 @@ has_length <- function(x, n = NULL) {
 #' Add attributes to an object.
 #'
 #' @param .x An object to decorate with attributes.
-#' @param ...,.attrs A list of named attributes.
+#' @param ... A list of named attributes. These have [explicit
+#'   splicing semantics][dots_list].
 #' @export
 #' @examples
-#' with_attributes(letters, class = "my_chr", names = 1:26)
+#' struct(letters, names = 1:26, class = "my_chr")
 #'
-#' attrs <- list(class = "my_chr", names = 1:26)
-#' with_attributes(letters, .attrs = attrs)
-with_attributes <- function(.x, ..., .attrs = list()) {
-  invoke("structure", c(list(.Data = .x, ...), .attrs))
+#' # Splice a list of attributes:
+#' attrs <- list(attr = "attr", names = 1:26, class = "my_chr")
+#' struct(letters, spliced(attrs))
+struct <- function(.x, ...) {
+  invoke("structure", c(list(.Data = .x), dots_list(...)))
 }
 
-zap_attributes <- function(x) {
+unstruct <- function(x) {
   switch_type(x,
     NULL = ,
     char = ,

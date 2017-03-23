@@ -10,7 +10,7 @@ test_that("equivalent to ~", {
   f1 <- ~abc
   f2 <- new_quosure(quote(abc))
 
-  expect_identical(f1, f2)
+  expect_identical(struct(f1, class = c("quosure", "formula")), f2)
 })
 
 test_that("is_formula works", {
@@ -27,7 +27,7 @@ test_that("as_quosure() uses correct env", {
     as_quosure(expr, env)
   }
   f_env <- child_env()
-  f <- env_set(~expr, f_env)
+  f <- new_quosure(quote(expr), f_env)
 
   out_expr_default <- fn(quote(expr))
   out_f_default <- fn(f)
@@ -101,7 +101,7 @@ test_that("can modify environment", {
 test_that("f_unwrap() substitutes values", {
   n <- 100
   f1 <- f_unwrap(~ x + n)
-  f2 <- new_quosure(quote(x + 100), env_parent(get_env()))
+  f2 <- set_env(~x + 100, env_parent(get_env()))
 
   expect_identical(f1, f2)
 })

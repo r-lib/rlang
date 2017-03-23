@@ -17,7 +17,7 @@
 #'
 #' @param f A formula. Any expressions wrapped in `UQ()` will will be
 #'   "unquoted", i.e. they will be evaluated, and the results inserted
-#'   back into the formula. See [quosure()] for more details. If a
+#'   back into the formula. See [quo()] for more details. If a
 #'   list of formulas, `eval_tidy()` is applied to each of them in
 #'   turn and the list of results is returned.
 #' @param data A list (or data frame). `data_source` is a generic used
@@ -52,7 +52,7 @@
 #' # The easiest way is "unquote" with !!
 #' # See ?quosure for more details
 #' var <- ~ cyl
-#' eval_tidy(quosure(mean( !!var )), mtcars)
+#' eval_tidy(quo(mean( !!var )), mtcars)
 #' @name eval_tidy
 eval_tidy_rhs <- function(f, data = NULL) {
   rhs <- new_quosure(f_rhs(f), f_env(f))
@@ -94,7 +94,7 @@ eval_tidy <- function(f, data = NULL) {
 #' Note that `eval_tidy_()` always installs a `.env` pronoun in the
 #' bottom environment of your dynamic scope. This pronoun provides a
 #' shortcut to the original lexical enclosure (typically, the dynamic
-#' environment of a captured argument, see [catch_quosure()]). It also
+#' environment of a captured argument, see [enquo()]). It also
 #' cleans up the overscope after evaluation. See [overscope_eval_next()]
 #' for evaluating several quosures in the same overscope.
 #'
@@ -255,7 +255,7 @@ overscope_eval_next <- function(overscope, quo, env = base_env()) {
   lexical_env <- f_env(quo)
 
   overscope$.env <- lexical_env
-  env_set_parent(overscope$.top_env, lexical_env)
+  mut_parent_env(overscope$.top_env, lexical_env)
 
   .Call(rlang_eval, f_rhs(quo), overscope)
 }

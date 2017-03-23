@@ -27,7 +27,7 @@
 #'   is scoped, that is, has a valid environment attribute. If `NULL`,
 #'   the scope is not inspected.
 #' @seealso [as_quosure()][new_quosure] and [new_quosure()] for creating
-#'   quosures, and [quosure()] or [eval_tidy()] for information
+#'   quosures, and [quo()] or [eval_tidy()] for information
 #'   about the role of quosures in the tidy evaluation framework.
 #' @export
 #' @examples
@@ -83,7 +83,7 @@ is_one_sided <- function(x, lang_sym = sym_tilde) {
 #'
 #' Quosure objects wrap an [expression][is_expr] with a [lexical
 #' enclosure][env]. This is a powerful quoting (see [base::quote()]
-#' and [quosure()]) mechanism that makes it possible to carry and
+#' and [quo()]) mechanism that makes it possible to carry and
 #' manipulate expressions while making sure that its symbolic content
 #' (symbols and named calls, see [is_symbolic()]) is correctly looked
 #' up during evaluation.
@@ -136,7 +136,8 @@ is_one_sided <- function(x, lang_sym = sym_tilde) {
 #' as_quosureish(a := b)
 #' as_quosureish(10L)
 new_quosure <- function(rhs, env = caller_env()) {
-  new_formula(NULL, rhs, env)
+  quo <- new_formula(NULL, rhs, env)
+  struct(quo, class = c("quosure", "formula"))
 }
 #' @rdname new_quosure
 #' @export
@@ -145,9 +146,11 @@ as_quosure <- function(x, env = caller_env()) {
     if (!is_env(f_env(x))) {
       f_env(x) <- env
     }
-    x
+    struct(x, class = c("quosure", "formula"))
   } else if (is_quosureish(x)) {
-    env <- f_env(x) %||% env
+    if (!is_env(f_env(x))) {
+      f_env(x) <- env
+    }
     new_quosure(f_rhs(x), env)
   } else if (is_frame(x)) {
     new_quosure(x$expr, sys_frame(x$caller_pos))
@@ -155,6 +158,12 @@ as_quosure <- function(x, env = caller_env()) {
     new_quosure(x, env)
   }
 }
+#' @export
+print.quosure <- function(x, ...) {
+  x <- struct(x, class = "formula")
+  NextMethod()
+}
+
 #' @rdname new_quosure
 #' @export
 as_quosureish <- function(x, env = caller_env()) {
@@ -164,7 +173,9 @@ as_quosureish <- function(x, env = caller_env()) {
     }
     x
   } else if (is_quosureish(x)) {
-    f_env(x) <- f_env(x) %||% env
+    if (!is_env(f_env(x))) {
+      f_env(x) <- env
+    }
     x
   } else if (is_frame(x)) {
     new_quosure(x$expr, sys_frame(x$caller_pos))
@@ -179,6 +190,10 @@ as_quosureish <- function(x, env = caller_env()) {
 #' turns `~foo(~bar(), ~baz)` to `foo(bar(), baz)`. `quo_text()` and
 #' `quo_label()` are equivalent to [f_text()], [expr_label()], etc,
 #' but they first splice their argument using `quo_expr()`.
+#' `quo_name()` transforms a quoted symbol to a string. It adds a bit
+#' more intent and type checking than simply calling `quo_text()` on
+#' the quoted symbol (which will work but won't return an error if not
+#' a symbol).
 #'
 #' @inheritParams expr_label
 #' @param quo A quosure or expression.
@@ -187,6 +202,8 @@ as_quosureish <- function(x, env = caller_env()) {
 #' @examples
 #' quo_expr(~foo(~bar))
 #' quo_text(~foo(~bar))
+#'
+#' quo_name(~sym)
 quo_expr <- function(quo) {
   quo_splice(duplicate(quo))
 }
@@ -199,6 +216,11 @@ quo_label <- function(quo) {
 #' @export
 quo_text <- function(quo, width = 60L, nlines = Inf) {
   expr_text(quo_expr(quo), width = width, nlines = nlines)
+}
+#' @rdname quo_expr
+#' @export
+quo_name <- function(quo) {
+  expr_name(quo_expr(quo))
 }
 
 quo_splice <- function(x, parent = NULL) {

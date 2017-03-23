@@ -9,7 +9,7 @@ eval_tidy_(f, bottom, top = NULL)
 \arguments{
 \item{f}{A formula. Any expressions wrapped in \code{UQ()} will will be
 "unquoted", i.e. they will be evaluated, and the results inserted
-back into the formula. See \code{\link[=quosure]{quosure()}} for more details. If a
+back into the formula. See \code{\link[=quo]{quo()}} for more details. If a
 list of formulas, \code{eval_tidy()} is applied to each of them in
 turn and the list of results is returned.}
 
@@ -39,7 +39,7 @@ with the bottom and the top of your custom overscope (see
 Note that \code{eval_tidy_()} always installs a \code{.env} pronoun in the
 bottom environment of your dynamic scope. This pronoun provides a
 shortcut to the original lexical enclosure (typically, the dynamic
-environment of a captured argument, see \code{\link[=catch_quosure]{catch_quosure()}}). It also
+environment of a captured argument, see \code{\link[=enquo]{enquo()}}). It also
 cleans up the overscope after evaluation. See \code{\link[=overscope_eval_next]{overscope_eval_next()}}
 for evaluating several quosures in the same overscope.
 }

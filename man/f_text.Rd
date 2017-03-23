@@ -2,10 +2,13 @@
 % Please edit documentation in R/formula.R
 \name{f_text}
 \alias{f_text}
+\alias{f_name}
 \alias{f_label}
 \title{Turn RHS of formula into a string/label.}
 \usage{
 f_text(x, width = 60L, nlines = Inf)
+
+f_name(x)
 
 f_label(x)
 }

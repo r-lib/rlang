@@ -105,13 +105,13 @@
 #' with_handlers(fn(FALSE), default_empty_string = restarting("rst_null"))
 with_restarts <- function(.expr, ..., .restarts = list()) {
   restarts <- c(list(...), .restarts)
-  with_restarts_(catch_quosure(.expr), restarts)
+  with_restarts_(enquo(.expr), restarts)
 }
 #' @rdname with_restarts
 #' @export
 with_restarts_ <- function(.expr, .restarts = list(), .env = NULL) {
   f <- as_quosure(.expr, .env)
-  f <- quosure(withRestarts(!! f, !!! .restarts))
+  f <- quo(withRestarts(!! f, !!! .restarts))
   eval_tidy(f)
 }
 

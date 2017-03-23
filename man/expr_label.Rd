@@ -2,10 +2,13 @@
 % Please edit documentation in R/expr.R
 \name{expr_label}
 \alias{expr_label}
+\alias{expr_name}
 \alias{expr_text}
 \title{Turn an expression to a label.}
 \usage{
 expr_label(expr)
+
+expr_name(expr)
 
 expr_text(expr, width = 60L, nlines = Inf)
 }
@@ -17,8 +20,11 @@ expr_text(expr, width = 60L, nlines = Inf)
 \item{nlines}{Maximum number of lines to extract.}
 }
 \description{
-\code{expr_text()} turns the expression into a single string;
-\code{expr_label()} formats it nicely for use in messages.
+\code{expr_text()} turns the expression into a single string, which
+might be multi-line. \code{expr_name()} is suitable for formatting
+names. It works best with symbols and scalar types, but also
+accepts calls. \code{expr_label()} formats the expression nicely for use
+in messages.
 }
 \examples{
 # To labellise a function argument, first capture it with

@@ -54,7 +54,7 @@
 #' list of a closure with [base::formals()] or [fn_fmls()].
 #'
 #' @param x An object to test. When you supply a tidy quote (see
-#'   [quosure()]) to any of the expression predicates, they will
+#'   [quo()]) to any of the expression predicates, they will
 #'   perform their test on the RHS of the formula.
 #' @seealso [is_lang()] for a call predicate; [as_symbol()] and
 #'   [as_lang()] for coercion functions.
@@ -206,8 +206,11 @@ eval_bare <- function(expr, env = parent.frame()) {
 
 #' Turn an expression to a label.
 #'
-#' `expr_text()` turns the expression into a single string;
-#' `expr_label()` formats it nicely for use in messages.
+#' `expr_text()` turns the expression into a single string, which
+#' might be multi-line. `expr_name()` is suitable for formatting
+#' names. It works best with symbols and scalar types, but also
+#' accepts calls. `expr_label()` formats the expression nicely for use
+#' in messages.
 #'
 #' @param expr An expression to labellise.
 #' @export
@@ -237,17 +240,40 @@ expr_label <- function(expr) {
   } else if (is.name(expr)) {
     paste0("`", as.character(expr), "`")
   } else {
-    chr <- deparse(expr)
-    if (length(chr) > 1) {
-      dot_call <- new_language(expr[[1]], quote(...))
-      chr <- paste(deparse(dot_call), collapse = "\n")
-    }
+    chr <- deparse_one(expr)
     paste0("`", chr, "`")
   }
 }
-
-#' @export
 #' @rdname expr_label
+#' @export
+expr_name <- function(expr) {
+  name <- switch_type(expr,
+    symbol = as_name(expr),
+    quosure = ,
+    language = {
+      expr_text <- deparse_one(expr)
+      paste0("(", expr_text, ")")
+    },
+    logical = ,
+    integer = ,
+    double = ,
+    complex = ,
+    string = ,
+    character = {
+      if (length(expr) == 1) {
+        as.character(expr)
+      }
+    }
+  )
+
+  if (is_null(name)) {
+    abort("`expr` must quote a symbol, scalar, or call")
+  } else {
+    name
+  }
+}
+#' @rdname expr_label
+#' @export
 #' @param width Width of each line.
 #' @param nlines Maximum number of lines to extract.
 expr_text <- function(expr, width = 60L, nlines = Inf) {
@@ -258,6 +284,14 @@ expr_text <- function(expr, width = 60L, nlines = Inf) {
   }
 
   paste0(str, collapse = "\n")
+}
+deparse_one <- function(expr) {
+  chr <- deparse(expr)
+  if (length(chr) > 1) {
+    dot_call <- new_language(expr[[1]], quote(...))
+    chr <- paste(deparse(dot_call), collapse = "\n")
+  }
+  chr
 }
 
 #' Set and get an expression.

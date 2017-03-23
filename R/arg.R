@@ -1,7 +1,7 @@
 #' Inspect an argument
 #'
 #' `arg_inspect()` provides argument introspection in the context of
-#' lazy evaluation. Compared to [catch_quosure()], the returned
+#' lazy evaluation. Compared to [enquo()], the returned
 #' information is more complete and takes R's lazy evaluation
 #' semantics into account: if an argument is passed around without
 #' being evaluated, `arg_inspect()` is able to return the expression
@@ -14,7 +14,7 @@
 #' `arg_inspect()` and takes a symbol and a call stack object.
 #'
 #' `arg_inspect()` should be used with two caveats in mind. First, it
-#' is slower than [catch_quosure()] and `lazyeval::lazy()`. Thus you
+#' is slower than [enquo()] and `lazyeval::lazy()`. Thus you
 #' should probably avoid using it in functions that might be used in
 #' tight loops (such as a loop over the rows of data frame). Second,
 #' `arg_inspect()` ignores all reassignment of arguments. It has no
@@ -162,8 +162,8 @@ fml_default <- function(expr, fn) {
 #' @export
 #' @examples
 #' # The missing argument can be useful to generate calls
-#' quosure(f(x = !! missing_arg()))
-#' quosure(f(x = !! NULL))
+#' quo(f(x = !! missing_arg()))
+#' quo(f(x = !! NULL))
 #'
 #'
 #' # It is perfectly valid to generate and assign the missing

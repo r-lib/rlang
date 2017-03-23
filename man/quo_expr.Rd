@@ -4,6 +4,7 @@
 \alias{quo_expr}
 \alias{quo_label}
 \alias{quo_text}
+\alias{quo_name}
 \title{Splice a quosure and format it into string or label.}
 \usage{
 quo_expr(quo)
@@ -11,6 +12,8 @@ quo_expr(quo)
 quo_label(quo)
 
 quo_text(quo, width = 60L, nlines = Inf)
+
+quo_name(quo)
 }
 \arguments{
 \item{quo}{A quosure or expression.}
@@ -24,10 +27,16 @@ quo_text(quo, width = 60L, nlines = Inf)
 turns \code{~foo(~bar(), ~baz)} to \code{foo(bar(), baz)}. \code{quo_text()} and
 \code{quo_label()} are equivalent to \code{\link[=f_text]{f_text()}}, \code{\link[=expr_label]{expr_label()}}, etc,
 but they first splice their argument using \code{quo_expr()}.
+\code{quo_name()} transforms a quoted symbol to a string. It adds a bit
+more intent and type checking than simply calling \code{quo_text()} on
+the quoted symbol (which will work but won't return an error if not
+a symbol).
 }
 \examples{
 quo_expr(~foo(~bar))
 quo_text(~foo(~bar))
+
+quo_name(~sym)
 }
 \seealso{
 \code{\link[=expr_label]{expr_label()}}, \code{\link[=f_label]{f_label()}}

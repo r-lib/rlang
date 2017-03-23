@@ -59,7 +59,7 @@ dots_splice <- function(...) {
 #' @param ... Arguments to extract.
 #' @export
 dots_exprs <- function(...) {
-  map(dots_quosures(...), f_rhs)
+  map(dots_quos(...), f_rhs)
 }
 
 #' Inspect dots
@@ -80,7 +80,7 @@ dots_exprs <- function(...) {
 #' @param ... Dots to inspect.
 #' @param .only_dots,only_dots Whether to stop introspection once
 #'   forwarded dots have been climbed. Setting this to `TRUE` is only
-#'   useful for inspecting dots (cf. [dots_quosures()] which does not
+#'   useful for inspecting dots (cf. [quos()][quosures] which does not
 #'   follow symbols).
 #' @seealso [arg_inspect()]
 #' @export

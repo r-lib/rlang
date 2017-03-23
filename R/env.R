@@ -26,7 +26,7 @@
 #' returns the one which has [empty_env()] as parent.
 #'
 #' @param env An environment or an object bundling an environment:
-#'   either a [quosure][quosure] or a [closure][is_closure]. If
+#'   either a [quosure] or a [closure][is_closure]. If
 #'   missing, the environment of the current evaluation frame is
 #'   returned.
 #' @param parent A parent environment. Can be an object with a S3
@@ -249,11 +249,11 @@ as_env_ <- function(x, parent = NULL) {
 
 #' Set an environment.
 #'
-#' `env_set()` does not work by side effect. The input is copied
+#' `set_env()` does not work by side effect. The input is copied
 #' before being assigned an environment, and left unchanged.
 #'
 #' @param env An environment or an object with a S3 method for
-#'   `env_set()`.
+#'   `set_env()`.
 #' @param new_env An environment to replace `env` with. Can be an
 #'   object with an S method for `get_env()`.
 #' @export
@@ -263,17 +263,17 @@ as_env_ <- function(x, parent = NULL) {
 #' fn <- with_env(env, function() NULL)
 #' identical(get_env(fn), env)
 #'
-#' # env_set() does not work by side effect. Setting a new environment
+#' # set_env() does not work by side effect. Setting a new environment
 #' # for fn has no effect on the original function:
 #' other_env <- child_env()
-#' env_set(fn, other_env)
+#' set_env(fn, other_env)
 #' identical(get_env(fn), other_env)
 #'
-#' # env_set() returns a new function with a different environment, so
+#' # set_env() returns a new function with a different environment, so
 #' # you need to assign the returned function to the `fn` name:
-#' fn <- env_set(fn, other_env)
+#' fn <- set_env(fn, other_env)
 #' identical(get_env(fn), other_env)
-env_set <- function(env, new_env) {
+set_env <- function(env, new_env = caller_env()) {
   switch_type(env,
     quosure = ,
     closure = {
@@ -287,7 +287,7 @@ env_set <- function(env, new_env) {
   )
 }
 
-env_set_parent <- function(env, new_env) {
+mut_parent_env <- function(env, new_env) {
   env_ <- get_env(env)
   parent.env(env_) <- get_env(new_env)
   env
@@ -469,7 +469,7 @@ env_bury <- function(env = caller_env(), data = list()) {
   env_ <- new.env(parent = env_)
 
   env_bind(env_, data)
-  env_set(env, env_)
+  set_env(env, env_)
 }
 
 #' Remove bindings from an environment.

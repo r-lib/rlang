@@ -15,15 +15,15 @@ formula or a function, or the current environment otherwise.}
 }
 \description{
 While all capturing functions in the tidy evaluation framework
-perform unquote on capture (most notably \code{\link[=quosure]{quosure()}}),
+perform unquote on capture (most notably \code{\link[=quo]{quo()}}),
 \code{expr_interp()} manually processes unquoting operators in
 expressions that are already captured. \code{expr_interp()} should be
 called in all user-facing functions expecting a formula as argument
 to provide the same quasiquotation functionality as NSE functions.
 }
 \examples{
-# All tidy NSE functions like quosure() unquote on capture:
-quosure(list(!! 1 + 2))
+# All tidy NSE functions like quo() unquote on capture:
+quo(list(!! 1 + 2))
 
 # expr_interp() is meant to provide the same functionality when you
 # have a formula or expression that might contain unquoting

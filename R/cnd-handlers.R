@@ -77,7 +77,7 @@
 #' with_handlers(fn2(), foo = inplace(exiting_handler), foo = inplace(other_handler))
 with_handlers <- function(.expr, ..., .handlers = list()) {
   handlers <- c(list(...), .handlers)
-  with_handlers_(catch_quosure(.expr), handlers)
+  with_handlers_(enquo(.expr), handlers)
 }
 #' @rdname with_handlers
 #' @export
@@ -97,10 +97,10 @@ with_handlers_ <- function(.expr, .handlers = list(), .env = NULL) {
 
 interp_handlers <- function(f, inplace, exiting) {
   if (length(exiting)) {
-    f <- quosure(tryCatch(!! f, !!! exiting))
+    f <- quo(tryCatch(!! f, !!! exiting))
   }
   if (length(inplace)) {
-    f <- quosure(withCallingHandlers(!! f, !!! inplace))
+    f <- quo(withCallingHandlers(!! f, !!! inplace))
   }
   f
 }

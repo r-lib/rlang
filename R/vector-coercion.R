@@ -105,7 +105,7 @@ NULL
 #' @export
 as_logical <- function(x) {
   coerce_type_vec(x, "logical",
-    logical = zap_attributes(x),
+    logical = unstruct(x),
     integer = as_base_type(x, as.logical),
     double = as_integerish_type(x, as.logical, "logical")
   )
@@ -116,7 +116,7 @@ as_logical <- function(x) {
 as_integer <- function(x) {
   coerce_type_vec(x, "integer",
     logical = as_base_type(x, as.integer),
-    integer = zap_attributes(x),
+    integer = unstruct(x),
     double = as_integerish_type(x, as.integer, "integer")
   )
 }
@@ -126,7 +126,7 @@ as_double <- function(x) {
   coerce_type_vec(x, "double",
     logical = ,
     integer = as_base_type(x, as.double),
-    double = zap_attributes(x)
+    double = unstruct(x)
   )
 }
 #' @rdname vector-coercion
@@ -136,7 +136,7 @@ as_complex <- function(x) {
     logical = ,
     integer = ,
     double = as_base_type(x, as.complex),
-    complex = zap_attributes(x)
+    complex = unstruct(x)
   )
 }
 #' @rdname vector-coercion
@@ -144,7 +144,7 @@ as_complex <- function(x) {
 #' @export
 as_character <- function(x, encoding = NULL) {
   coerce_type_vec(x, "character",
-    character = set_chr_encoding(zap_attributes(x), encoding)
+    character = set_chr_encoding(unstruct(x), encoding)
   )
 }
 #' @rdname vector-coercion
@@ -157,7 +157,7 @@ as_string <- function(x, encoding = NULL) {
       }
       .Call(rlang_symbol_to_character, x)
     },
-    string = zap_attributes(x)
+    string = unstruct(x)
   )
   set_chr_encoding(x, encoding)
 }
@@ -185,7 +185,7 @@ as_list_other <- function(x) {
     character = ,
     complex = ,
     raw = as_base_type(x, as.list),
-    list = zap_attributes(x)
+    list = unstruct(x)
   )
 }
 

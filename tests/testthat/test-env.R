@@ -135,3 +135,8 @@ test_that("env() creates child of current environment", {
   expect_identical(env_parent(env), get_env())
   expect_identical(env$b, "foo")
 })
+
+test_that("set_env() sets current env by default", {
+  quo <- set_env(locally(~foo))
+  expect_identical(f_env(quo), get_env())
+})

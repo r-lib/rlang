@@ -69,6 +69,35 @@ SEXP guard_formula(SEXP f) {
   return guard;
 }
 
+SEXP as_quosure(SEXP x) {
+  if (Rf_inherits(x, "quosure"))
+    return x;
+
+  static SEXP quo_classes = NULL;
+  if (!quo_classes) {
+    quo_classes = Rf_allocVector(STRSXP, 2);
+    R_PreserveObject(quo_classes);
+    SET_STRING_ELT(quo_classes, 0, Rf_mkChar("quosure"));
+    SET_STRING_ELT(quo_classes, 1, Rf_mkChar("formula"));
+  }
+
+  static SEXP sym_environment = NULL;
+  if (!sym_environment)
+    sym_environment = Rf_install(".Environment");
+
+  SEXP quo = PROTECT(Rf_shallow_duplicate(x));
+  Rf_setAttrib(quo, R_ClassSymbol, quo_classes);
+  Rf_setAttrib(quo, sym_environment, Rf_getAttrib(x, sym_environment));
+
+  UNPROTECT(1);
+  return quo;
+}
+
+void unquote_check(SEXP x) {
+  if (CDR(x) == R_NilValue)
+    Rf_errorcall(R_NilValue, "`UQ()` must be called with an argument");
+}
+
 SEXP unquote(SEXP x, SEXP env, SEXP uq_sym) {
   if (is_sym(uq_sym, "!!"))
     uq_sym = Rf_install("UQE");
@@ -79,6 +108,10 @@ SEXP unquote(SEXP x, SEXP env, SEXP uq_sym) {
 
   SEXP uq_call = PROTECT(Rf_lang2(uq_fun, x));
   SEXP res = Rf_eval(uq_call, env);
+
+  if (is_formula(res)) {
+    res = as_quosure(res);
+  }
 
   UNPROTECT(1);
   return res;
@@ -134,13 +167,15 @@ SEXP interp_walk(SEXP x, SEXP env)  {
   x = replace_double_bang(x);
 
   if (is_prefixed_call(x, is_uq_sym)) {
+    unquote_check(x);
     REPROTECT(x = unquote_prefixed_uq(x, env), ipx);
   } else if (is_any_call(x, is_uq_sym)) {
+    unquote_check(x);
     SEXP uq_sym = CAR(x);
     REPROTECT(x = unquote(CADR(x), env, uq_sym), ipx);
   } else if (is_rlang_prefixed(x, is_uqf_sym)) {
     REPROTECT(x = unquote_prefixed_uqf(x, env), ipx);
-  } else if (is_formula(x)) {
+  } else if (is_formula(x) && !Rf_inherits(x, "quosure")) {
     // Guard but don't unquote: environment should be recorded in the
     // formula lazily
     REPROTECT(x = guard_formula(x), ipx);
