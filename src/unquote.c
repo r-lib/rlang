@@ -90,6 +90,11 @@ SEXP as_quosure(SEXP x) {
   return quo;
 }
 
+void unquote_check(SEXP x) {
+  if (CDR(x) == R_NilValue)
+    Rf_errorcall(R_NilValue, "`UQ()` must be called with an argument");
+}
+
 SEXP unquote(SEXP x, SEXP env, SEXP uq_sym) {
   if (is_sym(uq_sym, "!!"))
     uq_sym = Rf_install("UQE");
@@ -159,8 +164,10 @@ SEXP interp_walk(SEXP x, SEXP env)  {
   x = replace_double_bang(x);
 
   if (is_prefixed_call(x, is_uq_sym)) {
+    unquote_check(x);
     REPROTECT(x = unquote_prefixed_uq(x, env), ipx);
   } else if (is_any_call(x, is_uq_sym)) {
+    unquote_check(x);
     SEXP uq_sym = CAR(x);
     REPROTECT(x = unquote(CADR(x), env, uq_sym), ipx);
   } else if (is_rlang_prefixed(x, is_uqf_sym)) {

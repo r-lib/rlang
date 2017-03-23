@@ -98,6 +98,13 @@ test_that("formulas are promised recursively during unquote", {
   expect_identical(quo(!!var), new_quosure(var))
 })
 
+test_that("UQ() fails if called without argument", {
+  expect_equal(quo(UQ(NULL)), ~NULL)
+  expect_equal(quo(rlang::UQ(NULL)), ~NULL)
+  expect_error(quo(UQ()), "must be called with an argument")
+  expect_error(quo(rlang::UQ()), "must be called with an argument")
+})
+
 
 # UQS ---------------------------------------------------------------------
 
