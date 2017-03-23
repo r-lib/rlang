@@ -202,7 +202,7 @@ struct <- function(.x, ...) {
   invoke("structure", c(list(.Data = .x), dots_list(...)))
 }
 
-zap_attributes <- function(x) {
+unstruct <- function(x) {
   switch_type(x,
     NULL = ,
     char = ,
