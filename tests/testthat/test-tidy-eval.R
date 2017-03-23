@@ -117,19 +117,19 @@ test_that("can unquote hygienically within captured arg", {
   fn <- function(df, arg) eval_tidy(enquo(arg), df)
 
   foo <- "bar"; var <- ~foo
-  expect_identical(fn(mtcars, list(var, !!var)), list(~foo, "bar"))
+  expect_identical(fn(mtcars, list(var, !!var)), list(quo(foo), "bar"))
 
   var <- ~cyl
   expect_identical(fn(mtcars, (!!var) > 4), mtcars$cyl > 4)
-  expect_identical(fn(mtcars, list(var, !!var)), list(~cyl, mtcars$cyl))
-  expect_equal(fn(mtcars, list(~var, !!var)), list(~var, mtcars$cyl))
+  expect_identical(fn(mtcars, list(var, !!var)), list(quo(cyl), mtcars$cyl))
+  expect_equal(fn(mtcars, list(~var, !!var)), list(quo(var), mtcars$cyl))
   expect_equal(fn(mtcars, list(~~var, !!~var, !!~~var)), list(new_quosure(new_language("_F", quote(var))), ~cyl, ~cyl))
 })
 
 test_that("can unquote for old-style NSE functions", {
-  var <- ~foo
+  var <- quo(foo)
   fn <- function(x) substitute(x)
-  expect_identical(quo(fn(!!f_rhs(var))), ~fn(foo))
+  expect_identical(quo(fn(!!f_rhs(var))), quo(fn(foo)))
   expect_identical(eval_tidy(quo(fn(!!f_rhs(var)))), quote(foo))
 })
 
@@ -171,7 +171,7 @@ test_that("evaluation env is cleaned up", {
   f <- local(~function() list(f = ~letters, env = environment()))
   fn <- eval_tidy(f)
   out <- fn()
-  expect_identical(out$f, new_quosure(quote(letters), env = out$env))
+  expect_identical(out$f, with_env(env = out$env, ~letters))
 })
 
 test_that("inner formulas are rechained to evaluation env", {

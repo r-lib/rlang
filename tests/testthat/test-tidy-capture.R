@@ -137,15 +137,15 @@ test_that("pronouns are scoped throughout nested captures", {
 
 test_that("Can supply := with LHS even if .named = TRUE", {
   expect_warning(regexp = NA, expect_identical(
-    dots_quos(!!"nm" := 2, .named = TRUE), list(nm = ~2)
+    dots_quos(!!"nm" := 2, .named = TRUE), list(nm = as_quosure(quote(2)))
   ))
   expect_warning(regexp = "name ignored", expect_identical(
-    dots_quos(foobar = !!"nm" := 2, .named = TRUE), list(nm = ~2)
+    dots_quos(foobar = !!"nm" := 2, .named = TRUE), list(nm = as_quosure(quote(2)))
   ))
 })
 
 test_that("RHS of tidy defs are unquoted", {
-  expect_identical(dots_quos(foo := !!"bar"), list(foo = ~"bar"))
+  expect_identical(dots_quos(foo := !!"bar"), list(foo = as_quosure(quote("bar"))))
 })
 
 test_that("can capture empty list of dots", {
@@ -173,7 +173,7 @@ test_that("formulas are guarded on capture", {
 test_that("formulas are not guarded if unquoted", {
   expect_identical(
     quo(!! ~foo(~bar, ~~baz())),
-    new_quosure(~foo(~bar, ~~baz()))
+    new_quosure(new_quosure(quote(foo(~bar, ~~baz()))))
   )
   quo <- quo(foo(bar))
   quo <- quo(baz(!! quo))
@@ -181,7 +181,7 @@ test_that("formulas are not guarded if unquoted", {
 })
 
 test_that("quosured literals are forwarded as is", {
-  expect_identical(quo(!! ~NULL), ~NULL)
+  expect_identical(quo(!! ~NULL), as_quosure(~NULL))
   expect_identical(quo(!! quo(NULL)), new_quosure(NULL, empty_env()))
-  expect_identical(dots_quos(!! ~10L), set_names(list(~10L), ""))
+  expect_identical(dots_quos(!! ~10L), set_names(list(as_quosure(~10L)), ""))
 })
