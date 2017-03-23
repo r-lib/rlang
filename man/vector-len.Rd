@@ -11,26 +11,25 @@
 \alias{list_len}
 \title{Create new vectors.}
 \usage{
-lgl_len(.n = 0, ..., .attrs = list())
+lgl_len(.n = 0, ...)
 
-int_len(.n = 0, ..., .attrs = list())
+int_len(.n = 0, ...)
 
-dbl_len(.n = 0, ..., .attrs = list())
+dbl_len(.n = 0, ...)
 
-chr_len(.n = 0, ..., .attrs = list())
+chr_len(.n = 0, ...)
 
-cpl_len(.n = 0, ..., .attrs = list())
+cpl_len(.n = 0, ...)
 
-bytes_len(.n = 0, ..., .attrs = list())
+bytes_len(.n = 0, ...)
 
-list_len(.n = 0, ..., .attrs = list())
+list_len(.n = 0, ...)
 }
 \arguments{
 \item{.n}{The vector length.}
 
-\item{...}{A list of named attributes.}
-
-\item{.attrs}{A list of named attributes.}
+\item{...}{A list of named attributes. These have \link[=dots_list]{explicit
+splicing semantics}.}
 }
 \description{
 These functions construct vectors of given length, with attributes

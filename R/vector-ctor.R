@@ -163,12 +163,11 @@ is_spliced <- function(x) {
 #'
 #' These functions take the idea of [seq_along()] and generalise it to
 #' creating lists (`lst_along`) and repeating values (`rep_along`).
-#' The dots and `.attrs` are forwarded to [with_attributes()] to make
-#' it easy to add attributes. Except for `lst_along()` and
-#' `raw_along()`, the empty vectors are filled with typed `missing`
-#' values.
+#' The dots are forwarded to [struct()] to make it easy to add
+#' attributes. Except for `lst_along()` and `raw_along()`, the empty
+#' vectors are filled with typed `missing` values.
 #'
-#' @inheritParams with_attributes
+#' @inheritParams struct
 #' @param .x A vector.
 #' @param .y Values to repeat.
 #' @examples
@@ -186,44 +185,44 @@ NULL
 
 #' @export
 #' @rdname vector-along
-lgl_along <- function(.x, ..., .attrs = list()) {
-  with_attributes(rep_len(na_lgl, length(.x)), ..., .attrs = .attrs)
+lgl_along <- function(.x, ...) {
+  struct(rep_len(na_lgl, length(.x)), ...)
 }
 #' @export
 #' @rdname vector-along
-int_along <- function(.x, ..., .attrs = list()) {
-  with_attributes(rep_len(na_int, length(.x)), ..., .attrs = .attrs)
+int_along <- function(.x, ...) {
+  struct(rep_len(na_int, length(.x)), ...)
 }
 #' @export
 #' @rdname vector-along
-dbl_along <- function(.x, ..., .attrs = list()) {
-  with_attributes(rep_len(na_dbl, length(.x)), ..., .attrs = .attrs)
+dbl_along <- function(.x, ...) {
+  struct(rep_len(na_dbl, length(.x)), ...)
 }
 #' @export
 #' @rdname vector-along
-chr_along <- function(.x, ..., .attrs = list()) {
-  with_attributes(rep_len(na_chr, length(.x)), ..., .attrs = .attrs)
+chr_along <- function(.x, ...) {
+  struct(rep_len(na_chr, length(.x)), ...)
 }
 #' @export
 #' @rdname vector-along
-lst_along <- function(.x, ..., .attrs = list()) {
-  with_attributes(vector("list", length(.x)), ..., .attrs = .attrs)
+lst_along <- function(.x, ...) {
+  struct(vector("list", length(.x)), ...)
 }
 #' @export
 #' @rdname vector-along
-cpl_along <- function(.x, ..., .attrs = list()) {
-  with_attributes(rep_len(na_cpl, length(.x)), ..., .attrs = .attrs)
+cpl_along <- function(.x, ...) {
+  struct(rep_len(na_cpl, length(.x)), ...)
 }
 #' @export
 #' @rdname vector-along
-raw_along <- function(.x, ..., .attrs = list()) {
-  with_attributes(vector("raw", length(.x)), ..., .attrs = .attrs)
+raw_along <- function(.x, ...) {
+  struct(vector("raw", length(.x)), ...)
 }
 
 #' @export
 #' @rdname vector-along
-rep_along <- function(.x, .y, ..., .attrs = list()) {
-  with_attributes(rep(.y, length.out = length(.x)), ..., .attrs = .attrs)
+rep_along <- function(.x, .y, ...) {
+  struct(rep(.y, length.out = length(.x)), ...)
 }
 
 
@@ -235,7 +234,7 @@ rep_along <- function(.x, .y, ..., .attrs = list()) {
 #' contrast to the base function [base::vector()] which creates
 #' zero-filled vectors.
 #'
-#' @inheritParams with_attributes
+#' @inheritParams struct
 #' @param .n The vector length.
 #' @examples
 #' list_len(10)
@@ -249,36 +248,36 @@ NULL
 
 #' @export
 #' @rdname vector-len
-lgl_len <- function(.n = 0, ..., .attrs = list()) {
-  with_attributes(rep_len(na_lgl, .n), ..., .attrs = .attrs)
+lgl_len <- function(.n = 0, ...) {
+  struct(rep_len(na_lgl, .n), ...)
 }
 #' @export
 #' @rdname vector-len
-int_len <- function(.n = 0, ..., .attrs = list()) {
-  with_attributes(rep_len(na_int, .n), ..., .attrs = .attrs)
+int_len <- function(.n = 0, ...) {
+  struct(rep_len(na_int, .n), ...)
 }
 #' @export
 #' @rdname vector-len
-dbl_len <- function(.n = 0, ..., .attrs = list()) {
-  with_attributes(rep_len(na_dbl, .n), ..., .attrs = .attrs)
+dbl_len <- function(.n = 0, ...) {
+  struct(rep_len(na_dbl, .n), ...)
 }
 #' @export
 #' @rdname vector-len
-chr_len <- function(.n = 0, ..., .attrs = list()) {
-  with_attributes(rep_len(na_chr, .n), ..., .attrs = .attrs)
+chr_len <- function(.n = 0, ...) {
+  struct(rep_len(na_chr, .n), ...)
 }
 #' @export
 #' @rdname vector-len
-cpl_len <- function(.n = 0, ..., .attrs = list()) {
-  with_attributes(rep_len(na_cpl, .n), ..., .attrs = .attrs)
+cpl_len <- function(.n = 0, ...) {
+  struct(rep_len(na_cpl, .n), ...)
 }
 #' @export
 #' @rdname vector-len
-bytes_len <- function(.n = 0, ..., .attrs = list()) {
-  with_attributes(vector("raw", .n), ..., .attrs = .attrs)
+bytes_len <- function(.n = 0, ...) {
+  struct(vector("raw", .n), ...)
 }
 #' @export
 #' @rdname vector-len
-list_len <- function(.n = 0, ..., .attrs = list()) {
-  with_attributes(vector("list", .n), ..., .attrs = .attrs)
+list_len <- function(.n = 0, ...) {
+  struct(vector("list", .n), ...)
 }
