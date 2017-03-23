@@ -68,7 +68,7 @@
 #' @export
 #' @return `enquo()` returns a formula; see also
 #'   `dots_quos()` for "capturing" dots as a list of formulas.
-#' @seealso [dots_quos()] for capturing dots, [expr_label()] and
+#' @seealso [quos()][quosures] for capturing dots, [expr_label()] and
 #'   [expr_text()] for capturing labelling information.
 #' @examples
 #' # enquo() returns a formula:

@@ -72,7 +72,7 @@
 #'   environment and inlined in the expression.
 #' @return A formula whose right-hand side contains the quoted
 #'   expression supplied as argument.
-#' @seealso [dots_quos()] for capturing several expressions,
+#' @seealso [quos()][quosures] for capturing several expressions,
 #'   including from dots; [expr()] for quoting a raw
 #'   expression with quasiquotation; and [expr_interp()] for unquoting
 #'   an already quoted expression or an existing formula.
@@ -262,6 +262,8 @@ expr <- function(expr) {
 #'   name. If an integer, it is passed to the `width` argument of
 #'   `expr_text()`, if `TRUE`, the default width is used. See
 #'   [exprs_auto_name()].
+#' @return A list of quosures with class `quosures`.
+#' @name quosures
 #' @export
 #' @examples
 #' # dots_quos() is like the singular version but allows quoting
@@ -306,11 +308,25 @@ dots_quos <- function(..., .named = FALSE) {
     width <- quo_names_width(.named)
     dots <- exprs_auto_name(dots, width)
   }
-  dots
+  struct(dots, class = "quosures")
 }
-#' @rdname dots_quos
+#' @rdname quosures
 #' @export
 quos <- dots_quos
+
+#' @rdname quosures
+#' @export
+is_quosures <- function(x) {
+  inherits(x, "quosures")
+}
+#' @export
+`[.quosures` <- function(x, i) {
+  struct(NextMethod(), class = "quosures")
+}
+#' @export
+c.quosures <- function(..., recursive = FALSE) {
+  structure(NextMethod(), class = "quosures")
+}
 
 quo_names_width <- function(named) {
   if (is_true(named)) {
@@ -322,7 +338,7 @@ quo_names_width <- function(named) {
   }
 }
 
-#' @rdname dots_quos
+#' @rdname quosures
 #' @export
 dots_definitions <- function(..., .named = FALSE) {
   dots <- dots_capture(...)

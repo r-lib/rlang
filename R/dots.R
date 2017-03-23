@@ -80,7 +80,7 @@ dots_exprs <- function(...) {
 #' @param ... Dots to inspect.
 #' @param .only_dots,only_dots Whether to stop introspection once
 #'   forwarded dots have been climbed. Setting this to `TRUE` is only
-#'   useful for inspecting dots (cf. [dots_quos()] which does not
+#'   useful for inspecting dots (cf. [quos()][quosures] which does not
 #'   follow symbols).
 #' @seealso [arg_inspect()]
 #' @export

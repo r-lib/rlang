@@ -92,6 +92,6 @@ g <- function(bar) fn(bar)
 g(a + b)
 }
 \seealso{
-\code{\link[=dots_quos]{dots_quos()}} for capturing dots, \code{\link[=expr_label]{expr_label()}} and
+\link[=quosures]{quos()} for capturing dots, \code{\link[=expr_label]{expr_label()}} and
 \code{\link[=expr_text]{expr_text()}} for capturing labelling information.
 }
