@@ -255,7 +255,7 @@ overscope_eval_next <- function(overscope, quo, env = base_env()) {
   lexical_env <- f_env(quo)
 
   overscope$.env <- lexical_env
-  env_set_parent(overscope$.top_env, lexical_env)
+  mut_parent_env(overscope$.top_env, lexical_env)
 
   .Call(rlang_eval, f_rhs(quo), overscope)
 }

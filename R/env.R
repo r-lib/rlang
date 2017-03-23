@@ -287,7 +287,7 @@ set_env <- function(env, new_env) {
   )
 }
 
-env_set_parent <- function(env, new_env) {
+mut_parent_env <- function(env, new_env) {
   env_ <- get_env(env)
   parent.env(env_) <- get_env(new_env)
   env
