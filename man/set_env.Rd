@@ -4,7 +4,7 @@
 \alias{set_env}
 \title{Set an environment.}
 \usage{
-set_env(env, new_env)
+set_env(env, new_env = caller_env())
 }
 \arguments{
 \item{env}{An environment or an object with a S3 method for

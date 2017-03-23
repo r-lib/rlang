@@ -273,7 +273,7 @@ as_env_ <- function(x, parent = NULL) {
 #' # you need to assign the returned function to the `fn` name:
 #' fn <- set_env(fn, other_env)
 #' identical(get_env(fn), other_env)
-set_env <- function(env, new_env) {
+set_env <- function(env, new_env = caller_env()) {
   switch_type(env,
     quosure = ,
     closure = {
