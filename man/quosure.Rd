@@ -211,7 +211,7 @@ eval_tidy(f)
 eval_tidy(quosure(a ~ b))
 }
 \seealso{
-\code{\link[=dots_quosures]{dots_quosures()}} for capturing several expressions,
+\code{\link[=dots_quos]{dots_quos()}} for capturing several expressions,
 including from dots; \code{\link[=expr]{expr()}} for quoting a raw
 expression with quasiquotation; and \code{\link[=expr_interp]{expr_interp()}} for unquoting
 an already quoted expression or an existing formula.

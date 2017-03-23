@@ -11,7 +11,7 @@
 #' evaluated. It is thus necessary to capture not only the R
 #' expression supplied as argument in a function call, but also the
 #' evaluation environment of the call site. `catch_quosure()` and
-#' `dots_quosures()` make it easy to record this information within
+#' `dots_quos()` make it easy to record this information within
 #' formulas.
 #'
 #' @section Non-standard evaluation:
@@ -59,7 +59,7 @@
 #'   expressions were not necessarily supplied in the last call
 #'   frame. In general, the call site of argument passed through dots
 #'   can be anywhere between the current and global frames. For this
-#'   reason, it is recommended to always use `dots_quosures()` rather
+#'   reason, it is recommended to always use `dots_quos()` rather
 #'   than `substitute()` and `caller_env()` or `parent.frame()`, since
 #'   the former will encode the appropriate evaluation environments
 #'   within the formulas.
@@ -67,8 +67,8 @@
 #' @param x,... Arguments to capture.
 #' @export
 #' @return `catch_quosure()` returns a formula; see also
-#'   `dots_quosures()` for "capturing" dots as a list of formulas.
-#' @seealso [dots_quosures()] for capturing dots, [expr_label()] and
+#'   `dots_quos()` for "capturing" dots as a list of formulas.
+#' @seealso [dots_quos()] for capturing dots, [expr_label()] and
 #'   [expr_text()] for capturing labelling information.
 #' @examples
 #' # catch_quosure() returns a formula:

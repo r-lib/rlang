@@ -72,7 +72,7 @@
 #'   environment and inlined in the expression.
 #' @return A formula whose right-hand side contains the quoted
 #'   expression supplied as argument.
-#' @seealso [dots_quosures()] for capturing several expressions,
+#' @seealso [dots_quos()] for capturing several expressions,
 #'   including from dots; [expr()] for quoting a raw
 #'   expression with quasiquotation; and [expr_interp()] for unquoting
 #'   an already quoted expression or an existing formula.
@@ -235,17 +235,17 @@ expr <- function(expr) {
 
 #' Tidy quotation of multiple expressions and dots.
 #'
-#' `dots_quosures()` quotes its arguments and returns them as a list of
+#' `dots_quos()` quotes its arguments and returns them as a list of
 #' tidy quotes. It is especially useful to "capture" arguments
 #' forwarded through `...`.
 #'
-#' Both `dots_quosures` and `dots_definitions()` have specific support for
+#' Both `dots_quos` and `dots_definitions()` have specific support for
 #' definition expressions of the type `var := expr`, with some
 #' differences:
 #'
 #'\describe{
-#'  \item{`dots_quosures()`}{
-#'    When `:=` definitions are supplied to `dots_quosures()`,
+#'  \item{`dots_quos()`}{
+#'    When `:=` definitions are supplied to `dots_quos()`,
 #'    they are treated as a synonym of argument assignment
 #'    `=`. On the other hand, they allow unquoting operators on
 #'    the left-hand side, which makes it easy to assign names
@@ -253,7 +253,7 @@ expr <- function(expr) {
 #'  \item{`dots_definitions()`}{
 #'    This dots capturing function returns definitions as is. Unquote
 #'    operators are processed on capture, in both the LHS and the
-#'    RHS. Unlike `dots_quosures()`, it allows named definitions.}
+#'    RHS. Unlike `dots_quos()`, it allows named definitions.}
 #' }
 #' @inheritParams catch_quosure
 #' @param .named Whether to ensure all dots are named. Unnamed
@@ -263,42 +263,42 @@ expr <- function(expr) {
 #'   [exprs_auto_name()].
 #' @export
 #' @examples
-#' # dots_quosures() is like the singular version but allows quoting
+#' # dots_quos() is like the singular version but allows quoting
 #' # several arguments:
-#' dots_quosures(foo(), bar(baz), letters[1:2], !! letters[1:2])
+#' dots_quos(foo(), bar(baz), letters[1:2], !! letters[1:2])
 #'
 #' # It is most useful when used with dots. This allows quoting
 #' # expressions across different levels of function calls:
-#' fn <- function(...) dots_quosures(...)
+#' fn <- function(...) dots_quos(...)
 #' fn(foo(bar), baz)
 #'
-#' # Note that dots_quosures() does not check for duplicate named
+#' # Note that dots_quos() does not check for duplicate named
 #' # arguments:
-#' fn <- function(...) dots_quosures(x = x, ...)
+#' fn <- function(...) dots_quos(x = x, ...)
 #' fn(x = a + b)
 #'
 #'
 #' # Dots can be spliced in:
 #' args <- list(x = 1:3, y = ~var)
-#' dots_quosures(!!! args, z = 10L)
+#' dots_quos(!!! args, z = 10L)
 #'
 #' # Raw expressions are turned to formulas:
 #' args <- alist(x = foo, y = bar)
-#' dots_quosures(!!! args)
+#' dots_quos(!!! args)
 #'
 #'
 #' # Definitions are treated similarly to named arguments:
-#' dots_quosures(x := expr, y = expr)
+#' dots_quos(x := expr, y = expr)
 #'
 #' # However, the LHS of definitions can be unquoted. The return value
 #' # must be a symbol or a string:
 #' var <- "foo"
-#' dots_quosures(!!var := expr)
+#' dots_quos(!!var := expr)
 #'
 #' # If you need the full LHS expression, use dots_definitions():
 #' dots <- dots_definitions(var = foo(baz) := bar(baz))
 #' dots$defs
-dots_quosures <- function(..., .named = FALSE) {
+dots_quos <- function(..., .named = FALSE) {
   dots <- dots_capture(...)
   dots <- dots_interp_lhs(dots)
   if (.named) {
@@ -307,9 +307,9 @@ dots_quosures <- function(..., .named = FALSE) {
   }
   dots
 }
-#' @rdname dots_quosures
+#' @rdname dots_quos
 #' @export
-quosures <- dots_quosures
+quosures <- dots_quos
 
 quo_names_width <- function(named) {
   if (is_true(named)) {
@@ -321,7 +321,7 @@ quo_names_width <- function(named) {
   }
 }
 
-#' @rdname dots_quosures
+#' @rdname dots_quos
 #' @export
 dots_definitions <- function(..., .named = FALSE) {
   dots <- dots_capture(...)

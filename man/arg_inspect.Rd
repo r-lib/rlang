@@ -19,7 +19,7 @@ inspect.}
 
 \item{only_dots}{Whether to stop introspection once
 forwarded dots have been climbed. Setting this to \code{TRUE} is only
-useful for inspecting dots (cf. \code{\link[=dots_quosures]{dots_quosures()}} which does not
+useful for inspecting dots (cf. \code{\link[=dots_quos]{dots_quos()}} which does not
 follow symbols).}
 }
 \value{

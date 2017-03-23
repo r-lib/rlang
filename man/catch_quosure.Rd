@@ -11,7 +11,7 @@ catch_quosure(x)
 }
 \value{
 \code{catch_quosure()} returns a formula; see also
-\code{dots_quosures()} for "capturing" dots as a list of formulas.
+\code{dots_quos()} for "capturing" dots as a list of formulas.
 }
 \description{
 A powerful feature in R is the ability of capturing the expression
@@ -25,7 +25,7 @@ at the call site are available when the expression gets
 evaluated. It is thus necessary to capture not only the R
 expression supplied as argument in a function call, but also the
 evaluation environment of the call site. \code{catch_quosure()} and
-\code{dots_quosures()} make it easy to record this information within
+\code{dots_quos()} make it easy to record this information within
 formulas.
 }
 \section{Non-standard evaluation}{
@@ -76,7 +76,7 @@ when you rescope expressions captured from dots because those
 expressions were not necessarily supplied in the last call
 frame. In general, the call site of argument passed through dots
 can be anywhere between the current and global frames. For this
-reason, it is recommended to always use \code{dots_quosures()} rather
+reason, it is recommended to always use \code{dots_quos()} rather
 than \code{substitute()} and \code{caller_env()} or \code{parent.frame()}, since
 the former will encode the appropriate evaluation environments
 within the formulas.
@@ -92,6 +92,6 @@ g <- function(bar) fn(bar)
 g(a + b)
 }
 \seealso{
-\code{\link[=dots_quosures]{dots_quosures()}} for capturing dots, \code{\link[=expr_label]{expr_label()}} and
+\code{\link[=dots_quos]{dots_quos()}} for capturing dots, \code{\link[=expr_label]{expr_label()}} and
 \code{\link[=expr_text]{expr_text()}} for capturing labelling information.
 }
