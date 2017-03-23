@@ -309,7 +309,7 @@ dots_quos <- function(..., .named = FALSE) {
 }
 #' @rdname dots_quos
 #' @export
-quosures <- dots_quos
+quos <- dots_quos
 
 quo_names_width <- function(named) {
   if (is_true(named)) {
