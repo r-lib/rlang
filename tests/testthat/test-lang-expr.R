@@ -35,3 +35,14 @@ test_that("converts atomics to strings", {
 test_that("truncates long calls", {
   expect_equal(expr_label(quote({ a + b })), "`{\n    ...\n}`")
 })
+
+
+# expr_name() --------------------------------------------------------
+
+test_that("name symbols, calls, and scalars", {
+  expect_identical(expr_name(quote(foo)), "foo")
+  expect_identical(expr_name(quote(foo(bar))), "(foo(bar))")
+  expect_identical(expr_name(1L), "1")
+  expect_identical(expr_name("foo"), "foo")
+  expect_error(expr_name(1:2), "must quote a symbol, scalar, or call")
+})

@@ -220,10 +220,7 @@ quo_text <- function(quo, width = 60L, nlines = Inf) {
 #' @rdname quo_expr
 #' @export
 quo_name <- function(quo) {
-  if (!is_symbol(quo)) {
-    abort("`quo` must quote a symbol")
-  }
-  as_name(quo)
+  expr_name(quo_expr(quo))
 }
 
 quo_splice <- function(x, parent = NULL) {

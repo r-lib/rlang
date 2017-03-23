@@ -70,6 +70,9 @@ SEXP guard_formula(SEXP f) {
 }
 
 SEXP as_quosure(SEXP x) {
+  if (Rf_inherits(x, "quosure"))
+    return x;
+
   static SEXP quo_classes = NULL;
   if (!quo_classes) {
     quo_classes = Rf_allocVector(STRSXP, 2);

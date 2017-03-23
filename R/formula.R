@@ -150,9 +150,13 @@ f_env <- function(f) {
 f_text <- function(x, width = 60L, nlines = Inf) {
   expr_text(f_rhs(x), width = width, nlines = nlines)
 }
-
-#' @export
 #' @rdname f_text
+#' @export
+f_name <- function(x) {
+  expr_name(f_rhs(x))
+}
+#' @rdname f_text
+#' @export
 f_label <- function(x) {
   expr_label(f_rhs(x))
 }
