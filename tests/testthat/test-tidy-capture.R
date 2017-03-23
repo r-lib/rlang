@@ -2,8 +2,8 @@ context("tidy capture")
 
 test_that("explicit dots make a list of formulas", {
   fs <- dots_quosures(x = 1 + 2, y = 2 + 3)
-  f1 <- ~ 1 + 2
-  f2 <- ~ 2 + 3
+  f1 <- as_quosure(~ 1 + 2)
+  f2 <- as_quosure(~ 2 + 3)
 
   expect_identical(fs$x, f1)
   expect_identical(fs$y, f2)
@@ -15,9 +15,9 @@ test_that("dots_quosures() produces correct formulas", {
   }
   out <- fn(z = a + b)
 
-  expect_identical(out$dots$x, with_env(out$env, ~x))
-  expect_identical(out$dots$y, with_env(out$env, ~a + b))
-  expect_identical(out$dots$z, ~a + b)
+  expect_identical(out$dots$x, env_set(quosure(x), out$env))
+  expect_identical(out$dots$y, env_set(quosure(a + b), out$env))
+  expect_identical(out$dots$z, quosure(a + b))
 })
 
 test_that("dots are interpolated", {
@@ -53,7 +53,7 @@ test_that("dots capture is stack-consistent", {
   h <- function(dots, ...) {
     dots
   }
-  expect_identical(fn(foo(baz)), named(list(~foo(baz))))
+  expect_identical(fn(foo(baz)), named(list(quosure(foo(baz)))))
 })
 
 test_that("splice is consistently recognised", {
@@ -77,26 +77,26 @@ test_that("dots can be spliced in", {
 
   out <- fn(foo(bar))
   expected <- list(
-    ~foo(bar),
-    with_env(out$env, ~bar(baz)),
-    a = with_env(out$env, ~"var"),
-    b = with_env(out$env, ~foo)
+    quosure(foo(bar)),
+    env_set(quosure(bar(baz)), out$env),
+    a = env_set(quosure("var"), out$env),
+    b = env_set(quosure(foo), out$env)
   )
   expect_identical(out$out, expected)
 })
 
 test_that("spliced dots are wrapped in formulas", {
   args <- alist(x = var, y = ~var)
-  expect_identical(dots_quosures(!!! args), list(x = ~var, y = ~var))
+  expect_identical(dots_quosures(!!! args), list(x = quosure(var), y = quosure(var)))
 })
 
 test_that("dot names are interpolated", {
   var <- "baz"
-  expect_identical(dots_quosures(!!var := foo, !!toupper(var) := bar), list(baz = ~foo, BAZ = ~bar))
-  expect_identical(dots_quosures(!!var := foo, bar), list(baz = ~foo, ~bar))
+  expect_identical(dots_quosures(!!var := foo, !!toupper(var) := bar), list(baz = quosure(foo), BAZ = quosure(bar)))
+  expect_identical(dots_quosures(!!var := foo, bar), list(baz = quosure(foo), quosure(bar)))
 
   var <- quote(baz)
-  expect_identical(dots_quosures(!!var := foo), list(baz = ~foo))
+  expect_identical(dots_quosures(!!var := foo), list(baz = quosure(foo)))
 })
 
 test_that("corner cases are handled when interpolating dot names", {
@@ -112,7 +112,7 @@ test_that("definitions are interpolated", {
   var2 <- "bar"
   dots <- dots_definitions(def = foo(!!var1) := bar(!!var2))
 
-  pat <- list(lhs = ~foo("foo"), rhs = ~bar("bar"))
+  pat <- list(lhs = quosure(foo("foo")), rhs = quosure(bar("bar")))
   expect_identical(dots$defs$def, pat)
 })
 

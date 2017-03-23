@@ -9,16 +9,16 @@ test_that("lazy objects are converted to tidy quotes", {
   env <- child_env(get_env())
 
   lazy <- structure(list(expr = quote(foo(bar)), env = env), class = "lazy")
-  expect_identical(compat_lazy(lazy), with_env(env, ~foo(bar)))
+  expect_identical(compat_lazy(lazy), new_quosure(quote(foo(bar)), env))
 
   lazy_str <- "foo(bar)"
-  expect_identical(compat_lazy(lazy_str), ~foo(bar))
+  expect_identical(compat_lazy(lazy_str), quosure(foo(bar)))
 
   lazy_lang <- quote(foo(bar))
-  expect_identical(compat_lazy(lazy_lang), ~foo(bar))
+  expect_identical(compat_lazy(lazy_lang), quosure(foo(bar)))
 
   lazy_sym <- quote(foo)
-  expect_identical(compat_lazy(lazy_sym), ~foo)
+  expect_identical(compat_lazy(lazy_sym), quosure(foo))
 })
 
 test_that("lazy_dots objects are converted to tidy quotes", {
@@ -30,9 +30,9 @@ test_that("lazy_dots objects are converted to tidy quotes", {
   ))
 
   expected <- list(
-    lazy = with_env(env, ~foo(bar)),
-    lazy_lang = ~foo(bar),
-    ~foo(bar)
+    lazy = new_quosure(quote(foo(bar)), env),
+    lazy_lang = quosure(foo(bar)),
+    quosure(foo(bar))
   )
 
   expect_identical(compat_lazy_dots(lazy_dots, get_env(), "foo(bar)"), expected)
@@ -45,9 +45,9 @@ test_that("unnamed lazy_dots are given default names", {
   ))
 
   expected <- list(
-    `foo(baz)` = ~foo(baz),
-    `foo(bar)` = ~foo(bar),
-    foobarbaz = ~foo(barbaz)
+    `foo(baz)` = quosure(foo(baz)),
+    `foo(bar)` = quosure(foo(bar)),
+    foobarbaz = quosure(foo(barbaz))
   )
   dots <- compat_lazy_dots(lazy_dots, get_env(), foobarbaz = "foo(barbaz)", .named = TRUE)
 
