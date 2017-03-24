@@ -312,13 +312,13 @@ dots_quos <- function(..., .named = FALSE,
   if (n_dots) {
     dots <- switch(match.arg(.ignore_empty),
       trailing =
-        if (is_empty_quosure(dots[[n_dots]])) {
+        if (quo_is_missing(dots[[n_dots]])) {
           dots[[n_dots]] <- NULL
           dots
         } else {
           dots
         },
-      all = discard(dots, is_empty_quosure),
+      all = discard(dots, quo_is_missing),
       dots
     )
   }

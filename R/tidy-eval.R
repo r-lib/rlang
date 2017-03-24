@@ -281,7 +281,7 @@ f_self_eval <- function(overscope, overscope_top) {
   function(...) {
     f <- sys.call()
 
-    if (is_empty_quosure(f)) {
+    if (quo_is_missing(f)) {
       return(missing_arg())
     }
 

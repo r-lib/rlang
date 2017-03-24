@@ -9,11 +9,9 @@ dots_exprs(..., .ignore_empty = "trailing")
 \arguments{
 \item{...}{Arguments to extract.}
 
-\item{.ignore_empty}{Whether to ignore empty arguments. If \code{TRUE},
-all empty arguments are ignored. If the string \code{"trailing"}, only
-the last argument is ignored if it is empty. If \code{FALSE}, empty
-arguments are returned as a quosure containing the \link[=missing_arg]{missing
-argument}.}
+\item{.ignore_empty}{Whether to ignore empty arguments. Can be one
+of \code{"trailing"}, \code{"none"}, \code{"all"}. If \code{"trailing"}, only the
+last argument is ignored if it is empty.}
 }
 \description{
 These functions return the arguments forwarded through \code{...}.

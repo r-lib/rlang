@@ -79,19 +79,19 @@ is_one_sided <- function(x, lang_sym = sym_tilde) {
 #' Is a quosure empty?
 #'
 #' When missing arguments are captured as quosures, either through
-#' [enquo()] or [quos()], they are returned as the empty
-#' quosure. These quosures contain the [missing argument][missing_arg]
-#' and typically have the [empty environment][empty_env] as enclosure.
+#' [enquo()] or [quos()], they are returned as an empty quosure. These
+#' quosures contain the [missing argument][missing_arg] and typically
+#' have the [empty environment][empty_env] as enclosure.
 #'
 #' @param quo A quosure.
 #' @export
 #' @examples
 #' quo <- quo()
-#' is_empty_quosure(quo)
+#' quo_is_missing(quo)
 #' is_missing(f_rhs(quo))
 #' @rdname empty_quosure
 #' @export
-is_empty_quosure <- function(quo) {
+quo_is_missing <- function(quo) {
   is_quosure(quo) && is_missing(f_rhs(quo))
 }
 
