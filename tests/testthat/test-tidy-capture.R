@@ -183,13 +183,12 @@ test_that("empty quosures are forwarded", {
 })
 
 test_that("dots_quos() captures missing arguments", {
-  q <- quo()
-  expect_identical(quos(, , .ignore_empty = FALSE), set_names(list(q, q), c("", "")))
+  expect_identical(quos(, , .ignore_empty = FALSE), quos_list(quo(), quo()), c("", ""))
 })
 
 test_that("dots_quos() ignores missing arguments", {
-  expect_identical(quos(, , "foo", ), dots_list(quo(), quo(), new_quosure("foo", empty_env())))
-  expect_identical(quos(, , "foo", , .ignore_empty = TRUE), dots_list(new_quosure("foo", empty_env())))
+  expect_identical(quos(, , "foo", ), quos_list(quo(), quo(), new_quosure("foo", empty_env())))
+  expect_identical(quos(, , "foo", , .ignore_empty = TRUE), quos_list(new_quosure("foo", empty_env())))
 })
 
 test_that("formulas are guarded on capture", {
