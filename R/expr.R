@@ -247,30 +247,24 @@ expr_label <- function(expr) {
 #' @rdname expr_label
 #' @export
 expr_name <- function(expr) {
-  name <- switch_type(expr,
+  switch_type(expr,
     symbol = as_name(expr),
     quosure = ,
     language = {
       expr_text <- deparse_one(expr)
       paste0("(", expr_text, ")")
     },
-    logical = ,
-    integer = ,
-    double = ,
-    complex = ,
-    string = ,
-    character = {
-      if (length(expr) == 1) {
-        as.character(expr)
-      }
+    if (is_scalar_atomic(expr)) {
+      # So 1L is translated to "1" and not "1L"
+      as.character(expr)
+    } else if (length(expr) == 1) {
+      name <- expr_text(expr)
+      name <- gsub("\n.*$", "...", name)
+      name
+    } else {
+      abort("`expr` must quote a symbol, scalar, or call")
     }
   )
-
-  if (is_null(name)) {
-    abort("`expr` must quote a symbol, scalar, or call")
-  } else {
-    name
-  }
 }
 #' @rdname expr_label
 #' @export
