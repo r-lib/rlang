@@ -53,3 +53,7 @@ test_that("unnamed lazy_dots are given default names", {
 
   expect_identical(dots, expected)
 })
+
+test_that("compat_lazy() handles missing arguments", {
+  expect_identical(compat_lazy(), quo())
+})

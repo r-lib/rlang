@@ -79,13 +79,19 @@
 #' g <- function(bar) fn(bar)
 #' g(a + b)
 enquo <- function(x) {
+  if (missing(x)) {
+    return(new_quosure(missing_arg(), empty_env()))
+  }
+
   capture <- new_language(captureArg, substitute(x))
   arg <- eval_bare(capture, caller_env())
   expr <- .Call(rlang_interp, arg$expr, arg$env)
   forward_quosure(expr, arg$env)
 }
 forward_quosure <- function(expr, env) {
-  if (is_symbolic(expr)) {
+  if (quo_is_missing(expr)) {
+    expr
+  } else if (is_symbolic(expr)) {
     new_quosure(expr, env)
   } else {
     as_quosure(expr, empty_env())

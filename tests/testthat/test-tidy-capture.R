@@ -166,9 +166,29 @@ test_that("quosures are spliced before serialisation", {
   expect_identical(names(quosures), "foo(bar)")
 })
 
+test_that("missing arguments are captured", {
+  q <- quo()
+  expect_true(is_missing(f_rhs(q)))
+  expect_identical(f_env(q), empty_env())
+})
+
+test_that("empty quosures are forwarded", {
+  inner <- function(x) enquo(x)
+  outer <- function(x) inner(x)
+  expect_identical(outer(), quo())
+
+  inner <- function(x) enquo(x)
+  outer <- function(x) inner(!! enquo(x))
+  expect_identical(outer(), quo())
+})
+
 test_that("dots_quos() captures missing arguments", {
-  q <- new_quosure(missing_arg(), empty_env())
-  expect_identical(dots_quos(, ), quos_list(q, q))
+  expect_identical(quos(, , .ignore_empty = "none"), quos_list(quo(), quo()), c("", ""))
+})
+
+test_that("dots_quos() ignores missing arguments", {
+  expect_identical(quos(, , "foo", ), quos_list(quo(), quo(), new_quosure("foo", empty_env())))
+  expect_identical(quos(, , "foo", , .ignore_empty = "all"), quos_list(new_quosure("foo", empty_env())))
 })
 
 test_that("formulas are guarded on capture", {

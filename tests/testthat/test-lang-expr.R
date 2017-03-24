@@ -41,8 +41,9 @@ test_that("truncates long calls", {
 
 test_that("name symbols, calls, and scalars", {
   expect_identical(expr_name(quote(foo)), "foo")
-  expect_identical(expr_name(quote(foo(bar))), "(foo(bar))")
+  expect_identical(expr_name(quote(foo(bar))), "foo(bar)")
   expect_identical(expr_name(1L), "1")
   expect_identical(expr_name("foo"), "foo")
+  expect_identical(expr_name(function() NULL), "function () ...")
   expect_error(expr_name(1:2), "must quote a symbol, scalar, or call")
 })

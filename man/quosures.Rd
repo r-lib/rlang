@@ -8,9 +8,9 @@
 \alias{dots_definitions}
 \title{Tidy quotation of multiple expressions and dots.}
 \usage{
-dots_quos(..., .named = FALSE)
+dots_quos(..., .named = FALSE, .ignore_empty = c("trailing", "none", "all"))
 
-quos(..., .named = FALSE)
+quos(..., .named = FALSE, .ignore_empty = c("trailing", "none", "all"))
 
 is_quosures(x)
 
@@ -25,10 +25,11 @@ name. If an integer, it is passed to the \code{width} argument of
 \code{expr_text()}, if \code{TRUE}, the default width is used. See
 \code{\link[=exprs_auto_name]{exprs_auto_name()}}.}
 
+\item{.ignore_empty}{Whether to ignore empty arguments. Can be one
+of \code{"trailing"}, \code{"none"}, \code{"all"}. If \code{"trailing"}, only the
+last argument is ignored if it is empty.}
+
 \item{x}{Arguments to capture.}
-}
-\value{
-A list of quosures with class \code{quosures}.
 }
 \description{
 \code{dots_quos()} quotes its arguments and returns them as a list of

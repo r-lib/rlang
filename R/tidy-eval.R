@@ -281,6 +281,10 @@ f_self_eval <- function(overscope, overscope_top) {
   function(...) {
     f <- sys.call()
 
+    if (quo_is_missing(f)) {
+      return(missing_arg())
+    }
+
     if (is_null(f_env(f))) {
       # Take care of degenerate formulas (e.g. created with ~~letters).
       # We assign them in `overscope` rather than `lexical_env` so that

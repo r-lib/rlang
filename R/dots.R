@@ -18,6 +18,8 @@
 #' @param ... Arguments with explicit (`dots_list()`) or list
 #'   (`dots_splice()`) splicing semantics. The contents of spliced
 #'   arguments are embedded in the returned list.
+#' @return A list of arguments. This list is always named: unnamed
+#'   arguments are named with the empty string `""`.
 #' @seealso [dots_exprs()] for extracting dots without evaluation.
 #' @export
 #' @examples
@@ -29,7 +31,9 @@
 #' # Unlike dots_splice(), it doesn't splice bare lists:
 #' dots_list(x, 3)
 dots_list <- function(...) {
-  .Call(rlang_splice, list(...), "list", bare = FALSE)
+  dots <- .Call(rlang_splice, list(...), "list", bare = FALSE)
+  names(dots) <- names2(dots)
+  dots
 }
 #' @rdname dots_list
 #' @export
@@ -41,7 +45,9 @@ dots_list <- function(...) {
 #' dots_splice(spliced(x), 3)
 #' dots_splice(x, 3)
 dots_splice <- function(...) {
-  .Call(rlang_splice, list(...), "list", bare = TRUE)
+  dots <- .Call(rlang_splice, list(...), "list", bare = TRUE)
+  names(dots) <- names2(dots)
+  dots
 }
 
 #' Extract dots forwarded as arguments.
@@ -56,10 +62,11 @@ dots_splice <- function(...) {
 #' is more bare bones and returns the pairlist as is, without
 #' unquoting.
 #'
+#' @inheritParams quosures
 #' @param ... Arguments to extract.
 #' @export
-dots_exprs <- function(...) {
-  map(dots_quos(...), f_rhs)
+dots_exprs <- function(..., .ignore_empty = "trailing") {
+  map(dots_quos(..., .ignore_empty = .ignore_empty), f_rhs)
 }
 
 #' Inspect dots
