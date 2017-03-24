@@ -251,8 +251,9 @@ expr_name <- function(expr) {
     symbol = as_name(expr),
     quosure = ,
     language = {
-      expr_text <- deparse_one(expr)
-      paste0("(", expr_text, ")")
+      name <- deparse_one(expr)
+      name <- gsub("\n.*$", "...", name)
+      name
     },
     if (is_scalar_atomic(expr)) {
       # So 1L is translated to "1" and not "1L"
