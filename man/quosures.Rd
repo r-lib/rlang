@@ -12,6 +12,8 @@ dots_quos(..., .named = FALSE, .ignore_empty = "trailing")
 
 quos(..., .named = FALSE, .ignore_empty = "trailing")
 
+is_quosures(x)
+
 dots_definitions(..., .named = FALSE)
 }
 \arguments{
@@ -28,6 +30,8 @@ all empty arguments are ignored. If the string \code{"trailing"}, only
 the last argument is ignored if it is empty. If \code{FALSE}, empty
 arguments are returned as a quosure containing the \link[=missing_arg]{missing
 argument}.}
+
+\item{x}{Arguments to capture.}
 }
 \description{
 \code{dots_quos()} quotes its arguments and returns them as a list of

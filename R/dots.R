@@ -62,7 +62,7 @@ dots_splice <- function(...) {
 #' is more bare bones and returns the pairlist as is, without
 #' unquoting.
 #'
-#' @inheritParams dots_quosures
+#' @inheritParams quosures
 #' @param ... Arguments to extract.
 #' @export
 dots_exprs <- function(..., .ignore_empty = "trailing") {

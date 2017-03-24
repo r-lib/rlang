@@ -268,6 +268,7 @@ expr <- function(expr) {
 #'   arguments are returned as a quosure containing the [missing
 #'   argument][missing_arg].
 #' @export
+#' @name quosures
 #' @examples
 #' # dots_quos() is like the singular version but allows quoting
 #' # several arguments:

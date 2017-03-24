@@ -11,13 +11,12 @@ is_empty_quosure(quo)
 }
 \description{
 When missing arguments are captured as quosures, either through
-\code{\link[=catch_quosure]{catch_quosure()}} or \code{\link[=dots_quosures]{dots_quosures()}}, they are returned as the
-empty quosure. These quosures contain the \link[=missing_arg]{missing
-argument} and typically have the \link[=empty_env]{empty
-environment} as enclosure.
+\code{\link[=enquo]{enquo()}} or \code{\link[=quos]{quos()}}, they are returned as the empty
+quosure. These quosures contain the \link[=missing_arg]{missing argument}
+and typically have the \link[=empty_env]{empty environment} as enclosure.
 }
 \examples{
-quo <- quosure()
+quo <- quo()
 is_empty_quosure(quo)
 is_missing(f_rhs(quo))
 }

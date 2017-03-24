@@ -213,7 +213,7 @@ test_that("whole scope is purged", {
 })
 
 test_that("empty quosure self-evaluates", {
-  quo <- quosure(is_missing(!! quosure()))
+  quo <- quo(is_missing(!! quo()))
   expect_true(eval_tidy(quo))
 })
 

@@ -173,21 +173,21 @@ test_that("missing arguments are captured", {
 })
 
 test_that("empty quosures are forwarded", {
-  inner <- function(x) catch_quosure(x)
+  inner <- function(x) enquo(x)
   outer <- function(x) inner(x)
-  expect_identical(outer(), quosure())
+  expect_identical(outer(), quo())
 
-  inner <- function(x) catch_quosure(x)
-  outer <- function(x) inner(!! catch_quosure(x))
-  expect_identical(outer(), quosure())
+  inner <- function(x) enquo(x)
+  outer <- function(x) inner(!! enquo(x))
+  expect_identical(outer(), quo())
 })
 
-test_that("dots_quosures() captures missing arguments", {
+test_that("dots_quos() captures missing arguments", {
   q <- quo()
   expect_identical(quos(, , .ignore_empty = FALSE), set_names(list(q, q), c("", "")))
 })
 
-test_that("dots_quosures() ignores missing arguments", {
+test_that("dots_quos() ignores missing arguments", {
   expect_identical(quos(, , "foo", ), dots_list(quo(), quo(), new_quosure("foo", empty_env())))
   expect_identical(quos(, , "foo", , .ignore_empty = TRUE), dots_list(new_quosure("foo", empty_env())))
 })
