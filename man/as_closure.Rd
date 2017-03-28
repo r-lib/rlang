@@ -4,11 +4,14 @@
 \alias{as_closure}
 \title{Convert to closure.}
 \usage{
-as_closure(x)
+as_closure(x, env = caller_env())
 }
 \arguments{
 \item{x}{A function or a string. In the latter case, the function
-is looked up in the calling environment.}
+is looked up in \code{env} (the calling environment by default).}
+
+\item{env}{Environment in which to fetch the function in case \code{x}
+is a string.}
 }
 \description{
 Convert an object to a closure. This is especially useful to

@@ -31,3 +31,10 @@ test_that("as_closure() handles primitive functions", {
 test_that("lambda shortcut handles positional arguments", {
   expect_identical(as_function(~ ..1 + ..3)(1, 2, 3), 4)
 })
+
+test_that("as_function() handles strings", {
+  expect_identical(as_function("mean"), mean)
+
+  env <- env(fn = function() NULL)
+  expect_identical(as_function("fn", env), env$fn)
+})
