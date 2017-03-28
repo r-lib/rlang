@@ -4,10 +4,10 @@
 \alias{as_function}
 \title{Coerce to function.}
 \usage{
-as_function(.f, .env = caller_env(), ...)
+as_function(x, env = caller_env())
 }
 \arguments{
-\item{.f}{A function or formula.
+\item{x}{A function or formula.
 
 If a \strong{function}, it is used as is.
 
@@ -15,7 +15,7 @@ If a \strong{formula}, e.g. \code{~ .x + 2}, it is converted to a function
 with two arguments, \code{.x} or \code{.} and \code{.y}. This allows you to
 create very compact anonymous functions with up to two inputs.}
 
-\item{.env}{Environment in which to fetch the function in case \code{.f}
+\item{env}{Environment in which to fetch the function in case \code{x}
 is a string.}
 
 \item{...}{Additional arguments passed on to methods. Currently
