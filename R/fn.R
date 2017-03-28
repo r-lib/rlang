@@ -239,20 +239,54 @@ fn_env <- function(fn) {
 }
 
 
-#' Convert to closure.
+#' Convert to function or closure.
 #'
-#' Convert an object to a closure. This is especially useful to
-#' normalise primitive functions to a proper closure (see
-#' [is_function()] about primitive functions).
+#' @description
 #'
-#' @param x A function or a string. In the latter case, the function
-#'   is looked up in `env` (the calling environment by default).
+#' * `as_function()` transform objects to functions. It fetches
+#'   functions by name if supplied a string or transforms
+#'   [quosures][quosure] to a proper function.
+#'
+#' * `as_closure()` first passes its argument to `as_function()`. If
+#'   the result is a primitive function, it regularises it to a proper
+#'   [closure] (see [is_function()] about primitive functions).
+#'
+#' @param x A function or formula.
+#'
+#'   If a **function**, it is used as is.
+#'
+#'   If a **formula**, e.g. `~ .x + 2`, it is converted to a function
+#'   with two arguments, `.x` or `.` and `.y`. This allows you to
+#'   create very compact anonymous functions with up to two inputs.
 #' @param env Environment in which to fetch the function in case `x`
 #'   is a string.
 #' @export
 #' @examples
+#' f <- as_function(~ . + 1)
+#' f(10)
+#'
+#' # Primitive functions are regularised as closures
 #' as_closure(list)
+#' as_closure("list")
+as_function <- function(x, env = caller_env()) {
+  coerce_type(x, "function",
+    primitive = ,
+    closure = {
+      x
+    },
+    quosure = {
+      args <- list(... = missing_arg(), .x = quote(..1), .y = quote(..2), . = quote(..1))
+      new_function(args, f_rhs(x), f_env(x))
+    },
+    string = {
+      get(x, envir = env, mode = "function")
+    }
+  )
+}
+#' @rdname as_function
+#' @export
 as_closure <- function(x, env = caller_env()) {
+  x <- as_function(x, env = env)
   coerce_type(x, "closure",
     closure =
       x,
@@ -274,43 +308,6 @@ as_closure <- function(x, env = caller_env()) {
 
       prim_call <- new_language(fn_name, .args = args)
       new_function(fmls, prim_call, base_env())
-    },
-    string =
-      as_closure(get(x, envir = env, x, mode = "function"))
-  )
-}
-#' Coerce to function.
-#'
-#' This generic transforms objects to functions. It is especially
-#' useful with formulas to create lambdas on the fly.
-#'
-#' @param x A function or formula.
-#'
-#'   If a **function**, it is used as is.
-#'
-#'   If a **formula**, e.g. `~ .x + 2`, it is converted to a function
-#'   with two arguments, `.x` or `.` and `.y`. This allows you to
-#'   create very compact anonymous functions with up to two inputs.
-#' @param env Environment in which to fetch the function in case `x`
-#'   is a string.
-#' @param ... Additional arguments passed on to methods. Currently
-#'   unused in rlang.
-#' @export
-#' @examples
-#' f <- as_function(~ . + 1)
-#' f(10)
-as_function <- function(x, env = caller_env()) {
-  coerce_type(x, "function",
-    primitive = ,
-    closure = {
-      x
-    },
-    quosure = {
-      args <- list(... = missing_arg(), .x = quote(..1), .y = quote(..2), . = quote(..1))
-      new_function(args, f_rhs(x), f_env(x))
-    },
-    string = {
-      get(x, envir = env, mode = "function")
     }
   )
 }
