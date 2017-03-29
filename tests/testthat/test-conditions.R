@@ -90,11 +90,11 @@ test_that("with_handlers() establishes inplace and exiting handlers", {
     foobar = inplace(function(c) cat("foobar"))
   )
 
-  expect_equal(with_handlers(identity(letters), .handlers = handlers), identity(letters))
-  expect_equal(with_handlers(stop(letters), .handlers = handlers), "caught error")
-  expect_equal(with_handlers(message(letters), .handlers = handlers), "caught message")
-  expect_warning(expect_equal(with_handlers({ warning("warn!"); letters }, .handlers = handlers), identity(letters)), "warn!")
-  expect_output(expect_equal(with_handlers({ cnd_signal("foobar"); letters }, .handlers = handlers), identity(letters)), "foobar")
+  expect_equal(with_handlers(identity(letters), spliced(handlers)), identity(letters))
+  expect_equal(with_handlers(stop(letters), spliced(handlers)), "caught error")
+  expect_equal(with_handlers(message(letters), spliced(handlers)), "caught message")
+  expect_warning(expect_equal(with_handlers({ warning("warn!"); letters }, spliced(handlers)), identity(letters)), "warn!")
+  expect_output(expect_equal(with_handlers({ cnd_signal("foobar"); letters }, spliced(handlers)), identity(letters)), "foobar")
 })
 
 test_that("set_names2() fills in empty names", {

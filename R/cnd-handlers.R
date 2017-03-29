@@ -31,9 +31,10 @@
 #' @param .expr An expression to execute in a context where new
 #'   handlers are established. The underscored version takes a quoted
 #'   expression or a quoted formula.
-#' @param ...,.handlers Named handlers. Handlers should inherit from
-#'   `exiting` or `inplace`. See [exiting()] and [inplace()] for
-#'   constructing such handlers.
+#' @param ... Named handlers. Handlers should inherit from `exiting`
+#'   or `inplace`. See [exiting()] and [inplace()] for constructing
+#'   such handlers. Dots are evaluated with [explicit
+#'   splicing][dots_list].
 #' @seealso [exiting()], [inplace()].
 #' @export
 #' @examples
@@ -75,9 +76,8 @@
 #'   with_restarts(g(), rst_foo = function() "restart value")
 #' }
 #' with_handlers(fn2(), foo = inplace(exiting_handler), foo = inplace(other_handler))
-with_handlers <- function(.expr, ..., .handlers = list()) {
-  handlers <- c(list(...), .handlers)
-  with_handlers_(enquo(.expr), handlers)
+with_handlers <- function(.expr, ...) {
+  with_handlers_(enquo(.expr), dots_list(...))
 }
 #' @rdname with_handlers
 #' @export

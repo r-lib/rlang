@@ -5,7 +5,7 @@
 \alias{with_handlers_}
 \title{Establish handlers on the stack.}
 \usage{
-with_handlers(.expr, ..., .handlers = list())
+with_handlers(.expr, ...)
 
 with_handlers_(.expr, .handlers = list(), .env = NULL)
 }
@@ -14,9 +14,10 @@ with_handlers_(.expr, .handlers = list(), .env = NULL)
 handlers are established. The underscored version takes a quoted
 expression or a quoted formula.}
 
-\item{..., .handlers}{Named handlers. Handlers should inherit from
-\code{exiting} or \code{inplace}. See \code{\link[=exiting]{exiting()}} and \code{\link[=inplace]{inplace()}} for
-constructing such handlers.}
+\item{...}{Named handlers. Handlers should inherit from \code{exiting}
+or \code{inplace}. See \code{\link[=exiting]{exiting()}} and \code{\link[=inplace]{inplace()}} for constructing
+such handlers. Dots are evaluated with \link[=dots_list]{explicit
+splicing}.}
 
 \item{.env}{The environment in which to evaluate a captured \code{expr}.}
 }
