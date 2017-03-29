@@ -147,8 +147,9 @@ new_language <- function(.fn, ...) {
 #' @param .call Can be a call, a formula quoting a call in the
 #'   right-hand side, or a frame object from which to extract the call
 #'   expression. If not supplied, the calling frame is used.
-#' @param ...,.args Named or unnamed expressions (constants, names or
-#'   calls) used to modify the call. Use `NULL` to remove arguments.
+#' @param ... Named or unnamed expressions (constants, names or calls)
+#'   used to modify the call. Use `NULL` to remove arguments. Dots are
+#'   evaluated with [explicit splicing][dots_list].
 #' @param .standardise If `TRUE`, the call is standardised before hand
 #'   to match existing unnamed arguments to their argument names. This
 #'   prevents new named arguments from accidentally replacing original
@@ -172,22 +173,20 @@ new_language <- function(.fn, ...) {
 #' # Add an explicit missing argument
 #' lang_modify(call, na.rm = quote(expr = ))
 #'
-#' # Supply a list of new arguments with .args
+#' # Supply a list of new arguments with spliced()
 #' newargs <- list(na.rm = NULL, trim = 0.1)
-#' lang_modify(call, .args = newargs)
+#' lang_modify(call, spliced(newargs))
 #'
 #' # If the call is missing, the parent frame is used instead.
-#' f <- function(bool = TRUE) lang_modify(.args = list(bool = FALSE))
+#' f <- function(bool = TRUE) lang_modify(, spliced(list(bool = FALSE)))
 #' f()
 #'
 #'
-#' # You can also modify a tidy quote inplace:
+#' # You can also modify quosures inplace:
 #' f <- ~matrix(bar)
 #' lang_modify(f, quote(foo))
-lang_modify <- function(.call = caller_frame(), ..., .args = list(),
-                        .standardise = FALSE) {
-  stopifnot(is_list(.args))
-  args <- c(list(...), .args)
+lang_modify <- function(.call = caller_frame(), ..., .standardise = FALSE) {
+  args <- dots_list(...)
   if (any(duplicated(names(args)) & names(args) != "")) {
     abort("Duplicate arguments")
   }

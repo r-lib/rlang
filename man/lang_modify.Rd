@@ -4,16 +4,16 @@
 \alias{lang_modify}
 \title{Modify the arguments of a call.}
 \usage{
-lang_modify(.call = caller_frame(), ..., .args = list(),
-  .standardise = FALSE)
+lang_modify(.call = caller_frame(), ..., .standardise = FALSE)
 }
 \arguments{
 \item{.call}{Can be a call, a formula quoting a call in the
 right-hand side, or a frame object from which to extract the call
 expression. If not supplied, the calling frame is used.}
 
-\item{..., .args}{Named or unnamed expressions (constants, names or
-calls) used to modify the call. Use \code{NULL} to remove arguments.}
+\item{...}{Named or unnamed expressions (constants, names or calls)
+used to modify the call. Use \code{NULL} to remove arguments. Dots are
+evaluated with \link[=dots_list]{explicit splicing}.}
 
 \item{.standardise}{If \code{TRUE}, the call is standardised before hand
 to match existing unnamed arguments to their argument names. This
@@ -42,16 +42,16 @@ lang_modify(call, trim = 0.1)
 # Add an explicit missing argument
 lang_modify(call, na.rm = quote(expr = ))
 
-# Supply a list of new arguments with .args
+# Supply a list of new arguments with spliced()
 newargs <- list(na.rm = NULL, trim = 0.1)
-lang_modify(call, .args = newargs)
+lang_modify(call, spliced(newargs))
 
 # If the call is missing, the parent frame is used instead.
-f <- function(bool = TRUE) lang_modify(.args = list(bool = FALSE))
+f <- function(bool = TRUE) lang_modify(, spliced(list(bool = FALSE)))
 f()
 
 
-# You can also modify a tidy quote inplace:
+# You can also modify quosures inplace:
 f <- ~matrix(bar)
 lang_modify(f, quote(foo))
 }

@@ -4,14 +4,15 @@
 \alias{new_language}
 \title{Create a call by "hand"}
 \usage{
-new_language(.fn, ..., .args = list())
+new_language(.fn, ...)
 }
 \arguments{
 \item{.fn}{Function to call. For \code{make_call}, either a string, a
 symbol or a quoted call. For \code{do_call}, a bare function name or
 call.}
 
-\item{..., .args}{Arguments to the call either in or out of a list}
+\item{...}{Arguments to the call either in or out of a list. Dots
+are evaluated with \link[=dots_list]{explicit splicing}.}
 }
 \description{
 Create a call by "hand"
@@ -24,7 +25,7 @@ new_language(quote(f()), a = 1)
 
 #' Can supply arguments individually or in a list
 new_language(quote(f), a = 1, b = 2)
-new_language(quote(f), .args = list(a = 1, b = 2))
+new_language(quote(f), spliced(list(a = 1, b = 2)))
 }
 \seealso{
 lang_modify
