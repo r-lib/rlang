@@ -13,11 +13,12 @@
 #' being callable by name once established.
 #'
 #' @param .expr An expression to execute with new restarts established
-#'   on the stack.
+#'   on the stack. This argument is passed by expression and supports
+#'   [unquoting][quasiquotation]. It is evaluated in a context where
+#'   restarts are established.
 #' @param ... Named restart functions. The name is taken as the
 #'   restart name and the function is executed after the jump. These
 #'   dots are evaluated with [explicit splicing][dots_list].
-#' @param .env The environment in which to evaluate a captured `expr`.
 #' @seealso [return_from()] and [return_to()] for a more flexible way
 #'   of performing a non-local jump to an arbitrary call frame.
 #' @export
@@ -105,15 +106,8 @@
 #' # You can use restarting() to create restarting handlers easily:
 #' with_handlers(fn(FALSE), default_empty_string = restarting("rst_null"))
 with_restarts <- function(.expr, ...) {
-  restarts <- dots_list(...)
-  with_restarts_(enquo(.expr), restarts)
-}
-#' @rdname with_restarts
-#' @export
-with_restarts_ <- function(.expr, .restarts = list(), .env = NULL) {
-  f <- as_quosure(.expr, .env)
-  f <- quo(withRestarts(!! f, !!! .restarts))
-  eval_tidy(f)
+  quo <- quo(withRestarts(expr = !! enquo(.expr), !!! dots_list(...)))
+  eval_tidy(quo)
 }
 
 
