@@ -306,7 +306,7 @@ as_closure <- function(x, env = caller_env()) {
       args <- set_names(args)
       names(args)[(names(args) == "...")] <- ""
 
-      prim_call <- new_language(fn_name, .args = args)
+      prim_call <- new_language(fn_name, spliced(args))
       new_function(fmls, prim_call, base_env())
     }
   )

@@ -118,7 +118,8 @@ as_lang <- function(x) {
 #' @param .fn Function to call. For `make_call`, either a string, a
 #'   symbol or a quoted call. For `do_call`, a bare function name or
 #'   call.
-#' @param ...,.args Arguments to the call either in or out of a list
+#' @param ... Arguments to the call either in or out of a list. Dots
+#'   are evaluated with [explicit splicing][dots_list].
 #' @seealso lang_modify
 #' @export
 #' @examples
@@ -129,8 +130,8 @@ as_lang <- function(x) {
 #'
 #' #' Can supply arguments individually or in a list
 #' new_language(quote(f), a = 1, b = 2)
-#' new_language(quote(f), .args = list(a = 1, b = 2))
-new_language <- function(.fn, ..., .args = list()) {
+#' new_language(quote(f), spliced(list(a = 1, b = 2)))
+new_language <- function(.fn, ...) {
   if (is_character(.fn)) {
     if (length(.fn) != 1) {
       abort("Character `.fn` must be length 1")
@@ -138,8 +139,7 @@ new_language <- function(.fn, ..., .args = list()) {
     .fn <- as_symbol(.fn)
   }
 
-  args <- c(list(...), as.list(.args))
-  as.call(c(.fn, args))
+  as.call(c(.fn, dots_list(...)))
 }
 
 #' Modify the arguments of a call.

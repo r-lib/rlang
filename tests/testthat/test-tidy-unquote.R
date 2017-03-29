@@ -139,7 +139,7 @@ test_that("splicing an empty vector works", {
 test_that("UQF() guards formulas", {
   f <- local({ x <- "foo"; ~x })
 
-  guarded <- new_language("_F", .args = f[-1])
+  guarded <- new_language("_F", spliced(as.list(node_cdr(f))))
   attributes(guarded) <- attributes(f)
 
   expected_f <- new_quosure(guarded)

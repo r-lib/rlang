@@ -7,7 +7,7 @@ test_that("character vector must be length 1", {
 })
 
 test_that("args can be specified individually or as list", {
-  out <- new_language("f", a = 1, .args = list(b = 2))
+  out <- new_language("f", a = 1, spliced(list(b = 2)))
   expect_equal(out, quote(f(a = 1, b = 2)))
 })
 
