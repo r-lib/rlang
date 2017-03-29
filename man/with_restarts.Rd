@@ -5,7 +5,7 @@
 \alias{with_restarts_}
 \title{Establish a restart point on the stack.}
 \usage{
-with_restarts(.expr, ..., .restarts = list())
+with_restarts(.expr, ...)
 
 with_restarts_(.expr, .restarts = list(), .env = NULL)
 }
@@ -13,8 +13,9 @@ with_restarts_(.expr, .restarts = list(), .env = NULL)
 \item{.expr}{An expression to execute with new restarts established
 on the stack.}
 
-\item{..., .restarts}{Named restart functions. The name is taken as
-the restart name and the function is executed after the jump.}
+\item{...}{Named restart functions. The name is taken as the
+restart name and the function is executed after the jump. These
+dots are evaluated with \link[=dots_list]{explicit splicing}.}
 
 \item{.env}{The environment in which to evaluate a captured \code{expr}.}
 }
@@ -88,7 +89,7 @@ fn <- function(valid_input) {
     rst_null = function() NULL
   )
 
-  with_restarts(.restarts = restarts, {
+  with_restarts(spliced(restarts), .expr = {
 
     # Signal a typed condition to let the caller know that we are
     # about to return an empty string as default value:

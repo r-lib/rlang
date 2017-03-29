@@ -14,8 +14,9 @@
 #'
 #' @param .expr An expression to execute with new restarts established
 #'   on the stack.
-#' @param ...,.restarts Named restart functions. The name is taken as
-#'   the restart name and the function is executed after the jump.
+#' @param ... Named restart functions. The name is taken as the
+#'   restart name and the function is executed after the jump. These
+#'   dots are evaluated with [explicit splicing][dots_list].
 #' @param .env The environment in which to evaluate a captured `expr`.
 #' @seealso [return_from()] and [return_to()] for a more flexible way
 #'   of performing a non-local jump to an arbitrary call frame.
@@ -76,7 +77,7 @@
 #'     rst_null = function() NULL
 #'   )
 #'
-#'   with_restarts(.restarts = restarts, {
+#'   with_restarts(spliced(restarts), .expr = {
 #'
 #'     # Signal a typed condition to let the caller know that we are
 #'     # about to return an empty string as default value:
@@ -103,8 +104,8 @@
 #'
 #' # You can use restarting() to create restarting handlers easily:
 #' with_handlers(fn(FALSE), default_empty_string = restarting("rst_null"))
-with_restarts <- function(.expr, ..., .restarts = list()) {
-  restarts <- c(list(...), .restarts)
+with_restarts <- function(.expr, ...) {
+  restarts <- dots_list(...)
   with_restarts_(enquo(.expr), restarts)
 }
 #' @rdname with_restarts
