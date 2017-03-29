@@ -112,7 +112,7 @@ test_that("restarting() handlers pass along all requested arguments", {
 
   restart_handler <- restarting("rst_foo",
     a = "a",
-    .args = list(b = "b"),
+    spliced(list(b = "b")),
     .fields = c(field_arg = "foo_field")
   )
 
