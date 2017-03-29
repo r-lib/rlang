@@ -13,7 +13,9 @@ cnd_abort(.cnd, ..., .msg = NULL, .call = FALSE, .mufflable = FALSE)
 \item{.cnd}{Either a condition object (see \code{\link[=new_cnd]{new_cnd()}}), or the
 name of a s3 class from which a new condition will be created.}
 
-\item{...}{Named data fields stored inside the condition object.}
+\item{...}{Named data fields stored inside the condition
+object. These dots are evaluated with \link[=dots_list]{explicit
+splicing}.}
 
 \item{.msg}{A string to override the condition's default message.}
 
