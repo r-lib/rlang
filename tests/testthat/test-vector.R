@@ -89,9 +89,9 @@ test_that("splice() splices names", {
   )
 })
 
-test_that("splice() with `.bare = FALSE` doesn't splice bare lists", {
-  expect_identical(splice(list(1, 2), .bare = FALSE), list(list(1, 2)))
-  expect_identical(splice(spliced(list(1, 2)), .bare = FALSE), list(1, 2))
+test_that("ll() doesn't splice bare lists", {
+  expect_identical(ll(list(1, 2)), list(list(1, 2)))
+  expect_identical(ll(spliced(list(1, 2))), list(1, 2))
 })
 
 test_that("atomic inputs are implicitly coerced", {

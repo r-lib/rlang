@@ -8,6 +8,7 @@
 \alias{cpl}
 \alias{chr}
 \alias{bytes}
+\alias{ll}
 \alias{splice}
 \title{Construct new vectors.}
 \usage{
@@ -23,7 +24,9 @@ chr(..., .encoding = NULL)
 
 bytes(...)
 
-splice(..., .bare = TRUE)
+ll(...)
+
+splice(...)
 }
 \arguments{
 \item{...}{Components of the new vector. Bare lists and explicitly
@@ -32,11 +35,6 @@ spliced lists are spliced.}
 \item{.encoding}{If non-null, passed to \code{\link[=set_chr_encoding]{set_chr_encoding()}} to add
 an encoding mark. This is only declarative, no encoding
 conversion is performed.}
-
-\item{.bare}{Whether to splice bare lists. If \code{FALSE}, only lists
-inheriting from \code{"spliced"} are spliced. This is called explicit
-splicing. If \code{TRUE}, \link[=is_bare_list]{bare lists} (pure lists with
-no \code{class} attribute) are spliced as well.}
 }
 \description{
 The atomic vector constructors are equivalent to \code{\link[=c]{c()}} but allow
@@ -63,10 +61,11 @@ inner lists are flattened before concatenation.
 Whether an inner list qualifies for splicing is determined by the
 type of splicing semantics. All the atomic constructors like
 \code{chr()} have \emph{list splicing} semantics: \link[=is_bare_list]{bare} lists
-and \link[=is_spliced]{explicitly spliced} lists are spliced. Likewise,
-\code{splice()} has list splicing semantics by default. If you set
-\code{.bare} to \code{FALSE}, it restricts splicing to lists marked with
-\code{\link[=spliced]{spliced()}}. This is called \emph{explicit splicing}.
+and \link[=is_spliced]{explicitly spliced} lists are spliced.
+
+There are two list constructors with different splicing
+semantics. \code{ll()} only splices lists explicitly marked with
+\code{\link[=spliced]{spliced()}}, while \code{splice()} has list splicing semantics.
 }
 
 \examples{
@@ -102,21 +101,14 @@ dbl(list(a = c(A = 1)))
 bytes(1:10)
 bytes(0x01, 0xff, c(0x03, 0x05), list(10, 20, 30L))
 
-# splice() is like the atomic vector constructors but for lists:
-dbl(1, list(1, 2))
-splice(1, list(1, 2))
+# The list constructor has explicit splicing semantics:
+ll(1, list(2))
 
-# Only bare lists are spliced. Objects like data frames are not spliced:
-splice(1, mtcars)
-
-# Use the spliced() adjective to splice objects:
-splice(1, spliced(mtcars))
-
-# You can chose not to splice bare lists with `.bare`:
-splice(list(1, 2), .bare = FALSE)
+# But splice() will splice bare lists as well:
+splice(1, list(2))
 
 # Note that explicitly spliced lists are always spliced:
-splice(spliced(list(1, 2)), .bare = FALSE)
+ll(spliced(list(1, 2)))
 }
 \seealso{
 \code{\link[=splice]{splice()}}

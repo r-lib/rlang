@@ -23,10 +23,11 @@
 #' Whether an inner list qualifies for splicing is determined by the
 #' type of splicing semantics. All the atomic constructors like
 #' `chr()` have _list splicing_ semantics: [bare][is_bare_list] lists
-#' and [explicitly spliced][is_spliced] lists are spliced. Likewise,
-#' `splice()` has list splicing semantics by default. If you set
-#' `.bare` to `FALSE`, it restricts splicing to lists marked with
-#' [spliced()]. This is called _explicit splicing_.
+#' and [explicitly spliced][is_spliced] lists are spliced.
+#'
+#' There are two list constructors with different splicing
+#' semantics. `ll()` only splices lists explicitly marked with
+#' [spliced()], while `splice()` has list splicing semantics.
 #'
 #' @param ... Components of the new vector. Bare lists and explicitly
 #'   spliced lists are spliced.
@@ -112,30 +113,24 @@ bytes <- function(...) {
 }
 
 #' @rdname vector-construction
-#' @param .bare Whether to splice bare lists. If `FALSE`, only lists
-#'   inheriting from `"spliced"` are spliced. This is called explicit
-#'   splicing. If `TRUE`, [bare lists][is_bare_list] (pure lists with
-#'   no `class` attribute) are spliced as well.
 #' @export
 #' @examples
 #'
-#' # splice() is like the atomic vector constructors but for lists:
-#' dbl(1, list(1, 2))
-#' splice(1, list(1, 2))
+#' # The list constructor has explicit splicing semantics:
+#' ll(1, list(2))
 #'
-#' # Only bare lists are spliced. Objects like data frames are not spliced:
-#' splice(1, mtcars)
-#'
-#' # Use the spliced() adjective to splice objects:
-#' splice(1, spliced(mtcars))
-#'
-#' # You can chose not to splice bare lists with `.bare`:
-#' splice(list(1, 2), .bare = FALSE)
+#' # But splice() will splice bare lists as well:
+#' splice(1, list(2))
 #'
 #' # Note that explicitly spliced lists are always spliced:
-#' splice(spliced(list(1, 2)), .bare = FALSE)
-splice <- function(..., .bare = TRUE) {
-  .Call(rlang_splice, list(...), "list", bare = .bare)
+#' ll(spliced(list(1, 2)))
+ll <- function(...) {
+  .Call(rlang_splice, list(...), "list", bare = FALSE)
+}
+#' @rdname vector-construction
+#' @export
+splice <- function(...) {
+  .Call(rlang_splice, list(...), "list", bare = TRUE)
 }
 
 #' Splice a list within a vector.
