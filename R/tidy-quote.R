@@ -230,8 +230,7 @@ quo <- function(expr) {
 #' e <- expr(toupper(!! f))
 #' eval_tidy(e)
 expr <- function(expr) {
-  expr <- substitute(expr)
-  .Call(rlang_interp, expr, parent.frame())
+  enexpr(expr)
 }
 
 #' Tidy quotation of multiple expressions and dots.

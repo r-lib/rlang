@@ -213,3 +213,13 @@ test_that("quosured literals are forwarded as is", {
   expect_identical(quo(!! quo(NULL)), new_quosure(NULL, empty_env()))
   expect_identical(dots_quos(!! ~10L), set_names(quos_list(as_quosure(~10L)), ""))
 })
+
+test_that("expr() returns missing argument", {
+  expect_true(is_missing(expr()))
+})
+
+test_that("expr() supports forwarded arguments", {
+  fn <- function(...) g(...)
+  g <- function(...) expr(...)
+  expect_identical(fn(foo), quote(foo))
+})
