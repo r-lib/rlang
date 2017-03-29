@@ -2,7 +2,7 @@ context("vector")
 
 test_that("vector is modified", {
   x <- c(1, b = 2, c = 3, 4)
-  out <- modify(x, 5, b = 20, .elts = list(6, c = "30"))
+  out <- modify(x, 5, b = 20, spliced(list(6, c = "30")))
   expect_equal(out, list(1, b = 20, c = "30", 4, 5, 6))
 })
 

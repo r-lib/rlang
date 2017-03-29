@@ -4,14 +4,15 @@
 \alias{modify}
 \title{Modify a vector.}
 \usage{
-modify(.x, ..., .elts = list())
+modify(.x, ...)
 }
 \arguments{
 \item{.x}{A vector to modify.}
 
-\item{..., .elts}{List of elements to merge into \code{.x}. Named
-elements already existing in \code{.x} are used as replacements.
-Elements that have new or no names are inserted at the end.}
+\item{...}{List of elements to merge into \code{.x}. Named elements
+already existing in \code{.x} are used as replacements. Elements that
+have new or no names are inserted at the end. These dots are
+evaluated with \link[=dots_list]{explicit splicing}.}
 }
 \value{
 A modified vector upcasted to a list.
@@ -25,5 +26,5 @@ modify(c(1, b = 2, 3), 4, b = "foo")
 
 x <- list(a = 1, b = 2)
 y <- list(b = 3, c = 4)
-modify(x, .elts = y)
+modify(x, spliced(y))
 }

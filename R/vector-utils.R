@@ -33,9 +33,10 @@ prepend <- function(x, values, before = 1) {
 #' returns a list.
 #'
 #' @param .x A vector to modify.
-#' @param ...,.elts List of elements to merge into `.x`. Named
-#'   elements already existing in `.x` are used as replacements.
-#'   Elements that have new or no names are inserted at the end.
+#' @param ... List of elements to merge into `.x`. Named elements
+#'   already existing in `.x` are used as replacements. Elements that
+#'   have new or no names are inserted at the end. These dots are
+#'   evaluated with [explicit splicing][dots_list].
 #' @return A modified vector upcasted to a list.
 #' @export
 #' @examples
@@ -43,10 +44,10 @@ prepend <- function(x, values, before = 1) {
 #'
 #' x <- list(a = 1, b = 2)
 #' y <- list(b = 3, c = 4)
-#' modify(x, .elts = y)
-modify <- function(.x, ..., .elts = list()) {
+#' modify(x, spliced(y))
+modify <- function(.x, ...) {
   out <- as.list(.x)
-  args <- c(list(...), .elts)
+  args <- dots_list(...)
 
   args_nms <- names(args)
   exists <- have_name(args) & args_nms %in% names(out)
