@@ -122,7 +122,8 @@ with_restarts <- function(.expr, ...) {
 #' exists before jumping.
 #'
 #' @param .restart The name of a restart.
-#' @param ...,.args Arguments passed on to the restart function.
+#' @param ... Arguments passed on to the restart function. These
+#'   dots are evaluated with [explicit splicing][dots_list].
 #' @seealso [with_restarts()], [rst_muffle()].
 #' @export
 rst_list <- function() {
@@ -135,15 +136,15 @@ rst_exists <- function(.restart) {
 }
 #' @rdname rst_list
 #' @export
-rst_jump <- function(.restart, ..., .args = list()) {
-  args <- c(list(.restart, ...), .args)
+rst_jump <- function(.restart, ...) {
+  args <- c(list(r = .restart), dots_list(...))
   do.call("invokeRestart", args)
 }
 #' @rdname rst_list
 #' @export
-rst_maybe_jump <- function(.restart, ..., .args = list()) {
+rst_maybe_jump <- function(.restart, ...) {
   if (rst_exists(.restart)) {
-    args <- c(list(.restart, ...), .args)
+    args <- c(list(r = .restart), dots_list(...))
     do.call("invokeRestart", args)
   }
 }
