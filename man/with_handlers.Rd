@@ -2,12 +2,9 @@
 % Please edit documentation in R/cnd-handlers.R
 \name{with_handlers}
 \alias{with_handlers}
-\alias{with_handlers_}
 \title{Establish handlers on the stack.}
 \usage{
 with_handlers(.expr, ...)
-
-with_handlers_(.expr, .handlers = list(), .env = NULL)
 }
 \arguments{
 \item{.expr}{An expression to execute in a context where new
@@ -18,8 +15,6 @@ expression or a quoted formula.}
 or \code{inplace}. See \code{\link[=exiting]{exiting()}} and \code{\link[=inplace]{inplace()}} for constructing
 such handlers. Dots are evaluated with \link[=dots_list]{explicit
 splicing}.}
-
-\item{.env}{The environment in which to evaluate a captured \code{expr}.}
 }
 \description{
 Condition handlers are functions established on the evaluation

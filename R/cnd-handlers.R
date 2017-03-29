@@ -77,34 +77,24 @@
 #' }
 #' with_handlers(fn2(), foo = inplace(exiting_handler), foo = inplace(other_handler))
 with_handlers <- function(.expr, ...) {
-  with_handlers_(enquo(.expr), dots_list(...))
-}
-#' @rdname with_handlers
-#' @export
-with_handlers_ <- function(.expr, .handlers = list(), .env = NULL) {
-  f <- as_quosure(.expr, .env)
+  quo <- enquo(.expr)
+  handlers <- dots_list(...)
 
-  inplace <- keep(.handlers, inherits, "inplace")
-  exiting <- keep(.handlers, inherits, "exiting")
+  inplace <- keep(handlers, inherits, "inplace")
+  exiting <- keep(handlers, inherits, "exiting")
 
-  if (length(.handlers) > length(exiting) + length(inplace)) {
+  if (length(handlers) > length(exiting) + length(inplace)) {
     abort("all handlers should inherit from `exiting` or `inplace`")
   }
-
-  f <- interp_handlers(f, inplace = inplace, exiting = exiting)
-  eval_tidy(f)
-}
-
-interp_handlers <- function(f, inplace, exiting) {
   if (length(exiting)) {
-    f <- quo(tryCatch(!! f, !!! exiting))
+    quo <- quo(tryCatch(!! quo, !!! exiting))
   }
   if (length(inplace)) {
-    f <- quo(withCallingHandlers(!! f, !!! inplace))
+    quo <- quo(withCallingHandlers(!! quo, !!! inplace))
   }
-  f
-}
 
+  eval_tidy(quo)
+}
 
 #' Create an exiting or in place handler.
 #'
