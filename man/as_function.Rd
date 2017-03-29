@@ -2,12 +2,15 @@
 % Please edit documentation in R/fn.R
 \name{as_function}
 \alias{as_function}
-\title{Coerce to function.}
+\alias{as_closure}
+\title{Convert to function or closure.}
 \usage{
-as_function(.f, ...)
+as_function(x, env = caller_env())
+
+as_closure(x, env = caller_env())
 }
 \arguments{
-\item{.f}{A function or formula.
+\item{x}{A function or formula.
 
 If a \strong{function}, it is used as is.
 
@@ -15,14 +18,24 @@ If a \strong{formula}, e.g. \code{~ .x + 2}, it is converted to a function
 with two arguments, \code{.x} or \code{.} and \code{.y}. This allows you to
 create very compact anonymous functions with up to two inputs.}
 
-\item{...}{Additional arguments passed on to methods. Currently
-unused in rlang.}
+\item{env}{Environment in which to fetch the function in case \code{x}
+is a string.}
 }
 \description{
-This generic transforms objects to functions. It is especially
-useful with formulas to create lambdas on the fly.
+\itemize{
+\item \code{as_function()} transform objects to functions. It fetches
+functions by name if supplied a string or transforms
+\link[=quosure]{quosures} to a proper function.
+\item \code{as_closure()} first passes its argument to \code{as_function()}. If
+the result is a primitive function, it regularises it to a proper
+\link{closure} (see \code{\link[=is_function]{is_function()}} about primitive functions).
+}
 }
 \examples{
 f <- as_function(~ . + 1)
 f(10)
+
+# Primitive functions are regularised as closures
+as_closure(list)
+as_closure("list")
 }
