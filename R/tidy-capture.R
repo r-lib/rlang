@@ -97,6 +97,25 @@ forward_quosure <- function(expr, env) {
     as_quosure(expr, empty_env())
   }
 }
+#' @rdname enquo
+#' @export
+#' @examples
+#'
+#' # enexpr() returns a bare expression instead of a quosure:
+#' fn <- function(x) enexpr(x)
+#' fn(foo(bar))
+#'
+#' # It supports unquoting as well:
+#' fn(foo(bar, !! letters[1:3]))
+enexpr <- function(x) {
+  if (missing(x)) {
+    return(missing_arg())
+  }
+
+  capture <- new_language(captureArg, substitute(x))
+  arg <- eval_bare(capture, caller_env())
+  .Call(rlang_interp, arg$expr, arg$env)
+}
 
 dots_capture <- function(...) {
   info <- captureDots()

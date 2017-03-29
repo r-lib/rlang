@@ -2,9 +2,12 @@
 % Please edit documentation in R/tidy-capture.R
 \name{enquo}
 \alias{enquo}
+\alias{enexpr}
 \title{Capture an expression and evaluation environment.}
 \usage{
 enquo(x)
+
+enexpr(x)
 }
 \arguments{
 \item{x, ...}{Arguments to capture.}
@@ -90,6 +93,13 @@ fn(a + b)
 # Capturing an argument only works for the most direct call:
 g <- function(bar) fn(bar)
 g(a + b)
+
+# enexpr() returns a bare expression instead of a quosure:
+fn <- function(x) enexpr(x)
+fn(foo(bar))
+
+# It supports unquoting as well:
+fn(foo(bar, !! letters[1:3]))
 }
 \seealso{
 \link[=quosures]{quos()} for capturing dots, \code{\link[=expr_label]{expr_label()}} and
