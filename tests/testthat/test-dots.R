@@ -2,10 +2,10 @@ context("dots")
 
 test_that("dots are retrieved from arguments", {
   fn <- function(f, ...) f(...)
-  expect_identical(fn(dots_exprs), list())
+  expect_identical(fn(exprs), list())
 
   g <- function(f, ...) fn(f, ...)
-  expect_identical(g(dots_exprs, a = 1, foo = bar), list(a = 1, foo = quote(bar)))
+  expect_identical(g(exprs, a = 1, foo = bar), list(a = 1, foo = quote(bar)))
 })
 
 test_that("dots_inspect() inspects dots", {
@@ -28,7 +28,7 @@ test_that("unmatched dots return missing_arg()", {
   # Only occurs with partial stack climbing. Necessary for lazyeval
   # compatibility
   fn <- function(...) {
-    dots <- dots_exprs(..., .ignore_empty = "none")
+    dots <- exprs(..., .ignore_empty = "none")
     stack <- call_stack(2)
     dots_inspect_(dots, stack)
   }
@@ -42,12 +42,12 @@ test_that("empty dots return list()", {
   expect_equal(fn(), list())
 })
 
-test_that("dots_exprs() captures empty arguments", {
-  expect_identical(dots_exprs(, , .ignore_empty = "none"), set_names(list(missing_arg(), missing_arg()), c("", "")))
+test_that("exprs() captures empty arguments", {
+  expect_identical(exprs(, , .ignore_empty = "none"), set_names(list(missing_arg(), missing_arg()), c("", "")))
 })
 
 test_that("dots are always named", {
   expect_named(dots_list("foo"), "")
   expect_named(dots_splice("foo", list("bar")), c("", ""))
-  expect_named(dots_exprs(foo, bar), c("", ""))
+  expect_named(exprs(foo, bar), c("", ""))
 })

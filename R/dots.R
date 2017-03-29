@@ -20,7 +20,7 @@
 #'   arguments are embedded in the returned list.
 #' @return A list of arguments. This list is always named: unnamed
 #'   arguments are named with the empty string `""`.
-#' @seealso [dots_exprs()] for extracting dots without evaluation.
+#' @seealso [exprs()] for extracting dots without evaluation.
 #' @export
 #' @examples
 #' # Compared to simply using list(...) to capture dots, dots_list()
@@ -53,11 +53,11 @@ dots_splice <- function(...) {
 #' Extract dots forwarded as arguments.
 #'
 #' These functions return the arguments forwarded through `...`.
-#' Contrarily to [dots_list()] and [dots_splice()], `dots_exprs()` and
+#' Contrarily to [dots_list()] and [dots_splice()], `exprs()` and
 #' `dots_node()` do not evaluate the arguments. The former returns a
 #' list of expressions while the latter returns a [pairlist].
 #'
-#' `dots_exprs()` performs call-splicing and is compatible with
+#' `exprs()` performs call-splicing and is compatible with
 #' [unquote operators][UQ], including unquote-splicing. `dots_node()`
 #' is more bare bones and returns the pairlist as is, without
 #' unquoting.
@@ -65,9 +65,12 @@ dots_splice <- function(...) {
 #' @inheritParams quosures
 #' @param ... Arguments to extract.
 #' @export
-dots_exprs <- function(..., .ignore_empty = "trailing") {
+exprs <- function(..., .ignore_empty = "trailing") {
   map(dots_quos(..., .ignore_empty = .ignore_empty), f_rhs)
 }
+#' @rdname exprs
+#' @export
+dots_exprs <- exprs
 
 #' Inspect dots
 #'
@@ -81,7 +84,7 @@ dots_exprs <- function(..., .ignore_empty = "trailing") {
 #'
 #' `dots_inspect_()` is the standard evaluation version of
 #' `dots_inspect()` and takes a list of dots as captured by
-#' [dots_exprs()], and a call stack as returned by
+#' [exprs()], and a call stack as returned by
 #' [call_stack()].
 #'
 #' @param ... Dots to inspect.
@@ -131,7 +134,7 @@ dots_exprs <- function(..., .ignore_empty = "trailing") {
 #' only_dots <- TRUE
 #' f(foo(bar))
 dots_inspect <- function(..., .only_dots = FALSE) {
-  dots <- dots_exprs(...)
+  dots <- exprs(...)
   stack <- call_stack()
   dots_inspect_(dots, stack, only_dots = .only_dots)
 }

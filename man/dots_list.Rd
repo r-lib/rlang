@@ -51,5 +51,5 @@ dots_splice(spliced(x), 3)
 dots_splice(x, 3)
 }
 \seealso{
-\code{\link[=dots_exprs]{dots_exprs()}} for extracting dots without evaluation.
+\code{\link[=exprs]{exprs()}} for extracting dots without evaluation.
 }
