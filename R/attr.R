@@ -197,7 +197,7 @@ has_length <- function(x, n = NULL) {
 #'
 #' # Splice a list of attributes:
 #' attrs <- list(attr = "attr", names = 1:26, class = "my_chr")
-#' struct(letters, spliced(attrs))
+#' struct(letters, splice(attrs))
 struct <- function(.x, ...) {
   invoke("structure", c(list(.Data = .x), dots_list(...)))
 }

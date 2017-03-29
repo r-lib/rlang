@@ -42,12 +42,12 @@ lang_modify(call, trim = 0.1)
 # Add an explicit missing argument
 lang_modify(call, na.rm = quote(expr = ))
 
-# Supply a list of new arguments with spliced()
+# Supply a list of new arguments with splice()
 newargs <- list(na.rm = NULL, trim = 0.1)
-lang_modify(call, spliced(newargs))
+lang_modify(call, splice(newargs))
 
 # If the call is missing, the parent frame is used instead.
-f <- function(bool = TRUE) lang_modify(, spliced(list(bool = FALSE)))
+f <- function(bool = TRUE) lang_modify(, splice(list(bool = FALSE)))
 f()
 
 

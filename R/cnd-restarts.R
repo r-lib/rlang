@@ -78,7 +78,7 @@
 #'     rst_null = function() NULL
 #'   )
 #'
-#'   with_restarts(spliced(restarts), .expr = {
+#'   with_restarts(splice(restarts), .expr = {
 #'
 #'     # Signal a typed condition to let the caller know that we are
 #'     # about to return an empty string as default value:

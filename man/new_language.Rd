@@ -25,7 +25,7 @@ new_language(quote(f()), a = 1)
 
 #' Can supply arguments individually or in a list
 new_language(quote(f), a = 1, b = 2)
-new_language(quote(f), spliced(list(a = 1, b = 2)))
+new_language(quote(f), splice(list(a = 1, b = 2)))
 }
 \seealso{
 lang_modify

@@ -130,7 +130,7 @@ as_lang <- function(x) {
 #'
 #' #' Can supply arguments individually or in a list
 #' new_language(quote(f), a = 1, b = 2)
-#' new_language(quote(f), spliced(list(a = 1, b = 2)))
+#' new_language(quote(f), splice(list(a = 1, b = 2)))
 new_language <- function(.fn, ...) {
   if (is_character(.fn)) {
     if (length(.fn) != 1) {
@@ -173,12 +173,12 @@ new_language <- function(.fn, ...) {
 #' # Add an explicit missing argument
 #' lang_modify(call, na.rm = quote(expr = ))
 #'
-#' # Supply a list of new arguments with spliced()
+#' # Supply a list of new arguments with splice()
 #' newargs <- list(na.rm = NULL, trim = 0.1)
-#' lang_modify(call, spliced(newargs))
+#' lang_modify(call, splice(newargs))
 #'
 #' # If the call is missing, the parent frame is used instead.
-#' f <- function(bool = TRUE) lang_modify(, spliced(list(bool = FALSE)))
+#' f <- function(bool = TRUE) lang_modify(, splice(list(bool = FALSE)))
 #' f()
 #'
 #'

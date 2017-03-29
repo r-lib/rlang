@@ -65,7 +65,7 @@ and \link[=is_spliced]{explicitly spliced} lists are spliced.
 
 There are two list constructors with different splicing
 semantics. \code{ll()} only splices lists explicitly marked with
-\code{\link[=spliced]{spliced()}}, while \code{list_splice()} has list splicing semantics.
+\code{\link[=splice]{splice()}}, while \code{list_splice()} has list splicing semantics.
 }
 
 \examples{
@@ -108,7 +108,7 @@ ll(1, list(2))
 list_splice(1, list(2))
 
 # Note that explicitly spliced lists are always spliced:
-ll(spliced(list(1, 2)))
+ll(splice(list(1, 2)))
 }
 \seealso{
 \code{\link[=list_splice]{list_splice()}}

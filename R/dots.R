@@ -7,7 +7,7 @@
 #'
 #' `dots_list()` has _explicit splicing semantics_: it splices lists
 #' that are explicitly marked for [splicing][list_splice] with the
-#' [spliced()] adjective. `dots_splice()` on the other hand has _list
+#' [splice()] adjective. `dots_splice()` on the other hand has _list
 #' splicing semantics_: in addition to lists marked explicitly for
 #' splicing, [bare][is_bare_list] lists are spliced as well.
 #'
@@ -26,7 +26,7 @@
 #' # Compared to simply using list(...) to capture dots, dots_list()
 #' # splices explicitly:
 #' x <- list(1, 2)
-#' dots_list(spliced(x), 3)
+#' dots_list(splice(x), 3)
 #'
 #' # Unlike dots_splice(), it doesn't splice bare lists:
 #' dots_list(x, 3)
@@ -39,10 +39,10 @@ dots_list <- function(...) {
 #' @export
 #' @examples
 #'
-#' # dots_splice() splices lists marked with spliced() as well as bare
+#' # dots_splice() splices lists marked with splice() as well as bare
 #' # lists:
 #' x <- list(1, 2)
-#' dots_splice(spliced(x), 3)
+#' dots_splice(splice(x), 3)
 #' dots_splice(x, 3)
 dots_splice <- function(...) {
   dots <- .Call(rlang_splice, list(...), "list", bare = TRUE)

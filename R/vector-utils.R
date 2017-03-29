@@ -44,7 +44,7 @@ prepend <- function(x, values, before = 1) {
 #'
 #' x <- list(a = 1, b = 2)
 #' y <- list(b = 3, c = 4)
-#' modify(x, spliced(y))
+#' modify(x, splice(y))
 modify <- function(.x, ...) {
   out <- as.list(.x)
   args <- dots_list(...)

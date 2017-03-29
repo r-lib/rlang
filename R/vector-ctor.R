@@ -27,7 +27,7 @@
 #'
 #' There are two list constructors with different splicing
 #' semantics. `ll()` only splices lists explicitly marked with
-#' [spliced()], while `list_splice()` has list splicing semantics.
+#' [splice()], while `list_splice()` has list splicing semantics.
 #'
 #' @param ... Components of the new vector. Bare lists and explicitly
 #'   spliced lists are spliced.
@@ -123,7 +123,7 @@ bytes <- function(...) {
 #' list_splice(1, list(2))
 #'
 #' # Note that explicitly spliced lists are always spliced:
-#' ll(spliced(list(1, 2)))
+#' ll(splice(list(1, 2)))
 ll <- function(...) {
   .Call(rlang_splice, list(...), "list", bare = FALSE)
 }
@@ -142,13 +142,13 @@ list_splice <- function(...) {
 #' @param x A list to splice.
 #' @seealso [list_splice()], [vector-construction]
 #' @export
-spliced <- function(x) {
+splice <- function(x) {
   if (!is_list(x)) {
     abort("Only lists can be spliced")
   }
   structure(x, class = "spliced")
 }
-#' @rdname spliced
+#' @rdname splice
 #' @export
 is_spliced <- function(x) {
   inherits(x, "spliced")
