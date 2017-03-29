@@ -9,7 +9,7 @@
 \alias{chr}
 \alias{bytes}
 \alias{ll}
-\alias{splice}
+\alias{list_splice}
 \title{Construct new vectors.}
 \usage{
 lgl(...)
@@ -26,7 +26,7 @@ bytes(...)
 
 ll(...)
 
-splice(...)
+list_splice(...)
 }
 \arguments{
 \item{...}{Components of the new vector. Bare lists and explicitly
@@ -43,7 +43,7 @@ you to be more explicit about the output type. Implicit coercions
 \link{vector-coercion}. In addition, all constructors support splicing:
 if you supply \link[=is_bare_list]{bare} lists or \link[=is_spliced]{explicitly
 spliced} lists, their contents are spliced into the
-output vectors (see below for details). \code{splice()} is a list
+output vectors (see below for details). \code{list_splice()} is a list
 constructor similar to \code{\link[base:list]{base::list()}} but with splicing semantics.
 }
 \section{Splicing}{
@@ -51,7 +51,7 @@ constructor similar to \code{\link[base:list]{base::list()}} but with splicing s
 
 Splicing is an operation similar to flattening one level of nested
 lists, e.g. with \code{\link[=unlist]{base::unlist(x, recursive =
-FALSE)}} or \code{purrr::flatten()}. \code{splice()} returns its
+FALSE)}} or \code{purrr::flatten()}. \code{list_splice()} returns its
 arguments as a list, just like \code{list()} would, but inner lists
 qualifying for splicing are flattened. That is, their contents are
 embedded in the surrounding list. Similarly, \code{chr()} concatenates
@@ -65,7 +65,7 @@ and \link[=is_spliced]{explicitly spliced} lists are spliced.
 
 There are two list constructors with different splicing
 semantics. \code{ll()} only splices lists explicitly marked with
-\code{\link[=spliced]{spliced()}}, while \code{splice()} has list splicing semantics.
+\code{\link[=spliced]{spliced()}}, while \code{list_splice()} has list splicing semantics.
 }
 
 \examples{
@@ -104,12 +104,12 @@ bytes(0x01, 0xff, c(0x03, 0x05), list(10, 20, 30L))
 # The list constructor has explicit splicing semantics:
 ll(1, list(2))
 
-# But splice() will splice bare lists as well:
-splice(1, list(2))
+# But list_splice() will splice bare lists as well:
+list_splice(1, list(2))
 
 # Note that explicitly spliced lists are always spliced:
 ll(spliced(list(1, 2)))
 }
 \seealso{
-\code{\link[=splice]{splice()}}
+\code{\link[=list_splice]{list_splice()}}
 }

@@ -2,17 +2,17 @@
 #'
 #' These functions evaluate all arguments contained in `...` and
 #' return them as a list. They both splice their arguments if they
-#' qualify for splicing. See [splice()] for information about splicing
+#' qualify for splicing. See [list_splice()] for information about splicing
 #' and below for the kind of arguments that qualify for splicing.
 #'
 #' `dots_list()` has _explicit splicing semantics_: it splices lists
-#' that are explicitly marked for [splicing][splice] with the
+#' that are explicitly marked for [splicing][list_splice] with the
 #' [spliced()] adjective. `dots_splice()` on the other hand has _list
 #' splicing semantics_: in addition to lists marked explicitly for
 #' splicing, [bare][is_bare_list] lists are spliced as well.
 #'
 #' Note that `dots_list()` and `dots_splice()` are simple aliases to
-#' [splice()]. Their main purpose is to provide more explicit
+#' [list_splice()]. Their main purpose is to provide more explicit
 #' documentation for functions capturing dots.
 #'
 #' @param ... Arguments with explicit (`dots_list()`) or list

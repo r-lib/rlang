@@ -6,14 +6,14 @@
 #' [vector-coercion]. In addition, all constructors support splicing:
 #' if you supply [bare][is_bare_list] lists or [explicitly
 #' spliced][is_spliced] lists, their contents are spliced into the
-#' output vectors (see below for details). `splice()` is a list
+#' output vectors (see below for details). `list_splice()` is a list
 #' constructor similar to [base::list()] but with splicing semantics.
 #'
 #' @section Splicing:
 #'
 #' Splicing is an operation similar to flattening one level of nested
 #' lists, e.g. with \code{\link[=unlist]{base::unlist(x, recursive =
-#' FALSE)}} or `purrr::flatten()`. `splice()` returns its
+#' FALSE)}} or `purrr::flatten()`. `list_splice()` returns its
 #' arguments as a list, just like `list()` would, but inner lists
 #' qualifying for splicing are flattened. That is, their contents are
 #' embedded in the surrounding list. Similarly, `chr()` concatenates
@@ -27,12 +27,12 @@
 #'
 #' There are two list constructors with different splicing
 #' semantics. `ll()` only splices lists explicitly marked with
-#' [spliced()], while `splice()` has list splicing semantics.
+#' [spliced()], while `list_splice()` has list splicing semantics.
 #'
 #' @param ... Components of the new vector. Bare lists and explicitly
 #'   spliced lists are spliced.
 #' @name vector-construction
-#' @seealso [splice()]
+#' @seealso [list_splice()]
 #' @examples
 #' # These constructors are like a typed version of c():
 #' c(TRUE, FALSE)
@@ -119,8 +119,8 @@ bytes <- function(...) {
 #' # The list constructor has explicit splicing semantics:
 #' ll(1, list(2))
 #'
-#' # But splice() will splice bare lists as well:
-#' splice(1, list(2))
+#' # But list_splice() will splice bare lists as well:
+#' list_splice(1, list(2))
 #'
 #' # Note that explicitly spliced lists are always spliced:
 #' ll(spliced(list(1, 2)))
@@ -129,7 +129,7 @@ ll <- function(...) {
 }
 #' @rdname vector-construction
 #' @export
-splice <- function(...) {
+list_splice <- function(...) {
   .Call(rlang_splice, list(...), "list", bare = TRUE)
 }
 
@@ -137,10 +137,10 @@ splice <- function(...) {
 #'
 #' This adjective signals to functions taking dots that `x` should be
 #' spliced in a surrounding vector. Examples of functions that support
-#' such explicit splicing are [splice()], [chr()], etc.
+#' such explicit splicing are [list_splice()], [chr()], etc.
 #'
 #' @param x A list to splice.
-#' @seealso [splice()], [vector-construction]
+#' @seealso [list_splice()], [vector-construction]
 #' @export
 spliced <- function(x) {
   if (!is_list(x)) {

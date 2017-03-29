@@ -38,7 +38,7 @@ test_that("can create empty vectors", {
   expect_identical(cpl(), complex(0))
   expect_identical(chr(), character(0))
   expect_identical(bytes(), raw(0))
-  expect_identical(splice(), list())
+  expect_identical(list_splice(), list())
 })
 
 test_that("objects are not spliced", {
@@ -71,19 +71,19 @@ test_that("warn when spliced lists have outer name", {
   expect_warning(lgl(C = list(FALSE)), "Outer names")
 })
 
-test_that("splice() splices names", {
-  expect_identical(splice(a = TRUE, b = FALSE), list(a = TRUE, b = FALSE))
-  expect_identical(splice(c(A = TRUE), c(B = FALSE)), list(c(A = TRUE), c(B = FALSE)))
-  expect_identical(splice(a = c(A = TRUE), b = c(B = FALSE)), list(a = c(A = TRUE), b = c(B = FALSE)))
+test_that("list_splice() splices names", {
+  expect_identical(list_splice(a = TRUE, b = FALSE), list(a = TRUE, b = FALSE))
+  expect_identical(list_splice(c(A = TRUE), c(B = FALSE)), list(c(A = TRUE), c(B = FALSE)))
+  expect_identical(list_splice(a = c(A = TRUE), b = c(B = FALSE)), list(a = c(A = TRUE), b = c(B = FALSE)))
   expect_warning(regexp = "Outer names",
     expect_identical(
-      splice(a = list(A = TRUE), b = list(B = FALSE)) ,
+      list_splice(a = list(A = TRUE), b = list(B = FALSE)) ,
       list(A = TRUE, B = FALSE)
     )
   )
   expect_warning(regexp = "Outer names",
     expect_identical(
-      splice(a = list(TRUE), b = list(FALSE)) ,
+      list_splice(a = list(TRUE), b = list(FALSE)) ,
       list(TRUE, FALSE)
     )
   )
