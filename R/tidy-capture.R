@@ -121,17 +121,18 @@ enexpr <- function(x) {
   .Call(rlang_interp, arg$expr, arg$env, TRUE)
 }
 
-dots_capture <- function(...) {
+dots_enquose <- function(...) {
   info <- captureDots()
-  dots <- map(info, dot_enquose)
+  dots <- map(info, dot_interp)
 
   # Flatten possibly spliced dots
   dots <- unlist(dots, FALSE) %||% list()
-  dots
+
+  map(dots, dot_enquose)
 }
-dot_enquose <- function(dot) {
+dot_interp <- function(dot, quosured = TRUE) {
   if (is_missing(dot$expr)) {
-    return(new_quosure(missing_arg(), empty_env()))
+    return(list(dot))
   }
   env <- dot$env
   expr <- dot$expr
@@ -139,12 +140,19 @@ dot_enquose <- function(dot) {
   # Allow unquote-splice in dots
   if (is_splice(expr)) {
     dots <- call("alist", expr)
-    dots <- .Call(rlang_interp, dots, env, TRUE)
+    dots <- .Call(rlang_interp, dots, env, quosured)
     dots <- eval_bare(dots)
-    map(dots, forward_quosure, env)
+    map(dots, function(expr) list(expr = expr, env = env))
   } else {
-    expr <- .Call(rlang_interp, expr, env, TRUE)
-    list(forward_quosure(expr, env))
+    expr <- .Call(rlang_interp, expr, env, quosured)
+    list(list(expr = expr, env = env))
+  }
+}
+dot_enquose <- function(dot) {
+  if (is_missing(dot$expr)) {
+    new_quosure(missing_arg(), empty_env())
+  } else {
+    forward_quosure(dot$expr, dot$env)
   }
 }
 
