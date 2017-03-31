@@ -1,13 +1,5 @@
 context("tidy capture")
 
-quos_list <- function(...) {
-  quos <- list(...)
-  if (length(quos)) {
-    names(quos) <- names2(quos)
-  }
-  struct(quos, class = "quosures")
-}
-
 test_that("explicit dots make a list of formulas", {
   fs <- dots_quos(x = 1 + 2, y = 2 + 3)
   f1 <- as_quosure(~ 1 + 2)
@@ -47,8 +39,8 @@ test_that("dots are interpolated", {
   var <- ~bar
   dots <- fn(toupper(!!var))
 
-  expect_identical(map(dots, deparse), named(list("~toupper(~foo)", "~toupper(~bar)", "~toupper(~baz)")))
-  expect_identical(map(dots, eval_tidy), named(list("FOO", "BAR", "BAZ")))
+  expect_identical(map(dots, deparse), named_list("~toupper(~foo)", "~toupper(~bar)", "~toupper(~baz)"))
+  expect_identical(map(dots, eval_tidy), named_list("FOO", "BAR", "BAZ"))
 })
 
 test_that("dots capture is stack-consistent", {
@@ -61,7 +53,7 @@ test_that("dots capture is stack-consistent", {
   h <- function(dots, ...) {
     dots
   }
-  expect_identical(fn(foo(baz)), named(quos_list(quo(foo(baz)))))
+  expect_identical(fn(foo(baz)), quos_list(quo(foo(baz))))
 })
 
 test_that("splice is consistently recognised", {

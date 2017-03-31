@@ -2,7 +2,7 @@ context("dots")
 
 test_that("dots are retrieved from arguments", {
   fn <- function(f, ...) f(...)
-  expect_identical(fn(exprs), list())
+  expect_identical(fn(exprs), named_list())
 
   g <- function(f, ...) fn(f, ...)
   expect_identical(g(exprs, a = 1, foo = bar), list(a = 1, foo = quote(bar)))
@@ -39,7 +39,7 @@ test_that("unmatched dots return missing_arg()", {
 
 test_that("empty dots return list()", {
   fn <- function(...) dots_inspect(...)
-  expect_equal(fn(), list())
+  expect_equal(fn(), named_list())
 })
 
 test_that("exprs() captures empty arguments", {

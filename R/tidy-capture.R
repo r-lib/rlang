@@ -168,32 +168,21 @@ is_splice <- function(expr) {
 }
 
 dots_interp_lhs <- function(dots) {
-  orig_names <- names(dots)
-  names <- names2(dots)
-  interpolated <- FALSE
+  nms <- names2(dots)
+  defs <- map_lgl(dots, is_definition)
 
-  for (i in seq_along(dots)) {
-    dot <- dot_interp_lhs(orig_names[[i]], dots[[i]])
-    dots[[i]] <- dot$dot
+  for (i in which(defs)) {
+    dot <- dot_interp_lhs(nms[[i]], dots[[i]])
+    dots[[i]] <- dot$expr
 
-    # Make sure unnamed dots remain unnamed
     if (!is_null(dot$name)) {
-      interpolated <- TRUE
-      names[[i]] <- dot$name
+      nms[[i]] <- dot$name
     }
   }
 
-  if (interpolated) {
-    names(dots) <- names
-  }
-
-  dots
+  set_names(dots, nms)
 }
 dot_interp_lhs <- function(name, dot) {
-  if (!is_definition(dot)) {
-    return(list(name = name, dot = dot))
-  }
-
   if (!is_null(name) && name != "") {
     warn("name ignored because a LHS was supplied")
   }
@@ -207,5 +196,5 @@ dot_interp_lhs <- function(name, dot) {
     abort("LHS must be a name or string")
   }
 
-  list(name = lhs, dot = rhs)
+  list(name = lhs, expr = rhs)
 }
