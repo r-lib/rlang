@@ -53,7 +53,7 @@
 #' # env() creates a new environment which has the current environment
 #' # as parent. It takes dots with explicit splicing:
 #' env(a = 1, b = "foo")
-#' env(a = 1, spliced(list(b = "foo", c = "bar")))
+#' env(a = 1, splice(list(b = "foo", c = "bar")))
 #'
 #' # child_env() creates by default an environment whose parent is the
 #' # empty environment. Here we return a new environment that has

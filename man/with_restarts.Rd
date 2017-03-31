@@ -2,21 +2,19 @@
 % Please edit documentation in R/cnd-restarts.R
 \name{with_restarts}
 \alias{with_restarts}
-\alias{with_restarts_}
 \title{Establish a restart point on the stack.}
 \usage{
-with_restarts(.expr, ..., .restarts = list())
-
-with_restarts_(.expr, .restarts = list(), .env = NULL)
+with_restarts(.expr, ...)
 }
 \arguments{
 \item{.expr}{An expression to execute with new restarts established
-on the stack.}
+on the stack. This argument is passed by expression and supports
+\link[=quasiquotation]{unquoting}. It is evaluated in a context where
+restarts are established.}
 
-\item{..., .restarts}{Named restart functions. The name is taken as
-the restart name and the function is executed after the jump.}
-
-\item{.env}{The environment in which to evaluate a captured \code{expr}.}
+\item{...}{Named restart functions. The name is taken as the
+restart name and the function is executed after the jump. These
+dots are evaluated with \link[=dots_list]{explicit splicing}.}
 }
 \description{
 Restart points are named functions that are established with
@@ -88,7 +86,7 @@ fn <- function(valid_input) {
     rst_null = function() NULL
   )
 
-  with_restarts(.restarts = restarts, {
+  with_restarts(splice(restarts), .expr = {
 
     # Signal a typed condition to let the caller know that we are
     # about to return an empty string as default value:

@@ -230,8 +230,7 @@ quo <- function(expr) {
 #' e <- expr(toupper(!! f))
 #' eval_tidy(e)
 expr <- function(expr) {
-  expr <- substitute(expr)
-  .Call(rlang_interp, expr, parent.frame())
+  enexpr(expr)
 }
 
 #' Tidy quotation of multiple expressions and dots.
@@ -305,8 +304,7 @@ expr <- function(expr) {
 #' dots$defs
 dots_quos <- function(..., .named = FALSE,
                       .ignore_empty = c("trailing", "none", "all")) {
-  dots <- dots_capture(...)
-  dots <- dots_interp_lhs(dots)
+  dots <- dots_enquose(...)
 
   n_dots <- length(dots)
   if (n_dots) {
@@ -360,28 +358,23 @@ quo_names_width <- function(named) {
 #' @rdname quosures
 #' @export
 dots_definitions <- function(..., .named = FALSE) {
-  dots <- dots_capture(...)
+  dots <- dots_enquose(..., lhs_interp = FALSE)
   if (.named) {
     width <- quo_names_width(.named)
     dots <- exprs_auto_name(dots, width)
   }
 
-  defined <- map_lgl(dots, function(dot) is_definition(f_rhs(dot)))
-  defs <- map(dots[defined], as_definition)
+  is_def <- map_lgl(dots, function(dot) is_definition(dot))
+  defs <- map(dots[is_def], as_definition)
 
-  list(dots = dots[!defined], defs = defs)
+  list(dots = dots[!is_def], defs = defs)
 }
 
-as_definition <- function(dot) {
-  env <- f_env(dot)
-  pat <- f_rhs(dot)
-
-  lhs <- .Call(rlang_interp, f_lhs(pat), env)
-  rhs <- .Call(rlang_interp, f_rhs(pat), env)
-
+as_definition <- function(def) {
+  env <- f_env(def)
   list(
-    lhs = new_quosure(lhs, env),
-    rhs = new_quosure(rhs, env)
+    lhs = new_quosure(f_lhs(def), env),
+    rhs = new_quosure(f_rhs(def), env)
   )
 }
 

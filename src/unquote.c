@@ -3,8 +3,8 @@
 #include <Rinternals.h>
 #include "utils.h"
 
-SEXP interp_walk(SEXP x, SEXP env);
-SEXP interp_arguments(SEXP x, SEXP env);
+SEXP interp_walk(SEXP x, SEXP env, bool quosured);
+SEXP interp_arguments(SEXP x, SEXP env, bool quosured);
 
 
 int bang_level(SEXP x) {
@@ -157,7 +157,7 @@ SEXP splice_nxt(SEXP cur, SEXP nxt, SEXP env) {
   return cur;
 }
 
-SEXP interp_walk(SEXP x, SEXP env)  {
+SEXP interp_walk(SEXP x, SEXP env, bool quosured)  {
   if (!Rf_isLanguage(x))
     return x;
 
@@ -173,28 +173,28 @@ SEXP interp_walk(SEXP x, SEXP env)  {
     unquote_check(x);
     SEXP uq_sym = CAR(x);
     REPROTECT(x = unquote(CADR(x), env, uq_sym), ipx);
-  } else if (is_rlang_prefixed(x, is_uqf_sym)) {
+  } else if (quosured && is_rlang_prefixed(x, is_uqf_sym)) {
     REPROTECT(x = unquote_prefixed_uqf(x, env), ipx);
-  } else if (is_formula(x) && !Rf_inherits(x, "quosure")) {
+  } else if (quosured && is_formula(x) && !Rf_inherits(x, "quosure")) {
     // Guard but don't unquote: environment should be recorded in the
     // formula lazily
     REPROTECT(x = guard_formula(x), ipx);
-    x = interp_arguments(x, env);
-  } else if (is_lang(x, "UQF")) {
+    x = interp_arguments(x, env, quosured);
+  } else if (quosured && is_lang(x, "UQF")) {
     // Guard and unquote: environment is recorded here
     REPROTECT(x = Rf_eval(x, env), ipx);
     REPROTECT(x = guard_formula(x), ipx);
   } else {
-    x = interp_arguments(x, env);
+    x = interp_arguments(x, env, quosured);
   }
 
   UNPROTECT(1);
   return x;
 }
 
-SEXP interp_arguments(SEXP x, SEXP env) {
+SEXP interp_arguments(SEXP x, SEXP env, bool quosured) {
   for(SEXP cur = x; cur != R_NilValue; cur = CDR(cur)) {
-    SETCAR(cur, interp_walk(CAR(cur), env));
+    SETCAR(cur, interp_walk(CAR(cur), env, quosured));
 
     SEXP nxt = CDR(cur);
     nxt = replace_triple_bang(nxt, cur);
@@ -207,14 +207,14 @@ SEXP interp_arguments(SEXP x, SEXP env) {
   return x;
 }
 
-SEXP rlang_interp(SEXP x, SEXP env) {
+SEXP rlang_interp(SEXP x, SEXP env, SEXP quosured) {
   if (!Rf_isLanguage(x))
     return x;
   if (!Rf_isEnvironment(env))
     Rf_errorcall(R_NilValue, "`env` must be an environment");
 
   x = PROTECT(Rf_duplicate(x));
-  x = interp_walk(x, env);
+  x = interp_walk(x, env, as_bool(quosured));
 
   UNPROTECT(1);
   return x;

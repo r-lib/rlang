@@ -65,8 +65,9 @@ test_that("unquoted formulas can use data", {
   }
 
   z <- 10
-  expect_equal(eval_tidy(quo(!! f1()), data = list(x = 1)), 101)
-  expect_equal(eval_tidy(quo(!! f2()), data = list(x = 1)), 11)
+  expect_identical(eval_tidy(f2(), list(x = 1)), 101)
+  expect_identical(eval_tidy(quo(!! f1()), data = list(x = 1)), 101)
+  expect_identical(eval_tidy(quo(!! f2()), data = list(x = 1)), 101)
 })
 
 test_that("guarded formulas are not evaluated", {

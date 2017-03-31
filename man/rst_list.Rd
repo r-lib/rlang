@@ -11,14 +11,15 @@ rst_list()
 
 rst_exists(.restart)
 
-rst_jump(.restart, ..., .args = list())
+rst_jump(.restart, ...)
 
-rst_maybe_jump(.restart, ..., .args = list())
+rst_maybe_jump(.restart, ...)
 }
 \arguments{
 \item{.restart}{The name of a restart.}
 
-\item{..., .args}{Arguments passed on to the restart function.}
+\item{...}{Arguments passed on to the restart function. These
+dots are evaluated with \link[=dots_list]{explicit splicing}.}
 }
 \description{
 Restarts are named jumping points established by \code{\link[=with_restarts]{with_restarts()}}.

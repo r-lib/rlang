@@ -13,10 +13,12 @@
 #' being callable by name once established.
 #'
 #' @param .expr An expression to execute with new restarts established
-#'   on the stack.
-#' @param ...,.restarts Named restart functions. The name is taken as
-#'   the restart name and the function is executed after the jump.
-#' @param .env The environment in which to evaluate a captured `expr`.
+#'   on the stack. This argument is passed by expression and supports
+#'   [unquoting][quasiquotation]. It is evaluated in a context where
+#'   restarts are established.
+#' @param ... Named restart functions. The name is taken as the
+#'   restart name and the function is executed after the jump. These
+#'   dots are evaluated with [explicit splicing][dots_list].
 #' @seealso [return_from()] and [return_to()] for a more flexible way
 #'   of performing a non-local jump to an arbitrary call frame.
 #' @export
@@ -76,7 +78,7 @@
 #'     rst_null = function() NULL
 #'   )
 #'
-#'   with_restarts(.restarts = restarts, {
+#'   with_restarts(splice(restarts), .expr = {
 #'
 #'     # Signal a typed condition to let the caller know that we are
 #'     # about to return an empty string as default value:
@@ -103,16 +105,9 @@
 #'
 #' # You can use restarting() to create restarting handlers easily:
 #' with_handlers(fn(FALSE), default_empty_string = restarting("rst_null"))
-with_restarts <- function(.expr, ..., .restarts = list()) {
-  restarts <- c(list(...), .restarts)
-  with_restarts_(enquo(.expr), restarts)
-}
-#' @rdname with_restarts
-#' @export
-with_restarts_ <- function(.expr, .restarts = list(), .env = NULL) {
-  f <- as_quosure(.expr, .env)
-  f <- quo(withRestarts(!! f, !!! .restarts))
-  eval_tidy(f)
+with_restarts <- function(.expr, ...) {
+  quo <- quo(withRestarts(expr = !! enquo(.expr), !!! dots_list(...)))
+  eval_tidy(quo)
 }
 
 
@@ -127,7 +122,8 @@ with_restarts_ <- function(.expr, .restarts = list(), .env = NULL) {
 #' exists before jumping.
 #'
 #' @param .restart The name of a restart.
-#' @param ...,.args Arguments passed on to the restart function.
+#' @param ... Arguments passed on to the restart function. These
+#'   dots are evaluated with [explicit splicing][dots_list].
 #' @seealso [with_restarts()], [rst_muffle()].
 #' @export
 rst_list <- function() {
@@ -140,15 +136,15 @@ rst_exists <- function(.restart) {
 }
 #' @rdname rst_list
 #' @export
-rst_jump <- function(.restart, ..., .args = list()) {
-  args <- c(list(.restart, ...), .args)
+rst_jump <- function(.restart, ...) {
+  args <- c(list(r = .restart), dots_list(...))
   do.call("invokeRestart", args)
 }
 #' @rdname rst_list
 #' @export
-rst_maybe_jump <- function(.restart, ..., .args = list()) {
+rst_maybe_jump <- function(.restart, ...) {
   if (rst_exists(.restart)) {
-    args <- c(list(.restart, ...), .args)
+    args <- c(list(r = .restart), dots_list(...))
     do.call("invokeRestart", args)
   }
 }

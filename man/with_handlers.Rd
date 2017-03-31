@@ -2,23 +2,19 @@
 % Please edit documentation in R/cnd-handlers.R
 \name{with_handlers}
 \alias{with_handlers}
-\alias{with_handlers_}
 \title{Establish handlers on the stack.}
 \usage{
-with_handlers(.expr, ..., .handlers = list())
-
-with_handlers_(.expr, .handlers = list(), .env = NULL)
+with_handlers(.expr, ...)
 }
 \arguments{
 \item{.expr}{An expression to execute in a context where new
 handlers are established. The underscored version takes a quoted
 expression or a quoted formula.}
 
-\item{..., .handlers}{Named handlers. Handlers should inherit from
-\code{exiting} or \code{inplace}. See \code{\link[=exiting]{exiting()}} and \code{\link[=inplace]{inplace()}} for
-constructing such handlers.}
-
-\item{.env}{The environment in which to evaluate a captured \code{expr}.}
+\item{...}{Named handlers. Handlers should inherit from \code{exiting}
+or \code{inplace}. See \code{\link[=exiting]{exiting()}} and \code{\link[=inplace]{inplace()}} for constructing
+such handlers. Dots are evaluated with \link[=dots_list]{explicit
+splicing}.}
 }
 \description{
 Condition handlers are functions established on the evaluation

@@ -2,17 +2,17 @@
 #'
 #' These functions evaluate all arguments contained in `...` and
 #' return them as a list. They both splice their arguments if they
-#' qualify for splicing. See [splice()] for information about splicing
+#' qualify for splicing. See [list_splice()] for information about splicing
 #' and below for the kind of arguments that qualify for splicing.
 #'
 #' `dots_list()` has _explicit splicing semantics_: it splices lists
-#' that are explicitly marked for [splicing][splice] with the
-#' [spliced()] adjective. `dots_splice()` on the other hand has _list
+#' that are explicitly marked for [splicing][list_splice] with the
+#' [splice()] adjective. `dots_splice()` on the other hand has _list
 #' splicing semantics_: in addition to lists marked explicitly for
 #' splicing, [bare][is_bare_list] lists are spliced as well.
 #'
 #' Note that `dots_list()` and `dots_splice()` are simple aliases to
-#' [splice()]. Their main purpose is to provide more explicit
+#' [list_splice()]. Their main purpose is to provide more explicit
 #' documentation for functions capturing dots.
 #'
 #' @param ... Arguments with explicit (`dots_list()`) or list
@@ -20,18 +20,18 @@
 #'   arguments are embedded in the returned list.
 #' @return A list of arguments. This list is always named: unnamed
 #'   arguments are named with the empty string `""`.
-#' @seealso [dots_exprs()] for extracting dots without evaluation.
+#' @seealso [exprs()] for extracting dots without evaluation.
 #' @export
 #' @examples
 #' # Compared to simply using list(...) to capture dots, dots_list()
 #' # splices explicitly:
 #' x <- list(1, 2)
-#' dots_list(spliced(x), 3)
+#' dots_list(splice(x), 3)
 #'
 #' # Unlike dots_splice(), it doesn't splice bare lists:
 #' dots_list(x, 3)
 dots_list <- function(...) {
-  dots <- .Call(rlang_splice, list(...), "list", bare = FALSE)
+  dots <- .Call(rlang_splice, dots_values(...), "list", bare = FALSE)
   names(dots) <- names2(dots)
   dots
 }
@@ -39,13 +39,13 @@ dots_list <- function(...) {
 #' @export
 #' @examples
 #'
-#' # dots_splice() splices lists marked with spliced() as well as bare
+#' # dots_splice() splices lists marked with splice() as well as bare
 #' # lists:
 #' x <- list(1, 2)
-#' dots_splice(spliced(x), 3)
+#' dots_splice(splice(x), 3)
 #' dots_splice(x, 3)
 dots_splice <- function(...) {
-  dots <- .Call(rlang_splice, list(...), "list", bare = TRUE)
+  dots <- .Call(rlang_splice, dots_values(...), "list", bare = TRUE)
   names(dots) <- names2(dots)
   dots
 }
@@ -53,11 +53,11 @@ dots_splice <- function(...) {
 #' Extract dots forwarded as arguments.
 #'
 #' These functions return the arguments forwarded through `...`.
-#' Contrarily to [dots_list()] and [dots_splice()], `dots_exprs()` and
+#' Contrarily to [dots_list()] and [dots_splice()], `exprs()` and
 #' `dots_node()` do not evaluate the arguments. The former returns a
 #' list of expressions while the latter returns a [pairlist].
 #'
-#' `dots_exprs()` performs call-splicing and is compatible with
+#' `exprs()` performs call-splicing and is compatible with
 #' [unquote operators][UQ], including unquote-splicing. `dots_node()`
 #' is more bare bones and returns the pairlist as is, without
 #' unquoting.
@@ -65,9 +65,12 @@ dots_splice <- function(...) {
 #' @inheritParams quosures
 #' @param ... Arguments to extract.
 #' @export
-dots_exprs <- function(..., .ignore_empty = "trailing") {
+exprs <- function(..., .ignore_empty = "trailing") {
   map(dots_quos(..., .ignore_empty = .ignore_empty), f_rhs)
 }
+#' @rdname exprs
+#' @export
+dots_exprs <- exprs
 
 #' Inspect dots
 #'
@@ -81,7 +84,7 @@ dots_exprs <- function(..., .ignore_empty = "trailing") {
 #'
 #' `dots_inspect_()` is the standard evaluation version of
 #' `dots_inspect()` and takes a list of dots as captured by
-#' [dots_exprs()], and a call stack as returned by
+#' [exprs()], and a call stack as returned by
 #' [call_stack()].
 #'
 #' @param ... Dots to inspect.
@@ -131,7 +134,7 @@ dots_exprs <- function(..., .ignore_empty = "trailing") {
 #' only_dots <- TRUE
 #' f(foo(bar))
 dots_inspect <- function(..., .only_dots = FALSE) {
-  dots <- dots_exprs(...)
+  dots <- exprs(...)
   stack <- call_stack()
   dots_inspect_(dots, stack, only_dots = .only_dots)
 }

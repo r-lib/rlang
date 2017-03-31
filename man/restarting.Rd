@@ -4,14 +4,15 @@
 \alias{restarting}
 \title{Create a restarting handler.}
 \usage{
-restarting(.restart, ..., .fields = NULL, .args = list())
+restarting(.restart, ..., .fields = NULL)
 }
 \arguments{
 \item{.restart}{The name of a restart.}
 
-\item{..., .args}{Additional arguments passed on the restart
+\item{...}{Additional arguments passed on the restart
 function. These arguments are evaluated only once and
-immediately, when creating the restarting handler.}
+immediately, when creating the restarting handler. Furthermore,
+they are evaluated with \link[=dots_list]{explicit splicing}.}
 
 \item{.fields}{A character vector specifying the fields of the
 condition that should be passed as arguments to the restart. If
@@ -26,8 +27,8 @@ This constructor automates the common task of creating an
 \details{
 Jumping to a restart point from an inplace handler has two
 effects. First, the control flow jumps to wherever the restart was
-established, and the restart function is called (with \code{...},
-\code{.args} or \code{.fields} as arguments). Execution resumes from the
+established, and the restart function is called (with \code{...}, or
+\code{.fields} as arguments). Execution resumes from the
 \code{\link[=with_restarts]{with_restarts()}} call. Secondly, the transfer of the control flow
 out of the function that signalled the condition means that the
 handler has dealt with the condition. Thus the condition will not

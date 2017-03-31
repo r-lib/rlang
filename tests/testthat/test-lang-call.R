@@ -7,7 +7,7 @@ test_that("character vector must be length 1", {
 })
 
 test_that("args can be specified individually or as list", {
-  out <- new_language("f", a = 1, .args = list(b = 2))
+  out <- new_language("f", a = 1, splice(list(b = 2)))
   expect_equal(out, quote(f(a = 1, b = 2)))
 })
 
@@ -204,7 +204,7 @@ test_that("new args replace old", {
 
 test_that("can modify without supplying `call`", {
   locally({
-    f <- function(std) lang_modify(.args = list(bool = FALSE), .standardise = std)
+    f <- function(std) lang_modify(, splice(list(bool = FALSE)), .standardise = std)
     expect_identical(f(TRUE), quote(f(std = TRUE, bool = FALSE)))
     expect_identical(f(FALSE), quote(f(FALSE, bool = FALSE)))
   })

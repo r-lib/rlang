@@ -2,7 +2,7 @@ context("vector")
 
 test_that("vector is modified", {
   x <- c(1, b = 2, c = 3, 4)
-  out <- modify(x, 5, b = 20, .elts = list(6, c = "30"))
+  out <- modify(x, 5, b = 20, splice(list(6, c = "30")))
   expect_equal(out, list(1, b = 20, c = "30", 4, 5, 6))
 })
 
@@ -38,7 +38,7 @@ test_that("can create empty vectors", {
   expect_identical(cpl(), complex(0))
   expect_identical(chr(), character(0))
   expect_identical(bytes(), raw(0))
-  expect_identical(splice(), list())
+  expect_identical(list_splice(), list())
 })
 
 test_that("objects are not spliced", {
@@ -71,27 +71,27 @@ test_that("warn when spliced lists have outer name", {
   expect_warning(lgl(C = list(FALSE)), "Outer names")
 })
 
-test_that("splice() splices names", {
-  expect_identical(splice(a = TRUE, b = FALSE), list(a = TRUE, b = FALSE))
-  expect_identical(splice(c(A = TRUE), c(B = FALSE)), list(c(A = TRUE), c(B = FALSE)))
-  expect_identical(splice(a = c(A = TRUE), b = c(B = FALSE)), list(a = c(A = TRUE), b = c(B = FALSE)))
+test_that("list_splice() splices names", {
+  expect_identical(list_splice(a = TRUE, b = FALSE), list(a = TRUE, b = FALSE))
+  expect_identical(list_splice(c(A = TRUE), c(B = FALSE)), list(c(A = TRUE), c(B = FALSE)))
+  expect_identical(list_splice(a = c(A = TRUE), b = c(B = FALSE)), list(a = c(A = TRUE), b = c(B = FALSE)))
   expect_warning(regexp = "Outer names",
     expect_identical(
-      splice(a = list(A = TRUE), b = list(B = FALSE)) ,
+      list_splice(a = list(A = TRUE), b = list(B = FALSE)) ,
       list(A = TRUE, B = FALSE)
     )
   )
   expect_warning(regexp = "Outer names",
     expect_identical(
-      splice(a = list(TRUE), b = list(FALSE)) ,
+      list_splice(a = list(TRUE), b = list(FALSE)) ,
       list(TRUE, FALSE)
     )
   )
 })
 
-test_that("splice() with `.bare = FALSE` doesn't splice bare lists", {
-  expect_identical(splice(list(1, 2), .bare = FALSE), list(list(1, 2)))
-  expect_identical(splice(spliced(list(1, 2)), .bare = FALSE), list(1, 2))
+test_that("ll() doesn't splice bare lists", {
+  expect_identical(ll(list(1, 2)), list(list(1, 2)))
+  expect_identical(ll(splice(list(1, 2))), list(1, 2))
 })
 
 test_that("atomic inputs are implicitly coerced", {

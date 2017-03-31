@@ -11,7 +11,9 @@
 #' inherit from `error`, `warning` or `message`.
 #'
 #' @param .type The condition subclass.
-#' @param ... Named data fields stored inside the condition object.
+#' @param ... Named data fields stored inside the condition
+#'   object. These dots are evaluated with [explicit
+#'   splicing][dots_list].
 #' @param .msg A default message to inform the user about the
 #'   condition when it is signalled.
 #' @seealso [cnd_signal()], [with_handlers()].
@@ -40,7 +42,7 @@
 #' # terminate the program if not handled:
 #' # stop(cnd_error("my_error"))
 new_cnd <- function(.type = NULL, ..., .msg = NULL) {
-  data <- list(...)
+  data <- dots_list(...)
   if (any(names(data) %in% "message")) {
     stop("Conditions cannot have a `message` data field", call. = FALSE)
   }

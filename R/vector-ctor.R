@@ -6,14 +6,14 @@
 #' [vector-coercion]. In addition, all constructors support splicing:
 #' if you supply [bare][is_bare_list] lists or [explicitly
 #' spliced][is_spliced] lists, their contents are spliced into the
-#' output vectors (see below for details). `splice()` is a list
+#' output vectors (see below for details). `list_splice()` is a list
 #' constructor similar to [base::list()] but with splicing semantics.
 #'
 #' @section Splicing:
 #'
 #' Splicing is an operation similar to flattening one level of nested
 #' lists, e.g. with \code{\link[=unlist]{base::unlist(x, recursive =
-#' FALSE)}} or `purrr::flatten()`. `splice()` returns its
+#' FALSE)}} or `purrr::flatten()`. `list_splice()` returns its
 #' arguments as a list, just like `list()` would, but inner lists
 #' qualifying for splicing are flattened. That is, their contents are
 #' embedded in the surrounding list. Similarly, `chr()` concatenates
@@ -23,15 +23,16 @@
 #' Whether an inner list qualifies for splicing is determined by the
 #' type of splicing semantics. All the atomic constructors like
 #' `chr()` have _list splicing_ semantics: [bare][is_bare_list] lists
-#' and [explicitly spliced][is_spliced] lists are spliced. Likewise,
-#' `splice()` has list splicing semantics by default. If you set
-#' `.bare` to `FALSE`, it restricts splicing to lists marked with
-#' [spliced()]. This is called _explicit splicing_.
+#' and [explicitly spliced][is_spliced] lists are spliced.
+#'
+#' There are two list constructors with different splicing
+#' semantics. `ll()` only splices lists explicitly marked with
+#' [splice()], while `list_splice()` has list splicing semantics.
 #'
 #' @param ... Components of the new vector. Bare lists and explicitly
 #'   spliced lists are spliced.
 #' @name vector-construction
-#' @seealso [splice()]
+#' @seealso [list_splice()]
 #' @examples
 #' # These constructors are like a typed version of c():
 #' c(TRUE, FALSE)
@@ -66,22 +67,22 @@ NULL
 #' @rdname vector-construction
 #' @export
 lgl <- function(...) {
-  .Call(rlang_splice, list(...), "logical", bare = TRUE)
+  .Call(rlang_splice, dots_values(...), "logical", bare = TRUE)
 }
 #' @rdname vector-construction
 #' @export
 int <- function(...) {
-  .Call(rlang_splice, list(...), "integer", bare = TRUE)
+  .Call(rlang_splice, dots_values(...), "integer", bare = TRUE)
 }
 #' @rdname vector-construction
 #' @export
 dbl <- function(...) {
-  .Call(rlang_splice, list(...), "double", bare = TRUE)
+  .Call(rlang_splice, dots_values(...), "double", bare = TRUE)
 }
 #' @rdname vector-construction
 #' @export
 cpl <- function(...) {
-  .Call(rlang_splice, list(...), "complex", bare = TRUE)
+  .Call(rlang_splice, dots_values(...), "complex", bare = TRUE)
 }
 #' @rdname vector-construction
 #' @export
@@ -90,7 +91,7 @@ cpl <- function(...) {
 #'   conversion is performed.
 #' @export
 chr <- function(..., .encoding = NULL) {
-  out <- .Call(rlang_splice, list(...), "character", bare = TRUE)
+  out <- .Call(rlang_splice, dots_values(...), "character", bare = TRUE)
   set_chr_encoding(out, .encoding)
 }
 #' @rdname vector-construction
@@ -101,7 +102,7 @@ chr <- function(..., .encoding = NULL) {
 #' bytes(1:10)
 #' bytes(0x01, 0xff, c(0x03, 0x05), list(10, 20, 30L))
 bytes <- function(...) {
-  dots <- map(list(...), function(dot) {
+  dots <- map(dots_values(...), function(dot) {
     if (is_bare_list(dot) || is_spliced(dot)) {
       map(dot, new_bytes)
     } else {
@@ -112,48 +113,42 @@ bytes <- function(...) {
 }
 
 #' @rdname vector-construction
-#' @param .bare Whether to splice bare lists. If `FALSE`, only lists
-#'   inheriting from `"spliced"` are spliced. This is called explicit
-#'   splicing. If `TRUE`, [bare lists][is_bare_list] (pure lists with
-#'   no `class` attribute) are spliced as well.
 #' @export
 #' @examples
 #'
-#' # splice() is like the atomic vector constructors but for lists:
-#' dbl(1, list(1, 2))
-#' splice(1, list(1, 2))
+#' # The list constructor has explicit splicing semantics:
+#' ll(1, list(2))
 #'
-#' # Only bare lists are spliced. Objects like data frames are not spliced:
-#' splice(1, mtcars)
-#'
-#' # Use the spliced() adjective to splice objects:
-#' splice(1, spliced(mtcars))
-#'
-#' # You can chose not to splice bare lists with `.bare`:
-#' splice(list(1, 2), .bare = FALSE)
+#' # But list_splice() will splice bare lists as well:
+#' list_splice(1, list(2))
 #'
 #' # Note that explicitly spliced lists are always spliced:
-#' splice(spliced(list(1, 2)), .bare = FALSE)
-splice <- function(..., .bare = TRUE) {
-  .Call(rlang_splice, list(...), "list", bare = .bare)
+#' ll(splice(list(1, 2)))
+ll <- function(...) {
+  .Call(rlang_splice, dots_values(...), "list", bare = FALSE)
+}
+#' @rdname vector-construction
+#' @export
+list_splice <- function(...) {
+  .Call(rlang_splice, dots_values(...), "list", bare = TRUE)
 }
 
 #' Splice a list within a vector.
 #'
 #' This adjective signals to functions taking dots that `x` should be
 #' spliced in a surrounding vector. Examples of functions that support
-#' such explicit splicing are [splice()], [chr()], etc.
+#' such explicit splicing are [list_splice()], [chr()], etc.
 #'
 #' @param x A list to splice.
-#' @seealso [splice()], [vector-construction]
+#' @seealso [list_splice()], [vector-construction]
 #' @export
-spliced <- function(x) {
+splice <- function(x) {
   if (!is_list(x)) {
     abort("Only lists can be spliced")
   }
   structure(x, class = "spliced")
 }
-#' @rdname spliced
+#' @rdname splice
 #' @export
 is_spliced <- function(x) {
   inherits(x, "spliced")

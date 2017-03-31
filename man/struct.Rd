@@ -20,5 +20,5 @@ struct(letters, names = 1:26, class = "my_chr")
 
 # Splice a list of attributes:
 attrs <- list(attr = "attr", names = 1:26, class = "my_chr")
-struct(letters, spliced(attrs))
+struct(letters, splice(attrs))
 }

@@ -31,9 +31,10 @@
 #' @param .expr An expression to execute in a context where new
 #'   handlers are established. The underscored version takes a quoted
 #'   expression or a quoted formula.
-#' @param ...,.handlers Named handlers. Handlers should inherit from
-#'   `exiting` or `inplace`. See [exiting()] and [inplace()] for
-#'   constructing such handlers.
+#' @param ... Named handlers. Handlers should inherit from `exiting`
+#'   or `inplace`. See [exiting()] and [inplace()] for constructing
+#'   such handlers. Dots are evaluated with [explicit
+#'   splicing][dots_list].
 #' @seealso [exiting()], [inplace()].
 #' @export
 #' @examples
@@ -75,36 +76,25 @@
 #'   with_restarts(g(), rst_foo = function() "restart value")
 #' }
 #' with_handlers(fn2(), foo = inplace(exiting_handler), foo = inplace(other_handler))
-with_handlers <- function(.expr, ..., .handlers = list()) {
-  handlers <- c(list(...), .handlers)
-  with_handlers_(enquo(.expr), handlers)
-}
-#' @rdname with_handlers
-#' @export
-with_handlers_ <- function(.expr, .handlers = list(), .env = NULL) {
-  f <- as_quosure(.expr, .env)
+with_handlers <- function(.expr, ...) {
+  quo <- enquo(.expr)
+  handlers <- dots_list(...)
 
-  inplace <- keep(.handlers, inherits, "inplace")
-  exiting <- keep(.handlers, inherits, "exiting")
+  inplace <- keep(handlers, inherits, "inplace")
+  exiting <- keep(handlers, inherits, "exiting")
 
-  if (length(.handlers) > length(exiting) + length(inplace)) {
+  if (length(handlers) > length(exiting) + length(inplace)) {
     abort("all handlers should inherit from `exiting` or `inplace`")
   }
-
-  f <- interp_handlers(f, inplace = inplace, exiting = exiting)
-  eval_tidy(f)
-}
-
-interp_handlers <- function(f, inplace, exiting) {
   if (length(exiting)) {
-    f <- quo(tryCatch(!! f, !!! exiting))
+    quo <- quo(tryCatch(!! quo, !!! exiting))
   }
   if (length(inplace)) {
-    f <- quo(withCallingHandlers(!! f, !!! inplace))
+    quo <- quo(withCallingHandlers(!! quo, !!! inplace))
   }
-  f
-}
 
+  eval_tidy(quo)
+}
 
 #' Create an exiting or in place handler.
 #'
@@ -179,8 +169,8 @@ inplace <- function(handler, muffle = FALSE) {
 #'
 #' Jumping to a restart point from an inplace handler has two
 #' effects. First, the control flow jumps to wherever the restart was
-#' established, and the restart function is called (with `...`,
-#' `.args` or `.fields` as arguments). Execution resumes from the
+#' established, and the restart function is called (with `...`, or
+#' `.fields` as arguments). Execution resumes from the
 #' [with_restarts()] call. Secondly, the transfer of the control flow
 #' out of the function that signalled the condition means that the
 #' handler has dealt with the condition. Thus the condition will not
@@ -192,10 +182,10 @@ inplace <- function(handler, muffle = FALSE) {
 #'   named, the names (except empty names `""`) are used as
 #'   argument names for calling the restart function. Otherwise the
 #'   the fields themselves are used as argument names.
-#' @param ...,.args Additional arguments passed on the restart
+#' @param ... Additional arguments passed on the restart
 #'   function. These arguments are evaluated only once and
-#'   immediately, when creating the restarting handler.
-#'
+#'   immediately, when creating the restarting handler. Furthermore,
+#'   they are evaluated with [explicit splicing][dots_list].
 #' @export
 #' @seealso [inplace()] and [exiting()].
 #' @examples
@@ -227,15 +217,14 @@ inplace <- function(handler, muffle = FALSE) {
 #' # The restarting() constructor is especially nice to use with
 #' # restarts that do not need arguments:
 #' with_handlers(fn(), foo = restarting("rst_baz"))
-restarting <- function(.restart, ..., .fields = NULL, .args = list()) {
+restarting <- function(.restart, ..., .fields = NULL) {
   stopifnot(is_scalar_character(.restart))
-
   if (!is_null(.fields)) {
     .fields <- set_names2(.fields)
     stopifnot(is_character(.fields) && is_dictionary(.fields))
   }
-  args <- c(list(...), .args)
 
+  args <- dots_list(...)
   handler <- function(c) {
     fields <- set_names(c[.fields], names(.fields))
     rst_args <- c(fields, args)

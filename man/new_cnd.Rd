@@ -18,7 +18,9 @@ cnd_message(.type = NULL, ..., .msg = NULL)
 \arguments{
 \item{.type}{The condition subclass.}
 
-\item{...}{Named data fields stored inside the condition object.}
+\item{...}{Named data fields stored inside the condition
+object. These dots are evaluated with \link[=dots_list]{explicit
+splicing}.}
 
 \item{.msg}{A default message to inform the user about the
 condition when it is signalled.}

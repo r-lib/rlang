@@ -21,35 +21,35 @@ arguments are named with the empty string \code{""}.
 \description{
 These functions evaluate all arguments contained in \code{...} and
 return them as a list. They both splice their arguments if they
-qualify for splicing. See \code{\link[=splice]{splice()}} for information about splicing
+qualify for splicing. See \code{\link[=list_splice]{list_splice()}} for information about splicing
 and below for the kind of arguments that qualify for splicing.
 }
 \details{
 \code{dots_list()} has \emph{explicit splicing semantics}: it splices lists
-that are explicitly marked for \link[=splice]{splicing} with the
-\code{\link[=spliced]{spliced()}} adjective. \code{dots_splice()} on the other hand has \emph{list
+that are explicitly marked for \link[=list_splice]{splicing} with the
+\code{\link[=splice]{splice()}} adjective. \code{dots_splice()} on the other hand has \emph{list
 splicing semantics}: in addition to lists marked explicitly for
 splicing, \link[=is_bare_list]{bare} lists are spliced as well.
 
 Note that \code{dots_list()} and \code{dots_splice()} are simple aliases to
-\code{\link[=splice]{splice()}}. Their main purpose is to provide more explicit
+\code{\link[=list_splice]{list_splice()}}. Their main purpose is to provide more explicit
 documentation for functions capturing dots.
 }
 \examples{
 # Compared to simply using list(...) to capture dots, dots_list()
 # splices explicitly:
 x <- list(1, 2)
-dots_list(spliced(x), 3)
+dots_list(splice(x), 3)
 
 # Unlike dots_splice(), it doesn't splice bare lists:
 dots_list(x, 3)
 
-# dots_splice() splices lists marked with spliced() as well as bare
+# dots_splice() splices lists marked with splice() as well as bare
 # lists:
 x <- list(1, 2)
-dots_splice(spliced(x), 3)
+dots_splice(splice(x), 3)
 dots_splice(x, 3)
 }
 \seealso{
-\code{\link[=dots_exprs]{dots_exprs()}} for extracting dots without evaluation.
+\code{\link[=exprs]{exprs()}} for extracting dots without evaluation.
 }

@@ -153,7 +153,7 @@ int is_true(SEXP x) {
 
 // Formulas --------------------------------------------------------------------
 
-bool is_formula(SEXP x) {
+bool is_formulaish(SEXP x) {
   if (TYPEOF(x) != LANGSXP)
     return 0;
 
@@ -164,12 +164,23 @@ bool is_formula(SEXP x) {
   return is_sym(head, "~") || is_sym(head, ":=");
 }
 
+bool is_formula(SEXP x) {
+  if (TYPEOF(x) != LANGSXP)
+    return 0;
+
+  SEXP head = CAR(x);
+  if (TYPEOF(head) != SYMSXP)
+    return 0;
+
+  return is_sym(head, "~");
+}
+
 bool is_fpromise(SEXP x) {
   return is_formula(x) && Rf_isNull(CDDR(x));
 }
 
 SEXP f_rhs_(SEXP f) {
-  if (!is_formula(f))
+  if (!is_formulaish(f))
     Rf_errorcall(R_NilValue, "`x` is not a formula");
 
   switch (Rf_length(f)) {
@@ -180,7 +191,7 @@ SEXP f_rhs_(SEXP f) {
 }
 
 SEXP f_lhs_(SEXP f) {
-  if (!is_formula(f))
+  if (!is_formulaish(f))
     Rf_errorcall(R_NilValue, "`x` is not a formula");
 
   switch (Rf_length(f)) {
@@ -191,7 +202,7 @@ SEXP f_lhs_(SEXP f) {
 }
 
 SEXP f_env_(SEXP f) {
-  if (!is_formula(f))
+  if (!is_formulaish(f))
     Rf_errorcall(R_NilValue, "`x` is not a formula");
 
   return Rf_getAttrib(f, Rf_install(".Environment"));
@@ -220,4 +231,11 @@ const char* kind_c_str(SEXPTYPE kind) {
 
 bool is_empty(SEXP x) {
   return Rf_length(x) == 0;
+}
+
+bool as_bool(SEXP x) {
+  if (TYPEOF(x) != LGLSXP && Rf_length(x) != 1)
+    Rf_errorcall(R_NilValue, "Expected a scalar logical");
+   int* xp = (int*) LOGICAL(x);
+   return *xp;
 }

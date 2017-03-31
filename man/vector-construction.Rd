@@ -8,7 +8,8 @@
 \alias{cpl}
 \alias{chr}
 \alias{bytes}
-\alias{splice}
+\alias{ll}
+\alias{list_splice}
 \title{Construct new vectors.}
 \usage{
 lgl(...)
@@ -23,7 +24,9 @@ chr(..., .encoding = NULL)
 
 bytes(...)
 
-splice(..., .bare = TRUE)
+ll(...)
+
+list_splice(...)
 }
 \arguments{
 \item{...}{Components of the new vector. Bare lists and explicitly
@@ -32,11 +35,6 @@ spliced lists are spliced.}
 \item{.encoding}{If non-null, passed to \code{\link[=set_chr_encoding]{set_chr_encoding()}} to add
 an encoding mark. This is only declarative, no encoding
 conversion is performed.}
-
-\item{.bare}{Whether to splice bare lists. If \code{FALSE}, only lists
-inheriting from \code{"spliced"} are spliced. This is called explicit
-splicing. If \code{TRUE}, \link[=is_bare_list]{bare lists} (pure lists with
-no \code{class} attribute) are spliced as well.}
 }
 \description{
 The atomic vector constructors are equivalent to \code{\link[=c]{c()}} but allow
@@ -45,7 +43,7 @@ you to be more explicit about the output type. Implicit coercions
 \link{vector-coercion}. In addition, all constructors support splicing:
 if you supply \link[=is_bare_list]{bare} lists or \link[=is_spliced]{explicitly
 spliced} lists, their contents are spliced into the
-output vectors (see below for details). \code{splice()} is a list
+output vectors (see below for details). \code{list_splice()} is a list
 constructor similar to \code{\link[base:list]{base::list()}} but with splicing semantics.
 }
 \section{Splicing}{
@@ -53,7 +51,7 @@ constructor similar to \code{\link[base:list]{base::list()}} but with splicing s
 
 Splicing is an operation similar to flattening one level of nested
 lists, e.g. with \code{\link[=unlist]{base::unlist(x, recursive =
-FALSE)}} or \code{purrr::flatten()}. \code{splice()} returns its
+FALSE)}} or \code{purrr::flatten()}. \code{list_splice()} returns its
 arguments as a list, just like \code{list()} would, but inner lists
 qualifying for splicing are flattened. That is, their contents are
 embedded in the surrounding list. Similarly, \code{chr()} concatenates
@@ -63,10 +61,11 @@ inner lists are flattened before concatenation.
 Whether an inner list qualifies for splicing is determined by the
 type of splicing semantics. All the atomic constructors like
 \code{chr()} have \emph{list splicing} semantics: \link[=is_bare_list]{bare} lists
-and \link[=is_spliced]{explicitly spliced} lists are spliced. Likewise,
-\code{splice()} has list splicing semantics by default. If you set
-\code{.bare} to \code{FALSE}, it restricts splicing to lists marked with
-\code{\link[=spliced]{spliced()}}. This is called \emph{explicit splicing}.
+and \link[=is_spliced]{explicitly spliced} lists are spliced.
+
+There are two list constructors with different splicing
+semantics. \code{ll()} only splices lists explicitly marked with
+\code{\link[=splice]{splice()}}, while \code{list_splice()} has list splicing semantics.
 }
 
 \examples{
@@ -102,22 +101,15 @@ dbl(list(a = c(A = 1)))
 bytes(1:10)
 bytes(0x01, 0xff, c(0x03, 0x05), list(10, 20, 30L))
 
-# splice() is like the atomic vector constructors but for lists:
-dbl(1, list(1, 2))
-splice(1, list(1, 2))
+# The list constructor has explicit splicing semantics:
+ll(1, list(2))
 
-# Only bare lists are spliced. Objects like data frames are not spliced:
-splice(1, mtcars)
-
-# Use the spliced() adjective to splice objects:
-splice(1, spliced(mtcars))
-
-# You can chose not to splice bare lists with `.bare`:
-splice(list(1, 2), .bare = FALSE)
+# But list_splice() will splice bare lists as well:
+list_splice(1, list(2))
 
 # Note that explicitly spliced lists are always spliced:
-splice(spliced(list(1, 2)), .bare = FALSE)
+ll(splice(list(1, 2)))
 }
 \seealso{
-\code{\link[=splice]{splice()}}
+\code{\link[=list_splice]{list_splice()}}
 }

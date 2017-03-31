@@ -1,13 +1,5 @@
 context("tidy capture")
 
-quos_list <- function(...) {
-  quos <- list(...)
-  if (length(quos)) {
-    names(quos) <- names2(quos)
-  }
-  struct(quos, class = "quosures")
-}
-
 test_that("explicit dots make a list of formulas", {
   fs <- dots_quos(x = 1 + 2, y = 2 + 3)
   f1 <- as_quosure(~ 1 + 2)
@@ -47,8 +39,8 @@ test_that("dots are interpolated", {
   var <- ~bar
   dots <- fn(toupper(!!var))
 
-  expect_identical(map(dots, deparse), named(list("~toupper(~foo)", "~toupper(~bar)", "~toupper(~baz)")))
-  expect_identical(map(dots, eval_tidy), named(list("FOO", "BAR", "BAZ")))
+  expect_identical(map(dots, deparse), named_list("~toupper(~foo)", "~toupper(~bar)", "~toupper(~baz)"))
+  expect_identical(map(dots, eval_tidy), named_list("FOO", "BAR", "BAZ"))
 })
 
 test_that("dots capture is stack-consistent", {
@@ -61,7 +53,7 @@ test_that("dots capture is stack-consistent", {
   h <- function(dots, ...) {
     dots
   }
-  expect_identical(fn(foo(baz)), named(quos_list(quo(foo(baz)))))
+  expect_identical(fn(foo(baz)), quos_list(quo(foo(baz))))
 })
 
 test_that("splice is consistently recognised", {
@@ -87,7 +79,7 @@ test_that("dots can be spliced in", {
   expected <- quos_list(
     quo(foo(bar)),
     set_env(quo(bar(baz)), out$env),
-    a = set_env(quo("var"), out$env),
+    a = quo("var"),
     b = set_env(quo(foo), out$env)
   )
   expect_identical(out$out, expected)
@@ -145,15 +137,15 @@ test_that("pronouns are scoped throughout nested captures", {
 
 test_that("Can supply := with LHS even if .named = TRUE", {
   expect_warning(regexp = NA, expect_identical(
-    dots_quos(!!"nm" := 2, .named = TRUE), quos_list(nm = as_quosure(quote(2)))
+    dots_quos(!!"nm" := 2, .named = TRUE), quos_list(nm = as_quosure(quote(2), empty_env()))
   ))
   expect_warning(regexp = "name ignored", expect_identical(
-    dots_quos(foobar = !!"nm" := 2, .named = TRUE), quos_list(nm = as_quosure(quote(2)))
+    dots_quos(foobar = !!"nm" := 2, .named = TRUE), quos_list(nm = as_quosure(quote(2), empty_env()))
   ))
 })
 
 test_that("RHS of tidy defs are unquoted", {
-  expect_identical(dots_quos(foo := !!"bar"), quos_list(foo = as_quosure(quote("bar"))))
+  expect_identical(dots_quos(foo := !!"bar"), quos_list(foo = as_quosure(quote("bar"), empty_env())))
 })
 
 test_that("can capture empty list of dots", {
@@ -201,7 +193,7 @@ test_that("formulas are guarded on capture", {
 test_that("formulas are not guarded if unquoted", {
   expect_identical(
     quo(!! ~foo(~bar, ~~baz())),
-    new_quosure(new_quosure(quote(foo(~bar, ~~baz()))))
+    new_quosure(quote(foo(~bar, ~~baz())))
   )
   quo <- quo(foo(bar))
   quo <- quo(baz(!! quo))
@@ -212,4 +204,14 @@ test_that("quosured literals are forwarded as is", {
   expect_identical(quo(!! ~NULL), as_quosure(~NULL))
   expect_identical(quo(!! quo(NULL)), new_quosure(NULL, empty_env()))
   expect_identical(dots_quos(!! ~10L), set_names(quos_list(as_quosure(~10L)), ""))
+})
+
+test_that("expr() returns missing argument", {
+  expect_true(is_missing(expr()))
+})
+
+test_that("expr() supports forwarded arguments", {
+  fn <- function(...) g(...)
+  g <- function(...) expr(...)
+  expect_identical(fn(foo), quote(foo))
 })
