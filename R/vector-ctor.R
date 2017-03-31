@@ -67,22 +67,22 @@ NULL
 #' @rdname vector-construction
 #' @export
 lgl <- function(...) {
-  .Call(rlang_splice, list(...), "logical", bare = TRUE)
+  .Call(rlang_splice, dots_values(...), "logical", bare = TRUE)
 }
 #' @rdname vector-construction
 #' @export
 int <- function(...) {
-  .Call(rlang_splice, list(...), "integer", bare = TRUE)
+  .Call(rlang_splice, dots_values(...), "integer", bare = TRUE)
 }
 #' @rdname vector-construction
 #' @export
 dbl <- function(...) {
-  .Call(rlang_splice, list(...), "double", bare = TRUE)
+  .Call(rlang_splice, dots_values(...), "double", bare = TRUE)
 }
 #' @rdname vector-construction
 #' @export
 cpl <- function(...) {
-  .Call(rlang_splice, list(...), "complex", bare = TRUE)
+  .Call(rlang_splice, dots_values(...), "complex", bare = TRUE)
 }
 #' @rdname vector-construction
 #' @export
@@ -91,7 +91,7 @@ cpl <- function(...) {
 #'   conversion is performed.
 #' @export
 chr <- function(..., .encoding = NULL) {
-  out <- .Call(rlang_splice, list(...), "character", bare = TRUE)
+  out <- .Call(rlang_splice, dots_values(...), "character", bare = TRUE)
   set_chr_encoding(out, .encoding)
 }
 #' @rdname vector-construction
@@ -102,7 +102,7 @@ chr <- function(..., .encoding = NULL) {
 #' bytes(1:10)
 #' bytes(0x01, 0xff, c(0x03, 0x05), list(10, 20, 30L))
 bytes <- function(...) {
-  dots <- map(list(...), function(dot) {
+  dots <- map(dots_values(...), function(dot) {
     if (is_bare_list(dot) || is_spliced(dot)) {
       map(dot, new_bytes)
     } else {
@@ -125,12 +125,12 @@ bytes <- function(...) {
 #' # Note that explicitly spliced lists are always spliced:
 #' ll(splice(list(1, 2)))
 ll <- function(...) {
-  .Call(rlang_splice, list(...), "list", bare = FALSE)
+  .Call(rlang_splice, dots_values(...), "list", bare = FALSE)
 }
 #' @rdname vector-construction
 #' @export
 list_splice <- function(...) {
-  .Call(rlang_splice, list(...), "list", bare = TRUE)
+  .Call(rlang_splice, dots_values(...), "list", bare = TRUE)
 }
 
 #' Splice a list within a vector.
