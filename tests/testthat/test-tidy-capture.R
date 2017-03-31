@@ -87,7 +87,7 @@ test_that("dots can be spliced in", {
   expected <- quos_list(
     quo(foo(bar)),
     set_env(quo(bar(baz)), out$env),
-    a = set_env(quo("var"), out$env),
+    a = quo("var"),
     b = set_env(quo(foo), out$env)
   )
   expect_identical(out$out, expected)
@@ -201,7 +201,7 @@ test_that("formulas are guarded on capture", {
 test_that("formulas are not guarded if unquoted", {
   expect_identical(
     quo(!! ~foo(~bar, ~~baz())),
-    new_quosure(new_quosure(quote(foo(~bar, ~~baz()))))
+    new_quosure(quote(foo(~bar, ~~baz())))
   )
   quo <- quo(foo(bar))
   quo <- quo(baz(!! quo))

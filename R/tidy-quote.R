@@ -365,22 +365,17 @@ dots_definitions <- function(..., .named = FALSE) {
     dots <- exprs_auto_name(dots, width)
   }
 
-  defined <- map_lgl(dots, function(dot) is_definition(f_rhs(dot)))
-  defs <- map(dots[defined], as_definition)
+  is_def <- map_lgl(dots, function(dot) is_definition(dot))
+  defs <- map(dots[is_def], as_definition)
 
-  list(dots = dots[!defined], defs = defs)
+  list(dots = dots[!is_def], defs = defs)
 }
 
-as_definition <- function(dot) {
-  env <- f_env(dot)
-  pat <- f_rhs(dot)
-
-  lhs <- .Call(rlang_interp, f_lhs(pat), env, TRUE)
-  rhs <- .Call(rlang_interp, f_rhs(pat), env, TRUE)
-
+as_definition <- function(def) {
+  env <- f_env(def)
   list(
-    lhs = new_quosure(lhs, env),
-    rhs = new_quosure(rhs, env)
+    lhs = new_quosure(f_lhs(def), env),
+    rhs = new_quosure(f_rhs(def), env)
   )
 }
 

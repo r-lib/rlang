@@ -65,12 +65,12 @@ test_that("unquoting is frame-consistent", {
 
 test_that("unquoted quosure has S3 class", {
   quo <- quo(!! ~quo)
-  expect_is(f_rhs(quo), "quosure")
+  expect_is(quo, "quosure")
 })
 
 test_that("unquoted quosures are not guarded", {
   quo <- eval_tidy(quo(quo(!! ~quo)))
-  expect_true(is_quosure(f_rhs(quo)))
+  expect_true(is_quosure(quo))
 })
 
 
@@ -83,7 +83,7 @@ test_that("evaluates contents of UQ()", {
 test_that("layers of unquote are not peeled off recursively upon interpolation", {
   var1 <- ~letters
   var2 <- ~!!var1
-  expect_identical(quo(!!var2), new_quosure(as_quosure(~!!var1)))
+  expect_identical(quo(!!var2), as_quosure(~!!var1))
 
   var1 <- local(~letters)
   var2 <- local(~!!var1)
@@ -92,10 +92,10 @@ test_that("layers of unquote are not peeled off recursively upon interpolation",
 
 test_that("formulas are promised recursively during unquote", {
   var <- ~~letters
-  expect_identical(quo(!!var), new_quosure(new_quosure(quote(~letters))))
+  expect_identical(quo(!!var), new_quosure(quote(~letters)))
 
   var <- new_quosure(local(~letters), env = child_env(get_env()))
-  expect_identical(quo(!!var), new_quosure(var))
+  expect_identical(quo(!!var), var)
 })
 
 test_that("UQ() fails if called without argument", {
@@ -162,8 +162,8 @@ test_that("single ! is not treated as shortcut", {
 
 test_that("double and triple ! are treated as syntactic shortcuts", {
   var <- local(~foo)
-  expect_identical(quo(!! var), new_quosure(as_quosure(var)))
-  expect_identical(quo(!! ~foo), new_quosure(quo(foo)))
+  expect_identical(quo(!! var), as_quosure(var))
+  expect_identical(quo(!! ~foo), quo(foo))
   expect_identical(quo(list(!!! letters[1:3])), quo(list("a", "b", "c")))
 })
 
@@ -186,6 +186,5 @@ test_that("fpromises are created for all informative formulas", {
   expect_identical(interpolated, expected)
 
   interpolated <- quo(!!interpolated)
-  expected <- new_quosure(expected)
   expect_identical(interpolated, expected)
 })

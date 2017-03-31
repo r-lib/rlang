@@ -91,6 +91,10 @@ enquo <- function(x) {
 forward_quosure <- function(expr, env) {
   if (quo_is_missing(expr)) {
     expr
+  } else if (is_definition(expr)) {
+    as_quosureish(expr, env)
+  } else if (is_formula(expr)) {
+    as_quosure(expr, env)
   } else if (is_symbolic(expr)) {
     new_quosure(expr, env)
   } else {
@@ -119,40 +123,33 @@ enexpr <- function(x) {
 
 dots_capture <- function(...) {
   info <- captureDots()
-  dots <- map(info, dot_f)
+  dots <- map(info, dot_enquose)
 
   # Flatten possibly spliced dots
   dots <- unlist(dots, FALSE) %||% list()
   dots
 }
-dot_f <- function(dot) {
+dot_enquose <- function(dot) {
   if (is_missing(dot$expr)) {
     return(new_quosure(missing_arg(), empty_env()))
   }
-
   env <- dot$env
-  orig <- dot$expr
-  expr <- if (is_definition(orig)) f_rhs(orig) else orig
+  expr <- dot$expr
 
   # Allow unquote-splice in dots
   if (is_splice(expr)) {
     dots <- call("alist", expr)
     dots <- .Call(rlang_interp, dots, env, TRUE)
     dots <- eval_bare(dots)
-    map(dots, as_quosure, env)
+    map(dots, forward_quosure, env)
   } else {
     expr <- .Call(rlang_interp, expr, env, TRUE)
-    if (is_definition(orig)) {
-      orig <- set_expr(orig, expr)
-      list(new_quosure(orig, env))
-    } else {
-      list(forward_quosure(expr, env))
-    }
+    list(forward_quosure(expr, env))
   }
 }
 
 is_bang <- function(expr) {
-  is.call(expr) && identical(node_car(expr), quote(`!`))
+  is_lang(expr) && identical(node_car(expr), quote(`!`))
 }
 is_splice <- function(expr) {
   if (!is.call(expr)) {
@@ -193,7 +190,7 @@ dots_interp_lhs <- function(dots) {
   dots
 }
 dot_interp_lhs <- function(name, dot) {
-  if (!is_formula(dot) || !is_definition(f_rhs(dot))) {
+  if (!is_definition(dot)) {
     return(list(name = name, dot = dot))
   }
 
@@ -201,8 +198,8 @@ dot_interp_lhs <- function(name, dot) {
     warn("name ignored because a LHS was supplied")
   }
 
-  rhs <- new_quosure(f_rhs(f_rhs(dot)), env = f_env(dot))
-  lhs <- .Call(rlang_interp, f_lhs(f_rhs(dot)), f_env(dot))
+  rhs <- new_quosure(f_rhs(dot), env = f_env(dot))
+  lhs <- .Call(rlang_interp, f_lhs(dot), f_env(dot), TRUE)
 
   if (is_symbol(lhs)) {
     lhs <- as_string(lhs)
