@@ -121,14 +121,13 @@ enexpr <- function(x) {
   .Call(rlang_interp, arg$expr, arg$env, TRUE)
 }
 
-dots_enquose <- function(...) {
+dots_values <- function(...) {
   info <- captureDots()
-  dots <- map(info, dot_interp)
+  dots <- map(info, dot_interp, quosured = FALSE)
 
   # Flatten possibly spliced dots
-  dots <- unlist(dots, FALSE) %||% list()
-
-  map(dots, dot_enquose)
+  dots <- unlist(dots, FALSE) %||% set_names(list())
+  map(dots, function(dot) eval_bare(dot$expr, dot$env))
 }
 dot_interp <- function(dot, quosured = TRUE) {
   if (is_missing(dot$expr)) {
@@ -147,6 +146,16 @@ dot_interp <- function(dot, quosured = TRUE) {
     expr <- .Call(rlang_interp, expr, env, quosured)
     list(list(expr = expr, env = env))
   }
+}
+
+dots_enquose <- function(...) {
+  info <- captureDots()
+  dots <- map(info, dot_interp)
+
+  # Flatten possibly spliced dots
+  dots <- unlist(dots, FALSE) %||% set_names(list())
+
+  map(dots, dot_enquose)
 }
 dot_enquose <- function(dot) {
   if (is_missing(dot$expr)) {

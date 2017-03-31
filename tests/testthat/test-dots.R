@@ -51,3 +51,13 @@ test_that("dots are always named", {
   expect_named(dots_splice("foo", list("bar")), c("", ""))
   expect_named(exprs(foo, bar), c("", ""))
 })
+
+test_that("dots can be spliced", {
+  expect_identical(dots_values(!!! letters), named(as.list(letters)))
+  expect_identical(dots_values(UQS(letters)), named(as.list(letters)))
+})
+
+test_that("interpolation by value does not guard formulas", {
+  expect_identical(dots_values(~1), named_list(~1))
+  expect_identical(dots_values(UQF(~1)), named_list(~1))
+})
