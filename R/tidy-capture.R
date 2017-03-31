@@ -85,7 +85,7 @@ enquo <- function(x) {
 
   capture <- new_language(captureArg, substitute(x))
   arg <- eval_bare(capture, caller_env())
-  expr <- .Call(rlang_interp, arg$expr, arg$env)
+  expr <- .Call(rlang_interp, arg$expr, arg$env, TRUE)
   forward_quosure(expr, arg$env)
 }
 forward_quosure <- function(expr, env) {
@@ -114,7 +114,7 @@ enexpr <- function(x) {
 
   capture <- new_language(captureArg, substitute(x))
   arg <- eval_bare(capture, caller_env())
-  .Call(rlang_interp, arg$expr, arg$env)
+  .Call(rlang_interp, arg$expr, arg$env, TRUE)
 }
 
 dots_capture <- function(...) {
@@ -137,11 +137,11 @@ dot_f <- function(dot) {
   # Allow unquote-splice in dots
   if (is_splice(expr)) {
     dots <- call("alist", expr)
-    dots <- .Call(rlang_interp, dots, env)
+    dots <- .Call(rlang_interp, dots, env, TRUE)
     dots <- eval_bare(dots)
     map(dots, as_quosure, env)
   } else {
-    expr <- .Call(rlang_interp, expr, env)
+    expr <- .Call(rlang_interp, expr, env, TRUE)
     if (is_definition(orig)) {
       orig <- set_expr(orig, expr)
       list(new_quosure(orig, env))

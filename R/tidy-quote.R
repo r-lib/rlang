@@ -375,8 +375,8 @@ as_definition <- function(dot) {
   env <- f_env(dot)
   pat <- f_rhs(dot)
 
-  lhs <- .Call(rlang_interp, f_lhs(pat), env)
-  rhs <- .Call(rlang_interp, f_rhs(pat), env)
+  lhs <- .Call(rlang_interp, f_lhs(pat), env, TRUE)
+  rhs <- .Call(rlang_interp, f_rhs(pat), env, TRUE)
 
   list(
     lhs = new_quosure(lhs, env),

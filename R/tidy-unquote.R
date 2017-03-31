@@ -43,12 +43,12 @@
 #' fn("foo")
 expr_interp <- function(x, env = NULL) {
   if (is_formula(x)) {
-    expr <- .Call(rlang_interp, f_rhs(x), env %||% f_env(x))
+    expr <- .Call(rlang_interp, f_rhs(x), env %||% f_env(x), TRUE)
     x <- new_quosure(expr, f_env(x))
   } else if (is_closure(x)) {
-    body(x) <- .Call(rlang_interp, body(x), env %||% fn_env(x))
+    body(x) <- .Call(rlang_interp, body(x), env %||% fn_env(x), TRUE)
   } else {
-    x <- .Call(rlang_interp, x, env %||% parent.frame())
+    x <- .Call(rlang_interp, x, env %||% parent.frame(), TRUE)
   }
   x
 }

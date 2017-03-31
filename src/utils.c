@@ -221,3 +221,10 @@ const char* kind_c_str(SEXPTYPE kind) {
 bool is_empty(SEXP x) {
   return Rf_length(x) == 0;
 }
+
+bool as_bool(SEXP x) {
+  if (TYPEOF(x) != LGLSXP && Rf_length(x) != 1)
+    Rf_errorcall(R_NilValue, "Expected a scalar logical");
+   int* xp = (int*) LOGICAL(x);
+   return *xp;
+}
