@@ -127,7 +127,10 @@ dots_values <- function(...) {
 
   # Flatten possibly spliced dots
   dots <- unlist(dots, FALSE) %||% set_names(list())
-  map(dots, function(dot) eval_bare(dot$expr, dot$env))
+
+  dots <- dots_interp_lhs(dots)
+  dots <- map(dots, function(dot) eval_bare(dot$expr, dot$env))
+  dots
 }
 dot_interp <- function(dot, quosured = TRUE) {
   if (is_missing(dot$expr)) {
@@ -148,12 +151,16 @@ dot_interp <- function(dot, quosured = TRUE) {
   }
 }
 
-dots_enquose <- function(...) {
+dots_enquose <- function(..., lhs_interp = TRUE) {
   info <- captureDots()
   dots <- map(info, dot_interp)
 
   # Flatten possibly spliced dots
   dots <- unlist(dots, FALSE) %||% set_names(list())
+
+  if (lhs_interp) {
+    dots <- dots_interp_lhs(dots)
+  }
 
   map(dots, dot_enquose)
 }
@@ -186,14 +193,14 @@ is_splice <- function(expr) {
 
 dots_interp_lhs <- function(dots) {
   nms <- names2(dots)
-  defs <- map_lgl(dots, is_definition)
+  defs <- map_lgl(dots, function(dot) is_definition(dot$expr))
 
   for (i in which(defs)) {
-    dot <- dot_interp_lhs(nms[[i]], dots[[i]])
-    dots[[i]] <- dot$expr
+    info <- dot_interp_lhs(nms[[i]], dots[[i]])
+    dots[[i]] <- info$dot
 
-    if (!is_null(dot$name)) {
-      nms[[i]] <- dot$name
+    if (!is_null(info$name)) {
+      nms[[i]] <- info$name
     }
   }
 
@@ -204,14 +211,13 @@ dot_interp_lhs <- function(name, dot) {
     warn("name ignored because a LHS was supplied")
   }
 
-  rhs <- new_quosure(f_rhs(dot), env = f_env(dot))
-  lhs <- .Call(rlang_interp, f_lhs(dot), f_env(dot), TRUE)
-
+  lhs <- .Call(rlang_interp, f_lhs(dot$expr), dot$env, FALSE)
   if (is_symbol(lhs)) {
     lhs <- as_string(lhs)
   } else if (!is_string(lhs)) {
     abort("LHS must be a name or string")
   }
 
-  list(name = lhs, expr = rhs)
+  dot <- list(expr = f_rhs(dot$expr), env = dot$env)
+  list(name = lhs, dot = dot)
 }

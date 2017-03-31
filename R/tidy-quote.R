@@ -305,7 +305,6 @@ expr <- function(expr) {
 dots_quos <- function(..., .named = FALSE,
                       .ignore_empty = c("trailing", "none", "all")) {
   dots <- dots_enquose(...)
-  dots <- dots_interp_lhs(dots)
 
   n_dots <- length(dots)
   if (n_dots) {
@@ -359,7 +358,7 @@ quo_names_width <- function(named) {
 #' @rdname quosures
 #' @export
 dots_definitions <- function(..., .named = FALSE) {
-  dots <- dots_enquose(...)
+  dots <- dots_enquose(..., lhs_interp = FALSE)
   if (.named) {
     width <- quo_names_width(.named)
     dots <- exprs_auto_name(dots, width)

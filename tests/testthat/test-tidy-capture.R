@@ -137,15 +137,15 @@ test_that("pronouns are scoped throughout nested captures", {
 
 test_that("Can supply := with LHS even if .named = TRUE", {
   expect_warning(regexp = NA, expect_identical(
-    dots_quos(!!"nm" := 2, .named = TRUE), quos_list(nm = as_quosure(quote(2)))
+    dots_quos(!!"nm" := 2, .named = TRUE), quos_list(nm = as_quosure(quote(2), empty_env()))
   ))
   expect_warning(regexp = "name ignored", expect_identical(
-    dots_quos(foobar = !!"nm" := 2, .named = TRUE), quos_list(nm = as_quosure(quote(2)))
+    dots_quos(foobar = !!"nm" := 2, .named = TRUE), quos_list(nm = as_quosure(quote(2), empty_env()))
   ))
 })
 
 test_that("RHS of tidy defs are unquoted", {
-  expect_identical(dots_quos(foo := !!"bar"), quos_list(foo = as_quosure(quote("bar"))))
+  expect_identical(dots_quos(foo := !!"bar"), quos_list(foo = as_quosure(quote("bar"), empty_env())))
 })
 
 test_that("can capture empty list of dots", {
