@@ -10,6 +10,7 @@
 \alias{bytes}
 \alias{ll}
 \alias{list_splice}
+\alias{list_splice_if}
 \title{Construct new vectors.}
 \usage{
 lgl(...)
@@ -27,6 +28,8 @@ bytes(...)
 ll(...)
 
 list_splice(x)
+
+list_splice_if(x, predicate = is_spliced)
 }
 \arguments{
 \item{...}{Components of the new vector. Bare lists and explicitly
@@ -37,6 +40,9 @@ an encoding mark. This is only declarative, no encoding
 conversion is performed.}
 
 \item{x}{A list to splice.}
+
+\item{predicate}{A function of one argument returning whether it
+should be spliced.}
 }
 \description{
 The atomic vector constructors are equivalent to \code{\link[=c]{c()}} but allow
@@ -106,11 +112,8 @@ bytes(0x01, 0xff, c(0x03, 0x05), list(10, 20, 30L))
 # The list constructor has explicit splicing semantics:
 ll(1, list(2))
 
-# But list_splice() will splice bare lists as well:
-list_splice(1, list(2))
-
 # Note that explicitly spliced lists are always spliced:
-ll(splice(list(1, 2)))
+ll(!!! list(1, 2))
 }
 \seealso{
 \code{\link[=list_splice]{list_splice()}}

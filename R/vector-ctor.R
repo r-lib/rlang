@@ -119,11 +119,8 @@ bytes <- function(...) {
 #' # The list constructor has explicit splicing semantics:
 #' ll(1, list(2))
 #'
-#' # But list_splice() will splice bare lists as well:
-#' list_splice(1, list(2))
-#'
 #' # Note that explicitly spliced lists are always spliced:
-#' ll(splice(list(1, 2)))
+#' ll(!!! list(1, 2))
 ll <- function(...) {
   .Call(rlang_splice, dots_values(...), "list", bare = FALSE)
 }
@@ -132,6 +129,13 @@ ll <- function(...) {
 #' @export
 list_splice <- function(x) {
   .Call(rlang_splice, x, "list", bare = TRUE)
+}
+#' @rdname vector-construction
+#' @param predicate A function of one argument returning whether it
+#'   should be spliced.
+#' @export
+list_splice_if <- function(x, predicate = is_spliced) {
+  .Call(rlang_splice, x, "list", predicate)
 }
 
 #' Splice a list within a vector.

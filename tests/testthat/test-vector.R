@@ -114,3 +114,14 @@ test_that("empty inputs are spliced", {
   expect_identical(lgl(NULL, lgl(), list(NULL, lgl())), lgl())
   expect_warning(regexp = NA, expect_identical(lgl(a = NULL, a = lgl(), list(a = NULL, a = lgl())), lgl()))
 })
+
+test_that("list_splice_if() handles custom predicate", {
+  obj <- struct(list(1:2), class = "foo")
+  x <- list(obj, splice(obj), unclass(obj))
+
+  expect_identical(list_splice_if(x), list(obj, obj[[1]], unclass(obj)))
+  expect_identical(list_splice_if(x, is_bare_list), list(obj, splice(obj), obj[[1]]))
+
+  pred <- function(x) is_bare_list(x) || is_spliced(x)
+  expect_identical(list_splice_if(x, pred), list(obj, obj[[1]], obj[[1]]))
+})
