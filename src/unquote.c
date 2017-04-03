@@ -139,7 +139,10 @@ SEXP unquote_prefixed_uqf(SEXP x, SEXP env) {
   return x;
 }
 SEXP splice_nxt(SEXP cur, SEXP nxt, SEXP env) {
-  SETCAR(CAR(nxt), rlang_fun(Rf_install("UQS")));
+  static SEXP uqs_fun;
+  if (!uqs_fun)
+    uqs_fun = rlang_fun(Rf_install("UQS"));
+  SETCAR(CAR(nxt), uqs_fun);
 
   // UQS() does error checking and returns a pair list
   SEXP args_lsp = PROTECT(Rf_eval(CAR(nxt), env));
