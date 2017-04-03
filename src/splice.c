@@ -129,7 +129,7 @@ SEXP atom_splice(SEXPTYPE kind, SEXP dots, bool bare) {
 
 // List splicing -----------------------------------------------------
 
-splice_info_t list_splice_info(SEXP dots, bool bare) {
+splice_info_t list_splice_info(SEXP dots, bool (*is_spliceable)(SEXP)) {
   splice_info_t info;
   info.size = 0;
   info.named = false;
@@ -141,7 +141,7 @@ splice_info_t list_splice_info(SEXP dots, bool bare) {
   while (i != Rf_length(dots)) {
     x = VECTOR_ELT(dots, i);
 
-    if (is_list(x) && (Rf_inherits(x, "spliced") || (bare && !is_object(x)))) {
+    if (is_spliceable(x)) {
       info.size += Rf_length(x);
       info.named = info.named || is_character(names(x));
       if (has_name_at(dots, i) && !info.warned) {
@@ -159,8 +159,8 @@ splice_info_t list_splice_info(SEXP dots, bool bare) {
   return info;
 }
 
-SEXP list_splice(SEXP dots, bool bare) {
-  splice_info_t info = list_splice_info(dots, bare);
+SEXP list_splice(SEXP dots, bool (*is_spliceable)(SEXP)) {
+  splice_info_t info = list_splice_info(dots, is_spliceable);
   SEXP out = PROTECT(Rf_allocVector(VECSXP, info.size));
 
   if (info.named) {
@@ -175,7 +175,7 @@ SEXP list_splice(SEXP dots, bool bare) {
   while (count != info.size) {
     x = VECTOR_ELT(dots, i);
 
-    if (is_list(x) && (Rf_inherits(x, "spliced") || (bare && !is_object(x)))) {
+    if (is_spliceable(x)) {
       R_len_t n = Rf_length(x);
       vec_copy_n(x, n, out, count, 0);
 
@@ -204,9 +204,22 @@ SEXP list_splice(SEXP dots, bool bare) {
 
 // Export ------------------------------------------------------------
 
+bool is_implicitly_spliceable(SEXP x) {
+  return is_list(x) && (Rf_inherits(x, "spliced") || !is_object(x));
+}
+bool is_explicitly_spliceable(SEXP x) {
+  return is_list(x) && Rf_inherits(x, "spliced");
+}
+
 SEXP rlang_splice(SEXP dots, SEXP type, SEXP bare) {
   bool splice_bare = *(LOGICAL(bare));
   SEXPTYPE kind = Rf_str2type(CHAR(STRING_ELT(type, 0)));
+
+  bool (*is_spliceable)(SEXP);
+  if (splice_bare)
+    is_spliceable = &is_implicitly_spliceable;
+  else
+    is_spliceable = &is_explicitly_spliceable;
 
   switch (kind) {
   case LGLSXP:
@@ -217,7 +230,7 @@ SEXP rlang_splice(SEXP dots, SEXP type, SEXP bare) {
   case RAWSXP:
     return atom_splice(kind, dots, splice_bare);
   case VECSXP:
-    return list_splice(dots, splice_bare);
+    return list_splice(dots, is_spliceable);
   default:
     Rf_errorcall(R_NilValue, "Splicing is not implemented for this type");
     return R_NilValue;
