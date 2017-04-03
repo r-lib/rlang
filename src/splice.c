@@ -208,14 +208,8 @@ bool is_explicitly_spliceable(SEXP x) {
   return is_list(x) && Rf_inherits(x, "spliced");
 }
 
-SEXP rlang_splice(SEXP dots, SEXP type, SEXP bare) {
+SEXP rlang_splice_if(SEXP dots, SEXP type, bool (*is_spliceable)(SEXP)) {
   SEXPTYPE kind = Rf_str2type(CHAR(STRING_ELT(type, 0)));
-
-  bool (*is_spliceable)(SEXP);
-  if (as_bool(bare))
-    is_spliceable = &is_implicitly_spliceable;
-  else
-    is_spliceable = &is_explicitly_spliceable;
 
   switch (kind) {
   case LGLSXP:
@@ -231,4 +225,14 @@ SEXP rlang_splice(SEXP dots, SEXP type, SEXP bare) {
     Rf_errorcall(R_NilValue, "Splicing is not implemented for this type");
     return R_NilValue;
   }
+}
+
+SEXP rlang_splice(SEXP dots, SEXP type, SEXP bare) {
+  bool (*is_spliceable)(SEXP);
+  if (as_bool(bare))
+    is_spliceable = &is_implicitly_spliceable;
+  else
+    is_spliceable = &is_explicitly_spliceable;
+
+  return rlang_splice_if(dots, type, is_spliceable);
 }
