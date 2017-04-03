@@ -128,9 +128,10 @@ ll <- function(...) {
   .Call(rlang_splice, dots_values(...), "list", bare = FALSE)
 }
 #' @rdname vector-construction
+#' @param x A list to splice.
 #' @export
-list_splice <- function(...) {
-  .Call(rlang_splice, dots_values(...), "list", bare = TRUE)
+list_splice <- function(x) {
+  .Call(rlang_splice, x, "list", bare = TRUE)
 }
 
 #' Splice a list within a vector.
