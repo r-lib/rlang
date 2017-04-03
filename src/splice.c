@@ -51,7 +51,7 @@ void atom_splice_info_list(splice_info_t* info, SEXPTYPE kind, SEXP outer) {
 }
 
 void atom_splice_info(splice_info_t* info, SEXPTYPE kind,
-                      SEXP dots, bool bare) {
+                      SEXP dots, bool (*is_spliceable)(SEXP)) {
   R_len_t i = 0;
   SEXP x;
 
@@ -60,11 +60,8 @@ void atom_splice_info(splice_info_t* info, SEXPTYPE kind,
     atom_splice_check_names(info, x, dots, i);
 
     if (is_list(x)) {
-      bool is_spliced = Rf_inherits(x, "spliced");
-      if (!bare && !is_spliced)
-        Rf_errorcall(R_NilValue, "Bare lists cannot be spliced");
-      if (is_object(x) && !is_spliced)
-        Rf_errorcall(R_NilValue, "Objects cannot be spliced");
+      if (!is_spliceable(x))
+        Rf_errorcall(R_NilValue, "List cannot be spliced in");
       atom_splice_info_list(info, kind, x);
     } else if (!(is_vector(x) || is_null(x))) {
       Rf_errorcall(R_NilValue,
@@ -109,12 +106,12 @@ R_len_t atom_splice_list(SEXP outer, SEXP out, R_len_t count,
   return count;
 }
 
-SEXP atom_splice(SEXPTYPE kind, SEXP dots, bool bare) {
+SEXP atom_splice(SEXPTYPE kind, SEXP dots, bool (*is_spliceable)(SEXP)) {
   splice_info_t info;
   info.size = 0;
   info.named = false;
   info.warned = false;
-  atom_splice_info(&info, kind, dots, bare);
+  atom_splice_info(&info, kind, dots, is_spliceable);
 
   SEXP out = PROTECT(Rf_allocVector(kind, info.size));
   if (info.named)
@@ -212,11 +209,10 @@ bool is_explicitly_spliceable(SEXP x) {
 }
 
 SEXP rlang_splice(SEXP dots, SEXP type, SEXP bare) {
-  bool splice_bare = *(LOGICAL(bare));
   SEXPTYPE kind = Rf_str2type(CHAR(STRING_ELT(type, 0)));
 
   bool (*is_spliceable)(SEXP);
-  if (splice_bare)
+  if (as_bool(bare))
     is_spliceable = &is_implicitly_spliceable;
   else
     is_spliceable = &is_explicitly_spliceable;
@@ -228,7 +224,7 @@ SEXP rlang_splice(SEXP dots, SEXP type, SEXP bare) {
   case CPLXSXP:
   case STRSXP:
   case RAWSXP:
-    return atom_splice(kind, dots, splice_bare);
+    return atom_splice(kind, dots, is_spliceable);
   case VECSXP:
     return list_splice(dots, is_spliceable);
   default:
