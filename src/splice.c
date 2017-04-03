@@ -201,6 +201,30 @@ SEXP list_splice(SEXP dots, bool (*is_spliceable)(SEXP)) {
 
 // Export ------------------------------------------------------------
 
+bool is_implicitly_spliceable(SEXP x) {
+  return is_list(x) && (Rf_inherits(x, "spliced") || !is_object(x));
+}
+bool is_explicitly_spliceable(SEXP x) {
+  return is_list(x) && Rf_inherits(x, "spliced");
+}
+
+// For unit tests:
+bool is_clevel_spliceable(SEXP x) {
+  return Rf_inherits(x, "foo");
+}
+
+// Emulate closure behaviour with global variable.
+SEXP clo_spliceable = NULL;
+bool is_spliceable_closure(SEXP x) {
+  if (!clo_spliceable)
+    Rf_error("Internal error while splicing");
+  SETCADR(clo_spliceable, x);
+
+  SEXP out = Rf_eval(clo_spliceable, R_GlobalEnv);
+  return as_bool(out);
+}
+
+
 SEXP rlang_splice_if(SEXP dots, SEXPTYPE kind, bool (*is_spliceable)(SEXP)) {
   switch (kind) {
   case LGLSXP:
@@ -217,34 +241,16 @@ SEXP rlang_splice_if(SEXP dots, SEXPTYPE kind, bool (*is_spliceable)(SEXP)) {
     return R_NilValue;
   }
 }
+SEXP rlang_splice_closure(SEXP dots, SEXPTYPE kind, SEXP pred) {
+  SEXP prev_pred = clo_spliceable;
+  clo_spliceable = PROTECT(Rf_lang2(pred, Rf_list2(R_NilValue, R_NilValue)));
 
-// Emulate closure behaviour with global variable.
-SEXP custom_spliceable_predicate = NULL;
-bool is_custom_spliceable(SEXP x) {
-  if (!custom_spliceable_predicate)
-    Rf_error("Internal error while splicing");
-  SETCADR(custom_spliceable_predicate, x);
+  SEXP out = rlang_splice_if(dots, kind, &is_spliceable_closure);
 
-  SEXP out = Rf_eval(custom_spliceable_predicate, R_GlobalEnv);
-  return as_bool(out);
-}
-SEXP rlang_splice_custom(SEXP dots, SEXPTYPE kind, SEXP pred) {
-  SEXP prev_pred = custom_spliceable_predicate;
-  custom_spliceable_predicate = PROTECT(Rf_lang2(pred, Rf_list2(R_NilValue, R_NilValue)));
-
-  SEXP out = rlang_splice_if(dots, kind, &is_custom_spliceable);
-
-  custom_spliceable_predicate = prev_pred;
+  clo_spliceable = prev_pred;
   UNPROTECT(1);
 
   return out;
-}
-
-bool is_implicitly_spliceable(SEXP x) {
-  return is_list(x) && (Rf_inherits(x, "spliced") || !is_object(x));
-}
-bool is_explicitly_spliceable(SEXP x) {
-  return is_list(x) && Rf_inherits(x, "spliced");
 }
 SEXP rlang_splice(SEXP dots, SEXP type, SEXP pred) {
   SEXPTYPE kind = Rf_str2type(CHAR(STRING_ELT(type, 0)));
@@ -258,7 +264,11 @@ SEXP rlang_splice(SEXP dots, SEXP type, SEXP pred) {
       return rlang_splice_if(dots, kind, &is_explicitly_spliceable);
   }
   case CLOSXP:
-    return rlang_splice_custom(dots, kind, pred);
+    return rlang_splice_closure(dots, kind, pred);
+  case EXTPTRSXP: {
+    bool (*is_spliceable)(SEXP) = (bool (*)(SEXP)) R_ExternalPtrAddr(pred);
+    return rlang_splice_if(dots, kind, is_spliceable);
+  }
   default:
     Rf_errorcall(R_NilValue, "`predicate` must be a closure");
   }

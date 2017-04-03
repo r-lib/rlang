@@ -133,6 +133,7 @@ list_splice <- function(x) {
 #' @rdname vector-construction
 #' @param predicate A function of one argument returning whether it
 #'   should be spliced.
+#' @useDynLib rlang is_clevel_spliceable
 #' @export
 list_splice_if <- function(x, predicate = is_spliced) {
   .Call(rlang_splice, x, "list", predicate)

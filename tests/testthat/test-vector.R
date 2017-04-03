@@ -125,3 +125,11 @@ test_that("list_splice_if() handles custom predicate", {
   pred <- function(x) is_bare_list(x) || is_spliced(x)
   expect_identical(list_splice_if(x, pred), list(obj, obj[[1]], obj[[1]]))
 })
+
+test_that("list_splice_if() handles external pointers", {
+  obj <- struct(list(1:2), class = "foo")
+  x <- list(obj, splice(obj), unclass(obj))
+
+  pred <- is_clevel_spliceable$address
+  expect_identical(list_splice_if(x, pred), list(obj[[1]], splice(obj), unclass(obj)))
+})
