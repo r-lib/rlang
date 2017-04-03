@@ -98,7 +98,7 @@ void unquote_check(SEXP x) {
     Rf_errorcall(R_NilValue, "`UQ()` must be called with an argument");
 }
 
-SEXP unquote(SEXP x, SEXP env, SEXP uq_sym) {
+SEXP unquote(SEXP x, SEXP env, SEXP uq_sym, bool quosured) {
   if (is_sym(uq_sym, "!!"))
     uq_sym = Rf_install("UQE");
 
@@ -106,21 +106,28 @@ SEXP unquote(SEXP x, SEXP env, SEXP uq_sym) {
   // not be available in interpolation environment.
   SEXP uq_fun = rlang_fun(uq_sym);
 
-  SEXP uq_call = PROTECT(Rf_lang2(uq_fun, x));
-  SEXP res = Rf_eval(uq_call, env);
+  PROTECT_INDEX ipx;
+  PROTECT_WITH_INDEX(uq_fun, &ipx);
+  REPROTECT(uq_fun = Rf_lang2(uq_fun, x), ipx);
 
-  if (is_formula(res)) {
-    res = as_quosure(res);
+  SEXP unquoted;
+  REPROTECT(unquoted = Rf_eval(uq_fun, env), ipx);
+
+  if (!quosured && is_symbolic(unquoted)) {
+    unquoted = lang2(Rf_install("quote"), unquoted);
+  } else if (quosured && is_formula(unquoted)) {
+    unquoted = as_quosure(unquoted);
   }
 
   UNPROTECT(1);
-  return res;
+  return unquoted;
 }
-SEXP unquote_prefixed_uq(SEXP x, SEXP env) {
+SEXP unquote_prefixed_uq(SEXP x, SEXP env, bool quosured) {
   SEXP uq_sym = CADR(CDAR(x));
-  SEXP unquoted = PROTECT(unquote(CADR(x), env, uq_sym));
+  SEXP unquoted = PROTECT(unquote(CADR(x), env, uq_sym, quosured));
   SETCDR(CDAR(x), CONS(unquoted, R_NilValue));
   UNPROTECT(1);
+
   if (is_rlang_prefixed(x, NULL))
     x = CADR(CDAR(x));
   else
@@ -180,11 +187,11 @@ SEXP interp_walk(SEXP x, SEXP env, bool quosured)  {
 
   if (is_prefixed_call(x, is_uq_sym)) {
     unquote_check(x);
-    REPROTECT(x = unquote_prefixed_uq(x, env), ipx);
+    REPROTECT(x = unquote_prefixed_uq(x, env, quosured), ipx);
   } else if (is_any_call(x, is_uq_sym)) {
     unquote_check(x);
     SEXP uq_sym = CAR(x);
-    REPROTECT(x = unquote(CADR(x), env, uq_sym), ipx);
+    REPROTECT(x = unquote(CADR(x), env, uq_sym, quosured), ipx);
   } else if (quosured && is_rlang_prefixed(x, is_uqf_sym)) {
     REPROTECT(x = unquote_prefixed_uqf(x, env), ipx);
   } else if (quosured && is_formula(x) && !Rf_inherits(x, "quosure")) {
