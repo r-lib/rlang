@@ -138,7 +138,7 @@ SEXP unquote_prefixed_uqf(SEXP x, SEXP env) {
   UNPROTECT(2);
   return x;
 }
-SEXP splice_nxt(SEXP cur, SEXP nxt, SEXP env) {
+SEXP splice_nxt(SEXP cur, SEXP nxt, SEXP env, bool quosured) {
   static SEXP uqs_fun;
   if (!uqs_fun)
     uqs_fun = rlang_fun(Rf_install("UQS"));
@@ -146,6 +146,15 @@ SEXP splice_nxt(SEXP cur, SEXP nxt, SEXP env) {
 
   // UQS() does error checking and returns a pair list
   SEXP args_lsp = PROTECT(Rf_eval(CAR(nxt), env));
+
+  if (!quosured) {
+    SEXP arg = args_lsp;
+    while (CAR(arg) != R_NilValue) {
+      if (is_symbolic(CAR(arg)))
+        SETCAR(arg, lang2(Rf_install("quote"), CAR(arg)));
+      arg = CDR(arg);
+    }
+  }
 
   if (args_lsp == R_NilValue) {
     SETCDR(cur, CDR(nxt));
@@ -202,7 +211,7 @@ SEXP interp_arguments(SEXP x, SEXP env, bool quosured) {
     SEXP nxt = CDR(cur);
     nxt = replace_triple_bang(nxt, cur);
     if (is_rlang_call(CAR(nxt), is_splice_sym)) {
-      cur = splice_nxt(cur, nxt, env);
+      cur = splice_nxt(cur, nxt, env, quosured);
       cur = nxt; // Don't interpolate unquoted stuff
     }
   }
