@@ -80,14 +80,12 @@ UQF <- function(x) {
 #' @export
 #' @rdname quosure
 UQS <- function(x) {
-  if (is_pairlist(x)) {
+  if (is_pairlist(x) || is_null(x)) {
     x
   } else if (is_vector(x)) {
     as.pairlist(x)
-  } else if (inherits(x, "{")) {
+  } else if (identical(node_car(x), sym_curly)) {
     node_cdr(x)
-  } else if (is_null(x)) {
-    NULL
   } else if (is_expr(x)) {
     pairlist(x)
   } else {
