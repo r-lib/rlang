@@ -8,47 +8,19 @@ typedef struct {
   bool warned;
 } splice_info_t;
 
+splice_info_t splice_info_init() {
+  splice_info_t info;
+  info.size = 0;
+  info.named = false;
+  info.warned = false;
+  return info;
+}
+
 void splice_warn_names(void) {
   Rf_warningcall(R_NilValue, "Outer names are only allowed for unnamed scalar atomic inputs");
 }
 
 // Atomic splicing ---------------------------------------------------
-
-void atom_splice_check_names(splice_info_t* info, SEXP inner, SEXP outer, R_len_t i) {
-  if (has_name_at(outer, i)) {
-    if (is_scalar_atomic(inner)) {
-      info->named = true;
-      if (!info->warned && is_character(names(inner)) && !is_empty(inner)) {
-        splice_warn_names();
-        info->warned = true;
-      }
-    } else if (!info->warned && !is_empty(inner)) {
-      splice_warn_names();
-      info->warned = true;
-    }
-  }
-  if (is_atomic(inner) && is_character(names(inner)))
-    info->named = true;
-}
-
-void atom_splice_info_list(splice_info_t* info, SEXPTYPE kind, SEXP outer) {
-  R_len_t i = 0;
-  SEXP x;
-
-  while (i != Rf_length(outer)) {
-    x = VECTOR_ELT(outer, i);
-    atom_splice_check_names(info, x, outer, i);
-
-    if (is_atomic(x)) {
-      info->size += Rf_length(x);
-    } else if (x != R_NilValue) {
-      Rf_errorcall(R_NilValue,
-                   "Cannot splice objects of type `%s` within a `%s`",
-                   kind_c_str(TYPEOF(x)), kind_c_str(kind));
-    }
-    ++i;
-  }
-}
 
 // This returns 1 for environments
 R_len_t storage_length(SEXPTYPE kind, SEXP x) {
@@ -70,26 +42,67 @@ R_len_t storage_length(SEXPTYPE kind, SEXP x) {
   }
 }
 
-void atom_splice_info(splice_info_t* info, SEXPTYPE kind,
-                      SEXP dots, bool (*is_spliceable)(SEXP)) {
+static
+void update_info(splice_info_t* info, SEXPTYPE kind,
+                 SEXP outer, R_len_t i, SEXP inner,
+                 bool merge_names) {
+  R_len_t n = storage_length(kind, inner);
+  info->size += n;
+
+  if (!info->named || !merge_names) {
+    bool named = is_character(names(inner));
+    if (named)
+      info->named = true;
+
+    if (has_name_at(outer, i)) {
+      if ((named || n != 1) && !info->warned) {
+        splice_warn_names();
+        info->warned = true;
+      }
+      if (n == 1)
+        info->named = true;
+    }
+  }
+}
+
+static
+void atom_splice_info_list(splice_info_t* info, SEXPTYPE kind, SEXP outer,
+                           bool merge_names) {
   R_len_t i = 0;
-  SEXP x;
+  SEXP inner;
 
-  while (i != Rf_length(dots)) {
-    x = VECTOR_ELT(dots, i);
-    atom_splice_check_names(info, x, dots, i);
+  while (i != Rf_length(outer)) {
+    inner = VECTOR_ELT(outer, i);
 
-    if (is_spliceable(x))
-      atom_splice_info_list(info, kind, x);
-    else
-      info->size += storage_length(kind, x);
+    if (storage_length(kind, inner))
+      update_info(info, kind, outer, i, inner, merge_names);
+
+    ++i;
+  }
+}
+
+static
+void atom_splice_info(splice_info_t* info, SEXPTYPE kind,
+                      SEXP outer, bool merge_names,
+                      bool (*is_spliceable)(SEXP)) {
+  R_len_t i = 0;
+  SEXP inner;
+
+  while (i != Rf_length(outer)) {
+    inner = VECTOR_ELT(outer, i);
+
+    if (is_spliceable(inner))
+      atom_splice_info_list(info, kind, inner, merge_names);
+    else if (storage_length(kind, inner))
+      update_info(info, kind, outer, i, inner, merge_names);
 
     ++i;
   }
 }
 
 R_len_t atom_splice_list(SEXP outer, SEXP out, R_len_t count,
-                         bool named, bool recurse) {
+                         bool named, bool merge_names, bool recurse,
+                         bool (*is_spliceable)(SEXP)) {
   R_len_t i = 0;
   SEXP x;
   SEXP out_names = names(out);
@@ -97,20 +110,20 @@ R_len_t atom_splice_list(SEXP outer, SEXP out, R_len_t count,
   while (i != Rf_length(outer)) {
     x = VECTOR_ELT(outer, i);
 
-    if (is_atomic(x)) {
+    if (is_spliceable(x) && recurse) {
+      count = atom_splice_list(x, out, count, named, merge_names, false, is_spliceable);
+    } else if (storage_length(TYPEOF(out), x)) {
       R_len_t n = Rf_length(x);
       vec_copy_coerce_n(x, n, out, count, 0);
 
       if (named) {
         if (is_character(names(x)))
           vec_copy_n(names(x), n, out_names, count, 0);
-        else if (Rf_length(x) == 1 && has_name_at(outer, i))
+        else if (merge_names && Rf_length(x) == 1 && has_name_at(outer, i))
           SET_STRING_ELT(out_names, count, STRING_ELT(names(outer), i));
       }
 
       count += n;
-    } else if (is_list(x) && recurse) {
-      count = atom_splice_list(x, out, count, named, false);
     }
 
     ++i;
@@ -120,17 +133,14 @@ R_len_t atom_splice_list(SEXP outer, SEXP out, R_len_t count,
 }
 
 SEXP atom_splice(SEXPTYPE kind, SEXP dots, bool (*is_spliceable)(SEXP)) {
-  splice_info_t info;
-  info.size = 0;
-  info.named = false;
-  info.warned = false;
-  atom_splice_info(&info, kind, dots, is_spliceable);
+  splice_info_t info = splice_info_init();
+  atom_splice_info(&info, kind, dots, true, is_spliceable);
 
   SEXP out = PROTECT(Rf_allocVector(kind, info.size));
   if (info.named)
     set_names(out, Rf_allocVector(STRSXP, info.size));
 
-  atom_splice_list(dots, out, 0, info.named, true);
+  atom_splice_list(dots, out, 0, info.named, true, true, is_spliceable);
 
   UNPROTECT(1);
   return out;
@@ -140,10 +150,7 @@ SEXP atom_splice(SEXPTYPE kind, SEXP dots, bool (*is_spliceable)(SEXP)) {
 // List splicing -----------------------------------------------------
 
 splice_info_t list_splice_info(SEXP dots, bool (*is_spliceable)(SEXP)) {
-  splice_info_t info;
-  info.size = 0;
-  info.named = false;
-  info.warned = false;
+  splice_info_t info = splice_info_init();
 
   R_len_t i = 0;
   SEXP x;
@@ -282,18 +289,17 @@ SEXP rlang_splice(SEXP dots, SEXP type, SEXP pred) {
 
   bool (*is_spliceable)(SEXP);
   switch (TYPEOF(pred)) {
-  case LGLSXP: {
+  case LGLSXP:
     if (as_bool(pred))
-      return rlang_splice_if(dots, kind, &is_atomic_spliceable);
+      is_spliceable = &is_atomic_spliceable;
     else
-      return rlang_splice_if(dots, kind, &is_explicitly_spliceable);
-  }
+      is_spliceable = &is_explicitly_spliceable;
+    break;
   case CLOSXP:
     return rlang_splice_closure(dots, kind, pred);
-  case EXTPTRSXP: {
-    bool (*is_spliceable)(SEXP) = (bool (*)(SEXP)) R_ExternalPtrAddr(pred);
-    return rlang_splice_if(dots, kind, is_spliceable);
-  }
+  case EXTPTRSXP:
+    is_spliceable = (bool (*)(SEXP)) R_ExternalPtrAddr(pred);
+    break;
   default:
     Rf_errorcall(R_NilValue, "`predicate` must be a closure");
   }

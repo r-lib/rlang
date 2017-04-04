@@ -67,8 +67,7 @@ test_that("warn when outer names unless input is unnamed scalar atomic", {
 })
 
 test_that("warn when spliced lists have outer name", {
-  expect_warning(lgl(C = list(c = FALSE)), "Outer names")
-  expect_warning(lgl(C = list(FALSE)), "Outer names")
+  expect_warning(lgl(list(c = c(cc = FALSE))), "Outer names")
 })
 
 test_that("list_splice() splices names", {
@@ -103,9 +102,6 @@ test_that("atomic inputs are implicitly coerced", {
 })
 
 test_that("type errors are handled", {
-  expect_error(lgl(chr()), "Cannot convert objects of type `character`")
-  expect_error(lgl(list(chr())), "Cannot convert objects of type `character`")
-
   expect_error(lgl(get_env()), "Cannot splice objects of type `environment`")
   expect_error(lgl(list(get_env())), "Cannot splice objects of type `environment`")
 })
