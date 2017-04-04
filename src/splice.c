@@ -50,6 +50,26 @@ void atom_splice_info_list(splice_info_t* info, SEXPTYPE kind, SEXP outer) {
   }
 }
 
+// This returns 1 for environments
+R_len_t storage_length(SEXPTYPE kind, SEXP x) {
+  bool store_null = (kind == VECSXP);
+
+  switch (TYPEOF(x)) {
+  case LGLSXP:
+  case INTSXP:
+  case REALSXP:
+  case CPLXSXP:
+  case STRSXP:
+  case RAWSXP:
+  case VECSXP:
+    return Rf_length(x);
+  case NILSXP:
+    return store_null ? 1 : 0;
+  default:
+    return 1;
+  }
+}
+
 void atom_splice_info(splice_info_t* info, SEXPTYPE kind,
                       SEXP dots, bool (*is_spliceable)(SEXP)) {
   R_len_t i = 0;
@@ -59,16 +79,14 @@ void atom_splice_info(splice_info_t* info, SEXPTYPE kind,
     x = VECTOR_ELT(dots, i);
     atom_splice_check_names(info, x, dots, i);
 
-    if (is_list(x)) {
-      if (!is_spliceable(x))
-        Rf_errorcall(R_NilValue, "List cannot be spliced in");
+    if (is_spliceable(x)) {
       atom_splice_info_list(info, kind, x);
-    } else if (!(is_vector(x) || is_null(x))) {
+    } else if (kind != VECSXP && !(is_vector(x) || is_null(x))) {
       Rf_errorcall(R_NilValue,
                    "Cannot splice objects of type `%s` within a `%s`",
                    kind_c_str(TYPEOF(x)), kind_c_str(kind));
     }  else {
-      info->size += Rf_length(x);
+      info->size += storage_length(kind, x);
     }
 
     ++i;
