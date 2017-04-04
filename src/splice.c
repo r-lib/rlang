@@ -79,15 +79,10 @@ void atom_splice_info(splice_info_t* info, SEXPTYPE kind,
     x = VECTOR_ELT(dots, i);
     atom_splice_check_names(info, x, dots, i);
 
-    if (is_spliceable(x)) {
+    if (is_spliceable(x))
       atom_splice_info_list(info, kind, x);
-    } else if (kind != VECSXP && !(is_vector(x) || is_null(x))) {
-      Rf_errorcall(R_NilValue,
-                   "Cannot splice objects of type `%s` within a `%s`",
-                   kind_c_str(TYPEOF(x)), kind_c_str(kind));
-    }  else {
+    else
       info->size += storage_length(kind, x);
-    }
 
     ++i;
   }
@@ -219,8 +214,20 @@ SEXP list_splice(SEXP dots, bool (*is_spliceable)(SEXP)) {
 
 // Export ------------------------------------------------------------
 
-bool is_implicitly_spliceable(SEXP x) {
-  return is_list(x) && (Rf_inherits(x, "spliced") || !is_object(x));
+bool is_atomic_spliceable(SEXP x) {
+  if (OBJECT(x) && !Rf_inherits(x, "spliced"))
+    Rf_errorcall(R_NilValue, "Cannot splice S3 objects");
+
+  if (is_list(x))
+    return true;
+
+  if (!is_vector(x) && !is_null(x)) {
+    Rf_errorcall(R_NilValue,
+                 "Cannot splice objects of type `%s` within vector",
+                 kind_c_str(TYPEOF(x)));
+  }
+
+  return false;
 }
 bool is_explicitly_spliceable(SEXP x) {
   return is_list(x) && Rf_inherits(x, "spliced");
@@ -277,7 +284,7 @@ SEXP rlang_splice(SEXP dots, SEXP type, SEXP pred) {
   switch (TYPEOF(pred)) {
   case LGLSXP: {
     if (as_bool(pred))
-      return rlang_splice_if(dots, kind, &is_implicitly_spliceable);
+      return rlang_splice_if(dots, kind, &is_atomic_spliceable);
     else
       return rlang_splice_if(dots, kind, &is_explicitly_spliceable);
   }

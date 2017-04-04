@@ -42,7 +42,7 @@ test_that("can create empty vectors", {
 })
 
 test_that("objects are not spliced", {
-  expect_error(lgl(structure(list(TRUE, TRUE), class = "bam")), "cannot be spliced")
+  expect_error(lgl(structure(list(TRUE, TRUE), class = "bam")), "Cannot splice S3 objects")
 })
 
 test_that("explicitly spliced lists are spliced", {
