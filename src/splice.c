@@ -120,17 +120,21 @@ R_len_t atom_splice_list(SEXPTYPE kind, splice_info_t info,
 
   for (R_len_t i = 0; i != n_outer; ++i) {
     inner = VECTOR_ELT(outer, i);
-    n_inner = vec_length(inner);
 
     if (depth != 0 && is_spliceable(inner)) {
       count = atom_splice_list(kind, info, inner, out, count, --depth, true, is_spliceable);
-    } else if (n_inner) {
+      continue;
+    }
+
+    n_inner = vec_length(inner);
+    if (n_inner) {
       vec_copy_coerce_n(inner, n_inner, out, count, 0);
       if (info.named)
         splice_copy_names_n(info.recursive, spliced, inner, n_inner, outer, i, out_names, count);
-    }
 
-    count += n_inner;
+      count += n_inner;
+      continue;
+    }
   }
 
   return count;
