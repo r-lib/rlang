@@ -31,7 +31,7 @@
 #' # Unlike dots_splice(), it doesn't splice bare lists:
 #' dots_list(x, 3)
 dots_list <- function(...) {
-  dots <- .Call(rlang_splice, dots_values(...), "list", bare = FALSE, 1L)
+  dots <- .Call(rlang_squash, dots_values(...), "list", bare = FALSE, 1L)
   names(dots) <- names2(dots)
   dots
 }
@@ -45,7 +45,7 @@ dots_list <- function(...) {
 #' dots_splice(splice(x), 3)
 #' dots_splice(x, 3)
 dots_splice <- function(...) {
-  dots <- .Call(rlang_splice, dots_values(...), "list", bare = TRUE, 1L)
+  dots <- .Call(rlang_squash, dots_values(...), "list", bare = TRUE, 1L)
   names(dots) <- names2(dots)
   dots
 }
