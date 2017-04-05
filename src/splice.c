@@ -73,9 +73,8 @@ void update_info(splice_info_t* info,
 }
 
 static
-void atom_splice_info(splice_info_t* info, SEXP outer,
-                      int depth, bool spliced,
-                      bool (*is_spliceable)(SEXP)) {
+void atom_splice_info(splice_info_t* info, SEXP outer, bool spliced,
+                      bool (*is_spliceable)(SEXP), int depth) {
   SEXP inner;
   R_len_t n_inner;
   R_len_t n_outer = Rf_length(outer);
@@ -85,7 +84,7 @@ void atom_splice_info(splice_info_t* info, SEXP outer,
     n_inner = vec_length(inner);
 
     if (depth != 0 && is_spliceable(inner))
-      atom_splice_info(info, inner, --depth, true, is_spliceable);
+      atom_splice_info(info, inner, true, is_spliceable, depth - 1);
     else if (n_inner)
       update_info(info, outer, i, inner, n_inner, spliced);
   }
@@ -111,8 +110,8 @@ void splice_copy_names_n(bool recursive, bool spliced,
 static
 R_len_t atom_splice_list(SEXPTYPE kind, splice_info_t info,
                          SEXP outer, SEXP out, R_len_t count,
-                         int depth, bool spliced,
-                         bool (*is_spliceable)(SEXP)) {
+                         bool spliced, bool (*is_spliceable)(SEXP),
+                         int depth) {
   SEXP inner;
   SEXP out_names = names(out);
   R_len_t n_outer = Rf_length(outer);
@@ -122,7 +121,7 @@ R_len_t atom_splice_list(SEXPTYPE kind, splice_info_t info,
     inner = VECTOR_ELT(outer, i);
 
     if (depth != 0 && is_spliceable(inner)) {
-      count = atom_splice_list(kind, info, inner, out, count, --depth, true, is_spliceable);
+      count = atom_splice_list(kind, info, inner, out, count, true, is_spliceable, depth - 1);
       continue;
     }
 
@@ -141,15 +140,15 @@ R_len_t atom_splice_list(SEXPTYPE kind, splice_info_t info,
 }
 
 static
-SEXP atom_splice(SEXPTYPE kind, SEXP dots, bool (*is_spliceable)(SEXP)) {
+SEXP atom_splice(SEXPTYPE kind, SEXP dots, bool (*is_spliceable)(SEXP), int depth) {
   splice_info_t info = splice_info_init(false);
-  atom_splice_info(&info, dots, 1, false, is_spliceable);
+  atom_splice_info(&info, dots, false, is_spliceable, depth);
 
   SEXP out = PROTECT(Rf_allocVector(kind, info.size));
   if (info.named)
     set_names(out, Rf_allocVector(STRSXP, info.size));
 
-  atom_splice_list(kind, info, dots, out, 0, 1, false, is_spliceable);
+  atom_splice_list(kind, info, dots, out, 0, false, is_spliceable, depth);
 
   UNPROTECT(1);
   return out;
@@ -273,7 +272,7 @@ bool is_spliceable_closure(SEXP x) {
 }
 
 
-SEXP rlang_splice_if(SEXP dots, SEXPTYPE kind, bool (*is_spliceable)(SEXP)) {
+SEXP rlang_splice_if(SEXP dots, SEXPTYPE kind, bool (*is_spliceable)(SEXP), int depth) {
   switch (kind) {
   case LGLSXP:
   case INTSXP:
@@ -281,7 +280,7 @@ SEXP rlang_splice_if(SEXP dots, SEXPTYPE kind, bool (*is_spliceable)(SEXP)) {
   case CPLXSXP:
   case STRSXP:
   case RAWSXP:
-    return atom_splice(kind, dots, is_spliceable);
+    return atom_splice(kind, dots, is_spliceable, depth);
   case VECSXP:
     return list_splice(dots, is_spliceable);
   default:
@@ -289,19 +288,20 @@ SEXP rlang_splice_if(SEXP dots, SEXPTYPE kind, bool (*is_spliceable)(SEXP)) {
     return R_NilValue;
   }
 }
-SEXP rlang_splice_closure(SEXP dots, SEXPTYPE kind, SEXP pred) {
+SEXP rlang_splice_closure(SEXP dots, SEXPTYPE kind, SEXP pred, int depth) {
   SEXP prev_pred = clo_spliceable;
   clo_spliceable = PROTECT(Rf_lang2(pred, Rf_list2(R_NilValue, R_NilValue)));
 
-  SEXP out = rlang_splice_if(dots, kind, &is_spliceable_closure);
+  SEXP out = rlang_splice_if(dots, kind, &is_spliceable_closure, depth);
 
   clo_spliceable = prev_pred;
   UNPROTECT(1);
 
   return out;
 }
-SEXP rlang_splice(SEXP dots, SEXP type, SEXP pred) {
+SEXP rlang_splice(SEXP dots, SEXP type, SEXP pred, SEXP depth_) {
   SEXPTYPE kind = Rf_str2type(CHAR(STRING_ELT(type, 0)));
+  int depth = Rf_asInteger(depth_);
 
   bool (*is_spliceable)(SEXP);
   switch (TYPEOF(pred)) {
@@ -322,7 +322,7 @@ SEXP rlang_splice(SEXP dots, SEXP type, SEXP pred) {
     }
     break;
   case CLOSXP:
-    return rlang_splice_closure(dots, kind, pred);
+    return rlang_splice_closure(dots, kind, pred, depth);
   case EXTPTRSXP:
     is_spliceable = (bool (*)(SEXP)) R_ExternalPtrAddr(pred);
     break;
@@ -330,5 +330,5 @@ SEXP rlang_splice(SEXP dots, SEXP type, SEXP pred) {
     Rf_errorcall(R_NilValue, "`predicate` must be a closure");
   }
 
-  return rlang_splice_if(dots, kind, is_spliceable);
+  return rlang_splice_if(dots, kind, is_spliceable, depth);
 }

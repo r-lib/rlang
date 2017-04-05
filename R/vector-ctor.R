@@ -67,22 +67,22 @@ NULL
 #' @rdname vector-construction
 #' @export
 lgl <- function(...) {
-  .Call(rlang_splice, dots_values(...), "logical", bare = TRUE)
+  .Call(rlang_splice, dots_values(...), "logical", bare = TRUE, 1L)
 }
 #' @rdname vector-construction
 #' @export
 int <- function(...) {
-  .Call(rlang_splice, dots_values(...), "integer", bare = TRUE)
+  .Call(rlang_splice, dots_values(...), "integer", bare = TRUE, 1L)
 }
 #' @rdname vector-construction
 #' @export
 dbl <- function(...) {
-  .Call(rlang_splice, dots_values(...), "double", bare = TRUE)
+  .Call(rlang_splice, dots_values(...), "double", bare = TRUE, 1L)
 }
 #' @rdname vector-construction
 #' @export
 cpl <- function(...) {
-  .Call(rlang_splice, dots_values(...), "complex", bare = TRUE)
+  .Call(rlang_splice, dots_values(...), "complex", bare = TRUE, 1L)
 }
 #' @rdname vector-construction
 #' @export
@@ -91,7 +91,7 @@ cpl <- function(...) {
 #'   conversion is performed.
 #' @export
 chr <- function(..., .encoding = NULL) {
-  out <- .Call(rlang_splice, dots_values(...), "character", bare = TRUE)
+  out <- .Call(rlang_splice, dots_values(...), "character", bare = TRUE, 1L)
   set_chr_encoding(out, .encoding)
 }
 #' @rdname vector-construction
@@ -109,7 +109,7 @@ bytes <- function(...) {
       new_bytes(dot)
     }
   })
-  .Call(rlang_splice, dots, "raw", bare = TRUE)
+  .Call(rlang_splice, dots, "raw", bare = TRUE, 1L)
 }
 
 #' @rdname vector-construction
@@ -122,13 +122,13 @@ bytes <- function(...) {
 #' # Note that explicitly spliced lists are always spliced:
 #' ll(!!! list(1, 2))
 ll <- function(...) {
-  .Call(rlang_splice, dots_values(...), "list", bare = FALSE)
+  .Call(rlang_splice, dots_values(...), "list", bare = FALSE, 1L)
 }
 #' @rdname vector-construction
 #' @param x A list to splice.
 #' @export
 list_splice <- function(x) {
-  .Call(rlang_splice, x, "list", bare = TRUE)
+  .Call(rlang_splice, x, "list", bare = TRUE, 1L)
 }
 #' @rdname vector-construction
 #' @param predicate A function of one argument returning whether it
@@ -136,7 +136,7 @@ list_splice <- function(x) {
 #' @useDynLib rlang is_clevel_spliceable
 #' @export
 list_splice_if <- function(x, predicate = is_spliced) {
-  .Call(rlang_splice, x, "list", predicate)
+  .Call(rlang_splice, x, "list", predicate, 1L)
 }
 
 #' Splice a list within a vector.
