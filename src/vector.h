@@ -3,6 +3,25 @@
 #include <stdbool.h>
 
 
+// In particular, this returns 1 for environments
+R_len_t vec_length(SEXP x) {
+  switch (TYPEOF(x)) {
+  case LGLSXP:
+  case INTSXP:
+  case REALSXP:
+  case CPLXSXP:
+  case STRSXP:
+  case RAWSXP:
+  case VECSXP:
+    return Rf_length(x);
+  case NILSXP:
+    return 0;
+  default:
+    return 1;
+  }
+}
+
+
 // Copy --------------------------------------------------------------
 
 void vec_copy_n(SEXP src, R_len_t n, SEXP dest,

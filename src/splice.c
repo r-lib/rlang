@@ -18,29 +18,84 @@ squash_info_t squash_info_init(bool recursive) {
   return info;
 }
 
+
+// Atomic squashing ---------------------------------------------------
+
+static
+R_len_t atom_squash(SEXPTYPE kind, squash_info_t info,
+                    SEXP outer, SEXP out, R_len_t count,
+                    bool (*is_spliceable)(SEXP), int depth) {
+  if (TYPEOF(outer) != VECSXP)
+    Rf_errorcall(R_NilValue, "Only lists can be spliced");
+
+  SEXP inner;
+  SEXP out_names = names(out);
+  R_len_t n_outer = Rf_length(outer);
+  R_len_t n_inner;
+
+  for (R_len_t i = 0; i != n_outer; ++i) {
+    inner = VECTOR_ELT(outer, i);
+    n_inner = vec_length(inner);
+
+    if (depth != 0 && is_spliceable(inner)) {
+      count = atom_squash(kind, info, inner, out, count, is_spliceable, depth - 1);
+    } else if (n_inner) {
+      vec_copy_coerce_n(inner, n_inner, out, count, 0);
+
+      if (info.named) {
+        SEXP nms = names(inner);
+        if (is_character(nms))
+          vec_copy_n(nms, n_inner, out_names, count, 0);
+        else if (n_inner == 1 && has_name_at(outer, i))
+          SET_STRING_ELT(out_names, count, STRING_ELT(names(outer), i));
+      }
+
+      count += n_inner;
+    }
+  }
+
+  return count;
+}
+
+
+// List squashing -----------------------------------------------------
+
+R_len_t list_squash(squash_info_t info, SEXP outer,
+                    SEXP out, R_len_t count,
+                    bool (*is_spliceable)(SEXP), int depth) {
+  if (TYPEOF(outer) != VECSXP)
+    Rf_errorcall(R_NilValue, "Only lists can be spliced");
+
+  SEXP inner;
+  SEXP out_names = names(out);
+  R_len_t n_outer = Rf_length(outer);
+
+  for (R_len_t i = 0; i != n_outer; ++i) {
+    inner = VECTOR_ELT(outer, i);
+
+    if (depth != 0 && is_spliceable(inner)) {
+      count = list_squash(info, inner, out, count, is_spliceable, depth - 1);
+    } else {
+      SET_VECTOR_ELT(out, count, inner);
+
+      if (info.named && is_character(names(outer))) {
+        SEXP name = STRING_ELT(names(outer), i);
+        SET_STRING_ELT(out_names, count, name);
+      }
+
+      count += 1;
+    }
+  }
+
+  return count;
+}
+
+
+// First pass --------------------------------------------------------
+
 static
 void squash_warn_names(void) {
   Rf_warningcall(R_NilValue, "Outer names are only allowed for unnamed scalar atomic inputs");
-}
-
-// Atomic splicing ---------------------------------------------------
-
-// In particular, this returns 1 for environments
-R_len_t vec_length(SEXP x) {
-  switch (TYPEOF(x)) {
-  case LGLSXP:
-  case INTSXP:
-  case REALSXP:
-  case CPLXSXP:
-  case STRSXP:
-  case RAWSXP:
-  case VECSXP:
-    return Rf_length(x);
-  case NILSXP:
-    return 0;
-  default:
-    return 1;
-  }
 }
 
 static
@@ -99,116 +154,20 @@ void squash_info(squash_info_t* info, SEXP outer,
 }
 
 static
-void squash_copy_names_n(bool recursive, bool spliced,
-                         SEXP src, R_len_t n,
-                         SEXP outer_src, R_len_t i,
-                         SEXP dest_nms, R_len_t count) {
-  SEXP nms = names(src);
-  bool copy_inner = recursive ? spliced : true;
-  if (copy_inner && is_character(nms)) {
-    vec_copy_n(nms, n, dest_nms, count, 0);
-    return;
-  }
+SEXP squash(SEXPTYPE kind, SEXP dots, bool (*is_spliceable)(SEXP), int depth) {
+  bool recursive = kind == VECSXP;
 
-  bool copy_outer = recursive ? (!spliced) : (n == 1);
-  if (copy_outer && has_name_at(outer_src, i))
-    SET_STRING_ELT(dest_nms, count, STRING_ELT(names(outer_src), i));
-}
-
-static
-R_len_t atom_squash_list(SEXPTYPE kind, squash_info_t info,
-                         SEXP outer, SEXP out, R_len_t count,
-                         bool spliced, bool (*is_spliceable)(SEXP),
-                         int depth) {
-  if (TYPEOF(outer) != VECSXP)
-    Rf_errorcall(R_NilValue, "Only lists can be spliced");
-
-  SEXP inner;
-  SEXP out_names = names(out);
-  R_len_t n_outer = Rf_length(outer);
-  R_len_t n_inner;
-
-  for (R_len_t i = 0; i != n_outer; ++i) {
-    inner = VECTOR_ELT(outer, i);
-
-    if (depth != 0 && is_spliceable(inner)) {
-      count = atom_squash_list(kind, info, inner, out, count, true, is_spliceable, depth - 1);
-      continue;
-    }
-
-    n_inner = vec_length(inner);
-    if (n_inner) {
-      vec_copy_coerce_n(inner, n_inner, out, count, 0);
-      if (info.named)
-        squash_copy_names_n(info.recursive, spliced, inner, n_inner, outer, i, out_names, count);
-
-      count += n_inner;
-      continue;
-    }
-  }
-
-  return count;
-}
-
-static
-SEXP atom_squash(SEXPTYPE kind, SEXP dots,
-                 bool (*is_spliceable)(SEXP), int depth) {
-  squash_info_t info = squash_info_init(false);
+  squash_info_t info = squash_info_init(recursive);
   squash_info(&info, dots, is_spliceable, depth);
 
   SEXP out = PROTECT(Rf_allocVector(kind, info.size));
   if (info.named)
     set_names(out, Rf_allocVector(STRSXP, info.size));
 
-  atom_squash_list(kind, info, dots, out, 0, false, is_spliceable, depth);
-
-  UNPROTECT(1);
-  return out;
-}
-
-
-// List splicing -----------------------------------------------------
-
-R_len_t list_squash_impl(squash_info_t info, SEXP outer,
-                         SEXP out, R_len_t count, bool spliced,
-                         bool (*is_spliceable)(SEXP), int depth) {
-  if (TYPEOF(outer) != VECSXP)
-    Rf_errorcall(R_NilValue, "Only lists can be spliced");
-
-  SEXP inner;
-  SEXP out_names = names(out);
-  R_len_t n_outer = Rf_length(outer);
-
-  for (R_len_t i = 0; i != n_outer; ++i) {
-    inner = VECTOR_ELT(outer, i);
-
-    if (depth != 0 && is_spliceable(inner)) {
-      count = list_squash_impl(info, inner, out, count, spliced, is_spliceable, depth - 1);
-    } else {
-      SET_VECTOR_ELT(out, count, inner);
-
-      if (info.named && is_character(names(outer))) {
-        SEXP name = STRING_ELT(names(outer), i);
-        SET_STRING_ELT(out_names, count, name);
-      }
-
-      count += 1;
-    }
-  }
-
-  return count;
-}
-
-SEXP list_squash(SEXP dots, bool (*is_spliceable)(SEXP), int depth) {
-  squash_info_t info = squash_info_init(true);
-  squash_info(&info, dots, is_spliceable, depth);
-
-  SEXP out = PROTECT(Rf_allocVector(VECSXP, info.size));
-
-  if (info.named)
-    set_names(out, Rf_allocVector(STRSXP, info.size));
-
-  list_squash_impl(info, dots, out, 0, false, is_spliceable, depth);
+  if (recursive)
+    list_squash(info, dots, out, 0, is_spliceable, depth);
+  else
+    atom_squash(kind, info, dots, out, 0, is_spliceable, depth);
 
   UNPROTECT(1);
   return out;
@@ -265,9 +224,8 @@ SEXP rlang_squash_if(SEXP dots, SEXPTYPE kind, bool (*is_spliceable)(SEXP), int 
   case CPLXSXP:
   case STRSXP:
   case RAWSXP:
-    return atom_squash(kind, dots, is_spliceable, depth);
   case VECSXP:
-    return list_squash(dots, is_spliceable, depth);
+    return squash(kind, dots, is_spliceable, depth);
   default:
     Rf_errorcall(R_NilValue, "Splicing is not implemented for this type");
     return R_NilValue;
