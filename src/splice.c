@@ -120,6 +120,9 @@ R_len_t atom_splice_list(SEXPTYPE kind, splice_info_t info,
                          SEXP outer, SEXP out, R_len_t count,
                          bool spliced, bool (*is_spliceable)(SEXP),
                          int depth) {
+  if (TYPEOF(outer) != VECSXP)
+    Rf_errorcall(R_NilValue, "Only lists can be spliced");
+
   SEXP inner;
   SEXP out_names = names(out);
   R_len_t n_outer = Rf_length(outer);
@@ -148,7 +151,8 @@ R_len_t atom_splice_list(SEXPTYPE kind, splice_info_t info,
 }
 
 static
-SEXP atom_splice(SEXPTYPE kind, SEXP dots, bool (*is_spliceable)(SEXP), int depth) {
+SEXP atom_splice(SEXPTYPE kind, SEXP dots,
+                 bool (*is_spliceable)(SEXP), int depth) {
   splice_info_t info = splice_info_init(false);
   splice_info(&info, dots, is_spliceable, depth);
 
@@ -165,70 +169,46 @@ SEXP atom_splice(SEXPTYPE kind, SEXP dots, bool (*is_spliceable)(SEXP), int dept
 
 // List splicing -----------------------------------------------------
 
-splice_info_t list_splice_info(SEXP dots, bool (*is_spliceable)(SEXP)) {
-  splice_info_t info = splice_info_init(true);
+R_len_t list_splice_impl(splice_info_t info, SEXP outer,
+                         SEXP out, R_len_t count, bool spliced,
+                         bool (*is_spliceable)(SEXP), int depth) {
+  if (TYPEOF(outer) != VECSXP)
+    Rf_errorcall(R_NilValue, "Only lists can be spliced");
 
-  R_len_t i = 0;
-  SEXP x;
-
-  while (i != Rf_length(dots)) {
-    x = VECTOR_ELT(dots, i);
-
-    if (is_spliceable(x)) {
-      info.size += Rf_length(x);
-      info.named = info.named || is_character(names(x));
-      if (has_name_at(dots, i) && !info.warned) {
-        splice_warn_names();
-        info.warned = true;
-      }
-    } else {
-      info.named = info.named || has_name_at(dots, i);
-      info.size += 1;
-    }
-
-    ++i;
-  }
-
-  return info;
-}
-
-SEXP list_splice(SEXP dots, bool (*is_spliceable)(SEXP)) {
-  splice_info_t info = list_splice_info(dots, is_spliceable);
-  SEXP out = PROTECT(Rf_allocVector(VECSXP, info.size));
-
-  if (info.named) {
-    set_names(out, Rf_allocVector(STRSXP, info.size));
-  }
+  SEXP inner;
   SEXP out_names = names(out);
+  R_len_t n_outer = Rf_length(outer);
 
-  R_len_t i = 0;
-  R_len_t count = 0;
-  SEXP x;
+  for (R_len_t i = 0; i != n_outer; ++i) {
+    inner = VECTOR_ELT(outer, i);
 
-  while (count != info.size) {
-    x = VECTOR_ELT(dots, i);
-
-    if (is_spliceable(x)) {
-      R_len_t n = Rf_length(x);
-      vec_copy_n(x, n, out, count, 0);
-
-      if (info.named && is_character(names(x)))
-        vec_copy_n(names(x), n, out_names, count, 0);
-
-      count += n;
+    if (depth != 0 && is_spliceable(inner)) {
+      count = list_splice_impl(info, inner, out, count, spliced, is_spliceable, depth - 1);
     } else {
-      SET_VECTOR_ELT(out, count, x);
+      SET_VECTOR_ELT(out, count, inner);
 
-      if (info.named && is_character(names(dots))) {
-        SEXP name = STRING_ELT(names(dots), i);
+      if (info.named && is_character(names(outer))) {
+        SEXP name = STRING_ELT(names(outer), i);
         SET_STRING_ELT(out_names, count, name);
       }
 
       count += 1;
     }
-
-    ++i;
   }
+
+  return count;
+}
+
+SEXP list_splice(SEXP dots, bool (*is_spliceable)(SEXP), int depth) {
+  splice_info_t info = splice_info_init(true);
+  splice_info(&info, dots, is_spliceable, depth);
+
+  SEXP out = PROTECT(Rf_allocVector(VECSXP, info.size));
+
+  if (info.named)
+    set_names(out, Rf_allocVector(STRSXP, info.size));
+
+  list_splice_impl(info, dots, out, 0, false, is_spliceable, depth);
 
   UNPROTECT(1);
   return out;
@@ -250,9 +230,6 @@ bool is_spliceable_atomic_explicit(SEXP x) {
   return is_list(x) && Rf_inherits(x, "spliced");
 }
 
-bool is_spliceable_recursive_full(SEXP x) {
-  return is_vector(x);
-}
 bool is_spliceable_recursive_list(SEXP x) {
   return is_list(x);
 }
@@ -290,7 +267,7 @@ SEXP rlang_splice_if(SEXP dots, SEXPTYPE kind, bool (*is_spliceable)(SEXP), int 
   case RAWSXP:
     return atom_splice(kind, dots, is_spliceable, depth);
   case VECSXP:
-    return list_splice(dots, is_spliceable);
+    return list_splice(dots, is_spliceable, depth);
   default:
     Rf_errorcall(R_NilValue, "Splicing is not implemented for this type");
     return R_NilValue;

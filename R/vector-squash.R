@@ -1,4 +1,7 @@
 
+flatten <- function(x) {
+  .Call(rlang_splice, x, "list", bare = TRUE, 1L)
+}
 flatten_lgl <- function(x) {
   .Call(rlang_splice, x, "logical", bare = TRUE, 1L)
 }
@@ -15,6 +18,9 @@ flatten_raw <- function(x) {
   .Call(rlang_splice, x, "raw", bare = TRUE, 1L)
 }
 
+squash <- function(x) {
+  .Call(rlang_splice, x, "list", bare = TRUE, -1L)
+}
 squash_lgl <- function(x) {
   .Call(rlang_splice, x, "logical", bare = TRUE, -1L)
 }

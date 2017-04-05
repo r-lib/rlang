@@ -146,6 +146,10 @@ test_that("bad outer names warn even at depth", {
   )
 })
 
+test_that("lists are squashed", {
+  expect_identical(squash(list(a = 1e0, list(c(b = 2e1, c = 3e1), d = 4e1, list(5e2, list(e = 6e3, c(f = 7e3)))), 8e0)), list(a = 1, c(b = 20, c = 30), d = 40, 500, e = 6000, c(f = 7000), 8))
+})
+
 
 # Flattening ---------------------------------------------------------
 
@@ -158,4 +162,12 @@ test_that("vectors and names are flattened", {
 test_that("bad outer names warn when flattening", {
   expect_warning(expect_identical(flatten_dbl(list(a = c(A = 1))), c(A = 1)), "Outer names")
   expect_warning(expect_identical(flatten_dbl(list(a = 1, list(b = c(B = 2)))), c(a = 1, B = 2)), "Outer names")
+})
+
+test_that("lists are flattened", {
+  x <- list(1, list(2, list(3, list(4))))
+  expect_identical(flatten(x), list(1, 2, list(3, list(4))))
+  expect_identical(flatten(flatten(x)), list(1, 2, 3, list(4)))
+  expect_identical(flatten(flatten(flatten(x))), list(1, 2, 3, 4))
+  expect_identical(flatten(flatten(flatten(flatten(x)))), list(1, 2, 3, 4))
 })
