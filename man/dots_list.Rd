@@ -21,19 +21,15 @@ arguments are named with the empty string \code{""}.
 \description{
 These functions evaluate all arguments contained in \code{...} and
 return them as a list. They both splice their arguments if they
-qualify for splicing. See \code{\link[=list_splice]{list_splice()}} for information about splicing
+qualify for splicing. See \code{\link[=ll]{ll()}} for information about splicing
 and below for the kind of arguments that qualify for splicing.
 }
 \details{
 \code{dots_list()} has \emph{explicit splicing semantics}: it splices lists
-that are explicitly marked for \link[=list_splice]{splicing} with the
+that are explicitly marked for \link[=ll]{splicing} with the
 \code{\link[=splice]{splice()}} adjective. \code{dots_splice()} on the other hand has \emph{list
 splicing semantics}: in addition to lists marked explicitly for
 splicing, \link[=is_bare_list]{bare} lists are spliced as well.
-
-Note that \code{dots_list()} and \code{dots_splice()} are simple aliases to
-\code{\link[=list_splice]{list_splice()}}. Their main purpose is to provide more explicit
-documentation for functions capturing dots.
 }
 \examples{
 # Compared to simply using list(...) to capture dots, dots_list()

@@ -6,19 +6,19 @@
 #' [vector-coercion]. In addition, all constructors support splicing:
 #' if you supply [bare][is_bare_list] lists or [explicitly
 #' spliced][is_spliced] lists, their contents are spliced into the
-#' output vectors (see below for details). `list_splice()` is a list
+#' output vectors (see below for details). `ll()` is a list
 #' constructor similar to [base::list()] but with splicing semantics.
 #'
 #' @section Splicing:
 #'
 #' Splicing is an operation similar to flattening one level of nested
 #' lists, e.g. with \code{\link[=unlist]{base::unlist(x, recursive =
-#' FALSE)}} or `purrr::flatten()`. `list_splice()` returns its
-#' arguments as a list, just like `list()` would, but inner lists
-#' qualifying for splicing are flattened. That is, their contents are
-#' embedded in the surrounding list. Similarly, `chr()` concatenates
-#' its arguments and returns them as a single character vector, but
-#' inner lists are flattened before concatenation.
+#' FALSE)}} or `purrr::flatten()`. `ll()` returns its arguments as a
+#' list, just like `list()` would, but inner lists qualifying for
+#' splicing are flattened. That is, their contents are embedded in the
+#' surrounding list. Similarly, `chr()` concatenates its arguments and
+#' returns them as a single character vector, but inner lists are
+#' flattened before concatenation.
 #'
 #' Whether an inner list qualifies for splicing is determined by the
 #' type of splicing semantics. All the atomic constructors like
@@ -27,12 +27,12 @@
 #'
 #' There are two list constructors with different splicing
 #' semantics. `ll()` only splices lists explicitly marked with
-#' [splice()], while `list_splice()` has list splicing semantics.
+#' [splice()].
 #'
 #' @param ... Components of the new vector. Bare lists and explicitly
 #'   spliced lists are spliced.
 #' @name vector-construction
-#' @seealso [list_splice()]
+#' @seealso [ll()]
 #' @examples
 #' # These constructors are like a typed version of c():
 #' c(TRUE, FALSE)
@@ -129,7 +129,7 @@ ll <- function(...) {
 #'
 #' This adjective signals to functions taking dots that `x` should be
 #' spliced in a surrounding vector. Examples of functions that support
-#' such explicit splicing are [list_splice()], [chr()], etc.
+#' such explicit splicing are [ll()], [chr()], etc.
 #'
 #' @param x A list to splice.
 #' @seealso [vector-construction]
