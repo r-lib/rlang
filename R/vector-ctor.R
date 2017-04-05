@@ -124,20 +124,6 @@ bytes <- function(...) {
 ll <- function(...) {
   .Call(rlang_squash, dots_values(...), "list", bare = FALSE, 1L)
 }
-#' @rdname vector-construction
-#' @param x A list to splice.
-#' @export
-list_splice <- function(x) {
-  .Call(rlang_squash, x, "list", bare = TRUE, 1L)
-}
-#' @rdname vector-construction
-#' @param predicate A function of one argument returning whether it
-#'   should be spliced.
-#' @useDynLib rlang is_clevel_spliceable
-#' @export
-list_splice_if <- function(x, predicate = is_spliced) {
-  .Call(rlang_squash, x, "list", predicate, 1L)
-}
 
 #' Splice a list within a vector.
 #'
@@ -146,7 +132,7 @@ list_splice_if <- function(x, predicate = is_spliced) {
 #' such explicit splicing are [list_splice()], [chr()], etc.
 #'
 #' @param x A list to splice.
-#' @seealso [list_splice()], [vector-construction]
+#' @seealso [vector-construction]
 #' @export
 splice <- function(x) {
   if (!is_list(x)) {

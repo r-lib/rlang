@@ -9,8 +9,6 @@
 \alias{chr}
 \alias{bytes}
 \alias{ll}
-\alias{list_splice}
-\alias{list_splice_if}
 \title{Construct new vectors.}
 \usage{
 lgl(...)
@@ -26,10 +24,6 @@ chr(..., .encoding = NULL)
 bytes(...)
 
 ll(...)
-
-list_splice(x)
-
-list_splice_if(x, predicate = is_spliced)
 }
 \arguments{
 \item{...}{Components of the new vector. Bare lists and explicitly
@@ -38,11 +32,6 @@ spliced lists are spliced.}
 \item{.encoding}{If non-null, passed to \code{\link[=set_chr_encoding]{set_chr_encoding()}} to add
 an encoding mark. This is only declarative, no encoding
 conversion is performed.}
-
-\item{x}{A list to splice.}
-
-\item{predicate}{A function of one argument returning whether it
-should be spliced.}
 }
 \description{
 The atomic vector constructors are equivalent to \code{\link[=c]{c()}} but allow

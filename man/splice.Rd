@@ -18,5 +18,5 @@ spliced in a surrounding vector. Examples of functions that support
 such explicit splicing are \code{\link[=list_splice]{list_splice()}}, \code{\link[=chr]{chr()}}, etc.
 }
 \seealso{
-\code{\link[=list_splice]{list_splice()}}, \link{vector-construction}
+\link{vector-construction}
 }
