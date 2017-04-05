@@ -44,9 +44,15 @@ R_len_t vec_length(SEXP x) {
 }
 
 static
-void update_info(splice_info_t* info,
-                 SEXP outer, R_len_t i, SEXP inner,
-                 R_len_t n_inner, bool spliced) {
+void update_info_outer(splice_info_t* info, SEXP outer, R_len_t i) {
+  if (!info->warned && info->recursive && has_name_at(outer, i)) {
+    splice_warn_names();
+    info->warned = true;
+  }
+}
+static
+void update_info_inner(splice_info_t* info, SEXP outer, R_len_t i, SEXP inner) {
+  R_len_t n_inner = info->recursive ? 1 : vec_length(inner);
   info->size += n_inner;
 
   // Return early if possible
@@ -56,8 +62,8 @@ void update_info(splice_info_t* info,
   bool named = is_character(names(inner));
   bool recursive = info->recursive;
 
-  bool copy_outer = recursive ? (!spliced) : (n_inner == 1);
-  bool copy_inner = recursive ? spliced : true;
+  bool copy_outer = recursive || n_inner == 1;
+  bool copy_inner = !recursive;
 
   if (named && copy_inner)
     info->named = true;
@@ -73,20 +79,22 @@ void update_info(splice_info_t* info,
 }
 
 static
-void atom_splice_info(splice_info_t* info, SEXP outer, bool spliced,
-                      bool (*is_spliceable)(SEXP), int depth) {
+void splice_info(splice_info_t* info, SEXP outer,
+                 bool (*is_spliceable)(SEXP), int depth) {
   SEXP inner;
   R_len_t n_inner;
   R_len_t n_outer = Rf_length(outer);
 
   for (R_len_t i = 0; i != n_outer; ++i) {
     inner = VECTOR_ELT(outer, i);
-    n_inner = vec_length(inner);
+    n_inner = info->recursive ? 1 : vec_length(inner);
 
-    if (depth != 0 && is_spliceable(inner))
-      atom_splice_info(info, inner, true, is_spliceable, depth - 1);
-    else if (n_inner)
-      update_info(info, outer, i, inner, n_inner, spliced);
+    if (depth != 0 && is_spliceable(inner)) {
+      update_info_outer(info, outer, i);
+      splice_info(info, inner, is_spliceable, depth - 1);
+    } else if (n_inner) {
+      update_info_inner(info, outer, i, inner);
+    }
   }
 }
 
@@ -142,7 +150,7 @@ R_len_t atom_splice_list(SEXPTYPE kind, splice_info_t info,
 static
 SEXP atom_splice(SEXPTYPE kind, SEXP dots, bool (*is_spliceable)(SEXP), int depth) {
   splice_info_t info = splice_info_init(false);
-  atom_splice_info(&info, dots, false, is_spliceable, depth);
+  splice_info(&info, dots, is_spliceable, depth);
 
   SEXP out = PROTECT(Rf_allocVector(kind, info.size));
   if (info.named)
