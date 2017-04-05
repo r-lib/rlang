@@ -53,8 +53,11 @@ test_that("dots are always named", {
 })
 
 test_that("dots can be spliced", {
-  expect_identical(dots_values(!!! letters), named(as.list(letters)))
-  expect_identical(dots_values(UQS(letters)), named(as.list(letters)))
+  expect_identical(dots_values(!!! list(letters)), named_list(splice(list(letters))))
+  expect_identical(flatten(dots_values(!!! list(letters))), list(letters))
+  expect_identical(ll(!!! list(letters)), list(letters))
+  wrapper <- function(...) ll(...)
+  expect_identical(wrapper(!!! list(letters)), list(letters))
 })
 
 test_that("interpolation by value does not guard formulas", {

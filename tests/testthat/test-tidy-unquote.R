@@ -193,7 +193,7 @@ test_that("fpromises are created for all informative formulas", {
 # dots_values() ------------------------------------------------------
 
 test_that("can unquote-splice symbols", {
-  expect_identical(dots_values(!!! list(quote(`_symbol`))), named_list(quote(`_symbol`)))
+  expect_identical(ll(!!! list(quote(`_symbol`))), list(quote(`_symbol`)))
 })
 
 test_that("can unquote symbols", {
