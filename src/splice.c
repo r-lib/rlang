@@ -6,26 +6,27 @@ typedef struct {
   R_len_t size;
   bool named;
   bool warned;
+  bool recursive;
 } splice_info_t;
 
-splice_info_t splice_info_init() {
+splice_info_t splice_info_init(bool recursive) {
   splice_info_t info;
   info.size = 0;
   info.named = false;
   info.warned = false;
+  info.recursive = recursive;
   return info;
 }
 
+static
 void splice_warn_names(void) {
   Rf_warningcall(R_NilValue, "Outer names are only allowed for unnamed scalar atomic inputs");
 }
 
 // Atomic splicing ---------------------------------------------------
 
-// This returns 1 for environments
-R_len_t storage_length(SEXPTYPE kind, SEXP x) {
-  bool store_null = (kind == VECSXP);
-
+// In particular, this returns 1 for environments
+R_len_t vec_length(SEXP x) {
   switch (TYPEOF(x)) {
   case LGLSXP:
   case INTSXP:
@@ -36,111 +37,115 @@ R_len_t storage_length(SEXPTYPE kind, SEXP x) {
   case VECSXP:
     return Rf_length(x);
   case NILSXP:
-    return store_null ? 1 : 0;
+    return 0;
   default:
     return 1;
   }
 }
 
 static
-void update_info(splice_info_t* info, SEXPTYPE kind,
+void update_info(splice_info_t* info,
                  SEXP outer, R_len_t i, SEXP inner,
-                 bool merge_names) {
-  R_len_t n = storage_length(kind, inner);
-  info->size += n;
+                 R_len_t n_inner, bool spliced) {
+  info->size += n_inner;
 
-  if (!info->named || !merge_names) {
-    bool named = is_character(names(inner));
-    if (named)
+  // Return early if possible
+  if (info->named && info->warned)
+    return;
+
+  bool named = is_character(names(inner));
+  bool recursive = info->recursive;
+
+  bool copy_outer = recursive ? (!spliced) : (n_inner == 1);
+  bool copy_inner = recursive ? spliced : true;
+
+  if (named && copy_inner)
+    info->named = true;
+
+  if (has_name_at(outer, i)) {
+    if (!recursive && (n_inner != 1 || named) && !info->warned) {
+      splice_warn_names();
+      info->warned = true;
+    }
+    if (copy_outer)
       info->named = true;
-
-    if (has_name_at(outer, i)) {
-      if ((named || n != 1) && !info->warned) {
-        splice_warn_names();
-        info->warned = true;
-      }
-      if (n == 1)
-        info->named = true;
-    }
   }
 }
 
 static
-void atom_splice_info_list(splice_info_t* info, SEXPTYPE kind, SEXP outer,
-                           bool merge_names) {
-  R_len_t i = 0;
-  SEXP inner;
-
-  while (i != Rf_length(outer)) {
-    inner = VECTOR_ELT(outer, i);
-
-    if (storage_length(kind, inner))
-      update_info(info, kind, outer, i, inner, merge_names);
-
-    ++i;
-  }
-}
-
-static
-void atom_splice_info(splice_info_t* info, SEXPTYPE kind,
-                      SEXP outer, bool merge_names,
+void atom_splice_info(splice_info_t* info, SEXP outer,
+                      int depth, bool spliced,
                       bool (*is_spliceable)(SEXP)) {
-  R_len_t i = 0;
   SEXP inner;
+  R_len_t n_inner;
+  R_len_t n_outer = Rf_length(outer);
 
-  while (i != Rf_length(outer)) {
+  for (R_len_t i = 0; i != n_outer; ++i) {
     inner = VECTOR_ELT(outer, i);
+    n_inner = vec_length(inner);
 
-    if (is_spliceable(inner))
-      atom_splice_info_list(info, kind, inner, merge_names);
-    else if (storage_length(kind, inner))
-      update_info(info, kind, outer, i, inner, merge_names);
-
-    ++i;
+    if (depth != 0 && is_spliceable(inner))
+      atom_splice_info(info, inner, --depth, true, is_spliceable);
+    else if (n_inner)
+      update_info(info, outer, i, inner, n_inner, spliced);
   }
 }
 
-R_len_t atom_splice_list(SEXP outer, SEXP out, R_len_t count,
-                         bool named, bool merge_names, bool recurse,
+static
+void splice_copy_names_n(bool recursive, bool spliced,
+                         SEXP src, R_len_t n,
+                         SEXP outer_src, R_len_t i,
+                         SEXP dest_nms, R_len_t count) {
+  SEXP nms = names(src);
+  bool copy_inner = recursive ? spliced : true;
+  if (copy_inner && is_character(nms)) {
+    vec_copy_n(nms, n, dest_nms, count, 0);
+    return;
+  }
+
+  bool copy_outer = recursive ? (!spliced) : (n == 1);
+  if (copy_outer && has_name_at(outer_src, i))
+    SET_STRING_ELT(dest_nms, count, STRING_ELT(names(outer_src), i));
+}
+
+static
+R_len_t atom_splice_list(SEXPTYPE kind, splice_info_t info,
+                         SEXP outer, SEXP out, R_len_t count,
+                         int depth, bool spliced,
                          bool (*is_spliceable)(SEXP)) {
-  R_len_t i = 0;
-  SEXP x;
+  SEXP inner;
   SEXP out_names = names(out);
+  R_len_t n_outer = Rf_length(outer);
+  R_len_t n_inner;
 
-  while (i != Rf_length(outer)) {
-    x = VECTOR_ELT(outer, i);
+  for (R_len_t i = 0; i != n_outer; ++i) {
+    inner = VECTOR_ELT(outer, i);
+    n_inner = vec_length(inner);
 
-    if (is_spliceable(x) && recurse) {
-      count = atom_splice_list(x, out, count, named, merge_names, false, is_spliceable);
-    } else if (storage_length(TYPEOF(out), x)) {
-      R_len_t n = Rf_length(x);
-      vec_copy_coerce_n(x, n, out, count, 0);
-
-      if (named) {
-        if (is_character(names(x)))
-          vec_copy_n(names(x), n, out_names, count, 0);
-        else if (merge_names && Rf_length(x) == 1 && has_name_at(outer, i))
-          SET_STRING_ELT(out_names, count, STRING_ELT(names(outer), i));
-      }
-
-      count += n;
+    if (depth != 0 && is_spliceable(inner)) {
+      count = atom_splice_list(kind, info, inner, out, count, --depth, true, is_spliceable);
+    } else if (n_inner) {
+      vec_copy_coerce_n(inner, n_inner, out, count, 0);
+      if (info.named)
+        splice_copy_names_n(info.recursive, spliced, inner, n_inner, outer, i, out_names, count);
     }
 
-    ++i;
+    count += n_inner;
   }
 
   return count;
 }
 
+static
 SEXP atom_splice(SEXPTYPE kind, SEXP dots, bool (*is_spliceable)(SEXP)) {
-  splice_info_t info = splice_info_init();
-  atom_splice_info(&info, kind, dots, true, is_spliceable);
+  splice_info_t info = splice_info_init(false);
+  atom_splice_info(&info, dots, 1, false, is_spliceable);
 
   SEXP out = PROTECT(Rf_allocVector(kind, info.size));
   if (info.named)
     set_names(out, Rf_allocVector(STRSXP, info.size));
 
-  atom_splice_list(dots, out, 0, info.named, true, true, is_spliceable);
+  atom_splice_list(kind, info, dots, out, 0, 1, false, is_spliceable);
 
   UNPROTECT(1);
   return out;
@@ -150,7 +155,7 @@ SEXP atom_splice(SEXPTYPE kind, SEXP dots, bool (*is_spliceable)(SEXP)) {
 // List splicing -----------------------------------------------------
 
 splice_info_t list_splice_info(SEXP dots, bool (*is_spliceable)(SEXP)) {
-  splice_info_t info = splice_info_init();
+  splice_info_t info = splice_info_init(true);
 
   R_len_t i = 0;
   SEXP x;
@@ -221,22 +226,29 @@ SEXP list_splice(SEXP dots, bool (*is_spliceable)(SEXP)) {
 
 // Export ------------------------------------------------------------
 
-bool is_atomic_spliceable(SEXP x) {
+bool is_spliceable_atomic_implicit(SEXP x) {
   if (OBJECT(x) && !Rf_inherits(x, "spliced"))
     Rf_errorcall(R_NilValue, "Cannot splice S3 objects");
 
-  if (is_list(x))
-    return true;
-
-  if (!is_vector(x) && !is_null(x)) {
-    Rf_errorcall(R_NilValue,
-                 "Cannot splice objects of type `%s` within vector",
-                 kind_c_str(TYPEOF(x)));
-  }
-
-  return false;
+  return is_list(x);
 }
-bool is_explicitly_spliceable(SEXP x) {
+bool is_spliceable_atomic_explicit(SEXP x) {
+  if (OBJECT(x) && !Rf_inherits(x, "spliced"))
+    Rf_errorcall(R_NilValue, "Cannot splice S3 objects");
+
+  return is_list(x) && Rf_inherits(x, "spliced");
+}
+
+bool is_spliceable_recursive_full(SEXP x) {
+  return is_vector(x);
+}
+bool is_spliceable_recursive_list(SEXP x) {
+  return is_list(x);
+}
+bool is_spliceable_recursive_implicit(SEXP x) {
+  return is_list(x) && (!OBJECT(x) || Rf_inherits(x, "spliced"));
+}
+bool is_spliceable_recursive_explicit(SEXP x) {
   return is_list(x) && Rf_inherits(x, "spliced");
 }
 
@@ -290,10 +302,20 @@ SEXP rlang_splice(SEXP dots, SEXP type, SEXP pred) {
   bool (*is_spliceable)(SEXP);
   switch (TYPEOF(pred)) {
   case LGLSXP:
-    if (as_bool(pred))
-      is_spliceable = &is_atomic_spliceable;
-    else
-      is_spliceable = &is_explicitly_spliceable;
+    switch (kind) {
+    case VECSXP:
+      if (as_bool(pred))
+        is_spliceable = &is_spliceable_recursive_implicit;
+      else
+        is_spliceable = &is_spliceable_recursive_explicit;
+      break;
+    default:
+      if (as_bool(pred))
+        is_spliceable = &is_spliceable_atomic_implicit;
+      else
+        is_spliceable = &is_spliceable_atomic_explicit;
+      break;
+    }
     break;
   case CLOSXP:
     return rlang_splice_closure(dots, kind, pred);

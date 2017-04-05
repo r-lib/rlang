@@ -102,8 +102,8 @@ test_that("atomic inputs are implicitly coerced", {
 })
 
 test_that("type errors are handled", {
-  expect_error(lgl(get_env()), "Cannot splice objects of type `environment`")
-  expect_error(lgl(list(get_env())), "Cannot splice objects of type `environment`")
+  expect_error(lgl(get_env()), "Cannot convert objects of type `environment`")
+  expect_error(lgl(list(get_env())), "Cannot convert objects of type `environment`")
 })
 
 test_that("empty inputs are spliced", {
