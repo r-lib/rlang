@@ -129,3 +129,33 @@ test_that("list_splice_if() handles external pointers", {
   pred <- is_clevel_spliceable$address
   expect_identical(list_splice_if(x, pred), list(obj[[1]], splice(obj), unclass(obj)))
 })
+
+
+# Squashing ----------------------------------------------------------
+
+test_that("vectors and names are squashed", {
+  expect_identical(
+    squash_dbl(list(a = 1e0, list(c(b = 2e1, c = 3e1), d = 4e1, list(5e2, list(e = 6e3, c(f = 7e3)))), 8e0)),
+    c(a = 1e0, b = 2e1, c = 3e1, d = 4e1, 5e2, e = 6e3, f = 7e3, 8e0)
+  )
+})
+
+test_that("bad outer names warn even at depth", {
+  expect_warning(regex = "Outer names",
+    expect_identical(squash_dbl(list(list(list(A = c(a = 1))))), c(a = 1))
+  )
+})
+
+
+# Flattening ---------------------------------------------------------
+
+test_that("vectors and names are flattened", {
+  expect_identical(flatten_dbl(list(a = 1, c(b = 2), 3)), c(a = 1, b = 2, 3))
+  expect_identical(flatten_dbl(list(list(a = 1), list(c(b = 2)), 3)), c(a = 1, b = 2, 3))
+  expect_error(flatten_dbl(list(1, list(list(2)), 3)), "Cannot convert")
+})
+
+test_that("bad outer names warn when flattening", {
+  expect_warning(expect_identical(flatten_dbl(list(a = c(A = 1))), c(A = 1)), "Outer names")
+  expect_warning(expect_identical(flatten_dbl(list(a = 1, list(b = c(B = 2)))), c(a = 1, B = 2)), "Outer names")
+})
