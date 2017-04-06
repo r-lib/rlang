@@ -46,6 +46,29 @@ dots_splice <- function(...) {
   dots
 }
 
+#' Evaluate dots with preliminary splicing.
+#'
+#' This is a tool for advanced users. It captures dots, processes
+#' unquoting and splicing operators, and evaluate them. Unlike
+#' [dots_list()] and [dots_splice()], it does not flatten spliced
+#' objects. They are merely attributed a `spliced` class (see
+#' [splice()]). You can process spliced objects manually, perhaps with
+#' a custom predicate (see [flatten_if()]).
+#'
+#' @param ... Arguments to evaluate and process splicing operators.
+#' @export
+#' @examples
+#' dots <- dots_values(!!! list(1))
+#' dots
+#'
+#' # Flatten the spliced objects:
+#' flatten_if(dots, is_spliced)
+dots_values <- function(...) {
+  dots <- dots_capture(..., `__quosured` = FALSE)
+  dots <- map(dots, function(dot) eval_bare(dot$expr, dot$env))
+  dots
+}
+
 #' Extract dots forwarded as arguments.
 #'
 #' These functions return the arguments forwarded through `...`.
