@@ -67,22 +67,22 @@ NULL
 #' @rdname vector-construction
 #' @export
 lgl <- function(...) {
-  .Call(rlang_squash, dots_values(...), "logical", bare = TRUE, 1L)
+  .Call(rlang_squash, dots_values(...), "logical", is_spliced_bare, 1L)
 }
 #' @rdname vector-construction
 #' @export
 int <- function(...) {
-  .Call(rlang_squash, dots_values(...), "integer", bare = TRUE, 1L)
+  .Call(rlang_squash, dots_values(...), "integer", is_spliced_bare, 1L)
 }
 #' @rdname vector-construction
 #' @export
 dbl <- function(...) {
-  .Call(rlang_squash, dots_values(...), "double", bare = TRUE, 1L)
+  .Call(rlang_squash, dots_values(...), "double", is_spliced_bare, 1L)
 }
 #' @rdname vector-construction
 #' @export
 cpl <- function(...) {
-  .Call(rlang_squash, dots_values(...), "complex", bare = TRUE, 1L)
+  .Call(rlang_squash, dots_values(...), "complex", is_spliced_bare, 1L)
 }
 #' @rdname vector-construction
 #' @export
@@ -91,7 +91,7 @@ cpl <- function(...) {
 #'   conversion is performed.
 #' @export
 chr <- function(..., .encoding = NULL) {
-  out <- .Call(rlang_squash, dots_values(...), "character", bare = TRUE, 1L)
+  out <- .Call(rlang_squash, dots_values(...), "character", is_spliced_bare, 1L)
   set_chr_encoding(out, .encoding)
 }
 #' @rdname vector-construction
@@ -109,7 +109,7 @@ bytes <- function(...) {
       new_bytes(dot)
     }
   })
-  .Call(rlang_squash, dots, "raw", bare = TRUE, 1L)
+  .Call(rlang_squash, dots, "raw", is_spliced_bare, 1L)
 }
 
 #' @rdname vector-construction
@@ -122,7 +122,7 @@ bytes <- function(...) {
 #' # Note that explicitly spliced lists are always spliced:
 #' ll(!!! list(1, 2))
 ll <- function(...) {
-  .Call(rlang_squash, dots_values(...), "list", bare = FALSE, 1L)
+  .Call(rlang_squash, dots_values(...), "list", is_spliced, 1L)
 }
 
 

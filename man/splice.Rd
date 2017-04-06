@@ -3,11 +3,14 @@
 \name{splice}
 \alias{splice}
 \alias{is_spliced}
+\alias{is_spliced_bare}
 \title{Splice a list within a vector.}
 \usage{
 splice(x)
 
 is_spliced(x)
+
+is_spliced_bare(x)
 }
 \arguments{
 \item{x}{A list to splice.}

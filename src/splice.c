@@ -174,29 +174,54 @@ SEXP squash(SEXPTYPE kind, SEXP dots, bool (*is_spliceable)(SEXP), int depth) {
 }
 
 
-// Export ------------------------------------------------------------
+// Predicates --------------------------------------------------------
 
-bool is_spliceable_atomic_implicit(SEXP x) {
-  if (OBJECT(x) && !Rf_inherits(x, "spliced"))
-    Rf_errorcall(R_NilValue, "Cannot splice S3 objects");
+typedef bool (*is_spliceable_t)(SEXP);
 
-  return is_list(x);
-}
-bool is_spliceable_atomic_explicit(SEXP x) {
-  if (OBJECT(x) && !Rf_inherits(x, "spliced"))
-    Rf_errorcall(R_NilValue, "Cannot splice S3 objects");
-
-  return is_list(x) && Rf_inherits(x, "spliced");
-}
-
-bool is_spliceable_recursive_list(SEXP x) {
-  return is_list(x);
-}
-bool is_spliceable_recursive_implicit(SEXP x) {
+bool is_spliced_bare(SEXP x) {
   return is_list(x) && (!OBJECT(x) || Rf_inherits(x, "spliced"));
 }
-bool is_spliceable_recursive_explicit(SEXP x) {
+bool is_spliced(SEXP x) {
   return is_list(x) && Rf_inherits(x, "spliced");
+}
+
+static
+is_spliceable_t predicate_pointer(SEXP x) {
+  is_spliceable_t is_spliceable;
+
+  switch (TYPEOF(x)) {
+  case VECSXP:
+    if (Rf_inherits(x, "NativeSymbolInfo") && Rf_length(x) == 3) {
+      SEXP ptr = VECTOR_ELT(x, 1);
+      if (TYPEOF(ptr) == EXTPTRSXP) {
+        is_spliceable = (is_spliceable_t) R_ExternalPtrAddr(ptr);
+        break;
+      }
+    }
+  case EXTPTRSXP:
+    is_spliceable = (is_spliceable_t) R_ExternalPtrAddr(x);
+    break;
+  default:
+    Rf_errorcall(R_NilValue, "`predicate` must be a closure or external pointer");
+  }
+
+  return is_spliceable;
+}
+
+is_spliceable_t predicate_internal(SEXP x) {
+  static SEXP is_spliced_clo = NULL;
+  if (!is_spliced_clo)
+    is_spliced_clo = rlang_fun(Rf_install("is_spliced"));
+
+  static SEXP is_spliceable_clo = NULL;
+  if (!is_spliceable_clo)
+    is_spliceable_clo = rlang_fun(Rf_install("is_spliced_bare"));
+
+  if (x == is_spliced_clo)
+    return &is_spliced;
+  if (x == is_spliceable_clo)
+    return &is_spliced_bare;
+  return NULL;
 }
 
 // For unit tests:
@@ -215,6 +240,8 @@ bool is_spliceable_closure(SEXP x) {
   return as_bool(out);
 }
 
+
+// Export ------------------------------------------------------------
 
 SEXP rlang_squash_if(SEXP dots, SEXPTYPE kind, bool (*is_spliceable)(SEXP), int depth) {
   switch (kind) {
@@ -246,32 +273,16 @@ SEXP rlang_squash(SEXP dots, SEXP type, SEXP pred, SEXP depth_) {
   SEXPTYPE kind = Rf_str2type(CHAR(STRING_ELT(type, 0)));
   int depth = Rf_asInteger(depth_);
 
-  bool (*is_spliceable)(SEXP);
-  switch (TYPEOF(pred)) {
-  case LGLSXP:
-    switch (kind) {
-    case VECSXP:
-      if (as_bool(pred))
-        is_spliceable = &is_spliceable_recursive_implicit;
-      else
-        is_spliceable = &is_spliceable_recursive_explicit;
-      break;
-    default:
-      if (as_bool(pred))
-        is_spliceable = &is_spliceable_atomic_implicit;
-      else
-        is_spliceable = &is_spliceable_atomic_explicit;
-      break;
-    }
-    break;
-  case CLOSXP:
-    return rlang_squash_closure(dots, kind, pred, depth);
-  case EXTPTRSXP:
-    is_spliceable = (bool (*)(SEXP)) R_ExternalPtrAddr(pred);
-    break;
-  default:
-    Rf_errorcall(R_NilValue, "`predicate` must be a closure");
+  is_spliceable_t is_spliceable;
+
+  if (TYPEOF(pred) == CLOSXP) {
+    is_spliceable = predicate_internal(pred);
+    if (is_spliceable)
+      return rlang_squash_if(dots, kind, is_spliceable, depth);
+    else
+      return rlang_squash_closure(dots, kind, pred, depth);
   }
 
+  is_spliceable = predicate_pointer(pred);
   return rlang_squash_if(dots, kind, is_spliceable, depth);
 }
