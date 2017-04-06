@@ -1,4 +1,4 @@
-# nocov - compat-oldrel (rlang 0.0.0.9000)
+# nocov - compat-oldrel (last updated: rlang 0.0.0.9001)
 
 # This file serves as a reference for compatibility functions for old
 # versions of R.

@@ -1,4 +1,4 @@
-# nocov - compat-lazyeval (rlang 0.0.0.9000)
+# nocov - compat-lazyeval (last updated: rlang 0.0.0.9004)
 
 # This file serves as a reference for compatibility functions for lazyeval.
 # Please find the most recent version in rlang's repository.
