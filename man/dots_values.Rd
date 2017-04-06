@@ -11,7 +11,7 @@ dots_values(...)
 }
 \description{
 This is a tool for advanced users. It captures dots, processes
-unquoting and splicing operators, and evaluate them. Unlike
+unquoting and splicing operators, and evaluates them. Unlike
 \code{\link[=dots_list]{dots_list()}} and \code{\link[=dots_splice]{dots_splice()}}, it does not flatten spliced
 objects. They are merely attributed a \code{spliced} class (see
 \code{\link[=splice]{splice()}}). You can process spliced objects manually, perhaps with

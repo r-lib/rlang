@@ -49,7 +49,7 @@ dots_splice <- function(...) {
 #' Evaluate dots with preliminary splicing.
 #'
 #' This is a tool for advanced users. It captures dots, processes
-#' unquoting and splicing operators, and evaluate them. Unlike
+#' unquoting and splicing operators, and evaluates them. Unlike
 #' [dots_list()] and [dots_splice()], it does not flatten spliced
 #' objects. They are merely attributed a `spliced` class (see
 #' [splice()]). You can process spliced objects manually, perhaps with
