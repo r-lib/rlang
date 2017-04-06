@@ -125,26 +125,6 @@ ll <- function(...) {
   .Call(rlang_squash, dots_values(...), "list", bare = FALSE, 1L)
 }
 
-#' Splice a list within a vector.
-#'
-#' This adjective signals to functions taking dots that `x` should be
-#' spliced in a surrounding vector. Examples of functions that support
-#' such explicit splicing are [ll()], [chr()], etc.
-#'
-#' @param x A list to splice.
-#' @seealso [vector-construction]
-#' @export
-splice <- function(x) {
-  if (!is_list(x)) {
-    abort("Only lists can be spliced")
-  }
-  structure(x, class = "spliced")
-}
-#' @rdname splice
-#' @export
-is_spliced <- function(x) {
-  inherits(x, "spliced")
-}
 
 #' Helper to create vectors with matching length.
 #'
