@@ -38,11 +38,11 @@ test_that("can create empty vectors", {
   expect_identical(cpl(), complex(0))
   expect_identical(chr(), character(0))
   expect_identical(bytes(), raw(0))
-  expect_identical(list_splice(), list())
+  expect_identical(ll(), list())
 })
 
 test_that("objects are not spliced", {
-  expect_error(lgl(structure(list(TRUE, TRUE), class = "bam")), "Objects cannot be spliced")
+  expect_error(lgl(structure(list(TRUE, TRUE), class = "bam")), "Cannot splice S3 objects")
 })
 
 test_that("explicitly spliced lists are spliced", {
@@ -67,26 +67,7 @@ test_that("warn when outer names unless input is unnamed scalar atomic", {
 })
 
 test_that("warn when spliced lists have outer name", {
-  expect_warning(lgl(C = list(c = FALSE)), "Outer names")
-  expect_warning(lgl(C = list(FALSE)), "Outer names")
-})
-
-test_that("list_splice() splices names", {
-  expect_identical(list_splice(a = TRUE, b = FALSE), list(a = TRUE, b = FALSE))
-  expect_identical(list_splice(c(A = TRUE), c(B = FALSE)), list(c(A = TRUE), c(B = FALSE)))
-  expect_identical(list_splice(a = c(A = TRUE), b = c(B = FALSE)), list(a = c(A = TRUE), b = c(B = FALSE)))
-  expect_warning(regexp = "Outer names",
-    expect_identical(
-      list_splice(a = list(A = TRUE), b = list(B = FALSE)) ,
-      list(A = TRUE, B = FALSE)
-    )
-  )
-  expect_warning(regexp = "Outer names",
-    expect_identical(
-      list_splice(a = list(TRUE), b = list(FALSE)) ,
-      list(TRUE, FALSE)
-    )
-  )
+  expect_warning(lgl(list(c = c(cc = FALSE))), "Outer names")
 })
 
 test_that("ll() doesn't splice bare lists", {
@@ -103,14 +84,100 @@ test_that("atomic inputs are implicitly coerced", {
 })
 
 test_that("type errors are handled", {
-  expect_error(lgl(chr()), "Cannot convert objects of type `character`")
-  expect_error(lgl(list(chr())), "Cannot convert objects of type `character`")
-
-  expect_error(lgl(get_env()), "Cannot splice objects of type `environment`")
-  expect_error(lgl(list(get_env())), "Cannot splice objects of type `environment`")
+  expect_error(lgl(get_env()), "Cannot convert objects of type `environment`")
+  expect_error(lgl(list(get_env())), "Cannot convert objects of type `environment`")
 })
 
 test_that("empty inputs are spliced", {
   expect_identical(lgl(NULL, lgl(), list(NULL, lgl())), lgl())
   expect_warning(regexp = NA, expect_identical(lgl(a = NULL, a = lgl(), list(a = NULL, a = lgl())), lgl()))
+})
+
+test_that("ll() splices names", {
+  expect_identical(ll(a = TRUE, b = FALSE), list(a = TRUE, b = FALSE))
+  expect_identical(ll(c(A = TRUE), c(B = FALSE)), list(c(A = TRUE), c(B = FALSE)))
+  expect_identical(ll(a = c(A = TRUE), b = c(B = FALSE)), list(a = c(A = TRUE), b = c(B = FALSE)))
+})
+
+
+# Squashing ----------------------------------------------------------
+
+test_that("vectors and names are squashed", {
+  expect_identical(
+    squash_dbl(list(a = 1e0, list(c(b = 2e1, c = 3e1), d = 4e1, list(5e2, list(e = 6e3, c(f = 7e3)))), 8e0)),
+    c(a = 1e0, b = 2e1, c = 3e1, d = 4e1, 5e2, e = 6e3, f = 7e3, 8e0)
+  )
+})
+
+test_that("bad outer names warn even at depth", {
+  expect_warning(regex = "Outer names",
+    expect_identical(squash_dbl(list(list(list(A = c(a = 1))))), c(a = 1))
+  )
+})
+
+test_that("lists are squashed", {
+  expect_identical(squash(list(a = 1e0, list(c(b = 2e1, c = 3e1), d = 4e1, list(5e2, list(e = 6e3, c(f = 7e3)))), 8e0)), list(a = 1, c(b = 20, c = 30), d = 40, 500, e = 6000, c(f = 7000), 8))
+})
+
+test_that("squash_if() handles custom predicate", {
+  is_foo <- function(x) inherits(x, "foo") || is_bare_list(x)
+  foo <- struct(list("bar"), class = "foo")
+  x <- list(1, list(foo, list(foo, 100)))
+  expect_identical(squash_if(x, is_foo), list(1, "bar", "bar", 100))
+})
+
+
+# Flattening ---------------------------------------------------------
+
+test_that("vectors and names are flattened", {
+  expect_identical(flatten_dbl(list(a = 1, c(b = 2), 3)), c(a = 1, b = 2, 3))
+  expect_identical(flatten_dbl(list(list(a = 1), list(c(b = 2)), 3)), c(a = 1, b = 2, 3))
+  expect_error(flatten_dbl(list(1, list(list(2)), 3)), "Cannot convert")
+})
+
+test_that("bad outer names warn when flattening", {
+  expect_warning(expect_identical(flatten_dbl(list(a = c(A = 1))), c(A = 1)), "Outer names")
+  expect_warning(expect_identical(flatten_dbl(list(a = 1, list(b = c(B = 2)))), c(a = 1, B = 2)), "Outer names")
+})
+
+test_that("lists are flattened", {
+  x <- list(1, list(2, list(3, list(4))))
+  expect_identical(flatten(x), list(1, 2, list(3, list(4))))
+  expect_identical(flatten(flatten(x)), list(1, 2, 3, list(4)))
+  expect_identical(flatten(flatten(flatten(x))), list(1, 2, 3, 4))
+  expect_identical(flatten(flatten(flatten(flatten(x)))), list(1, 2, 3, 4))
+})
+
+test_that("flatten_if() handles custom predicate", {
+  obj <- struct(list(1:2), class = "foo")
+  x <- list(obj, splice(obj), unclass(obj))
+
+  expect_identical(flatten_if(x), list(obj, obj[[1]], unclass(obj)))
+  expect_identical(flatten_if(x, is_bare_list), list(obj, splice(obj), obj[[1]]))
+
+  pred <- function(x) is_bare_list(x) || is_spliced(x)
+  expect_identical(flatten_if(x, pred), list(obj, obj[[1]], obj[[1]]))
+})
+
+test_that("flatten_if() handles external pointers", {
+  obj <- struct(list(1:2), class = "foo")
+  x <- list(obj, splice(obj), unclass(obj))
+
+  pred <- is_clevel_spliceable$address
+  expect_identical(flatten_if(x, pred), list(obj[[1]], splice(obj), unclass(obj)))
+})
+
+test_that("flatten() splices names", {
+  expect_warning(regexp = "Outer names",
+    expect_identical(
+      flatten(list(a = list(A = TRUE), b = list(B = FALSE))) ,
+      list(A = TRUE, B = FALSE)
+    )
+  )
+  expect_warning(regexp = "Outer names",
+    expect_identical(
+      flatten(list(a = list(TRUE), b = list(FALSE))) ,
+      list(TRUE, FALSE)
+    )
+  )
 })

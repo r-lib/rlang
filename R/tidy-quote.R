@@ -358,7 +358,7 @@ quo_names_width <- function(named) {
 #' @rdname quosures
 #' @export
 dots_definitions <- function(..., .named = FALSE) {
-  dots <- dots_enquose(..., lhs_interp = FALSE)
+  dots <- dots_enquose(..., `__interp_lhs` = FALSE)
   if (.named) {
     width <- quo_names_width(.named)
     dots <- exprs_auto_name(dots, width)

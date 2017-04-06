@@ -3,6 +3,25 @@
 #include <stdbool.h>
 
 
+// In particular, this returns 1 for environments
+R_len_t vec_length(SEXP x) {
+  switch (TYPEOF(x)) {
+  case LGLSXP:
+  case INTSXP:
+  case REALSXP:
+  case CPLXSXP:
+  case STRSXP:
+  case RAWSXP:
+  case VECSXP:
+    return Rf_length(x);
+  case NILSXP:
+    return 0;
+  default:
+    return 1;
+  }
+}
+
+
 // Copy --------------------------------------------------------------
 
 void vec_copy_n(SEXP src, R_len_t n, SEXP dest,
@@ -91,6 +110,8 @@ void vec_copy_coerce_n(SEXP src, R_len_t n, SEXP dest,
                        R_len_t offset_dest,
                        R_len_t offset_src) {
   if (TYPEOF(src) != TYPEOF(dest)) {
+    if (OBJECT(src))
+      Rf_errorcall(R_NilValue, "Cannot splice S3 objects");
     // FIXME: This callbacks to rlang R coercers with an extra copy.
     PROTECT_INDEX ipx;
     SEXP call, coerced;

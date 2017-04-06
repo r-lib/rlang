@@ -121,15 +121,17 @@ enexpr <- function(x) {
   .Call(rlang_interp, arg$expr, arg$env, TRUE)
 }
 
-dots_values <- function(...) {
+dots_capture <- function(..., `__interp_lhs` = TRUE, `__quosured` = TRUE) {
   info <- captureDots()
-  dots <- map(info, dot_interp, quosured = FALSE)
+  dots <- map(info, dot_interp, quosured = `__quosured`)
 
   # Flatten possibly spliced dots
   dots <- unlist(dots, FALSE) %||% set_names(list())
 
-  dots <- dots_interp_lhs(dots)
-  dots <- map(dots, function(dot) eval_bare(dot$expr, dot$env))
+  if (`__interp_lhs`) {
+    dots <- dots_interp_lhs(dots)
+  }
+
   dots
 }
 dot_interp <- function(dot, quosured = TRUE) {
@@ -151,17 +153,8 @@ dot_interp <- function(dot, quosured = TRUE) {
   }
 }
 
-dots_enquose <- function(..., lhs_interp = TRUE) {
-  info <- captureDots()
-  dots <- map(info, dot_interp)
-
-  # Flatten possibly spliced dots
-  dots <- unlist(dots, FALSE) %||% set_names(list())
-
-  if (lhs_interp) {
-    dots <- dots_interp_lhs(dots)
-  }
-
+dots_enquose <- function(..., `__interp_lhs` = TRUE) {
+  dots <- dots_capture(..., `__interp_lhs` = `__interp_lhs`)
   map(dots, dot_enquose)
 }
 dot_enquose <- function(dot) {
