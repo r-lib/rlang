@@ -20,7 +20,7 @@
 #'   back into the formula. See [quo()] for more details. If a
 #'   list of formulas, `eval_tidy()` is applied to each of them in
 #'   turn and the list of results is returned.
-#' @param data A list (or data frame). `data_source` is a generic used
+#' @param data A list (or data frame). `dictionary` is a generic used
 #'   to find the data associated with a given object. If you want to
 #'   make `eval_tidy` work for your own objects, you can define a
 #'   method for this generic.
@@ -187,7 +187,7 @@ eval_tidy_ <- function(f, bottom, top = NULL) {
 #' overscope_clean(overscope)
 #' fn()
 as_overscope <- function(quo, data = NULL) {
-  data_src <- data_source(data)
+  data_src <- dictionary(data)
   enclosure <- f_env(quo) %||% base_env()
 
   # Create bottom environment pre-chained to the lexical scope
