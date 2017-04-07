@@ -67,8 +67,8 @@
 #' # If you need the full LHS expression, use dots_definitions():
 #' dots <- dots_definitions(var = foo(baz) := bar(baz))
 #' dots$defs
-dots_quos <- function(..., .named = FALSE,
-                      .ignore_empty = c("trailing", "none", "all")) {
+quos <- function(..., .named = FALSE,
+                 .ignore_empty = c("trailing", "none", "all")) {
   dots <- dots_enquose(...)
 
   n_dots <- length(dots)
@@ -94,7 +94,30 @@ dots_quos <- function(..., .named = FALSE,
 }
 #' @rdname quosures
 #' @export
-quos <- dots_quos
+dots_quos <- quos
+
+#' Extract dots forwarded as arguments.
+#'
+#' These functions return the arguments forwarded through `...`.
+#' Contrarily to [dots_list()] and [dots_splice()], `exprs()` and
+#' `dots_node()` do not evaluate the arguments. The former returns a
+#' list of expressions while the latter returns a [pairlist].
+#'
+#' `exprs()` performs call-splicing and is compatible with
+#' [unquote operators][UQ], including unquote-splicing. `dots_node()`
+#' is more bare bones and returns the pairlist as is, without
+#' unquoting.
+#'
+#' @inheritParams quosures
+#' @param ... Arguments to extract.
+#' @export
+exprs <- function(..., .ignore_empty = "trailing") {
+  map(dots_quos(..., .ignore_empty = .ignore_empty), f_rhs)
+}
+#' @rdname exprs
+#' @export
+dots_exprs <- exprs
+
 
 #' @rdname quosures
 #' @export
