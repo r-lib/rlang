@@ -4,7 +4,7 @@
 \alias{is_pairlist}
 \alias{is_symbol}
 \alias{is_expr}
-\alias{is_parsable_literal}
+\alias{is_syntactic_literal}
 \alias{is_symbolic}
 \title{Is an object an expression?}
 \usage{
@@ -14,7 +14,7 @@ is_symbol(x)
 
 is_expr(x)
 
-is_parsable_literal(x)
+is_syntactic_literal(x)
 
 is_symbolic(x)
 }
@@ -29,7 +29,7 @@ equivalents. \code{is_expr()} tests for expressions, the set of objects
 that can be obtained from parsing R code. An expression can be one
 of two things: either a symbolic object (for which \code{is_symbolic()}
 returns \code{TRUE}), or a parsable literal (testable with
-\code{is_parsable_literal()}). Note that we are using the term
+\code{is_syntactic_literal()}). Note that we are using the term
 expression in its colloquial sense and not to refer to
 \code{\link[=expression]{expression()}} vectors, a data type that wraps expressions in a
 vector and which has not much use in R.
@@ -52,10 +52,11 @@ can either be symbolic or a parsable literal.
 \details{
 \code{is_symbolic()} returns \code{TRUE} for symbols and calls (objects with
 type \code{language}). Literals are the complement of symbolic
-objects. \code{is_parsable_literal()} is a predicate that returns \code{TRUE}
-for the subset of literals that are created by R when parsing text
-(see \code{\link[=parse_expr]{parse_expr()}}): numbers, strings and \code{NULL}. Along with
-symbols, these literals are the terminating nodes in a parse tree.
+objects. \code{is_syntactic_literal()} is a predicate that returns
+\code{TRUE} for the subset of literals that are created by R when
+parsing text (see \code{\link[=parse_expr]{parse_expr()}}): numbers, strings and
+\code{NULL}. Along with symbols, these literals are the terminating
+nodes in a parse tree.
 
 Note that in the most general sense, a literal is any R object that
 evaluates to itself and that can be evaluated in the empty
@@ -77,7 +78,7 @@ list of a closure with \code{\link[base:formals]{base::formals()}} or \code{\lin
 \examples{
 q1 <- quote(1)
 is_expr(q1)
-is_parsable_literal(q1)
+is_syntactic_literal(q1)
 
 q2 <- quote(x)
 is_expr(q2)
@@ -99,11 +100,11 @@ is_lang(~foo(bar))
 
 # Atomic expressions are the terminating nodes of a call tree:
 # NULL or a scalar atomic vector:
-is_parsable_literal("string")
-is_parsable_literal(NULL)
+is_syntactic_literal("string")
+is_syntactic_literal(NULL)
 
-is_parsable_literal(letters)
-is_parsable_literal(quote(call()))
+is_syntactic_literal(letters)
+is_syntactic_literal(quote(call()))
 
 # Parsable literals have the property of being self-quoting:
 identical("foo", quote("foo"))

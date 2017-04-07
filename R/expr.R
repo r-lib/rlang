@@ -7,7 +7,7 @@
 #' that can be obtained from parsing R code. An expression can be one
 #' of two things: either a symbolic object (for which `is_symbolic()`
 #' returns `TRUE`), or a parsable literal (testable with
-#' `is_parsable_literal()`). Note that we are using the term
+#' `is_syntactic_literal()`). Note that we are using the term
 #' expression in its colloquial sense and not to refer to
 #' [expression()] vectors, a data type that wraps expressions in a
 #' vector and which has not much use in R.
@@ -31,10 +31,11 @@
 #'
 #' `is_symbolic()` returns `TRUE` for symbols and calls (objects with
 #' type `language`). Literals are the complement of symbolic
-#' objects. `is_parsable_literal()` is a predicate that returns `TRUE`
-#' for the subset of literals that are created by R when parsing text
-#' (see [parse_expr()]): numbers, strings and `NULL`. Along with
-#' symbols, these literals are the terminating nodes in a parse tree.
+#' objects. `is_syntactic_literal()` is a predicate that returns
+#' `TRUE` for the subset of literals that are created by R when
+#' parsing text (see [parse_expr()]): numbers, strings and
+#' `NULL`. Along with symbols, these literals are the terminating
+#' nodes in a parse tree.
 #'
 #' Note that in the most general sense, a literal is any R object that
 #' evaluates to itself and that can be evaluated in the empty
@@ -62,7 +63,7 @@
 #' @examples
 #' q1 <- quote(1)
 #' is_expr(q1)
-#' is_parsable_literal(q1)
+#' is_syntactic_literal(q1)
 #'
 #' q2 <- quote(x)
 #' is_expr(q2)
@@ -84,11 +85,11 @@
 #'
 #' # Atomic expressions are the terminating nodes of a call tree:
 #' # NULL or a scalar atomic vector:
-#' is_parsable_literal("string")
-#' is_parsable_literal(NULL)
+#' is_syntactic_literal("string")
+#' is_syntactic_literal(NULL)
 #'
-#' is_parsable_literal(letters)
-#' is_parsable_literal(quote(call()))
+#' is_syntactic_literal(letters)
+#' is_syntactic_literal(quote(call()))
 #'
 #' # Parsable literals have the property of being self-quoting:
 #' identical("foo", quote("foo"))
@@ -118,11 +119,11 @@
 #' lang_tail(quote(fn(arg1, arg2 = "foo")))
 is_expr <- function(x) {
   x <- get_expr(x)
-  is_symbolic(x) || is_parsable_literal(x)
+  is_symbolic(x) || is_syntactic_literal(x)
 }
 #' @export
 #' @rdname is_expr
-is_parsable_literal <- function(x) {
+is_syntactic_literal <- function(x) {
   x <- get_expr(x)
   typeof(x) == "NULL" || (length(x) == 1 && typeof(x) %in% parsable_atomic_types)
 }
