@@ -6,5 +6,5 @@ named_list <- function(...) {
   named(list(...))
 }
 quos_list <- function(...) {
-  struct(named_list(...), class = "quosures")
+  set_attrs(named_list(...), class = "quosures")
 }

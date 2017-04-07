@@ -88,7 +88,7 @@ flatten_dbl(list(1, list(2)))
 
 # Only bare lists are flattened, but you can splice S3 lists
 # explicitly:
-foo <- struct(list("bar"), class = "foo")
+foo <- set_attrs(list("bar"), class = "foo")
 str(flatten(list(1, foo, list(100))))
 str(flatten(list(1, splice(foo), list(100))))
 

@@ -39,7 +39,7 @@ splicing semantics}.}
 \description{
 These functions take the idea of \code{\link[=seq_along]{seq_along()}} and generalise it to
 creating lists (\code{lst_along}) and repeating values (\code{rep_along}).
-The dots are forwarded to \code{\link[=struct]{struct()}} to make it easy to add
+The dots are forwarded to \code{\link[=set_attrs]{set_attrs()}} to make it easy to add
 attributes. Except for \code{lst_along()} and \code{raw_along()}, the empty
 vectors are filled with typed \code{missing} values.
 }

@@ -90,7 +90,7 @@ quos <- function(..., .named = FALSE,
     width <- quo_names_width(.named)
     dots <- exprs_auto_name(dots, width)
   }
-  struct(dots, class = "quosures")
+  set_attrs(dots, class = "quosures")
 }
 #' @rdname quosures
 #' @export
@@ -126,7 +126,7 @@ is_quosures <- function(x) {
 }
 #' @export
 `[.quosures` <- function(x, i) {
-  struct(NextMethod(), class = "quosures")
+  set_attrs(NextMethod(), class = "quosures")
 }
 #' @export
 c.quosures <- function(..., recursive = FALSE) {

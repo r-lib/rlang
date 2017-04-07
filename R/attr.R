@@ -1,3 +1,32 @@
+#' Add attributes to an object.
+#'
+#' @param .x An object to decorate with attributes.
+#' @param ... A list of named attributes. These have [explicit
+#'   splicing semantics][dots_list].
+#' @export
+#' @examples
+#' set_attrs(letters, names = 1:26, class = "my_chr")
+#'
+#' # Splice a list of attributes:
+#' attrs <- list(attr = "attr", names = 1:26, class = "my_chr")
+#' set_attrs(letters, splice(attrs))
+set_attrs <- function(.x, ...) {
+  invoke("structure", c(list(.Data = .x), dots_list(...)))
+}
+
+zap_attrs <- function(x) {
+  switch_type(x,
+    NULL = ,
+    char = ,
+    symbol = ,
+    environment = abort(paste0(
+      "Cannot change attributes of uncopyable type `", type_of(x), "`"
+    ))
+  )
+  attributes(x) <- NULL
+  x
+}
+
 #' Is object named?
 #'
 #' `is_named()` checks that `x` has names attributes, and that none of
@@ -184,33 +213,4 @@ has_length <- function(x, n = NULL) {
   } else {
     len == n
   }
-}
-
-#' Add attributes to an object.
-#'
-#' @param .x An object to decorate with attributes.
-#' @param ... A list of named attributes. These have [explicit
-#'   splicing semantics][dots_list].
-#' @export
-#' @examples
-#' struct(letters, names = 1:26, class = "my_chr")
-#'
-#' # Splice a list of attributes:
-#' attrs <- list(attr = "attr", names = 1:26, class = "my_chr")
-#' struct(letters, splice(attrs))
-struct <- function(.x, ...) {
-  invoke("structure", c(list(.Data = .x), dots_list(...)))
-}
-
-unstruct <- function(x) {
-  switch_type(x,
-    NULL = ,
-    char = ,
-    symbol = ,
-    environment = abort(paste0(
-      "Cannot change attributes of uncopyable type `", type_of(x), "`"
-    ))
-  )
-  attributes(x) <- NULL
-  x
 }

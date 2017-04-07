@@ -390,7 +390,7 @@ quo_is_missing <- function(quo) {
 #' as_quosureish(10L)
 new_quosure <- function(rhs, env = caller_env()) {
   quo <- new_formula(NULL, rhs, env)
-  struct(quo, class = c("quosure", "formula"))
+  set_attrs(quo, class = c("quosure", "formula"))
 }
 #' @rdname new_quosure
 #' @export
@@ -399,7 +399,7 @@ as_quosure <- function(x, env = caller_env()) {
     if (!is_env(f_env(x))) {
       f_env(x) <- env
     }
-    struct(x, class = c("quosure", "formula"))
+    set_attrs(x, class = c("quosure", "formula"))
   } else if (is_quosureish(x)) {
     if (!is_env(f_env(x))) {
       f_env(x) <- env
@@ -413,7 +413,7 @@ as_quosure <- function(x, env = caller_env()) {
 }
 #' @export
 print.quosure <- function(x, ...) {
-  x <- struct(x, class = "formula")
+  x <- set_attrs(x, class = "formula")
   NextMethod()
 }
 

@@ -10,7 +10,7 @@ test_that("equivalent to ~", {
   f1 <- ~abc
   f2 <- new_quosure(quote(abc))
 
-  expect_identical(struct(f1, class = c("quosure", "formula")), f2)
+  expect_identical(set_attrs(f1, class = c("quosure", "formula")), f2)
 })
 
 test_that("is_formula works", {

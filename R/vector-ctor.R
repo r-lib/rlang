@@ -130,11 +130,11 @@ ll <- function(...) {
 #'
 #' These functions take the idea of [seq_along()] and generalise it to
 #' creating lists (`lst_along`) and repeating values (`rep_along`).
-#' The dots are forwarded to [struct()] to make it easy to add
+#' The dots are forwarded to [set_attrs()] to make it easy to add
 #' attributes. Except for `lst_along()` and `raw_along()`, the empty
 #' vectors are filled with typed `missing` values.
 #'
-#' @inheritParams struct
+#' @inheritParams set_attrs
 #' @param .x A vector.
 #' @param .y Values to repeat.
 #' @examples
@@ -153,43 +153,43 @@ NULL
 #' @export
 #' @rdname vector-along
 lgl_along <- function(.x, ...) {
-  struct(rep_len(na_lgl, length(.x)), ...)
+  set_attrs(rep_len(na_lgl, length(.x)), ...)
 }
 #' @export
 #' @rdname vector-along
 int_along <- function(.x, ...) {
-  struct(rep_len(na_int, length(.x)), ...)
+  set_attrs(rep_len(na_int, length(.x)), ...)
 }
 #' @export
 #' @rdname vector-along
 dbl_along <- function(.x, ...) {
-  struct(rep_len(na_dbl, length(.x)), ...)
+  set_attrs(rep_len(na_dbl, length(.x)), ...)
 }
 #' @export
 #' @rdname vector-along
 chr_along <- function(.x, ...) {
-  struct(rep_len(na_chr, length(.x)), ...)
+  set_attrs(rep_len(na_chr, length(.x)), ...)
 }
 #' @export
 #' @rdname vector-along
 lst_along <- function(.x, ...) {
-  struct(vector("list", length(.x)), ...)
+  set_attrs(vector("list", length(.x)), ...)
 }
 #' @export
 #' @rdname vector-along
 cpl_along <- function(.x, ...) {
-  struct(rep_len(na_cpl, length(.x)), ...)
+  set_attrs(rep_len(na_cpl, length(.x)), ...)
 }
 #' @export
 #' @rdname vector-along
 raw_along <- function(.x, ...) {
-  struct(vector("raw", length(.x)), ...)
+  set_attrs(vector("raw", length(.x)), ...)
 }
 
 #' @export
 #' @rdname vector-along
 rep_along <- function(.x, .y, ...) {
-  struct(rep(.y, length.out = length(.x)), ...)
+  set_attrs(rep(.y, length.out = length(.x)), ...)
 }
 
 
@@ -201,7 +201,7 @@ rep_along <- function(.x, .y, ...) {
 #' contrast to the base function [base::vector()] which creates
 #' zero-filled vectors.
 #'
-#' @inheritParams struct
+#' @inheritParams set_attrs
 #' @param .n The vector length.
 #' @examples
 #' list_len(10)
@@ -216,35 +216,35 @@ NULL
 #' @export
 #' @rdname vector-len
 lgl_len <- function(.n = 0, ...) {
-  struct(rep_len(na_lgl, .n), ...)
+  set_attrs(rep_len(na_lgl, .n), ...)
 }
 #' @export
 #' @rdname vector-len
 int_len <- function(.n = 0, ...) {
-  struct(rep_len(na_int, .n), ...)
+  set_attrs(rep_len(na_int, .n), ...)
 }
 #' @export
 #' @rdname vector-len
 dbl_len <- function(.n = 0, ...) {
-  struct(rep_len(na_dbl, .n), ...)
+  set_attrs(rep_len(na_dbl, .n), ...)
 }
 #' @export
 #' @rdname vector-len
 chr_len <- function(.n = 0, ...) {
-  struct(rep_len(na_chr, .n), ...)
+  set_attrs(rep_len(na_chr, .n), ...)
 }
 #' @export
 #' @rdname vector-len
 cpl_len <- function(.n = 0, ...) {
-  struct(rep_len(na_cpl, .n), ...)
+  set_attrs(rep_len(na_cpl, .n), ...)
 }
 #' @export
 #' @rdname vector-len
 bytes_len <- function(.n = 0, ...) {
-  struct(vector("raw", .n), ...)
+  set_attrs(vector("raw", .n), ...)
 }
 #' @export
 #' @rdname vector-len
 list_len <- function(.n = 0, ...) {
-  struct(vector("list", .n), ...)
+  set_attrs(vector("list", .n), ...)
 }
