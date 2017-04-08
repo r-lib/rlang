@@ -57,3 +57,13 @@ test_that("unnamed lazy_dots are given default names", {
 test_that("compat_lazy() handles missing arguments", {
   expect_identical(compat_lazy(), quo())
 })
+
+test_that("compat_lazy_dots() takes lazy objects", {
+  lazy <- set_attrs(list(expr = quote(foo), env = empty_env()), class = "lazy")
+  expect_identical(compat_lazy_dots(lazy), named_list(new_quosure(quote(foo), empty_env())))
+})
+
+test_that("compat_lazy_dots() takes symbolic objects", {
+  expect_identical(compat_lazy_dots(quote(foo), empty_env()), named_list(new_quosure(quote(foo), empty_env())))
+  expect_identical(compat_lazy_dots(quote(foo(bar)), empty_env()), named_list(new_quosure(quote(foo(bar)), empty_env())))
+})
