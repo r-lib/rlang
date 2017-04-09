@@ -189,7 +189,7 @@ static
 is_spliceable_t predicate_pointer(SEXP x) {
   switch (TYPEOF(x)) {
   case VECSXP:
-    if (Rf_inherits(x, "NativeSymbolInfo")) {
+    if (Rf_inherits(x, "NativeSymbolInfo") && Rf_length(x) >= 3) {
       SEXP ptr = VECTOR_ELT(x, 1);
       if (TYPEOF(ptr) == EXTPTRSXP) {
         return (is_spliceable_t) R_ExternalPtrAddr(ptr);
