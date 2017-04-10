@@ -77,3 +77,13 @@ test_that("can take forced dots with strict = FALSE", {
   expect_error(fn(TRUE, letters), "already been evaluated")
   expect_identical(fn(FALSE, letters), NULL)
 })
+
+test_that("dots_values() handles forced dots", {
+  fn <- function(...) {
+    force(..1)
+    dots_values(...)
+  }
+  expect_identical(fn("foo"), named_list("foo"))
+
+  expect_identical(lapply(1:2, function(...) dots_values(...)), list(named_list(1L), named_list(2L)))
+})
