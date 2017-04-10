@@ -28,9 +28,10 @@ compat_lazy <- function(lazy, env = caller_env(), warn = TRUE) {
     quosure = lazy,
     symbol = ,
     language = new_quosure(lazy, env),
-    string = {
+    string = ,
+    character = {
       if (warn) warn_text_se()
-      parse_quosure(lazy, env)
+      parse_quosure(lazy[[1]], env)
     },
     list =
       coerce_class(lazy, "quosure",
