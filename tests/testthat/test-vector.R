@@ -163,8 +163,10 @@ test_that("flatten_if() handles external pointers", {
   obj <- set_attrs(list(1:2), class = "foo")
   x <- list(obj, splice(obj), unclass(obj))
 
-  pred <- is_clevel_spliceable$address
-  expect_identical(flatten_if(x, pred), list(obj[[1]], splice(obj), unclass(obj)))
+  expect_identical(flatten_if(x, test_is_spliceable), list(obj[[1]], splice(obj), unclass(obj)))
+
+  ptr <- test_is_spliceable[[1]]
+  expect_identical(flatten_if(x, ptr), list(obj[[1]], splice(obj), unclass(obj)))
 })
 
 test_that("flatten() splices names", {

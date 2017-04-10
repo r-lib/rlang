@@ -1,5 +1,6 @@
 #include "utils.h"
 #include "vector.h"
+#include "export.h"
 
 
 typedef struct {
@@ -187,25 +188,23 @@ bool is_spliced(SEXP x) {
 
 static
 is_spliceable_t predicate_pointer(SEXP x) {
-  is_spliceable_t is_spliceable;
-
   switch (TYPEOF(x)) {
   case VECSXP:
-    if (Rf_inherits(x, "NativeSymbolInfo") && Rf_length(x) == 3) {
-      SEXP ptr = VECTOR_ELT(x, 1);
-      if (TYPEOF(ptr) == EXTPTRSXP) {
-        is_spliceable = (is_spliceable_t) R_ExternalPtrAddr(ptr);
-        break;
-      }
+    if (Rf_inherits(x, "fn_pointer") && Rf_length(x) == 1) {
+      SEXP ptr = VECTOR_ELT(x, 0);
+      if (TYPEOF(ptr) == EXTPTRSXP)
+        return (is_spliceable_t) rlang_ExternalPtrAddrFn(ptr);
     }
-  case EXTPTRSXP:
-    is_spliceable = (is_spliceable_t) R_ExternalPtrAddr(x);
     break;
+
+  case EXTPTRSXP:
+    return (is_spliceable_t) rlang_ExternalPtrAddrFn(x);
+
   default:
-    Rf_errorcall(R_NilValue, "`predicate` must be a closure or external pointer");
+    break;
   }
 
-  return is_spliceable;
+  Rf_errorcall(R_NilValue, "`predicate` must be a closure or function pointer");
 }
 
 is_spliceable_t predicate_internal(SEXP x) {

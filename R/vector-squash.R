@@ -165,7 +165,6 @@ squash_raw <- function(x) {
 #' @rdname flatten
 #' @param predicate A function of one argument returning whether it
 #'   should be spliced.
-#' @useDynLib rlang is_clevel_spliceable
 #' @export
 flatten_if <- function(x, predicate = is_spliced) {
   .Call(rlang_squash, x, "list", predicate, 1L)
