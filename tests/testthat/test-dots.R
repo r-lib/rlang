@@ -68,3 +68,12 @@ test_that("interpolation by value does not guard formulas", {
 test_that("dots names can be unquoted", {
   expect_identical(dots_values(!! paste0("foo", "bar") := 10), list(foobar = 10))
 })
+
+test_that("can take forced dots with strict = FALSE", {
+  fn <- function(strict, ...) {
+    force(..1)
+    captureDots(strict)
+  }
+  expect_error(fn(TRUE, letters), "already been evaluated")
+  expect_identical(fn(FALSE, letters), NULL)
+})

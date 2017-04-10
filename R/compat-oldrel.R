@@ -23,14 +23,14 @@ if (TRUE || utils::packageVersion("base") < "3.4.0") {
     .Call(rlang_capturearg, NULL, NULL, pairlist(caller_env), get_env())
   }
 
-  captureDots <- function() {
+  captureDots <- function(strict = TRUE) {
     caller_env <- parent.frame()
 
     if (!exists("...", caller_env)) {
       stop("must be called in a function where dots exist")
     }
 
-    .Call(rlang_capturedots, NULL, NULL, pairlist(caller_env), get_env())
+    .Call(rlang_capturedots, NULL, NULL, pairlist(caller_env, strict), get_env())
   }
 
 }

@@ -25,17 +25,21 @@ SEXP attribute_hidden capture_arg(SEXP x, SEXP env) {
     return info;
 }
 
-SEXP attribute_hidden capture_promise(SEXP x) {
+SEXP attribute_hidden capture_promise(SEXP x, int strict) {
     SEXP env = R_NilValue;
     while (TYPEOF(x) == PROMSXP) {
         env = PRENV(x);
         x = PREXPR(x);
     }
-    if (env == R_NilValue)
-        error(_("the argument has already been evaluated"));
+    if (env == R_NilValue) {
+        if (strict)
+            error(_("the argument has already been evaluated"));
+        else
+            return R_NilValue;
+    }
+
     if (NAMED(x) < 2)
         SET_NAMED(x, 2);
-
     return capture_arg(x, env);
 }
 
@@ -51,7 +55,7 @@ SEXP attribute_hidden rlang_capturearg(SEXP call, SEXP op, SEXP args, SEXP rho)
             error(_("\"x\" must be an argument name"));
 
         arg = findVarInFrame3(caller_env, sym, TRUE);
-        return capture_promise(arg);
+        return capture_promise(arg, 1);
     } else {
         // Argument was optimised away
         return capture_arg(arg, R_EmptyEnv);
@@ -60,8 +64,10 @@ SEXP attribute_hidden rlang_capturearg(SEXP call, SEXP op, SEXP args, SEXP rho)
 
 SEXP attribute_hidden rlang_capturedots(SEXP call, SEXP op, SEXP args, SEXP rho)
 {
-    // R code has checked for unbound dots
     SEXP caller_env = CAR(args);
+    int strict = asLogical(CADR(args));
+
+    // R code has checked for unbound dots
     SEXP dots = findVarInFrame3(caller_env, R_DotsSymbol, TRUE);
 
     if (dots == R_MissingArg)
@@ -78,7 +84,11 @@ SEXP attribute_hidden rlang_capturedots(SEXP call, SEXP op, SEXP args, SEXP rho)
         dot = CAR(dots);
 
         if (TYPEOF(dot) == PROMSXP) {
-            dot = capture_promise(dot);
+            dot = capture_promise(dot, strict);
+            if (dot == R_NilValue) {
+                UNPROTECT(2);
+                return R_NilValue;
+            }
         } else {
             dot = capture_arg(dot, R_EmptyEnv);
         }
