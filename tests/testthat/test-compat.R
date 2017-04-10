@@ -67,3 +67,12 @@ test_that("compat_lazy_dots() takes symbolic objects", {
   expect_identical(compat_lazy_dots(quote(foo), empty_env()), named_list(new_quosure(quote(foo), empty_env())))
   expect_identical(compat_lazy_dots(quote(foo(bar)), empty_env()), named_list(new_quosure(quote(foo(bar)), empty_env())))
 })
+
+test_that("compat_lazy() demotes character vectors to strings", {
+  expect_identical(compat_lazy_dots(NULL, get_env(), c("foo", "bar")), named_list(as_quosure(~foo)))
+})
+
+test_that("compat_lazy() handles numeric vectors", {
+  expect_identical(compat_lazy_dots(NULL, get_env(), NA_real_), named_list(as_quosure(~NA_real_)))
+  expect_warning(expect_identical(compat_lazy_dots(NULL, get_env(), 1:3), named_list(as_quosure(~1L))), "Truncating vector")
+})
