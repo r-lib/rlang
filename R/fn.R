@@ -52,10 +52,13 @@ prim_name <- function(prim) {
 
 #' Extract arguments from a function
 #'
-#' `fn_defaults()` returns a named list of default arguments.
+#' `fn_fmls()` returns a named list of formal arguments.
 #' `fn_fmls_names()` returns the names of the arguments.
+#' `fn_fmls_syms()` returns formals as a named list of symbols. This
+#' is especially useful for forwarding arguments in [constructed
+#' calls][new_language].
 #'
-#' Contrarily to `formals()`, these helpers also work with primitive
+#' Unlike `formals()`, these helpers also work with primitive
 #' functions. See [is_function()] for a discussion of primitive and
 #' closure functions.
 #'
@@ -70,16 +73,25 @@ prim_name <- function(prim) {
 #'
 #' # Works with primitive functions:
 #' fn_fmls(base::switch)
+#'
+#' # fn_fmls_syms() makes it easy to forward arguments:
+#' new_language("apply", !!! fn_fmls_syms(lapply))
 fn_fmls <- function(fn = caller_fn()) {
   fn <- as_closure(fn)
   formals(fn)
 }
-
 #' @rdname fn_fmls
 #' @export
 fn_fmls_names <- function(fn = caller_fn()) {
   args <- fn_fmls(fn)
   names(args)
+}
+#' @rdname fn_fmls
+#' @export
+fn_fmls_syms <- function(fn = caller_fn()) {
+  nms <- set_names(fn_fmls_names(fn))
+  names(nms)[match("...", nms)] <- ""
+  syms(nms)
 }
 
 

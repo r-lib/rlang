@@ -38,3 +38,7 @@ test_that("as_function() handles strings", {
   env <- env(fn = function() NULL)
   expect_identical(as_function("fn", env), env$fn)
 })
+
+test_that("fn_fmls_syms() unnames `...`", {
+  expect_identical(fn_fmls_syms(lapply), list(X = quote(X), FUN = quote(FUN), quote(...)))
+})
