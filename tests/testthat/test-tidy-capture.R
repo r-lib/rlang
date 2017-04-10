@@ -215,3 +215,12 @@ test_that("expr() supports forwarded arguments", {
   g <- function(...) expr(...)
   expect_identical(fn(foo), quote(foo))
 })
+
+test_that("can take forced promise with strict = FALSE", {
+  fn <- function(strict, x) {
+    force(x)
+    captureArg(x, strict = strict)
+  }
+  expect_error(fn(TRUE, letters), "already been evaluated")
+  expect_identical(fn(FALSE, letters), NULL)
+})

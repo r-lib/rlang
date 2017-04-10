@@ -45,6 +45,7 @@ SEXP attribute_hidden capture_promise(SEXP x, int strict) {
 
 SEXP attribute_hidden rlang_capturearg(SEXP call, SEXP op, SEXP args, SEXP rho)
 {
+    int strict = asLogical(CADR(args));
     SEXP arg = findVarInFrame3(rho, install("x"), TRUE);
 
     if (TYPEOF(arg) == PROMSXP) {
@@ -55,7 +56,7 @@ SEXP attribute_hidden rlang_capturearg(SEXP call, SEXP op, SEXP args, SEXP rho)
             error(_("\"x\" must be an argument name"));
 
         arg = findVarInFrame3(caller_env, sym, TRUE);
-        return capture_promise(arg, 1);
+        return capture_promise(arg, strict);
     } else {
         // Argument was optimised away
         return capture_arg(arg, R_EmptyEnv);

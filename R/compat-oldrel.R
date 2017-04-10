@@ -10,7 +10,7 @@
 #' @useDynLib rlang rlang_capturearg rlang_capturedots
 if (TRUE || utils::packageVersion("base") < "3.4.0") {
 
-  captureArg <- function(x) {
+  captureArg <- function(x, strict = TRUE) {
     caller_env <- parent.frame()
 
     if (identical(caller_env, globalenv())) {
@@ -20,7 +20,7 @@ if (TRUE || utils::packageVersion("base") < "3.4.0") {
       stop("argument \"x\" is missing")
     }
 
-    .Call(rlang_capturearg, NULL, NULL, pairlist(caller_env), get_env())
+    .Call(rlang_capturearg, NULL, NULL, pairlist(caller_env, strict), get_env())
   }
 
   captureDots <- function(strict = TRUE) {
