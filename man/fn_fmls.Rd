@@ -3,22 +3,28 @@
 \name{fn_fmls}
 \alias{fn_fmls}
 \alias{fn_fmls_names}
+\alias{fn_fmls_syms}
 \title{Extract arguments from a function}
 \usage{
 fn_fmls(fn = caller_fn())
 
 fn_fmls_names(fn = caller_fn())
+
+fn_fmls_syms(fn = caller_fn())
 }
 \arguments{
 \item{fn}{A function. It is lookep up in the calling frame if not
 supplied.}
 }
 \description{
-\code{fn_defaults()} returns a named list of default arguments.
+\code{fn_fmls()} returns a named list of formal arguments.
 \code{fn_fmls_names()} returns the names of the arguments.
+\code{fn_fmls_syms()} returns formals as a named list of symbols. This
+is especially useful for forwarding arguments in \link[=new_language]{constructed
+calls}.
 }
 \details{
-Contrarily to \code{formals()}, these helpers also work with primitive
+Unlike \code{formals()}, these helpers also work with primitive
 functions. See \code{\link[=is_function]{is_function()}} for a discussion of primitive and
 closure functions.
 }
@@ -29,6 +35,9 @@ fn()
 
 # Works with primitive functions:
 fn_fmls(base::switch)
+
+# fn_fmls_syms() makes it easy to forward arguments:
+new_language("apply", !!! fn_fmls_syms(lapply))
 }
 \seealso{
 \code{\link[=lang_args]{lang_args()}} and \code{\link[=lang_args_names]{lang_args_names()}}
