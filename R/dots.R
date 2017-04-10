@@ -65,8 +65,12 @@ dots_splice <- function(...) {
 #' flatten_if(dots, is_spliced)
 dots_values <- function(...) {
   dots <- dots_capture(..., `__quosured` = FALSE)
-  dots <- map(dots, function(dot) eval_bare(dot$expr, dot$env))
-  dots
+  if (is_null(dots)) {
+    dots <- list(...)
+    set_names(dots, names2(dots))
+  } else {
+    map(dots, function(dot) eval_bare(dot$expr, dot$env))
+  }
 }
 
 #' Inspect dots

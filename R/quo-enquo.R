@@ -122,7 +122,13 @@ enexpr <- function(x) {
 }
 
 dots_capture <- function(..., `__interp_lhs` = TRUE, `__quosured` = TRUE) {
-  info <- captureDots()
+  info <- captureDots(strict = `__quosured`)
+
+  # No interpolation because dots were already evaluated
+  if (is_null(info)) {
+    return(NULL)
+  }
+
   dots <- map(info, dot_interp, quosured = `__quosured`)
 
   # Flatten possibly spliced dots
