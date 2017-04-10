@@ -33,6 +33,15 @@ compat_lazy <- function(lazy, env = caller_env(), warn = TRUE) {
       if (warn) warn_text_se()
       parse_quosure(lazy[[1]], env)
     },
+    logical = ,
+    integer = ,
+    double = {
+      if (length(lazy) > 1) {
+        warn("Truncating vector to length 1")
+        lazy <- lazy[[1]]
+      }
+      new_quosure(lazy, env)
+    },
     list =
       coerce_class(lazy, "quosure",
         lazy = new_quosure(lazy$expr, lazy$env)
