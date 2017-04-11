@@ -20,10 +20,10 @@
 #'   back into the formula. See [quo()] for more details. If a
 #'   list of formulas, `eval_tidy()` is applied to each of them in
 #'   turn and the list of results is returned.
-#' @param data A list (or data frame). `dictionary` is a generic used
-#'   to find the data associated with a given object. If you want to
-#'   make `eval_tidy` work for your own objects, you can define a
-#'   method for this generic.
+#' @param data A list (or data frame). This is passed to the
+#'   [dictionary()] constructor, a generic used to transform an object
+#'   to a proper data source. If you want to make `eval_tidy()` work
+#'   for your own objects, you can define a method for this generic.
 #' @export
 #' @examples
 #' eval_tidy(~ 1 + 2 + 3)

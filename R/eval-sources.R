@@ -1,4 +1,27 @@
-#' @rdname eval_tidy
+#' Create a dictionary.
+#'
+#' @description
+#'
+#' Dictionaries are a concept of types modelled after R
+#' environments. Dictionaries are containers of R objects that:
+#'
+#' - Contain uniquely named objects.
+#'
+#' - Can only be indexed by name. They must implement the extracting
+#'   operators `$` and `[[`. The latter returns an error when indexed
+#'   by position because dictionaries are not vectors (they are
+#'   unordered).
+#'
+#' - Report a clear error message when asked to extract a name that
+#'   does not exist. This error message can be customised with the
+#'   `lookup_msg` constructor argument.
+#'
+#' @details
+#'
+#' Dictionaries are used within the tidy evaluation framework for
+#' creating pronouns that can be explicitly referred to from captured
+#' code. See [eval_tidy()].
+#'
 #' @param x An object for which you want to find associated data.
 #' @param lookup_msg An error message when your data source is
 #'   accessed inappropriately (by position rather than name).
