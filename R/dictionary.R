@@ -62,10 +62,9 @@ as_dictionary.data.frame <- function(x, lookup_msg = NULL, read_only = FALSE) {
   new_dictionary(x, lookup_msg, read_only)
 }
 
+#' @useDynLib rlang rlang_new_dictionary
 new_dictionary <- function(x, lookup_msg, read_only) {
-  msg <- lookup_msg %||% "Object `%s` not found in data"
-  dict <- list(src = x, lookup_msg = msg, read_only = read_only)
-  set_attrs(dict, class = "dictionary")
+  .Call(rlang_new_dictionary, x, lookup_msg, read_only)
 }
 
 #' @rdname dictionary
