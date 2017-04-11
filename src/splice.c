@@ -193,12 +193,12 @@ is_spliceable_t predicate_pointer(SEXP x) {
     if (Rf_inherits(x, "fn_pointer") && Rf_length(x) == 1) {
       SEXP ptr = VECTOR_ELT(x, 0);
       if (TYPEOF(ptr) == EXTPTRSXP)
-        return (is_spliceable_t) rlang_ExternalPtrAddrFn(ptr);
+        return (is_spliceable_t) R_ExternalPtrAddrFn(ptr);
     }
     break;
 
   case EXTPTRSXP:
-    return (is_spliceable_t) rlang_ExternalPtrAddrFn(x);
+    return (is_spliceable_t) R_ExternalPtrAddrFn(x);
 
   default:
     break;
