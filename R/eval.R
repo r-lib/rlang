@@ -96,11 +96,8 @@ eval_tidy <- function(f, data = NULL) {
 #' @examples
 #' quo <- quo(.data$foo)
 #' eval_tidy(quo, list(foo = "bar"))
-.data <- structure(class = "dictionary", list(
-  src = list(),
-  lookup_msg = "Object `%s` not found",
-  read_only = TRUE
-))
+.data <- NULL
+delayedAssign(".data", as_dictionary(list(), read_only = TRUE))
 
 #' Tidy evaluation in a custom environment.
 #'
