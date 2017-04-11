@@ -2,13 +2,13 @@
 % Please edit documentation in R/attr.R
 \name{is_named}
 \alias{is_named}
-\alias{is_dictionarish}
+\alias{is_dictionaryish}
 \alias{have_name}
 \title{Is object named?}
 \usage{
 is_named(x)
 
-is_dictionarish(x)
+is_dictionaryish(x)
 
 have_name(x)
 }
@@ -16,13 +16,13 @@ have_name(x)
 \item{x}{An object to test.}
 }
 \value{
-\code{is_named()} and \code{is_dictionarish()} are scalar predicates
+\code{is_named()} and \code{is_dictionaryish()} are scalar predicates
 and return \code{TRUE} or \code{FALSE}. \code{have_name()} is vectorised and
 returns a logical vector as long as the input.
 }
 \description{
 \code{is_named()} checks that \code{x} has names attributes, and that none of
-the names are missing or empty (\code{NA} or \code{""}). \code{is_dictionarish()}
+the names are missing or empty (\code{NA} or \code{""}). \code{is_dictionaryish()}
 checks that an object is a dictionary: that it has actual names and
 in addition that there are no duplicated names. \code{have_name()}
 is a vectorised version of \code{is_named()}.
@@ -31,11 +31,11 @@ is a vectorised version of \code{is_named()}.
 # A data frame usually has valid, unique names
 is_named(mtcars)
 have_name(mtcars)
-is_dictionarish(mtcars)
+is_dictionaryish(mtcars)
 
 # But data frames can also have duplicated columns:
 dups <- cbind(mtcars, cyl = seq_len(nrow(mtcars)))
-is_dictionarish(dups)
+is_dictionaryish(dups)
 
 # The names are still valid:
 is_named(dups)
@@ -43,8 +43,8 @@ have_name(dups)
 
 
 # For empty objects the semantics are slightly different.
-# is_dictionarish() returns TRUE for empty objects:
-is_dictionarish(list())
+# is_dictionaryish() returns TRUE for empty objects:
+is_dictionaryish(list())
 
 # But is_named() will only return TRUE if there is a names
 # attribute (a zero-length character vector in this case):

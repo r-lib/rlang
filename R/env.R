@@ -31,7 +31,7 @@
 #'   returned.
 #' @param parent A parent environment. Can be an object with a S3
 #'   method for `as_env()`.
-#' @param ...,data Uniquely named bindings. See [is_dictionarish()].
+#' @param ...,data Uniquely named bindings. See [is_dictionaryish()].
 #'   Dots have [explicit-splicing semantics][dots_list].
 #' @param n The number of generations to go through.
 #' @seealso `scoped_env`, [env_has()], [env_assign()].
@@ -179,7 +179,7 @@ env_tail <- function(env = caller_env()) {
 #'
 #' `as_env()` coerces named vectors (including lists) to an
 #' environment. It first checks that `x` is a dictionary (see
-#' [is_dictionarish()]). If supplied an unnamed string, it returns the
+#' [is_dictionaryish()]). If supplied an unnamed string, it returns the
 #' corresponding package environment (see [pkg_env()]).
 #'
 #' If `x` is an environment and `parent` is not `NULL`, the
@@ -239,7 +239,7 @@ as_env <- function(x, parent = NULL) {
   )
 }
 as_env_ <- function(x, parent = NULL) {
-  stopifnot(is_dictionarish(x))
+  stopifnot(is_dictionaryish(x))
   if (is_atomic(x)) {
     x <- as_list(x)
   }
@@ -304,7 +304,7 @@ mut_parent_env <- function(env, new_env) {
 #' These functions create bindings in the specified environment. The
 #' bindings are supplied as pairs of names and values, either directly
 #' (`env_assign()`), in dots (`env_define()`), or from a dictionary
-#' (`env_bind()`). See [is_dictionarish()] for the definition of a
+#' (`env_bind()`). See [is_dictionaryish()] for the definition of a
 #' dictionary.
 #'
 #' These functions operate by side effect. For example, if you assign
@@ -344,7 +344,7 @@ env_assign <- function(env = caller_env(), nm, x) {
 #' @rdname env_assign
 #' @export
 env_bind <- function(env = caller_env(), data = list()) {
-  stopifnot(is_dictionarish(data))
+  stopifnot(is_dictionaryish(data))
   nms <- names(data)
 
   env_ <- get_env(env)

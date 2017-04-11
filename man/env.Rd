@@ -19,7 +19,7 @@ env_parent(env = caller_env(), n = 1)
 env_tail(env = caller_env())
 }
 \arguments{
-\item{..., data}{Uniquely named bindings. See \code{\link[=is_dictionarish]{is_dictionarish()}}.
+\item{..., data}{Uniquely named bindings. See \code{\link[=is_dictionaryish]{is_dictionaryish()}}.
 Dots have \link[=dots_list]{explicit-splicing semantics}.}
 
 \item{parent}{A parent environment. Can be an object with a S3

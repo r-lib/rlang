@@ -12,7 +12,7 @@ either a \link{quosure} or a \link[=is_closure]{closure}. If
 missing, the environment of the current evaluation frame is
 returned.}
 
-\item{data}{Uniquely named bindings. See \code{\link[=is_dictionarish]{is_dictionarish()}}.
+\item{data}{Uniquely named bindings. See \code{\link[=is_dictionaryish]{is_dictionaryish()}}.
 Dots have \link[=dots_list]{explicit-splicing semantics}.}
 }
 \value{
