@@ -32,7 +32,7 @@ dictionary <- function(x, lookup_msg = NULL) {
 #' @export
 dictionary.default <- function(x, lookup_msg = NULL) {
   x <- discard_unnamed(x)
-  if (!is_dictionary(x)) {
+  if (!is_dictionarish(x)) {
     abort("Data source must be a dictionary")
   }
   new_dictionary(as.list(x), lookup_msg)

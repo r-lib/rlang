@@ -221,7 +221,7 @@ restarting <- function(.restart, ..., .fields = NULL) {
   stopifnot(is_scalar_character(.restart))
   if (!is_null(.fields)) {
     .fields <- set_names2(.fields)
-    stopifnot(is_character(.fields) && is_dictionary(.fields))
+    stopifnot(is_character(.fields) && is_dictionarish(.fields))
   }
 
   args <- dots_list(...)
