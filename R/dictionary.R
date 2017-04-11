@@ -108,18 +108,28 @@ has_binding.environment <- function(x, name) {
   env_has(x, name)
 }
 
-# Unclassing before print() or str() is necessary because default
-# methods index objects with integers
-
 #' @export
 print.dictionary <- function(x, ...) {
-  print(unclass_src(x), ...)
+  src <- unclass_src(x)$src
+  objs <- glue_countable(length(src), "object")
+  cat(paste0("# A dictionary: ", objs, "\n"))
+  invisible(x)
 }
 #' @importFrom utils str
 #' @export
 str.dictionary <- function(object, ...) {
-  str(unclass_src(object), ...)
+  str(unclass_src(object)$src, ...)
 }
+
+glue_countable <- function(n, str) {
+  if (n == 1) {
+    paste0(n, " ", str)
+  } else {
+    paste0(n, " ", str, "s")
+  }
+}
+# Unclassing before print() or str() is necessary because default
+# methods index objects with integers
 unclass_src <- function(x) {
   i <- match("dictionary", class(x))
   class(x) <- class(x)[-i]
