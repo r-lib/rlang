@@ -418,7 +418,6 @@ switch_type <- function(.x, ...) {
 #' @rdname switch_type
 #' @export
 coerce_type <- function(.x, .to, ...) {
-  msg <- paste0("Cannot convert objects of type `", type_of(.x), "` to `", .to, "`")
   switch(type_of(.x), ..., abort_coercion(.x, .to))
 }
 #' @rdname switch_type
@@ -432,10 +431,42 @@ coerce_class <- function(.x, .to, ...) {
   switch(class(.x), ..., abort_coercion(.x, .to))
 }
 abort_coercion <- function(x, to) {
-  abort(paste0(
-    "Cannot convert objects of type `", type_of(x), "` to `", to, "`"
-  ))
+  x_type <- friendly_type(type_of(x))
+  to_type <- friendly_type(to)
+  abort(paste0("Cannot convert ", x_type, " to ", to_type))
 }
+
+friendly_type <- function(type, article = "indefinite") {
+  type <- switch(type,
+    logical = ,
+    integer = ,
+    double = ,
+    complex = ,
+    character = ,
+    raw =
+      paste(type, "vector"),
+    type
+  )
+
+  if (!is_null(article)) {
+    type <- switch(article,
+      definite = paste("the", type),
+      indefinite = paste(str_article(type), type),
+      abort("`article` must be the string \"definite\" or \"indefinite\"")
+    )
+  }
+
+  type
+}
+
+str_article <- function(str) {
+  if (substr(str, 0, 1) %in% c("a", "e", "i", "o", "u")) {
+    "an"
+  } else {
+    "a"
+  }
+}
+
 
 #' Dispatch on call type.
 #'
@@ -507,7 +538,7 @@ switch_lang <- function(.x, ...) {
 #' @rdname switch_lang
 #' @export
 coerce_lang <- function(.x, .to, ...) {
-  msg <- paste0("Cannot convert objects of type `", type_of(.x), "` to `", .to, "`")
+  msg <- paste0("Cannot convert ", type_of(.x), " to ", .to, "")
   switch(lang_type_of(.x), ..., abort(msg))
 }
 #' @rdname switch_lang

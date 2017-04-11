@@ -79,13 +79,13 @@ test_that("atomic inputs are implicitly coerced", {
   expect_identical(lgl(10L, FALSE, list(TRUE, 0L, 0)), c(TRUE, FALSE, TRUE, FALSE, FALSE))
   expect_identical(dbl(10L, 10, TRUE, list(10L, 0, TRUE)), c(10, 10, 1, 10, 0, 1))
 
-  expect_error(lgl("foo"), "Cannot convert objects of type")
-  expect_error(chr(10), "Cannot convert objects of type")
+  expect_error(lgl("foo"), "Cannot convert a string to a logical vector")
+  expect_error(chr(10), "Cannot convert a double vector to a character vector")
 })
 
 test_that("type errors are handled", {
-  expect_error(lgl(get_env()), "Cannot convert objects of type `environment`")
-  expect_error(lgl(list(get_env())), "Cannot convert objects of type `environment`")
+  expect_error(lgl(get_env()), "Cannot convert an environment to a logical vector")
+  expect_error(lgl(list(get_env())), "Cannot convert an environment to a logical vector")
 })
 
 test_that("empty inputs are spliced", {
