@@ -35,3 +35,20 @@ test_that("names() and length() methods", {
   expect_identical(names(x), names(mtcars))
   expect_identical(length(x), length(mtcars))
 })
+
+test_that("can replace elements of dictionaries", {
+  expect_src <- function(dict, expected) {
+    src <- .subset2(dict, "src")
+    expect_identical(src, expected)
+  }
+
+  x <- as_dictionary(list(foo = "bar"))
+
+  x$foo <- "baz"
+  expect_src(x, list(foo = "baz"))
+
+  x[["bar"]] <- "bam"
+  expect_src(x, list(foo = "baz", bar = "bam"))
+
+  expect_error(x[[3]] <- NULL, "Must subset with a string")
+})

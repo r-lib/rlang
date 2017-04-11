@@ -85,7 +85,7 @@ is_dictionary <- function(x) {
 }
 #' @export
 `[[.dictionary` <- function(x, i, ...) {
-  if (!is_scalar_character(i)) {
+  if (!is_string(i)) {
     abort("Must subset with a string")
   }
   src <- .subset2(x, "src")
@@ -94,6 +94,23 @@ is_dictionary <- function(x) {
   }
   src[[i, ...]]
 }
+
+#' @export
+`$<-.dictionary` <- function(x, i, value) {
+  dict <- unclass_dict(x)
+  dict$src[[i]] <- value
+  set_attrs(dict, class = class(x))
+}
+#' @export
+`[[<-.dictionary` <- function(x, i, value) {
+  if (!is_string(i)) {
+    abort("Must subset with a string")
+  }
+  dict <- unclass_dict(x)
+  dict$src[[i]] <- value
+  set_attrs(dict, class = class(x))
+}
+
 #' @export
 names.dictionary <- function(x) {
   names(unclass(x)$src)
@@ -117,7 +134,7 @@ has_binding.environment <- function(x, name) {
 
 #' @export
 print.dictionary <- function(x, ...) {
-  src <- unclass_src(x)$src
+  src <- unclass_dict(x)$src
   objs <- glue_countable(length(src), "object")
   cat(paste0("# A dictionary: ", objs, "\n"))
   invisible(x)
@@ -125,7 +142,7 @@ print.dictionary <- function(x, ...) {
 #' @importFrom utils str
 #' @export
 str.dictionary <- function(object, ...) {
-  str(unclass_src(object)$src, ...)
+  str(unclass_dict(object)$src, ...)
 }
 
 glue_countable <- function(n, str) {
@@ -137,7 +154,7 @@ glue_countable <- function(n, str) {
 }
 # Unclassing before print() or str() is necessary because default
 # methods index objects with integers
-unclass_src <- function(x) {
+unclass_dict <- function(x) {
   i <- match("dictionary", class(x))
   class(x) <- class(x)[-i]
   x
