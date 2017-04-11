@@ -1,4 +1,4 @@
-context("tidy sources")
+context("dictionary")
 
 test_that("can't access non-existent list members", {
   x1 <- list(y = 1)
