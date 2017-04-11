@@ -5,8 +5,8 @@ test_that("can't access non-existent list members", {
   x2 <- dictionary(x1)
 
   expect_equal(x2$y, 1)
-  expect_error(x2$z, "Object 'z' not found in pronoun")
-  expect_error(x2[["z"]], "Object 'z' not found in pronoun")
+  expect_error(x2$z, "Object `z` not found in data")
+  expect_error(x2[["z"]], "Object `z` not found in data")
 })
 
 test_that("can't access non-existent environment components", {
@@ -14,8 +14,8 @@ test_that("can't access non-existent environment components", {
   x2 <- dictionary(x1)
 
   expect_equal(x2$y, 1)
-  expect_error(x2$z, "Object 'z' not found in environment")
-  expect_error(x2[["z"]], "Object 'z' not found in environment")
+  expect_error(x2$z, "Object `z` not found in environment")
+  expect_error(x2[["z"]], "Object `z` not found in environment")
 })
 
 test_that("can't use non-character vectors", {
@@ -27,7 +27,7 @@ test_that("can't use non-character vectors", {
 
 test_that("subsetting .data pronoun fails when not supplied", {
   f <- quo(.data$foo)
-  expect_error(eval_tidy(f), "not found in pronoun")
+  expect_error(eval_tidy(f), "not found in data")
 })
 
 test_that("names() and length() methods", {

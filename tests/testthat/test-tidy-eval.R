@@ -33,8 +33,8 @@ test_that("pronouns resolve ambiguity looks first in `data`", {
 })
 
 test_that("pronouns complain about missing values", {
-  expect_error(eval_tidy(~ .data$x, list()), "Object 'x' not found in pronoun")
-  expect_error(eval_tidy(~ .data$x, data.frame()), "Variable 'x' not found in data")
+  expect_error(eval_tidy(~ .data$x, list()), "Object `x` not found in data")
+  expect_error(eval_tidy(~ .data$x, data.frame()), "Variable `x` not found in data")
 })
 
 test_that("eval_tidy does quasiquoting", {

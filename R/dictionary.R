@@ -50,7 +50,7 @@ dictionary.NULL <- function(x, lookup_msg = NULL) {
 }
 #' @export
 dictionary.environment <- function(x, lookup_msg = NULL) {
-  lookup_msg <- lookup_msg %||% "Object '%s' not found in environment"
+  lookup_msg <- lookup_msg %||% "Object `%s` not found in environment"
   if (!identical(x, global_env())) {
     x <- env_clone(x)
   }
@@ -58,12 +58,12 @@ dictionary.environment <- function(x, lookup_msg = NULL) {
 }
 #' @export
 dictionary.data.frame <- function(x, lookup_msg = NULL) {
-  lookup_msg <- lookup_msg %||% "Variable '%s' not found in data"
+  lookup_msg <- lookup_msg %||% "Variable `%s` not found in data"
   new_dictionary(x, lookup_msg)
 }
 
 new_dictionary <- function(x, lookup_msg) {
-  msg <- lookup_msg %||% "Object '%s' not found in pronoun"
+  msg <- lookup_msg %||% "Object `%s` not found in data"
   class <- "dictionary"
   structure(list(src = x, lookup_msg = msg), class = class)
 }
