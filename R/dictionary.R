@@ -68,6 +68,12 @@ new_dictionary <- function(x, lookup_msg) {
   structure(list(src = x, lookup_msg = msg), class = class)
 }
 
+#' @rdname dictionary
+#' @export
+is_dictionary <- function(x) {
+  inherits(x, "dictionary")
+}
+
 #' @export
 `$.dictionary` <- function(x, name) {
   src <- .subset2(x, "src")

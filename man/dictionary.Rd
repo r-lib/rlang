@@ -2,9 +2,12 @@
 % Please edit documentation in R/dictionary.R
 \name{dictionary}
 \alias{dictionary}
+\alias{is_dictionary}
 \title{Create a dictionary.}
 \usage{
 dictionary(x, lookup_msg = NULL)
+
+is_dictionary(x)
 }
 \arguments{
 \item{x}{An object for which you want to find associated data.}
