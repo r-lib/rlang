@@ -21,7 +21,7 @@ list of formulas, \code{eval_tidy()} is applied to each of them in
 turn and the list of results is returned.}
 
 \item{data}{A list (or data frame). This is passed to the
-\code{\link[=dictionary]{dictionary()}} constructor, a generic used to transform an object
+\code{\link[=as_dictionary]{as_dictionary()}} coercer, a generic used to transform an object
 to a proper data source. If you want to make \code{eval_tidy()} work
 for your own objects, you can define a method for this generic.}
 }

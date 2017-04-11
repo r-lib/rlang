@@ -2,10 +2,11 @@
 % Please edit documentation in R/dictionary.R
 \name{dictionary}
 \alias{dictionary}
+\alias{as_dictionary}
 \alias{is_dictionary}
 \title{Create a dictionary.}
 \usage{
-dictionary(x, lookup_msg = NULL)
+as_dictionary(x, lookup_msg = NULL)
 
 is_dictionary(x)
 }

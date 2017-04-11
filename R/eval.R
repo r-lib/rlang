@@ -21,7 +21,7 @@
 #'   list of formulas, `eval_tidy()` is applied to each of them in
 #'   turn and the list of results is returned.
 #' @param data A list (or data frame). This is passed to the
-#'   [dictionary()] constructor, a generic used to transform an object
+#'   [as_dictionary()] coercer, a generic used to transform an object
 #'   to a proper data source. If you want to make `eval_tidy()` work
 #'   for your own objects, you can define a method for this generic.
 #' @export
@@ -187,7 +187,7 @@ eval_tidy_ <- function(f, bottom, top = NULL) {
 #' overscope_clean(overscope)
 #' fn()
 as_overscope <- function(quo, data = NULL) {
-  data_src <- dictionary(data)
+  data_src <- as_dictionary(data)
   enclosure <- f_env(quo) %||% base_env()
 
   # Create bottom environment pre-chained to the lexical scope

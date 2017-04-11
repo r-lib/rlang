@@ -25,12 +25,13 @@
 #' @param x An object for which you want to find associated data.
 #' @param lookup_msg An error message when your data source is
 #'   accessed inappropriately (by position rather than name).
+#' @name dictionary
 #' @export
-dictionary <- function(x, lookup_msg = NULL) {
-  UseMethod("dictionary")
+as_dictionary <- function(x, lookup_msg = NULL) {
+  UseMethod("as_dictionary")
 }
 #' @export
-dictionary.default <- function(x, lookup_msg = NULL) {
+as_dictionary.default <- function(x, lookup_msg = NULL) {
   x <- discard_unnamed(x)
   if (!is_dictionarish(x)) {
     abort("Data source must be a dictionary")
@@ -38,18 +39,18 @@ dictionary.default <- function(x, lookup_msg = NULL) {
   new_dictionary(as.list(x), lookup_msg)
 }
 #' @export
-dictionary.dictionary <- function(x, lookup_msg = NULL) {
+as_dictionary.dictionary <- function(x, lookup_msg = NULL) {
   classes <- class(x)
   x <- unclass(x)
   x$lookup_msg <- lookup_msg %||% x$lookup_msg
   structure(x, class = classes)
 }
 #' @export
-dictionary.NULL <- function(x, lookup_msg = NULL) {
-  dictionary(list(), lookup_msg = lookup_msg)
+as_dictionary.NULL <- function(x, lookup_msg = NULL) {
+  as_dictionary(list(), lookup_msg = lookup_msg)
 }
 #' @export
-dictionary.environment <- function(x, lookup_msg = NULL) {
+as_dictionary.environment <- function(x, lookup_msg = NULL) {
   lookup_msg <- lookup_msg %||% "Object `%s` not found in environment"
   if (!identical(x, global_env())) {
     x <- env_clone(x)
@@ -57,7 +58,7 @@ dictionary.environment <- function(x, lookup_msg = NULL) {
   new_dictionary(x, lookup_msg)
 }
 #' @export
-dictionary.data.frame <- function(x, lookup_msg = NULL) {
+as_dictionary.data.frame <- function(x, lookup_msg = NULL) {
   lookup_msg <- lookup_msg %||% "Variable `%s` not found in data"
   new_dictionary(x, lookup_msg)
 }
