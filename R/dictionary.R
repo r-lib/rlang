@@ -58,7 +58,7 @@ as_dictionary.environment <- function(x, lookup_msg = NULL, read_only = FALSE) {
 }
 #' @export
 as_dictionary.data.frame <- function(x, lookup_msg = NULL, read_only = FALSE) {
-  lookup_msg <- lookup_msg %||% "Variable `%s` not found in data"
+  lookup_msg <- lookup_msg %||% "Column `%s` not found in data"
   new_dictionary(x, lookup_msg, read_only)
 }
 
