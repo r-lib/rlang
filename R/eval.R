@@ -82,6 +82,26 @@ eval_tidy <- function(f, data = NULL) {
   overscope_eval_next(overscope, f)
 }
 
+#' Data pronoun for tidy evaluation
+#'
+#' This pronoun is installed by functions performing [tidy
+#' evaluation][eval_tidy]. It allows you to refer to overscoped data
+#' explicitly.
+#'
+#' You can import this object in your package namespace to avoid `R
+#' CMD check` errors when referring to overscoped objects.
+#'
+#' @name tidyeval-data
+#' @export
+#' @examples
+#' quo <- quo(.data$foo)
+#' eval_tidy(quo, list(foo = "bar"))
+.data <- structure(class = "dictionary", list(
+  src = list(),
+  lookup_msg = "Object `%s` not found",
+  read_only = TRUE
+))
+
 #' Tidy evaluation in a custom environment.
 #'
 #' We recommend using [eval_tidy()] in your DSLs as much as possible
