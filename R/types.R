@@ -445,6 +445,7 @@ friendly_type <- function(type, article = "indefinite") {
     character = ,
     raw =
       paste(type, "vector"),
+    language = "language call",
     type
   )
 
