@@ -33,8 +33,8 @@ test_that("pronouns resolve ambiguity looks first in `data`", {
 })
 
 test_that("pronouns complain about missing values", {
-  expect_error(eval_tidy(~ .data$x, list()), "Object 'x' not found in pronoun")
-  expect_error(eval_tidy(~ .data$x, data.frame()), "Variable 'x' not found in data")
+  expect_error(eval_tidy(~ .data$x, list()), "Object `x` not found in data")
+  expect_error(eval_tidy(~ .data$x, data.frame()), "Column `x` not found in data")
 })
 
 test_that("eval_tidy does quasiquoting", {
@@ -216,6 +216,10 @@ test_that("whole scope is purged", {
 test_that("empty quosure self-evaluates", {
   quo <- quo(is_missing(!! quo()))
   expect_true(eval_tidy(quo))
+})
+
+test_that("cannot replace elements of pronouns", {
+  expect_error(eval_tidy(~(.data$foo <- "bar")), "read-only dictionary")
 })
 
 

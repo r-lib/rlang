@@ -16,7 +16,7 @@ sense to change the parent.}
 \description{
 \code{as_env()} coerces named vectors (including lists) to an
 environment. It first checks that \code{x} is a dictionary (see
-\code{\link[=is_dictionary]{is_dictionary()}}). If supplied an unnamed string, it returns the
+\code{\link[=is_dictionaryish]{is_dictionaryish()}}). If supplied an unnamed string, it returns the
 corresponding package environment (see \code{\link[=pkg_env]{pkg_env()}}).
 }
 \details{

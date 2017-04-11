@@ -30,13 +30,13 @@ zap_attrs <- function(x) {
 #' Is object named?
 #'
 #' `is_named()` checks that `x` has names attributes, and that none of
-#' the names are missing or empty (`NA` or `""`). `is_dictionary()`
+#' the names are missing or empty (`NA` or `""`). `is_dictionaryish()`
 #' checks that an object is a dictionary: that it has actual names and
 #' in addition that there are no duplicated names. `have_name()`
 #' is a vectorised version of `is_named()`.
 #'
 #' @param x An object to test.
-#' @return `is_named()` and `is_dictionary()` are scalar predicates
+#' @return `is_named()` and `is_dictionaryish()` are scalar predicates
 #'   and return `TRUE` or `FALSE`. `have_name()` is vectorised and
 #'   returns a logical vector as long as the input.
 #' @export
@@ -44,11 +44,11 @@ zap_attrs <- function(x) {
 #' # A data frame usually has valid, unique names
 #' is_named(mtcars)
 #' have_name(mtcars)
-#' is_dictionary(mtcars)
+#' is_dictionaryish(mtcars)
 #'
 #' # But data frames can also have duplicated columns:
 #' dups <- cbind(mtcars, cyl = seq_len(nrow(mtcars)))
-#' is_dictionary(dups)
+#' is_dictionaryish(dups)
 #'
 #' # The names are still valid:
 #' is_named(dups)
@@ -56,8 +56,8 @@ zap_attrs <- function(x) {
 #'
 #'
 #' # For empty objects the semantics are slightly different.
-#' # is_dictionary() returns TRUE for empty objects:
-#' is_dictionary(list())
+#' # is_dictionaryish() returns TRUE for empty objects:
+#' is_dictionaryish(list())
 #'
 #' # But is_named() will only return TRUE if there is a names
 #' # attribute (a zero-length character vector in this case):
@@ -91,17 +91,15 @@ is_named <- function(x) {
 
   TRUE
 }
-
 #' @rdname is_named
 #' @export
-is_dictionary <- function(x) {
+is_dictionaryish <- function(x) {
   if (!length(x)) {
     return(!is.null(x))
   }
 
   is_named(x) && !any(duplicated(names(x)))
 }
-
 #' @rdname is_named
 #' @export
 have_name <- function(x) {

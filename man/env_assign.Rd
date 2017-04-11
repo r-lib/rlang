@@ -22,7 +22,7 @@ returned.}
 
 \item{x}{The value of the binding.}
 
-\item{data}{Uniquely named bindings. See \code{\link[=is_dictionary]{is_dictionary()}}.
+\item{data}{Uniquely named bindings. See \code{\link[=is_dictionaryish]{is_dictionaryish()}}.
 Dots have \link[=dots_list]{explicit-splicing semantics}.}
 
 \item{...}{Pairs of unique names and R objects used to define new
@@ -36,7 +36,7 @@ modified in place.
 These functions create bindings in the specified environment. The
 bindings are supplied as pairs of names and values, either directly
 (\code{env_assign()}), in dots (\code{env_define()}), or from a dictionary
-(\code{env_bind()}). See \code{\link[=is_dictionary]{is_dictionary()}} for the definition of a
+(\code{env_bind()}). See \code{\link[=is_dictionaryish]{is_dictionaryish()}} for the definition of a
 dictionary.
 }
 \details{
