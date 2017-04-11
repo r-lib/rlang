@@ -113,13 +113,14 @@ as_lang <- function(x) {
   )
 }
 
-#' Create a call by "hand"
+#' Create a language call by "hand"
 #'
-#' @param .fn Function to call. For `make_call`, either a string, a
-#'   symbol or a quoted call. For `do_call`, a bare function name or
-#'   call.
+#' @param .fn Function to call. Can be a string or symbol or any
+#'   object supported by [as_symbol()].
 #' @param ... Arguments to the call either in or out of a list. Dots
 #'   are evaluated with [explicit splicing][dots_list].
+#' @param .ns Namespace with which to prefix `.fn`. Can be a string or
+#'   symbol or any object supported by [as_symbol()].
 #' @seealso lang_modify
 #' @export
 #' @examples
@@ -131,12 +132,20 @@ as_lang <- function(x) {
 #' #' Can supply arguments individually or in a list
 #' new_language(quote(f), a = 1, b = 2)
 #' new_language(quote(f), splice(list(a = 1, b = 2)))
-new_language <- function(.fn, ...) {
+#'
+#' # Creating namespaced calls:
+#' new_language("fun", arg = quote(baz), .ns = "mypkg")
+new_language <- function(.fn, ..., .ns = NULL) {
   if (is_character(.fn)) {
     if (length(.fn) != 1) {
       abort("Character `.fn` must be length 1")
     }
     .fn <- as_symbol(.fn)
+  }
+
+  if (!is_null(.ns)) {
+    .ns <- as_symbol(.ns)
+    .fn <- call("::", .ns, .fn)
   }
 
   as.call(c(.fn, dots_list(...)))
