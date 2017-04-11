@@ -30,9 +30,8 @@ void rlang_register_pointer(const char* ns, const char* ptr_name, DL_FUNC fn) {
   SEXP ptr_obj = PROTECT(Rf_allocVector(VECSXP, 1));
   SET_VECTOR_ELT(ptr_obj, 0, ptr);
 
-  SEXP class = PROTECT(Rf_mkString("fn_pointer"));
-  Rf_setAttrib(ptr_obj, R_ClassSymbol, class);
+  Rf_setAttrib(ptr_obj, R_ClassSymbol, Rf_mkString("fn_pointer"));
 
   Rf_defineVar(Rf_install(ptr_name), ptr_obj, rlang_namespace(ns));
-  UNPROTECT(3);
+  UNPROTECT(2);
 }

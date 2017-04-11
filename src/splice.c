@@ -205,6 +205,7 @@ is_spliceable_t predicate_pointer(SEXP x) {
   }
 
   Rf_errorcall(R_NilValue, "`predicate` must be a closure or function pointer");
+  return NULL;
 }
 
 is_spliceable_t predicate_internal(SEXP x) {
