@@ -7,10 +7,8 @@
 #include <R_ext/Rdynload.h>
 
 
-typedef void* (*DL_FUNC)();
-typedef union {void* p; DL_FUNC fn;} fn_ptr;
-
 #if (defined(R_VERSION) && R_VERSION < R_Version(3, 4, 0))
+typedef union {void* p; DL_FUNC fn;} fn_ptr;
 SEXP R_MakeExternalPtrFn(DL_FUNC p, SEXP tag, SEXP prot);
 DL_FUNC R_ExternalPtrAddrFn(SEXP s);
 #endif
