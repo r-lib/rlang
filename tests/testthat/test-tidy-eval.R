@@ -218,6 +218,10 @@ test_that("empty quosure self-evaluates", {
   expect_true(eval_tidy(quo))
 })
 
+test_that("cannot replace elements of pronouns", {
+  expect_error(eval_tidy(~(.data$foo <- "bar")), "read-only dictionary")
+})
+
 
 context("invoke") # --------------------------------------------------
 

@@ -187,7 +187,7 @@ eval_tidy_ <- function(f, bottom, top = NULL) {
 #' overscope_clean(overscope)
 #' fn()
 as_overscope <- function(quo, data = NULL) {
-  data_src <- as_dictionary(data)
+  data_src <- as_dictionary(data, read_only = TRUE)
   enclosure <- f_env(quo) %||% base_env()
 
   # Create bottom environment pre-chained to the lexical scope

@@ -25,48 +25,47 @@
 #' @param x An object for which you want to find associated data.
 #' @param lookup_msg An error message when your data source is
 #'   accessed inappropriately (by position rather than name).
+#' @param read_only Whether users can replace elements of the
+#'   dictionary.
 #' @name dictionary
 #' @export
-as_dictionary <- function(x, lookup_msg = NULL) {
+as_dictionary <- function(x, lookup_msg = NULL, read_only = FALSE) {
   UseMethod("as_dictionary")
 }
 #' @export
-as_dictionary.default <- function(x, lookup_msg = NULL) {
+as_dictionary.default <- function(x, lookup_msg = NULL, read_only = FALSE) {
   x <- discard_unnamed(x)
   if (!is_dictionarish(x)) {
     abort("Data source must be a dictionary")
   }
-  new_dictionary(as.list(x), lookup_msg)
+  new_dictionary(as.list(x), lookup_msg, read_only)
 }
 #' @export
-as_dictionary.dictionary <- function(x, lookup_msg = NULL) {
-  classes <- class(x)
-  x <- unclass(x)
-  x$lookup_msg <- lookup_msg %||% x$lookup_msg
-  structure(x, class = classes)
+as_dictionary.dictionary <- function(x, lookup_msg = NULL, read_only = FALSE) {
+  dict <- unclass_dict(x)
+  dict$lookup_msg <- lookup_msg %||% x$lookup_msg
+  dict$read_only <- read_only
+  set_attrs(dict, class = class(x))
 }
 #' @export
-as_dictionary.NULL <- function(x, lookup_msg = NULL) {
-  as_dictionary(list(), lookup_msg = lookup_msg)
+as_dictionary.NULL <- function(x, lookup_msg = NULL, read_only = FALSE) {
+  new_dictionary(list(), lookup_msg, read_only)
 }
 #' @export
-as_dictionary.environment <- function(x, lookup_msg = NULL) {
+as_dictionary.environment <- function(x, lookup_msg = NULL, read_only = FALSE) {
   lookup_msg <- lookup_msg %||% "Object `%s` not found in environment"
-  if (!identical(x, global_env())) {
-    x <- env_clone(x)
-  }
-  new_dictionary(x, lookup_msg)
+  new_dictionary(x, lookup_msg, read_only)
 }
 #' @export
-as_dictionary.data.frame <- function(x, lookup_msg = NULL) {
+as_dictionary.data.frame <- function(x, lookup_msg = NULL, read_only = FALSE) {
   lookup_msg <- lookup_msg %||% "Variable `%s` not found in data"
-  new_dictionary(x, lookup_msg)
+  new_dictionary(x, lookup_msg, read_only)
 }
 
-new_dictionary <- function(x, lookup_msg) {
+new_dictionary <- function(x, lookup_msg, read_only) {
   msg <- lookup_msg %||% "Object `%s` not found in data"
-  class <- "dictionary"
-  structure(list(src = x, lookup_msg = msg), class = class)
+  dict <- list(src = x, lookup_msg = msg, read_only = read_only)
+  set_attrs(dict, class = "dictionary")
 }
 
 #' @rdname dictionary
@@ -98,15 +97,25 @@ is_dictionary <- function(x) {
 #' @export
 `$<-.dictionary` <- function(x, i, value) {
   dict <- unclass_dict(x)
+
+  if (dict$read_only) {
+    abort("Can't modify read-only dictionary")
+  }
+
   dict$src[[i]] <- value
   set_attrs(dict, class = class(x))
 }
 #' @export
 `[[<-.dictionary` <- function(x, i, value) {
+  dict <- unclass_dict(x)
+
+  if (dict$read_only) {
+    abort("Can't modify read-only dictionary")
+  }
   if (!is_string(i)) {
     abort("Must subset with a string")
   }
-  dict <- unclass_dict(x)
+
   dict$src[[i]] <- value
   set_attrs(dict, class = class(x))
 }

@@ -6,7 +6,7 @@
 \alias{is_dictionary}
 \title{Create a dictionary.}
 \usage{
-as_dictionary(x, lookup_msg = NULL)
+as_dictionary(x, lookup_msg = NULL, read_only = FALSE)
 
 is_dictionary(x)
 }
@@ -15,6 +15,9 @@ is_dictionary(x)
 
 \item{lookup_msg}{An error message when your data source is
 accessed inappropriately (by position rather than name).}
+
+\item{read_only}{Whether users can replace elements of the
+dictionary.}
 }
 \description{
 Dictionaries are a concept of types modelled after R

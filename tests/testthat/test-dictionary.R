@@ -52,3 +52,9 @@ test_that("can replace elements of dictionaries", {
 
   expect_error(x[[3]] <- NULL, "Must subset with a string")
 })
+
+test_that("cannot replace elements of read-only dictionaries", {
+  x <- as_dictionary(list(foo = "bar"), read_only = TRUE)
+  expect_error(x$foo <- "baz", "read-only dictionary")
+  expect_error(x[["foo"]] <- "baz", "read-only dictionary")
+})
