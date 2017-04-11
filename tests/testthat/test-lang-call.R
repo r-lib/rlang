@@ -11,6 +11,11 @@ test_that("args can be specified individually or as list", {
   expect_equal(out, quote(f(a = 1, b = 2)))
 })
 
+test_that("creates namespaced calls", {
+  expect_identical(new_language("fun", foo = quote(baz), .ns = "bar"), quote(bar::fun(foo = baz)))
+})
+
+
 # Standardisation ---------------------------------------------------------
 
 test_that("args are partial matched", {

@@ -2,20 +2,22 @@
 % Please edit documentation in R/expr-lang.R
 \name{new_language}
 \alias{new_language}
-\title{Create a call by "hand"}
+\title{Create a language call by "hand"}
 \usage{
-new_language(.fn, ...)
+new_language(.fn, ..., .ns = NULL)
 }
 \arguments{
-\item{.fn}{Function to call. For \code{make_call}, either a string, a
-symbol or a quoted call. For \code{do_call}, a bare function name or
-call.}
+\item{.fn}{Function to call. Can be a string or symbol or any
+object supported by \code{\link[=as_symbol]{as_symbol()}}.}
 
 \item{...}{Arguments to the call either in or out of a list. Dots
 are evaluated with \link[=dots_list]{explicit splicing}.}
+
+\item{.ns}{Namespace with which to prefix \code{.fn}. Can be a string or
+symbol or any object supported by \code{\link[=as_symbol]{as_symbol()}}.}
 }
 \description{
-Create a call by "hand"
+Create a language call by "hand"
 }
 \examples{
 # fn can either be a string, a symbol or a call
@@ -26,6 +28,9 @@ new_language(quote(f()), a = 1)
 #' Can supply arguments individually or in a list
 new_language(quote(f), a = 1, b = 2)
 new_language(quote(f), splice(list(a = 1, b = 2)))
+
+# Creating namespaced calls:
+new_language("fun", arg = quote(baz), .ns = "mypkg")
 }
 \seealso{
 lang_modify
