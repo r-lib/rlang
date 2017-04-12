@@ -436,17 +436,6 @@ abort_coercion <- function(x, to) {
   abort(paste0("Cannot convert ", x_type, " to ", to_type))
 }
 
-#' Format a type for error messages
-#'
-#' @param type A type as returned by [type_of()].
-#' @param article A string, either `"indefinite"` or
-#'   `"definite"`. Indefinite articles depend on the starting letter
-#'   of `type`: `"an"` if starts with a vowel, `"a"` otherwise.
-#' @export
-#' @examples
-#' friendly_type("logical")
-#' friendly_type("integer")
-#' friendly_type("string")
 friendly_type <- function(type, article = c("indefinite", "definite")) {
   article <- match.arg(article)
 
