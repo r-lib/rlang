@@ -1,5 +1,29 @@
 context("arg")
 
+test_that("matches arg", {
+  myarg <- c("foo", "baz")
+  expect_identical(arg_match(myarg, c("bar", "foo")), "foo")
+  expect_error(
+    regex = "`myarg` should be one of: \"bar\" or \"baz\"",
+    arg_match(myarg, c("bar", "baz"))
+  )
+})
+
+test_that("informative error message on partial match", {
+  myarg <- "f"
+  expect_error(
+    regex = "Did you mean \"foo\"?",
+    arg_match(myarg, c("bar", "foo"))
+  )
+})
+
+test_that("gets choices from function", {
+  fn <- function(myarg = c("bar", "foo")) arg_match(myarg)
+  expect_error(fn("f"), "Did you mean \"foo\"?")
+  expect_identical(fn("foo"), "foo")
+})
+
+
 # arg_inspect -----------------------------------------------------------------
 
 test_that("follows through dots", {

@@ -1,3 +1,81 @@
+#' Match an argument to a character vector
+#'
+#' @description
+#'
+#' This is equivalent to [base::match.arg()] with a few differences:
+#'
+#' * Partial matches trigger an error.
+#'
+#' * Error messages are a bit more informative and obey the tidyverse
+#'   standards.
+#'
+#' @param arg A symbol referring to an argument accepting strings.
+#' @param values The possible values that `arg` can take. If `NULL`,
+#'   the values are taken from the function definition of the [caller
+#'   frame][caller_frame].
+#' @export
+#' @examples
+#' fn <- function(x = c("foo", "bar")) arg_match(x)
+#' fn("bar")
+#'
+#' # This would throw an informative error if run:
+#' # fn("b")
+#' # fn("baz")
+arg_match <- function(arg, values = NULL) {
+  arg_quo <- enquo(arg)
+  if (!is_symbol(arg_quo)) {
+    abort("Internal error: `arg_match()` expects a symbol")
+  }
+
+  arg_nm <- as_name(arg_quo)
+
+  if (is_null(values)) {
+    fn <- caller_fn()
+    values <- fn_fmls(fn)[[arg_nm]]
+    values <- eval_bare(values, get_env(fn))
+  }
+  if (!is_character(values)) {
+    abort("Internal error: `values` must be a character vector")
+  }
+  if (!is_character(arg)) {
+    abort(paste0(chr_quoted(arg_nm), " must be a character vector"))
+  }
+
+  arg <- arg[[1]]
+  i <- match(arg, values)
+
+  if (is_na(i)) {
+    msg <- paste0("`", arg_nm, "` should be one of: ")
+    msg <- paste0(msg, chr_enumerate(chr_quoted(values, "\"")))
+
+    i_partial <- pmatch(arg, values)
+    if (!is_na(i_partial)) {
+      candidate <- values[[i_partial]]
+      candidate <- chr_quoted(candidate, "\"")
+      msg <- paste0(msg, "\n", "Did you mean ", candidate, "?")
+    }
+
+    abort(msg)
+  }
+
+  values[[i]]
+}
+
+chr_quoted <- function(chr, type = "`") {
+  paste0(type, chr, type)
+}
+chr_enumerate <- function(chr, sep = ", ") {
+  if (length(chr) < 2) {
+    return(chr)
+  }
+  n <- length(chr)
+  head <- chr[seq_len(n - 1)]
+  last <- chr[length(chr)]
+
+  head <- paste(head, collapse = ", ")
+  paste(head, "or", last)
+}
+
 #' Inspect an argument
 #'
 #' `arg_inspect()` provides argument introspection in the context of
@@ -86,7 +164,7 @@ arg_inspect_ <- function(expr, stack, only_dots = FALSE) {
 
     # The `caller_expr` is always matched and valid during the first
     # iteration of the loop
-    arg_i <- arg_match(expr, call)
+    arg_i <- arg_match_call(expr, call)
     caller_expr <- call[[arg_i]]
 
     # If no match in the call, we have reached the call site.
@@ -132,7 +210,7 @@ arg_inspect_ <- function(expr, stack, only_dots = FALSE) {
   )
 }
 
-arg_match <- function(sym, call) {
+arg_match_call <- function(sym, call) {
   arg_nm <- as.character(sym)
   match(arg_nm, names2(call))
 }
