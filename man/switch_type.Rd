@@ -24,7 +24,8 @@ coerce_class(.x, .to, ...)
 \item{.to}{This is useful when you switchpatch within a coercing
 function. If supplied, this should be a string indicating the
 target type. A catch-all clause is then added to signal an error
-stating the conversion failure.}
+stating the conversion failure. This type is prettified unless
+\code{.to} inherits from the S3 class \code{"AsIs"} (see \code{\link[base:I]{base::I()}}).}
 }
 \description{
 \code{switch_type()} is equivalent to
@@ -43,7 +44,7 @@ switch_type(3L,
 # Use the coerce_ version to get standardised error handling when no
 # type matches:
 to_chr <- function(x) {
-  coerce_type(x, "chr",
+  coerce_type(x, "a chr",
     integer = as.character(x),
     double = as.character(x)
   )

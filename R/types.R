@@ -361,7 +361,8 @@ type_of <- function(x) {
 #' @param .to This is useful when you switchpatch within a coercing
 #'   function. If supplied, this should be a string indicating the
 #'   target type. A catch-all clause is then added to signal an error
-#'   stating the conversion failure.
+#'   stating the conversion failure. This type is prettified unless
+#'   `.to` inherits from the S3 class `"AsIs"` (see [base::I()]).
 #' @seealso [switch_lang()]
 #' @export
 #' @examples
@@ -374,7 +375,7 @@ type_of <- function(x) {
 #' # Use the coerce_ version to get standardised error handling when no
 #' # type matches:
 #' to_chr <- function(x) {
-#'   coerce_type(x, "chr",
+#'   coerce_type(x, "a chr",
 #'     integer = as.character(x),
 #'     double = as.character(x)
 #'   )
@@ -430,9 +431,11 @@ switch_class <- function(.x, ...) {
 coerce_class <- function(.x, .to, ...) {
   switch(class(.x), ..., abort_coercion(.x, .to))
 }
-abort_coercion <- function(x, to) {
+abort_coercion <- function(x, to_type) {
   x_type <- friendly_type(type_of(x))
-  to_type <- friendly_type(to)
+  if (!inherits(to_type, "AsIs")) {
+    to_type <- friendly_type(to_type)
+  }
   abort(paste0("Cannot convert ", x_type, " to ", to_type))
 }
 
@@ -452,7 +455,7 @@ friendly_type <- function(type) {
     return(friendly)
   }
 
-  abort("Internal error: unimplemented friendly type")
+  type
 }
 
 friendly_type_of <- function(type) {
