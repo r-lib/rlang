@@ -84,7 +84,7 @@ dots_clean_empty <- function(dots, is_empty, ignore_empty) {
   n_dots <- length(dots)
 
   if (n_dots) {
-    which <- match.arg(ignore_empty, c("trailing", "none", "all"))
+    which <- arg_match(ignore_empty, c("trailing", "none", "all"))
     switch(which,
       trailing =
         if (is_empty(dots[[n_dots]])) {
