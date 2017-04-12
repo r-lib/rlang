@@ -22,12 +22,12 @@
 #' # fn("b")
 #' # fn("baz")
 arg_match <- function(arg, values = NULL) {
-  arg_quo <- enquo(arg)
-  if (!is_symbol(arg_quo)) {
+  arg_expr <- enexpr(arg)
+  if (!is_symbol(arg_expr)) {
     abort("Internal error: `arg_match()` expects a symbol")
   }
 
-  arg_nm <- as_name(arg_quo)
+  arg_nm <- as_name(arg_expr)
 
   if (is_null(values)) {
     fn <- caller_fn()
