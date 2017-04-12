@@ -55,10 +55,3 @@ test_that("types are friendly", {
   expect_identical(friendly_type("integer"), "an integer vector")
   expect_identical(friendly_type("language"), "a language call")
 })
-
-test_that("default friend type", {
-  expect_identical(friendly_type("foobar"), "a foobar")
-  expect_identical(friendly_type("foobar", "definite"), "the foobar")
-  expect_identical(friendly_type("oobar"), "an oobar")
-  expect_identical(friendly_type("oobar", "definite"), "the oobar")
-})

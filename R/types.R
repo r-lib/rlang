@@ -436,40 +436,82 @@ abort_coercion <- function(x, to) {
   abort(paste0("Cannot convert ", x_type, " to ", to_type))
 }
 
-friendly_type <- function(type, article = c("indefinite", "definite")) {
-  article <- match.arg(article)
+friendly_type <- function(type) {
+  friendly <- friendly_type_of(type)
+  if (!is_null(friendly)) {
+    return(friendly)
+  }
 
-  type <- switch(type,
-    logical = ,
-    integer = ,
-    double = ,
-    complex = ,
-    character = ,
-    raw =
-      paste(type, "vector"),
-    language = "language call",
-    type
+  friendly <- friendly_lang_type_of(type)
+  if (!is_null(friendly)) {
+    return(friendly)
+  }
+
+  friendly <- friendly_expr_type_of(type)
+  if (!is_null(friendly)) {
+    return(friendly)
+  }
+
+  abort("Internal error: unimplemented friendly type")
+}
+
+friendly_type_of <- function(type) {
+  switch(type,
+    logical = "a logical vector",
+    integer = "an integer vector",
+    numeric = ,
+    double = "a double vector",
+    complex = "a complex vector",
+    character = "a character vector",
+    raw = "a raw vector",
+    string = "a string",
+    list = "a list",
+
+    NULL = "the NULL object",
+    environment = "an environment",
+    externalptr = "a pointer",
+    weakref = "a weak reference",
+    S4 = "an S4 object",
+
+    name = ,
+    symbol = "a symbol",
+    language = "a language call",
+    pairlist = "a pairlist node",
+    expression = "an expression vector",
+    quosure = "a quosure",
+
+    char = "an internal string",
+    promise = "an internal promise",
+    ... = "an internal dots object",
+    any = "an internal `any` object",
+    bytecode = "an internal bytecode object",
+
+    primitive = ,
+    builtin = ,
+    special = "a primitive function",
+    closure = "a function"
   )
-
-  if (!is_null(article)) {
-    type <- switch(article,
-      definite = paste("the", type),
-      indefinite = paste(str_article(type), type),
-      abort("`article` must be the string \"definite\" or \"indefinite\"")
-    )
-  }
-
-  type
 }
 
-str_article <- function(str) {
-  if (substr(str, 0, 1) %in% c("a", "e", "i", "o", "u")) {
-    "an"
-  } else {
-    "a"
-  }
+friendly_lang_type_of <- function(type) {
+  switch(type,
+    named = "a named language call",
+    namespaced = "a namespaced language call",
+    recursive = "a recursive language call",
+    inlined = "an inlined language call"
+  )
 }
 
+friendly_expr_type_of <- function(type) {
+  switch(type,
+    NULL = "the NULL object",
+    name = ,
+    symbol = "a symbol",
+    language = "a language call",
+    pairlist = "a pairlist node",
+    literal = "a syntactic literal"
+  )
+}
 
 #' Dispatch on call type.
 #'
