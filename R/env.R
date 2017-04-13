@@ -282,7 +282,7 @@ set_env <- function(env, new_env = caller_env()) {
     },
     environment = get_env(new_env),
     abort(paste0(
-      "Cannot set environment for object of type`", type_of(env), "`"
+      "Can't set environment for object of type`", type_of(env), "`"
     ))
   )
 }

@@ -212,7 +212,7 @@ as_integerish_type <- function(x, as_type, to) {
     as_base_type(x, as_type)
   } else {
     abort(paste0(
-      "Cannot convert fractional `double` to `", to, "`"
+      "Can't convert a fractional double vector to ", friendly_type(to), ""
     ))
   }
 }

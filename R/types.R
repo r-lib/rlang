@@ -436,7 +436,7 @@ abort_coercion <- function(x, to_type) {
   if (!inherits(to_type, "AsIs")) {
     to_type <- friendly_type(to_type)
   }
-  abort(paste0("Cannot convert ", x_type, " to ", to_type))
+  abort(paste0("Can't convert ", x_type, " to ", to_type))
 }
 
 friendly_type <- function(type) {
@@ -586,7 +586,7 @@ switch_lang <- function(.x, ...) {
 #' @rdname switch_lang
 #' @export
 coerce_lang <- function(.x, .to, ...) {
-  msg <- paste0("Cannot convert ", type_of(.x), " to ", .to, "")
+  msg <- paste0("Can't convert ", type_of(.x), " to ", .to, "")
   switch(lang_type_of(.x), ..., abort(msg))
 }
 #' @rdname switch_lang

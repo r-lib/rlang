@@ -33,8 +33,8 @@ test_that("as_list() bypasses environment method and leaves input intact", {
 })
 
 test_that("as_integer() and as_logical() require integerish input", {
-  expect_error(as_integer(1.5), "fractional `double`")
-  expect_error(as_logical(1.5), "fractional `double`")
+  expect_error(as_integer(1.5), "a fractional double vector to an integer vector")
+  expect_error(as_logical(1.5), "a fractional double vector to a logical vector")
 })
 
 test_that("names are preserved", {

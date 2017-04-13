@@ -50,8 +50,8 @@ as_symbol <- function(x) {
     language =
       switch_lang(x,
         namespaced = node_car(x),
-        inlined = abort("Cannot create symbol from inlined call"),
-        recursive = abort("cannot create symbol from recursive call"),
+        inlined = abort("Can't create symbol from inlined call"),
+        recursive = abort("Can't create symbol from recursive call"),
         as_symbol(node_car(x))
       )
   )

@@ -252,7 +252,7 @@ lang_standardise <- function(call = caller_frame()) {
     string = get(fn, envir = f_env(quote), mode = "function"),
     primitive = ,
     closure = fn,
-    abort("Cannot extract a function to compare the call to")
+    abort("Can't extract a function to compare the call to")
   )
 
   matched <- match.call(as_closure(fn), get_expr(quote))

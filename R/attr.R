@@ -20,7 +20,7 @@ zap_attrs <- function(x) {
     char = ,
     symbol = ,
     environment = abort(paste0(
-      "Cannot change attributes of uncopyable type `", type_of(x), "`"
+      "Can't change attributes of uncopyable type `", type_of(x), "`"
     ))
   )
   attributes(x) <- NULL
