@@ -343,11 +343,14 @@ op_as_closure <- function(prim_nm) {
       expr <- expr(UQ(op)(UQ(enexpr(.x)), UQ(enexpr(.y))))
       eval_bare(expr, caller_env())
     },
+    `@` = ,
     `$` = function(.x, .i) {
-      expr <- expr(.x$`!!`(enexpr(.i)))
+      op <- sym(prim_nm)
+      expr <- expr(UQ(op)(.x, `!!`(enexpr(.i))))
       eval_bare(expr)
     },
     `[[<-` = ,
+    `@<-` = ,
     `$<-` = function(.x, .i, .value) {
       op <- sym(prim_nm)
       expr <- expr(UQ(op)(UQ(enexpr(.x)), UQ(enexpr(.i)), UQ(enexpr(.value))))
