@@ -70,21 +70,7 @@
 quos <- function(..., .named = FALSE,
                  .ignore_empty = c("trailing", "none", "all")) {
   dots <- dots_enquose(...)
-
-  n_dots <- length(dots)
-  if (n_dots) {
-    dots <- switch(match.arg(.ignore_empty),
-      trailing =
-        if (quo_is_missing(dots[[n_dots]])) {
-          dots[[n_dots]] <- NULL
-          dots
-        } else {
-          dots
-        },
-      all = discard(dots, quo_is_missing),
-      dots
-    )
-  }
+  dots <- dots_clean_empty(dots, quo_is_missing, .ignore_empty)
 
   if (.named) {
     width <- quo_names_width(.named)
