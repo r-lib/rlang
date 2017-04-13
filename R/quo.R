@@ -415,20 +415,21 @@ as_quosure <- function(x, env = caller_env()) {
 
 #' @export
 print.quosure <- function(x, ...) {
-  env_type <- env_type(get_env(x))
-
+  cat(paste0("<quosure [", env_type(get_env(x)), "]>\n"))
+  print(zap_attrs(x))
+  invisible(x)
+}
+#' @export
+str.quosure <- function(object, ...) {
+  env_type <- env_type(get_env(object))
   if (env_type %in% c("frame", "local")) {
-    addr <- sxp_address(get_env(x))
-    env_type <- friendly_env_type(env_type)
-    env_type <- paste0(env_type, " (", addr, ")")
-  } else {
-    env_type <- friendly_env_type(env_type)
+    addr <- sxp_address(get_env(object))
+    env_type <- paste(env_type, addr)
   }
 
-  cat(paste0("# A quosure from ", env_type, "\n"))
-  print(zap_attrs(x))
-
-  invisible(x)
+  cat(paste0("<quosure [", env_type, "]>\n"))
+  print(zap_attrs(object))
+  invisible(object)
 }
 
 #' @rdname new_quosure
