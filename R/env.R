@@ -836,3 +836,18 @@ with_env <- function(env, expr) {
 locally <- function(expr) {
   .Call(rlang_eval, substitute(expr), child_env(caller_env()))
 }
+
+
+env_type <- function(env) {
+  if (identical(env, global_env())) {
+    "global"
+  } else if (identical(env, empty_env())) {
+    "empty"
+  } else if (identical(env, base_env())) {
+    "base"
+  } else if (is_frame_env(env)) {
+    "frame"
+  } else {
+    "local"
+  }
+}

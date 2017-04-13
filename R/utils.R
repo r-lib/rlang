@@ -67,3 +67,8 @@ map_around <- function(.x, .neighbour = c("right", "left"), .f, ...) {
 discard_unnamed <- function(x) {
   discard(x, names2(x) == "")
 }
+
+#' @useDynLib rlang rlang_sxp_address
+sxp_address <- function(x) {
+  .Call(rlang_sxp_address, x)
+}

@@ -412,11 +412,20 @@ as_quosure <- function(x, env = caller_env()) {
     new_quosure(x, env)
   }
 }
+
 #' @export
 print.quosure <- function(x, ...) {
-  cat("# A quosure\n")
-  x <- set_attrs(x, class = "formula")
-  NextMethod()
+  env_type <- env_type(get_env(x))
+
+  cat(paste0("# A quosure (", env_type, ")\n"))
+  print(zap_attrs(x))
+
+  if (env_type %in% c("frame", "local")) {
+    addr <- sxp_address(get_env(x))
+    cat(paste0("# Environment: ", addr, "\n"))
+  }
+
+  invisible(x)
 }
 
 #' @rdname new_quosure

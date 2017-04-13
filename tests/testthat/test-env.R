@@ -140,3 +140,10 @@ test_that("set_env() sets current env by default", {
   quo <- set_env(locally(~foo))
   expect_identical(f_env(quo), get_env())
 })
+
+test_that("finds correct env type", {
+  expect_identical(identity(env_type(ctxt_frame(2)$env)), "frame")
+  expect_identical(env_type(global_env()), "global")
+  expect_identical(env_type(empty_env()), "empty")
+  expect_identical(env_type(base_env()), "base")
+})

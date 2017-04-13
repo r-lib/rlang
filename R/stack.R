@@ -611,6 +611,15 @@ stack_trim <- function(stack, n = 1) {
   stack[seq(n_skip, n_frames)]
 }
 
+is_frame_env <- function(env) {
+  for (frame in sys.frames()) {
+    if (identical(env, frame)) {
+      return(TRUE)
+    }
+  }
+  FALSE
+}
+
 
 #' Jump to or from a frame.
 #'

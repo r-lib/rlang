@@ -307,3 +307,7 @@ test_that("can return to frame", {
 
   expect_equal(fn(), "returned from h() to fn()")
 })
+
+test_that("detects frame environment", {
+  expect_true(identity(is_frame_env(ctxt_frame(2)$env)))
+})
