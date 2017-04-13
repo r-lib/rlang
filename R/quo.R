@@ -182,6 +182,22 @@
 #' f <- quo(list(!!quo_f, !! quo))
 #' f
 #' eval_tidy(f)
+#'
+#'
+#' # When a quosure is printed in the console, the brackets indicate
+#' # if the enclosure is the global environment or a local one:
+#' locally(quo(foo))
+#'
+#' # Literals are enquosed with the empty environment because they can
+#' # be evaluated anywhere:
+#' quo(10L)
+#'
+#' # To differentiate local environments, use str(). It prints the
+#' # machine address of the environment:
+#' quo1 <- locally(quo(foo))
+#' quo2 <- locally(quo(foo))
+#' quo1; quo2
+#' str(quo1); str(quo2)
 #' @useDynLib rlang rlang_interp
 quo <- function(expr) {
   enquo(expr)
