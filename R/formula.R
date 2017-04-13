@@ -85,8 +85,8 @@ f_rhs <- function(f) {
 #' @rdname f_rhs
 `f_rhs<-` <- function(x, value) {
   stopifnot(is_formula(x))
-  f <- new_formula(f_lhs(x), value, f_env(x))
-  copy_lang_name(f, x)
+  x[[length(x)]] <- value
+  x
 }
 
 #' @export
@@ -100,8 +100,13 @@ f_lhs <- function(f) {
 #' @rdname f_rhs
 `f_lhs<-` <- function(x, value) {
   stopifnot(is_formula(x))
-  f <- new_formula(value, f_rhs(x), f_env(x))
-  copy_lang_name(f, x)
+  if (length(x) < 3) {
+    x <- duplicate(x)
+    mut_node_cdr(x, pairlist(value, x[[2]]))
+  } else {
+    x[[2]] <- value
+  }
+  x
 }
 
 copy_lang_name <- function(f, x) {
