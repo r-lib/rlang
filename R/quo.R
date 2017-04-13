@@ -437,11 +437,7 @@ print.quosure <- function(x, ...) {
 }
 #' @export
 str.quosure <- function(object, ...) {
-  env_type <- env_type(get_env(object))
-  if (env_type %in% c("frame", "local")) {
-    addr <- sxp_address(get_env(object))
-    env_type <- paste(env_type, addr)
-  }
+  env_type <- env_format(get_env(object))
 
   cat(paste0("<quosure [", env_type, "]>\n"))
   print(zap_attrs(object))

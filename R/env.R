@@ -861,3 +861,14 @@ friendly_env_type <- function(type) {
     abort("Internal error: unknown environment type")
   )
 }
+
+env_format <- function(env) {
+  type <- env_type(env)
+
+  if (type %in% c("frame", "local")) {
+    addr <- sxp_address(get_env(env))
+    type <- paste(type, addr)
+  }
+
+  type
+}

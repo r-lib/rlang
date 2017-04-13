@@ -131,7 +131,7 @@ print.frame <- function(x, ...) {
     expr <- paste(expr[[1]], "<...>")
   }
   cat("  expr: ", expr, "\n", sep = "")
-  cat("   env: ", format(x$env), "\n", sep = "")
+  cat("   env: [", env_format(x$env), "]\n", sep = "")
 }
 #' Is object a frame?
 #'
