@@ -95,6 +95,27 @@ test_that("can modify environment", {
   expect_equal(f_env(f), env)
 })
 
+test_that("setting RHS preserves attributes", {
+  attrs <- list(foo = "bar", class = "baz")
+
+  f <- set_attrs(~foo, !!! attrs)
+  f_rhs(f) <- quote(bar)
+
+  expect_identical(f, set_attrs(~bar, !!! attrs))
+})
+
+test_that("setting LHS preserves attributes", {
+  attrs <- list(foo = "bar", class = "baz")
+
+  f <- set_attrs(~foo, !!! attrs)
+  f_lhs(f) <- quote(bar)
+
+  expect_identical(f, set_attrs(bar ~ foo, !!! attrs))
+
+  f_lhs(f) <- quote(baz)
+  expect_identical(f, set_attrs(baz ~ foo, !!! attrs))
+})
+
 
 # Utils --------------------------------------------------------------
 

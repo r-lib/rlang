@@ -130,8 +130,8 @@ print.frame <- function(x, ...) {
   if (length(expr) > 1) {
     expr <- paste(expr[[1]], "<...>")
   }
-  cat("  expr: ", expr, "\n", sep = "")
-  cat("   env: ", format(x$env), "\n", sep = "")
+  cat("expr: ", expr, "\n", sep = "")
+  cat("env:  [", env_format(x$env), "]\n", sep = "")
 }
 #' Is object a frame?
 #'
@@ -609,6 +609,15 @@ stack_trim <- function(stack, n = 1) {
   n_frames <- length(stack)
   n_skip <- n_frames - caller_pos
   stack[seq(n_skip, n_frames)]
+}
+
+is_frame_env <- function(env) {
+  for (frame in sys.frames()) {
+    if (identical(env, frame)) {
+      return(TRUE)
+    }
+  }
+  FALSE
 }
 
 

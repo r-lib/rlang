@@ -3,6 +3,8 @@
 #include <Rinternals.h>
 #include <stdbool.h>
 
+SEXP sym_tilde = NULL;
+
 bool is_character(SEXP x) {
   return TYPEOF(x) == STRSXP;
 }

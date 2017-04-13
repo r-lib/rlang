@@ -3,6 +3,7 @@
 #include <R.h>
 #include <Rinternals.h>
 
+SEXP sym_tilde;
 bool is_lazy_load(SEXP x);
 bool is_lang(SEXP x, const char* f);
 bool is_formula(SEXP x);

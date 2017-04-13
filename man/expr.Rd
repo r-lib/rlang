@@ -38,14 +38,15 @@ e <- quote(letters)
 e <- expr(toupper(!!e))
 eval(e)
 
-# Be careful if you unquote a formula-quote: you need to take the
-# RHS (and lose the scope information) to evaluate with eval():
-f <- ~letters
-e <- expr(toupper(!! f_rhs(f)))
+# Be careful if you unquote a quosure: you need to take the RHS
+# (and lose the scope information) to evaluate with eval():
+f <- quo(letters)
+e <- expr(toupper(!! get_expr(f)))
 eval(e)
 
-# However it's fine to unquote formulas if you evaluate with eval_tidy():
-f <- ~letters
+# On the other hand it's fine to unquote quosures if you evaluate
+# with eval_tidy():
+f <- quo(letters)
 e <- expr(toupper(!! f))
 eval_tidy(e)
 }

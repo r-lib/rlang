@@ -836,3 +836,39 @@ with_env <- function(env, expr) {
 locally <- function(expr) {
   .Call(rlang_eval, substitute(expr), child_env(caller_env()))
 }
+
+
+env_type <- function(env) {
+  if (identical(env, global_env())) {
+    "global"
+  } else if (identical(env, empty_env())) {
+    "empty"
+  } else if (identical(env, base_env())) {
+    "base"
+  } else if (is_frame_env(env)) {
+    "frame"
+  } else {
+    "local"
+  }
+}
+friendly_env_type <- function(type) {
+  switch(type,
+    global = "the global environment",
+    empty = "the empty environment",
+    base = "the base environment",
+    frame = "a frame environment",
+    local = "a local environment",
+    abort("Internal error: unknown environment type")
+  )
+}
+
+env_format <- function(env) {
+  type <- env_type(env)
+
+  if (type %in% c("frame", "local")) {
+    addr <- sxp_address(get_env(env))
+    type <- paste(type, addr)
+  }
+
+  type
+}
