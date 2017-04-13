@@ -439,6 +439,17 @@ abort_coercion <- function(x, to_type) {
   abort(paste0("Can't convert ", x_type, " to ", to_type))
 }
 
+#' Format a type for error messages
+#'
+#' @param type A type as returned by [type_of()] or [lang_type_of()].
+#' @return A string of the prettified type, qualified with an
+#'   indefinite article.
+#' @export
+#' @examples
+#' friendly_type("logical")
+#' friendly_type("integer")
+#' friendly_type("string")
+#' @export
 friendly_type <- function(type) {
   friendly <- friendly_type_of(type)
   if (!is_null(friendly)) {
