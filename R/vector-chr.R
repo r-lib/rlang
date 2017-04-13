@@ -164,7 +164,7 @@ as_native_string <- function(x) {
 #' }
 set_chr_encoding <- function(x, encoding = c("unknown", "UTF-8", "latin1", "bytes")) {
   if (!is_null(encoding)) {
-    Encoding(x) <- match.arg(encoding)
+    Encoding(x) <- arg_match(encoding)
   }
   x
 }

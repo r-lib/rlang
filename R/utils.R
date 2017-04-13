@@ -32,7 +32,7 @@ imap_chr <- function(.x, .f, ...) {
 }
 
 map_around <- function(.x, .neighbour = c("right", "left"), .f, ...) {
-  where <- match.arg(.neighbour)
+  where <- arg_match(.neighbour)
   n <- length(.x)
   out <- vector("list", n)
 

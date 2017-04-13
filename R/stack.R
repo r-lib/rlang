@@ -514,7 +514,7 @@ sys_frame <- function(n) {
 frame_position <- function(frame, from = c("global", "current")) {
   stack <- stack_trim(ctxt_stack(), n = 2)
 
-  if (match.arg(from) == "global") {
+  if (arg_match(from) == "global") {
     frame_position_global(frame, stack)
   } else {
     caller_pos <- call_frame(2)$pos
