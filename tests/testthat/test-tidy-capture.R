@@ -23,12 +23,12 @@ test_that("dots_quos() produces correct formulas", {
 test_that("dots are interpolated", {
   fn <- function(...) {
     baz <- "baz"
-    fn_var <- ~baz
+    fn_var <- quo(baz)
     g(..., toupper(!! fn_var))
   }
   g <- function(...) {
     foo <- "foo"
-    g_var <- ~foo
+    g_var <- quo(foo)
     h(toupper(!! g_var), ...)
   }
   h <- function(...) {
@@ -36,7 +36,7 @@ test_that("dots are interpolated", {
   }
 
   bar <- "bar"
-  var <- ~bar
+  var <- quo(bar)
   dots <- fn(toupper(!!var))
 
   expect_identical(map(dots, deparse), named_list("~toupper(~foo)", "~toupper(~bar)", "~toupper(~baz)"))
@@ -154,7 +154,7 @@ test_that("can capture empty list of dots", {
 })
 
 test_that("quosures are spliced before serialisation", {
-  quosures <- dots_quos(!! ~foo(~bar), .named = TRUE)
+  quosures <- dots_quos(!! quo(foo(!! quo(bar))), .named = TRUE)
   expect_identical(names(quosures), "foo(bar)")
 })
 
@@ -190,20 +190,9 @@ test_that("formulas are guarded on capture", {
   )
 })
 
-test_that("formulas are not guarded if unquoted", {
-  expect_identical(
-    quo(!! ~foo(~bar, ~~baz())),
-    new_quosure(quote(foo(~bar, ~~baz())))
-  )
-  quo <- quo(foo(bar))
-  quo <- quo(baz(!! quo))
-  expect_equal(quo, ~baz(~foo(bar)))
-})
-
 test_that("quosured literals are forwarded as is", {
-  expect_identical(quo(!! ~NULL), as_quosure(~NULL))
   expect_identical(quo(!! quo(NULL)), new_quosure(NULL, empty_env()))
-  expect_identical(dots_quos(!! ~10L), set_names(quos_list(as_quosure(~10L)), ""))
+  expect_identical(dots_quos(!! quo(10L)), set_names(quos_list(new_quosure(10L, empty_env())), ""))
 })
 
 test_that("expr() returns missing argument", {

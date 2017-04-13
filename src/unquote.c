@@ -69,35 +69,16 @@ SEXP guard_formula(SEXP f) {
   return guard;
 }
 
-SEXP as_quosure(SEXP x) {
-  if (Rf_inherits(x, "quosure"))
-    return x;
-
-  static SEXP quo_classes = NULL;
-  if (!quo_classes) {
-    quo_classes = Rf_allocVector(STRSXP, 2);
-    R_PreserveObject(quo_classes);
-    SET_STRING_ELT(quo_classes, 0, Rf_mkChar("quosure"));
-    SET_STRING_ELT(quo_classes, 1, Rf_mkChar("formula"));
-  }
-
-  static SEXP sym_environment = NULL;
-  if (!sym_environment)
-    sym_environment = Rf_install(".Environment");
-
-  SEXP quo = PROTECT(Rf_shallow_duplicate(x));
-  Rf_setAttrib(quo, R_ClassSymbol, quo_classes);
-  Rf_setAttrib(quo, sym_environment, Rf_getAttrib(x, sym_environment));
-
-  UNPROTECT(1);
-  return quo;
-}
-
 void unquote_check(SEXP x) {
   if (CDR(x) == R_NilValue)
     Rf_errorcall(R_NilValue, "`UQ()` must be called with an argument");
 }
 
+bool is_bare_formula(SEXP x) {
+  return TYPEOF(x) == LANGSXP
+      && CAR(x) == sym_tilde
+      && !Rf_inherits(x, "quosure");
+}
 SEXP unquote(SEXP x, SEXP env, SEXP uq_sym, bool quosured) {
   if (is_sym(uq_sym, "!!"))
     uq_sym = Rf_install("UQE");
@@ -113,11 +94,10 @@ SEXP unquote(SEXP x, SEXP env, SEXP uq_sym, bool quosured) {
   SEXP unquoted;
   REPROTECT(unquoted = Rf_eval(uq_fun, env), ipx);
 
-  if (!quosured && is_symbolic(unquoted)) {
+  if (!quosured && is_symbolic(unquoted))
     unquoted = lang2(Rf_install("quote"), unquoted);
-  } else if (quosured && is_formula(unquoted)) {
-    unquoted = as_quosure(unquoted);
-  }
+  else if (quosured && is_bare_formula(unquoted))
+    unquoted = guard_formula(unquoted);
 
   UNPROTECT(1);
   return unquoted;

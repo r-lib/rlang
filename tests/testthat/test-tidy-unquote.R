@@ -8,8 +8,8 @@ test_that("interpolation does not recurse over spliced arguments", {
 })
 
 test_that("formulas containing unquote operators are interpolated", {
-  var1 <- ~foo
-  var2 <- local({ foo <- "baz"; ~foo })
+  var1 <- quo(foo)
+  var2 <- local({ foo <- "baz"; quo(foo) })
 
   f <- expr_interp(~list(!!var1, !!var2))
   expect_identical(f, new_quosure(new_language("list", as_quosure(var1), as_quosure(var2))))
@@ -80,19 +80,9 @@ test_that("evaluates contents of UQ()", {
   expect_equal(quo(UQ(1 + 2)), ~ 3)
 })
 
-test_that("layers of unquote are not peeled off recursively upon interpolation", {
-  var1 <- ~letters
-  var2 <- ~!!var1
-  expect_identical(quo(!!var2), as_quosure(~!!var1))
-
-  var1 <- local(~letters)
-  var2 <- local(~!!var1)
-  expect_identical(expr_interp(~!!var2), new_quosure(as_quosure(var2)))
-})
-
-test_that("formulas are promised recursively during unquote", {
-  var <- ~~letters
-  expect_identical(quo(!!var), new_quosure(quote(~letters)))
+test_that("quosures are not rewrapped", {
+  var <- quo(!! quo(letters))
+  expect_identical(quo(!!var), quo(letters))
 
   var <- new_quosure(local(~letters), env = child_env(get_env()))
   expect_identical(quo(!!var), var)
@@ -161,9 +151,9 @@ test_that("single ! is not treated as shortcut", {
 })
 
 test_that("double and triple ! are treated as syntactic shortcuts", {
-  var <- local(~foo)
+  var <- local(quo(foo))
   expect_identical(quo(!! var), as_quosure(var))
-  expect_identical(quo(!! ~foo), quo(foo))
+  expect_identical(quo(!! quo(foo)), quo(foo))
   expect_identical(quo(list(!!! letters[1:3])), quo(list("a", "b", "c")))
 })
 
@@ -175,11 +165,11 @@ test_that("`!!` works in prefixed calls", {
 })
 
 
-# fpromises ----------------------------------------------------------
+# quosures -----------------------------------------------------------
 
-test_that("fpromises are created for all informative formulas", {
-  foo <- local(~foo)
-  bar <- local(~bar)
+test_that("quosures are created for all informative formulas", {
+  foo <- local(quo(foo))
+  bar <- local(quo(bar))
 
   interpolated <- local(quo(list(!!foo, !!bar)))
   expected <- new_quosure(new_language("list", as_quosure(foo), as_quosure(bar)), env = get_env(interpolated))

@@ -46,7 +46,7 @@ test_that("eval_tidy does quasiquoting", {
 test_that("unquoted formulas look in their own env", {
   f <- function() {
     n <- 100
-    ~ n
+    quo(n)
   }
 
   n <- 10
@@ -70,14 +70,12 @@ test_that("unquoted formulas can use data", {
   expect_identical(eval_tidy(quo(!! f2()), data = list(x = 1)), 101)
 })
 
-test_that("guarded formulas are not evaluated", {
+test_that("bare formulas are not evaluated", {
   f <- local(~x)
-  expect_identical(eval_tidy(quo(UQF(f))), f)
+  expect_identical(eval_tidy(quo(!! f)), f)
 
   f <- a ~ b
-  fn <- function() ~UQF(f)
-  expect_identical(eval_tidy(quo(!!fn())), f)
-  expect_identical(eval_tidy(quo(UQF(f))), f)
+  expect_identical(eval_tidy(quo(!! f)), f)
 })
 
 test_that("quosures are not evaluated if not forced", {
@@ -85,28 +83,28 @@ test_that("quosures are not evaluated if not forced", {
     if (force) arg else "bar"
   }
 
-  f1 <- quo(fn(!! ~stop("forced!"), force = FALSE))
-  f2 <- quo(fn(!! local(~stop("forced!")), force = FALSE))
+  f1 <- quo(fn(!! quo(stop("forced!")), force = FALSE))
+  f2 <- quo(fn(!! local(quo(stop("forced!"))), force = FALSE))
   expect_identical(eval_tidy(f1), "bar")
   expect_identical(eval_tidy(f2), "bar")
 
-  f_forced1 <- quo(fn(!! ~stop("forced!"), force = TRUE))
-  f_forced2 <- quo(fn(!! local(~stop("forced!")), force = TRUE))
+  f_forced1 <- quo(fn(!! quo(stop("forced!")), force = TRUE))
+  f_forced2 <- quo(fn(!! local(quo(stop("forced!"))), force = TRUE))
   expect_error(eval_tidy(f_forced1), "forced!")
   expect_error(eval_tidy(f_forced2), "forced!")
 })
 
 test_that("can unquote captured arguments", {
-  var <- ~cyl
+  var <- quo(cyl)
   fn <- function(arg) eval_tidy(enquo(arg), mtcars)
-  expect_identical(fn(var), ~cyl)
+  expect_identical(fn(var), quo(cyl))
   expect_identical(fn(!!var), mtcars$cyl)
 })
 
 test_that("quosures are evaluated recursively", {
   foo <- "bar"
   expect_identical(eval_tidy(quo(foo)), "bar")
-  expect_identical(eval_tidy(quo(!!~~foo)), "bar")
+  expect_identical(eval_tidy(quo(!!quo(!! quo(foo)))), "bar")
 })
 
 test_that("quosures have lazy semantics", {
@@ -117,14 +115,14 @@ test_that("quosures have lazy semantics", {
 test_that("can unquote hygienically within captured arg", {
   fn <- function(df, arg) eval_tidy(enquo(arg), df)
 
-  foo <- "bar"; var <- ~foo
-  expect_identical(fn(mtcars, list(var, !!var)), list(~foo, "bar"))
+  foo <- "bar"; var <- quo(foo)
+  expect_identical(fn(mtcars, list(var, !!var)), list(quo(foo), "bar"))
 
-  var <- ~cyl
+  var <- quo(cyl)
   expect_identical(fn(mtcars, (!!var) > 4), mtcars$cyl > 4)
-  expect_identical(fn(mtcars, list(var, !!var)), list(~cyl, mtcars$cyl))
+  expect_identical(fn(mtcars, list(var, !!var)), list(quo(cyl), mtcars$cyl))
   expect_equal(fn(mtcars, list(~var, !!var)), list(~var, mtcars$cyl))
-  expect_equal(fn(mtcars, list(~~var, !!~var, !!~~var)), list(new_quosure(new_language("_F", quote(var))), ~cyl, ~cyl))
+  expect_equal(fn(mtcars, list(~~var, !!quo(var), !!quo(quo(var)))), list(new_quosure(new_language("_F", quote(var))), ~cyl, ~var))
 })
 
 test_that("can unquote for old-style NSE functions", {
