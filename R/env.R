@@ -851,3 +851,13 @@ env_type <- function(env) {
     "local"
   }
 }
+friendly_env_type <- function(type) {
+  switch(type,
+    global = "the global environment",
+    empty = "the empty environment",
+    base = "the base environment",
+    frame = "a frame environment",
+    local = "a local environment",
+    abort("Internal error: unknown environment type")
+  )
+}

@@ -417,13 +417,16 @@ as_quosure <- function(x, env = caller_env()) {
 print.quosure <- function(x, ...) {
   env_type <- env_type(get_env(x))
 
-  cat(paste0("# A quosure (", env_type, ")\n"))
-  print(zap_attrs(x))
-
   if (env_type %in% c("frame", "local")) {
     addr <- sxp_address(get_env(x))
-    cat(paste0("# Environment: ", addr, "\n"))
+    env_type <- friendly_env_type(env_type)
+    env_type <- paste0(env_type, " (", addr, ")")
+  } else {
+    env_type <- friendly_env_type(env_type)
   }
+
+  cat(paste0("# A quosure from ", env_type, "\n"))
+  print(zap_attrs(x))
 
   invisible(x)
 }
