@@ -11,6 +11,7 @@
 #' splicing semantics_: in addition to lists marked explicitly for
 #' splicing, [bare][is_bare_list] lists are spliced as well.
 #'
+#' @inheritParams dots_values
 #' @param ... Arguments with explicit (`dots_list()`) or list
 #'   (`dots_splice()`) splicing semantics. The contents of spliced
 #'   arguments are embedded in the returned list.
@@ -26,8 +27,9 @@
 #'
 #' # Unlike dots_splice(), it doesn't splice bare lists:
 #' dots_list(x, 3)
-dots_list <- function(...) {
-  dots <- .Call(rlang_squash, dots_values(...), "list", is_spliced, 1L)
+dots_list <- function(..., .ignore_empty = c("trailing", "none", "all")) {
+  dots <- dots_values(..., .ignore_empty = .ignore_empty)
+  dots <- .Call(rlang_squash, dots, "list", is_spliced, 1L)
   names(dots) <- names2(dots)
   dots
 }
@@ -40,8 +42,9 @@ dots_list <- function(...) {
 #' x <- list(1, 2)
 #' dots_splice(splice(x), 3)
 #' dots_splice(x, 3)
-dots_splice <- function(...) {
-  dots <- .Call(rlang_squash, dots_values(...), "list", is_spliced_bare, 1L)
+dots_splice <- function(..., .ignore_empty = c("trailing", "none", "all")) {
+  dots <- dots_values(..., .ignore_empty = .ignore_empty)
+  dots <- .Call(rlang_squash, dots, "list", is_spliced_bare, 1L)
   names(dots) <- names2(dots)
   dots
 }
@@ -56,6 +59,9 @@ dots_splice <- function(...) {
 #' a custom predicate (see [flatten_if()]).
 #'
 #' @param ... Arguments to evaluate and process splicing operators.
+#' @param .ignore_empty Whether to ignore empty arguments. Can be one
+#'   of `"trailing"`, `"none"`, `"all"`. If `"trailing"`, only the
+#'   last argument is ignored if it is empty.
 #' @export
 #' @examples
 #' dots <- dots_values(!!! list(1))
@@ -63,14 +69,34 @@ dots_splice <- function(...) {
 #'
 #' # Flatten the spliced objects:
 #' flatten_if(dots, is_spliced)
-dots_values <- function(...) {
+dots_values <- function(..., .ignore_empty = c("trailing", "none", "all")) {
   dots <- dots_capture(..., `__quosured` = FALSE)
+  dots <- dots_clean_empty(dots, function(x) is_missing(x$expr), .ignore_empty)
   if (is_null(dots)) {
     dots <- list(...)
     set_names(dots, names2(dots))
   } else {
     map(dots, function(dot) eval_bare(dot$expr, dot$env))
   }
+}
+
+dots_clean_empty <- function(dots, is_empty, ignore_empty) {
+  n_dots <- length(dots)
+
+  if (n_dots) {
+    which <- match.arg(ignore_empty, c("trailing", "none", "all"))
+    switch(which,
+      trailing =
+        if (is_empty(dots[[n_dots]])) {
+          dots[[n_dots]] <- NULL
+        },
+      all = {
+        dots <- discard(dots, is_empty)
+      }
+    )
+  }
+
+  dots
 }
 
 #' Inspect dots

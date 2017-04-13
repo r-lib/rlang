@@ -21,14 +21,12 @@
 #'    RHS. Unlike `dots_quos()`, it allows named definitions.}
 #' }
 #' @inheritParams enquo
+#' @inheritParams dots_values
 #' @param .named Whether to ensure all dots are named. Unnamed
 #'   elements are processed with [expr_text()] to figure out a default
 #'   name. If an integer, it is passed to the `width` argument of
 #'   `expr_text()`, if `TRUE`, the default width is used. See
 #'   [exprs_auto_name()].
-#' @param .ignore_empty Whether to ignore empty arguments. Can be one
-#'   of `"trailing"`, `"none"`, `"all"`. If `"trailing"`, only the
-#'   last argument is ignored if it is empty.
 #' @export
 #' @name quosures
 #' @examples
@@ -70,21 +68,7 @@
 quos <- function(..., .named = FALSE,
                  .ignore_empty = c("trailing", "none", "all")) {
   dots <- dots_enquose(...)
-
-  n_dots <- length(dots)
-  if (n_dots) {
-    dots <- switch(match.arg(.ignore_empty),
-      trailing =
-        if (quo_is_missing(dots[[n_dots]])) {
-          dots[[n_dots]] <- NULL
-          dots
-        } else {
-          dots
-        },
-      all = discard(dots, quo_is_missing),
-      dots
-    )
-  }
+  dots <- dots_clean_empty(dots, quo_is_missing, .ignore_empty)
 
   if (.named) {
     width <- quo_names_width(.named)

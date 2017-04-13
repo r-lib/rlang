@@ -87,3 +87,10 @@ test_that("dots_values() handles forced dots", {
 
   expect_identical(lapply(1:2, function(...) dots_values(...)), list(named_list(1L), named_list(2L)))
 })
+
+test_that("cleans empty arguments", {
+  expect_identical(dots_list(1, a = ), named_list(1))
+  expect_identical(ll(1, a = ), list(1))
+
+  expect_identical(dots_list(, 1, a = , .ignore_empty = "all"), named_list(1))
+})
