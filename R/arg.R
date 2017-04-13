@@ -13,6 +13,7 @@
 #' @param values The possible values that `arg` can take. If `NULL`,
 #'   the values are taken from the function definition of the [caller
 #'   frame][caller_frame].
+#' @return The string supplied to `arg`.
 #' @export
 #' @examples
 #' fn <- function(x = c("foo", "bar")) arg_match(x)
@@ -45,7 +46,7 @@ arg_match <- function(arg, values = NULL) {
   i <- match(arg, values)
 
   if (is_na(i)) {
-    msg <- paste0("`", arg_nm, "` should be one of: ")
+    msg <- paste0(chr_quoted(arg_nm), " should be one of: ")
     msg <- paste0(msg, chr_enumerate(chr_quoted(values, "\"")))
 
     i_partial <- pmatch(arg, values)

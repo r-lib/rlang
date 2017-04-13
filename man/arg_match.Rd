@@ -13,6 +13,9 @@ arg_match(arg, values = NULL)
 the values are taken from the function definition of the \link[=caller_frame]{caller
 frame}.}
 }
+\value{
+The string supplied to \code{arg}.
+}
 \description{
 This is equivalent to \code{\link[base:match.arg]{base::match.arg()}} with a few differences:
 \itemize{
