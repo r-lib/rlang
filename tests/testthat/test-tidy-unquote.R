@@ -48,13 +48,10 @@ test_that("can qualify operators with namespace", {
   # Should remove prefix only if rlang-qualified:
   expect_identical(quo(rlang::UQ(toupper("a"))), new_quosure("A", empty_env()))
   expect_identical(quo(list(rlang::UQS(list(a = 1, b = 2)))), quo(list(a = 1, b = 2)))
-  expect_identical(quo(rlang::UQF(~foo)), quo(UQF(~foo)))
 
   # Should keep prefix otherwise:
   expect_identical(quo(other::UQ(toupper("a"))), quo(other::"A"))
   expect_identical(quo(x$UQ(toupper("a"))), quo(x$"A"))
-  expect_error(quo(list(other::UQS(list(a = 1, b = 2)))), "Cannot splice at top-level")
-  expect_identical(quo(other::UQF(~foo)), quo(other::UQF(~foo)))
 })
 
 test_that("unquoting is frame-consistent", {
@@ -124,18 +121,7 @@ test_that("splicing an empty vector works", {
 })
 
 
-# UQF and UQE --------------------------------------------------------
-
-test_that("UQF() guards formulas", {
-  f <- local({ x <- "foo"; ~x })
-
-  guarded <- new_language("_F", splice(as.list(node_cdr(f))))
-  attributes(guarded) <- attributes(f)
-
-  expected_f <- new_quosure(guarded)
-  expect_identical(quo(UQF(f)), expected_f)
-  expect_identical(eval_tidy(expected_f), f)
-})
+# UQE ----------------------------------------------------------------
 
 test_that("UQE() extracts right-hand side", {
   var <- ~cyl

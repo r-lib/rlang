@@ -62,7 +62,6 @@ test_that("dots can be spliced", {
 
 test_that("interpolation by value does not guard formulas", {
   expect_identical(dots_values(~1), named_list(~1))
-  expect_identical(dots_values(UQF(~1)), named_list(~1))
 })
 
 test_that("dots names can be unquoted", {

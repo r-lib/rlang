@@ -3,21 +3,17 @@
 \name{UQ}
 \alias{UQ}
 \alias{UQE}
-\alias{UQF}
 \alias{UQS}
 \alias{quosure}
 \alias{quo}
 \alias{UQ}
 \alias{UQE}
-\alias{UQF}
 \alias{UQS}
 \title{Tidy quotation of an expression.}
 \usage{
 UQ(x)
 
 UQE(x)
-
-UQF(x)
 
 UQS(x)
 

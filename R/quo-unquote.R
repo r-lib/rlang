@@ -66,17 +66,11 @@ UQ <- function(x) {
 #' @rdname quosure
 UQE <- function(x) {
   if (is_formula(x)) {
-    f_rhs(x)
+    get_expr(x)
   } else {
     x
   }
 }
-#' @export
-#' @rdname quosure
-UQF <- function(x) {
-  x
-}
-
 #' @export
 #' @rdname quosure
 UQS <- function(x) {
