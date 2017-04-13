@@ -414,6 +414,7 @@ as_quosure <- function(x, env = caller_env()) {
 }
 #' @export
 print.quosure <- function(x, ...) {
+  cat("# A quosure\n")
   x <- set_attrs(x, class = "formula")
   NextMethod()
 }
