@@ -470,7 +470,7 @@ friendly_type_of <- function(type) {
     string = "a string",
     list = "a list",
 
-    NULL = "the NULL object",
+    NULL = "NULL",
     environment = "an environment",
     externalptr = "a pointer",
     weakref = "a weak reference",
@@ -478,7 +478,7 @@ friendly_type_of <- function(type) {
 
     name = ,
     symbol = "a symbol",
-    language = "a language call",
+    language = "a call (lang)",
     pairlist = "a pairlist node",
     expression = "an expression vector",
     quosure = "a quosure",
@@ -498,19 +498,19 @@ friendly_type_of <- function(type) {
 
 friendly_lang_type_of <- function(type) {
   switch(type,
-    named = "a named language call",
-    namespaced = "a namespaced language call",
-    recursive = "a recursive language call",
-    inlined = "an inlined language call"
+    named = "a named call (lang)",
+    namespaced = "a namespaced call (lang)",
+    recursive = "a recursive call (lang)",
+    inlined = "an inlined call (lang)"
   )
 }
 
 friendly_expr_type_of <- function(type) {
   switch(type,
-    NULL = "the NULL object",
+    NULL = "NULL",
     name = ,
     symbol = "a symbol",
-    language = "a language call",
+    language = "a call (lang)",
     pairlist = "a pairlist node",
     literal = "a syntactic literal"
   )

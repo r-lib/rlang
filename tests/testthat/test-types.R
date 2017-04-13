@@ -53,5 +53,5 @@ test_that("lang_type_of() returns correct lang subtype", {
 test_that("types are friendly", {
   expect_identical(friendly_type("character"), "a character vector")
   expect_identical(friendly_type("integer"), "an integer vector")
-  expect_identical(friendly_type("language"), "a language call")
+  expect_identical(friendly_type("language"), "a call (lang)")
 })
