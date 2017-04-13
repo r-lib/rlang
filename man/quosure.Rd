@@ -139,73 +139,73 @@ quo(mean(UQ(var) , UQS(extra_args)))
 
 # Unquoting is especially useful for transforming a captured
 # expression:
-f <- ~foo(bar)
+f <- quo(foo(bar))
 f <- quo(inner(!! f, arg1))
 f <- quo(outer(!! f, !!! lapply(letters[1:3], as_symbol)))
 f
 
-# Note that it's fine to unquote formulas as long as you evaluate
-# with eval_tidy():
-f <- ~letters
+# Note that it's fine to unquote expressions to be evaluated as
+# quosures, as long as you evaluate with eval_tidy():
+f <- quo(letters)
 f <- quo(toupper(!! f))
 eval_tidy(f)
 
-# Formulas carry scope information about the inner expression
+# Quosures carry scope information about the inner expression
 # inlined in the outer expression upon unquoting. To see this,
-# let's create a formula that quotes a symbol that only exists in a
+# let's create a quosure that quotes a symbol that only exists in a
 # local scope (a child environment of the current environment):
-f1 <- local({ foo <- "foo"; ~foo })
+f1 <- locally({ foo <- "foo"; quo(foo) })
 
 # You can evaluate that expression with eval_tidy():
 eval_tidy(f1)
 
 # And you can also inline it in another expression before
 # evaluation:
-f2 <- local({ bar <- "bar"; ~toupper(bar)})
+f2 <- locally({ bar <- "bar"; quo(toupper(bar))})
 f3 <- quo(paste(!!f1, !!f2, "!"))
 f3
 
-# eval_tidy() treats one-sided formulas like promises to be evaluated:
+# eval_tidy() treats quosures as promises to be evaluated:
 eval_tidy(f3)
 
 
-# The formula-promise representation is necessary to preserve scope
-# information and make sure objects are looked up in the right
-# place. However, there are situations where it can get in the way.
-# This is the case when you deal with non-tidy NSE functions that do
-# not understand formulas. You can inline the RHS of a formula in a
+# Quoting as a quosure is necessary to preserve scope information
+# and make sure objects are looked up in the right place. However,
+# there are situations where it can get in the way. This is the
+# case when you deal with non-tidy NSE functions that do not
+# understand formulas. You can inline the RHS of a formula in a
 # call thanks to the UQE() operator:
 nse_function <- function(arg) substitute(arg)
-var <- local(~foo(bar))
+var <- locally(quo(foo(bar)))
 quo(nse_function(UQ(var)))
 quo(nse_function(UQE(var)))
 
 # This is equivalent to unquoting and taking the RHS:
-quo(nse_function(!! f_rhs(var)))
+quo(nse_function(!! get_expr(var)))
 
 # One of the most important old-style NSE function is the dollar
 # operator. You need to use UQE() for subsetting with dollar:
-var <- ~cyl
+var <- quo(cyl)
 quo(mtcars$UQE(var))
 
 # `!!`() is also treated as a shortcut. It is meant for situations
 # where the bang operator would not parse, such as subsetting with
 # $. Since that's its main purpose, we've made it a shortcut for
 # UQE() rather than UQ():
-var <- ~cyl
+var <- quo(cyl)
 quo(mtcars$`!!`(var))
 
 
-# Sometimes you would like to unquote an object containing a
-# formula but include it as is rather than treating it as a
-# promise. You can use UQF() for this purpose:
-var <- ~letters[1:2]
-f <- quo(list(!!var, UQF(var)))
+# Quosures are represented as formulas, but formulas are not
+# treated identically to quosures. Formulas are guarded on capture
+# so that they evaluate to a literal formula rather than
+# self-evaluate like quosures:
+quo_f <- ~letters[1:2]
+quo <- quo(letters[1:2])
+
+f <- quo(list(!!quo_f, !! quo))
 f
 eval_tidy(f)
-
-# Note that two-sided formulas are never treated as fpromises:
-eval_tidy(quo(a ~ b))
 }
 \seealso{
 \link[=quosures]{quos()} for capturing several expressions,
