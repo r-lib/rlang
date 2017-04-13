@@ -280,6 +280,11 @@ fn_env <- function(fn) {
 #' # Primitive functions are regularised as closures
 #' as_closure(list)
 #' as_closure("list")
+#'
+#' # Operators have `.x` and `.y` as arguments, just like lambda
+#' # functions created with the formula syntax:
+#' as_closure(`+`)
+#' as_closure(`~`)
 as_function <- function(x, env = caller_env()) {
   coerce_type(x, "function",
     primitive = ,
@@ -305,6 +310,11 @@ as_closure <- function(x, env = caller_env()) {
     primitive = {
       fn_name <- prim_name(x)
 
+      fn <- op_as_closure(fn_name)
+      if (!is_null(fn)) {
+        return(fn)
+      }
+
       if (fn_name == "eval") {
         # do_eval() starts a context with a fake primitive function as
         # function definition. We replace it here with the .Internal()
@@ -320,6 +330,77 @@ as_closure <- function(x, env = caller_env()) {
 
       prim_call <- new_language(fn_name, splice(args))
       new_function(fmls, prim_call, base_env())
+    }
+  )
+}
+
+op_as_closure <- function(prim_nm) {
+  switch(prim_nm,
+    `<-` = ,
+    `<<-` = ,
+    `=` = function(.x, .y) {
+      op <- sym(prim_nm)
+      expr <- expr(UQ(op)(UQ(enexpr(.x)), UQ(enexpr(.y))))
+      eval_bare(expr, caller_env())
+    },
+    `$` = function(.x, .i) {
+      expr <- expr(.x$`!!`(enexpr(.i)))
+      eval_bare(expr)
+    },
+    `[[<-` = ,
+    `$<-` = function(.x, .i, .value) {
+      op <- sym(prim_nm)
+      expr <- expr(UQ(op)(UQ(enexpr(.x)), UQ(enexpr(.i)), UQ(enexpr(.value))))
+      eval_bare(expr, caller_env())
+    },
+    `[<-` = function(.x, ...) {
+      expr <- expr(`[<-`(!! enexpr(.x), !!! exprs(...)))
+      eval_bare(expr, caller_env())
+    },
+    `(` = function(.x) .x,
+    `[` = function(.x, ...) .x[...],
+    `[[` = function(.x, ...) .x[[...]],
+    `{` = function(...) {
+      values <- list(...)
+      values[[length(values)]]
+    },
+    `&` = function(.x, .y) .x & .y,
+    `|` = function(.x, .y) .x | .y,
+    `&&` = function(.x, .y) .x && .y,
+    `||` = function(.x, .y) .x || .y,
+    `!` = function(.x) !.x,
+    `+` = function(.x, .y) if (missing(.y)) .x else .x + .y,
+    `-` = function(.x, .y) if (missing(.y)) -.x else .x - .y,
+    `*` = function(.x, .y) .x * .y,
+    `/` = function(.x, .y) .x / .y,
+    `^` = function(.x, .y) .x ^ .y,
+    `%%` = function(.x, .y) .x %% .y,
+    `<` = function(.x, .y) .x < .y,
+    `<=` = function(.x, .y) .x <= .y,
+    `>` = function(.x, .y) .x > .y,
+    `>=` = function(.x, .y) .x >= .y,
+    `==` = function(.x, .y) .x == .y,
+    `!=` = function(.x, .y) .x != .y,
+    `:` = function(.x, .y) .x : .y,
+    `~` = function(.x, .y) {
+      if (is_missing(substitute(.y))) {
+        new_formula(NULL, substitute(.x), caller_env())
+      } else {
+        new_formula(substitute(.x), substitute(.y), caller_env())
+      }
+    },
+
+    # Unsupported primitives
+    `break` = ,
+    `for` = ,
+    `function` = ,
+    `if` = ,
+    `next` = ,
+    `repeat` = ,
+    `return` = ,
+    `while` = {
+      nm <- chr_quoted(prim_name(fn))
+      abort(paste0("Can't coerce the primitive function ", nm, " to a closure"))
     }
   )
 }

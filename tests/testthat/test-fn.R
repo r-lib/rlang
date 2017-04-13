@@ -22,10 +22,36 @@ test_that("as_closure() returns closure", {
 })
 
 test_that("as_closure() handles primitive functions", {
-  expect_identical(as_closure(`-`)(e2 = 10, e1 = 5), -5)
   expect_identical(as_closure(`c`)(1, 3, 5), c(1, 3, 5))
   expect_identical(as_closure(is.null)(1), FALSE)
   expect_identical(as_closure(is.null)(NULL), TRUE)
+})
+
+test_that("as_closure() handles operators", {
+  expect_identical(as_closure(`-`)(.y = 10, .x = 5), -5)
+  expect_identical(as_closure(`-`)(5), -5)
+  expect_identical(as_closure(`$`)(mtcars, cyl), mtcars$cyl)
+  expect_identical(as_closure(`~`)(foo), ~foo)
+  expect_identical(as_closure(`~`)(foo, bar), foo ~ bar)
+  expect_warning(expect_identical(as_closure(`{`)(warn("foo"), 2, 3), 3), "foo")
+
+  x <- "foo"
+  as_closure(`<-`)(x, "bar")
+  expect_identical(x, "bar")
+
+  x <- list(a = 1, b = 2)
+  as_closure(`$<-`)(x, b, 20)
+  expect_identical(x, list(a = 1, b = 20))
+
+  x <- list(1, 2)
+  as_closure(`[[<-`)(x, 2, 20)
+  expect_identical(x, list(1, 20))
+
+  expect_identical(as_closure(`[<-`)(data.frame(x = 1:2, y = 3:4), 2, 2, 10L), data.frame(x = 1:2, y = c(3L, 10L)))
+  expect_identical(as_closure(`[[<-`)(list(1, 2), 2, 20), list(1, 20))
+
+  x <- ll(ll(a = "A"), ll(a = "B"))
+  expect_identical(lapply(x, as_closure(`[[`), "a"), list("A", "B"))
 })
 
 test_that("lambda shortcut handles positional arguments", {
