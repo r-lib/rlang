@@ -111,7 +111,7 @@ void vec_copy_coerce_n(SEXP src, R_len_t n, SEXP dest,
                        R_len_t offset_src) {
   if (TYPEOF(src) != TYPEOF(dest)) {
     if (OBJECT(src))
-      Rf_errorcall(R_NilValue, "Cannot splice S3 objects");
+      Rf_errorcall(R_NilValue, "Can't splice S3 objects");
     // FIXME: This callbacks to rlang R coercers with an extra copy.
     PROTECT_INDEX ipx;
     SEXP call, coerced;

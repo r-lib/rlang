@@ -361,7 +361,8 @@ type_of <- function(x) {
 #' @param .to This is useful when you switchpatch within a coercing
 #'   function. If supplied, this should be a string indicating the
 #'   target type. A catch-all clause is then added to signal an error
-#'   stating the conversion failure.
+#'   stating the conversion failure. This type is prettified unless
+#'   `.to` inherits from the S3 class `"AsIs"` (see [base::I()]).
 #' @seealso [switch_lang()]
 #' @export
 #' @examples
@@ -374,7 +375,7 @@ type_of <- function(x) {
 #' # Use the coerce_ version to get standardised error handling when no
 #' # type matches:
 #' to_chr <- function(x) {
-#'   coerce_type(x, "chr",
+#'   coerce_type(x, "a chr",
 #'     integer = as.character(x),
 #'     double = as.character(x)
 #'   )
@@ -418,7 +419,6 @@ switch_type <- function(.x, ...) {
 #' @rdname switch_type
 #' @export
 coerce_type <- function(.x, .to, ...) {
-  msg <- paste0("Cannot convert objects of type `", type_of(.x), "` to `", .to, "`")
   switch(type_of(.x), ..., abort_coercion(.x, .to))
 }
 #' @rdname switch_type
@@ -431,10 +431,100 @@ switch_class <- function(.x, ...) {
 coerce_class <- function(.x, .to, ...) {
   switch(class(.x), ..., abort_coercion(.x, .to))
 }
-abort_coercion <- function(x, to) {
-  abort(paste0(
-    "Cannot convert objects of type `", type_of(x), "` to `", to, "`"
-  ))
+abort_coercion <- function(x, to_type) {
+  x_type <- friendly_type(type_of(x))
+  if (!inherits(to_type, "AsIs")) {
+    to_type <- friendly_type(to_type)
+  }
+  abort(paste0("Can't convert ", x_type, " to ", to_type))
+}
+
+#' Format a type for error messages
+#'
+#' @param type A type as returned by [type_of()] or [lang_type_of()].
+#' @return A string of the prettified type, qualified with an
+#'   indefinite article.
+#' @export
+#' @examples
+#' friendly_type("logical")
+#' friendly_type("integer")
+#' friendly_type("string")
+#' @export
+friendly_type <- function(type) {
+  friendly <- friendly_type_of(type)
+  if (!is_null(friendly)) {
+    return(friendly)
+  }
+
+  friendly <- friendly_lang_type_of(type)
+  if (!is_null(friendly)) {
+    return(friendly)
+  }
+
+  friendly <- friendly_expr_type_of(type)
+  if (!is_null(friendly)) {
+    return(friendly)
+  }
+
+  type
+}
+
+friendly_type_of <- function(type) {
+  switch(type,
+    logical = "a logical vector",
+    integer = "an integer vector",
+    numeric = ,
+    double = "a double vector",
+    complex = "a complex vector",
+    character = "a character vector",
+    raw = "a raw vector",
+    string = "a string",
+    list = "a list",
+
+    NULL = "NULL",
+    environment = "an environment",
+    externalptr = "a pointer",
+    weakref = "a weak reference",
+    S4 = "an S4 object",
+
+    name = ,
+    symbol = "a symbol",
+    language = "a call (lang)",
+    pairlist = "a pairlist node",
+    expression = "an expression vector",
+    quosure = "a quosure",
+
+    char = "an internal string",
+    promise = "an internal promise",
+    ... = "an internal dots object",
+    any = "an internal `any` object",
+    bytecode = "an internal bytecode object",
+
+    primitive = ,
+    builtin = ,
+    special = "a primitive function",
+    closure = "a function"
+  )
+}
+
+friendly_lang_type_of <- function(type) {
+  switch(type,
+    named = "a named call (lang)",
+    namespaced = "a namespaced call (lang)",
+    recursive = "a recursive call (lang)",
+    inlined = "an inlined call (lang)"
+  )
+}
+
+friendly_expr_type_of <- function(type) {
+  switch(type,
+    NULL = "NULL",
+    name = ,
+    symbol = "a symbol",
+    language = "a call (lang)",
+    pairlist = "a pairlist node",
+    literal = "a syntactic literal"
+  )
 }
 
 #' Dispatch on call type.
@@ -507,7 +597,7 @@ switch_lang <- function(.x, ...) {
 #' @rdname switch_lang
 #' @export
 coerce_lang <- function(.x, .to, ...) {
-  msg <- paste0("Cannot convert objects of type `", type_of(.x), "` to `", .to, "`")
+  msg <- paste0("Can't convert ", type_of(.x), " to ", .to, "")
   switch(lang_type_of(.x), ..., abort(msg))
 }
 #' @rdname switch_lang

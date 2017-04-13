@@ -20,7 +20,7 @@ test_that("as_list() zaps attributes", {
 
 test_that("as_list() only coerces vector or dictionary types", {
   expect_identical(as_list(1:3), list(1L, 2L, 3L))
-  expect_error(as_list(quote(symbol)), "`symbol` to `list`")
+  expect_error(as_list(quote(symbol)), "a symbol to a list")
 })
 
 test_that("as_list() bypasses environment method and leaves input intact", {
@@ -33,8 +33,8 @@ test_that("as_list() bypasses environment method and leaves input intact", {
 })
 
 test_that("as_integer() and as_logical() require integerish input", {
-  expect_error(as_integer(1.5), "fractional `double`")
-  expect_error(as_logical(1.5), "fractional `double`")
+  expect_error(as_integer(1.5), "a fractional double vector to an integer vector")
+  expect_error(as_logical(1.5), "a fractional double vector to a logical vector")
 })
 
 test_that("names are preserved", {

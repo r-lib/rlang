@@ -42,7 +42,7 @@ test_that("can create empty vectors", {
 })
 
 test_that("objects are not spliced", {
-  expect_error(lgl(structure(list(TRUE, TRUE), class = "bam")), "Cannot splice S3 objects")
+  expect_error(lgl(structure(list(TRUE, TRUE), class = "bam")), "Can't splice S3 objects")
 })
 
 test_that("explicitly spliced lists are spliced", {
@@ -79,13 +79,13 @@ test_that("atomic inputs are implicitly coerced", {
   expect_identical(lgl(10L, FALSE, list(TRUE, 0L, 0)), c(TRUE, FALSE, TRUE, FALSE, FALSE))
   expect_identical(dbl(10L, 10, TRUE, list(10L, 0, TRUE)), c(10, 10, 1, 10, 0, 1))
 
-  expect_error(lgl("foo"), "Cannot convert objects of type")
-  expect_error(chr(10), "Cannot convert objects of type")
+  expect_error(lgl("foo"), "Can't convert a string to a logical vector")
+  expect_error(chr(10), "Can't convert a double vector to a character vector")
 })
 
 test_that("type errors are handled", {
-  expect_error(lgl(get_env()), "Cannot convert objects of type `environment`")
-  expect_error(lgl(list(get_env())), "Cannot convert objects of type `environment`")
+  expect_error(lgl(get_env()), "Can't convert an environment to a logical vector")
+  expect_error(lgl(list(get_env())), "Can't convert an environment to a logical vector")
 })
 
 test_that("empty inputs are spliced", {
@@ -132,7 +132,7 @@ test_that("squash_if() handles custom predicate", {
 test_that("vectors and names are flattened", {
   expect_identical(flatten_dbl(list(a = 1, c(b = 2), 3)), c(a = 1, b = 2, 3))
   expect_identical(flatten_dbl(list(list(a = 1), list(c(b = 2)), 3)), c(a = 1, b = 2, 3))
-  expect_error(flatten_dbl(list(1, list(list(2)), 3)), "Cannot convert")
+  expect_error(flatten_dbl(list(1, list(list(2)), 3)), "Can't convert")
 })
 
 test_that("bad outer names warn when flattening", {

@@ -49,3 +49,9 @@ test_that("lang_type_of() returns correct lang subtype", {
   mut_node_car(lang, base::list)
   expect_identical(lang_type_of(lang), "inlined")
 })
+
+test_that("types are friendly", {
+  expect_identical(friendly_type("character"), "a character vector")
+  expect_identical(friendly_type("integer"), "an integer vector")
+  expect_identical(friendly_type("language"), "a call (lang)")
+})

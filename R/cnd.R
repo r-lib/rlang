@@ -44,7 +44,7 @@
 new_cnd <- function(.type = NULL, ..., .msg = NULL) {
   data <- dots_list(...)
   if (any(names(data) %in% "message")) {
-    stop("Conditions cannot have a `message` data field", call. = FALSE)
+    stop("Conditions can't have a `message` data field", call. = FALSE)
   }
   if (any(names2(data) == "")) {
     stop("Conditions must have named data fields", call. = FALSE)

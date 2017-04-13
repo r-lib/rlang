@@ -22,7 +22,8 @@ is extracted first.}
 \item{.to}{This is useful when you switchpatch within a coercing
 function. If supplied, this should be a string indicating the
 target type. A catch-all clause is then added to signal an error
-stating the conversion failure.}
+stating the conversion failure. This type is prettified unless
+\code{.to} inherits from the S3 class \code{"AsIs"} (see \code{\link[base:I]{base::I()}}).}
 }
 \description{
 \code{switch_lang()} dispatches clauses based on the subtype of call, as

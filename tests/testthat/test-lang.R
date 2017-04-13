@@ -40,7 +40,7 @@ test_that("as_symbol() produces names", {
   expect_equal(as_symbol(~ a), quote(a))
   expect_equal(as_symbol(~ a()), quote(a))
 
-  expect_error(as_symbol(c("a", "b")), "Cannot convert objects of type `character` to `symbol`")
+  expect_error(as_symbol(c("a", "b")), "Can't convert a character vector to a symbol")
 })
 
 test_that("as_lang() produces calls", {
@@ -49,7 +49,7 @@ test_that("as_lang() produces calls", {
   expect_equal(as_lang("a()"), quote(a()))
   expect_equal(as_lang(~ a()), quote(a()))
 
-  expect_error(as_lang(c("a", "b")), "Cannot convert objects of type `character` to `language`")
+  expect_error(as_lang(c("a", "b")), "Can't convert a character vector to a call \\(lang\\)")
 })
 
 test_that("as_symbol() handles prefixed call names", {

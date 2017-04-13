@@ -38,7 +38,7 @@ int is_splice_sym(SEXP x) {
 SEXP replace_double_bang(SEXP x) {
   int bang = bang_level(x);
   if (bang == 3 || is_any_call(x, is_splice_sym))
-    Rf_errorcall(R_NilValue, "Cannot splice at top-level");
+    Rf_errorcall(R_NilValue, "Can't splice at top-level");
   else if (bang == 2) {
     x = CADR(x);
     SETCAR(x, Rf_install("UQ"));
