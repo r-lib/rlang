@@ -8,7 +8,7 @@
 \usage{
 set_expr(x, value)
 
-get_expr(x)
+get_expr(x, default = x)
 
 as_generic_expr(x)
 }
@@ -17,6 +17,9 @@ as_generic_expr(x)
 \code{set_expr()} and \code{as_generic_expr()} accept frames.}
 
 \item{value}{An updated expression.}
+
+\item{default}{A default expression to return when \code{x} is not an
+expression wrapper. Defaults to \code{x} itself.}
 }
 \value{
 The updated original input for \code{set_expr()}. A raw

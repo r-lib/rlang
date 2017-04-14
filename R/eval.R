@@ -75,7 +75,9 @@ eval_tidy <- function(f, data = NULL) {
     return(map(f, eval_tidy, data = data))
   }
 
-  f <- as_quosure(f, caller_env())
+  if (!inherits(f, "quosure")) {
+    f <- new_quosure(f, caller_env())
+  }
   overscope <- as_overscope(f, data)
   on.exit(overscope_clean(overscope))
 
@@ -127,7 +129,9 @@ eval_tidy_ <- function(f, bottom, top = NULL) {
   overscope <- new_overscope(bottom, top)
   on.exit(overscope_clean(overscope))
 
-  f <- as_quosure(f, caller_env())
+  if (!inherits(f, "quosure")) {
+    f <- new_quosure(f, caller_env())
+  }
   overscope_eval_next(overscope, f)
 }
 
@@ -253,7 +257,6 @@ new_overscope <- function(bottom, top = NULL, enclosure = base_env()) {
   overscope <- child_env(bottom)
 
   overscope$`~` <- f_self_eval(overscope, top)
-  overscope$`_F` <- f_unguard
   overscope$.top_env <- top
   overscope$.env <- enclosure
 
@@ -283,7 +286,7 @@ overscope_clean <- function(overscope) {
   top_env <- overscope$.top_env %||% cur_env
 
   # At this level we only want to remove what we have installed
-  env_unbind(overscope, c("~", "_F", ".top_env", ".env"))
+  env_unbind(overscope, c("~", ".top_env", ".env"))
 
   while(!identical(cur_env, env_parent(top_env))) {
     env_unbind(cur_env, names(cur_env))
@@ -298,52 +301,27 @@ f_self_eval <- function(overscope, overscope_top) {
   function(...) {
     f <- sys.call()
 
+    if (!inherits(f, "quosure")) {
+      # We want formulas to be evaluated in the overscope so that
+      # functions like case_when() can pick up overscoped data. Using
+      # the parent because the bottom level has definitions for
+      # quosure self-evaluation etc.
+      return(eval_bare(f, env_parent(overscope)))
+    }
     if (quo_is_missing(f)) {
       return(missing_arg())
     }
 
-    if (is_null(f_env(f))) {
-      # Take care of degenerate formulas (e.g. created with ~~letters).
-      # We assign them in `overscope` rather than `lexical_env` so that
-      # things like case_when() within mutate() work out.
-      f <- as_quosureish(f, overscope)
-      fixup <- TRUE
-    } else {
-      fixup <- FALSE
-    }
-
-    # Two-sided formulas are not fpromises
-    if (length(f) > 2) {
-      return(f)
-    }
-
-    if (!fixup) {
-      # Swap enclosures temporarily by rechaining the top of the
-      # dynamic scope to the enclosure of the new formula, if it has
-      # one. We do it at C level to avoid GC adjustments when changing
-      # the parent. This should be safe since we reset everything
-      # afterwards.
-      .Call(rlang_set_parent, overscope_top, f_env(f) %||% overscope$.env)
-      on.exit(.Call(rlang_set_parent, overscope_top, overscope$.env))
-    }
+    # Swap enclosures temporarily by rechaining the top of the
+    # dynamic scope to the enclosure of the new formula, if it has
+    # one. We do it at C level to avoid GC adjustments when changing
+    # the parent. This should be safe since we reset everything
+    # afterwards.
+    .Call(rlang_set_parent, overscope_top, f_env(f) %||% overscope$.env)
+    on.exit(.Call(rlang_set_parent, overscope_top, overscope$.env))
 
     .Call(rlang_eval, f_rhs(f), overscope)
   }
-}
-f_unguard <- function(...) {
-  tilde <- sys.call()
-  tilde[[1]] <- sym_tilde
-
-  # Formulas explicitly supplied by the user are guarded but not
-  # unquoted. We evaluate them now to get the right environment.
-  if (is_null(attr(tilde, ".Environment"))) {
-    tilde <- structure(tilde,
-      class = "formula",
-      .Environment = caller_env()
-    )
-  }
-
-  tilde
 }
 
 

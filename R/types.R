@@ -336,7 +336,7 @@ is_scalar_integerish <- function(x) {
 #' type_of(quote(base::list()))
 type_of <- function(x) {
   type <- typeof(x)
-  if (is_quosure(x)) {
+  if (is_one_sided(x)) {
     "quosure"
   } else if (type == "character") {
     if (length(x) == 1) "string" else "character"

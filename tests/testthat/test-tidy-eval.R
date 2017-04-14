@@ -9,32 +9,32 @@ test_that("eval_tidy uses formula's environment", {
   x <- 10
   f <- local({
     y <- 100
-    ~ x + y
+    quo(x + y)
   })
 
   expect_equal(eval_tidy(f), 110)
 })
 
 test_that("data must be a dictionary", {
-  expect_error(eval_tidy(~ x, list(x = 10, x = 11)), "Data source must be a dictionary")
+  expect_error(eval_tidy(NULL, list(x = 10, x = 11)), "Data source must be a dictionary")
 })
 
 test_that("looks first in `data`", {
   x <- 10
   data <- list(x = 100)
-  expect_equal(eval_tidy(~ x, data), 100)
+  expect_equal(eval_tidy(quo(x), data), 100)
 })
 
 test_that("pronouns resolve ambiguity looks first in `data`", {
   x <- 10
   data <- list(x = 100)
-  expect_equal(eval_tidy(~ .data$x, data), 100)
-  expect_equal(eval_tidy(~ .env$x, data), 10)
+  expect_equal(eval_tidy(quo(.data$x), data), 100)
+  expect_equal(eval_tidy(quo(.env$x), data), 10)
 })
 
 test_that("pronouns complain about missing values", {
-  expect_error(eval_tidy(~ .data$x, list()), "Object `x` not found in data")
-  expect_error(eval_tidy(~ .data$x, data.frame()), "Column `x` not found in data")
+  expect_error(eval_tidy(quo(.data$x), list()), "Object `x` not found in data")
+  expect_error(eval_tidy(quo(.data$x), data.frame()), "Column `x` not found in data")
 })
 
 test_that("eval_tidy does quasiquoting", {
@@ -122,7 +122,7 @@ test_that("can unquote hygienically within captured arg", {
   expect_identical(fn(mtcars, (!!var) > 4), mtcars$cyl > 4)
   expect_identical(fn(mtcars, list(var, !!var)), list(quo(cyl), mtcars$cyl))
   expect_equal(fn(mtcars, list(~var, !!var)), list(~var, mtcars$cyl))
-  expect_equal(fn(mtcars, list(~~var, !!quo(var), !!quo(quo(var)))), list(new_quosure(new_language("_F", quote(var))), ~cyl, ~var))
+  expect_equal(fn(mtcars, list(~~var, !!quo(var), !!quo(quo(var)))), list(~~var, quo(cyl), quo(var)))
 })
 
 test_that("can unquote for old-style NSE functions", {
@@ -132,17 +132,9 @@ test_that("can unquote for old-style NSE functions", {
   expect_identical(eval_tidy(quo(fn(!!f_rhs(var)))), quote(foo))
 })
 
-test_that("formulas with empty environments are scoped in surrounding formula", {
-  var <- local(~letters)
-  f <- new_quosure(var, env = child_env(get_env()))
-  expect_identical(eval_tidy(f), letters)
-
-  expect_identical(eval_tidy(~~letters), letters)
-})
-
 test_that("all quosures in the call are evaluated", {
   foobar <- function(x) paste0("foo", x)
-  x <- new_quosure(call("foobar", local({ bar <- "bar"; ~bar })))
+  x <- new_quosure(call("foobar", local({ bar <- "bar"; quo(bar) })))
   f <- new_quosure(call("identity", x))
   expect_identical(eval_tidy(f), "foobar")
 })
@@ -152,8 +144,8 @@ test_that("two-sided formulas are not treated as quosures", {
 })
 
 test_that("formulas are evaluated in evaluation environment", {
-  f <- eval_tidy(~(foo ~ bar), list(foo = "bar"))
-  expect_true(!identical(f_env(f), get_env()))
+  f <- eval_tidy(quo(foo ~ bar), list(foo = "bar"))
+  expect_false(identical(f_env(f), get_env()))
 })
 
 test_that("evaluating a side preserves the other side", {
@@ -167,7 +159,7 @@ test_that("can evaluate definitions", {
 })
 
 test_that("evaluation env is cleaned up", {
-  f <- local(~function() list(f = ~letters, env = environment()))
+  f <- local(quo(function() list(f = ~letters, env = environment())))
   fn <- eval_tidy(f)
   out <- fn()
   expect_identical(out$f, with_env(env = out$env, ~letters))
@@ -189,7 +181,7 @@ test_that("inner formulas are rechained to evaluation env", {
 test_that("dyn scope is chained to lexical env", {
   foo <- "bar"
   overscope <- child_env(NULL)
-  expect_identical(eval_tidy_(~foo, overscope), "bar")
+  expect_identical(eval_tidy_(quo(foo), overscope), "bar")
 })
 
 test_that("whole scope is purged", {
@@ -199,8 +191,7 @@ test_that("whole scope is purged", {
   bottom <- child_env(mid, list(
     .top_env = top,
     .env = 1,
-    `~` = 2,
-    `_F` = 3
+    `~` = 2
   ))
 
   overscope_clean(bottom)
@@ -217,7 +208,11 @@ test_that("empty quosure self-evaluates", {
 })
 
 test_that("cannot replace elements of pronouns", {
-  expect_error(eval_tidy(~(.data$foo <- "bar")), "read-only dictionary")
+  expect_error(eval_tidy(quo(.data$foo <- "bar")), "read-only dictionary")
+})
+
+test_that("formulas are not evaluated as quosures", {
+  expect_identical(eval_tidy(~letters), ~letters)
 })
 
 

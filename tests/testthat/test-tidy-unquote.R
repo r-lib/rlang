@@ -27,8 +27,10 @@ test_that("interpolation now revisits unquoted formulas", {
   expect_error(expect_false(identical(expr_interp(f), f)), "interpolate within formulas")
 })
 
-test_that("two-sided formulas are not treated as fpromises", {
-  expect_identical(expr(a ~ b), quote(`_F`(a, b)))
+test_that("formulas are not treated as quosures", {
+  expect_identical(expr(a ~ b), quote(a ~ b))
+  expect_identical(expr(~b), quote(~b))
+  expect_identical(expr(!!~b), ~b)
 })
 
 test_that("unquote operators are always in scope", {

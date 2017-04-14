@@ -184,6 +184,18 @@ test_that("global_frame() can be standardised", {
   expect_null(lang_homogenise(global_frame()))
 })
 
+test_that("can standardise call frame", {
+  fn <- function(foo = "bar") lang_standardise()
+  expect_identical(fn(), quote(fn()))
+  expect_identical(fn("baz"), quote(fn(foo = "baz")))
+})
+
+test_that("can modify call frame", {
+  fn <- function(foo = "bar") lang_modify(baz = "bam", .standardise = TRUE)
+  expect_identical(fn(), quote(fn(baz = "bam")))
+  expect_identical(fn("foo"), quote(fn(foo = "foo", baz = "bam")))
+})
+
 
 # Modification ------------------------------------------------------------
 

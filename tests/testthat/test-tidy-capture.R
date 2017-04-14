@@ -80,14 +80,14 @@ test_that("dots can be spliced in", {
     quo(foo(bar)),
     set_env(quo(bar(baz)), out$env),
     a = quo("var"),
-    b = set_env(quo(foo), out$env)
+    b = set_env(quo(!! with_env(out$env, ~foo)), out$env)
   )
   expect_identical(out$out, expected)
 })
 
 test_that("spliced dots are wrapped in formulas", {
-  args <- alist(x = var, y = ~var)
-  expect_identical(dots_quos(!!! args), quos_list(x = quo(var), y = quo(var)))
+  args <- alist(x = var, y = foo(bar))
+  expect_identical(dots_quos(!!! args), quos_list(x = quo(var), y = quo(foo(bar))))
 })
 
 test_that("dot names are interpolated", {
@@ -181,13 +181,6 @@ test_that("dots_quos() captures missing arguments", {
 test_that("dots_quos() ignores missing arguments", {
   expect_identical(quos(, , "foo", ), quos_list(quo(), quo(), new_quosure("foo", empty_env())))
   expect_identical(quos(, , "foo", , .ignore_empty = "all"), quos_list(new_quosure("foo", empty_env())))
-})
-
-test_that("formulas are guarded on capture", {
-  expect_identical(
-    quo(~foo(~bar, ~~baz())),
-    quo(`_F`(foo(`_F`(bar), `_F`(`_F`(baz())))))
-  )
 })
 
 test_that("quosured literals are forwarded as is", {

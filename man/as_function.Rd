@@ -38,4 +38,9 @@ f(10)
 # Primitive functions are regularised as closures
 as_closure(list)
 as_closure("list")
+
+# Operators have `.x` and `.y` as arguments, just like lambda
+# functions created with the formula syntax:
+as_closure(`+`)
+as_closure(`~`)
 }

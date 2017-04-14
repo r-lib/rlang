@@ -52,10 +52,10 @@ lang_homogenise <- function(call = caller_frame(),
     fn <- NULL
   }
 
-  call <- as_quosure(call, caller_env())
-  fn <- fn %||% lang_fn(call)
+  call <- get_expr(call)
+  fn <- fn %||% lang_fn(as_quosure(call, caller_env()))
 
-  lang_homogenise_(f_rhs(call), fn, dots_env, enum_dots, add_missings)
+  lang_homogenise_(call, fn, dots_env, enum_dots, add_missings)
 }
 
 lang_homogenise_ <- function(call, fn, dots_env, enum_dots, add_missings) {

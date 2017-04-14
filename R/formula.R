@@ -127,8 +127,7 @@ f_env <- function(f) {
 #' @rdname f_rhs
 `f_env<-` <- function(x, value) {
   stopifnot(is_formula(x))
-  f <- new_formula(f_lhs(x), f_rhs(x), value)
-  copy_lang_name(f, x)
+  set_attrs(x, .Environment = value)
 }
 
 #' Turn RHS of formula into a string/label.

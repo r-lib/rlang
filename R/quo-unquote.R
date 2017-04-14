@@ -73,6 +73,9 @@ UQE <- function(x) {
 }
 #' @export
 #' @rdname quosure
+`!!` <- UQE
+#' @export
+#' @rdname quosure
 UQS <- function(x) {
   if (is_pairlist(x) || is_null(x)) {
     x
@@ -86,3 +89,7 @@ UQS <- function(x) {
     abort("`x` must be a vector or a language object")
   }
 }
+#' @export
+#' @rdname quosure
+#' @usage NULL
+`!!!` <- UQS

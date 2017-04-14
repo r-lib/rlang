@@ -244,18 +244,17 @@ lang_modify <- function(.call = caller_frame(), ..., .standardise = FALSE) {
 #' @export
 lang_standardise <- function(call = caller_frame()) {
   orig <- as_generic_expr(call)
-  quote <- as_quosure(call, caller_env())
 
-  # The call name might be a literal, not necessarily a symbol
-  fn <- lang_name(quote)
-  fn <- switch_type(fn,
-    string = get(fn, envir = f_env(quote), mode = "function"),
-    primitive = ,
-    closure = fn,
-    abort("Can't extract a function to compare the call to")
-  )
+  expr <- get_expr(call)
+  if (is_frame(call)) {
+    fn <- call$fn
+  } else {
+    # The call name might be a literal, not necessarily a symbol
+    env <- get_env(call, caller_env())
+    fn <- eval_bare(lang_head(expr), env)
+  }
 
-  matched <- match.call(as_closure(fn), get_expr(quote))
+  matched <- match.call(as_closure(fn), expr)
   set_expr(orig, matched)
 }
 
@@ -280,8 +279,8 @@ lang_fn <- function(call = caller_frame()) {
     return(call$fn)
   }
 
-  call <- as_quosure(call, caller_env())
-  expr <- f_rhs(call)
+  expr <- get_expr(call)
+  env <- get_env(call, caller_env())
 
   if (!is_lang(expr)) {
     abort("`call` must quote a call")
@@ -292,7 +291,7 @@ lang_fn <- function(call = caller_frame()) {
     inlined = node_car(expr),
     named = ,
     namespaced = ,
-    eval_bare(node_car(expr), f_env(call))
+    eval_bare(node_car(expr), env)
   )
 }
 

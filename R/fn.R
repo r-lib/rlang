@@ -402,7 +402,7 @@ op_as_closure <- function(prim_nm) {
     `repeat` = ,
     `return` = ,
     `while` = {
-      nm <- chr_quoted(prim_name(fn))
+      nm <- chr_quoted(prim_name)
       abort(paste0("Can't coerce the primitive function ", nm, " to a closure"))
     }
   )
