@@ -451,12 +451,7 @@ str.quosure <- function(object, ...) {
 #' @rdname new_quosure
 #' @export
 as_quosureish <- function(x, env = caller_env()) {
-  if (is_quosure(x)) {
-    if (!is_env(f_env(x))) {
-      f_env(x) <- env
-    }
-    x
-  } else if (is_quosureish(x)) {
+  if (is_quosureish(x)) {
     if (!is_env(f_env(x))) {
       f_env(x) <- env
     }
@@ -464,7 +459,7 @@ as_quosureish <- function(x, env = caller_env()) {
   } else if (is_frame(x)) {
     new_quosure(x$expr, sys_frame(x$caller_pos))
   } else {
-    new_quosure(x, env)
+    new_quosure(get_expr(x), get_env(x, env))
   }
 }
 
