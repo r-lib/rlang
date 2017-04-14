@@ -435,7 +435,7 @@ quo_env <- function(quo, default) {
 
 #' @export
 print.quosure <- function(x, ...) {
-  cat(paste0("<quosure [", env_type(get_env(x)), "]>\n"))
+  cat(paste0("<quosure: ", env_type(get_env(x)), ">\n"))
   print(zap_attrs(x))
   invisible(x)
 }
@@ -443,7 +443,7 @@ print.quosure <- function(x, ...) {
 str.quosure <- function(object, ...) {
   env_type <- env_format(get_env(object))
 
-  cat(paste0("<quosure [", env_type, "]>\n"))
+  cat(paste0("<quosure: ", env_type, ">\n"))
   print(zap_attrs(object))
   invisible(object)
 }
