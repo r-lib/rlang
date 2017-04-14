@@ -116,6 +116,15 @@ test_that("setting LHS preserves attributes", {
   expect_identical(f, set_attrs(baz ~ foo, !!! attrs))
 })
 
+test_that("setting environment preserves attributes", {
+  attrs <- list(foo = "bar", class = "baz")
+  env <- env()
+
+  f <- set_attrs(~foo, !!! attrs)
+  f_env(f) <- env
+  expect_identical(f, set_attrs(~foo, !!! attrs, .Environment = env))
+})
+
 
 # Utils --------------------------------------------------------------
 
