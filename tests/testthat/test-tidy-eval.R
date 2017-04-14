@@ -145,7 +145,7 @@ test_that("two-sided formulas are not treated as quosures", {
 
 test_that("formulas are evaluated in evaluation environment", {
   f <- eval_tidy(quo(foo ~ bar), list(foo = "bar"))
-  expect_true(identical(f_env(f), get_env()))
+  expect_false(identical(f_env(f), get_env()))
 })
 
 test_that("evaluating a side preserves the other side", {

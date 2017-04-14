@@ -302,7 +302,11 @@ f_self_eval <- function(overscope, overscope_top) {
     f <- sys.call()
 
     if (!inherits(f, "quosure")) {
-      return(eval_bare(f, overscope$.env))
+      # We want formulas to be evaluated in the overscope so that
+      # functions like case_when() can pick up overscoped data. Using
+      # the parent because the bottom level has definitions for
+      # quosure self-evaluation etc.
+      return(eval_bare(f, env_parent(overscope)))
     }
     if (quo_is_missing(f)) {
       return(missing_arg())
