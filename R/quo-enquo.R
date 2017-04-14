@@ -89,7 +89,7 @@ enquo <- function(x) {
   forward_quosure(expr, arg$env)
 }
 forward_quosure <- function(expr, env) {
-  if (inherits(expr, "quosure")) {
+  if (is_quosure(expr)) {
     expr
   } else if (is_definition(expr)) {
     as_quosureish(expr, env)

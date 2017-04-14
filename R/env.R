@@ -143,15 +143,14 @@ get_env <- function(env = caller_env(), default = NULL) {
     closure = environment(env),
     list = switch_class(env, frame = env$env)
   )
-  if (!is_null(out)) {
-    return(out)
-  }
 
-  if (is_null(default)) {
+  out <- out %||% default
+
+  if (is_null(out)) {
     type <- friendly_type(type_of(env))
     abort(paste0("Can't extract an environment from ", type))
   } else {
-    default
+    out
   }
 }
 
