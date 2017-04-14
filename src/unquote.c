@@ -55,14 +55,6 @@ SEXP replace_triple_bang(SEXP nxt, SEXP cur) {
   return nxt;
 }
 
-// Change call name to prevent the formula from self-evaluating
-SEXP guard_formula(SEXP f) {
-  SEXP guard = PROTECT(LCONS(Rf_install("_F"), CDR(f)));
-  Rf_copyMostAttrib(f, guard);
-  UNPROTECT(1);
-  return guard;
-}
-
 void unquote_check(SEXP x) {
   if (CDR(x) == R_NilValue)
     Rf_errorcall(R_NilValue, "`UQ()` must be called with an argument");
@@ -90,8 +82,6 @@ SEXP unquote(SEXP x, SEXP env, SEXP uq_sym, bool quosured) {
 
   if (!quosured && is_symbolic(unquoted))
     unquoted = lang2(Rf_install("quote"), unquoted);
-  else if (quosured && is_bare_formula(unquoted))
-    unquoted = guard_formula(unquoted);
 
   UNPROTECT(1);
   return unquoted;
@@ -139,23 +129,16 @@ SEXP interp_walk(SEXP x, SEXP env, bool quosured)  {
   if (!Rf_isLanguage(x))
     return x;
 
-  PROTECT_INDEX ipx;
-  PROTECT_WITH_INDEX(x, &ipx);
-
+  PROTECT(x);
   x = replace_double_bang(x);
 
   if (is_prefixed_call(x, is_uq_sym)) {
     unquote_check(x);
-    REPROTECT(x = unquote_prefixed_uq(x, env, quosured), ipx);
+    x = unquote_prefixed_uq(x, env, quosured);
   } else if (is_any_call(x, is_uq_sym)) {
     unquote_check(x);
     SEXP uq_sym = CAR(x);
-    REPROTECT(x = unquote(CADR(x), env, uq_sym, quosured), ipx);
-  } else if (quosured && is_bare_formula(x)) {
-    // Guard but don't unquote: environment should be recorded in the
-    // formula lazily
-    REPROTECT(x = guard_formula(x), ipx);
-    x = interp_arguments(x, env, quosured);
+    x = unquote(CADR(x), env, uq_sym, quosured);
   } else {
     x = interp_arguments(x, env, quosured);
   }

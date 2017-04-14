@@ -89,16 +89,14 @@ enquo <- function(x) {
   forward_quosure(expr, arg$env)
 }
 forward_quosure <- function(expr, env) {
-  if (quo_is_missing(expr)) {
+  if (inherits(expr, "quosure")) {
     expr
   } else if (is_definition(expr)) {
     as_quosureish(expr, env)
-  } else if (is_formula(expr)) {
-    as_quosure(expr, env)
   } else if (is_symbolic(expr)) {
     new_quosure(expr, env)
   } else {
-    as_quosure(expr, empty_env())
+    new_quosure(expr, empty_env())
   }
 }
 #' @rdname enquo

@@ -73,6 +73,10 @@ test_that("compat_lazy() demotes character vectors to strings", {
 })
 
 test_that("compat_lazy() handles numeric vectors", {
-  expect_identical(compat_lazy_dots(NULL, get_env(), NA_real_), named_list(as_quosure(~NA_real_)))
-  expect_warning(expect_identical(compat_lazy_dots(NULL, get_env(), 1:3), named_list(as_quosure(~1L))), "Truncating vector")
+  expect_identical(compat_lazy_dots(NULL, get_env(), NA_real_), named_list(set_env(quo(NA_real_))))
+  expect_warning(expect_identical(compat_lazy_dots(NULL, get_env(), 1:3), named_list(set_env(quo(1L)))), "Truncating vector")
+})
+
+test_that("compat_lazy() handles bare formulas", {
+  expect_identical(compat_lazy(~foo), quo(foo))
 })
