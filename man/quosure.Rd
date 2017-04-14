@@ -3,6 +3,7 @@
 \name{UQ}
 \alias{UQ}
 \alias{UQE}
+\alias{!!}
 \alias{UQS}
 \alias{quosure}
 \alias{quo}
@@ -14,6 +15,8 @@
 UQ(x)
 
 UQE(x)
+
+"!!"(x)
 
 UQS(x)
 
