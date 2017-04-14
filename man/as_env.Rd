@@ -11,7 +11,9 @@ as_env(x, parent = NULL)
 
 \item{parent}{A parent environment, \code{\link[=empty_env]{empty_env()}} by default. Can
 be ignored with a warning for methods where it does not make
-sense to change the parent.}
+sense to change the parent. Note that existing environments keep
+their original parent, only the parents of newly created
+environments are set to \code{parent}.}
 }
 \description{
 \code{as_env()} coerces named vectors (including lists) to an

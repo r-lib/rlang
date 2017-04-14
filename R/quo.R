@@ -303,7 +303,7 @@ expr <- function(expr) {
 #' is_quosureish(a := b)
 #' is_quosureish(a ~ b)
 is_quosure <- function(x, scoped = NULL) {
-  if (!is_one_sided(x)) {
+  if (!inherits(x, "quosure")) {
     return(FALSE)
   }
   if (!is_null(scoped) && scoped != is_env(f_env(x))) {
@@ -381,16 +381,16 @@ quo_is_missing <- function(quo) {
 #' @seealso [is_quosure()]
 #' @export
 #' @examples
-#' f <- new_quosure(quote(mtcars), get_env("datasets"))
+#' f <- new_quosure(quote(mtcars), as_env("datasets"))
 #' f
 #' eval_tidy(f)
 #'
 #'
-#' # Sometimes you get unscoped quosures because of quotation:
+#' # Sometimes you get unscoped formulas because of quotation:
 #' f <- ~~expr
 #' inner_f <- f_rhs(f)
-#' inner_f
-#' is_quosure(inner_f, scoped = TRUE)
+#' str(inner_f)
+#' is_quosureish(inner_f, scoped = TRUE)
 #'
 #' # You can use as_quosure() to provide a default environment:
 #' as_quosure(inner_f, base_env())
@@ -413,19 +413,23 @@ new_quosure <- function(rhs, env = caller_env()) {
 #' @export
 as_quosure <- function(x, env = caller_env()) {
   if (is_quosure(x)) {
-    if (!is_env(f_env(x))) {
-      f_env(x) <- env
-    }
-    set_attrs(x, class = c("quosure", "formula"))
-  } else if (is_quosureish(x)) {
-    if (!is_env(f_env(x))) {
-      f_env(x) <- env
-    }
-    new_quosure(f_rhs(x), env)
-  } else if (is_frame(x)) {
-    new_quosure(x$expr, sys_frame(x$caller_pos))
+    x
   } else {
-    new_quosure(x, env)
+    new_quosure(get_expr(x), quo_env(x, env))
+  }
+}
+quo_expr <- function(quo, default = quo) {
+  if (is_quosureish(quo)) {
+    f_rhs(quo)
+  } else {
+    default
+  }
+}
+quo_env <- function(quo, default) {
+  if (is_quosureish(quo)) {
+    f_env(quo) %||% default
+  } else {
+    default
   }
 }
 

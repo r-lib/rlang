@@ -192,7 +192,7 @@ test_that("explicit promise works only one level deep", {
   f <- function(x) list(env = get_env(), f = g(x))
   g <- function(y) enquo(y)
   out <- f(1 + 2 + 3)
-  expected_f <- with_env(out$env, as_quosure(~x))
+  expected_f <- with_env(out$env, quo(x))
 
   expect_identical(out$f, expected_f)
 })

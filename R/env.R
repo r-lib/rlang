@@ -31,6 +31,9 @@
 #'   returned.
 #' @param parent A parent environment. Can be an object with a S3
 #'   method for `as_env()`.
+#' @param default The default environment in case `env` does not wrap
+#'   an environment. If `NULL` and no environment could be extracted,
+#'   an error is issued.
 #' @param ...,data Uniquely named bindings. See [is_dictionaryish()].
 #'   Dots have [explicit-splicing semantics][dots_list].
 #' @param n The number of generations to go through.
@@ -132,16 +135,24 @@ child_env <- function(parent = NULL, data = list()) {
 
 #' @rdname env
 #' @export
-get_env <- function(env = caller_env()) {
-  target <- "environment"
-  coerce_type(env, target,
+get_env <- function(env = caller_env(), default = NULL) {
+  out <- switch_type(env,
     environment = env,
     quosure = attr(env, ".Environment"),
     primitive = base_env(),
     closure = environment(env),
-    string = pkg_env(env),
-    list = coerce_class(env, target, frame = env$env)
+    list = switch_class(env, frame = env$env)
   )
+  if (!is_null(out)) {
+    return(out)
+  }
+
+  if (is_null(default)) {
+    type <- friendly_type(type_of(env))
+    abort(paste0("Can't extract an environment from ", type))
+  } else {
+    default
+  }
 }
 
 #' @rdname env
@@ -189,7 +200,9 @@ env_tail <- function(env = caller_env()) {
 #' @param x An object to coerce.
 #' @param parent A parent environment, [empty_env()] by default. Can
 #'   be ignored with a warning for methods where it does not make
-#'   sense to change the parent.
+#'   sense to change the parent. Note that existing environments keep
+#'   their original parent, only the parents of newly created
+#'   environments are set to `parent`.
 #' @export
 #' @examples
 #' # Coerce a named vector to an environment:
@@ -214,9 +227,6 @@ as_env <- function(x, parent = NULL) {
       empty_env()
     },
     environment = {
-      if (!is_null(parent)) {
-        x <- env_clone(x, parent = parent)
-      }
       x
     },
     string = {
@@ -234,8 +244,9 @@ as_env <- function(x, parent = NULL) {
     complex = ,
     character = ,
     raw = ,
-    list =
+    list = {
       as_env_(x, parent)
+    }
   )
 }
 as_env_ <- function(x, parent = NULL) {
@@ -282,7 +293,7 @@ set_env <- function(env, new_env = caller_env()) {
     },
     environment = get_env(new_env),
     abort(paste0(
-      "Can't set environment for object of type`", type_of(env), "`"
+      "Can't set environment for ", friendly_type(type_of(env)), ""
     ))
   )
 }
@@ -398,12 +409,10 @@ env_assign_promise <- function(env = caller_env(), nm, expr,
 #' @export
 env_assign_promise_ <- function(env = caller_env(), nm, expr,
                                 eval_env = caller_env()) {
-  f <- as_quosure(expr, eval_env)
-
   args <- list(
     x = nm,
-    value = f_rhs(f),
-    eval.env = f_env(f),
+    value = get_expr(expr),
+    eval.env = get_env(expr, eval_env),
     assign.env = get_env(env)
   )
   do.call("delayedAssign", args)
@@ -824,11 +833,14 @@ is_installed <- function(pkg) {
 #' fn()
 #'
 #'
-#' # Since env is passed to get_env(), it can be any object with a
-#' # get_env() method. For strings, the pkg_env() is returned:
+#' # Since env is passed to as_env(), it can be any object with an
+#' # as_env() method. For strings, the pkg_env() is returned:
 #' with_env("base", ~mtcars)
+#'
+#' # This can be handy to put dictionaries in scope:
+#' with_env(mtcars, cyl)
 with_env <- function(env, expr) {
-  .Call(rlang_eval, substitute(expr), get_env(env))
+  .Call(rlang_eval, substitute(expr), as_env(env, caller_env()))
 }
 
 #' @rdname with_env

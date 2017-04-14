@@ -12,7 +12,7 @@ env(...)
 
 child_env(parent = NULL, data = list())
 
-get_env(env = caller_env())
+get_env(env = caller_env(), default = NULL)
 
 env_parent(env = caller_env(), n = 1)
 
@@ -29,6 +29,10 @@ method for \code{as_env()}.}
 either a \link{quosure} or a \link[=is_closure]{closure}. If
 missing, the environment of the current evaluation frame is
 returned.}
+
+\item{default}{The default environment in case \code{env} does not wrap
+an environment. If \code{NULL} and no environment could be extracted,
+an error is issued.}
 
 \item{n}{The number of generations to go through.}
 }

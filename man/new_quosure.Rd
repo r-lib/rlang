@@ -44,16 +44,16 @@ inputs as is.
 }
 }
 \examples{
-f <- new_quosure(quote(mtcars), get_env("datasets"))
+f <- new_quosure(quote(mtcars), as_env("datasets"))
 f
 eval_tidy(f)
 
 
-# Sometimes you get unscoped quosures because of quotation:
+# Sometimes you get unscoped formulas because of quotation:
 f <- ~~expr
 inner_f <- f_rhs(f)
-inner_f
-is_quosure(inner_f, scoped = TRUE)
+str(inner_f)
+is_quosureish(inner_f, scoped = TRUE)
 
 # You can use as_quosure() to provide a default environment:
 as_quosure(inner_f, base_env())

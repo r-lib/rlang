@@ -312,6 +312,8 @@ deparse_one <- function(expr) {
 #' @param x An expression or one-sided formula. In addition,
 #'   `set_expr()` and `as_generic_expr()` accept frames.
 #' @param value An updated expression.
+#' @param default A default expression to return when `x` is not an
+#'   expression wrapper. Defaults to `x` itself.
 #' @return The updated original input for `set_expr()`. A raw
 #'   expression for `get_expr()`. `as_generic_expr()` returns an
 #'   expression or formula quote.
@@ -341,13 +343,13 @@ set_expr <- function(x, value) {
 }
 #' @rdname set_expr
 #' @export
-get_expr <- function(x) {
+get_expr <- function(x, default = x) {
   if (is_quosureish(x)) {
     f_rhs(x)
   } else if (inherits(x, "frame")) {
     x$expr
   } else {
-    x
+    default
   }
 }
 #' @rdname set_expr

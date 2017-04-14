@@ -147,3 +147,25 @@ test_that("finds correct env type", {
   expect_identical(env_type(empty_env()), "empty")
   expect_identical(env_type(base_env()), "base")
 })
+
+test_that("get_env() fails if no default", {
+  expect_error(get_env(list()), "Can't extract an environment from a list")
+})
+
+test_that("get_env() picks up default", {
+  dft <- env()
+  expect_identical(get_env(list(), dft), dft)
+  expect_identical(get_env("a", dft), dft)
+})
+
+test_that("with_env() handles data", {
+  expect_identical(with_env(mtcars, cyl), mtcars$cyl)
+
+  foo <- "foo"
+  expect_identical(with_env(mtcars, foo), "foo")
+})
+
+test_that("with_env() evaluates in env", {
+  env <- env()
+  expect_identical(with_env(env, get_env()), env)
+})

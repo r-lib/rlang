@@ -280,8 +280,8 @@ lang_fn <- function(call = caller_frame()) {
     return(call$fn)
   }
 
-  call <- as_quosure(call, caller_env())
-  expr <- f_rhs(call)
+  expr <- get_expr(call)
+  env <- get_env(call, caller_env())
 
   if (!is_lang(expr)) {
     abort("`call` must quote a call")
@@ -292,7 +292,7 @@ lang_fn <- function(call = caller_frame()) {
     inlined = node_car(expr),
     named = ,
     namespaced = ,
-    eval_bare(node_car(expr), f_env(call))
+    eval_bare(node_car(expr), env)
   )
 }
 
