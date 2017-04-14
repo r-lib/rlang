@@ -5,6 +5,7 @@
 \alias{UQE}
 \alias{!!}
 \alias{UQS}
+\alias{!!!}
 \alias{quosure}
 \alias{quo}
 \alias{UQ}

@@ -89,3 +89,7 @@ UQS <- function(x) {
     abort("`x` must be a vector or a language object")
   }
 }
+#' @export
+#' @rdname quosure
+#' @usage NULL
+`!!!` <- UQS
