@@ -106,7 +106,7 @@ is_binary_lang <- function(x, name = NULL) {
 #' @rdname as_symbol
 as_lang <- function(x) {
   coerce_type(x, "language",
-    symbol = new_language(x),
+    symbol = lang(x),
     quosure = as_lang(f_rhs(x)),
     string = parse_expr(x),
     language = x
@@ -125,17 +125,17 @@ as_lang <- function(x) {
 #' @export
 #' @examples
 #' # fn can either be a string, a symbol or a call
-#' new_language("f", a = 1)
-#' new_language(quote(f), a = 1)
-#' new_language(quote(f()), a = 1)
+#' lang("f", a = 1)
+#' lang(quote(f), a = 1)
+#' lang(quote(f()), a = 1)
 #'
 #' #' Can supply arguments individually or in a list
-#' new_language(quote(f), a = 1, b = 2)
-#' new_language(quote(f), splice(list(a = 1, b = 2)))
+#' lang(quote(f), a = 1, b = 2)
+#' lang(quote(f), splice(list(a = 1, b = 2)))
 #'
 #' # Creating namespaced calls:
-#' new_language("fun", arg = quote(baz), .ns = "mypkg")
-new_language <- function(.fn, ..., .ns = NULL) {
+#' lang("fun", arg = quote(baz), .ns = "mypkg")
+lang <- function(.fn, ..., .ns = NULL) {
   if (is_character(.fn)) {
     if (length(.fn) != 1) {
       abort("Character `.fn` must be length 1")
@@ -150,6 +150,9 @@ new_language <- function(.fn, ..., .ns = NULL) {
 
   as.call(c(.fn, dots_list(...)))
 }
+#' @rdname lang
+#' @export
+new_language <- lang
 
 #' Modify the arguments of a call.
 #'
@@ -336,9 +339,9 @@ lang_name <- function(call = caller_frame()) {
 #' @description
 #'
 #' Internally, calls are structured as a tree of expressions (see
-#' [switch_lang()] and [pairlist] documentation pages). A `new_language` object
-#' is the top level node of the tree. `lang_head()` and `lang_tail()`
-#' allow you to retrieve the node components.
+#' [switch_lang()] and [pairlist] documentation pages). A `language`
+#' object is the top level node of the tree. `lang_head()` and
+#' `lang_tail()` allow you to retrieve the node components.
 #'
 #' * `lang_head()` Its head (the CAR of the node) usually contains a
 #'   symbol in case of a call to a named function. However it could be

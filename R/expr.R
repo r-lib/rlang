@@ -284,7 +284,7 @@ expr_text <- function(expr, width = 60L, nlines = Inf) {
 deparse_one <- function(expr) {
   chr <- deparse(expr)
   if (length(chr) > 1) {
-    dot_call <- new_language(expr[[1]], quote(...))
+    dot_call <- lang(expr[[1]], quote(...))
     chr <- paste(deparse(dot_call), collapse = "\n")
   }
   chr

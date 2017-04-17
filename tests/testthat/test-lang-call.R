@@ -3,16 +3,16 @@ context("lang-call")
 # Creation ----------------------------------------------------------------
 
 test_that("character vector must be length 1", {
-  expect_error(new_language(letters), "must be length 1")
+  expect_error(lang(letters), "must be length 1")
 })
 
 test_that("args can be specified individually or as list", {
-  out <- new_language("f", a = 1, splice(list(b = 2)))
+  out <- lang("f", a = 1, splice(list(b = 2)))
   expect_equal(out, quote(f(a = 1, b = 2)))
 })
 
 test_that("creates namespaced calls", {
-  expect_identical(new_language("fun", foo = quote(baz), .ns = "bar"), quote(bar::fun(foo = baz)))
+  expect_identical(lang("fun", foo = quote(baz), .ns = "bar"), quote(bar::fun(foo = baz)))
 })
 
 
