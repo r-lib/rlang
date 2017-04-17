@@ -15,6 +15,16 @@ test_that("creates namespaced calls", {
   expect_identical(lang("fun", foo = quote(baz), .ns = "bar"), quote(bar::fun(foo = baz)))
 })
 
+test_that("fails with non-callable objects", {
+  expect_error(lang(1), "non-callable")
+  expect_error(lang(get_env()), "non-callable")
+})
+
+test_that("succeeds with literal functions", {
+  expect_error(regex = NA, lang(base::mean, 1:10))
+  expect_error(regex = NA, lang(base::list, 1:10))
+})
+
 
 # Standardisation ---------------------------------------------------------
 

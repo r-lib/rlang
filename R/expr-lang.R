@@ -142,6 +142,9 @@ lang <- function(.fn, ..., .ns = NULL) {
     }
     .fn <- as_symbol(.fn)
   }
+  if (!is_symbolic(.fn) && !is_function(.fn) && !is_string(.fn)) {
+    abort("Can't create call to non-callable object")
+  }
 
   if (!is_null(.ns)) {
     .ns <- as_symbol(.ns)
