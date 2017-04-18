@@ -278,9 +278,6 @@ expr <- function(expr) {
 #' @param scoped A boolean indicating whether the quosure or formula
 #'   is scoped, that is, has a valid environment attribute. If `NULL`,
 #'   the scope is not inspected.
-#' @param lhs A boolean indicating whether the [formula][is_formula]
-#'   or [definition][is_definition] has a left-hand side. If `NULL`,
-#'   the LHS is not inspected.
 #' @seealso [as_quosure()][new_quosure] and [new_quosure()] for creating
 #'   quosures, and [quo()] or [eval_tidy()] for information
 #'   about the role of quosures in the tidy evaluation framework.
@@ -298,12 +295,13 @@ expr <- function(expr) {
 #' is_quosure(inner_f, scoped = TRUE)
 #'
 #'
-#' # Formulas and definitions are not quosures:
-#' is_quosure(a := b)
-#' is_quosure(a ~ b)
+#' # Formulas not quosures:
+#' is_quosure(~foo)
 #'
-#' # But they are quosureish objects:
-#' is_quosureish(a := b)
+#' # But they are quosureish:
+#' is_quosureish(~foo)
+#'
+#' # Though two-sided formulas are not quosureish:
 #' is_quosureish(a ~ b)
 is_quosure <- function(x, scoped = NULL) {
   if (!inherits(x, "quosure")) {
@@ -316,24 +314,8 @@ is_quosure <- function(x, scoped = NULL) {
 }
 #' @rdname is_quosure
 #' @export
-is_quosureish <- function(x, scoped = NULL, lhs = NULL) {
-  if(typeof(x) != "language") {
-    return(FALSE)
-  }
-
-  head <- node_car(x)
-  if (!identical(head, sym_tilde) && !identical(head, sym_def)) {
-    return(FALSE)
-  }
-
-  if (!is_null(scoped) && scoped != is_env(attr(x, ".Environment"))) {
-    return(FALSE)
-  }
-  if (!is_null(lhs) && !identical(lhs, length(x) > 2)) {
-    return(FALSE)
-  }
-
-  TRUE
+is_quosureish <- function(x, scoped = NULL) {
+  is_formula(x, scoped = scoped, lhs = FALSE)
 }
 is_one_sided <- function(x, lang_sym = sym_tilde) {
   typeof(x) == "language" &&

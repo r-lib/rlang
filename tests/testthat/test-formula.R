@@ -160,8 +160,10 @@ test_that("lhs is inspected", {
   expect_false(is_formula(foo ~ bar, lhs = FALSE))
 })
 
-test_that("definitions are not formulas but are quosureish", {
+test_that("definitions are not formulas but are formulaish", {
   expect_false(is_formula(foo := bar))
-  expect_true(is_quosureish(foo := bar, lhs = TRUE))
-  expect_false(is_quosureish(foo := bar, lhs = FALSE))
+  expect_true(is_formulaish(foo := bar, lhs = TRUE))
+  expect_false(is_formulaish(foo := bar, lhs = FALSE))
+  expect_false(is_formulaish(foo := bar, scoped = TRUE, lhs = FALSE))
+  expect_false(is_formulaish(foo := bar, scoped = FALSE, lhs = TRUE))
 })

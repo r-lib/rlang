@@ -78,7 +78,7 @@
 #' is_definition(a := b)
 #' is_definition(a ~ b)
 is_definition <- function(x) {
-  is_formula(x) && identical(x[[1]], quote(`:=`))
+  is_formulaish(x) && identical(x[[1]], quote(`:=`))
 }
 
 #' @rdname op-definition

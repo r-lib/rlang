@@ -26,16 +26,20 @@ new_formula <- function(lhs, rhs, env = caller_env()) {
 #'
 #' `is_formula()` tests if `x` is a call to `~`. `is_bare_formula()`
 #' tests in addition that `x` does not inherit from anything else than
-#' `"formula"`.
+#' `"formula"`. `is_formulaish()` returns `TRUE` for both formulas and
+#' [definitions][is_definition] of the type `a := b`.
 #'
 #' @inheritParams is_quosure
-#' @seealso [is_quosure()]
+#' @param lhs A boolean indicating whether the [formula][is_formula]
+#'   or [definition][is_definition] has a left-hand side. If `NULL`,
+#'   the LHS is not inspected.
+#' @seealso [is_quosure()] and [is_quosureish()]
 #' @export
 #' @examples
 #' x <- disp ~ am
 #' is_formula(x)
 #'
-#' is_formula(~ 10)
+#' is_formula(~10)
 #' is_formula(10)
 #'
 #' is_formula(quo(foo))
@@ -50,8 +54,14 @@ new_formula <- function(lhs, rhs, env = caller_env()) {
 #' # return FALSE for these unevaluated formulas:
 #' is_bare_formula(f, scoped = TRUE)
 #' is_bare_formula(eval(f), scoped = TRUE)
+#'
+#'
+#' # There is also a variant that returns TRUE for definitions in
+#' # addition to formulas:
+#' is_formulaish(a ~ b)
+#' is_formulaish(a := b)
 is_formula <- function(x, scoped = NULL, lhs = NULL) {
-  if (!is_quosureish(x, scoped = scoped, lhs = lhs)) {
+  if (!is_formulaish(x, scoped = scoped, lhs = lhs)) {
     return(FALSE)
   }
   identical(node_car(x), sym_tilde)
@@ -64,6 +74,27 @@ is_bare_formula <- function(x, scoped = NULL, lhs = NULL) {
   }
   class <- class(x)
   is_null(class) || identical(class, "formula")
+}
+#' @rdname is_formula
+#' @export
+is_formulaish <- function(x, scoped = NULL, lhs = NULL) {
+  if(typeof(x) != "language") {
+    return(FALSE)
+  }
+
+  head <- node_car(x)
+  if (!identical(head, sym_tilde) && !identical(head, sym_def)) {
+    return(FALSE)
+  }
+
+  if (!is_null(scoped) && scoped != is_env(attr(x, ".Environment"))) {
+    return(FALSE)
+  }
+  if (!is_null(lhs) && !identical(lhs, length(x) > 2)) {
+    return(FALSE)
+  }
+
+  TRUE
 }
 
 #' Get/set formula components.

@@ -7,7 +7,7 @@
 \usage{
 is_quosure(x, scoped = NULL)
 
-is_quosureish(x, scoped = NULL, lhs = NULL)
+is_quosureish(x, scoped = NULL)
 }
 \arguments{
 \item{x}{An object to test.}
@@ -15,10 +15,6 @@ is_quosureish(x, scoped = NULL, lhs = NULL)
 \item{scoped}{A boolean indicating whether the quosure or formula
 is scoped, that is, has a valid environment attribute. If \code{NULL},
 the scope is not inspected.}
-
-\item{lhs}{A boolean indicating whether the \link[=is_formula]{formula}
-or \link[=is_definition]{definition} has a left-hand side. If \code{NULL},
-the LHS is not inspected.}
 }
 \description{
 These predicates test for \link[=new_quosure]{quosure} objects.
@@ -52,12 +48,13 @@ inner_f <- f_rhs(f)
 is_quosure(inner_f, scoped = TRUE)
 
 
-# Formulas and definitions are not quosures:
-is_quosure(a := b)
-is_quosure(a ~ b)
+# Formulas not quosures:
+is_quosure(~foo)
 
-# But they are quosureish objects:
-is_quosureish(a := b)
+# But they are quosureish:
+is_quosureish(~foo)
+
+# Though two-sided formulas are not quosureish:
 is_quosureish(a ~ b)
 }
 \seealso{
