@@ -10,8 +10,8 @@
 #' defined) by [eval_tidy()].
 #'
 #' Like all capturing functions in the tidy evaluation framework,
-#' `quo()` interpolates on capture (see [enquo()]) and
-#' `vignette("tidy-eval")`. Alternatively, `expr_interp()` allows you
+#' `quo()` interpolates on capture (see [enquo()] and
+#' `vignette("tidy-eval")`). Alternatively, `expr_interp()` allows you
 #' to interpolate manually when you have constructed a raw expression
 #' or formula by yourself. When an expression is interpolated, all
 #' sub-expressions within unquoting operators (like `UQ(x)` and

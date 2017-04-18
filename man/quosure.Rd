@@ -45,8 +45,8 @@ defined) by \code{\link[=eval_tidy]{eval_tidy()}}.
 }
 \details{
 Like all capturing functions in the tidy evaluation framework,
-\code{quo()} interpolates on capture (see \code{\link[=enquo]{enquo()}}) and
-\code{vignette("tidy-eval")}. Alternatively, \code{expr_interp()} allows you
+\code{quo()} interpolates on capture (see \code{\link[=enquo]{enquo()}} and
+\code{vignette("tidy-eval")}). Alternatively, \code{expr_interp()} allows you
 to interpolate manually when you have constructed a raw expression
 or formula by yourself. When an expression is interpolated, all
 sub-expressions within unquoting operators (like \code{UQ(x)} and
