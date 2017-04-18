@@ -24,6 +24,10 @@ new_formula <- function(lhs, rhs, env = caller_env()) {
 
 #' Is object a formula?
 #'
+#' `is_formula()` tests if `x` is a call to `~`. `is_bare_formula()`
+#' tests in addition that `x` does not inherit from anything else than
+#' `"formula"`.
+#'
 #' @inheritParams is_quosure
 #' @seealso [is_quosure()]
 #' @export
@@ -33,6 +37,19 @@ new_formula <- function(lhs, rhs, env = caller_env()) {
 #'
 #' is_formula(~ 10)
 #' is_formula(10)
+#'
+#' is_formula(quo(foo))
+#' is_bare_formula(quo(foo))
+#'
+#' # Note that unevaluated formulas are treated as bare formulas even
+#' # though they don't inherit from "formula":
+#' f <- quote(~foo)
+#' is_bare_formula(f)
+#'
+#' # However you can specify `scoped` if you need the predicate to
+#' # return FALSE for these unevaluated formulas:
+#' is_bare_formula(f, scoped = TRUE)
+#' is_bare_formula(eval(f), scoped = TRUE)
 is_formula <- function(x, scoped = NULL) {
   if(typeof(x) != "language") {
     return(FALSE)
@@ -52,6 +69,16 @@ is_formula <- function(x, scoped = NULL) {
   }
 
   TRUE
+}
+#' @rdname is_formula
+#' @export
+is_bare_formula <- function(x, scoped = NULL) {
+  if (!is_formula(x, scoped = scoped)) {
+    return(FALSE)
+  }
+
+  class <- class(x)
+  is_null(class) || identical(class, "formula")
 }
 
 #' Get/set formula components.

@@ -145,3 +145,7 @@ test_that("f_unwrap() doesn't go past empty env", {
   f <- new_quosure(quote(x == y), env = empty_env())
   expect_equal(f_unwrap(f), f)
 })
+
+test_that("quosures are not recognised as bare formulas", {
+  expect_false(is_bare_formula(quo(foo)))
+})

@@ -2,9 +2,12 @@
 % Please edit documentation in R/formula.R
 \name{is_formula}
 \alias{is_formula}
+\alias{is_bare_formula}
 \title{Is object a formula?}
 \usage{
 is_formula(x, scoped = NULL)
+
+is_bare_formula(x, scoped = NULL)
 }
 \arguments{
 \item{x}{An object to test.}
@@ -14,7 +17,9 @@ is scoped, that is, has a valid environment attribute. If \code{NULL},
 the scope is not inspected.}
 }
 \description{
-Is object a formula?
+\code{is_formula()} tests if \code{x} is a call to \code{~}. \code{is_bare_formula()}
+tests in addition that \code{x} does not inherit from anything else than
+\code{"formula"}.
 }
 \examples{
 x <- disp ~ am
@@ -22,6 +27,18 @@ is_formula(x)
 
 is_formula(~ 10)
 is_formula(10)
+
+is_formula(quo(foo))
+is_bare_formula(quo(foo))
+
+# Note that unevaluated formulas are treated as bare formulas even
+# though they don't inherit from "formula":
+f <- quote(~foo)
+is_bare_formula(f)
+
+# However you can specify `scoped` if you need the predicate to
+# return FALSE for these unevaluated formulas:
+is_bare_formula(f, scoped = TRUE)
 }
 \seealso{
 \code{\link[=is_quosure]{is_quosure()}}
