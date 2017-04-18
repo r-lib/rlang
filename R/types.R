@@ -322,9 +322,13 @@ is_scalar_integerish <- function(x) {
 #' @export
 #' @examples
 #' type_of(10L)
-#' type_of(~10L)
-#' typeof(~10L)
 #'
+#' # Quosures are treated as a new base type but not formulas:
+#' type_of(quo(10L))
+#' type_of(~10L)
+#'
+#' # Compare to base::typeof():
+#' typeof(quo(10L))
 #' type_of(letters)
 #' type_of(letters[[1]])
 #'
@@ -336,7 +340,7 @@ is_scalar_integerish <- function(x) {
 #' type_of(quote(base::list()))
 type_of <- function(x) {
   type <- typeof(x)
-  if (is_one_sided(x)) {
+  if (is_quosure(x)) {
     "quosure"
   } else if (type == "character") {
     if (length(x) == 1) "string" else "character"
