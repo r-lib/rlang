@@ -50,33 +50,18 @@ new_formula <- function(lhs, rhs, env = caller_env()) {
 #' # return FALSE for these unevaluated formulas:
 #' is_bare_formula(f, scoped = TRUE)
 #' is_bare_formula(eval(f), scoped = TRUE)
-is_formula <- function(x, scoped = NULL) {
-  if(typeof(x) != "language") {
+is_formula <- function(x, scoped = NULL, lhs = NULL) {
+  if (!is_quosureish(x, scoped = scoped, lhs = lhs)) {
     return(FALSE)
   }
-
-  head <- node_car(x)
-  if (typeof(head) != "symbol") {
-    return(FALSE)
-  }
-
-  if (!identical(head, sym_tilde) && !identical(head, sym_def)) {
-    return(FALSE)
-  }
-
-  if (!is_null(scoped) && scoped != is_env(attr(x, ".Environment"))) {
-    return(FALSE)
-  }
-
-  TRUE
+  identical(node_car(x), sym_tilde)
 }
 #' @rdname is_formula
 #' @export
-is_bare_formula <- function(x, scoped = NULL) {
-  if (!is_formula(x, scoped = scoped)) {
+is_bare_formula <- function(x, scoped = NULL, lhs = NULL) {
+  if (!is_formula(x, scoped = scoped, lhs = lhs)) {
     return(FALSE)
   }
-
   class <- class(x)
   is_null(class) || identical(class, "formula")
 }
