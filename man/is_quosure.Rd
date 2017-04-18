@@ -5,7 +5,7 @@
 \alias{is_quosureish}
 \title{Is an object a quosure or quosure-like?}
 \usage{
-is_quosure(x, scoped = NULL)
+is_quosure(x)
 
 is_quosureish(x, scoped = NULL)
 }
@@ -36,25 +36,17 @@ framework}, unscoped quosures are automatically given
 the environment of the outer quosure during the evaluation process.
 }
 \examples{
-# Degenerate quosures are often created by quoting, since `~`
-# records the environment when it is evaluated the first time:
-f <- ~~expr
+# Quosures are created with quo():
+quo(foo)
+is_quosure(quo(foo))
 
-# The outer quosure has been evaluated and is scoped:
-is_quosure(f, scoped = TRUE)
-
-# But the inner formula is not:
-inner_f <- f_rhs(f)
-is_quosure(inner_f, scoped = TRUE)
-
-
-# Formulas not quosures:
+# Formulas look similar to quosures but are not quosures:
 is_quosure(~foo)
 
 # But they are quosureish:
 is_quosureish(~foo)
 
-# Though two-sided formulas are not quosureish:
+# Note that two-sided formulas are never quosureish:
 is_quosureish(a ~ b)
 }
 \seealso{

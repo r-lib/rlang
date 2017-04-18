@@ -283,34 +283,20 @@ expr <- function(expr) {
 #'   about the role of quosures in the tidy evaluation framework.
 #' @export
 #' @examples
-#' # Degenerate quosures are often created by quoting, since `~`
-#' # records the environment when it is evaluated the first time:
-#' f <- ~~expr
+#' # Quosures are created with quo():
+#' quo(foo)
+#' is_quosure(quo(foo))
 #'
-#' # The outer quosure has been evaluated and is scoped:
-#' is_quosure(f, scoped = TRUE)
-#'
-#' # But the inner formula is not:
-#' inner_f <- f_rhs(f)
-#' is_quosure(inner_f, scoped = TRUE)
-#'
-#'
-#' # Formulas not quosures:
+#' # Formulas look similar to quosures but are not quosures:
 #' is_quosure(~foo)
 #'
 #' # But they are quosureish:
 #' is_quosureish(~foo)
 #'
-#' # Though two-sided formulas are not quosureish:
+#' # Note that two-sided formulas are never quosureish:
 #' is_quosureish(a ~ b)
-is_quosure <- function(x, scoped = NULL) {
-  if (!inherits(x, "quosure")) {
-    return(FALSE)
-  }
-  if (!is_null(scoped) && scoped != is_env(f_env(x))) {
-    return(FALSE)
-  }
-  TRUE
+is_quosure <- function(x) {
+  inherits(x, "quosure")
 }
 #' @rdname is_quosure
 #' @export
