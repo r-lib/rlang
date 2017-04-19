@@ -43,7 +43,7 @@ compat_lazy <- function(lazy, env = caller_env(), warn = TRUE) {
       new_quosure(lazy, env)
     },
     list =
-      coerce_class(lazy, "quosure",
+      coerce_class(lazy, "a quosure",
         lazy = new_quosure(lazy$expr, lazy$env)
       )
   )
@@ -53,7 +53,7 @@ compat_lazy_dots <- function(dots, env, ..., .named = FALSE) {
   if (missing(dots)) {
     dots <- list()
   }
-  if (inherits(dots, "lazy")) {
+  if (inherits(dots, c("lazy", "formula"))) {
     dots <- list(dots)
   } else {
     dots <- unclass(dots)

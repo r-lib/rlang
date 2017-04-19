@@ -79,4 +79,5 @@ test_that("compat_lazy() handles numeric vectors", {
 
 test_that("compat_lazy() handles bare formulas", {
   expect_identical(compat_lazy(~foo), quo(foo))
+  expect_identical(compat_lazy_dots(~foo), named_list(quo(foo)))
 })
