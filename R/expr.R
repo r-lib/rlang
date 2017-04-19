@@ -236,7 +236,7 @@ expr_label <- function(expr) {
 #' @export
 expr_name <- function(expr) {
   switch_type(expr,
-    symbol = as_name(expr),
+    symbol = as_string(expr),
     quosure = ,
     language = {
       name <- deparse_one(expr)

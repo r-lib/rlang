@@ -28,7 +28,7 @@ arg_match <- function(arg, values = NULL) {
     abort("Internal error: `arg_match()` expects a symbol")
   }
 
-  arg_nm <- as_name(arg_expr)
+  arg_nm <- as_string(arg_expr)
 
   if (is_null(values)) {
     fn <- caller_fn()

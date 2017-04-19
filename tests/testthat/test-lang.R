@@ -31,13 +31,6 @@ test_that("is_lang() vectorises name", {
 })
 
 
-# coercion ----------------------------------------------------------------
-
-test_that("as_name() returns symbol as string", {
-  expect_identical(as_name(quote(foo)), "foo")
-})
-
-
 # misc -------------------------------------------------------------------
 
 test_that("qualified and namespaced symbols are recognised", {

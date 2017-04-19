@@ -24,25 +24,6 @@ syms <- function(x) {
   map(x, sym)
 }
 
-#' Coerce a symbol to a name
-#'
-#' @param x A symbol.
-#' @return A string.
-#' @seealso [sym()] for the inverse operation.
-#' @export
-#' @examples
-#' sym <- quote(sym)
-#' as_name(sym)
-#'
-#' quo <- quo(sym)
-#' as_name(get_expr(quo))
-as_name <- function(x) {
-  coerce_type(x, "a name",
-    string = x,
-    symbol = as_string(x)
-  )
-}
-
 #' @rdname is_expr
 #' @export
 is_symbol <- function(x) {
