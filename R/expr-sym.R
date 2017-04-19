@@ -24,47 +24,22 @@ syms <- function(x) {
   map(x, sym)
 }
 
-#' Coerce an object to a name or call.
+#' Coerce a symbol to a name
 #'
-#' These coercing functions can transform names, calls, formulas, and
-#' strings. The distinction between a name and a call is particularly
-#' important when coercing from a string. Coercing to a call will
-#' parse the string, coercing to a name will create a (potentially)
-#' non-syntactic name.
-#'
-#' @param x An object to coerce
+#' @param x A symbol.
+#' @return A string.
+#' @seealso [sym()] for the inverse operation.
 #' @export
-#' @return `as_symbol()` and `as_lang()` return a symbol or a
-#'   call. `as_name()` returns a string.
 #' @examples
-#' as_symbol("x + y")
+#' sym <- quote(sym)
+#' as_name(sym)
 #'
-#' as_lang(~ f)
-#' as_lang(quo(f))
-#'
-#' # as_symbol() takes the function name of quoted calls:
-#' as_symbol(~ f())
-#' as_symbol(quo(f()))
-as_symbol <- function(x) {
-  coerce_type(x, "symbol",
-    symbol = x,
-    string = sym(x),
-    formula = as_symbol(f_rhs(x)),
-    language =
-      switch_lang(x,
-        namespaced = node_car(x),
-        inlined = abort("Can't create symbol from inlined call"),
-        recursive = abort("Can't create symbol from recursive call"),
-        as_symbol(node_car(x))
-      )
-  )
-}
-#' @export
-#' @rdname as_symbol
+#' quo <- quo(sym)
+#' as_name(get_expr(quo))
 as_name <- function(x) {
-  switch_type(x,
+  coerce_type(x, "a name",
     string = x,
-    as_string(as_symbol(x))
+    symbol = as_string(x)
   )
 }
 

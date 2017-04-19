@@ -33,37 +33,8 @@ test_that("is_lang() vectorises name", {
 
 # coercion ----------------------------------------------------------------
 
-test_that("as_symbol() produces names", {
-  expect_equal(as_symbol("a"), quote(a))
-  expect_equal(as_symbol(quote(a)), quote(a))
-  expect_equal(as_symbol(quote(a())), quote(a))
-  expect_equal(as_symbol(~ a), quote(a))
-  expect_equal(as_symbol(~ a()), quote(a))
-
-  expect_error(as_symbol(c("a", "b")), "Can't convert a character vector to a symbol")
-})
-
-test_that("as_lang() produces calls", {
-  expect_equal(as_lang(quote(a)), quote(a()))
-  expect_equal(as_lang(quote(a())), quote(a()))
-  expect_equal(as_lang(~ a()), quote(a()))
-  expect_error(as_lang(c("a", "b")), "Can't convert a character vector to a call \\(lang\\)")
-})
-
-test_that("as_symbol() handles prefixed call names", {
-  expect_identical(as_symbol(quote(foo::bar())), quote(foo::bar))
-  expect_error(as_symbol(~foo@bar()), "recursive")
-})
-
-test_that("as_symbol() handles bad calls", {
-  call <- quote(foo())
-  mut_node_car(call, base::list)
-  expect_error(as_symbol(call), "inlined call")
-  expect_error(as_symbol(~foo()()), "recursive call")
-})
-
 test_that("as_name() returns symbol as string", {
-  expect_identical(as_name(~foo(bar)), "foo")
+  expect_identical(as_name(quote(foo)), "foo")
 })
 
 

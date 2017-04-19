@@ -117,7 +117,7 @@
 #' # expression:
 #' f <- quo(foo(bar))
 #' f <- quo(inner(!! f, arg1))
-#' f <- quo(outer(!! f, !!! lapply(letters[1:3], as_symbol)))
+#' f <- quo(outer(!! f, !!! syms(letters[1:3])))
 #' f
 #'
 #' # Note that it's fine to unquote expressions to be evaluated as

@@ -14,9 +14,9 @@
 #' @param x An object to test. If a formula, the right-hand side is
 #'   extracted.
 #' @param name An optional name that the call should match. It is
-#'   passed to [as_symbol()] before matching. This argument is
-#'   vectorised and you can supply a vector of names to match. In this
-#'   case, `is_lang()` returns `TRUE` if at least one name matches.
+#'   passed to [sym()] before matching. This argument is vectorised
+#'   and you can supply a vector of names to match. In this case,
+#'   `is_lang()` returns `TRUE` if at least one name matches.
 #' @param n An optional number of arguments that the call should
 #'   match.
 #' @seealso [is_expr()]
@@ -40,14 +40,14 @@
 #' is_binary_lang(quote(1 + 3))
 #'
 #' # Namespaced calls are a bit tricky. Strings won't work because
-#' # as_symbol("base::list") returns a symbol rather than a namespace
+#' # sym("base::list") returns a symbol rather than a namespace
 #' # call:
 #' is_lang(quote(base::list(baz)), "base::list")
 #'
 #' # However you can use the fact that as_symbol(quote(base::list()))
 #' # extracts the function identifier as is, and thus returns the call
 #' # base::list:
-#' is_lang(quote(base::list(baz)), ~base::list(), 1)
+#' is_lang(quote(base::list(baz)), quote(base::list()), 1)
 #'
 #'
 #' # The name argument is vectorised so you can supply a list of names
@@ -68,7 +68,7 @@ is_lang <- function(x, name = NULL, n = NULL) {
 
     unmatched <- TRUE
     for (elt in name) {
-      if (identical(x[[1]], as_symbol(elt))) {
+      if (identical(x[[1]], sym(elt))) {
         unmatched <- FALSE
         break
       }
@@ -96,25 +96,14 @@ is_binary_lang <- function(x, name = NULL) {
   is_lang(x, name, n = 2L)
 }
 
-
-#' @export
-#' @rdname as_symbol
-as_lang <- function(x) {
-  coerce_type(x, "language",
-    symbol = lang(x),
-    formula = as_lang(f_rhs(x)),
-    language = x
-  )
-}
-
 #' Create a language call by "hand"
 #'
-#' @param .fn Function to call. Can be a string or symbol or any
-#'   object supported by [as_symbol()].
+#' @param .fn Function to call. Must be a callable object: a string,
+#'   symbol, call, or a function.
 #' @param ... Arguments to the call either in or out of a list. Dots
 #'   are evaluated with [explicit splicing][dots_list].
-#' @param .ns Namespace with which to prefix `.fn`. Can be a string or
-#'   symbol or any object supported by [as_symbol()].
+#' @param .ns Namespace with which to prefix `.fn`. Must be a string
+#'   or symbol.
 #' @seealso lang_modify
 #' @export
 #' @examples
@@ -132,17 +121,15 @@ as_lang <- function(x) {
 lang <- function(.fn, ..., .ns = NULL) {
   if (is_character(.fn)) {
     if (length(.fn) != 1) {
-      abort("Character `.fn` must be length 1")
+      abort("`.fn` must be a length 1 string")
     }
-    .fn <- as_symbol(.fn)
-  }
-  if (!is_symbolic(.fn) && !is_function(.fn) && !is_string(.fn)) {
+    .fn <- sym(.fn)
+  } else if (!is_callable(.fn)) {
     abort("Can't create call to non-callable object")
   }
 
   if (!is_null(.ns)) {
-    .ns <- as_symbol(.ns)
-    .fn <- call("::", .ns, .fn)
+    .fn <- call("::", sym(.ns), .fn)
   }
 
   as.call(c(.fn, dots_list(...)))
@@ -150,6 +137,10 @@ lang <- function(.fn, ..., .ns = NULL) {
 #' @rdname lang
 #' @export
 new_language <- lang
+
+is_callable <- function(x) {
+  is_symbolic(x) || is_function(x) || is_string(x)
+}
 
 #' Modify the arguments of a call.
 #'
@@ -204,7 +195,7 @@ lang_modify <- function(.call = caller_frame(), ..., .standardise = FALSE) {
     quo <- lang_as_quosure(.call, caller_env())
     expr <- get_expr(lang_standardise(quo))
   } else {
-    expr <- as_lang(get_expr(.call))
+    expr <- get_expr(.call)
   }
 
   # Named arguments can be spliced by R
