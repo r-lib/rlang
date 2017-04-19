@@ -46,7 +46,7 @@ as_symbol <- function(x) {
   coerce_type(x, "symbol",
     symbol = x,
     string = sym(x),
-    quosure = as_symbol(f_rhs(x)),
+    formula = as_symbol(f_rhs(x)),
     language =
       switch_lang(x,
         namespaced = node_car(x),

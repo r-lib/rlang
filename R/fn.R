@@ -286,12 +286,15 @@ fn_env <- function(fn) {
 #' as_closure(`+`)
 #' as_closure(`~`)
 as_function <- function(x, env = caller_env()) {
-  coerce_type(x, "function",
+  coerce_type(x, "a function",
     primitive = ,
     closure = {
       x
     },
-    quosure = {
+    formula = {
+      if (length(x) > 2) {
+        abort("Can't convert a two-sided formula to a function")
+      }
       args <- list(... = missing_arg(), .x = quote(..1), .y = quote(..2), . = quote(..1))
       new_function(args, f_rhs(x), f_env(x))
     },
@@ -304,7 +307,7 @@ as_function <- function(x, env = caller_env()) {
 #' @export
 as_closure <- function(x, env = caller_env()) {
   x <- as_function(x, env = env)
-  coerce_type(x, "closure",
+  coerce_type(x, "a closure",
     closure =
       x,
     primitive = {
