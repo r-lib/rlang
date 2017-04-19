@@ -100,6 +100,32 @@ dots_clean_empty <- function(dots, is_empty, ignore_empty) {
 }
 
 
+#' @rdname quosures
+#' @export
+dots_definitions <- function(..., .named = FALSE) {
+  dots <- dots_enquose(..., `__interp_lhs` = FALSE)
+  if (.named) {
+    width <- quo_names_width(.named)
+    dots <- exprs_auto_name(dots, width)
+  }
+
+  is_def <- map_lgl(dots, function(dot) is_definition(f_rhs(dot)))
+  defs <- map(dots[is_def], as_definition)
+
+  list(dots = dots[!is_def], defs = defs)
+}
+as_definition <- function(def) {
+  # The definition comes wrapped in a quosure
+  env <- f_env(def)
+  def <- f_rhs(def)
+
+  list(
+    lhs = new_quosure(f_lhs(def), env),
+    rhs = new_quosure(f_rhs(def), env)
+  )
+}
+
+
 #' Is object a ..n symbol?
 #' @param x An object to test.
 #' @export
