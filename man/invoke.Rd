@@ -19,7 +19,7 @@ name of a function in scope of \code{.env}.}
 \item{.bury}{A character vector of length 2. The first string
 specifies which name should the function have in the call
 recorded in the evaluation stack. The second string specifies a
-prefix for the argument names. Set \code{.bury} to \code{FALSE} if you
+prefix for the argument names. Set \code{.bury} to \code{NULL} if you
 prefer to inline the function and its arguments in the call.}
 }
 \description{

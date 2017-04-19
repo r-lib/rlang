@@ -89,7 +89,7 @@ eval_bare <- function(expr, env = parent.frame()) {
 #' @param .bury A character vector of length 2. The first string
 #'   specifies which name should the function have in the call
 #'   recorded in the evaluation stack. The second string specifies a
-#'   prefix for the argument names. Set `.bury` to `FALSE` if you
+#'   prefix for the argument names. Set `.bury` to `NULL` if you
 #'   prefer to inline the function and its arguments in the call.
 #' @export
 #' @examples
@@ -119,7 +119,7 @@ invoke <- function(.fn, .args = list(), ...,
                    .env = caller_env(), .bury = c(".fn", "")) {
   args <- c(.args, list(...))
 
-  if (is_false(.bury) || !length(args)) {
+  if (is_null(.bury) || !length(args)) {
     if (is_scalar_character(.fn)) {
       .fn <- env_get(.env, .fn, inherit = TRUE)
     }
