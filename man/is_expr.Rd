@@ -125,6 +125,5 @@ is_pairlist(fmls)
 lang_tail(quote(fn(arg1, arg2 = "foo")))
 }
 \seealso{
-\code{\link[=is_lang]{is_lang()}} for a call predicate; \code{\link[=as_symbol]{as_symbol()}} and
-\code{\link[=as_lang]{as_lang()}} for coercion functions.
+\code{\link[=is_lang]{is_lang()}} for a call predicate.
 }

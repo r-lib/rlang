@@ -48,3 +48,26 @@ test_that("qualified and namespaced symbols are recognised", {
   expect_false(is_namespaced_lang(quote(foo@bar())))
   expect_true(is_namespaced_lang(quote(foo::bar())))
 })
+
+test_that("can specify ns in namespaced predicate", {
+  expr <- quote(foo::bar())
+  expect_false(is_namespaced_lang(expr, quote(bar)))
+  expect_true(is_namespaced_lang(expr, quote(foo)))
+  expect_true(is_namespaced_lang(expr, "foo"))
+})
+
+test_that("can specify ns in is_lang()", {
+  expr <- quote(foo::bar())
+  expect_true(is_lang(expr, ns = NULL))
+  expect_false(is_lang(expr, ns = ""))
+  expect_false(is_lang(expr, ns = "baz"))
+  expect_true(is_lang(expr, ns = "foo"))
+  expect_true(is_lang(expr, name = "bar", ns = "foo"))
+  expect_false(is_lang(expr, name = "baz", ns = "foo"))
+})
+
+test_that("can unnamespace calls", {
+  expect_identical(lang_unnamespace(quote(bar(baz))), quote(bar(baz)))
+  expect_identical(lang_unnamespace(quote(foo::bar(baz))), quote(bar(baz)))
+  expect_identical(lang_unnamespace(quote(foo@bar(baz))), quote(foo@bar(baz)))
+})
