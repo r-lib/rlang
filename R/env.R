@@ -219,7 +219,7 @@ env_tail <- function(env = caller_env()) {
 #' # With NULL it returns the empty environment:
 #' as_env(NULL)
 as_env <- function(x, parent = NULL) {
-  coerce_type(x, "environment",
+  coerce_type(x, "an environment",
     NULL = {
       if (!is_null(parent)) {
         warn("`parent` ignored for empty environment")

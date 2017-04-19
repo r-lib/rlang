@@ -286,7 +286,7 @@ fn_env <- function(fn) {
 #' as_closure(`+`)
 #' as_closure(`~`)
 as_function <- function(x, env = caller_env()) {
-  coerce_type(x, "a function",
+  coerce_type(x, friendly_type("function"),
     primitive = ,
     closure = {
       x
