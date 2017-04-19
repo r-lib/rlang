@@ -2,15 +2,8 @@
 % Please edit documentation in R/eval.R
 \name{eval_tidy}
 \alias{eval_tidy}
-\alias{eval_tidy_rhs}
-\alias{eval_tidy_lhs}
-\alias{eval_tidy}
 \title{Evaluate a quosure.}
 \usage{
-eval_tidy_rhs(f, data = NULL)
-
-eval_tidy_lhs(f, data = NULL)
-
 eval_tidy(f, data = NULL)
 }
 \arguments{
@@ -26,11 +19,6 @@ to a proper data source. If you want to make \code{eval_tidy()} work
 for your own objects, you can define a method for this generic.}
 }
 \description{
-\code{eval_tidy_rhs} evaluates the RHS of a formula and
-\code{eval_tidy_lhs()} evaluates the LHS. \code{eval_tidy()} is a shortcut
-for \code{eval_tidy_rhs()} since that is what you most commonly need.
-}
-\details{
 If \code{data} is specified, variables will be looked for first in this
 object, and if not found in the environment of the formula.
 }

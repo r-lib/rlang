@@ -1,9 +1,5 @@
 #' Evaluate a quosure.
 #'
-#' `eval_tidy_rhs` evaluates the RHS of a formula and
-#' `eval_tidy_lhs()` evaluates the LHS. `eval_tidy()` is a shortcut
-#' for `eval_tidy_rhs()` since that is what you most commonly need.
-#'
 #' If `data` is specified, variables will be looked for first in this
 #' object, and if not found in the environment of the formula.
 #'
@@ -54,22 +50,6 @@
 #' var <- ~ cyl
 #' eval_tidy(quo(mean( !!var )), mtcars)
 #' @name eval_tidy
-eval_tidy_rhs <- function(f, data = NULL) {
-  rhs <- new_quosure(f_rhs(f), f_env(f))
-  rhs <- eval_tidy(rhs, data)
-  f_rhs(f) <- rhs
-  f
-}
-#' @rdname eval_tidy
-#' @export
-eval_tidy_lhs <- function(f, data = NULL) {
-  lhs <- new_quosure(f_lhs(f), f_env(f))
-  lhs <- eval_tidy(lhs, data)
-  f_lhs(f) <- lhs
-  f
-}
-#' @rdname eval_tidy
-#' @export
 eval_tidy <- function(f, data = NULL) {
   if (is_list(f)) {
     return(map(f, eval_tidy, data = data))
