@@ -28,7 +28,6 @@ non-syntactic name.
 }
 \examples{
 as_symbol("x + y")
-as_lang("x + y")
 
 as_lang(~ f)
 as_lang(quo(f))

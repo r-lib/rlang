@@ -46,9 +46,7 @@ test_that("as_symbol() produces names", {
 test_that("as_lang() produces calls", {
   expect_equal(as_lang(quote(a)), quote(a()))
   expect_equal(as_lang(quote(a())), quote(a()))
-  expect_equal(as_lang("a()"), quote(a()))
   expect_equal(as_lang(~ a()), quote(a()))
-
   expect_error(as_lang(c("a", "b")), "Can't convert a character vector to a call \\(lang\\)")
 })
 

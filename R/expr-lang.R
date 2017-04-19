@@ -103,7 +103,6 @@ as_lang <- function(x) {
   coerce_type(x, "language",
     symbol = lang(x),
     formula = as_lang(f_rhs(x)),
-    string = parse_expr(x),
     language = x
   )
 }
