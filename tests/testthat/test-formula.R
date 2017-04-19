@@ -45,15 +45,15 @@ test_that("as_quosure() uses correct env", {
 # Getters -----------------------------------------------------------------
 
 test_that("throws errors for bad inputs", {
-  expect_error(f_rhs(1), "not a formula")
+  expect_error(f_rhs(1), "must be a formula")
   expect_error(f_rhs(`~`()), "Invalid formula")
   expect_error(f_rhs(`~`(1, 2, 3)), "Invalid formula")
 
-  expect_error(f_lhs(1), "not a formula")
+  expect_error(f_lhs(1), "must be a formula")
   expect_error(f_lhs(`~`()), "Invalid formula")
   expect_error(f_lhs(`~`(1, 2, 3)), "Invalid formula")
 
-  expect_error(f_env(1), "not a formula")
+  expect_error(f_env(1), "must be a formula")
 })
 
 test_that("extracts call, name, or scalar", {

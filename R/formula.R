@@ -76,25 +76,10 @@ is_bare_formula <- function(x, scoped = NULL, lhs = NULL) {
   is_null(class) || identical(class, "formula")
 }
 #' @rdname is_formula
+#' @useDynLib rlang rlang_is_formulaish
 #' @export
 is_formulaish <- function(x, scoped = NULL, lhs = NULL) {
-  if(typeof(x) != "language") {
-    return(FALSE)
-  }
-
-  head <- node_car(x)
-  if (!identical(head, sym_tilde) && !identical(head, sym_def)) {
-    return(FALSE)
-  }
-
-  if (!is_null(scoped) && scoped != is_env(attr(x, ".Environment"))) {
-    return(FALSE)
-  }
-  if (!is_null(lhs) && !identical(lhs, length(x) > 2)) {
-    return(FALSE)
-  }
-
-  TRUE
+  .Call(rlang_is_formulaish, x, scoped, lhs)
 }
 
 #' Get/set formula components.
@@ -161,7 +146,7 @@ copy_lang_name <- function(f, x) {
 #' @rdname f_rhs
 f_env <- function(f) {
   if(!is_formula(f)) {
-    abort("`f` is not a formula")
+    abort("`f` must be a formula")
   }
   attr(f, ".Environment")
 }
