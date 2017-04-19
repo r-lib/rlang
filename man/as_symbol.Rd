@@ -31,5 +31,9 @@ as_symbol("x + y")
 as_lang("x + y")
 
 as_lang(~ f)
+as_lang(quo(f))
+
+# as_symbol() takes the function name of quoted calls:
 as_symbol(~ f())
+as_symbol(quo(f()))
 }

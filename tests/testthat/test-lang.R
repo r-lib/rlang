@@ -9,25 +9,25 @@ test_that("is_lang() pattern-matches", {
   expect_false(is_lang(quote(foo(bar)), "bar"))
   expect_true(is_lang(quote(foo(bar)), quote(foo)))
 
-  expect_true(is_lang(~foo(bar), "foo", n = 1))
-  expect_false(is_lang(~foo(bar), "foo", n = 2))
+  expect_true(is_lang(quote(foo(bar)), "foo", n = 1))
+  expect_false(is_lang(quote(foo(bar)), "foo", n = 2))
 
-  expect_true(is_lang(~foo::bar()), quote(foo::bar()))
+  expect_true(is_lang(quote(foo::bar())), quote(foo::bar()))
 
-  expect_false(is_lang(~1))
-  expect_false(is_lang(~NULL))
+  expect_false(is_lang(1))
+  expect_false(is_lang(NULL))
 
-  expect_true(is_unary_lang(~ +3))
-  expect_true(is_binary_lang(~ 3 + 3))
+  expect_true(is_unary_lang(quote(+3)))
+  expect_true(is_binary_lang(quote(3 + 3)))
 })
 
 test_that("is_lang() vectorises name", {
-  expect_false(is_lang(~foo::bar, c("fn", "fn2")))
-  expect_true(is_lang(~foo::bar, c("fn", "::")))
+  expect_false(is_lang(quote(foo::bar), c("fn", "fn2")))
+  expect_true(is_lang(quote(foo::bar), c("fn", "::")))
 
-  expect_true(is_lang(~foo::bar, quote(`::`)))
-  expect_true(is_lang(~foo::bar, list(quote(`@`), quote(`::`))))
-  expect_false(is_lang(~foo::bar, list(quote(`@`), quote(`:::`))))
+  expect_true(is_lang(quote(foo::bar), quote(`::`)))
+  expect_true(is_lang(quote(foo::bar), list(quote(`@`), quote(`::`))))
+  expect_false(is_lang(quote(foo::bar), list(quote(`@`), quote(`:::`))))
 })
 
 

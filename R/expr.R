@@ -74,15 +74,6 @@
 #' is_lang(q3)
 #'
 #'
-#' # Since tidy quotes are an important way of representing
-#' # expressions in R, all expression predicates will test the RHS of
-#' # the formula if you supply one:
-#' is_symbol(~foo)
-#' is_lang(~foo)
-#' is_symbol(~foo(bar))
-#' is_lang(~foo(bar))
-#'
-#'
 #' # Atomic expressions are the terminating nodes of a call tree:
 #' # NULL or a scalar atomic vector:
 #' is_syntactic_literal("string")
@@ -98,10 +89,10 @@
 #'
 #' # Like any literals, they can be evaluated within the empty
 #' # environment:
-#' eval(quote(1L), empty_env())
+#' eval_bare(quote(1L), empty_env())
 #'
 #' # Whereas it would fail for symbolic expressions:
-#' # eval(quote(c(1L, 2L)), empty_env())
+#' # eval_bare(quote(c(1L, 2L)), empty_env())
 #'
 #'
 #' # Pairlists are also language objects representing argument lists.
@@ -118,19 +109,16 @@
 #' # Note that you can also extract call arguments as a pairlist:
 #' lang_tail(quote(fn(arg1, arg2 = "foo")))
 is_expr <- function(x) {
-  x <- get_expr(x)
   is_symbolic(x) || is_syntactic_literal(x)
 }
 #' @export
 #' @rdname is_expr
 is_syntactic_literal <- function(x) {
-  x <- get_expr(x)
   typeof(x) == "NULL" || (length(x) == 1 && typeof(x) %in% parsable_atomic_types)
 }
 #' @export
 #' @rdname is_expr
 is_symbolic <- function(x) {
-  x <- get_expr(x)
   typeof(x) %in% c("language", "symbol")
 }
 

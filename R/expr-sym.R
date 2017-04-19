@@ -41,7 +41,11 @@ syms <- function(x) {
 #' as_lang("x + y")
 #'
 #' as_lang(~ f)
+#' as_lang(quo(f))
+#'
+#' # as_symbol() takes the function name of quoted calls:
 #' as_symbol(~ f())
+#' as_symbol(quo(f()))
 as_symbol <- function(x) {
   coerce_type(x, "symbol",
     symbol = x,
@@ -68,7 +72,6 @@ as_name <- function(x) {
 #' @rdname is_expr
 #' @export
 is_symbol <- function(x) {
-  x <- get_expr(x)
   typeof(x) == "symbol"
 }
 

@@ -89,15 +89,6 @@ is_expr(q3)
 is_lang(q3)
 
 
-# Since tidy quotes are an important way of representing
-# expressions in R, all expression predicates will test the RHS of
-# the formula if you supply one:
-is_symbol(~foo)
-is_lang(~foo)
-is_symbol(~foo(bar))
-is_lang(~foo(bar))
-
-
 # Atomic expressions are the terminating nodes of a call tree:
 # NULL or a scalar atomic vector:
 is_syntactic_literal("string")
@@ -113,10 +104,10 @@ identical(NULL, quote(NULL))
 
 # Like any literals, they can be evaluated within the empty
 # environment:
-eval(quote(1L), empty_env())
+eval_bare(quote(1L), empty_env())
 
 # Whereas it would fail for symbolic expressions:
-# eval(quote(c(1L, 2L)), empty_env())
+# eval_bare(quote(c(1L, 2L)), empty_env())
 
 
 # Pairlists are also language objects representing argument lists.

@@ -40,40 +40,37 @@ consistency.
 \examples{
 is_lang(quote(foo(bar)))
 
-# Right-hand sides are extracted from formulas:
-is_lang(~foo(bar))
-
 # You can pattern-match the call with additional arguments:
-is_lang(~foo(bar), "foo")
-is_lang(~foo(bar), "bar")
-is_lang(~foo(bar), quote(foo))
+is_lang(quote(foo(bar)), "foo")
+is_lang(quote(foo(bar)), "bar")
+is_lang(quote(foo(bar)), quote(foo))
 
 # Match the number of arguments with is_lang():
-is_lang(~foo(bar), "foo", 1)
-is_lang(~foo(bar), "foo", 2)
+is_lang(quote(foo(bar)), "foo", 1)
+is_lang(quote(foo(bar)), "foo", 2)
 
 # Or more specifically:
-is_unary_lang(~foo(bar))
-is_unary_lang(~ +3)
-is_unary_lang(~ 1 + 3)
-is_binary_lang(~ 1 + 3)
+is_unary_lang(quote(foo(bar)))
+is_unary_lang(quote(+3))
+is_unary_lang(quote(1 + 3))
+is_binary_lang(quote(1 + 3))
 
 # Namespaced calls are a bit tricky. Strings won't work because
 # as_symbol("base::list") returns a symbol rather than a namespace
 # call:
-is_lang(~base::list(baz), "base::list")
+is_lang(quote(base::list(baz)), "base::list")
 
 # However you can use the fact that as_symbol(quote(base::list()))
 # extracts the function identifier as is, and thus returns the call
 # base::list:
-is_lang(~base::list(baz), ~base::list(), 1)
+is_lang(quote(base::list(baz)), ~base::list(), 1)
 
 
 # The name argument is vectorised so you can supply a list of names
 # to match with:
-is_lang(~foo(bar), c("bar", "baz"))
-is_lang(~foo(bar), c("bar", "foo"))
-is_lang(~base::list, c("::", ":::", "$", "@"))
+is_lang(quote(foo(bar)), c("bar", "baz"))
+is_lang(quote(foo(bar)), c("bar", "foo"))
+is_lang(quote(base::list), c("::", ":::", "$", "@"))
 }
 \seealso{
 \code{\link[=is_expr]{is_expr()}}
