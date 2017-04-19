@@ -42,10 +42,8 @@
 #' @param n The number of frames to go back in the stack.
 #' @param clean Whether to post-process the call stack to clean
 #'   non-standard frames. If `TRUE`, suboptimal call-stack entries by
-#'   [base::eval()] and [base::Recall()] will be cleaned up:
-#'   `Recall()` frames will be assigned the correct parent and
-#'   `eval()` frames are merged together (as `eval()` creates a
-#'   duplicate frame).
+#'   [base::eval()] will be cleaned up: the duplicate frame created by
+#'   `eval()` is eliminated.
 #' @param trim The number of layers of intervening frames to trim off
 #'   the stack. See [stack_trim()] and examples.
 #' @name stack
@@ -407,7 +405,6 @@ call_stack <- function(n = NULL, clean = TRUE) {
   stack <- map(stack, new_frame)
   if (clean) {
     stack <- map(stack, frame_clean_eval)
-    stack <- map_around(stack, "right", frame_clean_Recall)
   }
 
   if (trail[length(trail)] == 0L) {
@@ -423,24 +420,6 @@ frame_clean_eval <- function(frame) {
     # (the context with the fake primitive call)
     stopifnot(is_prim_eval(sys.function(frame$pos + 1)))
     frame$env <- sys.frame(frame$pos + 1)
-  }
-
-  frame
-}
-frame_clean_Recall <- function(frame, next_frame) {
-  if (!is_missing(next_frame) && identical(next_frame$fn, base::Recall)) {
-    call_recalled <- lang_homogenise(frame, enum_dots = TRUE, add_missings = TRUE)
-    args_recalled <- lang_args(call_recalled)
-    args_Recall <- lang_args(next_frame)
-
-    if (!length(args_Recall)) {
-      args_Recall <- map(names(args_recalled), as.symbol)
-      names(args_Recall) <- dots_enumerate(args_Recall)
-      mut_node_cdr(next_frame$expr, as.pairlist(args_Recall))
-    }
-
-    args_recalled <- dots_enumerate_args(as.pairlist(args_recalled))
-    mut_node_cdr(frame$expr, args_recalled)
   }
 
   frame
