@@ -309,7 +309,12 @@ is_one_sided <- function(x, lang_sym = sym_tilde) {
     is_null(node_cadr(node_cdr(x)))
 }
 
-#' Is a quosure empty?
+#' Is a quosure quoting a symbolic, missing or NULL object?
+#'
+#' These functions examine the expression of a quosure with a
+#' predicate.
+#'
+#' @section Empty quosures:
 #'
 #' When missing arguments are captured as quosures, either through
 #' [enquo()] or [quos()], they are returned as an empty quosure. These
@@ -317,15 +322,41 @@ is_one_sided <- function(x, lang_sym = sym_tilde) {
 #' have the [empty environment][empty_env] as enclosure.
 #'
 #' @param quo A quosure.
-#' @export
 #' @examples
+#' quo_is_symbol(quo(sym))
+#' quo_is_symbol(quo(foo(bar)))
+#'
+#' # You can create empty quosures by calling quo() without input:
 #' quo <- quo()
 #' quo_is_missing(quo)
 #' is_missing(f_rhs(quo))
-#' @rdname empty_quosure
+#' @name quo-predicates
+NULL
+
+#' @rdname quo-predicates
 #' @export
 quo_is_missing <- function(quo) {
-  is_quosure(quo) && is_missing(f_rhs(quo))
+  is_missing(f_rhs(quo))
+}
+#' @rdname quo-predicates
+#' @export
+quo_is_symbol <- function(quo) {
+  is_symbol(f_rhs(quo))
+}
+#' @rdname quo-predicates
+#' @export
+quo_is_lang <- function(quo) {
+  is_lang(f_rhs(quo))
+}
+#' @rdname quo-predicates
+#' @export
+quo_is_symbolic <- function(quo) {
+  is_symbolic(f_rhs(quo))
+}
+#' @rdname quo-predicates
+#' @export
+quo_is_null <- function(quo) {
+  is_null(f_rhs(quo))
 }
 
 #' Create quosures.
