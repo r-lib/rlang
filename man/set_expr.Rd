@@ -3,18 +3,15 @@
 \name{set_expr}
 \alias{set_expr}
 \alias{get_expr}
-\alias{as_generic_expr}
 \title{Set and get an expression.}
 \usage{
 set_expr(x, value)
 
 get_expr(x, default = x)
-
-as_generic_expr(x)
 }
 \arguments{
 \item{x}{An expression or one-sided formula. In addition,
-\code{set_expr()} and \code{as_generic_expr()} accept frames.}
+\code{set_expr()} accept frames.}
 
 \item{value}{An updated expression.}
 
@@ -23,8 +20,7 @@ expression wrapper. Defaults to \code{x} itself.}
 }
 \value{
 The updated original input for \code{set_expr()}. A raw
-expression for \code{get_expr()}. \code{as_generic_expr()} returns an
-expression or formula quote.
+expression for \code{get_expr()}.
 }
 \description{
 These helpers are useful to make your function work generically
@@ -35,16 +31,6 @@ You can return the result of \code{set_expr()}, either a formula or an
 expression depending on the input type. Note that \code{set_expr()} does
 not change its input, it creates a new object.
 }
-\details{
-\code{as_generic_expr()} is helpful when your function accepts frames as
-input but should be able to call \code{set_expr()} at the
-end. \code{set_expr()} does not work on frames because it does not make
-sense to modify this kind of object. In this case, first call
-\code{as_generic_expr()} to transform the input to an object that
-supports \code{set_expr()}. It transforms frame objects to a raw
-expression, and return formula quotes and raw expressions without
-changes.
-}
 \examples{
 f <- ~foo(bar)
 e <- quote(foo(bar))
@@ -53,10 +39,6 @@ frame <- identity(identity(ctxt_frame()))
 get_expr(f)
 get_expr(e)
 get_expr(frame)
-
-as_generic_expr(f)
-as_generic_expr(e)
-as_generic_expr(frame)
 
 set_expr(f, quote(baz))
 set_expr(e, quote(baz))

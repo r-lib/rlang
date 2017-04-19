@@ -300,23 +300,13 @@ deparse_one <- function(expr) {
 #' expression depending on the input type. Note that `set_expr()` does
 #' not change its input, it creates a new object.
 #'
-#' `as_generic_expr()` is helpful when your function accepts frames as
-#' input but should be able to call `set_expr()` at the
-#' end. `set_expr()` does not work on frames because it does not make
-#' sense to modify this kind of object. In this case, first call
-#' `as_generic_expr()` to transform the input to an object that
-#' supports `set_expr()`. It transforms frame objects to a raw
-#' expression, and return formula quotes and raw expressions without
-#' changes.
-#'
 #' @param x An expression or one-sided formula. In addition,
-#'   `set_expr()` and `as_generic_expr()` accept frames.
+#'   `set_expr()` accept frames.
 #' @param value An updated expression.
 #' @param default A default expression to return when `x` is not an
 #'   expression wrapper. Defaults to `x` itself.
 #' @return The updated original input for `set_expr()`. A raw
-#'   expression for `get_expr()`. `as_generic_expr()` returns an
-#'   expression or formula quote.
+#'   expression for `get_expr()`.
 #' @export
 #' @examples
 #' f <- ~foo(bar)
@@ -326,10 +316,6 @@ deparse_one <- function(expr) {
 #' get_expr(f)
 #' get_expr(e)
 #' get_expr(frame)
-#'
-#' as_generic_expr(f)
-#' as_generic_expr(e)
-#' as_generic_expr(frame)
 #'
 #' set_expr(f, quote(baz))
 #' set_expr(e, quote(baz))
@@ -352,16 +338,6 @@ get_expr <- function(x, default = x) {
     default
   }
 }
-#' @rdname set_expr
-#' @export
-as_generic_expr <- function(x) {
-  if (is_frame(x)) {
-    x$expr
-  } else {
-    x
-  }
-}
-
 
 expr_type_of <- function(x) {
   type <- typeof(x)

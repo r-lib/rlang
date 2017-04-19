@@ -206,34 +206,37 @@ lang_modify <- function(.call = caller_frame(), ..., .standardise = FALSE) {
     abort("Duplicate arguments")
   }
 
-  orig <- as_generic_expr(.call)
-
   if (.standardise) {
-    quote <- as_quosure(.call, caller_env())
-    quote <- set_expr(quote, as_lang(quote))
-    quote <- lang_standardise(quote)
-    call <- get_expr(quote)
+    quo <- lang_as_quosure(.call, caller_env())
+    expr <- get_expr(lang_standardise(quo))
   } else {
-    call <- as_lang(get_expr(.call))
+    expr <- as_lang(get_expr(.call))
   }
 
   # Named arguments can be spliced by R
   named <- have_name(args)
   for (nm in names(args)[named]) {
-    call[[nm]] <- args[[nm]]
+    expr[[nm]] <- args[[nm]]
   }
 
   if (any(!named)) {
     # Duplicate list structure in case it wasn't before
     if (!any(named)) {
-      call <- duplicate(call, shallow = TRUE)
+      expr <- duplicate(expr, shallow = TRUE)
     }
 
     remaining_args <- as.pairlist(args[!named])
-    call <- node_append(call, remaining_args)
+    expr <- node_append(expr, remaining_args)
   }
 
-  set_expr(orig, call)
+  set_expr(.call, expr)
+}
+lang_as_quosure <- function(lang, env) {
+  if (is_frame(lang)) {
+    new_quosure(lang$expr, lang$env)
+  } else {
+    as_quosure(lang, env)
+  }
 }
 
 #' Standardise a call.
@@ -247,8 +250,6 @@ lang_modify <- function(.call = caller_frame(), ..., .standardise = FALSE) {
 #' @return A tidy quote if `.call` is a tidy quote, a call otherwise.
 #' @export
 lang_standardise <- function(call = caller_frame()) {
-  orig <- as_generic_expr(call)
-
   expr <- get_expr(call)
   if (is_frame(call)) {
     fn <- call$fn
@@ -259,7 +260,7 @@ lang_standardise <- function(call = caller_frame()) {
   }
 
   matched <- match.call(as_closure(fn), expr)
-  set_expr(orig, matched)
+  set_expr(call, matched)
 }
 
 #' Extract function from a call
