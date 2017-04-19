@@ -57,8 +57,7 @@
 #' @param x An object to test. When you supply a tidy quote (see
 #'   [quo()]) to any of the expression predicates, they will
 #'   perform their test on the RHS of the formula.
-#' @seealso [is_lang()] for a call predicate; [as_symbol()] and
-#'   [as_lang()] for coercion functions.
+#' @seealso [is_lang()] for a call predicate.
 #' @export
 #' @examples
 #' q1 <- quote(1)
@@ -72,15 +71,6 @@
 #' q3 <- quote(x + 1)
 #' is_expr(q3)
 #' is_lang(q3)
-#'
-#'
-#' # Since tidy quotes are an important way of representing
-#' # expressions in R, all expression predicates will test the RHS of
-#' # the formula if you supply one:
-#' is_symbol(~foo)
-#' is_lang(~foo)
-#' is_symbol(~foo(bar))
-#' is_lang(~foo(bar))
 #'
 #'
 #' # Atomic expressions are the terminating nodes of a call tree:
@@ -98,10 +88,10 @@
 #'
 #' # Like any literals, they can be evaluated within the empty
 #' # environment:
-#' eval(quote(1L), empty_env())
+#' eval_bare(quote(1L), empty_env())
 #'
 #' # Whereas it would fail for symbolic expressions:
-#' # eval(quote(c(1L, 2L)), empty_env())
+#' # eval_bare(quote(c(1L, 2L)), empty_env())
 #'
 #'
 #' # Pairlists are also language objects representing argument lists.
@@ -118,19 +108,16 @@
 #' # Note that you can also extract call arguments as a pairlist:
 #' lang_tail(quote(fn(arg1, arg2 = "foo")))
 is_expr <- function(x) {
-  x <- get_expr(x)
   is_symbolic(x) || is_syntactic_literal(x)
 }
 #' @export
 #' @rdname is_expr
 is_syntactic_literal <- function(x) {
-  x <- get_expr(x)
   typeof(x) == "NULL" || (length(x) == 1 && typeof(x) %in% parsable_atomic_types)
 }
 #' @export
 #' @rdname is_expr
 is_symbolic <- function(x) {
-  x <- get_expr(x)
   typeof(x) %in% c("language", "symbol")
 }
 
@@ -300,23 +287,13 @@ deparse_one <- function(expr) {
 #' expression depending on the input type. Note that `set_expr()` does
 #' not change its input, it creates a new object.
 #'
-#' `as_generic_expr()` is helpful when your function accepts frames as
-#' input but should be able to call `set_expr()` at the
-#' end. `set_expr()` does not work on frames because it does not make
-#' sense to modify this kind of object. In this case, first call
-#' `as_generic_expr()` to transform the input to an object that
-#' supports `set_expr()`. It transforms frame objects to a raw
-#' expression, and return formula quotes and raw expressions without
-#' changes.
-#'
 #' @param x An expression or one-sided formula. In addition,
-#'   `set_expr()` and `as_generic_expr()` accept frames.
+#'   `set_expr()` accept frames.
 #' @param value An updated expression.
 #' @param default A default expression to return when `x` is not an
 #'   expression wrapper. Defaults to `x` itself.
 #' @return The updated original input for `set_expr()`. A raw
-#'   expression for `get_expr()`. `as_generic_expr()` returns an
-#'   expression or formula quote.
+#'   expression for `get_expr()`.
 #' @export
 #' @examples
 #' f <- ~foo(bar)
@@ -326,10 +303,6 @@ deparse_one <- function(expr) {
 #' get_expr(f)
 #' get_expr(e)
 #' get_expr(frame)
-#'
-#' as_generic_expr(f)
-#' as_generic_expr(e)
-#' as_generic_expr(frame)
 #'
 #' set_expr(f, quote(baz))
 #' set_expr(e, quote(baz))
@@ -352,16 +325,6 @@ get_expr <- function(x, default = x) {
     default
   }
 }
-#' @rdname set_expr
-#' @export
-as_generic_expr <- function(x) {
-  if (is_frame(x)) {
-    x$expr
-  } else {
-    x
-  }
-}
-
 
 expr_type_of <- function(x) {
   type <- typeof(x)

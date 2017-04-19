@@ -45,15 +45,15 @@ test_that("as_quosure() uses correct env", {
 # Getters -----------------------------------------------------------------
 
 test_that("throws errors for bad inputs", {
-  expect_error(f_rhs(1), "not a formula")
+  expect_error(f_rhs(1), "must be a formula")
   expect_error(f_rhs(`~`()), "Invalid formula")
   expect_error(f_rhs(`~`(1, 2, 3)), "Invalid formula")
 
-  expect_error(f_lhs(1), "not a formula")
+  expect_error(f_lhs(1), "must be a formula")
   expect_error(f_lhs(`~`()), "Invalid formula")
   expect_error(f_lhs(`~`(1, 2, 3)), "Invalid formula")
 
-  expect_error(f_env(1), "not a formula")
+  expect_error(f_env(1), "must be a formula")
 })
 
 test_that("extracts call, name, or scalar", {
@@ -144,4 +144,26 @@ test_that("f_unwrap() substitutes even in globalenv", {
 test_that("f_unwrap() doesn't go past empty env", {
   f <- new_quosure(quote(x == y), env = empty_env())
   expect_equal(f_unwrap(f), f)
+})
+
+test_that("quosures are not recognised as bare formulas", {
+  expect_false(is_bare_formula(quo(foo)))
+})
+
+test_that("lhs is inspected", {
+  expect_true(is_formula(~foo))
+
+  expect_false(is_formula(~foo, lhs = TRUE))
+  expect_true(is_formula(~foo, lhs = FALSE))
+
+  expect_true(is_formula(foo ~ bar, lhs = TRUE))
+  expect_false(is_formula(foo ~ bar, lhs = FALSE))
+})
+
+test_that("definitions are not formulas but are formulaish", {
+  expect_false(is_formula(foo := bar))
+  expect_true(is_formulaish(foo := bar, lhs = TRUE))
+  expect_false(is_formulaish(foo := bar, lhs = FALSE))
+  expect_false(is_formulaish(foo := bar, scoped = TRUE, lhs = FALSE))
+  expect_false(is_formulaish(foo := bar, scoped = FALSE, lhs = TRUE))
 })

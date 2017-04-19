@@ -3,8 +3,6 @@
 #include <Rinternals.h>
 #include <stdbool.h>
 
-SEXP sym_tilde = NULL;
-
 bool is_character(SEXP x) {
   return TYPEOF(x) == STRSXP;
 }
@@ -154,61 +152,6 @@ int is_true(SEXP x) {
 }
 
 // Formulas --------------------------------------------------------------------
-
-bool is_formulaish(SEXP x) {
-  if (TYPEOF(x) != LANGSXP)
-    return 0;
-
-  SEXP head = CAR(x);
-  if (TYPEOF(head) != SYMSXP)
-    return 0;
-
-  return is_sym(head, "~") || is_sym(head, ":=");
-}
-
-bool is_formula(SEXP x) {
-  if (TYPEOF(x) != LANGSXP)
-    return 0;
-
-  SEXP head = CAR(x);
-  if (TYPEOF(head) != SYMSXP)
-    return 0;
-
-  return is_sym(head, "~");
-}
-
-bool is_fpromise(SEXP x) {
-  return is_formula(x) && Rf_isNull(CDDR(x));
-}
-
-SEXP f_rhs_(SEXP f) {
-  if (!is_formulaish(f))
-    Rf_errorcall(R_NilValue, "`x` is not a formula");
-
-  switch (Rf_length(f)) {
-  case 2: return CADR(f);
-  case 3: return CADDR(f);
-  default: Rf_errorcall(R_NilValue, "Invalid formula");
-  }
-}
-
-SEXP f_lhs_(SEXP f) {
-  if (!is_formulaish(f))
-    Rf_errorcall(R_NilValue, "`x` is not a formula");
-
-  switch (Rf_length(f)) {
-  case 2: return R_NilValue;
-  case 3: return CADR(f);
-  default: Rf_errorcall(R_NilValue, "Invalid formula");
-  }
-}
-
-SEXP f_env_(SEXP f) {
-  if (!is_formulaish(f))
-    Rf_errorcall(R_NilValue, "`x` is not a formula");
-
-  return Rf_getAttrib(f, Rf_install(".Environment"));
-}
 
 SEXP make_formula1(SEXP rhs, SEXP env) {
   SEXP f = PROTECT(Rf_lang2(Rf_install("~"), rhs));

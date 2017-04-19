@@ -14,56 +14,69 @@
 #' @param x An object to test. If a formula, the right-hand side is
 #'   extracted.
 #' @param name An optional name that the call should match. It is
-#'   passed to [as_symbol()] before matching. This argument is
-#'   vectorised and you can supply a vector of names to match. In this
-#'   case, `is_lang()` returns `TRUE` if at least one name matches.
+#'   passed to [sym()] before matching. This argument is vectorised
+#'   and you can supply a vector of names to match. In this case,
+#'   `is_lang()` returns `TRUE` if at least one name matches.
 #' @param n An optional number of arguments that the call should
 #'   match.
+#' @param ns The namespace of the call. If `NULL`, the namespace
+#'   doesn't participate in the pattern-matching. If an empty string
+#'   `""` and `x` is a namespaced call, `is_lang()` returns
+#'   `FALSE`. If any other string, `is_lang()` checks that `x` is
+#'   namespaced within `ns`.
 #' @seealso [is_expr()]
 #' @export
 #' @examples
 #' is_lang(quote(foo(bar)))
 #'
-#' # Right-hand sides are extracted from formulas:
-#' is_lang(~foo(bar))
-#'
 #' # You can pattern-match the call with additional arguments:
-#' is_lang(~foo(bar), "foo")
-#' is_lang(~foo(bar), "bar")
-#' is_lang(~foo(bar), quote(foo))
+#' is_lang(quote(foo(bar)), "foo")
+#' is_lang(quote(foo(bar)), "bar")
+#' is_lang(quote(foo(bar)), quote(foo))
 #'
 #' # Match the number of arguments with is_lang():
-#' is_lang(~foo(bar), "foo", 1)
-#' is_lang(~foo(bar), "foo", 2)
+#' is_lang(quote(foo(bar)), "foo", 1)
+#' is_lang(quote(foo(bar)), "foo", 2)
 #'
 #' # Or more specifically:
-#' is_unary_lang(~foo(bar))
-#' is_unary_lang(~ +3)
-#' is_unary_lang(~ 1 + 3)
-#' is_binary_lang(~ 1 + 3)
+#' is_unary_lang(quote(foo(bar)))
+#' is_unary_lang(quote(+3))
+#' is_unary_lang(quote(1 + 3))
+#' is_binary_lang(quote(1 + 3))
 #'
-#' # Namespaced calls are a bit tricky. Strings won't work because
-#' # as_symbol("base::list") returns a symbol rather than a namespace
-#' # call:
-#' is_lang(~base::list(baz), "base::list")
 #'
-#' # However you can use the fact that as_symbol(quote(base::list()))
-#' # extracts the function identifier as is, and thus returns the call
-#' # base::list:
-#' is_lang(~base::list(baz), ~base::list(), 1)
+#' # By default, namespaced calls are tested unqualified:
+#' ns_expr <- quote(base::list())
+#' is_lang(ns_expr, "list")
+#'
+#' # You can also specify whether the call shouldn't be namespaced by
+#' # supplying an empty string:
+#' is_lang(ns_expr, "list", ns = "")
+#'
+#' # Or if it should have a namespace:
+#' is_lang(ns_expr, "list", ns = "utils")
+#' is_lang(ns_expr, "list", ns = "base")
 #'
 #'
 #' # The name argument is vectorised so you can supply a list of names
 #' # to match with:
-#' is_lang(~foo(bar), c("bar", "baz"))
-#' is_lang(~foo(bar), c("bar", "foo"))
-#' is_lang(~base::list, c("::", ":::", "$", "@"))
-is_lang <- function(x, name = NULL, n = NULL) {
-  x <- get_expr(x)
-
+#' is_lang(quote(foo(bar)), c("bar", "baz"))
+#' is_lang(quote(foo(bar)), c("bar", "foo"))
+#' is_lang(quote(base::list), c("::", ":::", "$", "@"))
+is_lang <- function(x, name = NULL, n = NULL, ns = NULL) {
   if (typeof(x) != "language") {
     return(FALSE)
   }
+
+  if (!is_null(ns)) {
+    if (identical(ns, "") && is_namespaced_lang(x, private = FALSE)) {
+      return(FALSE)
+    } else if (!is_namespaced_lang(x, ns, private = FALSE)) {
+      return(FALSE)
+    }
+  }
+
+  x <- lang_unnamespace(x)
 
   if (!is_null(name)) {
     # Wrap language objects in a list
@@ -73,7 +86,7 @@ is_lang <- function(x, name = NULL, n = NULL) {
 
     unmatched <- TRUE
     for (elt in name) {
-      if (identical(x[[1]], as_symbol(elt))) {
+      if (identical(x[[1]], sym(elt))) {
         unmatched <- FALSE
         break
       }
@@ -92,35 +105,23 @@ is_lang <- function(x, name = NULL, n = NULL) {
 }
 #' @rdname is_lang
 #' @export
-is_unary_lang <- function(x, name = NULL) {
-  is_lang(x, name, n = 1L)
+is_unary_lang <- function(x, name = NULL, ns = NULL) {
+  is_lang(x, name, n = 1L, ns = ns)
 }
 #' @rdname is_lang
 #' @export
-is_binary_lang <- function(x, name = NULL) {
-  is_lang(x, name, n = 2L)
-}
-
-
-#' @export
-#' @rdname as_symbol
-as_lang <- function(x) {
-  coerce_type(x, "language",
-    symbol = lang(x),
-    quosure = as_lang(f_rhs(x)),
-    string = parse_expr(x),
-    language = x
-  )
+is_binary_lang <- function(x, name = NULL, ns = NULL) {
+  is_lang(x, name, n = 2L, ns = ns)
 }
 
 #' Create a language call by "hand"
 #'
-#' @param .fn Function to call. Can be a string or symbol or any
-#'   object supported by [as_symbol()].
+#' @param .fn Function to call. Must be a callable object: a string,
+#'   symbol, call, or a function.
 #' @param ... Arguments to the call either in or out of a list. Dots
 #'   are evaluated with [explicit splicing][dots_list].
-#' @param .ns Namespace with which to prefix `.fn`. Can be a string or
-#'   symbol or any object supported by [as_symbol()].
+#' @param .ns Namespace with which to prefix `.fn`. Must be a string
+#'   or symbol.
 #' @seealso lang_modify
 #' @export
 #' @examples
@@ -138,17 +139,15 @@ as_lang <- function(x) {
 lang <- function(.fn, ..., .ns = NULL) {
   if (is_character(.fn)) {
     if (length(.fn) != 1) {
-      abort("Character `.fn` must be length 1")
+      abort("`.fn` must be a length 1 string")
     }
-    .fn <- as_symbol(.fn)
-  }
-  if (!is_symbolic(.fn) && !is_function(.fn) && !is_string(.fn)) {
+    .fn <- sym(.fn)
+  } else if (!is_callable(.fn)) {
     abort("Can't create call to non-callable object")
   }
 
   if (!is_null(.ns)) {
-    .ns <- as_symbol(.ns)
-    .fn <- call("::", .ns, .fn)
+    .fn <- call("::", sym(.ns), .fn)
   }
 
   as.call(c(.fn, dots_list(...)))
@@ -156,6 +155,10 @@ lang <- function(.fn, ..., .ns = NULL) {
 #' @rdname lang
 #' @export
 new_language <- lang
+
+is_callable <- function(x) {
+  is_symbolic(x) || is_function(x) || is_string(x)
+}
 
 #' Modify the arguments of a call.
 #'
@@ -206,34 +209,37 @@ lang_modify <- function(.call = caller_frame(), ..., .standardise = FALSE) {
     abort("Duplicate arguments")
   }
 
-  orig <- as_generic_expr(.call)
-
   if (.standardise) {
-    quote <- as_quosure(.call, caller_env())
-    quote <- set_expr(quote, as_lang(quote))
-    quote <- lang_standardise(quote)
-    call <- get_expr(quote)
+    quo <- lang_as_quosure(.call, caller_env())
+    expr <- get_expr(lang_standardise(quo))
   } else {
-    call <- as_lang(get_expr(.call))
+    expr <- get_expr(.call)
   }
 
   # Named arguments can be spliced by R
   named <- have_name(args)
   for (nm in names(args)[named]) {
-    call[[nm]] <- args[[nm]]
+    expr[[nm]] <- args[[nm]]
   }
 
   if (any(!named)) {
     # Duplicate list structure in case it wasn't before
     if (!any(named)) {
-      call <- duplicate(call, shallow = TRUE)
+      expr <- duplicate(expr, shallow = TRUE)
     }
 
     remaining_args <- as.pairlist(args[!named])
-    call <- node_append(call, remaining_args)
+    expr <- node_append(expr, remaining_args)
   }
 
-  set_expr(orig, call)
+  set_expr(.call, expr)
+}
+lang_as_quosure <- function(lang, env) {
+  if (is_frame(lang)) {
+    new_quosure(lang$expr, lang$env)
+  } else {
+    as_quosure(lang, env)
+  }
 }
 
 #' Standardise a call.
@@ -247,8 +253,6 @@ lang_modify <- function(.call = caller_frame(), ..., .standardise = FALSE) {
 #' @return A tidy quote if `.call` is a tidy quote, a call otherwise.
 #' @export
 lang_standardise <- function(call = caller_frame()) {
-  orig <- as_generic_expr(call)
-
   expr <- get_expr(call)
   if (is_frame(call)) {
     fn <- call$fn
@@ -259,7 +263,7 @@ lang_standardise <- function(call = caller_frame()) {
   }
 
   matched <- match.call(as_closure(fn), expr)
-  set_expr(orig, matched)
+  set_expr(call, matched)
 }
 
 #' Extract function from a call
@@ -413,9 +417,20 @@ is_qualified_lang <- function(x) {
   if (typeof(x) != "language") return(FALSE)
   is_qualified_symbol(node_car(x))
 }
-is_namespaced_lang <- function(x) {
+is_namespaced_lang <- function(x, ns = NULL, private = NULL) {
   if (typeof(x) != "language") return(FALSE)
-  is_namespaced_symbol(node_car(x))
+  if (!is_namespaced_symbol(node_car(x), ns, private)) return(FALSE)
+  TRUE
+}
+
+# Returns a new call whose CAR has been unqualified
+lang_unnamespace <- function(x) {
+  if (is_namespaced_lang(x)) {
+    lang <- lang(node_cadr(node_cdar(x)))
+    mut_node_cdr(lang, node_cdr(x))
+  } else {
+    x
+  }
 }
 
 # Qualified and namespaced symbols are actually calls
@@ -431,10 +446,16 @@ is_qualified_symbol <- function(x) {
     identical(qualifier, sym_dollar) ||
     identical(qualifier, sym_at)
 }
-is_namespaced_symbol <- function(x) {
+is_namespaced_symbol <- function(x, ns = NULL, private = NULL) {
   if (typeof(x) != "language") return(FALSE)
+  if (!is_null(ns) && !identical(node_cadr(x), sym(ns))) return(FALSE)
 
-  qualifier <- node_car(x)
-  identical(qualifier, sym_namespace) ||
-    identical(qualifier, sym_namespace2)
+  head <- node_car(x)
+  if (is_null(private)) {
+    identical(head, sym_namespace) || identical(head, sym_namespace2)
+  } else if (private) {
+    identical(head, sym_namespace2)
+  } else {
+    identical(head, sym_namespace)
+  }
 }

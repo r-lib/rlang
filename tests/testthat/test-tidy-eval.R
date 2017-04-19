@@ -148,16 +148,6 @@ test_that("formulas are evaluated in evaluation environment", {
   expect_false(identical(f_env(f), get_env()))
 })
 
-test_that("evaluating a side preserves the other side", {
-  expect_identical(eval_tidy_lhs(1 + 2 ~ 1 + 2), 3 ~ 1 + 2)
-  expect_identical(eval_tidy_rhs(1 + 2 ~ 1 + 2), 1 + 2 ~ 3)
-})
-
-test_that("can evaluate definitions", {
-  expect_identical(eval_tidy_lhs(1 + 2 := 1 + 2), 3 := 1 + 2)
-  expect_identical(eval_tidy_rhs(1 + 2 := 1 + 2), 1 + 2 := 3)
-})
-
 test_that("evaluation env is cleaned up", {
   f <- local(quo(function() list(f = ~letters, env = environment())))
   fn <- eval_tidy(f)

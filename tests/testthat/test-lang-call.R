@@ -3,7 +3,7 @@ context("lang-call")
 # Creation ----------------------------------------------------------------
 
 test_that("character vector must be length 1", {
-  expect_error(lang(letters), "must be length 1")
+  expect_error(lang(letters), "must be a length 1 string")
 })
 
 test_that("args can be specified individually or as list", {

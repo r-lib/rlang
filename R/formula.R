@@ -24,34 +24,62 @@ new_formula <- function(lhs, rhs, env = caller_env()) {
 
 #' Is object a formula?
 #'
+#' `is_formula()` tests if `x` is a call to `~`. `is_bare_formula()`
+#' tests in addition that `x` does not inherit from anything else than
+#' `"formula"`. `is_formulaish()` returns `TRUE` for both formulas and
+#' [definitions][is_definition] of the type `a := b`.
+#'
 #' @inheritParams is_quosure
-#' @seealso [is_quosure()]
+#' @param lhs A boolean indicating whether the [formula][is_formula]
+#'   or [definition][is_definition] has a left-hand side. If `NULL`,
+#'   the LHS is not inspected.
+#' @seealso [is_quosure()] and [is_quosureish()]
 #' @export
 #' @examples
 #' x <- disp ~ am
 #' is_formula(x)
 #'
-#' is_formula(~ 10)
+#' is_formula(~10)
 #' is_formula(10)
-is_formula <- function(x, scoped = NULL) {
-  if(typeof(x) != "language") {
+#'
+#' is_formula(quo(foo))
+#' is_bare_formula(quo(foo))
+#'
+#' # Note that unevaluated formulas are treated as bare formulas even
+#' # though they don't inherit from "formula":
+#' f <- quote(~foo)
+#' is_bare_formula(f)
+#'
+#' # However you can specify `scoped` if you need the predicate to
+#' # return FALSE for these unevaluated formulas:
+#' is_bare_formula(f, scoped = TRUE)
+#' is_bare_formula(eval(f), scoped = TRUE)
+#'
+#'
+#' # There is also a variant that returns TRUE for definitions in
+#' # addition to formulas:
+#' is_formulaish(a ~ b)
+#' is_formulaish(a := b)
+is_formula <- function(x, scoped = NULL, lhs = NULL) {
+  if (!is_formulaish(x, scoped = scoped, lhs = lhs)) {
     return(FALSE)
   }
-
-  head <- node_car(x)
-  if (typeof(head) != "symbol") {
+  identical(node_car(x), sym_tilde)
+}
+#' @rdname is_formula
+#' @export
+is_bare_formula <- function(x, scoped = NULL, lhs = NULL) {
+  if (!is_formula(x, scoped = scoped, lhs = lhs)) {
     return(FALSE)
   }
-
-  if (!identical(head, sym_tilde) && !identical(head, sym_def)) {
-    return(FALSE)
-  }
-
-  if (!is_null(scoped) && scoped != is_env(attr(x, ".Environment"))) {
-    return(FALSE)
-  }
-
-  TRUE
+  class <- class(x)
+  is_null(class) || identical(class, "formula")
+}
+#' @rdname is_formula
+#' @useDynLib rlang rlang_is_formulaish
+#' @export
+is_formulaish <- function(x, scoped = NULL, lhs = NULL) {
+  .Call(rlang_is_formulaish, x, scoped, lhs)
 }
 
 #' Get/set formula components.
@@ -118,7 +146,7 @@ copy_lang_name <- function(f, x) {
 #' @rdname f_rhs
 f_env <- function(f) {
   if(!is_formula(f)) {
-    abort("`f` is not a formula")
+    abort("`f` must be a formula")
   }
   attr(f, ".Environment")
 }

@@ -58,6 +58,10 @@ test_that("lambda shortcut handles positional arguments", {
   expect_identical(as_function(~ ..1 + ..3)(1, 2, 3), 4)
 })
 
+test_that("lambda shortcut fails with two-sided formulas", {
+  expect_error(as_function(lhs ~ ..1 + ..3), "two-sided formula")
+})
+
 test_that("as_function() handles strings", {
   expect_identical(as_function("mean"), mean)
 

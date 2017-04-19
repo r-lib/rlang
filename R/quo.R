@@ -117,7 +117,7 @@
 #' # expression:
 #' f <- quo(foo(bar))
 #' f <- quo(inner(!! f, arg1))
-#' f <- quo(outer(!! f, !!! lapply(letters[1:3], as_symbol)))
+#' f <- quo(outer(!! f, !!! syms(letters[1:3])))
 #' f
 #'
 #' # Note that it's fine to unquote expressions to be evaluated as
@@ -283,44 +283,25 @@ expr <- function(expr) {
 #'   about the role of quosures in the tidy evaluation framework.
 #' @export
 #' @examples
-#' # Degenerate quosures are often created by quoting, since `~`
-#' # records the environment when it is evaluated the first time:
-#' f <- ~~expr
+#' # Quosures are created with quo():
+#' quo(foo)
+#' is_quosure(quo(foo))
 #'
-#' # The outer quosure has been evaluated and is scoped:
-#' is_quosure(f, scoped = TRUE)
+#' # Formulas look similar to quosures but are not quosures:
+#' is_quosure(~foo)
 #'
-#' # But the inner formula is not:
-#' inner_f <- f_rhs(f)
-#' is_quosure(inner_f, scoped = TRUE)
+#' # But they are quosureish:
+#' is_quosureish(~foo)
 #'
-#'
-#' # Formulas and definitions are not quosures:
-#' is_quosure(a := b)
-#' is_quosure(a ~ b)
-#'
-#' # But they are quosureish objects:
-#' is_quosureish(a := b)
+#' # Note that two-sided formulas are never quosureish:
 #' is_quosureish(a ~ b)
-is_quosure <- function(x, scoped = NULL) {
-  if (!inherits(x, "quosure")) {
-    return(FALSE)
-  }
-  if (!is_null(scoped) && scoped != is_env(f_env(x))) {
-    return(FALSE)
-  }
-  TRUE
+is_quosure <- function(x) {
+  inherits(x, "quosure")
 }
 #' @rdname is_quosure
 #' @export
 is_quosureish <- function(x, scoped = NULL) {
-  if (!is_formula(x)) {
-    return(FALSE)
-  }
-  if (!is_null(scoped) && scoped != is_env(f_env(x))) {
-    return(FALSE)
-  }
-  TRUE
+  is_formula(x, scoped = scoped, lhs = FALSE)
 }
 is_one_sided <- function(x, lang_sym = sym_tilde) {
   typeof(x) == "language" &&
@@ -414,22 +395,12 @@ new_quosure <- function(rhs, env = caller_env()) {
 as_quosure <- function(x, env = caller_env()) {
   if (is_quosure(x)) {
     x
+  } else if (is_bare_formula(x)) {
+    new_quosure(f_rhs(x), f_env(x) %||% env)
+  } else if (is_symbolic(x)) {
+    new_quosure(x, env)
   } else {
-    new_quosure(get_expr(x), quo_env(x, env))
-  }
-}
-quo_expr <- function(quo, default = quo) {
-  if (is_quosureish(quo)) {
-    f_rhs(quo)
-  } else {
-    default
-  }
-}
-quo_env <- function(quo, default) {
-  if (is_quosureish(quo)) {
-    f_env(quo) %||% default
-  } else {
-    default
+    new_quosure(x, empty_env())
   }
 }
 
@@ -479,10 +450,21 @@ as_quosureish <- function(x, env = caller_env()) {
 #' @export
 #' @seealso [expr_label()], [f_label()]
 #' @examples
-#' quo_expr(~foo(~bar))
-#' quo_text(~foo(~bar))
+#' quo <- quo(foo(!! quo(bar)))
+#' quo
 #'
-#' quo_name(~sym)
+#' # quo_expr() unwraps all quosures and returns a raw expression:
+#' quo_expr(quo)
+#'
+#' # This is used by quo_text() and quo_label():
+#' quo_text(quo)
+#'
+#' # Compare to the unwrapped expression:
+#' expr_text(quo)
+#'
+#' # quo_name() is helpful when you need really short labels:
+#' quo_name(quo(sym))
+#' quo_name(quo(!! sym))
 quo_expr <- function(quo) {
   quo_splice(duplicate(quo))
 }

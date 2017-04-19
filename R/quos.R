@@ -136,14 +136,17 @@ dots_definitions <- function(..., .named = FALSE) {
     dots <- exprs_auto_name(dots, width)
   }
 
-  is_def <- map_lgl(dots, function(dot) is_definition(dot))
+  is_def <- map_lgl(dots, function(dot) is_definition(f_rhs(dot)))
   defs <- map(dots[is_def], as_definition)
 
   list(dots = dots[!is_def], defs = defs)
 }
 
 as_definition <- function(def) {
+  # The definition comes wrapped in a quosure
   env <- f_env(def)
+  def <- f_rhs(def)
+
   list(
     lhs = new_quosure(f_lhs(def), env),
     rhs = new_quosure(f_rhs(def), env)

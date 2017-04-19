@@ -138,7 +138,8 @@ child_env <- function(parent = NULL, data = list()) {
 get_env <- function(env = caller_env(), default = NULL) {
   out <- switch_type(env,
     environment = env,
-    quosure = attr(env, ".Environment"),
+    definition = ,
+    formula = attr(env, ".Environment"),
     primitive = base_env(),
     closure = environment(env),
     list = switch_class(env, frame = env$env)
@@ -285,7 +286,8 @@ as_env_ <- function(x, parent = NULL) {
 #' identical(get_env(fn), other_env)
 set_env <- function(env, new_env = caller_env()) {
   switch_type(env,
-    quosure = ,
+    definition = ,
+    formula = ,
     closure = {
       environment(env) <- get_env(new_env)
       env

@@ -22,5 +22,9 @@ test_that("splicing does not affect original quosure", {
 })
 
 test_that("as_quosure() doesn't convert functions", {
-  expect_identical(as_quosure(base::mean), set_env(quo(!! base::mean)))
+  expect_identical(as_quosure(base::mean), set_env(quo(!! base::mean), empty_env()))
+})
+
+test_that("as_quosure() coerces formulas", {
+  expect_identical(as_quosure(~foo), quo(foo))
 })

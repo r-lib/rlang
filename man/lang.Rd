@@ -10,14 +10,14 @@ lang(.fn, ..., .ns = NULL)
 new_language(.fn, ..., .ns = NULL)
 }
 \arguments{
-\item{.fn}{Function to call. Can be a string or symbol or any
-object supported by \code{\link[=as_symbol]{as_symbol()}}.}
+\item{.fn}{Function to call. Must be a callable object: a string,
+symbol, call, or a function.}
 
 \item{...}{Arguments to the call either in or out of a list. Dots
 are evaluated with \link[=dots_list]{explicit splicing}.}
 
-\item{.ns}{Namespace with which to prefix \code{.fn}. Can be a string or
-symbol or any object supported by \code{\link[=as_symbol]{as_symbol()}}.}
+\item{.ns}{Namespace with which to prefix \code{.fn}. Must be a string
+or symbol.}
 }
 \description{
 Create a language call by "hand"

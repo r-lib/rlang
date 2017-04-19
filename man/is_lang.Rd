@@ -6,23 +6,29 @@
 \alias{is_binary_lang}
 \title{Is object a call (language type)?}
 \usage{
-is_lang(x, name = NULL, n = NULL)
+is_lang(x, name = NULL, n = NULL, ns = NULL)
 
-is_unary_lang(x, name = NULL)
+is_unary_lang(x, name = NULL, ns = NULL)
 
-is_binary_lang(x, name = NULL)
+is_binary_lang(x, name = NULL, ns = NULL)
 }
 \arguments{
 \item{x}{An object to test. If a formula, the right-hand side is
 extracted.}
 
 \item{name}{An optional name that the call should match. It is
-passed to \code{\link[=as_symbol]{as_symbol()}} before matching. This argument is
-vectorised and you can supply a vector of names to match. In this
-case, \code{is_lang()} returns \code{TRUE} if at least one name matches.}
+passed to \code{\link[=sym]{sym()}} before matching. This argument is vectorised
+and you can supply a vector of names to match. In this case,
+\code{is_lang()} returns \code{TRUE} if at least one name matches.}
 
 \item{n}{An optional number of arguments that the call should
 match.}
+
+\item{ns}{The namespace of the call. If \code{NULL}, the namespace
+doesn't participate in the pattern-matching. If an empty string
+\code{""} and \code{x} is a namespaced call, \code{is_lang()} returns
+\code{FALSE}. If any other string, \code{is_lang()} checks that \code{x} is
+namespaced within \code{ns}.}
 }
 \description{
 This function tests if \code{x} is a call. This is a pattern-matching
@@ -40,40 +46,40 @@ consistency.
 \examples{
 is_lang(quote(foo(bar)))
 
-# Right-hand sides are extracted from formulas:
-is_lang(~foo(bar))
-
 # You can pattern-match the call with additional arguments:
-is_lang(~foo(bar), "foo")
-is_lang(~foo(bar), "bar")
-is_lang(~foo(bar), quote(foo))
+is_lang(quote(foo(bar)), "foo")
+is_lang(quote(foo(bar)), "bar")
+is_lang(quote(foo(bar)), quote(foo))
 
 # Match the number of arguments with is_lang():
-is_lang(~foo(bar), "foo", 1)
-is_lang(~foo(bar), "foo", 2)
+is_lang(quote(foo(bar)), "foo", 1)
+is_lang(quote(foo(bar)), "foo", 2)
 
 # Or more specifically:
-is_unary_lang(~foo(bar))
-is_unary_lang(~ +3)
-is_unary_lang(~ 1 + 3)
-is_binary_lang(~ 1 + 3)
+is_unary_lang(quote(foo(bar)))
+is_unary_lang(quote(+3))
+is_unary_lang(quote(1 + 3))
+is_binary_lang(quote(1 + 3))
 
-# Namespaced calls are a bit tricky. Strings won't work because
-# as_symbol("base::list") returns a symbol rather than a namespace
-# call:
-is_lang(~base::list(baz), "base::list")
 
-# However you can use the fact that as_symbol(quote(base::list()))
-# extracts the function identifier as is, and thus returns the call
-# base::list:
-is_lang(~base::list(baz), ~base::list(), 1)
+# By default, namespaced calls are tested unqualified:
+ns_expr <- quote(base::list())
+is_lang(ns_expr, "list")
+
+# You can also specify whether the call shouldn't be namespaced by
+# supplying an empty string:
+is_lang(ns_expr, "list", ns = "")
+
+# Or if it should have a namespace:
+is_lang(ns_expr, "list", ns = "utils")
+is_lang(ns_expr, "list", ns = "base")
 
 
 # The name argument is vectorised so you can supply a list of names
 # to match with:
-is_lang(~foo(bar), c("bar", "baz"))
-is_lang(~foo(bar), c("bar", "foo"))
-is_lang(~base::list, c("::", ":::", "$", "@"))
+is_lang(quote(foo(bar)), c("bar", "baz"))
+is_lang(quote(foo(bar)), c("bar", "foo"))
+is_lang(quote(base::list), c("::", ":::", "$", "@"))
 }
 \seealso{
 \code{\link[=is_expr]{is_expr()}}
