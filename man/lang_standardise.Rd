@@ -18,7 +18,3 @@ A tidy quote if \code{.call} is a tidy quote, a call otherwise.
 This is essentially equivalent to \code{\link[base:match.call]{base::match.call()}}, but handles
 primitive functions more gracefully.
 }
-\seealso{
-\code{\link[=lang_homogenise]{lang_homogenise()}} for a version more suitable to
-language analysis.
-}

@@ -311,3 +311,10 @@ test_that("can return to frame", {
 test_that("detects frame environment", {
   expect_true(identity(is_frame_env(ctxt_frame(2)$env)))
 })
+
+test_that("call is not modified in place", {
+  f <- function(...) g(...)
+  g <- function(...) call_stack()[1:2]
+  stack <- f(foo)
+  expect_equal(stack[[1]]$expr, quote(g(...)))
+})

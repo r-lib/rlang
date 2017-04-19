@@ -244,8 +244,6 @@ lang_modify <- function(.call = caller_frame(), ..., .standardise = FALSE) {
 #' @param call Can be a call, a formula quoting a call in the
 #'   right-hand side, or a frame object from which to extract the call
 #'   expression. If not supplied, the calling frame is used.
-#' @seealso [lang_homogenise()] for a version more suitable to
-#'   language analysis.
 #' @return A tidy quote if `.call` is a tidy quote, a call otherwise.
 #' @export
 lang_standardise <- function(call = caller_frame()) {

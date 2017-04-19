@@ -33,10 +33,8 @@ call_stack(n = NULL, clean = TRUE)
 
 \item{clean}{Whether to post-process the call stack to clean
 non-standard frames. If \code{TRUE}, suboptimal call-stack entries by
-\code{\link[base:eval]{base::eval()}} and \code{\link[base:Recall]{base::Recall()}} will be cleaned up:
-\code{Recall()} frames will be assigned the correct parent and
-\code{eval()} frames are merged together (as \code{eval()} creates a
-duplicate frame).}
+\code{\link[base:eval]{base::eval()}} will be cleaned up: the duplicate frame created by
+\code{eval()} is eliminated.}
 
 \item{trim}{The number of layers of intervening frames to trim off
 the stack. See \code{\link[=stack_trim]{stack_trim()}} and examples.}
