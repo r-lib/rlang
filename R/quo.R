@@ -395,22 +395,12 @@ new_quosure <- function(rhs, env = caller_env()) {
 as_quosure <- function(x, env = caller_env()) {
   if (is_quosure(x)) {
     x
+  } else if (is_bare_formula(x)) {
+    new_quosure(f_rhs(x), f_env(x) %||% env)
+  } else if (is_symbolic(x)) {
+    new_quosure(x, env)
   } else {
-    new_quosure(get_expr(x), quo_env(x, env))
-  }
-}
-quo_expr <- function(quo, default = quo) {
-  if (is_quosureish(quo)) {
-    f_rhs(quo)
-  } else {
-    default
-  }
-}
-quo_env <- function(quo, default) {
-  if (is_quosureish(quo)) {
-    f_env(quo) %||% default
-  } else {
-    default
+    new_quosure(x, empty_env())
   }
 }
 
