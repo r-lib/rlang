@@ -7,7 +7,7 @@
 \alias{quo_name}
 \title{Splice a quosure and format it into string or label.}
 \usage{
-quo_expr(quo)
+quo_expr(quo, warn = FALSE)
 
 quo_label(quo)
 
@@ -17,6 +17,9 @@ quo_name(quo)
 }
 \arguments{
 \item{quo}{A quosure or expression.}
+
+\item{warn}{Whether to warn if the quosure contains other quosures
+(those will be collapsed).}
 
 \item{width}{Width of each line.}
 

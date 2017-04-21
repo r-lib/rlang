@@ -431,6 +431,8 @@ as_quosureish <- function(x, env = caller_env()) {
 #'
 #' @inheritParams expr_label
 #' @param quo A quosure or expression.
+#' @param warn Whether to warn if the quosure contains other quosures
+#'   (those will be collapsed).
 #' @export
 #' @seealso [expr_label()], [f_label()]
 #' @examples
@@ -449,8 +451,12 @@ as_quosureish <- function(x, env = caller_env()) {
 #' # quo_name() is helpful when you need really short labels:
 #' quo_name(quo(sym))
 #' quo_name(quo(!! sym))
-quo_expr <- function(quo) {
-  quo_splice(duplicate(quo))
+quo_expr <- function(quo, warn = FALSE) {
+  # Never warn when unwrapping outer quosure
+  if (is_quosure(quo)) {
+    quo <- f_rhs(quo)
+  }
+  quo_splice(duplicate(quo), warn = warn)
 }
 #' @rdname quo_expr
 #' @export
@@ -468,24 +474,34 @@ quo_name <- function(quo) {
   expr_name(quo_expr(quo))
 }
 
-quo_splice <- function(x, parent = NULL) {
+quo_splice <- function(x, parent = NULL, warn = FALSE) {
   switch_expr(x,
     language = {
       if (is_quosure(x)) {
+        if (!is_false(warn)) {
+          if (is_string(warn)) {
+            msg <- warn
+          } else {
+            msg <- "Collapsing inner quosure"
+          }
+          warn(msg)
+          warn <- FALSE
+        }
+
         while (is_quosure(x)) {
           x <- f_rhs(x)
         }
         if (!is_null(parent)) {
           mut_node_car(parent, x)
         }
-        quo_splice(x, parent)
+        quo_splice(x, parent, warn = warn)
       } else {
-        quo_splice(node_cdr(x))
+        quo_splice(node_cdr(x), warn = warn)
       }
     },
     pairlist = {
       while(!is_null(x)) {
-        quo_splice(node_car(x), x)
+        quo_splice(node_car(x), x, warn = warn)
         x <- node_cdr(x)
       }
     }

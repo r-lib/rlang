@@ -28,3 +28,8 @@ test_that("as_quosure() doesn't convert functions", {
 test_that("as_quosure() coerces formulas", {
   expect_identical(as_quosure(~foo), quo(foo))
 })
+
+test_that("quo_expr() warns", {
+  expect_warning(regex = NA, quo_expr(quo(foo), warn = TRUE))
+  expect_warning(quo_expr(quo(list(!! quo(foo))), warn = TRUE), "inner quosure")
+})
