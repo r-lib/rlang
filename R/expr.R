@@ -304,6 +304,10 @@ get_expr <- function(x, default = x) {
 }
 
 expr_type_of <- function(x) {
+  if (missing(x)) {
+    return("missing")
+  }
+
   type <- typeof(x)
   if (type %in% c("symbol", "language", "pairlist", "NULL")) {
     type
