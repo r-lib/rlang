@@ -106,7 +106,7 @@ dots_definitions <- function(..., .named = FALSE) {
   dots <- dots_enquose(..., `__interp_lhs` = FALSE)
   if (.named) {
     width <- quo_names_width(.named)
-    dots <- exprs_auto_name(dots, width)
+    dots <- quos_auto_name(dots, width)
   }
 
   is_def <- map_lgl(dots, function(dot) is_definition(f_rhs(dot)))
