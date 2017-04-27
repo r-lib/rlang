@@ -204,3 +204,9 @@ test_that("cannot replace elements of pronouns", {
 test_that("formulas are not evaluated as quosures", {
   expect_identical(eval_tidy(~letters), ~letters)
 })
+
+test_that("can supply environment as data", {
+  `_x` <- "foo"
+  expect_identical(eval_tidy(quo(`_x`), environment()), "foo")
+  expect_error(eval_tidy(quo(`_y`), environment()), "not found")
+})
