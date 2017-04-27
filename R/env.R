@@ -361,7 +361,8 @@ env_bind <- function(env = caller_env(), data = list()) {
 
   env_ <- get_env(env)
   for (i in seq_along(data)) {
-    base::assign(nms[[i]], data[[i]], envir = env_)
+    nm <- nms[[i]]
+    base::assign(nm, data[[nm]], envir = env_)
   }
 
   env

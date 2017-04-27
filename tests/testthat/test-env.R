@@ -169,3 +169,9 @@ test_that("with_env() evaluates in env", {
   env <- env()
   expect_identical(with_env(env, get_env()), env)
 })
+
+test_that("env_bind() accepts environments", {
+  env <- env(a = 1, b = 2)
+  out <- env_bind(env(), env)
+  expect_true(all(env_has(out, c("a", "b"))))
+})
