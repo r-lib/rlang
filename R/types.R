@@ -636,3 +636,47 @@ lang_type_of <- function(x) {
     abort("corrupt language object")
   }
 }
+
+#' Is an object copyable?
+#'
+#' When an object is modified, R generally copies it (sometimes
+#' lazily) to enforce [value
+#' semantics](https://en.wikipedia.org/wiki/Value_semantics).
+#' However, some internal types are uncopyable. If you try to copy
+#' them, either with `<-` or by argument passing, you actually create
+#' references to the original object rather than actual
+#' copies. Modifying these references can thus have far reaching side
+#' effects.
+#'
+#' @param x An object to test.
+#' @export
+#' @examples
+#' # Let's add attributes with structure() to uncopyable types. Since
+#' # they are not copied, the attributes are changed in place:
+#' env <- env()
+#' structure(env, foo = "bar")
+#' env
+#'
+#' # These objects that can only be changed with side effect are not
+#' # copyable:
+#' is_copyable(env)
+#'
+#' structure(base::list, foo = "bar")
+#' str(base::list)
+#'
+#' # In expressions, calls and pairlists are safely copyable. However,
+#' # symbols are not:
+#' structure(quote(foo), foo = "bar")
+#' quote(foo)
+is_copyable <- function(x) {
+  switch_type(x,
+    NULL = ,
+    char = ,
+    symbol = ,
+    primitive = ,
+    environment = ,
+    pointer =
+      FALSE,
+    TRUE
+  )
+}
