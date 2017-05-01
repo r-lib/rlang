@@ -21,3 +21,9 @@ test_that("set_attrs() called with NULL zaps attributes", {
   obj <- set_attrs(letters, foo = "bar")
   expect_identical(set_attrs(obj, NULL), letters)
 })
+
+test_that("set_attrs() does not zap old attributes", {
+  obj <- set_attrs(letters, foo = "bar")
+  obj <- set_attrs(obj, baz = "bam")
+  expect_named(attributes(obj), c("foo", "baz"))
+})

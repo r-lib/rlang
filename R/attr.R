@@ -50,10 +50,11 @@ set_attrs_impl <- function(.x, ...) {
 
   # If passed a single unnamed NULL, zap attributes
   if (identical(attrs, set_attrs_null)) {
-    attrs <- NULL
+    attributes(.x) <- NULL
+  } else {
+    attributes(.x) <- c(attributes(.x), attrs)
   }
 
-  attributes(.x) <- attrs
   .x
 }
 set_attrs_null <- list(NULL)
