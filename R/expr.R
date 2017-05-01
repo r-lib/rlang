@@ -1,3 +1,50 @@
+#' Untidy quotation of an expression.
+#'
+#' Unlike [quo()], `expr()` returns a raw expression instead of a
+#' formula. As a result, `expr()` is untidy in the sense that it does
+#' not preserve scope information for the quoted expression. It can
+#' still be useful in certain cases.  Compared to base R's
+#' [base::quote()], it unquotes the expression on capture, and
+#' compared to [quo()], the quoted expression is directly compatible
+#' with the base R [base::eval()] function.
+#'
+#' @inheritParams quosure
+#' @seealso See [quo()] and [expr_interp()] for more
+#'   explanation on tidy quotation.
+#' @return The raw expression supplied as argument.
+#' @export
+#' @examples
+#' # The advantage of expr() over quote() is that it unquotes on
+#' # capture:
+#' expr(list(1, !! 3 + 10))
+#'
+#' # Unquoting can be especially useful for successive transformation
+#' # of a captured expression:
+#' (expr <- quote(foo(bar)))
+#' (expr <- expr(inner(!! expr, arg1)))
+#' (expr <- expr(outer(!! expr, !!! lapply(letters[1:3], as.symbol))))
+#'
+#' # Unlike quo(), expr() produces expressions that can
+#' # be evaluated with base::eval():
+#' e <- quote(letters)
+#' e <- expr(toupper(!!e))
+#' eval(e)
+#'
+#' # Be careful if you unquote a quosure: you need to take the RHS
+#' # (and lose the scope information) to evaluate with eval():
+#' f <- quo(letters)
+#' e <- expr(toupper(!! get_expr(f)))
+#' eval(e)
+#'
+#' # On the other hand it's fine to unquote quosures if you evaluate
+#' # with eval_tidy():
+#' f <- quo(letters)
+#' e <- expr(toupper(!! f))
+#' eval_tidy(e)
+expr <- function(expr) {
+  enexpr(expr)
+}
+
 #' Is an object an expression?
 #'
 #' @description
