@@ -40,8 +40,35 @@ lang <- function(.fn, ..., .ns = NULL) {
 #' @export
 new_language <- lang
 
+#' Is an object callable?
+#'
+#' A callable object is an object that can be set as the head of a
+#' [call node][lang_head]. This includes [symbolic
+#' objects][is_symbolic] that evaluate to a function or literal
+#' functions.
+#'
+#' Note that strings may look like callable objects because
+#' expressions of the form `"list"()` are valid R code. However,
+#' that's only because the R parser transforms strings to symbols. It
+#' is not legal to manually set language heads to strings.
+#'
+#' @param x An object to test.
+#' @export
+#' @examples
+#' # Symbolic objects and functions are callable:
+#' is_callable(quote(foo))
+#' is_callable(base::identity)
+#'
+#' # You can safely set the head of a language node to a callable
+#' # object:
+#' lang <- lang("identity", 10L)
+#' lang
+#'
+#' lang_literal <- mut_node_car(lang, base::identity)
+#' lang_literal
+#' eval_bare(lang_literal)
 is_callable <- function(x) {
-  is_symbolic(x) || is_function(x) || is_string(x)
+  is_symbolic(x) || is_function(x)
 }
 
 #' Is object a call (language type)?
