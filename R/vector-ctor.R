@@ -207,36 +207,36 @@ NULL
 
 #' @export
 #' @rdname vector-len
-lgl_len <- function(.n = 0) {
+lgl_len <- function(.n) {
   rep_len(na_lgl, .n)
 }
 #' @export
 #' @rdname vector-len
-int_len <- function(.n = 0) {
+int_len <- function(.n) {
   rep_len(na_int, .n)
 }
 #' @export
 #' @rdname vector-len
-dbl_len <- function(.n = 0) {
+dbl_len <- function(.n) {
   rep_len(na_dbl, .n)
 }
 #' @export
 #' @rdname vector-len
-chr_len <- function(.n = 0) {
+chr_len <- function(.n) {
   rep_len(na_chr, .n)
 }
 #' @export
 #' @rdname vector-len
-cpl_len <- function(.n = 0) {
+cpl_len <- function(.n) {
   rep_len(na_cpl, .n)
 }
 #' @export
 #' @rdname vector-len
-bytes_len <- function(.n = 0) {
+bytes_len <- function(.n) {
   vector("raw", .n)
 }
 #' @export
 #' @rdname vector-len
-list_len <- function(.n = 0) {
+list_len <- function(.n) {
   vector("list", .n)
 }

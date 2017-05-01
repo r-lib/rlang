@@ -11,19 +11,19 @@
 \alias{list_len}
 \title{Create new vectors.}
 \usage{
-lgl_len(.n = 0)
+lgl_len(.n)
 
-int_len(.n = 0)
+int_len(.n)
 
-dbl_len(.n = 0)
+dbl_len(.n)
 
-chr_len(.n = 0)
+chr_len(.n)
 
-cpl_len(.n = 0)
+cpl_len(.n)
 
-bytes_len(.n = 0)
+bytes_len(.n)
 
-list_len(.n = 0)
+list_len(.n)
 }
 \arguments{
 \item{.n}{The vector length.}
