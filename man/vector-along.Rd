@@ -12,47 +12,38 @@
 \alias{rep_along}
 \title{Helper to create vectors with matching length.}
 \usage{
-lgl_along(.x, ...)
+lgl_along(.x)
 
-int_along(.x, ...)
+int_along(.x)
 
-dbl_along(.x, ...)
+dbl_along(.x)
 
-chr_along(.x, ...)
+chr_along(.x)
 
-lst_along(.x, ...)
+lst_along(.x)
 
-cpl_along(.x, ...)
+cpl_along(.x)
 
-raw_along(.x, ...)
+raw_along(.x)
 
-rep_along(.x, .y, ...)
+rep_along(.x, .y)
 }
 \arguments{
 \item{.x}{A vector.}
-
-\item{...}{A list of named attributes. These have \link[=dots_list]{explicit
-splicing semantics}. Pass a single unnamed \code{NULL} to
-zap all attributes from \code{.x}.}
 
 \item{.y}{Values to repeat.}
 }
 \description{
 These functions take the idea of \code{\link[=seq_along]{seq_along()}} and generalise it to
 creating lists (\code{lst_along}) and repeating values (\code{rep_along}).
-The dots are forwarded to \code{\link[=set_attrs]{set_attrs()}} to make it easy to add
-attributes. Except for \code{lst_along()} and \code{raw_along()}, the empty
-vectors are filled with typed \code{missing} values.
+Except for \code{lst_along()} and \code{raw_along()}, the empty vectors are
+filled with typed \code{missing} values.
 }
 \examples{
 x <- 0:5
 rep_along(x, 1:2)
 rep_along(x, 1)
 lst_along(x)
-
-# You can also add attributes with additional arguments:
-rep_along(x, 1, class = "my_class")
-dbl_along(x, class = "my_class")
 }
 \seealso{
 vector-len

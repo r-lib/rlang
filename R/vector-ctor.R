@@ -130,9 +130,8 @@ ll <- function(...) {
 #'
 #' These functions take the idea of [seq_along()] and generalise it to
 #' creating lists (`lst_along`) and repeating values (`rep_along`).
-#' The dots are forwarded to [set_attrs()] to make it easy to add
-#' attributes. Except for `lst_along()` and `raw_along()`, the empty
-#' vectors are filled with typed `missing` values.
+#' Except for `lst_along()` and `raw_along()`, the empty vectors are
+#' filled with typed `missing` values.
 #'
 #' @inheritParams set_attrs
 #' @param .x A vector.
@@ -142,54 +141,50 @@ ll <- function(...) {
 #' rep_along(x, 1:2)
 #' rep_along(x, 1)
 #' lst_along(x)
-#'
-#' # You can also add attributes with additional arguments:
-#' rep_along(x, 1, class = "my_class")
-#' dbl_along(x, class = "my_class")
 #' @name vector-along
 #' @seealso vector-len
 NULL
 
 #' @export
 #' @rdname vector-along
-lgl_along <- function(.x, ...) {
-  set_attrs(rep_len(na_lgl, length(.x)), ...)
+lgl_along <- function(.x) {
+  rep_len(na_lgl, length(.x))
 }
 #' @export
 #' @rdname vector-along
-int_along <- function(.x, ...) {
-  set_attrs(rep_len(na_int, length(.x)), ...)
+int_along <- function(.x) {
+  rep_len(na_int, length(.x))
 }
 #' @export
 #' @rdname vector-along
-dbl_along <- function(.x, ...) {
-  set_attrs(rep_len(na_dbl, length(.x)), ...)
+dbl_along <- function(.x) {
+  rep_len(na_dbl, length(.x))
 }
 #' @export
 #' @rdname vector-along
-chr_along <- function(.x, ...) {
-  set_attrs(rep_len(na_chr, length(.x)), ...)
+chr_along <- function(.x) {
+  rep_len(na_chr, length(.x))
 }
 #' @export
 #' @rdname vector-along
-lst_along <- function(.x, ...) {
-  set_attrs(vector("list", length(.x)), ...)
+lst_along <- function(.x) {
+  vector("list", length(.x))
 }
 #' @export
 #' @rdname vector-along
-cpl_along <- function(.x, ...) {
-  set_attrs(rep_len(na_cpl, length(.x)), ...)
+cpl_along <- function(.x) {
+  rep_len(na_cpl, length(.x))
 }
 #' @export
 #' @rdname vector-along
-raw_along <- function(.x, ...) {
-  set_attrs(vector("raw", length(.x)), ...)
+raw_along <- function(.x) {
+  vector("raw", length(.x))
 }
 
 #' @export
 #' @rdname vector-along
-rep_along <- function(.x, .y, ...) {
-  set_attrs(rep(.y, length.out = length(.x)), ...)
+rep_along <- function(.x, .y) {
+  rep(.y, length.out = length(.x))
 }
 
 
@@ -205,46 +200,43 @@ rep_along <- function(.x, .y, ...) {
 #' @param .n The vector length.
 #' @examples
 #' list_len(10)
-#'
-#' # Add attributes, including the S3 class:
-#' int_len(0, index = 1)
-#' dbl_len(10, class = "my_class")
+#' lgl_len(10)
 #' @name vector-len
 #' @seealso vector-along
 NULL
 
 #' @export
 #' @rdname vector-len
-lgl_len <- function(.n = 0, ...) {
-  set_attrs(rep_len(na_lgl, .n), ...)
+lgl_len <- function(.n = 0) {
+  rep_len(na_lgl, .n)
 }
 #' @export
 #' @rdname vector-len
-int_len <- function(.n = 0, ...) {
-  set_attrs(rep_len(na_int, .n), ...)
+int_len <- function(.n = 0) {
+  rep_len(na_int, .n)
 }
 #' @export
 #' @rdname vector-len
-dbl_len <- function(.n = 0, ...) {
-  set_attrs(rep_len(na_dbl, .n), ...)
+dbl_len <- function(.n = 0) {
+  rep_len(na_dbl, .n)
 }
 #' @export
 #' @rdname vector-len
-chr_len <- function(.n = 0, ...) {
-  set_attrs(rep_len(na_chr, .n), ...)
+chr_len <- function(.n = 0) {
+  rep_len(na_chr, .n)
 }
 #' @export
 #' @rdname vector-len
-cpl_len <- function(.n = 0, ...) {
-  set_attrs(rep_len(na_cpl, .n), ...)
+cpl_len <- function(.n = 0) {
+  rep_len(na_cpl, .n)
 }
 #' @export
 #' @rdname vector-len
-bytes_len <- function(.n = 0, ...) {
-  set_attrs(vector("raw", .n), ...)
+bytes_len <- function(.n = 0) {
+  vector("raw", .n)
 }
 #' @export
 #' @rdname vector-len
-list_len <- function(.n = 0, ...) {
-  set_attrs(vector("list", .n), ...)
+list_len <- function(.n = 0) {
+  vector("list", .n)
 }
