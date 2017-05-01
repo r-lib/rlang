@@ -124,13 +124,13 @@
 #' identical(enclos_env, fn())
 env <- function(...) {
   env <- new.env(parent = caller_env())
-  env_bind(env, dots_list(...))
+  env_bind(env, !!! dots_list(...))
 }
 #' @rdname env
 #' @export
 child_env <- function(parent = NULL, data = list()) {
   env <- new.env(parent = as_env(parent))
-  env_bind(env, data)
+  env_bind(env, !!! data)
 }
 
 #' @rdname env
@@ -311,23 +311,19 @@ mut_parent_env <- function(env, new_env) {
 }
 
 
-#' Assign objects to an environment.
+#' Bind symbols to objects in an environment
 #'
-#' These functions create bindings in the specified environment. The
-#' bindings are supplied as pairs of names and values, either directly
-#' (`env_assign()`), in dots (`env_define()`), or from a dictionary
-#' (`env_bind()`). See [is_dictionaryish()] for the definition of a
-#' dictionary.
+#' `env_bind()` creates bindings in an environment. The bindings are
+#' supplied as pairs of names and values. As environments are an
+#' [uncopyable][is_copyable()] type, creating bindings changes the
+#' environment with side effects.
 #'
-#' These functions operate by side effect. For example, if you assign
-#' bindings to a closure function, the environment of the function is
-#' modified in place.
-#'
-#' @inheritParams get_env
-#' @param nm The name of the binding.
-#' @param x The value of the binding.
-#' @param ... Pairs of unique names and R objects used to define new
-#'   bindings.
+#' @param .env An environment or an object bundling an environment:
+#'   either a [quosure] or a [closure][is_closure]. If
+#'   missing, the environment of the current evaluation frame is
+#'   returned.
+#' @param ... Pairs of names and R objects. These dots support
+#'   [explicit splicing][dots_list] and name unquoting.
 #' @return The input object `env`, with its associated environment
 #'   modified in place.
 #' @export
@@ -335,28 +331,28 @@ mut_parent_env <- function(env, new_env) {
 #' # Create a function that uses undefined bindings:
 #' fn <- with_env(child_env("base"), function() list(a, b, c, d, e))
 #'
-#' # This would throw a scoping error if run:
+#' # This would fail if run since `a` etc are not defined in the
+#' # enclosure of fn():
 #' # fn()
 #'
-#' data <- set_names(letters, letters)
-#' env_bind(fn, data)
+#' # Let's define those symbols by splicing a list of named objects:
+#' data <- set_names(as_list(letters), letters)
+#' env_bind(fn, !!! data)
 #'
 #' # fn() now sees the objects
 #' fn()
 #'
-#' # Redefine new bindings:
-#' fn <- env_assign(fn, "a", "1")
-#' fn <- env_define(fn, b = "2", c = "3")
+#' # You can unquote a variable referring to a symbol or a string:
+#' var <- "a"
+#' fn <- env_bind(fn, !!var := 10)
 #' fn()
-env_assign <- function(env = caller_env(), nm, x) {
-  env_ <- get_env(env)
-  base::assign(nm, x, envir = env_)
-  env
-}
-#' @rdname env_assign
-#' @export
-env_bind <- function(env = caller_env(), data = list()) {
-  stopifnot(is_dictionaryish(data))
+#'
+#' # Or supply names and objects via dots:
+#' env_bind(fn, b = 20, c = 30)
+#' fn()
+env_bind <- function(.env = caller_env(), ...) {
+  data <- dots_list(...)
+  stopifnot(is_named(data))
   nms <- names(data)
 
   env_ <- get_env(env)
@@ -367,10 +363,45 @@ env_bind <- function(env = caller_env(), data = list()) {
 
   env
 }
-#' @rdname env_assign
+#' Remove bindings from an environment.
+#'
+#' `env_unbind()` is the complement of [env_bind()]. Like `env_has()`,
+#' it ignores the parent environments of `env` by default. Set
+#' `inherit` to `TRUE` to track down bindings in parent environments.
+#'
+#' @inheritParams env
+#' @param nms A character vector containing the names of the bindings
+#'   to remove.
+#' @param inherit Whether to look for bindings in the parent
+#'   environments.
+#' @return The input object `env`, with its associated
+#'   environment modified in place.
 #' @export
-env_define <- function(env = caller_env(), ...) {
-  env_bind(env, list(...))
+#' @examples
+#' data <- set_names(as_list(letters), letters)
+#' env_bind(environment(), !!! data)
+#' env_has(environment(), letters)
+#'
+#' # env_unbind() removes bindings:
+#' env_unbind(environment(), letters)
+#' env_has(environment(), letters)
+#'
+#' # With inherit = TRUE, it removes bindings in parent environments
+#' # as well:
+#' parent <- child_env(NULL, list(foo = "a"))
+#' env <- child_env(parent, list(foo = "b"))
+#' env_unbind(env, "foo", inherit = TRUE)
+#' env_has(env, "foo", inherit = TRUE)
+env_unbind <- function(env = caller_env(), nms, inherit = FALSE) {
+  env_ <- get_env(env)
+  if (inherit) {
+    while(any(env_has(env_, nms, inherit = TRUE))) {
+      rm(list = nms, envir = env, inherits = TRUE)
+    }
+  } else {
+    rm(list = nms, envir = env)
+  }
+  env
 }
 
 #' Assign a promise to an environment.
@@ -479,49 +510,8 @@ env_bury <- function(env = caller_env(), data = list()) {
   env_ <- get_env(env)
   env_ <- new.env(parent = env_)
 
-  env_bind(env_, data)
+  env_bind(env_, !!! data)
   set_env(env, env_)
-}
-
-#' Remove bindings from an environment.
-#'
-#' `env_unbind()` is the complement of [env_bind()]. Like `env_has()`,
-#' it ignores the parent environments of `env` by default. Set
-#' `inherit` to `TRUE` to track down bindings in parent environments.
-#'
-#' @inheritParams env_assign
-#' @param nms A character vector containing the names of the bindings
-#'   to remove.
-#' @param inherit Whether to look for bindings in the parent
-#'   environments.
-#' @return The input object `env`, with its associated
-#'   environment modified in place.
-#' @export
-#' @examples
-#' data <- set_names(letters, letters)
-#' env_bind(environment(), data)
-#' env_has(environment(), letters)
-#'
-#' # env_unbind() removes bindings:
-#' env_unbind(environment(), letters)
-#' env_has(environment(), letters)
-#'
-#' # With inherit = TRUE, it removes bindings in parent environments
-#' # as well:
-#' parent <- child_env(empty_env(), list(foo = "a"))
-#' env <- child_env(parent, list(foo = "b"))
-#' env_unbind(env, "foo", inherit = TRUE)
-#' env_has(env, "foo", inherit = TRUE)
-env_unbind <- function(env = caller_env(), nms, inherit = FALSE) {
-  env_ <- get_env(env)
-  if (inherit) {
-    while(any(env_has(env_, nms, inherit = TRUE))) {
-      rm(list = nms, envir = env, inherits = TRUE)
-    }
-  } else {
-    rm(list = nms, envir = env)
-  }
-  env
 }
 
 #' Does an environment have or see bindings?

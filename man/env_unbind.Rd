@@ -28,8 +28,8 @@ it ignores the parent environments of \code{env} by default. Set
 \code{inherit} to \code{TRUE} to track down bindings in parent environments.
 }
 \examples{
-data <- set_names(letters, letters)
-env_bind(environment(), data)
+data <- set_names(as_list(letters), letters)
+env_bind(environment(), !!! data)
 env_has(environment(), letters)
 
 # env_unbind() removes bindings:
@@ -38,7 +38,7 @@ env_has(environment(), letters)
 
 # With inherit = TRUE, it removes bindings in parent environments
 # as well:
-parent <- child_env(empty_env(), list(foo = "a"))
+parent <- child_env(NULL, list(foo = "a"))
 env <- child_env(parent, list(foo = "b"))
 env_unbind(env, "foo", inherit = TRUE)
 env_has(env, "foo", inherit = TRUE)

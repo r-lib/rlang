@@ -141,7 +141,7 @@ invoke <- function(.fn, .args = list(), ...,
   .args <- map(.args, as.name)
 
   if (is_function(.fn)) {
-    env_assign(.env, fn_nm, .fn)
+    env_bind(.env, !! fn_nm := .fn)
     .fn <- fn_nm
   }
 
