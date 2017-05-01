@@ -1,3 +1,49 @@
+#' Create a language call by "hand"
+#'
+#' @param .fn Function to call. Must be a callable object: a string,
+#'   symbol, call, or a function.
+#' @param ... Arguments to the call either in or out of a list. Dots
+#'   are evaluated with [explicit splicing][dots_list].
+#' @param .ns Namespace with which to prefix `.fn`. Must be a string
+#'   or symbol.
+#' @seealso lang_modify
+#' @export
+#' @examples
+#' # fn can either be a string, a symbol or a call
+#' lang("f", a = 1)
+#' lang(quote(f), a = 1)
+#' lang(quote(f()), a = 1)
+#'
+#' #' Can supply arguments individually or in a list
+#' lang(quote(f), a = 1, b = 2)
+#' lang(quote(f), splice(list(a = 1, b = 2)))
+#'
+#' # Creating namespaced calls:
+#' lang("fun", arg = quote(baz), .ns = "mypkg")
+lang <- function(.fn, ..., .ns = NULL) {
+  if (is_character(.fn)) {
+    if (length(.fn) != 1) {
+      abort("`.fn` must be a length 1 string")
+    }
+    .fn <- sym(.fn)
+  } else if (!is_callable(.fn)) {
+    abort("Can't create call to non-callable object")
+  }
+
+  if (!is_null(.ns)) {
+    .fn <- call("::", sym(.ns), .fn)
+  }
+
+  as.call(c(.fn, dots_list(...)))
+}
+#' @rdname lang
+#' @export
+new_language <- lang
+
+is_callable <- function(x) {
+  is_symbolic(x) || is_function(x) || is_string(x)
+}
+
 #' Is object a call (language type)?
 #'
 #' This function tests if `x` is a call. This is a pattern-matching
@@ -112,52 +158,6 @@ is_unary_lang <- function(x, name = NULL, ns = NULL) {
 #' @export
 is_binary_lang <- function(x, name = NULL, ns = NULL) {
   is_lang(x, name, n = 2L, ns = ns)
-}
-
-#' Create a language call by "hand"
-#'
-#' @param .fn Function to call. Must be a callable object: a string,
-#'   symbol, call, or a function.
-#' @param ... Arguments to the call either in or out of a list. Dots
-#'   are evaluated with [explicit splicing][dots_list].
-#' @param .ns Namespace with which to prefix `.fn`. Must be a string
-#'   or symbol.
-#' @seealso lang_modify
-#' @export
-#' @examples
-#' # fn can either be a string, a symbol or a call
-#' lang("f", a = 1)
-#' lang(quote(f), a = 1)
-#' lang(quote(f()), a = 1)
-#'
-#' #' Can supply arguments individually or in a list
-#' lang(quote(f), a = 1, b = 2)
-#' lang(quote(f), splice(list(a = 1, b = 2)))
-#'
-#' # Creating namespaced calls:
-#' lang("fun", arg = quote(baz), .ns = "mypkg")
-lang <- function(.fn, ..., .ns = NULL) {
-  if (is_character(.fn)) {
-    if (length(.fn) != 1) {
-      abort("`.fn` must be a length 1 string")
-    }
-    .fn <- sym(.fn)
-  } else if (!is_callable(.fn)) {
-    abort("Can't create call to non-callable object")
-  }
-
-  if (!is_null(.ns)) {
-    .fn <- call("::", sym(.ns), .fn)
-  }
-
-  as.call(c(.fn, dots_list(...)))
-}
-#' @rdname lang
-#' @export
-new_language <- lang
-
-is_callable <- function(x) {
-  is_symbolic(x) || is_function(x) || is_string(x)
 }
 
 #' Modify the arguments of a call.
