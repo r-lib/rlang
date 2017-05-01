@@ -2,23 +2,46 @@
 % Please edit documentation in R/attr.R
 \name{set_attrs}
 \alias{set_attrs}
+\alias{mut_attrs}
 \title{Add attributes to an object.}
 \usage{
 set_attrs(.x, ...)
+
+mut_attrs(.x, ...)
 }
 \arguments{
 \item{.x}{An object to decorate with attributes.}
 
 \item{...}{A list of named attributes. These have \link[=dots_list]{explicit
-splicing semantics}.}
+splicing semantics}. Pass a single unnamed \code{NULL} to
+zap all attributes from \code{.x}.}
 }
 \description{
-Add attributes to an object.
+\code{set_attrs()} adds, changes, or zaps attributes of objects. Pass a
+single unnamed \code{NULL} as argument to zap all attributes. For
+\link[=is_copyable]{uncopyable} types, use \code{mut_attrs()}.
+}
+\details{
+Unlike \code{\link[=structure]{structure()}}, these setters have no special handling of
+internal attributes names like \code{.Dim}, \code{.Dimnames} or \code{.Names}.
 }
 \examples{
 set_attrs(letters, names = 1:26, class = "my_chr")
 
 # Splice a list of attributes:
 attrs <- list(attr = "attr", names = 1:26, class = "my_chr")
-set_attrs(letters, splice(attrs))
+obj <- set_attrs(letters, splice(attrs))
+obj
+
+# Zap attributes by passing a single unnamed NULL argument:
+set_attrs(obj, NULL)
+set_attrs(obj, !!! list(NULL))
+
+# Note that set_attrs() never modifies objects in place:
+obj
+
+# For uncopyable types, mut_attrs() lets you modify in place:
+env <- env()
+mut_attrs(env, foo = "bar")
+env
 }

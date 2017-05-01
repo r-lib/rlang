@@ -391,7 +391,7 @@ as_quosure <- function(x, env = caller_env()) {
 #' @export
 print.quosure <- function(x, ...) {
   cat(paste0("<quosure: ", env_type(get_env(x)), ">\n"))
-  print(zap_attrs(x))
+  print(set_attrs(x, NULL))
   invisible(x)
 }
 #' @export
@@ -399,7 +399,7 @@ str.quosure <- function(object, ...) {
   env_type <- env_format(get_env(object))
 
   cat(paste0("<quosure: ", env_type, ">\n"))
-  print(zap_attrs(object))
+  print(set_attrs(object, NULL))
   invisible(object)
 }
 
