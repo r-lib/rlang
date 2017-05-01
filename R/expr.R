@@ -49,40 +49,34 @@ expr <- function(expr) {
 #'
 #' @description
 #'
-#' These helpers are consistent wrappers around their base R
-#' equivalents. `is_expr()` tests for expressions, the set of objects
-#' that can be obtained from parsing R code. An expression can be one
-#' of two things: either a symbolic object (for which `is_symbolic()`
-#' returns `TRUE`), or a parsable literal (testable with
-#' `is_syntactic_literal()`). Note that we are using the term
-#' expression in its colloquial sense and not to refer to
-#' [expression()] vectors, a data type that wraps expressions in a
-#' vector and which has not much use in R.
-#'
-#' Technically, a call can contain any R object, not necessarily
-#' language objects. However, this only happens in artificial
+#' `is_expr()` tests for expressions, the set of objects that can be
+#' obtained from parsing R code. An expression can be one of two
+#' things: either a symbolic object (for which `is_symbolic()` returns
+#' `TRUE`), or a syntactic literal (testable with
+#' `is_syntactic_literal()`). Technically, calls can contain any R
+#' object, not necessarily symbolic objects or syntactic
+#' literals. However, this only happens in artificial
 #' situations. Expressions as we define them only contain numbers,
 #' strings, `NULL`, symbols, and calls: this is the complete set of R
-#' objects that are created when R parses source code (e.g. from using
-#' [parse_expr()]). These objects can be classified as literals and
-#' symbolic objects. Symbolic objects like symbols and calls are
-#' treated specially when R evaluates an expression. When a symbol is
-#' evaluated, it is looked up and replaced by its value. When a call
-#' is evaluated, its arguments are recursively evaluated, and the
-#' corresponding function is called, and the call is replaced by the
-#' returned value. On the other hand, literal objects, such as numbers
-#' and strings, just return their own value. To sum up, an expression
-#' can either be symbolic or a parsable literal.
+#' objects that can be created when R parses source code (e.g. from
+#' using [parse_expr()]).
+#'
+#' Note that we are using the term expression in its colloquial sense
+#' and not to refer to [expression()] vectors, a data type that wraps
+#' expressions in a vector and which isn't used much in modern R code.
 #'
 #' @details
 #'
 #' `is_symbolic()` returns `TRUE` for symbols and calls (objects with
-#' type `language`). Literals are the complement of symbolic
-#' objects. `is_syntactic_literal()` is a predicate that returns
-#' `TRUE` for the subset of literals that are created by R when
-#' parsing text (see [parse_expr()]): numbers, strings and
-#' `NULL`. Along with symbols, these literals are the terminating
-#' nodes in a parse tree.
+#' type `language`). Symbolic objects are replaced by their value
+#' during evaluation. Literals are the complement of symbolic
+#' objects. They are their own value and return themselves during
+#' evaluation.
+#'
+#' `is_syntactic_literal()` is a predicate that returns `TRUE` for the
+#' subset of literals that are created by R when parsing text (see
+#' [parse_expr()]): numbers, strings and `NULL`. Along with symbols,
+#' these literals are the terminating nodes in a parse tree.
 #'
 #' Note that in the most general sense, a literal is any R object that
 #' evaluates to itself and that can be evaluated in the empty
@@ -101,9 +95,7 @@ expr <- function(expr) {
 #' which pairlist of arguments arise is by extracting the argument
 #' list of a closure with [base::formals()] or [fn_fmls()].
 #'
-#' @param x An object to test. When you supply a tidy quote (see
-#'   [quo()]) to any of the expression predicates, they will
-#'   perform their test on the RHS of the formula.
+#' @param x An object to test.
 #' @seealso [is_lang()] for a call predicate.
 #' @export
 #' @examples
@@ -257,7 +249,7 @@ deparse_one <- function(expr) {
 #' Set and get an expression.
 #'
 #' These helpers are useful to make your function work generically
-#' with tidy quotes and raw expressions. First call `get_expr()` to
+#' with quosures and raw expressions. First call `get_expr()` to
 #' extract an expression. Once you're done processing the expression,
 #' call `set_expr()` on the original object to update the expression.
 #' You can return the result of `set_expr()`, either a formula or an
