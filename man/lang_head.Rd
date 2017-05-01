@@ -3,22 +3,24 @@
 \name{lang_head}
 \alias{lang_head}
 \alias{lang_tail}
-\title{Return the head or tail of a call object.}
+\title{Return the head or tail of a call object}
 \usage{
-lang_head(call = caller_frame())
+lang_head(lang = caller_frame())
 
-lang_tail(call = caller_frame())
+lang_tail(lang = caller_frame())
 }
 \arguments{
-\item{call}{Can be a call, a formula quoting a call in the
-right-hand side, or a frame object from which to extract the call
-expression. If not supplied, the calling frame is used.}
+\item{lang}{Can be a call (language object), a formula quoting a
+call in the right-hand side, or a frame object from which to
+extract the call expression. If not supplied, the calling frame
+is used.}
 }
 \description{
-Internally, calls are structured as a tree of expressions (see
-\code{\link[=switch_lang]{switch_lang()}} and \link{pairlist} documentation pages). A \code{language}
-object is the top level node of the tree. \code{lang_head()} and
-\code{lang_tail()} allow you to retrieve the node components.
+Internally, calls (\code{language} objects) are structured as a tree of
+expressions (see \code{\link[=switch_lang]{switch_lang()}} and \link{pairlist} documentation
+pages). A \code{language} object is a node of the call tree.
+\code{lang_head()} and \code{lang_tail()} are accessor functions that allow
+you to retrieve the node components.
 \itemize{
 \item \code{lang_head()} Its head (the CAR of the node) usually contains a
 symbol in case of a call to a named function. However it could be

@@ -5,14 +5,15 @@
 \alias{lang_args_names}
 \title{Extract arguments from a call}
 \usage{
-lang_args(call = caller_frame())
+lang_args(lang = caller_frame())
 
-lang_args_names(call = caller_frame())
+lang_args_names(lang = caller_frame())
 }
 \arguments{
-\item{call}{Can be a call, a formula quoting a call in the
-right-hand side, or a frame object from which to extract the call
-expression. If not supplied, the calling frame is used.}
+\item{lang}{Can be a call (language object), a formula quoting a
+call in the right-hand side, or a frame object from which to
+extract the call expression. If not supplied, the calling frame
+is used.}
 }
 \value{
 A named list of arguments.

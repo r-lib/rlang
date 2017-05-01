@@ -1,7 +1,7 @@
 #' Create a language call by "hand"
 #'
-#' @param .fn Function to call. Must be a callable object: a string,
-#'   symbol, call, or a function.
+#' @param .fn Function to call. Must be a callable object: symbol,
+#'   call, or a function.
 #' @param ... Arguments to the call either in or out of a list. Dots
 #'   are evaluated with [explicit splicing][dots_list].
 #' @param .ns Namespace with which to prefix `.fn`. Must be a string
@@ -189,9 +189,10 @@ is_binary_lang <- function(x, name = NULL, ns = NULL) {
 
 #' Modify the arguments of a call.
 #'
-#' @param .call Can be a call, a formula quoting a call in the
-#'   right-hand side, or a frame object from which to extract the call
-#'   expression. If not supplied, the calling frame is used.
+#' @param .lang Can be a call (language object), a formula quoting a
+#'   call in the right-hand side, or a frame object from which to
+#'   extract the call expression. If not supplied, the calling frame
+#'   is used.
 #' @param ... Named or unnamed expressions (constants, names or calls)
 #'   used to modify the call. Use `NULL` to remove arguments. Dots are
 #'   evaluated with [explicit splicing][dots_list].
@@ -199,7 +200,7 @@ is_binary_lang <- function(x, name = NULL, ns = NULL) {
 #'   to match existing unnamed arguments to their argument names. This
 #'   prevents new named arguments from accidentally replacing original
 #'   unnamed arguments.
-#' @return A tidy quote if `.call` is a tidy quote, a call otherwise.
+#' @return A quosure if `.lang` is a quosure, a call otherwise.
 #' @seealso lang
 #' @export
 #' @examples
@@ -230,17 +231,17 @@ is_binary_lang <- function(x, name = NULL, ns = NULL) {
 #' # You can also modify quosures inplace:
 #' f <- ~matrix(bar)
 #' lang_modify(f, quote(foo))
-lang_modify <- function(.call = caller_frame(), ..., .standardise = FALSE) {
+lang_modify <- function(.lang = caller_frame(), ..., .standardise = FALSE) {
   args <- dots_list(...)
   if (any(duplicated(names(args)) & names(args) != "")) {
     abort("Duplicate arguments")
   }
 
   if (.standardise) {
-    quo <- lang_as_quosure(.call, caller_env())
+    quo <- lang_as_quosure(.lang, caller_env())
     expr <- get_expr(lang_standardise(quo))
   } else {
-    expr <- get_expr(.call)
+    expr <- get_expr(.lang)
   }
 
   # Named arguments can be spliced by R
@@ -259,7 +260,7 @@ lang_modify <- function(.call = caller_frame(), ..., .standardise = FALSE) {
     expr <- node_append(expr, remaining_args)
   }
 
-  set_expr(.call, expr)
+  set_expr(.lang, expr)
 }
 lang_as_quosure <- function(lang, env) {
   if (is_frame(lang)) {
@@ -274,23 +275,24 @@ lang_as_quosure <- function(lang, env) {
 #' This is essentially equivalent to [base::match.call()], but handles
 #' primitive functions more gracefully.
 #'
-#' @param call Can be a call, a formula quoting a call in the
-#'   right-hand side, or a frame object from which to extract the call
-#'   expression. If not supplied, the calling frame is used.
-#' @return A tidy quote if `.call` is a tidy quote, a call otherwise.
+#' @param lang Can be a call (language object), a formula quoting a
+#'   call in the right-hand side, or a frame object from which to
+#'   extract the call expression. If not supplied, the calling frame
+#'   is used.
+#' @return A quosure if `.lang` is a quosure, a raw call otherwise.
 #' @export
-lang_standardise <- function(call = caller_frame()) {
-  expr <- get_expr(call)
-  if (is_frame(call)) {
-    fn <- call$fn
+lang_standardise <- function(lang = caller_frame()) {
+  expr <- get_expr(lang)
+  if (is_frame(lang)) {
+    fn <- lang$fn
   } else {
     # The call name might be a literal, not necessarily a symbol
-    env <- get_env(call, caller_env())
+    env <- get_env(lang, caller_env())
     fn <- eval_bare(lang_head(expr), env)
   }
 
   matched <- match.call(as_closure(fn), expr)
-  set_expr(call, matched)
+  set_expr(lang, matched)
 }
 
 #' Extract function from a call
@@ -309,20 +311,20 @@ lang_standardise <- function(call = caller_frame()) {
 #' # Extract the calling function
 #' test <- function() lang_fn()
 #' test()
-lang_fn <- function(call = caller_frame()) {
-  if (is_frame(call)) {
-    return(call$fn)
+lang_fn <- function(lang = caller_frame()) {
+  if (is_frame(lang)) {
+    return(lang$fn)
   }
 
-  expr <- get_expr(call)
-  env <- get_env(call, caller_env())
+  expr <- get_expr(lang)
+  env <- get_env(lang, caller_env())
 
   if (!is_lang(expr)) {
-    abort("`call` must quote a call")
+    abort("`lang` must quote a lang")
   }
 
   switch_lang(expr,
-    recursive = abort("`call` does not call a named or inlined function"),
+    recursive = abort("`lang` does not lang a named or inlined function"),
     inlined = node_car(expr),
     named = ,
     namespaced = ,
@@ -353,15 +355,15 @@ lang_fn <- function(call = caller_frame()) {
 #' lang_name(~foo$bar())
 #' lang_name(~foo[[bar]]())
 #' lang_name(~foo()())
-lang_name <- function(call = caller_frame()) {
-  call <- get_expr(call)
-  if (!is_lang(call)) {
-    abort("`call` must be a call or a tidy quote of a call")
+lang_name <- function(lang = caller_frame()) {
+  lang <- get_expr(lang)
+  if (!is_lang(lang)) {
+    abort("`lang` must be a call or must wrap a call (e.g. in a quosure)")
   }
 
-  switch_lang(call,
-    named = as_string(node_car(call)),
-    namespaced = as_string(node_cadr(node_cdar(call))),
+  switch_lang(lang,
+    named = as_string(node_car(lang)),
+    namespaced = as_string(node_cadr(node_cdar(lang))),
     NULL
   )
 }
@@ -396,17 +398,17 @@ lang_name <- function(call = caller_frame()) {
 #' lang <- quote(foo(bar, baz))
 #' lang_head(lang)
 #' lang_tail(lang)
-lang_head <- function(call = caller_frame()) {
-  call <- get_expr(call)
-  stopifnot(is_lang(call))
-  node_car(call)
+lang_head <- function(lang = caller_frame()) {
+  lang <- get_expr(lang)
+  stopifnot(is_lang(lang))
+  node_car(lang)
 }
 #' @rdname lang_head
 #' @export
-lang_tail <- function(call = caller_frame()) {
-  call <- get_expr(call)
-  stopifnot(is_lang(call))
-  node_cdr(call)
+lang_tail <- function(lang = caller_frame()) {
+  lang <- get_expr(lang)
+  stopifnot(is_lang(lang))
+  node_cdr(lang)
 }
 
 #' Extract arguments from a call
@@ -427,17 +429,17 @@ lang_tail <- function(call = caller_frame()) {
 #' # When the call arguments are supplied without names, a vector of
 #' # empty strings is supplied (rather than NULL):
 #' lang_args_names(call)
-lang_args <- function(call = caller_frame()) {
-  call <- get_expr(call)
-  args <- as.list(lang_tail(call))
+lang_args <- function(lang = caller_frame()) {
+  lang <- get_expr(lang)
+  args <- as.list(lang_tail(lang))
   set_names((args), names2(args))
 }
 
 #' @rdname lang_args
 #' @export
-lang_args_names <- function(call = caller_frame()) {
-  call <- get_expr(call)
-  names2(lang_tail(call))
+lang_args_names <- function(lang = caller_frame()) {
+  lang <- get_expr(lang)
+  names2(lang_tail(lang))
 }
 
 is_qualified_lang <- function(x) {

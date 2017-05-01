@@ -4,16 +4,18 @@
 \alias{lang_fn}
 \title{Extract function from a call}
 \usage{
-lang_fn(call = caller_frame())
+lang_fn(lang = caller_frame())
 }
 \arguments{
-\item{call}{Can be a call, a formula quoting a call in the
-right-hand side, or a frame object from which to extract the call
-expression. If not supplied, the calling frame is used.}
+\item{lang}{Can be a call (language object), a formula quoting a
+call in the right-hand side, or a frame object from which to
+extract the call expression. If not supplied, the calling frame
+is used.}
 }
 \description{
-If a frame or formula, the function will be retrieved from their
-environment. Otherwise, it is looked up in the calling frame.
+If a frame or formula, the function will be retrieved from the
+associated environment. Otherwise, it is looked up in the calling
+frame.
 }
 \examples{
 # Extract from a quoted call:

@@ -4,12 +4,13 @@
 \alias{lang_modify}
 \title{Modify the arguments of a call.}
 \usage{
-lang_modify(.call = caller_frame(), ..., .standardise = FALSE)
+lang_modify(.lang = caller_frame(), ..., .standardise = FALSE)
 }
 \arguments{
-\item{.call}{Can be a call, a formula quoting a call in the
-right-hand side, or a frame object from which to extract the call
-expression. If not supplied, the calling frame is used.}
+\item{.lang}{Can be a call (language object), a formula quoting a
+call in the right-hand side, or a frame object from which to
+extract the call expression. If not supplied, the calling frame
+is used.}
 
 \item{...}{Named or unnamed expressions (constants, names or calls)
 used to modify the call. Use \code{NULL} to remove arguments. Dots are
@@ -21,7 +22,7 @@ prevents new named arguments from accidentally replacing original
 unnamed arguments.}
 }
 \value{
-A tidy quote if \code{.call} is a tidy quote, a call otherwise.
+A quosure if \code{.lang} is a quosure, a call otherwise.
 }
 \description{
 Modify the arguments of a call.
