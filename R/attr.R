@@ -60,19 +60,6 @@ set_attrs_impl <- function(.x, ...) {
 set_attrs_null <- list(NULL)
 names(set_attrs_null) <- ""
 
-zap_attrs <- function(x) {
-  switch_type(x,
-    NULL = ,
-    char = ,
-    symbol = ,
-    environment = abort(paste0(
-      "Can't change attributes of uncopyable type `", type_of(x), "`"
-    ))
-  )
-  attributes(x) <- NULL
-  x
-}
-
 #' Is object named?
 #'
 #' `is_named()` checks that `x` has names attributes, and that none of
