@@ -2,7 +2,7 @@
 % Please edit documentation in R/expr-lang.R
 \name{lang_standardise}
 \alias{lang_standardise}
-\title{Standardise a call.}
+\title{Standardise a call}
 \usage{
 lang_standardise(lang = caller_frame())
 }
@@ -16,6 +16,6 @@ is used.}
 A quosure if \code{.lang} is a quosure, a raw call otherwise.
 }
 \description{
-This is essentially equivalent to \code{\link[base:match.call]{base::match.call()}}, but handles
-primitive functions more gracefully.
+This is essentially equivalent to \code{\link[base:match.call]{base::match.call()}}, but with
+better handling of primitive functions.
 }

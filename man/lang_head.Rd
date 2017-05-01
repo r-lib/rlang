@@ -22,18 +22,19 @@ pages). A \code{language} object is a node of the call tree.
 \code{lang_head()} and \code{lang_tail()} are accessor functions that allow
 you to retrieve the node components.
 \itemize{
-\item \code{lang_head()} Its head (the CAR of the node) usually contains a
-symbol in case of a call to a named function. However it could be
-other things, like another call (e.g. \code{foo()()}). Thus it is like
-\code{\link[=lang_name]{lang_name()}}, but returns the head without any type checking or
-conversion (whereas \code{lang_name()} checks that the head is a
-symbol and converts it to a string).
+\item In the most common situation, a call refers to a named
+function. The head of such calls (the CAR of the \code{language} node)
+contains a symbol. However the node head could also be symbolic
+objects or literal functions (e.g. \code{foo()()}, see
+\code{\link[=is_callable]{is_callable()}}). \code{lang_head()} returns that bare object without
+any type checking or conversion (unlike \code{\link[=lang_name]{lang_name()}} which
+checks that the head is a symbol and converts it to a string).
 \item The second component of the tree node contains the arguments. The
-type of arguments is \emph{pairlist}. Pairlists are actually
+type of arguments is \emph{pairlist}. Pairlists are structurally
 equivalent to \code{language} objects (calls), they just have a
-different name. \code{lang_tail()} returns the pairlist of arguments
-(\code{\link[=lang_args]{lang_args()}} returns the same object converted to a regular
-list).
+different type name. \code{lang_tail()} returns the pairlist of
+arguments (while \code{\link[=lang_args]{lang_args()}} returns the same object converted
+to a regular list).
 }
 }
 \examples{

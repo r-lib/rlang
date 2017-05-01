@@ -2,7 +2,7 @@
 % Please edit documentation in R/expr-lang.R
 \name{lang_modify}
 \alias{lang_modify}
-\title{Modify the arguments of a call.}
+\title{Modify the arguments of a call}
 \usage{
 lang_modify(.lang = caller_frame(), ..., .standardise = FALSE)
 }
@@ -25,7 +25,7 @@ unnamed arguments.}
 A quosure if \code{.lang} is a quosure, a call otherwise.
 }
 \description{
-Modify the arguments of a call.
+Modify the arguments of a call
 }
 \examples{
 call <- quote(mean(x, na.rm = TRUE))

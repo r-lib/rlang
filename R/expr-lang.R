@@ -187,7 +187,7 @@ is_binary_lang <- function(x, name = NULL, ns = NULL) {
   is_lang(x, name, n = 2L, ns = ns)
 }
 
-#' Modify the arguments of a call.
+#' Modify the arguments of a call
 #'
 #' @param .lang Can be a call (language object), a formula quoting a
 #'   call in the right-hand side, or a frame object from which to
@@ -270,10 +270,10 @@ lang_as_quosure <- function(lang, env) {
   }
 }
 
-#' Standardise a call.
+#' Standardise a call
 #'
-#' This is essentially equivalent to [base::match.call()], but handles
-#' primitive functions more gracefully.
+#' This is essentially equivalent to [base::match.call()], but with
+#' better handling of primitive functions.
 #'
 #' @param lang Can be a call (language object), a formula quoting a
 #'   call in the right-hand side, or a frame object from which to
@@ -297,8 +297,9 @@ lang_standardise <- function(lang = caller_frame()) {
 
 #' Extract function from a call
 #'
-#' If a frame or formula, the function will be retrieved from their
-#' environment. Otherwise, it is looked up in the calling frame.
+#' If a frame or formula, the function will be retrieved from the
+#' associated environment. Otherwise, it is looked up in the calling
+#' frame.
 #'
 #' @inheritParams lang_standardise
 #' @export
@@ -368,28 +369,30 @@ lang_name <- function(lang = caller_frame()) {
   )
 }
 
-#' Return the head or tail of a call object.
+#' Return the head or tail of a call object
 #'
 #' @description
 #'
-#' Internally, calls are structured as a tree of expressions (see
-#' [switch_lang()] and [pairlist] documentation pages). A `language`
-#' object is the top level node of the tree. `lang_head()` and
-#' `lang_tail()` allow you to retrieve the node components.
+#' Internally, calls (`language` objects) are structured as a tree of
+#' expressions (see [switch_lang()] and [pairlist] documentation
+#' pages). A `language` object is a node of the call tree.
+#' `lang_head()` and `lang_tail()` are accessor functions that allow
+#' you to retrieve the node components.
 #'
-#' * `lang_head()` Its head (the CAR of the node) usually contains a
-#'   symbol in case of a call to a named function. However it could be
-#'   other things, like another call (e.g. `foo()()`). Thus it is like
-#'   [lang_name()], but returns the head without any type checking or
-#'   conversion (whereas `lang_name()` checks that the head is a
-#'   symbol and converts it to a string).
+#' * In the most common situation, a call refers to a named
+#'   function. The head of such calls (the CAR of the `language` node)
+#'   contains a symbol. However the node head could also be symbolic
+#'   objects or literal functions (e.g. `foo()()`, see
+#'   [is_callable()]). `lang_head()` returns that bare object without
+#'   any type checking or conversion (unlike [lang_name()] which
+#'   checks that the head is a symbol and converts it to a string).
 #'
 #' * The second component of the tree node contains the arguments. The
-#'   type of arguments is _pairlist_. Pairlists are actually
+#'   type of arguments is _pairlist_. Pairlists are structurally
 #'   equivalent to `language` objects (calls), they just have a
-#'   different name. `lang_tail()` returns the pairlist of arguments
-#'   ([lang_args()] returns the same object converted to a regular
-#'   list).
+#'   different type name. `lang_tail()` returns the pairlist of
+#'   arguments (while [lang_args()] returns the same object converted
+#'   to a regular list).
 #'
 #' @inheritParams lang_standardise
 #' @seealso [pairlist], [lang_args()]
@@ -420,14 +423,20 @@ lang_tail <- function(lang = caller_frame()) {
 #' @examples
 #' call <- quote(f(a, b))
 #'
-#' # Subsetting a call returns the arguments in a language pairlist:
+#' # Subsetting a call returns the arguments converted to a language
+#' # object:
 #' call[-1]
 #'
-#' # Whereas lang_args() returns a list:
-#' lang_args(call)
+#' # See also lang_tail() which returns the arguments without
+#' # conversion as the original pairlist:
+#' str(lang_tail(call))
 #'
-#' # When the call arguments are supplied without names, a vector of
-#' # empty strings is supplied (rather than NULL):
+#' # On the other hand, lang_args() returns a regular list that is
+#' # often easier to work with:
+#' str(lang_args(call))
+#'
+#' # When the arguments are unnamed, a vector of empty strings is
+#' # supplied (rather than NULL):
 #' lang_args_names(call)
 lang_args <- function(lang = caller_frame()) {
   lang <- get_expr(lang)

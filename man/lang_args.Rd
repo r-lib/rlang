@@ -24,14 +24,20 @@ Extract arguments from a call
 \examples{
 call <- quote(f(a, b))
 
-# Subsetting a call returns the arguments in a language pairlist:
+# Subsetting a call returns the arguments converted to a language
+# object:
 call[-1]
 
-# Whereas lang_args() returns a list:
-lang_args(call)
+# See also lang_tail() which returns the arguments without
+# conversion as the original pairlist:
+str(lang_tail(call))
 
-# When the call arguments are supplied without names, a vector of
-# empty strings is supplied (rather than NULL):
+# On the other hand, lang_args() returns a regular list that is
+# often easier to work with:
+str(lang_args(call))
+
+# When the arguments are unnamed, a vector of empty strings is
+# supplied (rather than NULL):
 lang_args_names(call)
 }
 \seealso{
