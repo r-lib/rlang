@@ -1,18 +1,58 @@
 #' Add attributes to an object.
 #'
+#' `set_attrs()` adds, changes, or zaps attributes of objects. Pass a
+#' single unnamed `NULL` as argument to zap all attributes. For
+#' [uncopyable][is_copyable] types, use `mut_attrs()`.
+#'
+#' Unlike [structure()], these setters have no special handling of
+#' internal attributes names like `.Dim`, `.Dimnames` or `.Names`.
+#'
 #' @param .x An object to decorate with attributes.
 #' @param ... A list of named attributes. These have [explicit
-#'   splicing semantics][dots_list].
+#'   splicing semantics][dots_list]. Pass a single unnamed `NULL` to
+#'   zap all attributes from `.x`.
 #' @export
 #' @examples
 #' set_attrs(letters, names = 1:26, class = "my_chr")
 #'
 #' # Splice a list of attributes:
 #' attrs <- list(attr = "attr", names = 1:26, class = "my_chr")
-#' set_attrs(letters, splice(attrs))
+#' obj <- set_attrs(letters, splice(attrs))
+#' obj
+#'
+#' # Zap attributes by passing a single unnamed NULL argument:
+#' set_attrs(obj, NULL)
+#' set_attrs(obj, !!! list(NULL))
+#'
+#' # Note that set_attrs() never modifies objects in place:
+#' obj
+#'
+#' # For uncopyable types, mut_attrs() lets you modify in place:
+#' env <- env()
+#' mut_attrs(env, foo = "bar")
+#' env
 set_attrs <- function(.x, ...) {
-  invoke("structure", c(list(.Data = .x), dots_list(...)))
+  if (!is_copyable(.x)) {
+    abort("`.x` is uncopyable: use `mut_attrs()` to change attributes in place")
+  }
+  set_attrs_impl(.x, ...)
 }
+#' @rdname set_attrs
+#' @export
+mut_attrs <- function(.x, ...) {
+  if (is_copyable(.x)) {
+    abort("`.x` is copyable: use `set_attrs()` to change attributes without side effect")
+  }
+  set_attrs_impl(.x, ...)
+}
+set_attrs_impl <- function(.x, ...) {
+  attrs <- dots_list(...)
+
+  attributes(.x) <- attrs
+  .x
+}
+set_attrs_null <- list(NULL)
+names(set_attrs_null) <- ""
 
 zap_attrs <- function(x) {
   switch_type(x,

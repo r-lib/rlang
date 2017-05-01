@@ -32,7 +32,8 @@ rep_along(.x, .y, ...)
 \item{.x}{A vector.}
 
 \item{...}{A list of named attributes. These have \link[=dots_list]{explicit
-splicing semantics}.}
+splicing semantics}. Pass a single unnamed \code{NULL} to
+zap all attributes from \code{.x}.}
 
 \item{.y}{Values to repeat.}
 }

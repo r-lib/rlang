@@ -29,7 +29,8 @@ list_len(.n = 0, ...)
 \item{.n}{The vector length.}
 
 \item{...}{A list of named attributes. These have \link[=dots_list]{explicit
-splicing semantics}.}
+splicing semantics}. Pass a single unnamed \code{NULL} to
+zap all attributes from \code{.x}.}
 }
 \description{
 These functions construct vectors of given length, with attributes

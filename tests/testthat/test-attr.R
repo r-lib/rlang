@@ -8,3 +8,11 @@ test_that("names2() takes care of missing values", {
 test_that("names2() fails for environments", {
   expect_error(names2(env()), "Use env_names() for environments.", fixed = TRUE)
 })
+
+test_that("set_attrs() fails with uncopyable types", {
+  expect_error(set_attrs(env(), foo = "bar"), "is uncopyable")
+})
+
+test_that("mut_attrs() fails with copyable types", {
+  expect_error(mut_attrs(letters, foo = "bar"), "is copyable")
+})
