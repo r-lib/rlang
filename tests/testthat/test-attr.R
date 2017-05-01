@@ -16,3 +16,8 @@ test_that("set_attrs() fails with uncopyable types", {
 test_that("mut_attrs() fails with copyable types", {
   expect_error(mut_attrs(letters, foo = "bar"), "is copyable")
 })
+
+test_that("set_attrs() called with NULL zaps attributes", {
+  obj <- set_attrs(letters, foo = "bar")
+  expect_identical(set_attrs(obj, NULL), letters)
+})

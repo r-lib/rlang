@@ -48,6 +48,11 @@ mut_attrs <- function(.x, ...) {
 set_attrs_impl <- function(.x, ...) {
   attrs <- dots_list(...)
 
+  # If passed a single unnamed NULL, zap attributes
+  if (identical(attrs, set_attrs_null)) {
+    attrs <- NULL
+  }
+
   attributes(.x) <- attrs
   .x
 }
