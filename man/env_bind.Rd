@@ -2,50 +2,150 @@
 % Please edit documentation in R/env.R
 \name{env_bind}
 \alias{env_bind}
+\alias{env_bind_exprs}
+\alias{env_bind_fns}
 \title{Bind symbols to objects in an environment}
 \usage{
 env_bind(.env = caller_env(), ...)
+
+env_bind_exprs(.env = caller_env(), ..., .eval_env = caller_env())
+
+env_bind_fns(.env = caller_env(), ...)
 }
 \arguments{
-\item{.env}{An environment or an object bundling an environment:
-either a \link{quosure} or a \link[=is_closure]{closure}. If
-missing, the environment of the current evaluation frame is
-returned.}
+\item{.env}{An environment or an object bundling an environment,
+e.g. a formula, \link{quosure} or \link[=is_closure]{closure}. This argument
+is passed to \code{\link[=get_env]{get_env()}}.}
 
-\item{...}{Pairs of names and R objects. These dots support
-\link[=dots_list]{explicit splicing} and name unquoting.}
+\item{...}{Pairs of names and expressions, values or
+functions. These dots support splicing (with varying semantics,
+see above) and name unquoting.}
+
+\item{.eval_env}{The environment where the expressions will be
+evaluated when the symbols are forced.}
 }
 \value{
-The input object \code{env}, with its associated environment
+The input object \code{.env}, with its associated environment
 modified in place.
 }
 \description{
-\code{env_bind()} creates bindings in an environment. The bindings are
-supplied as pairs of names and values. As environments are an
-\link[=is_copyable]{uncopyable} type, creating bindings changes the
-environment with side effects.
+These functions create bindings in an environment. These bindings
+are supplied through \code{...} as pairs of names and values or
+expressions. \code{env_bind()} is equivalent to evaluating a \code{<-}
+expression within the given environment, e.g. \code{with_env(env, foo <- "bar")}. This function should take care of the majority of use
+cases but the other variants can be useful for specific problems.
+\itemize{
+\item \code{env_bind()} takes named \emph{values}. The arguments are evaluated
+once (with \link[=dots_list]{explicit splicing}) and bound in \code{.env}.
+\item \code{env_bind_fns()} takes named \emph{functions} and creates active
+bindings in \code{.env}. An active binding executes a function each
+time it is evaluated. \code{env_bind_fns()} takes dots with \link[=dots_splice]{implicit
+splicing}, so that you can supply both named
+functions and named lists of functions.
+
+If these functions are \link[=is_closure]{closures} they are lexically
+scoped in the environment that they bundle. These functions can
+thus refer to symbols from this enclosure that are not actually
+in scope in the dynamic environment where the active bindings are
+invoked. This allows creative solutions to difficult problems
+(see the implementations of \code{dplyr::do()} methods for an
+example).
+\item \code{env_bind_exprs()} takes named \emph{expressions}. The arguments are
+captured with \code{\link[=exprs]{exprs()}} (and thus support call-splicing and
+unquoting) and assigned to symbols in \code{.env}. These expressions
+are not evaluated immediately but lazily. Once a symbol is
+evaluated, the corresponding expression is evaluated in turn and
+its value is bound to the symbol (the expressions are thus
+evaluated only once, if at all).
 }
+}
+\section{Reference semantics}{
+
+
+Unlike regular objects such as vectors, environments are an
+\link[=is_copyable]{uncopyable} type. This means that if you have
+multiple references to a given environment (by assigning with \code{<-}
+or passing the environment as argument), modifying the bindings of
+one of those references changes all other references as well. In
+other words, \code{env_bind()} and its variants have side effects.
+}
+
 \examples{
-# Create a function that uses undefined bindings:
-fn <- with_env(child_env("base"), function() list(a, b, c, d, e))
+# env_bind() is a programmatic way of assigning values to symbols
+# with `<-`. We can add bindings in the current environment:
+env_bind(get_env(), foo = "bar")
+foo
+
+# Or modify those bindings:
+bar <- "bar"
+env_bind(get_env(), bar = "BAR")
+bar
+
+# It is most useful to change other environments:
+my_env <- env()
+env_bind(my_env, foo = "foo")
+my_env$foo
+
+# A useful feature is to splice lists of named values:
+vals <- list(a = 10, b = 20)
+env_bind(my_env, !!! vals, c = 30)
+my_env$b
+my_env$c
+
+# You can also unquote a variable referring to a symbol or a string
+# as binding name:
+var <- "baz"
+env_bind(my_env, !!var := "BAZ")
+my_env$baz
+
+
+# env_bind() and its variants are generic over formulas, quosures
+# and closures. To illustrate this, let's create a closure function
+# referring to undefined bindings:
+fn <- function() list(a, b)
+fn <- set_env(fn, child_env("base"))
 
 # This would fail if run since `a` etc are not defined in the
-# enclosure of fn():
+# enclosure of fn() (a child of the base environment):
 # fn()
 
-# Let's define those symbols by splicing a list of named objects:
-data <- set_names(as_list(letters), letters)
-env_bind(fn, !!! data)
+# Let's define those symbols:
+env_bind(fn, a = "a", b = "b")
 
-# fn() now sees the objects
+# fn() now sees the objects:
 fn()
 
-# You can unquote a variable referring to a symbol or a string:
-var <- "a"
-fn <- env_bind(fn, !!var := 10)
-fn()
+# env_bind_exprs() assigns expressions lazily:
+env <- env()
+env_bind_exprs(env, name = cat("forced!\\n"))
+env$name
+env$name
 
-# Or supply names and objects via dots:
-env_bind(fn, b = 20, c = 30)
-fn()
+# You can unquote expressions. Note that quosures are not
+# supported, only raw expressions:
+expr <- quote(message("forced!"))
+env_bind_exprs(env, name = !! expr)
+env$name
+
+# You can create active bindings with env_bind_fns()
+# Let's create some bindings in the lexical enclosure of `fn`:
+counter <- 0
+
+# And now a function that increments the counter and returns a
+# string with the count:
+fn <- function() {
+  counter <<- counter + 1
+  paste("my counter:", counter)
+}
+
+# Now we create an active binding in a child of the current
+# environment:
+env <- env()
+env_bind_fns(env, symbol = fn)
+
+# `fn` is executed each time `symbol` is evaluated or retrieved:
+env$symbol
+env$symbol
+eval_bare(quote(symbol), env)
+eval_bare(quote(symbol), env)
 }

@@ -25,10 +25,9 @@ Dots have \link[=dots_list]{explicit-splicing semantics}.}
 \item{parent}{A parent environment. Can be an object with a S3
 method for \code{as_env()}.}
 
-\item{env}{An environment or an object bundling an environment:
-either a \link{quosure} or a \link[=is_closure]{closure}. If
-missing, the environment of the current evaluation frame is
-returned.}
+\item{env}{An environment or an object bundling an environment,
+e.g. a formula, \link{quosure} or \link[=is_closure]{closure}. If missing,
+the environment of the current evaluation frame is returned.}
 
 \item{default}{The default environment in case \code{env} does not wrap
 an environment. If \code{NULL} and no environment could be extracted,

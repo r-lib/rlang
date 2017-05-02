@@ -7,10 +7,9 @@
 env_clone(env, parent = env_parent(env))
 }
 \arguments{
-\item{env}{An environment or an object bundling an environment:
-either a \link{quosure} or a \link[=is_closure]{closure}. If
-missing, the environment of the current evaluation frame is
-returned.}
+\item{env}{An environment or an object bundling an environment,
+e.g. a formula, \link{quosure} or \link[=is_closure]{closure}. If missing,
+the environment of the current evaluation frame is returned.}
 
 \item{parent}{The parent of the cloned environment.}
 }
