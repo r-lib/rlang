@@ -551,32 +551,36 @@ env_bind_fns <- function(.env, ...) {
   .env
 }
 
-#' Bury bindings and define objects in new scope.
+#' Overscope bindings by defining symbols deeper in a scope
 #'
-#' `env_bury()` is like `env_bind()` but it creates the bindings in a
-#' new child environment. Note that this function does not modify its
-#' inputs.
+#' `env_bury()` is like [env_bind()] but it creates the bindings in a
+#' new child environment. This makes sure the new bindings have
+#' precedence over old ones, without altering existing environments.
+#' Unlike `env_bind()`, this function does not have side effects.
 #'
 #' @inheritParams env_bind
-#' @return An object associated with the new environment.
+#' @return A copy of `.env` enclosing the new environment containing
+#'   bindings to `...` arguments.
+#' @seealso [env_bind()], [env_unbind()]
 #' @export
 #' @examples
-#' scope <- child_env(base_env(), list(a = 10))
-#' fn <- with_env(scope, function() a)
+#' orig_env <- env(a = 10)
+#' fn <- set_env(function() a, orig_env)
 #'
-#' # fn() sees a = 10:
+#' # fn() currently sees `a` as the value `10`:
 #' fn()
 #'
 #' # env_bury() will bury the current scope of fn() behind a new
 #' # environment:
-#' fn <- env_bury(fn, list(a = 1000))
+#' fn <- env_bury(fn, a = 1000)
 #' fn()
-env_bury <- function(env = caller_env(), data = list()) {
-  env_ <- get_env(env)
-  env_ <- new.env(parent = env_)
-
-  env_bind(env_, !!! data)
-  set_env(env, env_)
+#'
+#' # Even though the symbol `a` is still defined deeper in the scope:
+#' orig_env$a
+env_bury <- function(.env, ...) {
+  env_ <- get_env(.env)
+  env_ <- child_env(env_, ...)
+  set_env(.env, env_)
 }
 
 #' Remove bindings from an environment.
