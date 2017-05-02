@@ -6,11 +6,11 @@
 \alias{env_bind_fns}
 \title{Bind symbols to objects in an environment}
 \usage{
-env_bind(.env = caller_env(), ...)
+env_bind(.env, ...)
 
-env_bind_exprs(.env = caller_env(), ..., .eval_env = caller_env())
+env_bind_exprs(.env, ..., .eval_env = caller_env())
 
-env_bind_fns(.env = caller_env(), ...)
+env_bind_fns(.env, ...)
 }
 \arguments{
 \item{.env}{An environment or an object bundling an environment,

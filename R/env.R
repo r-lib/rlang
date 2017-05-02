@@ -408,7 +408,7 @@ mut_parent_env <- function(env, new_env) {
 #'
 #' # fn() now sees the objects:
 #' fn()
-env_bind <- function(.env = caller_env(), ...) {
+env_bind <- function(.env, ...) {
   data <- dots_list(...)
   stopifnot(is_named(data))
 
@@ -439,8 +439,7 @@ env_bind <- function(.env = caller_env(), ...) {
 #' expr <- quote(message("forced!"))
 #' env_bind_exprs(env, name = !! expr)
 #' env$name
-env_bind_exprs <- function(.env = caller_env(), ...,
-                           .eval_env = caller_env()) {
+env_bind_exprs <- function(.env, ..., .eval_env = caller_env()) {
   exprs <- exprs(...)
   stopifnot(is_named(exprs))
 
@@ -483,7 +482,7 @@ env_bind_exprs <- function(.env = caller_env(), ...,
 #' env$symbol
 #' eval_bare(quote(symbol), env)
 #' eval_bare(quote(symbol), env)
-env_bind_fns <- function(.env = caller_env(), ...) {
+env_bind_fns <- function(.env, ...) {
   fns <- dots_splice(...)
   stopifnot(is_named(fns) && every(fns, is_function))
 
