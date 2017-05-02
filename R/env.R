@@ -697,8 +697,9 @@ env_names <- function(env) {
 #' @param parent The parent of the cloned environment.
 #' @export
 #' @examples
-#' env <- child_env(!!! mtcars)
+#' env <- env(!!! mtcars)
 #' clone <- env_clone(env)
+#' identical(env, clone)
 #' identical(env$cyl, clone$cyl)
 env_clone <- function(env, parent = env_parent(env)) {
   env <- get_env(env)

@@ -178,11 +178,7 @@ test_that("whole scope is purged", {
   outside <- child_env(NULL, important = TRUE)
   top <- child_env(outside, foo = "bar", hunoz = 1)
   mid <- child_env(top, bar = "baz", hunoz = 2)
-  bottom <- child_env(mid,
-    .top_env = top,
-    .env = 1,
-    `~` = 2
-  )
+  bottom <- child_env(mid, !!! list(.top_env = top, .env = 1, `~` = 2))
 
   overscope_clean(bottom)
 

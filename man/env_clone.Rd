@@ -17,7 +17,8 @@ This creates a new environment containing exactly the same objects,
 optionally with a new parent.
 }
 \examples{
-env <- child_env(!!! mtcars)
+env <- env(!!! mtcars)
 clone <- env_clone(env)
+identical(env, clone)
 identical(env$cyl, clone$cyl)
 }

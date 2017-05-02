@@ -19,7 +19,7 @@ test_that("child_env() has correct parent", {
   out <- fn()
   expect_identical(env_parent(out$new), out$env)
 
-  expect_identical(env_parent(child_env()), empty_env())
+  expect_identical(env_parent(child_env(NULL)), empty_env())
   expect_identical(env_parent(child_env("base")), base_env())
 })
 
@@ -36,7 +36,7 @@ test_that("env_tail() climbs env chain", {
 })
 
 test_that("promises are created", {
-  env <- child_env()
+  env <- child_env(NULL)
 
   env_bind_exprs(env, foo = bar <- "bar")
   expect_false(env_has(get_env(), "bar"))
