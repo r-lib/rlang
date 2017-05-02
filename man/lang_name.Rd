@@ -4,13 +4,12 @@
 \alias{lang_name}
 \title{Extract function name of a call}
 \usage{
-lang_name(lang = caller_frame())
+lang_name(lang)
 }
 \arguments{
 \item{lang}{Can be a call (language object), a formula quoting a
 call in the right-hand side, or a frame object from which to
-extract the call expression. If not supplied, the calling frame
-is used.}
+extract the call expression.}
 }
 \value{
 A string with the function name, or \code{NULL} if the function
@@ -24,8 +23,8 @@ Extract function name of a call
 lang_name(~foo(bar))
 lang_name(quote(foo(bar)))
 
-# The calling expression is used as default:
-foo <- function(bar) lang_name()
+# Or from a frame:
+foo <- function(bar) lang_name(call_frame())
 foo(bar)
 
 # Namespaced calls are correctly handled:

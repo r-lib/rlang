@@ -5,15 +5,14 @@
 \alias{lang_tail}
 \title{Return the head or tail of a call object}
 \usage{
-lang_head(lang = caller_frame())
+lang_head(lang)
 
-lang_tail(lang = caller_frame())
+lang_tail(lang)
 }
 \arguments{
 \item{lang}{Can be a call (language object), a formula quoting a
 call in the right-hand side, or a frame object from which to
-extract the call expression. If not supplied, the calling frame
-is used.}
+extract the call expression.}
 }
 \description{
 Internally, calls (\code{language} objects as R calls them, see

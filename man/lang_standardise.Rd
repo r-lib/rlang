@@ -4,13 +4,12 @@
 \alias{lang_standardise}
 \title{Standardise a call}
 \usage{
-lang_standardise(lang = caller_frame())
+lang_standardise(lang)
 }
 \arguments{
 \item{lang}{Can be a call (language object), a formula quoting a
 call in the right-hand side, or a frame object from which to
-extract the call expression. If not supplied, the calling frame
-is used.}
+extract the call expression.}
 }
 \value{
 A quosure if \code{.lang} is a quosure, a raw call otherwise.

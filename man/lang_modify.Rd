@@ -4,13 +4,12 @@
 \alias{lang_modify}
 \title{Modify the arguments of a call}
 \usage{
-lang_modify(.lang = caller_frame(), ..., .standardise = FALSE)
+lang_modify(.lang, ..., .standardise = FALSE)
 }
 \arguments{
 \item{.lang}{Can be a call (language object), a formula quoting a
 call in the right-hand side, or a frame object from which to
-extract the call expression. If not supplied, the calling frame
-is used.}
+extract the call expression.}
 
 \item{...}{Named or unnamed expressions (constants, names or calls)
 used to modify the call. Use \code{NULL} to remove arguments. Dots are
@@ -47,8 +46,10 @@ lang_modify(call, na.rm = quote(expr = ))
 newargs <- list(na.rm = NULL, trim = 0.1)
 lang_modify(call, splice(newargs))
 
-# If the call is missing, the parent frame is used instead.
-f <- function(bool = TRUE) lang_modify(, splice(list(bool = FALSE)))
+# Supply a call frame to extract the frame expression:
+f <- function(bool = TRUE) {
+  lang_modify(call_frame(), splice(list(bool = FALSE)))
+}
 f()
 
 

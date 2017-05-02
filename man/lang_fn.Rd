@@ -4,13 +4,12 @@
 \alias{lang_fn}
 \title{Extract function from a call}
 \usage{
-lang_fn(lang = caller_frame())
+lang_fn(lang)
 }
 \arguments{
 \item{lang}{Can be a call (language object), a formula quoting a
 call in the right-hand side, or a frame object from which to
-extract the call expression. If not supplied, the calling frame
-is used.}
+extract the call expression.}
 }
 \description{
 If a frame or formula, the function will be retrieved from the
@@ -23,7 +22,7 @@ lang_fn(~matrix())
 lang_fn(quote(matrix()))
 
 # Extract the calling function
-test <- function() lang_fn()
+test <- function() lang_fn(call_frame())
 test()
 }
 \seealso{
