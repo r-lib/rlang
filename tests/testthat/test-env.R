@@ -41,43 +41,14 @@ test_that("env_tail() climbs env chain", {
 test_that("promises are created", {
   env <- child_env()
 
-  env_assign_promise(env, "foo", bar <- "bar")
+  env_bind_exprs(env, foo = bar <- "bar")
   expect_false(env_has(get_env(), "bar"))
 
   force(env$foo)
   expect_true(env_has(get_env(), "bar"))
 
-  f <- ~stop("forced")
-  env_assign_promise_(env, "stop", f)
+  env_bind_exprs(env, stop = stop("forced"))
   expect_error(env$stop, "forced")
-})
-
-test_that("lazies are evaluated in correct environment", {
-  env <- child_env("base")
-
-  env_assign_promise(env, "test_captured", test_captured <- letters)
-  env_assign_promise_(env, "test_expr", quote(test_expr <- LETTERS))
-  env_assign_promise_(env, "test_formula", ~ (test_formula <- mtcars))
-  expect_false(any(env_has(get_env(), c("test_captured", "test_expr", "test_formula"))))
-
-  force(env$test_captured)
-  force(env$test_expr)
-  force(env$test_formula)
-  expect_true(all(env_has(get_env(), c("test_captured", "test_expr", "test_formula"))))
-
-  expect_equal(test_captured, letters)
-  expect_equal(test_expr, LETTERS)
-  expect_equal(test_formula, mtcars)
-})
-
-test_that("formula env is overridden by eval_env", {
-  env <- child_env("base")
-  env_assign_promise_(env, "within_env", quote(new_within_env <- "new"), env)
-  force(env$within_env)
-
-  expect_false(env_has(get_env(), "new_within_env"))
-  expect_true(env_has(env, "new_within_env"))
-  expect_equal(env$new_within_env, "new")
 })
 
 test_that("with_env() evaluates within correct environment", {

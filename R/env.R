@@ -37,7 +37,7 @@
 #' @param ...,data Uniquely named bindings. See [is_dictionaryish()].
 #'   Dots have [explicit-splicing semantics][dots_list].
 #' @param n The number of generations to go through.
-#' @seealso `scoped_env`, [env_has()], [env_assign()].
+#' @seealso `scoped_env`, [env_has()], [env_bind()].
 #' @export
 #' @examples
 #' # Get the environment of frame objects. If no argument is supplied,
@@ -353,15 +353,16 @@ mut_parent_env <- function(env, new_env) {
 env_bind <- function(.env = caller_env(), ...) {
   data <- dots_list(...)
   stopifnot(is_named(data))
-  nms <- names(data)
 
-  env_ <- get_env(env)
+  nms <- names(data)
+  env_ <- get_env(.env)
+
   for (i in seq_along(data)) {
     nm <- nms[[i]]
     base::assign(nm, data[[nm]], envir = env_)
   }
 
-  env
+  .env
 }
 #' Remove bindings from an environment.
 #'
@@ -394,6 +395,7 @@ env_bind <- function(.env = caller_env(), ...) {
 #' env_has(env, "foo", inherit = TRUE)
 env_unbind <- function(env = caller_env(), nms, inherit = FALSE) {
   env_ <- get_env(env)
+
   if (inherit) {
     while(any(env_has(env_, nms, inherit = TRUE))) {
       rm(list = nms, envir = env, inherits = TRUE)
@@ -401,6 +403,7 @@ env_unbind <- function(env = caller_env(), nms, inherit = FALSE) {
   } else {
     rm(list = nms, envir = env)
   }
+
   env
 }
 
@@ -411,59 +414,60 @@ env_unbind <- function(env = caller_env(), nms, inherit = FALSE) {
 #' evaluated whenever they are touched by code, but not when they are
 #' passed as arguments.
 #'
-#' @inheritParams env_assign
-#' @param expr An expression to capture for
-#'   `env_assign_promise()`, or a captured expression (either
-#'   quoted or a formula) for the standard evaluation version
-#'   `env_assign_promise_()`. This expression is used to create a
-#'   promise in `env`.
-#' @param eval_env The environment where the promise will be evaluated
-#'   when the promise gets forced. If `expr` is a formula, its
-#'   environment is used instead. If not a formula and `eval_env` is
-#'   not supplied, the promise is evaluated in the environment where
-#'   `env_assign_promise()` (or the underscore version) was called.
-#' @seealso [env_assign()], [env_assign_active()]
+#' @inheritParams env_bind
+#' @param ... Named expressions that will be evaluated lazily when
+#'   the new promises are forced. These dots support [splicing and
+#'   unquoting][exprs].
+#' @param .eval_env The environment where the promise will be evaluated
+#'   when the promise gets forced.
+#' @seealso [env_bind()], [env_bind_actives()]
 #' @export
 #' @examples
-#' env <- child_env()
-#' env_assign_promise(env, "name", cat("forced!\n"))
+#' env <- env()
+#' env_bind_exprs(env, name = cat("forced!\n"))
+#' env$name
 #' env$name
 #'
-#' # Use the standard evaluation version with quoted expressions:
-#' f <- ~message("forced!")
-#' env_assign_promise_(env, "name2", f)
-#' env$name2
-env_assign_promise <- function(env = caller_env(), nm, expr,
-                               eval_env = caller_env()) {
-  f <- as_quosure(substitute(expr), eval_env)
-  env_assign_promise_(env, nm, f)
-}
-#' @rdname env_assign_promise
-#' @export
-env_assign_promise_ <- function(env = caller_env(), nm, expr,
-                                eval_env = caller_env()) {
-  args <- list(
-    x = nm,
-    value = get_expr(expr),
-    eval.env = get_env(expr, eval_env),
-    assign.env = get_env(env)
-  )
-  do.call("delayedAssign", args)
+#' # You can unquote expressions. Note that quosures are not
+#' # supported, only raw expressions:
+#' expr <- quote(message("forced!"))
+#' env_bind_exprs(env, name = !! expr)
+#' env$name
+env_bind_exprs <- function(.env = caller_env(), ...,
+                           .eval_env = caller_env()) {
+  exprs <- exprs(...)
+  stopifnot(is_named(exprs))
+
+  nms <- names(exprs)
+  env_ <- get_env(.env)
+
+  for (i in seq_along(exprs)) {
+    do.call("delayedAssign", list(
+      x = nms[[i]],
+      value = exprs[[i]],
+      eval.env = .eval_env,
+      assign.env = env_
+    ))
+  }
+
+  .env
 }
 
-#' Assign an active binding to an environment.
+#' Bind functions to active bindings
 #'
-#' While the expression assigned with [env_assign_promise()] is
-#' evaluated only once, the function assigned by `env_assign_active()`
-#' is evaluated each time the binding is accessed in `env`.
+#' While the expression assigned with [env_bind_exprs()] is
+#' evaluated only once, the function assigned by `env_bind_fns()`
+#' is evaluated each time the binding is accessed in `.env`.
 #'
-#' @inheritParams env_assign
-#' @param fn A function that will be executed each time the binding
-#'   designated by `nm` is accessed in `env`. As all closures, this
-#'   function is lexically scoped and can rely on data that are not in
-#'   scope for expressions evaluated in `env`. This allows creative
-#'   solutions to difficult problems.
-#' @seealso [env_assign_promise()]
+#' @inheritParams env_bind
+#' @param ... Named functions that will be executed each time the
+#'   binding designated by the name is accessed in `.env`. As all
+#'   closures, this function is lexically scoped and can rely on data
+#'   that are not in scope for expressions evaluated in `env`. This
+#'   allows creative solutions to difficult problems.
+#'
+#'   These dots are taken by value, with [implicit splicing][dots_splice].
+#' @seealso [env_bind_exprs()]
 #' @export
 #' @examples
 #' # Some bindings for the lexical enclosure of `fn`:
@@ -472,7 +476,7 @@ env_assign_promise_ <- function(env = caller_env(), nm, expr,
 #'
 #' # Create an active binding in a new environment:
 #' env <- child_env()
-#' env_assign_active(env, "symbol", function() {
+#' env_bind_fns(env, "symbol", function() {
 #'   counter <<- counter + 1
 #'   paste(data, counter)
 #' })
@@ -482,8 +486,18 @@ env_assign_promise_ <- function(env = caller_env(), nm, expr,
 #' env$symbol
 #' eval_bare(quote(symbol), env)
 #' eval_bare(quote(symbol), env)
-env_assign_active <- function(env = caller_env(), nm, fn) {
-  makeActiveBinding(nm, fn, env)
+env_bind_fns <- function(.env = caller_env(), ...) {
+  fns <- dots_splice(...)
+  stopifnot(is_named(fns) && every(fns, is_function))
+
+  nms <- names(fns)
+  env_ <- get_env(.env)
+
+  for (i in seq_along(fns)) {
+    makeActiveBinding(nms[[i]], fns[[i]], env_)
+  }
+
+  .env
 }
 
 #' Bury bindings and define objects in new scope.

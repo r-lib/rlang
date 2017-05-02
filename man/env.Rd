@@ -148,5 +148,5 @@ fn <- with_env(enclos_env, function() env_parent())
 identical(enclos_env, fn())
 }
 \seealso{
-\code{scoped_env}, \code{\link[=env_has]{env_has()}}, \code{\link[=env_assign]{env_assign()}}.
+\code{scoped_env}, \code{\link[=env_has]{env_has()}}, \code{\link[=env_bind]{env_bind()}}.
 }
