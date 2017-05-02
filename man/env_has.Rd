@@ -27,8 +27,8 @@ environment owns bindings personally (with \code{inherit} set to
 any of its parents (with \code{inherit = TRUE}).
 }
 \examples{
-parent <- child_env(empty_env(), list(foo = "foo"))
-env <- child_env(parent, list(bar = "bar"))
+parent <- child_env(empty_env(), foo = "foo")
+env <- child_env(parent, bar = "bar")
 
 # env does not own `foo` but sees it in its parent environment:
 env_has(env, "foo")

@@ -127,9 +127,9 @@ env <- function(...) {
 }
 #' @rdname env
 #' @export
-child_env <- function(parent = NULL, data = list()) {
+child_env <- function(parent, ...) {
   env <- new.env(parent = as_env(parent))
-  env_bind(env, !!! data)
+  env_bind(env, ...)
 }
 
 #' @rdname env
@@ -549,8 +549,8 @@ env_bury <- function(env = caller_env(), data = list()) {
 #'
 #' # With inherit = TRUE, it removes bindings in parent environments
 #' # as well:
-#' parent <- child_env(NULL, list(foo = "a"))
-#' env <- child_env(parent, list(foo = "b"))
+#' parent <- child_env(NULL, foo = "a")
+#' env <- child_env(parent, foo = "b")
 #' env_unbind(env, "foo", inherit = TRUE)
 #' env_has(env, "foo", inherit = TRUE)
 env_unbind <- function(env = caller_env(), nms, inherit = FALSE) {
@@ -578,8 +578,8 @@ env_unbind <- function(env = caller_env(), nms, inherit = FALSE) {
 #' @return A logical vector as long as `nms`.
 #' @export
 #' @examples
-#' parent <- child_env(empty_env(), list(foo = "foo"))
-#' env <- child_env(parent, list(bar = "bar"))
+#' parent <- child_env(empty_env(), foo = "foo")
+#' env <- child_env(parent, bar = "bar")
 #'
 #' # env does not own `foo` but sees it in its parent environment:
 #' env_has(env, "foo")
@@ -599,8 +599,8 @@ env_has <- function(env = caller_env(), nms, inherit = FALSE) {
 #' @return An object if it exists. Otherwise, throws an error.
 #' @export
 #' @examples
-#' parent <- child_env(empty_env(), list(foo = "foo"))
-#' env <- child_env(parent, list(bar = "bar"))
+#' parent <- child_env(empty_env(), foo = "foo")
+#' env <- child_env(parent, bar = "bar")
 #'
 #' # This throws an error because `foo` is not directly defined in env:
 #' # env_get(env, "foo")
@@ -638,7 +638,7 @@ env_names <- function(env = caller_env()) {
 #' @param parent The parent of the cloned environment.
 #' @export
 #' @examples
-#' env <- child_env(data = mtcars)
+#' env <- child_env(!!! mtcars)
 #' clone <- env_clone(env)
 #' identical(env$cyl, clone$cyl)
 env_clone <- function(env, parent = env_parent(env)) {

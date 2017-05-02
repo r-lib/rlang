@@ -37,7 +37,7 @@ may return misleading results.
 }
 \examples{
 # eval_bare() works just like base::eval():
-env <- child_env(data = list(foo = "bar"))
+env <- child_env(NULL, foo = "bar")
 expr <- quote(foo)
 eval_bare(expr, env)
 

@@ -24,10 +24,7 @@ test_that("child_env() has correct parent", {
 })
 
 test_that("env_parent() reports correct parent", {
-  env <- child_env(
-    child_env(empty_env(), list(obj = "b")),
-    list(obj = "a")
-  )
+  env <- child_env(child_env(NULL, obj = "b"), obj = "a")
 
   expect_identical(env_parent(env, 1)$obj, "b")
   expect_identical(env_parent(env, 2), empty_env())
