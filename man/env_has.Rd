@@ -8,8 +8,7 @@ env_has(env = caller_env(), nms, inherit = FALSE)
 }
 \arguments{
 \item{env}{An environment or an object bundling an environment,
-e.g. a formula, \link{quosure} or \link[=is_closure]{closure}. If missing,
-the environment of the current evaluation frame is returned.}
+e.g. a formula, \link{quosure} or \link[=is_closure]{closure}.}
 
 \item{nms}{A character vector containing the names of the bindings
 to remove.}

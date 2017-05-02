@@ -4,12 +4,11 @@
 \alias{env_names}
 \title{List object names in an environment.}
 \usage{
-env_names(env = caller_env())
+env_names(env)
 }
 \arguments{
 \item{env}{An environment or an object bundling an environment,
-e.g. a formula, \link{quosure} or \link[=is_closure]{closure}. If missing,
-the environment of the current evaluation frame is returned.}
+e.g. a formula, \link{quosure} or \link[=is_closure]{closure}.}
 }
 \value{
 A character vector of object names.
@@ -20,5 +19,6 @@ vector.
 All names are returned, even those starting with a dot.
 }
 \examples{
-env_names()
+env <- env(a = 1, b = 2)
+env_names(env)
 }

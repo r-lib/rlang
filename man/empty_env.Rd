@@ -12,6 +12,6 @@ It is always used as the tail of a scope chain such as the search
 path (see \code{\link[=scoped_names]{scoped_names()}}).
 }
 \examples{
-# Create environments with nothing in scope (the default):
-child_env(parent = empty_env())
+# Create environments with nothing in scope:
+child_env(empty_env())
 }

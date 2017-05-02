@@ -3,148 +3,126 @@
 \name{env}
 \alias{env}
 \alias{child_env}
-\alias{get_env}
-\alias{env_parent}
-\alias{env_tail}
-\title{Get or create an environment.}
+\title{Create a new environment}
 \usage{
 env(...)
 
-child_env(parent = NULL, data = list())
-
-get_env(env = caller_env(), default = NULL)
-
-env_parent(env = caller_env(), n = 1)
-
-env_tail(env = caller_env())
+child_env(parent, ...)
 }
 \arguments{
-\item{..., data}{Uniquely named bindings. See \code{\link[=is_dictionaryish]{is_dictionaryish()}}.
-Dots have \link[=dots_list]{explicit-splicing semantics}.}
+\item{...}{Named values. These dots have \link[=dots_list]{explicit splicing
+semantics}.}
 
-\item{parent}{A parent environment. Can be an object with a S3
-method for \code{as_env()}.}
-
-\item{env}{An environment or an object bundling an environment,
-e.g. a formula, \link{quosure} or \link[=is_closure]{closure}. If missing,
-the environment of the current evaluation frame is returned.}
-
-\item{default}{The default environment in case \code{env} does not wrap
-an environment. If \code{NULL} and no environment could be extracted,
-an error is issued.}
-
-\item{n}{The number of generations to go through.}
+\item{parent}{A parent environment. Can be an object supported by
+\code{\link[=as_env]{as_env()}}.}
 }
 \description{
-Environments are objects that create a scope for evaluation of R
-code. Reification of scope is one of the most powerful feature of
-the R language: it allows you to change what objects a function or
-expression sees when it is evaluated. In R, scope is hierarchical:
-each environment is defined with a parent environment. An
-environment and its grandparents form together a linear
-hierarchy. All objects within the grandparents are in scope unless
-they are eclipsed by synonyms (other bindings with the same names)
-in child environments.
+\code{env()} and \code{child_env()} create new environments. \code{env()} always
+creates a child of the current environment while \code{child_env()} lets
+you specify a parent (see section on inheritance).
 }
-\details{
-\code{get_env()} dispatches internally. Methods are provided for
-functions, formulas and frames. If called with a missing argument,
-the environment of the current evaluation frame (see
-\code{\link[=ctxt_stack]{ctxt_stack()}}) is returned. If you call \code{get_env()} with an
-environment, it acts as the identity function and the environment
-is simply returned (this helps simplifying code when writing
-generic functions).
+\section{Environments as objects}{
 
-\code{env()} and \code{child_env()} create new environments. While \code{env()}
-always creates a child of the current environment, \code{child_env()}
-lets you choose a parent environment. \code{env_parent()} returns the
-parent environment of \code{env} if called with \code{n = 1}, the grandparent
-with \code{n = 2}, etc. \code{env_tail()} searches through the parents and
-returns the one which has \code{\link[=empty_env]{empty_env()}} as parent.
+
+Environments are containers of uniquely named objects. Their most
+common use is to provide a scope for the evaluation of R
+expressions. Not all languages can manipulate scope as regular
+objects. This is one of the most powerful feature of R as it allows
+you to change what objects a function or expression sees when it is
+evaluated.
+
+Environments also constitute a data structure in their own
+right. They are \link[=dictionary]{dictionaries} of uniquely named
+objects, subsettable by name and modifiable by reference. This
+latter property (see section on reference semantics) is especially
+useful for creating mutable OO systems (cf the \href{https://github.com/wch/R6}{R6package} and the \href{http://ggplot2.tidyverse.org/articles/extending-ggplot2.html}{ggprotosystem}
+for extending ggplot2).
 }
+
+\section{Inheritance}{
+
+
+All R environments (except the \link[=empty_env]{empty environment}) are
+defined with a parent environment. An environment and its
+grandparents thus form a linear hierarchy that is the basis for
+\href{https://en.wikipedia.org/wiki/Scope_(computer_science)}{lexicalscoping} in
+R. When R evaluates an expression, it looks up symbols in a given
+environment. If it cannot find these symbols there, it keeps
+looking them up in parent environments. This way, objects defined
+in child environments have precedence over objects defined in
+parent environments.
+
+The ability of overriding specific definitions is used in the
+tidyeval framework to create powerful domain-specific grammars. A
+common use of overscoping is to put data frame columns in
+scope. See \code{\link[=as_overscope]{as_overscope()}} for technical details.
+}
+
+\section{Reference semantics}{
+
+
+Unlike regular objects such as vectors, environments are an
+\link[=is_copyable]{uncopyable} object type. This means that if you
+have multiple references to a given environment (by assigning the
+environment to another symbol with \code{<-} or passing the environment
+as argument to a function), modifying the bindings of one of those
+references changes all other references as well.
+}
+
 \examples{
-# Get the environment of frame objects. If no argument is supplied,
-# the current frame is used:
-fn <- function() {
-  list(
-    get_env(call_frame()),
-    get_env()
-  )
-}
-fn()
-
-# Environment of closure functions:
-get_env(fn)
-
 # env() creates a new environment which has the current environment
-# as parent. It takes dots with explicit splicing:
-env(a = 1, b = "foo")
-env(a = 1, splice(list(b = "foo", c = "bar")))
-
-# child_env() creates by default an environment whose parent is the
-# empty environment. Here we return a new environment that has
-# the evaluation environment (or frame environment) of a function
-# as parent:
-fn <- function() {
-  my_object <- "A"
-  child_env(get_env())
-}
-frame_env <- fn()
-
-# The new environment is empty:
-env_has(frame_env, "my_object")
-
-# But sees objects defined inside fn() by inheriting from its
-# parent:
-env_has(frame_env, "my_object", inherit = TRUE)
+# as parent
+env <- env(a = 1, b = "foo")
+env$b
+identical(env_parent(env), get_env())
 
 
-# Create a new environment with a particular scope by setting a
-# parent. When inheriting from the empty environment (the default),
-# the environment will have no object in scope at all:
-env <- child_env()
-env_has(env, "lapply", inherit = TRUE)
+# child_env() lets you specify a parent:
+child <- child_env(env, c = "bar")
+identical(env_parent(child), env)
+
+# This child environment owns `c` but inherits `a` and `b` from `env`:
+env_has(child, c("a", "b", "c", "d"))
+env_has(child, c("a", "b", "c", "d"), inherit = TRUE)
+
+# `parent` is passed to as_env() to provide handy shortcuts. Pass a
+# string to create a child of a package environment:
+child_env("rlang")
+env_parent(child_env("rlang"))
+
+# Or `NULL` to create a child of the empty environment:
+child_env(NULL)
+env_parent(child_env(NULL))
 
 # The base package environment is often a good default choice for a
 # parent environment because it contains all standard base
 # functions. Also note that it will never inherit from other loaded
 # package environments since R keeps the base package at the tail
 # of the search path:
-env <- child_env(base_env())
-env_has(env, "lapply", inherit = TRUE)
+base_child <- child_env("base")
+env_has(base_child, c("lapply", "("), inherit = TRUE)
+
+# On the other hand, a child of the empty environment doesn't even
+# see a definition for `(`
+empty_child <- child_env(NULL)
+env_has(empty_child, c("lapply", "("), inherit = TRUE)
 
 # Note that all other package environments inherit from base_env()
 # as well:
-env <- child_env(pkg_env("rlang"))
-env_has(env, "env_has", inherit = TRUE)
-env_has(env, "lapply", inherit = TRUE)
+rlang_child <- child_env("rlang")
+env_has(rlang_child, "env", inherit = TRUE)     # rlang function
+env_has(rlang_child, "lapply", inherit = TRUE)  # base function
 
 
-# The parent argument of child_env() is passed to as_env() to provide
-# handy shortcuts:
-env <- child_env("rlang")
-identical(env_parent(env), pkg_env("rlang"))
+# Both env() and child_env() take dots with explicit splicing:
+objs <- list(b = "foo", c = "bar")
+env <- env(a = 1, !!! objs)
+env$c
 
-
-# Get the parent environment with env_parent():
-env_parent(global_env())
-
-# Or the tail environment with env_tail():
-env_tail(global_env())
-
-
-# By default, env_parent() returns the parent environment of the
-# current evaluation frame. If called at top-level (the global
-# frame), the following two expressions are equivalent:
-env_parent()
-env_parent(global_env())
-
-# This default is more handy when called within a function. In this
-# case, the enclosure environment of the function is returned
-# (since it is the parent of the evaluation frame):
-enclos_env <- child_env(pkg_env("rlang"))
-fn <- with_env(enclos_env, function() env_parent())
-identical(enclos_env, fn())
+# You can also unquote names with the definition operator `:=`
+var <- "a"
+env <- env(!!var := "A")
+env$a
 }
 \seealso{
 \code{scoped_env}, \code{\link[=env_has]{env_has()}}, \code{\link[=env_bind]{env_bind()}}.

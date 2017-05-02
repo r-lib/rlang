@@ -59,17 +59,12 @@ its value is bound to the symbol (the expressions are thus
 evaluated only once, if at all).
 }
 }
-\section{Reference semantics}{
-
-
-Unlike regular objects such as vectors, environments are an
-\link[=is_copyable]{uncopyable} type. This means that if you have
-multiple references to a given environment (by assigning with \code{<-}
-or passing the environment as argument), modifying the bindings of
-one of those references changes all other references as well. In
+\details{
+Since environments have reference semantics (see relevant section
+in \code{\link[=env]{env()}} documentation), modifying the bindings of an environment
+produces effects in all other references to that environment. In
 other words, \code{env_bind()} and its variants have side effects.
 }
-
 \examples{
 # env_bind() is a programmatic way of assigning values to symbols
 # with `<-`. We can add bindings in the current environment:
