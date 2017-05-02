@@ -16,11 +16,12 @@ extract the call expression. If not supplied, the calling frame
 is used.}
 }
 \description{
-Internally, calls (\code{language} objects) are structured as a tree of
-expressions (see \code{\link[=switch_lang]{switch_lang()}} and \link{pairlist} documentation
-pages). A \code{language} object is a node of the call tree.
-\code{lang_head()} and \code{lang_tail()} are accessor functions that allow
-you to retrieve the node components.
+Internally, calls (\code{language} objects as R calls them, see
+\code{\link[=type_of]{type_of()}}) are structured as a tree of expressions (see
+\code{\link[=switch_lang]{switch_lang()}} and \link{pairlist} documentation pages). A \code{language}
+object is a node of the call tree.  \code{lang_head()} and \code{lang_tail()}
+are accessor functions that allow you to retrieve the node
+components.
 \itemize{
 \item In the most common situation, a call refers to a named
 function. The head of such calls (the CAR of the \code{language} node)
@@ -32,7 +33,7 @@ checks that the head is a symbol and converts it to a string).
 \item The second component of the tree node contains the arguments. The
 type of arguments is \emph{pairlist}. Pairlists are structurally
 equivalent to \code{language} objects (calls), they just have a
-different type name. \code{lang_tail()} returns the pairlist of
+different type. \code{lang_tail()} returns the pairlist of
 arguments (while \code{\link[=lang_args]{lang_args()}} returns the same object converted
 to a regular list).
 }

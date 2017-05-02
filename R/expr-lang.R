@@ -1,7 +1,7 @@
 #' Create a language call by "hand"
 #'
-#' @param .fn Function to call. Must be a callable object: symbol,
-#'   call, or a function.
+#' @param .fn Function to call. Must be a callable object: a string,
+#'   symbol, call, or a function.
 #' @param ... Arguments to the call either in or out of a list. Dots
 #'   are evaluated with [explicit splicing][dots_list].
 #' @param .ns Namespace with which to prefix `.fn`. Must be a string
@@ -59,14 +59,20 @@ new_language <- lang
 #' is_callable(quote(foo))
 #' is_callable(base::identity)
 #'
-#' # You can safely set the head of a language node to a callable
-#' # object:
-#' lang <- lang("identity", 10L)
-#' lang
+#' # mut_node_car() lets you modify calls without any checking:
+#' lang <- quote(foo(10))
+#' mut_node_car(lang, get_env())
 #'
-#' lang_literal <- mut_node_car(lang, base::identity)
-#' lang_literal
-#' eval_bare(lang_literal)
+#' # Use is_callable() to check an input object is safe to put as CAR:
+#' obj <- base::identity
+#'
+#' if (is_callable(obj)) {
+#'   lang <- mut_node_car(lang, obj)
+#' } else {
+#'   abort("`obj` must be callable")
+#' }
+#'
+#' eval_bare(lang)
 is_callable <- function(x) {
   is_symbolic(x) || is_function(x)
 }
@@ -373,11 +379,12 @@ lang_name <- function(lang = caller_frame()) {
 #'
 #' @description
 #'
-#' Internally, calls (`language` objects) are structured as a tree of
-#' expressions (see [switch_lang()] and [pairlist] documentation
-#' pages). A `language` object is a node of the call tree.
-#' `lang_head()` and `lang_tail()` are accessor functions that allow
-#' you to retrieve the node components.
+#' Internally, calls (`language` objects as R calls them, see
+#' [type_of()]) are structured as a tree of expressions (see
+#' [switch_lang()] and [pairlist] documentation pages). A `language`
+#' object is a node of the call tree.  `lang_head()` and `lang_tail()`
+#' are accessor functions that allow you to retrieve the node
+#' components.
 #'
 #' * In the most common situation, a call refers to a named
 #'   function. The head of such calls (the CAR of the `language` node)
@@ -390,7 +397,7 @@ lang_name <- function(lang = caller_frame()) {
 #' * The second component of the tree node contains the arguments. The
 #'   type of arguments is _pairlist_. Pairlists are structurally
 #'   equivalent to `language` objects (calls), they just have a
-#'   different type name. `lang_tail()` returns the pairlist of
+#'   different type. `lang_tail()` returns the pairlist of
 #'   arguments (while [lang_args()] returns the same object converted
 #'   to a regular list).
 #'

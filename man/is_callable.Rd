@@ -26,12 +26,18 @@ is not legal to manually set language heads to strings.
 is_callable(quote(foo))
 is_callable(base::identity)
 
-# You can safely set the head of a language node to a callable
-# object:
-lang <- lang("identity", 10L)
-lang
+# mut_node_car() lets you modify calls without any checking:
+lang <- quote(foo(10))
+mut_node_car(lang, get_env())
 
-lang_literal <- mut_node_car(lang, base::identity)
-lang_literal
-eval_bare(lang_literal)
+# Use is_callable() to check an input object is safe to put as CAR:
+obj <- base::identity
+
+if (is_callable(obj)) {
+  lang <- mut_node_car(lang, obj)
+} else {
+  abort("`obj` must be callable")
+}
+
+eval_bare(lang)
 }

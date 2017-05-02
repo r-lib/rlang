@@ -10,8 +10,8 @@ lang(.fn, ..., .ns = NULL)
 new_language(.fn, ..., .ns = NULL)
 }
 \arguments{
-\item{.fn}{Function to call. Must be a callable object: symbol,
-call, or a function.}
+\item{.fn}{Function to call. Must be a callable object: a string,
+symbol, call, or a function.}
 
 \item{...}{Arguments to the call either in or out of a list. Dots
 are evaluated with \link[=dots_list]{explicit splicing}.}
