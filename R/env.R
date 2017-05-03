@@ -227,7 +227,7 @@ env_parent <- function(env = caller_env(), n = 1) {
   env_ <- get_env(env)
 
   while (n > 0) {
-    if (identical(env_, empty_env())) {
+    if (is_empty_env(env_)) {
       return(env_)
     }
     n <- n - 1
@@ -242,7 +242,7 @@ env_tail <- function(env = caller_env()) {
   env_ <- get_env(env)
   next_env <- parent.env(env_)
 
-  while(!identical(next_env, empty_env())) {
+  while(!is_empty_env(next_env)) {
     env_ <- next_env
     next_env <- parent.env(next_env)
   }
@@ -794,14 +794,14 @@ env_inherits <- function(env, ancestor) {
   env <- get_env(env)
   stopifnot(is_env(ancestor) && is_env(env))
 
-  while(!identical(env_parent(env), empty_env())) {
+  while(!is_empty_env(env_parent(env))) {
     env <- env_parent(env)
-    if (identical(env, ancestor)) {
+    if (is_identical(env, ancestor)) {
       return(TRUE)
     }
   }
 
-  identical(env, empty_env())
+  is_empty_env(env)
 }
 
 
@@ -1053,11 +1053,11 @@ locally <- function(expr) {
 
 
 env_type <- function(env) {
-  if (identical(env, global_env())) {
+  if (is_identical(env, global_env())) {
     "global"
-  } else if (identical(env, empty_env())) {
+  } else if (is_identical(env, empty_env())) {
     "empty"
-  } else if (identical(env, base_env())) {
+  } else if (is_identical(env, base_env())) {
     "base"
   } else if (is_frame_env(env)) {
     "frame"
