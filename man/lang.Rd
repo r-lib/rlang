@@ -2,12 +2,9 @@
 % Please edit documentation in R/expr-lang.R
 \name{lang}
 \alias{lang}
-\alias{new_language}
 \title{Create a language call by "hand"}
 \usage{
 lang(.fn, ..., .ns = NULL)
-
-new_language(.fn, ..., .ns = NULL)
 }
 \arguments{
 \item{.fn}{Function to call. Must be a callable object: a string,

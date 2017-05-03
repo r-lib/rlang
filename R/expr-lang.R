@@ -36,9 +36,6 @@ lang <- function(.fn, ..., .ns = NULL) {
 
   as.call(c(.fn, dots_list(...)))
 }
-#' @rdname lang
-#' @export
-new_language <- lang
 
 #' Is an object callable?
 #'
