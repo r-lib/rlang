@@ -31,17 +31,11 @@ doesn't participate in the pattern-matching. If an empty string
 namespaced within \code{ns}.}
 }
 \description{
-This function tests if \code{x} is a call. This is a pattern-matching
-predicate that will return \code{FALSE} if \code{name} and \code{n} are supplied
-and the call does not match these properties. \code{is_unary_lang()} and
-\code{is_binary_lang()} hardcode \code{n} to 1 and 2.
-}
-\details{
-Note that the base type of calls is \code{language}, while \code{call} is the
-old S mode. While it is usually better to avoid using S
-terminology, it would probably be even more confusing to refer to
-"calls" as "language". We still use \code{lang} as prefix or suffix for
-consistency.
+This function tests if \code{x} is a call (or \link[=lang]{language
+object}). This is a pattern-matching predicate that will
+return \code{FALSE} if \code{name} and \code{n} are supplied and the call does not
+match these properties. \code{is_unary_lang()} and \code{is_binary_lang()}
+hardcode \code{n} to 1 and 2.
 }
 \examples{
 is_lang(quote(foo(bar)))

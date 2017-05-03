@@ -15,27 +15,17 @@ call in the right-hand side, or a frame object from which to
 extract the call expression.}
 }
 \description{
-Internally, calls (\code{language} objects as R calls them, see
-\code{\link[=type_of]{type_of()}}) are structured as a tree of expressions (see
-\code{\link[=switch_lang]{switch_lang()}} and \link{pairlist} documentation pages). A \code{language}
-object is a node of the call tree.  \code{lang_head()} and \code{lang_tail()}
-are accessor functions that allow you to retrieve the node
-components.
-\itemize{
-\item In the most common situation, a call refers to a named
-function. The head of such calls (the CAR of the \code{language} node)
-contains a symbol. However the node head could also be symbolic
-objects or literal functions (e.g. \code{foo()()}, see
-\code{\link[=is_callable]{is_callable()}}). \code{lang_head()} returns that bare object without
-any type checking or conversion (unlike \code{\link[=lang_name]{lang_name()}} which
-checks that the head is a symbol and converts it to a string).
-\item The second component of the tree node contains the arguments. The
-type of arguments is \emph{pairlist}. Pairlists are structurally
-equivalent to \code{language} objects (calls), they just have a
-different type. \code{lang_tail()} returns the pairlist of
-arguments (while \code{\link[=lang_args]{lang_args()}} returns the same object converted
-to a regular list).
-}
+These functions return the head or the tail of a call. See section
+on calls as parse trees in \code{\link[=lang]{lang()}}. They are equivalent to
+\code{\link[=node_car]{node_car()}} and \code{\link[=node_cdr]{node_cdr()}} but support quosures and check that
+the input is indeed a call before retrieving the head or tail (it
+is unsafe to do this without type checking).
+
+\code{lang_head()} returns the head of the call without any conversion,
+unlike \code{\link[=lang_name]{lang_name()}} which checks that the head is a symbol and
+converts it to a string. \code{lang_tail()} returns the pairlist of
+arguments (while \code{\link[=lang_args]{lang_args()}} returns the same object converted to
+a regular list)
 }
 \examples{
 lang <- quote(foo(bar, baz))
@@ -43,5 +33,5 @@ lang_head(lang)
 lang_tail(lang)
 }
 \seealso{
-\link{pairlist}, \code{\link[=lang_args]{lang_args()}}
+\link{pairlist}, \code{\link[=lang_args]{lang_args()}}, \code{\link[=lang]{lang()}}
 }

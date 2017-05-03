@@ -2,7 +2,7 @@
 % Please edit documentation in R/expr-lang.R
 \name{lang}
 \alias{lang}
-\title{Create a language call by "hand"}
+\title{Create a language call}
 \usage{
 lang(.fn, ..., .ns = NULL)
 }
@@ -17,8 +17,51 @@ are evaluated with \link[=dots_list]{explicit splicing}.}
 or symbol.}
 }
 \description{
-Create a language call by "hand"
+Language objects are (with symbols) one of the two types of
+\link[=is_symbolic]{symbolic} objects in R. These symbolic objects form
+the backbone of \link[=is_expr]{expressions}. They represent a value,
+unlike literal objects which are their own values. While symbols
+are directly \link[=env_bind]{bound} to a value, language objects
+represent \emph{function calls}, which is why they are commonly referred
+to as calls.
 }
+\section{Calls as parse tree}{
+
+
+Language objects are structurally identical to
+\link[=pairlist]{pairlists}. They are containers of two objects, the head
+and the tail (also called the CAR and the CDR).
+\itemize{
+\item The head contains the function to call, either literally or
+symbolically. If a literal function, the call is said to be
+inlined. If a symbol, the call is named. If another call, it is
+recursive. \code{foo()()} would be an example of a recursive call
+whose head contains another call. See \code{\link[=lang_type_of]{lang_type_of()}} and
+\code{\link[=is_callable]{is_callable()}}.
+\item The tail contains the arguments and must be a \link{pairlist}.
+}
+
+You can retrieve those components with \code{\link[=lang_head]{lang_head()}} and
+\code{\link[=lang_tail]{lang_tail()}}. Since language nodes can contain other nodes (either
+calls or pairlists), they are capable of forming a tree. When R
+\link[=parse_expr]{parses} an expression, it saves the parse tree in a
+data structure composed of language and pairlist nodes. It is
+precisely because the parse tree is saved in first-class R objects
+that it is possible for functions to \link[=expr]{capture} their
+arguments unevaluated.
+}
+
+\section{Call versus language}{
+
+
+\code{call} is the old S \link[base:mode]{mode} of these objects while
+\code{language} is the R \link[base:typeof]{type}. While it is usually
+better to avoid using S terminology, it would probably be even more
+confusing to systematically refer to "calls" as "language". rlang
+still uses \code{lang} as particle for function dealing with calls for
+consistency.
+}
+
 \examples{
 # fn can either be a string, a symbol or a call
 lang("f", a = 1)

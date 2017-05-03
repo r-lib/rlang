@@ -1,4 +1,45 @@
-#' Create a language call by "hand"
+#' Create a language call
+#'
+#' Language objects are (with symbols) one of the two types of
+#' [symbolic][is_symbolic] objects in R. These symbolic objects form
+#' the backbone of [expressions][is_expr]. They represent a value,
+#' unlike literal objects which are their own values. While symbols
+#' are directly [bound][env_bind] to a value, language objects
+#' represent _function calls_, which is why they are commonly referred
+#' to as calls.
+#'
+#' @section Calls as parse tree:
+#'
+#' Language objects are structurally identical to
+#' [pairlists][pairlist]. They are containers of two objects, the head
+#' and the tail (also called the CAR and the CDR).
+#'
+#' - The head contains the function to call, either literally or
+#'   symbolically. If a literal function, the call is said to be
+#'   inlined. If a symbol, the call is named. If another call, it is
+#'   recursive. `foo()()` would be an example of a recursive call
+#'   whose head contains another call. See [lang_type_of()] and
+#'   [is_callable()].
+#'
+#' - The tail contains the arguments and must be a [pairlist].
+#'
+#' You can retrieve those components with [lang_head()] and
+#' [lang_tail()]. Since language nodes can contain other nodes (either
+#' calls or pairlists), they are capable of forming a tree. When R
+#' [parses][parse_expr] an expression, it saves the parse tree in a
+#' data structure composed of language and pairlist nodes. It is
+#' precisely because the parse tree is saved in first-class R objects
+#' that it is possible for functions to [capture][expr] their
+#' arguments unevaluated.
+#'
+#' @section Call versus language:
+#'
+#' `call` is the old S [mode][base::mode] of these objects while
+#' `language` is the R [type][base::typeof]. While it is usually
+#' better to avoid using S terminology, it would probably be even more
+#' confusing to systematically refer to "calls" as "language". rlang
+#' still uses `lang` as particle for function dealing with calls for
+#' consistency.
 #'
 #' @param .fn Function to call. Must be a callable object: a string,
 #'   symbol, call, or a function.
@@ -76,16 +117,11 @@ is_callable <- function(x) {
 
 #' Is object a call (language type)?
 #'
-#' This function tests if `x` is a call. This is a pattern-matching
-#' predicate that will return `FALSE` if `name` and `n` are supplied
-#' and the call does not match these properties. `is_unary_lang()` and
-#' `is_binary_lang()` hardcode `n` to 1 and 2.
-#'
-#' Note that the base type of calls is `language`, while `call` is the
-#' old S mode. While it is usually better to avoid using S
-#' terminology, it would probably be even more confusing to refer to
-#' "calls" as "language". We still use `lang` as prefix or suffix for
-#' consistency.
+#' This function tests if `x` is a call (or [language
+#' object][lang]). This is a pattern-matching predicate that will
+#' return `FALSE` if `name` and `n` are supplied and the call does not
+#' match these properties. `is_unary_lang()` and `is_binary_lang()`
+#' hardcode `n` to 1 and 2.
 #'
 #' @param x An object to test. If a formula, the right-hand side is
 #'   extracted.
@@ -376,30 +412,20 @@ lang_name <- function(lang) {
 #'
 #' @description
 #'
-#' Internally, calls (`language` objects as R calls them, see
-#' [type_of()]) are structured as a tree of expressions (see
-#' [switch_lang()] and [pairlist] documentation pages). A `language`
-#' object is a node of the call tree.  `lang_head()` and `lang_tail()`
-#' are accessor functions that allow you to retrieve the node
-#' components.
+#' These functions return the head or the tail of a call. See section
+#' on calls as parse trees in [lang()]. They are equivalent to
+#' [node_car()] and [node_cdr()] but support quosures and check that
+#' the input is indeed a call before retrieving the head or tail (it
+#' is unsafe to do this without type checking).
 #'
-#' * In the most common situation, a call refers to a named
-#'   function. The head of such calls (the CAR of the `language` node)
-#'   contains a symbol. However the node head could also be symbolic
-#'   objects or literal functions (e.g. `foo()()`, see
-#'   [is_callable()]). `lang_head()` returns that bare object without
-#'   any type checking or conversion (unlike [lang_name()] which
-#'   checks that the head is a symbol and converts it to a string).
-#'
-#' * The second component of the tree node contains the arguments. The
-#'   type of arguments is _pairlist_. Pairlists are structurally
-#'   equivalent to `language` objects (calls), they just have a
-#'   different type. `lang_tail()` returns the pairlist of
-#'   arguments (while [lang_args()] returns the same object converted
-#'   to a regular list).
+#' `lang_head()` returns the head of the call without any conversion,
+#' unlike [lang_name()] which checks that the head is a symbol and
+#' converts it to a string. `lang_tail()` returns the pairlist of
+#' arguments (while [lang_args()] returns the same object converted to
+#' a regular list)
 #'
 #' @inheritParams lang_standardise
-#' @seealso [pairlist], [lang_args()]
+#' @seealso [pairlist], [lang_args()], [lang()]
 #' @export
 #' @examples
 #' lang <- quote(foo(bar, baz))
