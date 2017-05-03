@@ -8,7 +8,7 @@
 \alias{is_scoped}
 \alias{base_env}
 \alias{global_env}
-\title{Scope environments}
+\title{Scoped environments}
 \usage{
 scoped_env(nm)
 
@@ -31,34 +31,38 @@ path. Call \code{\link[base:search]{base::search()}} to see what is currently on
 \item{pkg}{The name of a package.}
 }
 \description{
-Scope environments are named environments which form a parent-child
-hierarchy called the search path. They define what objects you can
-see (are in scope) from your workspace. They typically are package
-environments, i.e. special environments containing all exported
-functions from a package (and whose parent environment is the
-package namespace, which also contains unexported
-functions). Package environments are attached to the search path
-with \code{\link[base:library]{base::library()}}. Note however that any environment can be
-attached to the search path, for example with the unrecommended
-\code{\link[base:attach]{base::attach()}} base function which transforms vectors to scoped
-environments.
-}
-\details{
-Scope environments form a chain with newly attached environments as
-the childs of earlier ones. However, the global environment, where
-everything you define at top-level ends up, is pinned as the head
-of the linked list. Likewise, the base package environment is
-always the tail of the chain. You can obtain those environments
-with \code{global_env()} and \code{base_env()} respectively. The global
-environment is always the environment of the very first evaluation
-frame on the stack, see \code{\link[=global_frame]{global_frame()}} and \code{\link[=ctxt_stack]{ctxt_stack()}}.
+Scoped environments are named environments which form a
+parent-child hierarchy called the search path. They define what
+objects you can see (are in scope) from your workspace. They
+typically are package environments, i.e. special environments
+containing all exported functions from a package (and whose parent
+environment is the package namespace, which also contains
+unexported functions). Package environments are attached to the
+search path with \code{\link[base:library]{base::library()}}. Note however that any
+environment can be attached to the search path, for example with
+the unrecommended \code{\link[base:attach]{base::attach()}} base function which transforms
+vectors to scoped environments.
 
-You can list all scoped environments with \code{scoped_names()}. With
-\code{is_scoped()} you can check whether a named environment is on the
-search path. \code{pkg_env()} returns the scope environment of packages
-if they are attached to the search path, and throws an error
-otherwise.
+You can list all scoped environments with \code{scoped_names()}.
+\code{is_scoped()} allows you to check whether a named environment is on
+the search path. \code{pkg_env()} returns the scope environment of
+packages if they are attached to the search path, and throws an
+error otherwise.
 }
+\section{Search path}{
+
+
+The search path is a chain of scoped environments where newly
+attached environments are the childs of earlier ones. However, the
+global environment, where everything you define at top-level ends
+up, is pinned as the head of that linked chain. Likewise, the base
+package environment is pinned as the tail of the chain. You can
+retrieve those environments with \code{global_env()} and \code{base_env()}
+respectively. The global environment is also the environment of the
+very first evaluation frame on the stack, see \code{\link[=global_frame]{global_frame()}} and
+\code{\link[=ctxt_stack]{ctxt_stack()}}.
+}
+
 \examples{
 # List the names of scoped environments:
 nms <- scoped_names()

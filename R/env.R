@@ -728,34 +728,39 @@ env_inherits <- function(env, ancestor) {
 }
 
 
-#' Scope environments
+#' Scoped environments
 #'
-#' Scope environments are named environments which form a parent-child
-#' hierarchy called the search path. They define what objects you can
-#' see (are in scope) from your workspace. They typically are package
-#' environments, i.e. special environments containing all exported
-#' functions from a package (and whose parent environment is the
-#' package namespace, which also contains unexported
-#' functions). Package environments are attached to the search path
-#' with [base::library()]. Note however that any environment can be
-#' attached to the search path, for example with the unrecommended
-#' [base::attach()] base function which transforms vectors to scoped
-#' environments.
+#' @description
 #'
-#' Scope environments form a chain with newly attached environments as
-#' the childs of earlier ones. However, the global environment, where
-#' everything you define at top-level ends up, is pinned as the head
-#' of the linked list. Likewise, the base package environment is
-#' always the tail of the chain. You can obtain those environments
-#' with `global_env()` and `base_env()` respectively. The global
-#' environment is always the environment of the very first evaluation
-#' frame on the stack, see [global_frame()] and [ctxt_stack()].
+#' Scoped environments are named environments which form a
+#' parent-child hierarchy called the search path. They define what
+#' objects you can see (are in scope) from your workspace. They
+#' typically are package environments, i.e. special environments
+#' containing all exported functions from a package (and whose parent
+#' environment is the package namespace, which also contains
+#' unexported functions). Package environments are attached to the
+#' search path with [base::library()]. Note however that any
+#' environment can be attached to the search path, for example with
+#' the unrecommended [base::attach()] base function which transforms
+#' vectors to scoped environments.
 #'
-#' You can list all scoped environments with `scoped_names()`. With
-#' `is_scoped()` you can check whether a named environment is on the
-#' search path. `pkg_env()` returns the scope environment of packages
-#' if they are attached to the search path, and throws an error
-#' otherwise.
+#' You can list all scoped environments with `scoped_names()`.
+#' `is_scoped()` allows you to check whether a named environment is on
+#' the search path. `pkg_env()` returns the scope environment of
+#' packages if they are attached to the search path, and throws an
+#' error otherwise.
+#'
+#' @section Search path:
+#'
+#' The search path is a chain of scoped environments where newly
+#' attached environments are the childs of earlier ones. However, the
+#' global environment, where everything you define at top-level ends
+#' up, is pinned as the head of that linked chain. Likewise, the base
+#' package environment is pinned as the tail of the chain. You can
+#' retrieve those environments with `global_env()` and `base_env()`
+#' respectively. The global environment is also the environment of the
+#' very first evaluation frame on the stack, see [global_frame()] and
+#' [ctxt_stack()].
 #'
 #' @param nm The name of an environment attached to the search
 #'   path. Call [base::search()] to see what is currently on the path.
