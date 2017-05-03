@@ -193,14 +193,23 @@ as_env_ <- function(x, parent = NULL) {
 
 #' Get parent environments
 #'
-#' `env_parent()` returns the parent environment of `env` if called
-#' with `n = 1`, the grandparent with `n = 2`, etc. `env_tail()`
-#' searches through the parents and returns the one which has
-#' [empty_env()] as parent. See the section on _inheritance_ in
-#' [env()]'s documentation.
+#' @description
+#'
+#' - `env_parent()` returns the parent environment of `env` if called
+#'   with `n = 1`, the grandparent with `n = 2`, etc.
+#'
+#' - `env_tail()` searches through the parents and returns the one
+#'   which has [empty_env()] as parent.
+#'
+#' - `env_parents()` returns the list of all parents, including the
+#'   empty environment.
+#'
+#' See the section on _inheritance_ in [env()]'s documentation.
 #'
 #' @inheritParams get_env
 #' @param n The number of generations to go up.
+#' @return An environment for `env_parent()` and `env_tail()`, a list
+#'   of environments for `env_parents()`.
 #' @export
 #' @examples
 #' # Get the parent environment with env_parent():
@@ -246,6 +255,20 @@ env_tail <- function(env = caller_env()) {
   }
 
   env_
+}
+#' @rdname env_parent
+#' @export
+env_parents <- function(env = caller_env()) {
+  out <- list_len(env_depth(env))
+
+  i <- 1L
+  while(!is_empty_env(env)) {
+    env <- env_parent(env)
+    out[[i]] <- env
+    i <- i + 1L
+  }
+
+  out
 }
 
 #' Depth of an environment chain

@@ -3,11 +3,14 @@
 \name{env_parent}
 \alias{env_parent}
 \alias{env_tail}
+\alias{env_parents}
 \title{Get parent environments}
 \usage{
 env_parent(env = caller_env(), n = 1)
 
 env_tail(env = caller_env())
+
+env_parents(env = caller_env())
 }
 \arguments{
 \item{env}{An environment or an object bundling an environment,
@@ -15,12 +18,21 @@ e.g. a formula, \link{quosure} or \link[=is_closure]{closure}.}
 
 \item{n}{The number of generations to go up.}
 }
+\value{
+An environment for \code{env_parent()} and \code{env_tail()}, a list
+of environments for \code{env_parents()}.
+}
 \description{
-\code{env_parent()} returns the parent environment of \code{env} if called
-with \code{n = 1}, the grandparent with \code{n = 2}, etc. \code{env_tail()}
-searches through the parents and returns the one which has
-\code{\link[=empty_env]{empty_env()}} as parent. See the section on \emph{inheritance} in
-\code{\link[=env]{env()}}'s documentation.
+\itemize{
+\item \code{env_parent()} returns the parent environment of \code{env} if called
+with \code{n = 1}, the grandparent with \code{n = 2}, etc.
+\item \code{env_tail()} searches through the parents and returns the one
+which has \code{\link[=empty_env]{empty_env()}} as parent.
+\item \code{env_parents()} returns the list of all parents, including the
+empty environment.
+}
+
+See the section on \emph{inheritance} in \code{\link[=env]{env()}}'s documentation.
 }
 \examples{
 # Get the parent environment with env_parent():
