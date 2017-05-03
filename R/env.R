@@ -273,8 +273,9 @@ env_depth <- function(env) {
 
   n
 }
+`_empty_env` <- emptyenv()
 is_empty_env <- function(env) {
-  identical(env, empty_env())
+  is_identical(env, `_empty_env`)
 }
 
 #' Get or set the environment of an object

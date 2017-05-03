@@ -681,3 +681,11 @@ is_copyable <- function(x) {
     TRUE
   )
 }
+
+is_equal <- function(x, y) {
+  identical(x, y)
+}
+#' @useDynLib rlang rlang_is_identical
+is_identical <- function(x, y) {
+  .Call(rlang_is_identical, x, y)
+}
