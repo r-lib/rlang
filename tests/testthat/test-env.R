@@ -149,3 +149,17 @@ test_that("env_parents() returns all parents", {
   env2 <- child_env(env1)
   expect_identical(env_parents(env2), ll(env1, empty_env()))
 })
+
+test_that("scoped_envs() includes global and empty envs", {
+  envs <- scoped_envs()
+  expect_identical(envs[[1]], global_env())
+  expect_identical(envs[[length(envs)]], empty_env())
+})
+
+test_that("scoped_envs() returns named environments", {
+  expect_identical(names(scoped_envs()), scoped_names())
+})
+
+test_that("scoped_env() deals with empty environment", {
+  expect_identical(scoped_env("NULL"), empty_env())
+})

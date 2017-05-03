@@ -5,6 +5,7 @@
 \alias{pkg_env}
 \alias{pkg_env_name}
 \alias{scoped_names}
+\alias{scoped_envs}
 \alias{is_scoped}
 \alias{base_env}
 \alias{global_env}
@@ -17,6 +18,8 @@ pkg_env(pkg)
 pkg_env_name(pkg)
 
 scoped_names()
+
+scoped_envs()
 
 is_scoped(nm)
 
@@ -42,12 +45,18 @@ search path with \code{\link[base:library]{base::library()}}. Note however that 
 environment can be attached to the search path, for example with
 the unrecommended \code{\link[base:attach]{base::attach()}} base function which transforms
 vectors to scoped environments.
-
-You can list all scoped environments with \code{scoped_names()}.
-\code{is_scoped()} allows you to check whether a named environment is on
-the search path. \code{pkg_env()} returns the scope environment of
-packages if they are attached to the search path, and throws an
-error otherwise.
+\itemize{
+\item You can list all scoped environments with \code{scoped_names()}. Unlike
+\code{\link[base:search]{base::search()}}, it also mentions the empty environment that
+terminates the search path (it is given the name \code{"NULL"}).
+\item \code{scoped_envs()} returns all environments on the search path,
+including the empty environment.
+\item \code{pkg_env()} takes a package name and returns the scoped
+environment of packages if they are attached to the search path,
+and throws an error otherwise.
+\item \code{is_scoped()} allows you to check whether a named environment is
+on the search path.
+}
 }
 \section{Search path}{
 

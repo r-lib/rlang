@@ -828,11 +828,19 @@ env_inherits <- function(env, ancestor) {
 #' the unrecommended [base::attach()] base function which transforms
 #' vectors to scoped environments.
 #'
-#' You can list all scoped environments with `scoped_names()`.
-#' `is_scoped()` allows you to check whether a named environment is on
-#' the search path. `pkg_env()` returns the scope environment of
-#' packages if they are attached to the search path, and throws an
-#' error otherwise.
+#' - You can list all scoped environments with `scoped_names()`. Unlike
+#'   [base::search()], it also mentions the empty environment that
+#'   terminates the search path (it is given the name `"NULL"`).
+#'
+#' - `scoped_envs()` returns all environments on the search path,
+#'   including the empty environment.
+#'
+#' - `pkg_env()` takes a package name and returns the scoped
+#'   environment of packages if they are attached to the search path,
+#'   and throws an error otherwise.
+#'
+#' - `is_scoped()` allows you to check whether a named environment is
+#'   on the search path.
 #'
 #' @section Search path:
 #'
@@ -873,6 +881,9 @@ env_inherits <- function(env, ancestor) {
 #' # pkg_env():
 #' pkg_env("utils")
 scoped_env <- function(nm) {
+  if (identical(nm, "NULL")) {
+    return(empty_env())
+  }
   if (!is_scoped(nm)) {
     stop(paste0(nm, " is not in scope"), call. = FALSE)
   }
@@ -894,7 +905,13 @@ pkg_env_name <- function(pkg) {
 #' @rdname scoped_env
 #' @export
 scoped_names <- function() {
-  search()
+  c(search(), "NULL")
+}
+#' @rdname scoped_env
+#' @export
+scoped_envs <- function() {
+  envs <- c(.GlobalEnv, env_parents(.GlobalEnv))
+  set_names(envs, scoped_names())
 }
 #' @rdname scoped_env
 #' @export
