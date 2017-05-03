@@ -132,11 +132,10 @@ child_env <- function(parent, ...) {
 #' value is therefore a different environment than `x`.
 #'
 #' @param x An object to coerce.
-#' @param parent A parent environment, [empty_env()] by default. Can
-#'   be ignored with a warning for methods where it does not make
-#'   sense to change the parent. Note that existing environments keep
-#'   their original parent, only the parents of newly created
-#'   environments are set to `parent`.
+#' @param parent A parent environment, [empty_env()] by default. This
+#'   argument is only used when `x` is data actually coerced to an
+#'   environment (as opposed to data representing an environment, like
+#'   `NULL` representing the empty environment).
 #' @export
 #' @examples
 #' # Coerce a named vector to an environment:
@@ -155,9 +154,6 @@ child_env <- function(parent, ...) {
 as_env <- function(x, parent = NULL) {
   coerce_type(x, "an environment",
     NULL = {
-      if (!is_null(parent)) {
-        warn("`parent` ignored for empty environment")
-      }
       empty_env()
     },
     environment = {
@@ -166,9 +162,6 @@ as_env <- function(x, parent = NULL) {
     string = {
       if (length(x) > 1 || is_named(x)) {
         return(as_env_(x, parent))
-      }
-      if (!is_null(parent)) {
-        warn("`parent` ignored for named environments")
       }
       pkg_env(x)
     },
