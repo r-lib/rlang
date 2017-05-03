@@ -2,7 +2,7 @@
 % Please edit documentation in R/env.R
 \name{env_get}
 \alias{env_get}
-\title{Get an object from an environment.}
+\title{Get an object from an environment}
 \usage{
 env_get(env = caller_env(), nm, inherit = FALSE)
 }
@@ -23,7 +23,7 @@ An object if it exists. Otherwise, throws an error.
 default, it does not look in the parent environments.
 }
 \examples{
-parent <- child_env(empty_env(), foo = "foo")
+parent <- child_env(NULL, foo = "foo")
 env <- child_env(parent, bar = "bar")
 
 # This throws an error because `foo` is not directly defined in env:

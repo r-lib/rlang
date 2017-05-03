@@ -8,10 +8,10 @@
 #'
 #' Environments are containers of uniquely named objects. Their most
 #' common use is to provide a scope for the evaluation of R
-#' expressions. Not all languages can manipulate scope as regular
-#' objects. This is one of the most powerful feature of R as it allows
-#' you to change what objects a function or expression sees when it is
-#' evaluated.
+#' expressions. Not all languages have first class environments,
+#' i.e. can manipulate scope as regular objects. Reification of scope
+#' is one of the most powerful feature of R as it allows you to change
+#' what objects a function or expression sees when it is evaluated.
 #'
 #' Environments also constitute a data structure in their own
 #' right. They are [dictionaries][dictionary] of uniquely named
@@ -120,7 +120,7 @@ child_env <- function(parent, ...) {
   env_bind(env, ...)
 }
 
-#' Coerce to an environment.
+#' Coerce to an environment
 #'
 #' `as_env()` coerces named vectors (including lists) to an
 #' environment. It first checks that `x` is a dictionary (see
@@ -371,21 +371,23 @@ mut_parent_env <- function(env, new_env) {
 #'
 #' @description
 #'
-#' These functions create bindings in an environment. These bindings
-#' are supplied through `...` as pairs of names and values or
-#' expressions. `env_bind()` is equivalent to evaluating a `<-`
-#' expression within the given environment, e.g. `with_env(env, foo <-
-#' "bar")`. This function should take care of the majority of use
-#' cases but the other variants can be useful for specific problems.
+#' These functions create bindings in an environment. The bindings are
+#' supplied through `...` as pairs of names and values or expressions.
+#' `env_bind()` is equivalent to evaluating a `<-` expression within
+#' the given environment, e.g. `with_env(env, foo <- "bar")`. This
+#' function should take care of the majority of use cases but the
+#' other variants can be useful for specific problems.
 #'
 #' - `env_bind()` takes named _values_. The arguments are evaluated
 #'   once (with [explicit splicing][dots_list]) and bound in `.env`.
+#'   `env_bind()` is equivalent to [base::assign()].
 #'
 #' - `env_bind_fns()` takes named _functions_ and creates active
-#'   bindings in `.env`. An active binding executes a function each
-#'   time it is evaluated. `env_bind_fns()` takes dots with [implicit
-#'   splicing][dots_splice], so that you can supply both named
-#'   functions and named lists of functions.
+#'   bindings in `.env`. This is equivalent to
+#'   [base::makeActiveBinding()]. An active binding executes a
+#'   function each time it is evaluated. `env_bind_fns()` takes dots
+#'   with [implicit splicing][dots_splice], so that you can supply
+#'   both named functions and named lists of functions.
 #'
 #'   If these functions are [closures][is_closure] they are lexically
 #'   scoped in the environment that they bundle. These functions can
@@ -395,20 +397,24 @@ mut_parent_env <- function(env, new_env) {
 #'   (see the implementations of `dplyr::do()` methods for an
 #'   example).
 #'
-#' - `env_bind_exprs()` takes named _expressions_. The arguments are
-#'   captured with [exprs()] (and thus support call-splicing and
-#'   unquoting) and assigned to symbols in `.env`. These expressions
-#'   are not evaluated immediately but lazily. Once a symbol is
-#'   evaluated, the corresponding expression is evaluated in turn and
-#'   its value is bound to the symbol (the expressions are thus
-#'   evaluated only once, if at all).
+#' - `env_bind_exprs()` takes named _expressions_. This is equivalent
+#'   to [base::delayedAssign()]. The arguments are captured with
+#'   [exprs()] (and thus support call-splicing and unquoting) and
+#'   assigned to symbols in `.env`. These expressions are not
+#'   evaluated immediately but lazily. Once a symbol is evaluated, the
+#'   corresponding expression is evaluated in turn and its value is
+#'   bound to the symbol (the expressions are thus evaluated only
+#'   once, if at all).
 #'
-#' @details
+#' @section Side effects:
 #'
 #' Since environments have reference semantics (see relevant section
 #' in [env()] documentation), modifying the bindings of an environment
 #' produces effects in all other references to that environment. In
 #' other words, `env_bind()` and its variants have side effects.
+#'
+#' As they are called primarily for their side effects, these
+#' functions follow the convention of returning their input invisibly.
 #'
 #' @param .env An environment or an object bundling an environment,
 #'   e.g. a formula, [quosure] or [closure][is_closure]. This argument
@@ -417,7 +423,7 @@ mut_parent_env <- function(env, new_env) {
 #'   functions. These dots support splicing (with varying semantics,
 #'   see above) and name unquoting.
 #' @return The input object `.env`, with its associated environment
-#'   modified in place.
+#'   modified in place, invisibly.
 #' @export
 #' @examples
 #' # env_bind() is a programmatic way of assigning values to symbols
@@ -556,7 +562,8 @@ env_bind_fns <- function(.env, ...) {
 #' `env_bury()` is like [env_bind()] but it creates the bindings in a
 #' new child environment. This makes sure the new bindings have
 #' precedence over old ones, without altering existing environments.
-#' Unlike `env_bind()`, this function does not have side effects.
+#' Unlike `env_bind()`, this function does not have side effects and
+#' returns a new environment (or object wrapping that environment).
 #'
 #' @inheritParams env_bind
 #' @return A copy of `.env` enclosing the new environment containing
@@ -583,7 +590,7 @@ env_bury <- function(.env, ...) {
   set_env(.env, env_)
 }
 
-#' Remove bindings from an environment.
+#' Remove bindings from an environment
 #'
 #' `env_unbind()` is the complement of [env_bind()]. Like `env_has()`,
 #' it ignores the parent environments of `env` by default. Set
@@ -637,7 +644,7 @@ env_unbind <- function(env = caller_env(), nms, inherit = FALSE) {
 #' @return A logical vector as long as `nms`.
 #' @export
 #' @examples
-#' parent <- child_env(empty_env(), foo = "foo")
+#' parent <- child_env(NULL, foo = "foo")
 #' env <- child_env(parent, bar = "bar")
 #'
 #' # env does not own `foo` but sees it in its parent environment:
@@ -647,7 +654,7 @@ env_has <- function(env = caller_env(), nms, inherit = FALSE) {
   map_lgl(nms, exists, envir = get_env(env), inherits = inherit)
 }
 
-#' Get an object from an environment.
+#' Get an object from an environment
 #'
 #' `env_get()` extracts an object from an enviroment `env`. By
 #' default, it does not look in the parent environments.
@@ -658,7 +665,7 @@ env_has <- function(env = caller_env(), nms, inherit = FALSE) {
 #' @return An object if it exists. Otherwise, throws an error.
 #' @export
 #' @examples
-#' parent <- child_env(empty_env(), foo = "foo")
+#' parent <- child_env(NULL, foo = "foo")
 #' env <- child_env(parent, bar = "bar")
 #'
 #' # This throws an error because `foo` is not directly defined in env:
@@ -712,7 +719,7 @@ env_names <- function(env) {
   .Call(rlang_unescape_character, nms)
 }
 
-#' Clone an environment.
+#' Clone an environment
 #'
 #' This creates a new environment containing exactly the same objects,
 #' optionally with a new parent.
@@ -852,7 +859,7 @@ base_env <- baseenv
 #' @export
 global_env <- globalenv
 
-#' Get the empty environment.
+#' Get the empty environment
 #'
 #' The empty environment is the only one that does not have a parent.
 #' It is always used as the tail of a scope chain such as the search
@@ -864,7 +871,7 @@ global_env <- globalenv
 #' child_env(empty_env())
 empty_env <- emptyenv
 
-#' Get the namespace of a package.
+#' Get the namespace of a package
 #'
 #' Namespaces are the environment where all the functions of a package
 #' live. The parent environments of namespaces are the `imports`
@@ -925,7 +932,7 @@ is_installed <- function(pkg) {
 }
 
 
-#' Evaluate an expression within a given environment.
+#' Evaluate an expression within a given environment
 #'
 #' These functions evaluate `expr` within a given environment (`env`
 #' for `with_env()`, or the child of the current environment for

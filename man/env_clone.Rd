@@ -2,7 +2,7 @@
 % Please edit documentation in R/env.R
 \name{env_clone}
 \alias{env_clone}
-\title{Clone an environment.}
+\title{Clone an environment}
 \usage{
 env_clone(env, parent = env_parent(env))
 }

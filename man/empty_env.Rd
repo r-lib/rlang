@@ -2,7 +2,7 @@
 % Please edit documentation in R/env.R
 \name{empty_env}
 \alias{empty_env}
-\title{Get the empty environment.}
+\title{Get the empty environment}
 \usage{
 empty_env()
 }

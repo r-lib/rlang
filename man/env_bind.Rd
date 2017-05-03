@@ -26,22 +26,25 @@ evaluated when the symbols are forced.}
 }
 \value{
 The input object \code{.env}, with its associated environment
-modified in place.
+modified in place, invisibly.
 }
 \description{
-These functions create bindings in an environment. These bindings
-are supplied through \code{...} as pairs of names and values or
-expressions. \code{env_bind()} is equivalent to evaluating a \code{<-}
-expression within the given environment, e.g. \code{with_env(env, foo <- "bar")}. This function should take care of the majority of use
-cases but the other variants can be useful for specific problems.
+These functions create bindings in an environment. The bindings are
+supplied through \code{...} as pairs of names and values or expressions.
+\code{env_bind()} is equivalent to evaluating a \code{<-} expression within
+the given environment, e.g. \code{with_env(env, foo <- "bar")}. This
+function should take care of the majority of use cases but the
+other variants can be useful for specific problems.
 \itemize{
 \item \code{env_bind()} takes named \emph{values}. The arguments are evaluated
 once (with \link[=dots_list]{explicit splicing}) and bound in \code{.env}.
+\code{env_bind()} is equivalent to \code{\link[base:assign]{base::assign()}}.
 \item \code{env_bind_fns()} takes named \emph{functions} and creates active
-bindings in \code{.env}. An active binding executes a function each
-time it is evaluated. \code{env_bind_fns()} takes dots with \link[=dots_splice]{implicit
-splicing}, so that you can supply both named
-functions and named lists of functions.
+bindings in \code{.env}. This is equivalent to
+\code{\link[base:makeActiveBinding]{base::makeActiveBinding()}}. An active binding executes a
+function each time it is evaluated. \code{env_bind_fns()} takes dots
+with \link[=dots_splice]{implicit splicing}, so that you can supply
+both named functions and named lists of functions.
 
 If these functions are \link[=is_closure]{closures} they are lexically
 scoped in the environment that they bundle. These functions can
@@ -50,21 +53,28 @@ in scope in the dynamic environment where the active bindings are
 invoked. This allows creative solutions to difficult problems
 (see the implementations of \code{dplyr::do()} methods for an
 example).
-\item \code{env_bind_exprs()} takes named \emph{expressions}. The arguments are
-captured with \code{\link[=exprs]{exprs()}} (and thus support call-splicing and
-unquoting) and assigned to symbols in \code{.env}. These expressions
-are not evaluated immediately but lazily. Once a symbol is
-evaluated, the corresponding expression is evaluated in turn and
-its value is bound to the symbol (the expressions are thus
-evaluated only once, if at all).
+\item \code{env_bind_exprs()} takes named \emph{expressions}. This is equivalent
+to \code{\link[base:delayedAssign]{base::delayedAssign()}}. The arguments are captured with
+\code{\link[=exprs]{exprs()}} (and thus support call-splicing and unquoting) and
+assigned to symbols in \code{.env}. These expressions are not
+evaluated immediately but lazily. Once a symbol is evaluated, the
+corresponding expression is evaluated in turn and its value is
+bound to the symbol (the expressions are thus evaluated only
+once, if at all).
 }
 }
-\details{
+\section{Side effects}{
+
+
 Since environments have reference semantics (see relevant section
 in \code{\link[=env]{env()}} documentation), modifying the bindings of an environment
 produces effects in all other references to that environment. In
 other words, \code{env_bind()} and its variants have side effects.
+
+As they are called primarily for their side effects, these
+functions follow the convention of returning their input invisibly.
 }
+
 \examples{
 # env_bind() is a programmatic way of assigning values to symbols
 # with `<-`. We can add bindings in the current environment:

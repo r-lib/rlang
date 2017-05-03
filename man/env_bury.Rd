@@ -23,7 +23,8 @@ bindings to \code{...} arguments.
 \code{env_bury()} is like \code{\link[=env_bind]{env_bind()}} but it creates the bindings in a
 new child environment. This makes sure the new bindings have
 precedence over old ones, without altering existing environments.
-Unlike \code{env_bind()}, this function does not have side effects.
+Unlike \code{env_bind()}, this function does not have side effects and
+returns a new environment (or object wrapping that environment).
 }
 \examples{
 orig_env <- env(a = 10)

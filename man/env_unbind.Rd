@@ -2,7 +2,7 @@
 % Please edit documentation in R/env.R
 \name{env_unbind}
 \alias{env_unbind}
-\title{Remove bindings from an environment.}
+\title{Remove bindings from an environment}
 \usage{
 env_unbind(env = caller_env(), nms, inherit = FALSE)
 }

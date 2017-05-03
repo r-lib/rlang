@@ -4,7 +4,7 @@
 \alias{ns_env}
 \alias{ns_imports_env}
 \alias{ns_env_name}
-\title{Get the namespace of a package.}
+\title{Get the namespace of a package}
 \usage{
 ns_env(pkg = NULL)
 

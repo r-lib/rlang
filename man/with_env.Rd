@@ -3,7 +3,7 @@
 \name{with_env}
 \alias{with_env}
 \alias{locally}
-\title{Evaluate an expression within a given environment.}
+\title{Evaluate an expression within a given environment}
 \usage{
 with_env(env, expr)
 

@@ -2,7 +2,7 @@
 % Please edit documentation in R/env.R
 \name{as_env}
 \alias{as_env}
-\title{Coerce to an environment.}
+\title{Coerce to an environment}
 \usage{
 as_env(x, parent = NULL)
 }

@@ -26,10 +26,10 @@ you specify a parent (see section on inheritance).
 
 Environments are containers of uniquely named objects. Their most
 common use is to provide a scope for the evaluation of R
-expressions. Not all languages can manipulate scope as regular
-objects. This is one of the most powerful feature of R as it allows
-you to change what objects a function or expression sees when it is
-evaluated.
+expressions. Not all languages have first class environments,
+i.e. can manipulate scope as regular objects. Reification of scope
+is one of the most powerful feature of R as it allows you to change
+what objects a function or expression sees when it is evaluated.
 
 Environments also constitute a data structure in their own
 right. They are \link[=dictionary]{dictionaries} of uniquely named
