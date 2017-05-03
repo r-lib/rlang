@@ -137,3 +137,8 @@ test_that("with_env() evaluates in env", {
   env <- env()
   expect_identical(with_env(env, get_env()), env)
 })
+
+test_that("env_depth() counts parents", {
+  expect_identical(env_depth(child_env(child_env(NULL))), 2L)
+  expect_identical(env_depth(empty_env()), 0L)
+})

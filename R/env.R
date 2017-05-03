@@ -248,6 +248,35 @@ env_tail <- function(env = caller_env()) {
   env_
 }
 
+#' Depth of an environment chain
+#'
+#' This function returns the number of environments between `env` and
+#' the [empty environment][empty_env()], including `env`. The depth of
+#' `env` is also the number of parents of `env` (since the empty
+#' environment counts as a parent).
+#'
+#' @inheritParams get_env
+#' @return An integer.
+#' @seealso The section on inheritance in [env()] documentation.
+#' @export
+#' @examples
+#' env_depth(empty_env())
+#' env_depth(pkg_env("rlang"))
+env_depth <- function(env) {
+  env_ <- get_env(env)
+
+  n <- 0L
+  while(!is_empty_env(env_)) {
+    env_ <- env_parent(env_)
+    n <- n + 1L
+  }
+
+  n
+}
+is_empty_env <- function(env) {
+  identical(env, empty_env())
+}
+
 #' Get or set the environment of an object
 #'
 #' These functions dispatch internally with methods for functions,
