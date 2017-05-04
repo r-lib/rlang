@@ -291,7 +291,7 @@ env_depth <- function(env) {
 }
 `_empty_env` <- emptyenv()
 is_empty_env <- function(env) {
-  is_identical(env, `_empty_env`)
+  is_reference(env, `_empty_env`)
 }
 
 #' Get or set the environment of an object
@@ -796,7 +796,7 @@ env_inherits <- function(env, ancestor) {
 
   while(!is_empty_env(env_parent(env))) {
     env <- env_parent(env)
-    if (is_identical(env, ancestor)) {
+    if (is_reference(env, ancestor)) {
       return(TRUE)
     }
   }
@@ -1053,11 +1053,11 @@ locally <- function(expr) {
 
 
 env_type <- function(env) {
-  if (is_identical(env, global_env())) {
+  if (is_reference(env, global_env())) {
     "global"
-  } else if (is_identical(env, empty_env())) {
+  } else if (is_reference(env, empty_env())) {
     "empty"
-  } else if (is_identical(env, base_env())) {
+  } else if (is_reference(env, base_env())) {
     "base"
   } else if (is_frame_env(env)) {
     "frame"

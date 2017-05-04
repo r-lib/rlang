@@ -7,6 +7,6 @@ SEXP rlang_sxp_address(SEXP x) {
   return Rf_mkString(str);
 }
 
-SEXP rlang_is_identical(SEXP x, SEXP y) {
+SEXP rlang_is_reference(SEXP x, SEXP y) {
   return Rf_ScalarLogical(x == y);
 }
