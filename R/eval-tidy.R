@@ -1,4 +1,148 @@
-#' Evaluate a quosure.
+#' Tidy evaluation
+#'
+#' @description
+#'
+#' Tidy evaluation is the tidyverse's conception of how to create
+#' domain-specific languages. There are two primes examples of such
+#' sublanguages in R: modelling specification (`lm()`, `lme4::lmer()`,
+#' etc) and data manipulation grammars (dplyr, tidyr). Most of these
+#' DSLs put dataframe columns in scope so that users can refer to them
+#' directly, saving keystrokes during interactive analysis and
+#' creating easily readable code.
+#'
+#' R makes it easy to create DSLs thanks to three features of the
+#' language:
+#'
+#' - R code is first-class. That is, R code can be manipulated like
+#'   any other object (see [sym()], [lang()] and [node()] for creating
+#'   such objects). We also call _expressions_ these objects
+#'   containing R code (see [is_expr()]).
+#'
+#' - Scope is first-class. Scope is the lexical environment that
+#'   defines the values of symbols in expressions. Environments can be
+#'   created (see [env()]) and manipulated as regular objects.
+#'
+#' - Finally, functions can capture the expressions that were supplied
+#'   as arguments instead of capturing the value of these expressions
+#'   (see [quo()]).
+#'
+#' To sum up, R functions can capture expressions, manipulate them
+#' like regular objects, and alter the meaning of symbols referenced
+#' in these expressions by changing the scope (the environment) upon
+#' evaluation. This combination of features allow R packages to change
+#' the meaning of R code and create domain-specific sublanguages.
+#'
+#' Tidy evaluation is an opinionated approach over how to use these
+#' features to create consistent DSLs. The main principle is that
+#' sublanguages should feel and behave like R code. As sublanguages,
+#' they change the meaning of R code, but they do so in a precise and
+#' circumscribed way. In all other respects they should behave
+#' predictably and in accordance with R semantics. Users should be
+#' able to leverage their existing knowledge of R programming to solve
+#' problems involving the sublanguage, in ways that were not
+#' necessarily envisioned or planned by their designers.
+#'
+#' @section Parsing versus evaluation:
+#'
+#' There are two ways of dealing with unevaluated expressions to
+#' create a sublanguage. The first is to parse the expression
+#' manually. For example, if you're designing a modelling DSL for
+#' specifying regression models, you'd traverse the call to analyse
+#' all functions encountered in the expression (in particular,
+#' operators like `+` or `:`), building a data structure describing a
+#' model as you go. This method of dealing with expressions is
+#' tedious, rigid and error prone because you're basically rewriting
+#' an interpreter of R code.
+#'
+#' It is extremely difficult to emulate R semantics when parsing an
+#' expression: does a function take arguments by value or by
+#' expression? Can I parse these arguments? Do these symbols mean the
+#' same thing in this context? Will this argument be evaluated
+#' immediately or later on lazily? Given the difficulty of getting it
+#' right, parsing should be a last resort.
+#'
+#' The second way is to rely on evaluation in a specific environment.
+#' The expression is evaluated in an environment where certain objects
+#' and functions are given special definitions. For instance `+` might
+#' be defined as accumulating vectors in a data structure to build a
+#' design matrix later on, or we might put function helpers in scope
+#' like `dplyr::select()` does. As this method is relying on the R
+#' interpreter, the grammar is much likely to behave like real R code.
+#'
+#' R DSLs are traditionally implemented with a mix of both
+#' principles. Expressions are parsed in ad hoc ways, but are
+#' eventually evaluated in an environment containing dataframe
+#' columns. Tidyeval DSLs should try to rely on evaluation as much as
+#' possible.
+#'
+#' @section Tidy scoping:
+#'
+#' The special type of scoping found in R grammars implemented with
+#' evaluation poses some challenges. Both objects from a dataset and
+#' objects from the current environment should be in scope, with the
+#' former having precedence over the latter. In other words, the
+#' dataset should _overscope_ the dynamic context. The traditional
+#' solution to this issue in R is to transform a dataframe to an
+#' environment and set the calling frame as its parent environment.
+#' This way, the symbols appearing in the expression can refer to
+#' their surrounding context in addition to dataframe columns.
+#'
+#' Creating this scope hierarchy (data first, context next) is
+#' possible because R makes it easy to capture the calling environment
+#' (see [caller_env()]). However, this supposes that captured
+#' expressions were actually typed in the most immediate caller
+#' frame. This assumption easily breaks in R because arguments can be
+#' forwarded through the special `...` argument.
+#'
+#' If you're capturing a forwarded expression, it is important to make
+#' sure it is scoped in the right place. While base R does not provide
+#' any way of capturing a forwarded argument and its dynamic
+#' environment, rlang features [quos()] for this purpose. This
+#' function looks up each forwarded arguments and returns a list of
+#' [quosures][quo] that bundle the expressions with their own dynamic
+#' environments.
+#'
+#' At this point, we're dealing with multiple environments, one for
+#' each argument, plus one containing the overscoped data. This
+#' creates difficulties regarding tidyeval's overarching principle
+#' that we should change R semantics through evaluation. It is
+#' possible to evaluate each expression in turn, but how can we
+#' combine all expressions into one and evaluate it tidily? An
+#' expression can only be evaluated in a single environment. This
+#' issue is made worse by [quasiquotation] which allows users to
+#' insert expressions in other expressions. This is where quosures
+#' come into play.
+#'
+#' @section Quosures and overscoping:
+#'
+#' Unlike formulas, [quosures][quo] aren't simple containers of an
+#' expression and an environment. In the tidyeval framework, they have
+#' the property of self-evaluating in their own environment. Hence
+#' they can appear anywhere in an expression (e.g. by being
+#' [unquoted][quasiquotation]), carrying their own environment and
+#' behaving otherwise exactly like surrounding R code.  Quosures
+#' behave like reified promises that are unreified during tidy
+#' evaluation.
+#'
+#' However, the dynamic environments of quosures do not contain
+#' overscoped data. It's not of much use for sublanguages to get the
+#' contextual environment right if they can't also change the meaning
+#' of code quoted in quosures. To solve this issue, tidyeval rechains
+#' the overscope to a quosure just before it self-evaluates. This way,
+#' both the contextual environment and the overscoped data are in
+#' scope. The quosure is evaluated tidily.
+#'
+#' `eval_tidy()` takes a `data` argument and creates an overscope
+#' suitable for tidy evaluation. In particular, these overscopes
+#' contain definitions for self-evaluation of quosures. See
+#' [eval_tidy_()] and [as_overscope] for more flexible ways of
+#' creating overscopes.
+#'
+#' @name tidy-evaluation
+#' @seealso [eval_tidy()], [quo()], [quasiquotation].
+NULL
+
+#' Evaluate an expression tidily
 #'
 #' If `data` is specified, variables will be looked for first in this
 #' object, and if not found in the environment of the formula.
