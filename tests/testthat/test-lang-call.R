@@ -29,13 +29,13 @@ test_that("succeeds with literal functions", {
 # Standardisation ---------------------------------------------------------
 
 test_that("can standardise call frame", {
-  fn <- function(foo = "bar") lang_standardise()
+  fn <- function(foo = "bar") lang_standardise(call_frame())
   expect_identical(fn(), quote(fn()))
   expect_identical(fn("baz"), quote(fn(foo = "baz")))
 })
 
 test_that("can modify call frame", {
-  fn <- function(foo = "bar") lang_modify(baz = "bam", .standardise = TRUE)
+  fn <- function(foo = "bar") lang_modify(call_frame(), baz = "bam", .standardise = TRUE)
   expect_identical(fn(), quote(fn(baz = "bam")))
   expect_identical(fn("foo"), quote(fn(foo = "foo", baz = "bam")))
 })
@@ -61,14 +61,6 @@ test_that("new args replace old", {
   call <- quote(matrix(1:10))
   out <- lang_modify(call, data = 3, .standardise = TRUE)
   expect_equal(out, quote(matrix(data = 3)))
-})
-
-test_that("can modify without supplying `call`", {
-  locally({
-    f <- function(std) lang_modify(, splice(list(bool = FALSE)), .standardise = std)
-    expect_identical(f(TRUE), quote(f(std = TRUE, bool = FALSE)))
-    expect_identical(f(FALSE), quote(f(FALSE, bool = FALSE)))
-  })
 })
 
 test_that("can modify calls for primitive functions", {
@@ -109,12 +101,12 @@ test_that("lang_name() handles namespaced and anonymous calls", {
 test_that("lang_name() handles formulas and frames", {
   expect_identical(lang_name(~foo(baz)), "foo")
 
-  fn <- function() lang_name()
+  fn <- function() lang_name(call_frame())
   expect_identical(fn(), "fn")
 })
 
 test_that("lang_fn() extracts function", {
-  fn <- function() lang_fn()
+  fn <- function() lang_fn(call_frame())
   expect_identical(fn(), fn)
 
   expect_identical(lang_fn(~matrix()), matrix)
@@ -129,6 +121,6 @@ test_that("Inlined functions return NULL name", {
 test_that("lang_args() and lang_args_names()", {
   expect_identical(lang_args(~fn(a, b)), set_names(list(quote(a), quote(b)), c("", "")))
 
-  fn <- function(a, b) lang_args_names()
+  fn <- function(a, b) lang_args_names(call_frame())
   expect_identical(fn(a = foo, b = bar), c("a", "b"))
 })

@@ -2,19 +2,19 @@
 % Please edit documentation in R/expr-lang.R
 \name{lang_standardise}
 \alias{lang_standardise}
-\title{Standardise a call.}
+\title{Standardise a call}
 \usage{
-lang_standardise(call = caller_frame())
+lang_standardise(lang)
 }
 \arguments{
-\item{call}{Can be a call, a formula quoting a call in the
-right-hand side, or a frame object from which to extract the call
-expression. If not supplied, the calling frame is used.}
+\item{lang}{Can be a call (language object), a formula quoting a
+call in the right-hand side, or a frame object from which to
+extract the call expression.}
 }
 \value{
-A tidy quote if \code{.call} is a tidy quote, a call otherwise.
+A quosure if \code{.lang} is a quosure, a raw call otherwise.
 }
 \description{
-This is essentially equivalent to \code{\link[base:match.call]{base::match.call()}}, but handles
-primitive functions more gracefully.
+This is essentially equivalent to \code{\link[base:match.call]{base::match.call()}}, but with
+better handling of primitive functions.
 }

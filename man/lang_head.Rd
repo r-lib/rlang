@@ -3,36 +3,29 @@
 \name{lang_head}
 \alias{lang_head}
 \alias{lang_tail}
-\title{Return the head or tail of a call object.}
+\title{Return the head or tail of a call object}
 \usage{
-lang_head(call = caller_frame())
+lang_head(lang)
 
-lang_tail(call = caller_frame())
+lang_tail(lang)
 }
 \arguments{
-\item{call}{Can be a call, a formula quoting a call in the
-right-hand side, or a frame object from which to extract the call
-expression. If not supplied, the calling frame is used.}
+\item{lang}{Can be a call (language object), a formula quoting a
+call in the right-hand side, or a frame object from which to
+extract the call expression.}
 }
 \description{
-Internally, calls are structured as a tree of expressions (see
-\code{\link[=switch_lang]{switch_lang()}} and \link{pairlist} documentation pages). A \code{language}
-object is the top level node of the tree. \code{lang_head()} and
-\code{lang_tail()} allow you to retrieve the node components.
-\itemize{
-\item \code{lang_head()} Its head (the CAR of the node) usually contains a
-symbol in case of a call to a named function. However it could be
-other things, like another call (e.g. \code{foo()()}). Thus it is like
-\code{\link[=lang_name]{lang_name()}}, but returns the head without any type checking or
-conversion (whereas \code{lang_name()} checks that the head is a
-symbol and converts it to a string).
-\item The second component of the tree node contains the arguments. The
-type of arguments is \emph{pairlist}. Pairlists are actually
-equivalent to \code{language} objects (calls), they just have a
-different name. \code{lang_tail()} returns the pairlist of arguments
-(\code{\link[=lang_args]{lang_args()}} returns the same object converted to a regular
-list).
-}
+These functions return the head or the tail of a call. See section
+on calls as parse trees in \code{\link[=lang]{lang()}}. They are equivalent to
+\code{\link[=node_car]{node_car()}} and \code{\link[=node_cdr]{node_cdr()}} but support quosures and check that
+the input is indeed a call before retrieving the head or tail (it
+is unsafe to do this without type checking).
+
+\code{lang_head()} returns the head of the call without any conversion,
+unlike \code{\link[=lang_name]{lang_name()}} which checks that the head is a symbol and
+converts it to a string. \code{lang_tail()} returns the pairlist of
+arguments (while \code{\link[=lang_args]{lang_args()}} returns the same object converted to
+a regular list)
 }
 \examples{
 lang <- quote(foo(bar, baz))
@@ -40,5 +33,5 @@ lang_head(lang)
 lang_tail(lang)
 }
 \seealso{
-\link{pairlist}, \code{\link[=lang_args]{lang_args()}}
+\link{pairlist}, \code{\link[=lang_args]{lang_args()}}, \code{\link[=lang]{lang()}}
 }

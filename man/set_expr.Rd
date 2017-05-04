@@ -24,7 +24,7 @@ expression for \code{get_expr()}.
 }
 \description{
 These helpers are useful to make your function work generically
-with tidy quotes and raw expressions. First call \code{get_expr()} to
+with quosures and raw expressions. First call \code{get_expr()} to
 extract an expression. Once you're done processing the expression,
 call \code{set_expr()} on the original object to update the expression.
 You can return the result of \code{set_expr()}, either a formula or an

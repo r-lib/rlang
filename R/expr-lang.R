@@ -1,4 +1,45 @@
-#' Create a language call by "hand"
+#' Create a language call
+#'
+#' Language objects are (with symbols) one of the two types of
+#' [symbolic][is_symbolic] objects in R. These symbolic objects form
+#' the backbone of [expressions][is_expr]. They represent a value,
+#' unlike literal objects which are their own values. While symbols
+#' are directly [bound][env_bind] to a value, language objects
+#' represent _function calls_, which is why they are commonly referred
+#' to as calls.
+#'
+#' @section Calls as parse tree:
+#'
+#' Language objects are structurally identical to
+#' [pairlists][pairlist]. They are containers of two objects, the head
+#' and the tail (also called the CAR and the CDR).
+#'
+#' - The head contains the function to call, either literally or
+#'   symbolically. If a literal function, the call is said to be
+#'   inlined. If a symbol, the call is named. If another call, it is
+#'   recursive. `foo()()` would be an example of a recursive call
+#'   whose head contains another call. See [lang_type_of()] and
+#'   [is_callable()].
+#'
+#' - The tail contains the arguments and must be a [pairlist].
+#'
+#' You can retrieve those components with [lang_head()] and
+#' [lang_tail()]. Since language nodes can contain other nodes (either
+#' calls or pairlists), they are capable of forming a tree. When R
+#' [parses][parse_expr] an expression, it saves the parse tree in a
+#' data structure composed of language and pairlist nodes. It is
+#' precisely because the parse tree is saved in first-class R objects
+#' that it is possible for functions to [capture][expr] their
+#' arguments unevaluated.
+#'
+#' @section Call versus language:
+#'
+#' `call` is the old S [mode][base::mode] of these objects while
+#' `language` is the R [type][base::typeof]. While it is usually
+#' better to avoid using S terminology, it would probably be even more
+#' confusing to systematically refer to "calls" as "language". rlang
+#' still uses `lang` as particle for function dealing with calls for
+#' consistency.
 #'
 #' @param .fn Function to call. Must be a callable object: a string,
 #'   symbol, call, or a function.
@@ -36,26 +77,51 @@ lang <- function(.fn, ..., .ns = NULL) {
 
   as.call(c(.fn, dots_list(...)))
 }
-#' @rdname lang
-#' @export
-new_language <- lang
 
+#' Is an object callable?
+#'
+#' A callable object is an object that can be set as the head of a
+#' [call node][lang_head]. This includes [symbolic
+#' objects][is_symbolic] that evaluate to a function or literal
+#' functions.
+#'
+#' Note that strings may look like callable objects because
+#' expressions of the form `"list"()` are valid R code. However,
+#' that's only because the R parser transforms strings to symbols. It
+#' is not legal to manually set language heads to strings.
+#'
+#' @param x An object to test.
+#' @export
+#' @examples
+#' # Symbolic objects and functions are callable:
+#' is_callable(quote(foo))
+#' is_callable(base::identity)
+#'
+#' # mut_node_car() lets you modify calls without any checking:
+#' lang <- quote(foo(10))
+#' mut_node_car(lang, get_env())
+#'
+#' # Use is_callable() to check an input object is safe to put as CAR:
+#' obj <- base::identity
+#'
+#' if (is_callable(obj)) {
+#'   lang <- mut_node_car(lang, obj)
+#' } else {
+#'   abort("`obj` must be callable")
+#' }
+#'
+#' eval_bare(lang)
 is_callable <- function(x) {
-  is_symbolic(x) || is_function(x) || is_string(x)
+  is_symbolic(x) || is_function(x)
 }
 
 #' Is object a call (language type)?
 #'
-#' This function tests if `x` is a call. This is a pattern-matching
-#' predicate that will return `FALSE` if `name` and `n` are supplied
-#' and the call does not match these properties. `is_unary_lang()` and
-#' `is_binary_lang()` hardcode `n` to 1 and 2.
-#'
-#' Note that the base type of calls is `language`, while `call` is the
-#' old S mode. While it is usually better to avoid using S
-#' terminology, it would probably be even more confusing to refer to
-#' "calls" as "language". We still use `lang` as prefix or suffix for
-#' consistency.
+#' This function tests if `x` is a call (or [language
+#' object][lang]). This is a pattern-matching predicate that will
+#' return `FALSE` if `name` and `n` are supplied and the call does not
+#' match these properties. `is_unary_lang()` and `is_binary_lang()`
+#' hardcode `n` to 1 and 2.
 #'
 #' @param x An object to test. If a formula, the right-hand side is
 #'   extracted.
@@ -160,11 +226,11 @@ is_binary_lang <- function(x, name = NULL, ns = NULL) {
   is_lang(x, name, n = 2L, ns = ns)
 }
 
-#' Modify the arguments of a call.
+#' Modify the arguments of a call
 #'
-#' @param .call Can be a call, a formula quoting a call in the
-#'   right-hand side, or a frame object from which to extract the call
-#'   expression. If not supplied, the calling frame is used.
+#' @param .lang Can be a call (language object), a formula quoting a
+#'   call in the right-hand side, or a frame object from which to
+#'   extract the call expression.
 #' @param ... Named or unnamed expressions (constants, names or calls)
 #'   used to modify the call. Use `NULL` to remove arguments. Dots are
 #'   evaluated with [explicit splicing][dots_list].
@@ -172,7 +238,7 @@ is_binary_lang <- function(x, name = NULL, ns = NULL) {
 #'   to match existing unnamed arguments to their argument names. This
 #'   prevents new named arguments from accidentally replacing original
 #'   unnamed arguments.
-#' @return A tidy quote if `.call` is a tidy quote, a call otherwise.
+#' @return A quosure if `.lang` is a quosure, a call otherwise.
 #' @seealso lang
 #' @export
 #' @examples
@@ -195,25 +261,27 @@ is_binary_lang <- function(x, name = NULL, ns = NULL) {
 #' newargs <- list(na.rm = NULL, trim = 0.1)
 #' lang_modify(call, splice(newargs))
 #'
-#' # If the call is missing, the parent frame is used instead.
-#' f <- function(bool = TRUE) lang_modify(, splice(list(bool = FALSE)))
+#' # Supply a call frame to extract the frame expression:
+#' f <- function(bool = TRUE) {
+#'   lang_modify(call_frame(), splice(list(bool = FALSE)))
+#' }
 #' f()
 #'
 #'
 #' # You can also modify quosures inplace:
 #' f <- ~matrix(bar)
 #' lang_modify(f, quote(foo))
-lang_modify <- function(.call = caller_frame(), ..., .standardise = FALSE) {
+lang_modify <- function(.lang, ..., .standardise = FALSE) {
   args <- dots_list(...)
   if (any(duplicated(names(args)) & names(args) != "")) {
     abort("Duplicate arguments")
   }
 
   if (.standardise) {
-    quo <- lang_as_quosure(.call, caller_env())
+    quo <- lang_as_quosure(.lang, caller_env())
     expr <- get_expr(lang_standardise(quo))
   } else {
-    expr <- get_expr(.call)
+    expr <- get_expr(.lang)
   }
 
   # Named arguments can be spliced by R
@@ -232,7 +300,7 @@ lang_modify <- function(.call = caller_frame(), ..., .standardise = FALSE) {
     expr <- node_append(expr, remaining_args)
   }
 
-  set_expr(.call, expr)
+  set_expr(.lang, expr)
 }
 lang_as_quosure <- function(lang, env) {
   if (is_frame(lang)) {
@@ -242,34 +310,35 @@ lang_as_quosure <- function(lang, env) {
   }
 }
 
-#' Standardise a call.
+#' Standardise a call
 #'
-#' This is essentially equivalent to [base::match.call()], but handles
-#' primitive functions more gracefully.
+#' This is essentially equivalent to [base::match.call()], but with
+#' better handling of primitive functions.
 #'
-#' @param call Can be a call, a formula quoting a call in the
-#'   right-hand side, or a frame object from which to extract the call
-#'   expression. If not supplied, the calling frame is used.
-#' @return A tidy quote if `.call` is a tidy quote, a call otherwise.
+#' @param lang Can be a call (language object), a formula quoting a
+#'   call in the right-hand side, or a frame object from which to
+#'   extract the call expression.
+#' @return A quosure if `.lang` is a quosure, a raw call otherwise.
 #' @export
-lang_standardise <- function(call = caller_frame()) {
-  expr <- get_expr(call)
-  if (is_frame(call)) {
-    fn <- call$fn
+lang_standardise <- function(lang) {
+  expr <- get_expr(lang)
+  if (is_frame(lang)) {
+    fn <- lang$fn
   } else {
     # The call name might be a literal, not necessarily a symbol
-    env <- get_env(call, caller_env())
+    env <- get_env(lang, caller_env())
     fn <- eval_bare(lang_head(expr), env)
   }
 
   matched <- match.call(as_closure(fn), expr)
-  set_expr(call, matched)
+  set_expr(lang, matched)
 }
 
 #' Extract function from a call
 #'
-#' If a frame or formula, the function will be retrieved from their
-#' environment. Otherwise, it is looked up in the calling frame.
+#' If a frame or formula, the function will be retrieved from the
+#' associated environment. Otherwise, it is looked up in the calling
+#' frame.
 #'
 #' @inheritParams lang_standardise
 #' @export
@@ -280,22 +349,22 @@ lang_standardise <- function(call = caller_frame()) {
 #' lang_fn(quote(matrix()))
 #'
 #' # Extract the calling function
-#' test <- function() lang_fn()
+#' test <- function() lang_fn(call_frame())
 #' test()
-lang_fn <- function(call = caller_frame()) {
-  if (is_frame(call)) {
-    return(call$fn)
+lang_fn <- function(lang) {
+  if (is_frame(lang)) {
+    return(lang$fn)
   }
 
-  expr <- get_expr(call)
-  env <- get_env(call, caller_env())
+  expr <- get_expr(lang)
+  env <- get_env(lang, caller_env())
 
   if (!is_lang(expr)) {
-    abort("`call` must quote a call")
+    abort("`lang` must quote a lang")
   }
 
   switch_lang(expr,
-    recursive = abort("`call` does not call a named or inlined function"),
+    recursive = abort("`lang` does not lang a named or inlined function"),
     inlined = node_car(expr),
     named = ,
     namespaced = ,
@@ -315,8 +384,8 @@ lang_fn <- function(call = caller_frame()) {
 #' lang_name(~foo(bar))
 #' lang_name(quote(foo(bar)))
 #'
-#' # The calling expression is used as default:
-#' foo <- function(bar) lang_name()
+#' # Or from a frame:
+#' foo <- function(bar) lang_name(call_frame())
 #' foo(bar)
 #'
 #' # Namespaced calls are correctly handled:
@@ -326,60 +395,53 @@ lang_fn <- function(call = caller_frame()) {
 #' lang_name(~foo$bar())
 #' lang_name(~foo[[bar]]())
 #' lang_name(~foo()())
-lang_name <- function(call = caller_frame()) {
-  call <- get_expr(call)
-  if (!is_lang(call)) {
-    abort("`call` must be a call or a tidy quote of a call")
+lang_name <- function(lang) {
+  lang <- get_expr(lang)
+  if (!is_lang(lang)) {
+    abort("`lang` must be a call or must wrap a call (e.g. in a quosure)")
   }
 
-  switch_lang(call,
-    named = as_string(node_car(call)),
-    namespaced = as_string(node_cadr(node_cdar(call))),
+  switch_lang(lang,
+    named = as_string(node_car(lang)),
+    namespaced = as_string(node_cadr(node_cdar(lang))),
     NULL
   )
 }
 
-#' Return the head or tail of a call object.
+#' Return the head or tail of a call object
 #'
 #' @description
 #'
-#' Internally, calls are structured as a tree of expressions (see
-#' [switch_lang()] and [pairlist] documentation pages). A `language`
-#' object is the top level node of the tree. `lang_head()` and
-#' `lang_tail()` allow you to retrieve the node components.
+#' These functions return the head or the tail of a call. See section
+#' on calls as parse trees in [lang()]. They are equivalent to
+#' [node_car()] and [node_cdr()] but support quosures and check that
+#' the input is indeed a call before retrieving the head or tail (it
+#' is unsafe to do this without type checking).
 #'
-#' * `lang_head()` Its head (the CAR of the node) usually contains a
-#'   symbol in case of a call to a named function. However it could be
-#'   other things, like another call (e.g. `foo()()`). Thus it is like
-#'   [lang_name()], but returns the head without any type checking or
-#'   conversion (whereas `lang_name()` checks that the head is a
-#'   symbol and converts it to a string).
-#'
-#' * The second component of the tree node contains the arguments. The
-#'   type of arguments is _pairlist_. Pairlists are actually
-#'   equivalent to `language` objects (calls), they just have a
-#'   different name. `lang_tail()` returns the pairlist of arguments
-#'   ([lang_args()] returns the same object converted to a regular
-#'   list).
+#' `lang_head()` returns the head of the call without any conversion,
+#' unlike [lang_name()] which checks that the head is a symbol and
+#' converts it to a string. `lang_tail()` returns the pairlist of
+#' arguments (while [lang_args()] returns the same object converted to
+#' a regular list)
 #'
 #' @inheritParams lang_standardise
-#' @seealso [pairlist], [lang_args()]
+#' @seealso [pairlist], [lang_args()], [lang()]
 #' @export
 #' @examples
 #' lang <- quote(foo(bar, baz))
 #' lang_head(lang)
 #' lang_tail(lang)
-lang_head <- function(call = caller_frame()) {
-  call <- get_expr(call)
-  stopifnot(is_lang(call))
-  node_car(call)
+lang_head <- function(lang) {
+  lang <- get_expr(lang)
+  stopifnot(is_lang(lang))
+  node_car(lang)
 }
 #' @rdname lang_head
 #' @export
-lang_tail <- function(call = caller_frame()) {
-  call <- get_expr(call)
-  stopifnot(is_lang(call))
-  node_cdr(call)
+lang_tail <- function(lang) {
+  lang <- get_expr(lang)
+  stopifnot(is_lang(lang))
+  node_cdr(lang)
 }
 
 #' Extract arguments from a call
@@ -391,26 +453,32 @@ lang_tail <- function(call = caller_frame()) {
 #' @examples
 #' call <- quote(f(a, b))
 #'
-#' # Subsetting a call returns the arguments in a language pairlist:
+#' # Subsetting a call returns the arguments converted to a language
+#' # object:
 #' call[-1]
 #'
-#' # Whereas lang_args() returns a list:
-#' lang_args(call)
+#' # See also lang_tail() which returns the arguments without
+#' # conversion as the original pairlist:
+#' str(lang_tail(call))
 #'
-#' # When the call arguments are supplied without names, a vector of
-#' # empty strings is supplied (rather than NULL):
+#' # On the other hand, lang_args() returns a regular list that is
+#' # often easier to work with:
+#' str(lang_args(call))
+#'
+#' # When the arguments are unnamed, a vector of empty strings is
+#' # supplied (rather than NULL):
 #' lang_args_names(call)
-lang_args <- function(call = caller_frame()) {
-  call <- get_expr(call)
-  args <- as.list(lang_tail(call))
+lang_args <- function(lang) {
+  lang <- get_expr(lang)
+  args <- as.list(lang_tail(lang))
   set_names((args), names2(args))
 }
 
 #' @rdname lang_args
 #' @export
-lang_args_names <- function(call = caller_frame()) {
-  call <- get_expr(call)
-  names2(lang_tail(call))
+lang_args_names <- function(lang) {
+  lang <- get_expr(lang)
+  names2(lang_tail(lang))
 }
 
 is_qualified_lang <- function(x) {
