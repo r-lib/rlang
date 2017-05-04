@@ -540,7 +540,8 @@ friendly_expr_type_of <- function(type) {
     symbol = "a symbol",
     language = "a call (lang)",
     pairlist = "a pairlist node",
-    literal = "a syntactic literal"
+    literal = "a syntactic literal",
+    missing = "the missing argument"
   )
 }
 

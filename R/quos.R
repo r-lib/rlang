@@ -72,7 +72,7 @@ quos <- function(..., .named = FALSE,
 
   if (.named) {
     width <- quo_names_width(.named)
-    dots <- exprs_auto_name(dots, width)
+    dots <- quos_auto_name(dots, width)
   }
   set_attrs(dots, class = "quosures")
 }
@@ -131,19 +131,29 @@ quo_names_width <- function(named) {
 #'
 #' This gives default names to unnamed elements of a list of
 #' expressions (or expression wrappers such as formulas or tidy
-#' quotes). The expressions are deparsed with [expr_text()].
+#' quotes). `exprs_auto_name()` deparses the expressions with
+#' [expr_text()] by default. `quos_auto_name()` deparses with
+#' [quo_text()].
 #'
-#' @param exprs A list of expressions or expression wrappers,
-#'   e.g. tidy quotes.
+#' @param exprs A list of expressions.
 #' @param width Maximum width of names.
+#' @param printer A function that takes an expression and converts it
+#'   to a string. This function must take an expression as first
+#'   argument and `width` as second argument.
 #' @export
-exprs_auto_name <- function(exprs, width = 60L) {
+exprs_auto_name <- function(exprs, width = 60L, printer = expr_text) {
   have_name <- have_name(exprs)
 
   if (any(!have_name)) {
-    nms <- map_chr(exprs[!have_name], quo_text, width = width)
+    nms <- map_chr(exprs[!have_name], printer, width = width)
     names(exprs)[!have_name] <- nms
   }
 
   exprs
+}
+#' @rdname exprs_auto_name
+#' @param quos A list of quosures.
+#' @export
+quos_auto_name <- function(quos, width = 60L) {
+  exprs_auto_name(quos, width = width, printer = quo_text)
 }

@@ -1,5 +1,5 @@
 Package: rlang
-Version: 0.0.0.9018
+Version: 0.0.0.9019
 Title: Tools for Language Objects and Evaluation
 Description: A toolbox for working with calls, unevaluated code, and
     anything related to evaluation in R.
