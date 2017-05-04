@@ -2,24 +2,48 @@
 % Please edit documentation in R/expr.R
 \name{expr}
 \alias{expr}
-\title{Untidy quotation of an expression.}
+\alias{enexpr}
+\alias{exprs}
+\alias{dots_exprs}
+\title{Raw quotation of an expression}
 \usage{
 expr(expr)
+
+enexpr(arg)
+
+exprs(..., .ignore_empty = "trailing")
+
+dots_exprs(..., .ignore_empty = "trailing")
 }
 \arguments{
 \item{expr}{An expression.}
+
+\item{arg}{A symbol referring to an argument. The expression
+supplied to that argument will be captured unevaluated.}
+
+\item{...}{Arguments to extract.}
+
+\item{.ignore_empty}{Whether to ignore empty arguments. Can be one
+of \code{"trailing"}, \code{"none"}, \code{"all"}. If \code{"trailing"}, only the
+last argument is ignored if it is empty.}
 }
 \value{
-The raw expression supplied as argument.
+The raw expression supplied as argument. \code{exprs()} returns
+a list of expressions.
 }
 \description{
-Unlike \code{\link[=quo]{quo()}}, \code{expr()} returns a raw expression instead of a
-formula. As a result, \code{expr()} is untidy in the sense that it does
-not preserve scope information for the quoted expression. It can
-still be useful in certain cases.  Compared to base R's
-\code{\link[base:quote]{base::quote()}}, it unquotes the expression on capture, and
-compared to \code{\link[=quo]{quo()}}, the quoted expression is directly compatible
-with the base R \code{\link[base:eval]{base::eval()}} function.
+These functions return raw expressions (whereas \code{\link[=quo]{quo()}} and
+variants return quosures). They support \link{quasiquotation}
+syntax.
+\itemize{
+\item \code{expr()} returns its argument unevaluated.
+\item \code{enexpr()} takes an argument name and returns it unevaluated.
+\item \code{exprs()} captures multiple expressions and returns a list. In
+particular, it can capture expressions in \code{...}. It supports name
+unquoting with \code{:=} (see \code{\link[=quos]{quos()}}).
+}
+
+See \code{\link[=is_expr]{is_expr()}} for more about R expressions.
 }
 \examples{
 # The advantage of expr() over quote() is that it unquotes on
@@ -49,8 +73,11 @@ eval(e)
 f <- quo(letters)
 e <- expr(toupper(!! f))
 eval_tidy(e)
+
+# exprs() lets you unquote names with the definition operator:
+nm <- "foo"
+exprs(a = 1, !! nm := 2)
 }
 \seealso{
-See \code{\link[=quo]{quo()}} and \code{\link[=expr_interp]{expr_interp()}} for more
-explanation on tidy quotation.
+\code{\link[=quo]{quo()}}, \code{\link[=is_expr]{is_expr()}}
 }
