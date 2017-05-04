@@ -155,15 +155,12 @@ NULL
 #'   `.data` and `.env` that throw errors if you try to access
 #'   non-existent values.
 #'
-#' @param f A formula. Any expressions wrapped in `UQ()` will will be
-#'   "unquoted", i.e. they will be evaluated, and the results inserted
-#'   back into the formula. See [quo()] for more details. If a
-#'   list of formulas, `eval_tidy()` is applied to each of them in
-#'   turn and the list of results is returned.
+#' @param expr An expression.
 #' @param data A list (or data frame). This is passed to the
 #'   [as_dictionary()] coercer, a generic used to transform an object
 #'   to a proper data source. If you want to make `eval_tidy()` work
 #'   for your own objects, you can define a method for this generic.
+#' @param env The lexical environment in which to evaluate `expr`.
 #' @export
 #' @examples
 #' eval_tidy(~ 1 + 2 + 3)
@@ -194,18 +191,18 @@ NULL
 #' var <- ~ cyl
 #' eval_tidy(quo(mean( !!var )), mtcars)
 #' @name eval_tidy
-eval_tidy <- function(f, data = NULL) {
-  if (is_list(f)) {
-    return(map(f, eval_tidy, data = data))
+eval_tidy <- function(expr, data = NULL, env = caller_env()) {
+  if (is_list(expr)) {
+    return(map(expr, eval_tidy, data = data))
   }
 
-  if (!inherits(f, "quosure")) {
-    f <- new_quosure(f, caller_env())
+  if (!inherits(expr, "quosure")) {
+    expr <- new_quosure(expr, env)
   }
-  overscope <- as_overscope(f, data)
+  overscope <- as_overscope(expr, data)
   on.exit(overscope_clean(overscope))
 
-  overscope_eval_next(overscope, f)
+  overscope_eval_next(overscope, expr)
 }
 
 #' Data pronoun for tidy evaluation
@@ -244,19 +241,15 @@ delayedAssign(".data", as_dictionary(list(), read_only = TRUE))
 #' @inheritParams eval_tidy
 #' @inheritParams as_overscope
 #' @export
-eval_tidy_ <- function(f, bottom, top = NULL) {
-  if (is_list(f)) {
-    return(map(f, eval_tidy_, bottom, top))
-  }
-
+eval_tidy_ <- function(expr, bottom, top = NULL, env = caller_env()) {
   top <- top %||% bottom
   overscope <- new_overscope(bottom, top)
   on.exit(overscope_clean(overscope))
 
-  if (!inherits(f, "quosure")) {
-    f <- new_quosure(f, caller_env())
+  if (!inherits(expr, "quosure")) {
+    expr <- new_quosure(expr, env)
   }
-  overscope_eval_next(overscope, f)
+  overscope_eval_next(overscope, expr)
 }
 
 
