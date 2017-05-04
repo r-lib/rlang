@@ -75,6 +75,56 @@
 #' columns. Tidyeval DSLs should try to rely on evaluation as much as
 #' possible.
 #'
+#' @section Values versus expressions:
+#'
+#' A corollary of emphasising evaluation is that your DSL functions
+#' should understand _values_ in addition to expressions. This is
+#' especially important with [quasiquotation]: users can bypass
+#' symbolic evaluation completely by unquoting values. For instance,
+#' the following expressions are completely equivalent:
+#'
+#' ```
+#' # Taking an expression:
+#' dplyr::mutate(mtcars, cyl2 = cyl * 2)
+#'
+#' # Taking a value:
+#' var <- mtcars$cyl * 2
+#' dplyr::mutate(mtcars, cyl2 = !! var)
+#' ```
+#'
+#' `dplyr::mutate()` evaluates expressions in a context where
+#' dataframe columns are in scope, but it accepts any value that can
+#' be treated as a column (a recycled scalar or a vector as long as
+#' there are rows).
+#'
+#' A more complex example is `dplyr::select()`. This function
+#' evaluates dataframe columns in a context where they represent
+#' column positions. Therefore, `select()` understands column symbols
+#' like `cyl`:
+#'
+#' ```
+#' # Taking a symbol:
+#' dplyr::select(mtcars, cyl)
+#'
+#' # Taking an unquoted symbol:
+#' var <- quote(sym)
+#' dplyr::select(mtcars, !! var)
+#' ```
+#'
+#' But it also understands column positions:
+#'
+#' ```
+#' # Taking a column position:
+#' dplyr::select(mtcars, 2)
+#'
+#' # Taking an unquoted column position:
+#' var <- 2
+#' dplyr::select(mtcars, !! var)
+#' ```
+#'
+#' Understanding values in addition to expressions makes your grammar
+#' more consistent, predictable, and programmable.
+#'
 #' @section Tidy scoping:
 #'
 #' The special type of scoping found in R grammars implemented with
