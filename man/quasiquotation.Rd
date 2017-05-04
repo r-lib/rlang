@@ -2,7 +2,109 @@
 % Please edit documentation in R/quo-unquote.R
 \name{quasiquotation}
 \alias{quasiquotation}
-\title{Quasiquotation.}
+\alias{UQ}
+\alias{UQE}
+\alias{UQS}
+\alias{UQ}
+\alias{UQE}
+\alias{!!}
+\alias{UQS}
+\alias{!!!}
+\title{Quasiquotation of an expression}
+\usage{
+UQ(x)
+
+UQE(x)
+
+"!!"(x)
+
+UQS(x)
+}
+\arguments{
+\item{x}{An expression to unquote.}
+}
 \description{
-Quasiquotation.
+Quasiquotation is the mechanism that makes it possible to program
+flexibly with \link[=tidy-evaluation]{tidyeval} grammars like dplyr. It
+is enabled in all tidyeval functions, the most fundamental of which
+are \code{\link[=quo]{quo()}} and \code{\link[=expr]{expr()}}.
+
+Quasiquotation is the combination of quoting an expression while
+allowing immediate evaluation (unquoting) of part of that
+expression. We provide both syntactic operators and functional
+forms for unquoting.
+\itemize{
+\item \code{UQ()} and the \code{!!} operator unquote their argument. It gets
+evaluated immediately in the surrounding context.
+\item \code{UQE()} is like \code{UQ()} but retrieves the expression of
+\link[=is_quosureish]{quosureish} objects. It is a shortcut for \code{!! get_expr(x)}.
+\item \code{UQS()} and the \code{!!!} operators unquote and splice their
+argument. The argument should evaluate to a vector or an
+expression. Each component of the vector is embedded as its own
+argument in the surrounding call. If the vector is named, the
+names are used as argument names.
+}
+}
+\section{Theory}{
+
+
+Formally, \code{quo()} and \code{expr()} are quasiquote functions, \code{UQ()}
+is the unquote operator, and \code{UQS()} is the unquote splice
+operator. These terms have a rich history in LISP, and live on in
+modern languages like
+\href{http://docs.julialang.org/en/release-0.1/manual/metaprogramming/}{Julia}
+and
+\href{https://docs.racket-lang.org/reference/quasiquote.html}{Racket}.
+}
+
+\examples{
+# Quasiquotation functions act like base::quote()
+quote(foo(bar))
+expr(foo(bar))
+quo(foo(bar))
+
+# In addition, they support unquoting:
+expr(foo(UQ(1 + 2)))
+expr(foo(!! 1 + 2))
+quo(foo(!! 1 + 2))
+
+# The !! operator is a handy syntactic shortcut for unquoting with
+# UQ().  However you need to be a bit careful with operator
+# precedence. All arithmetic and comparison operators bind more
+# tightly than `!`:
+quo(1 +  !! (1 + 2 + 3) + 10)
+
+# For this reason you should always wrap the unquoted expression
+# with parentheses when operators are involved:
+quo(1 + (!! 1 + 2 + 3) + 10)
+
+# Or you can use the explicit unquote function:
+quo(1 + UQ(1 + 2 + 3) + 10)
+
+
+# Use !!! or UQS() if you want to add multiple arguments to a
+# function It must evaluate to a list
+args <- list(1:10, na.rm = TRUE)
+quo(mean( UQS(args) ))
+
+# You can combine the two
+var <- quote(xyz)
+extra_args <- list(trim = 0.9, na.rm = TRUE)
+quo(mean(UQ(var) , UQS(extra_args)))
+
+
+# Unquoting is especially useful for transforming successively a
+# captured expression:
+quo <- quo(foo(bar))
+quo <- quo(inner(!! quo, arg1))
+quo <- quo(outer(!! quo, !!! syms(letters[1:3])))
+quo
+
+# Since we are building the expression in the same environment, you
+# can also start with raw expressions and create a quosure in the
+# very last step to record the dynamic environment:
+expr <- expr(foo(bar))
+expr <- expr(inner(!! expr, arg1))
+quo <- quo(outer(!! expr, !!! syms(letters[1:3])))
+quo
 }
