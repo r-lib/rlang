@@ -188,6 +188,60 @@ contain definitions for self-evaluation of quosures. See
 creating overscopes.
 }
 
+\section{Theory}{
+
+
+The most important concept of the tidy evaluation framework is that
+expressions should be scoped in their dynamic context. This issue
+is linked to the computer science concept of \emph{hygiene}, which
+roughly means that symbols should be scoped in the context where
+they are typed. In a way, hygiene is what "tidy" refers to in
+"tidy evaluation".
+
+In languages with macros, hygiene comes up for \href{https://en.wikipedia.org/wiki/Hygienic_macro}{macroexpansion}. While
+macros look like R's non-standard evaluation functions, and share
+certain concepts with them (in particular, they get unevaluated
+code), they are actually quite different. Macros are a compile-time
+and therefore can only operate on code, never on data (except for
+constants). They also don't return a value but are expanded in
+place. In comparison, R does not have macros but it has
+\href{https://en.wikipedia.org/wiki/Fexpr}{fexprs}, i.e. regular
+functions that get arguments as unevaluated expressions rather than
+by their value (fexprs are what we call NSE functions in the R
+community). These functions execute at run-time and return a value.
+
+Symbolic hygiene is a problem for macros during
+expansion. Correspondingly, hygiene is an issue for NSE functions
+when the code they captured gets evaluated. Bundling quoted
+expressions with their dynamic environment is key to solve this
+issue. In R, this means using quosures.
+
+While formulas were introduced in the S language, the quosure was
+invented much later for R \href{https://github.com/wch/r-source/commit/a945ac8e6a82617205442d44a2be3a497d2ac896}{by Luke Tierney in2000}.
+From that point on formulas recorded their environment along with
+the model terms. In the Lisp world, the Kernel Lisp language also
+recognised that arguments should be captured together with their
+dynamic environment in order to solve hygienic evaluation (see
+chapter 5 of \href{https://web.wpi.edu/Pubs/ETD/Available/etd-090110-124904/}{John Schutt'sthesis}).
+However, Kernel Lisp did not have quosures and avoided quotation
+or quasiquotation operators in order to get around scoping issues.
+
+Tidyeval's contributes to the problem of hygienic evaluation in
+three ways:
+\itemize{
+\item Promoting the quosure as the proper quotation data structure, in
+order to keep track of the dynamic environment of quoted
+expressions.
+\item Introducing systematic quasiquotation in all capturing functions
+in order to make it straightforward to program with these
+functions.
+\item Treating quosures as reified promises that self-evaluate within
+their own environments. This allows unquoting quosures within
+other quosures, which is the key for programming hygienically
+with capturing functions.
+}
+}
+
 \seealso{
 \code{\link[=eval_tidy]{eval_tidy()}}, \code{\link[=quo]{quo()}}, \link{quasiquotation}.
 }
