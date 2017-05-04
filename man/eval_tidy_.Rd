@@ -4,14 +4,10 @@
 \alias{eval_tidy_}
 \title{Tidy evaluation in a custom environment.}
 \usage{
-eval_tidy_(f, bottom, top = NULL)
+eval_tidy_(expr, bottom, top = NULL, env = caller_env())
 }
 \arguments{
-\item{f}{A formula. Any expressions wrapped in \code{UQ()} will will be
-"unquoted", i.e. they will be evaluated, and the results inserted
-back into the formula. See \code{\link[=quo]{quo()}} for more details. If a
-list of formulas, \code{eval_tidy()} is applied to each of them in
-turn and the list of results is returned.}
+\item{expr}{An expression.}
 
 \item{bottom}{This is the environment (or the bottom of a set of
 environments) containing definitions for overscoped symbols. The
@@ -26,6 +22,8 @@ mechanism that ensures hygienic scoping: the bindings in the
 overscope have precedence, but the bindings in the dynamic
 environment where the tidy quotes were created in the first place
 are in scope as well.}
+
+\item{env}{The lexical environment in which to evaluate \code{expr}.}
 }
 \description{
 We recommend using \code{\link[=eval_tidy]{eval_tidy()}} in your DSLs as much as possible

@@ -2,62 +2,98 @@
 % Please edit documentation in R/eval-tidy.R
 \name{eval_tidy}
 \alias{eval_tidy}
-\title{Evaluate a quosure.}
+\title{Evaluate an expression tidily}
 \usage{
-eval_tidy(f, data = NULL)
+eval_tidy(expr, data = NULL, env = caller_env())
 }
 \arguments{
-\item{f}{A formula. Any expressions wrapped in \code{UQ()} will will be
-"unquoted", i.e. they will be evaluated, and the results inserted
-back into the formula. See \code{\link[=quo]{quo()}} for more details. If a
-list of formulas, \code{eval_tidy()} is applied to each of them in
-turn and the list of results is returned.}
+\item{expr}{An expression.}
 
 \item{data}{A list (or data frame). This is passed to the
 \code{\link[=as_dictionary]{as_dictionary()}} coercer, a generic used to transform an object
 to a proper data source. If you want to make \code{eval_tidy()} work
 for your own objects, you can define a method for this generic.}
+
+\item{env}{The lexical environment in which to evaluate \code{expr}.}
 }
 \description{
-If \code{data} is specified, variables will be looked for first in this
-object, and if not found in the environment of the formula.
+\code{eval_tidy()} is a variant of \code{\link[base:eval]{base::eval()}} and \code{\link[=eval_bare]{eval_bare()}} that
+powers the \link[=tidy-evaluation]{tidy evaluation framework}. It
+evaluates \code{expr} in an \link[=as_overscope]{overscope} where the special
+definitions enabling tidy evaluation are installed. This enables
+the following features:
+\itemize{
+\item Overscoped data. You can supply a data frame or list of named
+vectors to the \code{data} argument. The data contained in this list
+has precedence over the objects in the contextual environment.
+This is similar to how \code{\link[base:eval]{base::eval()}} accepts a list instead of
+an environment.
+\item Self-evaluation of quosures. Within the overscope, quosures act
+like promises. When a quosure within an expression is evaluated,
+it automatically invokes the quoted expression in the captured
+environment (chained to the overscope). Note that quosures do not
+always get evaluated because of lazy semantics, e.g. \code{TRUE || ~never_called}.
+\item Pronouns. \code{eval_tidy()} installs the \code{.env} and \code{.data}
+pronouns. \code{.env} contains a reference to the calling environment,
+while \code{.data} refers to the \code{data} argument. These pronouns lets
+you be explicit about where to find values and throw errors if
+you try to access non-existent values.
 }
-\section{Pronouns}{
-
-
-When used with \code{data}, \code{eval_tidy()} provides two pronouns to
-make it possible to be explicit about where you want values to
-come from: \code{.env} and \code{.data}. These are thin wrappers around
-\code{.data} and \code{.env} that throw errors if you try to access
-non-existent values.
 }
-
 \examples{
-eval_tidy(~ 1 + 2 + 3)
+# Like base::eval() and eval_bare(), eval_tidy() evaluates quoted
+# expressions:
+expr <- expr(1 + 2 + 3)
+eval_tidy(expr)
 
-# formulas automatically capture their enclosing environment
+# Like base::eval(), it lets you supply overscoping data:
+foo <- 1
+bar <- 2
+expr <- quote(list(foo, bar))
+eval_tidy(expr, list(foo = 100))
+
+# The main difference is that quosures self-evaluate within
+# eval_tidy():
+quo <- quo(1 + 2 + 3)
+eval(quo)
+eval_tidy(quo)
+
+# Quosures also self-evaluate deep in an expression not just when
+# directly supplied to eval_tidy():
+expr <- expr(list(list(list(!! quo))))
+eval(expr)
+eval_tidy(expr)
+
+# Self-evaluation of quosures is powerful because they
+# automatically capture their enclosing environment:
 foo <- function(x) {
   y <- 10
-  ~ x + y
+  quo(x + y)
 }
 f <- foo(1)
+
+# This quosure refers to `x` and `y` from `foo()`'s evaluation
+# frame. That's evaluated consistently by eval_tidy():
 f
 eval_tidy(f)
 
-# If you supply data, eval_tidy() will look there first:
-eval_tidy(~ cyl, mtcars)
 
-# To avoid ambiguity, you can use .env and .data pronouns to be
-# explicit:
+# Finally, eval_tidy() installs handy pronouns that allows users to
+# be explicit about where to find symbols. If you supply data,
+# eval_tidy() will look there first:
 cyl <- 10
-eval_tidy(~ .data$cyl, mtcars)
-eval_tidy(~ .env$cyl, mtcars)
+eval_tidy(quo(cyl), mtcars)
 
-# Imagine you are computing the mean of a variable:
-eval_tidy(~ mean(cyl), mtcars)
-# How can you change the variable that's being computed?
-# The easiest way is "unquote" with !!
-# See ?quosure for more details
-var <- ~ cyl
-eval_tidy(quo(mean( !!var )), mtcars)
+# To avoid ambiguity and be explicit, you can use the `.env` and
+# `.data` pronouns:
+eval_tidy(quo(.data$cyl), mtcars)
+eval_tidy(quo(.env$cyl), mtcars)
+
+# Note that instead of using `.env` it is often equivalent to
+# unquote a value. The only difference is the timing of evaluation
+# since unquoting happens earlier (when the quosure is created):
+eval_tidy(quo(!! cyl), mtcars)
+}
+\seealso{
+\link{tidy-evaluation}, \code{\link[=quo]{quo()}}, \link{quasiquotation}
 }
