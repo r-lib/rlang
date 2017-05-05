@@ -75,11 +75,8 @@ enexpr <- function(arg) {
 #' @param ... Arguments to extract.
 #' @export
 exprs <- function(..., .ignore_empty = "trailing") {
-  map(dots_quos(..., .ignore_empty = .ignore_empty), f_rhs)
+  map(quos(..., .ignore_empty = .ignore_empty), f_rhs)
 }
-#' @rdname expr
-#' @export
-dots_exprs <- exprs
 
 
 #' Is an object an expression?

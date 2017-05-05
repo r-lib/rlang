@@ -4,15 +4,12 @@
 \alias{dots_definitions}
 \alias{quosures}
 \alias{quos}
-\alias{dots_quos}
 \alias{is_quosures}
 \title{Tidy quotation of multiple expressions and dots}
 \usage{
 dots_definitions(..., .named = FALSE)
 
 quos(..., .named = FALSE, .ignore_empty = c("trailing", "none", "all"))
-
-dots_quos(..., .named = FALSE, .ignore_empty = c("trailing", "none", "all"))
 
 is_quosures(x)
 }
@@ -32,60 +29,59 @@ last argument is ignored if it is empty.}
 \item{x}{An object to test.}
 }
 \description{
-\code{dots_quos()} quotes its arguments and returns them as a list of
+\code{quos()} quotes its arguments and returns them as a list of
 quosures (see \code{\link[=quo]{quo()}}). It is especially useful to capture
 arguments forwarded through \code{...}.
 }
 \details{
-Both \code{dots_quos} and \code{dots_definitions()} have specific support for
+Both \code{quos} and \code{dots_definitions()} have specific support for
 definition expressions of the type \code{var := expr}, with some
 differences:
 
 \describe{
-\item{\code{dots_quos()}}{
-When \code{:=} definitions are supplied to \code{dots_quos()},
-they are treated as a synonym of argument assignment
-\code{=}. On the other hand, they allow unquoting operators on
-the left-hand side, which makes it easy to assign names
-programmatically.}
+\item{\code{quos()}}{
+When \code{:=} definitions are supplied to \code{quos()}, they are treated
+as a synonym of argument assignment \code{=}. On the other hand, they
+allow unquoting operators on the left-hand side, which makes it
+easy to assign names programmatically.}
 \item{\code{dots_definitions()}}{
 This dots capturing function returns definitions as is. Unquote
 operators are processed on capture, in both the LHS and the
-RHS. Unlike \code{dots_quos()}, it allows named definitions.}
+RHS. Unlike \code{quos()}, it allows named definitions.}
 }
 }
 \examples{
-# dots_quos() is like the singular version but allows quoting
+# quos() is like the singular version but allows quoting
 # several arguments:
-dots_quos(foo(), bar(baz), letters[1:2], !! letters[1:2])
+quos(foo(), bar(baz), letters[1:2], !! letters[1:2])
 
 # It is most useful when used with dots. This allows quoting
 # expressions across different levels of function calls:
-fn <- function(...) dots_quos(...)
+fn <- function(...) quos(...)
 fn(foo(bar), baz)
 
-# Note that dots_quos() does not check for duplicate named
+# Note that quos() does not check for duplicate named
 # arguments:
-fn <- function(...) dots_quos(x = x, ...)
+fn <- function(...) quos(x = x, ...)
 fn(x = a + b)
 
 
 # Dots can be spliced in:
 args <- list(x = 1:3, y = ~var)
-dots_quos(!!! args, z = 10L)
+quos(!!! args, z = 10L)
 
 # Raw expressions are turned to formulas:
 args <- alist(x = foo, y = bar)
-dots_quos(!!! args)
+quos(!!! args)
 
 
 # Definitions are treated similarly to named arguments:
-dots_quos(x := expr, y = expr)
+quos(x := expr, y = expr)
 
 # However, the LHS of definitions can be unquoted. The return value
 # must be a symbol or a string:
 var <- "foo"
-dots_quos(!!var := expr)
+quos(!!var := expr)
 
 # If you need the full LHS expression, use dots_definitions():
 dots <- dots_definitions(var = foo(baz) := bar(baz))

@@ -4,7 +4,6 @@
 \alias{expr}
 \alias{enexpr}
 \alias{exprs}
-\alias{dots_exprs}
 \title{Raw quotation of an expression}
 \usage{
 expr(expr)
@@ -12,8 +11,6 @@ expr(expr)
 enexpr(arg)
 
 exprs(..., .ignore_empty = "trailing")
-
-dots_exprs(..., .ignore_empty = "trailing")
 }
 \arguments{
 \item{expr}{An expression.}
