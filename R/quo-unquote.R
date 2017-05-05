@@ -33,7 +33,7 @@
 #' the unquote operator, and `UQS()` is the unquote splice operator.
 #' These terms have a rich history in Lisp languages, and live on in
 #' modern languages like
-#' [Julia](http://docs.julialang.org/en/release-0.1/manual/metaprogramming/)
+#' [Julia](https://docs.julialang.org/en/stable/manual/metaprogramming/)
 #' and
 #' [Racket](https://docs.racket-lang.org/reference/quasiquote.html).
 #'

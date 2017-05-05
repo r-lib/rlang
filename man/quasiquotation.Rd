@@ -54,7 +54,7 @@ Formally, \code{quo()} and \code{expr()} are quasiquote functions, \code{UQ()} i
 the unquote operator, and \code{UQS()} is the unquote splice operator.
 These terms have a rich history in Lisp languages, and live on in
 modern languages like
-\href{http://docs.julialang.org/en/release-0.1/manual/metaprogramming/}{Julia}
+\href{https://docs.julialang.org/en/stable/manual/metaprogramming/}{Julia}
 and
 \href{https://docs.racket-lang.org/reference/quasiquote.html}{Racket}.
 }
