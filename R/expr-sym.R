@@ -24,7 +24,8 @@ syms <- function(x) {
   map(x, sym)
 }
 
-#' @rdname is_expr
+#' Is object a symbol?
+#' @param x An object to test.
 #' @export
 is_symbol <- function(x) {
   typeof(x) == "symbol"
