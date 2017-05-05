@@ -1,4 +1,4 @@
-#' Construct a character vector or a string
+#' Create a string
 #'
 #' These base-type constructors allow more control over the creation
 #' of strings in R. They take character vectors or string-like objects

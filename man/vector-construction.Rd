@@ -9,7 +9,7 @@
 \alias{chr}
 \alias{bytes}
 \alias{ll}
-\title{Construct new vectors}
+\title{Create vectors}
 \usage{
 lgl(...)
 

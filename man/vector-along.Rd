@@ -11,7 +11,7 @@
 \alias{bytes_along}
 \alias{list_along}
 \alias{rep_along}
-\title{Helper to create vectors with matching length}
+\title{Create vectors matching the length of a given vector}
 \usage{
 lgl_along(.x)
 

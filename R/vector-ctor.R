@@ -1,4 +1,4 @@
-#' Construct new vectors
+#' Create vectors
 #'
 #' The atomic vector constructors are equivalent to [c()] but allow
 #' you to be more explicit about the output type. Implicit coercions
@@ -126,7 +126,7 @@ ll <- function(...) {
 }
 
 
-#' Helper to create vectors with matching length
+#' Create vectors matching the length of a given vector
 #'
 #' These functions take the idea of [seq_along()] and generalise it to
 #' creating lists (`list_along`) and repeating values (`rep_along`).
@@ -193,7 +193,7 @@ rep_along <- function(.x, .y) {
 }
 
 
-#' Create new vectors
+#' Create vectors matching a given length
 #'
 #' These functions construct vectors of given length, with attributes
 #' specified via dots. Except for `list_len()` and `bytes_len()`, the
