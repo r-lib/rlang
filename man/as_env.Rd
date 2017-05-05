@@ -2,18 +2,17 @@
 % Please edit documentation in R/env.R
 \name{as_env}
 \alias{as_env}
-\title{Coerce to an environment.}
+\title{Coerce to an environment}
 \usage{
 as_env(x, parent = NULL)
 }
 \arguments{
 \item{x}{An object to coerce.}
 
-\item{parent}{A parent environment, \code{\link[=empty_env]{empty_env()}} by default. Can
-be ignored with a warning for methods where it does not make
-sense to change the parent. Note that existing environments keep
-their original parent, only the parents of newly created
-environments are set to \code{parent}.}
+\item{parent}{A parent environment, \code{\link[=empty_env]{empty_env()}} by default. This
+argument is only used when \code{x} is data actually coerced to an
+environment (as opposed to data representing an environment, like
+\code{NULL} representing the empty environment).}
 }
 \description{
 \code{as_env()} coerces named vectors (including lists) to an

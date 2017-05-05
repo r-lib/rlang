@@ -25,7 +25,7 @@ test_that("as_list() only coerces vector or dictionary types", {
 
 test_that("as_list() bypasses environment method and leaves input intact", {
   as.list.foo <- function(x) "wrong"
-  x <- structure(child_env(), class = "foo")
+  x <- structure(child_env(NULL), class = "foo")
   y <- as_list(x)
 
   expect_is(x, "foo")

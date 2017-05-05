@@ -34,14 +34,14 @@ test_that("formulas are not treated as quosures", {
 })
 
 test_that("unquote operators are always in scope", {
-  env <- child_env("base", list(foo = "bar"))
+  env <- child_env("base", foo = "bar")
   f <- with_env(env, ~UQ(foo))
   expect_identical(expr_interp(f), new_quosure("bar", env))
 })
 
 test_that("can interpolate in specific env", {
   foo <- "bar"
-  env <- child_env(NULL, list(foo = "foo"))
+  env <- child_env(NULL, foo = "foo")
   expect_identical(expr_interp(~UQ(foo)), set_env(quo("bar")))
   expect_identical(expr_interp(~UQ(foo), env), set_env(quo("foo")))
 })

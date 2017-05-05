@@ -195,8 +195,12 @@ as_overscope <- function(quo, data = NULL) {
   bottom <- child_env(enclosure)
 
   # Emulate dynamic scope for established data
-  if (length(data)) {
-    bottom <- env_bury(bottom, discard_unnamed(data))
+  if (is_vector(data)) {
+    bottom <- env_bury(bottom, !!! discard_unnamed(data))
+  } else if (is_env(data)) {
+    bottom <- env_clone(data, parent = bottom)
+  } else if (!is_null(data)) {
+    abort("`data` must be a list or an environment")
   }
 
   # Install data pronoun

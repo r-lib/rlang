@@ -2,15 +2,13 @@
 % Please edit documentation in R/env.R
 \name{env_get}
 \alias{env_get}
-\title{Get an object from an environment.}
+\title{Get an object from an environment}
 \usage{
 env_get(env = caller_env(), nm, inherit = FALSE)
 }
 \arguments{
-\item{env}{An environment or an object bundling an environment:
-either a \link{quosure} or a \link[=is_closure]{closure}. If
-missing, the environment of the current evaluation frame is
-returned.}
+\item{env}{An environment or an object bundling an environment,
+e.g. a formula, \link{quosure} or \link[=is_closure]{closure}.}
 
 \item{nm}{The name of a binding.}
 
@@ -25,8 +23,8 @@ An object if it exists. Otherwise, throws an error.
 default, it does not look in the parent environments.
 }
 \examples{
-parent <- child_env(empty_env(), list(foo = "foo"))
-env <- child_env(parent, list(bar = "bar"))
+parent <- child_env(NULL, foo = "foo")
+env <- child_env(parent, bar = "bar")
 
 # This throws an error because `foo` is not directly defined in env:
 # env_get(env, "foo")

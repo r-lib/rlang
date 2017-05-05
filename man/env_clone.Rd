@@ -2,15 +2,13 @@
 % Please edit documentation in R/env.R
 \name{env_clone}
 \alias{env_clone}
-\title{Clone an environment.}
+\title{Clone an environment}
 \usage{
 env_clone(env, parent = env_parent(env))
 }
 \arguments{
-\item{env}{An environment or an object bundling an environment:
-either a \link{quosure} or a \link[=is_closure]{closure}. If
-missing, the environment of the current evaluation frame is
-returned.}
+\item{env}{An environment or an object bundling an environment,
+e.g. a formula, \link{quosure} or \link[=is_closure]{closure}.}
 
 \item{parent}{The parent of the cloned environment.}
 }
@@ -19,7 +17,8 @@ This creates a new environment containing exactly the same objects,
 optionally with a new parent.
 }
 \examples{
-env <- child_env(data = mtcars)
+env <- env(!!! mtcars)
 clone <- env_clone(env)
+identical(env, clone)
 identical(env$cyl, clone$cyl)
 }

@@ -2,15 +2,13 @@
 % Please edit documentation in R/env.R
 \name{env_unbind}
 \alias{env_unbind}
-\title{Remove bindings from an environment.}
+\title{Remove bindings from an environment}
 \usage{
 env_unbind(env = caller_env(), nms, inherit = FALSE)
 }
 \arguments{
-\item{env}{An environment or an object bundling an environment:
-either a \link{quosure} or a \link[=is_closure]{closure}. If
-missing, the environment of the current evaluation frame is
-returned.}
+\item{env}{An environment or an object bundling an environment,
+e.g. a formula, \link{quosure} or \link[=is_closure]{closure}.}
 
 \item{nms}{A character vector containing the names of the bindings
 to remove.}
@@ -28,8 +26,8 @@ it ignores the parent environments of \code{env} by default. Set
 \code{inherit} to \code{TRUE} to track down bindings in parent environments.
 }
 \examples{
-data <- set_names(letters, letters)
-env_bind(environment(), data)
+data <- set_names(as_list(letters), letters)
+env_bind(environment(), !!! data)
 env_has(environment(), letters)
 
 # env_unbind() removes bindings:
@@ -38,8 +36,8 @@ env_has(environment(), letters)
 
 # With inherit = TRUE, it removes bindings in parent environments
 # as well:
-parent <- child_env(empty_env(), list(foo = "a"))
-env <- child_env(parent, list(foo = "b"))
+parent <- child_env(NULL, foo = "a")
+env <- child_env(parent, foo = "b")
 env_unbind(env, "foo", inherit = TRUE)
 env_has(env, "foo", inherit = TRUE)
 }

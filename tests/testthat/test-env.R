@@ -19,15 +19,12 @@ test_that("child_env() has correct parent", {
   out <- fn()
   expect_identical(env_parent(out$new), out$env)
 
-  expect_identical(env_parent(child_env()), empty_env())
+  expect_identical(env_parent(child_env(NULL)), empty_env())
   expect_identical(env_parent(child_env("base")), base_env())
 })
 
 test_that("env_parent() reports correct parent", {
-  env <- child_env(
-    child_env(empty_env(), list(obj = "b")),
-    list(obj = "a")
-  )
+  env <- child_env(child_env(NULL, obj = "b"), obj = "a")
 
   expect_identical(env_parent(env, 1)$obj, "b")
   expect_identical(env_parent(env, 2), empty_env())
@@ -39,45 +36,16 @@ test_that("env_tail() climbs env chain", {
 })
 
 test_that("promises are created", {
-  env <- child_env()
+  env <- child_env(NULL)
 
-  env_assign_promise(env, "foo", bar <- "bar")
+  env_bind_exprs(env, foo = bar <- "bar")
   expect_false(env_has(get_env(), "bar"))
 
   force(env$foo)
   expect_true(env_has(get_env(), "bar"))
 
-  f <- ~stop("forced")
-  env_assign_promise_(env, "stop", f)
+  env_bind_exprs(env, stop = stop("forced"))
   expect_error(env$stop, "forced")
-})
-
-test_that("lazies are evaluated in correct environment", {
-  env <- child_env("base")
-
-  env_assign_promise(env, "test_captured", test_captured <- letters)
-  env_assign_promise_(env, "test_expr", quote(test_expr <- LETTERS))
-  env_assign_promise_(env, "test_formula", ~ (test_formula <- mtcars))
-  expect_false(any(env_has(get_env(), c("test_captured", "test_expr", "test_formula"))))
-
-  force(env$test_captured)
-  force(env$test_expr)
-  force(env$test_formula)
-  expect_true(all(env_has(get_env(), c("test_captured", "test_expr", "test_formula"))))
-
-  expect_equal(test_captured, letters)
-  expect_equal(test_expr, LETTERS)
-  expect_equal(test_formula, mtcars)
-})
-
-test_that("formula env is overridden by eval_env", {
-  env <- child_env("base")
-  env_assign_promise_(env, "within_env", quote(new_within_env <- "new"), env)
-  force(env$within_env)
-
-  expect_false(env_has(get_env(), "new_within_env"))
-  expect_true(env_has(env, "new_within_env"))
-  expect_equal(env$new_within_env, "new")
 })
 
 test_that("with_env() evaluates within correct environment", {
@@ -170,8 +138,28 @@ test_that("with_env() evaluates in env", {
   expect_identical(with_env(env, get_env()), env)
 })
 
-test_that("env_bind() accepts environments", {
-  env <- env(a = 1, b = 2)
-  out <- env_bind(env(), env)
-  expect_true(all(env_has(out, c("a", "b"))))
+test_that("env_depth() counts parents", {
+  expect_identical(env_depth(child_env(child_env(NULL))), 2L)
+  expect_identical(env_depth(empty_env()), 0L)
+})
+
+test_that("env_parents() returns all parents", {
+  expect_identical(env_parents(empty_env()), ll())
+  env1 <- child_env(NULL)
+  env2 <- child_env(env1)
+  expect_identical(env_parents(env2), ll(env1, empty_env()))
+})
+
+test_that("scoped_envs() includes global and empty envs", {
+  envs <- scoped_envs()
+  expect_identical(envs[[1]], global_env())
+  expect_identical(envs[[length(envs)]], empty_env())
+})
+
+test_that("scoped_envs() returns named environments", {
+  expect_identical(names(scoped_envs()), scoped_names())
+})
+
+test_that("scoped_env() deals with empty environment", {
+  expect_identical(scoped_env("NULL"), empty_env())
 })

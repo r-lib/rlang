@@ -7,10 +7,8 @@
 env_has(env = caller_env(), nms, inherit = FALSE)
 }
 \arguments{
-\item{env}{An environment or an object bundling an environment:
-either a \link{quosure} or a \link[=is_closure]{closure}. If
-missing, the environment of the current evaluation frame is
-returned.}
+\item{env}{An environment or an object bundling an environment,
+e.g. a formula, \link{quosure} or \link[=is_closure]{closure}.}
 
 \item{nms}{A character vector containing the names of the bindings
 to remove.}
@@ -28,8 +26,8 @@ environment owns bindings personally (with \code{inherit} set to
 any of its parents (with \code{inherit = TRUE}).
 }
 \examples{
-parent <- child_env(empty_env(), list(foo = "foo"))
-env <- child_env(parent, list(bar = "bar"))
+parent <- child_env(NULL, foo = "foo")
+env <- child_env(parent, bar = "bar")
 
 # env does not own `foo` but sees it in its parent environment:
 env_has(env, "foo")

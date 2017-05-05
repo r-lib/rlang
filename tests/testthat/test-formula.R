@@ -26,7 +26,7 @@ test_that("as_quosure() uses correct env", {
   g <- function(expr, env = caller_env()) {
     as_quosure(expr, env)
   }
-  f_env <- child_env()
+  f_env <- child_env(NULL)
   f <- new_quosure(quote(expr), f_env)
 
   out_expr_default <- fn(quote(expr))
@@ -34,7 +34,7 @@ test_that("as_quosure() uses correct env", {
   expect_identical(f_env(out_expr_default$f), get_env())
   expect_identical(f_env(out_f_default$f), f_env)
 
-  user_env <- child_env()
+  user_env <- child_env(NULL)
   out_expr <- fn(quote(expr), user_env)
   out_f <- fn(f, user_env)
   expect_identical(f_env(out_expr$f), user_env)
