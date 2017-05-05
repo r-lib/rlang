@@ -192,25 +192,3 @@ f_name <- function(x) {
 f_label <- function(x) {
   expr_label(f_rhs(x))
 }
-
-#' Unwrap a formula
-#'
-#' This interpolates values in the formula that are defined in its
-#' environment, replacing the environment with its parent.
-#'
-#' @export
-#' @param f A formula to unwrap.
-#' @examples
-#' n <- 100
-#' f <- ~ x + n
-#' f_unwrap(f)
-f_unwrap <- function(f) {
-  stopifnot(is_formula(f))
-
-  e <- environment(f)
-  if (identical(e, empty_env())) {
-    f
-  } else {
-    new_formula(f_lhs(f), substitute_(f_rhs(f), e), env_parent(e))
-  }
-}
