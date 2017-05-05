@@ -207,7 +207,8 @@ as_pairlist <- function(x) {
   as.vector(x, "pairlist")
 }
 
-#' @rdname is_expr
+#' Is object a node or pairlist?
+#' @param x Object to test.
 #' @export
 is_pairlist <- function(x) {
   typeof(x) == "pairlist"
