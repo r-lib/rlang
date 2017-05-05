@@ -99,94 +99,79 @@
 NULL
 
 #' @rdname pairlist
-#' @useDynLib rlang rlang_cons
 #' @export
 node <- function(newcar, newcdr) {
   .Call(rlang_cons, newcar, newcdr)
 }
 
 #' @rdname pairlist
-#' @useDynLib rlang rlang_car
 #' @export
 node_car <- function(x) {
   .Call(rlang_car, x)
 }
 #' @rdname pairlist
-#' @useDynLib rlang rlang_cdr
 #' @export
 node_cdr <- function(x) {
   .Call(rlang_cdr, x)
 }
 #' @rdname pairlist
-#' @useDynLib rlang rlang_caar
 #' @export
 node_caar <- function(x) {
   .Call(rlang_caar, x)
 }
 #' @rdname pairlist
-#' @useDynLib rlang rlang_cadr
 #' @export
 node_cadr <- function(x) {
   .Call(rlang_cadr, x)
 }
 #' @rdname pairlist
-#' @useDynLib rlang rlang_cdar
 #' @export
 node_cdar <- function(x) {
   .Call(rlang_cdar, x)
 }
 #' @rdname pairlist
-#' @useDynLib rlang rlang_cddr
 #' @export
 node_cddr <- function(x) {
   .Call(rlang_cddr, x)
 }
 
 #' @rdname pairlist
-#' @useDynLib rlang rlang_set_car
 #' @export
 mut_node_car <- function(x, newcar) {
   .Call(rlang_set_car, x, newcar)
 }
 #' @rdname pairlist
-#' @useDynLib rlang rlang_set_cdr
 #' @export
 mut_node_cdr <- function(x, newcdr) {
   .Call(rlang_set_cdr, x, newcdr)
 }
 #' @rdname pairlist
-#' @useDynLib rlang rlang_set_caar
 #' @export
-mut_node_caar <- function(x) {
-  .Call(rlang_set_caar, x)
+mut_node_caar <- function(x, newcar) {
+  .Call(rlang_set_caar, x, newcar)
 }
 #' @rdname pairlist
-#' @useDynLib rlang rlang_set_cadr
 #' @export
 mut_node_cadr <- function(x, newcar) {
   .Call(rlang_set_cadr, x, newcar)
 }
 #' @rdname pairlist
-#' @useDynLib rlang rlang_set_cdar
 #' @export
-mut_node_cdar <- function(x) {
-  .Call(rlang_set_cdar, x)
+mut_node_cdar <- function(x, newcdr) {
+  .Call(rlang_set_cdar, x, newcdr)
 }
 #' @rdname pairlist
-#' @useDynLib rlang rlang_set_cddr
 #' @export
 mut_node_cddr <- function(x, newcdr) {
   .Call(rlang_set_cddr, x, newcdr)
 }
 
 #' @rdname pairlist
-#' @useDynLib rlang rlang_tag
 #' @export
 node_tag <- function(x) {
   .Call(rlang_tag, x)
 }
 #' @rdname pairlist
-#' @useDynLib rlang rlang_set_tag
 #' @export
 mut_node_tag <- function(x, newtag) {
   .Call(rlang_set_tag, x, newtag)
@@ -237,8 +222,6 @@ is_pairlist <- function(x) {
 #'   still the same.
 #' @seealso pairlist
 #' @export
-#' @useDynLib rlang rlang_duplicate
-#' @useDynLib rlang rlang_shallow_duplicate
 duplicate <- function(x, shallow = FALSE) {
   if (shallow) {
     .Call(rlang_shallow_duplicate, x)

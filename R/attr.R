@@ -246,7 +246,6 @@ names2 <- function(x) {
   }
 }
 
-#' @useDynLib rlang rlang_length
 length_ <- function(x) {
   .Call(rlang_length, x)
 }

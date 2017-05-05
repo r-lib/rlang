@@ -7,7 +7,6 @@
 #'
 #' @param x A string or list of strings.
 #' @return A symbol for `sym()` and a list of symbols for `syms()`.
-#' @useDynLib rlang rlang_symbol
 #' @export
 sym <- function(x) {
   if (is_symbol(x)) {

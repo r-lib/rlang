@@ -24,7 +24,6 @@
 #'
 #' @param expr An expression to evaluate.
 #' @param env The environment in which to evaluate the expression.
-#' @useDynLib rlang rlang_eval
 #' @seealso with_env
 #' @export
 #' @examples

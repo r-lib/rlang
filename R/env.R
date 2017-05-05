@@ -759,7 +759,6 @@ env_get <- function(env = caller_env(), nm, inherit = FALSE) {
 #' @examples
 #' env <- env(a = 1, b = 2)
 #' env_names(env)
-#' @useDynLib rlang rlang_unescape_character
 env_names <- function(env) {
   nms <- names(get_env(env))
   .Call(rlang_unescape_character, nms)

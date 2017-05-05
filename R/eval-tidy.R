@@ -578,7 +578,6 @@ overscope_clean <- function(overscope) {
   overscope
 }
 
-#' @useDynLib rlang rlang_set_parent
 f_self_eval <- function(overscope, overscope_top) {
   function(...) {
     f <- sys.call()

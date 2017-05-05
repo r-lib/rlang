@@ -72,7 +72,6 @@ discard_unnamed <- function(x) {
   }
 }
 
-#' @useDynLib rlang rlang_sxp_address
 sxp_address <- function(x) {
   .Call(rlang_sxp_address, x)
 }

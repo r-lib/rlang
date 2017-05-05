@@ -37,11 +37,11 @@ mut_node_car(x, newcar)
 
 mut_node_cdr(x, newcdr)
 
-mut_node_caar(x)
+mut_node_caar(x, newcar)
 
 mut_node_cadr(x, newcar)
 
-mut_node_cdar(x)
+mut_node_cdar(x, newcdr)
 
 mut_node_cddr(x, newcdr)
 

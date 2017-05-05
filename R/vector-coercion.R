@@ -139,7 +139,6 @@ as_complex <- function(x) {
   )
 }
 #' @rdname vector-coercion
-#' @useDynLib rlang rlang_symbol_to_character
 #' @export
 as_character <- function(x, encoding = NULL) {
   coerce_type_vec(x, friendly_type("character"),
@@ -169,7 +168,6 @@ as_list <- function(x) {
   )
 }
 
-#' @useDynLib rlang rlang_unescape_character
 as_list_env <- function(x) {
   names_x <- names(x)
   x <- as_base_type(x, as.list)
@@ -188,9 +186,6 @@ as_list_other <- function(x) {
   )
 }
 
-#' @useDynLib rlang rlang_zap_attrs
-#' @useDynLib rlang rlang_set_attrs
-#' @useDynLib rlang rlang_get_attrs
 as_base_type <- function(x, as_type) {
   # Zap attributes temporarily instead of unclassing. We want to avoid
   # method dispatch, but we also want to avoid an extra copy of atomic

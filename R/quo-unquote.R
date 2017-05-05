@@ -171,7 +171,6 @@ UQS <- function(x) {
 #' })
 #' fn
 #' fn("foo")
-#' @useDynLib rlang rlang_interp
 expr_interp <- function(x, env = NULL) {
   if (is_formula(x)) {
     expr <- .Call(rlang_interp, f_rhs(x), env %||% f_env(x), TRUE)

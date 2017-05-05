@@ -685,7 +685,6 @@ is_copyable <- function(x) {
 is_equal <- function(x, y) {
   identical(x, y)
 }
-#' @useDynLib rlang rlang_is_reference
 is_reference <- function(x, y) {
   .Call(rlang_is_reference, x, y)
 }

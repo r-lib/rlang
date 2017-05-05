@@ -76,7 +76,6 @@ is_bare_formula <- function(x, scoped = NULL, lhs = NULL) {
   is_null(class) || identical(class, "formula")
 }
 #' @rdname is_formula
-#' @useDynLib rlang rlang_is_formulaish
 #' @export
 is_formulaish <- function(x, scoped = NULL, lhs = NULL) {
   .Call(rlang_is_formulaish, x, scoped, lhs)
@@ -104,7 +103,6 @@ is_formulaish <- function(x, scoped = NULL, lhs = NULL) {
 #' f_lhs(x ~ y)
 #'
 #' f_env(~ x)
-#' @useDynLib rlang f_rhs_
 f_rhs <- function(f) {
   .Call(f_rhs_, f)
 }
@@ -119,7 +117,6 @@ f_rhs <- function(f) {
 
 #' @export
 #' @rdname f_rhs
-#' @useDynLib rlang f_lhs_
 f_lhs <- function(f) {
   .Call(f_lhs_, f)
 }
