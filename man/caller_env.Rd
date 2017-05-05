@@ -4,7 +4,7 @@
 \alias{caller_env}
 \alias{caller_frame}
 \alias{caller_fn}
-\title{Get the environment of the caller frame.}
+\title{Get the environment of the caller frame}
 \usage{
 caller_env(n = 1)
 

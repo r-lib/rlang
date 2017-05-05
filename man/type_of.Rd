@@ -2,7 +2,7 @@
 % Please edit documentation in R/types.R
 \name{type_of}
 \alias{type_of}
-\title{Base type of an object.}
+\title{Base type of an object}
 \usage{
 type_of(x)
 }

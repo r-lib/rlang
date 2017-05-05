@@ -2,7 +2,7 @@
 % Please edit documentation in R/vector-raw.R
 \name{as_bytes}
 \alias{as_bytes}
-\title{Coerce to a raw vector.}
+\title{Coerce to a raw vector}
 \usage{
 as_bytes(x)
 }

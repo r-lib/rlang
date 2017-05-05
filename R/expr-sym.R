@@ -1,4 +1,4 @@
-#' Create a symbol or list of symbols.
+#' Create a symbol or list of symbols
 #'
 #' These functions take strings as input and turn them into symbols.
 #' Contrarily to `as.name()`, they convert the strings to the native

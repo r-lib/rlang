@@ -4,7 +4,7 @@
 \alias{f_text}
 \alias{f_name}
 \alias{f_label}
-\title{Turn RHS of formula into a string/label.}
+\title{Turn RHS of formula into a string or label}
 \usage{
 f_text(x, width = 60L, nlines = Inf)
 

@@ -9,7 +9,7 @@
 \alias{as_character}
 \alias{as_string}
 \alias{as_list}
-\title{Coerce an object to a base type.}
+\title{Coerce an object to a base type}
 \usage{
 as_logical(x)
 

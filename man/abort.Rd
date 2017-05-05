@@ -4,7 +4,7 @@
 \alias{abort}
 \alias{warn}
 \alias{inform}
-\title{Signal an error, warning, or message.}
+\title{Signal an error, warning, or message}
 \usage{
 abort(msg, type = NULL, call = FALSE)
 

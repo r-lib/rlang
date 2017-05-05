@@ -5,7 +5,7 @@
 \alias{parse_exprs}
 \alias{parse_quosure}
 \alias{parse_quosures}
-\title{Parse R code.}
+\title{Parse R code}
 \usage{
 parse_expr(x)
 

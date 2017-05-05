@@ -4,7 +4,7 @@
 \alias{mut_utf8_locale}
 \alias{mut_latin1_locale}
 \alias{mut_mbcs_locale}
-\title{Set the locale's codeset for testing.}
+\title{Set the locale's codeset for testing}
 \usage{
 mut_utf8_locale()
 

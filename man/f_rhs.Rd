@@ -7,7 +7,7 @@
 \alias{f_lhs<-}
 \alias{f_env}
 \alias{f_env<-}
-\title{Get/set formula components.}
+\title{Get or set formula components}
 \usage{
 f_rhs(f)
 

@@ -3,7 +3,7 @@
 \name{exprs_auto_name}
 \alias{exprs_auto_name}
 \alias{quos_auto_name}
-\title{Ensure that list of expressions are all named.}
+\title{Ensure that list of expressions are all named}
 \usage{
 exprs_auto_name(exprs, width = 60L, printer = expr_text)
 

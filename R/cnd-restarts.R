@@ -1,4 +1,4 @@
-#' Establish a restart point on the stack.
+#' Establish a restart point on the stack
 #'
 #' Restart points are named functions that are established with
 #' `with_restarts()`. Once established, you can interrupt the normal
@@ -111,7 +111,7 @@ with_restarts <- function(.expr, ...) {
 }
 
 
-#' Restarts utilities.
+#' Restarts utilities
 #'
 #' Restarts are named jumping points established by [with_restarts()].
 #' `rst_list()` returns the names of all restarts currently
@@ -149,7 +149,7 @@ rst_maybe_jump <- function(.restart, ...) {
   }
 }
 
-#' Jump to the abort restart.
+#' Jump to the abort restart
 #'
 #' The abort restart is the only restart that is established at top
 #' level. It is used by R as a top-level target, most notably when an
@@ -201,7 +201,7 @@ rst_abort <- function() {
   rst_jump("abort")
 }
 
-#' Jump to a muffling restart.
+#' Jump to a muffling restart
 #'
 #' Muffle restarts are established at the same location as where a
 #' condition is signalled. They are useful for two non-exclusive

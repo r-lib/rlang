@@ -105,7 +105,7 @@ quo_names_width <- function(named) {
   }
 }
 
-#' Ensure that list of expressions are all named.
+#' Ensure that list of expressions are all named
 #'
 #' This gives default names to unnamed elements of a list of
 #' expressions (or expression wrappers such as formulas or tidy

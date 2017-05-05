@@ -1,4 +1,4 @@
-#' Add attributes to an object.
+#' Add attributes to an object
 #'
 #' `set_attrs()` adds, changes, or zaps attributes of objects. Pass a
 #' single unnamed `NULL` as argument to zap all attributes. For
@@ -219,7 +219,7 @@ set_names <- function(x, nm = x, ...) {
   x
 }
 
-#' Get names of a vector.
+#' Get names of a vector
 #'
 #' This names getter always returns a character vector, even when an
 #' object does not have a `names` attribute. In this case, it returns

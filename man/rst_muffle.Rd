@@ -2,7 +2,7 @@
 % Please edit documentation in R/cnd-restarts.R
 \name{rst_muffle}
 \alias{rst_muffle}
-\title{Jump to a muffling restart.}
+\title{Jump to a muffling restart}
 \usage{
 rst_muffle(c)
 }

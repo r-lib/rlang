@@ -3,7 +3,7 @@
 \name{op-null-default}
 \alias{op-null-default}
 \alias{\%||\%}
-\title{Default value for \code{NULL}.}
+\title{Default value for \code{NULL}}
 \usage{
 x \%||\% y
 }

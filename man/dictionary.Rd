@@ -4,7 +4,7 @@
 \alias{dictionary}
 \alias{as_dictionary}
 \alias{is_dictionary}
-\title{Create a dictionary.}
+\title{Create a dictionary}
 \usage{
 as_dictionary(x, lookup_msg = NULL, read_only = FALSE)
 

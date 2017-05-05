@@ -2,7 +2,7 @@
 % Please edit documentation in R/vector-chr.R
 \name{string}
 \alias{string}
-\title{Construct a character vector or a string.}
+\title{Construct a character vector or a string}
 \usage{
 string(x, encoding = NULL)
 }

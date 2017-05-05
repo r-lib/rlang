@@ -3,7 +3,7 @@
 \name{fn_env}
 \alias{fn_env}
 \alias{fn_env<-}
-\title{Return the closure environment of a function.}
+\title{Return the closure environment of a function}
 \usage{
 fn_env(fn)
 

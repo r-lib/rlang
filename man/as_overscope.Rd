@@ -5,7 +5,7 @@
 \alias{new_overscope}
 \alias{overscope_eval_next}
 \alias{overscope_clean}
-\title{Create a dynamic scope for tidy evaluation.}
+\title{Create a dynamic scope for tidy evaluation}
 \usage{
 as_overscope(quo, data = NULL)
 

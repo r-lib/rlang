@@ -1,4 +1,4 @@
-#' Create a function by "hand"
+#' Create a function
 #'
 #' This constructs a new function given it's three components:
 #' list of arguments, body code and parent environment.
@@ -211,7 +211,7 @@ is_primitive_lazy <- function(x) {
 }
 
 
-#' Return the closure environment of a function.
+#' Return the closure environment of a function
 #'
 #' Closure environments define the scope of functions (see [env()]).
 #' When a function call is evaluated, R creates an evaluation frame
@@ -251,7 +251,7 @@ fn_env <- function(fn) {
 }
 
 
-#' Convert to function or closure.
+#' Convert to function or closure
 #'
 #' @description
 #'

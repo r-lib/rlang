@@ -1,4 +1,4 @@
-#' Missing values.
+#' Missing values
 #'
 #' Missing values are represented in R with the general symbol
 #' `NA`. They can be inserted in almost all data containers: all
@@ -53,7 +53,7 @@ na_chr <- NA_character_
 na_cpl <- NA_complex_
 
 
-#' Test for missing values.
+#' Test for missing values
 #'
 #' `are_na()` checks for missing values in a vector and is equivalent
 #' to [base::is.na()]. It is a vectorised predicate, meaning that its

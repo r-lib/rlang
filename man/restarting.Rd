@@ -2,7 +2,7 @@
 % Please edit documentation in R/cnd-handlers.R
 \name{restarting}
 \alias{restarting}
-\title{Create a restarting handler.}
+\title{Create a restarting handler}
 \usage{
 restarting(.restart, ..., .fields = NULL)
 }

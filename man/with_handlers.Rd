@@ -2,7 +2,7 @@
 % Please edit documentation in R/cnd-handlers.R
 \name{with_handlers}
 \alias{with_handlers}
-\title{Establish handlers on the stack.}
+\title{Establish handlers on the stack}
 \usage{
 with_handlers(.expr, ...)
 }

@@ -2,7 +2,7 @@
 % Please edit documentation in R/cnd-restarts.R
 \name{with_restarts}
 \alias{with_restarts}
-\title{Establish a restart point on the stack.}
+\title{Establish a restart point on the stack}
 \usage{
 with_restarts(.expr, ...)
 }

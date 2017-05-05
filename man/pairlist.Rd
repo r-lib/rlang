@@ -17,7 +17,7 @@
 \alias{mut_node_cddr}
 \alias{node_tag}
 \alias{mut_node_tag}
-\title{Helpers for pairlist and language nodes.}
+\title{Helpers for pairlist and language nodes}
 \usage{
 node(newcar, newcdr)
 

@@ -2,7 +2,7 @@
 % Please edit documentation in R/eval-tidy.R
 \name{eval_tidy_}
 \alias{eval_tidy_}
-\title{Tidy evaluation in a custom environment.}
+\title{Tidy evaluation in a custom environment}
 \usage{
 eval_tidy_(expr, bottom, top = NULL, env = caller_env())
 }

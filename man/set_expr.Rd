@@ -3,7 +3,7 @@
 \name{set_expr}
 \alias{set_expr}
 \alias{get_expr}
-\title{Set and get an expression.}
+\title{Set and get an expression}
 \usage{
 set_expr(x, value)
 

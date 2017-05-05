@@ -1,4 +1,4 @@
-#' Create a dictionary.
+#' Create a dictionary
 #'
 #' @description
 #'

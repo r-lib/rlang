@@ -5,7 +5,7 @@
 \alias{coerce_type}
 \alias{switch_class}
 \alias{coerce_class}
-\title{Dispatch on base types.}
+\title{Dispatch on base types}
 \usage{
 switch_type(.x, ...)
 

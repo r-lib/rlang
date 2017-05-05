@@ -3,7 +3,7 @@
 \name{as_function}
 \alias{as_function}
 \alias{as_closure}
-\title{Convert to function or closure.}
+\title{Convert to function or closure}
 \usage{
 as_function(x, env = caller_env())
 

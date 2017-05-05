@@ -2,7 +2,7 @@
 % Please edit documentation in R/eval.R
 \name{invoke}
 \alias{invoke}
-\title{Invoke a function with a list of arguments.}
+\title{Invoke a function with a list of arguments}
 \usage{
 invoke(.fn, .args = list(), ..., .env = caller_env(), .bury = c(".fn",
   ""))

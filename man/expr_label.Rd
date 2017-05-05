@@ -4,7 +4,7 @@
 \alias{expr_label}
 \alias{expr_name}
 \alias{expr_text}
-\title{Turn an expression to a label.}
+\title{Turn an expression to a label}
 \usage{
 expr_label(expr)
 

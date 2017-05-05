@@ -4,7 +4,7 @@
 \alias{switch_lang}
 \alias{coerce_lang}
 \alias{lang_type_of}
-\title{Dispatch on call type.}
+\title{Dispatch on call type}
 \usage{
 switch_lang(.x, ...)
 

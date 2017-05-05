@@ -2,7 +2,7 @@
 % Please edit documentation in R/vector-utils.R
 \name{prepend}
 \alias{prepend}
-\title{Prepend a vector.}
+\title{Prepend a vector}
 \usage{
 prepend(x, values, before = 1)
 }

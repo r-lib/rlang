@@ -1,4 +1,4 @@
-#' Coerce an object to a base type.
+#' Coerce an object to a base type
 #'
 #' These are equivalent to the base functions (e.g. [as.logical()],
 #' [as.list()], etc), but perform coercion rather than conversion.

@@ -8,7 +8,7 @@
 \alias{na_dbl}
 \alias{na_chr}
 \alias{na_cpl}
-\title{Missing values.}
+\title{Missing values}
 \format{An object of class \code{logical} of length 1.}
 \usage{
 na_lgl

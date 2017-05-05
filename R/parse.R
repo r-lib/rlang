@@ -1,4 +1,4 @@
-#' Parse R code.
+#' Parse R code
 #'
 #' These functions parse and transform text into R expressions. This
 #' is the first step to interpret or evaluate a piece of R code

@@ -3,7 +3,7 @@
 \name{dots_list}
 \alias{dots_list}
 \alias{dots_splice}
-\title{Extract dots with splicing semantics.}
+\title{Extract dots with splicing semantics}
 \usage{
 dots_list(..., .ignore_empty = c("trailing", "none", "all"))
 

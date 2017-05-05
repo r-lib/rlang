@@ -3,7 +3,7 @@
 \name{sym}
 \alias{sym}
 \alias{syms}
-\title{Create a symbol or list of symbols.}
+\title{Create a symbol or list of symbols}
 \usage{
 sym(x)
 

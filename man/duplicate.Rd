@@ -2,7 +2,7 @@
 % Please edit documentation in R/expr-node.R
 \name{duplicate}
 \alias{duplicate}
-\title{Duplicate an R object.}
+\title{Duplicate an R object}
 \usage{
 duplicate(x, shallow = FALSE)
 }

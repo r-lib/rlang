@@ -411,7 +411,7 @@ quo_is_null <- function(quo) {
 }
 
 
-#' Splice a quosure and format it into string or label.
+#' Splice a quosure and format it into string or label
 #'
 #' `quo_expr()` flattens all quosures within an expression. I.e., it
 #' turns `~foo(~bar(), ~baz)` to `foo(bar(), baz)`. `quo_text()` and

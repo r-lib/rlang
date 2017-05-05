@@ -5,7 +5,7 @@
 \alias{chr_encoding}
 \alias{set_str_encoding}
 \alias{str_encoding}
-\title{Set encoding of a string or character vector.}
+\title{Set encoding of a string or character vector}
 \usage{
 set_chr_encoding(x, encoding = c("unknown", "UTF-8", "latin1", "bytes"))
 

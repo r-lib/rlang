@@ -1,4 +1,4 @@
-#' Establish handlers on the stack.
+#' Establish handlers on the stack
 #'
 #' Condition handlers are functions established on the evaluation
 #' stack (see [ctxt_stack()]) that are called by R when a condition is
@@ -96,7 +96,7 @@ with_handlers <- function(.expr, ...) {
   eval_tidy(quo)
 }
 
-#' Create an exiting or in place handler.
+#' Create an exiting or in place handler
 #'
 #' There are two types of condition handlers: exiting handlers, which
 #' are thrown to the place where they have been established (e.g.,
@@ -162,7 +162,7 @@ inplace <- function(handler, muffle = FALSE) {
   structure(handler_, class = c("inplace", "handler"))
 }
 
-#' Create a restarting handler.
+#' Create a restarting handler
 #'
 #' This constructor automates the common task of creating an
 #' [inplace()] handler that invokes a restart.

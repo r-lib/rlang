@@ -3,7 +3,7 @@
 \name{cnd_signal}
 \alias{cnd_signal}
 \alias{cnd_abort}
-\title{Signal a condition.}
+\title{Signal a condition}
 \usage{
 cnd_signal(.cnd, ..., .msg = NULL, .call = FALSE, .mufflable = TRUE)
 

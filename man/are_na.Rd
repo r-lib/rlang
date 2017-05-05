@@ -8,7 +8,7 @@
 \alias{is_dbl_na}
 \alias{is_chr_na}
 \alias{is_cpl_na}
-\title{Test for missing values.}
+\title{Test for missing values}
 \usage{
 are_na(x)
 

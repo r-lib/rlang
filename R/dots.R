@@ -1,4 +1,4 @@
-#' Extract dots with splicing semantics.
+#' Extract dots with splicing semantics
 #'
 #' These functions evaluate all arguments contained in `...` and
 #' return them as a list. They both splice their arguments if they
@@ -49,7 +49,7 @@ dots_splice <- function(..., .ignore_empty = c("trailing", "none", "all")) {
   dots
 }
 
-#' Evaluate dots with preliminary splicing.
+#' Evaluate dots with preliminary splicing
 #'
 #' This is a tool for advanced users. It captures dots, processes
 #' unquoting and splicing operators, and evaluates them. Unlike

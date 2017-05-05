@@ -2,7 +2,7 @@
 % Please edit documentation in R/stack.R
 \name{call_inspect}
 \alias{call_inspect}
-\title{Inspect a call.}
+\title{Inspect a call}
 \usage{
 call_inspect(...)
 }

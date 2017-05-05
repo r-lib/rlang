@@ -2,7 +2,7 @@
 % Please edit documentation in R/cnd-restarts.R
 \name{rst_abort}
 \alias{rst_abort}
-\title{Jump to the abort restart.}
+\title{Jump to the abort restart}
 \usage{
 rst_abort()
 }

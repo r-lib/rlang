@@ -5,7 +5,7 @@
 \alias{:=}
 \alias{is_definition}
 \alias{new_definition}
-\title{Definition operator.}
+\title{Definition operator}
 \usage{
 ":="()
 

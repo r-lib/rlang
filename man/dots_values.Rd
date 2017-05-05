@@ -2,7 +2,7 @@
 % Please edit documentation in R/dots.R
 \name{dots_values}
 \alias{dots_values}
-\title{Evaluate dots with preliminary splicing.}
+\title{Evaluate dots with preliminary splicing}
 \usage{
 dots_values(..., .ignore_empty = c("trailing", "none", "all"))
 }

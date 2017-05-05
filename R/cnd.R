@@ -1,4 +1,4 @@
-#' Create a condition object.
+#' Create a condition object
 #'
 #' These constructors make it easy to create subclassed conditions.
 #' Conditions are objects that power the error system in R. They can
@@ -79,7 +79,7 @@ is_condition <- function(x) {
   inherits(x, "condition")
 }
 
-#' Signal a condition.
+#' Signal a condition
 #'
 #' Signal a condition to handlers that have been established on the
 #' stack. Conditions signalled with `cnd_signal()` are assumed to be
@@ -233,7 +233,7 @@ cnd_signal_ <- function(cnd, signal, mufflable) {
   }
 }
 
-#' Signal an error, warning, or message.
+#' Signal an error, warning, or message
 #'
 #' These functions are equivalent to base functions [base::stop()],
 #' [base::warning()] and [base::message()], but the `type` argument

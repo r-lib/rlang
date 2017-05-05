@@ -1,4 +1,4 @@
-#' Prepend a vector.
+#' Prepend a vector
 #'
 #' This is a companion to [base::append()] to help merging two lists
 #' or atomic vectors. `prepend()` is a clearer semantic signal than
@@ -27,7 +27,7 @@ prepend <- function(x, values, before = 1) {
   }
 }
 
-#' Modify a vector.
+#' Modify a vector
 #'
 #' This function merges a list of arguments into a vector. It always
 #' returns a list.

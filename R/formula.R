@@ -1,4 +1,4 @@
-#' Create a formula object by "hand".
+#' Create a formula
 #'
 #' @param lhs,rhs A call, name, or atomic vector.
 #' @param env An environment.
@@ -82,7 +82,7 @@ is_formulaish <- function(x, scoped = NULL, lhs = NULL) {
   .Call(rlang_is_formulaish, x, scoped, lhs)
 }
 
-#' Get/set formula components.
+#' Get or set formula components
 #'
 #' `f_rhs` extracts the righthand side, `f_lhs` extracts the lefthand
 #' side, and `f_env` extracts the environment. All functions throw an
@@ -158,7 +158,7 @@ f_env <- function(f) {
   set_attrs(x, .Environment = value)
 }
 
-#' Turn RHS of formula into a string/label.
+#' Turn RHS of formula into a string or label
 #'
 #' Equivalent of [expr_text()] and [expr_label()] for formulas.
 #'

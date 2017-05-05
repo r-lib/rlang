@@ -3,7 +3,7 @@
 \name{set_attrs}
 \alias{set_attrs}
 \alias{mut_attrs}
-\title{Add attributes to an object.}
+\title{Add attributes to an object}
 \usage{
 set_attrs(.x, ...)
 

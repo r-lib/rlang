@@ -1,4 +1,4 @@
-#' Evaluate an expression in an environment.
+#' Evaluate an expression in an environment
 #'
 #' `eval_bare()` is a lightweight version of the base function
 #' [base::eval()]. It does not accept supplementary data, but it is
@@ -67,7 +67,7 @@ eval_bare <- function(expr, env = parent.frame()) {
   .Call(rlang_eval, expr, env)
 }
 
-#' Invoke a function with a list of arguments.
+#' Invoke a function with a list of arguments
 #'
 #' Normally, you invoke a R function by typing arguments manually. A
 #' powerful alternative is to call a function with a list of arguments

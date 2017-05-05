@@ -1,4 +1,4 @@
-#' Splice a list within a vector.
+#' Splice a list within a vector
 #'
 #' This adjective signals to functions taking dots that `x` should be
 #' spliced in a surrounding vector. Examples of functions that support

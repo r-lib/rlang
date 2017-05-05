@@ -2,7 +2,7 @@
 % Please edit documentation in R/fn.R
 \name{new_function}
 \alias{new_function}
-\title{Create a function by "hand"}
+\title{Create a function}
 \usage{
 new_function(args, body, env = caller_env())
 }

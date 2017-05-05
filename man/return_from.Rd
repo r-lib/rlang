@@ -3,7 +3,7 @@
 \name{return_from}
 \alias{return_from}
 \alias{return_to}
-\title{Jump to or from a frame.}
+\title{Jump to or from a frame}
 \usage{
 return_from(frame, value = NULL)
 

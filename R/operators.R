@@ -1,4 +1,4 @@
-#' Default value for `NULL`.
+#' Default value for `NULL`
 #'
 #' This infix function makes it easy to replace `NULL`s with a default
 #' value. It's inspired by the way that Ruby's or operation (`||`)
@@ -14,7 +14,7 @@
   if (is_null(x)) y else x
 }
 
-#' Replace missing values.
+#' Replace missing values
 #'
 #' This infix function is similar to \code{\%||\%} but is vectorised
 #' and provides a default value for missing elements. It is faster
@@ -33,7 +33,7 @@
   .Call(replace_na, x, y)
 }
 
-#' Infix attribute accessor.
+#' Infix attribute accessor
 #'
 #' @param x Object
 #' @param name Attribute name
@@ -46,7 +46,7 @@
   attr(x, name, exact = TRUE)
 }
 
-#' Definition operator.
+#' Definition operator
 #'
 #' The definition operator is typically used in DSL packages like
 #' `ggvis` and `data.table`. It is exported in rlang as a alias to

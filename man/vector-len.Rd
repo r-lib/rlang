@@ -10,7 +10,7 @@
 \alias{raw_len}
 \alias{bytes_len}
 \alias{list_len}
-\title{Create new vectors.}
+\title{Create new vectors}
 \usage{
 lgl_len(.n)
 

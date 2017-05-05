@@ -2,7 +2,7 @@
 % Please edit documentation in R/expr-node.R
 \name{as_pairlist}
 \alias{as_pairlist}
-\title{Coerce to pairlist.}
+\title{Coerce to pairlist}
 \usage{
 as_pairlist(x)
 }

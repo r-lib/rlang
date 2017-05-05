@@ -5,7 +5,7 @@
 \alias{quo_label}
 \alias{quo_text}
 \alias{quo_name}
-\title{Splice a quosure and format it into string or label.}
+\title{Splice a quosure and format it into string or label}
 \usage{
 quo_expr(quo, warn = FALSE)
 

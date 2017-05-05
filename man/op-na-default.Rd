@@ -3,7 +3,7 @@
 \name{op-na-default}
 \alias{op-na-default}
 \alias{\%|\%}
-\title{Replace missing values.}
+\title{Replace missing values}
 \usage{
 x \%|\% y
 }

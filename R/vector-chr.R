@@ -1,4 +1,4 @@
-#' Construct a character vector or a string.
+#' Construct a character vector or a string
 #'
 #' These base-type constructors allow more control over the creation
 #' of strings in R. They take character vectors or string-like objects
@@ -42,7 +42,7 @@ string <- function(x, encoding = NULL) {
   set_chr_encoding(x, encoding)
 }
 
-#' Coerce to a character vector and attempt encoding conversion.
+#' Coerce to a character vector and attempt encoding conversion
 #'
 #' @description
 #'
@@ -106,7 +106,7 @@ as_native_string <- function(x) {
   )
 }
 
-#' Set encoding of a string or character vector.
+#' Set encoding of a string or character vector
 #'
 #' R has specific support for UTF-8 and latin1 encoded strings. This
 #' mostly matters for internal conversions. Thanks to this support,
@@ -186,7 +186,7 @@ str_encoding <- function(x) {
   Encoding(x)
 }
 
-#' Set the locale's codeset for testing.
+#' Set the locale's codeset for testing
 #'
 #' Setting a locale's codeset (specifically, the `LC_CTYPE` category)
 #' produces side effects in R's handling of strings. The most

@@ -4,7 +4,7 @@
 \alias{splice}
 \alias{is_spliced}
 \alias{is_spliced_bare}
-\title{Splice a list within a vector.}
+\title{Splice a list within a vector}
 \usage{
 splice(x)
 

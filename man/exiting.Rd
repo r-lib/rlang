@@ -3,7 +3,7 @@
 \name{exiting}
 \alias{exiting}
 \alias{inplace}
-\title{Create an exiting or in place handler.}
+\title{Create an exiting or in place handler}
 \usage{
 exiting(handler)
 

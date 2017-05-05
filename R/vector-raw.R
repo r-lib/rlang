@@ -9,7 +9,7 @@ new_bytes <- function(x) {
   }
 }
 
-#' Coerce to a raw vector.
+#' Coerce to a raw vector
 #'
 #' This currently only works with strings, and returns its hexadecimal
 #' representation.

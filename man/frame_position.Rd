@@ -2,7 +2,7 @@
 % Please edit documentation in R/stack.R
 \name{frame_position}
 \alias{frame_position}
-\title{Find the position or distance of a frame on the evaluation stack.}
+\title{Find the position or distance of a frame on the evaluation stack}
 \usage{
 frame_position(frame, from = c("global", "current"))
 }

@@ -1,4 +1,4 @@
-#' Helpers for pairlist and language nodes.
+#' Helpers for pairlist and language nodes
 #'
 #' @description
 #'
@@ -192,7 +192,7 @@ mut_node_tag <- function(x, newtag) {
   .Call(rlang_set_tag, x, newtag)
 }
 
-#' Coerce to pairlist.
+#' Coerce to pairlist
 #'
 #' This transforms vector objects to a linked pairlist of nodes. See
 #' [pairlist] for information about the pairlist type.
@@ -214,7 +214,7 @@ is_pairlist <- function(x) {
 }
 
 
-#' Duplicate an R object.
+#' Duplicate an R object
 #'
 #' In R semantics, objects are copied by value. This means that
 #' modifying the copy leaves the original object intact. Since,

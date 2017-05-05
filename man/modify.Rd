@@ -2,7 +2,7 @@
 % Please edit documentation in R/vector-utils.R
 \name{modify}
 \alias{modify}
-\title{Modify a vector.}
+\title{Modify a vector}
 \usage{
 modify(.x, ...)
 }

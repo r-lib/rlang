@@ -276,7 +276,7 @@ call_frame <- function(n = 1, clean = TRUE) {
   frame
 }
 
-#' Get the environment of the caller frame.
+#' Get the environment of the caller frame
 #'
 #' `caller_frame()` is a shortcut for `call_frame(2)` and
 #' `caller_fn()` and `caller_env()` are shortcuts for
@@ -452,7 +452,7 @@ sys_frame <- function(n) {
   }
 }
 
-#' Find the position or distance of a frame on the evaluation stack.
+#' Find the position or distance of a frame on the evaluation stack
 #'
 #' The frame position on the stack can be computed by counting frames
 #' from the global frame (the bottom of the stack, the default) or
@@ -536,7 +536,7 @@ frame_position_current <- function(frame, stack = NULL,
 }
 
 
-#' Trim top call layers from the evaluation stack.
+#' Trim top call layers from the evaluation stack
 #'
 #' [ctxt_stack()] can be tricky to use in real code because all
 #' intervening frames are returned with the stack, including those at
@@ -600,7 +600,7 @@ is_frame_env <- function(env) {
 }
 
 
-#' Jump to or from a frame.
+#' Jump to or from a frame
 #'
 #' While [base::return()] can only return from the current local
 #' frame, these two functions will return from any frame on the
@@ -666,7 +666,7 @@ return_to <- function(frame, value = NULL) {
 }
 
 
-#' Inspect a call.
+#' Inspect a call
 #'
 #' This function is useful for quick testing and debugging when you
 #' manipulate expressions and calls. It lets you check that a function

@@ -383,7 +383,7 @@ eval_tidy <- function(expr, data = NULL, env = caller_env()) {
 .data <- NULL
 delayedAssign(".data", as_dictionary(list(), read_only = TRUE))
 
-#' Tidy evaluation in a custom environment.
+#' Tidy evaluation in a custom environment
 #'
 #' We recommend using [eval_tidy()] in your DSLs as much as possible
 #' to ensure some consistency across packages (`.data` and `.env`
@@ -414,7 +414,7 @@ eval_tidy_ <- function(expr, bottom, top = NULL, env = caller_env()) {
 }
 
 
-#' Create a dynamic scope for tidy evaluation.
+#' Create a dynamic scope for tidy evaluation
 #'
 #' Tidy evaluation works by rescoping a set of symbols (column names
 #' of a data frame for example) to custom bindings. While doing this,

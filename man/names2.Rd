@@ -2,7 +2,7 @@
 % Please edit documentation in R/attr.R
 \name{names2}
 \alias{names2}
-\title{Get names of a vector.}
+\title{Get names of a vector}
 \usage{
 names2(x)
 }

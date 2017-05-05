@@ -2,7 +2,7 @@
 % Please edit documentation in R/formula.R
 \name{new_formula}
 \alias{new_formula}
-\title{Create a formula object by "hand".}
+\title{Create a formula}
 \usage{
 new_formula(lhs, rhs, env = caller_env())
 }
@@ -15,7 +15,7 @@ new_formula(lhs, rhs, env = caller_env())
 A formula object.
 }
 \description{
-Create a formula object by "hand".
+Create a formula
 }
 \examples{
 new_formula(quote(a), quote(b))

@@ -2,7 +2,7 @@
 % Please edit documentation in R/stack.R
 \name{stack_trim}
 \alias{stack_trim}
-\title{Trim top call layers from the evaluation stack.}
+\title{Trim top call layers from the evaluation stack}
 \usage{
 stack_trim(stack, n = 1)
 }

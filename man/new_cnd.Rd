@@ -5,7 +5,7 @@
 \alias{cnd_error}
 \alias{cnd_warning}
 \alias{cnd_message}
-\title{Create a condition object.}
+\title{Create a condition object}
 \usage{
 new_cnd(.type = NULL, ..., .msg = NULL)
 

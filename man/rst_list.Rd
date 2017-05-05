@@ -5,7 +5,7 @@
 \alias{rst_exists}
 \alias{rst_jump}
 \alias{rst_maybe_jump}
-\title{Restarts utilities.}
+\title{Restarts utilities}
 \usage{
 rst_list()
 

@@ -310,7 +310,7 @@ is_scalar_integerish <- function(x) {
   !is.object(x) && is_integerish(x, 1L)
 }
 
-#' Base type of an object.
+#' Base type of an object
 #'
 #' This is equivalent to [base::typeof()] with a few differences that
 #' make dispatching easier:
@@ -364,7 +364,7 @@ type_of <- function(x) {
   }
 }
 
-#' Dispatch on base types.
+#' Dispatch on base types
 #'
 #' `switch_type()` is equivalent to
 #' \code{\link[base]{switch}(\link{type_of}(x, ...))}, while
@@ -545,7 +545,7 @@ friendly_expr_type_of <- function(type) {
   )
 }
 
-#' Dispatch on call type.
+#' Dispatch on call type
 #'
 #' `switch_lang()` dispatches clauses based on the subtype of call, as
 #' determined by `lang_type_of()`. The subtypes are based on the type

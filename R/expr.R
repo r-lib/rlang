@@ -198,7 +198,7 @@ is_symbolic <- function(x) {
 }
 
 
-#' Turn an expression to a label.
+#' Turn an expression to a label
 #'
 #' `expr_text()` turns the expression into a single string, which
 #' might be multi-line. `expr_name()` is suitable for formatting
@@ -283,7 +283,7 @@ deparse_one <- function(expr) {
   chr
 }
 
-#' Set and get an expression.
+#' Set and get an expression
 #'
 #' These helpers are useful to make your function work generically
 #' with quosures and raw expressions. First call `get_expr()` to

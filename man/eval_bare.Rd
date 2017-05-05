@@ -2,7 +2,7 @@
 % Please edit documentation in R/eval.R
 \name{eval_bare}
 \alias{eval_bare}
-\title{Evaluate an expression in an environment.}
+\title{Evaluate an expression in an environment}
 \usage{
 eval_bare(expr, env = parent.frame())
 }

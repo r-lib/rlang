@@ -5,7 +5,7 @@
 \alias{as_native_character}
 \alias{as_utf8_string}
 \alias{as_native_string}
-\title{Coerce to a character vector and attempt encoding conversion.}
+\title{Coerce to a character vector and attempt encoding conversion}
 \usage{
 as_utf8_character(x)
 
