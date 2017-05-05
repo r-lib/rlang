@@ -118,6 +118,15 @@ the LHS is not inspected.</p></td>
     </tr>
     </table>
     
+    <h2 class="hasAnchor" id="details"><a class="anchor" href="#details"></a>Details</h2>
+
+    <p>The <code>scoped</code> argument patterns-match on whether the scoped bundled
+with the quosure is valid or not. Invalid scopes may happen in
+nested quotations like <code>~~expr</code>, where the outer quosure is validly
+scoped but not the inner one. This is because <code>~</code> saves the
+environment when it is evaluated, and quoted formulas are by
+definition not evaluated.</p>
+    
     <h2 class="hasAnchor" id="see-also"><a class="anchor" href="#see-also"></a>See also</h2>
 
     <p><code><a href='is_quosure.html'>is_quosure()</a></code> and <code><a href='is_quosure.html'>is_quosureish()</a></code></p>
@@ -145,6 +154,8 @@ the LHS is not inspected.</p></td>
     <ul class="nav nav-pills nav-stacked">
       <li><a href="#arguments">Arguments</a></li>
       
+      <li><a href="#details">Details</a></li>
+
       <li><a href="#see-also">See also</a></li>
       
       <li><a href="#examples">Examples</a></li>

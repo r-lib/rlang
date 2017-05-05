@@ -86,10 +86,10 @@
 
     
     <p>These predicates test for <a href='quosure.html'>quosure</a> objects.</p><ul>
-<li><p><code>is_quosure()</code> tests for the canonical R quosure: the one-sided
-"formula".</p></li>
+<li><p><code>is_quosure()</code> tests for a tidyeval quosure. These are one-sided
+formulas with a <code>quosure</code> class.</p></li>
 <li><p><code>is_quosureish()</code> tests for general R quosure objects: quosures,
-two-sided formulas, and <a href='op-definition.html'>definitions</a>.</p></li>
+or one-sided formulas.</p></li>
 </ul>
     
 
@@ -112,20 +112,9 @@ the scope is not inspected.</p></td>
     </tr>
     </table>
     
-    <h2 class="hasAnchor" id="details"><a class="anchor" href="#details"></a>Details</h2>
-
-    <p>The <code>scoped</code> argument patterns-match on whether the scoped bundled
-with the quosure is valid or not. Invalid scopes may happen in
-nested quotations like <code>~~expr</code>, where the outer quosure is validly
-scoped but not the inner one. This is because <code>~</code> saves the
-environment when it is evaluated, and quoted quosures are by
-definition not evaluated. Note that in the <a href='eval_tidy.html'>tidy evaluation
-framework</a>, unscoped quosures are automatically given
-the environment of the outer quosure during the evaluation process.</p>
-    
     <h2 class="hasAnchor" id="see-also"><a class="anchor" href="#see-also"></a>See also</h2>
 
-    <p><code><a href='quosure.html'>quo()</a></code> and <code><a href='as_quosure.html'>as_quosure()</a></code> for creating quosures.</p>
+    <p><code><a href='is_formula.html'>is_formula()</a></code> and <code><a href='is_formula.html'>is_formulaish()</a></code></p>
     
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
@@ -144,8 +133,6 @@ the environment of the outer quosure during the evaluation process.</p>
     <ul class="nav nav-pills nav-stacked">
       <li><a href="#arguments">Arguments</a></li>
       
-      <li><a href="#details">Details</a></li>
-
       <li><a href="#see-also">See also</a></li>
       
       <li><a href="#examples">Examples</a></li>

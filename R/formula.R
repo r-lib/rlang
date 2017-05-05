@@ -29,6 +29,13 @@ new_formula <- function(lhs, rhs, env = caller_env()) {
 #' `"formula"`. `is_formulaish()` returns `TRUE` for both formulas and
 #' [definitions][is_definition] of the type `a := b`.
 #'
+#' The `scoped` argument patterns-match on whether the scoped bundled
+#' with the quosure is valid or not. Invalid scopes may happen in
+#' nested quotations like `~~expr`, where the outer quosure is validly
+#' scoped but not the inner one. This is because `~` saves the
+#' environment when it is evaluated, and quoted formulas are by
+#' definition not evaluated.
+#'
 #' @inheritParams is_quosure
 #' @param lhs A boolean indicating whether the [formula][is_formula]
 #'   or [definition][is_definition] has a left-hand side. If `NULL`,

@@ -29,6 +29,14 @@ tests in addition that \code{x} does not inherit from anything else than
 \code{"formula"}. \code{is_formulaish()} returns \code{TRUE} for both formulas and
 \link[=is_definition]{definitions} of the type \code{a := b}.
 }
+\details{
+The \code{scoped} argument patterns-match on whether the scoped bundled
+with the quosure is valid or not. Invalid scopes may happen in
+nested quotations like \code{~~expr}, where the outer quosure is validly
+scoped but not the inner one. This is because \code{~} saves the
+environment when it is evaluated, and quoted formulas are by
+definition not evaluated.
+}
 \examples{
 x <- disp ~ am
 is_formula(x)
