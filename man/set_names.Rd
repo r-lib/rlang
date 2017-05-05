@@ -4,7 +4,7 @@
 \alias{set_names}
 \title{Set names of a vector}
 \usage{
-set_names(x, nm = NULL, ...)
+set_names(x, nm = x, ...)
 }
 \arguments{
 \item{x}{Vector to name.}
@@ -14,10 +14,11 @@ set_names(x, nm = NULL, ...)
 You can specify names in three ways:
 \itemize{
 \item If you do nothing, \code{x} will be named with itself.
-\item You can supply either a character vector to \code{nm} or individual
-strings in to `...``
 \item If \code{x} already has names, you can provide a function or formula
 to transform the existing names.
+\item In all other cases, \code{nm} and \code{...} are passed to \code{\link[=chr]{chr()}}. This
+gives implicit splicing semantics: you can pass character
+vectors or list of character vectors indistinctly.
 }}
 }
 \description{
