@@ -1,4 +1,134 @@
-#' Process unquote operators in a captured expression.
+#' Quasiquotation of an expression
+#'
+#' @description
+#'
+#' Quasiquotation is the mechanism that makes it possible to program
+#' flexibly with [tidyeval][tidy-evaluation] grammars like dplyr. It
+#' is enabled in all tidyeval functions, the most fundamental of which
+#' are [quo()] and [expr()].
+#'
+#' Quasiquotation is the combination of quoting an expression while
+#' allowing immediate evaluation (unquoting) of part of that
+#' expression. We provide both syntactic operators and functional
+#' forms for unquoting.
+#'
+#' - `UQ()` and the `!!` operator unquote their argument. It gets
+#'   evaluated immediately in the surrounding context.
+#'
+#' - `UQE()` is like `UQ()` but retrieves the expression of
+#'   [quosureish][is_quosureish] objects. It is a shortcut for `!!
+#'   get_expr(x)`. Use this with care: it is potentially unsafe to
+#'   discard the environment of the quosure.
+#'
+#' - `UQS()` and the `!!!` operators unquote and splice their
+#'   argument. The argument should evaluate to a vector or an
+#'   expression. Each component of the vector is embedded as its own
+#'   argument in the surrounding call. If the vector is named, the
+#'   names are used as argument names.
+#'
+#' @section Theory:
+#'
+#' Formally, `quo()` and `expr()` are quasiquote functions, `UQ()` is
+#' the unquote operator, and `UQS()` is the unquote splice operator.
+#' These terms have a rich history in Lisp languages, and live on in
+#' modern languages like
+#' [Julia](http://docs.julialang.org/en/release-0.1/manual/metaprogramming/)
+#' and
+#' [Racket](https://docs.racket-lang.org/reference/quasiquote.html).
+#'
+#' @param x An expression to unquote.
+#' @name quasiquotation
+#' @aliases UQ UQE UQS
+#' @examples
+#' # Quasiquotation functions act like base::quote()
+#' quote(foo(bar))
+#' expr(foo(bar))
+#' quo(foo(bar))
+#'
+#' # In addition, they support unquoting:
+#' expr(foo(UQ(1 + 2)))
+#' expr(foo(!! 1 + 2))
+#' quo(foo(!! 1 + 2))
+#'
+#' # The !! operator is a handy syntactic shortcut for unquoting with
+#' # UQ().  However you need to be a bit careful with operator
+#' # precedence. All arithmetic and comparison operators bind more
+#' # tightly than `!`:
+#' quo(1 +  !! (1 + 2 + 3) + 10)
+#'
+#' # For this reason you should always wrap the unquoted expression
+#' # with parentheses when operators are involved:
+#' quo(1 + (!! 1 + 2 + 3) + 10)
+#'
+#' # Or you can use the explicit unquote function:
+#' quo(1 + UQ(1 + 2 + 3) + 10)
+#'
+#'
+#' # Use !!! or UQS() if you want to add multiple arguments to a
+#' # function It must evaluate to a list
+#' args <- list(1:10, na.rm = TRUE)
+#' quo(mean( UQS(args) ))
+#'
+#' # You can combine the two
+#' var <- quote(xyz)
+#' extra_args <- list(trim = 0.9, na.rm = TRUE)
+#' quo(mean(UQ(var) , UQS(extra_args)))
+#'
+#'
+#' # Unquoting is especially useful for transforming successively a
+#' # captured expression:
+#' quo <- quo(foo(bar))
+#' quo <- quo(inner(!! quo, arg1))
+#' quo <- quo(outer(!! quo, !!! syms(letters[1:3])))
+#' quo
+#'
+#' # Since we are building the expression in the same environment, you
+#' # can also start with raw expressions and create a quosure in the
+#' # very last step to record the dynamic environment:
+#' expr <- expr(foo(bar))
+#' expr <- expr(inner(!! expr, arg1))
+#' quo <- quo(outer(!! expr, !!! syms(letters[1:3])))
+#' quo
+NULL
+
+#' @export
+#' @rdname quasiquotation
+UQ <- function(x) {
+  x
+}
+#' @export
+#' @rdname quasiquotation
+UQE <- function(x) {
+  if (is_quosureish(x)) {
+    get_expr(x)
+  } else {
+    x
+  }
+}
+#' @export
+#' @rdname quasiquotation
+`!!` <- UQE
+#' @export
+#' @rdname quasiquotation
+UQS <- function(x) {
+  if (is_pairlist(x) || is_null(x)) {
+    x
+  } else if (is_vector(x)) {
+    as.pairlist(x)
+  } else if (identical(node_car(x), sym_curly)) {
+    node_cdr(x)
+  } else if (is_expr(x)) {
+    pairlist(x)
+  } else {
+    abort("`x` must be a vector or a language object")
+  }
+}
+#' @export
+#' @rdname quasiquotation
+#' @usage NULL
+`!!!` <- UQS
+
+#' Process unquote operators in a captured expression
 #'
 #' While all capturing functions in the tidy evaluation framework
 #' perform unquote on capture (most notably [quo()]),
@@ -41,6 +171,7 @@
 #' })
 #' fn
 #' fn("foo")
+#' @useDynLib rlang rlang_interp
 expr_interp <- function(x, env = NULL) {
   if (is_formula(x)) {
     expr <- .Call(rlang_interp, f_rhs(x), env %||% f_env(x), TRUE)
@@ -52,44 +183,3 @@ expr_interp <- function(x, env = NULL) {
   }
   x
 }
-
-#' Quasiquotation.
-#' @name quasiquotation
-NULL
-
-#' @export
-#' @rdname quosure
-UQ <- function(x) {
-  x
-}
-#' @export
-#' @rdname quosure
-UQE <- function(x) {
-  if (is_formula(x)) {
-    get_expr(x)
-  } else {
-    x
-  }
-}
-#' @export
-#' @rdname quosure
-`!!` <- UQE
-#' @export
-#' @rdname quosure
-UQS <- function(x) {
-  if (is_pairlist(x) || is_null(x)) {
-    x
-  } else if (is_vector(x)) {
-    as.pairlist(x)
-  } else if (identical(node_car(x), sym_curly)) {
-    node_cdr(x)
-  } else if (is_expr(x)) {
-    pairlist(x)
-  } else {
-    abort("`x` must be a vector or a language object")
-  }
-}
-#' @export
-#' @rdname quosure
-#' @usage NULL
-`!!!` <- UQS

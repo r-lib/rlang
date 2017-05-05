@@ -1,17 +1,28 @@
-#' Untidy quotation of an expression.
+#' Raw quotation of an expression
 #'
-#' Unlike [quo()], `expr()` returns a raw expression instead of a
-#' formula. As a result, `expr()` is untidy in the sense that it does
-#' not preserve scope information for the quoted expression. It can
-#' still be useful in certain cases.  Compared to base R's
-#' [base::quote()], it unquotes the expression on capture, and
-#' compared to [quo()], the quoted expression is directly compatible
-#' with the base R [base::eval()] function.
+#' @description
+#'
+#' These functions return raw expressions (whereas [quo()] and
+#' variants return quosures). They support [quasiquotation]
+#' syntax.
+#'
+#' - `expr()` returns its argument unevaluated. It is equivalent to
+#'   [base::bquote()].
+#'
+#' - `enexpr()` takes an argument name and returns it unevaluated. It
+#'   is equivalent to [base::substitute()].
+#'
+#' - `exprs()` captures multiple expressions and returns a list. In
+#'   particular, it can capture expressions in `...`. It supports name
+#'   unquoting with `:=` (see [quos()]). It is equivalent to
+#'   `eval(substitute(alist(...)))`.
+#'
+#' See [is_expr()] for more about R expressions.
 #'
 #' @inheritParams quosure
-#' @seealso See [quo()] and [expr_interp()] for more
-#'   explanation on tidy quotation.
-#' @return The raw expression supplied as argument.
+#' @seealso [quo()], [is_expr()]
+#' @return The raw expression supplied as argument. `exprs()` returns
+#'   a list of expressions.
 #' @export
 #' @examples
 #' # The advantage of expr() over quote() is that it unquotes on
@@ -41,9 +52,35 @@
 #' f <- quo(letters)
 #' e <- expr(toupper(!! f))
 #' eval_tidy(e)
+#'
+#' # exprs() lets you unquote names with the definition operator:
+#' nm <- "foo"
+#' exprs(a = 1, !! nm := 2)
 expr <- function(expr) {
   enexpr(expr)
 }
+#' @rdname expr
+#' @export
+enexpr <- function(arg) {
+  if (missing(arg)) {
+    return(missing_arg())
+  }
+
+  capture <- lang(captureArg, substitute(arg))
+  arg <- eval_bare(capture, caller_env())
+  .Call(rlang_interp, arg$expr, arg$env, TRUE)
+}
+#' @rdname expr
+#' @inheritParams dots_values
+#' @param ... Arguments to extract.
+#' @export
+exprs <- function(..., .ignore_empty = "trailing") {
+  map(dots_quos(..., .ignore_empty = .ignore_empty), f_rhs)
+}
+#' @rdname expr
+#' @export
+dots_exprs <- exprs
+
 
 #' Is an object an expression?
 #'

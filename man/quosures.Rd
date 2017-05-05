@@ -6,7 +6,7 @@
 \alias{quos}
 \alias{dots_quos}
 \alias{is_quosures}
-\title{Tidy quotation of multiple expressions and dots.}
+\title{Tidy quotation of multiple expressions and dots}
 \usage{
 dots_definitions(..., .named = FALSE)
 
@@ -17,7 +17,7 @@ dots_quos(..., .named = FALSE, .ignore_empty = c("trailing", "none", "all"))
 is_quosures(x)
 }
 \arguments{
-\item{...}{Arguments to capture.}
+\item{...}{Expressions to capture unevaluated.}
 
 \item{.named}{Whether to ensure all dots are named. Unnamed
 elements are processed with \code{\link[=expr_text]{expr_text()}} to figure out a default
@@ -29,12 +29,12 @@ name. If an integer, it is passed to the \code{width} argument of
 of \code{"trailing"}, \code{"none"}, \code{"all"}. If \code{"trailing"}, only the
 last argument is ignored if it is empty.}
 
-\item{x}{Arguments to capture.}
+\item{x}{An object to test.}
 }
 \description{
 \code{dots_quos()} quotes its arguments and returns them as a list of
-tidy quotes. It is especially useful to "capture" arguments
-forwarded through \code{...}.
+quosures (see \code{\link[=quo]{quo()}}). It is especially useful to capture
+arguments forwarded through \code{...}.
 }
 \details{
 Both \code{dots_quos} and \code{dots_definitions()} have specific support for

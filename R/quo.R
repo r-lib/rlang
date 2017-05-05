@@ -1,148 +1,124 @@
-#' Tidy quotation of an expression.
+#' Create quosures
 #'
-#' `quo()` captures its argument as an unevaluated expression
-#' and returns it as a formula. Formulas are a key part of the tidy
-#' evaluation framework because they bundle an expression and a scope
-#' (the environment in which `quo()` was called).  This means
-#' that you can pass a formula around while keeping track of the
-#' context where it was created. The symbols quoted in the formula
-#' will be evaluated in the right context (where they are likely
-#' defined) by [eval_tidy()].
+#' @description
 #'
-#' Like all capturing functions in the tidy evaluation framework,
-#' `quo()` interpolates on capture (see [enquo()] and
-#' `vignette("tidy-eval")`). Alternatively, `expr_interp()` allows you
-#' to interpolate manually when you have constructed a raw expression
-#' or formula by yourself. When an expression is interpolated, all
-#' sub-expressions within unquoting operators (like `UQ(x)` and
-#' `UQS(x)`) are evaluated and inlined. This provides a powerful
-#' mechanism for manipulating expressions. Since unquoting is such an
-#' important operation, `!!` and `!!!` are provided as syntactic
-#' shortcuts for unquoting and unquote-splicing (see examples).
+#' Quosures are quoted [expressions][is_expr] that keep track of an
+#' [environment][env] (just like [closure
+#' functions](http://adv-r.had.co.nz/Functional-programming.html#closures)).
+#' They are implemented as a subclass of one-sided formulas. They are
+#' an essential piece of the tidy evaluation framework.
 #'
-#' @section Tidy manipulation of expressions:
+#' - `quo()` quotes its input (i.e. captures R code without
+#'   evaluation), captures the current environment, and bundles them
+#'   in a quosure.
 #'
-#'   Interpolating an expression allows you to inline any value within
-#'   the expression. In particular, you can transform a quoted
-#'   expression by unquoting another quoted expression into it. The
-#'   latter expression gets inlined within the former. This mechanism
-#'   allows you to easily program with NSE functions. E.g. `var <-
-#'   ~baz; quo(foo(bar, !! var))` produces the formula-quote
-#'   `~foo(bar, baz)`.
+#' - `enquo()` takes a symbol referring to a function argument, quotes
+#'   the R code that was supplied to this argument, captures the
+#'   environment where the function was called (and thus where the R
+#'   code was typed), and bundles them in a quosure.
 #'
-#' @section Tidy evaluation of expressions:
+#' - [quos()] is a bit different to other functions as it returns a
+#'   list of quosures. You can supply several expressions directly,
+#'   e.g. `quos(foo, bar)`, but more importantly you can also supply
+#'   dots: `quos(...)`. In the latter case, expressions forwarded
+#'   through dots are captured and transformed to quosures. The
+#'   environments bundled in those quosures are the ones where the
+#'   code was supplied as arguments, even if the dots were forwarded
+#'   multiple times across several function calls.
 #'
-#'   The purpose of a quoted expression is to be eventually evaluated
-#'   in a modified scope (e.g. a scope where the columns of a data
-#'   frame are directly accessible). While interpolation allows you to
-#'   easily manipulate expressions, you need to be a bit careful with
-#'   the scope of transplanted subexpressions. If they refer to
-#'   variables and functions that are only available in a given
-#'   environment (in a given scope), that environment should be
-#'   bundled with the expression. That is exactly the purpose of a
-#'   one-sided formula: bundling an expression and a scope.
+#' - `new_quosure()` is the only constructor that takes its arguments
+#'   by value. It lets you create a quosure from an expression and an
+#'   environment.
 #'
-#'   In a way, one-sided formulas are very much similar to promises in
-#'   the tidy evaluation framework. Promises are R objects bound to
-#'   function arguments which make lazy evaluation in R possible: they
-#'   bundle an expression (the argument supplied by the caller of the
-#'   function) and an environment (the original call site of the
-#'   function), and they self-evaluate to return a value as soon as
-#'   you touch them. Similarly, formulas self-evaluate when called
-#'   within [eval_tidy()]. However, unlike promises, they are
-#'   first-class objects: you can pass a formula around and use it to
-#'   transform another formula or expression. Formulas are thus
-#'   treated as reified promises.
+#' @section Role of quosures for tidy evaluation:
 #'
-#'   Being able to manipulate a formula has important practical
-#'   purposes: you can create them, inspect them interactively, and
-#'   modify them (see previous section). Taken together, tidy
-#'   modification and tidy evaluation of formulas provide a powerful
-#'   mechanism for metaprogramming and programming with DSLs.
+#' Quosures play an essential role thanks to these features:
 #'
-#' @section Theory: Formally, `quo()` and `expr()`
-#'   are quasiquote functions, `UQ()` is the unquote operator, and
-#'   `UQS()` is the unquote splice operator. These terms have a rich
-#'   history in LISP, and live on in modern languages like
-#'   [Julia](http://docs.julialang.org/en/release-0.1/manual/metaprogramming/)
-#'   and [Racket](https://docs.racket-lang.org/reference/quasiquote.html).
+#' - They allow consistent scoping of quoted expressions by recording
+#'   an expression along with its local environment.
+#'
+#' - `quo()`, `quos()` and `enquo()` all support [quasiquotation]. By
+#'   unquoting other quosures, you can safely combine expressions even
+#'   when they come from different contexts. You can also unquote
+#'   values and raw expressions depending on your needs.
+#'
+#' - Unlike formulas, quosures self-evaluate (see [eval_tidy()])
+#'   within their own environment, which is why you can unquote a
+#'   quosure inside another quosure and evaluate it like you've
+#'   unquoted a raw expression.
+#'
+#' See the [programming with
+#' dplyr](http://dplyr.tidyverse.org/articles/programming.html)
+#' vignette for practical examples. For developers, the [tidy
+#' evaluation][tidy-evaluation] page provides an overview of this
+#' approach. The [quasiquotation] page goes in detail over the
+#' unquoting and splicing operators.
 #'
 #' @param expr An expression.
-#' @param x An expression to unquote. It is evaluated in the current
-#'   environment and inlined in the expression.
+#' @param arg A symbol referring to an argument. The expression
+#'   supplied to that argument will be captured unevaluated.
 #' @return A formula whose right-hand side contains the quoted
 #'   expression supplied as argument.
-#' @seealso [quos()][quosures] for capturing several expressions,
-#'   including from dots; [expr()] for quoting a raw
-#'   expression with quasiquotation; and [expr_interp()] for unquoting
-#'   an already quoted expression or an existing formula.
+#' @seealso [expr()] for quoting a raw expression with quasiquotation.
+#'   The [quasiquotation] page goes over unquoting and splicing.
 #' @export
-#' @name quosure
-#' @aliases UQ UQE UQS
 #' @examples
-#' # When a tidyeval function captures an argument, it is wrapped in a
-#' # formula and interpolated. quo() is a simple wrapper around
-#' # enquo() and as such is the fundamental tidyeval
-#' # function. It allows you to quote an expression and interpolate
-#' # unquoted parts:
-#' quo(foo(bar))
-#' quo(1 + 2)
-#' quo(paste0(!! letters[1:2], "foo"))
+#' # quo() is a quotation function just like expr() and quote():
+#' expr(mean(1:10 * 2))
+#' quo(mean(1:10 * 2))
 #'
-#' # The !! operator is a syntactic shortcut for unquoting with UQ().
-#' # However you need to be a bit careful with operator
-#' # precedence. All arithmetic and comparison operators bind more
-#' # tightly than `!`:
-#' quo(1 +  !! (1 + 2 + 3) + 10)
+#' # It supports quasiquotation and allows unquoting (evaluating
+#' # immediately) part of the quoted expression:
+#' quo(mean(!! 1:10 * 2))
 #'
-#' # For this reason you should always wrap the unquoted expression
-#' # with parentheses when operators are involved:
-#' quo(1 + (!! 1 + 2 + 3) + 10)
+#' # What makes quo() often safer to use than quote() and expr() is
+#' # that it keeps track of the contextual environment. This is
+#' # especially important if you're referring to local variables in
+#' # the expression:
+#' var <- "foo"
+#' quo <- quo(var)
+#' quo
 #'
-#' # Or you can use the explicit unquote function:
-#' quo(1 + UQ(1 + 2 + 3) + 10)
-#'
-#' # Use !!! or UQS() if you want to add multiple arguments to a
-#' # function It must evaluate to a list
-#' args <- list(1:10, na.rm = TRUE)
-#' quo(mean( UQS(args) ))
-#'
-#' # You can combine the two
-#' var <- quote(xyz)
-#' extra_args <- list(trim = 0.9, na.rm = TRUE)
-#' quo(mean(UQ(var) , UQS(extra_args)))
+#' # Here `quo` quotes `var`. Let's check that it also captures the
+#' # environment where that symbol is defined:
+#' identical(get_env(quo), get_env())
+#' env_has(quo, "var")
 #'
 #'
-#' # Unquoting is especially useful for transforming a captured
-#' # expression:
-#' f <- quo(foo(bar))
-#' f <- quo(inner(!! f, arg1))
-#' f <- quo(outer(!! f, !!! syms(letters[1:3])))
-#' f
+#' # Keeping track of the environment is important when you quote an
+#' # expression in a context (that is, a particular function frame)
+#' # and pass it around to other functions (which will be run in their
+#' # own evaluation frame):
+#' fn <- function() {
+#'   foobar <- 10
+#'   quo(foobar * 2)
+#' }
+#' quo <- fn()
+#' quo
 #'
-#' # Note that it's fine to unquote expressions to be evaluated as
-#' # quosures, as long as you evaluate with eval_tidy():
-#' f <- quo(letters)
-#' f <- quo(toupper(!! f))
-#' eval_tidy(f)
+#' # `foobar` is not defined here but was defined in `fn()`'s
+#' # evaluation frame. However, the quosure keeps track of that frame
+#' # and is safe to evaluate:
+#' eval_tidy(quo)
 #'
-#' # Quosures carry scope information about the inner expression
-#' # inlined in the outer expression upon unquoting. To see this,
-#' # let's create a quosure that quotes a symbol that only exists in a
-#' # local scope (a child environment of the current environment):
-#' f1 <- locally({ foo <- "foo"; quo(foo) })
 #'
-#' # You can evaluate that expression with eval_tidy():
-#' eval_tidy(f1)
-#'
-#' # And you can also inline it in another expression before
+#' # Like other formulas, quosures are normally self-quoting under
 #' # evaluation:
-#' f2 <- locally({ bar <- "bar"; quo(toupper(bar))})
-#' f3 <- quo(paste(!!f1, !!f2, "!"))
-#' f3
+#' eval(~var)
+#' eval(quo(var))
 #'
-#' # eval_tidy() treats quosures as promises to be evaluated:
-#' eval_tidy(f3)
+#' # But eval_tidy() evaluates expressions in a special environment
+#' # (called the overscope) where they become promises. They
+#' # self-evaluate under evaluation:
+#' eval_tidy(~var)
+#' eval_tidy(quo(var))
+#'
+#' # Note that it's perfectly fine to unquote quosures within
+#' # quosures, as long as you evaluate with eval_tidy():
+#' quo <- quo(letters)
+#' quo <- quo(toupper(!! quo))
+#' quo
+#' eval_tidy(quo)
 #'
 #'
 #' # Quoting as a quosure is necessary to preserve scope information
@@ -172,24 +148,12 @@
 #' quo(mtcars$`!!`(var))
 #'
 #'
-#' # Quosures are represented as formulas, but formulas are not
-#' # treated identically to quosures. Formulas are guarded on capture
-#' # so that they evaluate to a literal formula rather than
-#' # self-evaluate like quosures:
-#' quo_f <- ~letters[1:2]
-#' quo <- quo(letters[1:2])
-#'
-#' f <- quo(list(!!quo_f, !! quo))
-#' f
-#' eval_tidy(f)
-#'
-#'
 #' # When a quosure is printed in the console, the brackets indicate
 #' # if the enclosure is the global environment or a local one:
 #' locally(quo(foo))
 #'
 #' # Literals are enquosed with the empty environment because they can
-#' # be evaluated anywhere:
+#' # be evaluated anywhere. The brackets indicate "empty":
 #' quo(10L)
 #'
 #' # To differentiate local environments, use str(). It prints the
@@ -198,16 +162,51 @@
 #' quo2 <- locally(quo(foo))
 #' quo1; quo2
 #' str(quo1); str(quo2)
-#' @useDynLib rlang rlang_interp
+#'
+#' # You can also see this address by printing the environment at the
+#' # console:
+#' get_env(quo1)
+#' get_env(quo2)
+#'
+#'
+#' # new_quosure() takes by value an expression that is already quoted:
+#' expr <- quote(mtcars)
+#' env <- as_env("datasets")
+#' quo <- new_quosure(expr, env)
+#' quo
+#' eval_tidy(quo)
+#' @name quosure
 quo <- function(expr) {
   enquo(expr)
+}
+#' @rdname quosure
+#' @inheritParams as_quosure
+#' @export
+new_quosure <- function(expr, env = caller_env()) {
+  quo <- new_formula(NULL, expr, env)
+  set_attrs(quo, class = c("quosure", "formula"))
+}
+
+#' @export
+print.quosure <- function(x, ...) {
+  cat(paste0("<quosure: ", env_type(get_env(x)), ">\n"))
+  print(set_attrs(x, NULL))
+  invisible(x)
+}
+#' @export
+str.quosure <- function(object, ...) {
+  env_type <- env_format(get_env(object))
+
+  cat(paste0("<quosure: ", env_type, ">\n"))
+  print(set_attrs(object, NULL))
+  invisible(object)
 }
 
 #' Is an object a quosure or quosure-like?
 #'
 #' @description
 #'
-#' These predicates test for [quosure][new_quosure] objects.
+#' These predicates test for [quosure] objects.
 #'
 #' - `is_quosure()` tests for the canonical R quosure: the one-sided
 #'   "formula".
@@ -231,9 +230,7 @@ quo <- function(expr) {
 #' @param scoped A boolean indicating whether the quosure or formula
 #'   is scoped, that is, has a valid environment attribute. If `NULL`,
 #'   the scope is not inspected.
-#' @seealso [as_quosure()][new_quosure] and [new_quosure()] for creating
-#'   quosures, and [quo()] or [eval_tidy()] for information
-#'   about the role of quosures in the tidy evaluation framework.
+#' @seealso [quo()] and [as_quosure()] for creating quosures.
 #' @export
 #' @examples
 #' # Quosures are created with quo():
@@ -260,6 +257,84 @@ is_one_sided <- function(x, lang_sym = sym_tilde) {
   typeof(x) == "language" &&
     identical(node_car(x), lang_sym) &&
     is_null(node_cadr(node_cdr(x)))
+}
+
+#' Coerce object to quosure
+#'
+#' @description
+#'
+#' Quosure objects wrap an [expression][is_expr] with a [lexical
+#' enclosure][env]. This is a powerful quoting (see [base::quote()]
+#' and [quo()]) mechanism that makes it possible to carry and
+#' manipulate expressions while making sure that its symbolic content
+#' (symbols and named calls, see [is_symbolic()]) is correctly looked
+#' up during evaluation.
+#'
+#' - `new_quosure()` creates a quosure from a raw expression and an
+#'   environment.
+#'
+#' - `as_quosure()` is useful for functions that expect quosures but
+#'   allow specifying a raw expression as well. It has two possible
+#'   effects: if `x` is not a quosure, it wraps it into a quosure
+#'   bundling `env` as scope. If `x` is an unscoped quosure (see
+#'   [is_quosure()]), `env` is used as a default scope. On the other
+#'   hand if `x` has a valid enclosure, it is returned as is (even if
+#'   `env` is not the same as the formula environment).
+#'
+#' - While `as_quosure()` always returns a quosure (a one-sided
+#'   formula), even when its input is a [formula][new_formula] or a
+#'   [definition][op-definition], `as_quosureish()` returns quosureish
+#'   inputs as is.
+#'
+#' @param x An object to convert.
+#' @param env An environment specifying the lexical enclosure of the
+#'   quosure.
+#' @seealso [is_quosure()]
+#' @export
+#' @examples
+#' # Sometimes you get unscoped formulas because of quotation:
+#' f <- ~~expr
+#' inner_f <- f_rhs(f)
+#' str(inner_f)
+#' is_quosureish(inner_f, scoped = TRUE)
+#'
+#' # You can use as_quosure() to provide a default environment:
+#' as_quosure(inner_f, base_env())
+#'
+#' # Or convert expressions or any R object to a validly scoped quosure:
+#' as_quosure(quote(expr), base_env())
+#' as_quosure(10L, base_env())
+#'
+#'
+#' # While as_quosure() always returns a quosure (one-sided formula),
+#' # as_quosureish() returns quosureish objects:
+#' as_quosure(a := b)
+#' as_quosureish(a := b)
+#' as_quosureish(10L)
+as_quosure <- function(x, env = caller_env()) {
+  if (is_quosure(x)) {
+    x
+  } else if (is_bare_formula(x)) {
+    new_quosure(f_rhs(x), f_env(x) %||% env)
+  } else if (is_symbolic(x)) {
+    new_quosure(x, env)
+  } else {
+    new_quosure(x, empty_env())
+  }
+}
+#' @rdname as_quosure
+#' @export
+as_quosureish <- function(x, env = caller_env()) {
+  if (is_quosureish(x)) {
+    if (!is_env(f_env(x))) {
+      f_env(x) <- env
+    }
+    x
+  } else if (is_frame(x)) {
+    new_quosure(x$expr, sys_frame(x$caller_pos))
+  } else {
+    new_quosure(get_expr(x), get_env(x, env))
+  }
 }
 
 #' Is a quosure quoting a symbolic, missing or NULL object?
@@ -312,111 +387,6 @@ quo_is_null <- function(quo) {
   is_null(f_rhs(quo))
 }
 
-#' Create quosures.
-#'
-#' @description
-#'
-#' Quosure objects wrap an [expression][is_expr] with a [lexical
-#' enclosure][env]. This is a powerful quoting (see [base::quote()]
-#' and [quo()]) mechanism that makes it possible to carry and
-#' manipulate expressions while making sure that its symbolic content
-#' (symbols and named calls, see [is_symbolic()]) is correctly looked
-#' up during evaluation.
-#'
-#' - `new_quosure()` creates a quosure from a raw expression and an
-#'   environment.
-#'
-#' - `as_quosure()` is useful for functions that expect quosures but
-#'   allow specifying a raw expression as well. It has two possible
-#'   effects: if `x` is not a quosure, it wraps it into a quosure
-#'   bundling `env` as scope. If `x` is an unscoped quosure (see
-#'   [is_quosure()]), `env` is used as a default scope. On the other
-#'   hand if `x` has a valid enclosure, it is returned as is (even if
-#'   `env` is not the same as the formula environment).
-#'
-#' - While `as_quosure()` always returns a quosure (a one-sided
-#'   formula), even when its input is a [formula][new_formula] or a
-#'   [definition][op-definition], `as_quosureish()` returns quosureish
-#'   inputs as is.
-#'
-#' @inheritParams new_formula
-#' @param x An object to convert.
-#' @param env An environment specifying the lexical enclosure of the
-#'   quosure.
-#' @seealso [is_quosure()]
-#' @export
-#' @examples
-#' f <- new_quosure(quote(mtcars), as_env("datasets"))
-#' f
-#' eval_tidy(f)
-#'
-#'
-#' # Sometimes you get unscoped formulas because of quotation:
-#' f <- ~~expr
-#' inner_f <- f_rhs(f)
-#' str(inner_f)
-#' is_quosureish(inner_f, scoped = TRUE)
-#'
-#' # You can use as_quosure() to provide a default environment:
-#' as_quosure(inner_f, base_env())
-#'
-#' # Or convert expressions or any R object to a validly scoped quosure:
-#' as_quosure(quote(expr), base_env())
-#' as_quosure(10L, base_env())
-#'
-#'
-#' # While as_quosure() always returns a quosure (one-sided formula),
-#' # as_quosureish() returns quosureish objects:
-#' as_quosure(a := b)
-#' as_quosureish(a := b)
-#' as_quosureish(10L)
-new_quosure <- function(rhs, env = caller_env()) {
-  quo <- new_formula(NULL, rhs, env)
-  set_attrs(quo, class = c("quosure", "formula"))
-}
-#' @rdname new_quosure
-#' @export
-as_quosure <- function(x, env = caller_env()) {
-  if (is_quosure(x)) {
-    x
-  } else if (is_bare_formula(x)) {
-    new_quosure(f_rhs(x), f_env(x) %||% env)
-  } else if (is_symbolic(x)) {
-    new_quosure(x, env)
-  } else {
-    new_quosure(x, empty_env())
-  }
-}
-
-#' @export
-print.quosure <- function(x, ...) {
-  cat(paste0("<quosure: ", env_type(get_env(x)), ">\n"))
-  print(set_attrs(x, NULL))
-  invisible(x)
-}
-#' @export
-str.quosure <- function(object, ...) {
-  env_type <- env_format(get_env(object))
-
-  cat(paste0("<quosure: ", env_type, ">\n"))
-  print(set_attrs(object, NULL))
-  invisible(object)
-}
-
-#' @rdname new_quosure
-#' @export
-as_quosureish <- function(x, env = caller_env()) {
-  if (is_quosureish(x)) {
-    if (!is_env(f_env(x))) {
-      f_env(x) <- env
-    }
-    x
-  } else if (is_frame(x)) {
-    new_quosure(x$expr, sys_frame(x$caller_pos))
-  } else {
-    new_quosure(get_expr(x), get_env(x, env))
-  }
-}
 
 #' Splice a quosure and format it into string or label.
 #'

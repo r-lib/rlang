@@ -1,8 +1,8 @@
-#' Tidy quotation of multiple expressions and dots.
+#' Tidy quotation of multiple expressions and dots
 #'
 #' `dots_quos()` quotes its arguments and returns them as a list of
-#' tidy quotes. It is especially useful to "capture" arguments
-#' forwarded through `...`.
+#' quosures (see [quo()]). It is especially useful to capture
+#' arguments forwarded through `...`.
 #'
 #' Both `dots_quos` and `dots_definitions()` have specific support for
 #' definition expressions of the type `var := expr`, with some
@@ -20,7 +20,7 @@
 #'    operators are processed on capture, in both the LHS and the
 #'    RHS. Unlike `dots_quos()`, it allows named definitions.}
 #' }
-#' @inheritParams enquo
+#' @param ... Expressions to capture unevaluated.
 #' @inheritParams dots_values
 #' @param .named Whether to ensure all dots are named. Unnamed
 #'   elements are processed with [expr_text()] to figure out a default
@@ -80,30 +80,8 @@ quos <- function(..., .named = FALSE,
 #' @export
 dots_quos <- quos
 
-#' Extract dots forwarded as arguments.
-#'
-#' These functions return the arguments forwarded through `...`.
-#' Contrarily to [dots_list()] and [dots_splice()], `exprs()` and
-#' `dots_node()` do not evaluate the arguments. The former returns a
-#' list of expressions while the latter returns a [pairlist].
-#'
-#' `exprs()` performs call-splicing and is compatible with
-#' [unquote operators][UQ], including unquote-splicing. `dots_node()`
-#' is more bare bones and returns the pairlist as is, without
-#' unquoting.
-#'
-#' @inheritParams quosures
-#' @param ... Arguments to extract.
-#' @export
-exprs <- function(..., .ignore_empty = "trailing") {
-  map(dots_quos(..., .ignore_empty = .ignore_empty), f_rhs)
-}
-#' @rdname exprs
-#' @export
-dots_exprs <- exprs
-
-
 #' @rdname quosures
+#' @param x An object to test.
 #' @export
 is_quosures <- function(x) {
   inherits(x, "quosures")

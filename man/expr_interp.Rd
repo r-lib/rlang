@@ -2,7 +2,7 @@
 % Please edit documentation in R/quo-unquote.R
 \name{expr_interp}
 \alias{expr_interp}
-\title{Process unquote operators in a captured expression.}
+\title{Process unquote operators in a captured expression}
 \usage{
 expr_interp(x, env = NULL)
 }
