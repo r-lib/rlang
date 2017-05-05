@@ -127,6 +127,11 @@ flatten_cpl <- function(x) {
 }
 #' @rdname flatten
 #' @export
+flatten_chr <- function(x) {
+  .Call(rlang_squash, x, "character", is_spliced_bare, 1L)
+}
+#' @rdname flatten
+#' @export
 flatten_raw <- function(x) {
   .Call(rlang_squash, x, "raw", is_spliced_bare, 1L)
 }
@@ -155,6 +160,11 @@ squash_dbl <- function(x) {
 #' @export
 squash_cpl <- function(x) {
   .Call(rlang_squash, x, "complex", is_spliced_bare, -1L)
+}
+#' @rdname flatten
+#' @export
+squash_chr <- function(x) {
+  .Call(rlang_squash, x, "character", is_spliced_bare, -1L)
 }
 #' @rdname flatten
 #' @export

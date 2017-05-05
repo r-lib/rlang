@@ -6,12 +6,14 @@
 \alias{flatten_int}
 \alias{flatten_dbl}
 \alias{flatten_cpl}
+\alias{flatten_chr}
 \alias{flatten_raw}
 \alias{squash}
 \alias{squash_lgl}
 \alias{squash_int}
 \alias{squash_dbl}
 \alias{squash_cpl}
+\alias{squash_chr}
 \alias{squash_raw}
 \alias{flatten_if}
 \alias{squash_if}
@@ -27,6 +29,8 @@ flatten_dbl(x)
 
 flatten_cpl(x)
 
+flatten_chr(x)
+
 flatten_raw(x)
 
 squash(x)
@@ -38,6 +42,8 @@ squash_int(x)
 squash_dbl(x)
 
 squash_cpl(x)
+
+squash_chr(x)
 
 squash_raw(x)
 
