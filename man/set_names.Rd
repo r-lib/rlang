@@ -15,7 +15,8 @@ You can specify names in three ways:
 \itemize{
 \item If you do nothing, \code{x} will be named with itself.
 \item If \code{x} already has names, you can provide a function or formula
-to transform the existing names.
+to transform the existing names. In that case, \code{...} is passed
+to the function.
 \item In all other cases, \code{nm} and \code{...} are passed to \code{\link[=chr]{chr()}}. This
 gives implicit splicing semantics: you can pass character
 vectors or list of character vectors indistinctly.
@@ -36,4 +37,7 @@ set_names(letters[1:5])
 # Alternatively you can supply a function
 set_names(1:10, ~ letters[seq_along(.)])
 set_names(head(mtcars), toupper)
+
+# `...` is passed to the function:
+set_names(head(mtcars), paste0, "_foo")
 }

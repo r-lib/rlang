@@ -43,6 +43,7 @@ test_that("can supply function/formula to rename", {
   x <- c(a = 1, b = 2)
   expect_named(set_names(x, toupper), c("A", "B"))
   expect_named(set_names(x, ~ toupper(.)), c("A", "B"))
+  expect_named(set_names(x, paste, "foo"), c("a foo", "b foo"))
 })
 
 test_that("set_names() zaps names", {

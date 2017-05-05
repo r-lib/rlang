@@ -176,7 +176,8 @@ has_name <- function(x, name) {
 #'   * If you do nothing, `x` will be named with itself.
 #'
 #'   * If `x` already has names, you can provide a function or formula
-#'     to transform the existing names.
+#'     to transform the existing names. In that case, `...` is passed
+#'     to the function.
 #'
 #'   * In all other cases, `nm` and `...` are passed to [chr()]. This
 #'     gives implicit splicing semantics: you can pass character
@@ -193,6 +194,9 @@ has_name <- function(x, name) {
 #' # Alternatively you can supply a function
 #' set_names(1:10, ~ letters[seq_along(.)])
 #' set_names(head(mtcars), toupper)
+#'
+#' # `...` is passed to the function:
+#' set_names(head(mtcars), paste0, "_foo")
 set_names <- function(x, nm = x, ...) {
   if (!is_vector(x)) {
     abort("`x` must be a vector")
@@ -200,7 +204,7 @@ set_names <- function(x, nm = x, ...) {
 
   if (is_function(nm) || is_formula(nm)) {
     nm <- as_function(nm)
-    nm <- nm(names2(x))
+    nm <- nm(names2(x), ...)
   } else if (!is_null(nm)) {
     # Make sure `x` is serialised when no arguments is provided.
     nm <- as.character(nm)
