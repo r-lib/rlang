@@ -3,12 +3,12 @@
 #' @description
 #'
 #' Tidy evaluation is the tidyverse's conception of how to create
-#' domain-specific languages. There are two primes examples of such
-#' sublanguages in R: modelling specification (`lm()`, `lme4::lmer()`,
-#' etc) and data manipulation grammars (dplyr, tidyr). Most of these
-#' DSLs put dataframe columns in scope so that users can refer to them
-#' directly, saving keystrokes during interactive analysis and
-#' creating easily readable code.
+#' domain-specific languages. The most prominent examples of such
+#' sublanguages in R are modelling specifications with formulas
+#' (`lm()`, `lme4::lmer()`, etc) and data manipulation grammars
+#' (dplyr, tidyr). Most of these DSLs put dataframe columns in scope
+#' so that users can refer to them directly, saving keystrokes during
+#' interactive analysis and creating easily readable code.
 #'
 #' R makes it easy to create DSLs thanks to three features of the
 #' language:
@@ -19,12 +19,12 @@
 #'   containing R code (see [is_expr()]).
 #'
 #' - Scope is first-class. Scope is the lexical environment that
-#'   defines the values of symbols in expressions. Environments can be
+#'   associates values to symbols in expressions. Environments can be
 #'   created (see [env()]) and manipulated as regular objects.
 #'
 #' - Finally, functions can capture the expressions that were supplied
-#'   as arguments instead of capturing the value of these expressions
-#'   (see [quo()]).
+#'   as arguments instead of being passed the value of these
+#'   expressions (see [enquo()] and [enexpr()]).
 #'
 #' To sum up, R functions can capture expressions, manipulate them
 #' like regular objects, and alter the meaning of symbols referenced
@@ -34,30 +34,31 @@
 #'
 #' Tidy evaluation is an opinionated approach over how to use these
 #' features to create consistent DSLs. The main principle is that
-#' sublanguages should feel and behave like R code. As sublanguages,
-#' they change the meaning of R code, but they do so in a precise and
-#' circumscribed way. In all other respects they should behave
-#' predictably and in accordance with R semantics. Users should be
-#' able to leverage their existing knowledge of R programming to solve
-#' problems involving the sublanguage, in ways that were not
-#' necessarily envisioned or planned by their designers.
+#' sublanguages should feel and behave like R code. They change the
+#' meaning of R code, but only in a precise and circumscribed way,
+#' behaving otherwise predictably and in accordance with R
+#' semantics. As a result, users are be able to leverage their
+#' existing knowledge of R programming to solve problems involving the
+#' sublanguage in ways that were not necessarily envisioned or planned
+#' by their designers.
 #'
 #' @section Parsing versus evaluation:
 #'
 #' There are two ways of dealing with unevaluated expressions to
 #' create a sublanguage. The first is to parse the expression
-#' manually. For example, if you're designing a modelling DSL for
-#' specifying regression models, you'd traverse the call to analyse
-#' all functions encountered in the expression (in particular,
-#' operators like `+` or `:`), building a data structure describing a
-#' model as you go. This method of dealing with expressions is
-#' tedious, rigid and error prone because you're basically rewriting
-#' an interpreter of R code.
+#' manually, the other is to evaluate the expression in a modified
+#' environment.
 #'
-#' It is extremely difficult to emulate R semantics when parsing an
-#' expression: does a function take arguments by value or by
-#' expression? Can I parse these arguments? Do these symbols mean the
-#' same thing in this context? Will this argument be evaluated
+#' Let's take the example of designing a modelling DSL to illustrate
+#' parsing. You would need to traverse the call and analyse all
+#' functions encountered in the expression (in particular, operators
+#' like `+` or `:`), building a data structure describing a model as
+#' you go. This method of dealing with expressions is tedious, rigid
+#' and error prone because you're basically rewriting an interpreter
+#' of R code. It is extremely difficult to emulate R semantics when
+#' parsing an expression: does a function take arguments by value or
+#' by expression? Can I parse these arguments? Do these symbols mean
+#' the same thing in this context? Will this argument be evaluated
 #' immediately or later on lazily? Given the difficulty of getting it
 #' right, parsing should be a last resort.
 #'
@@ -65,15 +66,16 @@
 #' The expression is evaluated in an environment where certain objects
 #' and functions are given special definitions. For instance `+` might
 #' be defined as accumulating vectors in a data structure to build a
-#' design matrix later on, or we might put function helpers in scope
-#' like `dplyr::select()` does. As this method is relying on the R
-#' interpreter, the grammar is much likely to behave like real R code.
+#' design matrix later on, or we might put helper functions in scope
+#' (an example is `dplyr::select()`). As this method is relying on the
+#' R interpreter, the grammar is much more likely to behave like real
+#' R code.
 #'
 #' R DSLs are traditionally implemented with a mix of both
 #' principles. Expressions are parsed in ad hoc ways, but are
 #' eventually evaluated in an environment containing dataframe
-#' columns. Tidyeval DSLs should try to rely on evaluation as much as
-#' possible.
+#' columns. While it is difficult to completely avoid ad hoc parsing,
+#' tidyeval DSLs strive to rely on evaluation as much as possible.
 #'
 #' @section Values versus expressions:
 #'
@@ -133,35 +135,35 @@
 #' former having precedence over the latter. In other words, the
 #' dataset should _overscope_ the dynamic context. The traditional
 #' solution to this issue in R is to transform a dataframe to an
-#' environment and set the calling frame as its parent environment.
+#' environment and set the calling frame as the parent environment.
 #' This way, the symbols appearing in the expression can refer to
-#' their surrounding context in addition to dataframe columns.
+#' their surrounding context in addition to dataframe columns. In
+#' other words, the grammar implements correctly an important aspect
+#' of R: [lexical scoping](http://adv-r.had.co.nz/Functions.html#lexical-scoping).
 #'
 #' Creating this scope hierarchy (data first, context next) is
 #' possible because R makes it easy to capture the calling environment
 #' (see [caller_env()]). However, this supposes that captured
 #' expressions were actually typed in the most immediate caller
-#' frame. This assumption easily breaks in R because arguments can be
-#' forwarded through the special `...` argument.
+#' frame. This assumption easily breaks in R. First because
+#' quasiquotation allows an user to combine expressions that do not
+#' necessarily come from the same lexical context. Secondly because
+#' arguments can be forwarded through the special `...` argument.
+#' While base R does not provide any way of capturing a forwarded
+#' argument along with its original environment, rlang features
+#' [quos()] for this purpose. This function looks up each forwarded
+#' arguments and returns a list of [quosures][quo] that bundle the
+#' expressions with their own dynamic environments.
 #'
-#' If you're capturing a forwarded expression, it is important to make
-#' sure it is scoped in the right place. While base R does not provide
-#' any way of capturing a forwarded argument and its dynamic
-#' environment, rlang features [quos()] for this purpose. This
-#' function looks up each forwarded arguments and returns a list of
-#' [quosures][quo] that bundle the expressions with their own dynamic
-#' environments.
-#'
-#' At this point, we're dealing with multiple environments, one for
-#' each argument, plus one containing the overscoped data. This
-#' creates difficulties regarding tidyeval's overarching principle
-#' that we should change R semantics through evaluation. It is
-#' possible to evaluate each expression in turn, but how can we
-#' combine all expressions into one and evaluate it tidily? An
-#' expression can only be evaluated in a single environment. This
-#' issue is made worse by [quasiquotation] which allows users to
-#' insert expressions in other expressions. This is where quosures
-#' come into play.
+#' In that context, maintaining scoping consistency is a challenge
+#' because we're dealing with multiple environments, one for each
+#' argument plus one containing the overscoped data. This creates
+#' difficulties regarding tidyeval's overarching principle that we
+#' should change R semantics through evaluation. It is possible to
+#' evaluate each expression in turn, but how can we combine all
+#' expressions into one and evaluate it tidily at once? An expression
+#' can only be evaluated in a single environment. This is where
+#' quosures come into play.
 #'
 #' @section Quosures and overscoping:
 #'
@@ -170,51 +172,57 @@
 #' the property of self-evaluating in their own environment. Hence
 #' they can appear anywhere in an expression (e.g. by being
 #' [unquoted][quasiquotation]), carrying their own environment and
-#' behaving otherwise exactly like surrounding R code.  Quosures
-#' behave like reified promises that are unreified during tidy
-#' evaluation.
+#' behaving otherwise exactly like surrounding R code. Quosures behave
+#' like reified
+#' [promises](http://adv-r.had.co.nz/Computing-on-the-language.html#capturing-expressions)
+#' that are unreified during tidy evaluation.
 #'
 #' However, the dynamic environments of quosures do not contain
 #' overscoped data. It's not of much use for sublanguages to get the
 #' contextual environment right if they can't also change the meaning
 #' of code quoted in quosures. To solve this issue, tidyeval rechains
 #' the overscope to a quosure just before it self-evaluates. This way,
-#' both the contextual environment and the overscoped data are in
-#' scope. The quosure is evaluated tidily.
+#' both the lexical environment and the overscoped data are in scope
+#' when the quosure is evaluated. Is is evaluated tidily.
 #'
-#' `eval_tidy()` takes a `data` argument and creates an overscope
-#' suitable for tidy evaluation. In particular, these overscopes
-#' contain definitions for self-evaluation of quosures. See
-#' [eval_tidy_()] and [as_overscope] for more flexible ways of
-#' creating overscopes.
+#' In practical terms, `eval_tidy()` takes a `data` argument and
+#' creates an overscope suitable for tidy evaluation. In particular,
+#' these overscopes contain definitions for self-evaluation of
+#' quosures. See [eval_tidy_()] and [as_overscope] for more flexible
+#' ways of creating overscopes.
 #'
 #' @section Theory:
 #'
 #' The most important concept of the tidy evaluation framework is that
 #' expressions should be scoped in their dynamic context. This issue
 #' is linked to the computer science concept of _hygiene_, which
-#' roughly means that symbols should be scoped in the context where
-#' they are typed. In a way, hygiene is what "tidy" refers to in
-#' "tidy evaluation".
+#' roughly means that symbols should be scoped in their local context,
+#' the context where they are typed by the user. In a way, hygiene is
+#' what "tidy" refers to in "tidy evaluation".
 #'
 #' In languages with macros, hygiene comes up for [macro
 #' expansion](https://en.wikipedia.org/wiki/Hygienic_macro). While
 #' macros look like R's non-standard evaluation functions, and share
-#' certain concepts with them (in particular, they get unevaluated
-#' code), they are actually quite different. Macros are a compile-time
-#' and therefore can only operate on code, never on data (except for
-#' constants). They also don't return a value but are expanded in
-#' place. In comparison, R does not have macros but it has
-#' [fexprs](https://en.wikipedia.org/wiki/Fexpr), i.e. regular
+#' certain concepts with them (in particular, they get their arguments
+#' as unevaluated code), they are actually quite different. Macros are
+#' compile-time and therefore can only operate on code and constants,
+#' never on user data. They also don't return a value but are expanded
+#' in place by the compiler. In comparison, R does not have macros but
+#' it has [fexprs](https://en.wikipedia.org/wiki/Fexpr), i.e. regular
 #' functions that get arguments as unevaluated expressions rather than
 #' by their value (fexprs are what we call NSE functions in the R
-#' community). These functions execute at run-time and return a value.
+#' community). Unlike macros, these functions execute at run-time and
+#' return a value.
 #'
-#' Symbolic hygiene is a problem for macros during
-#' expansion. Correspondingly, hygiene is an issue for NSE functions
-#' when the code they captured gets evaluated. Bundling quoted
-#' expressions with their dynamic environment is key to solve this
-#' issue. In R, this means using quosures.
+#' Symbolic hygiene is a problem for macros during expansion because
+#' expanded code might invisibly redefine surrounding symbols.
+#' Correspondingly, hygiene is an issue for NSE functions if the code
+#' they captured gets evaluated in the wrong
+#' environment. Historically, fexprs did not have this problem because
+#' they existed in languages with dynamic scoping. However in modern
+#' languages with lexical scoping, it is imperative to bundle quoted
+#' expressions with their dynamic environment. The most natural way
+#' to do this in R is to use formulas and quosures.
 #'
 #' While formulas were introduced in the S language, the quosure was
 #' invented much later for R [by Luke Tierney in
@@ -222,14 +230,14 @@
 #' From that point on formulas recorded their environment along with
 #' the model terms. In the Lisp world, the Kernel Lisp language also
 #' recognised that arguments should be captured together with their
-#' dynamic environment in order to solve hygienic evaluation (see
-#' chapter 5 of [John Schutt's
-#' thesis](https://web.wpi.edu/Pubs/ETD/Available/etd-090110-124904/)).
-#' However, Kernel Lisp did not have quosures and avoided quotation
-#' or quasiquotation operators in order to get around scoping issues.
+#' dynamic environment in order to solve hygienic evaluation in the
+#' context of lexically scoped languages (see chapter 5 of [John
+#' Schutt's thesis](https://web.wpi.edu/Pubs/ETD/Available/etd-090110-124904/)).
+#' However, Kernel Lisp did not have quosures and avoided quotation or
+#' quasiquotation operators altogether to avoid scoping issues.
 #'
 #' Tidyeval's contributes to the problem of hygienic evaluation in
-#' three ways:
+#' four ways:
 #'
 #' - Promoting the quosure as the proper quotation data structure, in
 #'   order to keep track of the dynamic environment of quoted
@@ -243,6 +251,11 @@
 #'   their own environments. This allows unquoting quosures within
 #'   other quosures, which is the key for programming hygienically
 #'   with capturing functions.
+#'
+#' - Building a moving overscope that rechains to quosures as they get
+#'   evaluated. This makes it possible to change the evaluation
+#'   context and at the same time take the lexical context of each
+#'   quosure into account.
 #'
 #' @name tidy-evaluation
 #' @seealso [eval_tidy()], [quo()], [quasiquotation].
