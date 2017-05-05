@@ -1,4 +1,4 @@
-#' Create a language call
+#' Create a call
 #'
 #' Language objects are (with symbols) one of the two types of
 #' [symbolic][is_symbolic] objects in R. These symbolic objects form
@@ -115,7 +115,7 @@ is_callable <- function(x) {
   is_symbolic(x) || is_function(x)
 }
 
-#' Is object a call (language type)?
+#' Is object a call?
 #'
 #' This function tests if `x` is a call (or [language
 #' object][lang]). This is a pattern-matching predicate that will

@@ -506,7 +506,7 @@ friendly_type_of <- function(type) {
 
     name = ,
     symbol = "a symbol",
-    language = "a call (lang)",
+    language = "a call",
     pairlist = "a pairlist node",
     expression = "an expression vector",
     quosure = "a quosure",
@@ -526,10 +526,10 @@ friendly_type_of <- function(type) {
 
 friendly_lang_type_of <- function(type) {
   switch(type,
-    named = "a named call (lang)",
-    namespaced = "a namespaced call (lang)",
-    recursive = "a recursive call (lang)",
-    inlined = "an inlined call (lang)"
+    named = "a named call",
+    namespaced = "a namespaced call",
+    recursive = "a recursive call",
+    inlined = "an inlined call"
   )
 }
 
@@ -538,7 +538,7 @@ friendly_expr_type_of <- function(type) {
     NULL = "NULL",
     name = ,
     symbol = "a symbol",
-    language = "a call (lang)",
+    language = "a call",
     pairlist = "a pairlist node",
     literal = "a syntactic literal",
     missing = "the missing argument"

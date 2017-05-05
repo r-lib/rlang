@@ -2,7 +2,7 @@
 % Please edit documentation in R/expr-lang.R
 \name{lang}
 \alias{lang}
-\title{Create a language call}
+\title{Create a call}
 \usage{
 lang(.fn, ..., .ns = NULL)
 }

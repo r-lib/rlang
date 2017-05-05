@@ -4,7 +4,7 @@
 \alias{is_lang}
 \alias{is_unary_lang}
 \alias{is_binary_lang}
-\title{Is object a call (language type)?}
+\title{Is object a call?}
 \usage{
 is_lang(x, name = NULL, n = NULL, ns = NULL)
 
