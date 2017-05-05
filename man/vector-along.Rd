@@ -6,10 +6,10 @@
 \alias{int_along}
 \alias{dbl_along}
 \alias{chr_along}
-\alias{lst_along}
 \alias{cpl_along}
 \alias{raw_along}
 \alias{bytes_along}
+\alias{list_along}
 \alias{rep_along}
 \title{Helper to create vectors with matching length.}
 \usage{
@@ -21,13 +21,13 @@ dbl_along(.x)
 
 chr_along(.x)
 
-lst_along(.x)
-
 cpl_along(.x)
 
 raw_along(.x)
 
 bytes_along(.x)
+
+list_along(.x)
 
 rep_along(.x, .y)
 }
@@ -38,15 +38,15 @@ rep_along(.x, .y)
 }
 \description{
 These functions take the idea of \code{\link[=seq_along]{seq_along()}} and generalise it to
-creating lists (\code{lst_along}) and repeating values (\code{rep_along}).
-Except for \code{lst_along()} and \code{raw_along()}, the empty vectors are
+creating lists (\code{list_along}) and repeating values (\code{rep_along}).
+Except for \code{list_along()} and \code{raw_along()}, the empty vectors are
 filled with typed \code{missing} values.
 }
 \examples{
 x <- 0:5
 rep_along(x, 1:2)
 rep_along(x, 1)
-lst_along(x)
+list_along(x)
 }
 \seealso{
 vector-len

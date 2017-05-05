@@ -129,8 +129,8 @@ ll <- function(...) {
 #' Helper to create vectors with matching length.
 #'
 #' These functions take the idea of [seq_along()] and generalise it to
-#' creating lists (`lst_along`) and repeating values (`rep_along`).
-#' Except for `lst_along()` and `raw_along()`, the empty vectors are
+#' creating lists (`list_along`) and repeating values (`rep_along`).
+#' Except for `list_along()` and `raw_along()`, the empty vectors are
 #' filled with typed `missing` values.
 #'
 #' @inheritParams set_attrs
@@ -140,7 +140,7 @@ ll <- function(...) {
 #' x <- 0:5
 #' rep_along(x, 1:2)
 #' rep_along(x, 1)
-#' lst_along(x)
+#' list_along(x)
 #' @name vector-along
 #' @seealso vector-len
 NULL
@@ -167,11 +167,6 @@ chr_along <- function(.x) {
 }
 #' @export
 #' @rdname vector-along
-lst_along <- function(.x) {
-  vector("list", length(.x))
-}
-#' @export
-#' @rdname vector-along
 cpl_along <- function(.x) {
   rep_len(na_cpl, length(.x))
 }
@@ -184,6 +179,11 @@ raw_along <- function(.x) {
 #' @rdname vector-along
 bytes_along <- function(.x) {
   vector("raw", length(.x))
+}
+#' @export
+#' @rdname vector-along
+list_along <- function(.x) {
+  vector("list", length(.x))
 }
 
 #' @export
