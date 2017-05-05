@@ -140,6 +140,19 @@ is_dot_nm <- function(nm) {
   grepl("^\\.\\.[0-9]+$", nm)
 }
 
+#' How many arguments are currently forwarded in dots?
+#'
+#' This returns the number of arguments currently forwarded in `...`
+#' as an integer.
+#'
+#' @param ... Forwarded arguments.
+#' @export
+#' @examples
+#' fn <- function(...) dots_n(..., baz)
+#' fn(foo, bar)
+dots_n <- function(...) {
+  nargs()
+}
 
 dots_capture <- function(..., `__interp_lhs` = TRUE, `__quosured` = TRUE) {
   info <- captureDots(strict = `__quosured`)
@@ -223,7 +236,8 @@ dots_interp_lhs <- function(dots) {
     }
   }
 
-  set_names(dots, nms)
+  names(dots) <- nms
+  dots
 }
 dot_interp_lhs <- function(name, dot) {
   if (!is_null(name) && name != "") {
