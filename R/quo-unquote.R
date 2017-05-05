@@ -17,7 +17,8 @@
 #'
 #' - `UQE()` is like `UQ()` but retrieves the expression of
 #'   [quosureish][is_quosureish] objects. It is a shortcut for `!!
-#'   get_expr(x)`.
+#'   get_expr(x)`. Use this with care: it is potentially unsafe to
+#'   discard the environment of the quosure.
 #'
 #' - `UQS()` and the `!!!` operators unquote and splice their
 #'   argument. The argument should evaluate to a vector or an
@@ -27,13 +28,13 @@
 #'
 #' @section Theory:
 #'
-#'   Formally, `quo()` and `expr()` are quasiquote functions, `UQ()`
-#'   is the unquote operator, and `UQS()` is the unquote splice
-#'   operator. These terms have a rich history in LISP, and live on in
-#'   modern languages like
-#'   [Julia](http://docs.julialang.org/en/release-0.1/manual/metaprogramming/)
-#'   and
-#'   [Racket](https://docs.racket-lang.org/reference/quasiquote.html).
+#' Formally, `quo()` and `expr()` are quasiquote functions, `UQ()` is
+#' the unquote operator, and `UQS()` is the unquote splice operator.
+#' These terms have a rich history in Lisp languages, and live on in
+#' modern languages like
+#' [Julia](http://docs.julialang.org/en/release-0.1/manual/metaprogramming/)
+#' and
+#' [Racket](https://docs.racket-lang.org/reference/quasiquote.html).
 #'
 #' @param x An expression to unquote.
 #' @name quasiquotation

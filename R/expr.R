@@ -6,13 +6,16 @@
 #' variants return quosures). They support [quasiquotation]
 #' syntax.
 #'
-#' - `expr()` returns its argument unevaluated.
+#' - `expr()` returns its argument unevaluated. It is equivalent to
+#'   [base::bquote()].
 #'
-#' - `enexpr()` takes an argument name and returns it unevaluated.
+#' - `enexpr()` takes an argument name and returns it unevaluated. It
+#'   is equivalent to [base::substitute()].
 #'
 #' - `exprs()` captures multiple expressions and returns a list. In
 #'   particular, it can capture expressions in `...`. It supports name
-#'   unquoting with `:=` (see [quos()]).
+#'   unquoting with `:=` (see [quos()]). It is equivalent to
+#'   `eval(substitute(alist(...)))`.
 #'
 #' See [is_expr()] for more about R expressions.
 #'

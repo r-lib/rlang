@@ -36,11 +36,14 @@ These functions return raw expressions (whereas \code{\link[=quo]{quo()}} and
 variants return quosures). They support \link{quasiquotation}
 syntax.
 \itemize{
-\item \code{expr()} returns its argument unevaluated.
-\item \code{enexpr()} takes an argument name and returns it unevaluated.
+\item \code{expr()} returns its argument unevaluated. It is equivalent to
+\code{\link[base:bquote]{base::bquote()}}.
+\item \code{enexpr()} takes an argument name and returns it unevaluated. It
+is equivalent to \code{\link[base:substitute]{base::substitute()}}.
 \item \code{exprs()} captures multiple expressions and returns a list. In
 particular, it can capture expressions in \code{...}. It supports name
-unquoting with \code{:=} (see \code{\link[=quos]{quos()}}).
+unquoting with \code{:=} (see \code{\link[=quos]{quos()}}). It is equivalent to
+\code{eval(substitute(alist(...)))}.
 }
 
 See \code{\link[=is_expr]{is_expr()}} for more about R expressions.

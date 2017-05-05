@@ -37,7 +37,8 @@ forms for unquoting.
 \item \code{UQ()} and the \code{!!} operator unquote their argument. It gets
 evaluated immediately in the surrounding context.
 \item \code{UQE()} is like \code{UQ()} but retrieves the expression of
-\link[=is_quosureish]{quosureish} objects. It is a shortcut for \code{!! get_expr(x)}.
+\link[=is_quosureish]{quosureish} objects. It is a shortcut for \code{!! get_expr(x)}. Use this with care: it is potentially unsafe to
+discard the environment of the quosure.
 \item \code{UQS()} and the \code{!!!} operators unquote and splice their
 argument. The argument should evaluate to a vector or an
 expression. Each component of the vector is embedded as its own
@@ -48,9 +49,9 @@ names are used as argument names.
 \section{Theory}{
 
 
-Formally, \code{quo()} and \code{expr()} are quasiquote functions, \code{UQ()}
-is the unquote operator, and \code{UQS()} is the unquote splice
-operator. These terms have a rich history in LISP, and live on in
+Formally, \code{quo()} and \code{expr()} are quasiquote functions, \code{UQ()} is
+the unquote operator, and \code{UQS()} is the unquote splice operator.
+These terms have a rich history in Lisp languages, and live on in
 modern languages like
 \href{http://docs.julialang.org/en/release-0.1/manual/metaprogramming/}{Julia}
 and
