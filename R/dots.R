@@ -125,17 +125,9 @@ as_definition <- function(def) {
   )
 }
 
-
-#' Is object a ..n symbol?
-#' @param x An object to test.
-#' @export
-#' @examples
-#' is_dot_symbol(quote(..2))
-#' is_dot_symbol(quote(sym))
 is_dot_symbol <- function(x) {
   is_symbol(x) && is_dot_nm(as.character(x))
 }
-
 is_dot_nm <- function(nm) {
   grepl("^\\.\\.[0-9]+$", nm)
 }
