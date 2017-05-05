@@ -27,3 +27,19 @@ test_that("set_attrs() does not zap old attributes", {
   obj <- set_attrs(obj, baz = "bam")
   expect_named(attributes(obj), c("foo", "baz"))
 })
+
+test_that("inputs must be valid", {
+  expect_error(set_names(environment()), "must be a vector")
+  expect_error(set_names(1:10, letters[1:4]), "same length")
+})
+
+test_that("can supply vector or ...", {
+  expect_named(set_names(1:2, c("a", "b")), c("a", "b"))
+  expect_named(set_names(1:2, "a", "b"), c("a", "b"))
+})
+
+test_that("can supply function/formula to rename", {
+  x <- c(a = 1, b = 2)
+  expect_named(set_names(x, toupper), c("A", "B"))
+  expect_named(set_names(x, ~ toupper(.)), c("A", "B"))
+})
