@@ -50,9 +50,10 @@
 #' See the [programming with
 #' dplyr](http://dplyr.tidyverse.org/articles/programming.html)
 #' vignette for practical examples. For developers, the [tidy
-#' evaluation][tidy-evaluation] page provides an overview of this
-#' approach. The [quasiquotation] page goes in detail over the
-#' unquoting and splicing operators.
+#' evaluation](http://rlang.tidyverse.org/articles/tidy-evaluation.html)
+#' vignette provides an overview of this approach. The
+#' [quasiquotation] page goes in detail over the unquoting and
+#' splicing operators.
 #'
 #' @param expr An expression.
 #' @param arg A symbol referring to an argument. The expression

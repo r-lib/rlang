@@ -25,9 +25,10 @@ UQS(x)
 }
 \description{
 Quasiquotation is the mechanism that makes it possible to program
-flexibly with \link[=tidy-evaluation]{tidyeval} grammars like dplyr. It
-is enabled in all tidyeval functions, the most fundamental of which
-are \code{\link[=quo]{quo()}} and \code{\link[=expr]{expr()}}.
+flexibly with
+\href{http://rlang.tidyverse.org/articles/tidy-evaluation.html}{tidyeval}
+grammars like dplyr. It is enabled in all tidyeval functions, the
+most fundamental of which are \code{\link[=quo]{quo()}} and \code{\link[=expr]{expr()}}.
 
 Quasiquotation is the combination of quoting an expression while
 allowing immediate evaluation (unquoting) of part of that

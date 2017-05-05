@@ -45,7 +45,8 @@ includes:
 
 dplyr provides a practical introduction to tidyeval in a
 [vignette](http://dplyr.tidyverse.org/articles/programming.html).
-See also [this tidy evaluation page](http://rlang.tidyverse.org/reference/tidy-evaluation.html)
+See also
+[the tidy evaluation vignette](http://rlang.tidyverse.org/articles/tidy-evaluation.html)
 that goes over the design of tidy evaluation.
 
 
