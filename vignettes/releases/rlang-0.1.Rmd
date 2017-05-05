@@ -68,6 +68,8 @@ have to call the function with `do.call()`.
 You can splice a list of arguments into dots:
 
 ```{r}
+library("rlang")
+
 args <- list(foo = "foo", bar = "bar", "baz")
 lang("fn", !!! args)
 ```

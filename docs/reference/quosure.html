@@ -54,6 +54,18 @@
         <li>
   <a href="../reference/index.html">Reference</a>
 </li>
+<li class="dropdown">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+    Articles
+     
+    <span class="caret"></span>
+  </a>
+  <ul class="dropdown-menu" role="menu">
+    <li>
+      <a href="../articles/tidy-evaluation.html">Tidy evaluation</a>
+    </li>
+  </ul>
+</li>
 <li>
   <a href="../news/index.html">News</a>
 </li>
@@ -144,10 +156,10 @@ quosure inside another quosure and evaluate it like you've
 unquoted a raw expression.</p></li>
 </ul>
     <p>See the <a href = 'http://dplyr.tidyverse.org/articles/programming.html'>programming withdplyr</a>
-vignette for practical examples. For developers, the <a href='tidy-evaluation.html'>tidy
-evaluation</a> page provides an overview of this
-approach. The <a href='quasiquotation.html'>quasiquotation</a> page goes in detail over the
-unquoting and splicing operators.</p>
+vignette for practical examples. For developers, the <a href = 'http://rlang.tidyverse.org/articles/tidy-evaluation.html'>tidyevaluation</a>
+vignette provides an overview of this approach. The
+<a href='quasiquotation.html'>quasiquotation</a> page goes in detail over the unquoting and
+splicing operators.</p>
     
     <h2 class="hasAnchor" id="see-also"><a class="anchor" href="#see-also"></a>See also</h2>
 
@@ -194,13 +206,13 @@ The <a href='quasiquotation.html'>quasiquotation</a> page goes over unquoting an
 <span class='co'># Like other formulas, quosures are normally self-quoting under</span>
 <span class='co'># evaluation:</span>
 <span class='fu'>eval</span>(~<span class='no'>var</span>)</div><div class='output co'>#&gt; ~var
-#&gt; &lt;environment: 0x7f8494ec1788&gt;</div><div class='input'><span class='fu'>eval</span>(<span class='fu'>quo</span>(<span class='no'>var</span>))</div><div class='output co'>#&gt; &lt;quosure: local&gt;
+#&gt; &lt;environment: 0x7f979ac90608&gt;</div><div class='input'><span class='fu'>eval</span>(<span class='fu'>quo</span>(<span class='no'>var</span>))</div><div class='output co'>#&gt; &lt;quosure: local&gt;
 #&gt; ~var</div><div class='input'>
 <span class='co'># But eval_tidy() evaluates expressions in a special environment</span>
 <span class='co'># (called the overscope) where they become promises. They</span>
 <span class='co'># self-evaluate under evaluation:</span>
 <span class='fu'><a href='eval_tidy.html'>eval_tidy</a></span>(~<span class='no'>var</span>)</div><div class='output co'>#&gt; ~var
-#&gt; &lt;environment: 0x7f8494ec1788&gt;</div><div class='input'><span class='fu'><a href='eval_tidy.html'>eval_tidy</a></span>(<span class='fu'>quo</span>(<span class='no'>var</span>))</div><div class='output co'>#&gt; [1] "foo"</div><div class='input'>
+#&gt; &lt;environment: 0x7f979ac90608&gt;</div><div class='input'><span class='fu'><a href='eval_tidy.html'>eval_tidy</a></span>(<span class='fu'>quo</span>(<span class='no'>var</span>))</div><div class='output co'>#&gt; [1] "foo"</div><div class='input'>
 <span class='co'># Note that it's perfectly fine to unquote quosures within</span>
 <span class='co'># quosures, as long as you evaluate with eval_tidy():</span>
 <span class='no'>quo</span> <span class='kw'>&lt;-</span> <span class='fu'>quo</span>(<span class='no'>letters</span>)
@@ -250,51 +262,51 @@ The <a href='quasiquotation.html'>quasiquotation</a> page goes over unquoting an
 <span class='no'>quo2</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='with_env.html'>locally</a></span>(<span class='fu'>quo</span>(<span class='no'>foo</span>))
 <span class='no'>quo1</span>; <span class='no'>quo2</span></div><div class='output co'>#&gt; &lt;quosure: local&gt;
 #&gt; ~foo</div><div class='output co'>#&gt; &lt;quosure: local&gt;
-#&gt; ~foo</div><div class='input'><span class='fu'>str</span>(<span class='no'>quo1</span>); <span class='fu'>str</span>(<span class='no'>quo2</span>)</div><div class='output co'>#&gt; &lt;quosure: local 0x7f84918bcce8&gt;
-#&gt; ~foo</div><div class='output co'>#&gt; &lt;quosure: local 0x7f848e2c3108&gt;
+#&gt; ~foo</div><div class='input'><span class='fu'>str</span>(<span class='no'>quo1</span>); <span class='fu'>str</span>(<span class='no'>quo2</span>)</div><div class='output co'>#&gt; &lt;quosure: local 0x7f979e79f2e0&gt;
+#&gt; ~foo</div><div class='output co'>#&gt; &lt;quosure: local 0x7f97a196ca78&gt;
 #&gt; ~foo</div><div class='input'>
 <span class='co'># You can also see this address by printing the environment at the</span>
 <span class='co'># console:</span>
-<span class='fu'><a href='get_env.html'>get_env</a></span>(<span class='no'>quo1</span>)</div><div class='output co'>#&gt; &lt;environment: 0x7f84918bcce8&gt;</div><div class='input'><span class='fu'><a href='get_env.html'>get_env</a></span>(<span class='no'>quo2</span>)</div><div class='output co'>#&gt; &lt;environment: 0x7f848e2c3108&gt;</div><div class='input'>
+<span class='fu'><a href='get_env.html'>get_env</a></span>(<span class='no'>quo1</span>)</div><div class='output co'>#&gt; &lt;environment: 0x7f979e79f2e0&gt;</div><div class='input'><span class='fu'><a href='get_env.html'>get_env</a></span>(<span class='no'>quo2</span>)</div><div class='output co'>#&gt; &lt;environment: 0x7f97a196ca78&gt;</div><div class='input'>
 
 <span class='co'># new_quosure() takes by value an expression that is already quoted:</span>
 <span class='no'>expr</span> <span class='kw'>&lt;-</span> <span class='fu'>quote</span>(<span class='no'>mtcars</span>)
 <span class='no'>env</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='as_env.html'>as_env</a></span>(<span class='st'>"datasets"</span>)
 <span class='no'>quo</span> <span class='kw'>&lt;-</span> <span class='fu'>new_quosure</span>(<span class='no'>expr</span>, <span class='no'>env</span>)
 <span class='no'>quo</span></div><div class='output co'>#&gt; &lt;quosure: local&gt;
-#&gt; ~mtcars</div><div class='input'><span class='fu'><a href='eval_tidy.html'>eval_tidy</a></span>(<span class='no'>quo</span>)</div><div class='output co'>#&gt;                      mpg cyl  disp  hp drat    wt  qsec vs am gear carb
-#&gt; Mazda RX4           21.0   6 160.0 110 3.90 2.620 16.46  0  1    4    4
-#&gt; Mazda RX4 Wag       21.0   6 160.0 110 3.90 2.875 17.02  0  1    4    4
-#&gt; Datsun 710          22.8   4 108.0  93 3.85 2.320 18.61  1  1    4    1
-#&gt; Hornet 4 Drive      21.4   6 258.0 110 3.08 3.215 19.44  1  0    3    1
-#&gt; Hornet Sportabout   18.7   8 360.0 175 3.15 3.440 17.02  0  0    3    2
-#&gt; Valiant             18.1   6 225.0 105 2.76 3.460 20.22  1  0    3    1
-#&gt; Duster 360          14.3   8 360.0 245 3.21 3.570 15.84  0  0    3    4
-#&gt; Merc 240D           24.4   4 146.7  62 3.69 3.190 20.00  1  0    4    2
-#&gt; Merc 230            22.8   4 140.8  95 3.92 3.150 22.90  1  0    4    2
-#&gt; Merc 280            19.2   6 167.6 123 3.92 3.440 18.30  1  0    4    4
-#&gt; Merc 280C           17.8   6 167.6 123 3.92 3.440 18.90  1  0    4    4
-#&gt; Merc 450SE          16.4   8 275.8 180 3.07 4.070 17.40  0  0    3    3
-#&gt; Merc 450SL          17.3   8 275.8 180 3.07 3.730 17.60  0  0    3    3
-#&gt; Merc 450SLC         15.2   8 275.8 180 3.07 3.780 18.00  0  0    3    3
-#&gt; Cadillac Fleetwood  10.4   8 472.0 205 2.93 5.250 17.98  0  0    3    4
-#&gt; Lincoln Continental 10.4   8 460.0 215 3.00 5.424 17.82  0  0    3    4
-#&gt; Chrysler Imperial   14.7   8 440.0 230 3.23 5.345 17.42  0  0    3    4
-#&gt; Fiat 128            32.4   4  78.7  66 4.08 2.200 19.47  1  1    4    1
-#&gt; Honda Civic         30.4   4  75.7  52 4.93 1.615 18.52  1  1    4    2
-#&gt; Toyota Corolla      33.9   4  71.1  65 4.22 1.835 19.90  1  1    4    1
-#&gt; Toyota Corona       21.5   4 120.1  97 3.70 2.465 20.01  1  0    3    1
-#&gt; Dodge Challenger    15.5   8 318.0 150 2.76 3.520 16.87  0  0    3    2
-#&gt; AMC Javelin         15.2   8 304.0 150 3.15 3.435 17.30  0  0    3    2
-#&gt; Camaro Z28          13.3   8 350.0 245 3.73 3.840 15.41  0  0    3    4
-#&gt; Pontiac Firebird    19.2   8 400.0 175 3.08 3.845 17.05  0  0    3    2
-#&gt; Fiat X1-9           27.3   4  79.0  66 4.08 1.935 18.90  1  1    4    1
-#&gt; Porsche 914-2       26.0   4 120.3  91 4.43 2.140 16.70  0  1    5    2
-#&gt; Lotus Europa        30.4   4  95.1 113 3.77 1.513 16.90  1  1    5    2
-#&gt; Ford Pantera L      15.8   8 351.0 264 4.22 3.170 14.50  0  1    5    4
-#&gt; Ferrari Dino        19.7   6 145.0 175 3.62 2.770 15.50  0  1    5    6
-#&gt; Maserati Bora       15.0   8 301.0 335 3.54 3.570 14.60  0  1    5    8
-#&gt; Volvo 142E          21.4   4 121.0 109 4.11 2.780 18.60  1  1    4    2</div></pre>
+#&gt; ~mtcars</div><div class='input'><span class='fu'><a href='eval_tidy.html'>eval_tidy</a></span>(<span class='no'>quo</span>)</div><div class='output co'>#&gt;                      mpg cyl  disp  hp drat   wt qsec vs am gear carb
+#&gt; Mazda RX4           21.0   6 160.0 110 3.90 2.62 16.5  0  1    4    4
+#&gt; Mazda RX4 Wag       21.0   6 160.0 110 3.90 2.88 17.0  0  1    4    4
+#&gt; Datsun 710          22.8   4 108.0  93 3.85 2.32 18.6  1  1    4    1
+#&gt; Hornet 4 Drive      21.4   6 258.0 110 3.08 3.21 19.4  1  0    3    1
+#&gt; Hornet Sportabout   18.7   8 360.0 175 3.15 3.44 17.0  0  0    3    2
+#&gt; Valiant             18.1   6 225.0 105 2.76 3.46 20.2  1  0    3    1
+#&gt; Duster 360          14.3   8 360.0 245 3.21 3.57 15.8  0  0    3    4
+#&gt; Merc 240D           24.4   4 146.7  62 3.69 3.19 20.0  1  0    4    2
+#&gt; Merc 230            22.8   4 140.8  95 3.92 3.15 22.9  1  0    4    2
+#&gt; Merc 280            19.2   6 167.6 123 3.92 3.44 18.3  1  0    4    4
+#&gt; Merc 280C           17.8   6 167.6 123 3.92 3.44 18.9  1  0    4    4
+#&gt; Merc 450SE          16.4   8 275.8 180 3.07 4.07 17.4  0  0    3    3
+#&gt; Merc 450SL          17.3   8 275.8 180 3.07 3.73 17.6  0  0    3    3
+#&gt; Merc 450SLC         15.2   8 275.8 180 3.07 3.78 18.0  0  0    3    3
+#&gt; Cadillac Fleetwood  10.4   8 472.0 205 2.93 5.25 18.0  0  0    3    4
+#&gt; Lincoln Continental 10.4   8 460.0 215 3.00 5.42 17.8  0  0    3    4
+#&gt; Chrysler Imperial   14.7   8 440.0 230 3.23 5.34 17.4  0  0    3    4
+#&gt; Fiat 128            32.4   4  78.7  66 4.08 2.20 19.5  1  1    4    1
+#&gt; Honda Civic         30.4   4  75.7  52 4.93 1.61 18.5  1  1    4    2
+#&gt; Toyota Corolla      33.9   4  71.1  65 4.22 1.83 19.9  1  1    4    1
+#&gt; Toyota Corona       21.5   4 120.1  97 3.70 2.46 20.0  1  0    3    1
+#&gt; Dodge Challenger    15.5   8 318.0 150 2.76 3.52 16.9  0  0    3    2
+#&gt; AMC Javelin         15.2   8 304.0 150 3.15 3.44 17.3  0  0    3    2
+#&gt; Camaro Z28          13.3   8 350.0 245 3.73 3.84 15.4  0  0    3    4
+#&gt; Pontiac Firebird    19.2   8 400.0 175 3.08 3.85 17.1  0  0    3    2
+#&gt; Fiat X1-9           27.3   4  79.0  66 4.08 1.94 18.9  1  1    4    1
+#&gt; Porsche 914-2       26.0   4 120.3  91 4.43 2.14 16.7  0  1    5    2
+#&gt; Lotus Europa        30.4   4  95.1 113 3.77 1.51 16.9  1  1    5    2
+#&gt; Ford Pantera L      15.8   8 351.0 264 4.22 3.17 14.5  0  1    5    4
+#&gt; Ferrari Dino        19.7   6 145.0 175 3.62 2.77 15.5  0  1    5    6
+#&gt; Maserati Bora       15.0   8 301.0 335 3.54 3.57 14.6  0  1    5    8
+#&gt; Volvo 142E          21.4   4 121.0 109 4.11 2.78 18.6  1  1    4    2</div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
     <h2>Contents</h2>
@@ -319,7 +331,7 @@ The <a href='quasiquotation.html'>quasiquotation</a> page goes over unquoting an
 </div>
 
 <div class="author">
-  <p>Developed by <a href='http://hadley.nz'>Hadley Wickham</a>, Lionel Henry.</p>
+  <p>Developed by Lionel Henry, <a href='http://hadley.nz'>Hadley Wickham</a>.</p>
   <p>Site built by <a href="http://hadley.github.io/pkgdown/">pkgdown</a>.</p>
 </div>
 

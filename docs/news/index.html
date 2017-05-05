@@ -54,6 +54,18 @@
         <li>
   <a href="../reference/index.html">Reference</a>
 </li>
+<li class="dropdown">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+    Articles
+     
+    <span class="caret"></span>
+  </a>
+  <ul class="dropdown-menu" role="menu">
+    <li>
+      <a href="../articles/tidy-evaluation.html">Tidy evaluation</a>
+    </li>
+  </ul>
+</li>
 <li>
   <a href="../news/index.html">News</a>
 </li>
@@ -74,65 +86,10 @@
     </div>
 
     <div class="contents">
-    <div id="rlang-0-0-0-9000" class="section level1">
+    <div id="rlang-0-1" class="section level1">
 <h1 class="hasAnchor">
-<a href="#rlang-0-0-0-9000" class="anchor"></a>rlang 0.0.0.9000</h1>
-<ul>
-<li>Fork rlang from lazyeval.</li>
-</ul>
-</div>
-    <div id="lazyeval-0-2-0-9000" class="section level1">
-<h1 class="hasAnchor">
-<a href="#lazyeval-0-2-0-9000" class="anchor"></a>lazyeval 0.2.0.9000</h1>
-<ul>
-<li>No longer check the type of the sides of the formula.</li>
-</ul>
-</div>
-    <div id="lazyeval-0-2-0" class="section level1">
-<h1 class="hasAnchor">
-<a href="#lazyeval-0-2-0" class="anchor"></a>lazyeval 0.2.0</h1>
-<div id="formula-based-lazy-evaluation" class="section level2">
-<h2 class="hasAnchor">
-<a href="#formula-based-lazy-evaluation" class="anchor"></a>Formula-based lazy evaluation</h2>
-<p>Lazyeval has a new system for lazy-eval based on formulas, described in depth in the new <code>lazyeval</code> vignette. This system is still a little experimental - it hasn’t seen much use outside of the vignette, so it certainly may change a little in the future. However, long-term goal is to use these tools across all of my packages (ggplot2, tidyr, dplyr, etc), and I am fairly confident that this is a robust system that won’t need major changes.</p>
-<p>There are three key components:</p>
-<ul>
-<li><p><code>tidy_eval()</code> evaluates a formula in the environment where it was defined. If supplied, values are first looked for in an optional <code>data</code> argument. Pronouns <code>.data</code> and <code>.env</code> can be used to resolve ambiguity in this case. (#43). Longer forms <code>tidy_eval_rhs()</code> and <code>tidy_eval_lhs()</code> emphasise the side of the formula that you want to evaluate (#64).</p></li>
-<li><p><code><a href="../reference/expr_interp.html">expr_interp()</a></code> provides a full quasiquoting system using <code>uq()</code> for unquote and <code>uqs()</code> for unquote-splice (#36).</p></li>
-<li><p><code>f_capture()</code> and <code>dots_capture()</code> make it easy to turn promises and <code>...</code> into explicit formulas. These should be used sparingly, as generally lazy-eval is preferred to non-standard eval.</p></li>
-<li><p>For functions that work with <code>...</code>, <code>f_list()</code> and <code>as_f_list()</code> make it possible to use the evaluated LHS of a formula to name the elements of a list (#59).</p></li>
-</ul>
-<p>The core components are accompanied by a number of helper functions:</p>
-<ul>
-<li><p>Identify a formula with <code><a href="../reference/is_formula.html">is_formula()</a></code>.</p></li>
-<li><p>Create a formula from a quoted call and an environment with <code>new_f()</code>.</p></li>
-<li><p>“Unwrap” a formula removing one level from the stack of parent environments with <code>f_unwrap()</code>.</p></li>
-<li><p>Get or set either side of a formula with <code><a href="../reference/f_rhs.html">f_rhs()</a></code> or <code><a href="../reference/f_rhs.html">f_lhs()</a></code>, and the environment with <code><a href="../reference/f_rhs.html">f_env()</a></code>.</p></li>
-<li><p>Convert to text/label with <code><a href="../reference/f_text.html">f_text()</a></code> and <code><a href="../reference/f_text.html">f_label()</a></code>.</p></li>
-</ul>
-<p>I’ve also added <code>expr_find()</code>, <code><a href="../reference/expr_label.html">expr_text()</a></code> and <code><a href="../reference/expr_label.html">expr_label()</a></code> explicitly to find the expression associated with a function argument, and label it for output (#58). This is one of the primary uses cases for NSE. <code>expr_env()</code> is a similar helper that returns the environment associated with a promise (#67).</p>
-</div>
-<div id="fixes-to-existing-functions" class="section level2">
-<h2 class="hasAnchor">
-<a href="#fixes-to-existing-functions" class="anchor"></a>Fixes to existing functions</h2>
-<ul>
-<li><p><code>lazy_dots()</code> gains <code>.ignore_empty</code> argument to drop extra arguments (#32).</p></li>
-<li><p><code>expr_interp.formula()</code> only accepts single-sided formulas (#37).</p></li>
-<li><p><code><a href="../reference/expr_interp.html">expr_interp()</a></code> accepts an environment in <code>.values</code> (#35).</p></li>
-<li><p><code>expr_interp.character()</code> always produes a single string, regardless of input length (#27).</p></li>
-<li><p>Fixed an infinite loop in <code>lazy_dots(.follow_symbols = TRUE)</code> (#22, #24)</p></li>
-<li><p><code>lazy()</code> now fails with an informative error when it is applied on an object that has already been evaluated (#23, @lionel-).</p></li>
-<li><p><code>lazy()</code> no longer follows the expressions of lazily loaded objects (#18, @lionel-).</p></li>
-</ul>
-</div>
-</div>
-    <div id="lazyeval-0-1-10" class="section level1">
-<h1 class="hasAnchor">
-<a href="#lazyeval-0-1-10" class="anchor"></a>lazyeval 0.1.10</h1>
-<ul>
-<li><p><code>as.lazy_dots()</code> gains a method for NULL, returning a zero-length list.</p></li>
-<li><p><code>auto_names()</code> no longer truncates symbols (#19, #20)</p></li>
-</ul>
+<a href="#rlang-0-1" class="anchor"></a>rlang 0.1</h1>
+<p>Initial release.</p>
 </div>
     </div>
   </div>
@@ -141,10 +98,7 @@
     <div id="tocnav">
       <h2>Contents</h2>
       <ul class="nav nav-pills nav-stacked">
-        <li><a href="#rlang-0-0-0-9000">0.0.0.9000</a></li>
-        <li><a href="#lazyeval-0-2-0-9000">0.2.0.9000</a></li>
-        <li><a href="#lazyeval-0-2-0">0.2.0</a></li>
-        <li><a href="#lazyeval-0-1-10">0.1.10</a></li>
+        <li><a href="#rlang-0-1">0.1</a></li>
       </ul>
     </div>
   </div>
@@ -157,7 +111,7 @@
 </div>
 
 <div class="author">
-  <p>Developed by <a href='http://hadley.nz'>Hadley Wickham</a>, Lionel Henry.</p>
+  <p>Developed by Lionel Henry, <a href='http://hadley.nz'>Hadley Wickham</a>.</p>
   <p>Site built by <a href="http://hadley.github.io/pkgdown/">pkgdown</a>.</p>
 </div>
 

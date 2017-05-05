@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Return the head or tail of a call object — lang_head • rlang</title>
+<title>Articles • rlang</title>
 
 <!-- jquery -->
 <script src="https://code.jquery.com/jquery-3.1.0.min.js" integrity="sha384-nrOSfDHtoPMzJHjVTdCopGqIqeYETSXhZDFyniQ8ZHcVy08QesyHcnOUpMpqnmWq" crossorigin="anonymous"></script>
@@ -33,7 +33,7 @@
   </head>
 
   <body>
-    <div class="container template-reference-topic">
+    <div class="container template-vignette-index">
       <header>
       <div class="navbar navbar-default navbar-fixed-top" role="navigation">
   <div class="container">
@@ -78,67 +78,21 @@
       
       </header>
 
-      <div class="row">
-  <div class="col-md-9 contents">
-    <div class="page-header">
-    <h1>Return the head or tail of a call object</h1>
+      <div class="page-header">
+  <h1>Articles <small>version&nbsp;0.0.0.9019</small></h1>
+</div>
+
+<div class="row">
+  <div class="col-md-9">
+    <div class="section ">
+      <h3>All vignettes</h3>
+      <p class="section-desc"></p>
+
+      <ul>
+        <li><a href="releases/rlang-0.1.html">rlang 0.1</a></li>
+        <li><a href="tidy-evaluation.html">Tidy evaluation</a></li>
+      </ul>
     </div>
-
-    
-    <p>These functions return the head or the tail of a call. See section
-on calls as parse trees in <code><a href='lang.html'>lang()</a></code>. They are equivalent to
-<code><a href='pairlist.html'>node_car()</a></code> and <code><a href='pairlist.html'>node_cdr()</a></code> but support quosures and check that
-the input is indeed a call before retrieving the head or tail (it
-is unsafe to do this without type checking).
-
-    <code>lang_head()</code> returns the head of the call without any conversion,
-unlike <code><a href='lang_name.html'>lang_name()</a></code> which checks that the head is a symbol and
-converts it to a string. <code>lang_tail()</code> returns the pairlist of
-arguments (while <code><a href='lang_args.html'>lang_args()</a></code> returns the same object converted to
-a regular list)</p>
-    
-
-    <pre class="usage"><span class='fu'>lang_head</span>(<span class='no'>lang</span>)
-
-<span class='fu'>lang_tail</span>(<span class='no'>lang</span>)</pre>
-    
-    <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a> Arguments</h2>
-    <table class="ref-arguments">
-    <colgroup><col class="name" /><col class="desc" /></colgroup>
-    <tr>
-      <th>lang</th>
-      <td><p>Can be a call (language object), a formula quoting a
-call in the right-hand side, or a frame object from which to
-extract the call expression.</p></td>
-    </tr>
-    </table>
-    
-    <h2 class="hasAnchor" id="see-also"><a class="anchor" href="#see-also"></a>See also</h2>
-
-    <p><a href='pairlist.html'>pairlist</a>, <code><a href='lang_args.html'>lang_args()</a></code>, <code><a href='lang.html'>lang()</a></code></p>
-    
-
-    <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><div class='input'><span class='no'>lang</span> <span class='kw'>&lt;-</span> <span class='fu'>quote</span>(<span class='fu'>foo</span>(<span class='no'>bar</span>, <span class='no'>baz</span>))
-<span class='fu'>lang_head</span>(<span class='no'>lang</span>)</div><div class='output co'>#&gt; foo
-#&gt; attr(,"foo")
-#&gt; [1] "bar"</div><div class='input'><span class='fu'>lang_tail</span>(<span class='no'>lang</span>)</div><div class='output co'>#&gt; [[1]]
-#&gt; bar
-#&gt; 
-#&gt; [[2]]
-#&gt; baz
-#&gt; </div></pre>
-  </div>
-  <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
-    <h2>Contents</h2>
-    <ul class="nav nav-pills nav-stacked">
-      <li><a href="#arguments">Arguments</a></li>
-      
-      <li><a href="#see-also">See also</a></li>
-      
-      <li><a href="#examples">Examples</a></li>
-    </ul>
-
   </div>
 </div>
 

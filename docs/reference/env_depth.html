@@ -54,6 +54,18 @@
         <li>
   <a href="../reference/index.html">Reference</a>
 </li>
+<li class="dropdown">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+    Articles
+     
+    <span class="caret"></span>
+  </a>
+  <ul class="dropdown-menu" role="menu">
+    <li>
+      <a href="../articles/tidy-evaluation.html">Tidy evaluation</a>
+    </li>
+  </ul>
+</li>
 <li>
   <a href="../news/index.html">News</a>
 </li>
@@ -101,7 +113,7 @@ e.g. a formula, <a href='quosure.html'>quosure</a> or <a href='is_function.html'
     
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><div class='input'><span class='fu'>env_depth</span>(<span class='fu'><a href='empty_env.html'>empty_env</a></span>())</div><div class='output co'>#&gt; [1] 0</div><div class='input'><span class='fu'>env_depth</span>(<span class='fu'><a href='scoped_env.html'>pkg_env</a></span>(<span class='st'>"rlang"</span>))</div><div class='output co'>#&gt; [1] 13</div></pre>
+    <pre class="examples"><div class='input'><span class='fu'>env_depth</span>(<span class='fu'><a href='empty_env.html'>empty_env</a></span>())</div><div class='output co'>#&gt; [1] 0</div><div class='input'><span class='fu'>env_depth</span>(<span class='fu'><a href='scoped_env.html'>pkg_env</a></span>(<span class='st'>"rlang"</span>))</div><div class='output co'>#&gt; [1] 12</div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
     <h2>Contents</h2>
@@ -124,7 +136,7 @@ e.g. a formula, <a href='quosure.html'>quosure</a> or <a href='is_function.html'
 </div>
 
 <div class="author">
-  <p>Developed by <a href='http://hadley.nz'>Hadley Wickham</a>, Lionel Henry.</p>
+  <p>Developed by Lionel Henry, <a href='http://hadley.nz'>Hadley Wickham</a>.</p>
   <p>Site built by <a href="http://hadley.github.io/pkgdown/">pkgdown</a>.</p>
 </div>
 
