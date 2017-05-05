@@ -11,7 +11,8 @@ map <- function(.x, .f, ...) {
 }
 map_mold <- function(.x, .f, .mold, ...) {
   out <- vapply(.x, .f, .mold, ..., USE.NAMES = FALSE)
-  rlang::set_names(out, names(.x))
+  names(out) <- names(.x)
+  out
 }
 map_lgl <- function(.x, .f, ...) {
   map_mold(.x, .f, logical(1), ...)

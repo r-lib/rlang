@@ -236,7 +236,8 @@ dots_interp_lhs <- function(dots) {
     }
   }
 
-  set_names(dots, nms)
+  names(dots) <- nms
+  dots
 }
 dot_interp_lhs <- function(name, dot) {
   if (!is_null(name) && name != "") {
