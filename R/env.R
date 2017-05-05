@@ -420,9 +420,9 @@ mut_parent_env <- function(env, new_env) {
 #' These functions create bindings in an environment. The bindings are
 #' supplied through `...` as pairs of names and values or expressions.
 #' `env_bind()` is equivalent to evaluating a `<-` expression within
-#' the given environment, e.g. `with_env(env, foo <- "bar")`. This
-#' function should take care of the majority of use cases but the
-#' other variants can be useful for specific problems.
+#' the given environment. This function should take care of the
+#' majority of use cases but the other variants can be useful for
+#' specific problems.
 #'
 #' - `env_bind()` takes named _values_. The arguments are evaluated
 #'   once (with [explicit splicing][dots_list]) and bound in `.env`.

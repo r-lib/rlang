@@ -32,9 +32,9 @@ modified in place, invisibly.
 These functions create bindings in an environment. The bindings are
 supplied through \code{...} as pairs of names and values or expressions.
 \code{env_bind()} is equivalent to evaluating a \code{<-} expression within
-the given environment, e.g. \code{with_env(env, foo <- "bar")}. This
-function should take care of the majority of use cases but the
-other variants can be useful for specific problems.
+the given environment. This function should take care of the
+majority of use cases but the other variants can be useful for
+specific problems.
 \itemize{
 \item \code{env_bind()} takes named \emph{values}. The arguments are evaluated
 once (with \link[=dots_list]{explicit splicing}) and bound in \code{.env}.
