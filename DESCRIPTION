@@ -1,11 +1,12 @@
 Package: rlang
 Version: 0.0.0.9019
-Title: Tools for Language Objects and Evaluation
-Description: A toolbox for working with calls, unevaluated code, and
-    anything related to evaluation in R.
+Title: Functions for Base Types and Core R and Tidyverse Features
+Description: A toolbox for working with base types, core R features
+  like the condition system, and core tidyverse features like tidy
+  evaluation.
 Authors@R: c(
-    person("Hadley", "Wickham", ,"hadley@rstudio.com", c("aut", "cre")),
-    person("Lionel", "Henry", ,"lionel@rstudio.com", "aut"),
+    person("Lionel", "Henry", ,"lionel@rstudio.com", c("aut", "cre")),
+    person("Hadley", "Wickham", ,"hadley@rstudio.com", "aut"),
     person("RStudio", role = "cph")
     )
 License: GPL-3
