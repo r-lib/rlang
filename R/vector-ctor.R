@@ -63,7 +63,6 @@
 #' dbl(list(a = c(A = 1)))
 NULL
 
-#' @useDynLib rlang rlang_squash
 #' @rdname vector-construction
 #' @export
 lgl <- function(...) {

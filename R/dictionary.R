@@ -62,7 +62,6 @@ as_dictionary.data.frame <- function(x, lookup_msg = NULL, read_only = FALSE) {
   new_dictionary(x, lookup_msg, read_only)
 }
 
-#' @useDynLib rlang rlang_new_dictionary
 new_dictionary <- function(x, lookup_msg, read_only) {
   .Call(rlang_new_dictionary, x, lookup_msg, read_only)
 }

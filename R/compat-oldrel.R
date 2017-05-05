@@ -1,4 +1,4 @@
-# nocov - compat-oldrel (last updated: rlang 0.0.0.9001)
+# nocov - compat-oldrel (last updated: rlang 0.0.0.9019)
 
 # This file serves as a reference for compatibility functions for old
 # versions of R.
@@ -7,7 +7,6 @@
 # Compat function for capture functions (that will hopefully make
 # their way to the next R version) -----------------------------------
 
-#' @useDynLib rlang rlang_capturearg rlang_capturedots
 if (TRUE || utils::packageVersion("base") < "3.4.0") {
 
   captureArg <- function(x, strict = TRUE) {

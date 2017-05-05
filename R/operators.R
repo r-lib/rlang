@@ -21,7 +21,6 @@
 #' than using [base::ifelse()] and does not perform type conversions.
 #'
 #' @param x,y `y` for elements of `x` that are NA; otherwise, `x`.
-#' @useDynLib rlang replace_na
 #' @export
 #' @name op-na-default
 #' @seealso [op-null-default]
