@@ -11,12 +11,13 @@ set_names(x, nm = x, ...)
 
 \item{nm, ...}{Vector of names, the same length as \code{x}.
 
-You can specify names in three ways:
+You can specify names in the following ways:
 \itemize{
 \item If you do nothing, \code{x} will be named with itself.
 \item If \code{x} already has names, you can provide a function or formula
 to transform the existing names. In that case, \code{...} is passed
 to the function.
+\item If \code{nm} is \code{NULL}, the names are removed (if present).
 \item In all other cases, \code{nm} and \code{...} are passed to \code{\link[=chr]{chr()}}. This
 gives implicit splicing semantics: you can pass character
 vectors or list of character vectors indistinctly.

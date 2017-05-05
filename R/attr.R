@@ -171,13 +171,15 @@ has_name <- function(x, name) {
 #' @param x Vector to name.
 #' @param nm,... Vector of names, the same length as `x`.
 #'
-#'   You can specify names in three ways:
+#'   You can specify names in the following ways:
 #'
 #'   * If you do nothing, `x` will be named with itself.
 #'
 #'   * If `x` already has names, you can provide a function or formula
 #'     to transform the existing names. In that case, `...` is passed
 #'     to the function.
+#'
+#'   * If `nm` is `NULL`, the names are removed (if present).
 #'
 #'   * In all other cases, `nm` and `...` are passed to [chr()]. This
 #'     gives implicit splicing semantics: you can pass character
