@@ -1,8 +1,8 @@
 Package: rlang
 Version: 0.1
-Title: Functions for Base Types and Core R and Tidyverse Features
+Title: Functions for Base Types and Core R and 'Tidyverse' Features
 Description: A toolbox for working with base types, core R features
-  like the condition system, and core tidyverse features like tidy
+  like the condition system, and core 'Tidyverse' features like tidy
   evaluation.
 Authors@R: c(
     person("Lionel", "Henry", ,"lionel@rstudio.com", c("aut", "cre")),
