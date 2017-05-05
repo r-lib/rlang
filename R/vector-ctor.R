@@ -180,6 +180,11 @@ cpl_along <- function(.x) {
 raw_along <- function(.x) {
   vector("raw", length(.x))
 }
+#' @export
+#' @rdname vector-along
+bytes_along <- function(.x) {
+  vector("raw", length(.x))
+}
 
 #' @export
 #' @rdname vector-along
@@ -229,6 +234,11 @@ chr_len <- function(.n) {
 #' @rdname vector-len
 cpl_len <- function(.n) {
   rep_len(na_cpl, .n)
+}
+#' @export
+#' @rdname vector-len
+raw_len <- function(.n) {
+  vector("raw", .n)
 }
 #' @export
 #' @rdname vector-len

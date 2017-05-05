@@ -7,6 +7,7 @@
 \alias{dbl_len}
 \alias{chr_len}
 \alias{cpl_len}
+\alias{raw_len}
 \alias{bytes_len}
 \alias{list_len}
 \title{Create new vectors.}
@@ -20,6 +21,8 @@ dbl_len(.n)
 chr_len(.n)
 
 cpl_len(.n)
+
+raw_len(.n)
 
 bytes_len(.n)
 

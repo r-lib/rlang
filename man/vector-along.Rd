@@ -9,6 +9,7 @@
 \alias{lst_along}
 \alias{cpl_along}
 \alias{raw_along}
+\alias{bytes_along}
 \alias{rep_along}
 \title{Helper to create vectors with matching length.}
 \usage{
@@ -25,6 +26,8 @@ lst_along(.x)
 cpl_along(.x)
 
 raw_along(.x)
+
+bytes_along(.x)
 
 rep_along(.x, .y)
 }
