@@ -54,6 +54,18 @@
         <li>
   <a href="../reference/index.html">Reference</a>
 </li>
+<li class="dropdown">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+    Articles
+     
+    <span class="caret"></span>
+  </a>
+  <ul class="dropdown-menu" role="menu">
+    <li>
+      <a href="../articles/tidy-evaluation.html">Tidy evaluation</a>
+    </li>
+  </ul>
+</li>
 <li>
   <a href="../news/index.html">News</a>
 </li>
@@ -98,9 +110,9 @@ effects.</p>
     <pre class="examples"><div class='input'><span class='co'># Let's add attributes with structure() to uncopyable types. Since</span>
 <span class='co'># they are not copied, the attributes are changed in place:</span>
 <span class='no'>env</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='env.html'>env</a></span>()
-<span class='fu'>structure</span>(<span class='no'>env</span>, <span class='kw'>foo</span> <span class='kw'>=</span> <span class='st'>"bar"</span>)</div><div class='output co'>#&gt; &lt;environment: 0x7f8494930320&gt;
+<span class='fu'>structure</span>(<span class='no'>env</span>, <span class='kw'>foo</span> <span class='kw'>=</span> <span class='st'>"bar"</span>)</div><div class='output co'>#&gt; &lt;environment: 0x7f979f274e00&gt;
 #&gt; attr(,"foo")
-#&gt; [1] "bar"</div><div class='input'><span class='no'>env</span></div><div class='output co'>#&gt; &lt;environment: 0x7f8494930320&gt;
+#&gt; [1] "bar"</div><div class='input'><span class='no'>env</span></div><div class='output co'>#&gt; &lt;environment: 0x7f979f274e00&gt;
 #&gt; attr(,"foo")
 #&gt; [1] "bar"</div><div class='input'>
 <span class='co'># These objects that can only be changed with side effect are not</span>
@@ -112,12 +124,8 @@ effects.</p>
 <span class='co'># symbols are not:</span>
 <span class='fu'>structure</span>(<span class='fu'>quote</span>(<span class='no'>foo</span>), <span class='kw'>foo</span> <span class='kw'>=</span> <span class='st'>"bar"</span>)</div><div class='output co'>#&gt; foo
 #&gt; attr(,"foo")
-#&gt; [1] "bar"
-#&gt; attr(,"attr")
 #&gt; [1] "bar"</div><div class='input'><span class='fu'>quote</span>(<span class='no'>foo</span>)</div><div class='output co'>#&gt; foo
 #&gt; attr(,"foo")
-#&gt; [1] "bar"
-#&gt; attr(,"attr")
 #&gt; [1] "bar"</div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
@@ -137,7 +145,7 @@ effects.</p>
 </div>
 
 <div class="author">
-  <p>Developed by <a href='http://hadley.nz'>Hadley Wickham</a>, Lionel Henry.</p>
+  <p>Developed by Lionel Henry, <a href='http://hadley.nz'>Hadley Wickham</a>.</p>
   <p>Site built by <a href="http://hadley.github.io/pkgdown/">pkgdown</a>.</p>
 </div>
 

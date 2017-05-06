@@ -3,9 +3,10 @@
 #' @description
 #'
 #' Quasiquotation is the mechanism that makes it possible to program
-#' flexibly with [tidyeval][tidy-evaluation] grammars like dplyr. It
-#' is enabled in all tidyeval functions, the most fundamental of which
-#' are [quo()] and [expr()].
+#' flexibly with
+#' [tidyeval](http://rlang.tidyverse.org/articles/tidy-evaluation.html)
+#' grammars like dplyr. It is enabled in all tidyeval functions, the
+#' most fundamental of which are [quo()] and [expr()].
 #'
 #' Quasiquotation is the combination of quoting an expression while
 #' allowing immediate evaluation (unquoting) of part of that
@@ -32,7 +33,7 @@
 #' the unquote operator, and `UQS()` is the unquote splice operator.
 #' These terms have a rich history in Lisp languages, and live on in
 #' modern languages like
-#' [Julia](http://docs.julialang.org/en/release-0.1/manual/metaprogramming/)
+#' [Julia](https://docs.julialang.org/en/stable/manual/metaprogramming/)
 #' and
 #' [Racket](https://docs.racket-lang.org/reference/quasiquote.html).
 #'

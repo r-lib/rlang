@@ -70,10 +70,10 @@ unquoted a raw expression.
 }
 
 See the \href{http://dplyr.tidyverse.org/articles/programming.html}{programming withdplyr}
-vignette for practical examples. For developers, the \link[=tidy-evaluation]{tidy
-evaluation} page provides an overview of this
-approach. The \link{quasiquotation} page goes in detail over the
-unquoting and splicing operators.
+vignette for practical examples. For developers, the \href{http://rlang.tidyverse.org/articles/tidy-evaluation.html}{tidyevaluation}
+vignette provides an overview of this approach. The
+\link{quasiquotation} page goes in detail over the unquoting and
+splicing operators.
 }
 
 \examples{

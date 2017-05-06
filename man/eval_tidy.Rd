@@ -18,10 +18,10 @@ for your own objects, you can define a method for this generic.}
 }
 \description{
 \code{eval_tidy()} is a variant of \code{\link[base:eval]{base::eval()}} and \code{\link[=eval_bare]{eval_bare()}} that
-powers the \link[=tidy-evaluation]{tidy evaluation framework}. It
-evaluates \code{expr} in an \link[=as_overscope]{overscope} where the special
-definitions enabling tidy evaluation are installed. This enables
-the following features:
+powers the \href{http://rlang.tidyverse.org/articles/tidy-evaluation.html}{tidy evaluationframework}.
+It evaluates \code{expr} in an \link[=as_overscope]{overscope} where the
+special definitions enabling tidy evaluation are installed. This
+enables the following features:
 \itemize{
 \item Overscoped data. You can supply a data frame or list of named
 vectors to the \code{data} argument. The data contained in this list
@@ -95,5 +95,5 @@ eval_tidy(quo(.env$cyl), mtcars)
 eval_tidy(quo(!! cyl), mtcars)
 }
 \seealso{
-\link{tidy-evaluation}, \code{\link[=quo]{quo()}}, \link{quasiquotation}
+\code{\link[=quo]{quo()}}, \link{quasiquotation}
 }

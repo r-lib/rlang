@@ -5,15 +5,28 @@
 
 ## Overview
 
-The rlang package provides tools to work with expressions and calls in
-R. It is a fork of lazyeval that is larger in scope than just
-non-standard evaluation.
+The rlang package provides tools to work with core language features
+of R and the tidyverse:
+
+- Tidy evaluation.
+- Base types: vectors, expressions, and environments.
+- Call and context stacks.
+- The condition system.
+
 
 ## Installation
 
-Install the development version from github with:
+rlang is not automatically installed with the `tidyverse` package, but
+you can install it with:
 
-```R
+```r
+install.packages("rlang")
+library("rlang")
+```
+
+Or install the development version from github with:
+
+```r
 # install.packages("devtools")
 devtools::install_github("tidyverse/rlang", build_vignettes = TRUE)
 ```

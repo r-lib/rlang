@@ -50,9 +50,10 @@
 #' See the [programming with
 #' dplyr](http://dplyr.tidyverse.org/articles/programming.html)
 #' vignette for practical examples. For developers, the [tidy
-#' evaluation][tidy-evaluation] page provides an overview of this
-#' approach. The [quasiquotation] page goes in detail over the
-#' unquoting and splicing operators.
+#' evaluation](http://rlang.tidyverse.org/articles/tidy-evaluation.html)
+#' vignette provides an overview of this approach. The
+#' [quasiquotation] page goes in detail over the unquoting and
+#' splicing operators.
 #'
 #' @param expr An expression.
 #' @param arg A symbol referring to an argument. The expression
@@ -231,29 +232,17 @@ str.quosure <- function(object, ...) {
 #'
 #' These predicates test for [quosure] objects.
 #'
-#' - `is_quosure()` tests for the canonical R quosure: the one-sided
-#'   "formula".
+#' - `is_quosure()` tests for a tidyeval quosure. These are one-sided
+#'   formulas with a `quosure` class.
 #'
 #' - `is_quosureish()` tests for general R quosure objects: quosures,
-#'   two-sided formulas, and [definitions][op-definition].
-#'
-#'
-#' @details
-#'
-#' The `scoped` argument patterns-match on whether the scoped bundled
-#' with the quosure is valid or not. Invalid scopes may happen in
-#' nested quotations like `~~expr`, where the outer quosure is validly
-#' scoped but not the inner one. This is because `~` saves the
-#' environment when it is evaluated, and quoted quosures are by
-#' definition not evaluated. Note that in the [tidy evaluation
-#' framework][eval_tidy], unscoped quosures are automatically given
-#' the environment of the outer quosure during the evaluation process.
+#'   or one-sided formulas.
 #'
 #' @param x An object to test.
 #' @param scoped A boolean indicating whether the quosure or formula
 #'   is scoped, that is, has a valid environment attribute. If `NULL`,
 #'   the scope is not inspected.
-#' @seealso [quo()] and [as_quosure()] for creating quosures.
+#' @seealso [is_formula()] and [is_formulaish()]
 #' @export
 #' @examples
 #' # Quosures are created with quo():

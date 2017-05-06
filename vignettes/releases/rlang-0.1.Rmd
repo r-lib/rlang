@@ -1,0 +1,233 @@
+---
+title: "rlang 0.1"
+---
+
+It is with great pleasure that we announce the first release of rlang.
+This package provides tools for working with core language features of
+R and the tidyverse:
+
+- tidy evaluation
+- base types: vectors, expressions, and environments
+- call and context stacks
+- the condition system.
+
+rlang is not automatically installed with the `tidyverse` package, but
+you can install it with:
+
+```{r, eval = FALSE}
+install.packages("rlang")
+```
+
+
+## Tidy evaluation
+
+Tidy evaluation is a new approach to non-standard evaluation (NSE)
+that will be implemented in all tidyverse grammars like dplyr, tidyr,
+and ggplot2. The tidyeval tools are implemented in rlang (note that
+the most important ones are reexported in the grammar packages). This
+includes:
+
+- Tools for creating quosures like `quo()`, `enquo()` and
+  `quos()`. Quosures are a subtype of formulas that have special
+  support in tidyeval grammars. These tools are reexported.
+
+- The [quasiquotation](http://rlang.tidyverse.org/reference/quasiquotation.html)
+  mechanism. Quasiquotation lets you unquote values and expressions in
+  quoting functions with the operator `!!`. It also supports
+  _splicing_ to embded a list of arguments in a surrounding call with
+  the operator `!!!`. Quasiquotation is supported in the quoting
+  functions `quo()` and `expr()` in particular, but also in all
+  functions taking dots (see splicing section below).
+
+- Tools for evaluating expressions containing quosures: `eval_tidy()`
+  and `as_overscope()`. This is what you will need to create your own
+  grammars.
+
+dplyr provides a practical introduction to tidyeval in a
+[vignette](http://dplyr.tidyverse.org/articles/programming.html).
+See also
+[the tidy evaluation vignette](http://rlang.tidyverse.org/articles/tidy-evaluation.html)
+that goes over the design of tidy evaluation.
+
+
+## Features and principles in rlang
+
+Many rlang features overlap with base R functions. However, we provide
+a consistent and friendly API designed around several overarching
+principles:
+
+
+### Splicing and unquoting syntax
+
+All rlang functions taking dots support special syntax for splicing
+and unquoting. This makes it easy to call these functions with lists.
+Thanks to splicing, it is no longer necessary to design functions that
+take an extra list argument in addition to dots. And users no longer
+have to call the function with `do.call()`.
+
+You can splice a list of arguments into dots:
+
+```{r}
+library("rlang")
+
+args <- list(foo = "foo", bar = "bar", "baz")
+lang("fn", !!! args)
+```
+
+And you can unquote argument names:
+
+```{r}
+var <- "foobar"
+ll(!! var := 100)
+```
+
+
+### Pattern-matching predicates
+
+The base type predicates support additional arguments to check that
+the input matches a given set of properties. You can check that
+vectors have a given length:
+
+```{r}
+is_list(mtcars)
+is_list(mtcars, 10)
+is_list(mtcars, 11)
+
+is_vector(letters, 26)
+is_character(letters, 26)
+is_character(letters, 20)
+```
+
+If you're working with calls, you can check the number of arguments,
+the call name, or the namespace:
+
+```{r}
+call <- quote(base::foo(bar, baz))
+
+is_lang(call, n = 3)
+is_lang(call, n = 2)
+
+is_lang(call, "bar")
+is_lang(call, "foo")
+
+is_lang(call, ns = "rlang")
+is_lang(call, ns = "base")
+
+is_lang(call, "foo", n = 2, ns = "base")
+```
+
+Formulas can be matched on the presence or absence of a left-hand
+side:
+
+```{r}
+f1 <- a ~ b
+f2 <- ~c
+
+is_formula(f1)
+is_formula(f1, lhs = TRUE)
+is_formula(f2, lhs = TRUE)
+
+is_formula(f1, lhs = FALSE)
+is_formula(f2, lhs = FALSE)
+```
+
+You can also check whether they carry an environment:
+
+```{r}
+# Let's create an unevaluated formula:
+f <- quote(~foo)
+is_formula(f)
+is_formula(f, scoped = TRUE)
+```
+
+
+### Consistent naming
+
+#### Prefixes and suffixes for input and output type
+
+rlang tries to follow the general rule that prefixes designate the
+input type of a function while suffixes indicate the output type.
+For instance, `env_bind()` takes an environment while `pkg_env()`
+returns one.
+
+
+#### Side-effects of setter functions
+
+If an rlang setter starts with `set_`, it means it doesn't have side
+effects. If it starts with `mut_`, it changes its input in place.
+
+```{r}
+# This has no effect on `mtcars`
+set_attrs(mtcars, class = NULL)
+
+# This changes the symbol inplace
+mut_attrs(quote(foo), attr = "bar")
+quote(foo)
+```
+
+
+#### Constructors
+
+If a container constructor takes dots, it is named after the output
+type:
+
+```{r}
+env(x = 1)
+chr(x = "a")
+lang("foo", x = NULL)
+```
+
+On the other hand, if it takes components as formed objects, it is
+prefixed with `new_`:
+
+```{r}
+new_function(list(x = NULL), quote({ x }))
+```
+
+
+#### Scalar versus vectorised functions
+
+What's the difference between `has_name()` and `have_name()`? The
+former is a scalar predicate while the latter is vectorised:
+
+```{r}
+has_name(mtcars, "cyl")
+have_name(mtcars)
+have_name(c(a = 1, 2))
+```
+
+For that reason, `is_na()` is different from the base R function
+`is.na()`: it is a scalar predicate. On the other hand, `are_na()` is
+a vector predicate.
+
+```{r}
+x <- c(1L, 2L, NA, 3L)
+is_na(x)
+are_na(x)
+```
+
+This consistency is a helpful hint to beginners as they often have a
+hard time figuring out what R functions are vectorised. It also
+enables additional type checking, for example if you're allowing `NA`
+as a sentinel value for a function argument. You can type-check even
+further by providing an expected type:
+
+```{r}
+is_na(NA)
+is_dbl_na(NA)
+is_lgl_na(NA)
+```
+
+
+### Comprehensive documentation
+
+rlang's documentation is intended to be didactic and introduce
+mid-level R programmers to deeper concepts and features of the
+language. For instance:
+
+- `?env` provides an introduction to scoping issues in R.
+
+- `?lang` and `?pairlist` explain the structure of R expressions.
+
+- `?cnd_signal`, `?with_handlers`, and `?exiting` go over the
+  condition system in R.

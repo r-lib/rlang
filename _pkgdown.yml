@@ -352,7 +352,6 @@ reference:
       Most of the time you only need `eval_tidy()`, but these
       functions can be useful if you are writing your own grammar.
     contents:
-      - "`tidy-evaluation`"
       - "`tidyeval-data`"
       - eval_tidy_
       - as_overscope
@@ -426,3 +425,15 @@ reference:
       - exiting
       - inplace
       - restarting
+
+navbar:
+  type: default
+  left:
+  - text: Reference
+    href: reference/index.html
+  - text: Articles
+    menu:
+    - text: Tidy evaluation
+      href: articles/tidy-evaluation.html
+  - text: News
+    href: news/index.html

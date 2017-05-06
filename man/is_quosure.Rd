@@ -19,21 +19,11 @@ the scope is not inspected.}
 \description{
 These predicates test for \link{quosure} objects.
 \itemize{
-\item \code{is_quosure()} tests for the canonical R quosure: the one-sided
-"formula".
+\item \code{is_quosure()} tests for a tidyeval quosure. These are one-sided
+formulas with a \code{quosure} class.
 \item \code{is_quosureish()} tests for general R quosure objects: quosures,
-two-sided formulas, and \link[=op-definition]{definitions}.
+or one-sided formulas.
 }
-}
-\details{
-The \code{scoped} argument patterns-match on whether the scoped bundled
-with the quosure is valid or not. Invalid scopes may happen in
-nested quotations like \code{~~expr}, where the outer quosure is validly
-scoped but not the inner one. This is because \code{~} saves the
-environment when it is evaluated, and quoted quosures are by
-definition not evaluated. Note that in the \link[=eval_tidy]{tidy evaluation
-framework}, unscoped quosures are automatically given
-the environment of the outer quosure during the evaluation process.
 }
 \examples{
 # Quosures are created with quo():
@@ -50,5 +40,5 @@ is_quosureish(~foo)
 is_quosureish(a ~ b)
 }
 \seealso{
-\code{\link[=quo]{quo()}} and \code{\link[=as_quosure]{as_quosure()}} for creating quosures.
+\code{\link[=is_formula]{is_formula()}} and \code{\link[=is_formulaish]{is_formulaish()}}
 }

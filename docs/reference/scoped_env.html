@@ -54,6 +54,18 @@
         <li>
   <a href="../reference/index.html">Reference</a>
 </li>
+<li class="dropdown">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+    Articles
+     
+    <span class="caret"></span>
+  </a>
+  <ul class="dropdown-menu" role="menu">
+    <li>
+      <a href="../articles/tidy-evaluation.html">Tidy evaluation</a>
+    </li>
+  </ul>
+</li>
 <li>
   <a href="../news/index.html">News</a>
 </li>
@@ -144,11 +156,11 @@ very first evaluation frame on the stack, see <code><a href='stack.html'>global_
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
     <pre class="examples"><div class='input'><span class='co'># List the names of scoped environments:</span>
 <span class='no'>nms</span> <span class='kw'>&lt;-</span> <span class='fu'>scoped_names</span>()
-<span class='no'>nms</span></div><div class='output co'>#&gt;  [1] ".GlobalEnv"        "package:rlang"     "package:testthat" 
-#&gt;  [4] "package:pkgdown"   "devtools_shims"    "ESSR"             
-#&gt;  [7] "package:stats"     "package:graphics"  "package:grDevices"
-#&gt; [10] "package:utils"     "package:datasets"  "package:methods"  
-#&gt; [13] "Autoloads"         "package:base"      "NULL"             </div><div class='input'>
+<span class='no'>nms</span></div><div class='output co'>#&gt;  [1] ".GlobalEnv"        "package:rlang"     "package:pkgdown"  
+#&gt;  [4] "devtools_shims"    "ESSR"              "package:stats"    
+#&gt;  [7] "package:graphics"  "package:grDevices" "package:utils"    
+#&gt; [10] "package:datasets"  "package:methods"   "Autoloads"        
+#&gt; [13] "package:base"      "NULL"             </div><div class='input'>
 <span class='co'># The global environment is always the first in the chain:</span>
 <span class='fu'>scoped_env</span>(<span class='no'>nms</span><span class='kw'>[[</span><span class='fl'>1</span>]])</div><div class='output co'>#&gt; &lt;environment: R_GlobalEnv&gt;</div><div class='input'>
 <span class='co'># And the scoped environment of the base package is always the last:</span>
@@ -189,7 +201,7 @@ very first evaluation frame on the stack, see <code><a href='stack.html'>global_
 </div>
 
 <div class="author">
-  <p>Developed by <a href='http://hadley.nz'>Hadley Wickham</a>, Lionel Henry.</p>
+  <p>Developed by Lionel Henry, <a href='http://hadley.nz'>Hadley Wickham</a>.</p>
   <p>Site built by <a href="http://hadley.github.io/pkgdown/">pkgdown</a>.</p>
 </div>
 

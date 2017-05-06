@@ -54,6 +54,18 @@
         <li>
   <a href="../reference/index.html">Reference</a>
 </li>
+<li class="dropdown">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+    Articles
+     
+    <span class="caret"></span>
+  </a>
+  <ul class="dropdown-menu" role="menu">
+    <li>
+      <a href="../articles/tidy-evaluation.html">Tidy evaluation</a>
+    </li>
+  </ul>
+</li>
 <li>
   <a href="../news/index.html">News</a>
 </li>
@@ -108,17 +120,17 @@ environment modified in place.</p>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
     <pre class="examples"><div class='input'><span class='no'>data</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='set_names.html'>set_names</a></span>(<span class='fu'><a href='vector-coercion.html'>as_list</a></span>(<span class='no'>letters</span>), <span class='no'>letters</span>)
-<span class='fu'><a href='env_bind.html'>env_bind</a></span>(<span class='fu'>environment</span>(), !!! <span class='no'>data</span>)</div><div class='output co'>#&gt; &lt;environment: 0x7f8493d3e008&gt;</div><div class='input'><span class='fu'><a href='env_has.html'>env_has</a></span>(<span class='fu'>environment</span>(), <span class='no'>letters</span>)</div><div class='output co'>#&gt;  [1] TRUE TRUE TRUE TRUE TRUE TRUE TRUE TRUE TRUE TRUE TRUE TRUE TRUE TRUE TRUE
+<span class='fu'><a href='env_bind.html'>env_bind</a></span>(<span class='fu'>environment</span>(), !!! <span class='no'>data</span>)</div><div class='output co'>#&gt; &lt;environment: 0x7f979f246838&gt;</div><div class='input'><span class='fu'><a href='env_has.html'>env_has</a></span>(<span class='fu'>environment</span>(), <span class='no'>letters</span>)</div><div class='output co'>#&gt;  [1] TRUE TRUE TRUE TRUE TRUE TRUE TRUE TRUE TRUE TRUE TRUE TRUE TRUE TRUE TRUE
 #&gt; [16] TRUE TRUE TRUE TRUE TRUE TRUE TRUE TRUE TRUE TRUE TRUE</div><div class='input'>
 <span class='co'># env_unbind() removes bindings:</span>
-<span class='fu'>env_unbind</span>(<span class='fu'>environment</span>(), <span class='no'>letters</span>)</div><div class='output co'>#&gt; &lt;environment: 0x7f8493d3e008&gt;</div><div class='input'><span class='fu'><a href='env_has.html'>env_has</a></span>(<span class='fu'>environment</span>(), <span class='no'>letters</span>)</div><div class='output co'>#&gt;  [1] FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE
+<span class='fu'>env_unbind</span>(<span class='fu'>environment</span>(), <span class='no'>letters</span>)</div><div class='output co'>#&gt; &lt;environment: 0x7f979f246838&gt;</div><div class='input'><span class='fu'><a href='env_has.html'>env_has</a></span>(<span class='fu'>environment</span>(), <span class='no'>letters</span>)</div><div class='output co'>#&gt;  [1] FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE
 #&gt; [13] FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE
 #&gt; [25] FALSE FALSE</div><div class='input'>
 <span class='co'># With inherit = TRUE, it removes bindings in parent environments</span>
 <span class='co'># as well:</span>
 <span class='no'>parent</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='env.html'>child_env</a></span>(<span class='kw'>NULL</span>, <span class='kw'>foo</span> <span class='kw'>=</span> <span class='st'>"a"</span>)
 <span class='no'>env</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='env.html'>child_env</a></span>(<span class='no'>parent</span>, <span class='kw'>foo</span> <span class='kw'>=</span> <span class='st'>"b"</span>)
-<span class='fu'>env_unbind</span>(<span class='no'>env</span>, <span class='st'>"foo"</span>, <span class='kw'>inherit</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>)</div><div class='output co'>#&gt; &lt;environment: 0x7f8492c746e8&gt;</div><div class='input'><span class='fu'><a href='env_has.html'>env_has</a></span>(<span class='no'>env</span>, <span class='st'>"foo"</span>, <span class='kw'>inherit</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>)</div><div class='output co'>#&gt; [1] FALSE</div></pre>
+<span class='fu'>env_unbind</span>(<span class='no'>env</span>, <span class='st'>"foo"</span>, <span class='kw'>inherit</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>)</div><div class='output co'>#&gt; &lt;environment: 0x7f97a0886dc0&gt;</div><div class='input'><span class='fu'><a href='env_has.html'>env_has</a></span>(<span class='no'>env</span>, <span class='st'>"foo"</span>, <span class='kw'>inherit</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>)</div><div class='output co'>#&gt; [1] FALSE</div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
     <h2>Contents</h2>
@@ -139,7 +151,7 @@ environment modified in place.</p>
 </div>
 
 <div class="author">
-  <p>Developed by <a href='http://hadley.nz'>Hadley Wickham</a>, Lionel Henry.</p>
+  <p>Developed by Lionel Henry, <a href='http://hadley.nz'>Hadley Wickham</a>.</p>
   <p>Site built by <a href="http://hadley.github.io/pkgdown/">pkgdown</a>.</p>
 </div>
 
