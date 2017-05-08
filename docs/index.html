@@ -75,18 +75,27 @@
 <a href="#overview" class="anchor"></a>Overview</h2>
 <p>The rlang package provides tools to work with core language features of R and the tidyverse:</p>
 <ul>
-<li>Tidy evaluation.</li>
-<li>Base types: vectors, expressions, and environments.</li>
-<li>Call and context stacks.</li>
-<li>The condition system.</li>
+<li><p>The <strong>tidyeval</strong> framework, which is a well-founded system for non-standard evaluation built on quasiquotation (<code><a href="reference/quasiquotation.html">UQ()</a></code>) and quosures (<code><a href="reference/quosure.html">quo()</a></code>). Read more in <code><a href="articles/tidy-evaluation.html">vignette("tidy-evaluation")</a></code>.</p></li>
+<li>
+<p>Consistent tools for working with base types:</p>
+<ul>
+<li><p>Vectors, including construction (<code><a href="reference/vector-construction.html">lgl()</a></code>, <code><a href="reference/vector-construction.html">int()</a></code>, …) coercion (<code>as_lgl()</code>, <code>as_chr()</code>, …),</p></li>
+<li><p>Language objects, such as calls (<code><a href="reference/lang.html">lang()</a></code>) and symbols (<code><a href="reference/sym.html">sym()</a></code>).</p></li>
+<li><p>Attributes, e.g. <code>set_attr()</code>, <code><a href="reference/set_names.html">set_names()</a></code>.</p></li>
+<li><p>Functions, e.g. <code><a href="reference/new_function.html">new_function()</a></code>, <code><a href="reference/as_function.html">as_function()</a></code>, <code><a href="reference/is_function.html">is_function()</a></code>.</p></li>
+<li><p>Environments, e.g. <code><a href="reference/env.html">env()</a></code>, <code><a href="reference/env_has.html">env_has()</a></code>, <code><a href="reference/env_get.html">env_get()</a></code>, <code><a href="reference/env_bind.html">env_bind()</a></code>, <code><a href="reference/env_unbind.html">env_unbind()</a></code>.</p></li>
+</ul>
+</li>
+<li><p>A comprehensive set of predicates to determine if an object satisfies various conditions, e.g. <code><a href="reference/has_length.html">has_length()</a></code>, <code><a href="reference/type-predicates.html">is_list()</a></code>, <code><a href="reference/is_empty.html">is_empty()</a></code>.</p></li>
+<li><p>The condition (message, warning, error) and restart system.</p></li>
+<li><p>Call and context stacks.</p></li>
 </ul>
 </div>
 <div id="installation" class="section level2">
 <h2 class="hasAnchor">
 <a href="#installation" class="anchor"></a>Installation</h2>
-<p>rlang is not automatically installed with the <code>tidyverse</code> package, but you can install it with:</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">install.packages</span>(<span class="st">"rlang"</span>)
-<span class="kw">library</span>(<span class="st">"rlang"</span>)</code></pre></div>
+<p>You can install the released version of rlang from CRAN with:</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">install.packages</span>(<span class="st">"rlang"</span>)</code></pre></div>
 <p>Or install the development version from github with:</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co"># install.packages("devtools")</span>
 devtools::<span class="kw">install_github</span>(<span class="st">"tidyverse/rlang"</span>, <span class="dt">build_vignettes =</span> <span class="ot">TRUE</span>)</code></pre></div>
