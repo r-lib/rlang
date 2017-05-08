@@ -340,11 +340,15 @@ f_self_eval <- function(overscope, overscope_top) {
   }
 }
 tilde_eval <- function(f, env) {
+  if (is_env(attr(f, ".Environment"))) {
+    return(f)
+  }
+  f <- duplicate(f, shallow = TRUE)
+
   # Inline the base primitive because overscopes override `~` to make
   # quosures self-evaluate
   mut_node_car(f, base::`~`)
 
-  # Change both old and new formulas to original head avoid side-effects
-  on.exit(mut_node_car(f, sym_tilde))
+  # Change it back because the result still has the primitive inlined
   mut_node_car(eval_bare(f, env), sym_tilde)
 }
