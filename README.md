@@ -8,20 +8,37 @@
 The rlang package provides tools to work with core language features
 of R and the tidyverse:
 
-- Tidy evaluation.
-- Base types: vectors, expressions, and environments.
-- Call and context stacks.
-- The condition system.
+*   The __tidyeval__ framework, which is a well-founded system for non-standard
+    evaluation built on quasiquotation (`UQ()`) and quosures (`quo()`). 
+    Read more in `vignette("tidy-evaluation")`.
 
+*   Consistent tools for working with base types:
+    
+    * Vectors, including construction (`lgl()`, `int()`, ...)
+      coercion (`as_lgl()`, `as_chr()`, ...), 
+      
+    * Language objects, such as calls (`lang()`) and symbols (`sym()`).
+    
+    * Attributes, e.g. `set_attr()`, `set_names()`.
+    
+    * Functions, e.g. `new_function()`, `as_function()`, `is_function()`.
+    
+    * Environments, e.g. `env()`, `env_has()`, `env_get()`, `env_bind()`,
+      `env_unbind()`.
+
+*   A comprehensive set of predicates to determine if an object satisfies 
+    various conditions, e.g. `has_length()`, `is_list()`, `is_empty()`.
+    
+*   The condition (message, warning, error) and restart system.
+
+*   Call and context stacks.
 
 ## Installation
 
-rlang is not automatically installed with the `tidyverse` package, but
-you can install it with:
+You can install the released version of rlang from CRAN with:
 
 ```r
 install.packages("rlang")
-library("rlang")
 ```
 
 Or install the development version from github with:
