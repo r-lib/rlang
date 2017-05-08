@@ -5,7 +5,7 @@
 <meta charset="utf-8">
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Functions for Base Types and Core R and Tidyverse Features • rlang</title>
+<title>Functions for Base Types and Core R and 'Tidyverse' Features • rlang</title>
 <!-- jquery --><script src="https://code.jquery.com/jquery-3.1.0.min.js" integrity="sha384-nrOSfDHtoPMzJHjVTdCopGqIqeYETSXhZDFyniQ8ZHcVy08QesyHcnOUpMpqnmWq" crossorigin="anonymous"></script><!-- Bootstrap --><link href="tidyverse.css" rel="stylesheet">
 <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script><!-- Font Awesome icons --><link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.6.3/css/font-awesome.min.css" rel="stylesheet" integrity="sha384-T8Gy5hrqNKT+hzMclPo118YTQO6cYprQmhrYwIiQ/3axmI1hQomh7Ud2hPOy8SP1" crossorigin="anonymous">
 <!-- tidyverse --><link href="pkgdown.css" rel="stylesheet">
@@ -50,7 +50,12 @@
 <li>
   <a href="news/index.html">News</a>
 </li>
-        
+        <li>
+  <a href="https://github.com/tidyverse/rlang">
+    <span class="fa fa-github fa-lg"></span>
+     
+  </a>
+</li>
       </ul>
 </div>
 <!--/.nav-collapse -->
@@ -65,6 +70,9 @@
     <div id="rlang" class="section level1">
 
 
+<div id="overview" class="section level2">
+<h2 class="hasAnchor">
+<a href="#overview" class="anchor"></a>Overview</h2>
 <p>The rlang package provides tools to work with core language features of R and the tidyverse:</p>
 <ul>
 <li>Tidy evaluation.</li>
@@ -72,21 +80,31 @@
 <li>Call and context stacks.</li>
 <li>The condition system.</li>
 </ul>
+</div>
 <div id="installation" class="section level2">
 <h2 class="hasAnchor">
 <a href="#installation" class="anchor"></a>Installation</h2>
 <p>rlang is not automatically installed with the <code>tidyverse</code> package, but you can install it with:</p>
-<pre class="sourceCode r"><code class="sourceCode r"><span class="kw">install.packages</span>(<span class="st">"rlang"</span>)
-<span class="kw">library</span>(<span class="st">"rlang"</span>)</code></pre>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">install.packages</span>(<span class="st">"rlang"</span>)
+<span class="kw">library</span>(<span class="st">"rlang"</span>)</code></pre></div>
 <p>Or install the development version from github with:</p>
-<pre class="sourceCode r"><code class="sourceCode r"><span class="co"># install.packages("devtools")</span>
-devtools::<span class="kw">install_github</span>(<span class="st">"hadley/rlang"</span>, <span class="dt">build_vignettes =</span> <span class="ot">TRUE</span>)</code></pre>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co"># install.packages("devtools")</span>
+devtools::<span class="kw">install_github</span>(<span class="st">"tidyverse/rlang"</span>, <span class="dt">build_vignettes =</span> <span class="ot">TRUE</span>)</code></pre></div>
 </div>
 </div>
   </div>
 
   <div class="col-md-3" id="sidebar">
-    <h2>License</h2>
+    <h2>Links</h2>
+<ul class="list-unstyled">
+<li>Download from CRAN at <br><a href="https://cran.r-project.org/package=rlang">https://​cran.r-project.org/​package=rlang</a>
+</li>
+<li>Browse source code at <br><a href="https://github.com/tidyverse/rlang">https://​github.com/​tidyverse/​rlang</a>
+</li>
+<li>Report a bug at <br><a href="https://github.com/tidyverse/rlang/issues">https://​github.com/​tidyverse/​rlang/​issues</a>
+</li>
+</ul>
+<h2>License</h2>
 <p><a href="https://www.r-project.org/Licenses/GPL-3">GPL-3</a></p>
 <h2>Developers</h2>
 <ul class="list-unstyled">
@@ -97,8 +115,8 @@ devtools::<span class="kw">install_github</span>(<span class="st">"hadley/rlang"
 </ul>
 <h2>Dev status</h2>
 <ul class="list-unstyled">
-<li><a href="https://travis-ci.org/hadley/rlang"><img src="https://travis-ci.org/hadley/rlang.png?branch=master" alt="Build Status"></a></li>
-<li><a href="https://codecov.io/github/hadley/rlang?branch=master"><img src="https://img.shields.io/codecov/c/github/hadley/rlang/master.svg" alt="Coverage Status"></a></li>
+<li><a href="https://travis-ci.org/tidyverse/rlang"><img src="https://travis-ci.org/tidyverse/rlang.svg?branch=master" alt="Build Status"></a></li>
+<li><a href="https://codecov.io/github/tidyverse/rlang?branch=master"><img src="https://img.shields.io/codecov/c/github/tidyverse/rlang/master.svg" alt="Coverage Status"></a></li>
 </ul>
 </div>
 </div>
