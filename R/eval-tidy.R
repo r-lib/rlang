@@ -320,12 +320,9 @@ f_self_eval <- function(overscope, overscope_top) {
   function(...) {
     f <- sys.call()
 
+    # Evaluate formula in the overscope with base::`~`()
     if (!inherits(f, "quosure")) {
-      # We want formulas to be evaluated in the overscope so that
-      # functions like case_when() can pick up overscoped data. Using
-      # the parent because the bottom level has definitions for
-      # quosure self-evaluation etc.
-      return(eval_bare(f, env_parent(overscope)))
+      return(tilde_eval(f, overscope))
     }
     if (quo_is_missing(f)) {
       return(missing_arg())
@@ -341,4 +338,13 @@ f_self_eval <- function(overscope, overscope_top) {
 
     .Call(rlang_eval, f_rhs(f), overscope)
   }
+}
+tilde_eval <- function(f, env) {
+  # Inline the base primitive because overscopes override `~` to make
+  # quosures self-evaluate
+  mut_node_car(f, base::`~`)
+
+  # Change both old and new formulas to original head avoid side-effects
+  on.exit(mut_node_car(f, sym_tilde))
+  mut_node_car(eval_bare(f, env), sym_tilde)
 }
