@@ -23,10 +23,22 @@
 #' # Compared to simply using list(...) to capture dots, dots_list()
 #' # splices explicitly:
 #' x <- list(1, 2)
-#' dots_list(splice(x), 3)
+#' dots_list(!!! x, 3)
 #'
 #' # Unlike dots_splice(), it doesn't splice bare lists:
 #' dots_list(x, 3)
+#'
+#' # Splicing is also helpful to workaround exact and partial matching
+#' # of arguments. Let's create a function taking named arguments and
+#' # dots:
+#' fn <- function(data, ...) {
+#'   dots_list(...)
+#' }
+#'
+#' # You normally cannot pass an argument named `data` through the dots
+#' # as it will match `fn`'s `data` argument. The splicing syntax
+#' # provides a workaround:
+#' fn(some_data, !!! list(data = letters))
 dots_list <- function(..., .ignore_empty = c("trailing", "none", "all")) {
   dots <- dots_values(..., .ignore_empty = .ignore_empty)
   dots <- .Call(rlang_squash, dots, "list", is_spliced, 1L)
@@ -40,7 +52,7 @@ dots_list <- function(..., .ignore_empty = c("trailing", "none", "all")) {
 #' # dots_splice() splices lists marked with splice() as well as bare
 #' # lists:
 #' x <- list(1, 2)
-#' dots_splice(splice(x), 3)
+#' dots_splice(!!! x, 3)
 #' dots_splice(x, 3)
 dots_splice <- function(..., .ignore_empty = c("trailing", "none", "all")) {
   dots <- dots_values(..., .ignore_empty = .ignore_empty)
