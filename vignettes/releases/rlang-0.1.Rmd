@@ -81,6 +81,24 @@ var <- "foobar"
 ll(!! var := 100)
 ```
 
+Another use of this syntax is to avoid matching and partial-matching
+of arguments in functions taking dots. Let's say you have a function
+taking data through dots:
+
+```{r}
+fn <- function(data, ...) {
+  dots_list(...)
+}
+```
+
+Your users normally cannot supply an argument named `data` through the
+dots as it will match `fn`'s `data` argument. The splicing syntax
+provides a workaround:
+
+```{r}
+fn(some_data, !!! list(data = mydata))
+```
+
 
 ### Pattern-matching predicates
 

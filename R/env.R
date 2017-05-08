@@ -51,7 +51,7 @@
 #'
 #' @param ... Named values. These dots have [explicit splicing
 #'   semantics][dots_list].
-#' @param parent A parent environment. Can be an object supported by
+#' @param .parent A parent environment. Can be an object supported by
 #'   [as_env()].
 #' @seealso `scoped_env`, [env_has()], [env_bind()].
 #' @export
@@ -111,13 +111,13 @@
 #' env$a
 env <- function(...) {
   env <- new.env(parent = caller_env())
-  env_bind(env, !!! dots_list(...))
+  env_bind(.env = env, ...)
 }
 #' @rdname env
 #' @export
-child_env <- function(parent, ...) {
-  env <- new.env(parent = as_env(parent))
-  env_bind(env, ...)
+child_env <- function(.parent, ...) {
+  env <- new.env(parent = as_env(.parent))
+  env_bind(.env = env, ...)
 }
 
 #' Coerce to an environment

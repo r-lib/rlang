@@ -163,3 +163,7 @@ test_that("scoped_envs() returns named environments", {
 test_that("scoped_env() deals with empty environment", {
   expect_identical(scoped_env("NULL"), empty_env())
 })
+
+test_that("env() doesn't partial match on env_bind()'s .env", {
+  expect_named(env(.data = 1, . = 2), c(".data", "."))
+})

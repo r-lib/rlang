@@ -7,13 +7,13 @@
 \usage{
 env(...)
 
-child_env(parent, ...)
+child_env(.parent, ...)
 }
 \arguments{
 \item{...}{Named values. These dots have \link[=dots_list]{explicit splicing
 semantics}.}
 
-\item{parent}{A parent environment. Can be an object supported by
+\item{.parent}{A parent environment. Can be an object supported by
 \code{\link[=as_env]{as_env()}}.}
 }
 \description{
