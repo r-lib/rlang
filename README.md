@@ -15,11 +15,12 @@ of R and the tidyverse:
 *   Consistent tools for working with base types:
     
     * Vectors, including construction (`lgl()`, `int()`, ...)
-      coercion (`as_lgl()`, `as_chr()`, ...), 
+      coercion (`as_logical()`, `as_character()`, ...), and
+      predicates (`is_logical()`, `is_character()`).
       
     * Language objects, such as calls (`lang()`) and symbols (`sym()`).
     
-    * Attributes, e.g. `set_attr()`, `set_names()`.
+    * Attributes, e.g. `set_attrs()`, `set_names()`.
     
     * Functions, e.g. `new_function()`, `as_function()`, `is_function()`.
     
