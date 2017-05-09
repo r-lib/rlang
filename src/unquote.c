@@ -62,7 +62,7 @@ void unquote_check(SEXP x) {
 
 bool is_bare_formula(SEXP x) {
   return TYPEOF(x) == LANGSXP
-      && CAR(x) == sym_tilde
+      && CAR(x) == Rf_install("~")
       && !Rf_inherits(x, "quosure");
 }
 SEXP unquote(SEXP x, SEXP env, SEXP uq_sym, bool quosured) {
