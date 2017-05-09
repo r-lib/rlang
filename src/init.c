@@ -4,10 +4,6 @@
 
 #include "export.h"
 
-// Constants initialised at load-time
-SEXP sym_tilde = NULL;
-SEXP sym_def = NULL;
-
 // Callable from other packages
 extern SEXP rlang_new_dictionary(SEXP, SEXP, SEXP);
 extern SEXP rlang_squash_if(SEXP, SEXPTYPE, bool (*is_spliceable)(SEXP), int);
@@ -95,10 +91,6 @@ static const R_CallMethodDef call_entries[] = {
 };
 
 void R_init_rlang(DllInfo* dll) {
-  // Initialise constants
-  sym_tilde = Rf_install("~");
-  sym_def = Rf_install(":=");
-
   // Register functions callable from other packages
   R_RegisterCCallable("rlang", "rlang_new_dictionary", (DL_FUNC) &rlang_new_dictionary);
   R_RegisterCCallable("rlang", "rlang_squash_if", (DL_FUNC) &rlang_squash_if);

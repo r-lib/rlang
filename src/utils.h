@@ -6,7 +6,6 @@
 #include <R.h>
 #include <Rinternals.h>
 
-#include "symbol.h"
 #include "formula.h"
 
 

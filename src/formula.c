@@ -2,8 +2,6 @@
 #include <Rinternals.h>
 #include <stdbool.h>
 
-#include "symbol.h"
-
 
 SEXP f_rhs_(SEXP f) {
   if (TYPEOF(f) != LANGSXP)
@@ -34,7 +32,7 @@ bool is_formulaish(SEXP x, int scoped, int lhs) {
     return false;
 
   SEXP head = CAR(x);
-  if (head != sym_tilde && head != sym_def)
+  if (head != Rf_install("~") && head != Rf_install(":="))
     return false;
 
   if (scoped >= 0) {
@@ -56,7 +54,7 @@ bool is_formula(SEXP x) {
   if (!is_formulaish(x, -1, -1))
     return false;
 
-  return CAR(x) == sym_tilde;
+  return CAR(x) == Rf_install("~");
 }
 
 
