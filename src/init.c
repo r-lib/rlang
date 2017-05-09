@@ -12,7 +12,7 @@ extern bool is_clevel_spliceable(SEXP);
 // Callable from this package
 extern SEXP f_lhs_(SEXP);
 extern SEXP f_rhs_(SEXP);
-extern SEXP replace_na(SEXP, SEXP);
+extern SEXP rlang_replace_na(SEXP, SEXP);
 extern SEXP rlang_car(SEXP);
 extern SEXP rlang_cdr(SEXP);
 extern SEXP rlang_caar(SEXP);
@@ -52,7 +52,7 @@ extern SEXP rlang_capturedots(SEXP, SEXP, SEXP, SEXP);
 static const R_CallMethodDef call_entries[] = {
   {"f_lhs_", (DL_FUNC) &f_lhs_, 1},
   {"f_rhs_", (DL_FUNC) &f_rhs_, 1},
-  {"replace_na", (DL_FUNC) &replace_na, 2},
+  {"rlang_replace_na", (DL_FUNC) &rlang_replace_na, 2},
   {"rlang_caar", (DL_FUNC) &rlang_caar, 1},
   {"rlang_cadr", (DL_FUNC) &rlang_cadr, 1},
   {"rlang_capturearg", (DL_FUNC) &rlang_capturearg, 4},

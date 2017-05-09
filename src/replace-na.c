@@ -3,7 +3,7 @@
 
 SEXP replace_na_(SEXP x, SEXP replacement, int start);
 
-SEXP replace_na(SEXP x, SEXP replacement) {
+SEXP rlang_replace_na(SEXP x, SEXP replacement) {
   int n = Rf_length(x);
   int i = 0;
 

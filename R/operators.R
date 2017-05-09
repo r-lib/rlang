@@ -29,7 +29,7 @@
 `%|%` <- function(x, y) {
   stopifnot(is_atomic(x) && is_scalar_atomic(y))
   stopifnot(typeof(x) == typeof(y))
-  .Call(replace_na, x, y)
+  .Call(rlang_replace_na, x, y)
 }
 
 #' Infix attribute accessor
