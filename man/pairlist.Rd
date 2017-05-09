@@ -58,6 +58,10 @@ barebones and do not perform any type checking.}
 
 \item{newtag}{The new tag for the node. This should be a symbol.}
 }
+\value{
+Setters like \code{mut_node_car()} invisibly return \code{x} modified
+in place. Getters return the requested node component.
+}
 \description{
 Like any \href{https://en.wikipedia.org/wiki/Parse_tree}{parse tree}, R
 expressions are structured as trees of nodes. Each node has two
