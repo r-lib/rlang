@@ -16,6 +16,11 @@ mut_attrs(.x, ...)
 splicing semantics}. Pass a single unnamed \code{NULL} to
 zap all attributes from \code{.x}.}
 }
+\value{
+\code{set_attrs()} returns a modified \link[=duplicate]{shallow copy}
+of \code{.x}. \code{mut_attrs()} invisibly returns the original \code{.x}
+modified in place.
+}
 \description{
 \code{set_attrs()} adds, changes, or zaps attributes of objects. Pass a
 single unnamed \code{NULL} as argument to zap all attributes. For

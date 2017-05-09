@@ -11,6 +11,9 @@
 #' @param ... A list of named attributes. These have [explicit
 #'   splicing semantics][dots_list]. Pass a single unnamed `NULL` to
 #'   zap all attributes from `.x`.
+#' @return `set_attrs()` returns a modified [shallow copy][duplicate]
+#'   of `.x`. `mut_attrs()` invisibly returns the original `.x`
+#'   modified in place.
 #' @export
 #' @examples
 #' set_attrs(letters, names = 1:26, class = "my_chr")
@@ -43,7 +46,7 @@ mut_attrs <- function(.x, ...) {
   if (is_copyable(.x)) {
     abort("`.x` is copyable: use `set_attrs()` to change attributes without side effect")
   }
-  set_attrs_impl(.x, ...)
+  invisible(set_attrs_impl(.x, ...))
 }
 set_attrs_impl <- function(.x, ...) {
   attrs <- dots_list(...)
