@@ -64,6 +64,8 @@
 #' @param newcar,newcdr The new CAR or CDR for the node. These can be
 #'   any R objects.
 #' @param newtag The new tag for the node. This should be a symbol.
+#' @return Setters like `mut_node_car()` invisibly return `x` modified
+#'   in place. Getters return the requested node component.
 #' @seealso [duplicate()] for creating copy-safe objects,
 #'   [lang_head()] and [lang_tail()] as slightly higher level
 #'   alternatives that check their input, and [base::pairlist()] for
@@ -138,32 +140,32 @@ node_cddr <- function(x) {
 #' @rdname pairlist
 #' @export
 mut_node_car <- function(x, newcar) {
-  .Call(rlang_set_car, x, newcar)
+  invisible(.Call(rlang_set_car, x, newcar))
 }
 #' @rdname pairlist
 #' @export
 mut_node_cdr <- function(x, newcdr) {
-  .Call(rlang_set_cdr, x, newcdr)
+  invisible(.Call(rlang_set_cdr, x, newcdr))
 }
 #' @rdname pairlist
 #' @export
 mut_node_caar <- function(x, newcar) {
-  .Call(rlang_set_caar, x, newcar)
+  invisible(.Call(rlang_set_caar, x, newcar))
 }
 #' @rdname pairlist
 #' @export
 mut_node_cadr <- function(x, newcar) {
-  .Call(rlang_set_cadr, x, newcar)
+  invisible(.Call(rlang_set_cadr, x, newcar))
 }
 #' @rdname pairlist
 #' @export
 mut_node_cdar <- function(x, newcdr) {
-  .Call(rlang_set_cdar, x, newcdr)
+  invisible(.Call(rlang_set_cdar, x, newcdr))
 }
 #' @rdname pairlist
 #' @export
 mut_node_cddr <- function(x, newcdr) {
-  .Call(rlang_set_cddr, x, newcdr)
+  invisible(.Call(rlang_set_cddr, x, newcdr))
 }
 
 #' @rdname pairlist
@@ -174,7 +176,7 @@ node_tag <- function(x) {
 #' @rdname pairlist
 #' @export
 mut_node_tag <- function(x, newtag) {
-  .Call(rlang_set_tag, x, newtag)
+  invisible(.Call(rlang_set_tag, x, newtag))
 }
 
 #' Coerce to pairlist
