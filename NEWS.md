@@ -12,6 +12,10 @@
   called primarily for their side effects should return their input
   invisibly.
 
+* The internal `replace_na()` symbol was renamed to avoid a collision
+  with an exported function in tidyverse. This solves an issue
+  occurring in old versions of R prior to 3.3.2 (#133).
+
 
 # rlang 0.1
 
