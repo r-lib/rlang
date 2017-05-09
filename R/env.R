@@ -1,8 +1,17 @@
 #' Create a new environment
 #'
-#' `env()` and `child_env()` create new environments. `env()` always
-#' creates a child of the current environment while `child_env()` lets
-#' you specify a parent (see section on inheritance).
+#' @description
+#'
+#' These functions create new environments.
+#'
+#' * `env()` always creates a child of the current environment.
+#'
+#' * `child_env()` lets you specify a parent (see section on
+#'   inheritance).
+#'
+#' * `new_env()` creates a child of the empty environment. It is
+#'   useful e.g. for using environments as containers of data rather
+#'   than as part of a scope hierarchy.
 #'
 #' @section Environments as objects:
 #'
@@ -109,6 +118,12 @@
 #' var <- "a"
 #' env <- env(!!var := "A")
 #' env$a
+#'
+#'
+#' # Use new_env() to create containers with the empty environment as
+#' # parent:
+#' env <- new_env(a = letters)
+#' env_parent(env)
 env <- function(...) {
   env <- new.env(parent = caller_env())
   env_bind(.env = env, ...)
@@ -117,6 +132,12 @@ env <- function(...) {
 #' @export
 child_env <- function(.parent, ...) {
   env <- new.env(parent = as_env(.parent))
+  env_bind(.env = env, ...)
+}
+#' @rdname env
+#' @export
+new_env <- function(...) {
+  env <- new.env(parent = empty_env())
   env_bind(.env = env, ...)
 }
 

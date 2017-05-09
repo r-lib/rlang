@@ -3,11 +3,14 @@
 \name{env}
 \alias{env}
 \alias{child_env}
+\alias{new_env}
 \title{Create a new environment}
 \usage{
 env(...)
 
 child_env(.parent, ...)
+
+new_env(...)
 }
 \arguments{
 \item{...}{Named values. These dots have \link[=dots_list]{explicit splicing
@@ -17,9 +20,15 @@ semantics}.}
 \code{\link[=as_env]{as_env()}}.}
 }
 \description{
-\code{env()} and \code{child_env()} create new environments. \code{env()} always
-creates a child of the current environment while \code{child_env()} lets
-you specify a parent (see section on inheritance).
+These functions create new environments.
+\itemize{
+\item \code{env()} always creates a child of the current environment.
+\item \code{child_env()} lets you specify a parent (see section on
+inheritance).
+\item \code{new_env()} creates a child of the empty environment. It is
+useful e.g. for using environments as containers of data rather
+than as part of a scope hierarchy.
+}
 }
 \section{Environments as objects}{
 
@@ -123,6 +132,12 @@ env$c
 var <- "a"
 env <- env(!!var := "A")
 env$a
+
+
+# Use new_env() to create containers with the empty environment as
+# parent:
+env <- new_env(a = letters)
+env_parent(env)
 }
 \seealso{
 \code{scoped_env}, \code{\link[=env_has]{env_has()}}, \code{\link[=env_bind]{env_bind()}}.

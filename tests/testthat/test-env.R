@@ -167,3 +167,9 @@ test_that("scoped_env() deals with empty environment", {
 test_that("env() doesn't partial match on env_bind()'s .env", {
   expect_named(env(.data = 1, . = 2), c(".data", "."))
 })
+
+test_that("new_env() creates a child of the empty env", {
+  env <- new_env(a = 1, b = 2)
+  expect_named(env, c("a", "b"))
+  expect_identical(env_parent(env), empty_env())
+})
