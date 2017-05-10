@@ -1,8 +1,17 @@
 #' Create a new environment
 #'
-#' `env()` and `child_env()` create new environments. `env()` always
-#' creates a child of the current environment while `child_env()` lets
-#' you specify a parent (see section on inheritance).
+#' @description
+#'
+#' These functions create new environments.
+#'
+#' * `env()` always creates a child of the current environment.
+#'
+#' * `child_env()` lets you specify a parent (see section on
+#'   inheritance).
+#'
+#' * `new_environment()` creates a child of the empty environment. It
+#'   is useful e.g. for using environments as containers of data
+#'   rather than as part of a scope hierarchy.
 #'
 #' @section Environments as objects:
 #'
@@ -49,7 +58,7 @@
 #' as argument to a function), modifying the bindings of one of those
 #' references changes all other references as well.
 #'
-#' @param ... Named values. These dots have [explicit splicing
+#' @param ...,data Named values. The dots have [explicit splicing
 #'   semantics][dots_list].
 #' @param .parent A parent environment. Can be an object supported by
 #'   [as_env()].
@@ -109,15 +118,30 @@
 #' var <- "a"
 #' env <- env(!!var := "A")
 #' env$a
+#'
+#'
+#' # Use new_environment() to create containers with the empty
+#' # environment as parent:
+#' env <- new_environment()
+#' env_parent(env)
+#'
+#' # Like other new_ constructors, it takes an object rather than dots:
+#' new_environment(list(a = "foo", b = "bar"))
 env <- function(...) {
   env <- new.env(parent = caller_env())
-  env_bind(.env = env, ...)
+  env_bind_impl(env, dots_list(...))
 }
 #' @rdname env
 #' @export
 child_env <- function(.parent, ...) {
   env <- new.env(parent = as_env(.parent))
-  env_bind(.env = env, ...)
+  env_bind_impl(env, dots_list(...))
+}
+#' @rdname env
+#' @export
+new_environment <- function(data = list()) {
+  env <- new.env(parent = empty_env())
+  env_bind_impl(env, data)
 }
 
 #' Coerce to an environment
@@ -516,18 +540,21 @@ mut_parent_env <- function(env, new_env) {
 #' # fn() now sees the objects:
 #' fn()
 env_bind <- function(.env, ...) {
-  data <- dots_list(...)
-  stopifnot(is_named(data))
+  invisible(env_bind_impl(.env, dots_list(...)))
+}
+env_bind_impl <- function(env, data) {
+  stopifnot(is_vector(data))
+  stopifnot(!length(data) || is_named(data))
 
   nms <- names(data)
-  env_ <- get_env(.env)
+  env_ <- get_env(env)
 
   for (i in seq_along(data)) {
     nm <- nms[[i]]
     base::assign(nm, data[[nm]], envir = env_)
   }
 
-  .env
+  env
 }
 #' @rdname env_bind
 #' @param .eval_env The environment where the expressions will be
@@ -562,7 +589,7 @@ env_bind_exprs <- function(.env, ..., .eval_env = caller_env()) {
     ))
   }
 
-  .env
+  invisible(.env)
 }
 #' @rdname env_bind
 #' @export
@@ -600,7 +627,7 @@ env_bind_fns <- function(.env, ...) {
     makeActiveBinding(nms[[i]], fns[[i]], env_)
   }
 
-  .env
+  invisible(.env)
 }
 
 #' Overscope bindings by defining symbols deeper in a scope
@@ -647,8 +674,8 @@ env_bury <- function(.env, ...) {
 #'   to remove.
 #' @param inherit Whether to look for bindings in the parent
 #'   environments.
-#' @return The input object `env`, with its associated
-#'   environment modified in place.
+#' @return The input object `env` with its associated environment
+#'   modified in place, invisibly.
 #' @export
 #' @examples
 #' data <- set_names(as_list(letters), letters)
@@ -676,7 +703,7 @@ env_unbind <- function(env = caller_env(), nms, inherit = FALSE) {
     rm(list = nms, envir = env)
   }
 
-  env
+  invisible(env)
 }
 
 #' Does an environment have or see bindings?
