@@ -17,8 +17,8 @@ to remove.}
 environments.}
 }
 \value{
-The input object \code{env}, with its associated
-environment modified in place.
+The input object \code{env} with its associated environment
+modified in place, invisibly.
 }
 \description{
 \code{env_unbind()} is the complement of \code{\link[=env_bind]{env_bind()}}. Like \code{env_has()},

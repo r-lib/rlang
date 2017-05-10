@@ -540,7 +540,7 @@ mut_parent_env <- function(env, new_env) {
 #' # fn() now sees the objects:
 #' fn()
 env_bind <- function(.env, ...) {
-  env_bind_impl(.env, dots_list(...))
+  invisible(env_bind_impl(.env, dots_list(...)))
 }
 env_bind_impl <- function(env, data) {
   stopifnot(is_vector(data))
@@ -589,7 +589,7 @@ env_bind_exprs <- function(.env, ..., .eval_env = caller_env()) {
     ))
   }
 
-  .env
+  invisible(.env)
 }
 #' @rdname env_bind
 #' @export
@@ -627,7 +627,7 @@ env_bind_fns <- function(.env, ...) {
     makeActiveBinding(nms[[i]], fns[[i]], env_)
   }
 
-  .env
+  invisible(.env)
 }
 
 #' Overscope bindings by defining symbols deeper in a scope
@@ -674,8 +674,8 @@ env_bury <- function(.env, ...) {
 #'   to remove.
 #' @param inherit Whether to look for bindings in the parent
 #'   environments.
-#' @return The input object `env`, with its associated
-#'   environment modified in place.
+#' @return The input object `env` with its associated environment
+#'   modified in place, invisibly.
 #' @export
 #' @examples
 #' data <- set_names(as_list(letters), letters)
@@ -703,7 +703,7 @@ env_unbind <- function(env = caller_env(), nms, inherit = FALSE) {
     rm(list = nms, envir = env)
   }
 
-  env
+  invisible(env)
 }
 
 #' Does an environment have or see bindings?
