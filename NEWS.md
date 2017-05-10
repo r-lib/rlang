@@ -23,6 +23,10 @@
   environments as data structures rather than as part of a scope
   hierarchy.
 
+* `is_pairlist()` now returns `TRUE` for `NULL`. We added `is_node()`
+  to test for actual pairlist nodes. In other words, `is_pairlist()`
+  tests for the data structure while `is_node()` tests for the type.
+
 
 # rlang 0.1
 
