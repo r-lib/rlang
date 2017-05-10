@@ -48,6 +48,7 @@ extern SEXP rlang_unescape_character(SEXP);
 extern SEXP capture_arg(SEXP, SEXP);
 extern SEXP rlang_capturearg(SEXP, SEXP, SEXP, SEXP);
 extern SEXP rlang_capturedots(SEXP, SEXP, SEXP, SEXP);
+extern SEXP rlang_new_language(SEXP, SEXP);
 
 static const R_CallMethodDef call_entries[] = {
   {"f_lhs_",                    (DL_FUNC) &f_lhs_, 1},
@@ -87,6 +88,7 @@ static const R_CallMethodDef call_entries[] = {
   {"rlang_tag",                 (DL_FUNC) &rlang_tag, 1},
   {"rlang_unescape_character",  (DL_FUNC) &rlang_unescape_character, 1},
   {"rlang_zap_attrs",           (DL_FUNC) &rlang_zap_attrs, 1},
+  {"rlang_new_language",        (DL_FUNC) &rlang_new_language, 2},
   {NULL, NULL, 0}
 };
 

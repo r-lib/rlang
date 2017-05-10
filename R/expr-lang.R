@@ -1,5 +1,7 @@
 #' Create a call
 #'
+#' @description
+#'
 #' Language objects are (with symbols) one of the two types of
 #' [symbolic][is_symbolic] objects in R. These symbolic objects form
 #' the backbone of [expressions][is_expr]. They represent a value,
@@ -7,6 +9,15 @@
 #' are directly [bound][env_bind] to a value, language objects
 #' represent _function calls_, which is why they are commonly referred
 #' to as calls.
+#'
+#' * `lang()` creates a call from a function name (or a literal
+#'   function to inline in the call) and a list of arguments.
+#'
+#' * `new_language()` is bare-bones and takes a head and a tail. The
+#'   head must be [callable][is_callable] and the tail must be a
+#'   [pairlist]. See section on calls as parse trees below. This
+#'   constructor is useful to avoid costly coercions between lists and
+#'   pairlists of arguments.
 #'
 #' @section Calls as parse tree:
 #'
@@ -72,10 +83,24 @@ lang <- function(.fn, ..., .ns = NULL) {
   }
 
   if (!is_null(.ns)) {
-    .fn <- call("::", sym(.ns), .fn)
+    .fn <- new_language(sym_namespace, pairlist(sym(.ns), .fn))
   }
 
-  as.call(c(.fn, dots_list(...)))
+  new_language(.fn, as.pairlist(dots_list(...)))
+}
+#' @rdname lang
+#' @param head A [callable][is_callable] object: a symbol, call, or
+#'   literal function.
+#' @param tail A [pairlist] of arguments.
+#' @export
+new_language <- function(head, tail = NULL) {
+  if (!is_callable(head)) {
+    abort("Can't create call to non-callable object")
+  }
+  if (!is_pairlist(tail)) {
+    abort("`tail` must be a pairlist")
+  }
+  .Call(rlang_new_language, head, tail)
 }
 
 #' Is an object callable?
