@@ -343,11 +343,10 @@ tilde_eval <- function(f, env) {
   if (is_env(attr(f, ".Environment"))) {
     return(f)
   }
-  f <- duplicate(f, shallow = TRUE)
 
   # Inline the base primitive because overscopes override `~` to make
   # quosures self-evaluate
-  mut_node_car(f, base::`~`)
+  f <- new_language(base::`~`, node_cdr(f))
 
   # Change it back because the result still has the primitive inlined
   mut_node_car(eval_bare(f, env), sym_tilde)

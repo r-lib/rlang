@@ -34,6 +34,9 @@
 * Bare formulas are now evaluated in the correct environment in
   tidyeval functions.
 
+* Bare formulas are now evaluated in the correct environment in
+  tidyeval functions.
+
 
 # rlang 0.1
 
