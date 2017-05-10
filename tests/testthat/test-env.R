@@ -173,3 +173,8 @@ test_that("new_environment() creates a child of the empty env", {
   expect_named(env, c("a", "b"))
   expect_identical(env_parent(env), empty_env())
 })
+
+test_that("new_environment() accepts empty vectors", {
+  expect_named(new_environment(), chr())
+  expect_named(new_environment(dbl()), chr())
+})
