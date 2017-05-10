@@ -16,6 +16,12 @@
   with an exported function in tidyverse. This solves an issue
   occurring in old versions of R prior to 3.3.2 (#133).
 
+* The `new_environment()` constructor creates a child of the empty
+  environment and takes an optional named list of data to populate it.
+  Compared to `env()` and `child_env()`, it is meant to create
+  environments as data structures rather than as part of a scope
+  hierarchy.
+
 
 # rlang 0.1
 
