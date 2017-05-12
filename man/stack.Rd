@@ -47,8 +47,7 @@ only base R function for querying the call stack). The context
 stack includes all R-level evaluation contexts. It is linear in
 terms of execution history but due to lazy evaluation it is
 potentially nonlinear in terms of call history. The call stack
-history, on the other hand, is homogenous. See \code{vignette("stack")}
-for more information.
+history, on the other hand, is homogenous.
 }
 \details{
 \code{ctxt_frame()} and \code{call_frame()} return a \code{frame} object

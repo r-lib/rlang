@@ -7,8 +7,7 @@
 #' stack includes all R-level evaluation contexts. It is linear in
 #' terms of execution history but due to lazy evaluation it is
 #' potentially nonlinear in terms of call history. The call stack
-#' history, on the other hand, is homogenous. See `vignette("stack")`
-#' for more information.
+#' history, on the other hand, is homogenous.
 #'
 #' `ctxt_frame()` and `call_frame()` return a `frame` object
 #' containing the following fields: `expr` and `env` (call expression

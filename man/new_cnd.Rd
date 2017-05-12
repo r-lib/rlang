@@ -28,9 +28,7 @@ condition when it is signalled.}
 \description{
 These constructors make it easy to create subclassed conditions.
 Conditions are objects that power the error system in R. They can
-also be used for passing messages to pre-established handlers. See
-\code{vignette("conditions")} for more information on how to use
-the condition system.
+also be used for passing messages to pre-established handlers.
 }
 \details{
 \code{new_cnd()} creates objects inheriting from \code{condition}. Conditions

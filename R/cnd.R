@@ -2,9 +2,7 @@
 #'
 #' These constructors make it easy to create subclassed conditions.
 #' Conditions are objects that power the error system in R. They can
-#' also be used for passing messages to pre-established handlers. See
-#' `vignette("conditions")` for more information on how to use
-#' the condition system.
+#' also be used for passing messages to pre-established handlers.
 #'
 #' `new_cnd()` creates objects inheriting from `condition`. Conditions
 #' created with `cnd_error()`, `cnd_warning()` and `cnd_message()`
