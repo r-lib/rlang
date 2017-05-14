@@ -247,8 +247,7 @@ Schutt's thesis](https://web.wpi.edu/Pubs/ETD/Available/etd-090110-124904/)).
 However, Kernel Lisp did not have quosures and avoided quotation or
 quasiquotation operators altogether to avoid scoping issues.
 
-Tidy evaluation contributes to the problem of hygienic evaluation in 
-four ways:
+Tidyeval contributes to the problem of hygienic evaluation in four ways:
 
 - Promoting the quosure as the proper quotation data structure, in
   order to keep track of the dynamic environment of quoted
