@@ -28,7 +28,7 @@ language:
 
 - Scope is first-class. Scope is the lexical environment that
   associates values to symbols in expressions. Unlike like most 
-  languages environments can be created (see `env()`) and manipulated 
+  languages, environments can be created (see `env()`) and manipulated 
   as regular objects.
 
 - Finally, functions can capture the expressions that were supplied
@@ -53,7 +53,9 @@ were not necessarily envisioned or planned by their designers.
 ## Parsing versus evaluation
 
 There are two ways of dealing with unevaluated expressions to create a
-sublanguage. The first is to parse the expression and modify it, and the other is to leave the expression as evaluate the expression in a modified environment.
+sublanguage. The first is to parse the expression and modify it, and 
+the other is to leave the expression as is and evaluate it in a
+modified environment.
 
 Let's take the example of designing a modelling DSL to illustrate
 parsing. You would need to traverse the call and analyse all functions
@@ -85,9 +87,10 @@ evaluation as much as possible.
 
 A corollary of emphasising evaluation is that your DSL functions
 should understand _values_ in addition to expressions. This is
-especially important with [quasiquotation]: users can bypass symbolic
-evaluation completely by unquoting values. For instance, the following
-expressions are completely equivalent:
+especially important with
+[quasiquotation][quasiquotation]:
+users can bypass symbolic evaluation completely by unquoting values. For
+instance, the following expressions are completely equivalent:
 
 ```{r, eval = FALSE}
 # Taking an expression:
@@ -154,9 +157,8 @@ context. Secondly because arguments can be forwarded through the
 special `...` argument.  While base R does not provide any way of
 capturing a forwarded argument along with its original environment,
 rlang features [quos()] for this purpose. This function looks up each
-forwarded arguments and returns a list
-of [quosures](http://rlang.tidyverse.org/reference/quosure.html) that
-bundle the expressions with their own dynamic environments.
+forwarded arguments and returns a list of [quosures][quosure] that bundle the
+expressions with their own dynamic environments.
 
 In that context, maintaining scoping consistency is a challenge
 because we're dealing with multiple environments, one for each
@@ -187,7 +189,7 @@ contextual environment right if they can't also change the meaning
 of code quoted in quosures. To solve this issue, tidyeval rechains
 the overscope to a quosure just before it self-evaluates. This way,
 both the lexical environment and the overscoped data are in scope
-when the quosure is evaluated. Is is evaluated tidily.
+when the quosure is evaluated. It is evaluated tidily.
 
 In practical terms, `eval_tidy()` takes a `data` argument and
 creates an overscope suitable for tidy evaluation. In particular,
@@ -240,8 +242,7 @@ Schutt's thesis](https://web.wpi.edu/Pubs/ETD/Available/etd-090110-124904/)).
 However, Kernel Lisp did not have quosures and avoided quotation or
 quasiquotation operators altogether to avoid scoping issues.
 
-Tidyeval's contributes to the problem of hygienic evaluation in
-four ways:
+Tidyeval contributes to the problem of hygienic evaluation in four ways:
 
 - Promoting the quosure as the proper quotation data structure, in
   order to keep track of the dynamic environment of quoted
