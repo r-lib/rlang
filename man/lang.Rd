@@ -2,9 +2,12 @@
 % Please edit documentation in R/expr-lang.R
 \name{lang}
 \alias{lang}
+\alias{new_language}
 \title{Create a call}
 \usage{
 lang(.fn, ..., .ns = NULL)
+
+new_language(head, tail = NULL)
 }
 \arguments{
 \item{.fn}{Function to call. Must be a callable object: a string,
@@ -15,6 +18,11 @@ are evaluated with \link[=dots_list]{explicit splicing}.}
 
 \item{.ns}{Namespace with which to prefix \code{.fn}. Must be a string
 or symbol.}
+
+\item{head}{A \link[=is_callable]{callable} object: a symbol, call, or
+literal function.}
+
+\item{tail}{A \link{pairlist} of arguments.}
 }
 \description{
 Language objects are (with symbols) one of the two types of
@@ -24,6 +32,15 @@ unlike literal objects which are their own values. While symbols
 are directly \link[=env_bind]{bound} to a value, language objects
 represent \emph{function calls}, which is why they are commonly referred
 to as calls.
+\itemize{
+\item \code{lang()} creates a call from a function name (or a literal
+function to inline in the call) and a list of arguments.
+\item \code{new_language()} is bare-bones and takes a head and a tail. The
+head must be \link[=is_callable]{callable} and the tail must be a
+\link{pairlist}. See section on calls as parse trees below. This
+constructor is useful to avoid costly coercions between lists and
+pairlists of arguments.
+}
 }
 \section{Calls as parse tree}{
 
