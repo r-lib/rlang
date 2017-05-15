@@ -28,7 +28,7 @@ language:
 
 - Scope is first-class. Scope is the lexical environment that
   associates values to symbols in expressions. Unlike like most 
-  languages environments can be created (see `env()`) and manipulated 
+  languages, environments can be created (see `env()`) and manipulated 
   as regular objects.
 
 - Finally, functions can capture the expressions that were supplied
@@ -53,9 +53,9 @@ were not necessarily envisioned or planned by their designers.
 ## Parsing versus evaluation
 
 There are two ways of dealing with unevaluated expressions to create a
-sublanguage. The first is to parse the expression and modify it, and
-the other is to leave the expression as is and evaluate the expression
-in a modified environment.
+sublanguage. The first is to parse the expression and modify it, and 
+the other is to leave the expression as is and evaluate it in a
+modified environment.
 
 Let's take the example of designing a modelling DSL to illustrate
 parsing. You would need to traverse the call and analyse all functions
