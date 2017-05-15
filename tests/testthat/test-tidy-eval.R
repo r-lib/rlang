@@ -206,3 +206,12 @@ test_that("can supply environment as data", {
   expect_identical(eval_tidy(quo(`_x`), environment()), "foo")
   expect_error(eval_tidy(quo(`_y`), environment()), "not found")
 })
+
+test_that("tilde calls are evaluated in overscope", {
+  quo <- quo({
+    foo <- "foo"
+    ~foo
+  })
+  f <- eval_tidy(quo)
+  expect_true(env_has(f, "foo"))
+})

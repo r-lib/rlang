@@ -23,6 +23,20 @@
   environments as data structures rather than as part of a scope
   hierarchy.
 
+* The `new_language()` constructor creates calls from a callable
+  object and a pairlist of arguments. It is useful to avoid costly
+  internal coercions between lists and pairlists of arguments.
+
+* `is_pairlist()` now returns `TRUE` for `NULL`. We added `is_node()`
+  to test for actual pairlist nodes. In other words, `is_pairlist()`
+  tests for the data structure while `is_node()` tests for the type.
+
+* Bare formulas are now evaluated in the correct environment in
+  tidyeval functions.
+
+* Bare formulas are now evaluated in the correct environment in
+  tidyeval functions.
+
 
 # rlang 0.1
 
