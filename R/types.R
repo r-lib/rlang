@@ -315,6 +315,7 @@ is_scalar_integerish <- function(x) {
 #' This is equivalent to [base::typeof()] with a few differences that
 #' make dispatching easier:
 #' * The type of one-sided formulas is "quote".
+#' * The type of quoted symbols is "symbol".
 #' * The type of character vectors of length 1 is "string".
 #' * The type of special and builtin functions is "primitive".
 #'

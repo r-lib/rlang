@@ -14,6 +14,7 @@ This is equivalent to \code{\link[base:typeof]{base::typeof()}} with a few diffe
 make dispatching easier:
 \itemize{
 \item The type of one-sided formulas is "quote".
+\item The type of quoted symbols is "symbol".
 \item The type of character vectors of length 1 is "string".
 \item The type of special and builtin functions is "primitive".
 }
