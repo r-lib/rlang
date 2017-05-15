@@ -88,7 +88,7 @@ evaluation as much as possible.
 A corollary of emphasising evaluation is that your DSL functions
 should understand _values_ in addition to expressions. This is
 especially important with
-[quasiquotation](http://rlang.tidyverse.org/reference/quasiquotation.html):
+[quasiquotation][quasiquotation]:
 users can bypass symbolic evaluation completely by unquoting values. For
 instance, the following expressions are completely equivalent:
 
@@ -147,17 +147,17 @@ addition to dataframe columns. In other words, the grammar implements
 correctly an important aspect of R:
 [lexical scoping](http://adv-r.had.co.nz/Functions.html#lexical-scoping).
 
-Creating this scope hierarchy (data first, context next) is possible 
-because R makes it easy to capture the calling environment (see 
+Creating this scope hierarchy (data first, context next) is possible
+because R makes it easy to capture the calling environment (see
 [caller_env()]). However, this supposes that captured expressions were
 actually typed in the most immediate caller frame. This assumption
 easily breaks in R. First because quasiquotation allows an user to
 combine expressions that do not necessarily come from the same lexical
 context. Secondly because arguments can be forwarded through the
-special `...` argument. While base R does not provide any way of
+special `...` argument.  While base R does not provide any way of
 capturing a forwarded argument along with its original environment,
 rlang features [quos()] for this purpose. This function looks up each
-forwarded arguments and returns a list of [quosures] that bundle the
+forwarded arguments and returns a list of [quosures][quosure] that bundle the
 expressions with their own dynamic environments.
 
 In that context, maintaining scoping consistency is a challenge
@@ -191,11 +191,11 @@ the overscope to a quosure just before it self-evaluates. This way,
 both the lexical environment and the overscoped data are in scope
 when the quosure is evaluated. It is evaluated tidily.
 
-In practical terms, `eval_tidy()` takes a `data` argument and creates 
-an overscope suitable for tidy evaluation. In particular, these 
-overscopes contain definitions for self-evaluation of quosures. See 
-[eval_tidy_()] and [as_overscope()] for more flexible ways of creating
-overscopes.
+In practical terms, `eval_tidy()` takes a `data` argument and
+creates an overscope suitable for tidy evaluation. In particular,
+these overscopes contain definitions for self-evaluation of
+quosures. See [eval_tidy_()] and [as_overscope] for more flexible
+ways of creating overscopes.
 
 ## Theory
 
