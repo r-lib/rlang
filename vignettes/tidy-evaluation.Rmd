@@ -53,7 +53,9 @@ were not necessarily envisioned or planned by their designers.
 ## Parsing versus evaluation
 
 There are two ways of dealing with unevaluated expressions to create a
-sublanguage. The first is to parse the expression and modify it, and the other is to leave the expression as evaluate the expression in a modified environment.
+sublanguage. The first is to parse the expression and modify it, and
+the other is to leave the expression as is and evaluate the expression
+in a modified environment.
 
 Let's take the example of designing a modelling DSL to illustrate
 parsing. You would need to traverse the call and analyse all functions
@@ -85,9 +87,10 @@ evaluation as much as possible.
 
 A corollary of emphasising evaluation is that your DSL functions
 should understand _values_ in addition to expressions. This is
-especially important with [quasiquotation]: users can bypass symbolic
-evaluation completely by unquoting values. For instance, the following
-expressions are completely equivalent:
+especially important with
+[quasiquotation](http://rlang.tidyverse.org/reference/quasiquotation.html):
+users can bypass symbolic evaluation completely by unquoting values. For
+instance, the following expressions are completely equivalent:
 
 ```{r, eval = FALSE}
 # Taking an expression:
@@ -144,18 +147,20 @@ addition to dataframe columns. In other words, the grammar implements
 correctly an important aspect of R:
 [lexical scoping](http://adv-r.had.co.nz/Functions.html#lexical-scoping).
 
-Creating this scope hierarchy (data first, context next) is possible
-because R makes it easy to capture the calling environment (see
-[caller_env()]). However, this supposes that captured expressions were
-actually typed in the most immediate caller frame. This assumption
-easily breaks in R. First because quasiquotation allows an user to
-combine expressions that do not necessarily come from the same lexical
-context. Secondly because arguments can be forwarded through the
-special `...` argument.  While base R does not provide any way of
-capturing a forwarded argument along with its original environment,
-rlang features [quos()] for this purpose. This function looks up each
-forwarded arguments and returns a list
-of [quosures](http://rlang.tidyverse.org/reference/quosure.html) that
+Creating this scope hierarchy (data first, context next) is possible 
+because R makes it easy to capture the calling environment (see 
+[`caller_env()`](http://rlang.tidyverse.org/reference/caller_env.html)).
+However, this supposes that captured expressions were actually typed 
+in the most immediate caller frame. This assumption easily breaks in 
+R. First because quasiquotation allows an user to combine expressions 
+that do not necessarily come from the same lexical context. Secondly 
+because arguments can be forwarded through the special `...` argument.
+While base R does not provide any way of capturing a forwarded 
+argument along with its original environment, rlang features 
+[`quos()`](http://rlang.tidyverse.org/reference/quosures.html) for
+this purpose. This function looks up each forwarded arguments and
+returns a list of
+[quosures](http://rlang.tidyverse.org/reference/quosure.html) that
 bundle the expressions with their own dynamic environments.
 
 In that context, maintaining scoping consistency is a challenge
@@ -187,13 +192,15 @@ contextual environment right if they can't also change the meaning
 of code quoted in quosures. To solve this issue, tidyeval rechains
 the overscope to a quosure just before it self-evaluates. This way,
 both the lexical environment and the overscoped data are in scope
-when the quosure is evaluated. Is is evaluated tidily.
+when the quosure is evaluated. It is evaluated tidily.
 
-In practical terms, `eval_tidy()` takes a `data` argument and
-creates an overscope suitable for tidy evaluation. In particular,
-these overscopes contain definitions for self-evaluation of
-quosures. See [eval_tidy_()] and [as_overscope] for more flexible
-ways of creating overscopes.
+In practical terms, `eval_tidy()` takes a `data` argument and creates 
+an overscope suitable for tidy evaluation. In particular, these 
+overscopes contain definitions for self-evaluation of quosures. See 
+[`eval_tidy_()`](http://rlang.tidyverse.org/reference/eval_tidy_.html)
+and 
+[`as_overscope()`](http://rlang.tidyverse.org/reference/as_overscope.html)
+for more flexible ways of creating overscopes.
 
 ## Theory
 
@@ -240,8 +247,7 @@ Schutt's thesis](https://web.wpi.edu/Pubs/ETD/Available/etd-090110-124904/)).
 However, Kernel Lisp did not have quosures and avoided quotation or
 quasiquotation operators altogether to avoid scoping issues.
 
-Tidyeval's contributes to the problem of hygienic evaluation in
-four ways:
+Tidyeval contributes to the problem of hygienic evaluation in four ways:
 
 - Promoting the quosure as the proper quotation data structure, in
   order to keep track of the dynamic environment of quoted
