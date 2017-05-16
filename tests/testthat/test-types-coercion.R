@@ -43,3 +43,8 @@ test_that("names are preserved", {
   expect_identical(names(as_double(x)), nms)
   expect_identical(names(as_list(x)), nms)
 })
+
+test_that("can convert strings (#138)", {
+  expect_identical(as_character("a"), "a")
+  expect_identical(as_list("a"), list("a"))
+})

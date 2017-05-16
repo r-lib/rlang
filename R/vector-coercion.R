@@ -142,6 +142,7 @@ as_complex <- function(x) {
 #' @export
 as_character <- function(x, encoding = NULL) {
   coerce_type_vec(x, friendly_type("character"),
+    string = ,
     character = set_chr_encoding(set_attrs(x, NULL), encoding)
   )
 }
@@ -163,22 +164,21 @@ as_string <- function(x, encoding = NULL) {
 #' @export
 as_list <- function(x) {
   switch_type(x,
-    environment = as_list_env(x),
-    as_list_other(x)
+    environment = env_as_list(x),
+    vec_as_list(x)
   )
 }
-
-as_list_env <- function(x) {
+env_as_list <- function(x) {
   names_x <- names(x)
   x <- as_base_type(x, as.list)
   set_names(x, .Call(rlang_unescape_character, names_x))
 }
-
-as_list_other <- function(x) {
+vec_as_list <- function(x) {
   coerce_type_vec(x, friendly_type("list"),
     logical = ,
     integer = ,
     double = ,
+    string = ,
     character = ,
     complex = ,
     raw = as_base_type(x, as.list),
