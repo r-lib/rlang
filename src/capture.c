@@ -26,6 +26,10 @@ SEXP attribute_hidden capture_arg(SEXP x, SEXP env) {
 }
 
 SEXP attribute_hidden capture_promise(SEXP x, int strict) {
+    // If promise was optimised away, return the literal
+    if (TYPEOF(x) != PROMSXP)
+        return capture_arg(x, R_EmptyEnv);
+
     SEXP env = R_NilValue;
     while (TYPEOF(x) == PROMSXP) {
         env = PRENV(x);
