@@ -37,6 +37,9 @@
 * Bare formulas are now evaluated in the correct environment in
   tidyeval functions.
 
+* Fixed a tidyeval bug where constants couldn't be enquoted within
+  compiled functions.
+
 
 # rlang 0.1
 
