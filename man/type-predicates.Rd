@@ -57,8 +57,6 @@ pattern-matching on the vector length.
 \item Unlike \code{is.vector()}, \code{is_vector()} test if an object is an
 atomic vector or a list. \code{is.vector} checks for the presence of
 attributes (other than name).
-\item \code{is_function()} returns \code{TRUE} only for regular functions, not
-special or primitive functions.
 }
 }
 \seealso{
