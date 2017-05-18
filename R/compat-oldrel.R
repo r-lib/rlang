@@ -54,6 +54,14 @@ if (utils::packageVersion("base") < "3.2.0") {
     }
   }
 
+  trimws <- function(x, which = c("both", "left", "right")) {
+    switch(match.arg(which),
+      left = sub("^[ \t\r\n]+", "", x, perl = TRUE),
+      right = sub("[ \t\r\n]+$", "", x, perl = TRUE),
+      both = trimws(trimws(x, "left"), "right")
+    )
+  }
+
 }
 
 # nocov end
