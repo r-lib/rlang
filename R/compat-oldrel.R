@@ -13,7 +13,7 @@ if (utils::packageVersion("base") < "3.2.0") {
     !identical(path, "") && file.exists(paste0(path, .Platform$file.sep))
   }
   dir.exists <- function(paths) {
-    map_lgl(paths, dir_exists)
+    vapply(paths, dir_exists, logical(1))
   }
 
   names <- function(x) {
