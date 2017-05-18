@@ -11,6 +11,7 @@ Authors@R: c(
     )
 License: GPL-3
 LazyData: true
+ByteCompile: true
 Depends:
     R (>= 3.1.0)
 Suggests:
