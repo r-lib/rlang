@@ -16,9 +16,6 @@
 #'   atomic vector or a list. `is.vector` checks for the presence of
 #'   attributes (other than name).
 #'
-#' * `is_function()` returns `TRUE` only for regular functions, not
-#'   special or primitive functions.
-#'
 #' @param x Object to be tested.
 #' @param n Expected length of a vector.
 #' @param encoding Expected encoding of a string or character
