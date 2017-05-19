@@ -18,10 +18,14 @@ if (utils::packageVersion("base") < "3.2.0") {
 
   names <- function(x) {
     if (is.environment(x)) {
-      ls(x, all.names = TRUE)
+      return(ls(x, all.names = TRUE))
     } else {
-      base::names(x)
+      return(base::names(x))
     }
+
+    # So R CMD check on old versions of R sees a generic, since we
+    # declare a names() method for dictionary objects
+    UseMethod("names")
   }
 
   trimws <- function(x, which = c("both", "left", "right")) {
