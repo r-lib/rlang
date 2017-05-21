@@ -398,10 +398,10 @@ reference:
     desc: >
       These helpers make it easy to create typed conditions.
     contents:
-      - new_cnd
-      - cnd_error
-      - cnd_warning
-      - cnd_message
+      - cnd
+      - error_cnd
+      - warning_cnd
+      - message_cnd
       - is_condition
   - title: Signal conditions
     contents:

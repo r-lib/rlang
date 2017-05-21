@@ -1,13 +1,13 @@
 context("conditions") # ----------------------------------------------
 
-test_that("new_cnd() constructs all fields", {
-  cond <- new_cnd("cnd_class", .msg = "cnd message")
+test_that("cnd() constructs all fields", {
+  cond <- cnd("cnd_class", .msg = "cnd message")
   expect_equal(conditionMessage(cond), "cnd message")
   expect_is(cond, "cnd_class")
 })
 
-test_that("new_cnd() throws with unnamed fields", {
-  expect_error(new_cnd("class", "msg", 10), "must have named data fields")
+test_that("cnd() throws with unnamed fields", {
+  expect_error(cnd("class", "msg", 10), "must have named data fields")
 })
 
 test_that("cnd_signal() creates muffle restarts", {
@@ -20,7 +20,7 @@ test_that("cnd_signal() creates muffle restarts", {
 })
 
 test_that("cnd_signal() include call info", {
-  cnd <- new_cnd("cnd", .call = quote(foo(bar)))
+  cnd <- cnd("cnd", .call = quote(foo(bar)))
   fn <- function(...) cnd_signal(cnd, .call = call)
 
   call <- FALSE

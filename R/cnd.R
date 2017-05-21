@@ -4,8 +4,8 @@
 #' Conditions are objects that power the error system in R. They can
 #' also be used for passing messages to pre-established handlers.
 #'
-#' `new_cnd()` creates objects inheriting from `condition`. Conditions
-#' created with `cnd_error()`, `cnd_warning()` and `cnd_message()`
+#' `cnd()` creates objects inheriting from `condition`. Conditions
+#' created with `error_cnd()`, `warning_cnd()` and `message_cnd()`
 #' inherit from `error`, `warning` or `message`.
 #'
 #' @param .type The condition subclass.
@@ -18,7 +18,7 @@
 #' @export
 #' @examples
 #' # Create a condition inheriting from the s3 type "foo":
-#' cnd <- new_cnd("foo")
+#' cnd <- cnd("foo")
 #'
 #' # Signal the condition to potential handlers. This has no effect if no
 #' # handler is registered to deal with conditions of type "foo":
@@ -34,12 +34,12 @@
 #'
 #' # Note that merely signalling a condition inheriting of "error" is
 #' # not sufficient to stop a program:
-#' cnd_signal(cnd_error("my_error"))
+#' cnd_signal(error_cnd("my_error"))
 #'
 #' # you need to use stop() to signal a critical condition that should
 #' # terminate the program if not handled:
-#' # stop(cnd_error("my_error"))
-new_cnd <- function(.type = NULL, ..., .msg = NULL) {
+#' # stop(error_cnd("my_error"))
+cnd <- function(.type = NULL, ..., .msg = NULL) {
   data <- dots_list(...)
   if (any(names(data) %in% "message")) {
     stop("Conditions can't have a `message` data field", call. = FALSE)
@@ -54,21 +54,58 @@ new_cnd <- function(.type = NULL, ..., .msg = NULL) {
   cnd <- c(list(message = .msg), data)
   structure(cnd, class = c(.type, "condition"))
 }
+#' @rdname cnd
+#' @export
+error_cnd <- function(.type = NULL, ..., .msg = NULL) {
+  cnd(c(.type, "error"), ..., .msg = .msg)
+}
+#' @rdname cnd
+#' @export
+warning_cnd <- function(.type = NULL, ..., .msg = NULL) {
+  cnd(c(.type, "warning"), ..., .msg = .msg)
+}
+#' @rdname cnd
+#' @export
+message_cnd <- function(.type = NULL, ..., .msg = NULL) {
+  cnd(c(.type, "message"), ..., .msg = .msg)
+}
 
-#' @rdname new_cnd
+#' Deprecated condition constructors
+#'
+#' Deprecated in 0.1.2. See [cnd()].
+#'
+#' @inheritParams cnd
+#' @name deprecated-cnd
+#' @export
+new_cnd <- function(.type = NULL, ..., .msg = NULL) {
+  # Deprecated in 0.1.2
+  warning("`new_cnd()` has been renamed to `cnd()` for consistency",
+    call. = FALSE)
+  cnd(.type = .type, ..., .msg = .msg)
+}
+#' @rdname deprecated-cnd
 #' @export
 cnd_error <- function(.type = NULL, ..., .msg = NULL) {
-  new_cnd(c(.type, "error"), ..., .msg = .msg)
+  # Deprecated in 0.1.2
+  warning("`cnd_error()` has been renamed to `error_cnd()` for consistency",
+    call. = FALSE)
+  error_cnd(.type = .type, ..., .msg = .msg)
 }
-#' @rdname new_cnd
+#' @rdname deprecated-cnd
 #' @export
 cnd_warning <- function(.type = NULL, ..., .msg = NULL) {
-  new_cnd(c(.type, "warning"), ..., .msg = .msg)
+  # Deprecated in 0.1.2
+  warning("`cnd_warning()` has been renamed to `cnd_warning()` for consistency",
+    call. = FALSE)
+  warning_cnd(.type = .type, ..., .msg = .msg)
 }
-#' @rdname new_cnd
+#' @rdname deprecated-cnd
 #' @export
 cnd_message <- function(.type = NULL, ..., .msg = NULL) {
-  new_cnd(c(.type, "message"), ..., .msg = .msg)
+  # Deprecated in 0.1.2
+  warning("`cnd_message()` has been renamed to `cnd_message()` for consistency",
+    call. = FALSE)
+  message_cnd(.type = .type, ..., .msg = .msg)
 }
 
 #' Is object a condition?
@@ -110,8 +147,8 @@ is_condition <- function(x) {
 #' the `muffle` argument of [inplace()] for creating a muffling
 #' handler.
 #'
-#' @inheritParams new_cnd
-#' @param .cnd Either a condition object (see [new_cnd()]), or the
+#' @inheritParams cnd
+#' @param .cnd Either a condition object (see [cnd()]), or the
 #'   name of a s3 class from which a new condition will be created.
 #' @param .msg A string to override the condition's default message.
 #' @param .call Whether to display the call of the frame in which the
@@ -132,7 +169,7 @@ is_condition <- function(x) {
 #' @export
 #' @examples
 #' # Creating a condition of type "foo"
-#' cnd <- new_cnd("foo")
+#' cnd <- cnd("foo")
 #'
 #' # If no handler capable of dealing with "foo" is established on the
 #' # stack, signalling the condition has no effect:
@@ -170,10 +207,10 @@ is_condition <- function(x) {
 #' }
 #'
 #' # If you don't specify a .msg or .call, the default message/call
-#' # (supplied to new_cnd()) are displayed. Otherwise, the ones
+#' # (supplied to cnd()) are displayed. Otherwise, the ones
 #' # supplied to cnd_abort() and cnd_signal() take precedence:
 #' \dontrun{
-#' critical <- new_cnd("my_error",
+#' critical <- cnd("my_error",
 #'   .msg = "default 'my_error' msg",
 #'   .call = quote(default(call))
 #' )
@@ -205,7 +242,7 @@ cnd_abort <- function(.cnd, ..., .msg = NULL, .call = FALSE,
 
 make_cnd <- function(.cnd, ..., .msg, .call, .show_call) {
   if (is_scalar_character(.cnd)) {
-    .cnd <- new_cnd(.cnd, ...)
+    .cnd <- cnd(.cnd, ...)
   } else {
     stopifnot(is_condition(.cnd))
   }
@@ -215,10 +252,8 @@ make_cnd <- function(.cnd, ..., .msg, .call, .show_call) {
 
   # The `call` field is displayed by stop().
   # But record call in `.call` in all cases.
+  .cnd$call <- if (.show_call) .cnd$.call
   .cnd$.call <- .call
-  if (.show_call) {
-    .cnd$call <- .cnd$.call
-  }
 
   .cnd
 }
@@ -266,7 +301,7 @@ cnd_signal_ <- function(cnd, signal, mufflable) {
 #'
 #' @export
 abort <- function(msg, type = NULL, call = FALSE) {
-  cnd <- cnd_error(type, .msg = msg, .call = sys.call(-1))
+  cnd <- error_cnd(type, .msg = msg, .call = sys.call(-1))
   if (call) {
     cnd$call <- cnd$.call
   }
@@ -275,7 +310,7 @@ abort <- function(msg, type = NULL, call = FALSE) {
 #' @rdname abort
 #' @export
 warn <- function(msg, type = NULL, call = FALSE) {
-  cnd <- cnd_warning(type, .msg = msg, .call = sys.call(-1))
+  cnd <- warning_cnd(type, .msg = msg, .call = sys.call(-1))
   if (call) {
     cnd$call <- cnd$.call
   }
@@ -285,7 +320,7 @@ warn <- function(msg, type = NULL, call = FALSE) {
 #' @export
 inform <- function(msg, type = NULL, call = FALSE) {
   msg <- paste0(msg, "\n")
-  cnd <- cnd_message(type, .msg = msg, .call = sys.call(-1))
+  cnd <- message_cnd(type, .msg = msg, .call = sys.call(-1))
   if (call) {
     cnd$call <- cnd$.call
   }

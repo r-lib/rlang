@@ -1,6 +1,12 @@
 
 # rlang 0.1.1.9000
 
+* `new_cnd()` is now `cnd()` for consistency with other constructors.
+  Also, `cnd_error()`, `cnd_warning()` and `cnd_message()` are now
+  `error_cnd()`, `warning_cnd()` and `message_cnd()` to follow our
+  naming scheme according to which the type of output is a suffix
+  rather than a prefix.
+
 
 # rlang 0.1.1
 

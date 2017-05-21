@@ -10,7 +10,7 @@ cnd_signal(.cnd, ..., .msg = NULL, .call = FALSE, .mufflable = TRUE)
 cnd_abort(.cnd, ..., .msg = NULL, .call = FALSE, .mufflable = FALSE)
 }
 \arguments{
-\item{.cnd}{Either a condition object (see \code{\link[=new_cnd]{new_cnd()}}), or the
+\item{.cnd}{Either a condition object (see \code{\link[=cnd]{cnd()}}), or the
 name of a s3 class from which a new condition will be created.}
 
 \item{...}{Named data fields stored inside the condition
@@ -68,7 +68,7 @@ handler.
 }
 \examples{
 # Creating a condition of type "foo"
-cnd <- new_cnd("foo")
+cnd <- cnd("foo")
 
 # If no handler capable of dealing with "foo" is established on the
 # stack, signalling the condition has no effect:
@@ -106,10 +106,10 @@ cnd_abort(cnd)
 }
 
 # If you don't specify a .msg or .call, the default message/call
-# (supplied to new_cnd()) are displayed. Otherwise, the ones
+# (supplied to cnd()) are displayed. Otherwise, the ones
 # supplied to cnd_abort() and cnd_signal() take precedence:
 \dontrun{
-critical <- new_cnd("my_error",
+critical <- cnd("my_error",
   .msg = "default 'my_error' msg",
   .call = quote(default(call))
 )
