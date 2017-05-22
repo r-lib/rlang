@@ -232,14 +232,14 @@ is_condition <- function(x) {
 #' # condition.
 cnd_signal <- function(.cnd, ..., .msg = NULL, .call = NULL,
                        .mufflable = TRUE) {
-  cnd <- make_cnd(.cnd, ..., .msg = .msg, .call = cnd_call(.call), .show_call = .call)
+  cnd <- cnd_update(.cnd, ..., .msg = .msg, .call = cnd_call(.call), .show_call = .call)
   cnd_signal_(cnd, base::signalCondition, .mufflable)
 }
 #' @rdname cnd_signal
 #' @export
 cnd_abort <- function(.cnd, ..., .msg = NULL, .call = NULL,
                       .mufflable = FALSE) {
-  cnd <- make_cnd(.cnd, ..., .msg = .msg, .call = cnd_call(.call), .show_call = .call)
+  cnd <- cnd_update(.cnd, ..., .msg = .msg, .call = cnd_call(.call), .show_call = .call)
   cnd_signal_(cnd, base::stop, .mufflable)
 }
 
@@ -252,8 +252,8 @@ cnd_call <- function(call) {
 
   caller_frame(call + 1)$expr
 }
-make_cnd <- function(.cnd, ..., .msg, .call, .show_call) {
-  if (is_scalar_character(.cnd)) {
+cnd_update <- function(.cnd, ..., .msg, .call, .show_call) {
+  if (is_string(.cnd)) {
     .cnd <- cnd(.cnd, ...)
   } else {
     stopifnot(is_condition(.cnd))
