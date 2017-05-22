@@ -61,9 +61,6 @@ bool is_vector(SEXP x) {
 bool is_null(SEXP x) {
   return x == R_NilValue;
 }
-bool is_string(SEXP x) {
-  return TYPEOF(x) == STRSXP && Rf_length(x) == 1;
-}
 
 int is_sym(SEXP x, const char* string) {
   if (TYPEOF(x) != SYMSXP)

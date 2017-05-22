@@ -33,7 +33,6 @@ bool is_empty(SEXP x);
 bool is_vector(SEXP x);
 bool is_null(SEXP x);
 bool as_bool(SEXP x);
-bool is_string(SEXP x);
 SEXP sym(const char* c_string);
 
 

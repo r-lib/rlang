@@ -15,11 +15,18 @@ void mut_chr_at(SEXP chr, R_len_t i, SEXP elt) {
   SET_STRING_ELT(chr, i, elt);
 }
 
+SEXP r_string(const char* c_string) {
+  return Rf_mkChar(c_string);
+}
 bool is_r_string(SEXP x) {
   return TYPEOF(x) == CHARSXP;
 }
-SEXP as_r_string(const char* c_string) {
-  return Rf_mkChar(c_string);
+
+SEXP string(const char* c_string) {
+  return Rf_mkString(c_string);
+}
+bool is_string(SEXP x) {
+  return TYPEOF(x) == STRSXP && Rf_length(x) == 1;
 }
 
 void validate_chr_setter(SEXP chr, SEXP r_string) {

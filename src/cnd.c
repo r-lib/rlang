@@ -2,27 +2,44 @@
 
 #define BUFSIZE 8192
 
+#define INTERP(BUF, FMT, DOTS)                  \
+  {                                             \
+    va_list dots;                               \
+    va_start(dots, FMT);                        \
+    vsnprintf(BUF, BUFSIZE, FMT, dots);         \
+    va_end(dots);                               \
+                                                \
+    BUF[BUFSIZE - 1] = '\0';                    \
+  }
 
+
+void r_inform(const char* fmt, ...) {
+  char buf[BUFSIZE];
+  INTERP(buf, fmt, ...);
+
+  SEXP lang = PROTECT(Rf_lcons(sym("message"), string(buf)));
+  Rf_eval(lang, R_BaseEnv);
+  UNPROTECT(1);
+}
+void r_warn(const char* fmt, ...) {
+  char buf[BUFSIZE];
+  INTERP(buf, fmt, ...);
+
+  SEXP lang = PROTECT(Rf_lcons(sym("warning"), string(buf)));
+  Rf_eval(lang, R_BaseEnv);
+  UNPROTECT(1);
+}
 void r_abort(const char* fmt, ...) {
   char buf[BUFSIZE];
-  va_list dots;
-  va_start(dots, fmt);
-  vsnprintf(buf, BUFSIZE, fmt, dots);
-  va_end(dots);
+  INTERP(buf, fmt, ...);
 
   Rf_errorcall(R_NilValue, buf);
 }
 SEXP interp_str(const char* fmt, ...) {
   char buf[BUFSIZE];
-  va_list dots;
-  va_start(dots, fmt);
-  vsnprintf(buf, BUFSIZE, fmt, dots);
-  va_end(dots);
+  INTERP(buf, fmt, ...);
 
-  // Make sure buffer is NULL terminated
-  buf[BUFSIZE - 1] = '\0';
-
-  return Rf_mkString(buf);
+  return string(buf);
 }
 
 static
@@ -36,7 +53,7 @@ SEXP new_condition_names(SEXP data) {
     r_abort("Conditions can't have a `message` data field");
 
   SEXP nms = PROTECT(Rf_allocVector(STRSXP, Rf_length(data) + 1));
-  mut_chr_at(nms, 0, as_r_string("message"));
+  mut_chr_at(nms, 0, r_string("message"));
   vec_copy_n(data_nms, Rf_length(data), nms, 1, 0);
 
   UNPROTECT(1);
@@ -53,7 +70,7 @@ SEXP new_condition(SEXP type, SEXP data, SEXP msg) {
   vec_copy_n(data, n_data, cnd, 1, 0);
 
   mut_names(cnd, new_condition_names(data));
-  mut_class(cnd, chr_append(type, as_r_string("condition")));
+  mut_class(cnd, chr_append(type, r_string("condition")));
 
   UNPROTECT(1);
   return cnd;
@@ -93,7 +110,7 @@ void cnd_signal_impl(const char* signaller, SEXP cnd, bool mufflable) {
   ++n_protect;
 
   if (mufflable) {
-    SEXP classes = PROTECT(chr_prepend(sxp_class(cnd), as_r_string("mufflable")));
+    SEXP classes = PROTECT(chr_prepend(sxp_class(cnd), r_string("mufflable")));
     ++n_protect;
     SETCADR(lang, set_class(cnd, classes));
 
