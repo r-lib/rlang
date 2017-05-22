@@ -19,7 +19,7 @@ test_that("cnd_signal() creates muffle restarts", {
   )
 })
 
-test_that("cnd_signal() include call info", {
+test_that("cnd_signal() includes call info", {
   cnd <- cnd("cnd", .call = quote(foo(bar)))
   fn <- function(...) cnd_signal(cnd, .call = call)
 
@@ -32,6 +32,11 @@ test_that("cnd_signal() include call info", {
   call <- TRUE
   with_handlers(fn(foo(bar)), cnd = inplace(function(c) {
     expect_identical(conditionCall(c), quote(fn(foo(bar))))
+  }))
+
+  call <- NULL
+  with_handlers(fn(foo(bar)), cnd = inplace(function(c) {
+    expect_identical(conditionCall(c), quote(foo(bar)))
   }))
 })
 

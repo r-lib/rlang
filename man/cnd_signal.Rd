@@ -22,8 +22,10 @@ splicing}.}
 \item{.call}{Whether to display the call of the frame in which the
 condition is signalled. If \code{TRUE}, the call is stored in the
 \code{call} field of the condition object: this field is displayed by
-R when an error is issued. The call information is also stored in
-the \code{.call} field in all cases.}
+R when an error is issued. If \code{NULL}, the call is taken from the
+\code{.call} field that was supplied to the condition constructor
+(e.g. \code{\link[=cnd]{cnd()}}). In all cases the \code{.call} field is updated with
+the actual call.}
 
 \item{.mufflable}{Whether to signal the condition with a muffling
 restart. This is useful to let \code{\link[=inplace]{inplace()}} handlers muffle a

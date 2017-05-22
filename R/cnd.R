@@ -154,8 +154,10 @@ is_condition <- function(x) {
 #' @param .call Whether to display the call of the frame in which the
 #'   condition is signalled. If `TRUE`, the call is stored in the
 #'   `call` field of the condition object: this field is displayed by
-#'   R when an error is issued. The call information is also stored in
-#'   the `.call` field in all cases.
+#'   R when an error is issued. If `NULL`, the call is taken from the
+#'   `.call` field that was supplied to the condition constructor
+#'   (e.g. [cnd()]). In all cases the `.call` field is updated with
+#'   the actual call.
 #' @param .mufflable Whether to signal the condition with a muffling
 #'   restart. This is useful to let [inplace()] handlers muffle a
 #'   condition. It stops the condition from being passed to other
@@ -250,9 +252,20 @@ make_cnd <- function(.cnd, ..., .msg, .call, .show_call) {
   # Override default field if supplied
   .cnd$message <- .msg %||% .cnd$message %||% ""
 
-  # The `call` field is displayed by stop().
-  # But record call in `.call` in all cases.
-  .cnd$call <- if (.show_call) .cnd$.call
+  # The `call` field is displayed by stop() and display is controlled
+  # by user. If NULL, use the call stored in the condition. If TRUE,
+  # use the current call.
+  if (is_null(.show_call)) {
+    .cnd$call <- .cnd$.call
+  } else if (is_true(.show_call)) {
+    .cnd$call <- .call
+  } else if (is_false(.show_call)) {
+    .cnd$call <- NULL
+  } else {
+    stop("Internal error: unexpected `.show_call`", call. = FALSE)
+  }
+
+  # Record actual call in `.call` in all cases
   .cnd$.call <- .call
 
   .cnd
