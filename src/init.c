@@ -12,6 +12,7 @@ extern bool is_clevel_spliceable(SEXP);
 // Callable from this package
 extern SEXP f_lhs_(SEXP);
 extern SEXP f_rhs_(SEXP);
+extern SEXP new_condition(SEXP, SEXP, SEXP);
 extern SEXP rlang_replace_na(SEXP, SEXP);
 extern SEXP rlang_car(SEXP);
 extern SEXP rlang_cdr(SEXP);
@@ -49,10 +50,13 @@ extern SEXP capture_arg(SEXP, SEXP);
 extern SEXP rlang_capturearg(SEXP, SEXP, SEXP, SEXP);
 extern SEXP rlang_capturedots(SEXP, SEXP, SEXP, SEXP);
 extern SEXP rlang_new_language(SEXP, SEXP);
+extern SEXP rlang_cnd_signal(SEXP, SEXP);
+extern SEXP rlang_cnd_signal_error(SEXP, SEXP);
 
 static const R_CallMethodDef call_entries[] = {
   {"f_lhs_",                    (DL_FUNC) &f_lhs_, 1},
   {"f_rhs_",                    (DL_FUNC) &f_rhs_, 1},
+  {"rlang_new_condition",       (DL_FUNC) &new_condition, 3},
   {"rlang_replace_na",          (DL_FUNC) &rlang_replace_na, 2},
   {"rlang_caar",                (DL_FUNC) &rlang_caar, 1},
   {"rlang_cadr",                (DL_FUNC) &rlang_cadr, 1},
@@ -89,6 +93,8 @@ static const R_CallMethodDef call_entries[] = {
   {"rlang_unescape_character",  (DL_FUNC) &rlang_unescape_character, 1},
   {"rlang_zap_attrs",           (DL_FUNC) &rlang_zap_attrs, 1},
   {"rlang_new_language",        (DL_FUNC) &rlang_new_language, 2},
+  {"rlang_cnd_signal",          (DL_FUNC) &rlang_cnd_signal, 2},
+  {"rlang_cnd_signal_error",    (DL_FUNC) &rlang_cnd_signal_error, 2},
   {NULL, NULL, 0}
 };
 

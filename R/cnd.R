@@ -40,19 +40,7 @@
 #' # terminate the program if not handled:
 #' # stop(error_cnd("my_error"))
 cnd <- function(.type = NULL, ..., .msg = NULL) {
-  data <- dots_list(...)
-  if (any(names(data) %in% "message")) {
-    stop("Conditions can't have a `message` data field", call. = FALSE)
-  }
-  if (any(names2(data) == "")) {
-    stop("Conditions must have named data fields", call. = FALSE)
-  }
-  if (!is_null(.msg) && !is_string(.msg)) {
-    stop("Condition message must be a string", call. = FALSE)
-  }
-
-  cnd <- c(list(message = .msg), data)
-  structure(cnd, class = c(.type, "condition"))
+  .Call(rlang_new_condition, .type, dots_list(...), .msg)
 }
 #' @rdname cnd
 #' @export
@@ -233,14 +221,14 @@ is_condition <- function(x) {
 cnd_signal <- function(.cnd, ..., .msg = NULL, .call = NULL,
                        .mufflable = TRUE) {
   cnd <- cnd_update(.cnd, ..., .msg = .msg, .call = cnd_call(.call), .show_call = .call)
-  cnd_signal_(cnd, base::signalCondition, .mufflable)
+  .Call(rlang_cnd_signal, cnd, .mufflable)
 }
 #' @rdname cnd_signal
 #' @export
 cnd_abort <- function(.cnd, ..., .msg = NULL, .call = NULL,
                       .mufflable = FALSE) {
   cnd <- cnd_update(.cnd, ..., .msg = .msg, .call = cnd_call(.call), .show_call = .call)
-  cnd_signal_(cnd, base::stop, .mufflable)
+  .Call(rlang_cnd_signal_error, cnd, .mufflable)
 }
 
 cnd_call <- function(call) {
@@ -280,14 +268,9 @@ cnd_update <- function(.cnd, ..., .msg, .call, .show_call) {
 
   .cnd
 }
-cnd_signal_ <- function(cnd, signal, mufflable) {
-  if (mufflable) {
-    class(cnd) <- c("mufflable", class(cnd))
-    withRestarts(signal(cnd), muffle = function(...) NULL)
-  } else {
-    signal(cnd)
-  }
-}
+# Used in C implementation
+muffle <- function(...) NULL
+
 
 #' Signal an error, warning, or message
 #'

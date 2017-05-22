@@ -61,6 +61,9 @@ bool is_vector(SEXP x) {
 bool is_null(SEXP x) {
   return x == R_NilValue;
 }
+bool is_string(SEXP x) {
+  return TYPEOF(x) == STRSXP && Rf_length(x) == 1;
+}
 
 int is_sym(SEXP x, const char* string) {
   if (TYPEOF(x) != SYMSXP)
@@ -163,7 +166,7 @@ SEXP make_formula1(SEXP rhs, SEXP env) {
 }
 
 SEXP rlang_fun(SEXP sym) {
-  SEXP prefixed_sym = PROTECT(Rf_lang3(Rf_install("::"), Rf_install("rlang"), sym));
+  SEXP prefixed_sym = PROTECT(Rf_lang3(Rf_install(":::"), Rf_install("rlang"), sym));
   SEXP fun = Rf_eval(prefixed_sym, R_BaseEnv);
   UNPROTECT(1);
   return fun;
@@ -215,4 +218,8 @@ SEXP rlang_new_dictionary(SEXP x, SEXP lookup_msg, SEXP read_only) {
 
   UNPROTECT(1);
   return dict;
+}
+
+SEXP sym(const char* c_string) {
+  return Rf_install(c_string);
 }

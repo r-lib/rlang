@@ -11,7 +11,7 @@ test_that("cnd() throws with unnamed fields", {
 })
 
 test_that("cnd_signal() creates muffle restarts", {
-  withCallingHandlers(cnd_signal("foo", muffle = TRUE),
+  withCallingHandlers(cnd_signal("foo", .mufflable = TRUE),
     foo = function(c) {
       expect_true(rst_exists("muffle"))
       expect_is(c, "mufflable")
