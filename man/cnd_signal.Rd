@@ -5,9 +5,9 @@
 \alias{cnd_abort}
 \title{Signal a condition}
 \usage{
-cnd_signal(.cnd, ..., .msg = NULL, .call = FALSE, .mufflable = TRUE)
+cnd_signal(.cnd, ..., .msg = NULL, .call = NULL, .mufflable = TRUE)
 
-cnd_abort(.cnd, ..., .msg = NULL, .call = FALSE, .mufflable = FALSE)
+cnd_abort(.cnd, ..., .msg = NULL, .call = NULL, .mufflable = FALSE)
 }
 \arguments{
 \item{.cnd}{Either a condition object (see \code{\link[=cnd]{cnd()}}), or the
@@ -22,10 +22,11 @@ splicing}.}
 \item{.call}{Whether to display the call of the frame in which the
 condition is signalled. If \code{TRUE}, the call is stored in the
 \code{call} field of the condition object: this field is displayed by
-R when an error is issued. If \code{NULL}, the call is taken from the
-\code{.call} field that was supplied to the condition constructor
-(e.g. \code{\link[=cnd]{cnd()}}). In all cases the \code{.call} field is updated with
-the actual call.}
+R when an error is issued. If a number \code{n}, the call is taken
+from the nth frame on the \link[=call_stack]{call stack}. If \code{NULL},
+the call is taken from the \code{.call} field that was supplied to the
+condition constructor (e.g. \code{\link[=cnd]{cnd()}}). In all cases the \code{.call}
+field is updated with the actual call.}
 
 \item{.mufflable}{Whether to signal the condition with a muffling
 restart. This is useful to let \code{\link[=inplace]{inplace()}} handlers muffle a

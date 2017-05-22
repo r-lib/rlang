@@ -154,10 +154,11 @@ is_condition <- function(x) {
 #' @param .call Whether to display the call of the frame in which the
 #'   condition is signalled. If `TRUE`, the call is stored in the
 #'   `call` field of the condition object: this field is displayed by
-#'   R when an error is issued. If `NULL`, the call is taken from the
-#'   `.call` field that was supplied to the condition constructor
-#'   (e.g. [cnd()]). In all cases the `.call` field is updated with
-#'   the actual call.
+#'   R when an error is issued. If a number `n`, the call is taken
+#'   from the nth frame on the [call stack][call_stack]. If `NULL`,
+#'   the call is taken from the `.call` field that was supplied to the
+#'   condition constructor (e.g. [cnd()]). In all cases the `.call`
+#'   field is updated with the actual call.
 #' @param .mufflable Whether to signal the condition with a muffling
 #'   restart. This is useful to let [inplace()] handlers muffle a
 #'   condition. It stops the condition from being passed to other
@@ -229,19 +230,28 @@ is_condition <- function(x) {
 #' # not have a muffle restart. That is because in most cases,
 #' # execution should not continue after signalling a critical
 #' # condition.
-cnd_signal <- function(.cnd, ..., .msg = NULL, .call = FALSE,
+cnd_signal <- function(.cnd, ..., .msg = NULL, .call = NULL,
                        .mufflable = TRUE) {
-  cnd <- make_cnd(.cnd, ..., .msg = .msg, .call = sys.call(-1), .show_call = .call)
+  cnd <- make_cnd(.cnd, ..., .msg = .msg, .call = cnd_call(.call), .show_call = .call)
   cnd_signal_(cnd, base::signalCondition, .mufflable)
 }
 #' @rdname cnd_signal
 #' @export
-cnd_abort <- function(.cnd, ..., .msg = NULL, .call = FALSE,
+cnd_abort <- function(.cnd, ..., .msg = NULL, .call = NULL,
                       .mufflable = FALSE) {
-  cnd <- make_cnd(.cnd, ..., .msg = .msg, .call = sys.call(-1), .show_call = .call)
+  cnd <- make_cnd(.cnd, ..., .msg = .msg, .call = cnd_call(.call), .show_call = .call)
   cnd_signal_(cnd, base::stop, .mufflable)
 }
 
+cnd_call <- function(call) {
+  if (is_scalar_logical(call) || is_null(call)) {
+    call <- 1
+  } else if (!is_scalar_integerish(call)) {
+    stop("`call` must be a scalar boolean or number", call. = FALSE)
+  }
+
+  caller_frame(call + 1)$expr
+}
 make_cnd <- function(.cnd, ..., .msg, .call, .show_call) {
   if (is_scalar_character(.cnd)) {
     .cnd <- cnd(.cnd, ...)
@@ -257,7 +267,7 @@ make_cnd <- function(.cnd, ..., .msg, .call, .show_call) {
   # use the current call.
   if (is_null(.show_call)) {
     .cnd$call <- .cnd$.call
-  } else if (is_true(.show_call)) {
+  } else if (is_true(.show_call) || is_scalar_integerish(.show_call)) {
     .cnd$call <- .call
   } else if (is_false(.show_call)) {
     .cnd$call <- NULL
@@ -310,12 +320,12 @@ cnd_signal_ <- function(cnd, signal, mufflable) {
 #'
 #' @param msg A message to display.
 #' @param type Subclass of the condition to signal.
-#' @param call Whether to display the call.
-#'
+#' @param call Whether to display the call. If a number `n`, the call
+#'   is taken from the nth frame on the [call stack][call_stack].
 #' @export
 abort <- function(msg, type = NULL, call = FALSE) {
-  cnd <- error_cnd(type, .msg = msg, .call = sys.call(-1))
-  if (call) {
+  cnd <- error_cnd(type, .msg = msg, .call = cnd_call(call))
+  if (!is_false(call)) {
     cnd$call <- cnd$.call
   }
   stop(cnd)
@@ -323,8 +333,8 @@ abort <- function(msg, type = NULL, call = FALSE) {
 #' @rdname abort
 #' @export
 warn <- function(msg, type = NULL, call = FALSE) {
-  cnd <- warning_cnd(type, .msg = msg, .call = sys.call(-1))
-  if (call) {
+  cnd <- warning_cnd(type, .msg = msg, .call = cnd_call(call))
+  if (!is_false(call)) {
     cnd$call <- cnd$.call
   }
   warning(cnd)
@@ -333,8 +343,8 @@ warn <- function(msg, type = NULL, call = FALSE) {
 #' @export
 inform <- function(msg, type = NULL, call = FALSE) {
   msg <- paste0(msg, "\n")
-  cnd <- message_cnd(type, .msg = msg, .call = sys.call(-1))
-  if (call) {
+  cnd <- message_cnd(type, .msg = msg, .call = cnd_call(call))
+  if (!is_false(call)) {
     cnd$call <- cnd$.call
   }
   message(cnd)

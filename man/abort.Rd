@@ -17,7 +17,8 @@ inform(msg, type = NULL, call = FALSE)
 
 \item{type}{Subclass of the condition to signal.}
 
-\item{call}{Whether to display the call.}
+\item{call}{Whether to display the call. If a number \code{n}, the call
+is taken from the nth frame on the \link[=call_stack]{call stack}.}
 }
 \description{
 These functions are equivalent to base functions \code{\link[base:stop]{base::stop()}},
