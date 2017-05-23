@@ -25,9 +25,16 @@ void r_warn(const char* fmt, ...) {
   char buf[BUFSIZE];
   INTERP(buf, fmt, ...);
 
-  SEXP lang = PROTECT(Rf_lcons(sym("warning"), string(buf)));
+  SEXP args;
+  args = PROTECT(Rf_ScalarLogical(0));
+  args = PROTECT(Rf_cons(args, R_NilValue));
+  SET_TAG(args, sym("call."));
+
+  args = PROTECT(Rf_cons(string(buf), args));
+  SEXP lang = PROTECT(Rf_lcons(sym("warning"), args));
+
   Rf_eval(lang, R_BaseEnv);
-  UNPROTECT(1);
+  UNPROTECT(4);
 }
 void r_abort(const char* fmt, ...) {
   char buf[BUFSIZE];
