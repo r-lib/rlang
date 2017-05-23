@@ -12,7 +12,7 @@ knitr::opts_chunk$set(collapse = T, comment = "#>")
 library("rlang")
 ```
 
-Tidy evaluation is is a general toolkit for non-standard evaluation,  principally used to create domain-specific languages of grammars. The most prominent examples of such sublanguages in R are modelling specifications with formulas (`lm()`,
+Tidy evaluation is a general toolkit for non-standard evaluation, principally used to create domain-specific languages (DSLs) of grammars. The most prominent examples of such sublanguages in R are modelling specifications with formulas (`lm()`,
 `lme4::lmer()`, etc) and data manipulation grammars (dplyr,
 tidyr). Most of these DSLs put dataframe columns in scope so that
 users can refer to them directly, saving keystrokes during interactive
@@ -78,9 +78,9 @@ is `dplyr::select()`). As this method is relying on the R interpreter,
 the grammar is much more likely to behave like real R code.
 
 R DSLs are traditionally implemented with a mix of both principles.
-Expressions are parsed in ad hoc ways, but are eventually evaluated in
+Expressions are parsed in _ad hoc_ ways, but are eventually evaluated in
 an environment containing dataframe columns. While it is difficult to
-completely avoid ad hoc parsing, tidyeval DSLs strive to rely on
+completely avoid _ad hoc_ parsing, tidyeval DSLs strive to rely on
 evaluation as much as possible.
 
 ## Values versus expressions
@@ -115,7 +115,7 @@ positions. Therefore, `select()` understands column symbols like
 dplyr::select(mtcars, cyl)
 
 # Taking an unquoted symbol:
-var <- quote(sym)
+var <- quote(cyl)
 dplyr::select(mtcars, !! var)
 ```
 
@@ -141,7 +141,7 @@ objects from the current environment should be in scope, with the
 former having precedence over the latter. In other words, the dataset
 should __overscope__ the dynamic context. The traditional solution to
 this issue in R is to transform a dataframe to an environment and set
-the calling frame as the parent environment.  This way, the symbols
+the calling frame as the parent environment. This way, the symbols
 appearing in the expression can refer to their surrounding context in
 addition to dataframe columns. In other words, the grammar implements
 correctly an important aspect of R:
@@ -154,7 +154,7 @@ actually typed in the most immediate caller frame. This assumption
 easily breaks in R. First because quasiquotation allows an user to
 combine expressions that do not necessarily come from the same lexical
 context. Secondly because arguments can be forwarded through the
-special `...` argument.  While base R does not provide any way of
+special `...` argument. While base R does not provide any way of
 capturing a forwarded argument along with its original environment,
 rlang features [quos()] for this purpose. This function looks up each
 forwarded arguments and returns a list of [quosures][quosure] that bundle the
@@ -168,7 +168,6 @@ change R semantics through evaluation. It is possible to evaluate each
 expression in turn, but how can we combine all expressions into one
 and evaluate it tidily at once? An expression can only be evaluated in
 a single environment. This is where quosures come into play.
-
 
 ## Quosures and overscoping
 
