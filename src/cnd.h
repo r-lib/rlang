@@ -10,6 +10,8 @@ void r_abort(const char* fmt, ...);
 
 SEXP interp_str(const char* fmt, ...);
 
+SEXP new_condition(SEXP type, SEXP data, SEXP msg);
+
 void cnd_signal(SEXP cnd, bool mufflable);
 void cnd_signal_error(SEXP cnd, bool mufflable);
 
