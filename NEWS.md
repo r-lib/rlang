@@ -7,6 +7,10 @@
   naming scheme according to which the type of output is a suffix
   rather than a prefix.
 
+* Condition signallers such as `cnd_signal()` and `abort()` now accept
+  a call depth as `call` arguments. This allows plucking a call from
+  further up the call stack (#30).
+
 
 # rlang 0.1.1
 
