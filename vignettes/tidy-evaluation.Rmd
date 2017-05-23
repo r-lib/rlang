@@ -78,9 +78,9 @@ is `dplyr::select()`). As this method is relying on the R interpreter,
 the grammar is much more likely to behave like real R code.
 
 R DSLs are traditionally implemented with a mix of both principles.
-Expressions are parsed in _ad hoc_ ways, but are eventually evaluated in
+Expressions are parsed in ad hoc ways, but are eventually evaluated in
 an environment containing dataframe columns. While it is difficult to
-completely avoid _ad hoc_ parsing, tidyeval DSLs strive to rely on
+completely avoid ad hoc parsing, tidyeval DSLs strive to rely on
 evaluation as much as possible.
 
 ## Values versus expressions
