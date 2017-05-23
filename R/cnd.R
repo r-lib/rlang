@@ -83,7 +83,7 @@ cnd_error <- function(.type = NULL, ..., .msg = NULL) {
 #' @export
 cnd_warning <- function(.type = NULL, ..., .msg = NULL) {
   # Deprecated in 0.1.2
-  warning("`cnd_warning()` has been renamed to `cnd_warning()` for consistency",
+  warning("`cnd_warning()` has been renamed to `warning_cnd()` for consistency",
     call. = FALSE)
   warning_cnd(.type = .type, ..., .msg = .msg)
 }
@@ -91,7 +91,7 @@ cnd_warning <- function(.type = NULL, ..., .msg = NULL) {
 #' @export
 cnd_message <- function(.type = NULL, ..., .msg = NULL) {
   # Deprecated in 0.1.2
-  warning("`cnd_message()` has been renamed to `cnd_message()` for consistency",
+  warning("`cnd_message()` has been renamed to `message_cnd()` for consistency",
     call. = FALSE)
   message_cnd(.type = .type, ..., .msg = .msg)
 }

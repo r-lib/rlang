@@ -398,10 +398,7 @@ reference:
     desc: >
       These helpers make it easy to create typed conditions.
     contents:
-      - cnd
-      - error_cnd
-      - warning_cnd
-      - message_cnd
+      - ends_with("cnd")
       - is_condition
   - title: Signal conditions
     contents:
