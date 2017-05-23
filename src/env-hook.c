@@ -30,7 +30,6 @@ void signal_lookup(const char* name, R_ObjectTable* env) {
 }
 
 Rboolean hook_env_exists(const char* const name, Rboolean* can_cache, R_ObjectTable* env) {
-  signal_lookup(name, env);
   return FALSE;
 }
 SEXP hook_env_get(const char* const name, Rboolean* can_cache, R_ObjectTable* env) {
