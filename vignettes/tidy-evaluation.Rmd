@@ -169,6 +169,7 @@ expression in turn, but how can we combine all expressions into one
 and evaluate it tidily at once? An expression can only be evaluated in
 a single environment. This is where quosures come into play.
 
+
 ## Quosures and overscoping
 
 Unlike formulas, quosures aren't simple containers of an expression
