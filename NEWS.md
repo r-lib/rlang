@@ -1,6 +1,16 @@
 
 # rlang 0.1.1.9000
 
+* `new_cnd()` is now `cnd()` for consistency with other constructors.
+  Also, `cnd_error()`, `cnd_warning()` and `cnd_message()` are now
+  `error_cnd()`, `warning_cnd()` and `message_cnd()` to follow our
+  naming scheme according to which the type of output is a suffix
+  rather than a prefix.
+
+* Condition signallers such as `cnd_signal()` and `abort()` now accept
+  a call depth as `call` arguments. This allows plucking a call from
+  further up the call stack (#30).
+
 
 # rlang 0.1.1
 

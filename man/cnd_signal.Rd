@@ -5,12 +5,12 @@
 \alias{cnd_abort}
 \title{Signal a condition}
 \usage{
-cnd_signal(.cnd, ..., .msg = NULL, .call = FALSE, .mufflable = TRUE)
+cnd_signal(.cnd, ..., .msg = NULL, .call = NULL, .mufflable = TRUE)
 
-cnd_abort(.cnd, ..., .msg = NULL, .call = FALSE, .mufflable = FALSE)
+cnd_abort(.cnd, ..., .msg = NULL, .call = NULL, .mufflable = FALSE)
 }
 \arguments{
-\item{.cnd}{Either a condition object (see \code{\link[=new_cnd]{new_cnd()}}), or the
+\item{.cnd}{Either a condition object (see \code{\link[=cnd]{cnd()}}), or the
 name of a s3 class from which a new condition will be created.}
 
 \item{...}{Named data fields stored inside the condition
@@ -22,8 +22,11 @@ splicing}.}
 \item{.call}{Whether to display the call of the frame in which the
 condition is signalled. If \code{TRUE}, the call is stored in the
 \code{call} field of the condition object: this field is displayed by
-R when an error is issued. The call information is also stored in
-the \code{.call} field in all cases.}
+R when an error is issued. If a number \code{n}, the call is taken
+from the nth frame on the \link[=call_stack]{call stack}. If \code{NULL},
+the call is taken from the \code{.call} field that was supplied to the
+condition constructor (e.g. \code{\link[=cnd]{cnd()}}). In all cases the \code{.call}
+field is updated with the actual call.}
 
 \item{.mufflable}{Whether to signal the condition with a muffling
 restart. This is useful to let \code{\link[=inplace]{inplace()}} handlers muffle a
@@ -68,7 +71,7 @@ handler.
 }
 \examples{
 # Creating a condition of type "foo"
-cnd <- new_cnd("foo")
+cnd <- cnd("foo")
 
 # If no handler capable of dealing with "foo" is established on the
 # stack, signalling the condition has no effect:
@@ -106,10 +109,10 @@ cnd_abort(cnd)
 }
 
 # If you don't specify a .msg or .call, the default message/call
-# (supplied to new_cnd()) are displayed. Otherwise, the ones
+# (supplied to cnd()) are displayed. Otherwise, the ones
 # supplied to cnd_abort() and cnd_signal() take precedence:
 \dontrun{
-critical <- new_cnd("my_error",
+critical <- cnd("my_error",
   .msg = "default 'my_error' msg",
   .call = quote(default(call))
 )

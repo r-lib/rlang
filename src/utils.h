@@ -6,8 +6,6 @@
 #include <R.h>
 #include <Rinternals.h>
 
-#include "formula.h"
-
 
 bool is_lazy_load(SEXP x);
 bool is_lang(SEXP x, const char* f);
@@ -35,6 +33,7 @@ bool is_empty(SEXP x);
 bool is_vector(SEXP x);
 bool is_null(SEXP x);
 bool as_bool(SEXP x);
+SEXP sym(const char* c_string);
 
 
 #endif

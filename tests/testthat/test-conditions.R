@@ -1,17 +1,17 @@
 context("conditions") # ----------------------------------------------
 
-test_that("new_cnd() constructs all fields", {
-  cond <- new_cnd("cnd_class", .msg = "cnd message")
+test_that("cnd() constructs all fields", {
+  cond <- cnd("cnd_class", .msg = "cnd message")
   expect_equal(conditionMessage(cond), "cnd message")
   expect_is(cond, "cnd_class")
 })
 
-test_that("new_cnd() throws with unnamed fields", {
-  expect_error(new_cnd("class", "msg", 10), "must have named data fields")
+test_that("cnd() throws with unnamed fields", {
+  expect_error(cnd("class", "msg", 10), "must have named data fields")
 })
 
 test_that("cnd_signal() creates muffle restarts", {
-  withCallingHandlers(cnd_signal("foo", muffle = TRUE),
+  withCallingHandlers(cnd_signal("foo", .mufflable = TRUE),
     foo = function(c) {
       expect_true(rst_exists("muffle"))
       expect_is(c, "mufflable")
@@ -19,8 +19,8 @@ test_that("cnd_signal() creates muffle restarts", {
   )
 })
 
-test_that("cnd_signal() include call info", {
-  cnd <- new_cnd("cnd", .call = quote(foo(bar)))
+test_that("cnd_signal() includes call info", {
+  cnd <- cnd("cnd", .call = quote(foo(bar)))
   fn <- function(...) cnd_signal(cnd, .call = call)
 
   call <- FALSE
@@ -32,6 +32,24 @@ test_that("cnd_signal() include call info", {
   call <- TRUE
   with_handlers(fn(foo(bar)), cnd = inplace(function(c) {
     expect_identical(conditionCall(c), quote(fn(foo(bar))))
+  }))
+
+  call <- NULL
+  with_handlers(fn(foo(bar)), cnd = inplace(function(c) {
+    expect_identical(conditionCall(c), quote(foo(bar)))
+  }))
+
+
+  wrapper <- function(...) fn(...)
+
+  call <- 1
+  with_handlers(wrapper(foo(bar)), cnd = inplace(function(c) {
+    expect_equal(conditionCall(c), quote(fn(...)))
+  }))
+
+  call <- 2
+  with_handlers(wrapper(foo(bar)), cnd = inplace(function(c) {
+    expect_equal(conditionCall(c), quote(wrapper(foo(bar))))
   }))
 })
 
@@ -47,6 +65,35 @@ test_that("abort() includes call info", {
   call <- TRUE
   with_handlers(fn(foo(bar)), cnd = exiting(function(c) {
     expect_identical(conditionCall(c), quote(fn(foo(bar))))
+  }))
+})
+
+test_that("abort() accepts call number", {
+  fn <- function(...) abort("abort", "cnd", call = call)
+  wrapper <- function(...) fn(...)
+
+  call <- FALSE
+  with_handlers(wrapper(foo(bar)), cnd = exiting(function(c) {
+    expect_equal(c$.call, quote(fn(...)))
+    expect_null(conditionCall(c))
+  }))
+
+  call <- TRUE
+  with_handlers(wrapper(foo(bar)), cnd = exiting(function(c) {
+    expect_equal(c$.call, quote(fn(...)))
+    expect_equal(conditionCall(c), quote(fn(...)))
+  }))
+
+  call <- 1
+  with_handlers(wrapper(foo(bar)), cnd = exiting(function(c) {
+    expect_equal(c$.call, quote(fn(...)))
+    expect_equal(conditionCall(c), quote(fn(...)))
+  }))
+
+  call <- 2
+  with_handlers(wrapper(foo(bar)), cnd = exiting(function(c) {
+    expect_equal(c$.call, quote(wrapper(foo(bar))))
+    expect_equal(conditionCall(c), quote(wrapper(foo(bar))))
   }))
 })
 
