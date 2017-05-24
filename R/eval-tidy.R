@@ -295,7 +295,7 @@ overscope_eval_next <- function(overscope, quo, env = base_env()) {
   lexical_env <- f_env(quo)
 
   overscope$.env <- lexical_env
-  mut_parent_env(overscope$.top_env, lexical_env)
+  mut_env_parent(overscope$.top_env, lexical_env)
 
   .Call(rlang_eval, f_rhs(quo), overscope)
 }
@@ -328,13 +328,10 @@ f_self_eval <- function(overscope, overscope_top) {
       return(missing_arg())
     }
 
-    # Swap enclosures temporarily by rechaining the top of the
-    # dynamic scope to the enclosure of the new formula, if it has
-    # one. We do it at C level to avoid GC adjustments when changing
-    # the parent. This should be safe since we reset everything
-    # afterwards.
-    .Call(rlang_set_parent, overscope_top, f_env(f) %||% overscope$.env)
-    on.exit(.Call(rlang_set_parent, overscope_top, overscope$.env))
+    # Swap enclosures temporarily by rechaining the top of the dynamic
+    # scope to the enclosure of the new formula, if it has one
+    mut_env_parent(overscope_top, f_env(f) %||% overscope$.env)
+    on.exit(mut_env_parent(overscope_top, overscope$.env))
 
     .Call(rlang_eval, f_rhs(f), overscope)
   }
