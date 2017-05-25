@@ -257,7 +257,8 @@ as_overscope <- function(quo, data = NULL) {
 #'   mechanism that ensures hygienic scoping: the bindings in the
 #'   overscope have precedence, but the bindings in the dynamic
 #'   environment where the tidy quotes were created in the first place
-#'   are in scope as well.
+#'   are in scope as well. The default value of `NULL` sets `top` to the
+#'   environment `bottom`.
 #' @param enclosure The default enclosure. After a quosure is done
 #'   self-evaluating, the overscope is rechained to the default
 #'   enclosure.
