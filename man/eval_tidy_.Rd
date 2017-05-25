@@ -21,7 +21,8 @@ enclosures of self-evaluating formulas (or quosures). This is the
 mechanism that ensures hygienic scoping: the bindings in the
 overscope have precedence, but the bindings in the dynamic
 environment where the tidy quotes were created in the first place
-are in scope as well.}
+are in scope as well. If \code{NULL} (the default), \code{bottom} is also the top of
+the overscope.}
 
 \item{env}{The lexical environment in which to evaluate \code{expr}.}
 }
