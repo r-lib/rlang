@@ -3,7 +3,7 @@ context("evaluation frames") # ---------------------------------------
 # Beware some sys.x() take `n` and some take `which`
 test_that("ctxt_frame() caller agrees with sys.parent()", {
   parent <- sys.parent(n = 1)
-  caller <- ctxt_frame()$caller
+  caller <- ctxt_frame()$caller_pos
   expect_equal(caller, parent)
 })
 
