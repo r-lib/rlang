@@ -11,6 +11,10 @@
   a call depth as `call` arguments. This allows plucking a call from
   further up the call stack (#30).
 
+* New `env_set()` function to set a value in an environment or a
+  scope. If the `create` argument is `FALSE`, it only overwrites
+  existing bindings and issues an error otherwise (#162).
+
 
 # rlang 0.1.1
 
