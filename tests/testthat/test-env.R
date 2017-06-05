@@ -178,3 +178,33 @@ test_that("new_environment() accepts empty vectors", {
   expect_named(new_environment(), chr())
   expect_named(new_environment(dbl()), chr())
 })
+
+test_that("env_set() returns env", {
+  env <- child_env(new_environment())
+  expect_identical(env_set(env, "foo", "foo"), env)
+  expect_identical(env_set(env, "foo", "foo", inherit = TRUE), env)
+})
+
+test_that("env_set() creates binding if `create` is TRUE", {
+  env <- new_environment()
+  expect_identical(env_get(env_set(env, "foo", "foo"), "foo"), "foo")
+
+  expect_error(env_set(env, "bar", "BAR", create = FALSE), "Can't find existing binding")
+  expect_identical(env_get(env_set(env, "foo", "FOO", create = FALSE), "foo"), "FOO")
+})
+
+test_that("env_set() inherits from parents if `inherit` is TRUE", {
+  env <- child_env(new_environment(), foo = "foo")
+  env <- child_env(env)
+
+  env_has(env, "foo")
+  env_has(env, "foo", TRUE)
+
+  env_set(env, "foo", "FOO", inherit = TRUE, create = FALSE)
+  expect_identical(env_get(env_parent(env), "foo", inherit = FALSE), "FOO")
+
+  expect_error(env_set(env, "bar", "bar", inherit = TRUE, create = FALSE), "Can't find existing binding")
+
+  env_set(env, "bar", "bar", inherit = TRUE, create = TRUE)
+  expect_identical(env_get(env, "bar"), "bar")
+})

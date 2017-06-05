@@ -2,9 +2,12 @@
 % Please edit documentation in R/env.R
 \name{env_get}
 \alias{env_get}
-\title{Get an object from an environment}
+\alias{env_set}
+\title{Get or set an object in an environment}
 \usage{
 env_get(env = caller_env(), nm, inherit = FALSE)
+
+env_set(env = caller_env(), nm, value, inherit = FALSE, create = TRUE)
 }
 \arguments{
 \item{env}{An environment or an object bundling an environment,
@@ -14,13 +17,26 @@ e.g. a formula, \link{quosure} or \link[=is_closure]{closure}.}
 
 \item{inherit}{Whether to look for bindings in the parent
 environments.}
+
+\item{value}{The value for a new binding.}
+
+\item{create}{Whether to create a binding if it does not already
+exist in the environment.}
 }
 \value{
 An object if it exists. Otherwise, throws an error.
 }
 \description{
-\code{env_get()} extracts an object from an enviroment \code{env}. By
+\itemize{
+\item \code{env_get()} extracts an object from an enviroment \code{env}. By
 default, it does not look in the parent environments.
+\item \code{env_set()} will assign or reassign a binding in \code{env} if
+\code{create} is \code{TRUE}. If \code{create} is \code{FALSE} and a binding does not
+already exists, an error is issued. If \code{inherit} is \code{TRUE}, the
+parents environments are checked for an existing binding to
+reassign. If not found and \code{create} is \code{TRUE}, a new binding is
+created in \code{env}.
+}
 }
 \examples{
 parent <- child_env(NULL, foo = "foo")
