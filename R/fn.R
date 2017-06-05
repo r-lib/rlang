@@ -96,6 +96,13 @@ prim_name <- function(prim) {
 #'
 #' # fn_fmls_syms() makes it easy to forward arguments:
 #' lang("apply", !!! fn_fmls_syms(lapply))
+#'
+#' # You can also change the formals:
+#' fn_fmls(fn) <- list(A = 10, B = 20)
+#' fn()
+#'
+#' fn_fmls_names(fn) <- c("foo", "bar")
+#' fn()
 fn_fmls <- function(fn = caller_fn()) {
   fn <- as_closure(fn)
   formals(fn)
@@ -114,6 +121,25 @@ fn_fmls_syms <- function(fn = caller_fn()) {
   syms(nms)
 }
 
+#' @rdname fn_fmls
+#' @param value New formals or formals names for `fn`.
+#' @export
+`fn_fmls<-` <- function(fn, value) {
+  fn <- as_closure(fn)
+  formals(fn) <- value
+  fn
+}
+#' @rdname fn_fmls
+#' @export
+`fn_fmls_names<-` <- function(fn, value) {
+  fn <- as_closure(fn)
+
+  fmls <- formals(fn)
+  names(fmls) <- value
+  formals(fn) <- fmls
+
+  fn
+}
 
 #' Is object a function?
 #'

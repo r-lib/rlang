@@ -76,3 +76,21 @@ test_that("fn_fmls_syms() unnames `...`", {
 test_that("as_closure() gives informative error messages on control flow primitives (#158)", {
   expect_error(as_closure(`if`), "Can't coerce the primitive function `if`")
 })
+
+test_that("fn_fmls<- and fn_fmls_names<- change formals", {
+  fn <- function() NULL
+  fn_fmls(fn) <- list(a = 1)
+  expect_identical(fn_fmls(fn), pairlist(a = 1))
+
+  fn_fmls_names(fn) <- c("b")
+  expect_identical(fn_fmls(fn), pairlist(b = 1))
+})
+
+test_that("fn_fmls<- and fn_fmls_names<- handle primitive functions", {
+  fn_fmls(`+`) <- list(a = 1, b = 2)
+  expect_true(is_closure(`+`))
+  expect_identical(fn_fmls(`+`), pairlist(a = 1, b = 2))
+
+  fn_fmls_names(`+`) <- c("A", "B")
+  expect_identical(fn_fmls(`+`), pairlist(A = 1, B = 2))
+})

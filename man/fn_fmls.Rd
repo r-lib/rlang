@@ -4,6 +4,8 @@
 \alias{fn_fmls}
 \alias{fn_fmls_names}
 \alias{fn_fmls_syms}
+\alias{fn_fmls<-}
+\alias{fn_fmls_names<-}
 \title{Extract arguments from a function}
 \usage{
 fn_fmls(fn = caller_fn())
@@ -11,10 +13,16 @@ fn_fmls(fn = caller_fn())
 fn_fmls_names(fn = caller_fn())
 
 fn_fmls_syms(fn = caller_fn())
+
+fn_fmls(fn) <- value
+
+fn_fmls_names(fn) <- value
 }
 \arguments{
 \item{fn}{A function. It is lookep up in the calling frame if not
 supplied.}
+
+\item{value}{New formals or formals names for \code{fn}.}
 }
 \description{
 \code{fn_fmls()} returns a named list of formal arguments.
@@ -52,6 +60,13 @@ fn_fmls(base::switch)
 
 # fn_fmls_syms() makes it easy to forward arguments:
 lang("apply", !!! fn_fmls_syms(lapply))
+
+# You can also change the formals:
+fn_fmls(fn) <- list(A = 10, B = 20)
+fn()
+
+fn_fmls_names(fn) <- c("foo", "bar")
+fn()
 }
 \seealso{
 \code{\link[=lang_args]{lang_args()}} and \code{\link[=lang_args_names]{lang_args_names()}}
