@@ -72,3 +72,7 @@ test_that("as_function() handles strings", {
 test_that("fn_fmls_syms() unnames `...`", {
   expect_identical(fn_fmls_syms(lapply), list(X = quote(X), FUN = quote(FUN), quote(...)))
 })
+
+test_that("as_closure() gives informative error messages on control flow primitives (#158)", {
+  expect_error(as_closure(`if`), "Can't coerce the primitive function `if`")
+})
