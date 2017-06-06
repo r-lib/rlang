@@ -204,6 +204,7 @@ test_that("env_set() inherits from parents if `inherit` is TRUE", {
   expect_identical(env_get(env_parent(env), "foo", inherit = FALSE), "FOO")
 
   expect_error(env_set(env, "bar", "bar", inherit = TRUE, create = FALSE), "Can't find existing binding")
+  expect_error(env_set(env, "bar", "bar", inherit = TRUE), "Can't find existing binding")
 
   env_set(env, "bar", "bar", inherit = TRUE, create = TRUE)
   expect_identical(env_get(env, "bar"), "bar")

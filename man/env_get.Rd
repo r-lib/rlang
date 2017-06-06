@@ -7,7 +7,7 @@
 \usage{
 env_get(env = caller_env(), nm, inherit = FALSE)
 
-env_set(env = caller_env(), nm, value, inherit = FALSE, create = TRUE)
+env_set(env = caller_env(), nm, value, inherit = FALSE, create = NULL)
 }
 \arguments{
 \item{env}{An environment or an object bundling an environment,
@@ -32,10 +32,20 @@ An object if it exists. Otherwise, throws an error.
 default, it does not look in the parent environments.
 \item \code{env_set()} will assign or reassign a binding in \code{env} if
 \code{create} is \code{TRUE}. If \code{create} is \code{FALSE} and a binding does not
-already exists, an error is issued. If \code{inherit} is \code{TRUE}, the
-parents environments are checked for an existing binding to
-reassign. If not found and \code{create} is \code{TRUE}, a new binding is
-created in \code{env}.
+already exists, an error is issued.
+
+If \code{inherit} is \code{TRUE}, the parents environments are checked for
+an existing binding to reassign. If not found and \code{create} is
+\code{TRUE}, a new binding is created in \code{env}. The default value for
+\code{create} is a function of \code{inherit}: \code{FALSE} when inheriting,
+\code{TRUE} otherwise.
+
+This default makes sense because the inheriting case is mostly
+for overriding an existing binding. If not found, something
+probably went wrong and it is safer to issue an error. Note that
+this is different to the base R operator \code{<<-} which will create
+a binding in the global environment instead of the current
+environment when no existing binding is found in the parents.
 }
 }
 \examples{
