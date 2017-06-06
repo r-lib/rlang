@@ -723,14 +723,36 @@ env_has <- function(env = caller_env(), nms, inherit = FALSE) {
   map_lgl(nms, exists, envir = get_env(env), inherits = inherit)
 }
 
-#' Get an object from an environment
+#' Get or set an object in an environment
 #'
-#' `env_get()` extracts an object from an enviroment `env`. By
-#' default, it does not look in the parent environments.
+#' @description
+#'
+#' * `env_get()` extracts an object from an enviroment `env`. By
+#'   default, it does not look in the parent environments.
+#'
+#' * `env_set()` will assign or reassign a binding in `env` if
+#'   `create` is `TRUE`. If `create` is `FALSE` and a binding does not
+#'   already exists, an error is issued.
+#'
+#'   If `inherit` is `TRUE`, the parents environments are checked for
+#'   an existing binding to reassign. If not found and `create` is
+#'   `TRUE`, a new binding is created in `env`. The default value for
+#'   `create` is a function of `inherit`: `FALSE` when inheriting,
+#'   `TRUE` otherwise.
+#'
+#'   This default makes sense because the inheriting case is mostly
+#'   for overriding an existing binding. If not found, something
+#'   probably went wrong and it is safer to issue an error. Note that
+#'   this is different to the base R operator `<<-` which will create
+#'   a binding in the global environment instead of the current
+#'   environment when no existing binding is found in the parents.
 #'
 #' @inheritParams get_env
 #' @inheritParams env_has
 #' @param nm The name of a binding.
+#' @param value The value for a new binding.
+#' @param create Whether to create a binding if it does not already
+#'   exist in the environment.
 #' @return An object if it exists. Otherwise, throws an error.
 #' @export
 #' @examples
@@ -744,6 +766,48 @@ env_has <- function(env = caller_env(), nms, inherit = FALSE) {
 #' env_get(env, "foo", inherit = TRUE)
 env_get <- function(env = caller_env(), nm, inherit = FALSE) {
   get(nm, envir = get_env(env), inherits = inherit)
+}
+
+#' @rdname env_get
+#' @export
+env_set <- function(env = caller_env(), nm, value,
+                    inherit = FALSE, create = NULL) {
+  stopifnot(is_string(nm))
+  env_ <- get_env(env)
+
+  # It is safer not to create a new binding when inherit is TRUE,
+  # since the main purpose is to override an existing binding
+  if (is_null(create)) {
+    create <- if (inherit) FALSE else TRUE
+  }
+
+  if (inherit) {
+    scope_set(env, nm, value, create)
+  } else if (create || env_has(env_, nm)) {
+    assign(nm, value, envir = env_)
+  } else {
+    abort(paste0("Can't find existing binding in `env` for \"", nm, "\""))
+  }
+
+  env
+}
+scope_set <- function(env, nm, value, create) {
+  env_ <- get_env(env)
+  cur <- env_
+
+  while(!env_has(cur, nm) && !is_empty_env(cur)) {
+    cur <- env_parent(cur)
+  }
+
+  if (is_empty_env(cur)) {
+    if (!create) {
+      abort(paste0("Can't find existing binding in `env` for \"", nm, "\""))
+    }
+    cur <- env_
+  }
+
+  assign(nm, value, envir = cur)
+  env
 }
 
 #' Names of symbols bound in an environment
