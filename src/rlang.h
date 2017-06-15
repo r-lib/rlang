@@ -9,6 +9,7 @@
 #include "cnd.h"
 #include "sym.h"
 #include "formula.h"
+#include "env.h"
 #include "sexp.h"
 #include "utils.h"
 #include "vector.h"
