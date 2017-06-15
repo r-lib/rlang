@@ -10,8 +10,8 @@ extern SEXP rlang_squash_if(SEXP, SEXPTYPE, bool (*is_spliceable)(SEXP), int);
 extern bool is_clevel_spliceable(SEXP);
 
 // Callable from this package
-extern SEXP f_lhs_(SEXP);
-extern SEXP f_rhs_(SEXP);
+extern SEXP r_f_lhs(SEXP);
+extern SEXP r_f_rhs(SEXP);
 extern SEXP new_condition(SEXP, SEXP, SEXP);
 extern SEXP r_mut_env_parent(SEXP, SEXP);
 extern SEXP rlang_replace_na(SEXP, SEXP);
@@ -59,8 +59,8 @@ extern SEXP chr_append(SEXP, SEXP);
 extern SEXP rlang_test_r_warn(SEXP);
 
 static const R_CallMethodDef call_entries[] = {
-  {"f_lhs_",                    (DL_FUNC) &f_lhs_, 1},
-  {"f_rhs_",                    (DL_FUNC) &f_rhs_, 1},
+  {"r_f_lhs",                    (DL_FUNC) &r_f_lhs, 1},
+  {"r_f_rhs",                    (DL_FUNC) &r_f_rhs, 1},
   {"rlang_new_condition",       (DL_FUNC) &new_condition, 3},
   {"rlang_replace_na",          (DL_FUNC) &rlang_replace_na, 2},
   {"rlang_caar",                (DL_FUNC) &rlang_caar, 1},
