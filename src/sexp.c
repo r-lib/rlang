@@ -7,11 +7,15 @@ SEXP rlang_sxp_address(SEXP x) {
 }
 
 SEXP rlang_is_reference(SEXP x, SEXP y) {
-  return Rf_ScalarLogical(x == y);
+  return r_scalar_lgl(x == y);
 }
 
 SEXPTYPE r_typeof(SEXP x) {
   return TYPEOF(x);
+}
+
+bool r_inherits(SEXP x, const char* class_) {
+  return Rf_inherits(x, class_);
 }
 
 SEXP r_get_attr(SEXP x, SEXP sym) {

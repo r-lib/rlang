@@ -7,6 +7,8 @@
 SEXPTYPE r_typeof(SEXP x);
 SEXP r_get_attr(SEXP x, SEXP sym);
 
+bool r_inherits(SEXP x, const char* class_);
+
 void mut_attr(SEXP x, SEXP sym, SEXP attr);
 void mut_class(SEXP x, SEXP classes);
 
