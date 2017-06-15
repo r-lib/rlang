@@ -11,6 +11,7 @@
 #include "formula.h"
 #include "env.h"
 #include "node.h"
+#include "lang.h"
 #include "sexp.h"
 #include "utils.h"
 #include "vector.h"

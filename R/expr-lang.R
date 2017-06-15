@@ -100,7 +100,7 @@ new_language <- function(head, tail = NULL) {
   if (!is_pairlist(tail)) {
     abort("`tail` must be a pairlist")
   }
-  .Call(rlang_new_language, head, tail)
+  .Call(r_new_language, head, tail)
 }
 
 #' Is an object callable?
