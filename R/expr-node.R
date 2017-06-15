@@ -103,80 +103,80 @@ NULL
 #' @rdname pairlist
 #' @export
 node <- function(newcar, newcdr) {
-  .Call(rlang_cons, newcar, newcdr)
+  .Call(r_cons, newcar, newcdr)
 }
 
 #' @rdname pairlist
 #' @export
 node_car <- function(x) {
-  .Call(rlang_car, x)
+  .Call(r_node_car, x)
 }
 #' @rdname pairlist
 #' @export
 node_cdr <- function(x) {
-  .Call(rlang_cdr, x)
+  .Call(r_node_cdr, x)
 }
 #' @rdname pairlist
 #' @export
 node_caar <- function(x) {
-  .Call(rlang_caar, x)
+  .Call(r_node_caar, x)
 }
 #' @rdname pairlist
 #' @export
 node_cadr <- function(x) {
-  .Call(rlang_cadr, x)
+  .Call(r_node_cadr, x)
 }
 #' @rdname pairlist
 #' @export
 node_cdar <- function(x) {
-  .Call(rlang_cdar, x)
+  .Call(r_node_cdar, x)
 }
 #' @rdname pairlist
 #' @export
 node_cddr <- function(x) {
-  .Call(rlang_cddr, x)
+  .Call(r_node_cddr, x)
 }
 
 #' @rdname pairlist
 #' @export
 mut_node_car <- function(x, newcar) {
-  invisible(.Call(rlang_set_car, x, newcar))
+  invisible(.Call(r_mut_node_car, x, newcar))
 }
 #' @rdname pairlist
 #' @export
 mut_node_cdr <- function(x, newcdr) {
-  invisible(.Call(rlang_set_cdr, x, newcdr))
+  invisible(.Call(r_mut_node_cdr, x, newcdr))
 }
 #' @rdname pairlist
 #' @export
 mut_node_caar <- function(x, newcar) {
-  invisible(.Call(rlang_set_caar, x, newcar))
+  invisible(.Call(r_mut_node_caar, x, newcar))
 }
 #' @rdname pairlist
 #' @export
 mut_node_cadr <- function(x, newcar) {
-  invisible(.Call(rlang_set_cadr, x, newcar))
+  invisible(.Call(r_mut_node_cadr, x, newcar))
 }
 #' @rdname pairlist
 #' @export
 mut_node_cdar <- function(x, newcdr) {
-  invisible(.Call(rlang_set_cdar, x, newcdr))
+  invisible(.Call(r_mut_node_cdar, x, newcdr))
 }
 #' @rdname pairlist
 #' @export
 mut_node_cddr <- function(x, newcdr) {
-  invisible(.Call(rlang_set_cddr, x, newcdr))
+  invisible(.Call(r_mut_node_cddr, x, newcdr))
 }
 
 #' @rdname pairlist
 #' @export
 node_tag <- function(x) {
-  .Call(rlang_tag, x)
+  .Call(r_node_tag, x)
 }
 #' @rdname pairlist
 #' @export
 mut_node_tag <- function(x, newtag) {
-  invisible(.Call(rlang_set_tag, x, newtag))
+  invisible(.Call(r_mut_node_tag, x, newtag))
 }
 
 #' Coerce to pairlist
@@ -244,9 +244,9 @@ is_node <- function(x) {
 #' @export
 duplicate <- function(x, shallow = FALSE) {
   if (shallow) {
-    .Call(rlang_shallow_duplicate, x)
+    .Call(r_shallow_duplicate, x)
   } else {
-    .Call(rlang_duplicate, x)
+    .Call(r_duplicate, x)
   }
 }
 
