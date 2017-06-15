@@ -16,6 +16,7 @@
 #include "vector.h"
 #include "vector-chr.h"
 #include "vector-list.h"
+#include "eval.h"
 
 
 #endif

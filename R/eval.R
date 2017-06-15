@@ -63,7 +63,7 @@
 #' eval_bare(get_stack)
 #' eval(get_stack)
 eval_bare <- function(expr, env = parent.frame()) {
-  .Call(rlang_eval, expr, env)
+  .Call(r_eval, expr, env)
 }
 
 #' Evaluate an expression within a given environment
@@ -114,12 +114,12 @@ eval_bare <- function(expr, env = parent.frame()) {
 #' # This can be handy to put dictionaries in scope:
 #' with_env(mtcars, cyl)
 with_env <- function(env, expr) {
-  .Call(rlang_eval, substitute(expr), as_env(env, caller_env()))
+  .Call(r_eval, substitute(expr), as_env(env, caller_env()))
 }
 #' @rdname with_env
 #' @export
 locally <- function(expr) {
-  .Call(rlang_eval, substitute(expr), child_env(caller_env()))
+  .Call(r_eval, substitute(expr), child_env(caller_env()))
 }
 
 #' Invoke a function with a list of arguments
@@ -179,7 +179,7 @@ invoke <- function(.fn, .args = list(), ...,
       .fn <- env_get(.env, .fn, inherit = TRUE)
     }
     call <- lang(.fn, !!! args)
-    return(.Call(rlang_eval, call, .env))
+    return(.Call(r_eval, call, .env))
   }
 
 
@@ -201,5 +201,5 @@ invoke <- function(.fn, .args = list(), ...,
   }
 
   call <- lang(.fn, !!! args)
-  .Call(rlang_eval, call, .env)
+  .Call(r_eval, call, .env)
 }

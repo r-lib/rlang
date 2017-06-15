@@ -298,7 +298,7 @@ overscope_eval_next <- function(overscope, quo, env = base_env()) {
   overscope$.env <- lexical_env
   mut_env_parent(overscope$.top_env, lexical_env)
 
-  .Call(rlang_eval, f_rhs(quo), overscope)
+  .Call(r_eval, f_rhs(quo), overscope)
 }
 #' @rdname as_overscope
 #' @export
@@ -334,7 +334,7 @@ f_self_eval <- function(overscope, overscope_top) {
     mut_env_parent(overscope_top, f_env(f) %||% overscope$.env)
     on.exit(mut_env_parent(overscope_top, overscope$.env))
 
-    .Call(rlang_eval, f_rhs(f), overscope)
+    .Call(r_eval, f_rhs(f), overscope)
   }
 }
 tilde_eval <- function(f, env) {
