@@ -70,3 +70,11 @@ SEXP r_missing_arg() {
 bool r_is_missing(SEXP x) {
   return x == R_MissingArg;
 }
+
+
+SEXP rlang_is_null(SEXP x) {
+  return r_scalar_lgl(r_is_null(x));
+}
+bool r_is_null(SEXP x) {
+  return x == R_NilValue;
+}

@@ -10,6 +10,7 @@ extern SEXP rlang_squash_if(SEXP, SEXPTYPE, bool (*is_spliceable)(SEXP), int);
 extern bool is_clevel_spliceable(SEXP);
 
 // Callable from this package
+extern SEXP rlang_is_null(SEXP);
 extern SEXP r_f_lhs(SEXP);
 extern SEXP r_f_rhs(SEXP);
 extern SEXP new_condition(SEXP, SEXP, SEXP);
@@ -78,6 +79,7 @@ static const R_CallMethodDef call_entries[] = {
   {"rlang_get_attrs",           (DL_FUNC) &rlang_get_attrs, 1},
   {"rlang_interp",              (DL_FUNC) &rlang_interp, 3},
   {"rlang_is_formulaish",       (DL_FUNC) &rlang_is_formulaish, 3},
+  {"rlang_is_null",             (DL_FUNC) &rlang_is_null, 1},
   {"rlang_is_reference",        (DL_FUNC) &rlang_is_reference, 2},
   {"rlang_length",              (DL_FUNC) &rlang_length, 1},
   {"rlang_new_dictionary",      (DL_FUNC) &rlang_new_dictionary, 3},

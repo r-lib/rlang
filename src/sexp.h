@@ -24,5 +24,7 @@ bool is_named(SEXP x);
 SEXP r_missing_arg();
 bool r_is_missing(SEXP x);
 
+bool r_is_null(SEXP x);
+
 
 #endif
