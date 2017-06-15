@@ -4,6 +4,9 @@
 #include <stdbool.h>
 
 
+SEXPTYPE r_typeof(SEXP x);
+SEXP r_get_attr(SEXP x, SEXP sym);
+
 void mut_attr(SEXP x, SEXP sym, SEXP attr);
 void mut_class(SEXP x, SEXP classes);
 

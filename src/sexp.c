@@ -10,6 +10,14 @@ SEXP rlang_is_reference(SEXP x, SEXP y) {
   return Rf_ScalarLogical(x == y);
 }
 
+SEXPTYPE r_typeof(SEXP x) {
+  return TYPEOF(x);
+}
+
+SEXP r_get_attr(SEXP x, SEXP sym) {
+  return Rf_getAttrib(x, sym);
+}
+
 void mut_attr(SEXP x, SEXP sym, SEXP attr) {
   Rf_setAttrib(x, sym, attr);
 }
