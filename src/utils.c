@@ -216,7 +216,3 @@ SEXP rlang_new_dictionary(SEXP x, SEXP lookup_msg, SEXP read_only) {
   UNPROTECT(1);
   return dict;
 }
-
-SEXP sym(const char* c_string) {
-  return Rf_install(c_string);
-}

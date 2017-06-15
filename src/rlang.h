@@ -7,6 +7,7 @@
 #include <Rinternals.h>
 
 #include "cnd.h"
+#include "sym.h"
 #include "formula.h"
 #include "sexp.h"
 #include "utils.h"

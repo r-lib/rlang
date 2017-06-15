@@ -17,7 +17,7 @@ void r_inform(const char* fmt, ...) {
   char buf[BUFSIZE];
   INTERP(buf, fmt, ...);
 
-  SEXP lang = PROTECT(Rf_lcons(sym("message"), string(buf)));
+  SEXP lang = PROTECT(Rf_lcons(r_sym("message"), string(buf)));
   Rf_eval(lang, R_BaseEnv);
   UNPROTECT(1);
 }
@@ -28,10 +28,10 @@ void r_warn(const char* fmt, ...) {
   SEXP args;
   args = PROTECT(Rf_ScalarLogical(0));
   args = PROTECT(Rf_cons(args, R_NilValue));
-  SET_TAG(args, sym("call."));
+  SET_TAG(args, r_sym("call."));
 
   args = PROTECT(Rf_cons(string(buf), args));
-  SEXP lang = PROTECT(Rf_lcons(sym("warning"), args));
+  SEXP lang = PROTECT(Rf_lcons(r_sym("warning"), args));
 
   Rf_eval(lang, R_BaseEnv);
   UNPROTECT(4);
@@ -91,13 +91,13 @@ static
 SEXP with_muffle_lang(SEXP signal) {
   static SEXP muffle_arg = NULL;
   if (!muffle_arg) {
-    muffle_arg = Rf_cons(rlang_fun(sym("muffle")), R_NilValue);
+    muffle_arg = Rf_cons(rlang_fun(r_sym("muffle")), R_NilValue);
     R_PreserveObject(muffle_arg);
-    SET_TAG(muffle_arg, sym("muffle"));
+    SET_TAG(muffle_arg, r_sym("muffle"));
   }
 
   SEXP args = PROTECT(Rf_cons(signal, muffle_arg));
-  SEXP lang = PROTECT(Rf_lcons(sym("withRestarts"), args));
+  SEXP lang = PROTECT(Rf_lcons(r_sym("withRestarts"), args));
 
   UNPROTECT(2);
   return lang;
@@ -113,7 +113,7 @@ void cnd_signal_impl(const char* signaller, SEXP cnd, bool mufflable) {
     r_abort("`cnd` must be a condition");
   }
 
-  SEXP lang = PROTECT(Rf_lang2(sym(signaller), cnd));
+  SEXP lang = PROTECT(Rf_lang2(r_sym(signaller), cnd));
   ++n_protect;
 
   if (mufflable) {
