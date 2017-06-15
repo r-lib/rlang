@@ -62,3 +62,11 @@ bool is_named(SEXP x) {
 
   return true;
 }
+
+
+SEXP r_missing_arg() {
+  return R_MissingArg;
+}
+bool r_is_missing(SEXP x) {
+  return x == R_MissingArg;
+}

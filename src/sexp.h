@@ -21,5 +21,8 @@ SEXP sxp_names(SEXP x);
 void mut_names(SEXP x, SEXP nms);
 bool is_named(SEXP x);
 
+SEXP r_missing_arg();
+bool r_is_missing(SEXP x);
+
 
 #endif

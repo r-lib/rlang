@@ -21,6 +21,7 @@ extern SEXP r_node_caar(SEXP);
 extern SEXP r_node_cadr(SEXP);
 extern SEXP r_node_cdar(SEXP);
 extern SEXP r_node_cddr(SEXP);
+extern SEXP r_missing_arg();
 extern SEXP r_mut_node_car(SEXP, SEXP);
 extern SEXP r_mut_node_cdr(SEXP, SEXP);
 extern SEXP r_mut_node_caar(SEXP, SEXP);
@@ -81,6 +82,7 @@ static const R_CallMethodDef call_entries[] = {
   {"rlang_length",              (DL_FUNC) &rlang_length, 1},
   {"rlang_new_dictionary",      (DL_FUNC) &rlang_new_dictionary, 3},
   {"rlang_set_attrs",           (DL_FUNC) &rlang_set_attrs, 2},
+  {"r_missing_arg",             (DL_FUNC) &r_missing_arg, 0},
   {"r_mut_node_caar",            (DL_FUNC) &r_mut_node_caar, 2},
   {"r_mut_node_cadr",            (DL_FUNC) &r_mut_node_cadr, 2},
   {"r_mut_node_car",             (DL_FUNC) &r_mut_node_car, 2},

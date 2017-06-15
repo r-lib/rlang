@@ -130,7 +130,7 @@ chr_enumerate <- function(chr, sep = ", ") {
 #' is_missing(missing_arg())
 #' is_missing(l[[1]])
 missing_arg <- function() {
-  quote(expr = )
+  .Call(r_missing_arg)
 }
 
 #' @rdname missing_arg
