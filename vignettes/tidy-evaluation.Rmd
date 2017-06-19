@@ -14,7 +14,7 @@ library("rlang")
 
 Tidy evaluation is a general toolkit for non-standard evaluation, principally used to create domain-specific languages (DSLs) of grammars. The most prominent examples of such sublanguages in R are modelling specifications with formulas (`lm()`,
 `lme4::lmer()`, etc) and data manipulation grammars (dplyr,
-tidyr). Most of these DSLs put dataframe columns in scope so that
+tidyr). Most of these DSLs put data frame columns in scope so that
 users can refer to them directly, saving keystrokes during interactive
 analysis and creating easily readable code.
 
@@ -38,7 +38,7 @@ language:
 R functions can capture expressions, manipulate them like
 regular objects, and alter the meaning of symbols referenced in these
 expressions by changing the scope (the environment) in which they
-are evaluated. This combination of features allow R packages to change
+are evaluated. This combination of features allows R packages to change
 the meaning of R code and create domain-specific sublanguages.
 
 Tidy evaluation is an opinionated way to use these
@@ -46,7 +46,7 @@ features to create consistent DSLs. The main principle is that
 sublanguages should feel and behave like R code. They change the
 meaning of R code, but only in a precise and circumscribed way,
 behaving otherwise predictably and in accordance with R semantics. As
-a result, users are be able to leverage their existing knowledge of R
+a result, users are able to leverage their existing knowledge of R
 programming to solve problems involving the sublanguage in ways that
 were not necessarily envisioned or planned by their designers.
 
@@ -78,9 +78,9 @@ is `dplyr::select()`). As this method is relying on the R interpreter,
 the grammar is much more likely to behave like real R code.
 
 R DSLs are traditionally implemented with a mix of both principles.
-Expressions are parsed in ad hoc ways, but are eventually evaluated in
-an environment containing dataframe columns. While it is difficult to
-completely avoid ad hoc parsing, tidyeval DSLs strive to rely on
+Expressions are parsed in *ad hoc* ways, but are eventually evaluated in
+an environment containing data frame columns. While it is difficult to
+completely avoid *ad hoc* parsing, tidyeval DSLs strive to rely on
 evaluation as much as possible.
 
 ## Values versus expressions
@@ -101,12 +101,12 @@ var <- mtcars$cyl * 2
 dplyr::mutate(mtcars, cyl2 = !! var)
 ```
 
-`dplyr::mutate()` evaluates expressions in a context where dataframe
+`dplyr::mutate()` evaluates expressions in a context where data frame
 columns are in scope, but it accepts any value that can be treated as
 a column (a recycled scalar or a vector as long as there are rows).
 
 A more complex example is `dplyr::select()`. This function evaluates
-dataframe columns in a context where they represent column
+data frame columns in a context where they represent column
 positions. Therefore, `select()` understands column symbols like
 `cyl`:
 
@@ -140,10 +140,10 @@ evaluation poses some challenges. Both objects from a dataset and
 objects from the current environment should be in scope, with the
 former having precedence over the latter. In other words, the dataset
 should __overscope__ the dynamic context. The traditional solution to
-this issue in R is to transform a dataframe to an environment and set
+this issue in R is to transform a data frame to an environment and set
 the calling frame as the parent environment. This way, the symbols
 appearing in the expression can refer to their surrounding context in
-addition to dataframe columns. In other words, the grammar implements
+addition to data frame columns. In other words, the grammar implements
 correctly an important aspect of R:
 [lexical scoping](http://adv-r.had.co.nz/Functions.html#lexical-scoping).
 
@@ -151,13 +151,13 @@ Creating this scope hierarchy (data first, context next) is possible
 because R makes it easy to capture the calling environment (see
 [caller_env()]). However, this supposes that captured expressions were
 actually typed in the most immediate caller frame. This assumption
-easily breaks in R. First because quasiquotation allows an user to
+easily breaks in R. First, because quasiquotation allows the user to
 combine expressions that do not necessarily come from the same lexical
 context. Secondly because arguments can be forwarded through the
 special `...` argument. While base R does not provide any way of
 capturing a forwarded argument along with its original environment,
 rlang features [quos()] for this purpose. This function looks up each
-forwarded arguments and returns a list of [quosures][quosure] that bundle the
+forwarded argument and returns a list of [quosures][quosure] that bundle the
 expressions with their own dynamic environments.
 
 In that context, maintaining scoping consistency is a challenge
