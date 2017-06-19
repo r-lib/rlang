@@ -115,7 +115,7 @@ positions. Therefore, `select()` understands column symbols like
 dplyr::select(mtcars, cyl)
 
 # Taking an unquoted symbol:
-var <- quo(cyl)
+var <- quote(cyl)
 dplyr::select(mtcars, !! var)
 ```
 
