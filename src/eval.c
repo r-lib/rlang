@@ -18,7 +18,7 @@ SEXP base_tilde_eval(SEXP tilde, SEXP env) {
 
   // Inline the base primitive because overscopes override `~` to make
   // quosures self-evaluate
-  tilde = PROTECT(r_new_language(tilde_prim, r_node_cdr(tilde)));
+  tilde = PROTECT(r_new_language_(tilde_prim, r_node_cdr(tilde)));
   tilde = PROTECT(r_eval(tilde, env));
 
   // Change it back because the result still has the primitive inlined

@@ -52,7 +52,7 @@ extern SEXP rlang_unescape_character(SEXP);
 extern SEXP capture_arg(SEXP, SEXP);
 extern SEXP rlang_capturearg(SEXP, SEXP, SEXP, SEXP);
 extern SEXP rlang_capturedots(SEXP, SEXP, SEXP, SEXP);
-extern SEXP r_new_language(SEXP, SEXP);
+extern SEXP r_new_language_(SEXP, SEXP);
 extern SEXP rlang_cnd_signal(SEXP, SEXP);
 extern SEXP rlang_cnd_signal_error(SEXP, SEXP);
 
@@ -103,7 +103,7 @@ static const R_CallMethodDef call_entries[] = {
   {"r_node_tag",                (DL_FUNC) &r_node_tag, 1},
   {"rlang_unescape_character",  (DL_FUNC) &rlang_unescape_character, 1},
   {"rlang_zap_attrs",           (DL_FUNC) &rlang_zap_attrs, 1},
-  {"r_new_language",            (DL_FUNC) &r_new_language, 2},
+  {"r_new_language",            (DL_FUNC) &r_new_language_, 2},
   {"rlang_cnd_signal",          (DL_FUNC) &rlang_cnd_signal, 2},
   {"rlang_cnd_signal_error",    (DL_FUNC) &rlang_cnd_signal_error, 2},
   {"rlang_test_chr_prepend",    (DL_FUNC) &chr_prepend, 2},
