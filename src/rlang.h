@@ -21,5 +21,8 @@
 #include "cnd.h"
 #include "stack.h"
 
+#define KEEP PROTECT
+#define FREE UNPROTECT
+
 
 #endif
