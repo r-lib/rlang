@@ -5,7 +5,10 @@ bool r_is_unbound_value(SEXP x) {
   return x == R_UnboundValue;
 }
 
-SEXP r_mut_env_parent(SEXP env, SEXP new_parent) {
+void r_mut_env_parent(SEXP env, SEXP new_parent) {
+  SET_ENCLOS(env, new_parent);
+}
+SEXP rlang_mut_env_parent(SEXP env, SEXP new_parent) {
   SET_ENCLOS(env, new_parent);
   return env;
 }
