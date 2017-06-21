@@ -41,7 +41,7 @@ SEXP rlang_tilde_eval(SEXP tilde, SEXP overscope, SEXP overscope_top, SEXP cur_f
   r_mut_env_parent(overscope_top, env);
 
   SEXP exit_fun = rlang_obj("mut_env_parent");
-  SEXP exit_args = r_pairlist2(overscope_top, prev_env);
+  SEXP exit_args = r_new_pairlist2(overscope_top, prev_env);
   SEXP exit_lang = KEEP(r_new_language(exit_fun, exit_args));
   r_on_exit(exit_lang, cur_frame);
   FREE(1);

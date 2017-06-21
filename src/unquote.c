@@ -86,7 +86,7 @@ SEXP unquote(SEXP x, SEXP env, SEXP uq_sym, bool quosured) {
 SEXP unquote_prefixed_uq(SEXP x, SEXP env, bool quosured) {
   SEXP uq_sym = CADR(CDAR(x));
   SEXP unquoted = PROTECT(unquote(CADR(x), env, uq_sym, quosured));
-  SETCDR(CDAR(x), r_node_(unquoted, R_NilValue));
+  SETCDR(CDAR(x), r_new_node_(unquoted, R_NilValue));
   UNPROTECT(1);
 
   if (is_rlang_prefixed(x, NULL))

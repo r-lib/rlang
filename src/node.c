@@ -45,10 +45,10 @@ SEXP r_mut_node_cddr(SEXP x, SEXP newcdr) {
 }
 
 // The underscored version expects protected arguments
-SEXP r_node_(SEXP car, SEXP cdr) {
+SEXP r_new_node_(SEXP car, SEXP cdr) {
   return CONS(car, cdr);
 }
-SEXP r_node(SEXP car, SEXP cdr) {
+SEXP r_new_node(SEXP car, SEXP cdr) {
   PROTECT(car);
   PROTECT(cdr);
   SEXP out = CONS(car, cdr);
@@ -56,14 +56,14 @@ SEXP r_node(SEXP car, SEXP cdr) {
   return out;
 }
 
-SEXP r_pairlist(SEXP car) {
-  return r_node(car, R_NilValue);
+SEXP r_new_pairlist(SEXP car) {
+  return r_new_node(car, R_NilValue);
 }
-SEXP r_pairlist2(SEXP car1, SEXP car2) {
-  return r_node(car1, r_pairlist(car2));
+SEXP r_new_pairlist2(SEXP car1, SEXP car2) {
+  return r_new_node(car1, r_new_pairlist(car2));
 }
-SEXP r_pairlist3(SEXP car1, SEXP car2, SEXP car3) {
-  return r_node(car1, r_pairlist2(car2, car3));
+SEXP r_new_pairlist3(SEXP car1, SEXP car2, SEXP car3) {
+  return r_new_node(car1, r_new_pairlist2(car2, car3));
 }
 
 SEXP r_node_tag(SEXP x) {

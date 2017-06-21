@@ -16,11 +16,11 @@ SEXP r_mut_node_cadr(SEXP x, SEXP newcar);
 SEXP r_mut_node_cdar(SEXP x, SEXP newcdar);
 SEXP r_mut_node_cddr(SEXP x, SEXP newcdr);
 
-SEXP r_node_(SEXP car, SEXP cdr);
-SEXP r_node(SEXP car, SEXP cdr);
-SEXP r_pairlist(SEXP car);
-SEXP r_pairlist2(SEXP car1, SEXP car2);
-SEXP r_pairlist3(SEXP car1, SEXP car2, SEXP car3);
+SEXP r_new_node_(SEXP car, SEXP cdr);
+SEXP r_new_node(SEXP car, SEXP cdr);
+SEXP r_new_pairlist(SEXP car);
+SEXP r_new_pairlist2(SEXP car1, SEXP car2);
+SEXP r_new_pairlist3(SEXP car1, SEXP car2, SEXP car3);
 
 SEXP r_node_tag(SEXP x);
 SEXP r_mut_node_tag(SEXP x, SEXP tag);
