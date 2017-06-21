@@ -1,7 +1,7 @@
 #include "rlang.h"
 
-SEXP interp_walk(SEXP x, SEXP env, bool quosured);
-SEXP interp_arguments(SEXP x, SEXP env, bool quosured);
+SEXP interp_lang(SEXP x, SEXP env, bool quosured);
+SEXP interp_pairlist(SEXP x, SEXP env, bool quosured);
 
 
 int bang_level(SEXP x) {
@@ -122,7 +122,7 @@ SEXP splice_value_nxt(SEXP cur, SEXP nxt, SEXP env) {
   return cur;
 }
 
-SEXP interp_walk(SEXP x, SEXP env, bool quosured)  {
+SEXP interp_lang(SEXP x, SEXP env, bool quosured)  {
   if (!Rf_isLanguage(x))
     return x;
 
@@ -137,16 +137,16 @@ SEXP interp_walk(SEXP x, SEXP env, bool quosured)  {
     SEXP uq_sym = CAR(x);
     x = unquote(CADR(x), env, uq_sym, quosured);
   } else {
-    x = interp_arguments(x, env, quosured);
+    x = interp_pairlist(x, env, quosured);
   }
 
   UNPROTECT(1);
   return x;
 }
 
-SEXP interp_arguments(SEXP x, SEXP env, bool quosured) {
+SEXP interp_pairlist(SEXP x, SEXP env, bool quosured) {
   for(SEXP cur = x; cur != R_NilValue; cur = CDR(cur)) {
-    SETCAR(cur, interp_walk(CAR(cur), env, quosured));
+    SETCAR(cur, interp_lang(CAR(cur), env, quosured));
 
     SEXP nxt = CDR(cur);
     nxt = replace_triple_bang(nxt, cur);
@@ -164,14 +164,14 @@ SEXP interp_arguments(SEXP x, SEXP env, bool quosured) {
 }
 
 SEXP rlang_interp(SEXP x, SEXP env, SEXP quosured) {
-  if (!Rf_isLanguage(x))
+  if (!r_is_lang(x))
     return x;
-  if (!Rf_isEnvironment(env))
-    Rf_errorcall(R_NilValue, "`env` must be an environment");
+  if (!r_is_env(env))
+    r_abort("`env` must be an environment");
 
-  x = PROTECT(Rf_duplicate(x));
-  x = interp_walk(x, env, as_bool(quosured));
+  x = KEEP(r_duplicate(x));
+  x = interp_lang(x, env, as_bool(quosured));
 
-  UNPROTECT(1);
+  FREE(1);
   return x;
 }

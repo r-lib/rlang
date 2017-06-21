@@ -28,5 +28,8 @@ bool r_is_missing(SEXP x);
 
 bool r_is_null(SEXP x);
 
+SEXP r_duplicate(SEXP x);
+SEXP r_shallow_duplicate(SEXP x);
+
 
 #endif

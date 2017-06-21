@@ -22,9 +22,6 @@ SEXP r_pairlist(SEXP car);
 SEXP r_pairlist2(SEXP car1, SEXP car2);
 SEXP r_pairlist3(SEXP car1, SEXP car2, SEXP car3);
 
-SEXP r_duplicate(SEXP x);
-SEXP r_shallow_duplicate(SEXP x);
-
 SEXP r_node_tag(SEXP x);
 SEXP r_mut_node_tag(SEXP x, SEXP tag);
 

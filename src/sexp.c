@@ -78,3 +78,11 @@ SEXP rlang_is_null(SEXP x) {
 bool r_is_null(SEXP x) {
   return x == R_NilValue;
 }
+
+
+SEXP r_duplicate(SEXP x) {
+  return Rf_duplicate(x);
+}
+SEXP r_shallow_duplicate(SEXP x) {
+  return Rf_shallow_duplicate(x);
+}

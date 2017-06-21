@@ -66,13 +66,6 @@ SEXP r_pairlist3(SEXP car1, SEXP car2, SEXP car3) {
   return r_node(car1, r_pairlist2(car2, car3));
 }
 
-SEXP r_duplicate(SEXP x) {
-  return Rf_duplicate(x);
-}
-SEXP r_shallow_duplicate(SEXP x) {
-  return Rf_shallow_duplicate(x);
-}
-
 SEXP r_node_tag(SEXP x) {
   return TAG(x);
 }
