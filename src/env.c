@@ -1,6 +1,10 @@
 #include "rlang.h"
 
 
+bool r_is_unbound_value(SEXP x) {
+  return x == R_UnboundValue;
+}
+
 SEXP r_mut_env_parent(SEXP env, SEXP new_parent) {
   SET_ENCLOS(env, new_parent);
   return env;
@@ -14,6 +18,9 @@ SEXP r_env_get(SEXP env, SEXP sym) {
   return Rf_findVarInFrame3(env, sym, TRUE);
 }
 
-SEXP r_base_env() {
-  return R_BaseEnv;
+SEXP r_ns_env(const char* pkg) {
+  SEXP ns = r_env_get(R_NamespaceRegistry, r_sym(pkg));
+  if (r_is_unbound_value(ns))
+    r_abort("Can't find namespace `%s`", pkg);
+  return ns;
 }

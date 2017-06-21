@@ -1,7 +1,5 @@
-#define R_NO_REMAP
-#include <R.h>
-#include <Rinternals.h>
-#include <stdbool.h>
+#include <string.h>
+#include "rlang.h"
 
 bool is_character(SEXP x) {
   return TYPEOF(x) == STRSXP;
@@ -162,11 +160,11 @@ SEXP make_formula1(SEXP rhs, SEXP env) {
   return f;
 }
 
-SEXP rlang_fun(SEXP sym) {
-  SEXP prefixed_sym = PROTECT(Rf_lang3(Rf_install(":::"), Rf_install("rlang"), sym));
-  SEXP fun = Rf_eval(prefixed_sym, R_BaseEnv);
-  UNPROTECT(1);
-  return fun;
+SEXP rlang_obj(const char* name) {
+  return r_env_get(r_ns_env("rlang"), r_sym(name));
+}
+SEXP base_obj(const char* name) {
+  return r_env_get(R_BaseEnv, r_sym(name));
 }
 
 const char* kind_c_str(SEXPTYPE kind) {

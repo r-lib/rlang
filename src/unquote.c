@@ -1,7 +1,4 @@
-#include <R.h>
-#include <Rdefines.h>
-#include <Rinternals.h>
-#include "utils.h"
+#include "rlang.h"
 
 SEXP interp_walk(SEXP x, SEXP env, bool quosured);
 SEXP interp_arguments(SEXP x, SEXP env, bool quosured);
@@ -71,7 +68,7 @@ SEXP unquote(SEXP x, SEXP env, SEXP uq_sym, bool quosured) {
 
   // Inline unquote function before evaluation because even `::` might
   // not be available in interpolation environment.
-  SEXP uq_fun = rlang_fun(uq_sym);
+  SEXP uq_fun = r_env_get(r_ns_env("rlang"), uq_sym);
 
   PROTECT_INDEX ipx;
   PROTECT_WITH_INDEX(uq_fun, &ipx);
@@ -81,7 +78,7 @@ SEXP unquote(SEXP x, SEXP env, SEXP uq_sym, bool quosured) {
   REPROTECT(unquoted = Rf_eval(uq_fun, env), ipx);
 
   if (!quosured && is_symbolic(unquoted))
-    unquoted = lang2(Rf_install("quote"), unquoted);
+    unquoted = Rf_lang2(Rf_install("quote"), unquoted);
 
   UNPROTECT(1);
   return unquoted;
@@ -89,7 +86,7 @@ SEXP unquote(SEXP x, SEXP env, SEXP uq_sym, bool quosured) {
 SEXP unquote_prefixed_uq(SEXP x, SEXP env, bool quosured) {
   SEXP uq_sym = CADR(CDAR(x));
   SEXP unquoted = PROTECT(unquote(CADR(x), env, uq_sym, quosured));
-  SETCDR(CDAR(x), CONS(unquoted, R_NilValue));
+  SETCDR(CDAR(x), r_cons(unquoted, R_NilValue));
   UNPROTECT(1);
 
   if (is_rlang_prefixed(x, NULL))
@@ -101,7 +98,7 @@ SEXP unquote_prefixed_uq(SEXP x, SEXP env, bool quosured) {
 SEXP splice_nxt(SEXP cur, SEXP nxt, SEXP env) {
   static SEXP uqs_fun;
   if (!uqs_fun)
-    uqs_fun = rlang_fun(Rf_install("UQS"));
+    uqs_fun = rlang_obj("UQS");
   SETCAR(CAR(nxt), uqs_fun);
 
   // UQS() does error checking and returns a pair list
@@ -120,7 +117,7 @@ SEXP splice_nxt(SEXP cur, SEXP nxt, SEXP env) {
   return cur;
 }
 SEXP splice_value_nxt(SEXP cur, SEXP nxt, SEXP env) {
-  SETCAR(CAR(nxt), rlang_fun(Rf_install("splice")));
+  SETCAR(CAR(nxt), rlang_obj("splice"));
   SETCAR(nxt, Rf_eval(CAR(nxt), env));
   return cur;
 }

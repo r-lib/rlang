@@ -91,7 +91,7 @@ static
 SEXP with_muffle_lang(SEXP signal) {
   static SEXP muffle_arg = NULL;
   if (!muffle_arg) {
-    muffle_arg = Rf_cons(rlang_fun(r_sym("muffle")), R_NilValue);
+    muffle_arg = Rf_cons(rlang_obj("muffle"), R_NilValue);
     R_PreserveObject(muffle_arg);
     SET_TAG(muffle_arg, r_sym("muffle"));
   }

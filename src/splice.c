@@ -1,5 +1,4 @@
-#include "utils.h"
-#include "vector.h"
+#include "rlang.h"
 #include "export.h"
 
 
@@ -211,11 +210,11 @@ is_spliceable_t predicate_pointer(SEXP x) {
 is_spliceable_t predicate_internal(SEXP x) {
   static SEXP is_spliced_clo = NULL;
   if (!is_spliced_clo)
-    is_spliced_clo = rlang_fun(Rf_install("is_spliced"));
+    is_spliced_clo = rlang_obj("is_spliced");
 
   static SEXP is_spliceable_clo = NULL;
   if (!is_spliceable_clo)
-    is_spliceable_clo = rlang_fun(Rf_install("is_spliced_bare"));
+    is_spliceable_clo = rlang_obj("is_spliced_bare");
 
   if (x == is_spliced_clo)
     return &is_spliced;

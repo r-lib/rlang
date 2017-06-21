@@ -14,7 +14,7 @@ SEXP base_tilde_eval(SEXP tilde, SEXP env) {
   if (!tilde_sym)
     tilde_sym = r_sym("~");
   if (!tilde_prim)
-    tilde_prim = r_env_get(r_base_env(), tilde_sym);
+    tilde_prim = base_obj("~");
 
   // Inline the base primitive because overscopes override `~` to make
   // quosures self-evaluate

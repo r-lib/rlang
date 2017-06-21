@@ -1,5 +1,5 @@
-#ifndef RLANG_NODE_H
-#define RLANG_NODE_H
+#ifndef RLANG_EVAL_H
+#define RLANG_EVAL_H
 
 
 SEXP r_eval(SEXP expr, SEXP env);

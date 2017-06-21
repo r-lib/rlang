@@ -1,3 +1,4 @@
+#include <string.h>
 #include "rlang.h"
 
 bool chr_has(SEXP chr, const char* c_string) {
