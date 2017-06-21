@@ -25,16 +25,14 @@ void r_warn(const char* fmt, ...) {
   char buf[BUFSIZE];
   INTERP(buf, fmt, ...);
 
-  SEXP args;
-  args = KEEP(Rf_ScalarLogical(0));
-  args = KEEP(Rf_cons(args, R_NilValue));
+  SEXP args = KEEP(r_new_pairlist(Rf_ScalarLogical(0)));
   SET_TAG(args, r_sym("call."));
 
-  args = KEEP(Rf_cons(string(buf), args));
+  args = KEEP(r_new_node(string(buf), args));
   SEXP lang = KEEP(Rf_lcons(r_sym("warning"), args));
 
   Rf_eval(lang, R_BaseEnv);
-  FREE(4);
+  FREE(3);
 }
 void r_abort(const char* fmt, ...) {
   char buf[BUFSIZE];
@@ -91,15 +89,15 @@ static
 SEXP with_muffle_lang(SEXP signal) {
   static SEXP muffle_arg = NULL;
   if (!muffle_arg) {
-    muffle_arg = Rf_cons(rlang_obj("muffle"), R_NilValue);
+    muffle_arg = r_new_pairlist(rlang_obj("muffle"));
     R_PreserveObject(muffle_arg);
     SET_TAG(muffle_arg, r_sym("muffle"));
   }
 
-  SEXP args = KEEP(Rf_cons(signal, muffle_arg));
-  SEXP lang = KEEP(Rf_lcons(r_sym("withRestarts"), args));
+  SEXP args = KEEP(r_new_node(signal, muffle_arg));
+  SEXP lang = Rf_lcons(r_sym("withRestarts"), args);
 
-  FREE(2);
+  FREE(1);
   return lang;
 }
 static
