@@ -100,7 +100,7 @@ static const R_CallMethodDef call_entries[] = {
   {"rlang_sxp_address",         (DL_FUNC) &rlang_sxp_address, 1},
   {"rlang_symbol",              (DL_FUNC) &rlang_symbol, 1},
   {"rlang_symbol_to_character", (DL_FUNC) &rlang_symbol_to_character, 1},
-  {"rlang_tilde_eval",          (DL_FUNC) &rlang_tilde_eval, 3},
+  {"rlang_tilde_eval",          (DL_FUNC) &rlang_tilde_eval, 4},
   {"r_node_tag",                (DL_FUNC) &r_node_tag, 1},
   {"rlang_unescape_character",  (DL_FUNC) &rlang_unescape_character, 1},
   {"rlang_zap_attrs",           (DL_FUNC) &rlang_zap_attrs, 1},
