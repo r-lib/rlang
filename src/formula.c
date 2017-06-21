@@ -5,7 +5,7 @@ SEXP r_f_rhs(SEXP f) {
   if (TYPEOF(f) != LANGSXP)
     Rf_errorcall(R_NilValue, "`x` must be a formula");
 
-  switch (Rf_length(f)) {
+  switch (r_length(f)) {
   case 2: return CADR(f);
   case 3: return CADDR(f);
   default: Rf_errorcall(R_NilValue, "Invalid formula");
@@ -15,7 +15,7 @@ SEXP r_f_lhs(SEXP f) {
   if (TYPEOF(f) != LANGSXP)
     Rf_errorcall(R_NilValue, "`x` must be a formula");
 
-  switch (Rf_length(f)) {
+  switch (r_length(f)) {
   case 2: return R_NilValue;
   case 3: return CADR(f);
   default: Rf_errorcall(R_NilValue, "Invalid formula");
@@ -44,7 +44,7 @@ bool is_formulaish(SEXP x, int scoped, int lhs) {
   }
 
   if (lhs >= 0) {
-    int has_lhs = Rf_length(x) > 2;
+    int has_lhs = r_length(x) > 2;
     if (lhs != has_lhs)
       return false;
   }

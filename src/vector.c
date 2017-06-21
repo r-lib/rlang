@@ -1,4 +1,4 @@
-#include "vector.h"
+#include "rlang.h"
 
 
 // In particular, this returns 1 for environments
@@ -11,7 +11,7 @@ R_len_t vec_length(SEXP x) {
   case STRSXP:
   case RAWSXP:
   case VECSXP:
-    return Rf_length(x);
+    return r_length(x);
   case NILSXP:
     return 0;
   default:

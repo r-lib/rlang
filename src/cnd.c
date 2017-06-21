@@ -57,9 +57,9 @@ SEXP new_condition_names(SEXP data) {
   if (chr_has(data_nms, "message"))
     r_abort("Conditions can't have a `message` data field");
 
-  SEXP nms = KEEP(Rf_allocVector(STRSXP, Rf_length(data) + 1));
+  SEXP nms = KEEP(Rf_allocVector(STRSXP, r_length(data) + 1));
   mut_chr_at(nms, 0, r_string("message"));
-  vec_copy_n(data_nms, Rf_length(data), nms, 1, 0);
+  vec_copy_n(data_nms, r_length(data), nms, 1, 0);
 
   FREE(1);
   return nms;
@@ -68,7 +68,7 @@ SEXP new_condition(SEXP type, SEXP data, SEXP msg) {
   if (!is_null(msg) && !is_string(msg))
     r_abort("Condition message must be a string");
 
-  int n_data = Rf_length(data);
+  int n_data = r_length(data);
   SEXP cnd = KEEP(Rf_allocVector(VECSXP, n_data + 1));
 
   mut_list_at(cnd, 0, msg);

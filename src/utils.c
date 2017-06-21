@@ -37,7 +37,7 @@ bool is_atomic(SEXP x) {
   }
 }
 bool is_scalar_atomic(SEXP x) {
-  return Rf_length(x) == 1 && is_atomic(x);
+  return r_length(x) == 1 && is_atomic(x);
 }
 bool is_list(SEXP x) {
   return TYPEOF(x) == VECSXP;
@@ -138,11 +138,11 @@ SEXP last_cons(SEXP x) {
 }
 
 SEXP rlang_length(SEXP x) {
-  return Rf_ScalarInteger(Rf_length(x));
+  return Rf_ScalarInteger(r_length(x));
 }
 
 int is_true(SEXP x) {
-  if (TYPEOF(x) != LGLSXP || Rf_length(x) != 1)
+  if (TYPEOF(x) != LGLSXP || r_length(x) != 1)
     Rf_errorcall(R_NilValue, "`x` must be a boolean");
 
   int value = LOGICAL(x)[0];
@@ -182,7 +182,7 @@ const char* kind_c_str(SEXPTYPE kind) {
 }
 
 bool is_empty(SEXP x) {
-  return Rf_length(x) == 0;
+  return r_length(x) == 0;
 }
 
 SEXP rlang_new_dictionary(SEXP x, SEXP lookup_msg, SEXP read_only) {

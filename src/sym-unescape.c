@@ -50,7 +50,7 @@ void copy_character(SEXP tgt, SEXP src, R_xlen_t len) {
 }
 
 R_xlen_t attribute_hidden unescape_character_in_copy(SEXP tgt, SEXP src, R_xlen_t i) {
-  R_xlen_t len = Rf_length(src);
+  R_xlen_t len = r_length(src);
   int dry_run = Rf_isNull(tgt);
 
   for (; i < len; ++i) {

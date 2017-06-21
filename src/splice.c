@@ -30,7 +30,7 @@ R_len_t atom_squash(SEXPTYPE kind, squash_info_t info,
 
   SEXP inner;
   SEXP out_names = names(out);
-  R_len_t n_outer = Rf_length(outer);
+  R_len_t n_outer = r_length(outer);
   R_len_t n_inner;
 
   for (R_len_t i = 0; i != n_outer; ++i) {
@@ -68,7 +68,7 @@ R_len_t list_squash(squash_info_t info, SEXP outer,
 
   SEXP inner;
   SEXP out_names = names(out);
-  R_len_t n_outer = Rf_length(outer);
+  R_len_t n_outer = r_length(outer);
 
   for (R_len_t i = 0; i != n_outer; ++i) {
     inner = VECTOR_ELT(outer, i);
@@ -138,7 +138,7 @@ void squash_info(squash_info_t* info, SEXP outer,
                  bool (*is_spliceable)(SEXP), int depth) {
   SEXP inner;
   R_len_t n_inner;
-  R_len_t n_outer = Rf_length(outer);
+  R_len_t n_outer = r_length(outer);
 
   for (R_len_t i = 0; i != n_outer; ++i) {
     inner = VECTOR_ELT(outer, i);
@@ -189,7 +189,7 @@ static
 is_spliceable_t predicate_pointer(SEXP x) {
   switch (TYPEOF(x)) {
   case VECSXP:
-    if (Rf_inherits(x, "fn_pointer") && Rf_length(x) == 1) {
+    if (Rf_inherits(x, "fn_pointer") && r_length(x) == 1) {
       SEXP ptr = VECTOR_ELT(x, 0);
       if (TYPEOF(ptr) == EXTPTRSXP)
         return (is_spliceable_t) R_ExternalPtrAddrFn(ptr);
