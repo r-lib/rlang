@@ -137,10 +137,10 @@ void cnd_signal_error(SEXP cnd, bool mufflable) {
 }
 
 SEXP rlang_cnd_signal(SEXP cnd, SEXP mufflable) {
-  cnd_signal(cnd, as_bool(mufflable));
+  cnd_signal(cnd, r_as_bool(mufflable));
   return cnd;
 }
 SEXP rlang_cnd_signal_error(SEXP cnd, SEXP mufflable) {
-  cnd_signal_error(cnd, as_bool(mufflable));
+  cnd_signal_error(cnd, r_as_bool(mufflable));
   return cnd;
 }

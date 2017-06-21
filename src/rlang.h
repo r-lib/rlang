@@ -16,6 +16,7 @@
 #include "sexp.h"
 #include "vector.h"
 #include "vector-chr.h"
+#include "vector-lgl.h"
 #include "vector-list.h"
 #include "eval.h"
 #include "cnd.h"

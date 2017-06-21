@@ -236,7 +236,7 @@ bool is_spliceable_closure(SEXP x) {
   SETCADR(clo_spliceable, x);
 
   SEXP out = Rf_eval(clo_spliceable, R_GlobalEnv);
-  return as_bool(out);
+  return r_as_bool(out);
 }
 
 

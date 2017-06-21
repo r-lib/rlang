@@ -170,7 +170,7 @@ SEXP rlang_interp(SEXP x, SEXP env, SEXP quosured) {
     r_abort("`env` must be an environment");
 
   x = KEEP(r_duplicate(x));
-  x = interp_lang(x, env, as_bool(quosured));
+  x = interp_lang(x, env, r_as_bool(quosured));
 
   FREE(1);
   return x;
