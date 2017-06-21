@@ -29,7 +29,7 @@ extern SEXP r_mut_node_caar(SEXP, SEXP);
 extern SEXP r_mut_node_cadr(SEXP, SEXP);
 extern SEXP r_mut_node_cdar(SEXP, SEXP);
 extern SEXP r_mut_node_cddr(SEXP, SEXP);
-extern SEXP r_cons_(SEXP, SEXP);
+extern SEXP r_node_(SEXP, SEXP);
 extern SEXP r_duplicate(SEXP);
 extern SEXP r_shallow_duplicate(SEXP);
 extern SEXP r_node_tag(SEXP);
@@ -74,7 +74,7 @@ static const R_CallMethodDef call_entries[] = {
   {"r_node_cdar",               (DL_FUNC) &r_node_cdar, 1},
   {"r_node_cddr",               (DL_FUNC) &r_node_cddr, 1},
   {"r_node_cdr",                (DL_FUNC) &r_node_cdr, 1},
-  {"r_cons",                    (DL_FUNC) &r_cons_, 2},
+  {"r_node",                    (DL_FUNC) &r_node_, 2},
   {"r_duplicate",               (DL_FUNC) &r_duplicate, 1},
   {"r_eval",                    (DL_FUNC) &r_eval, 2},
   {"rlang_get_attrs",           (DL_FUNC) &rlang_get_attrs, 1},

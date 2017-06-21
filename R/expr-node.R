@@ -103,7 +103,7 @@ NULL
 #' @rdname pairlist
 #' @export
 node <- function(newcar, newcdr) {
-  .Call(r_cons, newcar, newcdr)
+  .Call(r_node, newcar, newcdr)
 }
 
 #' @rdname pairlist
