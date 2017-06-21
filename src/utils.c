@@ -160,11 +160,20 @@ SEXP make_formula1(SEXP rhs, SEXP env) {
   return f;
 }
 
+SEXP pkg_obj(SEXP env, const char* name) {
+  SEXP obj = r_env_get(env, r_sym(name));
+
+  // Can be a promise to a lazyLoadDBfetch() call
+  if (r_typeof(obj) == PROMSXP)
+    obj = r_eval(obj, r_empty_env);
+
+  return obj;
+}
 SEXP rlang_obj(const char* name) {
-  return r_env_get(r_ns_env("rlang"), r_sym(name));
+  return pkg_obj(r_ns_env("rlang"), name);
 }
 SEXP base_obj(const char* name) {
-  return r_env_get(R_BaseEnv, r_sym(name));
+  return pkg_obj(r_base_env, name);
 }
 
 const char* kind_c_str(SEXPTYPE kind) {

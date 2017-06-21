@@ -5,6 +5,7 @@
 
 
 #define r_base_env R_BaseEnv
+#define r_empty_env R_EmptyEnv
 
 bool r_is_unbound_value(SEXP x);
 SEXP r_mut_env_parent(SEXP env, SEXP new_parent);
