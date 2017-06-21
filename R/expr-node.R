@@ -243,11 +243,7 @@ is_node <- function(x) {
 #' @seealso pairlist
 #' @export
 duplicate <- function(x, shallow = FALSE) {
-  if (shallow) {
-    .Call(r_shallow_duplicate, x)
-  } else {
-    .Call(r_duplicate, x)
-  }
+  .Call(rlang_duplicate, x, shallow)
 }
 
 

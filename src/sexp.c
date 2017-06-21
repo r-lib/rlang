@@ -79,10 +79,12 @@ bool r_is_null(SEXP x) {
   return x == R_NilValue;
 }
 
-
-SEXP r_duplicate(SEXP x) {
-  return Rf_duplicate(x);
+SEXP r_duplicate(SEXP x, bool shallow) {
+  if (shallow)
+    return Rf_shallow_duplicate(x);
+  else
+    return Rf_duplicate(x);
 }
-SEXP r_shallow_duplicate(SEXP x) {
-  return Rf_shallow_duplicate(x);
+SEXP rlang_duplicate(SEXP x, SEXP shallow) {
+  return r_duplicate(x, r_as_bool(shallow));
 }

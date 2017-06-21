@@ -5,6 +5,7 @@
 
 
 #define r_null R_NilValue
+#define r_length Rf_length
 
 SEXPTYPE r_typeof(SEXP x);
 SEXP r_get_attr(SEXP x, SEXP sym);
@@ -28,8 +29,7 @@ bool r_is_missing(SEXP x);
 
 bool r_is_null(SEXP x);
 
-SEXP r_duplicate(SEXP x);
-SEXP r_shallow_duplicate(SEXP x);
+SEXP r_duplicate(SEXP x, bool shallow);
 
 
 #endif

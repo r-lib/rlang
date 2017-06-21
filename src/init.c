@@ -30,8 +30,7 @@ extern SEXP r_mut_node_cadr(SEXP, SEXP);
 extern SEXP r_mut_node_cdar(SEXP, SEXP);
 extern SEXP r_mut_node_cddr(SEXP, SEXP);
 extern SEXP r_new_node_(SEXP, SEXP);
-extern SEXP r_duplicate(SEXP);
-extern SEXP r_shallow_duplicate(SEXP);
+extern SEXP rlang_duplicate(SEXP);
 extern SEXP r_node_tag(SEXP);
 extern SEXP r_mut_node_tag(SEXP);
 extern SEXP r_eval(SEXP, SEXP);
@@ -76,7 +75,7 @@ static const R_CallMethodDef call_entries[] = {
   {"r_node_cddr",               (DL_FUNC) &r_node_cddr, 1},
   {"r_node_cdr",                (DL_FUNC) &r_node_cdr, 1},
   {"r_new_node",                (DL_FUNC) &r_new_node_, 2},
-  {"r_duplicate",               (DL_FUNC) &r_duplicate, 1},
+  {"rlang_duplicate",           (DL_FUNC) &rlang_duplicate, 2},
   {"r_eval",                    (DL_FUNC) &r_eval, 2},
   {"rlang_get_attrs",           (DL_FUNC) &rlang_get_attrs, 1},
   {"rlang_interp",              (DL_FUNC) &rlang_interp, 3},
@@ -95,7 +94,6 @@ static const R_CallMethodDef call_entries[] = {
   {"r_mut_node_cdr",            (DL_FUNC) &r_mut_node_cdr, 2},
   {"rlang_mut_env_parent",      (DL_FUNC) &rlang_mut_env_parent, 2},
   {"r_mut_node_tag",            (DL_FUNC) &r_mut_node_tag, 2},
-  {"r_shallow_duplicate",       (DL_FUNC) &r_shallow_duplicate, 1},
   {"rlang_squash",              (DL_FUNC) &rlang_squash, 4},
   {"rlang_sxp_address",         (DL_FUNC) &rlang_sxp_address, 1},
   {"rlang_symbol",              (DL_FUNC) &rlang_symbol, 1},
