@@ -18,3 +18,13 @@ test_that("r_warn() signals", {
       .Call(rlang_test_r_warn, "foo")
     ))
 })
+
+test_that("r_on_exit() adds deferred expr", {
+  var <- chr()
+  fn <- function() {
+    .Call(rlang_test_r_on_exit, quote(var <<- c(var, "foo")), get_env())
+    var <<- c(var, "bar")
+  }
+  fn()
+  expect_identical(var, c("bar", "foo"))
+})

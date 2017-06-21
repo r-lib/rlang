@@ -4,6 +4,8 @@
 #include <stdbool.h>
 
 
+#define r_null R_NilValue
+
 SEXPTYPE r_typeof(SEXP x);
 SEXP r_get_attr(SEXP x, SEXP sym);
 

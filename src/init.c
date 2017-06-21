@@ -60,6 +60,7 @@ extern SEXP rlang_cnd_signal_error(SEXP, SEXP);
 extern SEXP chr_prepend(SEXP, SEXP);
 extern SEXP chr_append(SEXP, SEXP);
 extern SEXP rlang_test_r_warn(SEXP);
+extern SEXP r_on_exit(SEXP);
 
 static const R_CallMethodDef call_entries[] = {
   {"r_f_lhs",                   (DL_FUNC) &r_f_lhs, 1},
@@ -109,6 +110,7 @@ static const R_CallMethodDef call_entries[] = {
   {"rlang_test_chr_prepend",    (DL_FUNC) &chr_prepend, 2},
   {"rlang_test_chr_append",     (DL_FUNC) &chr_append, 2},
   {"rlang_test_r_warn",         (DL_FUNC) &rlang_test_r_warn, 1},
+  {"rlang_test_r_on_exit",      (DL_FUNC) &r_on_exit, 2},
   {NULL, NULL, 0}
 };
 

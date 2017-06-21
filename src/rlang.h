@@ -7,7 +7,6 @@
 #include <Rinternals.h>
 
 #include "utils.h"
-#include "cnd.h"
 #include "sym.h"
 #include "formula.h"
 #include "quo.h"
@@ -19,6 +18,8 @@
 #include "vector-chr.h"
 #include "vector-list.h"
 #include "eval.h"
+#include "cnd.h"
+#include "stack.h"
 
 
 #endif
