@@ -16,7 +16,7 @@ SEXP r_mut_node_cadr(SEXP x, SEXP newcar);
 SEXP r_mut_node_cdar(SEXP x, SEXP newcdar);
 SEXP r_mut_node_cddr(SEXP x, SEXP newcdr);
 
-SEXP r_cons(SEXP car, SEXP cdr);
+SEXP r_cons_(SEXP car, SEXP cdr);
 
 SEXP r_duplicate(SEXP x);
 SEXP r_shallow_duplicate(SEXP x);

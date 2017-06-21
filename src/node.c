@@ -44,7 +44,7 @@ SEXP r_mut_node_cddr(SEXP x, SEXP newcdr) {
   return x;
 }
 
-SEXP r_cons(SEXP car, SEXP cdr) {
+SEXP r_cons_(SEXP car, SEXP cdr) {
   return CONS(car, cdr);
 }
 
