@@ -14,13 +14,13 @@ SEXP base_tilde_eval(SEXP tilde, SEXP env) {
 
   // Inline the base primitive because overscopes override `~` to make
   // quosures self-evaluate
-  tilde = PROTECT(r_new_language_(tilde_prim, r_node_cdr(tilde)));
-  tilde = PROTECT(r_eval(tilde, env));
+  tilde = KEEP(r_new_language_(tilde_prim, r_node_cdr(tilde)));
+  tilde = KEEP(r_eval(tilde, env));
 
   // Change it back because the result still has the primitive inlined
   r_mut_node_car(tilde, tilde_sym);
 
-  UNPROTECT(2);
+  FREE(2);
   return tilde;
 }
 

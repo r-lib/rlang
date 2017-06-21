@@ -121,7 +121,7 @@ void vec_copy_coerce_n(SEXP src, R_len_t n, SEXP dest,
     REPROTECT(call = Rf_lang2(call, src), ipx);
     REPROTECT(coerced = Rf_eval(call, R_BaseEnv), ipx);
     vec_copy_n(coerced, n, dest, offset_dest, offset_src);
-    UNPROTECT(1);
+    FREE(1);
   } else {
     vec_copy_n(src, n, dest, offset_dest, offset_src);
   }

@@ -4,10 +4,10 @@ SEXP r_new_language_(SEXP head, SEXP tail) {
   return Rf_lcons(head, tail);
 }
 SEXP r_new_language(SEXP head, SEXP tail) {
-  PROTECT(head);
-  PROTECT(tail);
+  KEEP(head);
+  KEEP(tail);
   SEXP out = Rf_lcons(head, tail);
-  UNPROTECT(2);
+  FREE(2);
   return out;
 }
 

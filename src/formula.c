@@ -66,7 +66,7 @@ int lgl_optional(SEXP lgl) {
   if (lgl == R_NilValue)
     return -1;
   else
-    return Rf_asLogical(lgl);
+    return r_as_bool(lgl);
 }
 
 SEXP rlang_is_formulaish(SEXP x, SEXP scoped, SEXP lhs) {

@@ -80,14 +80,14 @@ SEXP unquote(SEXP x, SEXP env, SEXP uq_sym, bool quosured) {
   if (!quosured && is_symbolic(unquoted))
     unquoted = Rf_lang2(Rf_install("quote"), unquoted);
 
-  UNPROTECT(1);
+  FREE(1);
   return unquoted;
 }
 SEXP unquote_prefixed_uq(SEXP x, SEXP env, bool quosured) {
   SEXP uq_sym = CADR(CDAR(x));
-  SEXP unquoted = PROTECT(unquote(CADR(x), env, uq_sym, quosured));
+  SEXP unquoted = KEEP(unquote(CADR(x), env, uq_sym, quosured));
   SETCDR(CDAR(x), r_new_node_(unquoted, R_NilValue));
-  UNPROTECT(1);
+  FREE(1);
 
   if (is_rlang_prefixed(x, NULL))
     x = CADR(CDAR(x));
@@ -102,7 +102,7 @@ SEXP splice_nxt(SEXP cur, SEXP nxt, SEXP env) {
   SETCAR(CAR(nxt), uqs_fun);
 
   // UQS() does error checking and returns a pair list
-  SEXP args_lsp = PROTECT(Rf_eval(CAR(nxt), env));
+  SEXP args_lsp = KEEP(Rf_eval(CAR(nxt), env));
 
   if (args_lsp == R_NilValue) {
     SETCDR(cur, CDR(nxt));
@@ -113,7 +113,7 @@ SEXP splice_nxt(SEXP cur, SEXP nxt, SEXP env) {
     SETCDR(cur, args_lsp);
   }
 
-  UNPROTECT(1);
+  FREE(1);
   return cur;
 }
 SEXP splice_value_nxt(SEXP cur, SEXP nxt, SEXP env) {
@@ -126,7 +126,7 @@ SEXP interp_lang(SEXP x, SEXP env, bool quosured)  {
   if (!Rf_isLanguage(x))
     return x;
 
-  PROTECT(x);
+  KEEP(x);
   x = replace_double_bang(x);
 
   if (is_prefixed_call(x, is_uq_sym)) {
@@ -140,7 +140,7 @@ SEXP interp_lang(SEXP x, SEXP env, bool quosured)  {
     x = interp_pairlist(x, env, quosured);
   }
 
-  UNPROTECT(1);
+  FREE(1);
   return x;
 }
 

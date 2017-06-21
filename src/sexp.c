@@ -30,10 +30,10 @@ void mut_class(SEXP x, SEXP classes) {
 }
 
 SEXP set_attr(SEXP x, SEXP sym, SEXP attr) {
-  x = PROTECT(Rf_shallow_duplicate(x));
+  x = KEEP(Rf_shallow_duplicate(x));
   mut_attr(x, sym, attr);
 
-  UNPROTECT(1);
+  FREE(1);
   return x;
 }
 SEXP set_class(SEXP x, SEXP classes) {

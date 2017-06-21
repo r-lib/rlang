@@ -1,8 +1,7 @@
-#define R_NO_REMAP
-#include <R.h>
-#include <Rinternals.h>
+#include "rlang.h"
 #include <R_ext/GraphicsEngine.h>
-#include <stdbool.h>
+#include <string.h>
+#include <stdlib.h>
 
 #define attribute_hidden
 
@@ -27,10 +26,10 @@ SEXP rlang_unescape_character(SEXP chr) {
   R_xlen_t i = unescape_character_in_copy(R_NilValue, chr, 0);
   if (i == len) return chr;
 
-  SEXP ret = PROTECT(Rf_allocVector(STRSXP, len));
+  SEXP ret = KEEP(Rf_allocVector(STRSXP, len));
   copy_character(ret, chr, i);
   unescape_character_in_copy(ret, chr, i);
-  UNPROTECT(1);
+  FREE(1);
   return ret;
 }
 

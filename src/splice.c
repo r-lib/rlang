@@ -160,7 +160,7 @@ SEXP squash(SEXPTYPE kind, SEXP dots, bool (*is_spliceable)(SEXP), int depth) {
   squash_info_t info = squash_info_init(recursive);
   squash_info(&info, dots, is_spliceable, depth);
 
-  SEXP out = PROTECT(Rf_allocVector(kind, info.size));
+  SEXP out = KEEP(Rf_allocVector(kind, info.size));
   if (info.named)
     set_names(out, Rf_allocVector(STRSXP, info.size));
 
@@ -169,7 +169,7 @@ SEXP squash(SEXPTYPE kind, SEXP dots, bool (*is_spliceable)(SEXP), int depth) {
   else
     atom_squash(kind, info, dots, out, 0, is_spliceable, depth);
 
-  UNPROTECT(1);
+  FREE(1);
   return out;
 }
 
@@ -259,12 +259,12 @@ SEXP rlang_squash_if(SEXP dots, SEXPTYPE kind, bool (*is_spliceable)(SEXP), int 
 }
 SEXP rlang_squash_closure(SEXP dots, SEXPTYPE kind, SEXP pred, int depth) {
   SEXP prev_pred = clo_spliceable;
-  clo_spliceable = PROTECT(Rf_lang2(pred, Rf_list2(R_NilValue, R_NilValue)));
+  clo_spliceable = KEEP(Rf_lang2(pred, Rf_list2(R_NilValue, R_NilValue)));
 
   SEXP out = rlang_squash_if(dots, kind, &is_spliceable_closure, depth);
 
   clo_spliceable = prev_pred;
-  UNPROTECT(1);
+  FREE(1);
 
   return out;
 }

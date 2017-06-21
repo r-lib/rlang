@@ -152,11 +152,11 @@ int is_true(SEXP x) {
 // Formulas --------------------------------------------------------------------
 
 SEXP make_formula1(SEXP rhs, SEXP env) {
-  SEXP f = PROTECT(Rf_lang2(Rf_install("~"), rhs));
+  SEXP f = KEEP(Rf_lang2(Rf_install("~"), rhs));
   Rf_setAttrib(f, R_ClassSymbol, Rf_mkString("formula"));
   Rf_setAttrib(f, Rf_install(".Environment"), env);
 
-  UNPROTECT(1);
+  FREE(1);
   return f;
 }
 
@@ -186,7 +186,7 @@ bool is_empty(SEXP x) {
 }
 
 SEXP rlang_new_dictionary(SEXP x, SEXP lookup_msg, SEXP read_only) {
-  SEXP dict = PROTECT(Rf_allocVector(VECSXP, 3));
+  SEXP dict = KEEP(Rf_allocVector(VECSXP, 3));
 
   SET_VECTOR_ELT(dict, 0, x);
   SET_VECTOR_ELT(dict, 2, read_only);
@@ -213,6 +213,6 @@ SEXP rlang_new_dictionary(SEXP x, SEXP lookup_msg, SEXP read_only) {
   Rf_setAttrib(dict, R_ClassSymbol, s3);
   Rf_setAttrib(dict, R_NamesSymbol, nms);
 
-  UNPROTECT(1);
+  FREE(1);
   return dict;
 }
