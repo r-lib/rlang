@@ -44,3 +44,9 @@ mut_non_utf8_locale <- function() {
   )
   locale
 }
+
+with_latin1_locale <- function(expr) {
+  old_locale <- suppressMessages(mut_latin1_locale())
+  on.exit(mut_ctype(old_locale))
+  expr
+}

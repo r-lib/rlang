@@ -189,6 +189,15 @@ dot_interp <- function(dot, quosured = TRUE) {
     dots <- call("alist", expr)
     dots <- .Call(rlang_interp, dots, env, quosured)
     dots <- eval_bare(dots)
+
+    # Handle serialised unicode for characters that are not
+    # representable in the current locale. They have been serialised
+    # when converted to symbols (during pairlist-splicing).
+    nms <- names(dots)
+    if (!is_null(nms)) {
+      names(dots) <- as_utf8_character(nms)
+    }
+
     map(dots, function(expr) list(expr = expr, env = env))
   } else {
     expr <- .Call(rlang_interp, expr, env, quosured)
