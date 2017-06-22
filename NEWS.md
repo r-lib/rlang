@@ -17,6 +17,10 @@
 
 * New `fn_fmls<-` and `fn_fmls_names<-` setters.
 
+* Calling `enquo()` at top-level is now an alias for `quo()` instead
+  of throwing an error. This is intended to make it easier to teach
+  tidyeval.
+
 
 # rlang 0.1.1
 
