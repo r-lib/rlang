@@ -17,6 +17,10 @@
 
 * New `fn_fmls<-` and `fn_fmls_names<-` setters.
 
+* The `n` argument of the stack and frame function has been reviewed
+  to make it more intuitive. Now `n = 0` refers to the current frame,
+  `n = 1` to the previous frame, etc.
+
 
 # rlang 0.1.1
 

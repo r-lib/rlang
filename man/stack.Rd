@@ -16,9 +16,9 @@ global_frame()
 
 current_frame()
 
-ctxt_frame(n = 1)
+ctxt_frame(n = 0)
 
-call_frame(n = 1, clean = TRUE)
+call_frame(n = 0, clean = TRUE)
 
 ctxt_depth()
 
@@ -29,7 +29,8 @@ ctxt_stack(n = NULL, trim = 0)
 call_stack(n = NULL, clean = TRUE)
 }
 \arguments{
-\item{n}{The number of frames to go back in the stack.}
+\item{n}{The number of frames to go back in the stack. 0 refers to
+the current frame on the stack, 1 to the previous frame, etc.}
 
 \item{clean}{Whether to post-process the call stack to clean
 non-standard frames. If \code{TRUE}, suboptimal call-stack entries by
@@ -67,20 +68,8 @@ with \code{n = 1} referring to the current context. The \code{which} argument
 is more complicated and changes meaning for values lower than 1.
 For the sake of consistency, the lazyeval functions all take the
 same kind of argument \code{n}. This argument has a single meaning (the
-number of frames to go down the stack) and cannot be lower than 1.
-
-Note finally that \code{parent.frame(1)} corresponds to
-\code{call_frame(2)$env}, as \code{n = 1} always refers to the current
-frame. This makes the \code{_frame()} and \code{_stack()} functions
-consistent: \code{ctxt_frame(2)} is the same as \code{ctxt_stack()[[2]]}.
-Also, \code{ctxt_depth()} returns one more frame than
-[base::sys.nframe()] because it counts the global frame. That is
-consistent with the \code{_stack()} functions which return the global
-frame as well. This way, \code{call_stack(call_depth())} is the same as
-\code{global_frame()}.
-
-[[2]: R:[2
-[base::sys.nframe()]: R:base::sys.nframe()
+number of frames to go down the stack) and cannot be lower than 0,
+with 0 referring to the current context.
 }
 \examples{
 # Expressions within arguments count as contexts
@@ -109,8 +98,8 @@ f(g(call_stack))
 # purrr::map(stack, "env")
 # purrr::transpose(stack)$expr
 
-# current_frame() is an alias for ctxt_frame(1)
-fn <- function() list(current = current_frame(), first = ctxt_frame(1))
+# current_frame() is an alias for ctxt_frame(0)
+fn <- function() list(current = current_frame(), first = ctxt_frame(0))
 fn()
 
 # While current_frame() is the top of the stack, global_frame() is
