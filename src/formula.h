@@ -3,9 +3,10 @@
 
 
 SEXP rlang_is_formulaish(SEXP x, SEXP scoped, SEXP lhs);
-SEXP f_rhs_(SEXP f);
-SEXP f_lhs_(SEXP f);
-SEXP f_env_(SEXP f);
+SEXP r_f_rhs(SEXP f);
+SEXP r_f_lhs(SEXP f);
+SEXP r_f_env(SEXP f);
+bool r_f_has_env(SEXP f);
 
 
 #endif

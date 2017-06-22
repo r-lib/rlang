@@ -6,13 +6,24 @@
 #include <stdbool.h>
 #include <Rinternals.h>
 
-#include "cnd.h"
-#include "formula.h"
-#include "sexp.h"
 #include "utils.h"
+#include "sym.h"
+#include "formula.h"
+#include "quo.h"
+#include "env.h"
+#include "node.h"
+#include "lang.h"
+#include "sexp.h"
 #include "vector.h"
 #include "vector-chr.h"
+#include "vector-lgl.h"
 #include "vector-list.h"
+#include "eval.h"
+#include "cnd.h"
+#include "stack.h"
+
+#define KEEP PROTECT
+#define FREE UNPROTECT
 
 
 #endif

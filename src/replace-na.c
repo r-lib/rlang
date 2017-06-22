@@ -1,10 +1,9 @@
-#define R_NO_REMAP
-#include <Rinternals.h>
+#include "rlang.h"
 
 SEXP replace_na_(SEXP x, SEXP replacement, int start);
 
 SEXP rlang_replace_na(SEXP x, SEXP replacement) {
-  int n = Rf_length(x);
+  int n = r_length(x);
   int i = 0;
 
   switch(TYPEOF(x)) {
@@ -65,8 +64,8 @@ SEXP rlang_replace_na(SEXP x, SEXP replacement) {
 }
 
 SEXP replace_na_(SEXP x, SEXP replacement, int i) {
-  PROTECT(x = Rf_duplicate(x));
-  int n = Rf_length(x);
+  KEEP(x = Rf_duplicate(x));
+  int n = r_length(x);
 
   switch(TYPEOF(x)) {
   case LGLSXP: {
@@ -124,6 +123,6 @@ SEXP replace_na_(SEXP x, SEXP replacement, int i) {
   }
   }
 
-  UNPROTECT(1);
+  FREE(1);
   return x;
 }

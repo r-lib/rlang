@@ -1,7 +1,5 @@
-#define R_NO_REMAP
-#include <R.h>
-#include <Rinternals.h>
-#include <stdbool.h>
+#include <string.h>
+#include "rlang.h"
 
 bool is_character(SEXP x) {
   return TYPEOF(x) == STRSXP;
@@ -39,7 +37,7 @@ bool is_atomic(SEXP x) {
   }
 }
 bool is_scalar_atomic(SEXP x) {
-  return Rf_length(x) == 1 && is_atomic(x);
+  return r_length(x) == 1 && is_atomic(x);
 }
 bool is_list(SEXP x) {
   return TYPEOF(x) == VECSXP;
@@ -140,11 +138,11 @@ SEXP last_cons(SEXP x) {
 }
 
 SEXP rlang_length(SEXP x) {
-  return Rf_ScalarInteger(Rf_length(x));
+  return Rf_ScalarInteger(r_length(x));
 }
 
 int is_true(SEXP x) {
-  if (TYPEOF(x) != LGLSXP || Rf_length(x) != 1)
+  if (TYPEOF(x) != LGLSXP || r_length(x) != 1)
     Rf_errorcall(R_NilValue, "`x` must be a boolean");
 
   int value = LOGICAL(x)[0];
@@ -154,19 +152,28 @@ int is_true(SEXP x) {
 // Formulas --------------------------------------------------------------------
 
 SEXP make_formula1(SEXP rhs, SEXP env) {
-  SEXP f = PROTECT(Rf_lang2(Rf_install("~"), rhs));
+  SEXP f = KEEP(Rf_lang2(Rf_install("~"), rhs));
   Rf_setAttrib(f, R_ClassSymbol, Rf_mkString("formula"));
   Rf_setAttrib(f, Rf_install(".Environment"), env);
 
-  UNPROTECT(1);
+  FREE(1);
   return f;
 }
 
-SEXP rlang_fun(SEXP sym) {
-  SEXP prefixed_sym = PROTECT(Rf_lang3(Rf_install(":::"), Rf_install("rlang"), sym));
-  SEXP fun = Rf_eval(prefixed_sym, R_BaseEnv);
-  UNPROTECT(1);
-  return fun;
+SEXP pkg_obj(SEXP env, const char* name) {
+  SEXP obj = r_env_get(env, r_sym(name));
+
+  // Can be a promise to a lazyLoadDBfetch() call
+  if (r_typeof(obj) == PROMSXP)
+    obj = r_eval(obj, r_empty_env);
+
+  return obj;
+}
+SEXP rlang_obj(const char* name) {
+  return pkg_obj(r_ns_env("rlang"), name);
+}
+SEXP base_obj(const char* name) {
+  return pkg_obj(r_base_env, name);
 }
 
 const char* kind_c_str(SEXPTYPE kind) {
@@ -175,18 +182,11 @@ const char* kind_c_str(SEXPTYPE kind) {
 }
 
 bool is_empty(SEXP x) {
-  return Rf_length(x) == 0;
-}
-
-bool as_bool(SEXP x) {
-  if (TYPEOF(x) != LGLSXP && Rf_length(x) != 1)
-    Rf_errorcall(R_NilValue, "Expected a scalar logical");
-   int* xp = (int*) LOGICAL(x);
-   return *xp;
+  return r_length(x) == 0;
 }
 
 SEXP rlang_new_dictionary(SEXP x, SEXP lookup_msg, SEXP read_only) {
-  SEXP dict = PROTECT(Rf_allocVector(VECSXP, 3));
+  SEXP dict = KEEP(Rf_allocVector(VECSXP, 3));
 
   SET_VECTOR_ELT(dict, 0, x);
   SET_VECTOR_ELT(dict, 2, read_only);
@@ -213,10 +213,6 @@ SEXP rlang_new_dictionary(SEXP x, SEXP lookup_msg, SEXP read_only) {
   Rf_setAttrib(dict, R_ClassSymbol, s3);
   Rf_setAttrib(dict, R_NamesSymbol, nms);
 
-  UNPROTECT(1);
+  FREE(1);
   return dict;
-}
-
-SEXP sym(const char* c_string) {
-  return Rf_install(c_string);
 }

@@ -1,5 +1,4 @@
-#include "utils.h"
-#include "vector.h"
+#include "rlang.h"
 #include "export.h"
 
 
@@ -31,7 +30,7 @@ R_len_t atom_squash(SEXPTYPE kind, squash_info_t info,
 
   SEXP inner;
   SEXP out_names = names(out);
-  R_len_t n_outer = Rf_length(outer);
+  R_len_t n_outer = r_length(outer);
   R_len_t n_inner;
 
   for (R_len_t i = 0; i != n_outer; ++i) {
@@ -69,7 +68,7 @@ R_len_t list_squash(squash_info_t info, SEXP outer,
 
   SEXP inner;
   SEXP out_names = names(out);
-  R_len_t n_outer = Rf_length(outer);
+  R_len_t n_outer = r_length(outer);
 
   for (R_len_t i = 0; i != n_outer; ++i) {
     inner = VECTOR_ELT(outer, i);
@@ -139,7 +138,7 @@ void squash_info(squash_info_t* info, SEXP outer,
                  bool (*is_spliceable)(SEXP), int depth) {
   SEXP inner;
   R_len_t n_inner;
-  R_len_t n_outer = Rf_length(outer);
+  R_len_t n_outer = r_length(outer);
 
   for (R_len_t i = 0; i != n_outer; ++i) {
     inner = VECTOR_ELT(outer, i);
@@ -161,7 +160,7 @@ SEXP squash(SEXPTYPE kind, SEXP dots, bool (*is_spliceable)(SEXP), int depth) {
   squash_info_t info = squash_info_init(recursive);
   squash_info(&info, dots, is_spliceable, depth);
 
-  SEXP out = PROTECT(Rf_allocVector(kind, info.size));
+  SEXP out = KEEP(Rf_allocVector(kind, info.size));
   if (info.named)
     set_names(out, Rf_allocVector(STRSXP, info.size));
 
@@ -170,7 +169,7 @@ SEXP squash(SEXPTYPE kind, SEXP dots, bool (*is_spliceable)(SEXP), int depth) {
   else
     atom_squash(kind, info, dots, out, 0, is_spliceable, depth);
 
-  UNPROTECT(1);
+  FREE(1);
   return out;
 }
 
@@ -190,7 +189,7 @@ static
 is_spliceable_t predicate_pointer(SEXP x) {
   switch (TYPEOF(x)) {
   case VECSXP:
-    if (Rf_inherits(x, "fn_pointer") && Rf_length(x) == 1) {
+    if (Rf_inherits(x, "fn_pointer") && r_length(x) == 1) {
       SEXP ptr = VECTOR_ELT(x, 0);
       if (TYPEOF(ptr) == EXTPTRSXP)
         return (is_spliceable_t) R_ExternalPtrAddrFn(ptr);
@@ -211,11 +210,11 @@ is_spliceable_t predicate_pointer(SEXP x) {
 is_spliceable_t predicate_internal(SEXP x) {
   static SEXP is_spliced_clo = NULL;
   if (!is_spliced_clo)
-    is_spliced_clo = rlang_fun(Rf_install("is_spliced"));
+    is_spliced_clo = rlang_obj("is_spliced");
 
   static SEXP is_spliceable_clo = NULL;
   if (!is_spliceable_clo)
-    is_spliceable_clo = rlang_fun(Rf_install("is_spliced_bare"));
+    is_spliceable_clo = rlang_obj("is_spliced_bare");
 
   if (x == is_spliced_clo)
     return &is_spliced;
@@ -237,7 +236,7 @@ bool is_spliceable_closure(SEXP x) {
   SETCADR(clo_spliceable, x);
 
   SEXP out = Rf_eval(clo_spliceable, R_GlobalEnv);
-  return as_bool(out);
+  return r_as_bool(out);
 }
 
 
@@ -260,12 +259,12 @@ SEXP rlang_squash_if(SEXP dots, SEXPTYPE kind, bool (*is_spliceable)(SEXP), int 
 }
 SEXP rlang_squash_closure(SEXP dots, SEXPTYPE kind, SEXP pred, int depth) {
   SEXP prev_pred = clo_spliceable;
-  clo_spliceable = PROTECT(Rf_lang2(pred, Rf_list2(R_NilValue, R_NilValue)));
+  clo_spliceable = KEEP(Rf_lang2(pred, Rf_list2(R_NilValue, R_NilValue)));
 
   SEXP out = rlang_squash_if(dots, kind, &is_spliceable_closure, depth);
 
   clo_spliceable = prev_pred;
-  UNPROTECT(1);
+  FREE(1);
 
   return out;
 }

@@ -1,8 +1,6 @@
-#define R_NO_REMAP
-#include <Rinternals.h>
-#include <Rversion.h>
-
+#include "rlang.h"
 #include "export.h"
+#include <Rversion.h>
 
 #if (defined(R_VERSION) && R_VERSION < R_Version(3, 4, 0))
 SEXP R_MakeExternalPtrFn(DL_FUNC p, SEXP tag, SEXP prot) {
@@ -18,20 +16,20 @@ DL_FUNC R_ExternalPtrAddrFn(SEXP s) {
 #endif
 
 SEXP rlang_namespace(const char* ns) {
-  SEXP call = PROTECT(Rf_lang2(Rf_install("getNamespace"), Rf_mkString(ns)));
+  SEXP call = KEEP(Rf_lang2(Rf_install("getNamespace"), Rf_mkString(ns)));
   SEXP ns_env = Rf_eval(call, R_BaseEnv);
-  UNPROTECT(1);
+  FREE(1);
   return ns_env;
 }
 
 void rlang_register_pointer(const char* ns, const char* ptr_name, DL_FUNC fn) {
-  SEXP ptr = PROTECT(R_MakeExternalPtrFn(fn, R_NilValue, R_NilValue));
+  SEXP ptr = KEEP(R_MakeExternalPtrFn(fn, R_NilValue, R_NilValue));
 
-  SEXP ptr_obj = PROTECT(Rf_allocVector(VECSXP, 1));
+  SEXP ptr_obj = KEEP(Rf_allocVector(VECSXP, 1));
   SET_VECTOR_ELT(ptr_obj, 0, ptr);
 
   Rf_setAttrib(ptr_obj, R_ClassSymbol, Rf_mkString("fn_pointer"));
 
   Rf_defineVar(Rf_install(ptr_name), ptr_obj, rlang_namespace(ns));
-  UNPROTECT(2);
+  FREE(2);
 }

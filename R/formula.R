@@ -111,7 +111,7 @@ is_formulaish <- function(x, scoped = NULL, lhs = NULL) {
 #'
 #' f_env(~ x)
 f_rhs <- function(f) {
-  .Call(f_rhs_, f)
+  .Call(r_f_rhs, f)
 }
 
 #' @export
@@ -125,7 +125,7 @@ f_rhs <- function(f) {
 #' @export
 #' @rdname f_rhs
 f_lhs <- function(f) {
-  .Call(f_lhs_, f)
+  .Call(r_f_lhs, f)
 }
 
 #' @export

@@ -1,10 +1,7 @@
-#include <R.h>
-#include <Rdefines.h>
-#include <Rinternals.h>
-#include "utils.h"
+#include "rlang.h"
 
-SEXP interp_walk(SEXP x, SEXP env, bool quosured);
-SEXP interp_arguments(SEXP x, SEXP env, bool quosured);
+SEXP interp_lang(SEXP x, SEXP env, bool quosured);
+SEXP interp_pairlist(SEXP x, SEXP env, bool quosured);
 
 
 int bang_level(SEXP x) {
@@ -71,7 +68,7 @@ SEXP unquote(SEXP x, SEXP env, SEXP uq_sym, bool quosured) {
 
   // Inline unquote function before evaluation because even `::` might
   // not be available in interpolation environment.
-  SEXP uq_fun = rlang_fun(uq_sym);
+  SEXP uq_fun = r_env_get(r_ns_env("rlang"), uq_sym);
 
   PROTECT_INDEX ipx;
   PROTECT_WITH_INDEX(uq_fun, &ipx);
@@ -81,16 +78,16 @@ SEXP unquote(SEXP x, SEXP env, SEXP uq_sym, bool quosured) {
   REPROTECT(unquoted = Rf_eval(uq_fun, env), ipx);
 
   if (!quosured && is_symbolic(unquoted))
-    unquoted = lang2(Rf_install("quote"), unquoted);
+    unquoted = Rf_lang2(Rf_install("quote"), unquoted);
 
-  UNPROTECT(1);
+  FREE(1);
   return unquoted;
 }
 SEXP unquote_prefixed_uq(SEXP x, SEXP env, bool quosured) {
   SEXP uq_sym = CADR(CDAR(x));
-  SEXP unquoted = PROTECT(unquote(CADR(x), env, uq_sym, quosured));
-  SETCDR(CDAR(x), CONS(unquoted, R_NilValue));
-  UNPROTECT(1);
+  SEXP unquoted = KEEP(unquote(CADR(x), env, uq_sym, quosured));
+  SETCDR(CDAR(x), r_new_node_(unquoted, R_NilValue));
+  FREE(1);
 
   if (is_rlang_prefixed(x, NULL))
     x = CADR(CDAR(x));
@@ -101,11 +98,11 @@ SEXP unquote_prefixed_uq(SEXP x, SEXP env, bool quosured) {
 SEXP splice_nxt(SEXP cur, SEXP nxt, SEXP env) {
   static SEXP uqs_fun;
   if (!uqs_fun)
-    uqs_fun = rlang_fun(Rf_install("UQS"));
+    uqs_fun = rlang_obj("UQS");
   SETCAR(CAR(nxt), uqs_fun);
 
   // UQS() does error checking and returns a pair list
-  SEXP args_lsp = PROTECT(Rf_eval(CAR(nxt), env));
+  SEXP args_lsp = KEEP(Rf_eval(CAR(nxt), env));
 
   if (args_lsp == R_NilValue) {
     SETCDR(cur, CDR(nxt));
@@ -116,20 +113,20 @@ SEXP splice_nxt(SEXP cur, SEXP nxt, SEXP env) {
     SETCDR(cur, args_lsp);
   }
 
-  UNPROTECT(1);
+  FREE(1);
   return cur;
 }
 SEXP splice_value_nxt(SEXP cur, SEXP nxt, SEXP env) {
-  SETCAR(CAR(nxt), rlang_fun(Rf_install("splice")));
+  SETCAR(CAR(nxt), rlang_obj("splice"));
   SETCAR(nxt, Rf_eval(CAR(nxt), env));
   return cur;
 }
 
-SEXP interp_walk(SEXP x, SEXP env, bool quosured)  {
+SEXP interp_lang(SEXP x, SEXP env, bool quosured)  {
   if (!Rf_isLanguage(x))
     return x;
 
-  PROTECT(x);
+  KEEP(x);
   x = replace_double_bang(x);
 
   if (is_prefixed_call(x, is_uq_sym)) {
@@ -140,16 +137,16 @@ SEXP interp_walk(SEXP x, SEXP env, bool quosured)  {
     SEXP uq_sym = CAR(x);
     x = unquote(CADR(x), env, uq_sym, quosured);
   } else {
-    x = interp_arguments(x, env, quosured);
+    x = interp_pairlist(x, env, quosured);
   }
 
-  UNPROTECT(1);
+  FREE(1);
   return x;
 }
 
-SEXP interp_arguments(SEXP x, SEXP env, bool quosured) {
+SEXP interp_pairlist(SEXP x, SEXP env, bool quosured) {
   for(SEXP cur = x; cur != R_NilValue; cur = CDR(cur)) {
-    SETCAR(cur, interp_walk(CAR(cur), env, quosured));
+    SETCAR(cur, interp_lang(CAR(cur), env, quosured));
 
     SEXP nxt = CDR(cur);
     nxt = replace_triple_bang(nxt, cur);
@@ -167,14 +164,14 @@ SEXP interp_arguments(SEXP x, SEXP env, bool quosured) {
 }
 
 SEXP rlang_interp(SEXP x, SEXP env, SEXP quosured) {
-  if (!Rf_isLanguage(x))
+  if (!r_is_lang(x))
     return x;
-  if (!Rf_isEnvironment(env))
-    Rf_errorcall(R_NilValue, "`env` must be an environment");
+  if (!r_is_env(env))
+    r_abort("`env` must be an environment");
 
-  x = PROTECT(Rf_duplicate(x));
-  x = interp_walk(x, env, as_bool(quosured));
+  x = KEEP(r_duplicate(x, false));
+  x = interp_lang(x, env, r_as_bool(quosured));
 
-  UNPROTECT(1);
+  FREE(1);
   return x;
 }

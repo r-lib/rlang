@@ -91,7 +91,7 @@ is_bytes <- is_raw
 #' @export
 #' @rdname type-predicates
 is_null <- function(x) {
-  typeof(x) == "NULL"
+  .Call(rlang_is_null, x)
 }
 
 #' Scalar type predicates

@@ -298,7 +298,7 @@ overscope_eval_next <- function(overscope, quo, env = base_env()) {
   overscope$.env <- lexical_env
   mut_env_parent(overscope$.top_env, lexical_env)
 
-  .Call(rlang_eval, f_rhs(quo), overscope)
+  .Call(r_eval, f_rhs(quo), overscope)
 }
 #' @rdname as_overscope
 #' @export
@@ -318,34 +318,7 @@ overscope_clean <- function(overscope) {
 }
 
 f_self_eval <- function(overscope, overscope_top) {
-  function(...) {
-    f <- sys.call()
-
-    # Evaluate formula in the overscope with base::`~`()
-    if (!inherits(f, "quosure")) {
-      return(tilde_eval(f, overscope))
-    }
-    if (quo_is_missing(f)) {
-      return(missing_arg())
-    }
-
-    # Swap enclosures temporarily by rechaining the top of the dynamic
-    # scope to the enclosure of the new formula, if it has one
-    mut_env_parent(overscope_top, f_env(f) %||% overscope$.env)
-    on.exit(mut_env_parent(overscope_top, overscope$.env))
-
-    .Call(rlang_eval, f_rhs(f), overscope)
+  function(lhs, rhs) {
+    .Call(rlang_tilde_eval, sys.call(), overscope, overscope_top, environment())
   }
-}
-tilde_eval <- function(f, env) {
-  if (is_env(attr(f, ".Environment"))) {
-    return(f)
-  }
-
-  # Inline the base primitive because overscopes override `~` to make
-  # quosures self-evaluate
-  f <- new_language(base::`~`, node_cdr(f))
-
-  # Change it back because the result still has the primitive inlined
-  mut_node_car(eval_bare(f, env), sym_tilde)
 }

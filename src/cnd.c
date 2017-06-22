@@ -17,24 +17,22 @@ void r_inform(const char* fmt, ...) {
   char buf[BUFSIZE];
   INTERP(buf, fmt, ...);
 
-  SEXP lang = PROTECT(Rf_lcons(sym("message"), string(buf)));
+  SEXP lang = KEEP(Rf_lcons(r_sym("message"), string(buf)));
   Rf_eval(lang, R_BaseEnv);
-  UNPROTECT(1);
+  FREE(1);
 }
 void r_warn(const char* fmt, ...) {
   char buf[BUFSIZE];
   INTERP(buf, fmt, ...);
 
-  SEXP args;
-  args = PROTECT(Rf_ScalarLogical(0));
-  args = PROTECT(Rf_cons(args, R_NilValue));
-  SET_TAG(args, sym("call."));
+  SEXP args = KEEP(r_new_pairlist(Rf_ScalarLogical(0)));
+  SET_TAG(args, r_sym("call."));
 
-  args = PROTECT(Rf_cons(string(buf), args));
-  SEXP lang = PROTECT(Rf_lcons(sym("warning"), args));
+  args = KEEP(r_new_node(string(buf), args));
+  SEXP lang = KEEP(Rf_lcons(r_sym("warning"), args));
 
   Rf_eval(lang, R_BaseEnv);
-  UNPROTECT(4);
+  FREE(3);
 }
 void r_abort(const char* fmt, ...) {
   char buf[BUFSIZE];
@@ -59,19 +57,19 @@ SEXP new_condition_names(SEXP data) {
   if (chr_has(data_nms, "message"))
     r_abort("Conditions can't have a `message` data field");
 
-  SEXP nms = PROTECT(Rf_allocVector(STRSXP, Rf_length(data) + 1));
+  SEXP nms = KEEP(Rf_allocVector(STRSXP, r_length(data) + 1));
   mut_chr_at(nms, 0, r_string("message"));
-  vec_copy_n(data_nms, Rf_length(data), nms, 1, 0);
+  vec_copy_n(data_nms, r_length(data), nms, 1, 0);
 
-  UNPROTECT(1);
+  FREE(1);
   return nms;
 }
 SEXP new_condition(SEXP type, SEXP data, SEXP msg) {
   if (!is_null(msg) && !is_string(msg))
     r_abort("Condition message must be a string");
 
-  int n_data = Rf_length(data);
-  SEXP cnd = PROTECT(Rf_allocVector(VECSXP, n_data + 1));
+  int n_data = r_length(data);
+  SEXP cnd = KEEP(Rf_allocVector(VECSXP, n_data + 1));
 
   mut_list_at(cnd, 0, msg);
   vec_copy_n(data, n_data, cnd, 1, 0);
@@ -79,7 +77,7 @@ SEXP new_condition(SEXP type, SEXP data, SEXP msg) {
   mut_names(cnd, new_condition_names(data));
   mut_class(cnd, chr_append(type, r_string("condition")));
 
-  UNPROTECT(1);
+  FREE(1);
   return cnd;
 }
 
@@ -91,15 +89,15 @@ static
 SEXP with_muffle_lang(SEXP signal) {
   static SEXP muffle_arg = NULL;
   if (!muffle_arg) {
-    muffle_arg = Rf_cons(rlang_fun(sym("muffle")), R_NilValue);
+    muffle_arg = r_new_pairlist(rlang_obj("muffle"));
     R_PreserveObject(muffle_arg);
-    SET_TAG(muffle_arg, sym("muffle"));
+    SET_TAG(muffle_arg, r_sym("muffle"));
   }
 
-  SEXP args = PROTECT(Rf_cons(signal, muffle_arg));
-  SEXP lang = PROTECT(Rf_lcons(sym("withRestarts"), args));
+  SEXP args = KEEP(r_new_node(signal, muffle_arg));
+  SEXP lang = Rf_lcons(r_sym("withRestarts"), args);
 
-  UNPROTECT(2);
+  FREE(1);
   return lang;
 }
 static
@@ -107,26 +105,26 @@ void cnd_signal_impl(const char* signaller, SEXP cnd, bool mufflable) {
   int n_protect = 0;
 
   if (TYPEOF(cnd) == STRSXP) {
-    cnd = PROTECT(new_condition(cnd, R_NilValue, R_NilValue));
+    cnd = KEEP(new_condition(cnd, R_NilValue, R_NilValue));
     ++n_protect;
   } else if (!is_condition(cnd)) {
     r_abort("`cnd` must be a condition");
   }
 
-  SEXP lang = PROTECT(Rf_lang2(sym(signaller), cnd));
+  SEXP lang = KEEP(Rf_lang2(r_sym(signaller), cnd));
   ++n_protect;
 
   if (mufflable) {
-    SEXP classes = PROTECT(chr_prepend(sxp_class(cnd), r_string("mufflable")));
+    SEXP classes = KEEP(chr_prepend(sxp_class(cnd), r_string("mufflable")));
     ++n_protect;
     SETCADR(lang, set_class(cnd, classes));
 
-    lang = PROTECT(with_muffle_lang(lang));
+    lang = KEEP(with_muffle_lang(lang));
     ++n_protect;
   }
 
   Rf_eval(lang, R_BaseEnv);
-  UNPROTECT(n_protect);
+  FREE(n_protect);
 }
 
 void cnd_signal(SEXP cnd, bool mufflable) {
@@ -137,10 +135,10 @@ void cnd_signal_error(SEXP cnd, bool mufflable) {
 }
 
 SEXP rlang_cnd_signal(SEXP cnd, SEXP mufflable) {
-  cnd_signal(cnd, as_bool(mufflable));
+  cnd_signal(cnd, r_as_bool(mufflable));
   return cnd;
 }
 SEXP rlang_cnd_signal_error(SEXP cnd, SEXP mufflable) {
-  cnd_signal_error(cnd, as_bool(mufflable));
+  cnd_signal_error(cnd, r_as_bool(mufflable));
   return cnd;
 }

@@ -1,30 +1,32 @@
-#define R_NO_REMAP
-#include <Rinternals.h>
-#include <stdbool.h>
+#include "rlang.h"
 
 
-SEXP f_rhs_(SEXP f) {
+SEXP r_f_rhs(SEXP f) {
   if (TYPEOF(f) != LANGSXP)
     Rf_errorcall(R_NilValue, "`x` must be a formula");
 
-  switch (Rf_length(f)) {
+  switch (r_length(f)) {
   case 2: return CADR(f);
   case 3: return CADDR(f);
   default: Rf_errorcall(R_NilValue, "Invalid formula");
   }
 }
-SEXP f_lhs_(SEXP f) {
+SEXP r_f_lhs(SEXP f) {
   if (TYPEOF(f) != LANGSXP)
     Rf_errorcall(R_NilValue, "`x` must be a formula");
 
-  switch (Rf_length(f)) {
+  switch (r_length(f)) {
   case 2: return R_NilValue;
   case 3: return CADR(f);
   default: Rf_errorcall(R_NilValue, "Invalid formula");
   }
 }
-SEXP f_env_(SEXP f) {
-  return Rf_getAttrib(f, Rf_install(".Environment"));
+SEXP r_f_env(SEXP f) {
+  return r_get_attr(f, r_sym(".Environment"));
+}
+
+bool r_f_has_env(SEXP f) {
+  return r_is_env(r_f_env(f));
 }
 
 bool is_formulaish(SEXP x, int scoped, int lhs) {
@@ -36,13 +38,13 @@ bool is_formulaish(SEXP x, int scoped, int lhs) {
     return false;
 
   if (scoped >= 0) {
-    int has_env = TYPEOF(f_env_(x)) == ENVSXP;
+    int has_env = TYPEOF(r_f_env(x)) == ENVSXP;
     if (scoped != has_env)
       return false;
   }
 
   if (lhs >= 0) {
-    int has_lhs = Rf_length(x) > 2;
+    int has_lhs = r_length(x) > 2;
     if (lhs != has_lhs)
       return false;
   }
@@ -64,7 +66,7 @@ int lgl_optional(SEXP lgl) {
   if (lgl == R_NilValue)
     return -1;
   else
-    return Rf_asLogical(lgl);
+    return r_as_bool(lgl);
 }
 
 SEXP rlang_is_formulaish(SEXP x, SEXP scoped, SEXP lhs) {

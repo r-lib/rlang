@@ -426,10 +426,10 @@ set_env <- function(env, new_env = caller_env()) {
 }
 
 mut_env_parent <- function(env, new_env) {
-  .Call(rlang_mut_env_parent, get_env(env), new_env)
+  .Call(rlang_mut_env_parent, env, new_env)
 }
 `env_parent<-` <- function(x, value) {
-  .Call(rlang_mut_env_parent, get_env(x), value)
+  .Call(rlang_mut_env_parent, x, value)
 }
 
 

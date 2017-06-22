@@ -7,7 +7,19 @@ SEXP rlang_sxp_address(SEXP x) {
 }
 
 SEXP rlang_is_reference(SEXP x, SEXP y) {
-  return Rf_ScalarLogical(x == y);
+  return r_scalar_lgl(x == y);
+}
+
+SEXPTYPE r_typeof(SEXP x) {
+  return TYPEOF(x);
+}
+
+bool r_inherits(SEXP x, const char* class_) {
+  return Rf_inherits(x, class_);
+}
+
+SEXP r_get_attr(SEXP x, SEXP sym) {
+  return Rf_getAttrib(x, sym);
 }
 
 void mut_attr(SEXP x, SEXP sym, SEXP attr) {
@@ -18,10 +30,10 @@ void mut_class(SEXP x, SEXP classes) {
 }
 
 SEXP set_attr(SEXP x, SEXP sym, SEXP attr) {
-  x = PROTECT(Rf_shallow_duplicate(x));
+  x = KEEP(Rf_shallow_duplicate(x));
   mut_attr(x, sym, attr);
 
-  UNPROTECT(1);
+  FREE(1);
   return x;
 }
 SEXP set_class(SEXP x, SEXP classes) {
@@ -49,4 +61,30 @@ bool is_named(SEXP x) {
     return false;
 
   return true;
+}
+
+
+SEXP r_missing_arg() {
+  return R_MissingArg;
+}
+bool r_is_missing(SEXP x) {
+  return x == R_MissingArg;
+}
+
+
+SEXP rlang_is_null(SEXP x) {
+  return r_scalar_lgl(r_is_null(x));
+}
+bool r_is_null(SEXP x) {
+  return x == R_NilValue;
+}
+
+SEXP r_duplicate(SEXP x, bool shallow) {
+  if (shallow)
+    return Rf_shallow_duplicate(x);
+  else
+    return Rf_duplicate(x);
+}
+SEXP rlang_duplicate(SEXP x, SEXP shallow) {
+  return r_duplicate(x, r_as_bool(shallow));
 }

@@ -1,4 +1,4 @@
-#include "vector.h"
+#include "rlang.h"
 
 
 // In particular, this returns 1 for environments
@@ -11,12 +11,16 @@ R_len_t vec_length(SEXP x) {
   case STRSXP:
   case RAWSXP:
   case VECSXP:
-    return Rf_length(x);
+    return r_length(x);
   case NILSXP:
     return 0;
   default:
     return 1;
   }
+}
+
+SEXP r_scalar_lgl(bool x) {
+  return Rf_ScalarLogical(x);
 }
 
 
@@ -117,7 +121,7 @@ void vec_copy_coerce_n(SEXP src, R_len_t n, SEXP dest,
     REPROTECT(call = Rf_lang2(call, src), ipx);
     REPROTECT(coerced = Rf_eval(call, R_BaseEnv), ipx);
     vec_copy_n(coerced, n, dest, offset_dest, offset_src);
-    UNPROTECT(1);
+    FREE(1);
   } else {
     vec_copy_n(src, n, dest, offset_dest, offset_src);
   }

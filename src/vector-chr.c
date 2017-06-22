@@ -1,3 +1,4 @@
+#include <string.h>
 #include "rlang.h"
 
 bool chr_has(SEXP chr, const char* c_string) {
@@ -26,7 +27,7 @@ SEXP string(const char* c_string) {
   return Rf_mkString(c_string);
 }
 bool is_string(SEXP x) {
-  return TYPEOF(x) == STRSXP && Rf_length(x) == 1;
+  return TYPEOF(x) == STRSXP && r_length(x) == 1;
 }
 
 void validate_chr_setter(SEXP chr, SEXP r_string) {
@@ -41,13 +42,13 @@ SEXP chr_prepend(SEXP chr, SEXP r_string) {
   else
     validate_chr_setter(chr, r_string);
 
-  int n = Rf_length(chr);
-  SEXP out = PROTECT(Rf_allocVector(STRSXP, n + 1));
+  int n = r_length(chr);
+  SEXP out = KEEP(Rf_allocVector(STRSXP, n + 1));
 
   vec_copy_n(chr, n, out, 1, 0);
   mut_chr_at(out, 0, r_string);
 
-  UNPROTECT(1);
+  FREE(1);
   return out;
 }
 SEXP chr_append(SEXP chr, SEXP r_string) {
@@ -56,12 +57,12 @@ SEXP chr_append(SEXP chr, SEXP r_string) {
   else
     validate_chr_setter(chr, r_string);
 
-  int n = Rf_length(chr);
-  SEXP out = PROTECT(Rf_allocVector(STRSXP, n + 1));
+  int n = r_length(chr);
+  SEXP out = KEEP(Rf_allocVector(STRSXP, n + 1));
 
   vec_copy_n(chr, n, out, 0, 0);
   mut_chr_at(out, n, r_string);
 
-  UNPROTECT(1);
+  FREE(1);
   return out;
 }
