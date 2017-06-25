@@ -64,12 +64,10 @@ The base R functions take two sorts of arguments to indicate which
 frame to query: \code{which} and \code{n}. The \code{n} argument is
 straightforward: it's the number of frames to go down the stack,
 with \code{n = 1} referring to the current context. The \code{which} argument
-is more complicated and changes meaning for values lower than
-\enumerate{
-\item For the sake of consistency, the lazyeval functions all take the
+is more complicated and changes meaning for values lower than 1.
+For the sake of consistency, the lazyeval functions all take the
 same kind of argument \code{n}. This argument has a single meaning (the
 number of frames to go down the stack) and cannot be lower than 1.
-}
 
 Note finally that \code{parent.frame(1)} corresponds to
 \code{call_frame(2)$env}, as \code{n = 1} always refers to the current

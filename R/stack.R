@@ -23,8 +23,8 @@
 #' frame to query: `which` and `n`. The `n` argument is
 #' straightforward: it's the number of frames to go down the stack,
 #' with `n = 1` referring to the current context. The `which` argument
-#' is more complicated and changes meaning for values lower than
-#' 1. For the sake of consistency, the lazyeval functions all take the
+#' is more complicated and changes meaning for values lower than 1.
+#' For the sake of consistency, the lazyeval functions all take the
 #' same kind of argument `n`. This argument has a single meaning (the
 #' number of frames to go down the stack) and cannot be lower than 1.
 #'
