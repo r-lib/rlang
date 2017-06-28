@@ -21,6 +21,10 @@
   of throwing an error. This is intended to make it easier to teach
   tidyeval.
 
+* New function `chr_translate_unicode()` for turning characters
+  serialised to unicode point form (e.g. `<U+xxxx>`) to UTF-8. In
+  addition, `as_utf8_character()` now translates those as well.
+
 
 # rlang 0.1.1
 

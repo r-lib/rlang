@@ -36,6 +36,12 @@ native encoding. Conversion to native is a no-op, and conversion
 to UTF-8 should work as long as the string is actually encoded in
 the locale codeset.
 }
+
+When translating to UTF-8, the strings are parsed for serialised
+unicode points (e.g. strings looking like "U+xxxx") with
+\code{\link[=chr_translate_unicode]{chr_translate_unicode()}}. This helps to alleviate the effects of
+character-to-symbol-to-character roundtrips on systems with
+non-UTF-8 native encoding.
 }
 \examples{
 # Let's create a string marked as UTF-8 (which is guaranteed by the

@@ -122,6 +122,16 @@ test_that("splicing an empty vector works", {
   expect_identical(expr_interp(~list(!!! NULL)), quo(list()))
 })
 
+test_that("serialised unicode in argument names is parsed on splice", {
+  nms <- with_latin1_locale({
+    exprs <- exprs("\u5e78" := 10)
+    quos <- quos(!!! exprs)
+    names(quos)
+  })
+  expect_identical(as_bytes(nms), as_bytes("\u5e78"))
+  expect_true(all(chr_encoding(nms) == "UTF-8"))
+})
+
 
 # UQE ----------------------------------------------------------------
 
