@@ -58,7 +58,7 @@ test_that("call_depth() returns correct depth", {
 })
 
 test_that("call_frame()$env is the same as parent.frame()", {
-  f <- function(n) call_frame(n + 1)$env
+  f <- function(n) call_frame(n)$env
   f_base <- function(n) parent.frame(n)
   env1 <- f(1)
   env1_base <- f_base(1)
@@ -70,10 +70,10 @@ test_that("call_frame()$env is the same as parent.frame()", {
 })
 
 test_that("call_frame()$expr gives expression of caller not previous ctxt", {
-  f <- function(x = 1) call_frame(x)$expr
+  f <- function(x = 0) call_frame(x)$expr
   expect_equal(f(), quote(f()))
 
-  g <- function() identity(f(2))
+  g <- function() identity(f(1))
   expect_equal(g(), quote(g()))
 })
 
@@ -194,12 +194,12 @@ test_that("ctxt_stack() subsets n frames", {
   expect_identical(stack_2, stack[1:2])
 
   n <- ctxt_depth()
-  stack_n <- ctxt_stack(n)
+  stack_n <- ctxt_stack(n + 1)
   expect_identical(stack_n, stack)
 
   # Get correct eval depth within expect_error()
   expect_error({ n <- ctxt_depth(); stop() })
-  expect_error(ctxt_stack(n + 1), "not that many frames")
+  expect_error(ctxt_stack(n + 2), "not that many frames")
 })
 
 test_that("call_stack() subsets n frames", {
@@ -208,12 +208,14 @@ test_that("call_stack() subsets n frames", {
   expect_identical(stack_2, stack[1:2])
 
   n <- call_depth()
-  stack_n <- call_stack(n)
+  stack_n <- call_stack(n + 1)
   expect_identical(stack_n, stack)
 
   # Get correct eval depth within expect_error()
   expect_error({ n <- call_depth(); stop() })
-  expect_error(call_stack(n + 1), "not that many frames")
+
+  # Add 1 for the global frame + 1 to get out of bound
+  expect_error(call_stack(n + 2), "not that many frames")
 })
 
 test_that("call stacks are cleaned", {
@@ -310,6 +312,7 @@ test_that("can return to frame", {
 
 test_that("detects frame environment", {
   expect_true(identity(is_frame_env(ctxt_frame(2)$env)))
+  expect_false(is_frame_env(env()))
 })
 
 test_that("call is not modified in place", {

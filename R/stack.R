@@ -26,19 +26,11 @@
 #' is more complicated and changes meaning for values lower than 1.
 #' For the sake of consistency, the lazyeval functions all take the
 #' same kind of argument `n`. This argument has a single meaning (the
-#' number of frames to go down the stack) and cannot be lower than 1.
+#' number of frames to go down the stack) and cannot be lower than 0,
+#' with 0 referring to the current context.
 #'
-#' Note finally that `parent.frame(1)` corresponds to
-#' `call_frame(2)$env`, as `n = 1` always refers to the current
-#' frame. This makes the `_frame()` and `_stack()` functions
-#' consistent: `ctxt_frame(2)` is the same as `ctxt_stack()[[2]]`.
-#' Also, `ctxt_depth()` returns one more frame than
-#' [base::sys.nframe()] because it counts the global frame. That is
-#' consistent with the `_stack()` functions which return the global
-#' frame as well. This way, `call_stack(call_depth())` is the same as
-#' `global_frame()`.
-#'
-#' @param n The number of frames to go back in the stack.
+#' @param n The number of frames to go back in the stack. 0 refers to
+#'   the current frame on the stack, 1 to the previous frame, etc.
 #' @param clean Whether to post-process the call stack to clean
 #'   non-standard frames. If `TRUE`, suboptimal call-stack entries by
 #'   [base::eval()] will be cleaned up: the duplicate frame created by
@@ -73,8 +65,8 @@
 #' # purrr::map(stack, "env")
 #' # purrr::transpose(stack)$expr
 #'
-#' # current_frame() is an alias for ctxt_frame(1)
-#' fn <- function() list(current = current_frame(), first = ctxt_frame(1))
+#' # current_frame() is an alias for ctxt_frame(0)
+#' fn <- function() list(current = current_frame(), first = ctxt_frame(0))
 #' fn()
 #'
 #' # While current_frame() is the top of the stack, global_frame() is
@@ -153,17 +145,20 @@ global_frame <- function() {
 #' @rdname stack
 #' @export
 current_frame <- function() {
-  ctxt_frame(2)
+  ctxt_frame(1)
 }
 
 #' @rdname stack
 #' @export
-ctxt_frame <- function(n = 1) {
+ctxt_frame <- function(n = 0) {
+  # Account for ctxt_frame() own frame
+  n <- n + 1
+
   stopifnot(n > 0)
   pos <- sys.nframe() - n
 
   if (pos < 0L) {
-    stop("not that many frames on the stack", call. = FALSE)
+    abort_stack("evaluation")
   } else if (pos == 0L) {
     global_frame()
   } else {
@@ -181,17 +176,20 @@ ctxt_frame <- function(n = 1) {
 # Positions of frames in the call stack up to `n`
 trail_make <- function(callers, n = NULL, clean = TRUE) {
   n_ctxt <- length(callers)
-  if (is.null(n)) {
+  if (is_null(n)) {
     n_max <- n_ctxt
   } else {
     if (n > n_ctxt) {
-      stop("not that many frames on the evaluation stack", call. = FALSE)
+      abort_stack("evaluation")
     }
     n_max <- n + 1
   }
 
   state <- trail_next(callers, 1, clean)
   if (!length(state$i) || state$i == 0) {
+    if (!is_null(n) && n > 0) {
+      abort_stack("call")
+    }
     return(0L)
   }
   j <- 1
@@ -210,9 +208,15 @@ trail_make <- function(callers, n = NULL, clean = TRUE) {
 
   # Return relevant subset
   if (!is.null(n) && n > j) {
-    stop("not that many frames on the call stack", call. = FALSE)
+    abort_stack("call")
   }
   out[seq_len(j)]
+}
+abort_stack <- function(stack) {
+  msg <- sprintf("not that many frames on the %s stack", stack)
+
+  # Don't use abort() because stack code is called from cnd ctors
+  stop(msg, call. = FALSE)
 }
 
 trail_next <- function(callers, i, clean) {
@@ -249,12 +253,16 @@ trail_index <- function(callers, i) {
 
 #' @rdname stack
 #' @export
-call_frame <- function(n = 1, clean = TRUE) {
-  stopifnot(n > 0)
+call_frame <- function(n = 0, clean = TRUE) {
+  stopifnot(n >= 0)
 
   eval_callers <- ctxt_stack_callers()
   trail <- trail_make(eval_callers, n, clean = clean)
-  pos <- trail[n]
+
+  if (n >= length(trail)) {
+    abort_stack("call")
+  }
+  pos <- trail[n + 1]
 
   if (identical(pos, 0L)) {
     return(global_frame())
@@ -262,7 +270,7 @@ call_frame <- function(n = 1, clean = TRUE) {
 
   frame <- new_frame(list(
     pos = pos,
-    caller_pos = trail[n + 1],
+    caller_pos = trail[n + 2],
     expr = sys.call(pos),
     env = sys.frame(pos),
     fn = sys.function(pos),
@@ -277,9 +285,9 @@ call_frame <- function(n = 1, clean = TRUE) {
 
 #' Get the environment of the caller frame
 #'
-#' `caller_frame()` is a shortcut for `call_frame(2)` and
+#' `caller_frame()` is a shortcut for `call_frame(1)` and
 #' `caller_fn()` and `caller_env()` are shortcuts for
-#' `call_frame(2)$env` `call_frame(2)$fn`.
+#' `call_frame(1)$env` `call_frame(1)$fn`.
 #'
 #' @param n The number of generation to go back. Note that contrarily
 #'   to [call_frame()], 1 represents the parent frame rather than the
@@ -292,12 +300,12 @@ caller_env <- function(n = 1) {
 #' @rdname caller_env
 #' @export
 caller_frame <- function(n = 1) {
-  call_frame(n + 2)
+  call_frame(n + 1)
 }
 #' @rdname caller_env
 #' @export
 caller_fn <- function(n = 1) {
-  call_frame(n + 2)$fn
+  call_frame(n + 1)$fn
 }
 
 
@@ -306,14 +314,14 @@ caller_fn <- function(n = 1) {
 #' @rdname stack
 #' @export
 ctxt_depth <- function() {
-  sys.nframe()
+  sys.nframe()  - 1
 }
 #' @rdname stack
 #' @export
 call_depth <- function() {
   eval_callers <- ctxt_stack_callers()
   trail <- trail_make(eval_callers)
-  length(trail)
+  length(trail) - 1
 }
 
 
@@ -378,7 +386,7 @@ stack_subset <- function(stack_data, n) {
       # We'll add the global frame later
       n <- n <- n - 1
     } else if (n > n_stack + 1) {
-      stop("not that many frames on the stack", call. = FALSE)
+      abort_stack("evaluation")
     }
     stack_data <- map(stack_data, `[`, seq_len(n))
   }
@@ -406,7 +414,8 @@ call_stack <- function(n = NULL, clean = TRUE) {
     stack <- map(stack, frame_clean_eval)
   }
 
-  if (trail[length(trail)] == 0L) {
+  n <- n %||% length(trail)
+  if (trail[n] == 0L) {
     stack <- c(stack, list(global_frame()))
   }
 
@@ -581,8 +590,7 @@ stack_trim <- function(stack, n = 1) {
     return(stack)
   }
 
-  # Add 1 to discard stack_trim()'s own intervening frames
-  caller_pos <- call_frame(n + 1, clean = FALSE)$pos
+  caller_pos <- call_frame(n, clean = FALSE)$pos
 
   n_frames <- length(stack)
   n_skip <- n_frames - caller_pos
