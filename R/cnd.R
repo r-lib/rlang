@@ -221,14 +221,14 @@ is_condition <- function(x) {
 cnd_signal <- function(.cnd, ..., .msg = NULL, .call = NULL,
                        .mufflable = TRUE) {
   cnd <- cnd_update(.cnd, ..., .msg = .msg, .call = cnd_call(.call), .show_call = .call)
-  .Call(rlang_cnd_signal, cnd, .mufflable)
+  invisible(.Call(rlang_cnd_signal, cnd, .mufflable))
 }
 #' @rdname cnd_signal
 #' @export
 cnd_abort <- function(.cnd, ..., .msg = NULL, .call = NULL,
                       .mufflable = FALSE) {
   cnd <- cnd_update(.cnd, ..., .msg = .msg, .call = cnd_call(.call), .show_call = .call)
-  .Call(rlang_cnd_signal_error, cnd, .mufflable)
+  invisible(.Call(rlang_cnd_signal_error, cnd, .mufflable))
 }
 
 cnd_call <- function(call) {
@@ -241,7 +241,7 @@ cnd_call <- function(call) {
   caller_frame(call + 1)$expr
 }
 cnd_update <- function(.cnd, ..., .msg, .call, .show_call) {
-  if (is_string(.cnd)) {
+  if (is_character(.cnd)) {
     .cnd <- cnd(.cnd, ...)
   } else {
     stopifnot(is_condition(.cnd))
