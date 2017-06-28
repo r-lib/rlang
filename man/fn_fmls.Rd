@@ -4,6 +4,8 @@
 \alias{fn_fmls}
 \alias{fn_fmls_names}
 \alias{fn_fmls_syms}
+\alias{fn_fmls<-}
+\alias{fn_fmls_names<-}
 \title{Extract arguments from a function}
 \usage{
 fn_fmls(fn = caller_fn())
@@ -11,10 +13,16 @@ fn_fmls(fn = caller_fn())
 fn_fmls_names(fn = caller_fn())
 
 fn_fmls_syms(fn = caller_fn())
+
+fn_fmls(fn) <- value
+
+fn_fmls_names(fn) <- value
 }
 \arguments{
 \item{fn}{A function. It is lookep up in the calling frame if not
 supplied.}
+
+\item{value}{New formals or formals names for \code{fn}.}
 }
 \description{
 \code{fn_fmls()} returns a named list of formal arguments.
@@ -27,6 +35,20 @@ calls}.
 Unlike \code{formals()}, these helpers also work with primitive
 functions. See \code{\link[=is_function]{is_function()}} for a discussion of primitive and
 closure functions.
+
+Note that the argument names are taken from the closures that are
+created when passing the primitive to \code{\link[=as_closure]{as_closure()}}. For instance,
+while the arguments of the primitive operator \code{+} are labelled \code{e1}
+and \code{e2}, \code{fn_fmls_names()} will return \code{.x} and \code{.y}. Note that
+for many primitives the base R argument names are purely
+placeholders since they don't perform regular argument matching.
+E.g. this returns \code{5} instead of \code{-5}:\preformatted{`-`(e2 = 10, 5)
+}
+
+To regularise the semantics of primitive functions, it is usually a
+good idea to coerce them to a closure first:\preformatted{minus <- as_closure(`-`)
+minus(.y = 10, 5)
+}
 }
 \examples{
 # Extract from current call:
@@ -38,6 +60,13 @@ fn_fmls(base::switch)
 
 # fn_fmls_syms() makes it easy to forward arguments:
 lang("apply", !!! fn_fmls_syms(lapply))
+
+# You can also change the formals:
+fn_fmls(fn) <- list(A = 10, B = 20)
+fn()
+
+fn_fmls_names(fn) <- c("foo", "bar")
+fn()
 }
 \seealso{
 \code{\link[=lang_args]{lang_args()}} and \code{\link[=lang_args_names]{lang_args_names()}}

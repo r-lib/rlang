@@ -62,6 +62,26 @@ prim_name <- function(prim) {
 #' functions. See [is_function()] for a discussion of primitive and
 #' closure functions.
 #'
+#' Note that the argument names are taken from the closures that are
+#' created when passing the primitive to [as_closure()]. For instance,
+#' while the arguments of the primitive operator `+` are labelled `e1`
+#' and `e2`, `fn_fmls_names()` will return `.x` and `.y`. Note that
+#' for many primitives the base R argument names are purely
+#' placeholders since they don't perform regular argument matching.
+#' E.g. this returns `5` instead of `-5`:
+#'
+#' ```
+#' `-`(e2 = 10, 5)
+#' ```
+#'
+#' To regularise the semantics of primitive functions, it is usually a
+#' good idea to coerce them to a closure first:
+#'
+#' ```
+#' minus <- as_closure(`-`)
+#' minus(.y = 10, 5)
+#' ```
+#'
 #' @param fn A function. It is lookep up in the calling frame if not
 #'   supplied.
 #' @seealso [lang_args()] and [lang_args_names()]
@@ -76,6 +96,13 @@ prim_name <- function(prim) {
 #'
 #' # fn_fmls_syms() makes it easy to forward arguments:
 #' lang("apply", !!! fn_fmls_syms(lapply))
+#'
+#' # You can also change the formals:
+#' fn_fmls(fn) <- list(A = 10, B = 20)
+#' fn()
+#'
+#' fn_fmls_names(fn) <- c("foo", "bar")
+#' fn()
 fn_fmls <- function(fn = caller_fn()) {
   fn <- as_closure(fn)
   formals(fn)
@@ -94,6 +121,25 @@ fn_fmls_syms <- function(fn = caller_fn()) {
   syms(nms)
 }
 
+#' @rdname fn_fmls
+#' @param value New formals or formals names for `fn`.
+#' @export
+`fn_fmls<-` <- function(fn, value) {
+  fn <- as_closure(fn)
+  formals(fn) <- value
+  fn
+}
+#' @rdname fn_fmls
+#' @export
+`fn_fmls_names<-` <- function(fn, value) {
+  fn <- as_closure(fn)
+
+  fmls <- formals(fn)
+  names(fmls) <- value
+  formals(fn) <- fmls
+
+  fn
+}
 
 #' Is object a function?
 #'
@@ -405,7 +451,7 @@ op_as_closure <- function(prim_nm) {
     `repeat` = ,
     `return` = ,
     `while` = {
-      nm <- chr_quoted(prim_name)
+      nm <- chr_quoted(prim_nm)
       abort(paste0("Can't coerce the primitive function ", nm, " to a closure"))
     }
   )
