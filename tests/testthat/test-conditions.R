@@ -168,3 +168,7 @@ test_that("restarting() handlers pass along all requested arguments", {
   }
   with_restarts(fn(), rst_foo = rst_foo)
 })
+
+test_that("cnd_signal() returns NULL invisibly", {
+  expect_identical(withVisible(cnd_signal("foo")), withVisible(invisible(NULL)))
+})
