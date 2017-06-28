@@ -15,6 +15,8 @@
   scope. If the `create` argument is `FALSE`, it only overwrites
   existing bindings and issues an error otherwise (#162).
 
+* New `fn_fmls<-` and `fn_fmls_names<-` setters.
+
 
 # rlang 0.1.1
 
