@@ -36,25 +36,13 @@ native encoding. Conversion to native is a no-op, and conversion
 to UTF-8 should work as long as the string is actually encoded in
 the locale codeset.
 }
+
+When translating to UTF-8, the strings are parsed for serialised
+unicode points (e.g. strings looking like "U+xxxx") with
+\code{\link[=chr_translate_unicode]{chr_translate_unicode()}}. This helps to alleviate the effects of
+character-to-symbol-to-character roundtrips on systems with
+non-UTF-8 native encoding.
 }
-\section{Serialised unicode characters}{
-
-
-For historical reasons, R translates strings to the native encoding
-when they are converted to symbols. This string-to-symbol
-conversion is not a rare occurrence and happens for instance to the
-names of a list of arguments converted to a call by \code{do.call()}.
-If the string contains unicode characters that cannot be
-represented in the native encoding, R serialises those as a ASCII
-sequence representing the unicode point. This is why Windows users
-with western locales often see strings looking like \code{<U+xxxx>}. To
-alleviate some of the pain, rlang parses strings and looks for
-serialised unicode points to translate them back to the proper
-UTF-8 representation. This transformation occurs automatically in
-functions like \code{\link[=env_names]{env_names()}} and can be manually triggered with
-\code{as_utf8_character()}.
-}
-
 \examples{
 # Let's create a string marked as UTF-8 (which is guaranteed by the
 # Unicode escaping in the string):
