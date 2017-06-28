@@ -47,3 +47,10 @@ test_that("name symbols, calls, and scalars", {
   expect_identical(expr_name(function() NULL), "function () ...")
   expect_error(expr_name(1:2), "must quote a symbol, scalar, or call")
 })
+
+
+# --------------------------------------------------------------------
+
+test_that("can enexpr() at top-level", {
+  expect_identical(eval_bare(quote(enexpr(foo)), global_env()), quote(foo))
+})

@@ -24,7 +24,8 @@
 
 * Calling `enquo()` at top-level is now an alias for `quo()` instead
   of throwing an error. This is intended to make it easier to teach
-  tidyeval.
+  tidyeval. Similarly, `enexpr()` at top-level is an alias for
+  `expr()`.
 
 * New function `chr_translate_unicode()` for turning characters
   serialised to unicode point form (e.g. `<U+xxxx>`) to UTF-8. In
