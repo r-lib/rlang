@@ -27,6 +27,8 @@
   tidyeval. Similarly, `enexpr()` at top-level is an alias for
   `expr()`.
 
+* `ensym()` is a new variant of `enexpr()` that expects a symbol.
+
 * New function `chr_translate_unicode()` for turning characters
   serialised to unicode point form (e.g. `<U+xxxx>`) to UTF-8. In
   addition, `as_utf8_character()` now translates those as well.

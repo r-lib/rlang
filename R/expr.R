@@ -10,7 +10,8 @@
 #'   [base::bquote()].
 #'
 #' - `enexpr()` takes an argument name and returns it unevaluated. It
-#'   is equivalent to [base::substitute()].
+#'   is equivalent to [base::substitute()]. The variant `ensym()` also
+#'   checks the argument is a simple symbol.
 #'
 #' - `exprs()` captures multiple expressions and returns a list. In
 #'   particular, it can capture expressions in `...`. It supports name
