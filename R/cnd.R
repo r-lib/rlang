@@ -241,7 +241,7 @@ cnd_call <- function(call) {
   caller_frame(call + 1)$expr
 }
 cnd_update <- function(.cnd, ..., .msg, .call, .show_call) {
-  if (is_string(.cnd)) {
+  if (is_character(.cnd)) {
     .cnd <- cnd(.cnd, ...)
   } else {
     stopifnot(is_condition(.cnd))

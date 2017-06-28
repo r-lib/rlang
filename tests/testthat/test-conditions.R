@@ -172,3 +172,10 @@ test_that("restarting() handlers pass along all requested arguments", {
 test_that("cnd_signal() returns NULL invisibly", {
   expect_identical(withVisible(cnd_signal("foo")), withVisible(invisible(NULL)))
 })
+
+test_that("cnd_signal() accepts character vectors (#195)", {
+  expect <- inplace(function(cnd) {
+    expect_identical(class(cnd), c("mufflable", "foo", "bar", "condition"))
+  })
+  with_handlers(cnd_signal(c("foo", "bar")), foo = expect)
+})
