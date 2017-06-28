@@ -1115,3 +1115,15 @@ env_format <- function(env) {
 
   type
 }
+
+hook_env <- function() {
+  .Call(rlang_hook_env)
+}
+#' @export
+print.hook_env <- function(x, ...) {
+  cat("<environment: lookup hook>\n")
+}
+#' @export
+str.hook_env <- function(object, ...) {
+  cat("<environment: lookup hook>\n")
+}

@@ -215,3 +215,8 @@ test_that("tilde calls are evaluated in overscope", {
   f <- eval_tidy(quo)
   expect_true(env_has(f, "foo"))
 })
+
+test_that("can evaluate in the empty env", {
+  # Requires being careful when setting up the lookup hook env
+  expect_identical(eval_tidy("foo", env = empty_env()), "foo")
+})

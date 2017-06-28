@@ -25,18 +25,18 @@ test_that("cnd_signal() includes call info", {
 
   call <- FALSE
   with_handlers(fn(foo(bar)), cnd = inplace(function(c) {
-    expect_identical(c$.call, quote(fn(foo(bar))))
+    expect_equal(c$.call, quote(fn(foo(bar))))
     expect_null(conditionCall(c))
   }))
 
   call <- TRUE
   with_handlers(fn(foo(bar)), cnd = inplace(function(c) {
-    expect_identical(conditionCall(c), quote(fn(foo(bar))))
+    expect_equal(conditionCall(c), quote(fn(foo(bar))))
   }))
 
   call <- NULL
   with_handlers(fn(foo(bar)), cnd = inplace(function(c) {
-    expect_identical(conditionCall(c), quote(foo(bar)))
+    expect_equal(conditionCall(c), quote(foo(bar)))
   }))
 
 
@@ -58,13 +58,13 @@ test_that("abort() includes call info", {
 
   call <- FALSE
   with_handlers(fn(foo(bar)), cnd = exiting(function(c) {
-    expect_identical(c$.call, quote(fn(foo(bar))))
+    expect_equal(c$.call, quote(fn(foo(bar))))
     expect_null(conditionCall(c))
   }))
 
   call <- TRUE
   with_handlers(fn(foo(bar)), cnd = exiting(function(c) {
-    expect_identical(conditionCall(c), quote(fn(foo(bar))))
+    expect_equal(conditionCall(c), quote(fn(foo(bar))))
   }))
 })
 
