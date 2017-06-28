@@ -312,6 +312,7 @@ test_that("can return to frame", {
 
 test_that("detects frame environment", {
   expect_true(identity(is_frame_env(ctxt_frame(2)$env)))
+  expect_false(is_frame_env(env()))
 })
 
 test_that("call is not modified in place", {
