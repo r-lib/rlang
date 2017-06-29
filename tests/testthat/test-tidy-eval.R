@@ -215,3 +215,17 @@ test_that("tilde calls are evaluated in overscope", {
   f <- eval_tidy(quo)
   expect_true(env_has(f, "foo"))
 })
+
+test_that(".env pronoun refers to current quosure (#174)", {
+  inner_quo <- local({
+    var <- "inner"
+    quo(.env$var)
+  })
+
+  outer_quo <- local({
+    var <- "outer"
+    quo(identity(!! inner_quo))
+  })
+
+  expect_identical(eval_tidy(outer_quo), "inner")
+})

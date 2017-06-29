@@ -30,6 +30,15 @@
   serialised to unicode point form (e.g. `<U+xxxx>`) to UTF-8. In
   addition, `as_utf8_character()` now translates those as well.
 
+* `eval_tidy()` no longer maps over lists but returns them literally.
+  This behaviour is an overlook from past refactorings and was never
+  documented.
+
+* When nested quosures are evaluated with `eval_tidy()`, the `.env`
+  pronoun now correctly refers to the current quosure under evaluation
+  (#174). Previously it would always refer to the environment of the
+  outermost quosure.
+
 
 # rlang 0.1.1
 
