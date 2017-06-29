@@ -10,7 +10,8 @@
 #'   [base::bquote()].
 #'
 #' - `enexpr()` takes an argument name and returns it unevaluated. It
-#'   is equivalent to [base::substitute()].
+#'   is equivalent to [base::substitute()]. The variant `ensym()` also
+#'   checks the argument is a simple symbol.
 #'
 #' - `exprs()` captures multiple expressions and returns a list. In
 #'   particular, it can capture expressions in `...`. It supports name
@@ -66,9 +67,13 @@ enexpr <- function(arg) {
     return(missing_arg())
   }
 
-  capture <- lang(captureArg, substitute(arg))
-  arg <- eval_bare(capture, caller_env())
-  .Call(rlang_interp, arg$expr, arg$env, TRUE)
+  if (sys.parent() == 0) {
+    enexpr(arg)
+  } else {
+    capture <- lang(captureArg, substitute(arg))
+    arg <- eval_bare(capture, caller_env())
+    .Call(rlang_interp, arg$expr, arg$env, TRUE)
+  }
 }
 #' @rdname expr
 #' @inheritParams dots_values

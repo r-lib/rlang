@@ -30,6 +30,24 @@ is_symbol <- function(x) {
   typeof(x) == "symbol"
 }
 
+#' @rdname expr
+#' @export
+ensym <- function(arg) {
+  if (sys.parent() == 0) {
+    sym <- enexpr(arg)
+  } else {
+    capture <- lang(captureArg, substitute(arg))
+    arg <- eval_bare(capture, caller_env())
+    sym <- .Call(rlang_interp, arg$expr, arg$env, TRUE)
+  }
+
+  if (!is_symbol(sym)) {
+    abort("Must supply a symbol as argument")
+  }
+
+  sym
+}
+
 sym_namespace <- quote(`::`)
 sym_namespace2 <- quote(`:::`)
 sym_dollar <- quote(`$`)
