@@ -20,6 +20,10 @@ bool r_is_env(SEXP x) {
 SEXP r_env_get(SEXP env, SEXP sym) {
   return Rf_findVarInFrame3(env, sym, TRUE);
 }
+SEXP r_env_set(SEXP env, SEXP sym, SEXP value) {
+  Rf_defineVar(sym, value, env);
+  return env;
+}
 
 SEXP r_ns_env(const char* pkg) {
   SEXP ns = r_env_get(R_NamespaceRegistry, r_sym(pkg));
