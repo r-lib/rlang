@@ -295,7 +295,7 @@ deparse_one <- function(expr) {
 #' expression depending on the input type. Note that `set_expr()` does
 #' not change its input, it creates a new object.
 #'
-#' @param x An expression or one-sided formula. In addition,
+#' @param x An expression, closure, or one-sided formula. In addition,
 #'   `set_expr()` accept frames.
 #' @param value An updated expression.
 #' @param default A default expression to return when `x` is not an
@@ -317,16 +317,21 @@ deparse_one <- function(expr) {
 set_expr <- function(x, value) {
   if (is_quosureish(x)) {
     f_rhs(x) <- value
-    x
+  } else if (is_closure(x)) {
+    body(x) <- value
   } else {
-    value
+    x <- value
   }
+
+  x
 }
 #' @rdname set_expr
 #' @export
 get_expr <- function(x, default = x) {
   if (is_quosureish(x)) {
     f_rhs(x)
+  } else if (is_closure(x)) {
+    body(x)
   } else if (inherits(x, "frame")) {
     x$expr
   } else {
