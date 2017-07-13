@@ -331,6 +331,13 @@ is_empty_env <- function(env) {
 #' helps simplifying code when writing generic functions for
 #' environments).
 #'
+#' While `set_env()` returns a modified copy and does not have side
+#' effects, `mut_env_parent()` operates changes the environment by
+#' side effect. This is because environments are
+#' [uncopyable][is_copyable]. Be careful not to change environments
+#' that you don't own, e.g. a parent environment of a function from a
+#' package.
+#'
 #' @param env An environment or an object bundling an environment,
 #'   e.g. a formula, [quosure] or [closure][is_closure].
 #' @param default The default environment in case `env` does not wrap
@@ -427,12 +434,13 @@ set_env <- function(env, new_env = caller_env()) {
     ))
   )
 }
-
+#' @rdname get_env
+#' @export
 mut_env_parent <- function(env, new_env) {
-  .Call(rlang_mut_env_parent, env, new_env)
+  .Call(rlang_mut_env_parent, get_env(env), get_env(new_env))
 }
 `env_parent<-` <- function(x, value) {
-  .Call(rlang_mut_env_parent, x, value)
+  .Call(rlang_mut_env_parent, get_env(x), value)
 }
 
 
