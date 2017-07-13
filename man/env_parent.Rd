@@ -8,7 +8,7 @@
 \usage{
 env_parent(env = caller_env(), n = 1)
 
-env_tail(env = caller_env())
+env_tail(env = caller_env(), sentinel = empty_env())
 
 env_parents(env = caller_env())
 }
@@ -17,6 +17,10 @@ env_parents(env = caller_env())
 e.g. a formula, \link{quosure} or \link[=is_closure]{closure}.}
 
 \item{n}{The number of generations to go up.}
+
+\item{sentinel}{The environment signalling the end of the linear
+search. \code{env_tail()} returns the environment which has \code{sentinel}
+as parent.}
 }
 \value{
 An environment for \code{env_parent()} and \code{env_tail()}, a list

@@ -225,6 +225,9 @@ as_env_ <- function(x, parent = NULL) {
 #'
 #' @inheritParams get_env
 #' @param n The number of generations to go up.
+#' @param sentinel The environment signalling the end of the linear
+#'   search. `env_tail()` returns the environment which has `sentinel`
+#'   as parent.
 #' @return An environment for `env_parent()` and `env_tail()`, a list
 #'   of environments for `env_parents()`.
 #' @export
@@ -262,11 +265,11 @@ env_parent <- function(env = caller_env(), n = 1) {
 }
 #' @rdname env_parent
 #' @export
-env_tail <- function(env = caller_env()) {
+env_tail <- function(env = caller_env(), sentinel = empty_env()) {
   env_ <- get_env(env)
   next_env <- parent.env(env_)
 
-  while(!is_empty_env(next_env)) {
+  while(!is_reference(next_env, sentinel)) {
     env_ <- next_env
     next_env <- parent.env(next_env)
   }
