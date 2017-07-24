@@ -12,11 +12,14 @@ knitr::opts_chunk$set(collapse = T, comment = "#>")
 library("rlang")
 ```
 
-Tidy evaluation is a general toolkit for non-standard evaluation, principally used to create domain-specific languages (DSLs) of grammars. The most prominent examples of such sublanguages in R are modelling specifications with formulas (`lm()`,
-`lme4::lmer()`, etc) and data manipulation grammars (dplyr,
-tidyr). Most of these DSLs put data frame columns in scope so that
-users can refer to them directly, saving keystrokes during interactive
-analysis and creating easily readable code.
+Tidy evaluation is a general toolkit for non-standard evaluation,
+principally used to create domain-specific languages (DSLs) of
+grammars. The most prominent examples of such sublanguages in R are
+modelling specifications with formulas (`lm()`, `lme4::lmer()`, etc)
+and data manipulation grammars (dplyr, tidyr). Most of these DSLs put
+data frame columns in scope so that users can refer to them directly,
+saving keystrokes during interactive analysis and creating easily
+readable code.
 
 R makes it easy to create DSLs thanks to three features of the
 language:
@@ -27,8 +30,8 @@ language:
   are created by parsing R code.
 
 - Scope is first-class. Scope is the lexical environment that
-  associates values to symbols in expressions. Unlike like most 
-  languages, environments can be created (see `env()`) and manipulated 
+  associates values to symbols in expressions. Unlike like most
+  languages, environments can be created (see `env()`) and manipulated
   as regular objects.
 
 - Finally, functions can capture the expressions that were supplied
@@ -53,7 +56,7 @@ were not necessarily envisioned or planned by their designers.
 ## Parsing versus evaluation
 
 There are two ways of dealing with unevaluated expressions to create a
-sublanguage. The first is to parse the expression and modify it, and 
+sublanguage. The first is to parse the expression and modify it, and
 the other is to leave the expression as is and evaluate it in a
 modified environment.
 
@@ -83,13 +86,13 @@ an environment containing data frame columns. While it is difficult to
 completely avoid *ad hoc* parsing, tidyeval DSLs strive to rely on
 evaluation as much as possible.
 
+
 ## Values versus expressions
 
 A corollary of emphasising evaluation is that your DSL functions
 should understand _values_ in addition to expressions. This is
-especially important with
-[quasiquotation][quasiquotation]:
-users can bypass symbolic evaluation completely by unquoting values. For
+especially important with [quasiquotation][quasiquotation]: users can
+bypass symbolic evaluation completely by unquoting values. For
 instance, the following expressions are completely equivalent:
 
 ```{r, eval = FALSE}
@@ -132,6 +135,7 @@ dplyr::select(mtcars, !! var)
 
 Understanding values in addition to expressions makes your grammar
 more consistent, predictable, and programmable.
+
 
 ## Tidy scoping
 
@@ -196,6 +200,7 @@ creates an overscope suitable for tidy evaluation. In particular,
 these overscopes contain definitions for self-evaluation of
 quosures. See [eval_tidy_()] and [as_overscope] for more flexible
 ways of creating overscopes.
+
 
 ## Theory
 
