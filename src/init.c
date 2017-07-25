@@ -2,7 +2,7 @@
 #include <R_ext/Rdynload.h>
 #include <stdbool.h>
 
-#include "export.h"
+#include "rlang/export.h"
 
 // Callable from other packages
 extern SEXP rlang_new_dictionary(SEXP, SEXP, SEXP);
