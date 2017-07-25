@@ -1,4 +1,4 @@
-#include <Rinternals.h>
+#include "rlang.h"
 
 SEXP r_node_car(SEXP x) {
   return CAR(x);
@@ -46,12 +46,12 @@ SEXP r_mut_node_cddr(SEXP x, SEXP newcdr) {
 
 // The underscored version expects protected arguments
 SEXP r_new_node_(SEXP car, SEXP cdr) {
-  return CONS(car, cdr);
+  return Rf_cons(car, cdr);
 }
 SEXP r_new_node(SEXP car, SEXP cdr) {
   PROTECT(car);
   PROTECT(cdr);
-  SEXP out = CONS(car, cdr);
+  SEXP out = Rf_cons(car, cdr);
   UNPROTECT(2);
   return out;
 }
