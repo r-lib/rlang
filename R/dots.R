@@ -261,7 +261,7 @@ dot_interp_lhs <- function(name, dot) {
   if (is_symbol(lhs)) {
     lhs <- as_string(lhs)
   } else if (!is_string(lhs)) {
-    abort("LHS must be a name or string")
+    abort("LHS must be a symbol or string")
   }
 
   dot <- list(expr = f_rhs(dot$expr), env = dot$env)

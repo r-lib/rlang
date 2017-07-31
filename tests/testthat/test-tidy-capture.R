@@ -104,7 +104,7 @@ test_that("corner cases are handled when interpolating dot names", {
     expect_identical(names(quos(!!var := NULL)), na_chr)
 
     var <- NULL
-    expect_error(quos(!!var := NULL), "must be a name or string")
+    expect_error(quos(!!var := NULL), "must be a symbol or string")
 })
 
 test_that("definitions are interpolated", {
