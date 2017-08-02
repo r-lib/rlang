@@ -144,6 +144,10 @@ is_dot_nm <- function(nm) {
   grepl("^\\.\\.[0-9]+$", nm)
 }
 
+dots_node <- function(...) {
+  node_cdr(substitute(lang(...)))
+}
+
 #' How many arguments are currently forwarded in dots?
 #'
 #' This returns the number of arguments currently forwarded in `...`

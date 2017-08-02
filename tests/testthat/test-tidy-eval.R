@@ -229,3 +229,8 @@ test_that(".env pronoun refers to current quosure (#174)", {
 
   expect_identical(eval_tidy(outer_quo), "inner")
 })
+
+test_that("can call tilde with named arguments (#226)", {
+  expect_equal(eval_tidy(quote(`~`(foo = x, bar = y))), x ~ y)
+  expect_equal(eval_tidy(quote(`~`(foo = x, bar = y, baz = z))), `~`(foo = x, bar = y, baz = z))
+})

@@ -314,7 +314,13 @@ overscope_clean <- function(overscope) {
 }
 
 f_self_eval <- function(overscope, overscope_top) {
-  function(lhs, rhs) {
-    .Call(rlang_tilde_eval, sys.call(), overscope, overscope_top, environment())
+  function(...) {
+    .Call(rlang_tilde_eval,
+      sys.call(),
+      dots_node(...),
+      overscope,
+      overscope_top,
+      environment()
+    )
   }
 }

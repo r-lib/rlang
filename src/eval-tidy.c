@@ -1,7 +1,7 @@
 #include "rlang/rlang.h"
 
 static
-SEXP base_tilde_eval(SEXP tilde, SEXP quo_env) {
+SEXP base_tilde_eval(SEXP tilde, SEXP dots, SEXP quo_env) {
   if (r_f_has_env(tilde))
     return tilde;
 
@@ -14,7 +14,7 @@ SEXP base_tilde_eval(SEXP tilde, SEXP quo_env) {
 
   // Inline the base primitive because overscopes override `~` to make
   // quosures self-evaluate
-  tilde = KEEP(r_new_language_(tilde_prim, r_node_cdr(tilde)));
+  tilde = KEEP(r_new_language_(tilde_prim, dots));
   tilde = KEEP(r_eval(tilde, quo_env));
 
   // Change it back because the result still has the primitive inlined
@@ -24,9 +24,9 @@ SEXP base_tilde_eval(SEXP tilde, SEXP quo_env) {
   return tilde;
 }
 
-SEXP rlang_tilde_eval(SEXP tilde, SEXP overscope, SEXP overscope_top, SEXP cur_frame) {
+SEXP rlang_tilde_eval(SEXP tilde, SEXP dots, SEXP overscope, SEXP overscope_top, SEXP cur_frame) {
   if (!r_inherits(tilde, "quosure"))
-    return base_tilde_eval(tilde, overscope);
+    return base_tilde_eval(tilde, dots, overscope);
 
   if (r_quo_is_missing(tilde))
     return(r_missing_arg());
