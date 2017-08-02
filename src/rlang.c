@@ -4,7 +4,6 @@
 #include "rlang/cnd.c"
 #include "rlang/env.c"
 #include "rlang/eval.c"
-#include "rlang/eval-tidy.c"
 #include "rlang/export.c"
 #include "rlang/formula.c"
 #include "rlang/lang.c"
