@@ -15,6 +15,7 @@ extern SEXP r_f_lhs(SEXP);
 extern SEXP r_f_rhs(SEXP);
 extern SEXP new_condition(SEXP, SEXP, SEXP);
 extern SEXP rlang_mut_env_parent(SEXP, SEXP);
+extern SEXP rlang_mut_type(SEXP, SEXP);
 extern SEXP rlang_replace_na(SEXP, SEXP);
 extern SEXP r_node_car(SEXP);
 extern SEXP r_node_cdr(SEXP);
@@ -93,6 +94,7 @@ static const R_CallMethodDef call_entries[] = {
   {"r_mut_node_cddr",           (DL_FUNC) &r_mut_node_cddr, 2},
   {"r_mut_node_cdr",            (DL_FUNC) &r_mut_node_cdr, 2},
   {"rlang_mut_env_parent",      (DL_FUNC) &rlang_mut_env_parent, 2},
+  {"rlang_mut_type",            (DL_FUNC) &rlang_mut_type, 2},
   {"r_mut_node_tag",            (DL_FUNC) &r_mut_node_tag, 2},
   {"rlang_squash",              (DL_FUNC) &rlang_squash, 4},
   {"rlang_sxp_address",         (DL_FUNC) &rlang_sxp_address, 1},

@@ -1,6 +1,10 @@
 #include <string.h>
 #include "rlang.h"
 
+SEXP r_chr_get(SEXP chr, size_t i) {
+  return STRING_ELT(chr, i);
+}
+
 bool chr_has(SEXP chr, const char* c_string) {
   SEXP nm;
   for (int i = 0; i != vec_length(chr); ++i) {
@@ -28,6 +32,10 @@ SEXP string(const char* c_string) {
 }
 bool is_string(SEXP x) {
   return TYPEOF(x) == STRSXP && r_length(x) == 1;
+}
+
+const char* r_c_string(SEXP scalar_chr) {
+  return CHAR(r_chr_get(scalar_chr, 0));
 }
 
 void validate_chr_setter(SEXP chr, SEXP r_string) {

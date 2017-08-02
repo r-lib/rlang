@@ -14,6 +14,15 @@ SEXPTYPE r_typeof(SEXP x) {
   return TYPEOF(x);
 }
 
+SEXP r_mut_kind(SEXP x, SEXPTYPE kind) {
+  SET_TYPEOF(x, kind);
+  return x;
+}
+SEXP rlang_mut_type(SEXP x, SEXP type) {
+  SET_TYPEOF(x, Rf_str2type(r_c_string(type)));
+  return x;
+}
+
 bool r_inherits(SEXP x, const char* class_) {
   return Rf_inherits(x, class_);
 }
