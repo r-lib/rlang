@@ -7,7 +7,7 @@
 
 # R 3.2.0 ------------------------------------------------------------
 
-if (utils::packageVersion("base") < "3.2.0") {
+if (getRversion() < "3.2.0") {
 
   dir_exists <- function(path) {
     !identical(path, "") && file.exists(paste0(path, .Platform$file.sep))
