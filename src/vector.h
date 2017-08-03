@@ -91,7 +91,7 @@ SEXP namespace_rlang_sym(SEXP sym) {
   static SEXP rlang_sym = NULL;
   if (!rlang_sym)
     rlang_sym = Rf_install("rlang");
-  return(Rf_lang3(R_DoubleColonSymbol, rlang_sym, sym));
+  return(Rf_lang3(Rf_install("::"), rlang_sym, sym));
 }
 
 SEXP vec_coercer_sym(SEXP dest) {

@@ -1,57 +1,39 @@
-# nocov start - compat-oldrel (last updated: rlang 0.1.9000)
+# nocov start - compat-oldrel (last updated: rlang 0.1.2)
 
 # This file serves as a reference for compatibility functions for old
-# versions of R.
-
-
-# Compat function for capture functions (that will hopefully make
-# their way to the next R version) -----------------------------------
-
-if (TRUE || utils::packageVersion("base") < "3.4.0") {
-
-  captureArg <- function(x, strict = TRUE) {
-    caller_env <- parent.frame()
-
-    if (identical(caller_env, globalenv())) {
-      stop("must be called in a function")
-    }
-    if (missing(x)) {
-      stop("argument \"x\" is missing")
-    }
-
-    .Call(rlang_capturearg, NULL, NULL, pairlist(caller_env, strict), get_env())
-  }
-
-  captureDots <- function(strict = TRUE) {
-    caller_env <- parent.frame()
-
-    if (!exists("...", caller_env)) {
-      stop("must be called in a function where dots exist")
-    }
-
-    .Call(rlang_capturedots, NULL, NULL, pairlist(caller_env, strict), get_env())
-  }
-
-}
+# versions of R. Please find the most recent version in rlang's
+# repository.
 
 
 # R 3.2.0 ------------------------------------------------------------
 
-if (utils::packageVersion("base") < "3.2.0") {
+if (getRversion() < "3.2.0") {
 
   dir_exists <- function(path) {
     !identical(path, "") && file.exists(paste0(path, .Platform$file.sep))
   }
   dir.exists <- function(paths) {
-    map_lgl(paths, dir_exists)
+    vapply(paths, dir_exists, logical(1))
   }
 
   names <- function(x) {
     if (is.environment(x)) {
-      ls(x, all.names = TRUE)
+      return(ls(x, all.names = TRUE))
     } else {
-      base::names(x)
+      return(base::names(x))
     }
+
+    # So R CMD check on old versions of R sees a generic, since we
+    # declare a names() method for dictionary objects
+    UseMethod("names")
+  }
+
+  trimws <- function(x, which = c("both", "left", "right")) {
+    switch(match.arg(which),
+      left = sub("^[ \t\r\n]+", "", x, perl = TRUE),
+      right = sub("[ \t\r\n]+$", "", x, perl = TRUE),
+      both = trimws(trimws(x, "left"), "right")
+    )
   }
 
 }
