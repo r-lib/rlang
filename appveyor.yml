@@ -21,6 +21,7 @@ environment:
     RTOOLS_VERSION: 32
     CRAN: http://cran.rstudio.com
     PKGTYPE: source
+    WARNINGS_ARE_ERRORS: 0
 
   - R_VERSION: release
     R_ARCH: x64
