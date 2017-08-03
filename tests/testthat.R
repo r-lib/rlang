@@ -1,4 +1,4 @@
-library(testthat)
-library(rlang)
+library("testthat")
+library("rlang")
 
 test_check("rlang")
