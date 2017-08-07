@@ -11,7 +11,7 @@
 #include "rlang/quo.c"
 #include "rlang/replace-na.c"
 #include "rlang/sexp.c"
-#include "rlang/splice.c"
+#include "rlang/squash.c"
 #include "rlang/stack.c"
 #include "rlang/sym.c"
 #include "rlang/sym-unescape.c"
