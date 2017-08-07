@@ -1,4 +1,4 @@
-context("symbols")
+context("expr-sym")
 
 test_that("can ensym() at top-level", {
   expect_identical(eval_bare(quote(ensym(foo)), global_env()), quote(foo))
