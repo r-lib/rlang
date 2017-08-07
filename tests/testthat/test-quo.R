@@ -1,4 +1,4 @@
-context("quo-unquo")
+context("quo")
 
 test_that("explicit promise makes a formula", {
   capture <- function(x) enquo(x)
