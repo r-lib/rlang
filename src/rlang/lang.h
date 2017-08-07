@@ -5,7 +5,7 @@
 SEXP r_new_language_(SEXP head, SEXP tail);
 SEXP r_new_language(SEXP head, SEXP tail);
 
-bool r_is_lang(SEXP x);
+bool r_is_language(SEXP x);
 
 
 #endif
