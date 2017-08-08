@@ -42,6 +42,14 @@
   (#174). Previously it would always refer to the environment of the
   outermost quosure.
 
+* The new functions `cnd_warn()` and `cnd_inform()` transform
+  conditions to warnings or messages before signalling them.
+
+* `signal_deprecated()` and `warn_obsolete()` depreciate functions. A
+  deprecated function is silent unless the `rlang_verbose_deprecation`
+  option is set to `TRUE`. An obsolete function always issues a
+  warning.
+
 
 # rlang 0.1.2
 
