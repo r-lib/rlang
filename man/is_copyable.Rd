@@ -31,9 +31,4 @@ is_copyable(env)
 
 structure(base::list, foo = "bar")
 str(base::list)
-
-# In expressions, calls and pairlists are safely copyable. However,
-# symbols are not:
-structure(quote(foo), foo = "bar")
-quote(foo)
 }
