@@ -151,6 +151,13 @@ is_condition <- function(x) {
 #'   }))
 #'
 #'
+#' # cnd_warn() and cnd_inform() signal a condition and display a
+#' # warning or message:
+#' \dontrun{
+#' cnd_inform(cnd)
+#' cnd_warn(cnd)
+#' }
+#'
 #' # You can signal a critical condition with cnd_abort(). Unlike
 #' # cnd_signal() which has no side effect besides signalling the
 #' # condition, cnd_abort() makes the program terminate with an error
@@ -187,10 +194,26 @@ cnd_signal <- function(.cnd, ..., .msg = NULL, .call = NULL,
 }
 #' @rdname cnd_signal
 #' @export
+cnd_inform <- function(.cnd, ..., .msg = NULL, .call = NULL,
+                     .mufflable = FALSE) {
+  cnd <- as_special_cnd(.cnd, "message")
+  cnd <- cnd_update(cnd, ..., .msg = .msg, .call = cnd_call(.call), .show_call = .call)
+  invisible(.Call(rlang_cnd_inform, cnd, .mufflable))
+}
+#' @rdname cnd_signal
+#' @export
+cnd_warn <- function(.cnd, ..., .msg = NULL, .call = NULL,
+                     .mufflable = FALSE) {
+  cnd <- as_special_cnd(.cnd, "warning")
+  cnd <- cnd_update(cnd, ..., .msg = .msg, .call = cnd_call(.call), .show_call = .call)
+  invisible(.Call(rlang_cnd_warn, cnd, .mufflable))
+}
+#' @rdname cnd_signal
+#' @export
 cnd_abort <- function(.cnd, ..., .msg = NULL, .call = NULL,
                       .mufflable = FALSE) {
   cnd <- cnd_update(.cnd, ..., .msg = .msg, .call = cnd_call(.call), .show_call = .call)
-  invisible(.Call(rlang_cnd_signal_error, cnd, .mufflable))
+  invisible(.Call(rlang_cnd_abort, cnd, .mufflable))
 }
 
 cnd_call <- function(call) {
@@ -230,6 +253,24 @@ cnd_update <- function(.cnd, ..., .msg, .call, .show_call) {
 
   .cnd
 }
+as_special_cnd <- function(cnd, type) {
+  if (is_character(cnd) && !type %in% cnd) {
+    return(c(cnd, type))
+  }
+
+  if (is_condition(cnd) && !inherits(cnd, type)) {
+    classes <- class(cnd)
+
+    pos <- match("condition", classes)
+    before <- classes[seq_len(pos - 1)]
+    after <- classes[seq.int(pos, length(classes))]
+
+    class(cnd) <- chr(before, type, after)
+  }
+
+  cnd
+}
+
 # Used in C implementation
 muffle <- function(...) NULL
 
