@@ -1,4 +1,9 @@
 
+# rlang 0.1.2
+
+This hotfix release makes rlang compatible with the R 3.1 branch.
+
+
 # rlang 0.1.1
 
 This release includes two important fixes for tidy evaluation:
