@@ -6,7 +6,6 @@
 
 bool is_lazy_load(SEXP x);
 bool is_lang(SEXP x, const char* f);
-SEXP last_cons(SEXP x);
 SEXP make_formula1(SEXP rhs, SEXP env);
 SEXP rlang_obj(const char* name);
 SEXP base_obj(const char* name);

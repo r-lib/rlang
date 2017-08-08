@@ -1,7 +1,7 @@
 #include "rlang.h"
 
 SEXP interp_lang(SEXP x, SEXP env, bool quosured);
-SEXP interp_pairlist(SEXP x, SEXP env, bool quosured);
+SEXP interp_lang_node(SEXP x, SEXP env, bool quosured);
 
 
 int bang_level(SEXP x) {
@@ -42,14 +42,17 @@ SEXP replace_double_bang(SEXP x) {
   }
   return x;
 }
-SEXP replace_triple_bang(SEXP nxt, SEXP cur) {
-  if (bang_level(CAR(nxt)) == 3) {
-    nxt = CDAR(nxt);
-    nxt = CDAR(nxt);
-    SETCAR(CAR(nxt), Rf_install("UQS"));
-    SETCDR(nxt, CDR(CDR(cur)));
+SEXP replace_triple_bang(SEXP x) {
+  if (bang_level(CAR(x)) != 3) {
+    return x;
   }
-  return nxt;
+
+  SEXP node = CDAR(CDAR(x));
+
+  SETCAR(CAR(node), Rf_install("UQS"));
+  SETCDR(node, CDR(x));
+
+  return node;
 }
 
 void unquote_check(SEXP x) {
@@ -62,6 +65,7 @@ bool is_bare_formula(SEXP x) {
       && CAR(x) == Rf_install("~")
       && !Rf_inherits(x, "quosure");
 }
+
 SEXP unquote(SEXP x, SEXP env, SEXP uq_sym, bool quosured) {
   if (is_sym(uq_sym, "!!"))
     uq_sym = Rf_install("UQE");
@@ -83,6 +87,7 @@ SEXP unquote(SEXP x, SEXP env, SEXP uq_sym, bool quosured) {
   FREE(1);
   return unquoted;
 }
+
 SEXP unquote_prefixed_uq(SEXP x, SEXP env, bool quosured) {
   SEXP uq_sym = CADR(CDAR(x));
   SEXP unquoted = KEEP(unquote(CADR(x), env, uq_sym, quosured));
@@ -95,28 +100,29 @@ SEXP unquote_prefixed_uq(SEXP x, SEXP env, bool quosured) {
     x = CAR(x);
   return x;
 }
-SEXP splice_nxt(SEXP cur, SEXP nxt, SEXP env) {
+
+SEXP splice_next(SEXP node, SEXP next, SEXP env) {
   static SEXP uqs_fun;
   if (!uqs_fun)
     uqs_fun = rlang_obj("UQS");
-  SETCAR(CAR(nxt), uqs_fun);
+  SETCAR(CAR(next), uqs_fun);
 
   // UQS() does error checking and returns a pair list
-  SEXP args_lsp = KEEP(Rf_eval(CAR(nxt), env));
+  SEXP spliced_node = KEEP(Rf_eval(CAR(next), env));
 
-  if (args_lsp == R_NilValue) {
-    SETCDR(cur, CDR(nxt));
+  if (spliced_node == R_NilValue) {
+    SETCDR(node, CDR(next));
   } else {
-    // Insert args_lsp into existing pairlist of args
-    SEXP last_arg = last_cons(args_lsp);
-    SETCDR(last_arg, CDR(nxt));
-    SETCDR(cur, args_lsp);
+    // Insert spliced_node into existing pairlist of args
+    SETCDR(r_node_tail(spliced_node), CDR(next));
+    SETCDR(node, spliced_node);
   }
 
   FREE(1);
-  return cur;
+  return next;
 }
-SEXP splice_value_nxt(SEXP cur, SEXP nxt, SEXP env) {
+
+SEXP value_splice_next(SEXP cur, SEXP nxt, SEXP env) {
   SETCAR(CAR(nxt), rlang_obj("splice"));
   SETCAR(nxt, Rf_eval(CAR(nxt), env));
   return cur;
@@ -137,25 +143,30 @@ SEXP interp_lang(SEXP x, SEXP env, bool quosured)  {
     SEXP uq_sym = CAR(x);
     x = unquote(CADR(x), env, uq_sym, quosured);
   } else {
-    x = interp_pairlist(x, env, quosured);
+    x = interp_lang_node(x, env, quosured);
   }
 
   FREE(1);
   return x;
 }
 
-SEXP interp_pairlist(SEXP x, SEXP env, bool quosured) {
-  for(SEXP cur = x; cur != R_NilValue; cur = CDR(cur)) {
-    SETCAR(cur, interp_lang(CAR(cur), env, quosured));
+bool is_splice_node(SEXP node) {
+  return is_rlang_call(CAR(node), is_splice_sym);
+}
+SEXP interp_lang_node(SEXP x, SEXP env, bool quosured) {
+  SEXP node, next;
 
-    SEXP nxt = CDR(cur);
-    nxt = replace_triple_bang(nxt, cur);
-    if (is_rlang_call(CAR(nxt), is_splice_sym)) {
+  for (node = x; node != R_NilValue; node = CDR(node)) {
+    SETCAR(node, interp_lang(CAR(node), env, quosured));
+
+    next = CDR(node);
+    next = replace_triple_bang(next);
+
+    if (is_splice_node(next)) {
       if (quosured) {
-        cur = splice_nxt(cur, nxt, env);
-        cur = nxt; // Don't interpolate unquoted stuff
+        node = splice_next(node, next, env);
       } else {
-        cur = splice_value_nxt(cur, nxt, env);
+        node = value_splice_next(node, next, env);
       }
     }
   }
@@ -164,10 +175,12 @@ SEXP interp_pairlist(SEXP x, SEXP env, bool quosured) {
 }
 
 SEXP rlang_interp(SEXP x, SEXP env, SEXP quosured) {
-  if (!r_is_language(x))
+  if (!r_is_language(x)) {
     return x;
-  if (!r_is_env(env))
+  }
+  if (!r_is_env(env)) {
     r_abort("`env` must be an environment");
+  }
 
   x = KEEP(r_duplicate(x, false));
   x = interp_lang(x, env, r_as_bool(quosured));

@@ -18,6 +18,11 @@ SEXP r_node_cdar(SEXP x) {
 SEXP r_node_cddr(SEXP x) {
   return CDDR(x);
 }
+SEXP r_node_tail(SEXP x) {
+  while(CDR(x) != R_NilValue)
+    x = CDR(x);
+  return x;
+}
 
 SEXP r_mut_node_car(SEXP x, SEXP newcar) {
   SETCAR(x, newcar);
@@ -72,4 +77,8 @@ SEXP r_node_tag(SEXP x) {
 SEXP r_mut_node_tag(SEXP x, SEXP tag) {
   SET_TAG(x, tag);
   return x;
+}
+
+bool r_is_pairlist(SEXP x) {
+  return TYPEOF(x) == LISTSXP;
 }

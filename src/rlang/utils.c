@@ -131,12 +131,6 @@ int is_rlang_call(SEXP x, int (*sym_predicate)(SEXP)) {
     return sym_predicate(CAR(x)) || is_rlang_prefixed(x, sym_predicate);
 }
 
-SEXP last_cons(SEXP x) {
-  while(CDR(x) != R_NilValue)
-    x = CDR(x);
-  return x;
-}
-
 SEXP rlang_length(SEXP x) {
   return Rf_ScalarInteger(r_length(x));
 }
