@@ -97,3 +97,34 @@ captureDots <- function(strict = TRUE) {
 
   .Call(rlang_capturedots, NULL, NULL, pairlist(caller_env, strict), get_env())
 }
+
+scoped_exit <- function(expr, frame = caller_env()) {
+  expr <- enexpr(expr)
+
+  # Inline everything so the call will succeed in any environment
+  expr <- lang(on.exit, expr, add = TRUE)
+  eval_bare(expr, frame)
+
+  invisible(expr)
+}
+
+scoped_options <- function(..., .frame = caller_env()) {
+  options <- dots_list(...)
+  stopifnot(is_named(options))
+
+  old <- options(options)
+  options_lang <- lang(base::options, !!! old)
+  scoped_exit(!! options_lang, frame = .frame)
+
+  invisible(old)
+}
+
+poke_options <- function(...) {
+  options(dots_list(...))
+}
+peek_options <- function(...) {
+  options(chr(...))
+}
+peek_option <- function(option) {
+  getOption(option)
+}
