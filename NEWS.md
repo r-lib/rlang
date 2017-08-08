@@ -42,6 +42,9 @@
   (#174). Previously it would always refer to the environment of the
   outermost quosure.
 
+* The new functions `cnd_warn()` and `cnd_inform()` transform
+  conditions to warnings or messages before signalling them.
+
 
 # rlang 0.1.2
 
