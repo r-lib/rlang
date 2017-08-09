@@ -12,6 +12,7 @@ extern bool is_clevel_spliceable(SEXP);
 // Callable from this package
 extern SEXP f_lhs_(SEXP);
 extern SEXP f_rhs_(SEXP);
+extern SEXP r_mut_env_parent(SEXP, SEXP);
 extern SEXP rlang_replace_na(SEXP, SEXP);
 extern SEXP rlang_car(SEXP);
 extern SEXP rlang_cdr(SEXP);
@@ -40,7 +41,6 @@ extern SEXP rlang_is_reference(SEXP, SEXP);
 extern SEXP rlang_sxp_address(SEXP);
 extern SEXP rlang_length(SEXP);
 extern SEXP rlang_new_dictionary(SEXP, SEXP, SEXP);
-extern SEXP rlang_set_parent(SEXP, SEXP);
 extern SEXP rlang_squash(SEXP, SEXP, SEXP, SEXP);
 extern SEXP rlang_symbol(SEXP);
 extern SEXP rlang_symbol_to_character(SEXP);
@@ -78,7 +78,7 @@ static const R_CallMethodDef call_entries[] = {
   {"rlang_set_cdar",            (DL_FUNC) &rlang_set_cdar, 2},
   {"rlang_set_cddr",            (DL_FUNC) &rlang_set_cddr, 2},
   {"rlang_set_cdr",             (DL_FUNC) &rlang_set_cdr, 2},
-  {"rlang_set_parent",          (DL_FUNC) &rlang_set_parent, 2},
+  {"rlang_mut_env_parent",      (DL_FUNC) &r_mut_env_parent, 2},
   {"rlang_set_tag",             (DL_FUNC) &rlang_set_tag, 2},
   {"rlang_shallow_duplicate",   (DL_FUNC) &rlang_shallow_duplicate, 1},
   {"rlang_squash",              (DL_FUNC) &rlang_squash, 4},

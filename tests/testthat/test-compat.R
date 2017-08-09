@@ -81,3 +81,10 @@ test_that("compat_lazy() handles bare formulas", {
   expect_identical(compat_lazy(~foo), quo(foo))
   expect_identical(compat_lazy_dots(~foo), named_list(quo(foo)))
 })
+
+test_that("trimws() trims", {
+  x <- "  foo.  "
+  expect_identical(trimws(x), "foo.")
+  expect_identical(trimws(x, "l"), "foo.  ")
+  expect_identical(trimws(x, "r"), "  foo.")
+})

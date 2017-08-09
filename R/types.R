@@ -664,11 +664,6 @@ lang_type_of <- function(x) {
 #'
 #' structure(base::list, foo = "bar")
 #' str(base::list)
-#'
-#' # In expressions, calls and pairlists are safely copyable. However,
-#' # symbols are not:
-#' structure(quote(foo), foo = "bar")
-#' quote(foo)
 is_copyable <- function(x) {
   switch_type(x,
     NULL = ,
