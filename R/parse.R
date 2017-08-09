@@ -54,9 +54,9 @@ parse_expr <- function(x) {
 
   n <- length(exprs)
   if (n == 0) {
-    abort("No expression to parse_expr")
+    abort("No expression to parse")
   } else if (n > 1) {
-    abort("More than one expression parsed_expr")
+    abort("More than one expression parsed")
   }
 
   exprs[[1]]
