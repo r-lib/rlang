@@ -740,6 +740,8 @@ env_has <- function(env = caller_env(), nms, inherit = FALSE) {
 #'
 #' * `env_get()` extracts an object from an enviroment `env`. By
 #'   default, it does not look in the parent environments.
+#'   `env_get_list()` extracts multiple objects from an environment
+#'   into a named list.
 #'
 #' * `env_set()` will assign or reassign a binding in `env` if
 #'   `create` is `TRUE`. If `create` is `FALSE` and a binding does not
@@ -760,7 +762,7 @@ env_has <- function(env = caller_env(), nms, inherit = FALSE) {
 #'
 #' @inheritParams get_env
 #' @inheritParams env_has
-#' @param nm The name of a binding.
+#' @param nm,nms Names of bindings. `nm` must be a single string.
 #' @param value The value for a new binding.
 #' @param create Whether to create a binding if it does not already
 #'   exist in the environment.
@@ -777,6 +779,12 @@ env_has <- function(env = caller_env(), nms, inherit = FALSE) {
 #' env_get(env, "foo", inherit = TRUE)
 env_get <- function(env = caller_env(), nm, inherit = FALSE) {
   get(nm, envir = get_env(env), inherits = inherit)
+}
+#' @rdname env_get
+#' @export
+env_get_list <- function(env = caller_env(), nms, inherit = FALSE) {
+  nms <- set_names(nms)
+  map(nms, env_get, env = env, inherit = inherit)
 }
 
 #' @rdname env_get

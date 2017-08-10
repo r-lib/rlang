@@ -216,3 +216,12 @@ test_that("env_tail() detects sentinel", {
   descendant <- child_env(child_env(child_env(env)))
   expect_identical(env_tail(descendant, sentinel), env)
 })
+
+test_that("env_get_list() retrieves multiple bindings", {
+  env <- env(foo = 1L, bar = 2L)
+  expect_identical(env_get_list(env, c("foo", "bar")), list(foo = 1L, bar =2L))
+
+  baz <- 0L
+  expect_error(env_get_list(env, "baz"), "'baz' not found")
+  expect_identical(env_get_list(env, c("foo", "baz"), inherit = TRUE), list(foo = 1L, baz =0L))
+})
