@@ -10,7 +10,7 @@ test_that("can't add an exit event at top-level", {
 test_that("can add an exit event within a non-top-level global frame", {
   local(envir = global_env(), {
     `_x` <- list()
-    scoped_exit(`_x` <- c(`_x`, "bar"))
+    rlang:::scoped_exit(`_x` <- c(`_x`, "bar"))
     `_x` <- c(`_x`, "foo")
   })
 

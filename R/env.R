@@ -637,6 +637,61 @@ env_bind_fns <- function(.env, ...) {
   invisible(.env)
 }
 
+#' Temporarily change bindings of an environment
+#'
+#' @description
+#'
+#' * `scoped_bindings()` temporarily changes bindings in `.env` (which
+#'   is by default the caller environment). The bindings are reset to
+#'   their original values when the current frame (or an arbitrary one
+#'   if you specify `.frame`) goes out of scope.
+#'
+#' * `with_bindings()` evaluates `expr` with temporary bindings. When
+#'   `with_bindings()` returns, bindings are reset to their original
+#'   values. It is a simple wrapper around `scoped_bindings()`.
+#'
+#' @inheritParams env_bind
+#' @param ... Pairs of names and values. These dots support splicing
+#'   (with value semantics) and name unquoting.
+#' @param .frame The frame environment that determines the scope of
+#'   the temporary bindings. When that frame is popped from the call
+#'   stack, bindings are switched back to their original values.
+#' @return `scoped_bindings()` returns the values of old bindings
+#'   invisibly; `with_bindings()` returns the value of `expr`.
+#' @examples
+#' foo <- "foo"
+#' bar <- "bar"
+#'
+#' # `foo` will be temporarily rebinded while executing `expr`
+#' with_bindings(paste(foo, bar), foo = "rebinded")
+#' paste(foo, bar)
+scoped_bindings <- function(..., .env = .frame, .frame = caller_env()) {
+  env <- get_env(.env)
+  bindings <- dots_list(...)
+  stopifnot(is_named(bindings))
+
+  nms <- names(bindings)
+  is_old <- env_has(env, nms)
+  old <- env_get_list(env, nms[is_old])
+
+  unbind_lang <- lang(env_unbind, env, nms[!is_old])
+  rebind_lang <- lang(env_bind_impl, env, old)
+  scoped_exit(frame = .frame, {
+    !! unbind_lang
+    !! rebind_lang
+  })
+
+  env_bind_impl(env, bindings)
+  invisible(old)
+}
+#' @rdname scoped_bindings
+#' @param .expr An expression to evaluate with temporary bindings.
+#' @export
+with_bindings <- function(.expr, ..., .env = caller_env()) {
+  scoped_bindings(..., .env = .env)
+  .expr
+}
+
 #' Overscope bindings by defining symbols deeper in a scope
 #'
 #' `env_bury()` is like [env_bind()] but it creates the bindings in a
