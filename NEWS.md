@@ -1,5 +1,5 @@
 
-# rlang 0.1.1.9000
+# rlang 0.1.2.9000
 
 * `new_cnd()` is now `cnd()` for consistency with other constructors.
   Also, `cnd_error()`, `cnd_warning()` and `cnd_message()` are now
@@ -41,6 +41,11 @@
   pronoun now correctly refers to the current quosure under evaluation
   (#174). Previously it would always refer to the environment of the
   outermost quosure.
+
+
+# rlang 0.1.2
+
+This hotfix release makes rlang compatible with the R 3.1 branch.
 
 
 # rlang 0.1.1
