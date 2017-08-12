@@ -2,10 +2,13 @@
 % Please edit documentation in R/expr-node.R
 \name{is_pairlist}
 \alias{is_pairlist}
+\alias{is_pairlist_node}
 \alias{is_node}
 \title{Is object a node or pairlist?}
 \usage{
 is_pairlist(x)
+
+is_pairlist_node(x)
 
 is_node(x)
 }
@@ -18,11 +21,14 @@ is_node(x)
 \code{NULL} is treated as a pairlist because it is the terminating
 node of pairlists and an empty pairlist is thus the \code{NULL}
 object itself.
-\item \code{is_node()} checks that \code{x} has type \code{pairlist}.
+\item \code{is_pairlist_node()} checks that \code{x} has type \code{pairlist}.
+\item \code{is_node()} checks that \code{x} has type \code{pairlist} or \code{language}.
 }
 
-In other words, \code{is_pairlist()} tests for the data structure while
-\code{is_node()} tests for the internal type.
+In other words, \code{is_pairlist()} tests for the pairlist data
+structure while \code{is_pairlist_node()} tests for the internal
+pairlist type. \code{is_node()} tests that \code{x} is a node in general,
+including callable nodes.
 }
 \seealso{
 \code{\link[=is_lang]{is_lang()}} tests for language nodes.
