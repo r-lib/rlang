@@ -1,0 +1,31 @@
+files = rlang/rlang.h \
+        rlang/attrs.c \
+        rlang/cnd.c \
+        rlang/env.c \
+        rlang/eval.c \
+        rlang/export.c \
+        rlang/expr-interp.c \
+        rlang/formula.c \
+        rlang/lang.c \
+        rlang/node.c \
+        rlang/quo.c \
+        rlang/replace-na.c \
+        rlang/sexp.c \
+        rlang/squash.c \
+        rlang/stack.c \
+        rlang/sym.c \
+        rlang/sym-unescape.c \
+        rlang/utils.c \
+        rlang/vector.c \
+        rlang/vector-chr.c \
+        rlang/vector-lgl.c \
+        rlang/vector-list.c
+
+all: $(SHLIB)
+
+$(SHLIB): rlang.c
+
+rlang.c: $(files)
+	touch rlang.c
+
+.PHONY: all
