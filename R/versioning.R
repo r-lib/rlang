@@ -69,3 +69,49 @@ deprecation_msg <- function(type, name, replacement, start = NULL) {
 
   paste0(msg, sprintf(", please use `%s` instead", replacement))
 }
+
+ver_check <- function(ver, n_components = 3, n_digits = 2, minor = FALSE) {
+  stopifnot(
+    is_version(ver),
+    is_integerish(n_components),
+    is_integerish(n_digits)
+  )
+
+  components <- ver_components(ver)
+
+  if (!is_null(n_components) && length(components) != n_components) {
+    msg <- "version must have %s components, not %s"
+    msg <- sprintf(msg, n_components, length(components))
+    abort(msg)
+  }
+
+  if (!is_null(n_digits)) {
+    large <- log10(components) >= n_digits
+    if (any(large)) {
+      msg <- "version can't have components with more than %s digits"
+      msg <- sprintf(msg, n_digits)
+      abort(msg)
+    }
+  }
+
+  if (!minor && components[[length(components)]] != 0) {
+    abort("version can't be a minor update")
+  }
+
+  invisible(TRUE)
+}
+
+is_version <- function(x) {
+  inherits(x, "package_version")
+}
+as_version <- function(x) {
+  stopifnot(is_string(x))
+  as.package_version(x)
+}
+new_version <- function(x) {
+  stopifnot(is_integerish(x))
+  as_version(paste(x, collapse = "."))
+}
+ver_components <- function(ver) {
+  flatten_int(ver)
+}
