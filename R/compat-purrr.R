@@ -1,4 +1,4 @@
-# nocov start - compat-purrr (last updated: rlang 0.1.9000)
+# nocov start - compat-purrr (last updated: rlang 0.1.2.9000)
 
 # This file serves as a reference for compatibility functions for
 # purrr. They are not drop-in replacements but allow a similar style
@@ -157,6 +157,25 @@ accumulate <- function(.x, .f, ..., .init) {
 accumulate_right <- function(.x, .f, ..., .init) {
   f <- function(x, y) .f(y, x, ...)
   Reduce(f, .x, init = .init, right = TRUE, accumulate = TRUE)
+}
+
+detect <- function(.x, .f, ..., .right = FALSE) {
+  for (i in index(.x, .right)) {
+    if (is_true(.f(.x[[i]], ...))) return(.x[[i]])
+  }
+  NULL
+}
+detect_index <- function(.x, .f, ..., .right = FALSE) {
+  for (i in index(.x, .right)) {
+    if (is_true(.f(.x[[i]], ...))) return(i)
+  }
+  0L
+}
+index <- function(x, right = FALSE) {
+  idx <- seq_along(x)
+  if (right)
+    idx <- rev(idx)
+  idx
 }
 
 # nocov end
