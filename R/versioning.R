@@ -86,15 +86,7 @@ new_cycle <- function(cycle) {
     cycle <- chr_as_cycle(cycle)
   }
 
-  # Check that both the overridden cycle and the actual cycle are valid
-  cycle_check(cycle, n_components = NULL, max_digits = NULL, minor = NULL)
-
-  nms <- names(cycle)
-  if (is_null(nms)) {
-    abort("`cycle` should have named versions")
-  } else {
-    cycle_check(chr_as_cycle(nms), n_components = 3, max_digits = 2, minor = FALSE)
-  }
+  cycle_check(cycle, n_components = 3, max_digits = 2, minor = FALSE)
 
   cycle
 }
@@ -109,25 +101,7 @@ chr_as_cycle <- function(cycle) {
   # on, e.g. for comparison
   cycle[cycle == ""] <- "0.0.0"
 
-  overrides <- names2(cycle)
-  map(overrides, override_check)
-
-  # Merge `cycle` into empty elements of `overrides`
-  is_empty_alias <- overrides == ""
-  overrides[is_empty_alias] <- cycle[is_empty_alias]
-
-  overrides <- map(overrides, ver)
-  set_names(overrides, cycle)
-}
-override_check <- function(override) {
-  if (is_empty_string(override)) {
-    return(invisible(NULL))
-  }
-
-  override <- ver(override)
-  if (!is_version(override, n_components = 4)) {
-    abort("`cycle` overrides must be development versions with 4 components")
-  }
+  map(cycle, ver)
 }
 
 cycle_check <- function(cycle, n_components, max_digits, minor) {
