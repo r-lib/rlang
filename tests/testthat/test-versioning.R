@@ -32,6 +32,7 @@ test_that("cycle must be monotonic", {
 
 test_that("alias is created from cycle", {
   expect_named(new_cycle(c("0.1.0")), c("0.0.0", "0.0.0", "0.1.0"))
-  expect_named(new_cycle(c("0.1.0", `0.1.9000` = "0.2.0")), c("0.0.0", "0.1.0", "0.2.0"))
-  expect_error(new_cycle(c("0.1.0", `0.0.9000` = "0.2.0")), "must be monotonically increasing")
+  expect_named(new_cycle(c("0.1.0", `0.1.0.9000` = "0.2.0")), c("0.0.0", "0.1.0", "0.2.0"))
+  expect_error(new_cycle(c("0.1.0", `0.0.0.9000` = "0.2.0")), "must be monotonically increasing")
+  expect_error(new_cycle(c("0.1.0", `0.2.0` = "0.2.0")), "must be development versions")
 })
