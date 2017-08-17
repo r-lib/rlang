@@ -1,17 +1,12 @@
 context("versioning")
 
 test_that("components are checked", {
-  ver <- ver("0.0.0.0")
-  expect_error(ver_check(ver), "must have 3 components, not 4")
-
-  ver <- ver("0.100.0")
-  expect_error(ver_check(ver), "more than 2 digits")
-
-  ver <- ver("0.99.0")
-  expect_error(ver_check(ver), NA)
-
-  ver <- ver("0.0.1")
-  expect_error(ver_check(ver), "can't be a minor update")
+  expect_error(ver_check(ver("0.0.0.0"), n_components = 3), "must have 3 components, not 4")
+  expect_error(ver_check(ver("0.100.0"), max_digits = 2), "more than 2 digits")
+  expect_error(ver_check(ver("0.99.0"), max_digits = 2), NA)
+  expect_error(ver_check(ver("0.0.1"), minor = FALSE), "can't be a minor update")
+  expect_error(ver_check(ver("0.1.0"), minor = TRUE), "must be a minor update")
+  expect_error(ver_check(ver("0.0.1"), minor = NULL), NA)
 })
 
 test_that("cycle must have at least one version", {

@@ -87,13 +87,13 @@ new_cycle <- function(cycle) {
   }
 
   # Check that both the overridden cycle and the actual cycle are valid
-  cycle_check(cycle, n_components = NULL, n_digits = NULL, minor = NULL)
+  cycle_check(cycle, n_components = NULL, max_digits = NULL, minor = NULL)
 
   nms <- names(cycle)
   if (is_null(nms)) {
     abort("`cycle` should have named versions")
   } else {
-    cycle_check(chr_as_cycle(nms), n_components = 3, n_digits = 2, minor = FALSE)
+    cycle_check(chr_as_cycle(nms), n_components = 3, max_digits = 2, minor = FALSE)
   }
 
   cycle
@@ -118,14 +118,14 @@ chr_as_cycle <- function(cycle) {
   set_names(overrides, cycle)
 }
 
-cycle_check <- function(cycle, n_components, n_digits, minor) {
+cycle_check <- function(cycle, n_components, max_digits, minor) {
   is_empty <- map_lgl(cycle, identical, ver("0.0.0"))
   if (all(is_empty)) {
     abort("`cycle` can't be empty")
   }
 
   trimmed_cycle <- cycle[!is_empty]
-  map(trimmed_cycle, ver_check, n_components, n_digits, minor)
+  map(trimmed_cycle, ver_check, n_components, max_digits, minor)
 
   if (length(trimmed_cycle) > 1) {
     if (any(slide_lgl(trimmed_cycle, `>=`))) {
@@ -133,42 +133,36 @@ cycle_check <- function(cycle, n_components, n_digits, minor) {
     }
   }
 }
-ver_check <- function(ver, n_components = 3, n_digits = 2, minor = FALSE) {
-  stopifnot(
-    is_null(n_components) || is_integerish(n_components),
-    is_null(n_digits) || is_integerish(n_digits)
-  )
+ver_check <- function(ver, n_components = NULL, max_digits = NULL, minor = NULL) {
   if (!is_version(ver)) {
     abort("can't parse version")
   }
 
   components <- ver_components(ver)
 
-  if (!is_null(n_components) && length(components) != n_components) {
+  if (!is_version(ver, n_components = n_components)) {
     msg <- "version must have %s components, not %s"
     msg <- sprintf(msg, n_components, length(components))
     abort(msg)
   }
 
-  if (!is_null(n_digits)) {
-    large <- log10(components) >= n_digits
-    if (any(large)) {
-      msg <- "version can't have components with more than %s digits"
-      msg <- sprintf(msg, n_digits)
-      abort(msg)
-    }
+  if (!is_version(ver, max_digits = max_digits)) {
+    msg <- "version can't have components with more than %s digits"
+    msg <- sprintf(msg, max_digits)
+    abort(msg)
   }
 
-  if (is_false(minor) && components[[length(components)]] != 0) {
-    abort("version can't be a minor update")
+  if (!is_version(ver, minor = minor)) {
+    if (minor) {
+      abort("version must be a minor update")
+    } else {
+      abort("version can't be a minor update")
+    }
   }
 
   invisible(TRUE)
 }
 
-is_version <- function(x) {
-  inherits(x, "package_version")
-}
 ver <- function(x) {
   stopifnot(is_string(x))
   as.package_version(x)
@@ -177,6 +171,35 @@ new_version <- function(x) {
   stopifnot(is_integerish(x))
   ver(paste(x, collapse = "."))
 }
+
+is_version <- function(x, n_components = NULL, max_digits = NULL, minor = NULL) {
+  if (!inherits(x, "package_version")) {
+    return(FALSE)
+  }
+
+  components <- ver_components(x)
+
+  if (!is_null(n_components) && length(components) != n_components) {
+    return(FALSE)
+  }
+
+  if (!is_null(max_digits)) {
+    large <- log10(components) >= max_digits
+    if (any(large)) {
+      return(FALSE)
+    }
+  }
+
+  if (!is_null(minor)) {
+    is_minor <-  components[[length(components)]] != 0
+    if (!identical(minor, is_minor)) {
+      return(FALSE)
+    }
+  }
+
+  TRUE
+}
+
 ver_components <- function(ver) {
   flatten_int(ver)
 }
