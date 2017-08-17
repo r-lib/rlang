@@ -14,9 +14,9 @@ test_that("cycle must have at least one version", {
   expect_error(new_cycle(c("", "", ""), "`cycle` can't be empty"))
 })
 
-test_that("cycles are filled with empty versions", {
-  expect_identical(new_cycle("0.1.0"), list(ver("0.0.0"), ver("0.0.0"), ver("0.1.0")))
-  expect_identical(new_cycle(c("0.1.0", "0.2.0")), list(ver("0.0.0"), ver("0.1.0"), ver("0.2.0")))
+test_that("cycles are completed", {
+  expect_identical(new_cycle("0.1.0"), new_cycle(c("0.1.0", "0.2.0", "0.3.0")))
+  expect_identical(new_cycle(c("0.1.0", "0.2.0")), new_cycle(c("0.1.0", "0.2.0", "0.3.0")))
 })
 
 test_that("cycle must be a character vector with 1 to 3 components", {

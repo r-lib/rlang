@@ -91,25 +91,34 @@ new_cycle <- function(cycle) {
   cycle
 }
 chr_as_cycle <- function(cycle) {
-  # All cycles must have 3 components
-  if (length(cycle) < 3) {
-    filler <- rep_len("0.0.0", 3 - length(cycle))
-    cycle <- c(filler, cycle)
+  if (all(cycle == "")) {
+    abort("`cycle` can't be empty")
   }
 
   # Replace empty versions with "0.0.0" as this simplifies code later
   # on, e.g. for comparison
   cycle[cycle == ""] <- "0.0.0"
 
-  map(cycle, ver)
+  cycle <- map(cycle, ver)
+
+  # All cycles must have 3 components
+  if (length(cycle) < 3) {
+    n <- length(cycle)
+    n_missing <- 3 - n
+
+    filler <- list_len(n_missing)
+    cycle <- c(cycle, filler)
+
+    for (i in seq_len(n_missing)) {
+      cycle[[n + i]] <- ver_bump(cycle[[n + i - 1]], "minor")
+    }
+  }
+
+  cycle
 }
 
 cycle_check <- function(cycle, n_components, max_digits, minor) {
   is_empty <- map_lgl(cycle, identical, ver("0.0.0"))
-  if (all(is_empty)) {
-    abort("`cycle` can't be empty")
-  }
-
   trimmed_cycle <- cycle[!is_empty]
   map(trimmed_cycle, ver_check, n_components, max_digits, minor)
 
@@ -188,4 +197,19 @@ is_version <- function(x, n_components = NULL, max_digits = NULL, minor = NULL) 
 
 ver_components <- function(ver) {
   flatten_int(ver)
+}
+
+ver_bump <- function(ver, component = c("patch", "minor", "major")) {
+  stopifnot(is_version(ver, n_components = 3))
+
+  i <- switch(component,
+    patch = 1L,
+    minor = 2L,
+    major = 3L
+  )
+
+  components <- ver_components(ver)
+  components[[i]] <- components[[i]] + 1L
+
+  new_version(components)
 }
