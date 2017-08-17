@@ -291,3 +291,7 @@ mut_ctype <- function(x) {
   Sys.setlocale("LC_CTYPE", locale = x)
   invisible(old)
 }
+
+is_empty_string <- function(str) {
+  identical(str, "")
+}

@@ -70,12 +70,77 @@ deprecation_msg <- function(type, name, replacement, start = NULL) {
   paste0(msg, sprintf(", please use `%s` instead", replacement))
 }
 
+
+
+
+
+
+
+}
+
+new_cycle <- function(cycle) {
+  if (!length(cycle) || length(cycle) > 3) {
+    abort("`cycle` must have 1, 2, or 3 components")
+  }
+  if (is_character(cycle)) {
+    cycle <- chr_as_cycle(cycle)
+  }
+
+  # Check that both the overridden cycle and the actual cycle are valid
+  cycle_check(cycle, n_components = NULL, n_digits = NULL, minor = NULL)
+
+  nms <- names(cycle)
+  if (is_null(nms)) {
+    abort("`cycle` should have named versions")
+  } else {
+    cycle_check(chr_as_cycle(nms), n_components = 3, n_digits = 2, minor = FALSE)
+  }
+
+  cycle
+}
+chr_as_cycle <- function(cycle) {
+  # All cycles must have 3 components
+  if (length(cycle) < 3) {
+    filler <- rep_len("0.0.0", 3 - length(cycle))
+    cycle <- c(filler, cycle)
+  }
+
+  # Replace empty versions with "0.0.0" as this simplifies code later
+  # on, e.g. for comparison
+  cycle[cycle == ""] <- "0.0.0"
+
+  # Merge `cycle` into empty elements of `overrides`
+  overrides <- names2(cycle)
+  is_empty_alias <- overrides == ""
+  overrides[is_empty_alias] <- cycle[is_empty_alias]
+
+  overrides <- map(overrides, ver)
+  set_names(overrides, cycle)
+}
+
+cycle_check <- function(cycle, n_components, n_digits, minor) {
+  is_empty <- map_lgl(cycle, identical, ver("0.0.0"))
+  if (all(is_empty)) {
+    abort("`cycle` can't be empty")
+  }
+
+  trimmed_cycle <- cycle[!is_empty]
+  map(trimmed_cycle, ver_check, n_components, n_digits, minor)
+
+  if (length(trimmed_cycle) > 1) {
+    if (any(slide_lgl(trimmed_cycle, `>=`))) {
+      abort("`cycle` versions must be monotonically increasing")
+    }
+  }
+}
 ver_check <- function(ver, n_components = 3, n_digits = 2, minor = FALSE) {
   stopifnot(
-    is_version(ver),
-    is_integerish(n_components),
-    is_integerish(n_digits)
+    is_null(n_components) || is_integerish(n_components),
+    is_null(n_digits) || is_integerish(n_digits)
   )
+  if (!is_version(ver)) {
+    abort("can't parse version")
+  }
 
   components <- ver_components(ver)
 
@@ -94,7 +159,7 @@ ver_check <- function(ver, n_components = 3, n_digits = 2, minor = FALSE) {
     }
   }
 
-  if (!minor && components[[length(components)]] != 0) {
+  if (is_false(minor) && components[[length(components)]] != 0) {
     abort("version can't be a minor update")
   }
 
@@ -104,13 +169,13 @@ ver_check <- function(ver, n_components = 3, n_digits = 2, minor = FALSE) {
 is_version <- function(x) {
   inherits(x, "package_version")
 }
-as_version <- function(x) {
+ver <- function(x) {
   stopifnot(is_string(x))
   as.package_version(x)
 }
 new_version <- function(x) {
   stopifnot(is_integerish(x))
-  as_version(paste(x, collapse = "."))
+  ver(paste(x, collapse = "."))
 }
 ver_components <- function(ver) {
   flatten_int(ver)
