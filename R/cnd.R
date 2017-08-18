@@ -335,3 +335,24 @@ inform <- function(msg, type = NULL, call = FALSE) {
   }
   message(cnd)
 }
+
+#' Catch a condition
+#'
+#' This is a small wrapper around `tryCatch()` that captures any
+#' condition signalled while evaluating its argument. It is useful for
+#' debugging and unit testing.
+#'
+#' @param expr Expression to be evaluated with a catch-all condition
+#'   handler.
+#' @return A condition if any was signalled, `NULL` otherwise.
+#' @export
+#' @examples
+#' catch_cnd(10)
+#' catch_cnd(abort("an error"))
+#' catch_cnd(cnd_signal("my_condition", .msg = "a condition"))
+catch_cnd <- function(expr) {
+  tryCatch(condition = identity, {
+    force(expr)
+    return(NULL)
+  })
+}
