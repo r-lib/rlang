@@ -50,6 +50,10 @@
   option is set to `TRUE`. An obsolete function always issues a
   warning.
 
+* New helper `catch_cnd()`. This is a small wrapper around
+  `tryCatch()` that captures and returns any signalled condition. It
+  returns `NULL` if none was signalled.
+
 
 # rlang 0.1.2
 
