@@ -202,3 +202,8 @@ test_that("deprecation is signalled", {
   scoped_options(rlang_verbose_deprecation = TRUE)
   expect_warning(signal_deprecated("pkg::foo()", "bar()"))
 })
+
+test_that("cnd_abort() adds correct S3 classes for errors", {
+  expect_is(catch_cnd(cnd_abort("type")), "error")
+  expect_error(cnd_abort("type"))
+})

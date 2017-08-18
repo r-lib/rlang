@@ -54,6 +54,10 @@
   `tryCatch()` that captures and returns any signalled condition. It
   returns `NULL` if none was signalled.
 
+* `cnd_abort()` now adds the correct S3 classes for error
+  conditions. This fixes error catching, for instance by
+  `testthat::expect_error()`.
+
 
 # rlang 0.1.2
 
