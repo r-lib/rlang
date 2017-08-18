@@ -37,3 +37,11 @@ test_that("cycle must be monotonic", {
   expect_error(new_cycle(c("0.1.0", "0.1.0")), "must be monotonically increasing")
   expect_error(new_cycle(c("0.2.0", "0.1.0")), "must be monotonically increasing")
 })
+
+test_that("versions are trimmed", {
+  ver <- ver("0.1.0")
+
+  expect_identical(ver_trim(ver, 4), ver)
+  expect_identical(ver_trim(ver, 3), ver)
+  expect_identical(ver_trim(ver, 2), ver("0.1"))
+})
