@@ -212,7 +212,8 @@ cnd_warn <- function(.cnd, ..., .msg = NULL, .call = NULL,
 #' @export
 cnd_abort <- function(.cnd, ..., .msg = NULL, .call = NULL,
                       .mufflable = FALSE) {
-  cnd <- cnd_update(.cnd, ..., .msg = .msg, .call = cnd_call(.call), .show_call = .call)
+  cnd <- as_special_cnd(.cnd, "error")
+  cnd <- cnd_update(cnd, ..., .msg = .msg, .call = cnd_call(.call), .show_call = .call)
   invisible(.Call(rlang_cnd_abort, cnd, .mufflable))
 }
 

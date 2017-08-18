@@ -191,3 +191,8 @@ test_that("cnd_inform() transforms condition to message", {
   expect_message(cnd_inform(cnd), "informed")
   expect_message(cnd_inform("type", .msg = "informed"), "informed")
 })
+
+test_that("cnd_abort() adds correct S3 classes for errors", {
+  expect_is(catch_cnd(cnd_abort("type")), "error")
+  expect_error(cnd_abort("type"))
+})
