@@ -1,5 +1,13 @@
 context("versioning")
 
+test_that("versions are vectors", {
+  ver <- ver("1.0.0")
+  expect_length(ver, 3)
+  expect_identical(ver[[3]], 0L)
+  ver[[3]] <- 9L
+  expect_identical(ver[[3]], 9L)
+})
+
 test_that("components are checked", {
   expect_error(ver_check(ver("0.0.0.0"), n_components = 3), "must have 3 components, not 4")
   expect_error(ver_check(ver("0.100.0"), max_digits = 2), "more than 2 digits")

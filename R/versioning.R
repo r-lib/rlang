@@ -160,15 +160,22 @@ ver_check <- function(ver, n_components = NULL, max_digits = NULL, minor = NULL)
 
 ver <- function(x) {
   stopifnot(is_string(x))
-  as.package_version(x)
+  as_version(as.numeric_version(x))
 }
 new_version <- function(x) {
   stopifnot(is_integerish(x))
   ver(paste(x, collapse = "."))
 }
+as_version <- function(x) {
+  if (inherits(x, "numeric_version")) {
+    set_attrs(x, class = "version")
+  } else {
+    abort("Can't convert `x` to a version")
+  }
+}
 
 is_version <- function(x, n_components = NULL, max_digits = NULL, minor = NULL) {
-  if (!inherits(x, "package_version")) {
+  if (!inherits(x, "version")) {
     return(FALSE)
   }
 
@@ -211,5 +218,30 @@ ver_bump <- function(ver, component = c("patch", "minor", "major")) {
   components <- ver_components(ver)
   components[[i]] <- components[[i]] + 1L
 
+
+`[[.version` <- function(x, i) {
+  ver_components(x)[[i]]
+}
+`[[<-.version` <- function(x, i, value) {
+  components <- ver_components(x)
+  components[[i]] <- value
   new_version(components)
+}
+length.version <- function(x) {
+  length(ver_components(x))
+}
+Ops.version <- function(e1, e2) {
+  # Ops.numeric_version() assumes the length method is not implemented
+  e1 <- as.numeric_version(e1)
+  e2 <- as.numeric_version(e2)
+
+  # For some reason NextMethod() throws an error
+  eval_bare(lang(.Generic, e1, e2), base_env())
+}
+
+print.version <- function(x, ...) {
+  print(as.numeric_version(x))
+}
+as.character.version <- function(x) {
+  as.character(as.numeric_version(x))
 }
