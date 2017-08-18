@@ -258,17 +258,21 @@ is_version <- function(x, n_components = NULL, max_digits = NULL, minor = NULL) 
   TRUE
 }
 
+#' @export
 `[[.version` <- function(x, i) {
   ver_components(x)[[i]]
 }
+#' @export
 `[[<-.version` <- function(x, i, value) {
   components <- ver_components(x)
   components[[i]] <- value
   new_version(components)
 }
+#' @export
 length.version <- function(x) {
   length(ver_components(x))
 }
+#' @export
 Ops.version <- function(e1, e2) {
   # Ops.numeric_version() assumes the length method is not implemented
   e1 <- as.numeric_version(e1)
@@ -278,10 +282,12 @@ Ops.version <- function(e1, e2) {
   eval_bare(lang(.Generic, e1, e2), base_env())
 }
 
+#' @export
 print.version <- function(x, ...) {
   print(as.numeric_version(x))
 }
-as.character.version <- function(x) {
+#' @export
+as.character.version <- function(x, ...) {
   as.character(as.numeric_version(x))
 }
 
