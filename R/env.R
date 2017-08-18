@@ -1065,6 +1065,10 @@ ns_env_name <- function(pkg = NULL) {
   unname(getNamespaceName(pkg))
 }
 
+is_namespace <- function(x) {
+  isNamespace(x)
+}
+
 #' Is a package installed in the library?
 #'
 #' This checks that a package is installed with minimal side effects.
