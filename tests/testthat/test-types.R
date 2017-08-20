@@ -57,3 +57,22 @@ test_that("types are friendly", {
   expect_identical(friendly_type("integer"), "an integer vector")
   expect_identical(friendly_type("language"), "a call")
 })
+
+test_that("is_integerish() heeds type requirement", {
+  for (n in 0:2) {
+    expect_true(is_integerish(integer(n)))
+    expect_true(is_integerish(double(n)))
+    expect_false(is_integerish(double(n + 1) + .000001))
+  }
+
+  types <- c("logical", "complex", "character", "expression", "list", "raw")
+  for (type in types)
+    expect_false(is_integerish(vector(type)))
+})
+
+test_that("is_integerish() heeds length requirement", {
+  for (n in 0:2) {
+    expect_true(is_integerish(double(n), n = n))
+    expect_false(is_integerish(double(n), n = n + 1))
+  }
+})

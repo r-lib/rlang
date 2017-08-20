@@ -288,11 +288,11 @@ is_false <- function(x) {
 #' @examples
 #' is_integerish(10L)
 #' is_integerish(10.0)
+#' is_integerish(10.0, n = 2)
 #' is_integerish(10.000001)
 #' is_integerish(TRUE)
 is_integerish <- function(x, n = NULL) {
-  if (typeof(x) == "integer") return(TRUE)
-  if (typeof(x) != "double") return(FALSE)
+  if (!typeof(x) %in% c("double", "integer")) return(FALSE)
   if (!is_null(n) && length(x) != n) return(FALSE)
   all(x == as.integer(x))
 }
