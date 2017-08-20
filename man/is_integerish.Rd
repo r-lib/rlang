@@ -27,6 +27,7 @@ of how to check for whole numbers.
 \examples{
 is_integerish(10L)
 is_integerish(10.0)
+is_integerish(10.0, n = 2)
 is_integerish(10.000001)
 is_integerish(TRUE)
 }
