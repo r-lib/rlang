@@ -1065,6 +1065,10 @@ ns_env_name <- function(pkg = NULL) {
   unname(getNamespaceName(pkg))
 }
 
+#' Is an object a namespace environment?
+#'
+#' @param x An object to test.
+#' @export
 is_namespace <- function(x) {
   isNamespace(x)
 }
