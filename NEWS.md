@@ -53,6 +53,8 @@
   conditions. This fixes error catching, for instance by
   `testthat::expect_error()`.
 
+* `is_namespace()` is a snake case wrapper around `isNamespace()`.
+
 
 # rlang 0.1.2
 
