@@ -45,11 +45,6 @@
 * The new functions `cnd_warn()` and `cnd_inform()` transform
   conditions to warnings or messages before signalling them.
 
-* `signal_deprecated()` and `warn_obsolete()` depreciate functions. A
-  deprecated function is silent unless the `rlang_verbose_deprecation`
-  option is set to `TRUE`. An obsolete function always issues a
-  warning.
-
 * New helper `catch_cnd()`. This is a small wrapper around
   `tryCatch()` that captures and returns any signalled condition. It
   returns `NULL` if none was signalled.
