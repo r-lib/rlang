@@ -126,17 +126,54 @@ fn_fmls_syms <- function(fn = caller_fn()) {
 #' @export
 `fn_fmls<-` <- function(fn, value) {
   fn <- as_closure(fn)
+  attrs <- attributes(fn)
+
   formals(fn) <- value
+
+  # Work around bug in base R
+  attributes(fn) <- attrs
+
   fn
 }
 #' @rdname fn_fmls
 #' @export
 `fn_fmls_names<-` <- function(fn, value) {
   fn <- as_closure(fn)
+  attrs <- attributes(fn)
 
   fmls <- formals(fn)
   names(fmls) <- value
   formals(fn) <- fmls
+
+  # Work around bug in base R
+  attributes(fn) <- attrs
+
+  fn
+}
+
+#' Get or set function body
+#'
+#' `fn_body()` is a simple wrapper around `base::body()`. The setter
+#' version preserves attributes, unlike `body<-`.
+#'
+#' @inheritParams fn_fmls
+#'
+#' @export
+fn_body <- function(fn = caller_fn()) {
+  stopifnot(is_closure(fn))
+  body(fn)
+}
+#' @rdname fn_body
+#' @export
+`fn_body<-` <- function(fn, value) {
+  attrs <- attributes(fn)
+
+  body(fn) <- value
+
+  # Work around bug in base R. First remove source references since
+  # the body has changed
+  attrs$srcref <- NULL
+  attributes(fn) <- attrs
 
   fn
 }

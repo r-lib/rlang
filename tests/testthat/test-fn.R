@@ -94,3 +94,21 @@ test_that("fn_fmls<- and fn_fmls_names<- handle primitive functions", {
   fn_fmls_names(`+`) <- c("A", "B")
   expect_identical(fn_fmls(`+`), pairlist(A = 1, B = 2))
 })
+
+test_that("assignment methods preserve attributes", {
+  orig <- set_attrs(function(foo) NULL, foo = "foo", bar = "bar")
+
+  fn <- orig
+  fn_fmls(fn) <- list(arg = 1)
+  expect_identical(attributes(fn), attributes(orig))
+
+  fn <- orig
+  fn_fmls_names(fn) <- "bar"
+  expect_identical(attributes(fn), attributes(orig))
+
+  fn <- orig
+  fn_body(fn) <- "body"
+  orig_attrs <- attributes(orig)
+  orig_attrs$srcref <- NULL
+  expect_identical(attributes(fn), orig_attrs)
+})
