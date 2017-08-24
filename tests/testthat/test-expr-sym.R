@@ -9,3 +9,7 @@ test_that("ensym() fails with calls", {
   expect_identical(capture_sym(foo), quote(foo))
   expect_error(capture_sym(foo(bar)), "Must supply a symbol")
 })
+
+test_that("empty string is treated as the missing argument", {
+  expect_identical(sym(""), missing_arg())
+})
