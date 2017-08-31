@@ -76,3 +76,23 @@ test_that("is_integerish() heeds length requirement", {
     expect_false(is_integerish(double(n), n = n + 1))
   }
 })
+
+test_that("scalar predicates heed type and length", {
+  expect_true_false <- function(pred, pass, fail_len, fail_type) {
+    expect_true(pred(pass))
+    expect_false(pred(fail_len))
+    expect_false(pred(fail_type))
+  }
+
+  expect_true_false(is_scalar_list, list(1), list(1, 2), logical(1))
+  expect_true_false(is_scalar_atomic, logical(1), logical(2), list(1))
+  expect_true_false(is_scalar_vector, list(1), list(1, 2), quote(x))
+  expect_true_false(is_scalar_vector, logical(1), logical(2), function() {})
+  expect_true_false(is_scalar_integer, integer(1), integer(2), double(1))
+  expect_true_false(is_scalar_double, double(1), double(2), integer(1))
+  expect_true_false(is_scalar_character, character(1), character(2), logical(1))
+  expect_true_false(is_string, character(1), character(2), logical(1))
+  expect_true_false(is_scalar_logical, logical(1), logical(2), character(1))
+  expect_true_false(is_scalar_raw, raw(1), raw(2), NULL)
+  expect_true_false(is_scalar_bytes, raw(1), raw(2), NULL)
+})
