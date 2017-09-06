@@ -42,6 +42,19 @@
   (#174). Previously it would always refer to the environment of the
   outermost quosure.
 
+* The new functions `cnd_warn()` and `cnd_inform()` transform
+  conditions to warnings or messages before signalling them.
+
+* New helper `catch_cnd()`. This is a small wrapper around
+  `tryCatch()` that captures and returns any signalled condition. It
+  returns `NULL` if none was signalled.
+
+* `cnd_abort()` now adds the correct S3 classes for error
+  conditions. This fixes error catching, for instance by
+  `testthat::expect_error()`.
+
+* `is_namespace()` is a snake case wrapper around `isNamespace()`.
+
 
 # rlang 0.1.2
 

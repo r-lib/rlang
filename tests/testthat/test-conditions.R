@@ -179,3 +179,20 @@ test_that("cnd_signal() accepts character vectors (#195)", {
   })
   with_handlers(cnd_signal(c("foo", "bar")), foo = expect)
 })
+
+test_that("cnd_warn() transforms condition to warning", {
+  cnd <- cnd("type", attr = "baz", .msg = "warned")
+  expect_warning(cnd_warn(cnd), "warned")
+  expect_warning(cnd_warn("type", .msg = "warned"), "warned")
+})
+
+test_that("cnd_inform() transforms condition to message", {
+  cnd <- cnd("type", attr = "baz", .msg = "informed")
+  expect_message(cnd_inform(cnd), "informed")
+  expect_message(cnd_inform("type", .msg = "informed"), "informed")
+})
+
+test_that("cnd_abort() adds correct S3 classes for errors", {
+  expect_is(catch_cnd(cnd_abort("type")), "error")
+  expect_error(cnd_abort("type"))
+})

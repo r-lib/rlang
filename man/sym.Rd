@@ -21,3 +21,11 @@ Contrarily to \code{as.name()}, they convert the strings to the native
 encoding beforehand. This is necessary because symbols remove
 silently the encoding mark of strings (see \code{\link[=set_str_encoding]{set_str_encoding()}}).
 }
+\examples{
+# The empty string returns the missing argument:
+sym("")
+
+# This way sym() and as_string() are inverse of each other:
+as_string(missing_arg())
+sym(as_string(missing_arg()))
+}

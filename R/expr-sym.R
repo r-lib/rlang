@@ -8,9 +8,19 @@
 #' @param x A string or list of strings.
 #' @return A symbol for `sym()` and a list of symbols for `syms()`.
 #' @export
+#' @examples
+#' # The empty string returns the missing argument:
+#' sym("")
+#'
+#' # This way sym() and as_string() are inverse of each other:
+#' as_string(missing_arg())
+#' sym(as_string(missing_arg()))
 sym <- function(x) {
   if (is_symbol(x)) {
     return(x)
+  }
+  if (identical(x, "")) {
+    return(missing_arg())
   }
   if (!is_string(x)) {
     abort("Only strings can be converted to symbols")
