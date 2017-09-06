@@ -10,7 +10,8 @@ matrix:
       warnings_are_errors: false
     - r: oldrel
     - r: release
+      env: R_CODECOV=true
     - r: devel
 
 after_success:
-  - Rscript -e 'covr::codecov(line_exclusions = c("R/lazy.R", "R/lazy-as.R", "R/lazy-dots.R", "R/lazy-names.R", "R/lazy-call.R", "R/lazy-eval.R", "R/lazy-interp.R", "src/lazy.c"))'
+  - if [[ "${R_CODECOV}" ]]; then R -e 'covr::codecov()'; fi
