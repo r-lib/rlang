@@ -2,10 +2,16 @@
 % Please edit documentation in R/cnd.R
 \name{cnd_signal}
 \alias{cnd_signal}
+\alias{cnd_inform}
+\alias{cnd_warn}
 \alias{cnd_abort}
 \title{Signal a condition}
 \usage{
 cnd_signal(.cnd, ..., .msg = NULL, .call = NULL, .mufflable = TRUE)
+
+cnd_inform(.cnd, ..., .msg = NULL, .call = NULL, .mufflable = FALSE)
+
+cnd_warn(.cnd, ..., .msg = NULL, .call = NULL, .mufflable = FALSE)
 
 cnd_abort(.cnd, ..., .msg = NULL, .call = NULL, .mufflable = FALSE)
 }
@@ -99,6 +105,13 @@ with_handlers(foo = undesirable_handler,
     "return value"
   }))
 
+
+# cnd_warn() and cnd_inform() signal a condition and display a
+# warning or message:
+\dontrun{
+cnd_inform(cnd)
+cnd_warn(cnd)
+}
 
 # You can signal a critical condition with cnd_abort(). Unlike
 # cnd_signal() which has no side effect besides signalling the

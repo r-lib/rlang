@@ -58,44 +58,6 @@ message_cnd <- function(.type = NULL, ..., .msg = NULL) {
   cnd(c(.type, "message"), ..., .msg = .msg)
 }
 
-#' Deprecated condition constructors
-#'
-#' Deprecated in 0.1.2. See [cnd()].
-#'
-#' @inheritParams cnd
-#' @name deprecated-cnd
-#' @export
-new_cnd <- function(.type = NULL, ..., .msg = NULL) {
-  # Deprecated in 0.1.2
-  warning("`new_cnd()` has been renamed to `cnd()` for consistency",
-    call. = FALSE)
-  cnd(.type = .type, ..., .msg = .msg)
-}
-#' @rdname deprecated-cnd
-#' @export
-cnd_error <- function(.type = NULL, ..., .msg = NULL) {
-  # Deprecated in 0.1.2
-  warning("`cnd_error()` has been renamed to `error_cnd()` for consistency",
-    call. = FALSE)
-  error_cnd(.type = .type, ..., .msg = .msg)
-}
-#' @rdname deprecated-cnd
-#' @export
-cnd_warning <- function(.type = NULL, ..., .msg = NULL) {
-  # Deprecated in 0.1.2
-  warning("`cnd_warning()` has been renamed to `warning_cnd()` for consistency",
-    call. = FALSE)
-  warning_cnd(.type = .type, ..., .msg = .msg)
-}
-#' @rdname deprecated-cnd
-#' @export
-cnd_message <- function(.type = NULL, ..., .msg = NULL) {
-  # Deprecated in 0.1.2
-  warning("`cnd_message()` has been renamed to `message_cnd()` for consistency",
-    call. = FALSE)
-  message_cnd(.type = .type, ..., .msg = .msg)
-}
-
 #' Is object a condition?
 #' @param x An object to test.
 is_condition <- function(x) {
@@ -189,6 +151,13 @@ is_condition <- function(x) {
 #'   }))
 #'
 #'
+#' # cnd_warn() and cnd_inform() signal a condition and display a
+#' # warning or message:
+#' \dontrun{
+#' cnd_inform(cnd)
+#' cnd_warn(cnd)
+#' }
+#'
 #' # You can signal a critical condition with cnd_abort(). Unlike
 #' # cnd_signal() which has no side effect besides signalling the
 #' # condition, cnd_abort() makes the program terminate with an error
@@ -225,10 +194,27 @@ cnd_signal <- function(.cnd, ..., .msg = NULL, .call = NULL,
 }
 #' @rdname cnd_signal
 #' @export
+cnd_inform <- function(.cnd, ..., .msg = NULL, .call = NULL,
+                     .mufflable = FALSE) {
+  cnd <- as_special_cnd(.cnd, "message")
+  cnd <- cnd_update(cnd, ..., .msg = .msg, .call = cnd_call(.call), .show_call = .call)
+  invisible(.Call(rlang_cnd_inform, cnd, .mufflable))
+}
+#' @rdname cnd_signal
+#' @export
+cnd_warn <- function(.cnd, ..., .msg = NULL, .call = NULL,
+                     .mufflable = FALSE) {
+  cnd <- as_special_cnd(.cnd, "warning")
+  cnd <- cnd_update(cnd, ..., .msg = .msg, .call = cnd_call(.call), .show_call = .call)
+  invisible(.Call(rlang_cnd_warn, cnd, .mufflable))
+}
+#' @rdname cnd_signal
+#' @export
 cnd_abort <- function(.cnd, ..., .msg = NULL, .call = NULL,
                       .mufflable = FALSE) {
-  cnd <- cnd_update(.cnd, ..., .msg = .msg, .call = cnd_call(.call), .show_call = .call)
-  invisible(.Call(rlang_cnd_signal_error, cnd, .mufflable))
+  cnd <- as_special_cnd(.cnd, "error")
+  cnd <- cnd_update(cnd, ..., .msg = .msg, .call = cnd_call(.call), .show_call = .call)
+  invisible(.Call(rlang_cnd_abort, cnd, .mufflable))
 }
 
 cnd_call <- function(call) {
@@ -268,6 +254,24 @@ cnd_update <- function(.cnd, ..., .msg, .call, .show_call) {
 
   .cnd
 }
+as_special_cnd <- function(cnd, type) {
+  if (is_character(cnd) && !type %in% cnd) {
+    return(c(cnd, type))
+  }
+
+  if (is_condition(cnd) && !inherits(cnd, type)) {
+    classes <- class(cnd)
+
+    pos <- match("condition", classes)
+    before <- classes[seq_len(pos - 1)]
+    after <- classes[seq.int(pos, length(classes))]
+
+    class(cnd) <- chr(before, type, after)
+  }
+
+  cnd
+}
+
 # Used in C implementation
 muffle <- function(...) NULL
 
@@ -331,4 +335,25 @@ inform <- function(msg, type = NULL, call = FALSE) {
     cnd$call <- cnd$.call
   }
   message(cnd)
+}
+
+#' Catch a condition
+#'
+#' This is a small wrapper around `tryCatch()` that captures any
+#' condition signalled while evaluating its argument. It is useful for
+#' debugging and unit testing.
+#'
+#' @param expr Expression to be evaluated with a catch-all condition
+#'   handler.
+#' @return A condition if any was signalled, `NULL` otherwise.
+#' @export
+#' @examples
+#' catch_cnd(10)
+#' catch_cnd(abort("an error"))
+#' catch_cnd(cnd_signal("my_condition", .msg = "a condition"))
+catch_cnd <- function(expr) {
+  tryCatch(condition = identity, {
+    force(expr)
+    return(NULL)
+  })
 }

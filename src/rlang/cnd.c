@@ -130,7 +130,13 @@ void cnd_signal_impl(const char* signaller, SEXP cnd, bool mufflable) {
 void cnd_signal(SEXP cnd, bool mufflable) {
   cnd_signal_impl("signalCondition", cnd, mufflable);
 }
-void cnd_signal_error(SEXP cnd, bool mufflable) {
+void cnd_inform(SEXP cnd, bool mufflable) {
+  cnd_signal_impl("message", cnd, mufflable);
+}
+void cnd_warn(SEXP cnd, bool mufflable) {
+  cnd_signal_impl("warning", cnd, mufflable);
+}
+void cnd_abort(SEXP cnd, bool mufflable) {
   cnd_signal_impl("stop", cnd, mufflable);
 }
 
@@ -138,7 +144,15 @@ SEXP rlang_cnd_signal(SEXP cnd, SEXP mufflable) {
   cnd_signal(cnd, r_as_bool(mufflable));
   return R_NilValue;
 }
-SEXP rlang_cnd_signal_error(SEXP cnd, SEXP mufflable) {
-  cnd_signal_error(cnd, r_as_bool(mufflable));
+SEXP rlang_cnd_inform(SEXP cnd, SEXP mufflable) {
+  cnd_inform(cnd, r_as_bool(mufflable));
+  return R_NilValue;
+}
+SEXP rlang_cnd_warn(SEXP cnd, SEXP mufflable) {
+  cnd_warn(cnd, r_as_bool(mufflable));
+  return R_NilValue;
+}
+SEXP rlang_cnd_abort(SEXP cnd, SEXP mufflable) {
+  cnd_abort(cnd, r_as_bool(mufflable));
   return R_NilValue;
 }
