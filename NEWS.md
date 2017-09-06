@@ -55,6 +55,11 @@
 
 * `is_namespace()` is a snake case wrapper around `isNamespace()`.
 
+* `new_fn()` takes a function and creates an object of class `fn`.
+  The `fn` print method strips attributes before printing. The `fn`
+  class is thus convenient to augment functions with attributes with a
+  nicer print method.
+
 
 # rlang 0.1.2
 

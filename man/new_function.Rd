@@ -16,7 +16,7 @@ function. Usually this will be most easily generated with
 \code{\link[base:quote]{base::quote()}}}
 
 \item{env}{The parent environment of the function, defaults to the
-calling environment of \code{make_function}}
+calling environment of \code{new_function()}}
 }
 \description{
 This constructs a new function given it's three components:
