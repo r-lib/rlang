@@ -112,3 +112,20 @@ test_that("assignment methods preserve attributes", {
   orig_attrs$srcref <- NULL
   expect_identical(attributes(fn), orig_attrs)
 })
+
+test_that("print method for `fn` discards attributes", {
+  fn <- set_attrs(function() NULL, foo = "foo")
+  fn <- new_fn(fn)
+
+  temp <- file()
+  sink(temp)
+  on.exit({
+    sink()
+    close(temp)
+  })
+
+  print(fn)
+
+  output <- paste0(readLines(temp, warn = FALSE), collapse = "\n")
+  expect_false(grepl("attr", output))
+})

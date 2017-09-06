@@ -10,7 +10,7 @@
 #'   function. Usually this will be most easily generated with
 #'   [base::quote()]
 #' @param env The parent environment of the function, defaults to the
-#'   calling environment of `make_function`
+#'   calling environment of `new_function()`
 #' @export
 #' @examples
 #' f <- function(x) x + 3
@@ -492,4 +492,40 @@ op_as_closure <- function(prim_nm) {
       abort(paste0("Can't coerce the primitive function ", nm, " to a closure"))
     }
   )
+}
+
+#' Make an `fn` object
+#'
+#' @description
+#'
+#' `new_fn()` takes a function and sets the class to `c("fn",
+#' function)`.
+#'
+#' * Inheriting from `"fn"` enables a print method that strips all
+#'   attributes (except `srcref`) before printing. This is currently
+#'   the only purpose of the `fn` class.
+#'
+#' * Inheriting from `"function"` makes sure your function still
+#'   dispatches on type methods.
+#'
+#' @param fn A closure.
+#' @return An object of class `c("fn", "function")`.
+#' @export
+#' @examples
+#' fn <- set_attrs(function() "foo", attribute = "foobar")
+#' print(fn)
+#'
+#' # The `fn` object doesn't print with attributes:
+#' fn <- new_fn(fn)
+#' print(fn)
+new_fn <- function(fn) {
+  stopifnot(is_closure(fn))
+  set_attrs(fn, class = c("fn", "function"))
+}
+#' @export
+print.fn <- function(x, ...) {
+  srcref <- attr(x, "srcref")
+  x <- set_attrs(x, NULL)
+  x <- set_attrs(x, srcref = srcref)
+  print(x)
 }
