@@ -677,6 +677,42 @@ is_copyable <- function(x) {
 is_equal <- function(x, y) {
   identical(x, y)
 }
+
+#' Is an object referencing another?
+#'
+#' @description
+#'
+#' There are typically two situations where two symbols may refer to
+#' the same object.
+#'
+#' * R has copy-on-write semantics. This is an optimisation that
+#'   ensures that objects are only copied if needed. When you copy a
+#'   vector, no memory is actually copied until you modify either the
+#'   original object or the copy is modified.
+#'
+#' * Assigning an [uncopyable][is_copyable] object (like an
+#'   environment) creates a reference. These objects are never copied
+#'   even if you modify one of the references.
+#'
+#' @param x,y R objects.
+#' @export
+#' @examples
+#' # Reassigning an uncopyable object such as an environment creates a
+#' # reference:
+#' env <- env()
+#' ref <- env
+#' is_reference(ref, env)
+#'
+#' # Due to copy-on-write optimisation, a copied vector can
+#' # temporarily reference the original vector:
+#' vec <- 1:10
+#' copy <- vec
+#' is_reference(copy, vec)
+#'
+#' # Once you modify on of them, the copy is triggered in the
+#' # background and the objects cease to reference each other:
+#' vec[[1]] <- 100
+#' is_reference(copy, vec)
 is_reference <- function(x, y) {
   .Call(rlang_is_reference, x, y)
 }

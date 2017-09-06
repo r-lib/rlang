@@ -54,3 +54,12 @@ test_that("name symbols, calls, and scalars", {
 test_that("can enexpr() at top-level", {
   expect_identical(eval_bare(quote(enexpr(foo)), global_env()), quote(foo))
 })
+
+test_that("get_expr() supports closures", {
+  expect_identical(get_expr(identity), quote(x))
+})
+
+test_that("set_expr() supports closures", {
+  fn <- function(x) x
+  expect_equal(set_expr(fn, quote(y)), function(x) y)
+})

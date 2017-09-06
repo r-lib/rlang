@@ -209,3 +209,10 @@ test_that("env_set() inherits from parents if `inherit` is TRUE", {
   env_set(env, "bar", "bar", inherit = TRUE, create = TRUE)
   expect_identical(env_get(env, "bar"), "bar")
 })
+
+test_that("env_tail() detects sentinel", {
+  sentinel <- get_env()
+  env <- env()
+  descendant <- child_env(child_env(child_env(env)))
+  expect_identical(env_tail(descendant, sentinel), env)
+})

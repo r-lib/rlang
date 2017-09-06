@@ -10,7 +10,7 @@ set_expr(x, value)
 get_expr(x, default = x)
 }
 \arguments{
-\item{x}{An expression or one-sided formula. In addition,
+\item{x}{An expression, closure, or one-sided formula. In addition,
 \code{set_expr()} accept frames.}
 
 \item{value}{An updated expression.}

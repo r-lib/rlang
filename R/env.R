@@ -225,6 +225,9 @@ as_env_ <- function(x, parent = NULL) {
 #'
 #' @inheritParams get_env
 #' @param n The number of generations to go up.
+#' @param sentinel The environment signalling the end of the linear
+#'   search. `env_tail()` returns the environment which has `sentinel`
+#'   as parent.
 #' @return An environment for `env_parent()` and `env_tail()`, a list
 #'   of environments for `env_parents()`.
 #' @export
@@ -262,11 +265,11 @@ env_parent <- function(env = caller_env(), n = 1) {
 }
 #' @rdname env_parent
 #' @export
-env_tail <- function(env = caller_env()) {
+env_tail <- function(env = caller_env(), sentinel = empty_env()) {
   env_ <- get_env(env)
   next_env <- parent.env(env_)
 
-  while(!is_empty_env(next_env)) {
+  while(!is_reference(next_env, sentinel)) {
     env_ <- next_env
     next_env <- parent.env(next_env)
   }
@@ -327,6 +330,13 @@ is_empty_env <- function(env) {
 #' the identity function and the environment is simply returned (this
 #' helps simplifying code when writing generic functions for
 #' environments).
+#'
+#' While `set_env()` returns a modified copy and does not have side
+#' effects, `mut_env_parent()` operates changes the environment by
+#' side effect. This is because environments are
+#' [uncopyable][is_copyable]. Be careful not to change environments
+#' that you don't own, e.g. a parent environment of a function from a
+#' package.
 #'
 #' @param env An environment or an object bundling an environment,
 #'   e.g. a formula, [quosure] or [closure][is_closure].
@@ -424,12 +434,13 @@ set_env <- function(env, new_env = caller_env()) {
     ))
   )
 }
-
+#' @rdname get_env
+#' @export
 mut_env_parent <- function(env, new_env) {
-  .Call(rlang_mut_env_parent, env, new_env)
+  .Call(rlang_mut_env_parent, get_env(env), get_env(new_env))
 }
 `env_parent<-` <- function(x, value) {
-  .Call(rlang_mut_env_parent, x, value)
+  .Call(rlang_mut_env_parent, get_env(x), value)
 }
 
 
