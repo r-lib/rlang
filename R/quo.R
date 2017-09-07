@@ -486,7 +486,7 @@ quo_splice <- function(x, parent = NULL, warn = FALSE) {
       }
     },
     pairlist = {
-      while(!is_null(x)) {
+      while (!is_null(x)) {
         quo_splice(node_car(x), x, warn = warn)
         x <- node_cdr(x)
       }

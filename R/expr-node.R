@@ -249,7 +249,7 @@ duplicate <- function(x, shallow = FALSE) {
 
 node_walk <- function(.x, .f, ...) {
   cur <- .x
-  while(!is.null(cur)) {
+  while (!is.null(cur)) {
     .f(cur, ...)
     cur <- node_cdr(cur)
   }
@@ -258,7 +258,7 @@ node_walk <- function(.x, .f, ...) {
 node_walk_nonnull <- function(.x, .f, ...) {
   cur <- .x
   out <- NULL
-  while(!is.null(cur) && is.null(out)) {
+  while (!is.null(cur) && is.null(out)) {
     out <- .f(cur, ...)
     cur <- node_cdr(cur)
   }
@@ -266,7 +266,7 @@ node_walk_nonnull <- function(.x, .f, ...) {
 }
 node_walk_last <- function(.x, .f, ...) {
   cur <- .x
-  while(!is.null(node_cdr(cur))) {
+  while (!is.null(node_cdr(cur))) {
     cur <- node_cdr(cur)
   }
   .f(cur, ...)

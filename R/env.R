@@ -269,7 +269,7 @@ env_tail <- function(env = caller_env(), sentinel = empty_env()) {
   env_ <- get_env(env)
   next_env <- parent.env(env_)
 
-  while(!is_reference(next_env, sentinel)) {
+  while (!is_reference(next_env, sentinel)) {
     env_ <- next_env
     next_env <- parent.env(next_env)
   }
@@ -282,7 +282,7 @@ env_parents <- function(env = caller_env()) {
   out <- list_len(env_depth(env))
 
   i <- 1L
-  while(!is_empty_env(env)) {
+  while (!is_empty_env(env)) {
     env <- env_parent(env)
     out[[i]] <- env
     i <- i + 1L
@@ -309,7 +309,7 @@ env_depth <- function(env) {
   env_ <- get_env(env)
 
   n <- 0L
-  while(!is_empty_env(env_)) {
+  while (!is_empty_env(env_)) {
     env_ <- env_parent(env_)
     n <- n + 1L
   }
@@ -703,7 +703,7 @@ env_unbind <- function(env = caller_env(), nms, inherit = FALSE) {
   env_ <- get_env(env)
 
   if (inherit) {
-    while(any(env_has(env_, nms, inherit = TRUE))) {
+    while (any(env_has(env_, nms, inherit = TRUE))) {
       rm(list = nms, envir = env, inherits = TRUE)
     }
   } else {
@@ -806,7 +806,7 @@ scope_set <- function(env, nm, value, create) {
   env_ <- get_env(env)
   cur <- env_
 
-  while(!env_has(cur, nm) && !is_empty_env(cur)) {
+  while (!env_has(cur, nm) && !is_empty_env(cur)) {
     cur <- env_parent(cur)
   }
 
@@ -891,7 +891,7 @@ env_inherits <- function(env, ancestor) {
   env <- get_env(env)
   stopifnot(is_env(ancestor) && is_env(env))
 
-  while(!is_empty_env(env_parent(env))) {
+  while (!is_empty_env(env_parent(env))) {
     env <- env_parent(env)
     if (is_reference(env, ancestor)) {
       return(TRUE)

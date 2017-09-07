@@ -19,7 +19,7 @@ SEXP r_node_cddr(SEXP x) {
   return CDDR(x);
 }
 SEXP r_node_tail(SEXP x) {
-  while(CDR(x) != R_NilValue)
+  while (CDR(x) != R_NilValue)
     x = CDR(x);
   return x;
 }
