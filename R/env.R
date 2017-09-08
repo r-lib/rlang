@@ -658,6 +658,7 @@ env_bind_fns <- function(.env, ...) {
 #'   stack, bindings are switched back to their original values.
 #' @return `scoped_bindings()` returns the values of old bindings
 #'   invisibly; `with_bindings()` returns the value of `expr`.
+#' @export
 #' @examples
 #' foo <- "foo"
 #' bar <- "bar"
