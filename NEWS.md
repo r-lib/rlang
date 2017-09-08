@@ -72,6 +72,13 @@
   temporarily.
 
 
+## Breaking changes
+
+* `is_node()` now returns `TRUE` for calls as well. Use
+  `is_pairlist_node()` to determine whether an object is specifically
+   a pairlist node.
+
+
 # rlang 0.1.2
 
 This hotfix release makes rlang compatible with the R 3.1 branch.
