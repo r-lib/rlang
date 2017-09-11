@@ -11,7 +11,7 @@
 #' [base::parse()] which returns an base::expression vector). All
 #' functions also support R connections.
 #'
-#' The versions prefixed with `f_` return expressions quoted in
+#' The versions suffixed with `_quosure` return quosures quoted in
 #' formulas rather than raw expressions.
 #'
 #' @param x Text containing expressions to parse_expr for
@@ -32,7 +32,7 @@
 #' # A string can contain several expressions separated by ; or \n
 #' parse_exprs("NULL; list()\n foo(bar)")
 #'
-#' # The versions suffixed with _f return formulas:
+#' # The versions suffixed with _quosure/s return quosures:
 #' parse_quosure("foo %>% bar()")
 #' parse_quosures("1; 2; mtcars")
 #'
