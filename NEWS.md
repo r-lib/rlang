@@ -60,6 +60,12 @@
   class is thus convenient to augment functions with attributes with a
   nicer print method.
 
+* `env_get_list()` retrieves muliple bindings from an environment into
+  a named list.
+
+* `with_bindings()` and `scoped_bindings()` establish temporary
+  bindings in an environment.
+
 
 # rlang 0.1.2
 
