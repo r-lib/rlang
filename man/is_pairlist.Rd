@@ -3,26 +3,27 @@
 \name{is_pairlist}
 \alias{is_pairlist}
 \alias{is_node}
+\alias{is_node_list}
 \title{Is object a node or pairlist?}
 \usage{
 is_pairlist(x)
 
 is_node(x)
+
+is_node_list(x)
 }
 \arguments{
 \item{x}{Object to test.}
 }
 \description{
 \itemize{
-\item \code{is_pairlist()} checks that \code{x} has type \code{pairlist} or \code{NULL}.
-\code{NULL} is treated as a pairlist because it is the terminating
-node of pairlists and an empty pairlist is thus the \code{NULL}
-object itself.
-\item \code{is_node()} checks that \code{x} has type \code{pairlist}.
+\item \code{is_pairlist()} checks that \code{x} has type \code{pairlist}.
+\item \code{is_node()} checks that \code{x} has type \code{pairlist} or \code{language}.
+It tests whether \code{x} is a node that has a CAR and a CDR,
+including callable nodes (language objects).
+\item \code{is_node_list()} checks that \code{x} has type \code{pairlist} or \code{NULL}.
+\code{NULL} is the empty node list.
 }
-
-In other words, \code{is_pairlist()} tests for the data structure while
-\code{is_node()} tests for the internal type.
 }
 \seealso{
 \code{\link[=is_lang]{is_lang()}} tests for language nodes.

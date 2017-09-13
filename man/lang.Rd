@@ -22,7 +22,7 @@ or symbol.}
 \item{head}{A \link[=is_callable]{callable} object: a symbol, call, or
 literal function.}
 
-\item{tail}{A \link{pairlist} of arguments.}
+\item{tail}{A \link[=pairlist]{node list} of arguments.}
 }
 \description{
 Language objects are (with symbols) one of the two types of

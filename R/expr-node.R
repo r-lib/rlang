@@ -198,25 +198,30 @@ as_pairlist <- function(x) {
 #'
 #' @description
 #'
-#' * `is_pairlist()` checks that `x` has type `pairlist` or `NULL`.
-#'   `NULL` is treated as a pairlist because it is the terminating
-#'   node of pairlists and an empty pairlist is thus the `NULL`
-#'   object itself.
+#' * `is_pairlist()` checks that `x` has type `pairlist`.
 #'
-#' * `is_node()` checks that `x` has type `pairlist`.
+#' * `is_node()` checks that `x` has type `pairlist` or `language`.
+#'    It tests whether `x` is a node that has a CAR and a CDR,
+#'    including callable nodes (language objects).
 #'
-#' In other words, `is_pairlist()` tests for the data structure while
-#' `is_node()` tests for the internal type.
+#' * `is_node_list()` checks that `x` has type `pairlist` or `NULL`.
+#'   `NULL` is the empty node list.
+#'
 #' @param x Object to test.
 #' @seealso [is_lang()] tests for language nodes.
 #' @export
 is_pairlist <- function(x) {
-  typeof(x) %in% c("pairlist", "NULL")
+  typeof(x) == "pairlist"
 }
 #' @rdname is_pairlist
 #' @export
 is_node <- function(x) {
-  typeof(x) == "pairlist"
+  typeof(x) %in% c("pairlist", "language")
+}
+#' @rdname is_pairlist
+#' @export
+is_node_list <- function(x) {
+  typeof(x) %in% c("pairlist", "NULL")
 }
 
 
