@@ -42,7 +42,7 @@ expressions. It always returns a list of expressions (compare to
 \code{\link[base:parse]{base::parse()}} which returns an base::expression vector). All
 functions also support R connections.
 
-The versions prefixed with \code{f_} return expressions quoted in
+The versions suffixed with \code{_quosure} return quosures quoted in
 formulas rather than raw expressions.
 }
 \examples{
@@ -52,7 +52,7 @@ parse_expr("mtcars \%>\% dplyr::mutate(cyl_prime = cyl / sd(cyl))")
 # A string can contain several expressions separated by ; or \\n
 parse_exprs("NULL; list()\\n foo(bar)")
 
-# The versions suffixed with _f return formulas:
+# The versions suffixed with _quosure/s return quosures:
 parse_quosure("foo \%>\% bar()")
 parse_quosures("1; 2; mtcars")
 
