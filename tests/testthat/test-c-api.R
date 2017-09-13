@@ -1,12 +1,17 @@
 context("C API")
 
+r_string <- function(str) {
+  stopifnot(is_string(str))
+  .Call(rlang_r_string, str)
+}
+
 test_that("chr_prepend() prepends", {
-  out <- .Call(rlang_test_chr_prepend, c("foo", "bar"), node_cdr("baz"))
+  out <- .Call(rlang_test_chr_prepend, c("foo", "bar"), r_string("baz"))
   expect_identical(out, c("baz", "foo", "bar"))
 })
 
 test_that("chr_append() appends", {
-  out <- .Call(rlang_test_chr_append, c("foo", "bar"), node_cdr("baz"))
+  out <- .Call(rlang_test_chr_append, c("foo", "bar"), r_string("baz"))
   expect_identical(out, c("foo", "bar", "baz"))
 })
 
