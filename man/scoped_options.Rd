@@ -3,7 +3,7 @@
 \name{scoped_options}
 \alias{scoped_options}
 \alias{with_options}
-\alias{poke_options}
+\alias{push_options}
 \alias{peek_options}
 \alias{peek_option}
 \title{Change global options}
@@ -12,14 +12,14 @@ scoped_options(..., .frame = caller_env())
 
 with_options(.expr, ...)
 
-poke_options(...)
+push_options(...)
 
 peek_options(...)
 
 peek_option(name)
 }
 \arguments{
-\item{...}{For \code{scoped_options()} and \code{poke_options()}, named
+\item{...}{For \code{scoped_options()} and \code{push_options()}, named
 values defining new option values. For \code{peek_options()}, strings
 or character vectors of option names.}
 
@@ -32,7 +32,7 @@ options are set back to their original values.}
 \item{name}{An option name as string.}
 }
 \value{
-For \code{scoped_options()} and \code{poke_options()}, the old option
+For \code{scoped_options()} and \code{push_options()}, the old option
 values. \code{peek_option()} returns the current value of an option
 while the plural \code{peek_options()} returns a list of current
 option values.
@@ -44,7 +44,7 @@ frame (by default the current one). Options are set back to their
 old values when the frame returns.
 \item \code{with_options()} changes options while an expression is
 evaluated. Options are restored when the expression returns.
-\item \code{poke_options()} changes options permanently.
+\item \code{push_options()} adds or changes options permanently.
 \item \code{peek_option()} and \code{peek_options()} return option values. The
 former returns the option directly while the latter returns a
 list.
@@ -52,7 +52,7 @@ list.
 }
 \examples{
 # Store and retrieve a global option:
-poke_options(my_option = 10)
+push_options(my_option = 10)
 peek_option("my_option")
 
 # Change the option temporarily:
