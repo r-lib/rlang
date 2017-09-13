@@ -1,19 +1,3 @@
-
-# TODO: Use our own stack of expressions
-scoped_exit <- function(expr, frame = caller_env()) {
-  if (is_reference(frame, global_env())) {
-    abort("Can't add an exit event at top-level")
-  }
-
-  expr <- enexpr(expr)
-
-  # Inline everything so the call will succeed in any environment
-  expr <- lang(on.exit, expr, add = TRUE)
-  eval_bare(expr, frame)
-
-  invisible(expr)
-}
-
 #' Change global options
 #'
 #' @description
