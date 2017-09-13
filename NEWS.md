@@ -74,9 +74,9 @@
 
 ## Breaking changes
 
-* `is_node()` now returns `TRUE` for calls as well. Use
-  `is_pairlist_node()` to determine whether an object is specifically
-   a pairlist node.
+* `is_node()` now returns `TRUE` for calls as well and `is_pairlist()`
+  does not return `TRUE` for `NULL` objects. Use `is_node_list()` to
+  determine whether an object either of type `pairlist` or `NULL`.
 
 
 # rlang 0.1.2
