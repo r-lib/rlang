@@ -66,6 +66,11 @@
 * `with_bindings()` and `scoped_bindings()` establish temporary
   bindings in an environment.
 
+* New API for changing global options: `peek_options()` and
+  `peek_option()` examine options; `push_options()` changes options
+  indefinitely; `scoped_options()` and `with_options()` change options
+  temporarily.
+
 
 # rlang 0.1.2
 

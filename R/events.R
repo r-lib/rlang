@@ -6,7 +6,7 @@ scoped_exit <- function(expr, frame = caller_env()) {
   if (is_reference(frame, global_env())) {
     is_global_frame <- sys.parents() == 0
     if (sum(is_global_frame) == 1) {
-      abort("Can't add an exit event at top level")
+      abort("Can't add an exit event at top-level")
     }
   }
 
