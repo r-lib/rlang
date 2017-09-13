@@ -91,14 +91,14 @@ lang <- function(.fn, ..., .ns = NULL) {
 #' @rdname lang
 #' @param head A [callable][is_callable] object: a symbol, call, or
 #'   literal function.
-#' @param tail A [pairlist] of arguments.
+#' @param tail A [node list][pairlist] of arguments.
 #' @export
 new_language <- function(head, tail = NULL) {
   if (!is_callable(head)) {
     abort("Can't create call to non-callable object")
   }
-  if (!is_pairlist(tail)) {
-    abort("`tail` must be a pairlist")
+  if (!is_node_list(tail)) {
+    abort("`tail` must be a node list")
   }
   .Call(r_new_language, head, tail)
 }
