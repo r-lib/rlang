@@ -93,18 +93,24 @@ dots_definitions <- function(..., .named = FALSE) {
   dots <- .Call(rlang_quos_interp, environment(), .named, "trailing", FALSE)
 
   is_def <- map_lgl(dots, function(dot) is_definition(f_rhs(dot)))
-  defs <- map(dots[is_def], as_definition)
+  defs <- map(dots[is_def], pattern_quos)
 
   list(dots = dots[!is_def], defs = defs)
 }
-as_definition <- function(def) {
-  # The definition comes wrapped in a quosure
-  env <- f_env(def)
-  def <- f_rhs(def)
+pattern_quos <- function(x, default_env = NULL) {
+  # The pattern may be wrapped in a quosure
+  if (is_quosure(x)) {
+    env <- get_env(x)
+    x <- get_expr(x)
+  } else {
+    env <- default_env
+  }
+  stopifnot(is_formulaish(x, lhs = TRUE))
+  stopifnot(is_env(env))
 
   list(
-    lhs = new_quosure(f_lhs(def), env),
-    rhs = new_quosure(f_rhs(def), env)
+    lhs = new_quosure(f_lhs(x), env),
+    rhs = new_quosure(f_rhs(x), env)
   )
 }
 
