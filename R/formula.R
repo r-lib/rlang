@@ -77,6 +77,12 @@ is_bare_formula <- function(x, scoped = NULL, lhs = NULL) {
 is_formulaish <- function(x, scoped = NULL, lhs = NULL) {
   .Call(rlang_is_formulaish, x, scoped, lhs)
 }
+quo_is_formula <- function(x, scoped = NULL, lhs = NULL) {
+  is_formula(get_expr(x), scoped = scoped, lhs = lhs)
+}
+quo_is_formulaish <- function(x, scoped = NULL, lhs = NULL) {
+  is_formulaish(get_expr(x), scoped = scoped, lhs = lhs)
+}
 
 #' Get or set formula components
 #'

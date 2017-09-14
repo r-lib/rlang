@@ -4,21 +4,18 @@
 #' quosures (see [quo()]). It is especially useful to capture
 #' arguments forwarded through `...`.
 #'
-#' Both `quos` and `dots_definitions()` have specific support for
-#' definition expressions of the type `var := expr`, with some
-#' differences:
+#' @section Unquoting names:
 #'
-#'\describe{
-#'  \item{`quos()`}{
-#'    When `:=` definitions are supplied to `quos()`, they are treated
-#'    as a synonym of argument assignment `=`. On the other hand, they
-#'    allow unquoting operators on the left-hand side, which makes it
-#'    easy to assign names programmatically.}
-#'  \item{`dots_definitions()`}{
-#'    This dots capturing function returns definitions as is. Unquote
-#'    operators are processed on capture, in both the LHS and the
-#'    RHS. Unlike `quos()`, it allows named definitions.}
-#' }
+#' Like all rlang functions taking dots, `quos()` supports [definition
+#' expressions][is_definition] of the type `var := expr`. When `:=`
+#' definitions are supplied to `quos()`, they are treated as a synonym
+#' of argument assignment `=`. Unlike regular assignment, they support
+#' unquoting on the left-hand side, which makes it easy to assign
+#' names contained in variables.
+#'
+#' See [dots_patterns()] and [dots_definitions()] for using `:=`
+#' expressions with a different meaning than name assignment
+#'
 #' @param ... Expressions to capture unevaluated.
 #' @param .named Whether to ensure all dots are named. Unnamed
 #'   elements are processed with [expr_text()] to figure out a default

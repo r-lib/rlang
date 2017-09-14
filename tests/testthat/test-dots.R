@@ -119,6 +119,12 @@ test_that("dots_definitions() uses tidy eval", {
   expect_identical(dots$def, pat)
 })
 
-test_that("dots_definitions() fails with non-definitions", {
-  expect_error(dots_definitions(foo()), "`...` must be definitions")
+test_that("dots patterns check input types", {
+  expect_error(dots_definitions(foo()), "`...` can only contain `:=` definitions")
+  expect_error(dots_definitions(a ~ b), "`...` can only contain `:=` definitions")
+  expect_error(dots_formulas(foo()), "`...` can only contain two-sided formulas")
+  expect_error(dots_formulas(a := b), "`...` can only contain two-sided formulas")
+
+  expect_error(dots_patterns(foo()), "`...` can only contain two-sided formulas or `:=` definitions")
+  expect_error(regex = NA, dots_patterns(a := b, a ~ b))
 })

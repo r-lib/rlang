@@ -87,19 +87,95 @@ dots_values <- function(...,
   .Call(rlang_dots_values, environment(), FALSE, .ignore_empty, .unquote_names)
 }
 
-#' @rdname quosures
-#' @export
-dots_definitions <- function(...,
-                             .named = FALSE,
-                             .ignore_empty = c("trailing", "none", "all")) {
-  dots <- .Call(rlang_quos_interp, environment(), .named, .ignore_empty, FALSE)
+#' Quote patterns, definitions or formulas
+#'
+#' @description
+#'
+#' These quoting operators take dots and expect two-sided patterns
+#' like `a ~ b` or `a := b`. The LHS and RHS of each input are
+#' extracted in a list of quosures. The operators differ in the type
+#' of inputs they accept:
+#'
+#' * `dots_patterns()` accepts both two-sided formulas and `:=`
+#'   definitions. There is no distinction between either type of
+#'   inputs. This lets your users choose which syntax they prefer.
+#'
+#' * `dots_formulas()` and `dots_definitions()` accept only one type
+#'   of inputs.
+#'
+#' @inheritParams quosures
+#' @return A named list of list of extracted LHS and RHS
+#'   components. The components are extracted as quosures in a list
+#'   with `lhs` and `rhs` fields. The outer list is thus named after
+#'   the dots inputs while the inner lists contain the components for
+#'   each input.
+#' @seealso [quos()]
+#' @name dots_patterns
+#' @examples
+#' dots_formulas(
+#'   a ~ b,
+#'   c ~ d
+#' )
+#'
+#' dots_definitions(
+#'   a := b,
+#'   c := d
+#' )
+#'
+#' # dots_patterns() supports both kinds of inputs at the same time
+#' # but this should be discouraged. Users should opt for one type and
+#' # stick to it consistently:
+#' dots_patterns(
+#'   a ~ b,
+#'   c := d
+#' )
+NULL
 
-  if (!every(dots, quo_is_definition)) {
-    abort("`...` must be definitions specified with the `:=` operator")
+dots_patterns_ctor <- function(check_dots) {
+  fn <- function(...,
+                 .named = FALSE,
+                 .ignore_empty = c("trailing", "none", "all")) {
+    NULL
   }
+  environment(fn) <- parent.frame()
 
-  map(dots, pattern_quos)
+  body(fn) <- bquote({
+    dots <- .Call(rlang_quos_interp, environment(), .named, .ignore_empty, FALSE)
+
+    .(check_dots)(dots)
+
+    map(dots, pattern_quos)
+  })
+
+  fn
 }
+
+#' @rdname dots_patterns
+#' @export
+dots_patterns <- dots_patterns_ctor(quote(check_patterns))
+#' @rdname dots_patterns
+#' @export
+dots_formulas <- dots_patterns_ctor(quote(check_formulas))
+#' @rdname dots_patterns
+#' @export
+dots_definitions <- dots_patterns_ctor(quote(check_definitions))
+
+check_patterns <- function(dots) {
+  if (!every(dots, quo_is_formulaish, lhs = TRUE)) {
+    abort("`...` can only contain two-sided formulas or `:=` definitions")
+  }
+}
+check_formulas <- function(dots) {
+  if (!every(dots, quo_is_formula)) {
+    abort("`...` can only contain two-sided formulas")
+  }
+}
+check_definitions <- function(dots) {
+  if (!every(dots, quo_is_definition)) {
+    abort("`...` can only contain `:=` definitions")
+  }
+}
+
 pattern_quos <- function(x, default_env = NULL) {
   # The pattern may be wrapped in a quosure
   if (is_quosure(x)) {
