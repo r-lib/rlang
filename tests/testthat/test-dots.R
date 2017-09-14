@@ -109,3 +109,16 @@ test_that("dots_node() doesn't trim attributes from arguments", {
   dots <- eval(expr(dots_node(!! x)))
   expect_identical(node_car(dots), x)
 })
+
+test_that("dots_definitions() uses tidy eval", {
+  var1 <- "foo"
+  var2 <- "bar"
+  dots <- dots_definitions(def = foo(!!var1) := bar(!!var2))
+
+  pat <- list(lhs = quo(foo("foo")), rhs = quo(bar("bar")))
+  expect_identical(dots$def, pat)
+})
+
+test_that("dots_definitions() fails with non-definitions", {
+  expect_error(dots_definitions(foo()), "`...` must be definitions")
+})

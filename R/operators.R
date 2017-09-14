@@ -73,6 +73,10 @@
 is_definition <- function(x) {
   is_formulaish(x) && identical(node_car(x), sym_def)
 }
+quo_is_definition <- function(x) {
+  is_definition(get_expr(x))
+}
+
 #' @rdname op-definition
 #' @export
 #' @param lhs,rhs Expressions for the LHS and RHS of the definition.

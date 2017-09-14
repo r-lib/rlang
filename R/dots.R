@@ -94,10 +94,11 @@ dots_definitions <- function(...,
                              .ignore_empty = c("trailing", "none", "all")) {
   dots <- .Call(rlang_quos_interp, environment(), .named, .ignore_empty, FALSE)
 
-  is_def <- map_lgl(dots, function(dot) is_definition(f_rhs(dot)))
-  defs <- map(dots[is_def], pattern_quos)
+  if (!every(dots, quo_is_definition)) {
+    abort("`...` must be definitions specified with the `:=` operator")
+  }
 
-  list(dots = dots[!is_def], defs = defs)
+  map(dots, pattern_quos)
 }
 pattern_quos <- function(x, default_env = NULL) {
   # The pattern may be wrapped in a quosure

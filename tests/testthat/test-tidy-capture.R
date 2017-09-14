@@ -97,15 +97,6 @@ test_that("corner cases are handled when interpolating dot names", {
     expect_error(quos(!!var := NULL), "must be a string or a symbol")
 })
 
-test_that("definitions are interpolated", {
-  var1 <- "foo"
-  var2 <- "bar"
-  dots <- dots_definitions(def = foo(!!var1) := bar(!!var2))
-
-  pat <- list(lhs = quo(foo("foo")), rhs = quo(bar("bar")))
-  expect_identical(dots$defs$def, pat)
-})
-
 test_that("dots are forwarded to named arguments", {
   outer <- function(...) inner(...)
   inner <- function(...) fn(...)
