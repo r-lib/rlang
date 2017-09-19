@@ -157,7 +157,7 @@ because R makes it easy to capture the calling environment (see
 actually typed in the most immediate caller frame. This assumption
 easily breaks in R. First, because quasiquotation allows the user to
 combine expressions that do not necessarily come from the same lexical
-context. Secondly because arguments can be forwarded through the
+context. Secondly, because arguments can be forwarded through the
 special `...` argument. While base R does not provide any way of
 capturing a forwarded argument along with its original environment,
 rlang features [quos()] for this purpose. This function looks up each
