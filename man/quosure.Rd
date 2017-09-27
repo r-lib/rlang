@@ -28,7 +28,8 @@ expression supplied as argument.
 }
 \description{
 Quosures are quoted \link[=is_expr]{expressions} that keep track of an
-\link[=env]{environment} (just like \href{http://adv-r.had.co.nz/Functional-programming.html#closures}{closurefunctions}).
+\link[=env]{environment} (just like
+\href{http://adv-r.had.co.nz/Functional-programming.html#closures}{closure functions}).
 They are implemented as a subclass of one-sided formulas. They are
 an essential piece of the tidy evaluation framework.
 \itemize{
@@ -69,8 +70,10 @@ quosure inside another quosure and evaluate it like you've
 unquoted a raw expression.
 }
 
-See the \href{http://dplyr.tidyverse.org/articles/programming.html}{programming withdplyr}
-vignette for practical examples. For developers, the \href{http://rlang.tidyverse.org/articles/tidy-evaluation.html}{tidyevaluation}
+See the
+\href{http://dplyr.tidyverse.org/articles/programming.html}{programming with dplyr}
+vignette for practical examples. For developers, the
+\href{http://rlang.tidyverse.org/articles/tidy-evaluation.html}{tidy evaluation}
 vignette provides an overview of this approach. The
 \link{quasiquotation} page goes in detail over the unquoting and
 splicing operators.
