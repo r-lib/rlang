@@ -3,8 +3,8 @@
 #' @description
 #'
 #' Quosures are quoted [expressions][is_expr] that keep track of an
-#' [environment][env] (just like [closure
-#' functions](http://adv-r.had.co.nz/Functional-programming.html#closures)).
+#' [environment][env] (just like
+#' [closure functions](http://adv-r.had.co.nz/Functional-programming.html#closures)).
 #' They are implemented as a subclass of one-sided formulas. They are
 #' an essential piece of the tidy evaluation framework.
 #'
@@ -47,10 +47,10 @@
 #'   quosure inside another quosure and evaluate it like you've
 #'   unquoted a raw expression.
 #'
-#' See the [programming with
-#' dplyr](http://dplyr.tidyverse.org/articles/programming.html)
-#' vignette for practical examples. For developers, the [tidy
-#' evaluation](http://rlang.tidyverse.org/articles/tidy-evaluation.html)
+#' See the
+#' [programming with dplyr](http://dplyr.tidyverse.org/articles/programming.html)
+#' vignette for practical examples. For developers, the
+#' [tidy evaluation](http://rlang.tidyverse.org/articles/tidy-evaluation.html)
 #' vignette provides an overview of this approach. The
 #' [quasiquotation] page goes in detail over the unquoting and
 #' splicing operators.
