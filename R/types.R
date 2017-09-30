@@ -302,18 +302,19 @@ is_false <- function(x) {
 #' is_integerish(10.0, n = 2)
 #' is_integerish(10.000001)
 #' is_integerish(TRUE)
-is_integerish <- function(x, n = NULL, finite = NULL) {
+is_integerish <- function(x, n = NULL, finite = TRUE) {
   if (!typeof(x) %in% c("double", "integer")) return(FALSE)
   if (!is_null(n) && length(x) != n) return(FALSE)
 
-  finite_elts <- is.finite(x)
+  missing_elts <- is.na(x)
+  finite_elts <- is.finite(x) | missing_elts
   if (is_true(finite) && !all(finite_elts)) {
     return(FALSE)
   } else if (is_false(finite)) {
     return(!any(finite_elts))
   }
 
-  x_finite <- x[finite_elts]
+  x_finite <- x[finite_elts & !missing_elts]
   all(x_finite == as.integer(x_finite))
 }
 #' @rdname is_integerish

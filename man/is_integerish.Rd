@@ -6,7 +6,7 @@
 \alias{is_scalar_integerish}
 \title{Is a vector integer-like?}
 \usage{
-is_integerish(x, n = NULL, finite = NULL)
+is_integerish(x, n = NULL, finite = TRUE)
 
 is_bare_integerish(x, n = NULL)
 

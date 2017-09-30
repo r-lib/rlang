@@ -79,7 +79,7 @@ test_that("is_integerish() heeds length requirement", {
 })
 
 test_that("non finite double values are integerish", {
-  expect_true(is_integerish(dbl(1, Inf, -Inf, NaN)))
+  expect_true(is_integerish(dbl(1, Inf, -Inf, NaN), finite = NULL))
   expect_true(is_integerish(dbl(1, NA)))
   expect_true(is_integerish(int(1, NA)))
 })
