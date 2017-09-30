@@ -294,7 +294,9 @@ is_false <- function(x) {
 is_integerish <- function(x, n = NULL) {
   if (!typeof(x) %in% c("double", "integer")) return(FALSE)
   if (!is_null(n) && length(x) != n) return(FALSE)
-  all(x == as.integer(x))
+
+  x_finite <- x[is.finite(x)]
+  all(x_finite == as.integer(x_finite))
 }
 #' @rdname is_integerish
 #' @export
