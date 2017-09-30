@@ -22,7 +22,7 @@ is_vector(x, n = NULL)
 
 is_integer(x, n = NULL)
 
-is_double(x, n = NULL)
+is_double(x, n = NULL, finite = NULL)
 
 is_character(x, n = NULL, encoding = NULL)
 
@@ -38,6 +38,9 @@ is_null(x)
 \item{x}{Object to be tested.}
 
 \item{n}{Expected length of a vector.}
+
+\item{finite}{Whether values must be finite. Examples of non-finite
+values are \code{Inf}, \code{-Inf} and \code{NaN}.}
 
 \item{encoding}{Expected encoding of a string or character
 vector. One of \code{UTF-8}, \code{latin1}, or \code{unknown}.}

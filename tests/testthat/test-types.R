@@ -84,6 +84,20 @@ test_that("non finite double values are integerish", {
   expect_true(is_integerish(int(1, NA)))
 })
 
+test_that("check finiteness", {
+  expect_true(    is_double(dbl(1, 2), finite = TRUE))
+  expect_true(is_integerish(dbl(1, 2), finite = TRUE))
+
+  expect_false(    is_double(dbl(1, Inf), finite = TRUE))
+  expect_false(is_integerish(dbl(1, Inf), finite = TRUE))
+
+  expect_false(    is_double(dbl(1, Inf), finite = FALSE))
+  expect_false(is_integerish(dbl(1, Inf), finite = FALSE))
+
+  expect_true(    is_double(dbl(-Inf, Inf), finite = FALSE))
+  expect_true(is_integerish(dbl(-Inf, Inf), finite = FALSE))
+})
+
 test_that("scalar predicates heed type and length", {
   expect_true_false <- function(pred, pass, fail_len, fail_type) {
     expect_true(pred(pass))
