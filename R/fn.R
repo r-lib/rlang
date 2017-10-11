@@ -116,7 +116,12 @@ fn_fmls_names <- function(fn = caller_fn()) {
 #' @rdname fn_fmls
 #' @export
 fn_fmls_syms <- function(fn = caller_fn()) {
-  nms <- set_names(fn_fmls_names(fn))
+  fmls_nms <- fn_fmls_names(fn)
+  if (is_null(fmls_nms)) {
+    return(list())
+  }
+
+  nms <- set_names(fmls_nms)
   names(nms)[match("...", nms)] <- ""
   syms(nms)
 }
