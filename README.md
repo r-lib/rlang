@@ -2,6 +2,13 @@
 
 [![Build Status](https://travis-ci.org/tidyverse/rlang.svg?branch=master)](https://travis-ci.org/tidyverse/rlang)
 [![Coverage Status](https://codecov.io/gh/tidyverse/rlang/branch/master/graph/badge.svg)](https://codecov.io/github/tidyverse/rlang?branch=master)
+[![stability-unstable](https://img.shields.io/badge/stability-unstable-yellow.svg)](https://github.com/joethorley/stability-badges#unstable)
+
+**Important**: The rlang API is not completely stable yet (except for
+the tidy evaluation functions exported in tidyverse packages). Please
+see https://github.com/tidyverse/rlang/issues/281 for information
+about upcoming changes.
+
 
 ## Overview
 
@@ -9,27 +16,27 @@ The rlang package provides tools to work with core language features
 of R and the tidyverse:
 
 *   The __tidyeval__ framework, which is a well-founded system for non-standard
-    evaluation built on quasiquotation (`UQ()`) and quosures (`quo()`). 
+    evaluation built on quasiquotation (`UQ()`) and quosures (`quo()`).
     Read more in `vignette("tidy-evaluation")`.
 
 *   Consistent tools for working with base types:
-    
+
     * Vectors, including construction (`lgl()`, `int()`, ...)
       coercion (`as_logical()`, `as_character()`, ...), and
       predicates (`is_logical()`, `is_character()`).
-      
+
     * Language objects, such as calls (`lang()`) and symbols (`sym()`).
-    
+
     * Attributes, e.g. `set_attrs()`, `set_names()`.
-    
+
     * Functions, e.g. `new_function()`, `as_function()`, `is_function()`.
-    
+
     * Environments, e.g. `env()`, `env_has()`, `env_get()`, `env_bind()`,
       `env_unbind()`.
 
-*   A comprehensive set of predicates to determine if an object satisfies 
+*   A comprehensive set of predicates to determine if an object satisfies
     various conditions, e.g. `has_length()`, `is_list()`, `is_empty()`.
-    
+
 *   The condition (message, warning, error) and restart system.
 
 *   Call and context stacks.
