@@ -66,8 +66,9 @@ test_that("is_integerish() heeds type requirement", {
   }
 
   types <- c("logical", "complex", "character", "expression", "list", "raw")
-  for (type in types)
+  for (type in types) {
     expect_false(is_integerish(vector(type)))
+  }
 })
 
 test_that("is_integerish() heeds length requirement", {
@@ -75,6 +76,26 @@ test_that("is_integerish() heeds length requirement", {
     expect_true(is_integerish(double(n), n = n))
     expect_false(is_integerish(double(n), n = n + 1))
   }
+})
+
+test_that("non finite double values are integerish", {
+  expect_true(is_integerish(dbl(1, Inf, -Inf, NaN), finite = NULL))
+  expect_true(is_integerish(dbl(1, NA)))
+  expect_true(is_integerish(int(1, NA)))
+})
+
+test_that("check finiteness", {
+  expect_true(    is_double(dbl(1, 2), finite = TRUE))
+  expect_true(is_integerish(dbl(1, 2), finite = TRUE))
+
+  expect_false(    is_double(dbl(1, Inf), finite = TRUE))
+  expect_false(is_integerish(dbl(1, Inf), finite = TRUE))
+
+  expect_false(    is_double(dbl(1, Inf), finite = FALSE))
+  expect_false(is_integerish(dbl(1, Inf), finite = FALSE))
+
+  expect_true(    is_double(dbl(-Inf, Inf), finite = FALSE))
+  expect_true(is_integerish(dbl(-Inf, Inf), finite = FALSE))
 })
 
 test_that("scalar predicates heed type and length", {

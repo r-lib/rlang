@@ -18,6 +18,8 @@
 #'
 #' @param x Object to be tested.
 #' @param n Expected length of a vector.
+#' @param finite Whether values must be finite. Examples of non-finite
+#'   values are `Inf`, `-Inf` and `NaN`.
 #' @param encoding Expected encoding of a string or character
 #'   vector. One of `UTF-8`, `latin1`, or `unknown`.
 #' @seealso [bare-type-predicates] [scalar-type-predicates]
@@ -56,9 +58,18 @@ is_integer <- function(x, n = NULL) {
 }
 #' @export
 #' @rdname type-predicates
-is_double <- function(x, n = NULL) {
+is_double <- function(x, n = NULL, finite = NULL) {
   if (typeof(x) != "double") return(FALSE)
   if (!is_null(n) && length(x) != n) return(FALSE)
+
+  if (!is_null(finite)) {
+    if (finite) {
+      return(all(is.finite(x)))
+    } else {
+      return(!any(is.finite(x)))
+    }
+  }
+
   TRUE
 }
 #' @export
@@ -291,10 +302,20 @@ is_false <- function(x) {
 #' is_integerish(10.0, n = 2)
 #' is_integerish(10.000001)
 #' is_integerish(TRUE)
-is_integerish <- function(x, n = NULL) {
+is_integerish <- function(x, n = NULL, finite = TRUE) {
   if (!typeof(x) %in% c("double", "integer")) return(FALSE)
   if (!is_null(n) && length(x) != n) return(FALSE)
-  all(x == as.integer(x))
+
+  missing_elts <- is.na(x)
+  finite_elts <- is.finite(x) | missing_elts
+  if (is_true(finite) && !all(finite_elts)) {
+    return(FALSE)
+  } else if (is_false(finite)) {
+    return(!any(finite_elts))
+  }
+
+  x_finite <- x[finite_elts & !missing_elts]
+  all(x_finite == as.integer(x_finite))
 }
 #' @rdname is_integerish
 #' @export
