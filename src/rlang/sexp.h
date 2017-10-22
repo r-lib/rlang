@@ -35,5 +35,10 @@ bool r_is_null(SEXP x);
 
 SEXP r_duplicate(SEXP x, bool shallow);
 
+static inline
+bool r_is_object(SEXP x) {
+  return OBJECT(x);
+}
+
 
 #endif

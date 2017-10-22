@@ -20,42 +20,6 @@ SEXP set_names(SEXP x, SEXP nms) {
   return Rf_setAttrib(x, R_NamesSymbol, nms);
 }
 
-bool is_object(SEXP x) {
-  return OBJECT(x) != 0;
-}
-bool is_atomic(SEXP x) {
-  switch(r_kind(x)) {
-  case LGLSXP:
-  case INTSXP:
-  case REALSXP:
-  case CPLXSXP:
-  case STRSXP:
-  case RAWSXP:
-    return true;
-  default:
-    return false;
-  }
-}
-bool is_scalar_atomic(SEXP x) {
-  return r_length(x) == 1 && is_atomic(x);
-}
-bool is_list(SEXP x) {
-  return r_kind(x) == VECSXP;
-}
-bool is_vector(SEXP x) {
-  switch(r_kind(x)) {
-  case LGLSXP:
-  case INTSXP:
-  case REALSXP:
-  case CPLXSXP:
-  case STRSXP:
-  case RAWSXP:
-  case VECSXP:
-    return true;
-  default:
-    return false;
-  }
-}
 bool is_null(SEXP x) {
   return x == R_NilValue;
 }

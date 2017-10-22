@@ -179,7 +179,7 @@ SEXP squash(SEXPTYPE kind, SEXP dots, bool (*is_spliceable)(SEXP), int depth) {
 typedef bool (*is_spliceable_t)(SEXP);
 
 bool is_spliced_bare(SEXP x) {
-  return is_list(x) && (!OBJECT(x) || Rf_inherits(x, "spliced"));
+  return is_list(x) && (!r_is_object(x) || Rf_inherits(x, "spliced"));
 }
 bool is_spliced(SEXP x) {
   return is_list(x) && Rf_inherits(x, "spliced");

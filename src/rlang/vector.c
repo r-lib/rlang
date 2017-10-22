@@ -112,7 +112,7 @@ void vec_copy_coerce_n(SEXP src, r_size_t n, SEXP dest,
                        r_size_t offset_dest,
                        r_size_t offset_src) {
   if (r_kind(src) != r_kind(dest)) {
-    if (OBJECT(src))
+    if (r_is_object(src))
       r_abort("Can't splice S3 objects");
     // FIXME: This callbacks to rlang R coercers with an extra copy.
     PROTECT_INDEX ipx;
