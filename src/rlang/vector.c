@@ -26,58 +26,66 @@ SEXP r_scalar_lgl(bool x) {
 
 // Copy --------------------------------------------------------------
 
-void vec_copy_n(SEXP src, r_size_t n, SEXP dest,
-                r_size_t offset_dest,
-                r_size_t offset_src) {
-  switch (r_kind(dest)) {
+void r_vec_poke_from(SEXP x, r_size_t offset,
+                     SEXP y, r_size_t from, r_size_t to) {
+  if (to == -1) {
+    to = r_length(y);
+  }
+  r_size_t n = to - from;
+
+  if ((r_length(x) - offset) < n) {
+    r_abort("Can't copy data to `x` because it is too small");
+  }
+
+  switch (r_kind(x)) {
   case LGLSXP: {
-    int* src_data = LOGICAL(src);
-    int* dest_data = LOGICAL(dest);
+    int* src_data = LOGICAL(y);
+    int* dest_data = LOGICAL(x);
     for (r_size_t i = 0; i != n; ++i)
-      dest_data[i + offset_dest] = src_data[i + offset_src];
+      dest_data[i + offset] = src_data[i + from];
     break;
   }
   case INTSXP: {
-    int* src_data = INTEGER(src);
-    int* dest_data = INTEGER(dest);
+    int* src_data = INTEGER(y);
+    int* dest_data = INTEGER(x);
     for (r_size_t i = 0; i != n; ++i)
-      dest_data[i + offset_dest] = src_data[i + offset_src];
+      dest_data[i + offset] = src_data[i + from];
     break;
   }
   case REALSXP: {
-    double* src_data = REAL(src);
-    double* dest_data = REAL(dest);
+    double* src_data = REAL(y);
+    double* dest_data = REAL(x);
     for (r_size_t i = 0; i != n; ++i)
-      dest_data[i + offset_dest] = src_data[i + offset_src];
+      dest_data[i + offset] = src_data[i + from];
     break;
   }
   case CPLXSXP: {
-    r_complex_t* src_data = COMPLEX(src);
-    r_complex_t* dest_data = COMPLEX(dest);
+    r_complex_t* src_data = COMPLEX(y);
+    r_complex_t* dest_data = COMPLEX(x);
     for (r_size_t i = 0; i != n; ++i)
-      dest_data[i + offset_dest] = src_data[i + offset_src];
+      dest_data[i + offset] = src_data[i + from];
     break;
   }
   case RAWSXP: {
-    r_byte_t* src_data = RAW(src);
-    r_byte_t* dest_data = RAW(dest);
+    r_byte_t* src_data = RAW(y);
+    r_byte_t* dest_data = RAW(x);
     for (r_size_t i = 0; i != n; ++i)
-      dest_data[i + offset_dest] = src_data[i + offset_src];
+      dest_data[i + offset] = src_data[i + from];
     break;
   }
   case STRSXP: {
     SEXP elt;
     for (r_size_t i = 0; i != n; ++i) {
-      elt = STRING_ELT(src, i + offset_src);
-      SET_STRING_ELT(dest, i + offset_dest, elt);
+      elt = STRING_ELT(y, i + from);
+      SET_STRING_ELT(x, i + offset, elt);
     }
     break;
   }
   case VECSXP: {
     SEXP elt;
     for (r_size_t i = 0; i != n; ++i) {
-      elt = VECTOR_ELT(src, i + offset_src);
-      SET_VECTOR_ELT(dest, i + offset_dest, elt);
+      elt = VECTOR_ELT(y, i + from);
+      SET_VECTOR_ELT(x, i + offset, elt);
     }
     break;
   }
@@ -108,6 +116,25 @@ SEXP vec_coercer_sym(SEXP dest) {
   }
 }
 
+// Might allocate, caller must protect result
+void r_vec_poke_coerce_from(SEXP src, r_size_t n, SEXP dest,
+                            r_size_t offset_dest,
+                            r_size_t offset_src) {
+  if (r_kind(src) != r_kind(dest)) {
+    if (r_is_object(src))
+      r_abort("Can't splice S3 objects");
+    // FIXME: This callbacks to rlang R coercers with an extra copy.
+    PROTECT_INDEX ipx;
+    SEXP call, coerced;
+    PROTECT_WITH_INDEX(call = vec_coercer_sym(dest), &ipx);
+    REPROTECT(call = Rf_lang2(call, src), ipx);
+    REPROTECT(coerced = r_eval(call, R_BaseEnv), ipx);
+    r_vec_poke_from(dest, offset_dest, coerced, offset_src, n);
+    FREE(1);
+  } else {
+    r_vec_poke_from(dest, offset_dest, src, offset_src, n);
+  }
+}
 void vec_copy_coerce_n(SEXP src, r_size_t n, SEXP dest,
                        r_size_t offset_dest,
                        r_size_t offset_src) {
@@ -120,9 +147,9 @@ void vec_copy_coerce_n(SEXP src, r_size_t n, SEXP dest,
     PROTECT_WITH_INDEX(call = vec_coercer_sym(dest), &ipx);
     REPROTECT(call = Rf_lang2(call, src), ipx);
     REPROTECT(coerced = r_eval(call, R_BaseEnv), ipx);
-    vec_copy_n(coerced, n, dest, offset_dest, offset_src);
+    r_vec_poke_from(dest, offset_dest, coerced, offset_src, n);
     FREE(1);
   } else {
-    vec_copy_n(src, n, dest, offset_dest, offset_src);
+    r_vec_poke_from(dest, offset_dest, src, offset_src, n);
   }
 }

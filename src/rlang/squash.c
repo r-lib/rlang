@@ -44,10 +44,11 @@ r_size_t atom_squash(SEXPTYPE kind, squash_info_t info,
 
       if (info.named) {
         SEXP nms = names(inner);
-        if (is_character(nms))
-          vec_copy_n(nms, n_inner, out_names, count, 0);
-        else if (n_inner == 1 && has_name_at(outer, i))
+        if (is_character(nms)) {
+          r_vec_poke_from(out_names, count, nms, 0, n_inner);
+        } else if (n_inner == 1 && has_name_at(outer, i)) {
           SET_STRING_ELT(out_names, count, STRING_ELT(names(outer), i));
+        }
       }
 
       count += n_inner;
