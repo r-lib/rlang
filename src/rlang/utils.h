@@ -21,13 +21,9 @@ SEXP names(SEXP x);
 bool has_name_at(SEXP x, r_size_t i);
 bool is_str_empty(SEXP str);
 bool is_object(SEXP x);
-bool is_atomic(SEXP x);
-bool is_list(SEXP x);
 SEXP set_names(SEXP x, SEXP nms);
-bool is_scalar_atomic(SEXP x);
 const char* kind_c_str(SEXPTYPE kind);
 bool is_empty(SEXP x);
-bool is_vector(SEXP x);
 bool is_null(SEXP x);
 
 

@@ -1,6 +1,40 @@
 #include "rlang.h"
 
 
+bool r_is_atomic(SEXP x) {
+  switch(r_kind(x)) {
+  case LGLSXP:
+  case INTSXP:
+  case REALSXP:
+  case CPLXSXP:
+  case STRSXP:
+  case RAWSXP:
+    return true;
+  default:
+    return false;
+  }
+}
+bool r_is_scalar_atomic(SEXP x) {
+  return r_length(x) == 1 && r_is_atomic(x);
+}
+bool r_is_list(SEXP x) {
+  return r_kind(x) == VECSXP;
+}
+bool r_is_vector(SEXP x) {
+  switch(r_kind(x)) {
+  case LGLSXP:
+  case INTSXP:
+  case REALSXP:
+  case CPLXSXP:
+  case STRSXP:
+  case RAWSXP:
+  case VECSXP:
+    return true;
+  default:
+    return false;
+  }
+}
+
 // In particular, this returns 1 for environments
 r_size_t vec_length(SEXP x) {
   switch (r_kind(x)) {
