@@ -84,7 +84,7 @@ SEXP new_condition(SEXP type, SEXP data, SEXP msg) {
 }
 
 bool is_condition(SEXP x) {
-  return TYPEOF(x) == VECSXP && Rf_inherits(x, "condition");
+  return r_kind(x) == VECSXP && Rf_inherits(x, "condition");
 }
 
 static
@@ -106,7 +106,7 @@ static
 void cnd_signal_impl(const char* signaller, SEXP cnd, bool mufflable) {
   int n_protect = 0;
 
-  if (TYPEOF(cnd) == STRSXP) {
+  if (r_kind(cnd) == STRSXP) {
     cnd = KEEP(new_condition(cnd, R_NilValue, R_NilValue));
     ++n_protect;
   } else if (!is_condition(cnd)) {

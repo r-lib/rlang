@@ -3,7 +3,7 @@
 
 // In particular, this returns 1 for environments
 r_size_t vec_length(SEXP x) {
-  switch (TYPEOF(x)) {
+  switch (r_kind(x)) {
   case LGLSXP:
   case INTSXP:
   case REALSXP:
@@ -29,7 +29,7 @@ SEXP r_scalar_lgl(bool x) {
 void vec_copy_n(SEXP src, r_size_t n, SEXP dest,
                 r_size_t offset_dest,
                 r_size_t offset_src) {
-  switch (TYPEOF(dest)) {
+  switch (r_kind(dest)) {
   case LGLSXP: {
     int* src_data = LOGICAL(src);
     int* dest_data = LOGICAL(dest);
@@ -97,21 +97,21 @@ SEXP namespace_rlang_sym(SEXP sym) {
 }
 
 SEXP vec_coercer_sym(SEXP dest) {
-  switch(TYPEOF(dest)) {
+  switch(r_kind(dest)) {
   case LGLSXP: return namespace_rlang_sym(Rf_install("as_logical"));
   case INTSXP: return namespace_rlang_sym(Rf_install("as_integer"));
   case REALSXP: return namespace_rlang_sym(Rf_install("as_double"));
   case CPLXSXP: return namespace_rlang_sym(Rf_install("as_complex"));
   case STRSXP: return namespace_rlang_sym(Rf_install("as_character"));
   case RAWSXP: return namespace_rlang_sym(Rf_install("as_bytes"));
-  default: r_abort("No coercion implemented for `%s`", Rf_type2str(TYPEOF(dest)));
+  default: r_abort("No coercion implemented for `%s`", Rf_type2str(r_kind(dest)));
   }
 }
 
 void vec_copy_coerce_n(SEXP src, r_size_t n, SEXP dest,
                        r_size_t offset_dest,
                        r_size_t offset_src) {
-  if (TYPEOF(src) != TYPEOF(dest)) {
+  if (r_kind(src) != r_kind(dest)) {
     if (OBJECT(src))
       r_abort("Can't splice S3 objects");
     // FIXME: This callbacks to rlang R coercers with an extra copy.

@@ -80,5 +80,5 @@ SEXP r_mut_node_tag(SEXP x, SEXP tag) {
 }
 
 bool r_is_pairlist(SEXP x) {
-  return TYPEOF(x) == LISTSXP;
+  return r_kind(x) == LISTSXP;
 }

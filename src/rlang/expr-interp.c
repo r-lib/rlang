@@ -9,24 +9,24 @@ int bang_level(SEXP x) {
     return 0;
 
   SEXP arg = CDR(x);
-  if (TYPEOF(arg) == NILSXP || !is_lang(CAR(arg), "!"))
+  if (r_kind(arg) == NILSXP || !is_lang(CAR(arg), "!"))
     return 1;
 
   arg = CDR(CAR(arg));
-  if (TYPEOF(arg) == NILSXP || !is_lang(CAR(arg), "!"))
+  if (r_kind(arg) == NILSXP || !is_lang(CAR(arg), "!"))
     return 2;
 
   return 3;
 }
 
 int is_uq_sym(SEXP x) {
-  if (TYPEOF(x) != SYMSXP)
+  if (r_kind(x) != SYMSXP)
     return 0;
   else
     return is_sym(x, "UQ") || is_sym(x, "UQE") || is_sym(x, "!!");
 }
 int is_splice_sym(SEXP x) {
-  if (TYPEOF(x) != SYMSXP)
+  if (r_kind(x) != SYMSXP)
     return 0;
   else
     return is_sym(x, "UQS") || is_sym(x, "!!!");
@@ -61,7 +61,7 @@ void unquote_check(SEXP x) {
 }
 
 bool is_bare_formula(SEXP x) {
-  return TYPEOF(x) == LANGSXP
+  return r_kind(x) == LANGSXP
       && CAR(x) == Rf_install("~")
       && !Rf_inherits(x, "quosure");
 }

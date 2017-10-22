@@ -12,5 +12,5 @@ SEXP r_new_language(SEXP head, SEXP tail) {
 }
 
 bool r_is_language(SEXP x) {
-  return TYPEOF(x) == LANGSXP;
+  return r_kind(x) == LANGSXP;
 }

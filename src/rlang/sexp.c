@@ -10,10 +10,6 @@ SEXP rlang_is_reference(SEXP x, SEXP y) {
   return r_scalar_lgl(x == y);
 }
 
-SEXPTYPE r_typeof(SEXP x) {
-  return TYPEOF(x);
-}
-
 SEXP r_mut_kind(SEXP x, SEXPTYPE kind) {
   SET_TYPEOF(x, kind);
   return x;
@@ -63,7 +59,7 @@ void mut_names(SEXP x, SEXP nms) {
 bool is_named(SEXP x) {
   SEXP nms = sxp_names(x);
 
-  if (TYPEOF(nms) != STRSXP)
+  if (r_kind(nms) != STRSXP)
     return false;
 
   if (chr_has(nms, ""))

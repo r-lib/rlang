@@ -7,7 +7,11 @@
 #define r_null R_NilValue
 #define r_length Rf_length
 
-SEXPTYPE r_typeof(SEXP x);
+static inline
+SEXPTYPE r_kind(SEXP x) {
+  return TYPEOF(x);
+}
+
 SEXP r_get_attr(SEXP x, SEXP sym);
 
 bool r_inherits(SEXP x, const char* class_);

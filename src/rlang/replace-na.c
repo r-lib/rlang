@@ -6,7 +6,7 @@ SEXP rlang_replace_na(SEXP x, SEXP replacement) {
   int n = r_length(x);
   int i = 0;
 
-  switch(TYPEOF(x)) {
+  switch(r_kind(x)) {
   case LGLSXP: {
     int* arr = LOGICAL(x);
     for (; i < n; ++i) {
@@ -53,7 +53,7 @@ SEXP rlang_replace_na(SEXP x, SEXP replacement) {
   }
 
   default: {
-    r_abort("Don't know how to handle object of type", Rf_type2char(TYPEOF(x)));
+    r_abort("Don't know how to handle object of type", Rf_type2char(r_kind(x)));
   }
   }
 
@@ -67,7 +67,7 @@ SEXP replace_na_(SEXP x, SEXP replacement, int i) {
   KEEP(x = Rf_duplicate(x));
   int n = r_length(x);
 
-  switch(TYPEOF(x)) {
+  switch(r_kind(x)) {
   case LGLSXP: {
     int* arr = LOGICAL(x);
     int new_value = LOGICAL(replacement)[0];
@@ -119,7 +119,7 @@ SEXP replace_na_(SEXP x, SEXP replacement, int i) {
   }
 
   default: {
-    r_abort("Don't know how to handle object of type", Rf_type2char(TYPEOF(x)));
+    r_abort("Don't know how to handle object of type", Rf_type2char(r_kind(x)));
   }
   }
 

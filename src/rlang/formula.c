@@ -2,7 +2,7 @@
 
 
 SEXP r_f_rhs(SEXP f) {
-  if (TYPEOF(f) != LANGSXP)
+  if (r_kind(f) != LANGSXP)
     r_abort("`x` must be a formula");
 
   switch (r_length(f)) {
@@ -12,7 +12,7 @@ SEXP r_f_rhs(SEXP f) {
   }
 }
 SEXP r_f_lhs(SEXP f) {
-  if (TYPEOF(f) != LANGSXP)
+  if (r_kind(f) != LANGSXP)
     r_abort("`x` must be a formula");
 
   switch (r_length(f)) {
@@ -30,7 +30,7 @@ bool r_f_has_env(SEXP f) {
 }
 
 bool is_formulaish(SEXP x, int scoped, int lhs) {
-  if (TYPEOF(x) != LANGSXP)
+  if (r_kind(x) != LANGSXP)
     return false;
 
   SEXP head = CAR(x);
@@ -38,7 +38,7 @@ bool is_formulaish(SEXP x, int scoped, int lhs) {
     return false;
 
   if (scoped >= 0) {
-    int has_env = TYPEOF(r_f_env(x)) == ENVSXP;
+    int has_env = r_kind(r_f_env(x)) == ENVSXP;
     if (scoped != has_env)
       return false;
   }

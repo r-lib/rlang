@@ -2,7 +2,7 @@
 #include "rlang.h"
 
 bool is_character(SEXP x) {
-  return TYPEOF(x) == STRSXP;
+  return r_kind(x) == STRSXP;
 }
 bool is_str_empty(SEXP str) {
   const char* c_str = CHAR(str);
@@ -24,7 +24,7 @@ bool is_object(SEXP x) {
   return OBJECT(x) != 0;
 }
 bool is_atomic(SEXP x) {
-  switch(TYPEOF(x)) {
+  switch(r_kind(x)) {
   case LGLSXP:
   case INTSXP:
   case REALSXP:
@@ -40,10 +40,10 @@ bool is_scalar_atomic(SEXP x) {
   return r_length(x) == 1 && is_atomic(x);
 }
 bool is_list(SEXP x) {
-  return TYPEOF(x) == VECSXP;
+  return r_kind(x) == VECSXP;
 }
 bool is_vector(SEXP x) {
-  switch(TYPEOF(x)) {
+  switch(r_kind(x)) {
   case LGLSXP:
   case INTSXP:
   case REALSXP:
@@ -61,18 +61,18 @@ bool is_null(SEXP x) {
 }
 
 int is_sym(SEXP x, const char* string) {
-  if (TYPEOF(x) != SYMSXP)
+  if (r_kind(x) != SYMSXP)
     return false;
   else
     return strcmp(CHAR(PRINTNAME(x)), string) == 0;
 }
 
 int is_symbolic(SEXP x) {
-  return TYPEOF(x) == LANGSXP || TYPEOF(x) == SYMSXP;
+  return r_kind(x) == LANGSXP || r_kind(x) == SYMSXP;
 }
 
 bool is_lang(SEXP x, const char* f) {
-  if (!is_symbolic(x) && TYPEOF(x) != LISTSXP)
+  if (!is_symbolic(x) && r_kind(x) != LISTSXP)
     return false;
 
   SEXP fun = CAR(x);
@@ -80,7 +80,7 @@ bool is_lang(SEXP x, const char* f) {
 }
 
 int is_prefixed_call(SEXP x, int (*sym_predicate)(SEXP)) {
-  if (TYPEOF(x) != LANGSXP)
+  if (r_kind(x) != LANGSXP)
     return 0;
 
   SEXP head = CAR(x);
@@ -99,14 +99,14 @@ int is_prefixed_call(SEXP x, int (*sym_predicate)(SEXP)) {
 }
 
 int is_any_call(SEXP x, int (*sym_predicate)(SEXP)) {
-  if (TYPEOF(x) != LANGSXP)
+  if (r_kind(x) != LANGSXP)
     return false;
   else
     return sym_predicate(CAR(x)) || is_prefixed_call(x, sym_predicate);
 }
 
 int is_rlang_prefixed(SEXP x, int (*sym_predicate)(SEXP)) {
-  if (TYPEOF(x) != LANGSXP)
+  if (r_kind(x) != LANGSXP)
     return 0;
 
   if (!is_lang(CAR(x), "::"))
@@ -125,7 +125,7 @@ int is_rlang_prefixed(SEXP x, int (*sym_predicate)(SEXP)) {
   return 1;
 }
 int is_rlang_call(SEXP x, int (*sym_predicate)(SEXP)) {
-  if (TYPEOF(x) != LANGSXP)
+  if (r_kind(x) != LANGSXP)
     return false;
   else
     return sym_predicate(CAR(x)) || is_rlang_prefixed(x, sym_predicate);
@@ -136,7 +136,7 @@ SEXP rlang_length(SEXP x) {
 }
 
 int is_true(SEXP x) {
-  if (TYPEOF(x) != LGLSXP || r_length(x) != 1)
+  if (r_kind(x) != LGLSXP || r_length(x) != 1)
     r_abort("`x` must be a boolean");
 
   int value = LOGICAL(x)[0];
@@ -158,7 +158,7 @@ SEXP pkg_obj(SEXP env, const char* name) {
   SEXP obj = r_env_get(env, r_sym(name));
 
   // Can be a promise to a lazyLoadDBfetch() call
-  if (r_typeof(obj) == PROMSXP)
+  if (r_kind(obj) == PROMSXP)
     obj = r_eval(obj, r_empty_env);
 
   return obj;

@@ -24,14 +24,14 @@ SEXP r_string(const char* c_string) {
   return Rf_mkChar(c_string);
 }
 bool is_r_string(SEXP x) {
-  return TYPEOF(x) == CHARSXP;
+  return r_kind(x) == CHARSXP;
 }
 
 SEXP string(const char* c_string) {
   return Rf_mkString(c_string);
 }
 bool is_string(SEXP x) {
-  return TYPEOF(x) == STRSXP && r_length(x) == 1;
+  return r_kind(x) == STRSXP && r_length(x) == 1;
 }
 
 const char* r_c_string(SEXP scalar_chr) {

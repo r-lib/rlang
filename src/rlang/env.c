@@ -14,7 +14,7 @@ SEXP rlang_mut_env_parent(SEXP env, SEXP new_parent) {
 }
 
 bool r_is_env(SEXP x) {
-  return r_typeof(x) == ENVSXP;
+  return r_kind(x) == ENVSXP;
 }
 
 SEXP r_env_get(SEXP env, SEXP sym) {
