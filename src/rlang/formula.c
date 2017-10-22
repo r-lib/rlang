@@ -26,7 +26,7 @@ SEXP r_f_env(SEXP f) {
 }
 
 bool r_f_has_env(SEXP f) {
-  return r_is_env(r_f_env(f));
+  return r_is_environment(r_f_env(f));
 }
 
 bool is_formulaish(SEXP x, int scoped, int lhs) {

@@ -9,7 +9,7 @@
 
 bool r_is_unbound_value(SEXP x);
 void r_mut_env_parent(SEXP env, SEXP new_parent);
-bool r_is_env(SEXP x);
+bool r_is_environment(SEXP x);
 SEXP r_env_get(SEXP env, SEXP sym);
 SEXP r_env_set(SEXP env, SEXP sym, SEXP value);
 SEXP r_ns_env(const char* pkg);

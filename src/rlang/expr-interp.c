@@ -178,7 +178,7 @@ SEXP rlang_interp(SEXP x, SEXP env, SEXP quosured) {
   if (!r_is_language(x)) {
     return x;
   }
-  if (!r_is_env(env)) {
+  if (!r_is_environment(env)) {
     r_abort("`env` must be an environment");
   }
 
