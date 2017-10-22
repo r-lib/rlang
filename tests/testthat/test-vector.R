@@ -84,8 +84,8 @@ test_that("atomic inputs are implicitly coerced", {
 })
 
 test_that("type errors are handled", {
-  expect_error(lgl(get_env()), "Can't convert an environment to a logical vector")
-  expect_error(lgl(list(get_env())), "Can't convert an environment to a logical vector")
+  expect_error(lgl(env(a = 1)), "Internal error: expected a vector")
+  expect_error(lgl(list(env())), "Internal error: expected a vector")
 })
 
 test_that("empty inputs are spliced", {

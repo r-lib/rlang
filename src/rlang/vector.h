@@ -2,7 +2,7 @@
 #define RLANG_VECTOR_H
 
 
-r_size_t vec_length(SEXP x);
+r_size_t r_vec_length(SEXP x);
 
 bool r_is_list(SEXP x);
 bool r_is_vector(SEXP x);

@@ -35,9 +35,8 @@ bool r_is_vector(SEXP x) {
   }
 }
 
-// In particular, this returns 1 for environments
-r_size_t vec_length(SEXP x) {
-  switch (r_kind(x)) {
+r_size_t r_vec_length(SEXP x) {
+  switch(r_kind(x)) {
   case LGLSXP:
   case INTSXP:
   case REALSXP:
@@ -45,11 +44,10 @@ r_size_t vec_length(SEXP x) {
   case STRSXP:
   case RAWSXP:
   case VECSXP:
-    return r_length(x);
   case NILSXP:
-    return 0;
+    return r_length(x);
   default:
-    return 1;
+    r_abort("Internal error: expected a vector");
   }
 }
 

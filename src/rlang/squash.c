@@ -35,7 +35,7 @@ r_size_t atom_squash(SEXPTYPE kind, squash_info_t info,
 
   for (r_size_t i = 0; i != n_outer; ++i) {
     inner = VECTOR_ELT(outer, i);
-    n_inner = vec_length(inner);
+    n_inner = r_vec_length(inner);
 
     if (depth != 0 && is_spliceable(inner)) {
       count = atom_squash(kind, info, inner, out, count, is_spliceable, depth - 1);
@@ -108,7 +108,7 @@ void update_info_outer(squash_info_t* info, SEXP outer, r_size_t i) {
 }
 static
 void update_info_inner(squash_info_t* info, SEXP outer, r_size_t i, SEXP inner) {
-  r_size_t n_inner = info->recursive ? 1 : vec_length(inner);
+  r_size_t n_inner = info->recursive ? 1 : r_vec_length(inner);
   info->size += n_inner;
 
   // Return early if possible
@@ -143,7 +143,7 @@ void squash_info(squash_info_t* info, SEXP outer,
 
   for (r_size_t i = 0; i != n_outer; ++i) {
     inner = VECTOR_ELT(outer, i);
-    n_inner = info->recursive ? 1 : vec_length(inner);
+    n_inner = info->recursive ? 1 : r_vec_length(inner);
 
     if (depth != 0 && is_spliceable(inner)) {
       update_info_outer(info, outer, i);
