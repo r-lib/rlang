@@ -17,7 +17,7 @@ DL_FUNC R_ExternalPtrAddrFn(SEXP s) {
 
 SEXP rlang_namespace(const char* ns) {
   SEXP call = KEEP(Rf_lang2(Rf_install("getNamespace"), Rf_mkString(ns)));
-  SEXP ns_env = Rf_eval(call, R_BaseEnv);
+  SEXP ns_env = r_eval(call, R_BaseEnv);
   FREE(1);
   return ns_env;
 }

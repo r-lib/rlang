@@ -235,7 +235,7 @@ bool is_spliceable_closure(SEXP x) {
     r_abort("Internal error while splicing");
   SETCADR(clo_spliceable, x);
 
-  SEXP out = Rf_eval(clo_spliceable, R_GlobalEnv);
+  SEXP out = r_eval(clo_spliceable, R_GlobalEnv);
   return r_as_bool(out);
 }
 

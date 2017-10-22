@@ -79,7 +79,7 @@ SEXP unquote(SEXP x, SEXP env, SEXP uq_sym, bool quosured) {
   REPROTECT(uq_fun = Rf_lang2(uq_fun, x), ipx);
 
   SEXP unquoted;
-  REPROTECT(unquoted = Rf_eval(uq_fun, env), ipx);
+  REPROTECT(unquoted = r_eval(uq_fun, env), ipx);
 
   if (!quosured && is_symbolic(unquoted))
     unquoted = Rf_lang2(Rf_install("quote"), unquoted);
@@ -108,7 +108,7 @@ SEXP splice_next(SEXP node, SEXP next, SEXP env) {
   SETCAR(CAR(next), uqs_fun);
 
   // UQS() does error checking and returns a pair list
-  SEXP spliced_node = KEEP(Rf_eval(CAR(next), env));
+  SEXP spliced_node = KEEP(r_eval(CAR(next), env));
 
   if (spliced_node == R_NilValue) {
     SETCDR(node, CDR(next));
@@ -124,7 +124,7 @@ SEXP splice_next(SEXP node, SEXP next, SEXP env) {
 
 SEXP value_splice_next(SEXP cur, SEXP nxt, SEXP env) {
   SETCAR(CAR(nxt), rlang_obj("splice"));
-  SETCAR(nxt, Rf_eval(CAR(nxt), env));
+  SETCAR(nxt, r_eval(CAR(nxt), env));
   return cur;
 }
 

@@ -119,7 +119,7 @@ void vec_copy_coerce_n(SEXP src, r_size_t n, SEXP dest,
     SEXP call, coerced;
     PROTECT_WITH_INDEX(call = vec_coercer_sym(dest), &ipx);
     REPROTECT(call = Rf_lang2(call, src), ipx);
-    REPROTECT(coerced = Rf_eval(call, R_BaseEnv), ipx);
+    REPROTECT(coerced = r_eval(call, R_BaseEnv), ipx);
     vec_copy_n(coerced, n, dest, offset_dest, offset_src);
     FREE(1);
   } else {

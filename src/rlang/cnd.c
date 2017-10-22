@@ -18,7 +18,7 @@ void r_inform(const char* fmt, ...) {
   INTERP(buf, fmt, ...);
 
   SEXP lang = KEEP(Rf_lcons(r_sym("message"), string(buf)));
-  Rf_eval(lang, R_BaseEnv);
+  r_eval(lang, R_BaseEnv);
   FREE(1);
 }
 void r_warn(const char* fmt, ...) {
@@ -31,7 +31,7 @@ void r_warn(const char* fmt, ...) {
   args = KEEP(r_new_node(string(buf), args));
   SEXP lang = KEEP(Rf_lcons(r_sym("warning"), args));
 
-  Rf_eval(lang, R_BaseEnv);
+  r_eval(lang, R_BaseEnv);
   FREE(3);
 }
 void r_abort(const char* fmt, ...) {
@@ -125,7 +125,7 @@ void cnd_signal_impl(const char* signaller, SEXP cnd, bool mufflable) {
     ++n_protect;
   }
 
-  Rf_eval(lang, R_BaseEnv);
+  r_eval(lang, R_BaseEnv);
   FREE(n_protect);
 }
 
