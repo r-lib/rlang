@@ -40,7 +40,7 @@ r_size_t atom_squash(SEXPTYPE kind, squash_info_t info,
     if (depth != 0 && is_spliceable(inner)) {
       count = atom_squash(kind, info, inner, out, count, is_spliceable, depth - 1);
     } else if (n_inner) {
-      vec_copy_coerce_n(inner, n_inner, out, count, 0);
+      r_vec_poke_coerce_from(out, count, inner, 0, n_inner);
 
       if (info.named) {
         SEXP nms = names(inner);

@@ -117,39 +117,22 @@ SEXP vec_coercer_sym(SEXP dest) {
 }
 
 // Might allocate, caller must protect result
-void r_vec_poke_coerce_from(SEXP src, r_size_t n, SEXP dest,
-                            r_size_t offset_dest,
-                            r_size_t offset_src) {
-  if (r_kind(src) != r_kind(dest)) {
-    if (r_is_object(src))
-      r_abort("Can't splice S3 objects");
-    // FIXME: This callbacks to rlang R coercers with an extra copy.
-    PROTECT_INDEX ipx;
-    SEXP call, coerced;
-    PROTECT_WITH_INDEX(call = vec_coercer_sym(dest), &ipx);
-    REPROTECT(call = Rf_lang2(call, src), ipx);
-    REPROTECT(coerced = r_eval(call, R_BaseEnv), ipx);
-    r_vec_poke_from(dest, offset_dest, coerced, offset_src, n);
-    FREE(1);
-  } else {
-    r_vec_poke_from(dest, offset_dest, src, offset_src, n);
+void r_vec_poke_coerce_from(SEXP x, r_size_t offset,
+                            SEXP y, r_size_t from, r_size_t to) {
+  if (r_kind(y) == r_kind(x)) {
+    r_vec_poke_from(x, offset, y, from, to);
+    return ;
   }
-}
-void vec_copy_coerce_n(SEXP src, r_size_t n, SEXP dest,
-                       r_size_t offset_dest,
-                       r_size_t offset_src) {
-  if (r_kind(src) != r_kind(dest)) {
-    if (r_is_object(src))
-      r_abort("Can't splice S3 objects");
-    // FIXME: This callbacks to rlang R coercers with an extra copy.
-    PROTECT_INDEX ipx;
-    SEXP call, coerced;
-    PROTECT_WITH_INDEX(call = vec_coercer_sym(dest), &ipx);
-    REPROTECT(call = Rf_lang2(call, src), ipx);
-    REPROTECT(coerced = r_eval(call, R_BaseEnv), ipx);
-    r_vec_poke_from(dest, offset_dest, coerced, offset_src, n);
-    FREE(1);
-  } else {
-    r_vec_poke_from(dest, offset_dest, src, offset_src, n);
+  if (r_is_object(y)) {
+    r_abort("Can't splice S3 objects");
   }
+
+  // FIXME: This callbacks to rlang R coercers with an extra copy.
+  PROTECT_INDEX ipx;
+  SEXP call, coerced;
+  PROTECT_WITH_INDEX(call = vec_coercer_sym(x), &ipx);
+  REPROTECT(call = Rf_lang2(call, y), ipx);
+  REPROTECT(coerced = r_eval(call, R_BaseEnv), ipx);
+  r_vec_poke_from(x, offset, coerced, from, to);
+  FREE(1);
 }
