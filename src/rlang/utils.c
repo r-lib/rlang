@@ -110,9 +110,9 @@ int is_true(SEXP x) {
 // Formulas --------------------------------------------------------------------
 
 SEXP make_formula1(SEXP rhs, SEXP env) {
-  SEXP f = KEEP(Rf_lang2(Rf_install("~"), rhs));
+  SEXP f = KEEP(Rf_lang2(r_sym("~"), rhs));
   Rf_setAttrib(f, R_ClassSymbol, Rf_mkString("formula"));
-  Rf_setAttrib(f, Rf_install(".Environment"), env);
+  Rf_setAttrib(f, r_sym(".Environment"), env);
 
   FREE(1);
   return f;

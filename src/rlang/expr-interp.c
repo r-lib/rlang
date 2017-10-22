@@ -38,7 +38,7 @@ SEXP replace_double_bang(SEXP x) {
     r_abort("Can't splice at top-level");
   else if (bang == 2) {
     x = CADR(x);
-    SETCAR(x, Rf_install("UQ"));
+    SETCAR(x, r_sym("UQ"));
   }
   return x;
 }
@@ -49,7 +49,7 @@ SEXP replace_triple_bang(SEXP x) {
 
   SEXP node = CDAR(CDAR(x));
 
-  SETCAR(CAR(node), Rf_install("UQS"));
+  SETCAR(CAR(node), r_sym("UQS"));
   SETCDR(node, CDR(x));
 
   return node;
@@ -62,13 +62,13 @@ void unquote_check(SEXP x) {
 
 bool is_bare_formula(SEXP x) {
   return r_kind(x) == LANGSXP
-      && CAR(x) == Rf_install("~")
+      && CAR(x) == r_sym("~")
       && !Rf_inherits(x, "quosure");
 }
 
 SEXP unquote(SEXP x, SEXP env, SEXP uq_sym, bool quosured) {
   if (is_sym(uq_sym, "!!"))
-    uq_sym = Rf_install("UQE");
+    uq_sym = r_sym("UQE");
 
   // Inline unquote function before evaluation because even `::` might
   // not be available in interpolation environment.
@@ -82,7 +82,7 @@ SEXP unquote(SEXP x, SEXP env, SEXP uq_sym, bool quosured) {
   REPROTECT(unquoted = r_eval(uq_fun, env), ipx);
 
   if (!quosured && is_symbolic(unquoted))
-    unquoted = Rf_lang2(Rf_install("quote"), unquoted);
+    unquoted = Rf_lang2(r_sym("quote"), unquoted);
 
   FREE(1);
   return unquoted;

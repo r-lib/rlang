@@ -16,7 +16,7 @@ DL_FUNC R_ExternalPtrAddrFn(SEXP s) {
 #endif
 
 SEXP rlang_namespace(const char* ns) {
-  SEXP call = KEEP(Rf_lang2(Rf_install("getNamespace"), Rf_mkString(ns)));
+  SEXP call = KEEP(Rf_lang2(r_sym("getNamespace"), Rf_mkString(ns)));
   SEXP ns_env = r_eval(call, R_BaseEnv);
   FREE(1);
   return ns_env;
@@ -30,6 +30,6 @@ void rlang_register_pointer(const char* ns, const char* ptr_name, DL_FUNC fn) {
 
   Rf_setAttrib(ptr_obj, R_ClassSymbol, Rf_mkString("fn_pointer"));
 
-  Rf_defineVar(Rf_install(ptr_name), ptr_obj, rlang_namespace(ns));
+  Rf_defineVar(r_sym(ptr_name), ptr_obj, rlang_namespace(ns));
   FREE(2);
 }

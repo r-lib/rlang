@@ -92,18 +92,18 @@ void vec_copy_n(SEXP src, r_size_t n, SEXP dest,
 SEXP namespace_rlang_sym(SEXP sym) {
   static SEXP rlang_sym = NULL;
   if (!rlang_sym)
-    rlang_sym = Rf_install("rlang");
-  return(Rf_lang3(Rf_install("::"), rlang_sym, sym));
+    rlang_sym = r_sym("rlang");
+  return(Rf_lang3(r_sym("::"), rlang_sym, sym));
 }
 
 SEXP vec_coercer_sym(SEXP dest) {
   switch(r_kind(dest)) {
-  case LGLSXP: return namespace_rlang_sym(Rf_install("as_logical"));
-  case INTSXP: return namespace_rlang_sym(Rf_install("as_integer"));
-  case REALSXP: return namespace_rlang_sym(Rf_install("as_double"));
-  case CPLXSXP: return namespace_rlang_sym(Rf_install("as_complex"));
-  case STRSXP: return namespace_rlang_sym(Rf_install("as_character"));
-  case RAWSXP: return namespace_rlang_sym(Rf_install("as_bytes"));
+  case LGLSXP: return namespace_rlang_sym(r_sym("as_logical"));
+  case INTSXP: return namespace_rlang_sym(r_sym("as_integer"));
+  case REALSXP: return namespace_rlang_sym(r_sym("as_double"));
+  case CPLXSXP: return namespace_rlang_sym(r_sym("as_complex"));
+  case STRSXP: return namespace_rlang_sym(r_sym("as_character"));
+  case RAWSXP: return namespace_rlang_sym(r_sym("as_bytes"));
   default: r_abort("No coercion implemented for `%s`", Rf_type2str(r_kind(dest)));
   }
 }

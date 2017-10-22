@@ -34,7 +34,7 @@ bool is_formulaish(SEXP x, int scoped, int lhs) {
     return false;
 
   SEXP head = CAR(x);
-  if (head != Rf_install("~") && head != Rf_install(":="))
+  if (head != r_sym("~") && head != r_sym(":="))
     return false;
 
   if (scoped >= 0) {
@@ -56,7 +56,7 @@ bool is_formula(SEXP x) {
   if (!is_formulaish(x, -1, -1))
     return false;
 
-  return CAR(x) == Rf_install("~");
+  return CAR(x) == r_sym("~");
 }
 
 

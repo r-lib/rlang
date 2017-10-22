@@ -13,7 +13,7 @@ SEXP unescape_sexp(SEXP name);
 
 SEXP rlang_symbol(SEXP chr) {
   SEXP string = STRING_ELT(chr, 0);
-  return Rf_install(Rf_translateChar(string));
+  return r_sym(Rf_translateChar(string));
 }
 
 SEXP rlang_symbol_to_character(SEXP chr) {
