@@ -58,8 +58,14 @@ SEXP r_scalar_lgl(bool x) {
 
 // Copy --------------------------------------------------------------
 
-void r_vec_poke_from(SEXP x, r_size_t offset,
-                     SEXP y, r_size_t from, r_size_t to) {
+// void r_vec_poke_range(SEXP x, r_size_t from, r_size_t to,
+//                       SEXP y, , r_size_t offset)
+
+// void r_vec_poke_range(SEXP x, r_size_t from, r_size_t to,
+//                       SEXP y, , r_size_t offset)
+
+void r_vec_poke_range(SEXP x, r_size_t offset,
+                      SEXP y, r_size_t from, r_size_t to) {
   if (to == -1) {
     to = r_length(y);
   }
@@ -141,11 +147,10 @@ SEXP rlang_vec_coercer(SEXP dest) {
   }
 }
 
-// Might allocate, caller must protect result
-void r_vec_poke_coerce_from(SEXP x, r_size_t offset,
-                            SEXP y, r_size_t from, r_size_t to) {
+void r_vec_poke_coerce_range(SEXP x, r_size_t offset,
+                             SEXP y, r_size_t from, r_size_t to) {
   if (r_kind(y) == r_kind(x)) {
-    r_vec_poke_from(x, offset, y, from, to);
+    r_vec_poke_range(x, offset, y, from, to);
     return ;
   }
   if (r_is_object(y)) {
@@ -154,9 +159,9 @@ void r_vec_poke_coerce_from(SEXP x, r_size_t offset,
 
   // FIXME: This callbacks to rlang R coercers with an extra copy.
   SEXP coercer = rlang_vec_coercer(x);
-  SEXP call = PROTECT(Rf_lang2(coercer, y));
-  SEXP coerced = PROTECT(r_eval(call, R_BaseEnv));
+  SEXP call = KEEP(Rf_lang2(coercer, y));
+  SEXP coerced = KEEP(r_eval(call, R_BaseEnv));
 
-  r_vec_poke_from(x, offset, coerced, from, to);
+  r_vec_poke_range(x, offset, coerced, from, to);
   FREE(2);
 }
