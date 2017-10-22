@@ -97,21 +97,14 @@ void r_vec_poke_from(SEXP x, r_size_t offset,
 
 // Coercion ----------------------------------------------------------
 
-SEXP namespace_rlang_sym(SEXP sym) {
-  static SEXP rlang_sym = NULL;
-  if (!rlang_sym)
-    rlang_sym = r_sym("rlang");
-  return(Rf_lang3(r_sym("::"), rlang_sym, sym));
-}
-
-SEXP vec_coercer_sym(SEXP dest) {
+SEXP rlang_vec_coercer(SEXP dest) {
   switch(r_kind(dest)) {
-  case LGLSXP: return namespace_rlang_sym(r_sym("as_logical"));
-  case INTSXP: return namespace_rlang_sym(r_sym("as_integer"));
-  case REALSXP: return namespace_rlang_sym(r_sym("as_double"));
-  case CPLXSXP: return namespace_rlang_sym(r_sym("as_complex"));
-  case STRSXP: return namespace_rlang_sym(r_sym("as_character"));
-  case RAWSXP: return namespace_rlang_sym(r_sym("as_bytes"));
+  case LGLSXP: return rlang_obj("as_logical");
+  case INTSXP: return rlang_obj("as_integer");
+  case REALSXP: return rlang_obj("as_double");
+  case CPLXSXP: return rlang_obj("as_complex");
+  case STRSXP: return rlang_obj("as_character");
+  case RAWSXP: return rlang_obj("as_bytes");
   default: r_abort("No coercion implemented for `%s`", Rf_type2str(r_kind(dest)));
   }
 }
@@ -128,11 +121,10 @@ void r_vec_poke_coerce_from(SEXP x, r_size_t offset,
   }
 
   // FIXME: This callbacks to rlang R coercers with an extra copy.
-  PROTECT_INDEX ipx;
-  SEXP call, coerced;
-  PROTECT_WITH_INDEX(call = vec_coercer_sym(x), &ipx);
-  REPROTECT(call = Rf_lang2(call, y), ipx);
-  REPROTECT(coerced = r_eval(call, R_BaseEnv), ipx);
+  SEXP coercer = rlang_vec_coercer(x);
+  SEXP call = PROTECT(Rf_lang2(coercer, y));
+  SEXP coerced = PROTECT(r_eval(call, R_BaseEnv));
+
   r_vec_poke_from(x, offset, coerced, from, to);
-  FREE(1);
+  FREE(2);
 }
