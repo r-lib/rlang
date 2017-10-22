@@ -18,7 +18,7 @@ int is_prefixed_call(SEXP x, int (*sym_predicate)(SEXP));
 int is_rlang_call(SEXP x, int (*sym_predicate)(SEXP));
 bool is_character(SEXP x);
 SEXP names(SEXP x);
-bool has_name_at(SEXP x, R_len_t i);
+bool has_name_at(SEXP x, r_size_t i);
 bool is_str_empty(SEXP str);
 bool is_object(SEXP x);
 bool is_atomic(SEXP x);

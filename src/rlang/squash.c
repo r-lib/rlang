@@ -3,7 +3,7 @@
 
 
 typedef struct {
-  R_len_t size;
+  r_size_t size;
   bool named;
   bool warned;
   bool recursive;
@@ -22,18 +22,18 @@ squash_info_t squash_info_init(bool recursive) {
 // Atomic squashing ---------------------------------------------------
 
 static
-R_len_t atom_squash(SEXPTYPE kind, squash_info_t info,
-                    SEXP outer, SEXP out, R_len_t count,
+r_size_t atom_squash(SEXPTYPE kind, squash_info_t info,
+                    SEXP outer, SEXP out, r_size_t count,
                     bool (*is_spliceable)(SEXP), int depth) {
   if (TYPEOF(outer) != VECSXP)
     Rf_errorcall(R_NilValue, "Only lists can be spliced");
 
   SEXP inner;
   SEXP out_names = names(out);
-  R_len_t n_outer = r_length(outer);
-  R_len_t n_inner;
+  r_size_t n_outer = r_length(outer);
+  r_size_t n_inner;
 
-  for (R_len_t i = 0; i != n_outer; ++i) {
+  for (r_size_t i = 0; i != n_outer; ++i) {
     inner = VECTOR_ELT(outer, i);
     n_inner = vec_length(inner);
 
@@ -60,17 +60,17 @@ R_len_t atom_squash(SEXPTYPE kind, squash_info_t info,
 
 // List squashing -----------------------------------------------------
 
-R_len_t list_squash(squash_info_t info, SEXP outer,
-                    SEXP out, R_len_t count,
+r_size_t list_squash(squash_info_t info, SEXP outer,
+                    SEXP out, r_size_t count,
                     bool (*is_spliceable)(SEXP), int depth) {
   if (TYPEOF(outer) != VECSXP)
     Rf_errorcall(R_NilValue, "Only lists can be spliced");
 
   SEXP inner;
   SEXP out_names = names(out);
-  R_len_t n_outer = r_length(outer);
+  r_size_t n_outer = r_length(outer);
 
-  for (R_len_t i = 0; i != n_outer; ++i) {
+  for (r_size_t i = 0; i != n_outer; ++i) {
     inner = VECTOR_ELT(outer, i);
 
     if (depth != 0 && is_spliceable(inner)) {
@@ -99,15 +99,15 @@ void squash_warn_names(void) {
 }
 
 static
-void update_info_outer(squash_info_t* info, SEXP outer, R_len_t i) {
+void update_info_outer(squash_info_t* info, SEXP outer, r_size_t i) {
   if (!info->warned && info->recursive && has_name_at(outer, i)) {
     squash_warn_names();
     info->warned = true;
   }
 }
 static
-void update_info_inner(squash_info_t* info, SEXP outer, R_len_t i, SEXP inner) {
-  R_len_t n_inner = info->recursive ? 1 : vec_length(inner);
+void update_info_inner(squash_info_t* info, SEXP outer, r_size_t i, SEXP inner) {
+  r_size_t n_inner = info->recursive ? 1 : vec_length(inner);
   info->size += n_inner;
 
   // Return early if possible
@@ -137,10 +137,10 @@ static
 void squash_info(squash_info_t* info, SEXP outer,
                  bool (*is_spliceable)(SEXP), int depth) {
   SEXP inner;
-  R_len_t n_inner;
-  R_len_t n_outer = r_length(outer);
+  r_size_t n_inner;
+  r_size_t n_outer = r_length(outer);
 
-  for (R_len_t i = 0; i != n_outer; ++i) {
+  for (r_size_t i = 0; i != n_outer; ++i) {
     inner = VECTOR_ELT(outer, i);
     n_inner = info->recursive ? 1 : vec_length(inner);
 

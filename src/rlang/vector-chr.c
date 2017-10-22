@@ -16,7 +16,7 @@ bool chr_has(SEXP chr, const char* c_string) {
   return false;
 }
 
-void mut_chr_at(SEXP chr, R_len_t i, SEXP elt) {
+void mut_chr_at(SEXP chr, r_size_t i, SEXP elt) {
   SET_STRING_ELT(chr, i, elt);
 }
 

@@ -2,7 +2,7 @@
 
 
 // In particular, this returns 1 for environments
-R_len_t vec_length(SEXP x) {
+r_size_t vec_length(SEXP x) {
   switch (TYPEOF(x)) {
   case LGLSXP:
   case INTSXP:
@@ -26,48 +26,48 @@ SEXP r_scalar_lgl(bool x) {
 
 // Copy --------------------------------------------------------------
 
-void vec_copy_n(SEXP src, R_len_t n, SEXP dest,
-                R_len_t offset_dest,
-                R_len_t offset_src) {
+void vec_copy_n(SEXP src, r_size_t n, SEXP dest,
+                r_size_t offset_dest,
+                r_size_t offset_src) {
   switch (TYPEOF(dest)) {
   case LGLSXP: {
     int* src_data = LOGICAL(src);
     int* dest_data = LOGICAL(dest);
-    for (R_len_t i = 0; i != n; ++i)
+    for (r_size_t i = 0; i != n; ++i)
       dest_data[i + offset_dest] = src_data[i + offset_src];
     break;
   }
   case INTSXP: {
     int* src_data = INTEGER(src);
     int* dest_data = INTEGER(dest);
-    for (R_len_t i = 0; i != n; ++i)
+    for (r_size_t i = 0; i != n; ++i)
       dest_data[i + offset_dest] = src_data[i + offset_src];
     break;
   }
   case REALSXP: {
     double* src_data = REAL(src);
     double* dest_data = REAL(dest);
-    for (R_len_t i = 0; i != n; ++i)
+    for (r_size_t i = 0; i != n; ++i)
       dest_data[i + offset_dest] = src_data[i + offset_src];
     break;
   }
   case CPLXSXP: {
     Rcomplex* src_data = COMPLEX(src);
     Rcomplex* dest_data = COMPLEX(dest);
-    for (R_len_t i = 0; i != n; ++i)
+    for (r_size_t i = 0; i != n; ++i)
       dest_data[i + offset_dest] = src_data[i + offset_src];
     break;
   }
   case RAWSXP: {
-    Rbyte* src_data = RAW(src);
-    Rbyte* dest_data = RAW(dest);
-    for (R_len_t i = 0; i != n; ++i)
+    r_byte_t* src_data = RAW(src);
+    r_byte_t* dest_data = RAW(dest);
+    for (r_size_t i = 0; i != n; ++i)
       dest_data[i + offset_dest] = src_data[i + offset_src];
     break;
   }
   case STRSXP: {
     SEXP elt;
-    for (R_len_t i = 0; i != n; ++i) {
+    for (r_size_t i = 0; i != n; ++i) {
       elt = STRING_ELT(src, i + offset_src);
       SET_STRING_ELT(dest, i + offset_dest, elt);
     }
@@ -75,7 +75,7 @@ void vec_copy_n(SEXP src, R_len_t n, SEXP dest,
   }
   case VECSXP: {
     SEXP elt;
-    for (R_len_t i = 0; i != n; ++i) {
+    for (r_size_t i = 0; i != n; ++i) {
       elt = VECTOR_ELT(src, i + offset_src);
       SET_VECTOR_ELT(dest, i + offset_dest, elt);
     }
@@ -108,9 +108,9 @@ SEXP vec_coercer_sym(SEXP dest) {
   }
 }
 
-void vec_copy_coerce_n(SEXP src, R_len_t n, SEXP dest,
-                       R_len_t offset_dest,
-                       R_len_t offset_src) {
+void vec_copy_coerce_n(SEXP src, r_size_t n, SEXP dest,
+                       r_size_t offset_dest,
+                       r_size_t offset_src) {
   if (TYPEOF(src) != TYPEOF(dest)) {
     if (OBJECT(src))
       Rf_errorcall(R_NilValue, "Can't splice S3 objects");

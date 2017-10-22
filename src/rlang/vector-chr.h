@@ -5,7 +5,7 @@
 SEXP r_chr_get(SEXP chr, size_t i);
 
 bool chr_has(SEXP chr, const char* c_string);
-void mut_chr_at(SEXP chr, R_len_t i, SEXP elt);
+void mut_chr_at(SEXP chr, r_size_t i, SEXP elt);
 
 bool is_r_string(SEXP x);
 SEXP r_string(const char* c_string);

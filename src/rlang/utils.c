@@ -12,7 +12,7 @@ bool is_str_empty(SEXP str) {
 SEXP names(SEXP x) {
   return Rf_getAttrib(x, R_NamesSymbol);
 }
-bool has_name_at(SEXP x, R_len_t i) {
+bool has_name_at(SEXP x, r_size_t i) {
   SEXP nms = names(x);
   return is_character(nms) && !is_str_empty(STRING_ELT(nms, i));
 }

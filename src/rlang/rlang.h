@@ -6,6 +6,10 @@
 #include <stdbool.h>
 #include <Rinternals.h>
 
+typedef struct SEXPREC sexp;
+typedef R_len_t r_size_t;
+typedef Rbyte r_byte_t;
+
 #include "cnd.h"
 #include "env.h"
 #include "eval.h"
