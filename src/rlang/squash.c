@@ -26,7 +26,7 @@ r_size_t atom_squash(SEXPTYPE kind, squash_info_t info,
                     SEXP outer, SEXP out, r_size_t count,
                     bool (*is_spliceable)(SEXP), int depth) {
   if (TYPEOF(outer) != VECSXP)
-    Rf_errorcall(R_NilValue, "Only lists can be spliced");
+    r_abort("Only lists can be spliced");
 
   SEXP inner;
   SEXP out_names = names(out);
@@ -64,7 +64,7 @@ r_size_t list_squash(squash_info_t info, SEXP outer,
                     SEXP out, r_size_t count,
                     bool (*is_spliceable)(SEXP), int depth) {
   if (TYPEOF(outer) != VECSXP)
-    Rf_errorcall(R_NilValue, "Only lists can be spliced");
+    r_abort("Only lists can be spliced");
 
   SEXP inner;
   SEXP out_names = names(out);
@@ -203,7 +203,7 @@ is_spliceable_t predicate_pointer(SEXP x) {
     break;
   }
 
-  Rf_errorcall(R_NilValue, "`predicate` must be a closure or function pointer");
+  r_abort("`predicate` must be a closure or function pointer");
   return NULL;
 }
 
@@ -232,7 +232,7 @@ bool is_clevel_spliceable(SEXP x) {
 SEXP clo_spliceable = NULL;
 bool is_spliceable_closure(SEXP x) {
   if (!clo_spliceable)
-    Rf_error("Internal error while splicing");
+    r_abort("Internal error while splicing");
   SETCADR(clo_spliceable, x);
 
   SEXP out = Rf_eval(clo_spliceable, R_GlobalEnv);
@@ -253,7 +253,7 @@ SEXP rlang_squash_if(SEXP dots, SEXPTYPE kind, bool (*is_spliceable)(SEXP), int 
   case VECSXP:
     return squash(kind, dots, is_spliceable, depth);
   default:
-    Rf_errorcall(R_NilValue, "Splicing is not implemented for this type");
+    r_abort("Splicing is not implemented for this type");
     return R_NilValue;
   }
 }

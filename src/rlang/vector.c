@@ -82,7 +82,7 @@ void vec_copy_n(SEXP src, r_size_t n, SEXP dest,
     break;
   }
   default:
-    Rf_errorcall(R_NilValue, "Copy requires vectors");
+    r_abort("Copy requires vectors");
   }
 }
 
@@ -104,7 +104,7 @@ SEXP vec_coercer_sym(SEXP dest) {
   case CPLXSXP: return namespace_rlang_sym(Rf_install("as_complex"));
   case STRSXP: return namespace_rlang_sym(Rf_install("as_character"));
   case RAWSXP: return namespace_rlang_sym(Rf_install("as_bytes"));
-  default: Rf_errorcall(R_NilValue, "No coercion implemented for `%s`", Rf_type2str(TYPEOF(dest)));
+  default: r_abort("No coercion implemented for `%s`", Rf_type2str(TYPEOF(dest)));
   }
 }
 
@@ -113,7 +113,7 @@ void vec_copy_coerce_n(SEXP src, r_size_t n, SEXP dest,
                        r_size_t offset_src) {
   if (TYPEOF(src) != TYPEOF(dest)) {
     if (OBJECT(src))
-      Rf_errorcall(R_NilValue, "Can't splice S3 objects");
+      r_abort("Can't splice S3 objects");
     // FIXME: This callbacks to rlang R coercers with an extra copy.
     PROTECT_INDEX ipx;
     SEXP call, coerced;

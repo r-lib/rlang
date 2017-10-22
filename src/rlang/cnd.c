@@ -39,6 +39,8 @@ void r_abort(const char* fmt, ...) {
   INTERP(buf, fmt, ...);
 
   Rf_errorcall(R_NilValue, buf);
+
+  while (1); // No return
 }
 SEXP interp_str(const char* fmt, ...) {
   char buf[BUFSIZE];

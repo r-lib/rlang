@@ -137,7 +137,7 @@ SEXP rlang_length(SEXP x) {
 
 int is_true(SEXP x) {
   if (TYPEOF(x) != LGLSXP || r_length(x) != 1)
-    Rf_errorcall(R_NilValue, "`x` must be a boolean");
+    r_abort("`x` must be a boolean");
 
   int value = LOGICAL(x)[0];
   return value == NA_LOGICAL ? 0 : value;

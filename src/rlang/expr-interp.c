@@ -35,7 +35,7 @@ int is_splice_sym(SEXP x) {
 SEXP replace_double_bang(SEXP x) {
   int bang = bang_level(x);
   if (bang == 3 || is_any_call(x, is_splice_sym))
-    Rf_errorcall(R_NilValue, "Can't splice at top-level");
+    r_abort("Can't splice at top-level");
   else if (bang == 2) {
     x = CADR(x);
     SETCAR(x, Rf_install("UQ"));
@@ -57,7 +57,7 @@ SEXP replace_triple_bang(SEXP x) {
 
 void unquote_check(SEXP x) {
   if (CDR(x) == R_NilValue)
-    Rf_errorcall(R_NilValue, "`UQ()` must be called with an argument");
+    r_abort("`UQ()` must be called with an argument");
 }
 
 bool is_bare_formula(SEXP x) {

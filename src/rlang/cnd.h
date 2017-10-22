@@ -6,7 +6,7 @@
 
 void r_inform(const char* fmt, ...);
 void r_warn(const char* fmt, ...);
-void r_abort(const char* fmt, ...);
+void r_abort(const char* fmt, ...) __attribute__((noreturn));
 
 SEXP interp_str(const char* fmt, ...);
 

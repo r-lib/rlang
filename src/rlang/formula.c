@@ -3,22 +3,22 @@
 
 SEXP r_f_rhs(SEXP f) {
   if (TYPEOF(f) != LANGSXP)
-    Rf_errorcall(R_NilValue, "`x` must be a formula");
+    r_abort("`x` must be a formula");
 
   switch (r_length(f)) {
   case 2: return CADR(f);
   case 3: return CADDR(f);
-  default: Rf_errorcall(R_NilValue, "Invalid formula");
+  default: r_abort("Invalid formula");
   }
 }
 SEXP r_f_lhs(SEXP f) {
   if (TYPEOF(f) != LANGSXP)
-    Rf_errorcall(R_NilValue, "`x` must be a formula");
+    r_abort("`x` must be a formula");
 
   switch (r_length(f)) {
   case 2: return R_NilValue;
   case 3: return CADR(f);
-  default: Rf_errorcall(R_NilValue, "Invalid formula");
+  default: r_abort("Invalid formula");
   }
 }
 SEXP r_f_env(SEXP f) {
