@@ -52,8 +52,8 @@ void vec_copy_n(SEXP src, r_size_t n, SEXP dest,
     break;
   }
   case CPLXSXP: {
-    Rcomplex* src_data = COMPLEX(src);
-    Rcomplex* dest_data = COMPLEX(dest);
+    r_complex_t* src_data = COMPLEX(src);
+    r_complex_t* dest_data = COMPLEX(dest);
     for (r_size_t i = 0; i != n; ++i)
       dest_data[i + offset_dest] = src_data[i + offset_src];
     break;

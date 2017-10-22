@@ -9,6 +9,7 @@
 typedef struct SEXPREC sexp;
 typedef R_len_t r_size_t;
 typedef Rbyte r_byte_t;
+typedef Rcomplex r_complex_t;
 
 #include "cnd.h"
 #include "env.h"

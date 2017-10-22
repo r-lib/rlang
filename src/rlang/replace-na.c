@@ -43,7 +43,7 @@ SEXP rlang_replace_na(SEXP x, SEXP replacement) {
   }
 
   case CPLXSXP: {
-    Rcomplex* arr = COMPLEX(x);
+    r_complex_t* arr = COMPLEX(x);
 
     for (; i < n; ++i) {
       if (ISNA(arr[i].r))
@@ -108,8 +108,8 @@ SEXP replace_na_(SEXP x, SEXP replacement, int i) {
   }
 
   case CPLXSXP: {
-    Rcomplex* arr = COMPLEX(x);
-    Rcomplex new_value = COMPLEX(replacement)[0];
+    r_complex_t* arr = COMPLEX(x);
+    r_complex_t new_value = COMPLEX(replacement)[0];
 
     for (; i < n; ++i) {
       if (ISNA(arr[i].r))
