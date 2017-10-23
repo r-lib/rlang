@@ -1,4 +1,4 @@
-context("types-coercion")
+context("vec-coerce")
 
 test_that("no method dispatch", {
   as.logical.foo <- function(x) "wrong"
