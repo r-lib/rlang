@@ -58,15 +58,9 @@ SEXP r_scalar_lgl(bool x) {
 
 // Copy --------------------------------------------------------------
 
-// void r_vec_poke_range(SEXP x, r_size_t from, r_size_t to,
-//                       SEXP y, , r_size_t offset)
-
-// void r_vec_poke_range(SEXP x, r_size_t from, r_size_t to,
-//                       SEXP y, , r_size_t offset)
-
 void r_vec_poke_range(SEXP x, r_size_t offset,
                       SEXP y, r_size_t from, r_size_t to) {
-  if (to == -1) {
+  if (to == 0) {
     to = r_length(y);
   }
   r_size_t n = to - from;
