@@ -61,7 +61,7 @@ SEXP new_condition_names(SEXP data) {
 
   SEXP nms = KEEP(Rf_allocVector(STRSXP, r_length(data) + 1));
   mut_chr_at(nms, 0, r_string("message"));
-  r_vec_poke_range(nms, 1, data_nms, 0, 0);
+  r_vec_poke_n(nms, 1, data_nms, 0, r_length(nms) - 1);
 
   FREE(1);
   return nms;
@@ -74,7 +74,7 @@ SEXP new_condition(SEXP type, SEXP data, SEXP msg) {
   SEXP cnd = KEEP(Rf_allocVector(VECSXP, n_data + 1));
 
   mut_list_at(cnd, 0, msg);
-  r_vec_poke_range(cnd, 1, data, 0, 0);
+  r_vec_poke_n(cnd, 1, data, 0, r_length(cnd) - 1);
 
   mut_names(cnd, new_condition_names(data));
   mut_class(cnd, chr_append(type, r_string("condition")));

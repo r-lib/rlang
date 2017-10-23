@@ -58,15 +58,14 @@ SEXP r_scalar_lgl(bool x) {
 
 // Copy --------------------------------------------------------------
 
-void r_vec_poke_range(SEXP x, r_size_t offset,
-                      SEXP y, r_size_t from, r_size_t to) {
-  if (to == 0) {
-    to = r_length(y);
-  }
-  r_size_t n = to - from;
+void r_vec_poke_n(SEXP x, r_size_t offset,
+                  SEXP y, r_size_t from, r_size_t n) {
 
   if ((r_length(x) - offset) < n) {
     r_abort("Can't copy data to `x` because it is too small");
+  }
+  if ((r_length(y) - from) < n) {
+    r_abort("Can't copy data from `y` because it is too small");
   }
 
   switch (r_kind(x)) {
@@ -126,6 +125,11 @@ void r_vec_poke_range(SEXP x, r_size_t offset,
   }
 }
 
+void r_vec_poke_range(SEXP x, r_size_t offset,
+                      SEXP y, r_size_t from, r_size_t to) {
+  r_vec_poke_n(x, offset, y, from, to - from + 1);
+}
+
 
 // Coercion ----------------------------------------------------------
 
@@ -141,10 +145,10 @@ SEXP rlang_vec_coercer(SEXP dest) {
   }
 }
 
-void r_vec_poke_coerce_range(SEXP x, r_size_t offset,
-                             SEXP y, r_size_t from, r_size_t to) {
+void r_vec_poke_coerce_n(SEXP x, r_size_t offset,
+                         SEXP y, r_size_t from, r_size_t n) {
   if (r_kind(y) == r_kind(x)) {
-    r_vec_poke_range(x, offset, y, from, to);
+    r_vec_poke_n(x, offset, y, from, n);
     return ;
   }
   if (r_is_object(y)) {
@@ -156,6 +160,11 @@ void r_vec_poke_coerce_range(SEXP x, r_size_t offset,
   SEXP call = KEEP(Rf_lang2(coercer, y));
   SEXP coerced = KEEP(r_eval(call, R_BaseEnv));
 
-  r_vec_poke_range(x, offset, coerced, from, to);
+  r_vec_poke_n(x, offset, coerced, from, n);
   FREE(2);
+}
+
+void r_vec_poke_coerce_range(SEXP x, r_size_t offset,
+                             SEXP y, r_size_t from, r_size_t to) {
+  r_vec_poke_coerce_n(x, offset, y, from, to - from + 1);
 }

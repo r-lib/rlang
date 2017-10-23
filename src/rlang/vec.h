@@ -11,9 +11,13 @@ bool r_is_atomic(SEXP x);
 
 SEXP r_scalar_lgl(bool x);
 
+void r_vec_poke_n(SEXP x, r_size_t offset,
+                  SEXP y, r_size_t from, r_size_t n);
 void r_vec_poke_range(SEXP x, r_size_t offset,
                       SEXP y, r_size_t from, r_size_t to);
 
+void r_vec_poke_coerce_n(SEXP x, r_size_t offset,
+                         SEXP y, r_size_t from, r_size_t n);
 void r_vec_poke_coerce_range(SEXP x, r_size_t offset,
                              SEXP y, r_size_t from, r_size_t to);
 

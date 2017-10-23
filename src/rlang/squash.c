@@ -40,12 +40,12 @@ r_size_t atom_squash(SEXPTYPE kind, squash_info_t info,
     if (depth != 0 && is_spliceable(inner)) {
       count = atom_squash(kind, info, inner, out, count, is_spliceable, depth - 1);
     } else if (n_inner) {
-      r_vec_poke_coerce_range(out, count, inner, 0, n_inner);
+      r_vec_poke_coerce_n(out, count, inner, 0, n_inner);
 
       if (info.named) {
         SEXP nms = names(inner);
         if (is_character(nms)) {
-          r_vec_poke_range(out_names, count, nms, 0, n_inner);
+          r_vec_poke_n(out_names, count, nms, 0, n_inner);
         } else if (n_inner == 1 && has_name_at(outer, i)) {
           SET_STRING_ELT(out_names, count, STRING_ELT(names(outer), i));
         }

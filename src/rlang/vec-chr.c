@@ -53,7 +53,7 @@ SEXP chr_prepend(SEXP chr, SEXP r_string) {
   int n = r_length(chr);
   SEXP out = KEEP(Rf_allocVector(STRSXP, n + 1));
 
-  r_vec_poke_range(out, 1, chr, 0, n);
+  r_vec_poke_n(out, 1, chr, 0, n);
   mut_chr_at(out, 0, r_string);
 
   FREE(1);
@@ -68,7 +68,7 @@ SEXP chr_append(SEXP chr, SEXP r_string) {
   int n = r_length(chr);
   SEXP out = KEEP(Rf_allocVector(STRSXP, n + 1));
 
-  r_vec_poke_range(out, 0, chr, 0, n);
+  r_vec_poke_n(out, 0, chr, 0, n);
   mut_chr_at(out, n, r_string);
 
   FREE(1);
