@@ -82,6 +82,8 @@ extern sexp* rlang_quo_is_symbol(sexp* quo);
 extern sexp* rlang_quo_is_call(sexp* quo);
 extern sexp* rlang_quo_is_symbolic(sexp* quo);
 extern sexp* rlang_quo_is_null(sexp* quo);
+extern sexp* rlang_vec_poke_n(sexp*, sexp*, sexp*, sexp*, sexp*);
+extern sexp* rlang_vec_poke_range(sexp*, sexp*, sexp*, sexp*, sexp*);
 
 // Library initialisation defined below
 sexp* rlang_library_load();
@@ -99,6 +101,8 @@ extern sexp* rlang_test_sys_frame(sexp*);
 extern sexp* rlang_test_sys_call(sexp*);
 
 static const R_CallMethodDef call_entries[] = {
+  {"rlang_library_load",        (DL_FUNC) &rlang_library_load, 0},
+  {"rlang_library_unload",      (DL_FUNC) &rlang_library_unload, 0},
   {"r_f_lhs",                   (DL_FUNC) &r_f_lhs, 1},
   {"r_f_rhs",                   (DL_FUNC) &r_f_rhs, 1},
   {"rlang_new_condition",       (DL_FUNC) &r_new_condition, 3},
@@ -179,8 +183,8 @@ static const R_CallMethodDef call_entries[] = {
   {"rlang_quo_is_symbolic",     (DL_FUNC) &rlang_quo_is_symbolic, 1},
   {"rlang_quo_is_missing",      (DL_FUNC) &rlang_quo_is_missing, 1},
   {"rlang_quo_is_null",         (DL_FUNC) &rlang_quo_is_null, 1},
-  {"rlang_library_load",        (DL_FUNC) &rlang_library_load, 0},
-  {"rlang_library_unload",      (DL_FUNC) &rlang_library_unload, 0},
+  {"rlang_vec_poke_n",          (DL_FUNC) &rlang_vec_poke_n, 5},
+  {"rlang_vec_poke_range",      (DL_FUNC) &rlang_vec_poke_range, 5},
   {NULL, NULL, 0}
 };
 
