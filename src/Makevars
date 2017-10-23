@@ -16,10 +16,10 @@ files = rlang/rlang.h \
         rlang/sym.c \
         rlang/sym-unescape.c \
         rlang/utils.c \
-        rlang/vector.c \
-        rlang/vector-chr.c \
-        rlang/vector-lgl.c \
-        rlang/vector-list.c
+        rlang/vec.c \
+        rlang/vec-chr.c \
+        rlang/vec-lgl.c \
+        rlang/vec-list.c
 
 all: $(SHLIB)
 

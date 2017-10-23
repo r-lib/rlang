@@ -22,10 +22,10 @@ typedef Rcomplex r_complex_t;
 #include "stack.h"
 #include "sym.h"
 #include "utils.h"
-#include "vector.h"
-#include "vector-chr.h"
-#include "vector-lgl.h"
-#include "vector-list.h"
+#include "vec.h"
+#include "vec-chr.h"
+#include "vec-lgl.h"
+#include "vec-list.h"
 
 #define KEEP PROTECT
 #define FREE UNPROTECT
