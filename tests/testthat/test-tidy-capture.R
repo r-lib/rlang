@@ -57,10 +57,17 @@ test_that("dots capture is stack-consistent", {
 })
 
 test_that("splice is consistently recognised", {
-  expect_true(is_splice(quote(!!! list())))
-  expect_true(is_splice(quote(UQS(list()))))
-  expect_true(is_splice(quote(rlang::UQS(list()))))
-  expect_false(is_splice(quote(ns::UQS(list()))))
+  spliced <- quote(!!! list())
+  expect_true(is_splice(spliced))
+
+  spliced <- quote(UQS(list()))
+  expect_true(is_splice(spliced))
+
+  spliced <- quote(rlang::UQS(list()))
+  expect_true(is_splice(spliced))
+
+  spliced <- quote(ns::UQS(list()))
+  expect_false(is_splice(spliced))
 })
 
 test_that("dots can be spliced in", {
