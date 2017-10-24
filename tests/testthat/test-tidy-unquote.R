@@ -2,9 +2,12 @@ context("unquote")
 
 test_that("interpolation does not recurse over spliced arguments", {
   var1 <- quote(!! stop())
+  quo_var1 <- tryCatch(quo(list(!!! var1)), error = identity)
+  expect_false(inherits(quo_var1, "error"))
+
   var2 <- quote({foo; !! stop(); bar})
-  expect_error(quo(list(!!! var1)), NA)
-  expect_error(expr(list(!!! var2)), NA)
+  expr_var2 <- tryCatch(expr(list(!!! var2)), error = identity)
+  expect_false(inherits(expr_var2, "error"))
 })
 
 test_that("formulas containing unquote operators are interpolated", {
@@ -42,8 +45,12 @@ test_that("unquote operators are always in scope", {
 test_that("can interpolate in specific env", {
   foo <- "bar"
   env <- child_env(NULL, foo = "foo")
-  expect_identical(expr_interp(~UQ(foo)), set_env(quo("bar")))
-  expect_identical(expr_interp(~UQ(foo), env), set_env(quo("foo")))
+
+  expanded <- expr_interp(~UQ(foo))
+  expect_identical(expanded, set_env(quo("bar")))
+
+  expanded <- expr_interp(~UQ(foo), env)
+  expect_identical(expanded, set_env(quo("foo")))
 })
 
 test_that("can qualify operators with namespace", {
@@ -88,17 +95,28 @@ test_that("quosures are not rewrapped", {
 })
 
 test_that("UQ() fails if called without argument", {
-  expect_equal(quo(UQ(NULL)), ~NULL)
-  expect_equal(quo(rlang::UQ(NULL)), ~NULL)
-  expect_error(quo(UQ()), "must be called with an argument")
-  expect_error(quo(rlang::UQ()), "must be called with an argument")
+  quo <- quo(UQ(NULL))
+  expect_equal(quo, ~NULL)
+
+  quo <- quo(rlang::UQ(NULL))
+  expect_equal(quo, ~NULL)
+
+  quo <- tryCatch(quo(UQ()), error = identity)
+  expect_is(quo, "error")
+  expect_match(quo$message, "must be called with an argument")
+
+  quo <- tryCatch(quo(rlang::UQ()), error = identity)
+  expect_is(quo, "error")
+  expect_match(quo$message, "must be called with an argument")
 })
 
 
 # UQS ---------------------------------------------------------------------
 
 test_that("contents of UQS() must be a vector or language object", {
-  expect_error(quo(1 + UQS(environment())), "`x` must be a vector")
+  quo <- tryCatch(quo(1 + UQS(environment())), error = identity)
+  expect_is(quo, "error")
+  expect_match(quo$message, "`x` must be a vector")
 })
 
 test_that("values of UQS() spliced into expression", {
@@ -171,10 +189,14 @@ test_that("quosures are created for all informative formulas", {
 # dots_values() ------------------------------------------------------
 
 test_that("can unquote-splice symbols", {
-  expect_identical(ll(!!! list(quote(`_symbol`))), list(quote(`_symbol`)))
+  spliced <- ll(!!! list(quote(`_symbol`)))
+  expect_identical(spliced, list(quote(`_symbol`)))
 })
 
 test_that("can unquote symbols", {
-  expect_identical(dots_values(!! quote(.)), named_list(quote(.)))
-  expect_identical(dots_values(rlang::UQ(quote(.))), named_list(quote(.)))
+  unquoted <- dots_values(!! quote(.))
+  expect_identical(unquoted, named_list(quote(.)))
+
+  unquoted <- dots_values(rlang::UQ(quote(.)))
+  expect_identical(unquoted, named_list(quote(.)))
 })
