@@ -91,10 +91,6 @@
 #' eval_tidy(quo(!! cyl), mtcars)
 #' @name eval_tidy
 eval_tidy <- function(expr, data = NULL, env = caller_env()) {
-  if (is_list(expr)) {
-    return(map(expr, eval_tidy, data = data))
-  }
-
   if (!inherits(expr, "quosure")) {
     expr <- new_quosure(expr, env)
   }
