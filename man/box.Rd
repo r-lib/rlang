@@ -16,8 +16,8 @@ unbox(box)
 \item{x}{An R object.}
 
 \item{class}{For \code{box()}, an additional class for the boxed value
-(which comes in addition to \code{box}). For \code{is_box()}, a class that
-is passed to \code{\link[=inherits]{inherits()}}.}
+(which comes in addition to \code{box}). For \code{is_box()}, a class (or
+vector of classes) to be passed to \code{\link[=inherits_all]{inherits_all()}}.}
 
 \item{box}{A boxed value to unbox.}
 }

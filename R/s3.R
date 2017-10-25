@@ -57,8 +57,8 @@ inherits_all <- function(x, classes) {
 #'
 #' @param x An R object.
 #' @param class For `box()`, an additional class for the boxed value
-#'   (which comes in addition to `box`). For `is_box()`, a class that
-#'   is passed to [inherits()].
+#'   (which comes in addition to `box`). For `is_box()`, a class (or
+#'   vector of classes) to be passed to [inherits_all()].
 #' @export
 #' @examples
 #' boxed <- box(letters, "mybox")
@@ -77,7 +77,7 @@ is_box <- function(x, class = NULL) {
     return(FALSE)
   }
 
-  is_null(class) || inherits(x, class)
+  is_null(class) || inherits_all(x, class)
 }
 #' @rdname box
 #' @param box A boxed value to unbox.

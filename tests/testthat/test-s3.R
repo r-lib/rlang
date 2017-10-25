@@ -32,4 +32,8 @@ test_that("can box and unbox a value", {
   expect_true(is_box(box), "foo")
   expect_false(is_box(box, "bar"))
   expect_identical(unbox(box), letters)
+
+  box <- box(NULL, c("foo", "bar", "baz"))
+  expect_true(is_box(box, c("foo", "baz")))
+  expect_false(is_box(box, c("baz", "foo")))
 })
