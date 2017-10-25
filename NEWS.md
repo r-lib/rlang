@@ -133,6 +133,11 @@
 * `is_symbol()` gains a `name` argument to check that that the symbol
   name matches a string (#287).
 
+* New function `meow()`. It is equivalent to `cat()` but interleaves
+  with newlines rather than spaces and always finishes with a trailing
+  space. `conn_meow()` is like `meow()` but takes a connection as
+  first argument.
+
 
 ## Breaking changes
 

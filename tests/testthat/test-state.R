@@ -14,3 +14,13 @@ test_that("peek_options() returns a named list", {
   scoped_options(foo = "FOO", bar = "BAR")
   expect_identical(peek_options("foo", "bar"), list(foo = "FOO", bar = "BAR"))
 })
+
+test_that("meow() adds new lines", {
+  expect_output(meow("foo", "bar"), "foo\nbar")
+})
+
+test_that("conn_meow() takes a connection", {
+  file <- tempfile()
+  conn_meow(file, "foo", "bar")
+  expect_identical(readLines(file), c("foo", "bar"))
+})

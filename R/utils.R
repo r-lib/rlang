@@ -84,3 +84,11 @@ captureDots <- function() {
   args <- pairlist(parent.frame())
   .Call(rlang_capturedots, NULL, NULL, args, environment())
 }
+
+chr_lines <- function(..., .trailing = FALSE) {
+  lines <- paste(chr(...), collapse = "\n")
+  if (.trailing) {
+    lines <- paste0(lines, "\n")
+  }
+  lines
+}
