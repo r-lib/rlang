@@ -1,3 +1,53 @@
+#' Does an object inherit from a set of classes?
+#'
+#' @description
+#'
+#' * `inherits_any()` is like [base::inherits()] but is more explicit
+#'   about its behaviour with multiple classes. If `classes` contains
+#'   several elements and the object inherits from at least one of
+#'   them, `inherits_any()` returns `TRUE`.
+#'
+#' * `inherits_all()` tests that an object inherits from all of the
+#'   classes in the supplied order. This is usually the best way to
+#'   test for inheritance of multiple classes.
+#'
+#' @param x An object to test for inheritance.
+#' @param classes A character vector of at least one class.
+#'
+#' @export
+#' @examples
+#' obj <- structure(list(), class = c("foo", "bar", "baz"))
+#'
+#' # With the _any variant only one class must match:
+#' inherits_any(obj, c("foobar", "bazbaz"))
+#' inherits_any(obj, c("foo", "bazbaz"))
+#'
+#' # With the _all variant all classes must match:
+#' inherits_all(obj, c("foo", "bazbaz"))
+#' inherits_all(obj, c("foo", "baz"))
+#'
+#' # The order of classes must match as well:
+#' inherits_all(obj, c("baz", "foo"))
+inherits_any <- function(x, classes) {
+  if (is_empty(classes)) {
+    abort("`classes` can't be empty")
+  }
+  inherits(x, classes)
+}
+#' @rdname inherits_any
+#' @export
+inherits_all <- function(x, classes) {
+  if (is_empty(classes)) {
+    abort("`classes` can't be empty")
+  }
+
+  idx <- inherits(x, classes, which = TRUE)
+  cummax <- cummax(idx)
+
+  cummax[[1]] != 0 && all(idx == cummax(idx))
+}
+
+
 #' Box a value
 #'
 #' `box()` is similar to [base::I()] but it protects a value by
