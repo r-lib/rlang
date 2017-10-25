@@ -85,6 +85,9 @@ captureDots <- function() {
   .Call(rlang_capturedots, NULL, NULL, args, environment())
 }
 
+meow <- function(...) {
+  cat(chr_lines(..., .trailing = TRUE))
+}
 chr_lines <- function(..., .trailing = FALSE) {
   lines <- paste(chr(...), collapse = "\n")
   if (.trailing) {
