@@ -44,7 +44,7 @@ inherits_all <- function(x, class) {
   idx <- inherits(x, class, which = TRUE)
   cummax <- cummax(idx)
 
-  cummax[[1]] != 0 && all(idx == cummax(idx))
+  cummax[[1]] != 0L && all(idx == cummax)
 }
 
 
