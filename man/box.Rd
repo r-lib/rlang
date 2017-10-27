@@ -3,6 +3,7 @@
 \name{box}
 \alias{box}
 \alias{is_box}
+\alias{as_box}
 \alias{unbox}
 \title{Box a value}
 \usage{
@@ -10,14 +11,17 @@ box(x, class = NULL)
 
 is_box(x, class = NULL)
 
+as_box(x, class = NULL)
+
 unbox(box)
 }
 \arguments{
 \item{x}{An R object.}
 
 \item{class}{For \code{box()}, an additional class for the boxed value
-(which comes in addition to \code{box}). For \code{is_box()}, a class (or
-vector of classes) to be passed to \code{\link[=inherits_all]{inherits_all()}}.}
+(which comes in addition to \code{box}). For \code{is_box()} and
+\code{as_box()}, a class (or vector of classes) to be passed to
+\code{\link[=inherits_all]{inherits_all()}}.}
 
 \item{box}{A boxed value to unbox.}
 }
@@ -25,7 +29,8 @@ vector of classes) to be passed to \code{\link[=inherits_all]{inherits_all()}}.}
 \code{box()} is similar to \code{\link[base:I]{base::I()}} but it protects a value by
 wrapping it in a scalar list rather than by adding an attribute.
 \code{unbox()} retrieves the boxed value. \code{is_box()} tests whether an
-object is boxed with optional class.
+object is boxed with optional class. \code{as_box()} ensures that a
+value is wrapped in a box.
 }
 \examples{
 boxed <- box(letters, "mybox")

@@ -53,12 +53,14 @@ inherits_all <- function(x, classes) {
 #' `box()` is similar to [base::I()] but it protects a value by
 #' wrapping it in a scalar list rather than by adding an attribute.
 #' `unbox()` retrieves the boxed value. `is_box()` tests whether an
-#' object is boxed with optional class.
+#' object is boxed with optional class. `as_box()` ensures that a
+#' value is wrapped in a box.
 #'
 #' @param x An R object.
 #' @param class For `box()`, an additional class for the boxed value
-#'   (which comes in addition to `box`). For `is_box()`, a class (or
-#'   vector of classes) to be passed to [inherits_all()].
+#'   (which comes in addition to `box`). For `is_box()` and
+#'   `as_box()`, a class (or vector of classes) to be passed to
+#'   [inherits_all()].
 #' @export
 #' @examples
 #' boxed <- box(letters, "mybox")
@@ -74,6 +76,15 @@ box <- function(x, class = NULL) {
 #' @export
 is_box <- function(x, class = NULL) {
   inherits_all(x, c(class, "box"))
+}
+#' @rdname box
+#' @export
+as_box <- function(x, class = NULL) {
+  if (is_box(x, class)) {
+    x
+  } else {
+    box(x, class)
+  }
 }
 #' @rdname box
 #' @param box A boxed value to unbox.

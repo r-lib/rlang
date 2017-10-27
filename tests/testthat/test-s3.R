@@ -37,3 +37,18 @@ test_that("can box and unbox a value", {
   expect_true(is_box(box, c("foo", "baz")))
   expect_false(is_box(box, c("baz", "foo")))
 })
+
+test_that("as_box() ensures boxed value", {
+  box <- as_box(NULL)
+  expect_is(box, "box")
+
+  boxbox <- as_box(box)
+  expect_is(box, "box")
+  expect_null(unbox(box))
+
+  some_box <- as_box(NULL, "some_box")
+  some_boxbox <- as_box(some_box, "other_box")
+  expect_identical(class(some_boxbox), c("other_box", "box"))
+  expect_identical(class(unbox(some_boxbox)), c("some_box", "box"))
+  expect_null(unbox(unbox(some_boxbox)))
+})
