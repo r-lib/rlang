@@ -65,13 +65,14 @@ inherits_only <- function(x, class) {
 #' wrapping it in a scalar list rather than by adding an attribute.
 #' `unbox()` retrieves the boxed value. `is_box()` tests whether an
 #' object is boxed with optional class. `as_box()` ensures that a
-#' value is wrapped in a box.
+#' value is wrapped in a box. `as_box_if()` does the same but only if
+#' the value matches a predicate.
 #'
-#' @param x An R object.
-#' @param class For `box()`, an additional class for the boxed value
-#'   (which comes in addition to `box`). For `is_box()` and
-#'   `as_box()`, a class (or vector of classes) to be passed to
-#'   [inherits_all()].
+#' @param x,.x An R object.
+#' @param class,.class For `box()`, an additional class for the boxed
+#'   value (which comes in addition to `box`). For `is_box()`,
+#'   `as_box()` and `as_box_if()`, a class (or vector of classes) to
+#'   be passed to [inherits_all()].
 #' @export
 #' @examples
 #' boxed <- box(letters, "mybox")
@@ -80,6 +81,21 @@ inherits_only <- function(x, class) {
 #' is_box(boxed, "otherbox")
 #'
 #' unbox(boxed)
+#'
+#' # as_box() avoids double-boxing:
+#' boxed2 <- as_box(boxed, "mybox")
+#' boxed2
+#' unbox(boxed2)
+#'
+#' # Compare to:
+#' boxed_boxed <- box(boxed, "mybox")
+#' boxed_boxed
+#' unbox(unbox(boxed_boxed))
+#'
+#' # Use `as_box_if()` with a predicate if you need to ensure a box
+#' # only for a subset of values:
+#' as_box_if(NULL, is_null, "null_box")
+#' as_box_if("foo", is_null, "null_box")
 box <- function(x, class = NULL) {
   set_class(list(x), c(class, "box"))
 }
@@ -95,6 +111,17 @@ as_box <- function(x, class = NULL) {
     x
   } else {
     box(x, class)
+  }
+}
+#' @rdname box
+#' @param .p A predicate function.
+#' @param ... Arguments passed to `.p`.
+#' @export
+as_box_if <- function(.x, .p, .class = NULL, ...) {
+  if (is_box(.x, .class) || !.p(.x, ...)) {
+    .x
+  } else {
+    box(.x, .class)
   }
 }
 #' @rdname box

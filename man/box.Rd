@@ -4,6 +4,7 @@
 \alias{box}
 \alias{is_box}
 \alias{as_box}
+\alias{as_box_if}
 \alias{unbox}
 \title{Box a value}
 \usage{
@@ -13,15 +14,21 @@ is_box(x, class = NULL)
 
 as_box(x, class = NULL)
 
+as_box_if(.x, .p, .class = NULL, ...)
+
 unbox(box)
 }
 \arguments{
-\item{x}{An R object.}
+\item{x, .x}{An R object.}
 
-\item{class}{For \code{box()}, an additional class for the boxed value
-(which comes in addition to \code{box}). For \code{is_box()} and
-\code{as_box()}, a class (or vector of classes) to be passed to
-\code{\link[=inherits_all]{inherits_all()}}.}
+\item{class, .class}{For \code{box()}, an additional class for the boxed
+value (which comes in addition to \code{box}). For \code{is_box()},
+\code{as_box()} and \code{as_box_if()}, a class (or vector of classes) to
+be passed to \code{\link[=inherits_all]{inherits_all()}}.}
+
+\item{.p}{A predicate function.}
+
+\item{...}{Arguments passed to \code{.p}.}
 
 \item{box}{A boxed value to unbox.}
 }
@@ -30,7 +37,8 @@ unbox(box)
 wrapping it in a scalar list rather than by adding an attribute.
 \code{unbox()} retrieves the boxed value. \code{is_box()} tests whether an
 object is boxed with optional class. \code{as_box()} ensures that a
-value is wrapped in a box.
+value is wrapped in a box. \code{as_box_if()} does the same but only if
+the value matches a predicate.
 }
 \examples{
 boxed <- box(letters, "mybox")
@@ -39,4 +47,19 @@ is_box(boxed, "mybox")
 is_box(boxed, "otherbox")
 
 unbox(boxed)
+
+# as_box() avoids double-boxing:
+boxed2 <- as_box(boxed, "mybox")
+boxed2
+unbox(boxed2)
+
+# Compare to:
+boxed_boxed <- box(boxed, "mybox")
+boxed_boxed
+unbox(unbox(boxed_boxed))
+
+# Use `as_box_if()` with a predicate if you need to ensure a box
+# only for a subset of values:
+as_box_if(NULL, is_null, "null_box")
+as_box_if("foo", is_null, "null_box")
 }

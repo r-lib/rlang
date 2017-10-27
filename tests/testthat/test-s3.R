@@ -58,3 +58,14 @@ test_that("as_box() ensures boxed value", {
   expect_true(inherits_only(unbox(some_boxbox), c("some_box", "box")))
   expect_null(unbox(unbox(some_boxbox)))
 })
+
+test_that("as_box_if() ensures boxed value if predicate returns TRUE", {
+  box <- as_box_if(NULL, is_null, "null_box")
+  expect_true(inherits_only(box, c("null_box", "box")))
+
+  boxbox <- as_box_if(box, is_null, "null_box")
+  expect_true(inherits_only(box, c("null_box", "box")))
+  expect_null(unbox(boxbox))
+
+  expect_null(as_box_if(NULL, is_vector, "null_box"))
+})
