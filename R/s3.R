@@ -11,6 +11,9 @@
 #'   classes in the supplied order. This is usually the best way to
 #'   test for inheritance of multiple classes.
 #'
+#' * `inherits_only()` tests that the class vectors are identical. It
+#'   is a shortcut for `identical(class(x), class)`.
+#'
 #' @param x An object to test for inheritance.
 #' @param class A character vector of classes.
 #'
@@ -28,6 +31,10 @@
 #'
 #' # The order of classes must match as well:
 #' inherits_all(obj, c("baz", "foo"))
+#'
+#' # inherits_only() checks that the class vectors are identical:
+#' inherits_only(obj, c("foo", "baz"))
+#' inherits_only(obj, c("foo", "bar", "baz"))
 inherits_any <- function(x, class) {
   if (is_empty(class)) {
     abort("`class` can't be empty")
@@ -46,7 +53,11 @@ inherits_all <- function(x, class) {
 
   cummax[[1]] != 0L && all(idx == cummax)
 }
-
+#' @rdname inherits_any
+#' @export
+inherits_only <- function(x, class) {
+  identical(class(x), class)
+}
 
 #' Box a value
 #'

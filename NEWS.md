@@ -139,10 +139,12 @@
   boxed value, `is_box()` to test for a boxed value, and `unbox()` to
   unbox it. `box()` and `is_box()` accept optional subclass.
 
-* New functions `inherits_any()` and `inherits_all()`. They allow
-  testing for inheritance from multiple classes. The `_any` variant is
-  equivalent to `base::inherits()` but is more explicit about its
-  behaviour.
+* New functions `inherits_any()`, `inherits_all()`, and
+  `inherits_only()`. They allow testing for inheritance from multiple
+  classes. The `_any` variant is equivalent to `base::inherits()` but
+  is more explicit about its behaviour. `inherits_all()` checks that
+  all classes are present in order and `inherits_only()` checks that
+  the class vectors are identical.
 
 
 ## Breaking changes

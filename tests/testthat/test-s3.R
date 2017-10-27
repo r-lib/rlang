@@ -26,6 +26,12 @@ test_that("inherits from any class", {
   expect_error(inherits_any(x, chr()), "empty")
 })
 
+test_that("inherits only from class", {
+  x <- structure(list(), class = c("foo", "bar", "baz"))
+  expect_false(inherits_only(x, c("foo", "baz")))
+  expect_true(inherits_only(x, c("foo", "bar", "baz")))
+})
+
 test_that("can box and unbox a value", {
   box <- box(letters, "foo")
   expect_true(is_box(box))
@@ -40,15 +46,15 @@ test_that("can box and unbox a value", {
 
 test_that("as_box() ensures boxed value", {
   box <- as_box(NULL)
-  expect_is(box, "box")
+  expect_true(inherits_only(box, "box"))
 
   boxbox <- as_box(box)
-  expect_is(box, "box")
+  expect_true(inherits_only(box, "box"))
   expect_null(unbox(box))
 
   some_box <- as_box(NULL, "some_box")
   some_boxbox <- as_box(some_box, "other_box")
-  expect_identical(class(some_boxbox), c("other_box", "box"))
-  expect_identical(class(unbox(some_boxbox)), c("some_box", "box"))
+  expect_true(inherits_only(some_boxbox, c("other_box", "box")))
+  expect_true(inherits_only(unbox(some_boxbox), c("some_box", "box")))
   expect_null(unbox(unbox(some_boxbox)))
 })
