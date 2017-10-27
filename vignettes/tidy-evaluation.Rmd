@@ -180,7 +180,7 @@ Unlike formulas, quosures aren't simple containers of an expression
 and an environment. In the tidyeval framework, they have the property
 of self-evaluating in their own environment. Hence they can appear
 anywhere in an expression (e.g. by being
-[unquoted](http://rlang.tidyverse.org/reference/quasiquotation.html)),
+unquoted, see `UQ()`),
 carrying their own environment and behaving otherwise exactly like
 surrounding R code. Quosures behave like
 reified
