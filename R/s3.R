@@ -73,11 +73,7 @@ box <- function(x, class = NULL) {
 #' @rdname box
 #' @export
 is_box <- function(x, class = NULL) {
-  if (!inherits(x, "box")) {
-    return(FALSE)
-  }
-
-  is_null(class) || inherits_all(x, class)
+  inherits_all(x, c(class, "box"))
 }
 #' @rdname box
 #' @param box A boxed value to unbox.
