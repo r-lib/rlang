@@ -128,7 +128,9 @@ as_box_if <- function(.x, .p, .class = NULL, ...) {
 #' @param box A boxed value to unbox.
 #' @export
 unbox <- function(box) {
-  stopifnot(inherits(box, "box"))
+  if (!inherits(box, "box")) {
+    abort("`box` must be a box")
+  }
   box[[1]]
 }
 print.box <- function(x, ...) {
