@@ -70,7 +70,7 @@ inherits_all <- function(x, class) {
 #'
 #' unbox(boxed)
 box <- function(x, class = NULL) {
-  set_attrs(list(x), class = c(class, "box"))
+  set_class(list(x), c(class, "box"))
 }
 #' @rdname box
 #' @export

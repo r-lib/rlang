@@ -63,6 +63,11 @@ set_attrs_impl <- function(.x, ...) {
 set_attrs_null <- list(NULL)
 names(set_attrs_null) <- ""
 
+add_attributes <- set_attrs
+set_class <- function(x, class) {
+  add_attributes(x, class = class)
+}
+
 #' Is object named?
 #'
 #' `is_named()` checks that `x` has names attributes, and that none of
