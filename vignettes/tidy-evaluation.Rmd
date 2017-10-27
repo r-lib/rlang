@@ -91,7 +91,7 @@ evaluation as much as possible.
 
 A corollary of emphasising evaluation is that your DSL functions
 should understand _values_ in addition to expressions. This is
-especially important with [quasiquotation][quasiquotation]: users can
+especially important with quasiquotation (see `UQ()`): users can
 bypass symbolic evaluation completely by unquoting values. For
 instance, the following expressions are completely equivalent:
 
@@ -161,7 +161,7 @@ context. Secondly, because arguments can be forwarded through the
 special `...` argument. While base R does not provide any way of
 capturing a forwarded argument along with its original environment,
 rlang features `quos()` for this purpose. This function looks up each
-forwarded argument and returns a list of [quosures][quosure] that bundle the
+forwarded argument and returns a list of quosures (see `quo()`) that bundle the
 expressions with their own dynamic environments.
 
 In that context, maintaining scoping consistency is a challenge
