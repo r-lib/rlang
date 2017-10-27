@@ -5,14 +5,14 @@
 \alias{inherits_all}
 \title{Does an object inherit from a set of classes?}
 \usage{
-inherits_any(x, classes)
+inherits_any(x, class)
 
-inherits_all(x, classes)
+inherits_all(x, class)
 }
 \arguments{
 \item{x}{An object to test for inheritance.}
 
-\item{classes}{A character vector of at least one class.}
+\item{class}{A character vector of classes.}
 }
 \description{
 \itemize{

@@ -12,7 +12,7 @@
 #'   test for inheritance of multiple classes.
 #'
 #' @param x An object to test for inheritance.
-#' @param classes A character vector of at least one class.
+#' @param class A character vector of classes.
 #'
 #' @export
 #' @examples
@@ -28,20 +28,20 @@
 #'
 #' # The order of classes must match as well:
 #' inherits_all(obj, c("baz", "foo"))
-inherits_any <- function(x, classes) {
-  if (is_empty(classes)) {
-    abort("`classes` can't be empty")
+inherits_any <- function(x, class) {
+  if (is_empty(class)) {
+    abort("`class` can't be empty")
   }
-  inherits(x, classes)
+  inherits(x, class)
 }
 #' @rdname inherits_any
 #' @export
-inherits_all <- function(x, classes) {
-  if (is_empty(classes)) {
-    abort("`classes` can't be empty")
+inherits_all <- function(x, class) {
+  if (is_empty(class)) {
+    abort("`class` can't be empty")
   }
 
-  idx <- inherits(x, classes, which = TRUE)
+  idx <- inherits(x, class, which = TRUE)
   cummax <- cummax(idx)
 
   cummax[[1]] != 0 && all(idx == cummax(idx))
