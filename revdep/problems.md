@@ -2,13 +2,13 @@
 
 Version: 0.2.0
 
-## Newly broken
+## Newly fixed
 
 *   checking re-building of vignette outputs ... WARNING
     ```
     Error in re-building vignettes:
       ...
-    Quitting from lines 47-49 (geocode.Rmd) 
+    Quitting from lines 57-66 (geocode.Rmd) 
     Error: processing vignette 'geocode.Rmd' failed with diagnostics:
     The API sent back an error 503
     Execution halted
@@ -28,41 +28,6 @@ Version: 1.4.0
 
 ## In both
 
-*   checking tests ...
-    ```
-     ERROR
-    Running the tests in ‘tests/testthat.R’ failed.
-    Complete output:
-      > library(testthat)
-      > library(bayesplot)
-      This is bayesplot version 1.4.0
-      - Plotting theme set to bayesplot::theme_default()
-      - Online documentation at mc-stan.org/bayesplot
-      > 
-      > Sys.unsetenv("R_TESTS")
-      > test_check("bayesplot")
-      Error in library(rstanarm) : there is no package called 'rstanarm'
-      Calls: test_check ... suppressPackageStartupMessages -> withCallingHandlers -> library
-      testthat results ================================================================
-      OK: 173 SKIPPED: 0 FAILED: 0
-      Execution halted
-    ```
-
-*   checking re-building of vignette outputs ... WARNING
-    ```
-    Error in re-building vignettes:
-      ...
-    Quitting from lines 18-20 (graphical-ppcs.Rmd) 
-    Error: processing vignette 'graphical-ppcs.Rmd' failed with diagnostics:
-    there is no package called 'rstanarm'
-    Execution halted
-    ```
-
-*   checking package dependencies ... NOTE
-    ```
-    Packages suggested but not available for checking: ‘rstanarm’ ‘shinystan’
-    ```
-
 *   checking installed package size ... NOTE
     ```
       installed size is  5.7Mb
@@ -73,7 +38,7 @@ Version: 1.4.0
 
 # bomrang
 
-Version: 0.0.7
+Version: 0.0.8
 
 ## In both
 
@@ -170,16 +135,18 @@ Version: 0.1.2
       All declared Imports should be used.
     ```
 
-# fbar
+# GSODR
 
-Version: 0.3.3
+Version: 1.1.0
 
 ## In both
 
-*   checking dependencies in R code ... NOTE
+*   R CMD check timed out
+    
+
+*   checking package dependencies ... NOTE
     ```
-    Namespace in Imports field not imported from: ‘ROI.plugin.ecos’
-      All declared Imports should be used.
+    Package suggested but not available for checking: ‘rgeos’
     ```
 
 # implyr
@@ -200,9 +167,9 @@ Version: 0.2.1
       Error: package or namespace load failed for 'rJava':
        .onLoad failed in loadNamespace() for 'rJava', details:
         call: dyn.load(file, DLLpath = DLLpath, ...)
-        error: unable to load shared object '/Users/lionel/rlang/revdep/library/implyr/rJava/libs/rJava.so':
-        dlopen(/Users/lionel/rlang/revdep/library/implyr/rJava/libs/rJava.so, 6): Library not loaded: @rpath/libjvm.dylib
-        Referenced from: /Users/lionel/rlang/revdep/library/implyr/rJava/libs/rJava.so
+        error: unable to load shared object '/Users/lionel/Dropbox/Projects/R/hadley/rlang/revdep/library/implyr/rJava/libs/rJava.so':
+        dlopen(/Users/lionel/Dropbox/Projects/R/hadley/rlang/revdep/library/implyr/rJava/libs/rJava.so, 6): Library not loaded: @rpath/libjvm.dylib
+        Referenced from: /Users/lionel/Dropbox/Projects/R/hadley/rlang/revdep/library/implyr/rJava/libs/rJava.so
         Reason: image not found
       Error: package 'rJava' could not be loaded
       In addition: Warning message:
@@ -212,20 +179,16 @@ Version: 0.2.1
 
 # kokudosuuchi
 
-Version: 0.4.0
+Version: 0.4.1
 
 ## In both
 
-*   checking dependencies in R code ... NOTE
+*   checking package dependencies ... ERROR
     ```
-    Namespaces in Imports field not imported from:
-      ‘digest’ ‘stringi’
-      All declared Imports should be used.
-    ```
-
-*   checking data for non-ASCII characters ... NOTE
-    ```
-      Note: found 52458 marked UTF-8 strings
+    Package required but not available: ‘sf’
+    
+    See section ‘The DESCRIPTION file’ in the ‘Writing R Extensions’
+    manual.
     ```
 
 # MlBayesOpt
@@ -267,6 +230,38 @@ Version: 0.7.6
     No Java runtime present, try --request to install.
     ```
 
+# nyctaxi
+
+Version: 0.0.1
+
+## In both
+
+*   checking re-building of vignette outputs ... WARNING
+    ```
+    ...
+         
+         taxi <- etl("nyctaxi", dir = "~/Desktop/nyctaxi/")
+         taxi %>% 
+            etl_extract(years = 2016, months = 1:2, types = c("yellow","green")) %>% 
+            etl_transform(years = 2016, months = 1:2, types = c("yellow","green")) %>% 
+            etl_load(years = 2016, months = 1:2, types = c("yellow","green")) 
+         ## End(Not run)
+         
+    
+    
+    Attaching package: 'lubridate'
+    
+    The following object is masked from 'package:base':
+    
+        date
+    
+    pandoc: Could not fetch /Users/lionel/Dropbox/Projects/R/hadley/rlang/revdep/library/nyctaxi/leaflet/htmlwidgets/lib/leaflet/#default#VML
+    /Users/lionel/Dropbox/Projects/R/hadley/rlang/revdep/library/nyctaxi/leaflet/htmlwidgets/lib/leaflet/: openBinaryFile: inappropriate type (is a directory)
+    Error: processing vignette 'nyc_taxi.Rmd' failed with diagnostics:
+    pandoc document conversion failed with error 67
+    Execution halted
+    ```
+
 # PKPDmisc
 
 Version: 2.0.0
@@ -288,7 +283,7 @@ Version: 0.1
 *   checking whether package ‘pointblank’ can be installed ... ERROR
     ```
     Installation failed.
-    See ‘/Users/lionel/rlang/revdep/checks/pointblank/new/pointblank.Rcheck/00install.out’ for details.
+    See ‘/Users/lionel/Dropbox/Projects/R/hadley/rlang/revdep/checks/pointblank/new/pointblank.Rcheck/00install.out’ for details.
     ```
 
 ## Installation
@@ -306,12 +301,12 @@ No Java runtime present, try --request to install.
 Warning: running command '/usr/libexec/java_home' had status 1
 Error : .onLoad failed in loadNamespace() for 'rJava', details:
   call: dyn.load(file, DLLpath = DLLpath, ...)
-  error: unable to load shared object '/Users/lionel/rlang/revdep/library/pointblank/rJava/libs/rJava.so':
-  dlopen(/Users/lionel/rlang/revdep/library/pointblank/rJava/libs/rJava.so, 6): Library not loaded: @rpath/libjvm.dylib
-  Referenced from: /Users/lionel/rlang/revdep/library/pointblank/rJava/libs/rJava.so
+  error: unable to load shared object '/Users/lionel/Dropbox/Projects/R/hadley/rlang/revdep/library/pointblank/rJava/libs/rJava.so':
+  dlopen(/Users/lionel/Dropbox/Projects/R/hadley/rlang/revdep/library/pointblank/rJava/libs/rJava.so, 6): Library not loaded: @rpath/libjvm.dylib
+  Referenced from: /Users/lionel/Dropbox/Projects/R/hadley/rlang/revdep/library/pointblank/rJava/libs/rJava.so
   Reason: image not found
 ERROR: lazy loading failed for package ‘pointblank’
-* removing ‘/Users/lionel/rlang/revdep/checks/pointblank/new/pointblank.Rcheck/pointblank’
+* removing ‘/Users/lionel/Dropbox/Projects/R/hadley/rlang/revdep/checks/pointblank/new/pointblank.Rcheck/pointblank’
 
 ```
 ### CRAN
@@ -327,12 +322,12 @@ No Java runtime present, try --request to install.
 Warning: running command '/usr/libexec/java_home' had status 1
 Error : .onLoad failed in loadNamespace() for 'rJava', details:
   call: dyn.load(file, DLLpath = DLLpath, ...)
-  error: unable to load shared object '/Users/lionel/rlang/revdep/library/pointblank/rJava/libs/rJava.so':
-  dlopen(/Users/lionel/rlang/revdep/library/pointblank/rJava/libs/rJava.so, 6): Library not loaded: @rpath/libjvm.dylib
-  Referenced from: /Users/lionel/rlang/revdep/library/pointblank/rJava/libs/rJava.so
+  error: unable to load shared object '/Users/lionel/Dropbox/Projects/R/hadley/rlang/revdep/library/pointblank/rJava/libs/rJava.so':
+  dlopen(/Users/lionel/Dropbox/Projects/R/hadley/rlang/revdep/library/pointblank/rJava/libs/rJava.so, 6): Library not loaded: @rpath/libjvm.dylib
+  Referenced from: /Users/lionel/Dropbox/Projects/R/hadley/rlang/revdep/library/pointblank/rJava/libs/rJava.so
   Reason: image not found
 ERROR: lazy loading failed for package ‘pointblank’
-* removing ‘/Users/lionel/rlang/revdep/checks/pointblank/old/pointblank.Rcheck/pointblank’
+* removing ‘/Users/lionel/Dropbox/Projects/R/hadley/rlang/revdep/checks/pointblank/old/pointblank.Rcheck/pointblank’
 
 ```
 # poppr
@@ -344,7 +339,7 @@ Version: 2.5.0
 *   checking whether package ‘poppr’ can be installed ... ERROR
     ```
     Installation failed.
-    See ‘/Users/lionel/rlang/revdep/checks/poppr/new/poppr.Rcheck/00install.out’ for details.
+    See ‘/Users/lionel/Dropbox/Projects/R/hadley/rlang/revdep/checks/poppr/new/poppr.Rcheck/00install.out’ for details.
     ```
 
 ## Installation
@@ -359,7 +354,7 @@ clang -I/Library/Frameworks/R.framework/Resources/include -DNDEBUG   -I/usr/loca
 clang: error: unsupported option '-fopenmp'
 make: *** [bitwise_distance.o] Error 1
 ERROR: compilation failed for package ‘poppr’
-* removing ‘/Users/lionel/rlang/revdep/checks/poppr/new/poppr.Rcheck/poppr’
+* removing ‘/Users/lionel/Dropbox/Projects/R/hadley/rlang/revdep/checks/poppr/new/poppr.Rcheck/poppr’
 
 ```
 ### CRAN
@@ -372,7 +367,7 @@ clang -I/Library/Frameworks/R.framework/Resources/include -DNDEBUG   -I/usr/loca
 clang: error: unsupported option '-fopenmp'
 make: *** [bitwise_distance.o] Error 1
 ERROR: compilation failed for package ‘poppr’
-* removing ‘/Users/lionel/rlang/revdep/checks/poppr/old/poppr.Rcheck/poppr’
+* removing ‘/Users/lionel/Dropbox/Projects/R/hadley/rlang/revdep/checks/poppr/old/poppr.Rcheck/poppr’
 
 ```
 # prisonbrief
@@ -381,11 +376,46 @@ Version: 0.1.0
 
 ## In both
 
-*   checking data for non-ASCII characters ... NOTE
+*   checking whether package ‘prisonbrief’ can be installed ... ERROR
     ```
-      Note: found 2 marked UTF-8 strings
+    Installation failed.
+    See ‘/Users/lionel/Dropbox/Projects/R/hadley/rlang/revdep/checks/prisonbrief/new/prisonbrief.Rcheck/00install.out’ for details.
     ```
 
+## Installation
+
+### Devel
+
+```
+* installing *source* package ‘prisonbrief’ ...
+** package ‘prisonbrief’ successfully unpacked and MD5 sums checked
+** R
+** data
+*** moving datasets to lazyload DB
+** inst
+** preparing package for lazy loading
+Error in loadNamespace(i, c(lib.loc, .libPaths()), versionCheck = vI[[i]]) : 
+  there is no package called ‘sf’
+ERROR: lazy loading failed for package ‘prisonbrief’
+* removing ‘/Users/lionel/Dropbox/Projects/R/hadley/rlang/revdep/checks/prisonbrief/new/prisonbrief.Rcheck/prisonbrief’
+
+```
+### CRAN
+
+```
+* installing *source* package ‘prisonbrief’ ...
+** package ‘prisonbrief’ successfully unpacked and MD5 sums checked
+** R
+** data
+*** moving datasets to lazyload DB
+** inst
+** preparing package for lazy loading
+Error in loadNamespace(i, c(lib.loc, .libPaths()), versionCheck = vI[[i]]) : 
+  there is no package called ‘sf’
+ERROR: lazy loading failed for package ‘prisonbrief’
+* removing ‘/Users/lionel/Dropbox/Projects/R/hadley/rlang/revdep/checks/prisonbrief/old/prisonbrief.Rcheck/prisonbrief’
+
+```
 # proustr
 
 Version: 0.2.1
@@ -428,14 +458,19 @@ Version: 0.1.5
 
 # sf
 
-Version: 0.5-4
+Version: 0.5-5
 
 ## In both
 
 *   checking whether package ‘sf’ can be installed ... ERROR
     ```
     Installation failed.
-    See ‘/Users/lionel/rlang/revdep/checks/sf/new/sf.Rcheck/00install.out’ for details.
+    See ‘/Users/lionel/Dropbox/Projects/R/hadley/rlang/revdep/checks/sf/new/sf.Rcheck/00install.out’ for details.
+    ```
+
+*   checking package dependencies ... NOTE
+    ```
+    Package suggested but not available for checking: ‘rgeos’
     ```
 
 ## Installation
@@ -451,7 +486,7 @@ checking for gdal-config... no
 no
 configure: error: gdal-config not found or not executable.
 ERROR: configuration failed for package ‘sf’
-* removing ‘/Users/lionel/rlang/revdep/checks/sf/new/sf.Rcheck/sf’
+* removing ‘/Users/lionel/Dropbox/Projects/R/hadley/rlang/revdep/checks/sf/new/sf.Rcheck/sf’
 
 ```
 ### CRAN
@@ -465,7 +500,7 @@ checking for gdal-config... no
 no
 configure: error: gdal-config not found or not executable.
 ERROR: configuration failed for package ‘sf’
-* removing ‘/Users/lionel/rlang/revdep/checks/sf/old/sf.Rcheck/sf’
+* removing ‘/Users/lionel/Dropbox/Projects/R/hadley/rlang/revdep/checks/sf/old/sf.Rcheck/sf’
 
 ```
 # sjPlot
@@ -530,15 +565,12 @@ Version: 0.1.9
 
 ## In both
 
-*   checking re-building of vignette outputs ... WARNING
+*   checking package dependencies ... ERROR
     ```
-    Error in re-building vignettes:
-      ...
-    pandoc: Could not fetch /Users/lionel/rlang/revdep/library/stplanr/leaflet/htmlwidgets/lib/leaflet/#default#VML
-    /Users/lionel/rlang/revdep/library/stplanr/leaflet/htmlwidgets/lib/leaflet/: openBinaryFile: inappropriate type (is a directory)
-    Error: processing vignette 'introducing-stplanr.Rmd' failed with diagnostics:
-    pandoc document conversion failed with error 67
-    Execution halted
+    Package required but not available: ‘rgeos’
+    
+    See section ‘The DESCRIPTION file’ in the ‘Writing R Extensions’
+    manual.
     ```
 
 # tatoo

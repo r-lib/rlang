@@ -9,7 +9,7 @@
 |language |(EN)                         |
 |collate  |en_US.UTF-8                  |
 |tz       |Europe/Brussels              |
-|date     |2017-10-24                   |
+|date     |2017-10-31                   |
 
 # Dependencies
 
@@ -19,31 +19,32 @@
 
 # Revdeps
 
-## Couldn't check (4)
+## Couldn't check (6)
 
-|package                              |version |error |warning |note |
-|:------------------------------------|:-------|:-----|:-------|:----|
-|[bomrang](problems.md#bomrang)       |0.0.7   |1     |        |     |
-|[pointblank](problems.md#pointblank) |0.1     |1     |        |     |
-|[poppr](problems.md#poppr)           |2.5.0   |1     |        |     |
-|[sf](problems.md#sf)                 |0.5-4   |1     |        |     |
+|package                                |version |error |warning |note |
+|:--------------------------------------|:-------|:-----|:-------|:----|
+|[bomrang](problems.md#bomrang)         |0.0.8   |1     |        |     |
+|[GSODR](problems.md#gsodr)             |1.1.0   |1     |        |1    |
+|[pointblank](problems.md#pointblank)   |0.1     |1     |        |     |
+|[poppr](problems.md#poppr)             |2.5.0   |1     |        |     |
+|[prisonbrief](problems.md#prisonbrief) |0.1.0   |1     |        |     |
+|[sf](problems.md#sf)                   |0.5-5   |1     |        |1    |
 
-## Broken (2)
+## Broken (1)
 
 |package                  |version |error  |warning |note |
 |:------------------------|:-------|:------|:-------|:----|
-|[banR](problems.md#banr) |0.2.0   |       |__+1__  |1    |
 |[taxa](problems.md#taxa) |0.1.0   |__+2__ |__+1__  |1    |
 
-## All (70)
+## All (72)
 
 |package                                  |version |error  |warning |note |
 |:----------------------------------------|:-------|:------|:-------|:----|
 |auk                                      |0.1.0   |       |        |     |
-|[banR](problems.md#banr)                 |0.2.0   |       |__+1__  |1    |
-|[bayesplot](problems.md#bayesplot)       |1.4.0   |1      |1       |2    |
+|[banR](problems.md#banr)                 |0.2.0   |       |-1      |1    |
+|[bayesplot](problems.md#bayesplot)       |1.4.0   |       |        |1    |
 |bioset                                   |0.1.0   |       |        |     |
-|[bomrang](problems.md#bomrang)           |0.0.7   |1      |        |     |
+|[bomrang](problems.md#bomrang)           |0.0.8   |1      |        |     |
 |[condformat](problems.md#condformat)     |0.7.0   |1      |        |1    |
 |cytominer                                |0.1.0   |       |        |     |
 |[dbplyr](problems.md#dbplyr)             |1.1.0   |       |        |1    |
@@ -53,16 +54,17 @@
 |[epitable](problems.md#epitable)         |0.1.2   |       |        |1    |
 |ESTER                                    |0.1.0   |       |        |     |
 |etl                                      |0.3.7   |       |        |     |
-|[fbar](problems.md#fbar)                 |0.3.3   |       |        |1    |
+|fbar                                     |0.3.4   |       |        |     |
 |fold                                     |0.2.2   |       |        |     |
 |ggeffects                                |0.2.2   |       |        |     |
 |ggformula                                |0.6     |       |        |     |
 |gghighlight                              |0.0.1   |       |        |     |
 |googleAnalyticsR                         |0.4.2   |       |        |     |
 |googledrive                              |0.1.1   |       |        |     |
+|[GSODR](problems.md#gsodr)               |1.1.0   |1      |        |1    |
 |iadf                                     |0.1.0   |       |        |     |
 |[implyr](problems.md#implyr)             |0.2.1   |1      |        |     |
-|[kokudosuuchi](problems.md#kokudosuuchi) |0.4.0   |       |        |2    |
+|[kokudosuuchi](problems.md#kokudosuuchi) |0.4.1   |1      |        |     |
 |later                                    |0.5     |       |        |     |
 |metaplot                                 |0.2.1   |       |        |     |
 |[MlBayesOpt](problems.md#mlbayesopt)     |0.3.3   |       |        |1    |
@@ -72,12 +74,13 @@
 |nofrills                                 |0.2.0   |       |        |     |
 |[nonmemica](problems.md#nonmemica)       |0.7.6   |       |1       |1    |
 |NPMOD                                    |0.1.0   |       |        |     |
+|[nyctaxi](problems.md#nyctaxi)           |0.0.1   |       |1       |     |
 |photobiology                             |0.9.17  |       |        |     |
 |[PKPDmisc](problems.md#pkpdmisc)         |2.0.0   |       |        |1    |
 |[pointblank](problems.md#pointblank)     |0.1     |1      |        |     |
 |polypoly                                 |0.0.2   |       |        |     |
 |[poppr](problems.md#poppr)               |2.5.0   |1      |        |     |
-|[prisonbrief](problems.md#prisonbrief)   |0.1.0   |       |        |1    |
+|[prisonbrief](problems.md#prisonbrief)   |0.1.0   |1      |        |     |
 |[proustr](problems.md#proustr)           |0.2.1   |       |        |1    |
 |purrr                                    |0.2.4   |       |        |     |
 |[quickReg](problems.md#quickreg)         |1.5.0   |       |        |2    |
@@ -85,14 +88,14 @@
 |rsample                                  |0.0.1   |       |        |     |
 |RSDA                                     |2.0.2   |       |        |     |
 |[seplyr](problems.md#seplyr)             |0.1.5   |       |        |1    |
-|[sf](problems.md#sf)                     |0.5-4   |1      |        |     |
-|sjmisc                                   |2.6.1   |       |        |     |
+|[sf](problems.md#sf)                     |0.5-5   |1      |        |1    |
+|sjmisc                                   |2.6.2   |       |        |     |
 |[sjPlot](problems.md#sjplot)             |2.4.0   |       |        |2    |
 |[sjstats](problems.md#sjstats)           |0.12.0  |       |        |1    |
 |[sparklyr](problems.md#sparklyr)         |0.6.3   |1      |        |     |
 |spdplyr                                  |0.1.3   |       |        |     |
 |statar                                   |0.6.5   |       |        |     |
-|[stplanr](problems.md#stplanr)           |0.1.9   |       |1       |     |
+|[stplanr](problems.md#stplanr)           |0.1.9   |1      |        |     |
 |sugrrants                                |0.1.0   |       |        |     |
 |[tatoo](problems.md#tatoo)               |1.0.8   |       |        |1    |
 |[taxa](problems.md#taxa)                 |0.1.0   |__+2__ |__+1__  |1    |
