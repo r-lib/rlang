@@ -18,7 +18,7 @@ SEXP base_tilde_eval(SEXP tilde, SEXP dots, SEXP quo_env) {
   tilde = KEEP(r_eval(tilde, quo_env));
 
   // Change it back because the result still has the primitive inlined
-  r_mut_node_car(tilde, tilde_sym);
+  r_node_poke_car(tilde, tilde_sym);
 
   FREE(2);
   return tilde;

@@ -24,16 +24,16 @@ extern SEXP r_node_cadr(SEXP);
 extern SEXP r_node_cdar(SEXP);
 extern SEXP r_node_cddr(SEXP);
 extern SEXP r_missing_arg();
-extern SEXP r_mut_node_car(SEXP, SEXP);
-extern SEXP r_mut_node_cdr(SEXP, SEXP);
-extern SEXP r_mut_node_caar(SEXP, SEXP);
-extern SEXP r_mut_node_cadr(SEXP, SEXP);
-extern SEXP r_mut_node_cdar(SEXP, SEXP);
-extern SEXP r_mut_node_cddr(SEXP, SEXP);
+extern SEXP r_node_poke_car(SEXP, SEXP);
+extern SEXP r_node_poke_cdr(SEXP, SEXP);
+extern SEXP r_node_poke_caar(SEXP, SEXP);
+extern SEXP r_node_poke_cadr(SEXP, SEXP);
+extern SEXP r_node_poke_cdar(SEXP, SEXP);
+extern SEXP r_node_poke_cddr(SEXP, SEXP);
 extern SEXP r_new_node_(SEXP, SEXP);
 extern SEXP rlang_duplicate(SEXP);
 extern SEXP r_node_tag(SEXP);
-extern SEXP r_mut_node_tag(SEXP);
+extern SEXP r_node_poke_tag(SEXP);
 extern SEXP r_eval(SEXP, SEXP);
 extern SEXP rlang_zap_attrs(SEXP);
 extern SEXP rlang_get_attrs(SEXP);
@@ -91,15 +91,15 @@ static const R_CallMethodDef call_entries[] = {
   {"rlang_new_dictionary",      (DL_FUNC) &rlang_new_dictionary, 3},
   {"rlang_set_attrs",           (DL_FUNC) &rlang_set_attrs, 2},
   {"r_missing_arg",             (DL_FUNC) &r_missing_arg, 0},
-  {"r_mut_node_caar",           (DL_FUNC) &r_mut_node_caar, 2},
-  {"r_mut_node_cadr",           (DL_FUNC) &r_mut_node_cadr, 2},
-  {"r_mut_node_car",            (DL_FUNC) &r_mut_node_car, 2},
-  {"r_mut_node_cdar",           (DL_FUNC) &r_mut_node_cdar, 2},
-  {"r_mut_node_cddr",           (DL_FUNC) &r_mut_node_cddr, 2},
-  {"r_mut_node_cdr",            (DL_FUNC) &r_mut_node_cdr, 2},
+  {"r_node_poke_caar",           (DL_FUNC) &r_node_poke_caar, 2},
+  {"r_node_poke_cadr",           (DL_FUNC) &r_node_poke_cadr, 2},
+  {"r_node_poke_car",            (DL_FUNC) &r_node_poke_car, 2},
+  {"r_node_poke_cdar",           (DL_FUNC) &r_node_poke_cdar, 2},
+  {"r_node_poke_cddr",           (DL_FUNC) &r_node_poke_cddr, 2},
+  {"r_node_poke_cdr",            (DL_FUNC) &r_node_poke_cdr, 2},
   {"rlang_mut_env_parent",      (DL_FUNC) &rlang_mut_env_parent, 2},
   {"rlang_mut_type",            (DL_FUNC) &rlang_mut_type, 2},
-  {"r_mut_node_tag",            (DL_FUNC) &r_mut_node_tag, 2},
+  {"r_node_poke_tag",            (DL_FUNC) &r_node_poke_tag, 2},
   {"rlang_squash",              (DL_FUNC) &rlang_squash, 4},
   {"rlang_sxp_address",         (DL_FUNC) &rlang_sxp_address, 1},
   {"rlang_symbol",              (DL_FUNC) &rlang_symbol, 1},
