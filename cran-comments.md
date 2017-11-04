@@ -1,4 +1,7 @@
 
+The rchk warnings should now be fixed.
+
+
 ## Test environments
 
 * local OS X install, R 3.4.2

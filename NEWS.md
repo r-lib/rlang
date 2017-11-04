@@ -1,5 +1,5 @@
 
-# rlang 0.1.3
+# rlang 0.1.4
 
 * `eval_tidy()` no longer maps over lists but returns them literally.
   This behaviour is an overlook from past refactorings and was never
