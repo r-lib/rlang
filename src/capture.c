@@ -73,10 +73,12 @@ SEXP attribute_hidden rlang_capturedots(SEXP call, SEXP op, SEXP args, SEXP rho)
     int strict = asLogical(CADR(args));
 
     // R code has checked for unbound dots
-    SEXP dots = findVarInFrame3(caller_env, R_DotsSymbol, TRUE);
+    SEXP dots = PROTECT(findVarInFrame3(caller_env, R_DotsSymbol, TRUE));
 
-    if (dots == R_MissingArg)
+    if (dots == R_MissingArg) {
+        UNPROTECT(1);
         return allocVector(VECSXP, 0);
+    }
 
     int n_dots = length(dots);
     SEXP captured = PROTECT(allocVector(VECSXP, n_dots));
@@ -91,7 +93,7 @@ SEXP attribute_hidden rlang_capturedots(SEXP call, SEXP op, SEXP args, SEXP rho)
         if (TYPEOF(dot) == PROMSXP) {
             dot = capture_promise(dot, strict);
             if (dot == R_NilValue) {
-                UNPROTECT(2);
+                UNPROTECT(3);
                 return R_NilValue;
             }
         } else {
@@ -106,6 +108,6 @@ SEXP attribute_hidden rlang_capturedots(SEXP call, SEXP op, SEXP args, SEXP rho)
         dots = CDR(dots);
     }
 
-    UNPROTECT(2);
+    UNPROTECT(3);
     return captured;
 }

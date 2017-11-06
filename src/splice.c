@@ -30,7 +30,7 @@ R_len_t atom_squash(SEXPTYPE kind, squash_info_t info,
     Rf_errorcall(R_NilValue, "Only lists can be spliced");
 
   SEXP inner;
-  SEXP out_names = names(out);
+  SEXP out_names = PROTECT(names(out));
   R_len_t n_outer = Rf_length(outer);
   R_len_t n_inner;
 
@@ -55,6 +55,7 @@ R_len_t atom_squash(SEXPTYPE kind, squash_info_t info,
     }
   }
 
+  UNPROTECT(1);
   return count;
 }
 
@@ -68,7 +69,7 @@ R_len_t list_squash(squash_info_t info, SEXP outer,
     Rf_errorcall(R_NilValue, "Only lists can be spliced");
 
   SEXP inner;
-  SEXP out_names = names(out);
+  SEXP out_names = PROTECT(names(out));
   R_len_t n_outer = Rf_length(outer);
 
   for (R_len_t i = 0; i != n_outer; ++i) {
@@ -88,6 +89,7 @@ R_len_t list_squash(squash_info_t info, SEXP outer,
     }
   }
 
+  UNPROTECT(1);
   return count;
 }
 

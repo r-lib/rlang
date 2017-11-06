@@ -19,7 +19,8 @@ test_that("dots are always named", {
 })
 
 test_that("dots can be spliced", {
-  expect_identical(dots_values(!!! list(letters)), named_list(splice(list(letters))))
+  spliced_dots <- dots_values(!!! list(letters))
+  expect_identical(spliced_dots, named_list(splice(list(letters))))
   expect_identical(flatten(dots_values(!!! list(letters))), list(letters))
   expect_identical(ll(!!! list(letters)), list(letters))
   wrapper <- function(...) ll(...)
