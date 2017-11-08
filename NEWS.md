@@ -1,5 +1,5 @@
 
-# rlang 0.1.2.9000
+# rlang 0.1.4.9000
 
 * `new_cnd()` is now `cnd()` for consistency with other constructors.
   Also, `cnd_error()`, `cnd_warning()` and `cnd_message()` are now
@@ -32,10 +32,6 @@
 * New function `chr_translate_unicode()` for turning characters
   serialised to unicode point form (e.g. `<U+xxxx>`) to UTF-8. In
   addition, `as_utf8_character()` now translates those as well.
-
-* `eval_tidy()` no longer maps over lists but returns them literally.
-  This behaviour is an overlook from past refactorings and was never
-  documented.
 
 * When nested quosures are evaluated with `eval_tidy()`, the `.env`
   pronoun now correctly refers to the current quosure under evaluation
@@ -77,6 +73,13 @@
 * `is_node()` now returns `TRUE` for calls as well and `is_pairlist()`
   does not return `TRUE` for `NULL` objects. Use `is_node_list()` to
   determine whether an object either of type `pairlist` or `NULL`.
+
+
+# rlang 0.1.4
+
+* `eval_tidy()` no longer maps over lists but returns them literally.
+  This behaviour is an overlook from past refactorings and was never
+  documented.
 
 
 # rlang 0.1.2
