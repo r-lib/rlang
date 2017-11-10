@@ -23,66 +23,6 @@ int is_symbolic(SEXP x) {
   return r_kind(x) == LANGSXP || r_kind(x) == SYMSXP;
 }
 
-bool is_lang(SEXP x, const char* f) {
-  if (!is_symbolic(x) && r_kind(x) != LISTSXP)
-    return false;
-
-  SEXP fun = r_node_car(x);
-  return r_is_symbol(fun, f);
-}
-
-int is_prefixed_call(SEXP x, int (*sym_predicate)(SEXP)) {
-  if (r_kind(x) != LANGSXP)
-    return 0;
-
-  SEXP head = r_node_car(x);
-  if (!(is_lang(head, "$") ||
-        is_lang(head, "@") ||
-        is_lang(head, "::") ||
-        is_lang(head, ":::")))
-    return 0;
-
-  if (sym_predicate == NULL)
-    return 1;
-
-  SEXP args = r_node_cdar(x);
-  SEXP sym = r_node_cadr(args);
-  return sym_predicate(sym);
-}
-
-int is_any_call(SEXP x, int (*sym_predicate)(SEXP)) {
-  if (r_kind(x) != LANGSXP)
-    return false;
-  else
-    return sym_predicate(r_node_car(x)) || is_prefixed_call(x, sym_predicate);
-}
-
-int is_rlang_prefixed(SEXP x, int (*sym_predicate)(SEXP)) {
-  if (r_kind(x) != LANGSXP)
-    return 0;
-
-  if (!is_lang(r_node_car(x), "::"))
-    return 0;
-
-  SEXP args = r_node_cdar(x);
-  SEXP ns_sym = r_node_car(args);
-  if (!r_is_symbol(ns_sym, "rlang"))
-    return 0;
-
-  if (sym_predicate) {
-    SEXP sym = r_node_cadr(args);
-    return sym_predicate(sym);
-  }
-
-  return 1;
-}
-int is_rlang_call(SEXP x, int (*sym_predicate)(SEXP)) {
-  if (r_kind(x) != LANGSXP)
-    return false;
-  else
-    return sym_predicate(r_node_car(x)) || is_rlang_prefixed(x, sym_predicate);
-}
-
 SEXP rlang_length(SEXP x) {
   return Rf_ScalarInteger(r_length(x));
 }
