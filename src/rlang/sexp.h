@@ -31,7 +31,10 @@ bool is_named(SEXP x);
 SEXP r_missing_arg();
 bool r_is_missing(SEXP x);
 
-bool r_is_null(SEXP x);
+static inline
+bool r_is_null(SEXP x) {
+  return x == R_NilValue;
+}
 
 SEXP r_duplicate(SEXP x, bool shallow);
 

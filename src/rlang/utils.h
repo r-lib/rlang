@@ -23,7 +23,6 @@ bool is_object(SEXP x);
 SEXP set_names(SEXP x, SEXP nms);
 const char* kind_c_str(SEXPTYPE kind);
 bool is_empty(SEXP x);
-bool is_null(SEXP x);
 
 
 #endif

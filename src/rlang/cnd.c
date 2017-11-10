@@ -67,7 +67,7 @@ SEXP new_condition_names(SEXP data) {
   return nms;
 }
 SEXP new_condition(SEXP type, SEXP data, SEXP msg) {
-  if (!is_null(msg) && !is_string(msg))
+  if (!r_is_null(msg) && !is_string(msg))
     r_abort("Condition message must be a string");
 
   int n_data = r_length(data);

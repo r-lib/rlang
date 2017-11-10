@@ -46,7 +46,7 @@ void validate_chr_setter(SEXP chr, SEXP r_string) {
     r_abort("`r_string` must be an internal R string");
 }
 SEXP chr_prepend(SEXP chr, SEXP r_string) {
-  if (is_null(chr))
+  if (r_is_null(chr))
     return Rf_ScalarString(r_string);
   else
     validate_chr_setter(chr, r_string);
@@ -61,7 +61,7 @@ SEXP chr_prepend(SEXP chr, SEXP r_string) {
   return out;
 }
 SEXP chr_append(SEXP chr, SEXP r_string) {
-  if (is_null(chr))
+  if (r_is_null(chr))
     return Rf_ScalarString(r_string);
   else
     validate_chr_setter(chr, r_string);

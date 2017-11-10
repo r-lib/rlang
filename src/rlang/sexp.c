@@ -80,9 +80,6 @@ bool r_is_missing(SEXP x) {
 SEXP rlang_is_null(SEXP x) {
   return r_scalar_lgl(r_is_null(x));
 }
-bool r_is_null(SEXP x) {
-  return x == R_NilValue;
-}
 
 SEXP r_duplicate(SEXP x, bool shallow) {
   if (shallow)

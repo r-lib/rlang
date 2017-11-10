@@ -19,10 +19,6 @@ SEXP set_names(SEXP x, SEXP nms) {
   return Rf_setAttrib(x, R_NamesSymbol, nms);
 }
 
-bool is_null(SEXP x) {
-  return x == R_NilValue;
-}
-
 int is_symbolic(SEXP x) {
   return r_kind(x) == LANGSXP || r_kind(x) == SYMSXP;
 }
