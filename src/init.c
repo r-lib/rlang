@@ -7,7 +7,7 @@
 // Callable from other packages
 extern SEXP rlang_new_dictionary(SEXP, SEXP, SEXP);
 extern SEXP rlang_squash_if(SEXP, SEXPTYPE, bool (*is_spliceable)(SEXP), int);
-extern bool is_clevel_spliceable(SEXP);
+extern bool rlang_is_clevel_spliceable(SEXP);
 
 // Callable from this package
 extern SEXP rlang_is_null(SEXP);
@@ -125,7 +125,7 @@ void R_init_rlang(DllInfo* dll) {
   // Register functions callable from other packages
   R_RegisterCCallable("rlang", "rlang_new_dictionary", (DL_FUNC) &rlang_new_dictionary);
   R_RegisterCCallable("rlang", "rlang_squash_if", (DL_FUNC) &rlang_squash_if);
-  rlang_register_pointer("rlang", "test_is_spliceable", (DL_FUNC) &is_clevel_spliceable);
+  rlang_register_pointer("rlang", "rlang_test_is_spliceable", (DL_FUNC) &rlang_is_clevel_spliceable);
 
   // Register functions callable from this package
   R_registerRoutines(dll, NULL, call_entries, NULL, NULL);

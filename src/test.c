@@ -8,3 +8,10 @@ SEXP rlang_test_r_warn(SEXP x) {
 SEXP rlang_r_string(SEXP str) {
   return STRING_ELT(str, 0);
 }
+
+
+// squash.c
+
+bool rlang_is_clevel_spliceable(SEXP x) {
+  return Rf_inherits(x, "foo");
+}

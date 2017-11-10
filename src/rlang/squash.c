@@ -9,6 +9,7 @@ typedef struct {
   bool recursive;
 } squash_info_t;
 
+static
 squash_info_t squash_info_init(bool recursive) {
   squash_info_t info;
   info.size = 0;
@@ -62,6 +63,7 @@ r_size_t atom_squash(SEXPTYPE kind, squash_info_t info,
 
 // List squashing -----------------------------------------------------
 
+static
 r_size_t list_squash(squash_info_t info, SEXP outer,
                     SEXP out, r_size_t count,
                     bool (*is_spliceable)(SEXP), int depth) {
@@ -181,9 +183,11 @@ SEXP squash(SEXPTYPE kind, SEXP dots, bool (*is_spliceable)(SEXP), int depth) {
 
 typedef bool (*is_spliceable_t)(SEXP);
 
+static
 bool is_spliced_bare(SEXP x) {
   return r_is_list(x) && (!r_is_object(x) || Rf_inherits(x, "spliced"));
 }
+static
 bool is_spliced(SEXP x) {
   return r_is_list(x) && Rf_inherits(x, "spliced");
 }
@@ -210,6 +214,7 @@ is_spliceable_t predicate_pointer(SEXP x) {
   return NULL;
 }
 
+static
 is_spliceable_t predicate_internal(SEXP x) {
   static SEXP is_spliced_clo = NULL;
   if (!is_spliced_clo)
@@ -226,13 +231,11 @@ is_spliceable_t predicate_internal(SEXP x) {
   return NULL;
 }
 
-// For unit tests:
-bool is_clevel_spliceable(SEXP x) {
-  return Rf_inherits(x, "foo");
-}
-
 // Emulate closure behaviour with global variable.
+static
 SEXP clo_spliceable = NULL;
+
+static
 bool is_spliceable_closure(SEXP x) {
   if (!clo_spliceable)
     r_abort("Internal error while splicing");

@@ -1,9 +1,12 @@
 #include "rlang.h"
 
+static
 SEXP interp_lang(SEXP x, SEXP env, bool quosured);
+static
 SEXP interp_lang_node(SEXP x, SEXP env, bool quosured);
 
 
+static
 int bang_level(SEXP x) {
   if (!is_lang(x, "!"))
     return 0;
@@ -19,12 +22,14 @@ int bang_level(SEXP x) {
   return 3;
 }
 
+static
 int is_uq_sym(SEXP x) {
   if (r_kind(x) != SYMSXP)
     return 0;
   else
     return is_sym(x, "UQ") || is_sym(x, "UQE") || is_sym(x, "!!");
 }
+static
 int is_splice_sym(SEXP x) {
   if (r_kind(x) != SYMSXP)
     return 0;
@@ -32,6 +37,7 @@ int is_splice_sym(SEXP x) {
     return is_sym(x, "UQS") || is_sym(x, "!!!");
 }
 
+static
 SEXP replace_double_bang(SEXP x) {
   int bang = bang_level(x);
   if (bang == 3 || is_any_call(x, is_splice_sym)){
@@ -42,6 +48,7 @@ SEXP replace_double_bang(SEXP x) {
   }
   return x;
 }
+static
 SEXP replace_triple_bang(SEXP x) {
   if (bang_level(r_node_car(x)) != 3) {
     return x;
@@ -55,17 +62,13 @@ SEXP replace_triple_bang(SEXP x) {
   return node;
 }
 
+static
 void unquote_check(SEXP x) {
   if (r_node_cdr(x) == R_NilValue)
     r_abort("`UQ()` must be called with an argument");
 }
 
-bool is_bare_formula(SEXP x) {
-  return r_kind(x) == LANGSXP
-      && r_node_car(x) == r_sym("~")
-      && !Rf_inherits(x, "quosure");
-}
-
+static
 SEXP unquote(SEXP x, SEXP env, SEXP uq_sym, bool quosured) {
   if (is_sym(uq_sym, "!!"))
     uq_sym = r_sym("UQE");
@@ -88,6 +91,7 @@ SEXP unquote(SEXP x, SEXP env, SEXP uq_sym, bool quosured) {
   return unquoted;
 }
 
+static
 SEXP unquote_prefixed_uq(SEXP x, SEXP env, bool quosured) {
   SEXP uq_sym = r_node_cadr(r_node_cdar(x));
   SEXP unquoted = KEEP(unquote(r_node_cadr(x), env, uq_sym, quosured));
@@ -101,6 +105,7 @@ SEXP unquote_prefixed_uq(SEXP x, SEXP env, bool quosured) {
   return x;
 }
 
+static
 SEXP splice_next(SEXP node, SEXP next, SEXP env) {
   static SEXP uqs_fun;
   if (!uqs_fun)
@@ -122,12 +127,14 @@ SEXP splice_next(SEXP node, SEXP next, SEXP env) {
   return next;
 }
 
+static
 SEXP value_splice_next(SEXP cur, SEXP nxt, SEXP env) {
   r_node_poke_car(r_node_car(nxt), rlang_obj("splice"));
   r_node_poke_car(nxt, r_eval(r_node_car(nxt), env));
   return cur;
 }
 
+static
 SEXP interp_lang(SEXP x, SEXP env, bool quosured)  {
   if (!Rf_isLanguage(x))
     return x;
@@ -150,9 +157,12 @@ SEXP interp_lang(SEXP x, SEXP env, bool quosured)  {
   return x;
 }
 
+static
 bool is_splice_node(SEXP node) {
   return is_rlang_call(r_node_car(node), is_splice_sym);
 }
+
+static
 SEXP interp_lang_node(SEXP x, SEXP env, bool quosured) {
   SEXP node, next;
 

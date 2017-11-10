@@ -38,6 +38,7 @@ const char* r_c_string(SEXP scalar_chr) {
   return CHAR(r_chr_get(scalar_chr, 0));
 }
 
+static
 void validate_chr_setter(SEXP chr, SEXP r_string) {
   if (!is_character(chr))
     r_abort("`chr` must be a character vector");

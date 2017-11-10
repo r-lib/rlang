@@ -1,5 +1,6 @@
 #include "rlang.h"
 
+static
 SEXP replace_na_(SEXP x, SEXP replacement, int start);
 
 SEXP rlang_replace_na(SEXP x, SEXP replacement) {
@@ -63,6 +64,7 @@ SEXP rlang_replace_na(SEXP x, SEXP replacement) {
     return x;
 }
 
+static
 SEXP replace_na_(SEXP x, SEXP replacement, int i) {
   KEEP(x = Rf_duplicate(x));
   int n = r_length(x);
