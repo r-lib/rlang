@@ -103,80 +103,80 @@ NULL
 #' @rdname pairlist
 #' @export
 node <- function(newcar, newcdr) {
-  .Call(r_new_node, newcar, newcdr)
+  .Call(rlang_new_node, newcar, newcdr)
 }
 
 #' @rdname pairlist
 #' @export
 node_car <- function(x) {
-  .Call(r_node_car, x)
+  .Call(rlang_node_car, x)
 }
 #' @rdname pairlist
 #' @export
 node_cdr <- function(x) {
-  .Call(r_node_cdr, x)
+  .Call(rlang_node_cdr, x)
 }
 #' @rdname pairlist
 #' @export
 node_caar <- function(x) {
-  .Call(r_node_caar, x)
+  .Call(rlang_node_caar, x)
 }
 #' @rdname pairlist
 #' @export
 node_cadr <- function(x) {
-  .Call(r_node_cadr, x)
+  .Call(rlang_node_cadr, x)
 }
 #' @rdname pairlist
 #' @export
 node_cdar <- function(x) {
-  .Call(r_node_cdar, x)
+  .Call(rlang_node_cdar, x)
 }
 #' @rdname pairlist
 #' @export
 node_cddr <- function(x) {
-  .Call(r_node_cddr, x)
+  .Call(rlang_node_cddr, x)
 }
 
 #' @rdname pairlist
 #' @export
 mut_node_car <- function(x, newcar) {
-  invisible(.Call(r_node_poke_car, x, newcar))
+  invisible(.Call(rlang_node_poke_car, x, newcar))
 }
 #' @rdname pairlist
 #' @export
 mut_node_cdr <- function(x, newcdr) {
-  invisible(.Call(r_node_poke_cdr, x, newcdr))
+  invisible(.Call(rlang_node_poke_cdr, x, newcdr))
 }
 #' @rdname pairlist
 #' @export
 mut_node_caar <- function(x, newcar) {
-  invisible(.Call(r_node_poke_caar, x, newcar))
+  invisible(.Call(rlang_node_poke_caar, x, newcar))
 }
 #' @rdname pairlist
 #' @export
 mut_node_cadr <- function(x, newcar) {
-  invisible(.Call(r_node_poke_cadr, x, newcar))
+  invisible(.Call(rlang_node_poke_cadr, x, newcar))
 }
 #' @rdname pairlist
 #' @export
 mut_node_cdar <- function(x, newcdr) {
-  invisible(.Call(r_node_poke_cdar, x, newcdr))
+  invisible(.Call(rlang_node_poke_cdar, x, newcdr))
 }
 #' @rdname pairlist
 #' @export
 mut_node_cddr <- function(x, newcdr) {
-  invisible(.Call(r_node_poke_cddr, x, newcdr))
+  invisible(.Call(rlang_node_poke_cddr, x, newcdr))
 }
 
 #' @rdname pairlist
 #' @export
 node_tag <- function(x) {
-  .Call(r_node_tag, x)
+  .Call(rlang_node_tag, x)
 }
 #' @rdname pairlist
 #' @export
 mut_node_tag <- function(x, newtag) {
-  invisible(.Call(r_node_poke_tag, x, newtag))
+  invisible(.Call(rlang_node_poke_tag, x, newtag))
 }
 
 #' Coerce to pairlist
