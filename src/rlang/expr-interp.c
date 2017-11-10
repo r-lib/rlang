@@ -71,24 +71,22 @@ void unquote_check(SEXP x) {
 
 static
 SEXP unquote(SEXP x, SEXP env, SEXP uq_sym, bool quosured) {
-  if (r_is_symbol(uq_sym, "!!"))
+  if (r_is_symbol(uq_sym, "!!")) {
     uq_sym = r_sym("UQE");
+  }
 
   // Inline unquote function before evaluation because even `::` might
   // not be available in interpolation environment.
-  SEXP uq_fun = r_env_get(r_ns_env("rlang"), uq_sym);
+  SEXP uq_fun = KEEP(r_env_get(r_ns_env("rlang"), uq_sym));
+  uq_fun = KEEP(Rf_lang2(uq_fun, x));
 
-  PROTECT_INDEX ipx;
-  PROTECT_WITH_INDEX(uq_fun, &ipx);
-  REPROTECT(uq_fun = Rf_lang2(uq_fun, x), ipx);
+  SEXP unquoted = KEEP(r_eval(uq_fun, env));
 
-  SEXP unquoted;
-  REPROTECT(unquoted = r_eval(uq_fun, env), ipx);
-
-  if (!quosured && is_symbolic(unquoted))
+  if (!quosured && is_symbolic(unquoted)) {
     unquoted = Rf_lang2(r_sym("quote"), unquoted);
+  }
 
-  FREE(1);
+  FREE(3);
   return unquoted;
 }
 
