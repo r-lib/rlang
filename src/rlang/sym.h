@@ -8,5 +8,7 @@ SEXP r_sym(const char* c_string) {
 }
 
 int r_is_symbol(SEXP sym, const char* string);
+int r_is_symbol_any(SEXP x, const char** strings, int n);
+
 
 #endif

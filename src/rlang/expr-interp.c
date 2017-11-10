@@ -5,6 +5,15 @@ SEXP interp_lang(SEXP x, SEXP env, bool quosured);
 static
 SEXP interp_lang_node(SEXP x, SEXP env, bool quosured);
 
+#define UQ_N 3
+#define UQS_N 2
+
+static const char*
+uq_names[UQ_N] = { "UQ", "UQE", "!!" };
+
+static const char*
+uqs_names[UQS_N] = { "UQS", "!!!"};
+
 
 static
 int bang_level(SEXP x) {
@@ -24,17 +33,11 @@ int bang_level(SEXP x) {
 
 static
 int is_uq_sym(SEXP x) {
-  if (r_kind(x) != SYMSXP)
-    return 0;
-  else
-    return r_is_symbol(x, "UQ") || r_is_symbol(x, "UQE") || r_is_symbol(x, "!!");
+  return r_is_symbol_any(x, uq_names, UQ_N);
 }
 static
 int is_splice_sym(SEXP x) {
-  if (r_kind(x) != SYMSXP)
-    return 0;
-  else
-    return r_is_symbol(x, "UQS") || r_is_symbol(x, "!!!");
+  return r_is_symbol_any(x, uqs_names, UQS_N);
 }
 
 static
