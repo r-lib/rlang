@@ -1,4 +1,3 @@
-#include <string.h>
 #include "rlang.h"
 
 bool is_character(SEXP x) {
@@ -24,13 +23,6 @@ bool is_null(SEXP x) {
   return x == R_NilValue;
 }
 
-int is_sym(SEXP x, const char* string) {
-  if (r_kind(x) != SYMSXP)
-    return false;
-  else
-    return strcmp(CHAR(PRINTNAME(x)), string) == 0;
-}
-
 int is_symbolic(SEXP x) {
   return r_kind(x) == LANGSXP || r_kind(x) == SYMSXP;
 }
@@ -40,7 +32,7 @@ bool is_lang(SEXP x, const char* f) {
     return false;
 
   SEXP fun = r_node_car(x);
-  return is_sym(fun, f);
+  return r_is_symbol(fun, f);
 }
 
 int is_prefixed_call(SEXP x, int (*sym_predicate)(SEXP)) {
@@ -78,7 +70,7 @@ int is_rlang_prefixed(SEXP x, int (*sym_predicate)(SEXP)) {
 
   SEXP args = r_node_cdar(x);
   SEXP ns_sym = r_node_car(args);
-  if (!is_sym(ns_sym, "rlang"))
+  if (!r_is_symbol(ns_sym, "rlang"))
     return 0;
 
   if (sym_predicate) {

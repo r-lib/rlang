@@ -27,14 +27,14 @@ int is_uq_sym(SEXP x) {
   if (r_kind(x) != SYMSXP)
     return 0;
   else
-    return is_sym(x, "UQ") || is_sym(x, "UQE") || is_sym(x, "!!");
+    return r_is_symbol(x, "UQ") || r_is_symbol(x, "UQE") || r_is_symbol(x, "!!");
 }
 static
 int is_splice_sym(SEXP x) {
   if (r_kind(x) != SYMSXP)
     return 0;
   else
-    return is_sym(x, "UQS") || is_sym(x, "!!!");
+    return r_is_symbol(x, "UQS") || r_is_symbol(x, "!!!");
 }
 
 static
@@ -70,7 +70,7 @@ void unquote_check(SEXP x) {
 
 static
 SEXP unquote(SEXP x, SEXP env, SEXP uq_sym, bool quosured) {
-  if (is_sym(uq_sym, "!!"))
+  if (r_is_symbol(uq_sym, "!!"))
     uq_sym = r_sym("UQE");
 
   // Inline unquote function before evaluation because even `::` might

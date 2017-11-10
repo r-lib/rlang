@@ -11,7 +11,6 @@ SEXP rlang_obj(const char* name);
 SEXP base_obj(const char* name);
 int is_symbolic(SEXP x);
 int is_true(SEXP x);
-int is_sym(SEXP sym, const char* string);
 int is_rlang_prefixed(SEXP x, int (*sym_predicate)(SEXP));
 int is_any_call(SEXP x, int (*sym_predicate)(SEXP));
 int is_prefixed_call(SEXP x, int (*sym_predicate)(SEXP));
