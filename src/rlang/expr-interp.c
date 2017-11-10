@@ -8,12 +8,12 @@ int bang_level(SEXP x) {
   if (!is_lang(x, "!"))
     return 0;
 
-  SEXP arg = CDR(x);
-  if (r_kind(arg) == NILSXP || !is_lang(CAR(arg), "!"))
+  SEXP arg = r_node_cdr(x);
+  if (r_kind(arg) == NILSXP || !is_lang(r_node_car(arg), "!"))
     return 1;
 
-  arg = CDR(CAR(arg));
-  if (r_kind(arg) == NILSXP || !is_lang(CAR(arg), "!"))
+  arg = r_node_cdr(r_node_car(arg));
+  if (r_kind(arg) == NILSXP || !is_lang(r_node_car(arg), "!"))
     return 2;
 
   return 3;
@@ -34,35 +34,35 @@ int is_splice_sym(SEXP x) {
 
 SEXP replace_double_bang(SEXP x) {
   int bang = bang_level(x);
-  if (bang == 3 || is_any_call(x, is_splice_sym))
+  if (bang == 3 || is_any_call(x, is_splice_sym)){
     r_abort("Can't splice at top-level");
-  else if (bang == 2) {
-    x = CADR(x);
-    SETCAR(x, r_sym("UQ"));
+  } else if (bang == 2) {
+    x = r_node_cadr(x);
+    r_node_poke_car(x, r_sym("UQ"));
   }
   return x;
 }
 SEXP replace_triple_bang(SEXP x) {
-  if (bang_level(CAR(x)) != 3) {
+  if (bang_level(r_node_car(x)) != 3) {
     return x;
   }
 
-  SEXP node = CDAR(CDAR(x));
+  SEXP node = r_node_cdar(r_node_cdar(x));
 
-  SETCAR(CAR(node), r_sym("UQS"));
-  SETCDR(node, CDR(x));
+  r_node_poke_car(r_node_car(node), r_sym("UQS"));
+  r_node_poke_cdr(node, r_node_cdr(x));
 
   return node;
 }
 
 void unquote_check(SEXP x) {
-  if (CDR(x) == R_NilValue)
+  if (r_node_cdr(x) == R_NilValue)
     r_abort("`UQ()` must be called with an argument");
 }
 
 bool is_bare_formula(SEXP x) {
   return r_kind(x) == LANGSXP
-      && CAR(x) == r_sym("~")
+      && r_node_car(x) == r_sym("~")
       && !Rf_inherits(x, "quosure");
 }
 
@@ -89,15 +89,15 @@ SEXP unquote(SEXP x, SEXP env, SEXP uq_sym, bool quosured) {
 }
 
 SEXP unquote_prefixed_uq(SEXP x, SEXP env, bool quosured) {
-  SEXP uq_sym = CADR(CDAR(x));
-  SEXP unquoted = KEEP(unquote(CADR(x), env, uq_sym, quosured));
-  SETCDR(CDAR(x), r_new_node_(unquoted, R_NilValue));
+  SEXP uq_sym = r_node_cadr(r_node_cdar(x));
+  SEXP unquoted = KEEP(unquote(r_node_cadr(x), env, uq_sym, quosured));
+  r_node_poke_cdr(r_node_cdar(x), r_new_node_(unquoted, R_NilValue));
   FREE(1);
 
   if (is_rlang_prefixed(x, NULL))
-    x = CADR(CDAR(x));
+    x = r_node_cadr(r_node_cdar(x));
   else
-    x = CAR(x);
+    x = r_node_car(x);
   return x;
 }
 
@@ -105,17 +105,17 @@ SEXP splice_next(SEXP node, SEXP next, SEXP env) {
   static SEXP uqs_fun;
   if (!uqs_fun)
     uqs_fun = rlang_obj("UQS");
-  SETCAR(CAR(next), uqs_fun);
+  r_node_poke_car(r_node_car(next), uqs_fun);
 
   // UQS() does error checking and returns a pair list
-  SEXP spliced_node = KEEP(r_eval(CAR(next), env));
+  SEXP spliced_node = KEEP(r_eval(r_node_car(next), env));
 
   if (spliced_node == R_NilValue) {
-    SETCDR(node, CDR(next));
+    r_node_poke_cdr(node, r_node_cdr(next));
   } else {
     // Insert spliced_node into existing pairlist of args
-    SETCDR(r_node_tail(spliced_node), CDR(next));
-    SETCDR(node, spliced_node);
+    r_node_poke_cdr(r_node_tail(spliced_node), r_node_cdr(next));
+    r_node_poke_cdr(node, spliced_node);
   }
 
   FREE(1);
@@ -123,8 +123,8 @@ SEXP splice_next(SEXP node, SEXP next, SEXP env) {
 }
 
 SEXP value_splice_next(SEXP cur, SEXP nxt, SEXP env) {
-  SETCAR(CAR(nxt), rlang_obj("splice"));
-  SETCAR(nxt, r_eval(CAR(nxt), env));
+  r_node_poke_car(r_node_car(nxt), rlang_obj("splice"));
+  r_node_poke_car(nxt, r_eval(r_node_car(nxt), env));
   return cur;
 }
 
@@ -140,8 +140,8 @@ SEXP interp_lang(SEXP x, SEXP env, bool quosured)  {
     x = unquote_prefixed_uq(x, env, quosured);
   } else if (is_any_call(x, is_uq_sym)) {
     unquote_check(x);
-    SEXP uq_sym = CAR(x);
-    x = unquote(CADR(x), env, uq_sym, quosured);
+    SEXP uq_sym = r_node_car(x);
+    x = unquote(r_node_cadr(x), env, uq_sym, quosured);
   } else {
     x = interp_lang_node(x, env, quosured);
   }
@@ -151,15 +151,15 @@ SEXP interp_lang(SEXP x, SEXP env, bool quosured)  {
 }
 
 bool is_splice_node(SEXP node) {
-  return is_rlang_call(CAR(node), is_splice_sym);
+  return is_rlang_call(r_node_car(node), is_splice_sym);
 }
 SEXP interp_lang_node(SEXP x, SEXP env, bool quosured) {
   SEXP node, next;
 
-  for (node = x; node != R_NilValue; node = CDR(node)) {
-    SETCAR(node, interp_lang(CAR(node), env, quosured));
+  for (node = x; node != R_NilValue; node = r_node_cdr(node)) {
+    r_node_poke_car(node, interp_lang(r_node_car(node), env, quosured));
 
-    next = CDR(node);
+    next = r_node_cdr(node);
     next = replace_triple_bang(next);
 
     if (is_splice_node(next)) {

@@ -6,7 +6,7 @@ SEXP r_f_rhs(SEXP f) {
     r_abort("`x` must be a formula");
 
   switch (r_length(f)) {
-  case 2: return CADR(f);
+  case 2: return r_node_cadr(f);
   case 3: return CADDR(f);
   default: r_abort("Invalid formula");
   }
@@ -17,7 +17,7 @@ SEXP r_f_lhs(SEXP f) {
 
   switch (r_length(f)) {
   case 2: return R_NilValue;
-  case 3: return CADR(f);
+  case 3: return r_node_cadr(f);
   default: r_abort("Invalid formula");
   }
 }
@@ -33,7 +33,7 @@ bool is_formulaish(SEXP x, int scoped, int lhs) {
   if (r_kind(x) != LANGSXP)
     return false;
 
-  SEXP head = CAR(x);
+  SEXP head = r_node_car(x);
   if (head != r_sym("~") && head != r_sym(":="))
     return false;
 
@@ -56,7 +56,7 @@ bool is_formula(SEXP x) {
   if (!is_formulaish(x, -1, -1))
     return false;
 
-  return CAR(x) == r_sym("~");
+  return r_node_car(x) == r_sym("~");
 }
 
 
