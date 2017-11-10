@@ -4,7 +4,7 @@
 // These change attributes in-place.
 
 SEXP rlang_zap_attrs(SEXP x) {
-  SET_ATTRIB(x, R_NilValue);
+  SET_ATTRIB(x, r_null);
   return x;
 }
 

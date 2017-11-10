@@ -100,7 +100,7 @@ r_size_t list_squash(squash_info_t info, SEXP outer,
 
 static
 void squash_warn_names(void) {
-  Rf_warningcall(R_NilValue, "Outer names are only allowed for unnamed scalar atomic inputs");
+  Rf_warningcall(r_null, "Outer names are only allowed for unnamed scalar atomic inputs");
 }
 
 static
@@ -260,12 +260,12 @@ SEXP rlang_squash_if(SEXP dots, SEXPTYPE kind, bool (*is_spliceable)(SEXP), int 
     return squash(kind, dots, is_spliceable, depth);
   default:
     r_abort("Splicing is not implemented for this type");
-    return R_NilValue;
+    return r_null;
   }
 }
 SEXP rlang_squash_closure(SEXP dots, SEXPTYPE kind, SEXP pred, int depth) {
   SEXP prev_pred = clo_spliceable;
-  clo_spliceable = KEEP(Rf_lang2(pred, Rf_list2(R_NilValue, R_NilValue)));
+  clo_spliceable = KEEP(Rf_lang2(pred, Rf_list2(r_null, r_null)));
 
   SEXP out = rlang_squash_if(dots, kind, &is_spliceable_closure, depth);
 

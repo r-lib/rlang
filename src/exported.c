@@ -22,7 +22,7 @@ SEXP rlang_node_cddr(SEXP x) {
   return CDDR(x);
 }
 SEXP rlang_node_tail(SEXP x) {
-  while (CDR(x) != R_NilValue)
+  while (CDR(x) != r_null)
     x = CDR(x);
   return x;
 }

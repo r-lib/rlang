@@ -21,7 +21,7 @@ SEXP rlang_symbol_to_character(SEXP chr) {
 
 SEXP rlang_unescape_character(SEXP chr) {
   R_xlen_t len = Rf_xlength(chr);
-  R_xlen_t i = unescape_character_in_copy(R_NilValue, chr, 0);
+  R_xlen_t i = unescape_character_in_copy(r_null, chr, 0);
   if (i == len) return chr;
 
   SEXP ret = KEEP(Rf_allocVector(STRSXP, len));

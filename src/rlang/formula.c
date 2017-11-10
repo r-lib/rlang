@@ -16,7 +16,7 @@ SEXP r_f_lhs(SEXP f) {
     r_abort("`x` must be a formula");
 
   switch (r_length(f)) {
-  case 2: return R_NilValue;
+  case 2: return r_null;
   case 3: return r_node_cadr(f);
   default: r_abort("Invalid formula");
   }
@@ -63,7 +63,7 @@ bool is_formula(SEXP x) {
 // Export
 
 int lgl_optional(SEXP lgl) {
-  if (lgl == R_NilValue)
+  if (lgl == r_null)
     return -1;
   else
     return r_as_bool(lgl);

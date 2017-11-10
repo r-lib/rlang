@@ -38,7 +38,7 @@ void r_abort(const char* fmt, ...) {
   char buf[BUFSIZE];
   INTERP(buf, fmt, ...);
 
-  Rf_errorcall(R_NilValue, buf);
+  Rf_errorcall(r_null, buf);
 
   while (1); // No return
 }
@@ -107,7 +107,7 @@ void cnd_signal_impl(const char* signaller, SEXP cnd, bool mufflable) {
   int n_protect = 0;
 
   if (r_kind(cnd) == STRSXP) {
-    cnd = KEEP(new_condition(cnd, R_NilValue, R_NilValue));
+    cnd = KEEP(new_condition(cnd, r_null, r_null));
     ++n_protect;
   } else if (!is_condition(cnd)) {
     r_abort("`cnd` must be a condition");
@@ -144,17 +144,17 @@ void cnd_abort(SEXP cnd, bool mufflable) {
 
 SEXP rlang_cnd_signal(SEXP cnd, SEXP mufflable) {
   cnd_signal(cnd, r_as_bool(mufflable));
-  return R_NilValue;
+  return r_null;
 }
 SEXP rlang_cnd_inform(SEXP cnd, SEXP mufflable) {
   cnd_inform(cnd, r_as_bool(mufflable));
-  return R_NilValue;
+  return r_null;
 }
 SEXP rlang_cnd_warn(SEXP cnd, SEXP mufflable) {
   cnd_warn(cnd, r_as_bool(mufflable));
-  return R_NilValue;
+  return r_null;
 }
 SEXP rlang_cnd_abort(SEXP cnd, SEXP mufflable) {
   cnd_abort(cnd, r_as_bool(mufflable));
-  return R_NilValue;
+  return r_null;
 }

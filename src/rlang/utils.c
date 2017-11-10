@@ -137,7 +137,7 @@ SEXP rlang_new_dictionary(SEXP x, SEXP lookup_msg, SEXP read_only) {
   SET_VECTOR_ELT(dict, 0, x);
   SET_VECTOR_ELT(dict, 2, read_only);
 
-  if (lookup_msg == R_NilValue)
+  if (lookup_msg == r_null)
     SET_VECTOR_ELT(dict, 1, Rf_mkString("Object `%s` not found in data"));
   else
     SET_VECTOR_ELT(dict, 1, lookup_msg);

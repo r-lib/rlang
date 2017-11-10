@@ -21,11 +21,11 @@ int bang_level(SEXP x) {
     return 0;
 
   SEXP arg = r_node_cdr(x);
-  if (r_kind(arg) == NILSXP || !is_lang(r_node_car(arg), "!"))
+  if (r_is_null(arg) || !is_lang(r_node_car(arg), "!"))
     return 1;
 
   arg = r_node_cdr(r_node_car(arg));
-  if (r_kind(arg) == NILSXP || !is_lang(r_node_car(arg), "!"))
+  if (r_is_null(arg) || !is_lang(r_node_car(arg), "!"))
     return 2;
 
   return 3;
@@ -67,7 +67,7 @@ SEXP replace_triple_bang(SEXP x) {
 
 static
 void unquote_check(SEXP x) {
-  if (r_node_cdr(x) == R_NilValue)
+  if (r_node_cdr(x) == r_null)
     r_abort("`UQ()` must be called with an argument");
 }
 
@@ -98,7 +98,7 @@ static
 SEXP unquote_prefixed_uq(SEXP x, SEXP env, bool quosured) {
   SEXP uq_sym = r_node_cadr(r_node_cdar(x));
   SEXP unquoted = KEEP(unquote(r_node_cadr(x), env, uq_sym, quosured));
-  r_node_poke_cdr(r_node_cdar(x), r_new_node_(unquoted, R_NilValue));
+  r_node_poke_cdr(r_node_cdar(x), r_new_node_(unquoted, r_null));
   FREE(1);
 
   if (is_rlang_prefixed(x, NULL))
@@ -118,7 +118,7 @@ SEXP splice_next(SEXP node, SEXP next, SEXP env) {
   // UQS() does error checking and returns a pair list
   SEXP spliced_node = KEEP(r_eval(r_node_car(next), env));
 
-  if (spliced_node == R_NilValue) {
+  if (spliced_node == r_null) {
     r_node_poke_cdr(node, r_node_cdr(next));
   } else {
     // Insert spliced_node into existing pairlist of args
@@ -169,7 +169,7 @@ static
 SEXP interp_lang_node(SEXP x, SEXP env, bool quosured) {
   SEXP node, next;
 
-  for (node = x; node != R_NilValue; node = r_node_cdr(node)) {
+  for (node = x; node != r_null; node = r_node_cdr(node)) {
     r_node_poke_car(node, interp_lang(r_node_car(node), env, quosured));
 
     next = r_node_cdr(node);

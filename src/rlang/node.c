@@ -9,7 +9,7 @@ SEXP r_new_node(SEXP car, SEXP cdr) {
 }
 
 SEXP r_new_pairlist(SEXP car) {
-  return r_new_node(car, R_NilValue);
+  return r_new_node(car, r_null);
 }
 SEXP r_new_pairlist2(SEXP car1, SEXP car2) {
   return r_new_node(car1, r_new_pairlist(car2));
