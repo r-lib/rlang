@@ -27,7 +27,7 @@ SEXP rlang_namespace(const char* ns) {
 void rlang_register_pointer(const char* ns, const char* ptr_name, DL_FUNC fn) {
   SEXP ptr = KEEP(R_MakeExternalPtrFn(fn, r_null, r_null));
 
-  SEXP ptr_obj = KEEP(Rf_allocVector(VECSXP, 1));
+  SEXP ptr_obj = KEEP(r_new_vector(VECSXP, 1));
   SET_VECTOR_ELT(ptr_obj, 0, ptr);
 
   SEXP ptr_class = KEEP(Rf_mkString("fn_pointer"));

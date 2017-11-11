@@ -72,7 +72,7 @@ bool is_empty(SEXP x) {
 }
 
 SEXP rlang_new_dictionary(SEXP x, SEXP lookup_msg, SEXP read_only) {
-  SEXP dict = KEEP(Rf_allocVector(VECSXP, 3));
+  SEXP dict = KEEP(r_new_vector(VECSXP, 3));
 
   SET_VECTOR_ELT(dict, 0, x);
   SET_VECTOR_ELT(dict, 2, read_only);
@@ -84,7 +84,7 @@ SEXP rlang_new_dictionary(SEXP x, SEXP lookup_msg, SEXP read_only) {
 
   static SEXP nms = NULL;
   if (!nms) {
-    nms = Rf_allocVector(STRSXP, 3);
+    nms = r_new_vector(STRSXP, 3);
     R_PreserveObject(nms);
     SET_STRING_ELT(nms, 0, Rf_mkChar("src"));
     SET_STRING_ELT(nms, 1, Rf_mkChar("lookup_msg"));

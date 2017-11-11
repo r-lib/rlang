@@ -51,7 +51,7 @@ SEXP chr_prepend(SEXP chr, SEXP r_string) {
     validate_chr_setter(chr, r_string);
 
   int n = r_length(chr);
-  SEXP out = KEEP(Rf_allocVector(STRSXP, n + 1));
+  SEXP out = KEEP(r_new_vector(STRSXP, n + 1));
 
   r_vec_poke_n(out, 1, chr, 0, n);
   r_chr_poke(out, 0, r_string);
@@ -60,13 +60,13 @@ SEXP chr_prepend(SEXP chr, SEXP r_string) {
   return out;
 }
 SEXP chr_append(SEXP chr, SEXP r_string) {
-  if (r_is_null(chr))
+  if (r_is_null(chr)) {
     return Rf_ScalarString(r_string);
-  else
-    validate_chr_setter(chr, r_string);
+  }
+  validate_chr_setter(chr, r_string);
 
   int n = r_length(chr);
-  SEXP out = KEEP(Rf_allocVector(STRSXP, n + 1));
+  SEXP out = KEEP(r_new_vector(STRSXP, n + 1));
 
   r_vec_poke_n(out, 0, chr, 0, n);
   r_chr_poke(out, n, r_string);

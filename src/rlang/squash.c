@@ -157,9 +157,9 @@ static SEXP squash(SEXPTYPE kind, SEXP dots, bool (*is_spliceable)(SEXP), int de
   squash_info_t info = squash_info_init(recursive);
   squash_info(&info, dots, is_spliceable, depth);
 
-  SEXP out = KEEP(Rf_allocVector(kind, info.size));
+  SEXP out = KEEP(r_new_vector(kind, info.size));
   if (info.named)
-    set_names(out, Rf_allocVector(STRSXP, info.size));
+    set_names(out, r_new_vector(STRSXP, info.size));
 
   if (recursive)
     list_squash(info, dots, out, 0, is_spliceable, depth);
