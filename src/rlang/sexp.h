@@ -7,8 +7,7 @@
 #define r_null R_NilValue
 #define r_length Rf_length
 
-static inline
-SEXPTYPE r_kind(SEXP x) {
+static inline SEXPTYPE r_kind(SEXP x) {
   return TYPEOF(x);
 }
 
@@ -31,15 +30,13 @@ bool is_named(SEXP x);
 SEXP r_missing_arg();
 bool r_is_missing(SEXP x);
 
-static inline
-bool r_is_null(SEXP x) {
+static inline bool r_is_null(SEXP x) {
   return x == R_NilValue;
 }
 
 SEXP r_duplicate(SEXP x, bool shallow);
 
-static inline
-bool r_is_object(SEXP x) {
+static inline bool r_is_object(SEXP x) {
   return OBJECT(x);
 }
 

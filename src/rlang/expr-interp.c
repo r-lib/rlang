@@ -1,12 +1,9 @@
 #include "rlang.h"
 
-static
-SEXP interp_lang(SEXP x, SEXP env, bool quosured);
-static
-SEXP interp_lang_node(SEXP x, SEXP env, bool quosured);
+static SEXP interp_lang(SEXP x, SEXP env, bool quosured);
+static SEXP interp_lang_node(SEXP x, SEXP env, bool quosured);
 
-static inline
-bool is_rlang_call_any(SEXP x, const char** names, int n) {
+static inline bool is_rlang_call_any(SEXP x, const char** names, int n) {
   return
     r_is_call_any(x, names, n) ||
     r_is_namespaced_call_any(x, "rlang", names, n);
@@ -15,15 +12,11 @@ bool is_rlang_call_any(SEXP x, const char** names, int n) {
 #define UQ_N 3
 #define UQS_N 2
 
-static const char*
-uq_names[UQ_N] = { "UQ", "UQE", "!!" };
-
-static const char*
-uqs_names[UQS_N] = { "UQS", "!!!"};
+static const char* uq_names[UQ_N] = { "UQ", "UQE", "!!" };
+static const char* uqs_names[UQS_N] = { "UQS", "!!!"};
 
 
-static
-int bang_level(SEXP x) {
+static int bang_level(SEXP x) {
   if (!r_is_call(x, "!")) {
     return 0;
   }
@@ -41,8 +34,7 @@ int bang_level(SEXP x) {
   return 3;
 }
 
-static
-SEXP replace_double_bang(SEXP x) {
+static SEXP replace_double_bang(SEXP x) {
   int bang = bang_level(x);
   if (bang == 3 || r_is_maybe_prefixed_call_any(x, uqs_names, UQS_N)) {
     r_abort("Can't splice at top-level");
@@ -52,8 +44,7 @@ SEXP replace_double_bang(SEXP x) {
   }
   return x;
 }
-static
-SEXP replace_triple_bang(SEXP x) {
+static SEXP replace_triple_bang(SEXP x) {
   if (bang_level(r_node_car(x)) != 3) {
     return x;
   }
@@ -66,14 +57,12 @@ SEXP replace_triple_bang(SEXP x) {
   return node;
 }
 
-static
-void unquote_check(SEXP x) {
+static void unquote_check(SEXP x) {
   if (r_node_cdr(x) == r_null)
     r_abort("`UQ()` must be called with an argument");
 }
 
-static
-SEXP unquote(SEXP x, SEXP env, SEXP uq_sym, bool quosured) {
+static SEXP unquote(SEXP x, SEXP env, SEXP uq_sym, bool quosured) {
   if (r_is_symbol(uq_sym, "!!")) {
     uq_sym = r_sym("UQE");
   }
@@ -93,8 +82,7 @@ SEXP unquote(SEXP x, SEXP env, SEXP uq_sym, bool quosured) {
   return unquoted;
 }
 
-static
-SEXP unquote_prefixed_uq(SEXP x, SEXP env, bool quosured) {
+static SEXP unquote_prefixed_uq(SEXP x, SEXP env, bool quosured) {
   SEXP uq_sym = r_node_cadr(r_node_cdar(x));
   SEXP unquoted = KEEP(unquote(r_node_cadr(x), env, uq_sym, quosured));
   r_node_poke_cdr(r_node_cdar(x), r_new_node_(unquoted, r_null));
@@ -108,8 +96,7 @@ SEXP unquote_prefixed_uq(SEXP x, SEXP env, bool quosured) {
   return x;
 }
 
-static
-SEXP splice_next(SEXP node, SEXP next, SEXP env) {
+static SEXP splice_next(SEXP node, SEXP next, SEXP env) {
   static SEXP uqs_fun;
   if (!uqs_fun) {
     uqs_fun = rlang_obj("UQS");
@@ -131,15 +118,13 @@ SEXP splice_next(SEXP node, SEXP next, SEXP env) {
   return next;
 }
 
-static
-SEXP value_splice_next(SEXP cur, SEXP nxt, SEXP env) {
+static SEXP value_splice_next(SEXP cur, SEXP nxt, SEXP env) {
   r_node_poke_car(r_node_car(nxt), rlang_obj("splice"));
   r_node_poke_car(nxt, r_eval(r_node_car(nxt), env));
   return cur;
 }
 
-static
-SEXP interp_lang(SEXP x, SEXP env, bool quosured)  {
+static SEXP interp_lang(SEXP x, SEXP env, bool quosured)  {
   if (r_kind(x) != LANGSXP) {
     return x;
   }
@@ -162,13 +147,11 @@ SEXP interp_lang(SEXP x, SEXP env, bool quosured)  {
   return x;
 }
 
-static inline
-bool is_splice_call(SEXP node) {
+static inline bool is_splice_call(SEXP node) {
   return is_rlang_call_any(r_node_car(node), uqs_names, UQS_N);
 }
 
-static
-SEXP interp_lang_node(SEXP x, SEXP env, bool quosured) {
+static SEXP interp_lang_node(SEXP x, SEXP env, bool quosured) {
   SEXP node, next;
 
   for (node = x; node != r_null; node = r_node_cdr(node)) {
