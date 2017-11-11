@@ -52,7 +52,7 @@ extern SEXP rlang_unescape_character(SEXP);
 extern SEXP capture_arg(SEXP, SEXP);
 extern SEXP rlang_capturearg(SEXP, SEXP, SEXP, SEXP);
 extern SEXP rlang_capturedots(SEXP, SEXP, SEXP, SEXP);
-extern SEXP r_new_language_(SEXP, SEXP);
+extern SEXP rlang_new_call_node(SEXP, SEXP);
 extern SEXP rlang_cnd_abort(SEXP, SEXP);
 extern SEXP rlang_cnd_inform(SEXP, SEXP);
 extern SEXP rlang_cnd_signal(SEXP, SEXP);
@@ -108,7 +108,7 @@ static const R_CallMethodDef call_entries[] = {
   {"rlang_tilde_eval",          (DL_FUNC) &rlang_tilde_eval, 5},
   {"rlang_unescape_character",  (DL_FUNC) &rlang_unescape_character, 1},
   {"rlang_zap_attrs",           (DL_FUNC) &rlang_zap_attrs, 1},
-  {"r_new_language",            (DL_FUNC) &r_new_language_, 2},
+  {"r_new_language",            (DL_FUNC) &rlang_new_call_node, 2},
   {"rlang_cnd_abort",           (DL_FUNC) &rlang_cnd_abort, 2},
   {"rlang_cnd_inform",          (DL_FUNC) &rlang_cnd_inform, 2},
   {"rlang_cnd_signal",          (DL_FUNC) &rlang_cnd_signal, 2},

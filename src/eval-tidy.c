@@ -14,7 +14,7 @@ SEXP base_tilde_eval(SEXP tilde, SEXP dots, SEXP quo_env) {
 
   // Inline the base primitive because overscopes override `~` to make
   // quosures self-evaluate
-  tilde = KEEP(r_new_language_(tilde_prim, dots));
+  tilde = KEEP(r_build_call_node(tilde_prim, dots));
   tilde = KEEP(r_eval(tilde, quo_env));
 
   // Change it back because the result still has the primitive inlined
@@ -42,7 +42,7 @@ SEXP rlang_tilde_eval(SEXP tilde, SEXP dots, SEXP overscope, SEXP overscope_top,
 
   SEXP exit_fun = rlang_obj("mut_env_parent");
   SEXP exit_args = r_new_pairlist2(overscope_top, prev_env);
-  SEXP exit_lang = KEEP(r_new_language(exit_fun, exit_args));
+  SEXP exit_lang = KEEP(r_new_call_node(exit_fun, exit_args));
   r_on_exit(exit_lang, cur_frame);
   FREE(1);
 
@@ -51,7 +51,7 @@ SEXP rlang_tilde_eval(SEXP tilde, SEXP dots, SEXP overscope, SEXP overscope_top,
 
   exit_fun = rlang_obj("env_set");
   exit_args = r_new_pairlist3(overscope, string(".env"), prev_env);
-  exit_lang = KEEP(r_new_language(exit_fun, exit_args));
+  exit_lang = KEEP(r_new_call_node(exit_fun, exit_args));
   r_on_exit(exit_lang, cur_frame);
   FREE(1);
 

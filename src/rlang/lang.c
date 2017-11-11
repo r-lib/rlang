@@ -1,16 +1,5 @@
 #include "rlang.h"
 
-SEXP r_new_language_(SEXP head, SEXP tail) {
-  return Rf_lcons(head, tail);
-}
-SEXP r_new_language(SEXP head, SEXP tail) {
-  KEEP(head);
-  KEEP(tail);
-  SEXP out = Rf_lcons(head, tail);
-  FREE(2);
-  return out;
-}
-
 bool r_is_call(SEXP x, const char* name) {
   if (r_kind(x) != LANGSXP) {
     return false;

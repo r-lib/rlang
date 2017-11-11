@@ -20,7 +20,7 @@ SEXP rlang_cnd_abort(SEXP cnd, SEXP mufflable) {
 }
 
 
-// expr-node.c
+// node.c
 
 SEXP rlang_node_car(SEXP x) {
   return CAR(x);
@@ -86,6 +86,13 @@ SEXP rlang_node_poke_tag(SEXP x, SEXP tag) {
 SEXP rlang_on_exit(SEXP expr, SEXP frame) {
   r_on_exit(expr, frame);
   return r_null;
+}
+
+
+// lang.h
+
+SEXP rlang_new_call_node(SEXP car, SEXP cdr) {
+  return Rf_lcons(car, cdr);
 }
 
 
