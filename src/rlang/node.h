@@ -64,12 +64,6 @@ SEXP r_node_poke_cddr(SEXP x, SEXP newcdr) {
   return x;
 }
 
-// The underscored version expects protected arguments
-static inline
-SEXP r_new_node_(SEXP car, SEXP cdr) {
-  return Rf_cons(car, cdr);
-}
-
 static inline
 SEXP r_node_tag(SEXP x) {
   return TAG(x);
@@ -85,10 +79,16 @@ bool r_is_pairlist(SEXP x) {
   return TYPEOF(x) == LISTSXP;
 }
 
-SEXP r_new_node(SEXP car, SEXP cdr);
-SEXP r_new_pairlist(SEXP car);
-SEXP r_new_pairlist2(SEXP car1, SEXP car2);
-SEXP r_new_pairlist3(SEXP car1, SEXP car2, SEXP car3);
+
+static inline
+SEXP r_new_node(SEXP car, SEXP cdr) {
+  return Rf_cons(car, cdr);
+}
+
+SEXP r_build_node(SEXP car, SEXP cdr);
+SEXP r_build_pairlist(SEXP car);
+SEXP r_build_pairlist2(SEXP car1, SEXP car2);
+SEXP r_build_pairlist3(SEXP car1, SEXP car2, SEXP car3);
 
 
 #endif

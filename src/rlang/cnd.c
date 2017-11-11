@@ -17,7 +17,7 @@ void r_inform(const char* fmt, ...) {
   char buf[BUFSIZE];
   INTERP(buf, fmt, ...);
 
-  SEXP lang = KEEP(r_new_call_node(r_sym("message"), string(buf)));
+  SEXP lang = KEEP(r_build_call_node(r_sym("message"), string(buf)));
   r_eval(lang, R_BaseEnv);
   FREE(1);
 }
@@ -25,11 +25,11 @@ void r_warn(const char* fmt, ...) {
   char buf[BUFSIZE];
   INTERP(buf, fmt, ...);
 
-  SEXP args = KEEP(r_new_node(Rf_ScalarLogical(0), r_null));
+  SEXP args = KEEP(r_build_node(Rf_ScalarLogical(0), r_null));
   r_node_poke_tag(args, r_sym("call."));
 
-  args = KEEP(r_new_node(string(buf), args));
-  SEXP lang = KEEP(r_new_call_node(r_sym("warning"), args));
+  args = KEEP(r_build_node(string(buf), args));
+  SEXP lang = KEEP(r_build_call_node(r_sym("warning"), args));
 
   r_eval(lang, R_BaseEnv);
   FREE(3);
@@ -88,13 +88,13 @@ SEXP r_new_condition(SEXP type, SEXP data, SEXP msg) {
 static SEXP with_muffle_lang(SEXP signal) {
   static SEXP muffle_node = NULL;
   if (!muffle_node) {
-    muffle_node = r_new_pairlist(rlang_obj("muffle"));
+    muffle_node = r_build_pairlist(rlang_obj("muffle"));
     R_PreserveObject(muffle_node);
     r_node_poke_tag(muffle_node, r_sym("muffle"));
   }
 
-  SEXP args = r_new_node(signal, muffle_node);
-  SEXP lang = r_new_call_node(r_sym("withRestarts"), args);
+  SEXP args = r_build_node(signal, muffle_node);
+  SEXP lang = r_build_call_node(r_sym("withRestarts"), args);
 
   return lang;
 }
@@ -108,7 +108,7 @@ static void cnd_signal_impl(const char* signaller, SEXP cnd, bool mufflable) {
     r_abort("`cnd` must be a condition");
   }
 
-  SEXP lang = KEEP(r_new_call1(r_sym(signaller), cnd));
+  SEXP lang = KEEP(r_build_call1(r_sym(signaller), cnd));
   ++n_protect;
 
   if (mufflable) {

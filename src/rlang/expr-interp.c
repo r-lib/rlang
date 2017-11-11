@@ -85,7 +85,7 @@ static SEXP unquote(SEXP x, SEXP env, SEXP uq_sym, bool quosured) {
 static SEXP unquote_prefixed_uq(SEXP x, SEXP env, bool quosured) {
   SEXP uq_sym = r_node_cadr(r_node_cdar(x));
   SEXP unquoted = KEEP(unquote(r_node_cadr(x), env, uq_sym, quosured));
-  r_node_poke_cdr(r_node_cdar(x), r_new_node_(unquoted, r_null));
+  r_node_poke_cdr(r_node_cdar(x), r_new_node(unquoted, r_null));
   FREE(1);
 
   if (r_is_namespaced_call(x, "rlang")) {
