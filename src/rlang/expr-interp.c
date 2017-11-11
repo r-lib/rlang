@@ -74,7 +74,7 @@ static SEXP unquote(SEXP x, SEXP env, SEXP uq_sym, bool quosured) {
 
   SEXP unquoted = KEEP(r_eval(uq_fun, env));
 
-  if (!quosured && is_symbolic(unquoted)) {
+  if (!quosured && r_is_symbolic(unquoted)) {
     unquoted = Rf_lang2(r_sym("quote"), unquoted);
   }
 
@@ -99,7 +99,7 @@ static SEXP unquote_prefixed_uq(SEXP x, SEXP env, bool quosured) {
 static SEXP splice_next(SEXP node, SEXP next, SEXP env) {
   static SEXP uqs_fun;
   if (!uqs_fun) {
-    uqs_fun = rlang_obj("UQS");
+    uqs_fun = rlang_ns_get("UQS");
   }
   r_node_poke_car(r_node_car(next), uqs_fun);
 
@@ -119,7 +119,7 @@ static SEXP splice_next(SEXP node, SEXP next, SEXP env) {
 }
 
 static SEXP value_splice_next(SEXP cur, SEXP nxt, SEXP env) {
-  r_node_poke_car(r_node_car(nxt), rlang_obj("splice"));
+  r_node_poke_car(r_node_car(nxt), rlang_ns_get("splice"));
   r_node_poke_car(nxt, r_eval(r_node_car(nxt), env));
   return cur;
 }

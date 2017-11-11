@@ -36,7 +36,7 @@ static inline SEXP r_set_class(SEXP x, SEXP classes) {
 static inline SEXP r_get_class(SEXP x) {
   return Rf_getAttrib(x, R_ClassSymbol);
 }
-static inline SEXP r_get_names(SEXP x) {
+static inline SEXP r_names(SEXP x) {
   return Rf_getAttrib(x, R_NamesSymbol);
 }
 
@@ -44,6 +44,7 @@ static inline void r_poke_names(SEXP x, SEXP nms) {
   Rf_setAttrib(x, R_NamesSymbol, nms);
 }
 
+bool r_has_name_at(SEXP x, r_size_t i);
 bool r_is_named(SEXP x);
 
 static inline SEXP r_missing_arg() {
@@ -76,6 +77,17 @@ static inline SEXP r_poke_kind(SEXP x, SEXPTYPE kind) {
 static inline SEXP r_poke_str_kind(SEXP x, const char* type) {
   SET_TYPEOF(x, Rf_str2type(type));
   return x;
+}
+
+static inline const char* r_type_c_string(SEXPTYPE kind) {
+  SEXP str = Rf_type2str(kind);
+  return CHAR(str);
+}
+
+static inline bool r_is_symbolic(SEXP x) {
+  return
+    r_kind(x) == LANGSXP ||
+    r_kind(x) == SYMSXP;
 }
 
 

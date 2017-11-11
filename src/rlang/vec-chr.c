@@ -14,7 +14,7 @@ bool r_chr_has(SEXP chr, const char* c_string) {
 }
 
 static void validate_chr_setter(SEXP chr, SEXP r_string) {
-  if (!is_character(chr))
+  if (!r_is_character(chr))
     r_abort("`chr` must be a character vector");
   if (!r_is_r_string(r_string))
     r_abort("`r_string` must be an internal R string");

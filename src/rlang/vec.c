@@ -135,12 +135,12 @@ void r_vec_poke_range(SEXP x, r_size_t offset,
 
 SEXP rlang_vec_coercer(SEXP dest) {
   switch(r_kind(dest)) {
-  case LGLSXP: return rlang_obj("as_logical");
-  case INTSXP: return rlang_obj("as_integer");
-  case REALSXP: return rlang_obj("as_double");
-  case CPLXSXP: return rlang_obj("as_complex");
-  case STRSXP: return rlang_obj("as_character");
-  case RAWSXP: return rlang_obj("as_bytes");
+  case LGLSXP: return rlang_ns_get("as_logical");
+  case INTSXP: return rlang_ns_get("as_integer");
+  case REALSXP: return rlang_ns_get("as_double");
+  case CPLXSXP: return rlang_ns_get("as_complex");
+  case STRSXP: return rlang_ns_get("as_character");
+  case RAWSXP: return rlang_ns_get("as_bytes");
   default: r_abort("No coercion implemented for `%s`", Rf_type2str(r_kind(dest)));
   }
 }

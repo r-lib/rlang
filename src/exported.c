@@ -35,6 +35,42 @@ SEXP rlang_eval(SEXP expr, SEXP env) {
 }
 
 
+// eval-tidy.c
+
+SEXP rlang_new_dictionary(SEXP x, SEXP lookup_msg, SEXP read_only) {
+  SEXP dict = KEEP(r_new_vector(VECSXP, 3));
+
+  SET_VECTOR_ELT(dict, 0, x);
+  SET_VECTOR_ELT(dict, 2, read_only);
+
+  if (lookup_msg == r_null) {
+    SET_VECTOR_ELT(dict, 1, Rf_mkString("Object `%s` not found in data"));
+  } else {
+    SET_VECTOR_ELT(dict, 1, lookup_msg);
+  }
+
+  static SEXP nms = NULL;
+  if (!nms) {
+    nms = r_new_vector(STRSXP, 3);
+    R_PreserveObject(nms);
+    SET_STRING_ELT(nms, 0, Rf_mkChar("src"));
+    SET_STRING_ELT(nms, 1, Rf_mkChar("lookup_msg"));
+    SET_STRING_ELT(nms, 2, Rf_mkChar("read_only"));
+  }
+  static SEXP s3 = NULL;
+  if (!s3) {
+    s3 = Rf_mkString("dictionary");
+    R_PreserveObject(s3);
+  }
+
+  Rf_setAttrib(dict, R_ClassSymbol, s3);
+  Rf_setAttrib(dict, R_NamesSymbol, nms);
+
+  FREE(1);
+  return dict;
+}
+
+
 // formula.c
 
 SEXP rlang_is_formulaish(SEXP x, SEXP scoped, SEXP lhs) {
@@ -123,6 +159,10 @@ SEXP rlang_new_call_node(SEXP car, SEXP cdr) {
 
 
 // sexp.h
+
+SEXP rlang_length(SEXP x) {
+  return Rf_ScalarInteger(r_length(x));
+}
 
 SEXP rlang_is_reference(SEXP x, SEXP y) {
   return r_scalar_lgl(x == y);

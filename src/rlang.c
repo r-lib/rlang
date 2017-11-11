@@ -20,7 +20,6 @@
 #include "rlang/stack.c"
 #include "rlang/sym.c"
 #include "rlang/sym-unescape.c"
-#include "rlang/utils.c"
 #include "rlang/vec.c"
 #include "rlang/vec-chr.c"
 #include "rlang/vec-lgl.c"

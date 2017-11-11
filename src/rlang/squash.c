@@ -28,7 +28,7 @@ static r_size_t atom_squash(SEXPTYPE kind, squash_info_t info,
     r_abort("Only lists can be spliced");
 
   SEXP inner;
-  SEXP out_names = KEEP(names(out));
+  SEXP out_names = KEEP(r_names(out));
   r_size_t n_outer = r_length(outer);
   r_size_t n_inner;
 
@@ -42,11 +42,11 @@ static r_size_t atom_squash(SEXPTYPE kind, squash_info_t info,
       r_vec_poke_coerce_n(out, count, inner, 0, n_inner);
 
       if (info.named) {
-        SEXP nms = names(inner);
-        if (is_character(nms)) {
+        SEXP nms = r_names(inner);
+        if (r_is_character(nms)) {
           r_vec_poke_n(out_names, count, nms, 0, n_inner);
-        } else if (n_inner == 1 && has_name_at(outer, i)) {
-          SET_STRING_ELT(out_names, count, STRING_ELT(names(outer), i));
+        } else if (n_inner == 1 && r_has_name_at(outer, i)) {
+          SET_STRING_ELT(out_names, count, STRING_ELT(r_names(outer), i));
         }
       }
 
@@ -68,7 +68,7 @@ static r_size_t list_squash(squash_info_t info, SEXP outer,
     r_abort("Only lists can be spliced");
 
   SEXP inner;
-  SEXP out_names = KEEP(names(out));
+  SEXP out_names = KEEP(r_names(out));
   r_size_t n_outer = r_length(outer);
 
   for (r_size_t i = 0; i != n_outer; ++i) {
@@ -79,8 +79,8 @@ static r_size_t list_squash(squash_info_t info, SEXP outer,
     } else {
       SET_VECTOR_ELT(out, count, inner);
 
-      if (info.named && is_character(names(outer))) {
-        SEXP name = STRING_ELT(names(outer), i);
+      if (info.named && r_is_character(r_names(outer))) {
+        SEXP name = STRING_ELT(r_names(outer), i);
         SET_STRING_ELT(out_names, count, name);
       }
 
@@ -100,7 +100,7 @@ static void squash_warn_names(void) {
 }
 
 static void update_info_outer(squash_info_t* info, SEXP outer, r_size_t i) {
-  if (!info->warned && info->recursive && has_name_at(outer, i)) {
+  if (!info->warned && info->recursive && r_has_name_at(outer, i)) {
     squash_warn_names();
     info->warned = true;
   }
@@ -113,7 +113,7 @@ static void update_info_inner(squash_info_t* info, SEXP outer, r_size_t i, SEXP 
   if (info->named && info->warned)
     return;
 
-  bool named = is_character(names(inner));
+  bool named = r_is_character(r_names(inner));
   bool recursive = info->recursive;
 
   bool copy_outer = recursive || n_inner == 1;
@@ -122,7 +122,7 @@ static void update_info_inner(squash_info_t* info, SEXP outer, r_size_t i, SEXP 
   if (named && copy_inner)
     info->named = true;
 
-  if (has_name_at(outer, i)) {
+  if (r_has_name_at(outer, i)) {
     if (!recursive && (n_inner != 1 || named) && !info->warned) {
       squash_warn_names();
       info->warned = true;
@@ -158,13 +158,15 @@ static SEXP squash(SEXPTYPE kind, SEXP dots, bool (*is_spliceable)(SEXP), int de
   squash_info(&info, dots, is_spliceable, depth);
 
   SEXP out = KEEP(r_new_vector(kind, info.size));
-  if (info.named)
-    set_names(out, r_new_vector(STRSXP, info.size));
+  if (info.named) {
+    r_poke_names(out, r_new_vector(STRSXP, info.size));
+  }
 
-  if (recursive)
+  if (recursive) {
     list_squash(info, dots, out, 0, is_spliceable, depth);
-  else
+  } else {
     atom_squash(kind, info, dots, out, 0, is_spliceable, depth);
+  }
 
   FREE(1);
   return out;
@@ -206,11 +208,11 @@ static is_spliceable_t predicate_pointer(SEXP x) {
 static is_spliceable_t predicate_internal(SEXP x) {
   static SEXP is_spliced_clo = NULL;
   if (!is_spliced_clo)
-    is_spliced_clo = rlang_obj("is_spliced");
+    is_spliced_clo = rlang_ns_get("is_spliced");
 
   static SEXP is_spliceable_clo = NULL;
   if (!is_spliceable_clo)
-    is_spliceable_clo = rlang_obj("is_spliced_bare");
+    is_spliceable_clo = rlang_ns_get("is_spliced_bare");
 
   if (x == is_spliced_clo)
     return &is_spliced;

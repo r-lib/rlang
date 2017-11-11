@@ -1,6 +1,12 @@
 #ifndef RLANG_VECTOR_CHR_H
 #define RLANG_VECTOR_CHR_H
 
+#include <string.h>
+
+
+static inline bool r_is_character(SEXP x) {
+  return r_kind(x) == STRSXP;
+}
 
 static inline SEXP r_chr_get(SEXP chr, size_t i) {
   return STRING_ELT(chr, i);
@@ -33,6 +39,11 @@ static inline const char* r_c_string(SEXP scalar_chr) {
 
 SEXP chr_prepend(SEXP chr, SEXP r_string);
 SEXP chr_append(SEXP chr, SEXP r_string);
+
+static inline bool r_is_empty_string(SEXP str) {
+  const char* c_str = CHAR(str);
+  return strcmp(c_str, "") == 0;
+}
 
 
 #endif

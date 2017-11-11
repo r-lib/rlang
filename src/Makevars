@@ -15,7 +15,6 @@ files = rlang/rlang.h \
         rlang/stack.c \
         rlang/sym.c \
         rlang/sym-unescape.c \
-        rlang/utils.c \
         rlang/vec.c \
         rlang/vec-chr.c \
         rlang/vec-lgl.c \

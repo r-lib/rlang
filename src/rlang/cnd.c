@@ -1,5 +1,8 @@
 #include "rlang.h"
 
+SEXP rlang_ns_get(const char* name);
+
+
 #define BUFSIZE 8192
 
 #define INTERP(BUF, FMT, DOTS)                  \
@@ -54,7 +57,7 @@ static SEXP new_condition_names(SEXP data) {
     r_abort("Conditions must have named data fields");
   }
 
-  SEXP data_nms = r_get_names(data);
+  SEXP data_nms = r_names(data);
 
   if (r_chr_has(data_nms, "message")) {
     r_abort("Conditions can't have a `message` data field");
@@ -88,7 +91,7 @@ SEXP r_new_condition(SEXP type, SEXP data, SEXP msg) {
 static SEXP with_muffle_lang(SEXP signal) {
   static SEXP muffle_node = NULL;
   if (!muffle_node) {
-    muffle_node = r_build_pairlist(rlang_obj("muffle"));
+    muffle_node = r_build_pairlist(rlang_ns_get("muffle"));
     R_PreserveObject(muffle_node);
     r_node_poke_tag(muffle_node, r_sym("muffle"));
   }

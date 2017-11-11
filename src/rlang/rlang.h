@@ -27,7 +27,6 @@ typedef Rcomplex r_complex_t;
 #include "sexp.h"
 #include "stack.h"
 #include "sym.h"
-#include "utils.h"
 #include "vec.h"
 #include "vec-chr.h"
 #include "vec-lgl.h"

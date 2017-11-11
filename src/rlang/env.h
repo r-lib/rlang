@@ -30,5 +30,7 @@ static inline SEXP r_env_set(SEXP env, SEXP sym, SEXP value) {
 
 SEXP r_ns_env(const char* pkg);
 
+SEXP r_base_ns_get(const char* name);
+
 
 #endif

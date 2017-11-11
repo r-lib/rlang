@@ -1,5 +1,8 @@
 #include "rlang/rlang.h"
 
+SEXP rlang_ns_get(const char* name);
+
+
 static SEXP base_tilde_eval(SEXP tilde, SEXP dots, SEXP quo_env) {
   if (r_f_has_env(tilde))
     return tilde;
@@ -9,7 +12,7 @@ static SEXP base_tilde_eval(SEXP tilde, SEXP dots, SEXP quo_env) {
   if (!tilde_sym)
     tilde_sym = r_sym("~");
   if (!tilde_prim)
-    tilde_prim = base_obj("~");
+    tilde_prim = r_base_ns_get("~");
 
   // Inline the base primitive because overscopes override `~` to make
   // quosures self-evaluate
@@ -39,7 +42,7 @@ SEXP rlang_tilde_eval(SEXP tilde, SEXP dots, SEXP overscope, SEXP overscope_top,
   // scope to the enclosure of the new formula, if it has one
   r_env_poke_parent(overscope_top, quo_env);
 
-  SEXP exit_fun = rlang_obj("mut_env_parent");
+  SEXP exit_fun = rlang_ns_get("mut_env_parent");
   SEXP exit_args = r_build_pairlist2(overscope_top, prev_env);
   SEXP exit_lang = KEEP(r_build_call_node(exit_fun, exit_args));
   r_on_exit(exit_lang, cur_frame);
@@ -48,7 +51,7 @@ SEXP rlang_tilde_eval(SEXP tilde, SEXP dots, SEXP overscope, SEXP overscope_top,
   // Update .env pronoun to current quosure env temporarily
   r_env_set(overscope, r_sym(".env"), quo_env);
 
-  exit_fun = rlang_obj("env_set");
+  exit_fun = rlang_ns_get("env_set");
   exit_args = r_build_pairlist3(overscope, r_scalar_chr(".env"), prev_env);
   exit_lang = KEEP(r_build_call_node(exit_fun, exit_args));
   r_on_exit(exit_lang, cur_frame);
