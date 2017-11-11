@@ -2,7 +2,9 @@
 #define RLANG_EVAL_H
 
 
-SEXP r_eval(SEXP expr, SEXP env);
+static inline SEXP r_eval(SEXP expr, SEXP env) {
+  return Rf_eval(expr, env);
+}
 
 
 #endif

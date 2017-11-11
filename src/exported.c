@@ -28,6 +28,13 @@ SEXP rlang_mut_env_parent(SEXP env, SEXP new_parent) {
 }
 
 
+// eval.c
+
+SEXP rlang_eval(SEXP expr, SEXP env) {
+  return Rf_eval(expr, env);
+}
+
+
 // node.c
 
 SEXP rlang_node_car(SEXP x) {

@@ -34,7 +34,7 @@ extern SEXP rlang_new_node_(SEXP, SEXP);
 extern SEXP rlang_duplicate(SEXP);
 extern SEXP rlang_node_tag(SEXP);
 extern SEXP rlang_node_poke_tag(SEXP, SEXP);
-extern SEXP r_eval(SEXP, SEXP);
+extern SEXP rlang_eval(SEXP, SEXP);
 extern SEXP rlang_zap_attrs(SEXP);
 extern SEXP rlang_get_attrs(SEXP);
 extern SEXP rlang_set_attrs(SEXP, SEXP);
@@ -74,7 +74,7 @@ static const R_CallMethodDef call_entries[] = {
   {"rlang_capturearg",          (DL_FUNC) &rlang_capturearg, 4},
   {"rlang_capturedots",         (DL_FUNC) &rlang_capturedots, 4},
   {"rlang_duplicate",           (DL_FUNC) &rlang_duplicate, 2},
-  {"r_eval",                    (DL_FUNC) &r_eval, 2},
+  {"rlang_eval",                (DL_FUNC) &rlang_eval, 2},
   {"rlang_get_attrs",           (DL_FUNC) &rlang_get_attrs, 1},
   {"rlang_interp",              (DL_FUNC) &rlang_interp, 3},
   {"rlang_is_formulaish",       (DL_FUNC) &rlang_is_formulaish, 3},

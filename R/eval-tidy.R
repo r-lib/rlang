@@ -294,7 +294,7 @@ overscope_eval_next <- function(overscope, quo, env = base_env()) {
   overscope$.env <- lexical_env
   mut_env_parent(overscope$.top_env, lexical_env)
 
-  .Call(r_eval, f_rhs(quo), overscope)
+  .Call(rlang_eval, f_rhs(quo), overscope)
 }
 #' @rdname as_overscope
 #' @export
