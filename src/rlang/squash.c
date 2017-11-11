@@ -9,8 +9,7 @@ typedef struct {
   bool recursive;
 } squash_info_t;
 
-static
-squash_info_t squash_info_init(bool recursive) {
+static squash_info_t squash_info_init(bool recursive) {
   squash_info_t info;
   info.size = 0;
   info.named = false;
@@ -22,10 +21,9 @@ squash_info_t squash_info_init(bool recursive) {
 
 // Atomic squashing ---------------------------------------------------
 
-static
-r_size_t atom_squash(SEXPTYPE kind, squash_info_t info,
-                    SEXP outer, SEXP out, r_size_t count,
-                    bool (*is_spliceable)(SEXP), int depth) {
+static r_size_t atom_squash(SEXPTYPE kind, squash_info_t info,
+                            SEXP outer, SEXP out, r_size_t count,
+                            bool (*is_spliceable)(SEXP), int depth) {
   if (r_kind(outer) != VECSXP)
     r_abort("Only lists can be spliced");
 
@@ -63,10 +61,9 @@ r_size_t atom_squash(SEXPTYPE kind, squash_info_t info,
 
 // List squashing -----------------------------------------------------
 
-static
-r_size_t list_squash(squash_info_t info, SEXP outer,
-                    SEXP out, r_size_t count,
-                    bool (*is_spliceable)(SEXP), int depth) {
+static r_size_t list_squash(squash_info_t info, SEXP outer,
+                            SEXP out, r_size_t count,
+                            bool (*is_spliceable)(SEXP), int depth) {
   if (r_kind(outer) != VECSXP)
     r_abort("Only lists can be spliced");
 
@@ -98,20 +95,17 @@ r_size_t list_squash(squash_info_t info, SEXP outer,
 
 // First pass --------------------------------------------------------
 
-static
-void squash_warn_names(void) {
+static void squash_warn_names(void) {
   Rf_warningcall(r_null, "Outer names are only allowed for unnamed scalar atomic inputs");
 }
 
-static
-void update_info_outer(squash_info_t* info, SEXP outer, r_size_t i) {
+static void update_info_outer(squash_info_t* info, SEXP outer, r_size_t i) {
   if (!info->warned && info->recursive && has_name_at(outer, i)) {
     squash_warn_names();
     info->warned = true;
   }
 }
-static
-void update_info_inner(squash_info_t* info, SEXP outer, r_size_t i, SEXP inner) {
+static void update_info_inner(squash_info_t* info, SEXP outer, r_size_t i, SEXP inner) {
   r_size_t n_inner = info->recursive ? 1 : r_vec_length(inner);
   info->size += n_inner;
 
@@ -138,9 +132,8 @@ void update_info_inner(squash_info_t* info, SEXP outer, r_size_t i, SEXP inner) 
   }
 }
 
-static
-void squash_info(squash_info_t* info, SEXP outer,
-                 bool (*is_spliceable)(SEXP), int depth) {
+static void squash_info(squash_info_t* info, SEXP outer,
+                        bool (*is_spliceable)(SEXP), int depth) {
   SEXP inner;
   r_size_t n_inner;
   r_size_t n_outer = r_length(outer);
@@ -158,8 +151,7 @@ void squash_info(squash_info_t* info, SEXP outer,
   }
 }
 
-static
-SEXP squash(SEXPTYPE kind, SEXP dots, bool (*is_spliceable)(SEXP), int depth) {
+static SEXP squash(SEXPTYPE kind, SEXP dots, bool (*is_spliceable)(SEXP), int depth) {
   bool recursive = kind == VECSXP;
 
   squash_info_t info = squash_info_init(recursive);
@@ -183,17 +175,14 @@ SEXP squash(SEXPTYPE kind, SEXP dots, bool (*is_spliceable)(SEXP), int depth) {
 
 typedef bool (*is_spliceable_t)(SEXP);
 
-static
-bool is_spliced_bare(SEXP x) {
+static bool is_spliced_bare(SEXP x) {
   return r_is_list(x) && (!r_is_object(x) || Rf_inherits(x, "spliced"));
 }
-static
-bool is_spliced(SEXP x) {
+static bool is_spliced(SEXP x) {
   return r_is_list(x) && Rf_inherits(x, "spliced");
 }
 
-static
-is_spliceable_t predicate_pointer(SEXP x) {
+static is_spliceable_t predicate_pointer(SEXP x) {
   switch (r_kind(x)) {
   case VECSXP:
     if (Rf_inherits(x, "fn_pointer") && r_length(x) == 1) {
@@ -214,8 +203,7 @@ is_spliceable_t predicate_pointer(SEXP x) {
   return NULL;
 }
 
-static
-is_spliceable_t predicate_internal(SEXP x) {
+static is_spliceable_t predicate_internal(SEXP x) {
   static SEXP is_spliced_clo = NULL;
   if (!is_spliced_clo)
     is_spliced_clo = rlang_obj("is_spliced");
@@ -232,11 +220,9 @@ is_spliceable_t predicate_internal(SEXP x) {
 }
 
 // Emulate closure behaviour with global variable.
-static
-SEXP clo_spliceable = NULL;
+static SEXP clo_spliceable = NULL;
 
-static
-bool is_spliceable_closure(SEXP x) {
+static bool is_spliceable_closure(SEXP x) {
   if (!clo_spliceable)
     r_abort("Internal error while splicing");
   SETCADR(clo_spliceable, x);

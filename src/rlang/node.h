@@ -2,86 +2,67 @@
 #define RLANG_NODE_H
 
 
-static inline
-SEXP r_node_car(SEXP x) {
+static inline SEXP r_node_car(SEXP x) {
   return CAR(x);
 }
-static inline
-SEXP r_node_cdr(SEXP x) {
+static inline SEXP r_node_cdr(SEXP x) {
   return CDR(x);
 }
-static inline
-SEXP r_node_caar(SEXP x) {
+static inline SEXP r_node_caar(SEXP x) {
   return CAAR(x);
 }
-static inline
-SEXP r_node_cadr(SEXP x) {
+static inline SEXP r_node_cadr(SEXP x) {
   return CADR(x);
 }
-static inline
-SEXP r_node_cdar(SEXP x) {
+static inline SEXP r_node_cdar(SEXP x) {
   return CDAR(x);
 }
-static inline
-SEXP r_node_cddr(SEXP x) {
+static inline SEXP r_node_cddr(SEXP x) {
   return CDDR(x);
 }
-static inline
-SEXP r_node_tail(SEXP x) {
+static inline SEXP r_node_tail(SEXP x) {
   while (CDR(x) != R_NilValue)
     x = CDR(x);
   return x;
 }
 
-static inline
-SEXP r_node_poke_car(SEXP x, SEXP newcar) {
+static inline SEXP r_node_poke_car(SEXP x, SEXP newcar) {
   SETCAR(x, newcar);
   return x;
 }
-static inline
-SEXP r_node_poke_cdr(SEXP x, SEXP newcdr) {
+static inline SEXP r_node_poke_cdr(SEXP x, SEXP newcdr) {
   SETCDR(x, newcdr);
   return x;
 }
-static inline
-SEXP r_node_poke_caar(SEXP x, SEXP newcaar) {
+static inline SEXP r_node_poke_caar(SEXP x, SEXP newcaar) {
   SETCAR(CAR(x), newcaar);
   return x;
 }
-static inline
-SEXP r_node_poke_cadr(SEXP x, SEXP newcar) {
+static inline SEXP r_node_poke_cadr(SEXP x, SEXP newcar) {
   SETCADR(x, newcar);
   return x;
 }
-static inline
-SEXP r_node_poke_cdar(SEXP x, SEXP newcdar) {
+static inline SEXP r_node_poke_cdar(SEXP x, SEXP newcdar) {
   SETCDR(CAR(x), newcdar);
   return x;
 }
-static inline
-SEXP r_node_poke_cddr(SEXP x, SEXP newcdr) {
+static inline SEXP r_node_poke_cddr(SEXP x, SEXP newcdr) {
   SETCDR(CDR(x), newcdr);
   return x;
 }
 
-static inline
-SEXP r_node_tag(SEXP x) {
+static inline SEXP r_node_tag(SEXP x) {
   return TAG(x);
 }
-static inline
-SEXP r_node_poke_tag(SEXP x, SEXP tag) {
-  SET_TAG(x, tag);
-  return x;
+static inline SEXP r_node_poke_tag(SEXP x, SEXP tag) {SET_TAG(x, tag); return x;
 }
 
-static inline
-bool r_is_pairlist(SEXP x) {
+static inline bool r_is_pairlist(SEXP x) {
   return TYPEOF(x) == LISTSXP;
 }
 
 
-static inline
-SEXP r_new_node(SEXP car, SEXP cdr) {
+static inline SEXP r_new_node(SEXP car, SEXP cdr) {
   return Rf_cons(car, cdr);
 }
 

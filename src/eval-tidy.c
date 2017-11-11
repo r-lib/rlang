@@ -1,7 +1,6 @@
 #include "rlang/rlang.h"
 
-static
-SEXP base_tilde_eval(SEXP tilde, SEXP dots, SEXP quo_env) {
+static SEXP base_tilde_eval(SEXP tilde, SEXP dots, SEXP quo_env) {
   if (r_f_has_env(tilde))
     return tilde;
 
