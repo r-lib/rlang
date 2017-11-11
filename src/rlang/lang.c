@@ -11,7 +11,7 @@ SEXP r_new_language(SEXP head, SEXP tail) {
   return out;
 }
 
-bool r_is_language(SEXP x, const char* name) {
+bool r_is_call(SEXP x, const char* name) {
   if (r_kind(x) != LANGSXP) {
     return false;
   } else {
@@ -19,7 +19,7 @@ bool r_is_language(SEXP x, const char* name) {
   }
 }
 
-bool r_is_language_any(SEXP x, const char** names, int n) {
+bool r_is_call_any(SEXP x, const char** names, int n) {
   if (r_kind(x) != LANGSXP) {
     return false;
   } else {
@@ -39,7 +39,7 @@ bool r_is_prefixed_call(SEXP x) {
   }
 
   SEXP head = r_node_car(x);
-  return r_is_language_any(head, r_subset_names, R_SUBSET_NAMES_N);
+  return r_is_call_any(head, r_subset_names, R_SUBSET_NAMES_N);
 }
 
 bool r_is_prefixed_call_any(SEXP x, const char ** names, int n) {
@@ -48,7 +48,7 @@ bool r_is_prefixed_call_any(SEXP x, const char ** names, int n) {
   }
 
   SEXP head = r_node_car(x);
-  if (!r_is_language_any(head, r_subset_names, R_SUBSET_NAMES_N)) {
+  if (!r_is_call_any(head, r_subset_names, R_SUBSET_NAMES_N)) {
     return false;
   }
 
@@ -75,7 +75,7 @@ bool r_is_namespaced_call(SEXP x, const char* ns) {
   }
 
   SEXP head = r_node_car(x);
-  return r_is_language(head, "::") && r_is_symbol(r_node_cadr(head), ns);
+  return r_is_call(head, "::") && r_is_symbol(r_node_cadr(head), ns);
 }
 
 bool r_is_namespaced_call_any(SEXP x, const char* ns,

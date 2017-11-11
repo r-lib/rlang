@@ -8,7 +8,7 @@ SEXP interp_lang_node(SEXP x, SEXP env, bool quosured);
 static inline
 bool is_rlang_call_any(SEXP x, const char** names, int n) {
   return
-    r_is_language_any(x, names, n) ||
+    r_is_call_any(x, names, n) ||
     r_is_namespaced_call_any(x, "rlang", names, n);
 }
 
@@ -24,16 +24,19 @@ uqs_names[UQS_N] = { "UQS", "!!!"};
 
 static
 int bang_level(SEXP x) {
-  if (!r_is_language(x, "!"))
+  if (!r_is_call(x, "!")) {
     return 0;
+  }
 
   SEXP arg = r_node_cdr(x);
-  if (r_is_null(arg) || !r_is_language(r_node_car(arg), "!"))
+  if (r_is_null(arg) || !r_is_call(r_node_car(arg), "!")) {
     return 1;
+  }
 
   arg = r_node_cdr(r_node_car(arg));
-  if (r_is_null(arg) || !r_is_language(r_node_car(arg), "!"))
+  if (r_is_null(arg) || !r_is_call(r_node_car(arg), "!")) {
     return 2;
+  }
 
   return 3;
 }
@@ -108,8 +111,9 @@ SEXP unquote_prefixed_uq(SEXP x, SEXP env, bool quosured) {
 static
 SEXP splice_next(SEXP node, SEXP next, SEXP env) {
   static SEXP uqs_fun;
-  if (!uqs_fun)
+  if (!uqs_fun) {
     uqs_fun = rlang_obj("UQS");
+  }
   r_node_poke_car(r_node_car(next), uqs_fun);
 
   // UQS() does error checking and returns a pair list
@@ -146,7 +150,7 @@ SEXP interp_lang(SEXP x, SEXP env, bool quosured)  {
   if (r_is_prefixed_call_any(x, uq_names, UQ_N)) {
     unquote_check(x);
     x = unquote_prefixed_uq(x, env, quosured);
-  } else if (r_is_maybe_prefixed_call_any(x, uq_names, UQ_N)) {
+  } else if (r_is_call_any(x, uq_names, UQ_N)) {
     unquote_check(x);
     SEXP uq_sym = r_node_car(x);
     x = unquote(r_node_cadr(x), env, uq_sym, quosured);
