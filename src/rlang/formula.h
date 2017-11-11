@@ -2,7 +2,8 @@
 #define RLANG_FORMULA_H
 
 
-SEXP rlang_is_formulaish(SEXP x, SEXP scoped, SEXP lhs);
+bool r_is_formulaish(SEXP x, int scoped, int lhs);
+
 SEXP r_f_rhs(SEXP f);
 SEXP r_f_lhs(SEXP f);
 SEXP r_f_env(SEXP f);

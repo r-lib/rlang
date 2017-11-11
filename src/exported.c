@@ -35,6 +35,17 @@ SEXP rlang_eval(SEXP expr, SEXP env) {
 }
 
 
+// formula.c
+
+SEXP rlang_is_formulaish(SEXP x, SEXP scoped, SEXP lhs) {
+  int scoped_int = r_as_optional_bool(scoped);
+  int lhs_int = r_as_optional_bool(lhs);
+
+  bool out = r_is_formulaish(x, scoped_int, lhs_int);
+  return Rf_ScalarLogical(out);
+}
+
+
 // node.c
 
 SEXP rlang_node_car(SEXP x) {
