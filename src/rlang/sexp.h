@@ -16,35 +16,35 @@ static inline bool r_inherits(SEXP x, const char* class_) {
   return Rf_inherits(x, class_);
 }
 
-static inline SEXP r_get_attr(SEXP x, SEXP sym) {
+static inline SEXP r_get_attribute(SEXP x, SEXP sym) {
   return Rf_getAttrib(x, sym);
 }
 
-static inline void mut_attr(SEXP x, SEXP sym, SEXP attr) {
-  Rf_setAttrib(x, sym, attr);
+static inline void r_poke_attribute(SEXP x, SEXP sym, SEXP value) {
+  Rf_setAttrib(x, sym, value);
 }
-static inline void mut_class(SEXP x, SEXP classes) {
+static inline void r_poke_class(SEXP x, SEXP classes) {
   Rf_setAttrib(x, R_ClassSymbol, classes);
 }
 
-SEXP set_attr(SEXP x, SEXP sym, SEXP attr);
+SEXP r_set_attribute(SEXP x, SEXP sym, SEXP attr);
 
-static inline SEXP set_class(SEXP x, SEXP classes) {
-  return set_attr(x, R_ClassSymbol, classes);
+static inline SEXP r_set_class(SEXP x, SEXP classes) {
+  return r_set_attribute(x, R_ClassSymbol, classes);
 }
 
-static inline SEXP sxp_class(SEXP x) {
+static inline SEXP r_get_class(SEXP x) {
   return Rf_getAttrib(x, R_ClassSymbol);
 }
-static inline SEXP sxp_names(SEXP x) {
+static inline SEXP r_get_names(SEXP x) {
   return Rf_getAttrib(x, R_NamesSymbol);
 }
 
-static inline void mut_names(SEXP x, SEXP nms) {
+static inline void r_poke_names(SEXP x, SEXP nms) {
   Rf_setAttrib(x, R_NamesSymbol, nms);
 }
 
-bool is_named(SEXP x);
+bool r_is_named(SEXP x);
 
 static inline SEXP r_missing_arg() {
   return R_MissingArg;

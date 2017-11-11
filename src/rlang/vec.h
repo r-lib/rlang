@@ -11,6 +11,10 @@ bool r_is_atomic(SEXP x);
 
 SEXP r_scalar_lgl(bool x);
 
+static inline SEXP r_alloc_vec(r_kind_t type, r_size_t n) {
+  return Rf_allocVector(type, n);
+}
+
 void r_vec_poke_n(SEXP x, r_size_t offset,
                   SEXP y, r_size_t from, r_size_t n);
 void r_vec_poke_range(SEXP x, r_size_t offset,

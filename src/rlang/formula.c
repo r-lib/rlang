@@ -22,7 +22,7 @@ SEXP r_f_lhs(SEXP f) {
   }
 }
 SEXP r_f_env(SEXP f) {
-  return r_get_attr(f, r_sym(".Environment"));
+  return r_get_attribute(f, r_sym(".Environment"));
 }
 
 bool r_f_has_env(SEXP f) {

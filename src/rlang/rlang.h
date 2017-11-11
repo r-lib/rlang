@@ -7,11 +7,15 @@
 #include <Rinternals.h>
 
 typedef struct SEXPREC sexp;
+typedef SEXPTYPE r_kind_t;
 typedef R_len_t r_size_t;
 typedef Rbyte r_byte_t;
 typedef Rcomplex r_complex_t;
 
 #define r_null R_NilValue
+
+#define KEEP PROTECT
+#define FREE UNPROTECT
 
 #include "cnd.h"
 #include "env.h"
@@ -28,9 +32,6 @@ typedef Rcomplex r_complex_t;
 #include "vec-chr.h"
 #include "vec-lgl.h"
 #include "vec-list.h"
-
-#define KEEP PROTECT
-#define FREE UNPROTECT
 
 
 #endif

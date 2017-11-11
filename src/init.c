@@ -13,7 +13,7 @@ extern bool rlang_is_clevel_spliceable(SEXP);
 extern SEXP rlang_is_null(SEXP);
 extern SEXP r_f_lhs(SEXP);
 extern SEXP r_f_rhs(SEXP);
-extern SEXP new_condition(SEXP, SEXP, SEXP);
+extern SEXP r_new_condition(SEXP, SEXP, SEXP);
 extern SEXP rlang_mut_env_parent(SEXP, SEXP);
 extern SEXP rlang_poke_type(SEXP, SEXP);
 extern SEXP rlang_replace_na(SEXP, SEXP);
@@ -69,7 +69,7 @@ extern SEXP rlang_on_exit(SEXP, SEXP);
 static const R_CallMethodDef call_entries[] = {
   {"r_f_lhs",                   (DL_FUNC) &r_f_lhs, 1},
   {"r_f_rhs",                   (DL_FUNC) &r_f_rhs, 1},
-  {"rlang_new_condition",       (DL_FUNC) &new_condition, 3},
+  {"rlang_new_condition",       (DL_FUNC) &r_new_condition, 3},
   {"rlang_replace_na",          (DL_FUNC) &rlang_replace_na, 2},
   {"rlang_capturearg",          (DL_FUNC) &rlang_capturearg, 4},
   {"rlang_capturedots",         (DL_FUNC) &rlang_capturedots, 4},

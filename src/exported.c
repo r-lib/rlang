@@ -1,5 +1,24 @@
 #include "rlang/rlang.h"
 
+// cnd.c
+
+SEXP rlang_cnd_signal(SEXP cnd, SEXP mufflable) {
+  r_cnd_signal(cnd, r_as_bool(mufflable));
+  return r_null;
+}
+SEXP rlang_cnd_inform(SEXP cnd, SEXP mufflable) {
+  r_cnd_inform(cnd, r_as_bool(mufflable));
+  return r_null;
+}
+SEXP rlang_cnd_warn(SEXP cnd, SEXP mufflable) {
+  r_cnd_warn(cnd, r_as_bool(mufflable));
+  return r_null;
+}
+SEXP rlang_cnd_abort(SEXP cnd, SEXP mufflable) {
+  r_cnd_abort(cnd, r_as_bool(mufflable));
+  return r_null;
+}
+
 
 // expr-node.c
 

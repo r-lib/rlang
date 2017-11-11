@@ -1,15 +1,15 @@
 #include "rlang.h"
 
-SEXP set_attr(SEXP x, SEXP sym, SEXP attr) {
+SEXP r_set_attribute(SEXP x, SEXP sym, SEXP attr) {
   x = KEEP(r_duplicate(x, true));
-  mut_attr(x, sym, attr);
+  r_poke_attribute(x, sym, attr);
 
   FREE(1);
   return x;
 }
 
-bool is_named(SEXP x) {
-  SEXP nms = sxp_names(x);
+bool r_is_named(SEXP x) {
+  SEXP nms = r_get_names(x);
 
   if (r_kind(nms) != STRSXP) {
     return false;
