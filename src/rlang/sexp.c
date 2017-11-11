@@ -15,7 +15,7 @@ bool r_is_named(SEXP x) {
     return false;
   }
 
-  if (chr_has(nms, "")) {
+  if (r_chr_has(nms, "")) {
     return false;
   }
 

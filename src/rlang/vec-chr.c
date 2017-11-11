@@ -5,7 +5,7 @@ SEXP r_chr_get(SEXP chr, size_t i) {
   return STRING_ELT(chr, i);
 }
 
-bool chr_has(SEXP chr, const char* c_string) {
+bool r_chr_has(SEXP chr, const char* c_string) {
   SEXP nm;
   for (int i = 0; i != r_vec_length(chr); ++i) {
     nm = STRING_ELT(chr, i);
@@ -16,7 +16,7 @@ bool chr_has(SEXP chr, const char* c_string) {
   return false;
 }
 
-void mut_chr_at(SEXP chr, r_size_t i, SEXP elt) {
+void r_chr_poke(SEXP chr, r_size_t i, SEXP elt) {
   SET_STRING_ELT(chr, i, elt);
 }
 
@@ -54,7 +54,7 @@ SEXP chr_prepend(SEXP chr, SEXP r_string) {
   SEXP out = KEEP(Rf_allocVector(STRSXP, n + 1));
 
   r_vec_poke_n(out, 1, chr, 0, n);
-  mut_chr_at(out, 0, r_string);
+  r_chr_poke(out, 0, r_string);
 
   FREE(1);
   return out;
@@ -69,7 +69,7 @@ SEXP chr_append(SEXP chr, SEXP r_string) {
   SEXP out = KEEP(Rf_allocVector(STRSXP, n + 1));
 
   r_vec_poke_n(out, 0, chr, 0, n);
-  mut_chr_at(out, n, r_string);
+  r_chr_poke(out, n, r_string);
 
   FREE(1);
   return out;

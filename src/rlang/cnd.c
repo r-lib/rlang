@@ -56,12 +56,12 @@ static SEXP new_condition_names(SEXP data) {
 
   SEXP data_nms = r_get_names(data);
 
-  if (chr_has(data_nms, "message")) {
+  if (r_chr_has(data_nms, "message")) {
     r_abort("Conditions can't have a `message` data field");
   }
 
   SEXP nms = KEEP(Rf_allocVector(STRSXP, r_length(data) + 1));
-  mut_chr_at(nms, 0, r_string("message"));
+  r_chr_poke(nms, 0, r_string("message"));
   r_vec_poke_n(nms, 1, data_nms, 0, r_length(nms) - 1);
 
   FREE(1);
