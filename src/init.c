@@ -15,7 +15,7 @@ extern SEXP r_f_lhs(SEXP);
 extern SEXP r_f_rhs(SEXP);
 extern SEXP new_condition(SEXP, SEXP, SEXP);
 extern SEXP rlang_mut_env_parent(SEXP, SEXP);
-extern SEXP rlang_mut_type(SEXP, SEXP);
+extern SEXP rlang_poke_type(SEXP, SEXP);
 extern SEXP rlang_replace_na(SEXP, SEXP);
 extern SEXP rlang_node_car(SEXP);
 extern SEXP rlang_node_cdr(SEXP);
@@ -23,7 +23,7 @@ extern SEXP rlang_node_caar(SEXP);
 extern SEXP rlang_node_cadr(SEXP);
 extern SEXP rlang_node_cdar(SEXP);
 extern SEXP rlang_node_cddr(SEXP);
-extern SEXP r_missing_arg();
+extern SEXP rlang_missing_arg();
 extern SEXP rlang_node_poke_car(SEXP, SEXP);
 extern SEXP rlang_node_poke_cdr(SEXP, SEXP);
 extern SEXP rlang_node_poke_caar(SEXP, SEXP);
@@ -83,7 +83,7 @@ static const R_CallMethodDef call_entries[] = {
   {"rlang_length",              (DL_FUNC) &rlang_length, 1},
   {"rlang_new_dictionary",      (DL_FUNC) &rlang_new_dictionary, 3},
   {"rlang_set_attrs",           (DL_FUNC) &rlang_set_attrs, 2},
-  {"r_missing_arg",             (DL_FUNC) &r_missing_arg, 0},
+  {"rlang_missing_arg",         (DL_FUNC) &rlang_missing_arg, 0},
   {"rlang_node_car",            (DL_FUNC) &rlang_node_car, 1},
   {"rlang_node_cdr",            (DL_FUNC) &rlang_node_cdr, 1},
   {"rlang_node_caar",           (DL_FUNC) &rlang_node_caar, 1},
@@ -98,7 +98,7 @@ static const R_CallMethodDef call_entries[] = {
   {"rlang_node_poke_cddr",      (DL_FUNC) &rlang_node_poke_cddr, 2},
   {"rlang_new_node",            (DL_FUNC) &rlang_new_node_, 2},
   {"rlang_mut_env_parent",      (DL_FUNC) &rlang_mut_env_parent, 2},
-  {"rlang_mut_type",            (DL_FUNC) &rlang_mut_type, 2},
+  {"rlang_poke_type",           (DL_FUNC) &rlang_poke_type, 2},
   {"rlang_node_tag",            (DL_FUNC) &rlang_node_tag, 1},
   {"rlang_node_poke_tag",       (DL_FUNC) &rlang_node_poke_tag, 2},
   {"rlang_squash",              (DL_FUNC) &rlang_squash, 4},

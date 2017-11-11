@@ -68,3 +68,33 @@ SEXP rlang_on_exit(SEXP expr, SEXP frame) {
   r_on_exit(expr, frame);
   return r_null;
 }
+
+
+// sexp.h
+
+SEXP rlang_is_reference(SEXP x, SEXP y) {
+  return r_scalar_lgl(x == y);
+}
+
+SEXP rlang_missing_arg() {
+  return R_MissingArg;
+}
+
+SEXP rlang_duplicate(SEXP x, SEXP shallow) {
+  return r_duplicate(x, r_as_bool(shallow));
+}
+
+SEXP rlang_is_null(SEXP x) {
+  return r_scalar_lgl(r_is_null(x));
+}
+
+SEXP rlang_sxp_address(SEXP x) {
+  static char str[1000];
+  snprintf(str, 1000, "%p", (void*) x);
+  return Rf_mkString(str);
+}
+
+SEXP rlang_poke_type(SEXP x, SEXP type) {
+  SET_TYPEOF(x, Rf_str2type(r_c_string(type)));
+  return x;
+}

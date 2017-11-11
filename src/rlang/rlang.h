@@ -11,6 +11,8 @@ typedef R_len_t r_size_t;
 typedef Rbyte r_byte_t;
 typedef Rcomplex r_complex_t;
 
+#define r_null R_NilValue
+
 #include "cnd.h"
 #include "env.h"
 #include "eval.h"
