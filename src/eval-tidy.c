@@ -37,7 +37,7 @@ SEXP rlang_tilde_eval(SEXP tilde, SEXP dots, SEXP overscope, SEXP overscope_top,
 
   // Swap enclosures temporarily by rechaining the top of the dynamic
   // scope to the enclosure of the new formula, if it has one
-  r_mut_env_parent(overscope_top, quo_env);
+  r_env_poke_parent(overscope_top, quo_env);
 
   SEXP exit_fun = rlang_obj("mut_env_parent");
   SEXP exit_args = r_build_pairlist2(overscope_top, prev_env);

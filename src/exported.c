@@ -20,6 +20,14 @@ SEXP rlang_cnd_abort(SEXP cnd, SEXP mufflable) {
 }
 
 
+// env.c
+
+SEXP rlang_mut_env_parent(SEXP env, SEXP new_parent) {
+  SET_ENCLOS(env, new_parent);
+  return env;
+}
+
+
 // node.c
 
 SEXP rlang_node_car(SEXP x) {
