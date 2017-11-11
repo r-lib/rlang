@@ -49,7 +49,7 @@ SEXP rlang_tilde_eval(SEXP tilde, SEXP dots, SEXP overscope, SEXP overscope_top,
   r_env_set(overscope, r_sym(".env"), quo_env);
 
   exit_fun = rlang_obj("env_set");
-  exit_args = r_build_pairlist3(overscope, string(".env"), prev_env);
+  exit_args = r_build_pairlist3(overscope, r_scalar_chr(".env"), prev_env);
   exit_lang = KEEP(r_build_call_node(exit_fun, exit_args));
   r_on_exit(exit_lang, cur_frame);
   FREE(1);

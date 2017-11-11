@@ -17,7 +17,7 @@ void r_inform(const char* fmt, ...) {
   char buf[BUFSIZE];
   INTERP(buf, fmt, ...);
 
-  SEXP lang = KEEP(r_build_call_node(r_sym("message"), string(buf)));
+  SEXP lang = KEEP(r_build_call_node(r_sym("message"), r_scalar_chr(buf)));
   r_eval(lang, R_BaseEnv);
   FREE(1);
 }
@@ -28,7 +28,7 @@ void r_warn(const char* fmt, ...) {
   SEXP args = KEEP(r_build_node(Rf_ScalarLogical(0), r_null));
   r_node_poke_tag(args, r_sym("call."));
 
-  args = KEEP(r_build_node(string(buf), args));
+  args = KEEP(r_build_node(r_scalar_chr(buf), args));
   SEXP lang = KEEP(r_build_call_node(r_sym("warning"), args));
 
   r_eval(lang, R_BaseEnv);
@@ -46,7 +46,7 @@ SEXP r_interp_str(const char* fmt, ...) {
   char buf[BUFSIZE];
   INTERP(buf, fmt, ...);
 
-  return string(buf);
+  return r_scalar_chr(buf);
 }
 
 static SEXP new_condition_names(SEXP data) {
@@ -68,7 +68,7 @@ static SEXP new_condition_names(SEXP data) {
   return nms;
 }
 SEXP r_new_condition(SEXP type, SEXP data, SEXP msg) {
-  if (!r_is_null(msg) && !is_string(msg)) {
+  if (!r_is_null(msg) && !r_is_scalar_character(msg)) {
     r_abort("Condition message must be a string");
   }
 
