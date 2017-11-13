@@ -91,6 +91,9 @@ test_that("`!!` binds tightly", {
   expect_identical(expr(a <= !! foo), quote(a <= "foo"))
   expect_identical(expr(a >= !! foo : b), quote(a >= "foo" : b))
   expect_identical(expr(a > !! foo * b : c), quote(a > "foo" * b : c))
+
+  expect_identical(expr(!! foo^a^b), quote("foo"^a^b))
+  expect_identical(expr(!! foo^a^b + c), quote("foo"^a^b + c))
 })
 
 test_that("`!!` handles binary and unary `-` and `+`", {
