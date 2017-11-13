@@ -179,6 +179,8 @@ dots_capture <- function(..., `__interp_lhs` = TRUE, `__quosured` = TRUE) {
     dots <- dots_interp_lhs(dots)
   }
 
+  names(dots) <- .Call(rlang_unescape_character, names(dots))
+
   dots
 }
 dot_interp <- function(dot, quosured = TRUE) {
