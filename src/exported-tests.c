@@ -10,6 +10,13 @@ SEXP rlang_r_string(SEXP str) {
 }
 
 
+// sym.c
+
+SEXP rlang_test_is_special_op_sym(SEXP x) {
+  return Rf_ScalarLogical(r_is_special_op_sym(x));
+}
+
+
 // squash.c
 
 bool rlang_is_clevel_spliceable(SEXP x) {

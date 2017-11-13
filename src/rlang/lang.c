@@ -77,3 +77,9 @@ bool r_is_namespaced_call_any(SEXP x, const char* ns,
   SEXP sym = r_node_cadr(args);
   return r_is_symbol_any(sym, names, n);
 }
+
+bool r_is_special_op_call(SEXP x) {
+  return
+    r_kind(x) == LANGSXP &&
+    r_is_special_op_sym(r_node_car(x));
+}

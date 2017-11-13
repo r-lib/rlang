@@ -3,7 +3,7 @@
 #include "rlang.h"
 
 
-int r_is_symbol(SEXP x, const char* string) {
+bool r_is_symbol(SEXP x, const char* string) {
   if (r_kind(x) != SYMSXP) {
     return false;
   } else {
@@ -11,7 +11,7 @@ int r_is_symbol(SEXP x, const char* string) {
   }
 }
 
-int r_is_symbol_any(SEXP x, const char** strings, int n) {
+bool r_is_symbol_any(SEXP x, const char** strings, int n) {
   if (r_kind(x) != SYMSXP) {
     return false;
   }
@@ -25,4 +25,18 @@ int r_is_symbol_any(SEXP x, const char** strings, int n) {
   }
 
   return false;
+}
+
+bool r_is_special_op_sym(SEXP x) {
+  if (r_kind(x) != SYMSXP) {
+    return false;
+  }
+
+  const char* name = CHAR(PRINTNAME(x));
+  size_t len = strlen(name);
+
+  return
+    len > 2 &&
+    name[0] == '%' &&
+    name[len - 1] == '%';
 }
