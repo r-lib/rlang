@@ -2,12 +2,12 @@
 
 [![Build Status](https://travis-ci.org/tidyverse/rlang.svg?branch=master)](https://travis-ci.org/tidyverse/rlang)
 [![Coverage Status](https://codecov.io/gh/tidyverse/rlang/branch/master/graph/badge.svg)](https://codecov.io/github/tidyverse/rlang?branch=master)
-[![stability-unstable](https://img.shields.io/badge/stability-unstable-yellow.svg)](https://github.com/joethorley/stability-badges#unstable)
+![](https://img.shields.io/badge/lifecycle-maturing-blue.svg)
 
-**Important**: The rlang API is not completely stable yet (except for
-the tidy evaluation functions exported in tidyverse packages). Please
-see https://github.com/tidyverse/rlang/issues/281 for information
-about upcoming changes.
+**Important**: The rlang API is still maturing (except for the tidy
+evaluation functions exported in tidyverse packages). Please see
+https://github.com/tidyverse/rlang/issues/281 for information about
+upcoming changes.
 
 
 ## Overview
