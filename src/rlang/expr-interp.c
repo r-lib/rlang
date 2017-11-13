@@ -17,9 +17,13 @@ static const char* uqs_names[UQS_N] = { "UQS", "!!!"};
 
 
 #define FIXUP_OPS_N 9
+#define FIXUP_UNARY_OPS_N 2
 
 static const char* fixup_ops_names[FIXUP_OPS_N] = {
   "<", ">", "<=", ">=", "==", "!=", "*", "/", ":"
+};
+static const char* fixup_unary_ops_names[FIXUP_UNARY_OPS_N] = {
+  "-", "+"
 };
 
 
@@ -41,6 +45,19 @@ static int bang_level(SEXP x) {
   return 3;
 }
 
+static inline bool needs_fixup(SEXP x) {
+  if (r_is_call_any(x, fixup_ops_names, FIXUP_OPS_N)) {
+    return true;
+  }
+
+  // Don't fixup unary operators
+  if (r_is_call_any(x, fixup_unary_ops_names, FIXUP_UNARY_OPS_N)) {
+    return r_node_cddr(x) != r_null;
+  }
+
+  return false;
+}
+
 static SEXP uq_call(SEXP x) {
   SEXP args = KEEP(r_new_node_list(x));
   SEXP call = r_new_call_node(r_sym("UQ"), args);
@@ -59,7 +76,7 @@ static SEXP replace_double_bang(SEXP x) {
   SEXP cadr = r_node_cadr(x);
   SEXP cadr_cadr = r_node_cadr(r_node_cadr(x));
 
-  if (!r_is_call_any(cadr_cadr, fixup_ops_names, FIXUP_OPS_N)) {
+  if (!needs_fixup(cadr_cadr)) {
     x = cadr;
     r_node_poke_car(x, r_sym("UQ"));
     return x;
@@ -69,7 +86,7 @@ static SEXP replace_double_bang(SEXP x) {
   x = cadr_cadr;
 
   SEXP innermost = x;
-  while (r_is_call_any(r_node_cadr(innermost), fixup_ops_names, FIXUP_OPS_N)) {
+  while (needs_fixup(r_node_cadr(innermost))) {
     innermost = r_node_cadr(innermost);
   }
 
