@@ -80,6 +80,38 @@ test_that("unquoted quosures are not guarded", {
 })
 
 
+# !! ----------------------------------------------------------------------
+
+test_that("`!!` binds tightly", {
+  foo <- "foo"
+  expect_identical(expr(!! foo == a), quote("foo" == a))
+  expect_identical(expr(!! foo * a != b), quote("foo" * a != b))
+  expect_identical(expr(!! foo * a / b > c), quote("foo" * a / b > c))
+
+  expect_identical(expr(a <= !! foo), quote(a <= "foo"))
+  expect_identical(expr(a >= !! foo : b), quote(a >= "foo" : b))
+  expect_identical(expr(a > !! foo * b : c), quote(a > "foo" * b : c))
+
+  expect_identical(expr(!! foo^a^b), quote("foo"^a^b))
+  expect_identical(expr(!! foo^a^b + c), quote("foo"^a^b + c))
+})
+
+test_that("`!!` handles binary and unary `-` and `+`", {
+  foo <- "foo"
+  expect_identical(expr(!! foo + a), quote("foo" + a))
+  expect_identical(expr(!! foo - a), quote("foo" - a))
+
+  foo <- 1L
+  expect_identical(expr(!! +foo + a), quote(1L + a))
+  expect_identical(expr(!! -foo - a), expr(UQ(-1L) - a))
+})
+
+test_that("`!!` handles special operators", {
+  foo <- "foo"
+  expect_identical(expr(!! foo %>% a), quote("foo" %>% a))
+})
+
+
 # UQ ----------------------------------------------------------------------
 
 test_that("evaluates contents of UQ()", {

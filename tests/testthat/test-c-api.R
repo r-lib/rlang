@@ -33,3 +33,12 @@ test_that("r_on_exit() adds deferred expr", {
   fn()
   expect_identical(var, c("bar", "foo"))
 })
+
+test_that("r_is_special_op_sym() detects special operators", {
+  is_special_op <- function(x) .Call(rlang_test_is_special_op_sym, x)
+  expect_false(is_special_op(quote(foo)))
+  expect_true(is_special_op(quote(`%>%`)))
+
+  expect_false(is_special_op(quote(`%>>`)))
+  expect_false(is_special_op(quote(`%%`)))
+})

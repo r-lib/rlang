@@ -34,5 +34,7 @@ bool r_is_maybe_prefixed_call_any(SEXP x, const char ** names, int n);
 bool r_is_namespaced_call(SEXP x, const char* ns);
 bool r_is_namespaced_call_any(SEXP x, const char* ns, const char** names, int n);
 
+bool r_is_special_op_call(SEXP x);
+
 
 #endif

@@ -16,6 +16,17 @@ static const char* uq_names[UQ_N] = { "UQ", "UQE", "!!" };
 static const char* uqs_names[UQS_N] = { "UQS", "!!!"};
 
 
+#define FIXUP_OPS_N 10
+#define FIXUP_UNARY_OPS_N 2
+
+static const char* fixup_ops_names[FIXUP_OPS_N] = {
+  "<", ">", "<=", ">=", "==", "!=", "*", "/", ":", "^"
+};
+static const char* fixup_unary_ops_names[FIXUP_UNARY_OPS_N] = {
+  "-", "+"
+};
+
+
 static int bang_level(SEXP x) {
   if (!r_is_call(x, "!")) {
     return 0;
@@ -34,14 +45,56 @@ static int bang_level(SEXP x) {
   return 3;
 }
 
+static inline bool needs_fixup(SEXP x) {
+  if (r_is_call_any(x, fixup_ops_names, FIXUP_OPS_N)) {
+    return true;
+  }
+
+  // Don't fixup unary operators
+  if (r_is_call_any(x, fixup_unary_ops_names, FIXUP_UNARY_OPS_N)) {
+    return r_node_cddr(x) != r_null;
+  }
+
+  if (r_is_special_op_call(x)) {
+    return true;
+  }
+
+  return false;
+}
+
+static SEXP uq_call(SEXP x) {
+  SEXP args = KEEP(r_new_node_list(x));
+  SEXP call = r_new_call_node(r_sym("UQ"), args);
+  FREE(1);
+  return call;
+}
 static SEXP replace_double_bang(SEXP x) {
   int bang = bang_level(x);
   if (bang == 3 || r_is_maybe_prefixed_call_any(x, uqs_names, UQS_N)) {
     r_abort("Can't splice at top-level");
-  } else if (bang == 2) {
-    x = r_node_cadr(x);
-    r_node_poke_car(x, r_sym("UQ"));
   }
+  if (bang != 2) {
+    return x;
+  }
+
+  SEXP cadr = r_node_cadr(x);
+  SEXP cadr_cadr = r_node_cadr(r_node_cadr(x));
+
+  if (!needs_fixup(cadr_cadr)) {
+    x = cadr;
+    r_node_poke_car(x, r_sym("UQ"));
+    return x;
+  }
+
+  // We have an infix expression. Fix up AST so that `!!` binds tightly
+  x = cadr_cadr;
+
+  SEXP innermost = x;
+  while (needs_fixup(r_node_cadr(innermost))) {
+    innermost = r_node_cadr(innermost);
+  }
+
+  r_node_poke_cadr(innermost, uq_call(r_node_cadr(innermost)));
   return x;
 }
 static SEXP replace_triple_bang(SEXP x) {
