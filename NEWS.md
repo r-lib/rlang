@@ -67,12 +67,22 @@
   indefinitely; `scoped_options()` and `with_options()` change options
   temporarily.
 
+* The tidy eval `!!` operator now binds tightly. You no longer have to
+  wrap it in parentheses, i.e. `!! x > y` will only unquote `x`.
+
 
 ## Breaking changes
 
 * `is_node()` now returns `TRUE` for calls as well and `is_pairlist()`
   does not return `TRUE` for `NULL` objects. Use `is_node_list()` to
   determine whether an object either of type `pairlist` or `NULL`.
+
+* `!!` now binds tightly in order to match intuitive parsing of tidy
+  eval code, e.g. `!! x > y` is now equivalent to `(!! x) > y`.  A
+  corollary of this new syntax is that you now have to be explicit
+  when you want to unquote the whole expression on the right of `!!`.
+  For instance you have to explicitly write `!! (x > y)` to unquote
+  `x > y` rather than just `x`.
 
 
 # rlang 0.1.4
