@@ -22,11 +22,6 @@
 
 * New `fn_fmls<-` and `fn_fmls_names<-` setters.
 
-* Calling `enquo()` at top-level is now an alias for `quo()` instead
-  of throwing an error. This is intended to make it easier to teach
-  tidyeval. Similarly, `enexpr()` at top-level is an alias for
-  `expr()`.
-
 * `ensym()` is a new variant of `enexpr()` that expects a symbol.
 
 * New function `chr_translate_unicode()` for turning characters

@@ -194,14 +194,10 @@ enquo <- function(arg) {
     return(new_quosure(missing_arg(), empty_env()))
   }
 
-  if (sys.parent() == 0) {
-    enquo(arg)
-  } else {
-    capture <- lang(captureArg, substitute(arg))
-    arg <- eval_bare(capture, caller_env())
-    expr <- .Call(rlang_interp, arg$expr, arg$env, TRUE)
-    forward_quosure(expr, arg$env)
-  }
+  capture <- lang(captureArg, substitute(arg))
+  arg <- eval_bare(capture, caller_env())
+  expr <- .Call(rlang_interp, arg$expr, arg$env, TRUE)
+  forward_quosure(expr, arg$env)
 }
 forward_quosure <- function(expr, env) {
   if (is_quosure(expr)) {

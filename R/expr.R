@@ -67,13 +67,9 @@ enexpr <- function(arg) {
     return(missing_arg())
   }
 
-  if (sys.parent() == 0) {
-    enexpr(arg)
-  } else {
-    capture <- lang(captureArg, substitute(arg))
-    arg <- eval_bare(capture, caller_env())
-    .Call(rlang_interp, arg$expr, arg$env, TRUE)
-  }
+  capture <- lang(captureArg, substitute(arg))
+  arg <- eval_bare(capture, caller_env())
+  .Call(rlang_interp, arg$expr, arg$env, TRUE)
 }
 #' @rdname expr
 #' @inheritParams dots_values

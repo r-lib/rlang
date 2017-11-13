@@ -43,13 +43,9 @@ is_symbol <- function(x) {
 #' @rdname expr
 #' @export
 ensym <- function(arg) {
-  if (sys.parent() == 0) {
-    sym <- enexpr(arg)
-  } else {
-    capture <- lang(captureArg, substitute(arg))
-    arg <- eval_bare(capture, caller_env())
-    sym <- .Call(rlang_interp, arg$expr, arg$env, TRUE)
-  }
+  capture <- lang(captureArg, substitute(arg))
+  arg <- eval_bare(capture, caller_env())
+  sym <- .Call(rlang_interp, arg$expr, arg$env, TRUE)
 
   if (!is_symbol(sym)) {
     abort("Must supply a symbol as argument")

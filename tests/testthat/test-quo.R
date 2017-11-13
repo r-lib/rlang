@@ -35,11 +35,6 @@ test_that("can capture optimised constants", {
   expect_identical(dots_bytecode(), quos("foo", "bar"))
 })
 
-test_that("can enquo() at top-level", {
-  quo <- new_quosure(quote(foo), global_env())
-  expect_identical(eval_bare(quote(enquo(foo)), global_env()), quo)
-})
-
 test_that("quosures are spliced", {
   q <- quo(foo(!! quo(bar), !! quo(baz(!! quo(baz), 3))))
   expect_identical(quo_text(q), "foo(bar, baz(baz, 3))")

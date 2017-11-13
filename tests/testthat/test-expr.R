@@ -51,10 +51,6 @@ test_that("name symbols, calls, and scalars", {
 
 # --------------------------------------------------------------------
 
-test_that("can enexpr() at top-level", {
-  expect_identical(eval_bare(quote(enexpr(foo)), global_env()), quote(foo))
-})
-
 test_that("get_expr() supports closures", {
   expect_identical(get_expr(identity), quote(x))
 })
