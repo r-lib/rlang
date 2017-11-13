@@ -103,6 +103,11 @@ test_that("`!!` handles binary and unary `-` and `+`", {
   expect_identical(expr(!! -foo - a), expr(UQ(-1L) - a))
 })
 
+test_that("`!!` handles special operators", {
+  foo <- "foo"
+  expect_identical(expr(!! foo %>% a), quote("foo" %>% a))
+})
+
 
 # UQ ----------------------------------------------------------------------
 

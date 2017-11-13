@@ -55,6 +55,10 @@ static inline bool needs_fixup(SEXP x) {
     return r_node_cddr(x) != r_null;
   }
 
+  if (r_is_special_op_call(x)) {
+    return true;
+  }
+
   return false;
 }
 
