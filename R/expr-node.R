@@ -281,3 +281,13 @@ node_append <- function(.x, .y) {
   node_walk_last(.x, function(l) mut_node_cdr(l, .y))
   .x
 }
+
+
+# FIXME: Deprecate `mut_` variants properly with lifecycle package and
+# replace them with these:
+node_poke_car <- mut_node_car
+node_poke_cdr <- mut_node_cdr
+node_poke_caar <- mut_node_caar
+node_poke_cadr <- mut_node_cadr
+node_poke_cdar <- mut_node_cdar
+node_poke_cddr <- mut_node_cddr
