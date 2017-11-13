@@ -48,19 +48,21 @@ SEXP attribute_hidden rlang_capturearg(SEXP call, SEXP op, SEXP args, SEXP rho)
     int strict = asLogical(CADR(args));
     SEXP arg = findVarInFrame3(rho, install("x"), TRUE);
 
-    if (TYPEOF(arg) == PROMSXP) {
-        // Get promise in caller frame
-        SEXP caller_env = CAR(args);
-        SEXP sym = PREXPR(arg);
-        if (TYPEOF(sym) != SYMSXP)
-            error(_("\"x\" must be an argument name"));
-
-        arg = findVarInFrame3(caller_env, sym, TRUE);
-        return capture_promise(arg, strict);
-    } else {
-        // Argument was optimised away
+    // Happens when argument is unwrapped from a promise by the compiler
+    if (TYPEOF(arg) != PROMSXP)
         return capture_arg(arg, R_EmptyEnv);
-    }
+
+    // Get promise in caller frame
+    SEXP caller_env = CAR(args);
+    SEXP sym = PREXPR(arg);
+    if (TYPEOF(sym) != SYMSXP)
+        error(_("\"x\" must be an argument name"));
+
+    arg = findVarInFrame3(caller_env, sym, TRUE);
+    if (arg == R_UnboundValue)
+        error(_("Attempt to capture argument that is not part of function signature"));
+    else
+        return capture_promise(arg, strict);
 }
 
 SEXP attribute_hidden rlang_capturedots(SEXP call, SEXP op, SEXP args, SEXP rho)

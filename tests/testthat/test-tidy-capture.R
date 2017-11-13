@@ -213,3 +213,18 @@ test_that("can take forced promise with strict = FALSE", {
   expect_error(fn(TRUE, letters), "already been evaluated")
   expect_identical(fn(FALSE, letters), NULL)
 })
+
+test_that("capturing an argument that doesn't exist fails", {
+  y <- "a"
+
+  fn <- function(x) captureArg(y)
+  expect_error(fn(), "not part of function signature")
+
+  fn <- function() enquo(y)
+  expect_error(fn(), "not part of function signature")
+
+  fn <- function() enexpr(y)
+  expect_error(fn(), "not part of function signature")
+
+  expect_error((function() rlang::enexpr(y))(), "not part of function signature")
+})
