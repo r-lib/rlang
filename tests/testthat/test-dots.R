@@ -55,8 +55,14 @@ test_that("dots_values() handles forced dots", {
 })
 
 test_that("cleans empty arguments", {
-  expect_identical(dots_list(1, a = ), named_list(1))
-  expect_identical(ll(1, a = ), list(1))
+  expect_identical(dots_list(1, ), named_list(1))
+  expect_identical(ll(1, ), list(1))
+  expect_identical(exprs(1, ), named_list(1))
+  expect_identical(dots_list(, 1, , .ignore_empty = "all"), named_list(1))
+})
 
-  expect_identical(dots_list(, 1, a = , .ignore_empty = "all"), named_list(1))
+test_that("doesn't clean named empty argument arguments", {
+  expect_error(dots_list(1, a = ), "missing")
+  expect_identical(exprs(1, a = ), alist(1, a = ))
+  expect_identical(exprs(1, a = , b = , , .ignore_empty = "all"), alist(1, a = , b = ))
 })

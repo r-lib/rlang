@@ -94,16 +94,18 @@ dots_values <- function(..., .ignore_empty = c("trailing", "none", "all")) {
 
 dots_clean_empty <- function(dots, is_empty, ignore_empty) {
   n_dots <- length(dots)
+  names <- names(dots)
 
   if (n_dots) {
     which <- match.arg(ignore_empty, c("trailing", "none", "all"))
     switch(which,
       trailing =
-        if (is_empty(dots[[n_dots]])) {
+        if (is_empty(dots[[n_dots]]) && names[[n_dots]] == "") {
           dots[[n_dots]] <- NULL
         },
       all = {
-        dots <- discard(dots, is_empty)
+        is_empty <- map_lgl(dots, is_empty) & names == ""
+        dots <- dots[!is_empty]
       }
     )
   }
