@@ -291,3 +291,4 @@ node_poke_caar <- mut_node_caar
 node_poke_cadr <- mut_node_cadr
 node_poke_cdar <- mut_node_cdar
 node_poke_cddr <- mut_node_cddr
+node_poke_tag <- mut_node_tag

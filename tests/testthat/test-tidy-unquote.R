@@ -236,6 +236,7 @@ test_that("can unquote-splice symbols", {
 })
 
 test_that("can unquote symbols", {
+  skip("TODO: error msg")
   unquoted <- dots_values(!! quote(.))
   expect_identical(unquoted, named_list(quote(.)))
 

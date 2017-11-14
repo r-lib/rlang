@@ -14,11 +14,12 @@ new_formula <- function(lhs, rhs, env = caller_env()) {
   }
 
   if (is_null(lhs)) {
-    f <- lang("~", rhs)
+    args <- pairlist(rhs)
   } else {
-    f <- lang("~", lhs, rhs)
+    args <- pairlist(lhs, rhs)
   }
 
+  f <- new_language(sym_tilde, args)
   structure(f, class = "formula", .Environment = env)
 }
 

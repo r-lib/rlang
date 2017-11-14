@@ -66,3 +66,13 @@ test_that("doesn't clean named empty argument arguments", {
   expect_identical(exprs(1, a = ), alist(1, a = ))
   expect_identical(exprs(1, a = , b = , , .ignore_empty = "all"), alist(1, a = , b = ))
 })
+
+test_that("capturing dots by value only unquote-splices at top-level", {
+  expect_identical(dots_list(!!! list(quote(!!! a))), named_list(quote(!!! a)))
+  expect_identical(dots_list(!!! exprs(!!! 1:3)), named_list(1L, 2L, 3L))
+})
+
+test_that("can't unquote when capturing dots by value", {
+  expect_identical(dots_list(!!! list(!!! TRUE)), named_list(FALSE))
+})
+
