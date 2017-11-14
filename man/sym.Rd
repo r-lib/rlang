@@ -7,10 +7,13 @@
 \usage{
 sym(x)
 
-syms(x)
+syms(...)
 }
 \arguments{
-\item{x}{A string or list of strings.}
+\item{x}{A string.}
+
+\item{...}{Character vectors or list of character vectors. This is
+passed to \code{\link[=chr]{chr()}} to enable automatic splicing.}
 }
 \value{
 A symbol for \code{sym()} and a list of symbols for \code{syms()}.
@@ -28,4 +31,10 @@ sym("")
 # This way sym() and as_string() are inverse of each other:
 as_string(missing_arg())
 sym(as_string(missing_arg()))
+
+# syms() is handy to create lists of symbols
+syms(letters[1:5])
+
+# It takes multiple arguments and automatically splices lists:
+syms("a", "b", list("b", "c"))
 }

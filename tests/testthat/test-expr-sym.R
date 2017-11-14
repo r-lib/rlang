@@ -9,3 +9,7 @@ test_that("ensym() fails with calls", {
 test_that("empty string is treated as the missing argument", {
   expect_identical(sym(""), missing_arg())
 })
+
+test_that("syms() takes character vectors or list of character vectors", {
+  expect_identical(syms(c("a", "b"), list("c", "d")), unname(exprs(a, b, c, d)))
+})
