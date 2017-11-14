@@ -2,8 +2,8 @@
 
 SEXP rlang_ns_get(const char* name);
 
-static SEXP interp_lang(SEXP x, SEXP env, bool quosured);
-static SEXP interp_lang_node(SEXP x, SEXP env, bool quosured);
+static SEXP interp_lang(SEXP x, SEXP env);
+static SEXP interp_lang_node(SEXP x, SEXP env);
 
 
 static inline bool is_rlang_call_any(SEXP x, const char** names, int n) {
@@ -118,7 +118,7 @@ static void unquote_check(SEXP x) {
     r_abort("`UQ()` must be called with an argument");
 }
 
-static SEXP unquote(SEXP x, SEXP env, SEXP uq_sym, bool quosured) {
+static SEXP unquote(SEXP x, SEXP env, SEXP uq_sym) {
   if (r_is_symbol(uq_sym, "!!")) {
     uq_sym = r_sym("UQE");
   }
@@ -130,17 +130,13 @@ static SEXP unquote(SEXP x, SEXP env, SEXP uq_sym, bool quosured) {
 
   SEXP unquoted = KEEP(r_eval(uq_fun, env));
 
-  if (!quosured && r_is_symbolic(unquoted)) {
-    unquoted = Rf_lang2(r_sym("quote"), unquoted);
-  }
-
   FREE(3);
   return unquoted;
 }
 
-static SEXP unquote_prefixed_uq(SEXP x, SEXP env, bool quosured) {
+static SEXP unquote_prefixed_uq(SEXP x, SEXP env) {
   SEXP uq_sym = r_node_cadr(r_node_cdar(x));
-  SEXP unquoted = KEEP(unquote(r_node_cadr(x), env, uq_sym, quosured));
+  SEXP unquoted = KEEP(unquote(r_node_cadr(x), env, uq_sym));
   r_node_poke_cdr(r_node_cdar(x), r_new_node(unquoted, r_null));
   FREE(1);
 
@@ -174,13 +170,7 @@ static SEXP splice_next(SEXP node, SEXP next, SEXP env) {
   return next;
 }
 
-static SEXP value_splice_next(SEXP cur, SEXP nxt, SEXP env) {
-  r_node_poke_car(r_node_car(nxt), rlang_ns_get("splice"));
-  r_node_poke_car(nxt, r_eval(r_node_car(nxt), env));
-  return cur;
-}
-
-static SEXP interp_lang(SEXP x, SEXP env, bool quosured)  {
+static SEXP interp_lang(SEXP x, SEXP env)  {
   if (r_kind(x) != LANGSXP) {
     return x;
   }
@@ -190,13 +180,13 @@ static SEXP interp_lang(SEXP x, SEXP env, bool quosured)  {
 
   if (r_is_prefixed_call_any(x, uq_names, UQ_N)) {
     unquote_check(x);
-    x = unquote_prefixed_uq(x, env, quosured);
+    x = unquote_prefixed_uq(x, env);
   } else if (r_is_call_any(x, uq_names, UQ_N)) {
     unquote_check(x);
     SEXP uq_sym = r_node_car(x);
-    x = unquote(r_node_cadr(x), env, uq_sym, quosured);
+    x = unquote(r_node_cadr(x), env, uq_sym);
   } else {
-    x = interp_lang_node(x, env, quosured);
+    x = interp_lang_node(x, env);
   }
 
   FREE(1);
@@ -207,28 +197,24 @@ static inline bool is_splice_call(SEXP node) {
   return is_rlang_call_any(r_node_car(node), uqs_names, UQS_N);
 }
 
-static SEXP interp_lang_node(SEXP x, SEXP env, bool quosured) {
+static SEXP interp_lang_node(SEXP x, SEXP env) {
   SEXP node, next;
 
   for (node = x; node != r_null; node = r_node_cdr(node)) {
-    r_node_poke_car(node, interp_lang(r_node_car(node), env, quosured));
+    r_node_poke_car(node, interp_lang(r_node_car(node), env));
 
     next = r_node_cdr(node);
     next = replace_triple_bang(next);
 
     if (is_splice_call(next)) {
-      if (quosured) {
-        node = splice_next(node, next, env);
-      } else {
-        node = value_splice_next(node, next, env);
-      }
+      node = splice_next(node, next, env);
     }
   }
 
   return x;
 }
 
-SEXP rlang_interp(SEXP x, SEXP env, SEXP quosured) {
+SEXP rlang_interp(SEXP x, SEXP env) {
   if (r_kind(x) != LANGSXP) {
     return x;
   }
@@ -237,7 +223,7 @@ SEXP rlang_interp(SEXP x, SEXP env, SEXP quosured) {
   }
 
   x = KEEP(r_duplicate(x, false));
-  x = interp_lang(x, env, r_as_bool(quosured));
+  x = interp_lang(x, env);
 
   FREE(1);
   return x;

@@ -69,7 +69,7 @@ enexpr <- function(arg) {
 
   capture <- lang(captureArg, substitute(arg))
   arg <- eval_bare(capture, caller_env())
-  .Call(rlang_interp, arg$expr, arg$env, TRUE)
+  .Call(rlang_interp, arg$expr, arg$env)
 }
 #' @rdname expr
 #' @inheritParams dots_values

@@ -188,7 +188,7 @@ dots_clean_empty <- function(dots, is_empty, ignore_empty) {
 #' @rdname quosures
 #' @export
 dots_definitions <- function(..., .named = FALSE) {
-  dots <- dots_enquose(..., `__interp_lhs` = FALSE)
+  dots <- dots_capture(..., `__interp_lhs` = FALSE)
   if (.named) {
     width <- quo_names_width(.named)
     dots <- quos_auto_name(dots, width)
@@ -235,15 +235,9 @@ dots_n <- function(...) {
   nargs()
 }
 
-dots_capture <- function(..., `__interp_lhs` = TRUE, `__quosured` = TRUE) {
-  info <- captureDots(strict = `__quosured`)
-
-  # No interpolation because dots were already evaluated
-  if (is_null(info)) {
-    return(NULL)
-  }
-
-  dots <- map(info, dot_interp, quosured = `__quosured`)
+dots_capture <- function(..., `__interp_lhs` = TRUE) {
+  info <- captureDots()
+  dots <- map(info, dot_interp)
 
   # Flatten possibly spliced dots
   dots <- unlist(dots, FALSE) %||% set_names(list())
@@ -254,9 +248,9 @@ dots_capture <- function(..., `__interp_lhs` = TRUE, `__quosured` = TRUE) {
 
   names(dots) <- .Call(rlang_unescape_character, names(dots))
 
-  dots
+  map(dots, dot_enquose)
 }
-dot_interp <- function(dot, quosured = TRUE) {
+dot_interp <- function(dot) {
   if (is_missing(dot$expr)) {
     return(list(dot))
   }
@@ -266,7 +260,7 @@ dot_interp <- function(dot, quosured = TRUE) {
   # Allow unquote-splice in dots
   if (is_splice(expr)) {
     dots <- call("alist", expr)
-    dots <- .Call(rlang_interp, dots, env, quosured)
+    dots <- .Call(rlang_interp, dots, env)
     dots <- eval_bare(dots)
 
     # Handle serialised unicode for characters that are not
@@ -279,14 +273,9 @@ dot_interp <- function(dot, quosured = TRUE) {
 
     map(dots, function(expr) list(expr = expr, env = env))
   } else {
-    expr <- .Call(rlang_interp, expr, env, quosured)
+    expr <- .Call(rlang_interp, expr, env)
     list(list(expr = expr, env = env))
   }
-}
-
-dots_enquose <- function(..., `__interp_lhs` = TRUE) {
-  dots <- dots_capture(..., `__interp_lhs` = `__interp_lhs`)
-  map(dots, dot_enquose)
 }
 dot_enquose <- function(dot) {
   if (is_missing(dot$expr)) {
@@ -295,6 +284,7 @@ dot_enquose <- function(dot) {
     forward_quosure(dot$expr, dot$env)
   }
 }
+
 
 is_bang <- function(expr) {
   is_lang(expr) && identical(node_car(expr), quote(`!`))
@@ -336,7 +326,7 @@ dot_interp_lhs <- function(name, dot) {
     warn("name ignored because a LHS was supplied")
   }
 
-  lhs <- .Call(rlang_interp, f_lhs(dot$expr), dot$env, FALSE)
+  lhs <- .Call(rlang_interp, f_lhs(dot$expr), dot$env)
   if (is_symbol(lhs)) {
     lhs <- as_string(lhs)
   } else if (!is_string(lhs)) {

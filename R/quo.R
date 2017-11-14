@@ -196,7 +196,7 @@ enquo <- function(arg) {
 
   capture <- lang(captureArg, substitute(arg))
   arg <- eval_bare(capture, caller_env())
-  expr <- .Call(rlang_interp, arg$expr, arg$env, TRUE)
+  expr <- .Call(rlang_interp, arg$expr, arg$env)
   forward_quosure(expr, arg$env)
 }
 forward_quosure <- function(expr, env) {

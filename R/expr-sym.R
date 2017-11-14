@@ -53,7 +53,7 @@ is_symbol <- function(x) {
 ensym <- function(arg) {
   capture <- lang(captureArg, substitute(arg))
   arg <- eval_bare(capture, caller_env())
-  sym <- .Call(rlang_interp, arg$expr, arg$env, TRUE)
+  sym <- .Call(rlang_interp, arg$expr, arg$env)
 
   if (!is_symbol(sym)) {
     abort("Must supply a symbol as argument")
