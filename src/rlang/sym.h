@@ -2,6 +2,9 @@
 #define RLANG_SYM_H
 
 
+#define r_unbound_sym R_UnboundValue
+#define r_missing_sym R_MissingArg
+
 static inline SEXP r_sym(const char* c_string) {
   return Rf_install(c_string);
 }
