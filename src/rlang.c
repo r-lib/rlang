@@ -9,7 +9,6 @@
 #include "rlang/env.c"
 #include "rlang/eval.c"
 #include "rlang/export.c"
-#include "rlang/expr-interp.c"
 #include "rlang/formula.c"
 #include "rlang/lang.c"
 #include "rlang/node.c"

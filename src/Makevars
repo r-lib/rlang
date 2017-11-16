@@ -4,7 +4,6 @@ files = rlang/rlang.h \
         rlang/env.c \
         rlang/eval.c \
         rlang/export.c \
-        rlang/expr-interp.c \
         rlang/formula.c \
         rlang/lang.c \
         rlang/node.c \

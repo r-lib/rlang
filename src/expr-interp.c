@@ -1,7 +1,10 @@
-#include "rlang.h"
+#include "rlang/rlang.h"
+
+SEXP rlang_ns_get(const char* name);
 
 static SEXP interp_lang(SEXP x, SEXP env, bool quosured);
 static SEXP interp_lang_node(SEXP x, SEXP env, bool quosured);
+
 
 static inline bool is_rlang_call_any(SEXP x, const char** names, int n) {
   return
