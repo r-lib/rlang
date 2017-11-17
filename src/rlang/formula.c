@@ -57,3 +57,30 @@ bool r_is_formulaish(SEXP x, int scoped, int lhs) {
 
   return true;
 }
+
+SEXP r_new_formula(SEXP lhs, SEXP rhs, SEXP env) {
+  static SEXP tilde_sym = NULL;
+  if (!tilde_sym) {
+    tilde_sym = r_sym("~");
+  }
+  if (!r_is_environment(env) && env != r_null) {
+    r_abort("`env` must be an environment");
+  }
+
+  SEXP f, args;
+  if (lhs == r_null) {
+    args = KEEP(r_new_node_list(rhs));
+  } else {
+    args = KEEP(r_new_node_list2(lhs, rhs));
+  }
+  f = KEEP(r_new_call_node(tilde_sym, args));
+
+  SEXP attrs = KEEP(r_new_node(env, r_null));
+  r_node_poke_tag(attrs, r_sym(".Environment"));
+
+  r_poke_attributes(f, attrs);
+  r_push_class(f, "formula");
+
+  FREE(3);
+  return f;
+}

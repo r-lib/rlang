@@ -17,6 +17,7 @@ typedef Rcomplex r_complex_t;
 #define KEEP PROTECT
 #define FREE UNPROTECT
 
+#include "attrs.h"
 #include "cnd.h"
 #include "env.h"
 #include "eval.h"

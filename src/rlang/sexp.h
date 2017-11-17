@@ -66,6 +66,10 @@ static inline SEXP r_duplicate(SEXP x, bool shallow) {
   }
 }
 
+
+static inline void r_poke_object_bit(SEXP x, int bit) {
+  SET_OBJECT(x, bit);
+}
 static inline bool r_is_object(SEXP x) {
   return OBJECT(x);
 }

@@ -18,6 +18,8 @@ static inline void r_chr_poke(SEXP chr, r_size_t i, SEXP elt) {
 bool r_chr_has(SEXP chr, const char* c_string);
 
 
+SEXP r_build_character(const char** strings, int n);
+
 static inline SEXP r_string(const char* c_string) {
   return Rf_mkChar(c_string);
 }
@@ -28,6 +30,10 @@ static inline bool r_is_r_string(SEXP x) {
 static inline SEXP r_scalar_chr(const char* c_string) {
   return Rf_mkString(c_string);
 }
+static inline SEXP r_as_scalar_chr(SEXP x) {
+  return Rf_ScalarString(x);
+}
+
 static inline bool r_is_scalar_character(SEXP x) {
   return r_kind(x) == STRSXP && r_length(x) == 1;
 }

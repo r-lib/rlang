@@ -1,6 +1,18 @@
 #include <string.h>
 #include "rlang.h"
 
+
+SEXP r_build_character(const char** strings, int n) {
+  SEXP out = KEEP(r_new_vector(STRSXP, n));
+
+  for (int i = 0; i < n; ++i) {
+    r_chr_poke(out, i, r_string(strings[i]));
+  }
+
+  FREE(1);
+  return out;
+}
+
 bool r_chr_has(SEXP chr, const char* c_string) {
   SEXP nm;
   for (int i = 0; i != r_vec_length(chr); ++i) {

@@ -68,6 +68,12 @@ static inline SEXP r_new_node(SEXP car, SEXP cdr) {
 static inline SEXP r_new_node_list(SEXP car) {
   return Rf_cons(car, r_null);
 }
+static inline SEXP r_new_node_list2(SEXP car1, SEXP car2) {
+  SEXP out = KEEP(Rf_cons(car2, r_null));
+  out = Rf_cons(car1, out);
+  FREE(1);
+  return out;
+}
 
 static inline SEXP r_build_node(SEXP car, SEXP cdr) {
   PROTECT(car);
