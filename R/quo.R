@@ -184,8 +184,7 @@ quo <- function(expr) {
 #' @inheritParams as_quosure
 #' @export
 new_quosure <- function(expr, env = caller_env()) {
-  quo <- new_formula(NULL, expr, env)
-  set_attrs(quo, class = c("quosure", "formula"))
+  .Call(rlang_new_quosure, expr, env)
 }
 #' @rdname quosure
 #' @export

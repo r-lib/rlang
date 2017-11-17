@@ -58,7 +58,8 @@ bool r_is_formulaish(SEXP x, int scoped, int lhs) {
   return true;
 }
 
-SEXP r_new_formula(SEXP lhs, SEXP rhs, SEXP env) {
+
+SEXP new_raw_formula(SEXP lhs, SEXP rhs, SEXP env) {
   static SEXP tilde_sym = NULL;
   if (!tilde_sym) {
     tilde_sym = r_sym("~");
@@ -77,10 +78,15 @@ SEXP r_new_formula(SEXP lhs, SEXP rhs, SEXP env) {
 
   SEXP attrs = KEEP(r_new_node(env, r_null));
   r_node_poke_tag(attrs, r_sym(".Environment"));
-
   r_poke_attributes(f, attrs);
-  r_push_class(f, "formula");
 
   FREE(3);
+  return f;
+}
+SEXP r_new_formula(SEXP lhs, SEXP rhs, SEXP env) {
+  SEXP f = KEEP(new_raw_formula(lhs, rhs, env));
+  r_push_class(f, "formula");
+
+  FREE(1);
   return f;
 }
