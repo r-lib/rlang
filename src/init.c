@@ -57,9 +57,11 @@ extern SEXP rlang_cnd_abort(SEXP, SEXP);
 extern SEXP rlang_cnd_inform(SEXP, SEXP);
 extern SEXP rlang_cnd_signal(SEXP, SEXP);
 extern SEXP rlang_cnd_warn(SEXP, SEXP);
-extern SEXP rlang_r_string(SEXP str);
+extern SEXP rlang_r_string(SEXP);
+extern SEXP rlang_dots_quos(SEXP);
 extern SEXP r_new_formula(SEXP, SEXP, SEXP);
 extern SEXP r_new_quosure(SEXP, SEXP);
+extern SEXP rlang_forward_quosure(SEXP, SEXP);
 
 
 // For unit tests
@@ -124,8 +126,10 @@ static const R_CallMethodDef call_entries[] = {
   {"rlang_test_is_special_op_sym", (DL_FUNC) &rlang_test_is_special_op_sym, 1},
   {"rlang_test_base_ns_get",    (DL_FUNC) &rlang_test_base_ns_get, 1},
   {"rlang_r_string",            (DL_FUNC) &rlang_r_string, 1},
+  {"rlang_dots_quos",           (DL_FUNC) &rlang_dots_quos, 1},
   {"rlang_new_formula",         (DL_FUNC) &r_new_formula, 3},
   {"rlang_new_quosure",         (DL_FUNC) &r_new_quosure, 2},
+  {"rlang_forward_quosure",     (DL_FUNC) &rlang_forward_quosure, 2},
   {NULL, NULL, 0}
 };
 

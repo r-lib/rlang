@@ -66,7 +66,7 @@
 #' dots$defs
 quos <- function(..., .named = FALSE,
                  .ignore_empty = c("trailing", "none", "all")) {
-  dots <- dots_capture(...)
+  dots <- dots_quos(...)
   dots <- dots_clean_empty(dots, quo_is_missing, .ignore_empty)
 
   if (.named) {

@@ -12,7 +12,6 @@ SEXP r_new_quosure(SEXP expr, SEXP env) {
   return quo;
 }
 
-
 bool r_quo_is_missing(SEXP x) {
   return r_is_missing(r_f_rhs(x));
 }

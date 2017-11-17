@@ -29,6 +29,8 @@ static const char* fixup_unary_ops_names[FIXUP_UNARY_OPS_N] = {
   "-", "+"
 };
 
+static SEXP uqs_fun;
+
 
 static int bang_level(SEXP x) {
   if (!r_is_call(x, "!")) {
@@ -101,14 +103,9 @@ static SEXP replace_double_bang(SEXP x) {
   return x;
 }
 static SEXP replace_triple_bang(SEXP x) {
-  if (bang_level(r_node_car(x)) != 3) {
-    return x;
-  }
+  SEXP node = r_node_cadr(r_node_cadr(x));
 
-  SEXP node = r_node_cdar(r_node_cdar(x));
-
-  r_node_poke_car(r_node_car(node), r_sym("UQS"));
-  r_node_poke_cdr(node, r_node_cdr(x));
+  r_node_poke_car(node, r_sym("UQS"));
 
   return node;
 }
@@ -149,10 +146,6 @@ static SEXP unquote_prefixed_uq(SEXP x, SEXP env) {
 }
 
 static SEXP splice_next(SEXP node, SEXP next, SEXP env) {
-  static SEXP uqs_fun;
-  if (!uqs_fun) {
-    uqs_fun = rlang_ns_get("UQS");
-  }
   r_node_poke_car(r_node_car(next), uqs_fun);
 
   // UQS() does error checking and returns a pair list
@@ -171,6 +164,9 @@ static SEXP splice_next(SEXP node, SEXP next, SEXP env) {
 }
 
 static SEXP interp_lang(SEXP x, SEXP env)  {
+  if (!uqs_fun) {
+    uqs_fun = rlang_ns_get("UQS");
+  }
   if (r_kind(x) != LANGSXP) {
     return x;
   }
@@ -194,19 +190,24 @@ static SEXP interp_lang(SEXP x, SEXP env)  {
 }
 
 static inline bool is_splice_call(SEXP node) {
-  return is_rlang_call_any(r_node_car(node), uqs_names, UQS_N);
+  return is_rlang_call_any(node, uqs_names, UQS_N);
 }
 
 static SEXP interp_lang_node(SEXP x, SEXP env) {
-  SEXP node, next;
+  SEXP node, next, next_head;
 
   for (node = x; node != r_null; node = r_node_cdr(node)) {
     r_node_poke_car(node, interp_lang(r_node_car(node), env));
 
     next = r_node_cdr(node);
-    next = replace_triple_bang(next);
+    next_head = r_node_car(next);
 
-    if (is_splice_call(next)) {
+    // FIXME double check
+    if (bang_level(next_head) == 3) {
+      next_head = replace_triple_bang(next_head);
+      r_node_poke_car(next, next_head);
+    }
+    if (is_splice_call(next_head)) {
       node = splice_next(node, next, env);
     }
   }
@@ -227,4 +228,90 @@ SEXP rlang_interp(SEXP x, SEXP env) {
 
   FREE(1);
   return x;
+}
+
+// FIXME: is it right to disregard defs?
+SEXP rlang_forward_quosure(SEXP x, SEXP env) {
+  if (r_is_quosure(x)) {
+    return x;
+  } else if (r_is_symbolic(x)) {
+    return r_new_quosure(x, env);
+  } else {
+    return r_new_quosure(x, r_empty_env);
+  }
+}
+
+static inline SEXP dot_expr(SEXP dot) {
+  return r_list_get(dot, 0);
+}
+static inline SEXP dot_env(SEXP dot) {
+  return r_list_get(dot, 1);
+}
+
+SEXP rlang_capture_dots(SEXP frame_env);
+
+SEXP rlang_dots_quos(SEXP frame_env) {
+  SEXP dots = KEEP(rlang_capture_dots(frame_env));
+
+  SEXP node = dots;
+  SEXP parent = r_null;
+
+  while (node != r_null) {
+    SEXP expr = dot_expr(r_node_car(node));
+    SEXP env = dot_env(r_node_car(node));
+
+    if (bang_level(expr) == 3) {
+      expr = r_duplicate(expr, false);
+      expr = replace_triple_bang(expr);
+      r_node_poke_car(node, expr);
+    }
+    if (is_splice_call(expr)) {
+      SEXP spliced = r_eval(expr, env);
+
+      if (r_length(spliced)) {
+        SEXP rest = r_node_cdr(node);
+        r_node_poke_car(node, r_node_car(spliced));
+        r_node_poke_cdr(node, r_node_cdr(spliced));
+
+        SEXP tail;
+        while (node != r_null) {
+          expr = r_node_car(node);
+          r_node_poke_car(node, rlang_forward_quosure(expr, env));
+          tail = node;
+          node = r_node_cdr(node);
+        }
+
+        r_node_poke_cdr(tail, rest);
+        node = tail;
+      } else if (parent == r_null) {
+        dots = node = r_node_cdr(node);
+        continue; // Don't poke `parent`
+      } else {
+        r_node_poke_cdr(parent, r_node_cdr(node));
+      }
+
+    } else {
+      r_node_poke_car(node, rlang_forward_quosure(expr, env));
+    }
+
+    parent = node;
+    node = r_node_cdr(node);
+  }
+
+  if (dots == r_null) {
+    static SEXP empty_list = NULL;
+    if (!empty_list) {
+      empty_list = r_new_vector(VECSXP, 0);
+      r_preserve(empty_list);
+      r_mark_shared(empty_list);
+
+      SEXP nms = KEEP(r_new_vector(STRSXP, 0));
+      r_poke_names(empty_list, nms);
+      FREE(1);
+    }
+    dots = empty_list;
+  }
+
+  FREE(1);
+  return dots;
 }

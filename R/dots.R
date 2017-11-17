@@ -82,7 +82,23 @@ dots_splice <- function(..., .ignore_empty = c("trailing", "none", "all")) {
 #' # Flatten the spliced objects:
 #' flatten_if(dots, is_spliced)
 dots_values <- function(..., .ignore_empty = c("trailing", "none", "all")) {
+  dots <- rlang_expand_dots(dots_value_ctor, .ignore_empty, ...)
+
+  # Trigger missing argument errors
+  map_if(dots, is_missing, eval_bare)
+}
+dots_value_ctor <- function(node, expr, env) {
+  if (is_missing(expr)) {
+    node_poke_car(node, missing_arg())
+  } else {
+    evaluated_dot <- eval_bare(expr, env)
+    node_poke_car(node, evaluated_dot)
+  }
+}
+
+rlang_expand_dots <- function(`__ctor`, `__ignore_empty`, ...) {
   dots <- as.pairlist(captureDots(strict = FALSE))
+
   if (is_null(dots)) {
     return(ensure_named(list(...)))
   }
@@ -100,25 +116,17 @@ dots_values <- function(..., .ignore_empty = c("trailing", "none", "all")) {
     } else {
       splice_child <- triple_bang(first$expr)
       if (!is_null(splice_child)) {
-        first$expr <- new_language(rlang::splice, node_cdr(splice_child))
+        first$expr <- new_language(splice, node_cdr(splice_child))
       }
     }
 
-    if (is_missing(first$expr)) {
-      node_poke_car(node, missing_arg())
-    } else {
-      evaluated_dot <- eval_bare(first$expr, first$env)
-      node_poke_car(node, evaluated_dot)
-    }
+    `__ctor`(node, first$expr, first$env)
+
     node <- rest
   }
 
   dots <- ensure_named(as.list(dots))
-  dots <- dots_clean_empty(dots, is_missing, .ignore_empty)
-
-  # Trigger missing argument errors
-  map_if(dots, is_missing, eval_bare)
-
+  dots <- dots_clean_empty(dots, is_missing, `__ignore_empty`)
   dots
 }
 
@@ -188,7 +196,7 @@ dots_clean_empty <- function(dots, is_empty, ignore_empty) {
 #' @rdname quosures
 #' @export
 dots_definitions <- function(..., .named = FALSE) {
-  dots <- dots_capture(..., `__interp_lhs` = FALSE)
+  dots <- dots_quos(..., `__interp_lhs` = FALSE)
   if (.named) {
     width <- quo_names_width(.named)
     dots <- quos_auto_name(dots, width)
@@ -235,21 +243,11 @@ dots_n <- function(...) {
   nargs()
 }
 
-dots_capture <- function(..., `__interp_lhs` = TRUE) {
-  info <- captureDots()
-  dots <- map(info, dot_interp)
-
-  # Flatten possibly spliced dots
-  dots <- unlist(dots, FALSE) %||% set_names(list())
-
-  if (`__interp_lhs`) {
-    dots <- dots_interp_lhs(dots)
-  }
-
-  names(dots) <- .Call(rlang_unescape_character, names(dots))
-
-  map(dots, dot_enquose)
+dots_quos <- function(..., `__interp_lhs` = TRUE) {
+  return(.Call(rlang_dots_quos, get_env()))
 }
+
+# FIXME: port unicode logic
 dot_interp <- function(dot) {
   if (is_missing(dot$expr)) {
     return(list(dot))

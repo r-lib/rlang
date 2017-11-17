@@ -12,8 +12,22 @@ static inline SEXPTYPE r_kind(SEXP x) {
   return TYPEOF(x);
 }
 
-static inline bool r_inherits(SEXP x, const char* class_) {
-  return Rf_inherits(x, class_);
+static inline void r_preserve(SEXP x) {
+  R_PreserveObject(x);
+}
+static inline void r_release(SEXP x) {
+  R_ReleaseObject(x);
+}
+
+static inline void r_mark_shared(SEXP x) {
+  MARK_NOT_MUTABLE(x);
+}
+static inline bool r_is_shared(SEXP x) {
+  return MAYBE_SHARED(x);
+}
+
+static inline bool r_inherits(SEXP x, const char* tag) {
+  return Rf_inherits(x, tag);
 }
 
 static inline SEXP r_get_attribute(SEXP x, SEXP sym) {
@@ -67,7 +81,7 @@ static inline SEXP r_duplicate(SEXP x, bool shallow) {
 }
 
 
-static inline void r_poke_object_bit(SEXP x, int bit) {
+static inline void r_mark_object(SEXP x, int bit) {
   SET_OBJECT(x, bit);
 }
 static inline bool r_is_object(SEXP x) {

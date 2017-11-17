@@ -75,4 +75,3 @@ test_that("capturing dots by value only unquote-splices at top-level", {
 test_that("can't unquote when capturing dots by value", {
   expect_identical(dots_list(!!! list(!!! TRUE)), named_list(FALSE))
 })
-

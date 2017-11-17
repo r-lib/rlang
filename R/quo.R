@@ -199,15 +199,7 @@ enquo <- function(arg) {
   forward_quosure(expr, arg$env)
 }
 forward_quosure <- function(expr, env) {
-  if (is_quosure(expr)) {
-    expr
-  } else if (is_definition(expr)) {
-    as_quosureish(expr, env)
-  } else if (is_symbolic(expr)) {
-    new_quosure(expr, env)
-  } else {
-    new_quosure(expr, empty_env())
-  }
+  .Call(rlang_forward_quosure, expr, env)
 }
 
 #' @export
