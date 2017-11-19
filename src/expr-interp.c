@@ -32,21 +32,27 @@ static const char* fixup_unary_ops_names[FIXUP_UNARY_OPS_N] = {
 static SEXP uqs_fun;
 
 
-static int bang_level(SEXP x) {
+static int bang_level(SEXP x, SEXP* expr) {
   if (!r_is_call(x, "!")) {
     return 0;
   }
 
-  SEXP arg = r_node_cdr(x);
-  if (r_is_null(arg) || !r_is_call(r_node_car(arg), "!")) {
+  SEXP arg = r_node_cadr(x);
+  if (!r_is_call(arg, "!")) {
     return 1;
   }
 
-  arg = r_node_cdr(r_node_car(arg));
-  if (r_is_null(arg) || !r_is_call(r_node_car(arg), "!")) {
+  arg = r_node_cadr(arg);
+  if (!r_is_call(arg, "!")) {
+    if (expr) {
+      *expr = arg;
+    }
     return 2;
   }
 
+  if (expr) {
+    *expr = r_node_cadr(arg);
+  }
   return 3;
 }
 
@@ -74,7 +80,7 @@ static SEXP uq_call(SEXP x) {
   return call;
 }
 static SEXP replace_double_bang(SEXP x) {
-  int bang = bang_level(x);
+  int bang = bang_level(x, NULL);
   if (bang == 3 || r_is_maybe_prefixed_call_any(x, uqs_names, UQS_N)) {
     r_abort("Can't splice at top-level");
   }
@@ -203,7 +209,7 @@ static SEXP interp_lang_node(SEXP x, SEXP env) {
     next_head = r_node_car(next);
 
     // FIXME double check
-    if (bang_level(next_head) == 3) {
+    if (bang_level(next_head, NULL) == 3) {
       next_head = replace_triple_bang(next_head);
       r_node_poke_car(next, next_head);
     }
@@ -260,7 +266,7 @@ SEXP rlang_dots_quos(SEXP frame_env) {
     SEXP expr = dot_expr(r_node_car(node));
     SEXP env = dot_env(r_node_car(node));
 
-    if (bang_level(expr) == 3) {
+    if (bang_level(expr, NULL) == 3) {
       expr = r_duplicate(expr, false);
       expr = replace_triple_bang(expr);
       r_node_poke_car(node, expr);
