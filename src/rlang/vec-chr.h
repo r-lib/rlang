@@ -51,5 +51,9 @@ static inline bool r_is_empty_string(SEXP str) {
   return strcmp(c_str, "") == 0;
 }
 
+static inline bool r_chr_has_empty_string_at(SEXP chr, r_size_t i) {
+  return r_is_empty_string(r_chr_get(chr, i));
+}
+
 
 #endif
