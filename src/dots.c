@@ -315,7 +315,8 @@ SEXP dots_interp(SEXP frame_env, SEXP offset, SEXP ignore_empty) {
   return out;
 }
 
-SEXP rlang_dots_interp(SEXP frame_env, SEXP offset, SEXP ignore_empty) {
+SEXP rlang_dots_interp(SEXP frame_env, SEXP offset,
+                       SEXP named, SEXP ignore_empty) {
   SEXP dots = dots_interp(frame_env, offset, ignore_empty);
 
   if (dots == r_null) {
@@ -324,7 +325,8 @@ SEXP rlang_dots_interp(SEXP frame_env, SEXP offset, SEXP ignore_empty) {
     return dots;
   }
 }
-SEXP rlang_quos_interp(SEXP frame_env, SEXP offset, SEXP ignore_empty) {
+SEXP rlang_quos_interp(SEXP frame_env, SEXP offset,
+                       SEXP named, SEXP ignore_empty) {
   SEXP dots = dots_interp(frame_env, offset, ignore_empty);
 
   if (dots == r_null) {

@@ -17,6 +17,18 @@ bool r_is_atomic(SEXP x) {
 bool r_is_scalar_atomic(SEXP x) {
   return r_length(x) == 1 && r_is_atomic(x);
 }
+
+bool r_is_integerish(SEXP x) {
+  static SEXP predicate = NULL;
+  if (!predicate) {
+    predicate = rlang_ns_get("is_integerish");
+  }
+  SEXP call = KEEP(r_build_call1(predicate, x));
+  SEXP out = r_eval(call, r_empty_env);
+  FREE(1);
+  return out;
+}
+
 bool r_is_list(SEXP x) {
   return r_kind(x) == VECSXP;
 }

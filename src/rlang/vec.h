@@ -8,6 +8,7 @@ bool r_is_list(SEXP x);
 bool r_is_vector(SEXP x);
 bool r_is_scalar_atomic(SEXP x);
 bool r_is_atomic(SEXP x);
+bool r_is_integerish(SEXP x);
 
 SEXP r_scalar_lgl(bool x);
 
