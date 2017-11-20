@@ -55,5 +55,7 @@ static inline bool r_chr_has_empty_string_at(SEXP chr, r_size_t i) {
   return r_is_empty_string(r_chr_get(chr, i));
 }
 
+SEXP r_str_unserialise_unicode(SEXP r_string);
+
 
 #endif

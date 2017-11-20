@@ -7,7 +7,6 @@
 
 void copy_character(SEXP tgt, SEXP src, R_xlen_t len);
 R_xlen_t unescape_character_in_copy(SEXP tgt, SEXP src, R_xlen_t i);
-SEXP r_str_unserialise_unicode(SEXP r_string);
 
 SEXP rlang_symbol(SEXP chr) {
   SEXP string = STRING_ELT(chr, 0);
