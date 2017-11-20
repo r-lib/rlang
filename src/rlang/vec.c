@@ -63,10 +63,6 @@ r_size_t r_vec_length(SEXP x) {
   }
 }
 
-SEXP r_scalar_lgl(bool x) {
-  return Rf_ScalarLogical(x);
-}
-
 
 // Copy --------------------------------------------------------------
 

@@ -10,7 +10,12 @@ bool r_is_scalar_atomic(SEXP x);
 bool r_is_atomic(SEXP x);
 bool r_is_integerish(SEXP x);
 
-SEXP r_scalar_lgl(bool x);
+static inline SEXP r_scalar_lgl(bool x) {
+  return Rf_ScalarLogical(x);
+}
+static inline SEXP r_scalar_int(int x) {
+  return Rf_ScalarInteger(x);
+}
 
 static inline int r_c_int(SEXP x) {
   return INTEGER(x)[0];
