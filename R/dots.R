@@ -196,7 +196,8 @@ dots_clean_empty <- function(dots, is_empty, ignore_empty) {
 #' @rdname quosures
 #' @export
 dots_definitions <- function(..., .named = FALSE) {
-  dots <- dots_quos(..., `__interp_lhs` = FALSE)
+  # TODO: change `:=` symbol to avoid interpolating LHS
+  dots <- .Call(rlang_dots_interp, environment())
   if (.named) {
     width <- quo_names_width(.named)
     dots <- quos_auto_name(dots, width)
@@ -241,96 +242,4 @@ dots_node <- function(...) {
 #' fn(foo, bar)
 dots_n <- function(...) {
   nargs()
-}
-
-dots_quos <- function(..., `__interp_lhs` = TRUE) {
-  return(.Call(rlang_dots_quos, get_env()))
-}
-
-# FIXME: port unicode logic
-dot_interp <- function(dot) {
-  if (is_missing(dot$expr)) {
-    return(list(dot))
-  }
-  env <- dot$env
-  expr <- dot$expr
-
-  # Allow unquote-splice in dots
-  if (is_splice(expr)) {
-    dots <- call("alist", expr)
-    dots <- .Call(rlang_interp, dots, env)
-    dots <- eval_bare(dots)
-
-    # Handle serialised unicode for characters that are not
-    # representable in the current locale. They have been serialised
-    # when converted to symbols (during pairlist-splicing).
-    nms <- names(dots)
-    if (!is_null(nms)) {
-      names(dots) <- as_utf8_character(nms)
-    }
-
-    map(dots, function(expr) list(expr = expr, env = env))
-  } else {
-    expr <- .Call(rlang_interp, expr, env)
-    list(list(expr = expr, env = env))
-  }
-}
-dot_enquose <- function(dot) {
-  if (is_missing(dot$expr)) {
-    new_quosure(missing_arg(), empty_env())
-  } else {
-    forward_quosure(dot$expr, dot$env)
-  }
-}
-
-
-is_bang <- function(expr) {
-  is_lang(expr) && identical(node_car(expr), quote(`!`))
-}
-is_splice <- function(expr) {
-  if (!is.call(expr)) {
-    return(FALSE)
-  }
-
-  if (identical(node_car(expr), quote(UQS)) || identical(node_car(expr), quote(rlang::UQS))) {
-    return(TRUE)
-  }
-
-  if (is_bang(expr) && is_bang(node_cadr(expr)) && is_bang(node_cadr(node_cadr(expr)))) {
-    return(TRUE)
-  }
-
-  FALSE
-}
-
-dots_interp_lhs <- function(dots) {
-  nms <- names2(dots)
-  defs <- map_lgl(dots, function(dot) is_definition(dot$expr))
-
-  for (i in which(defs)) {
-    info <- dot_interp_lhs(nms[[i]], dots[[i]])
-    dots[[i]] <- info$dot
-
-    if (!is_null(info$name)) {
-      nms[[i]] <- info$name
-    }
-  }
-
-  names(dots) <- nms
-  dots
-}
-dot_interp_lhs <- function(name, dot) {
-  if (!is_null(name) && name != "") {
-    warn("name ignored because a LHS was supplied")
-  }
-
-  lhs <- .Call(rlang_interp, f_lhs(dot$expr), dot$env)
-  if (is_symbol(lhs)) {
-    lhs <- as_string(lhs)
-  } else if (!is_string(lhs)) {
-    abort("LHS must be a symbol or string")
-  }
-
-  dot <- list(expr = f_rhs(dot$expr), env = dot$env)
-  list(name = lhs, dot = dot)
 }

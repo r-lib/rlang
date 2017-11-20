@@ -56,20 +56,6 @@ test_that("dots capture is stack-consistent", {
   expect_identical(fn(foo(baz)), quos_list(quo(foo(baz))))
 })
 
-test_that("splice is consistently recognised", {
-  spliced <- quote(!!! list())
-  expect_true(is_splice(spliced))
-
-  spliced <- quote(UQS(list()))
-  expect_true(is_splice(spliced))
-
-  spliced <- quote(rlang::UQS(list()))
-  expect_true(is_splice(spliced))
-
-  spliced <- quote(ns::UQS(list()))
-  expect_false(is_splice(spliced))
-})
-
 test_that("dots can be spliced in", {
   fn <- function(...) {
     var <- "var"
@@ -108,13 +94,14 @@ test_that("dot names are interpolated", {
 
 test_that("corner cases are handled when interpolating dot names", {
     var <- na_chr
-    expect_identical(names(quos(!!var := NULL)), na_chr)
+    expect_identical(names(quos(!!var := NULL)), "NA")
 
     var <- NULL
-    expect_error(quos(!!var := NULL), "must be a symbol or string")
+    expect_error(quos(!!var := NULL), "must be a string or a symbol")
 })
 
 test_that("definitions are interpolated", {
+  skip("TODO")
   var1 <- "foo"
   var2 <- "bar"
   dots <- dots_definitions(def = foo(!!var1) := bar(!!var2))
@@ -146,9 +133,11 @@ test_that("Can supply := with LHS even if .named = TRUE", {
   expect_warning(regexp = NA, expect_identical(
     quos(!!"nm" := 2, .named = TRUE), quos_list(nm = as_quosure(quote(2), empty_env()))
   ))
-  expect_warning(regexp = "name ignored", expect_identical(
-    quos(foobar = !!"nm" := 2, .named = TRUE), quos_list(nm = as_quosure(quote(2), empty_env()))
-  ))
+})
+
+test_that("Can't supply both `=` and `:=`", {
+  expect_error(regexp = "both `=` and `:=`", quos(foobar = !!"nm" := 2))
+  expect_error(regexp = "both `=` and `:=`", quos(foobar = !!"nm" := 2, .named = TRUE))
 })
 
 test_that("RHS of tidy defs are unquoted", {
@@ -227,4 +216,18 @@ test_that("capturing an argument that doesn't exist fails", {
   expect_error(fn(), "not part of function signature")
 
   expect_error((function() rlang::enexpr(y))(), "not part of function signature")
+})
+
+test_that("serialised unicode in `:=` LHS is unserialised", {
+  nms <- with_latin1_locale({
+    exprs <- exprs("\u5e78" := 10)
+    names(exprs)
+  })
+  expect_identical(as_bytes(nms), as_bytes("\u5e78"))
+})
+
+test_that("Unicode escapes are always converted to UTF8 in quos()", {
+  skip("FIXME: Maybe not needed - check with dplyr tests")
+  q <- quos(`<U+5E78><U+798F>` = 1)
+  expect_identical(names(q), "\u5e78\u798f")
 })

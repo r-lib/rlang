@@ -172,7 +172,7 @@ test_that("splicing an empty vector works", {
   expect_identical(expr_interp(~list(!!! NULL)), quo(list()))
 })
 
-test_that("serialised unicode in argument names is parsed on splice", {
+test_that("serialised unicode in argument names is unserialised on splice", {
   nms <- with_latin1_locale({
     exprs <- exprs("\u5e78" := 10)
     quos <- quos(!!! exprs)

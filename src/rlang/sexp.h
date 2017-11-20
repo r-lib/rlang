@@ -50,6 +50,7 @@ static inline SEXP r_set_class(SEXP x, SEXP classes) {
 static inline SEXP r_get_class(SEXP x) {
   return Rf_getAttrib(x, R_ClassSymbol);
 }
+// FIXME: r_get_names()?
 static inline SEXP r_names(SEXP x) {
   return Rf_getAttrib(x, R_NamesSymbol);
 }
@@ -98,8 +99,7 @@ static inline SEXP r_poke_str_kind(SEXP x, const char* type) {
 }
 
 static inline const char* r_type_c_string(SEXPTYPE kind) {
-  SEXP str = Rf_type2str(kind);
-  return CHAR(str);
+  return CHAR(Rf_type2str(kind));
 }
 
 static inline bool r_is_symbolic(SEXP x) {

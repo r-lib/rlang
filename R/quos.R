@@ -66,7 +66,7 @@
 #' dots$defs
 quos <- function(..., .named = FALSE,
                  .ignore_empty = c("trailing", "none", "all")) {
-  dots <- dots_quos(...)
+  dots <- .Call(rlang_dots_interp, environment(), 3L)
   dots <- dots_clean_empty(dots, quo_is_missing, .ignore_empty)
 
   if (.named) {
