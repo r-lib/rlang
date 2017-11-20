@@ -21,6 +21,7 @@
 #' See [is_expr()] for more about R expressions.
 #'
 #' @inheritParams quosure
+#' @inheritParams quosures
 #' @seealso [quo()], [is_expr()]
 #' @return The raw expression supplied as argument. `exprs()` returns
 #'   a list of expressions.
@@ -75,8 +76,10 @@ enexpr <- function(arg) {
 #' @inheritParams dots_values
 #' @param ... Arguments to extract.
 #' @export
-exprs <- function(..., .ignore_empty = "trailing") {
-  map(quos(..., .ignore_empty = .ignore_empty), f_rhs)
+exprs <- function(...,
+                  .named = FALSE,
+                 .ignore_empty = c("trailing", "none", "all")) {
+  .Call(rlang_dots_interp, environment(), 0L, .named, .ignore_empty)
 }
 
 

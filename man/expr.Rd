@@ -13,7 +13,7 @@ expr(expr)
 
 enexpr(arg)
 
-exprs(..., .ignore_empty = "trailing")
+exprs(..., .named = FALSE, .ignore_empty = c("trailing", "none", "all"))
 }
 \arguments{
 \item{arg}{A symbol referring to an argument. The expression
@@ -22,6 +22,12 @@ supplied to that argument will be captured unevaluated.}
 \item{expr}{An expression.}
 
 \item{...}{Arguments to extract.}
+
+\item{.named}{Whether to ensure all dots are named. Unnamed
+elements are processed with \code{\link[=expr_text]{expr_text()}} to figure out a default
+name. If an integer, it is passed to the \code{width} argument of
+\code{expr_text()}, if \code{TRUE}, the default width is used. See
+\code{\link[=exprs_auto_name]{exprs_auto_name()}}.}
 
 \item{.ignore_empty}{Whether to ignore empty arguments. Can be one
 of \code{"trailing"}, \code{"none"}, \code{"all"}. If \code{"trailing"}, only the

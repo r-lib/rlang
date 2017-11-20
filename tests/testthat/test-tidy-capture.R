@@ -231,3 +231,7 @@ test_that("Unicode escapes are always converted to UTF8 in quos()", {
   q <- quos(`<U+5E78><U+798F>` = 1)
   expect_identical(names(q), "\u5e78\u798f")
 })
+
+test_that("exprs() supports auto-naming", {
+  expect_identical(exprs(foo(bar), b = baz(), .named = TRUE), list(`foo(bar)` = quote(foo(bar)), b = quote(baz())))
+})

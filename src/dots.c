@@ -123,7 +123,7 @@ static inline void mark_ignored_dot(SEXP x) {
   r_poke_attribute(x, rlang_ignored_flag, rlang_ignored_flag);
 }
 
-static SEXP quo_uqs_coerce(SEXP expr) {
+static SEXP uqs_coerce(SEXP expr) {
   switch (r_kind(expr)) {
   case NILSXP:
   case LISTSXP:
@@ -152,14 +152,17 @@ static SEXP quo_uqs_coerce(SEXP expr) {
     return r_new_node(expr, r_null);
   }
 }
-static SEXP quo_uqs(SEXP expr, SEXP env, r_size_t* count) {
+static SEXP uqs(SEXP expr, SEXP env, r_size_t* count, bool quosured) {
   SEXP spliced_node = KEEP(r_eval(expr, env));
-  spliced_node = quo_uqs_coerce(spliced_node);
+  spliced_node = uqs_coerce(spliced_node);
 
   SEXP node = spliced_node;
   while (node != r_null) {
     expr = r_node_car(node);
-    r_node_poke_car(node, rlang_forward_quosure(expr, env));
+    if (quosured) {
+      expr = rlang_forward_quosure(expr, env);
+    }
+    r_node_poke_car(node, expr);
 
     node = r_node_cdr(node);
     *count += 1;
@@ -210,9 +213,16 @@ static SEXP dots_unquote(SEXP dots, r_size_t* count,
 
     switch (op) {
     case OP_EXPR_NONE:
+      *count += 1;
+      break;
     case OP_EXPR_UQ:
+      expr = r_eval(operand, env);
+      *count += 1;
+      break;
     case OP_EXPR_UQS:
-      r_abort("TODO EXPR %d", op);
+      mark_spliced_dots(elt);
+      expr = uqs(operand, env, count, false);
+      break;
     case OP_QUO_NONE:
       expr = interp_lang(expr, env);
       expr = rlang_forward_quosure(expr, env);
@@ -227,7 +237,7 @@ static SEXP dots_unquote(SEXP dots, r_size_t* count,
     }
     case OP_QUO_UQS: {
       mark_spliced_dots(elt);
-      expr = quo_uqs(operand, env, count);
+      expr = uqs(operand, env, count, true);
       break;
     }
     case OP_VALUE_NONE:
