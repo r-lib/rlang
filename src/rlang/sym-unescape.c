@@ -7,7 +7,7 @@
 
 void copy_character(SEXP tgt, SEXP src, R_xlen_t len);
 R_xlen_t unescape_character_in_copy(SEXP tgt, SEXP src, R_xlen_t i);
-SEXP unescape_sexp(SEXP name);
+SEXP r_str_unserialise_unicode(SEXP r_string);
 
 SEXP rlang_symbol(SEXP chr) {
   SEXP string = STRING_ELT(chr, 0);
@@ -16,7 +16,7 @@ SEXP rlang_symbol(SEXP chr) {
 
 SEXP rlang_symbol_to_character(SEXP chr) {
   SEXP name = PRINTNAME(chr);
-  return Rf_ScalarString(unescape_sexp(name));
+  return Rf_ScalarString(r_str_unserialise_unicode(name));
 }
 
 SEXP rlang_unescape_character(SEXP chr) {
@@ -53,7 +53,7 @@ R_xlen_t unescape_character_in_copy(SEXP tgt, SEXP src, R_xlen_t i) {
 
   for (; i < len; ++i) {
     SEXP old_elt = STRING_ELT(src, i);
-    SEXP new_elt = unescape_sexp(old_elt);
+    SEXP new_elt = r_str_unserialise_unicode(old_elt);
     if (dry_run) {
       if (old_elt != new_elt) return i;
     } else {
@@ -64,22 +64,26 @@ R_xlen_t unescape_character_in_copy(SEXP tgt, SEXP src, R_xlen_t i) {
   return i;
 }
 
-SEXP unescape_sexp(SEXP name) {
-  int ce = Rf_getCharCE(name);
-  const char* src = CHAR(name);
+SEXP r_str_unserialise_unicode(SEXP r_string) {
+  int ce = Rf_getCharCE(r_string);
+  const char* src = CHAR(r_string);
+
+  if (!has_unicode_escape(src)) {
+    return r_string;
+  }
+
   const char* re_enc = Rf_reEnc(src, ce, CE_UTF8, 0);
 
-  if (re_enc != src) {
-    // If the string has been copied, it's safe to use as buffer
-    char* tmp = (char*)re_enc;
-    return unescape_char_to_sexp(tmp);
-  } else {
-    // If not, we're in a UTF-8 locale
-    // Need to check first if the string has any UTF-8 escapes
-    if (!has_unicode_escape(src)) return name;
+  if (re_enc == src) {
+    // The string was not copied because we're in a UTF-8 locale.
+    // Need to check first if the string has any UTF-8 escapes.
     int orig_len = strlen(re_enc);
     char tmp[orig_len + 1];
     memcpy(tmp, re_enc, orig_len + 1);
+    return unescape_char_to_sexp(tmp);
+  } else {
+    // The string has been copied so it's safe to use as buffer
+    char* tmp = (char*)re_enc;
     return unescape_char_to_sexp(tmp);
   }
 }
