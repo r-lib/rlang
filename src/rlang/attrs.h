@@ -9,21 +9,26 @@ static inline void r_poke_attributes(SEXP x, SEXP attrs) {
   SET_ATTRIB(x, attrs);
 }
 
+SEXP r_push_attribute(SEXP x, SEXP tag, SEXP value);
 
-SEXP r_node_push_classes(SEXP node, const char** tags, int n);
-
-static inline SEXP r_node_push_class(SEXP node, const char* tag) {
-  return r_node_push_classes(node, &tag, 1);
+static inline void r_push_names(SEXP x, SEXP value) {
+  r_push_attribute(x, R_NamesSymbol, value);
 }
 
-static inline void r_push_classes(SEXP object, const char** tags, int n) {
-  SEXP attrs = r_get_attributes(object);
+SEXP r_node_push_classes(SEXP x, const char** tags, int n);
+
+static inline SEXP r_node_push_class(SEXP x, const char* tag) {
+  return r_node_push_classes(x, &tag, 1);
+}
+
+static inline void r_push_classes(SEXP x, const char** tags, int n) {
+  SEXP attrs = r_get_attributes(x);
   attrs = r_node_push_classes(attrs, tags, n);
-  SET_ATTRIB(object, attrs);
-  SET_OBJECT(object, 1);
+  SET_ATTRIB(x, attrs);
+  SET_OBJECT(x, 1);
 }
-static inline void r_push_class(SEXP object, const char* tag) {
-  r_push_classes(object, &tag, 1);
+static inline void r_push_class(SEXP x, const char* tag) {
+  r_push_classes(x, &tag, 1);
 }
 
 #endif

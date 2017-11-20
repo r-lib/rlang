@@ -17,6 +17,17 @@ SEXP rlang_get_attrs(SEXP x) {
   return ATTRIB(x);
 }
 
+SEXP r_push_attribute(SEXP x, SEXP tag, SEXP value) {
+  SEXP attrs = r_new_node(value, r_get_attributes(x));
+  r_poke_attributes(x, attrs);
+
+  if (tag != r_null) {
+    r_node_poke_tag(attrs, tag);
+  }
+
+  return attrs;
+}
+
 
 /*
  * TODO:
