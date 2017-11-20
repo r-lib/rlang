@@ -96,12 +96,19 @@ enum expansion_op {
 };
 
 static SEXP rlang_spliced_flag = NULL;
+static SEXP rlang_ignored_flag = NULL;
 
-static inline bool was_spliced(SEXP x) {
-  return r_get_attribute(x, rlang_spliced_flag) == r_null;
+static inline bool is_spliced_dots(SEXP x) {
+  return r_get_attribute(x, rlang_spliced_flag) != r_null;
 }
-static inline void mark_spliced(SEXP x) {
+static inline void mark_spliced_dots(SEXP x) {
   r_poke_attribute(x, rlang_spliced_flag, rlang_spliced_flag);
+}
+static inline bool is_ignored_dot(SEXP x) {
+  return r_get_attribute(x, rlang_ignored_flag) != r_null;
+}
+static inline void mark_ignored_dot(SEXP x) {
+  r_poke_attribute(x, rlang_ignored_flag, rlang_ignored_flag);
 }
 
 static SEXP quo_uqs_coerce(SEXP expr) {
@@ -150,16 +157,22 @@ static SEXP quo_uqs(SEXP expr, SEXP env, r_size_t* count) {
   return spliced_node;
 }
 
-static SEXP dots_unquote(SEXP dots, r_size_t* count, SEXP op_offset) {
-  *count = 0;
+static inline bool should_ignore(int ignore_empty, r_size_t i, r_size_t n) {
+  return ignore_empty == 1 || (i == n - 1 && ignore_empty == -1);
+}
 
-  for (r_size_t i = 0; i < r_length(dots); ++i) {
+static SEXP dots_unquote(SEXP dots, r_size_t* count,
+                         int op_offset, int ignore_empty) {
+  SEXP dots_names = r_names(dots);
+  *count = 0;
+  r_size_t n = r_length(dots);
+
+  for (r_size_t i = 0; i < n; ++i) {
     SEXP elt = r_list_get(dots, i);
     SEXP expr = dot_get_expr(elt);
     SEXP env = dot_get_env(elt);
 
     if (r_is_call(expr, ":=")) {
-      SEXP dots_names = r_names(dots);
       SEXP name = def_unquote_name(expr, env);
 
       if (r_chr_has_empty_string_at(dots_names, i)) {
@@ -171,8 +184,17 @@ static SEXP dots_unquote(SEXP dots, r_size_t* count, SEXP op_offset) {
     }
 
     SEXP operand;
-    int offset = r_c_int(op_offset);
-    enum expansion_op op = which_expand_op(expr, &operand) + offset;
+    int base_op = which_expand_op(expr, &operand);
+    enum expansion_op op = base_op + op_offset;
+
+    // Ignore empty arguments
+    if (expr == r_missing_sym
+        && base_op == 0
+        && r_chr_has_empty_string_at(dots_names, i)
+        && should_ignore(ignore_empty, i, n)) {
+      mark_ignored_dot(elt);
+      continue;
+    }
 
     switch (op) {
     case OP_EXPR_NONE:
@@ -192,7 +214,7 @@ static SEXP dots_unquote(SEXP dots, r_size_t* count, SEXP op_offset) {
       break;
     }
     case OP_QUO_UQS: {
-      mark_spliced(elt);
+      mark_spliced_dots(elt);
       expr = quo_uqs(operand, env, count);
       break;
     }
@@ -208,41 +230,57 @@ static SEXP dots_unquote(SEXP dots, r_size_t* count, SEXP op_offset) {
   return dots;
 }
 
-SEXP rlang_dots_interp(SEXP frame_env, SEXP offset) {
+static int match_ignore_empty_arg(SEXP ignore_empty) {
+  if (!r_is_character(ignore_empty) || r_length(ignore_empty) == 0) {
+    r_abort("`.ignore_empty` must be a character vector");
+  }
+  const char* arg = r_c_string(ignore_empty);
+  switch(arg[0]) {
+  case 't': if (!strcmp(arg, "trailing")) return -1; else break;
+  case 'n': if (!strcmp(arg, "none")) return 0; else break;
+  case 'a': if (!strcmp(arg, "all")) return 1; else break;
+  }
+  r_abort("`.ignore_empty` should be one of: \"trailing\", \"none\" or \"all\"");
+}
+
+SEXP rlang_dots_interp(SEXP frame_env, SEXP offset, SEXP ignore_empty) {
   if (!rlang_spliced_flag) {
     rlang_spliced_flag = r_sym("__rlang_spliced");
   }
+  if (!rlang_ignored_flag) {
+    rlang_ignored_flag = r_sym("__rlang_ignored");
+  }
 
-  r_size_t total;
   SEXP dots_info = KEEP(rlang_capture_dots(frame_env));
   SEXP dots_info_names = r_names(dots_info);
 
-  dots_info = dots_unquote(dots_info, &total, offset);
+  r_size_t total;
+  int ignore_empty_int = match_ignore_empty_arg(ignore_empty);
+  dots_info = dots_unquote(dots_info, &total, r_c_int(offset), ignore_empty_int);
 
   if (total == 0) {
     FREE(1);
     return named_empty_list();
   }
 
-  SEXP dots = KEEP(r_new_vector(VECSXP, total));
-  SEXP dots_names = KEEP(r_new_vector(STRSXP, total));
-  r_push_names(dots, dots_names);
+  SEXP out = KEEP(r_new_vector(VECSXP, total));
+  SEXP out_names = KEEP(r_new_vector(STRSXP, total));
+  r_push_names(out, out_names);
 
   for (size_t i = 0, count = 0; i < r_length(dots_info); ++i) {
     SEXP elt = r_list_get(dots_info, i);
     SEXP expr = dot_get_expr(elt);
 
-    if (was_spliced(elt)) {
-      r_list_poke(dots, count, expr);
-      SEXP name = r_chr_get(dots_info_names, i);
-      r_chr_poke(dots_names, count, name);
-      ++count;
-    } else {
+    if (is_ignored_dot(elt)) {
+      continue;
+    }
+
+    if (is_spliced_dots(elt)) {
       // FIXME: Should be able to avoid conversion to pairlist and use
       // a generic vec_get() or coll_get to walk the new elements
       while (expr != r_null) {
         SEXP head = r_node_car(expr);
-        r_list_poke(dots, count, head);
+        r_list_poke(out, count, head);
 
         SEXP tag = r_node_tag(expr);
         if (tag == r_null) {
@@ -253,14 +291,19 @@ SEXP rlang_dots_interp(SEXP frame_env, SEXP offset) {
           // lists because of the conversion to pairlist
           tag = r_str_unserialise_unicode(tag);
         }
-        r_chr_poke(dots_names, count, tag);
+        r_chr_poke(out_names, count, tag);
 
         ++count;
         expr = r_node_cdr(expr);
       }
+    } else {
+      r_list_poke(out, count, expr);
+      SEXP name = r_chr_get(dots_info_names, i);
+      r_chr_poke(out_names, count, name);
+      ++count;
     }
   }
 
   FREE(3);
-  return dots;
+  return out;
 }
