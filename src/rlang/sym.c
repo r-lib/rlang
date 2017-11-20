@@ -3,6 +3,28 @@
 #include "rlang.h"
 
 
+// In old R versions `as.name()` does not translate to native which
+// loses the encoding. This symbol constructor always translates.
+SEXP r_new_symbol(SEXP x, int* err) {
+  switch (r_kind(x)) {
+  case SYMSXP:
+    return x;
+  case STRSXP:
+    if (r_length(x) == 1) {
+      const char* string = Rf_translateChar(r_chr_get(x, 0));
+      return r_sym(string);
+    } // else fallthrough
+  default: {
+    if (err) {
+      *err = -1;
+      return r_null;
+    } else {
+      const char* type = r_type_c_string(r_kind(x));
+      r_abort("Can't create a symbol with a %s", type);
+    }
+  }}
+}
+
 bool r_is_symbol(SEXP x, const char* string) {
   if (r_kind(x) != SYMSXP) {
     return false;
