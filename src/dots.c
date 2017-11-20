@@ -40,19 +40,31 @@ static inline void dot_poke_expr(SEXP dot, SEXP elt) {
 
 SEXP rlang_capture_dots(SEXP frame_env);
 
-static SEXP named_empty_list() {
-  static SEXP empty_list = NULL;
-  if (!empty_list) {
-    empty_list = r_new_vector(VECSXP, 0);
-    r_preserve(empty_list);
-    r_mark_shared(empty_list);
+static SEXP new_preserved_empty_list() {
+  SEXP empty_list = r_new_vector(VECSXP, 0);
+  r_preserve(empty_list);
+  r_mark_shared(empty_list);
 
-    SEXP nms = KEEP(r_new_vector(STRSXP, 0));
-    r_poke_names(empty_list, nms);
-    FREE(1);
-  }
+  SEXP nms = KEEP(r_new_vector(STRSXP, 0));
+  r_poke_names(empty_list, nms);
+  FREE(1);
 
   return empty_list;
+}
+static SEXP empty_named_list() {
+  static SEXP empty_list = NULL;
+  if (!empty_list) {
+    empty_list = new_preserved_empty_list();
+  }
+  return empty_list;
+}
+static SEXP empty_quosures() {
+  static SEXP empty_quos = NULL;
+  if (!empty_quos) {
+    empty_quos = new_preserved_empty_list();
+    r_push_class(empty_quos, "quosures");
+  }
+  return empty_quos;
 }
 
 static SEXP def_unquote_name(SEXP expr, SEXP env) {
@@ -243,7 +255,7 @@ static int match_ignore_empty_arg(SEXP ignore_empty) {
   r_abort("`.ignore_empty` should be one of: \"trailing\", \"none\" or \"all\"");
 }
 
-SEXP rlang_dots_interp(SEXP frame_env, SEXP offset, SEXP ignore_empty) {
+SEXP dots_interp(SEXP frame_env, SEXP offset, SEXP ignore_empty) {
   if (!rlang_spliced_flag) {
     rlang_spliced_flag = r_sym("__rlang_spliced");
   }
@@ -257,11 +269,6 @@ SEXP rlang_dots_interp(SEXP frame_env, SEXP offset, SEXP ignore_empty) {
   r_size_t total;
   int ignore_empty_int = match_ignore_empty_arg(ignore_empty);
   dots_info = dots_unquote(dots_info, &total, r_c_int(offset), ignore_empty_int);
-
-  if (total == 0) {
-    FREE(1);
-    return named_empty_list();
-  }
 
   SEXP out = KEEP(r_new_vector(VECSXP, total));
   SEXP out_names = KEEP(r_new_vector(STRSXP, total));
@@ -306,4 +313,26 @@ SEXP rlang_dots_interp(SEXP frame_env, SEXP offset, SEXP ignore_empty) {
 
   FREE(3);
   return out;
+}
+
+SEXP rlang_dots_interp(SEXP frame_env, SEXP offset, SEXP ignore_empty) {
+  SEXP dots = dots_interp(frame_env, offset, ignore_empty);
+
+  if (dots == r_null) {
+    return empty_named_list();
+  } else {
+    return dots;
+  }
+}
+SEXP rlang_quos_interp(SEXP frame_env, SEXP offset, SEXP ignore_empty) {
+  SEXP dots = dots_interp(frame_env, offset, ignore_empty);
+
+  if (dots == r_null) {
+    return empty_quosures();
+  } else {
+    KEEP(dots);
+    r_push_class(dots, "quosures");
+    FREE(1);
+    return dots;
+  }
 }

@@ -21,12 +21,8 @@ static inline SEXP r_node_push_class(SEXP x, const char* tag) {
   return r_node_push_classes(x, &tag, 1);
 }
 
-static inline void r_push_classes(SEXP x, const char** tags, int n) {
-  SEXP attrs = r_get_attributes(x);
-  attrs = r_node_push_classes(attrs, tags, n);
-  SET_ATTRIB(x, attrs);
-  SET_OBJECT(x, 1);
-}
+void r_push_classes(SEXP x, const char** tags, int n);
+
 static inline void r_push_class(SEXP x, const char* tag) {
   r_push_classes(x, &tag, 1);
 }

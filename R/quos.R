@@ -66,13 +66,14 @@
 #' dots$defs
 quos <- function(..., .named = FALSE,
                  .ignore_empty = c("trailing", "none", "all")) {
-  dots <- .Call(rlang_dots_interp, environment(), 3L, .ignore_empty)
+  dots <- .Call(rlang_quos_interp, environment(), 3L, .ignore_empty)
 
   if (.named) {
     width <- quo_names_width(.named)
     dots <- quos_auto_name(dots, width)
   }
-  poke_attributes(dots, pairlist(class = "quosures"))
+
+  dots
 }
 
 #' @rdname quosures

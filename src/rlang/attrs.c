@@ -51,3 +51,10 @@ SEXP r_node_push_classes(SEXP node, const char** tags, int n) {
   FREE(1);
   return attrs;
 }
+
+void r_push_classes(SEXP x, const char** tags, int n) {
+  SEXP attrs = r_get_attributes(x);
+  attrs = r_node_push_classes(attrs, tags, n);
+  SET_ATTRIB(x, attrs);
+  SET_OBJECT(x, 1);
+}
