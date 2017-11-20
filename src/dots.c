@@ -72,7 +72,14 @@ static SEXP def_unquote_name(SEXP expr, SEXP env) {
     r_abort("The LHS of `:=` must be a string or a symbol");
   }
 
-  return r_sym_str(lhs);
+  SEXP name = r_sym_str(lhs);
+
+  // Unserialise unicode points such as <U+xxx> that arise when
+  // UTF-8 names are converted to symbols and the native encoding
+  // does not support the characters (i.e. all the time on Windows)
+  name = r_str_unserialise_unicode(name);
+
+  return name;
 }
 
 
@@ -154,11 +161,6 @@ static SEXP dots_unquote(SEXP dots, r_size_t* count, SEXP op_offset) {
     if (r_is_call(expr, ":=")) {
       SEXP dots_names = r_names(dots);
       SEXP name = def_unquote_name(expr, env);
-
-      // Unserialise unicode points such as <U+xxx> that arise when
-      // UTF-8 names are converted to symbols and the native encoding
-      // does not support the characters (i.e. all the time on Windows)
-      name = r_str_unserialise_unicode(name);
 
       if (r_chr_has_empty_string_at(dots_names, i)) {
         r_chr_poke(dots_names, i, name);
