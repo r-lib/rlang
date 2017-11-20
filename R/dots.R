@@ -197,11 +197,7 @@ dots_clean_empty <- function(dots, is_empty, ignore_empty) {
 #' @export
 dots_definitions <- function(..., .named = FALSE) {
   # TODO: change `:=` symbol to avoid interpolating LHS
-  dots <- .Call(rlang_dots_interp, environment())
-  if (.named) {
-    width <- quo_names_width(.named)
-    dots <- quos_auto_name(dots, width)
-  }
+  dots <- .Call(rlang_dots_interp, environment(), 3L, .named, "trailing")
 
   is_def <- map_lgl(dots, function(dot) is_definition(f_rhs(dot)))
   defs <- map(dots[is_def], as_definition)

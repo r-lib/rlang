@@ -255,7 +255,36 @@ static int match_ignore_empty_arg(SEXP ignore_empty) {
   r_abort("`.ignore_empty` should be one of: \"trailing\", \"none\" or \"all\"");
 }
 
-SEXP dots_interp(SEXP frame_env, SEXP offset, SEXP ignore_empty) {
+static int find_auto_names_width(SEXP named) {
+  if (r_length(named) != 1) {
+    goto error;
+  }
+
+  switch (r_kind(named)) {
+  case LGLSXP:
+    if (r_as_bool(named)) {
+      return 60;
+    } else {
+      return 0;
+    }
+  case INTSXP:
+    return INTEGER(named)[0];
+  case REALSXP:
+    if (r_is_integerish(named)) {
+      return REAL(named)[0];
+    }
+    // else fallthrough
+  default:
+    break;
+  }
+
+ error:
+  r_abort("`.named` must be a scalar logical or number");
+}
+
+
+SEXP dots_interp(SEXP frame_env, SEXP offset,
+                 SEXP named, SEXP ignore_empty) {
   if (!rlang_spliced_flag) {
     rlang_spliced_flag = r_sym("__rlang_spliced");
   }
@@ -311,13 +340,22 @@ SEXP dots_interp(SEXP frame_env, SEXP offset, SEXP ignore_empty) {
     }
   }
 
+  int names_width = find_auto_names_width(named);
+  if (names_width) {
+    SEXP auto_fn = rlang_ns_get("quos_auto_name");
+    SEXP width = KEEP(r_scalar_int(names_width));
+    SEXP auto_call = KEEP(r_build_call2(auto_fn, out, width));
+    out = r_eval(auto_call, r_empty_env);
+    FREE(2);
+  }
+
   FREE(3);
   return out;
 }
 
 SEXP rlang_dots_interp(SEXP frame_env, SEXP offset,
                        SEXP named, SEXP ignore_empty) {
-  SEXP dots = dots_interp(frame_env, offset, ignore_empty);
+  SEXP dots = dots_interp(frame_env, offset, named, ignore_empty);
 
   if (dots == r_null) {
     return empty_named_list();
@@ -327,7 +365,7 @@ SEXP rlang_dots_interp(SEXP frame_env, SEXP offset,
 }
 SEXP rlang_quos_interp(SEXP frame_env, SEXP offset,
                        SEXP named, SEXP ignore_empty) {
-  SEXP dots = dots_interp(frame_env, offset, ignore_empty);
+  SEXP dots = dots_interp(frame_env, offset, named, ignore_empty);
 
   if (dots == r_null) {
     return empty_quosures();

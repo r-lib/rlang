@@ -64,16 +64,10 @@
 #' # If you need the full LHS expression, use dots_definitions():
 #' dots <- dots_definitions(var = foo(baz) := bar(baz))
 #' dots$defs
-quos <- function(..., .named = FALSE,
+quos <- function(...,
+                 .named = FALSE,
                  .ignore_empty = c("trailing", "none", "all")) {
-  dots <- .Call(rlang_quos_interp, environment(), 3L, .ignore_empty)
-
-  if (.named) {
-    width <- quo_names_width(.named)
-    dots <- quos_auto_name(dots, width)
-  }
-
-  dots
+  .Call(rlang_quos_interp, environment(), 3L, .named, .ignore_empty)
 }
 
 #' @rdname quosures
@@ -89,16 +83,6 @@ is_quosures <- function(x) {
 #' @export
 c.quosures <- function(..., recursive = FALSE) {
   structure(NextMethod(), class = "quosures")
-}
-
-quo_names_width <- function(named) {
-  if (is_true(named)) {
-    60L
-  } else if (is_scalar_integerish(named)) {
-    named
-  } else {
-    abort("`.named` must be a scalar logical or a numeric")
-  }
 }
 
 #' Ensure that list of expressions are all named
