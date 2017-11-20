@@ -72,7 +72,7 @@ quos <- function(..., .named = FALSE,
     width <- quo_names_width(.named)
     dots <- quos_auto_name(dots, width)
   }
-  set_attrs(dots, class = "quosures")
+  poke_attributes(dots, pairlist(class = "quosures"))
 }
 
 #' @rdname quosures

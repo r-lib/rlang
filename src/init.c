@@ -62,6 +62,7 @@ extern SEXP rlang_dots_interp(SEXP, SEXP, SEXP);
 extern SEXP r_new_formula(SEXP, SEXP, SEXP);
 extern SEXP r_new_quosure(SEXP, SEXP);
 extern SEXP rlang_forward_quosure(SEXP, SEXP);
+extern SEXP rlang_poke_attributes(SEXP, SEXP);
 
 
 // For unit tests
@@ -130,6 +131,7 @@ static const R_CallMethodDef call_entries[] = {
   {"rlang_new_formula",         (DL_FUNC) &r_new_formula, 3},
   {"rlang_new_quosure",         (DL_FUNC) &r_new_quosure, 2},
   {"rlang_forward_quosure",     (DL_FUNC) &rlang_forward_quosure, 2},
+  {"rlang_poke_attributes",     (DL_FUNC) &rlang_poke_attributes, 2},
   {NULL, NULL, 0}
 };
 

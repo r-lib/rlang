@@ -280,3 +280,7 @@ has_length <- function(x, n = NULL) {
     len == n
   }
 }
+
+poke_attributes <- function(x, attrs) {
+  .Call(rlang_poke_attributes, x, attrs)
+}

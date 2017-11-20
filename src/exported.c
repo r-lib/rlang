@@ -1,5 +1,14 @@
 #include "rlang/rlang.h"
 
+
+// attrs.c
+
+SEXP rlang_poke_attributes(SEXP x, SEXP attrs) {
+  SET_ATTRIB(x, attrs);
+  return x;
+}
+
+
 // cnd.c
 
 SEXP rlang_cnd_signal(SEXP cnd, SEXP mufflable) {
