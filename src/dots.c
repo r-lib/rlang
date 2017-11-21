@@ -9,7 +9,7 @@ SEXP rlang_capture_dots(SEXP frame_env) {
 
   if (!capture_call) {
     capture_call = KEEP(r_new_call_node(rlang_ns_get("captureDots"), r_null));
-    r_preserve(capture_call);
+    r_mark_precious(capture_call);
     r_mark_shared(capture_call);
     FREE(1);
   }
@@ -42,7 +42,7 @@ SEXP rlang_capture_dots(SEXP frame_env);
 
 static SEXP new_preserved_empty_list() {
   SEXP empty_list = r_new_vector(VECSXP, 0);
-  r_preserve(empty_list);
+  r_mark_precious(empty_list);
   r_mark_shared(empty_list);
 
   SEXP nms = KEEP(r_new_vector(STRSXP, 0));

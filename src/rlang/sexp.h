@@ -12,10 +12,10 @@ static inline SEXPTYPE r_kind(SEXP x) {
   return TYPEOF(x);
 }
 
-static inline void r_preserve(SEXP x) {
+static inline void r_mark_precious(SEXP x) {
   R_PreserveObject(x);
 }
-static inline void r_release(SEXP x) {
+static inline void r_unmark_precious(SEXP x) {
   R_ReleaseObject(x);
 }
 
