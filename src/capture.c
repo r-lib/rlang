@@ -80,8 +80,9 @@ SEXP attribute_hidden rlang_capturedots(SEXP call, SEXP op, SEXP args, SEXP rho)
 
     int n_dots = length(dots);
     SEXP captured = PROTECT(allocVector(VECSXP, n_dots));
+
     SEXP names = PROTECT(allocVector(STRSXP, n_dots));
-    setAttrib(captured, R_NamesSymbol, names);
+    Rboolean named = FALSE;
 
     SEXP dot;
     int i = 0;
@@ -99,12 +100,17 @@ SEXP attribute_hidden rlang_capturedots(SEXP call, SEXP op, SEXP args, SEXP rho)
         }
         SET_VECTOR_ELT(captured, i, dot);
 
-        if (TAG(dots) != R_NilValue)
+        if (TAG(dots) != R_NilValue) {
+            named = TRUE;
             SET_STRING_ELT(names, i, PRINTNAME(TAG(dots)));
+        }
 
         ++i;
         dots = CDR(dots);
     }
+
+    if (named)
+        setAttrib(captured, R_NamesSymbol, names);
 
     UNPROTECT(3);
     return captured;

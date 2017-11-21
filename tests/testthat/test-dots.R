@@ -44,6 +44,12 @@ test_that("can take forced dots with strict = FALSE", {
   expect_identical(fn(FALSE, letters), NULL)
 })
 
+test_that("captured dots are only named if names were supplied", {
+  fn <- function(...) captureDots()
+  expect_null(names(fn(1, 2)))
+  expect_identical(names(fn(a = 1, 2)), c("a", ""))
+})
+
 test_that("dots_values() handles forced dots", {
   fn <- function(...) {
     force(..1)
