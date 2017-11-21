@@ -5,6 +5,7 @@
 #define r_unbound_sym R_UnboundValue
 #define r_missing_sym R_MissingArg
 #define r_names_sym R_NamesSymbol
+#define r_class_sym R_ClassSymbol
 
 
 SEXP r_new_symbol(SEXP x, int* err);

@@ -236,10 +236,6 @@ test_that("can unquote-splice symbols", {
 })
 
 test_that("can unquote symbols", {
-  skip("TODO: error msg")
-  unquoted <- dots_values(!! quote(.))
-  expect_identical(unquoted, named_list(quote(.)))
-
-  unquoted <- dots_values(rlang::UQ(quote(.)))
-  expect_identical(unquoted, named_list(quote(.)))
+  expect_error(dots_values(!! quote(.)), "`!!` in a non-quoting function")
+  expect_error(dots_values(rlang::UQ(quote(.))), "`!!` in a non-quoting function")
 })

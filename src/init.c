@@ -60,6 +60,7 @@ extern SEXP rlang_cnd_warn(SEXP, SEXP);
 extern SEXP rlang_r_string(SEXP);
 extern SEXP rlang_exprs_interp(SEXP, SEXP, SEXP);
 extern SEXP rlang_quos_interp(SEXP, SEXP, SEXP);
+extern SEXP rlang_dots_interp(SEXP, SEXP, SEXP);
 extern SEXP r_new_formula(SEXP, SEXP, SEXP);
 extern SEXP r_new_quosure(SEXP, SEXP);
 extern SEXP rlang_forward_quosure(SEXP, SEXP);
@@ -130,6 +131,7 @@ static const R_CallMethodDef call_entries[] = {
   {"rlang_r_string",            (DL_FUNC) &rlang_r_string, 1},
   {"rlang_exprs_interp",        (DL_FUNC) &rlang_exprs_interp, 3},
   {"rlang_quos_interp",         (DL_FUNC) &rlang_quos_interp, 3},
+  {"rlang_dots_interp",         (DL_FUNC) &rlang_dots_interp, 3},
   {"rlang_new_formula",         (DL_FUNC) &r_new_formula, 3},
   {"rlang_new_quosure",         (DL_FUNC) &r_new_quosure, 2},
   {"rlang_forward_quosure",     (DL_FUNC) &rlang_forward_quosure, 2},

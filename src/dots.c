@@ -17,7 +17,6 @@ SEXP rlang_capture_dots(SEXP frame_env) {
   return r_eval(capture_call, frame_env);
 }
 
-// FIXME: is it right to disregard defs?
 SEXP rlang_forward_quosure(SEXP x, SEXP env) {
   if (r_is_quosure(x)) {
     return x;
@@ -37,8 +36,6 @@ static inline SEXP dot_get_env(SEXP dot) {
 static inline void dot_poke_expr(SEXP dot, SEXP elt) {
   r_list_poke(dot, 0, elt);
 }
-
-SEXP rlang_capture_dots(SEXP frame_env);
 
 static SEXP new_preserved_empty_list() {
   SEXP empty_list = r_new_vector(VECSXP, 0);
@@ -181,6 +178,21 @@ static inline bool should_ignore(int ignore_empty, r_size_t i, r_size_t n) {
   return ignore_empty == 1 || (i == n - 1 && ignore_empty == -1);
 }
 
+static SEXP set_spliced(SEXP x) {
+  static SEXP spliced_str = NULL;
+  if (!spliced_str) {
+    spliced_str = r_scalar_chr("spliced");
+    r_mark_precious(spliced_str);
+    r_mark_shared(spliced_str);
+  }
+
+  if (r_kind(x) != VECSXP) {
+    r_abort("Can't use `!!!` on atomic vectors in non-quoting functions");
+  }
+
+  return r_set_attribute(x, r_class_sym, spliced_str);
+}
+
 static SEXP dots_unquote(SEXP dots, r_size_t* count,
                          int op_offset, int ignore_empty) {
   SEXP dots_names = r_names(dots);
@@ -198,7 +210,13 @@ static SEXP dots_unquote(SEXP dots, r_size_t* count,
     if (r_is_call(expr, ":=")) {
       SEXP name = def_unquote_name(expr, env);
 
-      if (dots_names == r_null || r_chr_has_empty_string_at(dots_names, i)) {
+      if (dots_names == r_null) {
+        dots_names = KEEP(r_new_vector(STRSXP, n));
+        r_push_names(dots, dots_names);
+        FREE(1);
+      }
+
+      if (r_chr_has_empty_string_at(dots_names, i)) {
         r_chr_poke(dots_names, i, name);
       } else {
         r_abort("Can't supply both `=` and `:=`");
@@ -248,10 +266,18 @@ static SEXP dots_unquote(SEXP dots, r_size_t* count,
       break;
     }
     case OP_VALUE_NONE:
+      expr = r_eval(expr, env);
+      *count += 1;
+      break;
     case OP_VALUE_UQ:
-    case OP_VALUE_UQS:
-      r_abort("TODO VALUE %d", op);
-    }
+      r_abort("Can't use `!!` in a non-quoting function");
+    case OP_VALUE_UQS: {
+      expr = KEEP(r_eval(operand, env));
+      expr = set_spliced(expr);
+      FREE(1);
+      *count += 1;
+      break;
+    }}
 
     dot_poke_expr(elt, expr);
     FREE(1);
@@ -301,26 +327,22 @@ static int find_auto_names_width(SEXP named) {
 }
 
 
-SEXP dots_interp(SEXP frame_env, SEXP named, SEXP ignore_empty, int offset) {
-  if (!rlang_spliced_flag) {
-    rlang_spliced_flag = r_sym("__rlang_spliced");
-  }
-  if (!rlang_ignored_flag) {
-    rlang_ignored_flag = r_sym("__rlang_ignored");
-  }
+SEXP dots_interp(SEXP frame_env, SEXP named, SEXP ignore_empty, int op_offset) {
+  if (!rlang_spliced_flag) rlang_spliced_flag = r_sym("__rlang_spliced");
+  if (!rlang_ignored_flag) rlang_ignored_flag = r_sym("__rlang_ignored");
 
   SEXP dots_info = KEEP(rlang_capture_dots(frame_env));
-  SEXP dots_info_names = r_names(dots_info);
 
   r_size_t total;
   int ignore_empty_int = match_ignore_empty_arg(ignore_empty);
-  dots_info = dots_unquote(dots_info, &total, offset, ignore_empty_int);
+  dots_info = dots_unquote(dots_info, &total, op_offset, ignore_empty_int);
 
   SEXP out = KEEP(r_new_vector(VECSXP, total));
 
   // Dots captured by values don't have default empty names
+  SEXP dots_info_names = r_names(dots_info);
   SEXP out_names = NULL;
-  if (offset != 6 || dots_info_names != r_null) {
+  if (op_offset != 6 || dots_info_names != r_null) {
     out_names = KEEP(r_new_vector(STRSXP, total));
     r_push_names(out, out_names);
     FREE(1);
@@ -398,6 +420,15 @@ SEXP rlang_quos_interp(SEXP frame_env, SEXP named, SEXP ignore_empty) {
     KEEP(dots);
     r_push_class(dots, "quosures");
     FREE(1);
+    return dots;
+  }
+}
+SEXP rlang_dots_interp(SEXP frame_env, SEXP named, SEXP ignore_empty) {
+  SEXP dots = dots_interp(frame_env, named, ignore_empty, 6);
+
+  if (dots == r_null) {
+    return r_new_vector(VECSXP, 0);
+  } else {
     return dots;
   }
 }

@@ -65,6 +65,9 @@ static inline bool r_is_pairlist(SEXP x) {
 static inline SEXP r_new_node(SEXP car, SEXP cdr) {
   return Rf_cons(car, cdr);
 }
+
+SEXP r_new_tagged_node(const char* tag, SEXP car, SEXP cdr);
+
 static inline SEXP r_new_node_list(SEXP car) {
   return Rf_cons(car, r_null);
 }

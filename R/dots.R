@@ -82,122 +82,14 @@ dots_splice <- function(..., .ignore_empty = c("trailing", "none", "all")) {
 #' # Flatten the spliced objects:
 #' flatten_if(dots, is_spliced)
 dots_values <- function(..., .ignore_empty = c("trailing", "none", "all")) {
-  dots <- rlang_expand_dots(dots_value_ctor, .ignore_empty, ...)
-
-  # Trigger missing argument errors
-  map_if(dots, is_missing, eval_bare)
+  .Call(rlang_dots_interp, environment(), FALSE, .ignore_empty)
 }
-dots_value_ctor <- function(node, expr, env) {
-  if (is_missing(expr)) {
-    node_poke_car(node, missing_arg())
-  } else {
-    evaluated_dot <- eval_bare(expr, env)
-    node_poke_car(node, evaluated_dot)
-  }
-}
-
-rlang_expand_dots <- function(`__ctor`, `__ignore_empty`, ...) {
-  dots <- as.pairlist(captureDots(strict = FALSE))
-
-  if (is_null(dots)) {
-    return(ensure_named(list(...)))
-  }
-
-  node <- dots
-  while (!is_null(node)) {
-    first <- node_car(node)
-    rest <- node_cdr(node)
-
-    if (is_definition(first$expr)) {
-      lhs <- node_cadr(first$expr)
-      lhs <- maybe_unquote(lhs, first$env)
-      node_poke_tag(node, sym(quo_name(lhs)))
-      first$expr <- node_cadr(node_cdr(first$expr))
-    } else {
-      splice_child <- triple_bang(first$expr)
-      if (!is_null(splice_child)) {
-        first$expr <- new_language(splice, node_cdr(splice_child))
-      }
-    }
-
-    `__ctor`(node, first$expr, first$env)
-
-    node <- rest
-  }
-
-  dots <- ensure_named(as.list(dots))
-  dots <- dots_clean_empty(dots, is_missing, `__ignore_empty`)
-  dots
-}
-
-maybe_unquote <- function(x, env) {
-  child <- double_bang(x)
-  if (is_null(child)) {
-    x
-  } else {
-    eval_bare(node_cadr(child), env)
-  }
-}
-ensure_named <- function(x) {
-  if (is_null(names(x))) {
-    names(x) <- character(length(x))
-  }
-  x
-}
-
-nth_bang <- function(expr, n) {
-  i <- 0L
-  current <- expr
-  while (i < n) {
-    if (is_missing(current)) {
-      return(NULL)
-    }
-    if (!is_call(current, bang_sym)) {
-      return(NULL)
-    }
-    expr <- current
-    current <- node_cadr(current)
-    i <- i + 1L
-  }
-  expr
-}
-double_bang <- function(expr) {
-  nth_bang(expr, 2L)
-}
-triple_bang <- function(expr) {
-  nth_bang(expr, 3L)
-}
-
-is_call <- function(...) is_lang(...)
-bang_sym <- quote(`!`)
-
-dots_clean_empty <- function(dots, is_empty, ignore_empty) {
-  n_dots <- length(dots)
-  names <- names(dots)
-
-  if (n_dots) {
-    which <- match.arg(ignore_empty, c("trailing", "none", "all"))
-    switch(which,
-      trailing =
-        if (is_empty(dots[[n_dots]]) && names[[n_dots]] == "") {
-          dots[[n_dots]] <- NULL
-        },
-      all = {
-        is_empty <- map_lgl(dots, is_empty) & names == ""
-        dots <- dots[!is_empty]
-      }
-    )
-  }
-
-  dots
-}
-
 
 #' @rdname quosures
 #' @export
 dots_definitions <- function(..., .named = FALSE) {
   # TODO: change `:=` symbol to avoid interpolating LHS
-  dots <- .Call(rlang_dots_interp, environment(), 3L, .named, "trailing")
+  dots <- .Call(rlang_quos_interp, environment(), .named, "trailing")
 
   is_def <- map_lgl(dots, function(dot) is_definition(f_rhs(dot)))
   defs <- map(dots[is_def], as_definition)

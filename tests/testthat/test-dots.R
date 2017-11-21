@@ -20,7 +20,7 @@ test_that("dots are always named", {
 
 test_that("dots can be spliced", {
   spliced_dots <- dots_values(!!! list(letters))
-  expect_identical(spliced_dots, named_list(splice(list(letters))))
+  expect_identical(spliced_dots, list(splice(list(letters))))
   expect_identical(flatten(dots_values(!!! list(letters))), list(letters))
   expect_identical(ll(!!! list(letters)), list(letters))
   wrapper <- function(...) ll(...)
@@ -28,7 +28,7 @@ test_that("dots can be spliced", {
 })
 
 test_that("interpolation by value does not guard formulas", {
-  expect_identical(dots_values(~1), named_list(~1))
+  expect_identical(dots_values(~1), list(~1))
 })
 
 test_that("dots names can be unquoted", {
@@ -51,6 +51,7 @@ test_that("captured dots are only named if names were supplied", {
 })
 
 test_that("dots_values() handles forced dots", {
+  skip("TODO forced")
   fn <- function(...) {
     force(..1)
     dots_values(...)
