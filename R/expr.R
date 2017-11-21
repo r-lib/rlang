@@ -79,7 +79,7 @@ enexpr <- function(arg) {
 exprs <- function(...,
                   .named = FALSE,
                  .ignore_empty = c("trailing", "none", "all")) {
-  .Call(rlang_dots_interp, environment(), 0L, .named, .ignore_empty)
+  .Call(rlang_exprs_interp, environment(), .named, .ignore_empty)
 }
 
 

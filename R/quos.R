@@ -67,7 +67,7 @@
 quos <- function(...,
                  .named = FALSE,
                  .ignore_empty = c("trailing", "none", "all")) {
-  .Call(rlang_quos_interp, environment(), 3L, .named, .ignore_empty)
+  .Call(rlang_quos_interp, environment(), .named, .ignore_empty)
 }
 
 #' @rdname quosures

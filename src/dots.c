@@ -198,7 +198,7 @@ static SEXP dots_unquote(SEXP dots, r_size_t* count,
     if (r_is_call(expr, ":=")) {
       SEXP name = def_unquote_name(expr, env);
 
-      if (r_chr_has_empty_string_at(dots_names, i)) {
+      if (dots_names == r_null || r_chr_has_empty_string_at(dots_names, i)) {
         r_chr_poke(dots_names, i, name);
       } else {
         r_abort("Can't supply both `=` and `:=`");
@@ -213,7 +213,7 @@ static SEXP dots_unquote(SEXP dots, r_size_t* count,
     // Ignore empty arguments
     if (expr == r_missing_sym
         && base_op == 0
-        && r_chr_has_empty_string_at(dots_names, i)
+        && (dots_names == r_null || r_chr_has_empty_string_at(dots_names, i))
         && should_ignore(ignore_empty, i, n)) {
       mark_ignored_dot(elt);
       FREE(1);
@@ -301,8 +301,7 @@ static int find_auto_names_width(SEXP named) {
 }
 
 
-SEXP dots_interp(SEXP frame_env, SEXP offset,
-                 SEXP named, SEXP ignore_empty) {
+SEXP dots_interp(SEXP frame_env, SEXP named, SEXP ignore_empty, int offset) {
   if (!rlang_spliced_flag) {
     rlang_spliced_flag = r_sym("__rlang_spliced");
   }
@@ -315,11 +314,17 @@ SEXP dots_interp(SEXP frame_env, SEXP offset,
 
   r_size_t total;
   int ignore_empty_int = match_ignore_empty_arg(ignore_empty);
-  dots_info = dots_unquote(dots_info, &total, r_c_int(offset), ignore_empty_int);
+  dots_info = dots_unquote(dots_info, &total, offset, ignore_empty_int);
 
   SEXP out = KEEP(r_new_vector(VECSXP, total));
-  SEXP out_names = KEEP(r_new_vector(STRSXP, total));
-  r_push_names(out, out_names);
+
+  // Dots captured by values don't have default empty names
+  SEXP out_names = NULL;
+  if (offset != 6 || dots_info_names != r_null) {
+    out_names = KEEP(r_new_vector(STRSXP, total));
+    r_push_names(out, out_names);
+    FREE(1);
+  }
 
   for (size_t i = 0, count = 0; i < r_length(dots_info); ++i) {
     SEXP elt = r_list_get(dots_info, i);
@@ -345,15 +350,19 @@ SEXP dots_interp(SEXP frame_env, SEXP offset,
           // lists because of the conversion to pairlist
           tag = r_str_unserialise_unicode(tag);
         }
-        r_chr_poke(out_names, count, tag);
+        if (out_names) {
+          r_chr_poke(out_names, count, tag);
+        }
 
         ++count;
         expr = r_node_cdr(expr);
       }
     } else {
       r_list_poke(out, count, expr);
-      SEXP name = r_chr_get(dots_info_names, i);
-      r_chr_poke(out_names, count, name);
+      if (out_names && dots_info_names != r_null) {
+        SEXP name = r_chr_get(dots_info_names, i);
+        r_chr_poke(out_names, count, name);
+      }
       ++count;
     }
   }
@@ -367,13 +376,12 @@ SEXP dots_interp(SEXP frame_env, SEXP offset,
     FREE(2);
   }
 
-  FREE(3);
+  FREE(2);
   return out;
 }
 
-SEXP rlang_dots_interp(SEXP frame_env, SEXP offset,
-                       SEXP named, SEXP ignore_empty) {
-  SEXP dots = dots_interp(frame_env, offset, named, ignore_empty);
+SEXP rlang_exprs_interp(SEXP frame_env, SEXP named, SEXP ignore_empty) {
+  SEXP dots = dots_interp(frame_env, named, ignore_empty, 0);
 
   if (dots == r_null) {
     return empty_named_list();
@@ -381,9 +389,8 @@ SEXP rlang_dots_interp(SEXP frame_env, SEXP offset,
     return dots;
   }
 }
-SEXP rlang_quos_interp(SEXP frame_env, SEXP offset,
-                       SEXP named, SEXP ignore_empty) {
-  SEXP dots = dots_interp(frame_env, offset, named, ignore_empty);
+SEXP rlang_quos_interp(SEXP frame_env, SEXP named, SEXP ignore_empty) {
+  SEXP dots = dots_interp(frame_env, named, ignore_empty, 3);
 
   if (dots == r_null) {
     return empty_quosures();
