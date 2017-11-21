@@ -235,3 +235,16 @@ test_that("Unicode escapes are always converted to UTF8 in quos()", {
 test_that("exprs() supports auto-naming", {
   expect_identical(exprs(foo(bar), b = baz(), .named = TRUE), list(`foo(bar)` = quote(foo(bar)), b = quote(baz())))
 })
+
+test_that("dots_interp() supports unquoting", {
+  expect_identical(exprs(UQ(1 + 2)), named_list(3))
+  expect_identical(exprs(!! (1 + 1) + 2), named_list(quote(2 + 2)))
+  expect_identical(exprs(!! (1 + 1) + 2 + 3), named_list(quote(2 + 2 + 3)))
+  expect_identical(exprs(!! "foo" := bar), named_list(foo = quote(bar)))
+})
+
+test_that("dots_interp() has no side effect", {
+  f <- function(x) exprs(!! x + 2)
+  expect_identical(f(1), named_list(quote(1 + 2)))
+  expect_identical(f(2), named_list(quote(2 + 2)))
+})

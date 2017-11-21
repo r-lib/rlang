@@ -8,57 +8,7 @@ static SEXP interp_lang_node(SEXP x, SEXP env);
 static SEXP uqs_fun;
 
 
-int bang_level(SEXP x, SEXP* operand) {
-  if (!r_is_call(x, "!")) {
-    return 0;
-  }
-
-  SEXP arg = r_node_cadr(x);
-  if (!r_is_call(arg, "!")) {
-    return 0;
-  }
-
-  arg = r_node_cadr(arg);
-  if (!r_is_call(arg, "!")) {
-    if (operand) {
-      *operand = arg;
-    }
-    return 2;
-  }
-
-  if (operand) {
-    *operand = r_node_cadr(arg);
-  }
-  return 3;
-}
-
-int which_expand_op(SEXP x, SEXP* operand) {
-  int level = bang_level(x, operand);
-  if (level == 2) {
-    return OP_EXPAND_UQ;
-  } else if (level == 3) {
-    return OP_EXPAND_UQS;
-  }
-
-  if (is_rlang_call_any(x, uq_names, UQ_N)) {
-    if (operand) {
-      *operand = r_node_cadr(x);
-    }
-    return OP_EXPAND_UQ;
-  }
-
-  if (is_splice_call(x)) {
-    if (operand) {
-      *operand = r_node_cadr(x);
-    }
-    return OP_EXPAND_UQS;
-  }
-
-  return OP_EXPAND_NONE;
-}
-
-
-static inline bool needs_fixup(SEXP x) {
+static bool needs_fixup(SEXP x) {
   if (r_is_call_any(x, fixup_ops_names, FIXUP_OPS_N)) {
     return true;
   }
@@ -74,6 +24,62 @@ static inline bool needs_fixup(SEXP x) {
 
   return false;
 }
+
+// Takes the trailing `!`
+static void bang_bang_operand(SEXP x, SEXP* operand) {
+  while (needs_fixup(r_node_cadr(x))) {
+    x = r_node_cadr(x);
+  }
+  *operand = r_node_cadr(x);
+}
+
+int bang_level(SEXP x, SEXP* operand) {
+  if (!r_is_call(x, "!")) {
+    return 0;
+  }
+
+  SEXP second = r_node_cadr(x);
+  if (!r_is_call(second, "!")) {
+    return 0;
+  }
+
+  SEXP third = r_node_cadr(second);
+
+  if (!r_is_call(third, "!")) {
+    if (operand) {
+      bang_bang_operand(second, operand);
+    }
+    return 2;
+  }
+
+  if (operand) {
+    *operand = r_node_cadr(third);
+  }
+  return 3;
+}
+
+int which_expand_op(SEXP x, SEXP* operand) {
+  int level = bang_level(x, operand);
+
+  switch (level) {
+  case 2: return OP_EXPAND_UQ;
+  case 3: return OP_EXPAND_UQS;
+  }
+
+  if (is_rlang_call_any(x, uq_names, UQ_N)) {
+    if (operand) *operand = r_node_cadr(x);
+    return OP_EXPAND_UQ;
+  }
+
+  if (is_splice_call(x)) {
+    if (operand) *operand = r_node_cadr(x);
+    return OP_EXPAND_UQS;
+  }
+
+  *operand = NULL;
+  return OP_EXPAND_NONE;
+}
+
 
 static SEXP uq_call(SEXP x) {
   SEXP args = KEEP(r_new_node_list(x));
@@ -179,7 +185,6 @@ SEXP interp_lang(SEXP x, SEXP env)  {
     return x;
   }
 
-  KEEP(x);
   x = replace_double_bang(x);
 
   if (r_is_prefixed_call_any(x, uq_names, UQ_N)) {
@@ -193,7 +198,6 @@ SEXP interp_lang(SEXP x, SEXP env)  {
     x = interp_lang_node(x, env);
   }
 
-  FREE(1);
   return x;
 }
 

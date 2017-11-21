@@ -68,14 +68,18 @@ static SEXP empty_quosures() {
 }
 
 static SEXP def_unquote_name(SEXP expr, SEXP env) {
+  int n_kept = 0;
   SEXP lhs = r_node_cadr(expr);
 
-  SEXP bang_expr;
-  int level = bang_level(lhs, &bang_expr);
-  if (level == 3) {
+  SEXP operand;
+  int level = bang_level(lhs, &operand);
+  switch (level) {
+  case 2:
+    lhs = KEEP(r_eval(operand, env));
+    ++n_kept;
+    break;
+  case 3:
     r_abort("The LHS of `:=` can't be spliced with `!!!`");
-  } else if (level == 2) {
-    lhs = r_eval(bang_expr, env);
   }
 
   int err = 0;
@@ -91,6 +95,7 @@ static SEXP def_unquote_name(SEXP expr, SEXP env) {
   // does not support the characters (i.e. all the time on Windows)
   name = r_str_unserialise_unicode(name);
 
+  FREE(n_kept);
   return name;
 }
 
@@ -187,6 +192,9 @@ static SEXP dots_unquote(SEXP dots, r_size_t* count,
     SEXP expr = dot_get_expr(elt);
     SEXP env = dot_get_env(elt);
 
+    // Unquoting rearranges expressions
+    expr = KEEP(r_duplicate(expr, false));
+
     if (r_is_call(expr, ":=")) {
       SEXP name = def_unquote_name(expr, env);
 
@@ -208,15 +216,14 @@ static SEXP dots_unquote(SEXP dots, r_size_t* count,
         && r_chr_has_empty_string_at(dots_names, i)
         && should_ignore(ignore_empty, i, n)) {
       mark_ignored_dot(elt);
+      FREE(1);
       continue;
     }
 
     switch (op) {
     case OP_EXPR_NONE:
-      *count += 1;
-      break;
     case OP_EXPR_UQ:
-      expr = r_eval(operand, env);
+      expr = interp_lang(expr, env);
       *count += 1;
       break;
     case OP_EXPR_UQS:
@@ -229,8 +236,8 @@ static SEXP dots_unquote(SEXP dots, r_size_t* count,
       *count += 1;
       break;
     case OP_QUO_UQ: {
-      SEXP unquoted = KEEP(r_eval(operand, env));
-      expr = rlang_forward_quosure(unquoted, env);
+      expr = KEEP(interp_lang(expr, env));
+      expr = rlang_forward_quosure(expr, env);
       FREE(1);
       *count += 1;
       break;
@@ -247,6 +254,7 @@ static SEXP dots_unquote(SEXP dots, r_size_t* count,
     }
 
     dot_poke_expr(elt, expr);
+    FREE(1);
   }
 
   return dots;
