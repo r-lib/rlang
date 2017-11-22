@@ -230,6 +230,10 @@ test_that("can capture arguments that do exist", {
   expect_identical(fn(), list(expr = 10L, env = empty_env()))
 })
 
+test_that("can capture missing argument", {
+  expect_identical(captureArgInfo(), list(expr = missing_arg(), env = empty_env()))
+})
+
 test_that("serialised unicode in `:=` LHS is unserialised", {
   nms <- with_latin1_locale({
     exprs <- exprs("\u5e78" := 10)

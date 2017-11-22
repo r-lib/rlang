@@ -76,20 +76,11 @@ sxp_address <- function(x) {
   .Call(rlang_sxp_address, x)
 }
 
-  caller_env <- parent.frame()
-
-  if (identical(caller_env, globalenv())) {
-    stop("must be called in a function")
-  }
-  if (missing(x)) {
-    stop("argument \"x\" is missing")
-  }
-
-  args <- pairlist(caller_env, allowForced)
-  .Call(rlang_capturearg, NULL, NULL, args, get_env())
 captureArgInfo <- function(x) {
+  args <- pairlist(parent.frame())
+  .Call(rlang_capturearginfo, NULL, NULL, args, environment())
 }
-captureDots <- function(allowForced = FALSE) {
-  args <- pairlist(parent.frame(), allowForced)
-  .Call(rlang_capturedots, NULL, NULL, args, get_env())
+captureDots <- function() {
+  args <- pairlist(parent.frame())
+  .Call(rlang_capturedots, NULL, NULL, args, environment())
 }
