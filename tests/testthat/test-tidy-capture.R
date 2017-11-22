@@ -194,28 +194,28 @@ test_that("expr() supports forwarded arguments", {
   expect_identical(fn(foo), quote(foo))
 })
 
-test_that("can take forced promise with strict = FALSE", {
-  fn <- function(strict, x) {
+test_that("can take forced promise with `allowForced = TRUE`", {
+  fn <- function(allow, x) {
     force(x)
-    captureArg(x, strict = strict)
+    captureArg(x, allowForced = allow)
   }
-  expect_error(fn(TRUE, letters), "already been evaluated")
-  expect_identical(fn(FALSE, letters), NULL)
+  expect_error(fn(FALSE, letters), "already been evaluated")
+  expect_identical(fn(TRUE, letters), list(expr = letters, env = empty_env()))
 })
 
 test_that("capturing an argument that doesn't exist fails", {
   y <- "a"
 
   fn <- function(x) captureArg(y)
-  expect_error(fn(), "not part of function signature")
+  expect_error(fn(), "does not exist")
 
   fn <- function() enquo(y)
-  expect_error(fn(), "not part of function signature")
+  expect_error(fn(), "does not exist")
 
   fn <- function() enexpr(y)
-  expect_error(fn(), "not part of function signature")
+  expect_error(fn(), "does not exist")
 
-  expect_error((function() rlang::enexpr(y))(), "not part of function signature")
+  expect_error((function() rlang::enexpr(y))(), "does not exist")
 })
 
 test_that("serialised unicode in `:=` LHS is unserialised", {
