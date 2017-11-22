@@ -5,9 +5,7 @@
 #' encoding beforehand. This is necessary because symbols remove
 #' silently the encoding mark of strings (see [set_str_encoding()]).
 #'
-#' @param x A string.
-#' @param ... Character vectors or list of character vectors. This is
-#'   passed to [chr()] to enable automatic splicing.
+#' @param x A string or list of strings.
 #' @return A symbol for `sym()` and a list of symbols for `syms()`.
 #' @export
 #' @examples
@@ -17,12 +15,6 @@
 #' # This way sym() and as_string() are inverse of each other:
 #' as_string(missing_arg())
 #' sym(as_string(missing_arg()))
-#'
-#' # syms() is handy to create lists of symbols
-#' syms(letters[1:5])
-#'
-#' # It takes multiple arguments and automatically splices lists:
-#' syms("a", "b", list("b", "c"))
 sym <- function(x) {
   if (is_symbol(x)) {
     return(x)
@@ -37,8 +29,8 @@ sym <- function(x) {
 }
 #' @rdname sym
 #' @export
-syms <- function(...) {
-  map(chr(...), sym)
+syms <- function(x) {
+  map(x, sym)
 }
 
 #' Is object a symbol?
