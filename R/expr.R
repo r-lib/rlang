@@ -64,13 +64,7 @@ expr <- function(expr) {
 #' @rdname expr
 #' @export
 enexpr <- function(arg) {
-  if (missing(arg)) {
-    return(missing_arg())
-  }
-
-  capture <- lang(captureArg, substitute(arg))
-  arg <- eval_bare(capture, caller_env())
-  .Call(rlang_interp, arg$expr, arg$env)
+  .Call(rlang_enexpr, substitute(arg), parent.frame())
 }
 #' @rdname expr
 #' @inheritParams dots_values
