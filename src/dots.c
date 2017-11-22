@@ -4,19 +4,6 @@
 SEXP rlang_ns_get(const char* name);
 
 
-SEXP rlang_capture_dots(SEXP frame_env) {
-  static SEXP capture_call = NULL;
-
-  if (!capture_call) {
-    capture_call = KEEP(r_new_call_node(rlang_ns_get("captureDots"), r_null));
-    r_mark_precious(capture_call);
-    r_mark_shared(capture_call);
-    FREE(1);
-  }
-
-  return r_eval(capture_call, frame_env);
-}
-
 SEXP rlang_forward_quosure(SEXP x, SEXP env) {
   if (r_is_quosure(x)) {
     return x;
@@ -327,11 +314,13 @@ static int find_auto_names_width(SEXP named) {
 }
 
 
+SEXP capturedots(SEXP frame);
+
 SEXP dots_interp(SEXP frame_env, SEXP named, SEXP ignore_empty, int op_offset) {
   if (!rlang_spliced_flag) rlang_spliced_flag = r_sym("__rlang_spliced");
   if (!rlang_ignored_flag) rlang_ignored_flag = r_sym("__rlang_ignored");
 
-  SEXP dots_info = KEEP(rlang_capture_dots(frame_env));
+  SEXP dots_info = KEEP(capturedots(frame_env));
 
   r_size_t total;
   int ignore_empty_int = match_ignore_empty_arg(ignore_empty);

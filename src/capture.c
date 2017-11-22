@@ -50,33 +50,38 @@ SEXP attribute_hidden new_captured_promise(SEXP x, SEXP env) {
     }
 }
 
-SEXP attribute_hidden rlang_capturearg(SEXP call, SEXP op, SEXP args, SEXP rho)
+SEXP capturearg(SEXP sym, SEXP frame)
 {
-    SEXP arg = findVarInFrame3(rho, install("x"), TRUE);
-
-    // Happens when argument is unwrapped from a promise by the compiler
-    if (TYPEOF(arg) != PROMSXP)
-        return new_captured_literal(arg);
-
-    // Get promise in caller frame
-    SEXP caller_env = CAR(args);
-    SEXP sym = PREXPR(arg);
     if (TYPEOF(sym) != SYMSXP)
         error(_("\"x\" must be an argument name"));
 
-    arg = findVarInFrame3(caller_env, sym, TRUE);
+    SEXP arg = findVarInFrame3(frame, sym, TRUE);
 
     if (arg == R_UnboundValue)
         error(_("object '%s' not found"), CHAR(PRINTNAME(sym)));
+
+    if (TYPEOF(arg) == PROMSXP)
+        return new_captured_promise(arg, frame);
     else
-        return new_captured_promise(arg, caller_env);
+        return new_captured_literal(arg);
 }
 
-SEXP attribute_hidden rlang_capturedots(SEXP call, SEXP op, SEXP args, SEXP rho)
+SEXP attribute_hidden rlang_capturearg(SEXP call, SEXP op, SEXP args, SEXP rho)
 {
-    SEXP caller_env = CAR(args);
+    // Unwrap first layer of promise
+    SEXP sym = findVarInFrame3(rho, install("x"), TRUE);
 
-    SEXP dots = PROTECT(findVarInFrame3(caller_env, R_DotsSymbol, TRUE));
+    // May be a literal if compiler did not wrap in a promise
+    if (TYPEOF(sym) == PROMSXP) {
+        sym = PREXPR(sym);
+        return capturearg(sym, CAR(args));
+    } else {
+        return new_captured_literal(sym);
+    }
+}
+
+SEXP capturedots(SEXP frame) {
+    SEXP dots = PROTECT(findVarInFrame3(frame, R_DotsSymbol, TRUE));
 
     if (dots == R_UnboundValue) {
         error(_("Must capture dots in a function where dots exist"));
@@ -98,7 +103,7 @@ SEXP attribute_hidden rlang_capturedots(SEXP call, SEXP op, SEXP args, SEXP rho)
 
         SEXP dot;
         if (TYPEOF(head) == PROMSXP)
-            dot = new_captured_promise(head, caller_env);
+            dot = new_captured_promise(head, frame);
         else
             dot = new_captured_literal(head);
 
@@ -118,4 +123,10 @@ SEXP attribute_hidden rlang_capturedots(SEXP call, SEXP op, SEXP args, SEXP rho)
 
     UNPROTECT(3);
     return captured;
+}
+
+SEXP attribute_hidden rlang_capturedots(SEXP call, SEXP op, SEXP args, SEXP rho)
+{
+    SEXP caller_env = CAR(args);
+    return capturedots(caller_env);
 }
