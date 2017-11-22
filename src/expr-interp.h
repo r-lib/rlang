@@ -37,3 +37,14 @@ int which_expand_op(SEXP x, SEXP* operand);
 
 SEXP rlang_interp(SEXP x, SEXP env);
 SEXP interp_lang(SEXP x, SEXP env);
+
+
+static inline SEXP rlang_forward_quosure(SEXP x, SEXP env) {
+  if (r_is_quosure(x)) {
+    return x;
+  } else if (r_is_symbolic(x)) {
+    return r_new_quosure(x, env);
+  } else {
+    return r_new_quosure(x, r_empty_env);
+  }
+}

@@ -162,10 +162,6 @@ test_that("missing arguments are captured", {
 
 test_that("empty quosures are forwarded", {
   inner <- function(x) enquo(x)
-  outer <- function(x) inner(x)
-  expect_identical(outer(), quo())
-
-  inner <- function(x) enquo(x)
   outer <- function(x) inner(!! enquo(x))
   expect_identical(outer(), quo())
 })

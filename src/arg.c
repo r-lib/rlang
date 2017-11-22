@@ -5,7 +5,7 @@
 
 SEXP rlang_ns_get(const char* name);
 
-SEXP rlang_enexpr(SEXP sym, SEXP frame) {
+SEXP capture(SEXP sym, SEXP frame, SEXP* arg_env) {
   static SEXP capture_call = NULL;
   if (!capture_call) {
     SEXP args = KEEP(r_new_node(r_null, r_null));
@@ -26,8 +26,27 @@ SEXP rlang_enexpr(SEXP sym, SEXP frame) {
 
   // Unquoting rearranges the expression
   expr = KEEP(r_duplicate(expr, false));
-
   expr = interp_lang(expr, env);
+
+  if (arg_env) {
+    *arg_env = env;
+  }
+
   FREE(2);
   return expr;
+}
+
+SEXP rlang_enexpr(SEXP sym, SEXP frame) {
+  return capture(sym, frame, NULL);
+}
+
+
+SEXP rlang_forward_quosure(SEXP x, SEXP env);
+
+SEXP rlang_enquo(SEXP sym, SEXP frame) {
+  SEXP env;
+  SEXP expr = KEEP(capture(sym, frame, &env));
+  SEXP quo = rlang_forward_quosure(expr, env);
+  FREE(1);
+  return quo;
 }

@@ -4,16 +4,6 @@
 SEXP rlang_ns_get(const char* name);
 
 
-SEXP rlang_forward_quosure(SEXP x, SEXP env) {
-  if (r_is_quosure(x)) {
-    return x;
-  } else if (r_is_symbolic(x)) {
-    return r_new_quosure(x, env);
-  } else {
-    return r_new_quosure(x, r_empty_env);
-  }
-}
-
 static inline SEXP dot_get_expr(SEXP dot) {
   return r_list_get(dot, 0);
 }
