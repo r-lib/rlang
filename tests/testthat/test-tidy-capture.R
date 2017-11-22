@@ -194,28 +194,40 @@ test_that("expr() supports forwarded arguments", {
   expect_identical(fn(foo), quote(foo))
 })
 
-test_that("can take forced promise with `allowForced = TRUE`", {
+test_that("can take forced arguments with `allowForced = TRUE`", {
   fn <- function(allow, x) {
     force(x)
-    captureArg(x, allowForced = allow)
+    captureArg(x)
   }
-  expect_error(fn(FALSE, letters), "already been evaluated")
   expect_identical(fn(TRUE, letters), list(expr = letters, env = empty_env()))
+
+  expect_error(lapply(1:2, captureArg), "must be an argument name")
+
+  args <- list(list(expr = 1L, env = empty_env()), list(expr = 2L, env = empty_env()))
+  expect_identical(lapply(1:2, function(x) captureArg(x)), args)
 })
 
 test_that("capturing an argument that doesn't exist fails", {
   y <- "a"
 
   fn <- function(x) captureArg(y)
-  expect_error(fn(), "does not exist")
+  expect_error(fn(), "object 'y' not found")
 
   fn <- function() enquo(y)
-  expect_error(fn(), "does not exist")
+  expect_error(fn(), "not found")
 
   fn <- function() enexpr(y)
-  expect_error(fn(), "does not exist")
+  expect_error(fn(), "not found")
 
-  expect_error((function() rlang::enexpr(y))(), "does not exist")
+  expect_error((function() rlang::enexpr(y))(), "not found")
+})
+
+test_that("can capture arguments that do exist", {
+  fn <- function() {
+    x <- 10L
+    captureArg(x)
+  }
+  expect_identical(fn(), list(expr = 10L, env = empty_env()))
 })
 
 test_that("serialised unicode in `:=` LHS is unserialised", {
@@ -247,4 +259,24 @@ test_that("dots_interp() has no side effect", {
   f <- function(x) exprs(!! x + 2)
   expect_identical(f(1), named_list(quote(1 + 2)))
   expect_identical(f(2), named_list(quote(2 + 2)))
+})
+
+test_that("exprs() handles forced arguments", {
+  exprs <- list(named_list(1L), named_list(2L))
+  expect_identical(lapply(1:2, function(...) exprs(...)), exprs)
+  expect_identical(lapply(1:2, exprs), exprs)
+})
+
+test_that("quos() handles forced arguments", {
+  quos <- list(quos_list(quo(1L)), quos_list(quo(2L)))
+  expect_identical(lapply(1:2, function(...) quos(...)), quos)
+  expect_identical(lapply(1:2, quos), quos)
+})
+
+test_that("enexpr() handles forced arguments", {
+  expect_identical(lapply(1:2, function(x) enexpr(x)), list(1L, 2L))
+})
+
+test_that("enquo() handles forced arguments", {
+  expect_identical(lapply(1:2, function(x) enquo(x)), list(quo(1L), quo(2L)))
 })

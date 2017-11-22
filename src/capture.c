@@ -22,11 +22,14 @@ SEXP attribute_hidden new_captured_arg(SEXP x, SEXP env) {
     UNPROTECT(1);
     return info;
 }
+SEXP attribute_hidden new_captured_literal(SEXP x) {
+    return new_captured_arg(x, R_EmptyEnv);
+}
 
-SEXP attribute_hidden new_captured_promise(SEXP x, int allow_forced, SEXP env) {
+SEXP attribute_hidden new_captured_promise(SEXP x, SEXP env) {
     // If promise was optimised away, return the literal
     if (TYPEOF(x) != PROMSXP)
-        return new_captured_arg(x, R_EmptyEnv);
+        return new_captured_literal(x);
 
     SEXP expr_env = R_NilValue;
     SEXP expr = x;
@@ -35,15 +38,12 @@ SEXP attribute_hidden new_captured_promise(SEXP x, int allow_forced, SEXP env) {
         expr = PREXPR(expr);
     }
 
+    // Evaluated arguments are returned as literals
     if (expr_env == R_NilValue) {
-        if (allow_forced) {
-            SEXP value = PROTECT(eval(x, env));
-            SEXP arg = new_captured_arg(value, R_EmptyEnv);
-            UNPROTECT(1);
-            return arg;
-        } else {
-            error(_("the argument has already been evaluated"));
-        }
+        SEXP value = PROTECT(eval(x, env));
+        SEXP arg = new_captured_literal(value);
+        UNPROTECT(1);
+        return arg;
     } else {
         MARK_NOT_MUTABLE(expr);
         return new_captured_arg(expr, expr_env);
@@ -52,12 +52,11 @@ SEXP attribute_hidden new_captured_promise(SEXP x, int allow_forced, SEXP env) {
 
 SEXP attribute_hidden rlang_capturearg(SEXP call, SEXP op, SEXP args, SEXP rho)
 {
-    int strict = asLogical(CADR(args));
     SEXP arg = findVarInFrame3(rho, install("x"), TRUE);
 
     // Happens when argument is unwrapped from a promise by the compiler
     if (TYPEOF(arg) != PROMSXP)
-        return new_captured_arg(arg, R_EmptyEnv);
+        return new_captured_literal(arg);
 
     // Get promise in caller frame
     SEXP caller_env = CAR(args);
@@ -66,16 +65,16 @@ SEXP attribute_hidden rlang_capturearg(SEXP call, SEXP op, SEXP args, SEXP rho)
         error(_("\"x\" must be an argument name"));
 
     arg = findVarInFrame3(caller_env, sym, TRUE);
-    if (arg == R_UnboundValue)
-        error(_("Argument to capture does not exist"));
 
-    return new_captured_promise(arg, strict, caller_env);
+    if (arg == R_UnboundValue)
+        error(_("object '%s' not found"), CHAR(PRINTNAME(sym)));
+    else
+        return new_captured_promise(arg, caller_env);
 }
 
 SEXP attribute_hidden rlang_capturedots(SEXP call, SEXP op, SEXP args, SEXP rho)
 {
     SEXP caller_env = CAR(args);
-    int allow_forced = asLogical(CADR(args));
 
     SEXP dots = PROTECT(findVarInFrame3(caller_env, R_DotsSymbol, TRUE));
 
@@ -99,9 +98,9 @@ SEXP attribute_hidden rlang_capturedots(SEXP call, SEXP op, SEXP args, SEXP rho)
 
         SEXP dot;
         if (TYPEOF(head) == PROMSXP)
-            dot = new_captured_promise(head, allow_forced, caller_env);
+            dot = new_captured_promise(head, caller_env);
         else
-            dot = new_captured_arg(head, R_EmptyEnv);
+            dot = new_captured_literal(head);
 
         SET_VECTOR_ELT(captured, i, dot);
 

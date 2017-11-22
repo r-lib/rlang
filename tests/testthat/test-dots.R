@@ -36,12 +36,11 @@ test_that("dots names can be unquoted", {
 })
 
 test_that("can take forced dots with `allowForced = FALSE`", {
-  fn <- function(allow, ...) {
+  fn <- function(...) {
     force(..1)
-    captureDots(allow)
+    captureDots()
   }
-  expect_error(fn(FALSE, letters), "already been evaluated")
-  expect_identical(fn(TRUE, letters), list(list(expr = letters, env = empty_env())))
+  expect_identical(fn(letters), list(list(expr = letters, env = empty_env())))
 })
 
 test_that("captured dots are only named if names were supplied", {
@@ -51,14 +50,14 @@ test_that("captured dots are only named if names were supplied", {
 })
 
 test_that("dots_values() handles forced dots", {
-  skip("TODO forced")
   fn <- function(...) {
     force(..1)
     dots_values(...)
   }
-  expect_identical(fn("foo"), named_list("foo"))
+  expect_identical(fn("foo"), list("foo"))
 
-  expect_identical(lapply(1:2, function(...) dots_values(...)), list(named_list(1L), named_list(2L)))
+  expect_identical(lapply(1:2, function(...) dots_values(...)), list(list(1L), list(2L)))
+  expect_identical(lapply(1:2, dots_values), list(list(1L), list(2L)))
 })
 
 test_that("cleans empty arguments", {
