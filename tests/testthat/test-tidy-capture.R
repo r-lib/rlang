@@ -197,20 +197,20 @@ test_that("expr() supports forwarded arguments", {
 test_that("can take forced arguments with `allowForced = TRUE`", {
   fn <- function(allow, x) {
     force(x)
-    captureArg(x)
+    captureArgInfo(x)
   }
   expect_identical(fn(TRUE, letters), list(expr = letters, env = empty_env()))
 
-  expect_error(lapply(1:2, captureArg), "must be an argument name")
+  expect_error(lapply(1:2, captureArgInfo), "must be an argument name")
 
   args <- list(list(expr = 1L, env = empty_env()), list(expr = 2L, env = empty_env()))
-  expect_identical(lapply(1:2, function(x) captureArg(x)), args)
+  expect_identical(lapply(1:2, function(x) captureArgInfo(x)), args)
 })
 
 test_that("capturing an argument that doesn't exist fails", {
   y <- "a"
 
-  fn <- function(x) captureArg(y)
+  fn <- function(x) captureArgInfo(y)
   expect_error(fn(), "object 'y' not found")
 
   fn <- function() enquo(y)
@@ -225,7 +225,7 @@ test_that("capturing an argument that doesn't exist fails", {
 test_that("can capture arguments that do exist", {
   fn <- function() {
     x <- 10L
-    captureArg(x)
+    captureArgInfo(x)
   }
   expect_identical(fn(), list(expr = 10L, env = empty_env()))
 })

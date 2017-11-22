@@ -76,7 +76,6 @@ sxp_address <- function(x) {
   .Call(rlang_sxp_address, x)
 }
 
-captureArg <- function(x, allowForced = FALSE) {
   caller_env <- parent.frame()
 
   if (identical(caller_env, globalenv())) {
@@ -88,6 +87,7 @@ captureArg <- function(x, allowForced = FALSE) {
 
   args <- pairlist(caller_env, allowForced)
   .Call(rlang_capturearg, NULL, NULL, args, get_env())
+captureArgInfo <- function(x) {
 }
 captureDots <- function(allowForced = FALSE) {
   args <- pairlist(parent.frame(), allowForced)

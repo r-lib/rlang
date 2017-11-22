@@ -193,7 +193,7 @@ enquo <- function(arg) {
     return(new_quosure(missing_arg(), empty_env()))
   }
 
-  capture <- lang(captureArg, substitute(arg))
+  capture <- lang(captureArgInfo, substitute(arg))
   arg <- eval_bare(capture, caller_env())
   expr <- .Call(rlang_interp, arg$expr, arg$env)
   forward_quosure(expr, arg$env)

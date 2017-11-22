@@ -51,7 +51,7 @@ is_symbol <- function(x) {
 #' @rdname expr
 #' @export
 ensym <- function(arg) {
-  capture <- lang(captureArg, substitute(arg))
+  capture <- lang(captureArgInfo, substitute(arg))
   arg <- eval_bare(capture, caller_env())
   sym <- .Call(rlang_interp, arg$expr, arg$env)
 
