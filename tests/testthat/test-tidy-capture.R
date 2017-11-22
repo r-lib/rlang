@@ -280,3 +280,14 @@ test_that("enexpr() handles forced arguments", {
 test_that("enquo() handles forced arguments", {
   expect_identical(lapply(1:2, function(x) enquo(x)), list(quo(1L), quo(2L)))
 })
+
+test_that("default arguments are properly captured (#201)", {
+  fn <- function(x = x) enexpr(x)
+  expect_identical(fn(), quote(x))
+
+  # This is just for consistency. This causes an infinite recursion
+  # when evaluated as Hong noted
+  fn <- function(x = x) list(enquo(x), quo(x))
+  out <- fn()
+  expect_identical(out[[1]], out[[2]])
+})
