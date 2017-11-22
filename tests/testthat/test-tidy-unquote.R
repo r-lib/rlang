@@ -182,6 +182,10 @@ test_that("serialised unicode in argument names is unserialised on splice", {
   expect_true(all(chr_encoding(nms) == "UTF-8"))
 })
 
+test_that("splicing expressions fails", {
+  expect_error(expr(c(!!! expression(1, 2))), "must be a vector")
+})
+
 
 # UQE ----------------------------------------------------------------
 
