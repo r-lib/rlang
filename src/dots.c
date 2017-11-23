@@ -15,11 +15,11 @@ static inline void dot_poke_expr(SEXP dot, SEXP elt) {
 }
 
 static SEXP new_preserved_empty_list() {
-  SEXP empty_list = r_new_vector(VECSXP, 0);
+  SEXP empty_list = r_new_vector(r_type_list, 0);
   r_mark_precious(empty_list);
   r_mark_shared(empty_list);
 
-  SEXP nms = KEEP(r_new_vector(STRSXP, 0));
+  SEXP nms = KEEP(r_new_vector(r_type_character, 0));
   r_poke_names(empty_list, nms);
   FREE(1);
 
@@ -141,7 +141,7 @@ static SEXP set_spliced(SEXP x) {
     r_mark_shared(spliced_str);
   }
 
-  if (r_kind(x) != VECSXP) {
+  if (r_typeof(x) != r_type_list) {
     r_abort("Can't use `!!!` on atomic vectors in non-quoting functions");
   }
 
@@ -166,7 +166,7 @@ static SEXP dots_unquote(SEXP dots, r_size_t* count,
       SEXP name = def_unquote_name(expr, env);
 
       if (dots_names == r_null) {
-        dots_names = KEEP(r_new_vector(STRSXP, n));
+        dots_names = KEEP(r_new_vector(r_type_character, n));
         r_push_names(dots, dots_names);
         FREE(1);
       }
@@ -256,16 +256,16 @@ static int find_auto_names_width(SEXP named) {
     goto error;
   }
 
-  switch (r_kind(named)) {
-  case LGLSXP:
+  switch (r_typeof(named)) {
+  case r_type_logical:
     if (r_as_bool(named)) {
       return 60;
     } else {
       return 0;
     }
-  case INTSXP:
+  case r_type_integer:
     return INTEGER(named)[0];
-  case REALSXP:
+  case r_type_double:
     if (r_is_integerish(named)) {
       return REAL(named)[0];
     }
@@ -291,13 +291,13 @@ SEXP dots_interp(SEXP frame_env, SEXP named, SEXP ignore_empty, int op_offset) {
   int ignore_empty_int = match_ignore_empty_arg(ignore_empty);
   dots_info = dots_unquote(dots_info, &total, op_offset, ignore_empty_int);
 
-  SEXP out = KEEP(r_new_vector(VECSXP, total));
+  SEXP out = KEEP(r_new_vector(r_type_list, total));
 
   // Dots captured by values don't have default empty names
   SEXP dots_info_names = r_names(dots_info);
   SEXP out_names = NULL;
   if (op_offset != 8 || dots_info_names != r_null) {
-    out_names = KEEP(r_new_vector(STRSXP, total));
+    out_names = KEEP(r_new_vector(r_type_character, total));
     r_push_names(out, out_names);
     FREE(1);
   }
@@ -381,7 +381,7 @@ SEXP rlang_dots_interp(SEXP frame_env, SEXP named, SEXP ignore_empty) {
   SEXP dots = dots_interp(frame_env, named, ignore_empty, 8);
 
   if (dots == r_null) {
-    return r_new_vector(VECSXP, 0);
+    return r_new_vector(r_type_list, 0);
   } else {
     return dots;
   }

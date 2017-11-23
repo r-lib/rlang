@@ -11,6 +11,9 @@ static inline SEXPTYPE r_length(SEXP x) {
 static inline SEXPTYPE r_kind(SEXP x) {
   return TYPEOF(x);
 }
+static inline enum r_type r_typeof(SEXP x) {
+  return TYPEOF(x);
+}
 
 static inline void r_mark_precious(SEXP x) {
   R_PreserveObject(x);

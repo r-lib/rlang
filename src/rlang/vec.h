@@ -21,7 +21,7 @@ static inline int r_c_int(SEXP x) {
   return INTEGER(x)[0];
 }
 
-static inline SEXP r_new_vector(r_kind_t type, r_size_t n) {
+static inline SEXP r_new_vector(enum r_type type, r_size_t n) {
   return Rf_allocVector(type, n);
 }
 

@@ -65,7 +65,7 @@ struct expansion_info which_bang_op(SEXP x) {
 struct expansion_info which_expansion_op(SEXP x) {
   struct expansion_info info = which_bang_op(x);
 
-  if (r_kind(x) != LANGSXP) {
+  if (r_typeof(x) != r_type_call) {
     return info;
   }
   if (info.op) {
@@ -163,17 +163,17 @@ static SEXP bang_bang_expression(struct expansion_info info, SEXP env) {
 }
 
 SEXP big_bang_coerce(SEXP expr) {
-  switch (r_kind(expr)) {
-  case NILSXP:
-  case LISTSXP:
+  switch (r_typeof(expr)) {
+  case r_type_null:
+  case r_type_pairlist:
     return expr;
-  case LGLSXP:
-  case INTSXP:
-  case REALSXP:
-  case CPLXSXP:
-  case STRSXP:
-  case RAWSXP:
-  case VECSXP: {
+  case r_type_logical:
+  case r_type_integer:
+  case r_type_double:
+  case r_type_complex:
+  case r_type_character:
+  case r_type_raw:
+  case r_type_list: {
     static SEXP coercer = NULL;
     if (!coercer) { coercer = r_base_ns_get("as.pairlist"); }
     SEXP coerce_args = KEEP(r_new_node(expr, r_null));
@@ -182,7 +182,7 @@ SEXP big_bang_coerce(SEXP expr) {
     FREE(2);
     return coerced;
   }
-  case LANGSXP:
+  case r_type_call:
     if (r_is_symbol(r_node_car(expr), "{")) {
       return r_node_cdr(expr);
     }
@@ -223,7 +223,7 @@ SEXP call_interp_impl(SEXP x, SEXP env, struct expansion_info info) {
 
   switch (info.op) {
   case OP_EXPAND_NONE:
-    if (r_kind(x) == LANGSXP) {
+    if (r_typeof(x) == r_type_call) {
       return node_list_interp(x, env);
     } else {
       return x;
@@ -257,7 +257,7 @@ SEXP rlang_interp(SEXP x, SEXP env) {
   if (!r_is_environment(env)) {
     r_abort("`env` must be an environment");
   }
-  if (r_kind(x) != LANGSXP) {
+  if (r_typeof(x) != r_type_call) {
     return x;
   }
 
