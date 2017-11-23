@@ -21,6 +21,7 @@ typedef Rcomplex r_complex_t;
 #include "cnd.h"
 #include "env.h"
 #include "eval.h"
+#include "fn.h"
 #include "formula.h"
 #include "lang.h"
 #include "node.h"

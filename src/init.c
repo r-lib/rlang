@@ -65,6 +65,7 @@ extern SEXP r_new_quosure(SEXP, SEXP);
 extern SEXP rlang_poke_attributes(SEXP, SEXP);
 extern SEXP rlang_enexpr(SEXP, SEXP);
 extern SEXP rlang_enquo(SEXP, SEXP);
+extern SEXP r_get_expression(SEXP, SEXP);
 
 
 // For unit tests
@@ -137,6 +138,7 @@ static const R_CallMethodDef call_entries[] = {
   {"rlang_poke_attributes",     (DL_FUNC) &rlang_poke_attributes, 2},
   {"rlang_enexpr",              (DL_FUNC) &rlang_enexpr, 2},
   {"rlang_enquo",               (DL_FUNC) &rlang_enquo, 2},
+  {"rlang_get_expression",      (DL_FUNC) &r_get_expression, 2},
   {NULL, NULL, 0}
 };
 

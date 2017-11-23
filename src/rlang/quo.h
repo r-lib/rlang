@@ -9,5 +9,7 @@ static inline bool r_is_quosure(SEXP x) {
   return Rf_inherits(x, "quosure");
 }
 
+SEXP r_get_expression(SEXP x, SEXP alternate);
+
 
 #endif

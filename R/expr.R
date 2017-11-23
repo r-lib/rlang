@@ -321,15 +321,7 @@ set_expr <- function(x, value) {
 #' @rdname set_expr
 #' @export
 get_expr <- function(x, default = x) {
-  if (is_quosureish(x)) {
-    f_rhs(x)
-  } else if (is_closure(x)) {
-    body(x)
-  } else if (inherits(x, "frame")) {
-    x$expr
-  } else {
-    default
-  }
+  .Call(rlang_get_expression, x, default)
 }
 
 expr_type_of <- function(x) {

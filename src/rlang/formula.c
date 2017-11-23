@@ -32,12 +32,14 @@ bool r_f_has_env(SEXP f) {
 }
 
 bool r_is_formulaish(SEXP x, int scoped, int lhs) {
+  static const char* formulaish_names[2] = { "~", ":=" };
+
   if (r_kind(x) != LANGSXP) {
     return false;
   }
 
   SEXP head = r_node_car(x);
-  if (head != r_sym("~") && head != r_sym(":=")) {
+  if (!r_is_symbol_any(head, formulaish_names, 2)) {
     return false;
   }
 
