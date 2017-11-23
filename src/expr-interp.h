@@ -20,17 +20,17 @@ static const char* fixup_unary_ops_names[FIXUP_UNARY_OPS_N] = {
 };
 
 
-static inline bool is_rlang_call(SEXP x, const char* name) {
+static inline bool is_rlang_call(sexp* x, const char* name) {
   return
     r_is_call(x, name) ||
     r_is_namespaced_call(x, "rlang", name);
 }
-static inline bool is_rlang_call_any(SEXP x, const char** names, int n) {
+static inline bool is_rlang_call_any(sexp* x, const char** names, int n) {
   return
     r_is_call_any(x, names, n) ||
     r_is_namespaced_call_any(x, "rlang", names, n);
 }
-static inline bool is_splice_call(SEXP node) {
+static inline bool is_splice_call(sexp* node) {
   return is_rlang_call_any(node, uqs_names, UQS_N);
 }
 
@@ -44,9 +44,9 @@ enum expansion_op {
 
 struct expansion_info {
   enum expansion_op op;
-  SEXP operand;
-  SEXP parent;
-  SEXP root;
+  sexp* operand;
+  sexp* parent;
+  sexp* root;
 };
 
 static inline struct expansion_info init_expansion_info() {
@@ -60,17 +60,17 @@ static inline struct expansion_info init_expansion_info() {
   return info;
 }
 
-struct expansion_info which_bang_op(SEXP x);
-struct expansion_info which_expansion_op(SEXP x);
+struct expansion_info which_bang_op(sexp* x);
+struct expansion_info which_expansion_op(sexp* x);
 
-SEXP big_bang_coerce(SEXP expr);
+sexp* big_bang_coerce(sexp* expr);
 
-SEXP rlang_interp(SEXP x, SEXP env);
-SEXP call_interp(SEXP x, SEXP env);
-SEXP call_interp_impl(SEXP x, SEXP env, struct expansion_info info);
+sexp* rlang_interp(sexp* x, sexp* env);
+sexp* call_interp(sexp* x, sexp* env);
+sexp* call_interp_impl(sexp* x, sexp* env, struct expansion_info info);
 
 
-static inline SEXP rlang_forward_quosure(SEXP x, SEXP env) {
+static inline sexp* rlang_forward_quosure(sexp* x, sexp* env) {
   if (r_is_quosure(x)) {
     return x;
   } else if (r_is_symbolic(x)) {
