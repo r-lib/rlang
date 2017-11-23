@@ -151,7 +151,7 @@ static SEXP unquote_prefixed_uq(SEXP x, SEXP env) {
   r_node_poke_cdr(r_node_cdar(x), r_new_node(unquoted, r_null));
   FREE(1);
 
-  if (r_is_namespaced_call(x, "rlang")) {
+  if (r_is_namespaced_call(x, "rlang", NULL)) {
     x = r_node_cadr(r_node_cdar(x));
   } else {
     x = r_node_car(x);
