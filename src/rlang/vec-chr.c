@@ -17,7 +17,7 @@ bool r_chr_has(SEXP chr, const char* c_string) {
   SEXP nm;
   for (int i = 0; i != r_vec_length(chr); ++i) {
     nm = STRING_ELT(chr, i);
-    if (!strcmp(CHAR(nm), c_string)) {
+    if (strcmp(CHAR(nm), c_string) == 0) {
       return true;
     }
   }

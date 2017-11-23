@@ -369,7 +369,7 @@ SEXP dots_interp(SEXP frame_env, SEXP named, SEXP ignore_empty, int op_offset) {
   }
 
   int names_width = find_auto_names_width(named);
-  if (names_width) {
+  if (names_width && (!out_names || r_chr_has(out_names, ""))) {
     SEXP auto_fn = rlang_ns_get("quos_auto_name");
     SEXP width = KEEP(r_scalar_int(names_width));
     SEXP auto_call = KEEP(r_build_call2(auto_fn, out, width));
