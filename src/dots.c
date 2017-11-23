@@ -217,6 +217,9 @@ static sexp* dots_unquote(sexp* dots, r_size_t* count,
       break;
     }
     case OP_VALUE_NONE:
+      if (expr == r_missing_sym) {
+        r_abort("Argument %d is empty", i + 1);
+      }
       expr = r_eval(expr, env);
       *count += 1;
       break;
