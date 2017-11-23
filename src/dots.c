@@ -201,7 +201,7 @@ static SEXP dots_unquote(SEXP dots, r_size_t* count,
       expr = r_node_cadr(r_node_cdr(expr));
     }
 
-    SEXP operand;
+    SEXP operand = r_null;
     int base_op = which_expand_op(expr, &operand);
     enum expansion_op op = base_op + op_offset;
 
