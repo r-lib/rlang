@@ -60,6 +60,7 @@ enum r_type {
 #include "quo.h"
 #include "sexp.h"
 #include "stack.h"
+#include "squash.h"
 #include "sym.h"
 #include "vec.h"
 #include "vec-chr.h"

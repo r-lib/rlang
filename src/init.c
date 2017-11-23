@@ -6,7 +6,7 @@
 
 // Callable from other packages
 extern SEXP rlang_new_dictionary(SEXP, SEXP, SEXP);
-extern SEXP rlang_squash_if(SEXP, SEXPTYPE, bool (*is_spliceable)(SEXP), int);
+extern SEXP r_squash_if(SEXP, SEXPTYPE, bool (*is_spliceable)(SEXP), int);
 extern bool rlang_is_clevel_spliceable(SEXP);
 
 // Callable from this package
@@ -60,6 +60,8 @@ extern SEXP rlang_r_string(SEXP);
 extern SEXP rlang_exprs_interp(SEXP, SEXP, SEXP);
 extern SEXP rlang_quos_interp(SEXP, SEXP, SEXP);
 extern SEXP rlang_dots_interp(SEXP, SEXP, SEXP);
+extern SEXP rlang_dots_list(SEXP, SEXP, SEXP);
+extern SEXP rlang_dots_flat_list(SEXP, SEXP, SEXP);
 extern SEXP r_new_formula(SEXP, SEXP, SEXP);
 extern SEXP r_new_quosure(SEXP, SEXP);
 extern SEXP rlang_poke_attributes(SEXP, SEXP);
@@ -133,6 +135,8 @@ static const R_CallMethodDef call_entries[] = {
   {"rlang_exprs_interp",        (DL_FUNC) &rlang_exprs_interp, 3},
   {"rlang_quos_interp",         (DL_FUNC) &rlang_quos_interp, 3},
   {"rlang_dots_interp",         (DL_FUNC) &rlang_dots_interp, 3},
+  {"rlang_dots_list",           (DL_FUNC) &rlang_dots_list, 3},
+  {"rlang_dots_flat_list",     (DL_FUNC) &rlang_dots_flat_list, 3},
   {"rlang_new_formula",         (DL_FUNC) &r_new_formula, 3},
   {"rlang_new_quosure",         (DL_FUNC) &r_new_quosure, 2},
   {"rlang_poke_attributes",     (DL_FUNC) &rlang_poke_attributes, 2},
@@ -145,7 +149,7 @@ static const R_CallMethodDef call_entries[] = {
 void R_init_rlang(DllInfo* dll) {
   // Register functions callable from other packages
   R_RegisterCCallable("rlang", "rlang_new_dictionary", (DL_FUNC) &rlang_new_dictionary);
-  R_RegisterCCallable("rlang", "rlang_squash_if", (DL_FUNC) &rlang_squash_if);
+  R_RegisterCCallable("rlang", "rlang_squash_if", (DL_FUNC) &r_squash_if);
   rlang_register_pointer("rlang", "rlang_test_is_spliceable", (DL_FUNC) &rlang_is_clevel_spliceable);
 
   // Register functions callable from this package

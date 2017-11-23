@@ -40,8 +40,7 @@
 #' # provides a workaround:
 #' fn(some_data, !!! list(data = letters))
 dots_list <- function(..., .ignore_empty = c("trailing", "none", "all")) {
-  dots <- dots_values(..., .ignore_empty = .ignore_empty)
-  dots <- .Call(rlang_squash, dots, "list", is_spliced, 1L)
+  dots <- .Call(rlang_dots_list, environment(), FALSE, .ignore_empty)
   names(dots) <- names2(dots)
   dots
 }
@@ -55,8 +54,7 @@ dots_list <- function(..., .ignore_empty = c("trailing", "none", "all")) {
 #' dots_splice(!!! x, 3)
 #' dots_splice(x, 3)
 dots_splice <- function(..., .ignore_empty = c("trailing", "none", "all")) {
-  dots <- dots_values(..., .ignore_empty = .ignore_empty)
-  dots <- .Call(rlang_squash, dots, "list", is_spliced_bare, 1L)
+  dots <- .Call(rlang_dots_flat_list, environment(), FALSE, .ignore_empty)
   names(dots) <- names2(dots)
   dots
 }

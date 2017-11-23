@@ -386,3 +386,16 @@ sexp* rlang_dots_interp(sexp* frame_env, sexp* named, sexp* ignore_empty) {
     return dots;
   }
 }
+
+sexp* rlang_dots_list(sexp* frame_env, sexp* named, sexp* ignore_empty) {
+  sexp* dots = KEEP(rlang_dots_interp(frame_env, named, ignore_empty));
+  dots = r_squash_if(dots, r_type_list, &r_is_spliced, 1);
+  FREE(1);
+  return dots;
+}
+sexp* rlang_dots_flat_list(sexp* frame_env, sexp* named, sexp* ignore_empty) {
+  sexp* dots = KEEP(rlang_dots_interp(frame_env, named, ignore_empty));
+  dots = r_squash_if(dots, r_type_list, &r_is_spliced_bare, 1);
+  FREE(1);
+  return dots;
+}
