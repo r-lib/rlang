@@ -4,9 +4,6 @@
 SEXP rlang_ns_get(const char* name);
 SEXP r_str_unserialise_unicode(SEXP);
 
-static SEXP interp_lang_node(SEXP x, SEXP env);
-static SEXP uqs_fun;
-
 
 static bool needs_fixup(SEXP x) {
   if (r_is_call_any(x, fixup_ops_names, FIXUP_OPS_N)) {
@@ -26,197 +23,230 @@ static bool needs_fixup(SEXP x) {
 }
 
 // Takes the trailing `!`
-static void bang_bang_operand(SEXP x, SEXP* operand) {
-  while (needs_fixup(r_node_cadr(x))) {
-    x = r_node_cadr(x);
+static void poke_bang_bang_operand(SEXP bang, struct expansion_info* info) {
+  SEXP fixed = bang;
+  while (needs_fixup(r_node_cadr(fixed))) {
+    fixed = r_node_cadr(fixed);
   }
-  *operand = r_node_cadr(x);
+
+  info->parent = r_node_cdr(fixed);
+  if (bang != fixed) {
+    info->root = r_node_cadr(bang);
+  }
+  info->operand = r_node_cadr(fixed);
 }
 
-int bang_level(SEXP x, SEXP* operand) {
+struct expansion_info which_bang_op(SEXP x) {
+  struct expansion_info info = init_expansion_info();
+
   if (!r_is_call(x, "!")) {
-    return 0;
+    return info;
   }
 
   SEXP second = r_node_cadr(x);
   if (!r_is_call(second, "!")) {
-    return 0;
+    return info;
   }
 
   SEXP third = r_node_cadr(second);
 
+  // Need to fill in `info` for `!!` because parse tree might need changes
   if (!r_is_call(third, "!")) {
-    if (operand) {
-      bang_bang_operand(second, operand);
-    }
-    return 2;
+    info.op = OP_EXPAND_UQ;
+    poke_bang_bang_operand(second, &info);
+    return info;
   }
 
-  if (operand) {
-    *operand = r_node_cadr(third);
-  }
-  return 3;
+  info.op = OP_EXPAND_UQS;
+  info.operand = r_node_cadr(third);
+  return info;
 }
 
-int which_expand_op(SEXP x, SEXP* operand) {
-  int level = bang_level(x, operand);
+struct expansion_info which_expansion_op(SEXP x) {
+  struct expansion_info info = which_bang_op(x);
 
-  switch (level) {
-  case 2: return OP_EXPAND_UQ;
-  case 3: return OP_EXPAND_UQS;
+  if (r_kind(x) != LANGSXP) {
+    return info;
+  }
+  if (info.op) {
+    return info;
   }
 
-  if (is_rlang_call_any(x, uq_names, UQ_N)) {
-    if (operand) *operand = r_node_cadr(x);
-    return OP_EXPAND_UQ;
+  // This logic is complicated because rlang::UQ() gets fully unquoted
+  // but not foobar::UQ(). The functional form UI is a design mistake.
+
+  if (r_is_prefixed_call(x, "UQ")) {
+    info.op = OP_EXPAND_UQ;
+    info.operand = r_node_cadr(x);
+
+    if (!r_is_namespaced_call(x, "rlang", NULL)) {
+      info.parent = r_node_cdr(r_node_cdar(x));
+      info.root = r_node_car(x);
+    }
+
+    return info;
+  }
+  if (r_is_call(x, "UQ")) {
+    info.op = OP_EXPAND_UQ;
+    info.operand = r_node_cadr(x);
+    return info;
+  }
+
+
+  if (r_is_prefixed_call_any(x, uqe_names, UQE_N)) {
+    info.op = OP_EXPAND_UQE;
+    info.operand = r_node_cadr(x);
+
+    if (!r_is_namespaced_call(x, "rlang", NULL)) {
+      info.parent = r_node_cdr(r_node_cdar(x));
+      info.root = r_node_car(x);
+    }
+
+    return info;
+  }
+  if (r_is_call_any(x, uqe_names, UQE_N)) {
+    info.op = OP_EXPAND_UQE;
+    info.operand = r_node_cadr(x);
+    return info;
+  }
+
+
+  if (is_splice_call(x)) {
+    info.op = OP_EXPAND_UQS;
+    info.operand = r_node_cadr(x);
+    return info;
+  }
+
+  return info;
+}
+
+struct expansion_info is_big_bang_op(SEXP x) {
+  struct expansion_info info = which_bang_op(x);
+
+  if (info.op == OP_EXPAND_UQS) {
+    return info;
   }
 
   if (is_splice_call(x)) {
-    if (operand) *operand = r_node_cadr(x);
-    return OP_EXPAND_UQS;
+    info.op = OP_EXPAND_UQS;
+    info.operand = r_node_cadr(x);
   }
 
-  *operand = NULL;
-  return OP_EXPAND_NONE;
+  return info;
 }
 
 
-static SEXP uq_call(SEXP x) {
-  SEXP args = KEEP(r_new_node_list(x));
-  SEXP call = r_new_call_node(r_sym("UQ"), args);
-  FREE(1);
-  return call;
-}
-static SEXP replace_double_bang(SEXP x) {
-  int bang = bang_level(x, NULL);
-  if (bang == 3 || r_is_maybe_prefixed_call_any(x, uqs_names, UQS_N)) {
-    r_abort("Can't splice at top-level");
-  }
-  if (bang != 2) {
-    return x;
+static SEXP bang_bang_teardown(SEXP value, struct expansion_info info) {
+  if (info.parent != r_null) {
+    r_node_poke_car(info.parent, value);
   }
 
-  SEXP cadr = r_node_cadr(x);
-  SEXP cadr_cadr = r_node_cadr(r_node_cadr(x));
-
-  if (!needs_fixup(cadr_cadr)) {
-    x = cadr;
-    r_node_poke_car(x, r_sym("UQ"));
-    return x;
-  }
-
-  // We have an infix expression. Fix up AST so that `!!` binds tightly
-  x = cadr_cadr;
-
-  SEXP innermost = x;
-  while (needs_fixup(r_node_cadr(innermost))) {
-    innermost = r_node_cadr(innermost);
-  }
-
-  r_node_poke_cadr(innermost, uq_call(r_node_cadr(innermost)));
-  return x;
-}
-static SEXP replace_triple_bang(SEXP x) {
-  SEXP node = r_node_cadr(r_node_cadr(x));
-
-  r_node_poke_car(node, r_sym("UQS"));
-
-  return node;
-}
-
-static void unquote_check(SEXP x) {
-  if (r_node_cdr(x) == r_null)
-    r_abort("`UQ()` must be called with an argument");
-}
-
-static SEXP unquote(SEXP x, SEXP env, SEXP uq_sym) {
-  if (r_is_symbol(uq_sym, "!!")) {
-    uq_sym = r_sym("UQE");
-  }
-
-  // Inline unquote function before evaluation because even `::` might
-  // not be available in interpolation environment.
-  SEXP uq_fun = KEEP(r_env_get(r_ns_env("rlang"), uq_sym));
-  uq_fun = KEEP(Rf_lang2(uq_fun, x));
-
-  SEXP unquoted = KEEP(r_eval(uq_fun, env));
-
-  FREE(3);
-  return unquoted;
-}
-
-static SEXP unquote_prefixed_uq(SEXP x, SEXP env) {
-  SEXP uq_sym = r_node_cadr(r_node_cdar(x));
-  SEXP unquoted = KEEP(unquote(r_node_cadr(x), env, uq_sym));
-  r_node_poke_cdr(r_node_cdar(x), r_new_node(unquoted, r_null));
-  FREE(1);
-
-  if (r_is_namespaced_call(x, "rlang", NULL)) {
-    x = r_node_cadr(r_node_cdar(x));
+  if (info.root == r_null) {
+    return value;
   } else {
-    x = r_node_car(x);
+    return info.root;
   }
-  return x;
 }
 
-static SEXP splice_next(SEXP node, SEXP next, SEXP env) {
-  r_node_poke_car(r_node_car(next), uqs_fun);
+static SEXP bang_bang(struct expansion_info info, SEXP env) {
+  SEXP value = r_eval(info.operand, env);
+  return bang_bang_teardown(value, info);
+}
+static SEXP bang_bang_expression(struct expansion_info info, SEXP env) {
+  SEXP value = r_eval(info.operand, env);
 
-  // UQS() does error checking and returns a pair list
-  SEXP spliced_node = KEEP(r_eval(r_node_car(next), env));
+  if (r_is_formulaish(value, -1, 0)) {
+    value = r_get_expression(value, NULL);
+  }
 
-  if (spliced_node == r_null) {
+  return bang_bang_teardown(value, info);
+}
+
+SEXP big_bang_coerce(SEXP expr) {
+  switch (r_kind(expr)) {
+  case NILSXP:
+  case LISTSXP:
+    return expr;
+  case LGLSXP:
+  case INTSXP:
+  case REALSXP:
+  case CPLXSXP:
+  case STRSXP:
+  case RAWSXP:
+  case VECSXP: {
+    static SEXP coercer = NULL;
+    if (!coercer) { coercer = r_base_ns_get("as.pairlist"); }
+    SEXP coerce_args = KEEP(r_new_node(expr, r_null));
+    SEXP coerce_call = KEEP(r_new_call_node(coercer, coerce_args));
+    SEXP coerced = r_eval(coerce_call, r_empty_env);
+    FREE(2);
+    return coerced;
+  }
+  case LANGSXP:
+    if (r_is_symbol(r_node_car(expr), "{")) {
+      return r_node_cdr(expr);
+    }
+    // else fallthrough
+  default:
+    r_abort("`!!!` expects a vector, a node list, or a call to `{`");
+  }
+}
+
+SEXP big_bang(SEXP operand, SEXP env, SEXP node, SEXP next) {
+  SEXP value = KEEP(r_eval(operand, env));
+  value = big_bang_coerce(value);
+
+  if (value == r_null) {
     r_node_poke_cdr(node, r_node_cdr(next));
   } else {
-    // Insert spliced_node into existing pairlist of args
-    r_node_poke_cdr(r_node_tail(spliced_node), r_node_cdr(next));
-    r_node_poke_cdr(node, spliced_node);
+    // Insert coerced value into existing pairlist of args
+    r_node_poke_cdr(r_node_tail(value), r_node_cdr(next));
+    r_node_poke_cdr(node, value);
   }
 
   FREE(1);
   return next;
 }
 
-SEXP interp_lang(SEXP x, SEXP env)  {
-  if (!uqs_fun) {
-    uqs_fun = rlang_ns_get("UQS");
-  }
-  if (r_kind(x) != LANGSXP) {
-    return x;
-  }
 
-  x = replace_double_bang(x);
+static SEXP node_list_interp(SEXP x, SEXP env);
 
-  if (r_is_prefixed_call_any(x, uq_names, UQ_N)) {
-    unquote_check(x);
-    x = unquote_prefixed_uq(x, env);
-  } else if (r_is_call_any(x, uq_names, UQ_N)) {
-    unquote_check(x);
-    SEXP uq_sym = r_node_car(x);
-    x = unquote(r_node_cadr(x), env, uq_sym);
-  } else {
-    x = interp_lang_node(x, env);
-  }
-
-  return x;
+SEXP call_interp(SEXP x, SEXP env)  {
+  struct expansion_info info = which_expansion_op(x);
+  return call_interp_impl(x, env, info);
 }
 
-static SEXP interp_lang_node(SEXP x, SEXP env) {
-  SEXP node, next, next_head;
+SEXP call_interp_impl(SEXP x, SEXP env, struct expansion_info info) {
+  if (info.op && r_node_cdr(x) == r_null) {
+    r_abort("`UQ()`, `UQE()` and `UQS()` must be called with an argument");
+  }
 
-  for (node = x; node != r_null; node = r_node_cdr(node)) {
-    r_node_poke_car(node, interp_lang(r_node_car(node), env));
-
-    next = r_node_cdr(node);
-    next_head = r_node_car(next);
-
-    // FIXME double check
-    if (bang_level(next_head, NULL) == 3) {
-      next_head = replace_triple_bang(next_head);
-      r_node_poke_car(next, next_head);
+  switch (info.op) {
+  case OP_EXPAND_NONE:
+    if (r_kind(x) == LANGSXP) {
+      return node_list_interp(x, env);
+    } else {
+      return x;
     }
-    if (is_splice_call(next_head)) {
-      node = splice_next(node, next, env);
+  case OP_EXPAND_UQ:
+    return bang_bang(info, env);
+  case OP_EXPAND_UQE:
+    return bang_bang_expression(info, env);
+  case OP_EXPAND_UQS:
+    r_abort("Can't use `!!!` at top level");
+  }
+}
+
+static SEXP node_list_interp(SEXP x, SEXP env) {
+  for (SEXP node = x; node != r_null; node = r_node_cdr(node)) {
+    r_node_poke_car(node, call_interp(r_node_car(node), env));
+
+    SEXP next = r_node_cdr(node);
+    SEXP next_head = r_node_car(next);
+
+    struct expansion_info info = is_big_bang_op(next_head);
+    if (info.op == OP_EXPAND_UQS) {
+      node = big_bang(info.operand, env, node, next);
     }
   }
 
@@ -224,15 +254,15 @@ static SEXP interp_lang_node(SEXP x, SEXP env) {
 }
 
 SEXP rlang_interp(SEXP x, SEXP env) {
-  if (r_kind(x) != LANGSXP) {
-    return x;
-  }
   if (!r_is_environment(env)) {
     r_abort("`env` must be an environment");
   }
+  if (r_kind(x) != LANGSXP) {
+    return x;
+  }
 
   x = KEEP(r_duplicate(x, false));
-  x = interp_lang(x, env);
+  x = call_interp(x, env);
 
   FREE(1);
   return x;

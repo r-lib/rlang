@@ -26,7 +26,7 @@ SEXP capture(SEXP sym, SEXP frame, SEXP* arg_env) {
 
   // Unquoting rearranges the expression
   expr = KEEP(r_duplicate(expr, false));
-  expr = interp_lang(expr, env);
+  expr = call_interp(expr, env);
 
   if (arg_env) {
     *arg_env = env;

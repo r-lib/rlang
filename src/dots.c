@@ -45,14 +45,18 @@ static SEXP def_unquote_name(SEXP expr, SEXP env) {
   int n_kept = 0;
   SEXP lhs = r_node_cadr(expr);
 
-  SEXP operand;
-  int level = bang_level(lhs, &operand);
-  switch (level) {
-  case 2:
-    lhs = KEEP(r_eval(operand, env));
+  struct expansion_info info = which_expansion_op(lhs);
+
+  switch (info.op) {
+  case OP_EXPAND_NONE:
+    break;
+  case OP_EXPAND_UQ:
+    lhs = KEEP(r_eval(info.operand, env));
     ++n_kept;
     break;
-  case 3:
+  case OP_EXPAND_UQE:
+    r_abort("The LHS of `:=` can't be unquoted with `UQE()`");
+  case OP_EXPAND_UQS:
     r_abort("The LHS of `:=` can't be spliced with `!!!`");
   }
 
@@ -74,15 +78,18 @@ static SEXP def_unquote_name(SEXP expr, SEXP env) {
 }
 
 
-enum expansion_op {
+enum root_expansion_op {
   OP_EXPR_NONE,
   OP_EXPR_UQ,
+  OP_EXPR_UQE,
   OP_EXPR_UQS,
   OP_QUO_NONE,
   OP_QUO_UQ,
+  OP_QUO_UQE,
   OP_QUO_UQS,
   OP_VALUE_NONE,
   OP_VALUE_UQ,
+  OP_VALUE_UQE,
   OP_VALUE_UQS
 };
 
@@ -102,38 +109,9 @@ static inline void mark_ignored_dot(SEXP x) {
   r_poke_attribute(x, rlang_ignored_flag, rlang_ignored_flag);
 }
 
-static SEXP uqs_coerce(SEXP expr) {
-  switch (r_kind(expr)) {
-  case NILSXP:
-  case LISTSXP:
-    return expr;
-  case LGLSXP:
-  case INTSXP:
-  case REALSXP:
-  case CPLXSXP:
-  case STRSXP:
-  case RAWSXP:
-  case VECSXP: {
-    static SEXP coercer = NULL;
-    if (!coercer) { coercer = r_base_ns_get("as.pairlist"); }
-    SEXP coerce_args = KEEP(r_new_node(expr, r_null));
-    SEXP coerce_call = KEEP(r_new_call_node(coercer, coerce_args));
-    SEXP coerced = r_eval(coerce_call, r_empty_env);
-    FREE(2);
-    return coerced;
-  }
-  case LANGSXP:
-    if (r_is_symbol(r_node_car(expr), "{")) {
-      return r_node_cdr(expr);
-    }
-    // else fallthrough
-  default:
-    return r_new_node(expr, r_null);
-  }
-}
-static SEXP uqs(SEXP expr, SEXP env, r_size_t* count, bool quosured) {
+static SEXP root_big_bang(SEXP expr, SEXP env, r_size_t* count, bool quosured) {
   SEXP spliced_node = KEEP(r_eval(expr, env));
-  spliced_node = uqs_coerce(spliced_node);
+  spliced_node = big_bang_coerce(spliced_node);
 
   SEXP node = spliced_node;
   while (node != r_null) {
@@ -201,13 +179,11 @@ static SEXP dots_unquote(SEXP dots, r_size_t* count,
       expr = r_node_cadr(r_node_cdr(expr));
     }
 
-    SEXP operand = r_null;
-    int base_op = which_expand_op(expr, &operand);
-    enum expansion_op op = base_op + op_offset;
+    struct expansion_info info = which_expansion_op(expr);
+    enum root_expansion_op root_op = info.op + op_offset;
 
     // Ignore empty arguments
     if (expr == r_missing_sym
-        && base_op == 0
         && (dots_names == r_null || r_chr_has_empty_string_at(dots_names, i))
         && should_ignore(ignore_empty, i, n)) {
       mark_ignored_dot(elt);
@@ -215,23 +191,21 @@ static SEXP dots_unquote(SEXP dots, r_size_t* count,
       continue;
     }
 
-    switch (op) {
+    switch (root_op) {
     case OP_EXPR_NONE:
     case OP_EXPR_UQ:
-      expr = interp_lang(expr, env);
+    case OP_EXPR_UQE:
+      expr = call_interp_impl(expr, env, info);
       *count += 1;
       break;
     case OP_EXPR_UQS:
       mark_spliced_dots(elt);
-      expr = uqs(operand, env, count, false);
+      expr = root_big_bang(info.operand, env, count, false);
       break;
     case OP_QUO_NONE:
-      expr = interp_lang(expr, env);
-      expr = rlang_forward_quosure(expr, env);
-      *count += 1;
-      break;
-    case OP_QUO_UQ: {
-      expr = KEEP(interp_lang(expr, env));
+    case OP_QUO_UQ:
+    case OP_QUO_UQE: {
+      expr = KEEP(call_interp_impl(expr, env, info));
       expr = rlang_forward_quosure(expr, env);
       FREE(1);
       *count += 1;
@@ -239,7 +213,7 @@ static SEXP dots_unquote(SEXP dots, r_size_t* count,
     }
     case OP_QUO_UQS: {
       mark_spliced_dots(elt);
-      expr = uqs(operand, env, count, true);
+      expr = root_big_bang(info.operand, env, count, true);
       break;
     }
     case OP_VALUE_NONE:
@@ -247,9 +221,10 @@ static SEXP dots_unquote(SEXP dots, r_size_t* count,
       *count += 1;
       break;
     case OP_VALUE_UQ:
+    case OP_VALUE_UQE:
       r_abort("Can't use `!!` in a non-quoting function");
     case OP_VALUE_UQS: {
-      expr = KEEP(r_eval(operand, env));
+      expr = KEEP(r_eval(info.operand, env));
       expr = set_spliced(expr);
       FREE(1);
       *count += 1;
@@ -321,7 +296,7 @@ SEXP dots_interp(SEXP frame_env, SEXP named, SEXP ignore_empty, int op_offset) {
   // Dots captured by values don't have default empty names
   SEXP dots_info_names = r_names(dots_info);
   SEXP out_names = NULL;
-  if (op_offset != 6 || dots_info_names != r_null) {
+  if (op_offset != 8 || dots_info_names != r_null) {
     out_names = KEEP(r_new_vector(STRSXP, total));
     r_push_names(out, out_names);
     FREE(1);
@@ -391,7 +366,7 @@ SEXP rlang_exprs_interp(SEXP frame_env, SEXP named, SEXP ignore_empty) {
   }
 }
 SEXP rlang_quos_interp(SEXP frame_env, SEXP named, SEXP ignore_empty) {
-  SEXP dots = dots_interp(frame_env, named, ignore_empty, 3);
+  SEXP dots = dots_interp(frame_env, named, ignore_empty, 4);
 
   if (dots == r_null) {
     return empty_quosures();
@@ -403,7 +378,7 @@ SEXP rlang_quos_interp(SEXP frame_env, SEXP named, SEXP ignore_empty) {
   }
 }
 SEXP rlang_dots_interp(SEXP frame_env, SEXP named, SEXP ignore_empty) {
-  SEXP dots = dots_interp(frame_env, named, ignore_empty, 6);
+  SEXP dots = dots_interp(frame_env, named, ignore_empty, 8);
 
   if (dots == r_null) {
     return r_new_vector(VECSXP, 0);

@@ -1,10 +1,6 @@
 context("unquote")
 
 test_that("interpolation does not recurse over spliced arguments", {
-  var1 <- quote(!! stop())
-  quo_var1 <- tryCatch(quo(list(!!! var1)), error = identity)
-  expect_false(inherits(quo_var1, "error"))
-
   var2 <- quote({foo; !! stop(); bar})
   expr_var2 <- tryCatch(expr(list(!!! var2)), error = identity)
   expect_false(inherits(expr_var2, "error"))
@@ -148,7 +144,7 @@ test_that("UQ() fails if called without argument", {
 test_that("contents of UQS() must be a vector or language object", {
   quo <- tryCatch(quo(1 + UQS(environment())), error = identity)
   expect_is(quo, "error")
-  expect_match(quo$message, "`x` must be a vector")
+  expect_match(quo$message, "`!!!` expects a vector")
 })
 
 test_that("values of UQS() spliced into expression", {
@@ -161,8 +157,7 @@ test_that("names within UQS() are preseved", {
   expect_identical(f, quo(f(a = b)))
 })
 
-test_that("UQS() handles language objects", {
-  expect_identical(quo(list(UQS(quote(foo)))), quo(list(foo)))
+test_that("UQS() handles `{` calls", {
   expect_identical(quo(list(UQS(quote({ foo })))), quo(list(foo)))
 })
 
@@ -183,7 +178,11 @@ test_that("serialised unicode in argument names is unserialised on splice", {
 })
 
 test_that("splicing expressions fails", {
-  expect_error(expr(c(!!! expression(1, 2))), "must be a vector")
+  expect_error(expr(c(!!! expression(1, 2))), "expects a vector")
+})
+
+test_that("can't splice at top level", {
+  expect_error(expr(!!! letters), "top level")
 })
 
 

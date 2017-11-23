@@ -65,6 +65,9 @@
 * The tidy eval `!!` operator now binds tightly. You no longer have to
   wrap it in parentheses, i.e. `!! x > y` will only unquote `x`.
 
+* `!!!` now fails with symbols and calls. Only vectors, node lists,
+  `NULL` and `{` blocks can be spliced.
+
 
 ## Breaking changes
 
