@@ -95,16 +95,12 @@ NULL
 #' @export
 #' @rdname quasiquotation
 UQ <- function(x) {
-  x
+  abort("`UQ()` can't be called directly")
 }
 #' @export
 #' @rdname quasiquotation
 UQE <- function(x) {
-  if (is_quosureish(x)) {
-    get_expr(x)
-  } else {
-    x
-  }
+  abort("`UQE()` can't be called directly")
 }
 #' @export
 #' @rdname quasiquotation
@@ -112,17 +108,7 @@ UQE <- function(x) {
 #' @export
 #' @rdname quasiquotation
 UQS <- function(x) {
-  if (is_pairlist(x) || is_null(x)) {
-    x
-  } else if (is_vector(x)) {
-    as.pairlist(x)
-  } else if (is_lang(x, sym_curly)) {
-    node_cdr(x)
-  } else if (is_expr(x)) {
-    pairlist(x)
-  } else {
-    abort("`x` must be a vector or a language object")
-  }
+  abort("`UQS()` can't be called directly")
 }
 #' @export
 #' @rdname quasiquotation
