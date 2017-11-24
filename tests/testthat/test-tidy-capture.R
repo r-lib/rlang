@@ -189,13 +189,16 @@ test_that("expr() supports forwarded arguments", {
   expect_identical(fn(foo), quote(foo))
 })
 
-test_that("can take forced arguments with `allowForced = TRUE`", {
+test_that("can take forced arguments", {
   fn <- function(allow, x) {
     force(x)
     captureArgInfo(x)
   }
   expect_identical(fn(TRUE, letters), list(expr = letters, env = empty_env()))
 
+  if (getRversion() < "3.2.0") {
+    skip("lapply() does not force arguments in R 3.1")
+  }
   expect_error(lapply(1:2, captureArgInfo), "must be an argument name")
 
   args <- list(list(expr = 1L, env = empty_env()), list(expr = 2L, env = empty_env()))
@@ -255,22 +258,32 @@ test_that("dots_interp() has no side effect", {
 })
 
 test_that("exprs() handles forced arguments", {
+  if (getRversion() < "3.2.0") {
+    skip("lapply() does not force arguments in R 3.1")
+  }
   exprs <- list(named_list(1L), named_list(2L))
   expect_identical(lapply(1:2, function(...) exprs(...)), exprs)
   expect_identical(lapply(1:2, exprs), exprs)
 })
 
 test_that("quos() handles forced arguments", {
+  if (getRversion() < "3.2.0") {
+    skip("lapply() does not force arguments in R 3.1")
+  }
   quos <- list(quos_list(quo(1L)), quos_list(quo(2L)))
   expect_identical(lapply(1:2, function(...) quos(...)), quos)
   expect_identical(lapply(1:2, quos), quos)
 })
 
-test_that("enexpr() handles forced arguments", {
-  expect_identical(lapply(1:2, function(x) enexpr(x)), list(1L, 2L))
-})
+test_that("enexpr() and enquo() handle forced arguments", {
+  foo <- "foo"
+  expect_identical(enexpr(foo), "foo")
+  expect_identical(enquo(foo), quo("foo"))
 
-test_that("enquo() handles forced arguments", {
+  if (getRversion() < "3.2.0") {
+    skip("lapply() does not force arguments in R 3.1")
+  }
+  expect_identical(lapply(1:2, function(x) enexpr(x)), list(1L, 2L))
   expect_identical(lapply(1:2, function(x) enquo(x)), list(quo(1L), quo(2L)))
 })
 
