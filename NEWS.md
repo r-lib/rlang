@@ -75,6 +75,11 @@
   off interpretation of `:=` as a name operator. This should be useful
   for programming on the language targetting APIs such as `data.table`.
 
+* The backend for `quos()`, `exprs()`, `dots_list()`, etc is now
+  written in C. This greatly improve the performance of dots capture.
+  The unquoting algorithm has been improved and `enexpr()` and
+  `enquo()` are also more efficient as a result.
+
 
 ## Breaking changes
 
