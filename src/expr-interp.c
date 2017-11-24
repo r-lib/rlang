@@ -188,7 +188,7 @@ sexp* big_bang_coerce(sexp* expr) {
     }
     // else fallthrough
   default:
-    r_abort("`!!!` expects a vector, a node list, or a call to `{`");
+    return r_new_node(expr, r_null);
   }
 }
 

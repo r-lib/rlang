@@ -141,10 +141,9 @@ test_that("UQ() fails if called without argument", {
 
 # UQS ---------------------------------------------------------------------
 
-test_that("contents of UQS() must be a vector or language object", {
-  quo <- tryCatch(quo(1 + UQS(environment())), error = identity)
-  expect_is(quo, "error")
-  expect_match(quo$message, "`!!!` expects a vector")
+test_that("UQS() treats atomic objects as scalar vectors", {
+  expect_identical(quo(1 + !!! get_env()), quo(1 + !! get_env()))
+  expect_identical(expr(c(!!! expression(1, 2))), expr(c(!! expression(1, 2))))
 })
 
 test_that("values of UQS() spliced into expression", {
@@ -177,12 +176,16 @@ test_that("serialised unicode in argument names is unserialised on splice", {
   expect_true(all(chr_encoding(nms) == "UTF-8"))
 })
 
-test_that("splicing expressions fails", {
-  expect_error(expr(c(!!! expression(1, 2))), "expects a vector")
-})
-
 test_that("can't splice at top level", {
   expect_error(expr(!!! letters), "top level")
+})
+
+test_that("can splice function body even if not a `{` block", {
+  fn <- function(x) { x }
+  expect_identical(exprs(!!! body(fn)), named_list(quote(x)))
+
+  fn <- function(x) x
+  expect_identical(exprs(!!! body(fn)), named_list(quote(x)))
 })
 
 
