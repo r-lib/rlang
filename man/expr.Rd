@@ -13,7 +13,8 @@ expr(expr)
 
 enexpr(arg)
 
-exprs(..., .named = FALSE, .ignore_empty = c("trailing", "none", "all"))
+exprs(..., .named = FALSE, .ignore_empty = c("trailing", "none", "all"),
+  .unquote_names = TRUE)
 }
 \arguments{
 \item{arg}{A symbol referring to an argument. The expression
@@ -32,6 +33,9 @@ name. If an integer, it is passed to the \code{width} argument of
 \item{.ignore_empty}{Whether to ignore empty arguments. Can be one
 of \code{"trailing"}, \code{"none"}, \code{"all"}. If \code{"trailing"}, only the
 last argument is ignored if it is empty.}
+
+\item{.unquote_names}{Whether to treat \code{:=} as \code{=}. Unlike \code{=}, the
+\code{:=} syntax supports unquoting with \code{!!}.}
 }
 \value{
 The raw expression supplied as argument. \code{exprs()} returns

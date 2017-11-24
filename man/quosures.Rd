@@ -9,7 +9,8 @@
 \usage{
 dots_definitions(..., .named = FALSE)
 
-quos(..., .named = FALSE, .ignore_empty = c("trailing", "none", "all"))
+quos(..., .named = FALSE, .ignore_empty = c("trailing", "none", "all"),
+  .unquote_names = TRUE)
 
 is_quosures(x)
 }
@@ -25,6 +26,9 @@ name. If an integer, it is passed to the \code{width} argument of
 \item{.ignore_empty}{Whether to ignore empty arguments. Can be one
 of \code{"trailing"}, \code{"none"}, \code{"all"}. If \code{"trailing"}, only the
 last argument is ignored if it is empty.}
+
+\item{.unquote_names}{Whether to treat \code{:=} as \code{=}. Unlike \code{=}, the
+\code{:=} syntax supports unquoting with \code{!!}.}
 
 \item{x}{An object to test.}
 }

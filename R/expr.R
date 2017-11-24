@@ -67,13 +67,15 @@ enexpr <- function(arg) {
   .Call(rlang_enexpr, substitute(arg), parent.frame())
 }
 #' @rdname expr
+#' @inheritParams quosures
 #' @inheritParams dots_values
 #' @param ... Arguments to extract.
 #' @export
 exprs <- function(...,
                   .named = FALSE,
-                 .ignore_empty = c("trailing", "none", "all")) {
-  .Call(rlang_exprs_interp, environment(), .named, .ignore_empty)
+                  .ignore_empty = c("trailing", "none", "all"),
+                  .unquote_names = TRUE) {
+  .Call(rlang_exprs_interp, environment(), .named, .ignore_empty, .unquote_names)
 }
 
 

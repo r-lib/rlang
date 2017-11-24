@@ -68,6 +68,10 @@
 * `!!!` now fails with symbols and calls. Only vectors, node lists,
   `NULL` and `{` blocks can be spliced.
 
+* `exprs()` and `quos()` gain a `.unquote_names` arguments to switch
+  off interpretation of `:=` as a name operator. This should be useful
+  for programming on the language targetting APIs such as `data.table`.
+
 
 ## Breaking changes
 

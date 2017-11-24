@@ -26,6 +26,8 @@
 #'   name. If an integer, it is passed to the `width` argument of
 #'   `expr_text()`, if `TRUE`, the default width is used. See
 #'   [exprs_auto_name()].
+#' @param .unquote_names Whether to treat `:=` as `=`. Unlike `=`, the
+#'   `:=` syntax supports unquoting with `!!`.
 #' @export
 #' @name quosures
 #' @examples
@@ -66,8 +68,9 @@
 #' dots$defs
 quos <- function(...,
                  .named = FALSE,
-                 .ignore_empty = c("trailing", "none", "all")) {
-  .Call(rlang_quos_interp, environment(), .named, .ignore_empty)
+                 .ignore_empty = c("trailing", "none", "all"),
+                 .unquote_names = TRUE) {
+  .Call(rlang_quos_interp, environment(), .named, .ignore_empty, .unquote_names)
 }
 
 #' @rdname quosures

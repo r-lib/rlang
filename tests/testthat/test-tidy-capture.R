@@ -285,3 +285,14 @@ test_that("default arguments are properly captured (#201)", {
   out <- fn()
   expect_identical(out[[1]], out[[2]])
 })
+
+test_that("names-unquoting can be switched off", {
+  foo <- "foo"
+  bar <- "bar"
+
+  expect_identical(exprs(foo := bar, .unquote_names = FALSE), named_list(quote(foo := bar)))
+  expect_identical(exprs(!! foo := !! bar, .unquote_names = FALSE), named_list(quote("foo" := "bar")))
+
+  expect_identical(quos(foo := bar, .unquote_names = FALSE), quos_list(new_quosure(quote(foo := bar))))
+  expect_identical(quos(!! foo := !! bar, .unquote_names = FALSE), quos_list(new_quosure(quote("foo" := "bar"))))
+})
