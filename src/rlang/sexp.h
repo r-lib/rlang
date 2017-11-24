@@ -84,6 +84,13 @@ static inline SEXP r_duplicate(SEXP x, bool shallow) {
   }
 }
 
+static inline SEXP r_maybe_duplicate(SEXP x, bool shallow) {
+  if (r_is_shared(x)) {
+    return r_duplicate(x, shallow);
+  } else {
+    return x;
+  }
+}
 
 static inline void r_mark_object(SEXP x, int bit) {
   SET_OBJECT(x, bit);

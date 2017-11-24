@@ -188,6 +188,12 @@ test_that("can splice function body even if not a `{` block", {
   expect_identical(exprs(!!! body(fn)), named_list(quote(x)))
 })
 
+test_that("splicing a pairlist has no side effect", {
+  x <- pairlist(NULL)
+  expr(foo(!!! x, y))
+  expect_identical(x, pairlist(NULL))
+})
+
 
 # UQE ----------------------------------------------------------------
 

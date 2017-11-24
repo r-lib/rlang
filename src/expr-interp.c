@@ -165,8 +165,9 @@ static sexp* bang_bang_expression(struct expansion_info info, sexp* env) {
 sexp* big_bang_coerce(sexp* expr) {
   switch (r_typeof(expr)) {
   case r_type_null:
-  case r_type_pairlist:
     return expr;
+  case r_type_pairlist:
+    return r_duplicate(expr, true);
   case r_type_logical:
   case r_type_integer:
   case r_type_double:
