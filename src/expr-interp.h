@@ -70,7 +70,7 @@ sexp* call_interp(sexp* x, sexp* env);
 sexp* call_interp_impl(sexp* x, sexp* env, struct expansion_info info);
 
 
-static inline sexp* rlang_forward_quosure(sexp* x, sexp* env) {
+static inline sexp* forward_quosure(sexp* x, sexp* env) {
   if (r_is_quosure(x)) {
     return x;
   } else if (r_is_symbolic(x)) {

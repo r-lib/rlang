@@ -117,7 +117,7 @@ static sexp* root_big_bang(sexp* expr, sexp* env, r_size_t* count, bool quosured
   while (node != r_null) {
     expr = r_node_car(node);
     if (quosured) {
-      expr = rlang_forward_quosure(expr, env);
+      expr = forward_quosure(expr, env);
     }
     r_node_poke_car(node, expr);
 
@@ -206,7 +206,7 @@ static sexp* dots_unquote(sexp* dots, r_size_t* count,
     case OP_QUO_UQ:
     case OP_QUO_UQE: {
       expr = KEEP(call_interp_impl(expr, env, info));
-      expr = rlang_forward_quosure(expr, env);
+      expr = forward_quosure(expr, env);
       FREE(1);
       *count += 1;
       break;
@@ -314,8 +314,8 @@ sexp* dots_interp(sexp* frame_env, sexp* named, sexp* ignore_empty, int op_offse
     }
 
     if (is_spliced_dots(elt)) {
-      // FIXME: Should be able to avoid conversion to pairlist and use
-      // a generic vec_get() or coll_get to walk the new elements
+      // FIXME: Should be able to avoid conversion to pairlist for
+      // lists, node lists, and character vectors
       while (expr != r_null) {
         sexp* head = r_node_car(expr);
         r_list_poke(out, count, head);

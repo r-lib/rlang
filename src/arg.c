@@ -41,12 +41,12 @@ SEXP rlang_enexpr(SEXP sym, SEXP frame) {
 }
 
 
-SEXP rlang_forward_quosure(SEXP x, SEXP env);
+SEXP forward_quosure(SEXP x, SEXP env);
 
 SEXP rlang_enquo(SEXP sym, SEXP frame) {
   SEXP env;
   SEXP expr = KEEP(capture(sym, frame, &env));
-  SEXP quo = rlang_forward_quosure(expr, env);
+  SEXP quo = forward_quosure(expr, env);
   FREE(1);
   return quo;
 }
