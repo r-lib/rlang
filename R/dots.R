@@ -86,8 +86,7 @@ dots_values <- function(..., .ignore_empty = c("trailing", "none", "all")) {
 #' @rdname quosures
 #' @export
 dots_definitions <- function(..., .named = FALSE) {
-  # TODO: change `:=` symbol to avoid interpolating LHS
-  dots <- .Call(rlang_quos_interp, environment(), .named, "trailing")
+  dots <- .Call(rlang_quos_interp, environment(), .named, "trailing", FALSE)
 
   is_def <- map_lgl(dots, function(dot) is_definition(f_rhs(dot)))
   defs <- map(dots[is_def], as_definition)

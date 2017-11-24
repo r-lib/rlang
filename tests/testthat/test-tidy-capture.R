@@ -101,7 +101,6 @@ test_that("corner cases are handled when interpolating dot names", {
 })
 
 test_that("definitions are interpolated", {
-  skip("TODO")
   var1 <- "foo"
   var2 <- "bar"
   dots <- dots_definitions(def = foo(!!var1) := bar(!!var2))
