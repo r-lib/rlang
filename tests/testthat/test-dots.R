@@ -86,3 +86,8 @@ test_that("capturing dots by value only unquote-splices at top-level", {
 test_that("can't unquote when capturing dots by value", {
   expect_identical(dots_list(!!! list(!!! TRUE)), named_list(FALSE))
 })
+
+test_that("can splice NULL value", {
+  expect_identical(dots_list(!!! NULL), named_list())
+  expect_identical(dots_list(1, !!! NULL, 3), named_list(1, 3))
+})

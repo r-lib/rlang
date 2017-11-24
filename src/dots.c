@@ -229,6 +229,11 @@ static sexp* dots_unquote(sexp* dots, r_size_t* count,
       r_abort("Can't use `!!` in a non-quoting function");
     case OP_VALUE_UQS: {
       expr = KEEP(r_eval(info.operand, env));
+      if (expr == r_null) {
+        mark_ignored_dot(elt);
+        FREE(2);
+        continue;
+      }
       expr = set_spliced(expr);
       FREE(1);
       *count += 1;
