@@ -1,23 +1,20 @@
 context("tidy capture")
 
-test_that("explicit dots make a list of formulas", {
+test_that("quos() creates quosures", {
   fs <- quos(x = 1 + 2, y = 2 + 3)
-  f1 <- as_quosure(~ 1 + 2)
-  f2 <- as_quosure(~ 2 + 3)
-
-  expect_identical(fs$x, f1)
-  expect_identical(fs$y, f2)
+  expect_identical(fs$x, as_quosure(~ 1 + 2))
+  expect_identical(fs$y, as_quosure(~ 2 + 3))
 })
 
-test_that("quos() produces correct formulas", {
+test_that("quos() captures correct environment", {
   fn <- function(x = a + b, ...) {
     list(dots = quos(x = x, y = a + b, ...), env = environment())
   }
   out <- fn(z = a + b)
 
-  expect_identical(out$dots$x, set_env(quo(x), out$env))
-  expect_identical(out$dots$y, set_env(quo(a + b), out$env))
-  expect_identical(out$dots$z, quo(a + b))
+  expect_identical(get_env(out$dots$x), out$env)
+  expect_identical(get_env(out$dots$y), out$env)
+  expect_identical(get_env(out$dots$z), get_env())
 })
 
 test_that("dots are interpolated", {

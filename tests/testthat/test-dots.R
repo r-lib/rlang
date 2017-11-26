@@ -1,11 +1,12 @@
 context("dots")
 
-test_that("dots are retrieved from arguments", {
-  fn <- function(f, ...) f(...)
-  expect_identical(fn(exprs), named_list())
+test_that("exprs() without arguments creates an empty named list", {
+  expect_identical(exprs(), named_list())
+})
 
-  g <- function(f, ...) fn(f, ...)
-  expect_identical(g(exprs, a = 1, foo = bar), list(a = 1, foo = quote(bar)))
+test_that("exprs() captures arguments forwarded with `...`", {
+  wrapper <- function(...) wrapper(...)
+  expect_identical(wrapper(a = 1, foo = bar), list(a = 1, foo = quote(bar)))
 })
 
 test_that("exprs() captures empty arguments", {
