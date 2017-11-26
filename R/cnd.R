@@ -60,6 +60,7 @@ message_cnd <- function(.type = NULL, ..., .msg = NULL) {
 
 #' Is object a condition?
 #' @param x An object to test.
+#' @export
 is_condition <- function(x) {
   inherits(x, "condition")
 }

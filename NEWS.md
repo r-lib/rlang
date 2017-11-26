@@ -16,6 +16,8 @@
 * `cnd_signal()` and `cnd_abort()` now accept character vectors to
   create typed conditions with several S3 subclasses.
 
+* `is_condition()` is now properly exported.
+
 * New `env_set()` function to set a value in an environment or a
   scope. If the `create` argument is `FALSE`, it only overwrites
   existing bindings and issues an error otherwise (#162).
