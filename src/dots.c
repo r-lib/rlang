@@ -133,7 +133,7 @@ static inline bool should_ignore(int ignore_empty, r_size_t i, r_size_t n) {
   return ignore_empty == 1 || (i == n - 1 && ignore_empty == -1);
 }
 
-static sexp* set_spliced(sexp* x) {
+static sexp* set_value_spliced(sexp* x) {
   static sexp* spliced_str = NULL;
   if (!spliced_str) {
     spliced_str = r_scalar_chr("spliced");
@@ -234,7 +234,7 @@ static sexp* dots_unquote(sexp* dots, r_size_t* count,
         FREE(2);
         continue;
       }
-      expr = set_spliced(expr);
+      expr = set_value_spliced(expr);
       FREE(1);
       *count += 1;
       break;
