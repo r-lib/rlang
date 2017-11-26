@@ -24,6 +24,9 @@ static inline int r_c_int(SEXP x) {
 static inline SEXP r_new_vector(enum r_type type, r_size_t n) {
   return Rf_allocVector(type, n);
 }
+static inline sexp* r_vec_coerce(sexp* x, enum r_type to) {
+  return Rf_coerceVector(x, to);
+}
 
 void r_vec_poke_n(SEXP x, r_size_t offset,
                   SEXP y, r_size_t from, r_size_t n);

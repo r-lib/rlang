@@ -174,15 +174,8 @@ sexp* big_bang_coerce(sexp* expr) {
   case r_type_complex:
   case r_type_character:
   case r_type_raw:
-  case r_type_list: {
-    static sexp* coercer = NULL;
-    if (!coercer) { coercer = r_base_ns_get("as.pairlist"); }
-    sexp* coerce_args = KEEP(r_new_node(expr, r_null));
-    sexp* coerce_call = KEEP(r_new_call_node(coercer, coerce_args));
-    sexp* coerced = r_eval(coerce_call, r_empty_env);
-    FREE(2);
-    return coerced;
-  }
+  case r_type_list:
+    return r_vec_coerce(expr, r_type_pairlist);
   case r_type_call:
     if (r_is_symbol(r_node_car(expr), "{")) {
       return r_node_cdr(expr);
