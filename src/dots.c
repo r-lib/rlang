@@ -1,7 +1,10 @@
 #include "rlang/rlang.h"
+
 #include "expr-interp.h"
+#include "utils.h"
 
 sexp* rlang_ns_get(const char* name);
+
 
 enum dots_capture_type {
   DOTS_EXPR,
@@ -147,17 +150,6 @@ static inline sexp* dot_get_env(sexp* dot) {
   return r_list_get(dot, 1);
 }
 
-static sexp* new_preserved_empty_list() {
-  sexp* empty_list = r_new_vector(r_type_list, 0);
-  r_mark_precious(empty_list);
-  r_mark_shared(empty_list);
-
-  sexp* nms = KEEP(r_new_vector(r_type_character, 0));
-  r_poke_names(empty_list, nms);
-  FREE(1);
-
-  return empty_list;
-}
 static sexp* empty_spliced_list() {
   static sexp* list = NULL;
   if (!list) {
