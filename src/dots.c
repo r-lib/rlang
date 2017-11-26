@@ -26,6 +26,29 @@ enum dots_expansion_op {
   OP_VALUE_UQS
 };
 
+struct dots_capture_info {
+  enum dots_capture_type type;
+  r_size_t count;
+  int ignore_empty;
+  bool unquote_names;
+};
+
+static int match_ignore_empty_arg(sexp* ignore_empty);
+static int find_auto_names_width(sexp* named);
+
+struct dots_capture_info init_capture_info(enum dots_capture_type type,
+                                           sexp* ignore_empty,
+                                           sexp* unquote_names) {
+  struct dots_capture_info info;
+
+  info.type = type;
+  info.count = 0;
+  info.ignore_empty = match_ignore_empty_arg(ignore_empty);
+  info.unquote_names = r_as_bool(unquote_names);
+
+  return info;
+}
+
 
 static inline sexp* dot_get_expr(sexp* dot) {
   return r_list_get(dot, 0);
@@ -117,7 +140,8 @@ static inline void mark_ignored_dot(sexp* x) {
   r_poke_attribute(x, rlang_ignored_flag, rlang_ignored_flag);
 }
 
-static sexp* dots_big_bang(sexp* expr, sexp* env, r_size_t* count, bool quosured) {
+static sexp* dots_big_bang(struct dots_capture_info* capture_info,
+                           sexp* expr, sexp* env, bool quosured) {
   sexp* spliced_node = KEEP(r_eval(expr, env));
   spliced_node = big_bang_coerce(spliced_node);
 
@@ -130,7 +154,7 @@ static sexp* dots_big_bang(sexp* expr, sexp* env, r_size_t* count, bool quosured
     r_node_poke_car(node, expr);
 
     node = r_node_cdr(node);
-    *count += 1;
+    capture_info->count += 1;
   }
 
   FREE(1);
@@ -156,11 +180,9 @@ static sexp* set_value_spliced(sexp* x) {
   return r_set_attribute(x, r_class_sym, spliced_str);
 }
 
-static sexp* dots_unquote(sexp* dots, enum dots_capture_type type,
-                          r_size_t* count, int ignore_empty,
-                          bool unquote_names) {
+static sexp* dots_unquote(sexp* dots, struct dots_capture_info* capture_info) {
   sexp* dots_names = r_names(dots);
-  *count = 0;
+  capture_info->count = 0;
   r_size_t n = r_length(dots);
 
   for (r_size_t i = 0; i < n; ++i) {
@@ -171,7 +193,7 @@ static sexp* dots_unquote(sexp* dots, enum dots_capture_type type,
     // Unquoting rearranges expressions
     expr = KEEP(r_duplicate(expr, false));
 
-    if (unquote_names && r_is_call(expr, ":=")) {
+    if (capture_info->unquote_names && r_is_call(expr, ":=")) {
       sexp* name = def_unquote_name(expr, env);
 
       if (dots_names == r_null) {
@@ -189,12 +211,12 @@ static sexp* dots_unquote(sexp* dots, enum dots_capture_type type,
     }
 
     struct expansion_info info = which_expansion_op(expr);
-    enum dots_expansion_op dots_op = info.op + (N_EXPANSION_OPS * type);
+    enum dots_expansion_op dots_op = info.op + (N_EXPANSION_OPS * capture_info->type);
 
     // Ignore empty arguments
     if (expr == r_missing_sym
         && (dots_names == r_null || r_chr_has_empty_string_at(dots_names, i))
-        && should_ignore(ignore_empty, i, n)) {
+        && should_ignore(capture_info->ignore_empty, i, n)) {
       mark_ignored_dot(elt);
       FREE(1);
       continue;
@@ -205,11 +227,11 @@ static sexp* dots_unquote(sexp* dots, enum dots_capture_type type,
     case OP_EXPR_UQ:
     case OP_EXPR_UQE:
       expr = call_interp_impl(expr, env, info);
-      *count += 1;
+      capture_info->count += 1;
       break;
     case OP_EXPR_UQS:
       mark_spliced_dots(elt);
-      expr = dots_big_bang(info.operand, env, count, false);
+      expr = dots_big_bang(capture_info, info.operand, env, false);
       break;
     case OP_QUO_NONE:
     case OP_QUO_UQ:
@@ -217,12 +239,12 @@ static sexp* dots_unquote(sexp* dots, enum dots_capture_type type,
       expr = KEEP(call_interp_impl(expr, env, info));
       expr = forward_quosure(expr, env);
       FREE(1);
-      *count += 1;
+      capture_info->count += 1;
       break;
     }
     case OP_QUO_UQS: {
       mark_spliced_dots(elt);
-      expr = dots_big_bang(info.operand, env, count, true);
+      expr = dots_big_bang(capture_info, info.operand, env, true);
       break;
     }
     case OP_VALUE_NONE:
@@ -230,7 +252,7 @@ static sexp* dots_unquote(sexp* dots, enum dots_capture_type type,
         r_abort("Argument %d is empty", i + 1);
       }
       expr = r_eval(expr, env);
-      *count += 1;
+      capture_info->count += 1;
       break;
     case OP_VALUE_UQ:
     case OP_VALUE_UQE:
@@ -244,7 +266,7 @@ static sexp* dots_unquote(sexp* dots, enum dots_capture_type type,
       }
       expr = set_value_spliced(expr);
       FREE(1);
-      *count += 1;
+      capture_info->count += 1;
       break;
     }}
 
@@ -254,6 +276,7 @@ static sexp* dots_unquote(sexp* dots, enum dots_capture_type type,
 
   return dots;
 }
+
 
 static int match_ignore_empty_arg(sexp* ignore_empty) {
   if (!r_is_character(ignore_empty) || r_length(ignore_empty) == 0) {
@@ -295,7 +318,6 @@ static int find_auto_names_width(sexp* named) {
   r_abort("`.named` must be a scalar logical or number");
 }
 
-
 sexp* capturedots(sexp* frame);
 
 sexp* dots_interp(enum dots_capture_type type, sexp* frame_env,
@@ -303,26 +325,23 @@ sexp* dots_interp(enum dots_capture_type type, sexp* frame_env,
   if (!rlang_spliced_flag) rlang_spliced_flag = r_sym("__rlang_spliced");
   if (!rlang_ignored_flag) rlang_ignored_flag = r_sym("__rlang_ignored");
 
-  sexp* dots_info = KEEP(capturedots(frame_env));
+  sexp* dots = KEEP(capturedots(frame_env));
+  struct dots_capture_info capture_info = init_capture_info(type, ignore_empty, unquote_names);
+  dots = dots_unquote(dots, &capture_info);
 
-  r_size_t total;
-  int ignore_empty_int = match_ignore_empty_arg(ignore_empty);
-  bool unquote_names_bool = r_as_bool(unquote_names);
-  dots_info = dots_unquote(dots_info, type, &total, ignore_empty_int, unquote_names_bool);
-
-  sexp* out = KEEP(r_new_vector(r_type_list, total));
+  sexp* out = KEEP(r_new_vector(r_type_list, capture_info.count));
 
   // Dots captured by values don't have default empty names
-  sexp* dots_info_names = r_names(dots_info);
+  sexp* dots_info_names = r_names(dots);
   sexp* out_names = NULL;
   if (type != DOTS_VALUE || dots_info_names != r_null) {
-    out_names = KEEP(r_new_vector(r_type_character, total));
+    out_names = KEEP(r_new_vector(r_type_character, capture_info.count));
     r_push_names(out, out_names);
     FREE(1);
   }
 
-  for (size_t i = 0, count = 0; i < r_length(dots_info); ++i) {
-    sexp* elt = r_list_get(dots_info, i);
+  for (size_t i = 0, count = 0; i < r_length(dots); ++i) {
+    sexp* elt = r_list_get(dots, i);
     sexp* expr = dot_get_expr(elt);
 
     if (is_ignored_dot(elt)) {
