@@ -199,3 +199,10 @@ SEXP rlang_poke_type(SEXP x, SEXP type) {
   SET_TYPEOF(x, Rf_str2type(r_c_string(type)));
   return x;
 }
+
+
+// vec.h
+
+SEXP rlang_vec_coerce(SEXP x, SEXP type) {
+  return Rf_coerceVector(x, Rf_str2type(r_c_string(type)));
+}

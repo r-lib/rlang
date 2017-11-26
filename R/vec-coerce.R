@@ -225,3 +225,8 @@ coerce_type_vec <- function(.x, .to, ...) {
 
   out
 }
+
+
+vec_coerce <- function(x, type) {
+  .Call(rlang_vec_coerce, x, type)
+}
