@@ -78,7 +78,7 @@ static sexp* def_unquote_name(sexp* expr, sexp* env) {
 }
 
 
-enum root_expansion_op {
+enum dots_expansion_op {
   OP_EXPR_NONE,
   OP_EXPR_UQ,
   OP_EXPR_UQE,
@@ -109,7 +109,7 @@ static inline void mark_ignored_dot(sexp* x) {
   r_poke_attribute(x, rlang_ignored_flag, rlang_ignored_flag);
 }
 
-static sexp* root_big_bang(sexp* expr, sexp* env, r_size_t* count, bool quosured) {
+static sexp* dots_big_bang(sexp* expr, sexp* env, r_size_t* count, bool quosured) {
   sexp* spliced_node = KEEP(r_eval(expr, env));
   spliced_node = big_bang_coerce(spliced_node);
 
@@ -181,7 +181,7 @@ static sexp* dots_unquote(sexp* dots, r_size_t* count,
     }
 
     struct expansion_info info = which_expansion_op(expr);
-    enum root_expansion_op root_op = info.op + op_offset;
+    enum dots_expansion_op dots_op = info.op + op_offset;
 
     // Ignore empty arguments
     if (expr == r_missing_sym
@@ -192,7 +192,7 @@ static sexp* dots_unquote(sexp* dots, r_size_t* count,
       continue;
     }
 
-    switch (root_op) {
+    switch (dots_op) {
     case OP_EXPR_NONE:
     case OP_EXPR_UQ:
     case OP_EXPR_UQE:
@@ -201,7 +201,7 @@ static sexp* dots_unquote(sexp* dots, r_size_t* count,
       break;
     case OP_EXPR_UQS:
       mark_spliced_dots(elt);
-      expr = root_big_bang(info.operand, env, count, false);
+      expr = dots_big_bang(info.operand, env, count, false);
       break;
     case OP_QUO_NONE:
     case OP_QUO_UQ:
@@ -214,7 +214,7 @@ static sexp* dots_unquote(sexp* dots, r_size_t* count,
     }
     case OP_QUO_UQS: {
       mark_spliced_dots(elt);
-      expr = root_big_bang(info.operand, env, count, true);
+      expr = dots_big_bang(info.operand, env, count, true);
       break;
     }
     case OP_VALUE_NONE:
