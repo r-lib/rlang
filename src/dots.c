@@ -29,6 +29,7 @@ enum dots_expansion_op {
 struct dots_capture_info {
   enum dots_capture_type type;
   r_size_t count;
+  bool needs_expansion;
   int ignore_empty;
   bool unquote_names;
 };
@@ -43,49 +44,13 @@ struct dots_capture_info init_capture_info(enum dots_capture_type type,
 
   info.type = type;
   info.count = 0;
+  info.needs_expansion = false;
   info.ignore_empty = match_ignore_empty_arg(ignore_empty);
   info.unquote_names = r_as_bool(unquote_names);
 
   return info;
 }
 
-
-static inline sexp* dot_get_expr(sexp* dot) {
-  return r_list_get(dot, 0);
-}
-static inline sexp* dot_get_env(sexp* dot) {
-  return r_list_get(dot, 1);
-}
-static inline void dot_poke_expr(sexp* dot, sexp* elt) {
-  r_list_poke(dot, 0, elt);
-}
-
-static sexp* new_preserved_empty_list() {
-  sexp* empty_list = r_new_vector(r_type_list, 0);
-  r_mark_precious(empty_list);
-  r_mark_shared(empty_list);
-
-  sexp* nms = KEEP(r_new_vector(r_type_character, 0));
-  r_poke_names(empty_list, nms);
-  FREE(1);
-
-  return empty_list;
-}
-static sexp* empty_named_list() {
-  static sexp* empty_list = NULL;
-  if (!empty_list) {
-    empty_list = new_preserved_empty_list();
-  }
-  return empty_list;
-}
-static sexp* empty_quosures() {
-  static sexp* empty_quos = NULL;
-  if (!empty_quos) {
-    empty_quos = new_preserved_empty_list();
-    r_push_class(empty_quos, "quosures");
-  }
-  return empty_quos;
-}
 
 static sexp* def_unquote_name(sexp* expr, sexp* env) {
   int n_kept = 0;
@@ -157,12 +122,10 @@ static sexp* dots_big_bang(struct dots_capture_info* capture_info,
     capture_info->count += 1;
   }
 
+  mark_spliced_dots(spliced_node);
+
   FREE(1);
   return spliced_node;
-}
-
-static inline bool should_ignore(int ignore_empty, r_size_t i, r_size_t n) {
-  return ignore_empty == 1 || (i == n - 1 && ignore_empty == -1);
 }
 
 static sexp* set_value_spliced(sexp* x) {
@@ -178,6 +141,16 @@ static sexp* set_value_spliced(sexp* x) {
   }
 
   return r_set_attribute(x, r_class_sym, spliced_str);
+}
+
+static inline bool should_ignore(int ignore_empty, r_size_t i, r_size_t n) {
+  return ignore_empty == 1 || (i == n - 1 && ignore_empty == -1);
+}
+static inline sexp* dot_get_expr(sexp* dot) {
+  return r_list_get(dot, 0);
+}
+static inline sexp* dot_get_env(sexp* dot) {
+  return r_list_get(dot, 1);
 }
 
 static sexp* dots_unquote(sexp* dots, struct dots_capture_info* capture_info) {
@@ -217,6 +190,7 @@ static sexp* dots_unquote(sexp* dots, struct dots_capture_info* capture_info) {
     if (expr == r_missing_sym
         && (dots_names == r_null || r_chr_has_empty_string_at(dots_names, i))
         && should_ignore(capture_info->ignore_empty, i, n)) {
+      capture_info->needs_expansion = true;
       mark_ignored_dot(elt);
       FREE(1);
       continue;
@@ -230,7 +204,7 @@ static sexp* dots_unquote(sexp* dots, struct dots_capture_info* capture_info) {
       capture_info->count += 1;
       break;
     case OP_EXPR_UQS:
-      mark_spliced_dots(elt);
+      capture_info->needs_expansion = true;
       expr = dots_big_bang(capture_info, info.operand, env, false);
       break;
     case OP_QUO_NONE:
@@ -243,7 +217,7 @@ static sexp* dots_unquote(sexp* dots, struct dots_capture_info* capture_info) {
       break;
     }
     case OP_QUO_UQS: {
-      mark_spliced_dots(elt);
+      capture_info->needs_expansion = true;
       expr = dots_big_bang(capture_info, info.operand, env, true);
       break;
     }
@@ -260,6 +234,7 @@ static sexp* dots_unquote(sexp* dots, struct dots_capture_info* capture_info) {
     case OP_VALUE_UQS: {
       expr = KEEP(r_eval(info.operand, env));
       if (expr == r_null) {
+        capture_info->needs_expansion = true;
         mark_ignored_dot(elt);
         FREE(2);
         continue;
@@ -270,7 +245,7 @@ static sexp* dots_unquote(sexp* dots, struct dots_capture_info* capture_info) {
       break;
     }}
 
-    dot_poke_expr(elt, expr);
+    r_list_poke(dots, i, expr);
     FREE(1);
   }
 
@@ -318,6 +293,29 @@ static int find_auto_names_width(sexp* named) {
   r_abort("`.named` must be a scalar logical or number");
 }
 
+static sexp* maybe_auto_name(sexp* x, sexp* named) {
+  int names_width = find_auto_names_width(named);
+  sexp* names = r_names(x);
+
+  if (names_width && (!names || r_chr_has(names, ""))) {
+    sexp* auto_fn = rlang_ns_get("quos_auto_name");
+    sexp* width = KEEP(r_scalar_int(names_width));
+    sexp* auto_call = KEEP(r_build_call2(auto_fn, x, width));
+    x = r_eval(auto_call, r_empty_env);
+    FREE(2);
+  }
+
+  return x;
+}
+
+static sexp* init_names(sexp* x) {
+  sexp* nms = KEEP(r_new_vector(r_type_character, r_length(x)));
+  r_push_names(x, nms);
+  FREE(1);
+  return nms;
+}
+
+
 sexp* capturedots(sexp* frame);
 
 sexp* dots_interp(enum dots_capture_type type, sexp* frame_env,
@@ -329,20 +327,31 @@ sexp* dots_interp(enum dots_capture_type type, sexp* frame_env,
   struct dots_capture_info capture_info = init_capture_info(type, ignore_empty, unquote_names);
   dots = dots_unquote(dots, &capture_info);
 
+  sexp* dots_names = r_names(dots);
+
+  // If there is no expansion we can just return the unquoted dots
+  if (!capture_info.needs_expansion) {
+    if (type != DOTS_VALUE && dots_names == r_null) {
+      init_names(dots);
+    }
+    dots = maybe_auto_name(dots, named);
+    FREE(1);
+    return dots;
+  }
+
+
   sexp* out = KEEP(r_new_vector(r_type_list, capture_info.count));
 
-  // Dots captured by values don't have default empty names
-  sexp* dots_info_names = r_names(dots);
-  sexp* out_names = NULL;
-  if (type != DOTS_VALUE || dots_info_names != r_null) {
-    out_names = KEEP(r_new_vector(r_type_character, capture_info.count));
-    r_push_names(out, out_names);
-    FREE(1);
+  // Add default empty names unless dots are captured by values
+  sexp* out_names = r_null;
+  if (type != DOTS_VALUE || dots_names != r_null) {
+    out_names = init_names(out);
   }
+
 
   for (size_t i = 0, count = 0; i < r_length(dots); ++i) {
     sexp* elt = r_list_get(dots, i);
-    sexp* expr = dot_get_expr(elt);
+    sexp* expr = elt;
 
     if (is_ignored_dot(elt)) {
       continue;
@@ -356,39 +365,39 @@ sexp* dots_interp(enum dots_capture_type type, sexp* frame_env,
         r_list_poke(out, count, head);
 
         sexp* tag = r_node_tag(expr);
-        if (tag == r_null) {
-          tag = r_string("");
-        } else {
-          tag = r_sym_str(tag);
+        if (tag != r_null) {
           // Serialised unicode points might arise when unquoting
           // lists because of the conversion to pairlist
+          tag = r_sym_str(tag);
           tag = r_str_unserialise_unicode(tag);
-        }
-        if (out_names) {
+
+          // Names might not be initialised when dots are captured by value
+          if (out_names == r_null) {
+            out_names = init_names(out);
+          }
+
           r_chr_poke(out_names, count, tag);
         }
 
         ++count;
         expr = r_node_cdr(expr);
       }
-    } else {
-      r_list_poke(out, count, expr);
-      if (out_names && dots_info_names != r_null) {
-        sexp* name = r_chr_get(dots_info_names, i);
-        r_chr_poke(out_names, count, name);
-      }
-      ++count;
+
+      continue;
     }
+
+    r_list_poke(out, count, expr);
+
+    if (dots_names != r_null) {
+      sexp* name = r_chr_get(dots_names, i);
+      r_chr_poke(out_names, count, name);
+    }
+
+    ++count;
+    continue;
   }
 
-  int names_width = find_auto_names_width(named);
-  if (names_width && (!out_names || r_chr_has(out_names, ""))) {
-    sexp* auto_fn = rlang_ns_get("quos_auto_name");
-    sexp* width = KEEP(r_scalar_int(names_width));
-    sexp* auto_call = KEEP(r_build_call2(auto_fn, out, width));
-    out = r_eval(auto_call, r_empty_env);
-    FREE(2);
-  }
+  out = maybe_auto_name(out, named);
 
   FREE(2);
   return out;
@@ -396,37 +405,22 @@ sexp* dots_interp(enum dots_capture_type type, sexp* frame_env,
 
 sexp* rlang_exprs_interp(sexp* frame_env, sexp* named,
                          sexp* ignore_empty, sexp* unquote_names) {
-  sexp* dots = dots_interp(DOTS_EXPR, frame_env, named, ignore_empty, unquote_names);
-
-  if (dots == r_null) {
-    return empty_named_list();
-  } else {
-    return dots;
-  }
+  return dots_interp(DOTS_EXPR, frame_env, named, ignore_empty, unquote_names);
 }
 sexp* rlang_quos_interp(sexp* frame_env, sexp* named,
                         sexp* ignore_empty, sexp* unquote_names) {
   sexp* dots = dots_interp(DOTS_QUO, frame_env, named, ignore_empty, unquote_names);
 
-  if (dots == r_null) {
-    return empty_quosures();
-  } else {
-    KEEP(dots);
-    r_push_class(dots, "quosures");
-    FREE(1);
-    return dots;
-  }
+  KEEP(dots);
+  r_push_class(dots, "quosures");
+  FREE(1);
+  return dots;
 }
 sexp* rlang_dots_interp(sexp* frame_env, sexp* named, sexp* ignore_empty) {
   sexp* unquote_names = KEEP(r_scalar_lgl(1));
   sexp* dots = dots_interp(DOTS_VALUE, frame_env, named, ignore_empty, unquote_names);
   FREE(1);
-
-  if (dots == r_null) {
-    return r_new_vector(r_type_list, 0);
-  } else {
-    return dots;
-  }
+  return dots;
 }
 
 sexp* rlang_dots_list(sexp* frame_env, sexp* named, sexp* ignore_empty) {
