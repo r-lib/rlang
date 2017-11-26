@@ -98,12 +98,6 @@ static inline bool is_spliced_dots(sexp* x) {
 static inline void mark_spliced_dots(sexp* x) {
   r_poke_attribute(x, rlang_spliced_flag, rlang_spliced_flag);
 }
-static inline bool is_ignored_dot(sexp* x) {
-  return r_get_attribute(x, rlang_ignored_flag) != r_null;
-}
-static inline void mark_ignored_dot(sexp* x) {
-  r_poke_attribute(x, rlang_ignored_flag, rlang_ignored_flag);
-}
 
 static sexp* dots_big_bang(struct dots_capture_info* capture_info,
                            sexp* expr, sexp* env, bool quosured) {
@@ -153,6 +147,26 @@ static inline sexp* dot_get_env(sexp* dot) {
   return r_list_get(dot, 1);
 }
 
+static sexp* new_preserved_empty_list() {
+  sexp* empty_list = r_new_vector(r_type_list, 0);
+  r_mark_precious(empty_list);
+  r_mark_shared(empty_list);
+
+  sexp* nms = KEEP(r_new_vector(r_type_character, 0));
+  r_poke_names(empty_list, nms);
+  FREE(1);
+
+  return empty_list;
+}
+static sexp* empty_spliced_list() {
+  static sexp* list = NULL;
+  if (!list) {
+    list = new_preserved_empty_list();
+    mark_spliced_dots(list);
+  }
+  return list;
+}
+
 static sexp* dots_unquote(sexp* dots, struct dots_capture_info* capture_info) {
   sexp* dots_names = r_names(dots);
   capture_info->count = 0;
@@ -191,7 +205,7 @@ static sexp* dots_unquote(sexp* dots, struct dots_capture_info* capture_info) {
         && (dots_names == r_null || r_chr_has_empty_string_at(dots_names, i))
         && should_ignore(capture_info->ignore_empty, i, n)) {
       capture_info->needs_expansion = true;
-      mark_ignored_dot(elt);
+      r_list_poke(dots, i, empty_spliced_list());
       FREE(1);
       continue;
     }
@@ -233,15 +247,14 @@ static sexp* dots_unquote(sexp* dots, struct dots_capture_info* capture_info) {
       r_abort("Can't use `!!` in a non-quoting function");
     case OP_VALUE_UQS: {
       expr = KEEP(r_eval(info.operand, env));
+      capture_info->needs_expansion = true;
       if (expr == r_null) {
-        capture_info->needs_expansion = true;
-        mark_ignored_dot(elt);
-        FREE(2);
-        continue;
+        expr = empty_spliced_list();
+      } else {
+        expr = set_value_spliced(expr);
+        capture_info->count += 1;
       }
-      expr = set_value_spliced(expr);
       FREE(1);
-      capture_info->count += 1;
       break;
     }}
 
@@ -353,11 +366,11 @@ sexp* dots_interp(enum dots_capture_type type, sexp* frame_env,
     sexp* elt = r_list_get(dots, i);
     sexp* expr = elt;
 
-    if (is_ignored_dot(elt)) {
-      continue;
-    }
-
     if (is_spliced_dots(elt)) {
+      if (r_typeof(elt) == r_type_list) {
+        continue;
+      }
+
       // FIXME: Should be able to avoid conversion to pairlist for
       // lists, node lists, and character vectors
       while (expr != r_null) {
