@@ -273,3 +273,15 @@ test_that("`:=` chaining is detected at dots capture", {
   expect_error(dots_list(a := b := c), "chained")
   expect_error(dots_splice(a := b := c), "chained")
 })
+
+test_that("can unquote names deeply", {
+  expect_identical(expr(foo(a := bar())), quote(foo(a = bar())))
+  expect_identical(quo(foo(a := bar())), new_quosure(quote(foo(a = bar()))))
+
+  expect_identical(expr(foo(a := bar(b := baz))), quote(foo(a = bar(b = baz))))
+
+  bare_expr <- function(expr) enexpr(expr, unquote_names = FALSE)
+  bare_quo <- function(expr) enquo(expr, unquote_names = FALSE)
+  expect_identical(bare_expr(foo(a := bar())), quote(foo(a := bar())))
+  expect_identical(bare_quo(foo(a := bar())), new_quosure(quote(foo(a := bar()))))
+})

@@ -62,13 +62,13 @@ expr <- function(expr) {
   enexpr(expr)
 }
 #' @rdname expr
+#' @inheritParams quosures
 #' @export
-enexpr <- function(arg) {
-  .Call(rlang_enexpr, substitute(arg), parent.frame())
+enexpr <- function(arg, unquote_names = TRUE) {
+  .Call(rlang_enexpr, substitute(arg), parent.frame(), unquote_names)
 }
 #' @rdname expr
 #' @inheritParams quosures
-#' @inheritParams dots_values
 #' @param ... Arguments to extract.
 #' @export
 exprs <- function(...,

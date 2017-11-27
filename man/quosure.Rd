@@ -11,7 +11,7 @@ quo(expr)
 
 new_quosure(expr, env = caller_env())
 
-enquo(arg)
+enquo(arg, unquote_names = TRUE)
 }
 \arguments{
 \item{expr}{An expression.}
@@ -21,6 +21,10 @@ quosure.}
 
 \item{arg}{A symbol referring to an argument. The expression
 supplied to that argument will be captured unevaluated.}
+
+\item{unquote_names}{Whether to treat \code{:=} as
+\code{=}. Unlike \code{=}, the \code{:=} syntax supports unquoting the name in
+the LHS with \code{!!}.}
 }
 \value{
 A formula whose right-hand side contains the quoted

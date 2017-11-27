@@ -28,8 +28,9 @@
 #' @param .ignore_empty Whether to ignore empty arguments. Can be one
 #'   of `"trailing"`, `"none"`, `"all"`. If `"trailing"`, only the
 #'   last argument is ignored if it is empty.
-#' @param .unquote_names Whether to treat `:=` as `=`. Unlike `=`, the
-#'   `:=` syntax supports `!!` unquoting on the LHS.
+#' @param unquote_names,.unquote_names Whether to treat `:=` as
+#'   `=`. Unlike `=`, the `:=` syntax supports unquoting the name in
+#'   the LHS with `!!`.
 #' @export
 #' @name quosures
 #' @examples

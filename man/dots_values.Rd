@@ -14,8 +14,9 @@ dots_values(..., .ignore_empty = c("trailing", "none", "all"),
 of \code{"trailing"}, \code{"none"}, \code{"all"}. If \code{"trailing"}, only the
 last argument is ignored if it is empty.}
 
-\item{.unquote_names}{Whether to treat \code{:=} as \code{=}. Unlike \code{=}, the
-\code{:=} syntax supports unquoting with \code{!!}.}
+\item{.unquote_names}{Whether to treat \code{:=} as
+\code{=}. Unlike \code{=}, the \code{:=} syntax supports unquoting the name in
+the LHS with \code{!!}.}
 }
 \description{
 This is a tool for advanced users. It captures dots, processes

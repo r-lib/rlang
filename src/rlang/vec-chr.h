@@ -52,6 +52,12 @@ static inline const char* r_c_string(SEXP scalar_chr) {
   return CHAR(r_chr_get(scalar_chr, 0));
 }
 
+static inline const char* r_str_c_str(SEXP str) {
+  return CHAR(str);
+}
+static inline sexp* r_str_sym(SEXP str) {
+  return r_sym(CHAR(str));
+}
 
 SEXP chr_prepend(SEXP chr, SEXP r_string);
 SEXP chr_append(SEXP chr, SEXP r_string);

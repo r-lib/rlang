@@ -187,9 +187,10 @@ new_quosure <- function(expr, env = caller_env()) {
   .Call(rlang_new_quosure, expr, env)
 }
 #' @rdname quosure
+#' @inheritParams quosures
 #' @export
-enquo <- function(arg) {
-  .Call(rlang_enquo, substitute(arg), parent.frame())
+enquo <- function(arg, unquote_names = TRUE) {
+  .Call(rlang_enquo, substitute(arg), parent.frame(), unquote_names)
 }
 
 #' @export

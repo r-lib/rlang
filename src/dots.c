@@ -59,44 +59,6 @@ struct dots_capture_info init_capture_info(enum dots_capture_type type,
 }
 
 
-static sexp* def_unquote_name(sexp* expr, sexp* env) {
-  int n_kept = 0;
-  sexp* lhs = r_node_cadr(expr);
-
-  struct expansion_info info = which_expansion_op(lhs, true);
-
-  switch (info.op) {
-  case OP_EXPAND_NONE:
-    break;
-  case OP_EXPAND_UQ:
-    lhs = KEEP_N(r_eval(info.operand, env), &n_kept);
-    break;
-  case OP_EXPAND_UQE:
-    r_abort("The LHS of `:=` can't be unquoted with `UQE()`");
-  case OP_EXPAND_UQS:
-    r_abort("The LHS of `:=` can't be spliced with `!!!`");
-  case OP_EXPAND_UQN:
-    r_abort("Internal error: Chained `:=` should have been detected earlier");
-  }
-
-  int err = 0;
-  lhs = r_new_symbol(lhs, &err);
-  if (err) {
-    r_abort("The LHS of `:=` must be a string or a symbol");
-  }
-
-  sexp* name = r_sym_str(lhs);
-
-  // Unserialise unicode points such as <U+xxx> that arise when
-  // UTF-8 names are converted to symbols and the native encoding
-  // does not support the characters (i.e. all the time on Windows)
-  name = r_str_unserialise_unicode(name);
-
-  FREE(n_kept);
-  return name;
-}
-
-
 static sexp* rlang_spliced_flag = NULL;
 
 static inline bool is_spliced_dots(sexp* x) {

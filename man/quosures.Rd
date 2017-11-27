@@ -27,10 +27,11 @@ name. If an integer, it is passed to the \code{width} argument of
 of \code{"trailing"}, \code{"none"}, \code{"all"}. If \code{"trailing"}, only the
 last argument is ignored if it is empty.}
 
-\item{.unquote_names}{Whether to treat \code{:=} as \code{=}. Unlike \code{=}, the
-\code{:=} syntax supports \code{!!} unquoting on the LHS.}
-
 \item{x}{An object to test.}
+
+\item{unquote_names, .unquote_names}{Whether to treat \code{:=} as
+\code{=}. Unlike \code{=}, the \code{:=} syntax supports unquoting the name in
+the LHS with \code{!!}.}
 }
 \description{
 \code{quos()} quotes its arguments and returns them as a list of

@@ -125,7 +125,7 @@ struct expansion_info which_expansion_op(sexp* x, bool unquote_names) {
   return info;
 }
 
-struct expansion_info is_big_bang_op(sexp* x) {
+struct expansion_info which_node_expansion_op(sexp* x, bool unquote_names) {
   struct expansion_info info = which_bang_op(x);
 
   if (info.op == OP_EXPAND_UQS) {
@@ -135,6 +135,9 @@ struct expansion_info is_big_bang_op(sexp* x) {
   if (is_splice_call(x)) {
     info.op = OP_EXPAND_UQS;
     info.operand = r_node_cadr(x);
+  } else if (unquote_names && r_is_call(x, ":=")) {
+    info.op = OP_EXPAND_UQN;
+    return info;
   }
 
   return info;
@@ -207,6 +210,43 @@ sexp* big_bang(sexp* operand, sexp* env, sexp* node, sexp* next) {
   return next;
 }
 
+sexp* def_unquote_name(sexp* expr, sexp* env) {
+  int n_kept = 0;
+  sexp* lhs = r_node_cadr(expr);
+
+  struct expansion_info info = which_expansion_op(lhs, true);
+
+  switch (info.op) {
+  case OP_EXPAND_NONE:
+    break;
+  case OP_EXPAND_UQ:
+    lhs = KEEP_N(r_eval(info.operand, env), &n_kept);
+    break;
+  case OP_EXPAND_UQE:
+    r_abort("The LHS of `:=` can't be unquoted with `UQE()`");
+  case OP_EXPAND_UQS:
+    r_abort("The LHS of `:=` can't be spliced with `!!!`");
+  case OP_EXPAND_UQN:
+    r_abort("Internal error: Chained `:=` should have been detected earlier");
+  }
+
+  int err = 0;
+  lhs = r_new_symbol(lhs, &err);
+  if (err) {
+    r_abort("The LHS of `:=` must be a string or a symbol");
+  }
+
+  sexp* name = r_sym_str(lhs);
+
+  // Unserialise unicode points such as <U+xxx> that arise when
+  // UTF-8 names are converted to symbols and the native encoding
+  // does not support the characters (i.e. all the time on Windows)
+  name = r_str_unserialise_unicode(name);
+
+  FREE(n_kept);
+  return name;
+}
+
 
 static sexp* node_list_interp(sexp* x, sexp* env, bool unquote_names);
 
@@ -223,6 +263,11 @@ sexp* call_interp_impl(sexp* x, sexp* env,
   }
 
   switch (info.op) {
+  case OP_EXPAND_UQN:
+    if (unquote_names) {
+      r_abort("Can't use `:=` at top level");
+    }
+    // else fallthrough
   case OP_EXPAND_NONE:
     if (r_typeof(x) == r_type_call) {
       return node_list_interp(x, env, unquote_names);
@@ -235,8 +280,6 @@ sexp* call_interp_impl(sexp* x, sexp* env,
     return bang_bang_expression(info, env);
   case OP_EXPAND_UQS:
     r_abort("Can't use `!!!` at top level");
-  case OP_EXPAND_UQN:
-    r_abort("todo!");
   }
 }
 
@@ -247,9 +290,21 @@ static sexp* node_list_interp(sexp* x, sexp* env, bool unquote_names) {
     sexp* next = r_node_cdr(node);
     sexp* next_head = r_node_car(next);
 
-    struct expansion_info info = is_big_bang_op(next_head);
-    if (info.op == OP_EXPAND_UQS) {
+    struct expansion_info info;
+    info = which_node_expansion_op(next_head, unquote_names);
+
+    switch (info.op) {
+    case OP_EXPAND_UQS:
       node = big_bang(info.operand, env, node, next);
+      break;
+    case OP_EXPAND_UQN: {
+      sexp* name = def_unquote_name(next_head, env);
+      r_node_poke_tag(next, r_str_sym(name));
+      r_node_poke_car(next, r_node_cadr(r_node_cdr(next_head)));
+      break;
+    }
+    default:
+      break;
     }
   }
 
