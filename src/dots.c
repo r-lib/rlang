@@ -102,27 +102,46 @@ static inline void mark_spliced_dots(sexp* x) {
   r_poke_attribute(x, rlang_spliced_flag, rlang_spliced_flag);
 }
 
+static sexp* dots_big_bang_coerce(sexp* expr) {
+  switch (r_typeof(expr)) {
+  case r_type_null:
+  case r_type_pairlist:
+  case r_type_logical:
+  case r_type_integer:
+  case r_type_double:
+  case r_type_complex:
+  case r_type_character:
+  case r_type_raw:
+  case r_type_list:
+    return r_vec_coerce(expr, r_type_list);
+  case r_type_call:
+    if (r_is_symbol(r_node_car(expr), "{")) {
+      return r_vec_coerce(r_node_cdr(expr), r_type_list);
+    }
+    // else fallthrough
+  default:
+    return r_new_list(expr, NULL);
+  }
+}
 static sexp* dots_big_bang(struct dots_capture_info* capture_info,
                            sexp* expr, sexp* env, bool quosured) {
-  sexp* spliced_node = KEEP(r_eval(expr, env));
-  spliced_node = big_bang_coerce(spliced_node);
+  sexp* value = KEEP(r_eval(expr, env));
+  value = KEEP(dots_big_bang_coerce(value));
+  mark_spliced_dots(value);
 
-  sexp* node = spliced_node;
-  while (node != r_null) {
-    expr = r_node_car(node);
-    if (quosured) {
+  r_size_t n = r_length(value);
+  capture_info->count += n;
+
+  if (quosured) {
+    for (r_size_t i = 0; i < n; ++i) {
+      expr = r_list_get(value, i);
       expr = forward_quosure(expr, env);
+      r_list_poke(value, i, expr);
     }
-    r_node_poke_car(node, expr);
-
-    node = r_node_cdr(node);
-    capture_info->count += 1;
   }
 
-  mark_spliced_dots(spliced_node);
-
-  FREE(1);
-  return spliced_node;
+  FREE(2);
+  return value;
 }
 
 static sexp* set_value_spliced(sexp* x) {
@@ -353,53 +372,43 @@ sexp* dots_interp(enum dots_capture_type type, sexp* frame_env,
     out_names = init_names(out);
   }
 
-
   for (size_t i = 0, count = 0; i < r_length(dots); ++i) {
     sexp* elt = r_list_get(dots, i);
-    sexp* expr = elt;
 
     if (is_spliced_dots(elt)) {
-      if (r_typeof(elt) == r_type_list) {
-        continue;
-      }
+      sexp* names = r_names(elt);
 
-      // FIXME: Should be able to avoid conversion to pairlist for
-      // lists, node lists, and character vectors
-      while (expr != r_null) {
-        sexp* head = r_node_car(expr);
-        r_list_poke(out, count, head);
+      // FIXME: Should be able to avoid conversion to list for node
+      // lists and character vectors
+      for (r_size_t i = 0; i < r_length(elt); ++i) {
+        sexp* value = r_list_get(elt, i);
+        r_list_poke(out, count, value);
 
-        sexp* tag = r_node_tag(expr);
-        if (tag != r_null) {
+        sexp* name = r_nms_get(names, i);
+        if (name != r_string("")) {
           // Serialised unicode points might arise when unquoting
           // lists because of the conversion to pairlist
-          tag = r_sym_str(tag);
-          tag = r_str_unserialise_unicode(tag);
+          name = r_str_unserialise_unicode(name);
 
           // Names might not be initialised when dots are captured by value
           if (out_names == r_null) {
             out_names = init_names(out);
           }
-
-          r_chr_poke(out_names, count, tag);
+          r_chr_poke(out_names, count, name);
         }
 
         ++count;
-        expr = r_node_cdr(expr);
+      }
+    } else {
+      r_list_poke(out, count, elt);
+
+      if (dots_names != r_null) {
+        sexp* name = r_chr_get(dots_names, i);
+        r_chr_poke(out_names, count, name);
       }
 
-      continue;
+      ++count;
     }
-
-    r_list_poke(out, count, expr);
-
-    if (dots_names != r_null) {
-      sexp* name = r_chr_get(dots_names, i);
-      r_chr_poke(out_names, count, name);
-    }
-
-    ++count;
-    continue;
   }
 
   out = maybe_auto_name(out, named);
