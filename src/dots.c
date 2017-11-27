@@ -69,8 +69,7 @@ static sexp* def_unquote_name(sexp* expr, sexp* env) {
   case OP_EXPAND_NONE:
     break;
   case OP_EXPAND_UQ:
-    lhs = KEEP(r_eval(info.operand, env));
-    ++n_kept;
+    lhs = KEEP_N(r_eval(info.operand, env), &n_kept);
     break;
   case OP_EXPAND_UQE:
     r_abort("The LHS of `:=` can't be unquoted with `UQE()`");
