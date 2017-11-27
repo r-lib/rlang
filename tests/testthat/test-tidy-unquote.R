@@ -225,6 +225,20 @@ test_that("`!!` works in prefixed calls", {
   expect_identical(expr_interp(~base::`!!`(~list)()), quo(base::list()))
 })
 
+test_that("one layer of parentheses around !! is removed", {
+  foo <- "foo"
+  expect_identical(expr((!! foo)), "foo")
+  expect_identical(expr(((!! foo))), quote(("foo")))
+
+  expect_identical(expr((!! foo) + 1), quote("foo" + 1))
+  expect_identical(expr(((!! foo)) + 1), quote(("foo") + 1))
+
+  expect_identical(expr((!! sym(foo))(bar)), quote(foo(bar)))
+  expect_identical(expr(((!! sym(foo)))(bar)), quote((foo)(bar)))
+
+  expect_identical(exprs((!! foo), ((!! foo))), named_list("foo", quote(("foo"))))
+})
+
 
 # quosures -----------------------------------------------------------
 

@@ -117,6 +117,12 @@
   the first argument of an S3 method (which is necessarily evaluated
   in order to detect which class to dispatch to). (#295, #300).
 
+* Parentheses around `!!` are automatically removed. This is useful
+  for unquoting function names: `(!! sym("name"))(arg)`. If you need
+  the parenthesis wrapping, you can add a second layer since only one
+  layer is removed: `((!! x)) + 1` (#296).
+
+
 ## Breaking changes
 
 * `is_node()` now returns `TRUE` for calls as well and `is_pairlist()`
