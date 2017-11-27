@@ -272,6 +272,9 @@ test_that("`:=` chaining is detected at dots capture", {
   expect_error(quos(a := b := c), "chained")
   expect_error(dots_list(a := b := c), "chained")
   expect_error(dots_splice(a := b := c), "chained")
+
+  expect_error(expr(foo(a := b := c)), "chained")
+  expect_identical(bare_expr(foo(a := b := c)), quote(foo(a := b := c)))
 })
 
 test_that("can unquote names deeply", {
@@ -280,8 +283,14 @@ test_that("can unquote names deeply", {
 
   expect_identical(expr(foo(a := bar(b := baz))), quote(foo(a = bar(b = baz))))
 
-  bare_expr <- function(expr) enexpr(expr, unquote_names = FALSE)
-  bare_quo <- function(expr) enquo(expr, unquote_names = FALSE)
   expect_identical(bare_expr(foo(a := bar())), quote(foo(a := bar())))
   expect_identical(bare_quo(foo(a := bar())), new_quosure(quote(foo(a := bar()))))
+})
+
+test_that("can't use `:=` at top level", {
+  expect_error(expr(a := b), "top level")
+  expect_error(quo(a := b), "top level")
+
+  expect_identical(bare_expr(a := b), quote(a := b))
+  expect_identical(bare_quo(a := b), new_quosure(quote(a := b)))
 })

@@ -301,6 +301,11 @@ static sexp* node_list_interp(sexp* x, sexp* env, bool unquote_names) {
       sexp* name = def_unquote_name(next_head, env);
       r_node_poke_tag(next, r_str_sym(name));
       r_node_poke_car(next, r_node_cadr(r_node_cdr(next_head)));
+
+      if (r_is_call(r_node_car(next), ":=")) {
+        r_abort("`:=` can't be chained");
+      }
+
       break;
     }
     default:
