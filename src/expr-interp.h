@@ -35,11 +35,14 @@ static inline bool is_splice_call(sexp* node) {
 }
 
 
+#define N_EXPANSION_OPS 5
+
 enum expansion_op {
   OP_EXPAND_NONE,
   OP_EXPAND_UQ,
   OP_EXPAND_UQE,
   OP_EXPAND_UQS,
+  OP_EXPAND_UQN
 };
 
 struct expansion_info {
@@ -61,13 +64,14 @@ static inline struct expansion_info init_expansion_info() {
 }
 
 struct expansion_info which_bang_op(sexp* x);
-struct expansion_info which_expansion_op(sexp* x);
+struct expansion_info which_expansion_op(sexp* x, bool unquote_names);
 
 sexp* big_bang_coerce(sexp* expr);
 
-sexp* rlang_interp(sexp* x, sexp* env);
-sexp* call_interp(sexp* x, sexp* env);
-sexp* call_interp_impl(sexp* x, sexp* env, struct expansion_info info);
+sexp* rlang_interp(sexp* x, sexp* env, sexp* unquote_names);
+sexp* call_interp(sexp* x, sexp* env, bool unquote_names);
+sexp* call_interp_impl(sexp* x, sexp* env, struct expansion_info info,
+                       bool unquote_names);
 
 
 static inline sexp* forward_quosure(sexp* x, sexp* env) {

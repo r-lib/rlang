@@ -75,7 +75,9 @@
 
 * `exprs()` and `quos()` gain a `.unquote_names` arguments to switch
   off interpretation of `:=` as a name operator. This should be useful
-  for programming on the language targetting APIs such as data.table.
+  for programming on the language targetting APIs such as
+  data.table. For consistency `dots_list()` and `dots_splice()` gain
+  that argument as well.
 
 * The backend for `quos()`, `exprs()`, `dots_list()`, etc is now
   written in C. This greatly improve the performance of dots capture,

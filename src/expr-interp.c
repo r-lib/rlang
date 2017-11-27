@@ -62,13 +62,18 @@ struct expansion_info which_bang_op(sexp* x) {
   return info;
 }
 
-struct expansion_info which_expansion_op(sexp* x) {
+struct expansion_info which_expansion_op(sexp* x, bool unquote_names) {
   struct expansion_info info = which_bang_op(x);
 
   if (r_typeof(x) != r_type_call) {
     return info;
   }
   if (info.op) {
+    return info;
+  }
+
+  if (unquote_names && r_is_call(x, ":=")) {
+    info.op = OP_EXPAND_UQN;
     return info;
   }
 
@@ -203,14 +208,16 @@ sexp* big_bang(sexp* operand, sexp* env, sexp* node, sexp* next) {
 }
 
 
-static sexp* node_list_interp(sexp* x, sexp* env);
+static sexp* node_list_interp(sexp* x, sexp* env, bool unquote_names);
 
-sexp* call_interp(sexp* x, sexp* env)  {
-  struct expansion_info info = which_expansion_op(x);
-  return call_interp_impl(x, env, info);
+sexp* call_interp(sexp* x, sexp* env, bool unquote_names)  {
+  struct expansion_info info = which_expansion_op(x, unquote_names);
+  return call_interp_impl(x, env, info, unquote_names);
 }
 
-sexp* call_interp_impl(sexp* x, sexp* env, struct expansion_info info) {
+sexp* call_interp_impl(sexp* x, sexp* env,
+                       struct expansion_info info,
+                       bool unquote_names) {
   if (info.op && r_node_cdr(x) == r_null) {
     r_abort("`UQ()`, `UQE()` and `UQS()` must be called with an argument");
   }
@@ -218,7 +225,7 @@ sexp* call_interp_impl(sexp* x, sexp* env, struct expansion_info info) {
   switch (info.op) {
   case OP_EXPAND_NONE:
     if (r_typeof(x) == r_type_call) {
-      return node_list_interp(x, env);
+      return node_list_interp(x, env, unquote_names);
     } else {
       return x;
     }
@@ -228,12 +235,14 @@ sexp* call_interp_impl(sexp* x, sexp* env, struct expansion_info info) {
     return bang_bang_expression(info, env);
   case OP_EXPAND_UQS:
     r_abort("Can't use `!!!` at top level");
+  case OP_EXPAND_UQN:
+    r_abort("todo!");
   }
 }
 
-static sexp* node_list_interp(sexp* x, sexp* env) {
+static sexp* node_list_interp(sexp* x, sexp* env, bool unquote_names) {
   for (sexp* node = x; node != r_null; node = r_node_cdr(node)) {
-    r_node_poke_car(node, call_interp(r_node_car(node), env));
+    r_node_poke_car(node, call_interp(r_node_car(node), env, unquote_names));
 
     sexp* next = r_node_cdr(node);
     sexp* next_head = r_node_car(next);
@@ -247,7 +256,7 @@ static sexp* node_list_interp(sexp* x, sexp* env) {
   return x;
 }
 
-sexp* rlang_interp(sexp* x, sexp* env) {
+sexp* rlang_interp(sexp* x, sexp* env, sexp* unquote_names) {
   if (!r_is_environment(env)) {
     r_abort("`env` must be an environment");
   }
@@ -256,7 +265,7 @@ sexp* rlang_interp(sexp* x, sexp* env) {
   }
 
   x = KEEP(r_duplicate(x, false));
-  x = call_interp(x, env);
+  x = call_interp(x, env, unquote_names);
 
   FREE(1);
   return x;

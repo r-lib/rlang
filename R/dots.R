@@ -11,7 +11,7 @@
 #' splicing semantics_: in addition to lists marked explicitly for
 #' splicing, [bare][is_bare_list] lists are spliced as well.
 #'
-#' @inheritParams dots_values
+#' @inheritParams quosures
 #' @param ... Arguments with explicit (`dots_list()`) or list
 #'   (`dots_splice()`) splicing semantics. The contents of spliced
 #'   arguments are embedded in the returned list.
@@ -39,8 +39,10 @@
 #' # as it will match `fn`'s `data` argument. The splicing syntax
 #' # provides a workaround:
 #' fn(some_data, !!! list(data = letters))
-dots_list <- function(..., .ignore_empty = c("trailing", "none", "all")) {
-  dots <- .Call(rlang_dots_list, environment(), FALSE, .ignore_empty)
+dots_list <- function(...,
+                      .ignore_empty = c("trailing", "none", "all"),
+                      .unquote_names = TRUE) {
+  dots <- .Call(rlang_dots_list, environment(), FALSE, .ignore_empty, .unquote_names)
   names(dots) <- names2(dots)
   dots
 }
@@ -53,8 +55,10 @@ dots_list <- function(..., .ignore_empty = c("trailing", "none", "all")) {
 #' x <- list(1, 2)
 #' dots_splice(!!! x, 3)
 #' dots_splice(x, 3)
-dots_splice <- function(..., .ignore_empty = c("trailing", "none", "all")) {
-  dots <- .Call(rlang_dots_flat_list, environment(), FALSE, .ignore_empty)
+dots_splice <- function(...,
+                        .ignore_empty = c("trailing", "none", "all"),
+                        .unquote_names = TRUE) {
+  dots <- .Call(rlang_dots_flat_list, environment(), FALSE, .ignore_empty, .unquote_names)
   names(dots) <- names2(dots)
   dots
 }
@@ -68,10 +72,8 @@ dots_splice <- function(..., .ignore_empty = c("trailing", "none", "all")) {
 #' [splice()]). You can process spliced objects manually, perhaps with
 #' a custom predicate (see [flatten_if()]).
 #'
+#' @inheritParams quosures
 #' @param ... Arguments to evaluate and process splicing operators.
-#' @param .ignore_empty Whether to ignore empty arguments. Can be one
-#'   of `"trailing"`, `"none"`, `"all"`. If `"trailing"`, only the
-#'   last argument is ignored if it is empty.
 #' @export
 #' @examples
 #' dots <- dots_values(!!! list(1))
@@ -79,8 +81,10 @@ dots_splice <- function(..., .ignore_empty = c("trailing", "none", "all")) {
 #'
 #' # Flatten the spliced objects:
 #' flatten_if(dots, is_spliced)
-dots_values <- function(..., .ignore_empty = c("trailing", "none", "all")) {
-  .Call(rlang_dots_values, environment(), FALSE, .ignore_empty)
+dots_values <- function(...,
+                        .ignore_empty = c("trailing", "none", "all"),
+                        .unquote_names = TRUE) {
+  .Call(rlang_dots_values, environment(), FALSE, .ignore_empty, .unquote_names)
 }
 
 #' @rdname quosures
