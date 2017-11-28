@@ -80,7 +80,7 @@ dots_splice <- function(..., .ignore_empty = c("trailing", "none", "all")) {
 #' # Flatten the spliced objects:
 #' flatten_if(dots, is_spliced)
 dots_values <- function(..., .ignore_empty = c("trailing", "none", "all")) {
-  .Call(rlang_dots_interp, environment(), FALSE, .ignore_empty)
+  .Call(rlang_dots_values, environment(), FALSE, .ignore_empty)
 }
 
 #' @rdname quosures
