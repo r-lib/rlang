@@ -5,7 +5,7 @@ test_that("exprs() without arguments creates an empty named list", {
 })
 
 test_that("exprs() captures arguments forwarded with `...`", {
-  wrapper <- function(...) wrapper(...)
+  wrapper <- function(...) exprs(...)
   expect_identical(wrapper(a = 1, foo = bar), list(a = 1, foo = quote(bar)))
 })
 
