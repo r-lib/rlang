@@ -177,10 +177,10 @@ static SEXP squash(SEXPTYPE kind, SEXP dots, bool (*is_spliceable)(SEXP), int de
 
 typedef bool (*is_spliceable_t)(SEXP);
 
-static bool is_spliced_bare(SEXP x) {
+bool r_is_spliced_bare(SEXP x) {
   return r_is_list(x) && (!r_is_object(x) || Rf_inherits(x, "spliced"));
 }
-static bool is_spliced(SEXP x) {
+bool r_is_spliced(SEXP x) {
   return r_is_list(x) && Rf_inherits(x, "spliced");
 }
 
@@ -215,9 +215,9 @@ static is_spliceable_t predicate_internal(SEXP x) {
     is_spliceable_clo = rlang_ns_get("is_spliced_bare");
 
   if (x == is_spliced_clo)
-    return &is_spliced;
+    return &r_is_spliced;
   if (x == is_spliceable_clo)
-    return &is_spliced_bare;
+    return &r_is_spliced_bare;
   return NULL;
 }
 
@@ -236,7 +236,7 @@ static bool is_spliceable_closure(SEXP x) {
 
 // Export ------------------------------------------------------------
 
-SEXP rlang_squash_if(SEXP dots, SEXPTYPE kind, bool (*is_spliceable)(SEXP), int depth) {
+SEXP r_squash_if(SEXP dots, SEXPTYPE kind, bool (*is_spliceable)(SEXP), int depth) {
   switch (kind) {
   case LGLSXP:
   case INTSXP:
@@ -255,7 +255,7 @@ SEXP rlang_squash_closure(SEXP dots, SEXPTYPE kind, SEXP pred, int depth) {
   SEXP prev_pred = clo_spliceable;
   clo_spliceable = KEEP(Rf_lang2(pred, Rf_list2(r_null, r_null)));
 
-  SEXP out = rlang_squash_if(dots, kind, &is_spliceable_closure, depth);
+  SEXP out = r_squash_if(dots, kind, &is_spliceable_closure, depth);
 
   clo_spliceable = prev_pred;
   FREE(1);
@@ -271,11 +271,11 @@ SEXP rlang_squash(SEXP dots, SEXP type, SEXP pred, SEXP depth_) {
   if (r_kind(pred) == CLOSXP) {
     is_spliceable = predicate_internal(pred);
     if (is_spliceable)
-      return rlang_squash_if(dots, kind, is_spliceable, depth);
+      return r_squash_if(dots, kind, is_spliceable, depth);
     else
       return rlang_squash_closure(dots, kind, pred, depth);
   }
 
   is_spliceable = predicate_pointer(pred);
-  return rlang_squash_if(dots, kind, is_spliceable, depth);
+  return r_squash_if(dots, kind, is_spliceable, depth);
 }

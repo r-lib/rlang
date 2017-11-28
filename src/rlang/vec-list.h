@@ -9,5 +9,7 @@ static inline void r_list_poke(SEXP list, r_size_t i, SEXP elt) {
   SET_VECTOR_ELT(list, i, elt);
 }
 
+sexp* r_new_list(sexp* x, const char* name);
+
 
 #endif

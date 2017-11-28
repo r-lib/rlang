@@ -6,7 +6,7 @@
 
 // Callable from other packages
 extern SEXP rlang_new_dictionary(SEXP, SEXP, SEXP);
-extern SEXP rlang_squash_if(SEXP, SEXPTYPE, bool (*is_spliceable)(SEXP), int);
+extern SEXP r_squash_if(SEXP, SEXPTYPE, bool (*is_spliceable)(SEXP), int);
 extern bool rlang_is_clevel_spliceable(SEXP);
 
 // Callable from this package
@@ -38,7 +38,7 @@ extern SEXP rlang_eval(SEXP, SEXP);
 extern SEXP rlang_zap_attrs(SEXP);
 extern SEXP rlang_get_attrs(SEXP);
 extern SEXP rlang_set_attrs(SEXP, SEXP);
-extern SEXP rlang_interp(SEXP, SEXP, SEXP);
+extern SEXP rlang_interp(SEXP, SEXP);
 extern SEXP rlang_is_formulaish(SEXP, SEXP, SEXP);
 extern SEXP rlang_is_reference(SEXP, SEXP);
 extern SEXP rlang_sxp_address(SEXP);
@@ -49,15 +49,26 @@ extern SEXP rlang_symbol(SEXP);
 extern SEXP rlang_symbol_to_character(SEXP);
 extern SEXP rlang_tilde_eval(SEXP, SEXP, SEXP, SEXP);
 extern SEXP rlang_unescape_character(SEXP);
-extern SEXP capture_arg(SEXP, SEXP);
-extern SEXP rlang_capturearg(SEXP, SEXP, SEXP, SEXP);
+extern SEXP rlang_capturearginfo(SEXP, SEXP, SEXP, SEXP);
 extern SEXP rlang_capturedots(SEXP, SEXP, SEXP, SEXP);
 extern SEXP rlang_new_call_node(SEXP, SEXP);
 extern SEXP rlang_cnd_abort(SEXP, SEXP);
 extern SEXP rlang_cnd_inform(SEXP, SEXP);
 extern SEXP rlang_cnd_signal(SEXP, SEXP);
 extern SEXP rlang_cnd_warn(SEXP, SEXP);
-extern SEXP rlang_r_string(SEXP str);
+extern SEXP rlang_r_string(SEXP);
+extern SEXP rlang_exprs_interp(SEXP, SEXP, SEXP, SEXP);
+extern SEXP rlang_quos_interp(SEXP, SEXP, SEXP, SEXP);
+extern SEXP rlang_dots_values(SEXP, SEXP, SEXP);
+extern SEXP rlang_dots_list(SEXP, SEXP, SEXP);
+extern SEXP rlang_dots_flat_list(SEXP, SEXP, SEXP);
+extern SEXP r_new_formula(SEXP, SEXP, SEXP);
+extern SEXP r_new_quosure(SEXP, SEXP);
+extern SEXP rlang_poke_attributes(SEXP, SEXP);
+extern SEXP rlang_enexpr(SEXP, SEXP);
+extern SEXP rlang_enquo(SEXP, SEXP);
+extern SEXP r_get_expression(SEXP, SEXP);
+extern SEXP rlang_vec_coerce(SEXP, SEXP);
 
 
 // For unit tests
@@ -66,18 +77,19 @@ extern SEXP chr_append(SEXP, SEXP);
 extern SEXP rlang_test_r_warn(SEXP);
 extern SEXP rlang_on_exit(SEXP, SEXP);
 extern SEXP rlang_test_is_special_op_sym(SEXP);
+extern SEXP rlang_test_base_ns_get(SEXP);
 
 static const R_CallMethodDef call_entries[] = {
   {"r_f_lhs",                   (DL_FUNC) &r_f_lhs, 1},
   {"r_f_rhs",                   (DL_FUNC) &r_f_rhs, 1},
   {"rlang_new_condition",       (DL_FUNC) &r_new_condition, 3},
   {"rlang_replace_na",          (DL_FUNC) &rlang_replace_na, 2},
-  {"rlang_capturearg",          (DL_FUNC) &rlang_capturearg, 4},
+  {"rlang_capturearginfo",      (DL_FUNC) &rlang_capturearginfo, 4},
   {"rlang_capturedots",         (DL_FUNC) &rlang_capturedots, 4},
   {"rlang_duplicate",           (DL_FUNC) &rlang_duplicate, 2},
   {"rlang_eval",                (DL_FUNC) &rlang_eval, 2},
   {"rlang_get_attrs",           (DL_FUNC) &rlang_get_attrs, 1},
-  {"rlang_interp",              (DL_FUNC) &rlang_interp, 3},
+  {"rlang_interp",              (DL_FUNC) &rlang_interp, 2},
   {"rlang_is_formulaish",       (DL_FUNC) &rlang_is_formulaish, 3},
   {"rlang_is_null",             (DL_FUNC) &rlang_is_null, 1},
   {"rlang_is_reference",        (DL_FUNC) &rlang_is_reference, 2},
@@ -119,14 +131,27 @@ static const R_CallMethodDef call_entries[] = {
   {"rlang_test_r_warn",         (DL_FUNC) &rlang_test_r_warn, 1},
   {"rlang_test_r_on_exit",      (DL_FUNC) &rlang_on_exit, 2},
   {"rlang_test_is_special_op_sym", (DL_FUNC) &rlang_test_is_special_op_sym, 1},
+  {"rlang_test_base_ns_get",    (DL_FUNC) &rlang_test_base_ns_get, 1},
   {"rlang_r_string",            (DL_FUNC) &rlang_r_string, 1},
+  {"rlang_exprs_interp",        (DL_FUNC) &rlang_exprs_interp, 4},
+  {"rlang_quos_interp",         (DL_FUNC) &rlang_quos_interp, 4},
+  {"rlang_dots_values",         (DL_FUNC) &rlang_dots_values, 3},
+  {"rlang_dots_list",           (DL_FUNC) &rlang_dots_list, 3},
+  {"rlang_dots_flat_list",      (DL_FUNC) &rlang_dots_flat_list, 3},
+  {"rlang_new_formula",         (DL_FUNC) &r_new_formula, 3},
+  {"rlang_new_quosure",         (DL_FUNC) &r_new_quosure, 2},
+  {"rlang_poke_attributes",     (DL_FUNC) &rlang_poke_attributes, 2},
+  {"rlang_enexpr",              (DL_FUNC) &rlang_enexpr, 2},
+  {"rlang_enquo",               (DL_FUNC) &rlang_enquo, 2},
+  {"rlang_get_expression",      (DL_FUNC) &r_get_expression, 2},
+  {"rlang_vec_coerce",          (DL_FUNC) &rlang_vec_coerce, 2},
   {NULL, NULL, 0}
 };
 
 void R_init_rlang(DllInfo* dll) {
   // Register functions callable from other packages
   R_RegisterCCallable("rlang", "rlang_new_dictionary", (DL_FUNC) &rlang_new_dictionary);
-  R_RegisterCCallable("rlang", "rlang_squash_if", (DL_FUNC) &rlang_squash_if);
+  R_RegisterCCallable("rlang", "rlang_squash_if", (DL_FUNC) &r_squash_if);
   rlang_register_pointer("rlang", "rlang_test_is_spliceable", (DL_FUNC) &rlang_is_clevel_spliceable);
 
   // Register functions callable from this package

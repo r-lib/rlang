@@ -20,8 +20,13 @@ static inline bool r_is_environment(SEXP x) {
   return TYPEOF(x) == ENVSXP;
 }
 
-static inline SEXP r_env_get(SEXP env, SEXP sym) {
+// TODO A more complete family that optionally looks up ancestry
+// The `find` variant does not fail if object does not exist
+static inline SEXP r_env_find(SEXP env, SEXP sym) {
   return Rf_findVarInFrame3(env, sym, TRUE);
+}
+static inline SEXP r_env_get(SEXP env, SEXP sym) {
+  return Rf_eval(sym, env);
 }
 static inline SEXP r_env_set(SEXP env, SEXP sym, SEXP value) {
   Rf_defineVar(sym, value, env);

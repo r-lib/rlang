@@ -9,17 +9,7 @@
 #' new_formula(quote(a), quote(b))
 #' new_formula(NULL, quote(b))
 new_formula <- function(lhs, rhs, env = caller_env()) {
-  if (!is_env(env) && !is_null(env)) {
-    abort("`env` must be an environment")
-  }
-
-  if (is_null(lhs)) {
-    f <- lang("~", rhs)
-  } else {
-    f <- lang("~", lhs, rhs)
-  }
-
-  structure(f, class = "formula", .Environment = env)
+  .Call(rlang_new_formula, lhs, rhs, env)
 }
 
 #' Is object a formula?

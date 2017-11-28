@@ -26,5 +26,5 @@ bool r_has_name_at(SEXP x, r_size_t i) {
   SEXP nms = r_names(x);
   return
     r_is_character(nms) &&
-    !r_is_empty_string(r_chr_get(nms, i));
+    !r_chr_has_empty_string_at(nms, i);
 }

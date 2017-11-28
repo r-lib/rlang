@@ -95,39 +95,29 @@ NULL
 #' @export
 #' @rdname quasiquotation
 UQ <- function(x) {
-  x
+  abort("`UQ()` can only be used within a quasiquoted argument")
 }
 #' @export
 #' @rdname quasiquotation
 UQE <- function(x) {
-  if (is_quosureish(x)) {
-    get_expr(x)
-  } else {
-    x
-  }
+  abort("`UQE()` can only be used within a quasiquoted argument")
 }
 #' @export
 #' @rdname quasiquotation
-`!!` <- UQE
+UQS <- function(x) {
+  abort("`UQS()` can only be used within a quasiquoted argument")
+}
 #' @export
 #' @rdname quasiquotation
-UQS <- function(x) {
-  if (is_pairlist(x) || is_null(x)) {
-    x
-  } else if (is_vector(x)) {
-    as.pairlist(x)
-  } else if (identical(node_car(x), sym_curly)) {
-    node_cdr(x)
-  } else if (is_expr(x)) {
-    pairlist(x)
-  } else {
-    abort("`x` must be a vector or a language object")
-  }
+`!!` <- function(x) {
+  abort("`!!` can only be used within a quasiquoted argument")
 }
 #' @export
 #' @rdname quasiquotation
 #' @usage NULL
-`!!!` <- UQS
+`!!!` <- function(x) {
+  abort("`!!!` can only be used within a quasiquoted argument")
+}
 
 #' Process unquote operators in a captured expression
 #'
@@ -174,12 +164,12 @@ UQS <- function(x) {
 #' fn("foo")
 expr_interp <- function(x, env = NULL) {
   if (is_formula(x)) {
-    expr <- .Call(rlang_interp, f_rhs(x), env %||% f_env(x), TRUE)
+    expr <- .Call(rlang_interp, f_rhs(x), env %||% f_env(x))
     x <- new_quosure(expr, f_env(x))
   } else if (is_closure(x)) {
-    body(x) <- .Call(rlang_interp, body(x), env %||% fn_env(x), TRUE)
+    body(x) <- .Call(rlang_interp, body(x), env %||% fn_env(x))
   } else {
-    x <- .Call(rlang_interp, x, env %||% parent.frame(), TRUE)
+    x <- .Call(rlang_interp, x, env %||% parent.frame())
   }
   x
 }

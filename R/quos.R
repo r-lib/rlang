@@ -26,6 +26,8 @@
 #'   name. If an integer, it is passed to the `width` argument of
 #'   `expr_text()`, if `TRUE`, the default width is used. See
 #'   [exprs_auto_name()].
+#' @param .unquote_names Whether to treat `:=` as `=`. Unlike `=`, the
+#'   `:=` syntax supports `!!` unquoting on the LHS.
 #' @export
 #' @name quosures
 #' @examples
@@ -64,16 +66,11 @@
 #' # If you need the full LHS expression, use dots_definitions():
 #' dots <- dots_definitions(var = foo(baz) := bar(baz))
 #' dots$defs
-quos <- function(..., .named = FALSE,
-                 .ignore_empty = c("trailing", "none", "all")) {
-  dots <- dots_enquose(...)
-  dots <- dots_clean_empty(dots, quo_is_missing, .ignore_empty)
-
-  if (.named) {
-    width <- quo_names_width(.named)
-    dots <- quos_auto_name(dots, width)
-  }
-  set_attrs(dots, class = "quosures")
+quos <- function(...,
+                 .named = FALSE,
+                 .ignore_empty = c("trailing", "none", "all"),
+                 .unquote_names = TRUE) {
+  .Call(rlang_quos_interp, environment(), .named, .ignore_empty, .unquote_names)
 }
 
 #' @rdname quosures
@@ -89,16 +86,6 @@ is_quosures <- function(x) {
 #' @export
 c.quosures <- function(..., recursive = FALSE) {
   structure(NextMethod(), class = "quosures")
-}
-
-quo_names_width <- function(named) {
-  if (is_true(named)) {
-    60L
-  } else if (is_scalar_integerish(named)) {
-    named
-  } else {
-    abort("`.named` must be a scalar logical or a numeric")
-  }
 }
 
 #' Ensure that list of expressions are all named

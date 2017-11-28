@@ -21,6 +21,7 @@
 #' See [is_expr()] for more about R expressions.
 #'
 #' @inheritParams quosure
+#' @inheritParams quosures
 #' @seealso [quo()], [is_expr()]
 #' @return The raw expression supplied as argument. `exprs()` returns
 #'   a list of expressions.
@@ -63,20 +64,18 @@ expr <- function(expr) {
 #' @rdname expr
 #' @export
 enexpr <- function(arg) {
-  if (missing(arg)) {
-    return(missing_arg())
-  }
-
-  capture <- lang(captureArg, substitute(arg))
-  arg <- eval_bare(capture, caller_env())
-  .Call(rlang_interp, arg$expr, arg$env, TRUE)
+  .Call(rlang_enexpr, substitute(arg), parent.frame())
 }
 #' @rdname expr
+#' @inheritParams quosures
 #' @inheritParams dots_values
 #' @param ... Arguments to extract.
 #' @export
-exprs <- function(..., .ignore_empty = "trailing") {
-  map(quos(..., .ignore_empty = .ignore_empty), f_rhs)
+exprs <- function(...,
+                  .named = FALSE,
+                  .ignore_empty = c("trailing", "none", "all"),
+                  .unquote_names = TRUE) {
+  .Call(rlang_exprs_interp, environment(), .named, .ignore_empty, .unquote_names)
 }
 
 
@@ -324,15 +323,7 @@ set_expr <- function(x, value) {
 #' @rdname set_expr
 #' @export
 get_expr <- function(x, default = x) {
-  if (is_quosureish(x)) {
-    f_rhs(x)
-  } else if (is_closure(x)) {
-    body(x)
-  } else if (inherits(x, "frame")) {
-    x$expr
-  } else {
-    default
-  }
+  .Call(rlang_get_expression, x, default)
 }
 
 expr_type_of <- function(x) {

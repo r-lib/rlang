@@ -1,11 +1,12 @@
 context("dots")
 
-test_that("dots are retrieved from arguments", {
-  fn <- function(f, ...) f(...)
-  expect_identical(fn(exprs), named_list())
+test_that("exprs() without arguments creates an empty named list", {
+  expect_identical(exprs(), named_list())
+})
 
-  g <- function(f, ...) fn(f, ...)
-  expect_identical(g(exprs, a = 1, foo = bar), list(a = 1, foo = quote(bar)))
+test_that("exprs() captures arguments forwarded with `...`", {
+  wrapper <- function(...) exprs(...)
+  expect_identical(wrapper(a = 1, foo = bar), list(a = 1, foo = quote(bar)))
 })
 
 test_that("exprs() captures empty arguments", {
@@ -20,7 +21,7 @@ test_that("dots are always named", {
 
 test_that("dots can be spliced", {
   spliced_dots <- dots_values(!!! list(letters))
-  expect_identical(spliced_dots, named_list(splice(list(letters))))
+  expect_identical(spliced_dots, list(splice(list(letters))))
   expect_identical(flatten(dots_values(!!! list(letters))), list(letters))
   expect_identical(ll(!!! list(letters)), list(letters))
   wrapper <- function(...) ll(...)
@@ -28,20 +29,25 @@ test_that("dots can be spliced", {
 })
 
 test_that("interpolation by value does not guard formulas", {
-  expect_identical(dots_values(~1), named_list(~1))
+  expect_identical(dots_values(~1), list(~1))
 })
 
 test_that("dots names can be unquoted", {
   expect_identical(dots_values(!! paste0("foo", "bar") := 10), list(foobar = 10))
 })
 
-test_that("can take forced dots with strict = FALSE", {
-  fn <- function(strict, ...) {
+test_that("can take forced dots with `allowForced = FALSE`", {
+  fn <- function(...) {
     force(..1)
-    captureDots(strict)
+    captureDots()
   }
-  expect_error(fn(TRUE, letters), "already been evaluated")
-  expect_identical(fn(FALSE, letters), NULL)
+  expect_identical(fn(letters), list(list(expr = letters, env = empty_env())))
+})
+
+test_that("captured dots are only named if names were supplied", {
+  fn <- function(...) captureDots()
+  expect_null(names(fn(1, 2)))
+  expect_identical(names(fn(a = 1, 2)), c("a", ""))
 })
 
 test_that("dots_values() handles forced dots", {
@@ -49,9 +55,15 @@ test_that("dots_values() handles forced dots", {
     force(..1)
     dots_values(...)
   }
-  expect_identical(fn("foo"), named_list("foo"))
+  expect_identical(fn("foo"), list("foo"))
 
-  expect_identical(lapply(1:2, function(...) dots_values(...)), list(named_list(1L), named_list(2L)))
+  expect_identical(lapply(1:2, function(...) dots_values(...)), list(list(1L), list(2L)))
+  expect_identical(lapply(1:2, dots_values), list(list(1L), list(2L)))
+})
+
+test_that("empty arguments trigger meaningful error", {
+  expect_error(ll(1, , 3), "Argument 2 is empty")
+  expect_error(dots_list(1, , 3), "Argument 2 is empty")
 })
 
 test_that("cleans empty arguments", {
@@ -62,7 +74,21 @@ test_that("cleans empty arguments", {
 })
 
 test_that("doesn't clean named empty argument arguments", {
-  expect_error(dots_list(1, a = ), "missing")
+  expect_error(dots_list(1, a = ), "Argument 2 is empty")
   expect_identical(exprs(1, a = ), alist(1, a = ))
   expect_identical(exprs(1, a = , b = , , .ignore_empty = "all"), alist(1, a = , b = ))
+})
+
+test_that("capturing dots by value only unquote-splices at top-level", {
+  expect_identical(dots_list(!!! list(quote(!!! a))), named_list(quote(!!! a)))
+  expect_identical(dots_list(!!! exprs(!!! 1:3)), named_list(1L, 2L, 3L))
+})
+
+test_that("can't unquote when capturing dots by value", {
+  expect_identical(dots_list(!!! list(!!! TRUE)), named_list(FALSE))
+})
+
+test_that("can splice NULL value", {
+  expect_identical(dots_list(!!! NULL), named_list())
+  expect_identical(dots_list(1, !!! NULL, 3), named_list(1, 3))
 })

@@ -67,6 +67,46 @@
 * The tidy eval `!!` operator now binds tightly. You no longer have to
   wrap it in parentheses, i.e. `!! x > y` will only unquote `x`.
 
+* `!!!` now accepts any kind of objects for consistency. Scalar types
+  are treated as vectors of length 1. Previously only symbolic objects
+  like symbols and calls were treated as such in order to allow
+  splicing of function bodies (which are not necessarily wrapped in a
+  `{` block).
+
+* `exprs()` and `quos()` gain a `.unquote_names` arguments to switch
+  off interpretation of `:=` as a name operator. This should be useful
+  for programming on the language targetting APIs such as data.table.
+
+* The backend for `quos()`, `exprs()`, `dots_list()`, etc is now
+  written in C. This greatly improve the performance of dots capture,
+  especially with the splicing operator `!!!` which now scales much
+  better (you'll see a 1000x performance gain in some cases). The
+  unquoting algorithm has also been improved which makes `enexpr()`
+  and `enquo()` more efficient as well.
+
+* `enquo()` and `enexpr()` now deal with default values correctly (#201).
+
+* Functions taking dots by value rather than by expression
+  (e.g. regular functions, not quoting functions) have a more
+  restricted set of unquoting operations. They only support `:=` and
+  `!!!`, and only at top-level. I.e. `dots_list(!!! x)` is valid but
+  not `dots_list(deep(!!! x))` (#217).
+
+* Functions taking dots by value now support splicing a `NULL`
+  value. `dots_list(!!! NULL)` is equivalent to `dots_list()` (#242).
+
+* `exprs()` gains a `.named` option to auto-label its arguments (#267).
+
+* Splicing a list no longer mutates it (#280).
+
+* Capture operators now support evaluated arguments. Capturing a
+  forced or evaluated argument is exactly the same as unquoting that
+  argument: the actual object (even if a vector) is inlined in the
+  expression. Capturing a forced argument occurs when you use
+  `enquo()`, `enexpr()`, etc too late. It also happens when your
+  quoting function is supplied to `lapply()` or when you try to quote
+  the first argument of an S3 method (which is necessarily evaluated
+  in order to detect which class to dispatch to). (#295, #300).
 
 ## Breaking changes
 

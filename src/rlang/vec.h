@@ -8,11 +8,24 @@ bool r_is_list(SEXP x);
 bool r_is_vector(SEXP x);
 bool r_is_scalar_atomic(SEXP x);
 bool r_is_atomic(SEXP x);
+bool r_is_integerish(SEXP x);
 
-SEXP r_scalar_lgl(bool x);
+static inline SEXP r_scalar_lgl(bool x) {
+  return Rf_ScalarLogical(x);
+}
+static inline SEXP r_scalar_int(int x) {
+  return Rf_ScalarInteger(x);
+}
 
-static inline SEXP r_new_vector(r_kind_t type, r_size_t n) {
+static inline int r_c_int(SEXP x) {
+  return INTEGER(x)[0];
+}
+
+static inline SEXP r_new_vector(enum r_type type, r_size_t n) {
   return Rf_allocVector(type, n);
+}
+static inline sexp* r_vec_coerce(sexp* x, enum r_type to) {
+  return Rf_coerceVector(x, to);
 }
 
 void r_vec_poke_n(SEXP x, r_size_t offset,

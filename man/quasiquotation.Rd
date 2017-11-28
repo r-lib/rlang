@@ -7,8 +7,8 @@
 \alias{UQS}
 \alias{UQ}
 \alias{UQE}
-\alias{!!}
 \alias{UQS}
+\alias{!!}
 \alias{!!!}
 \title{Quasiquotation of an expression}
 \usage{
@@ -16,9 +16,9 @@ UQ(x)
 
 UQE(x)
 
-"!!"(x)
-
 UQS(x)
+
+"!!"(x)
 }
 \arguments{
 \item{x}{An expression to unquote.}

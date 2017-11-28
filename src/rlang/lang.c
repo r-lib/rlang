@@ -22,13 +22,24 @@ bool r_is_call_any(SEXP x, const char** names, int n) {
 static const char*
 r_subset_names[R_SUBSET_NAMES_N] = { "$", "@", "::", ":::" };
 
-bool r_is_prefixed_call(SEXP x) {
+bool r_is_prefixed_call(SEXP x, const char* name) {
   if (r_kind(x) != LANGSXP) {
     return false;
   }
 
   SEXP head = r_node_car(x);
-  return r_is_call_any(head, r_subset_names, R_SUBSET_NAMES_N);
+  if (!r_is_call_any(head, r_subset_names, R_SUBSET_NAMES_N)) {
+    return false;
+  }
+
+  if (name) {
+    SEXP rhs = r_node_cadr(r_node_cdr(head));
+    if (!r_is_symbol(rhs, name)) {
+      return false;
+    }
+  }
+
+  return true;
 }
 
 bool r_is_prefixed_call_any(SEXP x, const char ** names, int n) {
@@ -58,18 +69,36 @@ bool r_is_maybe_prefixed_call_any(SEXP x, const char ** names, int n) {
   return r_is_prefixed_call_any(x, names, n);
 }
 
-bool r_is_namespaced_call(SEXP x, const char* ns) {
+bool r_is_namespaced_call(SEXP x, const char* ns, const char* name) {
   if (r_kind(x) != LANGSXP) {
     return false;
   }
 
   SEXP head = r_node_car(x);
-  return r_is_call(head, "::") && r_is_symbol(r_node_cadr(head), ns);
+  if (!r_is_call(head, "::")) {
+    return false;
+  }
+
+  if (ns) {
+    SEXP lhs = r_node_cadr(head);
+    if (!r_is_symbol(lhs, ns)) {
+      return false;
+    }
+  }
+
+  if (name) {
+    SEXP rhs = r_node_cadr(r_node_cdar(x));
+    if (!r_is_symbol(rhs, name)) {
+      return false;
+    }
+  }
+
+  return true;
 }
 
 bool r_is_namespaced_call_any(SEXP x, const char* ns,
                               const char** names, int n) {
-  if (!r_is_namespaced_call(x, ns)) {
+  if (!r_is_namespaced_call(x, ns, NULL)) {
     return false;
   }
 

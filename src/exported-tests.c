@@ -10,6 +10,13 @@ SEXP rlang_r_string(SEXP str) {
 }
 
 
+// env.c
+
+SEXP rlang_test_base_ns_get(SEXP name) {
+  return r_base_ns_get(r_c_string(name));
+}
+
+
 // sym.c
 
 SEXP rlang_test_is_special_op_sym(SEXP x) {

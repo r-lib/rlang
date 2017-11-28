@@ -11,9 +11,26 @@ static inline SEXPTYPE r_length(SEXP x) {
 static inline SEXPTYPE r_kind(SEXP x) {
   return TYPEOF(x);
 }
+static inline enum r_type r_typeof(SEXP x) {
+  return TYPEOF(x);
+}
 
-static inline bool r_inherits(SEXP x, const char* class_) {
-  return Rf_inherits(x, class_);
+static inline void r_mark_precious(SEXP x) {
+  R_PreserveObject(x);
+}
+static inline void r_unmark_precious(SEXP x) {
+  R_ReleaseObject(x);
+}
+
+static inline void r_mark_shared(SEXP x) {
+  MARK_NOT_MUTABLE(x);
+}
+static inline bool r_is_shared(SEXP x) {
+  return MAYBE_SHARED(x);
+}
+
+static inline bool r_inherits(SEXP x, const char* tag) {
+  return Rf_inherits(x, tag);
 }
 
 static inline SEXP r_get_attribute(SEXP x, SEXP sym) {
@@ -36,6 +53,7 @@ static inline SEXP r_set_class(SEXP x, SEXP classes) {
 static inline SEXP r_get_class(SEXP x) {
   return Rf_getAttrib(x, R_ClassSymbol);
 }
+// FIXME: r_get_names()?
 static inline SEXP r_names(SEXP x) {
   return Rf_getAttrib(x, R_NamesSymbol);
 }
@@ -66,6 +84,17 @@ static inline SEXP r_duplicate(SEXP x, bool shallow) {
   }
 }
 
+static inline SEXP r_maybe_duplicate(SEXP x, bool shallow) {
+  if (r_is_shared(x)) {
+    return r_duplicate(x, shallow);
+  } else {
+    return x;
+  }
+}
+
+static inline void r_mark_object(SEXP x, int bit) {
+  SET_OBJECT(x, bit);
+}
 static inline bool r_is_object(SEXP x) {
   return OBJECT(x);
 }
@@ -80,8 +109,7 @@ static inline SEXP r_poke_str_kind(SEXP x, const char* type) {
 }
 
 static inline const char* r_type_c_string(SEXPTYPE kind) {
-  SEXP str = Rf_type2str(kind);
-  return CHAR(str);
+  return CHAR(Rf_type2str(kind));
 }
 
 static inline bool r_is_symbolic(SEXP x) {

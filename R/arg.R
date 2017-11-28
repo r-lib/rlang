@@ -147,7 +147,7 @@ is_missing <- function(x) {
 #' @rdname missing_arg
 #' @export
 maybe_missing <- function(x) {
-  if (is_missing(x) || quo_is_missing(x)) {
+  if (is_missing(x)) {
     missing_arg()
   } else {
     x

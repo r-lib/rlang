@@ -184,31 +184,12 @@ quo <- function(expr) {
 #' @inheritParams as_quosure
 #' @export
 new_quosure <- function(expr, env = caller_env()) {
-  quo <- new_formula(NULL, expr, env)
-  set_attrs(quo, class = c("quosure", "formula"))
+  .Call(rlang_new_quosure, expr, env)
 }
 #' @rdname quosure
 #' @export
 enquo <- function(arg) {
-  if (missing(arg)) {
-    return(new_quosure(missing_arg(), empty_env()))
-  }
-
-  capture <- lang(captureArg, substitute(arg))
-  arg <- eval_bare(capture, caller_env())
-  expr <- .Call(rlang_interp, arg$expr, arg$env, TRUE)
-  forward_quosure(expr, arg$env)
-}
-forward_quosure <- function(expr, env) {
-  if (is_quosure(expr)) {
-    expr
-  } else if (is_definition(expr)) {
-    as_quosureish(expr, env)
-  } else if (is_symbolic(expr)) {
-    new_quosure(expr, env)
-  } else {
-    new_quosure(expr, empty_env())
-  }
+  .Call(rlang_enquo, substitute(arg), parent.frame())
 }
 
 #' @export
