@@ -27,7 +27,7 @@
 #'   `expr_text()`, if `TRUE`, the default width is used. See
 #'   [exprs_auto_name()].
 #' @param .unquote_names Whether to treat `:=` as `=`. Unlike `=`, the
-#'   `:=` syntax supports unquoting with `!!`.
+#'   `:=` syntax supports `!!` unquoting on the LHS.
 #' @export
 #' @name quosures
 #' @examples

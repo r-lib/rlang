@@ -35,7 +35,7 @@ of \code{"trailing"}, \code{"none"}, \code{"all"}. If \code{"trailing"}, only th
 last argument is ignored if it is empty.}
 
 \item{.unquote_names}{Whether to treat \code{:=} as \code{=}. Unlike \code{=}, the
-\code{:=} syntax supports unquoting with \code{!!}.}
+\code{:=} syntax supports \code{!!} unquoting on the LHS.}
 }
 \value{
 The raw expression supplied as argument. \code{exprs()} returns
