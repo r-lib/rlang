@@ -95,25 +95,29 @@ NULL
 #' @export
 #' @rdname quasiquotation
 UQ <- function(x) {
-  abort("`UQ()` can't be called directly")
+  abort("`UQ()` can only be used within a quasiquoted argument")
 }
 #' @export
 #' @rdname quasiquotation
 UQE <- function(x) {
-  abort("`UQE()` can't be called directly")
+  abort("`UQE()` can only be used within a quasiquoted argument")
 }
 #' @export
 #' @rdname quasiquotation
-`!!` <- UQE
+UQS <- function(x) {
+  abort("`UQS()` can only be used within a quasiquoted argument")
+}
 #' @export
 #' @rdname quasiquotation
-UQS <- function(x) {
-  abort("`UQS()` can't be called directly")
+`!!` <- function(x) {
+  abort("`!!` can only be used within a quasiquoted argument")
 }
 #' @export
 #' @rdname quasiquotation
 #' @usage NULL
-`!!!` <- UQS
+`!!!` <- function(x) {
+  abort("`!!!` can only be used within a quasiquoted argument")
+}
 
 #' Process unquote operators in a captured expression
 #'
