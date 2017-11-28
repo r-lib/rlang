@@ -347,6 +347,7 @@ static sexp* init_names(sexp* x) {
 }
 
 
+// From capture.c
 sexp* capturedots(sexp* frame);
 
 sexp* dots_expand(sexp* dots, struct dots_capture_info* capture_info) {
@@ -360,7 +361,8 @@ sexp* dots_expand(sexp* dots, struct dots_capture_info* capture_info) {
     out_names = init_names(out);
   }
 
-  for (size_t i = 0, count = 0; i < r_length(dots); ++i) {
+  r_size_t n = r_length(dots);
+  for (r_size_t i = 0, count = 0; i < n; ++i) {
     sexp* elt = r_list_get(dots, i);
 
     if (is_spliced_dots(elt)) {
