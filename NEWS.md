@@ -65,20 +65,22 @@
 * The tidy eval `!!` operator now binds tightly. You no longer have to
   wrap it in parentheses, i.e. `!! x > y` will only unquote `x`.
 
-* `!!!` now accepts any kind of objects. Scalar types are treated as
-  vectors of length 1. Previously only symbolic objects like symbols
-  and calls were treated as such in order to allow splicing of
-  function bodies (which are not necessarily wrapped in a `{` block).
-  Allowing any kind of objects is more consistent.
+* `!!!` now accepts any kind of objects for consistency. Scalar types
+  are treated as vectors of length 1. Previously only symbolic objects
+  like symbols and calls were treated as such in order to allow
+  splicing of function bodies (which are not necessarily wrapped in a
+  `{` block).
 
 * `exprs()` and `quos()` gain a `.unquote_names` arguments to switch
   off interpretation of `:=` as a name operator. This should be useful
-  for programming on the language targetting APIs such as `data.table`.
+  for programming on the language targetting APIs such as data.table.
 
 * The backend for `quos()`, `exprs()`, `dots_list()`, etc is now
-  written in C. This greatly improve the performance of dots capture.
-  The unquoting algorithm has been improved and `enexpr()` and
-  `enquo()` are also more efficient as a result.
+  written in C. This greatly improve the performance of dots capture,
+  especially with the splicing operator `!!!` which now scales much
+  better (you'll see a 1000x performance gain in some cases). The
+  unquoting algorithm has also been improved which makes `enexpr()`
+  and `enquo()` more efficient as well.
 
 * `enquo()` and `enexpr()` now deal with default values correctly (#201).
 
