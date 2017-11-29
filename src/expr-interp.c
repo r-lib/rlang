@@ -221,16 +221,14 @@ sexp* big_bang(sexp* operand, sexp* env, sexp* node, sexp* next) {
 }
 
 
-static sexp* node_list_interp(sexp* x, sexp* env, bool unquote_names);
+static sexp* node_list_interp(sexp* x, sexp* env);
 
-sexp* call_interp(sexp* x, sexp* env, bool unquote_names)  {
-  struct expansion_info info = which_expansion_op(x, unquote_names);
-  return call_interp_impl(x, env, info, unquote_names);
+sexp* call_interp(sexp* x, sexp* env)  {
+  struct expansion_info info = which_expansion_op(x, false);
+  return call_interp_impl(x, env, info);
 }
 
-sexp* call_interp_impl(sexp* x, sexp* env,
-                       struct expansion_info info,
-                       bool unquote_names) {
+sexp* call_interp_impl(sexp* x, sexp* env, struct expansion_info info) {
   if (info.op && r_node_cdr(x) == r_null) {
     r_abort("`UQ()`, `UQE()` and `UQS()` must be called with an argument");
   }
@@ -238,7 +236,7 @@ sexp* call_interp_impl(sexp* x, sexp* env,
   switch (info.op) {
   case OP_EXPAND_NONE:
     if (r_typeof(x) == r_type_call) {
-      return node_list_interp(x, env, unquote_names);
+      return node_list_interp(x, env);
     } else {
       return x;
     }
@@ -253,9 +251,9 @@ sexp* call_interp_impl(sexp* x, sexp* env,
   }
 }
 
-static sexp* node_list_interp(sexp* x, sexp* env, bool unquote_names) {
+static sexp* node_list_interp(sexp* x, sexp* env) {
   for (sexp* node = x; node != r_null; node = r_node_cdr(node)) {
-    r_node_poke_car(node, call_interp(r_node_car(node), env, unquote_names));
+    r_node_poke_car(node, call_interp(r_node_car(node), env));
 
     sexp* next = r_node_cdr(node);
     sexp* next_head = r_node_car(next);
@@ -269,7 +267,7 @@ static sexp* node_list_interp(sexp* x, sexp* env, bool unquote_names) {
   return x;
 }
 
-sexp* rlang_interp(sexp* x, sexp* env, sexp* unquote_names) {
+sexp* rlang_interp(sexp* x, sexp* env) {
   if (!r_is_environment(env)) {
     r_abort("`env` must be an environment");
   }
@@ -278,7 +276,7 @@ sexp* rlang_interp(sexp* x, sexp* env, sexp* unquote_names) {
   }
 
   x = KEEP(r_duplicate(x, false));
-  x = call_interp(x, env, unquote_names);
+  x = call_interp(x, env);
 
   FREE(1);
   return x;

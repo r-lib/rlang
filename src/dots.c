@@ -232,7 +232,7 @@ static sexp* dots_unquote(sexp* dots, struct dots_capture_info* capture_info) {
     case OP_EXPR_NONE:
     case OP_EXPR_UQ:
     case OP_EXPR_UQE:
-      expr = call_interp_impl(expr, env, info, capture_info->unquote_names);
+      expr = call_interp_impl(expr, env, info);
       capture_info->count += 1;
       break;
     case OP_EXPR_UQS:
@@ -242,7 +242,7 @@ static sexp* dots_unquote(sexp* dots, struct dots_capture_info* capture_info) {
     case OP_QUO_NONE:
     case OP_QUO_UQ:
     case OP_QUO_UQE: {
-      expr = KEEP(call_interp_impl(expr, env, info, capture_info->unquote_names));
+      expr = KEEP(call_interp_impl(expr, env, info));
       expr = forward_quosure(expr, env);
       FREE(1);
       capture_info->count += 1;

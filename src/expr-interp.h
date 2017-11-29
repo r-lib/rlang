@@ -68,10 +68,9 @@ struct expansion_info which_expansion_op(sexp* x, bool unquote_names);
 
 sexp* big_bang_coerce(sexp* expr);
 
-sexp* rlang_interp(sexp* x, sexp* env, sexp* unquote_names);
-sexp* call_interp(sexp* x, sexp* env, bool unquote_names);
-sexp* call_interp_impl(sexp* x, sexp* env, struct expansion_info info,
-                       bool unquote_names);
+sexp* rlang_interp(sexp* x, sexp* env);
+sexp* call_interp(sexp* x, sexp* env);
+sexp* call_interp_impl(sexp* x, sexp* env, struct expansion_info info);
 
 
 static inline sexp* forward_quosure(sexp* x, sexp* env) {

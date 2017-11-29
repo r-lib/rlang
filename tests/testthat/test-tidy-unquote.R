@@ -286,10 +286,4 @@ test_that("`:=` chaining is detected at dots capture", {
   expect_error(quos(a := b := c), "chained")
   expect_error(dots_list(a := b := c), "chained")
   expect_error(dots_splice(a := b := c), "chained")
-  expect_error(expr(foo(a := b := c)), "chained")
-})
-
-test_that("can't use `:=` at top level", {
-  expect_error(expr(a := b), "top level")
-  expect_error(quo(a := b), "top level")
 })
