@@ -96,17 +96,17 @@ static inline bool r_is_object(SEXP x) {
   return OBJECT(x);
 }
 
-static inline SEXP r_poke_kind(SEXP x, SEXPTYPE kind) {
-  SET_TYPEOF(x, kind);
+static inline SEXP r_poke_type(SEXP x, enum r_type type) {
+  SET_TYPEOF(x, type);
   return x;
 }
-static inline SEXP r_poke_str_kind(SEXP x, const char* type) {
+static inline SEXP r_poke_str_type(SEXP x, const char* type) {
   SET_TYPEOF(x, Rf_str2type(type));
   return x;
 }
 
-static inline const char* r_type_c_string(SEXPTYPE kind) {
-  return CHAR(Rf_type2str(kind));
+static inline const char* r_type_c_string(enum r_type type) {
+  return CHAR(Rf_type2str(type));
 }
 
 static inline bool r_is_symbolic(SEXP x) {

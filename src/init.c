@@ -6,7 +6,7 @@
 
 // Callable from other packages
 extern SEXP rlang_new_dictionary(SEXP, SEXP, SEXP);
-extern SEXP r_squash_if(SEXP, SEXPTYPE, bool (*is_spliceable)(SEXP), int);
+extern SEXP r_squash_if(SEXP, enum r_type, bool (*is_spliceable)(SEXP), int);
 extern bool rlang_is_clevel_spliceable(SEXP);
 
 // Callable from this package

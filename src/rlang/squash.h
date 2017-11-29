@@ -4,7 +4,7 @@
 
 bool r_is_spliced(SEXP x);
 bool r_is_spliced_bare(SEXP x);
-SEXP r_squash_if(SEXP dots, SEXPTYPE kind, bool (*is_spliceable)(SEXP), int depth);
+SEXP r_squash_if(SEXP dots, enum r_type kind, bool (*is_spliceable)(SEXP), int depth);
 
 
 #endif

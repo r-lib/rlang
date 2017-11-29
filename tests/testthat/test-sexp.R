@@ -1,6 +1,6 @@
 context("sexp")
 
-test_that("mut_type() changes SEXPTYPE", {
+test_that("mut_type() changes object type", {
   x <- node(quote(foo), NULL)
   out <- withVisible(mut_type(x, "language"))
   expect_false(out$visible)

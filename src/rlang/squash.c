@@ -21,7 +21,7 @@ static squash_info_t squash_info_init(bool recursive) {
 
 // Atomic squashing ---------------------------------------------------
 
-static r_size_t atom_squash(SEXPTYPE kind, squash_info_t info,
+static r_size_t atom_squash(enum r_type kind, squash_info_t info,
                             SEXP outer, SEXP out, r_size_t count,
                             bool (*is_spliceable)(SEXP), int depth) {
   if (r_typeof(outer) != VECSXP)
@@ -151,7 +151,7 @@ static void squash_info(squash_info_t* info, SEXP outer,
   }
 }
 
-static SEXP squash(SEXPTYPE kind, SEXP dots, bool (*is_spliceable)(SEXP), int depth) {
+static SEXP squash(enum r_type kind, SEXP dots, bool (*is_spliceable)(SEXP), int depth) {
   bool recursive = kind == VECSXP;
 
   squash_info_t info = squash_info_init(recursive);
@@ -236,7 +236,7 @@ static bool is_spliceable_closure(SEXP x) {
 
 // Export ------------------------------------------------------------
 
-SEXP r_squash_if(SEXP dots, SEXPTYPE kind, bool (*is_spliceable)(SEXP), int depth) {
+SEXP r_squash_if(SEXP dots, enum r_type kind, bool (*is_spliceable)(SEXP), int depth) {
   switch (kind) {
   case LGLSXP:
   case INTSXP:
@@ -251,7 +251,7 @@ SEXP r_squash_if(SEXP dots, SEXPTYPE kind, bool (*is_spliceable)(SEXP), int dept
     return r_null;
   }
 }
-SEXP rlang_squash_closure(SEXP dots, SEXPTYPE kind, SEXP pred, int depth) {
+SEXP rlang_squash_closure(SEXP dots, enum r_type kind, SEXP pred, int depth) {
   SEXP prev_pred = clo_spliceable;
   clo_spliceable = KEEP(Rf_lang2(pred, Rf_list2(r_null, r_null)));
 
@@ -263,7 +263,7 @@ SEXP rlang_squash_closure(SEXP dots, SEXPTYPE kind, SEXP pred, int depth) {
   return out;
 }
 SEXP rlang_squash(SEXP dots, SEXP type, SEXP pred, SEXP depth_) {
-  SEXPTYPE kind = Rf_str2type(CHAR(STRING_ELT(type, 0)));
+  enum r_type kind = Rf_str2type(CHAR(STRING_ELT(type, 0)));
   int depth = Rf_asInteger(depth_);
 
   is_spliceable_t is_spliceable;
