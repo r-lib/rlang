@@ -67,6 +67,11 @@
 * The tidy eval `!!` operator now binds tightly. You no longer have to
   wrap it in parentheses, i.e. `!! x > y` will only unquote `x`.
 
+  Technically the `!!` operator has the same precedence as unary `-`
+  and `+`. This means that `!! a:b` and `!! a + b` are equivalent to
+  `(!! a):b` and `(!! a) + b`. On the other hand `!! a^b` and `!! a$b`
+  are equivalent to`!! (a^b)` and `!! (a$b)`.
+
 * `!!!` now accepts any kind of objects for consistency. Scalar types
   are treated as vectors of length 1. Previously only symbolic objects
   like symbols and calls were treated as such in order to allow
