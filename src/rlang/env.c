@@ -12,7 +12,7 @@ static SEXP ns_env_get(SEXP env, const char* name) {
   SEXP obj = r_env_get(env, r_sym(name));
 
   // Can be a promise to a lazyLoadDBfetch() call
-  if (r_kind(obj) == PROMSXP) {
+  if (r_typeof(obj) == PROMSXP) {
     obj = r_eval(obj, r_empty_env);
   }
 

@@ -17,7 +17,7 @@ bool r_quo_is_missing(SEXP x) {
 }
 
 SEXP r_get_expression(SEXP x, SEXP alternate) {
-  switch (r_kind(x)) {
+  switch (r_typeof(x)) {
   case LANGSXP:
     if (r_is_formulaish(x, -1, 0)) {
       return r_f_rhs(x);

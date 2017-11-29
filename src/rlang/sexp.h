@@ -4,13 +4,10 @@
 #include <stdbool.h>
 
 
-static inline SEXPTYPE r_length(SEXP x) {
+static inline r_size_t r_length(SEXP x) {
   return Rf_length(x);
 }
 
-static inline SEXPTYPE r_kind(SEXP x) {
-  return TYPEOF(x);
-}
 static inline enum r_type r_typeof(SEXP x) {
   return TYPEOF(x);
 }
@@ -114,8 +111,8 @@ static inline const char* r_type_c_string(SEXPTYPE kind) {
 
 static inline bool r_is_symbolic(SEXP x) {
   return
-    r_kind(x) == LANGSXP ||
-    r_kind(x) == SYMSXP;
+    r_typeof(x) == LANGSXP ||
+    r_typeof(x) == SYMSXP;
 }
 
 static inline void r_sxp_print(SEXP x) {

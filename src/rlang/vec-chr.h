@@ -5,7 +5,7 @@
 
 
 static inline bool r_is_character(SEXP x) {
-  return r_kind(x) == STRSXP;
+  return r_typeof(x) == STRSXP;
 }
 
 static inline SEXP r_chr_get(SEXP chr, r_size_t i) {
@@ -34,7 +34,7 @@ static inline SEXP r_string(const char* c_string) {
   return Rf_mkChar(c_string);
 }
 static inline bool r_is_r_string(SEXP x) {
-  return r_kind(x) == CHARSXP;
+  return r_typeof(x) == CHARSXP;
 }
 
 static inline SEXP r_scalar_chr(const char* c_string) {
@@ -45,7 +45,7 @@ static inline SEXP r_as_scalar_chr(SEXP x) {
 }
 
 static inline bool r_is_scalar_character(SEXP x) {
-  return r_kind(x) == STRSXP && r_length(x) == 1;
+  return r_typeof(x) == STRSXP && r_length(x) == 1;
 }
 
 static inline const char* r_c_string(SEXP scalar_chr) {

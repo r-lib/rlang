@@ -1,7 +1,7 @@
 #include "rlang.h"
 
 bool r_is_call(SEXP x, const char* name) {
-  if (r_kind(x) != LANGSXP) {
+  if (r_typeof(x) != LANGSXP) {
     return false;
   } else {
     return name == NULL || r_is_symbol(r_node_car(x), name);
@@ -9,7 +9,7 @@ bool r_is_call(SEXP x, const char* name) {
 }
 
 bool r_is_call_any(SEXP x, const char** names, int n) {
-  if (r_kind(x) != LANGSXP) {
+  if (r_typeof(x) != LANGSXP) {
     return false;
   } else {
     return r_is_symbol_any(r_node_car(x), names, n);
@@ -23,7 +23,7 @@ static const char*
 r_subset_names[R_SUBSET_NAMES_N] = { "$", "@", "::", ":::" };
 
 bool r_is_prefixed_call(SEXP x, const char* name) {
-  if (r_kind(x) != LANGSXP) {
+  if (r_typeof(x) != LANGSXP) {
     return false;
   }
 
@@ -43,7 +43,7 @@ bool r_is_prefixed_call(SEXP x, const char* name) {
 }
 
 bool r_is_prefixed_call_any(SEXP x, const char ** names, int n) {
-  if (r_kind(x) != LANGSXP) {
+  if (r_typeof(x) != LANGSXP) {
     return false;
   }
 
@@ -58,7 +58,7 @@ bool r_is_prefixed_call_any(SEXP x, const char ** names, int n) {
 }
 
 bool r_is_maybe_prefixed_call_any(SEXP x, const char ** names, int n) {
-  if (r_kind(x) != LANGSXP) {
+  if (r_typeof(x) != LANGSXP) {
     return false;
   }
 
@@ -70,7 +70,7 @@ bool r_is_maybe_prefixed_call_any(SEXP x, const char ** names, int n) {
 }
 
 bool r_is_namespaced_call(SEXP x, const char* ns, const char* name) {
-  if (r_kind(x) != LANGSXP) {
+  if (r_typeof(x) != LANGSXP) {
     return false;
   }
 
@@ -109,6 +109,6 @@ bool r_is_namespaced_call_any(SEXP x, const char* ns,
 
 bool r_is_special_op_call(SEXP x) {
   return
-    r_kind(x) == LANGSXP &&
+    r_typeof(x) == LANGSXP &&
     r_is_special_op_sym(r_node_car(x));
 }

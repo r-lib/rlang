@@ -104,7 +104,7 @@ static SEXP with_muffle_lang(SEXP signal) {
 static void cnd_signal_impl(const char* signaller, SEXP cnd, bool mufflable) {
   int n_protect = 0;
 
-  if (r_kind(cnd) == STRSXP) {
+  if (r_typeof(cnd) == STRSXP) {
     cnd = KEEP(r_new_condition(cnd, r_null, r_null));
     ++n_protect;
   } else if (!r_is_condition(cnd)) {

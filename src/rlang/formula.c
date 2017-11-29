@@ -2,7 +2,7 @@
 
 
 SEXP r_f_rhs(SEXP f) {
-  if (r_kind(f) != LANGSXP) {
+  if (r_typeof(f) != LANGSXP) {
     r_abort("`x` must be a formula");
   }
 
@@ -13,7 +13,7 @@ SEXP r_f_rhs(SEXP f) {
   }
 }
 SEXP r_f_lhs(SEXP f) {
-  if (r_kind(f) != LANGSXP) {
+  if (r_typeof(f) != LANGSXP) {
     r_abort("`x` must be a formula");
   }
 
@@ -34,7 +34,7 @@ bool r_f_has_env(SEXP f) {
 bool r_is_formulaish(SEXP x, int scoped, int lhs) {
   static const char* formulaish_names[2] = { "~", ":=" };
 
-  if (r_kind(x) != LANGSXP) {
+  if (r_typeof(x) != LANGSXP) {
     return false;
   }
 
@@ -44,7 +44,7 @@ bool r_is_formulaish(SEXP x, int scoped, int lhs) {
   }
 
   if (scoped >= 0) {
-    int has_env = r_kind(r_f_env(x)) == ENVSXP;
+    int has_env = r_typeof(r_f_env(x)) == ENVSXP;
     if (scoped != has_env) {
       return false;
     }

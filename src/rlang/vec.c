@@ -2,7 +2,7 @@
 
 
 bool r_is_atomic(SEXP x) {
-  switch(r_kind(x)) {
+  switch(r_typeof(x)) {
   case LGLSXP:
   case INTSXP:
   case REALSXP:
@@ -30,10 +30,10 @@ bool r_is_integerish(SEXP x) {
 }
 
 bool r_is_list(SEXP x) {
-  return r_kind(x) == VECSXP;
+  return r_typeof(x) == VECSXP;
 }
 bool r_is_vector(SEXP x) {
-  switch(r_kind(x)) {
+  switch(r_typeof(x)) {
   case LGLSXP:
   case INTSXP:
   case REALSXP:
@@ -48,7 +48,7 @@ bool r_is_vector(SEXP x) {
 }
 
 r_size_t r_vec_length(SEXP x) {
-  switch(r_kind(x)) {
+  switch(r_typeof(x)) {
   case LGLSXP:
   case INTSXP:
   case REALSXP:
@@ -76,7 +76,7 @@ void r_vec_poke_n(SEXP x, r_size_t offset,
     r_abort("Can't copy data from `y` because it is too small");
   }
 
-  switch (r_kind(x)) {
+  switch (r_typeof(x)) {
   case LGLSXP: {
     int* src_data = LOGICAL(y);
     int* dest_data = LOGICAL(x);
@@ -142,20 +142,20 @@ void r_vec_poke_range(SEXP x, r_size_t offset,
 // Coercion ----------------------------------------------------------
 
 SEXP rlang_vec_coercer(SEXP dest) {
-  switch(r_kind(dest)) {
+  switch(r_typeof(dest)) {
   case LGLSXP: return rlang_ns_get("as_logical");
   case INTSXP: return rlang_ns_get("as_integer");
   case REALSXP: return rlang_ns_get("as_double");
   case CPLXSXP: return rlang_ns_get("as_complex");
   case STRSXP: return rlang_ns_get("as_character");
   case RAWSXP: return rlang_ns_get("as_bytes");
-  default: r_abort("No coercion implemented for `%s`", Rf_type2str(r_kind(dest)));
+  default: r_abort("No coercion implemented for `%s`", Rf_type2str(r_typeof(dest)));
   }
 }
 
 void r_vec_poke_coerce_n(SEXP x, r_size_t offset,
                          SEXP y, r_size_t from, r_size_t n) {
-  if (r_kind(y) == r_kind(x)) {
+  if (r_typeof(y) == r_typeof(x)) {
     r_vec_poke_n(x, offset, y, from, n);
     return ;
   }

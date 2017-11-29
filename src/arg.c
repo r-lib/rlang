@@ -15,7 +15,7 @@ SEXP capture(SEXP sym, SEXP frame, SEXP* arg_env) {
     FREE(1);
   }
 
-  if (r_kind(sym) != SYMSXP) {
+  if (r_typeof(sym) != SYMSXP) {
     r_abort("`arg` must be a symbol");
   }
 

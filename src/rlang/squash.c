@@ -24,7 +24,7 @@ static squash_info_t squash_info_init(bool recursive) {
 static r_size_t atom_squash(SEXPTYPE kind, squash_info_t info,
                             SEXP outer, SEXP out, r_size_t count,
                             bool (*is_spliceable)(SEXP), int depth) {
-  if (r_kind(outer) != VECSXP)
+  if (r_typeof(outer) != VECSXP)
     r_abort("Only lists can be spliced");
 
   SEXP inner;
@@ -64,7 +64,7 @@ static r_size_t atom_squash(SEXPTYPE kind, squash_info_t info,
 static r_size_t list_squash(squash_info_t info, SEXP outer,
                             SEXP out, r_size_t count,
                             bool (*is_spliceable)(SEXP), int depth) {
-  if (r_kind(outer) != VECSXP)
+  if (r_typeof(outer) != VECSXP)
     r_abort("Only lists can be spliced");
 
   SEXP inner;
@@ -185,11 +185,11 @@ bool r_is_spliced(SEXP x) {
 }
 
 static is_spliceable_t predicate_pointer(SEXP x) {
-  switch (r_kind(x)) {
+  switch (r_typeof(x)) {
   case VECSXP:
     if (Rf_inherits(x, "fn_pointer") && r_length(x) == 1) {
       SEXP ptr = VECTOR_ELT(x, 0);
-      if (r_kind(ptr) == EXTPTRSXP)
+      if (r_typeof(ptr) == EXTPTRSXP)
         return (is_spliceable_t) R_ExternalPtrAddrFn(ptr);
     }
     break;
@@ -268,7 +268,7 @@ SEXP rlang_squash(SEXP dots, SEXP type, SEXP pred, SEXP depth_) {
 
   is_spliceable_t is_spliceable;
 
-  if (r_kind(pred) == CLOSXP) {
+  if (r_typeof(pred) == CLOSXP) {
     is_spliceable = predicate_internal(pred);
     if (is_spliceable)
       return r_squash_if(dots, kind, is_spliceable, depth);

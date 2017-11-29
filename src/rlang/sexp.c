@@ -11,7 +11,7 @@ SEXP r_set_attribute(SEXP x, SEXP sym, SEXP attr) {
 bool r_is_named(SEXP x) {
   SEXP nms = r_names(x);
 
-  if (r_kind(nms) != STRSXP) {
+  if (r_typeof(nms) != STRSXP) {
     return false;
   }
 

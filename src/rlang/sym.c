@@ -6,7 +6,7 @@
 // In old R versions `as.name()` does not translate to native which
 // loses the encoding. This symbol constructor always translates.
 SEXP r_new_symbol(SEXP x, int* err) {
-  switch (r_kind(x)) {
+  switch (r_typeof(x)) {
   case SYMSXP:
     return x;
   case STRSXP:
@@ -19,14 +19,14 @@ SEXP r_new_symbol(SEXP x, int* err) {
       *err = -1;
       return r_null;
     } else {
-      const char* type = r_type_c_string(r_kind(x));
+      const char* type = r_type_c_string(r_typeof(x));
       r_abort("Can't create a symbol with a %s", type);
     }
   }}
 }
 
 bool r_is_symbol(SEXP x, const char* string) {
-  if (r_kind(x) != SYMSXP) {
+  if (r_typeof(x) != SYMSXP) {
     return false;
   } else {
     return strcmp(CHAR(PRINTNAME(x)), string) == 0;
@@ -34,7 +34,7 @@ bool r_is_symbol(SEXP x, const char* string) {
 }
 
 bool r_is_symbol_any(SEXP x, const char** strings, int n) {
-  if (r_kind(x) != SYMSXP) {
+  if (r_typeof(x) != SYMSXP) {
     return false;
   }
 
@@ -50,7 +50,7 @@ bool r_is_symbol_any(SEXP x, const char** strings, int n) {
 }
 
 bool r_is_special_op_sym(SEXP x) {
-  if (r_kind(x) != SYMSXP) {
+  if (r_typeof(x) != SYMSXP) {
     return false;
   }
 
