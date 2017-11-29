@@ -55,6 +55,7 @@ static inline sexp* KEEP_N(sexp* x, int* n) {
 }
 
 #include "attrs.h"
+#include "debug.h"
 #include "cnd.h"
 #include "env.h"
 #include "eval.h"
