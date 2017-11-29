@@ -79,13 +79,6 @@
   data.table. For consistency `dots_list()` and `dots_splice()` gain
   that argument as well.
 
-* Quoting operators now treats the `:=` operator as a synonym of `=`
-  in the whole expression rather than just at the root. This way
-  `expr(list(a := 1))` is a synonym of `expr(list(a = 1))`. As usual
-  you can unquote names with `!!` on the LHS of `:=`. `enexpr()` and
-  `enquo()` gain an `unquote_names` argument to disable this behaviour
-  (which is useful if you're targetting DSLs such as data.table).
-
 * The backend for `quos()`, `exprs()`, `dots_list()`, etc is now
   written in C. This greatly improve the performance of dots capture,
   especially with the splicing operator `!!!` which now scales much

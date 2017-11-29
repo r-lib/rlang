@@ -65,8 +65,8 @@ extern SEXP rlang_dots_flat_list(SEXP, SEXP, SEXP, SEXP);
 extern SEXP r_new_formula(SEXP, SEXP, SEXP);
 extern SEXP r_new_quosure(SEXP, SEXP);
 extern SEXP rlang_poke_attributes(SEXP, SEXP);
-extern SEXP rlang_enexpr(SEXP, SEXP, SEXP);
-extern SEXP rlang_enquo(SEXP, SEXP, SEXP);
+extern SEXP rlang_enexpr(SEXP, SEXP);
+extern SEXP rlang_enquo(SEXP, SEXP);
 extern SEXP r_get_expression(SEXP, SEXP);
 extern SEXP rlang_vec_coerce(SEXP, SEXP);
 
@@ -141,8 +141,8 @@ static const R_CallMethodDef call_entries[] = {
   {"rlang_new_formula",         (DL_FUNC) &r_new_formula, 3},
   {"rlang_new_quosure",         (DL_FUNC) &r_new_quosure, 2},
   {"rlang_poke_attributes",     (DL_FUNC) &rlang_poke_attributes, 2},
-  {"rlang_enexpr",              (DL_FUNC) &rlang_enexpr, 3},
-  {"rlang_enquo",               (DL_FUNC) &rlang_enquo, 3},
+  {"rlang_enexpr",              (DL_FUNC) &rlang_enexpr, 2},
+  {"rlang_enquo",               (DL_FUNC) &rlang_enquo, 2},
   {"rlang_get_expression",      (DL_FUNC) &r_get_expression, 2},
   {"rlang_vec_coerce",          (DL_FUNC) &rlang_vec_coerce, 2},
   {NULL, NULL, 0}

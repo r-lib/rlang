@@ -11,7 +11,7 @@ ensym(arg)
 
 expr(expr)
 
-enexpr(arg, unquote_names = TRUE)
+enexpr(arg)
 
 exprs(..., .named = FALSE, .ignore_empty = c("trailing", "none", "all"),
   .unquote_names = TRUE)
@@ -21,10 +21,6 @@ exprs(..., .named = FALSE, .ignore_empty = c("trailing", "none", "all"),
 supplied to that argument will be captured unevaluated.}
 
 \item{expr}{An expression.}
-
-\item{unquote_names}{Whether to treat \code{:=} as
-\code{=}. Unlike \code{=}, the \code{:=} syntax supports unquoting the name in
-the LHS with \code{!!}.}
 
 \item{...}{Arguments to extract.}
 
@@ -38,9 +34,8 @@ name. If an integer, it is passed to the \code{width} argument of
 of \code{"trailing"}, \code{"none"}, \code{"all"}. If \code{"trailing"}, only the
 last argument is ignored if it is empty.}
 
-\item{.unquote_names}{Whether to treat \code{:=} as
-\code{=}. Unlike \code{=}, the \code{:=} syntax supports unquoting the name in
-the LHS with \code{!!}.}
+\item{.unquote_names}{Whether to treat \code{:=} as \code{=}. Unlike \code{=}, the
+\code{:=} syntax supports \code{!!} unquoting on the LHS.}
 }
 \value{
 The raw expression supplied as argument. \code{exprs()} returns

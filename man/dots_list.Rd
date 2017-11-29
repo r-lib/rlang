@@ -20,9 +20,8 @@ arguments are embedded in the returned list.}
 of \code{"trailing"}, \code{"none"}, \code{"all"}. If \code{"trailing"}, only the
 last argument is ignored if it is empty.}
 
-\item{.unquote_names}{Whether to treat \code{:=} as
-\code{=}. Unlike \code{=}, the \code{:=} syntax supports unquoting the name in
-the LHS with \code{!!}.}
+\item{.unquote_names}{Whether to treat \code{:=} as \code{=}. Unlike \code{=}, the
+\code{:=} syntax supports unquoting with \code{!!}.}
 }
 \value{
 A list of arguments. This list is always named: unnamed
