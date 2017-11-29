@@ -44,8 +44,13 @@ struct expansion_info which_bang_op(sexp* x) {
     if (r_is_call(paren, "(")) {
       return info;
     }
+
     struct expansion_info inner_info = which_bang_op(paren);
-    if (inner_info.op == OP_EXPAND_UQ) {
+
+    // Check that `root` is NULL so we don't remove parentheses when
+    // there's an operation tail (i.e. when the parse tree was fixed
+    // up to bind tightly)
+    if (inner_info.op == OP_EXPAND_UQ && inner_info.root == r_null) {
       return inner_info;
     } else {
       return info;

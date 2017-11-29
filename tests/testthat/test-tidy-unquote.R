@@ -239,6 +239,10 @@ test_that("one layer of parentheses around !! is removed", {
   expect_identical(exprs((!! foo), ((!! foo))), named_list("foo", quote(("foo"))))
 })
 
+test_that("parentheses are not removed if there's a tail", {
+  expect_identical(expr((!! "a" + b)), quote(("a" + b)))
+})
+
 
 # quosures -----------------------------------------------------------
 
