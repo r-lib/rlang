@@ -49,7 +49,13 @@ enum r_type {
 #define KEEP PROTECT
 #define FREE UNPROTECT
 
+static inline sexp* KEEP_N(sexp* x, int* n) {
+  ++(*n);
+  return KEEP(x);
+}
+
 #include "attrs.h"
+#include "debug.h"
 #include "cnd.h"
 #include "env.h"
 #include "eval.h"

@@ -75,7 +75,9 @@
 
 * `exprs()` and `quos()` gain a `.unquote_names` arguments to switch
   off interpretation of `:=` as a name operator. This should be useful
-  for programming on the language targetting APIs such as data.table.
+  for programming on the language targetting APIs such as
+  data.table. For consistency `dots_list()` and `dots_splice()` gain
+  that argument as well.
 
 * The backend for `quos()`, `exprs()`, `dots_list()`, etc is now
   written in C. This greatly improve the performance of dots capture,
@@ -107,6 +109,14 @@
   quoting function is supplied to `lapply()` or when you try to quote
   the first argument of an S3 method (which is necessarily evaluated
   in order to detect which class to dispatch to). (#295, #300).
+
+* Parentheses around `!!` are automatically removed. This makes the
+  generated expression call cleaner: `(!! sym("name"))(arg)`. Note
+  that removing the parentheses will never affect the actual
+  precedence within the expression as the parentheses are only useful
+  when parsing code as text. The parentheses will also be added by R
+  when printing code if needed (#296).
+
 
 ## Breaking changes
 

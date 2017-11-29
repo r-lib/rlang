@@ -12,21 +12,22 @@ enum dots_capture_type {
   DOTS_VALUE
 };
 
-#define N_EXPANSION_OPS 4
-
 enum dots_expansion_op {
   OP_EXPR_NONE,
   OP_EXPR_UQ,
   OP_EXPR_UQE,
   OP_EXPR_UQS,
+  OP_EXPR_UQN,
   OP_QUO_NONE,
   OP_QUO_UQ,
   OP_QUO_UQE,
   OP_QUO_UQS,
+  OP_QUO_UQN,
   OP_VALUE_NONE,
   OP_VALUE_UQ,
   OP_VALUE_UQE,
-  OP_VALUE_UQS
+  OP_VALUE_UQS,
+  OP_VALUE_UQN
 };
 
 struct dots_capture_info {
@@ -62,19 +63,20 @@ static sexp* def_unquote_name(sexp* expr, sexp* env) {
   int n_kept = 0;
   sexp* lhs = r_node_cadr(expr);
 
-  struct expansion_info info = which_expansion_op(lhs);
+  struct expansion_info info = which_expansion_op(lhs, true);
 
   switch (info.op) {
   case OP_EXPAND_NONE:
     break;
   case OP_EXPAND_UQ:
-    lhs = KEEP(r_eval(info.operand, env));
-    ++n_kept;
+    lhs = KEEP_N(r_eval(info.operand, env), &n_kept);
     break;
   case OP_EXPAND_UQE:
     r_abort("The LHS of `:=` can't be unquoted with `UQE()`");
   case OP_EXPAND_UQS:
     r_abort("The LHS of `:=` can't be spliced with `!!!`");
+  case OP_EXPAND_UQN:
+    r_abort("Internal error: Chained `:=` should have been detected earlier");
   }
 
   int err = 0;
@@ -186,6 +188,7 @@ static sexp* dots_unquote(sexp* dots, struct dots_capture_info* capture_info) {
   sexp* dots_names = r_names(dots);
   capture_info->count = 0;
   r_size_t n = r_length(dots);
+  bool unquote_names = capture_info->unquote_names;
 
   for (r_size_t i = 0; i < n; ++i) {
     sexp* elt = r_list_get(dots, i);
@@ -195,7 +198,7 @@ static sexp* dots_unquote(sexp* dots, struct dots_capture_info* capture_info) {
     // Unquoting rearranges expressions
     expr = KEEP(r_duplicate(expr, false));
 
-    if (capture_info->unquote_names && r_is_call(expr, ":=")) {
+    if (unquote_names && r_is_call(expr, ":=")) {
       sexp* name = def_unquote_name(expr, env);
 
       if (dots_names == r_null) {
@@ -212,7 +215,7 @@ static sexp* dots_unquote(sexp* dots, struct dots_capture_info* capture_info) {
       expr = r_node_cadr(r_node_cdr(expr));
     }
 
-    struct expansion_info info = which_expansion_op(expr);
+    struct expansion_info info = which_expansion_op(expr, unquote_names);
     enum dots_expansion_op dots_op = info.op + (N_EXPANSION_OPS * capture_info->type);
 
     // Ignore empty arguments
@@ -274,7 +277,12 @@ static sexp* dots_unquote(sexp* dots, struct dots_capture_info* capture_info) {
       }
       FREE(1);
       break;
-    }}
+    }
+    case OP_EXPR_UQN:
+    case OP_QUO_UQN:
+    case OP_VALUE_UQN:
+      r_abort("`:=` can't be chained");
+    }
 
     r_list_poke(dots, i, expr);
     FREE(1);
@@ -473,10 +481,9 @@ static bool is_spliced_bare_dots_value(SEXP x) {
   return true;
 }
 
-static sexp* dots_values_impl(sexp* frame_env, sexp* named, sexp* ignore_empty,
+static sexp* dots_values_impl(sexp* frame_env, sexp* named,
+                              sexp* ignore_empty, sexp* unquote_names,
                               bool (*is_spliced)(SEXP)) {
-  sexp* unquote_names = KEEP(r_scalar_lgl(1));
-
   struct dots_capture_info capture_info;
   capture_info = init_capture_info(DOTS_VALUE, named, ignore_empty, unquote_names);
   sexp* dots = dots_init(&capture_info, frame_env);
@@ -490,15 +497,18 @@ static sexp* dots_values_impl(sexp* frame_env, sexp* named, sexp* ignore_empty,
     }
   }
 
-  FREE(2);
+  FREE(1);
   return dots;
 }
-sexp* rlang_dots_values(sexp* frame_env, sexp* named, sexp* ignore_empty) {
-  return dots_values_impl(frame_env, named, ignore_empty, NULL);
+sexp* rlang_dots_values(sexp* frame_env, sexp* named,
+                        sexp* ignore_empty, sexp* unquote_names) {
+  return dots_values_impl(frame_env, named, ignore_empty, unquote_names, NULL);
 }
-sexp* rlang_dots_list(sexp* frame_env, sexp* named, sexp* ignore_empty) {
-  return dots_values_impl(frame_env, named, ignore_empty, is_spliced_dots_value);
+sexp* rlang_dots_list(sexp* frame_env, sexp* named,
+                      sexp* ignore_empty, sexp* unquote_names) {
+  return dots_values_impl(frame_env, named, ignore_empty, unquote_names, is_spliced_dots_value);
 }
-sexp* rlang_dots_flat_list(sexp* frame_env, sexp* named, sexp* ignore_empty) {
-  return dots_values_impl(frame_env, named, ignore_empty, is_spliced_bare_dots_value);
+sexp* rlang_dots_flat_list(sexp* frame_env, sexp* named,
+                           sexp* ignore_empty, sexp* unquote_names) {
+  return dots_values_impl(frame_env, named, ignore_empty, unquote_names, is_spliced_bare_dots_value);
 }

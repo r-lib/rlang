@@ -118,5 +118,9 @@ static inline bool r_is_symbolic(SEXP x) {
     r_kind(x) == SYMSXP;
 }
 
+static inline void r_sxp_print(SEXP x) {
+  Rf_PrintValue(x);
+}
+
 
 #endif

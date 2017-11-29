@@ -121,7 +121,7 @@ bytes <- function(...) {
 #' # Note that explicitly spliced lists are always spliced:
 #' ll(!!! list(1, 2))
 ll <- function(...) {
-  .Call(rlang_dots_list, environment(), FALSE, "trailing")
+  .Call(rlang_dots_list, environment(), FALSE, "trailing", TRUE)
 }
 
 

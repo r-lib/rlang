@@ -225,6 +225,24 @@ test_that("`!!` works in prefixed calls", {
   expect_identical(expr_interp(~base::`!!`(~list)()), quo(base::list()))
 })
 
+test_that("one layer of parentheses around !! is removed", {
+  foo <- "foo"
+  expect_identical(expr((!! foo)), "foo")
+  expect_identical(expr(((!! foo))), quote(("foo")))
+
+  expect_identical(expr((!! foo) + 1), quote("foo" + 1))
+  expect_identical(expr(((!! foo)) + 1), quote(("foo") + 1))
+
+  expect_identical(expr((!! sym(foo))(bar)), quote(foo(bar)))
+  expect_identical(expr(((!! sym(foo)))(bar)), quote((foo)(bar)))
+
+  expect_identical(exprs((!! foo), ((!! foo))), named_list("foo", quote(("foo"))))
+})
+
+test_that("parentheses are not removed if there's a tail", {
+  expect_identical(expr((!! "a" + b)), quote(("a" + b)))
+})
+
 
 # quosures -----------------------------------------------------------
 
@@ -251,4 +269,25 @@ test_that("can unquote-splice symbols", {
 test_that("can unquote symbols", {
   expect_error(dots_values(!! quote(.)), "`!!` in a non-quoting function")
   expect_error(dots_values(rlang::UQ(quote(.))), "`!!` in a non-quoting function")
+})
+
+
+# := -----------------------------------------------------------------
+
+test_that("`:=` unquotes its LHS as name unless `.unquote_names` is FALSE", {
+  expect_identical(exprs(a := b), list(a = quote(b)))
+  expect_identical(exprs(a := b, .unquote_names = FALSE), named_list(quote(a := b)))
+  expect_identical(quos(a := b), quos_list(a = quo(b)))
+  expect_identical(quos(a := b, .unquote_names = FALSE), quos_list(new_quosure(quote(a := b))))
+  expect_identical(dots_list(a := NULL), list(a = NULL))
+  expect_identical(dots_list(a := NULL, .unquote_names = FALSE), named_list(a := NULL))
+  expect_identical(dots_splice(a := NULL), list(a = NULL))
+  expect_identical(dots_splice(a := NULL, .unquote_names = FALSE), named_list(a := NULL))
+})
+
+test_that("`:=` chaining is detected at dots capture", {
+  expect_error(exprs(a := b := c), "chained")
+  expect_error(quos(a := b := c), "chained")
+  expect_error(dots_list(a := b := c), "chained")
+  expect_error(dots_splice(a := b := c), "chained")
 })

@@ -39,6 +39,24 @@ static void poke_bang_bang_operand(sexp* bang, struct expansion_info* info) {
 struct expansion_info which_bang_op(sexp* x) {
   struct expansion_info info = init_expansion_info();
 
+  if (r_is_call(x, "(")) {
+    sexp* paren = r_node_cadr(x);
+    if (r_is_call(paren, "(")) {
+      return info;
+    }
+
+    struct expansion_info inner_info = which_bang_op(paren);
+
+    // Check that `root` is NULL so we don't remove parentheses when
+    // there's an operation tail (i.e. when the parse tree was fixed
+    // up to bind tightly)
+    if (inner_info.op == OP_EXPAND_UQ && inner_info.root == r_null) {
+      return inner_info;
+    } else {
+      return info;
+    }
+  }
+
   if (!r_is_call(x, "!")) {
     return info;
   }
@@ -62,13 +80,18 @@ struct expansion_info which_bang_op(sexp* x) {
   return info;
 }
 
-struct expansion_info which_expansion_op(sexp* x) {
+struct expansion_info which_expansion_op(sexp* x, bool unquote_names) {
   struct expansion_info info = which_bang_op(x);
 
   if (r_typeof(x) != r_type_call) {
     return info;
   }
   if (info.op) {
+    return info;
+  }
+
+  if (unquote_names && r_is_call(x, ":=")) {
+    info.op = OP_EXPAND_UQN;
     return info;
   }
 
@@ -206,7 +229,7 @@ sexp* big_bang(sexp* operand, sexp* env, sexp* node, sexp* next) {
 static sexp* node_list_interp(sexp* x, sexp* env);
 
 sexp* call_interp(sexp* x, sexp* env)  {
-  struct expansion_info info = which_expansion_op(x);
+  struct expansion_info info = which_expansion_op(x, false);
   return call_interp_impl(x, env, info);
 }
 
@@ -228,6 +251,8 @@ sexp* call_interp_impl(sexp* x, sexp* env, struct expansion_info info) {
     return bang_bang_expression(info, env);
   case OP_EXPAND_UQS:
     r_abort("Can't use `!!!` at top level");
+  case OP_EXPAND_UQN:
+    r_abort("todo!");
   }
 }
 

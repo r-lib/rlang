@@ -4,7 +4,8 @@
 \alias{dots_values}
 \title{Evaluate dots with preliminary splicing}
 \usage{
-dots_values(..., .ignore_empty = c("trailing", "none", "all"))
+dots_values(..., .ignore_empty = c("trailing", "none", "all"),
+  .unquote_names = TRUE)
 }
 \arguments{
 \item{...}{Arguments to evaluate and process splicing operators.}
@@ -12,6 +13,9 @@ dots_values(..., .ignore_empty = c("trailing", "none", "all"))
 \item{.ignore_empty}{Whether to ignore empty arguments. Can be one
 of \code{"trailing"}, \code{"none"}, \code{"all"}. If \code{"trailing"}, only the
 last argument is ignored if it is empty.}
+
+\item{.unquote_names}{Whether to treat \code{:=} as \code{=}. Unlike \code{=}, the
+\code{:=} syntax supports unquoting with \code{!!}.}
 }
 \description{
 This is a tool for advanced users. It captures dots, processes
