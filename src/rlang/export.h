@@ -9,8 +9,8 @@
 
 #if (defined(R_VERSION) && R_VERSION < R_Version(3, 4, 0))
 typedef union {void* p; DL_FUNC fn;} fn_ptr;
-SEXP R_MakeExternalPtrFn(DL_FUNC p, SEXP tag, SEXP prot);
-DL_FUNC R_ExternalPtrAddrFn(SEXP s);
+sexp* R_MakeExternalPtrFn(DL_FUNC p, sexp* tag, sexp* prot);
+DL_FUNC R_ExternalPtrAddrFn(sexp* s);
 #endif
 
 void rlang_register_pointer(const char* ns, const char* ptr_name, DL_FUNC fn);

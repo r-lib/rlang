@@ -3,7 +3,7 @@
 
 // attrs.c
 
-SEXP rlang_poke_attributes(SEXP x, SEXP attrs) {
+sexp* rlang_poke_attributes(sexp* x, sexp* attrs) {
   SET_ATTRIB(x, attrs);
   return x;
 }
@@ -11,19 +11,19 @@ SEXP rlang_poke_attributes(SEXP x, SEXP attrs) {
 
 // cnd.c
 
-SEXP rlang_cnd_signal(SEXP cnd, SEXP mufflable) {
+sexp* rlang_cnd_signal(sexp* cnd, sexp* mufflable) {
   r_cnd_signal(cnd, r_as_bool(mufflable));
   return r_null;
 }
-SEXP rlang_cnd_inform(SEXP cnd, SEXP mufflable) {
+sexp* rlang_cnd_inform(sexp* cnd, sexp* mufflable) {
   r_cnd_inform(cnd, r_as_bool(mufflable));
   return r_null;
 }
-SEXP rlang_cnd_warn(SEXP cnd, SEXP mufflable) {
+sexp* rlang_cnd_warn(sexp* cnd, sexp* mufflable) {
   r_cnd_warn(cnd, r_as_bool(mufflable));
   return r_null;
 }
-SEXP rlang_cnd_abort(SEXP cnd, SEXP mufflable) {
+sexp* rlang_cnd_abort(sexp* cnd, sexp* mufflable) {
   r_cnd_abort(cnd, r_as_bool(mufflable));
   return r_null;
 }
@@ -31,7 +31,7 @@ SEXP rlang_cnd_abort(SEXP cnd, SEXP mufflable) {
 
 // env.c
 
-SEXP rlang_mut_env_parent(SEXP env, SEXP new_parent) {
+sexp* rlang_mut_env_parent(sexp* env, sexp* new_parent) {
   SET_ENCLOS(env, new_parent);
   return env;
 }
@@ -39,15 +39,15 @@ SEXP rlang_mut_env_parent(SEXP env, SEXP new_parent) {
 
 // eval.c
 
-SEXP rlang_eval(SEXP expr, SEXP env) {
+sexp* rlang_eval(sexp* expr, sexp* env) {
   return Rf_eval(expr, env);
 }
 
 
 // eval-tidy.c
 
-SEXP rlang_new_dictionary(SEXP x, SEXP lookup_msg, SEXP read_only) {
-  SEXP dict = KEEP(r_new_vector(VECSXP, 3));
+sexp* rlang_new_dictionary(sexp* x, sexp* lookup_msg, sexp* read_only) {
+  sexp* dict = KEEP(r_new_vector(VECSXP, 3));
 
   SET_VECTOR_ELT(dict, 0, x);
   SET_VECTOR_ELT(dict, 2, read_only);
@@ -58,7 +58,7 @@ SEXP rlang_new_dictionary(SEXP x, SEXP lookup_msg, SEXP read_only) {
     SET_VECTOR_ELT(dict, 1, lookup_msg);
   }
 
-  static SEXP nms = NULL;
+  static sexp* nms = NULL;
   if (!nms) {
     nms = r_new_vector(STRSXP, 3);
     R_PreserveObject(nms);
@@ -66,7 +66,7 @@ SEXP rlang_new_dictionary(SEXP x, SEXP lookup_msg, SEXP read_only) {
     SET_STRING_ELT(nms, 1, Rf_mkChar("lookup_msg"));
     SET_STRING_ELT(nms, 2, Rf_mkChar("read_only"));
   }
-  static SEXP s3 = NULL;
+  static sexp* s3 = NULL;
   if (!s3) {
     s3 = Rf_mkString("dictionary");
     R_PreserveObject(s3);
@@ -82,7 +82,7 @@ SEXP rlang_new_dictionary(SEXP x, SEXP lookup_msg, SEXP read_only) {
 
 // formula.c
 
-SEXP rlang_is_formulaish(SEXP x, SEXP scoped, SEXP lhs) {
+sexp* rlang_is_formulaish(sexp* x, sexp* scoped, sexp* lhs) {
   int scoped_int = r_as_optional_bool(scoped);
   int lhs_int = r_as_optional_bool(lhs);
 
@@ -93,68 +93,68 @@ SEXP rlang_is_formulaish(SEXP x, SEXP scoped, SEXP lhs) {
 
 // node.c
 
-SEXP rlang_node_car(SEXP x) {
+sexp* rlang_node_car(sexp* x) {
   return CAR(x);
 }
-SEXP rlang_node_cdr(SEXP x) {
+sexp* rlang_node_cdr(sexp* x) {
   return CDR(x);
 }
-SEXP rlang_node_caar(SEXP x) {
+sexp* rlang_node_caar(sexp* x) {
   return CAAR(x);
 }
-SEXP rlang_node_cadr(SEXP x) {
+sexp* rlang_node_cadr(sexp* x) {
   return CADR(x);
 }
-SEXP rlang_node_cdar(SEXP x) {
+sexp* rlang_node_cdar(sexp* x) {
   return CDAR(x);
 }
-SEXP rlang_node_cddr(SEXP x) {
+sexp* rlang_node_cddr(sexp* x) {
   return CDDR(x);
 }
-SEXP rlang_node_tail(SEXP x) {
+sexp* rlang_node_tail(sexp* x) {
   while (CDR(x) != r_null)
     x = CDR(x);
   return x;
 }
 
-SEXP rlang_node_poke_car(SEXP x, SEXP newcar) {
+sexp* rlang_node_poke_car(sexp* x, sexp* newcar) {
   SETCAR(x, newcar);
   return x;
 }
-SEXP rlang_node_poke_cdr(SEXP x, SEXP newcdr) {
+sexp* rlang_node_poke_cdr(sexp* x, sexp* newcdr) {
   SETCDR(x, newcdr);
   return x;
 }
-SEXP rlang_node_poke_caar(SEXP x, SEXP newcaar) {
+sexp* rlang_node_poke_caar(sexp* x, sexp* newcaar) {
   SETCAR(CAR(x), newcaar);
   return x;
 }
-SEXP rlang_node_poke_cadr(SEXP x, SEXP newcar) {
+sexp* rlang_node_poke_cadr(sexp* x, sexp* newcar) {
   SETCADR(x, newcar);
   return x;
 }
-SEXP rlang_node_poke_cdar(SEXP x, SEXP newcdar) {
+sexp* rlang_node_poke_cdar(sexp* x, sexp* newcdar) {
   SETCDR(CAR(x), newcdar);
   return x;
 }
-SEXP rlang_node_poke_cddr(SEXP x, SEXP newcdr) {
+sexp* rlang_node_poke_cddr(sexp* x, sexp* newcdr) {
   SETCDR(CDR(x), newcdr);
   return x;
 }
 
-SEXP rlang_new_node_(SEXP car, SEXP cdr) {
+sexp* rlang_new_node_(sexp* car, sexp* cdr) {
   return Rf_cons(car, cdr);
 }
 
-SEXP rlang_node_tag(SEXP x) {
+sexp* rlang_node_tag(sexp* x) {
   return TAG(x);
 }
-SEXP rlang_node_poke_tag(SEXP x, SEXP tag) {
+sexp* rlang_node_poke_tag(sexp* x, sexp* tag) {
   SET_TAG(x, tag);
   return x;
 }
 
-SEXP rlang_on_exit(SEXP expr, SEXP frame) {
+sexp* rlang_on_exit(sexp* expr, sexp* frame) {
   r_on_exit(expr, frame);
   return r_null;
 }
@@ -162,40 +162,40 @@ SEXP rlang_on_exit(SEXP expr, SEXP frame) {
 
 // lang.h
 
-SEXP rlang_new_call_node(SEXP car, SEXP cdr) {
+sexp* rlang_new_call_node(sexp* car, sexp* cdr) {
   return Rf_lcons(car, cdr);
 }
 
 
 // sexp.h
 
-SEXP rlang_length(SEXP x) {
+sexp* rlang_length(sexp* x) {
   return Rf_ScalarInteger(r_length(x));
 }
 
-SEXP rlang_is_reference(SEXP x, SEXP y) {
+sexp* rlang_is_reference(sexp* x, sexp* y) {
   return r_scalar_lgl(x == y);
 }
 
-SEXP rlang_missing_arg() {
+sexp* rlang_missing_arg() {
   return R_MissingArg;
 }
 
-SEXP rlang_duplicate(SEXP x, SEXP shallow) {
+sexp* rlang_duplicate(sexp* x, sexp* shallow) {
   return r_duplicate(x, r_as_bool(shallow));
 }
 
-SEXP rlang_is_null(SEXP x) {
+sexp* rlang_is_null(sexp* x) {
   return r_scalar_lgl(r_is_null(x));
 }
 
-SEXP rlang_sxp_address(SEXP x) {
+sexp* rlang_sxp_address(sexp* x) {
   static char str[1000];
   snprintf(str, 1000, "%p", (void*) x);
   return Rf_mkString(str);
 }
 
-SEXP rlang_poke_type(SEXP x, SEXP type) {
+sexp* rlang_poke_type(sexp* x, sexp* type) {
   SET_TYPEOF(x, Rf_str2type(r_c_string(type)));
   return x;
 }
@@ -203,6 +203,6 @@ SEXP rlang_poke_type(SEXP x, SEXP type) {
 
 // vec.h
 
-SEXP rlang_vec_coerce(SEXP x, SEXP type) {
+sexp* rlang_vec_coerce(sexp* x, sexp* type) {
   return Rf_coerceVector(x, Rf_str2type(r_c_string(type)));
 }

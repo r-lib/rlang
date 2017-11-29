@@ -3,22 +3,22 @@
 
 // These change attributes in-place.
 
-SEXP rlang_zap_attrs(SEXP x) {
+sexp* rlang_zap_attrs(sexp* x) {
   SET_ATTRIB(x, r_null);
   return x;
 }
 
-SEXP rlang_set_attrs(SEXP x, SEXP attrs) {
+sexp* rlang_set_attrs(sexp* x, sexp* attrs) {
   SET_ATTRIB(x, attrs);
   return x;
 }
 
-SEXP rlang_get_attrs(SEXP x) {
+sexp* rlang_get_attrs(sexp* x) {
   return ATTRIB(x);
 }
 
-SEXP r_push_attribute(SEXP x, SEXP tag, SEXP value) {
-  SEXP attrs = r_new_node(value, r_get_attributes(x));
+sexp* r_push_attribute(sexp* x, sexp* tag, sexp* value) {
+  sexp* attrs = r_new_node(value, r_get_attributes(x));
   r_poke_attributes(x, attrs);
 
   if (tag != r_null) {
@@ -38,22 +38,22 @@ SEXP r_push_attribute(SEXP x, SEXP tag, SEXP value) {
  */
 
 // Caller must poke the object bit
-SEXP r_node_push_classes(SEXP node, const char** tags, int n) {
-  static SEXP class_sym = NULL;
+sexp* r_node_push_classes(sexp* node, const char** tags, int n) {
+  static sexp* class_sym = NULL;
   if (!class_sym) {
     class_sym = r_sym("class");
   }
 
-  SEXP tags_chr = KEEP(r_build_character(tags, n));
-  SEXP attrs = r_new_node(tags_chr, node);
+  sexp* tags_chr = KEEP(r_build_character(tags, n));
+  sexp* attrs = r_new_node(tags_chr, node);
   r_node_poke_tag(attrs, class_sym);
 
   FREE(1);
   return attrs;
 }
 
-void r_push_classes(SEXP x, const char** tags, int n) {
-  SEXP attrs = r_get_attributes(x);
+void r_push_classes(sexp* x, const char** tags, int n) {
+  sexp* attrs = r_get_attributes(x);
   attrs = r_node_push_classes(attrs, tags, n);
   SET_ATTRIB(x, attrs);
   SET_OBJECT(x, 1);

@@ -8,34 +8,34 @@
 #define r_empty_env R_EmptyEnv
 
 
-static inline bool r_is_unbound_value(SEXP x) {
+static inline bool r_is_unbound_value(sexp* x) {
   return x == R_UnboundValue;
 }
 
-static inline void r_env_poke_parent(SEXP env, SEXP new_parent) {
+static inline void r_env_poke_parent(sexp* env, sexp* new_parent) {
   SET_ENCLOS(env, new_parent);
 }
 
-static inline bool r_is_environment(SEXP x) {
+static inline bool r_is_environment(sexp* x) {
   return TYPEOF(x) == ENVSXP;
 }
 
 // TODO A more complete family that optionally looks up ancestry
 // The `find` variant does not fail if object does not exist
-static inline SEXP r_env_find(SEXP env, SEXP sym) {
+static inline sexp* r_env_find(sexp* env, sexp* sym) {
   return Rf_findVarInFrame3(env, sym, TRUE);
 }
-static inline SEXP r_env_get(SEXP env, SEXP sym) {
+static inline sexp* r_env_get(sexp* env, sexp* sym) {
   return Rf_eval(sym, env);
 }
-static inline SEXP r_env_set(SEXP env, SEXP sym, SEXP value) {
+static inline sexp* r_env_set(sexp* env, sexp* sym, sexp* value) {
   Rf_defineVar(sym, value, env);
   return env;
 }
 
-SEXP r_ns_env(const char* pkg);
+sexp* r_ns_env(const char* pkg);
 
-SEXP r_base_ns_get(const char* name);
+sexp* r_base_ns_get(const char* name);
 
 
 #endif

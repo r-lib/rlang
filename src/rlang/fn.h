@@ -2,7 +2,7 @@
 #define RLANG_FN_H
 
 
-static inline SEXP r_fn_body(SEXP x) {
+static inline sexp* r_fn_body(sexp* x) {
   return BODY_EXPR(x);
 }
 

@@ -1,13 +1,13 @@
 #include "rlang.h"
 
-bool r_as_bool(SEXP x) {
+bool r_as_bool(sexp* x) {
   if (r_typeof(x) != LGLSXP && r_length(x) != 1)
     r_abort("Expected a scalar logical");
   int* xp = (int*) LOGICAL(x);
   return *xp;
 }
 
-int r_as_optional_bool(SEXP lgl) {
+int r_as_optional_bool(sexp* lgl) {
   if (lgl == r_null) {
     return -1;
   } else {
@@ -15,7 +15,7 @@ int r_as_optional_bool(SEXP lgl) {
   }
 }
 
-bool r_is_true(SEXP x) {
+bool r_is_true(sexp* x) {
   if (r_typeof(x) != LGLSXP || r_length(x) != 1) {
     r_abort("`x` must be a boolean");
   }

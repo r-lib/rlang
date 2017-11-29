@@ -3,20 +3,20 @@
 #define QUO_TAGS_N 2
 static const char* quo_tags[QUO_TAGS_N] = { "quosure", "formula" };
 
-SEXP new_raw_formula(SEXP lhs, SEXP rhs, SEXP env);
+sexp* new_raw_formula(sexp* lhs, sexp* rhs, sexp* env);
 
-SEXP r_new_quosure(SEXP expr, SEXP env) {
-  SEXP quo = KEEP(new_raw_formula(r_null, expr, env));
+sexp* r_new_quosure(sexp* expr, sexp* env) {
+  sexp* quo = KEEP(new_raw_formula(r_null, expr, env));
   r_push_classes(quo, quo_tags, QUO_TAGS_N);
   FREE(1);
   return quo;
 }
 
-bool r_quo_is_missing(SEXP x) {
+bool r_quo_is_missing(sexp* x) {
   return r_is_missing(r_f_rhs(x));
 }
 
-SEXP r_get_expression(SEXP x, SEXP alternate) {
+sexp* r_get_expression(sexp* x, sexp* alternate) {
   switch (r_typeof(x)) {
   case LANGSXP:
     if (r_is_formulaish(x, -1, 0)) {

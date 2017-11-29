@@ -2,10 +2,10 @@
 #define RLANG_VECTOR_LIST_H
 
 
-static inline SEXP r_list_get(SEXP list, r_size_t i) {
+static inline sexp* r_list_get(sexp* list, r_size_t i) {
   return VECTOR_ELT(list, i);
 }
-static inline void r_list_poke(SEXP list, r_size_t i, SEXP elt) {
+static inline void r_list_poke(sexp* list, r_size_t i, sexp* elt) {
   SET_VECTOR_ELT(list, i, elt);
 }
 

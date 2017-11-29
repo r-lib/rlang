@@ -2,82 +2,83 @@
 #include <R_ext/Rdynload.h>
 #include <stdbool.h>
 
+#include "rlang/rlang.h"
 #include "rlang/export.h"
 
 // Callable from other packages
-extern SEXP rlang_new_dictionary(SEXP, SEXP, SEXP);
-extern SEXP r_squash_if(SEXP, enum r_type, bool (*is_spliceable)(SEXP), int);
-extern bool rlang_is_clevel_spliceable(SEXP);
+extern sexp* rlang_new_dictionary(sexp*, sexp*, sexp*);
+extern sexp* r_squash_if(sexp*, enum r_type, bool (*is_spliceable)(sexp*), int);
+extern bool rlang_is_clevel_spliceable(sexp*);
 
 // Callable from this package
-extern SEXP rlang_is_null(SEXP);
-extern SEXP r_f_lhs(SEXP);
-extern SEXP r_f_rhs(SEXP);
-extern SEXP r_new_condition(SEXP, SEXP, SEXP);
-extern SEXP rlang_mut_env_parent(SEXP, SEXP);
-extern SEXP rlang_poke_type(SEXP, SEXP);
-extern SEXP rlang_replace_na(SEXP, SEXP);
-extern SEXP rlang_node_car(SEXP);
-extern SEXP rlang_node_cdr(SEXP);
-extern SEXP rlang_node_caar(SEXP);
-extern SEXP rlang_node_cadr(SEXP);
-extern SEXP rlang_node_cdar(SEXP);
-extern SEXP rlang_node_cddr(SEXP);
-extern SEXP rlang_missing_arg();
-extern SEXP rlang_node_poke_car(SEXP, SEXP);
-extern SEXP rlang_node_poke_cdr(SEXP, SEXP);
-extern SEXP rlang_node_poke_caar(SEXP, SEXP);
-extern SEXP rlang_node_poke_cadr(SEXP, SEXP);
-extern SEXP rlang_node_poke_cdar(SEXP, SEXP);
-extern SEXP rlang_node_poke_cddr(SEXP, SEXP);
-extern SEXP rlang_new_node_(SEXP, SEXP);
-extern SEXP rlang_duplicate(SEXP);
-extern SEXP rlang_node_tag(SEXP);
-extern SEXP rlang_node_poke_tag(SEXP, SEXP);
-extern SEXP rlang_eval(SEXP, SEXP);
-extern SEXP rlang_zap_attrs(SEXP);
-extern SEXP rlang_get_attrs(SEXP);
-extern SEXP rlang_set_attrs(SEXP, SEXP);
-extern SEXP rlang_interp(SEXP, SEXP);
-extern SEXP rlang_is_formulaish(SEXP, SEXP, SEXP);
-extern SEXP rlang_is_reference(SEXP, SEXP);
-extern SEXP rlang_sxp_address(SEXP);
-extern SEXP rlang_length(SEXP);
-extern SEXP rlang_new_dictionary(SEXP, SEXP, SEXP);
-extern SEXP rlang_squash(SEXP, SEXP, SEXP, SEXP);
-extern SEXP rlang_symbol(SEXP);
-extern SEXP rlang_symbol_to_character(SEXP);
-extern SEXP rlang_tilde_eval(SEXP, SEXP, SEXP, SEXP);
-extern SEXP rlang_unescape_character(SEXP);
-extern SEXP rlang_capturearginfo(SEXP, SEXP, SEXP, SEXP);
-extern SEXP rlang_capturedots(SEXP, SEXP, SEXP, SEXP);
-extern SEXP rlang_new_call_node(SEXP, SEXP);
-extern SEXP rlang_cnd_abort(SEXP, SEXP);
-extern SEXP rlang_cnd_inform(SEXP, SEXP);
-extern SEXP rlang_cnd_signal(SEXP, SEXP);
-extern SEXP rlang_cnd_warn(SEXP, SEXP);
-extern SEXP rlang_r_string(SEXP);
-extern SEXP rlang_exprs_interp(SEXP, SEXP, SEXP, SEXP);
-extern SEXP rlang_quos_interp(SEXP, SEXP, SEXP, SEXP);
-extern SEXP rlang_dots_values(SEXP, SEXP, SEXP, SEXP);
-extern SEXP rlang_dots_list(SEXP, SEXP, SEXP, SEXP);
-extern SEXP rlang_dots_flat_list(SEXP, SEXP, SEXP, SEXP);
-extern SEXP r_new_formula(SEXP, SEXP, SEXP);
-extern SEXP r_new_quosure(SEXP, SEXP);
-extern SEXP rlang_poke_attributes(SEXP, SEXP);
-extern SEXP rlang_enexpr(SEXP, SEXP);
-extern SEXP rlang_enquo(SEXP, SEXP);
-extern SEXP r_get_expression(SEXP, SEXP);
-extern SEXP rlang_vec_coerce(SEXP, SEXP);
+extern sexp* rlang_is_null(sexp*);
+extern sexp* r_f_lhs(sexp*);
+extern sexp* r_f_rhs(sexp*);
+extern sexp* r_new_condition(sexp*, sexp*, sexp*);
+extern sexp* rlang_mut_env_parent(sexp*, sexp*);
+extern sexp* rlang_poke_type(sexp*, sexp*);
+extern sexp* rlang_replace_na(sexp*, sexp*);
+extern sexp* rlang_node_car(sexp*);
+extern sexp* rlang_node_cdr(sexp*);
+extern sexp* rlang_node_caar(sexp*);
+extern sexp* rlang_node_cadr(sexp*);
+extern sexp* rlang_node_cdar(sexp*);
+extern sexp* rlang_node_cddr(sexp*);
+extern sexp* rlang_missing_arg();
+extern sexp* rlang_node_poke_car(sexp*, sexp*);
+extern sexp* rlang_node_poke_cdr(sexp*, sexp*);
+extern sexp* rlang_node_poke_caar(sexp*, sexp*);
+extern sexp* rlang_node_poke_cadr(sexp*, sexp*);
+extern sexp* rlang_node_poke_cdar(sexp*, sexp*);
+extern sexp* rlang_node_poke_cddr(sexp*, sexp*);
+extern sexp* rlang_new_node_(sexp*, sexp*);
+extern sexp* rlang_duplicate(sexp*);
+extern sexp* rlang_node_tag(sexp*);
+extern sexp* rlang_node_poke_tag(sexp*, sexp*);
+extern sexp* rlang_eval(sexp*, sexp*);
+extern sexp* rlang_zap_attrs(sexp*);
+extern sexp* rlang_get_attrs(sexp*);
+extern sexp* rlang_set_attrs(sexp*, sexp*);
+extern sexp* rlang_interp(sexp*, sexp*);
+extern sexp* rlang_is_formulaish(sexp*, sexp*, sexp*);
+extern sexp* rlang_is_reference(sexp*, sexp*);
+extern sexp* rlang_sxp_address(sexp*);
+extern sexp* rlang_length(sexp*);
+extern sexp* rlang_new_dictionary(sexp*, sexp*, sexp*);
+extern sexp* rlang_squash(sexp*, sexp*, sexp*, sexp*);
+extern sexp* rlang_symbol(sexp*);
+extern sexp* rlang_symbol_to_character(sexp*);
+extern sexp* rlang_tilde_eval(sexp*, sexp*, sexp*, sexp*);
+extern sexp* rlang_unescape_character(sexp*);
+extern sexp* rlang_capturearginfo(sexp*, sexp*, sexp*, sexp*);
+extern sexp* rlang_capturedots(sexp*, sexp*, sexp*, sexp*);
+extern sexp* rlang_new_call_node(sexp*, sexp*);
+extern sexp* rlang_cnd_abort(sexp*, sexp*);
+extern sexp* rlang_cnd_inform(sexp*, sexp*);
+extern sexp* rlang_cnd_signal(sexp*, sexp*);
+extern sexp* rlang_cnd_warn(sexp*, sexp*);
+extern sexp* rlang_r_string(sexp*);
+extern sexp* rlang_exprs_interp(sexp*, sexp*, sexp*, sexp*);
+extern sexp* rlang_quos_interp(sexp*, sexp*, sexp*, sexp*);
+extern sexp* rlang_dots_values(sexp*, sexp*, sexp*, sexp*);
+extern sexp* rlang_dots_list(sexp*, sexp*, sexp*, sexp*);
+extern sexp* rlang_dots_flat_list(sexp*, sexp*, sexp*, sexp*);
+extern sexp* r_new_formula(sexp*, sexp*, sexp*);
+extern sexp* r_new_quosure(sexp*, sexp*);
+extern sexp* rlang_poke_attributes(sexp*, sexp*);
+extern sexp* rlang_enexpr(sexp*, sexp*);
+extern sexp* rlang_enquo(sexp*, sexp*);
+extern sexp* r_get_expression(sexp*, sexp*);
+extern sexp* rlang_vec_coerce(sexp*, sexp*);
 
 
 // For unit tests
-extern SEXP chr_prepend(SEXP, SEXP);
-extern SEXP chr_append(SEXP, SEXP);
-extern SEXP rlang_test_r_warn(SEXP);
-extern SEXP rlang_on_exit(SEXP, SEXP);
-extern SEXP rlang_test_is_special_op_sym(SEXP);
-extern SEXP rlang_test_base_ns_get(SEXP);
+extern sexp* chr_prepend(sexp*, sexp*);
+extern sexp* chr_append(sexp*, sexp*);
+extern sexp* rlang_test_r_warn(sexp*);
+extern sexp* rlang_on_exit(sexp*, sexp*);
+extern sexp* rlang_test_is_special_op_sym(sexp*);
+extern sexp* rlang_test_base_ns_get(sexp*);
 
 static const R_CallMethodDef call_entries[] = {
   {"r_f_lhs",                   (DL_FUNC) &r_f_lhs, 1},

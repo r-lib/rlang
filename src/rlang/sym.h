@@ -8,20 +8,20 @@
 #define r_class_sym R_ClassSymbol
 
 
-SEXP r_new_symbol(SEXP x, int* err);
+sexp* r_new_symbol(sexp* x, int* err);
 
-static inline SEXP r_sym(const char* c_string) {
+static inline sexp* r_sym(const char* c_string) {
   return Rf_install(c_string);
 }
 
-static inline SEXP r_sym_str(SEXP sym) {
+static inline sexp* r_sym_str(sexp* sym) {
   return PRINTNAME(sym);
 }
 
-bool r_is_symbol(SEXP sym, const char* string);
-bool r_is_symbol_any(SEXP x, const char** strings, int n);
+bool r_is_symbol(sexp* sym, const char* string);
+bool r_is_symbol_any(sexp* x, const char** strings, int n);
 
-bool r_is_special_op_sym(SEXP x);
+bool r_is_special_op_sym(sexp* x);
 
 
 #endif

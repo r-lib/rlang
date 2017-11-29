@@ -1,7 +1,7 @@
 #include "rlang.h"
 
 
-SEXP r_f_rhs(SEXP f) {
+sexp* r_f_rhs(sexp* f) {
   if (r_typeof(f) != LANGSXP) {
     r_abort("`x` must be a formula");
   }
@@ -12,7 +12,7 @@ SEXP r_f_rhs(SEXP f) {
   default: r_abort("Invalid formula");
   }
 }
-SEXP r_f_lhs(SEXP f) {
+sexp* r_f_lhs(sexp* f) {
   if (r_typeof(f) != LANGSXP) {
     r_abort("`x` must be a formula");
   }
@@ -23,22 +23,22 @@ SEXP r_f_lhs(SEXP f) {
   default: r_abort("Invalid formula");
   }
 }
-SEXP r_f_env(SEXP f) {
+sexp* r_f_env(sexp* f) {
   return r_get_attribute(f, r_sym(".Environment"));
 }
 
-bool r_f_has_env(SEXP f) {
+bool r_f_has_env(sexp* f) {
   return r_is_environment(r_f_env(f));
 }
 
-bool r_is_formulaish(SEXP x, int scoped, int lhs) {
+bool r_is_formulaish(sexp* x, int scoped, int lhs) {
   static const char* formulaish_names[2] = { "~", ":=" };
 
   if (r_typeof(x) != LANGSXP) {
     return false;
   }
 
-  SEXP head = r_node_car(x);
+  sexp* head = r_node_car(x);
   if (!r_is_symbol_any(head, formulaish_names, 2)) {
     return false;
   }
@@ -61,8 +61,8 @@ bool r_is_formulaish(SEXP x, int scoped, int lhs) {
 }
 
 
-SEXP new_raw_formula(SEXP lhs, SEXP rhs, SEXP env) {
-  static SEXP tilde_sym = NULL;
+sexp* new_raw_formula(sexp* lhs, sexp* rhs, sexp* env) {
+  static sexp* tilde_sym = NULL;
   if (!tilde_sym) {
     tilde_sym = r_sym("~");
   }
@@ -70,7 +70,8 @@ SEXP new_raw_formula(SEXP lhs, SEXP rhs, SEXP env) {
     r_abort("`env` must be an environment");
   }
 
-  SEXP f, args;
+  sexp* f;
+  sexp* args;
   if (lhs == r_null) {
     args = KEEP(r_new_node_list(rhs));
   } else {
@@ -78,15 +79,15 @@ SEXP new_raw_formula(SEXP lhs, SEXP rhs, SEXP env) {
   }
   f = KEEP(r_new_call_node(tilde_sym, args));
 
-  SEXP attrs = KEEP(r_new_node(env, r_null));
+  sexp* attrs = KEEP(r_new_node(env, r_null));
   r_node_poke_tag(attrs, r_sym(".Environment"));
   r_poke_attributes(f, attrs);
 
   FREE(3);
   return f;
 }
-SEXP r_new_formula(SEXP lhs, SEXP rhs, SEXP env) {
-  SEXP f = KEEP(new_raw_formula(lhs, rhs, env));
+sexp* r_new_formula(sexp* lhs, sexp* rhs, sexp* env) {
+  sexp* f = KEEP(new_raw_formula(lhs, rhs, env));
   r_push_class(f, "formula");
 
   FREE(1);

@@ -1,31 +1,31 @@
 #include "rlang/rlang.h"
 
-SEXP rlang_test_r_warn(SEXP x) {
+sexp* rlang_test_r_warn(sexp* x) {
   r_warn(CHAR(STRING_ELT(x, 0)));
   return r_null;
 }
 
-SEXP rlang_r_string(SEXP str) {
+sexp* rlang_r_string(sexp* str) {
   return STRING_ELT(str, 0);
 }
 
 
 // env.c
 
-SEXP rlang_test_base_ns_get(SEXP name) {
+sexp* rlang_test_base_ns_get(sexp* name) {
   return r_base_ns_get(r_c_string(name));
 }
 
 
 // sym.c
 
-SEXP rlang_test_is_special_op_sym(SEXP x) {
+sexp* rlang_test_is_special_op_sym(sexp* x) {
   return Rf_ScalarLogical(r_is_special_op_sym(x));
 }
 
 
 // squash.c
 
-bool rlang_is_clevel_spliceable(SEXP x) {
+bool rlang_is_clevel_spliceable(sexp* x) {
   return Rf_inherits(x, "foo");
 }

@@ -462,7 +462,7 @@ sexp* rlang_quos_interp(sexp* frame_env, sexp* named,
   return dots;
 }
 
-static bool is_spliced_dots_value(SEXP x) {
+static bool is_spliced_dots_value(sexp* x) {
   if (r_typeof(x) != r_type_list) {
     return false;
   }
@@ -471,7 +471,7 @@ static bool is_spliced_dots_value(SEXP x) {
   }
   return false;
 }
-static bool is_spliced_bare_dots_value(SEXP x) {
+static bool is_spliced_bare_dots_value(sexp* x) {
   if (r_typeof(x) != r_type_list) {
     return false;
   }
@@ -483,7 +483,7 @@ static bool is_spliced_bare_dots_value(SEXP x) {
 
 static sexp* dots_values_impl(sexp* frame_env, sexp* named,
                               sexp* ignore_empty, sexp* unquote_names,
-                              bool (*is_spliced)(SEXP)) {
+                              bool (*is_spliced)(sexp*)) {
   struct dots_capture_info capture_info;
   capture_info = init_capture_info(DOTS_VALUE, named, ignore_empty, unquote_names);
   sexp* dots = dots_init(&capture_info, frame_env);

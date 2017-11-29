@@ -1,14 +1,14 @@
 #include "rlang/rlang.h"
 
-SEXP rlang_ns_get(const char* name);
+sexp* rlang_ns_get(const char* name);
 
 
-static SEXP base_tilde_eval(SEXP tilde, SEXP dots, SEXP quo_env) {
+static sexp* base_tilde_eval(sexp* tilde, sexp* dots, sexp* quo_env) {
   if (r_f_has_env(tilde))
     return tilde;
 
-  static SEXP tilde_sym;
-  static SEXP tilde_prim;
+  static sexp* tilde_sym;
+  static sexp* tilde_prim;
   if (!tilde_sym)
     tilde_sym = r_sym("~");
   if (!tilde_prim)
@@ -26,15 +26,15 @@ static SEXP base_tilde_eval(SEXP tilde, SEXP dots, SEXP quo_env) {
   return tilde;
 }
 
-SEXP rlang_tilde_eval(SEXP tilde, SEXP dots, SEXP overscope, SEXP overscope_top, SEXP cur_frame) {
+sexp* rlang_tilde_eval(sexp* tilde, sexp* dots, sexp* overscope, sexp* overscope_top, sexp* cur_frame) {
   if (!r_inherits(tilde, "quosure"))
     return base_tilde_eval(tilde, dots, overscope);
 
   if (r_quo_is_missing(tilde))
     return(r_missing_arg());
 
-  SEXP quo_env = r_f_env(tilde);
-  SEXP prev_env = r_env_get(overscope, r_sym(".env"));
+  sexp* quo_env = r_f_env(tilde);
+  sexp* prev_env = r_env_get(overscope, r_sym(".env"));
   if (r_is_null(quo_env))
     quo_env = prev_env;
 
@@ -42,9 +42,9 @@ SEXP rlang_tilde_eval(SEXP tilde, SEXP dots, SEXP overscope, SEXP overscope_top,
   // scope to the enclosure of the new formula, if it has one
   r_env_poke_parent(overscope_top, quo_env);
 
-  SEXP exit_fun = rlang_ns_get("mut_env_parent");
-  SEXP exit_args = r_build_pairlist2(overscope_top, prev_env);
-  SEXP exit_lang = KEEP(r_build_call_node(exit_fun, exit_args));
+  sexp* exit_fun = rlang_ns_get("mut_env_parent");
+  sexp* exit_args = r_build_pairlist2(overscope_top, prev_env);
+  sexp* exit_lang = KEEP(r_build_call_node(exit_fun, exit_args));
   r_on_exit(exit_lang, cur_frame);
   FREE(1);
 

@@ -2,9 +2,9 @@
 #define RLANG_SQUASH_H
 
 
-bool r_is_spliced(SEXP x);
-bool r_is_spliced_bare(SEXP x);
-SEXP r_squash_if(SEXP dots, enum r_type kind, bool (*is_spliceable)(SEXP), int depth);
+bool r_is_spliced(sexp* x);
+bool r_is_spliced_bare(sexp* x);
+sexp* r_squash_if(sexp* dots, enum r_type kind, bool (*is_spliceable)(sexp*), int depth);
 
 
 #endif

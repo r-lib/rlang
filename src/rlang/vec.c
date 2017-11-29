@@ -1,7 +1,7 @@
 #include "rlang.h"
 
 
-bool r_is_atomic(SEXP x) {
+bool r_is_atomic(sexp* x) {
   switch(r_typeof(x)) {
   case LGLSXP:
   case INTSXP:
@@ -14,25 +14,25 @@ bool r_is_atomic(SEXP x) {
     return false;
   }
 }
-bool r_is_scalar_atomic(SEXP x) {
+bool r_is_scalar_atomic(sexp* x) {
   return r_length(x) == 1 && r_is_atomic(x);
 }
 
-bool r_is_integerish(SEXP x) {
-  static SEXP predicate = NULL;
+bool r_is_integerish(sexp* x) {
+  static sexp* predicate = NULL;
   if (!predicate) {
     predicate = rlang_ns_get("is_integerish");
   }
-  SEXP call = KEEP(r_build_call1(predicate, x));
-  SEXP out = r_eval(call, r_empty_env);
+  sexp* call = KEEP(r_build_call1(predicate, x));
+  sexp* out = r_eval(call, r_empty_env);
   FREE(1);
   return out;
 }
 
-bool r_is_list(SEXP x) {
+bool r_is_list(sexp* x) {
   return r_typeof(x) == VECSXP;
 }
-bool r_is_vector(SEXP x) {
+bool r_is_vector(sexp* x) {
   switch(r_typeof(x)) {
   case LGLSXP:
   case INTSXP:
@@ -47,7 +47,7 @@ bool r_is_vector(SEXP x) {
   }
 }
 
-r_size_t r_vec_length(SEXP x) {
+r_size_t r_vec_length(sexp* x) {
   switch(r_typeof(x)) {
   case LGLSXP:
   case INTSXP:
@@ -66,8 +66,8 @@ r_size_t r_vec_length(SEXP x) {
 
 // Copy --------------------------------------------------------------
 
-void r_vec_poke_n(SEXP x, r_size_t offset,
-                  SEXP y, r_size_t from, r_size_t n) {
+void r_vec_poke_n(sexp* x, r_size_t offset,
+                  sexp* y, r_size_t from, r_size_t n) {
 
   if ((r_length(x) - offset) < n) {
     r_abort("Can't copy data to `x` because it is too small");
@@ -113,7 +113,7 @@ void r_vec_poke_n(SEXP x, r_size_t offset,
     break;
   }
   case STRSXP: {
-    SEXP elt;
+    sexp* elt;
     for (r_size_t i = 0; i != n; ++i) {
       elt = STRING_ELT(y, i + from);
       SET_STRING_ELT(x, i + offset, elt);
@@ -121,7 +121,7 @@ void r_vec_poke_n(SEXP x, r_size_t offset,
     break;
   }
   case VECSXP: {
-    SEXP elt;
+    sexp* elt;
     for (r_size_t i = 0; i != n; ++i) {
       elt = VECTOR_ELT(y, i + from);
       SET_VECTOR_ELT(x, i + offset, elt);
@@ -133,15 +133,15 @@ void r_vec_poke_n(SEXP x, r_size_t offset,
   }
 }
 
-void r_vec_poke_range(SEXP x, r_size_t offset,
-                      SEXP y, r_size_t from, r_size_t to) {
+void r_vec_poke_range(sexp* x, r_size_t offset,
+                      sexp* y, r_size_t from, r_size_t to) {
   r_vec_poke_n(x, offset, y, from, to - from + 1);
 }
 
 
 // Coercion ----------------------------------------------------------
 
-SEXP rlang_vec_coercer(SEXP dest) {
+sexp* rlang_vec_coercer(sexp* dest) {
   switch(r_typeof(dest)) {
   case LGLSXP: return rlang_ns_get("as_logical");
   case INTSXP: return rlang_ns_get("as_integer");
@@ -153,8 +153,8 @@ SEXP rlang_vec_coercer(SEXP dest) {
   }
 }
 
-void r_vec_poke_coerce_n(SEXP x, r_size_t offset,
-                         SEXP y, r_size_t from, r_size_t n) {
+void r_vec_poke_coerce_n(sexp* x, r_size_t offset,
+                         sexp* y, r_size_t from, r_size_t n) {
   if (r_typeof(y) == r_typeof(x)) {
     r_vec_poke_n(x, offset, y, from, n);
     return ;
@@ -164,15 +164,15 @@ void r_vec_poke_coerce_n(SEXP x, r_size_t offset,
   }
 
   // FIXME: This callbacks to rlang R coercers with an extra copy.
-  SEXP coercer = rlang_vec_coercer(x);
-  SEXP call = KEEP(Rf_lang2(coercer, y));
-  SEXP coerced = KEEP(r_eval(call, R_BaseEnv));
+  sexp* coercer = rlang_vec_coercer(x);
+  sexp* call = KEEP(Rf_lang2(coercer, y));
+  sexp* coerced = KEEP(r_eval(call, R_BaseEnv));
 
   r_vec_poke_n(x, offset, coerced, from, n);
   FREE(2);
 }
 
-void r_vec_poke_coerce_range(SEXP x, r_size_t offset,
-                             SEXP y, r_size_t from, r_size_t to) {
+void r_vec_poke_coerce_range(sexp* x, r_size_t offset,
+                             sexp* y, r_size_t from, r_size_t to) {
   r_vec_poke_coerce_n(x, offset, y, from, to - from + 1);
 }

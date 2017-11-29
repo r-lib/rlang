@@ -5,25 +5,25 @@
 
 // Interface functions ---------------------------------------------------------
 
-void copy_character(SEXP tgt, SEXP src, R_xlen_t len);
-R_xlen_t unescape_character_in_copy(SEXP tgt, SEXP src, R_xlen_t i);
+void copy_character(sexp* tgt, sexp* src, R_xlen_t len);
+R_xlen_t unescape_character_in_copy(sexp* tgt, sexp* src, R_xlen_t i);
 
-SEXP rlang_symbol(SEXP chr) {
-  SEXP string = STRING_ELT(chr, 0);
+sexp* rlang_symbol(sexp* chr) {
+  sexp* string = STRING_ELT(chr, 0);
   return r_sym(Rf_translateChar(string));
 }
 
-SEXP rlang_symbol_to_character(SEXP chr) {
-  SEXP name = PRINTNAME(chr);
+sexp* rlang_symbol_to_character(sexp* chr) {
+  sexp* name = PRINTNAME(chr);
   return Rf_ScalarString(r_str_unserialise_unicode(name));
 }
 
-SEXP rlang_unescape_character(SEXP chr) {
+sexp* rlang_unescape_character(sexp* chr) {
   R_xlen_t len = Rf_xlength(chr);
   R_xlen_t i = unescape_character_in_copy(r_null, chr, 0);
   if (i == len) return chr;
 
-  SEXP ret = KEEP(r_new_vector(STRSXP, len));
+  sexp* ret = KEEP(r_new_vector(STRSXP, len));
   copy_character(ret, chr, i);
   unescape_character_in_copy(ret, chr, i);
   FREE(1);
@@ -32,7 +32,7 @@ SEXP rlang_unescape_character(SEXP chr) {
 
 // Private functions -----------------------------------------------------------
 
-static SEXP unescape_char_to_sexp(char* tmp);
+static sexp* unescape_char_to_sexp(char* tmp);
 static bool has_unicode_escape(const char* chr);
 static int unescape_char(char* chr);
 static int unescape_char_found(char* chr);
@@ -40,19 +40,19 @@ static int process_byte(char* tgt, char* const src, int* len_processed);
 static bool has_codepoint(const char* src);
 static bool is_hex(const char chr);
 
-void copy_character(SEXP tgt, SEXP src, R_xlen_t len) {
+void copy_character(sexp* tgt, sexp* src, R_xlen_t len) {
   for (int i = 0; i < len; ++i) {
     SET_STRING_ELT(tgt, i, STRING_ELT(src, i));
   }
 }
 
-R_xlen_t unescape_character_in_copy(SEXP tgt, SEXP src, R_xlen_t i) {
+R_xlen_t unescape_character_in_copy(sexp* tgt, sexp* src, R_xlen_t i) {
   R_xlen_t len = r_length(src);
   int dry_run = Rf_isNull(tgt);
 
   for (; i < len; ++i) {
-    SEXP old_elt = STRING_ELT(src, i);
-    SEXP new_elt = r_str_unserialise_unicode(old_elt);
+    sexp* old_elt = STRING_ELT(src, i);
+    sexp* new_elt = r_str_unserialise_unicode(old_elt);
     if (dry_run) {
       if (old_elt != new_elt) return i;
     } else {
@@ -63,7 +63,7 @@ R_xlen_t unescape_character_in_copy(SEXP tgt, SEXP src, R_xlen_t i) {
   return i;
 }
 
-SEXP r_str_unserialise_unicode(SEXP r_string) {
+sexp* r_str_unserialise_unicode(sexp* r_string) {
   int ce = Rf_getCharCE(r_string);
   const char* src = CHAR(r_string);
 
@@ -87,7 +87,7 @@ SEXP r_str_unserialise_unicode(SEXP r_string) {
   }
 }
 
-static SEXP unescape_char_to_sexp(char* tmp) {
+static sexp* unescape_char_to_sexp(char* tmp) {
   int len = unescape_char(tmp);
   return Rf_mkCharLenCE(tmp, len, CE_UTF8);
 }

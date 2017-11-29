@@ -1,8 +1,8 @@
 #include "rlang.h"
 
-static SEXP replace_na_(SEXP x, SEXP replacement, int start);
+static sexp* replace_na_(sexp* x, sexp* replacement, int start);
 
-SEXP rlang_replace_na(SEXP x, SEXP replacement) {
+sexp* rlang_replace_na(sexp* x, sexp* replacement) {
   int n = r_length(x);
   int i = 0;
 
@@ -63,7 +63,7 @@ SEXP rlang_replace_na(SEXP x, SEXP replacement) {
     return x;
 }
 
-static SEXP replace_na_(SEXP x, SEXP replacement, int i) {
+static sexp* replace_na_(sexp* x, sexp* replacement, int i) {
   KEEP(x = Rf_duplicate(x));
   int n = r_length(x);
 
@@ -99,7 +99,7 @@ static SEXP replace_na_(SEXP x, SEXP replacement, int i) {
   }
 
   case STRSXP: {
-    SEXP new_value = STRING_ELT(replacement, 0);
+    sexp* new_value = STRING_ELT(replacement, 0);
     for (; i < n; ++i) {
       if (STRING_ELT(x, i) == NA_STRING)
         SET_STRING_ELT(x, i, new_value);

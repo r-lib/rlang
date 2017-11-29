@@ -3,12 +3,12 @@
 
 // Capture
 
-SEXP rlang_ns_get(const char* name);
+sexp* rlang_ns_get(const char* name);
 
-SEXP capture(SEXP sym, SEXP frame, SEXP* arg_env) {
-  static SEXP capture_call = NULL;
+sexp* capture(sexp* sym, sexp* frame, SEXP* arg_env) {
+  static sexp* capture_call = NULL;
   if (!capture_call) {
-    SEXP args = KEEP(r_new_node(r_null, r_null));
+    sexp* args = KEEP(r_new_node(r_null, r_null));
     capture_call = r_new_call_node(rlang_ns_get("captureArgInfo"), args);
     r_mark_precious(capture_call);
     r_mark_shared(capture_call);
@@ -20,9 +20,9 @@ SEXP capture(SEXP sym, SEXP frame, SEXP* arg_env) {
   }
 
   r_node_poke_cadr(capture_call, sym);
-  SEXP arg_info = KEEP(r_eval(capture_call, frame));
-  SEXP expr = r_list_get(arg_info, 0);
-  SEXP env = r_list_get(arg_info, 1);
+  sexp* arg_info = KEEP(r_eval(capture_call, frame));
+  sexp* expr = r_list_get(arg_info, 0);
+  sexp* env = r_list_get(arg_info, 1);
 
   // Unquoting rearranges the expression
   expr = KEEP(r_duplicate(expr, false));
@@ -36,17 +36,17 @@ SEXP capture(SEXP sym, SEXP frame, SEXP* arg_env) {
   return expr;
 }
 
-SEXP rlang_enexpr(SEXP sym, SEXP frame) {
+sexp* rlang_enexpr(sexp* sym, sexp* frame) {
   return capture(sym, frame, NULL);
 }
 
 
-SEXP forward_quosure(SEXP x, SEXP env);
+sexp* forward_quosure(sexp* x, sexp* env);
 
-SEXP rlang_enquo(SEXP sym, SEXP frame) {
-  SEXP env;
-  SEXP expr = KEEP(capture(sym, frame, &env));
-  SEXP quo = forward_quosure(expr, env);
+sexp* rlang_enquo(sexp* sym, sexp* frame) {
+  sexp* env;
+  sexp* expr = KEEP(capture(sym, frame, &env));
+  sexp* quo = forward_quosure(expr, env);
   FREE(1);
   return quo;
 }

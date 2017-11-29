@@ -2,7 +2,7 @@
 #define RLANG_STACK_H
 
 
-void r_on_exit(SEXP expr, SEXP frame);
+void r_on_exit(sexp* expr, sexp* frame);
 
 
 #endif
