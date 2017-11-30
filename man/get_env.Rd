@@ -3,14 +3,14 @@
 \name{get_env}
 \alias{get_env}
 \alias{set_env}
-\alias{mut_env_parent}
+\alias{env_poke_parent}
 \title{Get or set the environment of an object}
 \usage{
 get_env(env = caller_env(), default = NULL)
 
 set_env(env, new_env = caller_env())
 
-mut_env_parent(env, new_env)
+env_poke_parent(env, new_env)
 }
 \arguments{
 \item{env}{An environment or an object bundling an environment,
@@ -34,7 +34,7 @@ environments).
 }
 \details{
 While \code{set_env()} returns a modified copy and does not have side
-effects, \code{mut_env_parent()} operates changes the environment by
+effects, \code{env_poke_parent()} operates changes the environment by
 side effect. This is because environments are
 \link[=is_copyable]{uncopyable}. Be careful not to change environments
 that you don't own, e.g. a parent environment of a function from a

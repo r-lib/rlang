@@ -15,7 +15,7 @@ extern sexp* rlang_is_null(sexp*);
 extern sexp* r_f_lhs(sexp*);
 extern sexp* r_f_rhs(sexp*);
 extern sexp* r_new_condition(sexp*, sexp*, sexp*);
-extern sexp* rlang_mut_env_parent(sexp*, sexp*);
+extern sexp* rlang_env_poke_parent(sexp*, sexp*);
 extern sexp* rlang_poke_type(sexp*, sexp*);
 extern sexp* rlang_replace_na(sexp*, sexp*);
 extern sexp* rlang_node_car(sexp*);
@@ -116,7 +116,7 @@ static const R_CallMethodDef call_entries[] = {
   {"rlang_node_poke_cdar",      (DL_FUNC) &rlang_node_poke_cdar, 2},
   {"rlang_node_poke_cddr",      (DL_FUNC) &rlang_node_poke_cddr, 2},
   {"rlang_new_node",            (DL_FUNC) &rlang_new_node_, 2},
-  {"rlang_mut_env_parent",      (DL_FUNC) &rlang_mut_env_parent, 2},
+  {"rlang_env_poke_parent",      (DL_FUNC) &rlang_env_poke_parent, 2},
   {"rlang_poke_type",           (DL_FUNC) &rlang_poke_type, 2},
   {"rlang_mark_object",         (DL_FUNC) &rlang_mark_object, 1},
   {"rlang_unmark_object",       (DL_FUNC) &rlang_unmark_object, 1},

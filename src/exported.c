@@ -31,7 +31,7 @@ sexp* rlang_cnd_abort(sexp* cnd, sexp* mufflable) {
 
 // env.c
 
-sexp* rlang_mut_env_parent(sexp* env, sexp* new_parent) {
+sexp* rlang_env_poke_parent(sexp* env, sexp* new_parent) {
   SET_ENCLOS(env, new_parent);
   return env;
 }

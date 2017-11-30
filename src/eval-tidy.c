@@ -42,7 +42,7 @@ sexp* rlang_tilde_eval(sexp* tilde, sexp* dots, sexp* overscope, sexp* overscope
   // scope to the enclosure of the new formula, if it has one
   r_env_poke_parent(overscope_top, quo_env);
 
-  sexp* exit_fun = rlang_ns_get("mut_env_parent");
+  sexp* exit_fun = rlang_ns_get("env_poke_parent");
   sexp* exit_args = r_build_pairlist2(overscope_top, prev_env);
   sexp* exit_lang = KEEP(r_build_call_node(exit_fun, exit_args));
   r_on_exit(exit_lang, cur_frame);
