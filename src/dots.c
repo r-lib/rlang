@@ -475,8 +475,14 @@ static bool is_spliced_bare_dots_value(sexp* x) {
   if (r_typeof(x) != r_type_list) {
     return false;
   }
-  if (is_spliced_dots(x) || r_inherits(x, "spliced")) {
+  if (is_spliced_dots(x)) {
     return true;
+  }
+  if (r_inherits(x, "spliced")) {
+    return true;
+  }
+  if (r_is_object(x)) {
+    return false;
   }
   return true;
 }
