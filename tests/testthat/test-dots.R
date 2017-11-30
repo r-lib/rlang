@@ -98,3 +98,8 @@ test_that("dots_splice() flattens lists", {
   expect_identical(dots_splice(list("a"), !!! list("b"), list("c"), "d"), named_list("a", "b", "c", "d"))
   expect_identical(dots_splice(list("a"), splice(list("b")), list("c"), "d"), named_list("a", "b", "c", "d"))
 })
+
+test_that("dots_splice() doesn't squash S3 objects", {
+  s <- structure(list(v1 = 1, v2 = 2), class = "foo")
+  expect_identical(dots_splice(s, s), named_list(s, s))
+})
