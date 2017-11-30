@@ -510,5 +510,13 @@ sexp* rlang_dots_list(sexp* frame_env, sexp* named,
 }
 sexp* rlang_dots_flat_list(sexp* frame_env, sexp* named,
                            sexp* ignore_empty, sexp* unquote_names) {
-  return dots_values_impl(frame_env, named, ignore_empty, unquote_names, is_spliced_bare_dots_value);
+  struct dots_capture_info capture_info;
+  capture_info = init_capture_info(DOTS_VALUE, named, ignore_empty, unquote_names);
+  sexp* dots = dots_init(&capture_info, frame_env);
+
+  KEEP(dots);
+  dots = r_squash_if(dots, r_type_list, is_spliced_bare_dots_value, 1);
+
+  FREE(1);
+  return dots;
 }

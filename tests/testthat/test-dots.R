@@ -92,3 +92,7 @@ test_that("can splice NULL value", {
   expect_identical(dots_list(!!! NULL), named_list())
   expect_identical(dots_list(1, !!! NULL, 3), named_list(1, 3))
 })
+
+test_that("dots_splice() flattens lists", {
+  expect_identical(dots_splice(list("a", list("b"), "c"), "d", list("e")), named_list("a", list("b"), "c", "d", "e"))
+})
