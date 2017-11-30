@@ -73,6 +73,9 @@ extern sexp* rlang_vec_coerce(sexp*, sexp*);
 extern sexp* rlang_mark_object(sexp* x);
 extern sexp* rlang_unmark_object(sexp* x);
 
+// Library initialisation defined below
+sexp* rlang_library_load();
+sexp* rlang_library_unload();
 
 // For unit tests
 extern sexp* chr_prepend(sexp*, sexp*);
@@ -150,6 +153,8 @@ static const R_CallMethodDef call_entries[] = {
   {"rlang_enquo",               (DL_FUNC) &rlang_enquo, 2},
   {"rlang_get_expression",      (DL_FUNC) &r_get_expression, 2},
   {"rlang_vec_coerce",          (DL_FUNC) &rlang_vec_coerce, 2},
+  {"rlang_library_load",        (DL_FUNC) &rlang_library_load, 0},
+  {"rlang_library_unload",      (DL_FUNC) &rlang_library_unload, 0},
   {NULL, NULL, 0}
 };
 
@@ -162,4 +167,11 @@ void R_init_rlang(DllInfo* dll) {
   // Register functions callable from this package
   R_registerRoutines(dll, NULL, call_entries, NULL, NULL);
   R_useDynamicSymbols(dll, FALSE);
+}
+
+sexp* rlang_library_load() {
+  return r_null;
+}
+sexp* rlang_library_unload() {
+  return r_null;
 }
