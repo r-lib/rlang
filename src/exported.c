@@ -200,6 +200,14 @@ sexp* rlang_poke_type(sexp* x, sexp* type) {
   return x;
 }
 
+sexp* rlang_mark_object(sexp* x) {
+  SET_OBJECT(x, 1);
+  return x;
+}
+sexp* rlang_unmark_object(sexp* x) {
+  SET_OBJECT(x, 0);
+  return x;
+}
 
 // vec.h
 

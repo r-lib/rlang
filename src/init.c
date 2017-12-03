@@ -70,6 +70,8 @@ extern sexp* rlang_enexpr(sexp*, sexp*);
 extern sexp* rlang_enquo(sexp*, sexp*);
 extern sexp* r_get_expression(sexp*, sexp*);
 extern sexp* rlang_vec_coerce(sexp*, sexp*);
+extern sexp* rlang_mark_object(sexp* x);
+extern sexp* rlang_unmark_object(sexp* x);
 
 
 // For unit tests
@@ -113,6 +115,8 @@ static const R_CallMethodDef call_entries[] = {
   {"rlang_new_node",            (DL_FUNC) &rlang_new_node_, 2},
   {"rlang_mut_env_parent",      (DL_FUNC) &rlang_mut_env_parent, 2},
   {"rlang_poke_type",           (DL_FUNC) &rlang_poke_type, 2},
+  {"rlang_mark_object",         (DL_FUNC) &rlang_mark_object, 1},
+  {"rlang_unmark_object",       (DL_FUNC) &rlang_unmark_object, 1},
   {"rlang_node_tag",            (DL_FUNC) &rlang_node_tag, 1},
   {"rlang_node_poke_tag",       (DL_FUNC) &rlang_node_poke_tag, 2},
   {"rlang_squash",              (DL_FUNC) &rlang_squash, 4},

@@ -26,6 +26,16 @@ static inline bool r_is_shared(sexp* x) {
   return MAYBE_SHARED(x);
 }
 
+static inline void r_mark_object(sexp* x) {
+  SET_OBJECT(x, 1);
+}
+static inline void r_unmark_object(sexp* x) {
+  SET_OBJECT(x, 0);
+}
+static inline bool r_is_object(sexp* x) {
+  return OBJECT(x);
+}
+
 static inline bool r_inherits(sexp* x, const char* tag) {
   return Rf_inherits(x, tag);
 }
@@ -87,13 +97,6 @@ static inline sexp* r_maybe_duplicate(sexp* x, bool shallow) {
   } else {
     return x;
   }
-}
-
-static inline void r_mark_object(sexp* x, int bit) {
-  SET_OBJECT(x, bit);
-}
-static inline bool r_is_object(sexp* x) {
-  return OBJECT(x);
 }
 
 static inline sexp* r_poke_type(sexp* x, enum r_type type) {
