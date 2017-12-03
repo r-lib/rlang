@@ -141,7 +141,11 @@
 
 * Quosures are no longer a subclass of formula. They are now calls to
   inlined functions, which makes them compatible with `base::eval()`
-  (though they only support auxiliary data with `eval_tidy()`).
+  (though they only support auxiliary data with `eval_tidy()`). Note
+  that the R printer currently suffers from a bug that causes quosures
+  to evaluate during printing when they are wrapped in a list. To work
+  around this, pass your lists of quosures to `new_quosures()`.  The
+  lists returned by `quos()` are not affected.
 
 
 # rlang 0.1.4
