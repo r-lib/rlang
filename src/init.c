@@ -85,6 +85,9 @@ extern sexp* rlang_test_r_warn(sexp*);
 extern sexp* rlang_on_exit(sexp*, sexp*);
 extern sexp* rlang_test_is_special_op_sym(sexp*);
 extern sexp* rlang_test_base_ns_get(sexp*);
+extern sexp* r_current_frame();
+extern sexp* rlang_test_sys_frame(sexp*);
+extern sexp* rlang_test_sys_call(sexp*);
 
 static const R_CallMethodDef call_entries[] = {
   {"r_f_lhs",                   (DL_FUNC) &r_f_lhs, 1},
@@ -142,6 +145,9 @@ static const R_CallMethodDef call_entries[] = {
   {"rlang_test_r_on_exit",      (DL_FUNC) &rlang_on_exit, 2},
   {"rlang_test_is_special_op_sym", (DL_FUNC) &rlang_test_is_special_op_sym, 1},
   {"rlang_test_base_ns_get",    (DL_FUNC) &rlang_test_base_ns_get, 1},
+  {"rlang_test_current_frame",  (DL_FUNC) &r_current_frame, 0},
+  {"rlang_test_sys_frame",      (DL_FUNC) &rlang_test_sys_frame, 1},
+  {"rlang_test_sys_call",       (DL_FUNC) &rlang_test_sys_call, 1},
   {"rlang_r_string",            (DL_FUNC) &rlang_r_string, 1},
   {"rlang_exprs_interp",        (DL_FUNC) &rlang_exprs_interp, 4},
   {"rlang_quos_interp",         (DL_FUNC) &rlang_quos_interp, 4},

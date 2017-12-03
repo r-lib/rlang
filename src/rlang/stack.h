@@ -4,5 +4,9 @@
 
 void r_on_exit(sexp* expr, sexp* frame);
 
+sexp* r_current_frame();
+sexp* r_sys_frame(int n, sexp* frame);
+sexp* r_sys_call(int n, sexp* frame);
+
 
 #endif
