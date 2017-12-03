@@ -7,7 +7,7 @@
 \alias{overscope_clean}
 \title{Create a dynamic scope for tidy evaluation}
 \usage{
-as_overscope(quo, data = NULL)
+as_overscope(data, enclosure = base_env())
 
 new_overscope(bottom, top = NULL, enclosure = base_env())
 
@@ -16,9 +16,11 @@ overscope_eval_next(overscope, quo, env = base_env())
 overscope_clean(overscope)
 }
 \arguments{
-\item{quo}{A \link{quosure}.}
-
 \item{data}{Additional data to put in scope.}
+
+\item{enclosure}{The default enclosure. After a quosure is done
+self-evaluating, the overscope is rechained to the default
+enclosure.}
 
 \item{bottom}{This is the environment (or the bottom of a set of
 environments) containing definitions for overscoped symbols. The
@@ -35,13 +37,11 @@ environment where the tidy quotes were created in the first place
 are in scope as well. If \code{NULL} (the default), \code{bottom} is also the top of
 the overscope.}
 
-\item{enclosure}{The default enclosure. After a quosure is done
-self-evaluating, the overscope is rechained to the default
-enclosure.}
-
 \item{overscope}{A valid overscope containing bindings for \code{~},
 \code{.top_env} and \code{_F} and whose parents contain overscoped bindings
 for tidy evaluation.}
+
+\item{quo}{A \link{quosure}.}
 
 \item{env}{The lexical enclosure in case \code{quo} is not a validly
 scoped quosure. This is the \link[=base_env]{base environment} by

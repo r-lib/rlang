@@ -91,13 +91,30 @@
 #' eval_tidy(quo(!! cyl), mtcars)
 #' @name eval_tidy
 eval_tidy <- function(expr, data = NULL, env = caller_env()) {
-  if (!inherits(expr, "quosure")) {
-    expr <- new_quosure(expr, env)
+  if (is_null(data)) {
+    return(eval_bare(expr, env))
   }
-  overscope <- as_overscope(expr, data)
-  on.exit(overscope_clean(overscope))
 
-  overscope_eval_next(overscope, expr)
+  `_tidyeval_overscope` <- as_overscope(data, env)
+  on.exit(overscope_clean(`_tidyeval_overscope`))
+
+  expr <- as_quosure(expr, env)
+  eval_bare(expr, environment())
+}
+
+quo_eval <- function(expr) {
+  .Call(rlang_quo_eval, sys.call(), parent.frame())
+}
+quo_eval_overscoped <- function(expr, env, overscope) {
+  `_tidyeval_overscope` <- overscope
+
+  # Rechain overscope
+  prev_env <- overscope$.env
+  overscope$.env <- env
+  env_poke_parent(overscope$.top_env, env)
+  on.exit(env_poke_parent(overscope$.top_env, prev_env))
+
+  eval_bare(expr, overscope)
 }
 
 #' Data pronoun for tidy evaluation
@@ -141,9 +158,7 @@ eval_tidy_ <- function(expr, bottom, top = NULL, env = caller_env()) {
   overscope <- new_overscope(bottom, top)
   on.exit(overscope_clean(overscope))
 
-  if (!inherits(expr, "quosure")) {
-    expr <- new_quosure(expr, env)
-  }
+  expr <- as_quosure(expr, env)
   overscope_eval_next(overscope, expr)
 }
 
@@ -219,12 +234,11 @@ eval_tidy_ <- function(expr, bottom, top = NULL, env = caller_env()) {
 #'
 #' overscope_clean(overscope)
 #' fn()
-as_overscope <- function(quo, data = NULL) {
+as_overscope <- function(data, enclosure = base_env()) {
   data_src <- as_dictionary(data, read_only = TRUE)
-  enclosure <- f_env(quo) %||% base_env()
 
   # Create bottom environment pre-chained to the lexical scope
-  bottom <- child_env(enclosure)
+  bottom <- new_environment()
 
   # Emulate dynamic scope for established data
   if (is_vector(data)) {
@@ -273,9 +287,9 @@ new_overscope <- function(bottom, top = NULL, enclosure = base_env()) {
   # user.
   overscope <- child_env(bottom)
 
-  overscope$`~` <- f_self_eval(overscope, top)
   overscope$.top_env <- top
   overscope$.env <- enclosure
+  overscope$`_tidyeval_overscope` <- overscope
 
   overscope
 }
@@ -288,8 +302,8 @@ new_overscope <- function(bottom, top = NULL, enclosure = base_env()) {
 #'   default.
 #' @export
 overscope_eval_next <- function(overscope, quo, env = base_env()) {
-  quo <- as_quosureish(quo, env)
-  lexical_env <- f_env(quo)
+  quo <- as_quosure(quo, env)
+  lexical_env <- attr(quo, ".Environment")
 
   overscope$.env <- lexical_env
   env_poke_parent(overscope$.top_env, lexical_env)
@@ -303,7 +317,7 @@ overscope_clean <- function(overscope) {
   top_env <- overscope$.top_env %||% cur_env
 
   # At this level we only want to remove what we have installed
-  env_unbind(overscope, c("~", ".top_env", ".env"))
+  env_unbind(overscope, c(".top_env", ".env", "_tidyeval_overscope"))
 
   while (!identical(cur_env, env_parent(top_env))) {
     env_unbind(cur_env, names(cur_env))
@@ -311,16 +325,4 @@ overscope_clean <- function(overscope) {
   }
 
   overscope
-}
-
-f_self_eval <- function(overscope, overscope_top) {
-  function(...) {
-    .Call(rlang_tilde_eval,
-      sys.call(),
-      dots_node(...),
-      overscope,
-      overscope_top,
-      environment()
-    )
-  }
 }

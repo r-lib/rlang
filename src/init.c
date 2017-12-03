@@ -49,7 +49,6 @@ extern sexp* rlang_new_dictionary(sexp*, sexp*, sexp*);
 extern sexp* rlang_squash(sexp*, sexp*, sexp*, sexp*);
 extern sexp* rlang_symbol(sexp*);
 extern sexp* rlang_symbol_to_character(sexp*);
-extern sexp* rlang_tilde_eval(sexp*, sexp*, sexp*, sexp*);
 extern sexp* rlang_unescape_character(sexp*);
 extern sexp* rlang_capturearginfo(sexp*, sexp*, sexp*, sexp*);
 extern sexp* rlang_capturedots(sexp*, sexp*, sexp*, sexp*);
@@ -73,6 +72,7 @@ extern sexp* r_get_expression(sexp*, sexp*);
 extern sexp* rlang_vec_coerce(sexp*, sexp*);
 extern sexp* rlang_mark_object(sexp* x);
 extern sexp* rlang_unmark_object(sexp* x);
+extern sexp* rlang_quo_eval(sexp*, sexp*);
 
 // Library initialisation defined below
 sexp* rlang_library_load();
@@ -131,7 +131,6 @@ static const R_CallMethodDef call_entries[] = {
   {"rlang_sxp_address",         (DL_FUNC) &rlang_sxp_address, 1},
   {"rlang_symbol",              (DL_FUNC) &rlang_symbol, 1},
   {"rlang_symbol_to_character", (DL_FUNC) &rlang_symbol_to_character, 1},
-  {"rlang_tilde_eval",          (DL_FUNC) &rlang_tilde_eval, 5},
   {"rlang_unescape_character",  (DL_FUNC) &rlang_unescape_character, 1},
   {"rlang_zap_attrs",           (DL_FUNC) &rlang_zap_attrs, 1},
   {"r_new_language",            (DL_FUNC) &rlang_new_call_node, 2},
@@ -161,6 +160,7 @@ static const R_CallMethodDef call_entries[] = {
   {"rlang_enquo",               (DL_FUNC) &rlang_enquo, 2},
   {"rlang_get_expression",      (DL_FUNC) &r_get_expression, 2},
   {"rlang_vec_coerce",          (DL_FUNC) &rlang_vec_coerce, 2},
+  {"rlang_quo_eval",            (DL_FUNC) &rlang_quo_eval, 2},
   {"rlang_library_load",        (DL_FUNC) &rlang_library_load, 0},
   {"rlang_library_unload",      (DL_FUNC) &rlang_library_unload, 0},
   {NULL, NULL, 0}

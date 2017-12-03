@@ -373,6 +373,8 @@ type_of <- function(x) {
     } else {
       "formula"
     }
+  } else if (inherits(x, "quosure")) {
+    "quosure"
   } else if (type == "character") {
     if (length(x) == 1) "string" else "character"
   } else if (type %in% c("builtin", "special")) {

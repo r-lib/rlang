@@ -54,20 +54,20 @@ test_that("unquoted formulas look in their own env", {
 })
 
 test_that("unquoted formulas can use data", {
-  f1 <- function() {
+  quo1 <- local({
     z <- 100
     x <- 2
     quo(x + z)
-  }
-  f2 <- function() {
+  })
+  quo2 <- local({
     z <- 100
     quo(.data$x + .env$z)
-  }
+  })
 
   z <- 10
-  expect_identical(eval_tidy(f2(), list(x = 1)), 101)
-  expect_identical(eval_tidy(quo(!! f1()), data = list(x = 1)), 101)
-  expect_identical(eval_tidy(quo(!! f2()), data = list(x = 1)), 101)
+  expect_identical(eval_tidy(quo2, list(x = 1)), 101)
+  expect_identical(eval_tidy(quo(!! quo1), data = list(x = 1)), 101)
+  expect_identical(eval_tidy(quo(!! quo2), data = list(x = 1)), 101)
 })
 
 test_that("bare formulas are not evaluated", {
@@ -155,20 +155,21 @@ test_that("evaluation env is cleaned up", {
   expect_identical(out$f, with_env(env = out$env, ~letters))
 })
 
-test_that("inner formulas are rechained to evaluation env", {
+test_that("inner quosures are rechained to evaluation env", {
   env <- child_env(NULL)
-  f1 <- quo(env$eval_env1 <- get_env())
-  f2 <- quo({
-    !! f1
+  quo1 <- quo(env$eval_env1 <- get_env())
+  quo2 <- quo({
+    !! quo1
     env$eval_env2 <- get_env()
   })
 
-  eval_tidy(f2, mtcars)
+  eval_tidy(quo2, mtcars)
+
   expect_identical(env$eval_env1, env$eval_env2)
-  expect_true(env_inherits(env$eval_env2, get_env(f2)))
+  expect_true(env_inherits(env$eval_env2, get_env(quo2)))
 })
 
-test_that("dyn scope is chained to lexical env", {
+test_that("overscope inherits from lexical env", {
   foo <- "bar"
   overscope <- child_env(NULL)
   expect_identical(eval_tidy_(quo(foo), overscope), "bar")
@@ -178,7 +179,7 @@ test_that("whole scope is purged", {
   outside <- child_env(NULL, important = TRUE)
   top <- child_env(outside, foo = "bar", hunoz = 1)
   mid <- child_env(top, bar = "baz", hunoz = 2)
-  bottom <- child_env(mid, !!! list(.top_env = top, .env = 1, `~` = 2))
+  bottom <- child_env(mid, !!! list(.top_env = top, .env = 1, `_tidyeval_overscope` = 2))
 
   overscope_clean(bottom)
 
@@ -227,7 +228,7 @@ test_that(".env pronoun refers to current quosure (#174)", {
     quo(identity(!! inner_quo))
   })
 
-  expect_identical(eval_tidy(outer_quo), "inner")
+  expect_identical(eval_tidy(outer_quo, list()), "inner")
 })
 
 test_that("can call tilde with named arguments (#226)", {

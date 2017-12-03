@@ -33,6 +33,10 @@ static inline sexp* r_env_set(sexp* env, sexp* sym, sexp* value) {
   return env;
 }
 
+static inline sexp* r_env_parent(sexp* env) {
+  return ENCLOS(env);
+}
+
 sexp* r_ns_env(const char* pkg);
 
 sexp* r_base_ns_get(const char* name);

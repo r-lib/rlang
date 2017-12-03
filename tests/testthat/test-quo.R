@@ -1,20 +1,17 @@
 context("quo")
 
-test_that("explicit promise makes a formula", {
+test_that("enquo() returns a quosure", {
   capture <- function(x) enquo(x)
-  f1 <- capture(1 + 2 + 3)
-  f2 <- ~ 1 + 2 + 3
-
-  expect_equal(f1, f2)
+  expect_identical(capture(1 + 2 + 3), quo(1 + 2 + 3))
 })
 
-test_that("explicit promise works only one level deep", {
-  f <- function(x) list(env = get_env(), f = g(x))
+test_that("enquo() doesn't climb promises", {
+  f <- function(x) list(env = get_env(), quo = g(x))
   g <- function(y) enquo(y)
   out <- f(1 + 2 + 3)
-  expected_f <- with_env(out$env, quo(x))
+  expected_quo <- with_env(out$env, quo(x))
 
-  expect_identical(out$f, expected_f)
+  expect_identical(out$quo, expected_quo)
 })
 
 test_that("can capture optimised constants", {

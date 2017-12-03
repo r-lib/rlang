@@ -23,6 +23,9 @@ static inline sexp* r_build_call1(sexp* head, sexp* arg1) {
 static inline sexp* r_build_call2(sexp* head, sexp* arg1, sexp* arg2) {
   return r_build_call_node(head, r_build_pairlist2(arg1, arg2));
 }
+static inline sexp* r_build_call3(sexp* head, sexp* arg1, sexp* arg2, sexp* arg3) {
+  return r_build_call_node(head, r_build_pairlist3(arg1, arg2, arg3));
+}
 
 bool r_is_call(sexp* x, const char* name);
 bool r_is_call_any(sexp* x, const char** names, int n);

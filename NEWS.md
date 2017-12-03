@@ -136,6 +136,13 @@
   For instance you have to explicitly write `!! (x > y)` to unquote
   `x > y` rather than just `x`.
 
+* `as_overscope()` no longer takes a quosure as first argument. It is
+  used to transform a data vector into an overscope.
+
+* Quosures are no longer a subclass of formula. They are now calls to
+  inlined functions, which makes them compatible with `base::eval()`
+  (though they only support auxiliary data with `eval_tidy()`).
+
 
 # rlang 0.1.4
 

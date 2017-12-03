@@ -194,8 +194,8 @@ enquo <- function(arg) {
 
 #' @export
 print.quosure <- function(x, ...) {
-  cat(paste0("<quosure: ", env_type(get_env(x)), ">\n"))
-  print(set_attrs(x, NULL))
+  print(node_cadr(x))
+  print(get_env(x))
   invisible(x)
 }
 #' @export
