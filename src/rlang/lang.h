@@ -36,5 +36,7 @@ bool r_is_namespaced_call_any(sexp* x, const char* ns, const char** names, int n
 
 bool r_is_special_op_call(sexp* x);
 
+sexp* r_expr_protect(sexp* x);
+
 
 #endif
