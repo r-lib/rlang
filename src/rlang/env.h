@@ -28,7 +28,7 @@ static inline sexp* r_env_find(sexp* env, sexp* sym) {
 static inline sexp* r_env_get(sexp* env, sexp* sym) {
   return Rf_eval(sym, env);
 }
-static inline sexp* r_env_set(sexp* env, sexp* sym, sexp* value) {
+static inline sexp* r_env_poke(sexp* env, sexp* sym, sexp* value) {
   Rf_defineVar(sym, value, env);
   return env;
 }

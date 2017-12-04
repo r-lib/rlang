@@ -81,6 +81,7 @@ extern sexp* rlang_quo_is_symbol(sexp* quo);
 extern sexp* rlang_quo_is_call(sexp* quo);
 extern sexp* rlang_quo_is_symbolic(sexp* quo);
 extern sexp* rlang_quo_is_null(sexp* quo);
+extern sexp* rlang_new_overscope(sexp*, sexp*, sexp*);
 
 // Library initialisation defined below
 sexp* rlang_library_load();
@@ -177,6 +178,7 @@ static const R_CallMethodDef call_entries[] = {
   {"rlang_quo_is_symbolic",     (DL_FUNC) &rlang_quo_is_symbolic, 1},
   {"rlang_quo_is_missing",      (DL_FUNC) &rlang_quo_is_missing, 1},
   {"rlang_quo_is_null",         (DL_FUNC) &rlang_quo_is_null, 1},
+  {"rlang_new_overscope",       (DL_FUNC) &rlang_new_overscope, 3},
   {"rlang_library_load",        (DL_FUNC) &rlang_library_load, 0},
   {"rlang_library_unload",      (DL_FUNC) &rlang_library_unload, 0},
   {NULL, NULL, 0}

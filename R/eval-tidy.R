@@ -270,21 +270,7 @@ as_overscope <- function(data, enclosure = base_env()) {
 #'   (self-evaluating quosures, formula-unguarding, ...).
 #' @export
 new_overscope <- function(bottom, top = NULL, enclosure = base_env()) {
-  top <- top %||% bottom
-
-  # Create a child because we don't know what might be in bottom_env.
-  # This way we can just remove all bindings between the parent of
-  # `overscope` and `overscope_top`. We don't want to clean everything in
-  # `overscope` in case the environment is leaked, e.g. through a
-  # closure that might rely on some local bindings installed by the
-  # user.
-  overscope <- child_env(bottom)
-
-  overscope$.top_env <- top
-  overscope$.env <- enclosure
-  overscope$`_tidyeval_overscope` <- overscope
-
-  overscope
+  .Call(rlang_new_overscope, bottom, top, enclosure)
 }
 #' @rdname as_overscope
 #' @param overscope A valid overscope containing bindings for `~`,
