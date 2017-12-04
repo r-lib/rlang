@@ -84,16 +84,14 @@ an example of how to build a data scope for tidy evaluation.
 pronouns \code{.data} and \code{.env} in the bottom environment. The
 immediate parent is the top environment (this is a two-level
 overscope) and contains all the bindings from \code{data}.
-\item \code{new_overscope()} is called by \code{as_overscope()} and
-\code{\link[=eval_tidy_]{eval_tidy_()}}. It installs the definitions for making
-formulas self-evaluate and for formula-guards. It also installs
-the pronoun \code{.top_env} that helps keeping track of the boundary
-of the dynamic scope. If you evaluate a tidy quote with
-\code{\link[=eval_tidy_]{eval_tidy_()}}, you don't need to use this.
+\item \code{new_overscope()} is the most low-level overscope constructor. It
+takes a bottom and a top environment (which can be identical if
+the overscope is one-level deep) and installs the \code{.env} pronoun
+and an overscope flag.
 \item \code{eval_tidy_()} is useful when you have several quosures to
 evaluate in a same dynamic scope. That's a simple wrapper around
 \code{\link[=eval_bare]{eval_bare()}} that updates the \code{.env} pronoun and rechains the
-dynamic scope to the new formula enclosure to evaluate.
+overscope to the next quosure.
 \item Once an expression has been evaluated in the tidy environment,
 it's a good idea to clean up the definitions that make
 self-evaluation of formulas possible \code{overscope_clean()}.

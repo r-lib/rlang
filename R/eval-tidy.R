@@ -194,17 +194,15 @@ eval_tidy_ <- function(expr, bottom, top = NULL, env = caller_env()) {
 #'   immediate parent is the top environment (this is a two-level
 #'   overscope) and contains all the bindings from `data`.
 #'
-#' * `new_overscope()` is called by `as_overscope()` and
-#'   [eval_tidy_()]. It installs the definitions for making
-#'   formulas self-evaluate and for formula-guards. It also installs
-#'   the pronoun `.top_env` that helps keeping track of the boundary
-#'   of the dynamic scope. If you evaluate a tidy quote with
-#'   [eval_tidy_()], you don't need to use this.
+#' * `new_overscope()` is the most low-level overscope constructor. It
+#'   takes a bottom and a top environment (which can be identical if
+#'   the overscope is one-level deep) and installs the `.env` pronoun
+#'   and an overscope flag.
 #'
 #' * `eval_tidy_()` is useful when you have several quosures to
 #'   evaluate in a same dynamic scope. That's a simple wrapper around
 #'   [eval_bare()] that updates the `.env` pronoun and rechains the
-#'   dynamic scope to the new formula enclosure to evaluate.
+#'   overscope to the next quosure.
 #'
 #' * Once an expression has been evaluated in the tidy environment,
 #'   it's a good idea to clean up the definitions that make
@@ -214,7 +212,6 @@ eval_tidy_ <- function(expr, bottom, top = NULL, env = caller_env()) {
 #'   examples). Note that this function is automatically called by
 #'   [eval_tidy_()].
 #'
-#' @param quo A [quosure].
 #' @param data Additional data to put in scope.
 #' @return An overscope environment.
 #' @export
@@ -276,6 +273,7 @@ new_overscope <- function(bottom, top = NULL, enclosure = base_env()) {
 #' @param overscope A valid overscope containing bindings for `~`,
 #'   `.top_env` and `_F` and whose parents contain overscoped bindings
 #'   for tidy evaluation.
+#' @param quo A [quosure].
 #' @param env The lexical enclosure in case `quo` is not a validly
 #'   scoped quosure. This is the [base environment][base_env] by
 #'   default.
