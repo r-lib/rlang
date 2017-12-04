@@ -16,6 +16,8 @@ extern sexp* r_f_lhs(sexp*);
 extern sexp* r_f_rhs(sexp*);
 extern sexp* r_new_condition(sexp*, sexp*, sexp*);
 extern sexp* rlang_env_poke_parent(sexp*, sexp*);
+extern sexp* rlang_env_frame(sexp* env);
+extern sexp* rlang_env_hash_table(sexp* env);
 extern sexp* rlang_poke_type(sexp*, sexp*);
 extern sexp* rlang_replace_na(sexp*, sexp*);
 extern sexp* rlang_node_car(sexp*);
@@ -45,6 +47,7 @@ extern sexp* rlang_is_formulaish(sexp*, sexp*, sexp*);
 extern sexp* rlang_is_reference(sexp*, sexp*);
 extern sexp* rlang_sxp_address(sexp*);
 extern sexp* rlang_length(sexp*);
+extern sexp* rlang_true_length(sexp* x);
 extern sexp* rlang_new_dictionary(sexp*, sexp*, sexp*);
 extern sexp* rlang_squash(sexp*, sexp*, sexp*, sexp*);
 extern sexp* rlang_symbol(sexp*);
@@ -110,6 +113,7 @@ static const R_CallMethodDef call_entries[] = {
   {"rlang_is_null",             (DL_FUNC) &rlang_is_null, 1},
   {"rlang_is_reference",        (DL_FUNC) &rlang_is_reference, 2},
   {"rlang_length",              (DL_FUNC) &rlang_length, 1},
+  {"rlang_true_length",         (DL_FUNC) &rlang_true_length, 1},
   {"rlang_new_dictionary",      (DL_FUNC) &rlang_new_dictionary, 3},
   {"rlang_set_attrs",           (DL_FUNC) &rlang_set_attrs, 2},
   {"rlang_missing_arg",         (DL_FUNC) &rlang_missing_arg, 0},
@@ -126,7 +130,9 @@ static const R_CallMethodDef call_entries[] = {
   {"rlang_node_poke_cdar",      (DL_FUNC) &rlang_node_poke_cdar, 2},
   {"rlang_node_poke_cddr",      (DL_FUNC) &rlang_node_poke_cddr, 2},
   {"rlang_new_node",            (DL_FUNC) &rlang_new_node_, 2},
-  {"rlang_env_poke_parent",      (DL_FUNC) &rlang_env_poke_parent, 2},
+  {"rlang_env_poke_parent",     (DL_FUNC) &rlang_env_poke_parent, 2},
+  {"rlang_env_frame",           (DL_FUNC) &rlang_env_frame, 1},
+  {"rlang_env_hash_table",      (DL_FUNC) &rlang_env_hash_table, 1},
   {"rlang_poke_type",           (DL_FUNC) &rlang_poke_type, 2},
   {"rlang_mark_object",         (DL_FUNC) &rlang_mark_object, 1},
   {"rlang_unmark_object",       (DL_FUNC) &rlang_unmark_object, 1},

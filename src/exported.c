@@ -36,6 +36,13 @@ sexp* rlang_env_poke_parent(sexp* env, sexp* new_parent) {
   return env;
 }
 
+sexp* rlang_env_frame(sexp* env) {
+  return FRAME(env);
+}
+sexp* rlang_env_hash_table(sexp* env) {
+  return HASHTAB(env);
+}
+
 
 // eval.c
 
@@ -200,6 +207,9 @@ bool rlang_quo_is_null(sexp* quo) {
 
 sexp* rlang_length(sexp* x) {
   return Rf_ScalarInteger(r_length(x));
+}
+sexp* rlang_true_length(sexp* x) {
+  return Rf_ScalarInteger(TRUELENGTH(x));
 }
 
 sexp* rlang_is_reference(sexp* x, sexp* y) {
