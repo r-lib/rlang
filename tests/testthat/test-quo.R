@@ -68,3 +68,8 @@ test_that("quo_expr() warns", {
   expect_warning(regex = NA, quo_expr(quo(foo), warn = TRUE))
   expect_warning(quo_expr(quo(list(!! quo(foo))), warn = TRUE), "inner quosure")
 })
+
+test_that("print() method flattens quosures", {
+  x <- quo(list(!! quo(NULL)))
+  expect_output(print(x), "list\\(NULL\\)")
+})

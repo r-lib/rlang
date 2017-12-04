@@ -122,6 +122,10 @@
   when parsing code as text. The parentheses will also be added by R
   when printing code if needed (#296).
 
+* The print method for quosures now gives a cleaner output. Quosures
+  are printed as a flat expression with the environment printed below.
+  Previously they would appear as formulas.
+
 
 ## Breaking changes
 
