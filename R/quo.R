@@ -357,27 +357,27 @@ NULL
 #' @rdname quo-predicates
 #' @export
 quo_is_missing <- function(quo) {
-  is_missing(f_rhs(quo))
+  .Call(rlang_quo_is_missing, quo)
 }
 #' @rdname quo-predicates
 #' @export
 quo_is_symbol <- function(quo) {
-  is_symbol(f_rhs(quo))
+  .Call(rlang_quo_is_symbol, quo)
 }
 #' @rdname quo-predicates
 #' @export
 quo_is_lang <- function(quo) {
-  is_lang(f_rhs(quo))
+  .Call(rlang_quo_is_call, quo)
 }
 #' @rdname quo-predicates
 #' @export
 quo_is_symbolic <- function(quo) {
-  is_symbolic(f_rhs(quo))
+  .Call(rlang_quo_is_symbolic, quo)
 }
 #' @rdname quo-predicates
 #' @export
 quo_is_null <- function(quo) {
-  is_null(f_rhs(quo))
+  .Call(rlang_quo_is_null, quo)
 }
 
 

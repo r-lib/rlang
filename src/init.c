@@ -73,6 +73,11 @@ extern sexp* r_get_expression(sexp*, sexp*);
 extern sexp* rlang_vec_coerce(sexp*, sexp*);
 extern sexp* rlang_mark_object(sexp* x);
 extern sexp* rlang_unmark_object(sexp* x);
+extern sexp* rlang_quo_is_missing(sexp* quo);
+extern sexp* rlang_quo_is_symbol(sexp* quo);
+extern sexp* rlang_quo_is_call(sexp* quo);
+extern sexp* rlang_quo_is_symbolic(sexp* quo);
+extern sexp* rlang_quo_is_null(sexp* quo);
 
 // Library initialisation defined below
 sexp* rlang_library_load();
@@ -161,6 +166,11 @@ static const R_CallMethodDef call_entries[] = {
   {"rlang_enquo",               (DL_FUNC) &rlang_enquo, 2},
   {"rlang_get_expression",      (DL_FUNC) &r_get_expression, 2},
   {"rlang_vec_coerce",          (DL_FUNC) &rlang_vec_coerce, 2},
+  {"rlang_quo_is_symbol",       (DL_FUNC) &rlang_quo_is_symbol, 1},
+  {"rlang_quo_is_call",         (DL_FUNC) &rlang_quo_is_call, 1},
+  {"rlang_quo_is_symbolic",     (DL_FUNC) &rlang_quo_is_symbolic, 1},
+  {"rlang_quo_is_missing",      (DL_FUNC) &rlang_quo_is_missing, 1},
+  {"rlang_quo_is_null",         (DL_FUNC) &rlang_quo_is_null, 1},
   {"rlang_library_load",        (DL_FUNC) &rlang_library_load, 0},
   {"rlang_library_unload",      (DL_FUNC) &rlang_library_unload, 0},
   {NULL, NULL, 0}

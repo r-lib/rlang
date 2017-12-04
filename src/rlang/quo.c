@@ -12,10 +12,6 @@ sexp* r_new_quosure(sexp* expr, sexp* env) {
   return quo;
 }
 
-bool r_quo_is_missing(sexp* x) {
-  return r_is_missing(r_f_rhs(x));
-}
-
 sexp* r_get_expression(sexp* x, sexp* alternate) {
   switch (r_typeof(x)) {
   case LANGSXP:
