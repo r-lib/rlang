@@ -37,5 +37,7 @@ sexp* r_ns_env(const char* pkg);
 
 sexp* r_base_ns_get(const char* name);
 
+sexp* r_new_environment(sexp* parent);
+
 
 #endif
