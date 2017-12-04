@@ -194,7 +194,7 @@ enquo <- function(arg) {
 
 #' @export
 print.quosure <- function(x, ...) {
-  print(node_cadr(x))
+  print(quo_expr(x))
   print(get_env(x))
   invisible(x)
 }
