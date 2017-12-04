@@ -3,59 +3,64 @@
 sexp* rlang_ns_get(const char* name);
 
 
-static sexp* base_tilde_eval(sexp* tilde, sexp* dots, sexp* quo_env) {
-  if (r_f_has_env(tilde))
-    return tilde;
+static sexp* overscope_sym = NULL;
 
-  static sexp* tilde_sym;
-  static sexp* tilde_prim;
-  if (!tilde_sym)
-    tilde_sym = r_sym("~");
-  if (!tilde_prim)
-    tilde_prim = r_base_ns_get("~");
+sexp* rlang_quo_eval(sexp* quo, sexp* frame) {
+  if (!overscope_sym) overscope_sym = r_sym("_tidyeval_overscope");
 
-  // Inline the base primitive because overscopes override `~` to make
-  // quosures self-evaluate
-  tilde = KEEP(r_new_call_node(tilde_prim, dots));
-  tilde = KEEP(r_eval(tilde, quo_env));
+  sexp* quo_expr = r_node_cadr(quo);
+  if (quo_expr == r_missing_sym) {
+    return r_missing_sym;
+  }
 
-  // Change it back because the result still has the primitive inlined
-  r_node_poke_car(tilde, tilde_sym);
+  sexp* quo_env = r_get_attribute(quo, r_sym(".Environment"));
+  sexp* overscope = r_env_find(frame, overscope_sym);
+
+  if (overscope == r_unbound_sym) {
+    return r_eval(quo_expr, quo_env);
+  }
+
+  static sexp* (quo_eval_overscoped_fn) = NULL;
+  if (!quo_eval_overscoped_fn) {
+    quo_eval_overscoped_fn = rlang_ns_get("quo_eval_overscoped");
+  }
+
+  // Prevent expression from being evaluated
+  sexp* expr_wrapper = KEEP(r_expr_protect(quo_expr));
+
+  sexp* call = KEEP(r_build_call3(quo_eval_overscoped_fn, expr_wrapper, quo_env, overscope));
+  sexp* out = r_eval(call, r_empty_env);
 
   FREE(2);
-  return tilde;
+  return out;
 }
 
-sexp* rlang_tilde_eval(sexp* tilde, sexp* dots, sexp* overscope, sexp* overscope_top, sexp* cur_frame) {
-  if (!r_inherits(tilde, "quosure"))
-    return base_tilde_eval(tilde, dots, overscope);
+sexp* rlang_new_overscope(sexp* bottom, sexp* top, sexp* enclosure) {
+  if (!overscope_sym) overscope_sym = r_sym("_tidyeval_overscope");
 
-  if (r_quo_is_missing(tilde))
-    return(r_missing_arg());
+  static sexp* env_sym = NULL;
+  static sexp* top_env_sym = NULL;
+  if (!env_sym) {
+    env_sym = r_sym(".env");
+    top_env_sym = r_sym(".top_env");
+  }
 
-  sexp* quo_env = r_f_env(tilde);
-  sexp* prev_env = r_env_get(overscope, r_sym(".env"));
-  if (r_is_null(quo_env))
-    quo_env = prev_env;
+  if (top == r_null) {
+    top = bottom;
+  }
 
-  // Swap enclosures temporarily by rechaining the top of the dynamic
-  // scope to the enclosure of the new formula, if it has one
-  r_env_poke_parent(overscope_top, quo_env);
+  // Create a child because we don't know what might be in bottom_env.
+  // This way we can just remove all bindings between the parent of
+  // `overscope` and `overscope_top`. We don't want to clean
+  // everything in `overscope` in case the environment is leaked,
+  // e.g. through a closure that might rely on some local bindings
+  // installed by the user.
+  sexp* overscope = KEEP(r_new_environment(bottom));
 
-  sexp* exit_fun = rlang_ns_get("env_poke_parent");
-  sexp* exit_args = r_build_pairlist2(overscope_top, prev_env);
-  sexp* exit_lang = KEEP(r_build_call_node(exit_fun, exit_args));
-  r_on_exit(exit_lang, cur_frame);
+  r_env_poke(overscope, top_env_sym, top);
+  r_env_poke(overscope, env_sym, enclosure);
+  r_env_poke(overscope, overscope_sym, overscope);
+
   FREE(1);
-
-  // Update .env pronoun to current quosure env temporarily
-  r_env_set(overscope, r_sym(".env"), quo_env);
-
-  exit_fun = rlang_ns_get("env_set");
-  exit_args = r_build_pairlist3(overscope, r_scalar_chr(".env"), prev_env);
-  exit_lang = KEEP(r_build_call_node(exit_fun, exit_args));
-  r_on_exit(exit_lang, cur_frame);
-  FREE(1);
-
-  return r_eval(r_f_rhs(tilde), overscope);
+  return overscope;
 }

@@ -16,6 +16,8 @@ extern sexp* r_f_lhs(sexp*);
 extern sexp* r_f_rhs(sexp*);
 extern sexp* r_new_condition(sexp*, sexp*, sexp*);
 extern sexp* rlang_env_poke_parent(sexp*, sexp*);
+extern sexp* rlang_env_frame(sexp* env);
+extern sexp* rlang_env_hash_table(sexp* env);
 extern sexp* rlang_poke_type(sexp*, sexp*);
 extern sexp* rlang_replace_na(sexp*, sexp*);
 extern sexp* rlang_node_car(sexp*);
@@ -45,11 +47,11 @@ extern sexp* rlang_is_formulaish(sexp*, sexp*, sexp*);
 extern sexp* rlang_is_reference(sexp*, sexp*);
 extern sexp* rlang_sxp_address(sexp*);
 extern sexp* rlang_length(sexp*);
+extern sexp* rlang_true_length(sexp* x);
 extern sexp* rlang_new_dictionary(sexp*, sexp*, sexp*);
 extern sexp* rlang_squash(sexp*, sexp*, sexp*, sexp*);
 extern sexp* rlang_symbol(sexp*);
 extern sexp* rlang_symbol_to_character(sexp*);
-extern sexp* rlang_tilde_eval(sexp*, sexp*, sexp*, sexp*);
 extern sexp* rlang_unescape_character(sexp*);
 extern sexp* rlang_capturearginfo(sexp*, sexp*, sexp*, sexp*);
 extern sexp* rlang_capturedots(sexp*, sexp*, sexp*, sexp*);
@@ -73,6 +75,13 @@ extern sexp* r_get_expression(sexp*, sexp*);
 extern sexp* rlang_vec_coerce(sexp*, sexp*);
 extern sexp* rlang_mark_object(sexp* x);
 extern sexp* rlang_unmark_object(sexp* x);
+extern sexp* rlang_quo_eval(sexp*, sexp*);
+extern sexp* rlang_quo_is_missing(sexp* quo);
+extern sexp* rlang_quo_is_symbol(sexp* quo);
+extern sexp* rlang_quo_is_call(sexp* quo);
+extern sexp* rlang_quo_is_symbolic(sexp* quo);
+extern sexp* rlang_quo_is_null(sexp* quo);
+extern sexp* rlang_new_overscope(sexp*, sexp*, sexp*);
 
 // Library initialisation defined below
 sexp* rlang_library_load();
@@ -85,6 +94,9 @@ extern sexp* rlang_test_r_warn(sexp*);
 extern sexp* rlang_on_exit(sexp*, sexp*);
 extern sexp* rlang_test_is_special_op_sym(sexp*);
 extern sexp* rlang_test_base_ns_get(sexp*);
+extern sexp* r_current_frame();
+extern sexp* rlang_test_sys_frame(sexp*);
+extern sexp* rlang_test_sys_call(sexp*);
 
 static const R_CallMethodDef call_entries[] = {
   {"r_f_lhs",                   (DL_FUNC) &r_f_lhs, 1},
@@ -102,6 +114,7 @@ static const R_CallMethodDef call_entries[] = {
   {"rlang_is_null",             (DL_FUNC) &rlang_is_null, 1},
   {"rlang_is_reference",        (DL_FUNC) &rlang_is_reference, 2},
   {"rlang_length",              (DL_FUNC) &rlang_length, 1},
+  {"rlang_true_length",         (DL_FUNC) &rlang_true_length, 1},
   {"rlang_new_dictionary",      (DL_FUNC) &rlang_new_dictionary, 3},
   {"rlang_set_attrs",           (DL_FUNC) &rlang_set_attrs, 2},
   {"rlang_missing_arg",         (DL_FUNC) &rlang_missing_arg, 0},
@@ -118,7 +131,9 @@ static const R_CallMethodDef call_entries[] = {
   {"rlang_node_poke_cdar",      (DL_FUNC) &rlang_node_poke_cdar, 2},
   {"rlang_node_poke_cddr",      (DL_FUNC) &rlang_node_poke_cddr, 2},
   {"rlang_new_node",            (DL_FUNC) &rlang_new_node_, 2},
-  {"rlang_env_poke_parent",      (DL_FUNC) &rlang_env_poke_parent, 2},
+  {"rlang_env_poke_parent",     (DL_FUNC) &rlang_env_poke_parent, 2},
+  {"rlang_env_frame",           (DL_FUNC) &rlang_env_frame, 1},
+  {"rlang_env_hash_table",      (DL_FUNC) &rlang_env_hash_table, 1},
   {"rlang_poke_type",           (DL_FUNC) &rlang_poke_type, 2},
   {"rlang_mark_object",         (DL_FUNC) &rlang_mark_object, 1},
   {"rlang_unmark_object",       (DL_FUNC) &rlang_unmark_object, 1},
@@ -128,7 +143,6 @@ static const R_CallMethodDef call_entries[] = {
   {"rlang_sxp_address",         (DL_FUNC) &rlang_sxp_address, 1},
   {"rlang_symbol",              (DL_FUNC) &rlang_symbol, 1},
   {"rlang_symbol_to_character", (DL_FUNC) &rlang_symbol_to_character, 1},
-  {"rlang_tilde_eval",          (DL_FUNC) &rlang_tilde_eval, 5},
   {"rlang_unescape_character",  (DL_FUNC) &rlang_unescape_character, 1},
   {"rlang_zap_attrs",           (DL_FUNC) &rlang_zap_attrs, 1},
   {"r_new_language",            (DL_FUNC) &rlang_new_call_node, 2},
@@ -142,6 +156,9 @@ static const R_CallMethodDef call_entries[] = {
   {"rlang_test_r_on_exit",      (DL_FUNC) &rlang_on_exit, 2},
   {"rlang_test_is_special_op_sym", (DL_FUNC) &rlang_test_is_special_op_sym, 1},
   {"rlang_test_base_ns_get",    (DL_FUNC) &rlang_test_base_ns_get, 1},
+  {"rlang_test_current_frame",  (DL_FUNC) &r_current_frame, 0},
+  {"rlang_test_sys_frame",      (DL_FUNC) &rlang_test_sys_frame, 1},
+  {"rlang_test_sys_call",       (DL_FUNC) &rlang_test_sys_call, 1},
   {"rlang_r_string",            (DL_FUNC) &rlang_r_string, 1},
   {"rlang_exprs_interp",        (DL_FUNC) &rlang_exprs_interp, 4},
   {"rlang_quos_interp",         (DL_FUNC) &rlang_quos_interp, 4},
@@ -155,6 +172,13 @@ static const R_CallMethodDef call_entries[] = {
   {"rlang_enquo",               (DL_FUNC) &rlang_enquo, 2},
   {"rlang_get_expression",      (DL_FUNC) &r_get_expression, 2},
   {"rlang_vec_coerce",          (DL_FUNC) &rlang_vec_coerce, 2},
+  {"rlang_quo_eval",            (DL_FUNC) &rlang_quo_eval, 2},
+  {"rlang_quo_is_symbol",       (DL_FUNC) &rlang_quo_is_symbol, 1},
+  {"rlang_quo_is_call",         (DL_FUNC) &rlang_quo_is_call, 1},
+  {"rlang_quo_is_symbolic",     (DL_FUNC) &rlang_quo_is_symbolic, 1},
+  {"rlang_quo_is_missing",      (DL_FUNC) &rlang_quo_is_missing, 1},
+  {"rlang_quo_is_null",         (DL_FUNC) &rlang_quo_is_null, 1},
+  {"rlang_new_overscope",       (DL_FUNC) &rlang_new_overscope, 3},
   {"rlang_library_load",        (DL_FUNC) &rlang_library_load, 0},
   {"rlang_library_unload",      (DL_FUNC) &rlang_library_unload, 0},
   {NULL, NULL, 0}

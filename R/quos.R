@@ -89,6 +89,28 @@ is_quosures <- function(x) {
 c.quosures <- function(..., recursive = FALSE) {
   structure(NextMethod(), class = "quosures")
 }
+#' @export
+print.quosures <- function(x, ...) {
+  # Work around printing bug for OO language objects
+  quo_enquote <- function(quo) new_quosure(enquote(quo))
+  x <- map_if(x, is_quosure, quo_enquote)
+  print(unclass(x))
+}
+
+#' Create a list of quosures
+#'
+#' This takes a list and adds the `quosures` class. This ensures that
+#' quosures contained in the list are properly printed. This is mostly
+#' meant as a workaround to a bug in the current R printer which
+#' causes quosures wrapped in lists to evaluate early during printing.
+#'
+#' @param x A list containing quosures
+#' @export
+new_quosures <- function(x) {
+  stopifnot(is_list(x))
+  structure(x, class = "quosures")
+}
+
 
 #' Ensure that list of expressions are all named
 #'

@@ -7,7 +7,7 @@
 \alias{overscope_clean}
 \title{Create a dynamic scope for tidy evaluation}
 \usage{
-as_overscope(quo, data = NULL)
+as_overscope(data, enclosure = base_env())
 
 new_overscope(bottom, top = NULL, enclosure = base_env())
 
@@ -16,9 +16,11 @@ overscope_eval_next(overscope, quo, env = base_env())
 overscope_clean(overscope)
 }
 \arguments{
-\item{quo}{A \link{quosure}.}
-
 \item{data}{Additional data to put in scope.}
+
+\item{enclosure}{The default enclosure. After a quosure is done
+self-evaluating, the overscope is rechained to the default
+enclosure.}
 
 \item{bottom}{This is the environment (or the bottom of a set of
 environments) containing definitions for overscoped symbols. The
@@ -35,13 +37,11 @@ environment where the tidy quotes were created in the first place
 are in scope as well. If \code{NULL} (the default), \code{bottom} is also the top of
 the overscope.}
 
-\item{enclosure}{The default enclosure. After a quosure is done
-self-evaluating, the overscope is rechained to the default
-enclosure.}
-
 \item{overscope}{A valid overscope containing bindings for \code{~},
 \code{.top_env} and \code{_F} and whose parents contain overscoped bindings
 for tidy evaluation.}
+
+\item{quo}{A \link{quosure}.}
 
 \item{env}{The lexical enclosure in case \code{quo} is not a validly
 scoped quosure. This is the \link[=base_env]{base environment} by
@@ -78,22 +78,20 @@ of the time, you can just use \code{\link[=eval_tidy_]{eval_tidy_()}} as it will
 care of installing the tidyeval components in your custom dynamic
 scope.
 \itemize{
-\item \code{as_overscope()} is the function that powers \code{\link[=eval_tidy]{eval_tidy()}}. It
-could be useful if you cannot use \code{eval_tidy()} for some reason,
-but serves mostly as an example of how to build a dynamic scope
-for tidy evaluation. In this case, it creates pronouns \code{.data}
-and \code{.env} and buries all dynamic bindings from the supplied
-\code{data} in new environments.
-\item \code{new_overscope()} is called by \code{as_overscope()} and
-\code{\link[=eval_tidy_]{eval_tidy_()}}. It installs the definitions for making
-formulas self-evaluate and for formula-guards. It also installs
-the pronoun \code{.top_env} that helps keeping track of the boundary
-of the dynamic scope. If you evaluate a tidy quote with
-\code{\link[=eval_tidy_]{eval_tidy_()}}, you don't need to use this.
+\item \code{as_overscope()} is the function that powers \code{\link[=eval_tidy]{eval_tidy()}}. It is
+an example of how to build a data scope for tidy evaluation.
+\code{as_overscope()} creates a regular tidyverse overscope containing
+pronouns \code{.data} and \code{.env} in the bottom environment. The
+immediate parent is the top environment (this is a two-level
+overscope) and contains all the bindings from \code{data}.
+\item \code{new_overscope()} is the most low-level overscope constructor. It
+takes a bottom and a top environment (which can be identical if
+the overscope is one-level deep) and installs the \code{.env} pronoun
+and an overscope flag.
 \item \code{eval_tidy_()} is useful when you have several quosures to
 evaluate in a same dynamic scope. That's a simple wrapper around
 \code{\link[=eval_bare]{eval_bare()}} that updates the \code{.env} pronoun and rechains the
-dynamic scope to the new formula enclosure to evaluate.
+overscope to the next quosure.
 \item Once an expression has been evaluated in the tidy environment,
 it's a good idea to clean up the definitions that make
 self-evaluation of formulas possible \code{overscope_clean()}.
@@ -106,17 +104,10 @@ examples). Note that this function is automatically called by
 \examples{
 # Evaluating in a tidy evaluation environment enables all tidy
 # features:
-expr <- quote(list(.data$cyl, ~letters))
-f <- as_quosure(expr)
-overscope <- as_overscope(f, data = mtcars)
-overscope_eval_next(overscope, f)
+expr <- quote(.data$cyl + am)
+overscope <- as_overscope(mtcars)
+overscope_eval_next(overscope, expr)
 
-# However you need to cleanup the environment after evaluation.
-# Otherwise the leftover definitions for self-evaluation of
-# formulas might cause unexpected results:
-fn <- overscope_eval_next(overscope, ~function() ~letters)
-fn()
-
+# It is good practice to clean up the environment after evaluation.
 overscope_clean(overscope)
-fn()
 }

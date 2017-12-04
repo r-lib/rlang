@@ -36,6 +36,13 @@ sexp* rlang_env_poke_parent(sexp* env, sexp* new_parent) {
   return env;
 }
 
+sexp* rlang_env_frame(sexp* env) {
+  return FRAME(env);
+}
+sexp* rlang_env_hash_table(sexp* env) {
+  return HASHTAB(env);
+}
+
 
 // eval.c
 
@@ -167,10 +174,42 @@ sexp* rlang_new_call_node(sexp* car, sexp* cdr) {
 }
 
 
+// quo.h
+
+static void check_quosure(sexp* x) {
+  if (r_typeof(x) != r_type_call || !r_inherits(x, "quosure")) {
+    r_abort("Expected a quosure");
+  }
+}
+sexp* rlang_quo_is_missing(sexp* quo) {
+  check_quosure(quo);
+  return r_scalar_lgl(r_node_cadr(quo) == r_missing_sym);
+}
+sexp* rlang_quo_is_symbol(sexp* quo) {
+  check_quosure(quo);
+  return r_scalar_lgl(r_typeof(r_node_cadr(quo)) == r_type_symbol);
+}
+sexp* rlang_quo_is_call(sexp* quo) {
+  check_quosure(quo);
+  return r_scalar_lgl(r_typeof(r_node_cadr(quo)) == r_type_call);
+}
+sexp* rlang_quo_is_symbolic(sexp* quo) {
+  check_quosure(quo);
+  return r_scalar_lgl(r_is_symbolic(r_node_cadr(quo)));
+}
+bool rlang_quo_is_null(sexp* quo) {
+  check_quosure(quo);
+  return r_scalar_lgl(r_node_cadr(quo) == r_null);
+}
+
+
 // sexp.h
 
 sexp* rlang_length(sexp* x) {
   return Rf_ScalarInteger(r_length(x));
+}
+sexp* rlang_true_length(sexp* x) {
+  return Rf_ScalarInteger(TRUELENGTH(x));
 }
 
 sexp* rlang_is_reference(sexp* x, sexp* y) {

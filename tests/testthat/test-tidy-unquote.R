@@ -112,7 +112,7 @@ test_that("`!!` handles special operators", {
 # UQ ----------------------------------------------------------------------
 
 test_that("evaluates contents of UQ()", {
-  expect_equal(quo(UQ(1 + 2)), ~ 3)
+  expect_identical(node_cadr(quo(UQ(1L + 2L))), 3L)
 })
 
 test_that("quosures are not rewrapped", {
@@ -125,10 +125,10 @@ test_that("quosures are not rewrapped", {
 
 test_that("UQ() fails if called without argument", {
   quo <- quo(UQ(NULL))
-  expect_equal(quo, ~NULL)
+  expect_null(get_expr(quo))
 
   quo <- quo(rlang::UQ(NULL))
-  expect_equal(quo, ~NULL)
+  expect_null(get_expr(quo))
 
   quo <- tryCatch(quo(UQ()), error = identity)
   expect_is(quo, "error")

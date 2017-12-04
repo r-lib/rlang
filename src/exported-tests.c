@@ -29,3 +29,13 @@ sexp* rlang_test_is_special_op_sym(sexp* x) {
 bool rlang_is_clevel_spliceable(sexp* x) {
   return Rf_inherits(x, "foo");
 }
+
+
+// stack.c
+
+sexp* rlang_test_sys_call(sexp* n) {
+  return r_sys_call(r_c_int(n), NULL);
+}
+sexp* rlang_test_sys_frame(sexp* n) {
+  return r_sys_frame(r_c_int(n), NULL);
+}

@@ -86,5 +86,6 @@ parse_quosure <- function(x, env = caller_env()) {
 #' @rdname parse_expr
 #' @export
 parse_quosures <- function(x, env = caller_env()) {
-  map(parse_exprs(x), new_quosure, env = as_env(env))
+  quos <- map(parse_exprs(x), new_quosure, env = as_env(env))
+  new_quosures(quos)
 }

@@ -92,20 +92,20 @@ dots_values <- function(...,
 dots_definitions <- function(..., .named = FALSE) {
   dots <- .Call(rlang_quos_interp, environment(), .named, "trailing", FALSE)
 
-  is_def <- map_lgl(dots, function(dot) is_definition(f_rhs(dot)))
+  is_def <- map_lgl(dots, function(dot) is_definition(get_expr(dot)))
   defs <- map(dots[is_def], as_definition)
 
   list(dots = dots[!is_def], defs = defs)
 }
 as_definition <- function(def) {
   # The definition comes wrapped in a quosure
-  env <- f_env(def)
-  def <- f_rhs(def)
+  env <- get_env(def)
+  def <- get_expr(def)
 
-  list(
+  new_quosures(list(
     lhs = new_quosure(f_lhs(def), env),
     rhs = new_quosure(f_rhs(def), env)
-  )
+  ))
 }
 
 is_dot_symbol <- function(x) {

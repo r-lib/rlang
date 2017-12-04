@@ -46,3 +46,39 @@ test_that("r_is_special_op_sym() detects special operators", {
 test_that("r_base_ns_get() and r_env_get() fail if object does not exist", {
   expect_error(.Call(rlang_test_base_ns_get, "foobar"))
 })
+
+test_that("r_current_frame() returns current frame", {
+  current_frame <- function() {
+    list(.Call(rlang_test_current_frame), environment())
+  }
+  out <- current_frame()
+  expect_identical(out[[1]], out[[2]])
+})
+
+test_that("r_sys_frame() returns current frame environment", {
+  sys_frame <- function(..., .n = 0L) {
+    list(.Call(rlang_test_sys_frame, .n), sys.frame(.n))
+  }
+  out <- sys_frame(foo(), bar)
+  expect_identical(out[[1]], out[[2]])
+
+  wrapper <- function(...) {
+    sys_frame(.n = -1L)
+  }
+  out <- wrapper(foo(), bar)
+  expect_identical(out[[1]], out[[2]])
+})
+
+test_that("r_sys_call() returns current frame call", {
+  sys_call <- function(..., .n = 0L) {
+    list(.Call(rlang_test_sys_call, .n), sys.call(.n))
+  }
+  out <- sys_call(foo(), bar)
+  expect_identical(out[[1]], out[[2]])
+
+  wrapper <- function(...) {
+    sys_call(.n = -1L)
+  }
+  out <- wrapper(foo(), bar)
+  expect_identical(out[[1]], out[[2]])
+})

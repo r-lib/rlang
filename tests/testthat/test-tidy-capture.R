@@ -36,7 +36,9 @@ test_that("dots are interpolated", {
   var <- quo(bar)
   dots <- fn(toupper(!!var))
 
-  expect_identical(map(dots, deparse), named_list("~toupper(~foo)", "~toupper(~bar)", "~toupper(~baz)"))
+  inner_quos <- map(dots, function(x) node_cadr(get_expr(x)))
+  expect_identical(map(inner_quos, get_expr), exprs(foo, bar, baz))
+
   expect_identical(map(dots, eval_tidy), named_list("FOO", "BAR", "BAZ"))
 })
 
@@ -103,6 +105,7 @@ test_that("definitions are interpolated", {
   dots <- dots_definitions(def = foo(!!var1) := bar(!!var2))
 
   pat <- list(lhs = quo(foo("foo")), rhs = quo(bar("bar")))
+  pat <- new_quosures(pat)
   expect_identical(dots$defs$def, pat)
 })
 
@@ -153,7 +156,7 @@ test_that("quosures are spliced before serialisation", {
 test_that("missing arguments are captured", {
   q <- quo()
   expect_true(is_missing(f_rhs(q)))
-  expect_identical(f_env(q), empty_env())
+  expect_identical(get_env(q), empty_env())
 })
 
 test_that("empty quosures are forwarded", {

@@ -24,3 +24,17 @@ sexp* rlang_ns_get(const char* name) {
 sexp* r_base_ns_get(const char* name) {
   return ns_env_get(r_base_env, name);
 }
+
+sexp* r_new_environment(sexp* parent) {
+  static sexp* call = NULL;
+  if (!call) {
+    call = rlang_ns_get("rlang_new_env_call");
+  }
+
+  if (!parent) {
+    parent = r_empty_env;
+  }
+  r_node_poke_cadr(call, parent);
+
+  return r_eval(call, r_empty_env);
+}

@@ -112,3 +112,14 @@ bool r_is_special_op_call(sexp* x) {
     r_typeof(x) == LANGSXP &&
     r_is_special_op_sym(r_node_car(x));
 }
+
+sexp* r_expr_protect(sexp* x) {
+  static sexp* quote_prim = NULL;
+  if (!quote_prim) quote_prim = r_base_ns_get("quote");
+
+  sexp* args = KEEP(r_new_node(x, r_null));
+  sexp* out = r_new_call_node(quote_prim, args);
+
+  FREE(1);
+  return out;
+}

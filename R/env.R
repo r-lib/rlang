@@ -379,6 +379,7 @@ is_empty_env <- function(env) {
 get_env <- function(env = caller_env(), default = NULL) {
   out <- switch_type(env,
     environment = env,
+    quosure = ,
     definition = ,
     formula = attr(env, ".Environment"),
     primitive = base_env(),
@@ -421,6 +422,10 @@ get_env <- function(env = caller_env(), default = NULL) {
 #' fn <- set_env(fn, other_env)
 #' identical(get_env(fn), other_env)
 set_env <- function(env, new_env = caller_env()) {
+  if (is_quosure(env)) {
+    attr(env, ".Environment") <- new_env
+    return(env)
+  }
   switch_type(env,
     definition = ,
     formula = ,
