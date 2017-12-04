@@ -251,6 +251,10 @@ duplicate <- function(x, shallow = FALSE) {
   .Call(rlang_duplicate, x, shallow)
 }
 
+# Shallow copy of node trees
+node_tree_clone <- function(x) {
+  .Call(rlang_node_tree_clone, x);
+}
 
 node_walk <- function(.x, .f, ...) {
   cur <- .x

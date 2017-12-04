@@ -33,6 +33,7 @@ extern sexp* rlang_node_poke_cdar(sexp*, sexp*);
 extern sexp* rlang_node_poke_cddr(sexp*, sexp*);
 extern sexp* rlang_new_node_(sexp*, sexp*);
 extern sexp* rlang_duplicate(sexp*);
+extern sexp* r_node_tree_clone(sexp*);
 extern sexp* rlang_node_tag(sexp*);
 extern sexp* rlang_node_poke_tag(sexp*, sexp*);
 extern sexp* rlang_eval(sexp*, sexp*);
@@ -93,6 +94,7 @@ static const R_CallMethodDef call_entries[] = {
   {"rlang_capturearginfo",      (DL_FUNC) &rlang_capturearginfo, 4},
   {"rlang_capturedots",         (DL_FUNC) &rlang_capturedots, 4},
   {"rlang_duplicate",           (DL_FUNC) &rlang_duplicate, 2},
+  {"rlang_node_tree_clone",     (DL_FUNC) &r_node_tree_clone, 1},
   {"rlang_eval",                (DL_FUNC) &rlang_eval, 2},
   {"rlang_get_attrs",           (DL_FUNC) &rlang_get_attrs, 1},
   {"rlang_interp",              (DL_FUNC) &rlang_interp, 2},
