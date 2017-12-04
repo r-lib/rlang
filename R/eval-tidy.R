@@ -187,12 +187,12 @@ eval_tidy_ <- function(expr, bottom, top = NULL, env = caller_env()) {
 #' care of installing the tidyeval components in your custom dynamic
 #' scope.
 #'
-#' * `as_overscope()` is the function that powers [eval_tidy()]. It
-#'   could be useful if you cannot use `eval_tidy()` for some reason,
-#'   but serves mostly as an example of how to build a dynamic scope
-#'   for tidy evaluation. In this case, it creates pronouns `.data`
-#'   and `.env` and buries all dynamic bindings from the supplied
-#'   `data` in new environments.
+#' * `as_overscope()` is the function that powers [eval_tidy()]. It is
+#'   an example of how to build a data scope for tidy evaluation.
+#'   `as_overscope()` creates a regular tidyverse overscope containing
+#'   pronouns `.data` and `.env` in the bottom environment. The
+#'   immediate parent is the top environment (this is a two-level
+#'   overscope) and contains all the bindings from `data`.
 #'
 #' * `new_overscope()` is called by `as_overscope()` and
 #'   [eval_tidy_()]. It installs the definitions for making
@@ -221,19 +221,12 @@ eval_tidy_ <- function(expr, bottom, top = NULL, env = caller_env()) {
 #' @examples
 #' # Evaluating in a tidy evaluation environment enables all tidy
 #' # features:
-#' expr <- quote(list(.data$cyl, ~letters))
-#' f <- as_quosure(expr)
-#' overscope <- as_overscope(f, data = mtcars)
-#' overscope_eval_next(overscope, f)
+#' expr <- quote(.data$cyl + am)
+#' overscope <- as_overscope(mtcars)
+#' overscope_eval_next(overscope, expr)
 #'
-#' # However you need to cleanup the environment after evaluation.
-#' # Otherwise the leftover definitions for self-evaluation of
-#' # formulas might cause unexpected results:
-#' fn <- overscope_eval_next(overscope, ~function() ~letters)
-#' fn()
-#'
+#' # It is good practice to clean up the environment after evaluation.
 #' overscope_clean(overscope)
-#' fn()
 as_overscope <- function(data, enclosure = base_env()) {
   data_src <- as_dictionary(data, read_only = TRUE)
 

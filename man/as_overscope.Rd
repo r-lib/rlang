@@ -78,12 +78,12 @@ of the time, you can just use \code{\link[=eval_tidy_]{eval_tidy_()}} as it will
 care of installing the tidyeval components in your custom dynamic
 scope.
 \itemize{
-\item \code{as_overscope()} is the function that powers \code{\link[=eval_tidy]{eval_tidy()}}. It
-could be useful if you cannot use \code{eval_tidy()} for some reason,
-but serves mostly as an example of how to build a dynamic scope
-for tidy evaluation. In this case, it creates pronouns \code{.data}
-and \code{.env} and buries all dynamic bindings from the supplied
-\code{data} in new environments.
+\item \code{as_overscope()} is the function that powers \code{\link[=eval_tidy]{eval_tidy()}}. It is
+an example of how to build a data scope for tidy evaluation.
+\code{as_overscope()} creates a regular tidyverse overscope containing
+pronouns \code{.data} and \code{.env} in the bottom environment. The
+immediate parent is the top environment (this is a two-level
+overscope) and contains all the bindings from \code{data}.
 \item \code{new_overscope()} is called by \code{as_overscope()} and
 \code{\link[=eval_tidy_]{eval_tidy_()}}. It installs the definitions for making
 formulas self-evaluate and for formula-guards. It also installs
@@ -106,17 +106,10 @@ examples). Note that this function is automatically called by
 \examples{
 # Evaluating in a tidy evaluation environment enables all tidy
 # features:
-expr <- quote(list(.data$cyl, ~letters))
-f <- as_quosure(expr)
-overscope <- as_overscope(f, data = mtcars)
-overscope_eval_next(overscope, f)
+expr <- quote(.data$cyl + am)
+overscope <- as_overscope(mtcars)
+overscope_eval_next(overscope, expr)
 
-# However you need to cleanup the environment after evaluation.
-# Otherwise the leftover definitions for self-evaluation of
-# formulas might cause unexpected results:
-fn <- overscope_eval_next(overscope, ~function() ~letters)
-fn()
-
+# It is good practice to clean up the environment after evaluation.
 overscope_clean(overscope)
-fn()
 }
