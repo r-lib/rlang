@@ -22,8 +22,8 @@ unbox(box)
 \arguments{
 \item{x, .x}{An R object.}
 
-\item{class, .class}{For \code{new_box()}, an additional class for the boxed
-value (which comes in addition to \code{box}). For \code{is_box()},
+\item{class, .class}{For \code{new_box()}, an additional class for the
+boxed value (in addition to \code{rlang_box}). For \code{is_box()},
 \code{as_box()} and \code{as_box_if()}, a class (or vector of classes) to
 be passed to \code{\link[=inherits_all]{inherits_all()}}.}
 

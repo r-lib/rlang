@@ -70,8 +70,8 @@ inherits_only <- function(x, class) {
 #'
 #' @name box
 #' @param x,.x An R object.
-#' @param class,.class For `new_box()`, an additional class for the boxed
-#'   value (which comes in addition to `box`). For `is_box()`,
+#' @param class,.class For `new_box()`, an additional class for the
+#'   boxed value (in addition to `rlang_box`). For `is_box()`,
 #'   `as_box()` and `as_box_if()`, a class (or vector of classes) to
 #'   be passed to [inherits_all()].
 #' @export
