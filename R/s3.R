@@ -97,12 +97,12 @@ inherits_only <- function(x, class) {
 #' as_box_if(NULL, is_null, "null_box")
 #' as_box_if("foo", is_null, "null_box")
 box <- function(x, class = NULL) {
-  set_class(list(x), c(class, "box"))
+  set_class(list(x), c(class, "rlang_box"))
 }
 #' @rdname box
 #' @export
 is_box <- function(x, class = NULL) {
-  inherits_all(x, c(class, "box"))
+  inherits_all(x, c(class, "rlang_box"))
 }
 #' @rdname box
 #' @export
@@ -128,7 +128,7 @@ as_box_if <- function(.x, .p, .class = NULL, ...) {
 #' @param box A boxed value to unbox.
 #' @export
 unbox <- function(box) {
-  if (!inherits(box, "box")) {
+  if (!inherits(box, "rlang_box")) {
     abort("`box` must be a box")
   }
   box[[1]]

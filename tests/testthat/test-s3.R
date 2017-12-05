@@ -46,25 +46,25 @@ test_that("can box and unbox a value", {
 
 test_that("as_box() ensures boxed value", {
   box <- as_box(NULL)
-  expect_true(inherits_only(box, "box"))
+  expect_true(inherits_only(box, "rlang_box"))
 
   boxbox <- as_box(box)
-  expect_true(inherits_only(box, "box"))
+  expect_true(inherits_only(box, "rlang_box"))
   expect_null(unbox(box))
 
   some_box <- as_box(NULL, "some_box")
   some_boxbox <- as_box(some_box, "other_box")
-  expect_true(inherits_only(some_boxbox, c("other_box", "box")))
-  expect_true(inherits_only(unbox(some_boxbox), c("some_box", "box")))
+  expect_true(inherits_only(some_boxbox, c("other_box", "rlang_box")))
+  expect_true(inherits_only(unbox(some_boxbox), c("some_box", "rlang_box")))
   expect_null(unbox(unbox(some_boxbox)))
 })
 
 test_that("as_box_if() ensures boxed value if predicate returns TRUE", {
   box <- as_box_if(NULL, is_null, "null_box")
-  expect_true(inherits_only(box, c("null_box", "box")))
+  expect_true(inherits_only(box, c("null_box", "rlang_box")))
 
   boxbox <- as_box_if(box, is_null, "null_box")
-  expect_true(inherits_only(box, c("null_box", "box")))
+  expect_true(inherits_only(box, c("null_box", "rlang_box")))
   expect_null(unbox(boxbox))
 
   expect_null(as_box_if(NULL, is_vector, "null_box"))
