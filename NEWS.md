@@ -130,6 +130,9 @@
 
 * `expr_label()` now supports quoted function definition calls (#275).
 
+* `is_symbol()` gains a `name` argument to check that that the symbol
+  name matches a string (#287).
+
 
 ## Breaking changes
 

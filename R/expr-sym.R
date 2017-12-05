@@ -36,8 +36,14 @@ syms <- function(x) {
 #' Is object a symbol?
 #' @param x An object to test.
 #' @export
-is_symbol <- function(x) {
-  typeof(x) == "symbol"
+is_symbol <- function(x, name = NULL) {
+  if (typeof(x) != "symbol") {
+    return(FALSE)
+  }
+  if (!is_null(name) && !identical(as_string(x), name)) {
+    return(FALSE)
+  }
+  TRUE
 }
 
 #' Capture a symbol

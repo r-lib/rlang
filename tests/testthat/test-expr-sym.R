@@ -20,3 +20,9 @@ test_that("empty string is treated as the missing argument", {
 test_that("syms() supports symbols as well", {
   expect_identical(syms(list(quote(a), "b")), list(quote(a), quote(b)))
 })
+
+test_that("is_symbol() matches `name`", {
+  expect_true(is_symbol(sym("foo")))
+  expect_true(is_symbol(sym("foo"), "foo"))
+  expect_false(is_symbol(sym("foo"), "bar"))
+})
