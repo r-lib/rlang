@@ -253,3 +253,32 @@ sexp* rlang_unmark_object(sexp* x) {
 sexp* rlang_vec_coerce(sexp* x, sexp* type) {
   return Rf_coerceVector(x, Rf_str2type(r_c_string(type)));
 }
+
+// TODO: C-level check for scalar integerish
+int r_as_int(sexp* x) {
+  switch(r_typeof(x)) {
+  case r_type_integer: return *INTEGER(x);
+  case r_type_double: return (int) *REAL(x);
+  default: r_abort("Internal error: Expected integerish input");
+  }
+}
+
+sexp* rlang_vec_poke_n(sexp* x, sexp* offset,
+                       sexp* y, sexp* from, sexp* n) {
+  r_size_t offset_size = r_as_int(offset) - 1;
+  r_size_t from_size = r_as_int(from) - 1;
+  r_size_t n_size = r_as_int(n);
+
+  r_vec_poke_n(x, offset_size, y, from_size, n_size);
+  return x;
+}
+
+sexp* rlang_vec_poke_range(sexp* x, sexp* offset,
+                           sexp* y, sexp* from, sexp* to) {
+  r_size_t offset_size = r_as_int(offset) - 1;
+  r_size_t from_size = r_as_int(from) - 1;
+  r_size_t to_size = r_as_int(to) - 1;
+
+  r_vec_poke_range(x, offset_size, y, from_size, to_size);
+  return x;
+}

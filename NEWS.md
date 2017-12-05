@@ -133,6 +133,20 @@
 * `is_symbol()` gains a `name` argument to check that that the symbol
   name matches a string (#287).
 
+* New `rlang_box` class. Its purpose is similar to the `AsIs` class
+  from `base::I()`, i.e. it protects a value temporarily. However it
+  does so by wrapping the value in a scalar list. Use `new_box()` to
+  create a boxed value, `is_box()` to test for a boxed value, and
+  `unbox()` to unbox it. `new_box()` and `is_box()` accept optional
+  subclass.
+
+* New functions `inherits_any()`, `inherits_all()`, and
+  `inherits_only()`. They allow testing for inheritance from multiple
+  classes. The `_any` variant is equivalent to `base::inherits()` but
+  is more explicit about its behaviour. `inherits_all()` checks that
+  all classes are present in order and `inherits_only()` checks that
+  the class vectors are identical.
+
 
 ## Breaking changes
 
