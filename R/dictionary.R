@@ -35,9 +35,7 @@ as_dictionary <- function(x, lookup_msg = NULL, read_only = FALSE) {
 #' @export
 as_dictionary.default <- function(x, lookup_msg = NULL, read_only = FALSE) {
   x <- discard_unnamed(x)
-  if (!is_dictionaryish(x)) {
-    abort("Data source must be a dictionary")
-  }
+  check_dictionaryish(x)
   new_dictionary(as.list(x), lookup_msg, read_only)
 }
 #' @export
@@ -58,10 +56,28 @@ as_dictionary.environment <- function(x, lookup_msg = NULL, read_only = FALSE) {
 }
 #' @export
 as_dictionary.data.frame <- function(x, lookup_msg = NULL, read_only = FALSE) {
+  check_dictionaryish(x)
   lookup_msg <- lookup_msg %||% "Column `%s` not found in data"
   new_dictionary(x, lookup_msg, read_only)
 }
 
+check_dictionaryish <- function(x) {
+  if (!length(x)) {
+    return(NULL)
+  }
+  if (!is_named(x)) {
+    abort("Data must be uniquely named but some variables are unnamed")
+  }
+  nms <- names(x)
+  dups <- duplicated(nms)
+  if (any(dups)) {
+    dups <- unique(nms[dups])
+    dups <- chr_enumerate(chr_quoted(dups), final = "and")
+    abort(paste0(
+      "Data must be uniquely named but the following variables have duplicates: ", dups
+    ))
+  }
+}
 new_dictionary <- function(x, lookup_msg, read_only) {
   .Call(rlang_new_dictionary, x, lookup_msg, read_only)
 }

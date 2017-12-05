@@ -16,7 +16,15 @@ test_that("eval_tidy uses formula's environment", {
 })
 
 test_that("data must be a dictionary", {
-  expect_error(eval_tidy(NULL, list(x = 10, x = 11)), "Data source must be a dictionary")
+  expect_error(eval_tidy(NULL, list(x = 1, x = 2)), "duplicates: `x`")
+
+  data <- set_names(data.frame(x = 1, x = 2, y = 3, y = 4), c("x", "x", "y", "y"))
+  expect_error(eval_tidy(NULL, data), "duplicates: `x` and `y`")
+})
+
+test_that("can supply unnamed empty data", {
+  expect_identical(eval_tidy("foo", list()), "foo")
+  expect_identical(eval_tidy("foo", data.frame()), "foo")
 })
 
 test_that("looks first in `data`", {

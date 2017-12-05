@@ -65,7 +65,7 @@ arg_match <- function(arg, values = NULL) {
 chr_quoted <- function(chr, type = "`") {
   paste0(type, chr, type)
 }
-chr_enumerate <- function(chr, sep = ", ") {
+chr_enumerate <- function(chr, sep = ", ", final = "or") {
   if (length(chr) < 2) {
     return(chr)
   }
@@ -74,7 +74,7 @@ chr_enumerate <- function(chr, sep = ", ") {
   last <- chr[length(chr)]
 
   head <- paste(head, collapse = ", ")
-  paste(head, "or", last)
+  paste(head, final, last)
 }
 
 #' Generate or handle a missing argument
