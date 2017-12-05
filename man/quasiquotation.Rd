@@ -10,6 +10,7 @@
 \alias{UQS}
 \alias{!!}
 \alias{!!!}
+\alias{:=}
 \title{Quasiquotation of an expression}
 \usage{
 UQ(x)
@@ -19,9 +20,14 @@ UQE(x)
 UQS(x)
 
 "!!"(x)
+
+":="(x, y)
 }
 \arguments{
 \item{x}{An expression to unquote.}
+
+\item{y}{An R expression that will be given the argument name
+supplied to \code{x}.}
 }
 \description{
 Quasiquotation is the mechanism that makes it possible to program
@@ -47,6 +53,32 @@ argument in the surrounding call. If the vector is named, the
 names are used as argument names.
 }
 }
+\section{Unquoting names}{
+
+
+When a function takes multiple named arguments
+(e.g. \code{dplyr::mutate()}), it is difficult to supply a variable as
+name. Since the LHS of \code{=} is quoted, giving the name of a variable
+results in the argument having the name of the variable rather than
+the name stored in that variable. This problem is right up the
+alley for the unquoting operator \code{!!}. If you were able to unquote
+the variable when supplying the name, the argument would be named
+after the content of that variable.
+
+Unfortunately R is very strict about the kind of expressions
+supported on the LHS of \code{=}. This is why we have made the more
+flexible \code{:=} operator an alias of \code{=}. You can use it to supply
+names, e.g. \code{a := b} is equivalent to \code{a = b}. Since its syntax is
+more flexible you can unquote on the LHS:\preformatted{name <- "Jane"
+
+dots_list(!!name := 1 + 2)
+exprs(!!name := 1 + 2)
+quos(!!name := 1 + 2)
+}
+
+Like \code{=}, the \code{:=} operator expects strings or symbols on its LHS.
+}
+
 \section{Theory}{
 
 

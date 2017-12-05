@@ -27,6 +27,35 @@
 #'   argument in the surrounding call. If the vector is named, the
 #'   names are used as argument names.
 #'
+#'
+#' @section Unquoting names:
+#'
+#' When a function takes multiple named arguments
+#' (e.g. `dplyr::mutate()`), it is difficult to supply a variable as
+#' name. Since the LHS of `=` is quoted, giving the name of a variable
+#' results in the argument having the name of the variable rather than
+#' the name stored in that variable. This problem is right up the
+#' alley for the unquoting operator `!!`. If you were able to unquote
+#' the variable when supplying the name, the argument would be named
+#' after the content of that variable.
+#'
+#' Unfortunately R is very strict about the kind of expressions
+#' supported on the LHS of `=`. This is why we have made the more
+#' flexible `:=` operator an alias of `=`. You can use it to supply
+#' names, e.g. `a := b` is equivalent to `a = b`. Since its syntax is
+#' more flexible you can unquote on the LHS:
+#'
+#' ```
+#' name <- "Jane"
+#'
+#' dots_list(!!name := 1 + 2)
+#' exprs(!!name := 1 + 2)
+#' quos(!!name := 1 + 2)
+#' ```
+#'
+#' Like `=`, the `:=` operator expects strings or symbols on its LHS.
+#'
+#'
 #' @section Theory:
 #'
 #' Formally, `quo()` and `expr()` are quasiquote functions, `UQ()` is
@@ -92,32 +121,40 @@
 #' quo
 NULL
 
-#' @export
 #' @rdname quasiquotation
+#' @export
 UQ <- function(x) {
   abort("`UQ()` can only be used within a quasiquoted argument")
 }
-#' @export
 #' @rdname quasiquotation
+#' @export
 UQE <- function(x) {
   abort("`UQE()` can only be used within a quasiquoted argument")
 }
-#' @export
 #' @rdname quasiquotation
+#' @export
 UQS <- function(x) {
   abort("`UQS()` can only be used within a quasiquoted argument")
 }
-#' @export
 #' @rdname quasiquotation
+#' @export
 `!!` <- function(x) {
   abort("`!!` can only be used within a quasiquoted argument")
 }
-#' @export
 #' @rdname quasiquotation
+#' @export
 #' @usage NULL
 `!!!` <- function(x) {
   abort("`!!!` can only be used within a quasiquoted argument")
 }
+#' @rdname quasiquotation
+#' @param y An R expression that will be given the argument name
+#'   supplied to `x`.
+#' @export
+`:=` <- function(x, y) {
+  abort("`:=` can only be used within a quasiquoted argument")
+}
+
 
 #' Process unquote operators in a captured expression
 #'

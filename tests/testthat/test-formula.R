@@ -143,9 +143,11 @@ test_that("lhs is inspected", {
 })
 
 test_that("definitions are not formulas but are formulaish", {
-  expect_false(is_formula(foo := bar))
-  expect_true(is_formulaish(foo := bar, lhs = TRUE))
-  expect_false(is_formulaish(foo := bar, lhs = FALSE))
+  expect_false(is_formula(quote(foo := bar)))
+  expect_true(is_formulaish(quote(foo := bar), lhs = TRUE))
+  expect_false(is_formulaish(quote(foo := bar), lhs = FALSE))
+
+  `:=` <- `~`
   expect_false(is_formulaish(foo := bar, scoped = TRUE, lhs = FALSE))
   expect_false(is_formulaish(foo := bar, scoped = FALSE, lhs = TRUE))
 })
