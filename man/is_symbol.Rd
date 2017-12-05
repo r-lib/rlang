@@ -4,10 +4,12 @@
 \alias{is_symbol}
 \title{Is object a symbol?}
 \usage{
-is_symbol(x)
+is_symbol(x, name = NULL)
 }
 \arguments{
 \item{x}{An object to test.}
+
+\item{name}{An optional name that the symbol should match.}
 }
 \description{
 Is object a symbol?

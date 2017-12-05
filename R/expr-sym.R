@@ -35,6 +35,7 @@ syms <- function(x) {
 
 #' Is object a symbol?
 #' @param x An object to test.
+#' @param name An optional name that the symbol should match.
 #' @export
 is_symbol <- function(x, name = NULL) {
   if (typeof(x) != "symbol") {
