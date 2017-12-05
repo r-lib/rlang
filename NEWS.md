@@ -128,6 +128,8 @@
   are printed as a flat expression with the environment printed below.
   Previously they would appear as formulas.
 
+* `expr_label()` now supports quoted function definition calls (#275).
+
 
 ## Breaking changes
 

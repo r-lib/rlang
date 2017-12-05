@@ -33,7 +33,8 @@ test_that("converts atomics to strings", {
 })
 
 test_that("truncates long calls", {
-  expect_equal(expr_label(quote({ a + b })), "`{\n    ...\n}`")
+  expect_identical(expr_label(quote({ a + b })), "`\"{\"(...)`")
+  expect_identical(expr_label(expr(function() { a; b })), "`\"function() {\"(...)`")
 })
 
 
@@ -46,6 +47,7 @@ test_that("name symbols, calls, and scalars", {
   expect_identical(expr_name("foo"), "foo")
   expect_identical(expr_name(function() NULL), "function () ...")
   expect_error(expr_name(1:2), "must quote a symbol, scalar, or call")
+  expect_identical(expr_name(expr(function() { a; b })), "\"function() {\"(...)")
 })
 
 

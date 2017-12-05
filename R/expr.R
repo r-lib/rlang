@@ -271,13 +271,20 @@ expr_text <- function(expr, width = 60L, nlines = Inf) {
 
   paste0(str, collapse = "\n")
 }
+
 deparse_one <- function(expr) {
-  chr <- deparse(expr)
-  if (length(chr) > 1) {
-    dot_call <- lang(expr[[1]], quote(...))
-    chr <- paste(deparse(dot_call), collapse = "\n")
+  str <- deparse(expr)
+
+  if (length(str) > 1) {
+    if (identical(str[[1]], quote(`function`))) {
+      str[[3]] <- quote(...)
+      str <- paste(deparse(str), collapse = "\n")
+    } else {
+      str <- paste(deparse(as.call(list(str[[1]], quote(...)))), collapse = "\n")
+    }
   }
-  chr
+
+  str
 }
 
 #' Set and get an expression
