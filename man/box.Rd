@@ -2,13 +2,14 @@
 % Please edit documentation in R/s3.R
 \name{box}
 \alias{box}
+\alias{new_box}
 \alias{is_box}
 \alias{as_box}
 \alias{as_box_if}
 \alias{unbox}
 \title{Box a value}
 \usage{
-box(x, class = NULL)
+new_box(x, class = NULL)
 
 is_box(x, class = NULL)
 
@@ -21,7 +22,7 @@ unbox(box)
 \arguments{
 \item{x, .x}{An R object.}
 
-\item{class, .class}{For \code{box()}, an additional class for the boxed
+\item{class, .class}{For \code{new_box()}, an additional class for the boxed
 value (which comes in addition to \code{box}). For \code{is_box()},
 \code{as_box()} and \code{as_box_if()}, a class (or vector of classes) to
 be passed to \code{\link[=inherits_all]{inherits_all()}}.}
@@ -33,7 +34,7 @@ be passed to \code{\link[=inherits_all]{inherits_all()}}.}
 \item{box}{A boxed value to unbox.}
 }
 \description{
-\code{box()} is similar to \code{\link[base:I]{base::I()}} but it protects a value by
+\code{new_box()} is similar to \code{\link[base:I]{base::I()}} but it protects a value by
 wrapping it in a scalar list rather than by adding an attribute.
 \code{unbox()} retrieves the boxed value. \code{is_box()} tests whether an
 object is boxed with optional class. \code{as_box()} ensures that a
@@ -41,7 +42,7 @@ value is wrapped in a box. \code{as_box_if()} does the same but only if
 the value matches a predicate.
 }
 \examples{
-boxed <- box(letters, "mybox")
+boxed <- new_box(letters, "mybox")
 is_box(boxed)
 is_box(boxed, "mybox")
 is_box(boxed, "otherbox")
@@ -54,7 +55,7 @@ boxed2
 unbox(boxed2)
 
 # Compare to:
-boxed_boxed <- box(boxed, "mybox")
+boxed_boxed <- new_box(boxed, "mybox")
 boxed_boxed
 unbox(unbox(boxed_boxed))
 

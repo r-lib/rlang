@@ -135,9 +135,9 @@
 
 * New `rlang_box` class. Its purpose is similar to the `AsIs` class
   from `base::I()`, i.e. it protects a value temporarily. However it
-  does so by wrapping the value in a scalar list. Use `box()` to
+  does so by wrapping the value in a scalar list. Use `new_box()` to
   create a boxed value, `is_box()` to test for a boxed value, and
-  `unbox()` to unbox it. `box()` and `is_box()` accept optional
+  `unbox()` to unbox it. `new_box()` and `is_box()` accept optional
   subclass.
 
 * New functions `inherits_any()`, `inherits_all()`, and

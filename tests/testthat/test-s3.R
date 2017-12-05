@@ -33,13 +33,13 @@ test_that("inherits only from class", {
 })
 
 test_that("can box and unbox a value", {
-  box <- box(letters, "foo")
+  box <- new_box(letters, "foo")
   expect_true(is_box(box))
   expect_true(is_box(box), "foo")
   expect_false(is_box(box, "bar"))
   expect_identical(unbox(box), letters)
 
-  box <- box(NULL, c("foo", "bar", "baz"))
+  box <- new_box(NULL, c("foo", "bar", "baz"))
   expect_true(is_box(box, c("foo", "baz")))
   expect_false(is_box(box, c("baz", "foo")))
 })
