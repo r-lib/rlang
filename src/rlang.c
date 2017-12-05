@@ -17,6 +17,7 @@
 #include "rlang/sexp.c"
 #include "rlang/squash.c"
 #include "rlang/stack.c"
+#include "rlang/state.c"
 #include "rlang/sym.c"
 #include "rlang/sym-unescape.c"
 #include "rlang/vec.c"
