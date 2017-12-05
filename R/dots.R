@@ -116,7 +116,7 @@ is_dot_nm <- function(nm) {
 }
 
 dots_node <- function(...) {
-  node_cdr(substitute(lang(...)))
+  node_cdr(sys.call())
 }
 
 #' How many arguments are currently forwarded in dots?
