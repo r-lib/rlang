@@ -234,3 +234,13 @@ test_that("can call tilde with named arguments (#226)", {
   expect_equal(eval_tidy(quote(`~`(foo = x, bar = y))), x ~ y)
   expect_equal(eval_tidy(quote(`~`(foo = x, bar = y, baz = z))), `~`(foo = x, bar = y, baz = z))
 })
+
+test_that("Arguments to formulas are not stripped from their attributes (#227)", {
+  quo <- quo(x)
+
+  f <- eval_tidy(quo(~!!quo))
+  expect_identical(f_rhs(f), quo)
+
+  f <- eval_tidy(quo(!!quo(x) ~ a))
+  expect_identical(f_lhs(f), quo)
+})

@@ -317,7 +317,6 @@ f_self_eval <- function(overscope, overscope_top) {
   function(...) {
     .Call(rlang_tilde_eval,
       sys.call(),
-      dots_node(...),
       overscope,
       overscope_top,
       environment()

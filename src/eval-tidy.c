@@ -3,23 +3,19 @@
 sexp* rlang_ns_get(const char* name);
 
 
-static sexp* base_tilde_eval(sexp* tilde, sexp* dots, sexp* quo_env) {
+static sexp* base_tilde_eval(sexp* tilde, sexp* quo_env) {
   if (r_f_has_env(tilde)) {
     return tilde;
   }
 
   static sexp* tilde_sym;
   static sexp* tilde_prim;
-  if (!tilde_sym) {
-    tilde_sym = r_sym("~");
-  }
-  if (!tilde_prim) {
-    tilde_prim = r_base_ns_get("~");
-  }
+  if (!tilde_sym) tilde_sym = r_sym("~");
+  if (!tilde_prim) tilde_prim = r_base_ns_get("~");
 
   // Inline the base primitive because overscopes override `~` to make
   // quosures self-evaluate
-  tilde = KEEP(r_new_call_node(tilde_prim, dots));
+  tilde = KEEP(r_new_call_node(tilde_prim, r_node_cdr(tilde)));
   tilde = KEEP(r_eval(tilde, quo_env));
 
   // Change it back because the result still has the primitive inlined
@@ -29,11 +25,10 @@ static sexp* base_tilde_eval(sexp* tilde, sexp* dots, sexp* quo_env) {
   return tilde;
 }
 
-sexp* rlang_tilde_eval(sexp* tilde, sexp* dots, sexp* overscope, sexp* overscope_top, sexp* cur_frame) {
+sexp* rlang_tilde_eval(sexp* tilde, sexp* overscope, sexp* overscope_top, sexp* cur_frame) {
   if (!r_inherits(tilde, "quosure")) {
-    return base_tilde_eval(tilde, dots, overscope);
+    return base_tilde_eval(tilde, overscope);
   }
-
   if (r_quo_is_missing(tilde)) {
     return(r_missing_arg());
   }
