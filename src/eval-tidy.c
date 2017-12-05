@@ -4,15 +4,18 @@ sexp* rlang_ns_get(const char* name);
 
 
 static sexp* base_tilde_eval(sexp* tilde, sexp* dots, sexp* quo_env) {
-  if (r_f_has_env(tilde))
+  if (r_f_has_env(tilde)) {
     return tilde;
+  }
 
   static sexp* tilde_sym;
   static sexp* tilde_prim;
-  if (!tilde_sym)
+  if (!tilde_sym) {
     tilde_sym = r_sym("~");
-  if (!tilde_prim)
+  }
+  if (!tilde_prim) {
     tilde_prim = r_base_ns_get("~");
+  }
 
   // Inline the base primitive because overscopes override `~` to make
   // quosures self-evaluate
@@ -27,16 +30,19 @@ static sexp* base_tilde_eval(sexp* tilde, sexp* dots, sexp* quo_env) {
 }
 
 sexp* rlang_tilde_eval(sexp* tilde, sexp* dots, sexp* overscope, sexp* overscope_top, sexp* cur_frame) {
-  if (!r_inherits(tilde, "quosure"))
+  if (!r_inherits(tilde, "quosure")) {
     return base_tilde_eval(tilde, dots, overscope);
+  }
 
-  if (r_quo_is_missing(tilde))
+  if (r_quo_is_missing(tilde)) {
     return(r_missing_arg());
+  }
 
   sexp* quo_env = r_f_env(tilde);
   sexp* prev_env = r_env_get(overscope, r_sym(".env"));
-  if (r_is_null(quo_env))
+  if (r_is_null(quo_env)) {
     quo_env = prev_env;
+  }
 
   // Swap enclosures temporarily by rechaining the top of the dynamic
   // scope to the enclosure of the new formula, if it has one

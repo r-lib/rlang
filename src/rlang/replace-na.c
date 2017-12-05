@@ -10,8 +10,9 @@ sexp* rlang_replace_na(sexp* x, sexp* replacement) {
   case LGLSXP: {
     int* arr = LOGICAL(x);
     for (; i < n; ++i) {
-      if (arr[i] == NA_LOGICAL)
+      if (arr[i] == NA_LOGICAL) {
         break;
+      }
     }
     break;
   }
@@ -19,8 +20,9 @@ sexp* rlang_replace_na(sexp* x, sexp* replacement) {
   case INTSXP: {
     int* arr = INTEGER(x);
     for (; i < n; ++i) {
-      if (arr[i] == NA_INTEGER)
+      if (arr[i] == NA_INTEGER) {
         break;
+      }
     }
     break;
   }
@@ -28,16 +30,18 @@ sexp* rlang_replace_na(sexp* x, sexp* replacement) {
   case REALSXP: {
     double* arr = REAL(x);
     for (; i < n; ++i) {
-      if (ISNA(arr[i]))
+      if (ISNA(arr[i])) {
         break;
+      }
     }
     break;
   }
 
   case STRSXP: {
     for (; i < n; ++i) {
-      if (STRING_ELT(x, i) == NA_STRING)
+      if (STRING_ELT(x, i) == NA_STRING) {
         break;
+      }
     }
     break;
   }
@@ -46,8 +50,9 @@ sexp* rlang_replace_na(sexp* x, sexp* replacement) {
     r_complex_t* arr = COMPLEX(x);
 
     for (; i < n; ++i) {
-      if (ISNA(arr[i].r))
+      if (ISNA(arr[i].r)) {
         break;
+      }
     }
     break;
   }
@@ -57,10 +62,11 @@ sexp* rlang_replace_na(sexp* x, sexp* replacement) {
   }
   }
 
-  if (i < n)
+  if (i < n) {
     return replace_na_(x, replacement, i);
-  else
+  } else {
     return x;
+  }
 }
 
 static sexp* replace_na_(sexp* x, sexp* replacement, int i) {
@@ -72,8 +78,9 @@ static sexp* replace_na_(sexp* x, sexp* replacement, int i) {
     int* arr = LOGICAL(x);
     int new_value = LOGICAL(replacement)[0];
     for (; i < n; ++i) {
-      if (arr[i] == NA_LOGICAL)
+      if (arr[i] == NA_LOGICAL) {
         arr[i] = new_value;
+      }
     }
     break;
   }
@@ -82,8 +89,9 @@ static sexp* replace_na_(sexp* x, sexp* replacement, int i) {
     int* arr = INTEGER(x);
     int new_value = INTEGER(replacement)[0];
     for (; i < n; ++i) {
-      if (arr[i] == NA_INTEGER)
+      if (arr[i] == NA_INTEGER) {
         arr[i] = new_value;
+      }
     }
     break;
   }
@@ -92,8 +100,9 @@ static sexp* replace_na_(sexp* x, sexp* replacement, int i) {
     double* arr = REAL(x);
     double new_value = REAL(replacement)[0];
     for (; i < n; ++i) {
-      if (ISNA(arr[i]))
+      if (ISNA(arr[i])) {
         arr[i] = new_value;
+      }
     }
     break;
   }
@@ -101,8 +110,9 @@ static sexp* replace_na_(sexp* x, sexp* replacement, int i) {
   case STRSXP: {
     sexp* new_value = STRING_ELT(replacement, 0);
     for (; i < n; ++i) {
-      if (STRING_ELT(x, i) == NA_STRING)
+      if (STRING_ELT(x, i) == NA_STRING) {
         SET_STRING_ELT(x, i, new_value);
+      }
     }
     break;
   }
@@ -112,8 +122,9 @@ static sexp* replace_na_(sexp* x, sexp* replacement, int i) {
     r_complex_t new_value = COMPLEX(replacement)[0];
 
     for (; i < n; ++i) {
-      if (ISNA(arr[i].r))
+      if (ISNA(arr[i].r)) {
         arr[i] = new_value;
+      }
     }
     break;
   }

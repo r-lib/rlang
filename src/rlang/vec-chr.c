@@ -26,16 +26,19 @@ bool r_chr_has(sexp* chr, const char* c_string) {
 }
 
 static void validate_chr_setter(sexp* chr, sexp* r_string) {
-  if (!r_is_character(chr))
+  if (!r_is_character(chr)) {
     r_abort("`chr` must be a character vector");
-  if (!r_is_r_string(r_string))
+  }
+  if (!r_is_r_string(r_string)) {
     r_abort("`r_string` must be an internal R string");
+  }
 }
 sexp* chr_prepend(sexp* chr, sexp* r_string) {
-  if (r_is_null(chr))
+  if (r_is_null(chr)) {
     return Rf_ScalarString(r_string);
-  else
+  } else {
     validate_chr_setter(chr, r_string);
+  }
 
   int n = r_length(chr);
   sexp* out = KEEP(r_new_vector(STRSXP, n + 1));

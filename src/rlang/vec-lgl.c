@@ -1,8 +1,9 @@
 #include "rlang.h"
 
 bool r_as_bool(sexp* x) {
-  if (r_typeof(x) != LGLSXP && r_length(x) != 1)
+  if (r_typeof(x) != LGLSXP && r_length(x) != 1) {
     r_abort("Expected a scalar logical");
+  }
   int* xp = (int*) LOGICAL(x);
   return *xp;
 }
