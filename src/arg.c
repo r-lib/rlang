@@ -39,6 +39,26 @@ sexp* capture(sexp* sym, sexp* frame, SEXP* arg_env) {
 sexp* rlang_enexpr(sexp* sym, sexp* frame) {
   return capture(sym, frame, NULL);
 }
+sexp* rlang_ensym(sexp* sym, sexp* frame) {
+  sexp* expr = capture(sym, frame, NULL);
+
+  switch (r_typeof(expr)) {
+  case r_type_symbol:
+    break;
+  case r_type_character:
+    if (r_length(expr) == 1) {
+      KEEP(expr);
+      expr = r_sym(r_c_string(expr));
+      FREE(1);
+      break;
+    }
+    // else fallthrough
+  default:
+    r_abort("Must supply a symbol or a string as argument");
+  }
+
+  return expr;
+}
 
 
 sexp* forward_quosure(sexp* x, sexp* env);

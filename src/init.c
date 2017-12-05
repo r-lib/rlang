@@ -71,6 +71,7 @@ extern sexp* r_new_formula(sexp*, sexp*, sexp*);
 extern sexp* r_new_quosure(sexp*, sexp*);
 extern sexp* rlang_poke_attributes(sexp*, sexp*);
 extern sexp* rlang_enexpr(sexp*, sexp*);
+extern sexp* rlang_ensym(sexp*, sexp*);
 extern sexp* rlang_enquo(sexp*, sexp*);
 extern sexp* r_get_expression(sexp*, sexp*);
 extern sexp* rlang_vec_coerce(sexp*, sexp*);
@@ -169,6 +170,7 @@ static const R_CallMethodDef call_entries[] = {
   {"rlang_new_quosure",         (DL_FUNC) &r_new_quosure, 2},
   {"rlang_poke_attributes",     (DL_FUNC) &rlang_poke_attributes, 2},
   {"rlang_enexpr",              (DL_FUNC) &rlang_enexpr, 2},
+  {"rlang_ensym",               (DL_FUNC) &rlang_ensym, 2},
   {"rlang_enquo",               (DL_FUNC) &rlang_enquo, 2},
   {"rlang_get_expression",      (DL_FUNC) &r_get_expression, 2},
   {"rlang_vec_coerce",          (DL_FUNC) &rlang_vec_coerce, 2},

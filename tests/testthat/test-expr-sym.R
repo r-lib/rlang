@@ -6,6 +6,13 @@ test_that("ensym() fails with calls", {
   expect_error(capture_sym(foo(bar)), "Must supply a symbol")
 })
 
+test_that("ensym() supports strings and symbols", {
+  capture_sym <- function(arg) ensym(arg)
+  expect_identical(capture_sym("foo"), quote(foo))
+  expect_identical(capture_sym(!!"foo"), quote(foo))
+  expect_identical(capture_sym(!!sym("foo")), quote(foo))
+})
+
 test_that("empty string is treated as the missing argument", {
   expect_identical(sym(""), missing_arg())
 })

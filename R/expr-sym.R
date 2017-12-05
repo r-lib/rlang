@@ -43,15 +43,7 @@ is_symbol <- function(x) {
 #' @rdname expr
 #' @export
 ensym <- function(arg) {
-  capture <- lang(captureArgInfo, substitute(arg))
-  arg <- eval_bare(capture, caller_env())
-  sym <- .Call(rlang_interp, arg$expr, arg$env)
-
-  if (!is_symbol(sym)) {
-    abort("Must supply a symbol as argument")
-  }
-
-  sym
+  .Call(rlang_ensym, substitute(arg), parent.frame())
 }
 
 sym_namespace <- quote(`::`)
