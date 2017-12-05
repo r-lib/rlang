@@ -4,6 +4,7 @@
 #include <stdbool.h>
 
 
+#define r_global_env R_GlobalEnv
 #define r_base_env R_BaseEnv
 #define r_empty_env R_EmptyEnv
 
