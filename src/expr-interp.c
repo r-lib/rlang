@@ -1,8 +1,6 @@
 #include "rlang/rlang.h"
 #include "expr-interp.h"
-
-sexp* rlang_ns_get(const char* name);
-sexp* r_str_unserialise_unicode(sexp*);
+#include "utils.h"
 
 
 static bool needs_fixup(sexp* x) {
@@ -80,6 +78,19 @@ struct expansion_info which_bang_op(sexp* x) {
   return info;
 }
 
+void signal_uq_soft_deprecation() {
+  signal_soft_deprecation(
+    "`UQ()` is soft-deprecated as of rlang 0.2.0. "
+    "Please use the prefix form of `!!` instead."
+  );
+}
+void signal_uqs_soft_deprecation() {
+  signal_soft_deprecation(
+    "`UQS()` is soft-deprecated as of rlang 0.2.0. "
+    "Please use the prefix form of `!!!` instead."
+  );
+}
+
 struct expansion_info which_expansion_op(sexp* x, bool unquote_names) {
   struct expansion_info info = which_bang_op(x);
 
@@ -96,9 +107,14 @@ struct expansion_info which_expansion_op(sexp* x, bool unquote_names) {
   }
 
   // This logic is complicated because rlang::UQ() gets fully unquoted
-  // but not foobar::UQ(). The functional form UI is a design mistake.
+  // but not foobar::UQ(). The functional form UI is now retired so
+  // we'll be able to simplify this in the future.
 
   if (r_is_prefixed_call_any(x, uq_names, UQ_N)) {
+    if (r_is_prefixed_call(x, "UQ")) {
+      signal_uq_soft_deprecation();
+    }
+
     info.op = OP_EXPAND_UQ;
     info.operand = r_node_cadr(x);
 
@@ -110,6 +126,9 @@ struct expansion_info which_expansion_op(sexp* x, bool unquote_names) {
     return info;
   }
   if (r_is_call_any(x, uq_names, UQ_N)) {
+    if (r_is_call(x, "UQ")) {
+      signal_uq_soft_deprecation();
+    }
     info.op = OP_EXPAND_UQ;
     info.operand = r_node_cadr(x);
     return info;
@@ -135,6 +154,9 @@ struct expansion_info which_expansion_op(sexp* x, bool unquote_names) {
 
 
   if (is_splice_call(x)) {
+    if (r_is_call(x, "UQS") || r_is_prefixed_call(x, "UQS")) {
+      signal_uqs_soft_deprecation();
+    }
     info.op = OP_EXPAND_UQS;
     info.operand = r_node_cadr(x);
     return info;
@@ -151,6 +173,9 @@ struct expansion_info is_big_bang_op(sexp* x) {
   }
 
   if (is_splice_call(x)) {
+    if (r_is_call(x, "UQS") || r_is_prefixed_call(x, "UQS")) {
+      signal_uqs_soft_deprecation();
+    }
     info.op = OP_EXPAND_UQS;
     info.operand = r_node_cadr(x);
   }

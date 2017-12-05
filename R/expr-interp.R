@@ -13,14 +13,14 @@
 #' expression. We provide both syntactic operators and functional
 #' forms for unquoting.
 #'
-#' - `UQ()` and the `!!` operator unquote their argument. It gets
-#'   evaluated immediately in the surrounding context.
+#' - The `!!` operator unquotes its argument. It gets evaluated
+#'   immediately in the surrounding context.
 #'
-#' - `UQS()` and the `!!!` operators unquote and splice their
-#'   argument. The argument should evaluate to a vector or an
-#'   expression. Each component of the vector is embedded as its own
-#'   argument in the surrounding call. If the vector is named, the
-#'   names are used as argument names.
+#' - The `!!!` operator unquotes and splices its argument. The
+#'   argument should represents a list or a vector. Each element will
+#'   be embedded in the surrounding call, i.e. each element is
+#'   inserted as an argument. If the vector is named, the names are
+#'   used as argument names.
 #'
 #'
 #' @section Unquoting names:
@@ -53,8 +53,8 @@
 #'
 #' @section Theory:
 #'
-#' Formally, `quo()` and `expr()` are quasiquote functions, `UQ()` is
-#' the unquote operator, and `UQS()` is the unquote splice operator.
+#' Formally, `quo()` and `expr()` are quasiquote functions, `!!` is
+#' the unquote operator, and `!!!` is the unquote splice operator.
 #' These terms have a rich history in Lisp languages, and live on in
 #' modern languages like
 #' [Julia](https://docs.julialang.org/en/stable/manual/metaprogramming/)
@@ -63,6 +63,14 @@
 #'
 #'
 #' @section Life cycle:
+#'
+#' * `UQ()` and `UQS()` were soft-deprecated in rlang 0.2.0 in order
+#'   to make the syntax of quasiquotation more consistent. The prefix
+#'   forms are now \code{`!!`()} and \code{`!!!`()} which is
+#'   consistent with other R operators (e.g. \code{`+`(a, b)} is the
+#'   prefix form of `a + b`).
+#'
+#'   These operators are scheduled for deprecation in rlang 0.3.0.
 #'
 #' * `UQE()` was deprecated in rlang 0.2.0 in order to make the is
 #'   deprecated in order to simplify the quasiquotation syntax. You
@@ -79,48 +87,34 @@
 #' quo(foo(bar))
 #'
 #' # In addition, they support unquoting:
-#' expr(foo(UQ(1 + 2)))
-#' expr(foo(!! 1 + 2))
-#' quo(foo(!! 1 + 2))
-#'
-#' # The !! operator is a handy syntactic shortcut for unquoting with
-#' # UQ().  However you need to be a bit careful with operator
-#' # precedence. All arithmetic and comparison operators bind more
-#' # tightly than `!`:
-#' quo(1 +  !! (1 + 2 + 3) + 10)
-#'
-#' # For this reason you should always wrap the unquoted expression
-#' # with parentheses when operators are involved:
-#' quo(1 + (!! 1 + 2 + 3) + 10)
-#'
-#' # Or you can use the explicit unquote function:
-#' quo(1 + UQ(1 + 2 + 3) + 10)
+#' expr(foo(!!(1 + 2)))
+#' quo(foo(!!(1 + 2)))
 #'
 #'
-#' # Use !!! or UQS() if you want to add multiple arguments to a
-#' # function It must evaluate to a list
+#' # Use `!!!` to add multiple arguments to a function. Its argument
+#' # should evaluate to a list or vector:
 #' args <- list(1:10, na.rm = TRUE)
-#' quo(mean( UQS(args) ))
+#' quo(mean(!!!args))
 #'
 #' # You can combine the two
 #' var <- quote(xyz)
 #' extra_args <- list(trim = 0.9, na.rm = TRUE)
-#' quo(mean(UQ(var) , UQS(extra_args)))
+#' quo(mean(!!var , !!!extra_args))
 #'
 #'
 #' # Unquoting is especially useful for transforming successively a
 #' # captured expression:
 #' quo <- quo(foo(bar))
-#' quo <- quo(inner(!! quo, arg1))
-#' quo <- quo(outer(!! quo, !!! syms(letters[1:3])))
+#' quo <- quo(inner(!!quo, arg1))
+#' quo <- quo(outer(!!quo, !!!syms(letters[1:3])))
 #' quo
 #'
 #' # Since we are building the expression in the same environment, you
 #' # can also start with raw expressions and create a quosure in the
 #' # very last step to record the dynamic environment:
 #' expr <- expr(foo(bar))
-#' expr <- expr(inner(!! expr, arg1))
-#' quo <- quo(outer(!! expr, !!! syms(letters[1:3])))
+#' expr <- expr(inner(!!expr, arg1))
+#' quo <- quo(outer(!!expr, !!!syms(letters[1:3])))
 #' quo
 NULL
 

@@ -147,6 +147,13 @@
   all classes are present in order and `inherits_only()` checks that
   the class vectors are identical.
 
+* `UQ()` and `UQS()` are soft-deprecated in order to make the syntax
+  of quasiquotation more consistent. The prefix forms are now ``
+  `!!`() `` and `` `!!!`() `` which is consistent with other R
+  operators (e.g. `` `+`(a, b) `` is the prefix form of `a + b`).
+  These operators are scheduled for deprecation with a warning in
+  rlang 0.3.0.
+
 
 ## Breaking changes
 
