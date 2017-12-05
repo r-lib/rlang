@@ -11,12 +11,12 @@ test_that("formulas containing unquote operators are interpolated", {
   var2 <- local({ foo <- "baz"; quo(foo) })
 
   f <- expr_interp(~list(!!var1, !!var2))
-  expect_identical(f, new_quosure(lang("list", as_quosure(var1), as_quosure(var2))))
+  expect_identical(f, new_formula(NULL, lang("list", as_quosure(var1), as_quosure(var2))))
 })
 
 test_that("interpolation is carried out in the right environment", {
   f <- local({ foo <- "foo"; ~!!foo })
-  expect_identical(expr_interp(f), new_quosure("foo", env = f_env(f)))
+  expect_identical(expr_interp(f), new_formula(NULL, "foo", env = f_env(f)))
 })
 
 test_that("interpolation now revisits unquoted formulas", {
@@ -35,7 +35,7 @@ test_that("formulas are not treated as quosures", {
 test_that("unquote operators are always in scope", {
   env <- child_env("base", foo = "bar")
   f <- with_env(env, ~UQ(foo))
-  expect_identical(expr_interp(f), new_quosure("bar", env))
+  expect_identical(expr_interp(f), new_formula(NULL, "bar", env))
 })
 
 test_that("can interpolate in specific env", {
@@ -43,10 +43,10 @@ test_that("can interpolate in specific env", {
   env <- child_env(NULL, foo = "foo")
 
   expanded <- expr_interp(~UQ(foo))
-  expect_identical(expanded, set_env(quo("bar")))
+  expect_identical(expanded, ~"bar")
 
   expanded <- expr_interp(~UQ(foo), env)
-  expect_identical(expanded, set_env(quo("foo")))
+  expect_identical(expanded, ~"foo")
 })
 
 test_that("can qualify operators with namespace", {
@@ -162,9 +162,9 @@ test_that("UQS() handles `{` calls", {
 })
 
 test_that("splicing an empty vector works", {
-  expect_identical(expr_interp(~list(!!! list())), quo(list()))
-  expect_identical(expr_interp(~list(!!! character(0))), quo(list()))
-  expect_identical(expr_interp(~list(!!! NULL)), quo(list()))
+  expect_identical(expr_interp(~list(!!! list())), ~list())
+  expect_identical(expr_interp(~list(!!! character(0))), ~list())
+  expect_identical(expr_interp(~list(!!! NULL)), ~list())
 })
 
 test_that("serialised unicode in argument names is unserialised on splice", {
@@ -221,9 +221,9 @@ test_that("double and triple ! are treated as syntactic shortcuts", {
 
 test_that("`!!` works in prefixed calls", {
   var <- ~cyl
-  expect_identical(expr_interp(~mtcars$`!!`(var)), quo(mtcars$cyl))
-  expect_identical(expr_interp(~foo$`!!`(quote(bar))), quo(foo$bar))
-  expect_identical(expr_interp(~base::`!!`(~list)()), quo(base::list()))
+  expect_identical(expr_interp(~mtcars$`!!`(var)), ~mtcars$cyl)
+  expect_identical(expr_interp(~foo$`!!`(quote(bar))), ~foo$bar)
+  expect_identical(expr_interp(~base::`!!`(~list)()), ~base::list())
 })
 
 test_that("one layer of parentheses around !! is removed", {

@@ -23,18 +23,18 @@ to provide the same quasiquotation functionality as NSE functions.
 }
 \examples{
 # All tidy NSE functions like quo() unquote on capture:
-quo(list(!! 1 + 2))
+quo(list(!!(1 + 2)))
 
 # expr_interp() is meant to provide the same functionality when you
 # have a formula or expression that might contain unquoting
 # operators:
-f <- ~list(!! 1 + 2)
+f <- ~list(!!(1 + 2))
 expr_interp(f)
 
 # Note that only the outer formula is unquoted (which is a reason
 # to use expr_interp() as early as possible in all user-facing
 # functions):
-f <- ~list(~!! 1 + 2, !! 1 + 2)
+f <- ~list(~!!(1 + 2), !!(1 + 2))
 expr_interp(f)
 
 

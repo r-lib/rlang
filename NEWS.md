@@ -142,6 +142,9 @@
   For instance you have to explicitly write `!! (x > y)` to unquote
   `x > y` rather than just `x`.
 
+* `expr_interp()` now returns a formula instead of a quosure when
+  supplied a formula.
+
 
 # rlang 0.1.4
 
