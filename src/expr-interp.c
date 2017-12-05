@@ -237,6 +237,10 @@ sexp* call_interp_impl(sexp* x, sexp* env, struct expansion_info info) {
   if (info.op && r_node_cdr(x) == r_null) {
     r_abort("`UQ()`, `UQE()` and `UQS()` must be called with an argument");
   }
+  if (info.op == OP_EXPAND_UQE) {
+    r_warn("`UQE()` is deprecated. Please use `!! get_expr(x)`");
+  }
+
 
   switch (info.op) {
   case OP_EXPAND_NONE:

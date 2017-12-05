@@ -43,9 +43,6 @@ forms for unquoting.
 \itemize{
 \item \code{UQ()} and the \code{!!} operator unquote their argument. It gets
 evaluated immediately in the surrounding context.
-\item \code{UQE()} is like \code{UQ()} but retrieves the expression of
-\link[=is_quosureish]{quosureish} objects. It is a shortcut for \code{!! get_expr(x)}. Use this with care: it is potentially unsafe to
-discard the environment of the quosure.
 \item \code{UQS()} and the \code{!!!} operators unquote and splice their
 argument. The argument should evaluate to a vector or an
 expression. Each component of the vector is embedded as its own
@@ -89,6 +86,16 @@ modern languages like
 \href{https://docs.julialang.org/en/stable/manual/metaprogramming/}{Julia}
 and
 \href{https://docs.racket-lang.org/reference/quasiquote.html}{Racket}.
+}
+
+\section{Life cycle}{
+
+\itemize{
+\item \code{UQE()} was deprecated in rlang 0.2.0 in order to make the is
+deprecated in order to simplify the quasiquotation syntax. You
+can replace its use by a combination of \code{!!} and \code{get_expr()}.
+E.g. \code{!! get_expr(x)} is equivalent to \code{UQE(x)}.
+}
 }
 
 \examples{

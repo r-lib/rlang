@@ -174,6 +174,9 @@
   `+`(a, b) `` and both forms are completely equivalent. Also the
   prefix form `` `!!!`() `` is now equivalent to `!!!`.
 
+* `UQE()` is now deprecated in order to simplify the syntax of
+  quasiquotation. Please use `!! get_expr(x)` instead.
+
 
 # rlang 0.1.4
 

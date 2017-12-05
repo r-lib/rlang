@@ -16,11 +16,6 @@
 #' - `UQ()` and the `!!` operator unquote their argument. It gets
 #'   evaluated immediately in the surrounding context.
 #'
-#' - `UQE()` is like `UQ()` but retrieves the expression of
-#'   [quosureish][is_quosureish] objects. It is a shortcut for `!!
-#'   get_expr(x)`. Use this with care: it is potentially unsafe to
-#'   discard the environment of the quosure.
-#'
 #' - `UQS()` and the `!!!` operators unquote and splice their
 #'   argument. The argument should evaluate to a vector or an
 #'   expression. Each component of the vector is embedded as its own
@@ -65,6 +60,14 @@
 #' [Julia](https://docs.julialang.org/en/stable/manual/metaprogramming/)
 #' and
 #' [Racket](https://docs.racket-lang.org/reference/quasiquote.html).
+#'
+#'
+#' @section Life cycle:
+#'
+#' * `UQE()` was deprecated in rlang 0.2.0 in order to make the is
+#'   deprecated in order to simplify the quasiquotation syntax. You
+#'   can replace its use by a combination of `!!` and `get_expr()`.
+#'   E.g. `!! get_expr(x)` is equivalent to `UQE(x)`.
 #'
 #' @param x An expression to unquote.
 #' @name quasiquotation
@@ -129,6 +132,7 @@ UQ <- function(x) {
 #' @rdname quasiquotation
 #' @export
 UQE <- function(x) {
+  warn("`UQE()` is deprecated. Please use `!! get_expr(x)`")
   abort("`UQE()` can only be used within a quasiquoted argument")
 }
 #' @rdname quasiquotation

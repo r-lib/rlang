@@ -264,8 +264,9 @@ static sexp* dots_unquote(sexp* dots, struct dots_capture_info* capture_info) {
       capture_info->count += 1;
       break;
     case OP_VALUE_UQ:
-    case OP_VALUE_UQE:
       r_abort("Can't use `!!` in a non-quoting function");
+    case OP_VALUE_UQE:
+      r_abort("Can't use `UQE()` in a non-quoting function");
     case OP_VALUE_UQS: {
       expr = KEEP(r_eval(info.operand, env));
       capture_info->needs_expansion = true;

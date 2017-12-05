@@ -210,6 +210,16 @@ test_that("UQE() extracts right-hand side", {
   var <- ~cyl
   expect_warning(expect_identical(quo(mtcars$UQE(var)), quo(mtcars$cyl)), "deprecated")
 })
+
+test_that("UQE() throws a deprecation warning", {
+  expect_warning(exprs(UQE("foo")), "deprecated")
+  expect_warning(quos(UQE("foo")), "deprecated")
+  expect_warning(expr(UQE("foo")), "deprecated")
+  expect_warning(quo(UQE("foo")), "deprecated")
+})
+
+test_that("UQE() can't be used in by-value dots", {
+  expect_error(dots_list(UQE("foo")), "non-quoting function")
 })
 
 
