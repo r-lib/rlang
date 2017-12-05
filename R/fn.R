@@ -437,7 +437,7 @@ op_as_closure <- function(prim_nm) {
     `@` = ,
     `$` = function(.x, .i) {
       op <- sym(prim_nm)
-      expr <- expr(UQ(op)(.x, `!!`(enexpr(.i))))
+      expr <- expr(UQ(op)(.x, !! quo_expr(enexpr(.i), warn = TRUE)))
       eval_bare(expr)
     },
     `[[<-` = ,

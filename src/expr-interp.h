@@ -2,10 +2,12 @@
 #define RLANG_INTERNAL_EXPR_INTERP_H
 
 
-#define UQE_N 2
+#define UQ_N 2
+#define UQE_N 1
 #define UQS_N 2
 
-static const char* uqe_names[UQE_N] = { "UQE", "!!" };
+static const char* uq_names[UQ_N] = { "UQ", "!!" };
+static const char* uqe_names[UQE_N] = { "UQE" };
 static const char* uqs_names[UQS_N] = { "UQS", "!!!"};
 
 

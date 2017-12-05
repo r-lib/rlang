@@ -98,7 +98,7 @@ struct expansion_info which_expansion_op(sexp* x, bool unquote_names) {
   // This logic is complicated because rlang::UQ() gets fully unquoted
   // but not foobar::UQ(). The functional form UI is a design mistake.
 
-  if (r_is_prefixed_call(x, "UQ")) {
+  if (r_is_prefixed_call_any(x, uq_names, UQ_N)) {
     info.op = OP_EXPAND_UQ;
     info.operand = r_node_cadr(x);
 
@@ -109,7 +109,7 @@ struct expansion_info which_expansion_op(sexp* x, bool unquote_names) {
 
     return info;
   }
-  if (r_is_call(x, "UQ")) {
+  if (r_is_call_any(x, uq_names, UQ_N)) {
     info.op = OP_EXPAND_UQ;
     info.operand = r_node_cadr(x);
     return info;

@@ -168,6 +168,12 @@
   alias for `~` to allow calling it directly. This caused surprising
   results when it was invoked in wrong places.
 
+* The prefix form `` `!!`() `` is now an alias to `!!` rather than
+  `UQE()`. This makes it more in line with regular R syntax where
+  operators are parsed as regular calls, e.g. `a + b` is parsed as ``
+  `+`(a, b) `` and both forms are completely equivalent. Also the
+  prefix form `` `!!!`() `` is now equivalent to `!!!`.
+
 
 # rlang 0.1.4
 

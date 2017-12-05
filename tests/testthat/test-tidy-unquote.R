@@ -196,13 +196,20 @@ test_that("splicing a pairlist has no side effect", {
   expect_identical(x, pairlist(NULL))
 })
 
+test_that("`!!!` works in prefix form", {
+  expect_identical(exprs(`!!!`(1:2)), named_list(1L, 2L))
+  expect_identical(expr(list(`!!!`(1:2))), quote(list(1L, 2L)))
+  expect_identical(quos(`!!!`(1:2)), quos_list(quo(1L), quo(2L)))
+  expect_identical(quo(list(`!!!`(1:2))), new_quosure(quote(list(1L, 2L))))
+})
+
 
 # UQE ----------------------------------------------------------------
 
 test_that("UQE() extracts right-hand side", {
   var <- ~cyl
-  expect_identical(quo(mtcars$UQE(var)), quo(mtcars$cyl))
-  expect_identical(quo(mtcars$`!!`(var)), quo(mtcars$cyl))
+  expect_warning(expect_identical(quo(mtcars$UQE(var)), quo(mtcars$cyl)), "deprecated")
+})
 })
 
 
@@ -220,10 +227,10 @@ test_that("double and triple ! are treated as syntactic shortcuts", {
 })
 
 test_that("`!!` works in prefixed calls", {
-  var <- ~cyl
-  expect_identical(expr_interp(~mtcars$`!!`(var)), ~mtcars$cyl)
+  var <- quo(cyl)
+  expect_identical(expr_interp(~mtcars$`!!`(quo_expr(var))), ~mtcars$cyl)
   expect_identical(expr_interp(~foo$`!!`(quote(bar))), ~foo$bar)
-  expect_identical(expr_interp(~base::`!!`(~list)()), ~base::list())
+  expect_identical(expr_interp(~base::`!!`(quote(list))()), ~base::list())
 })
 
 test_that("one layer of parentheses around !! is removed", {
