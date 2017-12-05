@@ -131,11 +131,6 @@ f_lhs <- function(f) {
   x
 }
 
-copy_lang_name <- function(f, x) {
-  f[[1]] <- x[[1]]
-  f
-}
-
 #' @export
 #' @rdname f_rhs
 f_env <- function(f) {
