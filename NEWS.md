@@ -24,7 +24,9 @@
 
 * New `fn_fmls<-` and `fn_fmls_names<-` setters.
 
-* `ensym()` is a new variant of `enexpr()` that expects a symbol.
+* `ensym()` is a new variant of `enexpr()` that expects a symbol or a
+  string and always returns a symbol. If a complex expression is
+  supplied it fails with an error.
 
 * New function `chr_translate_unicode()` for turning characters
   serialised to unicode point form (e.g. `<U+xxxx>`) to UTF-8. In

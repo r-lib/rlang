@@ -40,8 +40,24 @@ is_symbol <- function(x) {
   typeof(x) == "symbol"
 }
 
-#' @rdname expr
+#' Capture a symbol
+#'
+#' Like [enexpr()] and [enquo()], `ensym()` makes an argument
+#' auto-quoting. It always returns a symbol and issues an error if the
+#' input is not a string or a symbol. It supports [quasiquotation].
+#'
+#' @inheritParams expr
+#'
 #' @export
+#' @examples
+#' quote_sym <- function(arg) ensym(arg)
+#' quote_sym(foo)
+#' quote_sym("foo")
+#'
+#' # The ensymed argument is quasiquoted:
+#' var <- "foo"
+#' quote_sym(var)
+#' quote_sym(!!var)
 ensym <- function(arg) {
   .Call(rlang_ensym, substitute(arg), parent.frame())
 }
