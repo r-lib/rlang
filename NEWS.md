@@ -173,10 +173,8 @@
 * The quasiquotation parser now gives meaningful errors in corner
   cases to help you figure out what is wrong.
 
-* `dots_formulas()` and `dots_patterns()` are like
-  `dots_definitions()`. The former supports only two-sided formulas
-  while the latter accepts both two-sided formulas and `:=`
-  definitions.
+* The new experimental function `dots_patterns()` makes it easy to
+  extract quosures from binary operators such as `~` or `:=`.
 
 
 ## Breaking changes
@@ -207,10 +205,6 @@
 
 * `UQE()` is now deprecated in order to simplify the syntax of
   quasiquotation. Please use `!! get_expr(x)` instead.
-
-* `dots_definitions()` now only supports `:=` inputs. The return value
-  has been simplified accordingly and is now a simple list of `:=`
-  components for each input.
 
 
 # rlang 0.1.4
