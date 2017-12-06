@@ -216,6 +216,11 @@ test_that("can't use prefix form of `!!!` with qualifying operators", {
   expect_error(expr(rlang:::`!!!`(bar)), "Prefix form of `!!!` can't be used with `:::`")
 })
 
+test_that("can't supply multiple arguments to `!!!`", {
+  expect_error(expr(list(`!!!`(1, 2))), "Can't supply multiple arguments to `!!!`")
+  expect_error(exprs(`!!!`(1, 2)), "Can't supply multiple arguments to `!!!`")
+})
+
 
 # UQE ----------------------------------------------------------------
 

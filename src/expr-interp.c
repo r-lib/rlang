@@ -91,6 +91,30 @@ void signal_uqs_soft_deprecation() {
   );
 }
 
+void maybe_poke_big_bang_op(sexp* x, struct expansion_info* info) {
+  if (r_is_call(x, "!!!")) {
+    if (r_node_cddr(x) != r_null) {
+      r_abort("Can't supply multiple arguments to `!!!`");
+    }
+    info->op = OP_EXPAND_UQS;
+    info->operand = r_node_cadr(x);
+    return ;
+  }
+
+  // Handle expressions like foo::`!!`(bar) or foo$`!!`(bar)
+  if (r_is_prefixed_call(x, "!!!")) {
+    const char* name = r_sym_c_str(r_node_caar(x));
+    r_abort("Prefix form of `!!!` can't be used with `%s`", name);
+  }
+
+  if (is_maybe_rlang_call(x, "UQS")) {
+    signal_uqs_soft_deprecation();
+    info->op = OP_EXPAND_UQS;
+    info->operand = r_node_cadr(x);
+    return ;
+  }
+}
+
 struct expansion_info which_expansion_op(sexp* x, bool unquote_names) {
   struct expansion_info info = which_bang_op(x);
 
@@ -107,19 +131,11 @@ struct expansion_info which_expansion_op(sexp* x, bool unquote_names) {
   }
 
 
-  sexp* head = r_node_car(x);
-
-  if (r_is_symbol(head, "!!")) {
+  if (r_is_call(x, "!!")) {
     info.op = OP_EXPAND_UQ;
     info.operand = r_node_cadr(x);
     return info;
   }
-  if (r_is_symbol(head, "!!!")) {
-    info.op = OP_EXPAND_UQS;
-    info.operand = r_node_cadr(x);
-    return info;
-  }
-
 
   // Handle expressions like foo::`!!`(bar) or foo$`!!`(bar)
   if (r_is_prefixed_call(x, "!!")) {
@@ -129,11 +145,11 @@ struct expansion_info which_expansion_op(sexp* x, bool unquote_names) {
     info.root = r_node_car(x);
     return info;
   }
-  if (r_is_prefixed_call(x, "!!!")) {
-    const char* name = r_sym_c_str(r_node_caar(x));
-    r_abort("Prefix form of `!!!` can't be used with `%s`", name);
-  }
 
+  maybe_poke_big_bang_op(x, &info);
+  if (info.op == OP_EXPAND_UQS) {
+    return info;
+  }
 
   // This logic is complicated because rlang::UQ() gets fully unquoted
   // but not foobar::UQ(). The functional form UI is now retired so
@@ -177,29 +193,14 @@ struct expansion_info which_expansion_op(sexp* x, bool unquote_names) {
   }
 
 
-  if (is_maybe_rlang_call(x, "UQS")) {
-    signal_uqs_soft_deprecation();
-    info.op = OP_EXPAND_UQS;
-    info.operand = r_node_cadr(x);
-    return info;
-  }
-
   return info;
 }
 
 struct expansion_info is_big_bang_op(sexp* x) {
   struct expansion_info info = which_bang_op(x);
 
-  if (info.op == OP_EXPAND_UQS) {
-    return info;
-  }
-
-  if (is_maybe_rlang_call_any(x, uqs_names, UQS_N)) {
-    if (r_is_call(x, "UQS") || r_is_prefixed_call(x, "UQS")) {
-      signal_uqs_soft_deprecation();
-    }
-    info.op = OP_EXPAND_UQS;
-    info.operand = r_node_cadr(x);
+  if (info.op != OP_EXPAND_UQS) {
+    maybe_poke_big_bang_op(x, &info);
   }
 
   return info;
