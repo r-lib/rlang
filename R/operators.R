@@ -61,6 +61,11 @@
 #' to be evaluated directly at top-level which is why the exported
 #' definitions issue an error.
 #'
+#'
+#' @section Life cycle:
+#'
+#' These functions are [experimental][lifecycle].
+#'
 #' @name op-definition
 #' @param x An object to test.
 #' @export
