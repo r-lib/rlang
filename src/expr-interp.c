@@ -153,10 +153,17 @@ struct expansion_info which_expansion_op(sexp* x, bool unquote_names) {
   }
 
 
-  if (is_splice_call(x)) {
-    if (r_is_call(x, "UQS") || r_is_prefixed_call(x, "UQS")) {
-      signal_uqs_soft_deprecation();
-    }
+  if (is_maybe_rlang_call(x, "UQS")) {
+    signal_uqs_soft_deprecation();
+    info.op = OP_EXPAND_UQS;
+    info.operand = r_node_cadr(x);
+    return info;
+  }
+  if (r_is_prefixed_call(x, "!!!")) {
+    const char* name = r_sym_c_str(r_node_caar(x));
+    r_abort("Prefix form of `!!!` can't be used with `%s`", name);
+  }
+  if (r_is_call(x, "!!!")) {
     info.op = OP_EXPAND_UQS;
     info.operand = r_node_cadr(x);
     return info;
@@ -172,7 +179,7 @@ struct expansion_info is_big_bang_op(sexp* x) {
     return info;
   }
 
-  if (is_splice_call(x)) {
+  if (is_maybe_rlang_call_any(x, uqs_names, UQS_N)) {
     if (r_is_call(x, "UQS") || r_is_prefixed_call(x, "UQS")) {
       signal_uqs_soft_deprecation();
     }

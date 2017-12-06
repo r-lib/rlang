@@ -207,6 +207,15 @@ test_that("`!!!` works in prefix form", {
   expect_identical(quo(list(`!!!`(1:2))), new_quosure(quote(list(1L, 2L))))
 })
 
+test_that("can't use prefix form of `!!!` with qualifying operators", {
+  expect_error(expr(foo$`!!!`(bar)), "Prefix form of `!!!` can't be used with `\\$`")
+  expect_error(expr(foo@`!!!`(bar)), "Prefix form of `!!!` can't be used with `@`")
+  expect_error(expr(foo::`!!!`(bar)), "Prefix form of `!!!` can't be used with `::`")
+  expect_error(expr(foo:::`!!!`(bar)), "Prefix form of `!!!` can't be used with `:::`")
+  expect_error(expr(rlang::`!!!`(bar)), "Prefix form of `!!!` can't be used with `::`")
+  expect_error(expr(rlang:::`!!!`(bar)), "Prefix form of `!!!` can't be used with `:::`")
+})
+
 
 # UQE ----------------------------------------------------------------
 
