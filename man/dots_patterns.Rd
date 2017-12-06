@@ -44,6 +44,12 @@ extracted in a list containing two quosures.
 \code{dots}.
 }
 }
+\section{Life cycle}{
+
+
+These functions are \link[=lifecycle]{experimental}.
+}
+
 \examples{
 dots_patterns(
   A = a ~ b,

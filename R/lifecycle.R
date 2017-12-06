@@ -8,6 +8,8 @@
 #' prepared to make changes as the package evolves. See sections below
 #' for a list of functions marked as stable.
 #'
+#' API breakages should be expected for experimental functions.
+#'
 #' The documentation pages of retired functions contain life cycle
 #' sections that explain the reasons for their retirements.
 #'
@@ -24,6 +26,15 @@
 #'
 #' * [set_names()]
 #' * [as_function()]
+#'
+#'
+#' @section Experimental functions:
+#'
+#' * [dots_patterns()]
+#'
+#' * [dots_definitions()]
+#' * [new_definition()]
+#' * [is_definition()]
 #'
 #'
 #' @section Soft-deprecated functions and arguments:

@@ -10,6 +10,8 @@ susceptible to API changes. Only use these in packages if you're
 prepared to make changes as the package evolves. See sections below
 for a list of functions marked as stable.
 
+API breakages should be expected for experimental functions.
+
 The documentation pages of retired functions contain life cycle
 sections that explain the reasons for their retirements.
 }
@@ -25,6 +27,16 @@ TODO: Review all functions in rlang and mark stable ones as such.
 \item \code{\link[=sym]{sym()}}, \code{\link[=syms]{syms()}}
 \item \code{\link[=set_names]{set_names()}}
 \item \code{\link[=as_function]{as_function()}}
+}
+}
+
+\section{Experimental functions}{
+
+\itemize{
+\item \code{\link[=dots_patterns]{dots_patterns()}}
+\item \code{\link[=dots_definitions]{dots_definitions()}}
+\item \code{\link[=new_definition]{new_definition()}}
+\item \code{\link[=is_definition]{is_definition()}}
 }
 }
 

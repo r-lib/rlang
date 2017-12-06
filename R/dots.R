@@ -102,6 +102,11 @@ dots_values <- function(...,
 #'   `defs`. All other types of inputs are captured in quosures within
 #'   `dots`.
 #'
+#'
+#' @section Life cycle:
+#'
+#' These functions are [experimental][lifecycle].
+#'
 #' @inheritParams quosures
 #' @param .operator The name of a binary operator from which to
 #'   extract an LHS and a RHS.
