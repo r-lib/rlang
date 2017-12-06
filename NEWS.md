@@ -170,6 +170,9 @@
   operator forms `!!` and `!!!` make it clearer that unquoting is
   special.
 
+* The quasiquotation parser now gives meaningful errors in corner
+  cases to help you figure out what is wrong.
+
 
 ## Breaking changes
 
