@@ -1,8 +1,10 @@
 #' Life cycle of the rlang package
 #'
 #' The rlang package is currently maturing. Unless otherwise stated,
-#' this applies to all its exported functions. See sections below for
-#' a list of functions marked as stable.
+#' this applies to all its exported functions. Maturing functions are
+#' susceptible to API changes. Only use these in packages if you're
+#' prepared to make changes as the package evolves. See sections below
+#' for a list of functions marked as stable.
 #'
 #'
 #' @section Stable functions:
@@ -25,6 +27,7 @@
 #'
 #' * [UQ()]
 #' * [UQS()]
+#'
 #'
 #' @section Deprecated functions and arguments:
 #'
