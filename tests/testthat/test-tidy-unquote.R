@@ -274,6 +274,15 @@ test_that("parentheses are not removed if there's a tail", {
   expect_identical(expr((!! "a" + b)), quote(("a" + b)))
 })
 
+test_that("can use prefix form of `!!` with qualifying operators", {
+  expect_identical(expr(foo$`!!`(quote(bar))), quote(foo$bar))
+  expect_identical(expr(foo@`!!`(quote(bar))), quote(foo@bar))
+  expect_identical(expr(foo::`!!`(quote(bar))), quote(foo::bar))
+  expect_identical(expr(foo:::`!!`(quote(bar))), quote(foo:::bar))
+  expect_identical(expr(rlang::`!!`(quote(bar))), quote(rlang::bar))
+  expect_identical(expr(rlang:::`!!`(quote(bar))), quote(rlang:::bar))
+})
+
 
 # quosures -----------------------------------------------------------
 

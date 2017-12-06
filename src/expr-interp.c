@@ -106,14 +106,40 @@ struct expansion_info which_expansion_op(sexp* x, bool unquote_names) {
     return info;
   }
 
+
+  sexp* head = r_node_car(x);
+
+  if (r_is_symbol(head, "!!")) {
+    info.op = OP_EXPAND_UQ;
+    info.operand = r_node_cadr(x);
+    return info;
+  }
+  if (r_is_symbol(head, "!!!")) {
+    info.op = OP_EXPAND_UQS;
+    info.operand = r_node_cadr(x);
+    return info;
+  }
+
+
+  // Handle expressions like foo::`!!`(bar) or foo$`!!`(bar)
+  if (r_is_prefixed_call(x, "!!")) {
+    info.op = OP_EXPAND_UQ;
+    info.operand = r_node_cadr(x);
+    info.parent = r_node_cdr(r_node_cdar(x));
+    info.root = r_node_car(x);
+    return info;
+  }
+  if (r_is_prefixed_call(x, "!!!")) {
+    const char* name = r_sym_c_str(r_node_caar(x));
+    r_abort("Prefix form of `!!!` can't be used with `%s`", name);
+  }
+
+
   // This logic is complicated because rlang::UQ() gets fully unquoted
   // but not foobar::UQ(). The functional form UI is now retired so
   // we'll be able to simplify this in the future.
-
-  if (r_is_prefixed_call_any(x, uq_names, UQ_N)) {
-    if (r_is_prefixed_call(x, "UQ")) {
-      signal_uq_soft_deprecation();
-    }
+  if (r_is_prefixed_call(x, "UQ")) {
+    signal_uq_soft_deprecation();
 
     info.op = OP_EXPAND_UQ;
     info.operand = r_node_cadr(x);
@@ -125,10 +151,8 @@ struct expansion_info which_expansion_op(sexp* x, bool unquote_names) {
 
     return info;
   }
-  if (r_is_call_any(x, uq_names, UQ_N)) {
-    if (r_is_call(x, "UQ")) {
-      signal_uq_soft_deprecation();
-    }
+  if (r_is_call(x, "UQ")) {
+    signal_uq_soft_deprecation();
     info.op = OP_EXPAND_UQ;
     info.operand = r_node_cadr(x);
     return info;
@@ -155,15 +179,6 @@ struct expansion_info which_expansion_op(sexp* x, bool unquote_names) {
 
   if (is_maybe_rlang_call(x, "UQS")) {
     signal_uqs_soft_deprecation();
-    info.op = OP_EXPAND_UQS;
-    info.operand = r_node_cadr(x);
-    return info;
-  }
-  if (r_is_prefixed_call(x, "!!!")) {
-    const char* name = r_sym_c_str(r_node_caar(x));
-    r_abort("Prefix form of `!!!` can't be used with `%s`", name);
-  }
-  if (r_is_call(x, "!!!")) {
     info.op = OP_EXPAND_UQS;
     info.operand = r_node_cadr(x);
     return info;
