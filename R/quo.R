@@ -127,6 +127,9 @@
 #' var <- sym("cyl")
 #' quo(mtcars$`!!`(var))
 #'
+#' # Or equivalently:
+#' quo(`$`(mtcars, !!var))
+#'
 #' # Quoting as a quosure is necessary to preserve scope information
 #' # and make sure objects are looked up in the right place. However,
 #' # there are situations where it can get in the way. This is the
