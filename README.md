@@ -1,4 +1,5 @@
-# rlang
+rlang <img src="man/figures/rlang.png" align="right" />
+=======================================================
 
 [![Build Status](https://travis-ci.org/tidyverse/rlang.svg?branch=master)](https://travis-ci.org/tidyverse/rlang)
 [![Coverage Status](https://codecov.io/gh/tidyverse/rlang/branch/master/graph/badge.svg)](https://codecov.io/github/tidyverse/rlang?branch=master)
