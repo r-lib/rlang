@@ -328,6 +328,19 @@ as_quosureish <- function(x, env = caller_env()) {
   }
 }
 
+quo_get_expr <- function(quo) {
+  if (typeof(quo) != "language") {
+    abort("Expected a quosure")
+  }
+  node_cadr(quo)
+}
+quo_get_env <- function(quo) {
+  if (typeof(quo) != "language") {
+    abort("Expected a quosure")
+  }
+  attr(quo, ".Environment")
+}
+
 #' Is a quosure quoting a symbolic, missing or NULL object?
 #'
 #' These functions examine the expression of a quosure with a
