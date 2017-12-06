@@ -5,6 +5,40 @@
 \title{Life cycle of the rlang package}
 \description{
 The rlang package is currently maturing. Unless otherwise stated,
-this applies to all its exported functions. See \link{lifecycle-stable}
-for a list of functions marked as stable.
+this applies to all its exported functions. See sections below for
+a list of functions marked as stable.
 }
+\section{Stable functions}{
+
+
+TODO: Review all functions in rlang and mark stable ones as such.
+\itemize{
+\item \code{\link[=eval_tidy]{eval_tidy()}}
+\item \link{!!}, \link{!!!}
+\item \code{\link[=enquo]{enquo()}}, \code{\link[=quo]{quo()}}, \code{\link[=quos]{quos()}}
+\item \code{\link[=enexpr]{enexpr()}}, \code{\link[=expr]{expr()}}, \code{\link[=exprs]{exprs()}}
+\item \code{\link[=sym]{sym()}}, \code{\link[=syms]{syms()}}
+\item \code{\link[=set_names]{set_names()}}
+\item \code{\link[=as_function]{as_function()}}
+}
+}
+
+\section{Soft-deprecated functions and arguments}{
+
+
+\strong{rlang 0.2.0:}
+\itemize{
+\item \code{\link[=UQ]{UQ()}}
+\item \code{\link[=UQS]{UQS()}}
+}
+}
+
+\section{Deprecated functions and arguments}{
+
+
+\strong{rlang 0.2.0:}
+\itemize{
+\item \code{\link[=UQE]{UQE()}}
+}
+}
+
