@@ -17,10 +17,10 @@ int r_as_optional_bool(sexp* lgl) {
 }
 
 bool r_is_true(sexp* x) {
-  if (r_typeof(x) != LGLSXP || r_length(x) != 1) {
-    r_abort("`x` must be a boolean");
+  if (!r_is_scalar_logical(x)) {
+    return false;
+  } else {
+    int value = LOGICAL(x)[0];
+    return value == NA_LOGICAL ? 0 : value;
   }
-
-  int value = LOGICAL(x)[0];
-  return value == NA_LOGICAL ? 0 : value;
 }

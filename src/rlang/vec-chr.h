@@ -44,10 +44,6 @@ static inline sexp* r_as_scalar_chr(sexp* x) {
   return Rf_ScalarString(x);
 }
 
-static inline bool r_is_scalar_character(sexp* x) {
-  return r_typeof(x) == STRSXP && r_length(x) == 1;
-}
-
 static inline const char* r_c_string(sexp* scalar_chr) {
   return CHAR(r_chr_get(scalar_chr, 0));
 }
