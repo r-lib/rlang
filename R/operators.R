@@ -74,7 +74,7 @@ is_definition <- function(x) {
   is_formulaish(x) && identical(node_car(x), sym_def)
 }
 quo_is_definition <- function(x) {
-  is_definition(get_expr(x))
+  is_definition(quo_get_expr(x))
 }
 
 #' @rdname op-definition

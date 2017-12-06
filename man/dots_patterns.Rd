@@ -2,16 +2,11 @@
 % Please edit documentation in R/dots.R
 \name{dots_patterns}
 \alias{dots_patterns}
-\alias{dots_patterns}
-\alias{dots_formulas}
 \alias{dots_definitions}
 \title{Quote patterns, definitions or formulas}
 \usage{
 dots_patterns(..., .named = FALSE, .ignore_empty = c("trailing", "none",
-  "all"))
-
-dots_formulas(..., .named = FALSE, .ignore_empty = c("trailing", "none",
-  "all"))
+  "all"), .operator = "~")
 
 dots_definitions(..., .named = FALSE, .ignore_empty = c("trailing", "none",
   "all"))
@@ -28,45 +23,36 @@ name. If an integer, it is passed to the \code{width} argument of
 \item{.ignore_empty}{Whether to ignore empty arguments. Can be one
 of \code{"trailing"}, \code{"none"}, \code{"all"}. If \code{"trailing"}, only the
 last argument is ignored if it is empty.}
+
+\item{.operator}{The name of a binary operator from which to
+extract an LHS and a RHS.}
 }
 \value{
-A named list of list of extracted LHS and RHS
-components. The components are extracted as quosures in a list
-with \code{lhs} and \code{rhs} fields. The outer list is thus named after
-the dots inputs while the inner lists contain the components for
-each input.
+A named list of lists of extracted LHS and RHS
+components. The inner lists contain two quosures named \code{lhs} and
+\code{rhs}. The outer list is named after the dots inputs.
 }
 \description{
-These quoting operators take dots and expect two-sided patterns
-like \code{a ~ b} or \code{a := b}. The LHS and RHS of each input are
-extracted in a list of quosures. The operators differ in the type
-of inputs they accept:
+These quoting functions take dots and expect two-sided patterns
+such as \code{a ~ b} or \code{a := b}. The LHS and RHS of each input are
+extracted in a list containing two quosures.
 \itemize{
-\item \code{dots_patterns()} accepts both two-sided formulas and \code{:=}
-definitions. There is no distinction between either type of
-inputs. This lets your users choose which syntax they prefer.
-\item \code{dots_formulas()} and \code{dots_definitions()} accept only one type
-of inputs.
+\item \code{dots_patterns()} expects two-sided formulas by default. If
+\code{.operator} is set to \code{":="}, it expects definitions.
+\item \code{dots_definitions()} extracts \code{:=} definitions in a sublist named
+\code{defs}. All other types of inputs are captured in quosures within
+\code{dots}.
 }
 }
 \examples{
-dots_formulas(
-  a ~ b,
+dots_patterns(
+  A = a ~ b,
   c ~ d
 )
 
-dots_definitions(
-  a := b,
-  c := d
-)
-
-# dots_patterns() supports both kinds of inputs at the same time
-# but this should be discouraged. Users should opt for one type and
-# stick to it consistently:
-dots_patterns(
-  a ~ b,
-  c := d
-)
+# You can specify the binary operator:
+dots_patterns(a := b, .operator = ":=")
+dots_patterns(a / b, .operator = "/")
 }
 \seealso{
 \code{\link[=quos]{quos()}}
