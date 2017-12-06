@@ -147,6 +147,32 @@
   all classes are present in order and `inherits_only()` checks that
   the class vectors are identical.
 
+* `UQ()` and `UQS()` are soft-deprecated in order to make the syntax
+  of quasiquotation more consistent. The prefix forms are now
+  `` `!!`() `` and `` `!!!`() `` which is consistent with other R
+  operators (e.g. `` `+`(a, b) `` is the prefix form of `a + b`).
+
+  Note that the prefix forms are not as relevant as before because
+  `!!` now has the right operator precedence, i.e. the same as unary
+  `-` or `+`. It is thus safe to mingle it with other operators,
+  e.g. `!!a + !!b` does the right thing. In addition the parser now
+  strips one level of parentheses around unquoted expressions. This
+  way `(!!"foo")(...)` expands to `foo(...)`.  These changes make the
+  prefix forms (and thus the named functional forms `UQ()` and
+  `UQS()`) less useful.
+
+  Finally, the named functional forms `UQ()` and `UQS()` were
+  misleading because they suggested that existing knowledge about
+  functions is applicable to quasiquotation. This was reinforced by
+  the visible definitions of these functions exported by rlang and by
+  the tidy eval parser interpreting `rlang::UQ()` as `!!`. In reality
+  unquoting is *not* a function call, it is a syntactic operation. The
+  operator forms `!!` and `!!!` make it clearer that unquoting is
+  special.
+
+* The quasiquotation parser now gives meaningful errors in corner
+  cases to help you figure out what is wrong.
+
 
 ## Breaking changes
 
@@ -167,6 +193,15 @@
 * `:=` now issues an error when called directly. It previously was an
   alias for `~` to allow calling it directly. This caused surprising
   results when it was invoked in wrong places.
+
+* The prefix form `` `!!`() `` is now an alias to `!!` rather than
+  `UQE()`. This makes it more in line with regular R syntax where
+  operators are parsed as regular calls, e.g. `a + b` is parsed as ``
+  `+`(a, b) `` and both forms are completely equivalent. Also the
+  prefix form `` `!!!`() `` is now equivalent to `!!!`.
+
+* `UQE()` is now deprecated in order to simplify the syntax of
+  quasiquotation. Please use `!! get_expr(x)` instead.
 
 
 # rlang 0.1.4

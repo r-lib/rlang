@@ -34,7 +34,7 @@ test_that("formulas are not treated as quosures", {
 
 test_that("unquote operators are always in scope", {
   env <- child_env("base", foo = "bar")
-  f <- with_env(env, ~UQ(foo))
+  f <- with_env(env, ~(!!foo))
   expect_identical(expr_interp(f), new_formula(NULL, "bar", env))
 })
 
@@ -42,21 +42,23 @@ test_that("can interpolate in specific env", {
   foo <- "bar"
   env <- child_env(NULL, foo = "foo")
 
-  expanded <- expr_interp(~UQ(foo))
-  expect_identical(expanded, ~"bar")
+  expanded <- expr_interp(~!!foo)
+  expect_identical(expanded, set_env(~"bar"))
 
-  expanded <- expr_interp(~UQ(foo), env)
-  expect_identical(expanded, ~"foo")
+  expanded <- expr_interp(~!!foo, env)
+  expect_identical(expanded, set_env(~"foo"))
 })
 
 test_that("can qualify operators with namespace", {
-  # Should remove prefix only if rlang-qualified:
-  expect_identical(quo(rlang::UQ(toupper("a"))), new_quosure("A", empty_env()))
-  expect_identical(quo(list(rlang::UQS(list(a = 1, b = 2)))), quo(list(a = 1, b = 2)))
+  with_non_verbose_retirement({
+    # Should remove prefix only if rlang-qualified:
+    expect_identical(quo(rlang::UQ(toupper("a"))), new_quosure("A", empty_env()))
+    expect_identical(quo(list(rlang::UQS(list(a = 1, b = 2)))), quo(list(a = 1, b = 2)))
 
-  # Should keep prefix otherwise:
-  expect_identical(quo(other::UQ(toupper("a"))), quo(other::"A"))
-  expect_identical(quo(x$UQ(toupper("a"))), quo(x$"A"))
+    # Should keep prefix otherwise:
+    expect_identical(quo(other::UQ(toupper("a"))), quo(other::"A"))
+    expect_identical(quo(x$UQ(toupper("a"))), quo(x$"A"))
+  })
 })
 
 test_that("unquoting is frame-consistent", {
@@ -100,7 +102,7 @@ test_that("`!!` handles binary and unary `-` and `+`", {
 
   foo <- 1L
   expect_identical(expr(!! +foo + a), quote(1L + a))
-  expect_identical(expr(!! -foo - a), expr(UQ(-1L) - a))
+  expect_identical(expr(!! -foo - a), expr(!!-1L - a))
 })
 
 test_that("`!!` handles special operators", {
@@ -109,10 +111,10 @@ test_that("`!!` handles special operators", {
 })
 
 
-# UQ ----------------------------------------------------------------------
+# !! ----------------------------------------------------------------------
 
-test_that("evaluates contents of UQ()", {
-  expect_equal(quo(UQ(1 + 2)), ~ 3)
+test_that("evaluates contents of `!!`", {
+  expect_identical(expr(!!(1 + 2)), 3)
 })
 
 test_that("quosures are not rewrapped", {
@@ -124,41 +126,43 @@ test_that("quosures are not rewrapped", {
 })
 
 test_that("UQ() fails if called without argument", {
-  quo <- quo(UQ(NULL))
-  expect_equal(quo, ~NULL)
+  with_non_verbose_retirement({
+    quo <- quo(UQ(NULL))
+    expect_equal(quo, ~NULL)
 
-  quo <- quo(rlang::UQ(NULL))
-  expect_equal(quo, ~NULL)
+    quo <- quo(rlang::UQ(NULL))
+    expect_equal(quo, ~NULL)
 
-  quo <- tryCatch(quo(UQ()), error = identity)
-  expect_is(quo, "error")
-  expect_match(quo$message, "must be called with an argument")
+    quo <- tryCatch(quo(UQ()), error = identity)
+    expect_is(quo, "error")
+    expect_match(quo$message, "must be called with an argument")
 
-  quo <- tryCatch(quo(rlang::UQ()), error = identity)
-  expect_is(quo, "error")
-  expect_match(quo$message, "must be called with an argument")
+    quo <- tryCatch(quo(rlang::UQ()), error = identity)
+    expect_is(quo, "error")
+    expect_match(quo$message, "must be called with an argument")
+  })
 })
 
 
-# UQS ---------------------------------------------------------------------
+# !!! ---------------------------------------------------------------------
 
-test_that("UQS() treats atomic objects as scalar vectors", {
+test_that("`!!!` treats atomic objects as scalar vectors", {
   expect_identical(quo(1 + !!! get_env()), quo(1 + !! get_env()))
   expect_identical(expr(c(!!! expression(1, 2))), expr(c(!! expression(1, 2))))
 })
 
-test_that("values of UQS() spliced into expression", {
-  f <- quo(f(a, UQS(list(quote(b), quote(c))), d))
+test_that("values of `!!!` spliced into expression", {
+  f <- quo(f(a, !!! list(quote(b), quote(c)), d))
   expect_identical(f, quo(f(a, b, c, d)))
 })
 
-test_that("names within UQS() are preseved", {
-  f <- quo(f(UQS(list(a = quote(b)))))
+test_that("names within `!!!` are preseved", {
+  f <- quo(f(!!! list(a = quote(b))))
   expect_identical(f, quo(f(a = b)))
 })
 
-test_that("UQS() handles `{` calls", {
-  expect_identical(quo(list(UQS(quote({ foo })))), quo(list(foo)))
+test_that("`!!!` handles `{` calls", {
+  expect_identical(quo(list(!!! quote({ foo }))), quo(list(foo)))
 })
 
 test_that("splicing an empty vector works", {
@@ -196,13 +200,44 @@ test_that("splicing a pairlist has no side effect", {
   expect_identical(x, pairlist(NULL))
 })
 
+test_that("`!!!` works in prefix form", {
+  expect_identical(exprs(`!!!`(1:2)), named_list(1L, 2L))
+  expect_identical(expr(list(`!!!`(1:2))), quote(list(1L, 2L)))
+  expect_identical(quos(`!!!`(1:2)), quos_list(quo(1L), quo(2L)))
+  expect_identical(quo(list(`!!!`(1:2))), new_quosure(quote(list(1L, 2L))))
+})
+
+test_that("can't use prefix form of `!!!` with qualifying operators", {
+  expect_error(expr(foo$`!!!`(bar)), "Prefix form of `!!!` can't be used with `\\$`")
+  expect_error(expr(foo@`!!!`(bar)), "Prefix form of `!!!` can't be used with `@`")
+  expect_error(expr(foo::`!!!`(bar)), "Prefix form of `!!!` can't be used with `::`")
+  expect_error(expr(foo:::`!!!`(bar)), "Prefix form of `!!!` can't be used with `:::`")
+  expect_error(expr(rlang::`!!!`(bar)), "Prefix form of `!!!` can't be used with `::`")
+  expect_error(expr(rlang:::`!!!`(bar)), "Prefix form of `!!!` can't be used with `:::`")
+})
+
+test_that("can't supply multiple arguments to `!!!`", {
+  expect_error(expr(list(`!!!`(1, 2))), "Can't supply multiple arguments to `!!!`")
+  expect_error(exprs(`!!!`(1, 2)), "Can't supply multiple arguments to `!!!`")
+})
+
 
 # UQE ----------------------------------------------------------------
 
 test_that("UQE() extracts right-hand side", {
   var <- ~cyl
-  expect_identical(quo(mtcars$UQE(var)), quo(mtcars$cyl))
-  expect_identical(quo(mtcars$`!!`(var)), quo(mtcars$cyl))
+  expect_warning(expect_identical(quo(mtcars$UQE(var)), quo(mtcars$cyl)), "deprecated")
+})
+
+test_that("UQE() throws a deprecation warning", {
+  expect_warning(exprs(UQE("foo")), "deprecated")
+  expect_warning(quos(UQE("foo")), "deprecated")
+  expect_warning(expr(UQE("foo")), "deprecated")
+  expect_warning(quo(UQE("foo")), "deprecated")
+})
+
+test_that("UQE() can't be used in by-value dots", {
+  expect_error(dots_list(UQE("foo")), "non-quoting function")
 })
 
 
@@ -220,10 +255,10 @@ test_that("double and triple ! are treated as syntactic shortcuts", {
 })
 
 test_that("`!!` works in prefixed calls", {
-  var <- ~cyl
-  expect_identical(expr_interp(~mtcars$`!!`(var)), ~mtcars$cyl)
+  var <- quo(cyl)
+  expect_identical(expr_interp(~mtcars$`!!`(quo_expr(var))), ~mtcars$cyl)
   expect_identical(expr_interp(~foo$`!!`(quote(bar))), ~foo$bar)
-  expect_identical(expr_interp(~base::`!!`(~list)()), ~base::list())
+  expect_identical(expr_interp(~base::`!!`(quote(list))()), ~base::list())
 })
 
 test_that("one layer of parentheses around !! is removed", {
@@ -242,6 +277,15 @@ test_that("one layer of parentheses around !! is removed", {
 
 test_that("parentheses are not removed if there's a tail", {
   expect_identical(expr((!! "a" + b)), quote(("a" + b)))
+})
+
+test_that("can use prefix form of `!!` with qualifying operators", {
+  expect_identical(expr(foo$`!!`(quote(bar))), quote(foo$bar))
+  expect_identical(expr(foo@`!!`(quote(bar))), quote(foo@bar))
+  expect_identical(expr(foo::`!!`(quote(bar))), quote(foo::bar))
+  expect_identical(expr(foo:::`!!`(quote(bar))), quote(foo:::bar))
+  expect_identical(expr(rlang::`!!`(quote(bar))), quote(rlang::bar))
+  expect_identical(expr(rlang:::`!!`(quote(bar))), quote(rlang:::bar))
 })
 
 
@@ -269,7 +313,10 @@ test_that("can unquote-splice symbols", {
 
 test_that("can unquote symbols", {
   expect_error(dots_values(!! quote(.)), "`!!` in a non-quoting function")
-  expect_error(dots_values(rlang::UQ(quote(.))), "`!!` in a non-quoting function")
+
+  with_non_verbose_retirement(
+    expect_error(dots_values(rlang::UQ(quote(.))), "`!!` in a non-quoting function")
+  )
 })
 
 
@@ -295,4 +342,23 @@ test_that("`:=` doesn't work at top level", {
   expect_error(dots_list(list(a := b), .unquote_names = FALSE), "within a quasiquoted argument")
   expect_error(dots_list(a := NULL, .unquote_names = FALSE), "within a quasiquoted argument")
   expect_error(dots_splice(a := NULL, .unquote_names = FALSE), "within a quasiquoted argument")
+})
+
+
+# Lifecycle ----------------------------------------------------------
+
+test_that("UQS() is soft-deprecated", {
+  with_non_verbose_retirement({
+    expect_identical(exprs(UQS(1:2)), exprs(!!! 1:2))
+    expect_identical(quos(UQS(1:2)), quos(!!! 1:2))
+    expect_identical(quo(list(UQS(1:2))), quo(list(!!! 1:2)))
+    expect_identical(expr(list(UQS(1:2))), expr(list(!!! 1:2)))
+  })
+
+  with_verbose_retirement({
+    expect_warning(exprs(UQS(1:2)), "soft-deprecated")
+    expect_warning(quos(UQS(1:2)), "soft-deprecated")
+    expect_warning(expr(list(UQS(1:2))), "soft-deprecated")
+    expect_warning(quo(list(UQS(1:2))), "soft-deprecated")
+  })
 })

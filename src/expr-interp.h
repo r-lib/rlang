@@ -2,10 +2,12 @@
 #define RLANG_INTERNAL_EXPR_INTERP_H
 
 
-#define UQE_N 2
+#define UQ_N 2
+#define UQE_N 1
 #define UQS_N 2
 
-static const char* uqe_names[UQE_N] = { "UQE", "!!" };
+static const char* uq_names[UQ_N] = { "UQ", "!!" };
+static const char* uqe_names[UQE_N] = { "UQE" };
 static const char* uqs_names[UQS_N] = { "UQS", "!!!"};
 
 
@@ -20,18 +22,18 @@ static const char* fixup_unary_ops_names[FIXUP_UNARY_OPS_N] = {
 };
 
 
-static inline bool is_rlang_call(sexp* x, const char* name) {
+static inline bool is_maybe_rlang_call(sexp* x, const char* name) {
   return
     r_is_call(x, name) ||
     r_is_namespaced_call(x, "rlang", name);
 }
-static inline bool is_rlang_call_any(sexp* x, const char** names, int n) {
+static inline bool is_maybe_rlang_call_any(sexp* x, const char** names, int n) {
   return
     r_is_call_any(x, names, n) ||
     r_is_namespaced_call_any(x, "rlang", names, n);
 }
 static inline bool is_splice_call(sexp* node) {
-  return is_rlang_call_any(node, uqs_names, UQS_N);
+  return is_maybe_rlang_call_any(node, uqs_names, UQS_N);
 }
 
 

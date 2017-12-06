@@ -13,19 +13,14 @@
 #' expression. We provide both syntactic operators and functional
 #' forms for unquoting.
 #'
-#' - `UQ()` and the `!!` operator unquote their argument. It gets
-#'   evaluated immediately in the surrounding context.
+#' - The `!!` operator unquotes its argument. It gets evaluated
+#'   immediately in the surrounding context.
 #'
-#' - `UQE()` is like `UQ()` but retrieves the expression of
-#'   [quosureish][is_quosureish] objects. It is a shortcut for `!!
-#'   get_expr(x)`. Use this with care: it is potentially unsafe to
-#'   discard the environment of the quosure.
-#'
-#' - `UQS()` and the `!!!` operators unquote and splice their
-#'   argument. The argument should evaluate to a vector or an
-#'   expression. Each component of the vector is embedded as its own
-#'   argument in the surrounding call. If the vector is named, the
-#'   names are used as argument names.
+#' - The `!!!` operator unquotes and splices its argument. The
+#'   argument should represents a list or a vector. Each element will
+#'   be embedded in the surrounding call, i.e. each element is
+#'   inserted as an argument. If the vector is named, the names are
+#'   used as argument names.
 #'
 #'
 #' @section Unquoting names:
@@ -58,13 +53,52 @@
 #'
 #' @section Theory:
 #'
-#' Formally, `quo()` and `expr()` are quasiquote functions, `UQ()` is
-#' the unquote operator, and `UQS()` is the unquote splice operator.
+#' Formally, `quo()` and `expr()` are quasiquote functions, `!!` is
+#' the unquote operator, and `!!!` is the unquote-splice operator.
 #' These terms have a rich history in Lisp languages, and live on in
 #' modern languages like
 #' [Julia](https://docs.julialang.org/en/stable/manual/metaprogramming/)
 #' and
 #' [Racket](https://docs.racket-lang.org/reference/quasiquote.html).
+#'
+#'
+#' @section Life cycle:
+#'
+#' * `UQ()` and `UQS()` were soft-deprecated in rlang 0.2.0 in order
+#'   to make the syntax of quasiquotation more consistent. The prefix
+#'   forms are now \code{`!!`()} and \code{`!!!`()} which is
+#'   consistent with other R operators (e.g. \code{`+`(a, b)} is the
+#'   prefix form of `a + b`).
+#'
+#'   Note that the prefix forms are not as relevant as before because
+#'   `!!` now has the right operator precedence, i.e. the same as
+#'   unary `-` or `+`. It is thus safe to mingle it with other
+#'   operators, e.g. `!!a + !!b` does the right thing. In addition the
+#'   parser now strips one level of parentheses around unquoted
+#'   expressions. This way `(!!"foo")(...)` expands to `foo(...)`.
+#'   These changes make the prefix forms less useful.
+#'
+#'   Finally, the named functional forms `UQ()` and `UQS()` were
+#'   misleading because they suggested that existing knowledge about
+#'   functions is applicable to quasiquotation. This was reinforced by
+#'   the visible definitions of these functions exported by rlang and
+#'   by the tidy eval parser interpreting `rlang::UQ()` as `!!`. In
+#'   reality unquoting is *not* a function call, it is a syntactic
+#'   operation. The operator form makes it clearer that unquoting is
+#'   special.
+#'
+#' * `UQE()` was deprecated in rlang 0.2.0 in order to make the is
+#'   deprecated in order to simplify the quasiquotation syntax. You
+#'   can replace its use by a combination of `!!` and `get_expr()`.
+#'   E.g. `!! get_expr(x)` is equivalent to `UQE(x)`.
+#'
+#' * The use of `:=` as alias of `~` is defunct as of rlang 0.2.0. It
+#'   caused surprising results when invoked in wrong places. For
+#'   instance in the expression `dots_list(name := 1)` this operator
+#'   was interpreted as a synonym to `=` that supports quasiquotation,
+#'   but not in `dots_list(list(name := 1))`. Since `:=` was an alias
+#'   for `~` the inner list would contain formula-like object. This
+#'   kind of mistakes now trigger an error.
 #'
 #' @param x An expression to unquote.
 #' @name quasiquotation
@@ -76,48 +110,34 @@
 #' quo(foo(bar))
 #'
 #' # In addition, they support unquoting:
-#' expr(foo(UQ(1 + 2)))
-#' expr(foo(!! 1 + 2))
-#' quo(foo(!! 1 + 2))
-#'
-#' # The !! operator is a handy syntactic shortcut for unquoting with
-#' # UQ().  However you need to be a bit careful with operator
-#' # precedence. All arithmetic and comparison operators bind more
-#' # tightly than `!`:
-#' quo(1 +  !! (1 + 2 + 3) + 10)
-#'
-#' # For this reason you should always wrap the unquoted expression
-#' # with parentheses when operators are involved:
-#' quo(1 + (!! 1 + 2 + 3) + 10)
-#'
-#' # Or you can use the explicit unquote function:
-#' quo(1 + UQ(1 + 2 + 3) + 10)
+#' expr(foo(!!(1 + 2)))
+#' quo(foo(!!(1 + 2)))
 #'
 #'
-#' # Use !!! or UQS() if you want to add multiple arguments to a
-#' # function It must evaluate to a list
+#' # Use `!!!` to add multiple arguments to a function. Its argument
+#' # should evaluate to a list or vector:
 #' args <- list(1:10, na.rm = TRUE)
-#' quo(mean( UQS(args) ))
+#' quo(mean(!!!args))
 #'
 #' # You can combine the two
 #' var <- quote(xyz)
 #' extra_args <- list(trim = 0.9, na.rm = TRUE)
-#' quo(mean(UQ(var) , UQS(extra_args)))
+#' quo(mean(!!var , !!!extra_args))
 #'
 #'
 #' # Unquoting is especially useful for transforming successively a
 #' # captured expression:
 #' quo <- quo(foo(bar))
-#' quo <- quo(inner(!! quo, arg1))
-#' quo <- quo(outer(!! quo, !!! syms(letters[1:3])))
+#' quo <- quo(inner(!!quo, arg1))
+#' quo <- quo(outer(!!quo, !!!syms(letters[1:3])))
 #' quo
 #'
 #' # Since we are building the expression in the same environment, you
 #' # can also start with raw expressions and create a quosure in the
 #' # very last step to record the dynamic environment:
 #' expr <- expr(foo(bar))
-#' expr <- expr(inner(!! expr, arg1))
-#' quo <- quo(outer(!! expr, !!! syms(letters[1:3])))
+#' expr <- expr(inner(!!expr, arg1))
+#' quo <- quo(outer(!!expr, !!!syms(letters[1:3])))
 #' quo
 NULL
 
@@ -129,6 +149,7 @@ UQ <- function(x) {
 #' @rdname quasiquotation
 #' @export
 UQE <- function(x) {
+  warn("`UQE()` is deprecated. Please use `!! get_expr(x)`")
   abort("`UQE()` can only be used within a quasiquoted argument")
 }
 #' @rdname quasiquotation

@@ -242,10 +242,10 @@ test_that("exprs() supports auto-naming", {
 })
 
 test_that("dots_interp() supports unquoting", {
-  expect_identical(exprs(UQ(1 + 2)), named_list(3))
-  expect_identical(exprs(!! (1 + 1) + 2), named_list(quote(2 + 2)))
-  expect_identical(exprs(!! (1 + 1) + 2 + 3), named_list(quote(2 + 2 + 3)))
-  expect_identical(exprs(!! "foo" := bar), named_list(foo = quote(bar)))
+  expect_identical(exprs(!!(1 + 2)), named_list(3))
+  expect_identical(exprs(!!(1 + 1) + 2), named_list(quote(2 + 2)))
+  expect_identical(exprs(!!(1 + 1) + 2 + 3), named_list(quote(2 + 2 + 3)))
+  expect_identical(exprs(!!"foo" := bar), named_list(foo = quote(bar)))
 })
 
 test_that("dots_interp() has no side effect", {

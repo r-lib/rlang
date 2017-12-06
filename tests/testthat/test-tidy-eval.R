@@ -47,7 +47,7 @@ test_that("pronouns complain about missing values", {
 
 test_that("eval_tidy does quasiquoting", {
   x <- 10
-  expect_equal(eval_tidy(quo(UQ(quote(x)))), 10)
+  expect_equal(eval_tidy(quo(!!quote(x))), 10)
 })
 
 
@@ -58,7 +58,7 @@ test_that("unquoted formulas look in their own env", {
   }
 
   n <- 10
-  expect_equal(eval_tidy(quo(UQ(f()))), 100)
+  expect_equal(eval_tidy(quo(!!f())), 100)
 })
 
 test_that("unquoted formulas can use data", {

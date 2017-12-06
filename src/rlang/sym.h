@@ -17,6 +17,9 @@ static inline sexp* r_sym(const char* c_string) {
 static inline sexp* r_sym_str(sexp* sym) {
   return PRINTNAME(sym);
 }
+static inline const char* r_sym_c_str(sexp* sym) {
+  return CHAR(PRINTNAME(sym));
+}
 
 bool r_is_symbol(sexp* sym, const char* string);
 bool r_is_symbol_any(sexp* x, const char** strings, int n);

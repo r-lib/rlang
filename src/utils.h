@@ -3,6 +3,8 @@
 
 
 sexp* new_preserved_empty_list();
+void signal_soft_deprecation(const char* msg);
+sexp* rlang_ns_get(const char* name);
 
 
 #endif

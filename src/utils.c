@@ -12,3 +12,9 @@ sexp* new_preserved_empty_list() {
 
   return empty_list;
 }
+
+void signal_soft_deprecation(const char* msg) {
+  if (r_peek_option("lifecycle_verbose_retirement") != r_null) {
+    r_warn(msg);
+  }
+}

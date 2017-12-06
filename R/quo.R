@@ -122,31 +122,29 @@
 #' eval_tidy(quo)
 #'
 #'
+#' # The `!!` operator can be used in prefix form as well. This is
+#' # useful for using it with `$` for instance:
+#' var <- sym("cyl")
+#' quo(mtcars$`!!`(var))
+#'
+#' # Or equivalently:
+#' quo(`$`(mtcars, !!var))
+#'
 #' # Quoting as a quosure is necessary to preserve scope information
 #' # and make sure objects are looked up in the right place. However,
 #' # there are situations where it can get in the way. This is the
-#' # case when you deal with non-tidy NSE functions that do not
-#' # understand formulas. You can inline the RHS of a formula in a
-#' # call thanks to the UQE() operator:
-#' nse_function <- function(arg) substitute(arg)
-#' var <- locally(quo(foo(bar)))
-#' quo(nse_function(UQ(var)))
-#' quo(nse_function(UQE(var)))
+#' # case when you deal with base NSE functions that do not understand
+#' # quosures. You can extract the expression from a quosure with
+#' # `get_expr()`.
+#' get_expr(quo(foo))
 #'
-#' # This is equivalent to unquoting and taking the RHS:
-#' quo(nse_function(!! get_expr(var)))
-#'
-#' # One of the most important old-style NSE function is the dollar
-#' # operator. You need to use UQE() for subsetting with dollar:
+#' # To use `get_expr()` safely it is important that the expression
+#' # within the quosure does not depend on any objects local to its
+#' # place of creation. For instance if the quosure contains a symbol
+#' # that refers to a data frame column it is safe to use the raw
+#' # symbol. Let's try to use `get_expr()` with `$`:
 #' var <- quo(cyl)
-#' quo(mtcars$UQE(var))
-#'
-#' # `!!`() is also treated as a shortcut. It is meant for situations
-#' # where the bang operator would not parse, such as subsetting with
-#' # $. Since that's its main purpose, we've made it a shortcut for
-#' # UQE() rather than UQ():
-#' var <- quo(cyl)
-#' quo(mtcars$`!!`(var))
+#' quo(mtcars$`!!`(get_expr(var)))
 #'
 #'
 #' # When a quosure is printed in the console, the brackets indicate

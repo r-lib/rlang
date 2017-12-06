@@ -1,8 +1,6 @@
 #include "rlang/rlang.h"
 #include "expr-interp.h"
-
-sexp* rlang_ns_get(const char* name);
-sexp* r_str_unserialise_unicode(sexp*);
+#include "utils.h"
 
 
 static bool needs_fixup(sexp* x) {
@@ -80,6 +78,43 @@ struct expansion_info which_bang_op(sexp* x) {
   return info;
 }
 
+void signal_uq_soft_deprecation() {
+  signal_soft_deprecation(
+    "`UQ()` is soft-deprecated as of rlang 0.2.0. "
+    "Please use the prefix form of `!!` instead."
+  );
+}
+void signal_uqs_soft_deprecation() {
+  signal_soft_deprecation(
+    "`UQS()` is soft-deprecated as of rlang 0.2.0. "
+    "Please use the prefix form of `!!!` instead."
+  );
+}
+
+void maybe_poke_big_bang_op(sexp* x, struct expansion_info* info) {
+  if (r_is_call(x, "!!!")) {
+    if (r_node_cddr(x) != r_null) {
+      r_abort("Can't supply multiple arguments to `!!!`");
+    }
+    info->op = OP_EXPAND_UQS;
+    info->operand = r_node_cadr(x);
+    return ;
+  }
+
+  // Handle expressions like foo::`!!`(bar) or foo$`!!`(bar)
+  if (r_is_prefixed_call(x, "!!!")) {
+    const char* name = r_sym_c_str(r_node_caar(x));
+    r_abort("Prefix form of `!!!` can't be used with `%s`", name);
+  }
+
+  if (is_maybe_rlang_call(x, "UQS")) {
+    signal_uqs_soft_deprecation();
+    info->op = OP_EXPAND_UQS;
+    info->operand = r_node_cadr(x);
+    return ;
+  }
+}
+
 struct expansion_info which_expansion_op(sexp* x, bool unquote_names) {
   struct expansion_info info = which_bang_op(x);
 
@@ -95,10 +130,33 @@ struct expansion_info which_expansion_op(sexp* x, bool unquote_names) {
     return info;
   }
 
-  // This logic is complicated because rlang::UQ() gets fully unquoted
-  // but not foobar::UQ(). The functional form UI is a design mistake.
 
+  if (r_is_call(x, "!!")) {
+    info.op = OP_EXPAND_UQ;
+    info.operand = r_node_cadr(x);
+    return info;
+  }
+
+  // Handle expressions like foo::`!!`(bar) or foo$`!!`(bar)
+  if (r_is_prefixed_call(x, "!!")) {
+    info.op = OP_EXPAND_UQ;
+    info.operand = r_node_cadr(x);
+    info.parent = r_node_cdr(r_node_cdar(x));
+    info.root = r_node_car(x);
+    return info;
+  }
+
+  maybe_poke_big_bang_op(x, &info);
+  if (info.op == OP_EXPAND_UQS) {
+    return info;
+  }
+
+  // This logic is complicated because rlang::UQ() gets fully unquoted
+  // but not foobar::UQ(). The functional form UI is now retired so
+  // we'll be able to simplify this in the future.
   if (r_is_prefixed_call(x, "UQ")) {
+    signal_uq_soft_deprecation();
+
     info.op = OP_EXPAND_UQ;
     info.operand = r_node_cadr(x);
 
@@ -110,6 +168,7 @@ struct expansion_info which_expansion_op(sexp* x, bool unquote_names) {
     return info;
   }
   if (r_is_call(x, "UQ")) {
+    signal_uq_soft_deprecation();
     info.op = OP_EXPAND_UQ;
     info.operand = r_node_cadr(x);
     return info;
@@ -134,25 +193,14 @@ struct expansion_info which_expansion_op(sexp* x, bool unquote_names) {
   }
 
 
-  if (is_splice_call(x)) {
-    info.op = OP_EXPAND_UQS;
-    info.operand = r_node_cadr(x);
-    return info;
-  }
-
   return info;
 }
 
 struct expansion_info is_big_bang_op(sexp* x) {
   struct expansion_info info = which_bang_op(x);
 
-  if (info.op == OP_EXPAND_UQS) {
-    return info;
-  }
-
-  if (is_splice_call(x)) {
-    info.op = OP_EXPAND_UQS;
-    info.operand = r_node_cadr(x);
+  if (info.op != OP_EXPAND_UQS) {
+    maybe_poke_big_bang_op(x, &info);
   }
 
   return info;
@@ -237,6 +285,10 @@ sexp* call_interp_impl(sexp* x, sexp* env, struct expansion_info info) {
   if (info.op && r_node_cdr(x) == r_null) {
     r_abort("`UQ()`, `UQE()` and `UQS()` must be called with an argument");
   }
+  if (info.op == OP_EXPAND_UQE) {
+    r_warn("`UQE()` is deprecated. Please use `!! get_expr(x)`");
+  }
+
 
   switch (info.op) {
   case OP_EXPAND_NONE:
