@@ -54,7 +54,7 @@
 #' @section Theory:
 #'
 #' Formally, `quo()` and `expr()` are quasiquote functions, `!!` is
-#' the unquote operator, and `!!!` is the unquote splice operator.
+#' the unquote operator, and `!!!` is the unquote-splice operator.
 #' These terms have a rich history in Lisp languages, and live on in
 #' modern languages like
 #' [Julia](https://docs.julialang.org/en/stable/manual/metaprogramming/)
@@ -70,7 +70,22 @@
 #'   consistent with other R operators (e.g. \code{`+`(a, b)} is the
 #'   prefix form of `a + b`).
 #'
-#'   These operators are scheduled for deprecation in rlang 0.3.0.
+#'   Note that the prefix forms are not as relevant as before because
+#'   `!!` now has the right operator precedence, i.e. the same as
+#'   unary `-` or `+`. It is thus safe to mingle it with other
+#'   operators, e.g. `!!a + !!b` does the right thing. In addition the
+#'   parser now strips one level of parentheses around unquoted
+#'   expressions. This way `(!!"foo")(...)` expands to `foo(...)`.
+#'   These changes make the prefix forms less useful.
+#'
+#'   Finally, the named functional forms `UQ()` and `UQS()` were
+#'   misleading because they suggested that existing knowledge about
+#'   functions is applicable to quasiquotation. This was reinforced by
+#'   the visible definitions of these functions exported by rlang and
+#'   by the tidy eval parser interpreting `rlang::UQ()` as `!!`. In
+#'   reality unquoting is *not* a function call, it is a syntactic
+#'   operation. The operator form makes it clearer that unquoting is
+#'   special.
 #'
 #' * `UQE()` was deprecated in rlang 0.2.0 in order to make the is
 #'   deprecated in order to simplify the quasiquotation syntax. You

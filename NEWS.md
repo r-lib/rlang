@@ -148,11 +148,27 @@
   the class vectors are identical.
 
 * `UQ()` and `UQS()` are soft-deprecated in order to make the syntax
-  of quasiquotation more consistent. The prefix forms are now ``
-  `!!`() `` and `` `!!!`() `` which is consistent with other R
+  of quasiquotation more consistent. The prefix forms are now
+  `` `!!`() `` and `` `!!!`() `` which is consistent with other R
   operators (e.g. `` `+`(a, b) `` is the prefix form of `a + b`).
-  These operators are scheduled for deprecation with a warning in
-  rlang 0.3.0.
+
+  Note that the prefix forms are not as relevant as before because
+  `!!` now has the right operator precedence, i.e. the same as unary
+  `-` or `+`. It is thus safe to mingle it with other operators,
+  e.g. `!!a + !!b` does the right thing. In addition the parser now
+  strips one level of parentheses around unquoted expressions. This
+  way `(!!"foo")(...)` expands to `foo(...)`.  These changes make the
+  prefix forms (and thus the named functional forms `UQ()` and
+  `UQS()`) less useful.
+
+  Finally, the named functional forms `UQ()` and `UQS()` were
+  misleading because they suggested that existing knowledge about
+  functions is applicable to quasiquotation. This was reinforced by
+  the visible definitions of these functions exported by rlang and by
+  the tidy eval parser interpreting `rlang::UQ()` as `!!`. In reality
+  unquoting is *not* a function call, it is a syntactic operation. The
+  operator forms `!!` and `!!!` make it clearer that unquoting is
+  special.
 
 
 ## Breaking changes

@@ -80,7 +80,7 @@ Like \code{=}, the \code{:=} operator expects strings or symbols on its LHS.
 
 
 Formally, \code{quo()} and \code{expr()} are quasiquote functions, \code{!!} is
-the unquote operator, and \code{!!!} is the unquote splice operator.
+the unquote operator, and \code{!!!} is the unquote-splice operator.
 These terms have a rich history in Lisp languages, and live on in
 modern languages like
 \href{https://docs.julialang.org/en/stable/manual/metaprogramming/}{Julia}
@@ -97,7 +97,22 @@ forms are now \code{`!!`()} and \code{`!!!`()} which is
 consistent with other R operators (e.g. \code{`+`(a, b)} is the
 prefix form of \code{a + b}).
 
-These operators are scheduled for deprecation in rlang 0.3.0.
+Note that the prefix forms are not as relevant as before because
+\code{!!} now has the right operator precedence, i.e. the same as
+unary \code{-} or \code{+}. It is thus safe to mingle it with other
+operators, e.g. \code{!!a + !!b} does the right thing. In addition the
+parser now strips one level of parentheses around unquoted
+expressions. This way \code{(!!"foo")(...)} expands to \code{foo(...)}.
+These changes make the prefix forms less useful.
+
+Finally, the named functional forms \code{UQ()} and \code{UQS()} were
+misleading because they suggested that existing knowledge about
+functions is applicable to quasiquotation. This was reinforced by
+the visible definitions of these functions exported by rlang and
+by the tidy eval parser interpreting \code{rlang::UQ()} as \code{!!}. In
+reality unquoting is \emph{not} a function call, it is a syntactic
+operation. The operator form makes it clearer that unquoting is
+special.
 \item \code{UQE()} was deprecated in rlang 0.2.0 in order to make the is
 deprecated in order to simplify the quasiquotation syntax. You
 can replace its use by a combination of \code{!!} and \code{get_expr()}.
