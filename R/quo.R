@@ -301,8 +301,8 @@ is_one_sided <- function(x, lang_sym = sym_tilde) {
 #'
 #' # While as_quosure() always returns a quosure (one-sided formula),
 #' # as_quosureish() returns quosureish objects:
-#' as_quosure(a := b)
-#' as_quosureish(a := b)
+#' as_quosure(a ~ b)
+#' as_quosureish(a ~ b)
 #' as_quosureish(10L)
 as_quosure <- function(x, env = caller_env()) {
   if (is_quosure(x)) {

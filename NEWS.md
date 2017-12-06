@@ -164,6 +164,10 @@
 * `expr_interp()` now returns a formula instead of a quosure when
   supplied a formula.
 
+* `:=` now issues an error when called directly. It previously was an
+  alias for `~` to allow calling it directly. This caused surprising
+  results when it was invoked in wrong places.
+
 
 # rlang 0.1.4
 

@@ -61,7 +61,7 @@ is_bare_formula(eval(f), scoped = TRUE)
 # There is also a variant that returns TRUE for definitions in
 # addition to formulas:
 is_formulaish(a ~ b)
-is_formulaish(a := b)
+is_formulaish(quote(a := b))
 }
 \seealso{
 \code{\link[=is_quosure]{is_quosure()}} and \code{\link[=is_quosureish]{is_quosureish()}}

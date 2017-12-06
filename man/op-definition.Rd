@@ -2,13 +2,10 @@
 % Please edit documentation in R/operators.R
 \name{op-definition}
 \alias{op-definition}
-\alias{:=}
 \alias{is_definition}
 \alias{new_definition}
 \title{Definition operator}
 \usage{
-":="()
-
 is_definition(x)
 
 new_definition(lhs, rhs, env = caller_env())
@@ -22,24 +19,24 @@ new_definition(lhs, rhs, env = caller_env())
 }
 \description{
 The definition operator is typically used in DSL packages like
-\code{ggvis} and \code{data.table}. It is exported in rlang as a alias to
-\code{~}. This makes it a quoting operator that can be shared between
-packages for computing on the language. Since it effectively
-creates formulas, it is immediately compatible with rlang's
-formulas and interpolation features.
+\code{ggvis} and \code{data.table}. It is also used in the tidyverse as a way
+of unquoting names (see \link{quasiquotation}).
+}
+\details{
+The recommended way to use it is to capture arguments as
+expressions or quosures. You can then give a special function
+definition for the \code{:=} symbol in an overscope. Note that if you
+capture dots with \code{\link[=exprs]{exprs()}} or \code{\link[=quos]{quos()}}, you need to disable
+interpretation of \code{:=} by setting \code{.unquote_names} to \code{FALSE}.
+
+From rlang and data.table perspectives, this operator is not meant
+to be evaluated directly at top-level which is why the exported
+definitions issue an error.
 }
 \examples{
-# This is useful to provide an alternative way of specifying
-# arguments in DSLs:
-fn <- function(...) ..1
-f <- fn(arg := foo(bar) + baz)
-
-is_formula(f)
-f_lhs(f)
-f_rhs(f)
 
 # A predicate is provided to distinguish formulas from the
 # colon-equals operator:
-is_definition(a := b)
+is_definition(quote(a := b))
 is_definition(a ~ b)
 }

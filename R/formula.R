@@ -56,7 +56,7 @@ new_formula <- function(lhs, rhs, env = caller_env()) {
 #' # There is also a variant that returns TRUE for definitions in
 #' # addition to formulas:
 #' is_formulaish(a ~ b)
-#' is_formulaish(a := b)
+#' is_formulaish(quote(a := b))
 is_formula <- function(x, scoped = NULL, lhs = NULL) {
   if (!is_formulaish(x, scoped = scoped, lhs = lhs)) {
     return(FALSE)

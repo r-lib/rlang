@@ -48,38 +48,31 @@
 #' Definition operator
 #'
 #' The definition operator is typically used in DSL packages like
-#' `ggvis` and `data.table`. It is exported in rlang as a alias to
-#' `~`. This makes it a quoting operator that can be shared between
-#' packages for computing on the language. Since it effectively
-#' creates formulas, it is immediately compatible with rlang's
-#' formulas and interpolation features.
+#' `ggvis` and `data.table`. It is also used in the tidyverse as a way
+#' of unquoting names (see [quasiquotation]).
 #'
-#' @export
-#' @examples
-#' # This is useful to provide an alternative way of specifying
-#' # arguments in DSLs:
-#' fn <- function(...) ..1
-#' f <- fn(arg := foo(bar) + baz)
+#' The recommended way to use it is to capture arguments as
+#' expressions or quosures. You can then give a special function
+#' definition for the `:=` symbol in an overscope. Note that if you
+#' capture dots with [exprs()] or [quos()], you need to disable
+#' interpretation of `:=` by setting `.unquote_names` to `FALSE`.
 #'
-#' is_formula(f)
-#' f_lhs(f)
-#' f_rhs(f)
+#' From rlang and data.table perspectives, this operator is not meant
+#' to be evaluated directly at top-level which is why the exported
+#' definitions issue an error.
+#'
 #' @name op-definition
-`:=` <- `~`
-
-#' @rdname op-definition
 #' @param x An object to test.
 #' @export
 #' @examples
 #'
 #' # A predicate is provided to distinguish formulas from the
 #' # colon-equals operator:
-#' is_definition(a := b)
+#' is_definition(quote(a := b))
 #' is_definition(a ~ b)
 is_definition <- function(x) {
   is_formulaish(x) && identical(node_car(x), sym_def)
 }
-
 #' @rdname op-definition
 #' @export
 #' @param lhs,rhs Expressions for the LHS and RHS of the definition.
