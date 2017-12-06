@@ -34,20 +34,6 @@ last argument is ignored if it is empty.}
 quosures (see \code{\link[=quo]{quo()}}). It is especially useful to capture
 arguments forwarded through \code{...}.
 }
-\section{Unquoting names}{
-
-
-Like all rlang functions taking dots, \code{quos()} supports \link[=is_definition]{definition
-expressions} of the type \code{var := expr}. When \code{:=}
-definitions are supplied to \code{quos()}, they are treated as a synonym
-of argument assignment \code{=}. Unlike regular assignment, they support
-unquoting on the left-hand side, which makes it easy to assign
-names contained in variables.
-
-See \code{\link[=dots_patterns]{dots_patterns()}} and \code{\link[=dots_definitions]{dots_definitions()}} for using \code{:=}
-expressions with a different meaning than name assignment
-}
-
 \examples{
 # quos() is like the singular version but allows quoting
 # several arguments:
