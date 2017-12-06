@@ -9,6 +9,9 @@ this applies to all its exported functions. Maturing functions are
 susceptible to API changes. Only use these in packages if you're
 prepared to make changes as the package evolves. See sections below
 for a list of functions marked as stable.
+
+The documentation pages of retired functions contain life cycle
+sections that explain the reasons for their retirements.
 }
 \section{Stable functions}{
 
@@ -41,6 +44,15 @@ TODO: Review all functions in rlang and mark stable ones as such.
 \strong{rlang 0.2.0:}
 \itemize{
 \item \code{\link[=UQE]{UQE()}}
+}
+}
+
+\section{Defunct functions and arguments}{
+
+
+\strong{rlang 0.2.0:}
+\itemize{
+\item \link[=quasiquotation]{:=}
 }
 }
 

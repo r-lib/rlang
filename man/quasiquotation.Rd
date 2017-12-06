@@ -117,6 +117,13 @@ special.
 deprecated in order to simplify the quasiquotation syntax. You
 can replace its use by a combination of \code{!!} and \code{get_expr()}.
 E.g. \code{!! get_expr(x)} is equivalent to \code{UQE(x)}.
+\item The use of \code{:=} as alias of \code{~} is defunct as of rlang 0.2.0. It
+caused surprising results when invoked in wrong places. For
+instance in the expression \code{dots_list(name := 1)} this operator
+was interpreted as a synonym to \code{=} that supports quasiquotation,
+but not in \code{dots_list(list(name := 1))}. Since \code{:=} was an alias
+for \code{~} the inner list would contain formula-like object. This
+kind of mistakes now trigger an error.
 }
 }
 
