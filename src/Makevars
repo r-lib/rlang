@@ -10,6 +10,7 @@ lib-files = \
         lib/formula.c \
         lib/lang.c \
         lib/node.c \
+        lib/parse.c \
         lib/quo.c \
         lib/replace-na.c \
         lib/sexp.c \
