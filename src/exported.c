@@ -197,7 +197,7 @@ sexp* rlang_quo_is_symbolic(sexp* quo) {
   check_quosure(quo);
   return r_scalar_lgl(r_is_symbolic(r_node_cadr(quo)));
 }
-bool rlang_quo_is_null(sexp* quo) {
+sexp* rlang_quo_is_null(sexp* quo) {
   check_quosure(quo);
   return r_scalar_lgl(r_node_cadr(quo) == r_null);
 }
