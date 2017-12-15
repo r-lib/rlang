@@ -80,8 +80,8 @@ test_that("doesn't clean named empty argument arguments", {
 })
 
 test_that("capturing dots by value only unquote-splices at top-level", {
-  expect_identical(dots_list(!!! list(quote(!!! a))), named_list(quote(!!! a)))
-  expect_identical(dots_list(!!! exprs(!!! 1:3)), named_list(1L, 2L, 3L))
+  expect_identical_(dots_list(!!! list(quote(!!! a))), named_list(quote(!!! a)))
+  expect_identical_(dots_list(!!! exprs(!!! 1:3)), named_list(1L, 2L, 3L))
 })
 
 test_that("can't unquote when capturing dots by value", {

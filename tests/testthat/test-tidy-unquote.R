@@ -183,7 +183,7 @@ test_that("serialised unicode in argument names is unserialised on splice", {
 })
 
 test_that("can't splice at top level", {
-  expect_error(expr(!!! letters), "top level")
+  expect_error_(expr(!!! letters), "top level")
 })
 
 test_that("can splice function body even if not a `{` block", {
@@ -208,17 +208,17 @@ test_that("`!!!` works in prefix form", {
 })
 
 test_that("can't use prefix form of `!!!` with qualifying operators", {
-  expect_error(expr(foo$`!!!`(bar)), "Prefix form of `!!!` can't be used with `\\$`")
-  expect_error(expr(foo@`!!!`(bar)), "Prefix form of `!!!` can't be used with `@`")
-  expect_error(expr(foo::`!!!`(bar)), "Prefix form of `!!!` can't be used with `::`")
-  expect_error(expr(foo:::`!!!`(bar)), "Prefix form of `!!!` can't be used with `:::`")
-  expect_error(expr(rlang::`!!!`(bar)), "Prefix form of `!!!` can't be used with `::`")
-  expect_error(expr(rlang:::`!!!`(bar)), "Prefix form of `!!!` can't be used with `:::`")
+  expect_error_(expr(foo$`!!!`(bar)), "Prefix form of `!!!` can't be used with `\\$`")
+  expect_error_(expr(foo@`!!!`(bar)), "Prefix form of `!!!` can't be used with `@`")
+  expect_error_(expr(foo::`!!!`(bar)), "Prefix form of `!!!` can't be used with `::`")
+  expect_error_(expr(foo:::`!!!`(bar)), "Prefix form of `!!!` can't be used with `:::`")
+  expect_error_(expr(rlang::`!!!`(bar)), "Prefix form of `!!!` can't be used with `::`")
+  expect_error_(expr(rlang:::`!!!`(bar)), "Prefix form of `!!!` can't be used with `:::`")
 })
 
 test_that("can't supply multiple arguments to `!!!`", {
-  expect_error(expr(list(`!!!`(1, 2))), "Can't supply multiple arguments to `!!!`")
-  expect_error(exprs(`!!!`(1, 2)), "Can't supply multiple arguments to `!!!`")
+  expect_error_(expr(list(`!!!`(1, 2))), "Can't supply multiple arguments to `!!!`")
+  expect_error_(exprs(`!!!`(1, 2)), "Can't supply multiple arguments to `!!!`")
 })
 
 
@@ -226,18 +226,18 @@ test_that("can't supply multiple arguments to `!!!`", {
 
 test_that("UQE() extracts right-hand side", {
   var <- ~cyl
-  expect_warning(expect_identical(quo(mtcars$UQE(var)), quo(mtcars$cyl)), "deprecated")
+  expect_warning_(expect_identical_(quo(mtcars$UQE(var)), quo(mtcars$cyl)), "deprecated")
 })
 
 test_that("UQE() throws a deprecation warning", {
-  expect_warning(exprs(UQE("foo")), "deprecated")
-  expect_warning(quos(UQE("foo")), "deprecated")
-  expect_warning(expr(UQE("foo")), "deprecated")
-  expect_warning(quo(UQE("foo")), "deprecated")
+  expect_warning_(exprs(UQE("foo")), "deprecated")
+  expect_warning_(quos(UQE("foo")), "deprecated")
+  expect_warning_(expr(UQE("foo")), "deprecated")
+  expect_warning_(quo(UQE("foo")), "deprecated")
 })
 
 test_that("UQE() can't be used in by-value dots", {
-  expect_error(dots_list(UQE("foo")), "non-quoting function")
+  expect_error_(dots_list(UQE("foo")), "non-quoting function")
 })
 
 
@@ -312,10 +312,10 @@ test_that("can unquote-splice symbols", {
 })
 
 test_that("can unquote symbols", {
-  expect_error(dots_values(!! quote(.)), "`!!` in a non-quoting function")
+  expect_error_(dots_values(!! quote(.)), "`!!` in a non-quoting function")
 
   with_non_verbose_retirement(
-    expect_error(dots_values(rlang::UQ(quote(.))), "`!!` in a non-quoting function")
+    expect_error_(dots_values(rlang::UQ(quote(.))), "`!!` in a non-quoting function")
   )
 })
 
@@ -349,16 +349,16 @@ test_that("`:=` doesn't work at top level", {
 
 test_that("UQS() is soft-deprecated", {
   with_non_verbose_retirement({
-    expect_identical(exprs(UQS(1:2)), exprs(!!! 1:2))
-    expect_identical(quos(UQS(1:2)), quos(!!! 1:2))
-    expect_identical(quo(list(UQS(1:2))), quo(list(!!! 1:2)))
-    expect_identical(expr(list(UQS(1:2))), expr(list(!!! 1:2)))
+    expect_identical_(exprs(UQS(1:2)), exprs(!!! 1:2))
+    expect_identical_(quos(UQS(1:2)), quos(!!! 1:2))
+    expect_identical_(quo(list(UQS(1:2))), quo(list(!!! 1:2)))
+    expect_identical_(expr(list(UQS(1:2))), expr(list(!!! 1:2)))
   })
 
   with_verbose_retirement({
-    expect_warning(exprs(UQS(1:2)), "soft-deprecated")
-    expect_warning(quos(UQS(1:2)), "soft-deprecated")
-    expect_warning(expr(list(UQS(1:2))), "soft-deprecated")
-    expect_warning(quo(list(UQS(1:2))), "soft-deprecated")
+    expect_warning_(exprs(UQS(1:2)), "soft-deprecated")
+    expect_warning_(quos(UQS(1:2)), "soft-deprecated")
+    expect_warning_(expr(list(UQS(1:2))), "soft-deprecated")
+    expect_warning_(quo(list(UQS(1:2))), "soft-deprecated")
   })
 })
