@@ -60,6 +60,9 @@ static inline sexp* KEEP_N(sexp* x, int* n) {
   return KEEP(x);
 }
 
+#define RLANG_ASSERT(condition) ((void)sizeof(char[1 - 2*!(condition)]))
+
+
 #include "sexp.h"
 
 #include "attrs.h"
