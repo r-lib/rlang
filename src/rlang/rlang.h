@@ -7,9 +7,13 @@
 #include <Rinternals.h>
 
 typedef struct SEXPREC sexp;
-typedef R_len_t r_size_t;
 typedef Rbyte r_byte_t;
 typedef Rcomplex r_complex_t;
+
+// FIXME: This typedef seems to be misleading because `R_len_t` is
+// currently a signed type
+typedef R_len_t r_size_t;
+#define R_SIZE_MAX R_LEN_T_MAX
 
 enum r_type {
   r_type_null        = 0,
