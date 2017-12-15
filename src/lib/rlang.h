@@ -2,8 +2,10 @@
 #define RLANG_RLANG_H
 
 
-#define R_NO_REMAP
+#include <inttypes.h>
 #include <stdbool.h>
+
+#define R_NO_REMAP
 #include <Rinternals.h>
 
 typedef struct SEXPREC sexp;
