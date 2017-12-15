@@ -1,6 +1,53 @@
 #include "rlang.h"
 
 
+const struct r_op_binding_power r_ops_binding_powers[R_OP_MAX] = {
+  [R_OP_NONE]           = { .power =   0,  .assoc =  0,  .unary = false,  .delimited = false },
+  [R_OP_QUESTION]       = { .power =  10,  .assoc = -1,  .unary = false,  .delimited = false },
+  [R_OP_QUESTION_UNARY] = { .power =  10,  .assoc = -1,  .unary =  true,  .delimited = false },
+  [R_OP_WHILE]          = { .power =  20,  .assoc = -1,  .unary = false,  .delimited =  true },
+  [R_OP_FOR]            = { .power =  20,  .assoc = -1,  .unary = false,  .delimited =  true },
+  [R_OP_REPEAT]         = { .power =  20,  .assoc = -1,  .unary = false,  .delimited =  true },
+  [R_OP_IF]             = { .power =  30,  .assoc =  1,  .unary = false,  .delimited =  true },
+  [R_OP_ASSIGN1]        = { .power =  40,  .assoc =  1,  .unary = false,  .delimited = false },
+  [R_OP_ASSIGN2]        = { .power =  40,  .assoc =  1,  .unary = false,  .delimited = false },
+  [R_OP_COLON_EQUAL]    = { .power =  40,  .assoc =  1,  .unary = false,  .delimited = false },
+  [R_OP_ASSIGN_EQUAL]   = { .power =  50,  .assoc =  1,  .unary = false,  .delimited = false },
+  [R_OP_TILDE]          = { .power =  60,  .assoc = -1,  .unary = false,  .delimited = false },
+  [R_OP_TILDE_UNARY]    = { .power =  60,  .assoc = -1,  .unary =  true,  .delimited = false },
+  [R_OP_OR1]            = { .power =  70,  .assoc = -1,  .unary = false,  .delimited = false },
+  [R_OP_OR2]            = { .power =  70,  .assoc = -1,  .unary = false,  .delimited = false },
+  [R_OP_AND1]           = { .power =  80,  .assoc = -1,  .unary = false,  .delimited = false },
+  [R_OP_AND2]           = { .power =  80,  .assoc = -1,  .unary = false,  .delimited = false },
+  [R_OP_BANG1]          = { .power =  90,  .assoc = -1,  .unary =  true,  .delimited = false },
+  [R_OP_BANG3]          = { .power =  90,  .assoc = -1,  .unary =  true,  .delimited = false },
+  [R_OP_GREATER]        = { .power = 100,  .assoc =  0,  .unary = false,  .delimited = false },
+  [R_OP_GREATER_EQUAL]  = { .power = 100,  .assoc =  0,  .unary = false,  .delimited = false },
+  [R_OP_LESS]           = { .power = 100,  .assoc =  0,  .unary = false,  .delimited = false },
+  [R_OP_LESS_EQUAL]     = { .power = 100,  .assoc =  0,  .unary = false,  .delimited = false },
+  [R_OP_EQUAL]          = { .power = 100,  .assoc =  0,  .unary = false,  .delimited = false },
+  [R_OP_NOT_EQUAL]      = { .power = 100,  .assoc =  0,  .unary = false,  .delimited = false },
+  [R_OP_PLUS]           = { .power = 110,  .assoc = -1,  .unary = false,  .delimited = false },
+  [R_OP_MINUS]          = { .power = 110,  .assoc = -1,  .unary = false,  .delimited = false },
+  [R_OP_TIMES]          = { .power = 120,  .assoc = -1,  .unary = false,  .delimited = false },
+  [R_OP_RATIO]          = { .power = 120,  .assoc = -1,  .unary = false,  .delimited = false },
+  [R_OP_MODULO]         = { .power = 130,  .assoc = -1,  .unary = false,  .delimited = false },
+  [R_OP_SPECIAL]        = { .power = 130,  .assoc = -1,  .unary = false,  .delimited = false },
+  [R_OP_COLON1]         = { .power = 140,  .assoc = -1,  .unary = false,  .delimited = false },
+  [R_OP_BANG2]          = { .power = 150,  .assoc = -1,  .unary =  true,  .delimited = false },
+  [R_OP_PLUS_UNARY]     = { .power = 150,  .assoc = -1,  .unary =  true,  .delimited = false },
+  [R_OP_MINUS_UNARY]    = { .power = 150,  .assoc = -1,  .unary =  true,  .delimited = false },
+  [R_OP_HAT]            = { .power = 160,  .assoc =  1,  .unary = false,  .delimited = false },
+  [R_OP_DOLLAR]         = { .power = 170,  .assoc = -1,  .unary = false,  .delimited = false },
+  [R_OP_AT]             = { .power = 170,  .assoc = -1,  .unary = false,  .delimited = false },
+  [R_OP_COLON2]         = { .power = 180,  .assoc =  0,  .unary = false,  .delimited = false },
+  [R_OP_COLON3]         = { .power = 180,  .assoc =  0,  .unary = false,  .delimited = false },
+  [R_OP_PARENTHESES]    = { .power = 190,  .assoc =  0,  .unary =  true,  .delimited =  true },
+  [R_OP_BRACKETS1]      = { .power = 190,  .assoc = -1,  .unary = false,  .delimited = false },
+  [R_OP_BRACKETS2]      = { .power = 190,  .assoc = -1,  .unary = false,  .delimited = false },
+  [R_OP_BRACES]         = { .power = 200,  .assoc =  0,  .unary =  true,  .delimited =  true }
+};
+
 enum r_operator r_which_operator(sexp* call) {
   if (r_typeof(call) != r_type_call) {
     r_abort("Internal error: Expected call to determine operator type");

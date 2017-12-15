@@ -55,4 +55,20 @@ enum r_operator {
 enum r_operator r_which_operator(sexp* call);
 
 
+/**
+ * @assoc
+ *   -1 = left associative
+ *    0 = non associative
+ *    1 = right associative
+ */
+struct r_op_binding_power {
+  uint8_t power;
+  int8_t assoc;
+  bool unary;
+  bool delimited;
+};
+
+const struct r_op_binding_power r_ops_binding_powers[R_OP_MAX];
+
+
 #endif

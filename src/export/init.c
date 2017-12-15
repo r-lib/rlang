@@ -201,8 +201,19 @@ void R_init_rlang(DllInfo* dll) {
 }
 
 sexp* rlang_library_load() {
+
+  // - parse.c - r_ops_binding_powers
+  RLANG_ASSERT((sizeof(r_ops_binding_powers) / sizeof(struct r_op_binding_power)) == R_OP_MAX);
+
+  for (int i = R_OP_NONE + 1; i < R_OP_MAX; ++i) {
+    if (r_ops_binding_powers[i].power == 0) {
+      r_abort("Internal error: `r_ops_binding_powers` is not fully initialised");
+    }
+  }
+
   return r_null;
 }
+
 sexp* rlang_library_unload() {
   return r_null;
 }
