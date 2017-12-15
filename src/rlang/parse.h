@@ -48,7 +48,8 @@ enum r_operator {
   R_OP_PARENTHESES    = 40,
   R_OP_BRACKETS1      = 41,
   R_OP_BRACKETS2      = 42,
-  R_OP_BRACES         = 43
+  R_OP_BRACES         = 43,
+  R_OP_MAX            = 44
 };
 
 enum r_operator r_which_operator(sexp* call);

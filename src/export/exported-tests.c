@@ -68,6 +68,7 @@ sexp* rlang_test_which_operator(sexp* call) {
   case R_OP_BRACKETS1:      op = "["; break;
   case R_OP_BRACKETS2:      op = "[["; break;
   case R_OP_BRACES:         op = "{"; break;
+  case R_OP_MAX:            r_abort("Unexpected `enum r_operator` value");
   }
 
   return r_scalar_chr(op);
