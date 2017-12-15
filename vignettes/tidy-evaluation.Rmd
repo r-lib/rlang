@@ -30,7 +30,7 @@ language:
   are created by parsing R code.
 
 - Scope is first-class. Scope is the lexical environment that
-  associates values to symbols in expressions. Unlike like most
+  associates values to symbols in expressions. Unlike most
   languages, environments can be created (see `env()`) and manipulated
   as regular objects.
 
