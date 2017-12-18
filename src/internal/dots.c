@@ -52,6 +52,8 @@ static sexp* def_unquote_name(sexp* expr, sexp* env) {
     r_abort("The LHS of `:=` can't be spliced with `!!!`");
   case OP_EXPAND_UQN:
     r_abort("Internal error: Chained `:=` should have been detected earlier");
+  case OP_EXPAND_FIXUP:
+    r_abort("The LHS of `:=` must be a string or a symbol");
   }
 
   int err = 0;
@@ -204,6 +206,10 @@ static sexp* dots_unquote(sexp* dots, struct dots_capture_info* capture_info) {
     }
 
     switch (dots_op) {
+    case OP_EXPR_FIXUP:
+    case OP_QUO_FIXUP:
+    case OP_VALUE_FIXUP:
+      r_abort("TODO");
     case OP_EXPR_NONE:
     case OP_EXPR_UQ:
     case OP_EXPR_UQE:

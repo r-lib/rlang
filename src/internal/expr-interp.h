@@ -37,13 +37,14 @@ static inline bool is_splice_call(sexp* node) {
 }
 
 
-#define EXPANSION_OP_MAX 5
+#define EXPANSION_OP_MAX 6
 enum expansion_op {
   OP_EXPAND_NONE,
   OP_EXPAND_UQ,
   OP_EXPAND_UQE,
   OP_EXPAND_UQS,
-  OP_EXPAND_UQN
+  OP_EXPAND_UQN,
+  OP_EXPAND_FIXUP
 };
 
 struct expansion_info {

@@ -304,7 +304,9 @@ sexp* call_interp_impl(sexp* x, sexp* env, struct expansion_info info) {
   case OP_EXPAND_UQS:
     r_abort("Can't use `!!!` at top level");
   case OP_EXPAND_UQN:
-    r_abort("todo!");
+    r_abort("Internal error: Deep `:=` unquoting");
+  case OP_EXPAND_FIXUP:
+    r_abort("TODO");
   }
 }
 
