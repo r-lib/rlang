@@ -193,18 +193,8 @@ enum r_operator r_which_operator(sexp* call) {
 
   case '!':
     switch (len) {
-    case 1: {
-      sexp* arg = r_node_cadr(call);
-      if (r_is_call(arg, "!")) {
-        if (r_is_call(r_node_cadr(arg), "!")) {
-          return R_OP_BANG3;
-        } else {
-          return R_OP_BANG2;
-        }
-      } else {
-        return R_OP_BANG1;
-      }
-    }
+    case 1:
+      return R_OP_BANG1;
     case 2:
       switch (name[1]) {
       case '!': return R_OP_BANG2;
