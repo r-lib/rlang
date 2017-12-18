@@ -251,6 +251,12 @@ is_binary_lang <- function(x, name = NULL, ns = NULL) {
   is_lang(x, name, n = 2L, ns = ns)
 }
 
+# Anticipate renaming
+is_call <- is_lang
+is_unary_call <- is_lang
+is_binary_call <- is_lang
+
+
 #' Modify the arguments of a call
 #'
 #' @param .lang Can be a call (language object), a formula quoting a
