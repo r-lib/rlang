@@ -1,33 +1,9 @@
 #include <rlang.h>
+#include "dots.h"
 #include "expr-interp.h"
 #include "utils.h"
 
 sexp* rlang_ns_get(const char* name);
-
-
-enum dots_capture_type {
-  DOTS_EXPR,
-  DOTS_QUO,
-  DOTS_VALUE
-};
-
-enum dots_expansion_op {
-  OP_EXPR_NONE,
-  OP_EXPR_UQ,
-  OP_EXPR_UQE,
-  OP_EXPR_UQS,
-  OP_EXPR_UQN,
-  OP_QUO_NONE,
-  OP_QUO_UQ,
-  OP_QUO_UQE,
-  OP_QUO_UQS,
-  OP_QUO_UQN,
-  OP_VALUE_NONE,
-  OP_VALUE_UQ,
-  OP_VALUE_UQE,
-  OP_VALUE_UQS,
-  OP_VALUE_UQN
-};
 
 struct dots_capture_info {
   enum dots_capture_type type;
@@ -215,7 +191,7 @@ static sexp* dots_unquote(sexp* dots, struct dots_capture_info* capture_info) {
     }
 
     struct expansion_info info = which_expansion_op(expr, unquote_names);
-    enum dots_expansion_op dots_op = info.op + (N_EXPANSION_OPS * capture_info->type);
+    enum dots_expansion_op dots_op = info.op + (EXPANSION_OP_MAX * capture_info->type);
 
     // Ignore empty arguments
     if (expr == r_missing_sym
@@ -282,6 +258,8 @@ static sexp* dots_unquote(sexp* dots, struct dots_capture_info* capture_info) {
     case OP_QUO_UQN:
     case OP_VALUE_UQN:
       r_abort("`:=` can't be chained");
+    case OP_DOTS_MAX:
+      r_abort("Internal error: `OP_DOTS_MAX`");
     }
 
     r_list_poke(dots, i, expr);

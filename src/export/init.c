@@ -200,9 +200,16 @@ void R_init_rlang(DllInfo* dll) {
   R_useDynamicSymbols(dll, FALSE);
 }
 
+
+#include "dots.h"
+#include "expr-interp.h"
+
 sexp* rlang_library_load() {
 
-  // - parse.c - r_ops_binding_powers
+  /* dots.c - enum dots_expansion_op */
+  RLANG_ASSERT(OP_DOTS_MAX == DOTS_CAPTURE_TYPE_MAX * EXPANSION_OP_MAX);
+
+  /* parse.c - r_ops_binding_powers[] */
   RLANG_ASSERT((sizeof(r_ops_binding_powers) / sizeof(struct r_op_binding_power)) == R_OP_MAX);
 
   for (int i = R_OP_NONE + 1; i < R_OP_MAX; ++i) {

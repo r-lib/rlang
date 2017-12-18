@@ -37,8 +37,7 @@ static inline bool is_splice_call(sexp* node) {
 }
 
 
-#define N_EXPANSION_OPS 5
-
+#define EXPANSION_OP_MAX 5
 enum expansion_op {
   OP_EXPAND_NONE,
   OP_EXPAND_UQ,
