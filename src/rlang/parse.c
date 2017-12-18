@@ -50,7 +50,7 @@ const struct r_op_binding_power r_ops_binding_powers[R_OP_MAX] = {
 
 enum r_operator r_which_operator(sexp* call) {
   if (r_typeof(call) != r_type_call) {
-    r_abort("Internal error: Expected call to determine operator type");
+    return R_OP_NONE;
   }
 
   sexp* head = r_node_car(call);
