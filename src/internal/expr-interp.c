@@ -34,11 +34,11 @@ static void poke_bang_bang_operand(sexp* bang, struct expansion_info* info) {
   info->operand = r_node_cadr(fixed);
 }
 
-struct expansion_info which_bang_op(sexp* x) {
+struct expansion_info which_bang_op(sexp* first) {
   struct expansion_info info = init_expansion_info();
 
-  if (r_is_call(x, "(")) {
-    sexp* paren = r_node_cadr(x);
+  if (r_is_call(first, "(")) {
+    sexp* paren = r_node_cadr(first);
     if (r_is_call(paren, "(")) {
       return info;
     }
@@ -55,11 +55,11 @@ struct expansion_info which_bang_op(sexp* x) {
     }
   }
 
-  if (!r_is_call(x, "!")) {
+  if (!r_is_call(first, "!")) {
     return info;
   }
 
-  sexp* second = r_node_cadr(x);
+  sexp* second = r_node_cadr(first);
   if (!r_is_call(second, "!")) {
     return info;
   }
