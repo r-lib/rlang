@@ -84,6 +84,7 @@ test_that("`!!` binds tightly", {
 
   expect_identical_(expr(!!1 + 2 + 3), quote(1 + 2 + 3))
   expect_identical_(expr(1 + !!2 + 3), quote(1 + 2 + 3))
+  expect_identical_(expr(1 + 2 + !!3 + 4), quote(1 + 2 + 3 + 4))
   expect_identical_(expr(1 + !!(2) + 3), quote(1 + 2 + 3))
   expect_identical_(expr(1 + 2 + !!3), quote(1 + 2 + 3))
   expect_identical_(expr(1 + !!2 * 3), quote(1 + 2 * 3))

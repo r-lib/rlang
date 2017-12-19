@@ -331,18 +331,11 @@ bool call_has_precedence(sexp* x, sexp* y) {
 
 struct ast_rotation_info {
   enum r_operator upper_pivot_op;
-  sexp* lower_root_node;
+  sexp* upper_pivot;
   sexp* lower_pivot;
+  sexp* lower_root;
   sexp* target;
 };
-
-
-// Defined below
-static sexp* expr_interp(sexp* x, sexp* env);
-static sexp* node_list_interp(sexp* x, sexp* env);
-static sexp* node_list_interp_fixup(sexp* x, sexp* env,
-                                    struct ast_rotation_info* rotation_info);
-
 
 static bool needs_rotation(sexp* x, struct ast_rotation_info* info) {
   if (info->lower_pivot) {
@@ -351,31 +344,30 @@ static bool needs_rotation(sexp* x, struct ast_rotation_info* info) {
     return false;
   }
 }
-static sexp* rotate(sexp* root, sexp* env, struct ast_rotation_info* info) {
-  // After rotation the fork becomes the new root
-  sexp* new_root = r_node_car(info->lower_root_node);
+static sexp* rotate(sexp* root, struct ast_rotation_info* info) {
+  /* sexp* upper_pivot = r_node_car(r_node_cddr(info->lower_root)); */
+  sexp* upper_pivot = info->upper_pivot;
 
-  // Rotate fork-pivot around the root
-  r_node_poke_car(info->lower_root_node, r_node_cadr(info->lower_pivot));
+  // Swap the lower root's RHS with the lower pivot's LHS
+  r_node_poke_car(r_node_cddr(info->lower_root), r_node_cadr(info->lower_pivot));
   r_node_poke_cadr(info->lower_pivot, root);
 
-  // Reset info before recursing. Also prevent rotating multiple times
-  // in earlier node_list_interp_fixup() calls.
+  // Reset info to prevent rotating multiple times
   info->upper_pivot_op = R_OP_NONE;
-  info->lower_root_node = NULL;
+  info->upper_pivot = NULL;
   info->lower_pivot = NULL;
+  info->lower_root = NULL;
   info->target = NULL;
 
-  // Recurse on the RHS
-  // FIXME: don't expand LHS this time around
-  new_root = node_list_interp_fixup(new_root, env, info);
-  if (info->lower_pivot) {
-    new_root = rotate(new_root, env, info);
-  }
-
-  return new_root;
+  return upper_pivot;
 }
 
+
+// Defined below
+static sexp* expr_interp(sexp* x, sexp* env);
+static sexp* node_list_interp(sexp* x, sexp* env);
+static sexp* node_list_interp_fixup(sexp* x, sexp* env,
+                                    struct ast_rotation_info* rotation_info);
 
 sexp* call_interp(sexp* x, sexp* env)  {
   struct expansion_info info = which_expansion_op(x, false);
@@ -417,8 +409,9 @@ static sexp* expr_interp(sexp* x, sexp* env) {
   if (expr_maybe_needs_fixup(x)) {
     struct ast_rotation_info rotation_info = {
       .upper_pivot_op = R_OP_NONE,
-      .lower_root_node = NULL,
       .lower_pivot = NULL,
+      .upper_pivot = NULL,
+      .lower_root = NULL,
       .target = NULL
     };
 
@@ -426,9 +419,8 @@ static sexp* expr_interp(sexp* x, sexp* env) {
     node_list_interp_fixup(x, env, &rotation_info);
 
     // If we found a pivot rotate it around the root
-    /* if (rotation_info.lower_pivot) { */
     if (needs_rotation(x, &rotation_info)) {
-      x = rotate(x, env, &rotation_info);
+      x = rotate(x, &rotation_info);
     }
 
     return x;
@@ -453,47 +445,44 @@ static sexp* node_list_interp(sexp* x, sexp* env) {
   return x;
 }
 
-static sexp* find_fork_info(sexp* first, struct ast_rotation_info* info) {
-  if (!r_is_call(first, "!")) {
+static sexp* find_upper_pivot(sexp* x, struct ast_rotation_info* info) {
+  if (!r_is_call(x, "!")) {
     return NULL;
   }
 
-  sexp* second = r_node_cadr(first);
-  if (!r_is_call(second, "!")) {
+  x = r_node_cadr(x);
+  if (!r_is_call(x, "!")) {
     return NULL;
   }
 
-  sexp* third = r_node_cadr(second);
-  if (r_is_call(third, "!")) {
+  x = r_node_cadr(x);
+  if (r_is_call(x, "!")) {
     return NULL;
   }
 
-  enum r_operator op = r_which_operator(third);
+  enum r_operator op = r_which_operator(x);
   if (!op_needs_fixup(op)) {
     return  NULL;
   }
 
   info->upper_pivot_op = op;
-  return third;
+  info->upper_pivot = x;
+  return x;
 }
 
 
 /**
  *
  * Climb through LHS's until we find an operator that has greater
- * precendence than the fork. This node is the pivot and will be
- * reattached to the root. Expand all RHS's as we go.
+ * precendence than the upper pivot. This node is the pivot and will
+ * be reattached to the root. Expand all RHS's as we go.
  *
  */
-static void poke_rotation_info(sexp* node, sexp* env,
-                               struct ast_rotation_info* info) {
-  // Expand RHS on the way to the target. If `node` is the fork node
-  // the RHS must be expanded after rotation in case the parse tree
-  // was forked multiple times by consecutive !! calls.
-  if (node != r_node_car(info->lower_root_node)) {
-    sexp* rhs_node = r_node_cddr(node);
-    r_node_poke_car(rhs_node, call_interp(r_node_car(rhs_node), env));
-  }
+static void find_lower_pivot(sexp* node, sexp* env,
+                             struct ast_rotation_info* info) {
+  // FIXME: Only expand if not the upper pivot?
+  sexp* rhs_node = r_node_cddr(node);
+  r_node_poke_car(rhs_node, call_interp(r_node_car(rhs_node), env));
 
   sexp* lhs = r_node_cadr(node);
   enum r_operator lhs_op = r_which_operator(lhs);
@@ -506,7 +495,7 @@ static void poke_rotation_info(sexp* node, sexp* env,
     sexp* target = r_eval(lhs, env);
     r_node_poke_cadr(node, target);
 
-    // Stop recursion as we found target and pivot
+    // Stop recursion as we found both target and lower pivot
     return;
   }
 
@@ -515,7 +504,7 @@ static void poke_rotation_info(sexp* node, sexp* env,
   }
 
   // Recurse
-  poke_rotation_info(lhs, env, info);
+  find_lower_pivot(lhs, env, info);
 }
 
 /**
@@ -531,7 +520,6 @@ static void poke_rotation_info(sexp* node, sexp* env,
  */
 static sexp* node_list_interp_fixup(sexp* x, sexp* env,
                                     struct ast_rotation_info* rotation_info) {
-
   sexp* lhs_node = r_node_cdr(x);
   sexp* rhs_node = r_node_cddr(x);
   sexp* lhs = r_node_car(lhs_node);
@@ -547,31 +535,34 @@ static sexp* node_list_interp_fixup(sexp* x, sexp* env,
   }
 
 
-  // A fork is the operand of a !! call and a binary operation whose
-  // precedence is problematic (between prec(`!`) and prec(`!!`))
-  sexp* fork = find_fork_info(rhs, rotation_info);
-  if (fork) {
-    rotation_info->lower_root_node = rhs_node;
+  // An upper pivot is an operand of a !! call that is a binary
+  // operation whose precedence is problematic (between prec(`!`) and
+  // prec(`!!`))
+  sexp* upper_pivot = find_upper_pivot(rhs, rotation_info);
+  if (upper_pivot) {
+    rotation_info->lower_root = x;
 
-    // A fork is not necessarily a pivot, so we need to find it. Also
-    // find the target of unquoting (leftmost leave whose predecence
-    // is greater than prec(`!!`)) and unquote it.
-    poke_rotation_info(fork, env, rotation_info);
+    // Reattach the RHS to the upper pivot stripped of its !! call
+    // in case there is no rotation around the lower root
+    r_node_poke_car(rhs_node, upper_pivot);
 
-    // Reattach the !! operand to its node
-    r_node_poke_car(rhs_node, rotation_info->lower_pivot);
+    // There might be a lower pivot, so we need to find it. Also find
+    // the target of unquoting (leftmost leaf whose predecence is
+    // greater than prec(`!!`)) and unquote it.
+    find_lower_pivot(upper_pivot, env, rotation_info);
 
     return x;
   }
 
-  // RHS is again an operator that might need changes in the AST
+  // If `rhs` is an operator that might be involved in a rotation
+  // recurse with the fixup version
   if (expr_maybe_needs_fixup(rhs)) {
-    // Look for !! calls across LHS's and expand the RHS's on the way
     node_list_interp_fixup(rhs, env, rotation_info);
 
-    // Now we might be a local root around which to rotate
+    // `rhs` might be an upper root around which to rotate
     if (needs_rotation(rhs, rotation_info)) {
-      x = rotate(rhs, env, rotation_info);
+      r_printf("rotate local\n");
+      rotate(rhs, rotation_info);
     }
 
     return x;
