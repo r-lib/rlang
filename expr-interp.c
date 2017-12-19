@@ -335,6 +335,7 @@ bool call_has_precedence(sexp* x, sexp* y) {
 struct ast_rotation_info {
   enum r_operator upper_pivot_op;
   sexp* lower_pivot;
+  sexp* lower_root;
   sexp* target;
 };
 
@@ -346,12 +347,14 @@ static bool needs_rotation(sexp* x, struct ast_rotation_info* info) {
   }
 }
 static sexp* rotate(sexp* root, struct ast_rotation_info* info) {
-  r_node_poke_car(r_node_cddr(root), r_node_cadr(info->lower_pivot));
+  // Swap the lower root's RHS with the lower pivot's LHS
+  r_node_poke_car(r_node_cddr(info->lower_root), r_node_cadr(info->lower_pivot));
   r_node_poke_cadr(info->lower_pivot, root);
 
   // Reset info to prevent rotating multiple times
   info->upper_pivot_op = R_OP_NONE;
   info->lower_pivot = NULL;
+  info->lower_root = NULL;
   info->target = NULL;
 
   return info->lower_pivot;
@@ -405,6 +408,7 @@ static sexp* expr_interp(sexp* x, sexp* env) {
     struct ast_rotation_info rotation_info = {
       .upper_pivot_op = R_OP_NONE,
       .lower_pivot = NULL,
+      .lower_root = NULL,
       .target = NULL
     };
 
@@ -533,7 +537,10 @@ static sexp* node_list_interp_fixup(sexp* x, sexp* env,
   // prec(`!!`))
   sexp* upper_pivot = find_upper_pivot(rhs, rotation_info);
   if (upper_pivot) {
+    rotation_info->lower_root = rhs;
+
     // Reattach the RHS to the upper pivot stripped of its !! call
+    // in case there is no rotation around the lower root
     r_node_poke_car(rhs_node, upper_pivot);
 
     // There might be a lower pivot, so we need to find it. Also find
