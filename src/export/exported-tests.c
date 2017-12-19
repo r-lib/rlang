@@ -19,6 +19,11 @@ sexp* rlang_test_base_ns_get(sexp* name) {
 
 // parse.c
 
+bool call_has_precedence(sexp* x, sexp* y);
+sexp* rlang_test_call_has_precedence(sexp* x, sexp* y) {
+  return r_scalar_lgl(call_has_precedence(x, y));
+}
+
 sexp* rlang_test_which_operator(sexp* call) {
   enum r_operator op_key = r_which_operator(call);
   const char* op;

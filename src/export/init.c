@@ -99,6 +99,7 @@ extern sexp* r_current_frame();
 extern sexp* rlang_test_sys_frame(sexp*);
 extern sexp* rlang_test_sys_call(sexp*);
 extern sexp* rlang_test_which_operator(sexp*);
+extern sexp* rlang_test_call_has_precedence(sexp*, sexp*);
 
 static const R_CallMethodDef call_entries[] = {
   {"rlang_library_load",        (DL_FUNC) &rlang_library_load, 0},
@@ -165,6 +166,7 @@ static const R_CallMethodDef call_entries[] = {
   {"rlang_test_sys_frame",      (DL_FUNC) &rlang_test_sys_frame, 1},
   {"rlang_test_sys_call",       (DL_FUNC) &rlang_test_sys_call, 1},
   {"rlang_test_which_operator", (DL_FUNC) &rlang_test_which_operator, 1},
+  {"rlang_test_call_has_precedence", (DL_FUNC) &rlang_test_call_has_precedence, 2},
   {"rlang_r_string",            (DL_FUNC) &rlang_r_string, 1},
   {"rlang_exprs_interp",        (DL_FUNC) &rlang_exprs_interp, 4},
   {"rlang_quos_interp",         (DL_FUNC) &rlang_quos_interp, 4},

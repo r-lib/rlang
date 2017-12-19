@@ -69,6 +69,8 @@ struct r_op_binding_power {
 };
 
 const struct r_op_binding_power r_ops_binding_powers[R_OP_MAX];
+bool r_op_has_precedence(enum r_operator x, enum r_operator y);
+bool r_call_has_precedence(sexp* x, sexp* y);
 
 
 #endif
