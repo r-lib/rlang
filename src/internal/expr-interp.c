@@ -347,8 +347,11 @@ static sexp* maybe_rotate(sexp* root, sexp* env, struct ast_rotation_info* info)
   if (info->upper_pivot_op == R_OP_NONE) {
     return root;
   }
+
+  // If rotation is not needed expand the RHS normally
   if (!op_has_precedence(r_which_operator(root), info->upper_pivot_op)) {
-    // expand RHS
+    sexp* rhs_node = r_node_cddr(root);
+    r_node_poke_car(rhs_node, call_interp(r_node_car(rhs_node), env));
     return root;
   }
 
