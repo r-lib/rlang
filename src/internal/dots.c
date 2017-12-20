@@ -206,13 +206,10 @@ static sexp* dots_unquote(sexp* dots, struct dots_capture_info* capture_info) {
     }
 
     switch (dots_op) {
-    case OP_EXPR_FIXUP:
-    case OP_QUO_FIXUP:
-    case OP_VALUE_FIXUP:
-      r_abort("TODO");
     case OP_EXPR_NONE:
     case OP_EXPR_UQ:
     case OP_EXPR_UQE:
+    case OP_EXPR_FIXUP:
       expr = call_interp_impl(expr, env, info);
       capture_info->count += 1;
       break;
@@ -222,7 +219,8 @@ static sexp* dots_unquote(sexp* dots, struct dots_capture_info* capture_info) {
       break;
     case OP_QUO_NONE:
     case OP_QUO_UQ:
-    case OP_QUO_UQE: {
+    case OP_QUO_UQE:
+    case OP_QUO_FIXUP: {
       expr = KEEP(call_interp_impl(expr, env, info));
       expr = forward_quosure(expr, env);
       FREE(1);
@@ -234,6 +232,7 @@ static sexp* dots_unquote(sexp* dots, struct dots_capture_info* capture_info) {
       expr = dots_big_bang(capture_info, info.operand, env, true);
       break;
     }
+    case OP_VALUE_FIXUP:
     case OP_VALUE_NONE:
       if (expr == r_missing_sym) {
         r_abort("Argument %d is empty", i + 1);

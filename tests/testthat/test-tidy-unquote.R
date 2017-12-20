@@ -92,23 +92,28 @@ test_that("`!!` binds tightly", {
   expect_identical_(expr(1 + 2 * 3 : !!4 + 5 * 6 + 7), quote(1 + 2 * 3 : 4 + 5 * 6 + 7))
   expect_identical_(expr(1 + 2 * 3 : !!4 + 5 * 6 + 7 * 8 : !!9 + 10 * 11), quote(1 + 2 * 3 : 4 + 5 * 6 + 7 * 8 : 9 + 10 * 11))
 
-  expect_identical_(expr(1 + !!2 + !!3  + !!4), quote(1 + 2 + 3 + 4))
-  expect_identical_(expr(1 + !!2 * !!3), quote(1 + 2 * 3))
-  expect_identical_(expr(1 + !!2 * !!3  * !!4), quote(1 + 2 * 3 * 4))
+  expect_identical_(expr(!!1 + !!2 + !!3  + !!4), quote(1 + 2 + 3 + 4))
+  expect_identical_(expr(!!1 + !!2 * !!3), quote(1 + 2 * 3))
+  expect_identical_(expr(!!1 + !!2 * !!3  * !!4), quote(1 + 2 * 3 * 4))
 
-  expect_identical(expr(!!1 == 2), quote(1 == 2))
-  expect_identical(expr(!!1 * 2 != 3), quote(1 * 2 != 3))
-  expect_identical(expr(!!1 * 2 / 3 > 4), quote(1 * 2 / 3 > 4))
+  expect_identical_(expr(!!1 == !!2), quote(1 == 2))
+  expect_identical_(expr(!!1 <= !!2), quote(1 <= 2))
+  expect_identical_(expr(!!1 >= !!2), quote(1 >= 2))
+  expect_identical_(expr(!!1 * 2 != 3), quote(1 * 2 != 3))
 
   # FIXME
-  ## expect_identical(expr(!!1 * !!2 / !!3 > !!4), quote(1 * 2 / 3 > 4))
+  ## expect_identical_(expr(!!1 * 2 / 3 > 4), quote(1 * 2 / 3 > 4))
+  ## expect_identical_(expr(!!1 * 2 > 3 + 4), quote(1 * 2 + 3 + 4))
+  ## expect_identical_(expr(!!1 * !!2 / !!3 > !!4), quote(1 * 2 / 3 > 4))
 
-  expect_identical(expr(1 <= !!2), quote(1 <= 2))
-  expect_identical(expr(1 >= !!2 : 3), quote(1 >= 2 : 3))
-  expect_identical(expr(1 > !!2 * 3 : 4), quote(1 > 2 * 3 : 4))
+  expect_identical_(expr(1 <= !!2), quote(1 <= 2))
+  expect_identical_(expr(1 >= !!2:3), quote(1 >= 2:3))
+  # FIXME
+  ## expect_identical_(expr(1 > !!2 * 3:4), quote(1 > 2 * 3:4))
 
-  expect_identical(expr(!! 1^1^1), quote(1))
-  expect_identical(expr(!! 1^1^1 + 2), quote(1 + 2))
+  expect_identical_(expr(!!1^2^3), quote(1))
+  expect_identical_(expr(!!1^2^3 + 4), quote(1 + 4))
+  expect_identical_(expr(!!1^2 + 3:4), quote(1 + 3:4))
 })
 
 test_that("`!!` handles binary and unary `-` and `+`", {

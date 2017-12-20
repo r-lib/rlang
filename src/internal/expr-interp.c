@@ -3,39 +3,7 @@
 #include "utils.h"
 
 
-static bool needs_fixup(sexp* x) {
-  if (r_is_call_any(x, fixup_ops_names, FIXUP_OPS_N)) {
-    return true;
-  }
-
-  // Don't fixup unary operators
-  if (r_is_call_any(x, fixup_unary_ops_names, FIXUP_UNARY_OPS_N)) {
-    return r_node_cddr(x) != r_null;
-  }
-
-  if (r_is_special_op_call(x)) {
-    return true;
-  }
-
-  return false;
-}
-
-// Takes the trailing `!`
-static void poke_bang_bang_operand(sexp* bang, struct expansion_info* info) {
-  // FIXME: Could be an OP_EXPAND_FIXUP
-  info->op = OP_EXPAND_UQ;
-
-  sexp* fixed = bang;
-  while (needs_fixup(r_node_cadr(fixed))) {
-    fixed = r_node_cadr(fixed);
-  }
-
-  info->parent = r_node_cdr(fixed);
-  if (bang != fixed) {
-    info->root = r_node_cadr(bang);
-  }
-  info->operand = r_node_cadr(fixed);
-}
+bool expr_maybe_needs_fixup(sexp* x);
 
 struct expansion_info which_bang_op(sexp* first) {
   struct expansion_info info = init_expansion_info();
@@ -71,8 +39,14 @@ struct expansion_info which_bang_op(sexp* first) {
 
   // Need to fill in `info` for `!!` because parse tree might need changes
   if (!r_is_call(third, "!")) {
-    info.op = OP_EXPAND_UQ;
-    poke_bang_bang_operand(second, &info);
+    if (expr_maybe_needs_fixup(third)) {
+      info.op = OP_EXPAND_FIXUP;
+      info.operand = third;
+    } else {
+      info.op = OP_EXPAND_UQ;
+      info.parent = r_node_cdr(second);
+      info.operand = third;
+    }
     return info;
   }
 
@@ -125,6 +99,11 @@ struct expansion_info which_expansion_op(sexp* x, bool unquote_names) {
     return info;
   }
   if (info.op) {
+    return info;
+  }
+
+  if (expr_maybe_needs_fixup(x)) {
+    info.op = OP_EXPAND_FIXUP;
     return info;
   }
 
@@ -194,7 +173,6 @@ struct expansion_info which_expansion_op(sexp* x, bool unquote_names) {
     info.operand = r_node_cadr(x);
     return info;
   }
-
 
   return info;
 }
@@ -338,7 +316,8 @@ struct ast_rotation_info {
 };
 
 // Defined below
-static sexp* expr_interp(sexp* x, sexp* env);
+static sexp* fixup_interp(sexp* x, sexp* env);
+static sexp* fixup_interp_first(sexp* x, sexp* env);
 static sexp* node_list_interp(sexp* x, sexp* env);
 static sexp* node_list_interp_fixup(sexp* x, sexp* env,
                                     struct ast_rotation_info* rotation_info);
@@ -391,44 +370,60 @@ sexp* call_interp_impl(sexp* x, sexp* env, struct expansion_info info) {
 
   switch (info.op) {
   case OP_EXPAND_NONE:
-    return expr_interp(x, env);
+    if (r_typeof(x) != r_type_call) {
+      return x;
+    } else {
+      return node_list_interp(x, env);
+    }
   case OP_EXPAND_UQ:
     return bang_bang(info, env);
   case OP_EXPAND_UQE:
     return bang_bang_expression(info, env);
+  case OP_EXPAND_FIXUP:
+    if (info.operand == r_null) {
+      return fixup_interp(x, env);
+    } else {
+      return fixup_interp_first(info.operand, env);
+    }
   case OP_EXPAND_UQS:
     r_abort("Can't use `!!!` at top level");
   case OP_EXPAND_UQN:
     r_abort("Internal error: Deep `:=` unquoting");
-  case OP_EXPAND_FIXUP:
-    r_abort("TODO");
   }
 }
 
-static sexp* expr_interp(sexp* x, sexp* env) {
-  if (r_typeof(x) != r_type_call) {
-    return x;
-  }
+// If !! is the root expression there is no rotation needed. Just
+// unquote the leftmost child across problematic binary operators.
+// However the resulting root might be involved in a rotation for
+// a subsequent !! call.
+static sexp* fixup_interp_first(sexp* x, sexp* env) {
+  sexp* parent = NULL; // `parent` will always be initialised in the loop
+  sexp* target = x;
+  while (expr_maybe_needs_fixup((parent = target, target = r_node_cadr(target))));
 
-  // Expression is an operator that might need changes in the AST if
-  // we find a !! call down the line. I.e. it is an operator whose
-  // precedence is between prec(`!`) and prec(`!!`).
-  if (expr_maybe_needs_fixup(x)) {
-    struct ast_rotation_info rotation_info = {
-      .upper_pivot_op = R_OP_NONE,
-      .lower_pivot = NULL,
-      .upper_pivot = NULL,
-      .lower_root = NULL,
-      .target = NULL
-    };
+  // Unquote target
+  r_node_poke_cadr(parent, r_eval(target, env));
 
-    // Look for problematic !! calls and expand arguments on the way.
-    // If a pivot is found rotate it around `x`.
-    node_list_interp_fixup(x, env, &rotation_info);
-    return maybe_rotate(x, env, &rotation_info);
-  }
+  // FIXME: Might be ok to leave left child alone when recursing?
+  return fixup_interp(x, env);
+}
 
-  return node_list_interp(x, env);
+// Expression is an operator that might need changes in the AST if
+// we find a !! call down the line. I.e. it is an operator whose
+// precedence is between prec(`!`) and prec(`!!`).
+static sexp* fixup_interp(sexp* x, sexp* env) {
+  struct ast_rotation_info rotation_info = {
+    .upper_pivot_op = R_OP_NONE,
+    .lower_pivot = NULL,
+    .upper_pivot = NULL,
+    .lower_root = NULL,
+    .target = NULL
+  };
+
+  // Look for problematic !! calls and expand arguments on the way.
+  // If a pivot is found rotate it around `x`.
+  node_list_interp_fixup(x, env, &rotation_info);
+  return maybe_rotate(x, env, &rotation_info);
 }
 
 static sexp* node_list_interp(sexp* x, sexp* env) {
@@ -471,7 +466,6 @@ static sexp* find_upper_pivot(sexp* x, struct ast_rotation_info* info) {
   info->upper_pivot = x;
   return x;
 }
-
 
 /**
  *
