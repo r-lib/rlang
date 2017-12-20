@@ -94,10 +94,16 @@ test_that("r_which_operator() returns correct tokens", {
 
   expect_identical(which_operator(quote(a <- b)), "<-")
   expect_identical(which_operator(quote(a <<- b)), "<<-")
+  expect_identical(which_operator(quote(a < b)), "<")
   expect_identical(which_operator(quote(a <= b)), "<=")
   expect_identical(which_operator(quote(`<--`(a, b))), "")
   expect_identical(which_operator(quote(`<<--`(a, b))), "")
   expect_identical(which_operator(quote(`<==`(a, b))), "")
+
+  expect_identical(which_operator(quote(a > b)), ">")
+  expect_identical(which_operator(quote(a >= b)), ">=")
+  expect_identical(which_operator(quote(`>-`(a, b))), "")
+  expect_identical(which_operator(quote(`>==`(a, b))), "")
 
   expect_identical(which_operator(quote(`=`(a, b))), "=")
   expect_identical(which_operator(quote(a == b)), "==")

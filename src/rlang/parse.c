@@ -119,6 +119,20 @@ enum r_operator r_which_operator(sexp* call) {
       goto none;
     }
 
+  case '>':
+    switch (len) {
+    case 1:
+      return R_OP_GREATER;
+    case 2:
+      if (name[1] == '=') {
+        return R_OP_GREATER_EQUAL;
+      } else {
+        goto none;
+      }
+    default:
+      goto none;
+    }
+
   case '=':
     switch (len) {
     case 1:
