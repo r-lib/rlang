@@ -42,8 +42,7 @@ SEXP attribute_hidden capture_promise(SEXP x, int strict) {
             return R_NilValue;
     }
 
-    if (NAMED(x) < 2)
-        SET_NAMED(x, 2);
+    MARK_NOT_MUTABLE(x);
     return capture_arg(x, env);
 }
 
