@@ -365,7 +365,6 @@ static sexp* rotate(sexp* root, sexp* env, struct ast_rotation_info* info) {
   info->lower_root = NULL;
   info->target = NULL;
 
-
   // Recurse on the RHS of the new root
   node_list_interp_fixup(root, env, info);
   if (needs_rotation(root, info)) {
@@ -487,9 +486,13 @@ static sexp* find_upper_pivot(sexp* x, struct ast_rotation_info* info) {
  */
 static void find_lower_pivot(sexp* node, sexp* env,
                              struct ast_rotation_info* info) {
-  // FIXME: Only expand if not the upper pivot?
-  sexp* rhs_node = r_node_cddr(node);
-  r_node_poke_car(rhs_node, call_interp(r_node_car(rhs_node), env));
+  // Only expand RHS if not the upper pivot because there might be
+  // consecutive rotations needed. The upper pivot's RHS will be
+  // expanded after the current rotation is complete.
+  if (node != info->upper_pivot) {
+    sexp* rhs_node = r_node_cddr(node);
+    r_node_poke_car(rhs_node, call_interp(r_node_car(rhs_node), env));
+  }
 
   sexp* lhs = r_node_cadr(node);
   enum r_operator lhs_op = r_which_operator(lhs);
