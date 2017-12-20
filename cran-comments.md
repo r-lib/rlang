@@ -1,11 +1,12 @@
 
-The rchk warnings should now be fixed.
+This point release switches from `SET_NAMED()` to
+`MARK_NOT_MUTABLE()`.
 
 
 ## Test environments
 
-* local OS X install, R 3.4.2
-* ubuntu 12.04 (on travis-ci), R 3.4.2
+* local OS X install, R 3.4.3
+* ubuntu 12.04 (on travis-ci), R 3.4.3
 * win-builder (devel and release)
 
 
@@ -16,22 +17,5 @@ The rchk warnings should now be fixed.
 
 ## Reverse dependencies
 
-I have run R CMD check on the 72 downstream dependencies.
-
-There were 6 packages I couldn't check:
-
-- bomrang
-- GSODR
-- pointblank
-- poppr
-- prisonbrief
-- sf
-
-
-There was 1 broken package :
-
-- taxa
-
-This is due to an intentional fix within rlang. I have sent a patch to
-`taxa` authors to fix this issue and they will send a CRAN update
-shortly.
+The only change is the use of `MARK_NOT_MUTABLE()` so I have not run
+the reverse dependencies.

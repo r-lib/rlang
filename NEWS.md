@@ -1,4 +1,11 @@
 
+# rlang 0.1.5
+
+* This is a maintenance release in anticipation of a forthcoming
+  change to R's C API (use `MARK_NOT_MUTABLE()` instead of
+  `SET_NAMED()`).
+
+
 # rlang 0.1.4
 
 * `eval_tidy()` no longer maps over lists but returns them literally.
