@@ -337,6 +337,12 @@ struct ast_rotation_info {
   sexp* target;
 };
 
+// Defined below
+static sexp* expr_interp(sexp* x, sexp* env);
+static sexp* node_list_interp(sexp* x, sexp* env);
+static sexp* node_list_interp_fixup(sexp* x, sexp* env,
+                                    struct ast_rotation_info* rotation_info);
+
 static bool needs_rotation(sexp* x, struct ast_rotation_info* info) {
   if (info->lower_pivot) {
     return op_has_precedence(r_which_operator(x), info->upper_pivot_op);
@@ -344,13 +350,13 @@ static bool needs_rotation(sexp* x, struct ast_rotation_info* info) {
     return false;
   }
 }
-static sexp* rotate(sexp* root, struct ast_rotation_info* info) {
-  /* sexp* upper_pivot = r_node_car(r_node_cddr(info->lower_root)); */
-  sexp* upper_pivot = info->upper_pivot;
-
+static sexp* rotate(sexp* root, sexp* env, struct ast_rotation_info* info) {
   // Swap the lower root's RHS with the lower pivot's LHS
   r_node_poke_car(r_node_cddr(info->lower_root), r_node_cadr(info->lower_pivot));
   r_node_poke_cadr(info->lower_pivot, root);
+
+  // After rotation the upper pivot is the new root
+  root = info->upper_pivot;
 
   // Reset info to prevent rotating multiple times
   info->upper_pivot_op = R_OP_NONE;
@@ -359,15 +365,16 @@ static sexp* rotate(sexp* root, struct ast_rotation_info* info) {
   info->lower_root = NULL;
   info->target = NULL;
 
-  return upper_pivot;
+
+  // Recurse on the RHS of the new root
+  node_list_interp_fixup(root, env, info);
+  if (needs_rotation(root, info)) {
+    root = rotate(root, env, info);
+  }
+
+  return root;
 }
 
-
-// Defined below
-static sexp* expr_interp(sexp* x, sexp* env);
-static sexp* node_list_interp(sexp* x, sexp* env);
-static sexp* node_list_interp_fixup(sexp* x, sexp* env,
-                                    struct ast_rotation_info* rotation_info);
 
 sexp* call_interp(sexp* x, sexp* env)  {
   struct expansion_info info = which_expansion_op(x, false);
@@ -420,7 +427,7 @@ static sexp* expr_interp(sexp* x, sexp* env) {
 
     // If we found a pivot rotate it around the root
     if (needs_rotation(x, &rotation_info)) {
-      x = rotate(x, &rotation_info);
+      x = rotate(x, env, &rotation_info);
     }
 
     return x;
@@ -562,7 +569,7 @@ static sexp* node_list_interp_fixup(sexp* x, sexp* env,
     // `rhs` might be an upper root around which to rotate
     if (needs_rotation(rhs, rotation_info)) {
       r_printf("rotate local\n");
-      rotate(rhs, rotation_info);
+      rotate(rhs, env, rotation_info);
     }
 
     return x;
