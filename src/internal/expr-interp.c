@@ -343,14 +343,15 @@ static sexp* node_list_interp(sexp* x, sexp* env);
 static sexp* node_list_interp_fixup(sexp* x, sexp* env,
                                     struct ast_rotation_info* rotation_info);
 
-static bool needs_rotation(sexp* x, struct ast_rotation_info* info) {
-  if (info->lower_pivot) {
-    return op_has_precedence(r_which_operator(x), info->upper_pivot_op);
-  } else {
-    return false;
+static sexp* maybe_rotate(sexp* root, sexp* env, struct ast_rotation_info* info) {
+  if (info->upper_pivot_op == R_OP_NONE) {
+    return root;
   }
-}
-static sexp* rotate(sexp* root, sexp* env, struct ast_rotation_info* info) {
+  if (!op_has_precedence(r_which_operator(root), info->upper_pivot_op)) {
+    // expand RHS
+    return root;
+  }
+
   // Swap the lower root's RHS with the lower pivot's LHS
   r_node_poke_car(r_node_cddr(info->lower_root), r_node_cadr(info->lower_pivot));
   r_node_poke_cadr(info->lower_pivot, root);
@@ -366,12 +367,9 @@ static sexp* rotate(sexp* root, sexp* env, struct ast_rotation_info* info) {
   info->target = NULL;
 
   // Recurse on the RHS of the new root
+  // FIXME: Don't expand LHS?
   node_list_interp_fixup(root, env, info);
-  if (needs_rotation(root, info)) {
-    root = rotate(root, env, info);
-  }
-
-  return root;
+  return maybe_rotate(root, env, info);
 }
 
 
@@ -421,15 +419,10 @@ static sexp* expr_interp(sexp* x, sexp* env) {
       .target = NULL
     };
 
-    // Look for problematic !! calls and expand arguments on the way
+    // Look for problematic !! calls and expand arguments on the way.
+    // If a pivot is found rotate it around `x`.
     node_list_interp_fixup(x, env, &rotation_info);
-
-    // If we found a pivot rotate it around the root
-    if (needs_rotation(x, &rotation_info)) {
-      x = rotate(x, env, &rotation_info);
-    }
-
-    return x;
+    return maybe_rotate(x, env, &rotation_info);
   }
 
   return node_list_interp(x, env);
