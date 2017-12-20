@@ -565,13 +565,6 @@ static sexp* node_list_interp_fixup(sexp* x, sexp* env,
   // recurse with the fixup version
   if (expr_maybe_needs_fixup(rhs)) {
     node_list_interp_fixup(rhs, env, rotation_info);
-
-    // `rhs` might be an upper root around which to rotate
-    if (needs_rotation(rhs, rotation_info)) {
-      r_printf("rotate local\n");
-      rotate(rhs, env, rotation_info);
-    }
-
     return x;
   }
 
