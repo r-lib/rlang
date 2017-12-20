@@ -17,6 +17,14 @@ sexp* rlang_test_base_ns_get(sexp* name) {
 }
 
 
+// expr-interp-rotate.c
+
+bool op_has_precedence(enum r_operator x, enum r_operator y);
+bool call_has_precedence(sexp* x, sexp* y) {
+  return op_has_precedence(r_which_operator(x), r_which_operator(y));
+}
+
+
 // parse.c
 
 bool call_has_precedence(sexp* x, sexp* y);

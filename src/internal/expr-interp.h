@@ -67,7 +67,9 @@ static inline struct expansion_info init_expansion_info() {
 
 struct expansion_info which_bang_op(sexp* x);
 struct expansion_info which_expansion_op(sexp* x, bool unquote_names);
+struct expansion_info is_big_bang_op(sexp* x);
 
+sexp* big_bang(sexp* operand, sexp* env, sexp* node, sexp* next);
 sexp* big_bang_coerce(sexp* expr);
 
 sexp* rlang_interp(sexp* x, sexp* env);
