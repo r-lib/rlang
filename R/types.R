@@ -688,10 +688,15 @@ is_equal <- function(x, y) {
 #' There are typically two situations where two symbols may refer to
 #' the same object.
 #'
-#' * R has copy-on-write semantics. This is an optimisation that
-#'   ensures that objects are only copied if needed. When you copy a
-#'   vector, no memory is actually copied until you modify either the
-#'   original object or the copy is modified.
+#' * R objects usually have copy-on-write semantics. This is an
+#'   optimisation that ensures that objects are only copied if
+#'   needed. When you copy a vector, no memory is actually copied
+#'   until you modify either the original object or the copy is
+#'   modified.
+#'
+#'   Note that the copy-on-write optimisation is an implementation
+#'   detail that is not guaranteed by the specification of the R
+#'   language.
 #'
 #' * Assigning an [uncopyable][is_copyable] object (like an
 #'   environment) creates a reference. These objects are never copied
