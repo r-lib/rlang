@@ -13,10 +13,15 @@ is_reference(x, y)
 There are typically two situations where two symbols may refer to
 the same object.
 \itemize{
-\item R has copy-on-write semantics. This is an optimisation that
-ensures that objects are only copied if needed. When you copy a
-vector, no memory is actually copied until you modify either the
-original object or the copy is modified.
+\item R objects usually have copy-on-write semantics. This is an
+optimisation that ensures that objects are only copied if
+needed. When you copy a vector, no memory is actually copied
+until you modify either the original object or the copy is
+modified.
+
+Note that the copy-on-write optimisation is an implementation
+detail that is not guaranteed by the specification of the R
+language.
 \item Assigning an \link[=is_copyable]{uncopyable} object (like an
 environment) creates a reference. These objects are never copied
 even if you modify one of the references.
