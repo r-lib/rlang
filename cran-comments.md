@@ -16,7 +16,7 @@ Solves the testthat failure
 
 ## Reverse dependencies
 
-I have run R CMD check on the 104 reverse dependencies.
+I have run R CMD check on the 105 reverse dependencies.
 
-- I couldn't check 6 packages (later, pointblank, poppr, RtutoR, sf)
-- No problems were found for the other packages
+- I couldn't check 4 packages (pointblank, poppr, RtutoR, sf)
+- `banr` was broken for a seemingly unrelated reason (httr request failure)
