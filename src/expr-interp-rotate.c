@@ -47,19 +47,15 @@ static sexp* maybe_rotate(sexp* root, sexp* env, struct ast_rotation_info* info)
     return root;
   }
 
-  // If rotation is not needed expand the RHS normally
-  if (!op_has_precedence(r_which_operator(root), info->upper_pivot_op)) {
-    sexp* rhs_node = r_node_cddr(root);
-    r_node_poke_car(rhs_node, call_interp(r_node_car(rhs_node), env));
-    return root;
+  // Rotate if needed
+  if (op_has_precedence(r_which_operator(root), info->upper_pivot_op)) {
+    // Swap the lower root's RHS with the lower pivot's LHS
+    r_node_poke_car(r_node_cddr(info->lower_root), r_node_cadr(info->lower_pivot));
+    r_node_poke_cadr(info->lower_pivot, root);
+
+    // After rotation the upper pivot is the new root
+    root = info->upper_pivot;
   }
-
-  // Swap the lower root's RHS with the lower pivot's LHS
-  r_node_poke_car(r_node_cddr(info->lower_root), r_node_cadr(info->lower_pivot));
-  r_node_poke_cadr(info->lower_pivot, root);
-
-  // After rotation the upper pivot is the new root
-  root = info->upper_pivot;
 
   // Reset info to prevent rotating multiple times
   info->upper_pivot_op = R_OP_NONE;
