@@ -1,6 +1,5 @@
 
-This point release switches from `SET_NAMED()` to
-`MARK_NOT_MUTABLE()`.
+Solves the testthat failure
 
 
 ## Test environments
@@ -17,5 +16,7 @@ This point release switches from `SET_NAMED()` to
 
 ## Reverse dependencies
 
-The only change is the use of `MARK_NOT_MUTABLE()` so I have not run
-the reverse dependencies.
+I have run R CMD check on the 104 reverse dependencies.
+
+- I couldn't check 6 packages (later, pointblank, poppr, RtutoR, sf)
+- No problems were found for the other packages
