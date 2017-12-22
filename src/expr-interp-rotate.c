@@ -34,9 +34,21 @@ struct ast_rotation_info {
   enum r_operator upper_pivot_op;
   sexp* upper_pivot;
   sexp* lower_pivot;
+  sexp* upper_root;
   sexp* lower_root;
+  sexp* root_parent;
   sexp* target;
 };
+
+static void initialise_rotation_info(struct ast_rotation_info* info) {
+  info->upper_pivot_op = R_OP_NONE;
+  info->upper_pivot = NULL;
+  info->lower_pivot = NULL;
+  info->upper_root = NULL;
+  info->lower_root = NULL;
+  info->root_parent = NULL;
+  info->target = NULL;
+}
 
 // Defined below
 static sexp* node_list_interp_fixup(sexp* x, sexp* env,
@@ -55,14 +67,14 @@ static sexp* maybe_rotate(sexp* root, sexp* env, struct ast_rotation_info* info)
 
     // After rotation the upper pivot is the new root
     root = info->upper_pivot;
+  } else if (info->upper_root) {
+    r_node_poke_car(r_node_cddr(info->lower_root), r_node_cadr(info->lower_pivot));
+    r_node_poke_cadr(info->lower_pivot, info->upper_root);
+    r_node_poke_car(r_node_cddr(info->root_parent), info->upper_pivot);
   }
 
   // Reset info to prevent rotating multiple times
-  info->upper_pivot_op = R_OP_NONE;
-  info->upper_pivot = NULL;
-  info->lower_pivot = NULL;
-  info->lower_root = NULL;
-  info->target = NULL;
+  initialise_rotation_info(info);
 
   // Recurse on the RHS of the new root
   // FIXME: Don't expand LHS?
@@ -90,13 +102,8 @@ sexp* fixup_interp_first(sexp* x, sexp* env) {
 // we find a !! call down the line. I.e. it is an operator whose
 // precedence is between prec(`!`) and prec(`!!`).
 sexp* fixup_interp(sexp* x, sexp* env) {
-  struct ast_rotation_info rotation_info = {
-    .upper_pivot_op = R_OP_NONE,
-    .lower_pivot = NULL,
-    .upper_pivot = NULL,
-    .lower_root = NULL,
-    .target = NULL
-  };
+  struct ast_rotation_info rotation_info;
+  initialise_rotation_info(&rotation_info);
 
   // Look for problematic !! calls and expand arguments on the way.
   // If a pivot is found rotate it around `x`.
@@ -172,8 +179,8 @@ static void find_lower_pivot(sexp* node, sexp* env,
 
 /**
  *
- * Takes a call to a binary operator whose precedence is between
- * prec(`!`) and prec(`!!`).
+ * Takes a call to a binary operator whith problematic precedence
+ * (between prec(`!`) and prec(`!!`)).
  *
  * - Somehow, root-swap parameter
  * - Normal interp on LHS
@@ -221,6 +228,13 @@ static sexp* node_list_interp_fixup(sexp* x, sexp* env,
   // recurse with the fixup version
   if (expr_maybe_needs_fixup(rhs)) {
     node_list_interp_fixup(rhs, env, rotation_info);
+
+    // This might the upper root around which to rotate
+    if (rotation_info->upper_pivot_op && op_has_precedence(r_which_operator(rhs), rotation_info->upper_pivot_op)) {
+      rotation_info->upper_root = rhs;
+      rotation_info->root_parent = x;
+    }
+
     return x;
   }
 
