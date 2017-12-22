@@ -177,6 +177,10 @@ static void find_lower_pivot(sexp* node, sexp* env,
   find_lower_pivot(lhs, env, info);
 }
 
+
+static void node_list_interp_fixup_rhs(sexp* parent, sexp* rhs, sexp* rhs_node,
+                                       sexp* env, struct ast_rotation_info* info);
+
 /**
  *
  * Takes a call to a binary operator whith problematic precedence
@@ -188,29 +192,33 @@ static void find_lower_pivot(sexp* node, sexp* env,
  * - If we get a root-swap, compare prec of pivot to prec of current
  *
  */
-static sexp* node_list_interp_fixup(sexp* x, sexp* env,
-                                    struct ast_rotation_info* rotation_info) {
+static sexp* node_list_interp_fixup(sexp* x, sexp* env, struct ast_rotation_info* info) {
   sexp* lhs_node = r_node_cdr(x);
   sexp* rhs_node = r_node_cddr(x);
   sexp* lhs = r_node_car(lhs_node);
   sexp* rhs = r_node_car(rhs_node);
 
   // Expand the LHS normally, it never needs changes in the AST
-  struct expansion_info info = is_big_bang_op(lhs);
-  if (info.op == OP_EXPAND_UQS) {
-    sexp* node = big_bang(info.operand, env, lhs_node, rhs_node);
+  struct expansion_info expansion_info = is_big_bang_op(lhs);
+  if (expansion_info.op == OP_EXPAND_UQS) {
+    sexp* node = big_bang(expansion_info.operand, env, lhs_node, rhs_node);
     rhs_node = r_node_cdr(node);
   } else {
     r_node_poke_car(lhs_node, call_interp(r_node_car(lhs_node), env));
   }
 
+  node_list_interp_fixup_rhs(x, rhs, rhs_node, env, info);
+  return x;
+}
 
+static void node_list_interp_fixup_rhs(sexp* parent, sexp* rhs, sexp* rhs_node,
+                                       sexp* env, struct ast_rotation_info* info) {
   // An upper pivot is an operand of a !! call that is a binary
   // operation whose precedence is problematic (between prec(`!`) and
   // prec(`!!`))
-  sexp* upper_pivot = find_upper_pivot(rhs, rotation_info);
+  sexp* upper_pivot = find_upper_pivot(rhs, info);
   if (upper_pivot) {
-    rotation_info->lower_root = x;
+    info->lower_root = parent;
 
     // Reattach the RHS to the upper pivot stripped of its !! call
     // in case there is no rotation around the lower root
@@ -219,27 +227,26 @@ static sexp* node_list_interp_fixup(sexp* x, sexp* env,
     // There might be a lower pivot, so we need to find it. Also find
     // the target of unquoting (leftmost leaf whose predecence is
     // greater than prec(`!!`)) and unquote it.
-    find_lower_pivot(upper_pivot, env, rotation_info);
+    find_lower_pivot(upper_pivot, env, info);
 
-    return x;
+    return;
   }
 
   // If `rhs` is an operator that might be involved in a rotation
   // recurse with the fixup version
   if (expr_maybe_needs_fixup(rhs)) {
-    node_list_interp_fixup(rhs, env, rotation_info);
+    node_list_interp_fixup(rhs, env, info);
 
     // This might the upper root around which to rotate
-    if (rotation_info->upper_pivot_op && op_has_precedence(r_which_operator(rhs), rotation_info->upper_pivot_op)) {
-      rotation_info->upper_root = rhs;
-      rotation_info->root_parent = x;
+    if (info->upper_pivot_op && op_has_precedence(r_which_operator(rhs), info->upper_pivot_op)) {
+      info->upper_root = rhs;
+      info->root_parent = parent;
     }
 
-    return x;
+    return;
   }
 
   // RHS is not a binary operation that might need changes in the AST
   // so expand it as usual
   r_node_poke_car(rhs_node, call_interp(rhs, env));
-  return x;
 }
