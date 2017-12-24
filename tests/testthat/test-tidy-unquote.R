@@ -122,18 +122,33 @@ test_that("`!!` binds tightly", {
 })
 
 test_that("`!!` handles binary and unary `-` and `+`", {
-  foo <- "foo"
-  expect_identical(expr(!! foo + a), quote("foo" + a))
-  expect_identical(expr(!! foo - a), quote("foo" - a))
+  expect_identical_(expr(!!1 + 2), quote(1 + 2))
+  expect_identical_(expr(!!1 - 2), quote(1 - 2))
 
-  foo <- 1L
-  expect_identical(expr(!! +foo + a), quote(1L + a))
-  expect_identical(expr(!! -foo - a), expr(!!-1L - a))
+  expect_identical_(expr(!!+1 + 2), quote(1 + 2))
+  expect_identical_(expr(!!-1 - 2), expr(`!!`(-1) - 2))
+
+  expect_identical_(expr(1 + -!!3 + 4), quote(1 + -3 + 4))
+  expect_identical_(expr(1 + ---+!!3 + 4), quote(1 + ---+3 + 4))
+
+  expect_identical_(expr(+1), quote(+1))
+  expect_identical_(expr(+-!!1), quote(+-1))
+  expect_identical_(expr(+-!!(1 + 1)), quote(+-2))
+  expect_identical_(expr(+-!!+-1), bquote(+-.(-1)))
+
+  expect_identical_(expr(+-+-!!+1), quote(+-+-1))
+  expect_identical_(expr(+-+-!!-1), bquote(+-+-.(-1)))
+
+  expect_identical_(expr(+-+-!!1 - 2), quote(+-+-1 - 2))
+  expect_identical_(expr(+-+-!!+-+1 + 2), bquote(+-+-.(-1) + 2))
+  expect_identical(expr(+-+-!!+-!1 + 2), quote(+-+-0L))
+
+  expect_identical_(expr(+-+-!!+-identity(1)), bquote(+-+-.(-1)))
+  expect_identical_(expr(+-+-!!+-identity(1) + 2), bquote(+-+-.(-1) + 2))
 })
 
 test_that("`!!` handles special operators", {
-  foo <- "foo"
-  expect_identical(expr(!! foo %>% a), quote("foo" %>% a))
+  expect_identical(expr(!! 1 %>% 2), quote(1 %>% 2))
 })
 
 test_that("evaluates contents of `!!`", {

@@ -17,6 +17,8 @@ static inline bool op_needs_fixup(enum r_operator op) {
   case R_OP_MODULO:
   case R_OP_SPECIAL:
   case R_OP_COLON1:
+  case R_OP_PLUS_UNARY:
+  case R_OP_MINUS_UNARY:
     return true;
   default:
     return false;
