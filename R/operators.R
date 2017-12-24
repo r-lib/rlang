@@ -61,6 +61,11 @@
 #' to be evaluated directly at top-level which is why the exported
 #' definitions issue an error.
 #'
+#'
+#' @section Life cycle:
+#'
+#' These functions are [experimental][lifecycle].
+#'
 #' @name op-definition
 #' @param x An object to test.
 #' @export
@@ -73,6 +78,10 @@
 is_definition <- function(x) {
   is_formulaish(x) && identical(node_car(x), sym_def)
 }
+quo_is_definition <- function(x) {
+  is_definition(quo_get_expr(x))
+}
+
 #' @rdname op-definition
 #' @export
 #' @param lhs,rhs Expressions for the LHS and RHS of the definition.

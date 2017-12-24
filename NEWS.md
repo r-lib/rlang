@@ -173,6 +173,9 @@
 * The quasiquotation parser now gives meaningful errors in corner
   cases to help you figure out what is wrong.
 
+* The new experimental function `dots_patterns()` makes it easy to
+  extract quosures from binary operators such as `~` or `:=`.
+
 
 ## Breaking changes
 

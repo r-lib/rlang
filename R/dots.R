@@ -87,24 +87,92 @@ dots_values <- function(...,
   .Call(rlang_dots_values, environment(), FALSE, .ignore_empty, .unquote_names)
 }
 
-#' @rdname quosures
+#' Quote patterns, definitions or formulas
+#'
+#' @description
+#'
+#' These quoting functions take dots and expect two-sided patterns
+#' such as `a ~ b` or `a := b`. The LHS and RHS of each input are
+#' extracted in a list containing two quosures.
+#'
+#' * `dots_patterns()` expects two-sided formulas by default. If
+#'   `.operator` is set to `":="`, it expects definitions.
+#'
+#' * `dots_definitions()` extracts `:=` definitions in a sublist named
+#'   `defs`. All other types of inputs are captured in quosures within
+#'   `dots`.
+#'
+#'
+#' @section Life cycle:
+#'
+#' These functions are [experimental][lifecycle].
+#'
+#' @inheritParams quosures
+#' @param .operator The name of a binary operator from which to
+#'   extract an LHS and a RHS.
+#' @return A named list of lists of extracted LHS and RHS
+#'   components. The inner lists contain two quosures named `lhs` and
+#'   `rhs`. The outer list is named after the dots inputs.
+#' @seealso [quos()]
 #' @export
-dots_definitions <- function(..., .named = FALSE) {
-  dots <- .Call(rlang_quos_interp, environment(), .named, "trailing", FALSE)
+#' @examples
+#' dots_patterns(
+#'   A = a ~ b,
+#'   c ~ d
+#' )
+#'
+#' # You can specify the binary operator:
+#' dots_patterns(a := b, .operator = ":=")
+#' dots_patterns(a / b, .operator = "/")
+dots_patterns <- function(...,
+                          .named = FALSE,
+                          .ignore_empty = c("trailing", "none", "all"),
+                          .operator = "~") {
+  dots <- .Call(rlang_quos_interp, environment(), .named, .ignore_empty, FALSE)
 
-  is_def <- map_lgl(dots, function(dot) is_definition(f_rhs(dot)))
-  defs <- map(dots[is_def], as_definition)
+  stopifnot(is_string(.operator))
+  predicate <- switch(.operator,
+    `~` = function(x) quo_is_formula(x, lhs = TRUE),
+    `:=` = quo_is_definition,
+    function(x) is_lang(quo_get_expr(x), .operator, n = 2)
+  )
+  if (!every(dots, predicate)) {
+    type_name <- switch(.operator,
+      `~` = "two-sided formulas",
+      `:=` = "`:=` definitions",
+      paste0("calls to `", .operator, "` with two arguments")
+    )
+    abort(paste0("`...` can only contain ", type_name))
+  }
+
+  map(dots, pattern_quos)
+}
+#' @rdname dots_patterns
+#' @export
+dots_definitions <- function(...,
+                             .named = FALSE,
+                             .ignore_empty = c("trailing", "none", "all")) {
+  dots <- .Call(rlang_quos_interp, environment(), .named, .ignore_empty, FALSE)
+
+  is_def <- map_lgl(dots, quo_is_definition)
+  defs <- map(dots[is_def], pattern_quos)
 
   list(dots = dots[!is_def], defs = defs)
 }
-as_definition <- function(def) {
-  # The definition comes wrapped in a quosure
-  env <- f_env(def)
-  def <- f_rhs(def)
+pattern_quos <- function(x, default_env = NULL) {
+  # The pattern may be wrapped in a quosure
+  if (is_quosure(x)) {
+    env <- quo_get_env(x)
+    x <- quo_get_expr(x)
+  } else {
+    env <- default_env
+  }
+  stopifnot(is_lang(x, n = 2))
+  stopifnot(is_env(env))
 
   list(
-    lhs = new_quosure(f_lhs(def), env),
-    rhs = new_quosure(f_rhs(def), env)
+    lhs = new_quosure(node_cadr(x), env),
+    rhs = new_quosure(node_cadr(node_cdr(x)), env)
   )
 }
 

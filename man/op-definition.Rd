@@ -33,6 +33,12 @@ From rlang and data.table perspectives, this operator is not meant
 to be evaluated directly at top-level which is why the exported
 definitions issue an error.
 }
+\section{Life cycle}{
+
+
+These functions are \link[=lifecycle]{experimental}.
+}
+
 \examples{
 
 # A predicate is provided to distinguish formulas from the
