@@ -56,10 +56,13 @@ enum r_operator r_which_operator(sexp* call);
 
 
 /**
- * @assoc
- *   -1 = left associative
- *    0 = non associative
- *    1 = right associative
+ * struct r_op_binding_power - Information about operator precedence
+ *
+ * @power: Binding power. Absolute value has no meaning, only the
+ *   relative ordering between operators has meaning.
+ * @assoc: -1 if left associative, 0 if non-associative, 1 if right associative.
+ * @unary: `false` if a binary operation.
+ * @delimited: `true` if an operation like `(` or `{`.
  */
 struct r_op_binding_power {
   uint8_t power;
