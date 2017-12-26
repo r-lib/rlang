@@ -204,6 +204,16 @@
   quasiquotation. Please use `!! get_expr(x)` instead.
 
 
+# rlang 0.1.6
+
+* This is a maintenance release in anticipation of a forthcoming
+  change to R's C API (use `MARK_NOT_MUTABLE()` instead of
+  `SET_NAMED()`).
+
+* New function `is_reference()` to check whether two objects are one
+  and the same.
+
+
 # rlang 0.1.4
 
 * `eval_tidy()` no longer maps over lists but returns them literally.
