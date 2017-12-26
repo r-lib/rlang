@@ -225,7 +225,7 @@ bool op_is_unary(enum r_operator op) {
   if (op == R_OP_NONE || op > R_OP_MAX) {
     r_abort("Internal error: `enum r_operator` out of bounds");
   }
-  return r_ops_binding_powers[op].unary;
+  return r_ops_precedence[op].unary;
 }
 bool is_unary(sexp* x) {
   return op_is_unary(r_which_operator(x));
@@ -248,15 +248,15 @@ bool is_unary_plusminus(sexp* x) {
  * op_has_precedence() - Does an operation have precedence over another?
  *
  * Relies on information in the table of operation metadata
- * %r_ops_binding_powers.
+ * %r_ops_precedence.
  */
 bool op_has_precedence(enum r_operator x, enum r_operator y) {
   if (x == R_OP_NONE || x > R_OP_MAX || y > R_OP_MAX) {
     r_abort("Internal error: `enum r_operator` out of bounds");
   }
 
-  struct r_op_binding_power x_info = r_ops_binding_powers[x];
-  struct r_op_binding_power y_info = r_ops_binding_powers[y];
+  struct r_op_precedence x_info = r_ops_precedence[x];
+  struct r_op_precedence y_info = r_ops_precedence[y];
 
   if (x_info.delimited) {
     return true;
@@ -269,7 +269,7 @@ bool op_has_precedence(enum r_operator x, enum r_operator y) {
   uint8_t y_power = y_info.power;
 
   if (x_power == y_power) {
-    return r_ops_binding_powers[x].assoc == -1;
+    return r_ops_precedence[x].assoc == -1;
   } else {
     return x_power > y_power;
   }

@@ -211,12 +211,12 @@ sexp* rlang_library_load() {
   /* dots.c - enum dots_expansion_op */
   RLANG_ASSERT(OP_DOTS_MAX == DOTS_CAPTURE_TYPE_MAX * EXPANSION_OP_MAX);
 
-  /* parse.c - r_ops_binding_powers[] */
-  RLANG_ASSERT((sizeof(r_ops_binding_powers) / sizeof(struct r_op_binding_power)) == R_OP_MAX);
+  /* parse.c - r_ops_precedence[] */
+  RLANG_ASSERT((sizeof(r_ops_precedence) / sizeof(struct r_op_precedence)) == R_OP_MAX);
 
   for (int i = R_OP_NONE + 1; i < R_OP_MAX; ++i) {
-    if (r_ops_binding_powers[i].power == 0) {
-      r_abort("Internal error: `r_ops_binding_powers` is not fully initialised");
+    if (r_ops_precedence[i].power == 0) {
+      r_abort("Internal error: `r_ops_precedence` is not fully initialised");
     }
   }
 

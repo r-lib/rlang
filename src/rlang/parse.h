@@ -56,7 +56,7 @@ enum r_operator r_which_operator(sexp* call);
 
 
 /**
- * struct r_op_binding_power - Information about operator precedence
+ * struct r_op_precedence - Information about operator precedence
  *
  * @power: Binding power. Absolute value has no meaning, only the
  *   relative ordering between operators has meaning.
@@ -64,14 +64,14 @@ enum r_operator r_which_operator(sexp* call);
  * @unary: `false` if a binary operation.
  * @delimited: `true` if an operation like `(` or `{`.
  */
-struct r_op_binding_power {
+struct r_op_precedence {
   uint8_t power;
   int8_t assoc;
   bool unary;
   bool delimited;
 };
 
-const struct r_op_binding_power r_ops_binding_powers[R_OP_MAX];
+const struct r_op_precedence r_ops_precedence[R_OP_MAX];
 bool r_call_has_precedence(sexp* x, sexp* y);
 
 
