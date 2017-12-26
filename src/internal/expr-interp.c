@@ -38,7 +38,7 @@ struct expansion_info which_bang_op(sexp* first) {
 
   // Need to fill in `info` for `!!` because parse tree might need changes
   if (!r_is_call(third, "!")) {
-    if (expr_maybe_needs_fixup(third)) {
+    if (is_problematic_op(third)) {
       info.op = OP_EXPAND_FIXUP;
       info.operand = third;
     } else {
@@ -101,7 +101,7 @@ struct expansion_info which_expansion_op(sexp* x, bool unquote_names) {
     return info;
   }
 
-  if (expr_maybe_needs_fixup(x)) {
+  if (is_problematic_op(x)) {
     info.op = OP_EXPAND_FIXUP;
     return info;
   }

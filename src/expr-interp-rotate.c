@@ -387,7 +387,7 @@ sexp* fixup_interp(sexp* x, sexp* env) {
 sexp* fixup_interp_first(sexp* x, sexp* env) {
   sexp* parent = NULL; // `parent` will always be initialised in the loop
   sexp* target = x;
-  while (expr_maybe_needs_fixup((parent = target, target = r_node_cadr(target)))
+  while (is_problematic_op((parent = target, target = r_node_cadr(target)))
          && !is_unary(target));
 
   // Unquote target
@@ -588,7 +588,7 @@ static void node_list_interp_fixup_rhs(sexp* rhs, sexp* rhs_node, sexp* parent,
 
   // If `rhs` is an operator that might be involved in a rotation
   // recurse with the fixup version
-  if (expr_maybe_needs_fixup(rhs)) {
+  if (is_problematic_op(rhs)) {
     node_list_interp_fixup(rhs, parent, env, info, true);
 
     // This might the upper root around which to rotate

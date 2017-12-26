@@ -25,7 +25,7 @@ static inline bool op_needs_fixup(enum r_operator op) {
   }
 }
 
-static inline bool expr_maybe_needs_fixup(sexp* x) {
+static inline bool is_problematic_op(sexp* x) {
   return op_needs_fixup(r_which_operator(x));
 }
 
