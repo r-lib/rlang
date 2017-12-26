@@ -45,7 +45,7 @@ const struct r_op_precedence r_ops_precedence[R_OP_MAX] = {
   [R_OP_PARENTHESES]    = { .power = 190,  .assoc =  0,  .unary =  true,  .delimited =  true },
   [R_OP_BRACKETS1]      = { .power = 190,  .assoc = -1,  .unary = false,  .delimited = false },
   [R_OP_BRACKETS2]      = { .power = 190,  .assoc = -1,  .unary = false,  .delimited = false },
-  [R_OP_BRACES]         = { .power = 200,  .assoc =  0,  .unary =  true,  .delimited =  true }
+  [R_OP_BRACES]         = { .power = 200,  .assoc =  0,  .unary = false,  .delimited =  true }
 };
 
 enum r_operator r_which_operator(sexp* call) {
