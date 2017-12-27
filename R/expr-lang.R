@@ -253,8 +253,8 @@ is_binary_lang <- function(x, name = NULL, ns = NULL) {
 
 # Anticipate renaming
 is_call <- is_lang
-is_unary_call <- is_lang
-is_binary_call <- is_lang
+is_unary_call <- is_unary_lang
+is_binary_call <- is_binary_lang
 
 
 #' Modify the arguments of a call
