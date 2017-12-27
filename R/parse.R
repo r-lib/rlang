@@ -21,8 +21,8 @@
 #' @param env The environment for the formulas. Defaults to the
 #'   context in which the parse_expr function was called. Can be any
 #'   object with a `as_env()` method.
-#' @return `parse_expr()` returns a formula, `parse_exprs()` returns a
-#'   list of formulas.
+#' @return `parse_expr()` returns a language object, `parse_exprs()` returns a
+#'   list of language objects
 #' @seealso [base::parse()]
 #' @export
 #' @examples
