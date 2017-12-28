@@ -244,11 +244,6 @@ is_quosure <- function(x) {
 is_quosureish <- function(x, scoped = NULL) {
   is_formula(x, scoped = scoped, lhs = FALSE)
 }
-is_one_sided <- function(x, lang_sym = sym_tilde) {
-  typeof(x) == "language" &&
-    identical(node_car(x), lang_sym) &&
-    is_null(node_cadr(node_cdr(x)))
-}
 
 #' Coerce object to quosure
 #'
