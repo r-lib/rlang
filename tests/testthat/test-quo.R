@@ -1,5 +1,32 @@
 context("quo")
 
+test_that("quo_get_expr() and quo_get_env() retrieve quosure components", {
+  quo <- quo(foo)
+  expect_identical(quo_get_expr(quo), quote(foo))
+  expect_identical(quo_get_env(quo), environment())
+})
+
+test_that("quo_set_expr() and quo_set_env() set quosure components", {
+  orig <- quo()
+  env <- env()
+  quo <- quo_set_env(quo_set_expr(orig, quote(foo)), env)
+  expect_identical(quo_get_expr(quo), quote(foo))
+  expect_identical(quo_get_env(quo), env)
+})
+
+test_that("generic getters work on quosures", {
+  expect_identical(get_expr(quo(foo)), quote(foo))
+  expect_identical(get_env(quo(foo)), environment())
+})
+
+test_that("generic setters work on quosures", {
+  orig <- quo()
+  env <- env()
+  quo <- set_env(set_expr(orig, quote(foo)), env)
+  expect_identical(quo_get_expr(quo), quote(foo))
+  expect_identical(quo_get_env(quo), env)
+})
+
 test_that("env must be an environment", {
   expect_error(new_quosure(quote(a), env = list()), "must be an environment")
 })

@@ -328,18 +328,67 @@ as_quosureish <- function(x, env = caller_env()) {
   }
 }
 
+
+#' Get or set the components of a quosure
+#'
+#' These functions are equivalent to [get_expr()], [get_env()],
+#' [set_expr()], and [set_env()]. However they only work on quosures
+#' and are a bit more efficient.
+#'
+#' @param quo A quosure.
+#'
+#' @export
+#' @examples
+#' quo <- quo(foo(bar))
+#' quo
+#'
+#' quo_set_expr(quo, quote(baz))
+#' quo_set_env(quo, empty_env())
 quo_get_expr <- function(quo) {
   if (typeof(quo) != "language") {
     abort("Expected a quosure")
   }
   node_cadr(quo)
 }
+#' @rdname quo_get_expr
+#' @export
 quo_get_env <- function(quo) {
   if (typeof(quo) != "language") {
     abort("Expected a quosure")
   }
   attr(quo, ".Environment")
 }
+
+#' @rdname quo_get_expr
+#' @param expr A new expression for the quosure.
+#' @export
+quo_set_expr <- function(quo, expr) {
+  if (typeof(quo) != "language") {
+    abort("Expected a quosure")
+  }
+  if (is_null(node_cdr(quo))) {
+    abort("Corrupt quosure")
+  }
+
+  quo <- duplicate(quo, shallow = TRUE)
+  node_poke_cadr(quo, expr)
+  quo
+}
+#' @rdname quo_get_expr
+#' @param env A new environment for the quosure.
+#' @export
+quo_set_env <- function(quo, env) {
+  if (!is_environment(env)) {
+    abort("`env` must be an environment")
+  }
+  if (typeof(quo) != "language") {
+    abort("Expected a quosure")
+  }
+
+  attr(quo, ".Environment") <- env
+  quo
+}
+
 
 #' Is a quosure quoting a symbolic, missing or NULL object?
 #'

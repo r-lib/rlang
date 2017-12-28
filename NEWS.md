@@ -173,6 +173,11 @@
 * The quasiquotation parser now gives meaningful errors in corner
   cases to help you figure out what is wrong.
 
+* New getters and setters for quosures: `quo_get_expr()`,
+  `quo_get_env()`, `quo_set_expr()`, and `quo_set_env()`. Compared to
+  `get_expr()` etc, these accessors only work on quosures and are a
+  bit more efficient.
+
 
 ## Breaking changes
 

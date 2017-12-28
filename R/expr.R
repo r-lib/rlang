@@ -304,6 +304,8 @@ deparse_one <- function(expr) {
 #'   expression wrapper. Defaults to `x` itself.
 #' @return The updated original input for `set_expr()`. A raw
 #'   expression for `get_expr()`.
+#' @seealso [quo_get_expr()] and [quo_set_expr()] for versions of
+#'   [get_expr()] and [set_expr()] that only work on quosures.
 #' @export
 #' @examples
 #' f <- ~foo(bar)
