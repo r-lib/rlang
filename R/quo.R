@@ -207,96 +207,65 @@ str.quosure <- function(object, ...) {
 
 #' Is an object a quosure or quosure-like?
 #'
-#' @description
+#' This predicate tests that an object is a [quosure].
 #'
-#' These predicates test for [quosure] objects.
 #'
-#' - `is_quosure()` tests for a tidyeval quosure. These are one-sided
-#'   formulas with a `quosure` class.
+#' @section Life cycle:
 #'
-#' - `is_quosureish()` tests for general R quosure objects: quosures,
-#'   or one-sided formulas.
+#' - `is_quosureish()` is deprecated as of rlang 0.2.0. This function
+#'   assumed that quosures are formulas which is currently true but
+#'   might not be in the future.
 #'
 #' @param x An object to test.
-#' @param scoped A boolean indicating whether the quosure or formula
-#'   is scoped, that is, has a valid environment attribute. If `NULL`,
-#'   the scope is not inspected.
-#' @seealso [is_formula()] and [is_formulaish()]
+#' @param scoped A boolean indicating whether the quosure is scoped,
+#'   that is, has a valid environment attribute. If `NULL`, the scope
+#'   is not inspected.
 #' @export
 #' @examples
-#' # Quosures are created with quo():
-#' quo(foo)
 #' is_quosure(quo(foo))
-#'
-#' # Formulas look similar to quosures but are not quosures:
-#' is_quosure(~foo)
-#'
-#' # But they are quosureish:
-#' is_quosureish(~foo)
-#'
-#' # Note that two-sided formulas are never quosureish:
-#' is_quosureish(a ~ b)
 is_quosure <- function(x) {
   inherits(x, "quosure")
-}
-#' @rdname is_quosure
-#' @export
-is_quosureish <- function(x, scoped = NULL) {
-  is_formula(x, scoped = scoped, lhs = FALSE)
 }
 
 #' Coerce object to quosure
 #'
 #' @description
 #'
-#' Quosure objects wrap an [expression][is_expr] with a [lexical
-#' enclosure][env]. This is a powerful quoting (see [base::quote()]
-#' and [quo()]) mechanism that makes it possible to carry and
-#' manipulate expressions while making sure that its symbolic content
-#' (symbols and named calls, see [is_symbolic()]) is correctly looked
-#' up during evaluation.
+#' While [new_quosure()] wraps any R object (including expressions,
+#' formulas, or other quosures) into a quosure, `as_quosure()`
+#' converts formulas and quosures and does not double-wrap.
 #'
-#' - `new_quosure()` creates a quosure from a raw expression and an
-#'   environment.
 #'
-#' - `as_quosure()` is useful for functions that expect quosures but
-#'   allow specifying a raw expression as well. It has two possible
-#'   effects: if `x` is not a quosure, it wraps it into a quosure
-#'   bundling `env` as scope. If `x` is an unscoped quosure (see
-#'   [is_quosure()]), `env` is used as a default scope. On the other
-#'   hand if `x` has a valid enclosure, it is returned as is (even if
-#'   `env` is not the same as the formula environment).
+#' @section Life cycle:
 #'
-#' - While `as_quosure()` always returns a quosure (a one-sided
-#'   formula), even when its input is a [formula][new_formula] or a
-#'   [definition][op-definition], `as_quosureish()` returns quosureish
-#'   inputs as is.
+#' - `as_quosureish()` is deprecated as of rlang 0.2.0. This function
+#'   assumes that quosures are formulas which is currently true but
+#'   might not be in the future.
 #'
-#' @param x An object to convert.
+#' @param x An object to convert. Either an [expression][is_expr] or a
+#'   formula.
 #' @param env An environment specifying the lexical enclosure of the
 #'   quosure.
-#' @seealso [is_quosure()]
+#' @seealso [quo()], [is_quosure()]
 #' @export
 #' @examples
-#' # Sometimes you get unscoped formulas because of quotation:
-#' f <- ~~expr
-#' inner_f <- f_rhs(f)
-#' str(inner_f)
-#' is_quosureish(inner_f, scoped = TRUE)
-#'
-#' # You can use as_quosure() to provide a default environment:
-#' as_quosure(inner_f, base_env())
-#'
-#' # Or convert expressions or any R object to a validly scoped quosure:
+#' # as_quosure() converts expressions or any R object to a validly
+#' # scoped quosure:
 #' as_quosure(quote(expr), base_env())
 #' as_quosure(10L, base_env())
 #'
 #'
-#' # While as_quosure() always returns a quosure (one-sided formula),
-#' # as_quosureish() returns quosureish objects:
-#' as_quosure(a ~ b)
-#' as_quosureish(a ~ b)
-#' as_quosureish(10L)
+#' # Sometimes you get unscoped formulas because of quotation:
+#' f <- ~~expr
+#' inner_f <- f_rhs(f)
+#' str(inner_f)
+#'
+#' # In that case testing for a scoped formula returns FALSE:
+#' is_formula(inner_f, scoped = TRUE)
+#'
+#' # With as_quosure() you ensure that this kind of unscoped formulas
+#' # will be granted a default environment:
+#' as_quosure(inner_f, base_env())
 as_quosure <- function(x, env = caller_env()) {
   if (is_quosure(x)) {
     x
@@ -306,20 +275,6 @@ as_quosure <- function(x, env = caller_env()) {
     new_quosure(x, env)
   } else {
     new_quosure(x, empty_env())
-  }
-}
-#' @rdname as_quosure
-#' @export
-as_quosureish <- function(x, env = caller_env()) {
-  if (is_quosureish(x)) {
-    if (!is_environment(get_env(x))) {
-      set_env(x, env)
-    }
-    x
-  } else if (is_frame(x)) {
-    new_quosure(x$expr, sys_frame(x$caller_pos))
-  } else {
-    new_quosure(get_expr(x), get_env(x, env))
   }
 }
 

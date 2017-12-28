@@ -208,6 +208,10 @@
 * `UQE()` is now deprecated in order to simplify the syntax of
   quasiquotation. Please use `!! get_expr(x)` instead.
 
+* `is_quosureish()` and `as_quosureish()` are deprecated. These
+  functions assumed that quosures are formulas but that is only an
+  implementation detail.
+
 
 ## Upcoming breaking changes
 
