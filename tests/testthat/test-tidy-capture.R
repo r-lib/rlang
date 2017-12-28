@@ -152,8 +152,8 @@ test_that("quosures are spliced before serialisation", {
 
 test_that("missing arguments are captured", {
   q <- quo()
-  expect_true(is_missing(f_rhs(q)))
-  expect_identical(f_env(q), empty_env())
+  expect_true(is_missing(quo_get_expr(q)))
+  expect_identical(quo_get_env(q), empty_env())
 })
 
 test_that("empty quosures are forwarded", {

@@ -101,13 +101,23 @@ is_formulaish <- function(x, scoped = NULL, lhs = NULL) {
 #'
 #' f_env(~ x)
 f_rhs <- function(f) {
+  if (is_quosure(f)) {
+    signal_formula_access()
+    return(quo_get_expr(f))
+  }
   .Call(r_f_rhs, f)
 }
 
 #' @export
 #' @rdname f_rhs
 `f_rhs<-` <- function(x, value) {
-  stopifnot(is_formula(x))
+  if (is_quosure(x)) {
+    signal_formula_access()
+    return(quo_set_expr(x, value))
+  }
+  if (!is_formula(x)) {
+    abort("`f` must be a formula")
+  }
   x[[length(x)]] <- value
   x
 }
@@ -115,26 +125,42 @@ f_rhs <- function(f) {
 #' @export
 #' @rdname f_rhs
 f_lhs <- function(f) {
+  if (is_quosure(f)) {
+    signal_formula_access()
+    abort("Can't retrieve the LHS of a quosure")
+  }
   .Call(r_f_lhs, f)
 }
 
 #' @export
 #' @rdname f_rhs
 `f_lhs<-` <- function(x, value) {
-  stopifnot(is_formula(x))
+  if (is_quosure(x)) {
+    signal_formula_access()
+    abort("Can't set the LHS of a quosure")
+  }
+  if (!is_formula(x)) {
+    abort("`f` must be a formula")
+  }
+
   if (length(x) < 3) {
     x <- duplicate(x)
     mut_node_cdr(x, pairlist(value, x[[2]]))
   } else {
     x[[2]] <- value
   }
+
   x
 }
 
 #' @export
 #' @rdname f_rhs
 f_env <- function(f) {
-  if(!is_formula(f)) {
+  if (is_quosure(f)) {
+    signal_formula_access()
+    return(quo_get_env(f))
+  }
+  if (!is_formula(f)) {
     abort("`f` must be a formula")
   }
   attr(f, ".Environment")
@@ -143,7 +169,13 @@ f_env <- function(f) {
 #' @export
 #' @rdname f_rhs
 `f_env<-` <- function(x, value) {
-  stopifnot(is_formula(x))
+  if (is_quosure(x)) {
+    signal_formula_access()
+    return(quo_set_env(x, value))
+  }
+  if (!is_formula(x)) {
+    abort("`f` must be a formula")
+  }
   set_attrs(x, .Environment = value)
 }
 
@@ -180,4 +212,11 @@ f_name <- function(x) {
 #' @export
 f_label <- function(x) {
   expr_label(f_rhs(x))
+}
+
+
+signal_formula_access <- function() {
+  signal_soft_deprecation(
+    "Using formula accessors with quosures is soft-deprecated"
+  )
 }

@@ -27,6 +27,10 @@ test_that("generic setters work on quosures", {
   expect_identical(quo_get_env(quo), env)
 })
 
+test_that("can flatten empty quosure", {
+  expect_identical(quo_expr(quo()), missing_arg())
+})
+
 test_that("env must be an environment", {
   expect_error(new_quosure(quote(a), env = list()), "must be an environment")
 })

@@ -2,9 +2,8 @@
 signal_soft_deprecation <- function(msg) {
   if (is_true(peek_option("lifecycle_verbose_retirement"))) {
     warn(msg)
-  } else {
-    invisible(NULL)
   }
+  invisible(NULL)
 }
 
 #' @rdname parse_expr

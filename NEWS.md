@@ -216,6 +216,11 @@
   consistent with the rule that abbreviated suffixes indicate the
   return type of a function.
 
+* Using `f_rhs()` and `f_env()` on quosures is soft-deprecated. The
+  fact that quosures are formulas is an implementation detail that
+  might change in the future. Please use `quo_get_expr()` and
+  `quo_get_env()` instead.
+
 
 # rlang 0.1.6
 

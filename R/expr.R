@@ -319,7 +319,9 @@ deparse_one <- function(expr) {
 #' set_expr(f, quote(baz))
 #' set_expr(e, quote(baz))
 set_expr <- function(x, value) {
-  if (is_quosureish(x)) {
+  if (is_quosure(x)) {
+    x <- quo_set_expr(x, value)
+  } else if (is_formula(x)) {
     f_rhs(x) <- value
   } else if (is_closure(x)) {
     body(x) <- value

@@ -136,8 +136,8 @@ test_that("can unquote hygienically within captured arg", {
 test_that("can unquote for old-style NSE functions", {
   var <- quo(foo)
   fn <- function(x) substitute(x)
-  expect_identical(quo(fn(!!f_rhs(var))), quo(fn(foo)))
-  expect_identical(eval_tidy(quo(fn(!!f_rhs(var)))), quote(foo))
+  expect_identical(quo(fn(!!quo_get_expr(var))), quo(fn(foo)))
+  expect_identical(eval_tidy(quo(fn(!!quo_get_expr(var)))), quote(foo))
 })
 
 test_that("all quosures in the call are evaluated", {

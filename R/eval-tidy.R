@@ -221,7 +221,7 @@ eval_tidy_ <- function(expr, bottom, top = NULL, env = caller_env()) {
 #' fn()
 as_overscope <- function(quo, data = NULL) {
   data_src <- as_dictionary(data, read_only = TRUE)
-  enclosure <- f_env(quo) %||% base_env()
+  enclosure <- quo_get_env(quo) %||% base_env()
 
   # Create bottom environment pre-chained to the lexical scope
   bottom <- child_env(enclosure)
@@ -288,13 +288,13 @@ new_overscope <- function(bottom, top = NULL, enclosure = base_env()) {
 #'   default.
 #' @export
 overscope_eval_next <- function(overscope, quo, env = base_env()) {
-  quo <- as_quosureish(quo, env)
-  lexical_env <- f_env(quo)
+  quo <- as_quosure(quo, env)
+  lexical_env <- quo_get_env(quo)
 
   overscope$.env <- lexical_env
   env_poke_parent(overscope$.top_env, lexical_env)
 
-  .Call(rlang_eval, f_rhs(quo), overscope)
+  .Call(rlang_eval, quo_get_expr(quo), overscope)
 }
 #' @rdname as_overscope
 #' @export

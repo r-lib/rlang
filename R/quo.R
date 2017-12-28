@@ -317,8 +317,8 @@ as_quosure <- function(x, env = caller_env()) {
 #' @export
 as_quosureish <- function(x, env = caller_env()) {
   if (is_quosureish(x)) {
-    if (!is_env(f_env(x))) {
-      f_env(x) <- env
+    if (!is_environment(get_env(x))) {
+      set_env(x, env)
     }
     x
   } else if (is_frame(x)) {
@@ -477,9 +477,13 @@ quo_is_null <- function(quo) {
 quo_expr <- function(quo, warn = FALSE) {
   # Never warn when unwrapping outer quosure
   if (is_quosure(quo)) {
-    quo <- f_rhs(quo)
+    quo <- quo_get_expr(quo)
   }
-  quo_splice(duplicate(quo), warn = warn)
+  if (is_missing(quo)) {
+    missing_arg()
+  } else {
+    quo_splice(duplicate(quo), warn = warn)
+  }
 }
 #' @rdname quo_expr
 #' @export
@@ -512,7 +516,7 @@ quo_splice <- function(x, parent = NULL, warn = FALSE) {
         }
 
         while (is_quosure(x)) {
-          x <- f_rhs(x)
+          x <- quo_get_expr(x)
         }
         if (!is_null(parent)) {
           mut_node_car(parent, x)
