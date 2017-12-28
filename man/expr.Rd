@@ -51,7 +51,7 @@ checks the argument is a simple symbol.
 \item \code{exprs()} captures multiple expressions and returns a list. In
 particular, it can capture expressions in \code{...}. It supports name
 unquoting with \code{:=} (see \code{\link[=quos]{quos()}}). It is equivalent to
-\code{eval(substitute(alist(...)))}.
+\code{eval(substitute(alist(...)))} or \code{base::alist()}.
 }
 
 See \code{\link[=is_expr]{is_expr()}} for more about R expressions.

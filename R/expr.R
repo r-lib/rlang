@@ -16,7 +16,7 @@
 #' - `exprs()` captures multiple expressions and returns a list. In
 #'   particular, it can capture expressions in `...`. It supports name
 #'   unquoting with `:=` (see [quos()]). It is equivalent to
-#'   `eval(substitute(alist(...)))`.
+#'   `eval(substitute(alist(...)))` or `base::alist()`.
 #'
 #' See [is_expr()] for more about R expressions.
 #'
