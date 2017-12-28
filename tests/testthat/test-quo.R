@@ -1,5 +1,37 @@
 context("quo")
 
+test_that("env must be an environment", {
+  expect_error(new_quosure(quote(a), env = list()), "must be an environment")
+})
+
+test_that("equivalent to ~", {
+  quo <- new_quosure(quote(abc))
+  expect_identical(set_attrs(~abc, class = c("quosure", "formula")), quo)
+})
+
+test_that("as_quosure() uses correct env", {
+  fn <- function(expr, env = caller_env()) {
+    f <- as_quosure(expr, env)
+    list(env = get_env(), quo = g(f))
+  }
+  g <- function(expr, env = caller_env()) {
+    as_quosure(expr, env)
+  }
+  quo_env <- child_env(NULL)
+  quo <- new_quosure(quote(expr), quo_env)
+
+  out_expr_default <- fn(quote(expr))
+  out_quo_default <- fn(quo)
+  expect_identical(quo_get_env(out_expr_default$quo), get_env())
+  expect_identical(quo_get_env(out_quo_default$quo), quo_env)
+
+  user_env <- child_env(NULL)
+  out_expr <- fn(quote(expr), user_env)
+  out_quo <- fn(quo, user_env)
+  expect_identical(quo_get_env(out_expr$quo), user_env)
+  expect_identical(out_quo$quo, quo)
+})
+
 test_that("explicit promise makes a formula", {
   capture <- function(x) enquo(x)
   f1 <- capture(1 + 2 + 3)
