@@ -11,22 +11,22 @@
 #' [base::parse()] which returns an base::expression vector). All
 #' functions also support R connections.
 #'
-#' The versions suffixed with `_quosure` return quosures quoted in
-#' formulas rather than raw expressions.
+#' The versions suffixed with `_quosure` return [quosures][quosure]
+#' rather than raw expressions.
 #'
 #' @param x Text containing expressions to parse_expr for
 #'   `parse_expr()` and `parse_exprs()`. Can also be an R connection,
 #'   for instance to a file. If the supplied connection is not open,
 #'   it will be automatically closed and destroyed.
-#' @param env The environment for the formulas. Defaults to the
+#' @param env The environment for the quosures. Defaults to the
 #'   context in which the parse_expr function was called. Can be any
 #'   object with a `as_env()` method.
-#' @return `parse_expr()` returns a formula, `parse_exprs()` returns a
-#'   list of formulas.
+#' @return `parse_expr()` returns an [expression][is_expr],
+#'   `parse_exprs()` returns a list of expressions.
 #' @seealso [base::parse()]
 #' @export
 #' @examples
-#' # parse_expr() can parse_expr any R expression:
+#' # parse_expr() can parse any R expression:
 #' parse_expr("mtcars %>% dplyr::mutate(cyl_prime = cyl / sd(cyl))")
 #'
 #' # A string can contain several expressions separated by ; or \n

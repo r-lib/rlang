@@ -21,13 +21,13 @@ parse_quosures(x, env = caller_env())
 for instance to a file. If the supplied connection is not open,
 it will be automatically closed and destroyed.}
 
-\item{env}{The environment for the formulas. Defaults to the
+\item{env}{The environment for the quosures. Defaults to the
 context in which the parse_expr function was called. Can be any
 object with a \code{as_env()} method.}
 }
 \value{
-\code{parse_expr()} returns a formula, \code{parse_exprs()} returns a
-list of formulas.
+\code{parse_expr()} returns an \link[=is_expr]{expression},
+\code{parse_exprs()} returns a list of expressions.
 }
 \description{
 These functions parse and transform text into R expressions. This
@@ -36,17 +36,17 @@ written by a programmer.
 }
 \details{
 \code{parse_expr()} returns one expression. If the text contains more
-than one expression (separated by colons or new lines), an error is
+than one expression (separated by semicolons or new lines), an error is
 issued. On the other hand \code{parse_exprs()} can handle multiple
 expressions. It always returns a list of expressions (compare to
 \code{\link[base:parse]{base::parse()}} which returns an base::expression vector). All
 functions also support R connections.
 
-The versions suffixed with \code{_quosure} return quosures quoted in
-formulas rather than raw expressions.
+The versions suffixed with \code{_quosure} return \link[=quosure]{quosures}
+rather than raw expressions.
 }
 \examples{
-# parse_expr() can parse_expr any R expression:
+# parse_expr() can parse any R expression:
 parse_expr("mtcars \%>\% dplyr::mutate(cyl_prime = cyl / sd(cyl))")
 
 # A string can contain several expressions separated by ; or \\n
