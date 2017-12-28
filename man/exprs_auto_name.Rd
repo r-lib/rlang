@@ -22,8 +22,8 @@ argument and \code{width} as second argument.}
 }
 \description{
 This gives default names to unnamed elements of a list of
-expressions (or expression wrappers such as formulas or tidy
-quotes). \code{exprs_auto_name()} deparses the expressions with
+expressions (or expression wrappers such as formulas or
+quosures). \code{exprs_auto_name()} deparses the expressions with
 \code{\link[=expr_text]{expr_text()}} by default. \code{quos_auto_name()} deparses with
 \code{\link[=quo_text]{quo_text()}}.
 }

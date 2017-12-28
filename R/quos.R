@@ -48,11 +48,12 @@
 #' fn(x = a + b)
 #'
 #'
-#' # Dots can be spliced in:
+#' # Lists of arguments can be spliced in:
 #' args <- list(x = 1:3, y = ~var)
 #' quos(!!! args, z = 10L)
 #'
-#' # Raw expressions are turned to formulas:
+#' # As well as lists of bare expressions (make sure that the current
+#' # environment is where the symbols in these expressions are defined):
 #' args <- alist(x = foo, y = bar)
 #' quos(!!! args)
 #'
@@ -93,8 +94,8 @@ c.quosures <- function(..., recursive = FALSE) {
 #' Ensure that list of expressions are all named
 #'
 #' This gives default names to unnamed elements of a list of
-#' expressions (or expression wrappers such as formulas or tidy
-#' quotes). `exprs_auto_name()` deparses the expressions with
+#' expressions (or expression wrappers such as formulas or
+#' quosures). `exprs_auto_name()` deparses the expressions with
 #' [expr_text()] by default. `quos_auto_name()` deparses with
 #' [quo_text()].
 #'

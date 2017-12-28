@@ -4,9 +4,8 @@
 #'
 #' Quosures are quoted [expressions][is_expr] that keep track of an
 #' [environment][env] (just like
-#' [closure functions](http://adv-r.had.co.nz/Functional-programming.html#closures)).
-#' They are implemented as a subclass of one-sided formulas. They are
-#' an essential piece of the tidy evaluation framework.
+#' [closures](http://adv-r.had.co.nz/Functional-programming.html#closures)).
+#' They are an essential piece of the tidy evaluation framework.
 #'
 #' - `quo()` quotes its input (i.e. captures R code without
 #'   evaluation), captures the current environment, and bundles them
@@ -103,15 +102,8 @@
 #' eval_tidy(quo)
 #'
 #'
-#' # Like other formulas, quosures are normally self-quoting under
-#' # evaluation:
-#' eval(~var)
-#' eval(quo(var))
-#'
-#' # But eval_tidy() evaluates expressions in a special environment
-#' # (called the overscope) where they become promises. They
-#' # self-evaluate under evaluation:
-#' eval_tidy(~var)
+#' # With eval_tidy() quosures self-evaluate under evaluation:
+#' var
 #' eval_tidy(quo(var))
 #'
 #' # Note that it's perfectly fine to unquote quosures within
