@@ -48,8 +48,8 @@ expressions. It always returns a list of expressions (compare to
 \code{\link[base:parse]{base::parse()}} which returns an base::expression vector). All
 functions also support R connections.
 
-The versions suffixed with \code{_quosure} return \link[=quosure]{quosures}
-rather than raw expressions.
+The versions suffixed with \code{_quo} and \code{quos} return
+\link[=quosure]{quosures} rather than raw expressions.
 }
 \section{Life cycle}{
 

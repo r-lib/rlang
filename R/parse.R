@@ -11,8 +11,8 @@
 #' [base::parse()] which returns an base::expression vector). All
 #' functions also support R connections.
 #'
-#' The versions suffixed with `_quosure` return [quosures][quosure]
-#' rather than raw expressions.
+#' The versions suffixed with `_quo` and `quos` return
+#' [quosures][quosure] rather than raw expressions.
 #'
 #'
 #' @section Life cycle:
