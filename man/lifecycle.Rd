@@ -35,6 +35,8 @@ TODO: Review all functions in rlang and mark stable ones as such.
 \itemize{
 \item \code{\link[=UQ]{UQ()}}
 \item \code{\link[=UQS]{UQS()}}
+\item \code{\link[=parse_quosure]{parse_quosure()}}
+\item \code{\link[=parse_quosures]{parse_quosures()}}
 }
 }
 

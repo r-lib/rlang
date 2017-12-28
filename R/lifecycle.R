@@ -32,6 +32,8 @@
 #'
 #' * [UQ()]
 #' * [UQS()]
+#' * [parse_quosure()]
+#' * [parse_quosures()]
 #'
 #'
 #' @section Deprecated functions and arguments:

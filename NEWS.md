@@ -204,6 +204,14 @@
   quasiquotation. Please use `!! get_expr(x)` instead.
 
 
+## Upcoming breaking changes
+
+* `parse_quosure()` and `parse_quosures()` are soft-deprecated in
+  favour of `parse_quo()` and `parse_quos()`. These new names are
+  consistent with the rule that abbreviated suffixes indicate the
+  return type of a function.
+
+
 # rlang 0.1.6
 
 * This is a maintenance release in anticipation of a forthcoming

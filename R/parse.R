@@ -14,6 +14,14 @@
 #' The versions suffixed with `_quosure` return [quosures][quosure]
 #' rather than raw expressions.
 #'
+#'
+#' @section Life cycle:
+#'
+#' - `parse_quosure()` and `parse_quosures()` were soft-deprecated in
+#'   rlang 0.2.0 and renamed to `parse_quo()` and `parse_quos()`. This
+#'   is consistent with the rule that abbreviated suffixes indicate
+#'   the return type of a function.
+#'
 #' @param x Text containing expressions to parse_expr for
 #'   `parse_expr()` and `parse_exprs()`. Can also be an R connection,
 #'   for instance to a file. If the supplied connection is not open,
@@ -33,13 +41,13 @@
 #' parse_exprs("NULL; list()\n foo(bar)")
 #'
 #' # The versions suffixed with _quosure/s return quosures:
-#' parse_quosure("foo %>% bar()")
-#' parse_quosures("1; 2; mtcars")
+#' parse_quo("foo %>% bar()")
+#' parse_quos("1; 2; mtcars")
 #'
 #' # The env argument is passed to as_env(). It can be e.g. a string
 #' # representing a scoped package environment:
-#' parse_quosure("identity(letters)", env = empty_env())
-#' parse_quosures("identity(letters); mtcars", env = "base")
+#' parse_quo("identity(letters)", env = empty_env())
+#' parse_quos("identity(letters); mtcars", env = "base")
 #'
 #'
 #' # You can also parse source files by passing a R connection. Let's
@@ -80,11 +88,11 @@ parse_exprs <- function(x) {
 
 #' @rdname parse_expr
 #' @export
-parse_quosure <- function(x, env = caller_env()) {
+parse_quo <- function(x, env = caller_env()) {
   new_quosure(parse_expr(x), as_env(env))
 }
 #' @rdname parse_expr
 #' @export
-parse_quosures <- function(x, env = caller_env()) {
+parse_quos <- function(x, env = caller_env()) {
   map(parse_exprs(x), new_quosure, env = as_env(env))
 }

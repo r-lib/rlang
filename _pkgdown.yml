@@ -63,8 +63,8 @@ reference:
       - get_expr
       - parse_expr
       - parse_exprs
-      - parse_quosure
-      - parse_quosures
+      - parse_quo
+      - parse_quos
       - expr_interp
       - exprs_auto_name
   - title: Quosures

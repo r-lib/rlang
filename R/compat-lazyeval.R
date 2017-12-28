@@ -31,7 +31,7 @@ compat_lazy <- function(lazy, env = caller_env(), warn = TRUE) {
     string = ,
     character = {
       if (warn) warn_text_se()
-      parse_quosure(lazy[[1]], env)
+      parse_quo(lazy[[1]], env)
     },
     logical = ,
     integer = ,
