@@ -21,6 +21,7 @@
 #' * [enquo()], [quo()], [quos()]
 #' * [enexpr()], [expr()], [exprs()]
 #' * [sym()], [syms()]
+#' * [new_quosure()], [is_quosure()]
 #'
 #' * [quo_get_expr()], [quo_set_expr()]
 #' * [quo_get_env()], [quo_set_env()]

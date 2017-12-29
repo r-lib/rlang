@@ -22,6 +22,7 @@ This predicate tests that an object is a \link{quosure}.
 \section{Life cycle}{
 
 \itemize{
+\item \code{is_quosure()} is stable.
 \item \code{is_quosureish()} is deprecated as of rlang 0.2.0. This function
 assumed that quosures are formulas which is currently true but
 might not be in the future.

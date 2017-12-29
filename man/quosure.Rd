@@ -78,6 +78,12 @@ vignette provides an overview of this approach. The
 splicing operators.
 }
 
+\section{Life cycle}{
+
+
+\code{quo()}, \code{enquo()}, \code{quos()} and \code{new_quosure()} are stable.
+}
+
 \examples{
 # quo() is a quotation function just like expr() and quote():
 expr(mean(1:10 * 2))

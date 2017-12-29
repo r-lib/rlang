@@ -23,6 +23,7 @@ TODO: Review all functions in rlang and mark stable ones as such.
 \item \code{\link[=enquo]{enquo()}}, \code{\link[=quo]{quo()}}, \code{\link[=quos]{quos()}}
 \item \code{\link[=enexpr]{enexpr()}}, \code{\link[=expr]{expr()}}, \code{\link[=exprs]{exprs()}}
 \item \code{\link[=sym]{sym()}}, \code{\link[=syms]{syms()}}
+\item \code{\link[=new_quosure]{new_quosure()}}, \code{\link[=is_quosure]{is_quosure()}}
 \item \code{\link[=quo_get_expr]{quo_get_expr()}}, \code{\link[=quo_set_expr]{quo_set_expr()}}
 \item \code{\link[=quo_get_env]{quo_get_env()}}, \code{\link[=quo_set_env]{quo_set_env()}}
 \item \code{\link[=set_names]{set_names()}}

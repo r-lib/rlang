@@ -29,6 +29,7 @@
 #'   by value. It lets you create a quosure from an expression and an
 #'   environment.
 #'
+#'
 #' @section Role of quosures for tidy evaluation:
 #'
 #' Quosures play an essential role thanks to these features:
@@ -53,6 +54,11 @@
 #' vignette provides an overview of this approach. The
 #' [quasiquotation] page goes in detail over the unquoting and
 #' splicing operators.
+#'
+#'
+#' @section Life cycle:
+#'
+#' `quo()`, `enquo()`, `quos()` and `new_quosure()` are stable.
 #'
 #' @param expr An expression.
 #' @param arg A symbol referring to an argument. The expression
@@ -209,6 +215,8 @@ str.quosure <- function(object, ...) {
 #'
 #'
 #' @section Life cycle:
+#'
+#' - `is_quosure()` is stable.
 #'
 #' - `is_quosureish()` is deprecated as of rlang 0.2.0. This function
 #'   assumed that quosures are formulas which is currently true but
