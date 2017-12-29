@@ -207,7 +207,7 @@ static sexp* bang_bang_expression(struct expansion_info info, sexp* env) {
   sexp* value = r_eval(info.operand, env);
 
   if (r_is_formulaish(value, -1, 0)) {
-    value = r_get_expression(value, NULL);
+    value = rlang_get_expression(value, NULL);
   }
 
   return bang_bang_teardown(value, info);

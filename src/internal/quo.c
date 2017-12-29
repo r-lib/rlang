@@ -5,14 +5,17 @@ static const char* quo_tags[QUO_TAGS_N] = { "quosure", "formula" };
 
 sexp* new_raw_formula(sexp* lhs, sexp* rhs, sexp* env);
 
-sexp* r_new_quosure(sexp* expr, sexp* env) {
+sexp* rlang_new_quosure(sexp* expr, sexp* env) {
   sexp* quo = KEEP(new_raw_formula(r_null, expr, env));
   r_push_classes(quo, quo_tags, QUO_TAGS_N);
   FREE(1);
   return quo;
 }
+bool rlang_is_quosure(sexp* x) {
+  return r_typeof(x) == r_type_call && Rf_inherits(x, "quosure");
+}
 
-sexp* r_get_expression(sexp* x, sexp* alternate) {
+sexp* rlang_get_expression(sexp* x, sexp* alternate) {
   switch (r_typeof(x)) {
   case LANGSXP:
     if (r_is_formulaish(x, -1, 0)) {

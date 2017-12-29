@@ -67,12 +67,12 @@ extern sexp* rlang_dots_values(sexp*, sexp*, sexp*, sexp*);
 extern sexp* rlang_dots_list(sexp*, sexp*, sexp*, sexp*);
 extern sexp* rlang_dots_flat_list(sexp*, sexp*, sexp*, sexp*);
 extern sexp* r_new_formula(sexp*, sexp*, sexp*);
-extern sexp* r_new_quosure(sexp*, sexp*);
+extern sexp* rlang_new_quosure(sexp*, sexp*);
 extern sexp* rlang_poke_attributes(sexp*, sexp*);
 extern sexp* rlang_enexpr(sexp*, sexp*);
 extern sexp* rlang_ensym(sexp*, sexp*);
 extern sexp* rlang_enquo(sexp*, sexp*);
-extern sexp* r_get_expression(sexp*, sexp*);
+extern sexp* rlang_get_expression(sexp*, sexp*);
 extern sexp* rlang_vec_coerce(sexp*, sexp*);
 extern sexp* rlang_mark_object(sexp* x);
 extern sexp* rlang_unmark_object(sexp* x);
@@ -173,12 +173,12 @@ static const r_callable r_callables[] = {
   {"rlang_dots_list",           (r_fn_ptr) &rlang_dots_list, 4},
   {"rlang_dots_flat_list",      (r_fn_ptr) &rlang_dots_flat_list, 4},
   {"rlang_new_formula",         (r_fn_ptr) &r_new_formula, 3},
-  {"rlang_new_quosure",         (r_fn_ptr) &r_new_quosure, 2},
+  {"rlang_new_quosure",         (r_fn_ptr) &rlang_new_quosure, 2},
   {"rlang_poke_attributes",     (r_fn_ptr) &rlang_poke_attributes, 2},
   {"rlang_enexpr",              (r_fn_ptr) &rlang_enexpr, 2},
   {"rlang_ensym",               (r_fn_ptr) &rlang_ensym, 2},
   {"rlang_enquo",               (r_fn_ptr) &rlang_enquo, 2},
-  {"rlang_get_expression",      (r_fn_ptr) &r_get_expression, 2},
+  {"rlang_get_expression",      (r_fn_ptr) &rlang_get_expression, 2},
   {"rlang_vec_coerce",          (r_fn_ptr) &rlang_vec_coerce, 2},
   {"rlang_quo_is_symbol",       (r_fn_ptr) &rlang_quo_is_symbol, 1},
   {"rlang_quo_is_call",         (r_fn_ptr) &rlang_quo_is_call, 1},

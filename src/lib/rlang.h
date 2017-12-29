@@ -75,7 +75,6 @@ static inline sexp* KEEP_N(sexp* x, int* n) {
 #include "lang.h"
 #include "node.h"
 #include "parse.h"
-#include "quo.h"
 #include "squash.h"
 #include "stack.h"
 #include "state.h"
