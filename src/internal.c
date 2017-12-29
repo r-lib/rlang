@@ -3,4 +3,5 @@
 #include "internal/eval-tidy.c"
 #include "internal/expr-interp.c"
 #include "internal/expr-interp-rotate.c"
+#include "internal/quo.c"
 #include "internal/utils.c"

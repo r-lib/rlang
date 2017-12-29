@@ -1,6 +1,8 @@
 #ifndef RLANG_INTERNAL_EXPR_INTERP_H
 #define RLANG_INTERNAL_EXPR_INTERP_H
 
+#include "quo.h"
+
 
 #define UQ_N 2
 #define UQE_N 1

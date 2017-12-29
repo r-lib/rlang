@@ -29,6 +29,7 @@ internal-files = \
         internal/eval-tidy.c \
         internal/expr-interp.c \
         internal/expr-interp-rotate.c \
+        internal/quo.c \
         internal/utils.c
 
 export-files = \
