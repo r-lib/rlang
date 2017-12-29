@@ -22,5 +22,13 @@ static inline void r_register_c_callable(const char* ns, const char* ptr_name, r
   R_RegisterCCallable(ns, ptr_name, fn);
 }
 
+typedef R_CallMethodDef r_callable;
+typedef DllInfo r_dll_info;
+
+static inline void r_register_r_callables(r_dll_info* dll, const r_callable* const callables) {
+  R_registerRoutines(dll, NULL, callables, NULL, NULL);
+  R_useDynamicSymbols(dll, FALSE);
+}
+
 
 #endif

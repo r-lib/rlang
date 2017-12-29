@@ -100,7 +100,7 @@ extern sexp* rlang_test_sys_frame(sexp*);
 extern sexp* rlang_test_sys_call(sexp*);
 extern sexp* rlang_which_operator(sexp*);
 
-static const R_CallMethodDef call_entries[] = {
+static const r_callable r_callables[] = {
   {"rlang_library_load",        (DL_FUNC) &rlang_library_load, 0},
   {"rlang_library_unload",      (DL_FUNC) &rlang_library_unload, 0},
   {"r_f_lhs",                   (DL_FUNC) &r_f_lhs, 1},
@@ -190,15 +190,12 @@ static const R_CallMethodDef call_entries[] = {
   {NULL, NULL, 0}
 };
 
-void R_init_rlang(DllInfo* dll) {
-  // Register functions callable from other packages
+void R_init_rlang(r_dll_info* dll) {
   r_register_c_callable("rlang", "rlang_new_dictionary", (r_fn_ptr) &rlang_new_dictionary);
   r_register_c_callable("rlang", "rlang_squash_if", (r_fn_ptr) &r_squash_if);
   rlang_register_pointer("rlang", "rlang_test_is_spliceable", (DL_FUNC) &rlang_is_clevel_spliceable);
 
-  // Register functions callable from this package
-  R_registerRoutines(dll, NULL, call_entries, NULL, NULL);
-  R_useDynamicSymbols(dll, FALSE);
+  r_register_r_callables(dll, r_callables);
 }
 
 
