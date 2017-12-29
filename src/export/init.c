@@ -206,6 +206,10 @@ void R_init_rlang(r_dll_info* dll) {
   // These functions are stable
   r_register_c_callable("rlang", "rlang_new_quosure", (r_fn_ptr) &rlang_new_quosure);
   r_register_c_callable("rlang", "rlang_is_quosure", (r_fn_ptr) &rlang_is_quosure);
+  r_register_c_callable("rlang", "rlang_quo_get_expr", (r_fn_ptr) &rlang_quo_get_expr);
+  r_register_c_callable("rlang", "rlang_quo_set_expr", (r_fn_ptr) &rlang_quo_set_expr);
+  r_register_c_callable("rlang", "rlang_quo_get_env", (r_fn_ptr) &rlang_quo_get_env);
+  r_register_c_callable("rlang", "rlang_quo_set_env", (r_fn_ptr) &rlang_quo_set_env);
 
   // Experimental method for exporting C function pointers as actual R objects
   rlang_register_pointer("rlang", "rlang_test_is_spliceable", (r_fn_ptr) &rlang_is_clevel_spliceable);
