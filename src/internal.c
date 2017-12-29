@@ -2,4 +2,5 @@
 #include "internal/dots.c"
 #include "internal/eval-tidy.c"
 #include "internal/expr-interp.c"
+#include "internal/expr-interp-rotate.c"
 #include "internal/utils.c"
