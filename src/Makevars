@@ -1,4 +1,7 @@
-files = lib/rlang.h \
+PKG_CPPFLAGS = -I./lib/
+
+lib-files = \
+        lib/rlang.h \
         lib/attrs.c \
         lib/cnd.c \
         lib/env.c \
@@ -19,11 +22,22 @@ files = lib/rlang.h \
         lib/vec-lgl.c \
         lib/vec-list.c
 
+internal-files = \
+        internal/arg.c \
+        internal/dots.c \
+        internal/eval-tidy.c \
+        internal/expr-interp.c \
+        internal/utils.c
+
+
 all: $(SHLIB)
 
-$(SHLIB): lib.c
+$(SHLIB): lib.c internal.c
 
-lib.c: $(files)
+lib.c: $(lib-files)
 	touch lib.c
+
+internal.c: $(internal-files)
+	touch internal.c
 
 .PHONY: all
