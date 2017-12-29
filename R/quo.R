@@ -184,10 +184,17 @@ enquo <- function(arg) {
 
 #' @export
 print.quosure <- function(x, ...) {
+  meow(.trailing = FALSE,
+    "<quosure>",
+    "  expr: "
+  )
   quo_print(x)
+  meow(.trailing = FALSE,
+    "  env:  "
+  )
 
   env <- get_env(x)
-  cat(paste0("<quosure: ", quo_env_print(env), ">\n"))
+  quo_env_print(env)
 
   invisible(x)
 }
@@ -529,6 +536,7 @@ quo_print <- function(x, parent = FALSE, palette = NULL) {
   if (!parent) {
     cat("\n")
   }
+
   invisible(x)
 }
 
@@ -544,10 +552,11 @@ quo_print_args <- function(x, palette) {
 
 quo_env_print <- function(env) {
   if (is_reference(env, global_env())) {
-    "global"
+    nm <- "global"
   } else if (is_reference(env, empty_env())) {
-    "R_EmptyEnv"
+    nm <- "empty"
   } else {
-    sxp_address(env)
+    nm <- sxp_address(env)
   }
+  meow(nm)
 }
