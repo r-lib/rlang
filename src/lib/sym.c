@@ -62,3 +62,5 @@ bool r_is_special_op_sym(sexp* x) {
     name[0] == '%' &&
     name[len - 1] == '%';
 }
+
+sexp* r_dot_environment_sym;

@@ -85,4 +85,9 @@ static inline sexp* KEEP_N(sexp* x, int* n) {
 #include "vec-list.h"
 
 
+static inline void rlang_init_library() {
+  r_dot_environment_sym = r_sym(".Environment");
+}
+
+
 #endif
