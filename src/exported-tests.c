@@ -1,4 +1,4 @@
-#include "rlang/rlang.h"
+#include "lib/rlang.h"
 
 sexp* rlang_test_r_warn(sexp* x) {
   r_warn(CHAR(STRING_ELT(x, 0)));

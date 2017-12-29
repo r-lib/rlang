@@ -1,29 +1,29 @@
-files = rlang/rlang.h \
-        rlang/attrs.c \
-        rlang/cnd.c \
-        rlang/env.c \
-        rlang/eval.c \
-        rlang/export.c \
-        rlang/formula.c \
-        rlang/lang.c \
-        rlang/node.c \
-        rlang/quo.c \
-        rlang/replace-na.c \
-        rlang/sexp.c \
-        rlang/squash.c \
-        rlang/stack.c \
-        rlang/sym.c \
-        rlang/sym-unescape.c \
-        rlang/vec.c \
-        rlang/vec-chr.c \
-        rlang/vec-lgl.c \
-        rlang/vec-list.c
+files = lib/rlang.h \
+        lib/attrs.c \
+        lib/cnd.c \
+        lib/env.c \
+        lib/eval.c \
+        lib/export.c \
+        lib/formula.c \
+        lib/lang.c \
+        lib/node.c \
+        lib/quo.c \
+        lib/replace-na.c \
+        lib/sexp.c \
+        lib/squash.c \
+        lib/stack.c \
+        lib/sym.c \
+        lib/sym-unescape.c \
+        lib/vec.c \
+        lib/vec-chr.c \
+        lib/vec-lgl.c \
+        lib/vec-list.c
 
 all: $(SHLIB)
 
-$(SHLIB): rlang.c
+$(SHLIB): lib.c
 
-rlang.c: $(files)
-	touch rlang.c
+lib.c: $(files)
+	touch lib.c
 
 .PHONY: all

@@ -2,8 +2,8 @@
 #include <R_ext/Rdynload.h>
 #include <stdbool.h>
 
-#include "rlang/rlang.h"
-#include "rlang/export.h"
+#include "lib/rlang.h"
+#include "lib/export.h"
 
 // Callable from other packages
 extern sexp* rlang_new_dictionary(sexp*, sexp*, sexp*);
