@@ -185,7 +185,12 @@ enquo <- function(arg) {
 #' @export
 print.quosure <- function(x, ...) {
   quo_print(x)
-  print(get_env(x))
+
+  env <- get_env(x)
+  if (!is_reference(env, global_env())) {
+    print(env)
+  }
+
   invisible(x)
 }
 #' @export
