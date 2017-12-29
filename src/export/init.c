@@ -1,9 +1,8 @@
 #include <Rinternals.h>
 #include <R_ext/Rdynload.h>
-#include <stdbool.h>
 
-#include "lib/rlang.h"
-#include "lib/export.h"
+#include <rlang.h>
+#include "../lib/export.h"
 
 // Callable from other packages
 extern sexp* rlang_new_dictionary(sexp*, sexp*, sexp*);
@@ -34,7 +33,7 @@ extern sexp* rlang_node_poke_cadr(sexp*, sexp*);
 extern sexp* rlang_node_poke_cdar(sexp*, sexp*);
 extern sexp* rlang_node_poke_cddr(sexp*, sexp*);
 extern sexp* rlang_new_node_(sexp*, sexp*);
-extern sexp* rlang_duplicate(sexp*);
+extern sexp* rlang_duplicate(sexp*, sexp*);
 extern sexp* r_node_tree_clone(sexp*);
 extern sexp* rlang_node_tag(sexp*);
 extern sexp* rlang_node_poke_tag(sexp*, sexp*);

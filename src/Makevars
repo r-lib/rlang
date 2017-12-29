@@ -29,15 +29,21 @@ internal-files = \
         internal/expr-interp.c \
         internal/utils.c
 
+export-files = \
+        export/exported.c \
+        export/exported-tests.c \
+        export/init.c
+
 
 all: $(SHLIB)
 
-$(SHLIB): lib.c internal.c
+$(SHLIB): lib.c internal.c export.c
 
 lib.c: $(lib-files)
 	touch lib.c
-
 internal.c: $(internal-files)
 	touch internal.c
+export.c: $(export-files)
+	touch export.c
 
 .PHONY: all
