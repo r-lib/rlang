@@ -486,13 +486,13 @@ quo_flatten <- function(x, parent = NULL, warn = FALSE) {
 
 # Create a circular list of colours. This infloops if printed in the REPL!
 quo_palette <- function() {
-  magenta_node <- node(magenta, NULL)
-  palette <- node(blue, node(green, magenta_node))
-  node_poke_cdr(magenta_node, palette)
+  last_node <- node(cyan, NULL)
+  palette <- node(blue, node(green, node(magenta, last_node)))
+  node_poke_cdr(last_node, palette)
 
   # Pass the circular list in a container with reference semantics.
   # Pass the last node so we start with the first when we bump.
-  new_environment(list(palette = magenta_node, current = NULL))
+  new_environment(list(palette = last_node, current = NULL))
 }
 bump_quo_palette <- function(palette) {
   if (is_null(palette)) {
