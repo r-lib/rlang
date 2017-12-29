@@ -490,32 +490,24 @@ quo_palette <- function() {
   palette <- node(blue, node(green, node(magenta, last_node)))
   node_poke_cdr(last_node, palette)
 
-  # Pass the circular list in a container with reference semantics.
-  # Pass the last node so we start with the first when we bump.
-  new_environment(list(palette = last_node, current = NULL))
+  # First node has no colour
+  node(identity, palette)
 }
 bump_quo_palette <- function(palette) {
   if (is_null(palette)) {
     quo_palette()
   } else {
-    palette$palette <- node_cdr(palette$palette)
-    palette$current <- palette$palette
-    palette
+    node_cdr(palette)
   }
 }
 
 quo_cat <- function(palette, ...) {
-  if (is_null(palette$current)) {
-    col <- paste
-  } else {
-    col <- node_car(palette$current)
-  }
+  col <- node_car(palette) %||% paste
   cat(col(...))
 }
 
 quo_print <- function(x, parent = FALSE, palette = NULL) {
   if (is_quosure(x)) {
-    old_colour <- palette$current
     palette <- bump_quo_palette(palette)
 
     while (is_quosure(x)) {
@@ -524,7 +516,6 @@ quo_print <- function(x, parent = FALSE, palette = NULL) {
     }
     quo_print(x, parent = parent, palette = palette)
 
-    palette$current <- old_colour
     return(invisible(x))
   }
 
