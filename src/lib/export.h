@@ -15,4 +15,12 @@ DL_FUNC R_ExternalPtrAddrFn(sexp* s);
 
 void rlang_register_pointer(const char* ns, const char* ptr_name, DL_FUNC fn);
 
+
+typedef DL_FUNC r_fn_ptr;
+
+static inline void r_register_c_callable(const char* ns, const char* ptr_name, r_fn_ptr fn) {
+  R_RegisterCCallable(ns, ptr_name, fn);
+}
+
+
 #endif

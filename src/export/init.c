@@ -192,8 +192,8 @@ static const R_CallMethodDef call_entries[] = {
 
 void R_init_rlang(DllInfo* dll) {
   // Register functions callable from other packages
-  R_RegisterCCallable("rlang", "rlang_new_dictionary", (DL_FUNC) &rlang_new_dictionary);
-  R_RegisterCCallable("rlang", "rlang_squash_if", (DL_FUNC) &r_squash_if);
+  r_register_c_callable("rlang", "rlang_new_dictionary", (r_fn_ptr) &rlang_new_dictionary);
+  r_register_c_callable("rlang", "rlang_squash_if", (r_fn_ptr) &r_squash_if);
   rlang_register_pointer("rlang", "rlang_test_is_spliceable", (DL_FUNC) &rlang_is_clevel_spliceable);
 
   // Register functions callable from this package
