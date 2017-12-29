@@ -304,6 +304,8 @@ deparse_one <- function(expr) {
 #'   expression wrapper. Defaults to `x` itself.
 #' @return The updated original input for `set_expr()`. A raw
 #'   expression for `get_expr()`.
+#' @seealso [quo_get_expr()] and [quo_set_expr()] for versions of
+#'   [get_expr()] and [set_expr()] that only work on quosures.
 #' @export
 #' @examples
 #' f <- ~foo(bar)
@@ -317,7 +319,9 @@ deparse_one <- function(expr) {
 #' set_expr(f, quote(baz))
 #' set_expr(e, quote(baz))
 set_expr <- function(x, value) {
-  if (is_quosureish(x)) {
+  if (is_quosure(x)) {
+    x <- quo_set_expr(x, value)
+  } else if (is_formula(x)) {
     f_rhs(x) <- value
   } else if (is_closure(x)) {
     body(x) <- value

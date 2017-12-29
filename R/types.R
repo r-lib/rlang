@@ -263,6 +263,10 @@ is_bare_env <- function(x) {
   !is.object(x) && typeof(x) == "environment"
 }
 
+# Anticipate renaming
+is_environment <- is_env
+is_bare_environment <- is_bare_env
+
 #' Is object identical to TRUE or FALSE?
 #'
 #' These functions bypass R's automatic conversion rules and check

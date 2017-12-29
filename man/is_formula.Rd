@@ -15,9 +15,9 @@ is_formulaish(x, scoped = NULL, lhs = NULL)
 \arguments{
 \item{x}{An object to test.}
 
-\item{scoped}{A boolean indicating whether the quosure or formula
-is scoped, that is, has a valid environment attribute. If \code{NULL},
-the scope is not inspected.}
+\item{scoped}{A boolean indicating whether the quosure is scoped,
+that is, has a valid environment attribute. If \code{NULL}, the scope
+is not inspected.}
 
 \item{lhs}{A boolean indicating whether the \link[=is_formula]{formula}
 or \link[=is_definition]{definition} has a left-hand side. If \code{NULL},

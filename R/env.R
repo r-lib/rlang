@@ -343,6 +343,9 @@ is_empty_env <- function(env) {
 #' @param default The default environment in case `env` does not wrap
 #'   an environment. If `NULL` and no environment could be extracted,
 #'   an error is issued.
+#'
+#' @seealso [quo_get_env()] and [quo_set_env()] for versions of
+#'   [get_env()] and [set_env()] that only work on quosures.
 #' @export
 #' @examples
 #' # Get the environment of frame objects. If no argument is supplied,

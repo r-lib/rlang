@@ -1,5 +1,68 @@
 context("quo")
 
+test_that("quo_get_expr() and quo_get_env() retrieve quosure components", {
+  quo <- quo(foo)
+  expect_identical(quo_get_expr(quo), quote(foo))
+  expect_identical(quo_get_env(quo), environment())
+})
+
+test_that("quo_set_expr() and quo_set_env() set quosure components", {
+  orig <- quo()
+  env <- env()
+  quo <- quo_set_env(quo_set_expr(orig, quote(foo)), env)
+  expect_identical(quo_get_expr(quo), quote(foo))
+  expect_identical(quo_get_env(quo), env)
+})
+
+test_that("generic getters work on quosures", {
+  expect_identical(get_expr(quo(foo)), quote(foo))
+  expect_identical(get_env(quo(foo)), environment())
+})
+
+test_that("generic setters work on quosures", {
+  orig <- quo()
+  env <- env()
+  quo <- set_env(set_expr(orig, quote(foo)), env)
+  expect_identical(quo_get_expr(quo), quote(foo))
+  expect_identical(quo_get_env(quo), env)
+})
+
+test_that("can flatten empty quosure", {
+  expect_identical(quo_expr(quo()), missing_arg())
+})
+
+test_that("env must be an environment", {
+  expect_error(new_quosure(quote(a), env = list()), "must be an environment")
+})
+
+test_that("equivalent to ~", {
+  quo <- new_quosure(quote(abc))
+  expect_identical(set_attrs(~abc, class = c("quosure", "formula")), quo)
+})
+
+test_that("as_quosure() uses correct env", {
+  fn <- function(expr, env = caller_env()) {
+    f <- as_quosure(expr, env)
+    list(env = get_env(), quo = g(f))
+  }
+  g <- function(expr, env = caller_env()) {
+    as_quosure(expr, env)
+  }
+  quo_env <- child_env(NULL)
+  quo <- new_quosure(quote(expr), quo_env)
+
+  out_expr_default <- fn(quote(expr))
+  out_quo_default <- fn(quo)
+  expect_identical(quo_get_env(out_expr_default$quo), get_env())
+  expect_identical(quo_get_env(out_quo_default$quo), quo_env)
+
+  user_env <- child_env(NULL)
+  out_expr <- fn(quote(expr), user_env)
+  out_quo <- fn(quo, user_env)
+  expect_identical(quo_get_env(out_expr$quo), user_env)
+  expect_identical(out_quo$quo, quo)
+})
+
 test_that("explicit promise makes a formula", {
   capture <- function(x) enquo(x)
   f1 <- capture(1 + 2 + 3)

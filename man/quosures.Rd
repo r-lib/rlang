@@ -70,11 +70,12 @@ fn <- function(...) quos(x = x, ...)
 fn(x = a + b)
 
 
-# Dots can be spliced in:
+# Lists of arguments can be spliced in:
 args <- list(x = 1:3, y = ~var)
 quos(!!! args, z = 10L)
 
-# Raw expressions are turned to formulas:
+# As well as lists of bare expressions (make sure that the current
+# environment is where the symbols in these expressions are defined):
 args <- alist(x = foo, y = bar)
 quos(!!! args)
 

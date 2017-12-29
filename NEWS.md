@@ -173,6 +173,11 @@
 * The quasiquotation parser now gives meaningful errors in corner
   cases to help you figure out what is wrong.
 
+* New getters and setters for quosures: `quo_get_expr()`,
+  `quo_get_env()`, `quo_set_expr()`, and `quo_set_env()`. Compared to
+  `get_expr()` etc, these accessors only work on quosures and are a
+  bit more efficient.
+
 
 ## Breaking changes
 
@@ -203,6 +208,10 @@
 * `UQE()` is now deprecated in order to simplify the syntax of
   quasiquotation. Please use `!! get_expr(x)` instead.
 
+* `is_quosureish()` and `as_quosureish()` are deprecated. These
+  functions assumed that quosures are formulas but that is only an
+  implementation detail.
+
 
 ## Upcoming breaking changes
 
@@ -210,6 +219,11 @@
   favour of `parse_quo()` and `parse_quos()`. These new names are
   consistent with the rule that abbreviated suffixes indicate the
   return type of a function.
+
+* Using `f_rhs()` and `f_env()` on quosures is soft-deprecated. The
+  fact that quosures are formulas is an implementation detail that
+  might change in the future. Please use `quo_get_expr()` and
+  `quo_get_env()` instead.
 
 
 # rlang 0.1.6

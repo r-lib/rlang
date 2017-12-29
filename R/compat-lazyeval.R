@@ -1,4 +1,4 @@
-# nocov start - compat-lazyeval (last updated: rlang 0.1.9000)
+# nocov start - compat-lazyeval (last updated: rlang 0.2.0)
 
 # This file serves as a reference for compatibility functions for lazyeval.
 # Please find the most recent version in rlang's repository.
@@ -68,7 +68,7 @@ compat_lazy_dots <- function(dots, env, ..., .named = FALSE) {
 
   named <- have_name(dots)
   if (.named && any(!named)) {
-    nms <- map_chr(dots[!named], f_text)
+    nms <- map_chr(dots[!named], function(x) expr_text(get_expr(x)))
     names(dots)[!named] <- nms
   }
 
@@ -78,8 +78,8 @@ compat_lazy_dots <- function(dots, env, ..., .named = FALSE) {
 
 compat_as_lazy <- function(quo) {
   structure(class = "lazy", list(
-    expr = f_rhs(quo),
-    env = f_env(quo)
+    expr = quo_get_expr(quo),
+    env = quo_get_env(quo)
   ))
 }
 compat_as_lazy_dots <- function(...) {

@@ -41,6 +41,7 @@
 #' **rlang 0.2.0:**
 #'
 #' * [UQE()]
+#' * [is_quosureish()], [as_quosureish()]
 #'
 #'
 #' @section Defunct functions and arguments:

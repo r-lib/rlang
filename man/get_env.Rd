@@ -93,3 +93,7 @@ identical(get_env(fn), other_env)
 fn <- set_env(fn, other_env)
 identical(get_env(fn), other_env)
 }
+\seealso{
+\code{\link[=quo_get_env]{quo_get_env()}} and \code{\link[=quo_set_env]{quo_set_env()}} for versions of
+\code{\link[=get_env]{get_env()}} and \code{\link[=set_env]{set_env()}} that only work on quosures.
+}

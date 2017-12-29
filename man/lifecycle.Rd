@@ -46,6 +46,7 @@ TODO: Review all functions in rlang and mark stable ones as such.
 \strong{rlang 0.2.0:}
 \itemize{
 \item \code{\link[=UQE]{UQE()}}
+\item \code{\link[=is_quosureish]{is_quosureish()}}, \code{\link[=as_quosureish]{as_quosureish()}}
 }
 }
 
