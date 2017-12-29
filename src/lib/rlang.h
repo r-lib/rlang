@@ -70,11 +70,13 @@ static inline sexp* KEEP_N(sexp* x, int* n) {
 #include "cnd.h"
 #include "env.h"
 #include "eval.h"
+#include "export.h"
 #include "fn.h"
 #include "formula.h"
 #include "lang.h"
 #include "node.h"
 #include "parse.h"
+#include "quo.h"
 #include "squash.h"
 #include "stack.h"
 #include "state.h"
@@ -85,8 +87,15 @@ static inline sexp* KEEP_N(sexp* x, int* n) {
 #include "vec-list.h"
 
 
+extern sexp* rlang_quo_get_expr(sexp*);
+
 static inline void rlang_init_library() {
   r_dot_environment_sym = r_sym(".Environment");
+
+  r_quo_get_expr = (sexp* (*)(sexp*)) r_peek_c_callable("rlang", "rlang_quo_get_expr");
+  r_quo_set_expr = (sexp* (*)(sexp*, sexp*)) r_peek_c_callable("rlang", "rlang_quo_set_expr");
+  r_quo_get_env = (sexp* (*)(sexp*)) r_peek_c_callable("rlang", "rlang_quo_get_env");
+  r_quo_set_env = (sexp* (*)(sexp*, sexp*)) r_peek_c_callable("rlang", "rlang_quo_set_env");
 }
 
 
