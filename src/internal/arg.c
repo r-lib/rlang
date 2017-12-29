@@ -61,8 +61,6 @@ sexp* rlang_ensym(sexp* sym, sexp* frame) {
 }
 
 
-sexp* forward_quosure(sexp* x, sexp* env);
-
 sexp* rlang_enquo(sexp* sym, sexp* frame) {
   sexp* env;
   sexp* expr = KEEP(capture(sym, frame, &env));

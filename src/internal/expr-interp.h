@@ -80,11 +80,16 @@ sexp* call_interp_impl(sexp* x, sexp* env, struct expansion_info info);
 
 
 static inline sexp* forward_quosure(sexp* x, sexp* env) {
-  if (rlang_is_quosure(x)) {
-    return x;
-  } else if (r_is_symbolic(x)) {
+  switch (r_typeof(x)) {
+  case r_type_call:
+    if (rlang_is_quosure(x)) {
+      return x;
+    }
+    // else fallthrough
+  case r_type_symbol:
+  case r_type_closure:
     return rlang_new_quosure(x, env);
-  } else {
+  default:
     return rlang_new_quosure(x, r_empty_env);
   }
 }

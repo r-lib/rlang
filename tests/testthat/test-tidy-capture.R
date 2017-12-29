@@ -429,3 +429,7 @@ test_that("dots_definitions() accepts other types of arguments", {
   expect_identical(dots$defs$A, list(lhs = quo(a), rhs = quo(b)))
   expect_identical(dots$dots$B, quo(c))
 })
+
+test_that("closures are captured with their calling environment", {
+  expect_reference(quo_get_env(quo(!!function() NULL)), environment())
+})
