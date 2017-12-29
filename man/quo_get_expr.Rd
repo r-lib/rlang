@@ -27,6 +27,12 @@ These functions are equivalent to \code{\link[=get_expr]{get_expr()}}, \code{\li
 \code{\link[=set_expr]{set_expr()}}, and \code{\link[=set_env]{set_env()}}. However they only work on quosures
 and are a bit more efficient.
 }
+\section{Life cycle}{
+
+
+All these functions are stable.
+}
+
 \examples{
 quo <- quo(foo(bar))
 quo

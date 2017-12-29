@@ -283,6 +283,12 @@ as_quosure <- function(x, env = caller_env()) {
 #' [set_expr()], and [set_env()]. However they only work on quosures
 #' and are a bit more efficient.
 #'
+#'
+#' @section Life cycle:
+#'
+#' All these functions are stable.
+#'
+#'
 #' @param quo A quosure.
 #'
 #' @export
