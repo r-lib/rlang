@@ -187,9 +187,7 @@ print.quosure <- function(x, ...) {
   quo_print(x)
 
   env <- get_env(x)
-  if (!is_reference(env, global_env())) {
-    print(env)
-  }
+  cat(paste0("<quosure: ", quo_env_print(env), ">\n"))
 
   invisible(x)
 }
@@ -545,5 +543,15 @@ quo_print_args <- function(x, palette) {
     if (!is_null(x)) {
       cat(", ")
     }
+  }
+}
+
+quo_env_print <- function(env) {
+  if (is_reference(env, global_env())) {
+    "global"
+  } else if (is_reference(env, empty_env())) {
+    "R_EmptyEnv"
+  } else {
+    sxp_address(env)
   }
 }
