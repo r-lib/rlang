@@ -95,3 +95,46 @@ chr_lines <- function(..., .trailing = FALSE) {
   }
   lines
 }
+
+red <- function(x) {
+  if (is_installed("crayon")) {
+    crayon::red(x)
+  } else {
+    x
+  }
+}
+blue <- function(x) {
+  if (is_installed("crayon")) {
+    crayon::blue(x)
+  } else {
+    x
+  }
+}
+green <- function(x) {
+  if (is_installed("crayon")) {
+    crayon::green(x)
+  } else {
+    x
+  }
+}
+yellow <- function(x) {
+  if (is_installed("crayon")) {
+    crayon::yellow(x)
+  } else {
+    x
+  }
+}
+magenta <- function(x) {
+  if (is_installed("crayon")) {
+    crayon::magenta(x)
+  } else {
+    x
+  }
+}
+cyan <- function(x) {
+  if (is_installed("crayon")) {
+    crayon::cyan(x)
+  } else {
+    x
+  }
+}

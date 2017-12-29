@@ -15,6 +15,7 @@ ByteCompile: true
 Depends:
     R (>= 3.1.0)
 Suggests:
+    crayon,
     knitr,
     rmarkdown (>= 0.2.65),
     testthat,
