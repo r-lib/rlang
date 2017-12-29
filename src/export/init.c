@@ -193,7 +193,9 @@ static const r_callable r_callables[] = {
 void R_init_rlang(r_dll_info* dll) {
   r_register_c_callable("rlang", "rlang_new_dictionary", (r_fn_ptr) &rlang_new_dictionary);
   r_register_c_callable("rlang", "rlang_squash_if", (r_fn_ptr) &r_squash_if);
-  rlang_register_pointer("rlang", "rlang_test_is_spliceable", (DL_FUNC) &rlang_is_clevel_spliceable);
+
+  // Experimental method for exporting C function pointers as actual R objects
+  rlang_register_pointer("rlang", "rlang_test_is_spliceable", (r_fn_ptr) &rlang_is_clevel_spliceable);
 
   r_register_r_callables(dll, r_callables);
 }
