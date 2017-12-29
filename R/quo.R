@@ -193,11 +193,7 @@ print.quosure <- function(x, ...) {
 }
 #' @export
 str.quosure <- function(object, ...) {
-  env_type <- env_format(get_env(object))
-
-  cat(paste0("<quosure: ", env_type, ">\n"))
-  print(set_attrs(object, NULL))
-  invisible(object)
+  str(unclass(object), ...)
 }
 
 #' Is an object a quosure or quosure-like?
