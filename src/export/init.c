@@ -75,15 +75,19 @@ extern sexp* rlang_ensym(sexp*, sexp*);
 extern sexp* rlang_enquo(sexp*, sexp*);
 extern sexp* rlang_get_expression(sexp*, sexp*);
 extern sexp* rlang_vec_coerce(sexp*, sexp*);
-extern sexp* rlang_mark_object(sexp* x);
-extern sexp* rlang_unmark_object(sexp* x);
-extern sexp* rlang_quo_is_missing(sexp* quo);
-extern sexp* rlang_quo_is_symbol(sexp* quo);
-extern sexp* rlang_quo_is_call(sexp* quo);
-extern sexp* rlang_quo_is_symbolic(sexp* quo);
-extern sexp* rlang_quo_is_null(sexp* quo);
+extern sexp* rlang_mark_object(sexp*);
+extern sexp* rlang_unmark_object(sexp*);
+extern sexp* rlang_quo_is_missing(sexp*);
+extern sexp* rlang_quo_is_symbol(sexp*);
+extern sexp* rlang_quo_is_call(sexp*);
+extern sexp* rlang_quo_is_symbolic(sexp*);
+extern sexp* rlang_quo_is_null(sexp*);
 extern sexp* rlang_vec_poke_n(sexp*, sexp*, sexp*, sexp*, sexp*);
 extern sexp* rlang_vec_poke_range(sexp*, sexp*, sexp*, sexp*, sexp*);
+extern sexp* rlang_quo_get_expr(sexp*);
+extern sexp* rlang_quo_set_expr(sexp*, sexp*);
+extern sexp* rlang_quo_get_env(sexp*);
+extern sexp* rlang_quo_set_env(sexp*, sexp*);
 
 // Library initialisation defined below
 sexp* rlang_library_load();
@@ -186,6 +190,10 @@ static const r_callable r_callables[] = {
   {"rlang_quo_is_symbolic",     (r_fn_ptr) &rlang_quo_is_symbolic, 1},
   {"rlang_quo_is_missing",      (r_fn_ptr) &rlang_quo_is_missing, 1},
   {"rlang_quo_is_null",         (r_fn_ptr) &rlang_quo_is_null, 1},
+  {"rlang_quo_get_expr",        (r_fn_ptr) &rlang_quo_get_expr, 1},
+  {"rlang_quo_set_expr",        (r_fn_ptr) &rlang_quo_set_expr, 2},
+  {"rlang_quo_get_env",         (r_fn_ptr) &rlang_quo_get_env, 1},
+  {"rlang_quo_set_env",         (r_fn_ptr) &rlang_quo_set_env, 2},
   {"rlang_vec_poke_n",          (r_fn_ptr) &rlang_vec_poke_n, 5},
   {"rlang_vec_poke_range",      (r_fn_ptr) &rlang_vec_poke_range, 5},
   {NULL, NULL, 0}

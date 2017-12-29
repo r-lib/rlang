@@ -293,48 +293,25 @@ as_quosure <- function(x, env = caller_env()) {
 #' quo_set_expr(quo, quote(baz))
 #' quo_set_env(quo, empty_env())
 quo_get_expr <- function(quo) {
-  if (typeof(quo) != "language") {
-    abort("Expected a quosure")
-  }
-  node_cadr(quo)
+  .Call(rlang_quo_get_expr, quo)
 }
 #' @rdname quo_get_expr
 #' @export
 quo_get_env <- function(quo) {
-  if (typeof(quo) != "language") {
-    abort("Expected a quosure")
-  }
-  attr(quo, ".Environment")
+  .Call(rlang_quo_get_env, quo)
 }
 
 #' @rdname quo_get_expr
 #' @param expr A new expression for the quosure.
 #' @export
 quo_set_expr <- function(quo, expr) {
-  if (typeof(quo) != "language") {
-    abort("Expected a quosure")
-  }
-  if (is_null(node_cdr(quo))) {
-    abort("Corrupt quosure")
-  }
-
-  quo <- duplicate(quo, shallow = TRUE)
-  node_poke_cadr(quo, expr)
-  quo
+  .Call(rlang_quo_set_expr, quo, expr)
 }
 #' @rdname quo_get_expr
 #' @param env A new environment for the quosure.
 #' @export
 quo_set_env <- function(quo, env) {
-  if (!is_environment(env)) {
-    abort("`env` must be an environment")
-  }
-  if (typeof(quo) != "language") {
-    abort("Expected a quosure")
-  }
-
-  attr(quo, ".Environment") <- env
-  quo
+  .Call(rlang_quo_set_env, quo, env)
 }
 
 

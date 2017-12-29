@@ -198,30 +198,27 @@ sexp* rlang_new_call_node(sexp* car, sexp* cdr) {
 
 // quo.h
 
-static void check_quosure(sexp* x) {
-  if (r_typeof(x) != r_type_call || !r_inherits(x, "quosure")) {
-    r_abort("Expected a quosure");
-  }
-}
+#include "../internal/quo.h"
+
 sexp* rlang_quo_is_missing(sexp* quo) {
   check_quosure(quo);
-  return r_scalar_lgl(r_node_cadr(quo) == r_missing_sym);
+  return r_scalar_lgl(quo_is_missing(quo));
 }
 sexp* rlang_quo_is_symbol(sexp* quo) {
   check_quosure(quo);
-  return r_scalar_lgl(r_typeof(r_node_cadr(quo)) == r_type_symbol);
+  return r_scalar_lgl(quo_is_symbol(quo));
 }
 sexp* rlang_quo_is_call(sexp* quo) {
   check_quosure(quo);
-  return r_scalar_lgl(r_typeof(r_node_cadr(quo)) == r_type_call);
+  return r_scalar_lgl(quo_is_call(quo));
 }
 sexp* rlang_quo_is_symbolic(sexp* quo) {
   check_quosure(quo);
-  return r_scalar_lgl(r_is_symbolic(r_node_cadr(quo)));
+  return r_scalar_lgl(quo_is_symbolic(quo));
 }
 sexp* rlang_quo_is_null(sexp* quo) {
   check_quosure(quo);
-  return r_scalar_lgl(r_node_cadr(quo) == r_null);
+  return r_scalar_lgl(quo_is_null(quo));
 }
 
 

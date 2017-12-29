@@ -29,7 +29,7 @@ sexp* rlang_tilde_eval(sexp* tilde, sexp* overscope, sexp* overscope_top, sexp* 
   if (!r_inherits(tilde, "quosure")) {
     return base_tilde_eval(tilde, overscope);
   }
-  if (rlang_quo_is_missing(tilde)) {
+  if (quo_is_missing(tilde)) {
     return(r_missing_arg());
   }
 
