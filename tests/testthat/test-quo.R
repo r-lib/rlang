@@ -44,13 +44,19 @@ test_that("can flatten empty quosure", {
   expect_identical(quo_expr(quo()), missing_arg())
 })
 
-test_that("env must be an environment", {
+test_that("new_quosure() checks inputs", {
   expect_error(new_quosure(quote(a), env = list()), "must be an environment")
 })
 
-test_that("equivalent to ~", {
+test_that("new_quosure() produces expected internal structure", {
   quo <- new_quosure(quote(abc))
   expect_identical(set_attrs(~abc, class = c("quosure", "formula")), quo)
+})
+
+test_that("new_quosure() double wraps", {
+  quo1 <- quo(foo)
+  quo2 <- new_quosure(quo1)
+  expect_identical(quo_get_expr(quo2), quo1)
 })
 
 test_that("as_quosure() uses correct env", {
