@@ -184,7 +184,7 @@ enquo <- function(arg) {
 
 #' @export
 print.quosure <- function(x, ...) {
-  print(quo_expr(x))
+  quo_print(x)
   print(get_env(x))
   invisible(x)
 }
@@ -424,7 +424,7 @@ quo_expr <- function(quo, warn = FALSE) {
   if (is_missing(quo)) {
     missing_arg()
   } else {
-    quo_splice(duplicate(quo), warn = warn)
+    quo_flatten(duplicate(quo), warn = warn)
   }
 }
 #' @rdname quo_expr
@@ -443,7 +443,7 @@ quo_name <- function(quo) {
   expr_name(quo_expr(quo))
 }
 
-quo_splice <- function(x, parent = NULL, warn = FALSE) {
+quo_flatten <- function(x, parent = NULL, warn = FALSE) {
   switch_expr(x,
     language = {
       if (is_quosure(x)) {
@@ -463,18 +463,56 @@ quo_splice <- function(x, parent = NULL, warn = FALSE) {
         if (!is_null(parent)) {
           mut_node_car(parent, x)
         }
-        quo_splice(x, parent, warn = warn)
+        quo_flatten(x, parent, warn = warn)
       } else {
-        quo_splice(node_cdr(x), warn = warn)
+        quo_flatten(node_cdr(x), warn = warn)
       }
     },
     pairlist = {
       while (!is_null(x)) {
-        quo_splice(node_car(x), x, warn = warn)
+        quo_flatten(node_car(x), x, warn = warn)
         x <- node_cdr(x)
       }
     }
   )
 
   x
+}
+
+quo_print <- function(x, parent = FALSE) {
+  switch_expr(x,
+    language = {
+      if (is_quosure(x)) {
+        while (is_quosure(x)) {
+          cat("^")
+          x <- quo_get_expr(x)
+        }
+        quo_print(x, parent = parent)
+      } else {
+        quo_print(node_car(x), parent = TRUE)
+        cat("(")
+        quo_print_args(node_cdr(x))
+        cat(")")
+        if (!parent) {
+          cat("\n")
+        }
+      }
+    }, {
+      cat(deparse(x))
+      if (!parent) {
+        cat("\n")
+      }
+    }
+  )
+  invisible(x)
+}
+
+quo_print_args <- function(x) {
+  while (!is_null(x)) {
+    quo_print(node_car(x), parent = TRUE)
+    x <- node_cdr(x)
+    if (!is_null(x)) {
+      cat(", ")
+    }
+  }
 }

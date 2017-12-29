@@ -132,9 +132,12 @@ test_that("quo_expr() warns", {
   expect_warning(quo_expr(quo(list(!! quo(foo))), warn = TRUE), "inner quosure")
 })
 
-test_that("print() method flattens quosures", {
-  x <- quo(list(!! quo(NULL)))
-  expect_output(print(x), "list\\(NULL\\)")
+test_that("print() method indicates quosures with `^`", {
+  x <- quo(list(!! quo(NULL), !! quo(foo())))
+  expect_output(print(x), "^list(^NULL, ^foo())", fixed = TRUE)
+
+  x <- quo(list(!!! 1:5))
+  expect_output(print(x), "^list(1L, 2L, 3L, 4L, 5L)", fixed = TRUE)
 })
 
 test_that("quosure predicates work", {
