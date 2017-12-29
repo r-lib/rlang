@@ -81,37 +81,75 @@ test_that("unquoted quosures are not guarded", {
 # !! ----------------------------------------------------------------------
 
 test_that("`!!` binds tightly", {
-  foo <- "foo"
-  expect_identical(expr(!! foo == a), quote("foo" == a))
-  expect_identical(expr(!! foo * a != b), quote("foo" * a != b))
-  expect_identical(expr(!! foo * a / b > c), quote("foo" * a / b > c))
+  expect_identical_(expr(!!1 + 2 + 3), quote(1 + 2 + 3))
+  expect_identical_(expr(1 + !!2 + 3), quote(1 + 2 + 3))
+  expect_identical_(expr(1 + 2 + !!3 + 4), quote(1 + 2 + 3 + 4))
+  expect_identical_(expr(1 + !!(2) + 3), quote(1 + 2 + 3))
+  expect_identical_(expr(1 + 2 + !!3), quote(1 + 2 + 3))
+  expect_identical_(expr(1 + !!2 * 3), quote(1 + 2 * 3))
+  expect_identical_(expr(1 + !!2 * 3 + 4), quote(1 + 2 * 3 + 4))
+  expect_identical_(expr(1 * !!2:!!3 + 4), quote(1 * 2:3 + 4))
+  expect_identical_(expr(1 + 2 + !!3 * 4 + 5 + 6), quote(1 + 2 + 3 * 4 + 5 + 6))
 
-  expect_identical(expr(a <= !! foo), quote(a <= "foo"))
-  expect_identical(expr(a >= !! foo : b), quote(a >= "foo" : b))
-  expect_identical(expr(a > !! foo * b : c), quote(a > "foo" * b : c))
+  expect_identical_(expr(1 + 2 * 3 : !!4 + 5 * 6 + 7), quote(1 + 2 * 3 : 4 + 5 * 6 + 7))
+  expect_identical_(expr(1 + 2 * 3 : !!4 + 5 * 6 + 7 * 8 : !!9 + 10 * 11), quote(1 + 2 * 3 : 4 + 5 * 6 + 7 * 8 : 9 + 10 * 11))
+  expect_identical_(expr(!!1 + !!2 * !!3:!!4 + !!5 * !!6 + !!7 * !!8:!!9 + !!10 * !!11), quote(1 + 2 * 3 : 4 + 5 * 6 + 7 * 8 : 9 + 10 * 11))
 
-  a <- b <- c <- 1
-  expect_identical(expr(!! a^b^c), quote(1))
-  expect_identical(expr(!! a^b^c + d), quote(1 + d))
+  expect_identical_(expr(!!1 + !!2 + !!3  + !!4), quote(1 + 2 + 3 + 4))
+  expect_identical_(expr(!!1 + !!2 * !!3), quote(1 + 2 * 3))
+
+  # Local roots
+  expect_identical_(expr(!!1 + !!2 * !!3  * !!4), quote(1 + 2 * 3 * 4))
+  expect_identical_(expr(1 == 2 + !!3 + 4), quote(1 == 2 + 3 + 4))
+  expect_identical_(expr(!!1 == !!2 + !!3 + !!4 + !!5 * !!6 * !!7), quote(1 == 2 + 3 + 4 + 5 * 6 * 7))
+  expect_identical_(expr(1 + 2 * 3:!!4:5), quote(1 + 2 * 3:4:5))
+
+  expect_identical_(expr(!!1 == !!2), quote(1 == 2))
+  expect_identical_(expr(!!1 <= !!2), quote(1 <= 2))
+  expect_identical_(expr(!!1 >= !!2), quote(1 >= 2))
+  expect_identical_(expr(!!1 * 2 != 3), quote(1 * 2 != 3))
+
+  expect_identical_(expr(!!1 * !!2 / !!3 > !!4), quote(1 * 2 / 3 > 4))
+  expect_identical_(expr(!!1 * !!2 > !!3 + !!4), quote(1 * 2 > 3 + 4))
+
+  expect_identical_(expr(1 <= !!2), quote(1 <= 2))
+  expect_identical_(expr(1 >= !!2 : 3), quote(1 >= 2 : 3))
+  expect_identical_(expr(1 > !!2 * 3 : 4), quote(1 > 2 * 3 : 4))
+
+  expect_identical_(expr(!!1^2^3), quote(1))
+  expect_identical_(expr(!!1^2^3 + 4), quote(1 + 4))
+  expect_identical_(expr(!!1^2 + 3:4), quote(1 + 3:4))
 })
 
 test_that("`!!` handles binary and unary `-` and `+`", {
-  foo <- "foo"
-  expect_identical(expr(!! foo + a), quote("foo" + a))
-  expect_identical(expr(!! foo - a), quote("foo" - a))
+  expect_identical_(expr(!!1 + 2), quote(1 + 2))
+  expect_identical_(expr(!!1 - 2), quote(1 - 2))
 
-  foo <- 1L
-  expect_identical(expr(!! +foo + a), quote(1L + a))
-  expect_identical(expr(!! -foo - a), expr(!!-1L - a))
+  expect_identical_(expr(!!+1 + 2), quote(1 + 2))
+  expect_identical_(expr(!!-1 - 2), expr(`!!`(-1) - 2))
+
+  expect_identical_(expr(1 + -!!3 + 4), quote(1 + -3 + 4))
+  expect_identical_(expr(1 + ---+!!3 + 4), quote(1 + ---+3 + 4))
+
+  expect_identical_(expr(+1), quote(+1))
+  expect_identical_(expr(+-!!1), quote(+-1))
+  expect_identical_(expr(+-!!(1 + 1)), quote(+-2))
+  expect_identical_(expr(+-!!+-1), bquote(+-.(-1)))
+
+  expect_identical_(expr(+-+-!!+1), quote(+-+-1))
+  expect_identical_(expr(+-+-!!-1), bquote(+-+-.(-1)))
+
+  expect_identical_(expr(+-+-!!1 - 2), quote(+-+-1 - 2))
+  expect_identical_(expr(+-+-!!+-+1 + 2), bquote(+-+-.(-1) + 2))
+  expect_identical(expr(+-+-!!+-!1 + 2), quote(+-+-0L))
+
+  expect_identical_(expr(+-+-!!+-identity(1)), bquote(+-+-.(-1)))
+  expect_identical_(expr(+-+-!!+-identity(1) + 2), bquote(+-+-.(-1) + 2))
 })
 
 test_that("`!!` handles special operators", {
-  foo <- "foo"
-  expect_identical(expr(!! foo %>% a), quote("foo" %>% a))
+  expect_identical(expr(!! 1 %>% 2), quote(1 %>% 2))
 })
-
-
-# !! ----------------------------------------------------------------------
 
 test_that("evaluates contents of `!!`", {
   expect_identical(expr(!!(1 + 2)), 3)
@@ -147,7 +185,7 @@ test_that("UQ() fails if called without argument", {
 # !!! ---------------------------------------------------------------------
 
 test_that("`!!!` treats atomic objects as scalar vectors", {
-  expect_identical(quo(1 + !!! get_env()), quo(1 + !! get_env()))
+  expect_identical(quo(list(!!! get_env())), quo(list(!! get_env())))
   expect_identical(expr(c(!!! expression(1, 2))), expr(c(!! expression(1, 2))))
 })
 

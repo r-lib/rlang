@@ -2,8 +2,10 @@
 #define RLANG_RLANG_H
 
 
-#define R_NO_REMAP
+#include <inttypes.h>
 #include <stdbool.h>
+
+#define R_NO_REMAP
 #include <Rinternals.h>
 
 typedef struct SEXPREC sexp;
@@ -58,6 +60,9 @@ static inline sexp* KEEP_N(sexp* x, int* n) {
   return KEEP(x);
 }
 
+#define RLANG_ASSERT(condition) ((void)sizeof(char[1 - 2*!(condition)]))
+
+
 #include "sexp.h"
 
 #include "attrs.h"
@@ -69,6 +74,7 @@ static inline sexp* KEEP_N(sexp* x, int* n) {
 #include "formula.h"
 #include "lang.h"
 #include "node.h"
+#include "parse.h"
 #include "quo.h"
 #include "squash.h"
 #include "stack.h"

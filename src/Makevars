@@ -10,6 +10,7 @@ lib-files = \
         lib/formula.c \
         lib/lang.c \
         lib/node.c \
+        lib/parse.c \
         lib/quo.c \
         lib/replace-na.c \
         lib/sexp.c \
@@ -27,6 +28,7 @@ internal-files = \
         internal/dots.c \
         internal/eval-tidy.c \
         internal/expr-interp.c \
+        internal/expr-interp-rotate.c \
         internal/utils.c
 
 export-files = \

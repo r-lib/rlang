@@ -1,33 +1,9 @@
 #include <rlang.h>
+#include "dots.h"
 #include "expr-interp.h"
 #include "utils.h"
 
 sexp* rlang_ns_get(const char* name);
-
-
-enum dots_capture_type {
-  DOTS_EXPR,
-  DOTS_QUO,
-  DOTS_VALUE
-};
-
-enum dots_expansion_op {
-  OP_EXPR_NONE,
-  OP_EXPR_UQ,
-  OP_EXPR_UQE,
-  OP_EXPR_UQS,
-  OP_EXPR_UQN,
-  OP_QUO_NONE,
-  OP_QUO_UQ,
-  OP_QUO_UQE,
-  OP_QUO_UQS,
-  OP_QUO_UQN,
-  OP_VALUE_NONE,
-  OP_VALUE_UQ,
-  OP_VALUE_UQE,
-  OP_VALUE_UQS,
-  OP_VALUE_UQN
-};
 
 struct dots_capture_info {
   enum dots_capture_type type;
@@ -76,6 +52,8 @@ static sexp* def_unquote_name(sexp* expr, sexp* env) {
     r_abort("The LHS of `:=` can't be spliced with `!!!`");
   case OP_EXPAND_UQN:
     r_abort("Internal error: Chained `:=` should have been detected earlier");
+  case OP_EXPAND_FIXUP:
+    r_abort("The LHS of `:=` must be a string or a symbol");
   }
 
   int err = 0;
@@ -215,7 +193,7 @@ static sexp* dots_unquote(sexp* dots, struct dots_capture_info* capture_info) {
     }
 
     struct expansion_info info = which_expansion_op(expr, unquote_names);
-    enum dots_expansion_op dots_op = info.op + (N_EXPANSION_OPS * capture_info->type);
+    enum dots_expansion_op dots_op = info.op + (EXPANSION_OP_MAX * capture_info->type);
 
     // Ignore empty arguments
     if (expr == r_missing_sym
@@ -231,6 +209,7 @@ static sexp* dots_unquote(sexp* dots, struct dots_capture_info* capture_info) {
     case OP_EXPR_NONE:
     case OP_EXPR_UQ:
     case OP_EXPR_UQE:
+    case OP_EXPR_FIXUP:
       expr = call_interp_impl(expr, env, info);
       capture_info->count += 1;
       break;
@@ -240,7 +219,8 @@ static sexp* dots_unquote(sexp* dots, struct dots_capture_info* capture_info) {
       break;
     case OP_QUO_NONE:
     case OP_QUO_UQ:
-    case OP_QUO_UQE: {
+    case OP_QUO_UQE:
+    case OP_QUO_FIXUP: {
       expr = KEEP(call_interp_impl(expr, env, info));
       expr = forward_quosure(expr, env);
       FREE(1);
@@ -252,6 +232,7 @@ static sexp* dots_unquote(sexp* dots, struct dots_capture_info* capture_info) {
       expr = dots_big_bang(capture_info, info.operand, env, true);
       break;
     }
+    case OP_VALUE_FIXUP:
     case OP_VALUE_NONE:
       if (expr == r_missing_sym) {
         r_abort("Argument %d is empty", i + 1);
@@ -282,6 +263,8 @@ static sexp* dots_unquote(sexp* dots, struct dots_capture_info* capture_info) {
     case OP_QUO_UQN:
     case OP_VALUE_UQN:
       r_abort("`:=` can't be chained");
+    case OP_DOTS_MAX:
+      r_abort("Internal error: `OP_DOTS_MAX`");
     }
 
     r_list_poke(dots, i, expr);

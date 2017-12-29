@@ -1,6 +1,7 @@
 context("events")
 
 test_that("can't add an exit event at top-level", {
+  expect_true(TRUE)
   # This can only be tested interactively
   if (FALSE) {
     scoped_exit(1)  # Can't add an exit event at top level

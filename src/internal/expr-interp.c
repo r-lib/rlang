@@ -1,44 +1,14 @@
 #include <rlang.h>
 #include "expr-interp.h"
+#include "expr-interp-rotate.h"
 #include "utils.h"
 
 
-static bool needs_fixup(sexp* x) {
-  if (r_is_call_any(x, fixup_ops_names, FIXUP_OPS_N)) {
-    return true;
-  }
-
-  // Don't fixup unary operators
-  if (r_is_call_any(x, fixup_unary_ops_names, FIXUP_UNARY_OPS_N)) {
-    return r_node_cddr(x) != r_null;
-  }
-
-  if (r_is_special_op_call(x)) {
-    return true;
-  }
-
-  return false;
-}
-
-// Takes the trailing `!`
-static void poke_bang_bang_operand(sexp* bang, struct expansion_info* info) {
-  sexp* fixed = bang;
-  while (needs_fixup(r_node_cadr(fixed))) {
-    fixed = r_node_cadr(fixed);
-  }
-
-  info->parent = r_node_cdr(fixed);
-  if (bang != fixed) {
-    info->root = r_node_cadr(bang);
-  }
-  info->operand = r_node_cadr(fixed);
-}
-
-struct expansion_info which_bang_op(sexp* x) {
+struct expansion_info which_bang_op(sexp* first) {
   struct expansion_info info = init_expansion_info();
 
-  if (r_is_call(x, "(")) {
-    sexp* paren = r_node_cadr(x);
+  if (r_is_call(first, "(")) {
+    sexp* paren = r_node_cadr(first);
     if (r_is_call(paren, "(")) {
       return info;
     }
@@ -55,11 +25,11 @@ struct expansion_info which_bang_op(sexp* x) {
     }
   }
 
-  if (!r_is_call(x, "!")) {
+  if (!r_is_call(first, "!")) {
     return info;
   }
 
-  sexp* second = r_node_cadr(x);
+  sexp* second = r_node_cadr(first);
   if (!r_is_call(second, "!")) {
     return info;
   }
@@ -68,8 +38,14 @@ struct expansion_info which_bang_op(sexp* x) {
 
   // Need to fill in `info` for `!!` because parse tree might need changes
   if (!r_is_call(third, "!")) {
-    info.op = OP_EXPAND_UQ;
-    poke_bang_bang_operand(second, &info);
+    if (is_problematic_op(third)) {
+      info.op = OP_EXPAND_FIXUP;
+      info.operand = third;
+    } else {
+      info.op = OP_EXPAND_UQ;
+      info.parent = r_node_cdr(second);
+      info.operand = third;
+    }
     return info;
   }
 
@@ -122,6 +98,11 @@ struct expansion_info which_expansion_op(sexp* x, bool unquote_names) {
     return info;
   }
   if (info.op) {
+    return info;
+  }
+
+  if (is_problematic_op(x)) {
+    info.op = OP_EXPAND_FIXUP;
     return info;
   }
 
@@ -191,7 +172,6 @@ struct expansion_info which_expansion_op(sexp* x, bool unquote_names) {
     info.operand = r_node_cadr(x);
     return info;
   }
-
 
   return info;
 }
@@ -274,6 +254,7 @@ sexp* big_bang(sexp* operand, sexp* env, sexp* node, sexp* next) {
 }
 
 
+// Defined below
 static sexp* node_list_interp(sexp* x, sexp* env);
 
 sexp* call_interp(sexp* x, sexp* env)  {
@@ -289,22 +270,27 @@ sexp* call_interp_impl(sexp* x, sexp* env, struct expansion_info info) {
     r_warn("`UQE()` is deprecated. Please use `!! get_expr(x)`");
   }
 
-
   switch (info.op) {
   case OP_EXPAND_NONE:
-    if (r_typeof(x) == r_type_call) {
-      return node_list_interp(x, env);
-    } else {
+    if (r_typeof(x) != r_type_call) {
       return x;
+    } else {
+      return node_list_interp(x, env);
     }
   case OP_EXPAND_UQ:
     return bang_bang(info, env);
   case OP_EXPAND_UQE:
     return bang_bang_expression(info, env);
+  case OP_EXPAND_FIXUP:
+    if (info.operand == r_null) {
+      return fixup_interp(x, env);
+    } else {
+      return fixup_interp_first(info.operand, env);
+    }
   case OP_EXPAND_UQS:
     r_abort("Can't use `!!!` at top level");
   case OP_EXPAND_UQN:
-    r_abort("todo!");
+    r_abort("Internal error: Deep `:=` unquoting");
   }
 }
 

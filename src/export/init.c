@@ -98,6 +98,8 @@ extern sexp* rlang_test_base_ns_get(sexp*);
 extern sexp* r_current_frame();
 extern sexp* rlang_test_sys_frame(sexp*);
 extern sexp* rlang_test_sys_call(sexp*);
+extern sexp* rlang_test_which_operator(sexp*);
+extern sexp* rlang_test_call_has_precedence(sexp*, sexp*);
 
 static const R_CallMethodDef call_entries[] = {
   {"rlang_library_load",        (DL_FUNC) &rlang_library_load, 0},
@@ -163,6 +165,8 @@ static const R_CallMethodDef call_entries[] = {
   {"rlang_test_current_frame",  (DL_FUNC) &r_current_frame, 0},
   {"rlang_test_sys_frame",      (DL_FUNC) &rlang_test_sys_frame, 1},
   {"rlang_test_sys_call",       (DL_FUNC) &rlang_test_sys_call, 1},
+  {"rlang_test_which_operator", (DL_FUNC) &rlang_test_which_operator, 1},
+  {"rlang_test_call_has_precedence", (DL_FUNC) &rlang_test_call_has_precedence, 2},
   {"rlang_r_string",            (DL_FUNC) &rlang_r_string, 1},
   {"rlang_exprs_interp",        (DL_FUNC) &rlang_exprs_interp, 4},
   {"rlang_quos_interp",         (DL_FUNC) &rlang_quos_interp, 4},
@@ -198,9 +202,27 @@ void R_init_rlang(DllInfo* dll) {
   R_useDynamicSymbols(dll, FALSE);
 }
 
+
+#include "../internal/dots.h"
+#include "../internal/expr-interp.h"
+
 sexp* rlang_library_load() {
+
+  /* dots.c - enum dots_expansion_op */
+  RLANG_ASSERT(OP_DOTS_MAX == DOTS_CAPTURE_TYPE_MAX * EXPANSION_OP_MAX);
+
+  /* parse.c - r_ops_precedence[] */
+  RLANG_ASSERT((sizeof(r_ops_precedence) / sizeof(struct r_op_precedence)) == R_OP_MAX);
+
+  for (int i = R_OP_NONE + 1; i < R_OP_MAX; ++i) {
+    if (r_ops_precedence[i].power == 0) {
+      r_abort("Internal error: `r_ops_precedence` is not fully initialised");
+    }
+  }
+
   return r_null;
 }
+
 sexp* rlang_library_unload() {
   return r_null;
 }
