@@ -8,6 +8,7 @@
 extern sexp* rlang_new_dictionary(sexp*, sexp*, sexp*);
 extern sexp* r_squash_if(sexp*, enum r_type, bool (*is_spliceable)(sexp*), int);
 extern bool rlang_is_clevel_spliceable(sexp*);
+extern bool rlang_is_quosure(sexp*);
 
 // Callable from this package
 extern sexp* rlang_is_null(sexp*);
@@ -193,6 +194,10 @@ static const r_callable r_callables[] = {
 void R_init_rlang(r_dll_info* dll) {
   r_register_c_callable("rlang", "rlang_new_dictionary", (r_fn_ptr) &rlang_new_dictionary);
   r_register_c_callable("rlang", "rlang_squash_if", (r_fn_ptr) &r_squash_if);
+
+  // These functions are stable
+  r_register_c_callable("rlang", "rlang_new_quosure", (r_fn_ptr) &rlang_new_quosure);
+  r_register_c_callable("rlang", "rlang_is_quosure", (r_fn_ptr) &rlang_is_quosure);
 
   // Experimental method for exporting C function pointers as actual R objects
   rlang_register_pointer("rlang", "rlang_test_is_spliceable", (r_fn_ptr) &rlang_is_clevel_spliceable);
