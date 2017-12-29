@@ -484,37 +484,72 @@ quo_flatten <- function(x, parent = NULL, warn = FALSE) {
   x
 }
 
-quo_print <- function(x, parent = FALSE) {
-  switch_expr(x,
-    language = {
-      if (is_quosure(x)) {
-        while (is_quosure(x)) {
-          cat("^")
-          x <- quo_get_expr(x)
-        }
-        quo_print(x, parent = parent)
-      } else {
-        quo_print(node_car(x), parent = TRUE)
-        cat("(")
-        quo_print_args(node_cdr(x))
-        cat(")")
-        if (!parent) {
-          cat("\n")
-        }
-      }
-    }, {
-      cat(deparse(x))
-      if (!parent) {
-        cat("\n")
-      }
+# Create a circular list of colours. This infloops if printed in the REPL!
+quo_palette <- function() {
+  magenta_node <- node(magenta, NULL)
+  palette <- node(blue, node(green, magenta_node))
+  node_poke_cdr(magenta_node, palette)
+
+  # Pass the circular list in a container with reference semantics.
+  # Pass the last node so we start with the first when we bump.
+  new_environment(list(palette = magenta_node, current = NULL))
+}
+bump_quo_palette <- function(palette) {
+  if (is_null(palette)) {
+    quo_palette()
+  } else {
+    palette$palette <- node_cdr(palette$palette)
+    palette$current <- palette$palette
+    palette
+  }
+}
+
+quo_cat <- function(palette, ...) {
+  if (is_null(palette$current)) {
+    col <- paste
+  } else {
+    col <- node_car(palette$current)
+  }
+  cat(col(...))
+}
+
+quo_print <- function(x, parent = FALSE, palette = NULL) {
+  if (is_quosure(x)) {
+    old_colour <- palette$current
+    palette <- bump_quo_palette(palette)
+
+    while (is_quosure(x)) {
+      quo_cat(palette, "^")
+      x <- quo_get_expr(x)
     }
-  )
+    quo_print(x, parent = parent, palette = palette)
+
+    palette$current <- old_colour
+    return(invisible(x))
+  }
+
+  if (is_lang(x)) {
+    quo_print(node_car(x), parent = TRUE, palette = palette)
+    quo_cat(palette, "(")
+    quo_print_args(node_cdr(x), palette = palette)
+    quo_cat(palette, ")")
+
+    if (!parent) {
+      cat("\n")
+    }
+    return(invisible(x))
+  }
+
+  quo_cat(palette, deparse(x))
+  if (!parent) {
+    cat("\n")
+  }
   invisible(x)
 }
 
-quo_print_args <- function(x) {
+quo_print_args <- function(x, palette) {
   while (!is_null(x)) {
-    quo_print(node_car(x), parent = TRUE)
+    quo_print(node_car(x), parent = TRUE, palette = palette)
     x <- node_cdr(x)
     if (!is_null(x)) {
       cat(", ")
