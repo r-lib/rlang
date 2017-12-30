@@ -115,23 +115,6 @@ if_deparse <- function(x, lines = new_lines()) {
   lines$lines
 }
 
-braces_deparse <- function(x, lines = new_lines()) {
-  x <- node_cdr(x)
-  lines$push("{")
-  lines$increase_indent()
-
-  while (!is_null(x)) {
-    lines$push_new("")
-    expr_deparse(node_car(x), lines)
-    x <- node_cdr(x)
-  }
-
-  lines$decrease_indent()
-  lines$push_new("}")
-
-  lines$lines
-}
-
 binary_op_deparse <- function(x, lines = new_lines(), space = " ") {
   op <- as_string(node_car(x))
 
@@ -152,6 +135,30 @@ unspaced_op_deparse <- function(x, lines = new_lines()) {
   binary_op_deparse(x, lines, space = "")
 }
 
+parens_deparse <- function(x, lines = new_lines()) {
+  lines$push("(")
+  expr_deparse(node_cadr(x), lines)
+  lines$push(")")
+
+  lines$lines
+}
+braces_deparse <- function(x, lines = new_lines()) {
+  lines$push("{")
+  lines$increase_indent()
+
+  x <- node_cdr(x)
+  while (!is_null(x)) {
+    lines$push_new("")
+    expr_deparse(node_car(x), lines)
+    x <- node_cdr(x)
+  }
+
+  lines$decrease_indent()
+  lines$push_new("}")
+
+  lines$lines
+}
+
 default_deparse <- function(x, lines) {
   lines$push(deparse(x, control = "keepInteger"))
 }
@@ -161,7 +168,6 @@ expr_deparse <- function(x, lines = new_lines()) {
     `while` = while_deparse,
     `for` = for_deparse,
     `if` = if_deparse,
-    `{` = braces_deparse,
     `?` = ,
     `<-` = ,
     `<<-` = ,
@@ -190,6 +196,8 @@ expr_deparse <- function(x, lines = new_lines()) {
     `@` = ,
     `::` = ,
     `:::` = unspaced_op_deparse,
+    `(` = parens_deparse,
+    `{` = braces_deparse,
     default_deparse
   )
   deparser(x, lines)

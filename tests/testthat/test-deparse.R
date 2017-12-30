@@ -23,6 +23,11 @@ test_that("blocks are deparsed", {
   expect_identical(braces_deparse(quote({11111; 22222; { 33333; 44444 }}), ctxt), expected_lines)
 })
 
+test_that("parentheses are deparsed", {
+  expect_identical(parens_deparse(quote((1))), "(1)")
+  expect_identical(parens_deparse(quote(({ 1; 2 }))), c("({", "  1", "  2", "})"))
+})
+
 test_that("spaced operators are deparsed", {
   expect_identical(spaced_op_deparse(quote(1 ? 2)), "1 ? 2")
   expect_identical(spaced_op_deparse(quote(1 <- 2)), "1 <- 2")
