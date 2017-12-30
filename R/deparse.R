@@ -166,12 +166,13 @@ braces_deparse <- function(x, lines = new_lines()) {
   lines$lines
 }
 
-default_deparse <- function(x, lines) {
+default_deparse <- function(x, lines = new_lines()) {
   lines$push(deparse(x, control = "keepInteger"))
+  lines$lines
 }
 
-expr_deparse <- function(x, lines = new_lines()) {
-  deparser <- switch (which_operator(x),
+op_deparse <- function(op, x, lines) {
+  deparser <- switch (op,
     `while` = while_deparse,
     `for` = for_deparse,
     `if` = if_deparse,
@@ -212,9 +213,18 @@ expr_deparse <- function(x, lines = new_lines()) {
     `-unary` =  unary_op_deparse,
     `(` = parens_deparse,
     `{` = braces_deparse,
-    default_deparse
+    abort("Internal error: Unexpected operator while deparsing")
   )
-  deparser(x, lines)
 
+  deparser(x, lines)
   lines$lines
+}
+
+expr_deparse <- function(x, lines = new_lines()) {
+  op <- which_operator(x)
+  if (op != "") {
+    return(op_deparse(op, x, lines))
+  }
+
+  default_deparse(x, lines)
 }
