@@ -135,6 +135,13 @@ unspaced_op_deparse <- function(x, lines = new_lines()) {
   binary_op_deparse(x, lines, space = "")
 }
 
+unary_op_deparse <- function(x, lines = new_lines()) {
+  op <- as_string(node_car(x))
+  lines$push(op)
+  expr_deparse(node_cadr(x), lines)
+  lines$lines
+}
+
 parens_deparse <- function(x, lines = new_lines()) {
   lines$push("(")
   expr_deparse(node_cadr(x), lines)
@@ -196,6 +203,13 @@ expr_deparse <- function(x, lines = new_lines()) {
     `@` = ,
     `::` = ,
     `:::` = unspaced_op_deparse,
+    `?unary` = ,
+    `~unary` = ,
+    `!` = ,
+    `!!!` = ,
+    `!!` = ,
+    `+unary` = ,
+    `-unary` =  unary_op_deparse,
     `(` = parens_deparse,
     `{` = braces_deparse,
     default_deparse

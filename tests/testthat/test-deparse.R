@@ -63,3 +63,15 @@ test_that("unspaced operators are deparsed", {
   expect_identical(unspaced_op_deparse(quote(a::b)), "a::b")
   expect_identical(unspaced_op_deparse(quote(a:::b)), "a:::b")
 })
+
+test_that("unary operators are deparsed", {
+  expect_identical(unary_op_deparse(quote(?1)), "?1")
+  expect_identical(unary_op_deparse(quote(~1)), "~1")
+  expect_identical(unary_op_deparse(quote(!1)), "!1")
+  expect_identical_(unary_op_deparse(quote(!!1)), "!!1")
+  expect_identical_(unary_op_deparse(quote(!!!1)), "!!!1")
+  expect_identical_(unary_op_deparse(quote(`!!`(1))), "!!1")
+  expect_identical_(unary_op_deparse(quote(`!!!`(1))), "!!!1")
+  expect_identical(unary_op_deparse(quote(+1)), "+1")
+  expect_identical(unary_op_deparse(quote(-1)), "-1")
+})
