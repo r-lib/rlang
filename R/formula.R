@@ -216,7 +216,9 @@ f_label <- function(x) {
 
 
 signal_formula_access <- function() {
-  signal_soft_deprecation(
-    "Using formula accessors with quosures is soft-deprecated"
-  )
+  if (is_true(peek_option("rlang_internal_warn_quosure_access"))) {
+    warn(
+      "Using formula accessors with quosures is soft-deprecated"
+    )
+  }
 }
