@@ -60,3 +60,86 @@ new_lines <- function(width = peek_option("width")) {
     }
   )
 }
+
+while_deparse <- function(x, lines = new_lines()) {
+  x <- node_cdr(x)
+  lines$push("while (")
+  expr_deparse(node_car(x), lines)
+
+  x <- node_cdr(x)
+  lines$push(") ")
+  expr_deparse(node_car(x), lines)
+
+  lines$lines
+}
+for_deparse <- function(x, lines = new_lines()) {
+  x <- node_cdr(x)
+  lines$push("for (")
+  expr_deparse(node_car(x), lines)
+
+  x <- node_cdr(x)
+  lines$push(" in ")
+  expr_deparse(node_car(x), lines)
+
+  x <- node_cdr(x)
+  lines$push(") ")
+  expr_deparse(node_car(x), lines)
+
+  lines$lines
+}
+repeat_deparse <- function(x, lines = new_lines()) {
+  x <- node_cdr(x)
+  lines$push("repeat ")
+  expr_deparse(node_car(x), lines)
+
+  x <- node_cdr(x)
+  expr_deparse(node_car(x), lines)
+
+  lines$lines
+}
+if_deparse <- function(x, lines = new_lines()) {
+  x <- node_cdr(x)
+  lines$push("if (")
+  expr_deparse(node_car(x), lines)
+
+  x <- node_cdr(x)
+  lines$push(") ")
+  expr_deparse(node_car(x), lines)
+
+  x <- node_cdr(x)
+  if (!is_null(x)) {
+    lines$push(" else ")
+    expr_deparse(node_car(x), lines)
+  }
+
+  lines$lines
+}
+
+braces_deparse <- function(x, lines = new_lines()) {
+  x <- node_cdr(x)
+  lines$push("{")
+  lines$increase_indent()
+
+  while (!is_null(x)) {
+    lines$push_new("")
+    expr_deparse(node_car(x), lines)
+    x <- node_cdr(x)
+  }
+
+  lines$decrease_indent()
+  lines$push_new("}")
+
+  lines$lines
+}
+
+expr_deparse <- function(x, lines = new_lines()) {
+  switch (which_operator(x),
+    `while` = while_deparse(x, lines),
+    `for` = for_deparse(x, lines),
+    `if` = if_deparse(x, lines),
+    `{` = braces_deparse(x, lines),
+    lines$push(deparse(x, control = "keepInteger"))
+  )
+
+  lines$lines
+}
