@@ -532,7 +532,12 @@ quo_print <- function(x, parent = FALSE, palette = NULL) {
     return(invisible(x))
   }
 
-  quo_cat(palette, deparse(x))
+  if (is.object(x)) {
+    class <- chr_enumerate(chr_quoted(class(x)), final = "and")
+    quo_cat(palette, sprintf("<S3 object of class %s>", class))
+  } else {
+    quo_cat(palette, deparse(x, control = "keepInteger"))
+  }
   if (!parent) {
     cat("\n")
   }

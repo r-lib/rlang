@@ -132,12 +132,18 @@ test_that("quo_expr() warns", {
   expect_warning(quo_expr(quo(list(!! quo(foo))), warn = TRUE), "inner quosure")
 })
 
-test_that("print() method indicates quosures with `^`", {
+test_that("print.quosure() indicates quosures with `^`", {
   x <- quo(list(!! quo(NULL), !! quo(foo())))
-  expect_output(print(x), "^list(^NULL, ^foo())", fixed = TRUE)
+  expect_fixed_output(print(x), "^list(^NULL, ^foo())")
 
   x <- quo(list(!!! 1:5))
-  expect_output(print(x), "^list(1L, 2L, 3L, 4L, 5L)", fixed = TRUE)
+  expect_fixed_output(print(x), "^list(1L, 2L, 3L, 4L, 5L)")
+})
+
+test_that("print.quosure() handles S3 objects", {
+  expect_fixed_output(print(quo(!!factor(1:2))), "^<S3 object of class `factor`")
+  expect_fixed_output(print(quo(!!structure(list(), class = c("foo", "bar", "baz")))), "^<S3 object of class `foo`, `bar` and `baz`")
+})
 })
 
 test_that("quosure predicates work", {
