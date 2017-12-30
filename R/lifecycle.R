@@ -26,6 +26,13 @@
 #' * [as_function()]
 #'
 #'
+#' @section Experimental functions:
+#'
+#' * [type_of()], [switch_type()], [coerce_type()]
+#' * [switch_class()], [coerce_class()]
+#' * [lang_type_of()], [switch_lang()], [coerce_lang()]
+#'
+#'
 #' @section Soft-deprecated functions and arguments:
 #'
 #' **rlang 0.2.0:**

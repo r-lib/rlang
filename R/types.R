@@ -340,6 +340,11 @@ is_scalar_integerish <- function(x) {
 #' * The type of character vectors of length 1 is "string".
 #' * The type of special and builtin functions is "primitive".
 #'
+#'
+#' @section Life cycle:
+#'
+#' `type_of()` is an experimental function. Expect API changes.
+#'
 #' @param x An R object.
 #' @export
 #' @examples
@@ -393,6 +398,14 @@ type_of <- function(x) {
 #' `switch_class()` switchpatches based on `class(x)`. The `coerce_`
 #' versions are intended for type conversion and provide a standard
 #' error message when conversion fails.
+#'
+#'
+#' @section Life cycle:
+#'
+#' * Like [type_of()], `switch_type()` and `coerce_type()` are
+#'   experimental functions.
+#'
+#' * `switch_class()` and `coerce_class()` are experimental functions.
 #'
 #' @param .x An object from which to dispatch.
 #' @param ... Named clauses. The names should be types as returned by
@@ -479,6 +492,10 @@ abort_coercion <- function(x, to_type) {
 }
 
 #' Format a type for error messages
+#'
+#' @section Life cycle:
+#'
+#' * Like [type_of()], `friendly_type()`.
 #'
 #' @param type A type as returned by [type_of()] or [lang_type_of()].
 #' @return A string of the prettified type, qualified with an
@@ -607,6 +624,12 @@ friendly_expr_type_of <- function(type) {
 #' representation for language code is a parse tree, with the tree
 #' hierarchy determined by the order of operations. See [pairlist] for
 #' more on this.
+#'
+#'
+#' @section Life cycle:
+#'
+#' * `lang_type_of()` is an experimental function.
+#' * `switch_lang()` and `coerce_lang()` are experimental functions.
 #'
 #' @inheritParams switch_type
 #' @param .x,x A language object (a call). If a formula quote, the RHS

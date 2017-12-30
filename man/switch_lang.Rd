@@ -64,6 +64,14 @@ representation for language code is a parse tree, with the tree
 hierarchy determined by the order of operations. See \link{pairlist} for
 more on this.
 }
+\section{Life cycle}{
+
+\itemize{
+\item \code{lang_type_of()} is an experimental function.
+\item \code{switch_lang()} and \code{coerce_lang()} are experimental functions.
+}
+}
+
 \examples{
 # Named calls:
 lang_type_of(~foo())

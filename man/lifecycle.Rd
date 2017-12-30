@@ -28,6 +28,15 @@ TODO: Review all functions in rlang and mark stable ones as such.
 }
 }
 
+\section{Experimental functions}{
+
+\itemize{
+\item \code{\link[=type_of]{type_of()}}, \code{\link[=switch_type]{switch_type()}}, \code{\link[=coerce_type]{coerce_type()}}
+\item \code{\link[=switch_class]{switch_class()}}, \code{\link[=coerce_class]{coerce_class()}}
+\item \code{\link[=lang_type_of]{lang_type_of()}}, \code{\link[=switch_lang]{switch_lang()}}, \code{\link[=coerce_lang]{coerce_lang()}}
+}
+}
+
 \section{Soft-deprecated functions and arguments}{
 
 

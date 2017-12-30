@@ -16,6 +16,13 @@ indefinite article.
 \description{
 Format a type for error messages
 }
+\section{Life cycle}{
+
+\itemize{
+\item Like \code{\link[=type_of]{type_of()}}, \code{friendly_type()}.
+}
+}
+
 \examples{
 friendly_type("logical")
 friendly_type("integer")
