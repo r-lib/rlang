@@ -49,3 +49,12 @@ test_that("spaced operators are deparsed", {
 
   expect_identical(expr_deparse(quote({ 1; 2 } + { 3; 4 })), c("{", "  1", "  2", "} + {", "  3", "  4", "}"))
 })
+
+test_that("unspaced operators are deparsed", {
+  expect_identical(unspaced_op_deparse(quote(1:2)), "1:2")
+  expect_identical(unspaced_op_deparse(quote(1^2)), "1^2")
+  expect_identical(unspaced_op_deparse(quote(a$b)), "a$b")
+  expect_identical(unspaced_op_deparse(quote(a@b)), "a@b")
+  expect_identical(unspaced_op_deparse(quote(a::b)), "a::b")
+  expect_identical(unspaced_op_deparse(quote(a:::b)), "a:::b")
+})

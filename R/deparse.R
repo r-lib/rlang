@@ -132,18 +132,24 @@ braces_deparse <- function(x, lines = new_lines()) {
   lines$lines
 }
 
-spaced_op_deparse <- function(x, lines = new_lines()) {
+binary_op_deparse <- function(x, lines = new_lines(), space = " ") {
   op <- as_string(node_car(x))
 
   x <- node_cdr(x)
   expr_deparse(node_car(x), lines)
 
-  lines$push(paste0(" ", op, " "))
+  lines$push(paste0(space, op, space))
 
   x <- node_cdr(x)
   expr_deparse(node_car(x), lines)
 
   lines$lines
+}
+spaced_op_deparse <- function(x, lines = new_lines()) {
+  binary_op_deparse(x, lines, space = " ")
+}
+unspaced_op_deparse <- function(x, lines = new_lines()) {
+  binary_op_deparse(x, lines, space = "")
 }
 
 default_deparse <- function(x, lines) {
@@ -178,6 +184,12 @@ expr_deparse <- function(x, lines = new_lines()) {
     `/` = ,
     `%%` = ,
     `special` = spaced_op_deparse,
+    `:` = ,
+    `^` = ,
+    `$` = ,
+    `@` = ,
+    `::` = ,
+    `:::` = unspaced_op_deparse,
     default_deparse
   )
   deparser(x, lines)
