@@ -144,6 +144,10 @@ test_that("print.quosure() handles S3 objects", {
   expect_fixed_output(print(quo(!!factor(1:2))), "^<S3 object of class `factor`")
   expect_fixed_output(print(quo(!!structure(list(), class = c("foo", "bar", "baz")))), "^<S3 object of class `foo`, `bar` and `baz`")
 })
+
+test_that("print.quosure() handles special calls", {
+  expect_fixed_output(print(quo(foo$bar)), "^foo$bar")
+  expect_fixed_output(print(quo(foo~bar)), "^foo ~ bar")
 })
 
 test_that("quosure predicates work", {

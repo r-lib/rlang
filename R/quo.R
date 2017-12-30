@@ -507,6 +507,11 @@ quo_cat <- function(palette, ...) {
   cat(col(...))
 }
 
+# Reproduces output of printed calls
+expr_deparse <- function(x) {
+  deparse(x, control = "keepInteger")
+}
+
 quo_print <- function(x, parent = FALSE, palette = NULL) {
   if (is_quosure(x)) {
     palette <- bump_quo_palette(palette)
@@ -520,15 +525,19 @@ quo_print <- function(x, parent = FALSE, palette = NULL) {
     return(invisible(x))
   }
 
+  if (which_operator(x) != "") {
+    quo_cat(palette, expr_deparse(x))
+    if (!parent) cat("\n")
+    return(invisible(x))
+  }
+
   if (is_lang(x)) {
     quo_print(node_car(x), parent = TRUE, palette = palette)
     quo_cat(palette, "(")
     quo_print_args(node_cdr(x), palette = palette)
     quo_cat(palette, ")")
 
-    if (!parent) {
-      cat("\n")
-    }
+    if (!parent) cat("\n")
     return(invisible(x))
   }
 
@@ -536,11 +545,9 @@ quo_print <- function(x, parent = FALSE, palette = NULL) {
     class <- chr_enumerate(chr_quoted(class(x)), final = "and")
     quo_cat(palette, sprintf("<S3 object of class %s>", class))
   } else {
-    quo_cat(palette, deparse(x, control = "keepInteger"))
+    quo_cat(palette, expr_deparse(x))
   }
-  if (!parent) {
-    cat("\n")
-  }
+  if (!parent) cat("\n")
 
   invisible(x)
 }

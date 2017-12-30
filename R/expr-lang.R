@@ -558,3 +558,7 @@ is_namespaced_symbol <- function(x, ns = NULL, private = NULL) {
     identical(head, sym_namespace)
   }
 }
+
+which_operator <- function(call) {
+  .Call(rlang_test_which_operator, call)
+}
