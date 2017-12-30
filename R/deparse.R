@@ -132,14 +132,55 @@ braces_deparse <- function(x, lines = new_lines()) {
   lines$lines
 }
 
+spaced_op_deparse <- function(x, lines = new_lines()) {
+  op <- as_string(node_car(x))
+
+  x <- node_cdr(x)
+  expr_deparse(node_car(x), lines)
+
+  lines$push(paste0(" ", op, " "))
+
+  x <- node_cdr(x)
+  expr_deparse(node_car(x), lines)
+
+  lines$lines
+}
+
+default_deparse <- function(x, lines) {
+  lines$push(deparse(x, control = "keepInteger"))
+}
+
 expr_deparse <- function(x, lines = new_lines()) {
-  switch (which_operator(x),
-    `while` = while_deparse(x, lines),
-    `for` = for_deparse(x, lines),
-    `if` = if_deparse(x, lines),
-    `{` = braces_deparse(x, lines),
-    lines$push(deparse(x, control = "keepInteger"))
+  deparser <- switch (which_operator(x),
+    `while` = while_deparse,
+    `for` = for_deparse,
+    `if` = if_deparse,
+    `{` = braces_deparse,
+    `?` = ,
+    `<-` = ,
+    `<<-` = ,
+    `=` = ,
+    `:=` = ,
+    `~` = ,
+    `|` = ,
+    `||` = ,
+    `&` = ,
+    `&&` = ,
+    `>` = ,
+    `>=` = ,
+    `<` = ,
+    `<=` = ,
+    `==` = ,
+    `!=` = ,
+    `+` = ,
+    `-` = ,
+    `*` = ,
+    `/` = ,
+    `%%` = ,
+    `special` = spaced_op_deparse,
+    default_deparse
   )
+  deparser(x, lines)
 
   lines$lines
 }
