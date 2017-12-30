@@ -545,7 +545,7 @@ quo_print_args <- function(x, palette) {
     quo_print(node_car(x), parent = TRUE, palette = palette)
     x <- node_cdr(x)
     if (!is_null(x)) {
-      cat(", ")
+      quo_cat(palette, ", ")
     }
   }
 }
