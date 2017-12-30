@@ -30,3 +30,33 @@ push_lines <- function(to, lines, width = NULL, indent = 0L) {
   }
   to
 }
+
+new_lines <- function(width = peek_option("width")) {
+  width <- width %||% 60L
+
+  new_r6lite(
+    width = width,
+    indent = 0L,
+
+    lines = chr(),
+
+    push = function(self, lines) {
+      self$lines <- push_lines(self$lines, lines, self$width, self$indent)
+    },
+    push_new = function(self, line) {
+      stopifnot(is_string(line))
+      self$lines <- c(self$lines, paste0(spaces(self$indent), line))
+    },
+
+    increase_indent = function(self) {
+      self$indent <- self$indent + 2L
+    },
+    decrease_indent = function(self) {
+      self$indent <- self$indent - 2L
+      if (self$indent < 0L) {
+        warn("Internal issue: Negative indent detected")
+        self$indent <- 0L
+      }
+    }
+  )
+}
