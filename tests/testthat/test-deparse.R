@@ -1,4 +1,4 @@
-context("print")
+context("deparse")
 
 test_that("push_lines() adds indentation", {
   lines <- c("foo", "  foobarbaz", "  barbazbam", "  bazbam")
