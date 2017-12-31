@@ -147,7 +147,6 @@ cyan <- function(x) {
       # Unquote the method so it is printable
       method <- !!field
       method(self, ...)
-      self
     })
   } else {
     field

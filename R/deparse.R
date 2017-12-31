@@ -42,10 +42,12 @@ new_lines <- function(width = peek_option("width")) {
     push = function(self, lines) {
       self$flush()
       self$lines <- push_lines(self$lines, lines, self$width, self$indent)
+      self
     },
     push_newline = function(self) {
       self$flush()
       self$lines <- c(self$lines, spaces(self$indent))
+      self
     },
 
     # We stage the sticky elements so we can compute their width
@@ -57,6 +59,7 @@ new_lines <- function(width = peek_option("width")) {
         length(self$lazy_line) %in% 0:1
       )
       self$lazy_line <- paste0(self$lazy_line, line)
+      self
     },
 
     make_last_line_lazy = function(self) {
@@ -68,6 +71,7 @@ new_lines <- function(width = peek_option("width")) {
         self$lines <- self$lines[seq_len(n - 1)]
         self$lazy_line <- last
       }
+      self
     },
 
     # Flush the `lazy_line` that is currently staged, if any
@@ -76,10 +80,12 @@ new_lines <- function(width = peek_option("width")) {
         self$lines <- push_lines(self$lines, self$lazy_line, self$width, self$indent)
         self$lazy_line <- chr()
       }
+      self
     },
 
     increase_indent = function(self) {
       self$indent <- self$indent + 2L
+      self
     },
     decrease_indent = function(self) {
       self$indent <- self$indent - 2L
@@ -87,6 +93,7 @@ new_lines <- function(width = peek_option("width")) {
         warn("Internal problem: Negative indent detected")
         self$indent <- 0L
       }
+      self
     }
   )
 }
