@@ -88,13 +88,8 @@ for_deparse <- function(x, lines = new_lines()) {
   lines$lines
 }
 repeat_deparse <- function(x, lines = new_lines()) {
-  x <- node_cdr(x)
   lines$push("repeat ")
-  expr_deparse(node_car(x), lines)
-
-  x <- node_cdr(x)
-  expr_deparse(node_car(x), lines)
-
+  expr_deparse(node_cadr(x), lines)
   lines$lines
 }
 if_deparse <- function(x, lines = new_lines()) {
