@@ -66,7 +66,7 @@ new_lines <- function(width = peek_option("width")) {
       n <- length(self$lines)
       if (n) {
         last <- self$lines[[n]]
-        self$lines <- self$lines[n - 1]
+        self$lines <- self$lines[seq_len(n - 1)]
         self$lazy_line <- last
       }
     },

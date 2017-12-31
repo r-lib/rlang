@@ -39,6 +39,15 @@ test_that("make_last_line_lazy() works", {
 
   ctxt$push_lazy_line("bar")$flush()
   expect_identical(ctxt$lines, c("foobar"))
+
+  ctxt$push("baz")
+  ctxt$make_last_line_lazy()
+  ctxt$push_lazy_line("bam")$flush()
+
+  ctxt$push("quux")
+  ctxt$make_last_line_lazy()
+  ctxt$push_lazy_line("hunoz")$flush()
+  expect_identical(ctxt$lines, c("foobar", "bazbam", "quuxhunoz"))
 })
 
 test_that("control flow is deparsed", {
