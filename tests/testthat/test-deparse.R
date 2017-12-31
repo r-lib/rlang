@@ -108,3 +108,7 @@ test_that("unary operators are deparsed", {
   expect_identical(unary_op_deparse(quote(+1)), "+1")
   expect_identical(unary_op_deparse(quote(-1)), "-1")
 })
+
+test_that("calls are deparsed", {
+  expect_identical(call_deparse(quote(foo(bar, baz))), "foo(bar, baz)")
+})

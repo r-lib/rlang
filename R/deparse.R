@@ -193,15 +193,38 @@ braces_deparse <- function(x, lines = new_lines()) {
   lines$lines
 }
 
-default_deparse <- function(x, lines = new_lines()) {
-  lines$push(deparse(x, control = "keepInteger"))
+sym_deparse <- function(x, lines = new_lines()) {
+  lines$push(as_string(x))$lines
+}
+
+call_deparse <- function(x, lines = new_lines()) {
+  expr_deparse(node_car(x), lines)
+  lines$push("(")
+  lines$increase_indent()
+
+  x <- node_cdr(x)
+  while (!is_null(x)) {
+    expr_deparse(node_car(x), lines)
+    x <- node_cdr(x)
+    if (!is_null(x)) {
+      lines$push(", ")
+    }
+  }
+
+  lines$push(")")
+  lines$decrease_indent()
   lines$lines
+}
+
+default_deparse <- function(x, lines = new_lines()) {
+  lines$push(deparse(x, control = "keepInteger"))$lines
 }
 
 op_deparse <- function(op, x, lines) {
   deparser <- switch (op,
     `while` = while_deparse,
     `for` = for_deparse,
+    `repeat` = repeat_deparse,
     `if` = if_deparse,
     `?` = ,
     `<-` = ,
@@ -253,5 +276,10 @@ expr_deparse <- function(x, lines = new_lines()) {
     return(op_deparse(op, x, lines))
   }
 
-  default_deparse(x, lines)
+  deparser <- switch (typeof(x),
+    symbol = sym_deparse,
+    language = call_deparse,
+    default_deparse
+  )
+  deparser(x, lines)
 }
