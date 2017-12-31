@@ -9,6 +9,23 @@ test_that("push_lines() doesn't make a new line if current is only spaces", {
   expect_identical(push_lines("    ", "foo", width = 2L), "    foo")
 })
 
+test_that("push_lazy_line() stages elements", {
+  ctxt <- new_lines(width = 3L)
+
+  ctxt$push("foo")
+  ctxt$push_lazy_line("bar")$push_lazy_line("baz")
+  expect_identical(ctxt$lines, "foo")
+
+  ctxt$flush()
+  expect_identical(ctxt$lines, c("foo", "barbaz"))
+
+  ctxt$push_lazy_line("truc")$push_lazy_line("muche")
+  expect_identical(ctxt$lines, c("foo", "barbaz"))
+
+  ctxt$push("bam")
+  expect_identical(ctxt$lines, c("foo", "barbaz", "trucmuche", "bam"))
+})
+
 test_that("control flow is deparsed", {
   expect_identical(while_deparse(quote(while(1)2(3))), "while (1) 2(3)")
   expect_identical(for_deparse(quote(for(a in 2(3))4)), "for (a in 2(3)) 4")
