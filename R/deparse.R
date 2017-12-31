@@ -34,7 +34,7 @@ push_lines <- function(to, lines, width = NULL, indent = 0L) {
 new_lines <- function(width = peek_option("width")) {
   width <- width %||% 60L
 
-  new_r6lite(
+  r6lite(
     width = width,
     indent = 0L,
 

@@ -139,17 +139,20 @@ cyan <- function(x) {
   }
 }
 
-`$.r6lite` <- function(obj, arg) {
+`$.r6lite` <- function(self, arg) {
   field <- NextMethod()
+
   if (is_function(field)) {
-    function(...) {
-      field(obj, ...)
-      obj
-    }
+    expr_interp(function(...) {
+      # Unquote the method so it is printable
+      method <- !!field
+      method(self, ...)
+      self
+    })
   } else {
     field
   }
 }
-new_r6lite <- function(...) {
+r6lite <- function(...) {
   structure(new_environment(dots_list(...)), class = "r6lite")
 }
