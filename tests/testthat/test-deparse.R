@@ -62,8 +62,8 @@ test_that("make_last_line_lazy() kills indentation to avoid double indenting", {
 })
 
 test_that("control flow is deparsed", {
-  expect_identical(while_deparse(quote(while(1)2(3))), "while (1) 2(3)")
-  expect_identical(for_deparse(quote(for(a in 2(3))4)), "for (a in 2(3)) 4")
+  expect_identical(while_deparse(quote(while(1) 2)), "while (1) 2")
+  expect_identical(for_deparse(quote(for(a in 2) 3)), "for (a in 2) 3")
   expect_identical(repeat_deparse(quote(repeat 1)), "repeat 1")
   expect_identical(if_deparse(quote(if (1) 2 else { 3 })), c("if (1) 2 else {", "  3", "}"))
 })

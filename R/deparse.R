@@ -6,29 +6,23 @@ is_spaces <- function(str) {
   identical(str, spaces(nchar(str)))
 }
 
-push_line <- function(to, line, width = NULL, indent = 0L) {
+merge_lines <- function(last, line, width = NULL, indent = 0L) {
+  if (!length(last)) {
+    return(line)
+  }
+  if (!is_string(last)) {
+    abort("`last` must be a string or empty")
+  }
   if (!is_string(line)) {
     abort("`line` must be a string")
   }
-  if (!length(to)) {
-    return(line)
-  }
-  n <- length(to)
-  last <- to[[n]]
-
   width <- width %||% peek_option("width")
 
   if (nchar(last) + nchar(line) > width && !is_spaces(last)) {
-    c(to, paste0(spaces(indent), line))
+    c(last, paste0(spaces(indent), line))
   } else {
-    c(to[-n], paste0(to[[n]], line))
+    paste0(last, line)
   }
-}
-push_lines <- function(to, lines, width = NULL, indent = 0L) {
-  for (line in lines) {
-    to <- push_line(to, line, width = width, indent = indent)
-  }
-  to
 }
 
 new_lines <- function(width = peek_option("width")) {
@@ -39,20 +33,39 @@ new_lines <- function(width = peek_option("width")) {
     indent = 0L,
 
     lines = chr(),
-    push = function(self, lines) {
-      self$flush()
-      self$lines <- push_lines(self$lines, lines, self$width, self$indent)
+    last_line = chr(),
+    lazy_line = chr(),
+
+    get_lines = function(self) {
+      c(self$lines, self$last_line)
+    },
+
+    push = function(self, line) {
+      stopifnot(is_string(line))
+
+      last <- merge_lines(self$last_line, line, self$width, self$indent)
+      n <- length(last)
+
+      if (n > 1) {
+        self$flush()
+        self$lines <- c(self$lines, last[-n])
+        self$last_line <- last[[n]]
+      } else if (n) {
+        self$last_line <- last
+      }
+
       self
     },
+
     push_newline = function(self) {
       self$flush()
-      self$lines <- c(self$lines, spaces(self$indent))
+      self$lines <- c(self$lines, self$last_line)
+      self$last_line <- spaces(self$indent)
       self
     },
 
     # We stage the sticky elements so we can compute their width
     # properly before actually pushing them to `lines`
-    lazy_line = chr(),
     push_lazy_line = function(self, line) {
       stopifnot(
         is_string(line),
@@ -63,23 +76,30 @@ new_lines <- function(width = peek_option("width")) {
     },
 
     make_last_line_lazy = function(self) {
-      n <- length(self$lines)
-      if (n) {
-        last <- self$lines[[n]]
-        last <- gsub("^ *", "", last)
+      if (length(self$lazy_line)) {
+        abort("Internal error: Tried to overwrite lazy line")
+      }
 
-        self$lines <- self$lines[seq_len(n - 1)]
+      last <- self$last_line
+      if (length(last)) {
+        last <- gsub("^ *", "", last)
+        self$last_line <- chr()
         self$lazy_line <- last
       }
+
       self
     },
 
     # Flush the `lazy_line` that is currently staged, if any
     flush = function(self) {
-      if (length(self$lazy_line)) {
-        self$lines <- push_lines(self$lines, self$lazy_line, self$width, self$indent)
-        self$lazy_line <- chr()
+      lazy <- self$lazy_line
+
+      # Avoid recursion within self$push()
+      self$lazy_line <- chr()
+      if (length(lazy)) {
+        self$push(lazy)
       }
+
       self
     },
 
@@ -107,7 +127,7 @@ while_deparse <- function(x, lines = new_lines()) {
   lines$push(") ")
   expr_deparse(node_car(x), lines)
 
-  lines$lines
+  lines$get_lines()
 }
 for_deparse <- function(x, lines = new_lines()) {
   x <- node_cdr(x)
@@ -122,12 +142,12 @@ for_deparse <- function(x, lines = new_lines()) {
   lines$push(") ")
   expr_deparse(node_car(x), lines)
 
-  lines$lines
+  lines$get_lines()
 }
 repeat_deparse <- function(x, lines = new_lines()) {
   lines$push("repeat ")
   expr_deparse(node_cadr(x), lines)
-  lines$lines
+  lines$get_lines()
 }
 if_deparse <- function(x, lines = new_lines()) {
   x <- node_cdr(x)
@@ -144,7 +164,7 @@ if_deparse <- function(x, lines = new_lines()) {
     expr_deparse(node_car(x), lines)
   }
 
-  lines$lines
+  lines$get_lines()
 }
 
 binary_op_deparse <- function(x, lines = new_lines(), space = " ") {
@@ -158,7 +178,7 @@ binary_op_deparse <- function(x, lines = new_lines(), space = " ") {
   x <- node_cdr(x)
   expr_deparse(node_car(x), lines)
 
-  lines$lines
+  lines$get_lines()
 }
 spaced_op_deparse <- function(x, lines = new_lines()) {
   binary_op_deparse(x, lines, space = " ")
@@ -171,7 +191,7 @@ unary_op_deparse <- function(x, lines = new_lines()) {
   op <- as_string(node_car(x))
   lines$push(op)
   expr_deparse(node_cadr(x), lines)
-  lines$lines
+  lines$get_lines()
 }
 
 parens_deparse <- function(x, lines = new_lines()) {
@@ -179,7 +199,7 @@ parens_deparse <- function(x, lines = new_lines()) {
   expr_deparse(node_cadr(x), lines)
   lines$push(")")
 
-  lines$lines
+  lines$get_lines()
 }
 braces_deparse <- function(x, lines = new_lines()) {
   lines$push("{")
@@ -196,7 +216,7 @@ braces_deparse <- function(x, lines = new_lines()) {
   lines$push_newline()
   lines$push("}")
 
-  lines$lines
+  lines$get_lines()
 }
 
 sym_deparse <- function(x, lines = new_lines()) {
@@ -219,11 +239,13 @@ call_deparse <- function(x, lines = new_lines()) {
 
   lines$push(")")
   lines$decrease_indent()
-  lines$lines
+
+  lines$get_lines()
 }
 
 default_deparse <- function(x, lines = new_lines()) {
-  lines$push(deparse(x, control = "keepInteger"))$lines
+  lines$push(deparse(x, control = "keepInteger"))
+  lines$get_lines()
 }
 
 op_deparse <- function(op, x, lines) {
@@ -273,7 +295,7 @@ op_deparse <- function(op, x, lines) {
   )
 
   deparser(x, lines)
-  lines$lines
+  lines$get_lines()
 }
 
 expr_deparse <- function(x, lines = new_lines()) {
