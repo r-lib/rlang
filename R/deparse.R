@@ -56,9 +56,6 @@ new_lines <- function(width = peek_option("width")) {
         is_string(line),
         length(self$lazy_line) %in% 0:1
       )
-      if (!length(self$lazy_line)) {
-        self$lazy_line <- spaces(self$indent)
-      }
       self$lazy_line <- paste0(self$lazy_line, line)
     },
 
@@ -66,6 +63,8 @@ new_lines <- function(width = peek_option("width")) {
       n <- length(self$lines)
       if (n) {
         last <- self$lines[[n]]
+        last <- gsub("^ *", "", last)
+
         self$lines <- self$lines[seq_len(n - 1)]
         self$lazy_line <- last
       }

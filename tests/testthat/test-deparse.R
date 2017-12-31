@@ -50,6 +50,17 @@ test_that("make_last_line_lazy() works", {
   expect_identical(ctxt$lines, c("foobar", "bazbam", "quuxhunoz"))
 })
 
+test_that("make_last_line_lazy() kills indentation to avoid double indenting", {
+  ctxt <- new_lines(width = 2L)
+
+  ctxt$push("foo")$increase_indent()$push("bar")
+  ctxt$make_last_line_lazy()
+  expect_identical(ctxt$lazy_line, "bar")
+
+  ctxt$flush()
+  expect_identical(ctxt$lines, c("foo", "  bar"))
+})
+
 test_that("control flow is deparsed", {
   expect_identical(while_deparse(quote(while(1)2(3))), "while (1) 2(3)")
   expect_identical(for_deparse(quote(for(a in 2(3))4)), "for (a in 2(3)) 4")
