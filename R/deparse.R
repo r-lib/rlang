@@ -62,6 +62,15 @@ new_lines <- function(width = peek_option("width")) {
       self$lazy_line <- paste0(self$lazy_line, line)
     },
 
+    make_last_line_lazy = function(self) {
+      n <- length(self$lines)
+      if (n) {
+        last <- self$lines[[n]]
+        self$lines <- self$lines[n - 1]
+        self$lazy_line <- last
+      }
+    },
+
     # Flush the `lazy_line` that is currently staged, if any
     flush = function(self) {
       if (length(self$lazy_line)) {

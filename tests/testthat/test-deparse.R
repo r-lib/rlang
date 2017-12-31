@@ -26,6 +26,21 @@ test_that("push_lazy_line() stages elements", {
   expect_identical(ctxt$lines, c("foo", "barbaz", "trucmuche", "bam"))
 })
 
+test_that("make_last_line_lazy() works", {
+  ctxt <- new_lines(width = 3L)
+  ctxt$make_last_line_lazy()
+  expect_identical(ctxt$lines, chr())
+  expect_identical(ctxt$lazy_line, chr())
+
+  ctxt$push("foo")
+  ctxt$make_last_line_lazy()
+  expect_identical(ctxt$lines, chr())
+  expect_identical(ctxt$lazy_line, "foo")
+
+  ctxt$push_lazy_line("bar")$flush()
+  expect_identical(ctxt$lines, c("foobar"))
+})
+
 test_that("control flow is deparsed", {
   expect_identical(while_deparse(quote(while(1)2(3))), "while (1) 2(3)")
   expect_identical(for_deparse(quote(for(a in 2(3))4)), "for (a in 2(3)) 4")
