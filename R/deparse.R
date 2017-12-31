@@ -43,9 +43,8 @@ new_lines <- function(width = peek_option("width")) {
     push = function(self, lines) {
       self$lines <- push_lines(self$lines, lines, self$width, self$indent)
     },
-    push_new = function(self, line) {
-      stopifnot(is_string(line))
-      self$lines <- c(self$lines, paste0(spaces(self$indent), line))
+    push_newline = function(self) {
+      self$lines <- c(self$lines, spaces(self$indent))
     },
 
     increase_indent = function(self) {
@@ -150,13 +149,14 @@ braces_deparse <- function(x, lines = new_lines()) {
 
   x <- node_cdr(x)
   while (!is_null(x)) {
-    lines$push_new("")
+    lines$push_newline()
     expr_deparse(node_car(x), lines)
     x <- node_cdr(x)
   }
 
   lines$decrease_indent()
-  lines$push_new("}")
+  lines$push_newline()
+  lines$push("}")
 
   lines$lines
 }
