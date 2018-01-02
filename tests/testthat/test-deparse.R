@@ -87,6 +87,11 @@ test_that("unspaced operators are deparsed", {
   expect_identical(unspaced_op_deparse(quote(a:::b)), "a:::b")
 })
 
+test_that("operands are wrapped in parentheses to ensure correct predecence", {
+  expect_identical_(expr_deparse(expr(1 + !!quote(2 + 3))), "1 + (2 + 3)")
+  expect_identical_(expr_deparse(expr((!!quote(1^2))^3)), "(1^2)^3")
+})
+
 test_that("unary operators are deparsed", {
   expect_identical(unary_op_deparse(quote(?1)), "?1")
   expect_identical(unary_op_deparse(quote(~1)), "~1")

@@ -187,16 +187,35 @@ if_deparse <- function(x, lines = new_lines()) {
   lines$get_lines()
 }
 
+# Wrap if the call lower in the AST is not supposed to have
+# precedence. This sort of AST cannot arise in parsed code but can
+# occur in constructed calls.
+operand_deparse <- function(x, parent, side, lines) {
+  wrap <- !call_has_precedence(x, parent, side)
+
+  if (wrap) {
+    lines$push("(")
+    lines$make_next_sticky()
+  }
+
+  expr_deparse(x, lines)
+
+  if (wrap) {
+    lines$push_sticky(")")
+  }
+}
+
 binary_op_deparse <- function(x, lines = new_lines(), space = " ") {
+  outer <- x;
   op <- as_string(node_car(x))
 
   x <- node_cdr(x)
-  expr_deparse(node_car(x), lines)
+  operand_deparse(node_car(x), outer, "lhs", lines)
 
   lines$push(paste0(space, op, space))
 
   x <- node_cdr(x)
-  expr_deparse(node_car(x), lines)
+  operand_deparse(node_car(x), outer, "rhs", lines)
 
   lines$get_lines()
 }
