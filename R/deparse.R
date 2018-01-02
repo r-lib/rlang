@@ -141,47 +141,47 @@ new_lines <- function(width = peek_option("width")) {
 while_deparse <- function(x, lines = new_lines()) {
   x <- node_cdr(x)
   lines$push("while (")
-  expr_deparse(node_car(x), lines)
+  sexp_deparse(node_car(x), lines)
 
   x <- node_cdr(x)
   lines$push(") ")
-  expr_deparse(node_car(x), lines)
+  sexp_deparse(node_car(x), lines)
 
   lines$get_lines()
 }
 for_deparse <- function(x, lines = new_lines()) {
   x <- node_cdr(x)
   lines$push("for (")
-  expr_deparse(node_car(x), lines)
+  sexp_deparse(node_car(x), lines)
 
   x <- node_cdr(x)
   lines$push(" in ")
-  expr_deparse(node_car(x), lines)
+  sexp_deparse(node_car(x), lines)
 
   x <- node_cdr(x)
   lines$push(") ")
-  expr_deparse(node_car(x), lines)
+  sexp_deparse(node_car(x), lines)
 
   lines$get_lines()
 }
 repeat_deparse <- function(x, lines = new_lines()) {
   lines$push("repeat ")
-  expr_deparse(node_cadr(x), lines)
+  sexp_deparse(node_cadr(x), lines)
   lines$get_lines()
 }
 if_deparse <- function(x, lines = new_lines()) {
   x <- node_cdr(x)
   lines$push("if (")
-  expr_deparse(node_car(x), lines)
+  sexp_deparse(node_car(x), lines)
 
   x <- node_cdr(x)
   lines$push(") ")
-  expr_deparse(node_car(x), lines)
+  sexp_deparse(node_car(x), lines)
 
   x <- node_cdr(x)
   if (!is_null(x)) {
     lines$push(" else ")
-    expr_deparse(node_car(x), lines)
+    sexp_deparse(node_car(x), lines)
   }
 
   lines$get_lines()
@@ -198,7 +198,7 @@ operand_deparse <- function(x, parent, side, lines) {
     lines$make_next_sticky()
   }
 
-  expr_deparse(x, lines)
+  sexp_deparse(x, lines)
 
   if (wrap) {
     lines$push_sticky(")")
@@ -229,13 +229,13 @@ unspaced_op_deparse <- function(x, lines = new_lines()) {
 unary_op_deparse <- function(x, lines = new_lines()) {
   op <- as_string(node_car(x))
   lines$push(op)
-  expr_deparse(node_cadr(x), lines)
+  sexp_deparse(node_cadr(x), lines)
   lines$get_lines()
 }
 
 parens_deparse <- function(x, lines = new_lines()) {
   lines$push("(")
-  expr_deparse(node_cadr(x), lines)
+  sexp_deparse(node_cadr(x), lines)
   lines$push(")")
 
   lines$get_lines()
@@ -247,7 +247,7 @@ braces_deparse <- function(x, lines = new_lines()) {
   x <- node_cdr(x)
   while (!is_null(x)) {
     lines$push_newline()
-    expr_deparse(node_car(x), lines)
+    sexp_deparse(node_car(x), lines)
     x <- node_cdr(x)
   }
 
@@ -263,7 +263,7 @@ sym_deparse <- function(x, lines = new_lines()) {
 }
 
 call_deparse <- function(x, lines = new_lines()) {
-  expr_deparse(node_car(x), lines)
+  sexp_deparse(node_car(x), lines)
   lines$push_sticky("(")
   lines$increase_indent()
 
@@ -275,7 +275,7 @@ call_deparse <- function(x, lines = new_lines()) {
       lines$push_sticky(" = ")
       lines$make_next_sticky()
     }
-    expr_deparse(node_car(x), lines)
+    sexp_deparse(node_car(x), lines)
 
     x <- node_cdr(x)
     if (!is_null(x)) {
@@ -344,7 +344,7 @@ op_deparse <- function(op, x, lines) {
   lines$get_lines()
 }
 
-expr_deparse <- function(x, lines = new_lines()) {
+sexp_deparse <- function(x, lines = new_lines()) {
   op <- which_operator(x)
   if (op != "") {
     return(op_deparse(op, x, lines))

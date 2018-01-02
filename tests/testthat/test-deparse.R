@@ -75,7 +75,7 @@ test_that("spaced operators are deparsed", {
   expect_identical(spaced_op_deparse(quote(1 %% 2)), "1 %% 2")
   expect_identical(spaced_op_deparse(quote(1 %>% 2)), "1 %>% 2")
 
-  expect_identical(expr_deparse(quote({ 1; 2 } + { 3; 4 })), c("{", "  1", "  2", "} + {", "  3", "  4", "}"))
+  expect_identical(sexp_deparse(quote({ 1; 2 } + { 3; 4 })), c("{", "  1", "  2", "} + {", "  3", "  4", "}"))
 })
 
 test_that("unspaced operators are deparsed", {
@@ -88,8 +88,8 @@ test_that("unspaced operators are deparsed", {
 })
 
 test_that("operands are wrapped in parentheses to ensure correct predecence", {
-  expect_identical_(expr_deparse(expr(1 + !!quote(2 + 3))), "1 + (2 + 3)")
-  expect_identical_(expr_deparse(expr((!!quote(1^2))^3)), "(1^2)^3")
+  expect_identical_(sexp_deparse(expr(1 + !!quote(2 + 3))), "1 + (2 + 3)")
+  expect_identical_(sexp_deparse(expr((!!quote(1^2))^3)), "(1^2)^3")
 })
 
 test_that("unary operators are deparsed", {
@@ -125,8 +125,8 @@ test_that("call_deparse() respects boundaries", {
 
 test_that("call_deparse() handles multi-line arguments", {
   ctxt <- new_lines(width = 1L)
-  expect_identical(expr_deparse(quote(foo(one = 1, two = nested(one = 1, two = 2))), ctxt), c("foo(", "  one = 1,", "  two = nested(", "    one = 1,", "    two = 2))"))
+  expect_identical(sexp_deparse(quote(foo(one = 1, two = nested(one = 1, two = 2))), ctxt), c("foo(", "  one = 1,", "  two = nested(", "    one = 1,", "    two = 2))"))
 
   ctxt <- new_lines(width = 20L)
-  expect_identical(expr_deparse(quote(foo(one = 1, two = nested(one = 1, two = 2))), ctxt), c("foo(one = 1, two = nested(", "    one = 1, two = 2))"))
+  expect_identical(sexp_deparse(quote(foo(one = 1, two = nested(one = 1, two = 2))), ctxt), c("foo(one = 1, two = nested(", "    one = 1, two = 2))"))
 })

@@ -508,7 +508,7 @@ quo_cat <- function(palette, ...) {
 }
 
 # Reproduces output of printed calls
-base_expr_deparse <- function(x) {
+base_deparse <- function(x) {
   deparse(x, control = "keepInteger")
 }
 
@@ -526,7 +526,7 @@ quo_print <- function(x, parent = FALSE, palette = NULL) {
   }
 
   if (which_operator(x) != "") {
-    quo_cat(palette, base_expr_deparse(x))
+    quo_cat(palette, base_deparse(x))
     if (!parent) cat("\n")
     return(invisible(x))
   }
@@ -545,7 +545,7 @@ quo_print <- function(x, parent = FALSE, palette = NULL) {
     class <- chr_enumerate(chr_quoted(class(x)), final = "and")
     quo_cat(palette, sprintf("<S3 object of class %s>", class))
   } else {
-    quo_cat(palette, base_expr_deparse(x))
+    quo_cat(palette, base_deparse(x))
   }
   if (!parent) cat("\n")
 
