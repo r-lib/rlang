@@ -94,3 +94,14 @@ test_that("unary operators are deparsed", {
 test_that("calls are deparsed", {
   expect_identical(call_deparse(quote(foo(bar, baz))), "foo(bar, baz)")
 })
+
+test_that("call_deparse() respects boundaries", {
+  ctxt <- new_lines(width = 1L)
+  expect_identical(call_deparse(quote(foo(bar, baz)), ctxt), c("foo(", "  bar,", "  baz)"))
+
+  ctxt <- new_lines(width = 7L)
+  expect_identical(call_deparse(quote(foo(bar, baz)), ctxt), c("foo(", "  bar,", "  baz)"))
+
+  ctxt <- new_lines(width = 8L)
+  expect_identical(call_deparse(quote(foo(bar, baz)), ctxt), c("foo(bar,", "  baz)"))
+})

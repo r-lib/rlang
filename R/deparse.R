@@ -241,19 +241,20 @@ sym_deparse <- function(x, lines = new_lines()) {
 
 call_deparse <- function(x, lines = new_lines()) {
   expr_deparse(node_car(x), lines)
-  lines$push("(")
+  lines$push_sticky("(")
   lines$increase_indent()
 
   x <- node_cdr(x)
   while (!is_null(x)) {
     expr_deparse(node_car(x), lines)
+
     x <- node_cdr(x)
     if (!is_null(x)) {
-      lines$push(", ")
+      lines$push_sticky(", ")
     }
   }
 
-  lines$push(")")
+  lines$push_sticky(")")
   lines$decrease_indent()
 
   lines$get_lines()
