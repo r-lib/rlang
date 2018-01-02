@@ -23,6 +23,10 @@ test_that("line_push() respects boundaries", {
   expect_identical(line_push("foo, bar", "baz", boundary = 4L, width = 1L, indent = 2L), c("foo, bar", "  baz"))
 })
 
+test_that("line_push() handles the nchar(line) == boundary case", {
+  expect_identical(line_push("  tag = ", "bar", sticky = TRUE, boundary = 8L, width = 3L, indent = 2L), "  tag = bar")
+})
+
 test_that("control flow is deparsed", {
   expect_identical(while_deparse(quote(while(1) 2)), "while (1) 2")
   expect_identical(for_deparse(quote(for(a in 2) 3)), "for (a in 2) 3")

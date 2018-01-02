@@ -19,7 +19,7 @@ line_push <- function(line, text,
     return(paste0(line, text))
   }
 
-  if (is_scalar_integer(boundary)) {
+  if (is_scalar_integer(boundary) && nchar(line) != boundary) {
     first <- substr(line, 0L, boundary)
     second <- substr(line, boundary + 1L, nchar(line))
     # Trim trailing spaces after boundary
