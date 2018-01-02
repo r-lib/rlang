@@ -3,6 +3,7 @@
 
 const struct r_op_precedence r_ops_precedence[R_OP_MAX] = {
   [R_OP_NONE]           = { .power =   0,  .assoc =  0,  .unary = false,  .delimited = false },
+  [R_OP_FUNCTION]       = { .power =   5,  .assoc =  1,  .unary =  true,  .delimited = false },
   [R_OP_QUESTION]       = { .power =  10,  .assoc = -1,  .unary = false,  .delimited = false },
   [R_OP_QUESTION_UNARY] = { .power =  10,  .assoc = -1,  .unary =  true,  .delimited = false },
   [R_OP_WHILE]          = { .power =  20,  .assoc = -1,  .unary = false,  .delimited =  true },
@@ -72,6 +73,8 @@ enum r_operator r_which_operator(sexp* call) {
   case 'f':
     if (strcmp(name, "for") == 0) {
       return R_OP_FOR;
+    } else if (strcmp(name, "function") == 0) {
+      return R_OP_FUNCTION;
     } else {
       goto none;
     }

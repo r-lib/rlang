@@ -124,6 +124,7 @@ sexp* rlang_which_operator(sexp* call) {
   case R_OP_FOR:            op = "for"; break;
   case R_OP_REPEAT:         op = "repeat"; break;
   case R_OP_IF:             op = "if"; break;
+  case R_OP_FUNCTION:       op = "function"; break;
   case R_OP_QUESTION:       op = "?"; break;
   case R_OP_QUESTION_UNARY: op = "?unary"; break;
   case R_OP_ASSIGN1:        op = "<-"; break;
