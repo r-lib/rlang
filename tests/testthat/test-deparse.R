@@ -9,8 +9,12 @@ test_that("line_push() doesn't make a new line if current is only spaces", {
   expect_identical(line_push("    ", "foo", width = 2L), "    foo")
 })
 
-test_that("line_push() removes trailing spaces", {
+test_that("line_push() trims trailing spaces", {
   expect_identical(line_push("foo  ", "bar", width = 1L), c("foo", "bar"))
+})
+
+test_that("line_push() doesn't trim trailing spaces on sticky inputs", {
+  expect_identical(line_push("tag", " = ", sticky = TRUE, width = 3L, indent = 2L), "tag = ")
 })
 
 test_that("sticky input sticks", {

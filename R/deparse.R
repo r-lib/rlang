@@ -26,7 +26,7 @@ line_push <- function(line, text,
     second <- trim_leading_spaces(second)
     second <- paste0(spaces(indent), second)
     if (sticky || !has_overflown(second, text, width)) {
-      line <- first
+      line <- trim_trailing_spaces(first)
       text <- paste0(second, text)
     } else {
       text <- paste0(spaces(indent), text)
@@ -35,10 +35,11 @@ line_push <- function(line, text,
     line <- paste0(line, text)
     text <- chr()
   } else {
+    line <- trim_trailing_spaces(line)
     text <- paste0(spaces(indent), text)
   }
 
-  c(trim_trailing_spaces(line), text)
+  c(line, text)
 }
 
 spaces <- function(n) {
