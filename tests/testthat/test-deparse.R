@@ -148,13 +148,6 @@ test_that("literal dots are deparsed", {
   expect_identical_(sexp_deparse(expr(foo(!!dots))), "foo(<...>)")
 })
 
-test_that("pointers are deparsed", {
-  ptr <- rlang_which_operator$address
-  if (!is_null(ptr)) {
-    expect_identical_(sexp_deparse(expr(foo(!!ptr))), "foo(<pointer>)")
-  }
-})
-
 test_that("environments are deparsed", {
   expect_identical(sexp_deparse(expr(foo(!! env()))), "foo(<environment>)")
 })
@@ -193,4 +186,9 @@ test_that("literal lists are deparsed", {
 test_that("other objects are deparsed with base deparser", {
   expect_identical_(sexp_deparse(expr(foo((!!base::list)(1, 2)))), "foo(.Primitive(\"list\")(1, 2))")
   expect_identical_(sexp_deparse(expr(foo((!!base::`if`)(1, 2)))), "foo(.Primitive(\"if\")(1, 2))")
+})
+
+test_that("S3 objects are deparsed", {
+  expr <- expr(list(!!factor(1:3), !!structure(list(), class = c("foo", "bar", "baz"))))
+  expect_identical(sexp_deparse(expr), "list(<s3 factor>, <s3 foo, bar, baz>)")
 })

@@ -489,6 +489,23 @@ list_deparse <- function(x, lines = new_lines()) {
   lines$get_lines()
 }
 
+s3_deparse <- function(x, lines = new_lines()) {
+  lines$push("<s3 ")
+
+  classes <- class(x)
+  n <- length(classes)
+
+  for (i in seq_len(n)) {
+    lines$push(classes[[i]])
+    if (i != n) {
+      lines$push_sticky(", ")
+    }
+  }
+
+  lines$push_sticky(">")
+  lines$get_lines()
+}
+
 literal_deparser <- function(type) {
   function(x, lines = new_lines()) {
     lines$push(paste0("<", type, ">"))
@@ -500,6 +517,11 @@ default_deparse <- function(x, lines = new_lines()) {
 }
 
 sexp_deparse <- function(x, lines = new_lines()) {
+  if (is.object(x)) {
+    s3_deparse(x, lines)
+    return(NULL)
+  }
+
   deparser <- switch (typeof(x),
     symbol = sym_deparse,
     language = call_deparser(x),
