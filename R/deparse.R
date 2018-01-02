@@ -430,7 +430,7 @@ atom_elements <- function(x) {
   )
 }
 atom_deparser <- function(x, lines = new_lines()) {
-  if (length(x) == 1 && !is_named(x)) {
+  if (typeof(x) != "raw" && length(x) == 1 && !is_named(x)) {
     lines$push(atom_elements(x))
     return(NULL)
   }

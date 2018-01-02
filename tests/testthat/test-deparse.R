@@ -180,7 +180,10 @@ test_that("scalar atomic vectors are simply printed", {
   expect_identical(sexp_deparse(1), "1")
   expect_identical(sexp_deparse(1i), "0+1i")
   expect_identical(sexp_deparse("1"), "\"1\"")
-  expect_identical(sexp_deparse(set_names(as.raw(1:3), c("", "b", ""))), "<raw 01, b = 02, 03>")
+})
+
+test_that("scalar raw vectors are printed in long form", {
+  expect_identical(sexp_deparse(as.raw(1)), "<raw 01>")
 })
 
 test_that("other objects are deparsed with base deparser", {
