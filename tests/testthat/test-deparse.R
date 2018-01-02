@@ -137,3 +137,11 @@ test_that("call_deparse() handles multi-line arguments", {
   ctxt <- new_lines(width = 20L)
   expect_identical(sexp_deparse(quote(foo(one = 1, two = nested(one = 1, two = 2))), ctxt), c("foo(one = 1, two = nested(", "    one = 1, two = 2))"))
 })
+
+test_that("literal functions are deparsed", {
+  expect_identical_(sexp_deparse(function(a) 1), "<function(a) 1>")
+  expect_identical_(sexp_deparse(expr(foo(!!function(a) 1))), "foo(<function(a) 1>)")
+  expect_identical_(sexp_deparse(expr(foo((!!base::list)(1, 2)))), "foo(.Primitive(\"list\")(1, 2))")
+  expect_identical_(sexp_deparse(expr(foo((!!base::`if`)(1, 2)))), "foo(.Primitive(\"if\")(1, 2))")
+})
+})

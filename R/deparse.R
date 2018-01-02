@@ -182,6 +182,21 @@ fn_call_deparse <- function(x, lines = new_lines()) {
 
   lines$get_lines()
 }
+
+fn_deparse <- function(x, lines) {
+  lines$push("<")
+  lines$make_next_sticky()
+  lines$push("function")
+
+  fmls_deparse(fn_fmls(x), lines)
+  lines$push(" ")
+
+  sexp_deparse(body(x), lines)
+  lines$push_sticky(">")
+
+  lines$get_lines()
+}
+
 while_deparse <- function(x, lines = new_lines()) {
   x <- node_cdr(x)
   lines$push("while (")
@@ -403,6 +418,7 @@ sexp_deparse <- function(x, lines = new_lines()) {
   deparser <- switch (typeof(x),
     symbol = sym_deparse,
     language = call_deparser(x),
+    closure = fn_deparse,
     default_deparse
   )
   deparser(x, lines)
