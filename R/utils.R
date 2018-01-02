@@ -140,7 +140,7 @@ cyan <- function(x) {
 }
 
 `$.r6lite` <- function(self, arg) {
-  field <- NextMethod()
+  field <- env_get(self, as_string(substitute(arg)))
 
   if (is_function(field)) {
     expr_interp(function(...) {
