@@ -1,28 +1,61 @@
 
+line_push <- function(line, text,
+                      sticky = FALSE,
+                      boundary = NULL,
+                      width = NULL,
+                      indent = 0L) {
+  if (!length(line)) {
+    return(text)
+  }
+  if (!is_string(line)) {
+    abort("`line` must be a string or empty")
+  }
+  if (!is_string(text)) {
+    abort("`text` must be a string")
+  }
+  width <- width %||% peek_option("width")
+
+  if (!has_overflown(line, text, width)) {
+    return(paste0(line, text))
+  }
+
+  if (is_scalar_integer(boundary)) {
+    first <- substr(line, 0L, boundary)
+    second <- substr(line, boundary + 1L, nchar(line))
+    # Trim trailing spaces after boundary
+    second <- trim_leading_spaces(second)
+    second <- paste0(spaces(indent), second)
+    if (sticky || !has_overflown(second, text, width)) {
+      line <- first
+      text <- paste0(second, text)
+    } else {
+      text <- paste0(spaces(indent), text)
+    }
+  } else if (sticky) {
+    line <- paste0(line, text)
+    text <- chr()
+  } else {
+    text <- paste0(spaces(indent), text)
+  }
+
+  c(trim_trailing_spaces(line), text)
+}
+
 spaces <- function(n) {
   paste(rep(" ", n), collapse = "")
 }
 is_spaces <- function(str) {
   identical(str, spaces(nchar(str)))
 }
-
-merge_lines <- function(last, line, width = NULL, indent = 0L) {
-  if (!length(last)) {
-    return(line)
-  }
-  if (!is_string(last)) {
-    abort("`last` must be a string or empty")
-  }
-  if (!is_string(line)) {
-    abort("`line` must be a string")
-  }
-  width <- width %||% peek_option("width")
-
-  if (nchar(last) + nchar(line) > width && !is_spaces(last)) {
-    c(last, paste0(spaces(indent), line))
-  } else {
-    paste0(last, line)
-  }
+has_overflown <- function(line, text, width) {
+  text <- trim_trailing_spaces(text)
+  nchar(line) + nchar(text) > width && !is_spaces(line)
+}
+trim_trailing_spaces <- function(line) {
+  sub(" *$", "", line)
+}
+trim_leading_spaces <- function(line) {
+  sub("^ *", "", line)
 }
 
 new_lines <- function(width = peek_option("width")) {
@@ -31,10 +64,11 @@ new_lines <- function(width = peek_option("width")) {
   r6lite(
     width = width,
     indent = 0L,
+    boundary = NULL,
+    next_sticky = FALSE,
 
     lines = chr(),
     last_line = chr(),
-    lazy_line = chr(),
 
     get_lines = function(self) {
       c(self$lines, self$last_line)
@@ -43,66 +77,48 @@ new_lines <- function(width = peek_option("width")) {
     push = function(self, line) {
       stopifnot(is_string(line))
 
-      last <- merge_lines(self$last_line, line, self$width, self$indent)
-      n <- length(last)
+      line <- line_push(self$last_line, line,
+        sticky = self$next_sticky,
+        boundary = self$boundary,
+        width = self$width,
+        indent = self$indent
+      )
+      n <- length(line)
 
       if (n > 1) {
-        self$flush()
-        self$lines <- c(self$lines, last[-n])
-        self$last_line <- last[[n]]
+        self$lines <- c(self$lines, line[-n])
+        self$last_line <- line[[n]]
+        self$boundary <- NULL
       } else if (n) {
-        self$last_line <- last
+        self$last_line <- line
       }
+      self$next_sticky <- FALSE
 
       self
     },
 
     push_newline = function(self) {
-      self$flush()
       self$lines <- c(self$lines, self$last_line)
       self$last_line <- spaces(self$indent)
+      self$next_sticky <- FALSE
       self
     },
 
-    # We stage the sticky elements so we can compute their width
-    # properly before actually pushing them to `lines`
-    push_lazy_line = function(self, line) {
-      stopifnot(
-        is_string(line),
-        length(self$lazy_line) %in% 0:1
-      )
-      self$lazy_line <- paste0(self$lazy_line, line)
+    push_sticky = function(self, line) {
+      stopifnot(is_string(line))
+      self$next_sticky <- TRUE
+      self$push(line)
+      self$set_boundary()
       self
     },
 
-    make_last_line_lazy = function(self) {
-      if (length(self$lazy_line)) {
-        abort("Internal error: Tried to overwrite lazy line")
-      }
-
-      last <- self$last_line
-      if (length(last)) {
-        last <- gsub("^ *", "", last)
-        self$last_line <- chr()
-        self$lazy_line <- last
-      }
-
-      self
+    make_next_sticky = function(self) {
+      self$next_sticky <- TRUE
     },
 
-    # Flush the `lazy_line` that is currently staged, if any
-    flush = function(self) {
-      lazy <- self$lazy_line
-
-      # Avoid recursion within self$push()
-      self$lazy_line <- chr()
-      if (length(lazy)) {
-        self$push(lazy)
-      }
-
-      self
+    set_boundary = function(self) {
+      self$boundary <- nchar(self$last_line)
     },
-
     increase_indent = function(self) {
       self$indent <- self$indent + 2L
       self

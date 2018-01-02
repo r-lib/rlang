@@ -1,64 +1,26 @@
 context("deparse")
 
-test_that("push_lines() adds indentation", {
-  lines <- c("foo", "  foobarbaz", "  barbazbam", "  bazbam")
-  expect_identical(push_lines("foo", c("foobarbaz", "barbazbam", "baz", "bam"), width = 8, indent = 2), lines)
+test_that("line_push() adds indentation", {
+  out <- line_push("foo", "bar", width = 4, indent = 2)
+  expect_identical(out, c("foo", "  bar"))
 })
 
-test_that("push_lines() doesn't make a new line if current is only spaces", {
-  expect_identical(push_lines("    ", "foo", width = 2L), "    foo")
+test_that("line_push() doesn't make a new line if current is only spaces", {
+  expect_identical(line_push("    ", "foo", width = 2L), "    foo")
 })
 
-test_that("push_lazy_line() stages elements", {
-  ctxt <- new_lines(width = 3L)
-
-  ctxt$push("foo")
-  ctxt$push_lazy_line("bar")$push_lazy_line("baz")
-  expect_identical(ctxt$lines, "foo")
-
-  ctxt$flush()
-  expect_identical(ctxt$lines, c("foo", "barbaz"))
-
-  ctxt$push_lazy_line("truc")$push_lazy_line("muche")
-  expect_identical(ctxt$lines, c("foo", "barbaz"))
-
-  ctxt$push("bam")
-  expect_identical(ctxt$lines, c("foo", "barbaz", "trucmuche", "bam"))
+test_that("line_push() removes trailing spaces", {
+  expect_identical(line_push("foo  ", "bar", width = 1L), c("foo", "bar"))
 })
 
-test_that("make_last_line_lazy() works", {
-  ctxt <- new_lines(width = 3L)
-  ctxt$make_last_line_lazy()
-  expect_identical(ctxt$lines, chr())
-  expect_identical(ctxt$lazy_line, chr())
-
-  ctxt$push("foo")
-  ctxt$make_last_line_lazy()
-  expect_identical(ctxt$lines, chr())
-  expect_identical(ctxt$lazy_line, "foo")
-
-  ctxt$push_lazy_line("bar")$flush()
-  expect_identical(ctxt$lines, c("foobar"))
-
-  ctxt$push("baz")
-  ctxt$make_last_line_lazy()
-  ctxt$push_lazy_line("bam")$flush()
-
-  ctxt$push("quux")
-  ctxt$make_last_line_lazy()
-  ctxt$push_lazy_line("hunoz")$flush()
-  expect_identical(ctxt$lines, c("foobar", "bazbam", "quuxhunoz"))
+test_that("sticky input sticks", {
+  expect_identical(line_push("foo  ", "bar", sticky = TRUE, width = 1L), "foo  bar")
 })
 
-test_that("make_last_line_lazy() kills indentation to avoid double indenting", {
-  ctxt <- new_lines(width = 2L)
-
-  ctxt$push("foo")$increase_indent()$push("bar")
-  ctxt$make_last_line_lazy()
-  expect_identical(ctxt$lazy_line, "bar")
-
-  ctxt$flush()
-  expect_identical(ctxt$lines, c("foo", "  bar"))
+test_that("line_push() respects boundaries", {
+  expect_identical(line_push("foo, ", "bar", boundary = 4L, width = 1L, indent = 2L), c("foo,", "  bar"))
+  expect_identical(line_push("foo, ", "bar", sticky = TRUE, boundary = 4L, width = 1L, indent = 2L), c("foo,", "  bar"))
+  expect_identical(line_push("foo, bar", "baz", boundary = 4L, width = 1L, indent = 2L), c("foo, bar", "  baz"))
 })
 
 test_that("control flow is deparsed", {
