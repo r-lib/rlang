@@ -31,6 +31,10 @@ test_that("line_push() handles the nchar(line) == boundary case", {
   expect_identical(line_push("  tag = ", "bar", sticky = TRUE, boundary = 8L, width = 3L, indent = 2L), "  tag = bar")
 })
 
+test_that("can push several lines (useful for default base deparser)", {
+  expect_identical(new_lines()$push(c("foo", "bar"))$get_lines(), "foobar")
+})
+
 test_that("control flow is deparsed", {
   expect_identical(fn_deparse(expr(function(a, b) 1)), "function(a, b) 1")
   expect_identical(fn_deparse(expr(function(a = 1, b = 2) { 3; 4; 5 })), c("function(a = 1, b = 2) {", "  3", "  4", "  5", "}"))

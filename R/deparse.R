@@ -75,9 +75,15 @@ new_lines <- function(width = peek_option("width")) {
       c(self$lines, self$last_line)
     },
 
-    push = function(self, line) {
-      stopifnot(is_string(line))
+    push = function(self, lines) {
+      stopifnot(is_character(lines))
+      for (line in lines) {
+        self$push_one(line)
+      }
+      self
+    },
 
+    push_one = function(self, line) {
       line <- line_push(self$last_line, line,
         sticky = self$next_sticky,
         boundary = self$boundary,
