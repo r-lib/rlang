@@ -117,3 +117,11 @@ test_that("call_deparse() respects boundaries", {
   ctxt <- new_lines(width = 1L)
   expect_identical(call_deparse(quote(foo(one = bar, two = baz)), ctxt), c("foo(", "  one = bar,", "  two = baz)"))
 })
+
+test_that("call_deparse() handles multi-line arguments", {
+  ctxt <- new_lines(width = 1L)
+  expect_identical(expr_deparse(quote(foo(one = 1, two = nested(one = 1, two = 2))), ctxt), c("foo(", "  one = 1,", "  two = nested(", "    one = 1,", "    two = 2))"))
+
+  ctxt <- new_lines(width = 20L)
+  expect_identical(expr_deparse(quote(foo(one = 1, two = nested(one = 1, two = 2))), ctxt), c("foo(one = 1, two = nested(", "    one = 1, two = 2))"))
+})
