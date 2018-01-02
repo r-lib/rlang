@@ -141,7 +141,10 @@ test_that("call_deparse() handles multi-line arguments", {
 test_that("literal functions are deparsed", {
   expect_identical_(sexp_deparse(function(a) 1), "<function(a) 1>")
   expect_identical_(sexp_deparse(expr(foo(!!function(a) 1))), "foo(<function(a) 1>)")
+})
+
+test_that("other objects are deparsed with base deparser", {
+  expect_identical(sexp_deparse(expr(foo(!! env()))), "foo(<environment>)")
   expect_identical_(sexp_deparse(expr(foo((!!base::list)(1, 2)))), "foo(.Primitive(\"list\")(1, 2))")
   expect_identical_(sexp_deparse(expr(foo((!!base::`if`)(1, 2)))), "foo(.Primitive(\"if\")(1, 2))")
-})
 })
