@@ -490,19 +490,7 @@ list_deparse <- function(x, lines = new_lines()) {
 }
 
 s3_deparse <- function(x, lines = new_lines()) {
-  lines$push("<s3 ")
-
-  classes <- class(x)
-  n <- length(classes)
-
-  for (i in seq_len(n)) {
-    lines$push(classes[[i]])
-    if (i != n) {
-      lines$push_sticky(", ")
-    }
-  }
-
-  lines$push_sticky(">")
+  lines$push(paste0("<", rlang_type_sum(x), ">"))
   lines$get_lines()
 }
 

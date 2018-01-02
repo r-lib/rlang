@@ -190,5 +190,5 @@ test_that("other objects are deparsed with base deparser", {
 
 test_that("S3 objects are deparsed", {
   expr <- expr(list(!!factor(1:3), !!structure(list(), class = c("foo", "bar", "baz"))))
-  expect_identical(sexp_deparse(expr), "list(<s3 factor>, <s3 foo, bar, baz>)")
+  expect_identical(sexp_deparse(expr), "list(<fct>, <S3: foo>)")
 })
