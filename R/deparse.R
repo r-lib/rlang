@@ -92,6 +92,9 @@ new_lines <- function(width = peek_option("width")) {
         self$boundary <- NULL
       } else if (n) {
         self$last_line <- line
+        if (self$next_sticky) {
+          self$boundary <- nchar(line)
+        }
       }
       self$next_sticky <- FALSE
 
@@ -247,6 +250,12 @@ call_deparse <- function(x, lines = new_lines()) {
 
   x <- node_cdr(x)
   while (!is_null(x)) {
+    tag <- node_tag(x)
+    if (!is_null(tag)) {
+      lines$push(as_string(tag))
+      lines$push_sticky(" = ")
+      lines$make_next_sticky()
+    }
     expr_deparse(node_car(x), lines)
 
     x <- node_cdr(x)
