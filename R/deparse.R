@@ -138,6 +138,44 @@ new_lines <- function(width = peek_option("width")) {
   )
 }
 
+fmls_deparse <- function(x, lines = new_lines()) {
+  lines$push_sticky("(")
+  lines$increase_indent()
+
+  while (!is_null(x)) {
+    lines$push(as_string(node_tag(x)))
+
+    car <- node_car(x)
+    if (!is_missing(car)) {
+      lines$push_sticky(" = ")
+      lines$make_next_sticky()
+      sexp_deparse(node_car(x), lines)
+    }
+
+    x <- node_cdr(x)
+    if (!is_null(x)) {
+      lines$push_sticky(", ")
+    }
+  }
+
+  lines$push_sticky(")")
+  lines$decrease_indent()
+
+  lines$get_lines()
+}
+fn_deparse <- function(x, lines = new_lines()) {
+  lines$push("function")
+
+  x <- node_cdr(x)
+  fmls_deparse(node_car(x), lines)
+
+  lines$push(" ")
+
+  x <- node_cdr(x)
+  sexp_deparse(node_car(x), lines)
+
+  lines$get_lines()
+}
 while_deparse <- function(x, lines = new_lines()) {
   x <- node_cdr(x)
   lines$push("while (")
@@ -259,15 +297,13 @@ braces_deparse <- function(x, lines = new_lines()) {
 }
 
 sym_deparse <- function(x, lines = new_lines()) {
-  lines$push(as_string(x))$lines
+  lines$push(as_string(x))$get_lines()
 }
 
-call_deparse <- function(x, lines = new_lines()) {
-  sexp_deparse(node_car(x), lines)
+args_deparse <- function(x, lines = new_lines()) {
   lines$push_sticky("(")
   lines$increase_indent()
 
-  x <- node_cdr(x)
   while (!is_null(x)) {
     tag <- node_tag(x)
     if (!is_null(tag)) {
@@ -288,6 +324,10 @@ call_deparse <- function(x, lines = new_lines()) {
 
   lines$get_lines()
 }
+call_deparse <- function(x, lines = new_lines()) {
+  sexp_deparse(node_car(x), lines)
+  args_deparse(node_cdr(x), lines)
+}
 
 default_deparse <- function(x, lines = new_lines()) {
   lines$push(deparse(x, control = "keepInteger"))
@@ -296,6 +336,7 @@ default_deparse <- function(x, lines = new_lines()) {
 
 op_deparse <- function(op, x, lines) {
   deparser <- switch (op,
+    `function` = fn_deparse,
     `while` = while_deparse,
     `for` = for_deparse,
     `repeat` = repeat_deparse,

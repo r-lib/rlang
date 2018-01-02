@@ -32,6 +32,8 @@ test_that("line_push() handles the nchar(line) == boundary case", {
 })
 
 test_that("control flow is deparsed", {
+  expect_identical(fn_deparse(expr(function(a, b) 1)), "function(a, b) 1")
+  expect_identical(fn_deparse(expr(function(a = 1, b = 2) { 3; 4; 5 })), c("function(a = 1, b = 2) {", "  3", "  4", "  5", "}"))
   expect_identical(while_deparse(quote(while(1) 2)), "while (1) 2")
   expect_identical(for_deparse(quote(for(a in 2) 3)), "for (a in 2) 3")
   expect_identical(repeat_deparse(quote(repeat 1)), "repeat 1")
@@ -90,6 +92,8 @@ test_that("unspaced operators are deparsed", {
 test_that("operands are wrapped in parentheses to ensure correct predecence", {
   expect_identical_(sexp_deparse(expr(1 + !!quote(2 + 3))), "1 + (2 + 3)")
   expect_identical_(sexp_deparse(expr((!!quote(1^2))^3)), "(1^2)^3")
+  expect_identical_(sexp_deparse(quote(function() 1 ? 2)), "function() 1 ? 2")
+  expect_identical_(sexp_deparse(expr(!!quote(function() 1) ? 2)), "(function() 1) ? 2")
 })
 
 test_that("unary operators are deparsed", {
