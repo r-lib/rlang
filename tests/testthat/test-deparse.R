@@ -186,6 +186,10 @@ test_that("scalar raw vectors are printed in long form", {
   expect_identical(sexp_deparse(as.raw(1)), "<raw 01>")
 })
 
+test_that("literal lists are deparsed", {
+  expect_identical(sexp_deparse(list(TRUE, b = 2L, 3, d = "4", as.raw(5))), "<list TRUE, b = 2L, 3, d = \"4\", <raw 05>>")
+})
+
 test_that("other objects are deparsed with base deparser", {
   expect_identical_(sexp_deparse(expr(foo((!!base::list)(1, 2)))), "foo(.Primitive(\"list\")(1, 2))")
   expect_identical_(sexp_deparse(expr(foo((!!base::`if`)(1, 2)))), "foo(.Primitive(\"if\")(1, 2))")

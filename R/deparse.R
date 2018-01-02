@@ -429,7 +429,7 @@ atom_elements <- function(x) {
     elts
   )
 }
-atom_deparser <- function(x, lines = new_lines()) {
+atom_deparse <- function(x, lines = new_lines()) {
   if (typeof(x) != "raw" && length(x) == 1 && !is_named(x)) {
     lines$push(atom_elements(x))
     return(NULL)
@@ -450,6 +450,33 @@ atom_deparser <- function(x, lines = new_lines()) {
     }
 
     lines$push(elts[[i]])
+
+    if (i != n) {
+      lines$push_sticky(", ")
+    }
+  }
+
+  lines$push_sticky(">")
+  lines$decrease_indent()
+
+  lines$get_lines()
+}
+
+list_deparse <- function(x, lines = new_lines()) {
+  lines$push(paste0("<", short_typeof(x), " "))
+  lines$increase_indent()
+
+  nms <- names2(x)
+  n <- length(x)
+
+  for (i in seq_len(n)) {
+    nm <- nms[[i]]
+    if (nzchar(nm)) {
+      lines$push(paste0(nm, " = "))
+      lines$make_next_sticky()
+    }
+
+    sexp_deparse(x[[i]], lines)
 
     if (i != n) {
       lines$push_sticky(", ")
@@ -488,7 +515,8 @@ sexp_deparse <- function(x, lines = new_lines()) {
     double = ,
     complex = ,
     character = ,
-    raw = atom_deparser,
+    raw = atom_deparse,
+    list = list_deparse,
     default_deparse
   )
   deparser(x, lines)
