@@ -76,7 +76,6 @@ test_that("spaced operators are deparsed", {
   expect_identical(spaced_op_deparse(quote(1 / 2)), "1 / 2")
   expect_identical(spaced_op_deparse(quote(1 %% 2)), "1 %% 2")
   expect_identical(spaced_op_deparse(quote(1 %>% 2)), "1 %>% 2")
-
   expect_identical(sexp_deparse(quote({ 1; 2 } + { 3; 4 })), c("{", "  1", "  2", "} + {", "  3", "  4", "}"))
 })
 

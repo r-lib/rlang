@@ -329,11 +329,6 @@ call_deparse <- function(x, lines = new_lines()) {
   args_deparse(node_cdr(x), lines)
 }
 
-default_deparse <- function(x, lines = new_lines()) {
-  lines$push(deparse(x, control = "keepInteger"))
-  lines$get_lines()
-}
-
 op_deparse <- function(op, x, lines) {
   deparser <- switch (op,
     `function` = fn_deparse,
@@ -384,16 +379,24 @@ op_deparse <- function(op, x, lines) {
   deparser(x, lines)
   lines$get_lines()
 }
-
-sexp_deparse <- function(x, lines = new_lines()) {
+call_deparser <- function(x) {
   op <- which_operator(x)
   if (op != "") {
-    return(op_deparse(op, x, lines))
+    function(x, lines) op_deparse(op, x, lines)
+  } else {
+    call_deparse
   }
+}
 
+default_deparse <- function(x, lines = new_lines()) {
+  lines$push(deparse(x, control = "keepInteger"))
+  lines$get_lines()
+}
+
+sexp_deparse <- function(x, lines = new_lines()) {
   deparser <- switch (typeof(x),
     symbol = sym_deparse,
-    language = call_deparse,
+    language = call_deparser(x),
     default_deparse
   )
   deparser(x, lines)
