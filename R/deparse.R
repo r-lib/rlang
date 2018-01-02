@@ -169,7 +169,7 @@ fmls_deparse <- function(x, lines = new_lines()) {
 
   lines$get_lines()
 }
-fn_deparse <- function(x, lines = new_lines()) {
+fn_call_deparse <- function(x, lines = new_lines()) {
   lines$push("function")
 
   x <- node_cdr(x)
@@ -337,7 +337,7 @@ call_deparse <- function(x, lines = new_lines()) {
 
 op_deparse <- function(op, x, lines) {
   deparser <- switch (op,
-    `function` = fn_deparse,
+    `function` = fn_call_deparse,
     `while` = while_deparse,
     `for` = for_deparse,
     `repeat` = repeat_deparse,

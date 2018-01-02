@@ -36,8 +36,8 @@ test_that("can push several lines (useful for default base deparser)", {
 })
 
 test_that("control flow is deparsed", {
-  expect_identical(fn_deparse(expr(function(a, b) 1)), "function(a, b) 1")
-  expect_identical(fn_deparse(expr(function(a = 1, b = 2) { 3; 4; 5 })), c("function(a = 1, b = 2) {", "  3", "  4", "  5", "}"))
+  expect_identical(fn_call_deparse(expr(function(a, b) 1)), "function(a, b) 1")
+  expect_identical(fn_call_deparse(expr(function(a = 1, b = 2) { 3; 4; 5 })), c("function(a = 1, b = 2) {", "  3", "  4", "  5", "}"))
   expect_identical(while_deparse(quote(while(1) 2)), "while (1) 2")
   expect_identical(for_deparse(quote(for(a in 2) 3)), "for (a in 2) 3")
   expect_identical(repeat_deparse(quote(repeat 1)), "repeat 1")
