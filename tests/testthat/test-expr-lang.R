@@ -186,3 +186,15 @@ test_that("can unnamespace calls", {
   expect_identical(lang_unnamespace(quote(foo::bar(baz))), quote(bar(baz)))
   expect_identical(lang_unnamespace(quote(foo@bar(baz))), quote(foo@bar(baz)))
 })
+
+test_that("precedence of regular calls", {
+  expect_true(call_has_precedence(quote(1 + 2), quote(foo(1 + 2))))
+  expect_true(call_has_precedence(quote(foo()), quote(1 + foo())))
+})
+
+test_that("precedence of associative ops", {
+  expect_true(call_has_precedence(quote(1 + 2), quote(1 + 2 + 3), "lhs"))
+  expect_false(call_has_precedence(quote(2 + 3), quote(1 + 2 + 3), "rhs"))
+  expect_false(call_has_precedence(quote(1^2), quote(1^2^3), "lhs"))
+  expect_true(call_has_precedence(quote(2^3), quote(1^2^3), "rhs"))
+})

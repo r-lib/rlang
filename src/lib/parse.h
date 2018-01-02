@@ -73,10 +73,29 @@ struct r_op_precedence {
 
 const struct r_op_precedence r_ops_precedence[R_OP_MAX];
 
-bool r_op_has_precedence(enum r_operator x, enum r_operator y);
+/**
+ * r_op_has_precedence() - Does an operation have precedence over another?
+ *
+ * Relies on information in the table of operation metadata
+ * %r_ops_precedence.
+ *
+ * @x The call that was found lower in the AST (i.e. the call that is
+ *   supposed to have precedence).
+ * @parent The call that was found earlier in the AST (i.e. the one
+ *   that wraps @x).
+ */
+bool r_op_has_precedence(enum r_operator x, enum r_operator parent);
+bool r_rhs_op_has_precedence(enum r_operator rhs, enum r_operator parent);
+bool r_lhs_op_has_precedence(enum r_operator lhs, enum r_operator parent);
 
-static inline bool r_call_has_precedence(sexp* x, sexp* y) {
-  return r_op_has_precedence(r_which_operator(x), r_which_operator(y));
+static inline bool r_call_has_precedence(sexp* x, sexp* parent) {
+  return r_op_has_precedence(r_which_operator(x), r_which_operator(parent));
+}
+static inline bool r_lhs_call_has_precedence(sexp* lhs, sexp* parent) {
+  return r_lhs_op_has_precedence(r_which_operator(lhs), r_which_operator(parent));
+}
+static inline bool r_rhs_call_has_precedence(sexp* rhs, sexp* parent) {
+  return r_rhs_op_has_precedence(r_which_operator(rhs), r_which_operator(parent));
 }
 
 

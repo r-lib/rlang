@@ -331,19 +331,19 @@ enum r_operator r_which_operator(sexp* call) {
   }
 }
 
-/**
- * r_op_has_precedence() - Does an operation have precedence over another?
- *
- * Relies on information in the table of operation metadata
- * %r_ops_precedence.
- */
-bool r_op_has_precedence(enum r_operator x, enum r_operator y) {
-  if (x == R_OP_NONE || x > R_OP_MAX || y > R_OP_MAX) {
+bool op_has_precedence_impl(enum r_operator x, enum r_operator parent, int side) {
+  if (x > R_OP_MAX || parent > R_OP_MAX) {
     r_abort("Internal error: `enum r_operator` out of bounds");
+  }
+  if (x == R_OP_NONE) {
+    return true;
+  }
+  if (parent == R_OP_NONE) {
+    return true;
   }
 
   struct r_op_precedence x_info = r_ops_precedence[x];
-  struct r_op_precedence y_info = r_ops_precedence[y];
+  struct r_op_precedence y_info = r_ops_precedence[parent];
 
   if (x_info.delimited) {
     return true;
@@ -356,9 +356,21 @@ bool r_op_has_precedence(enum r_operator x, enum r_operator y) {
   uint8_t y_power = y_info.power;
 
   if (x_power == y_power) {
-    return r_ops_precedence[x].assoc == -1;
+    if (side == 0) {
+      r_abort("Internal error: Unspecified direction of associativity");
+    }
+    return r_ops_precedence[x].assoc == side;
   } else {
     return x_power > y_power;
   }
 }
 
+bool r_op_has_precedence(enum r_operator x, enum r_operator parent) {
+  return op_has_precedence_impl(x, parent, 0);
+}
+bool r_lhs_op_has_precedence(enum r_operator lhs, enum r_operator parent) {
+  return op_has_precedence_impl(lhs, parent, -1);
+}
+bool r_rhs_op_has_precedence(enum r_operator rhs, enum r_operator parent) {
+  return op_has_precedence_impl(rhs, parent, 1);
+}
