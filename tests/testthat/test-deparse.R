@@ -159,6 +159,30 @@ test_that("environments are deparsed", {
   expect_identical(sexp_deparse(expr(foo(!! env()))), "foo(<environment>)")
 })
 
+test_that("atomic vectors are deparsed", {
+  expect_identical(sexp_deparse(set_names(c(TRUE, FALSE, TRUE), c("", "b", ""))), "<lgl TRUE, b = FALSE, TRUE>")
+  expect_identical(sexp_deparse(set_names(1:3, c("", "b", ""))), "<int 1L, b = 2L, 3L>")
+  expect_identical(sexp_deparse(set_names(c(1, 2, 3), c("", "b", ""))), "<dbl 1, b = 2, 3>")
+  expect_identical(sexp_deparse(set_names(as.complex(1:3), c("", "b", ""))), "<cpl 1+0i, b = 2+0i, 3+0i>")
+  expect_identical(sexp_deparse(set_names(as.character(1:3), c("", "b", ""))), "<chr \"1\", b = \"2\", \"3\">")
+  expect_identical(sexp_deparse(set_names(as.raw(1:3), c("", "b", ""))), "<raw 01, b = 02, 03>")
+})
+
+test_that("boundaries are respected when deparsing vectors", {
+  ctxt <- new_lines(width = 1L)
+  vec <- set_names(1:3, c("", "b", ""))
+  expect_identical_(sexp_deparse(expr(foo(!!vec)), ctxt), c("foo(", "  <int", "    1L,", "    b = 2L,", "    3L>)"))
+})
+
+test_that("scalar atomic vectors are simply printed", {
+  expect_identical(sexp_deparse(TRUE), "TRUE")
+  expect_identical(sexp_deparse(1L), "1L")
+  expect_identical(sexp_deparse(1), "1")
+  expect_identical(sexp_deparse(1i), "0+1i")
+  expect_identical(sexp_deparse("1"), "\"1\"")
+  expect_identical(sexp_deparse(set_names(as.raw(1:3), c("", "b", ""))), "<raw 01, b = 02, 03>")
+})
+
 test_that("other objects are deparsed with base deparser", {
   expect_identical_(sexp_deparse(expr(foo((!!base::list)(1, 2)))), "foo(.Primitive(\"list\")(1, 2))")
   expect_identical_(sexp_deparse(expr(foo((!!base::`if`)(1, 2)))), "foo(.Primitive(\"if\")(1, 2))")

@@ -409,12 +409,64 @@ call_deparser <- function(x) {
   }
 }
 
+short_typeof <- function(x) {
+  switch (typeof(x),
+    logical = "lgl",
+    integer = "int",
+    double = "dbl",
+    complex = "cpl",
+    character = "chr",
+    raw = "raw",
+    list = "list",
+    abort("Internal error: Unimplemented short type")
+  )
+}
+atom_elements <- function(x) {
+  elts <- as.character(x)
+  switch (typeof(x),
+    integer = paste0(elts, "L"),
+    character = paste0("\"", elts, "\""),
+    elts
+  )
+}
+atom_deparser <- function(x, lines = new_lines()) {
+  if (length(x) == 1 && !is_named(x)) {
+    lines$push(atom_elements(x))
+    return(NULL)
+  }
+
+  lines$push(paste0("<", short_typeof(x), " "))
+  lines$increase_indent()
+
+  elts <- atom_elements(x)
+  nms <- names2(x)
+
+  n <- length(elts)
+  for (i in seq_len(n)) {
+    nm <- nms[[i]]
+    if (nzchar(nm)) {
+      lines$push(paste0(nm, " = "))
+      lines$make_next_sticky()
+    }
+
+    lines$push(elts[[i]])
+
+    if (i != n) {
+      lines$push_sticky(", ")
+    }
+  }
+
+  lines$push_sticky(">")
+  lines$decrease_indent()
+
+  lines$get_lines()
+}
+
 literal_deparser <- function(type) {
   function(x, lines = new_lines()) {
     lines$push(paste0("<", type, ">"))
   }
 }
-
 default_deparse <- function(x, lines = new_lines()) {
   lines$push(deparse(x, control = "keepInteger"))
   lines$get_lines()
@@ -431,7 +483,15 @@ sexp_deparse <- function(x, lines = new_lines()) {
     externalptr = literal_deparser("pointer"),
     promise = literal_deparser("promise"),
     weakref = literal_deparser("weakref"),
+    logical = ,
+    integer = ,
+    double = ,
+    complex = ,
+    character = ,
+    raw = atom_deparser,
     default_deparse
   )
   deparser(x, lines)
+
+  lines$get_lines()
 }
