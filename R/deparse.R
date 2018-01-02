@@ -409,6 +409,12 @@ call_deparser <- function(x) {
   }
 }
 
+literal_deparser <- function(type) {
+  function(x, lines = new_lines()) {
+    lines$push(paste0("<", type, ">"))
+  }
+}
+
 default_deparse <- function(x, lines = new_lines()) {
   lines$push(deparse(x, control = "keepInteger"))
   lines$get_lines()
@@ -419,6 +425,12 @@ sexp_deparse <- function(x, lines = new_lines()) {
     symbol = sym_deparse,
     language = call_deparser(x),
     closure = fn_deparse,
+    `...` = literal_deparser("..."),
+    any = literal_deparser("any"),
+    environment = literal_deparser("environment"),
+    externalptr = literal_deparser("pointer"),
+    promise = literal_deparser("promise"),
+    weakref = literal_deparser("weakref"),
     default_deparse
   )
   deparser(x, lines)

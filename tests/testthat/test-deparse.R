@@ -143,8 +143,23 @@ test_that("literal functions are deparsed", {
   expect_identical_(sexp_deparse(expr(foo(!!function(a) 1))), "foo(<function(a) 1>)")
 })
 
-test_that("other objects are deparsed with base deparser", {
+test_that("literal dots are deparsed", {
+  dots <- (function(...) env_get(, "..."))(NULL)
+  expect_identical_(sexp_deparse(expr(foo(!!dots))), "foo(<...>)")
+})
+
+test_that("pointers are deparsed", {
+  ptr <- rlang_which_operator$address
+  if (!is_null(ptr)) {
+    expect_identical_(sexp_deparse(expr(foo(!!ptr))), "foo(<pointer>)")
+  }
+})
+
+test_that("environments are deparsed", {
   expect_identical(sexp_deparse(expr(foo(!! env()))), "foo(<environment>)")
+})
+
+test_that("other objects are deparsed with base deparser", {
   expect_identical_(sexp_deparse(expr(foo((!!base::list)(1, 2)))), "foo(.Primitive(\"list\")(1, 2))")
   expect_identical_(sexp_deparse(expr(foo((!!base::`if`)(1, 2)))), "foo(.Primitive(\"if\")(1, 2))")
 })
