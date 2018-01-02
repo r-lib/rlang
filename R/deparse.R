@@ -409,18 +409,6 @@ call_deparser <- function(x) {
   }
 }
 
-short_typeof <- function(x) {
-  switch (typeof(x),
-    logical = "lgl",
-    integer = "int",
-    double = "dbl",
-    complex = "cpl",
-    character = "chr",
-    raw = "raw",
-    list = "list",
-    abort("Internal error: Unimplemented short type")
-  )
-}
 atom_elements <- function(x) {
   elts <- as.character(x)
   switch (typeof(x),
@@ -435,7 +423,7 @@ atom_deparse <- function(x, lines = new_lines()) {
     return(NULL)
   }
 
-  lines$push(paste0("<", short_typeof(x), " "))
+  lines$push(paste0("<", rlang_type_sum(x), ": "))
   lines$increase_indent()
 
   elts <- atom_elements(x)
@@ -463,7 +451,7 @@ atom_deparse <- function(x, lines = new_lines()) {
 }
 
 list_deparse <- function(x, lines = new_lines()) {
-  lines$push(paste0("<", short_typeof(x), " "))
+  lines$push(paste0("<list: "))
   lines$increase_indent()
 
   nms <- names2(x)
