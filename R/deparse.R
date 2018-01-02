@@ -59,10 +59,15 @@ trim_leading_spaces <- function(line) {
   sub("^ *", "", line)
 }
 
-new_lines <- function(width = peek_option("width")) {
+new_lines <- function(width = peek_option("width"),
+                      deparser = sexp_deparse) {
   width <- width %||% 60L
 
   r6lite(
+    deparse = function(self, x) {
+      deparser(x, lines = self)
+    },
+
     width = width,
     indent = 0L,
     boundary = NULL,
@@ -155,7 +160,7 @@ fmls_deparse <- function(x, lines = new_lines()) {
     if (!is_missing(car)) {
       lines$push_sticky(" = ")
       lines$make_next_sticky()
-      sexp_deparse(node_car(x), lines)
+      lines$deparse(node_car(x))
     }
 
     x <- node_cdr(x)
@@ -178,7 +183,7 @@ fn_call_deparse <- function(x, lines = new_lines()) {
   lines$push(" ")
 
   x <- node_cdr(x)
-  sexp_deparse(node_car(x), lines)
+  lines$deparse(node_car(x))
 
   lines$get_lines()
 }
@@ -191,7 +196,7 @@ fn_deparse <- function(x, lines) {
   fmls_deparse(fn_fmls(x), lines)
   lines$push(" ")
 
-  sexp_deparse(body(x), lines)
+  lines$deparse(body(x))
   lines$push_sticky(">")
 
   lines$get_lines()
@@ -200,47 +205,47 @@ fn_deparse <- function(x, lines) {
 while_deparse <- function(x, lines = new_lines()) {
   x <- node_cdr(x)
   lines$push("while (")
-  sexp_deparse(node_car(x), lines)
+  lines$deparse(node_car(x))
 
   x <- node_cdr(x)
   lines$push(") ")
-  sexp_deparse(node_car(x), lines)
+  lines$deparse(node_car(x))
 
   lines$get_lines()
 }
 for_deparse <- function(x, lines = new_lines()) {
   x <- node_cdr(x)
   lines$push("for (")
-  sexp_deparse(node_car(x), lines)
+  lines$deparse(node_car(x))
 
   x <- node_cdr(x)
   lines$push(" in ")
-  sexp_deparse(node_car(x), lines)
+  lines$deparse(node_car(x))
 
   x <- node_cdr(x)
   lines$push(") ")
-  sexp_deparse(node_car(x), lines)
+  lines$deparse(node_car(x))
 
   lines$get_lines()
 }
 repeat_deparse <- function(x, lines = new_lines()) {
   lines$push("repeat ")
-  sexp_deparse(node_cadr(x), lines)
+  lines$deparse(node_cadr(x))
   lines$get_lines()
 }
 if_deparse <- function(x, lines = new_lines()) {
   x <- node_cdr(x)
   lines$push("if (")
-  sexp_deparse(node_car(x), lines)
+  lines$deparse(node_car(x))
 
   x <- node_cdr(x)
   lines$push(") ")
-  sexp_deparse(node_car(x), lines)
+  lines$deparse(node_car(x))
 
   x <- node_cdr(x)
   if (!is_null(x)) {
     lines$push(" else ")
-    sexp_deparse(node_car(x), lines)
+    lines$deparse(node_car(x))
   }
 
   lines$get_lines()
@@ -257,7 +262,7 @@ operand_deparse <- function(x, parent, side, lines) {
     lines$make_next_sticky()
   }
 
-  sexp_deparse(x, lines)
+  lines$deparse(x)
 
   if (wrap) {
     lines$push_sticky(")")
@@ -288,13 +293,13 @@ unspaced_op_deparse <- function(x, lines = new_lines()) {
 unary_op_deparse <- function(x, lines = new_lines()) {
   op <- as_string(node_car(x))
   lines$push(op)
-  sexp_deparse(node_cadr(x), lines)
+  lines$deparse(node_cadr(x))
   lines$get_lines()
 }
 
 parens_deparse <- function(x, lines = new_lines()) {
   lines$push("(")
-  sexp_deparse(node_cadr(x), lines)
+  lines$deparse(node_cadr(x))
   lines$push(")")
 
   lines$get_lines()
@@ -306,7 +311,7 @@ braces_deparse <- function(x, lines = new_lines()) {
   x <- node_cdr(x)
   while (!is_null(x)) {
     lines$push_newline()
-    sexp_deparse(node_car(x), lines)
+    lines$deparse(node_car(x))
     x <- node_cdr(x)
   }
 
@@ -332,7 +337,7 @@ args_deparse <- function(x, lines = new_lines()) {
       lines$push_sticky(" = ")
       lines$make_next_sticky()
     }
-    sexp_deparse(node_car(x), lines)
+    lines$deparse(node_car(x))
 
     x <- node_cdr(x)
     if (!is_null(x)) {
@@ -346,7 +351,7 @@ args_deparse <- function(x, lines = new_lines()) {
   lines$get_lines()
 }
 call_deparse <- function(x, lines = new_lines()) {
-  sexp_deparse(node_car(x), lines)
+  lines$deparse(node_car(x))
   args_deparse(node_cdr(x), lines)
 }
 
@@ -464,7 +469,7 @@ list_deparse <- function(x, lines = new_lines()) {
       lines$make_next_sticky()
     }
 
-    sexp_deparse(x[[i]], lines)
+    lines$deparse(x[[i]])
 
     if (i != n) {
       lines$push_sticky(", ")
