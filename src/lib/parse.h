@@ -72,7 +72,12 @@ struct r_op_precedence {
 };
 
 const struct r_op_precedence r_ops_precedence[R_OP_MAX];
-bool r_call_has_precedence(sexp* x, sexp* y);
+
+bool r_op_has_precedence(enum r_operator x, enum r_operator y);
+
+static inline bool r_call_has_precedence(sexp* x, sexp* y) {
+  return r_op_has_precedence(r_which_operator(x), r_which_operator(y));
+}
 
 
 #endif

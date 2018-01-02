@@ -330,3 +330,35 @@ enum r_operator r_which_operator(sexp* call) {
     return R_OP_NONE;
   }
 }
+
+/**
+ * r_op_has_precedence() - Does an operation have precedence over another?
+ *
+ * Relies on information in the table of operation metadata
+ * %r_ops_precedence.
+ */
+bool r_op_has_precedence(enum r_operator x, enum r_operator y) {
+  if (x == R_OP_NONE || x > R_OP_MAX || y > R_OP_MAX) {
+    r_abort("Internal error: `enum r_operator` out of bounds");
+  }
+
+  struct r_op_precedence x_info = r_ops_precedence[x];
+  struct r_op_precedence y_info = r_ops_precedence[y];
+
+  if (x_info.delimited) {
+    return true;
+  }
+  if (y_info.delimited) {
+    return false;
+  }
+
+  uint8_t x_power = x_info.power;
+  uint8_t y_power = y_info.power;
+
+  if (x_power == y_power) {
+    return r_ops_precedence[x].assoc == -1;
+  } else {
+    return x_power > y_power;
+  }
+}
+

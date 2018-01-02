@@ -245,38 +245,6 @@ bool is_unary_plusminus(sexp* x) {
 }
 
 /**
- * op_has_precedence() - Does an operation have precedence over another?
- *
- * Relies on information in the table of operation metadata
- * %r_ops_precedence.
- */
-bool op_has_precedence(enum r_operator x, enum r_operator y) {
-  if (x == R_OP_NONE || x > R_OP_MAX || y > R_OP_MAX) {
-    r_abort("Internal error: `enum r_operator` out of bounds");
-  }
-
-  struct r_op_precedence x_info = r_ops_precedence[x];
-  struct r_op_precedence y_info = r_ops_precedence[y];
-
-  if (x_info.delimited) {
-    return true;
-  }
-  if (y_info.delimited) {
-    return false;
-  }
-
-  uint8_t x_power = x_info.power;
-  uint8_t y_power = y_info.power;
-
-  if (x_power == y_power) {
-    return r_ops_precedence[x].assoc == -1;
-  } else {
-    return x_power > y_power;
-  }
-}
-
-
-/**
  * struct ast_rotation_info - Rotation data gathered while recursing over AST
  *
  * @upper_pivot_op: The operation type of the upper pivot.
@@ -329,7 +297,7 @@ static sexp* maybe_rotate(sexp* op, sexp* env, struct ast_rotation_info* info) {
   }
 
   // Rotate if `op` is the upper root
-  if (op_has_precedence(r_which_operator(op), info->upper_pivot_op)) {
+  if (r_op_has_precedence(r_which_operator(op), info->upper_pivot_op)) {
     // Swap the lower root's RHS with the lower pivot's LHS
     r_node_poke_car(info->lower_root, r_node_cadr(info->lower_pivot));
     r_node_poke_cadr(info->lower_pivot, op);
@@ -493,7 +461,7 @@ static void find_lower_pivot(sexp* x, sexp* parent_node, sexp* env,
     return;
   }
 
-  if (!op_has_precedence(info->upper_pivot_op, lhs_op)) {
+  if (!r_op_has_precedence(info->upper_pivot_op, lhs_op)) {
     info->lower_pivot = x;
   }
 
@@ -593,7 +561,7 @@ static void node_list_interp_fixup_rhs(sexp* rhs, sexp* rhs_node, sexp* parent,
 
     // This might the upper root around which to rotate
     if (info->upper_pivot_op
-        && op_has_precedence(r_which_operator(rhs), info->upper_pivot_op)) {
+        && r_op_has_precedence(r_which_operator(rhs), info->upper_pivot_op)) {
       info->upper_root = rhs;
       info->root_parent = parent;
     }
