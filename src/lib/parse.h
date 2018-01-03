@@ -54,6 +54,7 @@ enum r_operator {
 };
 
 enum r_operator r_which_operator(sexp* call);
+const char* r_op_as_c_string(enum r_operator op);
 
 
 /**
