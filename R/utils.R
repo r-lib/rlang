@@ -216,3 +216,10 @@ r6lite <- function(...) {
 child_r6lite <- function(.parent, ...) {
   structure(child_env(.parent, ...), class = "r6lite")
 }
+
+inc <- function(x) {
+  x + 1L
+}
+dec <- function(x) {
+  x - 1L
+}

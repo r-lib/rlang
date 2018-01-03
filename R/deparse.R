@@ -74,9 +74,11 @@ new_lines <- function(width = peek_option("width"),
     },
 
     width = width,
-    indent = 0L,
     boundary = NULL,
     next_sticky = FALSE,
+
+    indent = pairlist(node(0L, 0L)),
+    next_indent_sticky = FALSE,
 
     has_colour = FALSE,
 
@@ -86,6 +88,13 @@ new_lines <- function(width = peek_option("width"),
     get_lines = function(self) {
       c(self$lines, self$last_line)
     },
+    get_indent = function(self) {
+      indent <- node_car(self$indent)
+      if (is_null(indent)) {
+        warn("Internal problem: empty `indent` detected while deparsing")
+      }
+      node_car(indent)
+    },
 
     push = function(self, lines) {
       stopifnot(is_character(lines))
@@ -94,13 +103,12 @@ new_lines <- function(width = peek_option("width"),
       }
       self
     },
-
     push_one = function(self, line) {
       line <- line_push(self$last_line, line,
         sticky = self$next_sticky,
         boundary = self$boundary,
         width = self$width,
-        indent = self$indent,
+        indent = self$get_indent(),
         has_colour = self$has_colour
       )
       n <- length(line)
@@ -109,6 +117,7 @@ new_lines <- function(width = peek_option("width"),
         self$lines <- c(self$lines, line[-n])
         self$last_line <- line[[n]]
         self$boundary <- NULL
+        self$next_indent_sticky <- FALSE
       } else if (n) {
         self$last_line <- line
         if (self$next_sticky) {
@@ -122,11 +131,11 @@ new_lines <- function(width = peek_option("width"),
 
     push_newline = function(self) {
       self$lines <- c(self$lines, self$last_line)
-      self$last_line <- spaces(self$indent)
+      self$last_line <- spaces(self$get_indent())
       self$next_sticky <- FALSE
+      self$next_indent_sticky <- FALSE
       self
     },
-
     push_sticky = function(self, line) {
       stopifnot(is_string(line))
       self$next_sticky <- TRUE
@@ -137,21 +146,37 @@ new_lines <- function(width = peek_option("width"),
 
     make_next_sticky = function(self) {
       self$next_sticky <- TRUE
+      self
     },
-
     set_boundary = function(self) {
       self$boundary <- nchar(self$last_line)
+      self
     },
+
     increase_indent = function(self) {
-      self$indent <- self$indent + 2L
+      indent <- node_car(self$indent)
+
+      if (self$next_indent_sticky) {
+        node_poke_cdr(indent, inc(node_cdr(indent)))
+      } else {
+        level <- node_car(indent)
+        self$indent <- node(node(level + 2L, 0L), self$indent)
+        self$next_indent_sticky <- TRUE
+      }
+
       self
     },
     decrease_indent = function(self) {
-      self$indent <- self$indent - 2L
-      if (self$indent < 0L) {
-        warn("Internal problem: Negative indent detected")
-        self$indent <- 0L
+      indent <- node_car(self$indent)
+
+      n_sticky <- node_cdr(indent)
+      if (n_sticky > 1L) {
+        node_poke_cdr(indent, dec(n_sticky))
+      } else {
+        self$indent <- node_cdr(self$indent)
+        self$next_indent_sticky <- FALSE
       }
+
       self
     }
   )
@@ -188,24 +213,27 @@ fn_call_deparse <- function(x, lines = new_lines()) {
   x <- node_cdr(x)
   fmls_deparse(node_car(x), lines)
 
-  lines$push(" ")
+  lines$push_sticky(" ")
+  lines$increase_indent()
 
   x <- node_cdr(x)
   lines$deparse(node_car(x))
+  lines$decrease_indent()
 
   lines$get_lines()
 }
 
 fn_deparse <- function(x, lines) {
-  lines$push("<")
-  lines$make_next_sticky()
-  lines$push("function")
+  lines$push("<function")
 
   fmls_deparse(fn_fmls(x), lines)
-  lines$push(" ")
+
+  lines$push_sticky(" ")
+  lines$increase_indent()
 
   lines$deparse(body(x))
   lines$push_sticky(">")
+  lines$decrease_indent()
 
   lines$get_lines()
 }

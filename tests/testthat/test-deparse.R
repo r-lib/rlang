@@ -49,17 +49,35 @@ test_that("control flow is deparsed", {
   expect_identical(if_deparse(quote(if (1) 2 else { 3 })), c("if (1) 2 else {", "  3", "}"))
 })
 
+test_that("functions defs increase indent", {
+  ctxt <- new_lines(width = 3L)
+  expect_identical(sexp_deparse(quote(function() 1), ctxt), c("function()", "  1"))
+
+  ctxt <- new_lines(width = 3L)
+  expect_identical(sexp_deparse(function() 1, ctxt), c("<function()", "  1>"))
+})
+
 test_that("blocks are deparsed", {
   expect_identical(braces_deparse(quote({1; 2; { 3; 4 }})), c("{", "  1", "  2", "  {", "    3", "    4", "  }", "}"))
+  expect_identical(sexp_deparse(quote({{ 1 }})), c("{", "  {", "    1", "  }", "}"))
 
   ctxt <- new_lines(width = 3L)
   expected_lines <- c("{", "  11111", "  22222", "  {", "    33333", "    44444", "  }", "}")
   expect_identical(braces_deparse(quote({11111; 22222; { 33333; 44444 }}), ctxt), expected_lines)
 })
 
+test_that("multiple openers on the same line only trigger one indent", {
+  ctxt <- new_lines(width = 3L)
+  expect_identical(sexp_deparse(quote(function() { 1 }), ctxt), c("function()", "  {", "    1", "  }"))
+
+  ctxt <- new_lines(width = 12L)
+  expect_identical(sexp_deparse(quote(function() { 1 }), ctxt), c("function() {", "  1", "}"))
+})
+
 test_that("parentheses are deparsed", {
   expect_identical(parens_deparse(quote((1))), "(1)")
   expect_identical(parens_deparse(quote(({ 1; 2 }))), c("({", "  1", "  2", "})"))
+  expect_identical(sexp_deparse(quote(({({ 1 })}))), c("({", "  ({", "    1", "  })", "})"))
 })
 
 test_that("spaced operators are deparsed", {
@@ -140,7 +158,7 @@ test_that("call_deparse() handles multi-line arguments", {
   expect_identical(sexp_deparse(quote(foo(one = 1, two = nested(one = 1, two = 2))), ctxt), c("foo(", "  one = 1,", "  two = nested(", "    one = 1,", "    two = 2))"))
 
   ctxt <- new_lines(width = 20L)
-  expect_identical(sexp_deparse(quote(foo(one = 1, two = nested(one = 1, two = 2))), ctxt), c("foo(one = 1, two = nested(", "    one = 1, two = 2))"))
+  expect_identical(sexp_deparse(quote(foo(one = 1, two = nested(one = 1, two = 2))), ctxt), c("foo(one = 1, two = nested(", "  one = 1, two = 2))"))
 })
 
 test_that("literal functions are deparsed", {
@@ -170,6 +188,9 @@ test_that("boundaries are respected when deparsing vectors", {
   ctxt <- new_lines(width = 1L)
   vec <- set_names(1:3, c("", "b", ""))
   expect_identical_(sexp_deparse(expr(foo(!!vec)), ctxt), c("foo(", "  <int:", "    1L,", "    b = 2L,", "    3L>)"))
+
+  ctxt <- new_lines(width = 12L)
+  expect_identical(sexp_deparse(list(c("foo", "bar", "baz")), ctxt), c("<list: <chr:", "  \"foo\",", "  \"bar\",", "  \"baz\">>"))
 })
 
 test_that("scalar atomic vectors are simply printed", {
@@ -196,4 +217,14 @@ test_that("other objects are deparsed with base deparser", {
 test_that("S3 objects are deparsed", {
   expr <- expr(list(!!factor(1:3), !!structure(list(), class = c("foo", "bar", "baz"))))
   expect_identical(sexp_deparse(expr), "list(<fct>, <S3: foo>)")
+})
+
+test_that("successive indentations on a single line are only counted once", {
+  ctxt <- new_lines(5L)
+  broken_output <- c("<list:", "  <chr:", "    foo = \"bar\",", "    baz = \"bam\">>")
+  expect_identical(sexp_deparse(list(c(foo = "bar", baz = "bam")), ctxt), broken_output)
+
+  ctxt <- new_lines(12L)
+  unbroken_output <- c("<list: <chr:", "  foo = \"bar\",", "  baz = \"bam\">>")
+  expect_identical(sexp_deparse(list(c(foo = "bar", baz = "bam")), ctxt), unbroken_output)
 })
