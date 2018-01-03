@@ -546,7 +546,7 @@ new_quo_deparser <- function(width = peek_option("width"),
 
     quo_open_colour = function(self, env) {
       if (self$has_colour) {
-        if (is_reference(env, global_env())) {
+        if (is_reference(env, global_env()) || is_reference(env, empty_env())) {
           self$quo_push_opener(close_colour)
           return(NULL)
         }
