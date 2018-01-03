@@ -3,7 +3,8 @@ line_push <- function(line, text,
                       sticky = FALSE,
                       boundary = NULL,
                       width = NULL,
-                      indent = 0L) {
+                      indent = 0L,
+                      has_colour = FALSE) {
   if (!length(line)) {
     return(text)
   }
@@ -15,7 +16,7 @@ line_push <- function(line, text,
   }
   width <- width %||% peek_option("width")
 
-  if (!has_overflown(line, text, width)) {
+  if (!has_overflown(line, text, width, has_colour)) {
     return(paste0(line, text))
   }
 
@@ -25,7 +26,7 @@ line_push <- function(line, text,
     # Trim trailing spaces after boundary
     second <- trim_leading_spaces(second)
     second <- paste0(spaces(indent), second)
-    if (sticky || !has_overflown(second, text, width)) {
+    if (sticky || !has_overflown(second, text, width, has_colour)) {
       line <- trim_trailing_spaces(first)
       text <- paste0(second, text)
     } else {
@@ -48,7 +49,11 @@ spaces <- function(n) {
 is_spaces <- function(str) {
   identical(str, spaces(nchar(str)))
 }
-has_overflown <- function(line, text, width) {
+has_overflown <- function(line, text, width, has_colour) {
+  if (has_colour) {
+    line <- strip_style(line)
+    text <- strip_style(text)
+  }
   text <- trim_trailing_spaces(text)
   nchar(line) + nchar(text) > width && !is_spaces(line)
 }
@@ -73,6 +78,8 @@ new_lines <- function(width = peek_option("width"),
     boundary = NULL,
     next_sticky = FALSE,
 
+    has_colour = FALSE,
+
     lines = chr(),
     last_line = chr(),
 
@@ -93,7 +100,8 @@ new_lines <- function(width = peek_option("width"),
         sticky = self$next_sticky,
         boundary = self$boundary,
         width = self$width,
-        indent = self$indent
+        indent = self$indent,
+        has_colour = self$has_colour
       )
       n <- length(line)
 

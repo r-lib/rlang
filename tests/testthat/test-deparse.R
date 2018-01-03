@@ -31,6 +31,11 @@ test_that("line_push() handles the nchar(line) == boundary case", {
   expect_identical(line_push("  tag = ", "bar", sticky = TRUE, boundary = 8L, width = 3L, indent = 2L), "  tag = bar")
 })
 
+test_that("line_push() strips ANSI codes before computing overflow", {
+  expect_identical(length(line_push("foo", open_blue(), width = 3L)), 2L)
+  expect_identical(length(line_push("foo", open_blue(), width = 3L, has_colour = TRUE)), 1L)
+})
+
 test_that("can push several lines (useful for default base deparser)", {
   expect_identical(new_lines()$push(c("foo", "bar"))$get_lines(), "foobar")
 })

@@ -163,6 +163,14 @@ close_style <- function(style) {
   paste0("\u001b[", codes[[style]][[2]], "m")
 }
 
+ansi_regex <- paste0(
+  "(?:(?:\\x{001b}\\[)|\\x{009b})",
+  "(?:(?:[0-9]{1,3})?(?:(?:;[0-9]{0,3})*)?[A-M|f-m])",
+  "|\\x{001b}[A-M]"
+)
+strip_style <- function(x) {
+  gsub(ansi_regex, "", x, perl = TRUE)
+}
 
 codes <- list(
   reset =           c(0L, 0L),
