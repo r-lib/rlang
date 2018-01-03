@@ -140,7 +140,7 @@ cyan <- function(x) {
 }
 
 `$.r6lite` <- function(self, arg) {
-  field <- env_get(self, as_string(substitute(arg)))
+  field <- env_get(self, as_string(substitute(arg)), inherit = TRUE)
 
   if (is_function(field)) {
     expr_interp(function(...) {
@@ -154,4 +154,7 @@ cyan <- function(x) {
 }
 r6lite <- function(...) {
   structure(new_environment(dots_list(...)), class = "r6lite")
+}
+child_r6lite <- function(.parent, ...) {
+  structure(child_env(.parent, ...), class = "r6lite")
 }
