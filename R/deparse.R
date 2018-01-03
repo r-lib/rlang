@@ -333,6 +333,33 @@ unary_op_deparse <- function(x, lines = new_lines()) {
   lines$get_lines()
 }
 
+brackets_deparse <- function(x, lines = new_lines()) {
+  x <- node_cdr(x)
+  lines$deparse(node_car(x))
+  lines$push_sticky("[")
+  lines$increase_indent()
+
+  x <- node_cdr(x)
+  lines$deparse(node_car(x))
+  lines$push_sticky("]")
+  lines$decrease_indent()
+
+  lines$get_lines()
+}
+brackets2_deparse <- function(x, lines = new_lines()) {
+  x <- node_cdr(x)
+  lines$deparse(node_car(x))
+  lines$push_sticky("[[")
+  lines$increase_indent()
+
+  x <- node_cdr(x)
+  lines$deparse(node_car(x))
+  lines$push_sticky("]]")
+  lines$decrease_indent()
+
+  lines$get_lines()
+}
+
 parens_deparse <- function(x, lines = new_lines()) {
   lines$push("(")
   lines$deparse(node_cadr(x))
@@ -433,6 +460,8 @@ op_deparse <- function(op, x, lines) {
     `!!` = ,
     `+unary` = ,
     `-unary` =  unary_op_deparse,
+    `[` = brackets_deparse,
+    `[[` = brackets2_deparse,
     `(` = parens_deparse,
     `{` = braces_deparse,
     abort("Internal error: Unexpected operator while deparsing")

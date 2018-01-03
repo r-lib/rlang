@@ -137,6 +137,16 @@ test_that("unary operators are deparsed", {
   expect_identical(unary_op_deparse(quote(-1)), "-1")
 })
 
+test_that("brackets are deparsed", {
+  expect_identical(sexp_deparse(quote(1[2])), c("1[2]"))
+  expect_identical(sexp_deparse(quote(1[[2]])), c("1[[2]]"))
+
+  ctxt <- new_lines(width = 1L)
+  expect_identical(sexp_deparse(quote(1[2]), ctxt), c("1[", "  2]"))
+  ctxt <- new_lines(width = 1L)
+  expect_identical(sexp_deparse(quote(1[[2]]), ctxt), c("1[[", "  2]]"))
+})
+
 test_that("calls are deparsed", {
   expect_identical(call_deparse(quote(foo(bar, baz))), "foo(bar, baz)")
   expect_identical(call_deparse(quote(foo(one = bar, two = baz))), "foo(one = bar, two = baz)")
