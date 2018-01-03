@@ -558,7 +558,16 @@ new_quo_deparser <- function(width = peek_option("width"),
 }
 
 quo_print <- function(quo) {
-  cat(paste0(quo_deparse(quo), "\n"))
+  # Take into account the first 8-character wide columns
+  width <- peek_option("width") - 10L
+  deparser <- new_quo_deparser(width = width)
+
+  lines <- quo_deparse(quo, deparser)
+
+  n <- length(lines)
+  lines[seq2(2, n)] <- paste0("       ", lines[seq2(2, n)])
+
+  cat(paste0(lines, "\n"))
 }
 quo_env_print <- function(env) {
   if (is_reference(env, global_env())) {

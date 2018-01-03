@@ -138,6 +138,12 @@ test_that("quo_deparse() indicates quosures with `^`", {
   expect_identical(quo_deparse(x, ctxt), "^list(^NULL, ^foo())")
 })
 
+test_that("quosure deparser respects width", {
+  x <- quo(foo(quo(!!quo(bar))))
+  expect_identical(length(quo_deparse(x, new_quo_deparser(width = 8L))), 3L)
+  expect_identical(length(quo_deparse(x, new_quo_deparser(width = 9L))), 2L)
+})
+
 test_that("quosure predicates work", {
   expect_true(quo_is_missing(quo()))
   expect_true(quo_is_symbol(quo(sym)))
