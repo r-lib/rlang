@@ -77,7 +77,8 @@ new_lines <- function(width = peek_option("width"),
     boundary = NULL,
     next_sticky = FALSE,
 
-    indent = pairlist(node(0L, 0L)),
+    indent = 0L,
+    indent_status = pairlist(),
     next_indent_sticky = FALSE,
 
     has_colour = FALSE,
@@ -89,11 +90,7 @@ new_lines <- function(width = peek_option("width"),
       c(self$lines, self$last_line)
     },
     get_indent = function(self) {
-      indent <- node_car(self$indent)
-      if (is_null(indent)) {
-        warn("Internal problem: empty `indent` detected while deparsing")
-      }
-      node_car(indent)
+      self$indent
     },
 
     push = function(self, lines) {
@@ -154,26 +151,40 @@ new_lines <- function(width = peek_option("width"),
     },
 
     increase_indent = function(self) {
-      indent <- node_car(self$indent)
+      status <- node_car(self$indent_status)
 
       if (self$next_indent_sticky) {
-        node_poke_cdr(indent, inc(node_cdr(indent)))
+        node_poke_cdr(status, inc(node_cdr(status)))
       } else {
-        level <- node_car(indent)
-        self$indent <- node(node(level + 2L, 0L), self$indent)
+        self$indent <- self$indent + 2L
+        self$indent_status <- node(node(FALSE, 0L), self$indent_status)
         self$next_indent_sticky <- TRUE
       }
 
       self
     },
     decrease_indent = function(self) {
-      indent <- node_car(self$indent)
+      status <- node_car(self$indent_status)
+      if (is_null(status)) {
+        warn("Internal error: Detected NULL `status` while deparsing")
+        return(self)
+      }
 
-      n_sticky <- node_cdr(indent)
-      if (n_sticky > 1L) {
-        node_poke_cdr(indent, dec(n_sticky))
+      reset <- node_car(status)
+      n_sticky <- node_cdr(status)
+
+      # Decrease indent level only once for all the openers that were
+      # on a single line
+      if (!reset) {
+        self$indent <- self$indent - 2L
+        node_poke_car(status, FALSE)
+        self$next_indent_sticky <- FALSE
+      }
+
+      if (n_sticky >= 1L) {
+        node_poke_cdr(status, dec(n_sticky))
       } else {
-        self$indent <- node_cdr(self$indent)
+        self$indent_status <- node_cdr(self$indent_status)
         self$next_indent_sticky <- FALSE
       }
 

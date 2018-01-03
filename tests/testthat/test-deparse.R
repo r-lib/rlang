@@ -246,3 +246,9 @@ test_that("successive indentations on a single line are only counted once", {
   unbroken_output <- c("<list: <chr:", "  foo = \"bar\",", "  baz = \"bam\">>")
   expect_identical(sexp_deparse(list(c(foo = "bar", baz = "bam")), ctxt), unbroken_output)
 })
+
+test_that("successive indentations close off properly", {
+  expect_identical(sexp_deparse(quote(1(2(), 3(4())))), "1(2(), 3(4()))")
+  expect_identical(sexp_deparse(quote(1(2(), 3(4()))), new_lines(width = 1L)), c("1(", "  2(),", "  3(", "    4()))"))
+  expect_identical(sexp_deparse(expr(c((1), function() { 2 }))), c("c((1), function() {", "  2", "})"))
+})
