@@ -6,6 +6,7 @@
 // Examples of silent operators are `else` and `in`.
 enum r_operator {
   R_OP_NONE = 0,
+  R_OP_FUNCTION,
   R_OP_WHILE,
   R_OP_FOR,
   R_OP_REPEAT,
@@ -49,7 +50,6 @@ enum r_operator {
   R_OP_BRACKETS1,
   R_OP_BRACKETS2,
   R_OP_BRACES,
-  R_OP_FUNCTION,
   R_OP_MAX
 };
 

@@ -148,12 +148,6 @@ open_green <- function() if (has_crayon()) open_style("green")
 open_yellow <- function() if (has_crayon()) open_style("yellow")
 open_magenta <- function() if (has_crayon()) open_style("magenta")
 open_cyan <- function() if (has_crayon()) open_style("cyan")
-close_red <- function() if (has_crayon()) close_style("red")
-close_blue <- function() if (has_crayon()) close_style("blue")
-close_green <- function() if (has_crayon()) close_style("green")
-close_yellow <- function() if (has_crayon()) close_style("yellow")
-close_magenta <- function() if (has_crayon()) close_style("magenta")
-close_cyan <- function() if (has_crayon()) close_style("cyan")
 close_colour <- function() if (has_crayon()) "\u001b[39m"
 
 open_style <- function(style) {
