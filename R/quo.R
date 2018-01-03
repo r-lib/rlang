@@ -530,7 +530,7 @@ new_quo_deparser <- function(width = peek_option("width"),
     quo_envs = list(),
     quo_history = pairlist(),
     quo_colours = list(open_blue, open_green, open_magenta, open_cyan),
-    quo_was_italic = FALSE,
+    quo_was_too_many = FALSE,
 
     quo_push_opener = function(self, opener) {
       self$quo_history <- node(opener, self$quo_history)
@@ -555,8 +555,8 @@ new_quo_deparser <- function(width = peek_option("width"),
           idx <- n_known_envs + 1L
           opener <- self$quo_colours[[idx]]
         } else {
-          opener <- open_yellow_italic
-          self$quo_was_italic <- TRUE
+          opener <- open_blurred_italic
+          self$quo_was_too_many <- TRUE
         }
 
         self$quo_push_opener(opener)
@@ -565,8 +565,8 @@ new_quo_deparser <- function(width = peek_option("width"),
 
     quo_reset_colour = function(self) {
       if (self$has_colour) {
-        if (self$quo_was_italic) {
-          self$push_sticky(close_italic())
+        if (self$quo_was_too_many) {
+          self$push_sticky(close_blurred_italic())
         }
         self$quo_history <- node_cdr(self$quo_history)
         reset <- node_car(self$quo_history) %||% close_colour

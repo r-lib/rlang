@@ -151,7 +151,10 @@ open_cyan <- function() if (has_crayon()) open_style("cyan")
 
 close_colour <- function() if (has_crayon()) "\u001b[39m"
 close_italic <- function() if (has_crayon()) "\u001b[23m"
+
 open_yellow_italic <- function() if (has_crayon()) "\u001b[33m\u001b[3m"
+open_blurred_italic <- function() if (has_crayon()) "\u001b[2m\u001b[3m"
+close_blurred_italic <- function() if (has_crayon()) "\u001b[23m\u001b[22m"
 
 
 open_style <- function(style) {
