@@ -529,7 +529,13 @@ new_quo_deparser <- function(width = peek_option("width"),
 
     quo_envs = list(),
     quo_history = pairlist(),
-    quo_colours = list(open_blue, open_green, open_magenta, open_cyan),
+    quo_colours = list(
+      open_blue,
+      open_green,
+      open_magenta,
+      open_cyan,
+      open_yellow
+    ),
     quo_was_too_many = FALSE,
 
     quo_push_opener = function(self, opener) {
