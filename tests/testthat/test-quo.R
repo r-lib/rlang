@@ -132,22 +132,10 @@ test_that("quo_expr() warns", {
   expect_warning(quo_expr(quo(list(!! quo(foo))), warn = TRUE), "inner quosure")
 })
 
-test_that("print.quosure() indicates quosures with `^`", {
+test_that("quo_deparse() indicates quosures with `^`", {
   x <- quo(list(!! quo(NULL), !! quo(foo())))
-  expect_fixed_output(print(x), "^list(^NULL, ^foo())")
-
-  x <- quo(list(!!! 1:5))
-  expect_fixed_output(print(x), "^list(1L, 2L, 3L, 4L, 5L)")
-})
-
-test_that("print.quosure() handles S3 objects", {
-  expect_fixed_output(print(quo(!!factor(1:2))), "^<S3 object of class `factor`")
-  expect_fixed_output(print(quo(!!structure(list(), class = c("foo", "bar", "baz")))), "^<S3 object of class `foo`, `bar` and `baz`")
-})
-
-test_that("print.quosure() handles special calls", {
-  expect_fixed_output(print(quo(foo$bar)), "^foo$bar")
-  expect_fixed_output(print(quo(foo~bar)), "^foo ~ bar")
+  ctxt <- new_quo_deparser(crayon = FALSE)
+  expect_identical(quo_deparse(x, ctxt), "^list(^NULL, ^foo())")
 })
 
 test_that("quosure predicates work", {

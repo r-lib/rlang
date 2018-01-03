@@ -486,25 +486,13 @@ quo_flatten <- function(x, parent = NULL, warn = FALSE) {
 }
 
 # Create a circular list of colours. This infloops if printed in the REPL!
-quo_palette <- function() {
-  last_node <- node(cyan, NULL)
-  palette <- node(blue, node(green, node(magenta, last_node)))
+new_quo_palette <- function() {
+  last_node <- node(open_cyan, NULL)
+  palette <- node(open_blue, node(open_green, node(open_magenta, last_node)))
   node_poke_cdr(last_node, palette)
 
   # First node has no colour
-  node(identity, palette)
-}
-bump_quo_palette <- function(palette) {
-  if (is_null(palette)) {
-    quo_palette()
-  } else {
-    node_cdr(palette)
-  }
-}
-
-quo_cat <- function(palette, ...) {
-  col <- node_car(palette) %||% paste
-  cat(col(...))
+  node(close_colour, palette)
 }
 
 # Reproduces output of printed calls
@@ -512,56 +500,66 @@ base_deparse <- function(x) {
   deparse(x, control = "keepInteger")
 }
 
-quo_print <- function(x, parent = FALSE, palette = NULL) {
-  if (is_quosure(x)) {
-    palette <- bump_quo_palette(palette)
-
-    while (is_quosure(x)) {
-      quo_cat(palette, "^")
-      x <- quo_get_expr(x)
-    }
-    quo_print(x, parent = parent, palette = palette)
-
-    return(invisible(x))
+quo_deparse <- function(x, lines = new_quo_deparser()) {
+  if (!is_quosure(x)) {
+    return(sexp_deparse(x, lines = lines))
   }
 
-  if (which_operator(x) != "") {
-    quo_cat(palette, base_deparse(x))
-    if (!parent) cat("\n")
-    return(invisible(x))
+  lines$quo_bump_palette()
+  lines$quo_open_colour()
+
+  while (is_quosure(x)) {
+    lines$push("^")
+    x <- quo_get_expr(x)
   }
 
-  if (is_lang(x)) {
-    quo_print(node_car(x), parent = TRUE, palette = palette)
-    quo_cat(palette, "(")
-    quo_print_args(node_cdr(x), palette = palette)
-    quo_cat(palette, ")")
+  lines$make_next_sticky()
+  sexp_deparse(x, lines)
+  lines$quo_reset_colour()
 
-    if (!parent) cat("\n")
-    return(invisible(x))
-  }
-
-  if (is.object(x)) {
-    class <- chr_enumerate(chr_quoted(class(x)), final = "and")
-    quo_cat(palette, sprintf("<S3 object of class %s>", class))
-  } else {
-    quo_cat(palette, base_deparse(x))
-  }
-  if (!parent) cat("\n")
-
-  invisible(x)
+  lines$get_lines()
 }
 
-quo_print_args <- function(x, palette) {
-  while (!is_null(x)) {
-    quo_print(node_car(x), parent = TRUE, palette = palette)
-    x <- node_cdr(x)
-    if (!is_null(x)) {
-      quo_cat(palette, ", ")
+new_quo_deparser <- function(width = peek_option("width"),
+                             crayon = has_crayon()) {
+  lines <- new_lines(width = width, deparser = quo_deparse)
+
+  child_r6lite(lines,
+    has_colour = crayon,
+
+    quo_palette = NULL,
+    quo_parent = FALSE,
+    quo_history = pairlist(),
+
+    quo_bump_palette = function(self) {
+      if (is_null(self$quo_palette)) {
+        self$quo_palette <- new_quo_palette()
+      } else {
+        self$quo_history <- node(node_car(self$quo_palette), self$quo_history)
+        self$quo_palette <- node_cdr(self$quo_palette)
+      }
+    },
+
+    quo_open_colour = function(self) {
+      if (self$has_colour) {
+        open <- node_car(self$quo_palette)
+        self$push_sticky(open())
+      }
+    },
+
+    quo_reset_colour = function(self) {
+      if (self$has_colour) {
+        self$quo_history <- node_cdr(self$quo_history)
+        reset <- node_car(self$quo_history) %||% close_colour
+        self$push_sticky(reset())
+      }
     }
-  }
+  )
 }
 
+quo_print <- function(quo) {
+  cat(paste0(quo_deparse(quo), "\n"))
+}
 quo_env_print <- function(env) {
   if (is_reference(env, global_env())) {
     nm <- "global"
