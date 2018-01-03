@@ -32,6 +32,9 @@ test_that("line_push() handles the nchar(line) == boundary case", {
 })
 
 test_that("line_push() strips ANSI codes before computing overflow", {
+  if (!has_crayon()) {
+    skip("test needs crayon")
+  }
   expect_identical(length(line_push("foo", open_blue(), width = 3L)), 2L)
   expect_identical(length(line_push("foo", open_blue(), width = 3L, has_colour = TRUE)), 1L)
 })
