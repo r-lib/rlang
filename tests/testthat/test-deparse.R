@@ -222,6 +222,11 @@ test_that("literal lists are deparsed", {
   expect_identical(sexp_deparse(list(TRUE, b = 2L, 3, d = "4", as.raw(5))), "<list: TRUE, b = 2L, 3, d = \"4\", <raw: 05>>")
 })
 
+test_that("long vectors are truncated", {
+  expect_identical(sexp_deparse(1:10), "<int: 1L, 2L, 3L, 4L, 5L, ...>")
+  expect_identical(sexp_deparse(as.list(1:10)), "<list: 1L, 2L, 3L, 4L, 5L, ...>")
+})
+
 test_that("other objects are deparsed with base deparser", {
   expect_identical_(sexp_deparse(expr(foo((!!base::list)(1, 2)))), "foo(.Primitive(\"list\")(1, 2))")
   expect_identical_(sexp_deparse(expr(foo((!!base::`if`)(1, 2)))), "foo(.Primitive(\"if\")(1, 2))")

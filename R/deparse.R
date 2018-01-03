@@ -493,6 +493,11 @@ atom_deparse <- function(x, lines = new_lines()) {
     return(NULL)
   }
 
+  truncated <- length(x) > 5L
+  if (truncated) {
+    x <- .subset(x, 1:5)
+  }
+
   lines$push(paste0("<", rlang_type_sum(x), ": "))
   lines$increase_indent()
 
@@ -514,6 +519,11 @@ atom_deparse <- function(x, lines = new_lines()) {
     }
   }
 
+  if (truncated) {
+    lines$push_sticky(", ")
+    lines$push("...")
+  }
+
   lines$push_sticky(">")
   lines$decrease_indent()
 
@@ -523,6 +533,11 @@ atom_deparse <- function(x, lines = new_lines()) {
 list_deparse <- function(x, lines = new_lines()) {
   lines$push(paste0("<list: "))
   lines$increase_indent()
+
+  truncated <- length(x) > 5L
+  if (truncated) {
+    x <- .subset(x, 1:5)
+  }
 
   nms <- names2(x)
   n <- length(x)
@@ -539,6 +554,11 @@ list_deparse <- function(x, lines = new_lines()) {
     if (i != n) {
       lines$push_sticky(", ")
     }
+  }
+
+  if (truncated) {
+    lines$push_sticky(", ")
+    lines$push("...")
   }
 
   lines$push_sticky(">")
