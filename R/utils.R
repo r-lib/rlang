@@ -139,6 +139,62 @@ cyan <- function(x) {
   }
 }
 
+has_crayon <- function() {
+  is_installed("crayon") && crayon::has_color()
+}
+open_red <- function() if (has_crayon()) open_style("red")
+open_blue <- function() if (has_crayon()) open_style("blue")
+open_green <- function() if (has_crayon()) open_style("green")
+open_yellow <- function() if (has_crayon()) open_style("yellow")
+open_magenta <- function() if (has_crayon()) open_style("magenta")
+open_cyan <- function() if (has_crayon()) open_style("cyan")
+close_red <- function() if (has_crayon()) close_style("red")
+close_blue <- function() if (has_crayon()) close_style("blue")
+close_green <- function() if (has_crayon()) close_style("green")
+close_yellow <- function() if (has_crayon()) close_style("yellow")
+close_magenta <- function() if (has_crayon()) close_style("magenta")
+close_cyan <- function() if (has_crayon()) close_style("cyan")
+close_colour <- function() if (has_crayon()) "\u001b[39m"
+
+open_style <- function(style) {
+  paste0("\u001b[", codes[[style]][[1]], "m")
+}
+close_style <- function(style) {
+  paste0("\u001b[", codes[[style]][[2]], "m")
+}
+
+
+codes <- list(
+  reset =           c(0L, 0L),
+  bold =            c(1L, 22L),
+  blurred =         c(2L, 22L),
+  italic =          c(3L, 23L),
+  underline =       c(4L, 24L),
+  inverse =         c(7L, 27L),
+  hidden =          c(8L, 28L),
+  strikethrough =   c(9L, 29L),
+
+  black =           c(30L, 39L),
+  red =             c(31L, 39L),
+  green =           c(32L, 39L),
+  yellow =          c(33L, 39L),
+  blue =            c(34L, 39L),
+  magenta =         c(35L, 39L),
+  cyan =            c(36L, 39L),
+  white =           c(37L, 39L),
+  silver =          c(90L, 39L),
+
+  bgBlack =         c(40L, 49L),
+  bgRed =           c(41L, 49L),
+  bgGreen =         c(42L, 49L),
+  bgYellow =        c(43L, 49L),
+  bgBlue =          c(44L, 49L),
+  bgMagenta =       c(45L, 49L),
+  bgCyan =          c(46L, 49L),
+  bgWhite =         c(47L, 49L)
+)
+
+
 `$.r6lite` <- function(self, arg) {
   field <- env_get(self, as_string(substitute(arg)), inherit = TRUE)
 
