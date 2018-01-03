@@ -505,8 +505,8 @@ quo_deparse <- function(x, lines = new_quo_deparser()) {
     return(sexp_deparse(x, lines = lines))
   }
 
-  lines$quo_bump_palette()
-  lines$quo_open_colour()
+  env <- quo_get_env(x)
+  lines$quo_open_colour(env)
 
   while (is_quosure(x)) {
     lines$push("^")
@@ -527,28 +527,47 @@ new_quo_deparser <- function(width = peek_option("width"),
   child_r6lite(lines,
     has_colour = crayon,
 
-    quo_palette = NULL,
-    quo_parent = FALSE,
+    quo_envs = list(),
     quo_history = pairlist(),
+    quo_colours = list(open_blue, open_green, open_magenta, open_cyan),
+    quo_was_italic = FALSE,
 
-    quo_bump_palette = function(self) {
-      if (is_null(self$quo_palette)) {
-        self$quo_palette <- new_quo_palette()
-      } else {
-        self$quo_history <- node(node_car(self$quo_palette), self$quo_history)
-        self$quo_palette <- node_cdr(self$quo_palette)
-      }
+    quo_push_opener = function(self, opener) {
+      self$quo_history <- node(opener, self$quo_history)
+      self$push_sticky(opener())
+      self
     },
 
-    quo_open_colour = function(self) {
+    quo_open_colour = function(self, env) {
       if (self$has_colour) {
-        open <- node_car(self$quo_palette)
-        self$push_sticky(open())
+        if (is_reference(env, global_env())) {
+          self$quo_push_opener(close_colour)
+          return(NULL)
+        }
+
+        n_known_envs <- length(self$quo_envs)
+
+        idx <- detect_index(self$quo_envs, identical, env)
+        if (idx) {
+          opener <- self$quo_colours[[idx]]
+        } else if (n_known_envs < length(self$quo_colours)) {
+          self$quo_envs <- c(self$quo_envs, list(env))
+          idx <- n_known_envs + 1L
+          opener <- self$quo_colours[[idx]]
+        } else {
+          opener <- open_yellow_italic
+          self$quo_was_italic <- TRUE
+        }
+
+        self$quo_push_opener(opener)
       }
     },
 
     quo_reset_colour = function(self) {
       if (self$has_colour) {
+        if (self$quo_was_italic) {
+          self$push_sticky(close_italic())
+        }
         self$quo_history <- node_cdr(self$quo_history)
         reset <- node_car(self$quo_history) %||% close_colour
         self$push_sticky(reset())
@@ -575,7 +594,7 @@ quo_env_print <- function(env) {
   } else if (is_reference(env, empty_env())) {
     nm <- "empty"
   } else {
-    nm <- sxp_address(env)
+    nm <- blue(sxp_address(env))
   }
   meow(nm)
 }

@@ -148,7 +148,11 @@ open_green <- function() if (has_crayon()) open_style("green")
 open_yellow <- function() if (has_crayon()) open_style("yellow")
 open_magenta <- function() if (has_crayon()) open_style("magenta")
 open_cyan <- function() if (has_crayon()) open_style("cyan")
+
 close_colour <- function() if (has_crayon()) "\u001b[39m"
+close_italic <- function() if (has_crayon()) "\u001b[23m"
+open_yellow_italic <- function() if (has_crayon()) "\u001b[33m\u001b[3m"
+
 
 open_style <- function(style) {
   paste0("\u001b[", codes[[style]][[1]], "m")
