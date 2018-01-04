@@ -86,17 +86,7 @@ static inline sexp* KEEP_N(sexp* x, int* n) {
 #include "vec-lgl.h"
 #include "vec-list.h"
 
-
-// This *must* be called before making any calls to the functions
-// provided in the library
-static inline void r_init_library() {
-  r_dot_environment_sym = r_sym(".Environment");
-
-  r_quo_get_expr = (sexp* (*)(sexp*)) r_peek_c_callable("rlang", "rlang_quo_get_expr");
-  r_quo_set_expr = (sexp* (*)(sexp*, sexp*)) r_peek_c_callable("rlang", "rlang_quo_set_expr");
-  r_quo_get_env = (sexp* (*)(sexp*)) r_peek_c_callable("rlang", "rlang_quo_get_env");
-  r_quo_set_env = (sexp* (*)(sexp*, sexp*)) r_peek_c_callable("rlang", "rlang_quo_set_env");
-}
+void r_init_library();
 
 
 #endif

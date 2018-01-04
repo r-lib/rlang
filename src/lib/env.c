@@ -26,16 +26,19 @@ sexp* r_base_ns_get(const char* name) {
   return ns_env_get(r_base_env, name);
 }
 
-sexp* r_new_environment(sexp* parent) {
-  static sexp* call = NULL;
-  if (!call) {
-    call = rlang_ns_get("rlang_new_env_call");
-  }
 
+static sexp* new_env_call = NULL;
+
+sexp* r_new_environment(sexp* parent) {
   if (!parent) {
     parent = r_empty_env;
   }
-  r_node_poke_cadr(call, parent);
 
-  return r_eval(call, r_empty_env);
+  r_node_poke_cadr(new_env_call, parent);
+  return r_eval(new_env_call, r_empty_env);
+}
+
+
+void r_init_library_env() {
+  new_env_call = rlang_ns_get("rlang_new_env_call");
 }

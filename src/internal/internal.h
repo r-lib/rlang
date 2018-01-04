@@ -3,7 +3,6 @@
 
 
 void rlang_init_internal();
-static sexp* overscope_sym = NULL;
 
 
 #endif

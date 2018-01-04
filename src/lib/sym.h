@@ -27,6 +27,7 @@ bool r_is_symbol_any(sexp* x, const char** strings, int n);
 bool r_is_special_op_sym(sexp* x);
 
 extern sexp* r_dot_environment_sym;
+extern sexp* r_tilde_sym;
 
 
 #endif

@@ -15,6 +15,7 @@
 #include "lib/parse.c"
 #include "lib/quo.c"
 #include "lib/replace-na.c"
+#include "lib/rlang.c"
 #include "lib/sexp.c"
 #include "lib/squash.c"
 #include "lib/stack.c"

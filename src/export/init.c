@@ -219,6 +219,7 @@ void R_init_rlang(r_dll_info* dll) {
 
 #include "../internal/dots.h"
 #include "../internal/expr-interp.h"
+#include "../internal/internal.h"
 
 sexp* rlang_library_load() {
 

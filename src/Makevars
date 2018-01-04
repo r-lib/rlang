@@ -13,6 +13,7 @@ lib-files = \
         lib/parse.c \
         lib/quo.c \
         lib/replace-na.c \
+        lib/rlang.c \
         lib/sexp.c \
         lib/squash.c \
         lib/stack.c \
