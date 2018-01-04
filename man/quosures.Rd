@@ -4,6 +4,7 @@
 \alias{dots_definitions}
 \alias{quosures}
 \alias{quos}
+\alias{enquos}
 \alias{is_quosures}
 \title{Tidy quotation of multiple expressions and dots}
 \usage{
@@ -12,10 +13,15 @@ dots_definitions(..., .named = FALSE)
 quos(..., .named = FALSE, .ignore_empty = c("trailing", "none", "all"),
   .unquote_names = TRUE)
 
+enquos(..., .named = FALSE, .ignore_empty = c("trailing", "none", "all"),
+  .unquote_names = TRUE)
+
 is_quosures(x)
 }
 \arguments{
-\item{...}{Expressions to capture unevaluated.}
+\item{...}{For \code{enquos()}, names of arguments to capture without
+evaluation (including \code{...}). For \code{quos()}, the expressions to
+capture unevaluated (including expressions contained in \code{...}).}
 
 \item{.named}{Whether to ensure all dots are named. Unnamed
 elements are processed with \code{\link[=expr_text]{expr_text()}} to figure out a default
@@ -33,11 +39,17 @@ last argument is ignored if it is empty.}
 \item{x}{An object to test.}
 }
 \description{
-\code{quos()} quotes its arguments and returns them as a list of
-quosures (see \code{\link[=quo]{quo()}}). It is especially useful to capture
-arguments forwarded through \code{...}.
+\itemize{
+\item \code{quos()} quotes its arguments and returns them as a list of
+quosures (see \code{\link[=quo]{quo()}}).
+\item \code{enquos()} should be used inside a function. It takes argument
+names and captures the expressions to those arguments, i.e. one
+level up.
 }
-\details{
+}
+\section{The }{
+= operator:
+
 Both \code{quos} and \code{dots_definitions()} have specific support for
 definition expressions of the type \code{var := expr}, with some
 differences:
@@ -54,20 +66,26 @@ operators are processed on capture, in both the LHS and the
 RHS. Unlike \code{quos()}, it allows named definitions.}
 }
 }
+
 \examples{
-# quos() is like the singular version but allows quoting
+# quos() is like the singular version quo() but allows quoting
 # several arguments:
-quos(foo(), bar(baz), letters[1:2], !! letters[1:2])
+quos(foo(), letters[1:2], !! letters[1:2])
 
-# It is most useful when used with dots. This allows quoting
-# expressions across different levels of function calls:
-fn <- function(...) quos(...)
-fn(foo(bar), baz)
+# enquos() is like enquo() but lets you capture several arguments:
+fn <- function(arg1, arg2, ...) {
+  enquos(arg1, arg2, ...)
+}
+fn(leonardo, donatello, raphael())
 
-# Note that quos() does not check for duplicate named
-# arguments:
-fn <- function(...) quos(x = x, ...)
-fn(x = a + b)
+# Because of the nature of dots forwarding (expressions are
+# "teleported"), quos() can also be used to capture dots. But
+# notice the difference with enquos(). Arguments other than `...`
+# are captured directly, within the function:
+fn <- function(arg1, arg2, ...) {
+  quos(arg1, arg2, ...)
+}
+fn(leonardo, donatello, raphael())
 
 
 # Lists of arguments can be spliced in:
@@ -76,19 +94,23 @@ quos(!!! args, z = 10L)
 
 # As well as lists of bare expressions (make sure that the current
 # environment is where the symbols in these expressions are defined):
-args <- alist(x = foo, y = bar)
+args <- alist(mouse1 = bernard, mouse2 = bianca)
 quos(!!! args)
 
 
-# Definitions are treated similarly to named arguments:
-quos(x := expr, y = expr)
+# Like `=`, the `:=` operator creates named arguments:
+quos(mouse1 := bernard, mouse2 = bianca)
 
-# However, the LHS of definitions can be unquoted. The return value
-# must be a symbol or a string:
-var <- "foo"
-quos(!!var := expr)
+# The `:=` is mainly useful to unquote names. Unlike `=` it
+# supports `!!` on its LHS:
+var <- "unquote me!"
+quos(!!var := bernard, mouse2 = bianca)
 
-# If you need the full LHS expression, use dots_definitions():
-dots <- dots_definitions(var = foo(baz) := bar(baz))
-dots$defs
+
+# All these features apply to dots captured by enquos():
+fn <- function(...) enquos(...)
+fn(
+  !!! args,
+  !!var := penny
+)
 }

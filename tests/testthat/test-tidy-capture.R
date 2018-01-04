@@ -305,3 +305,21 @@ test_that("names-unquoting can be switched off", {
   expect_identical(quos(foo := bar, .unquote_names = FALSE), quos_list(new_quosure(quote(foo := bar))))
   expect_identical(quos(!! foo := !! bar, .unquote_names = FALSE), quos_list(new_quosure(quote("foo" := "bar"))))
 })
+
+test_that("enquos() captures arguments", {
+  fn <- function(foo, ..., bar) enquos(foo, bar, ...)
+  expect_identical(fn(arg1, arg2, bar = arg3()), quos(arg1, arg3(), arg2))
+})
+
+test_that("enquos() returns a named list", {
+  fn <- function(foo, bar) enquos(foo, bar)
+  expect_identical(names(fn()), c("", ""))
+})
+
+test_that("enquos() captures missing arguments", {
+  fn <- function(foo) enquos(foo)[[1]]
+  expect_identical(fn(), quo())
+
+  fn <- function(...) enquos(...)
+  expect_identical(fn(), quos())
+})
