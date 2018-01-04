@@ -558,3 +558,10 @@ is_namespaced_symbol <- function(x, ns = NULL, private = NULL) {
     identical(head, sym_namespace)
   }
 }
+
+which_operator <- function(call) {
+  .Call(rlang_which_operator, call)
+}
+call_has_precedence <- function(call, parent_call, side = NULL) {
+  .Call(rlang_call_has_precedence, call, parent_call, side)
+}

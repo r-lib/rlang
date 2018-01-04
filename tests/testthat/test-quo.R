@@ -132,9 +132,16 @@ test_that("quo_expr() warns", {
   expect_warning(quo_expr(quo(list(!! quo(foo))), warn = TRUE), "inner quosure")
 })
 
-test_that("print() method flattens quosures", {
-  x <- quo(list(!! quo(NULL)))
-  expect_output(print(x), "list\\(NULL\\)")
+test_that("quo_deparse() indicates quosures with `^`", {
+  x <- quo(list(!! quo(NULL), !! quo(foo())))
+  ctxt <- new_quo_deparser(crayon = FALSE)
+  expect_identical(quo_deparse(x, ctxt), "^list(^NULL, ^foo())")
+})
+
+test_that("quosure deparser respects width", {
+  x <- quo(foo(quo(!!quo(bar))))
+  expect_identical(length(quo_deparse(x, new_quo_deparser(width = 8L))), 3L)
+  expect_identical(length(quo_deparse(x, new_quo_deparser(width = 9L))), 2L)
 })
 
 test_that("quosure predicates work", {

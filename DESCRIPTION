@@ -1,5 +1,5 @@
 Package: rlang
-Version: 0.1.6.9001
+Version: 0.1.6.9002
 Title: Functions for Base Types and Core R and 'Tidyverse' Features
 Description: A toolbox for working with base types, core R features
   like the condition system, and core 'Tidyverse' features like tidy
@@ -15,7 +15,10 @@ ByteCompile: true
 Depends:
     R (>= 3.1.0)
 Suggests:
+    crayon,
     knitr,
+    methods,
+    pillar,
     rmarkdown (>= 0.2.65),
     testthat,
     covr

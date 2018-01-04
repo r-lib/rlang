@@ -90,6 +90,10 @@ is_quosures <- function(x) {
 c.quosures <- function(..., recursive = FALSE) {
   structure(NextMethod(), class = "quosures")
 }
+#' @export
+print.quosures <- function(x, ...) {
+  print(unclass(x), ...)
+}
 
 #' Ensure that list of expressions are all named
 #'

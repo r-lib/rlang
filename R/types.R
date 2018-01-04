@@ -769,3 +769,40 @@ is_equal <- function(x, y) {
 is_reference <- function(x, y) {
   .Call(rlang_is_reference, x, y)
 }
+
+
+# Use different generic name to avoid import warnings when loading
+# packages that import all of rlang after it has been load_all'd
+rlang_type_sum <- function(x) {
+  if (is_installed("pillar")) {
+    pillar::type_sum(x)
+  } else {
+    UseMethod("type_sum")
+  }
+}
+
+type_sum.ordered <- function(x) "ord"
+type_sum.factor <- function(x) "fct"
+type_sum.POSIXct <- function(x) "dttm"
+type_sum.difftime <- function(x) "time"
+type_sum.Date <- function(x) "date"
+type_sum.data.frame <- function(x) class(x)[[1]]
+
+type_sum.default <- function(x) {
+  if (!is.object(x)) {
+    switch(typeof(x),
+      logical = "lgl",
+      integer = "int",
+      double = "dbl",
+      character = "chr",
+      complex = "cpl",
+      closure = "fn",
+      environment = "env",
+      typeof(x)
+    )
+  } else if (!isS4(x)) {
+    paste0("S3: ", class(x)[[1]])
+  } else {
+    paste0("S4: ", methods::is(x)[[1]])
+  }
+}

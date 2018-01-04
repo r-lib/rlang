@@ -91,3 +91,10 @@ seq2 <- function(from, to) {
 seq2_along <- function(from, x) {
   seq2(from, length(x))
 }
+
+first <- function(x) {
+  .subset2(x, 1L)
+}
+last <- function(x) {
+  .subset2(x, length_(x))
+}

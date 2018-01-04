@@ -3,6 +3,7 @@
 
 const struct r_op_precedence r_ops_precedence[R_OP_MAX] = {
   [R_OP_NONE]           = { .power =   0,  .assoc =  0,  .unary = false,  .delimited = false },
+  [R_OP_FUNCTION]       = { .power =   5,  .assoc =  1,  .unary =  true,  .delimited = false },
   [R_OP_QUESTION]       = { .power =  10,  .assoc = -1,  .unary = false,  .delimited = false },
   [R_OP_QUESTION_UNARY] = { .power =  10,  .assoc = -1,  .unary =  true,  .delimited = false },
   [R_OP_WHILE]          = { .power =  20,  .assoc = -1,  .unary = false,  .delimited =  true },
@@ -72,6 +73,8 @@ enum r_operator r_which_operator(sexp* call) {
   case 'f':
     if (strcmp(name, "for") == 0) {
       return R_OP_FOR;
+    } else if (strcmp(name, "function") == 0) {
+      return R_OP_FUNCTION;
     } else {
       goto none;
     }
@@ -329,4 +332,99 @@ enum r_operator r_which_operator(sexp* call) {
   default:
     return R_OP_NONE;
   }
+}
+
+const char* r_op_as_c_string(enum r_operator op) {
+  switch (op) {
+  case R_OP_NONE:           return "";
+  case R_OP_WHILE:          return "while";
+  case R_OP_FOR:            return "for";
+  case R_OP_REPEAT:         return "repeat";
+  case R_OP_IF:             return "if";
+  case R_OP_FUNCTION:       return "function";
+  case R_OP_QUESTION:       return "?";
+  case R_OP_QUESTION_UNARY: return "?unary";
+  case R_OP_ASSIGN1:        return "<-";
+  case R_OP_ASSIGN2:        return "<<-";
+  case R_OP_ASSIGN_EQUAL:   return "=";
+  case R_OP_COLON_EQUAL:    return ":=";
+  case R_OP_TILDE:          return "~";
+  case R_OP_TILDE_UNARY:    return "~unary";
+  case R_OP_OR1:            return "|";
+  case R_OP_OR2:            return "||";
+  case R_OP_AND1:           return "&";
+  case R_OP_AND2:           return "&&";
+  case R_OP_BANG1:          return "!";
+  case R_OP_BANG3:          return "!!!";
+  case R_OP_GREATER:        return ">";
+  case R_OP_GREATER_EQUAL:  return ">=";
+  case R_OP_LESS:           return "<";
+  case R_OP_LESS_EQUAL:     return "<=";
+  case R_OP_EQUAL:          return "==";
+  case R_OP_NOT_EQUAL:      return "!=";
+  case R_OP_PLUS:           return "+";
+  case R_OP_MINUS:          return "-";
+  case R_OP_TIMES:          return "*";
+  case R_OP_RATIO:          return "/";
+  case R_OP_MODULO:         return "%%";
+  case R_OP_SPECIAL:        return "special";
+  case R_OP_COLON1:         return ":";
+  case R_OP_BANG2:          return "!!";
+  case R_OP_PLUS_UNARY:     return "+unary";
+  case R_OP_MINUS_UNARY:    return "-unary";
+  case R_OP_HAT:            return "^";
+  case R_OP_DOLLAR:         return "$";
+  case R_OP_AT:             return "@";
+  case R_OP_COLON2:         return "::";
+  case R_OP_COLON3:         return ":::";
+  case R_OP_PARENTHESES:    return "(";
+  case R_OP_BRACKETS1:      return "[";
+  case R_OP_BRACKETS2:      return "[[";
+  case R_OP_BRACES:         return "{";
+  case R_OP_MAX:            r_abort("Unexpected `enum r_operator` value");
+  }
+}
+
+bool op_has_precedence_impl(enum r_operator x, enum r_operator parent, int side) {
+  if (x > R_OP_MAX || parent > R_OP_MAX) {
+    r_abort("Internal error: `enum r_operator` out of bounds");
+  }
+  if (x == R_OP_NONE) {
+    return true;
+  }
+  if (parent == R_OP_NONE) {
+    return true;
+  }
+
+  struct r_op_precedence x_info = r_ops_precedence[x];
+  struct r_op_precedence y_info = r_ops_precedence[parent];
+
+  if (x_info.delimited) {
+    return true;
+  }
+  if (y_info.delimited) {
+    return false;
+  }
+
+  uint8_t x_power = x_info.power;
+  uint8_t y_power = y_info.power;
+
+  if (x_power == y_power) {
+    if (side == 0) {
+      r_abort("Internal error: Unspecified direction of associativity");
+    }
+    return r_ops_precedence[x].assoc == side;
+  } else {
+    return x_power > y_power;
+  }
+}
+
+bool r_op_has_precedence(enum r_operator x, enum r_operator parent) {
+  return op_has_precedence_impl(x, parent, 0);
+}
+bool r_lhs_op_has_precedence(enum r_operator lhs, enum r_operator parent) {
+  return op_has_precedence_impl(lhs, parent, -1);
+}
+bool r_rhs_op_has_precedence(enum r_operator rhs, enum r_operator parent) {
+  return op_has_precedence_impl(rhs, parent, 1);
 }

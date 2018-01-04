@@ -184,17 +184,23 @@ enquo <- function(arg) {
 
 #' @export
 print.quosure <- function(x, ...) {
-  print(quo_expr(x))
-  print(get_env(x))
+  meow(.trailing = FALSE,
+    "<quosure>",
+    "  expr: "
+  )
+  quo_print(x)
+  meow(.trailing = FALSE,
+    "  env:  "
+  )
+
+  env <- get_env(x)
+  quo_env_print(env)
+
   invisible(x)
 }
 #' @export
 str.quosure <- function(object, ...) {
-  env_type <- env_format(get_env(object))
-
-  cat(paste0("<quosure: ", env_type, ">\n"))
-  print(set_attrs(object, NULL))
-  invisible(object)
+  str(unclass(object), ...)
 }
 
 #' Is an object a quosure or quosure-like?
@@ -424,7 +430,7 @@ quo_expr <- function(quo, warn = FALSE) {
   if (is_missing(quo)) {
     missing_arg()
   } else {
-    quo_splice(duplicate(quo), warn = warn)
+    quo_flatten(duplicate(quo), warn = warn)
   }
 }
 #' @rdname quo_expr
@@ -443,7 +449,7 @@ quo_name <- function(quo) {
   expr_name(quo_expr(quo))
 }
 
-quo_splice <- function(x, parent = NULL, warn = FALSE) {
+quo_flatten <- function(x, parent = NULL, warn = FALSE) {
   switch_expr(x,
     language = {
       if (is_quosure(x)) {
@@ -463,18 +469,135 @@ quo_splice <- function(x, parent = NULL, warn = FALSE) {
         if (!is_null(parent)) {
           mut_node_car(parent, x)
         }
-        quo_splice(x, parent, warn = warn)
+        quo_flatten(x, parent, warn = warn)
       } else {
-        quo_splice(node_cdr(x), warn = warn)
+        quo_flatten(node_cdr(x), warn = warn)
       }
     },
     pairlist = {
       while (!is_null(x)) {
-        quo_splice(node_car(x), x, warn = warn)
+        quo_flatten(node_car(x), x, warn = warn)
         x <- node_cdr(x)
       }
     }
   )
 
   x
+}
+
+# Create a circular list of colours. This infloops if printed in the REPL!
+new_quo_palette <- function() {
+  last_node <- node(open_cyan, NULL)
+  palette <- node(open_blue, node(open_green, node(open_magenta, last_node)))
+  node_poke_cdr(last_node, palette)
+
+  # First node has no colour
+  node(close_colour, palette)
+}
+
+# Reproduces output of printed calls
+base_deparse <- function(x) {
+  deparse(x, control = "keepInteger")
+}
+
+quo_deparse <- function(x, lines = new_quo_deparser()) {
+  if (!is_quosure(x)) {
+    return(sexp_deparse(x, lines = lines))
+  }
+
+  env <- quo_get_env(x)
+  lines$quo_open_colour(env)
+
+  lines$push("^")
+  lines$make_next_sticky()
+  sexp_deparse(quo_get_expr(x), lines)
+
+  lines$quo_reset_colour()
+
+  lines$get_lines()
+}
+
+new_quo_deparser <- function(width = peek_option("width"),
+                             crayon = has_crayon()) {
+  lines <- new_lines(width = width, deparser = quo_deparse)
+
+  child_r6lite(lines,
+    has_colour = crayon,
+
+    quo_envs = list(),
+    quo_history = pairlist(),
+    quo_colours = list(
+      open_blue,
+      open_green,
+      open_magenta,
+      open_cyan,
+      open_yellow
+    ),
+    quo_was_too_many = FALSE,
+
+    quo_push_opener = function(self, opener) {
+      self$quo_history <- node(opener, self$quo_history)
+      self$push_sticky(opener())
+      self
+    },
+
+    quo_open_colour = function(self, env) {
+      if (self$has_colour) {
+        if (is_reference(env, global_env()) || is_reference(env, empty_env())) {
+          self$quo_push_opener(close_colour)
+          return(NULL)
+        }
+
+        n_known_envs <- length(self$quo_envs)
+
+        idx <- detect_index(self$quo_envs, identical, env)
+        if (idx) {
+          opener <- self$quo_colours[[idx]]
+        } else if (n_known_envs < length(self$quo_colours)) {
+          self$quo_envs <- c(self$quo_envs, list(env))
+          idx <- n_known_envs + 1L
+          opener <- self$quo_colours[[idx]]
+        } else {
+          opener <- function() paste0(close_colour(), open_blurred_italic())
+          self$quo_was_too_many <- TRUE
+        }
+
+        self$quo_push_opener(opener)
+      }
+    },
+
+    quo_reset_colour = function(self) {
+      if (self$has_colour) {
+        if (self$quo_was_too_many) {
+          self$push_sticky(close_blurred_italic())
+        }
+        self$quo_history <- node_cdr(self$quo_history)
+        reset <- node_car(self$quo_history) %||% close_colour
+        self$push_sticky(reset())
+      }
+    }
+  )
+}
+
+quo_print <- function(quo) {
+  # Take into account the first 8-character wide columns
+  width <- peek_option("width") - 10L
+  deparser <- new_quo_deparser(width = width)
+
+  lines <- quo_deparse(quo, deparser)
+
+  n <- length(lines)
+  lines[seq2(2, n)] <- paste0("       ", lines[seq2(2, n)])
+
+  cat(paste0(lines, "\n"))
+}
+quo_env_print <- function(env) {
+  if (is_reference(env, global_env())) {
+    nm <- "global"
+  } else if (is_reference(env, empty_env())) {
+    nm <- "empty"
+  } else {
+    nm <- blue(sxp_address(env))
+  }
+  meow(nm)
 }

@@ -63,5 +63,15 @@ static inline bool r_chr_has_empty_string_at(sexp* chr, r_size_t i) {
 
 sexp* r_str_unserialise_unicode(sexp* r_string);
 
+static inline bool r_is_string(sexp* x, const char* string) {
+  if (r_typeof(x) != r_type_character || r_length(x) != 1) {
+    return false;
+  }
+  if (string && strcmp(r_c_string(x), string) != 0) {
+    return false;
+  }
+  return true;
+}
+
 
 #endif

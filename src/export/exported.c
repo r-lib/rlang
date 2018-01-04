@@ -98,6 +98,28 @@ sexp* rlang_is_formulaish(sexp* x, sexp* scoped, sexp* lhs) {
 }
 
 
+// parse.c
+
+sexp* rlang_call_has_precedence(sexp* x, sexp* y, sexp* side) {
+  bool has_predence;
+  if (side == r_null) {
+    has_predence = r_call_has_precedence(x, y);
+  } else if (r_is_string(side, "lhs")) {
+    has_predence = r_lhs_call_has_precedence(x, y);
+  } else if (r_is_string(side, "rhs")) {
+    has_predence = r_rhs_call_has_precedence(x, y);
+  } else {
+    r_abort("`side` must be NULL, \"lhs\" or \"rhs\"");
+  }
+  return r_scalar_lgl(has_predence);
+}
+
+sexp* rlang_which_operator(sexp* call) {
+  const char* op = r_op_as_c_string(r_which_operator(call));
+  return r_scalar_chr(op);
+}
+
+
 // node.c
 
 sexp* rlang_node_car(sexp* x) {
