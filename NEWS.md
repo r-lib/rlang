@@ -1,5 +1,5 @@
 
-# rlang 0.1.4.9000
+# rlang 0.1.6.9000
 
 * `new_cnd()` is now `cnd()` for consistency with other constructors.
   Also, `cnd_error()`, `cnd_warning()` and `cnd_message()` are now
@@ -181,6 +181,12 @@
   (i.e. an unquoted integer vector is shown as `<int: 1, 2>` rather
   than `1:2`); unquoted S3 objects are displayed using
   `pillar::type_sum()` if available.
+
+* New `enquos()` function to capture arguments. It treats `...` the
+  same way as `quos()` but can also capture named arguments just like
+  `enquo()`, i.e. one level up. By comparison `quos(arg)` only
+  captures the name `arg` rather than the expression supplied to the
+  `arg` argument.
 
 
 ## Breaking changes
