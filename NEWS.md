@@ -124,10 +124,6 @@
   when parsing code as text. The parentheses will also be added by R
   when printing code if needed (#296).
 
-* The print method for quosures now gives a cleaner output. Quosures
-  are printed as a flat expression with the environment printed below.
-  Previously they would appear as formulas.
-
 * `expr_label()` now supports quoted function definition calls (#275).
 
 * `is_symbol()` gains a `name` argument to check that that the symbol
@@ -177,6 +173,14 @@
   `quo_get_env()`, `quo_set_expr()`, and `quo_set_env()`. Compared to
   `get_expr()` etc, these accessors only work on quosures and are a
   bit more efficient.
+
+* The print method for quosures has been greatly improved. Quosures no
+  longer appear as formulas but as expressions prefixed with `^`;
+  quosures are colourised according to their environment; unquoted
+  objects are displayed between angular brackets instead of code
+  (i.e. an unquoted integer vector is shown as `<int: 1, 2>` rather
+  than `1:2`); unquoted S3 objects are displayed using
+  `pillar::type_sum()` if available.
 
 
 ## Breaking changes
