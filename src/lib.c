@@ -9,6 +9,7 @@
 #include "lib/env.c"
 #include "lib/eval.c"
 #include "lib/export.c"
+#include "lib/fn.c"
 #include "lib/formula.c"
 #include "lib/lang.c"
 #include "lib/node.c"

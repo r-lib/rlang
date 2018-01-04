@@ -65,9 +65,11 @@ bool r_is_special_op_sym(sexp* x) {
 
 
 sexp* r_dot_environment_sym;
+sexp* r_function_sym;
 sexp* r_tilde_sym;
 
 void r_init_library_sym() {
   r_dot_environment_sym = r_sym(".Environment");
+  r_function_sym = r_sym("function");
   r_tilde_sym = r_sym("~");
 }

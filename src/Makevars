@@ -7,6 +7,7 @@ lib-files = \
         lib/env.c \
         lib/eval.c \
         lib/export.c \
+        lib/fn.c \
         lib/formula.c \
         lib/lang.c \
         lib/node.c \
