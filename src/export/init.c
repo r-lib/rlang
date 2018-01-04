@@ -235,6 +235,7 @@ sexp* rlang_library_load() {
   }
 
   r_init_library();
+  rlang_init_internal();
   return r_null;
 }
 
