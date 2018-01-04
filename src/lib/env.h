@@ -35,10 +35,13 @@ static inline sexp* r_env_poke(sexp* env, sexp* sym, sexp* value) {
 }
 
 sexp* r_ns_env(const char* pkg);
-
 sexp* r_base_ns_get(const char* name);
 
 sexp* r_new_environment(sexp* parent);
+
+sexp* r_env_as_list(sexp* x);
+sexp* r_list_as_environment(sexp* x, sexp* parent);
+sexp* r_env_clone(sexp* env, sexp* parent);
 
 
 #endif
