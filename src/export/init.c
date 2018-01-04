@@ -87,6 +87,7 @@ extern sexp* rlang_quo_get_expr(sexp*);
 extern sexp* rlang_quo_set_expr(sexp*, sexp*);
 extern sexp* rlang_quo_get_env(sexp*);
 extern sexp* rlang_quo_set_env(sexp*, sexp*);
+extern sexp* rlang_which_operator(sexp*);
 
 // Library initialisation defined below
 sexp* rlang_library_load();
@@ -102,7 +103,7 @@ extern sexp* rlang_test_base_ns_get(sexp*);
 extern sexp* r_current_frame();
 extern sexp* rlang_test_sys_frame(sexp*);
 extern sexp* rlang_test_sys_call(sexp*);
-extern sexp* rlang_which_operator(sexp*);
+extern sexp* new_tilde_thunk(sexp*, sexp*);
 
 static const r_callable r_callables[] = {
   {"rlang_library_load",        (r_fn_ptr_t) &rlang_library_load, 0},
@@ -168,6 +169,7 @@ static const r_callable r_callables[] = {
   {"rlang_test_current_frame",  (r_fn_ptr_t) &r_current_frame, 0},
   {"rlang_test_sys_frame",      (r_fn_ptr_t) &rlang_test_sys_frame, 1},
   {"rlang_test_sys_call",       (r_fn_ptr_t) &rlang_test_sys_call, 1},
+  {"rlang_new_tilde_thunk",     (r_fn_ptr_t) &new_tilde_thunk, 2},
   {"rlang_r_string",            (r_fn_ptr_t) &rlang_r_string, 1},
   {"rlang_exprs_interp",        (r_fn_ptr_t) &rlang_exprs_interp, 4},
   {"rlang_quos_interp",         (r_fn_ptr_t) &rlang_quos_interp, 4},

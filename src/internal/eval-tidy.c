@@ -1,6 +1,21 @@
 #include <rlang.h>
+#include "internal.h"
 
-sexp* rlang_ns_get(const char* name);
+
+static sexp* tilde_thunk_fmls = NULL;
+static sexp* tilde_thunk_body = NULL;
+
+sexp* new_tilde_thunk(sexp* data_mask, sexp* data_mask_top) {
+  sexp* body = KEEP(r_duplicate(tilde_thunk_body, false));
+  sexp* fn = KEEP(r_new_function(tilde_thunk_fmls, body, r_base_env));
+
+  sexp* args = r_node_cdr(r_node_cddr(body));
+  r_node_poke_car(args, data_mask);
+  r_node_poke_cadr(args, data_mask_top);
+
+  FREE(2);
+  return fn;
+}
 
 
 static sexp* tilde_prim = NULL;
@@ -62,7 +77,10 @@ sexp* rlang_tilde_eval(sexp* tilde, sexp* overscope, sexp* overscope_top, sexp* 
 
 
 void rlang_init_eval_tidy() {
-  data_mask_sym = r_sym("_tidyeval_data_mask");
+  tilde_thunk_fmls = rlang_constants_get("tilde_thunk_fmls");
+  tilde_thunk_body = rlang_constants_get("tilde_thunk_body");
+
+  data_mask_sym = r_sym(".__tidyeval_data_mask__.");
   data_mask_env_sym = r_sym(".env");
   data_mask_top_env_sym = r_sym(".top_env");
 
