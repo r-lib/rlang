@@ -50,7 +50,7 @@ sexp* rlang_tilde_eval(sexp* tilde, sexp* overscope, sexp* overscope_top, sexp* 
   FREE(1);
 
   // Update .env pronoun to current quosure env temporarily
-  r_env_set(overscope, r_sym(".env"), quo_env);
+  r_env_poke(overscope, r_sym(".env"), quo_env);
 
   exit_fun = rlang_ns_get("env_set");
   exit_args = r_build_pairlist3(overscope, r_scalar_chr(".env"), prev_env);
