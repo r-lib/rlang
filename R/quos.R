@@ -104,8 +104,10 @@ enquos <- function(...) {
 
   splice_dots <- FALSE
   quos <- map(syms, function(sym) {
-    stopifnot(is_symbol(sym))
-    if (is_symbol(sym, "...")) {
+    if (!is_symbol(sym)) {
+      abort("Inputs to capture must be argument names")
+    }
+    if (identical(sym, dots_sym)) {
       splice_dots <<- TRUE
       splice(.Call(rlang_quos_interp, env, FALSE, "none", TRUE))
     } else {

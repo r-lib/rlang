@@ -311,6 +311,12 @@ test_that("enquos() captures arguments", {
   expect_identical(fn(arg1, arg2, bar = arg3()), quos(arg1, arg3(), arg2))
 })
 
+test_that("enquos() requires symbols", {
+  expect_error(enquos(foo(bar)), "must be argument names")
+  expect_error(enquos(1), "must be argument names")
+  expect_error(enquos("foo"), "must be argument names")
+})
+
 test_that("enquos() returns a named list", {
   fn <- function(foo, bar) enquos(foo, bar)
   expect_identical(names(fn()), c("", ""))
