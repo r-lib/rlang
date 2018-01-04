@@ -18,6 +18,41 @@ sexp* new_tilde_thunk(sexp* data_mask, sexp* data_mask_top) {
 }
 
 
+static sexp* data_mask_sym = NULL;
+static sexp* data_mask_env_sym = NULL;
+static sexp* data_mask_top_env_sym = NULL;
+
+static void check_data_mask_input(sexp* env, const char* arg) {
+  if (r_typeof(env) != r_type_environment) {
+    r_abort("Can't create data mask because `%s` must be an environment", arg);
+  }
+}
+sexp* rlang_new_data_mask(sexp* bottom, sexp* top, sexp* parent) {
+  if (top == r_null) {
+    top = bottom;
+  }
+  check_data_mask_input(bottom, "bottom");
+  check_data_mask_input(top, "top");
+  check_data_mask_input(parent, "parent");
+
+  // Create a child because we don't know what might be in `bottom`.
+  // This way we can just remove all bindings between the parent of
+  // `bottom` and `top`. We don't want to clean everything in `bottom`
+  // in case the environment is leaked, e.g. through a closure,
+  // formula or quosure that might rely on some local bindings
+  // installed by the user.
+  sexp* data_mask = KEEP(r_new_environment(bottom));
+
+  r_env_poke(data_mask, r_tilde_sym, new_tilde_thunk(data_mask, top));
+  r_env_poke(data_mask, data_mask_sym, data_mask);
+  r_env_poke(data_mask, data_mask_env_sym, parent);
+  r_env_poke(data_mask, data_mask_top_env_sym, top);
+
+  FREE(1);
+  return data_mask;
+}
+
+
 static sexp* tilde_prim = NULL;
 
 static sexp* base_tilde_eval(sexp* tilde, sexp* quo_env) {
