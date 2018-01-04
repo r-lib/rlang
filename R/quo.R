@@ -558,7 +558,7 @@ new_quo_deparser <- function(width = peek_option("width"),
           idx <- n_known_envs + 1L
           opener <- self$quo_colours[[idx]]
         } else {
-          opener <- open_blurred_italic
+          opener <- function() paste0(close_colour(), open_blurred_italic())
           self$quo_was_too_many <- TRUE
         }
 
