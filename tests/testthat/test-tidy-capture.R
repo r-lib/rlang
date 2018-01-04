@@ -320,6 +320,9 @@ test_that("enquos() requires symbols", {
 test_that("enquos() returns a named list", {
   fn <- function(foo, bar) enquos(foo, bar)
   expect_identical(names(fn()), c("", ""))
+
+  fn <- function(arg, ...) enquos(other = arg, ...)
+  expect_identical(fn(arg = 1, b = 2), quos(other = 1, b = 2))
 })
 
 test_that("enquos() captures missing arguments", {
@@ -328,4 +331,25 @@ test_that("enquos() captures missing arguments", {
 
   fn <- function(...) enquos(...)
   expect_identical(fn(), quos())
+})
+
+test_that("enquos() supports `.named`", {
+  fn <- function(arg, ...) enquos(arg, ..., .named = TRUE)
+  expect_identical(fn(foo, bar), quos(foo = foo, bar = bar))
+})
+
+test_that("enquos() supports `.unquote_names`", {
+  fn <- function(...) enquos(..., .unquote_names = TRUE)
+  expect_identical(fn(!!"foo" := bar), quos(foo = bar))
+
+  fn <- function(...) enquos(..., .unquote_names = FALSE)
+  expect_identical(fn(!!"foo" := bar), quos(!!"foo" := bar, .unquote_names = FALSE))
+})
+
+test_that("enquos() supports `.ignore_empty`", {
+  fn <- function(...) enquos(..., .ignore_empty = "all")
+  expect_identical(fn(, ), quos())
+
+  fn <- function(...) enquos(..., .ignore_empty = "trailing")
+  expect_identical(fn(foo, ), quos(foo))
 })

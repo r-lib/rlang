@@ -98,9 +98,17 @@ quos <- function(...,
 
 #' @rdname quosures
 #' @export
-enquos <- function(...) {
+enquos <- function(...,
+                   .named = FALSE,
+                   .ignore_empty = c("trailing", "none", "all"),
+                   .unquote_names = TRUE) {
   syms <- as.list(node_cdr(sys.call()))
   env <- parent.frame()
+
+  if (!is_null(names(syms))) {
+    is_arg <- names(syms) %in% c(".named", ".ignore_empty", ".unquote_names")
+    syms <- syms[!is_arg]
+  }
 
   splice_dots <- FALSE
   quos <- map(syms, function(sym) {
@@ -109,7 +117,7 @@ enquos <- function(...) {
     }
     if (identical(sym, dots_sym)) {
       splice_dots <<- TRUE
-      splice(.Call(rlang_quos_interp, env, FALSE, "none", TRUE))
+      splice(.Call(rlang_quos_interp, env, .named, .ignore_empty, .unquote_names))
     } else {
       .Call(rlang_enquo, sym, env)
     }
@@ -117,6 +125,9 @@ enquos <- function(...) {
 
   if (splice_dots) {
     quos <- flatten_if(quos, is_spliced)
+  }
+  if (.named) {
+    quos <- quos_auto_name(quos)
   }
   names(quos) <- names2(quos)
   structure(quos, class = "quosures")
