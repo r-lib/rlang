@@ -508,13 +508,10 @@ quo_deparse <- function(x, lines = new_quo_deparser()) {
   env <- quo_get_env(x)
   lines$quo_open_colour(env)
 
-  while (is_quosure(x)) {
-    lines$push("^")
-    x <- quo_get_expr(x)
-  }
-
+  lines$push("^")
   lines$make_next_sticky()
-  sexp_deparse(x, lines)
+  sexp_deparse(quo_get_expr(x), lines)
+
   lines$quo_reset_colour()
 
   lines$get_lines()
