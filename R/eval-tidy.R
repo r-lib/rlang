@@ -295,16 +295,5 @@ overscope_eval_next <- function(overscope, quo, env = base_env()) {
 #' @rdname as_overscope
 #' @export
 overscope_clean <- function(overscope) {
-  cur_env <- env_parent(overscope)
-  top_env <- overscope$.top_env %||% cur_env
-
-  # At this level we only want to remove what we have installed
-  env_unbind(overscope, c("~", ".top_env", ".env"))
-
-  while (!identical(cur_env, env_parent(top_env))) {
-    env_unbind(cur_env, names(cur_env))
-    cur_env <- env_parent(cur_env)
-  }
-
-  overscope
+  invisible(.Call(rlang_data_mask_clean, overscope))
 }

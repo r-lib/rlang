@@ -168,6 +168,33 @@ sexp* rlang_tilde_eval(sexp* tilde, sexp* overscope, sexp* overscope_top, sexp* 
   return r_eval(r_f_rhs(tilde), overscope);
 }
 
+#define DATA_MASK_OBJECTS_N 3
+static const char* data_mask_objects_names[DATA_MASK_OBJECTS_N] = {
+   "~", ".top_env", ".env"
+};
+
+sexp* rlang_data_mask_clean(sexp* mask) {
+  sexp* bottom = r_env_parent(mask);
+  sexp* top = r_env_get(mask, data_mask_top_env_sym);
+
+  if (top == r_null) {
+    top = bottom;
+  }
+
+  // At this level we only want to remove our own stuff
+  r_env_unbind_all(mask, data_mask_objects_names, DATA_MASK_OBJECTS_N, false);
+
+  // Remove everything in the other levels
+  sexp* env = bottom;
+  sexp* parent = r_env_parent(top);
+  while (env != parent) {
+    r_env_unbind_names(env, r_env_names(env), false);
+    env = r_env_parent(env);
+  }
+
+  return mask;
+}
+
 
 void rlang_init_eval_tidy() {
   tilde_thunk_fmls = rlang_constants_get("tilde_thunk_fmls");
