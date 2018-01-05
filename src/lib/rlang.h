@@ -12,9 +12,10 @@ typedef struct SEXPREC sexp;
 typedef Rbyte r_byte_t;
 typedef Rcomplex r_complex_t;
 
-// FIXME: This typedef seems to be misleading because `R_len_t` is
-// currently a signed type
+// FIXME?: These typedefs seem to be misleading because `R_len_t` and
+// `R_xlen_t` are signed types
 typedef R_len_t r_size_t;
+typedef R_xlen_t r_long_size_t;
 #define R_SIZE_MAX R_LEN_T_MAX
 
 enum r_type {
