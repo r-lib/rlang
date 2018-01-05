@@ -88,6 +88,49 @@ sexp* r_env_clone(sexp* env, sexp* parent) {
 }
 
 
+static sexp* remove_call = NULL;
+
+sexp* r_env_unbind_names(sexp* env, sexp* names, bool inherits) {
+  sexp* names_node = r_node_cdr(remove_call);
+  r_node_poke_car(names_node, names);
+
+  sexp* env_node = r_node_cdr(names_node);
+  r_node_poke_car(env_node, env);
+
+  sexp* inherits_node = r_node_cdr(env_node);
+  r_node_poke_car(inherits_node, r_scalar_lgl(inherits));
+
+
+  // Evaluate call and free arguments for GC
+  r_eval(remove_call, r_base_env);
+  r_node_poke_car(names_node, r_null);
+  r_node_poke_car(env_node, r_null);
+
+  return env;
+}
+
+sexp* rlang_env_unbind(sexp* env, sexp* names, sexp* inherits) {
+  if (r_typeof(env) != r_type_environment) {
+    r_abort("`env` must be an environment");
+  }
+  if (r_typeof(names) != r_type_character) {
+    r_abort("`names` must be a character vector");
+  }
+  if (!r_is_scalar_logical(inherits)) {
+    r_abort("`inherits` must be a scalar logical vector");
+  }
+  return r_env_unbind_names(env, names, *r_lgl_deref(inherits));
+}
+
+sexp* r_env_unbind_all(sexp* env, const char** names, r_size_t n, bool inherits) {
+  return r_env_unbind_names(env, r_new_character(names, n), inherits);
+}
+
+sexp* r_env_unbind(sexp* env, const char* name, bool inherits) {
+  return r_env_unbind_all(env, &name, 1, inherits);
+}
+
+
 void r_init_library_env() {
   new_env_call = rlang_ns_get("rlang_new_env_call");
 
@@ -108,4 +151,13 @@ void r_init_library_env() {
   list2env_call = r_new_call_node(r_base_ns_get("list2env"), list2env_args);
   r_mark_precious(list2env_call);
   FREE(5);
+
+  sexp* remove_args = r_null;
+  sexp* inherits = KEEP(r_scalar_lgl(0));
+  remove_args = KEEP(r_new_tagged_node("inherits", inherits, remove_args));
+  remove_args = KEEP(r_new_tagged_node("envir", r_null, remove_args));
+  remove_args = KEEP(r_new_tagged_node("list", r_null, remove_args));
+  remove_call = r_new_call_node(r_base_ns_get("remove"), remove_args);
+  r_mark_precious(remove_call);
+  FREE(4);
 }

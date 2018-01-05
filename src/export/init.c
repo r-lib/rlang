@@ -15,6 +15,7 @@ extern sexp* r_f_lhs(sexp*);
 extern sexp* r_f_rhs(sexp*);
 extern sexp* r_new_condition(sexp*, sexp*, sexp*);
 extern sexp* r_env_clone(sexp*, sexp*);
+extern sexp* rlang_env_unbind(sexp*, sexp*);
 extern sexp* rlang_env_poke_parent(sexp*, sexp*);
 extern sexp* rlang_env_frame(sexp* env);
 extern sexp* rlang_env_hash_table(sexp* env);
@@ -144,6 +145,7 @@ static const r_callable r_callables[] = {
   {"rlang_node_poke_cddr",      (r_fn_ptr_t) &rlang_node_poke_cddr, 2},
   {"rlang_new_node",            (r_fn_ptr_t) &rlang_new_node_, 2},
   {"rlang_env_clone",           (r_fn_ptr_t) &r_env_clone, 2},
+  {"rlang_env_unbind",          (r_fn_ptr_t) &rlang_env_unbind, 3},
   {"rlang_env_poke_parent",     (r_fn_ptr_t) &rlang_env_poke_parent, 2},
   {"rlang_env_frame",           (r_fn_ptr_t) &rlang_env_frame, 1},
   {"rlang_env_hash_table",      (r_fn_ptr_t) &rlang_env_hash_table, 1},
