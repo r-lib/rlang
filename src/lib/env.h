@@ -13,6 +13,9 @@ static inline bool r_is_unbound_value(sexp* x) {
   return x == R_UnboundValue;
 }
 
+static inline sexp* r_env_parent(sexp* env) {
+  return ENCLOS(env);
+}
 static inline void r_env_poke_parent(sexp* env, sexp* new_parent) {
   SET_ENCLOS(env, new_parent);
 }

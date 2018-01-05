@@ -28,25 +28,83 @@ static void check_data_mask_input(sexp* env, const char* arg) {
   }
 }
 sexp* rlang_new_data_mask(sexp* bottom, sexp* top, sexp* parent) {
+  check_data_mask_input(parent, "parent");
+  sexp* data_mask;
+
+  if (bottom == r_null) {
+    data_mask = bottom = KEEP(r_new_environment(parent));
+  } else {
+    check_data_mask_input(bottom, "bottom");
+    // Create a child because we don't know what might be in `bottom`
+    // and we need to clear its contents without deleting any object
+    // created in the data mask environment
+    data_mask = KEEP(r_new_environment(bottom));
+  }
+
   if (top == r_null) {
     top = bottom;
+  } else {
+    check_data_mask_input(top, "top");
   }
-  check_data_mask_input(bottom, "bottom");
-  check_data_mask_input(top, "top");
-  check_data_mask_input(parent, "parent");
-
-  // Create a child because we don't know what might be in `bottom`.
-  // This way we can just remove all bindings between the parent of
-  // `bottom` and `top`. We don't want to clean everything in `bottom`
-  // in case the environment is leaked, e.g. through a closure,
-  // formula or quosure that might rely on some local bindings
-  // installed by the user.
-  sexp* data_mask = KEEP(r_new_environment(bottom));
 
   r_env_poke(data_mask, r_tilde_sym, new_tilde_thunk(data_mask, top));
   r_env_poke(data_mask, data_mask_sym, data_mask);
   r_env_poke(data_mask, data_mask_env_sym, parent);
   r_env_poke(data_mask, data_mask_top_env_sym, top);
+
+  FREE(1);
+  return data_mask;
+}
+
+
+static sexp* data_pronoun_sym = NULL;
+
+sexp* rlang_as_data_mask(sexp* data, sexp* data_src, sexp* parent) {
+  if (data == r_null) {
+    return rlang_new_data_mask(r_null, r_null, parent);
+  }
+
+  sexp* bottom = NULL;
+
+  switch (r_typeof(data)) {
+  case r_type_environment:
+    bottom = KEEP(r_env_clone(data, parent));
+    break;
+
+  case r_type_logical:
+  case r_type_integer:
+  case r_type_double:
+  case r_type_complex:
+  case r_type_character:
+  case r_type_raw:
+    data = r_vec_coerce(data, r_type_list);
+    // fallthrough;
+  case r_type_list: {
+    sexp* names = r_names(data);
+    bottom = KEEP(r_new_environment(parent));
+
+    if (names != r_null) {
+      r_size_t n = r_length(data);
+
+      for (r_size_t i = 0; i < n; ++i) {
+        // Ignore empty or missing names
+        sexp* nm = r_chr_get(names, i);
+        if (r_str_is_name(nm)) {
+          sexp* elt = r_list_get(data, i);
+          r_env_poke(bottom, r_str_as_symbol(nm), elt);
+        }
+      }
+    }
+
+    break;
+  }
+
+  default:
+    r_abort("`data` must be a list, vector, or environment");
+  }
+
+  r_env_poke(bottom, data_pronoun_sym, data_src);
+  sexp* data_mask = rlang_new_data_mask(bottom, bottom, parent);
 
   FREE(1);
   return data_mask;
@@ -118,6 +176,7 @@ void rlang_init_eval_tidy() {
   data_mask_sym = r_sym(".__tidyeval_data_mask__.");
   data_mask_env_sym = r_sym(".env");
   data_mask_top_env_sym = r_sym(".top_env");
+  data_pronoun_sym = r_sym(".data");
 
   tilde_prim = r_base_ns_get("~");
   env_poke_parent_fn = rlang_ns_get("env_poke_parent");

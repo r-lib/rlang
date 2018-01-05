@@ -102,13 +102,9 @@
 #' }
 #' @name eval_tidy
 eval_tidy <- function(expr, data = NULL, env = caller_env()) {
-  if (!inherits(expr, "quosure")) {
-    expr <- new_quosure(expr, env)
-  }
-  overscope <- as_overscope(expr, data)
-  on.exit(overscope_clean(overscope))
-
-  overscope_eval_next(overscope, expr)
+  data_mask <- as_data_mask(data, env)
+  on.exit(overscope_clean(data_mask))
+  eval_bare(expr, data_mask)
 }
 
 #' Data pronoun for tidy evaluation
@@ -231,6 +227,7 @@ eval_tidy_ <- function(expr, bottom, top = NULL, env = caller_env()) {
 #' overscope_clean(overscope)
 #' fn()
 as_overscope <- function(quo, data = NULL) {
+as_data_mask <- function(data = NULL, parent = base_env()) {
   data_src <- as_dictionary(data, read_only = TRUE)
   enclosure <- quo_get_env(quo) %||% base_env()
 
@@ -248,6 +245,8 @@ as_overscope <- function(quo, data = NULL) {
 
   # Install data pronoun
   bottom$.data <- data_src
+  .Call(rlang_as_data_mask, data, data_src, parent)
+}
 
   new_overscope(bottom, enclosure = enclosure)
 }
@@ -308,15 +307,4 @@ overscope_clean <- function(overscope) {
   }
 
   overscope
-}
-
-f_self_eval <- function(overscope, overscope_top) {
-  function(...) {
-    .Call(rlang_tilde_eval,
-      sys.call(),
-      overscope,
-      overscope_top,
-      environment()
-    )
-  }
 }

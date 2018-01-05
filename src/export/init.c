@@ -90,6 +90,7 @@ extern sexp* rlang_quo_get_env(sexp*);
 extern sexp* rlang_quo_set_env(sexp*, sexp*);
 extern sexp* rlang_which_operator(sexp*);
 extern sexp* rlang_new_data_mask(sexp*, sexp*, sexp*);
+extern sexp* rlang_as_data_mask(sexp*, sexp*, sexp*);
 
 // Library initialisation defined below
 sexp* rlang_library_load();
@@ -201,6 +202,7 @@ static const r_callable r_callables[] = {
   {"rlang_which_operator",      (r_fn_ptr_t) &rlang_which_operator, 1},
   {"rlang_call_has_precedence", (r_fn_ptr_t) &rlang_call_has_precedence, 3},
   {"rlang_new_data_mask",       (r_fn_ptr_t) &rlang_new_data_mask, 3},
+  {"rlang_as_data_mask",        (r_fn_ptr_t) &rlang_as_data_mask, 3},
   {NULL, NULL, 0}
 };
 
