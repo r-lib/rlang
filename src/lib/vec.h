@@ -4,6 +4,40 @@
 
 r_size_t r_vec_length(sexp* x);
 
+
+static inline int* r_lgl_deref(sexp* x) {
+  return LOGICAL(x);
+}
+static inline int* r_int_deref(sexp* x) {
+  return INTEGER(x);
+}
+static inline double* r_dbl_deref(sexp* x) {
+  return REAL(x);
+}
+static inline r_complex_t* r_cpl_deref(sexp* x) {
+  return COMPLEX(x);
+}
+static inline r_byte_t* r_raw_deref(sexp* x) {
+  return RAW(x);
+}
+
+static inline int r_lgl_get(sexp* x, r_size_t i) {
+  return LOGICAL(x)[i];
+}
+static inline int r_int_get(sexp* x, r_size_t i) {
+  return INTEGER(x)[i];
+}
+static inline double r_dbl_get(sexp* x, r_size_t i) {
+  return REAL(x)[i];
+}
+static inline r_complex_t r_cpl_get(sexp* x, r_size_t i) {
+  return COMPLEX(x)[i];
+}
+static inline r_byte_t r_raw_get(sexp* x, r_size_t i) {
+  return RAW(x)[i];
+}
+
+
 bool r_is_list(sexp* x);
 bool r_is_vector(sexp* x);
 bool r_is_scalar_atomic(sexp* x);
