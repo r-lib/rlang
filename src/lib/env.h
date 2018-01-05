@@ -9,6 +9,10 @@
 #define r_empty_env R_EmptyEnv
 
 
+static inline sexp* r_env_names(sexp* env) {
+  return R_lsInternal3(env, true, false);
+}
+
 static inline bool r_is_unbound_value(sexp* x) {
   return x == R_UnboundValue;
 }
