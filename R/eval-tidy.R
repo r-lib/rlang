@@ -85,16 +85,20 @@
 #' eval_tidy(quo(.data$cyl), mtcars)
 #' eval_tidy(quo(.env$cyl), mtcars)
 #'
-#' # Note that instead of using `.env` it is often equivalent and often
+#' # Note that instead of using `.env` it is often equivalent and may be
 #' # preferred to unquote a value. There are two differences. First unquoting
-#' # happens earlier, when the quosure is created. Second, `.env` will not
-#' # look in a parent environment, while unquoting will. (Note also that
-#' # magrittr pipes, such as `%>%`, create a child environment where `.env`
-#' # will not work properly)
+#' # happens earlier, when the quosure is created. Secondly, subsetting `.env`
+#' # with the `$` operator may be brittle because `$` does not look through
+#' # the parents of the environment. Using `.env$name` in a magrittr pipeline
+#' # is an instance where this poses problem, because the magrittr pipe
+#' # currently (as of v1.5.0) evaluates its operands in a *child* of the
+#' # current environment (this child environment is where it defines the
+#' # pronoun `.`).
+#'
 #' eval_tidy(quo(!! cyl), mtcars)  # 10
 #' \dontrun{
 #'   mtcars %>% eval_tidy(quo(!! cyl), .)  # 10
-#'   mtcars %>% eval_tidy(quo(!! cyl), .)  # NULL
+#'   mtcars %>% eval_tidy(quo(.env$cyl), .)  # NULL
 #' }
 #' @name eval_tidy
 eval_tidy <- function(expr, data = NULL, env = caller_env()) {
