@@ -34,7 +34,7 @@ static inline sexp* r_nms_get(sexp* nms, r_size_t i) {
 bool r_chr_has(sexp* chr, const char* c_string);
 
 
-sexp* r_build_character(const char** strings, int n);
+sexp* r_new_character(const char** strings, int n);
 
 static inline sexp* r_string(const char* c_string) {
   return Rf_mkChar(c_string);

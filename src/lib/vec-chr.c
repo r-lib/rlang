@@ -2,7 +2,7 @@
 #include "rlang.h"
 
 
-sexp* r_build_character(const char** strings, int n) {
+sexp* r_new_character(const char** strings, int n) {
   sexp* out = KEEP(r_new_vector(STRSXP, n));
 
   for (int i = 0; i < n; ++i) {
