@@ -79,7 +79,7 @@ check_dictionaryish <- function(x) {
   }
 }
 new_dictionary <- function(x, lookup_msg, read_only) {
-  .Call(rlang_new_dictionary, x, lookup_msg, read_only)
+  .Call(rlang_new_data_pronoun, x, lookup_msg, read_only)
 }
 
 #' @rdname dictionary

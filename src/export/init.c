@@ -4,7 +4,7 @@
 #include <rlang.h>
 
 // Callable from other packages
-extern sexp* rlang_new_dictionary(sexp*, sexp*, sexp*);
+extern sexp* rlang_new_data_pronoun(sexp*, sexp*, sexp*);
 extern sexp* r_squash_if(sexp*, enum r_type, bool (*is_spliceable)(sexp*), int);
 extern bool rlang_is_clevel_spliceable(sexp*);
 extern bool rlang_is_quosure(sexp*);
@@ -49,7 +49,7 @@ extern sexp* rlang_is_reference(sexp*, sexp*);
 extern sexp* rlang_sxp_address(sexp*);
 extern sexp* rlang_length(sexp*);
 extern sexp* rlang_true_length(sexp* x);
-extern sexp* rlang_new_dictionary(sexp*, sexp*, sexp*);
+extern sexp* rlang_new_data_pronoun(sexp*, sexp*, sexp*);
 extern sexp* rlang_squash(sexp*, sexp*, sexp*, sexp*);
 extern sexp* rlang_symbol(sexp*);
 extern sexp* rlang_symbol_to_character(sexp*);
@@ -129,7 +129,7 @@ static const r_callable r_callables[] = {
   {"rlang_is_reference",        (r_fn_ptr_t) &rlang_is_reference, 2},
   {"rlang_length",              (r_fn_ptr_t) &rlang_length, 1},
   {"rlang_true_length",         (r_fn_ptr_t) &rlang_true_length, 1},
-  {"rlang_new_dictionary",      (r_fn_ptr_t) &rlang_new_dictionary, 3},
+  {"rlang_new_data_pronoun",    (r_fn_ptr_t) &rlang_new_data_pronoun, 3},
   {"rlang_set_attrs",           (r_fn_ptr_t) &rlang_set_attrs, 2},
   {"rlang_missing_arg",         (r_fn_ptr_t) &rlang_missing_arg, 0},
   {"rlang_node_car",            (r_fn_ptr_t) &rlang_node_car, 1},
@@ -211,7 +211,7 @@ static const r_callable r_callables[] = {
 };
 
 void R_init_rlang(r_dll_info* dll) {
-  r_register_c_callable("rlang", "rlang_new_dictionary", (r_fn_ptr_t) &rlang_new_dictionary);
+  /* r_register_c_callable("rlang", "rlang_new_data_pronoun", (r_fn_ptr_t) &rlang_new_dictionary); */
   r_register_c_callable("rlang", "rlang_squash_if", (r_fn_ptr_t) &r_squash_if);
 
   // These functions are stable

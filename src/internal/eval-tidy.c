@@ -18,6 +18,30 @@ sexp* new_tilde_thunk(sexp* data_mask, sexp* data_mask_top) {
 }
 
 
+static sexp* data_pronoun_names = NULL;
+static sexp* data_pronoun_class = NULL;
+
+// Exported for deprecated as_dictionary() generic
+sexp* rlang_new_data_pronoun(sexp* x, sexp* lookup_msg, sexp* read_only) {
+  sexp* dict = KEEP(r_new_vector(r_type_list, 3));
+
+  r_list_poke(dict, 0, x);
+  r_list_poke(dict, 2, read_only);
+
+  if (lookup_msg == r_null) {
+    r_list_poke(dict, 1, r_scalar_chr("Object `%s` not found in data"));
+  } else {
+    r_list_poke(dict, 1, lookup_msg);
+  }
+
+  r_poke_attribute(dict, r_names_sym, data_pronoun_names);
+  r_poke_attribute(dict, r_class_sym, data_pronoun_class);
+
+  FREE(1);
+  return dict;
+}
+
+
 static sexp* data_mask_sym = NULL;
 static sexp* data_mask_env_sym = NULL;
 static sexp* data_mask_top_env_sym = NULL;
@@ -196,9 +220,17 @@ sexp* rlang_data_mask_clean(sexp* mask) {
 }
 
 
+const char* data_pronoun_c_names[3] = { "src", "lookup_msg", "read_only" };
+
 void rlang_init_eval_tidy() {
   tilde_thunk_fmls = rlang_constants_get("tilde_thunk_fmls");
   tilde_thunk_body = rlang_constants_get("tilde_thunk_body");
+
+  data_pronoun_names = r_new_character(data_pronoun_c_names, 3);
+  r_mark_precious(data_pronoun_names);
+
+  data_pronoun_class = r_scalar_chr("dictionary");
+  r_mark_precious(data_pronoun_class);
 
   data_mask_sym = r_sym(".__tidyeval_data_mask__.");
   data_mask_env_sym = r_sym(".env");
