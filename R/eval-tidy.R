@@ -85,10 +85,17 @@
 #' eval_tidy(quo(.data$cyl), mtcars)
 #' eval_tidy(quo(.env$cyl), mtcars)
 #'
-#' # Note that instead of using `.env` it is often equivalent to
-#' # unquote a value. The only difference is the timing of evaluation
-#' # since unquoting happens earlier (when the quosure is created):
-#' eval_tidy(quo(!! cyl), mtcars)
+#' # Note that instead of using `.env` it is often equivalent and often
+#' # preferred to unquote a value. There are two differences. First unquoting
+#' # happens earlier, when the quosure is created. Second, `.env` will not
+#' # look in a parent environment, while unquoting will. (Note also that
+#' # magrittr pipes, such as `%>%`, create a child environment where `.env`
+#' # will not work properly)
+#' eval_tidy(quo(!! cyl), mtcars)  # 10
+#' \dontrun{
+#'   mtcars %>% eval_tidy(quo(!! cyl), .)  # 10
+#'   mtcars %>% eval_tidy(quo(!! cyl), .)  # NULL
+#' }
 #' @name eval_tidy
 eval_tidy <- function(expr, data = NULL, env = caller_env()) {
   if (!inherits(expr, "quosure")) {
