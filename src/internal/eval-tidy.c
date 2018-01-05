@@ -56,13 +56,13 @@ sexp* rlang_new_data_mask(sexp* bottom, sexp* top, sexp* parent) {
   sexp* data_mask;
 
   if (bottom == r_null) {
-    data_mask = bottom = KEEP(r_new_environment(parent));
+    data_mask = bottom = KEEP(r_new_environment(parent, 0));
   } else {
     check_data_mask_input(bottom, "bottom");
     // Create a child because we don't know what might be in `bottom`
     // and we need to clear its contents without deleting any object
     // created in the data mask environment
-    data_mask = KEEP(r_new_environment(bottom));
+    data_mask = KEEP(r_new_environment(bottom, 0));
   }
 
   if (top == r_null) {
@@ -105,7 +105,7 @@ sexp* rlang_as_data_mask(sexp* data, sexp* data_src, sexp* parent) {
     // fallthrough;
   case r_type_list: {
     sexp* names = r_names(data);
-    bottom = KEEP(r_new_environment(parent));
+    bottom = KEEP(r_new_environment(parent, 0));
 
     if (names != r_null) {
       r_size_t n = r_length(data);

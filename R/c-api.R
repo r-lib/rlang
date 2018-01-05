@@ -27,5 +27,3 @@ rlang_current_frame <- as.call(list(rlang_current_frame))
 
 rlang_sys_frame <- as.call(list(base::sys.frame, 0L))
 rlang_sys_call <- as.call(list(base::sys.call, 0L))
-
-rlang_new_env_call <- as.call(list(base::new.env, parent = NULL))

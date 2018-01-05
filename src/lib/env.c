@@ -29,13 +29,23 @@ sexp* r_base_ns_get(const char* name) {
 
 static sexp* new_env_call = NULL;
 
-sexp* r_new_environment(sexp* parent) {
+sexp* r_new_environment(sexp* parent, r_size_t size) {
   if (!parent) {
     parent = r_empty_env;
   }
+  sexp* parent_node = r_node_cdr(new_env_call);
+  r_node_poke_car(parent_node, parent);
 
-  r_node_poke_cadr(new_env_call, parent);
-  return r_eval(new_env_call, r_empty_env);
+  if (!size) {
+    size = 29;
+  }
+  sexp* size_node = r_node_cdr(parent_node);
+  r_node_poke_car(size_node, r_scalar_int(size));
+
+  sexp* env = r_eval(new_env_call, r_empty_env);
+  r_node_poke_car(parent_node, r_null);
+
+  return env;
 }
 
 
@@ -132,7 +142,14 @@ sexp* r_env_unbind(sexp* env, const char* name, bool inherits) {
 
 
 void r_init_library_env() {
-  new_env_call = rlang_ns_get("rlang_new_env_call");
+  sexp* new_env_args = r_null;
+  sexp* hash = KEEP(r_scalar_lgl(1));
+  new_env_args = KEEP(r_new_tagged_node("hash", hash, new_env_args));
+  new_env_args = KEEP(r_new_tagged_node("size", r_null, new_env_args));
+  new_env_args = KEEP(r_new_tagged_node("parent", r_null, new_env_args));
+  new_env_call = r_new_call_node(r_base_ns_get("new.env"), new_env_args);
+  r_mark_precious(new_env_call);
+  FREE(4);
 
   sexp* env2list_args;
   env2list_args = KEEP(r_scalar_lgl(1));
