@@ -425,6 +425,8 @@ as_closure <- function(x, env = caller_env()) {
   )
 }
 
+utils::globalVariables(c("!<-", "(<-", "enexpr<-"))
+
 op_as_closure <- function(prim_nm) {
   switch(prim_nm,
     `<-` = ,
