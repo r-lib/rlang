@@ -1,6 +1,8 @@
 #ifndef RLANG_INTERNAL_INTERNAL_H
 #define RLANG_INTERNAL_INTERNAL_H
 
+#include "quo.h"
+
 
 sexp* rlang_constants_env;
 void rlang_init_internal();
