@@ -188,8 +188,8 @@
   captures the name `arg` rather than the expression supplied to the
   `arg` argument.
 
-  `enexprs()` is like `enquos()` but like `exprs()` it returns bare
-  expressions.
+  In addition, `enexprs()` is like `enquos()` but like `exprs()` it
+  returns bare expressions. And `ensyms()` expects strings or symbols.
 
 
 ## Breaking changes

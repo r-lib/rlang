@@ -391,3 +391,9 @@ test_that("endots() supports `.ignore_empty`", {
   fn <- function(...) enexprs(..., .ignore_empty = "trailing")
   expect_identical(fn(foo, ), exprs(foo))
 })
+
+test_that("ensyms() captures multiple symbols", {
+  fn <- function(arg, ...) ensyms(arg, ...)
+  expect_identical(fn(foo, bar, baz), exprs(foo, bar, baz))
+  expect_error(fn(foo()), "Must supply symbols or strings")
+})
