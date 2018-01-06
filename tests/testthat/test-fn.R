@@ -47,8 +47,13 @@ test_that("as_closure() handles operators", {
   as_closure(`[[<-`)(x, 2, 20)
   expect_identical(x, list(1, 20))
 
-  expect_identical(as_closure(`[<-`)(data.frame(x = 1:2, y = 3:4), 2, 2, 10L), data.frame(x = 1:2, y = c(3L, 10L)))
-  expect_identical(as_closure(`[[<-`)(list(1, 2), 2, 20), list(1, 20))
+  x <- data.frame(x = 1:2, y = 3:4)
+  expect_identical(as_closure(`[<-`)(x, 2, 2, 10L), 10L)
+  expect_identical(x, data.frame(x = 1:2, y = c(3L, 10L)))
+
+  x <- list(1, 2)
+  expect_identical(as_closure(`[[<-`)(x, 2, 20), 20)
+  expect_identical(x, list(1, 20))
 
   x <- ll(ll(a = "A"), ll(a = "B"))
   expect_identical(lapply(x, as_closure(`[[`), "a"), list("A", "B"))

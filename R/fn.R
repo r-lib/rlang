@@ -440,15 +440,25 @@ op_as_closure <- function(prim_nm) {
       expr <- expr((!!op)(.x, !! quo_expr(enexpr(.i), warn = TRUE)))
       eval_bare(expr)
     },
-    `[[<-` = ,
-    `@<-` = ,
-    `$<-` = function(.x, .i, .value) {
-      op <- sym(prim_nm)
-      expr <- expr((!!op)(!!enexpr(.x), !!enexpr(.i), !!enexpr(.value)))
+    `[[<-` = function(.x, .i, .value) {
+      expr <- expr((!!enexpr(.x))[[!!enexpr(.i)]] <- !!enexpr(.value))
       eval_bare(expr, caller_env())
     },
     `[<-` = function(.x, ...) {
-      expr <- expr(`[<-`(!!enexpr(.x), !!! exprs(...)))
+      args <- exprs(...)
+      n <- length(args)
+      if (n < 2L) {
+        abort("Must supply operands to `[<-`")
+      }
+      expr <- expr((!!enexpr(.x))[!!!args[-n]] <- !!args[[n]])
+      eval_bare(expr, caller_env())
+    },
+    `@<-` = function(.x, .i, .value) {
+      expr <- expr(`@`(!!enexpr(.x), !!enexpr(.i)) <- !!enexpr(.value))
+      eval_bare(expr, caller_env())
+    },
+    `$<-` = function(.x, .i, .value) {
+      expr <- expr(`$`(!!enexpr(.x), !!enexpr(.i)) <- !!enexpr(.value))
       eval_bare(expr, caller_env())
     },
     `(` = function(.x) .x,
