@@ -299,6 +299,15 @@ static sexp* new_quosure_mask(sexp* env) {
 }
 
 
+bool is_data_mask(sexp* env) {
+  if (r_typeof(env) != r_type_environment) {
+    return false;
+  } else {
+    return r_env_find(env, data_mask_flag_sym) != r_unbound_sym;
+  }
+}
+
+
 static sexp* data_mask_clean_fn = NULL;
 static sexp* env_sym = NULL;
 
@@ -311,7 +320,22 @@ sexp* rlang_eval_tidy(sexp* expr, sexp* data, sexp* frame) {
     env = r_eval(env_sym, frame);
   }
 
+  // If `data` is already a data mask, update env pronouns and
+  // evaluate in that environment. The caller is responsible for
+  // cleaning the mask if needed.
+  if (is_data_mask(data)) {
+    r_env_poke(data, data_mask_env_sym, env);
+    sexp* top = r_env_get(data, data_mask_top_env_sym);
+    r_env_poke_parent(top, env);
+    return r_eval(expr, data);
+  }
+
+
   sexp* mask;
+
+  // If there is no data, we only need to mask `~` with the definition
+  // for quosure thunks. Otherwise we create a heavier data mask with
+  // all the masking objects, data pronouns, etc.
   if (data == r_null) {
     mask = new_quosure_mask(env);
   } else {

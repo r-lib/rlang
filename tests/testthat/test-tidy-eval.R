@@ -276,3 +276,9 @@ test_that("tilde thunks are unique", {
 test_that("evaluating an empty quosure fails", {
   expect_error(eval_tidy(quo()), "not found")
 })
+
+test_that("can supply a data mask as data", {
+  mask <- as_data_mask(list(x = 1L))
+  eval_tidy(quo(x <- 2L), mask)
+  expect_identical(eval_tidy(quo(x), mask), 2L)
+})
