@@ -250,9 +250,9 @@ sexp* rlang_tilde_eval(sexp* tilde, sexp* overscope, sexp* overscope_top, sexp* 
   return r_eval(r_f_rhs(tilde), overscope);
 }
 
-#define DATA_MASK_OBJECTS_N 3
+#define DATA_MASK_OBJECTS_N 4
 static const char* data_mask_objects_names[DATA_MASK_OBJECTS_N] = {
-   "~", ".top_env", ".env"
+  ".__tidyeval_data_mask__.", "~", ".top_env", ".env"
 };
 
 sexp* rlang_data_mask_clean(sexp* mask) {
