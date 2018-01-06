@@ -79,5 +79,27 @@ void r_vec_poke_coerce_n(sexp* x, r_size_t offset,
 void r_vec_poke_coerce_range(sexp* x, r_size_t offset,
                              sexp* y, r_size_t from, r_size_t to);
 
+static inline bool r_vec_find_first_duplicate(sexp* x, sexp* except, r_long_size_t* index) {
+  r_long_size_t idx;
+  if (except) {
+    idx = Rf_any_duplicated3(x, except, false);
+  } else {
+    idx = Rf_any_duplicated(x, false);
+  }
+
+  if (idx) {
+    if (index) {
+      *index = idx - 1;
+    }
+    return true;
+  } else {
+    return false;
+  }
+}
+
+static inline sexp* r_vec_are_duplicated(sexp* x) {
+  return Rf_duplicated(x, false);
+}
+
 
 #endif
