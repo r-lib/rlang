@@ -272,3 +272,7 @@ test_that("tilde thunks are unique", {
   body2 <- body(thunk2)
   expect_false(is_reference(body1, body2))
 })
+
+test_that("evaluating an empty quosure fails", {
+  expect_error(eval_tidy(quo()), "not found")
+})
