@@ -111,12 +111,6 @@ f <- as_quosure(expr)
 overscope <- as_overscope(f, data = mtcars)
 overscope_eval_next(overscope, f)
 
-# However you need to cleanup the environment after evaluation.
-# Otherwise the leftover definitions for self-evaluation of
-# formulas might cause unexpected results:
-fn <- overscope_eval_next(overscope, ~function() ~letters)
-fn()
-
+# However you need to clean up the environment after evaluation.
 overscope_clean(overscope)
-fn()
 }

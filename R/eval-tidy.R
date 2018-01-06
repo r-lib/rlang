@@ -142,14 +142,9 @@ delayedAssign(".data", as_dictionary(list(), read_only = TRUE))
 #' @inheritParams as_overscope
 #' @export
 eval_tidy_ <- function(expr, bottom, top = NULL, env = caller_env()) {
-  top <- top %||% bottom
-  overscope <- new_overscope(bottom, top)
-  on.exit(overscope_clean(overscope))
-
-  if (!inherits(expr, "quosure")) {
-    expr <- new_quosure(expr, env)
-  }
-  overscope_eval_next(overscope, expr)
+  data_mask <- new_overscope(bottom, top %||% bottom)
+  on.exit(overscope_clean(data_mask))
+  .Call(rlang_eval_tidy, expr, data_mask, environment())
 }
 
 
@@ -216,14 +211,8 @@ eval_tidy_ <- function(expr, bottom, top = NULL, env = caller_env()) {
 #' overscope <- as_overscope(f, data = mtcars)
 #' overscope_eval_next(overscope, f)
 #'
-#' # However you need to cleanup the environment after evaluation.
-#' # Otherwise the leftover definitions for self-evaluation of
-#' # formulas might cause unexpected results:
-#' fn <- overscope_eval_next(overscope, ~function() ~letters)
-#' fn()
-#'
+#' # However you need to clean up the environment after evaluation.
 #' overscope_clean(overscope)
-#' fn()
 as_overscope <- function(quo, data = NULL) {
   as_data_mask(data, quo_get_env(quo))
 }
@@ -264,13 +253,7 @@ new_overscope <- function(bottom, top = NULL, enclosure = base_env()) {
 #'   default.
 #' @export
 overscope_eval_next <- function(overscope, quo, env = base_env()) {
-  quo <- as_quosure(quo, env)
-  lexical_env <- quo_get_env(quo)
-
-  overscope$.env <- lexical_env
-  env_poke_parent(overscope$.top_env, lexical_env)
-
-  .Call(rlang_eval, quo_get_expr(quo), overscope)
+  .Call(rlang_eval_tidy, quo, overscope, environment())
 }
 #' @rdname as_overscope
 #' @export
