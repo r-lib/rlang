@@ -2,16 +2,22 @@
 #define RLANG_ENV_H
 
 #include <stdbool.h>
+#include <Rversion.h>
 
 
 #define r_global_env R_GlobalEnv
 #define r_base_env R_BaseEnv
 #define r_empty_env R_EmptyEnv
 
-
+#if (!defined(R_VERSION) || R_VERSION < R_Version(3, 2, 0))
+static inline sexp* r_env_names(sexp* env) {
+  return R_lsInternal(env, true);
+}
+#else
 static inline sexp* r_env_names(sexp* env) {
   return R_lsInternal3(env, true, false);
 }
+#endif
 
 static inline bool r_is_unbound_value(sexp* x) {
   return x == R_UnboundValue;
