@@ -42,6 +42,63 @@ sexp* rlang_new_data_pronoun(sexp* x, sexp* lookup_msg, sexp* read_only) {
 }
 
 
+static sexp* empty_names_chr;
+
+static void check_unique_names(sexp* x) {
+  // Allow empty lists
+  if (!r_length(x)) {
+    return ;
+  }
+
+  sexp* names = r_names(x);
+  if (names == r_null) {
+    r_abort("`data` must be uniquely named but does not have names");
+  }
+  if (r_vec_find_first_identical_any(names, empty_names_chr, NULL)) {
+    r_abort("`data` must be uniquely named but has unnamed elements");
+  }
+  if (r_vec_find_first_duplicate(names, NULL, NULL)) {
+    r_abort("`data` must be uniquely named but has duplicate elements");
+  }
+}
+sexp* as_data_pronoun(sexp* x) {
+  int n_kept = 0;
+  sexp* lookup_msg = r_null;
+
+  switch (r_typeof(x)) {
+  case r_type_logical:
+  case r_type_integer:
+  case r_type_double:
+  case r_type_complex:
+  case r_type_character:
+  case r_type_raw:
+    check_unique_names(x);
+    x = KEEP_N(r_vec_coerce(x, r_type_list), &n_kept);
+    lookup_msg = r_null;
+    break;
+  case r_type_list:
+    check_unique_names(x);
+    if (r_inherits(x, "data.frame")) {
+      lookup_msg = KEEP_N(r_scalar_chr("Column `%s` not found in data"), &n_kept);
+    } else {
+      lookup_msg = KEEP_N(r_scalar_chr("Object `%s` not found in data"), &n_kept);
+    }
+    break;
+  case r_type_environment:
+    lookup_msg = KEEP_N(r_scalar_chr("Object `%s` not found in environment"), &n_kept);
+    break;
+  default:
+    r_abort("`data` must be an uniquely named vector, list, data frame or environment");
+  }
+
+  sexp* read_only = KEEP_N(r_scalar_lgl(1), &n_kept);
+  sexp* pronoun = rlang_new_data_pronoun(x, lookup_msg, read_only);
+
+  FREE(n_kept);
+  return pronoun;
+}
+
+
 static sexp* data_mask_sym = NULL;
 static sexp* data_mask_env_sym = NULL;
 static sexp* data_mask_top_env_sym = NULL;
@@ -83,11 +140,11 @@ sexp* rlang_new_data_mask(sexp* bottom, sexp* top, sexp* parent) {
 
 static sexp* data_pronoun_sym = NULL;
 
-sexp* rlang_as_data_mask(sexp* data, sexp* data_src, sexp* parent) {
+sexp* rlang_as_data_mask(sexp* data, sexp* parent) {
   if (data == r_null) {
     return rlang_new_data_mask(r_null, r_null, parent);
   }
-
+  sexp* data_pronoun = as_data_pronoun(data);
   sexp* bottom = NULL;
 
   switch (r_typeof(data)) {
@@ -102,7 +159,8 @@ sexp* rlang_as_data_mask(sexp* data, sexp* data_src, sexp* parent) {
   case r_type_character:
   case r_type_raw:
     data = r_vec_coerce(data, r_type_list);
-    // fallthrough;
+    // fallthrough:
+
   case r_type_list: {
     sexp* names = r_names(data);
     bottom = KEEP(r_new_environment(parent, 0));
@@ -124,10 +182,10 @@ sexp* rlang_as_data_mask(sexp* data, sexp* data_src, sexp* parent) {
   }
 
   default:
-    r_abort("`data` must be a list, vector, or environment");
+    r_abort("`data` must be a vector, list, data frame, or environment");
   }
 
-  r_env_poke(bottom, data_pronoun_sym, data_src);
+  r_env_poke(bottom, data_pronoun_sym, data_pronoun);
   sexp* data_mask = rlang_new_data_mask(bottom, bottom, parent);
 
   FREE(1);
@@ -231,6 +289,11 @@ void rlang_init_eval_tidy() {
 
   data_pronoun_class = r_scalar_chr("dictionary");
   r_mark_precious(data_pronoun_class);
+
+  empty_names_chr = r_new_vector(r_type_character, 2);
+  r_mark_precious(empty_names_chr);
+  r_chr_poke(empty_names_chr, 0, r_string(""));
+  r_chr_poke(empty_names_chr, 1, r_missing_str);
 
   data_mask_sym = r_sym(".__tidyeval_data_mask__.");
   data_mask_env_sym = r_sym(".env");
