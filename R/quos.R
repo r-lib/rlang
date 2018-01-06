@@ -1,8 +1,16 @@
 #' Tidy quotation of multiple expressions and dots
 #'
-#' `quos()` quotes its arguments and returns them as a list of
-#' quosures (see [quo()]). It is especially useful to capture
-#' arguments forwarded through `...`.
+#' @description
+#'
+#' * `quos()` quotes its arguments and returns them as a list of
+#'   quosures (see [quo()]).
+#'
+#' * `enquos()` should be used inside a function. It takes argument
+#'   names and captures the expressions to those arguments, i.e. one
+#'   level up.
+#'
+#'
+#' @section The := operator:
 #'
 #' Both `quos` and `dots_definitions()` have specific support for
 #' definition expressions of the type `var := expr`, with some
@@ -19,7 +27,10 @@
 #'    operators are processed on capture, in both the LHS and the
 #'    RHS. Unlike `quos()`, it allows named definitions.}
 #' }
-#' @param ... Expressions to capture unevaluated.
+#'
+#' @param ... For `enquos()`, names of arguments to capture without
+#'   evaluation (including `...`). For `quos()`, the expressions to
+#'   capture unevaluated (including expressions contained in `...`).
 #' @param .named Whether to ensure all dots are named. Unnamed
 #'   elements are processed with [expr_text()] to figure out a default
 #'   name. If an integer, it is passed to the `width` argument of
@@ -33,19 +44,24 @@
 #' @export
 #' @name quosures
 #' @examples
-#' # quos() is like the singular version but allows quoting
+#' # quos() is like the singular version quo() but allows quoting
 #' # several arguments:
-#' quos(foo(), bar(baz), letters[1:2], !! letters[1:2])
+#' quos(foo(), letters[1:2], !! letters[1:2])
 #'
-#' # It is most useful when used with dots. This allows quoting
-#' # expressions across different levels of function calls:
-#' fn <- function(...) quos(...)
-#' fn(foo(bar), baz)
+#' # enquos() is like enquo() but lets you capture several arguments:
+#' fn <- function(arg1, arg2, ...) {
+#'   enquos(arg1, arg2, ...)
+#' }
+#' fn(leonardo, donatello, raphael())
 #'
-#' # Note that quos() does not check for duplicate named
-#' # arguments:
-#' fn <- function(...) quos(x = x, ...)
-#' fn(x = a + b)
+#' # Because of the nature of dots forwarding (expressions are
+#' # "teleported"), quos() can also be used to capture dots. But
+#' # notice the difference with enquos(). Arguments other than `...`
+#' # are captured directly, within the function:
+#' fn <- function(arg1, arg2, ...) {
+#'   quos(arg1, arg2, ...)
+#' }
+#' fn(leonardo, donatello, raphael())
 #'
 #'
 #' # Lists of arguments can be spliced in:
@@ -54,27 +70,88 @@
 #'
 #' # As well as lists of bare expressions (make sure that the current
 #' # environment is where the symbols in these expressions are defined):
-#' args <- alist(x = foo, y = bar)
+#' args <- alist(mouse1 = bernard, mouse2 = bianca)
 #' quos(!!! args)
 #'
 #'
-#' # Definitions are treated similarly to named arguments:
-#' quos(x := expr, y = expr)
+#' # Like `=`, the `:=` operator creates named arguments:
+#' quos(mouse1 := bernard, mouse2 = bianca)
 #'
-#' # However, the LHS of definitions can be unquoted. The return value
-#' # must be a symbol or a string:
-#' var <- "foo"
-#' quos(!!var := expr)
+#' # The `:=` is mainly useful to unquote names. Unlike `=` it
+#' # supports `!!` on its LHS:
+#' var <- "unquote me!"
+#' quos(!!var := bernard, mouse2 = bianca)
 #'
-#' # If you need the full LHS expression, use dots_definitions():
-#' dots <- dots_definitions(var = foo(baz) := bar(baz))
-#' dots$defs
+#'
+#' # All these features apply to dots captured by enquos():
+#' fn <- function(...) enquos(...)
+#' fn(
+#'   !!! args,
+#'   !!var := penny
+#' )
 quos <- function(...,
                  .named = FALSE,
                  .ignore_empty = c("trailing", "none", "all"),
                  .unquote_names = TRUE) {
   .Call(rlang_quos_interp, environment(), .named, .ignore_empty, .unquote_names)
 }
+
+#' @rdname quosures
+#' @export
+enquos <- function(...,
+                   .named = FALSE,
+                   .ignore_empty = c("trailing", "none", "all"),
+                   .unquote_names = TRUE) {
+  quos <- endots(
+    environment(),
+    parent.frame(),
+    rlang_enquo,
+    rlang_quos_interp,
+    .named,
+    .ignore_empty,
+    .unquote_names
+  )
+  structure(quos, class = "quosures")
+}
+
+endots <- function(frame, env,
+                   capture_arg, capture_dots,
+                   .named, .ignore_empty, .unquote_names) {
+  sys_call <- eval_bare(quote(sys.call()), frame)
+  syms <- as.list(node_cdr(sys_call))
+
+  if (!is_null(names(syms))) {
+    is_arg <- names(syms) %in% c(".named", ".ignore_empty", ".unquote_names")
+    syms <- syms[!is_arg]
+  }
+
+  # Avoid note about registration problems
+  dot_call <- .Call
+
+  splice_dots <- FALSE
+  dots <- map(syms, function(sym) {
+    if (!is_symbol(sym)) {
+      abort("Inputs to capture must be argument names")
+    }
+    if (identical(sym, dots_sym)) {
+      splice_dots <<- TRUE
+      splice(dot_call(capture_dots, env, .named, .ignore_empty, .unquote_names))
+    } else {
+      dot_call(capture_arg, sym, env)
+    }
+  })
+
+  if (splice_dots) {
+    dots <- flatten_if(dots, is_spliced)
+  }
+  if (.named) {
+    dots <- quos_auto_name(dots)
+  }
+  names(dots) <- names2(dots)
+
+  dots
+}
+
 
 #' @rdname quosures
 #' @param x An object to test.

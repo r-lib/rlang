@@ -13,10 +13,14 @@
 #'   is equivalent to [base::substitute()]. The variant `ensym()` also
 #'   checks the argument is a simple symbol.
 #'
-#' - `exprs()` captures multiple expressions and returns a list. In
-#'   particular, it can capture expressions in `...`. It supports name
-#'   unquoting with `:=` (see [quos()]). It is equivalent to
-#'   `eval(substitute(alist(...)))` or `base::alist()`.
+#' - `exprs()` and `enexprs()` capture multiple expressions and return
+#'   a list. `exprs()` can be used anywhere but `enexprs()` must be
+#'   used within a function. These functions capture arguments
+#'   contained in `...` the same way but treat other arguments
+#'   differently. `exprs()` captures whatever expression is supplied
+#'   (and is thus equivaluent to [base::alist()]) while `enexprs()`
+#'   takes argument names and captures the expressions supplied one
+#'   level up.
 #'
 #' See [is_expr()] for more about R expressions.
 #'
@@ -76,6 +80,22 @@ exprs <- function(...,
                   .ignore_empty = c("trailing", "none", "all"),
                   .unquote_names = TRUE) {
   .Call(rlang_exprs_interp, environment(), .named, .ignore_empty, .unquote_names)
+}
+#' @rdname expr
+#' @export
+enexprs <- function(...,
+                   .named = FALSE,
+                   .ignore_empty = c("trailing", "none", "all"),
+                   .unquote_names = TRUE) {
+  endots(
+    environment(),
+    parent.frame(),
+    rlang_enexpr,
+    rlang_exprs_interp,
+    .named,
+    .ignore_empty,
+    .unquote_names
+  )
 }
 
 

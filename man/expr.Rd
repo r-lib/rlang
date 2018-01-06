@@ -4,6 +4,7 @@
 \alias{expr}
 \alias{enexpr}
 \alias{exprs}
+\alias{enexprs}
 \title{Raw quotation of an expression}
 \usage{
 expr(expr)
@@ -11,6 +12,9 @@ expr(expr)
 enexpr(arg)
 
 exprs(..., .named = FALSE, .ignore_empty = c("trailing", "none", "all"),
+  .unquote_names = TRUE)
+
+enexprs(..., .named = FALSE, .ignore_empty = c("trailing", "none", "all"),
   .unquote_names = TRUE)
 }
 \arguments{
@@ -48,10 +52,14 @@ syntax.
 \item \code{enexpr()} takes an argument name and returns it unevaluated. It
 is equivalent to \code{\link[base:substitute]{base::substitute()}}. The variant \code{ensym()} also
 checks the argument is a simple symbol.
-\item \code{exprs()} captures multiple expressions and returns a list. In
-particular, it can capture expressions in \code{...}. It supports name
-unquoting with \code{:=} (see \code{\link[=quos]{quos()}}). It is equivalent to
-\code{eval(substitute(alist(...)))} or \code{base::alist()}.
+\item \code{exprs()} and \code{enexprs()} capture multiple expressions and return
+a list. \code{exprs()} can be used anywhere but \code{enexprs()} must be
+used within a function. These functions capture arguments
+contained in \code{...} the same way but treat other arguments
+differently. \code{exprs()} captures whatever expression is supplied
+(and is thus equivaluent to \code{\link[base:alist]{base::alist()}}) while \code{enexprs()}
+takes argument names and captures the expressions supplied one
+level up.
 }
 
 See \code{\link[=is_expr]{is_expr()}} for more about R expressions.

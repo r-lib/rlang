@@ -49,11 +49,20 @@ is_symbol <- function(x, name = NULL) {
 
 #' Capture a symbol
 #'
-#' Like [enexpr()] and [enquo()], `ensym()` makes an argument
-#' auto-quoting. It always returns a symbol and issues an error if the
-#' input is not a string or a symbol. It supports [quasiquotation].
+#' @description
+#'
+#' * Like [enexpr()] and [enquo()], `ensym()` makes an argument
+#'   auto-quoting. It always returns a symbol and issues an error if
+#'   the input is not a string or a symbol. It supports
+#'   [quasiquotation].
+#'
+#' * Like [enexprs()] and [enquos()], `ensyms()` captures multiple
+#'   arguments at once. In particular it captures all arguments passed
+#'   in `...`. If any of the captured argument is not a symbol, it
+#'   throws an error.
 #'
 #' @inheritParams expr
+#' @inheritParams exprs
 #'
 #' @export
 #' @examples
@@ -68,6 +77,26 @@ is_symbol <- function(x, name = NULL) {
 ensym <- function(arg) {
   .Call(rlang_ensym, substitute(arg), parent.frame())
 }
+#' @rdname ensym
+#' @export
+ensyms <- function(...,
+                   .named = FALSE,
+                   .ignore_empty = c("trailing", "none", "all"),
+                   .unquote_names = TRUE) {
+  exprs <- endots(
+    environment(),
+    parent.frame(),
+    rlang_enexpr,
+    rlang_exprs_interp,
+    .named,
+    .ignore_empty,
+    .unquote_names
+  )
+  if (!every(exprs, function(x) is_symbol(x) || is_string(x))) {
+    abort("Must supply symbols or strings as argument")
+  }
+  map(exprs, sym)
+}
 
 sym_namespace <- quote(`::`)
 sym_namespace2 <- quote(`:::`)
@@ -76,3 +105,4 @@ sym_at <- quote(`@`)
 sym_tilde <- quote(`~`)
 sym_def <- quote(`:=`)
 sym_curly <- quote(`{`)
+dots_sym <- quote(...)
