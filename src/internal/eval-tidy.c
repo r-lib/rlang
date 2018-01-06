@@ -54,10 +54,7 @@ static void check_unique_names(sexp* x) {
   if (names == r_null) {
     r_abort("`data` must be uniquely named but does not have names");
   }
-  if (r_vec_find_first_identical_any(names, empty_names_chr, NULL)) {
-    r_abort("`data` must be uniquely named but has unnamed elements");
-  }
-  if (r_vec_find_first_duplicate(names, NULL, NULL)) {
+  if (r_vec_find_first_duplicate(names, empty_names_chr, NULL)) {
     r_abort("`data` must be uniquely named but has duplicate elements");
   }
 }
