@@ -61,6 +61,12 @@ test_that("unquoted formulas look in their own env", {
   expect_equal(eval_tidy(quo(!!f())), 100)
 })
 
+test_that("nested quosure thunks rechain properly in the non-data mask", {
+  bar <- "foo"
+  quo <- quo(identity(!!quo(toupper(!!quo(identity(bar))))))
+  expect_identical(eval_tidy(quo), "FOO")
+})
+
 test_that("unquoted formulas can use data", {
   f1 <- function() {
     z <- 100

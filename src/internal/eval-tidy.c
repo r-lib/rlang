@@ -224,11 +224,32 @@ sexp* rlang_tilde_eval(sexp* tilde, sexp* overscope, sexp* overscope_top, sexp* 
     return(r_missing_arg());
   }
 
-  sexp* quo_env = r_f_env(tilde);
-  sexp* prev_env = r_env_get(overscope, r_sym(".env"));
-  if (r_is_null(quo_env)) {
-    quo_env = prev_env;
+  sexp* expr = rlang_quo_get_expr(tilde);
+  if (!r_is_symbolic(expr)) {
+    return expr;
   }
+
+  sexp* quo_env = rlang_quo_get_env(tilde);
+  if (r_typeof(quo_env) != r_type_environment) {
+    r_abort("Internal error: Quosure environment is corrupt");
+  }
+
+  sexp* prev_env;
+  sexp* flag = r_env_find(overscope, data_mask_flag_sym);
+  if (flag == r_unbound_sym) {
+    prev_env = r_env_parent(overscope);
+  } else {
+    prev_env = r_env_get(overscope, r_sym(".env"));
+
+    // Update .env pronoun to current quosure env temporarily
+    r_env_poke(overscope, data_mask_env_sym, quo_env);
+
+    sexp* exit_args = r_build_pairlist3(overscope, r_scalar_chr(".env"), prev_env);
+    sexp* exit_lang = KEEP(r_build_call_node(env_set_fn, exit_args));
+    r_on_exit(exit_lang, cur_frame);
+    FREE(1);
+  }
+
 
   // Swap enclosures temporarily by rechaining the top of the dynamic
   // scope to the enclosure of the new formula, if it has one
@@ -239,15 +260,7 @@ sexp* rlang_tilde_eval(sexp* tilde, sexp* overscope, sexp* overscope_top, sexp* 
   r_on_exit(exit_lang, cur_frame);
   FREE(1);
 
-  // Update .env pronoun to current quosure env temporarily
-  r_env_poke(overscope, data_mask_env_sym, quo_env);
-
-  exit_args = r_build_pairlist3(overscope, r_scalar_chr(".env"), prev_env);
-  exit_lang = KEEP(r_build_call_node(env_set_fn, exit_args));
-  r_on_exit(exit_lang, cur_frame);
-  FREE(1);
-
-  return r_eval(r_f_rhs(tilde), overscope);
+  return r_eval(expr, overscope);
 }
 
 #define DATA_MASK_OBJECTS_N 4
@@ -278,6 +291,14 @@ sexp* rlang_data_mask_clean(sexp* mask) {
 }
 
 
+static sexp* new_quosure_mask(sexp* env) {
+  sexp* mask = KEEP(r_new_environment(env, 3));
+  r_env_poke(mask, r_tilde_sym, new_tilde_thunk(mask, mask));
+  FREE(1);
+  return mask;
+}
+
+
 static sexp* data_mask_clean_fn = NULL;
 
 sexp* rlang_eval_tidy(sexp* expr, sexp* data, sexp* env, sexp* frame) {
@@ -285,14 +306,19 @@ sexp* rlang_eval_tidy(sexp* expr, sexp* data, sexp* env, sexp* frame) {
     env = r_quo_get_env(expr);
     expr = r_quo_get_expr(expr);
   }
-  sexp* data_mask = rlang_as_data_mask(data, env);
 
-  sexp* exit_args = KEEP(r_new_node(data_mask, r_null));
-  sexp* exit_call = KEEP(r_new_call_node(data_mask_clean_fn, exit_args));
-  r_on_exit(exit_call, frame);
-  FREE(2);
+  sexp* mask;
+  if (data == r_null) {
+    mask = new_quosure_mask(env);
+  } else {
+    mask = rlang_as_data_mask(data, env);
+    sexp* exit_args = KEEP(r_new_node(mask, r_null));
+    sexp* exit_call = KEEP(r_new_call_node(data_mask_clean_fn, exit_args));
+    r_on_exit(exit_call, frame);
+    FREE(2);
+  }
 
-  return r_eval(expr, data_mask);
+  return r_eval(expr, mask);
 }
 
 
@@ -321,4 +347,6 @@ void rlang_init_eval_tidy() {
   tilde_prim = r_base_ns_get("~");
   env_poke_parent_fn = rlang_ns_get("env_poke_parent");
   env_set_fn = rlang_ns_get("env_set");
+
+  data_mask_clean_fn = rlang_ns_get("overscope_clean");
 }
