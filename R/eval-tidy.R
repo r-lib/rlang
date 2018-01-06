@@ -102,6 +102,10 @@
 #' }
 #' @name eval_tidy
 eval_tidy <- function(expr, data = NULL, env = caller_env()) {
+  if (is_quosure(expr)) {
+    env <- quo_get_env(expr)
+    expr <- quo_get_expr(expr)
+  }
   data_mask <- as_data_mask(data, env)
   on.exit(overscope_clean(data_mask))
   eval_bare(expr, data_mask)
