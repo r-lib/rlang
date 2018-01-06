@@ -278,6 +278,24 @@ sexp* rlang_data_mask_clean(sexp* mask) {
 }
 
 
+static sexp* data_mask_clean_fn = NULL;
+
+sexp* rlang_eval_tidy(sexp* expr, sexp* data, sexp* env, sexp* frame) {
+  if (rlang_is_quosure(expr)) {
+    env = r_quo_get_env(expr);
+    expr = r_quo_get_expr(expr);
+  }
+  sexp* data_mask = rlang_as_data_mask(data, env);
+
+  sexp* exit_args = KEEP(r_new_node(data_mask, r_null));
+  sexp* exit_call = KEEP(r_new_call_node(data_mask_clean_fn, exit_args));
+  r_on_exit(exit_call, frame);
+  FREE(2);
+
+  return r_eval(expr, data_mask);
+}
+
+
 const char* data_pronoun_c_names[3] = { "src", "lookup_msg", "read_only" };
 
 void rlang_init_eval_tidy() {
