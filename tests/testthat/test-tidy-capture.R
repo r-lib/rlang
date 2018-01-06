@@ -306,50 +306,88 @@ test_that("names-unquoting can be switched off", {
   expect_identical(quos(!! foo := !! bar, .unquote_names = FALSE), quos_list(new_quosure(quote("foo" := "bar"))))
 })
 
-test_that("enquos() captures arguments", {
+test_that("endots() captures arguments", {
+  # enquos()
   fn <- function(foo, ..., bar) enquos(foo, bar, ...)
   expect_identical(fn(arg1, arg2, bar = arg3()), quos(arg1, arg3(), arg2))
+
+  # enexprs()
+  fn <- function(foo, ..., bar) enexprs(foo, bar, ...)
+  expect_identical(fn(arg1, arg2, bar = arg3()), exprs(arg1, arg3(), arg2))
 })
 
-test_that("enquos() requires symbols", {
+test_that("endots() requires symbols", {
   expect_error(enquos(foo(bar)), "must be argument names")
   expect_error(enquos(1), "must be argument names")
   expect_error(enquos("foo"), "must be argument names")
+
+  expect_error(enexprs(foo(bar)), "must be argument names")
+  expect_error(enexprs(1), "must be argument names")
+  expect_error(enexprs("foo"), "must be argument names")
 })
 
-test_that("enquos() returns a named list", {
+test_that("endots() returns a named list", {
+  # enquos()
   fn <- function(foo, bar) enquos(foo, bar)
   expect_identical(names(fn()), c("", ""))
-
   fn <- function(arg, ...) enquos(other = arg, ...)
   expect_identical(fn(arg = 1, b = 2), quos(other = 1, b = 2))
+
+  # enexprs()
+  fn <- function(foo, bar) enexprs(foo, bar)
+  expect_identical(names(fn()), c("", ""))
+  fn <- function(arg, ...) enexprs(other = arg, ...)
+  expect_identical(fn(arg = 1, b = 2), exprs(other = 1, b = 2))
 })
 
-test_that("enquos() captures missing arguments", {
+test_that("endots() captures missing arguments", {
+  # enquos()
   fn <- function(foo) enquos(foo)[[1]]
   expect_identical(fn(), quo())
-
   fn <- function(...) enquos(...)
   expect_identical(fn(), quos())
+
+  # enexprs()
+  fn <- function(foo) enexprs(foo)[[1]]
+  expect_identical(fn(), expr())
+  fn <- function(...) enexprs(...)
+  expect_identical(fn(), exprs())
 })
 
-test_that("enquos() supports `.named`", {
+test_that("endots() supports `.named`", {
+  # enquos()
   fn <- function(arg, ...) enquos(arg, ..., .named = TRUE)
   expect_identical(fn(foo, bar), quos(foo = foo, bar = bar))
+
+  # enexprs()
+  fn <- function(arg, ...) enexprs(arg, ..., .named = TRUE)
+  expect_identical(fn(foo, bar), exprs(foo = foo, bar = bar))
 })
 
-test_that("enquos() supports `.unquote_names`", {
+test_that("endots() supports `.unquote_names`", {
+  # enquos()
   fn <- function(...) enquos(..., .unquote_names = TRUE)
   expect_identical(fn(!!"foo" := bar), quos(foo = bar))
-
   fn <- function(...) enquos(..., .unquote_names = FALSE)
   expect_identical(fn(!!"foo" := bar), quos(!!"foo" := bar, .unquote_names = FALSE))
+
+  # enexprs()
+  fn <- function(...) enexprs(..., .unquote_names = TRUE)
+  expect_identical(fn(!!"foo" := bar), exprs(foo = bar))
+  fn <- function(...) enexprs(..., .unquote_names = FALSE)
+  expect_identical(fn(!!"foo" := bar), exprs(!!"foo" := bar, .unquote_names = FALSE))
 })
 
-test_that("enquos() supports `.ignore_empty`", {
+test_that("endots() supports `.ignore_empty`", {
+  # enquos()
   fn <- function(...) enquos(..., .ignore_empty = "all")
   expect_identical(fn(, ), quos())
-
   fn <- function(...) enquos(..., .ignore_empty = "trailing")
   expect_identical(fn(foo, ), quos(foo))
+
+  # enexprs()
+  fn <- function(...) enexprs(..., .ignore_empty = "all")
+  expect_identical(fn(, ), exprs())
+  fn <- function(...) enexprs(..., .ignore_empty = "trailing")
+  expect_identical(fn(foo, ), exprs(foo))
 })
