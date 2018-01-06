@@ -99,7 +99,7 @@ sexp* as_data_pronoun(sexp* x) {
 }
 
 
-static sexp* data_mask_sym = NULL;
+static sexp* data_mask_flag_sym = NULL;
 static sexp* data_mask_env_sym = NULL;
 static sexp* data_mask_top_env_sym = NULL;
 
@@ -129,7 +129,7 @@ sexp* rlang_new_data_mask(sexp* bottom, sexp* top, sexp* parent) {
   }
 
   r_env_poke(data_mask, r_tilde_sym, new_tilde_thunk(data_mask, top));
-  r_env_poke(data_mask, data_mask_sym, data_mask);
+  r_env_poke(data_mask, data_mask_flag_sym, data_mask);
   r_env_poke(data_mask, data_mask_env_sym, parent);
   r_env_poke(data_mask, data_mask_top_env_sym, top);
 
@@ -313,7 +313,7 @@ void rlang_init_eval_tidy() {
   r_chr_poke(empty_names_chr, 0, r_string(""));
   r_chr_poke(empty_names_chr, 1, r_missing_str);
 
-  data_mask_sym = r_sym(".__tidyeval_data_mask__.");
+  data_mask_flag_sym = r_sym(".__tidyeval_data_mask__.");
   data_mask_env_sym = r_sym(".env");
   data_mask_top_env_sym = r_sym(".top_env");
   data_pronoun_sym = r_sym(".data");
