@@ -89,10 +89,21 @@ eval_tidy(quo(cyl), mtcars)
 eval_tidy(quo(.data$cyl), mtcars)
 eval_tidy(quo(.env$cyl), mtcars)
 
-# Note that instead of using `.env` it is often equivalent to
-# unquote a value. The only difference is the timing of evaluation
-# since unquoting happens earlier (when the quosure is created):
-eval_tidy(quo(!! cyl), mtcars)
+# Note that instead of using `.env` it is often equivalent and may be
+# preferred to unquote a value. There are two differences. First unquoting
+# happens earlier, when the quosure is created. Secondly, subsetting `.env`
+# with the `$` operator may be brittle because `$` does not look through
+# the parents of the environment. Using `.env$name` in a magrittr pipeline
+# is an instance where this poses problem, because the magrittr pipe
+# currently (as of v1.5.0) evaluates its operands in a *child* of the
+# current environment (this child environment is where it defines the
+# pronoun `.`).
+
+eval_tidy(quo(!! cyl), mtcars)  # 10
+\dontrun{
+  mtcars \%>\% eval_tidy(quo(!! cyl), .)  # 10
+  mtcars \%>\% eval_tidy(quo(.env$cyl), .)  # NULL
+}
 }
 \seealso{
 \code{\link[=quo]{quo()}}, \link{quasiquotation}
