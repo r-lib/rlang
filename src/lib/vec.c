@@ -63,6 +63,17 @@ r_size_t r_vec_length(sexp* x) {
   }
 }
 
+sexp* r_vec_get(sexp* vec, r_size_t i) {
+  switch (r_typeof(vec)) {
+  case r_type_character:
+    return r_chr_get(vec, i);
+  case r_type_list:
+    return r_list_get(vec, i);
+  default:
+    r_abort("Internal error: Unimplemented type in `r_vec_get()`");
+  }
+}
+
 
 // Copy --------------------------------------------------------------
 

@@ -37,6 +37,8 @@ static inline r_byte_t r_raw_get(sexp* x, r_size_t i) {
   return RAW(x)[i];
 }
 
+sexp* r_vec_get(sexp* vec, r_size_t i);
+
 
 bool r_is_list(sexp* x);
 bool r_is_vector(sexp* x);
