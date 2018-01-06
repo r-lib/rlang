@@ -102,35 +102,54 @@ enquos <- function(...,
                    .named = FALSE,
                    .ignore_empty = c("trailing", "none", "all"),
                    .unquote_names = TRUE) {
-  syms <- as.list(node_cdr(sys.call()))
-  env <- parent.frame()
+  quos <- endots(
+    environment(),
+    parent.frame(),
+    rlang_enquo,
+    rlang_quos_interp,
+    .named,
+    .ignore_empty,
+    .unquote_names
+  )
+  structure(quos, class = "quosures")
+}
+
+endots <- function(frame, env,
+                   capture_arg, capture_dots,
+                   .named, .ignore_empty, .unquote_names) {
+  sys_call <- eval_bare(quote(sys.call()), frame)
+  syms <- as.list(node_cdr(sys_call))
 
   if (!is_null(names(syms))) {
     is_arg <- names(syms) %in% c(".named", ".ignore_empty", ".unquote_names")
     syms <- syms[!is_arg]
   }
 
+  # Avoid note about registration problems
+  dot_call <- .Call
+
   splice_dots <- FALSE
-  quos <- map(syms, function(sym) {
+  dots <- map(syms, function(sym) {
     if (!is_symbol(sym)) {
       abort("Inputs to capture must be argument names")
     }
     if (identical(sym, dots_sym)) {
       splice_dots <<- TRUE
-      splice(.Call(rlang_quos_interp, env, .named, .ignore_empty, .unquote_names))
+      splice(dot_call(capture_dots, env, .named, .ignore_empty, .unquote_names))
     } else {
-      .Call(rlang_enquo, sym, env)
+      dot_call(capture_arg, sym, env)
     }
   })
 
   if (splice_dots) {
-    quos <- flatten_if(quos, is_spliced)
+    dots <- flatten_if(dots, is_spliced)
   }
   if (.named) {
-    quos <- quos_auto_name(quos)
+    dots <- quos_auto_name(dots)
   }
-  names(quos) <- names2(quos)
-  structure(quos, class = "quosures")
+  names(dots) <- names2(dots)
+
+  dots
 }
 
 
