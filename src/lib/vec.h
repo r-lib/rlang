@@ -103,5 +103,7 @@ static inline sexp* r_vec_are_duplicated(sexp* x) {
   return Rf_duplicated(x, false);
 }
 
+bool r_vec_find_first_identical_any(sexp* x, sexp* y, r_long_size_t* index);
+
 
 #endif

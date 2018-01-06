@@ -74,6 +74,32 @@ sexp* r_vec_get(sexp* vec, r_size_t i) {
   }
 }
 
+bool r_vec_find_first_identical_any(sexp* x, sexp* y, r_long_size_t* index) {
+  if (r_typeof(x) != r_type_list && r_typeof(x) != r_type_character) {
+    r_abort("Internal error: `x` must be a list or character vector in `r_vec_find_first_identical_any()`");
+  }
+  if (r_typeof(y) != r_type_list && r_typeof(y) != r_type_character) {
+    r_abort("Internal error: `y` must be a list or character vector in `r_vec_find_first_identical_any()`");
+  }
+  r_size_t n = r_length(x);
+  r_size_t n_comparisons = r_length(y);
+
+  for (r_size_t i = 0; i < n; ++i) {
+    sexp* elt = r_vec_get(x, i);
+
+    for (r_size_t j = 0; j < n_comparisons; ++j) {
+      if (r_is_identical(elt, r_vec_get(y, j))) {
+        if (index) {
+          *index = i;
+        }
+        return true;
+      }
+    }
+  }
+
+  return false;
+}
+
 
 // Copy --------------------------------------------------------------
 
