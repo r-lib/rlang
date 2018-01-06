@@ -300,11 +300,15 @@ static sexp* new_quosure_mask(sexp* env) {
 
 
 static sexp* data_mask_clean_fn = NULL;
+static sexp* env_sym = NULL;
 
-sexp* rlang_eval_tidy(sexp* expr, sexp* data, sexp* env, sexp* frame) {
+sexp* rlang_eval_tidy(sexp* expr, sexp* data, sexp* frame) {
+  sexp* env;
   if (rlang_is_quosure(expr)) {
     env = r_quo_get_env(expr);
     expr = r_quo_get_expr(expr);
+  } else {
+    env = r_eval(env_sym, frame);
   }
 
   sexp* mask;
@@ -349,4 +353,6 @@ void rlang_init_eval_tidy() {
   env_set_fn = rlang_ns_get("env_set");
 
   data_mask_clean_fn = rlang_ns_get("overscope_clean");
+
+  env_sym = r_sym("env");
 }

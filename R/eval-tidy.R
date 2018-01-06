@@ -102,7 +102,7 @@
 #' }
 #' @name eval_tidy
 eval_tidy <- function(expr, data = NULL, env = caller_env()) {
-  .Call(rlang_eval_tidy, expr, data, env, environment())
+  .Call(rlang_eval_tidy, expr, data, environment())
 }
 
 #' Data pronoun for tidy evaluation
