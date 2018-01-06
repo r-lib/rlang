@@ -227,28 +227,10 @@ eval_tidy_ <- function(expr, bottom, top = NULL, env = caller_env()) {
 #' overscope_clean(overscope)
 #' fn()
 as_overscope <- function(quo, data = NULL) {
-as_data_mask <- function(data = NULL, parent = base_env()) {
-  data_src <- as_dictionary(data, read_only = TRUE)
-  enclosure <- quo_get_env(quo) %||% base_env()
-
-  # Create bottom environment pre-chained to the lexical scope
-  bottom <- child_env(enclosure)
-
-  # Emulate dynamic scope for established data
-  if (is_vector(data)) {
-    bottom <- env_bury(bottom, !!! discard_unnamed(data))
-  } else if (is_env(data)) {
-    bottom <- env_clone(data, parent = bottom)
-  } else if (!is_null(data)) {
-    abort("`data` must be a list or an environment")
-  }
-
-  # Install data pronoun
-  bottom$.data <- data_src
-  .Call(rlang_as_data_mask, data, data_src, parent)
+  as_data_mask(data, quo_get_env(quo))
 }
-
-  new_overscope(bottom, enclosure = enclosure)
+as_data_mask <- function(data, parent = base_env()) {
+  .Call(rlang_as_data_mask, data, parent)
 }
 
 #' @rdname as_overscope
