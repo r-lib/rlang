@@ -191,6 +191,13 @@
   In addition, `enexprs()` is like `enquos()` but like `exprs()` it
   returns bare expressions. And `ensyms()` expects strings or symbols.
 
+* It is now possible to use `enquo()` within a magrittr pipe. Stated
+  more generally, `enquo()` captures arguments in parents of the
+  current environment rather than just in the current environment.
+  The flip side of this increased flexibility is that if an object
+  exists anywhere in the parent contexts, you will capture that object
+  rather than getting an error.
+
 
 ## Breaking changes
 
