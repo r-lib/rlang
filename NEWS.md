@@ -192,11 +192,12 @@
   returns bare expressions. And `ensyms()` expects strings or symbols.
 
 * It is now possible to use `enquo()` within a magrittr pipe. Stated
-  more generally, `enquo()` captures arguments in parents of the
-  current environment rather than just in the current environment.
-  The flip side of this increased flexibility is that if an object
-  exists anywhere in the parent contexts, you will capture that object
-  rather than getting an error.
+  more generally, `enquo()` now also captures arguments in parents of
+  the current environment rather than just in the current environment.
+  The flip side of this increased flexibility is that if you made a
+  typo in the name of the variable you want to capture, and if an
+  object of that name exists anywhere in the parent contexts, you will
+  capture that object rather than getting an error.
 
 
 ## Breaking changes
