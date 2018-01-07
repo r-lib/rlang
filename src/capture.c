@@ -63,7 +63,7 @@ SEXP attribute_hidden rlang_capturearginfo(SEXP call, SEXP op, SEXP args, SEXP r
         error(_("\"x\" must be an argument name"));
 
     SEXP frame = CAR(args);
-    SEXP arg = findVarInFrame3(frame, sym, TRUE);
+    SEXP arg = findVar(sym, frame);
 
     if (arg == R_UnboundValue)
         error(_("object '%s' not found"), CHAR(PRINTNAME(sym)));
@@ -77,7 +77,7 @@ SEXP attribute_hidden rlang_capturearginfo(SEXP call, SEXP op, SEXP args, SEXP r
 }
 
 SEXP capturedots(SEXP frame) {
-    SEXP dots = PROTECT(findVarInFrame3(frame, R_DotsSymbol, TRUE));
+    SEXP dots = PROTECT(findVar(R_DotsSymbol, frame));
 
     if (dots == R_UnboundValue) {
         error(_("Must capture dots in a function where dots exist"));

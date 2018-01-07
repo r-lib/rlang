@@ -203,18 +203,22 @@ test_that("can take forced arguments", {
 })
 
 test_that("capturing an argument that doesn't exist fails", {
-  y <- "a"
+  fn <- function(x) captureArgInfo(`_foobar`)
+  expect_error(fn(), "object '_foobar' not found")
 
-  fn <- function(x) captureArgInfo(y)
-  expect_error(fn(), "object 'y' not found")
-
-  fn <- function() enquo(y)
+  fn <- function() enquo(`_foobar`)
   expect_error(fn(), "not found")
 
-  fn <- function() enexpr(y)
+  fn <- function() enexpr(`_foobar`)
   expect_error(fn(), "not found")
 
-  expect_error((function() rlang::enexpr(y))(), "not found")
+  expect_error((function() rlang::enexpr(`_foobar`))(), "not found")
+})
+
+test_that("can capture arguments across ancestry", {
+  y <- "foo"
+  fn <- function() captureArgInfo(y)
+  expect_identical(fn(), list(expr = "foo", env = empty_env()))
 })
 
 test_that("can capture arguments that do exist", {
@@ -396,4 +400,18 @@ test_that("ensyms() captures multiple symbols", {
   fn <- function(arg, ...) ensyms(arg, ...)
   expect_identical(fn(foo, bar, baz), exprs(foo, bar, baz))
   expect_error(fn(foo()), "Must supply symbols or strings")
+})
+
+test_that("enquos() works with lexically scoped dots", {
+  capture <- function(...) {
+    eval_bare(quote(enquos(...)), child_env(env()))
+  }
+  expect_identical(capture("foo"), quos_list(quo("foo")))
+})
+
+test_that("enquo() works with lexically scoped arguments", {
+  capture <- function(arg) {
+    eval_bare(quote(enquo(arg)), child_env(env()))
+  }
+  expect_identical(capture(foo), quo(foo))
 })
