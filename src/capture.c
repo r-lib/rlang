@@ -77,7 +77,7 @@ SEXP attribute_hidden rlang_capturearginfo(SEXP call, SEXP op, SEXP args, SEXP r
 }
 
 SEXP capturedots(SEXP frame) {
-    SEXP dots = PROTECT(findVarInFrame3(frame, R_DotsSymbol, TRUE));
+    SEXP dots = PROTECT(findVar(R_DotsSymbol, frame));
 
     if (dots == R_UnboundValue) {
         error(_("Must capture dots in a function where dots exist"));

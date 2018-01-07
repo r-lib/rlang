@@ -397,3 +397,10 @@ test_that("ensyms() captures multiple symbols", {
   expect_identical(fn(foo, bar, baz), exprs(foo, bar, baz))
   expect_error(fn(foo()), "Must supply symbols or strings")
 })
+
+test_that("enquos() works across ancestry", {
+  capture <- function(...) {
+    eval_bare(quote(enquos(...)), child_env(env()))
+  }
+  expect_identical(capture("foo"), quos_list(quo("foo")))
+})
