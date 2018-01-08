@@ -1,1 +1,1 @@
-PKG_CPPFLAGS = -I./../../../../../src/lib/
+PKG_CPPFLAGS = -I./lib/
