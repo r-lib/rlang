@@ -206,6 +206,10 @@
   capture, and if an object of that name exists anywhere in the parent
   contexts, you will capture that object rather than getting an error.
 
+* `quo_expr()` has been renamed to `quo_squash()` in order to better
+  reflect that it is a lossy operation that flattens all nested
+  quosures.
+
 
 ## Breaking changes
 
@@ -252,6 +256,11 @@
   fact that quosures are formulas is an implementation detail that
   might change in the future. Please use `quo_get_expr()` and
   `quo_get_env()` instead.
+
+* `quo_expr()` is soft-deprecated in favour of `quo_squash()`.
+  `quo_expr()` was a misnomer because it implied that it was a mere
+  expression acccessor for quosures whereas it was really a lossy
+  operation that squashed all nested quosures.
 
 
 # rlang 0.1.6

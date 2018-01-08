@@ -45,6 +45,7 @@
 #' * [UQS()]
 #' * [parse_quosure()]
 #' * [parse_quosures()]
+#' * [quo_expr()] => [quo_squash()]
 #'
 #'
 #' @section Deprecated functions and arguments:

@@ -49,6 +49,7 @@ TODO: Review all functions in rlang and mark stable ones as such.
 \item \code{\link[=UQS]{UQS()}}
 \item \code{\link[=parse_quosure]{parse_quosure()}}
 \item \code{\link[=parse_quosures]{parse_quosures()}}
+\item \code{\link[=quo_expr]{quo_expr()}} => \code{\link[=quo_squash]{quo_squash()}}
 }
 }
 

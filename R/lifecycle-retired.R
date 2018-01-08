@@ -6,6 +6,9 @@ signal_soft_deprecation <- function(msg) {
   invisible(NULL)
 }
 
+
+# Soft-deprecated ----------------------------------------------------
+
 #' @rdname parse_expr
 #' @export
 parse_quosure <- function(x, env = caller_env()) {
@@ -22,6 +25,20 @@ parse_quosures <- function(x, env = caller_env()) {
   )
   parse_quos(x, env = env)
 }
+
+#' Squash a quosure
+#'
+#' This function is soft-deprecated, please use [quo_squash()] instead.
+#'
+#' @inheritParams quo_squash
+#' @keywords internal
+#' @export
+quo_expr <- function(quo, warn = FALSE) {
+  quo_squash(quo, warn = warn)
+}
+
+
+# Deprecated ---------------------------------------------------------
 
 #' @rdname is_quosure
 #' @export
