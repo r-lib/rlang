@@ -375,8 +375,9 @@ switch_expr <- function(.x, ...) {
 #'
 #' @description
 #'
-#' `expr_print()` is an alternative printer for R expressions with a
-#' few improvements over the base R printer.
+#' `expr_print()`, powered by `expr_deparse()`, is an alternative
+#' printer for R expressions with a few improvements over the base R
+#' printer.
 #'
 #' * It colourises [quosures][quosure] according to their environment.
 #'   Quosures from the global environment are printed normally while
@@ -393,8 +394,8 @@ switch_expr <- function(.x, ...) {
 #'   in more cases.
 #'
 #' @param x An object or expression to print.
-#' @param width The width of the printed expression. Defaults to the
-#'   global option `width`.
+#' @param width The width of the deparsed or printed expression.
+#'   Defaults to the global option `width`.
 #'
 #' @export
 #' @examples
@@ -424,6 +425,11 @@ switch_expr <- function(.x, ...) {
 #' wrapper_quo <- local(quo(bar(!!local_quo, baz)))
 #' expr_print(wrapper_quo)
 expr_print <- function(x, width = peek_option("width")) {
+  meow(expr_deparse(x, width = width))
+}
+#' @rdname expr_print
+#' @export
+expr_deparse <- function(x, width = peek_option("width")) {
   deparser <- new_quo_deparser(width = width)
-  meow(quo_deparse(x, deparser))
+  quo_deparse(x, deparser)
 }

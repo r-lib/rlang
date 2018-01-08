@@ -2,19 +2,23 @@
 % Please edit documentation in R/expr.R
 \name{expr_print}
 \alias{expr_print}
+\alias{expr_deparse}
 \title{Print an expression}
 \usage{
 expr_print(x, width = peek_option("width"))
+
+expr_deparse(x, width = peek_option("width"))
 }
 \arguments{
 \item{x}{An object or expression to print.}
 
-\item{width}{The width of the printed expression. Defaults to the
-global option \code{width}.}
+\item{width}{The width of the deparsed or printed expression.
+Defaults to the global option \code{width}.}
 }
 \description{
-\code{expr_print()} is an alternative printer for R expressions with a
-few improvements over the base R printer.
+\code{expr_print()}, powered by \code{expr_deparse()}, is an alternative
+printer for R expressions with a few improvements over the base R
+printer.
 \itemize{
 \item It colourises \link[=quosure]{quosures} according to their environment.
 Quosures from the global environment are printed normally while
