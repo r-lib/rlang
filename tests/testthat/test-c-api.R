@@ -180,6 +180,7 @@ test_that("client library passes tests", {
     every(file$results, inherits, "expectation_success")
   }
 
+  # Silence package building and embedded tests output
   temp <- file()
   sink(temp)
   on.exit({
@@ -187,7 +188,11 @@ test_that("client library passes tests", {
     close(temp)
   })
 
-  results <- devtools::test("fixtures/rlanglibtest")
+  file <- devtools::build("fixtures/rlanglibtest")
+  on.exit(file.remove(file), add = TRUE)
+
+  devtools::load_all("fixtures/rlanglibtest")
+  results <- testthat::test_dir("fixtures/rlanglibtest/tests/testthat/")
   expect_true(map_lgl(results, has_passed))
 
   # Clean up object files
