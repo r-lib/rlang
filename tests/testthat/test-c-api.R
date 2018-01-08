@@ -176,9 +176,18 @@ test_that("r_which_operator() returns correct tokens", {
 })
 
 test_that("client library passes tests", {
+  skip_on_cran()
   has_passed <- function(file) {
     every(file$results, inherits, "expectation_success")
   }
+
+  temp <- file()
+  sink(temp)
+  on.exit({
+    sink()
+    close(temp)
+  })
+
   results <- devtools::test("fixtures/rlanglibtest")
   expect_true(map_lgl(results, has_passed))
 
