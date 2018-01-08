@@ -176,10 +176,6 @@ test_that("r_which_operator() returns correct tokens", {
 })
 
 test_that("client library passes tests", {
-  has_passed <- function(file) {
-    every(file$results, inherits, "expectation_success")
-  }
-
   # Silence package building and embedded tests output
   temp <- file()
   sink(temp)
@@ -188,13 +184,26 @@ test_that("client library passes tests", {
     close(temp)
   })
 
-  file <- devtools::build("fixtures/rlanglibtest")
-  on.exit(file.remove(file), add = TRUE)
+  ## tools::testInstalledPackage() can't find the test package when
+  ## working with a temp lib:
 
-  devtools::load_all("fixtures/rlanglibtest")
-  results <- testthat::test_dir("fixtures/rlanglibtest/tests/testthat/")
-  expect_true(map_lgl(results, has_passed))
+  ## old_libpaths <- .libPaths()
+  ## temp_lib <- tempfile("temp_lib")
+  ## dir.create(temp_lib)
+  ## .libPaths(c(temp_lib, old_libpaths))
+  ## on.exit(.libPaths(old_libpaths), add = TRUE)
 
-  # Clean up object files
-  devtools::clean_dll("fixtures/rlanglibtest")
+  path <- normalizePath(file.path("fixtures", "rlanglibtest"))
+  devtools::install(path, dependencies = FALSE)
+
+  on.exit(devtools::clean_dll(path), add = TRUE)
+
+  # Set temporary dir so we don't have to clean leftovers files.
+  temp_test_dir <- tempfile("temp_test_dir")
+  dir.create(temp_test_dir)
+  old <- setwd(temp_test_dir)
+  on.exit(setwd(old), add = TRUE)
+
+  result <- tools::testInstalledPackage("rlanglibtest", lib.loc = .libPaths(), types = "test")
+  expect_identical(result, 0L)
 })
