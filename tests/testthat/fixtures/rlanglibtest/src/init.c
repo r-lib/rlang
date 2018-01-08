@@ -1,4 +1,4 @@
-#include "../../../../../src/lib/rlang.h"
+#include "lib/rlang.h"
 
 
 extern sexp* rlanglibtest_r_quo_get_expr(sexp*);

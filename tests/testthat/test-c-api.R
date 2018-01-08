@@ -176,7 +176,6 @@ test_that("r_which_operator() returns correct tokens", {
 })
 
 test_that("client library passes tests", {
-  skip_on_cran()
   has_passed <- function(file) {
     every(file$results, inherits, "expectation_success")
   }

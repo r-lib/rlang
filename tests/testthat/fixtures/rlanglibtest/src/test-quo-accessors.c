@@ -1,4 +1,5 @@
-#include "../../../../../src/lib/rlang.h"
+#include "lib/rlang.h"
+
 
 sexp* rlanglibtest_r_quo_get_expr(sexp* quo) {
   return r_quo_get_expr(quo);
