@@ -193,16 +193,17 @@ test_that("client library passes tests", {
   ## .libPaths(c(temp_lib, old_libpaths))
   ## on.exit(.libPaths(old_libpaths), add = TRUE)
 
-  path <- normalizePath(file.path("fixtures", "rlanglibtest"))
-  devtools::install(path, dependencies = FALSE)
+  src_path <- normalizePath(file.path("fixtures", "rlanglibtest"))
 
-  on.exit(devtools::clean_dll(path), add = TRUE)
-
-  # Set temporary dir so we don't have to clean leftovers files.
+  # Set temporary dir to install and test the embedded package so we
+  # don't have to clean leftovers files
   temp_test_dir <- tempfile("temp_test_dir")
   dir.create(temp_test_dir)
   old <- setwd(temp_test_dir)
   on.exit(setwd(old), add = TRUE)
+
+  file.copy(src_path, temp_test_dir, overwrite = TRUE, recursive = TRUE)
+  devtools::install(file.path(temp_test_dir, "rlanglibtest"), dependencies = FALSE)
 
   result <- tools::testInstalledPackage("rlanglibtest", lib.loc = .libPaths(), types = "test")
   expect_identical(result, 0L)
