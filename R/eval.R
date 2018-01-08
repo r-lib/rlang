@@ -31,6 +31,11 @@
 #' frame on the stack that confuses stack-sensitive functions. We call
 #' these evaluation semantics "stack inconsistent".
 #'
+#'
+#' @section Life cycle:
+#'
+#' `eval_bare()` is stable.
+#'
 #' @param expr An expression to evaluate.
 #' @param env The environment in which to evaluate the expression.
 #'

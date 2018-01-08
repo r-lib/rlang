@@ -38,6 +38,12 @@ existing frame environment to \code{base::eval()} you create a duplicate
 frame on the stack that confuses stack-sensitive functions. We call
 these evaluation semantics "stack inconsistent".
 }
+\section{Life cycle}{
+
+
+\code{eval_bare()} is stable.
+}
+
 \examples{
 # eval_bare() works just like base::eval() but you have to create
 # the evaluation environment yourself:

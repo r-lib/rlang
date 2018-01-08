@@ -27,6 +27,8 @@
 #' * [quo_get_expr()], [quo_set_expr()]
 #' * [quo_get_env()], [quo_set_env()]
 #'
+#' * [eval_bare()]
+#'
 #' * [set_names()], [names2()]
 #' * [as_function()]
 #'

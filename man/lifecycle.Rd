@@ -27,6 +27,7 @@ TODO: Review all functions in rlang and mark stable ones as such.
 \item \code{\link[=missing_arg]{missing_arg()}}, \code{\link[=is_missing]{is_missing()}}
 \item \code{\link[=quo_get_expr]{quo_get_expr()}}, \code{\link[=quo_set_expr]{quo_set_expr()}}
 \item \code{\link[=quo_get_env]{quo_get_env()}}, \code{\link[=quo_set_env]{quo_set_env()}}
+\item \code{\link[=eval_bare]{eval_bare()}}
 \item \code{\link[=set_names]{set_names()}}, \code{\link[=names2]{names2()}}
 \item \code{\link[=as_function]{as_function()}}
 }
