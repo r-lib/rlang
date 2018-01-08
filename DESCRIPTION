@@ -16,6 +16,7 @@ Depends:
     R (>= 3.1.0)
 Suggests:
     crayon,
+    devtools,
     knitr,
     methods,
     pillar,

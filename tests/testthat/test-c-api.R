@@ -175,23 +175,13 @@ test_that("r_which_operator() returns correct tokens", {
   expect_identical(which_operator(quote(`{-`(a))), "")
 })
 
-test_that("r_quo_get_expr() gets expression", {
-  r_quo_get_expr <- function(quo) {
-    .Call(rlang_test_r_quo_get_expr, quo)
+test_that("client library passes tests", {
+  has_passed <- function(file) {
+    every(file$results, inherits, "expectation_success")
   }
-  r_quo_set_expr <- function(quo, expr) {
-    .Call(rlang_test_r_quo_set_expr, quo, expr)
-  }
-  r_quo_get_env <- function(quo) {
-    .Call(rlang_test_r_quo_get_env, quo)
-  }
-  r_quo_set_env <- function(quo, env) {
-    .Call(rlang_test_r_quo_set_env, quo, env)
-  }
-  quo <- quo(foo)
+  results <- devtools::test("fixtures/rlanglibtest")
+  expect_true(map_lgl(results, has_passed))
 
-  expect_identical(r_quo_get_expr(quo), quo_get_expr(quo))
-  expect_identical(r_quo_get_env(quo), quo_get_env(quo))
-  expect_identical(r_quo_set_expr(quo, NULL), quo_set_expr(quo, NULL))
-  expect_identical(r_quo_set_env(quo, empty_env()), quo_set_env(quo, empty_env()))
+  # Clean up object files
+  devtools::clean_dll("fixtures/rlanglibtest")
 })

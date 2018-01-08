@@ -193,10 +193,6 @@ static const r_callable r_callables[] = {
   {"rlang_quo_set_expr",        (r_fn_ptr) &rlang_quo_set_expr, 2},
   {"rlang_quo_get_env",         (r_fn_ptr) &rlang_quo_get_env, 1},
   {"rlang_quo_set_env",         (r_fn_ptr) &rlang_quo_set_env, 2},
-  {"rlang_test_r_quo_get_expr", (r_fn_ptr) &rlang_test_r_quo_get_expr, 1},
-  {"rlang_test_r_quo_set_expr", (r_fn_ptr) &rlang_test_r_quo_set_expr, 2},
-  {"rlang_test_r_quo_get_env",  (r_fn_ptr) &rlang_test_r_quo_get_env, 1},
-  {"rlang_test_r_quo_set_env",  (r_fn_ptr) &rlang_test_r_quo_set_env, 2},
   {"rlang_vec_poke_n",          (r_fn_ptr) &rlang_vec_poke_n, 5},
   {"rlang_vec_poke_range",      (r_fn_ptr) &rlang_vec_poke_range, 5},
   {NULL, NULL, 0}

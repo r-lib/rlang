@@ -17,22 +17,6 @@ sexp* rlang_test_base_ns_get(sexp* name) {
 }
 
 
-// quo.c
-
-sexp* rlang_test_r_quo_get_expr(sexp* quo) {
-  return r_quo_get_expr(quo);
-}
-sexp* rlang_test_r_quo_set_expr(sexp* quo, sexp* expr) {
-  return r_quo_set_expr(quo, expr);
-}
-sexp* rlang_test_r_quo_get_env(sexp* quo) {
-  return r_quo_get_env(quo);
-}
-sexp* rlang_test_r_quo_set_env(sexp* quo, sexp* env) {
-  return r_quo_set_env(quo, env);
-}
-
-
 // sym.c
 
 sexp* rlang_test_is_special_op_sym(sexp* x) {
