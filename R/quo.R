@@ -380,29 +380,82 @@ quo_is_null <- function(quo) {
 }
 
 
-#' Splice a quosure and format it into string or label
+#' Squash a quosure
 #'
-#' `quo_expr()` flattens all quosures within an expression. I.e., it
-#' turns `~foo(~bar(), ~baz)` to `foo(bar(), baz)`. `quo_text()` and
-#' `quo_label()` are equivalent to [f_text()], [expr_label()], etc,
-#' but they first splice their argument using `quo_expr()`.
-#' `quo_name()` transforms a quoted symbol to a string. It adds a bit
-#' more intent and type checking than simply calling `quo_text()` on
-#' the quoted symbol (which will work but won't return an error if not
-#' a symbol).
+#' @description
 #'
-#' @inheritParams expr_label
+#' `quo_squash()` flattens all nested quosures within an expression.
+#' For example it transforms `^foo(^bar(), ^baz)` to the bare
+#' expression `foo(bar(), baz)`.
+#'
+#' This operation is safe if the squashed quosure is used for
+#' labelling or printing (see [quo_label()] or [quo_name()]). However
+#' if the squashed quosure is evaluated, all expressions of the
+#' flattened quosures are resolved in a single environment. This is a
+#' source of bugs so it is good practice to set `warn` to `TRUE` to
+#' let the user know about the lossy squashing.
+#'
+#'
+#' @section Life cycle:
+#'
+#' This function replaces `quo_expr()` which was soft-deprecated in
+#' rlang 0.2.0. `quo_expr()` was a misnomer because it implied that it
+#' was a mere expression acccessor for quosures whereas it was really
+#' a lossy operation that squashed all nested quosures.
+#'
+#'
 #' @param quo A quosure or expression.
 #' @param warn Whether to warn if the quosure contains other quosures
-#'   (those will be collapsed).
+#'   (those will be collapsed). This is useful when you use
+#'   `quo_squash()` in order to make a non-tidyeval API compatible
+#'   with quosures. In that case, getting rid of the nested quosures
+#'   is likely to cause subtle bugs and it is good practice to warn
+#'   the user about it.
+#'
+#' @export
+#' @examples
+#' # Quosures can contain nested quosures:
+#' quo <- quo(wrapper(!!quo(wrappee)))
+#' quo
+#'
+#' # quo_squash() flattens all the quosures and returns a simple expression:
+#' quo_squash(quo)
+quo_squash <- function(quo, warn = FALSE) {
+  # Never warn when unwrapping outer quosure
+  if (is_quosure(quo)) {
+    quo <- quo_get_expr(quo)
+  }
+  if (is_missing(quo)) {
+    missing_arg()
+  } else {
+    quo_squash_impl(duplicate(quo), warn = warn)
+  }
+}
+
+
+#' Format quosures for printing or labelling
+#'
+#' @description
+#'
+#' * `quo_text()` and `quo_label()` are equivalent to [expr_text()],
+#'   [expr_label()], etc, but they first squash all quosures with
+#'   [quo_squash()] so they print more nicely.
+#'
+#' * `quo_name()` squashes a quosure and transforms it into a simple
+#'   string. It is suitable to give an unnamed quosure a default name,
+#'   for instance a column name in a data frame.
+#'
+#' @inheritParams quo_squash
+#' @inheritParams expr_label
 #' @export
 #' @seealso [expr_label()], [f_label()]
 #' @examples
+#' # Quosures can contain nested quosures:
 #' quo <- quo(foo(!! quo(bar)))
 #' quo
 #'
-#' # quo_expr() unwraps all quosures and returns a raw expression:
-#' quo_expr(quo)
+#' # quo_squash() unwraps all quosures and returns a raw expression:
+#' quo_squash(quo)
 #'
 #' # This is used by quo_text() and quo_label():
 #' quo_text(quo)
@@ -413,34 +466,21 @@ quo_is_null <- function(quo) {
 #' # quo_name() is helpful when you need really short labels:
 #' quo_name(quo(sym))
 #' quo_name(quo(!! sym))
-quo_expr <- function(quo, warn = FALSE) {
-  # Never warn when unwrapping outer quosure
-  if (is_quosure(quo)) {
-    quo <- quo_get_expr(quo)
-  }
-  if (is_missing(quo)) {
-    missing_arg()
-  } else {
-    quo_flatten(duplicate(quo), warn = warn)
-  }
-}
-#' @rdname quo_expr
-#' @export
 quo_label <- function(quo) {
-  expr_label(quo_expr(quo))
+  expr_label(quo_squash(quo))
 }
-#' @rdname quo_expr
+#' @rdname quo_label
 #' @export
 quo_text <- function(quo, width = 60L, nlines = Inf) {
-  expr_text(quo_expr(quo), width = width, nlines = nlines)
+  expr_text(quo_squash(quo), width = width, nlines = nlines)
 }
-#' @rdname quo_expr
+#' @rdname quo_label
 #' @export
 quo_name <- function(quo) {
-  expr_name(quo_expr(quo))
+  expr_name(quo_squash(quo))
 }
 
-quo_flatten <- function(x, parent = NULL, warn = FALSE) {
+quo_squash_impl <- function(x, parent = NULL, warn = FALSE) {
   switch_expr(x,
     language = {
       if (is_quosure(x)) {
@@ -460,14 +500,14 @@ quo_flatten <- function(x, parent = NULL, warn = FALSE) {
         if (!is_null(parent)) {
           mut_node_car(parent, x)
         }
-        quo_flatten(x, parent, warn = warn)
+        quo_squash_impl(x, parent, warn = warn)
       } else {
-        quo_flatten(node_cdr(x), warn = warn)
+        quo_squash_impl(node_cdr(x), warn = warn)
       }
     },
     pairlist = {
       while (!is_null(x)) {
-        quo_flatten(node_car(x), x, warn = warn)
+        quo_squash_impl(node_car(x), x, warn = warn)
         x <- node_cdr(x)
       }
     }
