@@ -193,6 +193,7 @@ test_that("client library passes tests", {
   ## .libPaths(c(temp_lib, old_libpaths))
   ## on.exit(.libPaths(old_libpaths), add = TRUE)
 
+  zip_file <- normalizePath(file.path("fixtures", "lib.zip"))
   src_path <- normalizePath(file.path("fixtures", "rlanglibtest"))
 
   # Set temporary dir to install and test the embedded package so we
@@ -203,7 +204,24 @@ test_that("client library passes tests", {
   on.exit(setwd(old), add = TRUE)
 
   file.copy(src_path, temp_test_dir, overwrite = TRUE, recursive = TRUE)
-  devtools::install(file.path(temp_test_dir, "rlanglibtest"), dependencies = FALSE)
+  pkg_path <- file.path(temp_test_dir, "rlanglibtest")
+
+
+  # We store the library as a zip to avoid VCS noise
+  utils::unzip(zip_file, exdir = file.path(pkg_path, "src"))
+
+  # For maintenance
+  regenerate_zip <- function() {
+    location <- file.path("..", "..", "src")
+    old <- setwd(location)
+    on.exit(setwd(old))
+
+    lib_files <- c("lib.c", "lib")
+    file.remove(zip_file)
+    utils::zip(zip_file, lib_files)
+  }
+
+  devtools::install(pkg_path, dependencies = FALSE)
 
   result <- tools::testInstalledPackage("rlanglibtest", lib.loc = .libPaths(), types = "test")
   expect_identical(result, 0L)
