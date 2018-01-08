@@ -38,6 +38,7 @@
 #' * [lang_type_of()], [switch_lang()], [coerce_lang()]
 #' * [set_attrs()], [mut_attrs()]
 #' * [with_env()], [locally()]
+#' * [invoke()]
 #'
 #'
 #' @section Soft-deprecated functions and arguments:

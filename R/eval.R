@@ -142,6 +142,17 @@ locally <- function(expr) {
 #' uses the same strategy as [eval_bare()] to evaluate with minimal
 #' noise.
 #'
+#'
+#' @section Life cycle:
+#'
+#' `invoke()` is experimental. Now that we understand better the
+#' interaction between unquoting and dots capture, we believe that
+#' `invoke()` should not take a `.args` argument. Instead it should
+#' take dots with [dots_list()] in order to enable `!!!` syntax.
+#'
+#' We ask rlang users not to use `invoke()` in CRAN packages because
+#' we plan a breaking API update to remove the `.args` argument.
+#'
 #' @param .fn A function to invoke. Can be a function object or the
 #'   name of a function in scope of `.env`.
 #' @param .args,... List of arguments (possibly named) to be passed to
