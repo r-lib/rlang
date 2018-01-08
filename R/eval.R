@@ -80,6 +80,12 @@ eval_bare <- function(expr, env = parent.frame()) {
 #' evaluation stack, and has stack-consistent semantics. It is thus
 #' more suited for experimenting with the R language.
 #'
+#'
+#' @section Life cycle:
+#'
+#' These functions are experimental. Expect API changes.
+#'
+#'
 #' @inheritParams eval_bare
 #' @param env An environment within which to evaluate `expr`. Can be
 #'   an object with an [get_env()] method.
