@@ -88,6 +88,13 @@ chr_enumerate <- function(chr, sep = ", ", final = "or") {
 #' missing error. In addition, `is_missing()` lets you check for a
 #' missing argument in a larger range of situations than
 #' [base::missing()] (see examples).
+#'
+#'
+#' @section Life cycle:
+#'
+#' * `missing_arg()` and `is_missing()` are stable.
+#' * Like the rest of rlang, `maybe_missing()` is maturing.
+#'
 #' @param x An object that might be the missing argument.
 #' @export
 #' @examples

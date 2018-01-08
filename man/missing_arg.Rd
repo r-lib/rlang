@@ -26,6 +26,14 @@ missing error. In addition, \code{is_missing()} lets you check for a
 missing argument in a larger range of situations than
 \code{\link[base:missing]{base::missing()}} (see examples).
 }
+\section{Life cycle}{
+
+\itemize{
+\item \code{missing_arg()} and \code{is_missing()} are stable.
+\item Like the rest of rlang, \code{maybe_missing()} is maturing.
+}
+}
+
 \examples{
 # The missing argument can be useful to generate calls
 quo(f(x = !! missing_arg()))
