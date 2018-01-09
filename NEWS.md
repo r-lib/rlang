@@ -216,6 +216,9 @@
     - `new_language()` has ben renamed to `new_call()`.
     - `is_lang()`, `is_unary_lang()`, and `is_binary_lang()` have been
       renamed to `is_call()`, `is_unary_call()`, and `is_binary_call()`.
+    - All call accessors such as `lang_fn()`, `lang_name()`,
+      `lang_args()` etc are soft-deprecated and renamed with `call_`
+      prefix.
 
   In rlang 0.1 calls were called "language" objects in order to follow
   the R type nomenclature as returned by `base::typeof()`. We wanted
