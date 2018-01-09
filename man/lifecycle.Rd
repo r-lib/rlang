@@ -44,13 +44,18 @@ TODO: Review all functions in rlang and mark stable ones as such.
 \section{Soft-deprecated functions and arguments}{
 
 
-\strong{rlang 0.2.0:}
+\strong{Retired in rlang 0.2.0:}
 \itemize{
 \item \code{\link[=UQ]{UQ()}}
 \item \code{\link[=UQS]{UQS()}}
-\item \code{\link[=parse_quosure]{parse_quosure()}}
-\item \code{\link[=parse_quosures]{parse_quosures()}}
+\item \code{\link[=lang_head]{lang_head()}}, \code{\link[=lang_tail]{lang_tail()}}
+}
+
+\strong{Renamed in rlang 0.2.0:}
+\itemize{
 \item \code{\link[=quo_expr]{quo_expr()}} => \code{\link[=quo_squash]{quo_squash()}}
+\item \code{\link[=parse_quosure]{parse_quosure()}} => \code{\link[=parse_quo]{parse_quo()}}
+\item \code{\link[=parse_quosures]{parse_quosures()}} => \code{\link[=parse_quos]{parse_quos()}}
 \item \code{\link[=lang]{lang()}} => \code{\link[=call2]{call2()}}
 \item \code{\link[=new_language]{new_language()}} => \code{\link[=call_node]{call_node()}}
 \item \code{\link[=is_lang]{is_lang()}} => \code{\link[=is_call]{is_call()}}
@@ -62,14 +67,13 @@ TODO: Review all functions in rlang and mark stable ones as such.
 \item \code{\link[=lang_name]{lang_name()}} => \code{\link[=call_name]{call_name()}}
 \item \code{\link[=lang_args]{lang_args()}} => \code{\link[=call_args]{call_args()}}
 \item \code{\link[=lang_args_names]{lang_args_names()}} => \code{\link[=call_args_names]{call_args_names()}}
-\item \code{\link[=lang_head]{lang_head()}}, \code{\link[=lang_tail]{lang_tail()}}
 }
 }
 
 \section{Deprecated functions and arguments}{
 
 
-\strong{rlang 0.2.0:}
+\strong{Retired in rlang 0.2.0:}
 \itemize{
 \item \code{\link[=UQE]{UQE()}}
 \item \code{\link[=is_quosureish]{is_quosureish()}}, \code{\link[=as_quosureish]{as_quosureish()}}
@@ -79,7 +83,7 @@ TODO: Review all functions in rlang and mark stable ones as such.
 \section{Defunct functions and arguments}{
 
 
-\strong{rlang 0.2.0:}
+\strong{Retired in rlang 0.2.0:}
 \itemize{
 \item \link[=quasiquotation]{:=}
 }

@@ -40,13 +40,19 @@
 #'
 #' @section Soft-deprecated functions and arguments:
 #'
-#' **rlang 0.2.0:**
+#' **Retired in rlang 0.2.0:**
 #'
 #' * [UQ()]
 #' * [UQS()]
-#' * [parse_quosure()]
-#' * [parse_quosures()]
+#'
+#' * [lang_head()], [lang_tail()]
+#'
+#'
+#' **Renamed in rlang 0.2.0:**
+#'
 #' * [quo_expr()] => [quo_squash()]
+#' * [parse_quosure()] => [parse_quo()]
+#' * [parse_quosures()] => [parse_quos()]
 #'
 #' * [lang()] => [call2()]
 #' * [new_language()] => [call_node()]
@@ -61,12 +67,10 @@
 #' * [lang_args()] => [call_args()]
 #' * [lang_args_names()] => [call_args_names()]
 #'
-#' * [lang_head()], [lang_tail()]
-#'
 #'
 #' @section Deprecated functions and arguments:
 #'
-#' **rlang 0.2.0:**
+#' **Retired in rlang 0.2.0:**
 #'
 #' * [UQE()]
 #' * [is_quosureish()], [as_quosureish()]
@@ -74,7 +78,7 @@
 #'
 #' @section Defunct functions and arguments:
 #'
-#' **rlang 0.2.0:**
+#' **Retired in rlang 0.2.0:**
 #'
 #' * [:=][quasiquotation]
 #'
