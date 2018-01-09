@@ -2,9 +2,12 @@
 % Please edit documentation in R/lifecycle-retired.R
 \name{lang}
 \alias{lang}
+\alias{new_language}
 \title{Create a call}
 \usage{
 lang(.fn, ..., .ns = NULL)
+
+new_language(head, tail = NULL)
 }
 \arguments{
 \item{.fn}{Function to call. Must be a callable object: a string,
@@ -15,6 +18,11 @@ are evaluated with \link[=dots_list]{explicit splicing}.}
 
 \item{.ns}{Namespace with which to prefix \code{.fn}. Must be a string
 or symbol.}
+
+\item{head}{A \link[=is_callable]{callable} object: a symbol, call, or
+literal function.}
+
+\item{tail}{A \link[=pairlist]{node list} of arguments.}
 }
 \description{
 This function is soft-deprecated, please use \code{\link[=call2]{call2()}} instead.

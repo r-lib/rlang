@@ -163,7 +163,7 @@ static const r_callable r_callables[] = {
   {"rlang_tilde_eval",          (r_fn_ptr_t) &rlang_tilde_eval, 4},
   {"rlang_unescape_character",  (r_fn_ptr_t) &rlang_unescape_character, 1},
   {"rlang_zap_attrs",           (r_fn_ptr_t) &rlang_zap_attrs, 1},
-  {"r_new_language",            (r_fn_ptr_t) &rlang_new_call_node, 2},
+  {"rlang_new_call",            (r_fn_ptr_t) &rlang_new_call_node, 2},
   {"rlang_cnd_abort",           (r_fn_ptr_t) &rlang_cnd_abort, 2},
   {"rlang_cnd_inform",          (r_fn_ptr_t) &rlang_cnd_inform, 2},
   {"rlang_cnd_signal",          (r_fn_ptr_t) &rlang_cnd_signal, 2},

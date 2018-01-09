@@ -2,12 +2,12 @@
 % Please edit documentation in R/call.R
 \name{call2}
 \alias{call2}
-\alias{new_language}
+\alias{new_call}
 \title{Create a call}
 \usage{
 call2(.fn, ..., .ns = NULL)
 
-new_language(head, tail = NULL)
+new_call(head, tail = NULL)
 }
 \arguments{
 \item{.fn}{Function to call. Must be a callable object: a string,
@@ -35,7 +35,7 @@ to as calls.
 \itemize{
 \item \code{call2()} creates a call from a function name (or a literal
 function to inline in the call) and a list of arguments.
-\item \code{new_language()} is bare-bones and takes a head and a tail. The
+\item \code{new_call()} is bare-bones and takes a head and a tail. The
 head must be \link[=is_callable]{callable} and the tail must be a
 \link{pairlist}. See section on calls as parse trees below. This
 constructor is useful to avoid costly coercions between lists and
@@ -84,8 +84,8 @@ consistency.
 
 In rlang 0.2.0:
 \itemize{
-\item \code{lang()} was renamed to \code{call2()}
-\item \code{new_language()} was renamed to \code{new_call()}
+\item \code{lang()} was soft-deprecated and renamed to \code{call2()}
+\item \code{new_language()} was soft-deprecated and renamed to \code{new_call()}
 }
 
 In rlang 0.1.0 calls were called "language" objects in order to

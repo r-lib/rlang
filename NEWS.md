@@ -210,7 +210,10 @@
   reflect that it is a lossy operation that flattens all nested
   quosures.
 
-* `lang()` has been renamed to `call2()`.
+* The particle "lang" has been renamed to "call":
+
+    - `lang()` has been renamed to `call2()`.
+    - `new_language()` has ben renamed to `new_call()`.
 
   In rlang 0.1 calls were called "language" objects in order to follow
   the R type nomenclature as returned by `base::typeof()`. We wanted
@@ -312,7 +315,7 @@ This release includes two important fixes for tidy evaluation:
   environments as data structures rather than as part of a scope
   hierarchy.
 
-* The `new_language()` constructor creates calls out of a callable
+* The `new_call()` constructor creates calls out of a callable
   object (a function or an expression) and a pairlist of arguments. It
   is useful to avoid costly internal coercions between lists and
   pairlists of arguments.

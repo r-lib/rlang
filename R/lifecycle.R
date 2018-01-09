@@ -49,6 +49,7 @@
 #' * [quo_expr()] => [quo_squash()]
 #'
 #' * [lang()] => [call2()]
+#' * [new_language()] => [new_call()]
 #'
 #'
 #' @section Deprecated functions and arguments:

@@ -13,7 +13,7 @@
 #' * `call2()` creates a call from a function name (or a literal
 #'   function to inline in the call) and a list of arguments.
 #'
-#' * `new_language()` is bare-bones and takes a head and a tail. The
+#' * `new_call()` is bare-bones and takes a head and a tail. The
 #'   head must be [callable][is_callable] and the tail must be a
 #'   [pairlist]. See section on calls as parse trees below. This
 #'   constructor is useful to avoid costly coercions between lists and
@@ -57,8 +57,8 @@
 #'
 #' In rlang 0.2.0:
 #'
-#' * `lang()` was renamed to `call2()`
-#' * `new_language()` was renamed to `new_call()`
+#' * `lang()` was soft-deprecated and renamed to `call2()`
+#' * `new_language()` was soft-deprecated and renamed to `new_call()`
 #'
 #' In rlang 0.1.0 calls were called "language" objects in order to
 #' follow the R type nomenclature as returned by [base::typeof()]. We
@@ -97,24 +97,24 @@ call2 <- function(.fn, ..., .ns = NULL) {
   }
 
   if (!is_null(.ns)) {
-    .fn <- new_language(sym_namespace, pairlist(sym(.ns), .fn))
+    .fn <- new_call(sym_namespace, pairlist(sym(.ns), .fn))
   }
 
-  new_language(.fn, as.pairlist(dots_list(...)))
+  new_call(.fn, as.pairlist(dots_list(...)))
 }
 #' @rdname call2
 #' @param head A [callable][is_callable] object: a symbol, call, or
 #'   literal function.
 #' @param tail A [node list][pairlist] of arguments.
 #' @export
-new_language <- function(head, tail = NULL) {
+new_call <- function(head, tail = NULL) {
   if (!is_callable(head)) {
     abort("Can't create call to non-callable object")
   }
   if (!is_node_list(tail)) {
     abort("`tail` must be a node list")
   }
-  .Call(r_new_language, head, tail)
+  .Call(rlang_new_call, head, tail)
 }
 
 #' Is an object callable?

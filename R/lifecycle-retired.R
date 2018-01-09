@@ -47,6 +47,12 @@ quo_expr <- function(quo, warn = FALSE) {
 lang <- function(.fn, ..., .ns = NULL) {
   call2(.fn, ..., .ns = NULL)
 }
+#' @rdname lang
+#' @inheritParams new_call
+#' @export
+new_language <- function(head, tail = NULL) {
+  new_call(head, tail)
+}
 
 
 # Deprecated ---------------------------------------------------------
