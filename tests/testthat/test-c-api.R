@@ -228,7 +228,9 @@ test_that("client library passes tests", {
     repos = NULL,
     type = "source",
     lib = temp_lib,
-    INSTALL_opts = "--install-tests"
+    INSTALL_opts = "--install-tests",
+    verbose = FALSE,
+    quiet = TRUE
   )
 
   result <- tools::testInstalledPackage("rlanglibtest", lib.loc = temp_lib, types = "test")
