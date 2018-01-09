@@ -57,6 +57,7 @@ TODO: Review all functions in rlang and mark stable ones as such.
 \itemize{
 \item \code{\link[=UQ]{UQ()}}
 \item \code{\link[=UQS]{UQS()}}
+\item \code{\link[=eval_tidy_]{eval_tidy_()}}
 \item \code{\link[=lang_head]{lang_head()}}, \code{\link[=lang_tail]{lang_tail()}}
 }
 

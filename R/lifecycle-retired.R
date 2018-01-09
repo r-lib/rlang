@@ -150,6 +150,21 @@ lang_tail <- function(lang) {
 as_overscope <- function(quo, data = NULL) {
   as_data_mask(data, quo_get_env(quo))
 }
+#' Tidy evaluation in a custom environment
+#'
+#' This function is soft-deprecated as of rlang 0.2.0.
+#'
+#' @inheritParams eval_tidy
+#' @inheritParams as_overscope
+#'
+#' @keywords internal
+#' @export
+eval_tidy_ <- function(expr, bottom, top = NULL, env = caller_env()) {
+  data_mask <- new_overscope(bottom, top %||% bottom)
+  on.exit(overscope_clean(data_mask))
+  .Call(rlang_eval_tidy, expr, data_mask, environment())
+}
+
 
 
 # Deprecated ---------------------------------------------------------

@@ -54,6 +54,8 @@
 #' * [UQ()]
 #' * [UQS()]
 #'
+#' * [eval_tidy_()]
+#'
 #' * [lang_head()], [lang_tail()]
 #'
 #'

@@ -122,33 +122,8 @@ eval_tidy <- function(expr, data = NULL, env = caller_env()) {
 .data <- NULL
 delayedAssign(".data", as_dictionary(list(), read_only = TRUE))
 
-#' Tidy evaluation in a custom environment
-#'
-#' We recommend using [eval_tidy()] in your DSLs as much as possible
-#' to ensure some consistency across packages (`.data` and `.env`
-#' pronouns, etc). However, some DSLs might need a different
-#' evaluation environment. In this case, you can call `eval_tidy_()`
-#' with the bottom and the top of your custom overscope (see
-#' [as_overscope()] for more information).
-#'
-#' Note that `eval_tidy_()` always installs a `.env` pronoun in the
-#' bottom environment of your dynamic scope. This pronoun provides a
-#' shortcut to the original lexical enclosure (typically, the dynamic
-#' environment of a captured argument, see [enquo()]). It also
-#' cleans up the overscope after evaluation. See [overscope_eval_next()]
-#' for evaluating several quosures in the same overscope.
-#'
-#' @inheritParams eval_tidy
-#' @inheritParams as_overscope
-#' @export
-eval_tidy_ <- function(expr, bottom, top = NULL, env = caller_env()) {
-  data_mask <- new_overscope(bottom, top %||% bottom)
-  on.exit(overscope_clean(data_mask))
-  .Call(rlang_eval_tidy, expr, data_mask, environment())
-}
 
-
-#' Create a dynamic scope for tidy evaluation
+#' Create a data mask
 #'
 #' Tidy evaluation works by rescoping a set of symbols (column names
 #' of a data frame for example) to custom bindings. While doing this,
