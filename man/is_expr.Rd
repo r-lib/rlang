@@ -72,7 +72,7 @@ is_symbol(q2)
 
 q3 <- quote(x + 1)
 is_expr(q3)
-is_lang(q3)
+is_call(q3)
 
 
 # Atomic expressions are the terminating nodes of a call tree:
@@ -111,5 +111,5 @@ is_pairlist(fmls)
 lang_tail(quote(fn(arg1, arg2 = "foo")))
 }
 \seealso{
-\code{\link[=is_lang]{is_lang()}} for a call predicate.
+\code{\link[=is_call]{is_call()}} for a call predicate.
 }

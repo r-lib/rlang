@@ -150,7 +150,7 @@ enexprs <- function(...,
 #' list of a closure with [base::formals()] or [fn_fmls()].
 #'
 #' @param x An object to test.
-#' @seealso [is_lang()] for a call predicate.
+#' @seealso [is_call()] for a call predicate.
 #' @export
 #' @examples
 #' q1 <- quote(1)
@@ -163,7 +163,7 @@ enexprs <- function(...,
 #'
 #' q3 <- quote(x + 1)
 #' is_expr(q3)
-#' is_lang(q3)
+#' is_call(q3)
 #'
 #'
 #' # Atomic expressions are the terminating nodes of a call tree:

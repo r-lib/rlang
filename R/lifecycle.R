@@ -50,6 +50,9 @@
 #'
 #' * [lang()] => [call2()]
 #' * [new_language()] => [new_call()]
+#' * [is_lang()] => [is_call()]
+#' * [is_unary_lang()] => [is_unary_call()]
+#' * [is_binary_lang()] => [is_binary_call()]
 #'
 #'
 #' @section Deprecated functions and arguments:

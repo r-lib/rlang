@@ -156,65 +156,73 @@ is_callable <- function(x) {
 
 #' Is object a call?
 #'
-#' This function tests if `x` is a call (or [language
-#' object][lang]). This is a pattern-matching predicate that will
-#' return `FALSE` if `name` and `n` are supplied and the call does not
-#' match these properties. `is_unary_lang()` and `is_binary_lang()`
-#' hardcode `n` to 1 and 2.
+#' This function tests if `x` is a [call][call2]. This is a
+#' pattern-matching predicate that returns `FALSE` if `name` and `n`
+#' are supplied and the call does not match these properties.
+#' `is_unary_call()` and `is_binary_call()` hardcode `n` to 1 and 2.
+#'
+#'
+#' @section Life cycle:
+#'
+#' `is_lang()` has been soft-deprecated and renamed to `is_call()` in
+#' rlang 0.2.0 and similarly for `is_unary_lang()` and
+#' `is_binary_lang()`. This renaming follows the general switch from
+#' "language" to "call" in the rlang type nomenclature. See lifecycle
+#' section in [call2()].
 #'
 #' @param x An object to test. If a formula, the right-hand side is
 #'   extracted.
 #' @param name An optional name that the call should match. It is
 #'   passed to [sym()] before matching. This argument is vectorised
 #'   and you can supply a vector of names to match. In this case,
-#'   `is_lang()` returns `TRUE` if at least one name matches.
+#'   `is_call()` returns `TRUE` if at least one name matches.
 #' @param n An optional number of arguments that the call should
 #'   match.
 #' @param ns The namespace of the call. If `NULL`, the namespace
 #'   doesn't participate in the pattern-matching. If an empty string
-#'   `""` and `x` is a namespaced call, `is_lang()` returns
-#'   `FALSE`. If any other string, `is_lang()` checks that `x` is
+#'   `""` and `x` is a namespaced call, `is_call()` returns
+#'   `FALSE`. If any other string, `is_call()` checks that `x` is
 #'   namespaced within `ns`.
 #' @seealso [is_expr()]
 #' @export
 #' @examples
-#' is_lang(quote(foo(bar)))
+#' is_call(quote(foo(bar)))
 #'
 #' # You can pattern-match the call with additional arguments:
-#' is_lang(quote(foo(bar)), "foo")
-#' is_lang(quote(foo(bar)), "bar")
-#' is_lang(quote(foo(bar)), quote(foo))
+#' is_call(quote(foo(bar)), "foo")
+#' is_call(quote(foo(bar)), "bar")
+#' is_call(quote(foo(bar)), quote(foo))
 #'
-#' # Match the number of arguments with is_lang():
-#' is_lang(quote(foo(bar)), "foo", 1)
-#' is_lang(quote(foo(bar)), "foo", 2)
+#' # Match the number of arguments with is_call():
+#' is_call(quote(foo(bar)), "foo", 1)
+#' is_call(quote(foo(bar)), "foo", 2)
 #'
 #' # Or more specifically:
-#' is_unary_lang(quote(foo(bar)))
-#' is_unary_lang(quote(+3))
-#' is_unary_lang(quote(1 + 3))
-#' is_binary_lang(quote(1 + 3))
+#' is_unary_call(quote(foo(bar)))
+#' is_unary_call(quote(+3))
+#' is_unary_call(quote(1 + 3))
+#' is_binary_call(quote(1 + 3))
 #'
 #'
 #' # By default, namespaced calls are tested unqualified:
 #' ns_expr <- quote(base::list())
-#' is_lang(ns_expr, "list")
+#' is_call(ns_expr, "list")
 #'
 #' # You can also specify whether the call shouldn't be namespaced by
 #' # supplying an empty string:
-#' is_lang(ns_expr, "list", ns = "")
+#' is_call(ns_expr, "list", ns = "")
 #'
 #' # Or if it should have a namespace:
-#' is_lang(ns_expr, "list", ns = "utils")
-#' is_lang(ns_expr, "list", ns = "base")
+#' is_call(ns_expr, "list", ns = "utils")
+#' is_call(ns_expr, "list", ns = "base")
 #'
 #'
 #' # The name argument is vectorised so you can supply a list of names
 #' # to match with:
-#' is_lang(quote(foo(bar)), c("bar", "baz"))
-#' is_lang(quote(foo(bar)), c("bar", "foo"))
-#' is_lang(quote(base::list), c("::", ":::", "$", "@"))
-is_lang <- function(x, name = NULL, n = NULL, ns = NULL) {
+#' is_call(quote(foo(bar)), c("bar", "baz"))
+#' is_call(quote(foo(bar)), c("bar", "foo"))
+#' is_call(quote(base::list), c("::", ":::", "$", "@"))
+is_call <- function(x, name = NULL, n = NULL, ns = NULL) {
   if (typeof(x) != "language") {
     return(FALSE)
   }
@@ -256,19 +264,14 @@ is_lang <- function(x, name = NULL, n = NULL, ns = NULL) {
 }
 #' @rdname is_lang
 #' @export
-is_unary_lang <- function(x, name = NULL, ns = NULL) {
-  is_lang(x, name, n = 1L, ns = ns)
+is_unary_call <- function(x, name = NULL, ns = NULL) {
+  is_call(x, name, n = 1L, ns = ns)
 }
 #' @rdname is_lang
 #' @export
-is_binary_lang <- function(x, name = NULL, ns = NULL) {
-  is_lang(x, name, n = 2L, ns = ns)
+is_binary_call <- function(x, name = NULL, ns = NULL) {
+  is_call(x, name, n = 2L, ns = ns)
 }
-
-# Anticipate renaming
-is_call <- is_lang
-is_unary_call <- is_unary_lang
-is_binary_call <- is_binary_lang
 
 
 #' Modify the arguments of a call
@@ -404,7 +407,7 @@ lang_fn <- function(lang) {
   expr <- get_expr(lang)
   env <- get_env(lang, caller_env())
 
-  if (!is_lang(expr)) {
+  if (!is_call(expr)) {
     abort("`lang` must quote a lang")
   }
 
@@ -442,7 +445,7 @@ lang_fn <- function(lang) {
 #' lang_name(~foo()())
 lang_name <- function(lang) {
   lang <- get_expr(lang)
-  if (!is_lang(lang)) {
+  if (!is_call(lang)) {
     abort("`lang` must be a call or must wrap a call (e.g. in a quosure)")
   }
 
@@ -478,14 +481,14 @@ lang_name <- function(lang) {
 #' lang_tail(lang)
 lang_head <- function(lang) {
   lang <- get_expr(lang)
-  stopifnot(is_lang(lang))
+  stopifnot(is_call(lang))
   node_car(lang)
 }
 #' @rdname lang_head
 #' @export
 lang_tail <- function(lang) {
   lang <- get_expr(lang)
-  stopifnot(is_lang(lang))
+  stopifnot(is_call(lang))
   node_cdr(lang)
 }
 

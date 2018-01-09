@@ -208,7 +208,7 @@ as_pairlist <- function(x) {
 #'   `NULL` is the empty node list.
 #'
 #' @param x Object to test.
-#' @seealso [is_lang()] tests for language nodes.
+#' @seealso [is_call()] tests for language nodes.
 #' @export
 is_pairlist <- function(x) {
   typeof(x) == "pairlist"

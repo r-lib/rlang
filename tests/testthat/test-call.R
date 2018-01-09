@@ -90,30 +90,30 @@ test_that("NULL is a valid language object", {
   expect_true(is_expr(NULL))
 })
 
-test_that("is_lang() pattern-matches", {
-  expect_true(is_lang(quote(foo(bar)), "foo"))
-  expect_false(is_lang(quote(foo(bar)), "bar"))
-  expect_true(is_lang(quote(foo(bar)), quote(foo)))
+test_that("is_call() pattern-matches", {
+  expect_true(is_call(quote(foo(bar)), "foo"))
+  expect_false(is_call(quote(foo(bar)), "bar"))
+  expect_true(is_call(quote(foo(bar)), quote(foo)))
 
-  expect_true(is_lang(quote(foo(bar)), "foo", n = 1))
-  expect_false(is_lang(quote(foo(bar)), "foo", n = 2))
+  expect_true(is_call(quote(foo(bar)), "foo", n = 1))
+  expect_false(is_call(quote(foo(bar)), "foo", n = 2))
 
-  expect_true(is_lang(quote(foo::bar())), quote(foo::bar()))
+  expect_true(is_call(quote(foo::bar())), quote(foo::bar()))
 
-  expect_false(is_lang(1))
-  expect_false(is_lang(NULL))
+  expect_false(is_call(1))
+  expect_false(is_call(NULL))
 
-  expect_true(is_unary_lang(quote(+3)))
-  expect_true(is_binary_lang(quote(3 + 3)))
+  expect_true(is_unary_call(quote(+3)))
+  expect_true(is_binary_call(quote(3 + 3)))
 })
 
-test_that("is_lang() vectorises name", {
-  expect_false(is_lang(quote(foo::bar), c("fn", "fn2")))
-  expect_true(is_lang(quote(foo::bar), c("fn", "::")))
+test_that("is_call() vectorises name", {
+  expect_false(is_call(quote(foo::bar), c("fn", "fn2")))
+  expect_true(is_call(quote(foo::bar), c("fn", "::")))
 
-  expect_true(is_lang(quote(foo::bar), quote(`::`)))
-  expect_true(is_lang(quote(foo::bar), list(quote(`@`), quote(`::`))))
-  expect_false(is_lang(quote(foo::bar), list(quote(`@`), quote(`:::`))))
+  expect_true(is_call(quote(foo::bar), quote(`::`)))
+  expect_true(is_call(quote(foo::bar), list(quote(`@`), quote(`::`))))
+  expect_false(is_call(quote(foo::bar), list(quote(`@`), quote(`:::`))))
 })
 
 test_that("lang_name() handles namespaced and anonymous calls", {
@@ -171,14 +171,14 @@ test_that("can specify ns in namespaced predicate", {
   expect_true(is_namespaced_lang(expr, "foo"))
 })
 
-test_that("can specify ns in is_lang()", {
+test_that("can specify ns in is_call()", {
   expr <- quote(foo::bar())
-  expect_true(is_lang(expr, ns = NULL))
-  expect_false(is_lang(expr, ns = ""))
-  expect_false(is_lang(expr, ns = "baz"))
-  expect_true(is_lang(expr, ns = "foo"))
-  expect_true(is_lang(expr, name = "bar", ns = "foo"))
-  expect_false(is_lang(expr, name = "baz", ns = "foo"))
+  expect_true(is_call(expr, ns = NULL))
+  expect_false(is_call(expr, ns = ""))
+  expect_false(is_call(expr, ns = "baz"))
+  expect_true(is_call(expr, ns = "foo"))
+  expect_true(is_call(expr, name = "bar", ns = "foo"))
+  expect_false(is_call(expr, name = "baz", ns = "foo"))
 })
 
 test_that("can unnamespace calls", {
