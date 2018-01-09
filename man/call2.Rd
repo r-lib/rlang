@@ -68,17 +68,6 @@ that it is possible for functions to \link[=expr]{capture} their
 arguments unevaluated.
 }
 
-\section{Call versus language}{
-
-
-\code{call} is the old S \link[base:mode]{mode} of these objects while
-\code{language} is the R \link[base:typeof]{type}. While it is usually
-better to avoid using S terminology, it would probably be even more
-confusing to systematically refer to "calls" as "language". rlang
-still uses \code{lang} as particle for function dealing with calls for
-consistency.
-}
-
 \section{Life cycle}{
 
 
@@ -89,8 +78,8 @@ In rlang 0.2.0:
 }
 
 In rlang 0.1.0 calls were called "language" objects in order to
-follow the R type nomenclature as returned by \code{\link[base:typeof]{base::typeof()}}. We
-wanted to avoid adding to the confusion between S modes and R
+follow the R type nomenclature as returned by \code{\link[base:typeof]{base::typeof()}}. The
+goal was to avoid adding to the confusion between S modes and R
 types. With hindsight we find it is better to use more meaningful
 type names.
 }

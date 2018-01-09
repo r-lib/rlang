@@ -43,15 +43,6 @@
 #' that it is possible for functions to [capture][expr] their
 #' arguments unevaluated.
 #'
-#' @section Call versus language:
-#'
-#' `call` is the old S [mode][base::mode] of these objects while
-#' `language` is the R [type][base::typeof]. While it is usually
-#' better to avoid using S terminology, it would probably be even more
-#' confusing to systematically refer to "calls" as "language". rlang
-#' still uses `lang` as particle for function dealing with calls for
-#' consistency.
-#'
 #'
 #' @section Life cycle:
 #'
@@ -61,8 +52,8 @@
 #' * `new_language()` was soft-deprecated and renamed to `new_call()`
 #'
 #' In rlang 0.1.0 calls were called "language" objects in order to
-#' follow the R type nomenclature as returned by [base::typeof()]. We
-#' wanted to avoid adding to the confusion between S modes and R
+#' follow the R type nomenclature as returned by [base::typeof()]. The
+#' goal was to avoid adding to the confusion between S modes and R
 #' types. With hindsight we find it is better to use more meaningful
 #' type names.
 #'
