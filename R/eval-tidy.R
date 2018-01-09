@@ -120,7 +120,7 @@ eval_tidy <- function(expr, data = NULL, env = caller_env()) {
 #' quo <- quo(.data$foo)
 #' eval_tidy(quo, list(foo = "bar"))
 .data <- NULL
-delayedAssign(".data", as_dictionary(list(), read_only = TRUE))
+delayedAssign(".data", as_data_pronoun(list()))
 
 
 #' Create a data mask
@@ -237,4 +237,96 @@ overscope_eval_next <- function(overscope, quo, env = base_env()) {
 #' @export
 overscope_clean <- function(overscope) {
   invisible(.Call(rlang_data_mask_clean, overscope))
+}
+
+
+#' @export
+`$.rlang_data_pronoun` <- function(x, name) {
+  src <- .subset2(x, "src")
+  if (!has_binding(src, name)) {
+    abort(sprintf(.subset2(x, "lookup_msg"), name))
+  }
+  src[[name]]
+}
+#' @export
+`[[.rlang_data_pronoun` <- function(x, i, ...) {
+  if (!is_string(i)) {
+    abort("Must subset the data pronoun with a string")
+  }
+  src <- .subset2(x, "src")
+  if (!has_binding(src, i)) {
+    abort(sprintf(.subset2(x, "lookup_msg"), i))
+  }
+  src[[i, ...]]
+}
+
+#' @export
+`$<-.rlang_data_pronoun` <- function(x, i, value) {
+  dict <- unclass_data_pronoun(x)
+
+  if (dict$read_only) {
+    abort("Can't modify the data pronoun")
+  }
+
+  dict$src[[i]] <- value
+  set_attrs(dict, class = class(x))
+}
+#' @export
+`[[<-.rlang_data_pronoun` <- function(x, i, value) {
+  dict <- unclass_data_pronoun(x)
+
+  if (dict$read_only) {
+    abort("Can't modify the data pronoun")
+  }
+  if (!is_string(i)) {
+    abort("Must subset the data pronoun with a string")
+  }
+
+  dict$src[[i]] <- value
+  set_attrs(dict, class = class(x))
+}
+
+#' @export
+names.rlang_data_pronoun <- function(x) {
+  names(unclass(x)$src)
+}
+#' @export
+length.rlang_data_pronoun <- function(x) {
+  length(unclass(x)$src)
+}
+
+has_binding <- function(x, name) {
+  if (is_environment(x)) {
+    env_has(x, name)
+  } else {
+    has_name(x, name)
+  }
+}
+
+#' @export
+print.rlang_data_pronoun <- function(x, ...) {
+  src <- unclass_data_pronoun(x)$src
+  objs <- glue_countable(length(src), "object")
+  cat(paste0("<pronoun>\n", objs, "\n"))
+  invisible(x)
+}
+#' @importFrom utils str
+#' @export
+str.rlang_data_pronoun <- function(object, ...) {
+  str(unclass_data_pronoun(object)$src, ...)
+}
+
+glue_countable <- function(n, str) {
+  if (n == 1) {
+    paste0(n, " ", str)
+  } else {
+    paste0(n, " ", str, "s")
+  }
+}
+# Unclassing before print() or str() is necessary because default
+# methods index objects with integers
+unclass_data_pronoun <- function(x) {
+  i <- match("rlang_data_pronoun", class(x))
+  class(x) <- class(x)[-i]
+  x
 }

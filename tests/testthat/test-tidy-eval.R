@@ -208,7 +208,7 @@ test_that("empty quosure self-evaluates", {
 })
 
 test_that("cannot replace elements of pronouns", {
-  expect_error(eval_tidy(quo(.data$foo <- "bar")), "read-only dictionary")
+  expect_error(eval_tidy(quo(.data$foo <- "bar")), "Can't modify the data pronoun")
 })
 
 test_that("formulas are not evaluated as quosures", {

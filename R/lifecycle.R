@@ -65,6 +65,7 @@
 #' * [parse_quosure()] => [parse_quo()]
 #' * [parse_quosures()] => [parse_quos()]
 #' * [as_overscope()] => [as_data_mask()]
+#' * [as_dictionary()] => [as_data_pronoun()]
 #'
 #' * [lang()] => [call2()]
 #' * [new_language()] => [call_node()]

@@ -166,6 +166,80 @@ eval_tidy_ <- function(expr, bottom, top = NULL, env = caller_env()) {
 }
 
 
+#' Create a dictionary
+#'
+#' The dictionary class was soft-deprecated in rlang 0.2.0. It was
+#' trying to be too general and did not prove useful. Please use
+#' [as_data_pronoun()] or your own pronoun class instead.
+#'
+#' @param x An object for which you want to find associated data.
+#' @param lookup_msg An error message when your data source is
+#'   accessed inappropriately (by position rather than name).
+#' @param read_only Whether users can replace elements of the
+#'   dictionary.
+#'
+#' @name dictionary
+#' @keywords internal
+#' @export
+as_dictionary <- function(x, lookup_msg = NULL, read_only = FALSE) {
+  UseMethod("as_dictionary")
+}
+#' @export
+as_dictionary.default <- function(x, lookup_msg = NULL, read_only = FALSE) {
+  x <- discard_unnamed(x)
+  check_dictionaryish(x)
+  new_dictionary(as.list(x), lookup_msg, read_only)
+}
+#' @export
+as_dictionary.dictionary <- function(x, lookup_msg = NULL, read_only = FALSE) {
+  dict <- unclass_data_pronoun(x)
+  dict$lookup_msg <- lookup_msg %||% x$lookup_msg
+  dict$read_only <- read_only
+  set_attrs(dict, class = class(x))
+}
+#' @export
+as_dictionary.NULL <- function(x, lookup_msg = NULL, read_only = FALSE) {
+  new_dictionary(list(), lookup_msg, read_only)
+}
+#' @export
+as_dictionary.environment <- function(x, lookup_msg = NULL, read_only = FALSE) {
+  lookup_msg <- lookup_msg %||% "Object `%s` not found in environment"
+  new_dictionary(x, lookup_msg, read_only)
+}
+#' @export
+as_dictionary.data.frame <- function(x, lookup_msg = NULL, read_only = FALSE) {
+  check_dictionaryish(x)
+  lookup_msg <- lookup_msg %||% "Column `%s` not found in data"
+  new_dictionary(x, lookup_msg, read_only)
+}
+
+check_dictionaryish <- function(x) {
+  if (!length(x)) {
+    return(NULL)
+  }
+  if (!is_named(x)) {
+    abort("Data must be uniquely named but some variables are unnamed")
+  }
+  nms <- names(x)
+  dups <- duplicated(nms)
+  if (any(dups)) {
+    dups <- unique(nms[dups])
+    dups <- chr_enumerate(chr_quoted(dups), final = "and")
+    abort(paste0(
+      "Data must be uniquely named but the following variables have duplicates: ", dups
+    ))
+  }
+}
+new_dictionary <- function(x, lookup_msg, read_only) {
+  .Call(rlang_new_data_pronoun, x, lookup_msg, read_only)
+}
+
+#' @rdname dictionary
+#' @export
+is_dictionary <- function(x) {
+  inherits(x, "rlang_data_pronoun")
+}
+
 
 # Deprecated ---------------------------------------------------------
 

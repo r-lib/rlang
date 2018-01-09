@@ -356,7 +356,7 @@ void rlang_init_eval_tidy() {
   data_pronoun_names = r_new_character(data_pronoun_c_names, 3);
   r_mark_precious(data_pronoun_names);
 
-  data_pronoun_class = r_scalar_chr("dictionary");
+  data_pronoun_class = r_scalar_chr("rlang_data_pronoun");
   r_mark_precious(data_pronoun_class);
 
   empty_names_chr = r_new_vector(r_type_character, 2);
