@@ -69,5 +69,5 @@ fn_fmls_names(fn) <- c("foo", "bar")
 fn()
 }
 \seealso{
-\code{\link[=lang_args]{lang_args()}} and \code{\link[=lang_args_names]{lang_args_names()}}
+\code{\link[=call_args]{call_args()}} and \code{\link[=call_args_names]{call_args_names()}}
 }

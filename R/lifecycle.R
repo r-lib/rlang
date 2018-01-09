@@ -60,6 +60,8 @@
 #' * [lang_name()] => [call_name()]
 #' * [lang_head()] => [call_head()]
 #' * [lang_tail()] => [call_tail()]
+#' * [lang_args()] => [call_args()]
+#' * [lang_args_names()] => [call_args_names()]
 #'
 #'
 #' @section Deprecated functions and arguments:

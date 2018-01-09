@@ -114,6 +114,16 @@ lang_head <- function(lang) {
 lang_tail <- function(lang) {
   call_tail(lang)
 }
+#' @rdname lang_modify
+#' @export
+lang_args <- function(lang) {
+  call_args(lang)
+}
+#' @rdname lang_modify
+#' @export
+lang_args_names <- function(lang) {
+  call_args_names(lang)
+}
 
 # Deprecated ---------------------------------------------------------
 

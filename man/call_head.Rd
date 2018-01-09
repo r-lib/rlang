@@ -22,7 +22,7 @@ is unsafe to do this without type checking).
 \code{call_head()} returns the head of the call without any conversion,
 unlike \code{\link[=call_name]{call_name()}} which checks that the head is a symbol and
 converts it to a string. \code{call_tail()} returns the pairlist of
-arguments (while \code{\link[=lang_args]{lang_args()}} returns the same object converted to
+arguments (while \code{\link[=call_args]{call_args()}} returns the same object converted to
 a regular list)
 }
 \section{Life cycle}{
@@ -39,5 +39,5 @@ call_head(call)
 call_tail(call)
 }
 \seealso{
-\link{pairlist}, \code{\link[=lang_args]{lang_args()}}, \code{\link[=call2]{call2()}}
+\link{pairlist}, \code{\link[=call_args]{call_args()}}, \code{\link[=call2]{call2()}}
 }

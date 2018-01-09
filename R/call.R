@@ -496,7 +496,7 @@ call_name <- function(call) {
 #' `call_head()` returns the head of the call without any conversion,
 #' unlike [call_name()] which checks that the head is a symbol and
 #' converts it to a string. `call_tail()` returns the pairlist of
-#' arguments (while [lang_args()] returns the same object converted to
+#' arguments (while [call_args()] returns the same object converted to
 #' a regular list)
 #'
 #'
@@ -507,7 +507,7 @@ call_name <- function(call) {
 #' lifecycle section in [call2()] for more about this change.
 #'
 #' @inheritParams call_standardise
-#' @seealso [pairlist], [lang_args()], [call2()]
+#' @seealso [pairlist], [call_args()], [call2()]
 #' @export
 #' @examples
 #' call <- quote(foo(bar, baz))
@@ -528,7 +528,14 @@ call_tail <- function(call) {
 
 #' Extract arguments from a call
 #'
-#' @inheritParams lang_standardise
+#' @section Life cycle:
+#'
+#' In rlang 0.2.0, `lang_args()` and `lang_args_names()` were
+#' soft-deprecated and renamed to `call_args()` and
+#' `call_args_names()`. See lifecycle section in [call2()] for more
+#' about this change.
+#'
+#' @inheritParams call_standardise
 #' @return A named list of arguments.
 #' @seealso [call_tail()], [fn_fmls()] and [fn_fmls_names()]
 #' @export
@@ -539,28 +546,27 @@ call_tail <- function(call) {
 #' # object:
 #' call[-1]
 #'
-#' # See also call_tail() which returns the arguments without
-#' # conversion as the original pairlist:
+#' # And call_tail() returns the arguments without conversion as the
+#' # original pairlist:
 #' str(call_tail(call))
 #'
-#' # On the other hand, lang_args() returns a regular list that is
+#' # On the other hand, call_args() returns a regular list that is
 #' # often easier to work with:
-#' str(lang_args(call))
+#' str(call_args(call))
 #'
 #' # When the arguments are unnamed, a vector of empty strings is
 #' # supplied (rather than NULL):
-#' lang_args_names(call)
-lang_args <- function(lang) {
-  lang <- get_expr(lang)
-  args <- as.list(call_tail(lang))
+#' call_args_names(call)
+call_args <- function(call) {
+  call <- get_expr(call)
+  args <- as.list(call_tail(call))
   set_names((args), names2(args))
 }
-
-#' @rdname lang_args
+#' @rdname call_args
 #' @export
-lang_args_names <- function(lang) {
-  lang <- get_expr(lang)
-  names2(call_tail(lang))
+call_args_names <- function(call) {
+  call <- get_expr(call)
+  names2(call_tail(call))
 }
 
 is_qualified_lang <- function(x) {

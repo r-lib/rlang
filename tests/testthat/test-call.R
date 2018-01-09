@@ -148,10 +148,10 @@ test_that("Inlined functions return NULL name", {
   expect_null(call_name(call))
 })
 
-test_that("lang_args() and lang_args_names()", {
-  expect_identical(lang_args(~fn(a, b)), set_names(list(quote(a), quote(b)), c("", "")))
+test_that("call_args() and call_args_names()", {
+  expect_identical(call_args(~fn(a, b)), set_names(list(quote(a), quote(b)), c("", "")))
 
-  fn <- function(a, b) lang_args_names(call_frame())
+  fn <- function(a, b) call_args_names(call_frame())
   expect_identical(fn(a = foo, b = bar), c("a", "b"))
 })
 
