@@ -91,7 +91,7 @@ evaluation as much as possible.
 
 A corollary of emphasising evaluation is that your DSL functions
 should understand _values_ in addition to expressions. This is
-especially important with [quasiquotation][quasiquotation]: users can
+especially important with quasiquotation (see `UQ()`): users can
 bypass symbolic evaluation completely by unquoting values. For
 instance, the following expressions are completely equivalent:
 
@@ -153,15 +153,15 @@ correctly an important aspect of R:
 
 Creating this scope hierarchy (data first, context next) is possible
 because R makes it easy to capture the calling environment (see
-[caller_env()]). However, this supposes that captured expressions were
+`caller_env()`). However, this supposes that captured expressions were
 actually typed in the most immediate caller frame. This assumption
 easily breaks in R. First, because quasiquotation allows the user to
 combine expressions that do not necessarily come from the same lexical
 context. Secondly, because arguments can be forwarded through the
 special `...` argument. While base R does not provide any way of
 capturing a forwarded argument along with its original environment,
-rlang features [quos()] for this purpose. This function looks up each
-forwarded argument and returns a list of [quosures][quosure] that bundle the
+rlang features `quos()` for this purpose. This function looks up each
+forwarded argument and returns a list of quosures (see `quo()`) that bundle the
 expressions with their own dynamic environments.
 
 In that context, maintaining scoping consistency is a challenge
@@ -180,7 +180,7 @@ Unlike formulas, quosures aren't simple containers of an expression
 and an environment. In the tidyeval framework, they have the property
 of self-evaluating in their own environment. Hence they can appear
 anywhere in an expression (e.g. by being
-[unquoted](http://rlang.tidyverse.org/reference/quasiquotation.html)),
+unquoted, see `UQ()`),
 carrying their own environment and behaving otherwise exactly like
 surrounding R code. Quosures behave like
 reified
@@ -198,7 +198,7 @@ when the quosure is evaluated. It is evaluated tidily.
 In practical terms, `eval_tidy()` takes a `data` argument and
 creates an overscope suitable for tidy evaluation. In particular,
 these overscopes contain definitions for self-evaluation of
-quosures. See [eval_tidy_()] and [as_overscope] for more flexible
+quosures. See `eval_tidy_()` and `as_overscope()` for more flexible
 ways of creating overscopes.
 
 
