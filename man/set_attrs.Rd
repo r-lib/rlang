@@ -30,6 +30,20 @@ single unnamed \code{NULL} as argument to zap all attributes. For
 Unlike \code{\link[=structure]{structure()}}, these setters have no special handling of
 internal attributes names like \code{.Dim}, \code{.Dimnames} or \code{.Names}.
 }
+\section{Life cycle}{
+
+
+These functions are experimental, expect API changes.
+\itemize{
+\item \code{set_attrs()} should probably set the attributes as a
+whole. Another function with \code{add_} prefix would be in charge of
+adding an attribute to the set.
+\item \code{mut_attrs()} should be renamed to use the \code{poke_} prefix. Also
+it may be useful to allow any kind of objects, not just
+\link[=is_copyable]{non-copyable} ones.
+}
+}
+
 \examples{
 set_attrs(letters, names = 1:26, class = "my_chr")
 
@@ -50,3 +64,4 @@ env <- env()
 mut_attrs(env, foo = "bar")
 env
 }
+\keyword{internal}

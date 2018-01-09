@@ -7,6 +7,19 @@
 #' Unlike [structure()], these setters have no special handling of
 #' internal attributes names like `.Dim`, `.Dimnames` or `.Names`.
 #'
+#'
+#' @section Life cycle:
+#'
+#' These functions are experimental, expect API changes.
+#'
+#' * `set_attrs()` should probably set the attributes as a
+#'   whole. Another function with `add_` prefix would be in charge of
+#'   adding an attribute to the set.
+#'
+#' * `mut_attrs()` should be renamed to use the `poke_` prefix. Also
+#'   it may be useful to allow any kind of objects, not just
+#'   [non-copyable][is_copyable] ones.
+#'
 #' @param .x An object to decorate with attributes.
 #' @param ... A list of named attributes. These have [explicit
 #'   splicing semantics][dots_list]. Pass a single unnamed `NULL` to
@@ -14,6 +27,8 @@
 #' @return `set_attrs()` returns a modified [shallow copy][duplicate]
 #'   of `.x`. `mut_attrs()` invisibly returns the original `.x`
 #'   modified in place.
+#'
+#' @keywords internal
 #' @export
 #' @examples
 #' set_attrs(letters, names = 1:26, class = "my_chr")
