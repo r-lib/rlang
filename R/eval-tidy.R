@@ -223,17 +223,6 @@ new_overscope <- function(bottom, top = NULL, enclosure = base_env()) {
   .Call(rlang_new_data_mask, bottom, top, enclosure)
 }
 #' @rdname as_overscope
-#' @param overscope A valid overscope containing bindings for `~`,
-#'   `.top_env` and `_F` and whose parents contain overscoped bindings
-#'   for tidy evaluation.
-#' @param env The lexical enclosure in case `quo` is not a validly
-#'   scoped quosure. This is the [base environment][base_env] by
-#'   default.
-#' @export
-overscope_eval_next <- function(overscope, quo, env = base_env()) {
-  .Call(rlang_eval_tidy, quo, overscope, environment())
-}
-#' @rdname as_overscope
 #' @export
 overscope_clean <- function(overscope) {
   invisible(.Call(rlang_data_mask_clean, overscope))

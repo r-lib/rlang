@@ -2,14 +2,11 @@
 % Please edit documentation in R/eval-tidy.R, R/lifecycle-retired.R
 \name{new_overscope}
 \alias{new_overscope}
-\alias{overscope_eval_next}
 \alias{overscope_clean}
 \alias{as_overscope}
 \title{Convert to a data mask}
 \usage{
 new_overscope(bottom, top = NULL, enclosure = base_env())
-
-overscope_eval_next(overscope, quo, env = base_env())
 
 overscope_clean(overscope)
 
@@ -35,15 +32,7 @@ the overscope.}
 self-evaluating, the overscope is rechained to the default
 enclosure.}
 
-\item{overscope}{A valid overscope containing bindings for \code{~},
-\code{.top_env} and \code{_F} and whose parents contain overscoped bindings
-for tidy evaluation.}
-
 \item{quo}{A \link{quosure}.}
-
-\item{env}{The lexical enclosure in case \code{quo} is not a validly
-scoped quosure. This is the \link[=base_env]{base environment} by
-default.}
 
 \item{data}{A data frame or named vector of masking data.}
 }

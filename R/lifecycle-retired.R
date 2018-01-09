@@ -164,6 +164,25 @@ eval_tidy_ <- function(expr, bottom, top = NULL, env = caller_env()) {
   on.exit(overscope_clean(data_mask))
   .Call(rlang_eval_tidy, expr, data_mask, environment())
 }
+#' Evaluate next quosure in a data mask
+#'
+#' `overscope_eval_next()` is soft-deprecated as of rlang
+#' 0.2.0. Please use `eval_tidy()` to which you can now supply an
+#' overscope.
+#'
+#' @param quo A quosure.
+#' @param overscope A valid overscope containing bindings for `~`,
+#'   `.top_env` and `_F` and whose parents contain overscoped bindings
+#'   for tidy evaluation.
+#' @param env The lexical enclosure in case `quo` is not a validly
+#'   scoped quosure. This is the [base environment][base_env] by
+#'   default.
+#'
+#' @keywords internal
+#' @export
+overscope_eval_next <- function(overscope, quo, env = base_env()) {
+  .Call(rlang_eval_tidy, quo, overscope, environment())
+}
 
 
 #' Create a dictionary

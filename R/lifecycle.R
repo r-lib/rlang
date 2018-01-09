@@ -55,6 +55,7 @@
 #' * [UQS()]
 #'
 #' * [eval_tidy_()]
+#' * [overscope_eval_next()] => [eval_tidy()]
 #'
 #' * [lang_head()], [lang_tail()]
 #'

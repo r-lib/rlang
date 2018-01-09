@@ -58,6 +58,7 @@ TODO: Review all functions in rlang and mark stable ones as such.
 \item \code{\link[=UQ]{UQ()}}
 \item \code{\link[=UQS]{UQS()}}
 \item \code{\link[=eval_tidy_]{eval_tidy_()}}
+\item \code{\link[=overscope_eval_next]{overscope_eval_next()}} => \code{\link[=eval_tidy]{eval_tidy()}}
 \item \code{\link[=lang_head]{lang_head()}}, \code{\link[=lang_tail]{lang_tail()}}
 }
 
