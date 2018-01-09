@@ -107,18 +107,26 @@ eval_tidy <- function(expr, data = NULL, env = caller_env()) {
 
 #' Data pronoun for tidy evaluation
 #'
-#' This pronoun is installed by functions performing [tidy
-#' evaluation][eval_tidy]. It allows you to refer to overscoped data
-#' explicitly.
+#' @description
 #'
-#' You can import this object in your package namespace to avoid `R
-#' CMD check` errors when referring to overscoped objects.
+#' This pronoun allows you to be explicit when you refer to an object
+#' inside the data. Referring to the `.data` pronoun rather than to
+#' the original data frame has several advantages:
+#'
+#' * Sometimes a computation is not about the whole data but about a
+#'   subset. For example if you supply a grouped data frame to a dplyr
+#'   verb, the `.data` pronoun contains the group subset.
+#'
+#' * It lets dplyr know that you're referring to a column from the
+#'   data which is helpful to generate correct queries when the source
+#'   is a database.
+#'
+#' The `.data` object exported here is useful to import in your
+#' package namespace to avoid a `R CMD check` note when referring to
+#' objects from the data mask.
 #'
 #' @name tidyeval-data
 #' @export
-#' @examples
-#' quo <- quo(.data$foo)
-#' eval_tidy(quo, list(foo = "bar"))
 .data <- NULL
 delayedAssign(".data", as_data_pronoun(list()))
 
