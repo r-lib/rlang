@@ -58,7 +58,7 @@ static void check_unique_names(sexp* x) {
     r_abort("`data` must be uniquely named but has duplicate elements");
   }
 }
-sexp* as_data_pronoun(sexp* x) {
+sexp* rlang_as_data_pronoun(sexp* x) {
   int n_kept = 0;
   sexp* lookup_msg = r_null;
 
@@ -141,7 +141,7 @@ sexp* rlang_as_data_mask(sexp* data, sexp* parent) {
   if (data == r_null) {
     return rlang_new_data_mask(r_null, r_null, parent);
   }
-  sexp* data_pronoun = as_data_pronoun(data);
+  sexp* data_pronoun = rlang_as_data_pronoun(data);
   sexp* bottom = NULL;
 
   switch (r_typeof(data)) {

@@ -192,6 +192,11 @@ delayedAssign(".data", as_dictionary(list(), read_only = TRUE))
 as_data_mask <- function(data, parent = base_env()) {
   .Call(rlang_as_data_mask, data, parent)
 }
+#' @rdname as_data_mask
+#' @export
+as_data_pronoun <- function(data) {
+  .Call(rlang_as_data_pronoun, data)
+}
 
 #' @rdname as_overscope
 #' @param bottom This is the environment (or the bottom of a set of
