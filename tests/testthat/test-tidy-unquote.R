@@ -11,7 +11,7 @@ test_that("formulas containing unquote operators are interpolated", {
   var2 <- local({ foo <- "baz"; quo(foo) })
 
   f <- expr_interp(~list(!!var1, !!var2))
-  expect_identical(f, new_formula(NULL, lang("list", as_quosure(var1), as_quosure(var2))))
+  expect_identical(f, new_formula(NULL, call2("list", as_quosure(var1), as_quosure(var2))))
 })
 
 test_that("interpolation is carried out in the right environment", {
@@ -334,7 +334,7 @@ test_that("quosures are created for all informative formulas", {
   bar <- local(quo(bar))
 
   interpolated <- local(quo(list(!!foo, !!bar)))
-  expected <- new_quosure(lang("list", as_quosure(foo), as_quosure(bar)), env = get_env(interpolated))
+  expected <- new_quosure(call2("list", as_quosure(foo), as_quosure(bar)), env = get_env(interpolated))
   expect_identical(interpolated, expected)
 
   interpolated <- quo(!!interpolated)

@@ -51,6 +51,18 @@ TODO: Review all functions in rlang and mark stable ones as such.
 \item \code{\link[=parse_quosure]{parse_quosure()}}
 \item \code{\link[=parse_quosures]{parse_quosures()}}
 \item \code{\link[=quo_expr]{quo_expr()}} => \code{\link[=quo_squash]{quo_squash()}}
+\item \code{\link[=lang]{lang()}} => \code{\link[=call2]{call2()}}
+\item \code{\link[=new_language]{new_language()}} => \code{\link[=call_node]{call_node()}}
+\item \code{\link[=is_lang]{is_lang()}} => \code{\link[=is_call]{is_call()}}
+\item \code{\link[=is_unary_lang]{is_unary_lang()}} => Use the \code{n} argument of \code{\link[=is_call]{is_call()}}
+\item \code{\link[=is_binary_lang]{is_binary_lang()}} => Use the \code{n} argument of \code{\link[=is_call]{is_call()}}
+\item \code{\link[=lang_modify]{lang_modify()}} => \code{\link[=call_modify]{call_modify()}}
+\item \code{\link[=lang_standardise]{lang_standardise()}} => \code{\link[=call_standardise]{call_standardise()}}
+\item \code{\link[=lang_fn]{lang_fn()}} => \code{\link[=call_fn]{call_fn()}}
+\item \code{\link[=lang_name]{lang_name()}} => \code{\link[=call_name]{call_name()}}
+\item \code{\link[=lang_args]{lang_args()}} => \code{\link[=call_args]{call_args()}}
+\item \code{\link[=lang_args_names]{lang_args_names()}} => \code{\link[=call_args_names]{call_args_names()}}
+\item \code{\link[=lang_head]{lang_head()}}, \code{\link[=lang_tail]{lang_tail()}}
 }
 }
 

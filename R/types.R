@@ -636,6 +636,8 @@ friendly_expr_type_of <- function(type) {
 #'   is extracted first.
 #' @param ... Named clauses. The names should be types as returned by
 #'   `lang_type_of()`.
+#'
+#' @keywords internal
 #' @export
 #' @examples
 #' # Named calls:

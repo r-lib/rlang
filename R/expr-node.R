@@ -66,10 +66,9 @@
 #' @param newtag The new tag for the node. This should be a symbol.
 #' @return Setters like `mut_node_car()` invisibly return `x` modified
 #'   in place. Getters return the requested node component.
-#' @seealso [duplicate()] for creating copy-safe objects,
-#'   [lang_head()] and [lang_tail()] as slightly higher level
-#'   alternatives that check their input, and [base::pairlist()] for
-#'   an easier way of creating a linked list of nodes.
+#' @seealso [duplicate()] for creating copy-safe objects and
+#'   [base::pairlist()] for an easier way of creating a linked list of
+#'   nodes.
 #' @examples
 #' # Changing a node component happens in place and can have side
 #' # effects. Let's create a language object and a copy of it:
@@ -208,7 +207,7 @@ as_pairlist <- function(x) {
 #'   `NULL` is the empty node list.
 #'
 #' @param x Object to test.
-#' @seealso [is_lang()] tests for language nodes.
+#' @seealso [is_call()] tests for language nodes.
 #' @export
 is_pairlist <- function(x) {
   typeof(x) == "pairlist"
@@ -296,3 +295,18 @@ node_poke_cadr <- mut_node_cadr
 node_poke_cdar <- mut_node_cdar
 node_poke_cddr <- mut_node_cddr
 node_poke_tag <- mut_node_tag
+
+
+#' Create a new call from components
+#'
+#' @param car The head of the call. It should be a
+#'   [callable][is_callable] object: a symbol, call, or literal
+#'   function.
+#' @param cdr The tail of the call, i.e. a [node list][pairlist] of
+#'   arguments.
+#'
+#' @keywords internal
+#' @export
+call_node <- function(car, cdr = NULL) {
+  .Call(rlang_new_call, car, cdr)
+}

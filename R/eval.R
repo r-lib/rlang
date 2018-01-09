@@ -178,7 +178,7 @@ invoke <- function(.fn, .args = list(), ...,
     if (is_scalar_character(.fn)) {
       .fn <- env_get(.env, .fn, inherit = TRUE)
     }
-    call <- lang(.fn, !!! args)
+    call <- call2(.fn, !!! args)
     return(.Call(rlang_eval, call, .env))
   }
 
@@ -200,6 +200,6 @@ invoke <- function(.fn, .args = list(), ...,
     .fn <- fn_nm
   }
 
-  call <- lang(.fn, !!! args)
+  call <- call2(.fn, !!! args)
   .Call(rlang_eval, call, .env)
 }

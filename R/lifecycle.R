@@ -48,6 +48,21 @@
 #' * [parse_quosures()]
 #' * [quo_expr()] => [quo_squash()]
 #'
+#' * [lang()] => [call2()]
+#' * [new_language()] => [call_node()]
+#' * [is_lang()] => [is_call()]
+#' * [is_unary_lang()] => Use the `n` argument of [is_call()]
+#' * [is_binary_lang()] => Use the `n` argument of [is_call()]
+#'
+#' * [lang_modify()] => [call_modify()]
+#' * [lang_standardise()] => [call_standardise()]
+#' * [lang_fn()] => [call_fn()]
+#' * [lang_name()] => [call_name()]
+#' * [lang_args()] => [call_args()]
+#' * [lang_args_names()] => [call_args_names()]
+#'
+#' * [lang_head()], [lang_tail()]
+#'
 #'
 #' @section Deprecated functions and arguments:
 #'

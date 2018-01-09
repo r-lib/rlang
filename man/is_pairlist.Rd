@@ -26,5 +26,5 @@ including callable nodes (language objects).
 }
 }
 \seealso{
-\code{\link[=is_lang]{is_lang()}} tests for language nodes.
+\code{\link[=is_call]{is_call()}} tests for language nodes.
 }

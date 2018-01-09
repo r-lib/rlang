@@ -51,7 +51,7 @@ scoped_options <- function(..., .frame = caller_env()) {
   stopifnot(is_named(options))
 
   old <- options(options)
-  options_lang <- lang(base::options, !!! old)
+  options_lang <- call2(base::options, !!! old)
   scoped_exit(!! options_lang, frame = .frame)
 
   invisible(old)

@@ -11,7 +11,7 @@ scoped_exit <- function(expr, frame = caller_env()) {
   }
 
   # Inline everything so the call will succeed in any environment
-  expr <- lang(on.exit, expr, add = TRUE)
+  expr <- call2(on.exit, expr, add = TRUE)
   eval_bare(expr, frame)
 
   invisible(expr)

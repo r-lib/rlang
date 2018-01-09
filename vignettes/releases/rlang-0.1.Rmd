@@ -115,16 +115,16 @@ This particularly useful for more complex types like calls where you can check t
 ```{r}
 call <- quote(base::foo(bar, baz))
 
-is_lang(call, n = 3)
-is_lang(call, n = 2)
+is_call(call, n = 3)
+is_call(call, n = 2)
 
-is_lang(call, name = "bar")
-is_lang(call, name = "foo")
+is_call(call, name = "bar")
+is_call(call, name = "foo")
 
-is_lang(call, ns = "rlang")
-is_lang(call, ns = "base")
+is_call(call, ns = "rlang")
+is_call(call, ns = "base")
 
-is_lang(call, "foo", n = 2, ns = "base")
+is_call(call, "foo", n = 2, ns = "base")
 ```
 
 ### Consistent naming

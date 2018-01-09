@@ -37,6 +37,106 @@ quo_expr <- function(quo, warn = FALSE) {
   quo_squash(quo, warn = warn)
 }
 
+#' Create a call
+#'
+#' This function is soft-deprecated, please use [call2()] instead.
+#'
+#' @inheritParams call2
+#' @keywords internal
+#' @export
+lang <- function(.fn, ..., .ns = NULL) {
+  call2(.fn, ..., .ns = NULL)
+}
+#' @rdname lang
+#' @inheritParams call_node
+#' @export
+new_language <- function(head, tail = NULL) {
+  call_node(head, tail)
+}
+
+#' Is object a call?
+#'
+#' These functions are soft-deprecated, please use [is_call()] and its
+#' `n` argument instead.
+#'
+#' @inheritParams is_call
+#' @keywords internal
+#' @export
+is_lang <- function(x, name = NULL, n = NULL, ns = NULL) {
+  is_call(x, name, n, ns)
+}
+#' @rdname is_lang
+#' @export
+is_unary_lang <- function(x, name = NULL, ns = NULL) {
+  is_call(x, name, n = 1L, ns = ns)
+}
+#' @rdname is_lang
+#' @export
+is_binary_lang <- function(x, name = NULL, ns = NULL) {
+  is_call(x, name, n = 2L, ns = ns)
+}
+
+#' Manipulate or access a call
+#'
+#' These functions are soft-deprecated, please use [call_modify()],
+#' [call_standardise()], or [call_fn()] instead.
+#'
+#' @inheritParams call_modify
+#' @param lang,.lang The `call` or `.call` argument of the renamed
+#'   functions.
+#' @keywords internal
+#' @export
+lang_modify <- function(.lang, ..., .standardise = FALSE) {
+  call_modify(.lang, ..., .standardise = .standardise)
+}
+#' @rdname lang_modify
+#' @export
+lang_standardise <- function(lang) {
+  call_standardise(lang)
+}
+#' @rdname lang_modify
+#' @export
+lang_fn <- function(lang) {
+  call_fn(lang)
+}
+#' @rdname lang_modify
+#' @export
+lang_name <- function(lang) {
+  call_name(lang)
+}
+#' @rdname lang_modify
+#' @export
+lang_args <- function(lang) {
+  call_args(lang)
+}
+#' @rdname lang_modify
+#' @export
+lang_args_names <- function(lang) {
+  call_args_names(lang)
+}
+
+
+#' Return the head or tail of a call
+#'
+#' As of rlang 0.2.0 these functions are retired (soft-deprecated for
+#' now) because they are low level accessors that are rarely needed
+#' for end users.
+#'
+#' @param lang A call.
+#' @export
+lang_head <- function(lang) {
+  call <- get_expr(call)
+  stopifnot(is_call(call))
+  node_car(call)
+}
+#' @rdname lang_head
+#' @export
+lang_tail <- function(lang) {
+  call <- get_expr(call)
+  stopifnot(is_call(call))
+  node_cdr(call)
+}
+
 
 # Deprecated ---------------------------------------------------------
 

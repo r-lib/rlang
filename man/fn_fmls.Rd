@@ -59,7 +59,7 @@ fn()
 fn_fmls(base::switch)
 
 # fn_fmls_syms() makes it easy to forward arguments:
-lang("apply", !!! fn_fmls_syms(lapply))
+call2("apply", !!! fn_fmls_syms(lapply))
 
 # You can also change the formals:
 fn_fmls(fn) <- list(A = 10, B = 20)
@@ -69,5 +69,5 @@ fn_fmls_names(fn) <- c("foo", "bar")
 fn()
 }
 \seealso{
-\code{\link[=lang_args]{lang_args()}} and \code{\link[=lang_args_names]{lang_args_names()}}
+\code{\link[=call_args]{call_args()}} and \code{\link[=call_args_names]{call_args_names()}}
 }

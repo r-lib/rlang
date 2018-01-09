@@ -210,6 +210,22 @@
   reflect that it is a lossy operation that flattens all nested
   quosures.
 
+* The particle "lang" has been renamed to "call":
+
+    - `lang()` has been renamed to `call2()`.
+    - `new_language()` has ben renamed to `new_call()`.
+    - `is_lang()` has been renamed to `is_call()`. We haven't replaced
+      the `is_unary_lang()` and `is_binary_lang()` because they are
+      redundant with the `n` argument of `is_call()`.
+    - All call accessors such as `lang_fn()`, `lang_name()`,
+      `lang_args()` etc are soft-deprecated and renamed with `call_`
+      prefix.
+
+  In rlang 0.1 calls were called "language" objects in order to follow
+  the R type nomenclature as returned by `base::typeof()`. We wanted
+  to avoid adding to the confusion between S modes and R types. With
+  hindsight we find it is better to use more meaningful type names.
+
 
 ## Breaking changes
 
@@ -262,6 +278,14 @@
   expression acccessor for quosures whereas it was really a lossy
   operation that squashed all nested quosures.
 
+* With the renaming of the `lang` particle to `call`, all these
+  functions are soft-deprecated: `lang()`, `is_lang()`, `lang_fn()`,
+  `lang_name()`, `lang_args()`.
+
+  In addition, `lang_head()` and `lang_tail()` are soft-deprecated
+  without replacement because these are low level accessors that are
+  rarely needed.
+
 
 # rlang 0.1.6
 
@@ -305,7 +329,7 @@ This release includes two important fixes for tidy evaluation:
   environments as data structures rather than as part of a scope
   hierarchy.
 
-* The `new_language()` constructor creates calls out of a callable
+* The `new_call()` constructor creates calls out of a callable
   object (a function or an expression) and a pairlist of arguments. It
   is useful to avoid costly internal coercions between lists and
   pairlists of arguments.

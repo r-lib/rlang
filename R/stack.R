@@ -173,7 +173,7 @@ ctxt_frame <- function(n = 1) {
       expr = sys.call(-n),
       env = sys.frame(-n),
       fn = sys.function(-n),
-      fn_name = lang_name(sys.call(-n))
+      fn_name = call_name(sys.call(-n))
     ))
   }
 }
@@ -266,7 +266,7 @@ call_frame <- function(n = 1, clean = TRUE) {
     expr = sys.call(pos),
     env = sys.frame(pos),
     fn = sys.function(pos),
-    fn_name = lang_name(sys.call(pos))
+    fn_name = call_name(sys.call(pos))
   ))
 
   if (clean) {
@@ -334,7 +334,7 @@ ctxt_stack <- function(n = NULL, trim = 0) {
   stack_data <- map(stack_data, drop_first)
 
   stack_data <- stack_subset(stack_data, n)
-  stack_data$fn_name <- map(stack_data$expr, lang_name)
+  stack_data$fn_name <- map(stack_data$expr, call_name)
 
   stack <- transpose(stack_data)
   stack <- map(stack, new_frame)
@@ -398,7 +398,7 @@ call_stack <- function(n = NULL, clean = TRUE) {
     env = map(trail, sys.frame),
     fn = map(trail, sys.function)
   )
-  stack_data$fn_name <- map(stack_data$expr, lang_name)
+  stack_data$fn_name <- map(stack_data$expr, call_name)
 
   stack <- transpose(stack_data)
   stack <- map(stack, new_frame)
