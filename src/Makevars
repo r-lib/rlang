@@ -7,12 +7,14 @@ lib-files = \
         lib/env.c \
         lib/eval.c \
         lib/export.c \
+        lib/fn.c \
         lib/formula.c \
         lib/lang.c \
         lib/node.c \
         lib/parse.c \
         lib/quo.c \
         lib/replace-na.c \
+        lib/rlang.c \
         lib/sexp.c \
         lib/squash.c \
         lib/stack.c \
@@ -29,6 +31,7 @@ internal-files = \
         internal/eval-tidy.c \
         internal/expr-interp.c \
         internal/expr-interp-rotate.c \
+        internal/internal.c \
         internal/quo.c \
         internal/utils.c
 

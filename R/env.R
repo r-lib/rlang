@@ -943,8 +943,7 @@ env_names <- function(env) {
 #' identical(env, clone)
 #' identical(env$cyl, clone$cyl)
 env_clone <- function(env, parent = env_parent(env)) {
-  env <- get_env(env)
-  list2env(as.list(env, all.names = TRUE), parent = parent)
+  .Call(rlang_env_clone, get_env(env), parent)
 }
 
 #' Does environment inherit from another environment?

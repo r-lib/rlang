@@ -226,3 +226,19 @@ test_that("client library passes tests", {
   result <- tools::testInstalledPackage("rlanglibtest", lib.loc = .libPaths(), types = "test")
   expect_identical(result, 0L)
 })
+
+test_that("r_env_unbind() removes objects", {
+  c_env_unbind <- function(env, names, inherits = FALSE) {
+    invisible(.Call(rlang_env_unbind, env, names, inherits))
+  }
+
+  env <- env(a = 1L)
+  c_env_unbind(env, "a")
+  expect_false(env_has(env, "a"))
+
+  env <- env(a = 1L)
+  child <- child_env(env)
+  expect_warning(c_env_unbind(child, "a"), "not found")
+  c_env_unbind(child, "a", inherits = TRUE)
+  expect_false(env_has(env, "a"))
+})

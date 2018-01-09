@@ -4,6 +4,42 @@
 
 r_size_t r_vec_length(sexp* x);
 
+
+static inline int* r_lgl_deref(sexp* x) {
+  return LOGICAL(x);
+}
+static inline int* r_int_deref(sexp* x) {
+  return INTEGER(x);
+}
+static inline double* r_dbl_deref(sexp* x) {
+  return REAL(x);
+}
+static inline r_complex_t* r_cpl_deref(sexp* x) {
+  return COMPLEX(x);
+}
+static inline r_byte_t* r_raw_deref(sexp* x) {
+  return RAW(x);
+}
+
+static inline int r_lgl_get(sexp* x, r_size_t i) {
+  return LOGICAL(x)[i];
+}
+static inline int r_int_get(sexp* x, r_size_t i) {
+  return INTEGER(x)[i];
+}
+static inline double r_dbl_get(sexp* x, r_size_t i) {
+  return REAL(x)[i];
+}
+static inline r_complex_t r_cpl_get(sexp* x, r_size_t i) {
+  return COMPLEX(x)[i];
+}
+static inline r_byte_t r_raw_get(sexp* x, r_size_t i) {
+  return RAW(x)[i];
+}
+
+sexp* r_vec_get(sexp* vec, r_size_t i);
+
+
 bool r_is_list(sexp* x);
 bool r_is_vector(sexp* x);
 bool r_is_scalar_atomic(sexp* x);
@@ -44,6 +80,30 @@ void r_vec_poke_coerce_n(sexp* x, r_size_t offset,
                          sexp* y, r_size_t from, r_size_t n);
 void r_vec_poke_coerce_range(sexp* x, r_size_t offset,
                              sexp* y, r_size_t from, r_size_t to);
+
+static inline bool r_vec_find_first_duplicate(sexp* x, sexp* except, r_long_size_t* index) {
+  r_long_size_t idx;
+  if (except) {
+    idx = Rf_any_duplicated3(x, except, false);
+  } else {
+    idx = Rf_any_duplicated(x, false);
+  }
+
+  if (idx) {
+    if (index) {
+      *index = idx - 1;
+    }
+    return true;
+  } else {
+    return false;
+  }
+}
+
+static inline sexp* r_vec_are_duplicated(sexp* x) {
+  return Rf_duplicated(x, false);
+}
+
+bool r_vec_find_first_identical_any(sexp* x, sexp* y, r_long_size_t* index);
 
 
 #endif

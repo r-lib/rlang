@@ -122,5 +122,11 @@ static inline void r_sxp_print(sexp* x) {
   Rf_PrintValue(x);
 }
 
+static inline bool r_is_identical(sexp* x, sexp* y) {
+  // 16 corresponds to base::identical()'s defaults
+  // Do we need less conservative versions?
+  return R_compute_identical(x, y, 16);
+}
+
 
 #endif

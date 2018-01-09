@@ -51,42 +51,6 @@ sexp* rlang_eval(sexp* expr, sexp* env) {
 }
 
 
-// eval-tidy.c
-
-sexp* rlang_new_dictionary(sexp* x, sexp* lookup_msg, sexp* read_only) {
-  sexp* dict = KEEP(r_new_vector(VECSXP, 3));
-
-  SET_VECTOR_ELT(dict, 0, x);
-  SET_VECTOR_ELT(dict, 2, read_only);
-
-  if (lookup_msg == r_null) {
-    SET_VECTOR_ELT(dict, 1, Rf_mkString("Object `%s` not found in data"));
-  } else {
-    SET_VECTOR_ELT(dict, 1, lookup_msg);
-  }
-
-  static sexp* nms = NULL;
-  if (!nms) {
-    nms = r_new_vector(STRSXP, 3);
-    R_PreserveObject(nms);
-    SET_STRING_ELT(nms, 0, Rf_mkChar("src"));
-    SET_STRING_ELT(nms, 1, Rf_mkChar("lookup_msg"));
-    SET_STRING_ELT(nms, 2, Rf_mkChar("read_only"));
-  }
-  static sexp* s3 = NULL;
-  if (!s3) {
-    s3 = Rf_mkString("dictionary");
-    R_PreserveObject(s3);
-  }
-
-  Rf_setAttrib(dict, R_ClassSymbol, s3);
-  Rf_setAttrib(dict, R_NamesSymbol, nms);
-
-  FREE(1);
-  return dict;
-}
-
-
 // formula.c
 
 sexp* rlang_is_formulaish(sexp* x, sexp* scoped, sexp* lhs) {

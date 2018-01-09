@@ -5,21 +5,20 @@ test_that("accepts expressions", {
   expect_identical(eval_tidy(quote(letters)), letters)
 })
 
-test_that("eval_tidy uses formula's environment", {
+test_that("eval_tidy uses quosure environment", {
   x <- 10
-  f <- local({
+  quo <- local({
     y <- 100
     quo(x + y)
   })
-
-  expect_equal(eval_tidy(f), 110)
+  expect_equal(eval_tidy(quo), 110)
 })
 
-test_that("data must be a dictionary", {
-  expect_error(eval_tidy(NULL, list(x = 1, x = 2)), "duplicates: `x`")
+test_that("data must be uniquely named", {
+  expect_error(eval_tidy(NULL, list(x = 1, x = 2)), "has duplicate elements")
 
   data <- set_names(data.frame(x = 1, x = 2, y = 3, y = 4), c("x", "x", "y", "y"))
-  expect_error(eval_tidy(NULL, data), "duplicates: `x` and `y`")
+  expect_error(eval_tidy(NULL, data), "has duplicate elements")
 })
 
 test_that("can supply unnamed empty data", {
@@ -45,20 +44,20 @@ test_that("pronouns complain about missing values", {
   expect_error(eval_tidy(quo(.data$x), data.frame()), "Column `x` not found in data")
 })
 
-test_that("eval_tidy does quasiquoting", {
-  x <- 10
-  expect_equal(eval_tidy(quo(!!quote(x))), 10)
-})
-
-
-test_that("unquoted formulas look in their own env", {
+test_that("nested quosures look in their own env", {
+  n <- 10
   f <- function() {
     n <- 100
     quo(n)
   }
+  quo <- quo(!!f())
+  expect_equal(eval_tidy(quo), 100)
+})
 
-  n <- 10
-  expect_equal(eval_tidy(quo(!!f())), 100)
+test_that("nested quosure thunks rechain properly in the non-data mask", {
+  bar <- "foo"
+  quo <- quo(identity(!!quo(toupper(!!quo(identity(bar))))))
+  expect_identical(eval_tidy(quo), "FOO")
 })
 
 test_that("unquoted formulas can use data", {
@@ -186,7 +185,14 @@ test_that("whole scope is purged", {
   outside <- child_env(NULL, important = TRUE)
   top <- child_env(outside, foo = "bar", hunoz = 1)
   mid <- child_env(top, bar = "baz", hunoz = 2)
-  bottom <- child_env(mid, !!! list(.top_env = top, .env = 1, `~` = 2))
+
+  data_mask_objects <- list(
+    .top_env = top,
+    .env = 1,
+    `~` = 2,
+    .__tidyeval_data_mask__. = env()
+  )
+  bottom <- child_env(mid, !!! data_mask_objects)
 
   overscope_clean(bottom)
 
@@ -235,7 +241,7 @@ test_that(".env pronoun refers to current quosure (#174)", {
     quo(identity(!! inner_quo))
   })
 
-  expect_identical(eval_tidy(outer_quo), "inner")
+  expect_identical(eval_tidy(outer_quo, list()), "inner")
 })
 
 test_that("can call tilde with named arguments (#226)", {
@@ -251,4 +257,28 @@ test_that("Arguments to formulas are not stripped from their attributes (#227)",
 
   f <- eval_tidy(quo(!!quo(x) ~ a))
   expect_identical(f_lhs(f), quo)
+})
+
+test_that("tilde thunks are unique", {
+  new_tilde_thunk <- function(data_mask, data_mask_top) {
+    .Call(rlang_new_tilde_thunk, data_mask, data_mask_top)
+  }
+
+  thunk1 <- new_tilde_thunk(1, 2)
+  thunk2 <- new_tilde_thunk(1, 2)
+  expect_false(is_reference(thunk1, thunk2))
+
+  body1 <- body(thunk1)
+  body2 <- body(thunk2)
+  expect_false(is_reference(body1, body2))
+})
+
+test_that("evaluating an empty quosure fails", {
+  expect_error(eval_tidy(quo()), "not found")
+})
+
+test_that("can supply a data mask as data", {
+  mask <- as_data_mask(list(x = 1L))
+  eval_tidy(quo(x <- 2L), mask)
+  expect_identical(eval_tidy(quo(x), mask), 2L)
 })

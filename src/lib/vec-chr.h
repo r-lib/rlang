@@ -4,6 +4,8 @@
 #include <string.h>
 
 
+#define r_missing_str R_NaString
+
 static inline bool r_is_character(sexp* x) {
   return r_typeof(x) == STRSXP;
 }
@@ -13,6 +15,10 @@ static inline sexp* r_chr_get(sexp* chr, r_size_t i) {
 }
 static inline void r_chr_poke(sexp* chr, r_size_t i, sexp* elt) {
   SET_STRING_ELT(chr, i, elt);
+}
+
+static inline const char* r_chr_get_c_string(sexp* chr, r_size_t i) {
+  return CHAR(STRING_ELT(chr, i));
 }
 
 static inline sexp* r_nms_get(sexp* nms, r_size_t i) {
@@ -28,7 +34,7 @@ static inline sexp* r_nms_get(sexp* nms, r_size_t i) {
 bool r_chr_has(sexp* chr, const char* c_string);
 
 
-sexp* r_build_character(const char** strings, int n);
+sexp* r_new_character(const char** strings, int n);
 
 static inline sexp* r_string(const char* c_string) {
   return Rf_mkChar(c_string);
@@ -68,6 +74,24 @@ static inline bool r_is_string(sexp* x, const char* string) {
     return false;
   }
   if (string && strcmp(r_c_string(x), string) != 0) {
+    return false;
+  }
+  return true;
+}
+
+static inline const char* r_str_as_c_string(sexp* str) {
+  return CHAR(str);
+}
+
+static inline sexp* r_str_as_symbol(sexp* str) {
+  return r_sym(CHAR(str));
+}
+
+static inline bool r_str_is_name(sexp* str) {
+  if (str == r_missing_str) {
+    return false;
+  }
+  if (r_is_empty_string(str)) {
     return false;
   }
   return true;

@@ -102,13 +102,7 @@
 #' }
 #' @name eval_tidy
 eval_tidy <- function(expr, data = NULL, env = caller_env()) {
-  if (!inherits(expr, "quosure")) {
-    expr <- new_quosure(expr, env)
-  }
-  overscope <- as_overscope(expr, data)
-  on.exit(overscope_clean(overscope))
-
-  overscope_eval_next(overscope, expr)
+  .Call(rlang_eval_tidy, expr, data, environment())
 }
 
 #' Data pronoun for tidy evaluation
@@ -148,14 +142,9 @@ delayedAssign(".data", as_dictionary(list(), read_only = TRUE))
 #' @inheritParams as_overscope
 #' @export
 eval_tidy_ <- function(expr, bottom, top = NULL, env = caller_env()) {
-  top <- top %||% bottom
-  overscope <- new_overscope(bottom, top)
-  on.exit(overscope_clean(overscope))
-
-  if (!inherits(expr, "quosure")) {
-    expr <- new_quosure(expr, env)
-  }
-  overscope_eval_next(overscope, expr)
+  data_mask <- new_overscope(bottom, top %||% bottom)
+  on.exit(overscope_clean(data_mask))
+  .Call(rlang_eval_tidy, expr, data_mask, environment())
 }
 
 
@@ -222,34 +211,13 @@ eval_tidy_ <- function(expr, bottom, top = NULL, env = caller_env()) {
 #' overscope <- as_overscope(f, data = mtcars)
 #' overscope_eval_next(overscope, f)
 #'
-#' # However you need to cleanup the environment after evaluation.
-#' # Otherwise the leftover definitions for self-evaluation of
-#' # formulas might cause unexpected results:
-#' fn <- overscope_eval_next(overscope, ~function() ~letters)
-#' fn()
-#'
+#' # However you need to clean up the environment after evaluation.
 #' overscope_clean(overscope)
-#' fn()
 as_overscope <- function(quo, data = NULL) {
-  data_src <- as_dictionary(data, read_only = TRUE)
-  enclosure <- quo_get_env(quo) %||% base_env()
-
-  # Create bottom environment pre-chained to the lexical scope
-  bottom <- child_env(enclosure)
-
-  # Emulate dynamic scope for established data
-  if (is_vector(data)) {
-    bottom <- env_bury(bottom, !!! discard_unnamed(data))
-  } else if (is_env(data)) {
-    bottom <- env_clone(data, parent = bottom)
-  } else if (!is_null(data)) {
-    abort("`data` must be a list or an environment")
-  }
-
-  # Install data pronoun
-  bottom$.data <- data_src
-
-  new_overscope(bottom, enclosure = enclosure)
+  as_data_mask(data, quo_get_env(quo))
+}
+as_data_mask <- function(data, parent = base_env()) {
+  .Call(rlang_as_data_mask, data, parent)
 }
 
 #' @rdname as_overscope
@@ -274,21 +242,7 @@ as_overscope <- function(quo, data = NULL) {
 #'   (self-evaluating quosures, formula-unguarding, ...).
 #' @export
 new_overscope <- function(bottom, top = NULL, enclosure = base_env()) {
-  top <- top %||% bottom
-
-  # Create a child because we don't know what might be in bottom_env.
-  # This way we can just remove all bindings between the parent of
-  # `overscope` and `overscope_top`. We don't want to clean everything in
-  # `overscope` in case the environment is leaked, e.g. through a
-  # closure that might rely on some local bindings installed by the
-  # user.
-  overscope <- child_env(bottom)
-
-  overscope$`~` <- f_self_eval(overscope, top)
-  overscope$.top_env <- top
-  overscope$.env <- enclosure
-
-  overscope
+  .Call(rlang_new_data_mask, bottom, top, enclosure)
 }
 #' @rdname as_overscope
 #' @param overscope A valid overscope containing bindings for `~`,
@@ -299,38 +253,10 @@ new_overscope <- function(bottom, top = NULL, enclosure = base_env()) {
 #'   default.
 #' @export
 overscope_eval_next <- function(overscope, quo, env = base_env()) {
-  quo <- as_quosure(quo, env)
-  lexical_env <- quo_get_env(quo)
-
-  overscope$.env <- lexical_env
-  env_poke_parent(overscope$.top_env, lexical_env)
-
-  .Call(rlang_eval, quo_get_expr(quo), overscope)
+  .Call(rlang_eval_tidy, quo, overscope, environment())
 }
 #' @rdname as_overscope
 #' @export
 overscope_clean <- function(overscope) {
-  cur_env <- env_parent(overscope)
-  top_env <- overscope$.top_env %||% cur_env
-
-  # At this level we only want to remove what we have installed
-  env_unbind(overscope, c("~", ".top_env", ".env"))
-
-  while (!identical(cur_env, env_parent(top_env))) {
-    env_unbind(cur_env, names(cur_env))
-    cur_env <- env_parent(cur_env)
-  }
-
-  overscope
-}
-
-f_self_eval <- function(overscope, overscope_top) {
-  function(...) {
-    .Call(rlang_tilde_eval,
-      sys.call(),
-      overscope,
-      overscope_top,
-      environment()
-    )
-  }
+  invisible(.Call(rlang_data_mask_clean, overscope))
 }
