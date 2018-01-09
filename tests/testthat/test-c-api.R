@@ -184,14 +184,17 @@ test_that("client library passes tests", {
     close(temp)
   })
 
-  ## tools::testInstalledPackage() can't find the test package when
-  ## working with a temp lib:
-
-  ## old_libpaths <- .libPaths()
-  ## temp_lib <- tempfile("temp_lib")
-  ## dir.create(temp_lib)
-  ## .libPaths(c(temp_lib, old_libpaths))
-  ## on.exit(.libPaths(old_libpaths), add = TRUE)
+  # tools::testInstalledPackage() can't find the package if we install
+  # to a temporary library
+  if (FALSE) {
+    old_libpaths <- .libPaths()
+    temp_lib <- tempfile("temp_lib")
+    dir.create(temp_lib)
+    .libPaths(c(temp_lib, old_libpaths))
+    on.exit(.libPaths(old_libpaths), add = TRUE)
+  } else {
+    temp_lib <- .libPaths()
+  }
 
   zip_file <- normalizePath(file.path("fixtures", "lib.zip"))
   src_path <- normalizePath(file.path("fixtures", "rlanglibtest"))
@@ -221,9 +224,14 @@ test_that("client library passes tests", {
     utils::zip(zip_file, lib_files)
   }
 
-  devtools::install(pkg_path, dependencies = FALSE)
+  install.packages(pkg_path,
+    repos = NULL,
+    type = "source",
+    lib = temp_lib,
+    INSTALL_opts = "--install-tests"
+  )
 
-  result <- tools::testInstalledPackage("rlanglibtest", lib.loc = .libPaths(), types = "test")
+  result <- tools::testInstalledPackage("rlanglibtest", lib.loc = temp_lib, types = "test")
   expect_identical(result, 0L)
 })
 
