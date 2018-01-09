@@ -156,19 +156,19 @@ test_that("call_args() and call_args_names()", {
 })
 
 test_that("qualified and namespaced symbols are recognised", {
-  expect_true(is_qualified_lang(quote(foo@baz())))
-  expect_true(is_qualified_lang(quote(foo::bar())))
-  expect_false(is_qualified_lang(quote(foo()())))
+  expect_true(is_qualified_call(quote(foo@baz())))
+  expect_true(is_qualified_call(quote(foo::bar())))
+  expect_false(is_qualified_call(quote(foo()())))
 
-  expect_false(is_namespaced_lang(quote(foo@bar())))
-  expect_true(is_namespaced_lang(quote(foo::bar())))
+  expect_false(is_namespaced_call(quote(foo@bar())))
+  expect_true(is_namespaced_call(quote(foo::bar())))
 })
 
 test_that("can specify ns in namespaced predicate", {
   expr <- quote(foo::bar())
-  expect_false(is_namespaced_lang(expr, quote(bar)))
-  expect_true(is_namespaced_lang(expr, quote(foo)))
-  expect_true(is_namespaced_lang(expr, "foo"))
+  expect_false(is_namespaced_call(expr, quote(bar)))
+  expect_true(is_namespaced_call(expr, quote(foo)))
+  expect_true(is_namespaced_call(expr, "foo"))
 })
 
 test_that("can specify ns in is_call()", {

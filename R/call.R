@@ -228,9 +228,9 @@ is_call <- function(x, name = NULL, n = NULL, ns = NULL) {
   }
 
   if (!is_null(ns)) {
-    if (identical(ns, "") && is_namespaced_lang(x, private = FALSE)) {
+    if (identical(ns, "") && is_namespaced_call(x, private = FALSE)) {
       return(FALSE)
-    } else if (!is_namespaced_lang(x, ns, private = FALSE)) {
+    } else if (!is_namespaced_call(x, ns, private = FALSE)) {
       return(FALSE)
     }
   }
@@ -569,11 +569,11 @@ call_args_names <- function(call) {
   names2(call_tail(call))
 }
 
-is_qualified_lang <- function(x) {
+is_qualified_call <- function(x) {
   if (typeof(x) != "language") return(FALSE)
   is_qualified_symbol(node_car(x))
 }
-is_namespaced_lang <- function(x, ns = NULL, private = NULL) {
+is_namespaced_call <- function(x, ns = NULL, private = NULL) {
   if (typeof(x) != "language") return(FALSE)
   if (!is_namespaced_symbol(node_car(x), ns, private)) return(FALSE)
   TRUE
@@ -581,7 +581,7 @@ is_namespaced_lang <- function(x, ns = NULL, private = NULL) {
 
 # Returns a new call whose CAR has been unqualified
 call_unnamespace <- function(x) {
-  if (is_namespaced_lang(x)) {
+  if (is_namespaced_call(x)) {
     call <- call2(node_cadr(node_cdar(x)))
     mut_node_cdr(call, node_cdr(x))
   } else {
