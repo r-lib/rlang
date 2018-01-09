@@ -27,6 +27,12 @@ vectors or list of character vectors indistinctly.
 This is equivalent to \code{\link[stats:setNames]{stats::setNames()}}, with more features and
 stricter argument checking.
 }
+\section{Life cycle}{
+
+
+\code{set_names()} is stable and exported in purrr.
+}
+
 \examples{
 set_names(1:4, c("a", "b", "c", "d"))
 set_names(1:4, letters[1:4])

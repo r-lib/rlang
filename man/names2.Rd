@@ -15,6 +15,12 @@ object does not have a \code{names} attribute. In this case, it returns
 a vector of empty names \code{""}. It also standardises missing names to
 \code{""}.
 }
+\section{Life cycle}{
+
+
+\code{names2()} is stable.
+}
+
 \examples{
 names2(letters)
 

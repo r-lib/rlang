@@ -191,6 +191,11 @@ has_name <- function(x, name) {
 #' This is equivalent to [stats::setNames()], with more features and
 #' stricter argument checking.
 #'
+#'
+#' @section Life cycle:
+#'
+#' `set_names()` is stable and exported in purrr.
+#'
 #' @param x Vector to name.
 #' @param nm,... Vector of names, the same length as `x`.
 #'
@@ -207,6 +212,7 @@ has_name <- function(x, name) {
 #'   * In all other cases, `nm` and `...` are passed to [chr()]. This
 #'     gives implicit splicing semantics: you can pass character
 #'     vectors or list of character vectors indistinctly.
+#'
 #' @export
 #' @examples
 #' set_names(1:4, c("a", "b", "c", "d"))
@@ -250,6 +256,11 @@ set_names <- function(x, nm = x, ...) {
 #' object does not have a `names` attribute. In this case, it returns
 #' a vector of empty names `""`. It also standardises missing names to
 #' `""`.
+#'
+#'
+#' @section Life cycle:
+#'
+#' `names2()` is stable.
 #'
 #' @param x A vector.
 #' @export
