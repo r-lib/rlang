@@ -20,5 +20,4 @@ init_c_constants <- function() {
 
 # FIXME: shouldn't inline all of this at build-time! Reliance on
 # .Internal() API.
-rlang_sys_frame <- as.call(list(base::sys.frame, 0L))
 rlang_sys_call <- as.call(list(base::sys.call, 0L))

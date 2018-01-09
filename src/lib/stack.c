@@ -23,20 +23,17 @@ sexp* r_current_frame() {
   return r_eval(current_frame_call, r_empty_env);
 }
 
+
+sexp* sys_frame_call = NULL;
+int* sys_frame_n_addr = NULL;
+
 sexp* r_sys_frame(int n, sexp* frame) {
   if (!frame) {
     frame = r_current_frame();
   }
 
-  static sexp* call = NULL;
-  static int* n_addr = NULL;
-  if (!call) {
-    call = rlang_ns_get("rlang_sys_frame");
-    n_addr = INTEGER(r_node_cadr(call));
-  }
-
-  *n_addr = n;
-  return r_eval(call, frame);
+  *sys_frame_n_addr = n;
+  return r_eval(sys_frame_call, frame);
 }
 
 sexp* r_sys_call(int n, sexp* frame) {
@@ -70,5 +67,13 @@ void r_init_library_stack() {
 
   current_frame_call = r_new_call_node(current_frame_fn, r_null);
   r_mark_precious(current_frame_call);
+  FREE(3);
+
+  sexp* sys_frame_n = KEEP(r_scalar_int(0));
+  sys_frame_n_addr = r_int_deref(sys_frame_n);
+
+  sexp* sys_frame_args = KEEP(r_new_node(sys_frame_n, r_null));
+  sys_frame_call = KEEP(r_new_call_node(r_base_ns_get("sys.frame"), sys_frame_args));
+  r_mark_precious(sys_frame_call);
   FREE(3);
 }
