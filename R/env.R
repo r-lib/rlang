@@ -678,8 +678,8 @@ scoped_bindings <- function(..., .env = .frame, .frame = caller_env()) {
   is_old <- env_has(env, nms)
   old <- env_get_list(env, nms[is_old])
 
-  unbind_lang <- lang(env_unbind, env, nms[!is_old])
-  rebind_lang <- lang(env_bind_impl, env, old)
+  unbind_lang <- call2(env_unbind, env, nms[!is_old])
+  rebind_lang <- call2(env_bind_impl, env, old)
   scoped_exit(frame = .frame, {
     !! unbind_lang
     !! rebind_lang

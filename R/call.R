@@ -10,7 +10,7 @@
 #' represent _function calls_, which is why they are commonly referred
 #' to as calls.
 #'
-#' * `lang()` creates a call from a function name (or a literal
+#' * `call2()` creates a call from a function name (or a literal
 #'   function to inline in the call) and a list of arguments.
 #'
 #' * `new_language()` is bare-bones and takes a head and a tail. The
@@ -52,6 +52,20 @@
 #' still uses `lang` as particle for function dealing with calls for
 #' consistency.
 #'
+#'
+#' @section Life cycle:
+#'
+#' In rlang 0.2.0:
+#'
+#' * `lang()` was renamed to `call2()`
+#' * `new_language()` was renamed to `new_call()`
+#'
+#' In rlang 0.1.0 calls were called "language" objects in order to
+#' follow the R type nomenclature as returned by [base::typeof()]. We
+#' wanted to avoid adding to the confusion between S modes and R
+#' types. With hindsight we find it is better to use more meaningful
+#' type names.
+#'
 #' @param .fn Function to call. Must be a callable object: a string,
 #'   symbol, call, or a function.
 #' @param ... Arguments to the call either in or out of a list. Dots
@@ -62,17 +76,17 @@
 #' @export
 #' @examples
 #' # fn can either be a string, a symbol or a call
-#' lang("f", a = 1)
-#' lang(quote(f), a = 1)
-#' lang(quote(f()), a = 1)
+#' call2("f", a = 1)
+#' call2(quote(f), a = 1)
+#' call2(quote(f()), a = 1)
 #'
 #' #' Can supply arguments individually or in a list
-#' lang(quote(f), a = 1, b = 2)
-#' lang(quote(f), splice(list(a = 1, b = 2)))
+#' call2(quote(f), a = 1, b = 2)
+#' call2(quote(f), splice(list(a = 1, b = 2)))
 #'
 #' # Creating namespaced calls:
-#' lang("fun", arg = quote(baz), .ns = "mypkg")
-lang <- function(.fn, ..., .ns = NULL) {
+#' call2("fun", arg = quote(baz), .ns = "mypkg")
+call2 <- function(.fn, ..., .ns = NULL) {
   if (is_character(.fn)) {
     if (length(.fn) != 1) {
       abort("`.fn` must be a length 1 string")
@@ -88,7 +102,7 @@ lang <- function(.fn, ..., .ns = NULL) {
 
   new_language(.fn, as.pairlist(dots_list(...)))
 }
-#' @rdname lang
+#' @rdname call2
 #' @param head A [callable][is_callable] object: a symbol, call, or
 #'   literal function.
 #' @param tail A [node list][pairlist] of arguments.
@@ -213,7 +227,7 @@ is_lang <- function(x, name = NULL, n = NULL, ns = NULL) {
     }
   }
 
-  x <- lang_unnamespace(x)
+  x <- call_unnamespace(x)
 
   if (!is_null(name)) {
     # Wrap language objects in a list
@@ -444,7 +458,7 @@ lang_name <- function(lang) {
 #' @description
 #'
 #' These functions return the head or the tail of a call. See section
-#' on calls as parse trees in [lang()]. They are equivalent to
+#' on calls as parse trees in [call2()]. They are equivalent to
 #' [node_car()] and [node_cdr()] but support quosures and check that
 #' the input is indeed a call before retrieving the head or tail (it
 #' is unsafe to do this without type checking).
@@ -456,7 +470,7 @@ lang_name <- function(lang) {
 #' a regular list)
 #'
 #' @inheritParams lang_standardise
-#' @seealso [pairlist], [lang_args()], [lang()]
+#' @seealso [pairlist], [lang_args()], [call2()]
 #' @export
 #' @examples
 #' lang <- quote(foo(bar, baz))
@@ -523,10 +537,10 @@ is_namespaced_lang <- function(x, ns = NULL, private = NULL) {
 }
 
 # Returns a new call whose CAR has been unqualified
-lang_unnamespace <- function(x) {
+call_unnamespace <- function(x) {
   if (is_namespaced_lang(x)) {
-    lang <- lang(node_cadr(node_cdar(x)))
-    mut_node_cdr(lang, node_cdr(x))
+    call <- call2(node_cadr(node_cdar(x)))
+    mut_node_cdr(call, node_cdr(x))
   } else {
     x
   }

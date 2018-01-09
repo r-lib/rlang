@@ -210,6 +210,13 @@
   reflect that it is a lossy operation that flattens all nested
   quosures.
 
+* `lang()` has been renamed to `call2()`.
+
+  In rlang 0.1 calls were called "language" objects in order to follow
+  the R type nomenclature as returned by `base::typeof()`. We wanted
+  to avoid adding to the confusion between S modes and R types. With
+  hindsight we find it is better to use more meaningful type names.
+
 
 ## Breaking changes
 

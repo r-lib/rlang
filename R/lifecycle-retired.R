@@ -37,6 +37,17 @@ quo_expr <- function(quo, warn = FALSE) {
   quo_squash(quo, warn = warn)
 }
 
+#' Create a call
+#'
+#' This function is soft-deprecated, please use [call2()] instead.
+#'
+#' @inheritParams call2
+#' @keywords internal
+#' @export
+lang <- function(.fn, ..., .ns = NULL) {
+  call2(.fn, ..., .ns = NULL)
+}
+
 
 # Deprecated ---------------------------------------------------------
 

@@ -95,7 +95,7 @@ prim_name <- function(prim) {
 #' fn_fmls(base::switch)
 #'
 #' # fn_fmls_syms() makes it easy to forward arguments:
-#' lang("apply", !!! fn_fmls_syms(lapply))
+#' call2("apply", !!! fn_fmls_syms(lapply))
 #'
 #' # You can also change the formals:
 #' fn_fmls(fn) <- list(A = 10, B = 20)
@@ -419,7 +419,7 @@ as_closure <- function(x, env = caller_env()) {
       args <- set_names(args)
       names(args)[(names(args) == "...")] <- ""
 
-      prim_call <- lang(fn_name, splice(args))
+      prim_call <- call2(fn_name, splice(args))
       new_function(fmls, prim_call, base_env())
     }
   )

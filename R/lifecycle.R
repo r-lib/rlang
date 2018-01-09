@@ -48,6 +48,8 @@
 #' * [parse_quosures()]
 #' * [quo_expr()] => [quo_squash()]
 #'
+#' * [lang()] => [call2()]
+#'
 #'
 #' @section Deprecated functions and arguments:
 #'

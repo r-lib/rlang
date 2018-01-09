@@ -3,26 +3,26 @@ context("call")
 # Creation ----------------------------------------------------------------
 
 test_that("character vector must be length 1", {
-  expect_error(lang(letters), "must be a length 1 string")
+  expect_error(call2(letters), "must be a length 1 string")
 })
 
 test_that("args can be specified individually or as list", {
-  out <- lang("f", a = 1, splice(list(b = 2)))
+  out <- call2("f", a = 1, splice(list(b = 2)))
   expect_equal(out, quote(f(a = 1, b = 2)))
 })
 
 test_that("creates namespaced calls", {
-  expect_identical(lang("fun", foo = quote(baz), .ns = "bar"), quote(bar::fun(foo = baz)))
+  expect_identical(call2("fun", foo = quote(baz), .ns = "bar"), quote(bar::fun(foo = baz)))
 })
 
 test_that("fails with non-callable objects", {
-  expect_error(lang(1), "non-callable")
-  expect_error(lang(get_env()), "non-callable")
+  expect_error(call2(1), "non-callable")
+  expect_error(call2(get_env()), "non-callable")
 })
 
 test_that("succeeds with literal functions", {
-  expect_error(regex = NA, lang(base::mean, 1:10))
-  expect_error(regex = NA, lang(base::list, 1:10))
+  expect_error(regex = NA, call2(base::mean, 1:10))
+  expect_error(regex = NA, call2(base::list, 1:10))
 })
 
 
@@ -182,9 +182,9 @@ test_that("can specify ns in is_lang()", {
 })
 
 test_that("can unnamespace calls", {
-  expect_identical(lang_unnamespace(quote(bar(baz))), quote(bar(baz)))
-  expect_identical(lang_unnamespace(quote(foo::bar(baz))), quote(bar(baz)))
-  expect_identical(lang_unnamespace(quote(foo@bar(baz))), quote(foo@bar(baz)))
+  expect_identical(call_unnamespace(quote(bar(baz))), quote(bar(baz)))
+  expect_identical(call_unnamespace(quote(foo::bar(baz))), quote(bar(baz)))
+  expect_identical(call_unnamespace(quote(foo@bar(baz))), quote(foo@bar(baz)))
 })
 
 test_that("precedence of regular calls", {

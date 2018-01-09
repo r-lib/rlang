@@ -25,7 +25,7 @@ R makes it easy to create DSLs thanks to three features of the
 language:
 
 - R code is first-class. That is, R code can be manipulated like
-  any other object (see `sym()`, `lang()`, and `node()`). We use
+  any other object (see `sym()`, `call2()`, and `node()`). We use
   the term __expression__ (see `is_expr()`) to refer to objects that
   are created by parsing R code.
 
