@@ -72,7 +72,7 @@
 #'   are evaluated with [explicit splicing][dots_list].
 #' @param .ns Namespace with which to prefix `.fn`. Must be a string
 #'   or symbol.
-#' @seealso lang_modify
+#' @seealso call_modify
 #' @export
 #' @examples
 #' # fn can either be a string, a symbol or a call
@@ -276,60 +276,68 @@ is_binary_call <- function(x, name = NULL, ns = NULL) {
 
 #' Modify the arguments of a call
 #'
-#' @param .lang Can be a call (language object), a formula quoting a
-#'   call in the right-hand side, or a frame object from which to
-#'   extract the call expression.
+#'
+#' @section Life cycle:
+#'
+#' In rlang 0.2.0, `lang_modify()` was soft-deprecated and renamed to
+#' `call_modify()`. See lifecycle section in [call2()] for more about
+#' this change.
+#'
+#' @param .call Can be a call, a formula quoting a call in the
+#'   right-hand side, or a frame object from which to extract the call
+#'   expression.
 #' @param ... Named or unnamed expressions (constants, names or calls)
 #'   used to modify the call. Use `NULL` to remove arguments. Dots are
 #'   evaluated with [explicit splicing][dots_list].
-#' @param .standardise If `TRUE`, the call is standardised before hand
+#' @param .standardise If `TRUE`, the call is standardised beforehand
 #'   to match existing unnamed arguments to their argument names. This
 #'   prevents new named arguments from accidentally replacing original
 #'   unnamed arguments.
-#' @return A quosure if `.lang` is a quosure, a call otherwise.
+#'
+#' @return A quosure if `.call` is a quosure, a call otherwise.
 #' @seealso lang
 #' @export
 #' @examples
 #' call <- quote(mean(x, na.rm = TRUE))
 #'
 #' # Modify an existing argument
-#' lang_modify(call, na.rm = FALSE)
-#' lang_modify(call, x = quote(y))
+#' call_modify(call, na.rm = FALSE)
+#' call_modify(call, x = quote(y))
 #'
 #' # Remove an argument
-#' lang_modify(call, na.rm = NULL)
+#' call_modify(call, na.rm = NULL)
 #'
 #' # Add a new argument
-#' lang_modify(call, trim = 0.1)
+#' call_modify(call, trim = 0.1)
 #'
 #' # Add an explicit missing argument
-#' lang_modify(call, na.rm = quote(expr = ))
+#' call_modify(call, na.rm = quote(expr = ))
 #'
-#' # Supply a list of new arguments with splice()
+#' # Supply a list of new arguments with `!!!`
 #' newargs <- list(na.rm = NULL, trim = 0.1)
-#' lang_modify(call, splice(newargs))
+#' call_modify(call, !!! newargs)
 #'
 #' # Supply a call frame to extract the frame expression:
 #' f <- function(bool = TRUE) {
-#'   lang_modify(call_frame(), splice(list(bool = FALSE)))
+#'   call_modify(call_frame(), splice(list(bool = FALSE)))
 #' }
 #' f()
 #'
 #'
 #' # You can also modify quosures inplace:
-#' f <- ~matrix(bar)
-#' lang_modify(f, quote(foo))
-lang_modify <- function(.lang, ..., .standardise = FALSE) {
+#' f <- quo(matrix(bar))
+#' call_modify(f, quote(foo))
+call_modify <- function(.call, ..., .standardise = FALSE) {
   args <- dots_list(...)
   if (any(duplicated(names(args)) & names(args) != "")) {
     abort("Duplicate arguments")
   }
 
   if (.standardise) {
-    quo <- lang_as_quosure(.lang, caller_env())
+    quo <- call_as_quosure(.call, caller_env())
     expr <- get_expr(lang_standardise(quo))
   } else {
-    expr <- get_expr(.lang)
+    expr <- get_expr(.call)
   }
 
   # Named arguments can be spliced by R
@@ -348,13 +356,13 @@ lang_modify <- function(.lang, ..., .standardise = FALSE) {
     expr <- node_append(expr, remaining_args)
   }
 
-  set_expr(.lang, expr)
+  set_expr(.call, expr)
 }
-lang_as_quosure <- function(lang, env) {
-  if (is_frame(lang)) {
-    new_quosure(lang$expr, lang$env)
+call_as_quosure <- function(call, env) {
+  if (is_frame(call)) {
+    new_quosure(call$expr, call$env)
   } else {
-    as_quosure(lang, env)
+    as_quosure(call, env)
   }
 }
 

@@ -35,7 +35,7 @@ test_that("can standardise call frame", {
 })
 
 test_that("can modify call frame", {
-  fn <- function(foo = "bar") lang_modify(call_frame(), baz = "bam", .standardise = TRUE)
+  fn <- function(foo = "bar") call_modify(call_frame(), baz = "bam", .standardise = TRUE)
   expect_identical(fn(), quote(fn(baz = "bam")))
   expect_identical(fn("foo"), quote(fn(foo = "foo", baz = "bam")))
 })
@@ -44,43 +44,43 @@ test_that("can modify call frame", {
 # Modification ------------------------------------------------------------
 
 test_that("can modify formulas inplace", {
-  expect_identical(lang_modify(~matrix(bar), quote(foo)), ~matrix(bar, foo))
+  expect_identical(call_modify(~matrix(bar), quote(foo)), ~matrix(bar, foo))
 })
 
 test_that("optional standardisation", {
-  expect_identical(lang_modify(~matrix(bar), quote(foo), .standardise = TRUE), ~matrix(data = bar, foo))
+  expect_identical(call_modify(~matrix(bar), quote(foo), .standardise = TRUE), ~matrix(data = bar, foo))
 })
 
 test_that("new args inserted at end", {
   call <- quote(matrix(1:10))
-  out <- lang_modify(call, nrow = 3, .standardise = TRUE)
+  out <- call_modify(call, nrow = 3, .standardise = TRUE)
   expect_equal(out, quote(matrix(data = 1:10, nrow = 3)))
 })
 
 test_that("new args replace old", {
   call <- quote(matrix(1:10))
-  out <- lang_modify(call, data = 3, .standardise = TRUE)
+  out <- call_modify(call, data = 3, .standardise = TRUE)
   expect_equal(out, quote(matrix(data = 3)))
 })
 
 test_that("can modify calls for primitive functions", {
-  expect_identical(lang_modify(~list(), foo = "bar", .standardise = TRUE), ~list(foo = "bar"))
+  expect_identical(call_modify(~list(), foo = "bar", .standardise = TRUE), ~list(foo = "bar"))
 })
 
 test_that("can modify calls for functions containing dots", {
-  expect_identical(lang_modify(~mean(), na.rm = TRUE, .standardise = TRUE), ~mean(na.rm = TRUE))
+  expect_identical(call_modify(~mean(), na.rm = TRUE, .standardise = TRUE), ~mean(na.rm = TRUE))
 })
 
 test_that("accepts unnamed arguments", {
   expect_identical(
-    lang_modify(~get(), "foo", envir = "bar", "baz", .standardise = TRUE),
+    call_modify(~get(), "foo", envir = "bar", "baz", .standardise = TRUE),
     ~get(envir = "bar", "foo", "baz")
   )
 })
 
 test_that("fails with duplicated arguments", {
-  expect_error(lang_modify(~mean(), na.rm = TRUE, na.rm = FALSE), "Duplicate arguments")
-  expect_error(lang_modify(~mean(), TRUE, FALSE), NA)
+  expect_error(call_modify(~mean(), na.rm = TRUE, na.rm = FALSE), "Duplicate arguments")
+  expect_error(call_modify(~mean(), TRUE, FALSE), NA)
 })
 
 

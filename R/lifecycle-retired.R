@@ -76,6 +76,18 @@ is_binary_lang <- function(x, name = NULL, ns = NULL) {
   is_binary_call(x, name, ns)
 }
 
+#' Modify the arguments of a call
+#'
+#' This function is soft-deprecated, please use [call_modify()]
+#' instead.
+#'
+#' @inheritParams call_modify
+#' @param .lang The `.call` argument of [call_modify()].
+#' @keywords internal
+#' @export
+lang_modify <- function(.lang, ..., .standardise = FALSE) {
+  call_modify(.lang, ..., .standardise = .standardise)
+}
 
 # Deprecated ---------------------------------------------------------
 

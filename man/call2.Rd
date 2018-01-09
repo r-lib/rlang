@@ -109,5 +109,5 @@ call2(quote(f), splice(list(a = 1, b = 2)))
 call2("fun", arg = quote(baz), .ns = "mypkg")
 }
 \seealso{
-lang_modify
+call_modify
 }

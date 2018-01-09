@@ -54,6 +54,8 @@
 #' * [is_unary_lang()] => [is_unary_call()]
 #' * [is_binary_lang()] => [is_binary_call()]
 #'
+#' * [lang_modify()] => [call_modify()]
+#'
 #'
 #' @section Deprecated functions and arguments:
 #'
