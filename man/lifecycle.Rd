@@ -52,7 +52,7 @@ TODO: Review all functions in rlang and mark stable ones as such.
 \item \code{\link[=parse_quosures]{parse_quosures()}}
 \item \code{\link[=quo_expr]{quo_expr()}} => \code{\link[=quo_squash]{quo_squash()}}
 \item \code{\link[=lang]{lang()}} => \code{\link[=call2]{call2()}}
-\item \code{\link[=new_language]{new_language()}} => \code{\link[=new_call]{new_call()}}
+\item \code{\link[=new_language]{new_language()}} => \code{\link[=call_node]{call_node()}}
 \item \code{\link[=is_lang]{is_lang()}} => \code{\link[=is_call]{is_call()}}
 \item \code{\link[=is_unary_lang]{is_unary_lang()}} => Use the \code{n} argument of \code{\link[=is_call]{is_call()}}
 \item \code{\link[=is_binary_lang]{is_binary_lang()}} => Use the \code{n} argument of \code{\link[=is_call]{is_call()}}

@@ -295,3 +295,18 @@ node_poke_cadr <- mut_node_cadr
 node_poke_cdar <- mut_node_cdar
 node_poke_cddr <- mut_node_cddr
 node_poke_tag <- mut_node_tag
+
+
+#' Create a new call from components
+#'
+#' @param car The head of the call. It should be a
+#'   [callable][is_callable] object: a symbol, call, or literal
+#'   function.
+#' @param cdr The tail of the call, i.e. a [node list][pairlist] of
+#'   arguments.
+#'
+#' @keywords internal
+#' @export
+call_node <- function(car, cdr = NULL) {
+  .Call(rlang_new_call, car, cdr)
+}

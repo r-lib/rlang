@@ -2,12 +2,9 @@
 % Please edit documentation in R/call.R
 \name{call2}
 \alias{call2}
-\alias{new_call}
 \title{Create a call}
 \usage{
 call2(.fn, ..., .ns = NULL)
-
-new_call(head, tail = NULL)
 }
 \arguments{
 \item{.fn}{Function to call. Must be a callable object: a string,
@@ -18,11 +15,6 @@ are evaluated with \link[=dots_list]{explicit splicing}.}
 
 \item{.ns}{Namespace with which to prefix \code{.fn}. Must be a string
 or symbol.}
-
-\item{head}{A \link[=is_callable]{callable} object: a symbol, call, or
-literal function.}
-
-\item{tail}{A \link[=pairlist]{node list} of arguments.}
 }
 \description{
 Language objects are (with symbols) one of the two types of
@@ -32,15 +24,9 @@ unlike literal objects which are their own values. While symbols
 are directly \link[=env_bind]{bound} to a value, language objects
 represent \emph{function calls}, which is why they are commonly referred
 to as calls.
-\itemize{
-\item \code{call2()} creates a call from a function name (or a literal
+
+\code{call2()} creates a call from a function name (or a literal
 function to inline in the call) and a list of arguments.
-\item \code{new_call()} is bare-bones and takes a head and a tail. The
-head must be \link[=is_callable]{callable} and the tail must be a
-\link{pairlist}. See section on calls as parse trees below. This
-constructor is useful to avoid costly coercions between lists and
-pairlists of arguments.
-}
 }
 \section{Calls as parse tree}{
 
@@ -76,17 +62,14 @@ first-class R objects that it is possible for functions to
 \section{Life cycle}{
 
 
-In rlang 0.2.0:
-\itemize{
-\item \code{lang()} was soft-deprecated and renamed to \code{call2()}
-\item \code{new_language()} was soft-deprecated and renamed to \code{new_call()}
-}
+In rlang 0.2.0 \code{lang()} was soft-deprecated and renamed to
+\code{call2()}.
 
-In rlang 0.1.0 calls were called "language" objects in order to
-follow the R type nomenclature as returned by \code{\link[base:typeof]{base::typeof()}}. The
-goal was to avoid adding to the confusion between S modes and R
-types. With hindsight we find it is better to use more meaningful
-type names.
+In early versions of rlang calls were called "language" objects in
+order to follow the R type nomenclature as returned by
+\code{\link[base:typeof]{base::typeof()}}. The goal was to avoid adding to the confusion
+between S modes and R types. With hindsight we find it is better to
+use more meaningful type names.
 }
 
 \examples{

@@ -10,14 +10,8 @@
 #' represent _function calls_, which is why they are commonly referred
 #' to as calls.
 #'
-#' * `call2()` creates a call from a function name (or a literal
-#'   function to inline in the call) and a list of arguments.
-#'
-#' * `new_call()` is bare-bones and takes a head and a tail. The
-#'   head must be [callable][is_callable] and the tail must be a
-#'   [pairlist]. See section on calls as parse trees below. This
-#'   constructor is useful to avoid costly coercions between lists and
-#'   pairlists of arguments.
+#' `call2()` creates a call from a function name (or a literal
+#' function to inline in the call) and a list of arguments.
 #'
 #' @section Calls as parse tree:
 #'
@@ -46,16 +40,14 @@
 #'
 #' @section Life cycle:
 #'
-#' In rlang 0.2.0:
+#' In rlang 0.2.0 `lang()` was soft-deprecated and renamed to
+#' `call2()`.
 #'
-#' * `lang()` was soft-deprecated and renamed to `call2()`
-#' * `new_language()` was soft-deprecated and renamed to `new_call()`
-#'
-#' In rlang 0.1.0 calls were called "language" objects in order to
-#' follow the R type nomenclature as returned by [base::typeof()]. The
-#' goal was to avoid adding to the confusion between S modes and R
-#' types. With hindsight we find it is better to use more meaningful
-#' type names.
+#' In early versions of rlang calls were called "language" objects in
+#' order to follow the R type nomenclature as returned by
+#' [base::typeof()]. The goal was to avoid adding to the confusion
+#' between S modes and R types. With hindsight we find it is better to
+#' use more meaningful type names.
 #'
 #' @param .fn Function to call. Must be a callable object: a string,
 #'   symbol, call, or a function.
@@ -88,24 +80,10 @@ call2 <- function(.fn, ..., .ns = NULL) {
   }
 
   if (!is_null(.ns)) {
-    .fn <- new_call(sym_namespace, pairlist(sym(.ns), .fn))
+    .fn <- call_node(sym_namespace, pairlist(sym(.ns), .fn))
   }
 
-  new_call(.fn, as.pairlist(dots_list(...)))
-}
-#' @rdname call2
-#' @param head A [callable][is_callable] object: a symbol, call, or
-#'   literal function.
-#' @param tail A [node list][pairlist] of arguments.
-#' @export
-new_call <- function(head, tail = NULL) {
-  if (!is_callable(head)) {
-    abort("Can't create call to non-callable object")
-  }
-  if (!is_node_list(tail)) {
-    abort("`tail` must be a node list")
-  }
-  .Call(rlang_new_call, head, tail)
+  call_node(.fn, as.pairlist(dots_list(...)))
 }
 
 #' Is an object callable?

@@ -7,10 +7,12 @@
 call_node(car, cdr = NULL)
 }
 \arguments{
-\item{car}{The head of the call. A \link[=is_callable]{callable} object:
-a symbol, call, or literal function.}
+\item{car}{The head of the call. It should be a
+\link[=is_callable]{callable} object: a symbol, call, or literal
+function.}
 
-\item{cdr}{The tail of the call. A \link[=pairlist]{node list} of arguments.}
+\item{cdr}{The tail of the call, i.e. a \link[=pairlist]{node list} of
+arguments.}
 }
 \description{
 Create a new call from components
