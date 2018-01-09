@@ -58,10 +58,10 @@
 #' * [lang_standardise()] => [call_standardise()]
 #' * [lang_fn()] => [call_fn()]
 #' * [lang_name()] => [call_name()]
-#' * [lang_head()] => [call_head()]
-#' * [lang_tail()] => [call_tail()]
 #' * [lang_args()] => [call_args()]
 #' * [lang_args_names()] => [call_args_names()]
+#'
+#' * [lang_head()], [lang_tail()]
 #'
 #'
 #' @section Deprecated functions and arguments:

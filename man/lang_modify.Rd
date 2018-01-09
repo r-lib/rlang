@@ -5,8 +5,6 @@
 \alias{lang_standardise}
 \alias{lang_fn}
 \alias{lang_name}
-\alias{lang_head}
-\alias{lang_tail}
 \alias{lang_args}
 \alias{lang_args_names}
 \title{Manipulate or access a call}
@@ -18,10 +16,6 @@ lang_standardise(lang)
 lang_fn(lang)
 
 lang_name(lang)
-
-lang_head(lang)
-
-lang_tail(lang)
 
 lang_args(lang)
 

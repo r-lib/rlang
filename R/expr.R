@@ -145,7 +145,7 @@ enexprs <- function(...,
 #' usually do not arise from R code because subsetting a call is a
 #' type-preserving operation. However, you can obtain the pairlist of
 #' arguments by taking the CDR of the call object from C code. The
-#' rlang function [call_tail()] will do it from R. Another way in
+#' rlang function [node_cdr()] will do it from R. Another way in
 #' which pairlist of arguments arise is by extracting the argument
 #' list of a closure with [base::formals()] or [fn_fmls()].
 #'
@@ -197,9 +197,6 @@ enexprs <- function(...,
 #' # for them:
 #' is_expr(fmls)
 #' is_pairlist(fmls)
-#'
-#' # Note that you can also extract call arguments as a pairlist:
-#' call_tail(quote(fn(arg1, arg2 = "foo")))
 is_expr <- function(x) {
   is_symbolic(x) || is_syntactic_literal(x)
 }

@@ -68,7 +68,7 @@ is_lang <- function(x, name = NULL, n = NULL, ns = NULL) {
 #' @rdname is_lang
 #' @export
 is_unary_lang <- function(x, name = NULL, ns = NULL) {
-  is_unary_call(x, name, ns)
+  is_call(x, name, n = 1L, ns = ns)
 }
 #' @rdname is_lang
 #' @export
@@ -106,16 +106,6 @@ lang_name <- function(lang) {
 }
 #' @rdname lang_modify
 #' @export
-lang_head <- function(lang) {
-  call_head(lang)
-}
-#' @rdname lang_modify
-#' @export
-lang_tail <- function(lang) {
-  call_tail(lang)
-}
-#' @rdname lang_modify
-#' @export
 lang_args <- function(lang) {
   call_args(lang)
 }
@@ -124,6 +114,29 @@ lang_args <- function(lang) {
 lang_args_names <- function(lang) {
   call_args_names(lang)
 }
+
+
+#' Return the head or tail of a call
+#'
+#' As of rlang 0.2.0 these functions are retired (soft-deprecated for
+#' now) because they are low level accessors that are rarely needed
+#' for end users.
+#'
+#' @param lang A call.
+#' @export
+lang_head <- function(lang) {
+  call <- get_expr(call)
+  stopifnot(is_call(call))
+  node_car(call)
+}
+#' @rdname lang_head
+#' @export
+lang_tail <- function(lang) {
+  call <- get_expr(call)
+  stopifnot(is_call(call))
+  node_cdr(call)
+}
+
 
 # Deprecated ---------------------------------------------------------
 

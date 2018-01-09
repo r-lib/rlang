@@ -278,6 +278,14 @@
   expression acccessor for quosures whereas it was really a lossy
   operation that squashed all nested quosures.
 
+* With the renaming of the `lang` particle to `call`, all these
+  functions are soft-deprecated: `lang()`, `is_lang()`, `lang_fn()`,
+  `lang_name()`, `lang_args()`.
+
+  In addition, `lang_head()` and `lang_tail()` are soft-deprecated
+  without replacement because these are low level accessors that are
+  rarely needed.
+
 
 # rlang 0.1.6
 

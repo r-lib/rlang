@@ -66,10 +66,9 @@
 #' @param newtag The new tag for the node. This should be a symbol.
 #' @return Setters like `mut_node_car()` invisibly return `x` modified
 #'   in place. Getters return the requested node component.
-#' @seealso [duplicate()] for creating copy-safe objects,
-#'   [call_head()] and [call_tail()] as slightly higher level
-#'   alternatives that check their input, and [base::pairlist()] for
-#'   an easier way of creating a linked list of nodes.
+#' @seealso [duplicate()] for creating copy-safe objects and
+#'   [base::pairlist()] for an easier way of creating a linked list of
+#'   nodes.
 #' @examples
 #' # Changing a node component happens in place and can have side
 #' # effects. Let's create a language object and a copy of it:

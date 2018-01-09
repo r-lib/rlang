@@ -34,14 +34,14 @@
 #'
 #' - The tail contains the arguments and must be a [pairlist].
 #'
-#' You can retrieve those components with [call_head()] and
-#' [call_tail()]. Since language nodes can contain other nodes (either
-#' calls or pairlists), they are capable of forming a tree. When R
-#' [parses][parse_expr] an expression, it saves the parse tree in a
-#' data structure composed of language and pairlist nodes. It is
-#' precisely because the parse tree is saved in first-class R objects
-#' that it is possible for functions to [capture][expr] their
-#' arguments unevaluated.
+#' You can retrieve those components with `call[[1]]` and
+#' `as.pairlist(call[-1])`. Since language nodes can contain other
+#' nodes (either calls or pairlists), they are capable of forming a
+#' tree. When R [parses][parse_expr] an expression, it saves the parse
+#' tree in a data structure composed of language and pairlist
+#' nodes. It is precisely because the parse tree is saved in
+#' first-class R objects that it is possible for functions to
+#' [capture][expr] their arguments unevaluated.
 #'
 #'
 #' @section Life cycle:
@@ -110,10 +110,10 @@ new_call <- function(head, tail = NULL) {
 
 #' Is an object callable?
 #'
-#' A callable object is an object that can be set as the head of a
-#' [call node][call_head]. This includes [symbolic
-#' objects][is_symbolic] that evaluate to a function or literal
-#' functions.
+#' A callable object is an object that can appear in the function
+#' position of a call (as opposed to argument position). This includes
+#' [symbolic objects][is_symbolic] that evaluate to a function or
+#' literal functions embedded in the call.
 #'
 #' Note that strings may look like callable objects because
 #' expressions of the form `"list"()` are valid R code. However,
@@ -363,7 +363,7 @@ call_standardise <- function(call) {
   } else {
     # The call name might be a literal, not necessarily a symbol
     env <- get_env(call, caller_env())
-    fn <- eval_bare(call_head(expr), env)
+    fn <- eval_bare(node_car(expr), env)
   }
 
   matched <- match.call(as_closure(fn), expr)
@@ -458,49 +458,6 @@ call_name <- function(call) {
   )
 }
 
-#' Return the head or tail of a call
-#'
-#' @description
-#'
-#' These functions return the head or the tail of a call. See section
-#' on calls as parse trees in [call2()]. They are equivalent to
-#' [node_car()] and [node_cdr()] but support quosures and check that
-#' the input is indeed a call before retrieving the head or tail (it
-#' is unsafe to do this without type checking).
-#'
-#' `call_head()` returns the head of the call without any conversion,
-#' unlike [call_name()] which checks that the head is a symbol and
-#' converts it to a string. `call_tail()` returns the pairlist of
-#' arguments (while [call_args()] returns the same object converted to
-#' a regular list)
-#'
-#'
-#' @section Life cycle:
-#'
-#' In rlang 0.2.0, `lang_head()` and `lang_tail()` were
-#' soft-deprecated and renamed to `call_head()` and `call_tail()`. See
-#' lifecycle section in [call2()] for more about this change.
-#'
-#' @inheritParams call_standardise
-#' @seealso [pairlist], [call_args()], [call2()]
-#' @export
-#' @examples
-#' call <- quote(foo(bar, baz))
-#' call_head(call)
-#' call_tail(call)
-call_head <- function(call) {
-  call <- get_expr(call)
-  stopifnot(is_call(call))
-  node_car(call)
-}
-#' @rdname call_head
-#' @export
-call_tail <- function(call) {
-  call <- get_expr(call)
-  stopifnot(is_call(call))
-  node_cdr(call)
-}
-
 #' Extract arguments from a call
 #'
 #' @section Life cycle:
@@ -512,7 +469,7 @@ call_tail <- function(call) {
 #'
 #' @inheritParams call_standardise
 #' @return A named list of arguments.
-#' @seealso [call_tail()], [fn_fmls()] and [fn_fmls_names()]
+#' @seealso [fn_fmls()] and [fn_fmls_names()]
 #' @export
 #' @examples
 #' call <- quote(f(a, b))
@@ -520,10 +477,6 @@ call_tail <- function(call) {
 #' # Subsetting a call returns the arguments converted to a language
 #' # object:
 #' call[-1]
-#'
-#' # And call_tail() returns the arguments without conversion as the
-#' # original pairlist:
-#' str(call_tail(call))
 #'
 #' # On the other hand, call_args() returns a regular list that is
 #' # often easier to work with:
@@ -534,14 +487,14 @@ call_tail <- function(call) {
 #' call_args_names(call)
 call_args <- function(call) {
   call <- get_expr(call)
-  args <- as.list(call_tail(call))
+  args <- as.list(call[-1])
   set_names((args), names2(args))
 }
 #' @rdname call_args
 #' @export
 call_args_names <- function(call) {
   call <- get_expr(call)
-  names2(call_tail(call))
+  names2(call[-1])
 }
 
 is_qualified_call <- function(x) {

@@ -58,14 +58,19 @@ whose head contains another call. See \code{\link[=lang_type_of]{lang_type_of()}
 \item The tail contains the arguments and must be a \link{pairlist}.
 }
 
-You can retrieve those components with \code{\link[=call_head]{call_head()}} and
-\code{\link[=call_tail]{call_tail()}}. Since language nodes can contain other nodes (either
-calls or pairlists), they are capable of forming a tree. When R
-\link[=parse_expr]{parses} an expression, it saves the parse tree in a
-data structure composed of language and pairlist nodes. It is
-precisely because the parse tree is saved in first-class R objects
-that it is possible for functions to \link[=expr]{capture} their
-arguments unevaluated.
+You can retrieve those components with \code{call[[1]]} and
+\code{as.pairlist(call[-1])}. Since language nodes can contain other
+nodes (either calls or pairlists), they are capable of forming a
+tree. When R [parses][parse_expr] an expression, it saves the parse
+tree in a data structure composed of language and pairlist
+nodes. It is precisely because the parse tree is saved in
+first-class R objects that it is possible for functions to
+[capture][expr] their arguments unevaluated.
+
+[[1]: R:[1
+[-1]: R:-1
+[parse_expr]: R:parse_expr
+[expr]: R:expr
 }
 
 \section{Life cycle}{

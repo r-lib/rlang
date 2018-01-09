@@ -145,8 +145,7 @@ copy
 lang
 }
 \seealso{
-\code{\link[=duplicate]{duplicate()}} for creating copy-safe objects,
-\code{\link[=call_head]{call_head()}} and \code{\link[=call_tail]{call_tail()}} as slightly higher level
-alternatives that check their input, and \code{\link[base:pairlist]{base::pairlist()}} for
-an easier way of creating a linked list of nodes.
+\code{\link[=duplicate]{duplicate()}} for creating copy-safe objects and
+\code{\link[base:pairlist]{base::pairlist()}} for an easier way of creating a linked list of
+nodes.
 }

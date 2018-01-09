@@ -34,10 +34,6 @@ call <- quote(f(a, b))
 # object:
 call[-1]
 
-# And call_tail() returns the arguments without conversion as the
-# original pairlist:
-str(call_tail(call))
-
 # On the other hand, call_args() returns a regular list that is
 # often easier to work with:
 str(call_args(call))
@@ -47,5 +43,5 @@ str(call_args(call))
 call_args_names(call)
 }
 \seealso{
-\code{\link[=call_tail]{call_tail()}}, \code{\link[=fn_fmls]{fn_fmls()}} and \code{\link[=fn_fmls_names]{fn_fmls_names()}}
+\code{\link[=fn_fmls]{fn_fmls()}} and \code{\link[=fn_fmls_names]{fn_fmls_names()}}
 }

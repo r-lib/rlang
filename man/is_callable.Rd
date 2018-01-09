@@ -10,10 +10,10 @@ is_callable(x)
 \item{x}{An object to test.}
 }
 \description{
-A callable object is an object that can be set as the head of a
-\link[=call_head]{call node}. This includes \link[=is_symbolic]{symbolic
-objects} that evaluate to a function or literal
-functions.
+A callable object is an object that can appear in the function
+position of a call (as opposed to argument position). This includes
+\link[=is_symbolic]{symbolic objects} that evaluate to a function or
+literal functions embedded in the call.
 }
 \details{
 Note that strings may look like callable objects because
