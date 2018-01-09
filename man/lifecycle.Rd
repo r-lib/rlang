@@ -60,6 +60,8 @@ TODO: Review all functions in rlang and mark stable ones as such.
 \item \code{\link[=lang_standardise]{lang_standardise()}} => \code{\link[=call_standardise]{call_standardise()}}
 \item \code{\link[=lang_fn]{lang_fn()}} => \code{\link[=call_fn]{call_fn()}}
 \item \code{\link[=lang_name]{lang_name()}} => \code{\link[=call_name]{call_name()}}
+\item \code{\link[=lang_head]{lang_head()}} => \code{\link[=call_head]{call_head()}}
+\item \code{\link[=lang_tail]{lang_tail()}} => \code{\link[=call_tail]{call_tail()}}
 }
 }
 

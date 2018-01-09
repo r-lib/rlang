@@ -58,8 +58,8 @@ whose head contains another call. See \code{\link[=lang_type_of]{lang_type_of()}
 \item The tail contains the arguments and must be a \link{pairlist}.
 }
 
-You can retrieve those components with \code{\link[=lang_head]{lang_head()}} and
-\code{\link[=lang_tail]{lang_tail()}}. Since language nodes can contain other nodes (either
+You can retrieve those components with \code{\link[=call_head]{call_head()}} and
+\code{\link[=call_tail]{call_tail()}}. Since language nodes can contain other nodes (either
 calls or pairlists), they are capable of forming a tree. When R
 \link[=parse_expr]{parses} an expression, it saves the parse tree in a
 data structure composed of language and pairlist nodes. It is

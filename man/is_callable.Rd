@@ -11,7 +11,7 @@ is_callable(x)
 }
 \description{
 A callable object is an object that can be set as the head of a
-\link[=lang_head]{call node}. This includes \link[=is_symbolic]{symbolic
+\link[=call_head]{call node}. This includes \link[=is_symbolic]{symbolic
 objects} that evaluate to a function or literal
 functions.
 }

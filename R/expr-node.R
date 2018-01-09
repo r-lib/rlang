@@ -67,7 +67,7 @@
 #' @return Setters like `mut_node_car()` invisibly return `x` modified
 #'   in place. Getters return the requested node component.
 #' @seealso [duplicate()] for creating copy-safe objects,
-#'   [lang_head()] and [lang_tail()] as slightly higher level
+#'   [call_head()] and [call_tail()] as slightly higher level
 #'   alternatives that check their input, and [base::pairlist()] for
 #'   an easier way of creating a linked list of nodes.
 #' @examples

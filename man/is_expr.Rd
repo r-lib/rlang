@@ -57,7 +57,7 @@ them. Pairlists are the data structure for function arguments. They
 usually do not arise from R code because subsetting a call is a
 type-preserving operation. However, you can obtain the pairlist of
 arguments by taking the CDR of the call object from C code. The
-rlang function \code{\link[=lang_tail]{lang_tail()}} will do it from R. Another way in
+rlang function \code{\link[=call_tail]{call_tail()}} will do it from R. Another way in
 which pairlist of arguments arise is by extracting the argument
 list of a closure with \code{\link[base:formals]{base::formals()}} or \code{\link[=fn_fmls]{fn_fmls()}}.
 }
@@ -108,7 +108,7 @@ is_expr(fmls)
 is_pairlist(fmls)
 
 # Note that you can also extract call arguments as a pairlist:
-lang_tail(quote(fn(arg1, arg2 = "foo")))
+call_tail(quote(fn(arg1, arg2 = "foo")))
 }
 \seealso{
 \code{\link[=is_call]{is_call()}} for a call predicate.

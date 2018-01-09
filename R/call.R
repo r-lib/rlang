@@ -34,8 +34,8 @@
 #'
 #' - The tail contains the arguments and must be a [pairlist].
 #'
-#' You can retrieve those components with [lang_head()] and
-#' [lang_tail()]. Since language nodes can contain other nodes (either
+#' You can retrieve those components with [call_head()] and
+#' [call_tail()]. Since language nodes can contain other nodes (either
 #' calls or pairlists), they are capable of forming a tree. When R
 #' [parses][parse_expr] an expression, it saves the parse tree in a
 #' data structure composed of language and pairlist nodes. It is
@@ -120,7 +120,7 @@ new_call <- function(head, tail = NULL) {
 #' Is an object callable?
 #'
 #' A callable object is an object that can be set as the head of a
-#' [call node][lang_head]. This includes [symbolic
+#' [call node][call_head]. This includes [symbolic
 #' objects][is_symbolic] that evaluate to a function or literal
 #' functions.
 #'
@@ -388,7 +388,7 @@ call_standardise <- function(call) {
   } else {
     # The call name might be a literal, not necessarily a symbol
     env <- get_env(call, caller_env())
-    fn <- eval_bare(lang_head(expr), env)
+    fn <- eval_bare(call_head(expr), env)
   }
 
   matched <- match.call(as_closure(fn), expr)
@@ -483,7 +483,7 @@ call_name <- function(call) {
   )
 }
 
-#' Return the head or tail of a call object
+#' Return the head or tail of a call
 #'
 #' @description
 #'
@@ -493,37 +493,44 @@ call_name <- function(call) {
 #' the input is indeed a call before retrieving the head or tail (it
 #' is unsafe to do this without type checking).
 #'
-#' `lang_head()` returns the head of the call without any conversion,
+#' `call_head()` returns the head of the call without any conversion,
 #' unlike [call_name()] which checks that the head is a symbol and
-#' converts it to a string. `lang_tail()` returns the pairlist of
+#' converts it to a string. `call_tail()` returns the pairlist of
 #' arguments (while [lang_args()] returns the same object converted to
 #' a regular list)
 #'
-#' @inheritParams lang_standardise
+#'
+#' @section Life cycle:
+#'
+#' In rlang 0.2.0, `lang_head()` and `lang_tail()` were
+#' soft-deprecated and renamed to `call_head()` and `call_tail()`. See
+#' lifecycle section in [call2()] for more about this change.
+#'
+#' @inheritParams call_standardise
 #' @seealso [pairlist], [lang_args()], [call2()]
 #' @export
 #' @examples
-#' lang <- quote(foo(bar, baz))
-#' lang_head(lang)
-#' lang_tail(lang)
-lang_head <- function(lang) {
-  lang <- get_expr(lang)
-  stopifnot(is_call(lang))
-  node_car(lang)
+#' call <- quote(foo(bar, baz))
+#' call_head(call)
+#' call_tail(call)
+call_head <- function(call) {
+  call <- get_expr(call)
+  stopifnot(is_call(call))
+  node_car(call)
 }
-#' @rdname lang_head
+#' @rdname call_head
 #' @export
-lang_tail <- function(lang) {
-  lang <- get_expr(lang)
-  stopifnot(is_call(lang))
-  node_cdr(lang)
+call_tail <- function(call) {
+  call <- get_expr(call)
+  stopifnot(is_call(call))
+  node_cdr(call)
 }
 
 #' Extract arguments from a call
 #'
 #' @inheritParams lang_standardise
 #' @return A named list of arguments.
-#' @seealso [lang_tail()], [fn_fmls()] and [fn_fmls_names()]
+#' @seealso [call_tail()], [fn_fmls()] and [fn_fmls_names()]
 #' @export
 #' @examples
 #' call <- quote(f(a, b))
@@ -532,9 +539,9 @@ lang_tail <- function(lang) {
 #' # object:
 #' call[-1]
 #'
-#' # See also lang_tail() which returns the arguments without
+#' # See also call_tail() which returns the arguments without
 #' # conversion as the original pairlist:
-#' str(lang_tail(call))
+#' str(call_tail(call))
 #'
 #' # On the other hand, lang_args() returns a regular list that is
 #' # often easier to work with:
@@ -545,7 +552,7 @@ lang_tail <- function(lang) {
 #' lang_args_names(call)
 lang_args <- function(lang) {
   lang <- get_expr(lang)
-  args <- as.list(lang_tail(lang))
+  args <- as.list(call_tail(lang))
   set_names((args), names2(args))
 }
 
@@ -553,7 +560,7 @@ lang_args <- function(lang) {
 #' @export
 lang_args_names <- function(lang) {
   lang <- get_expr(lang)
-  names2(lang_tail(lang))
+  names2(call_tail(lang))
 }
 
 is_qualified_lang <- function(x) {

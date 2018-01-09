@@ -5,6 +5,8 @@
 \alias{lang_standardise}
 \alias{lang_fn}
 \alias{lang_name}
+\alias{lang_head}
+\alias{lang_tail}
 \title{Manipulate or access a call}
 \usage{
 lang_modify(.lang, ..., .standardise = FALSE)
@@ -14,6 +16,10 @@ lang_standardise(lang)
 lang_fn(lang)
 
 lang_name(lang)
+
+lang_head(lang)
+
+lang_tail(lang)
 }
 \arguments{
 \item{...}{Named or unnamed expressions (constants, names or calls)

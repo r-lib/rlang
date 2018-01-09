@@ -104,6 +104,16 @@ lang_fn <- function(lang) {
 lang_name <- function(lang) {
   call_name(lang)
 }
+#' @rdname lang_modify
+#' @export
+lang_head <- function(lang) {
+  call_head(lang)
+}
+#' @rdname lang_modify
+#' @export
+lang_tail <- function(lang) {
+  call_tail(lang)
+}
 
 # Deprecated ---------------------------------------------------------
 
