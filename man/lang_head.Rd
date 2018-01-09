@@ -10,9 +10,8 @@ lang_head(lang)
 lang_tail(lang)
 }
 \arguments{
-\item{lang}{Can be a call (language object), a formula quoting a
-call in the right-hand side, or a frame object from which to
-extract the call expression.}
+\item{lang}{The \code{call} or \code{.call} argument of the renamed
+functions.}
 }
 \description{
 These functions return the head or the tail of a call. See section
@@ -22,7 +21,7 @@ the input is indeed a call before retrieving the head or tail (it
 is unsafe to do this without type checking).
 
 \code{lang_head()} returns the head of the call without any conversion,
-unlike \code{\link[=lang_name]{lang_name()}} which checks that the head is a symbol and
+unlike \code{\link[=call_name]{call_name()}} which checks that the head is a symbol and
 converts it to a string. \code{lang_tail()} returns the pairlist of
 arguments (while \code{\link[=lang_args]{lang_args()}} returns the same object converted to
 a regular list)

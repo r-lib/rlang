@@ -56,6 +56,8 @@
 #'
 #' * [lang_modify()] => [call_modify()]
 #' * [lang_standardise()] => [call_standardise()]
+#' * [lang_fn()] => [call_fn()]
+#' * [lang_name()] => [call_name()]
 #'
 #'
 #' @section Deprecated functions and arguments:

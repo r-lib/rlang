@@ -116,36 +116,36 @@ test_that("is_call() vectorises name", {
   expect_false(is_call(quote(foo::bar), list(quote(`@`), quote(`:::`))))
 })
 
-test_that("lang_name() handles namespaced and anonymous calls", {
-  expect_equal(lang_name(quote(foo::bar())), "bar")
-  expect_equal(lang_name(quote(foo:::bar())), "bar")
+test_that("call_name() handles namespaced and anonymous calls", {
+  expect_equal(call_name(quote(foo::bar())), "bar")
+  expect_equal(call_name(quote(foo:::bar())), "bar")
 
-  expect_null(lang_name(quote(foo@bar())))
-  expect_null(lang_name(quote(foo$bar())))
-  expect_null(lang_name(quote(foo[[bar]]())))
-  expect_null(lang_name(quote(foo()())))
-  expect_null(lang_name(quote(foo::bar()())))
-  expect_null(lang_name(quote((function() NULL)())))
+  expect_null(call_name(quote(foo@bar())))
+  expect_null(call_name(quote(foo$bar())))
+  expect_null(call_name(quote(foo[[bar]]())))
+  expect_null(call_name(quote(foo()())))
+  expect_null(call_name(quote(foo::bar()())))
+  expect_null(call_name(quote((function() NULL)())))
 })
 
-test_that("lang_name() handles formulas and frames", {
-  expect_identical(lang_name(~foo(baz)), "foo")
+test_that("call_name() handles formulas and frames", {
+  expect_identical(call_name(~foo(baz)), "foo")
 
-  fn <- function() lang_name(call_frame())
+  fn <- function() call_name(call_frame())
   expect_identical(fn(), "fn")
 })
 
-test_that("lang_fn() extracts function", {
-  fn <- function() lang_fn(call_frame())
+test_that("call_fn() extracts function", {
+  fn <- function() call_fn(call_frame())
   expect_identical(fn(), fn)
 
-  expect_identical(lang_fn(~matrix()), matrix)
+  expect_identical(call_fn(~matrix()), matrix)
 })
 
 test_that("Inlined functions return NULL name", {
   call <- quote(fn())
   call[[1]] <- function() {}
-  expect_null(lang_name(call))
+  expect_null(call_name(call))
 })
 
 test_that("lang_args() and lang_args_names()", {

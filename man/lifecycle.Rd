@@ -58,6 +58,8 @@ TODO: Review all functions in rlang and mark stable ones as such.
 \item \code{\link[=is_binary_lang]{is_binary_lang()}} => \code{\link[=is_binary_call]{is_binary_call()}}
 \item \code{\link[=lang_modify]{lang_modify()}} => \code{\link[=call_modify]{call_modify()}}
 \item \code{\link[=lang_standardise]{lang_standardise()}} => \code{\link[=call_standardise]{call_standardise()}}
+\item \code{\link[=lang_fn]{lang_fn()}} => \code{\link[=call_fn]{call_fn()}}
+\item \code{\link[=lang_name]{lang_name()}} => \code{\link[=call_name]{call_name()}}
 }
 }
 

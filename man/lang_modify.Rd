@@ -2,13 +2,20 @@
 % Please edit documentation in R/lifecycle-retired.R
 \name{lang_modify}
 \alias{lang_modify}
-\title{Modify the arguments of a call}
+\alias{lang_standardise}
+\alias{lang_fn}
+\alias{lang_name}
+\title{Manipulate or access a call}
 \usage{
 lang_modify(.lang, ..., .standardise = FALSE)
+
+lang_standardise(lang)
+
+lang_fn(lang)
+
+lang_name(lang)
 }
 \arguments{
-\item{.lang}{The \code{.call} argument of \code{\link[=call_modify]{call_modify()}}.}
-
 \item{...}{Named or unnamed expressions (constants, names or calls)
 used to modify the call. Use \code{NULL} to remove arguments. Dots are
 evaluated with \link[=dots_list]{explicit splicing}.}
@@ -17,9 +24,12 @@ evaluated with \link[=dots_list]{explicit splicing}.}
 to match existing unnamed arguments to their argument names. This
 prevents new named arguments from accidentally replacing original
 unnamed arguments.}
+
+\item{lang, .lang}{The \code{call} or \code{.call} argument of the renamed
+functions.}
 }
 \description{
-This function is soft-deprecated, please use \code{\link[=call_modify]{call_modify()}}
-instead.
+These functions are soft-deprecated, please use \code{\link[=call_modify]{call_modify()}},
+\code{\link[=call_standardise]{call_standardise()}}, or \code{\link[=call_fn]{call_fn()}} instead.
 }
 \keyword{internal}

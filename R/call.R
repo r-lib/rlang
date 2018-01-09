@@ -401,31 +401,38 @@ call_standardise <- function(call) {
 #' associated environment. Otherwise, it is looked up in the calling
 #' frame.
 #'
+#'
+#' @section Life cycle:
+#'
+#' In rlang 0.2.0, `lang_fn()` was soft-deprecated and renamed to
+#' `call_fn()`. See lifecycle section in [call2()] for more about this
+#' change.
+#'
 #' @inheritParams call_standardise
 #' @export
-#' @seealso [lang_name()]
+#' @seealso [call_name()]
 #' @examples
 #' # Extract from a quoted call:
-#' lang_fn(~matrix())
-#' lang_fn(quote(matrix()))
+#' call_fn(quote(matrix()))
+#' call_fn(quo(matrix()))
 #'
 #' # Extract the calling function
-#' test <- function() lang_fn(call_frame())
+#' test <- function() call_fn(call_frame())
 #' test()
-lang_fn <- function(lang) {
-  if (is_frame(lang)) {
-    return(lang$fn)
+call_fn <- function(call) {
+  if (is_frame(call)) {
+    return(call$fn)
   }
 
-  expr <- get_expr(lang)
-  env <- get_env(lang, caller_env())
+  expr <- get_expr(call)
+  env <- get_env(call, caller_env())
 
   if (!is_call(expr)) {
-    abort("`lang` must quote a lang")
+    abort("`call` must quote a call")
   }
 
   switch_lang(expr,
-    recursive = abort("`lang` does not lang a named or inlined function"),
+    recursive = abort("`call` does not call a named or inlined function"),
     inlined = node_car(expr),
     named = ,
     namespaced = ,
@@ -435,36 +442,43 @@ lang_fn <- function(lang) {
 
 #' Extract function name of a call
 #'
+#'
+#' @section Life cycle:
+#'
+#' In rlang 0.2.0, `lang_name()` was soft-deprecated and renamed to
+#' `call_name()`. See lifecycle section in [call2()] for more about this
+#' change.
+#'
 #' @inheritParams call_standardise
 #' @return A string with the function name, or `NULL` if the function
 #'   is anonymous.
-#' @seealso [lang_fn()]
+#' @seealso [call_fn()]
 #' @export
 #' @examples
 #' # Extract the function name from quoted calls:
-#' lang_name(~foo(bar))
-#' lang_name(quote(foo(bar)))
+#' call_name(quote(foo(bar)))
+#' call_name(quo(foo(bar)))
 #'
 #' # Or from a frame:
-#' foo <- function(bar) lang_name(call_frame())
+#' foo <- function(bar) call_name(call_frame())
 #' foo(bar)
 #'
 #' # Namespaced calls are correctly handled:
-#' lang_name(~base::matrix(baz))
+#' call_name(~base::matrix(baz))
 #'
 #' # Anonymous and subsetted functions return NULL:
-#' lang_name(~foo$bar())
-#' lang_name(~foo[[bar]]())
-#' lang_name(~foo()())
-lang_name <- function(lang) {
-  lang <- get_expr(lang)
-  if (!is_call(lang)) {
-    abort("`lang` must be a call or must wrap a call (e.g. in a quosure)")
+#' call_name(quote(foo$bar()))
+#' call_name(quote(foo[[bar]]()))
+#' call_name(quote(foo()()))
+call_name <- function(call) {
+  call <- get_expr(call)
+  if (!is_call(call)) {
+    abort("`call` must be a call or must wrap a call (e.g. in a quosure)")
   }
 
-  switch_lang(lang,
-    named = as_string(node_car(lang)),
-    namespaced = as_string(node_cadr(node_cdar(lang))),
+  switch_lang(call,
+    named = as_string(node_car(call)),
+    namespaced = as_string(node_cadr(node_cdar(call))),
     NULL
   )
 }
@@ -480,12 +494,12 @@ lang_name <- function(lang) {
 #' is unsafe to do this without type checking).
 #'
 #' `lang_head()` returns the head of the call without any conversion,
-#' unlike [lang_name()] which checks that the head is a symbol and
+#' unlike [call_name()] which checks that the head is a symbol and
 #' converts it to a string. `lang_tail()` returns the pairlist of
 #' arguments (while [lang_args()] returns the same object converted to
 #' a regular list)
 #'
-#' @inheritParams call_standardise
+#' @inheritParams lang_standardise
 #' @seealso [pairlist], [lang_args()], [call2()]
 #' @export
 #' @examples
@@ -507,7 +521,7 @@ lang_tail <- function(lang) {
 
 #' Extract arguments from a call
 #'
-#' @inheritParams call_standardise
+#' @inheritParams lang_standardise
 #' @return A named list of arguments.
 #' @seealso [lang_tail()], [fn_fmls()] and [fn_fmls_names()]
 #' @export

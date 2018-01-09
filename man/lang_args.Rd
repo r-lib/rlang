@@ -10,9 +10,8 @@ lang_args(lang)
 lang_args_names(lang)
 }
 \arguments{
-\item{lang}{Can be a call (language object), a formula quoting a
-call in the right-hand side, or a frame object from which to
-extract the call expression.}
+\item{lang}{The \code{call} or \code{.call} argument of the renamed
+functions.}
 }
 \value{
 A named list of arguments.
