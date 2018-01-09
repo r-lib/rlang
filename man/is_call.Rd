@@ -52,12 +52,6 @@ is_call(quote(foo(bar)), quote(foo))
 is_call(quote(foo(bar)), "foo", 1)
 is_call(quote(foo(bar)), "foo", 2)
 
-# Or more specifically:
-is_unary_call(quote(foo(bar)))
-is_unary_call(quote(+3))
-is_unary_call(quote(1 + 3))
-is_binary_call(quote(1 + 3))
-
 
 # By default, namespaced calls are tested unqualified:
 ns_expr <- quote(base::list())

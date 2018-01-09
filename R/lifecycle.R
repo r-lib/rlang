@@ -51,8 +51,8 @@
 #' * [lang()] => [call2()]
 #' * [new_language()] => [new_call()]
 #' * [is_lang()] => [is_call()]
-#' * [is_unary_lang()] => [is_unary_call()]
-#' * [is_binary_lang()] => [is_binary_call()]
+#' * [is_unary_lang()] => Use the `n` argument of [is_call()]
+#' * [is_binary_lang()] => Use the `n` argument of [is_call()]
 #'
 #' * [lang_modify()] => [call_modify()]
 #' * [lang_standardise()] => [call_standardise()]

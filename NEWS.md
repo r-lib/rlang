@@ -214,8 +214,9 @@
 
     - `lang()` has been renamed to `call2()`.
     - `new_language()` has ben renamed to `new_call()`.
-    - `is_lang()`, `is_unary_lang()`, and `is_binary_lang()` have been
-      renamed to `is_call()`, `is_unary_call()`, and `is_binary_call()`.
+    - `is_lang()` has been renamed to `is_call()`. We haven't replaced
+      the `is_unary_lang()` and `is_binary_lang()` because they are
+      redundant with the `n` argument of `is_call()`.
     - All call accessors such as `lang_fn()`, `lang_name()`,
       `lang_args()` etc are soft-deprecated and renamed with `call_`
       prefix.

@@ -56,8 +56,8 @@ new_language <- function(head, tail = NULL) {
 
 #' Is object a call?
 #'
-#' These functions are soft-deprecated, please use [is_call()],
-#' [is_unary_call()], and [is_binary_call()] instead.
+#' These functions are soft-deprecated, please use [is_call()] and its
+#' `n` argument instead.
 #'
 #' @inheritParams is_call
 #' @keywords internal
@@ -73,7 +73,7 @@ is_unary_lang <- function(x, name = NULL, ns = NULL) {
 #' @rdname is_lang
 #' @export
 is_binary_lang <- function(x, name = NULL, ns = NULL) {
-  is_binary_call(x, name, ns)
+  is_call(x, name, n = 2L, ns = ns)
 }
 
 #' Manipulate or access a call

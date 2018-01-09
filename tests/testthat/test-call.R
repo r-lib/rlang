@@ -97,14 +97,13 @@ test_that("is_call() pattern-matches", {
 
   expect_true(is_call(quote(foo(bar)), "foo", n = 1))
   expect_false(is_call(quote(foo(bar)), "foo", n = 2))
+  expect_true(is_call(quote(+3), n = 1))
+  expect_true(is_call(quote(3 + 3), n = 2))
 
   expect_true(is_call(quote(foo::bar())), quote(foo::bar()))
 
   expect_false(is_call(1))
   expect_false(is_call(NULL))
-
-  expect_true(is_unary_call(quote(+3)))
-  expect_true(is_binary_call(quote(3 + 3)))
 })
 
 test_that("is_call() vectorises name", {

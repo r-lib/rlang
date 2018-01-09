@@ -188,12 +188,6 @@ is_callable <- function(x) {
 #' is_call(quote(foo(bar)), "foo", 1)
 #' is_call(quote(foo(bar)), "foo", 2)
 #'
-#' # Or more specifically:
-#' is_unary_call(quote(foo(bar)))
-#' is_unary_call(quote(+3))
-#' is_unary_call(quote(1 + 3))
-#' is_binary_call(quote(1 + 3))
-#'
 #'
 #' # By default, namespaced calls are tested unqualified:
 #' ns_expr <- quote(base::list())
@@ -252,16 +246,6 @@ is_call <- function(x, name = NULL, n = NULL, ns = NULL) {
   }
 
   TRUE
-}
-#' @rdname is_lang
-#' @export
-is_unary_call <- function(x, name = NULL, ns = NULL) {
-  is_call(x, name, n = 1L, ns = ns)
-}
-#' @rdname is_lang
-#' @export
-is_binary_call <- function(x, name = NULL, ns = NULL) {
-  is_call(x, name, n = 2L, ns = ns)
 }
 
 
