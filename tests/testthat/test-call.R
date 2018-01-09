@@ -29,7 +29,7 @@ test_that("succeeds with literal functions", {
 # Standardisation ---------------------------------------------------------
 
 test_that("can standardise call frame", {
-  fn <- function(foo = "bar") lang_standardise(call_frame())
+  fn <- function(foo = "bar") call_standardise(call_frame())
   expect_identical(fn(), quote(fn()))
   expect_identical(fn("baz"), quote(fn(foo = "baz")))
 })

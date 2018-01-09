@@ -88,6 +88,17 @@ is_binary_lang <- function(x, name = NULL, ns = NULL) {
 lang_modify <- function(.lang, ..., .standardise = FALSE) {
   call_modify(.lang, ..., .standardise = .standardise)
 }
+#' Standardise a call
+#'
+#' This function is soft-deprecated, please use [call_standardise()]
+#' instead.
+#'
+#' @param lang The `call` argument of [call_standardise()].
+#' @keywords internal
+#' @export
+lang_standardise <- function(lang) {
+  call_standardise(lang)
+}
 
 # Deprecated ---------------------------------------------------------
 

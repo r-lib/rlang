@@ -55,6 +55,7 @@
 #' * [is_binary_lang()] => [is_binary_call()]
 #'
 #' * [lang_modify()] => [call_modify()]
+#' * [lang_standardise()] => [call_standardise()]
 #'
 #'
 #' @section Deprecated functions and arguments:

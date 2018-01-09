@@ -335,7 +335,7 @@ call_modify <- function(.call, ..., .standardise = FALSE) {
 
   if (.standardise) {
     quo <- call_as_quosure(.call, caller_env())
-    expr <- get_expr(lang_standardise(quo))
+    expr <- get_expr(call_standardise(quo))
   } else {
     expr <- get_expr(.call)
   }
@@ -369,25 +369,30 @@ call_as_quosure <- function(call, env) {
 #' Standardise a call
 #'
 #' This is essentially equivalent to [base::match.call()], but with
-#' better handling of primitive functions.
+#' experimental handling of primitive functions.
 #'
-#' @param lang Can be a call (language object), a formula quoting a
-#'   call in the right-hand side, or a frame object from which to
-#'   extract the call expression.
-#' @return A quosure if `.lang` is a quosure, a raw call otherwise.
+#'
+#' @section Life cycle:
+#'
+#' In rlang 0.2.0, `lang_standardise()` was soft-deprecated and
+#' renamed to `call_standardise()`. See lifecycle section in [call2()]
+#' for more about this change.
+#'
+#' @param call Can be a call or a quosure that wraps a call.
+#' @return A quosure if `call` is a quosure, a raw call otherwise.
 #' @export
-lang_standardise <- function(lang) {
-  expr <- get_expr(lang)
-  if (is_frame(lang)) {
-    fn <- lang$fn
+call_standardise <- function(call) {
+  expr <- get_expr(call)
+  if (is_frame(call)) {
+    fn <- call$fn
   } else {
     # The call name might be a literal, not necessarily a symbol
-    env <- get_env(lang, caller_env())
+    env <- get_env(call, caller_env())
     fn <- eval_bare(lang_head(expr), env)
   }
 
   matched <- match.call(as_closure(fn), expr)
-  set_expr(lang, matched)
+  set_expr(call, matched)
 }
 
 #' Extract function from a call
@@ -396,7 +401,7 @@ lang_standardise <- function(lang) {
 #' associated environment. Otherwise, it is looked up in the calling
 #' frame.
 #'
-#' @inheritParams lang_standardise
+#' @inheritParams call_standardise
 #' @export
 #' @seealso [lang_name()]
 #' @examples
@@ -430,7 +435,7 @@ lang_fn <- function(lang) {
 
 #' Extract function name of a call
 #'
-#' @inheritParams lang_standardise
+#' @inheritParams call_standardise
 #' @return A string with the function name, or `NULL` if the function
 #'   is anonymous.
 #' @seealso [lang_fn()]
@@ -480,7 +485,7 @@ lang_name <- function(lang) {
 #' arguments (while [lang_args()] returns the same object converted to
 #' a regular list)
 #'
-#' @inheritParams lang_standardise
+#' @inheritParams call_standardise
 #' @seealso [pairlist], [lang_args()], [call2()]
 #' @export
 #' @examples
@@ -502,7 +507,7 @@ lang_tail <- function(lang) {
 
 #' Extract arguments from a call
 #'
-#' @inheritParams lang_standardise
+#' @inheritParams call_standardise
 #' @return A named list of arguments.
 #' @seealso [lang_tail()], [fn_fmls()] and [fn_fmls_names()]
 #' @export
