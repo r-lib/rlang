@@ -137,6 +137,20 @@ lang_tail <- function(lang) {
   node_cdr(call)
 }
 
+#' Convert to a data mask
+#'
+#' This function has been soft-deprecated in rlang 0.2.0. Please use
+#' [as_data_mask()] instead.
+#'
+#' @inheritParams as_data_mask
+#' @param quo A [quosure].
+#'
+#' @keywords internal
+#' @export
+as_overscope <- function(quo, data = NULL) {
+  as_data_mask(data, quo_get_env(quo))
+}
+
 
 # Deprecated ---------------------------------------------------------
 

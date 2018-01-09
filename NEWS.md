@@ -226,6 +226,10 @@
   to avoid adding to the confusion between S modes and R types. With
   hindsight we find it is better to use more meaningful type names.
 
+* The new function `as_data_mask()` replaces `as_overscope()`. It is
+  part of the larger renaming of "overscope" to "data mask". Its
+  interface is also more consistent.
+
 
 ## Breaking changes
 
@@ -285,6 +289,8 @@
   In addition, `lang_head()` and `lang_tail()` are soft-deprecated
   without replacement because these are low level accessors that are
   rarely needed.
+
+* `as_overscope()` is soft-deprecated in favour of `as_data_mask()`.
 
 
 # rlang 0.1.6

@@ -62,6 +62,7 @@
 #' * [quo_expr()] => [quo_squash()]
 #' * [parse_quosure()] => [parse_quo()]
 #' * [parse_quosures()] => [parse_quos()]
+#' * [as_overscope()] => [as_data_mask()]
 #'
 #' * [lang()] => [call2()]
 #' * [new_language()] => [call_node()]

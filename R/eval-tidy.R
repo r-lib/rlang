@@ -199,8 +199,9 @@ eval_tidy_ <- function(expr, bottom, top = NULL, env = caller_env()) {
 #'   examples). Note that this function is automatically called by
 #'   [eval_tidy_()].
 #'
-#' @param quo A [quosure].
-#' @param data Additional data to put in scope.
+#' @param data A data frame or named vector of masking data.
+#' @param parent The parent environment of the data mask.
+#'
 #' @return An overscope environment.
 #' @export
 #' @examples
@@ -213,9 +214,6 @@ eval_tidy_ <- function(expr, bottom, top = NULL, env = caller_env()) {
 #'
 #' # However you need to clean up the environment after evaluation.
 #' overscope_clean(overscope)
-as_overscope <- function(quo, data = NULL) {
-  as_data_mask(data, quo_get_env(quo))
-}
 as_data_mask <- function(data, parent = base_env()) {
   .Call(rlang_as_data_mask, data, parent)
 }
