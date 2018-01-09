@@ -1,5 +1,5 @@
-#ifndef RLANG_QUO_H
-#define RLANG_QUO_H
+#ifndef RLANG_INTERNAL_QUO_H
+#define RLANG_INTERNAL_QUO_H
 
 
 sexp* rlang_new_quosure(sexp* expr, sexp* env);

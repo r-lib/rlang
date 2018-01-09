@@ -13,6 +13,7 @@
 #include "lib/lang.c"
 #include "lib/node.c"
 #include "lib/parse.c"
+#include "lib/quo.c"
 #include "lib/replace-na.c"
 #include "lib/sexp.c"
 #include "lib/squash.c"

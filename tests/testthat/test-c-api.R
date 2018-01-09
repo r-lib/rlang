@@ -174,3 +174,55 @@ test_that("r_which_operator() returns correct tokens", {
   expect_identical(which_operator(quote(`(-`(a))), "")
   expect_identical(which_operator(quote(`{-`(a))), "")
 })
+
+test_that("client library passes tests", {
+  # Silence package building and embedded tests output
+  temp <- file()
+  sink(temp)
+  on.exit({
+    sink()
+    close(temp)
+  })
+
+  ## tools::testInstalledPackage() can't find the test package when
+  ## working with a temp lib:
+
+  ## old_libpaths <- .libPaths()
+  ## temp_lib <- tempfile("temp_lib")
+  ## dir.create(temp_lib)
+  ## .libPaths(c(temp_lib, old_libpaths))
+  ## on.exit(.libPaths(old_libpaths), add = TRUE)
+
+  zip_file <- normalizePath(file.path("fixtures", "lib.zip"))
+  src_path <- normalizePath(file.path("fixtures", "rlanglibtest"))
+
+  # Set temporary dir to install and test the embedded package so we
+  # don't have to clean leftovers files
+  temp_test_dir <- tempfile("temp_test_dir")
+  dir.create(temp_test_dir)
+  old <- setwd(temp_test_dir)
+  on.exit(setwd(old), add = TRUE)
+
+  file.copy(src_path, temp_test_dir, overwrite = TRUE, recursive = TRUE)
+  pkg_path <- file.path(temp_test_dir, "rlanglibtest")
+
+
+  # We store the library as a zip to avoid VCS noise
+  utils::unzip(zip_file, exdir = file.path(pkg_path, "src"))
+
+  # For maintenance
+  regenerate_zip <- function() {
+    location <- file.path("..", "..", "src")
+    old <- setwd(location)
+    on.exit(setwd(old))
+
+    lib_files <- c("lib.c", "lib")
+    file.remove(zip_file)
+    utils::zip(zip_file, lib_files)
+  }
+
+  devtools::install(pkg_path, dependencies = FALSE)
+
+  result <- tools::testInstalledPackage("rlanglibtest", lib.loc = .libPaths(), types = "test")
+  expect_identical(result, 0L)
+})

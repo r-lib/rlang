@@ -1,8 +1,6 @@
 #ifndef RLANG_EXPORT_H
 #define RLANG_EXPORT_H
 
-#define R_NO_REMAP
-#include <Rinternals.h>
 #include <Rversion.h>
 #include <R_ext/Rdynload.h>
 
