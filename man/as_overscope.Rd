@@ -2,17 +2,42 @@
 % Please edit documentation in R/lifecycle-retired.R
 \name{as_overscope}
 \alias{as_overscope}
-\title{Convert to a data mask}
+\alias{new_overscope}
+\alias{overscope_clean}
+\title{Create a data mask}
 \usage{
 as_overscope(quo, data = NULL)
+
+new_overscope(bottom, top = NULL, enclosure = base_env())
+
+overscope_clean(overscope)
 }
 \arguments{
 \item{quo}{A \link{quosure}.}
 
 \item{data}{A data frame or named vector of masking data.}
+
+\item{bottom}{This is the environment (or the bottom of a set of
+environments) containing definitions for overscoped symbols. The
+bottom environment typically contains pronouns (like \code{.data})
+while its direct parents contain the overscoping bindings. The
+last one of these parents is the \code{top}.}
+
+\item{top}{The top environment of the overscope. During tidy
+evaluation, this environment is chained and rechained to lexical
+enclosures of self-evaluating formulas (or quosures). This is the
+mechanism that ensures hygienic scoping: the bindings in the
+overscope have precedence, but the bindings in the dynamic
+environment where the tidy quotes were created in the first place
+are in scope as well. If \code{NULL} (the default), \code{bottom} is also the top of
+the overscope.}
+
+\item{enclosure}{The \code{parent} argument of \code{\link[=new_data_mask]{new_data_mask()}}.}
+
+\item{overscope}{The \code{mask} argument of \code{\link[=data_mask_clean]{data_mask_clean()}}}
 }
 \description{
-This function has been soft-deprecated in rlang 0.2.0. Please use
-\code{\link[=as_data_mask]{as_data_mask()}} instead.
+These functions have been soft-deprecated in rlang 0.2.0. Please use
+\code{\link[=as_data_mask]{as_data_mask()}}, \code{\link[=new_data_mask]{new_data_mask()}} and \code{\link[=data_mask_clean]{data_mask_clean()}} instead.
 }
 \keyword{internal}

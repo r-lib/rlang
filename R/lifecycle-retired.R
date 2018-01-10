@@ -137,10 +137,10 @@ lang_tail <- function(lang) {
   node_cdr(call)
 }
 
-#' Convert to a data mask
+#' Create a data mask
 #'
-#' This function has been soft-deprecated in rlang 0.2.0. Please use
-#' [as_data_mask()] instead.
+#' These functions have been soft-deprecated in rlang 0.2.0. Please use
+#' [as_data_mask()], [new_data_mask()] and [data_mask_clean()] instead.
 #'
 #' @inheritParams as_data_mask
 #' @param quo A [quosure].
@@ -150,6 +150,19 @@ lang_tail <- function(lang) {
 as_overscope <- function(quo, data = NULL) {
   as_data_mask(data, quo_get_env(quo))
 }
+#' @rdname as_overscope
+#' @param enclosure The `parent` argument of [new_data_mask()].
+#' @export
+new_overscope <- function(bottom, top = NULL, enclosure = base_env()) {
+  new_data_mask(bottom, top, enclosure)
+}
+#' @rdname as_overscope
+#' @param overscope The `mask` argument of [data_mask_clean()]
+#' @export
+overscope_clean <- function(overscope) {
+  invisible(.Call(rlang_data_mask_clean, overscope))
+}
+
 #' Tidy evaluation in a custom environment
 #'
 #' This function is soft-deprecated as of rlang 0.2.0.
@@ -182,16 +195,6 @@ eval_tidy_ <- function(expr, bottom, top = NULL, env = caller_env()) {
 #' @export
 overscope_eval_next <- function(overscope, quo, env = base_env()) {
   .Call(rlang_eval_tidy, quo, overscope, environment())
-}
-#' Create a new data mask
-#'
-#' `new_overscope()` is soft-deprecated as of rlang 0.2.0. Please use
-#' [new_data_mask()] instead.
-#'
-#' @param enclosure The `parent` argument of [new_data_mask()].
-#' @export
-new_overscope <- function(bottom, top = NULL, enclosure = base_env()) {
-  new_data_mask(bottom, top, enclosure)
 }
 
 

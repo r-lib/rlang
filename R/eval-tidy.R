@@ -168,7 +168,7 @@ delayedAssign(".data", as_data_pronoun(list()))
 #'
 #' * Once an expression has been evaluated in the tidy environment,
 #'   it's a good idea to clean up the definitions that make
-#'   self-evaluation of formulas possible `overscope_clean()`.
+#'   self-evaluation of formulas possible `data_mask_clean()`.
 #'   Otherwise your users may face unexpected results in specific
 #'   corner cases (e.g. when the evaluation environment is leaked, see
 #'   examples). Note that this function is automatically called by
@@ -196,13 +196,11 @@ delayedAssign(".data", as_data_pronoun(list()))
 #' @examples
 #' # Evaluating in a tidy evaluation environment enables all tidy
 #' # features:
-#' expr <- quote(list(.data$cyl, ~letters))
-#' f <- as_quosure(expr)
-#' overscope <- as_data_mask(f, data = mtcars)
-#' overscope_eval_next(overscope, f)
+#' mask <- as_data_mask(mtcars)
+#' eval_tidy(quo(letters), mask)
 #'
 #' # However you need to clean up the environment after evaluation.
-#' data_mask_clean(overscope)
+#' data_mask_clean(mask)
 as_data_mask <- function(data, parent = base_env()) {
   .Call(rlang_as_data_mask, data, parent)
 }
@@ -226,9 +224,6 @@ as_data_pronoun <- function(data) {
 #'   environment where the tidy quotes were created in the first place
 #'   are in scope as well. If `NULL` (the default), `bottom` is also the top of
 #'   the overscope.
-#' @param parent The parent environment of the data mask. After a
-#'   quosure is done self-evaluating, the overscope is rechained to
-#'   the default enclosure.
 #' @return A valid overscope: a child environment of `bottom`
 #'   containing the definitions enabling tidy evaluation
 #'   (self-evaluating quosures, formula-unguarding, ...).
@@ -237,9 +232,11 @@ new_data_mask <- function(bottom, top = NULL, parent = base_env()) {
   .Call(rlang_new_data_mask, bottom, top, parent)
 }
 #' @rdname as_data_mask
+#' @param mask A data mask as created by `as_data_mask()` or
+#'   `new_data_mask()`.
 #' @export
-overscope_clean <- function(overscope) {
-  invisible(.Call(rlang_data_mask_clean, overscope))
+data_mask_clean <- function(mask) {
+  invisible(.Call(rlang_data_mask_clean, mask))
 }
 
 

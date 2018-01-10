@@ -4,7 +4,7 @@
 \alias{as_data_mask}
 \alias{as_data_pronoun}
 \alias{new_data_mask}
-\alias{overscope_clean}
+\alias{data_mask_clean}
 \title{Create a data mask}
 \usage{
 as_data_mask(data, parent = base_env())
@@ -13,7 +13,7 @@ as_data_pronoun(data)
 
 new_data_mask(bottom, top = NULL, parent = base_env())
 
-overscope_clean(overscope)
+data_mask_clean(mask)
 }
 \arguments{
 \item{data}{A data frame or named vector of masking data.}
@@ -35,9 +35,8 @@ environment where the tidy quotes were created in the first place
 are in scope as well. If \code{NULL} (the default), \code{bottom} is also the top of
 the overscope.}
 
-\item{parent}{The parent environment of the data mask. After a
-quosure is done self-evaluating, the overscope is rechained to
-the default enclosure.}
+\item{mask}{A data mask as created by \code{as_data_mask()} or
+\code{new_data_mask()}.}
 }
 \value{
 An overscope environment.
@@ -113,11 +112,9 @@ Following this change in terminology, \code{as_data_mask()} and
 \examples{
 # Evaluating in a tidy evaluation environment enables all tidy
 # features:
-expr <- quote(list(.data$cyl, ~letters))
-f <- as_quosure(expr)
-overscope <- as_data_mask(f, data = mtcars)
-overscope_eval_next(overscope, f)
+mask <- as_data_mask(mtcars)
+eval_tidy(quo(letters), mask)
 
 # However you need to clean up the environment after evaluation.
-data_mask_clean(overscope)
+data_mask_clean(mask)
 }
