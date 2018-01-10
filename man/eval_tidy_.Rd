@@ -7,7 +7,7 @@
 eval_tidy_(expr, bottom, top = NULL, env = caller_env())
 }
 \arguments{
-\item{expr}{An expression.}
+\item{expr}{An expression to evaluate.}
 
 \item{bottom}{The environment containing masking objects if the
 data mask is one environment deep. The bottom environment if the
@@ -17,7 +17,7 @@ data mask comprises multiple environment.}
 is only one environment deep, \code{top} should be the same as
 \code{bottom}.}
 
-\item{env}{The lexical environment in which to evaluate \code{expr}.}
+\item{env}{The environment in which to evaluate \code{expr}.}
 }
 \description{
 This function is soft-deprecated as of rlang 0.2.0.

@@ -1,104 +1,75 @@
-#' Evaluate an expression tidily
+#' Evaluate an expression with quosures and pronoun support
 #'
 #' @description
 #'
-#' `eval_tidy()` is a variant of [base::eval()] and [eval_bare()] that
-#' powers the [tidy evaluation
-#' framework](http://rlang.tidyverse.org/articles/tidy-evaluation.html).
-#' It evaluates `expr` in an [overscope][as_data_mask] where the
-#' special definitions enabling tidy evaluation are installed. This
-#' enables the following features:
+#' `eval_tidy()` is a variant of [base::eval()] that powers the [tidy
+#' evaluation framework](http://rlang.tidyverse.org/articles/tidy-evaluation.html).
+#' Like `eval()` it accepts user data as argument. If supplied, it
+#' evaluates its input `expr` in a [data mask][as_data_mask]. In
+#' additon `eval_tidy()` supports:
 #'
-#' - Overscoped data. You can supply a data frame or list of named
-#'   vectors to the `data` argument. The data contained in this list
-#'   has precedence over the objects in the contextual environment.
-#'   This is similar to how [base::eval()] accepts a list instead of
-#'   an environment.
+#' - [Quosures][quosure]. The expression wrapped in the quosure
+#'   evaluates in its original context (masked by `data` if supplied).
 #'
-#' - Self-evaluation of quosures. Within the overscope, quosures act
-#'   like promises. When a quosure within an expression is evaluated,
-#'   it automatically invokes the quoted expression in the captured
-#'   environment (chained to the overscope). Note that quosures do not
-#'   always get evaluated because of lazy semantics, e.g. `TRUE ||
-#'   ~never_called`.
+#' - [Pronouns][.data]. If `data` is supplied, the `.env` and `.data`
+#'   pronouns are installed in the data mask. `.env` is a reference to
+#'   the calling environment and `.data` refers to the `data` argument.
+#'   These pronouns lets you be explicit about where to find
+#'   values and throw errors if you try to access non-existent values.
 #'
-#' - Pronouns. `eval_tidy()` installs the `.env` and `.data`
-#'   pronouns. `.env` contains a reference to the calling environment,
-#'   while `.data` refers to the `data` argument. These pronouns lets
-#'   you be explicit about where to find values and throw errors if
-#'   you try to access non-existent values.
-#'
-#' @param expr An expression.
-#' @param data A list (or data frame). This is passed to the
-#'   [as_dictionary()] coercer, a generic used to transform an object
-#'   to a proper data source. If you want to make `eval_tidy()` work
-#'   for your own objects, you can define a method for this generic.
-#' @param env The lexical environment in which to evaluate `expr`.
-#' @seealso [quo()], [quasiquotation]
+#' @param expr An expression to evaluate.
+#' @param data A data frame, or named list or vector. Alternatively, a
+#'   data mask created with [as_data_mask()] or [new_data_mask()].
+#' @param env The environment in which to evaluate `expr`.
+#' @seealso [quasiquotation] for the second leg of the tidy evaluation
+#'   framework.
 #' @export
 #' @examples
-#' # Like base::eval() and eval_bare(), eval_tidy() evaluates quoted
-#' # expressions:
-#' expr <- expr(1 + 2 + 3)
-#' eval_tidy(expr)
+#' # With simple quoted expressions eval_tidy() works the same way as
+#' # eval():
+#' apple <- "apple"
+#' kiwi <- "kiwi"
+#' expr <- quote(paste(apple, kiwi))
+#' expr
 #'
-#' # Like base::eval(), it lets you supply overscoping data:
-#' foo <- 1
-#' bar <- 2
-#' expr <- quote(list(foo, bar))
-#' eval_tidy(expr, list(foo = 100))
-#'
-#' # The main difference is that quosures self-evaluate within
-#' # eval_tidy():
-#' quo <- quo(1 + 2 + 3)
-#' eval(quo)
-#' eval_tidy(quo)
-#'
-#' # Quosures also self-evaluate deep in an expression not just when
-#' # directly supplied to eval_tidy():
-#' expr <- expr(list(list(list(!! quo))))
 #' eval(expr)
 #' eval_tidy(expr)
 #'
-#' # Self-evaluation of quosures is powerful because they
-#' # automatically capture their enclosing environment:
-#' foo <- function(x) {
-#'   y <- 10
-#'   quo(x + y)
+#' # Both accept a data mask as argument:
+#' data <- list(apple = "CARROT", kiwi = "TOMATO")
+#' eval(expr, data)
+#' eval_tidy(expr, data)
+#'
+#'
+#' # In addition eval_tidy() has support for quosures:
+#' with_data <- function(data, expr) {
+#'   quo <- enquo(expr)
+#'   eval_tidy(quo, data)
 #' }
-#' f <- foo(1)
+#' with_data(NULL, apple)
+#' with_data(data, apple)
+#' with_data(data, list(apple, kiwi))
 #'
-#' # This quosure refers to `x` and `y` from `foo()`'s evaluation
-#' # frame. That's evaluated consistently by eval_tidy():
-#' f
-#' eval_tidy(f)
+#' # Secondly eval_tidy() installs handy pronouns that allows users to
+#' # be explicit about where to find symbols:
+#' with_data(data, .data$apple)
+#' with_data(data, .env$apple)
 #'
 #'
-#' # Finally, eval_tidy() installs handy pronouns that allows users to
-#' # be explicit about where to find symbols. If you supply data,
-#' # eval_tidy() will look there first:
-#' cyl <- 10
-#' eval_tidy(quo(cyl), mtcars)
-#'
-#' # To avoid ambiguity and be explicit, you can use the `.env` and
-#' # `.data` pronouns:
-#' eval_tidy(quo(.data$cyl), mtcars)
-#' eval_tidy(quo(.env$cyl), mtcars)
-#'
-#' # Note that instead of using `.env` it is often equivalent and may be
-#' # preferred to unquote a value. There are two differences. First unquoting
-#' # happens earlier, when the quosure is created. Secondly, subsetting `.env`
-#' # with the `$` operator may be brittle because `$` does not look through
-#' # the parents of the environment. Using `.env$name` in a magrittr pipeline
-#' # is an instance where this poses problem, because the magrittr pipe
-#' # currently (as of v1.5.0) evaluates its operands in a *child* of the
-#' # current environment (this child environment is where it defines the
-#' # pronoun `.`).
-#'
-#' eval_tidy(quo(!! cyl), mtcars)  # 10
+#' # Note that instead of using `.env` it is often equivalent and may
+#' # be preferred to unquote a value. There are two differences. First
+#' # unquoting happens earlier, when the quosure is created. Secondly,
+#' # subsetting `.env` with the `$` operator may be brittle because
+#' # `$` does not look through the parents of the environment.
+#' #
+#' # For instance using `.env$name` in a magrittr pipeline is an
+#' # instance where this poses problem, because the magrittr pipe
+#' # currently (as of v1.5.0) evaluates its operands in a *child* of
+#' # the current environment (this child environment is where it
+#' # defines the pronoun `.`).
 #' \dontrun{
-#'   mtcars %>% eval_tidy(quo(!! cyl), .)  # 10
-#'   mtcars %>% eval_tidy(quo(.env$cyl), .)  # NULL
+#'   data %>% with_data(!!kiwi)    # "kiwi"
+#'   data %>% with_data(.env$kiwi)  # NULL
 #' }
 #' @name eval_tidy
 eval_tidy <- function(expr, data = NULL, env = caller_env()) {
