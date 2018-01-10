@@ -1,4 +1,4 @@
-context("unquote")
+context("quasiquotation")
 
 test_that("interpolation does not recurse over spliced arguments", {
   var2 <- quote({foo; !! stop(); bar})
