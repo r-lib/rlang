@@ -5,7 +5,7 @@
 #' `eval_tidy()` is a variant of [base::eval()] and [eval_bare()] that
 #' powers the [tidy evaluation
 #' framework](http://rlang.tidyverse.org/articles/tidy-evaluation.html).
-#' It evaluates `expr` in an [overscope][as_overscope] where the
+#' It evaluates `expr` in an [overscope][as_data_mask] where the
 #' special definitions enabling tidy evaluation are installed. This
 #' enables the following features:
 #'
@@ -147,14 +147,14 @@ delayedAssign(".data", as_data_pronoun(list()))
 #' care of installing the tidyeval components in your custom dynamic
 #' scope.
 #'
-#' * `as_overscope()` is the function that powers [eval_tidy()]. It
+#' * `as_data_mask()` is the function that powers [eval_tidy()]. It
 #'   could be useful if you cannot use `eval_tidy()` for some reason,
 #'   but serves mostly as an example of how to build a dynamic scope
 #'   for tidy evaluation. In this case, it creates pronouns `.data`
 #'   and `.env` and buries all dynamic bindings from the supplied
 #'   `data` in new environments.
 #'
-#' * `new_overscope()` is called by `as_overscope()` and
+#' * `new_overscope()` is called by `as_data_mask()` and
 #'   [eval_tidy_()]. It installs the definitions for making
 #'   formulas self-evaluate and for formula-guards. It also installs
 #'   the pronoun `.top_env` that helps keeping track of the boundary
@@ -184,7 +184,7 @@ delayedAssign(".data", as_data_pronoun(list()))
 #' environments). We say that that objects from user data mask objects
 #' in the current environment.
 #'
-#' Following this change in terminology, `as_overscope()` and
+#' Following this change in terminology, `as_data_mask()` and
 #' `new_overscope()` were soft-deprecated in rlang 0.2.0 in favour of
 #' `as_data_mask()` and `new_data_mask()`.
 #'
@@ -198,11 +198,11 @@ delayedAssign(".data", as_data_pronoun(list()))
 #' # features:
 #' expr <- quote(list(.data$cyl, ~letters))
 #' f <- as_quosure(expr)
-#' overscope <- as_overscope(f, data = mtcars)
+#' overscope <- as_data_mask(f, data = mtcars)
 #' overscope_eval_next(overscope, f)
 #'
 #' # However you need to clean up the environment after evaluation.
-#' overscope_clean(overscope)
+#' data_mask_clean(overscope)
 as_data_mask <- function(data, parent = base_env()) {
   .Call(rlang_as_data_mask, data, parent)
 }
@@ -212,7 +212,7 @@ as_data_pronoun <- function(data) {
   .Call(rlang_as_data_pronoun, data)
 }
 
-#' @rdname as_overscope
+#' @rdname as_data_mask
 #' @param bottom This is the environment (or the bottom of a set of
 #'   environments) containing definitions for overscoped symbols. The
 #'   bottom environment typically contains pronouns (like `.data`)
@@ -236,7 +236,7 @@ as_data_pronoun <- function(data) {
 new_data_mask <- function(bottom, top = NULL, parent = base_env()) {
   .Call(rlang_new_data_mask, bottom, top, parent)
 }
-#' @rdname as_overscope
+#' @rdname as_data_mask
 #' @export
 overscope_clean <- function(overscope) {
   invisible(.Call(rlang_data_mask_clean, overscope))

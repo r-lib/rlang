@@ -155,13 +155,13 @@ as_overscope <- function(quo, data = NULL) {
 #' This function is soft-deprecated as of rlang 0.2.0.
 #'
 #' @inheritParams eval_tidy
-#' @inheritParams as_overscope
+#' @inheritParams as_data_mask
 #'
 #' @keywords internal
 #' @export
 eval_tidy_ <- function(expr, bottom, top = NULL, env = caller_env()) {
   data_mask <- new_overscope(bottom, top %||% bottom)
-  on.exit(overscope_clean(data_mask))
+  on.exit(data_mask_clean(data_mask))
   .Call(rlang_eval_tidy, expr, data_mask, environment())
 }
 #' Evaluate next quosure in a data mask

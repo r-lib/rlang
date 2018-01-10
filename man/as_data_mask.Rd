@@ -3,19 +3,48 @@
 \name{as_data_mask}
 \alias{as_data_mask}
 \alias{as_data_pronoun}
+\alias{new_data_mask}
+\alias{overscope_clean}
 \title{Create a data mask}
 \usage{
 as_data_mask(data, parent = base_env())
 
 as_data_pronoun(data)
+
+new_data_mask(bottom, top = NULL, parent = base_env())
+
+overscope_clean(overscope)
 }
 \arguments{
 \item{data}{A data frame or named vector of masking data.}
 
 \item{parent}{The parent environment of the data mask.}
+
+\item{bottom}{This is the environment (or the bottom of a set of
+environments) containing definitions for overscoped symbols. The
+bottom environment typically contains pronouns (like \code{.data})
+while its direct parents contain the overscoping bindings. The
+last one of these parents is the \code{top}.}
+
+\item{top}{The top environment of the overscope. During tidy
+evaluation, this environment is chained and rechained to lexical
+enclosures of self-evaluating formulas (or quosures). This is the
+mechanism that ensures hygienic scoping: the bindings in the
+overscope have precedence, but the bindings in the dynamic
+environment where the tidy quotes were created in the first place
+are in scope as well. If \code{NULL} (the default), \code{bottom} is also the top of
+the overscope.}
+
+\item{parent}{The parent environment of the data mask. After a
+quosure is done self-evaluating, the overscope is rechained to
+the default enclosure.}
 }
 \value{
 An overscope environment.
+
+A valid overscope: a child environment of \code{bottom}
+containing the definitions enabling tidy evaluation
+(self-evaluating quosures, formula-unguarding, ...).
 }
 \description{
 Tidy evaluation works by rescoping a set of symbols (column names
@@ -41,13 +70,13 @@ of the time, you can just use \code{\link[=eval_tidy_]{eval_tidy_()}} as it will
 care of installing the tidyeval components in your custom dynamic
 scope.
 \itemize{
-\item \code{as_overscope()} is the function that powers \code{\link[=eval_tidy]{eval_tidy()}}. It
+\item \code{as_data_mask()} is the function that powers \code{\link[=eval_tidy]{eval_tidy()}}. It
 could be useful if you cannot use \code{eval_tidy()} for some reason,
 but serves mostly as an example of how to build a dynamic scope
 for tidy evaluation. In this case, it creates pronouns \code{.data}
 and \code{.env} and buries all dynamic bindings from the supplied
 \code{data} in new environments.
-\item \code{new_overscope()} is called by \code{as_overscope()} and
+\item \code{new_overscope()} is called by \code{as_data_mask()} and
 \code{\link[=eval_tidy_]{eval_tidy_()}}. It installs the definitions for making
 formulas self-evaluate and for formula-guards. It also installs
 the pronoun \code{.top_env} that helps keeping track of the boundary
@@ -59,7 +88,7 @@ evaluate in a same dynamic scope. That's a simple wrapper around
 dynamic scope to the new formula enclosure to evaluate.
 \item Once an expression has been evaluated in the tidy environment,
 it's a good idea to clean up the definitions that make
-self-evaluation of formulas possible \code{overscope_clean()}.
+self-evaluation of formulas possible \code{data_mask_clean()}.
 Otherwise your users may face unexpected results in specific
 corner cases (e.g. when the evaluation environment is leaked, see
 examples). Note that this function is automatically called by
@@ -76,7 +105,7 @@ masking in the search path which occurs through the same mechanism
 environments). We say that that objects from user data mask objects
 in the current environment.
 
-Following this change in terminology, \code{as_overscope()} and
+Following this change in terminology, \code{as_data_mask()} and
 \code{new_overscope()} were soft-deprecated in rlang 0.2.0 in favour of
 \code{as_data_mask()} and \code{new_data_mask()}.
 }
@@ -86,9 +115,9 @@ Following this change in terminology, \code{as_overscope()} and
 # features:
 expr <- quote(list(.data$cyl, ~letters))
 f <- as_quosure(expr)
-overscope <- as_overscope(f, data = mtcars)
+overscope <- as_data_mask(f, data = mtcars)
 overscope_eval_next(overscope, f)
 
 # However you need to clean up the environment after evaluation.
-overscope_clean(overscope)
+data_mask_clean(overscope)
 }
