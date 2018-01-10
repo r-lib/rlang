@@ -3,10 +3,9 @@
 #' @description
 #'
 #' Quasiquotation is the mechanism that makes it possible to program
-#' flexibly with
-#' [tidyeval](http://rlang.tidyverse.org/articles/tidy-evaluation.html)
-#' grammars like dplyr. It is enabled in all tidyeval functions, the
-#' most fundamental of which are [quo()] and [expr()].
+#' flexibly with tidy evaluation grammars like dplyr. It is enabled in
+#' all tidyeval quoting functions, the most fundamental of which are
+#' [quo()] and [expr()].
 #'
 #' Quasiquotation is the combination of quoting an expression while
 #' allowing immediate evaluation (unquoting) of part of that

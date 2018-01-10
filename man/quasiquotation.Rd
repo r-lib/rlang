@@ -31,10 +31,9 @@ supplied to \code{x}.}
 }
 \description{
 Quasiquotation is the mechanism that makes it possible to program
-flexibly with
-\href{http://rlang.tidyverse.org/articles/tidy-evaluation.html}{tidyeval}
-grammars like dplyr. It is enabled in all tidyeval functions, the
-most fundamental of which are \code{\link[=quo]{quo()}} and \code{\link[=expr]{expr()}}.
+flexibly with tidy evaluation grammars like dplyr. It is enabled in
+all tidyeval quoting functions, the most fundamental of which are
+\code{\link[=quo]{quo()}} and \code{\link[=expr]{expr()}}.
 
 Quasiquotation is the combination of quoting an expression while
 allowing immediate evaluation (unquoting) of part of that
