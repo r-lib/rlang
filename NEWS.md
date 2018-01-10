@@ -226,9 +226,18 @@
   to avoid adding to the confusion between S modes and R types. With
   hindsight we find it is better to use more meaningful type names.
 
-* The new function `as_data_mask()` replaces `as_overscope()`. It is
-  part of the larger renaming of "overscope" to "data mask". Its
-  interface is also more consistent.
+* We now use the term "data mask" instead of "overscope". We think
+  data mask is a more natural name in the context of R. We say that
+  that objects from user data mask objects in the current environment.
+  This makes reference to object masking in the search path which is
+  due to the same mechanism (in technical terms, lexical scoping with
+  hierarchically nested environments).
+
+  Following this new terminology, the new functions `as_data_mask()`
+  and `new_data_mask()` replace `as_overscope()` and
+  `new_overscope()`. `as_data_mask()` has also a more consistent
+  interface. These functions are only meant for developers of tidy
+  evaluation interfaces.
 
 
 ## Breaking changes

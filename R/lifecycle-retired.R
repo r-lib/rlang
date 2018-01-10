@@ -183,6 +183,16 @@ eval_tidy_ <- function(expr, bottom, top = NULL, env = caller_env()) {
 overscope_eval_next <- function(overscope, quo, env = base_env()) {
   .Call(rlang_eval_tidy, quo, overscope, environment())
 }
+#' Create a new data mask
+#'
+#' `new_overscope()` is soft-deprecated as of rlang 0.2.0. Please use
+#' [new_data_mask()] instead.
+#'
+#' @param enclosure The `parent` argument of [new_data_mask()].
+#' @export
+new_overscope <- function(bottom, top = NULL, enclosure = base_env()) {
+  new_data_mask(bottom, top, enclosure)
+}
 
 
 #' Create a dictionary

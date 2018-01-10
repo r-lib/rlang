@@ -68,6 +68,7 @@ TODO: Review all functions in rlang and mark stable ones as such.
 \item \code{\link[=parse_quosure]{parse_quosure()}} => \code{\link[=parse_quo]{parse_quo()}}
 \item \code{\link[=parse_quosures]{parse_quosures()}} => \code{\link[=parse_quos]{parse_quos()}}
 \item \code{\link[=as_overscope]{as_overscope()}} => \code{\link[=as_data_mask]{as_data_mask()}}
+\item \code{\link[=new_overscope]{new_overscope()}} => \code{\link[=new_data_mask]{new_data_mask()}}
 \item \code{\link[=as_dictionary]{as_dictionary()}} => \code{\link[=as_data_pronoun]{as_data_pronoun()}}
 \item \code{\link[=lang]{lang()}} => \code{\link[=call2]{call2()}}
 \item \code{\link[=new_language]{new_language()}} => \code{\link[=call_node]{call_node()}}

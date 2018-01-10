@@ -174,6 +174,20 @@ delayedAssign(".data", as_data_pronoun(list()))
 #'   examples). Note that this function is automatically called by
 #'   [eval_tidy_()].
 #'
+#'
+#' @section Life cycle:
+#'
+#' In early versions of rlang data masks were called overscopes. We
+#' think data mask is a more natural name in R. It makes reference to
+#' masking in the search path which occurs through the same mechanism
+#' (in technical terms, lexical scoping with hierarchically nested
+#' environments). We say that that objects from user data mask objects
+#' in the current environment.
+#'
+#' Following this change in terminology, `as_overscope()` and
+#' `new_overscope()` were soft-deprecated in rlang 0.2.0 in favour of
+#' `as_data_mask()` and `new_data_mask()`.
+#'
 #' @param data A data frame or named vector of masking data.
 #' @param parent The parent environment of the data mask.
 #'
@@ -212,15 +226,15 @@ as_data_pronoun <- function(data) {
 #'   environment where the tidy quotes were created in the first place
 #'   are in scope as well. If `NULL` (the default), `bottom` is also the top of
 #'   the overscope.
-#' @param enclosure The default enclosure. After a quosure is done
-#'   self-evaluating, the overscope is rechained to the default
-#'   enclosure.
+#' @param parent The parent environment of the data mask. After a
+#'   quosure is done self-evaluating, the overscope is rechained to
+#'   the default enclosure.
 #' @return A valid overscope: a child environment of `bottom`
 #'   containing the definitions enabling tidy evaluation
 #'   (self-evaluating quosures, formula-unguarding, ...).
 #' @export
-new_overscope <- function(bottom, top = NULL, enclosure = base_env()) {
-  .Call(rlang_new_data_mask, bottom, top, enclosure)
+new_data_mask <- function(bottom, top = NULL, parent = base_env()) {
+  .Call(rlang_new_data_mask, bottom, top, parent)
 }
 #' @rdname as_overscope
 #' @export

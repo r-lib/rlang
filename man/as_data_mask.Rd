@@ -66,6 +66,21 @@ examples). Note that this function is automatically called by
 \code{\link[=eval_tidy_]{eval_tidy_()}}.
 }
 }
+\section{Life cycle}{
+
+
+In early versions of rlang data masks were called overscopes. We
+think data mask is a more natural name in R. It makes reference to
+masking in the search path which occurs through the same mechanism
+(in technical terms, lexical scoping with hierarchically nested
+environments). We say that that objects from user data mask objects
+in the current environment.
+
+Following this change in terminology, \code{as_overscope()} and
+\code{new_overscope()} were soft-deprecated in rlang 0.2.0 in favour of
+\code{as_data_mask()} and \code{new_data_mask()}.
+}
+
 \examples{
 # Evaluating in a tidy evaluation environment enables all tidy
 # features:
