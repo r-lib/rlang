@@ -11,7 +11,7 @@ If I got an ERROR because I couldn't install your package (or one of it's depend
 
 Otherwise, please carefully look at the results, and let me know if I've introduced a bug in {{{ my_package }}}. If I have, I'd really appreciate a minimal reproducible example that uses only {{{ my_package }}} functions. That way I can find and fix the bug as quickly as possible.
 
-If it doesn't look like a bug in {{{ my_package }}}, please prepare an update for CRAN. Ideally you'll tweak your package so it works with both the released and development versions of dplyr. Otherwise, be prepared to submit your package to CRAN soon after I let you know that I've submitted.
+If it doesn't look like a bug in {{{ my_package }}}, please prepare an update for CRAN. Ideally you'll tweak your package so it works with both the released and development versions of {{{ my_package }}}. Otherwise, be prepared to submit your package to CRAN soon after I let you know that I've submitted.
 
 To get the development version of {{{ my_package }}} so you can run the checks yourself, you can run:
 
