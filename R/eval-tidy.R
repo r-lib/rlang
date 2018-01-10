@@ -133,54 +133,75 @@ delayedAssign(".data", as_data_pronoun(list()))
 
 #' Create a data mask
 #'
-#' Tidy evaluation works by rescoping a set of symbols (column names
-#' of a data frame for example) to custom bindings. While doing this,
-#' it is important to keep the original environment of captured
-#' expressions in scope. The gist of tidy evaluation is to create a
-#' dynamic scope containing custom bindings that should have
-#' precedence when expressions are evaluated, and chain this scope
-#' (set of linked environments) to the lexical enclosure of formulas
-#' under evaluation. During tidy evaluation, formulas are transformed
-#' into formula-promises and will self-evaluate their RHS as soon as
-#' they are called. The main trick of tidyeval is to consistently
-#' rechain the dynamic scope to the lexical enclosure of each tidy
-#' quote under evaluation.
+#' @description
 #'
-#' These functions are useful for embedding the tidy evaluation
-#' framework in your own DSLs with your own evaluating function. They
-#' let you create a custom dynamic scope. That is, a set of chained
-#' environments whose bottom serves as evaluation environment and
-#' whose top is rechained to the current lexical enclosure. But most
-#' of the time, you can just use [eval_tidy_()] as it will take
-#' care of installing the tidyeval components in your custom dynamic
-#' scope.
+#' A data mask is an environment (or possibly multiple environments
+#' forming an ancestry) containing user-supplied objects. Objects in
+#' the mask have precedence over objects in the environment (i.e. they
+#' mask those objects). Many R functions evaluate quoted expressions
+#' in a data mask so these expressions can refer to objects within the
+#' user data.
 #'
-#' * `as_data_mask()` is the function that powers [eval_tidy()]. It
-#'   could be useful if you cannot use `eval_tidy()` for some reason,
-#'   but serves mostly as an example of how to build a dynamic scope
-#'   for tidy evaluation. In this case, it creates pronouns `.data`
-#'   and `.env` and buries all dynamic bindings from the supplied
-#'   `data` in new environments.
+#' These functions let you construct a tidy eval data mask manually.
+#' They are meant for developers of tidy eval interfaces rather than
+#' for end users. Most of the time you can just call [eval_tidy()]
+#' with user data and the data mask will be constructed automatically.
+#' There are three main use cases for manual creation of data masks:
 #'
-#' * `new_overscope()` is called by `as_data_mask()` and
-#'   [eval_tidy_()]. It installs the definitions for making
-#'   formulas self-evaluate and for formula-guards. It also installs
-#'   the pronoun `.top_env` that helps keeping track of the boundary
-#'   of the dynamic scope. If you evaluate a tidy quote with
-#'   [eval_tidy_()], you don't need to use this.
+#' * When [eval_tidy()] is called with the same data in a tight loop.
+#'   Tidy eval data masks are a bit expensive to build so it is best
+#'   to construct it once and reuse it the other times for optimal
+#'   performance.
 #'
-#' * `eval_tidy_()` is useful when you have several quosures to
-#'   evaluate in a same dynamic scope. That's a simple wrapper around
-#'   [eval_bare()] that updates the `.env` pronoun and rechains the
-#'   dynamic scope to the new formula enclosure to evaluate.
+#' * When several expressions should be evaluated in the same
+#'   environment because a quoted expression might create new objects
+#'   that can be referred in other quoted expressions evaluated at a
+#'   later time.
 #'
-#' * Once an expression has been evaluated in the tidy environment,
-#'   it's a good idea to clean up the definitions that make
-#'   self-evaluation of formulas possible `data_mask_clean()`.
-#'   Otherwise your users may face unexpected results in specific
-#'   corner cases (e.g. when the evaluation environment is leaked, see
-#'   examples). Note that this function is automatically called by
-#'   [eval_tidy_()].
+#' * When your data mask requires special features. For instance the
+#'   data frame columns in dplyr data masks are implemented with
+#'   [active bindings][base::delayedAssign].
+#'
+#'
+#' @section Constructing a data mask:
+#'
+#' Creating a data mask for [base::eval()] is a simple matter of
+#' creating an environment containing masking objects that has the
+#' user context as parent. `eval()` automates this task when you
+#' supply data as second argument. However a tidy eval data mask also
+#' needs to enable support of [quosures][quosure] and [data
+#' pronouns][tidyeval-data]. These functions allow manual construction
+#' of tidy eval data masks:
+#'
+#' * `as_data_mask()` transforms a data frame, named vector or
+#'   environment to a data mask. If an environment, its ancestry is
+#'   ignored. It automatically installs a data pronoun.
+#'
+#' * `new_data_mask()` is a bare bones data mask constructor for
+#'   environments. You can supply a bottom and a top environment in
+#'   case your data mask comprises multiple environments.
+#'
+#'   Unlike `as_data_mask()` it does not install the `.data` pronoun
+#'   so you need to provide one yourself. You can provide a pronoun
+#'   constructed with `as_data_pronoun()` or your own pronoun class.
+#'
+#' - `as_data_pronoun()` constructs a tidy eval data pronoun that
+#'   gives more useful error messages than regular data frames or
+#'   lists, i.e. when an object does not exist or if an user tries to
+#'   overwrite an object.
+#'
+#'
+#' @section Evaluating in a data mask:
+#'
+#' To use a a data mask:
+#'
+#' * Supply it to [eval_tidy()] as `data` argument. You can repeat
+#'   this as many times as needed.
+#'
+#' * When you are done evaluating use `data_mask_clean()` to empty the
+#'   data mask. [eval_tidy()] automatically calls it only if it
+#'   created the data mask. If you created the mask it is your
+#'   responsibility to clean it.
 #'
 #'
 #' @section Life cycle:
@@ -198,8 +219,8 @@ delayedAssign(".data", as_data_pronoun(list()))
 #'
 #' @param data A data frame or named vector of masking data.
 #' @param parent The parent environment of the data mask.
+#' @return A data mask that you can supply to [eval_tidy()].
 #'
-#' @return An overscope environment.
 #' @export
 #' @examples
 #' # Evaluating in a tidy evaluation environment enables all tidy
@@ -207,8 +228,20 @@ delayedAssign(".data", as_data_pronoun(list()))
 #' mask <- as_data_mask(mtcars)
 #' eval_tidy(quo(letters), mask)
 #'
-#' # However you need to clean up the environment after evaluation.
+#' # You can install new pronouns in the mask:
+#' mask$.pronoun <- as_data_pronoun(list(foo = "bar", baz = "bam"))
+#' eval_tidy(quo(.pronoun$foo), mask)
+#'
+#' # In some cases the data mask can leak to the user, for example if
+#' # a function or formula is created in the data mask environment:
+#' cyl <- "user variable from the context"
+#' fn <- eval_tidy(quote(function() cyl), mask)
+#' fn()
+#'
+#' # This is why when you are done evaluating expressions it may be
+#' # necessary to clean up the data in the mask:
 #' data_mask_clean(mask)
+#' fn()
 as_data_mask <- function(data, parent = base_env()) {
   .Call(rlang_as_data_mask, data, parent)
 }
@@ -219,24 +252,14 @@ as_data_pronoun <- function(data) {
 }
 
 #' @rdname as_data_mask
-#' @param bottom This is the environment (or the bottom of a set of
-#'   environments) containing definitions for overscoped symbols. The
-#'   bottom environment typically contains pronouns (like `.data`)
-#'   while its direct parents contain the overscoping bindings. The
-#'   last one of these parents is the `top`.
-#' @param top The top environment of the overscope. During tidy
-#'   evaluation, this environment is chained and rechained to lexical
-#'   enclosures of self-evaluating formulas (or quosures). This is the
-#'   mechanism that ensures hygienic scoping: the bindings in the
-#'   overscope have precedence, but the bindings in the dynamic
-#'   environment where the tidy quotes were created in the first place
-#'   are in scope as well. If `NULL` (the default), `bottom` is also the top of
-#'   the overscope.
-#' @return A valid overscope: a child environment of `bottom`
-#'   containing the definitions enabling tidy evaluation
-#'   (self-evaluating quosures, formula-unguarding, ...).
+#' @param bottom The environment containing masking objects if the
+#'   data mask is one environment deep. The bottom environment if the
+#'   data mask comprises multiple environment.
+#' @param top The last environment of the data mask. If the data mask
+#'   is only one environment deep, `top` should be the same as
+#'   `bottom`.
 #' @export
-new_data_mask <- function(bottom, top = NULL, parent = base_env()) {
+new_data_mask <- function(bottom, top = bottom, parent = base_env()) {
   .Call(rlang_new_data_mask, bottom, top, parent)
 }
 #' @rdname as_data_mask

@@ -9,20 +9,13 @@ eval_tidy_(expr, bottom, top = NULL, env = caller_env())
 \arguments{
 \item{expr}{An expression.}
 
-\item{bottom}{This is the environment (or the bottom of a set of
-environments) containing definitions for overscoped symbols. The
-bottom environment typically contains pronouns (like \code{.data})
-while its direct parents contain the overscoping bindings. The
-last one of these parents is the \code{top}.}
+\item{bottom}{The environment containing masking objects if the
+data mask is one environment deep. The bottom environment if the
+data mask comprises multiple environment.}
 
-\item{top}{The top environment of the overscope. During tidy
-evaluation, this environment is chained and rechained to lexical
-enclosures of self-evaluating formulas (or quosures). This is the
-mechanism that ensures hygienic scoping: the bindings in the
-overscope have precedence, but the bindings in the dynamic
-environment where the tidy quotes were created in the first place
-are in scope as well. If \code{NULL} (the default), \code{bottom} is also the top of
-the overscope.}
+\item{top}{The last environment of the data mask. If the data mask
+is only one environment deep, \code{top} should be the same as
+\code{bottom}.}
 
 \item{env}{The lexical environment in which to evaluate \code{expr}.}
 }
