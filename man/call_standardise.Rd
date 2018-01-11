@@ -4,10 +4,13 @@
 \alias{call_standardise}
 \title{Standardise a call}
 \usage{
-call_standardise(call)
+call_standardise(call, env = caller_env())
 }
 \arguments{
 \item{call}{Can be a call or a quosure that wraps a call.}
+
+\item{env}{The environment where to find the \code{call} definition in
+case \code{call} is not wrapped in a quosure.}
 }
 \value{
 A quosure if \code{call} is a quosure, a raw call otherwise.

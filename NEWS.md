@@ -239,6 +239,10 @@
   interface. These functions are only meant for developers of tidy
   evaluation interfaces.
 
+* `call_modify()` and `call_standardise()` gain an argument to specify
+  an environment. The call definition is looked up in that environment
+  when the call to modify or standardise is not wrapped in a quosure.
+
 
 ## Breaking changes
 

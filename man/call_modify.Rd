@@ -4,7 +4,7 @@
 \alias{call_modify}
 \title{Modify the arguments of a call}
 \usage{
-call_modify(.call, ..., .standardise = FALSE)
+call_modify(.call, ..., .standardise = FALSE, .env = caller_env())
 }
 \arguments{
 \item{.call}{Can be a call, a formula quoting a call in the
@@ -19,6 +19,10 @@ evaluated with \link[=dots_list]{explicit splicing}.}
 to match existing unnamed arguments to their argument names. This
 prevents new named arguments from accidentally replacing original
 unnamed arguments.}
+
+\item{.env}{The environment where to find the \code{call} definition in
+case \code{call} is not wrapped in a quosure. This is passed to
+\code{call_standardise()} if \code{.standardise} is \code{TRUE}.}
 }
 \value{
 A quosure if \code{.call} is a quosure, a call otherwise.
