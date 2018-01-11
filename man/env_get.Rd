@@ -11,7 +11,7 @@ env_get_list(env = caller_env(), nms, inherit = FALSE)
 }
 \arguments{
 \item{env}{An environment or an object bundling an environment,
-e.g. a formula, \link{quosure} or \link[=is_closure]{closure}.}
+e.g. a formula, \link[=quotation]{quosure} or \link[=is_closure]{closure}.}
 
 \item{nm, nms}{Names of bindings. \code{nm} must be a single string.}
 

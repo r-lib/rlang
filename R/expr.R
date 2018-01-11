@@ -1,104 +1,3 @@
-#' Raw quotation of an expression
-#'
-#' @description
-#'
-#' These functions return raw expressions (whereas [quo()] and
-#' variants return quosures). They support [quasiquotation]
-#' syntax.
-#'
-#' - `expr()` returns its argument unevaluated. It is equivalent to
-#'   [base::bquote()].
-#'
-#' - `enexpr()` takes an argument name and returns it unevaluated. It
-#'   is equivalent to [base::substitute()]. The variant `ensym()` also
-#'   checks the argument is a simple symbol.
-#'
-#' - `exprs()` and `enexprs()` capture multiple expressions and return
-#'   a list. `exprs()` can be used anywhere but `enexprs()` must be
-#'   used within a function. These functions capture arguments
-#'   contained in `...` the same way but treat other arguments
-#'   differently. `exprs()` captures whatever expression is supplied
-#'   (and is thus equivaluent to [base::alist()]) while `enexprs()`
-#'   takes argument names and captures the expressions supplied one
-#'   level up.
-#'
-#' See [is_expression()] for more about R expressions.
-#'
-#' @inheritParams quosure
-#' @inheritParams quosures
-#' @seealso [quo()], [is_expression()]
-#' @return The raw expression supplied as argument. `exprs()` returns
-#'   a list of expressions.
-#' @export
-#' @examples
-#' # The advantage of expr() over quote() is that it unquotes on
-#' # capture:
-#' expr(list(1, !! 3 + 10))
-#'
-#' # Unquoting can be especially useful for successive transformation
-#' # of a captured expression:
-#' (expr <- quote(foo(bar)))
-#' (expr <- expr(inner(!! expr, arg1)))
-#' (expr <- expr(outer(!! expr, !!! lapply(letters[1:3], as.symbol))))
-#'
-#' # Unlike quo(), expr() produces expressions that can
-#' # be evaluated with base::eval():
-#' e <- quote(letters)
-#' e <- expr(toupper(!!e))
-#' eval(e)
-#'
-#' # Be careful if you unquote a quosure: you need to take the RHS
-#' # (and lose the scope information) to evaluate with eval():
-#' f <- quo(letters)
-#' e <- expr(toupper(!! get_expr(f)))
-#' eval(e)
-#'
-#' # On the other hand it's fine to unquote quosures if you evaluate
-#' # with eval_tidy():
-#' f <- quo(letters)
-#' e <- expr(toupper(!! f))
-#' eval_tidy(e)
-#'
-#' # exprs() lets you unquote names with the definition operator:
-#' nm <- "foo"
-#' exprs(a = 1, !! nm := 2)
-expr <- function(expr) {
-  enexpr(expr)
-}
-#' @rdname expr
-#' @export
-enexpr <- function(arg) {
-  .Call(rlang_enexpr, substitute(arg), parent.frame())
-}
-#' @rdname expr
-#' @inheritParams quosures
-#' @inheritParams dots_values
-#' @param ... Arguments to extract.
-#' @export
-exprs <- function(...,
-                  .named = FALSE,
-                  .ignore_empty = c("trailing", "none", "all"),
-                  .unquote_names = TRUE) {
-  .Call(rlang_exprs_interp, environment(), .named, .ignore_empty, .unquote_names)
-}
-#' @rdname expr
-#' @export
-enexprs <- function(...,
-                   .named = FALSE,
-                   .ignore_empty = c("trailing", "none", "all"),
-                   .unquote_names = TRUE) {
-  endots(
-    environment(),
-    parent.frame(),
-    rlang_enexpr,
-    rlang_exprs_interp,
-    .named,
-    .ignore_empty,
-    .unquote_names
-  )
-}
-
-
 #' Is an object an expression?
 #'
 #' @description
@@ -379,7 +278,7 @@ switch_expr <- function(.x, ...) {
 #' printer for R expressions with a few improvements over the base R
 #' printer.
 #'
-#' * It colourises [quosures][quosure] according to their environment.
+#' * It colourises [quosures][quotation] according to their environment.
 #'   Quosures from the global environment are printed normally while
 #'   quosures from local environments are printed in unique colour (or
 #'   in italic when all colours are taken).

@@ -19,10 +19,12 @@
 #'   of dots semantics (those of `dots_list()`) where splicing is
 #'   explicit.
 #'
-#' @inheritParams quosures
 #' @param ... Arguments with explicit (`dots_list()`) or list
 #'   (`dots_splice()`) splicing semantics. The contents of spliced
 #'   arguments are embedded in the returned list.
+#' @param .ignore_empty Whether to ignore empty arguments. Can be one
+#'   of `"trailing"`, `"none"`, `"all"`. If `"trailing"`, only the
+#'   last argument is ignored if it is empty.
 #' @return A list of arguments. This list is always named: unnamed
 #'   arguments are named with the empty string `""`.
 #' @seealso [exprs()] for extracting dots without evaluation.
@@ -78,7 +80,7 @@ dots_splice <- function(...,
 #' [splice()]). You can process spliced objects manually, perhaps with
 #' a custom predicate (see [flatten_if()]).
 #'
-#' @inheritParams quosures
+#' @inheritParams dots_list
 #' @param ... Arguments to evaluate and process splicing operators.
 #' @export
 #' @examples
@@ -92,7 +94,15 @@ dots_values <- function(...,
   .Call(rlang_dots_values, environment(), FALSE, .ignore_empty, TRUE)
 }
 
-#' @rdname quosures
+#' Capture definition objects
+#'
+#' @section Life cycle:
+#'
+#' `dots_definitions()` is experimental. Expect API changes.
+#'
+#' @inheritParams quotation
+#'
+#' @keywords internal
 #' @export
 dots_definitions <- function(...,
                              .named = FALSE,

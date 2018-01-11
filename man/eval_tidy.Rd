@@ -20,7 +20,7 @@ evaluation framework. Like \code{eval()} it accepts user data as
 argument. If supplied, it evaluates its input \code{expr} in a \link[=as_data_mask]{data
 mask}. In additon \code{eval_tidy()} supports:
 \itemize{
-\item \link[=quosure]{Quosures}. The expression wrapped in the quosure
+\item \link[=quotation]{Quosures}. The expression wrapped in the quosure
 evaluates in its original context (masked by \code{data} if supplied).
 \item \link[=.data]{Pronouns}. If \code{data} is supplied, the \code{.env} and \code{.data}
 pronouns are installed in the data mask. \code{.env} is a reference to

@@ -53,6 +53,3 @@ is_bare_formula(f)
 is_bare_formula(f, scoped = TRUE)
 is_bare_formula(eval(f), scoped = TRUE)
 }
-\seealso{
-\code{\link[=is_quosure]{is_quosure()}} and \code{\link[=is_quosureish]{is_quosureish()}}
-}

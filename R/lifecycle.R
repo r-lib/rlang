@@ -46,7 +46,8 @@
 #' * [ns_env()], [ns_imports_env()], [ns_env_name()]
 #'
 #' * [is_pairlist()], [is_node()], [is_node_list()]
-#' * [is_definition()], [new_definition()], [is_formulaish()]
+#' * [is_definition()], [new_definition()], [is_formulaish()],
+#'   [dots_definitions()]
 #'
 #' * [scoped_options()], [with_options()], [push_options()],
 #'   [peek_options()], [peek_option()]

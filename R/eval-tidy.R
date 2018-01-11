@@ -7,7 +7,7 @@
 #' argument. If supplied, it evaluates its input `expr` in a [data
 #' mask][as_data_mask]. In additon `eval_tidy()` supports:
 #'
-#' - [Quosures][quosure]. The expression wrapped in the quosure
+#' - [Quosures][quotation]. The expression wrapped in the quosure
 #'   evaluates in its original context (masked by `data` if supplied).
 #'
 #' - [Pronouns][.data]. If `data` is supplied, the `.env` and `.data`
@@ -144,7 +144,7 @@ delayedAssign(".data", as_data_pronoun(list()))
 #' creating an environment containing masking objects that has the
 #' user context as parent. `eval()` automates this task when you
 #' supply data as second argument. However a tidy eval data mask also
-#' needs to enable support of [quosures][quosure] and [data
+#' needs to enable support of [quosures][quotation] and [data
 #' pronouns][tidyeval-data]. These functions allow manual construction
 #' of tidy eval data masks:
 #'

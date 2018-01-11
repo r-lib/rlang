@@ -2,194 +2,116 @@
 % Please edit documentation in R/quo.R
 \name{quosure}
 \alias{quosure}
-\alias{quo}
-\alias{new_quosure}
-\alias{enquo}
-\title{Create quosures}
+\alias{is_quosure}
+\alias{quo_is_missing}
+\alias{quo_is_symbol}
+\alias{quo_is_lang}
+\alias{quo_is_symbolic}
+\alias{quo_is_null}
+\alias{quo_get_expr}
+\alias{quo_get_env}
+\alias{quo_set_expr}
+\alias{quo_set_env}
+\alias{is_quosures}
+\title{Predicate, constructors, getters and setters for quosures}
 \usage{
-quo(expr)
+is_quosure(x)
 
-new_quosure(expr, env = caller_env())
+quo_is_missing(quo)
 
-enquo(arg)
+quo_is_symbol(quo)
+
+quo_is_lang(quo)
+
+quo_is_symbolic(quo)
+
+quo_is_null(quo)
+
+quo_get_expr(quo)
+
+quo_get_env(quo)
+
+quo_set_expr(quo, expr)
+
+quo_set_env(quo, env)
+
+is_quosures(x)
 }
 \arguments{
-\item{expr}{An expression.}
+\item{x}{An object to test.}
 
-\item{env}{An environment specifying the lexical enclosure of the
-quosure.}
+\item{quo}{A quosure to test.}
 
-\item{arg}{A symbol referring to an argument. The expression
-supplied to that argument will be captured unevaluated.}
-}
-\value{
-A formula whose right-hand side contains the quoted
-expression supplied as argument.
+\item{expr}{A new expression for the quosure.}
+
+\item{env}{A new environment for the quosure.}
 }
 \description{
-Quosures are quoted \link[=is_expression]{expressions} that keep track of an
-\link[=env]{environment} (just like
-\href{http://adv-r.had.co.nz/Functional-programming.html#closures}{closures}).
-They are an essential piece of the tidy evaluation framework.
+You can access the quosure components (its expression and its
+environment) with:
 \itemize{
-\item \code{quo()} quotes its input (i.e. captures R code without
-evaluation), captures the current environment, and bundles them
-in a quosure.
-\item \code{enquo()} takes a symbol referring to a function argument, quotes
-the R code that was supplied to this argument, captures the
-environment where the function was called (and thus where the R
-code was typed), and bundles them in a quosure.
-\item \code{\link[=quos]{quos()}} is a bit different to other functions as it returns a
-list of quosures. You can supply several expressions directly,
-e.g. \code{quos(foo, bar)}, but more importantly you can also supply
-dots: \code{quos(...)}. In the latter case, expressions forwarded
-through dots are captured and transformed to quosures. The
-environments bundled in those quosures are the ones where the
-code was supplied as arguments, even if the dots were forwarded
-multiple times across several function calls.
-\item \code{new_quosure()} is the only constructor that takes its arguments
-by value. It lets you create a quosure from an expression and an
-environment.
-}
-}
-\section{Role of quosures for tidy evaluation}{
-
-
-Quosures play an essential role thanks to these features:
-\itemize{
-\item They allow consistent scoping of quoted expressions by recording
-an expression along with its local environment.
-\item \code{quo()}, \code{quos()} and \code{enquo()} all support \link{quasiquotation}. By
-unquoting other quosures, you can safely combine expressions even
-when they come from different contexts. You can also unquote
-values and raw expressions depending on your needs.
-\item Unlike formulas, quosures self-evaluate (see \code{\link[=eval_tidy]{eval_tidy()}})
-within their own environment, which is why you can unquote a
-quosure inside another quosure and evaluate it like you've
-unquoted a raw expression.
+\item \code{\link[=get_expr]{get_expr()}} and \code{\link[=get_env]{get_env()}}. These getters also support other
+kinds of objects such as formulas
+\item \code{quo_get_expr()} and \code{quo_get_env()}. These getters only work
+with quosures and throw an error with other types of input.
 }
 
-See the
-\href{http://dplyr.tidyverse.org/articles/programming.html}{programming with dplyr}
-vignette for practical examples. For developers, the
-\href{http://rlang.tidyverse.org/articles/tidy-evaluation.html}{tidy evaluation}
-vignette provides an overview of this approach. The
-\link{quasiquotation} page goes in detail over the unquoting and
-splicing operators.
+Test if an object is a quosure with \code{is_quosure()}. If you know an
+object is a quosure, use the \code{quo_} prefixed predicates to check
+its contents, \code{quo_is_missing()}, \code{quo_is_symbol()}, etc.
+}
+\section{Empty quosures}{
+
+
+When missing arguments are captured as quosures, either through
+\code{\link[=enquo]{enquo()}} or \code{\link[=quos]{quos()}}, they are returned as an empty quosure. These
+quosures contain the \link[=missing_arg]{missing argument} and typically
+have the \link[=empty_env]{empty environment} as enclosure.
 }
 
 \section{Life cycle}{
 
-
-\code{quo()}, \code{enquo()}, \code{quos()} and \code{new_quosure()} are stable.
+\itemize{
+\item \code{is_quosure()} is stable.
+\item \code{quo_get_expr()} and \code{quo_get_env()} are stable.
+\item \code{is_quosureish()} is deprecated as of rlang 0.2.0. This function
+assumed that quosures are formulas which is currently true but
+might not be in the future.
+}
 }
 
 \examples{
-# quo() is a quotation function just like expr() and quote():
-expr(mean(1:10 * 2))
-quo(mean(1:10 * 2))
-
-# It supports quasiquotation and allows unquoting (evaluating
-# immediately) part of the quoted expression:
-quo(mean(!! 1:10 * 2))
-
-# What makes quo() often safer to use than quote() and expr() is
-# that it keeps track of the contextual environment. This is
-# especially important if you're referring to local variables in
-# the expression:
-var <- "foo"
-quo <- quo(var)
+quo <- quo(my_quosure)
 quo
 
-# Here `quo` quotes `var`. Let's check that it also captures the
-# environment where that symbol is defined:
-identical(get_env(quo), get_env())
-env_has(quo, "var")
 
+# Access and set the components of a quosure:
+quo_get_expr(quo)
+quo_get_env(quo)
 
-# Keeping track of the environment is important when you quote an
-# expression in a context (that is, a particular function frame)
-# and pass it around to other functions (which will be run in their
-# own evaluation frame):
-fn <- function() {
-  foobar <- 10
-  quo(foobar * 2)
-}
-quo <- fn()
+quo <- quo_set_expr(quo, quote(baz))
+quo <- quo_set_env(quo, empty_env())
 quo
 
-# `foobar` is not defined here but was defined in `fn()`'s
-# evaluation frame. However, the quosure keeps track of that frame
-# and is safe to evaluate:
-eval_tidy(quo)
+# Test wether an object is a quosure:
+is_quosure(quo)
 
+# If it is a quosure, you can use the specialised type predicates
+# to check what is inside it:
+quo_is_symbol(quo)
+quo_is_lang(quo)
+quo_is_null(quo)
 
-# With eval_tidy() quosures self-evaluate under evaluation:
-var
-eval_tidy(quo(var))
+# quo_is_missing() checks for a special kind of quosure, the one
+# that contains the missing argument:
+quo()
+quo_is_missing(quo())
 
-# Note that it's perfectly fine to unquote quosures within
-# quosures, as long as you evaluate with eval_tidy():
-quo <- quo(letters)
-quo <- quo(toupper(!! quo))
-quo
-eval_tidy(quo)
-
-
-# The `!!` operator can be used in prefix form as well. This is
-# useful for using it with `$` for instance:
-var <- sym("cyl")
-quo(mtcars$`!!`(var))
-
-# Or equivalently:
-quo(`$`(mtcars, !!var))
-
-# Quoting as a quosure is necessary to preserve scope information
-# and make sure objects are looked up in the right place. However,
-# there are situations where it can get in the way. This is the
-# case when you deal with base NSE functions that do not understand
-# quosures. You can extract the expression from a quosure with
-# `get_expr()`.
-get_expr(quo(foo))
-
-# To use `get_expr()` safely it is important that the expression
-# within the quosure does not depend on any objects local to its
-# place of creation. For instance if the quosure contains a symbol
-# that refers to a data frame column it is safe to use the raw
-# symbol. Let's try to use `get_expr()` with `$`:
-var <- quo(cyl)
-quo(mtcars$`!!`(get_expr(var)))
-
-
-# When a quosure is printed in the console, the brackets indicate
-# if the enclosure is the global environment or a local one:
-locally(quo(foo))
-
-# Literals are enquosed with the empty environment because they can
-# be evaluated anywhere. The brackets indicate "empty":
-quo(10L)
-
-# To differentiate local environments, use str(). It prints the
-# machine address of the environment:
-quo1 <- locally(quo(foo))
-quo2 <- locally(quo(foo))
-quo1; quo2
-str(quo1); str(quo2)
-
-# You can also see this address by printing the environment at the
-# console:
-get_env(quo1)
-get_env(quo2)
-
-
-# new_quosure() takes by value an expression that is already quoted:
-expr <- quote(mtcars)
-env <- as_environment("datasets")
-quo <- new_quosure(expr, env)
-quo
-eval_tidy(quo)
+fn <- function(arg) enquo(arg)
+fn()
+quo_is_missing(fn())
 }
 \seealso{
-\code{\link[=expr]{expr()}} for quoting a raw expression with quasiquotation.
-The \link{quasiquotation} page goes over unquoting and splicing.
+\code{\link[=quo]{quo()}} for creating quosures by quotation; \code{\link[=as_quosure]{as_quosure()}}
+and \code{\link[=new_quosure]{new_quosure()}} for constructing quosures manually.
 }

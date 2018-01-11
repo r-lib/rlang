@@ -68,7 +68,7 @@ Creating a data mask for \code{\link[base:eval]{base::eval()}} is a simple matte
 creating an environment containing masking objects that has the
 user context as parent. \code{eval()} automates this task when you
 supply data as second argument. However a tidy eval data mask also
-needs to enable support of \link[=quosure]{quosures} and \link[=tidyeval-data]{data
+needs to enable support of \link[=quotation]{quosures} and \link[=tidyeval-data]{data
 pronouns}. These functions allow manual construction
 of tidy eval data masks:
 \itemize{

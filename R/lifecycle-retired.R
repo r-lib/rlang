@@ -151,7 +151,7 @@ lang_tail <- function(lang) {
 #' [as_data_mask()], [new_data_mask()] and [data_mask_clean()] instead.
 #'
 #' @inheritParams as_data_mask
-#' @param quo A [quosure].
+#' @param quo A [quosure][quotation].
 #'
 #' @keywords internal
 #' @export
@@ -351,11 +351,11 @@ is_expr <- function(x) {
 
 # Deprecated ---------------------------------------------------------
 
-#' Test for or coerce to quosureish objects
+#' Test for or coerce to quosure-like objects
 #'
-#' These functions were deprecated in rlang 0.2.0 because they assumed
-#' that quosures are formulas which is currently true but might not be
-#' in the future.
+#' These functions are deprecated as of rlang 0.2.0 because they make
+#' the assumption that quosures are a subtype of formula, which we are
+#' now considering to be an implementation detail.
 #'
 #' @inheritParams is_formula
 #' @inheritParams as_quosure
