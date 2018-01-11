@@ -246,6 +246,9 @@ is_call <- function(x, name = NULL, n = NULL, ns = NULL) {
 #'   to match existing unnamed arguments to their argument names. This
 #'   prevents new named arguments from accidentally replacing original
 #'   unnamed arguments.
+#' @param .env The environment where to find the `call` definition in
+#'   case `call` is not wrapped in a quosure. This is passed to
+#'   `call_standardise()` if `.standardise` is `TRUE`.
 #'
 #' @return A quosure if `.call` is a quosure, a call otherwise.
 #' @seealso lang
@@ -280,15 +283,16 @@ is_call <- function(x, name = NULL, n = NULL, ns = NULL) {
 #' # You can also modify quosures inplace:
 #' f <- quo(matrix(bar))
 #' call_modify(f, quote(foo))
-call_modify <- function(.call, ..., .standardise = FALSE) {
+call_modify <- function(.call, ...,
+                        .standardise = FALSE,
+                        .env = caller_env()) {
   args <- dots_list(...)
   if (any(duplicated(names(args)) & names(args) != "")) {
     abort("Duplicate arguments")
   }
 
   if (.standardise) {
-    quo <- call_as_quosure(.call, caller_env())
-    expr <- get_expr(call_standardise(quo))
+    expr <- get_expr(call_standardise(.call, env = .env))
   } else {
     expr <- get_expr(.call)
   }
@@ -311,13 +315,6 @@ call_modify <- function(.call, ..., .standardise = FALSE) {
 
   set_expr(.call, expr)
 }
-call_as_quosure <- function(call, env) {
-  if (is_frame(call)) {
-    new_quosure(call$expr, call$env)
-  } else {
-    as_quosure(call, env)
-  }
-}
 
 #' Standardise a call
 #'
@@ -332,15 +329,18 @@ call_as_quosure <- function(call, env) {
 #' for more about this change.
 #'
 #' @param call Can be a call or a quosure that wraps a call.
+#' @param env The environment where to find the `call` definition in
+#'   case `call` is not wrapped in a quosure.
+#'
 #' @return A quosure if `call` is a quosure, a raw call otherwise.
 #' @export
-call_standardise <- function(call) {
+call_standardise <- function(call, env = caller_env()) {
   expr <- get_expr(call)
   if (is_frame(call)) {
     fn <- call$fn
   } else {
     # The call name might be a literal, not necessarily a symbol
-    env <- get_env(call, caller_env())
+    env <- get_env(call, env)
     fn <- eval_bare(node_car(expr), env)
   }
 
