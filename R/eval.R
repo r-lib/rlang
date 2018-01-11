@@ -1,35 +1,41 @@
 #' Evaluate an expression in an environment
 #'
-#' @description
-#'
 #' `eval_bare()` is a lower-level version of function [base::eval()].
 #' Technically, it is a simple wrapper around the C function
-#' `Rf_eval()`. It has different evaluation semantics than `eval()`.
+#' `Rf_eval()`. You generally don't need to use `eval_bare()` instead
+#' of `eval()`. Its main advantage is that it handles stack-sensitive
+#' (calls such as `return()`, `on.exit()` or `parent.frame()`) more
+#' consistently when you pass an enviroment of a frame on the call
+#' stack.
 #'
-#' * It does not accept auxiliary data and has no `data` argument.
+#' These semantics are possible because `eval_bare()` creates only one
+#' frame on the call stack whereas `eval()` creates two frames, the
+#' second of which has the user-supplied environment as frame
+#' environment. When you supply an existing frame environment to
+#' `base::eval()` there will be two frames on the stack with the same
+#' frame environment. Stack-sensitive functions only detect the
+#' topmost of these frames. We call these evaluation semantics
+#' "stack inconsistent".
 #'
-#' * It can't evaluate `break` or `next` expressions even if called
-#'   within a loop.
+#' Evaluating expressions in the actual frame environment has useful
+#' practical implications for `eval_bare()`:
 #'
-#' * It evaluates `return()` calls in frame environments on the call
-#'   stack. This causes a long return that might unwind multiple
-#'   frames (triggering the `on.exit()` event for each frame).
+#' * `return()` calls are evaluated in frame environments that might
+#'   be burried deep in the call stack. This causes a long return that
+#'   unwinds multiple frames (triggering the `on.exit()` event for
+#'   each frame). By contrast `eval()` only returns from the `eval()`
+#'   call, one level up.
 #'
-#' * Similarly, it evaluates stack-sensitive calls like
-#'   `parent.frame()`, `sys.call()`, and generally all the `sys.xxx()`
-#'   functions for stack inspection in the actual frame environments.
-#'   This is similar to how this type of calls can be evaluated deep
-#'   in the call stack because of lazy evaluation.
+#' * `on.exit()`, `parent.frame()`, `sys.call()`, and generally all
+#'   the stack inspection functions `sys.xxx()` are evaluated in the
+#'   correct frame environment. This is similar to how this type of
+#'   calls can be evaluated deep in the call stack because of lazy
+#'   evaluation, when you force an argument that has been passed
+#'   around several times.
 #'
-#' * It only creates one frame on the call stack.
-#'
-#' The last property is why the stack-sensitive functions are
-#' evaluated in the correct frame environments. `base::eval()` creates
-#' two call frames, the second of which has the user-supplied
-#' environment as frame environment.  This means that if you supply an
-#' existing frame environment to `base::eval()` you create a duplicate
-#' frame on the stack that confuses stack-sensitive functions. We call
-#' these evaluation semantics "stack inconsistent".
+#' The flip side of the semantics of `eval_bare()` is that it can't
+#' evaluate `break` or `next` expressions even if called within a
+#' loop.
 #'
 #'
 #' @section Life cycle:
