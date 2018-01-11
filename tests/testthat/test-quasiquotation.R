@@ -376,12 +376,6 @@ test_that("`:=` chaining is detected at dots capture", {
   expect_error(dots_splice(a := b := c), "chained")
 })
 
-test_that("`:=` doesn't work at top level", {
-  expect_error(dots_list(list(a := b), .unquote_names = FALSE), "within a quasiquoted argument")
-  expect_error(dots_list(a := NULL, .unquote_names = FALSE), "within a quasiquoted argument")
-  expect_error(dots_splice(a := NULL, .unquote_names = FALSE), "within a quasiquoted argument")
-})
-
 
 # Lifecycle ----------------------------------------------------------
 

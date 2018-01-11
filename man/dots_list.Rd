@@ -5,11 +5,9 @@
 \alias{dots_splice}
 \title{Extract dots with splicing semantics}
 \usage{
-dots_list(..., .ignore_empty = c("trailing", "none", "all"),
-  .unquote_names = TRUE)
+dots_list(..., .ignore_empty = c("trailing", "none", "all"))
 
-dots_splice(..., .ignore_empty = c("trailing", "none", "all"),
-  .unquote_names = TRUE)
+dots_splice(..., .ignore_empty = c("trailing", "none", "all"))
 }
 \arguments{
 \item{...}{Arguments with explicit (\code{dots_list()}) or list
@@ -19,9 +17,6 @@ arguments are embedded in the returned list.}
 \item{.ignore_empty}{Whether to ignore empty arguments. Can be one
 of \code{"trailing"}, \code{"none"}, \code{"all"}. If \code{"trailing"}, only the
 last argument is ignored if it is empty.}
-
-\item{.unquote_names}{Whether to treat \code{:=} as \code{=}. Unlike \code{=}, the
-\code{:=} syntax supports \code{!!} unquoting on the LHS.}
 }
 \value{
 A list of arguments. This list is always named: unnamed

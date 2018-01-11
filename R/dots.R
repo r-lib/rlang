@@ -40,9 +40,8 @@
 #' # provides a workaround:
 #' fn(some_data, !!! list(data = letters))
 dots_list <- function(...,
-                      .ignore_empty = c("trailing", "none", "all"),
-                      .unquote_names = TRUE) {
-  dots <- .Call(rlang_dots_list, environment(), FALSE, .ignore_empty, .unquote_names)
+                      .ignore_empty = c("trailing", "none", "all")) {
+  dots <- .Call(rlang_dots_list, environment(), FALSE, .ignore_empty, TRUE)
   names(dots) <- names2(dots)
   dots
 }
@@ -56,9 +55,8 @@ dots_list <- function(...,
 #' dots_splice(!!! x, 3)
 #' dots_splice(x, 3)
 dots_splice <- function(...,
-                        .ignore_empty = c("trailing", "none", "all"),
-                        .unquote_names = TRUE) {
-  dots <- .Call(rlang_dots_flat_list, environment(), FALSE, .ignore_empty, .unquote_names)
+                        .ignore_empty = c("trailing", "none", "all")) {
+  dots <- .Call(rlang_dots_flat_list, environment(), FALSE, .ignore_empty, TRUE)
   names(dots) <- names2(dots)
   dots
 }
@@ -82,9 +80,8 @@ dots_splice <- function(...,
 #' # Flatten the spliced objects:
 #' flatten_if(dots, is_spliced)
 dots_values <- function(...,
-                        .ignore_empty = c("trailing", "none", "all"),
-                        .unquote_names = TRUE) {
-  .Call(rlang_dots_values, environment(), FALSE, .ignore_empty, .unquote_names)
+                        .ignore_empty = c("trailing", "none", "all")) {
+  .Call(rlang_dots_values, environment(), FALSE, .ignore_empty, TRUE)
 }
 
 #' @rdname quosures
