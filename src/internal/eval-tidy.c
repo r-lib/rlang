@@ -371,7 +371,7 @@ void rlang_init_eval_tidy() {
 
   tilde_prim = r_base_ns_get("~");
   env_poke_parent_fn = rlang_ns_get("env_poke_parent");
-  env_set_fn = rlang_ns_get("env_set");
+  env_set_fn = rlang_ns_get("env_poke");
 
   data_mask_clean_fn = rlang_ns_get("overscope_clean");
 

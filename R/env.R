@@ -826,7 +826,7 @@ env_get_list <- function(env = caller_env(), nms, inherit = FALSE) {
 
 #' Poke an object in an environment
 #'
-#' `env_set()` will assign or reassign a binding in `env` if `create`
+#' `env_poke()` will assign or reassign a binding in `env` if `create`
 #' is `TRUE`. If `create` is `FALSE` and a binding does not already
 #' exists, an error is issued.
 #'
@@ -846,9 +846,9 @@ env_get_list <- function(env = caller_env(), nms, inherit = FALSE) {
 #'
 #' @section Life cycle:
 #'
-#' `env_set()` is experimental. We are still experimenting with
+#' `env_poke()` is experimental. We are still experimenting with
 #' reducing the number of redundant functions by using quasiquotation.
-#' It is possible `env_set()` will be deprecated in favour of
+#' It is possible `env_poke()` will be deprecated in favour of
 #' `env_bind()` and name-unquoting with `:=`.
 #'
 #' @inheritParams env_get
@@ -858,7 +858,7 @@ env_get_list <- function(env = caller_env(), nms, inherit = FALSE) {
 #'
 #' @keywords internal
 #' @export
-env_set <- function(env = caller_env(), nm, value,
+env_poke <- function(env = caller_env(), nm, value,
                     inherit = FALSE, create = NULL) {
   stopifnot(is_string(nm))
   env_ <- get_env(env)

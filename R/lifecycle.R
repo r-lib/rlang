@@ -40,7 +40,7 @@
 #' * [lang_type_of()], [switch_lang()], [coerce_lang()]
 #' * [set_attrs()], [mut_attrs()]
 #' * [with_env()], [locally()]
-#' * [env_set()]
+#' * [env_poke()]
 #'
 #'
 #' @section Questioning functions:
