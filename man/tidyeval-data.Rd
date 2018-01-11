@@ -10,15 +10,20 @@
 .data
 }
 \description{
-This pronoun is installed by functions performing \link[=eval_tidy]{tidy
-evaluation}. It allows you to refer to overscoped data
-explicitly.
+This pronoun allows you to be explicit when you refer to an object
+inside the data. Referring to the \code{.data} pronoun rather than to
+the original data frame has several advantages:
+\itemize{
+\item Sometimes a computation is not about the whole data but about a
+subset. For example if you supply a grouped data frame to a dplyr
+verb, the \code{.data} pronoun contains the group subset.
+\item It lets dplyr know that you're referring to a column from the
+data which is helpful to generate correct queries when the source
+is a database.
 }
-\details{
-You can import this object in your package namespace to avoid \code{R CMD check} errors when referring to overscoped objects.
-}
-\examples{
-quo <- quo(.data$foo)
-eval_tidy(quo, list(foo = "bar"))
+
+The \code{.data} object exported here is useful to import in your
+package namespace to avoid a \code{R CMD check} note when referring to
+objects from the data mask.
 }
 \keyword{datasets}
