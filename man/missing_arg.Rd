@@ -19,10 +19,10 @@ maybe_missing(x)
 These functions help using the missing argument as a regular R
 object.
 \itemize{
-\item \code{missing_arg()} generates a missing argument. It is equivalent to
-calling \code{base::quote(expr = )}.
+\item \code{missing_arg()} generates a missing argument.
 \item \code{is_missing()} is like \code{\link[base:missing]{base::missing()}} but also supports
-testing for missing arguments contained in lists.
+testing for missing arguments contained in other objects like
+lists.
 \item \code{maybe_missing()} is useful to pass down an input that might be
 missing to another function. It avoids triggering an
 "argument is missing" error.
@@ -39,7 +39,7 @@ quosure containing the missing argument object.
 }
 }
 
-\section{Tangibility of the missing argument object}{
+\section{Fragility of the missing argument object}{
 
 
 The missing argument is an object that triggers an error if and

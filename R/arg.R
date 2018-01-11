@@ -84,11 +84,11 @@ chr_enumerate <- function(chr, sep = ", ", final = "or") {
 #' These functions help using the missing argument as a regular R
 #' object.
 #'
-#' * `missing_arg()` generates a missing argument. It is equivalent to
-#'   calling `base::quote(expr = )`.
+#' * `missing_arg()` generates a missing argument.
 #'
 #' * `is_missing()` is like [base::missing()] but also supports
-#'   testing for missing arguments contained in lists.
+#'   testing for missing arguments contained in other objects like
+#'   lists.
 #'
 #' * `maybe_missing()` is useful to pass down an input that might be
 #'   missing to another function. It avoids triggering an
@@ -106,7 +106,7 @@ chr_enumerate <- function(chr, sep = ", ", final = "or") {
 #'   quosure containing the missing argument object.
 #'
 #'
-#' @section Tangibility of the missing argument object:
+#' @section Fragility of the missing argument object:
 #'
 #' The missing argument is an object that triggers an error if and
 #' only if it is the result of evaluating a symbol. No error is
