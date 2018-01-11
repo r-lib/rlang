@@ -415,3 +415,17 @@ test_that("enquo() works with lexically scoped arguments", {
   }
   expect_identical(capture(foo), quo(foo))
 })
+
+test_that("dots_definitions() uses tidy eval", {
+  var1 <- "foo"
+  var2 <- "bar"
+  dots <- dots_definitions(pat = foo(!!var1) := bar(!!var2))
+  pat <- list(lhs = quo(foo("foo")), rhs = quo(bar("bar")))
+  expect_identical(dots$defs$pat, pat)
+})
+
+test_that("dots_definitions() accepts other types of arguments", {
+  dots <- dots_definitions(A = a := b, B = c)
+  expect_identical(dots$defs$A, list(lhs = quo(a), rhs = quo(b)))
+  expect_identical(dots$dots$B, quo(c))
+})
