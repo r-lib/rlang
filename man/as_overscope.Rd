@@ -4,7 +4,7 @@
 \alias{as_overscope}
 \alias{new_overscope}
 \alias{overscope_clean}
-\title{Create a data mask}
+\title{Create an overscope}
 \usage{
 as_overscope(quo, data = NULL)
 

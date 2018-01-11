@@ -137,7 +137,7 @@ lang_tail <- function(lang) {
   node_cdr(call)
 }
 
-#' Create a data mask
+#' Create an overscope
 #'
 #' These functions have been soft-deprecated in rlang 0.2.0. Please use
 #' [as_data_mask()], [new_data_mask()] and [data_mask_clean()] instead.
