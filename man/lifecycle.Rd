@@ -57,6 +57,8 @@ TODO: Review all functions in rlang and mark stable ones as such.
 \itemize{
 \item \code{\link[=UQ]{UQ()}}
 \item \code{\link[=UQS]{UQS()}}
+\item \code{\link[=eval_tidy_]{eval_tidy_()}}
+\item \code{\link[=overscope_eval_next]{overscope_eval_next()}} => \code{\link[=eval_tidy]{eval_tidy()}}
 \item \code{\link[=lang_head]{lang_head()}}, \code{\link[=lang_tail]{lang_tail()}}
 }
 
@@ -65,6 +67,10 @@ TODO: Review all functions in rlang and mark stable ones as such.
 \item \code{\link[=quo_expr]{quo_expr()}} => \code{\link[=quo_squash]{quo_squash()}}
 \item \code{\link[=parse_quosure]{parse_quosure()}} => \code{\link[=parse_quo]{parse_quo()}}
 \item \code{\link[=parse_quosures]{parse_quosures()}} => \code{\link[=parse_quos]{parse_quos()}}
+\item \code{\link[=as_overscope]{as_overscope()}} => \code{\link[=as_data_mask]{as_data_mask()}}
+\item \code{\link[=new_overscope]{new_overscope()}} => \code{\link[=new_data_mask]{new_data_mask()}}
+\item \code{\link[=overscope_clean]{overscope_clean()}} => \code{\link[=data_mask_clean]{data_mask_clean()}}
+\item \code{\link[=as_dictionary]{as_dictionary()}} => \code{\link[=as_data_pronoun]{as_data_pronoun()}}
 \item \code{\link[=lang]{lang()}} => \code{\link[=call2]{call2()}}
 \item \code{\link[=new_language]{new_language()}} => \code{\link[=call_node]{call_node()}}
 \item \code{\link[=is_lang]{is_lang()}} => \code{\link[=is_call]{is_call()}}

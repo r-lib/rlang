@@ -47,7 +47,7 @@
 #' The ability of overriding specific definitions is used in the
 #' tidyeval framework to create powerful domain-specific grammars. A
 #' common use of overscoping is to put data frame columns in
-#' scope. See [as_overscope()] for technical details.
+#' scope. See [as_data_mask()] for technical details.
 #'
 #' @section Reference semantics:
 #'

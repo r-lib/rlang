@@ -94,6 +94,7 @@ extern sexp* rlang_new_data_mask(sexp*, sexp*, sexp*);
 extern sexp* rlang_as_data_mask(sexp*, sexp*);
 extern sexp* rlang_data_mask_clean(sexp*);
 extern sexp* rlang_eval_tidy(sexp*, sexp*, sexp*);
+extern sexp* rlang_as_data_pronoun(sexp*);
 
 // Library initialisation defined below
 sexp* rlang_library_load();
@@ -209,6 +210,7 @@ static const r_callable r_callables[] = {
   {"rlang_as_data_mask",        (r_fn_ptr_t) &rlang_as_data_mask, 2},
   {"rlang_data_mask_clean",     (r_fn_ptr_t) &rlang_data_mask_clean, 1},
   {"rlang_eval_tidy",           (r_fn_ptr_t) &rlang_eval_tidy, 3},
+  {"rlang_as_data_pronoun",     (r_fn_ptr_t) &rlang_as_data_pronoun, 1},
   {NULL, NULL, 0}
 };
 
@@ -223,6 +225,7 @@ void R_init_rlang(r_dll_info* dll) {
   r_register_c_callable("rlang", "rlang_quo_set_expr", (r_fn_ptr_t) &rlang_quo_set_expr);
   r_register_c_callable("rlang", "rlang_quo_get_env", (r_fn_ptr_t) &rlang_quo_get_env);
   r_register_c_callable("rlang", "rlang_quo_set_env", (r_fn_ptr_t) &rlang_quo_set_env);
+  r_register_c_callable("rlang", "rlang_as_data_pronoun", (r_fn_ptr_t) &rlang_as_data_pronoun);
 
   // Experimental method for exporting C function pointers as actual R objects
   rlang_register_pointer("rlang", "rlang_test_is_spliceable", (r_fn_ptr_t) &rlang_is_clevel_spliceable);

@@ -194,7 +194,7 @@ test_that("whole scope is purged", {
   )
   bottom <- child_env(mid, !!! data_mask_objects)
 
-  overscope_clean(bottom)
+  data_mask_clean(bottom)
 
   expect_identical(names(bottom), character(0))
   expect_identical(names(mid), character(0))
@@ -208,7 +208,7 @@ test_that("empty quosure self-evaluates", {
 })
 
 test_that("cannot replace elements of pronouns", {
-  expect_error(eval_tidy(quo(.data$foo <- "bar")), "read-only dictionary")
+  expect_error(eval_tidy(quo(.data$foo <- "bar")), "Can't modify the data pronoun")
 })
 
 test_that("formulas are not evaluated as quosures", {

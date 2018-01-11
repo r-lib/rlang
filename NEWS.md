@@ -226,6 +226,19 @@
   to avoid adding to the confusion between S modes and R types. With
   hindsight we find it is better to use more meaningful type names.
 
+* We now use the term "data mask" instead of "overscope". We think
+  data mask is a more natural name in the context of R. We say that
+  that objects from user data mask objects in the current environment.
+  This makes reference to object masking in the search path which is
+  due to the same mechanism (in technical terms, lexical scoping with
+  hierarchically nested environments).
+
+  Following this new terminology, the new functions `as_data_mask()`
+  and `new_data_mask()` replace `as_overscope()` and
+  `new_overscope()`. `as_data_mask()` has also a more consistent
+  interface. These functions are only meant for developers of tidy
+  evaluation interfaces.
+
 
 ## Breaking changes
 
@@ -285,6 +298,8 @@
   In addition, `lang_head()` and `lang_tail()` are soft-deprecated
   without replacement because these are low level accessors that are
   rarely needed.
+
+* `as_overscope()` is soft-deprecated in favour of `as_data_mask()`.
 
 
 # rlang 0.1.6

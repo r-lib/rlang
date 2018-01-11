@@ -137,6 +137,141 @@ lang_tail <- function(lang) {
   node_cdr(call)
 }
 
+#' Create an overscope
+#'
+#' These functions have been soft-deprecated in rlang 0.2.0. Please use
+#' [as_data_mask()], [new_data_mask()] and [data_mask_clean()] instead.
+#'
+#' @inheritParams as_data_mask
+#' @param quo A [quosure].
+#'
+#' @keywords internal
+#' @export
+as_overscope <- function(quo, data = NULL) {
+  as_data_mask(data, quo_get_env(quo))
+}
+#' @rdname as_overscope
+#' @param enclosure The `parent` argument of [new_data_mask()].
+#' @export
+new_overscope <- function(bottom, top = NULL, enclosure = base_env()) {
+  new_data_mask(bottom, top, enclosure)
+}
+#' @rdname as_overscope
+#' @param overscope The `mask` argument of [data_mask_clean()]
+#' @export
+overscope_clean <- function(overscope) {
+  invisible(.Call(rlang_data_mask_clean, overscope))
+}
+
+#' Tidy evaluation in a custom environment
+#'
+#' This function is soft-deprecated as of rlang 0.2.0.
+#'
+#' @inheritParams eval_tidy
+#' @inheritParams as_data_mask
+#'
+#' @keywords internal
+#' @export
+eval_tidy_ <- function(expr, bottom, top = NULL, env = caller_env()) {
+  data_mask <- new_overscope(bottom, top %||% bottom)
+  on.exit(data_mask_clean(data_mask))
+  .Call(rlang_eval_tidy, expr, data_mask, environment())
+}
+#' Evaluate next quosure in a data mask
+#'
+#' `overscope_eval_next()` is soft-deprecated as of rlang
+#' 0.2.0. Please use `eval_tidy()` to which you can now supply an
+#' overscope.
+#'
+#' @param quo A quosure.
+#' @param overscope A valid overscope containing bindings for `~`,
+#'   `.top_env` and `_F` and whose parents contain overscoped bindings
+#'   for tidy evaluation.
+#' @param env The lexical enclosure in case `quo` is not a validly
+#'   scoped quosure. This is the [base environment][base_env] by
+#'   default.
+#'
+#' @keywords internal
+#' @export
+overscope_eval_next <- function(overscope, quo, env = base_env()) {
+  .Call(rlang_eval_tidy, quo, overscope, environment())
+}
+
+
+#' Create a dictionary
+#'
+#' The dictionary class was soft-deprecated in rlang 0.2.0. It was
+#' trying to be too general and did not prove useful. Please use
+#' [as_data_pronoun()] or your own pronoun class instead.
+#'
+#' @param x An object for which you want to find associated data.
+#' @param lookup_msg An error message when your data source is
+#'   accessed inappropriately (by position rather than name).
+#' @param read_only Whether users can replace elements of the
+#'   dictionary.
+#'
+#' @name dictionary
+#' @keywords internal
+#' @export
+as_dictionary <- function(x, lookup_msg = NULL, read_only = FALSE) {
+  UseMethod("as_dictionary")
+}
+#' @export
+as_dictionary.default <- function(x, lookup_msg = NULL, read_only = FALSE) {
+  x <- discard_unnamed(x)
+  check_dictionaryish(x)
+  new_dictionary(as.list(x), lookup_msg, read_only)
+}
+#' @export
+as_dictionary.dictionary <- function(x, lookup_msg = NULL, read_only = FALSE) {
+  dict <- unclass_data_pronoun(x)
+  dict$lookup_msg <- lookup_msg %||% x$lookup_msg
+  dict$read_only <- read_only
+  set_attrs(dict, class = class(x))
+}
+#' @export
+as_dictionary.NULL <- function(x, lookup_msg = NULL, read_only = FALSE) {
+  new_dictionary(list(), lookup_msg, read_only)
+}
+#' @export
+as_dictionary.environment <- function(x, lookup_msg = NULL, read_only = FALSE) {
+  lookup_msg <- lookup_msg %||% "Object `%s` not found in environment"
+  new_dictionary(x, lookup_msg, read_only)
+}
+#' @export
+as_dictionary.data.frame <- function(x, lookup_msg = NULL, read_only = FALSE) {
+  check_dictionaryish(x)
+  lookup_msg <- lookup_msg %||% "Column `%s` not found in data"
+  new_dictionary(x, lookup_msg, read_only)
+}
+
+check_dictionaryish <- function(x) {
+  if (!length(x)) {
+    return(NULL)
+  }
+  if (!is_named(x)) {
+    abort("Data must be uniquely named but some variables are unnamed")
+  }
+  nms <- names(x)
+  dups <- duplicated(nms)
+  if (any(dups)) {
+    dups <- unique(nms[dups])
+    dups <- chr_enumerate(chr_quoted(dups), final = "and")
+    abort(paste0(
+      "Data must be uniquely named but the following variables have duplicates: ", dups
+    ))
+  }
+}
+new_dictionary <- function(x, lookup_msg, read_only) {
+  .Call(rlang_new_data_pronoun, x, lookup_msg, read_only)
+}
+
+#' @rdname dictionary
+#' @export
+is_dictionary <- function(x) {
+  inherits(x, "rlang_data_pronoun")
+}
+
 
 # Deprecated ---------------------------------------------------------
 

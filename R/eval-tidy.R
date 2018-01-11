@@ -5,7 +5,7 @@
 #' `eval_tidy()` is a variant of [base::eval()] and [eval_bare()] that
 #' powers the [tidy evaluation
 #' framework](http://rlang.tidyverse.org/articles/tidy-evaluation.html).
-#' It evaluates `expr` in an [overscope][as_overscope] where the
+#' It evaluates `expr` in an [overscope][as_data_mask] where the
 #' special definitions enabling tidy evaluation are installed. This
 #' enables the following features:
 #'
@@ -120,35 +120,10 @@ eval_tidy <- function(expr, data = NULL, env = caller_env()) {
 #' quo <- quo(.data$foo)
 #' eval_tidy(quo, list(foo = "bar"))
 .data <- NULL
-delayedAssign(".data", as_dictionary(list(), read_only = TRUE))
-
-#' Tidy evaluation in a custom environment
-#'
-#' We recommend using [eval_tidy()] in your DSLs as much as possible
-#' to ensure some consistency across packages (`.data` and `.env`
-#' pronouns, etc). However, some DSLs might need a different
-#' evaluation environment. In this case, you can call `eval_tidy_()`
-#' with the bottom and the top of your custom overscope (see
-#' [as_overscope()] for more information).
-#'
-#' Note that `eval_tidy_()` always installs a `.env` pronoun in the
-#' bottom environment of your dynamic scope. This pronoun provides a
-#' shortcut to the original lexical enclosure (typically, the dynamic
-#' environment of a captured argument, see [enquo()]). It also
-#' cleans up the overscope after evaluation. See [overscope_eval_next()]
-#' for evaluating several quosures in the same overscope.
-#'
-#' @inheritParams eval_tidy
-#' @inheritParams as_overscope
-#' @export
-eval_tidy_ <- function(expr, bottom, top = NULL, env = caller_env()) {
-  data_mask <- new_overscope(bottom, top %||% bottom)
-  on.exit(overscope_clean(data_mask))
-  .Call(rlang_eval_tidy, expr, data_mask, environment())
-}
+delayedAssign(".data", as_data_pronoun(list()))
 
 
-#' Create a dynamic scope for tidy evaluation
+#' Create a data mask
 #'
 #' Tidy evaluation works by rescoping a set of symbols (column names
 #' of a data frame for example) to custom bindings. While doing this,
@@ -172,14 +147,14 @@ eval_tidy_ <- function(expr, bottom, top = NULL, env = caller_env()) {
 #' care of installing the tidyeval components in your custom dynamic
 #' scope.
 #'
-#' * `as_overscope()` is the function that powers [eval_tidy()]. It
+#' * `as_data_mask()` is the function that powers [eval_tidy()]. It
 #'   could be useful if you cannot use `eval_tidy()` for some reason,
 #'   but serves mostly as an example of how to build a dynamic scope
 #'   for tidy evaluation. In this case, it creates pronouns `.data`
 #'   and `.env` and buries all dynamic bindings from the supplied
 #'   `data` in new environments.
 #'
-#' * `new_overscope()` is called by `as_overscope()` and
+#' * `new_overscope()` is called by `as_data_mask()` and
 #'   [eval_tidy_()]. It installs the definitions for making
 #'   formulas self-evaluate and for formula-guards. It also installs
 #'   the pronoun `.top_env` that helps keeping track of the boundary
@@ -193,34 +168,49 @@ eval_tidy_ <- function(expr, bottom, top = NULL, env = caller_env()) {
 #'
 #' * Once an expression has been evaluated in the tidy environment,
 #'   it's a good idea to clean up the definitions that make
-#'   self-evaluation of formulas possible `overscope_clean()`.
+#'   self-evaluation of formulas possible `data_mask_clean()`.
 #'   Otherwise your users may face unexpected results in specific
 #'   corner cases (e.g. when the evaluation environment is leaked, see
 #'   examples). Note that this function is automatically called by
 #'   [eval_tidy_()].
 #'
-#' @param quo A [quosure].
-#' @param data Additional data to put in scope.
+#'
+#' @section Life cycle:
+#'
+#' In early versions of rlang data masks were called overscopes. We
+#' think data mask is a more natural name in R. It makes reference to
+#' masking in the search path which occurs through the same mechanism
+#' (in technical terms, lexical scoping with hierarchically nested
+#' environments). We say that that objects from user data mask objects
+#' in the current environment.
+#'
+#' Following this change in terminology, `as_data_mask()` and
+#' `new_overscope()` were soft-deprecated in rlang 0.2.0 in favour of
+#' `as_data_mask()` and `new_data_mask()`.
+#'
+#' @param data A data frame or named vector of masking data.
+#' @param parent The parent environment of the data mask.
+#'
 #' @return An overscope environment.
 #' @export
 #' @examples
 #' # Evaluating in a tidy evaluation environment enables all tidy
 #' # features:
-#' expr <- quote(list(.data$cyl, ~letters))
-#' f <- as_quosure(expr)
-#' overscope <- as_overscope(f, data = mtcars)
-#' overscope_eval_next(overscope, f)
+#' mask <- as_data_mask(mtcars)
+#' eval_tidy(quo(letters), mask)
 #'
 #' # However you need to clean up the environment after evaluation.
-#' overscope_clean(overscope)
-as_overscope <- function(quo, data = NULL) {
-  as_data_mask(data, quo_get_env(quo))
-}
+#' data_mask_clean(mask)
 as_data_mask <- function(data, parent = base_env()) {
   .Call(rlang_as_data_mask, data, parent)
 }
+#' @rdname as_data_mask
+#' @export
+as_data_pronoun <- function(data) {
+  .Call(rlang_as_data_pronoun, data)
+}
 
-#' @rdname as_overscope
+#' @rdname as_data_mask
 #' @param bottom This is the environment (or the bottom of a set of
 #'   environments) containing definitions for overscoped symbols. The
 #'   bottom environment typically contains pronouns (like `.data`)
@@ -234,29 +224,109 @@ as_data_mask <- function(data, parent = base_env()) {
 #'   environment where the tidy quotes were created in the first place
 #'   are in scope as well. If `NULL` (the default), `bottom` is also the top of
 #'   the overscope.
-#' @param enclosure The default enclosure. After a quosure is done
-#'   self-evaluating, the overscope is rechained to the default
-#'   enclosure.
 #' @return A valid overscope: a child environment of `bottom`
 #'   containing the definitions enabling tidy evaluation
 #'   (self-evaluating quosures, formula-unguarding, ...).
 #' @export
-new_overscope <- function(bottom, top = NULL, enclosure = base_env()) {
-  .Call(rlang_new_data_mask, bottom, top, enclosure)
+new_data_mask <- function(bottom, top = NULL, parent = base_env()) {
+  .Call(rlang_new_data_mask, bottom, top, parent)
 }
-#' @rdname as_overscope
-#' @param overscope A valid overscope containing bindings for `~`,
-#'   `.top_env` and `_F` and whose parents contain overscoped bindings
-#'   for tidy evaluation.
-#' @param env The lexical enclosure in case `quo` is not a validly
-#'   scoped quosure. This is the [base environment][base_env] by
-#'   default.
+#' @rdname as_data_mask
+#' @param mask A data mask as created by `as_data_mask()` or
+#'   `new_data_mask()`.
 #' @export
-overscope_eval_next <- function(overscope, quo, env = base_env()) {
-  .Call(rlang_eval_tidy, quo, overscope, environment())
+data_mask_clean <- function(mask) {
+  invisible(.Call(rlang_data_mask_clean, mask))
 }
-#' @rdname as_overscope
+
+
 #' @export
-overscope_clean <- function(overscope) {
-  invisible(.Call(rlang_data_mask_clean, overscope))
+`$.rlang_data_pronoun` <- function(x, name) {
+  src <- .subset2(x, "src")
+  if (!has_binding(src, name)) {
+    abort(sprintf(.subset2(x, "lookup_msg"), name))
+  }
+  src[[name]]
+}
+#' @export
+`[[.rlang_data_pronoun` <- function(x, i, ...) {
+  if (!is_string(i)) {
+    abort("Must subset the data pronoun with a string")
+  }
+  src <- .subset2(x, "src")
+  if (!has_binding(src, i)) {
+    abort(sprintf(.subset2(x, "lookup_msg"), i))
+  }
+  src[[i, ...]]
+}
+
+#' @export
+`$<-.rlang_data_pronoun` <- function(x, i, value) {
+  dict <- unclass_data_pronoun(x)
+
+  if (dict$read_only) {
+    abort("Can't modify the data pronoun")
+  }
+
+  dict$src[[i]] <- value
+  set_attrs(dict, class = class(x))
+}
+#' @export
+`[[<-.rlang_data_pronoun` <- function(x, i, value) {
+  dict <- unclass_data_pronoun(x)
+
+  if (dict$read_only) {
+    abort("Can't modify the data pronoun")
+  }
+  if (!is_string(i)) {
+    abort("Must subset the data pronoun with a string")
+  }
+
+  dict$src[[i]] <- value
+  set_attrs(dict, class = class(x))
+}
+
+#' @export
+names.rlang_data_pronoun <- function(x) {
+  names(unclass(x)$src)
+}
+#' @export
+length.rlang_data_pronoun <- function(x) {
+  length(unclass(x)$src)
+}
+
+has_binding <- function(x, name) {
+  if (is_environment(x)) {
+    env_has(x, name)
+  } else {
+    has_name(x, name)
+  }
+}
+
+#' @export
+print.rlang_data_pronoun <- function(x, ...) {
+  src <- unclass_data_pronoun(x)$src
+  objs <- glue_countable(length(src), "object")
+  cat(paste0("<pronoun>\n", objs, "\n"))
+  invisible(x)
+}
+#' @importFrom utils str
+#' @export
+str.rlang_data_pronoun <- function(object, ...) {
+  str(unclass_data_pronoun(object)$src, ...)
+}
+
+glue_countable <- function(n, str) {
+  if (n == 1) {
+    paste0(n, " ", str)
+  } else {
+    paste0(n, " ", str, "s")
+  }
+}
+# Unclassing before print() or str() is necessary because default
+# methods index objects with integers
+unclass_data_pronoun <- function(x) {
+  i <- match("rlang_data_pronoun", class(x))
+  class(x) <- class(x)[-i]
+  x
 }

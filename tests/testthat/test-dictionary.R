@@ -21,8 +21,8 @@ test_that("can't access non-existent environment components", {
 test_that("can't use non-character vectors", {
   x <- as_dictionary(list(y = 1))
 
-  expect_error(x[[1]], "subset with a string")
-  expect_error(x[[c("a", "b")]], "subset with a string")
+  expect_error(x[[1]], "with a string")
+  expect_error(x[[c("a", "b")]], "with a string")
 })
 
 test_that("subsetting .data pronoun fails when not supplied", {
@@ -50,11 +50,11 @@ test_that("can replace elements of dictionaries", {
   x[["bar"]] <- "bam"
   expect_src(x, list(foo = "baz", bar = "bam"))
 
-  expect_error(x[[3]] <- NULL, "Must subset with a string")
+  expect_error(x[[3]] <- NULL, "with a string")
 })
 
 test_that("cannot replace elements of read-only dictionaries", {
   x <- as_dictionary(list(foo = "bar"), read_only = TRUE)
-  expect_error(x$foo <- "baz", "read-only dictionary")
-  expect_error(x[["foo"]] <- "baz", "read-only dictionary")
+  expect_error(x$foo <- "baz", "Can't modify")
+  expect_error(x[["foo"]] <- "baz", "Can't modify")
 })

@@ -54,6 +54,9 @@
 #' * [UQ()]
 #' * [UQS()]
 #'
+#' * [eval_tidy_()]
+#' * [overscope_eval_next()] => [eval_tidy()]
+#'
 #' * [lang_head()], [lang_tail()]
 #'
 #'
@@ -62,6 +65,10 @@
 #' * [quo_expr()] => [quo_squash()]
 #' * [parse_quosure()] => [parse_quo()]
 #' * [parse_quosures()] => [parse_quos()]
+#' * [as_overscope()] => [as_data_mask()]
+#' * [new_overscope()] => [new_data_mask()]
+#' * [overscope_clean()] => [data_mask_clean()]
+#' * [as_dictionary()] => [as_data_pronoun()]
 #'
 #' * [lang()] => [call2()]
 #' * [new_language()] => [call_node()]

@@ -19,7 +19,7 @@ for your own objects, you can define a method for this generic.}
 \description{
 \code{eval_tidy()} is a variant of \code{\link[base:eval]{base::eval()}} and \code{\link[=eval_bare]{eval_bare()}} that
 powers the \href{http://rlang.tidyverse.org/articles/tidy-evaluation.html}{tidy evaluationframework}.
-It evaluates \code{expr} in an \link[=as_overscope]{overscope} where the
+It evaluates \code{expr} in an \link[=as_data_mask]{overscope} where the
 special definitions enabling tidy evaluation are installed. This
 enables the following features:
 \itemize{
