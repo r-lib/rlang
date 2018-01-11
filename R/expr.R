@@ -369,3 +369,67 @@ expr_type_of <- function(x) {
 switch_expr <- function(.x, ...) {
   switch(expr_type_of(.x), ...)
 }
+
+
+#' Print an expression
+#'
+#' @description
+#'
+#' `expr_print()`, powered by `expr_deparse()`, is an alternative
+#' printer for R expressions with a few improvements over the base R
+#' printer.
+#'
+#' * It colourises [quosures][quosure] according to their environment.
+#'   Quosures from the global environment are printed normally while
+#'   quosures from local environments are printed in unique colour (or
+#'   in italic when all colours are taken).
+#'
+#' * It wraps inlined objects in angular brackets. For instance, an
+#'   integer vector unquoted in a function call (e.g.
+#'   `expr(foo(!!(1:3)))`) is printed like this: `foo(<int: 1L, 2L,
+#'   3L>)` while by default R prints the code to create that vector:
+#'   `foo(1:3)` which is ambiguous.
+#'
+#' * It respects the width boundary (from the global option `width`)
+#'   in more cases.
+#'
+#' @param x An object or expression to print.
+#' @param width The width of the deparsed or printed expression.
+#'   Defaults to the global option `width`.
+#'
+#' @export
+#' @examples
+#' # It supports any object. Non-symbolic objects are always printed
+#' # within angular brackets:
+#' expr_print(1:3)
+#' expr_print(function() NULL)
+#'
+#' # Contrast this to how the code to create these objects is printed:
+#' expr_print(quote(1:3))
+#' expr_print(quote(function() NULL))
+#'
+#' # The main cause of non-symbolic objects in expressions is
+#' # quasiquotation:
+#' expr_print(expr(foo(!!(1:3))))
+#'
+#'
+#' # Quosures from the global environment are printed normally:
+#' expr_print(quo(foo))
+#' expr_print(quo(foo(!!quo(bar))))
+#'
+#' # Quosures from local environments are colourised according to
+#' # their environments (if you have crayon installed):
+#' local_quo <- local(quo(foo))
+#' expr_print(local_quo)
+#'
+#' wrapper_quo <- local(quo(bar(!!local_quo, baz)))
+#' expr_print(wrapper_quo)
+expr_print <- function(x, width = peek_option("width")) {
+  meow(expr_deparse(x, width = width))
+}
+#' @rdname expr_print
+#' @export
+expr_deparse <- function(x, width = peek_option("width")) {
+  deparser <- new_quo_deparser(width = width)
+  quo_deparse(x, deparser)
+}
