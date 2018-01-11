@@ -2,11 +2,10 @@
 #'
 #' @description
 #'
-#' `eval_tidy()` is a variant of [base::eval()] that powers the [tidy
-#' evaluation framework](http://rlang.tidyverse.org/articles/tidy-evaluation.html).
-#' Like `eval()` it accepts user data as argument. If supplied, it
-#' evaluates its input `expr` in a [data mask][as_data_mask]. In
-#' additon `eval_tidy()` supports:
+#' `eval_tidy()` is a variant of [base::eval()] that powers the tidy
+#' evaluation framework. Like `eval()` it accepts user data as
+#' argument. If supplied, it evaluates its input `expr` in a [data
+#' mask][as_data_mask]. In additon `eval_tidy()` supports:
 #'
 #' - [Quosures][quosure]. The expression wrapped in the quosure
 #'   evaluates in its original context (masked by `data` if supplied).
@@ -68,7 +67,7 @@
 #' # the current environment (this child environment is where it
 #' # defines the pronoun `.`).
 #' \dontrun{
-#'   data %>% with_data(!!kiwi)    # "kiwi"
+#'   data %>% with_data(!!kiwi)     # "kiwi"
 #'   data %>% with_data(.env$kiwi)  # NULL
 #' }
 #' @name eval_tidy

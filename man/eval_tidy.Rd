@@ -15,10 +15,10 @@ data mask created with \code{\link[=as_data_mask]{as_data_mask()}} or \code{\lin
 \item{env}{The environment in which to evaluate \code{expr}.}
 }
 \description{
-\code{eval_tidy()} is a variant of \code{\link[base:eval]{base::eval()}} that powers the \href{http://rlang.tidyverse.org/articles/tidy-evaluation.html}{tidyevaluation framework}.
-Like \code{eval()} it accepts user data as argument. If supplied, it
-evaluates its input \code{expr} in a \link[=as_data_mask]{data mask}. In
-additon \code{eval_tidy()} supports:
+\code{eval_tidy()} is a variant of \code{\link[base:eval]{base::eval()}} that powers the tidy
+evaluation framework. Like \code{eval()} it accepts user data as
+argument. If supplied, it evaluates its input \code{expr} in a \link[=as_data_mask]{data
+mask}. In additon \code{eval_tidy()} supports:
 \itemize{
 \item \link[=quosure]{Quosures}. The expression wrapped in the quosure
 evaluates in its original context (masked by \code{data} if supplied).
@@ -73,7 +73,7 @@ with_data(data, .env$apple)
 # the current environment (this child environment is where it
 # defines the pronoun `.`).
 \dontrun{
-  data \%>\% with_data(!!kiwi)    # "kiwi"
+  data \%>\% with_data(!!kiwi)     # "kiwi"
   data \%>\% with_data(.env$kiwi)  # NULL
 }
 }
