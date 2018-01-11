@@ -29,6 +29,12 @@ some subtle implications when evaluting stack sensitive functions
 evaluation stack, and has stack-consistent semantics. It is thus
 more suited for experimenting with the R language.
 }
+\section{Life cycle}{
+
+
+These functions are experimental. Expect API changes.
+}
+
 \examples{
 # with_env() is handy to create formulas with a given environment:
 env <- child_env("rlang")

@@ -36,6 +36,19 @@ and all arguments bound to new symbols (see \code{\link[=env_bury]{env_bury()}})
 uses the same strategy as \code{\link[=eval_bare]{eval_bare()}} to evaluate with minimal
 noise.
 }
+\section{Life cycle}{
+
+
+\code{invoke()} is in questioning lifecycle stage. Now that we
+understand better the interaction between unquoting and dots
+capture, we believe that \code{invoke()} should not take a \code{.args}
+argument. Instead it should take dots with \code{\link[=dots_list]{dots_list()}} in order
+to enable \code{!!!} syntax.
+
+We ask rlang users not to use \code{invoke()} in CRAN packages because
+we plan a breaking API update to remove the \code{.args} argument.
+}
+
 \examples{
 # invoke() has the same purpose as do.call():
 invoke(paste, letters)

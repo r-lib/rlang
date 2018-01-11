@@ -12,34 +12,70 @@ eval_bare(expr, env = parent.frame())
 \item{env}{The environment in which to evaluate the expression.}
 }
 \description{
-\code{eval_bare()} is a lightweight version of the base function
-\code{\link[base:eval]{base::eval()}}. It does not accept supplementary data, but it is
-more efficient and does not clutter the evaluation stack.
-Technically, \code{eval_bare()} is a simple wrapper around the C
-function \code{Rf_eval()}.
+\code{eval_bare()} is a lower-level version of function \code{\link[base:eval]{base::eval()}}.
+Technically, it is a simple wrapper around the C function
+\code{Rf_eval()}. You generally don't need to use \code{eval_bare()} instead
+of \code{eval()}. Its main advantage is that it handles stack-sensitive
+(calls such as \code{return()}, \code{on.exit()} or \code{parent.frame()}) more
+consistently when you pass an enviroment of a frame on the call
+stack.
 }
 \details{
-\code{base::eval()} inserts two call frames in the stack, the second of
-which features the \code{envir} parameter as frame environment. This may
-unnecessarily clutter the evaluation stack and it can change
-evaluation semantics with stack sensitive functions in the case
-where \code{env} is an evaluation environment of a stack frame (see
-\code{\link[=ctxt_stack]{ctxt_stack()}}). Since the base function \code{eval()} creates a new
-evaluation context with \code{env} as frame environment there are
-actually two contexts with the same evaluation environment on the
-stack when \code{expr} is evaluated. Thus, any command that looks up
-frames on the stack (stack sensitive functions) may find the
-parasite frame set up by \code{eval()} rather than the original frame
-targetted by \code{env}. As a result, code evaluated with \code{base::eval()}
-does not have the property of stack consistency, and stack
-sensitive functions like \code{\link[base:return]{base::return()}}, \code{\link[base:parent.frame]{base::parent.frame()}}
-may return misleading results.
+These semantics are possible because \code{eval_bare()} creates only one
+frame on the call stack whereas \code{eval()} creates two frames, the
+second of which has the user-supplied environment as frame
+environment. When you supply an existing frame environment to
+\code{base::eval()} there will be two frames on the stack with the same
+frame environment. Stack-sensitive functions only detect the
+topmost of these frames. We call these evaluation semantics
+"stack inconsistent".
+
+Evaluating expressions in the actual frame environment has useful
+practical implications for \code{eval_bare()}:
+\itemize{
+\item \code{return()} calls are evaluated in frame environments that might
+be burried deep in the call stack. This causes a long return that
+unwinds multiple frames (triggering the \code{on.exit()} event for
+each frame). By contrast \code{eval()} only returns from the \code{eval()}
+call, one level up.
+\item \code{on.exit()}, \code{parent.frame()}, \code{sys.call()}, and generally all
+the stack inspection functions \code{sys.xxx()} are evaluated in the
+correct frame environment. This is similar to how this type of
+calls can be evaluated deep in the call stack because of lazy
+evaluation, when you force an argument that has been passed
+around several times.
 }
+
+The flip side of the semantics of \code{eval_bare()} is that it can't
+evaluate \code{break} or \code{next} expressions even if called within a
+loop.
+}
+\section{Life cycle}{
+
+
+\code{eval_bare()} is stable.
+}
+
 \examples{
-# eval_bare() works just like base::eval():
-env <- child_env(NULL, foo = "bar")
-expr <- quote(foo)
-eval_bare(expr, env)
+# eval_bare() works just like base::eval() but you have to create
+# the evaluation environment yourself:
+eval_bare(quote(foo), env(foo = "bar"))
+
+# eval() has different evaluation semantics than eval_bare(). It
+# can return from the supplied environment even if its an
+# environment that is not on the call stack (i.e. because you've
+# created it yourself). The following would trigger an error with
+# eval_bare():
+ret <- quote(return("foo"))
+eval(ret, env())
+# eval_bare(ret, env())  # "no function to return from" error
+
+# Another feature of eval() is that you can control surround loops:
+bail <- quote(break)
+while (TRUE) {
+  eval(bail)
+  # eval_bare(bail)  # "no loop for break/next" error
+}
 
 # To explore the consequences of stack inconsistent semantics, let's
 # create a function that evaluates `parent.frame()` deep in the call
@@ -73,5 +109,6 @@ eval_bare(get_stack)
 eval(get_stack)
 }
 \seealso{
-with_env
+\code{\link[=eval_tidy]{eval_tidy()}} for evaluation with data mask and quosure
+support.
 }

@@ -27,6 +27,7 @@ TODO: Review all functions in rlang and mark stable ones as such.
 \item \code{\link[=missing_arg]{missing_arg()}}, \code{\link[=is_missing]{is_missing()}}
 \item \code{\link[=quo_get_expr]{quo_get_expr()}}, \code{\link[=quo_set_expr]{quo_set_expr()}}
 \item \code{\link[=quo_get_env]{quo_get_env()}}, \code{\link[=quo_set_env]{quo_set_env()}}
+\item \code{\link[=eval_bare]{eval_bare()}}
 \item \code{\link[=set_names]{set_names()}}, \code{\link[=names2]{names2()}}
 \item \code{\link[=as_function]{as_function()}}
 }
@@ -39,7 +40,14 @@ TODO: Review all functions in rlang and mark stable ones as such.
 \item \code{\link[=switch_class]{switch_class()}}, \code{\link[=coerce_class]{coerce_class()}}
 \item \code{\link[=lang_type_of]{lang_type_of()}}, \code{\link[=switch_lang]{switch_lang()}}, \code{\link[=coerce_lang]{coerce_lang()}}
 \item \code{\link[=set_attrs]{set_attrs()}}, \code{\link[=mut_attrs]{mut_attrs()}}
+\item \code{\link[=with_env]{with_env()}}, \code{\link[=locally]{locally()}}
 }
+}
+
+\section{Questioning functions}{
+
+
+#' * \code{\link[=invoke]{invoke()}}
 }
 
 \section{Soft-deprecated functions and arguments}{

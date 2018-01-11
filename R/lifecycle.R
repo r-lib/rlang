@@ -27,6 +27,8 @@
 #' * [quo_get_expr()], [quo_set_expr()]
 #' * [quo_get_env()], [quo_set_env()]
 #'
+#' * [eval_bare()]
+#'
 #' * [set_names()], [names2()]
 #' * [as_function()]
 #'
@@ -37,6 +39,12 @@
 #' * [switch_class()], [coerce_class()]
 #' * [lang_type_of()], [switch_lang()], [coerce_lang()]
 #' * [set_attrs()], [mut_attrs()]
+#' * [with_env()], [locally()]
+#'
+#'
+#' @section Questioning functions:
+#'
+#' #' * [invoke()]
 #'
 #'
 #' @section Soft-deprecated functions and arguments:

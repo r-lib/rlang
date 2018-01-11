@@ -1,36 +1,73 @@
 #' Evaluate an expression in an environment
 #'
-#' `eval_bare()` is a lightweight version of the base function
-#' [base::eval()]. It does not accept supplementary data, but it is
-#' more efficient and does not clutter the evaluation stack.
-#' Technically, `eval_bare()` is a simple wrapper around the C
-#' function `Rf_eval()`.
+#' `eval_bare()` is a lower-level version of function [base::eval()].
+#' Technically, it is a simple wrapper around the C function
+#' `Rf_eval()`. You generally don't need to use `eval_bare()` instead
+#' of `eval()`. Its main advantage is that it handles stack-sensitive
+#' (calls such as `return()`, `on.exit()` or `parent.frame()`) more
+#' consistently when you pass an enviroment of a frame on the call
+#' stack.
 #'
-#' `base::eval()` inserts two call frames in the stack, the second of
-#' which features the `envir` parameter as frame environment. This may
-#' unnecessarily clutter the evaluation stack and it can change
-#' evaluation semantics with stack sensitive functions in the case
-#' where `env` is an evaluation environment of a stack frame (see
-#' [ctxt_stack()]). Since the base function `eval()` creates a new
-#' evaluation context with `env` as frame environment there are
-#' actually two contexts with the same evaluation environment on the
-#' stack when `expr` is evaluated. Thus, any command that looks up
-#' frames on the stack (stack sensitive functions) may find the
-#' parasite frame set up by `eval()` rather than the original frame
-#' targetted by `env`. As a result, code evaluated with `base::eval()`
-#' does not have the property of stack consistency, and stack
-#' sensitive functions like [base::return()], [base::parent.frame()]
-#' may return misleading results.
+#' These semantics are possible because `eval_bare()` creates only one
+#' frame on the call stack whereas `eval()` creates two frames, the
+#' second of which has the user-supplied environment as frame
+#' environment. When you supply an existing frame environment to
+#' `base::eval()` there will be two frames on the stack with the same
+#' frame environment. Stack-sensitive functions only detect the
+#' topmost of these frames. We call these evaluation semantics
+#' "stack inconsistent".
+#'
+#' Evaluating expressions in the actual frame environment has useful
+#' practical implications for `eval_bare()`:
+#'
+#' * `return()` calls are evaluated in frame environments that might
+#'   be burried deep in the call stack. This causes a long return that
+#'   unwinds multiple frames (triggering the `on.exit()` event for
+#'   each frame). By contrast `eval()` only returns from the `eval()`
+#'   call, one level up.
+#'
+#' * `on.exit()`, `parent.frame()`, `sys.call()`, and generally all
+#'   the stack inspection functions `sys.xxx()` are evaluated in the
+#'   correct frame environment. This is similar to how this type of
+#'   calls can be evaluated deep in the call stack because of lazy
+#'   evaluation, when you force an argument that has been passed
+#'   around several times.
+#'
+#' The flip side of the semantics of `eval_bare()` is that it can't
+#' evaluate `break` or `next` expressions even if called within a
+#' loop.
+#'
+#'
+#' @section Life cycle:
+#'
+#' `eval_bare()` is stable.
 #'
 #' @param expr An expression to evaluate.
 #' @param env The environment in which to evaluate the expression.
-#' @seealso with_env
+#'
+#' @seealso [eval_tidy()] for evaluation with data mask and quosure
+#'   support.
 #' @export
 #' @examples
-#' # eval_bare() works just like base::eval():
-#' env <- child_env(NULL, foo = "bar")
-#' expr <- quote(foo)
-#' eval_bare(expr, env)
+#' # eval_bare() works just like base::eval() but you have to create
+#' # the evaluation environment yourself:
+#' eval_bare(quote(foo), env(foo = "bar"))
+#'
+#' # eval() has different evaluation semantics than eval_bare(). It
+#' # can return from the supplied environment even if its an
+#' # environment that is not on the call stack (i.e. because you've
+#' # created it yourself). The following would trigger an error with
+#' # eval_bare():
+#' ret <- quote(return("foo"))
+#' eval(ret, env())
+#' # eval_bare(ret, env())  # "no function to return from" error
+#'
+#' # Another feature of eval() is that you can control surround loops:
+#' bail <- quote(break)
+#' while (TRUE) {
+#'   eval(bail)
+#'   # eval_bare(bail)  # "no loop for break/next" error
+#' }
 #'
 #' # To explore the consequences of stack inconsistent semantics, let's
 #' # create a function that evaluates `parent.frame()` deep in the call
@@ -79,6 +116,12 @@ eval_bare <- function(expr, env = parent.frame()) {
 #' [base::local()] but it produces a much cleaner
 #' evaluation stack, and has stack-consistent semantics. It is thus
 #' more suited for experimenting with the R language.
+#'
+#'
+#' @section Life cycle:
+#'
+#' These functions are experimental. Expect API changes.
+#'
 #'
 #' @inheritParams eval_bare
 #' @param env An environment within which to evaluate `expr`. Can be
@@ -135,6 +178,18 @@ locally <- function(expr) {
 #' and all arguments bound to new symbols (see [env_bury()]). It then
 #' uses the same strategy as [eval_bare()] to evaluate with minimal
 #' noise.
+#'
+#'
+#' @section Life cycle:
+#'
+#' `invoke()` is in questioning lifecycle stage. Now that we
+#' understand better the interaction between unquoting and dots
+#' capture, we believe that `invoke()` should not take a `.args`
+#' argument. Instead it should take dots with [dots_list()] in order
+#' to enable `!!!` syntax.
+#'
+#' We ask rlang users not to use `invoke()` in CRAN packages because
+#' we plan a breaking API update to remove the `.args` argument.
 #'
 #' @param .fn A function to invoke. Can be a function object or the
 #'   name of a function in scope of `.env`.
