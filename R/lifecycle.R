@@ -22,6 +22,7 @@
 #' * [enexpr()], [expr()], [exprs()]
 #' * [sym()], [syms()]
 #' * [new_quosure()], [is_quosure()]
+#' * [missing_arg()], [is_missing()]
 #'
 #' * [quo_get_expr()], [quo_set_expr()]
 #' * [quo_get_env()], [quo_set_env()]
