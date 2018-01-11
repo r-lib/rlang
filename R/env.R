@@ -793,38 +793,16 @@ env_has <- function(env = caller_env(), nms, inherit = FALSE) {
   map_lgl(nms, exists, envir = get_env(env), inherits = inherit)
 }
 
-#' Get or set an object in an environment
+#' Get an object in an environment
 #'
-#' @description
-#'
-#' * `env_get()` extracts an object from an enviroment `env`. By
-#'   default, it does not look in the parent environments.
-#'   `env_get_list()` extracts multiple objects from an environment
-#'   into a named list.
-#'
-#' * `env_set()` will assign or reassign a binding in `env` if
-#'   `create` is `TRUE`. If `create` is `FALSE` and a binding does not
-#'   already exists, an error is issued.
-#'
-#'   If `inherit` is `TRUE`, the parents environments are checked for
-#'   an existing binding to reassign. If not found and `create` is
-#'   `TRUE`, a new binding is created in `env`. The default value for
-#'   `create` is a function of `inherit`: `FALSE` when inheriting,
-#'   `TRUE` otherwise.
-#'
-#'   This default makes sense because the inheriting case is mostly
-#'   for overriding an existing binding. If not found, something
-#'   probably went wrong and it is safer to issue an error. Note that
-#'   this is different to the base R operator `<<-` which will create
-#'   a binding in the global environment instead of the current
-#'   environment when no existing binding is found in the parents.
+#' `env_get()` extracts an object from an enviroment `env`. By
+#' default, it does not look in the parent environments.
+#' `env_get_list()` extracts multiple objects from an environment into
+#' a named list.
 #'
 #' @inheritParams get_env
 #' @inheritParams env_has
 #' @param nm,nms Names of bindings. `nm` must be a single string.
-#' @param value The value for a new binding.
-#' @param create Whether to create a binding if it does not already
-#'   exist in the environment.
 #' @return An object if it exists. Otherwise, throws an error.
 #' @export
 #' @examples
@@ -846,7 +824,39 @@ env_get_list <- function(env = caller_env(), nms, inherit = FALSE) {
   map(nms, env_get, env = env, inherit = inherit)
 }
 
-#' @rdname env_get
+#' Poke an object in an environment
+#'
+#' `env_set()` will assign or reassign a binding in `env` if `create`
+#' is `TRUE`. If `create` is `FALSE` and a binding does not already
+#' exists, an error is issued.
+#'
+#' If `inherit` is `TRUE`, the parents environments are checked for
+#' an existing binding to reassign. If not found and `create` is
+#' `TRUE`, a new binding is created in `env`. The default value for
+#' `create` is a function of `inherit`: `FALSE` when inheriting,
+#' `TRUE` otherwise.
+#'
+#' This default makes sense because the inheriting case is mostly
+#' for overriding an existing binding. If not found, something
+#' probably went wrong and it is safer to issue an error. Note that
+#' this is different to the base R operator `<<-` which will create
+#' a binding in the global environment instead of the current
+#' environment when no existing binding is found in the parents.
+#'
+#'
+#' @section Life cycle:
+#'
+#' `env_set()` is experimental. We are still experimenting with
+#' reducing the number of redundant functions by using quasiquotation.
+#' It is possible `env_set()` will be deprecated in favour of
+#' `env_bind()` and name-unquoting with `:=`.
+#'
+#' @inheritParams env_get
+#' @param value The value for a new binding.
+#' @param create Whether to create a binding if it does not already
+#'   exist in the environment.
+#'
+#' @keywords internal
 #' @export
 env_set <- function(env = caller_env(), nm, value,
                     inherit = FALSE, create = NULL) {

@@ -41,6 +41,7 @@ TODO: Review all functions in rlang and mark stable ones as such.
 \item \code{\link[=lang_type_of]{lang_type_of()}}, \code{\link[=switch_lang]{switch_lang()}}, \code{\link[=coerce_lang]{coerce_lang()}}
 \item \code{\link[=set_attrs]{set_attrs()}}, \code{\link[=mut_attrs]{mut_attrs()}}
 \item \code{\link[=with_env]{with_env()}}, \code{\link[=locally]{locally()}}
+\item \code{\link[=env_set]{env_set()}}
 }
 }
 

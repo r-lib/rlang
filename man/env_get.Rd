@@ -3,14 +3,11 @@
 \name{env_get}
 \alias{env_get}
 \alias{env_get_list}
-\alias{env_set}
-\title{Get or set an object in an environment}
+\title{Get an object in an environment}
 \usage{
 env_get(env = caller_env(), nm, inherit = FALSE)
 
 env_get_list(env = caller_env(), nms, inherit = FALSE)
-
-env_set(env = caller_env(), nm, value, inherit = FALSE, create = NULL)
 }
 \arguments{
 \item{env}{An environment or an object bundling an environment,
@@ -20,38 +17,15 @@ e.g. a formula, \link{quosure} or \link[=is_closure]{closure}.}
 
 \item{inherit}{Whether to look for bindings in the parent
 environments.}
-
-\item{value}{The value for a new binding.}
-
-\item{create}{Whether to create a binding if it does not already
-exist in the environment.}
 }
 \value{
 An object if it exists. Otherwise, throws an error.
 }
 \description{
-\itemize{
-\item \code{env_get()} extracts an object from an enviroment \code{env}. By
+\code{env_get()} extracts an object from an enviroment \code{env}. By
 default, it does not look in the parent environments.
-\code{env_get_list()} extracts multiple objects from an environment
-into a named list.
-\item \code{env_set()} will assign or reassign a binding in \code{env} if
-\code{create} is \code{TRUE}. If \code{create} is \code{FALSE} and a binding does not
-already exists, an error is issued.
-
-If \code{inherit} is \code{TRUE}, the parents environments are checked for
-an existing binding to reassign. If not found and \code{create} is
-\code{TRUE}, a new binding is created in \code{env}. The default value for
-\code{create} is a function of \code{inherit}: \code{FALSE} when inheriting,
-\code{TRUE} otherwise.
-
-This default makes sense because the inheriting case is mostly
-for overriding an existing binding. If not found, something
-probably went wrong and it is safer to issue an error. Note that
-this is different to the base R operator \code{<<-} which will create
-a binding in the global environment instead of the current
-environment when no existing binding is found in the parents.
-}
+\code{env_get_list()} extracts multiple objects from an environment into
+a named list.
 }
 \examples{
 parent <- child_env(NULL, foo = "foo")
