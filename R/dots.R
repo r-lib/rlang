@@ -86,8 +86,10 @@ dots_values <- function(...,
 
 #' @rdname quosures
 #' @export
-dots_definitions <- function(..., .named = FALSE) {
-  dots <- .Call(rlang_quos_interp, environment(), .named, "trailing", FALSE)
+dots_definitions <- function(...,
+                             .named = FALSE,
+                             .ignore_empty = c("trailing", "none", "all")) {
+  dots <- .Call(rlang_quos_interp, environment(), .named, .ignore_empty, FALSE)
 
   is_def <- map_lgl(dots, function(dot) is_definition(quo_get_expr(dot)))
   defs <- map(dots[is_def], as_definition)

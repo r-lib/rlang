@@ -8,7 +8,8 @@
 \alias{is_quosures}
 \title{Tidy quotation of multiple expressions and dots}
 \usage{
-dots_definitions(..., .named = FALSE)
+dots_definitions(..., .named = FALSE, .ignore_empty = c("trailing", "none",
+  "all"))
 
 quos(..., .named = FALSE, .ignore_empty = c("trailing", "none", "all"),
   .unquote_names = TRUE)
