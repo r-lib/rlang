@@ -211,7 +211,7 @@ static sexp* base_tilde_eval(sexp* tilde, sexp* quo_env) {
 
 
 static sexp* env_poke_parent_fn = NULL;
-static sexp* env_set_fn = NULL;
+static sexp* env_poke_fn = NULL;
 
 sexp* rlang_tilde_eval(sexp* tilde, sexp* overscope, sexp* overscope_top, sexp* cur_frame) {
   if (!rlang_is_quosure(tilde)) {
@@ -242,7 +242,7 @@ sexp* rlang_tilde_eval(sexp* tilde, sexp* overscope, sexp* overscope_top, sexp* 
     r_env_poke(overscope, data_mask_env_sym, quo_env);
 
     sexp* exit_args = r_build_pairlist3(overscope, r_scalar_chr(".env"), prev_env);
-    sexp* exit_lang = KEEP(r_build_call_node(env_set_fn, exit_args));
+    sexp* exit_lang = KEEP(r_build_call_node(env_poke_fn, exit_args));
     r_on_exit(exit_lang, cur_frame);
     FREE(1);
   }
@@ -371,7 +371,7 @@ void rlang_init_eval_tidy() {
 
   tilde_prim = r_base_ns_get("~");
   env_poke_parent_fn = rlang_ns_get("env_poke_parent");
-  env_set_fn = rlang_ns_get("env_poke");
+  env_poke_fn = rlang_ns_get("env_poke");
 
   data_mask_clean_fn = rlang_ns_get("overscope_clean");
 
