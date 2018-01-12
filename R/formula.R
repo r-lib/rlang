@@ -16,8 +16,7 @@ new_formula <- function(lhs, rhs, env = caller_env()) {
 #'
 #' `is_formula()` tests if `x` is a call to `~`. `is_bare_formula()`
 #' tests in addition that `x` does not inherit from anything else than
-#' `"formula"`. `is_formulaish()` returns `TRUE` for both formulas and
-#' [definitions][is_definition] of the type `a := b`.
+#' `"formula"`.
 #'
 #' The `scoped` argument patterns-match on whether the scoped bundled
 #' with the quosure is valid or not. Invalid scopes may happen in
@@ -51,12 +50,6 @@ new_formula <- function(lhs, rhs, env = caller_env()) {
 #' # return FALSE for these unevaluated formulas:
 #' is_bare_formula(f, scoped = TRUE)
 #' is_bare_formula(eval(f), scoped = TRUE)
-#'
-#'
-#' # There is also a variant that returns TRUE for definitions in
-#' # addition to formulas:
-#' is_formulaish(a ~ b)
-#' is_formulaish(quote(a := b))
 is_formula <- function(x, scoped = NULL, lhs = NULL) {
   if (!is_formulaish(x, scoped = scoped, lhs = lhs)) {
     return(FALSE)
@@ -71,11 +64,6 @@ is_bare_formula <- function(x, scoped = NULL, lhs = NULL) {
   }
   class <- class(x)
   is_null(class) || identical(class, "formula")
-}
-#' @rdname is_formula
-#' @export
-is_formulaish <- function(x, scoped = NULL, lhs = NULL) {
-  .Call(rlang_is_formulaish, x, scoped, lhs)
 }
 
 #' Get or set formula components

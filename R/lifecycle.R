@@ -48,6 +48,7 @@
 #' * [ns_env()], [ns_imports_env()], [ns_env_name()]
 #'
 #' * [is_pairlist()], [is_node()], [is_node_list()]
+#' * [is_definition()], [new_definition()], [is_formulaish()]
 #'
 #'
 #' @section Questioning functions:

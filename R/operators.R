@@ -47,9 +47,19 @@
 
 #' Definition operator
 #'
+#' @description
+#'
 #' The definition operator is typically used in DSL packages like
 #' `ggvis` and `data.table`. It is also used in the tidyverse as a way
 #' of unquoting names (see [quasiquotation]).
+#'
+#' * `is_definition()` returns `TRUE` for calls to `:=`.
+#'
+#' * `is_formulaish()` returns `TRUE` for both formulas and
+#'   colon-equals operators.
+#'
+#'
+#' @details
 #'
 #' The recommended way to use it is to capture arguments as
 #' expressions or quosures. You can then give a special function
@@ -61,8 +71,14 @@
 #' to be evaluated directly at top-level which is why the exported
 #' definitions issue an error.
 #'
+#'
+#' @section Life cycle:
+#'
+#' These functions are experimental.
+#'
 #' @name op-definition
 #' @param x An object to test.
+#' @keywords internal
 #' @export
 #' @examples
 #'
@@ -70,6 +86,11 @@
 #' # colon-equals operator:
 #' is_definition(quote(a := b))
 #' is_definition(a ~ b)
+#'
+#'
+#' # is_formulaish() tests for both definitions and formulas:
+#' is_formulaish(a ~ b)
+#' is_formulaish(quote(a := b))
 is_definition <- function(x) {
   is_formulaish(x) && identical(node_car(x), colon_equals_sym)
 }
@@ -80,4 +101,9 @@ is_definition <- function(x) {
 new_definition <- function(lhs, rhs, env = caller_env()) {
   def <- new_formula(lhs, rhs, env)
   node_poke_car(def, colon_equals_sym)
+}
+#' @rdname op-definition
+#' @export
+is_formulaish <- function(x, scoped = NULL, lhs = NULL) {
+  .Call(rlang_is_formulaish, x, scoped, lhs)
 }

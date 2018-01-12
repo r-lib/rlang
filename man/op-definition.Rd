@@ -4,11 +4,14 @@
 \alias{op-definition}
 \alias{is_definition}
 \alias{new_definition}
+\alias{is_formulaish}
 \title{Definition operator}
 \usage{
 is_definition(x)
 
 new_definition(lhs, rhs, env = caller_env())
+
+is_formulaish(x, scoped = NULL, lhs = NULL)
 }
 \arguments{
 \item{x}{An object to test.}
@@ -21,6 +24,11 @@ new_definition(lhs, rhs, env = caller_env())
 The definition operator is typically used in DSL packages like
 \code{ggvis} and \code{data.table}. It is also used in the tidyverse as a way
 of unquoting names (see \link{quasiquotation}).
+\itemize{
+\item \code{is_definition()} returns \code{TRUE} for calls to \code{:=}.
+\item \code{is_formulaish()} returns \code{TRUE} for both formulas and
+colon-equals operators.
+}
 }
 \details{
 The recommended way to use it is to capture arguments as
@@ -33,10 +41,22 @@ From rlang and data.table perspectives, this operator is not meant
 to be evaluated directly at top-level which is why the exported
 definitions issue an error.
 }
+\section{Life cycle}{
+
+
+These functions are experimental.
+}
+
 \examples{
 
 # A predicate is provided to distinguish formulas from the
 # colon-equals operator:
 is_definition(quote(a := b))
 is_definition(a ~ b)
+
+
+# is_formulaish() tests for both definitions and formulas:
+is_formulaish(a ~ b)
+is_formulaish(quote(a := b))
 }
+\keyword{internal}
