@@ -157,8 +157,15 @@ as_pairlist <- function(x) {
 #' * `is_node_list()` checks that `x` has type `pairlist` or `NULL`.
 #'   `NULL` is the empty node list.
 #'
+#'
+#' @section Life cycle:
+#'
+#' These functions are experimental. We are still figuring out a good
+#' naming convention to refer to the different lisp-like lists in R.
+#'
 #' @param x Object to test.
 #' @seealso [is_call()] tests for language nodes.
+#' @keywords internal
 #' @export
 is_pairlist <- function(x) {
   typeof(x) == "pairlist"

@@ -25,6 +25,14 @@ including callable nodes (language objects).
 \code{NULL} is the empty node list.
 }
 }
+\section{Life cycle}{
+
+
+These functions are experimental. We are still figuring out a good
+naming convention to refer to the different lisp-like lists in R.
+}
+
 \seealso{
 \code{\link[=is_call]{is_call()}} tests for language nodes.
 }
+\keyword{internal}

@@ -47,6 +47,8 @@
 #' * [scoped_env()], [scoped_names()], [scoped_envs()], [is_scoped()]
 #' * [ns_env()], [ns_imports_env()], [ns_env_name()]
 #'
+#' * [is_pairlist()], [is_node()], [is_node_list()]
+#'
 #'
 #' @section Questioning functions:
 #'

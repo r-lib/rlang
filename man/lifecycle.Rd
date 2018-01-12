@@ -46,6 +46,7 @@ TODO: Review all functions in rlang and mark stable ones as such.
 \item \code{\link[=pkg_env]{pkg_env()}}, \code{\link[=pkg_env_name]{pkg_env_name()}}
 \item \code{\link[=scoped_env]{scoped_env()}}, \code{\link[=scoped_names]{scoped_names()}}, \code{\link[=scoped_envs]{scoped_envs()}}, \code{\link[=is_scoped]{is_scoped()}}
 \item \code{\link[=ns_env]{ns_env()}}, \code{\link[=ns_imports_env]{ns_imports_env()}}, \code{\link[=ns_env_name]{ns_env_name()}}
+\item \code{\link[=is_pairlist]{is_pairlist()}}, \code{\link[=is_node]{is_node()}}, \code{\link[=is_node_list]{is_node_list()}}
 }
 }
 
