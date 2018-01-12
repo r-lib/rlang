@@ -53,7 +53,14 @@
 #'
 #' @section Questioning functions:
 #'
-#' #' * [invoke()]
+#' * [invoke()]
+#'
+#' * [is_frame()], [global_frame()], [current_frame()],
+#'   [ctxt_frame()], [call_frame()], [frame_position()]
+#'
+#' * [ctxt_depth()], [call_depth()], [ctxt_stack()], [call_stack()],
+#'   [stack_trim()]
+#'
 #'
 #'
 #' @section Soft-deprecated functions and arguments:

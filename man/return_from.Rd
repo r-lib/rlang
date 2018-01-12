@@ -34,6 +34,14 @@ gotos can be hard to reason about in casual code, though they can
 sometimes be useful. Also, consider to use the condition system to
 perform non-local jumps.
 }
+\section{Life cycle}{
+
+
+The support for \code{frame} object is experimental. The stack and frame
+objects are likely to be moved from rlang to another package.
+Please pass simple environments to \code{return_from()} and \code{return_to()}.
+}
+
 \examples{
 # Passing fn() evaluation frame to g():
 fn <- function() {

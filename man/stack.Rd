@@ -82,6 +82,15 @@ frame as well. This way, \code{call_stack(call_depth())} is the same as
 [[2]: R:[2
 [base::sys.nframe()]: R:base::sys.nframe()
 }
+\section{Life cycle}{
+
+
+These functions are in the questioning stage. We are no longer
+convinced they belong in rlang as they are mostly for REPL
+interaction and runtime inspection rather than function
+development.
+}
+
 \examples{
 # Expressions within arguments count as contexts
 identity(identity(ctxt_depth())) # returns 2
@@ -143,3 +152,4 @@ g <- function(trim) identity(identity(fn(trim)))
 g(2)
 g(3)
 }
+\keyword{internal}

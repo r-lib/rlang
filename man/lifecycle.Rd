@@ -53,8 +53,13 @@ TODO: Review all functions in rlang and mark stable ones as such.
 
 \section{Questioning functions}{
 
-
-#' * \code{\link[=invoke]{invoke()}}
+\itemize{
+\item \code{\link[=invoke]{invoke()}}
+\item \code{\link[=is_frame]{is_frame()}}, \code{\link[=global_frame]{global_frame()}}, \code{\link[=current_frame]{current_frame()}},
+\code{\link[=ctxt_frame]{ctxt_frame()}}, \code{\link[=call_frame]{call_frame()}}, \code{\link[=frame_position]{frame_position()}}
+\item \code{\link[=ctxt_depth]{ctxt_depth()}}, \code{\link[=call_depth]{call_depth()}}, \code{\link[=ctxt_stack]{ctxt_stack()}}, \code{\link[=call_stack]{call_stack()}},
+\code{\link[=stack_trim]{stack_trim()}}
+}
 }
 
 \section{Soft-deprecated functions and arguments}{

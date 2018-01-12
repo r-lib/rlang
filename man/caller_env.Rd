@@ -13,15 +13,8 @@ caller_frame(n = 1)
 caller_fn(n = 1)
 }
 \arguments{
-\item{n}{The number of generation to go back. Note that contrarily
-to \code{\link[=call_frame]{call_frame()}}, 1 represents the parent frame rather than the
-current frame.}
+\item{n}{The number of generation to go back.}
 }
 \description{
-\code{caller_frame()} is a shortcut for \code{call_frame(2)} and
-\code{caller_fn()} and \code{caller_env()} are shortcuts for
-\code{call_frame(2)$env} \code{call_frame(2)$fn}.
-}
-\seealso{
-\code{\link[=call_frame]{call_frame()}}
+Get the environment of the caller frame
 }

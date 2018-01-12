@@ -1,3 +1,22 @@
+#' Get the environment of the caller frame
+#'
+#' @param n The number of generation to go back.
+#' @export
+caller_env <- function(n = 1) {
+  parent.frame(n + 1)
+}
+#' @rdname caller_env
+#' @export
+caller_frame <- function(n = 1) {
+  call_frame(n + 2)
+}
+#' @rdname caller_env
+#' @export
+caller_fn <- function(n = 1) {
+  call_frame(n + 2)$fn
+}
+
+
 #' Call stack information
 #'
 #' The `eval_` and `call_` families of functions provide a replacement
@@ -38,6 +57,14 @@
 #' frame as well. This way, `call_stack(call_depth())` is the same as
 #' `global_frame()`.
 #'
+#'
+#' @section Life cycle:
+#'
+#' These functions are in the questioning stage. We are no longer
+#' convinced they belong in rlang as they are mostly for REPL
+#' interaction and runtime inspection rather than function
+#' development.
+#'
 #' @param n The number of frames to go back in the stack.
 #' @param clean Whether to post-process the call stack to clean
 #'   non-standard frames. If `TRUE`, suboptimal call-stack entries by
@@ -46,6 +73,7 @@
 #' @param trim The number of layers of intervening frames to trim off
 #'   the stack. See [stack_trim()] and examples.
 #' @name stack
+#' @keywords internal
 #' @examples
 #' # Expressions within arguments count as contexts
 #' identity(identity(ctxt_depth())) # returns 2
@@ -275,31 +303,6 @@ call_frame <- function(n = 1, clean = TRUE) {
   frame
 }
 
-#' Get the environment of the caller frame
-#'
-#' `caller_frame()` is a shortcut for `call_frame(2)` and
-#' `caller_fn()` and `caller_env()` are shortcuts for
-#' `call_frame(2)$env` `call_frame(2)$fn`.
-#'
-#' @param n The number of generation to go back. Note that contrarily
-#'   to [call_frame()], 1 represents the parent frame rather than the
-#'   current frame.
-#' @seealso [call_frame()]
-#' @export
-caller_env <- function(n = 1) {
-  parent.frame(n + 1)
-}
-#' @rdname caller_env
-#' @export
-caller_frame <- function(n = 1) {
-  call_frame(n + 2)
-}
-#' @rdname caller_env
-#' @export
-caller_fn <- function(n = 1) {
-  call_frame(n + 2)$fn
-}
-
 
 # The _depth() functions count the global frame as well
 
@@ -461,6 +464,14 @@ sys_frame <- function(n) {
 #' evaluation stack, it can safely be called with intervening frames
 #' as those will be discarded.
 #'
+#'
+#' @section Life cycle:
+#'
+#' These functions are in the questioning stage. We are no longer
+#' convinced they belong in rlang as they are mostly for REPL
+#' interaction and runtime inspection rather than function
+#' development.
+#'
 #' @param frame The environment of a frame. Can be any object with a
 #'   [get_env()] method. Note that for frame objects, the position from
 #'   the global frame is simply `frame$pos`. Alternatively, `frame`
@@ -469,6 +480,8 @@ sys_frame <- function(n) {
 #' @param from Whether to compute distance from the global frame (the
 #'   bottom of the evaluation stack), or from the current frame (the
 #'   top of the evaluation stack).
+#'
+#' @keywords internal
 #' @export
 #' @examples
 #' fn <- function() g(environment())
@@ -542,11 +555,20 @@ frame_position_current <- function(frame, stack = NULL,
 #' `ctxt_stack()` own call site. `stack_trim()` makes it easy to
 #' remove layers of intervening calls.
 #'
+#'
+#' @section Life cycle:
+#'
+#' These functions are in the questioning stage. We are no longer
+#' convinced they belong in rlang as they are mostly for REPL
+#' interaction and runtime inspection rather than function
+#' development.
+#'
 #' @param stack An evaluation stack.
 #' @param n The number of call frames (not eval frames) to trim off
 #'   the top of the stack. In other words, the number of layers of
 #'   intervening frames to trim.
 #' @export
+#' @keywords internal
 #' @examples
 #' # Intervening frames appear on the evaluation stack:
 #' identity(identity(ctxt_stack()))
@@ -616,6 +638,13 @@ is_frame_env <- function(env) {
 #' gotos can be hard to reason about in casual code, though they can
 #' sometimes be useful. Also, consider to use the condition system to
 #' perform non-local jumps.
+#'
+#'
+#' @section Life cycle:
+#'
+#' The support for `frame` object is experimental. The stack and frame
+#' objects are likely to be moved from rlang to another package.
+#' Please pass simple environments to `return_from()` and `return_to()`.
 #'
 #' @param frame An environment, a frame object, or any object with an
 #'   [get_env()] method. The environment should be an evaluation

@@ -27,6 +27,15 @@ While this function returns the position of the frame on the
 evaluation stack, it can safely be called with intervening frames
 as those will be discarded.
 }
+\section{Life cycle}{
+
+
+These functions are in the questioning stage. We are no longer
+convinced they belong in rlang as they are mostly for REPL
+interaction and runtime inspection rather than function
+development.
+}
+
 \examples{
 fn <- function() g(environment())
 g <- function(env) frame_position(env)
@@ -47,3 +56,4 @@ g <- function(env) h(env)
 h <- function(env) frame_position(env, from = "current")
 fn()
 }
+\keyword{internal}

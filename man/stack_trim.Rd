@@ -19,6 +19,15 @@ intervening frames are returned with the stack, including those at
 \code{ctxt_stack()} own call site. \code{stack_trim()} makes it easy to
 remove layers of intervening calls.
 }
+\section{Life cycle}{
+
+
+These functions are in the questioning stage. We are no longer
+convinced they belong in rlang as they are mostly for REPL
+interaction and runtime inspection rather than function
+development.
+}
+
 \examples{
 # Intervening frames appear on the evaluation stack:
 identity(identity(ctxt_stack()))
@@ -49,3 +58,4 @@ user_fn <- function() {
 # These intervening frames won't appear in the evaluation stack
 identity(user_fn())
 }
+\keyword{internal}
