@@ -252,7 +252,7 @@ data_mask_clean <- function(mask) {
 `$.rlang_data_pronoun` <- function(x, name) {
   src <- .subset2(x, "src")
   if (!has_binding(src, name)) {
-    abort(sprintf(.subset2(x, "lookup_msg"), name))
+    abort(sprintf(.subset2(x, "lookup_msg"), name), "rlang_data_pronoun_not_found")
   }
   src[[name]]
 }
@@ -263,7 +263,7 @@ data_mask_clean <- function(mask) {
   }
   src <- .subset2(x, "src")
   if (!has_binding(src, i)) {
-    abort(sprintf(.subset2(x, "lookup_msg"), i))
+    abort(sprintf(.subset2(x, "lookup_msg"), i), "rlang_data_pronoun_not_found")
   }
   src[[i, ...]]
 }
