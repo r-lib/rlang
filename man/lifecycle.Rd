@@ -50,6 +50,7 @@ TODO: Review all functions in rlang and mark stable ones as such.
 \item \code{\link[=is_definition]{is_definition()}}, \code{\link[=new_definition]{new_definition()}}, \code{\link[=is_formulaish]{is_formulaish()}}
 \item \code{\link[=scoped_options]{scoped_options()}}, \code{\link[=with_options]{with_options()}}, \code{\link[=push_options]{push_options()}},
 \code{\link[=peek_options]{peek_options()}}, \code{\link[=peek_option]{peek_option()}}
+\item \code{\link[=as_bytes]{as_bytes()}}
 }
 }
 

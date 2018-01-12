@@ -16,3 +16,10 @@ A raw vector of bytes.
 This currently only works with strings, and returns its hexadecimal
 representation.
 }
+\section{Life cycle}{
+
+
+Raw vector functions are experimental.
+}
+
+\keyword{internal}

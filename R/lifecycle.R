@@ -53,6 +53,8 @@
 #' * [scoped_options()], [with_options()], [push_options()],
 #'   [peek_options()], [peek_option()]
 #'
+#' * [as_bytes()]
+#'
 #'
 #' @section Questioning functions:
 #'

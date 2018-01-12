@@ -14,8 +14,14 @@ new_bytes <- function(x) {
 #' This currently only works with strings, and returns its hexadecimal
 #' representation.
 #'
+#'
+#' @section Life cycle:
+#'
+#' Raw vector functions are experimental.
+#'
 #' @param x A string.
 #' @return A raw vector of bytes.
+#' @keywords internal
 #' @export
 as_bytes <- function(x) {
   switch(typeof(x),
