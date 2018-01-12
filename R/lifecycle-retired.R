@@ -9,7 +9,15 @@ signal_soft_deprecation <- function(msg) {
 
 # Soft-deprecated ----------------------------------------------------
 
-#' @rdname parse_expr
+#' Parse text into a quosure
+#'
+#' These functions were soft-deprecated and renamed to [parse_quo()]
+#' and [parse_quos()] in rlang 0.2.0. This is for consistency with the
+#' convention that suffixes indicating return types are not
+#' abbreviated.
+#'
+#' @inheritParams parse_expr
+#' @keywords internal
 #' @export
 parse_quosure <- function(x, env = caller_env()) {
   signal_soft_deprecation(
