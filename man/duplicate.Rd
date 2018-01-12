@@ -32,3 +32,4 @@ Some objects are not duplicable, like symbols and environments.
 \seealso{
 pairlist
 }
+\keyword{internal}

@@ -203,6 +203,7 @@ is_node_list <- function(x) {
 #'   top-level data structure. The objects contained in the list are
 #'   still the same.
 #' @seealso pairlist
+#' @keywords internal
 #' @export
 duplicate <- function(x, shallow = FALSE) {
   .Call(rlang_duplicate, x, shallow)
