@@ -272,6 +272,17 @@ is_dictionary <- function(x) {
   inherits(x, "rlang_data_pronoun")
 }
 
+#' Coerce to an environment
+#'
+#' This function is soft-deprecated as it was renamed to
+#' [as_environment()] in rlang 0.2.0.
+#'
+#' @keywords internal
+#' @export
+as_env <- function(x, parent = NULL) {
+  as_environment(x, parent)
+}
+
 
 # Deprecated ---------------------------------------------------------
 

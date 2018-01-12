@@ -17,7 +17,7 @@ new_environment(data = list())
 semantics}.}
 
 \item{.parent}{A parent environment. Can be an object supported by
-\code{\link[=as_env]{as_env()}}.}
+\code{\link[=as_environment]{as_environment()}}.}
 }
 \description{
 These functions create new environments.
@@ -95,8 +95,9 @@ identical(env_parent(child), env)
 env_has(child, c("a", "b", "c", "d"))
 env_has(child, c("a", "b", "c", "d"), inherit = TRUE)
 
-# `parent` is passed to as_env() to provide handy shortcuts. Pass a
-# string to create a child of a package environment:
+# `parent` is passed to as_environment() to provide handy
+# shortcuts. Pass a string to create a child of a package
+# environment:
 child_env("rlang")
 env_parent(child_env("rlang"))
 

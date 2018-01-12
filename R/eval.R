@@ -150,14 +150,14 @@ eval_bare <- function(expr, env = parent.frame()) {
 #' fn()
 #'
 #'
-#' # Since env is passed to as_env(), it can be any object with an
-#' # as_env() method. For strings, the pkg_env() is returned:
+#' # Since env is passed to as_environment(), it can be any object with an
+#' # as_environment() method. For strings, the pkg_env() is returned:
 #' with_env("base", ~mtcars)
 #'
 #' # This can be handy to put dictionaries in scope:
 #' with_env(mtcars, cyl)
 with_env <- function(env, expr) {
-  .Call(rlang_eval, substitute(expr), as_env(env, caller_env()))
+  .Call(rlang_eval, substitute(expr), as_environment(env, caller_env()))
 }
 #' @rdname with_env
 #' @export

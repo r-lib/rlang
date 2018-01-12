@@ -78,15 +78,15 @@ test_that("ns_env_name() returns namespace name", {
   expect_identical(ns_env_name(rlang::get_env), "rlang")
 })
 
-test_that("as_env() dispatches correctly", {
-  expect_identical(as_env("base"), base_env())
-  expect_false(env_has(as_env(set_names(letters)), "map"))
+test_that("as_environment() dispatches correctly", {
+  expect_identical(as_environment("base"), base_env())
+  expect_false(env_has(as_environment(set_names(letters)), "map"))
 
-  expect_identical(as_env(NULL), empty_env())
+  expect_identical(as_environment(NULL), empty_env())
 
-  expect_true(all(env_has(as_env(mtcars), names(mtcars))))
-  expect_identical(env_parent(as_env(mtcars)), empty_env())
-  expect_identical(env_parent(as_env(mtcars, base_env())), base_env())
+  expect_true(all(env_has(as_environment(mtcars), names(mtcars))))
+  expect_identical(env_parent(as_environment(mtcars)), empty_env())
+  expect_identical(env_parent(as_environment(mtcars, base_env())), base_env())
 })
 
 test_that("env_inherits() finds ancestor", {

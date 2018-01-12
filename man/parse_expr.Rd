@@ -29,7 +29,7 @@ it will be automatically closed and destroyed.}
 
 \item{env}{The environment for the quosures. Defaults to the
 context in which the parse_expr function was called. Can be any
-object with a \code{as_env()} method.}
+object with a \code{as_environment()} method.}
 }
 \value{
 \code{parse_expr()} returns an \link[=is_expr]{expression},
@@ -72,7 +72,7 @@ parse_exprs("NULL; list()\\n foo(bar)")
 parse_quo("foo \%>\% bar()")
 parse_quos("1; 2; mtcars")
 
-# The env argument is passed to as_env(). It can be e.g. a string
+# The env argument is passed to as_environment(). It can be e.g. a string
 # representing a scoped package environment:
 parse_quo("identity(letters)", env = empty_env())
 parse_quos("identity(letters); mtcars", env = "base")

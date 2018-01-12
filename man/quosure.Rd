@@ -184,7 +184,7 @@ get_env(quo2)
 
 # new_quosure() takes by value an expression that is already quoted:
 expr <- quote(mtcars)
-env <- as_env("datasets")
+env <- as_environment("datasets")
 quo <- new_quosure(expr, env)
 quo
 eval_tidy(quo)

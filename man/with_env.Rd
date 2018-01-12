@@ -58,8 +58,8 @@ g <- function(env) {
 fn()
 
 
-# Since env is passed to as_env(), it can be any object with an
-# as_env() method. For strings, the pkg_env() is returned:
+# Since env is passed to as_environment(), it can be any object with an
+# as_environment() method. For strings, the pkg_env() is returned:
 with_env("base", ~mtcars)
 
 # This can be handy to put dictionaries in scope:

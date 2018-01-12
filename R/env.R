@@ -61,7 +61,7 @@
 #' @param ...,data Named values. The dots have [explicit splicing
 #'   semantics][dots_list].
 #' @param .parent A parent environment. Can be an object supported by
-#'   [as_env()].
+#'   [as_environment()].
 #' @seealso `scoped_env`, [env_has()], [env_bind()].
 #' @export
 #' @examples
@@ -80,8 +80,9 @@
 #' env_has(child, c("a", "b", "c", "d"))
 #' env_has(child, c("a", "b", "c", "d"), inherit = TRUE)
 #'
-#' # `parent` is passed to as_env() to provide handy shortcuts. Pass a
-#' # string to create a child of a package environment:
+#' # `parent` is passed to as_environment() to provide handy
+#' # shortcuts. Pass a string to create a child of a package
+#' # environment:
 #' child_env("rlang")
 #' env_parent(child_env("rlang"))
 #'
@@ -134,7 +135,7 @@ env <- function(...) {
 #' @rdname env
 #' @export
 child_env <- function(.parent, ...) {
-  env <- new.env(parent = as_env(.parent))
+  env <- new.env(parent = as_environment(.parent))
   env_bind_impl(env, dots_list(...))
 }
 #' @rdname env
@@ -146,7 +147,7 @@ new_environment <- function(data = list()) {
 
 #' Coerce to an environment
 #'
-#' `as_env()` coerces named vectors (including lists) to an
+#' `as_environment()` coerces named vectors (including lists) to an
 #' environment. It first checks that `x` is a dictionary (see
 #' [is_dictionaryish()]). If supplied an unnamed string, it returns the
 #' corresponding package environment (see [pkg_env()]).
@@ -154,6 +155,13 @@ new_environment <- function(data = list()) {
 #' If `x` is an environment and `parent` is not `NULL`, the
 #' environment is duplicated before being set a new parent. The return
 #' value is therefore a different environment than `x`.
+#'
+#'
+#' @section Life cycle:
+#'
+#' `as_env()` was soft-deprecated and renamed to `as_environment()` in
+#' rlang 0.2.0. This is for consistency as type predicates should not
+#' be abbreviated.
 #'
 #' @param x An object to coerce.
 #' @param parent A parent environment, [empty_env()] by default. This
@@ -163,19 +171,19 @@ new_environment <- function(data = list()) {
 #' @export
 #' @examples
 #' # Coerce a named vector to an environment:
-#' env <- as_env(mtcars)
+#' env <- as_environment(mtcars)
 #'
 #' # By default it gets the empty environment as parent:
 #' identical(env_parent(env), empty_env())
 #'
 #'
 #' # With strings it is a handy shortcut for pkg_env():
-#' as_env("base")
-#' as_env("rlang")
+#' as_environment("base")
+#' as_environment("rlang")
 #'
 #' # With NULL it returns the empty environment:
-#' as_env(NULL)
-as_env <- function(x, parent = NULL) {
+#' as_environment(NULL)
+as_environment <- function(x, parent = NULL) {
   coerce_type(x, "an environment",
     NULL = {
       empty_env()

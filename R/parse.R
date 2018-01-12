@@ -28,7 +28,7 @@
 #'   it will be automatically closed and destroyed.
 #' @param env The environment for the quosures. Defaults to the
 #'   context in which the parse_expr function was called. Can be any
-#'   object with a `as_env()` method.
+#'   object with a `as_environment()` method.
 #' @return `parse_expr()` returns an [expression][is_expr],
 #'   `parse_exprs()` returns a list of expressions.
 #' @seealso [base::parse()]
@@ -44,7 +44,7 @@
 #' parse_quo("foo %>% bar()")
 #' parse_quos("1; 2; mtcars")
 #'
-#' # The env argument is passed to as_env(). It can be e.g. a string
+#' # The env argument is passed to as_environment(). It can be e.g. a string
 #' # representing a scoped package environment:
 #' parse_quo("identity(letters)", env = empty_env())
 #' parse_quos("identity(letters); mtcars", env = "base")
@@ -89,10 +89,10 @@ parse_exprs <- function(x) {
 #' @rdname parse_expr
 #' @export
 parse_quo <- function(x, env = caller_env()) {
-  new_quosure(parse_expr(x), as_env(env))
+  new_quosure(parse_expr(x), as_environment(env))
 }
 #' @rdname parse_expr
 #' @export
 parse_quos <- function(x, env = caller_env()) {
-  map(parse_exprs(x), new_quosure, env = as_env(env))
+  map(parse_exprs(x), new_quosure, env = as_environment(env))
 }

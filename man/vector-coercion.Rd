@@ -131,7 +131,7 @@ as_integer("33")
 # With base R tools there is no way to convert an environment to a
 # list without either triggering method dispatch, or changing the
 # original environment. as_list() makes it easy:
-x <- structure(as_env(mtcars[1:2]), class = "foobar")
+x <- structure(as_environment(mtcars[1:2]), class = "foobar")
 as.list.foobar <- function(x) abort("dont call me")
 as_list(x)
 }
