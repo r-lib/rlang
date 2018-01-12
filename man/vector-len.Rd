@@ -45,3 +45,4 @@ lgl_len(10)
 \seealso{
 vector-along
 }
+\keyword{internal}

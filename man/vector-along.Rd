@@ -51,3 +51,4 @@ list_along(x)
 \seealso{
 vector-len
 }
+\keyword{internal}

@@ -132,6 +132,8 @@ ll <- function(...) {
 }
 
 
+# FIXME: The functions below might be best named with `new_` prefix
+
 #' Create vectors matching the length of a given vector
 #'
 #' These functions take the idea of [seq_along()] and generalise it to
@@ -142,6 +144,7 @@ ll <- function(...) {
 #' @inheritParams set_attrs
 #' @param .x A vector.
 #' @param .y Values to repeat.
+#' @keywords internal
 #' @examples
 #' x <- 0:5
 #' rep_along(x, 1:2)
@@ -209,6 +212,7 @@ rep_along <- function(.x, .y) {
 #'
 #' @inheritParams set_attrs
 #' @param .n The vector length.
+#' @keywords internal
 #' @examples
 #' list_len(10)
 #' lgl_len(10)
