@@ -43,6 +43,10 @@
 #' * [env_poke()]
 #' * [dots_splice()]
 #'
+#' * [pkg_env()], [pkg_env_name()]
+#' * [scoped_env()], [scoped_names()], [scoped_envs()], [is_scoped()]
+#' * [ns_env()], [ns_imports_env()], [ns_env_name()]
+#'
 #'
 #' @section Questioning functions:
 #'

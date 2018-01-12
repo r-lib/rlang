@@ -1016,6 +1016,7 @@ env_inherits <- function(env, ancestor) {
 #' - `is_scoped()` allows you to check whether a named environment is
 #'   on the search path.
 #'
+#'
 #' @section Search path:
 #'
 #' The search path is a chain of scoped environments where newly
@@ -1028,8 +1029,16 @@ env_inherits <- function(env, ancestor) {
 #' very first evaluation frame on the stack, see [global_frame()] and
 #' [ctxt_stack()].
 #'
+#'
+#' @section Life cycle:
+#'
+#' These functions are experimental and may not belong to the rlang
+#' package. Expect API changes.
+#'
 #' @param nm The name of an environment attached to the search
 #'   path. Call [base::search()] to see what is currently on the path.
+#'
+#' @keywords internal
 #' @export
 #' @examples
 #' # List the names of scoped environments:
@@ -1122,11 +1131,19 @@ empty_env <- emptyenv
 #' environments, which contain all the functions imported from other
 #' packages.
 #'
+#'
+#' @section Life cycle:
+#'
+#' These functions are experimental and may not belong to the rlang
+#' package. Expect API changes.
+#'
 #' @param pkg The name of a package. If `NULL`, the surrounding
 #'   namespace is returned, or an error is issued if not called within
 #'   a namespace. If a function, the enclosure of that function is
 #'   checked.
+#'
 #' @seealso [pkg_env()]
+#' @keywords internal
 #' @export
 ns_env <- function(pkg = NULL) {
   if (is_null(pkg)) {

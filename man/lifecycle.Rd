@@ -43,6 +43,9 @@ TODO: Review all functions in rlang and mark stable ones as such.
 \item \code{\link[=with_env]{with_env()}}, \code{\link[=locally]{locally()}}
 \item \code{\link[=env_poke]{env_poke()}}
 \item \code{\link[=dots_splice]{dots_splice()}}
+\item \code{\link[=pkg_env]{pkg_env()}}, \code{\link[=pkg_env_name]{pkg_env_name()}}
+\item \code{\link[=scoped_env]{scoped_env()}}, \code{\link[=scoped_names]{scoped_names()}}, \code{\link[=scoped_envs]{scoped_envs()}}, \code{\link[=is_scoped]{is_scoped()}}
+\item \code{\link[=ns_env]{ns_env()}}, \code{\link[=ns_imports_env]{ns_imports_env()}}, \code{\link[=ns_env_name]{ns_env_name()}}
 }
 }
 

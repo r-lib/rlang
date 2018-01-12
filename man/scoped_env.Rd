@@ -72,6 +72,13 @@ very first evaluation frame on the stack, see \code{\link[=global_frame]{global_
 \code{\link[=ctxt_stack]{ctxt_stack()}}.
 }
 
+\section{Life cycle}{
+
+
+These functions are experimental and may not belong to the rlang
+package. Expect API changes.
+}
+
 \examples{
 # List the names of scoped environments:
 nms <- scoped_names()
@@ -96,3 +103,4 @@ scoped_env(pkg_env_name("rlang"))
 # pkg_env():
 pkg_env("utils")
 }
+\keyword{internal}
