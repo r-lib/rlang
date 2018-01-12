@@ -621,9 +621,8 @@ friendly_expr_type_of <- function(type) {
 #'
 #' The reason we use the term _node head_ is because calls are
 #' structured as tree objects. This makes sense because the best
-#' representation for language code is a parse tree, with the tree
-#' hierarchy determined by the order of operations. See [node] for
-#' more on this.
+#' representation for language code is a tree whose hierarchy is
+#' determined by the order of operations. See [node] for more on this.
 #'
 #'
 #' @section Life cycle:

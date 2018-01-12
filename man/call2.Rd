@@ -28,37 +28,6 @@ to as calls.
 \code{call2()} creates a call from a function name (or a literal
 function to inline in the call) and a list of arguments.
 }
-\section{Calls as parse tree}{
-
-
-Language objects are structurally identical to
-\link[=pairlist]{pairlists}. They are containers of two objects, the head
-and the tail (also called the CAR and the CDR).
-\itemize{
-\item The head contains the function to call, either literally or
-symbolically. If a literal function, the call is said to be
-inlined. If a symbol, the call is named. If another call, it is
-recursive. \code{foo()()} would be an example of a recursive call
-whose head contains another call. See \code{\link[=lang_type_of]{lang_type_of()}} and
-\code{\link[=is_callable]{is_callable()}}.
-\item The tail contains the arguments and must be a \link{pairlist}.
-}
-
-You can retrieve those components with \code{call[[1]]} and
-\code{as.pairlist(call[-1])}. Since language nodes can contain other
-nodes (either calls or pairlists), they are capable of forming a
-tree. When R [parses][parse_expr] an expression, it saves the parse
-tree in a data structure composed of language and pairlist
-nodes. It is precisely because the parse tree is saved in
-first-class R objects that it is possible for functions to
-[capture][expr] their arguments unevaluated.
-
-[[1]: R:[1
-[-1]: R:-1
-[parse_expr]: R:parse_expr
-[expr]: R:expr
-}
-
 \section{Life cycle}{
 
 

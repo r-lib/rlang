@@ -13,30 +13,6 @@
 #' `call2()` creates a call from a function name (or a literal
 #' function to inline in the call) and a list of arguments.
 #'
-#' @section Calls as parse tree:
-#'
-#' Language objects are structurally identical to
-#' [pairlists][pairlist]. They are containers of two objects, the head
-#' and the tail (also called the CAR and the CDR).
-#'
-#' - The head contains the function to call, either literally or
-#'   symbolically. If a literal function, the call is said to be
-#'   inlined. If a symbol, the call is named. If another call, it is
-#'   recursive. `foo()()` would be an example of a recursive call
-#'   whose head contains another call. See [lang_type_of()] and
-#'   [is_callable()].
-#'
-#' - The tail contains the arguments and must be a [pairlist].
-#'
-#' You can retrieve those components with `call[[1]]` and
-#' `as.pairlist(call[-1])`. Since language nodes can contain other
-#' nodes (either calls or pairlists), they are capable of forming a
-#' tree. When R [parses][parse_expr] an expression, it saves the parse
-#' tree in a data structure composed of language and pairlist
-#' nodes. It is precisely because the parse tree is saved in
-#' first-class R objects that it is possible for functions to
-#' [capture][expr] their arguments unevaluated.
-#'
 #'
 #' @section Life cycle:
 #'

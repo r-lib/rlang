@@ -42,7 +42,7 @@ evaluation.
 \code{is_syntactic_literal()} is a predicate that returns \code{TRUE} for the
 subset of literals that are created by R when parsing text (see
 \code{\link[=parse_expr]{parse_expr()}}): numbers, strings and \code{NULL}. Along with symbols,
-these literals are the terminating nodes in a parse tree.
+these literals are the terminating nodes in an AST.
 
 Note that in the most general sense, a literal is any R object that
 evaluates to itself and that can be evaluated in the empty
