@@ -14,8 +14,6 @@
 #'
 #' @section Stable functions:
 #'
-#' TODO: Review all functions in rlang and mark stable ones as such.
-#'
 #' * [eval_tidy()]
 #' * [!!], [!!!]
 #' * [enquo()], [quo()], [quos()]

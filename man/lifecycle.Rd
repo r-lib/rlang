@@ -15,8 +15,6 @@ sections that explain the reasons for their retirements.
 }
 \section{Stable functions}{
 
-
-TODO: Review all functions in rlang and mark stable ones as such.
 \itemize{
 \item \code{\link[=eval_tidy]{eval_tidy()}}
 \item \link{!!}, \link{!!!}
