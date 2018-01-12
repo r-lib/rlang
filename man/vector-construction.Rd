@@ -65,6 +65,14 @@ semantics. \code{ll()} only splices lists explicitly marked with
 \code{\link[=splice]{splice()}}.
 }
 
+\section{Life cycle}{
+
+
+The splicing support in these functions is experimental, expect API
+changes. We now tend to think that splicing should be explicit
+rather than automatic.
+}
+
 \examples{
 # These constructors are like a typed version of c():
 c(TRUE, FALSE)

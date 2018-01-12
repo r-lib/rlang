@@ -29,6 +29,13 @@
 #' semantics. `ll()` only splices lists explicitly marked with
 #' [splice()].
 #'
+#'
+#' @section Life cycle:
+#'
+#' The splicing support in these functions is experimental, expect API
+#' changes. We now tend to think that splicing should be explicit
+#' rather than automatic.
+#'
 #' @param ... Components of the new vector. Bare lists and explicitly
 #'   spliced lists are spliced.
 #' @name vector-construction
