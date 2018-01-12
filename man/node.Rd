@@ -19,7 +19,7 @@
 \alias{mut_node_tag}
 \title{Helpers for pairlist and language nodes}
 \usage{
-node(newcar, newcdr)
+node(car, cdr = NULL)
 
 node_car(x)
 
@@ -50,8 +50,8 @@ node_tag(x)
 mut_node_tag(x, newtag)
 }
 \arguments{
-\item{newcar, newcdr}{The new CAR or CDR for the node. These can be
-any R objects.}
+\item{car, newcar, cdr, newcdr}{The new CAR or CDR for the node. These
+can be any R objects.}
 
 \item{x}{A language or pairlist node. Note that these functions are
 barebones and do not perform any type checking.}

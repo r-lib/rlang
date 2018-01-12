@@ -12,8 +12,8 @@
 #'
 #' @param x A language or pairlist node. Note that these functions are
 #'   barebones and do not perform any type checking.
-#' @param newcar,newcdr The new CAR or CDR for the node. These can be
-#'   any R objects.
+#' @param car,newcar,cdr,newcdr The new CAR or CDR for the node. These
+#'   can be any R objects.
 #' @param newtag The new tag for the node. This should be a symbol.
 #' @return Setters like `mut_node_car()` invisibly return `x` modified
 #'   in place. Getters return the requested node component.
@@ -53,8 +53,8 @@ NULL
 
 #' @rdname node
 #' @export
-node <- function(newcar, newcdr) {
-  .Call(rlang_new_node, newcar, newcdr)
+node <- function(car, cdr = NULL) {
+  .Call(rlang_new_node, car, cdr)
 }
 
 #' @rdname node
