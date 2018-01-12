@@ -24,9 +24,10 @@
   string and always returns a symbol. If a complex expression is
   supplied it fails with an error.
 
-* New function `chr_translate_unicode()` for turning characters
-  serialised to unicode point form (e.g. `<U+xxxx>`) to UTF-8. In
-  addition, `as_utf8_character()` now translates those as well.
+* New function experimental function `chr_unserialise_unicode()` for
+  turning characters serialised to unicode point form
+  (e.g. `<U+xxxx>`) to UTF-8. In addition, `as_utf8_character()` now
+  translates those as well.
 
 * When nested quosures are evaluated with `eval_tidy()`, the `.env`
   pronoun now correctly refers to the current quosure under evaluation

@@ -39,7 +39,7 @@ the locale codeset.
 
 When translating to UTF-8, the strings are parsed for serialised
 unicode points (e.g. strings looking like "U+xxxx") with
-\code{\link[=chr_translate_unicode]{chr_translate_unicode()}}. This helps to alleviate the effects of
+\code{\link[=chr_unserialise_unicode]{chr_unserialise_unicode()}}. This helps to alleviate the effects of
 character-to-symbol-to-character roundtrips on systems with
 non-UTF-8 native encoding.
 }

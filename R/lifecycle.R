@@ -53,7 +53,7 @@
 #' * [scoped_options()], [with_options()], [push_options()],
 #'   [peek_options()], [peek_option()]
 #'
-#' * [as_bytes()]
+#' * [as_bytes()], [chr_unserialise_unicode()]
 #'
 #'
 #' @section Questioning functions:

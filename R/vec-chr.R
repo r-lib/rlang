@@ -66,7 +66,7 @@ string <- function(x, encoding = NULL) {
 #'
 #' When translating to UTF-8, the strings are parsed for serialised
 #' unicode points (e.g. strings looking like "U+xxxx") with
-#' [chr_translate_unicode()]. This helps to alleviate the effects of
+#' [chr_unserialise_unicode()]. This helps to alleviate the effects of
 #' character-to-symbol-to-character roundtrips on systems with
 #' non-UTF-8 native encoding.
 #'
@@ -129,16 +129,22 @@ as_native_string <- function(x) {
 #' serialised unicode points to translate them back to the proper
 #' UTF-8 representation. This transformation occurs automatically in
 #' functions like [env_names()] and can be manually triggered with
-#' `as_utf8_character()` and `chr_translate_unicode()`.
+#' `as_utf8_character()` and `chr_unserialise_unicode()`.
+#'
+#'
+#' @section Life cycle:
+#'
+#' This function is experimental
 #'
 #' @param chr A character vector.
 #' @export
+#' @keywords internal
 #' @examples
 #' ascii <- "<U+5E78>"
-#' chr_translate_unicode(ascii)
+#' chr_unserialise_unicode(ascii)
 #'
-#' identical(chr_translate_unicode(ascii), "\u5e78")
-chr_translate_unicode <- function(chr) {
+#' identical(chr_unserialise_unicode(ascii), "\u5e78")
+chr_unserialise_unicode <- function(chr) {
   stopifnot(is_character(chr))
   .Call(rlang_unescape_character, chr)
 }
