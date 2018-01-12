@@ -347,6 +347,7 @@ is_scalar_integerish <- function(x) {
 #'
 #' @param x An R object.
 #' @export
+#' @keywords internal
 #' @examples
 #' type_of(10L)
 #'
@@ -417,6 +418,7 @@ type_of <- function(x) {
 #'   `.to` inherits from the S3 class `"AsIs"` (see [base::I()]).
 #' @seealso [switch_lang()]
 #' @export
+#' @keywords internal
 #' @examples
 #' switch_type(3L,
 #'   double = "foo",
@@ -495,12 +497,13 @@ abort_coercion <- function(x, to_type) {
 #'
 #' @section Life cycle:
 #'
-#' * Like [type_of()], `friendly_type()`.
+#' * Like [type_of()], `friendly_type()` is experimental.
 #'
 #' @param type A type as returned by [type_of()] or [lang_type_of()].
 #' @return A string of the prettified type, qualified with an
 #'   indefinite article.
 #' @export
+#' @keywords internal
 #' @examples
 #' friendly_type("logical")
 #' friendly_type("integer")

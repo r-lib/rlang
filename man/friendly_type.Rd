@@ -19,7 +19,7 @@ Format a type for error messages
 \section{Life cycle}{
 
 \itemize{
-\item Like \code{\link[=type_of]{type_of()}}, \code{friendly_type()}.
+\item Like \code{\link[=type_of]{type_of()}}, \code{friendly_type()} is experimental.
 }
 }
 
@@ -28,3 +28,4 @@ friendly_type("logical")
 friendly_type("integer")
 friendly_type("string")
 }
+\keyword{internal}

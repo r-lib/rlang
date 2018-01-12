@@ -95,3 +95,4 @@ switch_type(rlang::switch_type,
 \seealso{
 \code{\link[=switch_lang]{switch_lang()}}
 }
+\keyword{internal}
