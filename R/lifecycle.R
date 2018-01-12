@@ -102,6 +102,14 @@
 #' * [is_quosureish()], [as_quosureish()]
 #'
 #'
+#' **Renamed in rlang 0.2.0**
+#'
+#' * [new_cnd()] => [cnd()]
+#' * [cnd_message()] => [message_cnd()]
+#' * [cnd_warning()] => [warning_cnd()]
+#' * [cnd_error()] => [error_cnd()]
+#'
+#'
 #' @section Defunct functions and arguments:
 #'
 #' **Retired in rlang 0.2.0:**
