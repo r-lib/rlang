@@ -29,7 +29,7 @@
 #' @param env The environment for the quosures. Defaults to the
 #'   context in which the parse_expr function was called. Can be any
 #'   object with a `as_environment()` method.
-#' @return `parse_expr()` returns an [expression][is_expr],
+#' @return `parse_expr()` returns an [expression][is_expression],
 #'   `parse_exprs()` returns a list of expressions.
 #' @seealso [base::parse()]
 #' @export

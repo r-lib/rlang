@@ -22,7 +22,7 @@ a dot.
 
 
 Technically, objects are bound to symbols rather than strings,
-since the R interpreter evaluates symbols (see \code{\link[=is_expr]{is_expr()}} for a
+since the R interpreter evaluates symbols (see \code{\link[=is_expression]{is_expression()}} for a
 discussion of symbolic objects versus literal objects). However it
 is often more convenient to work with strings. In rlang
 terminology, the string corresponding to a symbol is called the

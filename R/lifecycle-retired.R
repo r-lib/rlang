@@ -327,6 +327,19 @@ mut_node_tag <- function(x, newtag) {
   invisible(.Call(rlang_node_poke_tag, x, newtag))
 }
 
+#' Is an object an expression?
+#'
+#' This function was soft-deprecated and renamed to [is_expression()]
+#' in rlang 0.2.0. This is for consistency with other type predicates
+#' which are not abbreviated.
+#'
+#' @inheritParams is_expression
+#' @keywords internal
+#' @export
+is_expr <- function(x) {
+  is_expression(x)
+}
+
 
 # Deprecated ---------------------------------------------------------
 

@@ -83,6 +83,7 @@
 #' * [is_lang()] => [is_call()]
 #' * [is_unary_lang()] => Use the `n` argument of [is_call()]
 #' * [is_binary_lang()] => Use the `n` argument of [is_call()]
+#' * [is_expr()] => [is_expression()]
 #'
 #' * [lang_modify()] => [call_modify()]
 #' * [lang_standardise()] => [call_standardise()]

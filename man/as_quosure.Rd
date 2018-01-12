@@ -10,7 +10,7 @@ as_quosureish(x, env = caller_env())
 as_quosure(x, env = caller_env())
 }
 \arguments{
-\item{x}{An object to convert. Either an \link[=is_expr]{expression} or a
+\item{x}{An object to convert. Either an \link[=is_expression]{expression} or a
 formula.}
 
 \item{env}{An environment specifying the lexical enclosure of the

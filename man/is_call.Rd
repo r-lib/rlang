@@ -73,5 +73,5 @@ is_call(quote(foo(bar)), c("bar", "foo"))
 is_call(quote(base::list), c("::", ":::", "$", "@"))
 }
 \seealso{
-\code{\link[=is_expr]{is_expr()}}
+\code{\link[=is_expression]{is_expression()}}
 }

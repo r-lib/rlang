@@ -2,7 +2,7 @@
 #'
 #' @description
 #'
-#' Quosures are quoted [expressions][is_expr] that keep track of an
+#' Quosures are quoted [expressions][is_expression] that keep track of an
 #' [environment][env] (just like
 #' [closures](http://adv-r.had.co.nz/Functional-programming.html#closures)).
 #' They are an essential piece of the tidy evaluation framework.
@@ -248,7 +248,7 @@ is_quosure <- function(x) {
 #'   assumes that quosures are formulas which is currently true but
 #'   might not be in the future.
 #'
-#' @param x An object to convert. Either an [expression][is_expr] or a
+#' @param x An object to convert. Either an [expression][is_expression] or a
 #'   formula.
 #' @param env An environment specifying the lexical enclosure of the
 #'   quosure.

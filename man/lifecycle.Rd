@@ -82,6 +82,7 @@ TODO: Review all functions in rlang and mark stable ones as such.
 \item \code{\link[=is_lang]{is_lang()}} => \code{\link[=is_call]{is_call()}}
 \item \code{\link[=is_unary_lang]{is_unary_lang()}} => Use the \code{n} argument of \code{\link[=is_call]{is_call()}}
 \item \code{\link[=is_binary_lang]{is_binary_lang()}} => Use the \code{n} argument of \code{\link[=is_call]{is_call()}}
+\item \code{\link[=is_expr]{is_expr()}} => \code{\link[=is_expression]{is_expression()}}
 \item \code{\link[=lang_modify]{lang_modify()}} => \code{\link[=call_modify]{call_modify()}}
 \item \code{\link[=lang_standardise]{lang_standardise()}} => \code{\link[=call_standardise]{call_standardise()}}
 \item \code{\link[=lang_fn]{lang_fn()}} => \code{\link[=call_fn]{call_fn()}}

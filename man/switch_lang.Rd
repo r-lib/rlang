@@ -48,7 +48,7 @@ infix functions \code{$} or \code{@}). The call subtype is said to be
 \code{foo::bar()}. \code{switch_lang()} returns "namespaced" for these
 calls. It is generally a good idea if your function treats
 \code{bar()} and \code{foo::bar()} similarly.
-\item Finally, it is possible to have a literal (see \code{\link[=is_expr]{is_expr()}} for a
+\item Finally, it is possible to have a literal (see \code{\link[=is_expression]{is_expression()}} for a
 definition of literals) as call head. In most cases, this will be
 a function inlined in the call (this is sometimes an expedient
 way of dealing with scoping issues). For calls with a literal

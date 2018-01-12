@@ -915,7 +915,7 @@ scope_set <- function(env, nm, value, create) {
 #' @section Names of symbols and objects:
 #'
 #' Technically, objects are bound to symbols rather than strings,
-#' since the R interpreter evaluates symbols (see [is_expr()] for a
+#' since the R interpreter evaluates symbols (see [is_expression()] for a
 #' discussion of symbolic objects versus literal objects). However it
 #' is often more convenient to work with strings. In rlang
 #' terminology, the string corresponding to a symbol is called the

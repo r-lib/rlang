@@ -62,7 +62,7 @@ takes argument names and captures the expressions supplied one
 level up.
 }
 
-See \code{\link[=is_expr]{is_expr()}} for more about R expressions.
+See \code{\link[=is_expression]{is_expression()}} for more about R expressions.
 }
 \examples{
 # The advantage of expr() over quote() is that it unquotes on
@@ -98,5 +98,5 @@ nm <- "foo"
 exprs(a = 1, !! nm := 2)
 }
 \seealso{
-\code{\link[=quo]{quo()}}, \code{\link[=is_expr]{is_expr()}}
+\code{\link[=quo]{quo()}}, \code{\link[=is_expression]{is_expression()}}
 }

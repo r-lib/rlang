@@ -87,7 +87,7 @@ test_that("fails with duplicated arguments", {
 # Utils --------------------------------------------------------------
 
 test_that("NULL is a valid language object", {
-  expect_true(is_expr(NULL))
+  expect_true(is_expression(NULL))
 })
 
 test_that("is_call() pattern-matches", {

@@ -610,7 +610,7 @@ friendly_expr_type_of <- function(type) {
 #'   calls. It is generally a good idea if your function treats
 #'   `bar()` and `foo::bar()` similarly.
 #'
-#' * Finally, it is possible to have a literal (see [is_expr()] for a
+#' * Finally, it is possible to have a literal (see [is_expression()] for a
 #'   definition of literals) as call head. In most cases, this will be
 #'   a function inlined in the call (this is sometimes an expedient
 #'   way of dealing with scoping issues). For calls with a literal

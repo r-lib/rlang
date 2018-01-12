@@ -27,7 +27,7 @@ A formula whose right-hand side contains the quoted
 expression supplied as argument.
 }
 \description{
-Quosures are quoted \link[=is_expr]{expressions} that keep track of an
+Quosures are quoted \link[=is_expression]{expressions} that keep track of an
 \link[=env]{environment} (just like
 \href{http://adv-r.had.co.nz/Functional-programming.html#closures}{closures}).
 They are an essential piece of the tidy evaluation framework.

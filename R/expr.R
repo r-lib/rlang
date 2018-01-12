@@ -22,11 +22,11 @@
 #'   takes argument names and captures the expressions supplied one
 #'   level up.
 #'
-#' See [is_expr()] for more about R expressions.
+#' See [is_expression()] for more about R expressions.
 #'
 #' @inheritParams quosure
 #' @inheritParams quosures
-#' @seealso [quo()], [is_expr()]
+#' @seealso [quo()], [is_expression()]
 #' @return The raw expression supplied as argument. `exprs()` returns
 #'   a list of expressions.
 #' @export
@@ -103,7 +103,7 @@ enexprs <- function(...,
 #'
 #' @description
 #'
-#' `is_expr()` tests for expressions, the set of objects that can be
+#' `is_expression()` tests for expressions, the set of objects that can be
 #' obtained from parsing R code. An expression can be one of two
 #' things: either a symbolic object (for which `is_symbolic()` returns
 #' `TRUE`), or a syntactic literal (testable with
@@ -139,7 +139,7 @@ enexprs <- function(...,
 #' literal(in this case an atomic vector).
 #'
 #' Pairlists are also a kind of language objects. However, since they
-#' are mostly an internal data structure, `is_expr()` returns `FALSE`
+#' are mostly an internal data structure, `is_expression()` returns `FALSE`
 #' for pairlists. You can use `is_pairlist()` to explicitly check for
 #' them. Pairlists are the data structure for function arguments. They
 #' usually do not arise from R code because subsetting a call is a
@@ -154,15 +154,15 @@ enexprs <- function(...,
 #' @export
 #' @examples
 #' q1 <- quote(1)
-#' is_expr(q1)
+#' is_expression(q1)
 #' is_syntactic_literal(q1)
 #'
 #' q2 <- quote(x)
-#' is_expr(q2)
+#' is_expression(q2)
 #' is_symbol(q2)
 #'
 #' q3 <- quote(x + 1)
-#' is_expr(q3)
+#' is_expression(q3)
 #' is_call(q3)
 #'
 #'
@@ -189,24 +189,24 @@ enexprs <- function(...,
 #'
 #' # Pairlists are also language objects representing argument lists.
 #' # You will usually encounter them with extracted formals:
-#' fmls <- formals(is_expr)
+#' fmls <- formals(is_expression)
 #' typeof(fmls)
 #'
-#' # Since they are mostly an internal data structure, is_expr()
+#' # Since they are mostly an internal data structure, is_expression()
 #' # returns FALSE for pairlists, so you will have to check explicitly
 #' # for them:
-#' is_expr(fmls)
+#' is_expression(fmls)
 #' is_pairlist(fmls)
-is_expr <- function(x) {
+is_expression <- function(x) {
   is_symbolic(x) || is_syntactic_literal(x)
 }
 #' @export
-#' @rdname is_expr
+#' @rdname is_expression
 is_syntactic_literal <- function(x) {
   typeof(x) == "NULL" || (length(x) == 1 && typeof(x) %in% parsable_atomic_types)
 }
 #' @export
-#' @rdname is_expr
+#' @rdname is_expression
 is_symbolic <- function(x) {
   typeof(x) %in% c("language", "symbol")
 }

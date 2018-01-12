@@ -32,7 +32,7 @@ context in which the parse_expr function was called. Can be any
 object with a \code{as_environment()} method.}
 }
 \value{
-\code{parse_expr()} returns an \link[=is_expr]{expression},
+\code{parse_expr()} returns an \link[=is_expression]{expression},
 \code{parse_exprs()} returns a list of expressions.
 }
 \description{

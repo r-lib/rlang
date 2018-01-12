@@ -4,7 +4,7 @@
 #'
 #' Language objects are (with symbols) one of the two types of
 #' [symbolic][is_symbolic] objects in R. These symbolic objects form
-#' the backbone of [expressions][is_expr]. They represent a value,
+#' the backbone of [expressions][is_expression]. They represent a value,
 #' unlike literal objects which are their own values. While symbols
 #' are directly [bound][env_bind] to a value, language objects
 #' represent _function calls_, which is why they are commonly referred
@@ -128,7 +128,7 @@ is_callable <- function(x) {
 #'   `""` and `x` is a namespaced call, `is_call()` returns
 #'   `FALSE`. If any other string, `is_call()` checks that `x` is
 #'   namespaced within `ns`.
-#' @seealso [is_expr()]
+#' @seealso [is_expression()]
 #' @export
 #' @examples
 #' is_call(quote(foo(bar)))
