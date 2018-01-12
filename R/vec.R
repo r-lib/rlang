@@ -13,6 +13,7 @@
 #' @param n How many elements should be copied from `y` to `x`.
 #' @param to The index indicating the end of the range to copy from `y`.
 #'
+#' @keywords internal
 #' @export
 vec_poke_n <- function(x, start, y,
                        from = 1L,
