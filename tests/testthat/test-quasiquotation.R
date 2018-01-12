@@ -210,7 +210,6 @@ test_that("splicing an empty vector works", {
 })
 
 test_that("serialised unicode in argument names is unserialised on splice", {
-  skip("failing")
   nms <- with_latin1_locale({
     exprs <- exprs("\u5e78" := 10)
     quos <- quos(!!! exprs)
