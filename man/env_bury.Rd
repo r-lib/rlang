@@ -2,7 +2,7 @@
 % Please edit documentation in R/env.R
 \name{env_bury}
 \alias{env_bury}
-\title{Overscope bindings by defining symbols deeper in a scope}
+\title{Mask bindings by defining symbols deeper in a scope}
 \usage{
 env_bury(.env, ...)
 }

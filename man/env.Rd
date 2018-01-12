@@ -64,8 +64,8 @@ parent environments.
 
 The ability of overriding specific definitions is used in the
 tidyeval framework to create powerful domain-specific grammars. A
-common use of overscoping is to put data frame columns in
-scope. See \code{\link[=as_data_mask]{as_data_mask()}} for technical details.
+common use of masking is to put data frame columns in scope. See
+for example \code{\link[=as_data_mask]{as_data_mask()}}.
 }
 
 \section{Reference semantics}{

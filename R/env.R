@@ -46,8 +46,8 @@
 #'
 #' The ability of overriding specific definitions is used in the
 #' tidyeval framework to create powerful domain-specific grammars. A
-#' common use of overscoping is to put data frame columns in
-#' scope. See [as_data_mask()] for technical details.
+#' common use of masking is to put data frame columns in scope. See
+#' for example [as_data_mask()].
 #'
 #' @section Reference semantics:
 #'
@@ -704,7 +704,7 @@ with_bindings <- function(.expr, ..., .env = caller_env()) {
   .expr
 }
 
-#' Overscope bindings by defining symbols deeper in a scope
+#' Mask bindings by defining symbols deeper in a scope
 #'
 #' `env_bury()` is like [env_bind()] but it creates the bindings in a
 #' new child environment. This makes sure the new bindings have
