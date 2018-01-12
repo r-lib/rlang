@@ -5,10 +5,9 @@ rlang <img src="man/figures/rlang.png" align="right" />
 [![Coverage Status](https://codecov.io/gh/tidyverse/rlang/branch/master/graph/badge.svg)](https://codecov.io/github/tidyverse/rlang?branch=master)
 ![](https://img.shields.io/badge/lifecycle-maturing-blue.svg)
 
-**Important**: The rlang API is still maturing (except for the tidy
-evaluation functions exported in tidyverse packages). Please see
-https://github.com/tidyverse/rlang/issues/281 for information about
-upcoming changes.
+**Important**: The rlang API is still maturing. Please see
+`?rlang::lifecycle` for the list of functions that are considered
+stable.
 
 
 ## Overview
