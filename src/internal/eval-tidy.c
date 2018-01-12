@@ -29,7 +29,7 @@ sexp* rlang_new_data_pronoun(sexp* x, sexp* lookup_msg, sexp* read_only) {
   r_list_poke(dict, 2, read_only);
 
   if (lookup_msg == r_null) {
-    r_list_poke(dict, 1, r_scalar_chr("Object `%s` not found in data"));
+    r_list_poke(dict, 1, r_scalar_chr("Object `%s` not found in `.data`"));
   } else {
     r_list_poke(dict, 1, lookup_msg);
   }
@@ -80,7 +80,7 @@ sexp* rlang_as_data_pronoun(sexp* x) {
     r_abort("`data` must be an uniquely named vector, list, data frame or environment");
   }
 
-  sexp* lookup_msg = KEEP_N(r_scalar_chr("Column `%s` not found in data"), &n_kept);
+  sexp* lookup_msg = KEEP_N(r_scalar_chr("Column `%s` not found in `.data`"), &n_kept);
   sexp* read_only = KEEP_N(r_scalar_lgl(1), &n_kept);
   sexp* pronoun = rlang_new_data_pronoun(x, lookup_msg, read_only);
 
