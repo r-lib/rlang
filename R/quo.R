@@ -223,9 +223,6 @@ str.quosure <- function(object, ...) {
 #'   might not be in the future.
 #'
 #' @param x An object to test.
-#' @param scoped A boolean indicating whether the quosure is scoped,
-#'   that is, has a valid environment attribute. If `NULL`, the scope
-#'   is not inspected.
 #' @export
 #' @examples
 #' is_quosure(quo(foo))

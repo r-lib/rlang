@@ -101,6 +101,14 @@ TODO: Review all functions in rlang and mark stable ones as such.
 \item \code{\link[=UQE]{UQE()}}
 \item \code{\link[=is_quosureish]{is_quosureish()}}, \code{\link[=as_quosureish]{as_quosureish()}}
 }
+
+\strong{Renamed in rlang 0.2.0}
+\itemize{
+\item \code{\link[=new_cnd]{new_cnd()}} => \code{\link[=cnd]{cnd()}}
+\item \code{\link[=cnd_message]{cnd_message()}} => \code{\link[=message_cnd]{message_cnd()}}
+\item \code{\link[=cnd_warning]{cnd_warning()}} => \code{\link[=warning_cnd]{warning_cnd()}}
+\item \code{\link[=cnd_error]{cnd_error()}} => \code{\link[=error_cnd]{error_cnd()}}
+}
 }
 
 \section{Defunct functions and arguments}{

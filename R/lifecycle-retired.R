@@ -343,13 +343,22 @@ is_expr <- function(x) {
 
 # Deprecated ---------------------------------------------------------
 
-#' @rdname is_quosure
+#' Test for or coerce to quosureish objects
+#'
+#' These functions were deprecated in rlang 0.2.0 because they assumed
+#' that quosures are formulas which is currently true but might not be
+#' in the future.
+#'
+#' @inheritParams is_formula
+#' @inheritParams as_quosure
+#'
+#' @keywords internal
 #' @export
 is_quosureish <- function(x, scoped = NULL) {
   warn("`is_quosureish()` is deprecated as of rlang 0.2.0")
   is_formula(x, scoped = scoped, lhs = FALSE)
 }
-#' @rdname as_quosure
+#' @rdname is_quosureish
 #' @export
 as_quosureish <- function(x, env = caller_env()) {
   warn("`as_quosureish()` is deprecated as of rlang 0.2.0")

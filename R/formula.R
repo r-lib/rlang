@@ -25,7 +25,10 @@ new_formula <- function(lhs, rhs, env = caller_env()) {
 #' environment when it is evaluated, and quoted formulas are by
 #' definition not evaluated.
 #'
-#' @inheritParams is_quosure
+#' @param x An object to test.
+#' @param scoped A boolean indicating whether the quosure is scoped,
+#'   that is, has a valid environment attribute. If `NULL`, the scope
+#'   is not inspected.
 #' @param lhs A boolean indicating whether the [formula][is_formula]
 #'   or [definition][is_definition] has a left-hand side. If `NULL`,
 #'   the LHS is not inspected.
