@@ -513,6 +513,7 @@ op_as_closure <- function(prim_nm) {
 
 #' Make an `fn` object
 #'
+#' @noRd
 #' @description
 #'
 #' `new_fn()` takes a function and sets the class to `c("fn",
@@ -527,7 +528,6 @@ op_as_closure <- function(prim_nm) {
 #'
 #' @param fn A closure.
 #' @return An object of class `c("fn", "function")`.
-#' @export
 #' @examples
 #' fn <- set_attrs(function() "foo", attribute = "foobar")
 #' print(fn)
@@ -539,7 +539,6 @@ new_fn <- function(fn) {
   stopifnot(is_closure(fn))
   set_attrs(fn, class = c("fn", "function"))
 }
-#' @export
 print.fn <- function(x, ...) {
   srcref <- attr(x, "srcref")
   x <- set_attrs(x, NULL)
