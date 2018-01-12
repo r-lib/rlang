@@ -29,6 +29,12 @@ These pronouns lets you be explicit about where to find
 values and throw errors if you try to access non-existent values.
 }
 }
+\section{Life cycle}{
+
+
+\code{eval_tidy()} is stable.
+}
+
 \examples{
 # With simple quoted expressions eval_tidy() works the same way as
 # eval():

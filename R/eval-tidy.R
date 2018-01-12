@@ -16,6 +16,11 @@
 #'   These pronouns lets you be explicit about where to find
 #'   values and throw errors if you try to access non-existent values.
 #'
+#'
+#' @section Life cycle:
+#'
+#' `eval_tidy()` is stable.
+#'
 #' @param expr An expression to evaluate.
 #' @param data A data frame, or named list or vector. Alternatively, a
 #'   data mask created with [as_data_mask()] or [new_data_mask()].
@@ -175,6 +180,8 @@ delayedAssign(".data", as_data_pronoun(list()))
 #'
 #'
 #' @section Life cycle:
+#'
+#' All these functions are now stable.
 #'
 #' In early versions of rlang data masks were called overscopes. We
 #' think data mask is a more natural name in R. It makes reference to

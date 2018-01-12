@@ -108,6 +108,8 @@ responsibility to clean it.
 \section{Life cycle}{
 
 
+All these functions are now stable.
+
 In early versions of rlang data masks were called overscopes. We
 think data mask is a more natural name in R. It makes reference to
 masking in the search path which occurs through the same mechanism
