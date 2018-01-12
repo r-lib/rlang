@@ -41,10 +41,11 @@ is one of the most powerful feature of R as it allows you to change
 what objects a function or expression sees when it is evaluated.
 
 Environments also constitute a data structure in their own
-right. They are \link[=dictionary]{dictionaries} of uniquely named
-objects, subsettable by name and modifiable by reference. This
-latter property (see section on reference semantics) is especially
-useful for creating mutable OO systems (cf the \href{https://github.com/wch/R6}{R6package} and the \href{http://ggplot2.tidyverse.org/articles/extending-ggplot2.html}{ggprotosystem}
+right. They are a collection of uniquely named objects, subsettable
+by name and modifiable by reference. This latter property (see
+section on reference semantics) is especially useful for creating
+mutable OO systems (cf the \href{https://github.com/wch/R6}{R6 package}
+and the \href{http://ggplot2.tidyverse.org/articles/extending-ggplot2.html}{ggprotosystem}
 for extending ggplot2).
 }
 
