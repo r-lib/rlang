@@ -15,7 +15,7 @@
 #' @param car,newcar,cdr,newcdr The new CAR or CDR for the node. These
 #'   can be any R objects.
 #' @param newtag The new tag for the node. This should be a symbol.
-#' @return Setters like `mut_node_car()` invisibly return `x` modified
+#' @return Setters like `node_poke_car()` invisibly return `x` modified
 #'   in place. Getters return the requested node component.
 #' @seealso [duplicate()] for creating copy-safe objects and
 #'   [base::pairlist()] for an easier way of creating a linked list of
@@ -40,10 +40,10 @@
 #'
 #' # Now we change the argument pairlist of `copy`, making sure the new
 #' # arguments are NULL-terminated:
-#' mut_node_cdr(copy, node(quote(BAZ), NULL))
+#' node_poke_cdr(copy, node(quote(BAZ), NULL))
 #'
 #' # Or equivalently:
-#' mut_node_cdr(copy, pairlist(quote(BAZ)))
+#' node_poke_cdr(copy, pairlist(quote(BAZ)))
 #' copy
 #'
 #' # The original object has been changed in place:
@@ -90,32 +90,32 @@ node_cddr <- function(x) {
 
 #' @rdname node
 #' @export
-mut_node_car <- function(x, newcar) {
+node_poke_car <- function(x, newcar) {
   invisible(.Call(rlang_node_poke_car, x, newcar))
 }
 #' @rdname node
 #' @export
-mut_node_cdr <- function(x, newcdr) {
+node_poke_cdr <- function(x, newcdr) {
   invisible(.Call(rlang_node_poke_cdr, x, newcdr))
 }
 #' @rdname node
 #' @export
-mut_node_caar <- function(x, newcar) {
+node_poke_caar <- function(x, newcar) {
   invisible(.Call(rlang_node_poke_caar, x, newcar))
 }
 #' @rdname node
 #' @export
-mut_node_cadr <- function(x, newcar) {
+node_poke_cadr <- function(x, newcar) {
   invisible(.Call(rlang_node_poke_cadr, x, newcar))
 }
 #' @rdname node
 #' @export
-mut_node_cdar <- function(x, newcdr) {
+node_poke_cdar <- function(x, newcdr) {
   invisible(.Call(rlang_node_poke_cdar, x, newcdr))
 }
 #' @rdname node
 #' @export
-mut_node_cddr <- function(x, newcdr) {
+node_poke_cddr <- function(x, newcdr) {
   invisible(.Call(rlang_node_poke_cddr, x, newcdr))
 }
 
@@ -126,7 +126,7 @@ node_tag <- function(x) {
 }
 #' @rdname node
 #' @export
-mut_node_tag <- function(x, newtag) {
+node_poke_tag <- function(x, newtag) {
   invisible(.Call(rlang_node_poke_tag, x, newtag))
 }
 
@@ -181,8 +181,8 @@ is_node_list <- function(x) {
 #' modifying the copy leaves the original object intact. Since,
 #' copying data in memory is an expensive operation, copies in R are
 #' as lazy as possible. They only happen when the new object is
-#' actually modified. However, some operations (like [mut_node_car()]
-#' or [mut_node_cdr()]) do not support copy-on-write. In those cases,
+#' actually modified. However, some operations (like [node_poke_car()]
+#' or [node_poke_cdr()]) do not support copy-on-write. In those cases,
 #' it is necessary to duplicate the object manually in order to
 #' preserve copy-by-value semantics.
 #'
@@ -232,20 +232,9 @@ node_walk_last <- function(.x, .f, ...) {
 }
 
 node_append <- function(.x, .y) {
-  node_walk_last(.x, function(l) mut_node_cdr(l, .y))
+  node_walk_last(.x, function(l) node_poke_cdr(l, .y))
   .x
 }
-
-
-# FIXME: Deprecate `mut_` variants properly with lifecycle package and
-# replace them with these:
-node_poke_car <- mut_node_car
-node_poke_cdr <- mut_node_cdr
-node_poke_caar <- mut_node_caar
-node_poke_cadr <- mut_node_cadr
-node_poke_cdar <- mut_node_cdar
-node_poke_cddr <- mut_node_cddr
-node_poke_tag <- mut_node_tag
 
 
 #' Create a new call from components

@@ -283,6 +283,50 @@ as_env <- function(x, parent = NULL) {
   as_environment(x, parent)
 }
 
+#' Mutate node components
+#'
+#' These functions were soft-deprecated and renamed with `node_poke_`
+#' prefix in rlang 0.2.0. This change follows a new naming convention
+#' where mutation is referred to as "poking".
+#'
+#' @inheritParams node
+#'
+#' @keywords internal
+#' @export
+mut_node_car <- function(x, newcar) {
+  invisible(.Call(rlang_node_poke_car, x, newcar))
+}
+#' @rdname mut_node_car
+#' @export
+mut_node_cdr <- function(x, newcdr) {
+  invisible(.Call(rlang_node_poke_cdr, x, newcdr))
+}
+#' @rdname mut_node_car
+#' @export
+mut_node_caar <- function(x, newcar) {
+  invisible(.Call(rlang_node_poke_caar, x, newcar))
+}
+#' @rdname mut_node_car
+#' @export
+mut_node_cadr <- function(x, newcar) {
+  invisible(.Call(rlang_node_poke_cadr, x, newcar))
+}
+#' @rdname mut_node_car
+#' @export
+mut_node_cdar <- function(x, newcdr) {
+  invisible(.Call(rlang_node_poke_cdar, x, newcdr))
+}
+#' @rdname mut_node_car
+#' @export
+mut_node_cddr <- function(x, newcdr) {
+  invisible(.Call(rlang_node_poke_cddr, x, newcdr))
+}
+#' @rdname mut_node_car
+#' @export
+mut_node_tag <- function(x, newtag) {
+  invisible(.Call(rlang_node_poke_tag, x, newtag))
+}
+
 
 # Deprecated ---------------------------------------------------------
 

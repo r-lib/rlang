@@ -145,7 +145,7 @@ f_lhs <- function(f) {
 
   if (length(x) < 3) {
     x <- duplicate(x)
-    mut_node_cdr(x, pairlist(value, x[[2]]))
+    node_poke_cdr(x, pairlist(value, x[[2]]))
   } else {
     x[[2]] <- value
   }

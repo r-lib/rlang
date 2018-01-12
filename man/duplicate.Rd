@@ -20,8 +20,8 @@ In R semantics, objects are copied by value. This means that
 modifying the copy leaves the original object intact. Since,
 copying data in memory is an expensive operation, copies in R are
 as lazy as possible. They only happen when the new object is
-actually modified. However, some operations (like \code{\link[=mut_node_car]{mut_node_car()}}
-or \code{\link[=mut_node_cdr]{mut_node_cdr()}}) do not support copy-on-write. In those cases,
+actually modified. However, some operations (like \code{\link[=node_poke_car]{node_poke_car()}}
+or \code{\link[=node_poke_cdr]{node_poke_cdr()}}) do not support copy-on-write. In those cases,
 it is necessary to duplicate the object manually in order to
 preserve copy-by-value semantics.
 }

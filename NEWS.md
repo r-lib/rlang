@@ -301,6 +301,10 @@
 
 * `as_overscope()` is soft-deprecated in favour of `as_data_mask()`.
 
+* The node setters were renamed from `mut_node_` prefix to
+  `node_poke_`. This change follows a new naming convention in rlang
+  where mutation is referred to as "poking".
+
 
 # rlang 0.1.6
 

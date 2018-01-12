@@ -79,5 +79,5 @@ is_definition <- function(x) {
 #' @param env The evaluation environment bundled with the definition.
 new_definition <- function(lhs, rhs, env = caller_env()) {
   def <- new_formula(lhs, rhs, env)
-  mut_node_car(def, sym_def)
+  node_poke_car(def, sym_def)
 }

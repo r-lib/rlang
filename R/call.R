@@ -81,15 +81,15 @@ call2 <- function(.fn, ..., .ns = NULL) {
 #' is_callable(quote(foo))
 #' is_callable(base::identity)
 #'
-#' # mut_node_car() lets you modify calls without any checking:
+#' # node_poke_car() lets you modify calls without any checking:
 #' lang <- quote(foo(10))
-#' mut_node_car(lang, get_env())
+#' node_poke_car(lang, get_env())
 #'
 #' # Use is_callable() to check an input object is safe to put as CAR:
 #' obj <- base::identity
 #'
 #' if (is_callable(obj)) {
-#'   lang <- mut_node_car(lang, obj)
+#'   lang <- node_poke_car(lang, obj)
 #' } else {
 #'   abort("`obj` must be callable")
 #' }
@@ -465,7 +465,7 @@ is_namespaced_call <- function(x, ns = NULL, private = NULL) {
 call_unnamespace <- function(x) {
   if (is_namespaced_call(x)) {
     call <- call2(node_cadr(node_cdar(x)))
-    mut_node_cdr(call, node_cdr(x))
+    node_poke_cdr(call, node_cdr(x))
   } else {
     x
   }

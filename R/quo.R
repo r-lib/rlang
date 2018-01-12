@@ -498,7 +498,7 @@ quo_squash_impl <- function(x, parent = NULL, warn = FALSE) {
           x <- quo_get_expr(x)
         }
         if (!is_null(parent)) {
-          mut_node_car(parent, x)
+          node_poke_car(parent, x)
         }
         quo_squash_impl(x, parent, warn = warn)
       } else {

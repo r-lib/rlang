@@ -9,14 +9,14 @@
 \alias{node_cadr}
 \alias{node_cdar}
 \alias{node_cddr}
-\alias{mut_node_car}
-\alias{mut_node_cdr}
-\alias{mut_node_caar}
-\alias{mut_node_cadr}
-\alias{mut_node_cdar}
-\alias{mut_node_cddr}
+\alias{node_poke_car}
+\alias{node_poke_cdr}
+\alias{node_poke_caar}
+\alias{node_poke_cadr}
+\alias{node_poke_cdar}
+\alias{node_poke_cddr}
 \alias{node_tag}
-\alias{mut_node_tag}
+\alias{node_poke_tag}
 \title{Helpers for pairlist and language nodes}
 \usage{
 node(car, cdr = NULL)
@@ -33,21 +33,21 @@ node_cdar(x)
 
 node_cddr(x)
 
-mut_node_car(x, newcar)
+node_poke_car(x, newcar)
 
-mut_node_cdr(x, newcdr)
+node_poke_cdr(x, newcdr)
 
-mut_node_caar(x, newcar)
+node_poke_caar(x, newcar)
 
-mut_node_cadr(x, newcar)
+node_poke_cadr(x, newcar)
 
-mut_node_cdar(x, newcdr)
+node_poke_cdar(x, newcdr)
 
-mut_node_cddr(x, newcdr)
+node_poke_cddr(x, newcdr)
 
 node_tag(x)
 
-mut_node_tag(x, newtag)
+node_poke_tag(x, newtag)
 }
 \arguments{
 \item{car, newcar, cdr, newcdr}{The new CAR or CDR for the node. These
@@ -59,7 +59,7 @@ barebones and do not perform any type checking.}
 \item{newtag}{The new tag for the node. This should be a symbol.}
 }
 \value{
-Setters like \code{mut_node_car()} invisibly return \code{x} modified
+Setters like \code{node_poke_car()} invisibly return \code{x} modified
 in place. Getters return the requested node component.
 }
 \description{
@@ -89,10 +89,10 @@ copy <- lang
 
 # Now we change the argument pairlist of `copy`, making sure the new
 # arguments are NULL-terminated:
-mut_node_cdr(copy, node(quote(BAZ), NULL))
+node_poke_cdr(copy, node(quote(BAZ), NULL))
 
 # Or equivalently:
-mut_node_cdr(copy, pairlist(quote(BAZ)))
+node_poke_cdr(copy, pairlist(quote(BAZ)))
 copy
 
 # The original object has been changed in place:
