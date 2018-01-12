@@ -50,6 +50,12 @@ former returns the option directly while the latter returns a
 list.
 }
 }
+\section{Life cycle}{
+
+
+These functions are experimental.
+}
+
 \examples{
 # Store and retrieve a global option:
 push_options(my_option = 10)
@@ -71,3 +77,4 @@ peek_option("my_option")
 peek_options("my_option")
 peek_options("my_option", "digits")
 }
+\keyword{experimental}

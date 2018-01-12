@@ -50,6 +50,9 @@
 #' * [is_pairlist()], [is_node()], [is_node_list()]
 #' * [is_definition()], [new_definition()], [is_formulaish()]
 #'
+#' * [scoped_options()], [with_options()], [push_options()],
+#'   [peek_options()], [peek_option()]
+#'
 #'
 #' @section Questioning functions:
 #'

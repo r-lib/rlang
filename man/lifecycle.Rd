@@ -48,6 +48,8 @@ TODO: Review all functions in rlang and mark stable ones as such.
 \item \code{\link[=ns_env]{ns_env()}}, \code{\link[=ns_imports_env]{ns_imports_env()}}, \code{\link[=ns_env_name]{ns_env_name()}}
 \item \code{\link[=is_pairlist]{is_pairlist()}}, \code{\link[=is_node]{is_node()}}, \code{\link[=is_node_list]{is_node_list()}}
 \item \code{\link[=is_definition]{is_definition()}}, \code{\link[=new_definition]{new_definition()}}, \code{\link[=is_formulaish]{is_formulaish()}}
+\item \code{\link[=scoped_options]{scoped_options()}}, \code{\link[=with_options]{with_options()}}, \code{\link[=push_options]{push_options()}},
+\code{\link[=peek_options]{peek_options()}}, \code{\link[=peek_option]{peek_option()}}
 }
 }
 

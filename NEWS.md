@@ -52,11 +52,6 @@
 * `with_bindings()` and `scoped_bindings()` establish temporary
   bindings in an environment.
 
-* New API for changing global options: `peek_options()` and
-  `peek_option()` examine options; `push_options()` changes options
-  indefinitely; `scoped_options()` and `with_options()` change options
-  temporarily.
-
 * The tidy eval `!!` operator now binds tightly. You no longer have to
   wrap it in parentheses, i.e. `!! x > y` will only unquote `x`.
 

@@ -15,6 +15,11 @@
 #'   former returns the option directly while the latter returns a
 #'   list.
 #'
+#'
+#' @section Life cycle:
+#'
+#' These functions are experimental.
+#'
 #' @param ... For `scoped_options()` and `push_options()`, named
 #'   values defining new option values. For `peek_options()`, strings
 #'   or character vectors of option names.
@@ -25,6 +30,8 @@
 #'   values. `peek_option()` returns the current value of an option
 #'   while the plural `peek_options()` returns a list of current
 #'   option values.
+#'
+#' @keywords experimental
 #' @export
 #' @examples
 #' # Store and retrieve a global option:
