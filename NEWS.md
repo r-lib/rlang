@@ -1,57 +1,27 @@
 
-# rlang 0.1.6.9000
+# rlang 0.2.0
 
-* `new_cnd()` is now `cnd()` for consistency with other constructors.
-  Also, `cnd_error()`, `cnd_warning()` and `cnd_message()` are now
-  `error_cnd()`, `warning_cnd()` and `message_cnd()` to follow our
-  naming scheme according to which the type of output is a suffix
-  rather than a prefix.
+This release of rlang is mostly an effort at polishing the tidy
+evaluation framework. It is now much faster and many of the
+inconveniences that affected the unquoting operators are gone.
 
-* Condition signallers such as `cnd_signal()` and `abort()` now accept
-  a call depth as `call` arguments. This allows plucking a call from
-  further up the call stack (#30).
+* The `!!` operator now has the precedence of unary `+` and `-` which
+  allows a much more natural syntax: `!!a > b` only unquotes `a`
+  rather than the whole `a > b` expression.
 
-* `cnd_signal()` now returns invisibly.
+* `enquo()` works in magrittr pipes: `mtcars %>% select(!!enquo(var))`.
 
-* `cnd_signal()` and `cnd_abort()` now accept character vectors to
-  create typed conditions with several S3 subclasses.
+* `enquos()` is a variant of `quos()` that has a more natural
+  interface.
 
-* `is_condition()` is now properly exported.
+See below for a complete list of changes.
 
-* New `fn_fmls<-` and `fn_fmls_names<-` setters.
+
+## Tidy evaluation
 
 * `ensym()` is a new variant of `enexpr()` that expects a symbol or a
   string and always returns a symbol. If a complex expression is
   supplied it fails with an error.
-
-* New function experimental function `chr_unserialise_unicode()` for
-  turning characters serialised to unicode point form
-  (e.g. `<U+xxxx>`) to UTF-8. In addition, `as_utf8_character()` now
-  translates those as well.
-
-* When nested quosures are evaluated with `eval_tidy()`, the `.env`
-  pronoun now correctly refers to the current quosure under evaluation
-  (#174). Previously it would always refer to the environment of the
-  outermost quosure.
-
-* The new functions `cnd_warn()` and `cnd_inform()` transform
-  conditions to warnings or messages before signalling them.
-
-* New helper `catch_cnd()`. This is a small wrapper around
-  `tryCatch()` that captures and returns any signalled condition. It
-  returns `NULL` if none was signalled.
-
-* `cnd_abort()` now adds the correct S3 classes for error
-  conditions. This fixes error catching, for instance by
-  `testthat::expect_error()`.
-
-* `is_namespace()` is a snake case wrapper around `isNamespace()`.
-
-* `env_get_list()` retrieves muliple bindings from an environment into
-  a named list.
-
-* `with_bindings()` and `scoped_bindings()` establish temporary
-  bindings in an environment.
 
 * The tidy eval `!!` operator now binds tightly. You no longer have to
   wrap it in parentheses, i.e. `!! x > y` will only unquote `x`.
@@ -111,25 +81,6 @@
   when parsing code as text. The parentheses will also be added by R
   when printing code if needed (#296).
 
-* `expr_label()` now supports quoted function definition calls (#275).
-
-* `is_symbol()` gains a `name` argument to check that that the symbol
-  name matches a string (#287).
-
-* New `rlang_box` class. Its purpose is similar to the `AsIs` class
-  from `base::I()`, i.e. it protects a value temporarily. However it
-  does so by wrapping the value in a scalar list. Use `new_box()` to
-  create a boxed value, `is_box()` to test for a boxed value, and
-  `unbox()` to unbox it. `new_box()` and `is_box()` accept optional
-  subclass.
-
-* New functions `inherits_any()`, `inherits_all()`, and
-  `inherits_only()`. They allow testing for inheritance from multiple
-  classes. The `_any` variant is equivalent to `base::inherits()` but
-  is more explicit about its behaviour. `inherits_all()` checks that
-  all classes are present in order and `inherits_only()` checks that
-  the class vectors are identical.
-
 * `UQ()` and `UQS()` are soft-deprecated in order to make the syntax
   of quasiquotation more consistent. The prefix forms are now
   `` `!!`() `` and `` `!!!`() `` which is consistent with other R
@@ -158,8 +109,8 @@
 
 * New getters and setters for quosures: `quo_get_expr()`,
   `quo_get_env()`, `quo_set_expr()`, and `quo_set_env()`. Compared to
-  `get_expr()` etc, these accessors only work on quosures and are a
-  bit more efficient.
+  `get_expr()` etc, these accessors only work on quosures and are
+  slightly more efficient.
 
 * The print method for quosures has been greatly improved. Quosures no
   longer appear as formulas but as expressions prefixed with `^`;
@@ -197,6 +148,92 @@
   reflect that it is a lossy operation that flattens all nested
   quosures.
 
+
+## Conditions
+
+* The new functions `cnd_warn()` and `cnd_inform()` transform
+  conditions to warnings or messages before signalling them.
+
+* `cnd_signal()` now returns invisibly.
+
+* `cnd_signal()` and `cnd_abort()` now accept character vectors to
+  create typed conditions with several S3 subclasses.
+
+* `is_condition()` is now properly exported.
+
+* Condition signallers such as `cnd_signal()` and `abort()` now accept
+  a call depth as `call` arguments. This allows plucking a call from
+  further up the call stack (#30).
+
+* New helper `catch_cnd()`. This is a small wrapper around
+  `tryCatch()` that captures and returns any signalled condition. It
+  returns `NULL` if none was signalled.
+
+* `cnd_abort()` now adds the correct S3 classes for error
+  conditions. This fixes error catching, for instance by
+  `testthat::expect_error()`.
+
+
+## Environments
+
+* `env_get_list()` retrieves muliple bindings from an environment into
+  a named list.
+
+* `with_bindings()` and `scoped_bindings()` establish temporary
+  bindings in an environment.
+
+* `is_namespace()` is a snake case wrapper around `isNamespace()`.
+
+
+## Various features
+
+* New `fn_fmls<-` and `fn_fmls_names<-` setters.
+
+* New function experimental function `chr_unserialise_unicode()` for
+  turning characters serialised to unicode point form
+  (e.g. `<U+xxxx>`) to UTF-8. In addition, `as_utf8_character()` now
+  translates those as well.
+
+* `expr_label()` now supports quoted function definition calls (#275).
+
+* `call_modify()` and `call_standardise()` gain an argument to specify
+  an environment. The call definition is looked up in that environment
+  when the call to modify or standardise is not wrapped in a quosure.
+
+* `is_symbol()` gains a `name` argument to check that that the symbol
+  name matches a string (#287).
+
+* New `rlang_box` class. Its purpose is similar to the `AsIs` class
+  from `base::I()`, i.e. it protects a value temporarily. However it
+  does so by wrapping the value in a scalar list. Use `new_box()` to
+  create a boxed value, `is_box()` to test for a boxed value, and
+  `unbox()` to unbox it. `new_box()` and `is_box()` accept optional
+  subclass.
+
+* New functions `inherits_any()`, `inherits_all()`, and
+  `inherits_only()`. They allow testing for inheritance from multiple
+  classes. The `_any` variant is equivalent to `base::inherits()` but
+  is more explicit about its behaviour. `inherits_all()` checks that
+  all classes are present in order and `inherits_only()` checks that
+  the class vectors are identical.
+
+
+## Bugfixes
+
+* When nested quosures are evaluated with `eval_tidy()`, the `.env`
+  pronoun now correctly refers to the current quosure under evaluation
+  (#174). Previously it would always refer to the environment of the
+  outermost quosure.
+
+
+## API changes
+
+The rlang API is maturing and still in flux. However we have made an
+effort to better communicate what parts are stable. We will not
+introduce breaking changes for stable functions unless the payoff for
+the change is worth the trouble. See `?rlang::lifecycle` for the
+lifecycle status of exported functions.
+
 * The particle "lang" has been renamed to "call":
 
     - `lang()` has been renamed to `call2()`.
@@ -226,12 +263,14 @@
   interface. These functions are only meant for developers of tidy
   evaluation interfaces.
 
-* `call_modify()` and `call_standardise()` gain an argument to specify
-  an environment. The call definition is looked up in that environment
-  when the call to modify or standardise is not wrapped in a quosure.
 
+### Breaking changes
 
-## Breaking changes
+* `new_cnd()` is now `cnd()` for consistency with other constructors.
+  Also, `cnd_error()`, `cnd_warning()` and `cnd_message()` are now
+  `error_cnd()`, `warning_cnd()` and `message_cnd()` to follow our
+  naming scheme according to which the type of output is a suffix
+  rather than a prefix.
 
 * `is_node()` now returns `TRUE` for calls as well and `is_pairlist()`
   does not return `TRUE` for `NULL` objects. Use `is_node_list()` to
@@ -265,7 +304,7 @@
   implementation detail.
 
 
-## Upcoming breaking changes
+### Upcoming breaking changes
 
 * `parse_quosure()` and `parse_quosures()` are soft-deprecated in
   favour of `parse_quo()` and `parse_quos()`. These new names are
