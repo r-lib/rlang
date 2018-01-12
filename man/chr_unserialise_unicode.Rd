@@ -28,7 +28,7 @@ functions like \code{\link[=env_names]{env_names()}} and can be manually trigger
 \section{Life cycle}{
 
 
-This function is experimental
+This function is experimental.
 }
 
 \examples{

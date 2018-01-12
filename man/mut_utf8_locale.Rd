@@ -44,3 +44,11 @@ in the course of a data analysis. Note finally that
 \code{mut_utf8_locale()} will not work on Windows as only latin1 and
 MBCS locales are supported on this OS.
 }
+\section{Life cycle}{
+
+
+These functions are experimental. They might be removed in the
+future because they don't bring anything new over the base API.
+}
+
+\keyword{internal}

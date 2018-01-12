@@ -134,7 +134,7 @@ as_native_string <- function(x) {
 #'
 #' @section Life cycle:
 #'
-#' This function is experimental
+#' This function is experimental.
 #'
 #' @param chr A character vector.
 #' @export
@@ -163,6 +163,12 @@ chr_unserialise_unicode <- function(chr) {
 #' the actual encoding. In those situations, you can use these
 #' functions to ensure an encoding mark in your strings.
 #'
+#'
+#' @section Life cycle:
+#'
+#' These functions are experimental. They might be removed in the
+#' future because they don't bring anything new over the base API.
+#'
 #' @param x A string or character vector.
 #' @param encoding Either an encoding specially handled by R
 #'   (`"UTF-8"` or `"latin1"`), `"bytes"` to inhibit all encoding
@@ -171,6 +177,7 @@ chr_unserialise_unicode <- function(chr) {
 #' @seealso [mut_utf8_locale()] about the effects of the locale, and
 #'   [as_utf8_string()] about encoding conversion.
 #' @export
+#' @keywords internal
 #' @examples
 #' # Encoding marks are always ignored on ASCII strings:
 #' str_encoding(set_str_encoding("cafe", "UTF-8"))
@@ -258,7 +265,14 @@ str_encoding <- function(x) {
 #' `mut_utf8_locale()` will not work on Windows as only latin1 and
 #' MBCS locales are supported on this OS.
 #'
+#'
+#' @section Life cycle:
+#'
+#' These functions are experimental. They might be removed in the
+#' future because they don't bring anything new over the base API.
+#'
 #' @return The previous locale (invisibly).
+#' @keywords internal
 #' @export
 mut_utf8_locale <- function() {
   if (.Platform$OS.type == "windows") {

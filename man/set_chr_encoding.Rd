@@ -36,6 +36,13 @@ codesets), which is not appropriate if it does not coincide with
 the actual encoding. In those situations, you can use these
 functions to ensure an encoding mark in your strings.
 }
+\section{Life cycle}{
+
+
+These functions are experimental. They might be removed in the
+future because they don't bring anything new over the base API.
+}
+
 \examples{
 # Encoding marks are always ignored on ASCII strings:
 str_encoding(set_str_encoding("cafe", "UTF-8"))
@@ -75,3 +82,4 @@ as_bytes(names(c(bad)))
 \code{\link[=mut_utf8_locale]{mut_utf8_locale()}} about the effects of the locale, and
 \code{\link[=as_utf8_string]{as_utf8_string()}} about encoding conversion.
 }
+\keyword{internal}

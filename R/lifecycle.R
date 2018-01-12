@@ -53,7 +53,10 @@
 #' * [scoped_options()], [with_options()], [push_options()],
 #'   [peek_options()], [peek_option()]
 #'
-#' * [as_bytes()], [chr_unserialise_unicode()]
+#' * [as_bytes()], [chr_unserialise_unicode()], [set_chr_encoding()],
+#'   [chr_encoding()], [set_str_encoding()], [str_encoding()]
+#'
+#' * [mut_utf8_locale()], [mut_latin1_locale()], [mut_mbcs_locale()]
 #'
 #'
 #' @section Questioning functions:

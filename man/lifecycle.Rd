@@ -50,7 +50,9 @@ TODO: Review all functions in rlang and mark stable ones as such.
 \item \code{\link[=is_definition]{is_definition()}}, \code{\link[=new_definition]{new_definition()}}, \code{\link[=is_formulaish]{is_formulaish()}}
 \item \code{\link[=scoped_options]{scoped_options()}}, \code{\link[=with_options]{with_options()}}, \code{\link[=push_options]{push_options()}},
 \code{\link[=peek_options]{peek_options()}}, \code{\link[=peek_option]{peek_option()}}
-\item \code{\link[=as_bytes]{as_bytes()}}, \code{\link[=chr_unserialise_unicode]{chr_unserialise_unicode()}}
+\item \code{\link[=as_bytes]{as_bytes()}}, \code{\link[=chr_unserialise_unicode]{chr_unserialise_unicode()}}, \code{\link[=set_chr_encoding]{set_chr_encoding()}},
+\code{\link[=chr_encoding]{chr_encoding()}}, \code{\link[=set_str_encoding]{set_str_encoding()}}, \code{\link[=str_encoding]{str_encoding()}}
+\item \code{\link[=mut_utf8_locale]{mut_utf8_locale()}}, \code{\link[=mut_latin1_locale]{mut_latin1_locale()}}, \code{\link[=mut_mbcs_locale]{mut_mbcs_locale()}}
 }
 }
 
