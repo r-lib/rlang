@@ -93,8 +93,9 @@ static sexp* dots_big_bang_coerce(sexp* expr) {
   case r_type_complex:
   case r_type_character:
   case r_type_raw:
-  case r_type_list:
     return r_vec_coerce(expr, r_type_list);
+  case r_type_list:
+    return r_duplicate(expr, true);
   case r_type_call:
     if (r_is_symbol(r_node_car(expr), "{")) {
       return r_vec_coerce(r_node_cdr(expr), r_type_list);

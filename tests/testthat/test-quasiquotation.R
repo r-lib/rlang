@@ -259,6 +259,20 @@ test_that("can't supply multiple arguments to `!!!`", {
   expect_error_(exprs(`!!!`(1, 2)), "Can't supply multiple arguments to `!!!`")
 })
 
+test_that("`!!!` doesn't modify spliced inputs by reference", {
+  x <- 1:3
+  quos(!!! x)
+  expect_identical(x, 1:3)
+
+  x <- as.list(1:3)
+  quos(!!! x)
+  expect_identical(x, as.list(1:3))
+
+  x <- quote({ 1L; 2L; 3L })
+  quos(!!! x)
+  expect_equal(x, quote({ 1L; 2L; 3L }))  # equal because of srcrefs
+})
+
 
 # UQE ----------------------------------------------------------------
 
