@@ -214,9 +214,9 @@ test_that("serialised unicode in argument names is unserialised on splice", {
     exprs <- exprs("\u5e78" := 10)
     quos <- quos(!!! exprs)
     names(quos)
+    expect_identical(as_bytes(nms), as_bytes("\u5e78"))
+    expect_true(all(!!Encoding(nms) == "UTF-8"), nms)
   })
-  expect_identical(as_bytes(nms), as_bytes("\u5e78"))
-  expect_true(all(!!Encoding(nms) == "UTF-8"), nms)
 })
 
 test_that("can't splice at top level", {
