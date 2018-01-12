@@ -60,7 +60,6 @@ static void check_unique_names(sexp* x) {
 }
 sexp* rlang_as_data_pronoun(sexp* x) {
   int n_kept = 0;
-  sexp* lookup_msg = r_null;
 
   switch (r_typeof(x)) {
   case r_type_logical:
@@ -71,23 +70,17 @@ sexp* rlang_as_data_pronoun(sexp* x) {
   case r_type_raw:
     check_unique_names(x);
     x = KEEP_N(r_vec_coerce(x, r_type_list), &n_kept);
-    lookup_msg = r_null;
     break;
   case r_type_list:
     check_unique_names(x);
-    if (r_inherits(x, "data.frame")) {
-      lookup_msg = KEEP_N(r_scalar_chr("Column `%s` not found in data"), &n_kept);
-    } else {
-      lookup_msg = KEEP_N(r_scalar_chr("Object `%s` not found in data"), &n_kept);
-    }
     break;
   case r_type_environment:
-    lookup_msg = KEEP_N(r_scalar_chr("Object `%s` not found in environment"), &n_kept);
     break;
   default:
     r_abort("`data` must be an uniquely named vector, list, data frame or environment");
   }
 
+  sexp* lookup_msg = KEEP_N(r_scalar_chr("Column `%s` not found in data"), &n_kept);
   sexp* read_only = KEEP_N(r_scalar_lgl(1), &n_kept);
   sexp* pronoun = rlang_new_data_pronoun(x, lookup_msg, read_only);
 

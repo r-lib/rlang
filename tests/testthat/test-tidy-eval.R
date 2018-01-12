@@ -40,7 +40,7 @@ test_that("pronouns resolve ambiguity looks first in `data`", {
 })
 
 test_that("pronouns complain about missing values", {
-  expect_error(eval_tidy(quo(.data$x), list()), "Object `x` not found in data")
+  expect_error(eval_tidy(quo(.data$x), list()), "Column `x` not found in data")
   expect_error(eval_tidy(quo(.data$x), data.frame()), "Column `x` not found in data")
 })
 
