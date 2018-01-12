@@ -72,10 +72,6 @@ discard_unnamed <- function(x) {
   }
 }
 
-sxp_address <- function(x) {
-  .Call(rlang_sxp_address, x)
-}
-
 captureArgInfo <- function(x) {
   args <- pairlist(parent.frame())
   .Call(rlang_capturearginfo, NULL, NULL, args, environment())
