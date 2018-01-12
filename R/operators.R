@@ -71,7 +71,7 @@
 #' is_definition(quote(a := b))
 #' is_definition(a ~ b)
 is_definition <- function(x) {
-  is_formulaish(x) && identical(node_car(x), sym_def)
+  is_formulaish(x) && identical(node_car(x), colon_equals_sym)
 }
 #' @rdname op-definition
 #' @export
@@ -79,5 +79,5 @@ is_definition <- function(x) {
 #' @param env The evaluation environment bundled with the definition.
 new_definition <- function(lhs, rhs, env = caller_env()) {
   def <- new_formula(lhs, rhs, env)
-  node_poke_car(def, sym_def)
+  node_poke_car(def, colon_equals_sym)
 }

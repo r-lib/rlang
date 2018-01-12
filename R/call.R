@@ -56,7 +56,7 @@ call2 <- function(.fn, ..., .ns = NULL) {
   }
 
   if (!is_null(.ns)) {
-    .fn <- call_node(sym_namespace, pairlist(sym(.ns), .fn))
+    .fn <- call_node(namespace_sym, pairlist(sym(.ns), .fn))
   }
 
   call_node(.fn, as.pairlist(dots_list(...)))
@@ -479,10 +479,10 @@ is_qualified_symbol <- function(x) {
   if (typeof(head) != "symbol") return(FALSE)
 
   qualifier <- node_car(x)
-  identical(qualifier, sym_namespace) ||
-    identical(qualifier, sym_namespace2) ||
-    identical(qualifier, sym_dollar) ||
-    identical(qualifier, sym_at)
+  identical(qualifier, namespace_sym) ||
+    identical(qualifier, namespace2_sym) ||
+    identical(qualifier, dollar_sym) ||
+    identical(qualifier, at_sym)
 }
 is_namespaced_symbol <- function(x, ns = NULL, private = NULL) {
   if (typeof(x) != "language") return(FALSE)
@@ -490,11 +490,11 @@ is_namespaced_symbol <- function(x, ns = NULL, private = NULL) {
 
   head <- node_car(x)
   if (is_null(private)) {
-    identical(head, sym_namespace) || identical(head, sym_namespace2)
+    identical(head, namespace_sym) || identical(head, namespace2_sym)
   } else if (private) {
-    identical(head, sym_namespace2)
+    identical(head, namespace2_sym)
   } else {
-    identical(head, sym_namespace)
+    identical(head, namespace_sym)
   }
 }
 

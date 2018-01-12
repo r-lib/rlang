@@ -98,11 +98,11 @@ ensyms <- function(...,
   map(exprs, sym)
 }
 
-sym_namespace <- quote(`::`)
-sym_namespace2 <- quote(`:::`)
-sym_dollar <- quote(`$`)
-sym_at <- quote(`@`)
-sym_tilde <- quote(`~`)
-sym_def <- quote(`:=`)
-sym_curly <- quote(`{`)
+namespace_sym <- quote(`::`)
+namespace2_sym <- quote(`:::`)
+dollar_sym <- quote(`$`)
+at_sym <- quote(`@`)
+tilde_sym <- quote(`~`)
+colon_equals_sym <- quote(`:=`)
+curly_sym <- quote(`{`)
 dots_sym <- quote(...)

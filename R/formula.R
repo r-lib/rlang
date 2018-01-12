@@ -61,7 +61,7 @@ is_formula <- function(x, scoped = NULL, lhs = NULL) {
   if (!is_formulaish(x, scoped = scoped, lhs = lhs)) {
     return(FALSE)
   }
-  identical(node_car(x), sym_tilde)
+  identical(node_car(x), tilde_sym)
 }
 #' @rdname is_formula
 #' @export
