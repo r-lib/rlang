@@ -61,7 +61,7 @@ wrong and using that object will probably make R crash.
 The reason we use the term \emph{node head} is because calls are
 structured as tree objects. This makes sense because the best
 representation for language code is a parse tree, with the tree
-hierarchy determined by the order of operations. See \link{pairlist} for
+hierarchy determined by the order of operations. See \link{node} for
 more on this.
 }
 \section{Life cycle}{

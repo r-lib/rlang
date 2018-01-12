@@ -11,8 +11,5 @@ as_pairlist(x)
 }
 \description{
 This transforms vector objects to a linked pairlist of nodes. See
-\link{pairlist} for information about the pairlist type.
-}
-\seealso{
-\link{pairlist}
+the \link[=node]{pairlist} type help page.
 }

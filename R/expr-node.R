@@ -2,62 +2,13 @@
 #'
 #' @description
 #'
-#' Like any [parse tree](https://en.wikipedia.org/wiki/Parse_tree), R
-#' expressions are structured as trees of nodes. Each node has two
-#' components: the head and the tail (though technically there is
-#' actually a third component for argument names, see details). Due to
-#' R's [lisp roots](https://en.wikipedia.org/wiki/CAR_and_CDR), the
-#' head of a node (or cons cell) is called the CAR and the tail is
-#' called the CDR (pronounced _car_ and _cou-der_). While R's ordinary
-#' subsetting operators have builtin support for indexing into these
-#' trees and replacing elements, it is sometimes useful to manipulate
-#' the nodes more directly. This is the purpose of functions like
-#' `node_car()` and `mut_node_car()`. They are particularly useful to
-#' prototype algorithms for your C-level functions.
-#'
-#' * `node_car()` and `mut_node_car()` access or change the head of a node.
-#'
-#' * `node_cdr()` and `mut_node_cdr()` access or change the tail of a node.
-#'
-#' * Variants like `node_caar()` or `mut_node_cdar()` deal with the
-#'   CAR of the CAR of a node or the CDR of the CAR of a node
-#'   respectively. The letters in the middle indicate the type (CAR or
-#'   CDR) and order of access.
-#'
-#' * `node_tag()` and `mut_node_tag()` access or change the tag of a
-#'   node. This is meant for argument names and should only contain
-#'   symbols (not strings).
-#'
-#' * `node()` creates a new node from two components.
-#'
-#' @details
-#'
-#' R has two types of nodes to represent parse trees: language nodes,
-#' which represent function calls, and pairlist nodes, which represent
-#' arguments in a function call. These are the exact same data
-#' structures with a different name. This distinction is helpful for
-#' parsing the tree: the top-level node of a function call always has
-#' _language_ type while its arguments have _pairlist_ type.
-#'
-#' Note that it is risky to manipulate calls at the node level. First,
-#' the calls are changed inplace. This is unlike base R operators
-#' which create a new copy of the language tree for each modification.
-#' To make sure modifying a language object does not produce
-#' side-effects, rlang exports the `duplicate()` function to create
-#' deep copy (or optionally a shallow copy, i.e. only the top-level
-#' node is copied). The second danger is that R expects language trees
-#' to be structured as a `NULL`-terminated list. The CAR of a node is
-#' a data slot and can contain anything, including another node (which
-#' is how you form trees, as opposed to mere linked lists). On the
-#' other hand, the CDR has to be either another node, or `NULL`. If it
-#' is terminated by anything other than the `NULL` object, many R
-#' commands will crash, including functions like `str()`. It is up to
-#' you to ensure that the language list you have modified is
-#' `NULL`-terminated.
-#'
-#' Finally, all nodes can contain metadata in the TAG slot. This is
-#' meant for argument names and R expects tags to contain a symbol
-#' (not a string).
+#' These functions are mostly useful to navigate ASTs which are
+#' organised as binary trees of [cons
+#' cells](https://en.wikipedia.org/wiki/CAR_and_CDR). They are low
+#' level getters and setters that don't perform any type checking. As
+#' such, they can easily make R crash. Their main purpose is to
+#' prototype C code for computing on the language and they are meant
+#' for R experts only.
 #'
 #' @param x A language or pairlist node. Note that these functions are
 #'   barebones and do not perform any type checking.
@@ -69,6 +20,7 @@
 #' @seealso [duplicate()] for creating copy-safe objects and
 #'   [base::pairlist()] for an easier way of creating a linked list of
 #'   nodes.
+#' @keywords internal
 #' @examples
 #' # Changing a node component happens in place and can have side
 #' # effects. Let's create a language object and a copy of it:
@@ -96,83 +48,83 @@
 #'
 #' # The original object has been changed in place:
 #' lang
-#' @name pairlist
+#' @name node
 NULL
 
-#' @rdname pairlist
+#' @rdname node
 #' @export
 node <- function(newcar, newcdr) {
   .Call(rlang_new_node, newcar, newcdr)
 }
 
-#' @rdname pairlist
+#' @rdname node
 #' @export
 node_car <- function(x) {
   .Call(rlang_node_car, x)
 }
-#' @rdname pairlist
+#' @rdname node
 #' @export
 node_cdr <- function(x) {
   .Call(rlang_node_cdr, x)
 }
-#' @rdname pairlist
+#' @rdname node
 #' @export
 node_caar <- function(x) {
   .Call(rlang_node_caar, x)
 }
-#' @rdname pairlist
+#' @rdname node
 #' @export
 node_cadr <- function(x) {
   .Call(rlang_node_cadr, x)
 }
-#' @rdname pairlist
+#' @rdname node
 #' @export
 node_cdar <- function(x) {
   .Call(rlang_node_cdar, x)
 }
-#' @rdname pairlist
+#' @rdname node
 #' @export
 node_cddr <- function(x) {
   .Call(rlang_node_cddr, x)
 }
 
-#' @rdname pairlist
+#' @rdname node
 #' @export
 mut_node_car <- function(x, newcar) {
   invisible(.Call(rlang_node_poke_car, x, newcar))
 }
-#' @rdname pairlist
+#' @rdname node
 #' @export
 mut_node_cdr <- function(x, newcdr) {
   invisible(.Call(rlang_node_poke_cdr, x, newcdr))
 }
-#' @rdname pairlist
+#' @rdname node
 #' @export
 mut_node_caar <- function(x, newcar) {
   invisible(.Call(rlang_node_poke_caar, x, newcar))
 }
-#' @rdname pairlist
+#' @rdname node
 #' @export
 mut_node_cadr <- function(x, newcar) {
   invisible(.Call(rlang_node_poke_cadr, x, newcar))
 }
-#' @rdname pairlist
+#' @rdname node
 #' @export
 mut_node_cdar <- function(x, newcdr) {
   invisible(.Call(rlang_node_poke_cdar, x, newcdr))
 }
-#' @rdname pairlist
+#' @rdname node
 #' @export
 mut_node_cddr <- function(x, newcdr) {
   invisible(.Call(rlang_node_poke_cddr, x, newcdr))
 }
 
-#' @rdname pairlist
+#' @rdname node
 #' @export
 node_tag <- function(x) {
   .Call(rlang_node_tag, x)
 }
-#' @rdname pairlist
+#' @rdname node
 #' @export
 mut_node_tag <- function(x, newtag) {
   invisible(.Call(rlang_node_poke_tag, x, newtag))
@@ -181,10 +133,9 @@ mut_node_tag <- function(x, newtag) {
 #' Coerce to pairlist
 #'
 #' This transforms vector objects to a linked pairlist of nodes. See
-#' [pairlist] for information about the pairlist type.
+#' the [pairlist][node] type help page.
 #'
 #' @param x An object to coerce.
-#' @seealso [pairlist]
 #' @export
 as_pairlist <- function(x) {
   if (!is_vector(x)) {
@@ -302,7 +253,7 @@ node_poke_tag <- mut_node_tag
 #' @param car The head of the call. It should be a
 #'   [callable][is_callable] object: a symbol, call, or literal
 #'   function.
-#' @param cdr The tail of the call, i.e. a [node list][pairlist] of
+#' @param cdr The tail of the call, i.e. a [node list][node] of
 #'   arguments.
 #'
 #' @keywords internal
