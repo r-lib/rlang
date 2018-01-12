@@ -41,6 +41,7 @@
 #' * [set_attrs()], [mut_attrs()]
 #' * [with_env()], [locally()]
 #' * [env_poke()]
+#' * [dots_splice()]
 #'
 #'
 #' @section Questioning functions:

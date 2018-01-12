@@ -11,6 +11,14 @@
 #' splicing semantics_: in addition to lists marked explicitly for
 #' splicing, [bare][is_bare_list] lists are spliced as well.
 #'
+#'
+#' @section Life cycle:
+#'
+#' * `dots_splice()` is experimental. It is part of our experiments
+#'   with dots semantics. We now lean towards adopting a single type
+#'   of dots semantics (those of `dots_list()`) where splicing is
+#'   explicit.
+#'
 #' @inheritParams quosures
 #' @param ... Arguments with explicit (`dots_list()`) or list
 #'   (`dots_splice()`) splicing semantics. The contents of spliced

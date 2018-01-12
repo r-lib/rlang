@@ -42,6 +42,7 @@ TODO: Review all functions in rlang and mark stable ones as such.
 \item \code{\link[=set_attrs]{set_attrs()}}, \code{\link[=mut_attrs]{mut_attrs()}}
 \item \code{\link[=with_env]{with_env()}}, \code{\link[=locally]{locally()}}
 \item \code{\link[=env_poke]{env_poke()}}
+\item \code{\link[=dots_splice]{dots_splice()}}
 }
 }
 

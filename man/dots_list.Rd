@@ -35,6 +35,16 @@ that are explicitly marked for \link[=ll]{splicing} with the
 splicing semantics}: in addition to lists marked explicitly for
 splicing, \link[=is_bare_list]{bare} lists are spliced as well.
 }
+\section{Life cycle}{
+
+\itemize{
+\item \code{dots_splice()} is experimental. It is part of our experiments
+with dots semantics. We now lean towards adopting a single type
+of dots semantics (those of \code{dots_list()}) where splicing is
+explicit.
+}
+}
+
 \examples{
 # Compared to simply using list(...) to capture dots, dots_list()
 # splices explicitly:
