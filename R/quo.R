@@ -1,4 +1,4 @@
-#' Predicate, constructors, getters and setters for quosures
+#' Quosure getters, setters and testers
 #'
 #' @description
 #'

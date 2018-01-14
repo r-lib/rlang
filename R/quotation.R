@@ -18,8 +18,8 @@
 #' We call objects containing calls and symbols [expressions][is_expr].
 #' There are two ways to create R expressions. First you can **build**
 #' calls and symbols from parts and pieces (see [sym()], [syms()] and
-#' [call2()]). The other way is by *quotation*, i.e. by intercepting
-#' an expression instead of evaluating it.
+#' [call2()]). The other way is by *quotation* or *quasiquotation*,
+#' i.e. by intercepting an expression instead of evaluating it.
 #'
 #'
 #' @section User expressions versus your expressions:
@@ -34,7 +34,8 @@
 #'   that argument.
 #'
 #' * You can capture the expressions that _you_ supply. To this end
-#'   use `expr()`, `quo()` and their plural variants.
+#'   use `expr()` and `quo()` and their plural variants `exprs()` and
+#'   `quos()`.
 #'
 #'
 #' @section Capture raw expressions:
@@ -46,30 +47,31 @@
 #'
 #' * `ensym()` and `ensyms()` are variants of `enexpr()` and
 #'   `enexprs()` that check the captured expression is either a string
-#'   (which they convert to symbol) or a symbol. If a call or data
-#'   (e.g. a number like `1L`) is supplied they throw an error.
+#'   (which they convert to symbol) or a symbol. If anything else
+#'   is supplied they throw an error.
 #'
 #' In terms of base functions, `enexpr()` corresponds to
 #' [base::substitute()] (though that function has complex semantics)
 #' and `expr()` is like [quote()] and [bquote()]. The plural variant
-#' `exprs()` is equivalent to [base::alist()].
+#' `exprs()` is equivalent to [base::alist()]. Finally there is no
+#' function in base R that is equivalent to `enexprs()` but you can
+#' reproduce its behaviour with `eval(substitute(alist(...)))`.
 #'
 #'
 #' @section Capture expressions in quosures:
 #'
 #' `quo()` and `enquo()` are similar to their `expr` counterparts but
-#' box the captured expression in a wrapper called a quosure. This
-#' wrapper contains a reference to the original environment in which
-#' that expression was captured. Keeping track of the contexts of
-#' expressions is important because this is where functions and
-#' objects mentioned in the expression are defined.
+#' capture both the expression and its environment in an object called
+#' a quosure. This wrapper contains a reference to the original
+#' environment in which that expression was captured. Keeping track of
+#' the environments of expressions is important because this is where
+#' functions and objects mentioned in the expression are defined.
 #'
-#' Even though a quosure is an expression wrapper, it is itself an
-#' expression that can be evaluated. Quosures can be seen as vehicle
-#' for expressions that allow to travel far but that have an option to
-#' beam back instantly to their original context during evaluation.
-#' If your expression is a quosure or might contain a quosure,
-#' evaluate it with [eval_tidy()].
+#' Quosures are objects that can be evaluated with [eval_tidy()] just
+#' like symbols or function calls. Since they always evaluate in their
+#' original environment, quosures can be seen as a vehicle that allow
+#' expressions to travel from function to function but that beam back
+#' instantly to their original environment upon evaluation.
 #'
 #' See the [quosure] help topic about tools to work with quosures.
 #'
@@ -77,11 +79,16 @@
 #' @section Quasiquotation:
 #'
 #' All quotation functions in rlang have support for [unquoting
-#' operators][quasiquotation]. A captured expression is essentially a
-#' constant, just like a string is a constant. In all the following
-#' cases `apple` is a constant: `~apple`, `"apple"` and
-#' `expr(apple)`. Unquoting allows you to introduce a part of
-#' variability within an expression.
+#' operators][quasiquotation]. The combination of quotation and
+#' unquotation is called *quasiquotation*.
+#'
+#' Unquotation provides a way to refer to variables during quotation.
+#' Variables are problematic when quoting because a captured
+#' expression is essentially a constant, just like a string is a
+#' constant. For instance in all the following cases `apple` is a
+#' constant: `~apple`, `"apple"` and `expr(apple)`. Unquoting allows
+#' you to introduce a part of variability within a captured
+#' expression.
 #'
 #' * In the case of `enexpr()` and `enquo()`, unquoting provides an
 #'   escape hatch to the users of your function that allows them to
@@ -92,7 +99,8 @@
 #'   parts that are captured) and some parts are variable (the parts
 #'   that are unquoted).
 #'
-#' See the [quasiquotation] help topic for more about this.
+#' See the [quasiquotation] help topic for more about this as well as
+#' [the chapter in Advanced R](https://adv-r.hadley.nz/quasiquotation.html).
 #'
 #'
 #' @section Life cycle:
@@ -154,8 +162,8 @@
 #' expr_inputs(say(!!what), !!what)
 #'
 #'
-#' # Finally, you can capture expressions in quosures. These are
-#' # simple wrappers that record the environment of the expression:
+#' # Finally, you can capture expressions as quosures. A quosure is an
+#' # object that contains both the expression and its environment:
 #' quo <- quo(letters)
 #' quo
 #'
@@ -169,7 +177,7 @@
 #' # context to context (that is, from function to function) and they
 #' # still evaluate in their original environment:
 #' multiply_expr_by_10 <- function(expr) {
-#'   # We capture the user expression in its context:
+#'   # We capture the user expression and its environment:
 #'   expr <- enquo(expr)
 #'
 #'   # Then create an object that only exists in this function:

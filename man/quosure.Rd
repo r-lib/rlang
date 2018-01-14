@@ -13,7 +13,7 @@
 \alias{quo_set_expr}
 \alias{quo_set_env}
 \alias{is_quosures}
-\title{Predicate, constructors, getters and setters for quosures}
+\title{Quosure getters, setters and testers}
 \usage{
 is_quosure(x)
 
