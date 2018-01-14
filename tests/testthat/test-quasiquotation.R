@@ -407,19 +407,3 @@ test_that("namespaced unquoting is soft-deprecated", {
     expect_warning_(quo(list(rlang::UQ(1:2))), "`UQ()` with a namespace is soft-deprecated", fixed = TRUE)
   })
 })
-
-test_that("UQS() is soft-deprecated", {
-  with_non_verbose_retirement({
-    expect_identical_(exprs(UQS(1:2)), exprs(!!! 1:2))
-    expect_identical_(quos(UQS(1:2)), quos(!!! 1:2))
-    expect_identical_(quo(list(UQS(1:2))), quo(list(!!! 1:2)))
-    expect_identical_(expr(list(UQS(1:2))), expr(list(!!! 1:2)))
-  })
-
-  with_verbose_retirement({
-    expect_warning_(exprs(UQS(1:2)), "soft-deprecated")
-    expect_warning_(quos(UQS(1:2)), "soft-deprecated")
-    expect_warning_(expr(list(UQS(1:2))), "soft-deprecated")
-    expect_warning_(quo(list(UQS(1:2))), "soft-deprecated")
-  })
-})

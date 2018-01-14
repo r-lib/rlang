@@ -81,28 +81,17 @@ See below for a complete list of changes.
   when parsing code as text. The parentheses will also be added by R
   when printing code if needed (#296).
 
-* `UQ()` and `UQS()` are soft-deprecated in order to make the syntax
-  of quasiquotation more consistent. The prefix forms are now
-  `` `!!`() `` and `` `!!!`() `` which is consistent with other R
-  operators (e.g. `` `+`(a, b) `` is the prefix form of `a + b`).
+* Quasiquotation now supports `!!` and `!!!` as functional forms:
 
-  Note that the prefix forms are not as relevant as before because
-  `!!` now has the right operator precedence, i.e. the same as unary
-  `-` or `+`. It is thus safe to mingle it with other operators,
-  e.g. `!!a + !!b` does the right thing. In addition the parser now
-  strips one level of parentheses around unquoted expressions. This
-  way `(!!"foo")(...)` expands to `foo(...)`.  These changes make the
-  prefix forms (and thus the named functional forms `UQ()` and
-  `UQS()`) less useful.
+  ```
+  expr(`!!`(var))
+  quo(call(`!!!`(var)))
+  ```
 
-  Finally, the named functional forms `UQ()` and `UQS()` were
-  misleading because they suggested that existing knowledge about
-  functions is applicable to quasiquotation. This was reinforced by
-  the visible definitions of these functions exported by rlang and by
-  the tidy eval parser interpreting `rlang::UQ()` as `!!`. In reality
-  unquoting is *not* a function call, it is a syntactic operation. The
-  operator forms `!!` and `!!!` make it clearer that unquoting is
-  special.
+  This is consistent with the way native R operators parses to
+  function calls. These new functional forms are to be preferred to
+  `UQ()` and `UQS()`. We are now questioning the latter and might
+  deprecate them in a future release.
 
 * The quasiquotation parser now gives meaningful errors in corner
   cases to help you figure out what is wrong.
@@ -313,6 +302,14 @@ lifecycle status of exported functions.
   unquotation and is misleading as to the nature of unquoting (which
   are syntactic operators at quotation-time rather than function calls
   at evaluation-time).
+
+* We are now questioning `UQ()` and `UQS()` as functional forms of
+  `!!`.  If `!!` and `!!!` were native R operators, they would parse
+  to the functional calls `` `!!`() `` and `` `!!!`() ``. This is now
+  the preferred way to unquote with a function call rather than with
+  the operators. We haven't decided yet whether we will deprecate
+  `UQ()` and `UQS()` in the future. In any case we recommend using the
+  new functional forms.
 
 * `parse_quosure()` and `parse_quosures()` are soft-deprecated in
   favour of `parse_quo()` and `parse_quos()`. These new names are

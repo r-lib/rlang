@@ -60,6 +60,8 @@
 #'
 #' @section Questioning functions:
 #'
+#' * [UQ()], [UQS()]
+#'
 #' * [invoke()]
 #'
 #' * [is_frame()], [global_frame()], [current_frame()],
@@ -73,9 +75,6 @@
 #' @section Soft-deprecated functions and arguments:
 #'
 #' **Retired in rlang 0.2.0:**
-#'
-#' * [UQ()]
-#' * [UQS()]
 #'
 #' * [eval_tidy_()]
 #' * [overscope_eval_next()] => [eval_tidy()]

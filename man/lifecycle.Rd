@@ -58,6 +58,7 @@ sections that explain the reasons for their retirements.
 \section{Questioning functions}{
 
 \itemize{
+\item \code{\link[=UQ]{UQ()}}, \code{\link[=UQS]{UQS()}}
 \item \code{\link[=invoke]{invoke()}}
 \item \code{\link[=is_frame]{is_frame()}}, \code{\link[=global_frame]{global_frame()}}, \code{\link[=current_frame]{current_frame()}},
 \code{\link[=ctxt_frame]{ctxt_frame()}}, \code{\link[=call_frame]{call_frame()}}, \code{\link[=frame_position]{frame_position()}}
@@ -71,8 +72,6 @@ sections that explain the reasons for their retirements.
 
 \strong{Retired in rlang 0.2.0:}
 \itemize{
-\item \code{\link[=UQ]{UQ()}}
-\item \code{\link[=UQS]{UQS()}}
 \item \code{\link[=eval_tidy_]{eval_tidy_()}}
 \item \code{\link[=overscope_eval_next]{overscope_eval_next()}} => \code{\link[=eval_tidy]{eval_tidy()}}
 \item \code{\link[=lang_head]{lang_head()}}, \code{\link[=lang_tail]{lang_tail()}}
