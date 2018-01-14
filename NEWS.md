@@ -255,16 +255,6 @@ lifecycle status of exported functions.
 
 ### Breaking changes
 
-* `new_cnd()` is now `cnd()` for consistency with other constructors.
-  Also, `cnd_error()`, `cnd_warning()` and `cnd_message()` are now
-  `error_cnd()`, `warning_cnd()` and `message_cnd()` to follow our
-  naming scheme according to which the type of output is a suffix
-  rather than a prefix.
-
-* `is_node()` now returns `TRUE` for calls as well and `is_pairlist()`
-  does not return `TRUE` for `NULL` objects. Use `is_node_list()` to
-  determine whether an object either of type `pairlist` or `NULL`.
-
 * `!!` now binds tightly in order to match intuitive parsing of tidy
   eval code, e.g. `!! x > y` is now equivalent to `(!! x) > y`.  A
   corollary of this new syntax is that you now have to be explicit
@@ -272,12 +262,10 @@ lifecycle status of exported functions.
   For instance you have to explicitly write `!! (x > y)` to unquote
   `x > y` rather than just `x`.
 
-* `expr_interp()` now returns a formula instead of a quosure when
-  supplied a formula.
-
-* `:=` now issues an error when called directly. It previously was an
-  alias for `~` to allow calling it directly. This caused surprising
-  results when it was invoked in wrong places.
+* `UQ()`, `UQS()` and `:=` now issue an error when called
+  directly. The previous definitions caused surprising results when
+  the operators were invoked in wrong places (i.e. not in quasiquoted
+  arguments).
 
 * The prefix form `` `!!`() `` is now an alias to `!!` rather than
   `UQE()`. This makes it more in line with regular R syntax where
@@ -288,9 +276,23 @@ lifecycle status of exported functions.
 * `UQE()` is now deprecated in order to simplify the syntax of
   quasiquotation. Please use `!! get_expr(x)` instead.
 
+* `expr_interp()` now returns a formula instead of a quosure when
+  supplied a formula.
+
 * `is_quosureish()` and `as_quosureish()` are deprecated. These
   functions assumed that quosures are formulas but that is only an
   implementation detail.
+
+* `new_cnd()` is now `cnd()` for consistency with other constructors.
+  Also, `cnd_error()`, `cnd_warning()` and `cnd_message()` are now
+  `error_cnd()`, `warning_cnd()` and `message_cnd()` to follow our
+  naming scheme according to which the type of output is a suffix
+  rather than a prefix.
+
+* `is_node()` now returns `TRUE` for calls as well and `is_pairlist()`
+  does not return `TRUE` for `NULL` objects. Use `is_node_list()` to
+  determine whether an object either of type `pairlist` or `NULL`.
+  Note that all these functions are still experimental.
 
 
 ### Upcoming breaking changes
