@@ -63,6 +63,15 @@
 #'
 #' @section Life cycle:
 #'
+#' * Calling `UQ()` and `UQS()` with the rlang namespace qualifier is
+#'   soft-deprecated as of rlang 0.2.0. Just use the unqualified forms
+#'   instead.
+#'
+#'   Supporting namespace qualifiers complicates the implementation of
+#'   unquotation and is misleading as to the nature of unquoting
+#'   operators (these are syntactic operators that operates at
+#'   quotation-time rather than function calls at evaluation-time).
+#'
 #' * `UQ()` and `UQS()` were soft-deprecated in rlang 0.2.0 in order
 #'   to make the syntax of quasiquotation more consistent. The prefix
 #'   forms are now \code{`!!`()} and \code{`!!!`()} which is

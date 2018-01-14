@@ -18,3 +18,16 @@ expect_warning_ <- function(object, ...) {
 expect_identical_ <- function(object, expected, ...) {
   expect_identical(object, expected, ...)
 }
+
+expect_no_warning <- function(object, ...) {
+  expect_warning(!!enquo(object), NA, ...)
+}
+expect_no_warning_ <- function(object, ...) {
+  expect_warning(object, NA, ...)
+}
+expect_no_error <- function(object, ...) {
+  expect_error(!!enquo(object), NA, ...)
+}
+expect_no_error_ <- function(object, ...) {
+  expect_error(object, NA, ...)
+}

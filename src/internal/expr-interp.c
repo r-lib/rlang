@@ -66,6 +66,18 @@ void signal_uqs_soft_deprecation() {
     "Please use the prefix form of `!!!` instead."
   );
 }
+void signal_namespaced_uq_deprecation() {
+  signal_soft_deprecation(
+    "Prefixing `UQ()` with a namespace is soft-deprecated as of rlang 0.2.0. "
+    "Please use the unprefixed form instead."
+  );
+}
+void signal_namespaced_uqs_deprecation() {
+  signal_soft_deprecation(
+    "Prefixing `UQS()` with a namespace is soft-deprecated as of rlang 0.2.0. "
+    "Please use the unprefixed form instead."
+  );
+}
 
 void maybe_poke_big_bang_op(sexp* x, struct expansion_info* info) {
   if (r_is_call(x, "!!!")) {
@@ -83,7 +95,11 @@ void maybe_poke_big_bang_op(sexp* x, struct expansion_info* info) {
     r_abort("Prefix form of `!!!` can't be used with `%s`", name);
   }
 
-  if (is_maybe_rlang_call(x, "UQS")) {
+  bool namespaced_uqs = r_is_namespaced_call(x, "rlang", "UQS");
+  if (namespaced_uqs) {
+    signal_namespaced_uqs_deprecation();
+  }
+  if (namespaced_uqs || r_is_call(x, "UQS")) {
     signal_uqs_soft_deprecation();
     info->op = OP_EXPAND_UQS;
     info->operand = r_node_cadr(x);
@@ -141,7 +157,9 @@ struct expansion_info which_expansion_op(sexp* x, bool unquote_names) {
     info.op = OP_EXPAND_UQ;
     info.operand = r_node_cadr(x);
 
-    if (!r_is_namespaced_call(x, "rlang", NULL)) {
+    if (r_is_namespaced_call(x, "rlang", NULL)) {
+      signal_namespaced_uq_deprecation();
+    } else {
       info.parent = r_node_cdr(r_node_cdar(x));
       info.root = r_node_car(x);
     }

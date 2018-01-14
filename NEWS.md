@@ -306,6 +306,14 @@ lifecycle status of exported functions.
 
 ### Upcoming breaking changes
 
+* Calling the functional forms of unquote operators with the rlang
+  namespace qualifier is soft-deprecated. `UQ()` and `UQS()` are not
+  function calls so it does not make sense to namespace them.
+  Supporting namespace qualifiers complicates the implementation of
+  unquotation and is misleading as to the nature of unquoting (which
+  are syntactic operators at quotation-time rather than function calls
+  at evaluation-time).
+
 * `parse_quosure()` and `parse_quosures()` are soft-deprecated in
   favour of `parse_quo()` and `parse_quos()`. These new names are
   consistent with the rule that abbreviated suffixes indicate the

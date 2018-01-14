@@ -396,6 +396,18 @@ test_that("`:=` chaining is detected at dots capture", {
 
 # Lifecycle ----------------------------------------------------------
 
+test_that("namespaced unquoting is soft-deprecated", {
+  with_non_verbose_retirement({
+    expect_no_warning_(exprs(rlang::UQS(1:2)))
+    expect_no_warning_(quo(list(rlang::UQ(1:2))))
+  })
+
+  with_verbose_retirement({
+    expect_warning_(exprs(rlang::UQS(1:2)), "`UQS()` with a namespace is soft-deprecated", fixed = TRUE)
+    expect_warning_(quo(list(rlang::UQ(1:2))), "`UQ()` with a namespace is soft-deprecated", fixed = TRUE)
+  })
+})
+
 test_that("UQS() is soft-deprecated", {
   with_non_verbose_retirement({
     expect_identical_(exprs(UQS(1:2)), exprs(!!! 1:2))
