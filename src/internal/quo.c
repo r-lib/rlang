@@ -49,8 +49,8 @@ sexp* rlang_get_expression(sexp* x, sexp* alternate) {
       return r_f_rhs(x);
     }
     break;
-  case CLOSXP:
-    return r_fn_body(x);
+  // case CLOSXP:
+  //   return r_fn_body(x);
   case VECSXP:
     if (r_inherits(x, "frame")) {
       return r_list_get(x, 2);

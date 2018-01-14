@@ -54,6 +54,7 @@ test_that("name symbols, calls, and scalars", {
 # --------------------------------------------------------------------
 
 test_that("get_expr() supports closures", {
+  skip("Disabled because causes dplyr to fail")
   expect_identical(get_expr(identity), quote(x))
 })
 
