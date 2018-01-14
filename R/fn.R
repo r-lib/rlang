@@ -345,7 +345,7 @@ fn_env <- function(fn) {
 #'
 #' * `as_function()` transform objects to functions. It fetches
 #'   functions by name if supplied a string or transforms
-#'   [quosures][quosure] to a proper function.
+#'   [quosures][quotation] to a proper function.
 #'
 #' * `as_closure()` first passes its argument to `as_function()`. If
 #'   the result is a primitive function, it regularises it to a proper

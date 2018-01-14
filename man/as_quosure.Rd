@@ -2,25 +2,31 @@
 % Please edit documentation in R/quo.R
 \name{as_quosure}
 \alias{as_quosure}
+\alias{new_quosure}
 \title{Coerce object to quosure}
 \usage{
 as_quosure(x, env = caller_env())
+
+new_quosure(expr, env = caller_env())
 }
 \arguments{
 \item{x}{An object to convert. Either an \link[=is_expression]{expression} or a
 formula.}
 
-\item{env}{An environment specifying the lexical enclosure of the
-quosure.}
+\item{env}{The original context of the context expression.}
+
+\item{expr}{The expression wrapped by the quosure.}
 }
 \description{
-While \code{\link[=new_quosure]{new_quosure()}} wraps any R object (including expressions,
+While \code{new_quosure()} wraps any R object (including expressions,
 formulas, or other quosures) into a quosure, \code{as_quosure()}
 converts formulas and quosures and does not double-wrap.
 }
 \section{Life cycle}{
 
 \itemize{
+\item Like the rest of the rlang package, \code{new_quosure()} and
+\code{as_quosure()} are maturing.
 \item \code{as_quosureish()} is deprecated as of rlang 0.2.0. This function
 assumes that quosures are formulas which is currently true but
 might not be in the future.

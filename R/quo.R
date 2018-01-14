@@ -1,245 +1,168 @@
-#' Create quosures
+#' Quosure getters, setters and testers
 #'
 #' @description
 #'
-#' Quosures are quoted [expressions][is_expression] that keep track of an
-#' [environment][env] (just like
-#' [closures](http://adv-r.had.co.nz/Functional-programming.html#closures)).
-#' They are an essential piece of the tidy evaluation framework.
+#' You can access the quosure components (its expression and its
+#' environment) with:
 #'
-#' - `quo()` quotes its input (i.e. captures R code without
-#'   evaluation), captures the current environment, and bundles them
-#'   in a quosure.
+#' * [get_expr()] and [get_env()]. These getters also support other
+#'   kinds of objects such as formulas
 #'
-#' - `enquo()` takes a symbol referring to a function argument, quotes
-#'   the R code that was supplied to this argument, captures the
-#'   environment where the function was called (and thus where the R
-#'   code was typed), and bundles them in a quosure.
+#' * `quo_get_expr()` and `quo_get_env()`. These getters only work
+#'   with quosures and throw an error with other types of input.
 #'
-#' - [quos()] is a bit different to other functions as it returns a
-#'   list of quosures. You can supply several expressions directly,
-#'   e.g. `quos(foo, bar)`, but more importantly you can also supply
-#'   dots: `quos(...)`. In the latter case, expressions forwarded
-#'   through dots are captured and transformed to quosures. The
-#'   environments bundled in those quosures are the ones where the
-#'   code was supplied as arguments, even if the dots were forwarded
-#'   multiple times across several function calls.
-#'
-#' - `new_quosure()` is the only constructor that takes its arguments
-#'   by value. It lets you create a quosure from an expression and an
-#'   environment.
+#' Test if an object is a quosure with `is_quosure()`. If you know an
+#' object is a quosure, use the `quo_` prefixed predicates to check
+#' its contents, `quo_is_missing()`, `quo_is_symbol()`, etc.
 #'
 #'
-#' @section Role of quosures for tidy evaluation:
+#' @section Empty quosures:
 #'
-#' Quosures play an essential role thanks to these features:
-#'
-#' - They allow consistent scoping of quoted expressions by recording
-#'   an expression along with its local environment.
-#'
-#' - `quo()`, `quos()` and `enquo()` all support [quasiquotation]. By
-#'   unquoting other quosures, you can safely combine expressions even
-#'   when they come from different contexts. You can also unquote
-#'   values and raw expressions depending on your needs.
-#'
-#' - Unlike formulas, quosures self-evaluate (see [eval_tidy()])
-#'   within their own environment, which is why you can unquote a
-#'   quosure inside another quosure and evaluate it like you've
-#'   unquoted a raw expression.
-#'
-#' See the
-#' [programming with dplyr](http://dplyr.tidyverse.org/articles/programming.html)
-#' vignette for practical examples. For developers, the
-#' [tidy evaluation](http://rlang.tidyverse.org/articles/tidy-evaluation.html)
-#' vignette provides an overview of this approach. The
-#' [quasiquotation] page goes in detail over the unquoting and
-#' splicing operators.
-#'
-#'
-#' @section Life cycle:
-#'
-#' `quo()`, `enquo()`, `quos()` and `new_quosure()` are stable.
-#'
-#' @param expr An expression.
-#' @param arg A symbol referring to an argument. The expression
-#'   supplied to that argument will be captured unevaluated.
-#' @return A formula whose right-hand side contains the quoted
-#'   expression supplied as argument.
-#' @seealso [expr()] for quoting a raw expression with quasiquotation.
-#'   The [quasiquotation] page goes over unquoting and splicing.
-#' @export
-#' @examples
-#' # quo() is a quotation function just like expr() and quote():
-#' expr(mean(1:10 * 2))
-#' quo(mean(1:10 * 2))
-#'
-#' # It supports quasiquotation and allows unquoting (evaluating
-#' # immediately) part of the quoted expression:
-#' quo(mean(!! 1:10 * 2))
-#'
-#' # What makes quo() often safer to use than quote() and expr() is
-#' # that it keeps track of the contextual environment. This is
-#' # especially important if you're referring to local variables in
-#' # the expression:
-#' var <- "foo"
-#' quo <- quo(var)
-#' quo
-#'
-#' # Here `quo` quotes `var`. Let's check that it also captures the
-#' # environment where that symbol is defined:
-#' identical(get_env(quo), get_env())
-#' env_has(quo, "var")
-#'
-#'
-#' # Keeping track of the environment is important when you quote an
-#' # expression in a context (that is, a particular function frame)
-#' # and pass it around to other functions (which will be run in their
-#' # own evaluation frame):
-#' fn <- function() {
-#'   foobar <- 10
-#'   quo(foobar * 2)
-#' }
-#' quo <- fn()
-#' quo
-#'
-#' # `foobar` is not defined here but was defined in `fn()`'s
-#' # evaluation frame. However, the quosure keeps track of that frame
-#' # and is safe to evaluate:
-#' eval_tidy(quo)
-#'
-#'
-#' # With eval_tidy() quosures self-evaluate under evaluation:
-#' var
-#' eval_tidy(quo(var))
-#'
-#' # Note that it's perfectly fine to unquote quosures within
-#' # quosures, as long as you evaluate with eval_tidy():
-#' quo <- quo(letters)
-#' quo <- quo(toupper(!! quo))
-#' quo
-#' eval_tidy(quo)
-#'
-#'
-#' # The `!!` operator can be used in prefix form as well. This is
-#' # useful for using it with `$` for instance:
-#' var <- sym("cyl")
-#' quo(mtcars$`!!`(var))
-#'
-#' # Or equivalently:
-#' quo(`$`(mtcars, !!var))
-#'
-#' # Quoting as a quosure is necessary to preserve scope information
-#' # and make sure objects are looked up in the right place. However,
-#' # there are situations where it can get in the way. This is the
-#' # case when you deal with base NSE functions that do not understand
-#' # quosures. You can extract the expression from a quosure with
-#' # `get_expr()`.
-#' get_expr(quo(foo))
-#'
-#' # To use `get_expr()` safely it is important that the expression
-#' # within the quosure does not depend on any objects local to its
-#' # place of creation. For instance if the quosure contains a symbol
-#' # that refers to a data frame column it is safe to use the raw
-#' # symbol. Let's try to use `get_expr()` with `$`:
-#' var <- quo(cyl)
-#' quo(mtcars$`!!`(get_expr(var)))
-#'
-#'
-#' # When a quosure is printed in the console, the brackets indicate
-#' # if the enclosure is the global environment or a local one:
-#' locally(quo(foo))
-#'
-#' # Literals are enquosed with the empty environment because they can
-#' # be evaluated anywhere. The brackets indicate "empty":
-#' quo(10L)
-#'
-#' # To differentiate local environments, use str(). It prints the
-#' # machine address of the environment:
-#' quo1 <- locally(quo(foo))
-#' quo2 <- locally(quo(foo))
-#' quo1; quo2
-#' str(quo1); str(quo2)
-#'
-#' # You can also see this address by printing the environment at the
-#' # console:
-#' get_env(quo1)
-#' get_env(quo2)
-#'
-#'
-#' # new_quosure() takes by value an expression that is already quoted:
-#' expr <- quote(mtcars)
-#' env <- as_environment("datasets")
-#' quo <- new_quosure(expr, env)
-#' quo
-#' eval_tidy(quo)
-#' @name quosure
-quo <- function(expr) {
-  enquo(expr)
-}
-#' @rdname quosure
-#' @inheritParams as_quosure
-#' @export
-new_quosure <- function(expr, env = caller_env()) {
-  .Call(rlang_new_quosure, expr, env)
-}
-#' @rdname quosure
-#' @export
-enquo <- function(arg) {
-  .Call(rlang_enquo, substitute(arg), parent.frame())
-}
-
-#' @export
-print.quosure <- function(x, ...) {
-  meow(.trailing = FALSE,
-    "<quosure>",
-    "  expr: "
-  )
-  quo_print(x)
-  meow(.trailing = FALSE,
-    "  env:  "
-  )
-
-  env <- get_env(x)
-  quo_env_print(env)
-
-  invisible(x)
-}
-#' @export
-str.quosure <- function(object, ...) {
-  str(unclass(object), ...)
-}
-
-#' Is an object a quosure or quosure-like?
-#'
-#' This predicate tests that an object is a [quosure].
+#' When missing arguments are captured as quosures, either through
+#' [enquo()] or [quos()], they are returned as an empty quosure. These
+#' quosures contain the [missing argument][missing_arg] and typically
+#' have the [empty environment][empty_env] as enclosure.
 #'
 #'
 #' @section Life cycle:
 #'
 #' - `is_quosure()` is stable.
 #'
+#' - `quo_get_expr()` and `quo_get_env()` are stable.
+#'
 #' - `is_quosureish()` is deprecated as of rlang 0.2.0. This function
 #'   assumed that quosures are formulas which is currently true but
 #'   might not be in the future.
 #'
+#'
+#' @name quosure
+#' @seealso [quo()] for creating quosures by quotation; [as_quosure()]
+#'   and [new_quosure()] for constructing quosures manually.
+#' @examples
+#' quo <- quo(my_quosure)
+#' quo
+#'
+#'
+#' # Access and set the components of a quosure:
+#' quo_get_expr(quo)
+#' quo_get_env(quo)
+#'
+#' quo <- quo_set_expr(quo, quote(baz))
+#' quo <- quo_set_env(quo, empty_env())
+#' quo
+#'
+#' # Test wether an object is a quosure:
+#' is_quosure(quo)
+#'
+#' # If it is a quosure, you can use the specialised type predicates
+#' # to check what is inside it:
+#' quo_is_symbol(quo)
+#' quo_is_lang(quo)
+#' quo_is_null(quo)
+#'
+#' # quo_is_missing() checks for a special kind of quosure, the one
+#' # that contains the missing argument:
+#' quo()
+#' quo_is_missing(quo())
+#'
+#' fn <- function(arg) enquo(arg)
+#' fn()
+#' quo_is_missing(fn())
+NULL
+
+#' @rdname quosure
 #' @param x An object to test.
 #' @export
-#' @examples
-#' is_quosure(quo(foo))
 is_quosure <- function(x) {
   inherits(x, "quosure")
 }
+
+#' @rdname quosure
+#' @param quo A quosure to test.
+#' @export
+quo_is_missing <- function(quo) {
+  .Call(rlang_quo_is_missing, quo)
+}
+#' @rdname quosure
+#' @export
+quo_is_symbol <- function(quo) {
+  .Call(rlang_quo_is_symbol, quo)
+}
+#' @rdname quosure
+#' @export
+quo_is_lang <- function(quo) {
+  .Call(rlang_quo_is_call, quo)
+}
+#' @rdname quosure
+#' @export
+quo_is_symbolic <- function(quo) {
+  .Call(rlang_quo_is_symbolic, quo)
+}
+#' @rdname quosure
+#' @export
+quo_is_null <- function(quo) {
+  .Call(rlang_quo_is_null, quo)
+}
+
+
+#' @rdname quosure
+#' @export
+quo_get_expr <- function(quo) {
+  .Call(rlang_quo_get_expr, quo)
+}
+#' @rdname quosure
+#' @export
+quo_get_env <- function(quo) {
+  .Call(rlang_quo_get_env, quo)
+}
+
+#' @rdname quosure
+#' @param expr A new expression for the quosure.
+#' @export
+quo_set_expr <- function(quo, expr) {
+  .Call(rlang_quo_set_expr, quo, expr)
+}
+#' @rdname quosure
+#' @param env A new environment for the quosure.
+#' @export
+quo_set_env <- function(quo, env) {
+  .Call(rlang_quo_set_env, quo, env)
+}
+
+
+#' @rdname quosure
+#' @export
+is_quosures <- function(x) {
+  inherits(x, "quosures")
+}
+
+#' @export
+`[.quosures` <- function(x, i) {
+  set_attrs(NextMethod(), class = "quosures")
+}
+#' @export
+c.quosures <- function(..., recursive = FALSE) {
+  structure(NextMethod(), class = "quosures")
+}
+#' @export
+print.quosures <- function(x, ...) {
+  print(unclass(x), ...)
+}
+
 
 #' Coerce object to quosure
 #'
 #' @description
 #'
-#' While [new_quosure()] wraps any R object (including expressions,
+#' While `new_quosure()` wraps any R object (including expressions,
 #' formulas, or other quosures) into a quosure, `as_quosure()`
 #' converts formulas and quosures and does not double-wrap.
 #'
 #'
 #' @section Life cycle:
+#'
+#' - Like the rest of the rlang package, `new_quosure()` and
+#'   `as_quosure()` are maturing.
 #'
 #' - `as_quosureish()` is deprecated as of rlang 0.2.0. This function
 #'   assumes that quosures are formulas which is currently true but
@@ -247,8 +170,7 @@ is_quosure <- function(x) {
 #'
 #' @param x An object to convert. Either an [expression][is_expression] or a
 #'   formula.
-#' @param env An environment specifying the lexical enclosure of the
-#'   quosure.
+#' @param env The original context of the context expression.
 #' @seealso [quo()], [is_quosure()]
 #' @export
 #' @examples
@@ -280,100 +202,11 @@ as_quosure <- function(x, env = caller_env()) {
     new_quosure(x, empty_env())
   }
 }
-
-
-#' Get or set the components of a quosure
-#'
-#' These functions are equivalent to [get_expr()], [get_env()],
-#' [set_expr()], and [set_env()]. However they only work on quosures
-#' and are a bit more efficient.
-#'
-#'
-#' @section Life cycle:
-#'
-#' All these functions are stable.
-#'
-#'
-#' @param quo A quosure.
-#'
+#' @rdname as_quosure
+#' @param expr The expression wrapped by the quosure.
 #' @export
-#' @examples
-#' quo <- quo(foo(bar))
-#' quo
-#'
-#' quo_set_expr(quo, quote(baz))
-#' quo_set_env(quo, empty_env())
-quo_get_expr <- function(quo) {
-  .Call(rlang_quo_get_expr, quo)
-}
-#' @rdname quo_get_expr
-#' @export
-quo_get_env <- function(quo) {
-  .Call(rlang_quo_get_env, quo)
-}
-
-#' @rdname quo_get_expr
-#' @param expr A new expression for the quosure.
-#' @export
-quo_set_expr <- function(quo, expr) {
-  .Call(rlang_quo_set_expr, quo, expr)
-}
-#' @rdname quo_get_expr
-#' @param env A new environment for the quosure.
-#' @export
-quo_set_env <- function(quo, env) {
-  .Call(rlang_quo_set_env, quo, env)
-}
-
-
-#' Is a quosure quoting a symbolic, missing or NULL object?
-#'
-#' These functions examine the expression of a quosure with a
-#' predicate.
-#'
-#' @section Empty quosures:
-#'
-#' When missing arguments are captured as quosures, either through
-#' [enquo()] or [quos()], they are returned as an empty quosure. These
-#' quosures contain the [missing argument][missing_arg] and typically
-#' have the [empty environment][empty_env] as enclosure.
-#'
-#' @param quo A quosure.
-#' @examples
-#' quo_is_symbol(quo(sym))
-#' quo_is_symbol(quo(foo(bar)))
-#'
-#' # You can create empty quosures by calling quo() without input:
-#' quo <- quo()
-#' quo_is_missing(quo)
-#' is_missing(f_rhs(quo))
-#' @name quo-predicates
-NULL
-
-#' @rdname quo-predicates
-#' @export
-quo_is_missing <- function(quo) {
-  .Call(rlang_quo_is_missing, quo)
-}
-#' @rdname quo-predicates
-#' @export
-quo_is_symbol <- function(quo) {
-  .Call(rlang_quo_is_symbol, quo)
-}
-#' @rdname quo-predicates
-#' @export
-quo_is_lang <- function(quo) {
-  .Call(rlang_quo_is_call, quo)
-}
-#' @rdname quo-predicates
-#' @export
-quo_is_symbolic <- function(quo) {
-  .Call(rlang_quo_is_symbolic, quo)
-}
-#' @rdname quo-predicates
-#' @export
-quo_is_null <- function(quo) {
-  .Call(rlang_quo_is_null, quo)
+new_quosure <- function(expr, env = caller_env()) {
+  .Call(rlang_new_quosure, expr, env)
 }
 
 
@@ -511,6 +344,28 @@ quo_squash_impl <- function(x, parent = NULL, warn = FALSE) {
   )
 
   x
+}
+
+
+#' @export
+print.quosure <- function(x, ...) {
+  meow(.trailing = FALSE,
+    "<quosure>",
+    "  expr: "
+  )
+  quo_print(x)
+  meow(.trailing = FALSE,
+    "  env:  "
+  )
+
+  env <- get_env(x)
+  quo_env_print(env)
+
+  invisible(x)
+}
+#' @export
+str.quosure <- function(object, ...) {
+  str(unclass(object), ...)
 }
 
 # Create a circular list of colours. This infloops if printed in the REPL!

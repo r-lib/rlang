@@ -32,7 +32,6 @@ new_formula <- function(lhs, rhs, env = caller_env()) {
 #' @param lhs A boolean indicating whether the [formula][is_formula]
 #'   or [definition][is_definition] has a left-hand side. If `NULL`,
 #'   the LHS is not inspected.
-#' @seealso [is_quosure()] and [is_quosureish()]
 #' @export
 #' @examples
 #' x <- disp ~ am

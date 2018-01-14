@@ -8,8 +8,8 @@ env_bury(.env, ...)
 }
 \arguments{
 \item{.env}{An environment or an object bundling an environment,
-e.g. a formula, \link{quosure} or \link[=is_closure]{closure}. This argument
-is passed to \code{\link[=get_env]{get_env()}}.}
+e.g. a formula, \link[=quotation]{quosure} or \link[=is_closure]{closure}.
+This argument is passed to \code{\link[=get_env]{get_env()}}.}
 
 \item{...}{Pairs of names and expressions, values or
 functions. These dots support splicing (with varying semantics,

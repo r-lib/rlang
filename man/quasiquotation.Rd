@@ -127,7 +127,7 @@ kind of mistakes now trigger an error.
 }
 
 \examples{
-# Quasiquotation functions act like base::quote()
+# Quasiquotation functions quote expressions like base::quote()
 quote(foo(bar))
 expr(foo(bar))
 quo(foo(bar))
@@ -136,10 +136,9 @@ quo(foo(bar))
 expr(foo(!!(1 + 2)))
 quo(foo(!!(1 + 2)))
 
-
 # Use `!!!` to add multiple arguments to a function. Its argument
 # should evaluate to a list or vector:
-args <- list(1:10, na.rm = TRUE)
+args <- list(1:3, na.rm = TRUE)
 quo(mean(!!!args))
 
 # You can combine the two
@@ -148,18 +147,29 @@ extra_args <- list(trim = 0.9, na.rm = TRUE)
 quo(mean(!!var , !!!extra_args))
 
 
-# Unquoting is especially useful for transforming successively a
-# captured expression:
-quo <- quo(foo(bar))
-quo <- quo(inner(!!quo, arg1))
-quo <- quo(outer(!!quo, !!!syms(letters[1:3])))
-quo
+# The plural versions have support for the `:=` operator.
+# Like `=`, `:=` creates named arguments:
+quos(mouse1 := bernard, mouse2 = bianca)
 
-# Since we are building the expression in the same environment, you
-# can also start with raw expressions and create a quosure in the
-# very last step to record the dynamic environment:
-expr <- expr(foo(bar))
-expr <- expr(inner(!!expr, arg1))
-quo <- quo(outer(!!expr, !!!syms(letters[1:3])))
-quo
+# The `:=` is mainly useful to unquote names. Unlike `=` it
+# supports `!!` on its LHS:
+var <- "unquote me!"
+quos(!!var := bernard, mouse2 = bianca)
+
+
+# All these features apply to dots captured by enquos():
+fn <- function(...) enquos(...)
+fn(!!! args, !!var := penny)
+
+
+# Unquoting is especially useful for building an expression by
+# expanding around a variable part (the unquoted part):
+quo1 <- quo(toupper(foo))
+quo1
+
+quo2 <- quo(paste(!!quo1, bar))
+quo2
+
+quo3 <- quo(list(!!quo2, !!!syms(letters[1:5])))
+quo3
 }

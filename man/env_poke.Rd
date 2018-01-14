@@ -8,7 +8,7 @@ env_poke(env = caller_env(), nm, value, inherit = FALSE, create = NULL)
 }
 \arguments{
 \item{env}{An environment or an object bundling an environment,
-e.g. a formula, \link{quosure} or \link[=is_closure]{closure}.}
+e.g. a formula, \link[=quotation]{quosure} or \link[=is_closure]{closure}.}
 
 \item{nm}{Names of bindings. \code{nm} must be a single string.}
 

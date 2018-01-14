@@ -3,7 +3,7 @@
 \name{is_quosureish}
 \alias{is_quosureish}
 \alias{as_quosureish}
-\title{Test for or coerce to quosureish objects}
+\title{Test for or coerce to quosure-like objects}
 \usage{
 is_quosureish(x, scoped = NULL)
 
@@ -16,12 +16,11 @@ as_quosureish(x, env = caller_env())
 that is, has a valid environment attribute. If \code{NULL}, the scope
 is not inspected.}
 
-\item{env}{An environment specifying the lexical enclosure of the
-quosure.}
+\item{env}{The original context of the context expression.}
 }
 \description{
-These functions were deprecated in rlang 0.2.0 because they assumed
-that quosures are formulas which is currently true but might not be
-in the future.
+These functions are deprecated as of rlang 0.2.0 because they make
+the assumption that quosures are a subtype of formula, which we are
+now considering to be an implementation detail.
 }
 \keyword{internal}

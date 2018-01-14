@@ -347,7 +347,7 @@ is_empty_env <- function(env) {
 #' package.
 #'
 #' @param env An environment or an object bundling an environment,
-#'   e.g. a formula, [quosure] or [closure][is_closure].
+#'   e.g. a formula, [quosure][quotation] or [closure][is_closure].
 #' @param default The default environment in case `env` does not wrap
 #'   an environment. If `NULL` and no environment could be extracted,
 #'   an error is issued.
@@ -505,8 +505,8 @@ env_poke_parent <- function(env, new_env) {
 #' functions follow the convention of returning their input invisibly.
 #'
 #' @param .env An environment or an object bundling an environment,
-#'   e.g. a formula, [quosure] or [closure][is_closure]. This argument
-#'   is passed to [get_env()].
+#'   e.g. a formula, [quosure][quotation] or [closure][is_closure].
+#'   This argument is passed to [get_env()].
 #' @param ... Pairs of names and expressions, values or
 #'   functions. These dots support splicing (with varying semantics,
 #'   see above) and name unquoting.

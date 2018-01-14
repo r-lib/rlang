@@ -14,7 +14,7 @@ env_poke_parent(env, new_env)
 }
 \arguments{
 \item{env}{An environment or an object bundling an environment,
-e.g. a formula, \link{quosure} or \link[=is_closure]{closure}.}
+e.g. a formula, \link[=quotation]{quosure} or \link[=is_closure]{closure}.}
 
 \item{default}{The default environment in case \code{env} does not wrap
 an environment. If \code{NULL} and no environment could be extracted,

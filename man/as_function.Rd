@@ -25,7 +25,7 @@ is a string.}
 \itemize{
 \item \code{as_function()} transform objects to functions. It fetches
 functions by name if supplied a string or transforms
-\link[=quosure]{quosures} to a proper function.
+\link[=quotation]{quosures} to a proper function.
 \item \code{as_closure()} first passes its argument to \code{as_function()}. If
 the result is a primitive function, it regularises it to a proper
 \link{closure} (see \code{\link[=is_function]{is_function()}} about primitive functions).

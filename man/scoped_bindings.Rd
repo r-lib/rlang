@@ -14,8 +14,8 @@ with_bindings(.expr, ..., .env = caller_env())
 (with value semantics) and name unquoting.}
 
 \item{.env}{An environment or an object bundling an environment,
-e.g. a formula, \link{quosure} or \link[=is_closure]{closure}. This argument
-is passed to \code{\link[=get_env]{get_env()}}.}
+e.g. a formula, \link[=quotation]{quosure} or \link[=is_closure]{closure}.
+This argument is passed to \code{\link[=get_env]{get_env()}}.}
 
 \item{.frame}{The frame environment that determines the scope of
 the temporary bindings. When that frame is popped from the call
