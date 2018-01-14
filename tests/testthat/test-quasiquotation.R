@@ -210,14 +210,13 @@ test_that("splicing an empty vector works", {
 })
 
 test_that("serialised unicode in argument names is unserialised on splice", {
-  skip("failing")
   nms <- with_latin1_locale({
     exprs <- exprs("\u5e78" := 10)
     quos <- quos(!!! exprs)
     names(quos)
+    expect_identical(as_bytes(nms), as_bytes("\u5e78"))
+    expect_true(all(!!Encoding(nms) == "UTF-8"), nms)
   })
-  expect_identical(as_bytes(nms), as_bytes("\u5e78"))
-  expect_true(all(chr_encoding(nms) == "UTF-8"))
 })
 
 test_that("can't splice at top level", {
