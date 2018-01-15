@@ -1,4 +1,4 @@
-context("eval_tidy") # --------------------------------------------------
+context("eval-tidy")
 
 test_that("accepts expressions", {
   expect_identical(eval_tidy(10), 10)
