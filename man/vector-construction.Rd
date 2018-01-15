@@ -112,6 +112,3 @@ ll(1, list(2))
 # Note that explicitly spliced lists are always spliced:
 ll(!!! list(1, 2))
 }
-\seealso{
-\code{\link[=ll]{ll()}}
-}
