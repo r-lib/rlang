@@ -39,7 +39,6 @@
 #' @param ... Components of the new vector. Bare lists and explicitly
 #'   spliced lists are spliced.
 #' @name vector-construction
-#' @seealso [ll()]
 #' @examples
 #' # These constructors are like a typed version of c():
 #' c(TRUE, FALSE)
