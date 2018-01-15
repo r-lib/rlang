@@ -433,3 +433,20 @@ test_that("dots_definitions() accepts other types of arguments", {
 test_that("closures are captured with their calling environment", {
   expect_reference(quo_get_env(quo(!!function() NULL)), environment())
 })
+
+test_that("the missing argument is captured", {
+  expect_equal_(quos(!!missing_arg()), quos(, ))
+
+  fn <- function(x) {
+    g(!!enquo(x))
+  }
+  g <- function(...) {
+    quos(...)
+  }
+  expect_equal_(fn(), quos(!!missing_arg()))
+})
+
+test_that("missing names are forwarded", {
+  x <- set_names(1:2, c(NA, NA))
+  expect_identical_(names(exprs(!!!x)), chr(na_chr, na_chr))
+})
