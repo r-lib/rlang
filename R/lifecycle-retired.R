@@ -133,14 +133,14 @@ lang_args_names <- function(lang) {
 #' @param lang A call.
 #' @export
 lang_head <- function(lang) {
-  call <- get_expr(call)
+  call <- get_expr(lang)
   stopifnot(is_call(call))
   node_car(call)
 }
 #' @rdname lang_head
 #' @export
 lang_tail <- function(lang) {
-  call <- get_expr(call)
+  call <- get_expr(lang)
   stopifnot(is_call(call))
   node_cdr(call)
 }
