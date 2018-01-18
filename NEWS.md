@@ -294,6 +294,9 @@ lifecycle status of exported functions.
   determine whether an object either of type `pairlist` or `NULL`.
   Note that all these functions are still experimental.
 
+* `set_names()` no longer automatically splices lists of character
+  vectors as we are moving away from automatic splicing semantics.
+
 
 ### Upcoming breaking changes
 

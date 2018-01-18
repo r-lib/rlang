@@ -209,9 +209,7 @@ has_name <- function(x, name) {
 #'
 #'   * If `nm` is `NULL`, the names are removed (if present).
 #'
-#'   * In all other cases, `nm` and `...` are passed to [chr()]. This
-#'     gives implicit splicing semantics: you can pass character
-#'     vectors or list of character vectors indistinctly.
+#'   * In all other cases, `nm` and `...` are coerced to character.
 #'
 #' @export
 #' @examples
@@ -239,7 +237,7 @@ set_names <- function(x, nm = x, ...) {
   } else if (!is_null(nm)) {
     # Make sure `x` is serialised when no arguments is provided.
     nm <- as.character(nm)
-    nm <- chr(nm, ...)
+    nm <- c(nm, ...)
   }
 
   if (!is_null(nm) && !is_character(nm, length(x))) {
