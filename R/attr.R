@@ -237,7 +237,9 @@ set_names <- function(x, nm = x, ...) {
   } else if (!is_null(nm)) {
     # Make sure `x` is serialised when no arguments is provided.
     nm <- as.character(nm)
-    nm <- c(nm, ...)
+    if (dots_n(...)) {
+      nm <- c(nm, ...)
+    }
   }
 
   if (!is_null(nm) && !is_character(nm, length(x))) {
