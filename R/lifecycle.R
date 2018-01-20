@@ -111,6 +111,7 @@
 #' * [lang_args_names()] => [call_args_names()]
 #'
 #' * [env_bury()] => [env_mask()]
+#' * `.bury` argument of [invoke()] => `.mask`
 #'
 #'
 #' @section Deprecated functions and arguments:

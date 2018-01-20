@@ -339,12 +339,17 @@ lifecycle status of exported functions.
   without replacement because these are low level accessors that are
   rarely needed.
 
-* Following a change in terminology,`as_overscope()` is
-  soft-deprecated and renamed to `as_data_mask()` and `env_bury()` is
-  soft-deprecated and renamed to `env_mask()`. We are now referring to
-  "overscoping" and "symbol burying" as "masking", a friendlier and
-  more familiar term for R users (cf masked objects in the search
-  path)
+* Following a change in terminology:
+
+    - `as_overscope()` is soft-deprecated and renamed to
+      `as_data_mask()`;
+    - `env_bury()` is soft-deprecated and renamed to `env_mask()`;
+    - The `.bury` argument of `invoke()` is soft-deprecated and
+      renamed to `.mask`.
+
+  We are now referring to "overscoping" and "symbol burying" as
+  "masking", a friendlier and more familiar term for R users (cf
+  masked objects in the search path)
 
 * The node setters were renamed from `mut_node_` prefix to
   `node_poke_`. This change follows a new naming convention in rlang
