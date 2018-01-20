@@ -30,7 +30,10 @@ is only one environment deep, \code{top} should be the same as
 \item{overscope}{The \code{mask} argument of \code{\link[=data_mask_clean]{data_mask_clean()}}}
 }
 \description{
-These functions have been soft-deprecated in rlang 0.2.0. Please use
-\code{\link[=as_data_mask]{as_data_mask()}}, \code{\link[=new_data_mask]{new_data_mask()}} and \code{\link[=data_mask_clean]{data_mask_clean()}} instead.
+These functions have been soft-deprecated and renamed in rlang
+0.2.0. We are now referring to overscoping as "masking", a
+friendlier and more familiar term for R users (cf masked objects in
+the search path). Please use \code{\link[=as_data_mask]{as_data_mask()}}, \code{\link[=new_data_mask]{new_data_mask()}}
+and \code{\link[=data_mask_clean]{data_mask_clean()}}.
 }
 \keyword{internal}

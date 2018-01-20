@@ -110,6 +110,8 @@
 #' * [lang_args()] => [call_args()]
 #' * [lang_args_names()] => [call_args_names()]
 #'
+#' * [env_bury()] => [env_mask()]
+#'
 #'
 #' @section Deprecated functions and arguments:
 #'

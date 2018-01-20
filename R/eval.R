@@ -175,7 +175,7 @@ locally <- function(expr) {
 #' that creates cleaner call traces because it does not inline the
 #' function and the arguments in the call (see examples). To achieve
 #' this, `invoke()` creates a child environment of `.env` with `.fn`
-#' and all arguments bound to new symbols (see [env_bury()]). It then
+#' and all arguments bound to new symbols (see [env_mask()]). It then
 #' uses the same strategy as [eval_bare()] to evaluate with minimal
 #' noise.
 #'
@@ -246,7 +246,7 @@ invoke <- function(.fn, .args = list(), ...,
 
   buried_nms <- paste0(arg_prefix, seq_along(args))
   buried_args <- set_names(args, buried_nms)
-  .env <- env_bury(.env, !!! buried_args)
+  .env <- env_mask(.env, !!! buried_args)
   args <- set_names(buried_nms, names(args))
   args <- syms(args)
 

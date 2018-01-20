@@ -148,8 +148,11 @@ lang_tail <- function(lang) {
 
 #' Create an overscope
 #'
-#' These functions have been soft-deprecated in rlang 0.2.0. Please use
-#' [as_data_mask()], [new_data_mask()] and [data_mask_clean()] instead.
+#' These functions have been soft-deprecated and renamed in rlang
+#' 0.2.0. We are now referring to overscoping as "masking", a
+#' friendlier and more familiar term for R users (cf masked objects in
+#' the search path). Please use [as_data_mask()], [new_data_mask()]
+#' and [data_mask_clean()].
 #'
 #' @inheritParams as_data_mask
 #' @param quo A [quosure][quotation].
@@ -347,6 +350,21 @@ mut_node_tag <- function(x, newtag) {
 #' @export
 is_expr <- function(x) {
   is_expression(x)
+}
+
+#' Bury symbols in a new child environment
+#'
+#' This function was soft-deprecated and renamed to [env_mask()] in
+#' rlang 0.2.0. This is part of a larger change in terminology. We are
+#' now referring to overscoping and symbol burying as "masking", a
+#' friendlier and more familiar term for R users (cf masked objects in
+#' the search path).
+#'
+#' @inheritParams env_mask
+#' @keywords internal
+#' @export
+env_bury <- function(.env, ...) {
+  env_mask(.env, ...)
 }
 
 
