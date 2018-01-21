@@ -141,6 +141,14 @@ test_that("call_fn() extracts function", {
   expect_identical(call_fn(~matrix()), matrix)
 })
 
+test_that("call_fn() looks up function in `env`", {
+  env <- local({
+    fn <- function() "foo"
+    get_env()
+  })
+  expect_identical(call_fn(quote(fn()), env = env), env$fn)
+})
+
 test_that("Inlined functions return NULL name", {
   call <- quote(fn())
   call[[1]] <- function() {}

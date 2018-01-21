@@ -305,8 +305,9 @@ call_modify <- function(.call, ...,
 #' for more about this change.
 #'
 #' @param call Can be a call or a quosure that wraps a call.
-#' @param env The environment where to find the `call` definition in
-#'   case `call` is not wrapped in a quosure.
+#' @param env The environment where to find the definition of the
+#'   function quoted in `call` in case `call` is not wrapped in a
+#'   quosure.
 #'
 #' @return A quosure if `call` is a quosure, a raw call otherwise.
 #' @export
@@ -348,13 +349,13 @@ call_standardise <- function(call, env = caller_env()) {
 #' # Extract the calling function
 #' test <- function() call_fn(call_frame())
 #' test()
-call_fn <- function(call) {
+call_fn <- function(call, env = caller_env()) {
   if (is_frame(call)) {
     return(call$fn)
   }
 
   expr <- get_expr(call)
-  env <- get_env(call, caller_env())
+  env <- get_env(call, env)
 
   if (!is_call(expr)) {
     abort("`call` must quote a call")
