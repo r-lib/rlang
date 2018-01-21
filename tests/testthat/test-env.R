@@ -251,3 +251,15 @@ test_that("with_bindings() evaluates with temporary bindings", {
   expect_identical(with_bindings(paste(foo, baz), foo = "FOO"), "FOO baz")
   expect_identical(foo, "foo")
 })
+
+test_that("as_environment() treats named strings as vectors", {
+  env <- as_environment(c(foo = "bar"))
+  expect_true(is_environment(env))
+  expect_true(env_has(env, "foo"))
+})
+
+test_that("as_environment() converts character vectors", {
+  env <- as_environment(set_names(letters))
+  expect_true(is_environment(env))
+  expect_true(all(env_has(env, letters)))
+})
