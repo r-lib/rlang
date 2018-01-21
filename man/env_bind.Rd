@@ -2,15 +2,9 @@
 % Please edit documentation in R/env.R
 \name{env_bind}
 \alias{env_bind}
-\alias{env_bind_exprs}
-\alias{env_bind_fns}
 \title{Bind symbols to objects in an environment}
 \usage{
 env_bind(.env, ...)
-
-env_bind_exprs(.env, ..., .eval_env = caller_env())
-
-env_bind_fns(.env, ...)
 }
 \arguments{
 \item{.env}{An environment or an object bundling an environment,
@@ -20,9 +14,6 @@ This argument is passed to \code{\link[=get_env]{get_env()}}.}
 \item{...}{Pairs of names and expressions, values or
 functions. These dots support splicing (with varying semantics,
 see above) and name unquoting.}
-
-\item{.eval_env}{The environment where the expressions will be
-evaluated when the symbols are forced.}
 }
 \value{
 The input object \code{.env}, with its associated environment
@@ -119,38 +110,4 @@ env_bind(fn, a = "a", b = "b")
 
 # fn() now sees the objects:
 fn()
-
-# env_bind_exprs() assigns expressions lazily:
-env <- env()
-env_bind_exprs(env, name = cat("forced!\\n"))
-env$name
-env$name
-
-# You can unquote expressions. Note that quosures are not
-# supported, only raw expressions:
-expr <- quote(message("forced!"))
-env_bind_exprs(env, name = !! expr)
-env$name
-
-# You can create active bindings with env_bind_fns()
-# Let's create some bindings in the lexical enclosure of `fn`:
-counter <- 0
-
-# And now a function that increments the counter and returns a
-# string with the count:
-fn <- function() {
-  counter <<- counter + 1
-  paste("my counter:", counter)
-}
-
-# Now we create an active binding in a child of the current
-# environment:
-env <- env()
-env_bind_fns(env, symbol = fn)
-
-# `fn` is executed each time `symbol` is evaluated or retrieved:
-env$symbol
-env$symbol
-eval_bare(quote(symbol), env)
-eval_bare(quote(symbol), env)
 }
