@@ -122,7 +122,7 @@ test_that("quosures are spliced", {
   expect_identical(quo_text(q), "foo(bar, baz(baz, 3))")
 
   q <- expr_interp(~foo::bar(!! function(x) ...))
-  expect_identical(f_text(q), "foo::bar(function (x) \n...)")
+  expect_identical(f_text(q), "foo::bar(<function(x) ...>)")
 
   q <- quo(!! quo(!! quo(foo(!! quo(!! quo(bar(!! quo(!! quo(!! quo(baz))))))))))
   expect_identical(quo_text(q), "foo(bar(baz))")
