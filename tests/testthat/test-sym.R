@@ -1,4 +1,4 @@
-context("expr-sym")
+context("sym")
 
 test_that("ensym() fails with calls", {
   capture_sym <- function(arg) ensym(arg)
