@@ -26,3 +26,8 @@ test_that("is_symbol() matches `name`", {
   expect_true(is_symbol(sym("foo"), "foo"))
   expect_false(is_symbol(sym("foo"), "bar"))
 })
+
+test_that("must supply strings to sym()", {
+  expect_error(sym(letters), "strings")
+  expect_error(sym(1:2), "strings")
+})
