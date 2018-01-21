@@ -66,3 +66,21 @@ test_that("node_tree_clone() clones all nodes", {
   clone_caadr <- node_car(clone_cadr)
   expect_true(sxp_address(caadr) == sxp_address(clone_caadr))
 })
+
+test_that("as_pairlist() converts to pairlist", {
+  expect_identical(as_pairlist(letters), as.pairlist(letters))
+  expect_error(as_pairlist(quote(foo)), "Can't convert a symbol to a pairlist node")
+})
+
+test_that("pairlist predicates detect pairlists", {
+  node <- node(NULL)
+  call <- quote(foo(bar))
+
+  expect_true(is_pairlist(node))
+
+  expect_true(is_node(node))
+  expect_true(is_node(call))
+
+  expect_true(is_node_list(node))
+  expect_true(is_node_list(NULL))
+})
