@@ -289,3 +289,12 @@ test_that("as_data_pronoun() creates pronoun", {
   expect_error(data$foobar, "Column `foobar` not found in `.data`")
   expect_identical(data[["cyl"]], mtcars$cyl)
 })
+
+test_that("pronoun has print() and str() method", {
+  data <- as_data_pronoun(mtcars)
+  expect_output(print(data), "<pronoun>\n11 objects")
+  expect_output(str(data), "32 obs")
+
+  data <- as_data_pronoun(list(a = 1))
+  expect_output(print(data), "<pronoun>\n1 object")
+})
