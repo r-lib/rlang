@@ -235,10 +235,10 @@ set_names <- function(x, nm = x, ...) {
     nm <- as_function(nm)
     nm <- nm(names2(x), ...)
   } else if (!is_null(nm)) {
-    # Make sure `x` is serialised when no arguments is provided.
-    nm <- as.character(nm)
     if (dots_n(...)) {
-      nm <- c(nm, ...)
+      nm <- as.character(c(nm, ...))
+    } else {
+      nm <- as.character(nm)
     }
   }
 
