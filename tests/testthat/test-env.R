@@ -301,3 +301,8 @@ test_that("friendly_env_type() returns a friendly env name", {
   expect_identical(friendly_env_type("frame"), "a frame environment")
   expect_identical(friendly_env_type("local"), "a local environment")
 })
+
+test_that("is_namespace() recognises namespaces", {
+  expect_false(is_namespace(env()))
+  expect_true(is_namespace(get_env(is_namespace)))
+})
