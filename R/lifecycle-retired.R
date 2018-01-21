@@ -95,13 +95,12 @@ is_binary_lang <- function(x, name = NULL, ns = NULL) {
 #' @keywords internal
 #' @export
 lang_modify <- function(.lang, ..., .standardise = FALSE) {
-  call_modify(.lang, ..., .standardise = .standardise)
+  call_modify(.lang, ..., .standardise = .standardise, .env = caller_env())
 }
 #' @rdname lang_modify
 #' @export
 lang_standardise <- function(lang) {
-  env <- caller_env()
-  call_standardise(lang, env = env)
+  call_standardise(lang, env = caller_env())
 }
 #' @rdname lang_modify
 #' @export
