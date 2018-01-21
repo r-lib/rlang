@@ -93,3 +93,31 @@ test_that("flatten() splices names", {
     )
   )
 })
+
+test_that("typed flatten return typed vectors", {
+  x <- list(list(TRUE), list(FALSE))
+  expect_identical(flatten_lgl(x), lgl(TRUE, FALSE))
+  expect_identical(flatten_int(x), int(TRUE, FALSE))
+  expect_identical(flatten_dbl(x), dbl(TRUE, FALSE))
+  expect_identical(flatten_cpl(x), cpl(TRUE, FALSE))
+
+  x <- list(list("foo"), list("bar"))
+  expect_identical(flatten_chr(x), chr("foo", "bar"))
+
+  x <- list(bytes(0L), bytes(1L))
+  expect_identical(flatten_raw(x), as.raw(0:1))
+})
+
+test_that("typed squash return typed vectors", {
+  x <- list(list(list(TRUE)), list(list(FALSE)))
+  expect_identical(squash_lgl(x), lgl(TRUE, FALSE))
+  expect_identical(squash_int(x), int(TRUE, FALSE))
+  expect_identical(squash_dbl(x), dbl(TRUE, FALSE))
+  expect_identical(squash_cpl(x), cpl(TRUE, FALSE))
+
+  x <- list(list(list("foo")), list(list("bar")))
+  expect_identical(squash_chr(x), chr("foo", "bar"))
+
+  x <- list(list(bytes(0L)), list(bytes(1L)))
+  expect_identical(squash_raw(x), as.raw(0:1))
+})
