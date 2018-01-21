@@ -48,6 +48,12 @@ test_that("promises are created", {
   expect_error(env$stop, "forced")
 })
 
+test_that("env_bind_fns() creates active bindings", {
+  env <- env_bind_fns(env(), a = function() "foo")
+  expect_identical(env$a, "foo")
+  expect_identical(env$a, "foo")
+})
+
 test_that("with_env() evaluates within correct environment", {
   fn <- function() {
     g(get_env())
