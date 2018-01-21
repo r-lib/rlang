@@ -101,6 +101,7 @@ is_definition <- function(x) {
 new_definition <- function(lhs, rhs, env = caller_env()) {
   def <- new_formula(lhs, rhs, env)
   node_poke_car(def, colon_equals_sym)
+  def
 }
 #' @rdname op-definition
 #' @export
