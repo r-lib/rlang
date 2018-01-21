@@ -50,12 +50,13 @@
 #'   (which they convert to symbol) or a symbol. If anything else
 #'   is supplied they throw an error.
 #'
-#' In terms of base functions, `enexpr()` corresponds to
-#' [base::substitute()] (though that function has complex semantics)
-#' and `expr()` is like [quote()] and [bquote()]. The plural variant
-#' `exprs()` is equivalent to [base::alist()]. Finally there is no
-#' function in base R that is equivalent to `enexprs()` but you can
-#' reproduce its behaviour with `eval(substitute(alist(...)))`.
+#' In terms of base functions, `enexpr(arg)` corresponds to
+#' [base::substitute(arg)] (though that function has complex
+#' semantics) and `expr()` is like [quote()] (and [bquote()] if we
+#' consider unquotation syntax). The plural variant `exprs()` is
+#' equivalent to [base::alist()]. Finally there is no function in base
+#' R that is equivalent to `enexprs()` but you can reproduce its
+#' behaviour with `eval(substitute(alist(...)))`.
 #'
 #'
 #' @section Capture expressions in quosures:

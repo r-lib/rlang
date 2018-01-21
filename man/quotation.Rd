@@ -113,12 +113,13 @@ including expressions contained in \code{...}.
 is supplied they throw an error.
 }
 
-In terms of base functions, \code{enexpr()} corresponds to
-\code{\link[base:substitute]{base::substitute()}} (though that function has complex semantics)
-and \code{expr()} is like \code{\link[=quote]{quote()}} and \code{\link[=bquote]{bquote()}}. The plural variant
-\code{exprs()} is equivalent to \code{\link[base:alist]{base::alist()}}. Finally there is no
-function in base R that is equivalent to \code{enexprs()} but you can
-reproduce its behaviour with \code{eval(substitute(alist(...)))}.
+In terms of base functions, \code{enexpr(arg)} corresponds to
+\link[base:substitute(arg)]{base::substitute(arg)} (though that function has complex
+semantics) and \code{expr()} is like \code{\link[=quote]{quote()}} (and \code{\link[=bquote]{bquote()}} if we
+consider unquotation syntax). The plural variant \code{exprs()} is
+equivalent to \code{\link[base:alist]{base::alist()}}. Finally there is no function in base
+R that is equivalent to \code{enexprs()} but you can reproduce its
+behaviour with \code{eval(substitute(alist(...)))}.
 }
 
 \section{Capture expressions in quosures}{
