@@ -165,7 +165,9 @@ fn_fmls_syms <- function(fn = caller_fn()) {
 #'
 #' @export
 fn_body <- function(fn = caller_fn()) {
-  stopifnot(is_closure(fn))
+  if(!is_closure(fn)) {
+    abort("`fn` is not a closure")
+  }
   body(fn)
 }
 #' @rdname fn_body
@@ -323,7 +325,7 @@ is_primitive_lazy <- function(x) {
 #' identical(fn_env(fn), other_env)
 fn_env <- function(fn) {
   if(!is_function(fn)) {
-    abort("`fn` is not a function", "type")
+    abort("`fn` is not a function")
   }
   environment(fn)
 }
@@ -332,7 +334,7 @@ fn_env <- function(fn) {
 #' @rdname fn_env
 `fn_env<-` <- function(x, value) {
   if(!is_function(x)) {
-    abort("`fn` is not a function", "type")
+    abort("`fn` is not a function")
   }
   environment(x) <- value
   x
