@@ -284,3 +284,12 @@ test_that("env_names() unserialises unicode", {
   env <- env(`<U+5E78><U+798F>` = "foo")
   expect_identical(env_names(env), "\u5E78\u798F")
 })
+
+test_that("env_clone() clones an environment", {
+  data <- list(a = 1L, b = 2L)
+  env <- env(!!! data)
+  clone <- env_clone(env)
+  expect_false(is_reference(env, clone))
+  expect_reference(env_parent(env), env_parent(clone))
+  expect_identical(env_get_list(clone, c("a", "b")), data)
+})
