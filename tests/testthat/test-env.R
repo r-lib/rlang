@@ -48,6 +48,12 @@ test_that("promises are created", {
   expect_error(env$stop, "forced")
 })
 
+test_that("env_bind_fns() creates active bindings", {
+  env <- env_bind_fns(env(), a = function() "foo")
+  expect_identical(env$a, "foo")
+  expect_identical(env$a, "foo")
+})
+
 test_that("with_env() evaluates within correct environment", {
   fn <- function() {
     g(get_env())
@@ -250,4 +256,53 @@ test_that("with_bindings() evaluates with temporary bindings", {
   baz <- "baz"
   expect_identical(with_bindings(paste(foo, baz), foo = "FOO"), "FOO baz")
   expect_identical(foo, "foo")
+})
+
+test_that("as_environment() treats named strings as vectors", {
+  env <- as_environment(c(foo = "bar"))
+  expect_true(is_environment(env))
+  expect_true(env_has(env, "foo"))
+})
+
+test_that("as_environment() converts character vectors", {
+  env <- as_environment(set_names(letters))
+  expect_true(is_environment(env))
+  expect_true(all(env_has(env, letters)))
+})
+
+test_that("env_unbind() with `inherits = TRUE` wipes out all bindings", {
+  bindings <- list(`_foo` = "foo", `_bar` = "bar")
+  env_bind(global_env(), !!! bindings)
+  env <- child_env(global_env(), !!! bindings)
+
+  env_unbind(env, "_foo", inherit = TRUE)
+  expect_false(all(env_has(env, names(bindings))))
+  expect_false(all(env_has(global_env(), names(bindings))))
+})
+
+test_that("env_names() unserialises unicode", {
+  env <- env(`<U+5E78><U+798F>` = "foo")
+  expect_identical(env_names(env), "\u5E78\u798F")
+})
+
+test_that("env_clone() clones an environment", {
+  data <- list(a = 1L, b = 2L)
+  env <- env(!!! data)
+  clone <- env_clone(env)
+  expect_false(is_reference(env, clone))
+  expect_reference(env_parent(env), env_parent(clone))
+  expect_identical(env_get_list(clone, c("a", "b")), data)
+})
+
+test_that("friendly_env_type() returns a friendly env name", {
+  expect_identical(friendly_env_type("global"), "the global environment")
+  expect_identical(friendly_env_type("empty"), "the empty environment")
+  expect_identical(friendly_env_type("base"), "the base environment")
+  expect_identical(friendly_env_type("frame"), "a frame environment")
+  expect_identical(friendly_env_type("local"), "a local environment")
+})
+
+test_that("is_namespace() recognises namespaces", {
+  expect_false(is_namespace(env()))
+  expect_true(is_namespace(get_env(is_namespace)))
 })

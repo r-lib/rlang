@@ -125,13 +125,6 @@ as_definition <- function(def) {
   )
 }
 
-is_dot_symbol <- function(x) {
-  is_symbol(x) && is_dot_nm(as.character(x))
-}
-is_dot_nm <- function(nm) {
-  grepl("^\\.\\.[0-9]+$", nm)
-}
-
 dots_node <- function(...) {
   node_cdr(sys.call())
 }

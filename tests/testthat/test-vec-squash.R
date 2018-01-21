@@ -48,6 +48,14 @@ test_that("lists are flattened", {
   expect_identical(flatten(flatten(flatten(flatten(x)))), list(1, 2, 3, 4))
 })
 
+test_that("splice() requires lists", {
+  expect_error(splice(quote(sym)), "Only lists can be spliced")
+})
+
+test_that("is_spliced_bare() is TRUE for bare lists", {
+  expect_true(is_spliced_bare(list()))
+})
+
 test_that("flatten_if() handles custom predicate", {
   obj <- set_attrs(list(1:2), class = "foo")
   x <- list(obj, splice(obj), unclass(obj))
@@ -84,4 +92,32 @@ test_that("flatten() splices names", {
       list(TRUE, FALSE)
     )
   )
+})
+
+test_that("typed flatten return typed vectors", {
+  x <- list(list(TRUE), list(FALSE))
+  expect_identical(flatten_lgl(x), lgl(TRUE, FALSE))
+  expect_identical(flatten_int(x), int(TRUE, FALSE))
+  expect_identical(flatten_dbl(x), dbl(TRUE, FALSE))
+  expect_identical(flatten_cpl(x), cpl(TRUE, FALSE))
+
+  x <- list(list("foo"), list("bar"))
+  expect_identical(flatten_chr(x), chr("foo", "bar"))
+
+  x <- list(bytes(0L), bytes(1L))
+  expect_identical(flatten_raw(x), as.raw(0:1))
+})
+
+test_that("typed squash return typed vectors", {
+  x <- list(list(list(TRUE)), list(list(FALSE)))
+  expect_identical(squash_lgl(x), lgl(TRUE, FALSE))
+  expect_identical(squash_int(x), int(TRUE, FALSE))
+  expect_identical(squash_dbl(x), dbl(TRUE, FALSE))
+  expect_identical(squash_cpl(x), cpl(TRUE, FALSE))
+
+  x <- list(list(list("foo")), list(list("bar")))
+  expect_identical(squash_chr(x), chr("foo", "bar"))
+
+  x <- list(list(bytes(0L)), list(bytes(1L)))
+  expect_identical(squash_raw(x), as.raw(0:1))
 })

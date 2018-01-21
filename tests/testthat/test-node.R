@@ -1,5 +1,47 @@
 context("node")
 
+test_that("node() creates a pairlist node", {
+  x <- node("foo", "bar")
+  expect_is(x, "pairlist")
+  expect_identical(node_car(x), "foo")
+  expect_identical(node_cdr(x), "bar")
+})
+
+test_that("node getters and pokers work", {
+  A <- as.pairlist(c(a = "a", b = "b"))
+  B <- as.pairlist(c(A = "A", B = "B"))
+  x <- pairlist(foo = A, bar = B, baz = "baz")
+
+  expect_identical(node_car(x), A)
+  expect_identical(node_cdr(x), pairlist(bar = B, baz = "baz"))
+  expect_identical(node_caar(x), "a")
+  expect_identical(node_cadr(x), B)
+  expect_identical(node_cdar(x), pairlist(b = "b"))
+  expect_identical(node_cddr(x), pairlist(baz = "baz"))
+  expect_identical(node_tag(x), sym("foo"))
+
+  node_poke_car(x, B)
+  expect_identical(node_car(x), B)
+
+  node_poke_cdr(x, pairlist(foo = A))
+  expect_identical(node_cdr(x), pairlist(foo = A))
+
+  node_poke_cdar(x, "cdar")
+  expect_identical(node_cdar(x), "cdar")
+
+  node_poke_caar(x, "caar")
+  expect_identical(node_caar(x), "caar")
+
+  node_poke_cadr(x, "cadr")
+  expect_identical(node_cadr(x), "cadr")
+
+  node_poke_cddr(x, "cddr")
+  expect_identical(node_cddr(x), "cddr")
+
+  node_poke_tag(x, sym("tag"))
+  expect_identical(node_tag(x), sym("tag"))
+})
+
 test_that("node_tree_clone() clones all nodes", {
   x <- pairlist(1, pairlist(2))
   clone <- node_tree_clone(x)
@@ -23,4 +65,22 @@ test_that("node_tree_clone() clones all nodes", {
   caadr <- node_car(cadr)
   clone_caadr <- node_car(clone_cadr)
   expect_true(sxp_address(caadr) == sxp_address(clone_caadr))
+})
+
+test_that("as_pairlist() converts to pairlist", {
+  expect_identical(as_pairlist(letters), as.pairlist(letters))
+  expect_error(as_pairlist(quote(foo)), "Can't convert a symbol to a pairlist node")
+})
+
+test_that("pairlist predicates detect pairlists", {
+  node <- node(NULL)
+  call <- quote(foo(bar))
+
+  expect_true(is_pairlist(node))
+
+  expect_true(is_node(node))
+  expect_true(is_node(call))
+
+  expect_true(is_node_list(node))
+  expect_true(is_node_list(NULL))
 })

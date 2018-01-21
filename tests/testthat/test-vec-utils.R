@@ -10,3 +10,13 @@ test_that("are_na() requires vector input but not is_na()", {
   expect_error(are_na(base::eval), "must be a vector")
   expect_false(is_na(base::eval))
 })
+
+test_that("seq2() creates increasing sequences", {
+  expect_identical(seq2(2, 3), 2:3)
+  expect_identical(seq2(3, 2), int())
+})
+
+test_that("seq2_along() creates increasing sequences", {
+  expect_identical(seq2_along(3, 1:2), int())
+  expect_identical(seq2_along(-1, 1:2), -1:2)
+})

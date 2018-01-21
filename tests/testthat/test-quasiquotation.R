@@ -394,6 +394,19 @@ test_that("`:=` chaining is detected at dots capture", {
 })
 
 
+# --------------------------------------------------------------------
+
+test_that("Unquote operators fail when called outside quasiquoted arguments", {
+  expect_qq_error <- function(object) expect_error(object, regexp = "within a quasiquoted argument")
+  expect_qq_error(UQ())
+  expect_warning_(expect_qq_error(UQE()), "deprecated")
+  expect_qq_error(UQS())
+  expect_qq_error(`!!`())
+  expect_qq_error(`!!!`())
+  expect_qq_error(a := b)
+})
+
+
 # Lifecycle ----------------------------------------------------------
 
 test_that("namespaced unquoting is soft-deprecated", {

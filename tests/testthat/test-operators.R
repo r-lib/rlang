@@ -22,3 +22,13 @@ test_that("%|% fails with wrong types", {
   expect_error(c(1, NA) %|% "")
 })
 
+test_that("%@% returns attribute", {
+  expect_identical(mtcars %@% "row.names", row.names(mtcars))
+  expect_null(mtcars %@% "row")
+})
+
+test_that("new_definition() returns new `:=` call", {
+  def <- "foo" ~ "bar"
+  node_poke_car(def, quote(`:=`))
+  expect_identical(new_definition("foo", "bar"), def)
+})

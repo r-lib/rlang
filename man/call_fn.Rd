@@ -4,10 +4,14 @@
 \alias{call_fn}
 \title{Extract function from a call}
 \usage{
-call_fn(call)
+call_fn(call, env = caller_env())
 }
 \arguments{
 \item{call}{Can be a call or a quosure that wraps a call.}
+
+\item{env}{The environment where to find the definition of the
+function quoted in \code{call} in case \code{call} is not wrapped in a
+quosure.}
 }
 \description{
 If a frame or formula, the function will be retrieved from the

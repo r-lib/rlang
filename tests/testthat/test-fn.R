@@ -17,7 +17,7 @@ test_that("prim_name() extracts names", {
 })
 
 test_that("as_closure() returns closure", {
-  expect_identical(typeof(as_closure(list)), "closure")
+  expect_identical(typeof(as_closure(base::list)), "closure")
   expect_identical(typeof(as_closure("list")), "closure")
 })
 
@@ -25,6 +25,11 @@ test_that("as_closure() handles primitive functions", {
   expect_identical(as_closure(`c`)(1, 3, 5), c(1, 3, 5))
   expect_identical(as_closure(is.null)(1), FALSE)
   expect_identical(as_closure(is.null)(NULL), TRUE)
+
+  eval_prim <- eval(quote(sys.function()))
+  eval_clos <- as_closure(eval_prim)
+  expect_identical(typeof(eval_clos), "closure")
+  expect_identical(eval_clos(quote(data.frame), base_env()), data.frame)
 })
 
 test_that("as_closure() handles operators", {
@@ -50,6 +55,12 @@ test_that("as_closure() handles operators", {
   x <- data.frame(x = 1:2, y = 3:4)
   expect_identical(as_closure(`[<-`)(x, 2, 2, 10L), 10L)
   expect_identical(x, data.frame(x = 1:2, y = c(3L, 10L)))
+  expect_error(as_closure(`[<-`)(), "Must supply operands")
+
+  methods::setClass("rlang_test", methods::representation(foo = "character"))
+  s4 <- methods::new("rlang_test")
+  as_closure(`@<-`)(s4, "foo", "FOO")
+  expect_identical(s4@foo, "FOO")
 
   x <- list(1, 2)
   expect_identical(as_closure(`[[<-`)(x, 2, 20), 20)
@@ -137,4 +148,27 @@ test_that("print method for `fn` discards attributes", {
 
   output <- paste0(readLines(temp, warn = FALSE), collapse = "\n")
   expect_false(grepl("attr", output))
+})
+
+test_that("fn_body() requires a closure to extract body", {
+  expect_error(fn_body(c), "`fn` is not a closure")
+  expect_null(fn_body(function() NULL))
+})
+
+test_that("fn_env() requires a function to extract env", {
+  expect_error(fn_env(1L), "`fn` is not a function")
+  expect_identical(fn_env(function() NULL), get_env())
+})
+
+test_that("`fn_env<-`() sets environment", {
+  fn <- function() NULL
+  fn_env(fn) <- base_env()
+  expect_reference(fn_env(fn), base_env())
+})
+
+test_that("primitive predicates work", {
+  expect_true(is_primitive_eager(c))
+  expect_true(is_primitive_lazy(`$`))
+  expect_false(is_primitive_eager(`$`))
+  expect_false(is_primitive_lazy(`c`))
 })

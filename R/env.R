@@ -574,7 +574,17 @@ env_bind_impl <- function(env, data) {
 
   env
 }
-#' @rdname env_bind
+
+# FIXME: Should these be env_bind_promises() and env_bind_actives()?
+
+#' Bind lazy or active bindings
+#'
+#' @keywords internal
+#' @section Life cycle:
+#'
+#' These functions are experimental. Expect API changes.
+#'
+#' @inheritParams env_bind
 #' @param .eval_env The environment where the expressions will be
 #'   evaluated when the symbols are forced.
 #' @export
@@ -609,7 +619,7 @@ env_bind_exprs <- function(.env, ..., .eval_env = caller_env()) {
 
   invisible(.env)
 }
-#' @rdname env_bind
+#' @rdname env_bind_exprs
 #' @export
 #' @examples
 #'
