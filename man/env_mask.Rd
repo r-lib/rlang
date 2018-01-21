@@ -20,9 +20,9 @@ A new child of \code{.env} containing bindings to \code{...} arguments.
 }
 \description{
 \code{env_mask()} is like \code{\link[=env_bind]{env_bind()}} but it creates the bindings in a
-new child environment (i.e. a masking environment). The objects in
-this deeper environment have precedence over those in parent
-environments.
+new child environment (i.e. a masking environment). The objects
+defined in this new environment have precedence over those in
+parent environments.
 
 Unlike \code{env_bind()}, this function does not have side effects and
 returns a new environment (or object wrapping that environment).

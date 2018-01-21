@@ -709,9 +709,9 @@ with_bindings <- function(.expr, ..., .env = caller_env()) {
 #' @description
 #'
 #' `env_mask()` is like [env_bind()] but it creates the bindings in a
-#' new child environment (i.e. a masking environment). The objects in
-#' this deeper environment have precedence over those in parent
-#' environments.
+#' new child environment (i.e. a masking environment). The objects
+#' defined in this new environment have precedence over those in
+#' parent environments.
 #'
 #' Unlike `env_bind()`, this function does not have side effects and
 #' returns a new environment (or object wrapping that environment).
