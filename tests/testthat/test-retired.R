@@ -48,7 +48,7 @@ test_that("lang_standardise() forwards to call_standardise()", {
 test_that("`lang_` accessors forward to `call_` accessors", {
   fn <- function(foo = "bar") NULL
   call <- quote(fn(f = "foo"))
-  ## expect_identical(lang_fn(call), fn)  # FIXME
+  expect_identical(lang_fn(call), fn)
   expect_identical(lang_name(call), "fn")
   expect_identical(lang_args(call), list(f = "foo"))
   expect_identical(lang_args_names(call), "f")

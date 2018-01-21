@@ -105,7 +105,7 @@ lang_standardise <- function(lang) {
 #' @rdname lang_modify
 #' @export
 lang_fn <- function(lang) {
-  call_fn(lang)
+  call_fn(lang, caller_env())
 }
 #' @rdname lang_modify
 #' @export
