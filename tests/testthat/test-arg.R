@@ -35,3 +35,9 @@ test_that("is_missing() works with non-symbols", {
   expect_true(is_missing(l[[1]]))
   expect_error(missing(l[[1]]), "invalid use")
 })
+
+test_that("maybe_missing() forwards missing value", {
+  x <- missing_arg()
+  expect_true(is_missing(maybe_missing(x)))
+  expect_false(is_missing(maybe_missing(1L)))
+})
