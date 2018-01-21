@@ -282,3 +282,10 @@ test_that("can supply a data mask as data", {
   eval_tidy(quo(x <- 2L), mask)
   expect_identical(eval_tidy(quo(x), mask), 2L)
 })
+
+test_that("as_data_pronoun() creates pronoun", {
+  data <- as_data_pronoun(mtcars)
+  expect_is(data, "rlang_data_pronoun")
+  expect_error(data$foobar, "Column `foobar` not found in `.data`")
+  expect_identical(data[["cyl"]], mtcars$cyl)
+})
