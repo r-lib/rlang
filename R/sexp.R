@@ -1,5 +1,4 @@
-
-# These functions are mostly for interactive experimentation
+# nocov start - These functions are mostly for interactive experimentation
 
 poke_type <- function(x, type) {
   invisible(.Call(rlang_poke_type, x, type))
@@ -24,3 +23,5 @@ env_frame <- function(x) {
 env_hash_table <- function(x) {
   .Call(rlang_env_hash_table, x)
 }
+
+# nocov end
