@@ -189,15 +189,18 @@ expr_text <- function(expr, width = 60L, nlines = Inf) {
 }
 
 deparse_one <- function(expr) {
-  str <- deparse(expr)
+  str <- deparse(expr, 60L)
 
   if (length(str) > 1) {
-    if (identical(str[[1]], quote(`function`))) {
-      str[[3]] <- quote(...)
-      str <- paste(deparse(str), collapse = "\n")
-    } else {
-      str <- paste(deparse(as.call(list(str[[1]], quote(...)))), collapse = "\n")
+    if (is_call(expr, function_sym)) {
+      expr[[3]] <- quote(...)
+      str <- deparse(expr, 60L)
+    } else if (is_call(expr, brace_sym)) {
+      str <- "{ ... }"
+    } else if (is_call(expr)) {
+      str <- deparse(call2(expr[[1]], quote(...)), 60L)
     }
+    str <- paste(str, collapse = "\n")
   }
 
   str

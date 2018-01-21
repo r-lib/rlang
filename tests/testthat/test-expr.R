@@ -32,9 +32,16 @@ test_that("converts atomics to strings", {
   expect_equal(expr_label(0.5), "0.5")
 })
 
-test_that("truncates long calls", {
-  expect_identical(expr_label(quote({ a + b })), "`\"{\"(...)`")
-  expect_identical(expr_label(expr(function() { a; b })), "`\"function() {\"(...)`")
+test_that("expr_label() truncates blocks", {
+  expect_identical(expr_label(quote({ a + b })), "`{ ... }`")
+  expect_identical(expr_label(expr(function() { a; b })), "`function() ...`")
+})
+
+test_that("expr_label() truncates long calls", {
+  long_call <- quote(foo())
+  long_arg <- quote(longlonglonglonglonglonglonglonglonglonglonglong)
+  long_call[c(2, 3, 4)] <- list(long_arg, long_arg, long_arg)
+  expect_identical(expr_label(long_call), "`foo(...)`")
 })
 
 
@@ -47,7 +54,7 @@ test_that("name symbols, calls, and scalars", {
   expect_identical(expr_name("foo"), "foo")
   expect_identical(expr_name(function() NULL), "function () ...")
   expect_error(expr_name(1:2), "must quote a symbol, scalar, or call")
-  expect_identical(expr_name(expr(function() { a; b })), "\"function() {\"(...)")
+  expect_identical(expr_name(expr(function() { a; b })), "function() ...")
 })
 
 
