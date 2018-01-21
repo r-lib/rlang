@@ -279,3 +279,8 @@ test_that("env_unbind() with `inherits = TRUE` wipes out all bindings", {
   expect_false(all(env_has(env, names(bindings))))
   expect_false(all(env_has(global_env(), names(bindings))))
 })
+
+test_that("env_names() unserialises unicode", {
+  env <- env(`<U+5E78><U+798F>` = "foo")
+  expect_identical(env_names(env), "\u5E78\u798F")
+})
