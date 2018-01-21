@@ -62,3 +62,8 @@ test_that("set_expr() supports closures", {
   fn <- function(x) x
   expect_equal(set_expr(fn, quote(y)), function(x) y)
 })
+
+test_that("expressions are deparsed and printed", {
+  expect_output(expr_print(1:2), "<int: 1L, 2L>")
+  expect_identical(expr_deparse(1:2), "<int: 1L, 2L>")
+})
