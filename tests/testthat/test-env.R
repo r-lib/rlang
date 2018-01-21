@@ -269,3 +269,13 @@ test_that("as_environment() converts character vectors", {
   expect_true(is_environment(env))
   expect_true(all(env_has(env, letters)))
 })
+
+test_that("env_unbind() with `inherits = TRUE` wipes out all bindings", {
+  bindings <- list(`_foo` = "foo", `_bar` = "bar")
+  env_bind(global_env(), !!! bindings)
+  env <- child_env(global_env(), !!! bindings)
+
+  env_unbind(env, "_foo", inherit = TRUE)
+  expect_false(all(env_has(env, names(bindings))))
+  expect_false(all(env_has(global_env(), names(bindings))))
+})
