@@ -51,7 +51,7 @@
 #'   is supplied they throw an error.
 #'
 #' In terms of base functions, `enexpr(arg)` corresponds to
-#' [base::substitute(arg)] (though that function has complex
+#' `base::substitute(arg)` (though that function has complex
 #' semantics) and `expr()` is like [quote()] (and [bquote()] if we
 #' consider unquotation syntax). The plural variant `exprs()` is
 #' equivalent to [base::alist()]. Finally there is no function in base

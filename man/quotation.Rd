@@ -114,7 +114,7 @@ is supplied they throw an error.
 }
 
 In terms of base functions, \code{enexpr(arg)} corresponds to
-\link[base:substitute(arg)]{base::substitute(arg)} (though that function has complex
+\code{base::substitute(arg)} (though that function has complex
 semantics) and \code{expr()} is like \code{\link[=quote]{quote()}} (and \code{\link[=bquote]{bquote()}} if we
 consider unquotation syntax). The plural variant \code{exprs()} is
 equivalent to \code{\link[base:alist]{base::alist()}}. Finally there is no function in base
