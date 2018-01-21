@@ -48,6 +48,14 @@ test_that("lists are flattened", {
   expect_identical(flatten(flatten(flatten(flatten(x)))), list(1, 2, 3, 4))
 })
 
+test_that("splice() requires lists", {
+  expect_error(splice(quote(sym)), "Only lists can be spliced")
+})
+
+test_that("is_spliced_bare() is TRUE for bare lists", {
+  expect_true(is_spliced_bare(list()))
+})
+
 test_that("flatten_if() handles custom predicate", {
   obj <- set_attrs(list(1:2), class = "foo")
   x <- list(obj, splice(obj), unclass(obj))
