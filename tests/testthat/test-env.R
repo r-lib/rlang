@@ -293,3 +293,11 @@ test_that("env_clone() clones an environment", {
   expect_reference(env_parent(env), env_parent(clone))
   expect_identical(env_get_list(clone, c("a", "b")), data)
 })
+
+test_that("friendly_env_type() returns a friendly env name", {
+  expect_identical(friendly_env_type("global"), "the global environment")
+  expect_identical(friendly_env_type("empty"), "the empty environment")
+  expect_identical(friendly_env_type("base"), "the base environment")
+  expect_identical(friendly_env_type("frame"), "a frame environment")
+  expect_identical(friendly_env_type("local"), "a local environment")
+})
