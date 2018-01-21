@@ -53,7 +53,7 @@ quo_expr <- function(quo, warn = FALSE) {
 #' @keywords internal
 #' @export
 lang <- function(.fn, ..., .ns = NULL) {
-  call2(.fn, ..., .ns = NULL)
+  call2(.fn, ..., .ns = .ns)
 }
 #' @rdname lang
 #' @inheritParams call_node
