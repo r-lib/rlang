@@ -33,6 +33,9 @@
 #'
 #' @section Experimental functions:
 #'
+#' These functions are not yet part of the rlang API. Expect breaking
+#' changes.
+#'
 #' * [type_of()], [switch_type()], [coerce_type()]
 #' * [switch_class()], [coerce_class()]
 #' * [lang_type_of()], [switch_lang()], [coerce_lang()]
@@ -57,6 +60,8 @@
 #'
 #' * [mut_utf8_locale()], [mut_latin1_locale()], [mut_mbcs_locale()]
 #'
+#' * [prepend()], [modify()]
+#'
 #'
 #' @section Questioning functions:
 #'
@@ -69,7 +74,6 @@
 #'
 #' * [ctxt_depth()], [call_depth()], [ctxt_stack()], [call_stack()],
 #'   [stack_trim()]
-#'
 #'
 #'
 #' @section Soft-deprecated functions and arguments:

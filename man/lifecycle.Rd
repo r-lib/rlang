@@ -33,6 +33,9 @@ sections that explain the reasons for their retirements.
 
 \section{Experimental functions}{
 
+
+These functions are not yet part of the rlang API. Expect breaking
+changes.
 \itemize{
 \item \code{\link[=type_of]{type_of()}}, \code{\link[=switch_type]{switch_type()}}, \code{\link[=coerce_type]{coerce_type()}}
 \item \code{\link[=switch_class]{switch_class()}}, \code{\link[=coerce_class]{coerce_class()}}
@@ -52,6 +55,7 @@ sections that explain the reasons for their retirements.
 \item \code{\link[=as_bytes]{as_bytes()}}, \code{\link[=chr_unserialise_unicode]{chr_unserialise_unicode()}}, \code{\link[=set_chr_encoding]{set_chr_encoding()}},
 \code{\link[=chr_encoding]{chr_encoding()}}, \code{\link[=set_str_encoding]{set_str_encoding()}}, \code{\link[=str_encoding]{str_encoding()}}
 \item \code{\link[=mut_utf8_locale]{mut_utf8_locale()}}, \code{\link[=mut_latin1_locale]{mut_latin1_locale()}}, \code{\link[=mut_mbcs_locale]{mut_mbcs_locale()}}
+\item \code{\link[=prepend]{prepend()}}, \code{\link[=modify]{modify()}}
 }
 }
 

@@ -5,9 +5,17 @@
 #' `c()` that a vector is to be merged at the beginning of another,
 #' especially in a pipe chain.
 #'
+#'
+#' @keywords internal
+#' @section Life cycle:
+#'
+#' `prepend()` is experimental, expect API changes. We are still
+#' figuring out what vector tools belong in rlang.
+#'
 #' @param x the vector to be modified.
 #' @param values to be included in the modified vector.
 #' @param before a subscript, before which the values are to be appended.
+#'
 #' @return A merged vector.
 #' @export
 #' @examples
@@ -32,11 +40,19 @@ prepend <- function(x, values, before = 1) {
 #' This function merges a list of arguments into a vector. It always
 #' returns a list.
 #'
+#'
+#' @keywords internal
+#' @section Life cycle:
+#'
+#' `modify()` is experimental, expect API changes. We are still
+#' figuring out what vector tools belong in rlang.
+#'
 #' @param .x A vector to modify.
 #' @param ... List of elements to merge into `.x`. Named elements
 #'   already existing in `.x` are used as replacements. Elements that
 #'   have new or no names are inserted at the end. These dots are
 #'   evaluated with [explicit splicing][dots_list].
+#'
 #' @return A modified vector upcasted to a list.
 #' @export
 #' @examples

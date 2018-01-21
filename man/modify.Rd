@@ -21,6 +21,13 @@ A modified vector upcasted to a list.
 This function merges a list of arguments into a vector. It always
 returns a list.
 }
+\section{Life cycle}{
+
+
+\code{modify()} is experimental, expect API changes. We are still
+figuring out what vector tools belong in rlang.
+}
+
 \examples{
 modify(c(1, b = 2, 3), 4, b = "foo")
 
@@ -28,3 +35,4 @@ x <- list(a = 1, b = 2)
 y <- list(b = 3, c = 4)
 modify(x, splice(y))
 }
+\keyword{internal}

@@ -22,6 +22,13 @@ or atomic vectors. \code{prepend()} is a clearer semantic signal than
 \code{c()} that a vector is to be merged at the beginning of another,
 especially in a pipe chain.
 }
+\section{Life cycle}{
+
+
+\code{prepend()} is experimental, expect API changes. We are still
+figuring out what vector tools belong in rlang.
+}
+
 \examples{
 x <- as.list(1:3)
 
@@ -29,3 +36,4 @@ append(x, "a")
 prepend(x, "a")
 prepend(x, list("a", "b"), before = 3)
 }
+\keyword{internal}
