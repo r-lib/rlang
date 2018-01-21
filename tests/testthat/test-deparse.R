@@ -260,3 +260,19 @@ test_that("successive indentations close off properly", {
 test_that("empty quosures are deparsed", {
   expect_identical(strip_style(quo_deparse(quo())), "^")
 })
+
+test_that("missing values are deparsed", {
+  expect_identical(sexp_deparse(NA), "NA")
+  expect_identical(sexp_deparse(c(name = NA)), "<lgl: name = NA>")
+  expect_identical(sexp_deparse(NA_integer_), "<int: NA>")
+  expect_identical(sexp_deparse(NA_real_), "<dbl: NA>")
+  expect_identical(sexp_deparse(NA_complex_), "<cpl: NA>")
+  expect_identical(sexp_deparse(NA_character_), "<chr: NA>")
+  expect_identical(sexp_deparse(c(NA, "NA")), "<chr: NA, \"NA\">")
+
+  expect_identical(sexp_deparse(quote(call(NA))), "call(NA)")
+  expect_identical(sexp_deparse(quote(call(NA_integer_))), "call(<int: NA>)")
+  expect_identical(sexp_deparse(quote(call(NA_real_))), "call(<dbl: NA>)")
+  expect_identical(sexp_deparse(quote(call(NA_complex_))), "call(<cpl: NA>)")
+  expect_identical(sexp_deparse(quote(call(NA_character_))), "call(<chr: NA>)")
+})

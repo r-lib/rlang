@@ -497,14 +497,32 @@ call_deparser <- function(x) {
 
 atom_elements <- function(x) {
   elts <- as.character(x)
-  switch (typeof(x),
-    integer = paste0(elts, "L"),
-    character = paste0("\"", elts, "\""),
-    elts
+
+  na_pos <- are_na(x)
+  elts[na_pos] <- "NA"
+
+  elts[!na_pos] <- switch (typeof(x),
+    integer = paste0(elts[!na_pos], "L"),
+    character = paste0("\"", elts[!na_pos], "\""),
+    elts[!na_pos]
   )
+
+  elts
 }
+is_scalar_deparsable <- function(x) {
+  if (typeof(x) == "raw" || length(x) != 1 || is_named(x)) {
+    return(FALSE)
+  }
+
+  if (is_na(x) && !is_logical(x)) {
+    return(FALSE)
+  }
+
+  TRUE
+}
+
 atom_deparse <- function(x, lines = new_lines()) {
-  if (typeof(x) != "raw" && length(x) == 1 && !is_named(x)) {
+  if (is_scalar_deparsable(x)) {
     lines$push(atom_elements(x))
     return(NULL)
   }
