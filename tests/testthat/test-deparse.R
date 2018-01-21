@@ -77,6 +77,10 @@ test_that("multiple openers on the same line only trigger one indent", {
   expect_identical(sexp_deparse(quote(function() { 1 }), ctxt), c("function() {", "  1", "}"))
 })
 
+test_that("multiple openers on the same line are correctly reset", {
+  expect_identical(sexp_deparse(quote({ 1(2()) })), c("{", "  1(2())", "}"))
+})
+
 test_that("parentheses are deparsed", {
   expect_identical(parens_deparse(quote((1))), "(1)")
   expect_identical(parens_deparse(quote(({ 1; 2 }))), c("({", "  1", "  2", "})"))

@@ -23,6 +23,13 @@ expect_condition <- function(expr,
   invisible(object)
 }
 
+expect_no_error <- function(...) {
+  expect_error(regexp = NA, ...)
+}
+expect_no_error_ <- function(object, ...) {
+  expect_error(object, regexp = NA, ...)
+}
+
 with_verbose_retirement <- function(expr) {
   with_options(lifecycle_force_verbose_retirement = TRUE, expr)
 }

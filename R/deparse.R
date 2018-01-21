@@ -90,7 +90,12 @@ new_lines <- function(width = peek_option("width"),
       c(self$lines, self$last_line)
     },
     get_indent = function(self) {
-      self$indent
+      if (self$indent < 0) {
+        warn("Internal error: Negative indent while deparsing")
+        0L
+      } else {
+        self$indent
+      }
     },
 
     push = function(self, lines) {
@@ -177,7 +182,7 @@ new_lines <- function(width = peek_option("width"),
       # on a single line
       if (!reset) {
         self$indent <- self$indent - 2L
-        node_poke_car(status, FALSE)
+        node_poke_car(status, TRUE)
         self$next_indent_sticky <- FALSE
       }
 
