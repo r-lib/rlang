@@ -21,6 +21,12 @@
 #'   inserted as an argument. If the vector is named, the names are
 #'   used as argument names.
 #'
+#' Use `qq_show()` to experiment with quasiquotation or debug the
+#' effect of unquoting operators. `qq_show()` quotes its input,
+#' processes unquoted parts, and prints the result with
+#' [expr_print()]. This expression printer has a clearer output than
+#' the base R printer (see the [documentation topic][expr_print]).
+#'
 #'
 #' @section Unquoting names:
 #'
@@ -132,6 +138,19 @@
 #' quo(how_many(!!(1 + 2)))
 #'
 #'
+#' # Note that when you unquote complex objects into an expression,
+#' # the base R printer may be a bit misleading. For anstance compare
+#' # the output of `expr()` and `quo()` (which uses a custom printer)
+#' # when we unquote an integer vector:
+#' expr(how_many(!!(1:10)))
+#' quo(how_many(!!(1:10)))
+#'
+#' # This is why it's often useful to use qq_show() to examine the
+#' # result of unquotation operators. It uses the same printer as
+#' # quosures but does not return anything:
+#' qq_show(how_many(!!(1:10)))
+#'
+#'
 #' # Use `!!!` to add multiple arguments to a function. Its argument
 #' # should evaluate to a list or vector:
 #' args <- list(1:3, na.rm = TRUE)
@@ -205,6 +224,12 @@ UQS <- function(x) {
   abort("`:=` can only be used within a quasiquoted argument")
 }
 
+#' @rdname quasiquotation
+#' @param expr An expression to be quasiquoted.
+#' @export
+qq_show <- function(expr) {
+  expr_print(enexpr(expr))
+}
 
 #' Process unquote operators in a captured expression
 #'
