@@ -113,13 +113,24 @@
 #' @aliases UQ UQE UQS
 #' @examples
 #' # Quasiquotation functions quote expressions like base::quote()
-#' quote(foo(bar))
-#' expr(foo(bar))
-#' quo(foo(bar))
+#' quote(how_many(this))
+#' expr(how_many(this))
+#' quo(how_many(this))
 #'
-#' # In addition, they support unquoting:
-#' expr(foo(!!(1 + 2)))
-#' quo(foo(!!(1 + 2)))
+#' # In addition, they support unquoting. Let's store symbols
+#' # (i.e. object names) in variables:
+#' this <- sym("apples")
+#' that <- sym("oranges")
+#'
+#' # With unquotation you can insert the contents of these variables
+#' # inside the quoted expression:
+#' expr(how_many(!!this))
+#' expr(how_many(!!that))
+#'
+#' # You can also insert values:
+#' expr(how_many(!!(1 + 2)))
+#' quo(how_many(!!(1 + 2)))
+#'
 #'
 #' # Use `!!!` to add multiple arguments to a function. Its argument
 #' # should evaluate to a list or vector:
