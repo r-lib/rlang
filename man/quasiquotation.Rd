@@ -11,6 +11,7 @@
 \alias{!!}
 \alias{!!!}
 \alias{:=}
+\alias{qq_show}
 \title{Quasiquotation of an expression}
 \usage{
 UQ(x)
@@ -22,12 +23,16 @@ UQS(x)
 "!!"(x)
 
 ":="(x, y)
+
+qq_show(expr)
 }
 \arguments{
 \item{x}{An expression to unquote.}
 
 \item{y}{An R expression that will be given the argument name
 supplied to \code{x}.}
+
+\item{expr}{An expression to be quasiquoted.}
 }
 \description{
 Quasiquotation is the mechanism that makes it possible to program
@@ -48,6 +53,12 @@ be embedded in the surrounding call, i.e. each element is
 inserted as an argument. If the vector is named, the names are
 used as argument names.
 }
+
+Use \code{qq_show()} to experiment with quasiquotation or debug the
+effect of unquoting operators. \code{qq_show()} quotes its input,
+processes unquoted parts, and prints the result with
+\code{\link[=expr_print]{expr_print()}}. This expression printer has a clearer output than
+the base R printer (see the \link[=expr_print]{documentation topic}).
 }
 \section{Unquoting names}{
 
@@ -153,6 +164,19 @@ expr(how_many(!!that))
 # You can also insert values:
 expr(how_many(!!(1 + 2)))
 quo(how_many(!!(1 + 2)))
+
+
+# Note that when you unquote complex objects into an expression,
+# the base R printer may be a bit misleading. For anstance compare
+# the output of `expr()` and `quo()` (which uses a custom printer)
+# when we unquote an integer vector:
+expr(how_many(!!(1:10)))
+quo(how_many(!!(1:10)))
+
+# This is why it's often useful to use qq_show() to examine the
+# result of unquotation operators. It uses the same printer as
+# quosures but does not return anything:
+qq_show(how_many(!!(1:10)))
 
 
 # Use `!!!` to add multiple arguments to a function. Its argument
