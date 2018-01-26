@@ -75,19 +75,19 @@ dots_splice <- function(...,
 #'
 #' This is a tool for advanced users. It captures dots, processes
 #' unquoting and splicing operators, and evaluates them. Unlike
-#' [dots_list()] and [dots_splice()], it does not flatten spliced
-#' objects. They are merely attributed a `spliced` class (see
-#' [splice()]). You can process spliced objects manually, perhaps with
-#' a custom predicate (see [flatten_if()]).
+#' [dots_list()], it does not flatten spliced objects, instead they
+#' are attributed a `spliced` class (see [splice()]). You can process
+#' spliced objects manually, perhaps with a custom predicate (see
+#' [flatten_if()]).
 #'
 #' @inheritParams dots_list
 #' @param ... Arguments to evaluate and process splicing operators.
 #' @export
 #' @examples
-#' dots <- dots_values(!!! list(1))
+#' dots <- dots_values(!!! list(1, 2), 3)
 #' dots
 #'
-#' # Flatten the spliced objects:
+#' # Flatten the objects marked as spliced:
 #' flatten_if(dots, is_spliced)
 dots_values <- function(...,
                         .ignore_empty = c("trailing", "none", "all")) {
