@@ -15,11 +15,12 @@ stable.
 The rlang package provides tools to work with core language features
 of R and the tidyverse:
 
-*   The __tidyeval__ framework, which is a well-founded system for non-standard
-    evaluation built on quasiquotation (`UQ()`) and quosures (`quo()`).
-    Read more in `vignette("tidy-evaluation")`.
+*   The __tidy eval__ framework, which is a well-founded system for
+    non-standard evaluation built on quasiquotation (`!!`) and
+    quosures (`quo()`).
 
-*   Consistent tools for working with base types:
+*   Consistent tools for working with base types. Note that overall
+    this is a work in progress that is still in flux:
 
     * Vectors, including construction (`lgl()`, `int()`, ...)
       coercion (`as_logical()`, `as_character()`, ...), and
@@ -27,9 +28,10 @@ of R and the tidyverse:
 
     * Language objects, such as calls (`lang()`) and symbols (`sym()`).
 
-    * Attributes, e.g. `set_attrs()`, `set_names()`.
+    * Attributes, e.g. `set_names()`.
 
-    * Functions, e.g. `new_function()`, `as_function()`, `is_function()`.
+    * Functions, e.g. `new_function()`, `as_function()`. The latter
+      supports the purrr-style formula notation for lambda functions.
 
     * Environments, e.g. `env()`, `env_has()`, `env_get()`, `env_bind()`,
       `env_unbind()`.
@@ -39,7 +41,6 @@ of R and the tidyverse:
 
 *   The condition (message, warning, error) and restart system.
 
-*   Call and context stacks.
 
 ## Installation
 
