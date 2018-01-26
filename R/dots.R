@@ -14,10 +14,10 @@
 #'
 #' @section Life cycle:
 #'
-#' * `dots_splice()` is experimental. It is part of our experiments
-#'   with dots semantics. We now lean towards adopting a single type
-#'   of dots semantics (those of `dots_list()`) where splicing is
-#'   explicit.
+#' * `dots_splice()` is in **questioning** stage. It is part of our
+#'   experiments with dots semantics. We now lean towards adopting a
+#'   single type of dots semantics (those of `dots_list()`) where
+#'   splicing is explicit.
 #'
 #' @param ... Arguments with explicit (`dots_list()`) or list
 #'   (`dots_splice()`) splicing semantics. The contents of spliced

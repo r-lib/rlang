@@ -43,7 +43,6 @@ changes.
 \item \code{\link[=set_attrs]{set_attrs()}}, \code{\link[=mut_attrs]{mut_attrs()}}
 \item \code{\link[=with_env]{with_env()}}, \code{\link[=locally]{locally()}}
 \item \code{\link[=env_poke]{env_poke()}}
-\item \code{\link[=dots_splice]{dots_splice()}}
 \item \code{\link[=env_bind_fns]{env_bind_fns()}}, \code{\link[=env_bind_exprs]{env_bind_exprs()}}
 \item \code{\link[=pkg_env]{pkg_env()}}, \code{\link[=pkg_env_name]{pkg_env_name()}}
 \item \code{\link[=scoped_env]{scoped_env()}}, \code{\link[=scoped_names]{scoped_names()}}, \code{\link[=scoped_envs]{scoped_envs()}}, \code{\link[=is_scoped]{is_scoped()}}
@@ -64,6 +63,7 @@ changes.
 
 \itemize{
 \item \code{\link[=UQ]{UQ()}}, \code{\link[=UQS]{UQS()}}
+\item \code{\link[=dots_splice]{dots_splice()}}
 \item \code{\link[=invoke]{invoke()}}
 \item \code{\link[=is_frame]{is_frame()}}, \code{\link[=global_frame]{global_frame()}}, \code{\link[=current_frame]{current_frame()}},
 \code{\link[=ctxt_frame]{ctxt_frame()}}, \code{\link[=call_frame]{call_frame()}}, \code{\link[=frame_position]{frame_position()}}

@@ -38,10 +38,10 @@ splicing, \link[=is_bare_list]{bare} lists are spliced as well.
 \section{Life cycle}{
 
 \itemize{
-\item \code{dots_splice()} is experimental. It is part of our experiments
-with dots semantics. We now lean towards adopting a single type
-of dots semantics (those of \code{dots_list()}) where splicing is
-explicit.
+\item \code{dots_splice()} is in \strong{questioning} stage. It is part of our
+experiments with dots semantics. We now lean towards adopting a
+single type of dots semantics (those of \code{dots_list()}) where
+splicing is explicit.
 }
 }
 
