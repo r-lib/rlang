@@ -17,7 +17,9 @@ data mask comprises multiple environment.}
 is only one environment deep, \code{top} should be the same as
 \code{bottom}.}
 
-\item{env}{The environment in which to evaluate \code{expr}.}
+\item{env}{The environment in which to evaluate \code{expr}. This
+environment is always ignored when evaluating quosures. Quosures
+are evaluated in their own environment.}
 }
 \description{
 This function is soft-deprecated as of rlang 0.2.0.

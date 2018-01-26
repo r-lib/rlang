@@ -12,7 +12,9 @@ eval_tidy(expr, data = NULL, env = caller_env())
 \item{data}{A data frame, or named list or vector. Alternatively, a
 data mask created with \code{\link[=as_data_mask]{as_data_mask()}} or \code{\link[=new_data_mask]{new_data_mask()}}.}
 
-\item{env}{The environment in which to evaluate \code{expr}.}
+\item{env}{The environment in which to evaluate \code{expr}. This
+environment is always ignored when evaluating quosures. Quosures
+are evaluated in their own environment.}
 }
 \description{
 \code{eval_tidy()} is a variant of \code{\link[base:eval]{base::eval()}} that powers the tidy

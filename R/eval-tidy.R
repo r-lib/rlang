@@ -24,7 +24,9 @@
 #' @param expr An expression to evaluate.
 #' @param data A data frame, or named list or vector. Alternatively, a
 #'   data mask created with [as_data_mask()] or [new_data_mask()].
-#' @param env The environment in which to evaluate `expr`.
+#' @param env The environment in which to evaluate `expr`. This
+#'   environment is always ignored when evaluating quosures. Quosures
+#'   are evaluated in their own environment.
 #' @seealso [quasiquotation] for the second leg of the tidy evaluation
 #'   framework.
 #' @export
