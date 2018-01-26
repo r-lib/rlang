@@ -3,12 +3,9 @@
 \name{dots_list}
 \alias{dots_list}
 \alias{tidy-dots}
-\alias{dots_splice}
-\title{Extract tidy dots}
+\title{Extract dots tidily}
 \usage{
 dots_list(..., .ignore_empty = c("trailing", "none", "all"))
-
-dots_splice(..., .ignore_empty = c("trailing", "none", "all"))
 }
 \arguments{
 \item{...}{Arguments with explicit (\code{dots_list()}) or list
@@ -38,35 +35,13 @@ functions taking dots with \code{dots_list()} tidy dots functions.
 Quasiquotation is an alternative to \code{do.call()} idioms and gives
 the users of your functions an uniform syntax to supply a variable
 number of arguments or a variable name.
-
+}
+\details{
 Note that while all tidy eval \link[=quotation]{quoting functions} have
 tidy dots semantics, not all tidy dots functions are quoting
 functions. \code{dots_list()} is for standard functions, not quoting
 functions.
 }
-\section{Comparison to tidy eval splicing}{
-
-
-The \code{!!!} operator works differently in \emph{standard} functions taking
-dots with \code{dots_list()} than in \emph{quoting} functions taking dots
-with \code{\link[=enexprs]{enexprs()}} or \code{\link[=enquos]{enquos()}}.
-\itemize{
-\item In quoting functions \code{!!!} disaggregates its argument (let's call
-it \code{x}) into as many objects as there are elements in
-\code{x}. E.g. \code{quo(foo(!!! c(1, 2)))} is completely equivalent to
-\code{quo(foo(1, 2))}. The creation of those separate objects has an
-overhead but is typically not important when manipulating calls
-because function calls typically take a small number of
-arguments.
-\item In standard functions, disaggregating the spliced collection
-would have a negative performance impact in cases where
-\code{dots_list()} is used to build up data structures from user
-inputs. To avoid this spliced inputs are marked with \code{\link[=splice]{splice()}}
-and the final list is built with (the equivalent of)
-\code{flatten_if(dots, is_spliced)}.
-}
-}
-
 \section{Life cycle}{
 
 \itemize{

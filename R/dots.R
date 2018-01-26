@@ -1,4 +1,4 @@
-#' Extract tidy dots
+#' Extract dots tidily
 #'
 #' @description
 #'
@@ -17,32 +17,13 @@
 #' the users of your functions an uniform syntax to supply a variable
 #' number of arguments or a variable name.
 #'
+#'
+#' @details
+#'
 #' Note that while all tidy eval [quoting functions][quotation] have
 #' tidy dots semantics, not all tidy dots functions are quoting
 #' functions. `dots_list()` is for standard functions, not quoting
 #' functions.
-#'
-#'
-#' @section Comparison to tidy eval splicing:
-#'
-#' The `!!!` operator works differently in _standard_ functions taking
-#' dots with `dots_list()` than in _quoting_ functions taking dots
-#' with [enexprs()] or [enquos()].
-#'
-#' * In quoting functions `!!!` disaggregates its argument (let's call
-#'   it `x`) into as many objects as there are elements in
-#'   `x`. E.g. `quo(foo(!!! c(1, 2)))` is completely equivalent to
-#'   `quo(foo(1, 2))`. The creation of those separate objects has an
-#'   overhead but is typically not important when manipulating calls
-#'   because function calls typically take a small number of
-#'   arguments.
-#'
-#' * In standard functions, disaggregating the spliced collection
-#'   would have a negative performance impact in cases where
-#'   `dots_list()` is used to build up data structures from user
-#'   inputs. To avoid this spliced inputs are marked with [splice()]
-#'   and the final list is built with (the equivalent of)
-#'   `flatten_if(dots, is_spliced)`.
 #'
 #'
 #' @section Life cycle:
@@ -59,12 +40,6 @@
 #'   For this reason we may break the API in the future by returning
 #'   `NULL` names when no arguments were named. Please use
 #'   `dots_list()` accordingly (i.e. `set_names(dots, names2(dots))`).
-#'
-#' * `dots_splice()` is in **questioning** stage. It is part of our
-#'   experiments with dots semantics. Compared to `dots_list()`,
-#'   `dots_splice()` automatically splices lists. We now lean towards
-#'   adopting a single type of dots semantics (those of `dots_list()`)
-#'   where splicing is explicit.
 #'
 #' @param ... Arguments with explicit (`dots_list()`) or list
 #'   (`dots_splice()`) splicing semantics. The contents of spliced
@@ -116,19 +91,66 @@ dots_list <- function(...,
   names(dots) <- names2(dots)
   dots
 }
-#' @rdname dots_list
-#' @export
-dots_splice <- function(...,
-                        .ignore_empty = c("trailing", "none", "all")) {
-  dots <- .Call(rlang_dots_flat_list, environment(), FALSE, .ignore_empty, TRUE)
-  names(dots) <- names2(dots)
-  dots
-}
 
-#' Splice a list within a vector
+#' Splice lists
 #'
-#' This function marks an object to be spliced. It is equivalent to
-#' using `!!!` in a function with [tidy dots semantics][dots_list].
+#' - `splice` marks an object to be spliced. It is equivalent to using
+#'   `!!!` in a function with [tidy dots semantics][dots_list].
+#'
+#' - `dots_splice()` is like [dots_list()] but automatically splices
+#'   list inputs.
+#'
+#'
+#' @section Standard splicing versus quoting splicing:
+#'
+#' The `!!!` operator works differently in _standard_ functions taking
+#' dots with `dots_list()` than in _quoting_ functions taking dots
+#' with [enexprs()] or [enquos()].
+#'
+#' * In quoting functions `!!!` disaggregates its argument (let's call
+#'   it `x`) into as many objects as there are elements in
+#'   `x`. E.g. `quo(foo(!!! c(1, 2)))` is completely equivalent to
+#'   `quo(foo(1, 2))`. The creation of those separate objects has an
+#'   overhead but is typically not important when manipulating calls
+#'   because function calls typically take a small number of
+#'   arguments.
+#'
+#' * In standard functions, disaggregating the spliced collection
+#'   would have a negative performance impact in cases where
+#'   `dots_list()` is used to build up data structures from user
+#'   inputs. To avoid this spliced inputs are marked with [splice()]
+#'   and the final list is built with (the equivalent of)
+#'   `flatten_if(dots, is_spliced)`.
+#'
+#' Most of the time you should not care about the difference. However
+#' if you use a standard function taking tidy dots within a quoting
+#' function, the `!!!` operator will disaggregate its argument because
+#' the behaviour of the quasiquoting function has priority. You might
+#' then observe some performance cost in edge cases. Here is one
+#' example where this would happen:
+#'
+#' ```
+#' purrr::rerun(10, dplyr::bind_rows(!!! x))
+#' ```
+#'
+#' `purrr::rerun()` is a quoting function and `dplyr::bind_rows()` is
+#' a standard function. Because `bind_rows()` is called _inside_
+#' `rerun()`, the list `x` will be disaggregated into a pairlist of
+#' arguments. To avoid this you can use `splice()` instead:
+#'
+#' ```
+#' purrr::rerun(10, dplyr::bind_rows(splice(x)))
+#' ```
+#'
+#'
+#' @section Life cycle:
+#'
+#' * `dots_splice()` is in **questioning** stage. It is part of our
+#'   experiments with dots semantics. Compared to `dots_list()`,
+#'   `dots_splice()` automatically splices lists. We now lean towards
+#'   adopting a single type of dots semantics (those of `dots_list()`)
+#'   where splicing is explicit.
+#'
 #'
 #' @param x A list to splice.
 #'
@@ -149,6 +171,15 @@ is_spliced <- function(x) {
 #' @export
 is_spliced_bare <- function(x) {
   is_bare_list(x) || is_spliced(x)
+}
+#' @rdname splice
+#' @inheritParams dots_list
+#' @export
+dots_splice <- function(...,
+                        .ignore_empty = c("trailing", "none", "all")) {
+  dots <- .Call(rlang_dots_flat_list, environment(), FALSE, .ignore_empty, TRUE)
+  names(dots) <- names2(dots)
+  dots
 }
 
 

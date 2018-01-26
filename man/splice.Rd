@@ -4,19 +4,89 @@
 \alias{splice}
 \alias{is_spliced}
 \alias{is_spliced_bare}
-\title{Splice a list within a vector}
+\alias{dots_splice}
+\title{Splice lists}
 \usage{
 splice(x)
 
 is_spliced(x)
 
 is_spliced_bare(x)
+
+dots_splice(..., .ignore_empty = c("trailing", "none", "all"))
 }
 \arguments{
 \item{x}{A list to splice.}
+
+\item{...}{Arguments with explicit (\code{dots_list()}) or list
+(\code{dots_splice()}) splicing semantics. The contents of spliced
+arguments are embedded in the returned list.}
+
+\item{.ignore_empty}{Whether to ignore empty arguments. Can be one
+of \code{"trailing"}, \code{"none"}, \code{"all"}. If \code{"trailing"}, only the
+last argument is ignored if it is empty.}
 }
 \description{
-This function marks an object to be spliced. It is equivalent to
-using \code{!!!} in a function with \link[=dots_list]{tidy dots semantics}.
+\itemize{
+\item \code{splice} marks an object to be spliced. It is equivalent to using
+\code{!!!} in a function with \link[=dots_list]{tidy dots semantics}.
 }
+}
+\details{
+\itemize{
+\item \code{dots_splice()} is like \code{\link[=dots_list]{dots_list()}} but automatically splices
+list inputs.
+}
+}
+\section{Standard splicing versus quoting splicing}{
+
+
+The \code{!!!} operator works differently in \emph{standard} functions taking
+dots with \code{dots_list()} than in \emph{quoting} functions taking dots
+with \code{\link[=enexprs]{enexprs()}} or \code{\link[=enquos]{enquos()}}.
+\itemize{
+\item In quoting functions \code{!!!} disaggregates its argument (let's call
+it \code{x}) into as many objects as there are elements in
+\code{x}. E.g. \code{quo(foo(!!! c(1, 2)))} is completely equivalent to
+\code{quo(foo(1, 2))}. The creation of those separate objects has an
+overhead but is typically not important when manipulating calls
+because function calls typically take a small number of
+arguments.
+\item In standard functions, disaggregating the spliced collection
+would have a negative performance impact in cases where
+\code{dots_list()} is used to build up data structures from user
+inputs. To avoid this spliced inputs are marked with \code{\link[=splice]{splice()}}
+and the final list is built with (the equivalent of)
+\code{flatten_if(dots, is_spliced)}.
+}
+
+Most of the time you should not care about the difference. However
+if you use a standard function taking tidy dots within a quoting
+function, the \code{!!!} operator will disaggregate its argument because
+the behaviour of the quasiquoting function has priority. You might
+then observe some performance cost in edge cases. Here is one
+example where this would happen:\preformatted{purrr::rerun(10, dplyr::bind_rows(!!! x))
+}
+
+\code{purrr::rerun()} is a quoting function and \code{dplyr::bind_rows()} is
+a standard function. Because \code{bind_rows()} is called \emph{inside}
+\code{rerun()}, the list \code{x} will be disaggregated into a pairlist of
+arguments. To avoid this you can use \code{splice()} instead:\preformatted{purrr::rerun(10, dplyr::bind_rows(splice(x)))
+}
+}
+
+\section{Life cycle}{
+
+\itemize{
+\item \code{dots_splice()} is in \strong{questioning} stage. It is part of our
+experiments with dots semantics. Compared to \code{dots_list()},
+\code{dots_splice()} automatically splices lists. We now lean towards
+adopting a single type of dots semantics (those of \code{dots_list()})
+where splicing is explicit.
+\item \code{splice()} is in questioning stage. It is not clear whether it is
+really needed as there are other ways to avoid the performance
+issue discussed in the section above.
+}
+}
+
 \keyword{internal}
