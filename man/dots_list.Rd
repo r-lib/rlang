@@ -57,11 +57,6 @@ allocating an empty character vector of names can be expensive.
 For this reason we may break the API in the future by returning
 \code{NULL} names when no arguments were named. Please use
 \code{dots_list()} accordingly (i.e. \code{set_names(dots, names2(dots))}).
-\item \code{dots_splice()} is in \strong{questioning} stage. It is part of our
-experiments with dots semantics. Compared to \code{dots_list()},
-\code{dots_splice()} automatically splices lists. We now lean towards
-adopting a single type of dots semantics (those of \code{dots_list()})
-where splicing is explicit.
 }
 }
 

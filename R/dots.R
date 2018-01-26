@@ -151,6 +151,10 @@ dots_list <- function(...,
 #'   adopting a single type of dots semantics (those of `dots_list()`)
 #'   where splicing is explicit.
 #'
+#' * `splice()` is in questioning stage. It is not clear whether it is
+#'   really needed as there are other ways to avoid the performance
+#'   issue discussed in the section above.
+#'
 #'
 #' @param x A list to splice.
 #'

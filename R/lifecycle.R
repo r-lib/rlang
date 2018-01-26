@@ -67,7 +67,7 @@
 #'
 #' * [UQ()], [UQS()]
 #'
-#' * [dots_splice()]
+#' * [dots_splice()], [splice()]
 #' * [invoke()]
 #'
 #' * [is_frame()], [global_frame()], [current_frame()],

@@ -345,6 +345,9 @@ lifecycle status of exported functions.
   `node_poke_`. This change follows a new naming convention in rlang
   where mutation is referred to as "poking".
 
+* `splice()` is now in questioning stage as it is not needed given the
+  `!!!` operator works in functions taking dots with `dots_list()`.
+
 
 # rlang 0.1.6
 

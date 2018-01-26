@@ -63,7 +63,7 @@ changes.
 
 \itemize{
 \item \code{\link[=UQ]{UQ()}}, \code{\link[=UQS]{UQS()}}
-\item \code{\link[=dots_splice]{dots_splice()}}
+\item \code{\link[=dots_splice]{dots_splice()}}, \code{\link[=splice]{splice()}}
 \item \code{\link[=invoke]{invoke()}}
 \item \code{\link[=is_frame]{is_frame()}}, \code{\link[=global_frame]{global_frame()}}, \code{\link[=current_frame]{current_frame()}},
 \code{\link[=ctxt_frame]{ctxt_frame()}}, \code{\link[=call_frame]{call_frame()}}, \code{\link[=frame_position]{frame_position()}}
