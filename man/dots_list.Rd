@@ -2,8 +2,9 @@
 % Please edit documentation in R/dots.R
 \name{dots_list}
 \alias{dots_list}
+\alias{tidy-dots}
 \alias{dots_splice}
-\title{Extract dots with splicing semantics}
+\title{Extract tidy dots}
 \usage{
 dots_list(..., .ignore_empty = c("trailing", "none", "all"))
 
@@ -23,40 +24,94 @@ A list of arguments. This list is always named: unnamed
 arguments are named with the empty string \code{""}.
 }
 \description{
-These functions evaluate all arguments contained in \code{...} and
-return them as a list. They both splice their arguments if they
-qualify for splicing. See \code{\link[=ll]{ll()}} for information about splicing
-and below for the kind of arguments that qualify for splicing.
+\code{dots_list(...)} is equivalent to \code{list(...)} but provides tidy
+dots semantics:
+\itemize{
+\item You can splice other lists with the
+\link[=quasiquotation]{unquote-splice} \code{!!!} operator.
+\item You can unquote names by using the \link[=quasiquotation]{unquote}
+operator \code{!!} on the left-hand side of \code{:=}.
 }
-\details{
-\code{dots_list()} has \emph{explicit splicing semantics}: it splices lists
-that are explicitly marked for \link[=ll]{splicing} with the
-\code{\link[=splice]{splice()}} adjective. \code{dots_splice()} on the other hand has \emph{list
-splicing semantics}: in addition to lists marked explicitly for
-splicing, \link[=is_bare_list]{bare} lists are spliced as well.
+
+We call quasiquotation support in dots \strong{tidy dots} semantics and
+functions taking dots with \code{dots_list()} tidy dots functions.
+Quasiquotation is an alternative to \code{do.call()} idioms and gives
+the users of your functions an uniform syntax to supply a variable
+number of arguments or a variable name.
+
+Note that while all tidy eval \link[=quotation]{quoting functions} have
+tidy dots semantics, not all tidy dots functions are quoting
+functions. \code{dots_list()} is for standard functions, not quoting
+functions.
 }
+\section{Comparison to tidy eval splicing}{
+
+
+The \code{!!!} operator works differently in \emph{standard} functions taking
+dots with \code{dots_list()} than in \emph{quoting} functions taking dots
+with \code{\link[=enexprs]{enexprs()}} or \code{\link[=enquos]{enquos()}}.
+\itemize{
+\item In quoting functions \code{!!!} disaggregates its argument (let's call
+it \code{x}) into as many objects as there are elements in
+\code{x}. E.g. \code{quo(foo(!!! c(1, 2)))} is completely equivalent to
+\code{quo(foo(1, 2))}. The creation of those separate objects has an
+overhead but is typically not important when manipulating calls
+because function calls typically take a small number of
+arguments.
+\item In standard functions, disaggregating the spliced collection
+would have a negative performance impact in cases where
+\code{dots_list()} is used to build up data structures from user
+inputs. To avoid this spliced inputs are marked with \code{\link[=splice]{splice()}}
+and the final list is built with (the equivalent of)
+\code{flatten_if(dots, is_spliced)}.
+}
+}
+
 \section{Life cycle}{
 
 \itemize{
+\item \code{dots_list()} returns named dots, even if no names were supplied.
+This behaviour is for consistency with dots returned by \code{\link[=exprs]{exprs()}}
+or \code{\link[=quos]{quos()}} or their capturing variants. However we now question
+this feature. It makes sense in quoting functions that are
+building up function calls and where usage of \code{\link[=names2]{names2()}} was
+rather systematic before tidy evaluation. However in the case of
+standard functions such as created by \code{dots_list()}, the cost of
+allocating an empty character vector of names can be expensive.
+
+For this reason we may break the API in the future by returning
+\code{NULL} names when no arguments were named. Please use
+\code{dots_list()} accordingly (i.e. \code{set_names(dots, names2(dots))}).
 \item \code{dots_splice()} is in \strong{questioning} stage. It is part of our
-experiments with dots semantics. We now lean towards adopting a
-single type of dots semantics (those of \code{dots_list()}) where
-splicing is explicit.
+experiments with dots semantics. Compared to \code{dots_list()},
+\code{dots_splice()} automatically splices lists. We now lean towards
+adopting a single type of dots semantics (those of \code{dots_list()})
+where splicing is explicit.
 }
 }
 
 \examples{
-# Compared to simply using list(...) to capture dots, dots_list()
-# splices explicitly:
-x <- list(1, 2)
-dots_list(!!! x, 3)
+# Let's create a function that takes a variable number of arguments:
+numeric <- function(...) {
+  dots <- dots_list(...)
+  num <- as.numeric(dots)
+  set_names(num, names(dots))
+}
+numeric(1, 2, 3)
 
-# Unlike dots_splice(), it doesn't splice bare lists:
-dots_list(x, 3)
+# The main difference with list(...) is that dots_list(...) enables
+# the `!!!` syntax to splice lists:
+x <- list(2, 3)
+numeric(1, !!! x, 4)
 
-# Splicing is also helpful to workaround exact and partial matching
-# of arguments. Let's create a function taking named arguments and
-# dots:
+# As well as unquoting of names:
+nm <- "yup!"
+numeric(!!nm := 1)
+
+
+# One useful application of splicing is to work around exact and
+# partial matching of arguments. Let's create a function taking
+# named arguments and dots:
 fn <- function(data, ...) {
   dots_list(...)
 }
@@ -64,13 +119,9 @@ fn <- function(data, ...) {
 # You normally cannot pass an argument named `data` through the dots
 # as it will match `fn`'s `data` argument. The splicing syntax
 # provides a workaround:
-fn(some_data, !!! list(data = letters))
-
-# dots_splice() splices lists marked with splice() as well as bare
-# lists:
-x <- list(1, 2)
-dots_splice(!!! x, 3)
-dots_splice(x, 3)
+fn("wrong!", data = letters)  # exact matching of `data`
+fn("wrong!", dat = letters)   # partial matching of `data`
+fn(some_data, !!! list(data = letters))  # no matching
 }
 \seealso{
 \code{\link[=exprs]{exprs()}} for extracting dots without evaluation.
