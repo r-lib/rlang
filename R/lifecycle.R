@@ -42,7 +42,6 @@
 #' * [set_attrs()], [mut_attrs()]
 #' * [with_env()], [locally()]
 #' * [env_poke()]
-#' * [dots_splice()]
 #'
 #' * [env_bind_fns()], [env_bind_exprs()]
 #' * [pkg_env()], [pkg_env_name()]
@@ -68,6 +67,7 @@
 #'
 #' * [UQ()], [UQS()]
 #'
+#' * [dots_splice()], [splice()]
 #' * [invoke()]
 #'
 #' * [is_frame()], [global_frame()], [current_frame()],

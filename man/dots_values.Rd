@@ -16,15 +16,15 @@ last argument is ignored if it is empty.}
 \description{
 This is a tool for advanced users. It captures dots, processes
 unquoting and splicing operators, and evaluates them. Unlike
-\code{\link[=dots_list]{dots_list()}} and \code{\link[=dots_splice]{dots_splice()}}, it does not flatten spliced
-objects. They are merely attributed a \code{spliced} class (see
-\code{\link[=splice]{splice()}}). You can process spliced objects manually, perhaps with
-a custom predicate (see \code{\link[=flatten_if]{flatten_if()}}).
+\code{\link[=dots_list]{dots_list()}}, it does not flatten spliced objects, instead they
+are attributed a \code{spliced} class (see \code{\link[=splice]{splice()}}). You can process
+spliced objects manually, perhaps with a custom predicate (see
+\code{\link[=flatten_if]{flatten_if()}}).
 }
 \examples{
-dots <- dots_values(!!! list(1))
+dots <- dots_values(!!! list(1, 2), 3)
 dots
 
-# Flatten the spliced objects:
+# Flatten the objects marked as spliced:
 flatten_if(dots, is_spliced)
 }
