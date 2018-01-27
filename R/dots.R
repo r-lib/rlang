@@ -1,4 +1,4 @@
-#' Extract dots tidily
+#' Collect dots tidily
 #'
 #' @description
 #'

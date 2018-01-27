@@ -3,7 +3,7 @@
 \name{dots_list}
 \alias{dots_list}
 \alias{tidy-dots}
-\title{Extract dots tidily}
+\title{Collect dots tidily}
 \usage{
 dots_list(..., .ignore_empty = c("trailing", "none", "all"))
 }
