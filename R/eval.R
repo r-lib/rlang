@@ -175,7 +175,7 @@ locally <- function(expr) {
 #' that creates cleaner call traces because it does not inline the
 #' function and the arguments in the call (see examples). To achieve
 #' this, `invoke()` creates a child environment of `.env` with `.fn`
-#' and all arguments bound to new symbols (see [env_bury()]). It then
+#' and all arguments bound to new symbols (see [env_mask()]). It then
 #' uses the same strategy as [eval_bare()] to evaluate with minimal
 #' noise.
 #'
@@ -196,11 +196,16 @@ locally <- function(expr) {
 #' @param .args,... List of arguments (possibly named) to be passed to
 #'   `.fn`.
 #' @param .env The environment in which to call `.fn`.
-#' @param .bury A character vector of length 2. The first string
+#' @param .mask A character vector of length 2. The first string
 #'   specifies which name should the function have in the call
 #'   recorded in the evaluation stack. The second string specifies a
 #'   prefix for the argument names. Set `.bury` to `NULL` if you
 #'   prefer to inline the function and its arguments in the call.
+#' @param .bury This argument was soft-deprecated and renamed to
+#'   `.mask` in rlang 0.2.0. This is part of a larger change in
+#'   terminology. We are now referring to "overscoping" and
+#'   "symbol burying" as "masking", a friendlier and more familiar
+#'   term for R users (cf masked objects in the search path).
 #' @export
 #' @examples
 #' # invoke() has the same purpose as do.call():
@@ -226,10 +231,16 @@ locally <- function(expr) {
 #' # the argument prefix:
 #' invoke(call_inspect, mtcars, .bury = c("inspect!", "col"))
 invoke <- function(.fn, .args = list(), ...,
-                   .env = caller_env(), .bury = c(".fn", "")) {
+                   .env = caller_env(),
+                   .mask = c(".fn", ""),
+                   .bury) {
   args <- c(.args, list(...))
 
-  if (is_null(.bury) || !length(args)) {
+  if (!missing(.bury)) {
+    .mask <- .bury
+  }
+
+  if (is_null(.mask) || !length(args)) {
     if (is_scalar_character(.fn)) {
       .fn <- env_get(.env, .fn, inherit = TRUE)
     }
@@ -238,15 +249,15 @@ invoke <- function(.fn, .args = list(), ...,
   }
 
 
-  if (!is_character(.bury, 2L)) {
-    abort("`.bury` must be a character vector of length 2")
+  if (!is_character(.mask, 2L)) {
+    abort("`.mask` must be a character vector of length 2")
   }
-  arg_prefix <- .bury[[2]]
-  fn_nm <- .bury[[1]]
+  arg_prefix <- .mask[[2]]
+  fn_nm <- .mask[[1]]
 
   buried_nms <- paste0(arg_prefix, seq_along(args))
   buried_args <- set_names(args, buried_nms)
-  .env <- env_bury(.env, !!! buried_args)
+  .env <- env_mask(.env, !!! buried_args)
   args <- set_names(buried_nms, names(args))
   args <- syms(args)
 

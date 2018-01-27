@@ -4,8 +4,8 @@
 \alias{invoke}
 \title{Invoke a function with a list of arguments}
 \usage{
-invoke(.fn, .args = list(), ..., .env = caller_env(), .bury = c(".fn",
-  ""))
+invoke(.fn, .args = list(), ..., .env = caller_env(), .mask = c(".fn",
+  ""), .bury)
 }
 \arguments{
 \item{.fn}{A function to invoke. Can be a function object or the
@@ -16,11 +16,17 @@ name of a function in scope of \code{.env}.}
 
 \item{.env}{The environment in which to call \code{.fn}.}
 
-\item{.bury}{A character vector of length 2. The first string
+\item{.mask}{A character vector of length 2. The first string
 specifies which name should the function have in the call
 recorded in the evaluation stack. The second string specifies a
 prefix for the argument names. Set \code{.bury} to \code{NULL} if you
 prefer to inline the function and its arguments in the call.}
+
+\item{.bury}{This argument was soft-deprecated and renamed to
+\code{.mask} in rlang 0.2.0. This is part of a larger change in
+terminology. We are now referring to "overscoping" and
+"symbol burying" as "masking", a friendlier and more familiar
+term for R users (cf masked objects in the search path).}
 }
 \description{
 Normally, you invoke a R function by typing arguments manually. A
@@ -32,7 +38,7 @@ Technically, \code{invoke()} is basically a version of \code{\link[base:do.call]
 that creates cleaner call traces because it does not inline the
 function and the arguments in the call (see examples). To achieve
 this, \code{invoke()} creates a child environment of \code{.env} with \code{.fn}
-and all arguments bound to new symbols (see \code{\link[=env_bury]{env_bury()}}). It then
+and all arguments bound to new symbols (see \code{\link[=env_mask]{env_mask()}}). It then
 uses the same strategy as \code{\link[=eval_bare]{eval_bare()}} to evaluate with minimal
 noise.
 }
