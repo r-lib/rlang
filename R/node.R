@@ -2,13 +2,12 @@
 #'
 #' @description
 #'
-#' These functions are mostly useful to navigate ASTs which are
-#' organised as binary trees of [cons
-#' cells](https://en.wikipedia.org/wiki/CAR_and_CDR). They are low
-#' level getters and setters that don't perform any type checking. As
-#' such, they can easily make R crash. Their main purpose is to
-#' prototype C code for computing on the language and they are meant
-#' for R experts only.
+#' **Important**: These functions are for expert R programmers only.
+#' You should only use them if you feel comfortable manipulating low
+#' level R data structures at the C level. We export them at R level
+#' in order to make it easy to prototype C code. They don't perform
+#' any type checking and can crash R very easily (try to take the CAR
+#' of an integer vector --- save any important object beforehand!).
 #'
 #' @param x A language or pairlist node. Note that these functions are
 #'   barebones and do not perform any type checking.
@@ -21,33 +20,6 @@
 #'   [base::pairlist()] for an easier way of creating a linked list of
 #'   nodes.
 #' @keywords internal
-#' @examples
-#' # Changing a node component happens in place and can have side
-#' # effects. Let's create a language object and a copy of it:
-#' lang <- quote(foo(bar))
-#' copy <- lang
-#'
-#' # Using R's builtin operators to change the language tree does not
-#' # create side effects:
-#' copy[[2]] <- quote(baz)
-#' copy
-#' lang
-#'
-#' # On the other hand, the CAR and CDR operators operate in-place. Let's
-#' # create new objects since the previous examples triggered a copy:
-#' lang <- quote(foo(bar))
-#' copy <- lang
-#'
-#' # Now we change the argument pairlist of `copy`, making sure the new
-#' # arguments are NULL-terminated:
-#' node_poke_cdr(copy, node(quote(BAZ), NULL))
-#'
-#' # Or equivalently:
-#' node_poke_cdr(copy, pairlist(quote(BAZ)))
-#' copy
-#'
-#' # The original object has been changed in place:
-#' lang
 #' @name node
 NULL
 
