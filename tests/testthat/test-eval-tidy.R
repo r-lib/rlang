@@ -194,7 +194,7 @@ test_that("whole scope is purged", {
   )
   bottom <- child_env(mid, !!! data_mask_objects)
 
-  data_mask_clean(bottom)
+  overscope_clean(bottom)
 
   expect_identical(names(bottom), character(0))
   expect_identical(names(mid), character(0))

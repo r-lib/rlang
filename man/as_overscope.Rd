@@ -27,10 +27,12 @@ is only one environment deep, \code{top} should be the same as
 
 \item{enclosure}{The \code{parent} argument of \code{\link[=new_data_mask]{new_data_mask()}}.}
 
-\item{overscope}{The \code{mask} argument of \code{\link[=data_mask_clean]{data_mask_clean()}}}
+\item{overscope}{A data mask.}
 }
 \description{
-These functions have been soft-deprecated in rlang 0.2.0. Please use
-\code{\link[=as_data_mask]{as_data_mask()}}, \code{\link[=new_data_mask]{new_data_mask()}} and \code{\link[=data_mask_clean]{data_mask_clean()}} instead.
+These functions have been soft-deprecated in rlang 0.2.0. Please
+use \code{\link[=as_data_mask]{as_data_mask()}} and \code{\link[=new_data_mask]{new_data_mask()}} instead. We no longer
+require the mask to be cleaned up so \code{overscope_clean()} does not
+have a replacement.
 }
 \keyword{internal}

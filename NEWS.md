@@ -252,6 +252,10 @@ lifecycle status of exported functions.
   interface. These functions are only meant for developers of tidy
   evaluation interfaces.
 
+* We no longer require a data mask (previously called overscope) to be
+  cleaned up after evaluation. `overscope_clean()` is thus
+  soft-deprecated without replacement.
+
 
 ### Breaking changes
 

@@ -4,7 +4,6 @@
 \alias{as_data_mask}
 \alias{as_data_pronoun}
 \alias{new_data_mask}
-\alias{data_mask_clean}
 \title{Create a data mask}
 \usage{
 as_data_mask(data, parent = base_env())
@@ -12,8 +11,6 @@ as_data_mask(data, parent = base_env())
 as_data_pronoun(data)
 
 new_data_mask(bottom, top = bottom, parent = base_env())
-
-data_mask_clean(mask)
 }
 \arguments{
 \item{data}{A data frame or named vector of masking data.}
@@ -27,9 +24,6 @@ data mask comprises multiple environment.}
 \item{top}{The last environment of the data mask. If the data mask
 is only one environment deep, \code{top} should be the same as
 \code{bottom}.}
-
-\item{mask}{A data mask as created by \code{as_data_mask()} or
-\code{new_data_mask()}.}
 }
 \value{
 A data mask that you can supply to \code{\link[=eval_tidy]{eval_tidy()}}.
@@ -61,7 +55,7 @@ data frame columns in dplyr data masks are implemented with
 \link[base:delayedAssign]{active bindings}.
 }
 }
-\section{Constructing a data mask}{
+\section{Building your own data mask}{
 
 
 Creating a data mask for \code{\link[base:eval]{base::eval()}} is a simple matter of
@@ -89,20 +83,11 @@ gives more useful error messages than regular data frames or
 lists, i.e. when an object does not exist or if an user tries to
 overwrite an object.
 }
-}
 
-\section{Evaluating in a data mask}{
-
-
-To use a a data mask:
-\itemize{
-\item Supply it to \code{\link[=eval_tidy]{eval_tidy()}} as \code{data} argument. You can repeat
-this as many times as needed.
-\item When you are done evaluating use \code{data_mask_clean()} to empty the
-data mask. \code{\link[=eval_tidy]{eval_tidy()}} automatically calls it only if it
-created the data mask. If you created the mask it is your
-responsibility to clean it.
-}
+To use a a data mask, just supply it to \code{\link[=eval_tidy]{eval_tidy()}} as \code{data}
+argument. You can repeat this as many times as needed. Note that
+any objects created there (perhaps because of a call to \code{<-}) will
+persist in subsequent evaluations:
 }
 
 \section{Life cycle}{
@@ -138,8 +123,8 @@ cyl <- "user variable from the context"
 fn <- eval_tidy(quote(function() cyl), mask)
 fn()
 
-# This is why when you are done evaluating expressions it may be
-# necessary to clean up the data in the mask:
-data_mask_clean(mask)
-fn()
+# If new objects are created in the mask, they persist in the
+# subsequent calls:
+eval_tidy(quote(new <- cyl + am), mask)
+eval_tidy(quote(new * 2), mask)
 }

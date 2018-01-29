@@ -147,8 +147,10 @@ lang_tail <- function(lang) {
 
 #' Create an overscope
 #'
-#' These functions have been soft-deprecated in rlang 0.2.0. Please use
-#' [as_data_mask()], [new_data_mask()] and [data_mask_clean()] instead.
+#' These functions have been soft-deprecated in rlang 0.2.0. Please
+#' use [as_data_mask()] and [new_data_mask()] instead. We no longer
+#' require the mask to be cleaned up so `overscope_clean()` does not
+#' have a replacement.
 #'
 #' @inheritParams as_data_mask
 #' @param quo A [quosure][quotation].
@@ -165,7 +167,7 @@ new_overscope <- function(bottom, top = NULL, enclosure = base_env()) {
   new_data_mask(bottom, top, enclosure)
 }
 #' @rdname as_overscope
-#' @param overscope The `mask` argument of [data_mask_clean()]
+#' @param overscope A data mask.
 #' @export
 overscope_clean <- function(overscope) {
   invisible(.Call(rlang_data_mask_clean, overscope))
@@ -182,7 +184,7 @@ overscope_clean <- function(overscope) {
 #' @export
 eval_tidy_ <- function(expr, bottom, top = NULL, env = caller_env()) {
   data_mask <- new_overscope(bottom, top %||% bottom)
-  on.exit(data_mask_clean(data_mask))
+  on.exit(overscope_clean(data_mask))
   .Call(rlang_eval_tidy, expr, data_mask, environment())
 }
 #' Evaluate next quosure in a data mask

@@ -230,7 +230,6 @@ void R_init_rlang(r_dll_info* dll) {
   r_register_c_callable("rlang", "rlang_as_data_pronoun", (r_fn_ptr_t) &rlang_as_data_pronoun);
   r_register_c_callable("rlang", "rlang_as_data_mask", (r_fn_ptr_t) &rlang_as_data_mask);
   r_register_c_callable("rlang", "rlang_new_data_mask", (r_fn_ptr_t) &rlang_new_data_mask);
-  r_register_c_callable("rlang", "rlang_data_mask_clean", (r_fn_ptr_t) &rlang_data_mask_clean);
 
   // Experimental method for exporting C function pointers as actual R objects
   rlang_register_pointer("rlang", "rlang_test_is_spliceable", (r_fn_ptr_t) &rlang_is_clevel_spliceable);

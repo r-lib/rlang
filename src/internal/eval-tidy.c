@@ -258,6 +258,7 @@ static const char* data_mask_objects_names[DATA_MASK_OBJECTS_N] = {
   ".__tidyeval_data_mask__.", "~", ".top_env", ".env"
 };
 
+// Soft-deprecated in rlang 0.2.0
 sexp* rlang_data_mask_clean(sexp* mask) {
   sexp* bottom = r_env_parent(mask);
   sexp* top = r_env_get(mask, data_mask_top_env_sym);

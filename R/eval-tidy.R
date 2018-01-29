@@ -140,7 +140,7 @@ delayedAssign(".data", as_data_pronoun(list()))
 #'   [active bindings][base::delayedAssign].
 #'
 #'
-#' @section Constructing a data mask:
+#' @section Building your own data mask:
 #'
 #' Creating a data mask for [base::eval()] is a simple matter of
 #' creating an environment containing masking objects that has the
@@ -167,18 +167,10 @@ delayedAssign(".data", as_data_pronoun(list()))
 #'   lists, i.e. when an object does not exist or if an user tries to
 #'   overwrite an object.
 #'
-#'
-#' @section Evaluating in a data mask:
-#'
-#' To use a a data mask:
-#'
-#' * Supply it to [eval_tidy()] as `data` argument. You can repeat
-#'   this as many times as needed.
-#'
-#' * When you are done evaluating use `data_mask_clean()` to empty the
-#'   data mask. [eval_tidy()] automatically calls it only if it
-#'   created the data mask. If you created the mask it is your
-#'   responsibility to clean it.
+#' To use a a data mask, just supply it to [eval_tidy()] as `data`
+#' argument. You can repeat this as many times as needed. Note that
+#' any objects created there (perhaps because of a call to `<-`) will
+#' persist in subsequent evaluations:
 #'
 #'
 #' @section Life cycle:
@@ -217,10 +209,10 @@ delayedAssign(".data", as_data_pronoun(list()))
 #' fn <- eval_tidy(quote(function() cyl), mask)
 #' fn()
 #'
-#' # This is why when you are done evaluating expressions it may be
-#' # necessary to clean up the data in the mask:
-#' data_mask_clean(mask)
-#' fn()
+#' # If new objects are created in the mask, they persist in the
+#' # subsequent calls:
+#' eval_tidy(quote(new <- cyl + am), mask)
+#' eval_tidy(quote(new * 2), mask)
 as_data_mask <- function(data, parent = base_env()) {
   .Call(rlang_as_data_mask, data, parent)
 }
@@ -240,13 +232,6 @@ as_data_pronoun <- function(data) {
 #' @export
 new_data_mask <- function(bottom, top = bottom, parent = base_env()) {
   .Call(rlang_new_data_mask, bottom, top, parent)
-}
-#' @rdname as_data_mask
-#' @param mask A data mask as created by `as_data_mask()` or
-#'   `new_data_mask()`.
-#' @export
-data_mask_clean <- function(mask) {
-  invisible(.Call(rlang_data_mask_clean, mask))
 }
 
 
