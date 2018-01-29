@@ -48,7 +48,7 @@
 #' * [scoped_env()], [scoped_names()], [scoped_envs()], [is_scoped()]
 #' * [ns_env()], [ns_imports_env()], [ns_env_name()]
 #'
-#' * [is_pairlist()], [is_node()], [is_node_list()]
+#' * [is_pairlist()], [as_pairlist()], [is_node()], [is_node_list()]
 #' * [is_definition()], [new_definition()], [is_formulaish()],
 #'   [dots_definitions()]
 #'

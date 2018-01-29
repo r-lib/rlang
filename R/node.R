@@ -107,6 +107,13 @@ node_poke_tag <- function(x, newtag) {
 #' This transforms vector objects to a linked pairlist of nodes. See
 #' the [pairlist][node] type help page.
 #'
+#'
+#' @keywords internal
+#' @section Life cycle:
+#'
+#' `as_pairlist()` is experimental because we are still figuring out
+#' the naming scheme for pairlists and node-like objects.
+#'
 #' @param x An object to coerce.
 #' @export
 as_pairlist <- function(x) {

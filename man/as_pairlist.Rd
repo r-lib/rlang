@@ -13,3 +13,11 @@ as_pairlist(x)
 This transforms vector objects to a linked pairlist of nodes. See
 the \link[=node]{pairlist} type help page.
 }
+\section{Life cycle}{
+
+
+\code{as_pairlist()} is experimental because we are still figuring out
+the naming scheme for pairlists and node-like objects.
+}
+
+\keyword{internal}
