@@ -70,6 +70,11 @@ test_that("node_tree_clone() clones all nodes", {
 test_that("as_pairlist() converts to pairlist", {
   expect_identical(as_pairlist(letters), as.pairlist(letters))
   expect_error(as_pairlist(quote(foo)), "Can't convert a symbol to a pairlist node")
+
+  expect_identical(as_pairlist(NULL), NULL)
+
+  x <- pairlist(1, 2)
+  expect_identical(as_pairlist(x), x)
 })
 
 test_that("pairlist predicates detect pairlists", {

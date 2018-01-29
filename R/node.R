@@ -110,7 +110,7 @@ node_poke_tag <- function(x, newtag) {
 #' @param x An object to coerce.
 #' @export
 as_pairlist <- function(x) {
-  if (!is_vector(x)) {
+  if (! typeof(x) %in% c(atomic_types, "list", "pairlist", "NULL")) {
     abort_coercion(x, "pairlist")
   }
   as.vector(x, "pairlist")

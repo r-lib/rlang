@@ -214,6 +214,9 @@ See below for a complete list of changes.
   (#174). Previously it would always refer to the environment of the
   outermost quosure.
 
+* `as_pairlist()` (part of the experimental API) now supports `NULL`
+  and objects of type pairlist (#397).
+
 
 ## API changes
 
