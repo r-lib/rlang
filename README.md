@@ -1,8 +1,8 @@
 rlang <img src="man/figures/rlang.png" align="right" />
 =======================================================
 
-[![Build Status](https://travis-ci.org/tidyverse/rlang.svg?branch=master)](https://travis-ci.org/tidyverse/rlang)
-[![Coverage Status](https://codecov.io/gh/tidyverse/rlang/branch/master/graph/badge.svg)](https://codecov.io/github/tidyverse/rlang?branch=master)
+[![Build Status](https://travis-ci.org/r-lib/rlang.svg?branch=master)](https://travis-ci.org/r-lib/rlang)
+[![Coverage Status](https://codecov.io/gh/r-lib/rlang/branch/master/graph/badge.svg)](https://codecov.io/github/r-lib/rlang?branch=master)
 ![](https://img.shields.io/badge/lifecycle-maturing-blue.svg)
 
 **Important**: The rlang API is still maturing. Please see
@@ -54,5 +54,5 @@ Or install the development version from github with:
 
 ```r
 # install.packages("devtools")
-devtools::install_github("tidyverse/rlang", build_vignettes = TRUE)
+devtools::install_github("r-lib/rlang", build_vignettes = TRUE)
 ```
