@@ -217,6 +217,9 @@ See below for a complete list of changes.
 * `as_pairlist()` (part of the experimental API) now supports `NULL`
   and objects of type pairlist (#397).
 
+* Fixed a performance bug in `set_names()` that caused a full copy of
+  the vector names (@jimhester, #366).
+
 
 ## API changes
 
