@@ -37,6 +37,22 @@ static inline r_byte_t r_raw_get(sexp* x, r_ssize_t i) {
   return RAW(x)[i];
 }
 
+static inline void r_lgl_poke(sexp* x, r_ssize_t i, int y) {
+  LOGICAL(x)[i] = y;
+}
+static inline void r_int_poke(sexp* x, r_ssize_t i, int y) {
+  INTEGER(x)[i] = y;
+}
+static inline void r_dbl_poke(sexp* x, r_ssize_t i, double y) {
+  REAL(x)[i] = y;
+}
+static inline void r_cpl_poke(sexp* x, r_ssize_t i, r_complex_t y) {
+  COMPLEX(x)[i] = y;
+}
+static inline void r_raw_poke(sexp* x, r_ssize_t i, r_byte_t y) {
+  RAW(x)[i] = y;
+}
+
 sexp* r_vec_get(sexp* vec, r_ssize_t i);
 
 
