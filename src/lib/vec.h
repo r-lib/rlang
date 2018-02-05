@@ -69,9 +69,6 @@ static inline bool r_is_scalar_logical(sexp* x) {
   return r_typeof(x) == r_type_logical && r_length(x) == 1;
 }
 
-static inline sexp* r_scalar_lgl(bool x) {
-  return Rf_ScalarLogical(x);
-}
 static inline sexp* r_scalar_int(int x) {
   return Rf_ScalarInteger(x);
 }

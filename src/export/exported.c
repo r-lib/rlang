@@ -75,7 +75,7 @@ sexp* rlang_call_has_precedence(sexp* x, sexp* y, sexp* side) {
   } else {
     r_abort("`side` must be NULL, \"lhs\" or \"rhs\"");
   }
-  return r_scalar_lgl(has_predence);
+  return r_bool_as_logical(has_predence);
 }
 
 sexp* rlang_which_operator(sexp* call) {
@@ -166,23 +166,23 @@ sexp* rlang_new_call_node(sexp* car, sexp* cdr) {
 
 sexp* rlang_quo_is_missing(sexp* quo) {
   check_quosure(quo);
-  return r_scalar_lgl(quo_is_missing(quo));
+  return r_bool_as_logical(quo_is_missing(quo));
 }
 sexp* rlang_quo_is_symbol(sexp* quo) {
   check_quosure(quo);
-  return r_scalar_lgl(quo_is_symbol(quo));
+  return r_bool_as_logical(quo_is_symbol(quo));
 }
 sexp* rlang_quo_is_call(sexp* quo) {
   check_quosure(quo);
-  return r_scalar_lgl(quo_is_call(quo));
+  return r_bool_as_logical(quo_is_call(quo));
 }
 sexp* rlang_quo_is_symbolic(sexp* quo) {
   check_quosure(quo);
-  return r_scalar_lgl(quo_is_symbolic(quo));
+  return r_bool_as_logical(quo_is_symbolic(quo));
 }
 sexp* rlang_quo_is_null(sexp* quo) {
   check_quosure(quo);
-  return r_scalar_lgl(quo_is_null(quo));
+  return r_bool_as_logical(quo_is_null(quo));
 }
 
 
@@ -196,7 +196,7 @@ sexp* rlang_true_length(sexp* x) {
 }
 
 sexp* rlang_is_reference(sexp* x, sexp* y) {
-  return r_scalar_lgl(x == y);
+  return r_bool_as_logical(x == y);
 }
 
 sexp* rlang_missing_arg() {
@@ -208,7 +208,7 @@ sexp* rlang_duplicate(sexp* x, sexp* shallow) {
 }
 
 sexp* rlang_is_null(sexp* x) {
-  return r_scalar_lgl(r_is_null(x));
+  return r_bool_as_logical(r_is_null(x));
 }
 
 sexp* rlang_sexp_address(sexp* x) {
