@@ -29,9 +29,6 @@ bool r_is_integerish(sexp* x) {
   return r_lgl_get(out, 0);
 }
 
-bool r_is_list(sexp* x) {
-  return r_typeof(x) == VECSXP;
-}
 bool r_is_vector(sexp* x) {
   switch(r_typeof(x)) {
   case LGLSXP:

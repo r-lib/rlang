@@ -56,7 +56,6 @@ static inline void r_raw_poke(sexp* x, r_ssize_t i, r_byte_t y) {
 sexp* r_vec_get(sexp* vec, r_ssize_t i);
 
 
-bool r_is_list(sexp* x);
 bool r_is_vector(sexp* x);
 bool r_is_scalar_atomic(sexp* x);
 bool r_is_atomic(sexp* x);
