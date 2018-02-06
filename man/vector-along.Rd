@@ -49,6 +49,6 @@ rep_along(x, 1)
 list_along(x)
 }
 \seealso{
-vector-len
+new-vector
 }
 \keyword{internal}

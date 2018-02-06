@@ -431,3 +431,55 @@ cnd_message <- function(.type = NULL, ..., .msg = NULL) {
     call. = FALSE)
   message_cnd(.type = .type, ..., .msg = .msg)
 }
+
+#' Retired vector construction by length
+#'
+#' These functions were soft-deprecated and renamed with `new_` prefix
+#' in rlang 0.2.0. This is for consistency with other non-variadic
+#' object constructors.
+#'
+#' @inheritParams new-vector
+#' @name vector-len
+#' @keywords internal
+NULL
+
+#' @rdname vector-len
+#' @export
+lgl_len <- function(.n) {
+  new_logical(.n)
+}
+#' @rdname vector-len
+#' @export
+int_len <- function(.n) {
+  new_integer(.n)
+}
+#' @rdname vector-len
+#' @export
+dbl_len <- function(.n) {
+  new_double(.n)
+}
+#' @rdname vector-len
+#' @export
+chr_len <- function(.n) {
+  new_character(.n)
+}
+#' @rdname vector-len
+#' @export
+cpl_len <- function(.n) {
+  new_complex(.n)
+}
+#' @rdname vector-len
+#' @export
+raw_len <- function(.n) {
+  new_raw(.n)
+}
+#' @rdname vector-len
+#' @export
+bytes_len <- function(.n) {
+  new_raw(.n)
+}
+#' @rdname vector-len
+#' @export
+list_len <- function(.n) {
+  new_list(.n)
+}

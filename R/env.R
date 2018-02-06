@@ -287,7 +287,7 @@ env_tail <- function(env = caller_env(), sentinel = empty_env()) {
 #' @rdname env_parent
 #' @export
 env_parents <- function(env = caller_env()) {
-  out <- list_len(env_depth(env))
+  out <- new_list(env_depth(env))
 
   i <- 1L
   while (!is_empty_env(env)) {

@@ -150,7 +150,7 @@ ll <- function(...) {
 #' rep_along(x, 1)
 #' list_along(x)
 #' @name vector-along
-#' @seealso vector-len
+#' @seealso new-vector
 NULL
 
 #' @export
@@ -204,7 +204,7 @@ rep_along <- function(.x, .y) {
 #' Create vectors matching a given length
 #'
 #' These functions construct vectors of given length, with attributes
-#' specified via dots. Except for `list_len()` and `bytes_len()`, the
+#' specified via dots. Except for `new_list()` and `new_bytes()`, the
 #' empty vectors are filled with typed [missing] values. This is in
 #' contrast to the base function [base::vector()] which creates
 #' zero-filled vectors.
@@ -213,49 +213,44 @@ rep_along <- function(.x, .y) {
 #' @param .n The vector length.
 #' @keywords internal
 #' @examples
-#' list_len(10)
-#' lgl_len(10)
-#' @name vector-len
+#' new_list(10)
+#' new_logical(10)
+#' @name new-vector
 #' @seealso vector-along
 NULL
 
+#' @rdname new-vector
 #' @export
-#' @rdname vector-len
-lgl_len <- function(.n) {
+new_logical <- function(.n) {
   rep_len(na_lgl, .n)
 }
+#' @rdname new-vector
 #' @export
-#' @rdname vector-len
-int_len <- function(.n) {
+new_integer <- function(.n) {
   rep_len(na_int, .n)
 }
+#' @rdname new-vector
 #' @export
-#' @rdname vector-len
-dbl_len <- function(.n) {
+new_double <- function(.n) {
   rep_len(na_dbl, .n)
 }
+#' @rdname new-vector
 #' @export
-#' @rdname vector-len
-chr_len <- function(.n) {
+new_character <- function(.n) {
   rep_len(na_chr, .n)
 }
+#' @rdname new-vector
 #' @export
-#' @rdname vector-len
-cpl_len <- function(.n) {
+new_complex <- function(.n) {
   rep_len(na_cpl, .n)
 }
+#' @rdname new-vector
 #' @export
-#' @rdname vector-len
-raw_len <- function(.n) {
+new_raw <- function(.n) {
   vector("raw", .n)
 }
+#' @rdname new-vector
 #' @export
-#' @rdname vector-len
-bytes_len <- function(.n) {
-  vector("raw", .n)
-}
-#' @export
-#' @rdname vector-len
-list_len <- function(.n) {
+new_list <- function(.n) {
   vector("list", .n)
 }
