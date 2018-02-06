@@ -83,6 +83,12 @@ is_unary_lang <- function(x, name = NULL, ns = NULL) {
 is_binary_lang <- function(x, name = NULL, ns = NULL) {
   is_call(x, name, n = 2L, ns = ns)
 }
+#' @rdname is_lang
+#' @param quo A quosure to test.
+#' @export
+quo_is_lang <- function(quo) {
+  .Call(rlang_quo_is_call, quo)
+}
 
 #' Manipulate or access a call
 #'

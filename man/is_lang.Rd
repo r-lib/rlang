@@ -4,6 +4,7 @@
 \alias{is_lang}
 \alias{is_unary_lang}
 \alias{is_binary_lang}
+\alias{quo_is_lang}
 \title{Is object a call?}
 \usage{
 is_lang(x, name = NULL, n = NULL, ns = NULL)
@@ -11,6 +12,8 @@ is_lang(x, name = NULL, n = NULL, ns = NULL)
 is_unary_lang(x, name = NULL, ns = NULL)
 
 is_binary_lang(x, name = NULL, ns = NULL)
+
+quo_is_lang(quo)
 }
 \arguments{
 \item{x}{An object to test. If a formula, the right-hand side is
@@ -29,6 +32,8 @@ doesn't participate in the pattern-matching. If an empty string
 \code{""} and \code{x} is a namespaced call, \code{is_call()} returns
 \code{FALSE}. If any other string, \code{is_call()} checks that \code{x} is
 namespaced within \code{ns}.}
+
+\item{quo}{A quosure to test.}
 }
 \description{
 These functions are soft-deprecated, please use \code{\link[=is_call]{is_call()}} and its

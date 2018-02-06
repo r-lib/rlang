@@ -57,7 +57,7 @@
 #' # If it is a quosure, you can use the specialised type predicates
 #' # to check what is inside it:
 #' quo_is_symbol(quo)
-#' quo_is_lang(quo)
+#' quo_is_call(quo)
 #' quo_is_null(quo)
 #'
 #' # quo_is_missing() checks for a special kind of quosure, the one
@@ -90,7 +90,7 @@ quo_is_symbol <- function(quo) {
 }
 #' @rdname quosure
 #' @export
-quo_is_lang <- function(quo) {
+quo_is_call <- function(quo) {
   .Call(rlang_quo_is_call, quo)
 }
 #' @rdname quosure

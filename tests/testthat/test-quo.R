@@ -166,14 +166,14 @@ test_that("quosure deparser respects width", {
 test_that("quosure predicates work", {
   expect_true(quo_is_missing(quo()))
   expect_true(quo_is_symbol(quo(sym)))
-  expect_true(quo_is_lang(quo(call())))
+  expect_true(quo_is_call(quo(call())))
   expect_true(quo_is_symbolic(quo(sym)))
   expect_true(quo_is_symbolic(quo(call())))
   expect_true(quo_is_null(quo(NULL)))
 
   expect_false(quo_is_missing(quo(10L)))
   expect_false(quo_is_symbol(quo(10L)))
-  expect_false(quo_is_lang(quo(10L)))
+  expect_false(quo_is_call(quo(10L)))
   expect_false(quo_is_symbolic(quo(10L)))
   expect_false(quo_is_symbolic(quo(10L)))
   expect_false(quo_is_null(quo(10L)))

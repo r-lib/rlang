@@ -5,7 +5,7 @@
 \alias{is_quosure}
 \alias{quo_is_missing}
 \alias{quo_is_symbol}
-\alias{quo_is_lang}
+\alias{quo_is_call}
 \alias{quo_is_symbolic}
 \alias{quo_is_null}
 \alias{quo_get_expr}
@@ -21,7 +21,7 @@ quo_is_missing(quo)
 
 quo_is_symbol(quo)
 
-quo_is_lang(quo)
+quo_is_call(quo)
 
 quo_is_symbolic(quo)
 
@@ -99,7 +99,7 @@ is_quosure(quo)
 # If it is a quosure, you can use the specialised type predicates
 # to check what is inside it:
 quo_is_symbol(quo)
-quo_is_lang(quo)
+quo_is_call(quo)
 quo_is_null(quo)
 
 # quo_is_missing() checks for a special kind of quosure, the one
