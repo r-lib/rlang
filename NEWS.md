@@ -137,6 +137,9 @@ See below for a complete list of changes.
   reflect that it is a lossy operation that flattens all nested
   quosures.
 
+* `quo_is_symbol()` and `quo_is_call()` now take the same set of
+  arguments as `is_symbol()` and `is_call()`.
+
 
 ## Conditions
 

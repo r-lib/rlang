@@ -84,14 +84,17 @@ quo_is_missing <- function(quo) {
   .Call(rlang_quo_is_missing, quo)
 }
 #' @rdname quosure
+#' @param name The name of the symbol or function call. If `NULL` the
+#'   name is not tested.
 #' @export
-quo_is_symbol <- function(quo) {
-  .Call(rlang_quo_is_symbol, quo)
+quo_is_symbol <- function(quo, name = NULL) {
+  is_symbol(quo_get_expr(quo), name = name)
 }
 #' @rdname quosure
+#' @inheritParams is_call
 #' @export
-quo_is_call <- function(quo) {
-  .Call(rlang_quo_is_call, quo)
+quo_is_call <- function(quo, name = NULL, n = NULL, ns = NULL) {
+  is_call(quo_get_expr(quo), name = name, n = n, ns = ns)
 }
 #' @rdname quosure
 #' @export

@@ -19,9 +19,9 @@ is_quosure(x)
 
 quo_is_missing(quo)
 
-quo_is_symbol(quo)
+quo_is_symbol(quo, name = NULL)
 
-quo_is_call(quo)
+quo_is_call(quo, name = NULL, n = NULL, ns = NULL)
 
 quo_is_symbolic(quo)
 
@@ -41,6 +41,18 @@ is_quosures(x)
 \item{x}{An object to test.}
 
 \item{quo}{A quosure to test.}
+
+\item{name}{The name of the symbol or function call. If \code{NULL} the
+name is not tested.}
+
+\item{n}{An optional number of arguments that the call should
+match.}
+
+\item{ns}{The namespace of the call. If \code{NULL}, the namespace
+doesn't participate in the pattern-matching. If an empty string
+\code{""} and \code{x} is a namespaced call, \code{is_call()} returns
+\code{FALSE}. If any other string, \code{is_call()} checks that \code{x} is
+namespaced within \code{ns}.}
 
 \item{expr}{A new expression for the quosure.}
 
