@@ -131,76 +131,6 @@ ll <- function(...) {
 }
 
 
-# FIXME: The functions below might be best named with `new_` prefix
-
-#' Create vectors matching the length of a given vector
-#'
-#' These functions take the idea of [seq_along()] and generalise it to
-#' creating lists (`list_along`) and repeating values (`rep_along`).
-#' Except for `list_along()` and `raw_along()`, the empty vectors are
-#' filled with typed `missing` values.
-#'
-#' @inheritParams set_attrs
-#' @param .x A vector.
-#' @param .y Values to repeat.
-#' @keywords internal
-#' @examples
-#' x <- 0:5
-#' rep_along(x, 1:2)
-#' rep_along(x, 1)
-#' list_along(x)
-#' @name vector-along
-#' @seealso new-vector
-NULL
-
-#' @export
-#' @rdname vector-along
-lgl_along <- function(.x) {
-  rep_len(na_lgl, length(.x))
-}
-#' @export
-#' @rdname vector-along
-int_along <- function(.x) {
-  rep_len(na_int, length(.x))
-}
-#' @export
-#' @rdname vector-along
-dbl_along <- function(.x) {
-  rep_len(na_dbl, length(.x))
-}
-#' @export
-#' @rdname vector-along
-chr_along <- function(.x) {
-  rep_len(na_chr, length(.x))
-}
-#' @export
-#' @rdname vector-along
-cpl_along <- function(.x) {
-  rep_len(na_cpl, length(.x))
-}
-#' @export
-#' @rdname vector-along
-raw_along <- function(.x) {
-  vector("raw", length(.x))
-}
-#' @export
-#' @rdname vector-along
-bytes_along <- function(.x) {
-  vector("raw", length(.x))
-}
-#' @export
-#' @rdname vector-along
-list_along <- function(.x) {
-  vector("list", length(.x))
-}
-
-#' @export
-#' @rdname vector-along
-rep_along <- function(.x, .y) {
-  rep(.y, length.out = length(.x))
-}
-
-
 #' Create vectors matching a given length
 #'
 #' These functions construct vectors of given length, with attributes
@@ -216,7 +146,7 @@ rep_along <- function(.x, .y) {
 #' new_list(10)
 #' new_logical(10)
 #' @name new-vector
-#' @seealso vector-along
+#' @seealso new-vector-along
 NULL
 
 #' @rdname new-vector
@@ -253,4 +183,66 @@ new_raw <- function(.n) {
 #' @export
 new_list <- function(.n) {
   vector("list", .n)
+}
+
+#' Create vectors matching the length of a given vector
+#'
+#' These functions take the idea of [seq_along()] and generalise it to
+#' creating lists (`new_list_along`) and repeating values (`rep_along`).
+#' Except for `new_list_along()` and `new_raw_along()`, the empty
+#' vectors are filled with typed `missing` values.
+#'
+#' @inheritParams set_attrs
+#' @param .x A vector.
+#' @param .y Values to repeat.
+#' @keywords internal
+#' @examples
+#' x <- 0:5
+#' rep_along(x, 1:2)
+#' rep_along(x, 1)
+#' new_list_along(x)
+#' @name new-vector-along
+#' @seealso new-vector
+NULL
+
+#' @export
+#' @rdname new-vector-along
+new_logical_along <- function(.x) {
+  rep_len(na_lgl, length(.x))
+}
+#' @export
+#' @rdname new-vector-along
+new_integer_along <- function(.x) {
+  rep_len(na_int, length(.x))
+}
+#' @export
+#' @rdname new-vector-along
+new_double_along <- function(.x) {
+  rep_len(na_dbl, length(.x))
+}
+#' @export
+#' @rdname new-vector-along
+new_character_along <- function(.x) {
+  rep_len(na_chr, length(.x))
+}
+#' @export
+#' @rdname new-vector-along
+new_complex_along <- function(.x) {
+  rep_len(na_cpl, length(.x))
+}
+#' @export
+#' @rdname new-vector-along
+new_raw_along <- function(.x) {
+  vector("raw", length(.x))
+}
+#' @export
+#' @rdname new-vector-along
+new_list_along <- function(.x) {
+  vector("list", length(.x))
+}
+
+#' @export
+#' @rdname new-vector-along
+rep_along <- function(.x, .y) {
+  rep(.y, length.out = length(.x))
 }

@@ -40,6 +40,6 @@ new_list(10)
 new_logical(10)
 }
 \seealso{
-vector-along
+new-vector-along
 }
 \keyword{internal}
