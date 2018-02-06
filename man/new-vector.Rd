@@ -11,22 +11,25 @@
 \alias{new_list}
 \title{Create vectors matching a given length}
 \usage{
-new_logical(n)
+new_logical(n, names = NULL)
 
-new_integer(n)
+new_integer(n, names = NULL)
 
-new_double(n)
+new_double(n, names = NULL)
 
-new_character(n)
+new_character(n, names = NULL)
 
-new_complex(n)
+new_complex(n, names = NULL)
 
-new_raw(n)
+new_raw(n, names = NULL)
 
-new_list(n)
+new_list(n, names = NULL)
 }
 \arguments{
 \item{n}{The vector length.}
+
+\item{names}{Names for the new vector. This is passed to
+\code{\link[=set_names]{set_names()}} and thus supports renaming functions.}
 }
 \description{
 These functions construct vectors of given length, with attributes

@@ -147,6 +147,8 @@ ll <- function(...) {
 #' zero-filled vectors.
 #'
 #' @param n The vector length.
+#' @param names Names for the new vector. This is passed to
+#'   [set_names()] and thus supports renaming functions.
 #' @keywords internal
 #' @examples
 #' new_list(10)
@@ -157,38 +159,38 @@ NULL
 
 #' @rdname new-vector
 #' @export
-new_logical <- function(n) {
-  rep_len(na_lgl, n)
+new_logical <- function(n, names = NULL) {
+  set_names(rep_len(na_lgl, n), names)
 }
 #' @rdname new-vector
 #' @export
-new_integer <- function(n) {
-  rep_len(na_int, n)
+new_integer <- function(n, names = NULL) {
+  set_names(rep_len(na_int, n), names)
 }
 #' @rdname new-vector
 #' @export
-new_double <- function(n) {
-  rep_len(na_dbl, n)
+new_double <- function(n, names = NULL) {
+  set_names(rep_len(na_dbl, n), names)
 }
 #' @rdname new-vector
 #' @export
-new_character <- function(n) {
-  rep_len(na_chr, n)
+new_character <- function(n, names = NULL) {
+  set_names(rep_len(na_chr, n), names)
 }
 #' @rdname new-vector
 #' @export
-new_complex <- function(n) {
-  rep_len(na_cpl, n)
+new_complex <- function(n, names = NULL) {
+  set_names(rep_len(na_cpl, n), names)
 }
 #' @rdname new-vector
 #' @export
-new_raw <- function(n) {
-  vector("raw", n)
+new_raw <- function(n, names = NULL) {
+  set_names(vector("raw", n), names)
 }
 #' @rdname new-vector
 #' @export
-new_list <- function(n) {
-  vector("list", n)
+new_list <- function(n, names = NULL) {
+  set_names(vector("list", n), names)
 }
 
 #' Create vectors matching the length of a given vector
