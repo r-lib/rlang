@@ -97,6 +97,7 @@ extern sexp* rlang_eval_tidy(sexp*, sexp*, sexp*);
 extern sexp* rlang_as_data_pronoun(sexp*);
 extern sexp* rlang_env_binding_are_promise(sexp*, sexp*);
 extern sexp* rlang_env_unlock(sexp*);
+extern sexp* rlang_is_list(sexp*, sexp*);
 
 // Library initialisation defined below
 sexp* rlang_library_load();
@@ -215,6 +216,7 @@ static const r_callable r_callables[] = {
   {"rlang_as_data_pronoun",     (r_fn_ptr_t) &rlang_as_data_pronoun, 1},
   {"rlang_env_binding_are_promise", (r_fn_ptr_t) &rlang_env_binding_are_promise, 2},
   {"rlang_env_unlock",          (r_fn_ptr_t) &rlang_env_unlock, 1},
+  {"rlang_is_list",             (r_fn_ptr_t) &rlang_is_list, 2},
   {NULL, NULL, 0}
 };
 

@@ -265,3 +265,34 @@ sexp* rlang_vec_poke_range(sexp* x, sexp* offset,
   r_vec_poke_range(x, offset_size, y, from_size, to_size);
   return x;
 }
+
+
+// vec-list.h
+
+static inline r_ssize_t validate_n(sexp* n) {
+  switch (r_typeof(n)) {
+  case r_type_null:
+    return INT_MAX;
+  // Just coerce doubles to int for efficiency
+  case r_type_double:
+    if (r_length(n) == 1) {
+      return r_dbl_get(n, 0);
+    } else {
+      goto error;
+    }
+  case r_type_integer:
+    if (r_length(n) == 1) {
+      return r_int_get(n, 0);
+    } else {
+      goto error;
+    }
+  error:
+  default:
+    r_abort("`n` must be NULL or a scalar integer");
+  }
+}
+
+sexp* rlang_is_list(sexp* x, sexp* n_) {
+  r_ssize_t n = validate_n(n_);
+  return r_bool_as_shared_logical(r_is_list(x, n));
+}

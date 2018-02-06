@@ -29,9 +29,7 @@ NULL
 #' @export
 #' @rdname type-predicates
 is_list <- function(x, n = NULL) {
-  if (typeof(x) != "list") return(FALSE)
-  if (!is_null(n) && length(x) != n) return(FALSE)
-  TRUE
+  .Call(rlang_is_list, x, n)
 }
 
 parsable_atomic_types <- c("logical", "integer", "double", "complex", "character")
@@ -118,7 +116,7 @@ NULL
 #' @export
 #' @rdname scalar-type-predicates
 is_scalar_list <- function(x) {
-  is_list(x, n = 1)
+  .Call(rlang_is_list, x, 1L)
 }
 #' @export
 #' @rdname scalar-type-predicates
