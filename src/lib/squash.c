@@ -183,10 +183,19 @@ static sexp* squash(enum r_type kind, sexp* dots, bool (*is_spliceable)(sexp*), 
 typedef bool (*is_spliceable_t)(sexp*);
 
 bool r_is_spliced_bare(sexp* x) {
-  return r_is_list(x) && (!r_is_object(x) || Rf_inherits(x, "spliced"));
+  if (r_typeof(x) != r_type_list) {
+    return false;
+  }
+  if (!r_is_object(x)) {
+    return true;
+  }
+  return r_inherits(x, "spliced");
 }
 bool r_is_spliced(sexp* x) {
-  return r_is_list(x) && Rf_inherits(x, "spliced");
+  if (r_typeof(x) != r_type_list) {
+    return false;
+  }
+  return r_inherits(x, "spliced");
 }
 
 static is_spliceable_t predicate_pointer(sexp* x) {
