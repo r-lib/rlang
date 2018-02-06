@@ -12,24 +12,28 @@
 \alias{rep_along}
 \title{Create vectors matching the length of a given vector}
 \usage{
-new_logical_along(x)
+new_logical_along(x, names = base::names(x))
 
-new_integer_along(x)
+new_integer_along(x, names = base::names(x))
 
-new_double_along(x)
+new_double_along(x, names = base::names(x))
 
-new_character_along(x)
+new_character_along(x, names = base::names(x))
 
-new_complex_along(x)
+new_complex_along(x, names = base::names(x))
 
-new_raw_along(x)
+new_raw_along(x, names = base::names(x))
 
-new_list_along(x)
+new_list_along(x, names = base::names(x))
 
 rep_along(.x, .y)
 }
 \arguments{
 \item{x, .x}{A vector.}
+
+\item{names}{Names for the new vector. Defaults to the names of
+\code{x}. This is passed to \code{\link[=set_names]{set_names()}} and thus supports renaming
+functions.}
 
 \item{.y}{Values to repeat.}
 }
@@ -44,6 +48,10 @@ x <- 0:5
 rep_along(x, 1:2)
 rep_along(x, 1)
 new_list_along(x)
+
+# The default names are picked up from the input vector
+x <- c(a = "foo", b = "bar")
+new_character_along(x)
 }
 \seealso{
 new-vector

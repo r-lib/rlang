@@ -200,53 +200,59 @@ new_list <- function(n, names = NULL) {
 #' Except for `new_list_along()` and `new_raw_along()`, the empty
 #' vectors are filled with typed `missing` values.
 #'
-#' @inheritParams set_attrs
 #' @param x,.x A vector.
 #' @param .y Values to repeat.
+#' @param names Names for the new vector. Defaults to the names of
+#'   `x`. This is passed to [set_names()] and thus supports renaming
+#'   functions.
 #' @keywords internal
 #' @examples
 #' x <- 0:5
 #' rep_along(x, 1:2)
 #' rep_along(x, 1)
 #' new_list_along(x)
+#'
+#' # The default names are picked up from the input vector
+#' x <- c(a = "foo", b = "bar")
+#' new_character_along(x)
 #' @name new-vector-along
 #' @seealso new-vector
 NULL
 
 #' @export
 #' @rdname new-vector-along
-new_logical_along <- function(x) {
-  rep_len(na_lgl, length(x))
+new_logical_along <- function(x, names = base::names(x)) {
+  set_names(rep_len(na_lgl, length(x)), names)
 }
 #' @export
 #' @rdname new-vector-along
-new_integer_along <- function(x) {
-  rep_len(na_int, length(x))
+new_integer_along <- function(x, names = base::names(x)) {
+  set_names(rep_len(na_int, length(x)), names)
 }
 #' @export
 #' @rdname new-vector-along
-new_double_along <- function(x) {
-  rep_len(na_dbl, length(x))
+new_double_along <- function(x, names = base::names(x)) {
+  set_names(rep_len(na_dbl, length(x)), names)
 }
 #' @export
 #' @rdname new-vector-along
-new_character_along <- function(x) {
-  rep_len(na_chr, length(x))
+new_character_along <- function(x, names = base::names(x)) {
+  set_names(rep_len(na_chr, length(x)), names)
 }
 #' @export
 #' @rdname new-vector-along
-new_complex_along <- function(x) {
-  rep_len(na_cpl, length(x))
+new_complex_along <- function(x, names = base::names(x)) {
+  set_names(rep_len(na_cpl, length(x)), names)
 }
 #' @export
 #' @rdname new-vector-along
-new_raw_along <- function(x) {
-  vector("raw", length(x))
+new_raw_along <- function(x, names = base::names(x)) {
+  set_names(vector("raw", length(x)), names)
 }
 #' @export
 #' @rdname new-vector-along
-new_list_along <- function(x) {
-  vector("list", length(x))
+new_list_along <- function(x, names = base::names(x)) {
+  set_names(vector("list", length(x)), names)
 }
 
 #' @export
