@@ -524,4 +524,16 @@ bytes_along <- function(.x) {
 #' @export
 list_along <- function(.x) {
   new_list_along(.x)
+
+#' Deprecated list constructor
+#'
+#' `ll()` has been soft-deprecated and renamed to [list2()] in rlang
+#' 0.2.0. This is consistent with the new [call2()] constructor for
+#' calls with explicit `!!!` support.
+#'
+#' @inheritParams vector-construction
+#' @keywords internal
+#' @export
+ll <- function(...) {
+  .Call(rlang_dots_list, environment(), FALSE, "trailing", TRUE)
 }

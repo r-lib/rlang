@@ -112,6 +112,8 @@
 #' * [lang_args()] => [call_args()]
 #' * [lang_args_names()] => [call_args_names()]
 #'
+#' * [ll()] => [list2()]
+#'
 #'
 #' @section Deprecated functions and arguments:
 #'

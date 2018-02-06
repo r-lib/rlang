@@ -8,7 +8,7 @@
 \alias{cpl}
 \alias{chr}
 \alias{bytes}
-\alias{ll}
+\alias{list2}
 \title{Create vectors}
 \usage{
 lgl(...)
@@ -23,7 +23,7 @@ chr(..., .encoding = NULL)
 
 bytes(...)
 
-ll(...)
+list2(...)
 }
 \arguments{
 \item{...}{Components of the new vector. Bare lists and explicitly
@@ -40,7 +40,7 @@ you to be more explicit about the output type. Implicit coercions
 \link{vector-coercion}. In addition, all constructors support splicing:
 if you supply \link[=is_bare_list]{bare} lists or \link[=is_spliced]{explicitly
 spliced} lists, their contents are spliced into the
-output vectors (see below for details). \code{ll()} is a list
+output vectors (see below for details). \code{list2()} is a list
 constructor similar to \code{\link[base:list]{base::list()}} but with splicing semantics.
 }
 \section{Splicing}{
@@ -48,7 +48,7 @@ constructor similar to \code{\link[base:list]{base::list()}} but with splicing s
 
 Splicing is an operation similar to flattening one level of nested
 lists, e.g. with \code{\link[=unlist]{base::unlist(x, recursive =
-FALSE)}} or \code{purrr::flatten()}. \code{ll()} returns its arguments as a
+FALSE)}} or \code{purrr::flatten()}. \code{list2()} returns its arguments as a
 list, just like \code{list()} would, but inner lists qualifying for
 splicing are flattened. That is, their contents are embedded in the
 surrounding list. Similarly, \code{chr()} concatenates its arguments and
@@ -61,16 +61,20 @@ type of splicing semantics. All the atomic constructors like
 and \link[=is_spliced]{explicitly spliced} lists are spliced.
 
 There are two list constructors with different splicing
-semantics. \code{ll()} only splices lists explicitly marked with
+semantics. \code{list2()} only splices lists explicitly marked with
 \code{\link[=splice]{splice()}}.
 }
 
 \section{Life cycle}{
 
-
-The splicing support in these functions is experimental, expect API
-changes. We now tend to think that splicing should be explicit
-rather than automatic.
+\itemize{
+\item The splicing support in these functions is experimental, expect
+API changes. We now tend to think that splicing should be
+explicit rather than automatic.
+\item \code{ll()} was renamed to \code{list2()} in rlang 0.2.0. This is
+consistent with \code{call2()} which is another object constructor
+with \code{!!!} support.
+}
 }
 
 \examples{
@@ -107,8 +111,8 @@ bytes(1:10)
 bytes(0x01, 0xff, c(0x03, 0x05), list(10, 20, 30L))
 
 # The list constructor has explicit splicing semantics:
-ll(1, list(2))
+list2(1, list(2))
 
 # Note that explicitly spliced lists are always spliced:
-ll(!!! list(1, 2))
+list2(!!! list(1, 2))
 }

@@ -104,6 +104,7 @@ changes.
 \item \code{\link[=lang_name]{lang_name()}} => \code{\link[=call_name]{call_name()}}
 \item \code{\link[=lang_args]{lang_args()}} => \code{\link[=call_args]{call_args()}}
 \item \code{\link[=lang_args_names]{lang_args_names()}} => \code{\link[=call_args_names]{call_args_names()}}
+\item \code{\link[=ll]{ll()}} => \code{\link[=list2]{list2()}}
 }
 }
 
