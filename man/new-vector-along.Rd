@@ -12,24 +12,24 @@
 \alias{rep_along}
 \title{Create vectors matching the length of a given vector}
 \usage{
-new_logical_along(.x)
+new_logical_along(x)
 
-new_integer_along(.x)
+new_integer_along(x)
 
-new_double_along(.x)
+new_double_along(x)
 
-new_character_along(.x)
+new_character_along(x)
 
-new_complex_along(.x)
+new_complex_along(x)
 
-new_raw_along(.x)
+new_raw_along(x)
 
-new_list_along(.x)
+new_list_along(x)
 
 rep_along(.x, .y)
 }
 \arguments{
-\item{.x}{A vector.}
+\item{x, .x}{A vector.}
 
 \item{.y}{Values to repeat.}
 }

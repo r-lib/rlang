@@ -53,8 +53,6 @@ bytes_along(.x)
 list_along(.x)
 }
 \arguments{
-\item{.n}{The vector length.}
-
 \item{.x}{A vector.}
 }
 \description{
