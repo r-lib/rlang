@@ -32,8 +32,7 @@ rep_along(.x, .y)
 \item{x, .x}{A vector.}
 
 \item{names}{Names for the new vector. Defaults to the names of
-\code{x}. This is passed to \code{\link[=set_names]{set_names()}} and thus supports renaming
-functions.}
+\code{x}.}
 
 \item{.y}{Values to repeat.}
 }

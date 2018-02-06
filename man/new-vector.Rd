@@ -28,8 +28,7 @@ new_list(n, names = NULL)
 \arguments{
 \item{n}{The vector length.}
 
-\item{names}{Names for the new vector. This is passed to
-\code{\link[=set_names]{set_names()}} and thus supports renaming functions.}
+\item{names}{Names for the new vector.}
 }
 \description{
 These functions construct vectors of given length, with attributes

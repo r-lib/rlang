@@ -147,8 +147,7 @@ ll <- function(...) {
 #' zero-filled vectors.
 #'
 #' @param n The vector length.
-#' @param names Names for the new vector. This is passed to
-#'   [set_names()] and thus supports renaming functions.
+#' @param names Names for the new vector.
 #' @keywords internal
 #' @examples
 #' new_list(10)
@@ -203,8 +202,7 @@ new_list <- function(n, names = NULL) {
 #' @param x,.x A vector.
 #' @param .y Values to repeat.
 #' @param names Names for the new vector. Defaults to the names of
-#'   `x`. This is passed to [set_names()] and thus supports renaming
-#'   functions.
+#'   `x`.
 #' @keywords internal
 #' @examples
 #' x <- 0:5
