@@ -8,6 +8,8 @@
 #' spliced][is_spliced] lists, their contents are spliced into the
 #' output vectors (see below for details). `list2()` is a list
 #' constructor similar to [base::list()] but with splicing semantics.
+#' `ll()` is an alias to `list2()` intended as a shorthand.
+#'
 #'
 #' @section Splicing:
 #'
@@ -35,10 +37,6 @@
 #' * The splicing support in these functions is experimental, expect
 #'   API changes. We now tend to think that splicing should be
 #'   explicit rather than automatic.
-#'
-#' * `ll()` was renamed to `list2()` in rlang 0.2.0. This is
-#'   consistent with `call2()` which is another object constructor
-#'   with `!!!` support.
 #'
 #' @param ... Components of the new vector. Bare lists and explicitly
 #'   spliced lists are spliced.
@@ -131,6 +129,11 @@ bytes <- function(...) {
 #' # Note that explicitly spliced lists are always spliced:
 #' list2(!!! list(1, 2))
 list2 <- function(...) {
+  .Call(rlang_dots_list, environment(), FALSE, "trailing", TRUE)
+}
+#' @rdname vector-construction
+#' @export
+ll <- function(...) {
   .Call(rlang_dots_list, environment(), FALSE, "trailing", TRUE)
 }
 

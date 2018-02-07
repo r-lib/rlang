@@ -9,6 +9,7 @@
 \alias{chr}
 \alias{bytes}
 \alias{list2}
+\alias{ll}
 \title{Create vectors}
 \usage{
 lgl(...)
@@ -24,6 +25,8 @@ chr(..., .encoding = NULL)
 bytes(...)
 
 list2(...)
+
+ll(...)
 }
 \arguments{
 \item{...}{Components of the new vector. Bare lists and explicitly
@@ -42,6 +45,7 @@ if you supply \link[=is_bare_list]{bare} lists or \link[=is_spliced]{explicitly
 spliced} lists, their contents are spliced into the
 output vectors (see below for details). \code{list2()} is a list
 constructor similar to \code{\link[base:list]{base::list()}} but with splicing semantics.
+\code{ll()} is an alias to \code{list2()} intended as a shorthand.
 }
 \section{Splicing}{
 
@@ -71,9 +75,6 @@ semantics. \code{list2()} only splices lists explicitly marked with
 \item The splicing support in these functions is experimental, expect
 API changes. We now tend to think that splicing should be
 explicit rather than automatic.
-\item \code{ll()} was renamed to \code{list2()} in rlang 0.2.0. This is
-consistent with \code{call2()} which is another object constructor
-with \code{!!!} support.
 }
 }
 

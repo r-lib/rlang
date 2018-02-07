@@ -88,7 +88,7 @@ test_that("list2() splices names", {
   expect_identical(list2(a = c(A = TRUE), b = c(B = FALSE)), list(a = c(A = TRUE), b = c(B = FALSE)))
 })
 
-test_that("retired ll() still works", {
+test_that("ll() is an alias to list2()", {
   expect_identical(ll(!!! list(1, 2)), list(1, 2))
 })
 

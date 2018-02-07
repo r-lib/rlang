@@ -365,10 +365,11 @@ lifecycle status of exported functions.
   with `new_` prefix, e.g. `new_logical()` and `new_integer()`. This
   is for consistency with other non-variadic object constructors.
 
-* `ll()` has been renamed to `list2()`. This is consistent with the
-  new `call2()` constructor for calls. `list2()` and `call2()` are
+* `ll()` is now an alias to `list2()`. This is consistent with the new
+  `call2()` constructor for calls. `list2()` and `call2()` are
   versions of `list()` and `call()` that support splicing of lists
-  with `!!!`.
+  with `!!!`. `ll()` remains around as a shorthand for users who like
+  its conciseness.
 
 
 # rlang 0.1.6
