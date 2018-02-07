@@ -75,7 +75,7 @@ sexp* r_new_condition(sexp* type, sexp* data, sexp* msg) {
     r_abort("Condition message must be a string");
   }
 
-  r_size_t n_data = r_length(data);
+  r_ssize_t n_data = r_length(data);
   sexp* cnd = KEEP(r_new_vector(VECSXP, n_data + 1));
 
   r_list_poke(cnd, 0, msg);

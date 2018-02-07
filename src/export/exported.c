@@ -248,9 +248,9 @@ int r_as_int(sexp* x) {
 
 sexp* rlang_vec_poke_n(sexp* x, sexp* offset,
                        sexp* y, sexp* from, sexp* n) {
-  r_size_t offset_size = r_as_int(offset) - 1;
-  r_size_t from_size = r_as_int(from) - 1;
-  r_size_t n_size = r_as_int(n);
+  r_ssize_t offset_size = r_as_int(offset) - 1;
+  r_ssize_t from_size = r_as_int(from) - 1;
+  r_ssize_t n_size = r_as_int(n);
 
   r_vec_poke_n(x, offset_size, y, from_size, n_size);
   return x;
@@ -258,9 +258,9 @@ sexp* rlang_vec_poke_n(sexp* x, sexp* offset,
 
 sexp* rlang_vec_poke_range(sexp* x, sexp* offset,
                            sexp* y, sexp* from, sexp* to) {
-  r_size_t offset_size = r_as_int(offset) - 1;
-  r_size_t from_size = r_as_int(from) - 1;
-  r_size_t to_size = r_as_int(to) - 1;
+  r_ssize_t offset_size = r_as_int(offset) - 1;
+  r_ssize_t from_size = r_as_int(from) - 1;
+  r_ssize_t to_size = r_as_int(to) - 1;
 
   r_vec_poke_range(x, offset_size, y, from_size, to_size);
   return x;

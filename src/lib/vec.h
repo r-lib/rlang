@@ -2,7 +2,7 @@
 #define RLANG_VECTOR_H
 
 
-r_size_t r_vec_length(sexp* x);
+r_ssize_t r_vec_length(sexp* x);
 
 
 static inline int* r_lgl_deref(sexp* x) {
@@ -21,23 +21,23 @@ static inline r_byte_t* r_raw_deref(sexp* x) {
   return RAW(x);
 }
 
-static inline int r_lgl_get(sexp* x, r_size_t i) {
+static inline int r_lgl_get(sexp* x, r_ssize_t i) {
   return LOGICAL(x)[i];
 }
-static inline int r_int_get(sexp* x, r_size_t i) {
+static inline int r_int_get(sexp* x, r_ssize_t i) {
   return INTEGER(x)[i];
 }
-static inline double r_dbl_get(sexp* x, r_size_t i) {
+static inline double r_dbl_get(sexp* x, r_ssize_t i) {
   return REAL(x)[i];
 }
-static inline r_complex_t r_cpl_get(sexp* x, r_size_t i) {
+static inline r_complex_t r_cpl_get(sexp* x, r_ssize_t i) {
   return COMPLEX(x)[i];
 }
-static inline r_byte_t r_raw_get(sexp* x, r_size_t i) {
+static inline r_byte_t r_raw_get(sexp* x, r_ssize_t i) {
   return RAW(x)[i];
 }
 
-sexp* r_vec_get(sexp* vec, r_size_t i);
+sexp* r_vec_get(sexp* vec, r_ssize_t i);
 
 
 bool r_is_list(sexp* x);
@@ -64,25 +64,25 @@ static inline int r_c_int(sexp* x) {
   return INTEGER(x)[0];
 }
 
-static inline sexp* r_new_vector(enum r_type type, r_size_t n) {
+static inline sexp* r_new_vector(enum r_type type, r_ssize_t n) {
   return Rf_allocVector(type, n);
 }
 static inline sexp* r_vec_coerce(sexp* x, enum r_type to) {
   return Rf_coerceVector(x, to);
 }
 
-void r_vec_poke_n(sexp* x, r_size_t offset,
-                  sexp* y, r_size_t from, r_size_t n);
-void r_vec_poke_range(sexp* x, r_size_t offset,
-                      sexp* y, r_size_t from, r_size_t to);
+void r_vec_poke_n(sexp* x, r_ssize_t offset,
+                  sexp* y, r_ssize_t from, r_ssize_t n);
+void r_vec_poke_range(sexp* x, r_ssize_t offset,
+                      sexp* y, r_ssize_t from, r_ssize_t to);
 
-void r_vec_poke_coerce_n(sexp* x, r_size_t offset,
-                         sexp* y, r_size_t from, r_size_t n);
-void r_vec_poke_coerce_range(sexp* x, r_size_t offset,
-                             sexp* y, r_size_t from, r_size_t to);
+void r_vec_poke_coerce_n(sexp* x, r_ssize_t offset,
+                         sexp* y, r_ssize_t from, r_ssize_t n);
+void r_vec_poke_coerce_range(sexp* x, r_ssize_t offset,
+                             sexp* y, r_ssize_t from, r_ssize_t to);
 
-static inline bool r_vec_find_first_duplicate(sexp* x, sexp* except, r_long_size_t* index) {
-  r_long_size_t idx;
+static inline bool r_vec_find_first_duplicate(sexp* x, sexp* except, r_long_ssize_t* index) {
+  r_long_ssize_t idx;
   if (except) {
     idx = Rf_any_duplicated3(x, except, false);
   } else {
@@ -103,7 +103,7 @@ static inline sexp* r_vec_are_duplicated(sexp* x) {
   return Rf_duplicated(x, false);
 }
 
-bool r_vec_find_first_identical_any(sexp* x, sexp* y, r_long_size_t* index);
+bool r_vec_find_first_identical_any(sexp* x, sexp* y, r_long_ssize_t* index);
 
 
 #endif

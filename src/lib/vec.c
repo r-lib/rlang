@@ -47,7 +47,7 @@ bool r_is_vector(sexp* x) {
   }
 }
 
-r_size_t r_vec_length(sexp* x) {
+r_ssize_t r_vec_length(sexp* x) {
   switch(r_typeof(x)) {
   case LGLSXP:
   case INTSXP:
@@ -63,7 +63,7 @@ r_size_t r_vec_length(sexp* x) {
   }
 }
 
-sexp* r_vec_get(sexp* vec, r_size_t i) {
+sexp* r_vec_get(sexp* vec, r_ssize_t i) {
   switch (r_typeof(vec)) {
   case r_type_character:
     return r_chr_get(vec, i);
@@ -74,20 +74,20 @@ sexp* r_vec_get(sexp* vec, r_size_t i) {
   }
 }
 
-bool r_vec_find_first_identical_any(sexp* x, sexp* y, r_long_size_t* index) {
+bool r_vec_find_first_identical_any(sexp* x, sexp* y, r_long_ssize_t* index) {
   if (r_typeof(x) != r_type_list && r_typeof(x) != r_type_character) {
     r_abort("Internal error: `x` must be a list or character vector in `r_vec_find_first_identical_any()`");
   }
   if (r_typeof(y) != r_type_list && r_typeof(y) != r_type_character) {
     r_abort("Internal error: `y` must be a list or character vector in `r_vec_find_first_identical_any()`");
   }
-  r_size_t n = r_length(x);
-  r_size_t n_comparisons = r_length(y);
+  r_ssize_t n = r_length(x);
+  r_ssize_t n_comparisons = r_length(y);
 
-  for (r_size_t i = 0; i < n; ++i) {
+  for (r_ssize_t i = 0; i < n; ++i) {
     sexp* elt = r_vec_get(x, i);
 
-    for (r_size_t j = 0; j < n_comparisons; ++j) {
+    for (r_ssize_t j = 0; j < n_comparisons; ++j) {
       if (r_is_identical(elt, r_vec_get(y, j))) {
         if (index) {
           *index = i;
@@ -103,8 +103,8 @@ bool r_vec_find_first_identical_any(sexp* x, sexp* y, r_long_size_t* index) {
 
 // Copy --------------------------------------------------------------
 
-void r_vec_poke_n(sexp* x, r_size_t offset,
-                  sexp* y, r_size_t from, r_size_t n) {
+void r_vec_poke_n(sexp* x, r_ssize_t offset,
+                  sexp* y, r_ssize_t from, r_ssize_t n) {
 
   if ((r_length(x) - offset) < n) {
     r_abort("Can't copy data to `x` because it is too small");
@@ -117,41 +117,41 @@ void r_vec_poke_n(sexp* x, r_size_t offset,
   case LGLSXP: {
     int* src_data = LOGICAL(y);
     int* dest_data = LOGICAL(x);
-    for (r_size_t i = 0; i != n; ++i)
+    for (r_ssize_t i = 0; i != n; ++i)
       dest_data[i + offset] = src_data[i + from];
     break;
   }
   case INTSXP: {
     int* src_data = INTEGER(y);
     int* dest_data = INTEGER(x);
-    for (r_size_t i = 0; i != n; ++i)
+    for (r_ssize_t i = 0; i != n; ++i)
       dest_data[i + offset] = src_data[i + from];
     break;
   }
   case REALSXP: {
     double* src_data = REAL(y);
     double* dest_data = REAL(x);
-    for (r_size_t i = 0; i != n; ++i)
+    for (r_ssize_t i = 0; i != n; ++i)
       dest_data[i + offset] = src_data[i + from];
     break;
   }
   case CPLXSXP: {
     r_complex_t* src_data = COMPLEX(y);
     r_complex_t* dest_data = COMPLEX(x);
-    for (r_size_t i = 0; i != n; ++i)
+    for (r_ssize_t i = 0; i != n; ++i)
       dest_data[i + offset] = src_data[i + from];
     break;
   }
   case RAWSXP: {
     r_byte_t* src_data = RAW(y);
     r_byte_t* dest_data = RAW(x);
-    for (r_size_t i = 0; i != n; ++i)
+    for (r_ssize_t i = 0; i != n; ++i)
       dest_data[i + offset] = src_data[i + from];
     break;
   }
   case STRSXP: {
     sexp* elt;
-    for (r_size_t i = 0; i != n; ++i) {
+    for (r_ssize_t i = 0; i != n; ++i) {
       elt = STRING_ELT(y, i + from);
       SET_STRING_ELT(x, i + offset, elt);
     }
@@ -159,7 +159,7 @@ void r_vec_poke_n(sexp* x, r_size_t offset,
   }
   case VECSXP: {
     sexp* elt;
-    for (r_size_t i = 0; i != n; ++i) {
+    for (r_ssize_t i = 0; i != n; ++i) {
       elt = VECTOR_ELT(y, i + from);
       SET_VECTOR_ELT(x, i + offset, elt);
     }
@@ -170,8 +170,8 @@ void r_vec_poke_n(sexp* x, r_size_t offset,
   }
 }
 
-void r_vec_poke_range(sexp* x, r_size_t offset,
-                      sexp* y, r_size_t from, r_size_t to) {
+void r_vec_poke_range(sexp* x, r_ssize_t offset,
+                      sexp* y, r_ssize_t from, r_ssize_t to) {
   r_vec_poke_n(x, offset, y, from, to - from + 1);
 }
 
@@ -190,8 +190,8 @@ sexp* rlang_vec_coercer(sexp* dest) {
   }
 }
 
-void r_vec_poke_coerce_n(sexp* x, r_size_t offset,
-                         sexp* y, r_size_t from, r_size_t n) {
+void r_vec_poke_coerce_n(sexp* x, r_ssize_t offset,
+                         sexp* y, r_ssize_t from, r_ssize_t n) {
   if (r_typeof(y) == r_typeof(x)) {
     r_vec_poke_n(x, offset, y, from, n);
     return ;
@@ -209,7 +209,7 @@ void r_vec_poke_coerce_n(sexp* x, r_size_t offset,
   FREE(2);
 }
 
-void r_vec_poke_coerce_range(sexp* x, r_size_t offset,
-                             sexp* y, r_size_t from, r_size_t to) {
+void r_vec_poke_coerce_range(sexp* x, r_ssize_t offset,
+                             sexp* y, r_ssize_t from, r_ssize_t to) {
   r_vec_poke_coerce_n(x, offset, y, from, to - from + 1);
 }

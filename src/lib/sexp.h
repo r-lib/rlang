@@ -4,7 +4,7 @@
 #include <stdbool.h>
 
 
-static inline r_size_t r_length(sexp* x) {
+static inline r_ssize_t r_length(sexp* x) {
   return Rf_length(x);
 }
 
@@ -69,7 +69,7 @@ static inline void r_poke_names(sexp* x, sexp* nms) {
   Rf_setAttrib(x, R_NamesSymbol, nms);
 }
 
-bool r_has_name_at(sexp* x, r_size_t i);
+bool r_has_name_at(sexp* x, r_ssize_t i);
 bool r_is_named(sexp* x);
 
 static inline sexp* r_missing_arg() {

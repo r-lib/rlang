@@ -29,7 +29,7 @@ sexp* r_base_ns_get(const char* name) {
 
 static sexp* new_env_call = NULL;
 
-sexp* r_new_environment(sexp* parent, r_size_t size) {
+sexp* r_new_environment(sexp* parent, r_ssize_t size) {
   if (!parent) {
     parent = r_empty_env;
   }
@@ -132,7 +132,7 @@ sexp* rlang_env_unbind(sexp* env, sexp* names, sexp* inherits) {
   return r_env_unbind_names(env, names, *r_lgl_deref(inherits));
 }
 
-sexp* r_env_unbind_all(sexp* env, const char** names, r_size_t n, bool inherits) {
+sexp* r_env_unbind_all(sexp* env, const char** names, r_ssize_t n, bool inherits) {
   return r_env_unbind_names(env, r_new_character(names, n), inherits);
 }
 

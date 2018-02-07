@@ -7,7 +7,7 @@ sexp* rlang_ns_get(const char* name);
 
 struct dots_capture_info {
   enum dots_capture_type type;
-  r_size_t count;
+  r_ssize_t count;
   sexp* named;
   bool needs_expansion;
   int ignore_empty;
@@ -111,11 +111,11 @@ static sexp* dots_big_bang(struct dots_capture_info* capture_info,
   value = KEEP(dots_big_bang_coerce(value));
   mark_spliced_dots(value);
 
-  r_size_t n = r_length(value);
+  r_ssize_t n = r_length(value);
   capture_info->count += n;
 
   if (quosured) {
-    for (r_size_t i = 0; i < n; ++i) {
+    for (r_ssize_t i = 0; i < n; ++i) {
       expr = r_list_get(value, i);
       expr = forward_quosure(expr, env);
       r_list_poke(value, i, expr);
@@ -141,7 +141,7 @@ static sexp* set_value_spliced(sexp* x) {
   return r_set_attribute(x, r_class_sym, spliced_str);
 }
 
-static inline bool should_ignore(int ignore_empty, r_size_t i, r_size_t n) {
+static inline bool should_ignore(int ignore_empty, r_ssize_t i, r_ssize_t n) {
   return ignore_empty == 1 || (i == n - 1 && ignore_empty == -1);
 }
 static inline sexp* dot_get_expr(sexp* dot) {
@@ -165,10 +165,10 @@ static sexp* dots_unquote(sexp* dots, struct dots_capture_info* capture_info) {
 
   sexp* dots_names = r_names(dots);
   capture_info->count = 0;
-  r_size_t n = r_length(dots);
+  r_ssize_t n = r_length(dots);
   bool unquote_names = capture_info->unquote_names;
 
-  for (r_size_t i = 0; i < n; ++i) {
+  for (r_ssize_t i = 0; i < n; ++i) {
     sexp* elt = r_list_get(dots, i);
     sexp* expr = dot_get_expr(elt);
     sexp* env = dot_get_env(elt);
@@ -363,8 +363,8 @@ sexp* dots_expand(sexp* dots, struct dots_capture_info* capture_info) {
     out_names = init_names(out);
   }
 
-  r_size_t n = r_length(dots);
-  for (r_size_t i = 0, count = 0; i < n; ++i) {
+  r_ssize_t n = r_length(dots);
+  for (r_ssize_t i = 0, count = 0; i < n; ++i) {
     sexp* elt = r_list_get(dots, i);
 
     if (is_spliced_dots(elt)) {
@@ -372,7 +372,7 @@ sexp* dots_expand(sexp* dots, struct dots_capture_info* capture_info) {
 
       // FIXME: Should be able to avoid conversion to list for node
       // lists and character vectors
-      for (r_size_t i = 0; i < r_length(elt); ++i) {
+      for (r_ssize_t i = 0; i < r_length(elt); ++i) {
         sexp* value = r_list_get(elt, i);
         r_list_poke(out, count, value);
 

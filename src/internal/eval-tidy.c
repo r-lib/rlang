@@ -156,9 +156,9 @@ sexp* rlang_as_data_mask(sexp* data, sexp* parent) {
     bottom = KEEP(r_new_environment(parent, 0));
 
     if (names != r_null) {
-      r_size_t n = r_length(data);
+      r_ssize_t n = r_length(data);
 
-      for (r_size_t i = 0; i < n; ++i) {
+      for (r_ssize_t i = 0; i < n; ++i) {
         // Ignore empty or missing names
         sexp* nm = r_chr_get(names, i);
         if (r_str_is_name(nm)) {

@@ -22,7 +22,7 @@ bool r_is_named(sexp* x) {
   return true;
 }
 
-bool r_has_name_at(sexp* x, r_size_t i) {
+bool r_has_name_at(sexp* x, r_ssize_t i) {
   sexp* nms = r_names(x);
   return
     r_is_character(nms) &&
