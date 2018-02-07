@@ -56,7 +56,7 @@ na_dbl <- NA
 typeof(na_dbl)
 }
 \seealso{
-The \link{vector-along} family to create typed vectors filled
+The \link{new-vector-along} family to create typed vectors filled
 with missing values.
 }
 \keyword{datasets}

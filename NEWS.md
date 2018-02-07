@@ -361,6 +361,10 @@ lifecycle status of exported functions.
 * `splice()` is now in questioning stage as it is not needed given the
   `!!!` operator works in functions taking dots with `dots_list()`.
 
+* `lgl_len()`, `int_len()` etc have been soft-deprecated and renamed
+  with `new_` prefix, e.g. `new_logical()` and `new_integer()`. This
+  is for consistency with other non-variadic object constructors.
+
 
 # rlang 0.1.6
 

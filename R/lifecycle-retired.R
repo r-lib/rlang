@@ -431,3 +431,97 @@ cnd_message <- function(.type = NULL, ..., .msg = NULL) {
     call. = FALSE)
   message_cnd(.type = .type, ..., .msg = .msg)
 }
+
+#' Retired vector construction by length
+#'
+#' These functions were soft-deprecated and renamed with `new_` prefix
+#' in rlang 0.2.0. This is for consistency with other non-variadic
+#' object constructors.
+#'
+#' @inheritParams new-vector
+#' @inheritParams new-vector-along
+#' @name vector-old-ctors
+#' @keywords internal
+NULL
+
+#' @rdname vector-old-ctors
+#' @export
+lgl_len <- function(.n) {
+  new_logical(.n)
+}
+#' @rdname vector-old-ctors
+#' @export
+int_len <- function(.n) {
+  new_integer(.n)
+}
+#' @rdname vector-old-ctors
+#' @export
+dbl_len <- function(.n) {
+  new_double(.n)
+}
+#' @rdname vector-old-ctors
+#' @export
+chr_len <- function(.n) {
+  new_character(.n)
+}
+#' @rdname vector-old-ctors
+#' @export
+cpl_len <- function(.n) {
+  new_complex(.n)
+}
+#' @rdname vector-old-ctors
+#' @export
+raw_len <- function(.n) {
+  new_raw(.n)
+}
+#' @rdname vector-old-ctors
+#' @export
+bytes_len <- function(.n) {
+  new_raw(.n)
+}
+#' @rdname vector-old-ctors
+#' @export
+list_len <- function(.n) {
+  new_list(.n)
+}
+
+#' @rdname vector-old-ctors
+#' @export
+lgl_along <- function(.x) {
+  new_logical_along(.x)
+}
+#' @rdname vector-old-ctors
+#' @export
+int_along <- function(.x) {
+  new_integer_along(.x)
+}
+#' @rdname vector-old-ctors
+#' @export
+dbl_along <- function(.x) {
+  new_double_along(.x)
+}
+#' @rdname vector-old-ctors
+#' @export
+chr_along <- function(.x) {
+  new_character_along(.x)
+}
+#' @rdname vector-old-ctors
+#' @export
+cpl_along <- function(.x) {
+  new_complex_along(.x)
+}
+#' @rdname vector-old-ctors
+#' @export
+raw_along <- function(.x) {
+  new_raw_along(.x)
+}
+#' @rdname vector-old-ctors
+#' @export
+bytes_along <- function(.x) {
+  new_raw_along(.x)
+}
+#' @rdname vector-old-ctors
+#' @export
+list_along <- function(.x) {
+  new_list_along(.x)
+}
