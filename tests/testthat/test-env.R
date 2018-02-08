@@ -280,6 +280,16 @@ test_that("env_unbind() with `inherits = TRUE` wipes out all bindings", {
   expect_false(all(env_has(global_env(), names(bindings))))
 })
 
+test_that("env_bind() requires uniquely named elements", {
+  expect_error(env_bind(env(), 1), "not uniquely named")
+  expect_error(env_bind(env(), !!! list(1)), "not uniquely named")
+})
+
+test_that("env_bind() works with empty unnamed lists", {
+  expect_no_error(env_bind(env()))
+  expect_no_error(env_bind(env(), !!! list()))
+})
+
 test_that("env_names() unserialises unicode", {
   env <- env(`<U+5E78><U+798F>` = "foo")
   expect_identical(env_names(env), "\u5E78\u798F")

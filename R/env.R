@@ -561,8 +561,9 @@ env_bind <- function(.env, ...) {
   invisible(env_bind_impl(.env, dots_list(...)))
 }
 env_bind_impl <- function(env, data) {
-  stopifnot(is_vector(data))
-  stopifnot(!length(data) || is_named(data))
+  if (!is_vector(data) || (length(data) && !is_named(data))) {
+    abort("Can't bind data because it is not uniquely named")
+  }
 
   nms <- names(data)
   env_ <- get_env(env)
