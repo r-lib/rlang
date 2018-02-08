@@ -113,6 +113,17 @@ test_that("vector _along() ctors pick up names", {
   expect_identical(new_list_along(x), list(a = NULL, b = NULL))
 })
 
+test_that("vector _along() ctors pick up names", {
+  x <- list(a = NULL, b = NULL)
+  expect_identical(new_logical_along(x, toupper), c(A = NA, B = NA))
+  expect_identical(new_integer_along(x, toupper), c(A = na_int, B = na_int))
+  expect_identical(new_double_along(x, toupper), c(A = na_dbl, B = na_dbl))
+  expect_identical(new_complex_along(x, toupper), c(A = na_cpl, B = na_cpl))
+  expect_identical(new_character_along(x, toupper), c(A = na_chr, B = na_chr))
+  expect_identical(new_raw_along(x, toupper), set_names(raw(2), c("A", "B")))
+  expect_identical(new_list_along(x, toupper), list(A = NULL, B = NULL))
+})
+
 test_that("retired _len() ctors still work", {
   expect_identical(lgl_len(2), new_logical(2))
   expect_identical(int_len(2), new_integer(2))

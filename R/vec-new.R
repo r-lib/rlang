@@ -202,7 +202,8 @@ new_list <- function(n, names = NULL) {
 #' @param x,.x A vector.
 #' @param .y Values to repeat.
 #' @param names Names for the new vector. Defaults to the names of
-#'   `x`.
+#'   `x`. This can be a function to apply to the names of `x` as in
+#'   [set_names()].
 #' @keywords internal
 #' @examples
 #' x <- 0:5
@@ -220,37 +221,37 @@ NULL
 #' @export
 #' @rdname new-vector-along
 new_logical_along <- function(x, names = base::names(x)) {
-  set_names(rep_len(na_lgl, length(x)), names)
+  set_names_impl(rep_len(na_lgl, length(x)), x, names)
 }
 #' @export
 #' @rdname new-vector-along
 new_integer_along <- function(x, names = base::names(x)) {
-  set_names(rep_len(na_int, length(x)), names)
+  set_names_impl(rep_len(na_int, length(x)), x, names)
 }
 #' @export
 #' @rdname new-vector-along
 new_double_along <- function(x, names = base::names(x)) {
-  set_names(rep_len(na_dbl, length(x)), names)
+  set_names_impl(rep_len(na_dbl, length(x)), x, names)
 }
 #' @export
 #' @rdname new-vector-along
 new_character_along <- function(x, names = base::names(x)) {
-  set_names(rep_len(na_chr, length(x)), names)
+  set_names_impl(rep_len(na_chr, length(x)), x, names)
 }
 #' @export
 #' @rdname new-vector-along
 new_complex_along <- function(x, names = base::names(x)) {
-  set_names(rep_len(na_cpl, length(x)), names)
+  set_names_impl(rep_len(na_cpl, length(x)), x, names)
 }
 #' @export
 #' @rdname new-vector-along
 new_raw_along <- function(x, names = base::names(x)) {
-  set_names(vector("raw", length(x)), names)
+  set_names_impl(vector("raw", length(x)), x, names)
 }
 #' @export
 #' @rdname new-vector-along
 new_list_along <- function(x, names = base::names(x)) {
-  set_names(vector("list", length(x)), names)
+  set_names_impl(vector("list", length(x)), x, names)
 }
 
 #' @export
