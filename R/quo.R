@@ -373,12 +373,12 @@ str.quosure <- function(object, ...) {
 
 # Create a circular list of colours. This infloops if printed in the REPL!
 new_quo_palette <- function() {
-  last_node <- node(open_cyan, NULL)
-  palette <- node(open_blue, node(open_green, node(open_magenta, last_node)))
+  last_node <- new_node(open_cyan, NULL)
+  palette <- new_node(open_blue, new_node(open_green, new_node(open_magenta, last_node)))
   node_poke_cdr(last_node, palette)
 
   # First node has no colour
-  node(close_colour, palette)
+  new_node(close_colour, palette)
 }
 
 # Reproduces output of printed calls
@@ -422,7 +422,7 @@ new_quo_deparser <- function(width = peek_option("width"),
     quo_was_too_many = FALSE,
 
     quo_push_opener = function(self, opener) {
-      self$quo_history <- node(opener, self$quo_history)
+      self$quo_history <- new_node(opener, self$quo_history)
       self$push_sticky(opener())
       self
     },

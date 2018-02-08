@@ -162,7 +162,7 @@ new_lines <- function(width = peek_option("width"),
         node_poke_cdr(status, inc(node_cdr(status)))
       } else {
         self$indent <- self$indent + 2L
-        self$indent_status <- node(node(FALSE, 0L), self$indent_status)
+        self$indent_status <- new_node(new_node(FALSE, 0L), self$indent_status)
         self$next_indent_sticky <- TRUE
       }
 

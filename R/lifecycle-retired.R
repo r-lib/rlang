@@ -305,7 +305,7 @@ as_env <- function(x, parent = NULL) {
 #' prefix in rlang 0.2.0. This change follows a new naming convention
 #' where mutation is referred to as "poking".
 #'
-#' @inheritParams node
+#' @inheritParams new_node
 #'
 #' @keywords internal
 #' @export
@@ -524,4 +524,9 @@ bytes_along <- function(.x) {
 #' @export
 list_along <- function(.x) {
   new_list_along(.x, NULL)
+}
+#' @rdname vector-old-ctors
+#' @export
+node <- function(car, cdr = NULL) {
+  new_node(car, cdr)
 }

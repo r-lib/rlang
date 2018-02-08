@@ -1,7 +1,7 @@
 context("node")
 
 test_that("node() creates a pairlist node", {
-  x <- node("foo", "bar")
+  x <- new_node("foo", "bar")
   expect_is(x, "pairlist")
   expect_identical(node_car(x), "foo")
   expect_identical(node_cdr(x), "bar")
@@ -78,7 +78,7 @@ test_that("as_pairlist() converts to pairlist", {
 })
 
 test_that("pairlist predicates detect pairlists", {
-  node <- node(NULL)
+  node <- new_node(NULL)
   call <- quote(foo(bar))
 
   expect_true(is_pairlist(node))

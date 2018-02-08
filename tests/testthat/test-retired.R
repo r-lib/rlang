@@ -124,3 +124,7 @@ test_that("new_cnd() and cnd_ functions forward to cnd() and _cnd functions()", 
   expect_warning(expect_identical(cnd_error("foo"), error_cnd("foo")), "renamed")
   expect_warning(expect_identical(cnd_message("foo"), message_cnd("foo")), "renamed")
 })
+
+test_that("node() still works", {
+  expect_identical(node(1, NULL), new_node(1, NULL))
+})

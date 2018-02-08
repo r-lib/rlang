@@ -20,83 +20,79 @@
 #'   [base::pairlist()] for an easier way of creating a linked list of
 #'   nodes.
 #' @keywords internal
-#' @name node
-NULL
-
-#' @rdname node
 #' @export
-node <- function(car, cdr = NULL) {
+new_node <- function(car, cdr = NULL) {
   .Call(rlang_new_node, car, cdr)
 }
 
-#' @rdname node
+#' @rdname new_node
 #' @export
 node_car <- function(x) {
   .Call(rlang_node_car, x)
 }
-#' @rdname node
+#' @rdname new_node
 #' @export
 node_cdr <- function(x) {
   .Call(rlang_node_cdr, x)
 }
-#' @rdname node
+#' @rdname new_node
 #' @export
 node_caar <- function(x) {
   .Call(rlang_node_caar, x)
 }
-#' @rdname node
+#' @rdname new_node
 #' @export
 node_cadr <- function(x) {
   .Call(rlang_node_cadr, x)
 }
-#' @rdname node
+#' @rdname new_node
 #' @export
 node_cdar <- function(x) {
   .Call(rlang_node_cdar, x)
 }
-#' @rdname node
+#' @rdname new_node
 #' @export
 node_cddr <- function(x) {
   .Call(rlang_node_cddr, x)
 }
 
-#' @rdname node
+#' @rdname new_node
 #' @export
 node_poke_car <- function(x, newcar) {
   invisible(.Call(rlang_node_poke_car, x, newcar))
 }
-#' @rdname node
+#' @rdname new_node
 #' @export
 node_poke_cdr <- function(x, newcdr) {
   invisible(.Call(rlang_node_poke_cdr, x, newcdr))
 }
-#' @rdname node
+#' @rdname new_node
 #' @export
 node_poke_caar <- function(x, newcar) {
   invisible(.Call(rlang_node_poke_caar, x, newcar))
 }
-#' @rdname node
+#' @rdname new_node
 #' @export
 node_poke_cadr <- function(x, newcar) {
   invisible(.Call(rlang_node_poke_cadr, x, newcar))
 }
-#' @rdname node
+#' @rdname new_node
 #' @export
 node_poke_cdar <- function(x, newcdr) {
   invisible(.Call(rlang_node_poke_cdar, x, newcdr))
 }
-#' @rdname node
+#' @rdname new_node
 #' @export
 node_poke_cddr <- function(x, newcdr) {
   invisible(.Call(rlang_node_poke_cddr, x, newcdr))
 }
 
-#' @rdname node
+#' @rdname new_node
 #' @export
 node_tag <- function(x) {
   .Call(rlang_node_tag, x)
 }
-#' @rdname node
+#' @rdname new_node
 #' @export
 node_poke_tag <- function(x, newtag) {
   invisible(.Call(rlang_node_poke_tag, x, newtag))

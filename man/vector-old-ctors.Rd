@@ -18,6 +18,7 @@
 \alias{raw_along}
 \alias{bytes_along}
 \alias{list_along}
+\alias{node}
 \title{Retired vector construction by length}
 \usage{
 lgl_len(.n)
@@ -51,6 +52,8 @@ raw_along(.x)
 bytes_along(.x)
 
 list_along(.x)
+
+node(car, cdr = NULL)
 }
 \arguments{
 \item{.x}{A vector.}
