@@ -202,6 +202,6 @@ node_append <- function(.x, .y) {
 #'
 #' @keywords internal
 #' @export
-call_node <- function(car, cdr = NULL) {
+new_call <- function(car, cdr = NULL) {
   .Call(rlang_new_call, car, cdr)
 }

@@ -98,7 +98,7 @@
 #' * [as_dictionary()] => [as_data_pronoun()]
 #'
 #' * [lang()] => [call2()]
-#' * [new_language()] => [call_node()]
+#' * [new_language()] => [new_call()]
 #' * [is_lang()] => [is_call()]
 #' * [is_unary_lang()] => Use the `n` argument of [is_call()]
 #' * [is_binary_lang()] => Use the `n` argument of [is_call()]

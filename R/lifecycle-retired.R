@@ -56,10 +56,10 @@ lang <- function(.fn, ..., .ns = NULL) {
   call2(.fn, ..., .ns = .ns)
 }
 #' @rdname lang
-#' @inheritParams call_node
+#' @inheritParams new_call
 #' @export
 new_language <- function(head, tail = NULL) {
-  call_node(head, tail)
+  new_call(head, tail)
 }
 
 #' Is object a call?

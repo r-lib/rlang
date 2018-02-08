@@ -56,10 +56,10 @@ call2 <- function(.fn, ..., .ns = NULL) {
   }
 
   if (!is_null(.ns)) {
-    .fn <- call_node(namespace_sym, pairlist(sym(.ns), .fn))
+    .fn <- new_call(namespace_sym, pairlist(sym(.ns), .fn))
   }
 
-  call_node(.fn, as.pairlist(dots_list(...)))
+  new_call(.fn, as.pairlist(dots_list(...)))
 }
 
 #' Is an object callable?

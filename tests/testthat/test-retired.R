@@ -20,10 +20,10 @@ test_that("lang() forwards to call2() and is_lang() to is_call()", {
   expect_true(is_binary_lang(lang, "foo", "bar"))
 })
 
-test_that("new_language() forwards to call_node()", {
+test_that("new_language() forwards to new_call()", {
   expect_identical(
     new_language(quote(foo), pairlist("bar")),
-    call_node(quote(foo), pairlist("bar"))
+    new_call(quote(foo), pairlist("bar"))
   )
 })
 
