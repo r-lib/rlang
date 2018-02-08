@@ -27,7 +27,7 @@ test_that("can create empty vectors", {
   expect_identical(cpl(), complex(0))
   expect_identical(chr(), character(0))
   expect_identical(bytes(), raw(0))
-  expect_identical(ll(), list())
+  expect_identical(list2(), list())
 })
 
 test_that("objects are not spliced", {
@@ -59,9 +59,9 @@ test_that("warn when spliced lists have outer name", {
   expect_warning(lgl(list(c = c(cc = FALSE))), "Outer names")
 })
 
-test_that("ll() doesn't splice bare lists", {
-  expect_identical(ll(list(1, 2)), list(list(1, 2)))
-  expect_identical(ll(splice(list(1, 2))), list(1, 2))
+test_that("list2() doesn't splice bare lists", {
+  expect_identical(list2(list(1, 2)), list(list(1, 2)))
+  expect_identical(list2(!!! list(1, 2)), list(1, 2))
 })
 
 test_that("atomic inputs are implicitly coerced", {
@@ -82,10 +82,14 @@ test_that("empty inputs are spliced", {
   expect_warning(regexp = NA, expect_identical(lgl(a = NULL, a = lgl(), list(a = NULL, a = lgl())), lgl()))
 })
 
-test_that("ll() splices names", {
-  expect_identical(ll(a = TRUE, b = FALSE), list(a = TRUE, b = FALSE))
-  expect_identical(ll(c(A = TRUE), c(B = FALSE)), list(c(A = TRUE), c(B = FALSE)))
-  expect_identical(ll(a = c(A = TRUE), b = c(B = FALSE)), list(a = c(A = TRUE), b = c(B = FALSE)))
+test_that("list2() splices names", {
+  expect_identical(list2(a = TRUE, b = FALSE), list(a = TRUE, b = FALSE))
+  expect_identical(list2(c(A = TRUE), c(B = FALSE)), list(c(A = TRUE), c(B = FALSE)))
+  expect_identical(list2(a = c(A = TRUE), b = c(B = FALSE)), list(a = c(A = TRUE), b = c(B = FALSE)))
+})
+
+test_that("ll() is an alias to list2()", {
+  expect_identical(ll(!!! list(1, 2)), list(1, 2))
 })
 
 test_that("retired _len() ctors still work", {

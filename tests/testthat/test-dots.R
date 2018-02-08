@@ -23,8 +23,8 @@ test_that("dots can be spliced", {
   spliced_dots <- dots_values(!!! list(letters))
   expect_identical(spliced_dots, list(splice(list(letters))))
   expect_identical(flatten(dots_values(!!! list(letters))), list(letters))
-  expect_identical(ll(!!! list(letters)), list(letters))
-  wrapper <- function(...) ll(...)
+  expect_identical(list2(!!! list(letters)), list(letters))
+  wrapper <- function(...) list2(...)
   expect_identical(wrapper(!!! list(letters)), list(letters))
 })
 
@@ -62,13 +62,13 @@ test_that("dots_values() handles forced dots", {
 })
 
 test_that("empty arguments trigger meaningful error", {
-  expect_error(ll(1, , 3), "Argument 2 is empty")
+  expect_error(list2(1, , 3), "Argument 2 is empty")
   expect_error(dots_list(1, , 3), "Argument 2 is empty")
 })
 
 test_that("cleans empty arguments", {
   expect_identical(dots_list(1, ), named_list(1))
-  expect_identical(ll(1, ), list(1))
+  expect_identical(list2(1, ), list(1))
   expect_identical(exprs(1, ), named_list(1))
   expect_identical(dots_list(, 1, , .ignore_empty = "all"), named_list(1))
 })

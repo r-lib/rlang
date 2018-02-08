@@ -150,10 +150,10 @@ test_that("env_depth() counts parents", {
 })
 
 test_that("env_parents() returns all parents", {
-  expect_identical(env_parents(empty_env()), ll())
+  expect_identical(env_parents(empty_env()), list2())
   env1 <- child_env(NULL)
   env2 <- child_env(env1)
-  expect_identical(env_parents(env2), ll(env1, empty_env()))
+  expect_identical(env_parents(env2), list2(env1, empty_env()))
 })
 
 test_that("scoped_envs() includes global and empty envs", {

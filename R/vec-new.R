@@ -6,14 +6,16 @@
 #' [vector-coercion]. In addition, all constructors support splicing:
 #' if you supply [bare][is_bare_list] lists or [explicitly
 #' spliced][is_spliced] lists, their contents are spliced into the
-#' output vectors (see below for details). `ll()` is a list
+#' output vectors (see below for details). `list2()` is a list
 #' constructor similar to [base::list()] but with splicing semantics.
+#' `ll()` is an alias to `list2()` intended as a shorthand.
+#'
 #'
 #' @section Splicing:
 #'
 #' Splicing is an operation similar to flattening one level of nested
 #' lists, e.g. with \code{\link[=unlist]{base::unlist(x, recursive =
-#' FALSE)}} or `purrr::flatten()`. `ll()` returns its arguments as a
+#' FALSE)}} or `purrr::flatten()`. `list2()` returns its arguments as a
 #' list, just like `list()` would, but inner lists qualifying for
 #' splicing are flattened. That is, their contents are embedded in the
 #' surrounding list. Similarly, `chr()` concatenates its arguments and
@@ -26,15 +28,15 @@
 #' and [explicitly spliced][is_spliced] lists are spliced.
 #'
 #' There are two list constructors with different splicing
-#' semantics. `ll()` only splices lists explicitly marked with
+#' semantics. `list2()` only splices lists explicitly marked with
 #' [splice()].
 #'
 #'
 #' @section Life cycle:
 #'
-#' The splicing support in these functions is experimental, expect API
-#' changes. We now tend to think that splicing should be explicit
-#' rather than automatic.
+#' * The splicing support in these functions is experimental, expect
+#'   API changes. We now tend to think that splicing should be
+#'   explicit rather than automatic.
 #'
 #' @param ... Components of the new vector. Bare lists and explicitly
 #'   spliced lists are spliced.
@@ -122,10 +124,15 @@ bytes <- function(...) {
 #' @examples
 #'
 #' # The list constructor has explicit splicing semantics:
-#' ll(1, list(2))
+#' list2(1, list(2))
 #'
 #' # Note that explicitly spliced lists are always spliced:
-#' ll(!!! list(1, 2))
+#' list2(!!! list(1, 2))
+list2 <- function(...) {
+  .Call(rlang_dots_list, environment(), FALSE, "trailing", TRUE)
+}
+#' @rdname vector-construction
+#' @export
 ll <- function(...) {
   .Call(rlang_dots_list, environment(), FALSE, "trailing", TRUE)
 }

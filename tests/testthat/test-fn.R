@@ -66,7 +66,7 @@ test_that("as_closure() handles operators", {
   expect_identical(as_closure(`[[<-`)(x, 2, 20), 20)
   expect_identical(x, list(1, 20))
 
-  x <- ll(ll(a = "A"), ll(a = "B"))
+  x <- list2(list2(a = "A"), list2(a = "B"))
   expect_identical(lapply(x, as_closure(`[[`), "a"), list("A", "B"))
 })
 

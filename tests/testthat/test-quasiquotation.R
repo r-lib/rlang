@@ -362,7 +362,7 @@ test_that("quosures are created for all informative formulas", {
 # dots_values() ------------------------------------------------------
 
 test_that("can unquote-splice symbols", {
-  spliced <- ll(!!! list(quote(`_symbol`)))
+  spliced <- list2(!!! list(quote(`_symbol`)))
   expect_identical(spliced, list(quote(`_symbol`)))
 })
 
