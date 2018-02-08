@@ -209,6 +209,10 @@ See below for a complete list of changes.
   all classes are present in order and `inherits_only()` checks that
   the class vectors are identical.
 
+* The vector constructors such as `new_integer()`,
+  `new_double_along()` etc gain a `names` argument. In the case of the
+  `_along` family it defaults to the names of the input vector.
+
 
 ## Bugfixes
 

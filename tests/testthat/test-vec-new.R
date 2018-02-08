@@ -92,6 +92,38 @@ test_that("ll() is an alias to list2()", {
   expect_identical(ll(!!! list(1, 2)), list(1, 2))
 })
 
+test_that("vector ctors take names arguments", {
+  expect_identical(new_logical(2, letters[1:2]), c(a = NA, b = NA))
+  expect_identical(new_integer(2, letters[1:2]), c(a = na_int, b = na_int))
+  expect_identical(new_double(2, letters[1:2]), c(a = na_dbl, b = na_dbl))
+  expect_identical(new_complex(2, letters[1:2]), c(a = na_cpl, b = na_cpl))
+  expect_identical(new_character(2, letters[1:2]), c(a = na_chr, b = na_chr))
+  expect_identical(new_raw(2, letters[1:2]), set_names(raw(2), c("a", "b")))
+  expect_identical(new_list(2, letters[1:2]), list(a = NULL, b = NULL))
+})
+
+test_that("vector _along() ctors pick up names", {
+  x <- list(a = NULL, b = NULL)
+  expect_identical(new_logical_along(x), c(a = NA, b = NA))
+  expect_identical(new_integer_along(x), c(a = na_int, b = na_int))
+  expect_identical(new_double_along(x), c(a = na_dbl, b = na_dbl))
+  expect_identical(new_complex_along(x), c(a = na_cpl, b = na_cpl))
+  expect_identical(new_character_along(x), c(a = na_chr, b = na_chr))
+  expect_identical(new_raw_along(x), set_names(raw(2), c("a", "b")))
+  expect_identical(new_list_along(x), list(a = NULL, b = NULL))
+})
+
+test_that("vector _along() ctors pick up names", {
+  x <- list(a = NULL, b = NULL)
+  expect_identical(new_logical_along(x, toupper), c(A = NA, B = NA))
+  expect_identical(new_integer_along(x, toupper), c(A = na_int, B = na_int))
+  expect_identical(new_double_along(x, toupper), c(A = na_dbl, B = na_dbl))
+  expect_identical(new_complex_along(x, toupper), c(A = na_cpl, B = na_cpl))
+  expect_identical(new_character_along(x, toupper), c(A = na_chr, B = na_chr))
+  expect_identical(new_raw_along(x, toupper), set_names(raw(2), c("A", "B")))
+  expect_identical(new_list_along(x, toupper), list(A = NULL, B = NULL))
+})
+
 test_that("retired _len() ctors still work", {
   expect_identical(lgl_len(2), new_logical(2))
   expect_identical(int_len(2), new_integer(2))

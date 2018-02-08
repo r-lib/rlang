@@ -488,40 +488,40 @@ list_len <- function(.n) {
 #' @rdname vector-old-ctors
 #' @export
 lgl_along <- function(.x) {
-  new_logical_along(.x)
+  new_logical_along(.x, NULL)
 }
 #' @rdname vector-old-ctors
 #' @export
 int_along <- function(.x) {
-  new_integer_along(.x)
+  new_integer_along(.x, NULL)
 }
 #' @rdname vector-old-ctors
 #' @export
 dbl_along <- function(.x) {
-  new_double_along(.x)
+  new_double_along(.x, NULL)
 }
 #' @rdname vector-old-ctors
 #' @export
 chr_along <- function(.x) {
-  new_character_along(.x)
+  new_character_along(.x, NULL)
 }
 #' @rdname vector-old-ctors
 #' @export
 cpl_along <- function(.x) {
-  new_complex_along(.x)
+  new_complex_along(.x, NULL)
 }
 #' @rdname vector-old-ctors
 #' @export
 raw_along <- function(.x) {
-  new_raw_along(.x)
+  new_raw_along(.x, NULL)
 }
 #' @rdname vector-old-ctors
 #' @export
 bytes_along <- function(.x) {
-  new_raw_along(.x)
+  new_raw_along(.x, NULL)
 }
 #' @rdname vector-old-ctors
 #' @export
 list_along <- function(.x) {
-  new_list_along(.x)
+  new_list_along(.x, NULL)
 }

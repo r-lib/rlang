@@ -227,13 +227,16 @@ has_name <- function(x, name) {
 #' # `...` is passed to the function:
 #' set_names(head(mtcars), paste0, "_foo")
 set_names <- function(x, nm = x, ...) {
+  set_names_impl(x, x, nm, ...)
+}
+set_names_impl <- function(x, mold, nm, ...) {
   if (!is_vector(x)) {
     abort("`x` must be a vector")
   }
 
   if (is_function(nm) || is_formula(nm)) {
     nm <- as_function(nm)
-    nm <- nm(names2(x), ...)
+    nm <- nm(names2(mold), ...)
   } else if (!is_null(nm)) {
     if (dots_n(...)) {
       nm <- as.character(c(nm, ...))
