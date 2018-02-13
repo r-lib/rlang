@@ -163,7 +163,7 @@ static sexp* empty_spliced_list() {
 static sexp* dots_unquote(sexp* dots, struct dots_capture_info* capture_info) {
   if (!rlang_spliced_flag) rlang_spliced_flag = r_sym("__rlang_spliced");
 
-  sexp* dots_names = r_names(dots);
+  sexp* dots_names = r_vec_names(dots);
   capture_info->count = 0;
   r_ssize_t n = r_length(dots);
   bool unquote_names = capture_info->unquote_names;
@@ -328,7 +328,7 @@ static int find_auto_names_width(sexp* named) {
 
 static sexp* maybe_auto_name(sexp* x, sexp* named) {
   int names_width = find_auto_names_width(named);
-  sexp* names = r_names(x);
+  sexp* names = r_vec_names(x);
 
   if (names_width && (!names || r_chr_has(names, ""))) {
     sexp* auto_fn = rlang_ns_get("quos_auto_name");
@@ -353,7 +353,7 @@ static sexp* init_names(sexp* x) {
 sexp* capturedots(sexp* frame);
 
 sexp* dots_expand(sexp* dots, struct dots_capture_info* capture_info) {
-  sexp* dots_names = r_names(dots);
+  sexp* dots_names = r_vec_names(dots);
 
   sexp* out = KEEP(r_new_vector(r_type_list, capture_info->count));
 
@@ -368,7 +368,7 @@ sexp* dots_expand(sexp* dots, struct dots_capture_info* capture_info) {
     sexp* elt = r_list_get(dots, i);
 
     if (is_spliced_dots(elt)) {
-      sexp* names = r_names(elt);
+      sexp* names = r_vec_names(elt);
 
       // FIXME: Should be able to avoid conversion to list for node
       // lists and character vectors
@@ -417,7 +417,7 @@ sexp* dots_init(struct dots_capture_info* capture_info, sexp* frame_env) {
   // Initialise the names only if there is no expansion to avoid
   // unnecessary allocation and auto-labelling
   if (!capture_info->needs_expansion) {
-    if (capture_info->type != DOTS_VALUE && r_names(dots) == r_null) {
+    if (capture_info->type != DOTS_VALUE && r_vec_names(dots) == r_null) {
       init_names(dots);
     }
     dots = maybe_auto_name(dots, capture_info->named);

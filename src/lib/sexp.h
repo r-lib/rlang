@@ -1,8 +1,6 @@
 #ifndef RLANG_SEXP_H
 #define RLANG_SEXP_H
 
-#include <stdbool.h>
-
 
 static inline r_ssize_t r_length(sexp* x) {
   return Rf_length(x);
@@ -56,9 +54,12 @@ static inline sexp* r_set_class(sexp* x, sexp* classes) {
 static inline sexp* r_get_class(sexp* x) {
   return Rf_getAttrib(x, R_ClassSymbol);
 }
-// FIXME: r_get_names()?
-static inline sexp* r_names(sexp* x) {
-  return Rf_getAttrib(x, R_NamesSymbol);
+
+// From attrs.c
+sexp* r_get_attribute(sexp* x, sexp* tag);
+
+static inline sexp* r_vec_names(sexp* x) {
+  return r_get_attribute(x, R_NamesSymbol);
 }
 
 static inline void r_poke_names(sexp* x, sexp* nms) {

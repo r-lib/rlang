@@ -50,7 +50,7 @@ static void check_unique_names(sexp* x) {
     return ;
   }
 
-  sexp* names = r_names(x);
+  sexp* names = r_vec_names(x);
   if (names == r_null) {
     r_abort("`data` must be uniquely named but does not have names");
   }
@@ -152,7 +152,7 @@ sexp* rlang_as_data_mask(sexp* data, sexp* parent) {
     // fallthrough:
 
   case r_type_list: {
-    sexp* names = r_names(data);
+    sexp* names = r_vec_names(data);
     bottom = KEEP(r_new_environment(parent, 0));
 
     if (names != r_null) {
