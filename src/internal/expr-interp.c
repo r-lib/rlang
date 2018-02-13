@@ -227,13 +227,15 @@ static sexp* bang_bang(struct expansion_info info, sexp* env) {
   return bang_bang_teardown(value, info);
 }
 static sexp* bang_bang_expression(struct expansion_info info, sexp* env) {
-  sexp* value = r_eval(info.operand, env);
+  sexp* value = KEEP(r_eval(info.operand, env));
 
   if (r_is_formulaish(value, -1, 0)) {
     value = rlang_get_expression(value, NULL);
   }
+  value = bang_bang_teardown(value, info);
 
-  return bang_bang_teardown(value, info);
+  FREE(1);
+  return value;
 }
 
 sexp* big_bang_coerce(sexp* expr) {
