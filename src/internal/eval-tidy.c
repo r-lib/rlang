@@ -232,7 +232,7 @@ sexp* rlang_tilde_eval(sexp* tilde, sexp* overscope, sexp* overscope_top, sexp* 
   if (flag == r_unbound_sym) {
     prev_env = r_env_parent(overscope);
   } else {
-    prev_env = r_env_get(overscope, r_sym(".env"));
+    prev_env = r_env_get(overscope, data_mask_env_sym);
 
     // Update .env pronoun to current quosure env temporarily
     r_env_poke(overscope, data_mask_env_sym, quo_env);
