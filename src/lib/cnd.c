@@ -20,9 +20,10 @@ void r_inform(const char* fmt, ...) {
   char buf[BUFSIZE];
   INTERP(buf, fmt, ...);
 
-  sexp* lang = KEEP(r_build_call_node(r_sym("message"), r_scalar_chr(buf)));
+  sexp* buf_chr = KEEP(r_scalar_chr(buf));
+  sexp* lang = KEEP(r_build_call_node(r_sym("message"), buf_chr));
   r_eval(lang, R_BaseEnv);
-  FREE(1);
+  FREE(2);
 }
 void r_warn(const char* fmt, ...) {
   char buf[BUFSIZE];
