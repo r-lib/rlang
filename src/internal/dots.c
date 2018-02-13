@@ -177,7 +177,7 @@ static sexp* dots_unquote(sexp* dots, struct dots_capture_info* capture_info) {
     expr = KEEP(r_duplicate(expr, false));
 
     if (unquote_names && r_is_call(expr, ":=")) {
-      sexp* name = def_unquote_name(expr, env);
+      sexp* name = KEEP(def_unquote_name(expr, env));
 
       if (dots_names == r_null) {
         dots_names = KEEP(r_new_vector(r_type_character, n));
@@ -191,6 +191,8 @@ static sexp* dots_unquote(sexp* dots, struct dots_capture_info* capture_info) {
         r_abort("Can't supply both `=` and `:=`");
       }
       expr = r_node_cadr(r_node_cdr(expr));
+
+      FREE(1);
     }
 
     struct expansion_info info = which_expansion_op(expr, unquote_names);
