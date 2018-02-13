@@ -40,10 +40,6 @@ static inline bool r_inherits(sexp* x, const char* tag) {
   return Rf_inherits(x, tag);
 }
 
-static inline sexp* r_get_attribute(sexp* x, sexp* sym) {
-  return Rf_getAttrib(x, sym);
-}
-
 static inline void r_poke_attribute(sexp* x, sexp* sym, sexp* value) {
   Rf_setAttrib(x, sym, value);
 }
