@@ -137,9 +137,11 @@ sexp* rlang_as_data_mask(sexp* data, sexp* parent) {
   sexp* data_pronoun = rlang_as_data_pronoun(data);
   sexp* bottom = NULL;
 
+  int n_protect = 0;
+
   switch (r_typeof(data)) {
   case r_type_environment:
-    bottom = KEEP(r_env_clone(data, parent));
+    bottom = KEEP_N(r_env_clone(data, parent), &n_protect);
     break;
 
   case r_type_logical:
@@ -149,11 +151,12 @@ sexp* rlang_as_data_mask(sexp* data, sexp* parent) {
   case r_type_character:
   case r_type_raw:
     data = r_vec_coerce(data, r_type_list);
+    KEEP_N(data, &n_protect);
     // fallthrough:
 
   case r_type_list: {
     sexp* names = r_vec_names(data);
-    bottom = KEEP(r_new_environment(parent, 0));
+    bottom = KEEP_N(r_new_environment(parent, 0), &n_protect);
 
     if (names != r_null) {
       r_ssize_t n = r_length(data);
@@ -178,7 +181,7 @@ sexp* rlang_as_data_mask(sexp* data, sexp* parent) {
   r_env_poke(bottom, data_pronoun_sym, data_pronoun);
   sexp* data_mask = rlang_new_data_mask(bottom, bottom, parent);
 
-  FREE(1);
+  FREE(n_protect);
   return data_mask;
 }
 
