@@ -96,9 +96,10 @@ static sexp* with_muffle_lang(sexp* signal) {
     r_node_poke_tag(muffle_node, r_sym("muffle"));
   }
 
-  sexp* args = r_build_node(signal, muffle_node);
+  sexp* args = KEEP(r_build_node(signal, muffle_node));
   sexp* lang = r_build_call_node(r_sym("withRestarts"), args);
 
+  FREE(1);
   return lang;
 }
 static void cnd_signal_impl(const char* signaller, sexp* cnd, bool mufflable) {
