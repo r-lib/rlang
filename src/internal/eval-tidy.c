@@ -306,12 +306,14 @@ static sexp* data_mask_clean_fn = NULL;
 static sexp* env_sym = NULL;
 
 sexp* rlang_eval_tidy(sexp* expr, sexp* data, sexp* frame) {
+  int n_protect = 0;
+
   sexp* env;
   if (rlang_is_quosure(expr)) {
     env = r_quo_get_env(expr);
     expr = r_quo_get_expr(expr);
   } else {
-    env = r_eval(env_sym, frame);
+    env = KEEP_N(r_eval(env_sym, frame), &n_protect);
   }
 
   // If `data` is already a data mask, update env pronouns and
@@ -321,7 +323,10 @@ sexp* rlang_eval_tidy(sexp* expr, sexp* data, sexp* frame) {
     r_env_poke(data, data_mask_env_sym, env);
     sexp* top = r_env_get(data, data_mask_top_env_sym);
     r_env_poke_parent(top, env);
-    return r_eval(expr, data);
+
+    sexp* out = r_eval(expr, data);
+    FREE(n_protect);
+    return out;
   }
 
 
@@ -340,7 +345,9 @@ sexp* rlang_eval_tidy(sexp* expr, sexp* data, sexp* frame) {
     FREE(2);
   }
 
-  return r_eval(expr, mask);
+  sexp* out = r_eval(expr, mask);
+  FREE(n_protect);
+  return out;
 }
 
 
