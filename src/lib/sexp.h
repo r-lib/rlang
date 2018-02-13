@@ -10,12 +10,8 @@ static inline enum r_type r_typeof(sexp* x) {
   return TYPEOF(x);
 }
 
-static inline void r_mark_precious(sexp* x) {
-  R_PreserveObject(x);
-}
-static inline void r_unmark_precious(sexp* x) {
-  R_ReleaseObject(x);
-}
+#define r_mark_precious R_PreserveObject
+#define r_unmark_precious R_ReleaseObject
 
 static inline void r_mark_shared(sexp* x) {
   MARK_NOT_MUTABLE(x);
