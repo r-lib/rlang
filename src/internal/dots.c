@@ -446,18 +446,19 @@ sexp* rlang_exprs_interp(sexp* frame_env, sexp* named,
 }
 sexp* rlang_quos_interp(sexp* frame_env, sexp* named,
                         sexp* ignore_empty, sexp* unquote_names) {
+  int n_protect = 0;
+
   struct dots_capture_info capture_info;
   capture_info = init_capture_info(DOTS_QUO, named, ignore_empty, unquote_names);
-  sexp* dots = KEEP(dots_init(&capture_info, frame_env));
+  sexp* dots = KEEP_N(dots_init(&capture_info, frame_env), n_protect);
 
-  int n_protect = 0;
   if (capture_info.needs_expansion) {
     dots = dots_expand(dots, &capture_info);
     KEEP_N(dots, n_protect);
   }
   r_push_class(dots, "quosures");
 
-  FREE(1 + n_protect);
+  FREE(n_protect);
   return dots;
 }
 
