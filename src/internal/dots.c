@@ -333,11 +333,11 @@ static sexp* maybe_auto_name(sexp* x, sexp* named) {
   sexp* names = r_vec_names(x);
 
   if (names_width && (!names || r_chr_has(names, ""))) {
-    sexp* auto_fn = rlang_ns_get("quos_auto_name");
+    sexp* auto_fn = KEEP(rlang_ns_get("quos_auto_name"));
     sexp* width = KEEP(r_scalar_int(names_width));
     sexp* auto_call = KEEP(r_build_call2(auto_fn, x, width));
     x = r_eval(auto_call, r_empty_env);
-    FREE(2);
+    FREE(3);
   }
 
   return x;
