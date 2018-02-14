@@ -55,6 +55,9 @@ enum r_type {
 #define FREE UNPROTECT
 #define KEEP_N(x, n) (++n, KEEP(x))
 
+#define KEEP_WITH_INDEX(x, i) PROTECT_WITH_INDEX(x, &i)
+#define KEEP_I REPROTECT
+
 #define RLANG_ASSERT(condition) ((void)sizeof(char[1 - 2*!(condition)]))
 
 
