@@ -3,7 +3,7 @@
 
 sexp* r_ns_env(const char* pkg) {
   sexp* ns = r_env_get(R_NamespaceRegistry, r_sym(pkg));
-  if (r_is_unbound_value(ns)) {
+  if (ns == r_unbound_sym) {
     r_abort("Can't find namespace `%s`", pkg);
   }
   return ns;
@@ -14,7 +14,9 @@ static sexp* ns_env_get(sexp* env, const char* name) {
 
   // Can be a promise to a lazyLoadDBfetch() call
   if (r_typeof(obj) == PROMSXP) {
+    KEEP(obj); // Help rchk
     obj = r_eval(obj, r_empty_env);
+    FREE(1);
   }
 
   return obj;

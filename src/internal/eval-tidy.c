@@ -50,7 +50,7 @@ static void check_unique_names(sexp* x) {
     return ;
   }
 
-  sexp* names = r_names(x);
+  sexp* names = r_vec_names(x);
   if (names == r_null) {
     r_abort("`data` must be uniquely named but does not have names");
   }
@@ -69,7 +69,7 @@ sexp* rlang_as_data_pronoun(sexp* x) {
   case r_type_character:
   case r_type_raw:
     check_unique_names(x);
-    x = KEEP_N(r_vec_coerce(x, r_type_list), &n_kept);
+    x = KEEP_N(r_vec_coerce(x, r_type_list), n_kept);
     break;
   case r_type_list:
     check_unique_names(x);
@@ -80,8 +80,8 @@ sexp* rlang_as_data_pronoun(sexp* x) {
     r_abort("`data` must be an uniquely named vector, list, data frame or environment");
   }
 
-  sexp* lookup_msg = KEEP_N(r_scalar_chr("Column `%s` not found in `.data`"), &n_kept);
-  sexp* read_only = KEEP_N(r_scalar_lgl(1), &n_kept);
+  sexp* lookup_msg = KEEP_N(r_scalar_chr("Column `%s` not found in `.data`"), n_kept);
+  sexp* read_only = KEEP_N(r_scalar_lgl(1), n_kept);
   sexp* pronoun = rlang_new_data_pronoun(x, lookup_msg, read_only);
 
   FREE(n_kept);
@@ -137,9 +137,11 @@ sexp* rlang_as_data_mask(sexp* data, sexp* parent) {
   sexp* data_pronoun = rlang_as_data_pronoun(data);
   sexp* bottom = NULL;
 
+  int n_protect = 0;
+
   switch (r_typeof(data)) {
   case r_type_environment:
-    bottom = KEEP(r_env_clone(data, parent));
+    bottom = KEEP_N(r_env_clone(data, parent), n_protect);
     break;
 
   case r_type_logical:
@@ -149,11 +151,12 @@ sexp* rlang_as_data_mask(sexp* data, sexp* parent) {
   case r_type_character:
   case r_type_raw:
     data = r_vec_coerce(data, r_type_list);
+    KEEP_N(data, n_protect);
     // fallthrough:
 
   case r_type_list: {
-    sexp* names = r_names(data);
-    bottom = KEEP(r_new_environment(parent, 0));
+    sexp* names = r_vec_names(data);
+    bottom = KEEP_N(r_new_environment(parent, 0), n_protect);
 
     if (names != r_null) {
       r_ssize_t n = r_length(data);
@@ -178,7 +181,7 @@ sexp* rlang_as_data_mask(sexp* data, sexp* parent) {
   r_env_poke(bottom, data_pronoun_sym, data_pronoun);
   sexp* data_mask = rlang_new_data_mask(bottom, bottom, parent);
 
-  FREE(1);
+  FREE(n_protect);
   return data_mask;
 }
 
@@ -224,12 +227,15 @@ sexp* rlang_tilde_eval(sexp* tilde, sexp* overscope, sexp* overscope_top, sexp* 
     r_abort("Internal error: Quosure environment is corrupt");
   }
 
+  int n_protect = 0;
+
   sexp* prev_env;
   sexp* flag = r_env_find(overscope, data_mask_flag_sym);
   if (flag == r_unbound_sym) {
     prev_env = r_env_parent(overscope);
   } else {
-    prev_env = r_env_get(overscope, r_sym(".env"));
+    prev_env = r_env_get(overscope, data_mask_env_sym);
+    KEEP_N(prev_env, n_protect); // Help rchk
 
     // Update .env pronoun to current quosure env temporarily
     r_env_poke(overscope, data_mask_env_sym, quo_env);
@@ -246,11 +252,13 @@ sexp* rlang_tilde_eval(sexp* tilde, sexp* overscope, sexp* overscope_top, sexp* 
   r_env_poke_parent(overscope_top, quo_env);
 
   sexp* exit_args = r_build_pairlist2(overscope_top, prev_env);
-  sexp* exit_lang = KEEP(r_build_call_node(env_poke_parent_fn, exit_args));
+  sexp* exit_lang = r_build_call_node(env_poke_parent_fn, exit_args);
+  KEEP_N(exit_lang, n_protect);
   r_on_exit(exit_lang, cur_frame);
-  FREE(1);
 
-  return r_eval(expr, overscope);
+  sexp* out = r_eval(expr, overscope);
+  FREE(n_protect);
+  return out;
 }
 
 #define DATA_MASK_OBJECTS_N 4
@@ -262,6 +270,8 @@ static const char* data_mask_objects_names[DATA_MASK_OBJECTS_N] = {
 sexp* rlang_data_mask_clean(sexp* mask) {
   sexp* bottom = r_env_parent(mask);
   sexp* top = r_env_get(mask, data_mask_top_env_sym);
+
+  KEEP(top); // Help rchk
 
   if (top == r_null) {
     top = bottom;
@@ -278,6 +288,7 @@ sexp* rlang_data_mask_clean(sexp* mask) {
     env = r_env_parent(env);
   }
 
+  FREE(1);
   return mask;
 }
 
@@ -303,12 +314,14 @@ static sexp* data_mask_clean_fn = NULL;
 static sexp* env_sym = NULL;
 
 sexp* rlang_eval_tidy(sexp* expr, sexp* data, sexp* frame) {
+  int n_protect = 0;
+
   sexp* env;
   if (rlang_is_quosure(expr)) {
     env = r_quo_get_env(expr);
     expr = r_quo_get_expr(expr);
   } else {
-    env = r_eval(env_sym, frame);
+    env = KEEP_N(r_eval(env_sym, frame), n_protect);
   }
 
   // If `data` is already a data mask, update env pronouns and
@@ -318,7 +331,10 @@ sexp* rlang_eval_tidy(sexp* expr, sexp* data, sexp* frame) {
     r_env_poke(data, data_mask_env_sym, env);
     sexp* top = r_env_get(data, data_mask_top_env_sym);
     r_env_poke_parent(top, env);
-    return r_eval(expr, data);
+
+    sexp* out = r_eval(expr, data);
+    FREE(n_protect);
+    return out;
   }
 
 
@@ -337,7 +353,9 @@ sexp* rlang_eval_tidy(sexp* expr, sexp* data, sexp* frame) {
     FREE(2);
   }
 
-  return r_eval(expr, mask);
+  sexp* out = r_eval(expr, mask);
+  FREE(n_protect);
+  return out;
 }
 
 

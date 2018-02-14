@@ -44,7 +44,7 @@ static sexp* def_unquote_name(sexp* expr, sexp* env) {
   case OP_EXPAND_NONE:
     break;
   case OP_EXPAND_UQ:
-    lhs = KEEP_N(r_eval(info.operand, env), &n_kept);
+    lhs = KEEP_N(r_eval(info.operand, env), n_kept);
     break;
   case OP_EXPAND_UQE:
     r_abort("The LHS of `:=` can't be unquoted with `UQE()`");
@@ -163,10 +163,13 @@ static sexp* empty_spliced_list() {
 static sexp* dots_unquote(sexp* dots, struct dots_capture_info* capture_info) {
   if (!rlang_spliced_flag) rlang_spliced_flag = r_sym("__rlang_spliced");
 
-  sexp* dots_names = r_names(dots);
+  sexp* dots_names = r_vec_names(dots);
   capture_info->count = 0;
   r_ssize_t n = r_length(dots);
   bool unquote_names = capture_info->unquote_names;
+
+  int i_protect;
+  KEEP_WITH_INDEX(dots_names, i_protect);
 
   for (r_ssize_t i = 0; i < n; ++i) {
     sexp* elt = r_list_get(dots, i);
@@ -177,12 +180,12 @@ static sexp* dots_unquote(sexp* dots, struct dots_capture_info* capture_info) {
     expr = KEEP(r_duplicate(expr, false));
 
     if (unquote_names && r_is_call(expr, ":=")) {
-      sexp* name = def_unquote_name(expr, env);
+      sexp* name = KEEP(def_unquote_name(expr, env));
 
       if (dots_names == r_null) {
-        dots_names = KEEP(r_new_vector(r_type_character, n));
+        dots_names = r_new_vector(r_type_character, n);
+        KEEP_I(dots_names, i_protect);
         r_push_names(dots, dots_names);
-        FREE(1);
       }
 
       if (r_chr_has_empty_string_at(dots_names, i)) {
@@ -191,6 +194,8 @@ static sexp* dots_unquote(sexp* dots, struct dots_capture_info* capture_info) {
         r_abort("Can't supply both `=` and `:=`");
       }
       expr = r_node_cadr(r_node_cdr(expr));
+
+      FREE(1);
     }
 
     struct expansion_info info = which_expansion_op(expr, unquote_names);
@@ -282,6 +287,7 @@ static sexp* dots_unquote(sexp* dots, struct dots_capture_info* capture_info) {
     FREE(1);
   }
 
+  FREE(1);
   return dots;
 }
 
@@ -328,14 +334,14 @@ static int find_auto_names_width(sexp* named) {
 
 static sexp* maybe_auto_name(sexp* x, sexp* named) {
   int names_width = find_auto_names_width(named);
-  sexp* names = r_names(x);
+  sexp* names = r_vec_names(x);
 
   if (names_width && (!names || r_chr_has(names, ""))) {
-    sexp* auto_fn = rlang_ns_get("quos_auto_name");
+    sexp* auto_fn = KEEP(rlang_ns_get("quos_auto_name"));
     sexp* width = KEEP(r_scalar_int(names_width));
     sexp* auto_call = KEEP(r_build_call2(auto_fn, x, width));
     x = r_eval(auto_call, r_empty_env);
-    FREE(2);
+    FREE(3);
   }
 
   return x;
@@ -353,7 +359,7 @@ static sexp* init_names(sexp* x) {
 sexp* capturedots(sexp* frame);
 
 sexp* dots_expand(sexp* dots, struct dots_capture_info* capture_info) {
-  sexp* dots_names = r_names(dots);
+  sexp* dots_names = r_vec_names(dots);
 
   sexp* out = KEEP(r_new_vector(r_type_list, capture_info->count));
 
@@ -368,7 +374,7 @@ sexp* dots_expand(sexp* dots, struct dots_capture_info* capture_info) {
     sexp* elt = r_list_get(dots, i);
 
     if (is_spliced_dots(elt)) {
-      sexp* names = r_names(elt);
+      sexp* names = r_vec_names(elt);
 
       // FIXME: Should be able to avoid conversion to list for node
       // lists and character vectors
@@ -380,13 +386,15 @@ sexp* dots_expand(sexp* dots, struct dots_capture_info* capture_info) {
         if (name != r_string("")) {
           // Serialised unicode points might arise when unquoting
           // lists because of the conversion to pairlist
-          name = r_str_unserialise_unicode(name);
+          name = KEEP(r_str_unserialise_unicode(name));
 
           // Names might not be initialised when dots are captured by value
           if (out_names == r_null) {
             out_names = init_names(out);
           }
           r_chr_poke(out_names, count, name);
+
+          FREE(1);
         }
 
         ++count;
@@ -417,7 +425,7 @@ sexp* dots_init(struct dots_capture_info* capture_info, sexp* frame_env) {
   // Initialise the names only if there is no expansion to avoid
   // unnecessary allocation and auto-labelling
   if (!capture_info->needs_expansion) {
-    if (capture_info->type != DOTS_VALUE && r_names(dots) == r_null) {
+    if (capture_info->type != DOTS_VALUE && r_vec_names(dots) == r_null) {
       init_names(dots);
     }
     dots = maybe_auto_name(dots, capture_info->named);
@@ -442,17 +450,19 @@ sexp* rlang_exprs_interp(sexp* frame_env, sexp* named,
 }
 sexp* rlang_quos_interp(sexp* frame_env, sexp* named,
                         sexp* ignore_empty, sexp* unquote_names) {
+  int n_protect = 0;
+
   struct dots_capture_info capture_info;
   capture_info = init_capture_info(DOTS_QUO, named, ignore_empty, unquote_names);
-  sexp* dots = dots_init(&capture_info, frame_env);
+  sexp* dots = KEEP_N(dots_init(&capture_info, frame_env), n_protect);
 
-  KEEP(dots);
   if (capture_info.needs_expansion) {
     dots = dots_expand(dots, &capture_info);
+    KEEP_N(dots, n_protect);
   }
   r_push_class(dots, "quosures");
 
-  FREE(1);
+  FREE(n_protect);
   return dots;
 }
 

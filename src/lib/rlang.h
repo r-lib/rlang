@@ -53,11 +53,10 @@ enum r_type {
 
 #define KEEP PROTECT
 #define FREE UNPROTECT
+#define KEEP_N(x, n) (++n, KEEP(x))
 
-static inline sexp* KEEP_N(sexp* x, int* n) {
-  ++(*n);
-  return KEEP(x);
-}
+#define KEEP_WITH_INDEX(x, i) PROTECT_WITH_INDEX(x, &i)
+#define KEEP_I REPROTECT
 
 #define RLANG_ASSERT(condition) ((void)sizeof(char[1 - 2*!(condition)]))
 

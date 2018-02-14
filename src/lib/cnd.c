@@ -20,9 +20,10 @@ void r_inform(const char* fmt, ...) {
   char buf[BUFSIZE];
   INTERP(buf, fmt, ...);
 
-  sexp* lang = KEEP(r_build_call_node(r_sym("message"), r_scalar_chr(buf)));
+  sexp* buf_chr = KEEP(r_scalar_chr(buf));
+  sexp* lang = KEEP(r_build_call_node(r_sym("message"), buf_chr));
   r_eval(lang, R_BaseEnv);
-  FREE(1);
+  FREE(2);
 }
 void r_warn(const char* fmt, ...) {
   char buf[BUFSIZE];
@@ -57,7 +58,7 @@ static sexp* new_condition_names(sexp* data) {
     r_abort("Conditions must have named data fields");
   }
 
-  sexp* data_nms = r_names(data);
+  sexp* data_nms = r_vec_names(data);
 
   if (r_chr_has(data_nms, "message")) {
     r_abort("Conditions can't have a `message` data field");
@@ -96,31 +97,29 @@ static sexp* with_muffle_lang(sexp* signal) {
     r_node_poke_tag(muffle_node, r_sym("muffle"));
   }
 
-  sexp* args = r_build_node(signal, muffle_node);
+  sexp* args = KEEP(r_build_node(signal, muffle_node));
   sexp* lang = r_build_call_node(r_sym("withRestarts"), args);
 
+  FREE(1);
   return lang;
 }
 static void cnd_signal_impl(const char* signaller, sexp* cnd, bool mufflable) {
   int n_protect = 0;
 
   if (r_typeof(cnd) == STRSXP) {
-    cnd = KEEP(r_new_condition(cnd, r_null, r_null));
-    ++n_protect;
+    cnd = KEEP_N(r_new_condition(cnd, r_null, r_null), n_protect);
   } else if (!r_is_condition(cnd)) {
     r_abort("`cnd` must be a condition");
   }
 
-  sexp* lang = KEEP(r_build_call1(r_sym(signaller), cnd));
-  ++n_protect;
+  sexp* lang = KEEP_N(r_build_call1(r_sym(signaller), cnd), n_protect);
 
   if (mufflable) {
-    sexp* classes = KEEP(chr_prepend(r_get_class(cnd), r_string("mufflable")));
-    ++n_protect;
+    sexp* muffable_str = KEEP_N(r_string("mufflable"), n_protect);
+    sexp* classes = KEEP_N(chr_prepend(r_get_class(cnd), muffable_str), n_protect);
     SETCADR(lang, r_set_class(cnd, classes));
 
-    lang = KEEP(with_muffle_lang(lang));
-    ++n_protect;
+    lang = KEEP_N(with_muffle_lang(lang), n_protect);
   }
 
   r_eval(lang, R_BaseEnv);

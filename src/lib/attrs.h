@@ -10,6 +10,7 @@ static inline void r_poke_attributes(sexp* x, sexp* attrs) {
 }
 
 sexp* r_push_attribute(sexp* x, sexp* tag, sexp* value);
+sexp* r_get_attribute(sexp* x, sexp* tag);
 
 static inline void r_push_names(sexp* x, sexp* value) {
   r_push_attribute(x, R_NamesSymbol, value);

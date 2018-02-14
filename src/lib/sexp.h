@@ -1,8 +1,6 @@
 #ifndef RLANG_SEXP_H
 #define RLANG_SEXP_H
 
-#include <stdbool.h>
-
 
 static inline r_ssize_t r_length(sexp* x) {
   return Rf_length(x);
@@ -12,12 +10,8 @@ static inline enum r_type r_typeof(sexp* x) {
   return TYPEOF(x);
 }
 
-static inline void r_mark_precious(sexp* x) {
-  R_PreserveObject(x);
-}
-static inline void r_unmark_precious(sexp* x) {
-  R_ReleaseObject(x);
-}
+#define r_mark_precious R_PreserveObject
+#define r_unmark_precious R_ReleaseObject
 
 static inline void r_mark_shared(sexp* x) {
   MARK_NOT_MUTABLE(x);
@@ -40,10 +34,6 @@ static inline bool r_inherits(sexp* x, const char* tag) {
   return Rf_inherits(x, tag);
 }
 
-static inline sexp* r_get_attribute(sexp* x, sexp* sym) {
-  return Rf_getAttrib(x, sym);
-}
-
 static inline void r_poke_attribute(sexp* x, sexp* sym, sexp* value) {
   Rf_setAttrib(x, sym, value);
 }
@@ -60,9 +50,12 @@ static inline sexp* r_set_class(sexp* x, sexp* classes) {
 static inline sexp* r_get_class(sexp* x) {
   return Rf_getAttrib(x, R_ClassSymbol);
 }
-// FIXME: r_get_names()?
-static inline sexp* r_names(sexp* x) {
-  return Rf_getAttrib(x, R_NamesSymbol);
+
+// From attrs.c
+sexp* r_get_attribute(sexp* x, sexp* tag);
+
+static inline sexp* r_vec_names(sexp* x) {
+  return r_get_attribute(x, R_NamesSymbol);
 }
 
 static inline void r_poke_names(sexp* x, sexp* nms) {
