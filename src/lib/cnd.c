@@ -107,19 +107,19 @@ static void cnd_signal_impl(const char* signaller, sexp* cnd, bool mufflable) {
   int n_protect = 0;
 
   if (r_typeof(cnd) == STRSXP) {
-    cnd = KEEP_N(r_new_condition(cnd, r_null, r_null), &n_protect);
+    cnd = KEEP_N(r_new_condition(cnd, r_null, r_null), n_protect);
   } else if (!r_is_condition(cnd)) {
     r_abort("`cnd` must be a condition");
   }
 
-  sexp* lang = KEEP_N(r_build_call1(r_sym(signaller), cnd), &n_protect);
+  sexp* lang = KEEP_N(r_build_call1(r_sym(signaller), cnd), n_protect);
 
   if (mufflable) {
-    sexp* muffable_str = KEEP_N(r_string("mufflable"), &n_protect);
-    sexp* classes = KEEP_N(chr_prepend(r_get_class(cnd), muffable_str), &n_protect);
+    sexp* muffable_str = KEEP_N(r_string("mufflable"), n_protect);
+    sexp* classes = KEEP_N(chr_prepend(r_get_class(cnd), muffable_str), n_protect);
     SETCADR(lang, r_set_class(cnd, classes));
 
-    lang = KEEP_N(with_muffle_lang(lang), &n_protect);
+    lang = KEEP_N(with_muffle_lang(lang), n_protect);
   }
 
   r_eval(lang, R_BaseEnv);

@@ -69,7 +69,7 @@ sexp* rlang_as_data_pronoun(sexp* x) {
   case r_type_character:
   case r_type_raw:
     check_unique_names(x);
-    x = KEEP_N(r_vec_coerce(x, r_type_list), &n_kept);
+    x = KEEP_N(r_vec_coerce(x, r_type_list), n_kept);
     break;
   case r_type_list:
     check_unique_names(x);
@@ -80,8 +80,8 @@ sexp* rlang_as_data_pronoun(sexp* x) {
     r_abort("`data` must be an uniquely named vector, list, data frame or environment");
   }
 
-  sexp* lookup_msg = KEEP_N(r_scalar_chr("Column `%s` not found in `.data`"), &n_kept);
-  sexp* read_only = KEEP_N(r_scalar_lgl(1), &n_kept);
+  sexp* lookup_msg = KEEP_N(r_scalar_chr("Column `%s` not found in `.data`"), n_kept);
+  sexp* read_only = KEEP_N(r_scalar_lgl(1), n_kept);
   sexp* pronoun = rlang_new_data_pronoun(x, lookup_msg, read_only);
 
   FREE(n_kept);
@@ -141,7 +141,7 @@ sexp* rlang_as_data_mask(sexp* data, sexp* parent) {
 
   switch (r_typeof(data)) {
   case r_type_environment:
-    bottom = KEEP_N(r_env_clone(data, parent), &n_protect);
+    bottom = KEEP_N(r_env_clone(data, parent), n_protect);
     break;
 
   case r_type_logical:
@@ -151,12 +151,12 @@ sexp* rlang_as_data_mask(sexp* data, sexp* parent) {
   case r_type_character:
   case r_type_raw:
     data = r_vec_coerce(data, r_type_list);
-    KEEP_N(data, &n_protect);
+    KEEP_N(data, n_protect);
     // fallthrough:
 
   case r_type_list: {
     sexp* names = r_vec_names(data);
-    bottom = KEEP_N(r_new_environment(parent, 0), &n_protect);
+    bottom = KEEP_N(r_new_environment(parent, 0), n_protect);
 
     if (names != r_null) {
       r_ssize_t n = r_length(data);
@@ -313,7 +313,7 @@ sexp* rlang_eval_tidy(sexp* expr, sexp* data, sexp* frame) {
     env = r_quo_get_env(expr);
     expr = r_quo_get_expr(expr);
   } else {
-    env = KEEP_N(r_eval(env_sym, frame), &n_protect);
+    env = KEEP_N(r_eval(env_sym, frame), n_protect);
   }
 
   // If `data` is already a data mask, update env pronouns and
