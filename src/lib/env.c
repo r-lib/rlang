@@ -14,7 +14,9 @@ static sexp* ns_env_get(sexp* env, const char* name) {
 
   // Can be a promise to a lazyLoadDBfetch() call
   if (r_typeof(obj) == PROMSXP) {
+    KEEP(obj); // Help rchk
     obj = r_eval(obj, r_empty_env);
+    FREE(1);
   }
 
   return obj;

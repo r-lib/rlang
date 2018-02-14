@@ -227,12 +227,15 @@ sexp* rlang_tilde_eval(sexp* tilde, sexp* overscope, sexp* overscope_top, sexp* 
     r_abort("Internal error: Quosure environment is corrupt");
   }
 
+  int n_protect = 0;
+
   sexp* prev_env;
   sexp* flag = r_env_find(overscope, data_mask_flag_sym);
   if (flag == r_unbound_sym) {
     prev_env = r_env_parent(overscope);
   } else {
     prev_env = r_env_get(overscope, data_mask_env_sym);
+    KEEP_N(prev_env, n_protect); // Help rchk
 
     // Update .env pronoun to current quosure env temporarily
     r_env_poke(overscope, data_mask_env_sym, quo_env);
@@ -249,11 +252,13 @@ sexp* rlang_tilde_eval(sexp* tilde, sexp* overscope, sexp* overscope_top, sexp* 
   r_env_poke_parent(overscope_top, quo_env);
 
   sexp* exit_args = r_build_pairlist2(overscope_top, prev_env);
-  sexp* exit_lang = KEEP(r_build_call_node(env_poke_parent_fn, exit_args));
+  sexp* exit_lang = r_build_call_node(env_poke_parent_fn, exit_args);
+  KEEP_N(exit_lang, n_protect);
   r_on_exit(exit_lang, cur_frame);
-  FREE(1);
 
-  return r_eval(expr, overscope);
+  sexp* out = r_eval(expr, overscope);
+  FREE(n_protect);
+  return out;
 }
 
 #define DATA_MASK_OBJECTS_N 4
@@ -265,6 +270,8 @@ static const char* data_mask_objects_names[DATA_MASK_OBJECTS_N] = {
 sexp* rlang_data_mask_clean(sexp* mask) {
   sexp* bottom = r_env_parent(mask);
   sexp* top = r_env_get(mask, data_mask_top_env_sym);
+
+  KEEP(top); // Help rchk
 
   if (top == r_null) {
     top = bottom;
@@ -281,6 +288,7 @@ sexp* rlang_data_mask_clean(sexp* mask) {
     env = r_env_parent(env);
   }
 
+  FREE(1);
   return mask;
 }
 
