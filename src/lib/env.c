@@ -3,7 +3,7 @@
 
 sexp* r_ns_env(const char* pkg) {
   sexp* ns = r_env_get(R_NamespaceRegistry, r_sym(pkg));
-  if (r_is_unbound_value(ns)) {
+  if (ns == r_unbound_sym) {
     r_abort("Can't find namespace `%s`", pkg);
   }
   return ns;

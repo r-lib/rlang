@@ -19,10 +19,6 @@ static inline sexp* r_env_names(sexp* env) {
 }
 #endif
 
-static inline bool r_is_unbound_value(sexp* x) {
-  return x == R_UnboundValue;
-}
-
 static inline sexp* r_env_parent(sexp* env) {
   return ENCLOS(env);
 }
