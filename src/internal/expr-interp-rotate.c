@@ -365,7 +365,7 @@ sexp* fixup_interp_first(sexp* x, sexp* env) {
   struct ast_rotation_info rotation_info;
   initialise_rotation_info(&rotation_info);
 
-  node_list_interp_fixup(x, NULL, env, &rotation_info, false);
+  node_list_interp_fixup(x, NULL, env, &rotation_info, true);
   return maybe_rotate(x, env, &rotation_info);
 }
 

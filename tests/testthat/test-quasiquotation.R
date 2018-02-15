@@ -151,6 +151,11 @@ test_that("`!!` handles special operators", {
   expect_identical(expr(!! 1 %>% 2), quote(1 %>% 2))
 })
 
+test_that("LHS of nested `!!` is expanded (#405)", {
+  expect_identical_(expr(!!1 + foo(!!2) + !!3), quote(1 + foo(2) + 3))
+  expect_identical_(expr(!!1 + !!2 + foo(!!3) + !!4), quote(1 + 2 + foo(3) + 4))
+})
+
 test_that("evaluates contents of `!!`", {
   expect_identical(expr(!!(1 + 2)), 3)
 })
