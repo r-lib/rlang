@@ -26,9 +26,11 @@
 #'   `parse_expr()` and `parse_exprs()`. Can also be an R connection,
 #'   for instance to a file. If the supplied connection is not open,
 #'   it will be automatically closed and destroyed.
-#' @param env The environment for the quosures. Defaults to the
-#'   context in which the parse_expr function was called. Can be any
-#'   object with a `as_environment()` method.
+#' @param env The environment for the quosures. Depending on the use
+#'   case, a good default might be the [global
+#'   environment][global_env] but you might also want to evaluate the
+#'   R code in an isolated context (perhaps a child of the global
+#'   environment or of the [base environment][base_env]).
 #' @return `parse_expr()` returns an [expression][is_expression],
 #'   `parse_exprs()` returns a list of expressions.
 #' @seealso [base::parse()]
@@ -88,11 +90,17 @@ parse_exprs <- function(x) {
 
 #' @rdname parse_expr
 #' @export
-parse_quo <- function(x, env = caller_env()) {
+parse_quo <- function(x, env) {
+  if (missing(env)) {
+    abort("The quosure environment should be explicitly supplied as `env`")
+  }
   new_quosure(parse_expr(x), as_environment(env))
 }
 #' @rdname parse_expr
 #' @export
-parse_quos <- function(x, env = caller_env()) {
+parse_quos <- function(x, env) {
+  if (missing(env)) {
+    abort("The quosure environment should be explicitly supplied as `env`")
+  }
   map(parse_exprs(x), new_quosure, env = as_environment(env))
 }

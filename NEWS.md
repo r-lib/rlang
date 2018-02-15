@@ -350,7 +350,8 @@ lifecycle status of exported functions.
 * `parse_quosure()` and `parse_quosures()` are soft-deprecated in
   favour of `parse_quo()` and `parse_quos()`. These new names are
   consistent with the rule that abbreviated suffixes indicate the
-  return type of a function.
+  return type of a function. In addition the new functions require their
+  callers to explicitly supply an environment for the quosures.
 
 * Using `f_rhs()` and `f_env()` on quosures is soft-deprecated. The
   fact that quosures are formulas is an implementation detail that

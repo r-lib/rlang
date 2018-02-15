@@ -14,9 +14,9 @@ parse_expr(x)
 
 parse_exprs(x)
 
-parse_quo(x, env = caller_env())
+parse_quo(x, env)
 
-parse_quos(x, env = caller_env())
+parse_quos(x, env)
 }
 \arguments{
 \item{x}{Text containing expressions to parse_expr for
@@ -24,9 +24,11 @@ parse_quos(x, env = caller_env())
 for instance to a file. If the supplied connection is not open,
 it will be automatically closed and destroyed.}
 
-\item{env}{The environment for the quosures. Defaults to the
-context in which the parse_expr function was called. Can be any
-object with a \code{as_environment()} method.}
+\item{env}{The environment for the quosures. Depending on the use
+case, a good default might be the \link[=global_env]{global
+environment} but you might also want to evaluate the
+R code in an isolated context (perhaps a child of the global
+environment or of the \link[=base_env]{base environment}).}
 }
 \value{
 \code{parse_expr()} returns an \link[=is_expression]{expression},

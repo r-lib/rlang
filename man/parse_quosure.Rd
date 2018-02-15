@@ -12,9 +12,11 @@ parse_quosure(x, env = caller_env())
 for instance to a file. If the supplied connection is not open,
 it will be automatically closed and destroyed.}
 
-\item{env}{The environment for the quosures. Defaults to the
-context in which the parse_expr function was called. Can be any
-object with a \code{as_environment()} method.}
+\item{env}{The environment for the quosures. Depending on the use
+case, a good default might be the \link[=global_env]{global
+environment} but you might also want to evaluate the
+R code in an isolated context (perhaps a child of the global
+environment or of the \link[=base_env]{base environment}).}
 }
 \description{
 These functions were soft-deprecated and renamed to \code{\link[=parse_quo]{parse_quo()}}
