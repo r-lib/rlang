@@ -184,7 +184,7 @@ See below for a complete list of changes.
 * New function experimental function `chr_unserialise_unicode()` for
   turning characters serialised to unicode point form
   (e.g. `<U+xxxx>`) to UTF-8. In addition, `as_utf8_character()` now
-  translates those as well.
+  translates those as well. (@krlmlr)
 
 * `expr_label()` now supports quoted function definition calls (#275).
 
