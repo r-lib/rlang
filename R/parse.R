@@ -42,16 +42,6 @@
 #' # A string can contain several expressions separated by ; or \n
 #' parse_exprs("NULL; list()\n foo(bar)")
 #'
-#' # The versions suffixed with _quosure/s return quosures:
-#' parse_quo("foo %>% bar()")
-#' parse_quos("1; 2; mtcars")
-#'
-#' # The env argument is passed to as_environment(). It can be e.g. a string
-#' # representing a scoped package environment:
-#' parse_quo("identity(letters)", env = empty_env())
-#' parse_quos("identity(letters); mtcars", env = "base")
-#'
-#'
 #' # You can also parse source files by passing a R connection. Let's
 #' # create a file containing R code:
 #' path <- tempfile("my-file.R")
@@ -89,6 +79,7 @@ parse_exprs <- function(x) {
 }
 
 #' @rdname parse_expr
+#' @usage NULL
 #' @export
 parse_quo <- function(x, env) {
   if (missing(env)) {
@@ -97,6 +88,7 @@ parse_quo <- function(x, env) {
   new_quosure(parse_expr(x), as_environment(env))
 }
 #' @rdname parse_expr
+#' @usage NULL
 #' @export
 parse_quos <- function(x, env) {
   if (missing(env)) {

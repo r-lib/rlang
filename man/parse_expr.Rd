@@ -13,10 +13,6 @@ parse_quosures(x, env = caller_env())
 parse_expr(x)
 
 parse_exprs(x)
-
-parse_quo(x, env)
-
-parse_quos(x, env)
 }
 \arguments{
 \item{x}{Text containing expressions to parse_expr for
@@ -66,16 +62,6 @@ parse_expr("mtcars \%>\% dplyr::mutate(cyl_prime = cyl / sd(cyl))")
 
 # A string can contain several expressions separated by ; or \\n
 parse_exprs("NULL; list()\\n foo(bar)")
-
-# The versions suffixed with _quosure/s return quosures:
-parse_quo("foo \%>\% bar()")
-parse_quos("1; 2; mtcars")
-
-# The env argument is passed to as_environment(). It can be e.g. a string
-# representing a scoped package environment:
-parse_quo("identity(letters)", env = empty_env())
-parse_quos("identity(letters); mtcars", env = "base")
-
 
 # You can also parse source files by passing a R connection. Let's
 # create a file containing R code:
