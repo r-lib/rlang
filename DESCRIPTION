@@ -25,5 +25,5 @@ Suggests:
 VignetteBuilder: knitr
 RoxygenNote: 6.0.1
 Roxygen: list(markdown = TRUE)
-URL: http://rlang.tidyverse.org, https://github.com/tidyverse/rlang
-BugReports: https://github.com/tidyverse/rlang/issues
+URL: http://rlang.tidyverse.org, https://github.com/r-lib/rlang
+BugReports: https://github.com/r-lib/rlang/issues
