@@ -2,8 +2,11 @@
 # rlang 0.2.0
 
 This release of rlang is mostly an effort at polishing the tidy
-evaluation framework. It is now much faster and many of the
-inconveniences that affected the unquoting operators are gone.
+evaluation framework. All tidy eval functions and operators have been
+rewritten in C in order to improve performance. Capture of expression,
+quasiquotation, and evaluation of quosures are now vastly faster. On
+the UI side, many of the inconveniences that affected the first
+release of rlang have been solved:
 
 * The `!!` operator now has the precedence of unary `+` and `-` which
   allows a much more natural syntax: `!!a > b` only unquotes `a`
@@ -12,94 +15,39 @@ inconveniences that affected the unquoting operators are gone.
 * `enquo()` works in magrittr pipes: `mtcars %>% select(!!enquo(var))`.
 
 * `enquos()` is a variant of `quos()` that has a more natural
-  interface.
+  interface for capturing multiple arguments and `...`.
 
-See below for a complete list of changes.
+See the first section below for a complete list of changes to the tidy
+evaluation framework.
+
+This release also polishes the rlang API. Many functions have been
+renamed as we get a better feel for the consistency and clarity of the
+API. Note that rlang as a whole is still maturing and some functions
+are even experimental. In order to make things clearer for users of
+rlang, we have started to develop a set of conventions to document the
+current stability of each function. You will now find "lifecycle"
+sections in documentation topics. In addition we have gathered all
+lifecycle information in the `?rlang::lifecycle` help page. Please
+only use functions marked as stable in your projects unless you are
+prepared to deal with occasional backward incompatible updates.
 
 
 ## Tidy evaluation
 
-* `ensym()` is a new variant of `enexpr()` that expects a symbol or a
-  string and always returns a symbol. If a complex expression is
-  supplied it fails with an error.
+* The backend for `quos()`, `exprs()`, `list2()`, `dots_list()`, etc
+  is now written in C. This greatly improve the performance of dots
+  capture, especially with the splicing operator `!!!` which now
+  scales much better (you'll see a 1000x performance gain in some
+  cases). The unquoting algorithm has also been improved which makes
+  `enexpr()` and `enquo()` more efficient as well.
 
 * The tidy eval `!!` operator now binds tightly. You no longer have to
-  wrap it in parentheses, i.e. `!! x > y` will only unquote `x`.
+  wrap it in parentheses, i.e. `!!x > y` will only unquote `x`.
 
   Technically the `!!` operator has the same precedence as unary `-`
-  and `+`. This means that `!! a:b` and `!! a + b` are equivalent to
-  `(!! a):b` and `(!! a) + b`. On the other hand `!! a^b` and `!! a$b`
-  are equivalent to`!! (a^b)` and `!! (a$b)`.
-
-* `!!!` now accepts any kind of objects for consistency. Scalar types
-  are treated as vectors of length 1. Previously only symbolic objects
-  like symbols and calls were treated as such in order to allow
-  splicing of function bodies (which are not necessarily wrapped in a
-  `{` block).
-
-* `exprs()` and `quos()` gain a `.unquote_names` arguments to switch
-  off interpretation of `:=` as a name operator. This should be useful
-  for programming on the language targetting APIs such as
-  data.table. For consistency `dots_list()` and `dots_splice()` gain
-  that argument as well.
-
-* The backend for `quos()`, `exprs()`, `dots_list()`, etc is now
-  written in C. This greatly improve the performance of dots capture,
-  especially with the splicing operator `!!!` which now scales much
-  better (you'll see a 1000x performance gain in some cases). The
-  unquoting algorithm has also been improved which makes `enexpr()`
-  and `enquo()` more efficient as well.
-
-* `enquo()` and `enexpr()` now deal with default values correctly (#201).
-
-* Functions taking dots by value rather than by expression
-  (e.g. regular functions, not quoting functions) have a more
-  restricted set of unquoting operations. They only support `:=` and
-  `!!!`, and only at top-level. I.e. `dots_list(!!! x)` is valid but
-  not `dots_list(deep(!!! x))` (#217).
-
-* Functions taking dots by value now support splicing a `NULL`
-  value. `dots_list(!!! NULL)` is equivalent to `dots_list()` (#242).
-
-* `exprs()` gains a `.named` option to auto-label its arguments (#267).
-
-* Splicing a list no longer mutates it (#280).
-
-* Capture operators now support evaluated arguments. Capturing a
-  forced or evaluated argument is exactly the same as unquoting that
-  argument: the actual object (even if a vector) is inlined in the
-  expression. Capturing a forced argument occurs when you use
-  `enquo()`, `enexpr()`, etc too late. It also happens when your
-  quoting function is supplied to `lapply()` or when you try to quote
-  the first argument of an S3 method (which is necessarily evaluated
-  in order to detect which class to dispatch to). (#295, #300).
-
-* Parentheses around `!!` are automatically removed. This makes the
-  generated expression call cleaner: `(!! sym("name"))(arg)`. Note
-  that removing the parentheses will never affect the actual
-  precedence within the expression as the parentheses are only useful
-  when parsing code as text. The parentheses will also be added by R
-  when printing code if needed (#296).
-
-* Quasiquotation now supports `!!` and `!!!` as functional forms:
-
-  ```
-  expr(`!!`(var))
-  quo(call(`!!!`(var)))
-  ```
-
-  This is consistent with the way native R operators parses to
-  function calls. These new functional forms are to be preferred to
-  `UQ()` and `UQS()`. We are now questioning the latter and might
-  deprecate them in a future release.
-
-* The quasiquotation parser now gives meaningful errors in corner
-  cases to help you figure out what is wrong.
-
-* New getters and setters for quosures: `quo_get_expr()`,
-  `quo_get_env()`, `quo_set_expr()`, and `quo_set_env()`. Compared to
-  `get_expr()` etc, these accessors only work on quosures and are
-  slightly more efficient.
+  and `+`. This means that `!!a:b` and `!!a + b` are equivalent to
+  `(!!a):b` and `(!!a) + b`. On the other hand `!!a^b` and `!!a$b` are
+  equivalent to`!!(a^b)` and `!!(a$b)`.
 
 * The print method for quosures has been greatly improved. Quosures no
   longer appear as formulas but as expressions prefixed with `^`;
@@ -137,8 +85,74 @@ See below for a complete list of changes.
   reflect that it is a lossy operation that flattens all nested
   quosures.
 
+
+* `!!!` now accepts any kind of objects for consistency. Scalar types
+  are treated as vectors of length 1. Previously only symbolic objects
+  like symbols and calls were treated as such.
+
+* `ensym()` is a new variant of `enexpr()` that expects a symbol or a
+  string and always returns a symbol. If a complex expression is
+  supplied it fails with an error.
+
+* `exprs()` and `quos()` gain a `.unquote_names` arguments to switch
+  off interpretation of `:=` as a name operator. This should be useful
+  for programming on the language targetting APIs such as
+  data.table.
+
+* `exprs()` gains a `.named` option to auto-label its arguments (#267).
+
+* Functions taking dots by value rather than by expression
+  (e.g. regular functions, not quoting functions) have a more
+  restricted set of unquoting operations. They only support `:=` and
+  `!!!`, and only at top-level. I.e. `dots_list(!!! x)` is valid but
+  not `dots_list(nested_call(!!! x))` (#217).
+
+* Functions taking dots with `list2()` or `dots_list()` now support
+  splicing of `NULL` values. `!!! NULL` is equivalent to `!!! list()`
+  (#242).
+
+* Capture operators now support evaluated arguments. Capturing a
+  forced or evaluated argument is exactly the same as unquoting that
+  argument: the actual object (even if a vector) is inlined in the
+  expression. Capturing a forced argument occurs when you use
+  `enquo()`, `enexpr()`, etc too late. It also happens when your
+  quoting function is supplied to `lapply()` or when you try to quote
+  the first argument of an S3 method (which is necessarily evaluated
+  in order to detect which class to dispatch to). (#295, #300).
+
+* Parentheses around `!!` are automatically removed. This makes the
+  generated expression call cleaner: `(!! sym("name"))(arg)`. Note
+  that removing the parentheses will never affect the actual
+  precedence within the expression as the parentheses are only useful
+  when parsing code as text. The parentheses will also be added by R
+  when printing code if needed (#296).
+
+* Quasiquotation now supports `!!` and `!!!` as functional forms:
+
+  ```
+  expr(`!!`(var))
+  quo(call(`!!!`(var)))
+  ```
+
+  This is consistent with the way native R operators parses to
+  function calls. These new functional forms are to be preferred to
+  `UQ()` and `UQS()`. We are now questioning the latter and might
+  deprecate them in a future release.
+
+* The quasiquotation parser now gives meaningful errors in corner
+  cases to help you figure out what is wrong.
+
+* New getters and setters for quosures: `quo_get_expr()`,
+  `quo_get_env()`, `quo_set_expr()`, and `quo_set_env()`. Compared to
+  `get_expr()` etc, these accessors only work on quosures and are
+  slightly more efficient.
+
 * `quo_is_symbol()` and `quo_is_call()` now take the same set of
   arguments as `is_symbol()` and `is_call()`.
+
+* `enquo()` and `enexpr()` now deal with default values correctly (#201).
+
+* Splicing a list no longer mutates it (#280).
 
 
 ## Conditions
@@ -179,6 +193,13 @@ See below for a complete list of changes.
 
 ## Various features
 
+* New functions `inherits_any()`, `inherits_all()`, and
+  `inherits_only()`. They allow testing for inheritance from multiple
+  classes. The `_any` variant is equivalent to `base::inherits()` but
+  is more explicit about its behaviour. `inherits_all()` checks that
+  all classes are present in order and `inherits_only()` checks that
+  the class vectors are identical.
+
 * New `fn_fmls<-` and `fn_fmls_names<-` setters.
 
 * New function experimental function `chr_unserialise_unicode()` for
@@ -201,13 +222,6 @@ See below for a complete list of changes.
   create a boxed value, `is_box()` to test for a boxed value, and
   `unbox()` to unbox it. `new_box()` and `is_box()` accept optional
   subclass.
-
-* New functions `inherits_any()`, `inherits_all()`, and
-  `inherits_only()`. They allow testing for inheritance from multiple
-  classes. The `_any` variant is equivalent to `base::inherits()` but
-  is more explicit about its behaviour. `inherits_all()` checks that
-  all classes are present in order and `inherits_only()` checks that
-  the class vectors are identical.
 
 * The vector constructors such as `new_integer()`,
   `new_double_along()` etc gain a `names` argument. In the case of the
