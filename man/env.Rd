@@ -13,8 +13,8 @@ child_env(.parent, ...)
 new_environment(data = list())
 }
 \arguments{
-\item{..., data}{Named values. The dots have \link[=tidy-dots]{explicit splicing
-semantics}.}
+\item{..., data}{Named values. These dots support \link[=tidy-dots]{tidy
+dots} features.}
 
 \item{.parent}{A parent environment. Can be an object supported by
 \code{\link[=as_environment]{as_environment()}}.}
@@ -125,7 +125,7 @@ env_has(rlang_child, "env", inherit = TRUE)     # rlang function
 env_has(rlang_child, "lapply", inherit = TRUE)  # base function
 
 
-# Both env() and child_env() take dots with explicit splicing:
+# Both env() and child_env() support tidy dots features:
 objs <- list(b = "foo", c = "bar")
 env <- env(a = 1, !!! objs)
 env$c

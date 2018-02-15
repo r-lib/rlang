@@ -10,8 +10,8 @@ call2(.fn, ..., .ns = NULL)
 \item{.fn}{Function to call. Must be a callable object: a string,
 symbol, call, or a function.}
 
-\item{...}{Arguments to the call either in or out of a list. Dots
-are evaluated with \link[=tidy-dots]{explicit splicing}.}
+\item{...}{Arguments to the call either in or out of a list. These dots
+support \link[=tidy-dots]{tidy dots} features.}
 
 \item{.ns}{Namespace with which to prefix \code{.fn}. Must be a string
 or symbol.}

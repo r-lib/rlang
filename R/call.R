@@ -27,8 +27,8 @@
 #'
 #' @param .fn Function to call. Must be a callable object: a string,
 #'   symbol, call, or a function.
-#' @param ... Arguments to the call either in or out of a list. Dots
-#'   are evaluated with [explicit splicing][tidy-dots].
+#' @param ... Arguments to the call either in or out of a list. These dots
+#'   support [tidy dots][tidy-dots] features.
 #' @param .ns Namespace with which to prefix `.fn`. Must be a string
 #'   or symbol.
 #' @seealso call_modify
@@ -216,8 +216,8 @@ is_call <- function(x, name = NULL, n = NULL, ns = NULL) {
 #'   right-hand side, or a frame object from which to extract the call
 #'   expression.
 #' @param ... Named or unnamed expressions (constants, names or calls)
-#'   used to modify the call. Use `NULL` to remove arguments. Dots are
-#'   evaluated with [explicit splicing][tidy-dots].
+#'   used to modify the call. Use `NULL` to remove arguments. These
+#'   dots support [tidy dots][tidy-dots] features.
 #' @param .standardise If `TRUE`, the call is standardised beforehand
 #'   to match existing unnamed arguments to their argument names. This
 #'   prevents new named arguments from accidentally replacing original

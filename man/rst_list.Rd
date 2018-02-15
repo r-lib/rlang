@@ -19,7 +19,7 @@ rst_maybe_jump(.restart, ...)
 \item{.restart}{The name of a restart.}
 
 \item{...}{Arguments passed on to the restart function. These
-dots are evaluated with \link[=tidy-dots]{explicit splicing}.}
+dots support \link[=tidy-dots]{tidy dots} features.}
 }
 \description{
 Restarts are named jumping points established by \code{\link[=with_restarts]{with_restarts()}}.

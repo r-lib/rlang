@@ -18,7 +18,7 @@
 #'   restarts are established.
 #' @param ... Named restart functions. The name is taken as the
 #'   restart name and the function is executed after the jump. These
-#'   dots are evaluated with [explicit splicing][tidy-dots].
+#'   dots support [tidy dots][tidy-dots] features.
 #' @seealso [return_from()] and [return_to()] for a more flexible way
 #'   of performing a non-local jump to an arbitrary call frame.
 #' @export
@@ -123,7 +123,7 @@ with_restarts <- function(.expr, ...) {
 #'
 #' @param .restart The name of a restart.
 #' @param ... Arguments passed on to the restart function. These
-#'   dots are evaluated with [explicit splicing][tidy-dots].
+#'   dots support [tidy dots][tidy-dots] features.
 #' @seealso [with_restarts()], [rst_muffle()].
 #' @export
 rst_list <- function() {

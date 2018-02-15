@@ -23,8 +23,8 @@ lang_args_names(lang)
 }
 \arguments{
 \item{...}{Named or unnamed expressions (constants, names or calls)
-used to modify the call. Use \code{NULL} to remove arguments. Dots are
-evaluated with \link[=tidy-dots]{explicit splicing}.}
+used to modify the call. Use \code{NULL} to remove arguments. These
+dots support \link[=tidy-dots]{tidy dots} features.}
 
 \item{.standardise}{If \code{TRUE}, the call is standardised beforehand
 to match existing unnamed arguments to their argument names. This

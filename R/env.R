@@ -58,8 +58,8 @@
 #' as argument to a function), modifying the bindings of one of those
 #' references changes all other references as well.
 #'
-#' @param ...,data Named values. The dots have [explicit splicing
-#'   semantics][tidy-dots].
+#' @param ...,data Named values. These dots support [tidy
+#'   dots][tidy-dots] features.
 #' @param .parent A parent environment. Can be an object supported by
 #'   [as_environment()].
 #' @seealso `scoped_env`, [env_has()], [env_bind()].
@@ -110,7 +110,7 @@
 #' env_has(rlang_child, "lapply", inherit = TRUE)  # base function
 #'
 #'
-#' # Both env() and child_env() take dots with explicit splicing:
+#' # Both env() and child_env() support tidy dots features:
 #' objs <- list(b = "foo", c = "bar")
 #' env <- env(a = 1, !!! objs)
 #' env$c
@@ -466,8 +466,7 @@ env_poke_parent <- function(env, new_env) {
 #' majority of use cases but the other variants can be useful for
 #' specific problems.
 #'
-#' - `env_bind()` takes named _values_. The arguments are evaluated
-#'   once (with [explicit splicing][tidy-dots]) and bound in `.env`.
+#' - `env_bind()` takes named _values_ which are bound in `.env`.
 #'   `env_bind()` is equivalent to [base::assign()].
 #'
 #' - `env_bind_fns()` takes named _functions_ and creates active
@@ -507,9 +506,8 @@ env_poke_parent <- function(env, new_env) {
 #' @param .env An environment or an object bundling an environment,
 #'   e.g. a formula, [quosure][quotation] or [closure][is_closure].
 #'   This argument is passed to [get_env()].
-#' @param ... Pairs of names and expressions, values or
-#'   functions. These dots support splicing (with varying semantics,
-#'   see above) and name unquoting.
+#' @param ... Pairs of names and expressions, values or functions.
+#'   These dots support [tidy dots][tidy-dots] features.
 #' @return The input object `.env`, with its associated environment
 #'   modified in place, invisibly.
 #' @export

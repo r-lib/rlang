@@ -14,7 +14,7 @@ restarts are established.}
 
 \item{...}{Named restart functions. The name is taken as the
 restart name and the function is executed after the jump. These
-dots are evaluated with \link[=tidy-dots]{explicit splicing}.}
+dots support \link[=tidy-dots]{tidy dots} features.}
 }
 \description{
 Restart points are named functions that are established with

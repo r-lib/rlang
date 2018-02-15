@@ -185,7 +185,7 @@ inplace <- function(handler, muffle = FALSE) {
 #' @param ... Additional arguments passed on the restart
 #'   function. These arguments are evaluated only once and
 #'   immediately, when creating the restarting handler. Furthermore,
-#'   they are evaluated with [explicit splicing][tidy-dots].
+#'   they support [tidy dots][tidy-dots] features.
 #' @export
 #' @seealso [inplace()] and [exiting()].
 #' @examples

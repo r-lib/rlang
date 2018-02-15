@@ -14,9 +14,8 @@ env_bind_fns(.env, ...)
 e.g. a formula, \link[=quotation]{quosure} or \link[=is_closure]{closure}.
 This argument is passed to \code{\link[=get_env]{get_env()}}.}
 
-\item{...}{Pairs of names and expressions, values or
-functions. These dots support splicing (with varying semantics,
-see above) and name unquoting.}
+\item{...}{Pairs of names and expressions, values or functions.
+These dots support \link[=tidy-dots]{tidy dots} features.}
 
 \item{.eval_env}{The environment where the expressions will be
 evaluated when the symbols are forced.}

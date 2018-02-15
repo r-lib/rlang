@@ -11,8 +11,8 @@ modify(.x, ...)
 
 \item{...}{List of elements to merge into \code{.x}. Named elements
 already existing in \code{.x} are used as replacements. Elements that
-have new or no names are inserted at the end. These dots are
-evaluated with \link[=tidy-dots]{explicit splicing}.}
+have new or no names are inserted at the end. These dots support
+\link[=tidy-dots]{tidy dots} features.}
 }
 \value{
 A modified vector upcasted to a list.

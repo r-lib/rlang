@@ -11,9 +11,8 @@ env_bind(.env, ...)
 e.g. a formula, \link[=quotation]{quosure} or \link[=is_closure]{closure}.
 This argument is passed to \code{\link[=get_env]{get_env()}}.}
 
-\item{...}{Pairs of names and expressions, values or
-functions. These dots support splicing (with varying semantics,
-see above) and name unquoting.}
+\item{...}{Pairs of names and expressions, values or functions.
+These dots support \link[=tidy-dots]{tidy dots} features.}
 }
 \value{
 The input object \code{.env}, with its associated environment
@@ -27,8 +26,7 @@ the given environment. This function should take care of the
 majority of use cases but the other variants can be useful for
 specific problems.
 \itemize{
-\item \code{env_bind()} takes named \emph{values}. The arguments are evaluated
-once (with \link[=tidy-dots]{explicit splicing}) and bound in \code{.env}.
+\item \code{env_bind()} takes named \emph{values} which are bound in \code{.env}.
 \code{env_bind()} is equivalent to \code{\link[base:assign]{base::assign()}}.
 \item \code{env_bind_fns()} takes named \emph{functions} and creates active
 bindings in \code{.env}. This is equivalent to
