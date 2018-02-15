@@ -20,7 +20,7 @@ cnd_abort(.cnd, ..., .msg = NULL, .call = NULL, .mufflable = FALSE)
 name of a s3 class from which a new condition will be created.}
 
 \item{...}{Named data fields stored inside the condition
-object. These dots are evaluated with \link[=dots_list]{explicit
+object. These dots are evaluated with \link[=tidy-dots]{explicit
 splicing}.}
 
 \item{.msg}{A string to override the condition's default message.}

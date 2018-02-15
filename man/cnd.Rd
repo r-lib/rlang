@@ -19,7 +19,7 @@ message_cnd(.type = NULL, ..., .msg = NULL)
 \item{.type}{The condition subclass.}
 
 \item{...}{Named data fields stored inside the condition
-object. These dots are evaluated with \link[=dots_list]{explicit
+object. These dots are evaluated with \link[=tidy-dots]{explicit
 splicing}.}
 
 \item{.msg}{A default message to inform the user about the

@@ -12,7 +12,7 @@ restarting(.restart, ..., .fields = NULL)
 \item{...}{Additional arguments passed on the restart
 function. These arguments are evaluated only once and
 immediately, when creating the restarting handler. Furthermore,
-they are evaluated with \link[=dots_list]{explicit splicing}.}
+they are evaluated with \link[=tidy-dots]{explicit splicing}.}
 
 \item{.fields}{A character vector specifying the fields of the
 condition that should be passed as arguments to the restart. If

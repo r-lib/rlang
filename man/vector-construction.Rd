@@ -8,7 +8,6 @@
 \alias{cpl}
 \alias{chr}
 \alias{bytes}
-\alias{list2}
 \alias{ll}
 \title{Create vectors}
 \usage{
@@ -23,8 +22,6 @@ cpl(...)
 chr(..., .encoding = NULL)
 
 bytes(...)
-
-list2(...)
 
 ll(...)
 }
@@ -67,6 +64,8 @@ and \link[=is_spliced]{explicitly spliced} lists are spliced.
 There are two list constructors with different splicing
 semantics. \code{list2()} only splices lists explicitly marked with
 \code{\link[=splice]{splice()}}.
+
+See the \link[=tidy-dots]{tidy dots} topic for more information.
 }
 
 \section{Life cycle}{
@@ -110,10 +109,4 @@ dbl(list(a = c(A = 1)))
 # bytes() accepts integerish inputs
 bytes(1:10)
 bytes(0x01, 0xff, c(0x03, 0x05), list(10, 20, 30L))
-
-# The list constructor has explicit splicing semantics:
-list2(1, list(2))
-
-# Note that explicitly spliced lists are always spliced:
-list2(!!! list(1, 2))
 }

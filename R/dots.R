@@ -2,7 +2,7 @@
 #'
 #' @description
 #'
-#' `dots_list(...)` is equivalent to `list(...)` but provides tidy
+#' `list2()` is equivalent to `list(...)` but provides tidy
 #' dots semantics:
 #'
 #' - You can splice other lists with the
@@ -12,34 +12,33 @@
 #'   operator `!!` on the left-hand side of `:=`.
 #'
 #' We call quasiquotation support in dots **tidy dots** semantics and
-#' functions taking dots with `dots_list()` tidy dots functions.
+#' functions taking dots with `list2()` tidy dots functions.
 #' Quasiquotation is an alternative to `do.call()` idioms and gives
 #' the users of your functions an uniform syntax to supply a variable
 #' number of arguments or a variable name.
+#'
+#' `dots_list()` is a lower-level version of `list2()` that offers
+#' additional parameters for dots capture.
 #'
 #'
 #' @details
 #'
 #' Note that while all tidy eval [quoting functions][quotation] have
 #' tidy dots semantics, not all tidy dots functions are quoting
-#' functions. `dots_list()` is for standard functions, not quoting
+#' functions. `list2()` is for standard functions, not quoting
 #' functions.
 #'
 #'
 #' @section Life cycle:
 #'
-#' * `dots_list()` returns named dots, even if no names were supplied.
-#'   This behaviour is for consistency with dots returned by [exprs()]
-#'   or [quos()] or their capturing variants. However we now question
-#'   this feature. It makes sense in quoting functions that are
-#'   building up function calls and where usage of [names2()] was
-#'   rather systematic before tidy evaluation. However in the case of
-#'   standard functions such as created by `dots_list()`, the cost of
-#'   allocating an empty character vector of names can be expensive.
+#' One difference of `dots_list()` with `list2()` is that it always
+#' allocates a vector of names even if no names were supplied. In this
+#' case, the names are all empty `""`. This is for consistency with
+#' [enquos()] and [enexprs()] but can be quite costly when long lists
+#' are spliced in the results. For this reason we plan to parameterise
+#' this behaviour with a `.named` argument and possibly change the
+#' default. `list2()` does not have this issue.
 #'
-#'   For this reason we may break the API in the future by returning
-#'   `NULL` names when no arguments were named. Please use
-#'   `dots_list()` accordingly (i.e. `set_names(dots, names2(dots))`).
 #'
 #' @param ... Arguments with explicit (`dots_list()`) or list
 #'   (`dots_splice()`) splicing semantics. The contents of spliced
@@ -51,18 +50,20 @@
 #'   arguments are named with the empty string `""`.
 #'
 #' @seealso [exprs()] for extracting dots without evaluation.
-#' @aliases tidy-dots
+#' @name tidy-dots
+
+#' @rdname tidy-dots
 #' @export
 #' @examples
 #' # Let's create a function that takes a variable number of arguments:
 #' numeric <- function(...) {
-#'   dots <- dots_list(...)
+#'   dots <- list2(...)
 #'   num <- as.numeric(dots)
 #'   set_names(num, names(dots))
 #' }
 #' numeric(1, 2, 3)
 #'
-#' # The main difference with list(...) is that dots_list(...) enables
+#' # The main difference with list(...) is that list2(...) enables
 #' # the `!!!` syntax to splice lists:
 #' x <- list(2, 3)
 #' numeric(1, !!! x, 4)
@@ -76,7 +77,7 @@
 #' # partial matching of arguments. Let's create a function taking
 #' # named arguments and dots:
 #' fn <- function(data, ...) {
-#'   dots_list(...)
+#'   list2(...)
 #' }
 #'
 #' # You normally cannot pass an argument named `data` through the dots
@@ -95,7 +96,7 @@ dots_list <- function(...,
 #' Splice lists
 #'
 #' - `splice` marks an object to be spliced. It is equivalent to using
-#'   `!!!` in a function with [tidy dots semantics][dots_list].
+#'   `!!!` in a function with [tidy dots semantics][tidy-dots].
 #'
 #' - `dots_splice()` is like [dots_list()] but automatically splices
 #'   list inputs.
@@ -177,7 +178,7 @@ is_spliced_bare <- function(x) {
   is_bare_list(x) || is_spliced(x)
 }
 #' @rdname splice
-#' @inheritParams dots_list
+#' @inheritParams tidy-dots
 #' @export
 dots_splice <- function(...,
                         .ignore_empty = c("trailing", "none", "all")) {
@@ -196,7 +197,7 @@ dots_splice <- function(...,
 #' spliced objects manually, perhaps with a custom predicate (see
 #' [flatten_if()]).
 #'
-#' @inheritParams dots_list
+#' @inheritParams tidy-dots
 #' @param ... Arguments to evaluate and process splicing operators.
 #' @export
 #' @examples

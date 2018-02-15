@@ -13,7 +13,7 @@ expression or a quoted formula.}
 
 \item{...}{Named handlers. Handlers should inherit from \code{exiting}
 or \code{inplace}. See \code{\link[=exiting]{exiting()}} and \code{\link[=inplace]{inplace()}} for constructing
-such handlers. Dots are evaluated with \link[=dots_list]{explicit
+such handlers. Dots are evaluated with \link[=tidy-dots]{explicit
 splicing}.}
 }
 \description{

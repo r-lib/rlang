@@ -109,7 +109,7 @@
 #' All the quotation functions mentioned here are stable.
 #'
 #'
-#' @inheritParams dots_list
+#' @inheritParams tidy-dots
 #' @param expr An expression.
 #' @param arg A symbol representing an argument. The expression
 #'   supplied to that argument will be captured instead of being

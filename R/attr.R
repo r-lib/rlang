@@ -22,7 +22,7 @@
 #'
 #' @param .x An object to decorate with attributes.
 #' @param ... A list of named attributes. These have [explicit
-#'   splicing semantics][dots_list]. Pass a single unnamed `NULL` to
+#'   splicing semantics][tidy-dots]. Pass a single unnamed `NULL` to
 #'   zap all attributes from `.x`.
 #' @return `set_attrs()` returns a modified [shallow copy][duplicate]
 #'   of `.x`. `mut_attrs()` invisibly returns the original `.x`

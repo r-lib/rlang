@@ -31,6 +31,8 @@
 #' semantics. `list2()` only splices lists explicitly marked with
 #' [splice()].
 #'
+#' See the [tidy dots][tidy-dots] topic for more information.
+#'
 #'
 #' @section Life cycle:
 #'
@@ -119,15 +121,8 @@ bytes <- function(...) {
   .Call(rlang_squash, dots, "raw", is_spliced_bare, 1L)
 }
 
-#' @rdname vector-construction
+#' @rdname tidy-dots
 #' @export
-#' @examples
-#'
-#' # The list constructor has explicit splicing semantics:
-#' list2(1, list(2))
-#'
-#' # Note that explicitly spliced lists are always spliced:
-#' list2(!!! list(1, 2))
 list2 <- function(...) {
   .Call(rlang_dots_list, environment(), FALSE, "trailing", TRUE)
 }

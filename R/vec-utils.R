@@ -51,7 +51,7 @@ prepend <- function(x, values, before = 1) {
 #' @param ... List of elements to merge into `.x`. Named elements
 #'   already existing in `.x` are used as replacements. Elements that
 #'   have new or no names are inserted at the end. These dots are
-#'   evaluated with [explicit splicing][dots_list].
+#'   evaluated with [explicit splicing][tidy-dots].
 #'
 #' @return A modified vector upcasted to a list.
 #' @export

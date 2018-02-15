@@ -24,7 +24,7 @@ lang_args_names(lang)
 \arguments{
 \item{...}{Named or unnamed expressions (constants, names or calls)
 used to modify the call. Use \code{NULL} to remove arguments. Dots are
-evaluated with \link[=dots_list]{explicit splicing}.}
+evaluated with \link[=tidy-dots]{explicit splicing}.}
 
 \item{.standardise}{If \code{TRUE}, the call is standardised beforehand
 to match existing unnamed arguments to their argument names. This

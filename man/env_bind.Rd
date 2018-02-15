@@ -28,7 +28,7 @@ majority of use cases but the other variants can be useful for
 specific problems.
 \itemize{
 \item \code{env_bind()} takes named \emph{values}. The arguments are evaluated
-once (with \link[=dots_list]{explicit splicing}) and bound in \code{.env}.
+once (with \link[=tidy-dots]{explicit splicing}) and bound in \code{.env}.
 \code{env_bind()} is equivalent to \code{\link[base:assign]{base::assign()}}.
 \item \code{env_bind_fns()} takes named \emph{functions} and creates active
 bindings in \code{.env}. This is equivalent to

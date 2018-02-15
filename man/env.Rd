@@ -13,7 +13,7 @@ child_env(.parent, ...)
 new_environment(data = list())
 }
 \arguments{
-\item{..., data}{Named values. The dots have \link[=dots_list]{explicit splicing
+\item{..., data}{Named values. The dots have \link[=tidy-dots]{explicit splicing
 semantics}.}
 
 \item{.parent}{A parent environment. Can be an object supported by

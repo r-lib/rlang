@@ -29,7 +29,7 @@ last argument is ignored if it is empty.}
 \description{
 \itemize{
 \item \code{splice} marks an object to be spliced. It is equivalent to using
-\code{!!!} in a function with \link[=dots_list]{tidy dots semantics}.
+\code{!!!} in a function with \link[=tidy-dots]{tidy dots semantics}.
 }
 }
 \details{

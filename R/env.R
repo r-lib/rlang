@@ -59,7 +59,7 @@
 #' references changes all other references as well.
 #'
 #' @param ...,data Named values. The dots have [explicit splicing
-#'   semantics][dots_list].
+#'   semantics][tidy-dots].
 #' @param .parent A parent environment. Can be an object supported by
 #'   [as_environment()].
 #' @seealso `scoped_env`, [env_has()], [env_bind()].
@@ -467,7 +467,7 @@ env_poke_parent <- function(env, new_env) {
 #' specific problems.
 #'
 #' - `env_bind()` takes named _values_. The arguments are evaluated
-#'   once (with [explicit splicing][dots_list]) and bound in `.env`.
+#'   once (with [explicit splicing][tidy-dots]) and bound in `.env`.
 #'   `env_bind()` is equivalent to [base::assign()].
 #'
 #' - `env_bind_fns()` takes named _functions_ and creates active

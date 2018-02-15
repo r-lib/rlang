@@ -14,7 +14,7 @@ new_language(head, tail = NULL)
 symbol, call, or a function.}
 
 \item{...}{Arguments to the call either in or out of a list. Dots
-are evaluated with \link[=dots_list]{explicit splicing}.}
+are evaluated with \link[=tidy-dots]{explicit splicing}.}
 
 \item{.ns}{Namespace with which to prefix \code{.fn}. Must be a string
 or symbol.}

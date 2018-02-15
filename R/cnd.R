@@ -11,7 +11,7 @@
 #' @param .type The condition subclass.
 #' @param ... Named data fields stored inside the condition
 #'   object. These dots are evaluated with [explicit
-#'   splicing][dots_list].
+#'   splicing][tidy-dots].
 #' @param .msg A default message to inform the user about the
 #'   condition when it is signalled.
 #' @seealso [cnd_signal()], [with_handlers()].
