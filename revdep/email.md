@@ -17,7 +17,7 @@ To get the development version of {{{ my_package }}} so you can run the checks y
 
     # install.packages("devtools")
     devtools::install_github("{{my_github}}")
-    
+
 To see what's changed visit <https://github.com/{{{my_github}}}/blob/master/NEWS.md>.
 
 {{/you_have_problems}}
