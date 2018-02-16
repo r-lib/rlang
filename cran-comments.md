@@ -1,17 +1,9 @@
-## Bugfix release
-
-The last rlang release was sent recently, but we have discovered one
-issue with the bytecode compiler that causes downstream failures in
-the reverse dependencies of the next dplyr version. This release
-should prevent many R CMD check failures for compiled packages
-depending on dplyr.
-
 
 ## Test environments
 
-* local OS X install, R 3.4.0
-* ubuntu 12.04 (on travis-ci), R 3.4.0
-* win-builder (devel and release)
+* local OS X install: 3.4.3
+* travis-ci: 3.1, 3.3, 3.4.3, and devel
+* win-builder: devel and release
 
 
 ## R CMD check results
@@ -21,7 +13,13 @@ depending on dplyr.
 
 ## Reverse dependencies
 
-I have run R CMD check on the 2 downstream dependencies. (Summary at
+I have run R CMD check on the 134 downstream dependencies. (Summary at
 https://github.com/tidyverse/rlang/tree/master/revdep).
 
-There were no problems.
+I couldn't install 8 packages:
+
+  idealstan, pointblank, poppr, RtutoR, rubias, sf, infer, ipumsr
+
+There were 9 broken packages. I have sent emails one month ago and
+again today to inform the authors. Updates for dplyr, dbplot and
+dbplyr will be sent shortly to CRAN to fix the issues.
