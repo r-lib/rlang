@@ -8,20 +8,8 @@
 #define UQE_N 1
 #define UQS_N 2
 
-static const char* uq_names[UQ_N] = { "UQ", "!!" };
 static const char* uqe_names[UQE_N] = { "UQE" };
 static const char* uqs_names[UQS_N] = { "UQS", "!!!"};
-
-
-#define FIXUP_OPS_N 9
-#define FIXUP_UNARY_OPS_N 2
-
-static const char* fixup_ops_names[FIXUP_OPS_N] = {
-  "<", ">", "<=", ">=", "==", "!=", "*", "/", ":"
-};
-static const char* fixup_unary_ops_names[FIXUP_UNARY_OPS_N] = {
-  "-", "+"
-};
 
 
 static inline bool is_maybe_rlang_call(sexp* x, const char* name) {
