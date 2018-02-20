@@ -238,24 +238,10 @@ void R_init_rlang(r_dll_info* dll) {
 }
 
 
-#include "../internal/dots.h"
-#include "../internal/expr-interp.h"
-#include "../internal/internal.h"
+// From "../internal/internal.h"
+void rlang_init_internal();
 
 sexp* rlang_library_load() {
-
-  /* dots.c - enum dots_expansion_op */
-  RLANG_ASSERT(OP_DOTS_MAX == DOTS_CAPTURE_TYPE_MAX * EXPANSION_OP_MAX);
-
-  /* parse.c - r_ops_precedence[] */
-  RLANG_ASSERT((sizeof(r_ops_precedence) / sizeof(struct r_op_precedence)) == R_OP_MAX);
-
-  for (int i = R_OP_NONE + 1; i < R_OP_MAX; ++i) {
-    if (r_ops_precedence[i].power == 0) {
-      r_abort("Internal error: `r_ops_precedence` is not fully initialised");
-    }
-  }
-
   r_init_library();
   rlang_init_internal();
   return r_null;
