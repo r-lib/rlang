@@ -22,7 +22,6 @@ Suggests:
     rmarkdown (>= 0.2.65),
     testthat,
     covr
-VignetteBuilder: knitr
 RoxygenNote: 6.0.1
 Roxygen: list(markdown = TRUE)
 URL: http://rlang.tidyverse.org, https://github.com/r-lib/rlang
