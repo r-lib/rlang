@@ -176,6 +176,8 @@ test_that("r_which_operator() returns correct tokens", {
 })
 
 test_that("client library passes tests", {
+  skip_on_cran()
+
   # Silence package building and embedded tests output
   temp <- file()
   sink(temp)
