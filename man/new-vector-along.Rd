@@ -56,4 +56,3 @@ new_character_along(x)
 \seealso{
 new-vector
 }
-\keyword{internal}

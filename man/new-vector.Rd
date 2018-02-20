@@ -44,4 +44,3 @@ new_logical(10)
 \seealso{
 new-vector-along
 }
-\keyword{internal}

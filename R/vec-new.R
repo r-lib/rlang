@@ -119,7 +119,6 @@ ll <- function(...) {
 #'
 #' @param n The vector length.
 #' @param names Names for the new vector.
-#' @keywords internal
 #' @examples
 #' new_list(10)
 #' new_logical(10)
@@ -175,7 +174,6 @@ new_list <- function(n, names = NULL) {
 #' @param names Names for the new vector. Defaults to the names of
 #'   `x`. This can be a function to apply to the names of `x` as in
 #'   [set_names()].
-#' @keywords internal
 #' @examples
 #' x <- 0:5
 #' rep_along(x, 1:2)
