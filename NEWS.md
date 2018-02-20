@@ -390,6 +390,10 @@ lifecycle status of exported functions.
   with `!!!`. `ll()` remains around as a shorthand for users who like
   its conciseness.
 
+* Automatic splicing of lists in vector constructors (e.g. `lgl()`,
+  `chr()`, etc) is now soft-deprecated. Please be explicit with the
+  splicing operator `!!!`.
+
 
 # rlang 0.1.6
 

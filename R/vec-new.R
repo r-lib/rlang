@@ -1,44 +1,20 @@
 #' Create vectors
 #'
-#' The atomic vector constructors are equivalent to [c()] but allow
-#' you to be more explicit about the output type. Implicit coercions
-#' (e.g. from integer to logical) follow the rules described in
-#' [vector-coercion]. In addition, all constructors support splicing:
-#' if you supply [bare][is_bare_list] lists or [explicitly
-#' spliced][is_spliced] lists, their contents are spliced into the
-#' output vectors (see below for details). `list2()` is a list
-#' constructor similar to [base::list()] but with splicing semantics.
-#' `ll()` is an alias to `list2()` intended as a shorthand.
+#' @description
 #'
+#' The atomic vector constructors are equivalent to [c()] but:
 #'
-#' @section Splicing:
+#' * They allow you to be more explicit about the output
+#'   type. Implicit coercions (e.g. from integer to logical) follow
+#'   the rules described in [vector-coercion].
 #'
-#' Splicing is an operation similar to flattening one level of nested
-#' lists, e.g. with \code{\link[=unlist]{base::unlist(x, recursive =
-#' FALSE)}} or `purrr::flatten()`. `list2()` returns its arguments as a
-#' list, just like `list()` would, but inner lists qualifying for
-#' splicing are flattened. That is, their contents are embedded in the
-#' surrounding list. Similarly, `chr()` concatenates its arguments and
-#' returns them as a single character vector, but inner lists are
-#' flattened before concatenation.
-#'
-#' Whether an inner list qualifies for splicing is determined by the
-#' type of splicing semantics. All the atomic constructors like
-#' `chr()` have _list splicing_ semantics: [bare][is_bare_list] lists
-#' and [explicitly spliced][is_spliced] lists are spliced.
-#'
-#' There are two list constructors with different splicing
-#' semantics. `list2()` only splices lists explicitly marked with
-#' [splice()].
-#'
-#' See the [tidy dots][tidy-dots] topic for more information.
+#' * They use [tidy dots][tidy-dots] and thus support splicing with `!!!`.
 #'
 #'
 #' @section Life cycle:
 #'
-#' * The splicing support in these functions is experimental, expect
-#'   API changes. We now tend to think that splicing should be
-#'   explicit rather than automatic.
+#' * Automatic splicing is soft-deprecated and will trigger a warning
+#'   in a future version. Please splice explicitly with `!!!`.
 #'
 #' @param ... Components of the new vector. Bare lists and explicitly
 #'   spliced lists are spliced.
@@ -52,7 +28,7 @@
 #' int(TRUE, FALSE, 20)
 #'
 #' # Lists can be spliced:
-#' dbl(10, list(1, 2L), TRUE)
+#' dbl(10, !!! list(1, 2L), TRUE)
 #'
 #'
 #' # They splice names a bit differently than c(). The latter
@@ -69,8 +45,8 @@
 #' dbl(a = 1)
 #'
 #' # Spliced lists behave the same way:
-#' dbl(list(a = 1))
-#' dbl(list(a = c(A = 1)))
+#' dbl(!!! list(a = 1))
+#' dbl(!!! list(a = c(A = 1)))
 NULL
 
 #' @rdname vector-construction

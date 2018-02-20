@@ -34,46 +34,19 @@ an encoding mark. This is only declarative, no encoding
 conversion is performed.}
 }
 \description{
-The atomic vector constructors are equivalent to \code{\link[=c]{c()}} but allow
-you to be more explicit about the output type. Implicit coercions
-(e.g. from integer to logical) follow the rules described in
-\link{vector-coercion}. In addition, all constructors support splicing:
-if you supply \link[=is_bare_list]{bare} lists or \link[=is_spliced]{explicitly
-spliced} lists, their contents are spliced into the
-output vectors (see below for details). \code{list2()} is a list
-constructor similar to \code{\link[base:list]{base::list()}} but with splicing semantics.
-\code{ll()} is an alias to \code{list2()} intended as a shorthand.
+The atomic vector constructors are equivalent to \code{\link[=c]{c()}} but:
+\itemize{
+\item They allow you to be more explicit about the output
+type. Implicit coercions (e.g. from integer to logical) follow
+the rules described in \link{vector-coercion}.
+\item They use \link[=tidy-dots]{tidy dots} and thus support splicing with \code{!!!}.
 }
-\section{Splicing}{
-
-
-Splicing is an operation similar to flattening one level of nested
-lists, e.g. with \code{\link[=unlist]{base::unlist(x, recursive =
-FALSE)}} or \code{purrr::flatten()}. \code{list2()} returns its arguments as a
-list, just like \code{list()} would, but inner lists qualifying for
-splicing are flattened. That is, their contents are embedded in the
-surrounding list. Similarly, \code{chr()} concatenates its arguments and
-returns them as a single character vector, but inner lists are
-flattened before concatenation.
-
-Whether an inner list qualifies for splicing is determined by the
-type of splicing semantics. All the atomic constructors like
-\code{chr()} have \emph{list splicing} semantics: \link[=is_bare_list]{bare} lists
-and \link[=is_spliced]{explicitly spliced} lists are spliced.
-
-There are two list constructors with different splicing
-semantics. \code{list2()} only splices lists explicitly marked with
-\code{\link[=splice]{splice()}}.
-
-See the \link[=tidy-dots]{tidy dots} topic for more information.
 }
-
 \section{Life cycle}{
 
 \itemize{
-\item The splicing support in these functions is experimental, expect
-API changes. We now tend to think that splicing should be
-explicit rather than automatic.
+\item Automatic splicing is soft-deprecated and will trigger a warning
+in a future version. Please splice explicitly with \code{!!!}.
 }
 }
 
@@ -86,7 +59,7 @@ lgl(TRUE, FALSE)
 int(TRUE, FALSE, 20)
 
 # Lists can be spliced:
-dbl(10, list(1, 2L), TRUE)
+dbl(10, !!! list(1, 2L), TRUE)
 
 
 # They splice names a bit differently than c(). The latter
@@ -103,8 +76,8 @@ dbl(a = c(1, 2))
 dbl(a = 1)
 
 # Spliced lists behave the same way:
-dbl(list(a = 1))
-dbl(list(a = c(A = 1)))
+dbl(!!! list(a = 1))
+dbl(!!! list(a = c(A = 1)))
 
 # bytes() accepts integerish inputs
 bytes(1:10)
