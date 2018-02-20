@@ -383,6 +383,9 @@ const char* r_op_as_c_string(enum r_operator op) {
   case R_OP_BRACES:         return "{";
   case R_OP_MAX:            r_abort("Unexpected `enum r_operator` value");
   }
+
+  // Silence mistaken noreturn warning on GCC
+  r_abort("Never reached");
 }
 
 bool op_has_precedence_impl(enum r_operator x, enum r_operator parent, int side) {

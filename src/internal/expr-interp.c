@@ -317,6 +317,9 @@ sexp* call_interp_impl(sexp* x, sexp* env, struct expansion_info info) {
   case OP_EXPAND_UQN:
     r_abort("Internal error: Deep `:=` unquoting");
   }
+
+  // Silence mistaken noreturn warning on GCC
+  r_abort("Never reached");
 }
 
 static sexp* node_list_interp(sexp* x, sexp* env) {
