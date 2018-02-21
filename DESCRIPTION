@@ -16,10 +16,8 @@ Depends:
     R (>= 3.1.0)
 Suggests:
     crayon,
-    knitr,
     methods,
     pillar,
-    rmarkdown (>= 0.2.65),
     testthat,
     covr
 RoxygenNote: 6.0.1
