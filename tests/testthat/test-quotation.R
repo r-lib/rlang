@@ -450,3 +450,7 @@ test_that("missing names are forwarded", {
   x <- set_names(1:2, c(NA, NA))
   expect_identical_(names(exprs(!!!x)), chr(na_chr, na_chr))
 })
+
+test_that("`.named` must be integerish", {
+  expect_error(exprs(foo, .named = 100.5), "scalar logical or number")
+})
