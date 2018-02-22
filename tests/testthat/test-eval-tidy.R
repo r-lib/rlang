@@ -299,12 +299,17 @@ test_that("pronoun has print() and str() method", {
   expect_output(print(data), "<pronoun>\n1 object")
 })
 
+test_that("data mask can escape", {
+  fn <- eval_tidy(quote(function() cyl), mtcars)
+  expect_identical(fn(), mtcars$cyl)
+})
+
 test_that("inner formulas are evaluated in the current frame", {
-  quo <- quo(local(list(f_env = f_env(~foo), env = current_env())))
+  quo <- quo(local(list(f_env = f_env(~foo), env = environment())))
   envs <- eval_tidy(quo)
   expect_identical(envs$f_env, envs$env)
 
-  quo <- quo(as_function(~list(f_env = get_env(~foo), env = current_env()))())
+  quo <- quo(as_function(~list(f_env = get_env(~foo), env = environment()))())
   envs <- eval_tidy(quo)
   expect_identical(envs$f_env, envs$env)
 })
