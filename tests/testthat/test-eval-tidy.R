@@ -298,3 +298,8 @@ test_that("pronoun has print() and str() method", {
   data <- as_data_pronoun(list(a = 1))
   expect_output(print(data), "<pronoun>\n1 object")
 })
+
+test_that("data mask can escape", {
+  fn <- eval_tidy(quote(function() cyl), mtcars)
+  expect_identical(fn(), mtcars$cyl)
+})

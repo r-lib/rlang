@@ -347,10 +347,6 @@ sexp* rlang_eval_tidy(sexp* expr, sexp* data, sexp* frame) {
     mask = new_quosure_mask(env);
   } else {
     mask = rlang_as_data_mask(data, env);
-    sexp* exit_args = KEEP(r_new_node(mask, r_null));
-    sexp* exit_call = KEEP(r_new_call_node(data_mask_clean_fn, exit_args));
-    r_on_exit(exit_call, frame);
-    FREE(2);
   }
 
   sexp* out = r_eval(expr, mask);
