@@ -4,6 +4,7 @@ lib-files = \
         lib/rlang.h \
         lib/attrs.c \
         lib/cnd.c \
+        lib/debug.c \
         lib/env.c \
         lib/eval.c \
         lib/export.c \

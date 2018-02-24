@@ -6,6 +6,7 @@
 
 #include "lib/attrs.c"
 #include "lib/cnd.c"
+#include "lib/debug.c"
 #include "lib/env.c"
 #include "lib/eval.c"
 #include "lib/export.c"
