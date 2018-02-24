@@ -118,7 +118,7 @@ sexp* r_expr_protect(sexp* x) {
   if (!quote_prim) quote_prim = r_base_ns_get("quote");
 
   sexp* args = KEEP(r_new_node(x, r_null));
-  sexp* out = r_new_call_node(quote_prim, args);
+  sexp* out = r_new_call(quote_prim, args);
 
   FREE(1);
   return out;

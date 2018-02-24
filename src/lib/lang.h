@@ -4,7 +4,7 @@
 #include "node.h"
 
 
-static inline sexp* r_new_call_node(sexp* car, sexp* cdr) {
+static inline sexp* r_new_call(sexp* car, sexp* cdr) {
   return Rf_lcons(car, cdr);
 }
 static inline sexp* r_build_call_node(sexp* car, sexp* cdr) {

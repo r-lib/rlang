@@ -149,7 +149,7 @@ void r_init_library_env() {
   new_env_args = KEEP(r_new_tagged_node("hash", hash, new_env_args));
   new_env_args = KEEP(r_new_tagged_node("size", r_null, new_env_args));
   new_env_args = KEEP(r_new_tagged_node("parent", r_null, new_env_args));
-  new_env_call = r_new_call_node(r_base_ns_get("new.env"), new_env_args);
+  new_env_call = r_new_call(r_base_ns_get("new.env"), new_env_args);
   r_mark_precious(new_env_call);
   FREE(4);
 
@@ -157,7 +157,7 @@ void r_init_library_env() {
   env2list_args = KEEP(r_scalar_lgl(1));
   env2list_args = KEEP(r_new_tagged_node("all.names", env2list_args, r_null));
   env2list_args = KEEP(r_new_tagged_node("x", r_null, env2list_args));
-  env2list_call = r_new_call_node(r_base_ns_get("as.list.environment"), env2list_args);
+  env2list_call = r_new_call(r_base_ns_get("as.list.environment"), env2list_args);
   r_mark_precious(env2list_call);
   FREE(3);
 
@@ -167,7 +167,7 @@ void r_init_library_env() {
   list2env_args = KEEP(r_new_tagged_node("parent", r_null, list2env_args));
   list2env_args = KEEP(r_new_tagged_node("envir", r_null, list2env_args));
   list2env_args = KEEP(r_new_tagged_node("x", r_null, list2env_args));
-  list2env_call = r_new_call_node(r_base_ns_get("list2env"), list2env_args);
+  list2env_call = r_new_call(r_base_ns_get("list2env"), list2env_args);
   r_mark_precious(list2env_call);
   FREE(5);
 
@@ -176,7 +176,7 @@ void r_init_library_env() {
   remove_args = KEEP(r_new_tagged_node("inherits", inherits, remove_args));
   remove_args = KEEP(r_new_tagged_node("envir", r_null, remove_args));
   remove_args = KEEP(r_new_tagged_node("list", r_null, remove_args));
-  remove_call = r_new_call_node(r_base_ns_get("remove"), remove_args);
+  remove_call = r_new_call(r_base_ns_get("remove"), remove_args);
   r_mark_precious(remove_call);
   FREE(4);
 }

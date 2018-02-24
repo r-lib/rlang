@@ -77,7 +77,7 @@ sexp* new_raw_formula(sexp* lhs, sexp* rhs, sexp* env) {
   } else {
     args = KEEP(r_new_node_list2(lhs, rhs));
   }
-  f = KEEP(r_new_call_node(tilde_sym, args));
+  f = KEEP(r_new_call(tilde_sym, args));
 
   sexp* attrs = KEEP(r_new_node(env, r_null));
   r_node_poke_tag(attrs, r_sym(".Environment"));

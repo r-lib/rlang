@@ -9,7 +9,7 @@ sexp* capture(sexp* sym, sexp* frame, SEXP* arg_env) {
   static sexp* capture_call = NULL;
   if (!capture_call) {
     sexp* args = KEEP(r_new_node(r_null, r_null));
-    capture_call = r_new_call_node(rlang_ns_get("captureArgInfo"), args);
+    capture_call = r_new_call(rlang_ns_get("captureArgInfo"), args);
     r_mark_precious(capture_call);
     r_mark_shared(capture_call);
     FREE(1);
