@@ -111,7 +111,7 @@ static inline bool r_is_symbolic(sexp* x) {
     r_typeof(x) == SYMSXP;
 }
 
-static inline void r_sxp_print(sexp* x) {
+static inline void r_sexp_print(sexp* x) {
   Rf_PrintValue(x);
 }
 
