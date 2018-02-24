@@ -483,7 +483,7 @@ quo_env_print <- function(env) {
   } else if (is_reference(env, empty_env())) {
     nm <- "empty"
   } else {
-    nm <- blue(sxp_address(env))
+    nm <- blue(sexp_address(env))
   }
   meow(nm)
 }

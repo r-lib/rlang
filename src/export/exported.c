@@ -211,7 +211,7 @@ sexp* rlang_is_null(sexp* x) {
   return r_scalar_lgl(r_is_null(x));
 }
 
-sexp* rlang_sxp_address(sexp* x) {
+sexp* rlang_sexp_address(sexp* x) {
   static char str[1000];
   snprintf(str, 1000, "%p", (void*) x);
   return Rf_mkString(str);

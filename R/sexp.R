@@ -31,8 +31,8 @@ duplicate <- function(x, shallow = FALSE) {
 poke_type <- function(x, type) {
   invisible(.Call(rlang_poke_type, x, type))
 }
-sxp_address <- function(x) {
-  .Call(rlang_sxp_address, x)
+sexp_address <- function(x) {
+  .Call(rlang_sexp_address, x)
 }
 
 mark_object <- function(x) {

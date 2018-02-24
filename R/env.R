@@ -1238,7 +1238,7 @@ env_format <- function(env) {
   type <- env_type(env)
 
   if (type %in% c("frame", "local")) {
-    addr <- sxp_address(get_env(env))
+    addr <- sexp_address(get_env(env))
     type <- paste(type, addr)
   }
 

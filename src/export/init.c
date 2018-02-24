@@ -46,7 +46,7 @@ extern sexp* rlang_set_attrs(sexp*, sexp*);
 extern sexp* rlang_interp(sexp*, sexp*);
 extern sexp* rlang_is_formulaish(sexp*, sexp*, sexp*);
 extern sexp* rlang_is_reference(sexp*, sexp*);
-extern sexp* rlang_sxp_address(sexp*);
+extern sexp* rlang_sexp_address(sexp*);
 extern sexp* rlang_length(sexp*);
 extern sexp* rlang_true_length(sexp* x);
 extern sexp* rlang_new_data_pronoun(sexp*, sexp*, sexp*);
@@ -158,7 +158,7 @@ static const r_callable r_callables[] = {
   {"rlang_node_tag",            (r_fn_ptr_t) &rlang_node_tag, 1},
   {"rlang_node_poke_tag",       (r_fn_ptr_t) &rlang_node_poke_tag, 2},
   {"rlang_squash",              (r_fn_ptr_t) &rlang_squash, 4},
-  {"rlang_sxp_address",         (r_fn_ptr_t) &rlang_sxp_address, 1},
+  {"rlang_sexp_address",         (r_fn_ptr_t) &rlang_sexp_address, 1},
   {"rlang_symbol",              (r_fn_ptr_t) &rlang_symbol, 1},
   {"rlang_symbol_to_character", (r_fn_ptr_t) &rlang_symbol_to_character, 1},
   {"rlang_tilde_eval",          (r_fn_ptr_t) &rlang_tilde_eval, 4},
