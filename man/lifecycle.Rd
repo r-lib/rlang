@@ -4,6 +4,16 @@
 \alias{lifecycle}
 \title{Life cycle of the rlang package}
 \description{
+\ifelse{html}{
+\out{
+<a href="https://www.tidyverse.org/lifecycle/#maturing">
+  <img src="https://img.shields.io/badge/lifecycle-maturing-blue.svg" alt="Maturing lifecycle">
+</a>
+}
+}{
+\url{https://www.tidyverse.org/lifecycle/#maturing}
+}
+
 The rlang package is currently maturing. Unless otherwise stated,
 this applies to all its exported functions. Maturing functions are
 susceptible to API changes. Only use these in packages if you're
@@ -15,6 +25,16 @@ sections that explain the reasons for their retirements.
 }
 \section{Stable functions}{
 
+
+\ifelse{html}{
+\out{
+<a href="https://www.tidyverse.org/lifecycle/#stable">
+  <img src="https://img.shields.io/badge/lifecycle-stable-green.svg" alt="Stable lifecycle">
+</a>
+}
+}{
+\url{https://www.tidyverse.org/lifecycle/#stable}
+}
 \itemize{
 \item \code{\link[=eval_tidy]{eval_tidy()}}
 \item \link{!!}, \link{!!!}
@@ -33,6 +53,16 @@ sections that explain the reasons for their retirements.
 
 \section{Experimental functions}{
 
+
+\ifelse{html}{
+\out{
+<a href="https://www.tidyverse.org/lifecycle/#experimental">
+  <img src="https://img.shields.io/badge/lifecycle-experimental-orange.svg" alt="Experimental lifecycle">
+</a>
+}
+}{
+\url{https://www.tidyverse.org/lifecycle/#experimental}
+}
 
 These functions are not yet part of the rlang API. Expect breaking
 changes.
@@ -61,6 +91,16 @@ changes.
 
 \section{Questioning functions}{
 
+
+\ifelse{html}{
+\out{
+<a href="https://www.tidyverse.org/lifecycle/#questioning">
+  <img src="https://img.shields.io/badge/lifecycle-questioning-blue.svg" alt="Questioning lifecycle">
+</a>
+}
+}{
+\url{https://www.tidyverse.org/lifecycle/#questioning}
+}
 \itemize{
 \item \code{\link[=UQ]{UQ()}}, \code{\link[=UQS]{UQS()}}
 \item \code{\link[=dots_splice]{dots_splice()}}, \code{\link[=splice]{splice()}}
@@ -74,6 +114,10 @@ changes.
 
 \section{Soft-deprecated functions and arguments}{
 
+
+\if{html}{
+\figure{lifecycle-soft--deprecated-blue.svg}{options: alt="Soft-deprecated lifecycle"}
+}
 
 \strong{Retired in rlang 0.2.0:}
 \itemize{
@@ -110,6 +154,10 @@ changes.
 \section{Deprecated functions and arguments}{
 
 
+\if{html}{
+\figure{lifecycle-deprecated-orange.svg}{options: alt="Deprecated lifecycle"}
+}
+
 \strong{Retired in rlang 0.2.0:}
 \itemize{
 \item \code{\link[=UQE]{UQE()}}
@@ -127,6 +175,10 @@ changes.
 
 \section{Defunct functions and arguments}{
 
+
+\if{html}{
+\figure{lifecycle-defunct-red.svg}{options: alt="Defunct lifecycle"}
+}
 
 \strong{Retired in rlang 0.2.0:}
 \itemize{

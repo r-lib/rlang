@@ -2,6 +2,16 @@
 #'
 #' @description
 #'
+#' \ifelse{html}{
+#' \out{
+#' <a href="https://www.tidyverse.org/lifecycle/#maturing">
+#'   <img src="https://img.shields.io/badge/lifecycle-maturing-blue.svg" alt="Maturing lifecycle">
+#' </a>
+#' }
+#' }{
+#' \url{https://www.tidyverse.org/lifecycle/#maturing}
+#' }
+#'
 #' The rlang package is currently maturing. Unless otherwise stated,
 #' this applies to all its exported functions. Maturing functions are
 #' susceptible to API changes. Only use these in packages if you're
@@ -13,6 +23,16 @@
 #'
 #'
 #' @section Stable functions:
+#'
+#' \ifelse{html}{
+#' \out{
+#' <a href="https://www.tidyverse.org/lifecycle/#stable">
+#'   <img src="https://img.shields.io/badge/lifecycle-stable-green.svg" alt="Stable lifecycle">
+#' </a>
+#' }
+#' }{
+#' \url{https://www.tidyverse.org/lifecycle/#stable}
+#' }
 #'
 #' * [eval_tidy()]
 #' * [!!], [!!!]
@@ -32,6 +52,17 @@
 #'
 #'
 #' @section Experimental functions:
+#'
+#' \ifelse{html}{
+#' \out{
+#' <a href="https://www.tidyverse.org/lifecycle/#experimental">
+#'   <img src="https://img.shields.io/badge/lifecycle-experimental-orange.svg" alt="Experimental lifecycle">
+#' </a>
+#' }
+#' }{
+#' \url{https://www.tidyverse.org/lifecycle/#experimental}
+#' }
+#'
 #'
 #' These functions are not yet part of the rlang API. Expect breaking
 #' changes.
@@ -65,6 +96,16 @@
 #'
 #' @section Questioning functions:
 #'
+#' \ifelse{html}{
+#' \out{
+#' <a href="https://www.tidyverse.org/lifecycle/#questioning">
+#'   <img src="https://img.shields.io/badge/lifecycle-questioning-blue.svg" alt="Questioning lifecycle">
+#' </a>
+#' }
+#' }{
+#' \url{https://www.tidyverse.org/lifecycle/#questioning}
+#' }
+#'
 #' * [UQ()], [UQS()]
 #'
 #' * [dots_splice()], [splice()]
@@ -78,6 +119,10 @@
 #'
 #'
 #' @section Soft-deprecated functions and arguments:
+#'
+#' \if{html}{
+#' \figure{lifecycle-soft--deprecated-blue.svg}{options: alt="Soft-deprecated lifecycle"}
+#' }
 #'
 #' **Retired in rlang 0.2.0:**
 #'
@@ -115,6 +160,10 @@
 #'
 #' @section Deprecated functions and arguments:
 #'
+#' \if{html}{
+#' \figure{lifecycle-deprecated-orange.svg}{options: alt="Deprecated lifecycle"}
+#' }
+#'
 #' **Retired in rlang 0.2.0:**
 #'
 #' * [UQE()]
@@ -130,6 +179,10 @@
 #'
 #'
 #' @section Defunct functions and arguments:
+#'
+#' \if{html}{
+#' \figure{lifecycle-defunct-red.svg}{options: alt="Defunct lifecycle"}
+#' }
 #'
 #' **Retired in rlang 0.2.0:**
 #'
