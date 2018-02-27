@@ -101,12 +101,6 @@ fn(rlang::eval_bare)
 
 # But that's not the case with base::eval():
 fn(base::eval)
-
-# Another difference of eval_bare() compared to base::eval() is
-# that it does not insert parasite frames in the evaluation stack:
-get_stack <- quote(identity(ctxt_stack()))
-eval_bare(get_stack)
-eval(get_stack)
 }
 \seealso{
 \code{\link[=eval_tidy]{eval_tidy()}} for evaluation with data mask and quosure

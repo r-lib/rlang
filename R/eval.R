@@ -93,12 +93,6 @@
 #'
 #' # But that's not the case with base::eval():
 #' fn(base::eval)
-#'
-#' # Another difference of eval_bare() compared to base::eval() is
-#' # that it does not insert parasite frames in the evaluation stack:
-#' get_stack <- quote(identity(ctxt_stack()))
-#' eval_bare(get_stack)
-#' eval(get_stack)
 eval_bare <- function(expr, env = parent.frame()) {
   .Call(rlang_eval, expr, env)
 }
