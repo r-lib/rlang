@@ -190,17 +190,20 @@
 NULL
 
 #' @rdname quasiquotation
+#' @usage NULL
 #' @export
 UQ <- function(x) {
   abort("`UQ()` can only be used within a quasiquoted argument")
 }
 #' @rdname quasiquotation
+#' @usage NULL
 #' @export
 UQE <- function(x) {
   warn("`UQE()` is deprecated. Please use `!! get_expr(x)`")
   abort("`UQE()` can only be used within a quasiquoted argument")
 }
 #' @rdname quasiquotation
+#' @usage NULL
 #' @export
 UQS <- function(x) {
   abort("`UQS()` can only be used within a quasiquoted argument")
@@ -212,7 +215,6 @@ UQS <- function(x) {
 }
 #' @rdname quasiquotation
 #' @export
-#' @usage NULL
 `!!!` <- function(x) {
   abort("`!!!` can only be used within a quasiquoted argument")
 }

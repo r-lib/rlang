@@ -14,13 +14,9 @@
 \alias{qq_show}
 \title{Quasiquotation of an expression}
 \usage{
-UQ(x)
-
-UQE(x)
-
-UQS(x)
-
 "!!"(x)
+
+"!!!"(x)
 
 ":="(x, y)
 
