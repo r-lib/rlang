@@ -10,26 +10,57 @@
 
 <!-- jquery -->
 <script src="https://code.jquery.com/jquery-3.1.0.min.js" integrity="sha384-nrOSfDHtoPMzJHjVTdCopGqIqeYETSXhZDFyniQ8ZHcVy08QesyHcnOUpMpqnmWq" crossorigin="anonymous"></script>
-
 <!-- Bootstrap -->
-<link href="../tidyverse.css" rel="stylesheet">
+
+<link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
 <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
 
 <!-- Font Awesome icons -->
 <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.6.3/css/font-awesome.min.css" rel="stylesheet" integrity="sha384-T8Gy5hrqNKT+hzMclPo118YTQO6cYprQmhrYwIiQ/3axmI1hQomh7Ud2hPOy8SP1" crossorigin="anonymous">
 
-<!-- tidyverse -->
+<!-- clipboard.js -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/1.7.1/clipboard.min.js" integrity="sha384-cV+rhyOuRHc9Ub/91rihWcGmMmCXDeksTtCihMupQHSsi8GIIRDG0ThDc3HGQFJ3" crossorigin="anonymous"></script>
+
+<!-- pkgdown -->
 <link href="../pkgdown.css" rel="stylesheet">
 <script src="../jquery.sticky-kit.min.js"></script>
 <script src="../pkgdown.js"></script>
+  
+  
+<meta property="og:title" content="Quasiquotation of an expression — quasiquotation" />
 
+<meta property="og:description" content="Quasiquotation is the mechanism that makes it possible to program
+flexibly with tidy evaluation grammars like dplyr. It is enabled in
+all tidyeval quoting functions, the most fundamental of which are
+quo() and expr().
+Quasiquotation is the combination of quoting an expression while
+allowing immediate evaluation (unquoting) of part of that
+expression. We provide both syntactic operators and functional
+forms for unquoting.
+The !! operator unquotes its argument. It gets evaluated
+immediately in the surrounding context.
+The !!! operator unquotes and splices its argument. The
+argument should represents a list or a vector. Each element will
+be embedded in the surrounding call, i.e. each element is
+inserted as an argument. If the vector is named, the names are
+used as argument names.
+" />
+
+<meta property="og:description" content="Use qq_show() to experiment with quasiquotation or debug the
+effect of unquoting operators. qq_show() quotes its input,
+processes unquoted parts, and prints the result with
+expr_print(). This expression printer has a clearer output than
+the base R printer (see the documentation topic)." />
+<meta name="twitter:card" content="summary" />
 <!-- mathjax -->
-<script src='https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML'></script>
+<script src='https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML'></script>
 
 <!--[if lt IE 9]>
 <script src="https://oss.maxcdn.com/html5shiv/3.7.3/html5shiv.min.js"></script>
 <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
 <![endif]-->
+
+
   </head>
 
   <body>
@@ -43,33 +74,28 @@
         <span class="icon-bar"></span>
         <span class="icon-bar"></span>
       </button>
-
-      <div class="navbar-brand-container">
-        <a class="navbar-brand" href="../index.html">rlang</a>
-        <small class="tidyverse">part of the <a href="http://tidyverse.org">tidyverse</a></small>
-      </div>
+      <a class="navbar-brand" href="../index.html">rlang</a>
     </div>
     <div id="navbar" class="navbar-collapse collapse">
-      <ul class="nav navbar-nav navbar-right">
+      <ul class="nav navbar-nav">
         <li>
   <a href="../reference/index.html">Reference</a>
 </li>
-<li class="dropdown">
-  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
-    Articles
-     
-    <span class="caret"></span>
-  </a>
-  <ul class="dropdown-menu" role="menu">
-    <li>
-      <a href="../articles/tidy-evaluation.html">Tidy evaluation</a>
-    </li>
-  </ul>
+<li>
+  <a href="../reference/lifecycle.html">Lifecycle</a>
 </li>
 <li>
   <a href="../news/index.html">News</a>
 </li>
-        
+      </ul>
+      
+      <ul class="nav navbar-nav navbar-right">
+        <li>
+  <a href="https://github.com/r-lib/rlang">
+    <span class="fa fa-github fa-lg"></span>
+     
+  </a>
+</li>
       </ul>
     </div><!--/.nav-collapse -->
   </div><!--/.container -->
@@ -86,34 +112,36 @@
 
     
     <p>Quasiquotation is the mechanism that makes it possible to program
-flexibly with
-<a href = 'http://rlang.tidyverse.org/articles/tidy-evaluation.html'>tidyeval</a>
-grammars like dplyr. It is enabled in all tidyeval functions, the
-most fundamental of which are <code><a href='quosure.html'>quo()</a></code> and <code><a href='expr.html'>expr()</a></code>.</p>
+flexibly with tidy evaluation grammars like dplyr. It is enabled in
+all tidyeval quoting functions, the most fundamental of which are
+<code><a href='quotation.html'>quo()</a></code> and <code><a href='quotation.html'>expr()</a></code>.</p>
 <p>Quasiquotation is the combination of quoting an expression while
 allowing immediate evaluation (unquoting) of part of that
 expression. We provide both syntactic operators and functional
 forms for unquoting.</p><ul>
-<li><p><code>UQ()</code> and the <code>!!</code> operator unquote their argument. It gets
-evaluated immediately in the surrounding context.</p></li>
-<li><p><code>UQE()</code> is like <code>UQ()</code> but retrieves the expression of
-<a href='is_quosure.html'>quosureish</a> objects. It is a shortcut for <code>!! get_expr(x)</code>. Use this with care: it is potentially unsafe to
-discard the environment of the quosure.</p></li>
-<li><p><code>UQS()</code> and the <code>!!!</code> operators unquote and splice their
-argument. The argument should evaluate to a vector or an
-expression. Each component of the vector is embedded as its own
-argument in the surrounding call. If the vector is named, the
-names are used as argument names.</p></li>
+<li><p>The <code>!!</code> operator unquotes its argument. It gets evaluated
+immediately in the surrounding context.</p></li>
+<li><p>The <code>!!!</code> operator unquotes and splices its argument. The
+argument should represents a list or a vector. Each element will
+be embedded in the surrounding call, i.e. each element is
+inserted as an argument. If the vector is named, the names are
+used as argument names.</p></li>
 </ul>
+
+    <p>Use <code>qq_show()</code> to experiment with quasiquotation or debug the
+effect of unquoting operators. <code>qq_show()</code> quotes its input,
+processes unquoted parts, and prints the result with
+<code><a href='expr_print.html'>expr_print()</a></code>. This expression printer has a clearer output than
+the base R printer (see the <a href='expr_print.html'>documentation topic</a>).</p>
     
 
-    <pre class="usage"><span class='fu'>UQ</span>(<span class='no'>x</span>)
+    <pre class="usage"><span class='st'>"!!"</span>(<span class='no'>x</span>)
 
-<span class='fu'>UQE</span>(<span class='no'>x</span>)
+<span class='st'>"!!!"</span>(<span class='no'>x</span>)
 
-<span class='st'>"!!"</span>(<span class='no'>x</span>)
+<span class='st'>":="</span>(<span class='no'>x</span>, <span class='no'>y</span>)
 
-<span class='fu'>UQS</span>(<span class='no'>x</span>)</pre>
+<span class='fu'>qq_show</span>(<span class='no'>expr</span>)</pre>
     
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a> Arguments</h2>
     <table class="ref-arguments">
@@ -122,74 +150,207 @@ names are used as argument names.</p></li>
       <th>x</th>
       <td><p>An expression to unquote.</p></td>
     </tr>
+    <tr>
+      <th>y</th>
+      <td><p>An R expression that will be given the argument name
+supplied to <code>x</code>.</p></td>
+    </tr>
+    <tr>
+      <th>expr</th>
+      <td><p>An expression to be quasiquoted.</p></td>
+    </tr>
     </table>
+    
+    <h2 class="hasAnchor" id="unquoting-names"><a class="anchor" href="#unquoting-names"></a>Unquoting names</h2>
+
+    
+    <p>When a function takes multiple named arguments
+(e.g. <code><a href='http://dplyr.tidyverse.org/reference/mutate.html'>dplyr::mutate()</a></code>), it is difficult to supply a variable as
+name. Since the LHS of <code>=</code> is quoted, giving the name of a variable
+results in the argument having the name of the variable rather than
+the name stored in that variable. This problem is right up the
+alley for the unquoting operator <code>!!</code>. If you were able to unquote
+the variable when supplying the name, the argument would be named
+after the content of that variable.</p>
+<p>Unfortunately R is very strict about the kind of expressions
+supported on the LHS of <code>=</code>. This is why we have made the more
+flexible <code>:=</code> operator an alias of <code>=</code>. You can use it to supply
+names, e.g. <code>a := b</code> is equivalent to <code>a = b</code>. Since its syntax is
+more flexible you can unquote on the LHS:</p><pre>name &lt;- "Jane"
+    dots_list(!!name := 1 + 2)
+exprs(!!name := 1 + 2)
+quos(!!name := 1 + 2)
+</pre>
+    <p>Like <code>=</code>, the <code>:=</code> operator expects strings or symbols on its LHS.</p>
     
     <h2 class="hasAnchor" id="theory"><a class="anchor" href="#theory"></a>Theory</h2>
 
     
-    <p>Formally, <code>quo()</code> and <code>expr()</code> are quasiquote functions, <code>UQ()</code> is
-the unquote operator, and <code>UQS()</code> is the unquote splice operator.
+    <p>Formally, <code><a href='quotation.html'>quo()</a></code> and <code><a href='quotation.html'>expr()</a></code> are quasiquote functions, <code>!!</code> is
+the unquote operator, and <code>!!!</code> is the unquote-splice operator.
 These terms have a rich history in Lisp languages, and live on in
 modern languages like
-<a href = 'http://docs.julialang.org/en/release-0.1/manual/metaprogramming/'>Julia</a>
+<a href='https://docs.julialang.org/en/stable/manual/metaprogramming/'>Julia</a>
 and
-<a href = 'https://docs.racket-lang.org/reference/quasiquote.html'>Racket</a>.</p>
+<a href='https://docs.racket-lang.org/reference/quasiquote.html'>Racket</a>.</p>
+    
+    <h2 class="hasAnchor" id="life-cycle"><a class="anchor" href="#life-cycle"></a>Life cycle</h2>
+
+    
+    <ul>
+<li><p>Calling <code>UQ()</code> and <code>UQS()</code> with the rlang namespace qualifier is
+soft-deprecated as of rlang 0.2.0. Just use the unqualified forms
+instead.</p>
+<p>Supporting namespace qualifiers complicates the implementation of
+unquotation and is misleading as to the nature of unquoting
+operators (these are syntactic operators that operates at
+quotation-time rather than function calls at evaluation-time).</p></li>
+<li><p><code>UQ()</code> and <code>UQS()</code> were soft-deprecated in rlang 0.2.0 in order
+to make the syntax of quasiquotation more consistent. The prefix
+forms are now <code>`!!`()</code> and <code>`!!!`()</code> which is
+consistent with other R operators (e.g. <code>`+`(a, b)</code> is the
+prefix form of <code>a + b</code>).</p>
+<p>Note that the prefix forms are not as relevant as before because
+<code>!!</code> now has the right operator precedence, i.e. the same as
+unary <code>-</code> or <code>+</code>. It is thus safe to mingle it with other
+operators, e.g. <code>!!a + !!b</code> does the right thing. In addition the
+parser now strips one level of parentheses around unquoted
+expressions. This way <code>(!!"foo")(...)</code> expands to <code>foo(...)</code>.
+These changes make the prefix forms less useful.</p>
+<p>Finally, the named functional forms <code>UQ()</code> and <code>UQS()</code> were
+misleading because they suggested that existing knowledge about
+functions is applicable to quasiquotation. This was reinforced by
+the visible definitions of these functions exported by rlang and
+by the tidy eval parser interpreting <code>rlang::UQ()</code> as <code>!!</code>. In
+reality unquoting is <em>not</em> a function call, it is a syntactic
+operation. The operator form makes it clearer that unquoting is
+special.</p></li>
+<li><p><code>UQE()</code> was deprecated in rlang 0.2.0 in order to make the is
+deprecated in order to simplify the quasiquotation syntax. You
+can replace its use by a combination of <code>!!</code> and <code><a href='set_expr.html'>get_expr()</a></code>.
+E.g. <code>!! get_expr(x)</code> is equivalent to <code>UQE(x)</code>.</p></li>
+<li><p>The use of <code>:=</code> as alias of <code>~</code> is defunct as of rlang 0.2.0. It
+caused surprising results when invoked in wrong places. For
+instance in the expression <code><a href='tidy-dots.html'>dots_list(name := 1)</a></code> this operator
+was interpreted as a synonym to <code>=</code> that supports quasiquotation,
+but not in <code><a href='tidy-dots.html'>dots_list(list(name := 1))</a></code>. Since <code>:=</code> was an alias
+for <code>~</code> the inner list would contain formula-like object. This
+kind of mistakes now trigger an error.</p></li>
+</ul>
     
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><div class='input'><span class='co'># Quasiquotation functions act like base::quote()</span>
-<span class='fu'>quote</span>(<span class='fu'>foo</span>(<span class='no'>bar</span>))</div><div class='output co'>#&gt; foo(bar)</div><div class='input'><span class='fu'><a href='expr.html'>expr</a></span>(<span class='fu'>foo</span>(<span class='no'>bar</span>))</div><div class='output co'>#&gt; foo(bar)</div><div class='input'><span class='fu'><a href='quosure.html'>quo</a></span>(<span class='fu'>foo</span>(<span class='no'>bar</span>))</div><div class='output co'>#&gt; &lt;quosure: local&gt;
-#&gt; ~foo(bar)</div><div class='input'>
-<span class='co'># In addition, they support unquoting:</span>
-<span class='fu'><a href='expr.html'>expr</a></span>(<span class='fu'>foo</span>(<span class='fu'>UQ</span>(<span class='fl'>1</span> + <span class='fl'>2</span>)))</div><div class='output co'>#&gt; foo(3)</div><div class='input'><span class='fu'><a href='expr.html'>expr</a></span>(<span class='fu'>foo</span>(!! <span class='fl'>1</span> + <span class='fl'>2</span>))</div><div class='output co'>#&gt; foo(3)</div><div class='input'><span class='fu'><a href='quosure.html'>quo</a></span>(<span class='fu'>foo</span>(!! <span class='fl'>1</span> + <span class='fl'>2</span>))</div><div class='output co'>#&gt; &lt;quosure: local&gt;
-#&gt; ~foo(3)</div><div class='input'>
-<span class='co'># The !! operator is a handy syntactic shortcut for unquoting with</span>
-<span class='co'># UQ().  However you need to be a bit careful with operator</span>
-<span class='co'># precedence. All arithmetic and comparison operators bind more</span>
-<span class='co'># tightly than `!`:</span>
-<span class='fu'><a href='quosure.html'>quo</a></span>(<span class='fl'>1</span> +  !! (<span class='fl'>1</span> + <span class='fl'>2</span> + <span class='fl'>3</span>) + <span class='fl'>10</span>)</div><div class='output co'>#&gt; &lt;quosure: local&gt;
-#&gt; ~1 + 16</div><div class='input'>
-<span class='co'># For this reason you should always wrap the unquoted expression</span>
-<span class='co'># with parentheses when operators are involved:</span>
-<span class='fu'><a href='quosure.html'>quo</a></span>(<span class='fl'>1</span> + (!! <span class='fl'>1</span> + <span class='fl'>2</span> + <span class='fl'>3</span>) + <span class='fl'>10</span>)</div><div class='output co'>#&gt; &lt;quosure: local&gt;
-#&gt; ~1 + (6) + 10</div><div class='input'>
-<span class='co'># Or you can use the explicit unquote function:</span>
-<span class='fu'><a href='quosure.html'>quo</a></span>(<span class='fl'>1</span> + <span class='fu'>UQ</span>(<span class='fl'>1</span> + <span class='fl'>2</span> + <span class='fl'>3</span>) + <span class='fl'>10</span>)</div><div class='output co'>#&gt; &lt;quosure: local&gt;
-#&gt; ~1 + 6 + 10</div><div class='input'>
+    <pre class="examples"><div class='input'><span class='co'># Quasiquotation functions quote expressions like base::quote()</span>
+<span class='fu'>quote</span>(<span class='fu'>how_many</span>(<span class='no'>this</span>))</div><div class='output co'>#&gt; how_many(this)</div><div class='input'><span class='fu'><a href='quotation.html'>expr</a></span>(<span class='fu'>how_many</span>(<span class='no'>this</span>))</div><div class='output co'>#&gt; how_many(this)</div><div class='input'><span class='fu'><a href='quotation.html'>quo</a></span>(<span class='fu'>how_many</span>(<span class='no'>this</span>))</div><div class='output co'>#&gt; &lt;quosure&gt;
+#&gt;   expr: ^how_many(this)
+#&gt;   env:  0x7f82994d1fc8</div><div class='input'>
+<span class='co'># In addition, they support unquoting. Let's store symbols</span>
+<span class='co'># (i.e. object names) in variables:</span>
+<span class='no'>this</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='sym.html'>sym</a></span>(<span class='st'>"apples"</span>)
+<span class='no'>that</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='sym.html'>sym</a></span>(<span class='st'>"oranges"</span>)
 
-<span class='co'># Use !!! or UQS() if you want to add multiple arguments to a</span>
-<span class='co'># function It must evaluate to a list</span>
-<span class='no'>args</span> <span class='kw'>&lt;-</span> <span class='fu'>list</span>(<span class='fl'>1</span>:<span class='fl'>10</span>, <span class='kw'>na.rm</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>)
-<span class='fu'><a href='quosure.html'>quo</a></span>(<span class='fu'>mean</span>( <span class='fu'>UQS</span>(<span class='no'>args</span>) ))</div><div class='output co'>#&gt; &lt;quosure: local&gt;
-#&gt; ~mean(1:10, na.rm = TRUE)</div><div class='input'>
+<span class='co'># With unquotation you can insert the contents of these variables</span>
+<span class='co'># inside the quoted expression:</span>
+<span class='fu'><a href='quotation.html'>expr</a></span>(<span class='fu'>how_many</span>(!!<span class='no'>this</span>))</div><div class='output co'>#&gt; how_many(apples)</div><div class='input'><span class='fu'><a href='quotation.html'>expr</a></span>(<span class='fu'>how_many</span>(!!<span class='no'>that</span>))</div><div class='output co'>#&gt; how_many(oranges)</div><div class='input'>
+<span class='co'># You can also insert values:</span>
+<span class='fu'><a href='quotation.html'>expr</a></span>(<span class='fu'>how_many</span>(!!(<span class='fl'>1</span> + <span class='fl'>2</span>)))</div><div class='output co'>#&gt; how_many(3)</div><div class='input'><span class='fu'><a href='quotation.html'>quo</a></span>(<span class='fu'>how_many</span>(!!(<span class='fl'>1</span> + <span class='fl'>2</span>)))</div><div class='output co'>#&gt; &lt;quosure&gt;
+#&gt;   expr: ^how_many(3)
+#&gt;   env:  0x7f82994d1fc8</div><div class='input'>
+
+<span class='co'># Note that when you unquote complex objects into an expression,</span>
+<span class='co'># the base R printer may be a bit misleading. For anstance compare</span>
+<span class='co'># the output of `expr()` and `quo()` (which uses a custom printer)</span>
+<span class='co'># when we unquote an integer vector:</span>
+<span class='fu'><a href='quotation.html'>expr</a></span>(<span class='fu'>how_many</span>(!!(<span class='fl'>1</span>:<span class='fl'>10</span>)))</div><div class='output co'>#&gt; how_many(1:10)</div><div class='input'><span class='fu'><a href='quotation.html'>quo</a></span>(<span class='fu'>how_many</span>(!!(<span class='fl'>1</span>:<span class='fl'>10</span>)))</div><div class='output co'>#&gt; &lt;quosure&gt;
+#&gt;   expr: ^how_many(&lt;int: 1L, 2L, 3L, 4L, 5L, ...&gt;)
+#&gt;   env:  0x7f82994d1fc8</div><div class='input'>
+<span class='co'># This is why it's often useful to use qq_show() to examine the</span>
+<span class='co'># result of unquotation operators. It uses the same printer as</span>
+<span class='co'># quosures but does not return anything:</span>
+<span class='fu'>qq_show</span>(<span class='fu'>how_many</span>(!!(<span class='fl'>1</span>:<span class='fl'>10</span>)))</div><div class='output co'>#&gt; how_many(&lt;int: 1L, 2L, 3L, 4L, 5L, ...&gt;)</div><div class='input'>
+
+<span class='co'># Use `!!!` to add multiple arguments to a function. Its argument</span>
+<span class='co'># should evaluate to a list or vector:</span>
+<span class='no'>args</span> <span class='kw'>&lt;-</span> <span class='fu'>list</span>(<span class='fl'>1</span>:<span class='fl'>3</span>, <span class='kw'>na.rm</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>)
+<span class='fu'><a href='quotation.html'>quo</a></span>(<span class='fu'>mean</span>(!!!<span class='no'>args</span>))</div><div class='output co'>#&gt; &lt;quosure&gt;
+#&gt;   expr: ^mean(&lt;int: 1L, 2L, 3L&gt;, na.rm = TRUE)
+#&gt;   env:  0x7f82994d1fc8</div><div class='input'>
 <span class='co'># You can combine the two</span>
 <span class='no'>var</span> <span class='kw'>&lt;-</span> <span class='fu'>quote</span>(<span class='no'>xyz</span>)
 <span class='no'>extra_args</span> <span class='kw'>&lt;-</span> <span class='fu'>list</span>(<span class='kw'>trim</span> <span class='kw'>=</span> <span class='fl'>0.9</span>, <span class='kw'>na.rm</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>)
-<span class='fu'><a href='quosure.html'>quo</a></span>(<span class='fu'>mean</span>(<span class='fu'>UQ</span>(<span class='no'>var</span>) , <span class='fu'>UQS</span>(<span class='no'>extra_args</span>)))</div><div class='output co'>#&gt; &lt;quosure: local&gt;
-#&gt; ~mean(xyz, trim = 0.9, na.rm = TRUE)</div><div class='input'>
+<span class='fu'><a href='quotation.html'>quo</a></span>(<span class='fu'>mean</span>(!!<span class='no'>var</span> , !!!<span class='no'>extra_args</span>))</div><div class='output co'>#&gt; &lt;quosure&gt;
+#&gt;   expr: ^mean(xyz, trim = 0.9, na.rm = TRUE)
+#&gt;   env:  0x7f82994d1fc8</div><div class='input'>
 
-<span class='co'># Unquoting is especially useful for transforming successively a</span>
-<span class='co'># captured expression:</span>
-<span class='no'>quo</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='quosure.html'>quo</a></span>(<span class='fu'>foo</span>(<span class='no'>bar</span>))
-<span class='no'>quo</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='quosure.html'>quo</a></span>(<span class='fu'>inner</span>(!! <span class='no'>quo</span>, <span class='no'>arg1</span>))
-<span class='no'>quo</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='quosure.html'>quo</a></span>(<span class='fu'>outer</span>(!! <span class='no'>quo</span>, !!! <span class='fu'><a href='sym.html'>syms</a></span>(<span class='no'>letters</span>[<span class='fl'>1</span>:<span class='fl'>3</span>])))
-<span class='no'>quo</span></div><div class='output co'>#&gt; &lt;quosure: local&gt;
-#&gt; ~outer(~inner(~foo(bar), arg1), a, b, c)</div><div class='input'>
-<span class='co'># Since we are building the expression in the same environment, you</span>
-<span class='co'># can also start with raw expressions and create a quosure in the</span>
-<span class='co'># very last step to record the dynamic environment:</span>
-<span class='no'>expr</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='expr.html'>expr</a></span>(<span class='fu'>foo</span>(<span class='no'>bar</span>))
-<span class='no'>expr</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='expr.html'>expr</a></span>(<span class='fu'>inner</span>(!! <span class='no'>expr</span>, <span class='no'>arg1</span>))
-<span class='no'>quo</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='quosure.html'>quo</a></span>(<span class='fu'>outer</span>(!! <span class='no'>expr</span>, !!! <span class='fu'><a href='sym.html'>syms</a></span>(<span class='no'>letters</span>[<span class='fl'>1</span>:<span class='fl'>3</span>])))
-<span class='no'>quo</span></div><div class='output co'>#&gt; &lt;quosure: local&gt;
-#&gt; ~outer(inner(foo(bar), arg1), a, b, c)</div></pre>
+<span class='co'># The plural versions have support for the `:=` operator.</span>
+<span class='co'># Like `=`, `:=` creates named arguments:</span>
+<span class='fu'><a href='quotation.html'>quos</a></span>(<span class='no'>mouse1</span> <span class='kw'>:=</span> <span class='no'>bernard</span>, <span class='kw'>mouse2</span> <span class='kw'>=</span> <span class='no'>bianca</span>)</div><div class='output co'>#&gt; $mouse1
+#&gt; &lt;quosure&gt;
+#&gt;   expr: ^bernard
+#&gt;   env:  0x7f82994d1fc8
+#&gt; 
+#&gt; $mouse2
+#&gt; &lt;quosure&gt;
+#&gt;   expr: ^bianca
+#&gt;   env:  0x7f82994d1fc8
+#&gt; </div><div class='input'>
+<span class='co'># The `:=` is mainly useful to unquote names. Unlike `=` it</span>
+<span class='co'># supports `!!` on its LHS:</span>
+<span class='no'>var</span> <span class='kw'>&lt;-</span> <span class='st'>"unquote me!"</span>
+<span class='fu'><a href='quotation.html'>quos</a></span>(!!<span class='no'>var</span> <span class='kw'>:=</span> <span class='no'>bernard</span>, <span class='kw'>mouse2</span> <span class='kw'>=</span> <span class='no'>bianca</span>)</div><div class='output co'>#&gt; $`unquote me!`
+#&gt; &lt;quosure&gt;
+#&gt;   expr: ^bernard
+#&gt;   env:  0x7f82994d1fc8
+#&gt; 
+#&gt; $mouse2
+#&gt; &lt;quosure&gt;
+#&gt;   expr: ^bianca
+#&gt;   env:  0x7f82994d1fc8
+#&gt; </div><div class='input'>
+
+<span class='co'># All these features apply to dots captured by enquos():</span>
+<span class='no'>fn</span> <span class='kw'>&lt;-</span> <span class='kw'>function</span>(<span class='no'>...</span>) <span class='fu'><a href='quotation.html'>enquos</a></span>(<span class='no'>...</span>)
+<span class='fu'>fn</span>(!!! <span class='no'>args</span>, !!<span class='no'>var</span> <span class='kw'>:=</span> <span class='no'>penny</span>)</div><div class='output co'>#&gt; [[1]]
+#&gt; &lt;quosure&gt;
+#&gt;   expr: ^&lt;int: 1L, 2L, 3L&gt;
+#&gt;   env:  empty
+#&gt; 
+#&gt; $na.rm
+#&gt; &lt;quosure&gt;
+#&gt;   expr: ^TRUE
+#&gt;   env:  empty
+#&gt; 
+#&gt; $`unquote me!`
+#&gt; &lt;quosure&gt;
+#&gt;   expr: ^penny
+#&gt;   env:  0x7f82994d1fc8
+#&gt; </div><div class='input'>
+
+<span class='co'># Unquoting is especially useful for building an expression by</span>
+<span class='co'># expanding around a variable part (the unquoted part):</span>
+<span class='no'>quo1</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='quotation.html'>quo</a></span>(<span class='fu'>toupper</span>(<span class='no'>foo</span>))
+<span class='no'>quo1</span></div><div class='output co'>#&gt; &lt;quosure&gt;
+#&gt;   expr: ^toupper(foo)
+#&gt;   env:  0x7f82994d1fc8</div><div class='input'>
+<span class='no'>quo2</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='quotation.html'>quo</a></span>(<span class='fu'>paste</span>(!!<span class='no'>quo1</span>, <span class='no'>bar</span>))
+<span class='no'>quo2</span></div><div class='output co'>#&gt; &lt;quosure&gt;
+#&gt;   expr: ^paste(^toupper(foo), bar)
+#&gt;   env:  0x7f82994d1fc8</div><div class='input'>
+<span class='no'>quo3</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='quotation.html'>quo</a></span>(<span class='fu'>list</span>(!!<span class='no'>quo2</span>, !!!<span class='fu'><a href='sym.html'>syms</a></span>(<span class='no'>letters</span>[<span class='fl'>1</span>:<span class='fl'>5</span>])))
+<span class='no'>quo3</span></div><div class='output co'>#&gt; &lt;quosure&gt;
+#&gt;   expr: ^list(^paste(^toupper(foo), bar), a, b, c, d, e)
+#&gt;   env:  0x7f82994d1fc8</div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
     <h2>Contents</h2>
     <ul class="nav nav-pills nav-stacked">
       <li><a href="#arguments">Arguments</a></li>
       
+      <li><a href="#unquoting-names">Unquoting names</a></li>
+
       <li><a href="#theory">Theory</a></li>
+
+      <li><a href="#life-cycle">Life cycle</a></li>
       
       <li><a href="#examples">Examples</a></li>
     </ul>
@@ -198,24 +359,14 @@ and
 </div>
 
       <footer>
-      <div class="tidyverse">
-  <p>rlang is a part of the <strong>tidyverse</strong>, an ecosystem of packages designed with common APIs and a shared philosophy. Learn more at <a href="http://tidyverse.org">tidyverse.org</a>.</p>
-</div>
-
-<div class="author">
+      <div class="copyright">
   <p>Developed by Lionel Henry, <a href='http://hadley.nz'>Hadley Wickham</a>.</p>
-  <p>Site built by <a href="http://hadley.github.io/pkgdown/">pkgdown</a>.</p>
 </div>
 
-<script>
-  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
-  (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
-  m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
-  })(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+<div class="pkgdown">
+  <p>Site built with <a href="http://pkgdown.r-lib.org/">pkgdown</a>.</p>
+</div>
 
-  ga('create', 'UA-67989-18', 'auto');
-  ga('send', 'pageview');
-</script>
       </footer>
    </div>
 

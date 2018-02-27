@@ -1,33 +1,36 @@
-template:
-  package: tidytemplate
-  default_assets: false
-
 home:
   strip_header: true
 
 reference:
-  - title: Quote expressions
+  - title: Tidy evaluation
     desc: >
       These functions support quasiquotation. They return quosures or
       raw expressions.
     contents:
       - quo
-      - enquo
       - quos
+      - enquo
+      - enquos
       - expr
-      - enexpr
       - exprs
+      - enexpr
+      - enexprs
       - quasiquotation
-      - UQ
-      - UQS
-      - UQE
+  - title: Creating tidy evaluation APIs
+    desc: >
+      This set of functions makes it easy to create tidy eval APIs.
+      They are meant for developers rather than users.
+    contents:
+      - "`tidyeval-data`"
+      - eval_tidy
+      - as_data_mask
+      - new_data_mask
+      - as_data_pronoun
   - title: Evaluate expressions
     contents:
       - eval_tidy
       - eval_bare
       - invoke
-      - with_env
-      - locally
   - title: Symbols
     contents:
       - sym
@@ -35,26 +38,17 @@ reference:
       - is_symbol
   - title: Calls
     contents:
-      - lang
-      - is_lang
-      - is_unary_lang
-      - is_binary_lang
-      - lang_modify
-      - lang_standardise
-      - lang_fn
-      - lang_name
-      - lang_head
-      - lang_tail
-      - lang_args
-      - lang_args_names
-      - is_callable
-      - switch_lang
-      - coerce_lang
-      - lang_type_of
+      - call2
+      - is_call
+      - call_modify
+      - call_standardise
+      - call_fn
+      - call_name
+      - call_args
+      - call_args_names
   - title: Expressions
     contents:
-      - is_expr
-      - is_syntactic_literal
+      - is_expression
       - is_symbolic
       - expr_text
       - expr_label
@@ -67,19 +61,19 @@ reference:
       - parse_quos
       - expr_interp
       - exprs_auto_name
+      - expr_print
+      - expr_deparse
   - title: Quosures
     contents:
       - new_quosure
       - is_quosure
-      - is_quosureish
       - as_quosure
-      - as_quosureish
       - quo_is_missing
       - quo_is_symbol
-      - quo_is_lang
+      - quo_is_call
       - quo_is_symbolic
       - quo_is_null
-      - quo_expr
+      - quo_squash
       - quo_text
       - quo_label
       - quo_name
@@ -90,7 +84,6 @@ reference:
       - new_formula
       - is_formula
       - is_bare_formula
-      - is_formulaish
       - f_rhs
       - f_lhs
       - f_env
@@ -98,27 +91,6 @@ reference:
       - f_text
       - f_label
       - f_name
-  - title: Pairlists and language nodes
-    contents:
-      - pairlist
-      - node
-      - node_car
-      - node_cdr
-      - node_caar
-      - node_cadr
-      - node_cdar
-      - node_cddr
-      - mut_node_car
-      - mut_node_cdr
-      - mut_node_caar
-      - mut_node_cadr
-      - mut_node_cdar
-      - mut_node_cddr
-      - node_tag
-      - mut_node_tag
-      - as_pairlist
-      - is_pairlist
-      - duplicate
   - title: Functions
     contents:
       - new_function
@@ -128,9 +100,6 @@ reference:
       - is_function
       - is_closure
       - is_primitive
-      - is_primitive_eager
-      - is_primitive_lazy
-      - prim_name
       - fn_env
       - "`fn_env<-`"
       - as_function
@@ -139,7 +108,6 @@ reference:
     contents:
       - env
       - child_env
-      - as_env
       - env_parent
       - env_tail
       - env_parents
@@ -153,26 +121,32 @@ reference:
       - env_unbind
       - env_has
       - env_get
+      - env_get_list
       - env_names
       - env_clone
       - env_inherits
-      - is_env
-      - is_bare_env
+      - is_environment
+      - is_bare_environment
+      - as_environment
+      - scoped_bindings
+      - with_bindings
+      - caller_env
   - title: Search path and namespaces
     contents:
-      - scoped_env
-      - scoped_names
-      - scoped_envs
-      - is_scoped
-      - pkg_env
-      - pkg_env_name
       - base_env
       - global_env
       - empty_env
-      - ns_env
-      - ns_imports_env
-      - ns_env_name
       - is_installed
+  - title: S3
+    contents:
+      - inherits_any
+      - inherits_all
+      - inherits_only
+      - new_box
+      - is_box
+      - as_box
+      - as_box_if
+      - unbox
   - title: Create vectors
     desc: >
       Atomic vector constructors have implicit splicing (i.e. splice
@@ -185,25 +159,23 @@ reference:
       - cpl
       - chr
       - bytes
-      - ll
+      - list2
       - string
       - rep_along
-      - lgl_along
-      - int_along
-      - dbl_along
-      - cpl_along
-      - chr_along
-      - raw_along
-      - bytes_along
-      - list_along
-      - lgl_len
-      - int_len
-      - dbl_len
-      - cpl_len
-      - chr_len
-      - raw_len
-      - bytes_len
-      - list_len
+      - new_logical_along
+      - new_integer_along
+      - new_double_along
+      - new_complex_along
+      - new_character_along
+      - new_raw_along
+      - new_list_along
+      - new_logical
+      - new_integer
+      - new_double
+      - new_complex
+      - new_character
+      - new_raw
+      - new_list
   - title: Coerce vectors
     desc: >
       These coercers skip S3 dispatch and have stricter implicit
@@ -235,13 +207,8 @@ reference:
       - squash_raw
       - flatten_if
       - squash_if
-      - splice
-      - is_spliced
-      - is_spliced_bare
   - title: Vectors tools
     contents:
-      - prepend
-      - modify
       - seq2
       - seq2_along
   - title: Missing values
@@ -260,28 +227,8 @@ reference:
       - is_chr_na
   - title: Attributes
     contents:
-      - set_attrs
-      - mut_attrs
       - set_names
       - names2
-      - is_named
-      - is_dictionaryish
-      - have_name
-      - has_name
-      - has_length
-  - title: Encoding
-    contents:
-      - as_utf8_character
-      - as_native_character
-      - as_utf8_string
-      - as_native_string
-      - set_chr_encoding
-      - chr_encoding
-      - set_str_encoding
-      - str_encoding
-      - mut_utf8_locale
-      - mut_latin1_locale
-      - mut_mbcs_locale
   - title: Vectors and lists predicates
     contents:
       - is_list
@@ -324,76 +271,23 @@ reference:
       - is_string
       - is_bare_string
       - is_copyable
-      - type_of
-      - switch_type
-      - coerce_type
-      - switch_class
-      - coerce_class
-      - friendly_type
   - title: Operators
     contents:
       - "`%||%`"
       - "`%|%`"
       - "`%@%`"
-      - "`:=`"
-      - new_definition
-      - is_definition
   - title: Capture dots
     desc: >
       Capture dots with different kinds of splicing semantics.
     contents:
       - dots_list
-      - dots_splice
-      - dots_values
-      - dots_definitions
       - dots_n
-  - title: Tidy evaluation and overscoping
-    desc: >
-      Most of the time you only need `eval_tidy()`, but these
-      functions can be useful if you are writing your own grammar.
-    contents:
-      - "`tidyeval-data`"
-      - eval_tidy_
-      - as_overscope
-      - new_overscope
-      - overscope_eval_next
-      - overscope_clean
-      - as_dictionary
-      - is_dictionary
   - title: Function arguments
     contents:
       - arg_match
       - missing_arg
       - is_missing
       - maybe_missing
-  - title: Call and context stacks
-    desc: >
-      The call stack is a subset of the context stack where nuisance
-      frames due to lazy evaluation are removed. It is easier to
-      analyse than the full context stack. Stacks are list of frames,
-      which are S3 objects with a nice print method for visualing call
-      frames.
-    contents:
-      - ctxt_stack
-      - call_stack
-      - is_stack
-      - is_eval_stack
-      - is_call_stack
-      - ctxt_frame
-      - call_frame
-      - is_frame
-      - global_frame
-      - current_frame
-      - caller_env
-      - caller_frame
-      - caller_fn
-      - ctxt_depth
-      - call_depth
-      - frame_position
-      - stack_trim
-      - return_from
-      - return_to
-      - call_inspect
   - title: Create conditions
     desc: >
       These helpers make it easy to create typed conditions.
@@ -428,9 +322,7 @@ navbar:
   left:
   - text: Reference
     href: reference/index.html
-  - text: Articles
-    menu:
-    - text: Tidy evaluation
-      href: articles/tidy-evaluation.html
+  - text: Lifecycle
+    href: reference/lifecycle.html
   - text: News
     href: news/index.html

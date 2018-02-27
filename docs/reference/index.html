@@ -10,26 +10,33 @@
 
 <!-- jquery -->
 <script src="https://code.jquery.com/jquery-3.1.0.min.js" integrity="sha384-nrOSfDHtoPMzJHjVTdCopGqIqeYETSXhZDFyniQ8ZHcVy08QesyHcnOUpMpqnmWq" crossorigin="anonymous"></script>
-
 <!-- Bootstrap -->
-<link href="../tidyverse.css" rel="stylesheet">
+
+<link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
 <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
 
 <!-- Font Awesome icons -->
 <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.6.3/css/font-awesome.min.css" rel="stylesheet" integrity="sha384-T8Gy5hrqNKT+hzMclPo118YTQO6cYprQmhrYwIiQ/3axmI1hQomh7Ud2hPOy8SP1" crossorigin="anonymous">
 
-<!-- tidyverse -->
+<!-- clipboard.js -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/1.7.1/clipboard.min.js" integrity="sha384-cV+rhyOuRHc9Ub/91rihWcGmMmCXDeksTtCihMupQHSsi8GIIRDG0ThDc3HGQFJ3" crossorigin="anonymous"></script>
+
+<!-- pkgdown -->
 <link href="../pkgdown.css" rel="stylesheet">
 <script src="../jquery.sticky-kit.min.js"></script>
 <script src="../pkgdown.js"></script>
-
+  
+  
+<meta property="og:title" content="Function reference" />
 <!-- mathjax -->
-<script src='https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML'></script>
+<script src='https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML'></script>
 
 <!--[if lt IE 9]>
 <script src="https://oss.maxcdn.com/html5shiv/3.7.3/html5shiv.min.js"></script>
 <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
 <![endif]-->
+
+
   </head>
 
   <body>
@@ -43,33 +50,28 @@
         <span class="icon-bar"></span>
         <span class="icon-bar"></span>
       </button>
-
-      <div class="navbar-brand-container">
-        <a class="navbar-brand" href="../index.html">rlang</a>
-        <small class="tidyverse">part of the <a href="http://tidyverse.org">tidyverse</a></small>
-      </div>
+      <a class="navbar-brand" href="../index.html">rlang</a>
     </div>
     <div id="navbar" class="navbar-collapse collapse">
-      <ul class="nav navbar-nav navbar-right">
+      <ul class="nav navbar-nav">
         <li>
   <a href="../reference/index.html">Reference</a>
 </li>
-<li class="dropdown">
-  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
-    Articles
-     
-    <span class="caret"></span>
-  </a>
-  <ul class="dropdown-menu" role="menu">
-    <li>
-      <a href="../articles/tidy-evaluation.html">Tidy evaluation</a>
-    </li>
-  </ul>
+<li>
+  <a href="../reference/lifecycle.html">Lifecycle</a>
 </li>
 <li>
   <a href="../news/index.html">News</a>
 </li>
-        
+      </ul>
+      
+      <ul class="nav navbar-nav navbar-right">
+        <li>
+  <a href="https://github.com/r-lib/rlang">
+    <span class="fa fa-github fa-lg"></span>
+     
+  </a>
+</li>
       </ul>
     </div><!--/.nav-collapse -->
   </div><!--/.container -->
@@ -83,7 +85,7 @@
     <div class="page-header">
       <h1>
         Reference
-        <small>version&nbsp;0.0.0.9019</small>
+        <small>version&nbsp;0.2.0.9000</small>
       </h1>
     </div>
 
@@ -98,34 +100,48 @@
       <tbody>
         <tr>
           <th colspan="2">
-            <h2 id="section-quote-expressions" class="hasAnchor"><a href="#section-quote-expressions" class="anchor"></a>Quote expressions</h2>
+            <h2 id="section-tidy-evaluation" class="hasAnchor"><a href="#section-tidy-evaluation" class="anchor"></a>Tidy evaluation</h2>
             <p class="section-desc"><p>These functions support quasiquotation. They return quosures or raw expressions.</p></p>
           </th>
         </tr>
         <tr>
           <!--  -->
           <td>
-            <p><code><a href="quosure.html">quo</a></code> <code><a href="quosure.html">new_quosure</a></code> <code><a href="quosure.html">enquo</a></code> </p>
+            <p><code><a href="quotation.html">expr</a></code> <code><a href="quotation.html">enexpr</a></code> <code><a href="quotation.html">exprs</a></code> <code><a href="quotation.html">enexprs</a></code> <code><a href="quotation.html">ensym</a></code> <code><a href="quotation.html">ensyms</a></code> <code><a href="quotation.html">quo</a></code> <code><a href="quotation.html">enquo</a></code> <code><a href="quotation.html">quos</a></code> <code><a href="quotation.html">enquos</a></code> </p>
           </td>
-          <td><p>Create quosures</p></td>
+          <td><p>Quotation</p></td>
         </tr><tr>
           <!--  -->
           <td>
-            <p><code><a href="quosures.html">dots_definitions</a></code> <code><a href="quosures.html">quos</a></code> <code><a href="quosures.html">is_quosures</a></code> </p>
-          </td>
-          <td><p>Tidy quotation of multiple expressions and dots</p></td>
-        </tr><tr>
-          <!--  -->
-          <td>
-            <p><code><a href="expr.html">expr</a></code> <code><a href="expr.html">enexpr</a></code> <code><a href="expr.html">exprs</a></code> </p>
-          </td>
-          <td><p>Raw quotation of an expression</p></td>
-        </tr><tr>
-          <!--  -->
-          <td>
-            <p><code><a href="quasiquotation.html">UQ</a></code> <code><a href="quasiquotation.html">UQE</a></code> <code><a href="quasiquotation.html">!!</a></code> <code><a href="quasiquotation.html">UQS</a></code> </p>
+            <p><code><a href="quasiquotation.html">!!</a></code> <code><a href="quasiquotation.html">!!!</a></code> <code><a href="quasiquotation.html">:=</a></code> <code><a href="quasiquotation.html">qq_show</a></code> </p>
           </td>
           <td><p>Quasiquotation of an expression</p></td>
+        </tr>
+      </tbody><tbody>
+        <tr>
+          <th colspan="2">
+            <h2 id="section-creating-tidy-evaluation-apis" class="hasAnchor"><a href="#section-creating-tidy-evaluation-apis" class="anchor"></a>Creating tidy evaluation APIs</h2>
+            <p class="section-desc"><p>This set of functions makes it easy to create tidy eval APIs. They are meant for developers rather than users.</p></p>
+          </th>
+        </tr>
+        <tr>
+          <!--  -->
+          <td>
+            <p><code><a href="tidyeval-data.html">.data</a></code> </p>
+          </td>
+          <td><p>Data pronoun for tidy evaluation</p></td>
+        </tr><tr>
+          <!--  -->
+          <td>
+            <p><code><a href="eval_tidy.html">eval_tidy</a></code> </p>
+          </td>
+          <td><p>Evaluate an expression with quosures and pronoun support</p></td>
+        </tr><tr>
+          <!--  -->
+          <td>
+            <p><code><a href="as_data_mask.html">as_data_mask</a></code> <code><a href="as_data_mask.html">as_data_pronoun</a></code> <code><a href="as_data_mask.html">new_data_mask</a></code> </p>
+          </td>
+          <td><p>Create a data mask</p></td>
         </tr>
       </tbody><tbody>
         <tr>
@@ -139,7 +155,7 @@
           <td>
             <p><code><a href="eval_tidy.html">eval_tidy</a></code> </p>
           </td>
-          <td><p>Evaluate an expression tidily</p></td>
+          <td><p>Evaluate an expression with quosures and pronoun support</p></td>
         </tr><tr>
           <!--  -->
           <td>
@@ -152,12 +168,6 @@
             <p><code><a href="invoke.html">invoke</a></code> </p>
           </td>
           <td><p>Invoke a function with a list of arguments</p></td>
-        </tr><tr>
-          <!--  -->
-          <td>
-            <p><code><a href="with_env.html">with_env</a></code> <code><a href="with_env.html">locally</a></code> </p>
-          </td>
-          <td><p>Evaluate an expression within a given environment</p></td>
         </tr>
       </tbody><tbody>
         <tr>
@@ -189,63 +199,45 @@
         <tr>
           <!--  -->
           <td>
-            <p><code><a href="lang.html">lang</a></code> </p>
+            <p><code><a href="call2.html">call2</a></code> </p>
           </td>
           <td><p>Create a call</p></td>
         </tr><tr>
           <!--  -->
           <td>
-            <p><code><a href="is_lang.html">is_lang</a></code> <code><a href="is_lang.html">is_unary_lang</a></code> <code><a href="is_lang.html">is_binary_lang</a></code> </p>
+            <p><code><a href="is_call.html">is_call</a></code> </p>
           </td>
           <td><p>Is object a call?</p></td>
         </tr><tr>
           <!--  -->
           <td>
-            <p><code><a href="lang_modify.html">lang_modify</a></code> </p>
+            <p><code><a href="call_modify.html">call_modify</a></code> </p>
           </td>
           <td><p>Modify the arguments of a call</p></td>
         </tr><tr>
           <!--  -->
           <td>
-            <p><code><a href="lang_standardise.html">lang_standardise</a></code> </p>
+            <p><code><a href="call_standardise.html">call_standardise</a></code> </p>
           </td>
           <td><p>Standardise a call</p></td>
         </tr><tr>
           <!--  -->
           <td>
-            <p><code><a href="lang_fn.html">lang_fn</a></code> </p>
+            <p><code><a href="call_fn.html">call_fn</a></code> </p>
           </td>
           <td><p>Extract function from a call</p></td>
         </tr><tr>
           <!--  -->
           <td>
-            <p><code><a href="lang_name.html">lang_name</a></code> </p>
+            <p><code><a href="call_name.html">call_name</a></code> </p>
           </td>
           <td><p>Extract function name of a call</p></td>
         </tr><tr>
           <!--  -->
           <td>
-            <p><code><a href="lang_head.html">lang_head</a></code> <code><a href="lang_head.html">lang_tail</a></code> </p>
-          </td>
-          <td><p>Return the head or tail of a call object</p></td>
-        </tr><tr>
-          <!--  -->
-          <td>
-            <p><code><a href="lang_args.html">lang_args</a></code> <code><a href="lang_args.html">lang_args_names</a></code> </p>
+            <p><code><a href="call_args.html">call_args</a></code> <code><a href="call_args.html">call_args_names</a></code> </p>
           </td>
           <td><p>Extract arguments from a call</p></td>
-        </tr><tr>
-          <!--  -->
-          <td>
-            <p><code><a href="is_callable.html">is_callable</a></code> </p>
-          </td>
-          <td><p>Is an object callable?</p></td>
-        </tr><tr>
-          <!--  -->
-          <td>
-            <p><code><a href="switch_lang.html">switch_lang</a></code> <code><a href="switch_lang.html">coerce_lang</a></code> <code><a href="switch_lang.html">lang_type_of</a></code> </p>
-          </td>
-          <td><p>Dispatch on call type</p></td>
         </tr>
       </tbody><tbody>
         <tr>
@@ -257,7 +249,7 @@
         <tr>
           <!--  -->
           <td>
-            <p><code><a href="is_expr.html">is_expr</a></code> <code><a href="is_expr.html">is_syntactic_literal</a></code> <code><a href="is_expr.html">is_symbolic</a></code> </p>
+            <p><code><a href="is_expression.html">is_expression</a></code> <code><a href="is_expression.html">is_syntactic_literal</a></code> <code><a href="is_expression.html">is_symbolic</a></code> </p>
           </td>
           <td><p>Is an object an expression?</p></td>
         </tr><tr>
@@ -275,7 +267,7 @@
         </tr><tr>
           <!--  -->
           <td>
-            <p><code><a href="parse_expr.html">parse_expr</a></code> <code><a href="parse_expr.html">parse_exprs</a></code> <code><a href="parse_expr.html">parse_quosure</a></code> <code><a href="parse_expr.html">parse_quosures</a></code> </p>
+            <p><code><a href="parse_expr.html">parse_quosures</a></code> <code><a href="parse_expr.html">parse_expr</a></code> <code><a href="parse_expr.html">parse_exprs</a></code> </p>
           </td>
           <td><p>Parse R code</p></td>
         </tr><tr>
@@ -290,6 +282,12 @@
             <p><code><a href="exprs_auto_name.html">exprs_auto_name</a></code> <code><a href="exprs_auto_name.html">quos_auto_name</a></code> </p>
           </td>
           <td><p>Ensure that list of expressions are all named</p></td>
+        </tr><tr>
+          <!--  -->
+          <td>
+            <p><code><a href="expr_print.html">expr_print</a></code> <code><a href="expr_print.html">expr_deparse</a></code> </p>
+          </td>
+          <td><p>Print an expression</p></td>
         </tr>
       </tbody><tbody>
         <tr>
@@ -301,39 +299,27 @@
         <tr>
           <!--  -->
           <td>
-            <p><code><a href="quosure.html">quo</a></code> <code><a href="quosure.html">new_quosure</a></code> <code><a href="quosure.html">enquo</a></code> </p>
-          </td>
-          <td><p>Create quosures</p></td>
-        </tr><tr>
-          <!--  -->
-          <td>
-            <p><code><a href="is_quosure.html">is_quosure</a></code> <code><a href="is_quosure.html">is_quosureish</a></code> </p>
-          </td>
-          <td><p>Is an object a quosure or quosure-like?</p></td>
-        </tr><tr>
-          <!--  -->
-          <td>
-            <p><code><a href="as_quosure.html">as_quosure</a></code> <code><a href="as_quosure.html">as_quosureish</a></code> </p>
+            <p><code><a href="as_quosure.html">as_quosure</a></code> <code><a href="as_quosure.html">new_quosure</a></code> </p>
           </td>
           <td><p>Coerce object to quosure</p></td>
         </tr><tr>
           <!--  -->
           <td>
-            <p><code><a href="quo-predicates.html">quo_is_missing</a></code> <code><a href="quo-predicates.html">quo_is_symbol</a></code> <code><a href="quo-predicates.html">quo_is_lang</a></code> <code><a href="quo-predicates.html">quo_is_symbolic</a></code> <code><a href="quo-predicates.html">quo_is_null</a></code> </p>
+            <p><code><a href="quosure.html">is_quosure</a></code> <code><a href="quosure.html">quo_is_missing</a></code> <code><a href="quosure.html">quo_is_symbol</a></code> <code><a href="quosure.html">quo_is_call</a></code> <code><a href="quosure.html">quo_is_symbolic</a></code> <code><a href="quosure.html">quo_is_null</a></code> <code><a href="quosure.html">quo_get_expr</a></code> <code><a href="quosure.html">quo_get_env</a></code> <code><a href="quosure.html">quo_set_expr</a></code> <code><a href="quosure.html">quo_set_env</a></code> <code><a href="quosure.html">is_quosures</a></code> </p>
           </td>
-          <td><p>Is a quosure quoting a symbolic, missing or NULL object?</p></td>
+          <td><p>Quosure getters, setters and testers</p></td>
         </tr><tr>
           <!--  -->
           <td>
-            <p><code><a href="quo_expr.html">quo_expr</a></code> <code><a href="quo_expr.html">quo_label</a></code> <code><a href="quo_expr.html">quo_text</a></code> <code><a href="quo_expr.html">quo_name</a></code> </p>
+            <p><code><a href="quo_squash.html">quo_squash</a></code> </p>
           </td>
-          <td><p>Splice a quosure and format it into string or label</p></td>
+          <td><p>Squash a quosure</p></td>
         </tr><tr>
           <!--  -->
           <td>
-            <p><code><a href="quosures.html">dots_definitions</a></code> <code><a href="quosures.html">quos</a></code> <code><a href="quosures.html">is_quosures</a></code> </p>
+            <p><code><a href="quo_label.html">quo_label</a></code> <code><a href="quo_label.html">quo_text</a></code> <code><a href="quo_label.html">quo_name</a></code> </p>
           </td>
-          <td><p>Tidy quotation of multiple expressions and dots</p></td>
+          <td><p>Format quosures for printing or labelling</p></td>
         </tr><tr>
           <!--  -->
           <td>
@@ -357,13 +343,13 @@
         </tr><tr>
           <!--  -->
           <td>
-            <p><code><a href="is_formula.html">is_formula</a></code> <code><a href="is_formula.html">is_bare_formula</a></code> <code><a href="is_formula.html">is_formulaish</a></code> </p>
+            <p><code><a href="is_formula.html">is_formula</a></code> <code><a href="is_formula.html">is_bare_formula</a></code> </p>
           </td>
           <td><p>Is object a formula?</p></td>
         </tr><tr>
           <!--  -->
           <td>
-            <p><code><a href="f_rhs.html">f_rhs</a></code> <code><a href="f_rhs.html">&amp;</a></code> <code><a href="f_rhs.html">-</a></code> <code><a href="f_rhs.html">f_lhs</a></code> <code><a href="f_rhs.html">f_env</a></code> </p>
+            <p><code><a href="f_rhs.html">f_rhs</a></code> <code><a href="f_rhs.html">f_rhs<-</a></code> <code><a href="f_rhs.html">f_lhs</a></code> <code><a href="f_rhs.html">f_lhs<-</a></code> <code><a href="f_rhs.html">f_env</a></code> <code><a href="f_rhs.html">f_env<-</a></code> </p>
           </td>
           <td><p>Get or set formula components</p></td>
         </tr><tr>
@@ -372,38 +358,6 @@
             <p><code><a href="f_text.html">f_text</a></code> <code><a href="f_text.html">f_name</a></code> <code><a href="f_text.html">f_label</a></code> </p>
           </td>
           <td><p>Turn RHS of formula into a string or label</p></td>
-        </tr>
-      </tbody><tbody>
-        <tr>
-          <th colspan="2">
-            <h2 id="section-pairlists-and-language-nodes" class="hasAnchor"><a href="#section-pairlists-and-language-nodes" class="anchor"></a>Pairlists and language nodes</h2>
-            <p class="section-desc"></p>
-          </th>
-        </tr>
-        <tr>
-          <!--  -->
-          <td>
-            <p><code><a href="pairlist.html">node</a></code> <code><a href="pairlist.html">node_car</a></code> <code><a href="pairlist.html">node_cdr</a></code> <code><a href="pairlist.html">node_caar</a></code> <code><a href="pairlist.html">node_cadr</a></code> <code><a href="pairlist.html">node_cdar</a></code> <code><a href="pairlist.html">node_cddr</a></code> <code><a href="pairlist.html">mut_node_car</a></code> <code><a href="pairlist.html">mut_node_cdr</a></code> <code><a href="pairlist.html">mut_node_caar</a></code> <code><a href="pairlist.html">mut_node_cadr</a></code> <code><a href="pairlist.html">mut_node_cdar</a></code> <code><a href="pairlist.html">mut_node_cddr</a></code> <code><a href="pairlist.html">node_tag</a></code> <code><a href="pairlist.html">mut_node_tag</a></code> </p>
-          </td>
-          <td><p>Helpers for pairlist and language nodes</p></td>
-        </tr><tr>
-          <!--  -->
-          <td>
-            <p><code><a href="as_pairlist.html">as_pairlist</a></code> </p>
-          </td>
-          <td><p>Coerce to pairlist</p></td>
-        </tr><tr>
-          <!--  -->
-          <td>
-            <p><code><a href="is_pairlist.html">is_pairlist</a></code> </p>
-          </td>
-          <td><p>Is object a node or pairlist?</p></td>
-        </tr><tr>
-          <!--  -->
-          <td>
-            <p><code><a href="duplicate.html">duplicate</a></code> </p>
-          </td>
-          <td><p>Duplicate an R object</p></td>
         </tr>
       </tbody><tbody>
         <tr>
@@ -421,7 +375,7 @@
         </tr><tr>
           <!--  -->
           <td>
-            <p><code><a href="fn_fmls.html">fn_fmls</a></code> <code><a href="fn_fmls.html">fn_fmls_names</a></code> <code><a href="fn_fmls.html">fn_fmls_syms</a></code> </p>
+            <p><code><a href="fn_fmls.html">fn_fmls</a></code> <code><a href="fn_fmls.html">fn_fmls_names</a></code> <code><a href="fn_fmls.html">fn_fmls_syms</a></code> <code><a href="fn_fmls.html">fn_fmls<-</a></code> <code><a href="fn_fmls.html">fn_fmls_names<-</a></code> </p>
           </td>
           <td><p>Extract arguments from a function</p></td>
         </tr><tr>
@@ -433,13 +387,7 @@
         </tr><tr>
           <!--  -->
           <td>
-            <p><code><a href="prim_name.html">prim_name</a></code> </p>
-          </td>
-          <td><p>Name of a primitive function</p></td>
-        </tr><tr>
-          <!--  -->
-          <td>
-            <p><code><a href="fn_env.html">fn_env</a></code> <code><a href="fn_env.html">&amp;</a></code> <code><a href="fn_env.html">-</a></code> </p>
+            <p><code><a href="fn_env.html">fn_env</a></code> <code><a href="fn_env.html">fn_env<-</a></code> </p>
           </td>
           <td><p>Return the closure environment of a function</p></td>
         </tr><tr>
@@ -459,15 +407,9 @@
         <tr>
           <!--  -->
           <td>
-            <p><code><a href="env.html">env</a></code> <code><a href="env.html">child_env</a></code> </p>
+            <p><code><a href="env.html">env</a></code> <code><a href="env.html">child_env</a></code> <code><a href="env.html">new_environment</a></code> </p>
           </td>
           <td><p>Create a new environment</p></td>
-        </tr><tr>
-          <!--  -->
-          <td>
-            <p><code><a href="as_env.html">as_env</a></code> </p>
-          </td>
-          <td><p>Coerce to an environment</p></td>
         </tr><tr>
           <!--  -->
           <td>
@@ -483,21 +425,27 @@
         </tr><tr>
           <!--  -->
           <td>
-            <p><code><a href="get_env.html">get_env</a></code> <code><a href="get_env.html">set_env</a></code> </p>
+            <p><code><a href="get_env.html">get_env</a></code> <code><a href="get_env.html">set_env</a></code> <code><a href="get_env.html">env_poke_parent</a></code> </p>
           </td>
           <td><p>Get or set the environment of an object</p></td>
         </tr><tr>
           <!--  -->
           <td>
-            <p><code><a href="env_bind.html">env_bind</a></code> <code><a href="env_bind.html">env_bind_exprs</a></code> <code><a href="env_bind.html">env_bind_fns</a></code> </p>
+            <p><code><a href="env_bind.html">env_bind</a></code> </p>
           </td>
           <td><p>Bind symbols to objects in an environment</p></td>
         </tr><tr>
           <!--  -->
           <td>
+            <p><code><a href="env_bind_exprs.html">env_bind_exprs</a></code> <code><a href="env_bind_exprs.html">env_bind_fns</a></code> </p>
+          </td>
+          <td><p>Bind lazy or active bindings</p></td>
+        </tr><tr>
+          <!--  -->
+          <td>
             <p><code><a href="env_bury.html">env_bury</a></code> </p>
           </td>
-          <td><p>Overscope bindings by defining symbols deeper in a scope</p></td>
+          <td><p>Mask bindings by defining symbols deeper in a scope</p></td>
         </tr><tr>
           <!--  -->
           <td>
@@ -513,9 +461,9 @@
         </tr><tr>
           <!--  -->
           <td>
-            <p><code><a href="env_get.html">env_get</a></code> </p>
+            <p><code><a href="env_get.html">env_get</a></code> <code><a href="env_get.html">env_get_list</a></code> </p>
           </td>
-          <td><p>Get an object from an environment</p></td>
+          <td><p>Get an object in an environment</p></td>
         </tr><tr>
           <!--  -->
           <td>
@@ -537,9 +485,27 @@
         </tr><tr>
           <!--  -->
           <td>
-            <p><code><a href="is_env.html">is_env</a></code> <code><a href="is_env.html">is_bare_env</a></code> </p>
+            <p><code><a href="is_environment.html">is_environment</a></code> <code><a href="is_environment.html">is_bare_environment</a></code> </p>
           </td>
           <td><p>Is object an environment?</p></td>
+        </tr><tr>
+          <!--  -->
+          <td>
+            <p><code><a href="as_environment.html">as_environment</a></code> </p>
+          </td>
+          <td><p>Coerce to an environment</p></td>
+        </tr><tr>
+          <!--  -->
+          <td>
+            <p><code><a href="scoped_bindings.html">scoped_bindings</a></code> <code><a href="scoped_bindings.html">with_bindings</a></code> </p>
+          </td>
+          <td><p>Temporarily change bindings of an environment</p></td>
+        </tr><tr>
+          <!--  -->
+          <td>
+            <p><code><a href="caller_env.html">caller_env</a></code> <code><a href="caller_env.html">caller_frame</a></code> <code><a href="caller_env.html">caller_fn</a></code> </p>
+          </td>
+          <td><p>Get the environment of the caller frame</p></td>
         </tr>
       </tbody><tbody>
         <tr>
@@ -563,15 +529,29 @@
         </tr><tr>
           <!--  -->
           <td>
-            <p><code><a href="ns_env.html">ns_env</a></code> <code><a href="ns_env.html">ns_imports_env</a></code> <code><a href="ns_env.html">ns_env_name</a></code> </p>
-          </td>
-          <td><p>Get the namespace of a package</p></td>
-        </tr><tr>
-          <!--  -->
-          <td>
             <p><code><a href="is_installed.html">is_installed</a></code> </p>
           </td>
           <td><p>Is a package installed in the library?</p></td>
+        </tr>
+      </tbody><tbody>
+        <tr>
+          <th colspan="2">
+            <h2 id="section-s-" class="hasAnchor"><a href="#section-s-" class="anchor"></a>S3</h2>
+            <p class="section-desc"></p>
+          </th>
+        </tr>
+        <tr>
+          <!--  -->
+          <td>
+            <p><code><a href="inherits_any.html">inherits_any</a></code> <code><a href="inherits_any.html">inherits_all</a></code> <code><a href="inherits_any.html">inherits_only</a></code> </p>
+          </td>
+          <td><p>Does an object inherit from a set of classes?</p></td>
+        </tr><tr>
+          <!--  -->
+          <td>
+            <p><code><a href="box.html">new_box</a></code> <code><a href="box.html">is_box</a></code> <code><a href="box.html">as_box</a></code> <code><a href="box.html">as_box_if</a></code> <code><a href="box.html">unbox</a></code> </p>
+          </td>
+          <td><p>Box a value</p></td>
         </tr>
       </tbody><tbody>
         <tr>
@@ -589,19 +569,25 @@
         </tr><tr>
           <!--  -->
           <td>
+            <p><code><a href="tidy-dots.html">dots_list</a></code> <code><a href="tidy-dots.html">list2</a></code> </p>
+          </td>
+          <td><p>Collect dots tidily</p></td>
+        </tr><tr>
+          <!--  -->
+          <td>
             <p><code><a href="string.html">string</a></code> </p>
           </td>
           <td><p>Create a string</p></td>
         </tr><tr>
           <!--  -->
           <td>
-            <p><code><a href="vector-along.html">lgl_along</a></code> <code><a href="vector-along.html">int_along</a></code> <code><a href="vector-along.html">dbl_along</a></code> <code><a href="vector-along.html">chr_along</a></code> <code><a href="vector-along.html">cpl_along</a></code> <code><a href="vector-along.html">raw_along</a></code> <code><a href="vector-along.html">bytes_along</a></code> <code><a href="vector-along.html">list_along</a></code> <code><a href="vector-along.html">rep_along</a></code> </p>
+            <p><code><a href="new-vector-along.html">new_logical_along</a></code> <code><a href="new-vector-along.html">new_integer_along</a></code> <code><a href="new-vector-along.html">new_double_along</a></code> <code><a href="new-vector-along.html">new_character_along</a></code> <code><a href="new-vector-along.html">new_complex_along</a></code> <code><a href="new-vector-along.html">new_raw_along</a></code> <code><a href="new-vector-along.html">new_list_along</a></code> <code><a href="new-vector-along.html">rep_along</a></code> </p>
           </td>
           <td><p>Create vectors matching the length of a given vector</p></td>
         </tr><tr>
           <!--  -->
           <td>
-            <p><code><a href="vector-len.html">lgl_len</a></code> <code><a href="vector-len.html">int_len</a></code> <code><a href="vector-len.html">dbl_len</a></code> <code><a href="vector-len.html">chr_len</a></code> <code><a href="vector-len.html">cpl_len</a></code> <code><a href="vector-len.html">raw_len</a></code> <code><a href="vector-len.html">bytes_len</a></code> <code><a href="vector-len.html">list_len</a></code> </p>
+            <p><code><a href="new-vector.html">new_logical</a></code> <code><a href="new-vector.html">new_integer</a></code> <code><a href="new-vector.html">new_double</a></code> <code><a href="new-vector.html">new_character</a></code> <code><a href="new-vector.html">new_complex</a></code> <code><a href="new-vector.html">new_raw</a></code> <code><a href="new-vector.html">new_list</a></code> </p>
           </td>
           <td><p>Create vectors matching a given length</p></td>
         </tr>
@@ -638,12 +624,6 @@
             <p><code><a href="flatten.html">flatten</a></code> <code><a href="flatten.html">flatten_lgl</a></code> <code><a href="flatten.html">flatten_int</a></code> <code><a href="flatten.html">flatten_dbl</a></code> <code><a href="flatten.html">flatten_cpl</a></code> <code><a href="flatten.html">flatten_chr</a></code> <code><a href="flatten.html">flatten_raw</a></code> <code><a href="flatten.html">squash</a></code> <code><a href="flatten.html">squash_lgl</a></code> <code><a href="flatten.html">squash_int</a></code> <code><a href="flatten.html">squash_dbl</a></code> <code><a href="flatten.html">squash_cpl</a></code> <code><a href="flatten.html">squash_chr</a></code> <code><a href="flatten.html">squash_raw</a></code> <code><a href="flatten.html">flatten_if</a></code> <code><a href="flatten.html">squash_if</a></code> </p>
           </td>
           <td><p>Flatten or squash a list of lists into a simpler vector</p></td>
-        </tr><tr>
-          <!--  -->
-          <td>
-            <p><code><a href="splice.html">splice</a></code> <code><a href="splice.html">is_spliced</a></code> <code><a href="splice.html">is_spliced_bare</a></code> </p>
-          </td>
-          <td><p>Splice a list within a vector</p></td>
         </tr>
       </tbody><tbody>
         <tr>
@@ -653,18 +633,6 @@
           </th>
         </tr>
         <tr>
-          <!--  -->
-          <td>
-            <p><code><a href="prepend.html">prepend</a></code> </p>
-          </td>
-          <td><p>Prepend a vector</p></td>
-        </tr><tr>
-          <!--  -->
-          <td>
-            <p><code><a href="modify.html">modify</a></code> </p>
-          </td>
-          <td><p>Modify a vector</p></td>
-        </tr><tr>
           <!--  -->
           <td>
             <p><code><a href="seq2.html">seq2</a></code> <code><a href="seq2.html">seq2_along</a></code> </p>
@@ -681,7 +649,7 @@
         <tr>
           <!--  -->
           <td>
-            <p><code><a href="missing.html">missing</a></code> </p>
+            <p><code><a href="missing.html">na_lgl</a></code> <code><a href="missing.html">na_int</a></code> <code><a href="missing.html">na_dbl</a></code> <code><a href="missing.html">na_chr</a></code> <code><a href="missing.html">na_cpl</a></code> </p>
           </td>
           <td><p>Missing values</p></td>
         </tr><tr>
@@ -701,12 +669,6 @@
         <tr>
           <!--  -->
           <td>
-            <p><code><a href="set_attrs.html">set_attrs</a></code> <code><a href="set_attrs.html">mut_attrs</a></code> </p>
-          </td>
-          <td><p>Add attributes to an object</p></td>
-        </tr><tr>
-          <!--  -->
-          <td>
             <p><code><a href="set_names.html">set_names</a></code> </p>
           </td>
           <td><p>Set names of a vector</p></td>
@@ -716,50 +678,6 @@
             <p><code><a href="names2.html">names2</a></code> </p>
           </td>
           <td><p>Get names of a vector</p></td>
-        </tr><tr>
-          <!--  -->
-          <td>
-            <p><code><a href="is_named.html">is_named</a></code> <code><a href="is_named.html">is_dictionaryish</a></code> <code><a href="is_named.html">have_name</a></code> </p>
-          </td>
-          <td><p>Is object named?</p></td>
-        </tr><tr>
-          <!--  -->
-          <td>
-            <p><code><a href="has_name.html">has_name</a></code> </p>
-          </td>
-          <td><p>Does an object have an element with this name?</p></td>
-        </tr><tr>
-          <!--  -->
-          <td>
-            <p><code><a href="has_length.html">has_length</a></code> </p>
-          </td>
-          <td><p>How long is an object?</p></td>
-        </tr>
-      </tbody><tbody>
-        <tr>
-          <th colspan="2">
-            <h2 id="section-encoding" class="hasAnchor"><a href="#section-encoding" class="anchor"></a>Encoding</h2>
-            <p class="section-desc"></p>
-          </th>
-        </tr>
-        <tr>
-          <!--  -->
-          <td>
-            <p><code><a href="as_utf8_character.html">as_utf8_character</a></code> <code><a href="as_utf8_character.html">as_native_character</a></code> <code><a href="as_utf8_character.html">as_utf8_string</a></code> <code><a href="as_utf8_character.html">as_native_string</a></code> </p>
-          </td>
-          <td><p>Coerce to a character vector and attempt encoding conversion</p></td>
-        </tr><tr>
-          <!--  -->
-          <td>
-            <p><code><a href="set_chr_encoding.html">set_chr_encoding</a></code> <code><a href="set_chr_encoding.html">chr_encoding</a></code> <code><a href="set_chr_encoding.html">set_str_encoding</a></code> <code><a href="set_chr_encoding.html">str_encoding</a></code> </p>
-          </td>
-          <td><p>Set encoding of a string or character vector</p></td>
-        </tr><tr>
-          <!--  -->
-          <td>
-            <p><code><a href="mut_utf8_locale.html">mut_utf8_locale</a></code> <code><a href="mut_utf8_locale.html">mut_latin1_locale</a></code> <code><a href="mut_utf8_locale.html">mut_mbcs_locale</a></code> </p>
-          </td>
-          <td><p>Set the locale's codeset for testing</p></td>
         </tr>
       </tbody><tbody>
         <tr>
@@ -836,24 +754,6 @@
             <p><code><a href="is_copyable.html">is_copyable</a></code> </p>
           </td>
           <td><p>Is an object copyable?</p></td>
-        </tr><tr>
-          <!--  -->
-          <td>
-            <p><code><a href="type_of.html">type_of</a></code> </p>
-          </td>
-          <td><p>Base type of an object</p></td>
-        </tr><tr>
-          <!--  -->
-          <td>
-            <p><code><a href="switch_type.html">switch_type</a></code> <code><a href="switch_type.html">coerce_type</a></code> <code><a href="switch_type.html">switch_class</a></code> <code><a href="switch_type.html">coerce_class</a></code> </p>
-          </td>
-          <td><p>Dispatch on base types</p></td>
-        </tr><tr>
-          <!--  -->
-          <td>
-            <p><code><a href="friendly_type.html">friendly_type</a></code> </p>
-          </td>
-          <td><p>Format a type for error messages</p></td>
         </tr>
       </tbody><tbody>
         <tr>
@@ -880,12 +780,6 @@
             <p><code><a href="op-get-attr.html">%@%</a></code> </p>
           </td>
           <td><p>Infix attribute accessor</p></td>
-        </tr><tr>
-          <!--  -->
-          <td>
-            <p><code><a href="op-definition.html">:=</a></code> <code><a href="op-definition.html">is_definition</a></code> <code><a href="op-definition.html">new_definition</a></code> </p>
-          </td>
-          <td><p>Definition operator</p></td>
         </tr>
       </tbody><tbody>
         <tr>
@@ -897,59 +791,15 @@
         <tr>
           <!--  -->
           <td>
-            <p><code><a href="dots_list.html">dots_list</a></code> <code><a href="dots_list.html">dots_splice</a></code> </p>
+            <p><code><a href="tidy-dots.html">dots_list</a></code> <code><a href="tidy-dots.html">list2</a></code> </p>
           </td>
-          <td><p>Extract dots with splicing semantics</p></td>
-        </tr><tr>
-          <!--  -->
-          <td>
-            <p><code><a href="dots_values.html">dots_values</a></code> </p>
-          </td>
-          <td><p>Evaluate dots with preliminary splicing</p></td>
-        </tr><tr>
-          <!--  -->
-          <td>
-            <p><code><a href="quosures.html">dots_definitions</a></code> <code><a href="quosures.html">quos</a></code> <code><a href="quosures.html">is_quosures</a></code> </p>
-          </td>
-          <td><p>Tidy quotation of multiple expressions and dots</p></td>
+          <td><p>Collect dots tidily</p></td>
         </tr><tr>
           <!--  -->
           <td>
             <p><code><a href="dots_n.html">dots_n</a></code> </p>
           </td>
           <td><p>How many arguments are currently forwarded in dots?</p></td>
-        </tr>
-      </tbody><tbody>
-        <tr>
-          <th colspan="2">
-            <h2 id="section-tidy-evaluation-and-overscoping" class="hasAnchor"><a href="#section-tidy-evaluation-and-overscoping" class="anchor"></a>Tidy evaluation and overscoping</h2>
-            <p class="section-desc"><p>Most of the time you only need <code><a href="../reference/eval_tidy.html">eval_tidy()</a></code>, but these functions can be useful if you are writing your own grammar.</p></p>
-          </th>
-        </tr>
-        <tr>
-          <!--  -->
-          <td>
-            <p><code><a href="tidyeval-data.html">tidyeval-data</a></code> </p>
-          </td>
-          <td><p>Data pronoun for tidy evaluation</p></td>
-        </tr><tr>
-          <!--  -->
-          <td>
-            <p><code><a href="eval_tidy_.html">eval_tidy_</a></code> </p>
-          </td>
-          <td><p>Tidy evaluation in a custom environment</p></td>
-        </tr><tr>
-          <!--  -->
-          <td>
-            <p><code><a href="as_overscope.html">as_overscope</a></code> <code><a href="as_overscope.html">new_overscope</a></code> <code><a href="as_overscope.html">overscope_eval_next</a></code> <code><a href="as_overscope.html">overscope_clean</a></code> </p>
-          </td>
-          <td><p>Create a dynamic scope for tidy evaluation</p></td>
-        </tr><tr>
-          <!--  -->
-          <td>
-            <p><code><a href="dictionary.html">as_dictionary</a></code> <code><a href="dictionary.html">is_dictionary</a></code> </p>
-          </td>
-          <td><p>Create a dictionary</p></td>
         </tr>
       </tbody><tbody>
         <tr>
@@ -974,62 +824,6 @@
       </tbody><tbody>
         <tr>
           <th colspan="2">
-            <h2 id="section-call-and-context-stacks" class="hasAnchor"><a href="#section-call-and-context-stacks" class="anchor"></a>Call and context stacks</h2>
-            <p class="section-desc"><p>The call stack is a subset of the context stack where nuisance frames due to lazy evaluation are removed. It is easier to analyse than the full context stack. Stacks are list of frames, which are S3 objects with a nice print method for visualing call frames.</p></p>
-          </th>
-        </tr>
-        <tr>
-          <!--  -->
-          <td>
-            <p><code><a href="stack.html">global_frame</a></code> <code><a href="stack.html">current_frame</a></code> <code><a href="stack.html">ctxt_frame</a></code> <code><a href="stack.html">call_frame</a></code> <code><a href="stack.html">ctxt_depth</a></code> <code><a href="stack.html">call_depth</a></code> <code><a href="stack.html">ctxt_stack</a></code> <code><a href="stack.html">call_stack</a></code> </p>
-          </td>
-          <td><p>Call stack information</p></td>
-        </tr><tr>
-          <!--  -->
-          <td>
-            <p><code><a href="is_stack.html">is_stack</a></code> <code><a href="is_stack.html">is_eval_stack</a></code> <code><a href="is_stack.html">is_call_stack</a></code> </p>
-          </td>
-          <td><p>Is object a stack?</p></td>
-        </tr><tr>
-          <!--  -->
-          <td>
-            <p><code><a href="is_frame.html">is_frame</a></code> </p>
-          </td>
-          <td><p>Is object a frame?</p></td>
-        </tr><tr>
-          <!--  -->
-          <td>
-            <p><code><a href="caller_env.html">caller_env</a></code> <code><a href="caller_env.html">caller_frame</a></code> <code><a href="caller_env.html">caller_fn</a></code> </p>
-          </td>
-          <td><p>Get the environment of the caller frame</p></td>
-        </tr><tr>
-          <!--  -->
-          <td>
-            <p><code><a href="frame_position.html">frame_position</a></code> </p>
-          </td>
-          <td><p>Find the position or distance of a frame on the evaluation stack</p></td>
-        </tr><tr>
-          <!--  -->
-          <td>
-            <p><code><a href="stack_trim.html">stack_trim</a></code> </p>
-          </td>
-          <td><p>Trim top call layers from the evaluation stack</p></td>
-        </tr><tr>
-          <!--  -->
-          <td>
-            <p><code><a href="return_from.html">return_from</a></code> <code><a href="return_from.html">return_to</a></code> </p>
-          </td>
-          <td><p>Jump to or from a frame</p></td>
-        </tr><tr>
-          <!--  -->
-          <td>
-            <p><code><a href="call_inspect.html">call_inspect</a></code> </p>
-          </td>
-          <td><p>Inspect a call</p></td>
-        </tr>
-      </tbody><tbody>
-        <tr>
-          <th colspan="2">
             <h2 id="section-create-conditions" class="hasAnchor"><a href="#section-create-conditions" class="anchor"></a>Create conditions</h2>
             <p class="section-desc"><p>These helpers make it easy to create typed conditions.</p></p>
           </th>
@@ -1037,7 +831,13 @@
         <tr>
           <!--  -->
           <td>
-            <p><code><a href="new_cnd.html">new_cnd</a></code> <code><a href="new_cnd.html">cnd_error</a></code> <code><a href="new_cnd.html">cnd_warning</a></code> <code><a href="new_cnd.html">cnd_message</a></code> </p>
+            <p><code><a href="catch_cnd.html">catch_cnd</a></code> </p>
+          </td>
+          <td><p>Catch a condition</p></td>
+        </tr><tr>
+          <!--  -->
+          <td>
+            <p><code><a href="cnd.html">cnd</a></code> <code><a href="cnd.html">error_cnd</a></code> <code><a href="cnd.html">warning_cnd</a></code> <code><a href="cnd.html">message_cnd</a></code> </p>
           </td>
           <td><p>Create a condition object</p></td>
         </tr><tr>
@@ -1063,7 +863,7 @@
         </tr><tr>
           <!--  -->
           <td>
-            <p><code><a href="cnd_signal.html">cnd_signal</a></code> <code><a href="cnd_signal.html">cnd_abort</a></code> </p>
+            <p><code><a href="cnd_signal.html">cnd_signal</a></code> <code><a href="cnd_signal.html">cnd_inform</a></code> <code><a href="cnd_signal.html">cnd_warn</a></code> <code><a href="cnd_signal.html">cnd_abort</a></code> </p>
           </td>
           <td><p>Signal a condition</p></td>
         </tr>
@@ -1133,31 +933,29 @@
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
     <h2>Contents</h2>
     <ul class="nav nav-pills nav-stacked">
-      <li><a href="#section-quote-expressions">Quote expressions</a></li>
+      <li><a href="#section-tidy-evaluation">Tidy evaluation</a></li>
+      <li><a href="#section-creating-tidy-evaluation-apis">Creating tidy evaluation APIs</a></li>
       <li><a href="#section-evaluate-expressions">Evaluate expressions</a></li>
       <li><a href="#section-symbols">Symbols</a></li>
       <li><a href="#section-calls">Calls</a></li>
       <li><a href="#section-expressions">Expressions</a></li>
       <li><a href="#section-quosures">Quosures</a></li>
       <li><a href="#section-formulas">Formulas</a></li>
-      <li><a href="#section-pairlists-and-language-nodes">Pairlists and language nodes</a></li>
       <li><a href="#section-functions">Functions</a></li>
       <li><a href="#section-environments">Environments</a></li>
       <li><a href="#section-search-path-and-namespaces">Search path and namespaces</a></li>
+      <li><a href="#section-s-">S3</a></li>
       <li><a href="#section-create-vectors">Create vectors</a></li>
       <li><a href="#section-coerce-vectors">Coerce vectors</a></li>
       <li><a href="#section-flatten-and-squash-vectors">Flatten and squash vectors</a></li>
       <li><a href="#section-vectors-tools">Vectors tools</a></li>
       <li><a href="#section-missing-values">Missing values</a></li>
       <li><a href="#section-attributes">Attributes</a></li>
-      <li><a href="#section-encoding">Encoding</a></li>
       <li><a href="#section-vectors-and-lists-predicates">Vectors and lists predicates</a></li>
       <li><a href="#section-other-r-types-and-objects-predicates">Other R types and objects predicates</a></li>
       <li><a href="#section-operators">Operators</a></li>
       <li><a href="#section-capture-dots">Capture dots</a></li>
-      <li><a href="#section-tidy-evaluation-and-overscoping">Tidy evaluation and overscoping</a></li>
       <li><a href="#section-function-arguments">Function arguments</a></li>
-      <li><a href="#section-call-and-context-stacks">Call and context stacks</a></li>
       <li><a href="#section-create-conditions">Create conditions</a></li>
       <li><a href="#section-signal-conditions">Signal conditions</a></li>
       <li><a href="#section-restarts">Restarts</a></li>
@@ -1167,24 +965,14 @@
 </div>
 
       <footer>
-      <div class="tidyverse">
-  <p>rlang is a part of the <strong>tidyverse</strong>, an ecosystem of packages designed with common APIs and a shared philosophy. Learn more at <a href="http://tidyverse.org">tidyverse.org</a>.</p>
-</div>
-
-<div class="author">
+      <div class="copyright">
   <p>Developed by Lionel Henry, <a href='http://hadley.nz'>Hadley Wickham</a>.</p>
-  <p>Site built by <a href="http://hadley.github.io/pkgdown/">pkgdown</a>.</p>
 </div>
 
-<script>
-  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
-  (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
-  m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
-  })(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+<div class="pkgdown">
+  <p>Site built with <a href="http://pkgdown.r-lib.org/">pkgdown</a>.</p>
+</div>
 
-  ga('create', 'UA-67989-18', 'auto');
-  ga('send', 'pageview');
-</script>
       </footer>
    </div>
 

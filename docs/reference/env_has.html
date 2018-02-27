@@ -10,26 +10,39 @@
 
 <!-- jquery -->
 <script src="https://code.jquery.com/jquery-3.1.0.min.js" integrity="sha384-nrOSfDHtoPMzJHjVTdCopGqIqeYETSXhZDFyniQ8ZHcVy08QesyHcnOUpMpqnmWq" crossorigin="anonymous"></script>
-
 <!-- Bootstrap -->
-<link href="../tidyverse.css" rel="stylesheet">
+
+<link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
 <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
 
 <!-- Font Awesome icons -->
 <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.6.3/css/font-awesome.min.css" rel="stylesheet" integrity="sha384-T8Gy5hrqNKT+hzMclPo118YTQO6cYprQmhrYwIiQ/3axmI1hQomh7Ud2hPOy8SP1" crossorigin="anonymous">
 
-<!-- tidyverse -->
+<!-- clipboard.js -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/1.7.1/clipboard.min.js" integrity="sha384-cV+rhyOuRHc9Ub/91rihWcGmMmCXDeksTtCihMupQHSsi8GIIRDG0ThDc3HGQFJ3" crossorigin="anonymous"></script>
+
+<!-- pkgdown -->
 <link href="../pkgdown.css" rel="stylesheet">
 <script src="../jquery.sticky-kit.min.js"></script>
 <script src="../pkgdown.js"></script>
+  
+  
+<meta property="og:title" content="Does an environment have or see bindings? — env_has" />
 
+<meta property="og:description" content="env_has() is a vectorised predicate that queries whether an
+environment owns bindings personally (with inherit set to
+FALSE, the default), or sees them in its own environment or in
+any of its parents (with inherit = TRUE)." />
+<meta name="twitter:card" content="summary" />
 <!-- mathjax -->
-<script src='https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML'></script>
+<script src='https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML'></script>
 
 <!--[if lt IE 9]>
 <script src="https://oss.maxcdn.com/html5shiv/3.7.3/html5shiv.min.js"></script>
 <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
 <![endif]-->
+
+
   </head>
 
   <body>
@@ -43,33 +56,28 @@
         <span class="icon-bar"></span>
         <span class="icon-bar"></span>
       </button>
-
-      <div class="navbar-brand-container">
-        <a class="navbar-brand" href="../index.html">rlang</a>
-        <small class="tidyverse">part of the <a href="http://tidyverse.org">tidyverse</a></small>
-      </div>
+      <a class="navbar-brand" href="../index.html">rlang</a>
     </div>
     <div id="navbar" class="navbar-collapse collapse">
-      <ul class="nav navbar-nav navbar-right">
+      <ul class="nav navbar-nav">
         <li>
   <a href="../reference/index.html">Reference</a>
 </li>
-<li class="dropdown">
-  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
-    Articles
-     
-    <span class="caret"></span>
-  </a>
-  <ul class="dropdown-menu" role="menu">
-    <li>
-      <a href="../articles/tidy-evaluation.html">Tidy evaluation</a>
-    </li>
-  </ul>
+<li>
+  <a href="../reference/lifecycle.html">Lifecycle</a>
 </li>
 <li>
   <a href="../news/index.html">News</a>
 </li>
-        
+      </ul>
+      
+      <ul class="nav navbar-nav navbar-right">
+        <li>
+  <a href="https://github.com/r-lib/rlang">
+    <span class="fa fa-github fa-lg"></span>
+     
+  </a>
+</li>
       </ul>
     </div><!--/.nav-collapse -->
   </div><!--/.container -->
@@ -99,7 +107,7 @@ any of its parents (with <code>inherit = TRUE</code>).</p>
     <tr>
       <th>env</th>
       <td><p>An environment or an object bundling an environment,
-e.g. a formula, <a href='quosure.html'>quosure</a> or <a href='is_function.html'>closure</a>.</p></td>
+e.g. a formula, <a href='quotation.html'>quosure</a> or <a href='is_function.html'>closure</a>.</p></td>
     </tr>
     <tr>
       <th>nms</th>
@@ -139,24 +147,14 @@ environments.</p></td>
 </div>
 
       <footer>
-      <div class="tidyverse">
-  <p>rlang is a part of the <strong>tidyverse</strong>, an ecosystem of packages designed with common APIs and a shared philosophy. Learn more at <a href="http://tidyverse.org">tidyverse.org</a>.</p>
-</div>
-
-<div class="author">
+      <div class="copyright">
   <p>Developed by Lionel Henry, <a href='http://hadley.nz'>Hadley Wickham</a>.</p>
-  <p>Site built by <a href="http://hadley.github.io/pkgdown/">pkgdown</a>.</p>
 </div>
 
-<script>
-  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
-  (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
-  m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
-  })(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+<div class="pkgdown">
+  <p>Site built with <a href="http://pkgdown.r-lib.org/">pkgdown</a>.</p>
+</div>
 
-  ga('create', 'UA-67989-18', 'auto');
-  ga('send', 'pageview');
-</script>
       </footer>
    </div>
 

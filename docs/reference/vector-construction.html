@@ -10,26 +10,41 @@
 
 <!-- jquery -->
 <script src="https://code.jquery.com/jquery-3.1.0.min.js" integrity="sha384-nrOSfDHtoPMzJHjVTdCopGqIqeYETSXhZDFyniQ8ZHcVy08QesyHcnOUpMpqnmWq" crossorigin="anonymous"></script>
-
 <!-- Bootstrap -->
-<link href="../tidyverse.css" rel="stylesheet">
+
+<link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
 <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
 
 <!-- Font Awesome icons -->
 <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.6.3/css/font-awesome.min.css" rel="stylesheet" integrity="sha384-T8Gy5hrqNKT+hzMclPo118YTQO6cYprQmhrYwIiQ/3axmI1hQomh7Ud2hPOy8SP1" crossorigin="anonymous">
 
-<!-- tidyverse -->
+<!-- clipboard.js -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/1.7.1/clipboard.min.js" integrity="sha384-cV+rhyOuRHc9Ub/91rihWcGmMmCXDeksTtCihMupQHSsi8GIIRDG0ThDc3HGQFJ3" crossorigin="anonymous"></script>
+
+<!-- pkgdown -->
 <link href="../pkgdown.css" rel="stylesheet">
 <script src="../jquery.sticky-kit.min.js"></script>
 <script src="../pkgdown.js"></script>
+  
+  
+<meta property="og:title" content="Create vectors — vector-construction" />
 
+<meta property="og:description" content="The atomic vector constructors are equivalent to c() but:
+They allow you to be more explicit about the output
+type. Implicit coercions (e.g. from integer to logical) follow
+the rules described in vector-coercion.
+They use tidy dots and thus support splicing with !!!.
+" />
+<meta name="twitter:card" content="summary" />
 <!-- mathjax -->
-<script src='https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML'></script>
+<script src='https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML'></script>
 
 <!--[if lt IE 9]>
 <script src="https://oss.maxcdn.com/html5shiv/3.7.3/html5shiv.min.js"></script>
 <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
 <![endif]-->
+
+
   </head>
 
   <body>
@@ -43,33 +58,28 @@
         <span class="icon-bar"></span>
         <span class="icon-bar"></span>
       </button>
-
-      <div class="navbar-brand-container">
-        <a class="navbar-brand" href="../index.html">rlang</a>
-        <small class="tidyverse">part of the <a href="http://tidyverse.org">tidyverse</a></small>
-      </div>
+      <a class="navbar-brand" href="../index.html">rlang</a>
     </div>
     <div id="navbar" class="navbar-collapse collapse">
-      <ul class="nav navbar-nav navbar-right">
+      <ul class="nav navbar-nav">
         <li>
   <a href="../reference/index.html">Reference</a>
 </li>
-<li class="dropdown">
-  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
-    Articles
-     
-    <span class="caret"></span>
-  </a>
-  <ul class="dropdown-menu" role="menu">
-    <li>
-      <a href="../articles/tidy-evaluation.html">Tidy evaluation</a>
-    </li>
-  </ul>
+<li>
+  <a href="../reference/lifecycle.html">Lifecycle</a>
 </li>
 <li>
   <a href="../news/index.html">News</a>
 </li>
-        
+      </ul>
+      
+      <ul class="nav navbar-nav navbar-right">
+        <li>
+  <a href="https://github.com/r-lib/rlang">
+    <span class="fa fa-github fa-lg"></span>
+     
+  </a>
+</li>
       </ul>
     </div><!--/.nav-collapse -->
   </div><!--/.container -->
@@ -85,14 +95,12 @@
     </div>
 
     
-    <p>The atomic vector constructors are equivalent to <code>c()</code> but allow
-you to be more explicit about the output type. Implicit coercions
-(e.g. from integer to logical) follow the rules described in
-<a href='vector-coercion.html'>vector-coercion</a>. In addition, all constructors support splicing:
-if you supply <a href='bare-type-predicates.html'>bare</a> lists or <a href='splice.html'>explicitly
-spliced</a> lists, their contents are spliced into the
-output vectors (see below for details). <code>ll()</code> is a list
-constructor similar to <code><a href='http://www.rdocumentation.org/packages/base/topics/list'>base::list()</a></code> but with splicing semantics.</p>
+    <p>The atomic vector constructors are equivalent to <code>c()</code> but:</p><ul>
+<li><p>They allow you to be more explicit about the output
+type. Implicit coercions (e.g. from integer to logical) follow
+the rules described in <a href='vector-coercion.html'>vector-coercion</a>.</p></li>
+<li><p>They use <a href='tidy-dots.html'>tidy dots</a> and thus support splicing with <code>!!!</code>.</p></li>
+</ul>
     
 
     <pre class="usage"><span class='fu'>lgl</span>(<span class='no'>...</span>)
@@ -125,28 +133,13 @@ conversion is performed.</p></td>
     </tr>
     </table>
     
-    <h2 class="hasAnchor" id="splicing"><a class="anchor" href="#splicing"></a>Splicing</h2>
+    <h2 class="hasAnchor" id="life-cycle"><a class="anchor" href="#life-cycle"></a>Life cycle</h2>
 
     
-    <p>Splicing is an operation similar to flattening one level of nested
-lists, e.g. with <code>base::unlist(x, recursive =
-FALSE)</code> or <code>purrr::flatten()</code>. <code>ll()</code> returns its arguments as a
-list, just like <code>list()</code> would, but inner lists qualifying for
-splicing are flattened. That is, their contents are embedded in the
-surrounding list. Similarly, <code>chr()</code> concatenates its arguments and
-returns them as a single character vector, but inner lists are
-flattened before concatenation.</p>
-<p>Whether an inner list qualifies for splicing is determined by the
-type of splicing semantics. All the atomic constructors like
-<code>chr()</code> have <em>list splicing</em> semantics: <a href='bare-type-predicates.html'>bare</a> lists
-and <a href='splice.html'>explicitly spliced</a> lists are spliced.</p>
-<p>There are two list constructors with different splicing
-semantics. <code>ll()</code> only splices lists explicitly marked with
-<code><a href='splice.html'>splice()</a></code>.</p>
-    
-    <h2 class="hasAnchor" id="see-also"><a class="anchor" href="#see-also"></a>See also</h2>
-
-    <p><code>ll()</code></p>
+    <ul>
+<li><p>Automatic splicing is soft-deprecated and will trigger a warning
+in a future version. Please splice explicitly with <code>!!!</code>.</p></li>
+</ul>
     
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
@@ -155,7 +148,7 @@ semantics. <code>ll()</code> only splices lists explicitly marked with
 <span class='co'># They follow a restricted set of coercion rules:</span>
 <span class='fu'>int</span>(<span class='fl'>TRUE</span>, <span class='fl'>FALSE</span>, <span class='fl'>20</span>)</div><div class='output co'>#&gt; [1]  1  0 20</div><div class='input'>
 <span class='co'># Lists can be spliced:</span>
-<span class='fu'>dbl</span>(<span class='fl'>10</span>, <span class='fu'>list</span>(<span class='fl'>1</span>, <span class='fl'>2L</span>), <span class='fl'>TRUE</span>)</div><div class='output co'>#&gt; [1] 10  1  2  1</div><div class='input'>
+<span class='fu'>dbl</span>(<span class='fl'>10</span>, !!! <span class='fu'>list</span>(<span class='fl'>1</span>, <span class='fl'>2L</span>), <span class='fl'>TRUE</span>)</div><div class='output co'>#&gt; [1] 10  1  2  1</div><div class='input'>
 
 <span class='co'># They splice names a bit differently than c(). The latter</span>
 <span class='co'># automatically composes inner and outer names:</span>
@@ -170,36 +163,18 @@ semantics. <code>ll()</code> only splices lists explicitly marked with
 <span class='fu'>dbl</span>(<span class='kw'>a</span> <span class='kw'>=</span> <span class='fl'>1</span>)</div><div class='output co'>#&gt; a 
 #&gt; 1 </div><div class='input'>
 <span class='co'># Spliced lists behave the same way:</span>
-<span class='fu'>dbl</span>(<span class='fu'>list</span>(<span class='kw'>a</span> <span class='kw'>=</span> <span class='fl'>1</span>))</div><div class='output co'>#&gt; a 
-#&gt; 1 </div><div class='input'><span class='fu'>dbl</span>(<span class='fu'>list</span>(<span class='kw'>a</span> <span class='kw'>=</span> <span class='fu'>c</span>(<span class='kw'>A</span> <span class='kw'>=</span> <span class='fl'>1</span>)))</div><div class='output co'>#&gt; <span class='warning'>Warning: Outer names are only allowed for unnamed scalar atomic inputs</span></div><div class='output co'>#&gt; A 
+<span class='fu'>dbl</span>(!!! <span class='fu'>list</span>(<span class='kw'>a</span> <span class='kw'>=</span> <span class='fl'>1</span>))</div><div class='output co'>#&gt; a 
+#&gt; 1 </div><div class='input'><span class='fu'>dbl</span>(!!! <span class='fu'>list</span>(<span class='kw'>a</span> <span class='kw'>=</span> <span class='fu'>c</span>(<span class='kw'>A</span> <span class='kw'>=</span> <span class='fl'>1</span>)))</div><div class='output co'>#&gt; <span class='warning'>Warning: Outer names are only allowed for unnamed scalar atomic inputs</span></div><div class='output co'>#&gt; A 
 #&gt; 1 </div><div class='input'>
 <span class='co'># bytes() accepts integerish inputs</span>
-<span class='fu'>bytes</span>(<span class='fl'>1</span>:<span class='fl'>10</span>)</div><div class='output co'>#&gt;  [1] 01 02 03 04 05 06 07 08 09 0a</div><div class='input'><span class='fu'>bytes</span>(<span class='fl'>0x01</span>, <span class='fl'>0xff</span>, <span class='fu'>c</span>(<span class='fl'>0x03</span>, <span class='fl'>0x05</span>), <span class='fu'>list</span>(<span class='fl'>10</span>, <span class='fl'>20</span>, <span class='fl'>30L</span>))</div><div class='output co'>#&gt; [1] 01 ff 03 05 0a 14 1e</div><div class='input'>
-<span class='co'># The list constructor has explicit splicing semantics:</span>
-<span class='fu'>ll</span>(<span class='fl'>1</span>, <span class='fu'>list</span>(<span class='fl'>2</span>))</div><div class='output co'>#&gt; [[1]]
-#&gt; [1] 1
-#&gt; 
-#&gt; [[2]]
-#&gt; [[2]][[1]]
-#&gt; [1] 2
-#&gt; 
-#&gt; </div><div class='input'>
-<span class='co'># Note that explicitly spliced lists are always spliced:</span>
-<span class='fu'>ll</span>(!!! <span class='fu'>list</span>(<span class='fl'>1</span>, <span class='fl'>2</span>))</div><div class='output co'>#&gt; [[1]]
-#&gt; [1] 1
-#&gt; 
-#&gt; [[2]]
-#&gt; [1] 2
-#&gt; </div></pre>
+<span class='fu'>bytes</span>(<span class='fl'>1</span>:<span class='fl'>10</span>)</div><div class='output co'>#&gt;  [1] 01 02 03 04 05 06 07 08 09 0a</div><div class='input'><span class='fu'>bytes</span>(<span class='fl'>0x01</span>, <span class='fl'>0xff</span>, <span class='fu'>c</span>(<span class='fl'>0x03</span>, <span class='fl'>0x05</span>), <span class='fu'>list</span>(<span class='fl'>10</span>, <span class='fl'>20</span>, <span class='fl'>30L</span>))</div><div class='output co'>#&gt; [1] 01 ff 03 05 0a 14 1e</div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
     <h2>Contents</h2>
     <ul class="nav nav-pills nav-stacked">
       <li><a href="#arguments">Arguments</a></li>
       
-      <li><a href="#splicing">Splicing</a></li>
-
-      <li><a href="#see-also">See also</a></li>
+      <li><a href="#life-cycle">Life cycle</a></li>
       
       <li><a href="#examples">Examples</a></li>
     </ul>
@@ -208,24 +183,14 @@ semantics. <code>ll()</code> only splices lists explicitly marked with
 </div>
 
       <footer>
-      <div class="tidyverse">
-  <p>rlang is a part of the <strong>tidyverse</strong>, an ecosystem of packages designed with common APIs and a shared philosophy. Learn more at <a href="http://tidyverse.org">tidyverse.org</a>.</p>
-</div>
-
-<div class="author">
+      <div class="copyright">
   <p>Developed by Lionel Henry, <a href='http://hadley.nz'>Hadley Wickham</a>.</p>
-  <p>Site built by <a href="http://hadley.github.io/pkgdown/">pkgdown</a>.</p>
 </div>
 
-<script>
-  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
-  (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
-  m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
-  })(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+<div class="pkgdown">
+  <p>Site built with <a href="http://pkgdown.r-lib.org/">pkgdown</a>.</p>
+</div>
 
-  ga('create', 'UA-67989-18', 'auto');
-  ga('send', 'pageview');
-</script>
       </footer>
    </div>
 
