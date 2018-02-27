@@ -356,6 +356,25 @@ is_expr <- function(x) {
   is_expression(x)
 }
 
+#' Is an object an environment?
+#'
+#' These functions were soft-deprecated and renamed to
+#' [is_environment()] and [is_bare_environment()] in rlang 0.2.0. This
+#' is for consistency with other type predicates which are not
+#' abbreviated.
+#'
+#' @inheritParams is_environment
+#' @keywords internal
+#' @export
+is_env <- function(x) {
+  is_environment(x)
+}
+#' @rdname is_env
+#' @export
+is_bare_env <- function(x) {
+  is_bare_environment(x)
+}
+
 
 # Deprecated ---------------------------------------------------------
 

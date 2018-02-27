@@ -982,7 +982,7 @@ env_clone <- function(env, parent = env_parent(env)) {
 #' @export
 env_inherits <- function(env, ancestor) {
   env <- get_env(env)
-  stopifnot(is_env(ancestor) && is_env(env))
+  stopifnot(is_environment(ancestor) && is_environment(env))
 
   while (!is_empty_env(env_parent(env))) {
     env <- env_parent(env)

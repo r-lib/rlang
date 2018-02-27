@@ -249,23 +249,19 @@ is_empty <- function(x) length(x) == 0
 
 #' Is object an environment?
 #'
-#' `is_bare_env()` tests whether `x` is an environment without a s3 or
+#' `is_bare_environment()` tests whether `x` is an environment without a s3 or
 #' s4 class.
 #'
 #' @inheritParams is_empty
 #' @export
-is_env <- function(x) {
+is_environment <- function(x) {
   typeof(x) == "environment"
 }
-#' @rdname is_env
+#' @rdname is_environment
 #' @export
-is_bare_env <- function(x) {
+is_bare_environment <- function(x) {
   !is.object(x) && typeof(x) == "environment"
 }
-
-# Anticipate renaming
-is_environment <- is_env
-is_bare_environment <- is_bare_env
 
 #' Is object identical to TRUE or FALSE?
 #'

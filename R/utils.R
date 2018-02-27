@@ -65,7 +65,7 @@ map_around <- function(.x, .neighbour = c("right", "left"), .f, ...) {
 }
 
 discard_unnamed <- function(x) {
-  if (is_env(x)) {
+  if (is_environment(x)) {
     x
   } else {
     discard(x, names2(x) == "")
