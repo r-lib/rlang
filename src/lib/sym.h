@@ -6,6 +6,11 @@
 #define r_missing_sym R_MissingArg
 #define r_names_sym R_NamesSymbol
 #define r_class_sym R_ClassSymbol
+#define r_dots_sym R_DotsSymbol
+
+extern sexp* r_dot_environment_sym;
+extern sexp* r_function_sym;
+extern sexp* r_tilde_sym;
 
 
 sexp* r_new_symbol(sexp* x, int* err);
@@ -25,10 +30,6 @@ bool r_is_symbol(sexp* sym, const char* string);
 bool r_is_symbol_any(sexp* x, const char** strings, int n);
 
 bool r_is_special_op_sym(sexp* x);
-
-extern sexp* r_dot_environment_sym;
-extern sexp* r_function_sym;
-extern sexp* r_tilde_sym;
 
 
 #endif
