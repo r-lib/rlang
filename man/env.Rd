@@ -10,14 +10,14 @@ env(...)
 
 child_env(.parent, ...)
 
-new_environment(data = list())
+new_environment(data = list(), parent = empty_env())
 }
 \arguments{
 \item{..., data}{Named values. These dots support \link[=tidy-dots]{tidy
 dots} features.}
 
-\item{.parent}{A parent environment. Can be an object supported by
-\code{\link[=as_environment]{as_environment()}}.}
+\item{.parent, parent}{A parent environment. Can be an object
+supported by \code{\link[=as_environment]{as_environment()}}.}
 }
 \description{
 These functions create new environments.

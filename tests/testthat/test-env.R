@@ -316,3 +316,8 @@ test_that("is_namespace() recognises namespaces", {
   expect_false(is_namespace(env()))
   expect_true(is_namespace(get_env(is_namespace)))
 })
+
+test_that("new_environment() accepts optional parent", {
+  env <- new_environment(parent = base_env())
+  expect_reference(env_parent(env), base_env())
+})

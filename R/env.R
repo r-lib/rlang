@@ -60,8 +60,8 @@
 #'
 #' @param ...,data Named values. These dots support [tidy
 #'   dots][tidy-dots] features.
-#' @param .parent A parent environment. Can be an object supported by
-#'   [as_environment()].
+#' @param .parent,parent A parent environment. Can be an object
+#'   supported by [as_environment()].
 #' @seealso `scoped_env`, [env_has()], [env_bind()].
 #' @export
 #' @examples
@@ -140,8 +140,8 @@ child_env <- function(.parent, ...) {
 }
 #' @rdname env
 #' @export
-new_environment <- function(data = list()) {
-  env <- new.env(parent = empty_env())
+new_environment <- function(data = list(), parent = empty_env()) {
+  env <- new.env(parent = parent)
   env_bind_impl(env, data)
 }
 
