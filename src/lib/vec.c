@@ -49,15 +49,17 @@ bool r_is_vector(sexp* x) {
 
 r_ssize_t r_vec_length(sexp* x) {
   switch(r_typeof(x)) {
-  case LGLSXP:
-  case INTSXP:
-  case REALSXP:
-  case CPLXSXP:
-  case STRSXP:
-  case RAWSXP:
-  case VECSXP:
-  case NILSXP:
-    return r_length(x);
+  case r_type_null:
+    return 0;
+  case r_type_logical:
+  case r_type_integer:
+  case r_type_double:
+  case r_type_complex:
+  case r_type_character:
+  case r_type_raw:
+  case r_type_list:
+  case r_type_string:
+    return LENGTH(x);
   default:
     r_abort("Internal error: expected a vector");
   }
