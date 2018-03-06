@@ -73,7 +73,7 @@ struct r_op_precedence {
   bool delimited;
 };
 
-const struct r_op_precedence r_ops_precedence[R_OP_MAX];
+extern const struct r_op_precedence r_ops_precedence[R_OP_MAX];
 
 /**
  * r_op_has_precedence() - Does an operation have precedence over another?
