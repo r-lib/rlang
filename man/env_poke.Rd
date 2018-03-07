@@ -20,6 +20,10 @@ environments.}
 \item{create}{Whether to create a binding if it does not already
 exist in the environment.}
 }
+\value{
+The old value of \code{nm} or the \link[=missing_arg]{missing
+argument} if it did not exist yet.
+}
 \description{
 \code{env_poke()} will assign or reassign a binding in \code{env} if \code{create}
 is \code{TRUE}. If \code{create} is \code{FALSE} and a binding does not already

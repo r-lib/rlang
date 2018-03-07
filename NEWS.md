@@ -13,6 +13,9 @@
 * `env_get()` and `env_get_list()` gain a `default` argument to
   provide a default value for non-existing bindings.
 
+* `env_poke()` now returns the old value invisibly rather than the
+  input environment.
+
 
 ## Upcoming breaking changes
 

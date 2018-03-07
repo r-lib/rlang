@@ -180,18 +180,21 @@ test_that("new_environment() accepts empty vectors", {
   expect_identical(length(new_environment(dbl())), 0L)
 })
 
-test_that("env_poke() returns env", {
-  env <- child_env(new_environment())
-  expect_identical(env_poke(env, "foo", "foo"), env)
-  expect_identical(env_poke(env, "foo", "foo", inherit = TRUE), env)
+test_that("env_poke() returns previous value", {
+  env <- env(env(empty_env(), bar = "bar"))
+  expect_identical(env_poke(env, "foo", "foo"), missing_arg())
+  expect_identical(env_poke(env, "foo", "FOO"), "foo")
+  expect_identical(env_poke(env, "bar", "foo", inherit = TRUE), "bar")
 })
 
 test_that("env_poke() creates binding if `create` is TRUE", {
   env <- new_environment()
-  expect_identical(env_get(env_poke(env, "foo", "foo"), "foo"), "foo")
+  env_poke(env, "foo", "foo")
+  expect_identical(env_get(env, "foo"), "foo")
 
   expect_error(env_poke(env, "bar", "BAR", create = FALSE), "Can't find existing binding")
-  expect_identical(env_get(env_poke(env, "foo", "FOO", create = FALSE), "foo"), "FOO")
+  env_poke(env, "foo", "FOO", create = FALSE)
+  expect_identical(env_get(env, "foo"), "FOO")
 })
 
 test_that("env_poke() inherits from parents if `inherit` is TRUE", {

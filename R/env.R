@@ -941,13 +941,16 @@ env_get_list <- function(env = caller_env(), nms, inherit = FALSE, default) {
 #' @param value The value for a new binding.
 #' @param create Whether to create a binding if it does not already
 #'   exist in the environment.
+#' @return The old value of `nm` or the [missing
+#'   argument][missing_arg()] if it did not exist yet.
 #'
 #' @keywords internal
 #' @export
 env_poke <- function(env = caller_env(), nm, value,
-                    inherit = FALSE, create = NULL) {
+                     inherit = FALSE, create = NULL) {
   stopifnot(is_string(nm))
   env_ <- get_env(env)
+  old <- env_get(env_, nm, inherit = inherit, default = missing_arg())
 
   # It is safer not to create a new binding when inherit is TRUE,
   # since the main purpose is to override an existing binding
@@ -963,7 +966,7 @@ env_poke <- function(env = caller_env(), nm, value,
     abort(paste0("Can't find existing binding in `env` for \"", nm, "\""))
   }
 
-  env
+  invisible(maybe_missing(old))
 }
 scope_set <- function(env, nm, value, create) {
   env_ <- get_env(env)
