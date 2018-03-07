@@ -251,10 +251,16 @@ as_env_ <- function(x, parent = NULL) {
 #'
 #' See the section on _inheritance_ in [env()]'s documentation.
 #'
+#'
+#' @section Life cycle:
+#'
+#' The `sentinel` argument of `env_tail()` has been deprecated in
+#' rlang 0.2.0 and renamed to `last`.
+#'
 #' @inheritParams get_env
 #' @param n The number of generations to go up.
-#' @param sentinel The environment signalling the end of the linear
-#'   search. `env_tail()` returns the environment which has `sentinel`
+#' @param last,sentinel The environment signalling the end of the linear
+#'   search. `env_tail()` returns the environment which has `last`
 #'   as parent.
 #' @return An environment for `env_parent()` and `env_tail()`, a list
 #'   of environments for `env_parents()`.
@@ -293,7 +299,12 @@ env_parent <- function(env = caller_env(), n = 1) {
 }
 #' @rdname env_parent
 #' @export
-env_tail <- function(env = caller_env(), sentinel = empty_env()) {
+env_tail <- function(env = caller_env(), last = empty_env(),
+                     sentinel = NULL) {
+  if (!is_null(sentinel)) {
+    warning("`sentinel` is deprecated as of version 0.2.0.9000, please use `last` instead")
+    last <- sentinel
+  }
   env_ <- get_env(env)
   next_env <- parent.env(env_)
 

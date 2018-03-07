@@ -171,6 +171,11 @@
 #' \figure{lifecycle-deprecated-orange.svg}{options: alt="Deprecated lifecycle"}
 #' }
 #'
+#' **Renamed in rlang 0.2.0.9000**
+#'
+#' * [env_tail()]: `sentinel` => `last`
+#'
+#'
 #' **Retired in rlang 0.2.0:**
 #'
 #' * [UQE()]

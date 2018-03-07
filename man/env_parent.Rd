@@ -8,7 +8,7 @@
 \usage{
 env_parent(env = caller_env(), n = 1)
 
-env_tail(env = caller_env(), sentinel = empty_env())
+env_tail(env = caller_env(), last = empty_env(), sentinel = NULL)
 
 env_parents(env = caller_env())
 }
@@ -18,8 +18,8 @@ e.g. a formula, \link[=quotation]{quosure} or \link[=is_closure]{closure}.}
 
 \item{n}{The number of generations to go up.}
 
-\item{sentinel}{The environment signalling the end of the linear
-search. \code{env_tail()} returns the environment which has \code{sentinel}
+\item{last, sentinel}{The environment signalling the end of the linear
+search. \code{env_tail()} returns the environment which has \code{last}
 as parent.}
 }
 \value{
@@ -38,6 +38,13 @@ empty environment.
 
 See the section on \emph{inheritance} in \code{\link[=env]{env()}}'s documentation.
 }
+\section{Life cycle}{
+
+
+The \code{sentinel} argument of \code{env_tail()} has been deprecated in
+rlang 0.2.0 and renamed to \code{last}.
+}
+
 \examples{
 # Get the parent environment with env_parent():
 env_parent(global_env())

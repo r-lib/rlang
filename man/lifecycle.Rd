@@ -165,6 +165,11 @@ Since rlang 0.2.0:
 \figure{lifecycle-deprecated-orange.svg}{options: alt="Deprecated lifecycle"}
 }
 
+\strong{Renamed in rlang 0.2.0.9000}
+\itemize{
+\item \code{\link[=env_tail]{env_tail()}}: \code{sentinel} => \code{last}
+}
+
 \strong{Retired in rlang 0.2.0:}
 \itemize{
 \item \code{\link[=UQE]{UQE()}}
