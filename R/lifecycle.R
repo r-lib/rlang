@@ -106,6 +106,13 @@
 #' \url{https://www.tidyverse.org/lifecycle/#questioning}
 #' }
 #'
+#' Since rlang 0.2.0.9000:
+#'
+#' * [child_env()]
+#'
+#'
+#' Since rlang 0.2.0:
+#'
 #' * [UQ()], [UQS()]
 #'
 #' * [dots_splice()], [splice()]

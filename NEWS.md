@@ -2,7 +2,8 @@
 # rlang 0.2.0.9000
 
 * `env()` now treats a single unnamed argument as the parent of the
-  new environment.
+  new environment. Consequently, `child_env()` is now superfluous and
+  is now in questioning life cycle.
 
 
 # rlang 0.2.0

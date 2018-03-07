@@ -7,9 +7,6 @@
 #' * `env()` creates a child of the current environment by default
 #'   and takes a variable number of named objects to populate it.
 #'
-#' * `child_env()` lets you specify a parent (see section on
-#'   inheritance).
-#'
 #' * `new_environment()` creates a child of the empty environment by
 #'   default and takes a named list of objects to populate it.
 #'
@@ -60,6 +57,12 @@
 #' environment to another symbol with `<-` or passing the environment
 #' as argument to a function), modifying the bindings of one of those
 #' references changes all other references as well.
+#'
+#'
+#' @section Life cycle:
+#'
+#' - `child_env()` is in questioning lifecycle stage. It has become
+#'   redundant since `env()` now accepts parent environments.
 #'
 #' @param ...,data Named values. You can supply one unnamed to specify
 #'   a custom parent, otherwise it defaults to the current

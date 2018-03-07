@@ -101,6 +101,13 @@ changes.
 }{
 \url{https://www.tidyverse.org/lifecycle/#questioning}
 }
+
+Since rlang 0.2.0.9000:
+\itemize{
+\item \code{\link[=child_env]{child_env()}}
+}
+
+Since rlang 0.2.0:
 \itemize{
 \item \code{\link[=UQ]{UQ()}}, \code{\link[=UQS]{UQS()}}
 \item \code{\link[=dots_splice]{dots_splice()}}, \code{\link[=splice]{splice()}}

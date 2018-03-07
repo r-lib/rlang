@@ -26,8 +26,6 @@ These functions create new environments.
 \itemize{
 \item \code{env()} creates a child of the current environment by default
 and takes a variable number of named objects to populate it.
-\item \code{child_env()} lets you specify a parent (see section on
-inheritance).
 \item \code{new_environment()} creates a child of the empty environment by
 default and takes a named list of objects to populate it.
 }
@@ -79,6 +77,14 @@ have multiple references to a given environment (by assigning the
 environment to another symbol with \code{<-} or passing the environment
 as argument to a function), modifying the bindings of one of those
 references changes all other references as well.
+}
+
+\section{Life cycle}{
+
+\itemize{
+\item \code{child_env()} is in questioning lifecycle stage. It has become
+redundant since \code{env()} now accepts parent environments.
+}
 }
 
 \examples{
