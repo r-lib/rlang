@@ -10,6 +10,9 @@
   equivalent to `base::environment()` and `base::sys.function()`
   called without argument.
 
+* `env_get()` and `env_get_list()` gain a `default` argument to
+  provide a default value for non-existing bindings.
+
 
 ## Upcoming breaking changes
 

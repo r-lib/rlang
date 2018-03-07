@@ -5,9 +5,9 @@
 \alias{env_get_list}
 \title{Get an object in an environment}
 \usage{
-env_get(env = caller_env(), nm, inherit = FALSE)
+env_get(env = caller_env(), nm, inherit = FALSE, default)
 
-env_get_list(env = caller_env(), nms, inherit = FALSE)
+env_get_list(env = caller_env(), nms, inherit = FALSE, default)
 }
 \arguments{
 \item{env}{An environment or an object bundling an environment,
@@ -17,6 +17,9 @@ e.g. a formula, \link[=quotation]{quosure} or \link[=is_closure]{closure}.}
 
 \item{inherit}{Whether to look for bindings in the parent
 environments.}
+
+\item{default}{A default value in case there is no binding for \code{nm}
+in \code{env}.}
 }
 \value{
 An object if it exists. Otherwise, throws an error.
@@ -36,4 +39,7 @@ env <- child_env(parent, bar = "bar")
 
 # However `foo` can be fetched in the parent environment:
 env_get(env, "foo", inherit = TRUE)
+
+# You can also avoid an error by supplying a default value:
+env_get(env, "foo", default = "FOO")
 }

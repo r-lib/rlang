@@ -877,6 +877,8 @@ env_has <- function(env = caller_env(), nms, inherit = FALSE) {
 #' @inheritParams get_env
 #' @inheritParams env_has
 #' @param nm,nms Names of bindings. `nm` must be a single string.
+#' @param default A default value in case there is no binding for `nm`
+#'   in `env`.
 #' @return An object if it exists. Otherwise, throws an error.
 #' @export
 #' @examples
@@ -888,14 +890,24 @@ env_has <- function(env = caller_env(), nms, inherit = FALSE) {
 #'
 #' # However `foo` can be fetched in the parent environment:
 #' env_get(env, "foo", inherit = TRUE)
-env_get <- function(env = caller_env(), nm, inherit = FALSE) {
-  get(nm, envir = get_env(env), inherits = inherit)
+#'
+#' # You can also avoid an error by supplying a default value:
+#' env_get(env, "foo", default = "FOO")
+env_get <- function(env = caller_env(), nm, inherit = FALSE, default) {
+  env <- get_env(env)
+  if (!missing(default)) {
+    exists <- env_has(env, nm, inherit = inherit)
+    if (!exists) {
+      return(default)
+    }
+  }
+  get(nm, envir = env, inherits = inherit)
 }
 #' @rdname env_get
 #' @export
-env_get_list <- function(env = caller_env(), nms, inherit = FALSE) {
+env_get_list <- function(env = caller_env(), nms, inherit = FALSE, default) {
   nms <- set_names(nms)
-  map(nms, env_get, env = env, inherit = inherit)
+  map(nms, env_get, env = env, inherit = inherit, default = default)
 }
 
 #' Poke an object in an environment

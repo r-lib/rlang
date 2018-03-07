@@ -367,3 +367,13 @@ test_that("env_bind_impl() fails if data is not a vector", {
 test_that("env_unbind() doesn't warn if binding doesn't exist (#177)", {
   expect_no_warning(env_unbind(env(), c("foo", "bar")))
 })
+
+test_that("env_get() and env_get_list() accept default value", {
+  env <- env(a = 1)
+
+  expect_error(env_get(env, "b"), "not found")
+  expect_error(env_get_list(env, "b"), "not found")
+
+  expect_identical(env_get(env, "b", default = "foo"), "foo")
+  expect_identical(env_get_list(env, c("a", "b"), default = "foo"), list(a = 1, b = "foo"))
+})
