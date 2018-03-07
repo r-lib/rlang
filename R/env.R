@@ -610,6 +610,9 @@ env_bind_impl <- function(env, data) {
     if (is_null(nms) || any(nms_are_invalid(nms))) {
       abort("Can't bind data because all arguments must be named")
     }
+    if (any(duplicated(nms))) {
+      abort("Can't bind data because some arguments have the same name")
+    }
   }
 
   nms <- names(data)

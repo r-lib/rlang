@@ -285,12 +285,21 @@ test_that("env_bind() requires named elements", {
   expect_error(env_bind(env(), !!! list(1)), "all arguments must be named")
 })
 
+test_that("env_bind() requires uniquely named elements", {
+  expect_error(env_bind(env(), a = 1, a = 2), "some arguments have the same name")
+})
+
 test_that("child_env() requires named elements", {
   expect_error(child_env(env(), 1), "all arguments must be named")
 })
 
 test_that("env() requires named elements", {
   expect_error(env(env(), 1), "Expected 0 or 1 unnamed arguments")
+})
+
+test_that("env() and child_env() requires uniquely named elements", {
+  expect_error(env(a = 1, a = 2), "some arguments have the same name")
+  expect_error(child_env(env(), a = 1, a = 2), "some arguments have the same name")
 })
 
 test_that("env_bind() works with empty unnamed lists", {
