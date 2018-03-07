@@ -1,4 +1,4 @@
-#' Get the environment of the caller frame
+#' Get properties of the current or caller frame
 #'
 #' @param n The number of generation to go back.
 #' @export
@@ -14,6 +14,16 @@ caller_frame <- function(n = 1) {
 #' @export
 caller_fn <- function(n = 1) {
   call_frame(n + 2)$fn
+}
+#' @rdname caller_env
+#' @export
+current_env <- function() {
+  parent.frame()
+}
+#' @rdname caller_env
+#' @export
+current_fn <- function() {
+  call_frame(2)$fn
 }
 
 

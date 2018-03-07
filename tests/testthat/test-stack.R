@@ -318,3 +318,15 @@ test_that("call is not modified in place", {
   stack <- f(foo)
   expect_equal(stack[[1]]$expr, quote(g(...)))
 })
+
+test_that("current_env() and current_fn() return current frame props", {
+  fn <- function() {
+    list(
+      rlang = list(identity(current_env()), current_fn()),
+      base = list(environment(), sys.function())
+    )
+  }
+  out <- fn()
+  expect_identical(out$rlang[[1]], out$base[[1]])
+  expect_identical(out$rlang[[2]], out$base[[2]])
+})

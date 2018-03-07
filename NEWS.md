@@ -5,6 +5,11 @@
   new environment. Consequently, `child_env()` is now superfluous and
   is now in questioning life cycle.
 
+* New `current_env()` and `current_fn()` functions to retrieve the
+  current environment or the function being evaluated. They are
+  equivalent to `base::environment()` and `base::sys.function()`
+  called without argument.
+
 
 # rlang 0.2.0
 

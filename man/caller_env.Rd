@@ -4,17 +4,23 @@
 \alias{caller_env}
 \alias{caller_frame}
 \alias{caller_fn}
-\title{Get the environment of the caller frame}
+\alias{current_env}
+\alias{current_fn}
+\title{Get properties of the current or caller frame}
 \usage{
 caller_env(n = 1)
 
 caller_frame(n = 1)
 
 caller_fn(n = 1)
+
+current_env()
+
+current_fn()
 }
 \arguments{
 \item{n}{The number of generation to go back.}
 }
 \description{
-Get the environment of the caller frame
+Get properties of the current or caller frame
 }
