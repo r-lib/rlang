@@ -45,7 +45,7 @@ Please pass simple environments to \code{return_from()} and \code{return_to()}.
 \examples{
 # Passing fn() evaluation frame to g():
 fn <- function() {
-  val <- g(get_env())
+  val <- g(current_env())
   cat("g returned:", val, "\\n")
   "normal return"
 }

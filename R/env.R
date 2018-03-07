@@ -77,7 +77,7 @@
 #' # as parent
 #' env <- env(a = 1, b = "foo")
 #' env$b
-#' identical(env_parent(env), get_env())
+#' identical(env_parent(env), current_env())
 #'
 #' # Supply one unnamed argument to override the default:
 #' env <- env(base_env(), a = 1, b = "foo")
@@ -388,6 +388,13 @@ is_empty_env <- function(env) {
 #' that you don't own, e.g. a parent environment of a function from a
 #' package.
 #'
+#'
+#' @section Life cycle:
+#'
+#' Using `get_env()` without supplying `env` is soft-deprecated as of
+#' rlang 0.2.0.9000. Please use [current_env()] to retrieve the
+#' current environment.
+#'
 #' @param env An environment or an object bundling an environment,
 #'   e.g. a formula, [quosure][quotation] or [closure][is_closure].
 #' @param default The default environment in case `env` does not wrap
@@ -398,17 +405,8 @@ is_empty_env <- function(env) {
 #'   [get_env()] and [set_env()] that only work on quosures.
 #' @export
 #' @examples
-#' # Get the environment of frame objects. If no argument is supplied,
-#' # the current frame is used:
-#' fn <- function() {
-#'   list(
-#'     get_env(call_frame()),
-#'     get_env()
-#'   )
-#' }
-#' fn()
-#'
 #' # Environment of closure functions:
+#' fn <- function() "foo"
 #' get_env(fn)
 #'
 #' # Or of quosures or formulas:
@@ -429,7 +427,12 @@ is_empty_env <- function(env) {
 #' # functions accepting formulas as input:
 #' default <- env()
 #' identical(get_env(f, default), default)
-get_env <- function(env = caller_env(), default = NULL) {
+get_env <- function(env, default = NULL) {
+  if (missing(env)) {
+    # This is soft-deprecated
+    env <- caller_env()
+  }
+
   out <- switch_type(env,
     environment = env,
     definition = ,
@@ -461,7 +464,7 @@ get_env <- function(env = caller_env(), default = NULL) {
 #'
 #' # That function now has `env` as enclosure:
 #' identical(get_env(fn), env)
-#' identical(get_env(fn), get_env())
+#' identical(get_env(fn), current_env())
 #'
 #' # set_env() does not work by side effect. Setting a new environment
 #' # for fn has no effect on the original function:
@@ -556,12 +559,12 @@ env_poke_parent <- function(env, new_env) {
 #' @examples
 #' # env_bind() is a programmatic way of assigning values to symbols
 #' # with `<-`. We can add bindings in the current environment:
-#' env_bind(get_env(), foo = "bar")
+#' env_bind(current_env(), foo = "bar")
 #' foo
 #'
 #' # Or modify those bindings:
 #' bar <- "bar"
-#' env_bind(get_env(), bar = "BAR")
+#' env_bind(current_env(), bar = "BAR")
 #' bar
 #'
 #' # It is most useful to change other environments:

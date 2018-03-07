@@ -92,7 +92,7 @@ redundant since \code{env()} now accepts parent environments.
 # as parent
 env <- env(a = 1, b = "foo")
 env$b
-identical(env_parent(env), get_env())
+identical(env_parent(env), current_env())
 
 # Supply one unnamed argument to override the default:
 env <- env(base_env(), a = 1, b = "foo")

@@ -17,7 +17,7 @@ test_that("creates namespaced calls", {
 
 test_that("fails with non-callable objects", {
   expect_error(call2(1), "non-callable")
-  expect_error(call2(get_env()), "non-callable")
+  expect_error(call2(current_env()), "non-callable")
 })
 
 test_that("succeeds with literal functions", {
@@ -144,7 +144,7 @@ test_that("call_fn() extracts function", {
 test_that("call_fn() looks up function in `env`", {
   env <- local({
     fn <- function() "foo"
-    get_env()
+    current_env()
   })
   expect_identical(call_fn(quote(fn()), env = env), env$fn)
 })

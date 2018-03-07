@@ -27,7 +27,7 @@ test_that("r_warn() signals", {
 test_that("r_on_exit() adds deferred expr", {
   var <- chr()
   fn <- function() {
-    .Call(rlang_test_r_on_exit, quote(var <<- c(var, "foo")), get_env())
+    .Call(rlang_test_r_on_exit, quote(var <<- c(var, "foo")), current_env())
     var <<- c(var, "bar")
   }
   fn()

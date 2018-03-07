@@ -32,7 +32,7 @@
 #'
 #' # Whereas a non-local return requires to manually pass the calling
 #' # frame to the return function:
-#' fn <- function() g(get_env())
+#' fn <- function() g(current_env())
 #' g <- function(env) h(env)
 #' h <- function(env) { return_from(env, "returned"); "not returned" }
 #' fn()

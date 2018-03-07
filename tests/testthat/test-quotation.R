@@ -14,7 +14,7 @@ test_that("quos() captures correct environment", {
 
   expect_identical(get_env(out$dots$x), out$env)
   expect_identical(get_env(out$dots$y), out$env)
-  expect_identical(get_env(out$dots$z), get_env())
+  expect_identical(get_env(out$dots$z), current_env())
 })
 
 test_that("dots are interpolated", {
@@ -58,7 +58,7 @@ test_that("dots can be spliced in", {
     var <- "var"
     list(
       out = g(!!! quos(...), bar(baz), !!! list(a = var, b = ~foo)),
-      env = get_env()
+      env = current_env()
     )
   }
   g <- function(...) {
@@ -111,7 +111,7 @@ test_that("dots are forwarded to named arguments", {
   inner <- function(...) fn(...)
   fn <- function(x) enquo(x)
 
-  env <- child_env(get_env())
+  env <- child_env(current_env())
   expect_identical(with_env(env, outer(foo(bar))), new_quosure(quote(foo(bar)), env))
 })
 

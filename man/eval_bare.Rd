@@ -85,11 +85,11 @@ while (TRUE) {
 fn <- function(eval_fn) {
   list(
     returned_env = middle(eval_fn),
-    actual_env = get_env()
+    actual_env = current_env()
   )
 }
 middle <- function(eval_fn) {
-  deep(eval_fn, get_env())
+  deep(eval_fn, current_env())
 }
 deep <- function(eval_fn, eval_env) {
   expr <- quote(parent.frame())

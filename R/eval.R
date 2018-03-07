@@ -77,11 +77,11 @@
 #' fn <- function(eval_fn) {
 #'   list(
 #'     returned_env = middle(eval_fn),
-#'     actual_env = get_env()
+#'     actual_env = current_env()
 #'   )
 #' }
 #' middle <- function(eval_fn) {
-#'   deep(eval_fn, get_env())
+#'   deep(eval_fn, current_env())
 #' }
 #' deep <- function(eval_fn, eval_env) {
 #'   expr <- quote(parent.frame())
@@ -119,7 +119,7 @@ eval_bare <- function(expr, env = parent.frame()) {
 #'
 #' @inheritParams eval_bare
 #' @param env An environment within which to evaluate `expr`. Can be
-#'   an object with an [get_env()] method.
+#'   an object with a [get_env()] method.
 #' @export
 #' @examples
 #' # with_env() is handy to create formulas with a given environment:
@@ -135,7 +135,7 @@ eval_bare <- function(expr, env = parent.frame()) {
 #' # Unlike eval() it doesn't create duplicates on the evaluation
 #' # stack. You can thus use it e.g. to create non-local returns:
 #' fn <- function() {
-#'   g(get_env())
+#'   g(current_env())
 #'   "normal return"
 #' }
 #' g <- function(env) {

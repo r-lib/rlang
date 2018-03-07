@@ -62,7 +62,7 @@ test_that("new_quosure() double wraps", {
 test_that("as_quosure() uses correct env", {
   fn <- function(expr, env = caller_env()) {
     f <- as_quosure(expr, env)
-    list(env = get_env(), quo = g(f))
+    list(env = current_env(), quo = g(f))
   }
   g <- function(expr, env = caller_env()) {
     as_quosure(expr, env)
@@ -72,7 +72,7 @@ test_that("as_quosure() uses correct env", {
 
   out_expr_default <- fn(quote(expr))
   out_quo_default <- fn(quo)
-  expect_identical(quo_get_env(out_expr_default$quo), get_env())
+  expect_identical(quo_get_env(out_expr_default$quo), current_env())
   expect_identical(quo_get_env(out_quo_default$quo), quo_env)
 
   user_env <- child_env(NULL)
@@ -91,7 +91,7 @@ test_that("explicit promise makes a formula", {
 })
 
 test_that("explicit promise works only one level deep", {
-  f <- function(x) list(env = get_env(), f = g(x))
+  f <- function(x) list(env = current_env(), f = g(x))
   g <- function(y) enquo(y)
   out <- f(1 + 2 + 3)
   expected_f <- with_env(out$env, quo(x))

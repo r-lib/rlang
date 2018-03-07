@@ -1,10 +1,5 @@
 context("environments")
 
-test_that("get_env() returns current frame by default", {
-  fn <- function() expect_identical(get_env(), environment())
-  fn()
-})
-
 test_that("env_parent() returns enclosure frame by default", {
   enclos_env <- child_env(pkg_env("rlang"))
   fn <- with_env(enclos_env, function() env_parent())
@@ -15,7 +10,7 @@ test_that("child_env() has correct parent", {
   env <- child_env(empty_env())
   expect_false(env_has(env, "list", inherit = TRUE))
 
-  fn <- function() list(new = child_env(get_env()), env = environment())
+  fn <- function() list(new = child_env(current_env()), env = environment())
   out <- fn()
   expect_identical(env_parent(out$new), out$env)
 
@@ -39,10 +34,10 @@ test_that("promises are created", {
   env <- child_env(NULL)
 
   env_bind_exprs(env, foo = bar <- "bar")
-  expect_false(env_has(get_env(), "bar"))
+  expect_false(env_has(current_env(), "bar"))
 
   force(env$foo)
-  expect_true(env_has(get_env(), "bar"))
+  expect_true(env_has(current_env(), "bar"))
 
   env_bind_exprs(env, stop = stop("forced"))
   expect_error(env$stop, "forced")
@@ -56,7 +51,7 @@ test_that("env_bind_fns() creates active bindings", {
 
 test_that("with_env() evaluates within correct environment", {
   fn <- function() {
-    g(get_env())
+    g(current_env())
     "normal return"
   }
   g <- function(env) {
@@ -67,7 +62,7 @@ test_that("with_env() evaluates within correct environment", {
 
 test_that("locally() evaluates within correct environment", {
   env <- child_env("rlang")
-  local_env <- with_env(env, locally(get_env()))
+  local_env <- with_env(env, locally(current_env()))
   expect_identical(env_parent(local_env), env)
 })
 
@@ -96,9 +91,9 @@ test_that("as_environment() dispatches correctly", {
 })
 
 test_that("env_inherits() finds ancestor", {
-  env <- child_env(get_env())
+  env <- child_env(current_env())
   env <- child_env(env)
-  expect_true(env_inherits(env, get_env()))
+  expect_true(env_inherits(env, current_env()))
   expect_false(env_inherits(env, ns_env("utils")))
 
   expect_true(env_inherits(empty_env(), empty_env()))
@@ -106,13 +101,13 @@ test_that("env_inherits() finds ancestor", {
 
 test_that("env() creates child of current environment", {
   env <- env(a = 1, b = "foo")
-  expect_identical(env_parent(env), get_env())
+  expect_identical(env_parent(env), current_env())
   expect_identical(env$b, "foo")
 })
 
 test_that("set_env() sets current env by default", {
   quo <- set_env(locally(~foo))
-  expect_identical(f_env(quo), get_env())
+  expect_identical(f_env(quo), current_env())
 })
 
 test_that("finds correct env type", {
@@ -122,11 +117,11 @@ test_that("finds correct env type", {
   expect_identical(env_type(base_env()), "base")
 })
 
-test_that("get_env() fails if no default", {
+test_that("current_env() fails if no default", {
   expect_error(get_env(list()), "Can't extract an environment from a list")
 })
 
-test_that("get_env() picks up default", {
+test_that("current_env() picks up default", {
   dft <- env()
   expect_identical(get_env(list(), dft), dft)
   expect_identical(get_env("a", dft), dft)
@@ -141,7 +136,7 @@ test_that("with_env() handles data", {
 
 test_that("with_env() evaluates in env", {
   env <- env()
-  expect_identical(with_env(env, get_env()), env)
+  expect_identical(with_env(env, current_env()), env)
 })
 
 test_that("env_depth() counts parents", {
@@ -217,7 +212,7 @@ test_that("env_poke() inherits from parents if `inherit` is TRUE", {
 })
 
 test_that("env_tail() detects sentinel", {
-  sentinel <- get_env()
+  sentinel <- current_env()
   env <- env()
   descendant <- child_env(child_env(child_env(env)))
   expect_identical(env_tail(descendant, sentinel), env)

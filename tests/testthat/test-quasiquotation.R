@@ -164,7 +164,7 @@ test_that("quosures are not rewrapped", {
   var <- quo(!! quo(letters))
   expect_identical(quo(!!var), quo(letters))
 
-  var <- new_quosure(local(~letters), env = child_env(get_env()))
+  var <- new_quosure(local(~letters), env = child_env(current_env()))
   expect_identical(quo(!!var), var)
 })
 
@@ -190,7 +190,7 @@ test_that("UQ() fails if called without argument", {
 # !!! ---------------------------------------------------------------------
 
 test_that("`!!!` treats atomic objects as scalar vectors", {
-  expect_identical(quo(list(!!! get_env())), quo(list(!! get_env())))
+  expect_identical(quo(list(!!! current_env())), quo(list(!! current_env())))
   expect_identical(expr(c(!!! expression(1, 2))), expr(c(!! expression(1, 2))))
 })
 

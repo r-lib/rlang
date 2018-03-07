@@ -11,7 +11,7 @@ locally(expr)
 }
 \arguments{
 \item{env}{An environment within which to evaluate \code{expr}. Can be
-an object with an \code{\link[=get_env]{get_env()}} method.}
+an object with a \code{\link[=get_env]{get_env()}} method.}
 
 \item{expr}{An expression to evaluate.}
 }
@@ -49,7 +49,7 @@ identical(get_env(fn), env)
 # Unlike eval() it doesn't create duplicates on the evaluation
 # stack. You can thus use it e.g. to create non-local returns:
 fn <- function() {
-  g(get_env())
+  g(current_env())
   "normal return"
 }
 g <- function(env) {

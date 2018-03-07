@@ -28,7 +28,7 @@ is_callable(base::identity)
 
 # node_poke_car() lets you modify calls without any checking:
 lang <- quote(foo(10))
-node_poke_car(lang, get_env())
+node_poke_car(lang, current_env())
 
 # Use is_callable() to check an input object is safe to put as CAR:
 obj <- base::identity

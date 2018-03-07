@@ -157,7 +157,7 @@ test_that("fn_body() requires a closure to extract body", {
 
 test_that("fn_env() requires a function to extract env", {
   expect_error(fn_env(1L), "`fn` is not a function")
-  expect_identical(fn_env(function() NULL), get_env())
+  expect_identical(fn_env(function() NULL), current_env())
 })
 
 test_that("`fn_env<-`() sets environment", {

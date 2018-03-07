@@ -664,7 +664,7 @@ is_frame_env <- function(env) {
 #' @examples
 #' # Passing fn() evaluation frame to g():
 #' fn <- function() {
-#'   val <- g(get_env())
+#'   val <- g(current_env())
 #'   cat("g returned:", val, "\n")
 #'   "normal return"
 #' }

@@ -11,6 +11,13 @@
   called without argument.
 
 
+## Upcoming breaking changes
+
+* Using `get_env()` without supplying an environment is now
+  soft-deprecated. Please use `current_env()` to retrieve the current
+  environment.
+
+
 # rlang 0.2.0
 
 This release of rlang is mostly an effort at polishing the tidy

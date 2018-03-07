@@ -131,6 +131,11 @@
 #' \figure{lifecycle-soft--deprecated-blue.svg}{options: alt="Soft-deprecated lifecycle"}
 #' }
 #'
+#' **Retired in rlang 0.2.0.9000**
+#'
+#' * [get_env()]: The `env` argument no longer has a default and must be supplied
+#'
+#'
 #' **Retired in rlang 0.2.0:**
 #'
 #' * [eval_tidy_()]

@@ -152,7 +152,7 @@ test_that("two-sided formulas are not treated as quosures", {
 
 test_that("formulas are evaluated in evaluation environment", {
   f <- eval_tidy(quo(foo ~ bar), list(foo = "bar"))
-  expect_false(identical(f_env(f), get_env()))
+  expect_false(identical(f_env(f), current_env()))
 })
 
 test_that("evaluation env is cleaned up", {
@@ -164,10 +164,10 @@ test_that("evaluation env is cleaned up", {
 
 test_that("inner formulas are rechained to evaluation env", {
   env <- child_env(NULL)
-  f1 <- quo(env$eval_env1 <- get_env())
+  f1 <- quo(env$eval_env1 <- current_env())
   f2 <- quo({
     !! f1
-    env$eval_env2 <- get_env()
+    env$eval_env2 <- current_env()
   })
 
   eval_tidy(f2, mtcars)

@@ -126,6 +126,11 @@ Since rlang 0.2.0:
 \figure{lifecycle-soft--deprecated-blue.svg}{options: alt="Soft-deprecated lifecycle"}
 }
 
+\strong{Retired in rlang 0.2.0.9000}
+\itemize{
+\item \code{\link[=get_env]{get_env()}}: The \code{env} argument no longer has a default and must be supplied
+}
+
 \strong{Retired in rlang 0.2.0:}
 \itemize{
 \item \code{\link[=eval_tidy_]{eval_tidy_()}}

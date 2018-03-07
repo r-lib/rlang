@@ -67,12 +67,12 @@ functions follow the convention of returning their input invisibly.
 \examples{
 # env_bind() is a programmatic way of assigning values to symbols
 # with `<-`. We can add bindings in the current environment:
-env_bind(get_env(), foo = "bar")
+env_bind(current_env(), foo = "bar")
 foo
 
 # Or modify those bindings:
 bar <- "bar"
-env_bind(get_env(), bar = "BAR")
+env_bind(current_env(), bar = "BAR")
 bar
 
 # It is most useful to change other environments:

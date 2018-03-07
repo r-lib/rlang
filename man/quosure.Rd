@@ -62,7 +62,7 @@ namespaced within \code{ns}.}
 You can access the quosure components (its expression and its
 environment) with:
 \itemize{
-\item \code{\link[=get_expr]{get_expr()}} and \code{\link[=get_env]{get_env()}}. These getters also support other
+\item \code{\link[=get_expr]{get_expr()}} and \code{\link[=current_env]{current_env()}}. These getters also support other
 kinds of objects such as formulas
 \item \code{quo_get_expr()} and \code{quo_get_env()}. These getters only work
 with quosures and throw an error with other types of input.

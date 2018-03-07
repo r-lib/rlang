@@ -86,8 +86,8 @@ test_that("overscope functions forward to mask functions", {
 
   mask <- as_data_mask(mtcars)
   x <- 10
-  expect_identical(overscope_eval_next(mask, quote(cyl * x), get_env()), mtcars$cyl * x)
-  expect_identical(overscope_eval_next(mask, quote(am * x), get_env()), mtcars$am * x)
+  expect_identical(overscope_eval_next(mask, quote(cyl * x), current_env()), mtcars$cyl * x)
+  expect_identical(overscope_eval_next(mask, quote(am * x), current_env()), mtcars$am * x)
 })
 
 test_that("as_dictionary() forwards to as_data_pronoun()", {
