@@ -368,3 +368,7 @@ test_that("env_parents() always stops at the empty env", {
 test_that("env_bind_impl() fails if data is not a vector", {
   expect_error(env_bind_impl(env(), env()), "must be a vector")
 })
+
+test_that("env_unbind() doesn't warn if binding doesn't exist (#177)", {
+  expect_no_warning(env_unbind(env(), c("foo", "bar")))
+})

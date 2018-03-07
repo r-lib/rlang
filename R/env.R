@@ -831,11 +831,12 @@ env_unbind <- function(env = caller_env(), nms, inherit = FALSE) {
   env_ <- get_env(env)
 
   if (inherit) {
-    while (any(env_has(env_, nms, inherit = TRUE))) {
-      rm(list = nms, envir = env, inherits = TRUE)
+    while (any(exist <- env_has(env_, nms, inherit = TRUE))) {
+      rm(list = nms[exist], envir = env, inherits = TRUE)
     }
   } else {
-    rm(list = nms, envir = env)
+    exist <- env_has(env_, nms, inherit = FALSE)
+    rm(list = nms[exist], envir = env)
   }
 
   invisible(env)
