@@ -93,6 +93,33 @@ dots_list <- function(...,
   dots
 }
 
+dots_split <- function(...,
+                       .n_unnamed = NULL,
+                       .ignore_empty = c("trailing", "none", "all")) {
+  dots <- .Call(rlang_dots_list, environment(), FALSE, .ignore_empty, TRUE)
+
+  if (is_null(names(dots))) {
+    unnamed_idx <- TRUE
+    n <- length(dots)
+  } else {
+    unnamed_idx <- names(dots) == ""
+    n <- sum(unnamed_idx)
+  }
+
+  if (!is_null(.n_unnamed) && all(n != .n_unnamed)) {
+    ns <- chr_enumerate(.n_unnamed)
+    abort(sprintf("Expected %s unnamed arguments in `...`", ns))
+  }
+
+  unnamed <- dots[unnamed_idx]
+  named <- dots[!unnamed_idx]
+
+  # Remove empty names vector
+  names(unnamed) <- NULL
+
+  list(named = named, unnamed = unnamed)
+}
+
 #' Splice lists
 #'
 #' - `splice` marks an object to be spliced. It is equivalent to using

@@ -109,3 +109,26 @@ test_that("dots_node() doesn't trim attributes from arguments", {
   dots <- eval(expr(dots_node(!! x)))
   expect_identical(node_car(dots), x)
 })
+
+test_that("dots_split() splits named and unnamed dots", {
+  dots <- dots_split(1, 2)
+  expect_identical(dots$named, list())
+  expect_identical(dots$unnamed, list(1, 2))
+
+  dots <- dots_split(a = 1, 2)
+  expect_identical(dots$named, list(a = 1))
+  expect_identical(dots$unnamed, list(2))
+
+  dots <- dots_split(a = 1, b = 2)
+  expect_identical(dots$named, list(a = 1, b = 2))
+  expect_identical(dots$unnamed, list())
+})
+
+test_that("dots_split() fails if .n_unnamed doesn't match", {
+  expect_error(dots_split(1, 2, .n_unnamed = 1), "Expected 1 unnamed")
+  expect_error(dots_split(1, 2, .n_unnamed = 0:1), "Expected 0 or 1 unnamed")
+
+  dots <- dots_split(a = 1, 2, .n_unnamed = 1)
+  expect_identical(dots$named, list(a = 1))
+  expect_identical(dots$unnamed, list(2))
+})
