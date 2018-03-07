@@ -308,7 +308,7 @@ env_tail <- function(env = caller_env(), last = empty_env(),
   env_ <- get_env(env)
   next_env <- parent.env(env_)
 
-  while (!is_reference(next_env, sentinel)) {
+  while (!is_reference(next_env, last)) {
     env_ <- next_env
     next_env <- parent.env(next_env)
   }
