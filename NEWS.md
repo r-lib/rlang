@@ -1,6 +1,9 @@
 
 # rlang 0.2.0.9000
 
+* `env()` now treats a single unnamed argument as the parent of the
+  new environment.
+
 
 # rlang 0.2.0
 

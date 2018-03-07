@@ -4,14 +4,15 @@
 #'
 #' These functions create new environments.
 #'
-#' * `env()` always creates a child of the current environment.
+#' * `env()` creates a child of the current environment by default
+#'   and takes a variable number of named objects to populate it.
 #'
 #' * `child_env()` lets you specify a parent (see section on
 #'   inheritance).
 #'
-#' * `new_environment()` creates a child of the empty environment. It
-#'   is useful e.g. for using environments as containers of data
-#'   rather than as part of a scope hierarchy.
+#' * `new_environment()` creates a child of the empty environment by
+#'   default and takes a named list of objects to populate it.
+#'
 #'
 #' @section Environments as objects:
 #'
@@ -31,6 +32,7 @@
 #' system](http://ggplot2.tidyverse.org/articles/extending-ggplot2.html)
 #' for extending ggplot2).
 #'
+#'
 #' @section Inheritance:
 #'
 #' All R environments (except the [empty environment][empty_env]) are
@@ -49,6 +51,7 @@
 #' common use of masking is to put data frame columns in scope. See
 #' for example [as_data_mask()].
 #'
+#'
 #' @section Reference semantics:
 #'
 #' Unlike regular objects such as vectors, environments are an
@@ -58,8 +61,10 @@
 #' as argument to a function), modifying the bindings of one of those
 #' references changes all other references as well.
 #'
-#' @param ...,data Named values. These dots support [tidy
-#'   dots][tidy-dots] features.
+#' @param ...,data Named values. You can supply one unnamed to specify
+#'   a custom parent, otherwise it defaults to the current
+#'   environment. These dots support [tidy dots][tidy-dots]
+#'   features.
 #' @param .parent,parent A parent environment. Can be an object
 #'   supported by [as_environment()].
 #' @seealso `scoped_env`, [env_has()], [env_bind()].
@@ -70,6 +75,10 @@
 #' env <- env(a = 1, b = "foo")
 #' env$b
 #' identical(env_parent(env), get_env())
+#'
+#' # Supply one unnamed argument to override the default:
+#' env <- env(base_env(), a = 1, b = "foo")
+#' identical(env_parent(env), base_env())
 #'
 #'
 #' # child_env() lets you specify a parent:
@@ -129,14 +138,22 @@
 #' # Like other new_ constructors, it takes an object rather than dots:
 #' new_environment(list(a = "foo", b = "bar"))
 env <- function(...) {
-  env <- new.env(parent = caller_env())
-  env_bind_impl(env, dots_list(...))
+  dots <- dots_split(..., .n_unnamed = 0:1)
+
+  if (length(dots$unnamed)) {
+    parent <- dots$unnamed[[1]]
+  } else {
+    parent = caller_env()
+  }
+
+  env <- new.env(parent = parent)
+  env_bind_impl(env, dots$named)
 }
 #' @rdname env
 #' @export
 child_env <- function(.parent, ...) {
   env <- new.env(parent = as_environment(.parent))
-  env_bind_impl(env, dots_list(...))
+  env_bind_impl(env, list2(...))
 }
 #' @rdname env
 #' @export

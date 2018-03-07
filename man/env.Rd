@@ -13,8 +13,10 @@ child_env(.parent, ...)
 new_environment(data = list(), parent = empty_env())
 }
 \arguments{
-\item{..., data}{Named values. These dots support \link[=tidy-dots]{tidy
-dots} features.}
+\item{..., data}{Named values. You can supply one unnamed to specify
+a custom parent, otherwise it defaults to the current
+environment. These dots support \link[=tidy-dots]{tidy dots}
+features.}
 
 \item{.parent, parent}{A parent environment. Can be an object
 supported by \code{\link[=as_environment]{as_environment()}}.}
@@ -22,12 +24,12 @@ supported by \code{\link[=as_environment]{as_environment()}}.}
 \description{
 These functions create new environments.
 \itemize{
-\item \code{env()} always creates a child of the current environment.
+\item \code{env()} creates a child of the current environment by default
+and takes a variable number of named objects to populate it.
 \item \code{child_env()} lets you specify a parent (see section on
 inheritance).
-\item \code{new_environment()} creates a child of the empty environment. It
-is useful e.g. for using environments as containers of data
-rather than as part of a scope hierarchy.
+\item \code{new_environment()} creates a child of the empty environment by
+default and takes a named list of objects to populate it.
 }
 }
 \section{Environments as objects}{
@@ -85,6 +87,10 @@ references changes all other references as well.
 env <- env(a = 1, b = "foo")
 env$b
 identical(env_parent(env), get_env())
+
+# Supply one unnamed argument to override the default:
+env <- env(base_env(), a = 1, b = "foo")
+identical(env_parent(env), base_env())
 
 
 # child_env() lets you specify a parent:

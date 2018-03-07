@@ -321,3 +321,12 @@ test_that("new_environment() accepts optional parent", {
   env <- new_environment(parent = base_env())
   expect_reference(env_parent(env), base_env())
 })
+
+test_that("env() accepts one unnamed argument to specify parent", {
+  env <- env(base_env())
+  expect_reference(env_parent(env), base_env())
+
+  env <- env(global_env(), a = 1)
+  expect_reference(env_parent(env), global_env())
+  expect_identical(env_names(env), "a")
+})
