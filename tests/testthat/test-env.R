@@ -280,9 +280,17 @@ test_that("env_unbind() with `inherits = TRUE` wipes out all bindings", {
   expect_false(all(env_has(global_env(), names(bindings))))
 })
 
-test_that("env_bind() requires uniquely named elements", {
-  expect_error(env_bind(env(), 1), "not uniquely named")
-  expect_error(env_bind(env(), !!! list(1)), "not uniquely named")
+test_that("env_bind() requires named elements", {
+  expect_error(env_bind(env(), 1), "all arguments must be named")
+  expect_error(env_bind(env(), !!! list(1)), "all arguments must be named")
+})
+
+test_that("child_env() requires named elements", {
+  expect_error(child_env(env(), 1), "all arguments must be named")
+})
+
+test_that("env() requires named elements", {
+  expect_error(env(env(), 1), "Expected 0 or 1 unnamed arguments")
 })
 
 test_that("env_bind() works with empty unnamed lists", {
@@ -346,4 +354,8 @@ test_that("env_parents() stops at the global env by default", {
 test_that("env_parents() always stops at the empty env", {
   expect_identical(env_parents(empty_env()), list())
   expect_identical(env_parents(pkg_env("base")), list(empty_env()))
+})
+
+test_that("env_bind_impl() fails if data is not a vector", {
+  expect_error(env_bind_impl(env(), env()), "must be a vector")
 })

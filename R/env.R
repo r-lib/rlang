@@ -601,8 +601,15 @@ env_bind <- function(.env, ...) {
   invisible(env_bind_impl(.env, dots_list(...)))
 }
 env_bind_impl <- function(env, data) {
-  if (!is_vector(data) || (length(data) && !is_named(data))) {
-    abort("Can't bind data because it is not uniquely named")
+  if (!is_vector(data)) {
+    type <- friendly_type_of(type_of(data))
+    abort(sprintf("`data` must be a vector not a %s", type))
+  }
+  if (length(data)) {
+    nms <- names(data)
+    if (is_null(nms) || any(nms_are_invalid(nms))) {
+      abort("Can't bind data because all arguments must be named")
+    }
   }
 
   nms <- names(data)

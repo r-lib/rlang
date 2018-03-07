@@ -141,7 +141,7 @@ is_named <- function(x) {
     return(FALSE)
   }
 
-  if (any(nms == "" | is.na(nms))) {
+  if (any(nms_are_invalid(nms))) {
     return(FALSE)
   }
 
@@ -163,8 +163,12 @@ have_name <- function(x) {
   if (is.null(nms)) {
     rep(FALSE, length(x))
   } else {
-    !(is.na(nms) | nms == "")
+    !nms_are_invalid(nms)
   }
+}
+
+nms_are_invalid <- function(x) {
+  x == "" | is.na(x)
 }
 
 #' Does an object have an element with this name?
