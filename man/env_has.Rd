@@ -17,7 +17,7 @@ to remove.}
 environments.}
 }
 \value{
-A logical vector as long as \code{nms}.
+A named logical vector as long as \code{nms}.
 }
 \description{
 \code{env_has()} is a vectorised predicate that queries whether an

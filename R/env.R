@@ -817,7 +817,7 @@ env_unbind <- function(env = caller_env(), nms, inherit = FALSE) {
 #' any of its parents (with `inherit = TRUE`).
 #'
 #' @inheritParams env_unbind
-#' @return A logical vector as long as `nms`.
+#' @return A named logical vector as long as `nms`.
 #' @export
 #' @examples
 #' parent <- child_env(NULL, foo = "foo")
@@ -827,6 +827,7 @@ env_unbind <- function(env = caller_env(), nms, inherit = FALSE) {
 #' env_has(env, "foo")
 #' env_has(env, "foo", inherit = TRUE)
 env_has <- function(env = caller_env(), nms, inherit = FALSE) {
+  nms <- set_names(nms)
   map_lgl(nms, exists, envir = get_env(env), inherits = inherit)
 }
 

@@ -330,3 +330,7 @@ test_that("env() accepts one unnamed argument to specify parent", {
   expect_reference(env_parent(env), global_env())
   expect_identical(env_names(env), "a")
 })
+
+test_that("env_has() returns a named vector", {
+  expect_identical(env_has(env(a = TRUE), c("a", "b", "c")), c(a = TRUE, b = FALSE, c = FALSE))
+})
