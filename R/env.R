@@ -259,9 +259,9 @@ as_env_ <- function(x, parent = NULL) {
 #'
 #' @inheritParams get_env
 #' @param n The number of generations to go up.
-#' @param last,sentinel The environment signalling the end of the linear
-#'   search. `env_tail()` returns the environment which has `last`
-#'   as parent.
+#' @param last,sentinel The environment at which to stop. `env_tail()`
+#'   returns the environment which has `last` as parent and
+#'   `env_parents()` returns the list of environments up to `last`.
 #' @return An environment for `env_parent()` and `env_tail()`, a list
 #'   of environments for `env_parents()`.
 #' @export
@@ -317,14 +317,25 @@ env_tail <- function(env = caller_env(), last = empty_env(),
 }
 #' @rdname env_parent
 #' @export
-env_parents <- function(env = caller_env()) {
-  out <- new_list(env_depth(env))
+env_parents <- function(env = caller_env(), last = NULL) {
+  n <- env_depth(env)
+  out <- new_list(n)
+
+  if (!typeof(last) %in% c("environment", "NULL")) {
+    abort("`last` must be `NULL` or an environment")
+  }
+  if (is_null(last) && !is_reference(env, global_env())) {
+    last <- global_env()
+  }
 
   i <- 1L
-  while (!is_empty_env(env)) {
+  while (!is_reference(env, last) && !is_empty_env(env)) {
     env <- env_parent(env)
     out[[i]] <- env
     i <- i + 1L
+  }
+  if (i < n) {
+    out <- out[seq_len(i - 1L)]
   }
 
   out

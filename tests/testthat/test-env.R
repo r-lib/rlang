@@ -334,3 +334,16 @@ test_that("env() accepts one unnamed argument to specify parent", {
 test_that("env_has() returns a named vector", {
   expect_identical(env_has(env(a = TRUE), c("a", "b", "c")), c(a = TRUE, b = FALSE, c = FALSE))
 })
+
+test_that("env_parents() stops at the global env by default", {
+  env <- env(env(global_env()))
+  expect_identical(env_parents(env), list(env_parent(env), global_env()))
+
+  rlang_parents <- env_parents(ns_env("rlang"))
+  expect_identical(rlang_parents[2:3], list(ns_env("base"), global_env()))
+})
+
+test_that("env_parents() always stops at the empty env", {
+  expect_identical(env_parents(empty_env()), list())
+  expect_identical(env_parents(pkg_env("base")), list(empty_env()))
+})

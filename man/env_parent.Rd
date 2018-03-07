@@ -10,7 +10,7 @@ env_parent(env = caller_env(), n = 1)
 
 env_tail(env = caller_env(), last = empty_env(), sentinel = NULL)
 
-env_parents(env = caller_env())
+env_parents(env = caller_env(), last = NULL)
 }
 \arguments{
 \item{env}{An environment or an object bundling an environment,
@@ -18,9 +18,9 @@ e.g. a formula, \link[=quotation]{quosure} or \link[=is_closure]{closure}.}
 
 \item{n}{The number of generations to go up.}
 
-\item{last, sentinel}{The environment signalling the end of the linear
-search. \code{env_tail()} returns the environment which has \code{last}
-as parent.}
+\item{last, sentinel}{The environment at which to stop. \code{env_tail()}
+returns the environment which has \code{last} as parent and
+\code{env_parents()} returns the list of environments up to \code{last}.}
 }
 \value{
 An environment for \code{env_parent()} and \code{env_tail()}, a list
