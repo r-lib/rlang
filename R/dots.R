@@ -99,7 +99,11 @@ dots_split <- function(...,
   dots <- .Call(rlang_dots_list, environment(), FALSE, .ignore_empty, TRUE)
 
   if (is_null(names(dots))) {
-    unnamed_idx <- TRUE
+    if (length(dots)) {
+      unnamed_idx <- TRUE
+    } else {
+      unnamed_idx <- lgl()
+    }
     n <- length(dots)
   } else {
     unnamed_idx <- names(dots) == ""

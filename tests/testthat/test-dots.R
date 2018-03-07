@@ -124,6 +124,12 @@ test_that("dots_split() splits named and unnamed dots", {
   expect_identical(dots$unnamed, list())
 })
 
+test_that("dots_split() handles empty dots", {
+  dots <- dots_split()
+  expect_identical(dots$named, list())
+  expect_identical(dots$unnamed, list())
+})
+
 test_that("dots_split() fails if .n_unnamed doesn't match", {
   expect_error(dots_split(1, 2, .n_unnamed = 1), "Expected 1 unnamed")
   expect_error(dots_split(1, 2, .n_unnamed = 0:1), "Expected 0 or 1 unnamed")
