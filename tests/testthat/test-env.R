@@ -289,3 +289,17 @@ test_that("can unlock environments", {
   expect_false(env_is_locked(env))
   expect_no_error(env_bind(env, a = 1))
 })
+
+test_that("active and promise bindings are pretty-printed", {
+  env <- env()
+  env_bind_exprs(env, a = "foo")
+  env_bind_fns(env, b = ~"foo")
+  expect_output(env_print(env), "a: <promise>.*b: <active>")
+})
+
+test_that("locked environments are pretty-printed", {
+  env <- env()
+  expect_output(env_print(env), "locked: FALSE")
+  env_lock(env)
+  expect_output(env_print(env), "locked: TRUE")
+})

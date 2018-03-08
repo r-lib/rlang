@@ -976,3 +976,43 @@ env_label <- function(env) {
     sexp_address(env)
   }
 }
+
+#' Pretty-print an environment
+#'
+#' @description
+#'
+#' This prints:
+#'
+#' * The label and the parent label.
+#'
+#' * Whether the environment is [locked][env_lock].
+#'
+#' * The bindings in the environment (up to 20 bindings). They are
+#'   printed succintly using `pillar::type_sum()` (if available,
+#'   otherwise uses an internal version of that generic). In addition
+#'   [fancy bindings][env_bind_exprs] (actives and promises) are
+#'   indicated as such.
+#'
+#' @param env An environment.
+#'
+#' @export
+env_print <- function(env) {
+  if (is_empty_env(env)) {
+    parent <- "NULL"
+  } else {
+    parent <- env_label(env_parent(env))
+  }
+
+  meow(
+    "<environment>",
+    sprintf("  label:  %s", env_label(env)),
+    sprintf("  parent: %s", parent),
+    sprintf("  locked: %s", env_is_locked(env)),
+    "  bindings:"
+  )
+
+  types <- env_binding_type_sum(env)
+  types <- paste0("   * ", names(types), ": <", types, ">")
+
+  meow(types)
+}
