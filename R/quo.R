@@ -478,12 +478,11 @@ quo_print <- function(quo) {
   cat(paste0(lines, "\n"))
 }
 quo_env_print <- function(env) {
-  if (is_reference(env, global_env())) {
-    nm <- "global"
-  } else if (is_reference(env, empty_env())) {
-    nm <- "empty"
-  } else {
-    nm <- blue(sexp_address(env))
+  nm <- env_label(env)
+
+  if (!is_reference(env, global_env()) && !is_reference(env, empty_env())) {
+    nm <- blue(nm)
   }
+
   meow(nm)
 }
