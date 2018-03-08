@@ -178,3 +178,19 @@ test_that("env_binding_are_active() doesn't force promises", {
   expect_identical(env_binding_are_promise(env), lgl(foo = TRUE))
   expect_identical(env_binding_are_promise(env), lgl(foo = TRUE))
 })
+
+test_that("env_binding_type_sum() detects types", {
+  env <- env()
+  env_bind_fns(env, a = ~"foo")
+  env_bind_exprs(env, b = identity("foo"))
+  env_bind(env,
+    c = "foo",
+    d = 1L,
+    e = 2
+  )
+
+  expect_error(env_binding_type_sum(env, 1L), "must be a character vector")
+
+  types <- c(a = "active", b = "promise", c = "chr", d = "int", e = "dbl")
+  expect_identical(env_binding_type_sum(env), types)
+})

@@ -569,3 +569,18 @@ env_binding_validate_names <- function(env, nms) {
   }
   nms
 }
+
+env_binding_type_sum <- function(env, nms = NULL) {
+  nms <- env_binding_validate_names(env, nms)
+
+  active <- env_binding_are_active(env, nms)
+  promise <- env_binding_are_promise(env, nms)
+  other <- !active & !promise
+
+  types <- new_character(length(nms), nms)
+  types[active] <- "active"
+  types[promise] <- "promise"
+  types[other] <- map_chr(env_get_list(env, nms[other]), rlang_type_sum)
+
+  types
+}
