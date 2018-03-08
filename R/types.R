@@ -798,6 +798,8 @@ type_sum.default <- function(x) {
       complex = "cpl",
       closure = "fn",
       environment = sprintf("env: %s", env_label(x)),
+      builtin = ,
+      special = "primitive",
       typeof(x)
     )
   } else if (!isS4(x)) {
