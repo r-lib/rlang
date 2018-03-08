@@ -1,34 +1,4 @@
-context("environments")
-
-test_that("env_parent() returns enclosure frame by default", {
-  enclos_env <- child_env(pkg_env("rlang"))
-  fn <- with_env(enclos_env, function() env_parent())
-  expect_identical(fn(), enclos_env)
-})
-
-test_that("child_env() has correct parent", {
-  env <- child_env(empty_env())
-  expect_false(env_has(env, "list", inherit = TRUE))
-
-  fn <- function() list(new = child_env(current_env()), env = environment())
-  out <- fn()
-  expect_identical(env_parent(out$new), out$env)
-
-  expect_identical(env_parent(child_env(NULL)), empty_env())
-  expect_identical(env_parent(child_env("base")), base_env())
-})
-
-test_that("env_parent() reports correct parent", {
-  env <- child_env(child_env(NULL, obj = "b"), obj = "a")
-
-  expect_identical(env_parent(env, 1)$obj, "b")
-  expect_identical(env_parent(env, 2), empty_env())
-  expect_identical(env_parent(env, 3), empty_env())
-})
-
-test_that("env_tail() climbs env chain", {
-  expect_identical(env_tail(global_env()), base_env())
-})
+context("env-binding")
 
 test_that("promises are created", {
   env <- child_env(NULL)
@@ -47,137 +17,6 @@ test_that("env_bind_fns() creates active bindings", {
   env <- env_bind_fns(env(), a = function() "foo")
   expect_identical(env$a, "foo")
   expect_identical(env$a, "foo")
-})
-
-test_that("with_env() evaluates within correct environment", {
-  fn <- function() {
-    g(current_env())
-    "normal return"
-  }
-  g <- function(env) {
-    with_env(env, return("early return"))
-  }
-  expect_equal(fn(), "early return")
-})
-
-test_that("locally() evaluates within correct environment", {
-  env <- child_env("rlang")
-  local_env <- with_env(env, locally(current_env()))
-  expect_identical(env_parent(local_env), env)
-})
-
-test_that("ns_env() returns current namespace", {
-  expect_identical(with_env(ns_env("rlang"), ns_env()), get_env(rlang::get_env))
-})
-
-test_that("ns_imports_env() returns imports env", {
-  expect_identical(with_env(ns_env("rlang"), ns_imports_env()), env_parent(get_env(rlang::get_env)))
-})
-
-test_that("ns_env_name() returns namespace name", {
-  expect_identical(with_env(ns_env("base"), ns_env_name()), "base")
-  expect_identical(ns_env_name(rlang::get_env), "rlang")
-})
-
-test_that("as_environment() dispatches correctly", {
-  expect_identical(as_environment("base"), base_env())
-  expect_false(env_has(as_environment(set_names(letters)), "map"))
-
-  expect_identical(as_environment(NULL), empty_env())
-
-  expect_true(all(env_has(as_environment(mtcars), names(mtcars))))
-  expect_identical(env_parent(as_environment(mtcars)), empty_env())
-  expect_identical(env_parent(as_environment(mtcars, base_env())), base_env())
-})
-
-test_that("env_inherits() finds ancestor", {
-  env <- child_env(current_env())
-  env <- child_env(env)
-  expect_true(env_inherits(env, current_env()))
-  expect_false(env_inherits(env, ns_env("utils")))
-
-  expect_true(env_inherits(empty_env(), empty_env()))
-})
-
-test_that("env() creates child of current environment", {
-  env <- env(a = 1, b = "foo")
-  expect_identical(env_parent(env), current_env())
-  expect_identical(env$b, "foo")
-})
-
-test_that("set_env() sets current env by default", {
-  quo <- set_env(locally(~foo))
-  expect_identical(f_env(quo), current_env())
-})
-
-test_that("finds correct env type", {
-  expect_identical(identity(env_type(ctxt_frame(2)$env)), "frame")
-  expect_identical(env_type(global_env()), "global")
-  expect_identical(env_type(empty_env()), "empty")
-  expect_identical(env_type(base_env()), "base")
-})
-
-test_that("current_env() fails if no default", {
-  expect_error(get_env(list()), "Can't extract an environment from a list")
-})
-
-test_that("current_env() picks up default", {
-  dft <- env()
-  expect_identical(get_env(list(), dft), dft)
-  expect_identical(get_env("a", dft), dft)
-})
-
-test_that("with_env() handles data", {
-  expect_identical(with_env(mtcars, cyl), mtcars$cyl)
-
-  foo <- "foo"
-  expect_identical(with_env(mtcars, foo), "foo")
-})
-
-test_that("with_env() evaluates in env", {
-  env <- env()
-  expect_identical(with_env(env, current_env()), env)
-})
-
-test_that("env_depth() counts parents", {
-  expect_identical(env_depth(child_env(child_env(NULL))), 2L)
-  expect_identical(env_depth(empty_env()), 0L)
-})
-
-test_that("env_parents() returns all parents", {
-  expect_identical(env_parents(empty_env()), named_list())
-  env1 <- child_env(NULL)
-  env2 <- child_env(env1)
-  expect_identical(env_parents(env2), list(env1, empty = empty_env()))
-})
-
-test_that("scoped_envs() includes global and empty envs", {
-  envs <- scoped_envs()
-  expect_identical(envs[[1]], global_env())
-  expect_identical(envs[[length(envs)]], empty_env())
-})
-
-test_that("scoped_envs() returns named environments", {
-  expect_identical(names(scoped_envs()), scoped_names())
-})
-
-test_that("scoped_env() deals with empty environment", {
-  expect_identical(scoped_env("NULL"), empty_env())
-})
-
-test_that("env() doesn't partial match on env_bind()'s .env", {
-  expect_true(all(env_has(env(.data = 1, . = 2), c(".data", "."))))
-})
-
-test_that("new_environment() creates a child of the empty env", {
-  env <- new_environment(list(a = 1, b = 2))
-  expect_true(all(env_has(env, c("a", "b"))))
-  expect_identical(env_parent(env), empty_env())
-})
-
-test_that("new_environment() accepts empty vectors", {
-  expect_identical(length(new_environment()), 0L)
-  expect_identical(length(new_environment(dbl())), 0L)
 })
 
 test_that("env_poke() returns previous value", {
@@ -212,13 +51,6 @@ test_that("env_poke() inherits from parents if `inherit` is TRUE", {
 
   env_poke(env, "bar", "bar", inherit = TRUE, create = TRUE)
   expect_identical(env_get(env, "bar"), "bar")
-})
-
-test_that("env_tail() detects sentinel", {
-  sentinel <- current_env()
-  env <- env()
-  descendant <- child_env(child_env(child_env(env)))
-  expect_identical(env_tail(descendant, sentinel), env)
 })
 
 test_that("env_get_list() retrieves multiple bindings", {
@@ -256,18 +88,6 @@ test_that("with_bindings() evaluates with temporary bindings", {
   expect_identical(foo, "foo")
 })
 
-test_that("as_environment() treats named strings as vectors", {
-  env <- as_environment(c(foo = "bar"))
-  expect_true(is_environment(env))
-  expect_true(env_has(env, "foo"))
-})
-
-test_that("as_environment() converts character vectors", {
-  env <- as_environment(set_names(letters))
-  expect_true(is_environment(env))
-  expect_true(all(env_has(env, letters)))
-})
-
 test_that("env_unbind() with `inherits = TRUE` wipes out all bindings", {
   bindings <- list(`_foo` = "foo", `_bar` = "bar")
   env_bind(global_env(), !!! bindings)
@@ -286,20 +106,6 @@ test_that("env_bind() requires named elements", {
 test_that("env_bind() requires uniquely named elements", {
   expect_error(env_bind(env(), a = 1, a = 2), "some arguments have the same name")
 })
-
-test_that("child_env() requires named elements", {
-  expect_error(child_env(env(), 1), "all arguments must be named")
-})
-
-test_that("env() requires named elements", {
-  expect_error(env(env(), 1), "Expected 0 or 1 unnamed arguments")
-})
-
-test_that("env() and child_env() requires uniquely named elements", {
-  expect_error(env(a = 1, a = 2), "some arguments have the same name")
-  expect_error(child_env(env(), a = 1, a = 2), "some arguments have the same name")
-})
-
 test_that("env_bind() works with empty unnamed lists", {
   expect_no_error(env_bind(env()))
   expect_no_error(env_bind(env(), !!! list()))
@@ -310,58 +116,8 @@ test_that("env_names() unserialises unicode", {
   expect_identical(env_names(env), "\u5E78\u798F")
 })
 
-test_that("env_clone() clones an environment", {
-  data <- list(a = 1L, b = 2L)
-  env <- env(!!! data)
-  clone <- env_clone(env)
-  expect_false(is_reference(env, clone))
-  expect_reference(env_parent(env), env_parent(clone))
-  expect_identical(env_get_list(clone, c("a", "b")), data)
-})
-
-test_that("friendly_env_type() returns a friendly env name", {
-  expect_identical(friendly_env_type("global"), "the global environment")
-  expect_identical(friendly_env_type("empty"), "the empty environment")
-  expect_identical(friendly_env_type("base"), "the base environment")
-  expect_identical(friendly_env_type("frame"), "a frame environment")
-  expect_identical(friendly_env_type("local"), "a local environment")
-})
-
-test_that("is_namespace() recognises namespaces", {
-  expect_false(is_namespace(env()))
-  expect_true(is_namespace(get_env(is_namespace)))
-})
-
-test_that("new_environment() accepts optional parent", {
-  env <- new_environment(parent = base_env())
-  expect_reference(env_parent(env), base_env())
-})
-
-test_that("env() accepts one unnamed argument to specify parent", {
-  env <- env(base_env())
-  expect_reference(env_parent(env), base_env())
-
-  env <- env(global_env(), a = 1)
-  expect_reference(env_parent(env), global_env())
-  expect_identical(env_names(env), "a")
-})
-
 test_that("env_has() returns a named vector", {
   expect_identical(env_has(env(a = TRUE), c("a", "b", "c")), c(a = TRUE, b = FALSE, c = FALSE))
-})
-
-test_that("env_parents() stops at the global env by default", {
-  env <- env(env(global_env()))
-  expect_identical(env_parents(env), list(env_parent(env), global = global_env()))
-
-  rlang_parents <- env_parents(ns_env("rlang"))
-  expected <- list(`namespace:base` = ns_env("base"), global = global_env())
-  expect_identical(rlang_parents[2:3], expected)
-})
-
-test_that("env_parents() always stops at the empty env", {
-  expect_identical(env_parents(empty_env()), named_list())
-  expect_identical(env_parents(pkg_env("base")), list(empty = empty_env()))
 })
 
 test_that("env_bind_impl() fails if data is not a vector", {
@@ -385,27 +141,4 @@ test_that("env_get() and env_get_list() accept default value", {
 test_that("env_bind_fns() uses as_function()", {
   env_bind_fns(current_env(), foo = ~2 + 3)
   expect_identical(foo, 5)
-})
-
-test_that("env_name() returns proper environment name", {
-  expect_identical(env_name(global_env()), "global")
-  expect_identical(env_name(empty_env()), "empty")
-  expect_identical(env_name(base_env()), "base")
-
-  expect_identical(env_name(pkg_env("rlang")), "package:rlang")
-  expect_identical(env_name(ns_imports_env("rlang")), "imports:rlang")
-  expect_identical(env_name(ns_env("rlang")), "namespace:rlang")
-
-  env <- structure(env(), name = "foobar")
-  expect_identical(env_label(env), "foobar")
-})
-
-test_that("env_label() returns memory address for anonymous envs", {
-  env <- env()
-  expect_identical(env_label(env), sexp_address(env))
-})
-
-test_that("env_parents() returns a named list", {
-  env <- env(structure(env(base_env()), name = "foobar"))
-  expect_identical(names(env_parents(env)), c("foobar", "base", "empty"))
 })
