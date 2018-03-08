@@ -554,6 +554,7 @@ env_names <- function(env) {
 #'   `env_binding_unlock()` return the old value of
 #'   `env_binding_are_unlocked()` invisibly.
 #'
+#' @seealso [env_lock()] for locking an environment.
 #' @export
 #' @examples
 #' # Bindings are unlocked by default:

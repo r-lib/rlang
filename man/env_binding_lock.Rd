@@ -50,3 +50,6 @@ env_bind(env, a = "foo")
 with_env(env, a <- "bar")
 env$a
 }
+\seealso{
+\code{\link[=env_lock]{env_lock()}} for locking an environment.
+}

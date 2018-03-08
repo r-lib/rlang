@@ -271,3 +271,13 @@ test_that("env_parents() returns a named list", {
   env <- env(structure(env(base_env()), name = "foobar"))
   expect_identical(names(env_parents(env)), c("foobar", "base", "empty"))
 })
+
+test_that("can lock environments", {
+  env <- env()
+  expect_false(env_is_locked(env))
+
+  expect_false(env_lock(env))
+  expect_true(env_is_locked(env))
+
+  expect_true(env_lock(env))
+})

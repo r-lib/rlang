@@ -40,6 +40,9 @@
   unlock multiple bindings. The predicate `env_binding_are_locked()`
   tests if bindings are locked.
 
+* `env_lock()` and `env_is_locked()` lock an environment or test if
+  an environment is locked.
+
 
 ## Breaking changes
 
