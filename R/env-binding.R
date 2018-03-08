@@ -550,3 +550,8 @@ env_binding_are_active <- function(env, nms) {
   stopifnot(is_character(nms))
   map_lgl(nms, bindingIsActive, env = env)
 }
+#' @rdname env_binding_are_active
+#' @export
+env_binding_are_promise <- function(env, nms) {
+  .Call(rlang_env_binding_are_promise, env, syms(nms))
+}

@@ -2,9 +2,12 @@
 % Please edit documentation in R/env-binding.R
 \name{env_binding_are_active}
 \alias{env_binding_are_active}
+\alias{env_binding_are_promise}
 \title{What kind of environment binding?}
 \usage{
 env_binding_are_active(env, nms)
+
+env_binding_are_promise(env, nms)
 }
 \arguments{
 \item{env}{An environment.}
