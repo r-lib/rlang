@@ -303,3 +303,9 @@ test_that("locked environments are pretty-printed", {
   env_lock(env)
   expect_output(env_print(env), "locked: TRUE")
 })
+
+test_that("locked bindings are pretty-printed", {
+  env <- env(a = 1, b = 2)
+  env_binding_lock(env, "a")
+  expect_output(env_print(env), "a: <dbl> \\[L\\].*b: <dbl>")
+})

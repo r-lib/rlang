@@ -19,5 +19,6 @@ printed succintly using \code{pillar::type_sum()} (if available,
 otherwise uses an internal version of that generic). In addition
 \link[=env_bind_exprs]{fancy bindings} (actives and promises) are
 indicated as such.
+\item Locked bindings get a \code{[L]} tag
 }
 }

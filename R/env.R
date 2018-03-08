@@ -993,6 +993,8 @@ env_label <- function(env) {
 #'   [fancy bindings][env_bind_exprs] (actives and promises) are
 #'   indicated as such.
 #'
+#' * Locked bindings get a `[L]` tag
+#'
 #' @param env An environment.
 #'
 #' @export
@@ -1013,6 +1015,10 @@ env_print <- function(env) {
 
   types <- env_binding_type_sum(env)
   types <- paste0("   * ", names(types), ": <", types, ">")
+
+  locked <- env_binding_are_locked(env)
+  locked <- ifelse(locked, " [L]", "")
+  types <- paste0(types, locked)
 
   meow(types)
 }
