@@ -19,8 +19,8 @@ sexp* rlang_get_attrs(sexp* x) {
 
 sexp* r_push_attribute(sexp* x, sexp* tag, sexp* value) {
   sexp* attrs = r_new_node(value, r_get_attributes(x));
-  r_poke_attributes(x, attrs);
   r_node_poke_tag(attrs, tag);
+  r_poke_attributes(x, attrs);
   return attrs;
 }
 
