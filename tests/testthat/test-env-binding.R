@@ -199,9 +199,11 @@ test_that("can lock and unlock bindings", {
   env <- env(a = "A", b = "B")
   expect_identical(env_binding_are_locked(env), lgl(a = FALSE, b = FALSE))
 
-  env_binding_lock(env, "a")
-  expect_identical(env_binding_are_locked(env), lgl(a = TRUE, b = FALSE))
+  expect_identical(env_binding_lock(env, "a"), lgl(a = FALSE))
 
-  env_binding_unlock(env)
+  locked <- env_binding_are_locked(env)
+  expect_identical(locked, lgl(a = TRUE, b = FALSE))
+
+  expect_identical(env_binding_unlock(env), locked)
   expect_identical(env_binding_are_locked(env), lgl(a = FALSE, b = FALSE))
 })

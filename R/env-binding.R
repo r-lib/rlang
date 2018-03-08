@@ -549,6 +549,11 @@ env_names <- function(env) {
 #' @param env An environment.
 #' @param nms Names of bindings. Defaults to all bindings in `env`.
 #'
+#' @return `env_binding_are_unlocked()` returns a logical vector as
+#'   long as `nms` and named after it. `env_binding_lock()` and
+#'   `env_binding_unlock()` return the old value of
+#'   `env_binding_are_unlocked()` invisibly.
+#'
 #' @export
 #' @examples
 #' # Bindings are unlocked by default:
@@ -563,26 +568,28 @@ env_names <- function(env) {
 #' # env_bind(env, a = "foo")
 #' # with_env(env, a <- "bar")
 #'
-#' # Let's unlock it:
-#' env_binding_unlock(env, "a")
+#' # Let's unlock it. Note that the return value indicate which
+#' # bindings were locked:
+#' were_locked <- env_binding_unlock(env)
+#' were_locked
 #'
-#' # We can modify it again:
+#' # Now that it is unlocked we can modify it again:
 #' env_bind(env, a = "foo")
 #' with_env(env, a <- "bar")
 #' env$a
-#'
-#' NULL
 env_binding_lock <- function(env, nms = NULL) {
   nms <- env_binding_validate_names(env, nms)
+  old <- env_binding_are_locked(env, nms)
   map(nms, lockBinding, env = env)
-  invisible(env)
+  invisible(old)
 }
 #' @rdname env_binding_lock
 #' @export
 env_binding_unlock <- function(env, nms = NULL) {
   nms <- env_binding_validate_names(env, nms)
+  old <- env_binding_are_locked(env, nms)
   map(nms, unlockBinding, env = env)
-  invisible(env)
+  invisible(old)
 }
 #' @rdname env_binding_lock
 #' @export

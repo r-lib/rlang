@@ -17,6 +17,12 @@ env_binding_are_locked(env, nms = NULL)
 
 \item{nms}{Names of bindings. Defaults to all bindings in \code{env}.}
 }
+\value{
+\code{env_binding_are_unlocked()} returns a logical vector as
+long as \code{nms} and named after it. \code{env_binding_lock()} and
+\code{env_binding_unlock()} return the old value of
+\code{env_binding_are_unlocked()} invisibly.
+}
 \description{
 Locked environment bindings trigger an error when an attempt is
 made to redefine the binding.
@@ -34,13 +40,13 @@ env_binding_are_locked(env)
 # env_bind(env, a = "foo")
 # with_env(env, a <- "bar")
 
-# Let's unlock it:
-env_binding_unlock(env, "a")
+# Let's unlock it. Note that the return value indicate which
+# bindings were locked:
+were_locked <- env_binding_unlock(env)
+were_locked
 
-# We can modify it again:
+# Now that it is unlocked we can modify it again:
 env_bind(env, a = "foo")
 with_env(env, a <- "bar")
 env$a
-
-NULL
 }
