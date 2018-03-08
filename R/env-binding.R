@@ -544,17 +544,28 @@ env_names <- function(env) {
 #' What kind of environment binding?
 #'
 #' @param env An environment.
-#' @param nms Names of bindings.
+#' @param nms Names of bindings. Defaults to all bindings in `env`.
 #'
 #' @return A logical vector as long as `nms` and named after it.
 #' @export
-env_binding_are_active <- function(env, nms) {
-  stopifnot(is_character(nms))
+env_binding_are_active <- function(env, nms = NULL) {
+  nms <- env_binding_validate_names(env, nms)
   set_names(map_lgl(nms, bindingIsActive, env = env), nms)
 }
 #' @rdname env_binding_are_active
 #' @export
-env_binding_are_promise <- function(env, nms) {
-  stopifnot(is_character(nms))
+env_binding_are_promise <- function(env, nms = NULL) {
+  nms <- env_binding_validate_names(env, nms)
   set_names(.Call(rlang_env_binding_are_promise, env, syms(nms)), nms)
+}
+
+env_binding_validate_names <- function(env, nms) {
+  if (is_null(nms)) {
+    nms <- env_names(env)
+  } else {
+    if (!is_character(nms)) {
+      abort("`nms` must be a character vector of names")
+    }
+  }
+  nms
 }
