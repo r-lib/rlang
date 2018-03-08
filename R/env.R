@@ -1030,8 +1030,10 @@ env_print <- function(env) {
       other <- chr()
     }
 
+    escaped_nms <- map_chr(syms(nms), deparse, backtick = TRUE)
+
     types <- env_binding_type_sum(env, nms)
-    types <- paste0("   * ", names(types), ": <", types, ">")
+    types <- paste0("   * ", escaped_nms, ": <", types, ">")
 
     locked <- env_binding_are_locked(env, nms)
     locked <- ifelse(locked, " [L]", "")

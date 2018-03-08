@@ -315,3 +315,9 @@ test_that("large environments are truncated", {
   expected <- sprintf("\\.\\.\\. with %s more bindings", n_truncated)
   expect_output(env_print(base_env()), expected)
 })
+
+test_that("special names are backticked", {
+  env <- env(`<-` = 1, `:` = 2)
+  expect_output(env_print(env), "`:`:")
+  expect_output(env_print(env), "`<-`:")
+})
