@@ -959,7 +959,7 @@ env_poke <- function(env = caller_env(), nm, value,
   }
 
   if (inherit) {
-    scope_set(env, nm, value, create)
+    scope_poke(env, nm, value, create)
   } else if (create || env_has(env_, nm)) {
     assign(nm, value, envir = env_)
   } else {
@@ -968,7 +968,7 @@ env_poke <- function(env = caller_env(), nm, value,
 
   invisible(maybe_missing(old))
 }
-scope_set <- function(env, nm, value, create) {
+scope_poke <- function(env, nm, value, create) {
   env_ <- get_env(env)
   cur <- env_
 
