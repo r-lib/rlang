@@ -50,6 +50,9 @@ enum r_type {
 
 
 #define r_null R_NilValue
+extern sexp* r_shared_true;
+extern sexp* r_shared_false;
+
 
 #define KEEP PROTECT
 #define FREE UNPROTECT
