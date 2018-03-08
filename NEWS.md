@@ -16,6 +16,11 @@
 * `env_poke()` now returns the old value invisibly rather than the
   input environment.
 
+* The new function `env_label()` returns the name of an environment.
+  It always adds the "namespace:" prefix to namespace names. It
+  returns "global" instead of ".GlobalEnv" or "R_GlobalEnv", "empty"
+  instead of "R_EmptyEnv".
+
 
 ## Upcoming breaking changes
 
