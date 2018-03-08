@@ -31,17 +31,15 @@ specific problems.
 \item \code{env_bind_fns()} takes named \emph{functions} and creates active
 bindings in \code{.env}. This is equivalent to
 \code{\link[base:makeActiveBinding]{base::makeActiveBinding()}}. An active binding executes a
-function each time it is evaluated. \code{env_bind_fns()} takes dots
-with \link[=dots_splice]{implicit splicing}, so that you can supply
-both named functions and named lists of functions.
+function each time it is evaluated. The arguments are passed to
+\code{\link[=as_function]{as_function()}} so you can supply formulas instead of functions.
 
-If these functions are \link[=is_closure]{closures} they are lexically
-scoped in the environment that they bundle. These functions can
-thus refer to symbols from this enclosure that are not actually
-in scope in the dynamic environment where the active bindings are
-invoked. This allows creative solutions to difficult problems
-(see the implementations of \code{dplyr::do()} methods for an
-example).
+Remember that functions are scoped in their own environment.
+These functions can thus refer to symbols from this enclosure
+that are not actually in scope in the dynamic environment where
+the active bindings are invoked. This allows creative solutions
+to difficult problems (see the implementations of \code{dplyr::do()}
+methods for an example).
 \item \code{env_bind_exprs()} takes named \emph{expressions}. This is equivalent
 to \code{\link[base:delayedAssign]{base::delayedAssign()}}. The arguments are captured with
 \code{\link[=exprs]{exprs()}} (and thus support call-splicing and unquoting) and

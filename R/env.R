@@ -517,17 +517,15 @@ env_poke_parent <- function(env, new_env) {
 #' - `env_bind_fns()` takes named _functions_ and creates active
 #'   bindings in `.env`. This is equivalent to
 #'   [base::makeActiveBinding()]. An active binding executes a
-#'   function each time it is evaluated. `env_bind_fns()` takes dots
-#'   with [implicit splicing][dots_splice], so that you can supply
-#'   both named functions and named lists of functions.
+#'   function each time it is evaluated. The arguments are passed to
+#'   [as_function()] so you can supply formulas instead of functions.
 #'
-#'   If these functions are [closures][is_closure] they are lexically
-#'   scoped in the environment that they bundle. These functions can
-#'   thus refer to symbols from this enclosure that are not actually
-#'   in scope in the dynamic environment where the active bindings are
-#'   invoked. This allows creative solutions to difficult problems
-#'   (see the implementations of `dplyr::do()` methods for an
-#'   example).
+#'   Remember that functions are scoped in their own environment.
+#'   These functions can thus refer to symbols from this enclosure
+#'   that are not actually in scope in the dynamic environment where
+#'   the active bindings are invoked. This allows creative solutions
+#'   to difficult problems (see the implementations of `dplyr::do()`
+#'   methods for an example).
 #'
 #' - `env_bind_exprs()` takes named _expressions_. This is equivalent
 #'   to [base::delayedAssign()]. The arguments are captured with
@@ -698,9 +696,16 @@ env_bind_exprs <- function(.env, ..., .eval_env = caller_env()) {
 #' env$symbol
 #' eval_bare(quote(symbol), env)
 #' eval_bare(quote(symbol), env)
+#'
+#' # All arguments are passed to as_function() so you can use the
+#' # formula shortcut:
+#' env_bind_fns(env, foo = ~runif(1))
+#' env$foo
+#' env$foo
 env_bind_fns <- function(.env, ...) {
   fns <- dots_splice(...)
-  stopifnot(is_named(fns) && every(fns, is_function))
+  stopifnot(is_named(fns))
+  fns <- map(fns, as_function)
 
   nms <- names(fns)
   env_ <- get_env(.env)

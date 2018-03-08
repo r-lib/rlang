@@ -380,3 +380,8 @@ test_that("env_get() and env_get_list() accept default value", {
   expect_identical(env_get(env, "b", default = "foo"), "foo")
   expect_identical(env_get_list(env, c("a", "b"), default = "foo"), list(a = 1, b = "foo"))
 })
+
+test_that("env_bind_fns() uses as_function()", {
+  env_bind_fns(current_env(), foo = ~2 + 3)
+  expect_identical(foo, 5)
+})

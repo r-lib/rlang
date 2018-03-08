@@ -64,5 +64,11 @@ env$symbol
 env$symbol
 eval_bare(quote(symbol), env)
 eval_bare(quote(symbol), env)
+
+# All arguments are passed to as_function() so you can use the
+# formula shortcut:
+env_bind_fns(env, foo = ~runif(1))
+env$foo
+env$foo
 }
 \keyword{internal}
