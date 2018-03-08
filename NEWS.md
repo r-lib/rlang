@@ -43,6 +43,9 @@
 * `env_lock()` and `env_is_locked()` lock an environment or test if
   an environment is locked.
 
+* `env_print()` pretty-prints environments. It shows the contents (up
+  to 20 elements) and the properties of the environment.
+
 
 ## Breaking changes
 
