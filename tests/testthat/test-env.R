@@ -145,10 +145,10 @@ test_that("env_depth() counts parents", {
 })
 
 test_that("env_parents() returns all parents", {
-  expect_identical(env_parents(empty_env()), list2())
+  expect_identical(env_parents(empty_env()), named_list())
   env1 <- child_env(NULL)
   env2 <- child_env(env1)
-  expect_identical(env_parents(env2), list2(env1, empty_env()))
+  expect_identical(env_parents(env2), list(env1, empty = empty_env()))
 })
 
 test_that("scoped_envs() includes global and empty envs", {
@@ -352,15 +352,16 @@ test_that("env_has() returns a named vector", {
 
 test_that("env_parents() stops at the global env by default", {
   env <- env(env(global_env()))
-  expect_identical(env_parents(env), list(env_parent(env), global_env()))
+  expect_identical(env_parents(env), list(env_parent(env), global = global_env()))
 
   rlang_parents <- env_parents(ns_env("rlang"))
-  expect_identical(rlang_parents[2:3], list(ns_env("base"), global_env()))
+  expected <- list(`namespace:base` = ns_env("base"), global = global_env())
+  expect_identical(rlang_parents[2:3], expected)
 })
 
 test_that("env_parents() always stops at the empty env", {
-  expect_identical(env_parents(empty_env()), list())
-  expect_identical(env_parents(pkg_env("base")), list(empty_env()))
+  expect_identical(env_parents(empty_env()), named_list())
+  expect_identical(env_parents(pkg_env("base")), list(empty = empty_env()))
 })
 
 test_that("env_bind_impl() fails if data is not a vector", {
@@ -402,4 +403,9 @@ test_that("env_name() returns proper environment name", {
 test_that("env_label() returns memory address for anonymous envs", {
   env <- env()
   expect_identical(env_label(env), sexp_address(env))
+})
+
+test_that("env_parents() returns a named list", {
+  env <- env(structure(env(base_env()), name = "foobar"))
+  expect_identical(names(env_parents(env)), c("foobar", "base", "empty"))
 })

@@ -33,7 +33,7 @@ with \code{n = 1}, the grandparent with \code{n = 2}, etc.
 \item \code{env_tail()} searches through the parents and returns the one
 which has \code{\link[=empty_env]{empty_env()}} as parent.
 \item \code{env_parents()} returns the list of all parents, including the
-empty environment.
+empty environment. This list is named using \code{\link[=env_name]{env_name()}}.
 }
 
 See the section on \emph{inheritance} in \code{\link[=env]{env()}}'s documentation.

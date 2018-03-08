@@ -247,7 +247,7 @@ as_env_ <- function(x, parent = NULL) {
 #'   which has [empty_env()] as parent.
 #'
 #' - `env_parents()` returns the list of all parents, including the
-#'   empty environment.
+#'   empty environment. This list is named using [env_name()].
 #'
 #' See the section on _inheritance_ in [env()]'s documentation.
 #'
@@ -337,6 +337,8 @@ env_parents <- function(env = caller_env(), last = NULL) {
   if (i < n) {
     out <- out[seq_len(i - 1L)]
   }
+
+  names(out) <- map_chr(out, env_name)
 
   out
 }

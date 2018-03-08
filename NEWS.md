@@ -23,6 +23,9 @@
   `env_name()` but returns the memory address for anonymous
   environments.
 
+* `env_parents()` now returns a named list. The names are taken with
+  `env_name()`.
+
 
 ## Upcoming breaking changes
 
