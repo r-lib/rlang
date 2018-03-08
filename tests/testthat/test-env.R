@@ -321,3 +321,7 @@ test_that("special names are backticked", {
   expect_output(env_print(env), "`:`:")
   expect_output(env_print(env), "`<-`:")
 })
+
+test_that("empty environment is pretty printed", {
+  expect_output(env_print(empty_env()), "<environment: empty>\n  parent: NULL$")
+})
