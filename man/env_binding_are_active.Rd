@@ -5,14 +5,17 @@
 \alias{env_binding_are_promise}
 \title{What kind of environment binding?}
 \usage{
-env_binding_are_active(env, nms)
+env_binding_are_active(env, nms = NULL)
 
-env_binding_are_promise(env, nms)
+env_binding_are_promise(env, nms = NULL)
 }
 \arguments{
 \item{env}{An environment.}
 
-\item{nms}{Names of bindings.}
+\item{nms}{Names of bindings. Defaults to all bindings in \code{env}.}
+}
+\value{
+A logical vector as long as \code{nms} and named after it.
 }
 \description{
 What kind of environment binding?

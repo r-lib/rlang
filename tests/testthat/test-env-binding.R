@@ -194,3 +194,14 @@ test_that("env_binding_type_sum() detects types", {
   types <- c(a = "active", b = "promise", c = "chr", d = "int", e = "dbl")
   expect_identical(env_binding_type_sum(env), types)
 })
+
+test_that("can lock and unlock bindings", {
+  env <- env(a = "A", b = "B")
+  expect_identical(env_binding_are_locked(env), lgl(a = FALSE, b = FALSE))
+
+  env_binding_lock(env, "a")
+  expect_identical(env_binding_are_locked(env), lgl(a = TRUE, b = FALSE))
+
+  env_binding_unlock(env)
+  expect_identical(env_binding_are_locked(env), lgl(a = FALSE, b = FALSE))
+})

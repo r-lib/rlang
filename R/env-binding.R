@@ -541,10 +541,59 @@ env_names <- function(env) {
 }
 
 
-#' What kind of environment binding?
+#' Lock or unlock environment bindings
+#'
+#' Locked environment bindings trigger an error when an attempt is
+#' made to redefine the binding.
 #'
 #' @param env An environment.
 #' @param nms Names of bindings. Defaults to all bindings in `env`.
+#'
+#' @export
+#' @examples
+#' # Bindings are unlocked by default:
+#' env <- env(a = "A", b = "B")
+#' env_binding_are_locked(env)
+#'
+#' # But can optionally be locked:
+#' env_binding_lock(env, "a")
+#' env_binding_are_locked(env)
+#'
+#' # If run, the following would now return an error because `a` is locked:
+#' # env_bind(env, a = "foo")
+#' # with_env(env, a <- "bar")
+#'
+#' # Let's unlock it:
+#' env_binding_unlock(env, "a")
+#'
+#' # We can modify it again:
+#' env_bind(env, a = "foo")
+#' with_env(env, a <- "bar")
+#' env$a
+#'
+#' NULL
+env_binding_lock <- function(env, nms = NULL) {
+  nms <- env_binding_validate_names(env, nms)
+  map(nms, lockBinding, env = env)
+  invisible(env)
+}
+#' @rdname env_binding_lock
+#' @export
+env_binding_unlock <- function(env, nms = NULL) {
+  nms <- env_binding_validate_names(env, nms)
+  map(nms, unlockBinding, env = env)
+  invisible(env)
+}
+#' @rdname env_binding_lock
+#' @export
+env_binding_are_locked <- function(env, nms = NULL) {
+  nms <- env_binding_validate_names(env, nms)
+  set_names(map_lgl(nms, bindingIsLocked, env = env), nms)
+}
+
+#' What kind of environment binding?
+#'
+#' @inheritParams env_binding_lock
 #'
 #' @return A logical vector as long as `nms` and named after it.
 #' @export
