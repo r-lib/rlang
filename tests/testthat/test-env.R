@@ -309,3 +309,9 @@ test_that("locked bindings are pretty-printed", {
   env_binding_lock(env, "a")
   expect_output(env_print(env), "a: <dbl> \\[L\\].*b: <dbl>")
 })
+
+test_that("large environments are truncated", {
+  n_truncated <- length(base_env()) - 20L
+  expected <- sprintf("\\.\\.\\. with %s more bindings", n_truncated)
+  expect_output(env_print(base_env()), expected)
+})

@@ -1017,17 +1017,32 @@ env_print <- function(env) {
     sprintf("  parent: %s", parent)
   )
 
-  if (length(env)) {
+  nms <- env_names(env)
+  n <- length(nms)
+
+  if (n) {
     meow("  bindings:")
 
-    types <- env_binding_type_sum(env)
+    if (n > 20) {
+      other <- nms[seq(21L, n)]
+      nms <- nms[1:20]
+    } else {
+      other <- chr()
+    }
+
+    types <- env_binding_type_sum(env, nms)
     types <- paste0("   * ", names(types), ": <", types, ">")
 
-    locked <- env_binding_are_locked(env)
+    locked <- env_binding_are_locked(env, nms)
     locked <- ifelse(locked, " [L]", "")
     types <- paste0(types, locked)
 
     meow(types)
+
+    n_other <- length(other)
+    if (n_other) {
+      meow(sprintf("   * ... with %s more bindings", n_other))
+    }
   }
 
   invisible(env)
