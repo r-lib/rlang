@@ -603,6 +603,20 @@ env_is_locked <- function(env) {
   environmentIsLocked(env)
 }
 
+#' Unlock an environment
+#'
+#' This function should only be used in development tools or
+#' interactively.
+#'
+#' @inheritParams env_lock
+#' @return Whether the environment has been unlocked.
+#'
+#' @keywords internal
+#' @export
+env_unlock <- function(env) {
+  invisible(.Call(rlang_env_unlock, env))
+}
+
 
 #' Scoped environments
 #'

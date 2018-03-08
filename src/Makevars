@@ -29,6 +29,7 @@ lib-files = \
 internal-files = \
         internal/arg.c \
         internal/dots.c \
+        internal/env.c \
         internal/env-binding.c \
         internal/eval-tidy.c \
         internal/expr-interp.c \
