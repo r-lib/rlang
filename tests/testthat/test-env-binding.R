@@ -142,3 +142,10 @@ test_that("env_bind_fns() uses as_function()", {
   env_bind_fns(current_env(), foo = ~2 + 3)
   expect_identical(foo, 5)
 })
+
+test_that("env_bind_fns() and env_bind_exprs() redefine bindings", {
+  env <- env(a = 1, b = 2)
+  env_bind_fns(env, a = ~"foo")
+  env_bind_exprs(env, b = "bar")
+  expect_identical(c(env$a, env$b), c("foo", "bar"))
+})

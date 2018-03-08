@@ -208,6 +208,9 @@ env_bind_fns <- function(.env, ...) {
   nms <- names(fns)
   env_ <- get_env(.env)
 
+  exist <- env_has(env_, nms)
+  env_unbind(env_, nms[exist])
+
   for (i in seq_along(fns)) {
     makeActiveBinding(nms[[i]], fns[[i]], env_)
   }
