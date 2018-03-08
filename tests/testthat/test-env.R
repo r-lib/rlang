@@ -309,3 +309,7 @@ test_that("locked bindings are pretty-printed", {
   env_binding_lock(env, "a")
   expect_output(env_print(env), "a: <dbl> \\[L\\].*b: <dbl>")
 })
+
+test_that("empty environments are pretty-printed", {
+  expect_output(env_print(env()), "locked: FALSE$")
+})

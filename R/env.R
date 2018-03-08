@@ -1009,16 +1009,21 @@ env_print <- function(env) {
     "<environment>",
     sprintf("  label:  %s", env_label(env)),
     sprintf("  parent: %s", parent),
-    sprintf("  locked: %s", env_is_locked(env)),
-    "  bindings:"
+    sprintf("  locked: %s", env_is_locked(env))
   )
 
-  types <- env_binding_type_sum(env)
-  types <- paste0("   * ", names(types), ": <", types, ">")
+  if (length(env)) {
+    meow("  bindings:")
 
-  locked <- env_binding_are_locked(env)
-  locked <- ifelse(locked, " [L]", "")
-  types <- paste0(types, locked)
+    types <- env_binding_type_sum(env)
+    types <- paste0("   * ", names(types), ": <", types, ">")
 
-  meow(types)
+    locked <- env_binding_are_locked(env)
+    locked <- ifelse(locked, " [L]", "")
+    types <- paste0(types, locked)
+
+    meow(types)
+  }
+
+  invisible(env)
 }
