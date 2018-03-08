@@ -12,7 +12,7 @@ env_print(env)
 \description{
 This prints:
 \itemize{
-\item The label and the parent label.
+\item The \link[=env_label]{label} and the parent label.
 \item Whether the environment is \link[=env_lock]{locked}.
 \item The bindings in the environment (up to 20 bindings). They are
 printed succintly using \code{pillar::type_sum()} (if available,

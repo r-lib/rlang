@@ -983,7 +983,7 @@ env_label <- function(env) {
 #'
 #' This prints:
 #'
-#' * The label and the parent label.
+#' * The [label][env_label] and the parent label.
 #'
 #' * Whether the environment is [locked][env_lock].
 #'
