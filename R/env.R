@@ -1327,7 +1327,7 @@ env_format <- function(env) {
 #' @description
 #'
 #' Special environments like the global environment have their own
-#' names. `env_label()` returns:
+#' names. `env_name()` returns:
 #'
 #' * "global" for the global environment.
 #'
@@ -1343,19 +1343,24 @@ env_format <- function(env) {
 #'   environments][ns_imports_env] store their names. The name of package
 #'   environments is typically "package:pkg".
 #'
-#' * The memory address of the environment is returned as fallback.
+#' * The empty string `""` otherwise.
+#'
+#' `env_label()` is exactly like `env_name()` but returns the memory
+#' address of anonymous environments as fallback.
 #'
 #' @param env An environment.
 #'
 #' @export
 #' @examples
-#' # Some environments have specific labels:
-#' env_label(global_env())
-#' env_label(ns_env("rlang"))
+#' # Some environments have specific names:
+#' env_name(global_env())
+#' env_name(ns_env("rlang"))
 #'
-#' # Anonymous environments are referenced by their address in memory:
+#' # Anonymous environments don't have names but are labelled by their
+#' # address in memory:
+#' env_name(env())
 #' env_label(env())
-env_label <- function(env) {
+env_name <- function(env) {
   if (is_reference(env, global_env())) {
     return("global")
   }
@@ -1370,9 +1375,16 @@ env_label <- function(env) {
     return(paste0("namespace:", nm))
   }
 
-  if (nzchar(nm)) {
-    return(nm)
-  }
+  nm
+}
+#' @rdname env_name
+#' @export
+env_label <- function(env) {
+  nm <- env_name(env)
 
-  sexp_address(nm)
+  if (nzchar(nm)) {
+    nm
+  } else {
+    sexp_address(env)
+  }
 }

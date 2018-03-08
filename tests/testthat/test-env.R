@@ -386,15 +386,20 @@ test_that("env_bind_fns() uses as_function()", {
   expect_identical(foo, 5)
 })
 
-test_that("env_label() returns proper environment name", {
-  expect_identical(env_label(global_env()), "global")
-  expect_identical(env_label(empty_env()), "empty")
-  expect_identical(env_label(base_env()), "base")
+test_that("env_name() returns proper environment name", {
+  expect_identical(env_name(global_env()), "global")
+  expect_identical(env_name(empty_env()), "empty")
+  expect_identical(env_name(base_env()), "base")
 
-  expect_identical(env_label(pkg_env("rlang")), "package:rlang")
-  expect_identical(env_label(ns_imports_env("rlang")), "imports:rlang")
-  expect_identical(env_label(ns_env("rlang")), "namespace:rlang")
+  expect_identical(env_name(pkg_env("rlang")), "package:rlang")
+  expect_identical(env_name(ns_imports_env("rlang")), "imports:rlang")
+  expect_identical(env_name(ns_env("rlang")), "namespace:rlang")
 
   env <- structure(env(), name = "foobar")
   expect_identical(env_label(env), "foobar")
+})
+
+test_that("env_label() returns memory address for anonymous envs", {
+  env <- env()
+  expect_identical(env_label(env), sexp_address(env))
 })
