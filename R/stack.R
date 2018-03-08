@@ -1,31 +1,32 @@
 #' Get properties of the current or caller frame
 #'
+#' @description
+#'
+#' * The current frame is the execution context of the function that
+#'   is currently being evaluated.
+#'
+#' * The caller frame is the execution context of the function that
+#'   called the function currently being evaluated.
+#'
+#' See the [call stack][stack] topic for more information.
+#'
 #' @param n The number of generation to go back.
-#' @export
-caller_env <- function(n = 1) {
-  parent.frame(n + 1)
-}
-#' @rdname caller_env
+#'
+#' @seealso [caller_env()] and [current_env()]
 #' @export
 caller_frame <- function(n = 1) {
   call_frame(n + 2)
 }
-#' @rdname caller_env
+#' @rdname caller_frame
 #' @export
 caller_fn <- function(n = 1) {
   call_frame(n + 2)$fn
 }
-#' @rdname caller_env
-#' @export
-current_env <- function() {
-  parent.frame()
-}
-#' @rdname caller_env
+#' @rdname caller_frame
 #' @export
 current_fn <- function() {
   call_frame(2)$fn
 }
-
 
 #' Call stack information
 #'

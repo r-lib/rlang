@@ -1218,6 +1218,46 @@ global_env <- globalenv
 #' child_env(empty_env())
 empty_env <- emptyenv
 
+#' Get the current or caller environment
+#'
+#' @description
+#'
+#' * The current environment is the execution environment of the
+#'   current function (the one currently being evaluated).
+#'
+#' * The caller environment is the execution environment of the
+#'   function that called the current function.
+#'
+#' @inheritParams caller_frame
+#'
+#' @seealso [caller_frame()] and [current_frame()]
+#' @export
+#' @examples
+#' # Let's create a function that returns its current environment and
+#' # its caller environment:
+#' fn <- function() list(current = current_env(), caller = caller_env())
+#'
+#' # The current environment is an unique execution environment
+#' # created when `fn()` was called. The caller environment is the
+#' # global env because that's where we called `fn()`.
+#' fn()
+#'
+#' # Let's call `fn()` again but this time within a function:
+#' g <- function() fn()
+#'
+#' # Now the caller environment is also an unique execution environment.
+#' # This is the exec env created by R for our call to g():
+#' g()
+caller_env <- function(n = 1) {
+  parent.frame(n + 1)
+}
+#' @rdname caller_env
+#' @export
+current_env <- function() {
+  parent.frame()
+}
+
+
 #' Get the namespace of a package
 #'
 #' Namespaces are the environment where all the functions of a package
