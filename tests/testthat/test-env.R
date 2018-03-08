@@ -299,9 +299,9 @@ test_that("active and promise bindings are pretty-printed", {
 
 test_that("locked environments are pretty-printed", {
   env <- env()
-  expect_output(env_print(env), "<environment>\n")
+  expect_output(env_print(env), sprintf("<environment: %s>\n", sexp_address(env)))
   env_lock(env)
-  expect_output(env_print(env), "<environment> \\[L\\]\n")
+  expect_output(env_print(env), sprintf("<environment: %s> \\[L\\]\n", sexp_address(env)))
 })
 
 test_that("locked bindings are pretty-printed", {

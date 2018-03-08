@@ -1002,7 +1002,7 @@ env_print <- function(env) {
   if (is_empty_env(env)) {
     parent <- "NULL"
   } else {
-    parent <- env_label(env_parent(env))
+    parent <- paste0("<", rlang_type_sum(env_parent(env)), ">")
   }
 
   if (env_is_locked(env)) {
@@ -1012,8 +1012,7 @@ env_print <- function(env) {
   }
 
   meow(
-    sprintf("<environment>%s", locked),
-    sprintf("  label:  %s", env_label(env)),
+    sprintf("<environment: %s>%s", env_label(env), locked),
     sprintf("  parent: %s", parent)
   )
 
