@@ -149,3 +149,12 @@ test_that("env_bind_fns() and env_bind_exprs() redefine bindings", {
   env_bind_exprs(env, b = "bar")
   expect_identical(c(env$a, env$b), c("foo", "bar"))
 })
+
+test_that("binding predicates detect special bindings", {
+  env <- env()
+  env_bind_fns(env, a = ~toupper("foo"))
+  env_bind_exprs(env, b = stop("kaboom"))
+  env_bind(env, c = toupper("foo"))
+
+  expect_identical(env_binding_are_active(env, c("a", "b", "c")), c(TRUE, FALSE, FALSE))
+})

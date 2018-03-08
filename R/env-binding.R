@@ -539,3 +539,14 @@ env_names <- function(env) {
   nms <- names(get_env(env))
   .Call(rlang_unescape_character, nms)
 }
+
+
+#' What kind of environment binding?
+#'
+#' @param env An environment.
+#' @param nms Names of bindings.
+#' @export
+env_binding_are_active <- function(env, nms) {
+  stopifnot(is_character(nms))
+  map_lgl(nms, bindingIsActive, env = env)
+}
