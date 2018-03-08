@@ -545,13 +545,16 @@ env_names <- function(env) {
 #'
 #' @param env An environment.
 #' @param nms Names of bindings.
+#'
+#' @return A logical vector as long as `nms` and named after it.
 #' @export
 env_binding_are_active <- function(env, nms) {
   stopifnot(is_character(nms))
-  map_lgl(nms, bindingIsActive, env = env)
+  set_names(map_lgl(nms, bindingIsActive, env = env), nms)
 }
 #' @rdname env_binding_are_active
 #' @export
 env_binding_are_promise <- function(env, nms) {
-  .Call(rlang_env_binding_are_promise, env, syms(nms))
+  stopifnot(is_character(nms))
+  set_names(.Call(rlang_env_binding_are_promise, env, syms(nms)), nms)
 }
