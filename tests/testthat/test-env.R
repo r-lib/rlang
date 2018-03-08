@@ -299,17 +299,13 @@ test_that("active and promise bindings are pretty-printed", {
 
 test_that("locked environments are pretty-printed", {
   env <- env()
-  expect_output(env_print(env), "locked: FALSE")
+  expect_output(env_print(env), "<environment>\n")
   env_lock(env)
-  expect_output(env_print(env), "locked: TRUE")
+  expect_output(env_print(env), "<environment> \\[L\\]\n")
 })
 
 test_that("locked bindings are pretty-printed", {
   env <- env(a = 1, b = 2)
   env_binding_lock(env, "a")
   expect_output(env_print(env), "a: <dbl> \\[L\\].*b: <dbl>")
-})
-
-test_that("empty environments are pretty-printed", {
-  expect_output(env_print(env()), "locked: FALSE$")
 })

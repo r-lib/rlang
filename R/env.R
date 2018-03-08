@@ -1005,11 +1005,16 @@ env_print <- function(env) {
     parent <- env_label(env_parent(env))
   }
 
+  if (env_is_locked(env)) {
+    locked <- " [L]"
+  } else {
+    locked <- ""
+  }
+
   meow(
-    "<environment>",
+    sprintf("<environment>%s", locked),
     sprintf("  label:  %s", env_label(env)),
-    sprintf("  parent: %s", parent),
-    sprintf("  locked: %s", env_is_locked(env))
+    sprintf("  parent: %s", parent)
   )
 
   if (length(env)) {
