@@ -30,6 +30,12 @@ test_that("env_tail() climbs env chain", {
   expect_identical(env_tail(global_env()), base_env())
 })
 
+test_that("env_tail() stops at the global env", {
+  tail <- env(global_env())
+  env <- env(tail)
+  expect_reference(env_tail(env), tail)
+})
+
 test_that("with_env() evaluates within correct environment", {
   fn <- function() {
     g(current_env())

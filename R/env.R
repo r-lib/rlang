@@ -259,9 +259,15 @@ as_env_ <- function(x, parent = NULL) {
 #'
 #' @inheritParams get_env
 #' @param n The number of generations to go up.
-#' @param last,sentinel The environment at which to stop. `env_tail()`
-#'   returns the environment which has `last` as parent and
-#'   `env_parents()` returns the list of environments up to `last`.
+#' @param last The environment at which to stop. Defaults to the
+#'   global environment. The empty environment is always a stopping
+#'   condition so it is safe to leave the default even when taking the
+#'   tail or the parents of an environment on the search path.
+#'
+#'   `env_tail()` returns the environment which has `last` as parent
+#'   and `env_parents()` returns the list of environments up to `last`.
+#' @param sentinel This argument is soft-deprecated, please use `last`
+#'   instead.
 #' @return An environment for `env_parent()` and `env_tail()`, a list
 #'   of environments for `env_parents()`.
 #' @export
@@ -299,45 +305,55 @@ env_parent <- function(env = caller_env(), n = 1) {
 }
 #' @rdname env_parent
 #' @export
-env_tail <- function(env = caller_env(), last = empty_env(),
+env_tail <- function(env = caller_env(), last = global_env(),
                      sentinel = NULL) {
   if (!is_null(sentinel)) {
     warning("`sentinel` is deprecated as of version 0.2.0.9000, please use `last` instead")
     last <- sentinel
   }
-  env_ <- get_env(env)
-  next_env <- parent.env(env_)
 
-  while (!is_reference(next_env, last)) {
-    env_ <- next_env
-    next_env <- parent.env(next_env)
+  env_ <- get_env(env)
+  parent <- env_parent(env_)
+
+  while (!is_reference(parent, last) && !is_empty_env(parent)) {
+    env_ <- parent
+    parent <- env_parent(parent)
   }
 
   env_
 }
 #' @rdname env_parent
 #' @export
-env_parents <- function(env = caller_env(), last = NULL) {
+env_parents <- function(env = caller_env(), last = global_env()) {
+  if (is_empty_env(env)) {
+    return(set_names(list()))
+  }
+
   n <- env_depth(env)
   out <- new_list(n)
 
   if (!typeof(last) %in% c("environment", "NULL")) {
     abort("`last` must be `NULL` or an environment")
   }
-  if (is_null(last) && !is_reference(env, global_env())) {
-    last <- global_env()
-  }
 
   i <- 1L
-  while (!is_reference(env, last) && !is_empty_env(env)) {
-    env <- env_parent(env)
-    out[[i]] <- env
+  parent <- env_parent(env)
+
+  while (TRUE) {
+    out[[i]] <- parent
     i <- i + 1L
+
+    if (is_reference(parent, last) || is_empty_env(parent)) {
+      break
+    }
+
+    env <- parent
+    parent <- env_parent(env)
   }
+
   if (i < n) {
     out <- out[seq_len(i - 1L)]
   }
-
   names(out) <- map_chr(out, env_name)
 
   out

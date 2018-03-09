@@ -26,10 +26,19 @@
 * `env_parents()` now returns a named list. The names are taken with
   `env_name()`.
 
+* `env_parents()` and `env_tail()` now stop at the global environment
+  by default. This can be changed with the `last` argument. The empty
+  environment is always a stopping condition so you can take the
+  parents or the tail of an environment on the search path without
+  changing the default.
+
 
 ## Breaking changes
 
 * Taking the `env_parent()` of the empty environment is now an error.
+
+* The `sentinel` argument of `env_last()` has been deprecated and
+  renamed to `last`.
 
 
 ## Upcoming breaking changes

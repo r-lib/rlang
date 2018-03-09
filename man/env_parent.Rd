@@ -8,9 +8,9 @@
 \usage{
 env_parent(env = caller_env(), n = 1)
 
-env_tail(env = caller_env(), last = empty_env(), sentinel = NULL)
+env_tail(env = caller_env(), last = global_env(), sentinel = NULL)
 
-env_parents(env = caller_env(), last = NULL)
+env_parents(env = caller_env(), last = global_env())
 }
 \arguments{
 \item{env}{An environment or an object bundling an environment,
@@ -18,9 +18,16 @@ e.g. a formula, \link[=quotation]{quosure} or \link[=is_closure]{closure}.}
 
 \item{n}{The number of generations to go up.}
 
-\item{last, sentinel}{The environment at which to stop. \code{env_tail()}
-returns the environment which has \code{last} as parent and
-\code{env_parents()} returns the list of environments up to \code{last}.}
+\item{last}{The environment at which to stop. Defaults to the
+global environment. The empty environment is always a stopping
+condition so it is safe to leave the default even when taking the
+tail or the parents of an environment on the search path.
+
+\code{env_tail()} returns the environment which has \code{last} as parent
+and \code{env_parents()} returns the list of environments up to \code{last}.}
+
+\item{sentinel}{This argument is soft-deprecated, please use \code{last}
+instead.}
 }
 \value{
 An environment for \code{env_parent()} and \code{env_tail()}, a list
