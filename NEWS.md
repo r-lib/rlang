@@ -27,6 +27,11 @@
   `env_name()`.
 
 
+## Breaking changes
+
+* Taking the `env_parent()` of the empty environment is now an error.
+
+
 ## Upcoming breaking changes
 
 * Using `get_env()` without supplying an environment is now
