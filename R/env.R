@@ -326,7 +326,7 @@ env_tail <- function(env = caller_env(), last = global_env(),
 #' @export
 env_parents <- function(env = caller_env(), last = global_env()) {
   if (is_empty_env(env)) {
-    return(set_names(list()))
+    return(new_environments(list()))
   }
 
   n <- env_depth(env)
@@ -354,8 +354,6 @@ env_parents <- function(env = caller_env(), last = global_env()) {
   if (i < n) {
     out <- out[seq_len(i - 1L)]
   }
-  names(out) <- map_chr(out, env_name)
-
 
   new_environments(out)
 }

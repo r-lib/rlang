@@ -133,8 +133,8 @@ test_that("env_depth() counts parents", {
 
 test_that("env_parents() returns all parents", {
   expect_identical(env_parents(empty_env()), new_environments(list()))
-  env1 <- child_env(NULL)
-  env2 <- child_env(env1)
+  env1 <- env(empty_env())
+  env2 <- env(env1)
   expect_identical(env_parents(env2), new_environments(list(env1, empty_env())))
 })
 
