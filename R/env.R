@@ -1060,9 +1060,16 @@ new_environments <- function(envs, names) {
 
 #' @export
 print.rlang_envs <- function(x, ...) {
-  if (!length(x)) {
+  n <- length(x)
+  if (!n) {
     print(list())
     return(invisible(x))
+  }
+  if (n > 20L) {
+    footer <- sprintf("... and %s more environments", n - 20L)
+    x <- x[seq_len(20L)]
+  } else {
+    footer <- chr()
   }
 
   digits <- n_digits(seq_along(x))
@@ -1072,7 +1079,10 @@ print.rlang_envs <- function(x, ...) {
   labels <- map_chr(x, env_label)
   nms_tags <- names_tags(names(x))
 
-  meow(paste0(pads, "[[", seq_along(x), "]]", nms_tags, " <env: ", labels, ">"))
+  meow(
+    paste0(pads, "[[", seq_along(x), "]]", nms_tags, " <env: ", labels, ">"),
+    footer
+  )
 
   invisible(x)
 }

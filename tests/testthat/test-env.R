@@ -351,3 +351,13 @@ test_that("envs printer: no name tag if no named elements", {
   expect_output(print(x), "[[1]] <", fixed = TRUE)
   expect_output(print(x), "\n[[2]] <", fixed = TRUE)
 })
+
+test_that("envs printer: long lists are truncated", {
+  x <- rep(list(empty_env()), 20L)
+  x <- new_environments(x)
+  expect_output(print(x), "empty>$")
+
+  x <- rep(list(empty_env()), 25L)
+  x <- new_environments(x)
+  expect_output(print(x), "empty>\n... and 5 more environments$")
+})
