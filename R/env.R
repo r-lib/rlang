@@ -326,7 +326,7 @@ env_tail <- function(env = caller_env(), last = global_env(),
 #' @export
 env_parents <- function(env = caller_env(), last = global_env()) {
   if (is_empty_env(env)) {
-    return(set_names(list()))
+    return(new_environments(list()))
   }
 
   n <- env_depth(env)
@@ -354,9 +354,8 @@ env_parents <- function(env = caller_env(), last = global_env()) {
   if (i < n) {
     out <- out[seq_len(i - 1L)]
   }
-  names(out) <- map_chr(out, env_name)
 
-  out
+  new_environments(out)
 }
 
 #' Depth of an environment chain
@@ -975,4 +974,128 @@ env_label <- function(env) {
   } else {
     sexp_address(env)
   }
+}
+
+#' Pretty-print an environment
+#'
+#' @description
+#'
+#' This prints:
+#'
+#' * The [label][env_label] and the parent label.
+#'
+#' * Whether the environment is [locked][env_lock].
+#'
+#' * The bindings in the environment (up to 20 bindings). They are
+#'   printed succintly using `pillar::type_sum()` (if available,
+#'   otherwise uses an internal version of that generic). In addition
+#'   [fancy bindings][env_bind_exprs] (actives and promises) are
+#'   indicated as such.
+#'
+#' * Locked bindings get a `[L]` tag
+#'
+#' @param env An environment.
+#'
+#' @export
+env_print <- function(env) {
+  if (is_empty_env(env)) {
+    parent <- "NULL"
+  } else {
+    parent <- paste0("<", rlang_type_sum(env_parent(env)), ">")
+  }
+
+  if (env_is_locked(env)) {
+    locked <- " [L]"
+  } else {
+    locked <- ""
+  }
+
+  meow(
+    sprintf("<environment: %s>%s", env_label(env), locked),
+    sprintf("  parent: %s", parent)
+  )
+
+  nms <- env_names(env)
+  n <- length(nms)
+
+  if (n) {
+    meow("  bindings:")
+
+    if (n > 20) {
+      other <- nms[seq(21L, n)]
+      nms <- nms[1:20]
+    } else {
+      other <- chr()
+    }
+
+    escaped_nms <- map_chr(syms(nms), deparse, backtick = TRUE)
+
+    types <- env_binding_type_sum(env, nms)
+    types <- paste0("   * ", escaped_nms, ": <", types, ">")
+
+    locked <- env_binding_are_locked(env, nms)
+    locked <- ifelse(locked, " [L]", "")
+    types <- paste0(types, locked)
+
+    meow(types)
+
+    n_other <- length(other)
+    if (n_other) {
+      meow(sprintf("   * ... with %s more bindings", n_other))
+    }
+  }
+
+  invisible(env)
+}
+
+new_environments <- function(envs, names) {
+  stopifnot(is_list(envs))
+  structure(envs,
+    names = map_chr(envs, env_name),
+    class = "rlang_envs"
+  )
+}
+
+#' @export
+print.rlang_envs <- function(x, ...) {
+  n <- length(x)
+  if (!n) {
+    print(list())
+    return(invisible(x))
+  }
+  if (n > 20L) {
+    footer <- sprintf("... and %s more environments", n - 20L)
+    x <- x[seq_len(20L)]
+  } else {
+    footer <- chr()
+  }
+
+  digits <- n_digits(seq_along(x))
+  pads <- digits[[length(x)]] - digits
+  pads <- map_chr(pads, spaces)
+
+  labels <- map_chr(x, env_label)
+  nms_tags <- names_tags(names(x))
+
+  meow(
+    paste0(pads, "[[", seq_along(x), "]]", nms_tags, " <env: ", labels, ">"),
+    footer
+  )
+
+  invisible(x)
+}
+n_digits <- function(x) {
+  floor(log10(x) + 1)
+}
+names_tags <- function(nms) {
+  if (is_null(nms)) {
+    return("")
+  }
+
+  invalid <- nms_are_invalid(nms)
+  if (all(invalid)) {
+    return("")
+  }
+
+  ifelse(invalid, "  ", " $")
 }

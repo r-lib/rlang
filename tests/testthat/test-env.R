@@ -132,10 +132,10 @@ test_that("env_depth() counts parents", {
 })
 
 test_that("env_parents() returns all parents", {
-  expect_identical(env_parents(empty_env()), named_list())
-  env1 <- child_env(NULL)
-  env2 <- child_env(env1)
-  expect_identical(env_parents(env2), list(env1, empty = empty_env()))
+  expect_identical(env_parents(empty_env()), new_environments(list()))
+  env1 <- env(empty_env())
+  env2 <- env(env1)
+  expect_identical(env_parents(env2), new_environments(list(env1, empty_env())))
 })
 
 test_that("scoped_envs() includes global and empty envs", {
@@ -237,7 +237,7 @@ test_that("env() accepts one unnamed argument to specify parent", {
 
 test_that("env_parents() stops at the global env by default", {
   env <- env(env(global_env()))
-  expect_identical(env_parents(env), list(env_parent(env), global = global_env()))
+  expect_identical(env_parents(env), new_environments(list(env_parent(env), global_env())))
 
   rlang_parents <- env_parents(ns_env("rlang"))
   expected <- list(`namespace:base` = ns_env("base"), global = global_env())
@@ -245,8 +245,8 @@ test_that("env_parents() stops at the global env by default", {
 })
 
 test_that("env_parents() always stops at the empty env", {
-  expect_identical(env_parents(empty_env()), named_list())
-  expect_identical(env_parents(pkg_env("base")), list(empty = empty_env()))
+  expect_identical(env_parents(empty_env()), new_environments(list()))
+  expect_identical(env_parents(pkg_env("base")), new_environments(list(empty_env())))
 })
 
 test_that("env_name() returns proper environment name", {
@@ -288,4 +288,76 @@ test_that("can unlock environments", {
   expect_true(env_unlock(env))
   expect_false(env_is_locked(env))
   expect_no_error(env_bind(env, a = 1))
+})
+
+test_that("active and promise bindings are pretty-printed", {
+  env <- env()
+  env_bind_exprs(env, a = "foo")
+  env_bind_fns(env, b = ~"foo")
+  expect_output(env_print(env), "a: <promise>.*b: <active>")
+})
+
+test_that("locked environments are pretty-printed", {
+  env <- env()
+  expect_output(env_print(env), sprintf("<environment: %s>\n", sexp_address(env)))
+  env_lock(env)
+  expect_output(env_print(env), sprintf("<environment: %s> \\[L\\]\n", sexp_address(env)))
+})
+
+test_that("locked bindings are pretty-printed", {
+  env <- env(a = 1, b = 2)
+  env_binding_lock(env, "a")
+  expect_output(env_print(env), "a: <dbl> \\[L\\].*b: <dbl>")
+})
+
+test_that("large environments are truncated", {
+  n_truncated <- length(env_names(base_env())) - 20L
+  expected <- sprintf("\\.\\.\\. with %s more bindings", n_truncated)
+  expect_output(env_print(base_env()), expected)
+})
+
+test_that("special names are backticked", {
+  env <- env(`<-` = 1, `:` = 2)
+  expect_output(env_print(env), "`:`:")
+  expect_output(env_print(env), "`<-`:")
+})
+
+test_that("empty environment is pretty printed", {
+  expect_output(env_print(empty_env()), "<environment: empty>\n  parent: NULL$")
+})
+
+test_that("envs printer: padding is added to right-align indices", {
+  x <- c(rep(list(empty_env()), 9L), global_env())
+  x <- new_environments(x)
+  expect_output(print(x), "^ \\[\\[1\\]\\]")
+  expect_output(print(x), "\n\\[\\[10\\]\\]")
+})
+
+test_that("envs printer: name tag is added to named elements", {
+  x <- list(empty_env(), env(), empty_env())
+  x <- new_environments(x)
+  expect_output(print(x), "[[1]] $ <", fixed = TRUE)
+  expect_output(print(x), "\n[[2]]   <", fixed = TRUE)
+  expect_output(print(x), "\n[[3]] $ <", fixed = TRUE)
+})
+
+test_that("envs printer: no name tag if no named elements", {
+  x <- list(env(), env())
+  x <- new_environments(x)
+  expect_output(print(x), "[[1]] <", fixed = TRUE)
+  expect_output(print(x), "\n[[2]] <", fixed = TRUE)
+
+  names(x) <- c("", NA)
+  expect_output(print(x), "[[1]] <", fixed = TRUE)
+  expect_output(print(x), "\n[[2]] <", fixed = TRUE)
+})
+
+test_that("envs printer: long lists are truncated", {
+  x <- rep(list(empty_env()), 20L)
+  x <- new_environments(x)
+  expect_output(print(x), "empty>$")
+
+  x <- rep(list(empty_env()), 25L)
+  x <- new_environments(x)
+  expect_output(print(x), "empty>\n... and 5 more environments$")
 })
