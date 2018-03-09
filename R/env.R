@@ -560,6 +560,8 @@ env_inherits <- function(env, ancestor) {
 #'
 #' @description
 #'
+#' \badgeexperimental
+#'
 #' Locked environments cannot be modified. An important example is
 #' namespace environments which are locked by R when loaded in a
 #' session. Once an environment is locked it normally cannot be

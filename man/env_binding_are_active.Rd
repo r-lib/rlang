@@ -18,5 +18,5 @@ env_binding_are_promise(env, nms = NULL)
 A logical vector as long as \code{nms} and named after it.
 }
 \description{
-What kind of environment binding?
+\badgeexperimental
 }

@@ -424,9 +424,16 @@ env_get_list <- function(env = caller_env(), nms, inherit = FALSE, default) {
 
 #' Poke an object in an environment
 #'
+#' @description
+#'
+#' \badgeexperimental
+#'
 #' `env_poke()` will assign or reassign a binding in `env` if `create`
 #' is `TRUE`. If `create` is `FALSE` and a binding does not already
 #' exists, an error is issued.
+#'
+#'
+#' @details
 #'
 #' If `inherit` is `TRUE`, the parents environments are checked for
 #' an existing binding to reassign. If not found and `create` is
@@ -543,6 +550,10 @@ env_names <- function(env) {
 
 #' Lock or unlock environment bindings
 #'
+#' @description
+#'
+#' \badgeexperimental
+#'
 #' Locked environment bindings trigger an error when an attempt is
 #' made to redefine the binding.
 #'
@@ -600,6 +611,8 @@ env_binding_are_locked <- function(env, nms = NULL) {
 }
 
 #' What kind of environment binding?
+#'
+#' \badgeexperimental
 #'
 #' @inheritParams env_binding_lock
 #'
