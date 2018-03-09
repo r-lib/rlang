@@ -424,9 +424,16 @@ env_get_list <- function(env = caller_env(), nms, inherit = FALSE, default) {
 
 #' Poke an object in an environment
 #'
+#' @description
+#'
+#' \badgeexperimental
+#'
 #' `env_poke()` will assign or reassign a binding in `env` if `create`
 #' is `TRUE`. If `create` is `FALSE` and a binding does not already
 #' exists, an error is issued.
+#'
+#'
+#' @details
 #'
 #' If `inherit` is `TRUE`, the parents environments are checked for
 #' an existing binding to reassign. If not found and `create` is
@@ -538,4 +545,112 @@ scope_poke <- function(env, nm, value, create) {
 env_names <- function(env) {
   nms <- names(get_env(env))
   .Call(rlang_unescape_character, nms)
+}
+
+
+#' Lock or unlock environment bindings
+#'
+#' @description
+#'
+#' \badgeexperimental
+#'
+#' Locked environment bindings trigger an error when an attempt is
+#' made to redefine the binding.
+#'
+#' @param env An environment.
+#' @param nms Names of bindings. Defaults to all bindings in `env`.
+#'
+#' @return `env_binding_are_unlocked()` returns a logical vector as
+#'   long as `nms` and named after it. `env_binding_lock()` and
+#'   `env_binding_unlock()` return the old value of
+#'   `env_binding_are_unlocked()` invisibly.
+#'
+#' @seealso [env_lock()] for locking an environment.
+#' @export
+#' @examples
+#' # Bindings are unlocked by default:
+#' env <- env(a = "A", b = "B")
+#' env_binding_are_locked(env)
+#'
+#' # But can optionally be locked:
+#' env_binding_lock(env, "a")
+#' env_binding_are_locked(env)
+#'
+#' # If run, the following would now return an error because `a` is locked:
+#' # env_bind(env, a = "foo")
+#' # with_env(env, a <- "bar")
+#'
+#' # Let's unlock it. Note that the return value indicate which
+#' # bindings were locked:
+#' were_locked <- env_binding_unlock(env)
+#' were_locked
+#'
+#' # Now that it is unlocked we can modify it again:
+#' env_bind(env, a = "foo")
+#' with_env(env, a <- "bar")
+#' env$a
+env_binding_lock <- function(env, nms = NULL) {
+  nms <- env_binding_validate_names(env, nms)
+  old <- env_binding_are_locked(env, nms)
+  map(nms, lockBinding, env = env)
+  invisible(old)
+}
+#' @rdname env_binding_lock
+#' @export
+env_binding_unlock <- function(env, nms = NULL) {
+  nms <- env_binding_validate_names(env, nms)
+  old <- env_binding_are_locked(env, nms)
+  map(nms, unlockBinding, env = env)
+  invisible(old)
+}
+#' @rdname env_binding_lock
+#' @export
+env_binding_are_locked <- function(env, nms = NULL) {
+  nms <- env_binding_validate_names(env, nms)
+  set_names(map_lgl(nms, bindingIsLocked, env = env), nms)
+}
+
+#' What kind of environment binding?
+#'
+#' \badgeexperimental
+#'
+#' @inheritParams env_binding_lock
+#'
+#' @return A logical vector as long as `nms` and named after it.
+#' @export
+env_binding_are_active <- function(env, nms = NULL) {
+  nms <- env_binding_validate_names(env, nms)
+  set_names(map_lgl(nms, bindingIsActive, env = env), nms)
+}
+#' @rdname env_binding_are_active
+#' @export
+env_binding_are_promise <- function(env, nms = NULL) {
+  nms <- env_binding_validate_names(env, nms)
+  set_names(.Call(rlang_env_binding_are_promise, env, syms(nms)), nms)
+}
+
+env_binding_validate_names <- function(env, nms) {
+  if (is_null(nms)) {
+    nms <- env_names(env)
+  } else {
+    if (!is_character(nms)) {
+      abort("`nms` must be a character vector of names")
+    }
+  }
+  nms
+}
+
+env_binding_type_sum <- function(env, nms = NULL) {
+  nms <- env_binding_validate_names(env, nms)
+
+  active <- env_binding_are_active(env, nms)
+  promise <- env_binding_are_promise(env, nms)
+  other <- !active & !promise
+
+  types <- new_character(length(nms), nms)
+  types[active] <- "active"
+  types[promise] <- "promise"
+  types[other] <- map_chr(env_get_list(env, nms[other]), rlang_type_sum)
+
+  types
 }

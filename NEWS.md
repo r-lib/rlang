@@ -32,6 +32,17 @@
   parents or the tail of an environment on the search path without
   changing the default.
 
+* New predicates `env_binding_are_active()` and
+  `env_binding_are_promise()` detect the kind of bindings in an
+  environment.
+
+* `env_binding_lock()` and `env_binding_unlock()` allows to lock and
+  unlock multiple bindings. The predicate `env_binding_are_locked()`
+  tests if bindings are locked.
+
+* `env_lock()` and `env_is_locked()` lock an environment or test if
+  an environment is locked.
+
 
 ## Breaking changes
 

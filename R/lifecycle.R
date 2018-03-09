@@ -2,15 +2,7 @@
 #'
 #' @description
 #'
-#' \ifelse{html}{
-#' \out{
-#' <a href="https://www.tidyverse.org/lifecycle/#maturing">
-#'   <img src="https://img.shields.io/badge/lifecycle-maturing-blue.svg" alt="Maturing lifecycle">
-#' </a>
-#' }
-#' }{
-#' \url{https://www.tidyverse.org/lifecycle/#maturing}
-#' }
+#' \badgematuring
 #'
 #' The rlang package is currently maturing. Unless otherwise stated,
 #' this applies to all its exported functions. Maturing functions are
@@ -24,15 +16,7 @@
 #'
 #' @section Stable functions:
 #'
-#' \ifelse{html}{
-#' \out{
-#' <a href="https://www.tidyverse.org/lifecycle/#stable">
-#'   <img src="https://img.shields.io/badge/lifecycle-stable-green.svg" alt="Stable lifecycle">
-#' </a>
-#' }
-#' }{
-#' \url{https://www.tidyverse.org/lifecycle/#stable}
-#' }
+#' \badgestable
 #'
 #' * [eval_tidy()]
 #' * [!!], [!!!]
@@ -53,16 +37,7 @@
 #'
 #' @section Experimental functions:
 #'
-#' \ifelse{html}{
-#' \out{
-#' <a href="https://www.tidyverse.org/lifecycle/#experimental">
-#'   <img src="https://img.shields.io/badge/lifecycle-experimental-orange.svg" alt="Experimental lifecycle">
-#' </a>
-#' }
-#' }{
-#' \url{https://www.tidyverse.org/lifecycle/#experimental}
-#' }
-#'
+#' \badgeexperimental
 #'
 #' These functions are not yet part of the rlang API. Expect breaking
 #' changes.
@@ -96,15 +71,7 @@
 #'
 #' @section Questioning functions:
 #'
-#' \ifelse{html}{
-#' \out{
-#' <a href="https://www.tidyverse.org/lifecycle/#questioning">
-#'   <img src="https://img.shields.io/badge/lifecycle-questioning-blue.svg" alt="Questioning lifecycle">
-#' </a>
-#' }
-#' }{
-#' \url{https://www.tidyverse.org/lifecycle/#questioning}
-#' }
+#' \badgequestioning
 #'
 #' Since rlang 0.2.0.9000:
 #'
@@ -127,9 +94,7 @@
 #'
 #' @section Soft-deprecated functions and arguments:
 #'
-#' \if{html}{
-#' \figure{lifecycle-soft--deprecated-blue.svg}{options: alt="Soft-deprecated lifecycle"}
-#' }
+#' \badgesoftdeprecated
 #'
 #' **Retired in rlang 0.2.0.9000**
 #'
@@ -172,9 +137,7 @@
 #'
 #' @section Deprecated functions and arguments:
 #'
-#' \if{html}{
-#' \figure{lifecycle-deprecated-orange.svg}{options: alt="Deprecated lifecycle"}
-#' }
+#' \badgedeprecated
 #'
 #' **Renamed in rlang 0.2.0.9000**
 #'
@@ -197,9 +160,7 @@
 #'
 #' @section Defunct functions and arguments:
 #'
-#' \if{html}{
-#' \figure{lifecycle-defunct-red.svg}{options: alt="Defunct lifecycle"}
-#' }
+#' \badgedefunct
 #'
 #' **Retired in rlang 0.2.0:**
 #'

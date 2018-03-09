@@ -1,5 +1,7 @@
 #include "internal/arg.c"
 #include "internal/dots.c"
+#include "internal/env.c"
+#include "internal/env-binding.c"
 #include "internal/eval-tidy.c"
 #include "internal/expr-interp.c"
 #include "internal/expr-interp-rotate.c"

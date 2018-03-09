@@ -149,3 +149,61 @@ test_that("env_bind_fns() and env_bind_exprs() redefine bindings", {
   env_bind_exprs(env, b = "bar")
   expect_identical(c(env$a, env$b), c("foo", "bar"))
 })
+
+test_that("binding predicates detect special bindings", {
+  env <- env()
+  env_bind_fns(env, a = ~toupper("foo"))
+  env_bind_exprs(env, b = toupper("foo"))
+  env_bind(env, c = toupper("foo"), d = "irrelevant")
+
+  expect_identical(env_binding_are_active(env, c("a", "b", "c")), c(a = TRUE, b = FALSE, c = FALSE))
+  expect_identical(env_binding_are_promise(env, c("a", "b", "c")), c(a = FALSE, b = TRUE, c = FALSE))
+
+  force(env$b)
+  expect_identical(env_binding_are_promise(env, c("a", "b", "c")), c(a = FALSE, b = FALSE, c = FALSE))
+})
+
+test_that("applies predicates to all bindings by default", {
+  env <- env()
+  env_bind_fns(env, a = ~toupper("foo"))
+  env_bind_exprs(env, b = toupper("foo"))
+  env_bind(env, c = toupper("foo"))
+  expect_identical(env_binding_are_active(env), c(a = TRUE, b = FALSE, c = FALSE))
+  expect_identical(env_binding_are_promise(env), c(a = FALSE, b = TRUE, c = FALSE))
+})
+
+test_that("env_binding_are_active() doesn't force promises", {
+  env <- env_bind_exprs(env(), foo = stop("kaboom"))
+  expect_no_error(env_binding_are_active(env))
+  expect_identical(env_binding_are_promise(env), lgl(foo = TRUE))
+  expect_identical(env_binding_are_promise(env), lgl(foo = TRUE))
+})
+
+test_that("env_binding_type_sum() detects types", {
+  env <- env()
+  env_bind_fns(env, a = ~"foo")
+  env_bind_exprs(env, b = identity("foo"))
+  env_bind(env,
+    c = "foo",
+    d = 1L,
+    e = 2
+  )
+
+  expect_error(env_binding_type_sum(env, 1L), "must be a character vector")
+
+  types <- c(a = "active", b = "promise", c = "chr", d = "int", e = "dbl")
+  expect_identical(env_binding_type_sum(env), types)
+})
+
+test_that("can lock and unlock bindings", {
+  env <- env(a = "A", b = "B")
+  expect_identical(env_binding_are_locked(env), lgl(a = FALSE, b = FALSE))
+
+  expect_identical(env_binding_lock(env, "a"), lgl(a = FALSE))
+
+  locked <- env_binding_are_locked(env)
+  expect_identical(locked, lgl(a = TRUE, b = FALSE))
+
+  expect_identical(env_binding_unlock(env), locked)
+  expect_identical(env_binding_are_locked(env), lgl(a = FALSE, b = FALSE))
+})
