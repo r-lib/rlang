@@ -132,10 +132,10 @@ test_that("env_depth() counts parents", {
 })
 
 test_that("env_parents() returns all parents", {
-  expect_identical(env_parents(empty_env()), named_list())
+  expect_identical(env_parents(empty_env()), new_environments(list()))
   env1 <- child_env(NULL)
   env2 <- child_env(env1)
-  expect_identical(env_parents(env2), list(env1, empty = empty_env()))
+  expect_identical(env_parents(env2), new_environments(list(env1, empty_env())))
 })
 
 test_that("scoped_envs() includes global and empty envs", {
@@ -237,7 +237,7 @@ test_that("env() accepts one unnamed argument to specify parent", {
 
 test_that("env_parents() stops at the global env by default", {
   env <- env(env(global_env()))
-  expect_identical(env_parents(env), list(env_parent(env), global = global_env()))
+  expect_identical(env_parents(env), new_environments(list(env_parent(env), global_env())))
 
   rlang_parents <- env_parents(ns_env("rlang"))
   expected <- list(`namespace:base` = ns_env("base"), global = global_env())
@@ -245,8 +245,8 @@ test_that("env_parents() stops at the global env by default", {
 })
 
 test_that("env_parents() always stops at the empty env", {
-  expect_identical(env_parents(empty_env()), named_list())
-  expect_identical(env_parents(pkg_env("base")), list(empty = empty_env()))
+  expect_identical(env_parents(empty_env()), new_environments(list()))
+  expect_identical(env_parents(pkg_env("base")), new_environments(list(empty_env())))
 })
 
 test_that("env_name() returns proper environment name", {
