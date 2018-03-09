@@ -289,7 +289,7 @@ env_parent <- function(env = caller_env(), n = 1) {
 
   while (n > 0) {
     if (is_empty_env(env_)) {
-      return(env_)
+      abort("The empty environment has no parent")
     }
     n <- n - 1
     env_ <- parent.env(env_)

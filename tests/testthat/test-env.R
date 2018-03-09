@@ -23,7 +23,7 @@ test_that("env_parent() reports correct parent", {
 
   expect_identical(env_parent(env, 1)$obj, "b")
   expect_identical(env_parent(env, 2), empty_env())
-  expect_identical(env_parent(env, 3), empty_env())
+  expect_error(env_parent(env, 3), "empty environment has no parent")
 })
 
 test_that("env_tail() climbs env chain", {
@@ -77,7 +77,7 @@ test_that("env_inherits() finds ancestor", {
   expect_true(env_inherits(env, current_env()))
   expect_false(env_inherits(env, ns_env("utils")))
 
-  expect_true(env_inherits(empty_env(), empty_env()))
+  expect_error(env_inherits(empty_env(), empty_env()), "has no parent")
 })
 
 test_that("env() creates child of current environment", {
