@@ -325,3 +325,29 @@ test_that("special names are backticked", {
 test_that("empty environment is pretty printed", {
   expect_output(env_print(empty_env()), "<environment: empty>\n  parent: NULL$")
 })
+
+test_that("envs printer: padding is added to right-align indices", {
+  x <- c(rep(list(empty_env()), 9L), global_env())
+  x <- new_environments(x)
+  expect_output(print(x), "^ \\[\\[1\\]\\]")
+  expect_output(print(x), "\n\\[\\[10\\]\\]")
+})
+
+test_that("envs printer: name tag is added to named elements", {
+  x <- list(empty_env(), env(), empty_env())
+  x <- new_environments(x)
+  expect_output(print(x), "[[1]] $ <", fixed = TRUE)
+  expect_output(print(x), "\n[[2]]   <", fixed = TRUE)
+  expect_output(print(x), "\n[[3]] $ <", fixed = TRUE)
+})
+
+test_that("envs printer: no name tag if no named elements", {
+  x <- list(env(), env())
+  x <- new_environments(x)
+  expect_output(print(x), "[[1]] <", fixed = TRUE)
+  expect_output(print(x), "\n[[2]] <", fixed = TRUE)
+
+  names(x) <- c("", NA)
+  expect_output(print(x), "[[1]] <", fixed = TRUE)
+  expect_output(print(x), "\n[[2]] <", fixed = TRUE)
+})

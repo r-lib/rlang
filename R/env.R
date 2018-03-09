@@ -356,7 +356,8 @@ env_parents <- function(env = caller_env(), last = global_env()) {
   }
   names(out) <- map_chr(out, env_name)
 
-  out
+
+  new_environments(out)
 }
 
 #' Depth of an environment chain
@@ -1047,4 +1048,46 @@ env_print <- function(env) {
   }
 
   invisible(env)
+}
+
+new_environments <- function(envs, names) {
+  stopifnot(is_list(envs))
+  structure(envs,
+    names = map_chr(envs, env_name),
+    class = "rlang_envs"
+  )
+}
+
+#' @export
+print.rlang_envs <- function(x, ...) {
+  if (!length(x)) {
+    print(list())
+    return(invisible(x))
+  }
+
+  digits <- n_digits(seq_along(x))
+  pads <- digits[[length(x)]] - digits
+  pads <- map_chr(pads, spaces)
+
+  labels <- map_chr(x, env_label)
+  nms_tags <- names_tags(names(x))
+
+  meow(paste0(pads, "[[", seq_along(x), "]]", nms_tags, " <env: ", labels, ">"))
+
+  invisible(x)
+}
+n_digits <- function(x) {
+  floor(log10(x) + 1)
+}
+names_tags <- function(nms) {
+  if (is_null(nms)) {
+    return("")
+  }
+
+  invalid <- nms_are_invalid(nms)
+  if (all(invalid)) {
+    return("")
+  }
+
+  ifelse(invalid, "  ", " $")
 }
