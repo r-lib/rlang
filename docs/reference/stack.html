@@ -160,7 +160,7 @@ frame to query: <code>which</code> and <code>n</code>. The <code>n</code> argume
 straightforward: it's the number of frames to go down the stack,
 with <code>n = 1</code> referring to the current context. The <code>which</code> argument
 is more complicated and changes meaning for values lower than 1.
-For the sake of consistency, the lazyeval functions all take the
+For the sake of consistency, the rlang functions all take the
 same kind of argument <code>n</code>. This argument has a single meaning (the
 number of frames to go down the stack) and cannot be lower than 1.</p>
 <p>Note finally that <code>parent.frame(1)</code> corresponds to
@@ -591,7 +591,7 @@ development.</p>
 #&gt; 
 #&gt; attr(,"class")
 #&gt; [1] "call_stack" "stack"     </div><div class='input'>
-<span class='co'># The lazyeval _stack() functions return a list of frame</span>
+<span class='co'># The rlang _stack() functions return a list of frame</span>
 <span class='co'># objects. Use purrr::transpose() or index a field with</span>
 <span class='co'># purrr::map()'s to extract a particular field from a stack:</span>
 

@@ -110,7 +110,7 @@ g <- function(cmd) cmd()
 f(g(ctxt_stack))
 f(g(call_stack))
 
-# The lazyeval _stack() functions return a list of frame
+# The rlang _stack() functions return a list of frame
 # objects. Use purrr::transpose() or index a field with
 # purrr::map()'s to extract a particular field from a stack:
 

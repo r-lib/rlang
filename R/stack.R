@@ -54,7 +54,7 @@ current_fn <- function() {
 #' straightforward: it's the number of frames to go down the stack,
 #' with `n = 1` referring to the current context. The `which` argument
 #' is more complicated and changes meaning for values lower than 1.
-#' For the sake of consistency, the lazyeval functions all take the
+#' For the sake of consistency, the rlang functions all take the
 #' same kind of argument `n`. This argument has a single meaning (the
 #' number of frames to go down the stack) and cannot be lower than 1.
 #'
@@ -104,7 +104,7 @@ current_fn <- function() {
 #' f(g(ctxt_stack))
 #' f(g(call_stack))
 #'
-#' # The lazyeval _stack() functions return a list of frame
+#' # The rlang _stack() functions return a list of frame
 #' # objects. Use purrr::transpose() or index a field with
 #' # purrr::map()'s to extract a particular field from a stack:
 #'
