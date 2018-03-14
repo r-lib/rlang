@@ -163,7 +163,7 @@ quo(how_many(!!(1 + 2)))
 
 
 # Note that when you unquote complex objects into an expression,
-# the base R printer may be a bit misleading. For anstance compare
+# the base R printer may be a bit misleading. For instance compare
 # the output of `expr()` and `quo()` (which uses a custom printer)
 # when we unquote an integer vector:
 expr(how_many(!!(1:10)))
@@ -198,7 +198,7 @@ quos(!!var := bernard, mouse2 = bianca)
 
 # All these features apply to dots captured by enquos():
 fn <- function(...) enquos(...)
-fn(!!! args, !!var := penny)
+fn(!!!args, !!var := penny)
 
 
 # Unquoting is especially useful for building an expression by
