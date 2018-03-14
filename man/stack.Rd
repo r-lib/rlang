@@ -65,7 +65,7 @@ frame to query: \code{which} and \code{n}. The \code{n} argument is
 straightforward: it's the number of frames to go down the stack,
 with \code{n = 1} referring to the current context. The \code{which} argument
 is more complicated and changes meaning for values lower than 1.
-For the sake of consistency, the lazyeval functions all take the
+For the sake of consistency, the rlang functions all take the
 same kind of argument \code{n}. This argument has a single meaning (the
 number of frames to go down the stack) and cannot be lower than 1.
 

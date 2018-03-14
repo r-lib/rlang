@@ -139,7 +139,7 @@
 #'
 #'
 #' # Note that when you unquote complex objects into an expression,
-#' # the base R printer may be a bit misleading. For anstance compare
+#' # the base R printer may be a bit misleading. For instance compare
 #' # the output of `expr()` and `quo()` (which uses a custom printer)
 #' # when we unquote an integer vector:
 #' expr(how_many(!!(1:10)))
