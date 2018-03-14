@@ -198,7 +198,7 @@ quos(!!var := bernard, mouse2 = bianca)
 
 # All these features apply to dots captured by enquos():
 fn <- function(...) enquos(...)
-fn(!!! args, !!var := penny)
+fn(!!!args, !!var := penny)
 
 
 # Unquoting is especially useful for building an expression by
