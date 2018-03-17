@@ -8,7 +8,7 @@ init_c_constants <- function() {
       formals(function(...) NULL),
 
     tilde_thunk_body =
-      expr((!!.Call)(!!(rlang_tilde_eval),
+      expr((!!expr(.Call))(!!(rlang_tilde_eval),
         sys.call(),
         "data_mask_arg",
         "data_mask_top_arg",
