@@ -133,7 +133,42 @@ quo_set_env <- function(quo, env) {
 }
 
 
-#' @rdname quosure
+#' Create a list of quosures
+#'
+#' @description
+#'
+#' This small S3 class provides methods for `[` and `c()` and ensures
+#' the following invariants:
+#'
+#' * The list only contains quosures.
+#' * It is always named, possibly with a vector of empty strings.
+#'
+#' `new_quosures()` takes a list of quosures and adds the `quosures`
+#' class and a vector of empty names if needed. `as_quosures()` calls
+#' [as_quosure()] on all elements before creating the `quosures`
+#' object.
+#'
+#' @param x A list of quosures or objects to coerce to quosures.
+#' @param env The default environment for the new quosures.
+#' @param named Whether to name the list with [quos_auto_name()].
+#' @export
+new_quosures <- function(x) {
+  stopifnot(is_list(x), every(x, is_quosure))
+  structure(x,
+    class = "quosures",
+    names = names2(x)
+  )
+}
+#' @rdname new_quosures
+#' @export
+as_quosures <- function(x, env, named = FALSE) {
+  x <- map(x, as_quosure, env = env)
+  if (named) {
+    x <- quos_auto_name(x)
+  }
+  new_quosures(x)
+}
+#' @rdname new_quosures
 #' @export
 is_quosures <- function(x) {
   inherits(x, "quosures")
@@ -141,11 +176,11 @@ is_quosures <- function(x) {
 
 #' @export
 `[.quosures` <- function(x, i) {
-  set_attrs(NextMethod(), class = "quosures")
+  structure(NextMethod(), class = "quosures")
 }
 #' @export
 c.quosures <- function(..., recursive = FALSE) {
-  structure(NextMethod(), class = "quosures")
+  new_quosures(NextMethod())
 }
 #' @export
 print.quosures <- function(x, ...) {

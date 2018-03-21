@@ -12,7 +12,6 @@
 \alias{quo_get_env}
 \alias{quo_set_expr}
 \alias{quo_set_env}
-\alias{is_quosures}
 \title{Quosure getters, setters and testers}
 \usage{
 is_quosure(x)
@@ -34,8 +33,6 @@ quo_get_env(quo)
 quo_set_expr(quo, expr)
 
 quo_set_env(quo, env)
-
-is_quosures(x)
 }
 \arguments{
 \item{x}{An object to test.}
