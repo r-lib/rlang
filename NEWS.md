@@ -46,6 +46,9 @@
 * `env_print()` pretty-prints environments. It shows the contents (up
   to 20 elements) and the properties of the environment.
 
+* `flatten_if()` and `squash_if()` now handle primitive functions like
+  `base::is.list()` as predicates.
+
 
 ## Breaking changes
 

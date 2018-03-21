@@ -121,3 +121,8 @@ test_that("typed squash return typed vectors", {
   x <- list(list(bytes(0L)), list(bytes(1L)))
   expect_identical(squash_raw(x), as.raw(0:1))
 })
+
+test_that("flatten_if() and squash_if() handle primitive functions", {
+  expect_identical(flatten_if(list(list(1), 2), is.list), list(1, 2))
+  expect_identical(squash_if(list(list(list(1)), 2), is.list), list(1, 2))
+})

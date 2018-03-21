@@ -279,15 +279,17 @@ sexp* rlang_squash(sexp* dots, sexp* type, sexp* pred, sexp* depth_) {
 
   is_spliceable_t is_spliceable;
 
-  if (r_typeof(pred) == CLOSXP) {
+  switch (r_typeof(pred)) {
+  case r_type_closure:
     is_spliceable = predicate_internal(pred);
     if (is_spliceable) {
       return r_squash_if(dots, kind, is_spliceable, depth);
-    } else {
-      return rlang_squash_closure(dots, kind, pred, depth);
-    }
+    } // else fallthrough
+  case r_type_builtin:
+  case r_type_special:
+    return rlang_squash_closure(dots, kind, pred, depth);
+  default:
+    is_spliceable = predicate_pointer(pred);
+    return r_squash_if(dots, kind, is_spliceable, depth);
   }
-
-  is_spliceable = predicate_pointer(pred);
-  return r_squash_if(dots, kind, is_spliceable, depth);
 }
