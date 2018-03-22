@@ -32,7 +32,10 @@
 #'   R code in an isolated context (perhaps a child of the global
 #'   environment or of the [base environment][base_env]).
 #' @return `parse_expr()` returns an [expression][is_expression],
-#'   `parse_exprs()` returns a list of expressions.
+#'   `parse_exprs()` returns a list of expressions. Note that for the
+#'   plural variants the length of the output may be greater than the
+#'   length of the input. This would happen is one of the strings
+#'   contain several expressions (such as `"foo; bar"`).
 #' @seealso [base::parse()]
 #' @export
 #' @examples
@@ -70,10 +73,13 @@ parse_exprs <- function(x) {
       on.exit(close(x))
     }
     exprs <- parse(file = x)
-  } else if (is_scalar_character(x)) {
+  } else if (is_string(x)) {
+    exprs <- parse(text = x)
+  } else if (is.character(x)) {
+    x <- paste(x, collapse = "; ")
     exprs <- parse(text = x)
   } else {
-    abort("`x` must be a string or a R connection")
+    abort("`x` must be a character vector or an R connection")
   }
   as.list(exprs)
 }

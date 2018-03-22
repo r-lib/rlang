@@ -58,6 +58,10 @@
 * `is_symbol()` now accepts a character vector of names to mach the
   symbol against.
 
+* `parse_exprs()` and `parse_quos()` now support character vectors.
+  Note that the output may be longer than the input as each string may
+  yield multiple expressions (such as `"foo; bar"`).
+
 
 ## Breaking changes
 
