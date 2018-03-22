@@ -55,6 +55,9 @@
   a quosure and that the list is always named even if only with a
   vector of empty strings.
 
+* `is_symbol()` now accepts a character vector of names to mach the
+  symbol against.
+
 
 ## Breaking changes
 

@@ -35,16 +35,17 @@ syms <- function(x) {
 
 #' Is object a symbol?
 #' @param x An object to test.
-#' @param name An optional name that the symbol should match.
+#' @param name An optional name or vector of names that the symbol
+#'   should match.
 #' @export
 is_symbol <- function(x, name = NULL) {
   if (typeof(x) != "symbol") {
     return(FALSE)
   }
-  if (!is_null(name) && !identical(as_string(x), name)) {
-    return(FALSE)
+  if (is_null(name)) {
+    return(TRUE)
   }
-  TRUE
+  as_string(x) %in% name
 }
 
 
