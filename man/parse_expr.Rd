@@ -28,7 +28,10 @@ environment or of the \link[=base_env]{base environment}).}
 }
 \value{
 \code{parse_expr()} returns an \link[=is_expression]{expression},
-\code{parse_exprs()} returns a list of expressions.
+\code{parse_exprs()} returns a list of expressions. Note that for the
+plural variants the length of the output may be greater than the
+length of the input. This would happen is one of the strings
+contain several expressions (such as \code{"foo; bar"}).
 }
 \description{
 These functions parse and transform text into R expressions. This
