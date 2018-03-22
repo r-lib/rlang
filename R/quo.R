@@ -153,7 +153,9 @@ quo_set_env <- function(quo, env) {
 #' @param named Whether to name the list with [quos_auto_name()].
 #' @export
 new_quosures <- function(x) {
-  stopifnot(is_list(x), every(x, is_quosure))
+  if (!is_list(x) || !every(x, is_quosure)) {
+    abort("Expected a list of quosures")
+  }
   structure(x,
     class = "quosures",
     names = names2(x)

@@ -183,3 +183,24 @@ test_that("quosure predicates work", {
   expect_false(quo_is_symbolic(quo(10L)))
   expect_false(quo_is_null(quo(10L)))
 })
+
+test_that("new_quosures() checks that elements are quosures", {
+  expect_error(new_quosures(list(1)), "list of quosures")
+})
+
+test_that("new_quosures() and as_quosures() return named lists", {
+  exp <- structure(list(), names = chr(), class = "quosures")
+  expect_identical(new_quosures(list()), exp)
+  expect_identical(as_quosures(list()), exp)
+})
+
+test_that("as_quosures() applies default environment", {
+  out <- as_quosures(list(quote(foo), quote(bar)), env = base_env())
+  exp <- quos_list(new_quosure(quote(foo), base_env()), new_quosure(quote(bar), base_env()))
+  expect_identical(out, exp)
+})
+
+test_that("as_quosures() auto-names if requested", {
+  x <- list(quote(foo), quote(bar))
+  expect_named(as_quosures(x, global_env(), named = TRUE), c("foo", "bar"))
+})
