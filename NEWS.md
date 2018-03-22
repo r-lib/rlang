@@ -49,6 +49,12 @@
 * `flatten_if()` and `squash_if()` now handle primitive functions like
   `base::is.list()` as predicates.
 
+* New functions `new_quosures()` and `as_quosures()` to create or
+  coerce to a list of quosures. This is a small S3 class that ensures
+  two invariants on subsetting and concatenation: that each element is
+  a quosure and that the list is always named even if only with a
+  vector of empty strings.
+
 
 ## Breaking changes
 
