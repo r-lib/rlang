@@ -100,5 +100,6 @@ parse_quos <- function(x, env) {
   if (missing(env)) {
     abort("The quosure environment should be explicitly supplied as `env`")
   }
-  map(parse_exprs(x), new_quosure, env = as_environment(env))
+  out <- map(parse_exprs(x), new_quosure, env = as_environment(env))
+  new_quosures(out)
 }

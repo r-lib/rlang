@@ -2,7 +2,7 @@ context("parse")
 
 test_that("parse_quo() etc return quosures", {
   expect_identical(parse_quo("foo(bar)", "base"), set_env(quo(foo(bar)), base_env()))
-  expect_identical(parse_quos("foo(bar)\n mtcars", "base"), list(set_env(quo(foo(bar)), base_env()), set_env(quo(mtcars), base_env())))
+  expect_identical(parse_quos("foo(bar)\n mtcars", "base"), new_quosures(list(set_env(quo(foo(bar)), base_env()), set_env(quo(mtcars), base_env()))))
 })
 
 test_that("parse_quosure() and parse_quosures() are deprecated", {
