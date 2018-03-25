@@ -55,7 +55,7 @@ static void check_unique_names(sexp* x) {
     r_abort("`data` must be uniquely named but does not have names");
   }
   if (r_vec_find_first_duplicate(names, empty_names_chr, NULL)) {
-    r_abort("`data` must be uniquely named but has duplicate elements");
+    r_abort("`data` must be uniquely named but has duplicate columns");
   }
 }
 sexp* rlang_as_data_pronoun(sexp* x) {

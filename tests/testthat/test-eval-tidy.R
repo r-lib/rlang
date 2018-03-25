@@ -15,10 +15,10 @@ test_that("eval_tidy uses quosure environment", {
 })
 
 test_that("data must be uniquely named", {
-  expect_error(eval_tidy(NULL, list(x = 1, x = 2)), "has duplicate elements")
+  expect_error(eval_tidy(NULL, list(x = 1, x = 2)), "has duplicate columns")
 
   data <- set_names(data.frame(x = 1, x = 2, y = 3, y = 4), c("x", "x", "y", "y"))
-  expect_error(eval_tidy(NULL, data), "has duplicate elements")
+  expect_error(eval_tidy(NULL, data), "has duplicate columns")
 })
 
 test_that("can supply unnamed empty data", {
