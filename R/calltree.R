@@ -1,7 +1,6 @@
 # TODO:
 # * environments -> names
 # * Add tests
-# * Save rmd trace in test dir
 # * Finish rewrite of cli::tree()
 # * Trim to include all top-level children
 # * Add options to print (and hence to lobstr::cst)
@@ -16,7 +15,7 @@
 #' x
 #' trim_trailing(x)
 #'
-#' rmd <- readRDS("~/desktop/test.rds")
+#' rmd <- reprex_callstack()
 #' rmd
 #' trim_env(rmd)
 #' trim_trailing(rmd)
@@ -28,15 +27,35 @@
 #' trim_trailing(j(1))
 #' trim_trailing(j(2))
 #' trim_trailing(j(3))
+#'
+#' @export
 calltrace <- function(scope = caller_env()) {
   calls <- sys.calls()
   parents <- sys.parents()
-  envs <- sys.frames()
+  envs <- lapply(sys.frames(), env_label)
 
   funs <- lapply(1:sys.nframe(), sys.function)
   refs <- lapply(funs, attr, "srcref")
 
   new_calltrace(calls, parents, envs, refs)
+}
+
+reprex_callstack <- function() {
+  path <- tempfile(fileext = ".rds")
+
+  code <- expr({
+    f <- function() g()
+    g <- function() h()
+    h <- function() rlang::calltrace()
+
+    x <- try(identity(f()))
+    saveRDS(x, !!path)
+  })
+
+  reprex <- getExportedValue("reprex", "reprex")
+  reprex(input = expr_deparse(code), outfile = NULL, show = FALSE)
+
+  readRDS(path)
 }
 
 new_calltrace <- function(calls, parents, envs, refs) {
@@ -117,7 +136,7 @@ as_tree <- function(x) {
 
 # Find all children after specified environment
 trim_env <- function(x, topenv = globalenv()) {
-  is_top <- vapply(x$envs, identical, topenv, FUN.VALUE = logical(1))
+  is_top <- x$envs == env_label(topenv)
   if (!any(is_top)) {
     return(x)
   }
