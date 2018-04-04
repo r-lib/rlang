@@ -32,10 +32,10 @@
 calltrace <- function(scope = caller_env()) {
   calls <- sys.calls()
   parents <- sys.parents()
-  envs <- lapply(sys.frames(), env_label)
+  envs <- map(sys.frames(), env_label)
 
-  funs <- lapply(1:sys.nframe(), sys.function)
-  refs <- lapply(funs, attr, "srcref")
+  funs <- map(1:sys.nframe(), sys.function)
+  refs <- map(funs, attr, "srcref")
 
   new_calltrace(calls, parents, envs, refs)
 }
@@ -121,14 +121,14 @@ print.calltrace <- function(x) {
 
 as_tree <- function(x) {
   nodes <- c(0, seq_along(x$calls))
-  children <- lapply(nodes, function(id) seq_along(x$parents)[x$parents == id])
+  children <- map(nodes, function(id) seq_along(x$parents)[x$parents == id])
 
-  call_text <- vapply(as.list(x$calls), expr_name, character(1))
-  src_loc <- vapply(x$refs, src_loc, character(1))
+  call_text <- map_chr(as.list(x$calls), expr_name)
+  src_loc <- map_chr(x$refs, src_loc)
   call_text <- paste0(call_text, " ", src_loc)
 
   tree <- data.frame(id = as.character(nodes), stringsAsFactors = FALSE)
-  tree$children <- lapply(children, as.character)
+  tree$children <- map(children, as.character)
   tree$call <- c("\u2588", call_text)
 
   tree
