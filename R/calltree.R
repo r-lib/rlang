@@ -1,35 +1,58 @@
 # TODO:
-# * environments -> names
-# * Add tests
 # * Finish rewrite of cli::tree()
-# * Trim to include all top-level children
-# * Add options to print (and hence to lobstr::cst)
 # * trim_self to remove calltrace()
 # * check printing + subsetting for empty tree
 
+#' Capture a call trace.
+#'
+#' A call trace captures sequence of calls that lead to the current function,
+#' sometimes called the call stack. Because of lazy evaluation, the call
+#' stack in R is actually a tree, which the print method of this object will
+#' reveal.
+#'
+#' @param top_env If non-null, this will be used to automatically trim the
+#'   call trace to only show calls after the last occurence of this enviroment.
+#'   This is needed when the code that calls `calltree()` is run indirectly,
+#'   for example in tests, or inside an RMarkdown document.
 #' @examples
+#' f <- function() g()
+#' g <- function() h()
+#' h <- function() calltrace()
 #'
+#' # When no lazy evaluation is involved the calltrack is linear
+#' # (i.e. every call has only one child)
+#' f()
 #'
-#' x <- NULL
-#' try(with(mtcars, {x <<- try(f()); 10}))
+#' # Lazy evaluation introduces a tree like structure
+#' identity(identity(f()))
+#' identity(try(f()))
+#' try(identity(f()))
+#'
+#' # When printing, you can request to simplify this tree to only show
+#' # the direct sequence of calls that lead to `calltrace()`
+#' x <- try(identity(f()))
 #' x
-#' trim_trailing(x)
+#' print(x, simplify = TRUE)
 #'
-#' rmd <- reprex_callstack()
-#' rmd
-#' trim_env(rmd)
-#' trim_trailing(rmd)
+#' # With a little cunning you can also use it to capture the
+#' # tree from within a base NSE function
+#' x <- NULL
+#' with(mtcars, {x <<- f(); 10})
+#' x
 #'
-#' j <- function(i) k(i)
-#' k <- function(i) l(i)
-#' l <- function(i) eval(quote(calltrace()), parent.frame(i))
+#' # When code is executed indirectly, i.e. via source or within an
+#' # RMarkdown document, you'll tend to get a lot of guff at the beginning
+#' # related to the execution environment:
+#' source(textConnection("f()"), echo = TRUE)
 #'
-#' trim_trailing(j(1))
-#' trim_trailing(j(2))
-#' trim_trailing(j(3))
+#' # To automatically strip this off, pass `top_env = globalenv()`
+#' # That will automatically trim of calls prior to the last appearance
+#' # of the global environment on the stack
+#' h <- function() calltrace(globalenv())
+#' source(textConnection("f()"), echo = TRUE)
 #'
 #' @export
-calltrace <- function(scope = caller_env()) {
+calltrace <- function(top_env = NULL) {
   calls <- sys.calls()
   parents <- sys.parents()
   envs <- map(sys.frames(), env_label)
@@ -37,25 +60,8 @@ calltrace <- function(scope = caller_env()) {
   funs <- map(1:sys.nframe(), sys.function)
   refs <- map(funs, attr, "srcref")
 
-  new_calltrace(calls, parents, envs, refs)
-}
-
-reprex_callstack <- function() {
-  path <- tempfile(fileext = ".rds")
-
-  code <- expr({
-    f <- function() g()
-    g <- function() h()
-    h <- function() rlang::calltrace()
-
-    x <- try(identity(f()))
-    saveRDS(x, !!path)
-  })
-
-  reprex <- getExportedValue("reprex", "reprex")
-  reprex(input = expr_deparse(code), outfile = NULL, show = FALSE)
-
-  readRDS(path)
+  trace <- new_calltrace(calls, parents, envs, refs)
+  trace_trim_env(trace, top_env)
 }
 
 new_calltrace <- function(calls, parents, envs, refs) {
@@ -72,6 +78,87 @@ new_calltrace <- function(calls, parents, envs, refs) {
   )
 }
 
+# Methods -----------------------------------------------------------------
+
+#' @export
+format.calltrace <- function(x, simplify = FALSE, ...) {
+  if (simplify) {
+    x <- trace_simplify(x)
+  }
+  tree <- as_tree(x)
+  cli::tree(tree)
+}
+
+#' @export
+print.calltrace <- function(x, simplify = FALSE, ...) {
+  meow(format(x, ..., simplify = simplify))
+  invisible(x)
+}
+
+#' @export
+length.calltrace <- function(x) {
+  length(x$calls)
+}
+
+#' @export
+`[.calltrace` <- function(x, i, ...) {
+  stopifnot(is.integer(i))
+
+  calls <- x$calls[i]
+  envs <- x$envs[i]
+  parents <- match(as.character(x$parents[i]), as.character(i), nomatch = 0)
+  refs <- x$refs[i]
+
+  new_calltrace(calls, parents, envs, refs)
+}
+
+# Trimming ----------------------------------------------------------------
+
+trace_trim_env <- function(x, top_env = globalenv()) {
+  if (is.null(top_env)) {
+    return(x)
+  }
+
+  is_top <- x$envs == env_label(top_env)
+  if (!any(is_top)) {
+    return(x)
+  }
+
+  start <- last(which(is_top)) + 1
+  end <- length(x$envs)
+
+  x[start:end]
+}
+
+trace_simplify <- function(x) {
+  path <- integer()
+  id <- length(x$parents)
+
+  while (id != 0) {
+    path <- c(path, id)
+    id <- x$parents[id]
+  }
+
+  x[rev(path)]
+}
+
+# Printing ----------------------------------------------------------------
+
+as_tree <- function(x) {
+  nodes <- c(0, seq_along(x$calls))
+  children <- map(nodes, function(id) seq_along(x$parents)[x$parents == id])
+
+  call_text <- map_chr(as.list(x$calls), expr_name)
+  src_loc <- map_chr(x$refs, src_loc)
+  call_text <- paste0(call_text, " ", src_loc)
+
+  tree <- data.frame(id = as.character(nodes), stringsAsFactors = FALSE)
+  tree$children <- map(children, as.character)
+  tree$call <- c("\u2588", call_text)
+
+  tree
+}
+
 src_loc <- function(x) {
   if (is.null(x))
     return("")
@@ -81,7 +168,7 @@ src_loc <- function(x) {
     return("")
   }
   file <- srcfile$filename
-  if (identical(file, "")) {
+  if (identical(file, "") || identical(file, "<text>")) {
     return("")
   }
 
@@ -99,115 +186,22 @@ relish <- function(x, dir = getwd()) {
   gsub(dir, "", x, fixed = TRUE)
 }
 
-#' @export
-print.calltrace <- function(x) {
-  tree <- as_tree(x)
-  print(cli::tree(tree))
+# Misc --------------------------------------------------------------------
 
-  invisible(x)
+reprex_callstack <- function() {
+  path <- tempfile(fileext = ".rds")
+
+  code <- expr({
+    f <- function() g()
+    g <- function() h()
+    h <- function() rlang::calltrace(globalenv())
+
+    x <- try(identity(f()))
+    saveRDS(x, !!path)
+  })
+
+  reprex <- getExportedValue("reprex", "reprex")
+  reprex(input = expr_deparse(code), outfile = NULL, show = FALSE)
+
+  readRDS(path)
 }
-
-#' @export
-`[.calltrace` <- function(x, i, ...) {
-  stopifnot(is.integer(i))
-
-  calls <- x$calls[i]
-  envs <- x$envs[i]
-  parents <- match(as.character(x$parents[i]), as.character(i), nomatch = 0)
-  refs <- x$refs[i]
-
-  new_calltrace(calls, parents, envs, refs)
-}
-
-as_tree <- function(x) {
-  nodes <- c(0, seq_along(x$calls))
-  children <- map(nodes, function(id) seq_along(x$parents)[x$parents == id])
-
-  call_text <- map_chr(as.list(x$calls), expr_name)
-  src_loc <- map_chr(x$refs, src_loc)
-  call_text <- paste0(call_text, " ", src_loc)
-
-  tree <- data.frame(id = as.character(nodes), stringsAsFactors = FALSE)
-  tree$children <- map(children, as.character)
-  tree$call <- c("\u2588", call_text)
-
-  tree
-}
-
-# Find all children after specified environment
-trim_env <- function(x, topenv = globalenv()) {
-  is_top <- x$envs == env_label(topenv)
-  if (!any(is_top)) {
-    return(x)
-  }
-
-  start <- last(which(is_top)) + 1
-  end <- length(x$envs)
-
-  x[start:end]
-}
-
-# Find all components of last branch
-trim_trailing <- function(x) {
-  path <- integer()
-  id <- length(x$parents)
-
-  while (id != 0) {
-    path <- c(path, id)
-    id <- x$parents[id]
-  }
-
-  x[rev(path)]
-}
-
-
-f <- function() g()
-g <- function() h()
-h <- function() calltrace()
-
-
-# Tree --------------------------------------------------------------------
-
-# Compared to cli::tree
-# * doesn't respect width -
-cat_tree <- function(id, children, label1, label2 = NULL) {
-  style <- box_chars()
-
-  res <- character()
-
-  pt <- function(root, n = integer(), mx = integer()) {
-
-    num_root <- match(root, data[[1]])
-
-    level <- length(n) - 1
-    prefix <- vcapply(seq_along(n), function(i) {
-      if (n[i] < mx[i]) {
-        if (i == length(n)) {
-          paste0(style$j, style$h)
-        } else {
-          paste0(style$v, " ")
-        }
-      } else if (n[i] == mx[i] && i == length(n)) {
-        paste0(style$l, style$h)
-      } else {
-        "  "
-      }
-    })
-
-    res <<- c(res, paste0(paste(prefix, collapse = ""), labels[[num_root]]))
-
-    children <- children[[num_root]]
-    for (d in seq_along(children)) {
-      pt(children[[d]], c(n, d), c(mx, length(children)))
-    }
-  }
-
-  pt(root)
-
-  if (!is.null(label2)) {
-    res <- paste0(format(res), label2)
-  }
-
-  cat(res, sep = "\n")
-}
-
