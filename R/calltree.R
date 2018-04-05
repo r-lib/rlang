@@ -1,6 +1,3 @@
-# TODO:
-# * Finish rewrite of cli::tree()
-
 #' Capture a call trace.
 #'
 #' A call trace captures sequence of calls that lead to the current function,
@@ -89,8 +86,8 @@ format.calltrace <- function(x, simplify = FALSE, ...) {
   if (simplify) {
     x <- trace_simplify(x)
   }
-  tree <- as_tree(x)
-  cli::tree(tree)
+  tree <- trace_as_tree(x)
+  cli_tree(tree)
 }
 
 #' @export
@@ -152,7 +149,7 @@ trace_simplify <- function(x) {
 
 # Printing ----------------------------------------------------------------
 
-as_tree <- function(x) {
+trace_as_tree <- function(x) {
   nodes <- c(0, seq_along(x$calls))
   children <- map(nodes, function(id) seq_along(x$parents)[x$parents == id])
 
