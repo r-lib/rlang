@@ -1,6 +1,11 @@
 
 # rlang 0.2.0.9000
 
+* New `calltrace()` captures the call trace, which is similar to traceback,
+  but contains additional structure about the relationship between frames.
+  It comes with tools for automatically restricting to frames after a certain
+  environment on the stack, and to simplify when printing.
+
 * `env()` now treats a single unnamed argument as the parent of the
   new environment. Consequently, `child_env()` is now superfluous and
   is now in questioning life cycle.
