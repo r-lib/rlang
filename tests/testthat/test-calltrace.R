@@ -1,4 +1,4 @@
-context("test-calltree.R")
+context("calltrace.R")
 
 # This test must come first because print method includes srcrefs
 test_that("tree printing only changes deliberately", {
