@@ -1,12 +1,27 @@
 context("test-calltree.R")
 
-# Trimming ----------------------------------------------------------------
+# This test must come first because print method includes srcrefs
+test_that("tree printing only changes deliberately", {
+  e <- environment()
+  j <- function(i) k(i)
+  k <- function(i) l(i)
+  l <- function(i) calltrace(e)
+
+  x <- j()
+
+  expect_known_output({
+    print(x)
+    cat("\n")
+    print(x[0L])
+  }, test_path("calltrace-print.txt"))
+})
 
 test_that("trace_simplify() extracts last branch", {
   e <- environment()
   j <- function(i) k(i)
   k <- function(i) l(i)
-  l <- function(i) eval(quote(calltrace(e)), parent.frame(i))
+  l <- function(i) eval(quote(m()), parent.frame(i))
+  m <- function() calltrace(e)
 
   x1 <- j(1)
   expect_length(x1, 6)

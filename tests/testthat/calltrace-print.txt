@@ -1,0 +1,6 @@
+█
+└─j() test-calltree.R:6:8
+  └─k(i) test-calltree.R:7:8
+    └─l(i) test-calltree.R:8:8
+
+█

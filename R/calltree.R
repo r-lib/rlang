@@ -1,7 +1,5 @@
 # TODO:
 # * Finish rewrite of cli::tree()
-# * trim_self to remove calltrace()
-# * check printing + subsetting for empty tree
 
 #' Capture a call trace.
 #'
@@ -50,7 +48,6 @@
 #' # of the global environment on the stack
 #' h <- function() calltrace(globalenv())
 #' source(textConnection("f()"), echo = TRUE)
-#'
 #' @export
 calltrace <- function(top_env = NULL) {
   calls <- sys.calls()
@@ -61,7 +58,10 @@ calltrace <- function(top_env = NULL) {
   refs <- map(funs, attr, "srcref")
 
   trace <- new_calltrace(calls, parents, envs, refs)
-  trace_trim_env(trace, top_env)
+  trace <- trace_trim_env(trace, top_env)
+  trace <- trace[-length(trace)] # remove call to self
+
+  trace
 }
 
 new_calltrace <- function(calls, parents, envs, refs) {
@@ -82,6 +82,10 @@ new_calltrace <- function(calls, parents, envs, refs) {
 
 #' @export
 format.calltrace <- function(x, simplify = FALSE, ...) {
+  if (length(x) == 0) {
+    return("\u2588")
+  }
+
   if (simplify) {
     x <- trace_simplify(x)
   }
@@ -103,6 +107,10 @@ length.calltrace <- function(x) {
 #' @export
 `[.calltrace` <- function(x, i, ...) {
   stopifnot(is.integer(i))
+
+  if (all(i < 0L)) {
+    i <- setdiff(seq_along(x), abs(i))
+  }
 
   calls <- x$calls[i]
   envs <- x$envs[i]
