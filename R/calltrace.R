@@ -80,7 +80,7 @@ new_calltrace <- function(calls, parents, envs, refs) {
 #' @export
 format.calltrace <- function(x, simplify = FALSE, dir = getwd(), ...) {
   if (length(x) == 0) {
-    return("\u2588")
+    return(trace_root())
   }
 
   if (simplify) {
@@ -159,7 +159,7 @@ trace_as_tree <- function(x, dir = getwd()) {
 
   tree <- data.frame(id = as.character(nodes), stringsAsFactors = FALSE)
   tree$children <- map(children, as.character)
-  tree$call <- c("\u2588", call_text)
+  tree$call <- c(trace_root(), call_text)
 
   tree
 }
@@ -190,6 +190,8 @@ relish <- function(x, dir = getwd()) {
 
   gsub(dir, "", x, fixed = TRUE)
 }
+
+trace_root <- function() if (cli_is_utf8_output()) "\u2588" else "x"
 
 # Misc --------------------------------------------------------------------
 
