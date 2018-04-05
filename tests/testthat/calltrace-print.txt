@@ -1,0 +1,6 @@
+█
+└─j() testthat/test-calltrace.R:8:8
+  └─k(i) testthat/test-calltrace.R:9:8
+    └─l(i) testthat/test-calltrace.R:10:8
+
+█

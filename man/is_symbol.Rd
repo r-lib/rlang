@@ -9,7 +9,8 @@ is_symbol(x, name = NULL)
 \arguments{
 \item{x}{An object to test.}
 
-\item{name}{An optional name that the symbol should match.}
+\item{name}{An optional name or vector of names that the symbol
+should match.}
 }
 \description{
 Is object a symbol?
