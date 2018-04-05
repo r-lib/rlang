@@ -1,6 +1,6 @@
 █
-└─j() test-calltrace.R:6:8
-  └─k(i) test-calltrace.R:7:8
-    └─l(i) test-calltrace.R:8:8
+└─j() testthat/test-calltrace.R:8:8
+  └─k(i) testthat/test-calltrace.R:9:8
+    └─l(i) testthat/test-calltrace.R:10:8
 
 █

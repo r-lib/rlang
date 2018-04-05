@@ -2,6 +2,8 @@ context("calltrace.R")
 
 # This test must come first because print method includes srcrefs
 test_that("tree printing only changes deliberately", {
+  dir <- normalizePath(test_path(".."))
+
   e <- environment()
   j <- function(i) k(i)
   k <- function(i) l(i)
@@ -10,9 +12,9 @@ test_that("tree printing only changes deliberately", {
   x <- j()
 
   expect_known_output({
-    print(x)
+    print(x, dir = dir)
     cat("\n")
-    print(x[0L])
+    print(x[0L], dir = dir)
   }, test_path("calltrace-print.txt"))
 })
 

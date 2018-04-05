@@ -78,7 +78,7 @@ new_calltrace <- function(calls, parents, envs, refs) {
 # Methods -----------------------------------------------------------------
 
 #' @export
-format.calltrace <- function(x, simplify = FALSE, ...) {
+format.calltrace <- function(x, simplify = FALSE, dir = getwd(), ...) {
   if (length(x) == 0) {
     return("\u2588")
   }
@@ -86,13 +86,13 @@ format.calltrace <- function(x, simplify = FALSE, ...) {
   if (simplify) {
     x <- trace_simplify(x)
   }
-  tree <- trace_as_tree(x)
+  tree <- trace_as_tree(x, dir = dir)
   cli_tree(tree)
 }
 
 #' @export
-print.calltrace <- function(x, simplify = FALSE, ...) {
-  meow(format(x, ..., simplify = simplify))
+print.calltrace <- function(x, simplify = FALSE, dir = getwd(), ...) {
+  meow(format(x, ..., simplify = simplify, dir = dir))
   invisible(x)
 }
 
@@ -149,12 +149,12 @@ trace_simplify <- function(x) {
 
 # Printing ----------------------------------------------------------------
 
-trace_as_tree <- function(x) {
+trace_as_tree <- function(x, dir = getwd()) {
   nodes <- c(0, seq_along(x$calls))
   children <- map(nodes, function(id) seq_along(x$parents)[x$parents == id])
 
   call_text <- map_chr(as.list(x$calls), expr_name)
-  src_loc <- map_chr(x$refs, src_loc)
+  src_loc <- map_chr(x$refs, src_loc, dir = dir)
   call_text <- paste0(call_text, " ", src_loc)
 
   tree <- data.frame(id = as.character(nodes), stringsAsFactors = FALSE)
@@ -164,7 +164,7 @@ trace_as_tree <- function(x) {
   tree
 }
 
-src_loc <- function(x) {
+src_loc <- function(x, dir = getwd()) {
   if (is.null(x))
     return("")
 
@@ -180,7 +180,7 @@ src_loc <- function(x) {
   if (length(srcref) == 6L)
     srcref <- c(srcref, srcref[c(1L, 3L)])
 
-  paste0(relish(file), ":", x[[1]], ":", x[[5]])
+  paste0(relish(file, dir = dir), ":", x[[1]], ":", x[[5]])
 }
 
 relish <- function(x, dir = getwd()) {
