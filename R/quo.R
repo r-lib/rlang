@@ -398,7 +398,7 @@ print.quosure <- function(x, ...) {
     "  env:  "
   )
 
-  env <- get_env(x)
+  env <- quo_get_env(x)
   quo_env_print(env)
 
   invisible(x)
