@@ -45,7 +45,8 @@ prepend <- function(x, values, before = 1) {
 #' @section Life cycle:
 #'
 #' `modify()` is experimental, expect API changes. We are still
-#' figuring out what vector tools belong in rlang.
+#' figuring out what vector tools belong in rlang. To use it in your
+#' package, call `register_experimental("rlang::modify")`.
 #'
 #' @param .x A vector to modify.
 #' @param ... List of elements to merge into `.x`. Named elements
@@ -62,6 +63,8 @@ prepend <- function(x, values, before = 1) {
 #' y <- list(b = 3, c = 4)
 #' modify(x, splice(y))
 modify <- function(.x, ...) {
+  check_experimental("rlang::modify")
+
   out <- as.list(.x)
   args <- dots_list(...)
 
