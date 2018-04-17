@@ -1,6 +1,10 @@
 
 # rlang 0.2.0.9000
 
+* New `register_experimental()` and `check_experimental()`
+  functions. These force developers to explicitly enable use of
+  experimental functions in their package.
+
 * New `calltrace()` captures the call trace, which is similar to traceback,
   but contains additional structure about the relationship between frames.
   It comes with tools for automatically restricting to frames after a certain
