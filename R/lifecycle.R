@@ -168,3 +168,67 @@
 #'
 #' @name lifecycle
 NULL
+
+
+#' Enable experimental functions
+#'
+#' Call this at the top level of your package to enable experimental
+#' functions. Please avoid depending on experimental functions as API
+#' changes are likely.
+#'
+#' @param names Names of functions to enable.
+#' @param name Name of function to check.
+#' @param env Environment in which to register or check a
+#'   function. The `topenv()` of that environment is taken for both
+#'   registration and validation.
+#' @export
+#' @examples
+#' # A package might export an experimental function for
+#' # testing purposes:
+#' highly_experimental <- function() {
+#'   check_experimental("thispkg::highly_experimental")
+#'   "return_value"
+#' }
+#'
+#' # To use it in your package, register it explicitly in your
+#' # namespace:
+#' register_experimental("thispkg::highly_experimental")
+#'
+#' # You can then use it without triggering an error:
+#' myfunction <- function() {
+#'   highly_experimental()
+#' }
+register_experimental <- function(names, env = caller_env()) {
+  stopifnot(is_character(names))
+  top <- topenv(env)
+  registered <- top[[allowed_experimental]]
+  top[[allowed_experimental]] <- unique(chr(registered, names))
+  invisible(NULL)
+}
+
+#' @rdname register_experimental
+#' @export
+check_experimental <- function(name, env = caller_env(2L)) {
+  stopifnot(is_string(name))
+
+  # Always allow calling experimental functions from the global env
+  if (is_reference(env, global_env())) {
+    return(invisible(NULL))
+  }
+
+  top <- topenv(env)
+  if (is_reference(top, global_env())) {
+    return(invisible(NULL))
+  }
+
+
+  registered <- name %in% top[[allowed_experimental]]
+  if (!registered) {
+    msg <- "`%s()` is an experimental function. Please register it with `register_experimental()`"
+    abort(sprintf(msg, name))
+  }
+
+  invisible(NULL)
+}
+
+allowed_experimental <- ".__rlang_allowed_experimental__."

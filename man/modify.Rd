@@ -25,7 +25,8 @@ returns a list.
 
 
 \code{modify()} is experimental, expect API changes. We are still
-figuring out what vector tools belong in rlang.
+figuring out what vector tools belong in rlang. To use it in your
+package, call \code{register_experimental("rlang::modify")}.
 }
 
 \examples{
