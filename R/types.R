@@ -63,10 +63,15 @@ is_double <- function(x, n = NULL, finite = NULL) {
 #' @export
 #' @rdname type-predicates
 is_character <- function(x, n = NULL, encoding = NULL) {
-  if (typeof(x) != "character") return(FALSE)
-  if (!is_null(n) && length(x) != n) return(FALSE)
-  stopifnot(typeof(encoding) %in% c("character", "NULL"))
-  if (!is_null(encoding) && !all(chr_encoding(x) %in% encoding)) return(FALSE)
+  if (!.Call(rlang_is_character, x, n)) {
+    return(FALSE)
+  }
+  if (!is_null(encoding)) {
+    stopifnot(typeof(encoding) == "character")
+    if (!all(chr_encoding(x) %in% encoding)) {
+      return(FALSE)
+    }
+  }
   TRUE
 }
 #' @export

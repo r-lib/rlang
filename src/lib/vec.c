@@ -99,6 +99,9 @@ bool r_is_double(sexp* x, r_ssize_t n, int finite) {
   return true;
 }
 
+bool r_is_character(sexp* x, r_ssize_t n) {
+  return r_typeof(x) == r_type_character && has_correct_length(x, n);
+}
 
 r_ssize_t r_vec_length(sexp* x) {
   switch(r_typeof(x)) {

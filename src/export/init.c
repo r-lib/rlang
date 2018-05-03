@@ -103,6 +103,7 @@ extern sexp* rlang_is_vector(sexp*, sexp*);
 extern sexp* rlang_is_finite(sexp*);
 extern sexp* rlang_is_integer(sexp*, sexp*);
 extern sexp* rlang_is_double(sexp*, sexp*, sexp*);
+extern sexp* rlang_is_character(sexp*, sexp*);
 
 // Library initialisation defined below
 sexp* rlang_library_load();
@@ -227,6 +228,7 @@ static const r_callable r_callables[] = {
   {"rlang_is_finite",           (r_fn_ptr_t) &rlang_is_finite, 1},
   {"rlang_is_integer",          (r_fn_ptr_t) &rlang_is_integer, 2},
   {"rlang_is_double",           (r_fn_ptr_t) &rlang_is_double, 3},
+  {"rlang_is_character",        (r_fn_ptr_t) &rlang_is_character, 2},
   {NULL, NULL, 0}
 };
 

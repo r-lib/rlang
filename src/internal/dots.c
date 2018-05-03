@@ -293,7 +293,7 @@ static sexp* dots_unquote(sexp* dots, struct dots_capture_info* capture_info) {
 
 
 static int match_ignore_empty_arg(sexp* ignore_empty) {
-  if (!r_is_character(ignore_empty) || r_length(ignore_empty) == 0) {
+  if (r_typeof(ignore_empty) != r_type_character || r_length(ignore_empty) == 0) {
     r_abort("`.ignore_empty` must be a character vector");
   }
   const char* arg = r_c_string(ignore_empty);

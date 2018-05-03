@@ -26,7 +26,7 @@ bool r_chr_has(sexp* chr, const char* c_string) {
 }
 
 static void validate_chr_setter(sexp* chr, sexp* r_string) {
-  if (!r_is_character(chr)) {
+  if (r_typeof(chr) != r_type_character) {
     r_abort("`chr` must be a character vector");
   }
   if (!r_is_r_string(r_string)) {

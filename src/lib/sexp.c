@@ -25,6 +25,6 @@ bool r_is_named(sexp* x) {
 bool r_has_name_at(sexp* x, r_ssize_t i) {
   sexp* nms = r_vec_names(x);
   return
-    r_is_character(nms) &&
+    r_typeof(nms) == r_type_character &&
     !r_chr_has_empty_string_at(nms, i);
 }
