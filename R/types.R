@@ -77,16 +77,12 @@ is_character <- function(x, n = NULL, encoding = NULL) {
 #' @export
 #' @rdname type-predicates
 is_logical <- function(x, n = NULL) {
-  if (typeof(x) != "logical") return(FALSE)
-  if (!is_null(n) && length(x) != n) return(FALSE)
-  TRUE
+  .Call(rlang_is_logical, x, n)
 }
 #' @export
 #' @rdname type-predicates
 is_raw <- function(x, n = NULL) {
-  if (typeof(x) != "raw") return(FALSE)
-  if (!is_null(n) && length(x) != n) return(FALSE)
-  TRUE
+  .Call(rlang_is_raw, x, n)
 }
 #' @export
 #' @rdname type-predicates
@@ -136,17 +132,17 @@ is_scalar_double <- function(x) {
 #' @export
 #' @rdname scalar-type-predicates
 is_scalar_character <- function(x, encoding = NULL) {
-  is_character(x, encoding = encoding, n = 1)
+  is_character(x, encoding = encoding, n = 1L)
 }
 #' @export
 #' @rdname scalar-type-predicates
 is_scalar_logical <- function(x) {
-  is_logical(x, n = 1)
+  .Call(rlang_is_logical, x, 1L)
 }
 #' @export
 #' @rdname scalar-type-predicates
 is_scalar_raw <- function(x) {
-  is_raw(x, n = 1)
+  .Call(rlang_is_raw, x, 1L)
 }
 #' @export
 #' @rdname scalar-type-predicates

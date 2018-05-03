@@ -327,6 +327,10 @@ sexp* rlang_is_vector(sexp* x, sexp* n_) {
   return r_bool_as_shared_logical(r_is_vector(x, n));
 }
 
+sexp* rlang_is_logical(sexp* x, sexp* n_) {
+  r_ssize_t n = validate_n(n_);
+  return r_bool_as_shared_logical(r_is_logical(x, n));
+}
 sexp* rlang_is_integer(sexp* x, sexp* n_) {
   r_ssize_t n = validate_n(n_);
   return r_bool_as_shared_logical(r_is_integer(x, n));
@@ -340,4 +344,8 @@ sexp* rlang_is_double(sexp* x, sexp* n_, sexp* finite_) {
 sexp* rlang_is_character(sexp* x, sexp* n_) {
   r_ssize_t n = validate_n(n_);
   return r_bool_as_shared_logical(r_is_character(x, n));
+}
+sexp* rlang_is_raw(sexp* x, sexp* n_) {
+  r_ssize_t n = validate_n(n_);
+  return r_bool_as_shared_logical(r_is_raw(x, n));
 }

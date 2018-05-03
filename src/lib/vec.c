@@ -37,6 +37,10 @@ bool r_is_vector(sexp* x, r_ssize_t n) {
   }
 }
 
+bool r_is_logical(sexp* x, r_ssize_t n) {
+  return r_typeof(x) == r_type_logical && has_correct_length(x, n);
+}
+
 bool r_is_integerish(sexp* x) {
   static sexp* predicate = NULL;
   if (!predicate) {
@@ -101,6 +105,9 @@ bool r_is_double(sexp* x, r_ssize_t n, int finite) {
 
 bool r_is_character(sexp* x, r_ssize_t n) {
   return r_typeof(x) == r_type_character && has_correct_length(x, n);
+}
+bool r_is_raw(sexp* x, r_ssize_t n) {
+  return r_typeof(x) == r_type_raw && has_correct_length(x, n);
 }
 
 r_ssize_t r_vec_length(sexp* x) {

@@ -61,10 +61,12 @@ bool r_is_scalar_atomic(sexp* x);
 bool r_is_atomic(sexp* x, r_ssize_t n);
 
 bool r_is_finite(sexp* x);
+bool r_is_logical(sexp* x, r_ssize_t n);
 bool r_is_integerish(sexp* x);
 bool r_is_integer(sexp* x, r_ssize_t n);
 bool r_is_double(sexp* x, r_ssize_t n, int finite);
 bool r_is_character(sexp* x, r_ssize_t n);
+bool r_is_raw(sexp* x, r_ssize_t n);
 
 
 static inline bool r_is_scalar_character(sexp* x) {
