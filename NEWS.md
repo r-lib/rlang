@@ -1,6 +1,8 @@
 
 # rlang 0.2.0.9000
 
+* `with_handlers()` now produces a cleaner stack trace.
+
 * New `calltrace()` captures the call trace, which is similar to traceback,
   but contains additional structure about the relationship between frames.
   It comes with tools for automatically restricting to frames after a certain

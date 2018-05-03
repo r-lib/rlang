@@ -77,23 +77,26 @@
 #' }
 #' with_handlers(fn2(), foo = inplace(exiting_handler), foo = inplace(other_handler))
 with_handlers <- function(.expr, ...) {
-  quo <- enquo(.expr)
   handlers <- list2(...)
+  if (!every(handlers, is_function)) {
+    abort("All handlers should be functions")
+  }
 
   inplace <- keep(handlers, inherits, "inplace")
   exiting <- keep(handlers, inherits, "exiting")
-
   if (length(handlers) > length(exiting) + length(inplace)) {
     abort("all handlers should inherit from `exiting` or `inplace`")
   }
+
+  expr <- quote(.expr)
   if (length(exiting)) {
-    quo <- quo(tryCatch(!! quo, !!! exiting))
+    expr <- expr(tryCatch(!!expr, !!!exiting))
   }
   if (length(inplace)) {
-    quo <- quo(withCallingHandlers(!! quo, !!! inplace))
+    expr <- expr(withCallingHandlers(!!expr, !!!inplace))
   }
 
-  eval_tidy(quo)
+  .Call(rlang_eval, expr, environment())
 }
 
 #' Create an exiting or in place handler
