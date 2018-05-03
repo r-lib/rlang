@@ -63,7 +63,7 @@ prepend <- function(x, values, before = 1) {
 #' modify(x, splice(y))
 modify <- function(.x, ...) {
   out <- as.list(.x)
-  args <- dots_list(...)
+  args <- list2(...)
 
   args_nms <- names(args)
   exists <- have_name(args) & args_nms %in% names(out)

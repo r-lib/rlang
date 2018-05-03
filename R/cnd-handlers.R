@@ -78,7 +78,7 @@
 #' with_handlers(fn2(), foo = inplace(exiting_handler), foo = inplace(other_handler))
 with_handlers <- function(.expr, ...) {
   quo <- enquo(.expr)
-  handlers <- dots_list(...)
+  handlers <- list2(...)
 
   inplace <- keep(handlers, inherits, "inplace")
   exiting <- keep(handlers, inherits, "exiting")
@@ -224,7 +224,7 @@ restarting <- function(.restart, ..., .fields = NULL) {
     stopifnot(is_character(.fields) && is_dictionaryish(.fields))
   }
 
-  args <- dots_list(...)
+  args <- list2(...)
   handler <- function(c) {
     fields <- set_names(c[.fields], names(.fields))
     rst_args <- c(fields, args)

@@ -54,7 +54,7 @@
 #' peek_options("my_option")
 #' peek_options("my_option", "digits")
 scoped_options <- function(..., .frame = caller_env()) {
-  options <- dots_list(...)
+  options <- list2(...)
   stopifnot(is_named(options))
 
   old <- options(options)
@@ -74,7 +74,7 @@ with_options <- function(.expr, ...) {
 #' @rdname scoped_options
 #' @export
 push_options <- function(...) {
-  options(dots_list(...))
+  options(list2(...))
 }
 #' @rdname scoped_options
 #' @export

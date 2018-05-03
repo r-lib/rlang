@@ -74,7 +74,7 @@ flexible \code{:=} operator an alias of \code{=}. You can use it to supply
 names, e.g. \code{a := b} is equivalent to \code{a = b}. Since its syntax is
 more flexible you can unquote on the LHS:\preformatted{name <- "Jane"
 
-dots_list(!!name := 1 + 2)
+list2(!!name := 1 + 2)
 exprs(!!name := 1 + 2)
 quos(!!name := 1 + 2)
 }

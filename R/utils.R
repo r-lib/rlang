@@ -214,7 +214,7 @@ codes <- list(
   }
 }
 r6lite <- function(...) {
-  structure(new_environment(dots_list(...)), class = "r6lite")
+  structure(new_environment(list2(...)), class = "r6lite")
 }
 child_r6lite <- function(.parent, ...) {
   structure(child_env(.parent, ...), class = "r6lite")

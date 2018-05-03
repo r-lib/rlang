@@ -59,7 +59,7 @@ call2 <- function(.fn, ..., .ns = NULL) {
     .fn <- new_call(namespace_sym, pairlist(sym(.ns), .fn))
   }
 
-  new_call(.fn, as.pairlist(dots_list(...)))
+  new_call(.fn, as.pairlist(list2(...)))
 }
 
 #' Is an object callable?
@@ -262,7 +262,7 @@ is_call <- function(x, name = NULL, n = NULL, ns = NULL) {
 call_modify <- function(.call, ...,
                         .standardise = FALSE,
                         .env = caller_env()) {
-  args <- dots_list(...)
+  args <- list2(...)
   if (any(duplicated(names(args)) & names(args) != "")) {
     abort("Duplicate arguments")
   }

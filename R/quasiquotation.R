@@ -48,7 +48,7 @@
 #' ```
 #' name <- "Jane"
 #'
-#' dots_list(!!name := 1 + 2)
+#' list2(!!name := 1 + 2)
 #' exprs(!!name := 1 + 2)
 #' quos(!!name := 1 + 2)
 #' ```

@@ -97,7 +97,7 @@
 #' # fn() now sees the objects:
 #' fn()
 env_bind <- function(.env, ...) {
-  invisible(env_bind_impl(.env, dots_list(...)))
+  invisible(env_bind_impl(.env, list2(...)))
 }
 env_bind_impl <- function(env, data) {
   if (!is_vector(data)) {
@@ -249,7 +249,7 @@ env_bind_fns <- function(.env, ...) {
 #' paste(foo, bar)
 scoped_bindings <- function(..., .env = .frame, .frame = caller_env()) {
   env <- get_env(.env)
-  bindings <- dots_list(...)
+  bindings <- list2(...)
   stopifnot(is_named(bindings))
 
   nms <- names(bindings)
