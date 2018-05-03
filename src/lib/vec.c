@@ -24,6 +24,27 @@ bool r_is_scalar_atomic(sexp* x) {
   return r_is_atomic(x, 1);
 }
 
+bool r_is_vector(sexp* x, r_ssize_t n) {
+  switch(r_typeof(x)) {
+  case LGLSXP:
+  case INTSXP:
+  case REALSXP:
+  case CPLXSXP:
+  case STRSXP:
+  case RAWSXP:
+  case VECSXP:
+    break;
+  default:
+    return false;
+  }
+
+  if (n >= 0 && r_length(x) != n) {
+    return false;
+  }
+
+  return true;
+}
+
 bool r_is_integerish(sexp* x) {
   static sexp* predicate = NULL;
   if (!predicate) {
@@ -33,21 +54,6 @@ bool r_is_integerish(sexp* x) {
   sexp* out = r_eval(call, r_empty_env);
   FREE(1);
   return r_lgl_get(out, 0);
-}
-
-bool r_is_vector(sexp* x) {
-  switch(r_typeof(x)) {
-  case LGLSXP:
-  case INTSXP:
-  case REALSXP:
-  case CPLXSXP:
-  case STRSXP:
-  case RAWSXP:
-  case VECSXP:
-    return true;
-  default:
-    return false;
-  }
 }
 
 r_ssize_t r_vec_length(sexp* x) {

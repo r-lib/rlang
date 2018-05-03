@@ -42,7 +42,7 @@ is_atomic <- function(x, n = NULL) {
 #' @export
 #' @rdname type-predicates
 is_vector <- function(x, n = NULL) {
-  is_atomic(x, n) || is_list(x, n)
+  .Call(rlang_is_vector, x, n)
 }
 
 #' @export
@@ -124,7 +124,7 @@ is_scalar_atomic <- function(x) {
 #' @export
 #' @rdname scalar-type-predicates
 is_scalar_vector <- function(x) {
-  is_vector(x, n = 1)
+  .Call(rlang_is_vector, x, 1L)
 }
 #' @export
 #' @rdname scalar-type-predicates

@@ -99,6 +99,7 @@ extern sexp* rlang_env_binding_are_promise(sexp*, sexp*);
 extern sexp* rlang_env_unlock(sexp*);
 extern sexp* rlang_is_list(sexp*, sexp*);
 extern sexp* rlang_is_atomic(sexp*, sexp*);
+extern sexp* rlang_is_vector(sexp*, sexp*);
 
 // Library initialisation defined below
 sexp* rlang_library_load();
@@ -219,6 +220,7 @@ static const r_callable r_callables[] = {
   {"rlang_env_unlock",          (r_fn_ptr_t) &rlang_env_unlock, 1},
   {"rlang_is_list",             (r_fn_ptr_t) &rlang_is_list, 2},
   {"rlang_is_atomic",           (r_fn_ptr_t) &rlang_is_atomic, 2},
+  {"rlang_is_vector",           (r_fn_ptr_t) &rlang_is_vector, 2},
   {NULL, NULL, 0}
 };
 
