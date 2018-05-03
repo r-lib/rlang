@@ -144,6 +144,10 @@ test_that("with_handlers() establishes inplace and exiting handlers", {
   expect_output(expect_equal(with_handlers({ cnd_signal("foobar"); letters }, splice(handlers)), identity(letters)), "foobar")
 })
 
+test_that("bare functions are treated as exiting handlers", {
+  expect_identical(with_handlers(abort("foo"), error = function(cnd) "caught"), "caught")
+})
+
 test_that("set_names2() fills in empty names", {
   chr <- c("a", b = "B", "c")
   expect_equal(set_names2(chr), c(a = "a", b = "B", c = "c"))

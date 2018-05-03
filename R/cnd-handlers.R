@@ -31,10 +31,10 @@
 #' @param .expr An expression to execute in a context where new
 #'   handlers are established. The underscored version takes a quoted
 #'   expression or a quoted formula.
-#' @param ... Named handlers. Handlers should inherit from `exiting`
-#'   or `inplace`. See [exiting()] and [inplace()] for constructing
-#'   such handlers. Dots are evaluated with [explicit
-#'   splicing][tidy-dots].
+#' @param ... Named handlers. These should be functions of one
+#'   argument. These handlers are treated as exiting by default. Use
+#'   [inplace()] to specify an inplace handler. These dots support
+#'   [tidy dots][tidy-dots] features.
 #' @seealso [exiting()], [inplace()].
 #' @export
 #' @examples
@@ -57,6 +57,9 @@
 #' # executed. Their return value is handed over:
 #' handler <- function(c) "handler return value"
 #' with_handlers(fn(), foo = exiting(handler))
+#'
+#' # Handlers are exiting by default so you can omit the adjective:
+#' with_handlers(fn(), foo = handler)
 #'
 #' # In place handlers are called in turn and their return value is
 #' # ignored. Returning just means they are declining to take charge of
@@ -82,11 +85,9 @@ with_handlers <- function(.expr, ...) {
     abort("All handlers should be functions")
   }
 
-  inplace <- keep(handlers, inherits, "inplace")
-  exiting <- keep(handlers, inherits, "exiting")
-  if (length(handlers) > length(exiting) + length(inplace)) {
-    abort("all handlers should inherit from `exiting` or `inplace`")
-  }
+  is_inplace <- map_lgl(handlers, inherits, "inplace")
+  inplace <- handlers[is_inplace]
+  exiting <- handlers[!is_inplace]
 
   expr <- quote(.expr)
   if (length(exiting)) {
