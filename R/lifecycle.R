@@ -142,6 +142,8 @@
 #' **Renamed in rlang 0.2.0.9000**
 #'
 #' * [env_tail()]: `sentinel` => `last`
+#' * [abort()], [warn()], [inform()]: `msg`, `type` and `call` =>
+#'   `.msg`, `.type` and `.call`
 #'
 #'
 #' **Retired in rlang 0.2.0:**

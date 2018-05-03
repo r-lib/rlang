@@ -6,19 +6,24 @@
 \alias{inform}
 \title{Signal an error, warning, or message}
 \usage{
-abort(msg, type = NULL, call = FALSE)
+abort(.msg, .type = NULL, ..., .call = FALSE, msg, type, call)
 
-warn(msg, type = NULL, call = FALSE)
+warn(.msg, .type = NULL, ..., .call = FALSE, msg, type, call)
 
-inform(msg, type = NULL, call = FALSE)
+inform(.msg, .type = NULL, ..., .call = FALSE, msg, type, call)
 }
 \arguments{
-\item{msg}{A message to display.}
+\item{.msg}{The message to display.}
 
-\item{type}{Subclass of the condition to signal.}
+\item{.type}{Subclass of the condition.}
 
-\item{call}{Whether to display the call. If a number \code{n}, the call
+\item{...}{Additional data to be stored in the condition object.}
+
+\item{.call}{Whether to display the call. If a number \code{n}, the call
 is taken from the nth frame on the \link[=call_stack]{call stack}.}
+
+\item{msg, type, call}{These arguments were renamed to be prefixed
+with a dot and are deprecated as of rlang 0.3.0.}
 }
 \description{
 These functions are equivalent to base functions \code{\link[base:stop]{base::stop()}},
@@ -49,3 +54,14 @@ message from being displayed. Execution resumes normally after
 that. See \code{\link[=rst_muffle]{rst_muffle()}} to jump to a muffling restart, and the
 \code{muffle} argument of \code{\link[=inplace]{inplace()}} for creating a muffling handler.
 }
+\section{Lifecycle}{
+
+
+These functions were changed in rlang 0.3.0 to take condition
+metadata with \code{...}. Consequently:
+\itemize{
+\item All arguments were renamed to be prefixed with a dot.
+\item \code{.call} (previously \code{call}) can no longer be passed positionally.
+}
+}
+
