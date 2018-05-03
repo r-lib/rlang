@@ -333,7 +333,7 @@ sexp* rlang_is_logical(sexp* x, sexp* n_) {
 }
 sexp* rlang_is_integer(sexp* x, sexp* n_) {
   r_ssize_t n = validate_n(n_);
-  return r_bool_as_shared_logical(r_is_integer(x, n));
+  return r_bool_as_shared_logical(r_is_integer(x, n, -1));
 }
 sexp* rlang_is_double(sexp* x, sexp* n_, sexp* finite_) {
   r_ssize_t n = validate_n(n_);

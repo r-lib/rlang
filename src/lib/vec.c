@@ -52,10 +52,6 @@ bool r_is_integerish(sexp* x) {
   return r_lgl_get(out, 0);
 }
 
-bool r_is_integer(sexp* x, r_ssize_t n) {
-  return r_typeof(x) == r_type_integer && has_correct_length(x, n);
-}
-
 bool r_is_finite(sexp* x) {
   size_t n = r_length(x);
 
@@ -91,6 +87,15 @@ bool r_is_finite(sexp* x) {
     r_abort("Internal error: expected a numeric vector");
   }
 
+  return true;
+}
+bool r_is_integer(sexp* x, r_ssize_t n, int finite) {
+  if (r_typeof(x) != r_type_integer || !has_correct_length(x, n)) {
+    return false;
+  }
+  if (finite >= 0 && (bool) finite != r_is_finite(x)) {
+    return false;
+  }
   return true;
 }
 bool r_is_double(sexp* x, r_ssize_t n, int finite) {
