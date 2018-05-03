@@ -84,6 +84,25 @@ test_that("non finite double values are integerish", {
   expect_true(is_integerish(int(1, NA)))
 })
 
+test_that("is_finite handles numeric types", {
+  expect_true(is_finite(1L))
+  expect_false(is_finite(na_int))
+
+  expect_true(is_finite(1))
+  expect_false(is_finite(na_dbl))
+  expect_false(is_finite(Inf))
+  expect_false(is_finite(-Inf))
+  expect_false(is_finite(NaN))
+  expect_false(is_finite(c(1, 2, NaN)))
+
+  # Should we upcoerce later on?
+  expect_error(expect_false(is_finite(NA)), "expected a numeric vector")
+
+  expect_true(is_finite(0i))
+  expect_false(is_finite(complex(real = NA)))
+  expect_false(is_finite(complex(imaginary = Inf)))
+})
+
 test_that("check finiteness", {
   expect_true(    is_double(dbl(1, 2), finite = TRUE))
   expect_true(is_integerish(dbl(1, 2), finite = TRUE))

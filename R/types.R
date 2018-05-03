@@ -45,6 +45,11 @@ is_vector <- function(x, n = NULL) {
   .Call(rlang_is_vector, x, n)
 }
 
+# Mostly for unit testing
+is_finite <- function(x) {
+  .Call(rlang_is_finite, x)
+}
+
 #' @export
 #' @rdname type-predicates
 is_integer <- function(x, n = NULL) {

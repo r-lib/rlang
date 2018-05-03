@@ -1,4 +1,5 @@
 #include "rlang.h"
+#include <math.h>
 
 static bool has_correct_length(sexp* x, r_ssize_t n) {
   return n < 0 || r_length(x) == n;
@@ -50,6 +51,45 @@ bool r_is_integerish(sexp* x) {
 bool r_is_integer(sexp* x, r_ssize_t n) {
   return r_typeof(x) == r_type_integer && has_correct_length(x, n);
 }
+
+bool r_is_finite(sexp* x) {
+  size_t n = r_length(x);
+
+  switch(r_typeof(x)) {
+  case r_type_integer: {
+    int* ptr = r_int_deref(x);
+    for (size_t i = 0; i < n; ++i, ++ptr) {
+      if (*ptr == NA_INTEGER) {
+        return false;
+      }
+    }
+    break;
+  }
+  case r_type_double: {
+    double* ptr = r_dbl_deref(x);
+    for (size_t i = 0; i < n; ++i, ++ptr) {
+      if (!isfinite(*ptr)) {
+        return false;
+      }
+    }
+    break;
+  }
+  case r_type_complex: {
+    r_complex_t* ptr = r_cpl_deref(x);
+    for (size_t i = 0; i < n; ++i, ++ptr) {
+      if (!isfinite(ptr->r) || !isfinite(ptr->i)) {
+        return false;
+      }
+    }
+    break;
+  }
+  default:
+    r_abort("Internal error: expected a numeric vector");
+  }
+
+  return true;
+}
+
 r_ssize_t r_vec_length(sexp* x) {
   switch(r_typeof(x)) {
   case r_type_null:

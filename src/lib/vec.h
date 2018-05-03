@@ -60,6 +60,7 @@ bool r_is_vector(sexp* x, r_ssize_t n);
 bool r_is_scalar_atomic(sexp* x);
 bool r_is_atomic(sexp* x, r_ssize_t n);
 
+bool r_is_finite(sexp* x);
 bool r_is_integerish(sexp* x);
 bool r_is_integer(sexp* x, r_ssize_t n);
 
