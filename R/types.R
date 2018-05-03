@@ -37,9 +37,7 @@ atomic_types <- c(parsable_atomic_types, "raw")
 #' @export
 #' @rdname type-predicates
 is_atomic <- function(x, n = NULL) {
-  if (!typeof(x) %in% atomic_types) return(FALSE)
-  if (!is_null(n) && length(x) != n) return(FALSE)
-  TRUE
+  .Call(rlang_is_atomic, x, n)
 }
 #' @export
 #' @rdname type-predicates
@@ -121,7 +119,7 @@ is_scalar_list <- function(x) {
 #' @export
 #' @rdname scalar-type-predicates
 is_scalar_atomic <- function(x) {
-  is_atomic(x, n = 1)
+  .Call(rlang_is_atomic, x, 1L)
 }
 #' @export
 #' @rdname scalar-type-predicates

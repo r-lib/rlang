@@ -1,7 +1,7 @@
 #include "rlang.h"
 
 
-bool r_is_atomic(sexp* x) {
+bool r_is_atomic(sexp* x, r_ssize_t n) {
   switch(r_typeof(x)) {
   case LGLSXP:
   case INTSXP:
@@ -9,13 +9,19 @@ bool r_is_atomic(sexp* x) {
   case CPLXSXP:
   case STRSXP:
   case RAWSXP:
-    return true;
+    break;
   default:
     return false;
   }
+
+  if (n >= 0 && r_length(x) != n) {
+    return false;
+  }
+
+  return true;
 }
 bool r_is_scalar_atomic(sexp* x) {
-  return r_length(x) == 1 && r_is_atomic(x);
+  return r_is_atomic(x, 1);
 }
 
 bool r_is_integerish(sexp* x) {

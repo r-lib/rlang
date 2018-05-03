@@ -58,7 +58,7 @@ sexp* r_vec_get(sexp* vec, r_ssize_t i);
 
 bool r_is_vector(sexp* x);
 bool r_is_scalar_atomic(sexp* x);
-bool r_is_atomic(sexp* x);
+bool r_is_atomic(sexp* x, r_ssize_t n);
 bool r_is_integerish(sexp* x);
 
 static inline bool r_is_scalar_character(sexp* x) {
