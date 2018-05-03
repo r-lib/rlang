@@ -48,9 +48,7 @@ is_vector <- function(x, n = NULL) {
 #' @export
 #' @rdname type-predicates
 is_integer <- function(x, n = NULL) {
-  if (typeof(x) != "integer") return(FALSE)
-  if (!is_null(n) && length(x) != n) return(FALSE)
-  TRUE
+  .Call(rlang_is_integer, x, n)
 }
 #' @export
 #' @rdname type-predicates
@@ -129,7 +127,7 @@ is_scalar_vector <- function(x) {
 #' @export
 #' @rdname scalar-type-predicates
 is_scalar_integer <- function(x) {
-  is_integer(x, n = 1)
+  .Call(rlang_is_integer, x, 1L)
 }
 #' @export
 #' @rdname scalar-type-predicates

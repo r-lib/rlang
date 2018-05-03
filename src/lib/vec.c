@@ -47,6 +47,9 @@ bool r_is_integerish(sexp* x) {
   return r_lgl_get(out, 0);
 }
 
+bool r_is_integer(sexp* x, r_ssize_t n) {
+  return r_typeof(x) == r_type_integer && has_correct_length(x, n);
+}
 r_ssize_t r_vec_length(sexp* x) {
   switch(r_typeof(x)) {
   case r_type_null:

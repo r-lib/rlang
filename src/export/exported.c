@@ -301,8 +301,12 @@ sexp* rlang_is_atomic(sexp* x, sexp* n_) {
   r_ssize_t n = validate_n(n_);
   return r_bool_as_shared_logical(r_is_atomic(x, n));
 }
-
 sexp* rlang_is_vector(sexp* x, sexp* n_) {
   r_ssize_t n = validate_n(n_);
   return r_bool_as_shared_logical(r_is_vector(x, n));
+}
+
+sexp* rlang_is_integer(sexp* x, sexp* n_) {
+  r_ssize_t n = validate_n(n_);
+  return r_bool_as_shared_logical(r_is_integer(x, n));
 }
