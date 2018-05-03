@@ -1,5 +1,8 @@
 #include "rlang.h"
 
+static bool has_correct_length(sexp* x, r_ssize_t n) {
+  return n < 0 || r_length(x) == n;
+}
 
 bool r_is_atomic(sexp* x, r_ssize_t n) {
   switch(r_typeof(x)) {
@@ -9,16 +12,10 @@ bool r_is_atomic(sexp* x, r_ssize_t n) {
   case CPLXSXP:
   case STRSXP:
   case RAWSXP:
-    break;
+    return has_correct_length(x, n);
   default:
     return false;
   }
-
-  if (n >= 0 && r_length(x) != n) {
-    return false;
-  }
-
-  return true;
 }
 bool r_is_scalar_atomic(sexp* x) {
   return r_is_atomic(x, 1);
@@ -33,16 +30,10 @@ bool r_is_vector(sexp* x, r_ssize_t n) {
   case STRSXP:
   case RAWSXP:
   case VECSXP:
-    break;
+    return has_correct_length(x, n);
   default:
     return false;
   }
-
-  if (n >= 0 && r_length(x) != n) {
-    return false;
-  }
-
-  return true;
 }
 
 bool r_is_integerish(sexp* x) {
