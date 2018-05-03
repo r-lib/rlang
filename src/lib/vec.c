@@ -89,6 +89,16 @@ bool r_is_finite(sexp* x) {
 
   return true;
 }
+bool r_is_double(sexp* x, r_ssize_t n, int finite) {
+  if (r_typeof(x) != r_type_double || !has_correct_length(x, n)) {
+    return false;
+  }
+  if (finite >= 0 && (bool) finite != r_is_finite(x)) {
+    return false;
+  }
+  return true;
+}
+
 
 r_ssize_t r_vec_length(sexp* x) {
   switch(r_typeof(x)) {

@@ -269,7 +269,7 @@ sexp* rlang_vec_poke_range(sexp* x, sexp* offset,
 
 // vec-list.h
 
-static inline r_ssize_t validate_n(sexp* n) {
+static r_ssize_t validate_n(sexp* n) {
   switch (r_typeof(n)) {
   case r_type_null:
     return -1;
@@ -291,6 +291,27 @@ static inline r_ssize_t validate_n(sexp* n) {
     r_abort("`n` must be NULL or a scalar integer");
   }
 }
+static int validate_finite(sexp* finite) {
+  switch (r_typeof(finite)) {
+  case r_type_null:
+    return -1;
+  case r_type_integer:
+  case r_type_double:
+    finite = r_vec_coerce(finite, r_type_logical);
+  case r_type_logical: {
+    int value = r_lgl_get(finite, 0);
+    if (value != NA_LOGICAL) {
+      return r_lgl_get(finite, 0);
+    } // else fallthrough
+  }
+  default:
+    r_abort("`finite` must be NULL or a scalar logical");
+  }
+}
+
+sexp* rlang_is_finite(sexp* x) {
+  return r_bool_as_shared_logical(r_is_finite(x));
+}
 
 sexp* rlang_is_list(sexp* x, sexp* n_) {
   r_ssize_t n = validate_n(n_);
@@ -309,4 +330,9 @@ sexp* rlang_is_vector(sexp* x, sexp* n_) {
 sexp* rlang_is_integer(sexp* x, sexp* n_) {
   r_ssize_t n = validate_n(n_);
   return r_bool_as_shared_logical(r_is_integer(x, n));
+}
+sexp* rlang_is_double(sexp* x, sexp* n_, sexp* finite_) {
+  r_ssize_t n = validate_n(n_);
+  int finite = validate_finite(finite_);
+  return r_bool_as_shared_logical(r_is_double(x, n, finite));
 }

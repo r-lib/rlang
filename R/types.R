@@ -58,18 +58,7 @@ is_integer <- function(x, n = NULL) {
 #' @export
 #' @rdname type-predicates
 is_double <- function(x, n = NULL, finite = NULL) {
-  if (typeof(x) != "double") return(FALSE)
-  if (!is_null(n) && length(x) != n) return(FALSE)
-
-  if (!is_null(finite)) {
-    if (finite) {
-      return(all(is.finite(x)))
-    } else {
-      return(!any(is.finite(x)))
-    }
-  }
-
-  TRUE
+  .Call(rlang_is_double, x, n, finite)
 }
 #' @export
 #' @rdname type-predicates
@@ -137,7 +126,7 @@ is_scalar_integer <- function(x) {
 #' @export
 #' @rdname scalar-type-predicates
 is_scalar_double <- function(x) {
-  is_double(x, n = 1)
+  .Call(rlang_is_double, x, 1L, NULL)
 }
 #' @export
 #' @rdname scalar-type-predicates
