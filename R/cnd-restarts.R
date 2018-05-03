@@ -106,8 +106,7 @@
 #' # You can use restarting() to create restarting handlers easily:
 #' with_handlers(fn(FALSE), default_empty_string = restarting("rst_null"))
 with_restarts <- function(.expr, ...) {
-  quo <- quo(withRestarts(expr = !!enquo(.expr), !!!list2(...)))
-  eval_tidy(quo)
+  do.call("withRestarts", list2(expr = quote(.expr), ...))
 }
 
 
