@@ -1,4 +1,4 @@
-context("conditions") # ----------------------------------------------
+context("cnd")
 
 test_that("cnd() constructs all fields", {
   cond <- cnd("cnd_class", .msg = "cnd message")
