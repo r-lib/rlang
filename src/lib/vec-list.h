@@ -15,7 +15,7 @@ static inline bool r_is_list(sexp* x, r_ssize_t n) {
   if (r_typeof(x) != r_type_list) {
     return false;
   }
-  if (n == INT_MAX) {
+  if (n < 0) {
     return true;
   }
   return r_length(x) == n;

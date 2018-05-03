@@ -272,7 +272,7 @@ sexp* rlang_vec_poke_range(sexp* x, sexp* offset,
 static inline r_ssize_t validate_n(sexp* n) {
   switch (r_typeof(n)) {
   case r_type_null:
-    return INT_MAX;
+    return -1;
   // Just coerce doubles to int for efficiency
   case r_type_double:
     if (r_length(n) == 1) {
