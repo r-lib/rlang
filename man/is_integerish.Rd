@@ -6,11 +6,11 @@
 \alias{is_scalar_integerish}
 \title{Is a vector integer-like?}
 \usage{
-is_integerish(x, n = NULL, finite = TRUE)
+is_integerish(x, n = NULL, finite = NULL)
 
-is_bare_integerish(x, n = NULL)
+is_bare_integerish(x, n = NULL, finite = NULL)
 
-is_scalar_integerish(x)
+is_scalar_integerish(x, finite = NULL)
 }
 \arguments{
 \item{x}{Object to be tested.}

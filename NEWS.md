@@ -1,6 +1,15 @@
 
 # rlang 0.2.0.9000
 
+* The vector predicates have been rewritten in C for performance.
+
+* The `finite` argument of `is_integerish()` is now `NULL` by
+  default. Missing values are now considered as non-finite for
+  consistency with `base::is.finite()`.
+
+* `is_bare_integerish()` and `is_scalar_integerish()` gain a `finite`
+  argument for consistency with `is_integerish()`.
+
 * `with_handlers()` now produces a cleaner stack trace.
 
 * New `calltrace()` captures the call trace, which is similar to traceback,

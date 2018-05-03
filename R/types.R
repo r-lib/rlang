@@ -291,30 +291,18 @@ is_false <- function(x) {
 #' is_integerish(10.0, n = 2)
 #' is_integerish(10.000001)
 #' is_integerish(TRUE)
-is_integerish <- function(x, n = NULL, finite = TRUE) {
-  if (!typeof(x) %in% c("double", "integer")) return(FALSE)
-  if (!is_null(n) && length(x) != n) return(FALSE)
-
-  missing_elts <- is.na(x)
-  finite_elts <- is.finite(x) | missing_elts
-  if (is_true(finite) && !all(finite_elts)) {
-    return(FALSE)
-  } else if (is_false(finite)) {
-    return(!any(finite_elts))
-  }
-
-  x_finite <- x[finite_elts & !missing_elts]
-  all(x_finite == as.integer(x_finite))
+is_integerish <- function(x, n = NULL, finite = NULL) {
+  .Call(rlang_is_integerish, x, n, finite)
 }
 #' @rdname is_integerish
 #' @export
-is_bare_integerish <- function(x, n = NULL) {
-  !is.object(x) && is_integerish(x, n)
+is_bare_integerish <- function(x, n = NULL, finite = NULL) {
+  !is.object(x) && is_integerish(x, n, finite)
 }
 #' @rdname is_integerish
 #' @export
-is_scalar_integerish <- function(x) {
-  !is.object(x) && is_integerish(x, 1L)
+is_scalar_integerish <- function(x, finite = NULL) {
+  .Call(rlang_is_integerish, x, 1L, finite)
 }
 
 #' Base type of an object

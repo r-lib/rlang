@@ -340,6 +340,11 @@ sexp* rlang_is_double(sexp* x, sexp* n_, sexp* finite_) {
   int finite = validate_finite(finite_);
   return r_bool_as_shared_logical(r_is_double(x, n, finite));
 }
+sexp* rlang_is_integerish(sexp* x, sexp* n_, sexp* finite_) {
+  r_ssize_t n = validate_n(n_);
+  int finite = validate_finite(finite_);
+  return r_bool_as_shared_logical(r_is_integerish(x, n, finite));
+}
 
 sexp* rlang_is_character(sexp* x, sexp* n_) {
   r_ssize_t n = validate_n(n_);

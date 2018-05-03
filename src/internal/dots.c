@@ -320,7 +320,7 @@ static int find_auto_names_width(sexp* named) {
   case r_type_integer:
     return INTEGER(named)[0];
   case r_type_double:
-    if (r_is_integerish(named)) {
+    if (r_is_integerish(named, -1, true)) {
       return REAL(named)[0];
     }
     // else fallthrough

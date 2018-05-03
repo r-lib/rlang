@@ -41,17 +41,6 @@ bool r_is_logical(sexp* x, r_ssize_t n) {
   return r_typeof(x) == r_type_logical && has_correct_length(x, n);
 }
 
-bool r_is_integerish(sexp* x) {
-  static sexp* predicate = NULL;
-  if (!predicate) {
-    predicate = rlang_ns_get("is_integerish");
-  }
-  sexp* call = KEEP(r_build_call1(predicate, x));
-  sexp* out = r_eval(call, r_empty_env);
-  FREE(1);
-  return r_lgl_get(out, 0);
-}
-
 bool r_is_finite(sexp* x) {
   size_t n = r_length(x);
 
@@ -105,6 +94,37 @@ bool r_is_double(sexp* x, r_ssize_t n, int finite) {
   if (finite >= 0 && (bool) finite != r_is_finite(x)) {
     return false;
   }
+  return true;
+}
+
+bool r_is_integerish(sexp* x, r_ssize_t n, int finite) {
+  if (r_typeof(x) == r_type_integer) {
+    return r_is_integer(x, n, finite);
+  }
+  if (r_typeof(x) != r_type_double || !has_correct_length(x, n)) {
+    return false;
+  }
+
+  size_t actual_n = r_length(x);
+  double* ptr = r_dbl_deref(x);
+  bool actual_finite = true;
+
+  for (size_t i = 0; i < actual_n; ++i, ++ptr) {
+    double elt = *ptr;
+
+    if (!isfinite(elt)) {
+      actual_finite = false;
+      continue;
+    }
+    if (elt != (int) elt) {
+      return false;
+    }
+  }
+
+  if (finite >= 0 && actual_finite != (bool) finite) {
+    return false;
+  }
+
   return true;
 }
 
