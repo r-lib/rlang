@@ -34,8 +34,7 @@ condition metadata:
 be captured or handled selectively, allowing for finer-grained
 error handling.
 \item Supply metadata with named \code{...} arguments. This data will be
-stored in the condition object and can be examined by handlers,
-print methods, etc.
+stored in the condition object and can be examined by handlers.
 }
 }
 \section{Call trace}{

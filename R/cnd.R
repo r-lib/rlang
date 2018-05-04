@@ -290,8 +290,7 @@ muffle <- function(...) NULL
 #'   error handling.
 #'
 #' * Supply metadata with named `...` arguments. This data will be
-#'   stored in the condition object and can be examined by handlers,
-#'   print methods, etc.
+#'   stored in the condition object and can be examined by handlers.
 #'
 #'
 #' @section Call trace:
