@@ -18,8 +18,10 @@
 #'
 #' @param x Object to be tested.
 #' @param n Expected length of a vector.
-#' @param finite Whether values must be finite. Examples of non-finite
-#'   values are `Inf`, `-Inf` and `NaN`.
+#' @param finite Whether all values of the vector are finite. The
+#'   non-finite values are `NA`, `Inf`, `-Inf` and `NaN`. Setting this
+#'   to something else than `NULL` can be expensive because the whole
+#'   vector needs to be traversed and checked.
 #' @param encoding Expected encoding of a string or character
 #'   vector. One of `UTF-8`, `latin1`, or `unknown`.
 #' @seealso [bare-type-predicates] [scalar-type-predicates]
@@ -275,11 +277,16 @@ is_false <- function(x) {
 
 #' Is a vector integer-like?
 #'
+#' @description
+#'
 #' These predicates check whether R considers a number vector to be
 #' integer-like, according to its own tolerance check (which is in
 #' fact delegated to the C library). This function is not adapted to
 #' data analysis, see the help for [base::is.integer()] for examples
 #' of how to check for whole numbers.
+#'
+#' Note that this check can be expensive for double vectors because
+#' they have to be traversed and check in their entirety.
 #'
 #' @seealso [is_bare_numeric()] for testing whether an object is a
 #'   base numeric type (a bare double or integer vector).
