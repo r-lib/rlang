@@ -95,6 +95,8 @@ test_that("abort() accepts call number", {
     expect_equal(c$.call, quote(wrapper(foo(bar))))
     expect_equal(conditionCall(c), quote(wrapper(foo(bar))))
   }))
+
+  expect_error(abort("foo", .call = na_int), "scalar logical or number")
 })
 
 test_that("error when msg is not a string", {

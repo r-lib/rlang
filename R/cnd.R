@@ -234,12 +234,12 @@ cnd_abort <- function(.cnd, ..., .msg = NULL, .call = NULL,
 
 cnd_call <- function(call) {
   if (is_scalar_logical(call) || is_null(call)) {
-    call <- 1
-  } else if (!is_scalar_integerish(call)) {
-    stop("`call` must be a scalar boolean or number", call. = FALSE)
+    call <- 1L
+  } else if (!is_scalar_integerish(call, finite = TRUE)) {
+    stop("`call` must be a scalar logical or number", call. = FALSE)
   }
 
-  caller_frame(call + 1)$expr
+  sys.call(sys.parent(call + 1L))
 }
 cnd_update <- function(.cnd, ..., .msg, .call, .show_call) {
   if (is_character(.cnd)) {
