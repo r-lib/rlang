@@ -110,7 +110,7 @@ sexp* r_env_unbind_names(sexp* env, sexp* names, bool inherits) {
   r_node_poke_car(env_node, env);
 
   sexp* inherits_node = r_node_cdr(env_node);
-  r_node_poke_car(inherits_node, r_scalar_lgl(inherits));
+  r_node_poke_car(inherits_node, r_bool_as_logical(inherits));
 
 
   // Evaluate call and free arguments for GC
@@ -145,7 +145,7 @@ sexp* r_env_unbind(sexp* env, const char* name, bool inherits) {
 
 void r_init_library_env() {
   sexp* new_env_args = r_null;
-  sexp* hash = KEEP(r_scalar_lgl(1));
+  sexp* hash = KEEP(r_bool_as_logical(1));
   new_env_args = KEEP(r_new_tagged_node("hash", hash, new_env_args));
   new_env_args = KEEP(r_new_tagged_node("size", r_null, new_env_args));
   new_env_args = KEEP(r_new_tagged_node("parent", r_null, new_env_args));
@@ -154,7 +154,7 @@ void r_init_library_env() {
   FREE(4);
 
   sexp* env2list_args;
-  env2list_args = KEEP(r_scalar_lgl(1));
+  env2list_args = KEEP(r_bool_as_logical(1));
   env2list_args = KEEP(r_new_tagged_node("all.names", env2list_args, r_null));
   env2list_args = KEEP(r_new_tagged_node("x", r_null, env2list_args));
   env2list_call = r_new_call(r_base_ns_get("as.list.environment"), env2list_args);
@@ -162,7 +162,7 @@ void r_init_library_env() {
   FREE(3);
 
   sexp* list2env_args;
-  list2env_args = KEEP(r_scalar_lgl(1));
+  list2env_args = KEEP(r_bool_as_logical(1));
   list2env_args = KEEP(r_new_tagged_node("hash", list2env_args, r_null));
   list2env_args = KEEP(r_new_tagged_node("parent", r_null, list2env_args));
   list2env_args = KEEP(r_new_tagged_node("envir", r_null, list2env_args));
@@ -172,7 +172,7 @@ void r_init_library_env() {
   FREE(5);
 
   sexp* remove_args = r_null;
-  sexp* inherits = KEEP(r_scalar_lgl(0));
+  sexp* inherits = KEEP(r_bool_as_logical(0));
   remove_args = KEEP(r_new_tagged_node("inherits", inherits, remove_args));
   remove_args = KEEP(r_new_tagged_node("envir", r_null, remove_args));
   remove_args = KEEP(r_new_tagged_node("list", r_null, remove_args));

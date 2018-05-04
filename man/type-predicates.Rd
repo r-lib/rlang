@@ -39,8 +39,10 @@ is_null(x)
 
 \item{n}{Expected length of a vector.}
 
-\item{finite}{Whether values must be finite. Examples of non-finite
-values are \code{Inf}, \code{-Inf} and \code{NaN}.}
+\item{finite}{Whether all values of the vector are finite. The
+non-finite values are \code{NA}, \code{Inf}, \code{-Inf} and \code{NaN}. Setting this
+to something else than \code{NULL} can be expensive because the whole
+vector needs to be traversed and checked.}
 
 \item{encoding}{Expected encoding of a string or character
 vector. One of \code{UTF-8}, \code{latin1}, or \code{unknown}.}

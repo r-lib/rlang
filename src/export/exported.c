@@ -75,7 +75,7 @@ sexp* rlang_call_has_precedence(sexp* x, sexp* y, sexp* side) {
   } else {
     r_abort("`side` must be NULL, \"lhs\" or \"rhs\"");
   }
-  return r_scalar_lgl(has_predence);
+  return r_bool_as_logical(has_predence);
 }
 
 sexp* rlang_which_operator(sexp* call) {
@@ -166,23 +166,23 @@ sexp* rlang_new_call_node(sexp* car, sexp* cdr) {
 
 sexp* rlang_quo_is_missing(sexp* quo) {
   check_quosure(quo);
-  return r_scalar_lgl(quo_is_missing(quo));
+  return r_bool_as_logical(quo_is_missing(quo));
 }
 sexp* rlang_quo_is_symbol(sexp* quo) {
   check_quosure(quo);
-  return r_scalar_lgl(quo_is_symbol(quo));
+  return r_bool_as_logical(quo_is_symbol(quo));
 }
 sexp* rlang_quo_is_call(sexp* quo) {
   check_quosure(quo);
-  return r_scalar_lgl(quo_is_call(quo));
+  return r_bool_as_logical(quo_is_call(quo));
 }
 sexp* rlang_quo_is_symbolic(sexp* quo) {
   check_quosure(quo);
-  return r_scalar_lgl(quo_is_symbolic(quo));
+  return r_bool_as_logical(quo_is_symbolic(quo));
 }
 sexp* rlang_quo_is_null(sexp* quo) {
   check_quosure(quo);
-  return r_scalar_lgl(quo_is_null(quo));
+  return r_bool_as_logical(quo_is_null(quo));
 }
 
 
@@ -196,7 +196,7 @@ sexp* rlang_true_length(sexp* x) {
 }
 
 sexp* rlang_is_reference(sexp* x, sexp* y) {
-  return r_scalar_lgl(x == y);
+  return r_bool_as_logical(x == y);
 }
 
 sexp* rlang_missing_arg() {
@@ -208,7 +208,7 @@ sexp* rlang_duplicate(sexp* x, sexp* shallow) {
 }
 
 sexp* rlang_is_null(sexp* x) {
-  return r_scalar_lgl(r_is_null(x));
+  return r_bool_as_logical(r_is_null(x));
 }
 
 sexp* rlang_sexp_address(sexp* x) {
@@ -264,4 +264,93 @@ sexp* rlang_vec_poke_range(sexp* x, sexp* offset,
 
   r_vec_poke_range(x, offset_size, y, from_size, to_size);
   return x;
+}
+
+
+// vec-list.h
+
+static r_ssize_t validate_n(sexp* n) {
+  switch (r_typeof(n)) {
+  case r_type_null:
+    return -1;
+  // Just coerce doubles to int for efficiency
+  case r_type_double:
+    if (r_length(n) == 1) {
+      return r_dbl_get(n, 0);
+    } else {
+      goto error;
+    }
+  case r_type_integer:
+    if (r_length(n) == 1) {
+      return r_int_get(n, 0);
+    } else {
+      goto error;
+    }
+  error:
+  default:
+    r_abort("`n` must be NULL or a scalar integer");
+  }
+}
+static int validate_finite(sexp* finite) {
+  switch (r_typeof(finite)) {
+  case r_type_null:
+    return -1;
+  case r_type_integer:
+  case r_type_double:
+    finite = r_vec_coerce(finite, r_type_logical);
+  case r_type_logical: {
+    int value = r_lgl_get(finite, 0);
+    if (value != NA_LOGICAL) {
+      return r_lgl_get(finite, 0);
+    } // else fallthrough
+  }
+  default:
+    r_abort("`finite` must be NULL or a scalar logical");
+  }
+}
+
+sexp* rlang_is_finite(sexp* x) {
+  return r_bool_as_shared_logical(r_is_finite(x));
+}
+
+sexp* rlang_is_list(sexp* x, sexp* n_) {
+  r_ssize_t n = validate_n(n_);
+  return r_bool_as_shared_logical(r_is_list(x, n));
+}
+
+sexp* rlang_is_atomic(sexp* x, sexp* n_) {
+  r_ssize_t n = validate_n(n_);
+  return r_bool_as_shared_logical(r_is_atomic(x, n));
+}
+sexp* rlang_is_vector(sexp* x, sexp* n_) {
+  r_ssize_t n = validate_n(n_);
+  return r_bool_as_shared_logical(r_is_vector(x, n));
+}
+
+sexp* rlang_is_logical(sexp* x, sexp* n_) {
+  r_ssize_t n = validate_n(n_);
+  return r_bool_as_shared_logical(r_is_logical(x, n));
+}
+sexp* rlang_is_integer(sexp* x, sexp* n_) {
+  r_ssize_t n = validate_n(n_);
+  return r_bool_as_shared_logical(r_is_integer(x, n, -1));
+}
+sexp* rlang_is_double(sexp* x, sexp* n_, sexp* finite_) {
+  r_ssize_t n = validate_n(n_);
+  int finite = validate_finite(finite_);
+  return r_bool_as_shared_logical(r_is_double(x, n, finite));
+}
+sexp* rlang_is_integerish(sexp* x, sexp* n_, sexp* finite_) {
+  r_ssize_t n = validate_n(n_);
+  int finite = validate_finite(finite_);
+  return r_bool_as_shared_logical(r_is_integerish(x, n, finite));
+}
+
+sexp* rlang_is_character(sexp* x, sexp* n_) {
+  r_ssize_t n = validate_n(n_);
+  return r_bool_as_shared_logical(r_is_character(x, n));
+}
+sexp* rlang_is_raw(sexp* x, sexp* n_) {
+  r_ssize_t n = validate_n(n_);
+  return r_bool_as_shared_logical(r_is_raw(x, n));
 }

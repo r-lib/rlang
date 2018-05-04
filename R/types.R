@@ -18,8 +18,10 @@
 #'
 #' @param x Object to be tested.
 #' @param n Expected length of a vector.
-#' @param finite Whether values must be finite. Examples of non-finite
-#'   values are `Inf`, `-Inf` and `NaN`.
+#' @param finite Whether all values of the vector are finite. The
+#'   non-finite values are `NA`, `Inf`, `-Inf` and `NaN`. Setting this
+#'   to something else than `NULL` can be expensive because the whole
+#'   vector needs to be traversed and checked.
 #' @param encoding Expected encoding of a string or character
 #'   vector. One of `UTF-8`, `latin1`, or `unknown`.
 #' @seealso [bare-type-predicates] [scalar-type-predicates]
@@ -29,9 +31,7 @@ NULL
 #' @export
 #' @rdname type-predicates
 is_list <- function(x, n = NULL) {
-  if (typeof(x) != "list") return(FALSE)
-  if (!is_null(n) && length(x) != n) return(FALSE)
-  TRUE
+  .Call(rlang_is_list, x, n)
 }
 
 parsable_atomic_types <- c("logical", "integer", "double", "complex", "character")
@@ -39,61 +39,52 @@ atomic_types <- c(parsable_atomic_types, "raw")
 #' @export
 #' @rdname type-predicates
 is_atomic <- function(x, n = NULL) {
-  if (!typeof(x) %in% atomic_types) return(FALSE)
-  if (!is_null(n) && length(x) != n) return(FALSE)
-  TRUE
+  .Call(rlang_is_atomic, x, n)
 }
 #' @export
 #' @rdname type-predicates
 is_vector <- function(x, n = NULL) {
-  is_atomic(x, n) || is_list(x, n)
+  .Call(rlang_is_vector, x, n)
+}
+
+# Mostly for unit testing
+is_finite <- function(x) {
+  .Call(rlang_is_finite, x)
 }
 
 #' @export
 #' @rdname type-predicates
 is_integer <- function(x, n = NULL) {
-  if (typeof(x) != "integer") return(FALSE)
-  if (!is_null(n) && length(x) != n) return(FALSE)
-  TRUE
+  .Call(rlang_is_integer, x, n)
 }
 #' @export
 #' @rdname type-predicates
 is_double <- function(x, n = NULL, finite = NULL) {
-  if (typeof(x) != "double") return(FALSE)
-  if (!is_null(n) && length(x) != n) return(FALSE)
-
-  if (!is_null(finite)) {
-    if (finite) {
-      return(all(is.finite(x)))
-    } else {
-      return(!any(is.finite(x)))
-    }
-  }
-
-  TRUE
+  .Call(rlang_is_double, x, n, finite)
 }
 #' @export
 #' @rdname type-predicates
 is_character <- function(x, n = NULL, encoding = NULL) {
-  if (typeof(x) != "character") return(FALSE)
-  if (!is_null(n) && length(x) != n) return(FALSE)
-  stopifnot(typeof(encoding) %in% c("character", "NULL"))
-  if (!is_null(encoding) && !all(chr_encoding(x) %in% encoding)) return(FALSE)
+  if (!.Call(rlang_is_character, x, n)) {
+    return(FALSE)
+  }
+  if (!is_null(encoding)) {
+    stopifnot(typeof(encoding) == "character")
+    if (!all(chr_encoding(x) %in% encoding)) {
+      return(FALSE)
+    }
+  }
   TRUE
 }
 #' @export
 #' @rdname type-predicates
 is_logical <- function(x, n = NULL) {
-  if (typeof(x) != "logical") return(FALSE)
-  if (!is_null(n) && length(x) != n) return(FALSE)
-  TRUE
+  .Call(rlang_is_logical, x, n)
 }
 #' @export
 #' @rdname type-predicates
 is_raw <- function(x, n = NULL) {
-  if (typeof(x) != "raw") return(FALSE)
-  if (!is_null(n) && length(x) != n) return(FALSE)
-  TRUE
+  .Call(rlang_is_raw, x, n)
 }
 #' @export
 #' @rdname type-predicates
@@ -118,42 +109,42 @@ NULL
 #' @export
 #' @rdname scalar-type-predicates
 is_scalar_list <- function(x) {
-  is_list(x, n = 1)
+  .Call(rlang_is_list, x, 1L)
 }
 #' @export
 #' @rdname scalar-type-predicates
 is_scalar_atomic <- function(x) {
-  is_atomic(x, n = 1)
+  .Call(rlang_is_atomic, x, 1L)
 }
 #' @export
 #' @rdname scalar-type-predicates
 is_scalar_vector <- function(x) {
-  is_vector(x, n = 1)
+  .Call(rlang_is_vector, x, 1L)
 }
 #' @export
 #' @rdname scalar-type-predicates
 is_scalar_integer <- function(x) {
-  is_integer(x, n = 1)
+  .Call(rlang_is_integer, x, 1L)
 }
 #' @export
 #' @rdname scalar-type-predicates
 is_scalar_double <- function(x) {
-  is_double(x, n = 1)
+  .Call(rlang_is_double, x, 1L, NULL)
 }
 #' @export
 #' @rdname scalar-type-predicates
 is_scalar_character <- function(x, encoding = NULL) {
-  is_character(x, encoding = encoding, n = 1)
+  is_character(x, encoding = encoding, n = 1L)
 }
 #' @export
 #' @rdname scalar-type-predicates
 is_scalar_logical <- function(x) {
-  is_logical(x, n = 1)
+  .Call(rlang_is_logical, x, 1L)
 }
 #' @export
 #' @rdname scalar-type-predicates
 is_scalar_raw <- function(x) {
-  is_raw(x, n = 1)
+  .Call(rlang_is_raw, x, 1L)
 }
 #' @export
 #' @rdname scalar-type-predicates
@@ -286,11 +277,16 @@ is_false <- function(x) {
 
 #' Is a vector integer-like?
 #'
+#' @description
+#'
 #' These predicates check whether R considers a number vector to be
 #' integer-like, according to its own tolerance check (which is in
 #' fact delegated to the C library). This function is not adapted to
 #' data analysis, see the help for [base::is.integer()] for examples
 #' of how to check for whole numbers.
+#'
+#' Note that this check can be expensive for double vectors because
+#' they have to be traversed and check in their entirety.
 #'
 #' @seealso [is_bare_numeric()] for testing whether an object is a
 #'   base numeric type (a bare double or integer vector).
@@ -302,30 +298,18 @@ is_false <- function(x) {
 #' is_integerish(10.0, n = 2)
 #' is_integerish(10.000001)
 #' is_integerish(TRUE)
-is_integerish <- function(x, n = NULL, finite = TRUE) {
-  if (!typeof(x) %in% c("double", "integer")) return(FALSE)
-  if (!is_null(n) && length(x) != n) return(FALSE)
-
-  missing_elts <- is.na(x)
-  finite_elts <- is.finite(x) | missing_elts
-  if (is_true(finite) && !all(finite_elts)) {
-    return(FALSE)
-  } else if (is_false(finite)) {
-    return(!any(finite_elts))
-  }
-
-  x_finite <- x[finite_elts & !missing_elts]
-  all(x_finite == as.integer(x_finite))
+is_integerish <- function(x, n = NULL, finite = NULL) {
+  .Call(rlang_is_integerish, x, n, finite)
 }
 #' @rdname is_integerish
 #' @export
-is_bare_integerish <- function(x, n = NULL) {
-  !is.object(x) && is_integerish(x, n)
+is_bare_integerish <- function(x, n = NULL, finite = NULL) {
+  !is.object(x) && is_integerish(x, n, finite)
 }
 #' @rdname is_integerish
 #' @export
-is_scalar_integerish <- function(x) {
-  !is.object(x) && is_integerish(x, 1L)
+is_scalar_integerish <- function(x, finite = NULL) {
+  .Call(rlang_is_integerish, x, 1L, finite)
 }
 
 #' Base type of an object

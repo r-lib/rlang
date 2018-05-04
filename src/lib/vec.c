@@ -1,7 +1,11 @@
 #include "rlang.h"
+#include <math.h>
 
+static bool has_correct_length(sexp* x, r_ssize_t n) {
+  return n < 0 || r_length(x) == n;
+}
 
-bool r_is_atomic(sexp* x) {
+bool r_is_atomic(sexp* x, r_ssize_t n) {
   switch(r_typeof(x)) {
   case LGLSXP:
   case INTSXP:
@@ -9,30 +13,16 @@ bool r_is_atomic(sexp* x) {
   case CPLXSXP:
   case STRSXP:
   case RAWSXP:
-    return true;
+    return has_correct_length(x, n);
   default:
     return false;
   }
 }
 bool r_is_scalar_atomic(sexp* x) {
-  return r_length(x) == 1 && r_is_atomic(x);
+  return r_is_atomic(x, 1);
 }
 
-bool r_is_integerish(sexp* x) {
-  static sexp* predicate = NULL;
-  if (!predicate) {
-    predicate = rlang_ns_get("is_integerish");
-  }
-  sexp* call = KEEP(r_build_call1(predicate, x));
-  sexp* out = r_eval(call, r_empty_env);
-  FREE(1);
-  return r_lgl_get(out, 0);
-}
-
-bool r_is_list(sexp* x) {
-  return r_typeof(x) == VECSXP;
-}
-bool r_is_vector(sexp* x) {
+bool r_is_vector(sexp* x, r_ssize_t n) {
   switch(r_typeof(x)) {
   case LGLSXP:
   case INTSXP:
@@ -41,10 +31,108 @@ bool r_is_vector(sexp* x) {
   case STRSXP:
   case RAWSXP:
   case VECSXP:
-    return true;
+    return has_correct_length(x, n);
   default:
     return false;
   }
+}
+
+bool r_is_logical(sexp* x, r_ssize_t n) {
+  return r_typeof(x) == r_type_logical && has_correct_length(x, n);
+}
+
+bool r_is_finite(sexp* x) {
+  size_t n = r_length(x);
+
+  switch(r_typeof(x)) {
+  case r_type_integer: {
+    int* ptr = r_int_deref(x);
+    for (size_t i = 0; i < n; ++i, ++ptr) {
+      if (*ptr == NA_INTEGER) {
+        return false;
+      }
+    }
+    break;
+  }
+  case r_type_double: {
+    double* ptr = r_dbl_deref(x);
+    for (size_t i = 0; i < n; ++i, ++ptr) {
+      if (!isfinite(*ptr)) {
+        return false;
+      }
+    }
+    break;
+  }
+  case r_type_complex: {
+    r_complex_t* ptr = r_cpl_deref(x);
+    for (size_t i = 0; i < n; ++i, ++ptr) {
+      if (!isfinite(ptr->r) || !isfinite(ptr->i)) {
+        return false;
+      }
+    }
+    break;
+  }
+  default:
+    r_abort("Internal error: expected a numeric vector");
+  }
+
+  return true;
+}
+bool r_is_integer(sexp* x, r_ssize_t n, int finite) {
+  if (r_typeof(x) != r_type_integer || !has_correct_length(x, n)) {
+    return false;
+  }
+  if (finite >= 0 && (bool) finite != r_is_finite(x)) {
+    return false;
+  }
+  return true;
+}
+bool r_is_double(sexp* x, r_ssize_t n, int finite) {
+  if (r_typeof(x) != r_type_double || !has_correct_length(x, n)) {
+    return false;
+  }
+  if (finite >= 0 && (bool) finite != r_is_finite(x)) {
+    return false;
+  }
+  return true;
+}
+
+bool r_is_integerish(sexp* x, r_ssize_t n, int finite) {
+  if (r_typeof(x) == r_type_integer) {
+    return r_is_integer(x, n, finite);
+  }
+  if (r_typeof(x) != r_type_double || !has_correct_length(x, n)) {
+    return false;
+  }
+
+  size_t actual_n = r_length(x);
+  double* ptr = r_dbl_deref(x);
+  bool actual_finite = true;
+
+  for (size_t i = 0; i < actual_n; ++i, ++ptr) {
+    double elt = *ptr;
+
+    if (!isfinite(elt)) {
+      actual_finite = false;
+      continue;
+    }
+    if (elt != (int) elt) {
+      return false;
+    }
+  }
+
+  if (finite >= 0 && actual_finite != (bool) finite) {
+    return false;
+  }
+
+  return true;
+}
+
+bool r_is_character(sexp* x, r_ssize_t n) {
+  return r_typeof(x) == r_type_character && has_correct_length(x, n);
+}
+bool r_is_raw(sexp* x, r_ssize_t n) {
+  return r_typeof(x) == r_type_raw && has_correct_length(x, n);
 }
 
 r_ssize_t r_vec_length(sexp* x) {

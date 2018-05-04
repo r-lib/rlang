@@ -37,14 +37,37 @@ static inline r_byte_t r_raw_get(sexp* x, r_ssize_t i) {
   return RAW(x)[i];
 }
 
+static inline void r_lgl_poke(sexp* x, r_ssize_t i, int y) {
+  LOGICAL(x)[i] = y;
+}
+static inline void r_int_poke(sexp* x, r_ssize_t i, int y) {
+  INTEGER(x)[i] = y;
+}
+static inline void r_dbl_poke(sexp* x, r_ssize_t i, double y) {
+  REAL(x)[i] = y;
+}
+static inline void r_cpl_poke(sexp* x, r_ssize_t i, r_complex_t y) {
+  COMPLEX(x)[i] = y;
+}
+static inline void r_raw_poke(sexp* x, r_ssize_t i, r_byte_t y) {
+  RAW(x)[i] = y;
+}
+
 sexp* r_vec_get(sexp* vec, r_ssize_t i);
 
 
-bool r_is_list(sexp* x);
-bool r_is_vector(sexp* x);
+bool r_is_vector(sexp* x, r_ssize_t n);
 bool r_is_scalar_atomic(sexp* x);
-bool r_is_atomic(sexp* x);
-bool r_is_integerish(sexp* x);
+bool r_is_atomic(sexp* x, r_ssize_t n);
+
+bool r_is_finite(sexp* x);
+bool r_is_logical(sexp* x, r_ssize_t n);
+bool r_is_integerish(sexp* x, r_ssize_t n, int finite);
+bool r_is_integer(sexp* x, r_ssize_t n, int finite);
+bool r_is_double(sexp* x, r_ssize_t n, int finite);
+bool r_is_character(sexp* x, r_ssize_t n);
+bool r_is_raw(sexp* x, r_ssize_t n);
+
 
 static inline bool r_is_scalar_character(sexp* x) {
   return r_typeof(x) == r_type_character && r_length(x) == 1;
@@ -53,9 +76,6 @@ static inline bool r_is_scalar_logical(sexp* x) {
   return r_typeof(x) == r_type_logical && r_length(x) == 1;
 }
 
-static inline sexp* r_scalar_lgl(bool x) {
-  return Rf_ScalarLogical(x);
-}
 static inline sexp* r_scalar_int(int x) {
   return Rf_ScalarInteger(x);
 }

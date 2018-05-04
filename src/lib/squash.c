@@ -44,7 +44,7 @@ static r_ssize_t atom_squash(enum r_type kind, squash_info_t info,
 
       if (info.named) {
         sexp* nms = r_vec_names(inner);
-        if (r_is_character(nms)) {
+        if (r_typeof(nms) == r_type_character) {
           r_vec_poke_n(out_names, count, nms, 0, n_inner);
         } else if (n_inner == 1 && r_has_name_at(outer, i)) {
           SET_STRING_ELT(out_names, count, STRING_ELT(r_vec_names(outer), i));
@@ -81,7 +81,7 @@ static r_ssize_t list_squash(squash_info_t info, sexp* outer,
     } else {
       SET_VECTOR_ELT(out, count, inner);
 
-      if (info.named && r_is_character(r_vec_names(outer))) {
+      if (info.named && r_typeof(r_vec_names(outer)) == r_type_character) {
         sexp* name = STRING_ELT(r_vec_names(outer), i);
         SET_STRING_ELT(out_names, count, name);
       }
@@ -116,7 +116,7 @@ static void update_info_inner(squash_info_t* info, sexp* outer, r_ssize_t i, sex
     return;
   }
 
-  bool named = r_is_character(r_vec_names(inner));
+  bool named = r_typeof(r_vec_names(inner)) == r_type_character;
   bool recursive = info->recursive;
 
   bool copy_outer = recursive || n_inner == 1;
@@ -183,10 +183,19 @@ static sexp* squash(enum r_type kind, sexp* dots, bool (*is_spliceable)(sexp*), 
 typedef bool (*is_spliceable_t)(sexp*);
 
 bool r_is_spliced_bare(sexp* x) {
-  return r_is_list(x) && (!r_is_object(x) || Rf_inherits(x, "spliced"));
+  if (r_typeof(x) != r_type_list) {
+    return false;
+  }
+  if (!r_is_object(x)) {
+    return true;
+  }
+  return r_inherits(x, "spliced");
 }
 bool r_is_spliced(sexp* x) {
-  return r_is_list(x) && Rf_inherits(x, "spliced");
+  if (r_typeof(x) != r_type_list) {
+    return false;
+  }
+  return r_inherits(x, "spliced");
 }
 
 static is_spliceable_t predicate_pointer(sexp* x) {

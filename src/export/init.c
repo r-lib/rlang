@@ -97,6 +97,16 @@ extern sexp* rlang_eval_tidy(sexp*, sexp*, sexp*);
 extern sexp* rlang_as_data_pronoun(sexp*);
 extern sexp* rlang_env_binding_are_promise(sexp*, sexp*);
 extern sexp* rlang_env_unlock(sexp*);
+extern sexp* rlang_is_list(sexp*, sexp*);
+extern sexp* rlang_is_atomic(sexp*, sexp*);
+extern sexp* rlang_is_vector(sexp*, sexp*);
+extern sexp* rlang_is_finite(sexp*);
+extern sexp* rlang_is_logical(sexp*, sexp*);
+extern sexp* rlang_is_integer(sexp*, sexp*);
+extern sexp* rlang_is_double(sexp*, sexp*, sexp*);
+extern sexp* rlang_is_integerish(sexp*, sexp*, sexp*);
+extern sexp* rlang_is_character(sexp*, sexp*);
+extern sexp* rlang_is_raw(sexp*, sexp*);
 
 // Library initialisation defined below
 sexp* rlang_library_load();
@@ -215,6 +225,16 @@ static const r_callable r_callables[] = {
   {"rlang_as_data_pronoun",     (r_fn_ptr_t) &rlang_as_data_pronoun, 1},
   {"rlang_env_binding_are_promise", (r_fn_ptr_t) &rlang_env_binding_are_promise, 2},
   {"rlang_env_unlock",          (r_fn_ptr_t) &rlang_env_unlock, 1},
+  {"rlang_is_list",             (r_fn_ptr_t) &rlang_is_list, 2},
+  {"rlang_is_atomic",           (r_fn_ptr_t) &rlang_is_atomic, 2},
+  {"rlang_is_vector",           (r_fn_ptr_t) &rlang_is_vector, 2},
+  {"rlang_is_finite",           (r_fn_ptr_t) &rlang_is_finite, 1},
+  {"rlang_is_logical",          (r_fn_ptr_t) &rlang_is_logical, 2},
+  {"rlang_is_integer",          (r_fn_ptr_t) &rlang_is_integer, 2},
+  {"rlang_is_double",           (r_fn_ptr_t) &rlang_is_double, 3},
+  {"rlang_is_integerish",       (r_fn_ptr_t) &rlang_is_integerish, 3},
+  {"rlang_is_character",        (r_fn_ptr_t) &rlang_is_character, 2},
+  {"rlang_is_raw",              (r_fn_ptr_t) &rlang_is_raw, 2},
   {NULL, NULL, 0}
 };
 
