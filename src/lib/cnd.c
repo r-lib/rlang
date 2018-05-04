@@ -21,8 +21,8 @@ void r_inform(const char* fmt, ...) {
   INTERP(buf, fmt, ...);
 
   sexp* buf_chr = KEEP(r_scalar_chr(buf));
-  sexp* lang = KEEP(r_build_call_node(r_sym("message"), buf_chr));
-  r_eval(lang, R_BaseEnv);
+  sexp* call = KEEP(r_build_call_node(r_sym("message"), buf_chr));
+  r_eval(call, R_BaseEnv);
   FREE(2);
 }
 void r_warn(const char* fmt, ...) {
@@ -33,9 +33,9 @@ void r_warn(const char* fmt, ...) {
   r_node_poke_tag(args, r_sym("call."));
 
   args = KEEP(r_build_node(r_scalar_chr(buf), args));
-  sexp* lang = KEEP(r_build_call_node(r_sym("warning"), args));
+  sexp* call = KEEP(r_build_call_node(r_sym("warning"), args));
 
-  r_eval(lang, R_BaseEnv);
+  r_eval(call, R_BaseEnv);
   FREE(3);
 }
 void r_abort(const char* fmt, ...) {
@@ -89,7 +89,7 @@ sexp* r_new_condition(sexp* type, sexp* data, sexp* msg) {
   return cnd;
 }
 
-static sexp* with_muffle_lang(sexp* signal) {
+static sexp* with_muffle_call(sexp* signal) {
   static sexp* muffle_node = NULL;
   if (!muffle_node) {
     muffle_node = r_build_pairlist(rlang_ns_get("muffle"));
@@ -98,10 +98,10 @@ static sexp* with_muffle_lang(sexp* signal) {
   }
 
   sexp* args = KEEP(r_build_node(signal, muffle_node));
-  sexp* lang = r_build_call_node(r_sym("withRestarts"), args);
+  sexp* call = r_build_call_node(r_sym("withRestarts"), args);
 
   FREE(1);
-  return lang;
+  return call;
 }
 static void cnd_signal_impl(const char* signaller, sexp* cnd, bool mufflable) {
   int n_protect = 0;
@@ -112,17 +112,17 @@ static void cnd_signal_impl(const char* signaller, sexp* cnd, bool mufflable) {
     r_abort("`cnd` must be a condition");
   }
 
-  sexp* lang = KEEP_N(r_build_call1(r_sym(signaller), cnd), n_protect);
+  sexp* call = KEEP_N(r_build_call1(r_sym(signaller), cnd), n_protect);
 
   if (mufflable) {
     sexp* muffable_str = KEEP_N(r_string("mufflable"), n_protect);
     sexp* classes = KEEP_N(chr_prepend(r_get_class(cnd), muffable_str), n_protect);
-    SETCADR(lang, r_set_class(cnd, classes));
+    SETCADR(call, r_set_class(cnd, classes));
 
-    lang = KEEP_N(with_muffle_lang(lang), n_protect);
+    call = KEEP_N(with_muffle_call(call), n_protect);
   }
 
-  r_eval(lang, R_BaseEnv);
+  r_eval(call, R_BaseEnv);
   FREE(n_protect);
 }
 
