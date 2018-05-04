@@ -6,6 +6,9 @@
 
 #define r_missing_str R_NaString
 
+extern sexp* r_shared_empty_chr;
+
+
 static inline sexp* r_chr_get(sexp* chr, r_ssize_t i) {
   return STRING_ELT(chr, i);
 }

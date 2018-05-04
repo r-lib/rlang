@@ -7,26 +7,26 @@
 \alias{interrupt}
 \title{Signal an error, warning, or message}
 \usage{
-abort(.msg, .type = NULL, ..., .call = FALSE, msg, type, call)
+abort(message, .type = NULL, ..., call = NULL, msg, type)
 
-warn(.msg, .type = NULL, ..., .call = FALSE, msg, type, call)
+warn(message, .type = NULL, ..., call = NULL, msg, type)
 
-inform(.msg, .type = NULL, ..., .call = FALSE, msg, type, call)
+inform(message, .type = NULL, ..., call = NULL, msg, type)
 
 interrupt()
 }
 \arguments{
-\item{.msg}{The message to display.}
+\item{message}{The message to display.}
 
 \item{.type}{Subclass of the condition.}
 
 \item{...}{Additional data to be stored in the condition object.}
 
-\item{.call}{Whether to display the call. If a number \code{n}, the call
+\item{call}{Whether to display the call. If a number \code{n}, the call
 is taken from the nth frame on the \link[=call_stack]{call stack}.}
 
-\item{msg, type, call}{These arguments were renamed to be prefixed
-with a dot and are deprecated as of rlang 0.3.0.}
+\item{msg, type}{These arguments were renamed to \code{message} and
+\code{.type} and are deprecated as of rlang 0.3.0.}
 }
 \description{
 These functions are equivalent to base functions \code{\link[base:stop]{base::stop()}},

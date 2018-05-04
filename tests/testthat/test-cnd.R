@@ -1,8 +1,8 @@
 context("cnd")
 
 test_that("cnd() constructs all fields", {
-  cond <- cnd("cnd_class", .msg = "cnd message")
-  expect_equal(conditionMessage(cond), "cnd message")
+  cond <- cnd("cnd_class", message = "cnd message")
+  expect_identical(conditionMessage(cond), "cnd message")
   expect_is(cond, "cnd_class")
 })
 
@@ -20,23 +20,17 @@ test_that("cnd_signal() creates muffle restarts", {
 })
 
 test_that("cnd_signal() includes call info", {
-  cnd <- cnd("cnd", .call = quote(foo(bar)))
-  fn <- function(...) cnd_signal(cnd, .call = call)
+  cnd <- cnd("cnd", call = quote(foo(bar)))
+  fn <- function(...) cnd_signal(cnd, call = call)
 
-  call <- FALSE
+  call <- NULL
   with_handlers(fn(foo(bar)), cnd = calling(function(c) {
-    expect_identical(c$.call, quote(fn(foo(bar))))
     expect_null(conditionCall(c))
   }))
 
   call <- TRUE
   with_handlers(fn(foo(bar)), cnd = calling(function(c) {
     expect_identical(conditionCall(c), quote(fn(foo(bar))))
-  }))
-
-  call <- NULL
-  with_handlers(fn(foo(bar)), cnd = calling(function(c) {
-    expect_identical(conditionCall(c), quote(foo(bar)))
   }))
 
 
@@ -54,11 +48,10 @@ test_that("cnd_signal() includes call info", {
 })
 
 test_that("abort() includes call info", {
-  fn <- function(...) abort("abort", "cnd", .call = call)
+  fn <- function(...) abort("abort", "cnd", call = call)
 
-  call <- FALSE
+  call <- NULL
   with_handlers(fn(foo(bar)), cnd = exiting(function(c) {
-    expect_identical(c$.call, quote(fn(foo(bar))))
     expect_null(conditionCall(c))
   }))
 
@@ -69,34 +62,30 @@ test_that("abort() includes call info", {
 })
 
 test_that("abort() accepts call number", {
-  fn <- function(...) abort("abort", "cnd", .call = call)
+  fn <- function(...) abort("abort", "cnd", call = call)
   wrapper <- function(...) fn(...)
 
   call <- FALSE
   with_handlers(wrapper(foo(bar)), cnd = exiting(function(c) {
-    expect_equal(c$.call, quote(fn(...)))
     expect_null(conditionCall(c))
   }))
 
   call <- TRUE
   with_handlers(wrapper(foo(bar)), cnd = exiting(function(c) {
-    expect_equal(c$.call, quote(fn(...)))
     expect_equal(conditionCall(c), quote(fn(...)))
   }))
 
   call <- 1
   with_handlers(wrapper(foo(bar)), cnd = exiting(function(c) {
-    expect_equal(c$.call, quote(fn(...)))
     expect_equal(conditionCall(c), quote(fn(...)))
   }))
 
   call <- 2
   with_handlers(wrapper(foo(bar)), cnd = exiting(function(c) {
-    expect_equal(c$.call, quote(wrapper(foo(bar))))
     expect_equal(conditionCall(c), quote(wrapper(foo(bar))))
   }))
 
-  expect_error(abort("foo", .call = na_int), "scalar logical or number")
+  expect_error(abort("foo", call = na_int), "scalar logical or number")
 })
 
 test_that("error when msg is not a string", {
@@ -191,22 +180,22 @@ test_that("cnd_signal() accepts character vectors (#195)", {
   with_handlers(cnd_signal(c("foo", "bar")), foo = expect)
 })
 
-test_that("cnd_warn() transforms condition to warning", {
-  cnd <- cnd("type", attr = "baz", .msg = "warned")
-  expect_warning(cnd_warn(cnd), "warned")
-  expect_warning(cnd_warn("type", .msg = "warned"), "warned")
-})
+## test_that("cnd_warn() transforms condition to warning", {
+##   cnd <- cnd("type", attr = "baz", .msg = "warned")
+##   expect_warning(cnd_warn(cnd), "warned")
+##   expect_warning(cnd_warn("type", .msg = "warned"), "warned")
+## })
 
-test_that("cnd_inform() transforms condition to message", {
-  cnd <- cnd("type", attr = "baz", .msg = "informed")
-  expect_message(cnd_inform(cnd), "informed")
-  expect_message(cnd_inform("type", .msg = "informed"), "informed")
-})
+## test_that("cnd_inform() transforms condition to message", {
+##   cnd <- cnd("type", attr = "baz", .msg = "informed")
+##   expect_message(cnd_inform(cnd), "informed")
+##   expect_message(cnd_inform("type", .msg = "informed"), "informed")
+## })
 
-test_that("cnd_abort() adds correct S3 classes for errors", {
-  expect_is(catch_cnd(cnd_abort("type")), "error")
-  expect_error(cnd_abort("type"))
-})
+## test_that("cnd_abort() adds correct S3 classes for errors", {
+##   expect_is(catch_cnd(cnd_abort("type")), "error")
+##   expect_error(cnd_abort("type"))
+## })
 
 test_that("can pass condition metadata", {
   msg <- catch_cnd(inform("type", foo = "bar"))
@@ -246,10 +235,9 @@ test_that("deprecated arguments of abort() etc still work", {
   msgs <- pluck_conditions_msgs(cnds)
 
   warnings_msgs <- msgs$warnings
-  expect_length(warnings_msgs, 3L)
-  expect_match(warnings_msgs[[1]], "`msg` has been renamed to `.msg`")
+  expect_length(warnings_msgs, 2L)
+  expect_match(warnings_msgs[[1]], "`msg` has been renamed to `message`")
   expect_match(warnings_msgs[[2]], "`type` has been renamed to `.type`")
-  expect_match(warnings_msgs[[3]], "`call` has been renamed to `.call`")
 
   expect_match(msgs$error, "foo")
   expect_identical(conditionCall(cnds$error), quote(foo()))

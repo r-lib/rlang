@@ -8,12 +8,19 @@
 #' created with `error_cnd()`, `warning_cnd()` and `message_cnd()`
 #' inherit from `error`, `warning` or `message`.
 #'
+#' @section Lifecycle:
+#'
+#' The `.msg` argument has been renamed to `message` and is defunct as
+#' of rlang 0.3.0.
+#'
 #' @param .type The condition subclass.
 #' @param ... Named data fields stored inside the condition
 #'   object. These dots are evaluated with [explicit
 #'   splicing][tidy-dots].
-#' @param .msg A default message to inform the user about the
+#' @param message A default message to inform the user about the
 #'   condition when it is signalled.
+#' @param call A call documenting what expression caused a condition
+#'   to be signalled.
 #' @seealso [cnd_signal()], [with_handlers()].
 #' @export
 #' @examples
@@ -39,23 +46,23 @@
 #' # you need to use stop() to signal a critical condition that should
 #' # terminate the program if not handled:
 #' # stop(error_cnd("my_error"))
-cnd <- function(.type = NULL, ..., .msg = NULL) {
-  .Call(rlang_new_condition, .type, dots_list(...), .msg)
+cnd <- function(.type = NULL, ..., message = "", call = NULL) {
+  .Call(rlang_new_condition, .type, message, call, dots_list(...))
 }
 #' @rdname cnd
 #' @export
-error_cnd <- function(.type = NULL, ..., .msg = NULL) {
-  cnd(c(.type, "error"), ..., .msg = .msg)
+error_cnd <- function(.type = NULL, ..., message = "", call = NULL) {
+  .Call(rlang_new_condition, c(.type, "error"), message, call, dots_list(...))
 }
 #' @rdname cnd
 #' @export
-warning_cnd <- function(.type = NULL, ..., .msg = NULL) {
-  cnd(c(.type, "warning"), ..., .msg = .msg)
+warning_cnd <- function(.type = NULL, ..., message = "", call = NULL) {
+  .Call(rlang_new_condition, c(.type, "warning"), message, call, dots_list(...))
 }
 #' @rdname cnd
 #' @export
-message_cnd <- function(.type = NULL, ..., .msg = NULL) {
-  cnd(c(.type, "message"), ..., .msg = .msg)
+message_cnd <- function(.type = NULL, ..., message = "", call = NULL) {
+  .Call(rlang_new_condition, c(.type, "message"), message, call, dots_list(...))
 }
 
 #' Is object a condition?
@@ -113,11 +120,16 @@ cnd_type <- function(cnd) {
 #' the `muffle` argument of [calling()] for creating a muffling
 #' handler.
 #'
+#' @section Lifecycle:
+#'
+#' The `.msg` and `.call` arguments were renamed to `message` and
+#' `call` and are defunct as of rlang 0.3.0.
+#'
 #' @inheritParams cnd
 #' @param .cnd Either a condition object (see [cnd()]), or the
 #'   name of a s3 class from which a new condition will be created.
-#' @param .msg A string to override the condition's default message.
-#' @param .call Whether to display the call of the frame in which the
+#' @param message A string to override the condition's default message.
+#' @param call Whether to display the call of the frame in which the
 #'   condition is signalled. If `TRUE`, the call is stored in the
 #'   `call` field of the condition object: this field is displayed by
 #'   R when an error is issued. If a number `n`, the call is taken
@@ -203,38 +215,41 @@ cnd_type <- function(cnd) {
 #' # not have a muffle restart. That is because in most cases,
 #' # execution should not continue after signalling a critical
 #' # condition.
-cnd_signal <- function(.cnd, ..., .msg = NULL, .call = NULL,
-                       .mufflable = TRUE) {
-  cnd <- cnd_update(.cnd, ..., .msg = .msg, .call = cnd_call(.call), .show_call = .call)
+cnd_signal <- function(.cnd, ..., message = "", call = NULL, .mufflable = TRUE) {
+  cnd <- cnd_update(.cnd, ..., .msg = message, .call = cnd_call(call), .show_call = call)
   invisible(.Call(rlang_cnd_signal, cnd, .mufflable))
 }
 #' @rdname cnd_signal
 #' @export
-cnd_inform <- function(.cnd, ..., .msg = NULL, .call = NULL,
-                     .mufflable = FALSE) {
+cnd_inform <- function(.cnd, ..., message = NULL, call = NULL, .mufflable = FALSE) {
   cnd <- as_special_cnd(.cnd, "message")
-  cnd <- cnd_update(cnd, ..., .msg = .msg, .call = cnd_call(.call), .show_call = .call)
+  cnd <- cnd_update(cnd, ..., .msg = message, .call = cnd_call(call), .show_call = call)
   invisible(.Call(rlang_cnd_inform, cnd, .mufflable))
 }
 #' @rdname cnd_signal
 #' @export
-cnd_warn <- function(.cnd, ..., .msg = NULL, .call = NULL,
-                     .mufflable = FALSE) {
+cnd_warn <- function(.cnd, ..., message = NULL, call = NULL, .mufflable = FALSE) {
   cnd <- as_special_cnd(.cnd, "warning")
-  cnd <- cnd_update(cnd, ..., .msg = .msg, .call = cnd_call(.call), .show_call = .call)
+  cnd <- cnd_update(cnd, ..., .msg = message, .call = cnd_call(call), .show_call = call)
   invisible(.Call(rlang_cnd_warn, cnd, .mufflable))
 }
 #' @rdname cnd_signal
 #' @export
-cnd_abort <- function(.cnd, ..., .msg = NULL, .call = NULL,
-                      .mufflable = FALSE) {
+cnd_abort <- function(.cnd, ..., message = NULL, call = NULL, .mufflable = FALSE) {
   cnd <- as_special_cnd(.cnd, "error")
-  cnd <- cnd_update(cnd, ..., .msg = .msg, .call = cnd_call(.call), .show_call = .call)
+  cnd <- cnd_update(cnd, ..., .msg = message, .call = cnd_call(call), .show_call = call)
   invisible(.Call(rlang_cnd_abort, cnd, .mufflable))
 }
 
 cnd_call <- function(call) {
-  if (is_scalar_logical(call) || is_null(call)) {
+  if (is_null(call) || is_false(call)) {
+    return(NULL)
+  }
+  if (is_call(call)) {
+    return(call)
+  }
+
+  if (is_true(call)) {
     call <- 1L
   } else if (!is_scalar_integerish(call, finite = TRUE)) {
     stop("`call` must be a scalar logical or number", call. = FALSE)
@@ -255,11 +270,9 @@ cnd_update <- function(.cnd, ..., .msg, .call, .show_call) {
   # The `call` field is displayed by stop() and display is controlled
   # by user. If NULL, use the call stored in the condition. If TRUE,
   # use the current call.
-  if (is_null(.show_call)) {
-    .cnd$call <- .cnd$.call
-  } else if (is_true(.show_call) || is_scalar_integerish(.show_call)) {
+  if (is_true(.show_call) || is_scalar_integerish(.show_call)) {
     .cnd$call <- .call
-  } else if (is_false(.show_call)) {
+  } else if (is_null(.show_call) || is_false(.show_call)) {
     .cnd$call <- NULL
   } else {
     stop("Internal error: unexpected `.show_call`", call. = FALSE)
@@ -338,13 +351,13 @@ muffle <- function(...) NULL
 #' * All arguments were renamed to be prefixed with a dot.
 #' * `.call` (previously `call`) can no longer be passed positionally.
 #'
-#' @param .msg The message to display.
+#' @param message The message to display.
 #' @param .type Subclass of the condition.
 #' @param ... Additional data to be stored in the condition object.
-#' @param .call Whether to display the call. If a number `n`, the call
+#' @param call Whether to display the call. If a number `n`, the call
 #'   is taken from the nth frame on the [call stack][call_stack].
-#' @param msg,type,call These arguments were renamed to be prefixed
-#'   with a dot and are deprecated as of rlang 0.3.0.
+#' @param msg,type These arguments were renamed to `message` and
+#'   `.type` and are deprecated as of rlang 0.3.0.
 #'
 #' @export
 #' @examples
@@ -379,39 +392,27 @@ muffle <- function(...) NULL
 #' )
 #'
 #' }
-abort <- function(.msg, .type = NULL, ..., .call = FALSE, msg, type, call) {
-  validate_signal_args(msg, type, call)
+abort <- function(message, .type = NULL, ..., call = NULL, msg, type) {
+  validate_signal_args(msg, type)
 
-  cnd <- error_cnd(.type, ..., .msg = .msg, .call = cnd_call(.call))
-  if (!is_false(.call)) {
-    cnd$call <- cnd$.call
-  }
-
+  cnd <- error_cnd(.type, ..., message = message, call = cnd_call(call))
   stop(cnd)
 }
 #' @rdname abort
 #' @export
-warn <- function(.msg, .type = NULL, ..., .call = FALSE, msg, type, call) {
-  validate_signal_args(msg, type, call)
+warn <- function(message, .type = NULL, ..., call = NULL, msg, type) {
+  validate_signal_args(msg, type)
 
-  cnd <- warning_cnd(.type, ..., .msg = .msg, .call = cnd_call(.call))
-  if (!is_false(.call)) {
-    cnd$call <- cnd$.call
-  }
-
+  cnd <- warning_cnd(.type, ..., message = message, call = cnd_call(call))
   warning(cnd)
 }
 #' @rdname abort
 #' @export
-inform <- function(.msg, .type = NULL, ..., .call = FALSE, msg, type, call) {
+inform <- function(message, .type = NULL, ..., call = NULL, msg, type) {
   validate_signal_args(msg, type, call)
 
-  .msg <- paste0(.msg, "\n")
-  cnd <- message_cnd(.type, ..., .msg = .msg, .call = cnd_call(.call))
-  if (!is_false(.call)) {
-    cnd$call <- cnd$.call
-  }
-
+  message <- paste0(message, "\n")
+  cnd <- message_cnd(.type, ..., message = message, call = cnd_call(call))
   message(cnd)
 }
 #' @rdname abort
@@ -420,18 +421,14 @@ interrupt <- function() {
   .Call(rlang_interrupt)
 }
 
-validate_signal_args <- function(msg, type, call, env = parent.frame()) {
+validate_signal_args <- function(msg, type, env = parent.frame()) {
   if (!missing(msg)) {
-    warn("`msg` has been renamed to `.msg` and is deprecated as of rlang 0.3.0")
-    env$.msg <- msg
+    warn("`msg` has been renamed to `message` and is deprecated as of rlang 0.3.0")
+    env$message <- msg
   }
   if (!missing(type)) {
     warn("`type` has been renamed to `.type` and is deprecated as of rlang 0.3.0")
     env$.type <- type
-  }
-  if (!missing(call)) {
-    warn("`call` has been renamed to `.call` and is deprecated as of rlang 0.3.0")
-    env$.call <- call
   }
 }
 

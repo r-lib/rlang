@@ -7,13 +7,13 @@
 \alias{cnd_abort}
 \title{Signal a condition}
 \usage{
-cnd_signal(.cnd, ..., .msg = NULL, .call = NULL, .mufflable = TRUE)
+cnd_signal(.cnd, ..., message = "", call = NULL, .mufflable = TRUE)
 
-cnd_inform(.cnd, ..., .msg = NULL, .call = NULL, .mufflable = FALSE)
+cnd_inform(.cnd, ..., message = NULL, call = NULL, .mufflable = FALSE)
 
-cnd_warn(.cnd, ..., .msg = NULL, .call = NULL, .mufflable = FALSE)
+cnd_warn(.cnd, ..., message = NULL, call = NULL, .mufflable = FALSE)
 
-cnd_abort(.cnd, ..., .msg = NULL, .call = NULL, .mufflable = FALSE)
+cnd_abort(.cnd, ..., message = NULL, call = NULL, .mufflable = FALSE)
 }
 \arguments{
 \item{.cnd}{Either a condition object (see \code{\link[=cnd]{cnd()}}), or the
@@ -23,9 +23,9 @@ name of a s3 class from which a new condition will be created.}
 object. These dots are evaluated with \link[=tidy-dots]{explicit
 splicing}.}
 
-\item{.msg}{A string to override the condition's default message.}
+\item{message}{A string to override the condition's default message.}
 
-\item{.call}{Whether to display the call of the frame in which the
+\item{call}{Whether to display the call of the frame in which the
 condition is signalled. If \code{TRUE}, the call is stored in the
 \code{call} field of the condition object: this field is displayed by
 R when an error is issued. If a number \code{n}, the call is taken
@@ -75,6 +75,13 @@ condition. See \code{\link[=rst_muffle]{rst_muffle()}} to jump to a muffling res
 the \code{muffle} argument of \code{\link[=calling]{calling()}} for creating a muffling
 handler.
 }
+\section{Lifecycle}{
+
+
+The \code{.msg} and \code{.call} arguments were renamed to \code{message} and
+\code{call} and are defunct as of rlang 0.3.0.
+}
+
 \examples{
 # Creating a condition of type "foo"
 cnd <- cnd("foo")

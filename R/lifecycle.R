@@ -164,9 +164,17 @@
 #'
 #' \badgedefunct
 #'
+#' **Retired in rlang 0.3.0:**
+#'
+#' * [cnd()], [error_cnd()], [warning_cnd()] and [message_cnd()]:
+#'   `.msg` => `message`.
+#' * [cnd_signal()]: `.msg` and `.call`.
+#'
+#'
 #' **Retired in rlang 0.2.0:**
 #'
 #' * [:=][quasiquotation]
+#'
 #'
 #' @name lifecycle
 NULL

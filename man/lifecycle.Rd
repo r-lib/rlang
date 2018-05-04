@@ -161,6 +161,13 @@ Since rlang 0.2.0:
 
 \badgedefunct
 
+\strong{Retired in rlang 0.3.0:}
+\itemize{
+\item \code{\link[=cnd]{cnd()}}, \code{\link[=error_cnd]{error_cnd()}}, \code{\link[=warning_cnd]{warning_cnd()}} and \code{\link[=message_cnd]{message_cnd()}}:
+\code{.msg} => \code{message}.
+\item \code{\link[=cnd_signal]{cnd_signal()}}: \code{.msg} and \code{.call}.
+}
+
 \strong{Retired in rlang 0.2.0:}
 \itemize{
 \item \link[=quasiquotation]{:=}

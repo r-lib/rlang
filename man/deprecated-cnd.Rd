@@ -22,9 +22,6 @@ cnd_message(.type = NULL, ..., .msg = NULL)
 \item{...}{Named data fields stored inside the condition
 object. These dots are evaluated with \link[=tidy-dots]{explicit
 splicing}.}
-
-\item{.msg}{A default message to inform the user about the
-condition when it is signalled.}
 }
 \description{
 These functions were deprecated in rlang 0.2.0 to follow the

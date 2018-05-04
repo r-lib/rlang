@@ -4,6 +4,7 @@ void r_init_library_cnd();
 void r_init_library_env();
 void r_init_library_stack();
 void r_init_library_sym();
+void r_init_library_vec_chr();
 
 sexp* r_shared_true;
 sexp* r_shared_false;
@@ -16,6 +17,7 @@ void r_init_library() {
   r_init_library_cnd();
   r_init_library_env();
   r_init_library_stack();
+  r_init_library_vec_chr();
 
   r_shared_true = r_new_vector(r_type_logical, 1);
   r_mark_precious(r_shared_true);

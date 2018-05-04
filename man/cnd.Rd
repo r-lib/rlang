@@ -7,13 +7,13 @@
 \alias{message_cnd}
 \title{Create a condition object}
 \usage{
-cnd(.type = NULL, ..., .msg = NULL)
+cnd(.type = NULL, ..., message = "", call = NULL)
 
-error_cnd(.type = NULL, ..., .msg = NULL)
+error_cnd(.type = NULL, ..., message = "", call = NULL)
 
-warning_cnd(.type = NULL, ..., .msg = NULL)
+warning_cnd(.type = NULL, ..., message = "", call = NULL)
 
-message_cnd(.type = NULL, ..., .msg = NULL)
+message_cnd(.type = NULL, ..., message = "", call = NULL)
 }
 \arguments{
 \item{.type}{The condition subclass.}
@@ -22,8 +22,11 @@ message_cnd(.type = NULL, ..., .msg = NULL)
 object. These dots are evaluated with \link[=tidy-dots]{explicit
 splicing}.}
 
-\item{.msg}{A default message to inform the user about the
+\item{message}{A default message to inform the user about the
 condition when it is signalled.}
+
+\item{call}{A call documenting what expression caused a condition
+to be signalled.}
 }
 \description{
 These constructors make it easy to create subclassed conditions.
@@ -35,6 +38,13 @@ also be used for passing messages to pre-established handlers.
 created with \code{error_cnd()}, \code{warning_cnd()} and \code{message_cnd()}
 inherit from \code{error}, \code{warning} or \code{message}.
 }
+\section{Lifecycle}{
+
+
+The \code{.msg} argument has been renamed to \code{message} and is defunct as
+of rlang 0.3.0.
+}
+
 \examples{
 # Create a condition inheriting from the s3 type "foo":
 cnd <- cnd("foo")
