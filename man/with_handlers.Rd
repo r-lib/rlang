@@ -11,10 +11,10 @@ with_handlers(.expr, ...)
 handlers are established. The underscored version takes a quoted
 expression or a quoted formula.}
 
-\item{...}{Named handlers. Handlers should inherit from \code{exiting}
-or \code{inplace}. See \code{\link[=exiting]{exiting()}} and \code{\link[=inplace]{inplace()}} for constructing
-such handlers. Dots are evaluated with \link[=tidy-dots]{explicit
-splicing}.}
+\item{...}{Named handlers. These should be functions of one
+argument. These handlers are treated as exiting by default. Use
+\code{\link[=inplace]{inplace()}} to specify an inplace handler. These dots support
+\link[=tidy-dots]{tidy dots} features.}
 }
 \description{
 Condition handlers are functions established on the evaluation
@@ -65,6 +65,9 @@ h <- function() {
 # executed. Their return value is handed over:
 handler <- function(c) "handler return value"
 with_handlers(fn(), foo = exiting(handler))
+
+# Handlers are exiting by default so you can omit the adjective:
+with_handlers(fn(), foo = handler)
 
 # In place handlers are called in turn and their return value is
 # ignored. Returning just means they are declining to take charge of

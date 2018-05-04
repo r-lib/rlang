@@ -1,6 +1,12 @@
 
 # rlang 0.2.0.9000
 
+* `with_handlers()` treats bare functions as exiting handlers
+  (equivalent to handlers supplied to `tryCatch()`). It also supports
+  the formula shortcut for lambda functions (as in purrr).
+
+* `with_handlers()` now produces a cleaner stack trace.
+
 * The vector predicates have been rewritten in C for performance.
 
 * The `finite` argument of `is_integerish()` is now `NULL` by
@@ -9,8 +15,6 @@
 
 * `is_bare_integerish()` and `is_scalar_integerish()` gain a `finite`
   argument for consistency with `is_integerish()`.
-
-* `with_handlers()` now produces a cleaner stack trace.
 
 * New `calltrace()` captures the call trace, which is similar to traceback,
   but contains additional structure about the relationship between frames.
