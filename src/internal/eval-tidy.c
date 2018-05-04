@@ -261,9 +261,8 @@ sexp* rlang_tilde_eval(sexp* tilde, sexp* overscope, sexp* overscope_top, sexp* 
   return out;
 }
 
-#define DATA_MASK_OBJECTS_N 4
-static const char* data_mask_objects_names[DATA_MASK_OBJECTS_N] = {
-  ".__tidyeval_data_mask__.", "~", ".top_env", ".env"
+static const char* data_mask_objects_names[5] = {
+  ".__tidyeval_data_mask__.", "~", ".top_env", ".env", NULL
 };
 
 // Soft-deprecated in rlang 0.2.0
@@ -278,7 +277,7 @@ sexp* rlang_data_mask_clean(sexp* mask) {
   }
 
   // At this level we only want to remove our own stuff
-  r_env_unbind_all(mask, data_mask_objects_names, DATA_MASK_OBJECTS_N, false);
+  r_env_unbind_all(mask, data_mask_objects_names, false);
 
   // Remove everything in the other levels
   sexp* env = bottom;
@@ -356,13 +355,13 @@ sexp* rlang_eval_tidy(sexp* expr, sexp* data, sexp* frame) {
 }
 
 
-const char* data_pronoun_c_names[3] = { "src", "lookup_msg", "read_only" };
+const char* data_pronoun_c_names[4] = { "src", "lookup_msg", "read_only", NULL };
 
 void rlang_init_eval_tidy() {
   tilde_thunk_fmls = rlang_constants_get("tilde_thunk_fmls");
   tilde_thunk_body = rlang_constants_get("tilde_thunk_body");
 
-  data_pronoun_names = r_new_character(data_pronoun_c_names, 3);
+  data_pronoun_names = r_new_character(data_pronoun_c_names);
   r_mark_precious(data_pronoun_names);
 
   data_pronoun_class = r_scalar_chr("rlang_data_pronoun");

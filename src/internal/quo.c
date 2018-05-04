@@ -1,13 +1,12 @@
 #include <rlang.h>
 
-#define QUO_TAGS_N 2
-static const char* quo_tags[QUO_TAGS_N] = { "quosure", "formula" };
+static const char* quo_tags[3] = { "quosure", "formula", NULL };
 
 sexp* new_raw_formula(sexp* lhs, sexp* rhs, sexp* env);
 
 sexp* rlang_new_quosure(sexp* expr, sexp* env) {
   sexp* quo = KEEP(new_raw_formula(r_null, expr, env));
-  r_push_classes(quo, quo_tags, QUO_TAGS_N);
+  r_push_classes(quo, quo_tags);
   FREE(1);
   return quo;
 }

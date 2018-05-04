@@ -53,7 +53,7 @@ sexp* r_list_as_environment(sexp* x, sexp* parent);
 sexp* r_env_clone(sexp* env, sexp* parent);
 
 sexp* r_env_unbind_names(sexp* env, sexp* names, bool inherits);
-sexp* r_env_unbind_all(sexp* env, const char** names, r_ssize_t n, bool inherits);
+sexp* r_env_unbind_all(sexp* env, const char** names, bool inherits);
 sexp* r_env_unbind(sexp* env, const char* name, bool inherits);
 
 

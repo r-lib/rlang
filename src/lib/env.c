@@ -134,12 +134,14 @@ sexp* rlang_env_unbind(sexp* env, sexp* names, sexp* inherits) {
   return r_env_unbind_names(env, names, *r_lgl_deref(inherits));
 }
 
-sexp* r_env_unbind_all(sexp* env, const char** names, r_ssize_t n, bool inherits) {
-  return r_env_unbind_names(env, r_new_character(names, n), inherits);
+sexp* r_env_unbind_all(sexp* env, const char** names, bool inherits) {
+  return r_env_unbind_names(env, r_new_character(names), inherits);
 }
 
 sexp* r_env_unbind(sexp* env, const char* name, bool inherits) {
-  return r_env_unbind_all(env, &name, 1, inherits);
+  static const char* names[2] = { "", NULL };
+  names[0] = name;
+  return r_env_unbind_all(env, names, inherits);
 }
 
 

@@ -50,23 +50,28 @@ sexp* r_get_attribute(sexp* x, sexp* tag) {
  */
 
 // Caller must poke the object bit
-sexp* r_node_push_classes(sexp* node, const char** tags, int n) {
-  static sexp* class_sym = NULL;
-  if (!class_sym) {
-    class_sym = r_sym("class");
-  }
-
-  sexp* tags_chr = KEEP(r_new_character(tags, n));
+sexp* r_node_push_classes(sexp* node, const char** tags) {
+  sexp* tags_chr = KEEP(r_new_character(tags));
   sexp* attrs = r_new_node(tags_chr, node);
-  r_node_poke_tag(attrs, class_sym);
+  r_node_poke_tag(attrs, r_class_sym);
 
   FREE(1);
   return attrs;
 }
+sexp* r_node_push_class(sexp* x, const char* tag) {
+  static const char* tags[2] = { "", NULL };
+  tags[0] = tag;
+  return r_node_push_classes(x, tags);
+}
 
-void r_push_classes(sexp* x, const char** tags, int n) {
+void r_push_classes(sexp* x, const char** tags) {
   sexp* attrs = r_get_attributes(x);
-  attrs = r_node_push_classes(attrs, tags, n);
+  attrs = r_node_push_classes(attrs, tags);
   SET_ATTRIB(x, attrs);
   SET_OBJECT(x, 1);
+}
+void r_push_class(sexp* x, const char* tag) {
+  static const char* tags[2] = { "", NULL };
+  tags[0] = tag;
+  r_push_classes(x, tags);
 }

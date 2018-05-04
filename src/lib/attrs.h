@@ -16,16 +16,11 @@ static inline void r_push_names(sexp* x, sexp* value) {
   r_push_attribute(x, R_NamesSymbol, value);
 }
 
-sexp* r_node_push_classes(sexp* x, const char** tags, int n);
+sexp* r_node_push_classes(sexp* x, const char** tags);
+sexp* r_node_push_class(sexp* x, const char* tag);
 
-static inline sexp* r_node_push_class(sexp* x, const char* tag) {
-  return r_node_push_classes(x, &tag, 1);
-}
+void r_push_classes(sexp* x, const char** tags);
+void r_push_class(sexp* x, const char* tag);
 
-void r_push_classes(sexp* x, const char** tags, int n);
-
-static inline void r_push_class(sexp* x, const char* tag) {
-  r_push_classes(x, &tag, 1);
-}
 
 #endif

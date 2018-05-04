@@ -35,7 +35,7 @@ bool r_chr_has(sexp* chr, const char* c_string);
 bool r_chr_has_any(sexp* chr, const char** c_strings);
 
 
-sexp* r_new_character(const char** strings, int n);
+sexp* r_new_character(const char** strings);
 
 static inline sexp* r_string(const char* c_string) {
   return Rf_mkChar(c_string);

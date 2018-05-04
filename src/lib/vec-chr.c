@@ -2,7 +2,19 @@
 #include "rlang.h"
 
 
-sexp* r_new_character(const char** strings, int n) {
+size_t ptrs_array_length(void** ptrs) {
+  size_t n = 0;
+
+  while (*ptrs) {
+    ++ptrs;
+    ++n;
+  }
+
+  return n;
+}
+
+sexp* r_new_character(const char** strings) {
+  size_t n = ptrs_array_length((void**) strings);
   sexp* out = KEEP(r_new_vector(STRSXP, n));
 
   for (int i = 0; i < n; ++i) {
