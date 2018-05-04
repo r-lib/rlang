@@ -13,6 +13,10 @@ static inline void r_chr_poke(sexp* chr, r_ssize_t i, sexp* elt) {
   SET_STRING_ELT(chr, i, elt);
 }
 
+static inline const char* r_str_deref(sexp* str) {
+  return CHAR(str);
+}
+
 static inline const char* r_chr_get_c_string(sexp* chr, r_ssize_t i) {
   return CHAR(STRING_ELT(chr, i));
 }
@@ -73,10 +77,6 @@ static inline bool r_is_string(sexp* x, const char* string) {
     return false;
   }
   return true;
-}
-
-static inline const char* r_str_as_c_string(sexp* str) {
-  return CHAR(str);
 }
 
 static inline sexp* r_str_as_symbol(sexp* str) {
