@@ -14,11 +14,29 @@ sexp* r_new_character(const char** strings, int n) {
 }
 
 bool r_chr_has(sexp* chr, const char* c_string) {
-  sexp* nm;
-  for (int i = 0; i != r_vec_length(chr); ++i) {
-    nm = STRING_ELT(chr, i);
-    if (strcmp(CHAR(nm), c_string) == 0) {
+  size_t n = r_length(chr);
+
+  for (int i = 0; i != n; ++i) {
+    const char* cur = CHAR(STRING_ELT(chr, i));
+    if (strcmp(cur, c_string) == 0) {
       return true;
+    }
+  }
+
+  return false;
+}
+
+bool r_chr_has_any(sexp* chr, const char** c_strings) {
+  size_t n = r_length(chr);
+
+  for (int i = 0; i != n; ++i) {
+    const char* cur = CHAR(STRING_ELT(chr, i));
+
+    while (*c_strings) {
+      if (strcmp(cur, *c_strings) == 0) {
+        return true;
+      }
+      ++c_strings;
     }
   }
 
