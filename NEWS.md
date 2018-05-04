@@ -2,7 +2,8 @@
 # rlang 0.2.0.9000
 
 * `with_handlers()` treats bare functions as exiting handlers
-  (equivalent to handlers supplied to `tryCatch()`).
+  (equivalent to handlers supplied to `tryCatch()`). It also supports
+  the formula shortcut for lambda functions (as in purrr).
 
 * `with_handlers()` now produces a cleaner stack trace.
 

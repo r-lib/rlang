@@ -34,7 +34,8 @@
 #' @param ... Named handlers. These should be functions of one
 #'   argument. These handlers are treated as exiting by default. Use
 #'   [inplace()] to specify an inplace handler. These dots support
-#'   [tidy dots][tidy-dots] features.
+#'   [tidy dots][tidy-dots] features and are passed to [as_function()]
+#'   to enable the formula shortcut for lambda functions.
 #' @seealso [exiting()], [inplace()].
 #' @export
 #' @examples
@@ -80,10 +81,7 @@
 #' }
 #' with_handlers(fn2(), foo = inplace(exiting_handler), foo = inplace(other_handler))
 with_handlers <- function(.expr, ...) {
-  handlers <- list2(...)
-  if (!every(handlers, is_function)) {
-    abort("All handlers should be functions")
-  }
+  handlers <- map(list2(...), as_function)
 
   is_inplace <- map_lgl(handlers, inherits, "inplace")
   inplace <- handlers[is_inplace]
