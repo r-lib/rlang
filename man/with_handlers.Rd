@@ -14,7 +14,8 @@ expression or a quoted formula.}
 \item{...}{Named handlers. These should be functions of one
 argument. These handlers are treated as exiting by default. Use
 \code{\link[=inplace]{inplace()}} to specify an inplace handler. These dots support
-\link[=tidy-dots]{tidy dots} features.}
+\link[=tidy-dots]{tidy dots} features and are passed to \code{\link[=as_function]{as_function()}}
+to enable the formula shortcut for lambda functions.}
 }
 \description{
 Condition handlers are functions established on the evaluation

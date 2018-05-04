@@ -41,3 +41,56 @@ with_non_verbose_retirement <- function(expr) {
 # is easier to develop rlang with the older testthat for now because
 # of the dangling pointers after a load_all().
 options(lifecycle_force_verbose_retirement = TRUE)
+
+
+catch_wngs <- function(expr) {
+  wngs <- list()
+
+  withCallingHandlers({
+    expr
+  },
+  warning = function(wng) {
+    wngs <<- c(wngs, list(wng))
+    invokeRestart("muffleWarning")
+  })
+
+  wngs
+}
+catch_warning_msgs <- function(expr) {
+  wngs <- catch_wngs(expr)
+  flatten_chr(pluck(wngs, "message"))
+}
+
+catch_cnds <- function(expr) {
+  wngs <- list()
+  msgs <- list()
+
+  err <- tryCatch(
+    withCallingHandlers({
+      force(expr)
+      NULL
+    },
+    message = function(msg) {
+      msgs <<- c(msgs, list(msg))
+      invokeRestart("muffleMessage")
+    },
+    warning = function(wng) {
+      wngs <<- c(wngs, list(wng))
+      invokeRestart("muffleWarning")
+    }),
+    error = identity
+  )
+
+  list(messages = msgs, warnings = wngs, error = err)
+}
+
+catch_conditions_msgs <- function(expr) {
+  pluck_conditions_msgs(catch_cnds(expr))
+}
+
+pluck_conditions_msgs <- function(cnds) {
+  cnds$messages <- flatten_chr(pluck(cnds$messages, "message"))
+  cnds$warnings <- flatten_chr(pluck(cnds$warnings, "message"))
+  cnds$error <- cnds$error$message
+  cnds
+}

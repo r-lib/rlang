@@ -1,6 +1,14 @@
 
 # rlang 0.2.0.9000
 
+* `abort()`, `warn()` and `inform()` now accepts metadata with `...`.
+  The data are stored in the condition and can be examined by user
+  handlers.
+
+  Consequently all arguments have been renamed to be prefixed with a
+  dot (to limit naming conflicts between arguments and metadata names)
+  and `.call` (previously `call`) can no longer be passed by position.
+
 * `with_handlers()` treats bare functions as exiting handlers
   (equivalent to handlers supplied to `tryCatch()`). It also supports
   the formula shortcut for lambda functions (as in purrr).

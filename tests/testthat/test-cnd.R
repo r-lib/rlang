@@ -54,7 +54,7 @@ test_that("cnd_signal() includes call info", {
 })
 
 test_that("abort() includes call info", {
-  fn <- function(...) abort("abort", "cnd", call = call)
+  fn <- function(...) abort("abort", "cnd", .call = call)
 
   call <- FALSE
   with_handlers(fn(foo(bar)), cnd = exiting(function(c) {
@@ -69,7 +69,7 @@ test_that("abort() includes call info", {
 })
 
 test_that("abort() accepts call number", {
-  fn <- function(...) abort("abort", "cnd", call = call)
+  fn <- function(...) abort("abort", "cnd", .call = call)
   wrapper <- function(...) fn(...)
 
   call <- FALSE
@@ -204,4 +204,36 @@ test_that("cnd_inform() transforms condition to message", {
 test_that("cnd_abort() adds correct S3 classes for errors", {
   expect_is(catch_cnd(cnd_abort("type")), "error")
   expect_error(cnd_abort("type"))
+})
+
+test_that("can pass condition metadata", {
+  msg <- catch_cnd(inform("type", foo = "bar"))
+  expect_identical(msg$foo, "bar")
+
+  wng <- catch_cnd(warn("type", foo = "bar"))
+  expect_identical(wng$foo, "bar")
+
+  err <- catch_cnd(abort("type", foo = "bar"))
+  expect_identical(err$foo, "bar")
+})
+
+
+# Lifecycle ----------------------------------------------------------
+
+test_that("deprecated arguments of abort() etc still work", {
+  foo <- function() {
+    abort(msg = "foo", type = "bar", call = TRUE)
+  }
+
+  cnds <- catch_cnds(foo())
+  msgs <- pluck_conditions_msgs(cnds)
+
+  warnings_msgs <- msgs$warnings
+  expect_length(warnings_msgs, 3L)
+  expect_match(warnings_msgs[[1]], "`msg` has been renamed to `.msg`")
+  expect_match(warnings_msgs[[2]], "`type` has been renamed to `.type`")
+  expect_match(warnings_msgs[[3]], "`call` has been renamed to `.call`")
+
+  expect_match(msgs$error, "foo")
+  expect_identical(conditionCall(cnds$error), quote(foo()))
 })

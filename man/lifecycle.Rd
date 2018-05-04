@@ -137,6 +137,8 @@ Since rlang 0.2.0:
 \strong{Renamed in rlang 0.2.0.9000}
 \itemize{
 \item \code{\link[=env_tail]{env_tail()}}: \code{sentinel} => \code{last}
+\item \code{\link[=abort]{abort()}}, \code{\link[=warn]{warn()}}, \code{\link[=inform]{inform()}}: \code{msg}, \code{type} and \code{call} =>
+\code{.msg}, \code{.type} and \code{.call}
 }
 
 \strong{Retired in rlang 0.2.0:}
