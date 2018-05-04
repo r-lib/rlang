@@ -89,14 +89,9 @@ sexp* r_new_condition(sexp* type, sexp* data, sexp* msg) {
   return cnd;
 }
 
-static sexp* with_muffle_call(sexp* signal) {
-  static sexp* muffle_node = NULL;
-  if (!muffle_node) {
-    muffle_node = r_build_pairlist(rlang_ns_get("muffle"));
-    R_PreserveObject(muffle_node);
-    r_node_poke_tag(muffle_node, r_sym("muffle"));
-  }
+static sexp* muffle_node = NULL;
 
+static sexp* with_muffle_call(sexp* signal) {
   sexp* args = KEEP(r_build_node(signal, muffle_node));
   sexp* call = r_build_call_node(r_sym("withRestarts"), args);
 
@@ -183,4 +178,11 @@ enum r_condition_type r_cnd_type(sexp* cnd) {
 
  error:
   r_abort("`cnd` is not a condition object");
+}
+
+
+void r_init_library_cnd() {
+  muffle_node = r_build_pairlist(rlang_ns_get("muffle"));
+  R_PreserveObject(muffle_node);
+  r_node_poke_tag(muffle_node, r_sym("muffle"));
 }

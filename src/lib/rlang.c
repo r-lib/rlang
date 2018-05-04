@@ -1,5 +1,6 @@
 #include <rlang.h>
 
+void r_init_library_cnd();
 void r_init_library_env();
 void r_init_library_stack();
 void r_init_library_sym();
@@ -11,6 +12,8 @@ sexp* r_shared_false;
 // provided in the library
 void r_init_library() {
   r_init_library_sym();  // Needs to be first
+
+  r_init_library_cnd();
   r_init_library_env();
   r_init_library_stack();
 
