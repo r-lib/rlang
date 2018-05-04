@@ -65,6 +65,20 @@ is_condition <- function(x) {
   inherits(x, "condition")
 }
 
+#' What type is a condition?
+#'
+#' Use `cnd_type()` to check what type a condition is.
+#'
+#' @param cnd A condition object.
+#' @return A string, either `"condition"`, `"message"`, `"warning"` or
+#'   `"error"`.
+#' @export
+#' @examples
+#' cnd_type(catch_cnd(abort("Abort!")))
+cnd_type <- function(cnd) {
+  .Call(rlang_cnd_type, cnd)
+}
+
 #' Signal a condition
 #'
 #' Signal a condition to handlers that have been established on the

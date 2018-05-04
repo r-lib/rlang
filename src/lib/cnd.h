@@ -21,5 +21,14 @@ void r_cnd_inform(sexp* cnd, bool mufflable);
 void r_cnd_warn(sexp* cnd, bool mufflable);
 void r_cnd_abort(sexp* cnd, bool mufflable);
 
+enum r_condition_type {
+  r_condition = 0,
+  r_message = 1,
+  r_warning = 2,
+  r_error = 3
+};
+
+enum r_condition_type r_cnd_type(sexp* cnd);
+
 
 #endif

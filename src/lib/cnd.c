@@ -138,3 +138,49 @@ void r_cnd_warn(sexp* cnd, bool mufflable) {
 void r_cnd_abort(sexp* cnd, bool mufflable) {
   cnd_signal_impl("stop", cnd, mufflable);
 }
+
+
+enum r_condition_type r_cnd_type(sexp* cnd) {
+  sexp* classes = r_get_class(cnd);
+  if (r_typeof(cnd) != r_type_list ||
+      r_typeof(classes) != r_type_character) {
+    goto error;
+  }
+
+  size_t n_classes = r_length(classes);
+
+  for (size_t i = 0; i < n_classes; ++i) {
+    const char* class_str = r_str_deref(r_chr_get(classes, i));
+    switch (class_str[0]) {
+    case 'c':
+      if (strcmp(class_str, "condition")) {
+        continue;
+      } else {
+        return r_condition;
+      }
+    case 'm':
+      if (strcmp(class_str, "message")) {
+        continue;
+      } else {
+        return r_message;
+      }
+    case 'w':
+      if (strcmp(class_str, "warning")) {
+        continue;
+      } else {
+        return r_warning;
+      }
+    case 'e':
+      if (strcmp(class_str, "error")) {
+        continue;
+      } else {
+        return r_error;
+      }
+    default:
+      continue;
+    }
+  }
+
+ error:
+  r_abort("`cnd` is not a condition object");
+}

@@ -1,6 +1,9 @@
 
 # rlang 0.2.0.9000
 
+* New `cnd_type()` helper to determine the type of a condition
+  (`"condition"`, `"message"`, `"warning"` or `"error"`).
+
 * `abort()`, `warn()` and `inform()` now accepts metadata with `...`.
   The data are stored in the condition and can be examined by user
   handlers.

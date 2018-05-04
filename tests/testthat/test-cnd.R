@@ -217,6 +217,16 @@ test_that("can pass condition metadata", {
   expect_identical(err$foo, "bar")
 })
 
+test_that("cnd_type() detects condition type", {
+  expect_error(cnd_type(list()), "not a condition object")
+  expect_error(cnd_type(mtcars), "not a condition object")
+  expect_error(cnd_type(env()), "not a condition object")
+  expect_identical(cnd_type(cnd()), "condition")
+  expect_identical(cnd_type(message_cnd()), "message")
+  expect_identical(cnd_type(warning_cnd()), "warning")
+  expect_identical(cnd_type(error_cnd()), "error")
+})
+
 
 # Lifecycle ----------------------------------------------------------
 

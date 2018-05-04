@@ -28,6 +28,16 @@ sexp* rlang_cnd_abort(sexp* cnd, sexp* mufflable) {
   return r_null;
 }
 
+sexp* rlang_cnd_type(sexp* cnd) {
+  enum r_condition_type type = r_cnd_type(cnd);
+  switch (type) {
+  case r_condition: return r_scalar_chr("condition");
+  case r_message: return r_scalar_chr("message");
+  case r_warning: return r_scalar_chr("warning");
+  case r_error: return r_scalar_chr("error");
+  }
+}
+
 
 // env.c
 

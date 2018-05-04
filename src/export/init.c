@@ -107,6 +107,7 @@ extern sexp* rlang_is_double(sexp*, sexp*, sexp*);
 extern sexp* rlang_is_integerish(sexp*, sexp*, sexp*);
 extern sexp* rlang_is_character(sexp*, sexp*);
 extern sexp* rlang_is_raw(sexp*, sexp*);
+extern sexp* rlang_cnd_type(sexp*);
 
 // Library initialisation defined below
 sexp* rlang_library_load();
@@ -235,6 +236,7 @@ static const r_callable r_callables[] = {
   {"rlang_is_integerish",       (r_fn_ptr_t) &rlang_is_integerish, 3},
   {"rlang_is_character",        (r_fn_ptr_t) &rlang_is_character, 2},
   {"rlang_is_raw",              (r_fn_ptr_t) &rlang_is_raw, 2},
+  {"rlang_cnd_type",            (r_fn_ptr_t) &rlang_cnd_type, 1},
   {NULL, NULL, 0}
 };
 
