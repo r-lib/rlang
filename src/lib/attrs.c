@@ -1,5 +1,4 @@
-#define R_NO_REMAP
-#include <Rinternals.h>
+#include "rlang.h"
 
 // These change attributes in-place.
 
@@ -38,6 +37,14 @@ sexp* r_get_attribute(sexp* x, sexp* tag) {
   }
 
   return r_null;
+}
+
+sexp* r_set_attribute(sexp* x, sexp* sym, sexp* attr) {
+  x = KEEP(r_duplicate(x, true));
+  r_poke_attribute(x, sym, attr);
+
+  FREE(1);
+  return x;
 }
 
 

@@ -34,37 +34,6 @@ static inline bool r_inherits(sexp* x, const char* tag) {
   return Rf_inherits(x, tag);
 }
 
-static inline void r_poke_attribute(sexp* x, sexp* sym, sexp* value) {
-  Rf_setAttrib(x, sym, value);
-}
-static inline void r_poke_class(sexp* x, sexp* classes) {
-  Rf_setAttrib(x, R_ClassSymbol, classes);
-}
-
-sexp* r_set_attribute(sexp* x, sexp* sym, sexp* attr);
-
-static inline sexp* r_set_class(sexp* x, sexp* classes) {
-  return r_set_attribute(x, R_ClassSymbol, classes);
-}
-
-static inline sexp* r_get_class(sexp* x) {
-  return Rf_getAttrib(x, R_ClassSymbol);
-}
-
-// From attrs.c
-sexp* r_get_attribute(sexp* x, sexp* tag);
-
-static inline sexp* r_vec_names(sexp* x) {
-  return r_get_attribute(x, R_NamesSymbol);
-}
-
-static inline void r_poke_names(sexp* x, sexp* nms) {
-  Rf_setAttrib(x, R_NamesSymbol, nms);
-}
-
-bool r_has_name_at(sexp* x, r_ssize_t i);
-bool r_is_named(sexp* x);
-
 static inline sexp* r_missing_arg() {
   return R_MissingArg;
 }
