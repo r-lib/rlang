@@ -254,3 +254,52 @@ test_that("r_env_unbind() removes objects", {
   c_env_unbind(child, "a", inherits = TRUE)
   expect_false(env_has(env, "a"))
 })
+
+node_list_clone_until <- function(node, sentinel) {
+  .Call(rlang_test_node_list_clone_until, node, sentinel)
+}
+
+test_that("can clone-until with NULL list", {
+  expect_identical(node_list_clone_until(NULL, pairlist()), list(NULL, NULL))
+})
+
+test_that("can clone-until with NULL sentinel", {
+  node <- pairlist(a = 1, b = 2, c = 3)
+  out <- node_list_clone_until(node, NULL)
+  expect_null(out[[2]])
+
+  node_out <- out[[1]]
+  expect_identical(node_out, pairlist(a = 1, b = 2, c = 3))
+  while (!is_null(node_out)) {
+    expect_false(is_reference(node_out, node))
+    node_out <- node_cdr(node_out)
+    node <- node_cdr(node)
+  }
+})
+
+test_that("returned sentinel is NULL if it couldn't be found", {
+  node <- pairlist(a = NULL)
+  out <- node_list_clone_until(node, pairlist())
+
+  expect_false(is_reference(out[[1]], node))
+  expect_null(out[[2]])
+})
+
+test_that("can clone until sentinel", {
+  node1 <- pairlist(a = 1, b = 2, c = 3)
+  node2 <- node_cdr(node1)
+  node3 <- node_cdr(node2)
+
+  out <- node_list_clone_until(node1, node2)
+
+  # No modification by reference of original list
+  expect_false(is_reference(out, node1))
+  expect_true(is_reference(node_cdr(node1), node2))
+  expect_true(is_reference(node_cdr(node2), node3))
+
+  node_out <- out[[1]]
+  expect_identical(node_out, pairlist(a = 1, b = 2, c = 3))
+  expect_false(is_reference(node_out, node1))
+  expect_true(is_reference(node_cdr(node_out), node2))
+  expect_true(is_reference(node_out, out[[2]]))
+})

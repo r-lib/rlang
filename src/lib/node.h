@@ -97,6 +97,7 @@ static inline sexp* r_build_pairlist3(sexp* car1, sexp* car2, sexp* car3) {
 }
 
 sexp* r_node_tree_clone(sexp* x);
+sexp* r_node_list_clone_until(sexp* node, sexp* sentinel, sexp** sentinel_out);
 
 
 #endif

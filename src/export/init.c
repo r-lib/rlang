@@ -121,6 +121,7 @@ extern sexp* rlang_on_exit(sexp*, sexp*);
 extern sexp* rlang_test_is_special_op_sym(sexp*);
 extern sexp* rlang_test_base_ns_get(sexp*);
 extern sexp* r_current_frame();
+extern sexp* rlang_test_node_list_clone_until(sexp*, sexp*);
 extern sexp* rlang_test_sys_frame(sexp*);
 extern sexp* rlang_test_sys_call(sexp*);
 extern sexp* new_tilde_thunk(sexp*, sexp*);
@@ -189,6 +190,7 @@ static const r_callable r_callables[] = {
   {"rlang_test_is_special_op_sym", (r_fn_ptr_t) &rlang_test_is_special_op_sym, 1},
   {"rlang_test_base_ns_get",    (r_fn_ptr_t) &rlang_test_base_ns_get, 1},
   {"rlang_test_current_frame",  (r_fn_ptr_t) &r_current_frame, 0},
+  {"rlang_test_node_list_clone_until", (r_fn_ptr_t) &rlang_test_node_list_clone_until, 2},
   {"rlang_test_sys_frame",      (r_fn_ptr_t) &rlang_test_sys_frame, 1},
   {"rlang_test_sys_call",       (r_fn_ptr_t) &rlang_test_sys_call, 1},
   {"rlang_new_tilde_thunk",     (r_fn_ptr_t) &new_tilde_thunk, 2},

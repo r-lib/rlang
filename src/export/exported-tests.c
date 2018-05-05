@@ -17,6 +17,21 @@ sexp* rlang_test_base_ns_get(sexp* name) {
 }
 
 
+// node.c
+
+sexp* rlang_test_node_list_clone_until(sexp* node, sexp* sentinel) {
+  sexp* sentinel_out;
+  node = KEEP(r_node_list_clone_until(node, sentinel, &sentinel_out));
+
+  sexp* out = r_new_vector(r_type_list, 2);
+  r_list_poke(out, 0, node);
+  r_list_poke(out, 1, sentinel_out);
+
+  FREE(1);
+  return out;
+}
+
+
 // sym.c
 
 sexp* rlang_test_is_special_op_sym(sexp* x) {
