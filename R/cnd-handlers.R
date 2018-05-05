@@ -39,7 +39,7 @@
 #' @seealso [exiting()], [calling()].
 #' @export
 #' @examples
-#' # Signal a condition with cnd_signal():
+#' # Signal a condition with signal():
 #' fn <- function() {
 #'   g()
 #'   cat("called?\n")
@@ -50,7 +50,7 @@
 #'   cat("called?\n")
 #' }
 #' h <- function() {
-#'   cnd_signal("foo")
+#'   signal("A foobar condition occurred", "foo")
 #'   cat("called?\n")
 #' }
 #'
@@ -138,11 +138,11 @@ with_handlers <- function(.expr, ...) {
 #' @examples
 #' # You can supply a function taking a condition as argument:
 #' hnd <- exiting(function(c) cat("handled foo\n"))
-#' with_handlers(cnd_signal("foo"), foo = hnd)
+#' with_handlers(signal("A foobar condition occurred", "foo"), foo = hnd)
 #'
 #' # Or a lambda-formula where "." is bound to the condition:
 #' with_handlers(foo = calling(~cat("hello", .$attr, "\n")), {
-#'   cnd_signal("foo", attr = "there")
+#'   signal("A foobar condition occurred", "foo", attr = "there")
 #'   "foo"
 #' })
 exiting <- function(handler) {
@@ -201,7 +201,7 @@ calling <- function(handler, muffle = FALSE) {
 #'
 #' # Signalling a condition parameterised with a data frame
 #' fn <- function() {
-#'   with_restarts(cnd_signal("foo", foo_field = mtcars),
+#'   with_restarts(signal("A foobar condition occurred", "foo", foo_field = mtcars),
 #'     rst_bar = rst_bar,
 #'     rst_baz = rst_baz
 #'   )

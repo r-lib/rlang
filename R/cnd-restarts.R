@@ -155,7 +155,7 @@ rst_maybe_jump <- function(.restart, ...) {
 #' error is issued (see [abort()]) that no handler is able
 #' to deal with (see [with_handlers()]).
 #'
-#' @seealso [rst_jump()], [abort()] and [cnd_abort()].
+#' @seealso [rst_jump()], [abort()]
 #' @export
 #' @examples
 #' # The `abort` restart is a bit special in that it is always

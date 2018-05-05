@@ -1,6 +1,16 @@
 
 # rlang 0.2.0.9000
 
+* `cnd_inform()`, `cnd_warn()` and `cnd_abort()` are retired and
+  defunct.
+
+* Modifying a condition with `cnd_signal()` is defunct. Creating a
+  condition with `cnd_signal()` is soft-deprecated, please use the new
+  function [signal()] instead.
+
+* The new `signal()` function completes the `abort()`, `warn()` and
+  `inform()` family. It creates and signals a bare condition.
+
 * New `interrupt()` function to simulate an user interrupt from R
   code.
 

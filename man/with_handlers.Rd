@@ -47,7 +47,7 @@ place handlers are installed in second place. The latter handlers
 thus take precedence over the former.
 }
 \examples{
-# Signal a condition with cnd_signal():
+# Signal a condition with signal():
 fn <- function() {
   g()
   cat("called?\\n")
@@ -58,7 +58,7 @@ g <- function() {
   cat("called?\\n")
 }
 h <- function() {
-  cnd_signal("foo")
+  signal("A foobar condition occurred", "foo")
   cat("called?\\n")
 }
 

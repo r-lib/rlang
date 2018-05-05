@@ -97,6 +97,11 @@ Since rlang 0.2.0:
 \item \code{\link[=get_env]{get_env()}}: The \code{env} argument no longer has a default and must be supplied
 }
 
+\strong{Renamed in rlang 0.2.0.9000}
+\itemize{
+\item \code{\link[=cnd_signal]{cnd_signal()}}: \code{.cnd} and \code{.mufflable} => \code{cnd} and \code{mufflable}.
+}
+
 \strong{Retired in rlang 0.2.0:}
 \itemize{
 \item \code{\link[=eval_tidy_]{eval_tidy_()}}
@@ -166,6 +171,7 @@ Since rlang 0.2.0:
 \item \code{\link[=cnd]{cnd()}}, \code{\link[=error_cnd]{error_cnd()}}, \code{\link[=warning_cnd]{warning_cnd()}} and \code{\link[=message_cnd]{message_cnd()}}:
 \code{.msg} => \code{message}.
 \item \code{\link[=cnd_signal]{cnd_signal()}}: \code{.msg} and \code{.call}.
+\item \code{cnd_inform()}, \code{cnd_warn()} and \code{cnd_abort()}
 }
 
 \strong{Retired in rlang 0.2.0:}

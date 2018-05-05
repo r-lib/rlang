@@ -101,6 +101,11 @@
 #' * [get_env()]: The `env` argument no longer has a default and must be supplied
 #'
 #'
+#' **Renamed in rlang 0.2.0.9000**
+#'
+#' * [cnd_signal()]: `.cnd` and `.mufflable` => `cnd` and `mufflable`.
+#'
+#'
 #' **Retired in rlang 0.2.0:**
 #'
 #' * [eval_tidy_()]
@@ -169,6 +174,7 @@
 #' * [cnd()], [error_cnd()], [warning_cnd()] and [message_cnd()]:
 #'   `.msg` => `message`.
 #' * [cnd_signal()]: `.msg` and `.call`.
+#' * `cnd_inform()`, `cnd_warn()` and `cnd_abort()`
 #'
 #'
 #' **Retired in rlang 0.2.0:**

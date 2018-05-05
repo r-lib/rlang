@@ -4,6 +4,7 @@
 \alias{abort}
 \alias{warn}
 \alias{inform}
+\alias{signal}
 \alias{interrupt}
 \title{Signal an error, warning, or message}
 \usage{
@@ -12,6 +13,8 @@ abort(message, .type = NULL, ..., call = NULL, msg, type)
 warn(message, .type = NULL, ..., call = NULL, msg, type)
 
 inform(message, .type = NULL, ..., call = NULL, msg, type)
+
+signal(message, .type, ..., call = NULL)
 
 interrupt()
 }
