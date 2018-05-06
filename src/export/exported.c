@@ -11,20 +11,8 @@ sexp* rlang_poke_attributes(sexp* x, sexp* attrs) {
 
 // cnd.c
 
-sexp* rlang_cnd_signal(sexp* cnd, sexp* mufflable) {
-  r_cnd_signal(cnd, r_as_bool(mufflable));
-  return r_null;
-}
-sexp* rlang_cnd_inform(sexp* cnd, sexp* mufflable) {
-  r_cnd_inform(cnd, r_as_bool(mufflable));
-  return r_null;
-}
-sexp* rlang_cnd_warn(sexp* cnd, sexp* mufflable) {
-  r_cnd_warn(cnd, r_as_bool(mufflable));
-  return r_null;
-}
-sexp* rlang_cnd_abort(sexp* cnd, sexp* mufflable) {
-  r_cnd_abort(cnd, r_as_bool(mufflable));
+sexp* rlang_cnd_signal(sexp* cnd) {
+  r_cnd_signal(cnd);
   return r_null;
 }
 

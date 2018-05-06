@@ -11,10 +11,10 @@ test_that("cnd() throws with unnamed fields", {
 })
 
 test_that("cnd_signal() creates muffle restarts", {
-  withCallingHandlers(cnd_signal(cnd("foo"), mufflable = TRUE),
+  withCallingHandlers(cnd_signal(cnd("foo")),
     foo = function(c) {
       expect_true(rst_exists("muffle"))
-      expect_is(c, "mufflable")
+      expect_true(attr(c, "rlang_mufflable_cnd"))
     }
   )
 })
@@ -175,7 +175,7 @@ test_that("cnd_signal() and signal() returns NULL invisibly", {
 
 test_that("signal() accepts character vectors of classes (#195)", {
   expect <- calling(function(cnd) {
-    expect_identical(class(cnd), c("mufflable", "foo", "bar", "condition"))
+    expect_identical(class(cnd), c("foo", "bar", "condition"))
   })
   with_handlers(signal("", c("foo", "bar")), foo = expect)
 })

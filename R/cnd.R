@@ -27,25 +27,20 @@
 #' # Create a condition inheriting from the s3 type "foo":
 #' cnd <- cnd("foo")
 #'
-#' # Signal the condition to potential handlers. This has no effect if no
-#' # handler is registered to deal with conditions of type "foo":
+#' # Signal the condition to potential handlers. Since this is a bare
+#' # condition the signal has no effect if no handlers are set up:
 #' cnd_signal(cnd)
 #'
-#' # If a relevant handler is on the current evaluation stack, it will be
-#' # called by cnd_signal():
+#' # When a relevant handler is set up, the signal causes the handler
+#' # to be called:
 #' with_handlers(cnd_signal(cnd), foo = exiting(function(c) "caught!"))
 #'
 #' # Handlers can be thrown or executed inplace. See with_handlers()
 #' # documentation for more on this.
 #'
-#'
-#' # Note that merely signalling a condition inheriting of "error" is
-#' # not sufficient to stop a program:
-#' cnd_signal(error_cnd("my_error"))
-#'
-#' # you need to use stop() to signal a critical condition that should
-#' # terminate the program if not handled:
-#' # stop(error_cnd("my_error"))
+#' # Signalling an error condition aborts the current computation:
+#' err <- error_cnd("foo", message = "I am an error")
+#' try(cnd_signal(err))
 cnd <- function(.type = NULL, ..., message = "", call = NULL) {
   .Call(rlang_new_condition, .type, message, call, dots_list(...))
 }
@@ -114,32 +109,28 @@ cnd_type <- function(cnd) {
 #' resume execution from the place where the condition was
 #' signalled. The easiest way to accomplish this is by jumping to a
 #' restart point (see [with_restarts()]) established by the signalling
-#' function. If `.mufflable` is `TRUE`, a muffle restart is
-#' established. This allows calling handlers to muffle a signalled
-#' condition. See [rst_muffle()] to jump to a muffling restart, and
-#' the `muffle` argument of [calling()] for creating a muffling
-#' handler.
+#' function. `cnd_signal()` always installs a muffle restart (see
+#' [rst_muffle()]).
 #'
 #' @section Lifecycle:
 #'
 #' * Modifying a condition object with `cnd_signal()` is defunct.
 #'   Consequently the `.msg` and `.call` arguments are retired and
-#'   defunct as of rlang 0.3.0.  In addition `.cnd` and `.mufflable`
-#'   are renamed to `cnd` and `mufflable` and soft-deprecated.
+#'   defunct as of rlang 0.3.0.  In addition `.cnd` is renamed to
+#'   `cnd` and soft-deprecated.
+#'
+#' * The `.mufflable` argument is soft-deprecated and no longer has
+#'   any effect. Non-critical conditions are always signalled with a
+#'   muffle restart.
 #'
 #' * Creating a condition object with [cnd_signal()] is
 #'   soft-deprecated. Please use [signal()] instead.
 #'
 #' @param cnd A condition object (see [cnd()]).
-#' @param mufflable Whether to signal the condition with a muffling
-#'   restart. This is useful to let [calling()] handlers muffle a
-#'   condition. It stops the condition from being passed to other
-#'   handlers when the calling handler did not jump elsewhere. `TRUE`
-#'   by default for benign conditions, but `FALSE` for critical ones,
-#'   since in those cases execution should probably not be allowed to
-#'   continue normally.
-#' @param .cnd,.mufflable These arguments have been renamed to `cnd`
-#'   and `mufflable`.
+#' @param .cnd,.mufflable These arguments are retired. `.cnd` has been
+#'   renamed to `cnd` and `.mufflable` no longer has any effect as
+#'   non-critical conditions are always signalled with a muffling
+#'   restart.
 #' @seealso [abort()], [warn()] and [inform()] for signalling typical
 #'   R conditions. See [with_handlers()] for establishing condition
 #'   handlers.
@@ -173,9 +164,9 @@ cnd_type <- function(cnd) {
 #'     cnd_signal(cnd("foo"))
 #'     "return value"
 #'   }))
-cnd_signal <- function(cnd, mufflable = TRUE, .cnd, .mufflable) {
+cnd_signal <- function(cnd, .cnd, .mufflable) {
   validate_cnd_signal_args(cnd, .cnd, .mufflable)
-  invisible(.Call(rlang_cnd_signal, cnd, mufflable))
+  invisible(.Call(rlang_cnd_signal, cnd))
 }
 validate_cnd_signal_args <- function(cnd, .cnd, .mufflable,
                                      env = parent.frame()) {
@@ -192,9 +183,8 @@ validate_cnd_signal_args <- function(cnd, .cnd, .mufflable,
     env$cnd <- .cnd
   }
   if (!missing(.mufflable)) {
-    msg <- "`.mufflable` is soft-deprecated as of rlang 0.3.0, please use `mufflable` instead"
+    msg <- "`.mufflable` is soft-deprecated as of rlang 0.3.0 and has no longer any effect"
     signal_soft_deprecation(msg)
-    env$mufflable <- .mufflable
   }
 }
 

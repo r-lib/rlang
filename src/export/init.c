@@ -55,10 +55,7 @@ extern sexp* rlang_unescape_character(sexp*);
 extern sexp* rlang_capturearginfo(sexp*, sexp*, sexp*, sexp*);
 extern sexp* rlang_capturedots(sexp*, sexp*, sexp*, sexp*);
 extern sexp* rlang_new_call_node(sexp*, sexp*);
-extern sexp* rlang_cnd_abort(sexp*, sexp*);
-extern sexp* rlang_cnd_inform(sexp*, sexp*);
-extern sexp* rlang_cnd_signal(sexp*, sexp*);
-extern sexp* rlang_cnd_warn(sexp*, sexp*);
+extern sexp* rlang_cnd_signal(sexp*);
 extern sexp* rlang_r_string(sexp*);
 extern sexp* rlang_exprs_interp(sexp*, sexp*, sexp*, sexp*);
 extern sexp* rlang_quos_interp(sexp*, sexp*, sexp*, sexp*);
@@ -175,10 +172,7 @@ static const r_callable r_callables[] = {
   {"rlang_tilde_eval",          (r_fn_ptr_t) &rlang_tilde_eval, 4},
   {"rlang_unescape_character",  (r_fn_ptr_t) &rlang_unescape_character, 1},
   {"rlang_new_call",            (r_fn_ptr_t) &rlang_new_call_node, 2},
-  {"rlang_cnd_abort",           (r_fn_ptr_t) &rlang_cnd_abort, 2},
-  {"rlang_cnd_inform",          (r_fn_ptr_t) &rlang_cnd_inform, 2},
-  {"rlang_cnd_signal",          (r_fn_ptr_t) &rlang_cnd_signal, 2},
-  {"rlang_cnd_warn",            (r_fn_ptr_t) &rlang_cnd_warn, 2},
+  {"rlang_cnd_signal",          (r_fn_ptr_t) &rlang_cnd_signal, 1},
   {"rlang_test_chr_prepend",    (r_fn_ptr_t) &chr_prepend, 2},
   {"rlang_test_chr_append",     (r_fn_ptr_t) &chr_append, 2},
   {"rlang_test_r_warn",         (r_fn_ptr_t) &rlang_test_r_warn, 1},

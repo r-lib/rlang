@@ -95,11 +95,12 @@ Since rlang 0.2.0:
 \strong{Retired in rlang 0.2.0.9000}
 \itemize{
 \item \code{\link[=get_env]{get_env()}}: The \code{env} argument no longer has a default and must be supplied
+\item \code{\link[=cnd_signal]{cnd_signal()}}: The \code{.mufflable} argument no longer has any effect
 }
 
 \strong{Renamed in rlang 0.2.0.9000}
 \itemize{
-\item \code{\link[=cnd_signal]{cnd_signal()}}: \code{.cnd} and \code{.mufflable} => \code{cnd} and \code{mufflable}.
+\item \code{\link[=cnd_signal]{cnd_signal()}}: \code{.cnd} => \code{cnd}
 }
 
 \strong{Retired in rlang 0.2.0:}

@@ -93,56 +93,53 @@ sexp* r_new_condition(sexp* type, sexp* msg, sexp* call, sexp* data) {
   return cnd;
 }
 
-static sexp* muffle_node = NULL;
 
-static sexp* with_muffle_call(sexp* signal) {
-  sexp* args = KEEP(r_build_node(signal, muffle_node));
-  sexp* call = r_build_call_node(r_sym("withRestarts"), args);
+static sexp* cnd_signal_call = NULL;
+static sexp* msg_signal_call = NULL;
+static sexp* wng_signal_call = NULL;
+static sexp* err_signal_call = NULL;
 
-  FREE(1);
-  return call;
-}
-static void cnd_signal_impl(const char* signaller, sexp* cnd, bool mufflable) {
+static sexp* cnd_signal_cnd_node = NULL;
+
+void r_cnd_signal(sexp* cnd) {
   int n_protect = 0;
+  sexp* call = r_null;
+  sexp* cnd_node = r_null;
 
-  if (r_typeof(cnd) == STRSXP) {
-    cnd = KEEP_N(r_new_condition(cnd, r_null, r_null, r_null), n_protect);
-  } else if (!r_is_condition(cnd)) {
-    r_abort("`cnd` must be a condition");
+  switch (r_cnd_type(cnd)) {
+  case r_cnd_type_message:
+    call = msg_signal_call;
+    cnd_node = r_node_cdr(call);
+    break;
+  case r_cnd_type_warning:
+    call = wng_signal_call;
+    cnd_node = r_node_cdr(call);
+    break;
+  case r_cnd_type_error:
+    call = err_signal_call;
+    cnd_node = r_node_cdr(call);
+    break;
+  default:
+    cnd = KEEP(r_set_attribute(cnd, r_sym("rlang_mufflable_cnd"), r_shared_true));
+    ++ n_protect;
+    call = cnd_signal_call;
+    cnd_node = cnd_signal_cnd_node;
+    break;
   }
 
-  sexp* call = KEEP_N(r_build_call1(r_sym(signaller), cnd), n_protect);
+  r_node_poke_car(cnd_node, cnd);
+  r_eval(call, r_base_env);
 
-  if (mufflable) {
-    sexp* muffable_str = KEEP_N(r_string("mufflable"), n_protect);
-    sexp* classes = KEEP_N(chr_prepend(r_get_class(cnd), muffable_str), n_protect);
-    SETCADR(call, r_set_class(cnd, classes));
-
-    call = KEEP_N(with_muffle_call(call), n_protect);
-  }
-
-  r_eval(call, R_BaseEnv);
+  // Release `cnd`
+  r_node_poke_car(cnd_node, r_null);
   FREE(n_protect);
 }
 
-void r_cnd_signal(sexp* cnd, bool mufflable) {
-  cnd_signal_impl("signalCondition", cnd, mufflable);
-}
-void r_cnd_inform(sexp* cnd, bool mufflable) {
-  cnd_signal_impl("message", cnd, mufflable);
-}
-void r_cnd_warn(sexp* cnd, bool mufflable) {
-  cnd_signal_impl("warning", cnd, mufflable);
-}
-void r_cnd_abort(sexp* cnd, bool mufflable) {
-  cnd_signal_impl("stop", cnd, mufflable);
-}
 
 #include <Rinterface.h>
 void r_interrupt() {
   Rf_onintr();
 }
-
 
 enum r_condition_type r_cnd_type(sexp* cnd) {
   sexp* classes = r_get_class(cnd);
@@ -195,9 +192,27 @@ enum r_condition_type r_cnd_type(sexp* cnd) {
   r_abort("`cnd` is not a condition object");
 }
 
-
 void r_init_library_cnd() {
-  muffle_node = r_build_pairlist(rlang_ns_get("muffle"));
-  R_PreserveObject(muffle_node);
-  r_node_poke_tag(muffle_node, r_sym("muffle"));
+  msg_signal_call = r_build_call1(r_base_ns_get("message"), r_null);
+  r_mark_precious(msg_signal_call);
+
+  wng_signal_call = r_build_call1(r_base_ns_get("warning"), r_null);
+  r_mark_precious(wng_signal_call);
+
+  err_signal_call = r_build_call1(r_base_ns_get("stop"), r_null);
+  r_mark_precious(err_signal_call);
+
+  // This is a handle to the node that holds the condition to signal
+  cnd_signal_cnd_node = KEEP(r_new_node(r_null, r_null));
+
+  // The signalCondition() call is wrapped with a muffle restart
+  sexp* cnd_signal_core_call = KEEP(r_build_call_node(r_base_ns_get("signalCondition"), cnd_signal_cnd_node));
+
+  sexp* cnd_signal_args;
+  cnd_signal_args = KEEP(r_new_tagged_node("muffle", rlang_ns_get("muffle"), r_null));
+  cnd_signal_args = KEEP(r_new_tagged_node("expr", cnd_signal_core_call, cnd_signal_args));
+  cnd_signal_call = KEEP(r_build_call_node(r_sym("withRestarts"), cnd_signal_args));
+
+  r_mark_precious(cnd_signal_call);
+  FREE(5);
 }

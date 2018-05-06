@@ -99,11 +99,12 @@
 #' **Retired in rlang 0.2.0.9000**
 #'
 #' * [get_env()]: The `env` argument no longer has a default and must be supplied
+#' * [cnd_signal()]: The `.mufflable` argument no longer has any effect
 #'
 #'
 #' **Renamed in rlang 0.2.0.9000**
 #'
-#' * [cnd_signal()]: `.cnd` and `.mufflable` => `cnd` and `mufflable`.
+#' * [cnd_signal()]: `.cnd` => `cnd`
 #'
 #'
 #' **Retired in rlang 0.2.0:**

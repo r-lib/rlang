@@ -17,7 +17,7 @@ static inline bool r_is_condition(sexp* x) {
   return TYPEOF(x) == VECSXP && Rf_inherits(x, "condition");
 }
 
-void r_cnd_signal(sexp* cnd, bool mufflable);
+void r_cnd_signal(sexp* cnd);
 void r_cnd_inform(sexp* cnd, bool mufflable);
 void r_cnd_warn(sexp* cnd, bool mufflable);
 void r_cnd_abort(sexp* cnd, bool mufflable);

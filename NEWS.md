@@ -1,6 +1,16 @@
 
 # rlang 0.2.0.9000
 
+* `cnd_signal()` now dispatches messages, warnings and errors to the
+  relevant signallig functions (`message()`, `warning()` and
+  `stop()`). This makes it a good choice to resignal a captured
+  condition.
+
+* `cnd_signal()` now always installs a muffling restart for
+  non-critical conditions. Consequently the `.mufflable` argument has
+  been soft-deprecated (it does not trigger a deprecation warning but
+  no longer has any effect).
+
 * `cnd_inform()`, `cnd_warn()` and `cnd_abort()` are retired and
   defunct.
 

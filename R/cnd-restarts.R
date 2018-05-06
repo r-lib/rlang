@@ -256,17 +256,19 @@ rst_abort <- function() {
 #'
 #' with_handlers(foo = undesirable_handler,
 #'   with_handlers(foo = muffling_handler, {
-#'     cnd_signal("foo", mufflable = TRUE)
+#'     cnd_signal(cnd("foo"))
 #'     "return value"
 #'   }))
-#'
-#' # See the `mufflable` argument of cnd_signal() for more on this point
 rst_muffle <- function(c) {
   UseMethod("rst_muffle")
 }
 #' @export
 rst_muffle.default <- function(c) {
-  abort("No muffle restart defined for this condition", "control")
+  if (is_true(attr(c, "rlang_mufflable_cnd"))) {
+    rst_jump("muffle")
+  } else {
+    abort("No muffle restart defined for this condition", "control")
+  }
 }
 #' @export
 rst_muffle.simpleMessage <- function(c) {
@@ -275,8 +277,4 @@ rst_muffle.simpleMessage <- function(c) {
 #' @export
 rst_muffle.simpleWarning <- function(c) {
   rst_jump("muffleWarning")
-}
-#' @export
-rst_muffle.mufflable <- function(c) {
-  rst_jump("muffle")
 }
