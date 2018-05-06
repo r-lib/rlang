@@ -10,6 +10,12 @@ static inline sexp* r_get_attributes(sexp* x) {
 static inline void r_poke_attributes(sexp* x, sexp* attrs) {
   SET_ATTRIB(x, attrs);
 }
+static inline sexp* r_set_attributes(sexp* x, sexp* attrs) {
+  x = KEEP(r_duplicate(x, true));
+  SET_ATTRIB(x, attrs);
+  FREE(1);
+  return x;
+}
 
 sexp* r_get_attribute(sexp* x, sexp* tag);
 sexp* r_push_attribute(sexp* x, sexp* tag, sexp* value);
@@ -33,7 +39,15 @@ static inline void r_poke_class(sexp* x, sexp* classes) {
 }
 
 static inline sexp* r_set_class(sexp* x, sexp* classes) {
-  return r_set_attribute(x, r_class_sym, classes);
+  x = r_set_attribute(x, r_class_sym, classes);
+
+  if (classes == r_null) {
+    r_unmark_object(x);
+  } else {
+    r_mark_object(x);
+  }
+
+  return x;
 }
 static inline sexp* r_get_class(sexp* x) {
   return r_get_attribute(x, r_class_sym);

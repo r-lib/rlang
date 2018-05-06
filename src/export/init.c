@@ -191,6 +191,7 @@ static const r_callable r_callables[] = {
   {"rlang_test_base_ns_get",    (r_fn_ptr_t) &rlang_test_base_ns_get, 1},
   {"rlang_test_current_frame",  (r_fn_ptr_t) &r_current_frame, 0},
   {"rlang_test_node_list_clone_until", (r_fn_ptr_t) &rlang_test_node_list_clone_until, 2},
+  {"rlang_test_set_attribute",  (r_fn_ptr_t) &r_set_attribute, 3},
   {"rlang_test_sys_frame",      (r_fn_ptr_t) &rlang_test_sys_frame, 1},
   {"rlang_test_sys_call",       (r_fn_ptr_t) &rlang_test_sys_call, 1},
   {"rlang_new_tilde_thunk",     (r_fn_ptr_t) &new_tilde_thunk, 2},

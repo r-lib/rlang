@@ -39,21 +39,82 @@ sexp* r_get_attribute(sexp* x, sexp* tag) {
   return r_null;
 }
 
-sexp* r_set_attribute(sexp* x, sexp* sym, sexp* attr) {
-  x = KEEP(r_duplicate(x, true));
-  r_poke_attribute(x, sym, attr);
+sexp* r_attrs_set_at(sexp* attrs, sexp* node, sexp* value) {
+  sexp* sentinel = r_node_cdr(node);
+  sexp* new_node = r_null;
+
+  attrs = KEEP(r_node_list_clone_until(attrs, sentinel, &new_node));
+  r_node_poke_car(new_node, value);
 
   FREE(1);
-  return x;
+  return attrs;
+}
+sexp* r_attrs_zap_at(sexp* attrs, sexp* node, sexp* value) {
+  sexp* sentinel = node;
+  sexp* new_node = r_null;
+
+  attrs = KEEP(r_node_list_clone_until(attrs, sentinel, &new_node));
+
+  if (new_node == r_null) {
+    // `node` is the first node of `attrs`
+    attrs = r_node_cdr(attrs);
+  } else {
+    r_node_poke_cdr(new_node, r_node_cdr(node));
+  }
+
+  FREE(1);
+  return attrs;
+}
+sexp* r_clone2(sexp* x) {
+  sexp* attrs = r_get_attributes(x);
+
+  // Prevent attributes from being cloned
+  r_poke_attributes(x, r_null);
+  sexp* out = r_duplicate(x, true);
+  r_poke_attributes(x, attrs);
+  r_poke_attributes(out, attrs);
+
+  return out;
+}
+
+sexp* r_set_attribute(sexp* x, sexp* tag, sexp* value) {
+  sexp* attrs = r_get_attributes(x);
+  sexp* out = KEEP(r_clone2(x));
+
+  sexp* node = attrs;
+  while (node != r_null) {
+    if (r_node_tag(node) == tag) {
+      if (value == r_null) {
+        attrs = r_attrs_zap_at(attrs, node, value);
+      } else {
+        attrs = r_attrs_set_at(attrs, node, value);
+      }
+      r_poke_attributes(out, attrs);
+
+      FREE(1);
+      return out;
+    }
+
+    node = r_node_cdr(node);
+  }
+
+  if (value != r_null) {
+    // Just add to the front if attribute does not exist yet
+    attrs = KEEP(r_new_node(out, attrs));
+    r_node_poke_tag(attrs, tag);
+    r_node_poke_car(attrs, value);
+    r_poke_attributes(out, attrs);
+    FREE(1);
+  }
+
+  FREE(1);
+  return out;
 }
 
 
-/*
- * TODO:
- *
- * push: assumes there is no `class` attribute in the node list
- * merge: looks for `class` attribute first
- *
+/**
+ * With push_ prefix, assumes there is no `class` attribute in the
+ * node list merge. This is for low-level construction of objects.
  */
 
 // Caller must poke the object bit

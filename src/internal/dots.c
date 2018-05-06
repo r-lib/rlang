@@ -138,7 +138,7 @@ static sexp* set_value_spliced(sexp* x) {
     r_abort("Can't use `!!!` on atomic vectors in non-quoting functions");
   }
 
-  return r_set_attribute(x, r_class_sym, spliced_str);
+  return r_set_class(x, spliced_str);
 }
 
 static inline bool should_ignore(int ignore_empty, r_ssize_t i, r_ssize_t n) {

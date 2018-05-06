@@ -306,3 +306,77 @@ test_that("can clone until sentinel", {
   expect_true(is_reference(node_cdr(node_out), node2))
   expect_true(is_reference(node_out, out[[2]]))
 })
+
+get_attributes <- function(x) {
+  .Call(rlang_get_attrs, x)
+}
+c_set_attribute <- function(x, name, value) {
+  .Call(rlang_test_set_attribute, x, sym(name), value)
+}
+
+test_that("r_set_attribute() sets elements", {
+  x <- list()
+  out1 <- c_set_attribute(x, "foo", 1L)
+  attrs1 <- get_attributes(out1)
+  expect_identical(attrs1, pairlist(foo = 1L))
+  expect_false(is_reference(x, out1))
+  expect_null(get_attributes(x))
+
+  out2 <- c_set_attribute(out1, "bar", 2L)
+  attrs2 <- get_attributes(out2)
+  expect_identical(attrs2, pairlist(bar = 2L, foo = 1L))
+
+  expect_reference(get_attributes(out1), attrs1)
+  expect_reference(node_cdr(attrs2), attrs1)
+})
+
+test_that("r_set_attribute() zaps one element", {
+  x <- structure(list(), foo = 1)
+  attrs <- get_attributes(x)
+  out <- c_set_attribute(x, "foo", NULL)
+
+  expect_reference(get_attributes(x), attrs)
+  expect_null(get_attributes(out))
+})
+
+test_that("r_set_attribute() zaps several elements", {
+  x <- structure(list(), foo = 1, bar = 2, baz = 3)
+  attrs <- get_attributes(x)
+
+  out1 <- c_set_attribute(x, "foo", NULL)
+  attrs1 <- get_attributes(out1)
+
+  expect_identical(attrs1, pairlist(bar = 2, baz = 3))
+  expect_true(is_reference(attrs1, node_cdr(attrs)))
+  expect_true(is_reference(node_cdr(attrs1), node_cddr(attrs)))
+
+
+  out2 <- c_set_attribute(x, "bar", NULL)
+  attrs2 <- get_attributes(out2)
+
+  expect_identical(attrs2, pairlist(foo = 1, baz = 3))
+  expect_false(is_reference(attrs2, attrs))
+  expect_true(is_reference(node_cdr(attrs2), node_cddr(attrs)))
+
+
+  out3 <- c_set_attribute(x, "baz", NULL)
+  attrs3 <- get_attributes(out3)
+
+  expect_identical(attrs3, pairlist(foo = 1, bar = 2))
+  expect_false(is_reference(attrs3, attrs))
+  expect_false(is_reference(node_cdr(attrs3), node_cdr(attrs)))
+})
+
+
+test_that("can zap non-existing attributes", {
+  x <- list()
+  out <- c_set_attribute(x, "foo", NULL)
+  expect_identical(out, list())
+  expect_false(is_reference(x, out))
+
+  x2 <- structure(list(), foo = 1, bar = 2)
+  out2 <- c_set_attribute(x2, "baz", NULL)
+  attrs2 <- get_attributes(out2)
+  expect_identical(attrs2, pairlist(foo = 1, bar = 2))
+  expect_reference(attrs2, get_attributes(x2))
+})
