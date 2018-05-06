@@ -1,6 +1,9 @@
 
 # rlang 0.2.0.9000
 
+* `inplace()` has been renamed to `calling()` to follow base R
+  terminology more closely.
+
 * New `cnd_type()` helper to determine the type of a condition
   (`"condition"`, `"message"`, `"warning"` or `"error"`).
 
