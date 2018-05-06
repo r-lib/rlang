@@ -5,7 +5,7 @@
 #' signalled (see [cnd_signal()] and [abort()] for two common signal
 #' functions). They come in two types: exiting handlers, which jump
 #' out of the signalling context and are transferred to
-#' `with_handlers()` before being executed. And inplace handlers,
+#' `with_handlers()` before being executed. And calling handlers,
 #' which are executed within the signal functions.
 #'
 #' An exiting handler is taking charge of the condition. No other
@@ -15,12 +15,12 @@
 #' necessarily take charge. If they return normally, they decline to
 #' handle the condition, and R looks for other handlers established on
 #' the evaluation stack. Only by jumping to an earlier call frame can
-#' an inplace handler take charge of the condition and stop the
+#' a calling handler take charge of the condition and stop the
 #' signalling process. Sometimes, a muffling restart has been
 #' established for the purpose of jumping out of the signalling
 #' function but not out of the context where the condition was
 #' signalled, which allows execution to resume normally. See
-#' [rst_muffle()] the `muffle` argument of [inplace()] and the
+#' [rst_muffle()] the `muffle` argument of [calling()] and the
 #' `mufflable` argument of [cnd_signal()].
 #'
 #' Exiting handlers are established first by `with_handlers()`, and in
@@ -33,10 +33,10 @@
 #'   expression or a quoted formula.
 #' @param ... Named handlers. These should be functions of one
 #'   argument. These handlers are treated as exiting by default. Use
-#'   [inplace()] to specify an inplace handler. These dots support
+#'   [calling()] to specify a calling handler. These dots support
 #'   [tidy dots][tidy-dots] features and are passed to [as_function()]
 #'   to enable the formula shortcut for lambda functions.
-#' @seealso [exiting()], [inplace()].
+#' @seealso [exiting()], [calling()].
 #' @export
 #' @examples
 #' # Signal a condition with cnd_signal():
@@ -68,7 +68,7 @@
 #' # displaying a message:
 #' some_handler <- function(c) cat("some handler!\n")
 #' other_handler <- function(c) cat("other handler!\n")
-#' with_handlers(fn(), foo = inplace(some_handler), foo = inplace(other_handler))
+#' with_handlers(fn(), foo = calling(some_handler), foo = calling(other_handler))
 #'
 #' # If an in place handler jumps to an earlier context, it takes
 #' # charge of the condition and no other handler gets a chance to
@@ -79,20 +79,20 @@
 #' fn2 <- function() {
 #'   with_restarts(g(), rst_foo = function() "restart value")
 #' }
-#' with_handlers(fn2(), foo = inplace(exiting_handler), foo = inplace(other_handler))
+#' with_handlers(fn2(), foo = calling(exiting_handler), foo = calling(other_handler))
 with_handlers <- function(.expr, ...) {
   handlers <- map(list2(...), as_function)
 
-  is_inplace <- map_lgl(handlers, inherits, "inplace")
-  inplace <- handlers[is_inplace]
-  exiting <- handlers[!is_inplace]
+  is_calling <- map_lgl(handlers, inherits, "calling")
+  calling <- handlers[is_calling]
+  exiting <- handlers[!is_calling]
 
   expr <- quote(.expr)
   if (length(exiting)) {
     expr <- expr(tryCatch(!!expr, !!!exiting))
   }
-  if (length(inplace)) {
-    expr <- expr(withCallingHandlers(!!expr, !!!inplace))
+  if (length(calling)) {
+    expr <- expr(withCallingHandlers(!!expr, !!!calling))
   }
 
   .Call(rlang_eval, expr, environment())
@@ -104,7 +104,7 @@ with_handlers <- function(.expr, ...) {
 #' are thrown to the place where they have been established (e.g.,
 #' [with_handlers()]'s evaluation frame), and local handlers, which
 #' are executed in place (e.g., where the condition has been
-#' signalled). `exiting()` and `inplace()` create handlers suitable
+#' signalled). `exiting()` and `calling()` create handlers suitable
 #' for [with_handlers()].
 #'
 #' A subtle point in the R language is that conditions are not thrown,
@@ -116,8 +116,8 @@ with_handlers <- function(.expr, ...) {
 #' established it ([with_handlers()]). That is, it interrupts the
 #' normal course of evaluation and jumps to `with_handlers()`
 #' evaluation frame (see [ctxt_stack()]), and only then and there the
-#' handler is called. On the other hand, if R finds an inplace
-#' handler, it executes it locally. The inplace handler can choose to
+#' handler is called. On the other hand, if R finds a calling
+#' handler, it executes it locally. The calling handler can choose to
 #' handle the condition by jumping out of the frame (see [rst_jump()]
 #' or [return_from()]). If it returns locally, it declines to handle
 #' the condition which is passed to the next relevant handler on the
@@ -129,11 +129,11 @@ with_handlers <- function(.expr, ...) {
 #' @param handler A handler function that takes a condition as
 #'   argument. This is passed to [as_function()] and can thus be a
 #'   formula describing a lambda function.
-#' @param muffle Whether to muffle the condition after executing an
-#'   inplace handler. The signalling function must have established a
+#' @param muffle Whether to muffle the condition after executing a
+#'   calling handler. The signalling function must have established a
 #'   muffling restart. Otherwise, an error will be issued.
 #' @seealso [with_handlers()] for examples, [restarting()] for another
-#'   kind of inplace handler.
+#'   kind of calling handler.
 #' @export
 #' @examples
 #' # You can supply a function taking a condition as argument:
@@ -141,7 +141,7 @@ with_handlers <- function(.expr, ...) {
 #' with_handlers(cnd_signal("foo"), foo = hnd)
 #'
 #' # Or a lambda-formula where "." is bound to the condition:
-#' with_handlers(foo = inplace(~cat("hello", .$attr, "\n")), {
+#' with_handlers(foo = calling(~cat("hello", .$attr, "\n")), {
 #'   cnd_signal("foo", attr = "there")
 #'   "foo"
 #' })
@@ -151,7 +151,7 @@ exiting <- function(handler) {
 }
 #' @rdname exiting
 #' @export
-inplace <- function(handler, muffle = FALSE) {
+calling <- function(handler, muffle = FALSE) {
   handler <- as_function(handler)
   if (muffle) {
     handler_ <- function(c) {
@@ -161,15 +161,15 @@ inplace <- function(handler, muffle = FALSE) {
   } else {
     handler_ <- handler
   }
-  structure(handler_, class = c("inplace", "handler"))
+  structure(handler_, class = c("calling", "handler"))
 }
 
 #' Create a restarting handler
 #'
 #' This constructor automates the common task of creating an
-#' [inplace()] handler that invokes a restart.
+#' [calling()] handler that invokes a restart.
 #'
-#' Jumping to a restart point from an inplace handler has two
+#' Jumping to a restart point from a calling handler has two
 #' effects. First, the control flow jumps to wherever the restart was
 #' established, and the restart function is called (with `...`, or
 #' `.fields` as arguments). Execution resumes from the
@@ -189,7 +189,7 @@ inplace <- function(handler, muffle = FALSE) {
 #'   immediately, when creating the restarting handler. Furthermore,
 #'   they support [tidy dots][tidy-dots] features.
 #' @export
-#' @seealso [inplace()] and [exiting()].
+#' @seealso [calling()] and [exiting()].
 #' @examples
 #' # This is a restart that takes a data frame and names as arguments
 #' rst_bar <- function(df, nms) {
@@ -233,5 +233,5 @@ restarting <- function(.restart, ..., .fields = NULL) {
     do.call("rst_jump", c(list(.restart = .restart), rst_args))
   }
 
-  structure(handler, class = c("restarting", "inplace", "handler"))
+  structure(handler, class = c("restarting", "calling", "handler"))
 }

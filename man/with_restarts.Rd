@@ -104,11 +104,11 @@ fn(TRUE)
 fn(FALSE)
 
 # Change the default value if you need an empty character vector by
-# defining an inplace handler that jumps to the restart. It has to
-# be inplace because exiting handlers jump to the place where they
+# defining a calling handler that jumps to the restart. It has to
+# be calling because exiting handlers jump to the place where they
 # are established before being executed, and the restart is not
 # defined anymore at that point:
-rst_handler <- inplace(function(c) rst_jump("rst_empty_chr"))
+rst_handler <- calling(function(c) rst_jump("rst_empty_chr"))
 with_handlers(fn(FALSE), default_empty_string = rst_handler)
 
 # You can use restarting() to create restarting handlers easily:

@@ -2,20 +2,20 @@
 % Please edit documentation in R/cnd-handlers.R
 \name{exiting}
 \alias{exiting}
-\alias{inplace}
+\alias{calling}
 \title{Create an exiting or in place handler}
 \usage{
 exiting(handler)
 
-inplace(handler, muffle = FALSE)
+calling(handler, muffle = FALSE)
 }
 \arguments{
 \item{handler}{A handler function that takes a condition as
 argument. This is passed to \code{\link[=as_function]{as_function()}} and can thus be a
 formula describing a lambda function.}
 
-\item{muffle}{Whether to muffle the condition after executing an
-inplace handler. The signalling function must have established a
+\item{muffle}{Whether to muffle the condition after executing a
+calling handler. The signalling function must have established a
 muffling restart. Otherwise, an error will be issued.}
 }
 \description{
@@ -23,7 +23,7 @@ There are two types of condition handlers: exiting handlers, which
 are thrown to the place where they have been established (e.g.,
 \code{\link[=with_handlers]{with_handlers()}}'s evaluation frame), and local handlers, which
 are executed in place (e.g., where the condition has been
-signalled). \code{exiting()} and \code{inplace()} create handlers suitable
+signalled). \code{exiting()} and \code{calling()} create handlers suitable
 for \code{\link[=with_handlers]{with_handlers()}}.
 }
 \details{
@@ -36,8 +36,8 @@ it finds an exiting handler, it throws it to the function that
 established it (\code{\link[=with_handlers]{with_handlers()}}). That is, it interrupts the
 normal course of evaluation and jumps to \code{with_handlers()}
 evaluation frame (see \code{\link[=ctxt_stack]{ctxt_stack()}}), and only then and there the
-handler is called. On the other hand, if R finds an inplace
-handler, it executes it locally. The inplace handler can choose to
+handler is called. On the other hand, if R finds a calling
+handler, it executes it locally. The calling handler can choose to
 handle the condition by jumping out of the frame (see \code{\link[=rst_jump]{rst_jump()}}
 or \code{\link[=return_from]{return_from()}}). If it returns locally, it declines to handle
 the condition which is passed to the next relevant handler on the
@@ -52,12 +52,12 @@ hnd <- exiting(function(c) cat("handled foo\\n"))
 with_handlers(cnd_signal("foo"), foo = hnd)
 
 # Or a lambda-formula where "." is bound to the condition:
-with_handlers(foo = inplace(~cat("hello", .$attr, "\\n")), {
+with_handlers(foo = calling(~cat("hello", .$attr, "\\n")), {
   cnd_signal("foo", attr = "there")
   "foo"
 })
 }
 \seealso{
 \code{\link[=with_handlers]{with_handlers()}} for examples, \code{\link[=restarting]{restarting()}} for another
-kind of inplace handler.
+kind of calling handler.
 }

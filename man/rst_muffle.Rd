@@ -22,18 +22,18 @@ where the condition was signalled.
 }
 \examples{
 side_effect <- function() cat("side effect!\\n")
-handler <- inplace(function(c) side_effect())
+handler <- calling(function(c) side_effect())
 
-# A muffling handler is an inplace handler that jumps to a muffle
+# A muffling handler is a calling handler that jumps to a muffle
 # restart:
-muffling_handler <- inplace(function(c) {
+muffling_handler <- calling(function(c) {
   side_effect()
   rst_muffle(c)
 })
 
 # You can also create a muffling handler simply by setting
 # muffle = TRUE:
-muffling_handler <- inplace(function(c) side_effect(), muffle = TRUE)
+muffling_handler <- calling(function(c) side_effect(), muffle = TRUE)
 
 # You can then muffle the signalling function:
 fn <- function(signal, msg) {
@@ -56,7 +56,7 @@ with_handlers(fn(warning, "some warning"),
 # Another use case for muffle restarts is to muffle conditions
 # themselves. That is, to prevent other condition handlers from
 # being called:
-undesirable_handler <- inplace(function(c) cat("please don't call me\\n"))
+undesirable_handler <- calling(function(c) cat("please don't call me\\n"))
 
 with_handlers(foo = undesirable_handler,
   with_handlers(foo = muffling_handler, {
@@ -67,6 +67,6 @@ with_handlers(foo = undesirable_handler,
 # See the `mufflable` argument of cnd_signal() for more on this point
 }
 \seealso{
-The \code{muffle} argument of \code{\link[=inplace]{inplace()}}, and the \code{mufflable}
+The \code{muffle} argument of \code{\link[=calling]{calling()}}, and the \code{mufflable}
 argument of \code{\link[=cnd_signal]{cnd_signal()}}.
 }

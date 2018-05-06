@@ -19,7 +19,7 @@ test_that("r_warn() signals", {
   handler <- function(c) expect_null(c$call)
 
   expect_warning(regexp = "foo",
-    with_handlers(warning = inplace(handler),
+    with_handlers(warning = calling(handler),
       .Call(rlang_test_r_warn, "foo")
     ))
 })

@@ -24,18 +24,18 @@ test_that("cnd_signal() includes call info", {
   fn <- function(...) cnd_signal(cnd, .call = call)
 
   call <- FALSE
-  with_handlers(fn(foo(bar)), cnd = inplace(function(c) {
+  with_handlers(fn(foo(bar)), cnd = calling(function(c) {
     expect_identical(c$.call, quote(fn(foo(bar))))
     expect_null(conditionCall(c))
   }))
 
   call <- TRUE
-  with_handlers(fn(foo(bar)), cnd = inplace(function(c) {
+  with_handlers(fn(foo(bar)), cnd = calling(function(c) {
     expect_identical(conditionCall(c), quote(fn(foo(bar))))
   }))
 
   call <- NULL
-  with_handlers(fn(foo(bar)), cnd = inplace(function(c) {
+  with_handlers(fn(foo(bar)), cnd = calling(function(c) {
     expect_identical(conditionCall(c), quote(foo(bar)))
   }))
 
@@ -43,12 +43,12 @@ test_that("cnd_signal() includes call info", {
   wrapper <- function(...) fn(...)
 
   call <- 1
-  with_handlers(wrapper(foo(bar)), cnd = inplace(function(c) {
+  with_handlers(wrapper(foo(bar)), cnd = calling(function(c) {
     expect_equal(conditionCall(c), quote(fn(...)))
   }))
 
   call <- 2
-  with_handlers(wrapper(foo(bar)), cnd = inplace(function(c) {
+  with_handlers(wrapper(foo(bar)), cnd = calling(function(c) {
     expect_equal(conditionCall(c), quote(wrapper(foo(bar))))
   }))
 })
@@ -115,8 +115,8 @@ context("handlers") # ------------------------------------------------
 
 test_that("Local handlers can muffle mufflable conditions", {
   signal_mufflable <- function() cnd_signal("foo", with_muffle = TRUE)
-  muffling_handler <- inplace(function(c) NULL, muffle = TRUE)
-  non_muffling_handler <- inplace(function(c) NULL, muffle = FALSE)
+  muffling_handler <- calling(function(c) NULL, muffle = TRUE)
+  non_muffling_handler <- calling(function(c) NULL, muffle = FALSE)
 
   expect_error(regexp = "not muffled!",
     withCallingHandlers(foo = function(c) stop("not muffled!"), {
@@ -135,8 +135,8 @@ test_that("with_handlers() establishes inplace and exiting handlers", {
   handlers <- list(
     error = exiting(function(c) "caught error"),
     message = exiting(function(c) "caught message"),
-    warning = inplace(function(c) "warning"),
-    foobar = inplace(function(c) cat("foobar"))
+    warning = calling(function(c) "warning"),
+    foobar = calling(function(c) cat("foobar"))
   )
 
   expect_equal(with_handlers(identity(letters), splice(handlers)), identity(letters))
@@ -185,7 +185,7 @@ test_that("cnd_signal() returns NULL invisibly", {
 })
 
 test_that("cnd_signal() accepts character vectors (#195)", {
-  expect <- inplace(function(cnd) {
+  expect <- calling(function(cnd) {
     expect_identical(class(cnd), c("mufflable", "foo", "bar", "condition"))
   })
   with_handlers(cnd_signal(c("foo", "bar")), foo = expect)

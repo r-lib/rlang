@@ -96,11 +96,11 @@
 #' fn(FALSE)
 #'
 #' # Change the default value if you need an empty character vector by
-#' # defining an inplace handler that jumps to the restart. It has to
-#' # be inplace because exiting handlers jump to the place where they
+#' # defining a calling handler that jumps to the restart. It has to
+#' # be calling because exiting handlers jump to the place where they
 #' # are established before being executed, and the restart is not
 #' # defined anymore at that point:
-#' rst_handler <- inplace(function(c) rst_jump("rst_empty_chr"))
+#' rst_handler <- calling(function(c) rst_jump("rst_empty_chr"))
 #' with_handlers(fn(FALSE), default_empty_string = rst_handler)
 #'
 #' # You can use restarting() to create restarting handlers easily:
@@ -213,23 +213,23 @@ rst_abort <- function() {
 #' where the condition was signalled.
 #'
 #' @param c A condition to muffle.
-#' @seealso The `muffle` argument of [inplace()], and the `mufflable`
+#' @seealso The `muffle` argument of [calling()], and the `mufflable`
 #'   argument of [cnd_signal()].
 #' @export
 #' @examples
 #' side_effect <- function() cat("side effect!\n")
-#' handler <- inplace(function(c) side_effect())
+#' handler <- calling(function(c) side_effect())
 #'
-#' # A muffling handler is an inplace handler that jumps to a muffle
+#' # A muffling handler is a calling handler that jumps to a muffle
 #' # restart:
-#' muffling_handler <- inplace(function(c) {
+#' muffling_handler <- calling(function(c) {
 #'   side_effect()
 #'   rst_muffle(c)
 #' })
 #'
 #' # You can also create a muffling handler simply by setting
 #' # muffle = TRUE:
-#' muffling_handler <- inplace(function(c) side_effect(), muffle = TRUE)
+#' muffling_handler <- calling(function(c) side_effect(), muffle = TRUE)
 #'
 #' # You can then muffle the signalling function:
 #' fn <- function(signal, msg) {
@@ -252,7 +252,7 @@ rst_abort <- function() {
 #' # Another use case for muffle restarts is to muffle conditions
 #' # themselves. That is, to prevent other condition handlers from
 #' # being called:
-#' undesirable_handler <- inplace(function(c) cat("please don't call me\n"))
+#' undesirable_handler <- calling(function(c) cat("please don't call me\n"))
 #'
 #' with_handlers(foo = undesirable_handler,
 #'   with_handlers(foo = muffling_handler, {

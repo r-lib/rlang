@@ -98,18 +98,18 @@ cnd_type <- function(cnd) {
 #' program will terminate if no handler dealt with the condition by
 #' jumping out of the distressed call frame.
 #'
-#' [inplace()] handlers are called in turn when they decline to handle
+#' [calling()] handlers are called in turn when they decline to handle
 #' the condition by returning normally. However, it is sometimes
-#' useful for an inplace handler to produce a side effect (signalling
+#' useful for a calling handler to produce a side effect (signalling
 #' another condition, displaying a message, logging something, etc),
 #' prevent the condition from being passed to other handlers, and
 #' resume execution from the place where the condition was
 #' signalled. The easiest way to accomplish this is by jumping to a
 #' restart point (see [with_restarts()]) established by the signalling
 #' function. If `.mufflable` is `TRUE`, a muffle restart is
-#' established. This allows inplace handler to muffle a signalled
+#' established. This allows calling handlers to muffle a signalled
 #' condition. See [rst_muffle()] to jump to a muffling restart, and
-#' the `muffle` argument of [inplace()] for creating a muffling
+#' the `muffle` argument of [calling()] for creating a muffling
 #' handler.
 #'
 #' @inheritParams cnd
@@ -125,9 +125,9 @@ cnd_type <- function(cnd) {
 #'   condition constructor (e.g. [cnd()]). In all cases the `.call`
 #'   field is updated with the actual call.
 #' @param .mufflable Whether to signal the condition with a muffling
-#'   restart. This is useful to let [inplace()] handlers muffle a
+#'   restart. This is useful to let [calling()] handlers muffle a
 #'   condition. It stops the condition from being passed to other
-#'   handlers when the inplace handler did not jump elsewhere. `TRUE`
+#'   handlers when the calling handler did not jump elsewhere. `TRUE`
 #'   by default for benign conditions, but `FALSE` for critical ones,
 #'   since in those cases execution should probably not be allowed to
 #'   continue normally.
@@ -144,17 +144,17 @@ cnd_type <- function(cnd) {
 #' cnd_signal(cnd)
 #'
 #' # To learn more about establishing condition handlers, see
-#' # documentation for with_handlers(), exiting() and inplace():
+#' # documentation for with_handlers(), exiting() and calling():
 #' with_handlers(cnd_signal(cnd),
-#'   foo = inplace(function(c) cat("side effect!\n"))
+#'   foo = calling(function(c) cat("side effect!\n"))
 #' )
 #'
 #'
 #' # By default, cnd_signal() creates a muffling restart which allows
-#' # inplace handlers to prevent a condition from being passed on to
+#' # calling handlers to prevent a condition from being passed on to
 #' # other handlers and to resume execution:
-#' undesirable_handler <- inplace(function(c) cat("please don't call me\n"))
-#' muffling_handler <- inplace(function(c) {
+#' undesirable_handler <- calling(function(c) cat("please don't call me\n"))
+#' muffling_handler <- calling(function(c) {
 #'   cat("muffling foo...\n")
 #'   rst_muffle(c)
 #' })

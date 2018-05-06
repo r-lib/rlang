@@ -13,7 +13,7 @@ expression or a quoted formula.}
 
 \item{...}{Named handlers. These should be functions of one
 argument. These handlers are treated as exiting by default. Use
-\code{\link[=inplace]{inplace()}} to specify an inplace handler. These dots support
+\code{\link[=calling]{calling()}} to specify a calling handler. These dots support
 \link[=tidy-dots]{tidy dots} features and are passed to \code{\link[=as_function]{as_function()}}
 to enable the formula shortcut for lambda functions.}
 }
@@ -23,7 +23,7 @@ stack (see \code{\link[=ctxt_stack]{ctxt_stack()}}) that are called by R when a 
 signalled (see \code{\link[=cnd_signal]{cnd_signal()}} and \code{\link[=abort]{abort()}} for two common signal
 functions). They come in two types: exiting handlers, which jump
 out of the signalling context and are transferred to
-\code{with_handlers()} before being executed. And inplace handlers,
+\code{with_handlers()} before being executed. And calling handlers,
 which are executed within the signal functions.
 }
 \details{
@@ -34,12 +34,12 @@ of that handler. On the other hand, in place handlers do not
 necessarily take charge. If they return normally, they decline to
 handle the condition, and R looks for other handlers established on
 the evaluation stack. Only by jumping to an earlier call frame can
-an inplace handler take charge of the condition and stop the
+a calling handler take charge of the condition and stop the
 signalling process. Sometimes, a muffling restart has been
 established for the purpose of jumping out of the signalling
 function but not out of the context where the condition was
 signalled, which allows execution to resume normally. See
-\code{\link[=rst_muffle]{rst_muffle()}} the \code{muffle} argument of \code{\link[=inplace]{inplace()}} and the
+\code{\link[=rst_muffle]{rst_muffle()}} the \code{muffle} argument of \code{\link[=calling]{calling()}} and the
 \code{mufflable} argument of \code{\link[=cnd_signal]{cnd_signal()}}.
 
 Exiting handlers are established first by \code{with_handlers()}, and in
@@ -76,7 +76,7 @@ with_handlers(fn(), foo = handler)
 # displaying a message:
 some_handler <- function(c) cat("some handler!\\n")
 other_handler <- function(c) cat("other handler!\\n")
-with_handlers(fn(), foo = inplace(some_handler), foo = inplace(other_handler))
+with_handlers(fn(), foo = calling(some_handler), foo = calling(other_handler))
 
 # If an in place handler jumps to an earlier context, it takes
 # charge of the condition and no other handler gets a chance to
@@ -87,8 +87,8 @@ exiting_handler <- function(c) rst_jump("rst_foo")
 fn2 <- function() {
   with_restarts(g(), rst_foo = function() "restart value")
 }
-with_handlers(fn2(), foo = inplace(exiting_handler), foo = inplace(other_handler))
+with_handlers(fn2(), foo = calling(exiting_handler), foo = calling(other_handler))
 }
 \seealso{
-\code{\link[=exiting]{exiting()}}, \code{\link[=inplace]{inplace()}}.
+\code{\link[=exiting]{exiting()}}, \code{\link[=calling]{calling()}}.
 }
