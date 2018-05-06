@@ -70,11 +70,12 @@ is_condition <- function(x) {
 #' Use `cnd_type()` to check what type a condition is.
 #'
 #' @param cnd A condition object.
-#' @return A string, either `"condition"`, `"message"`, `"warning"` or
-#'   `"error"`.
+#' @return A string, either `"condition"`, `"message"`, `"warning"`,
+#'   `"error"` or `"interrupt"`.
 #' @export
 #' @examples
 #' cnd_type(catch_cnd(abort("Abort!")))
+#' cnd_type(catch_cnd(interrupt()))
 cnd_type <- function(cnd) {
   .Call(rlang_cnd_type, cnd)
 }

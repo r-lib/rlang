@@ -176,6 +176,12 @@ enum r_condition_type r_cnd_type(sexp* cnd) {
       } else {
         return r_cnd_type_error;
       }
+    case 'i':
+      if (strcmp(class_str, "interrupt")) {
+        continue;
+      } else {
+        return r_cnd_type_interrupt;
+      }
     default:
       continue;
     }

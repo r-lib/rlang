@@ -227,6 +227,7 @@ test_that("cnd_type() detects condition type", {
   expect_identical(cnd_type(message_cnd()), "message")
   expect_identical(cnd_type(warning_cnd()), "warning")
   expect_identical(cnd_type(error_cnd()), "error")
+  expect_identical(cnd_type(catch_cnd(interrupt())), "interrupt")
 })
 
 test_that("can signal and catch interrupts", {

@@ -7,6 +7,7 @@
 void r_inform(const char* fmt, ...);
 void r_warn(const char* fmt, ...);
 void r_abort(const char* fmt, ...) __attribute__((noreturn));
+void r_interrupt();
 
 sexp* r_interp_str(const char* fmt, ...);
 
@@ -21,13 +22,12 @@ void r_cnd_inform(sexp* cnd, bool mufflable);
 void r_cnd_warn(sexp* cnd, bool mufflable);
 void r_cnd_abort(sexp* cnd, bool mufflable);
 
-void r_interrupt();
-
 enum r_condition_type {
   r_cnd_type_condition = 0,
   r_cnd_type_message = 1,
   r_cnd_type_warning = 2,
   r_cnd_type_error = 3,
+  r_cnd_type_interrupt = 4
 };
 
 enum r_condition_type r_cnd_type(sexp* cnd);

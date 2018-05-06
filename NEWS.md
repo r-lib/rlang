@@ -8,7 +8,7 @@
   terminology more closely.
 
 * New `cnd_type()` helper to determine the type of a condition
-  (`"condition"`, `"message"`, `"warning"` or `"error"`).
+  (`"condition"`, `"message"`, `"warning"`, `"error"` or `"interrupt"`).
 
 * `abort()`, `warn()` and `inform()` now accepts metadata with `...`.
   The data are stored in the condition and can be examined by user
