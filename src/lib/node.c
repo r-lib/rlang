@@ -29,19 +29,29 @@ sexp* r_node_tree_clone(sexp* x) {
   return x;
 }
 
+/**
+ * - If `sentinel` is found in the first node: `parent_out` is `r_null`
+ * - If `sentinel` is not found: both return value and `parent_out`
+ *   are `r_null`
+ * - If `sentinel` is `r_null`, this is like a full shallow duplication
+ *   but returns tail node
+ */
 sexp* r_node_list_clone_until(sexp* node, sexp* sentinel, sexp** parent_out) {
   sexp* parent = r_null;
   sexp* cur = node;
   int n_protect = 0;
 
   while (true) {
-    if (cur == r_null) {
-      // Return NULL parent if sentinel is not found
-      parent = r_null;
-      break;
-    }
     if (cur == sentinel) {
-      break;
+      FREE(n_protect);
+      *parent_out = parent;
+      return node;
+    }
+    // Return NULL if sentinel is not found
+    if (cur == r_null) {
+      FREE(n_protect);
+      *parent_out = r_null;
+      return r_null;
     }
 
     sexp* tag = r_node_tag(cur);
@@ -59,7 +69,5 @@ sexp* r_node_list_clone_until(sexp* node, sexp* sentinel, sexp** parent_out) {
     cur = r_node_cdr(cur);
   }
 
-  FREE(n_protect);
-  *parent_out = parent;
-  return node;
+  r_abort("Internal error in r_node_list_clone_until()");
 }

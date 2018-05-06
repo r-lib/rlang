@@ -266,7 +266,9 @@ test_that("can clone-until with NULL list", {
 test_that("can clone-until with NULL sentinel", {
   node <- pairlist(a = 1, b = 2, c = 3)
   out <- node_list_clone_until(node, NULL)
-  expect_null(out[[2]])
+
+  sentinel_out <- out[[2]]
+  expect_reference(node_cddr(out[[1]]), sentinel_out)
 
   node_out <- out[[1]]
   expect_identical(node_out, pairlist(a = 1, b = 2, c = 3))
@@ -277,11 +279,12 @@ test_that("can clone-until with NULL sentinel", {
   }
 })
 
-test_that("returned sentinel is NULL if it couldn't be found", {
+test_that("returned sentinel and value are NULL if couldn't be found", {
   node <- pairlist(a = NULL)
-  out <- node_list_clone_until(node, pairlist())
+  out <- node_list_clone_until(node, pairlist(NULL))
 
   expect_false(is_reference(out[[1]], node))
+  expect_null(out[[1]])
   expect_null(out[[2]])
 })
 
