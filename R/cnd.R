@@ -41,7 +41,10 @@
 #' # Signalling an error condition aborts the current computation:
 #' err <- error_cnd("foo", message = "I am an error")
 #' try(cnd_signal(err))
-cnd <- function(.type = NULL, ..., message = "", call = NULL) {
+cnd <- function(.type, ..., message = "", call = NULL) {
+  if (missing(.type)) {
+    abort("Bare conditions must be subclassed")
+  }
   .Call(rlang_new_condition, .type, message, call, dots_list(...))
 }
 #' @rdname cnd
@@ -322,9 +325,6 @@ inform <- function(message, .type = NULL, ..., call = NULL, msg, type) {
 #' @rdname abort
 #' @export
 signal <- function(message, .type, ..., call = NULL) {
-  if (missing(.type)) {
-    abort("Bare conditions must be subclassed")
-  }
   cnd <- cnd(.type, ..., message = message, call = cnd_call(call))
   cnd_signal(cnd)
 }

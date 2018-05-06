@@ -7,7 +7,7 @@
 \alias{message_cnd}
 \title{Create a condition object}
 \usage{
-cnd(.type = NULL, ..., message = "", call = NULL)
+cnd(.type, ..., message = "", call = NULL)
 
 error_cnd(.type = NULL, ..., message = "", call = NULL)
 

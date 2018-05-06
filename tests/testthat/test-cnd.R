@@ -195,7 +195,7 @@ test_that("cnd_type() detects condition type", {
   expect_error(cnd_type(list()), "not a condition object")
   expect_error(cnd_type(mtcars), "not a condition object")
   expect_error(cnd_type(env()), "not a condition object")
-  expect_identical(cnd_type(cnd()), "condition")
+  expect_identical(cnd_type(cnd("foo")), "condition")
   expect_identical(cnd_type(message_cnd()), "message")
   expect_identical(cnd_type(warning_cnd()), "warning")
   expect_identical(cnd_type(error_cnd()), "error")
@@ -204,6 +204,11 @@ test_that("cnd_type() detects condition type", {
 
 test_that("can signal and catch interrupts", {
   expect_is(catch_cnd(interrupt()), "interrupt")
+})
+
+test_that("bare conditions must be subclassed", {
+  expect_error(cnd(), "must be subclassed")
+  expect_error(signal(""), "must be subclassed")
 })
 
 
