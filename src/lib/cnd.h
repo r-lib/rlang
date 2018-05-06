@@ -24,10 +24,10 @@ void r_cnd_abort(sexp* cnd, bool mufflable);
 void r_interrupt();
 
 enum r_condition_type {
-  r_condition = 0,
-  r_message = 1,
-  r_warning = 2,
-  r_error = 3
+  r_cnd_type_condition = 0,
+  r_cnd_type_message = 1,
+  r_cnd_type_warning = 2,
+  r_cnd_type_error = 3,
 };
 
 enum r_condition_type r_cnd_type(sexp* cnd);

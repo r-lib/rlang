@@ -156,25 +156,25 @@ enum r_condition_type r_cnd_type(sexp* cnd) {
       if (strcmp(class_str, "condition")) {
         continue;
       } else {
-        return r_condition;
+        return r_cnd_type_condition;
       }
     case 'm':
       if (strcmp(class_str, "message")) {
         continue;
       } else {
-        return r_message;
+        return r_cnd_type_message;
       }
     case 'w':
       if (strcmp(class_str, "warning")) {
         continue;
       } else {
-        return r_warning;
+        return r_cnd_type_warning;
       }
     case 'e':
       if (strcmp(class_str, "error")) {
         continue;
       } else {
-        return r_error;
+        return r_cnd_type_error;
       }
     default:
       continue;
