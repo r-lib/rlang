@@ -1,6 +1,9 @@
 
 # rlang 0.2.0.9000
 
+* New `interrupt()` function to simulate an user interrupt from R
+  code.
+
 * `inplace()` has been renamed to `calling()` to follow base R
   terminology more closely.
 

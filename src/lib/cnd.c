@@ -134,6 +134,11 @@ void r_cnd_abort(sexp* cnd, bool mufflable) {
   cnd_signal_impl("stop", cnd, mufflable);
 }
 
+#include <Rinterface.h>
+void r_interrupt() {
+  Rf_onintr();
+}
+
 
 enum r_condition_type r_cnd_type(sexp* cnd) {
   sexp* classes = r_get_class(cnd);

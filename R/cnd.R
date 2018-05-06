@@ -306,6 +306,10 @@ muffle <- function(...) NULL
 #' * Supply metadata with named `...` arguments. This data will be
 #'   stored in the condition object and can be examined by handlers.
 #'
+#' `interrupt()` allows R code to simulate an user interrupt of the
+#' kind that is signalled with `Ctrl-C`. It is currently not possible
+#' to create custom interrupt condition objects.
+#'
 #'
 #' @section Call trace:
 #'
@@ -319,6 +323,10 @@ muffle <- function(...) NULL
 #' Signalling a condition with `inform()` or `warn()` causes a message
 #' to be displayed in the console. These messages can be muffled with
 #' [base::suppressMessages()] or [base::suppressWarnings()].
+#'
+#' On recent R versions (>= R 3.5.0), interrupts are typically
+#' signalled with a `"resume"` restart. This is however not
+#' guaranteed.
 #'
 #'
 #' @section Lifecycle:
@@ -404,6 +412,11 @@ inform <- function(.msg, .type = NULL, ..., .call = FALSE, msg, type, call) {
   }
 
   message(cnd)
+}
+#' @rdname abort
+#' @export
+interrupt <- function() {
+  .Call(rlang_interrupt)
 }
 
 validate_signal_args <- function(msg, type, call, env = parent.frame()) {

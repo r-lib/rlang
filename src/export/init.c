@@ -93,6 +93,7 @@ extern sexp* rlang_eval_tidy(sexp*, sexp*, sexp*);
 extern sexp* rlang_as_data_pronoun(sexp*);
 extern sexp* rlang_env_binding_are_promise(sexp*, sexp*);
 extern sexp* rlang_env_unlock(sexp*);
+extern sexp* rlang_interrupt();
 extern sexp* rlang_is_list(sexp*, sexp*);
 extern sexp* rlang_is_atomic(sexp*, sexp*);
 extern sexp* rlang_is_vector(sexp*, sexp*);
@@ -223,6 +224,7 @@ static const r_callable r_callables[] = {
   {"rlang_as_data_pronoun",     (r_fn_ptr_t) &rlang_as_data_pronoun, 1},
   {"rlang_env_binding_are_promise", (r_fn_ptr_t) &rlang_env_binding_are_promise, 2},
   {"rlang_env_unlock",          (r_fn_ptr_t) &rlang_env_unlock, 1},
+  {"rlang_interrupt",           (r_fn_ptr_t) &rlang_interrupt, 0},
   {"rlang_is_list",             (r_fn_ptr_t) &rlang_is_list, 2},
   {"rlang_is_atomic",           (r_fn_ptr_t) &rlang_is_atomic, 2},
   {"rlang_is_vector",           (r_fn_ptr_t) &rlang_is_vector, 2},

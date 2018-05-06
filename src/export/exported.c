@@ -38,6 +38,11 @@ sexp* rlang_cnd_type(sexp* cnd) {
   }
 }
 
+sexp* rlang_interrupt() {
+  r_interrupt();
+  return r_null;
+}
+
 
 // env.c
 
