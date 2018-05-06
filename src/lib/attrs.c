@@ -1,20 +1,7 @@
 #include "rlang.h"
 
-// These change attributes in-place.
-
-sexp* rlang_zap_attrs(sexp* x) {
-  SET_ATTRIB(x, r_null);
-  return x;
-}
-
-sexp* rlang_set_attrs(sexp* x, sexp* attrs) {
-  SET_ATTRIB(x, attrs);
-  return x;
-}
-
-sexp* rlang_get_attrs(sexp* x) {
-  return ATTRIB(x);
-}
+extern sexp* rlang_get_attributes(sexp* x);
+extern sexp* r_poke_attributes(sexp* x, sexp* attrs);
 
 sexp* r_push_attribute(sexp* x, sexp* tag, sexp* value) {
   sexp* attrs = r_new_node(value, r_get_attributes(x));

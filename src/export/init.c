@@ -40,9 +40,6 @@ extern sexp* r_node_tree_clone(sexp*);
 extern sexp* rlang_node_tag(sexp*);
 extern sexp* rlang_node_poke_tag(sexp*, sexp*);
 extern sexp* rlang_eval(sexp*, sexp*);
-extern sexp* rlang_zap_attrs(sexp*);
-extern sexp* rlang_get_attrs(sexp*);
-extern sexp* rlang_set_attrs(sexp*, sexp*);
 extern sexp* rlang_interp(sexp*, sexp*);
 extern sexp* rlang_is_formulaish(sexp*, sexp*, sexp*);
 extern sexp* rlang_is_reference(sexp*, sexp*);
@@ -70,7 +67,6 @@ extern sexp* rlang_dots_list(sexp*, sexp*, sexp*, sexp*);
 extern sexp* rlang_dots_flat_list(sexp*, sexp*, sexp*, sexp*);
 extern sexp* r_new_formula(sexp*, sexp*, sexp*);
 extern sexp* rlang_new_quosure(sexp*, sexp*);
-extern sexp* rlang_poke_attributes(sexp*, sexp*);
 extern sexp* rlang_enexpr(sexp*, sexp*);
 extern sexp* rlang_ensym(sexp*, sexp*);
 extern sexp* rlang_enquo(sexp*, sexp*);
@@ -138,7 +134,6 @@ static const r_callable r_callables[] = {
   {"rlang_duplicate",           (r_fn_ptr_t) &rlang_duplicate, 2},
   {"rlang_node_tree_clone",     (r_fn_ptr_t) &r_node_tree_clone, 1},
   {"rlang_eval",                (r_fn_ptr_t) &rlang_eval, 2},
-  {"rlang_get_attrs",           (r_fn_ptr_t) &rlang_get_attrs, 1},
   {"rlang_interp",              (r_fn_ptr_t) &rlang_interp, 2},
   {"rlang_is_formulaish",       (r_fn_ptr_t) &rlang_is_formulaish, 3},
   {"rlang_is_null",             (r_fn_ptr_t) &rlang_is_null, 1},
@@ -146,7 +141,8 @@ static const r_callable r_callables[] = {
   {"rlang_length",              (r_fn_ptr_t) &rlang_length, 1},
   {"rlang_true_length",         (r_fn_ptr_t) &rlang_true_length, 1},
   {"rlang_new_data_pronoun",    (r_fn_ptr_t) &rlang_new_data_pronoun, 3},
-  {"rlang_set_attrs",           (r_fn_ptr_t) &rlang_set_attrs, 2},
+  {"rlang_get_attributes",      (r_fn_ptr_t) &r_get_attributes, 1},
+  {"rlang_poke_attributes",     (r_fn_ptr_t) &r_poke_attributes, 2},
   {"rlang_missing_arg",         (r_fn_ptr_t) &rlang_missing_arg, 0},
   {"rlang_node_car",            (r_fn_ptr_t) &rlang_node_car, 1},
   {"rlang_node_cdr",            (r_fn_ptr_t) &rlang_node_cdr, 1},
@@ -177,7 +173,6 @@ static const r_callable r_callables[] = {
   {"rlang_symbol_to_character", (r_fn_ptr_t) &rlang_symbol_to_character, 1},
   {"rlang_tilde_eval",          (r_fn_ptr_t) &rlang_tilde_eval, 4},
   {"rlang_unescape_character",  (r_fn_ptr_t) &rlang_unescape_character, 1},
-  {"rlang_zap_attrs",           (r_fn_ptr_t) &rlang_zap_attrs, 1},
   {"rlang_new_call",            (r_fn_ptr_t) &rlang_new_call_node, 2},
   {"rlang_cnd_abort",           (r_fn_ptr_t) &rlang_cnd_abort, 2},
   {"rlang_cnd_inform",          (r_fn_ptr_t) &rlang_cnd_inform, 2},
@@ -203,7 +198,6 @@ static const r_callable r_callables[] = {
   {"rlang_dots_flat_list",      (r_fn_ptr_t) &rlang_dots_flat_list, 4},
   {"rlang_new_formula",         (r_fn_ptr_t) &r_new_formula, 3},
   {"rlang_new_quosure",         (r_fn_ptr_t) &rlang_new_quosure, 2},
-  {"rlang_poke_attributes",     (r_fn_ptr_t) &rlang_poke_attributes, 2},
   {"rlang_enexpr",              (r_fn_ptr_t) &rlang_enexpr, 2},
   {"rlang_ensym",               (r_fn_ptr_t) &rlang_ensym, 2},
   {"rlang_enquo",               (r_fn_ptr_t) &rlang_enquo, 2},

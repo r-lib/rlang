@@ -7,8 +7,9 @@
 static inline sexp* r_get_attributes(sexp* x) {
   return ATTRIB(x);
 }
-static inline void r_poke_attributes(sexp* x, sexp* attrs) {
+inline sexp* r_poke_attributes(sexp* x, sexp* attrs) {
   SET_ATTRIB(x, attrs);
+  return x;
 }
 static inline sexp* r_set_attributes(sexp* x, sexp* attrs) {
   x = KEEP(r_duplicate(x, true));
