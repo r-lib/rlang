@@ -99,6 +99,12 @@
 #' **Retired in rlang 0.2.0.9000**
 #'
 #' * [get_env()]: The `env` argument no longer has a default and must be supplied
+#' * [cnd_signal()]: The `.mufflable` argument no longer has any effect
+#'
+#'
+#' **Renamed in rlang 0.2.0.9000**
+#'
+#' * [cnd_signal()]: `.cnd` => `cnd`
 #'
 #'
 #' **Retired in rlang 0.2.0:**
@@ -152,21 +158,30 @@
 #' * [is_quosureish()], [as_quosureish()]
 #'
 #'
-#' **Renamed in rlang 0.2.0**
-#'
-#' * [new_cnd()] => [cnd()]
-#' * [cnd_message()] => [message_cnd()]
-#' * [cnd_warning()] => [warning_cnd()]
-#' * [cnd_error()] => [error_cnd()]
-#'
-#'
 #' @section Defunct functions and arguments:
 #'
 #' \badgedefunct
 #'
+#' **Retired in rlang 0.3.0:**
+#'
+#' * [cnd()], [error_cnd()], [warning_cnd()] and [message_cnd()]:
+#'   `.msg` => `message`.
+#' * [cnd_signal()]: `.msg` and `.call`.
+#' * `cnd_inform()`, `cnd_warn()` and `cnd_abort()`
+#'
+#'
+#' **Renamed in rlang 0.2.0**
+#'
+#' * `new_cnd()` => [cnd()]
+#' * `cnd_message()` => [message_cnd()]
+#' * `cnd_warning()` => [warning_cnd()]
+#' * `cnd_error()` => [error_cnd()]
+#'
+#'
 #' **Retired in rlang 0.2.0:**
 #'
 #' * [:=][quasiquotation]
+#'
 #'
 #' @name lifecycle
 NULL

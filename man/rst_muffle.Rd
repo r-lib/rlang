@@ -60,11 +60,9 @@ undesirable_handler <- calling(function(c) cat("please don't call me\\n"))
 
 with_handlers(foo = undesirable_handler,
   with_handlers(foo = muffling_handler, {
-    cnd_signal("foo", mufflable = TRUE)
+    cnd_signal(cnd("foo"))
     "return value"
   }))
-
-# See the `mufflable` argument of cnd_signal() for more on this point
 }
 \seealso{
 The \code{muffle} argument of \code{\link[=calling]{calling()}}, and the \code{mufflable}

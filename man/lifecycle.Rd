@@ -95,6 +95,12 @@ Since rlang 0.2.0:
 \strong{Retired in rlang 0.2.0.9000}
 \itemize{
 \item \code{\link[=get_env]{get_env()}}: The \code{env} argument no longer has a default and must be supplied
+\item \code{\link[=cnd_signal]{cnd_signal()}}: The \code{.mufflable} argument no longer has any effect
+}
+
+\strong{Renamed in rlang 0.2.0.9000}
+\itemize{
+\item \code{\link[=cnd_signal]{cnd_signal()}}: \code{.cnd} => \code{cnd}
 }
 
 \strong{Retired in rlang 0.2.0:}
@@ -146,20 +152,28 @@ Since rlang 0.2.0:
 \item \code{\link[=UQE]{UQE()}}
 \item \code{\link[=is_quosureish]{is_quosureish()}}, \code{\link[=as_quosureish]{as_quosureish()}}
 }
-
-\strong{Renamed in rlang 0.2.0}
-\itemize{
-\item \code{\link[=new_cnd]{new_cnd()}} => \code{\link[=cnd]{cnd()}}
-\item \code{\link[=cnd_message]{cnd_message()}} => \code{\link[=message_cnd]{message_cnd()}}
-\item \code{\link[=cnd_warning]{cnd_warning()}} => \code{\link[=warning_cnd]{warning_cnd()}}
-\item \code{\link[=cnd_error]{cnd_error()}} => \code{\link[=error_cnd]{error_cnd()}}
-}
 }
 
 \section{Defunct functions and arguments}{
 
 
 \badgedefunct
+
+\strong{Retired in rlang 0.3.0:}
+\itemize{
+\item \code{\link[=cnd]{cnd()}}, \code{\link[=error_cnd]{error_cnd()}}, \code{\link[=warning_cnd]{warning_cnd()}} and \code{\link[=message_cnd]{message_cnd()}}:
+\code{.msg} => \code{message}.
+\item \code{\link[=cnd_signal]{cnd_signal()}}: \code{.msg} and \code{.call}.
+\item \code{cnd_inform()}, \code{cnd_warn()} and \code{cnd_abort()}
+}
+
+\strong{Renamed in rlang 0.2.0}
+\itemize{
+\item \code{new_cnd()} => \code{\link[=cnd]{cnd()}}
+\item \code{cnd_message()} => \code{\link[=message_cnd]{message_cnd()}}
+\item \code{cnd_warning()} => \code{\link[=warning_cnd]{warning_cnd()}}
+\item \code{cnd_error()} => \code{\link[=error_cnd]{error_cnd()}}
+}
 
 \strong{Retired in rlang 0.2.0:}
 \itemize{

@@ -1,6 +1,27 @@
 
 # rlang 0.2.0.9000
 
+* `cnd_signal()` now dispatches messages, warnings, errors and
+  interrupts to the relevant signalling functions (`message()`,
+  `warning()`, `stop()` and the C function `Rf_onintr()`). This makes
+  it a good choice to resignal a captured condition.
+
+* `cnd_signal()` now always installs a muffling restart for
+  non-critical conditions. Consequently the `.mufflable` argument has
+  been soft-deprecated (it does not trigger a deprecation warning but
+  no longer has any effect).
+
+* `cnd_inform()`, `cnd_warn()` and `cnd_abort()` are retired and
+  defunct. The old `cnd_message()`, `cnd_warning()`, `cnd_error()` and
+  `new_cnd()` constructors deprecated in rlang 0.2.0 are now defunct.
+
+* Modifying a condition with `cnd_signal()` is defunct. Creating a
+  condition with `cnd_signal()` is soft-deprecated, please use the new
+  function [signal()] instead.
+
+* The new `signal()` function completes the `abort()`, `warn()` and
+  `inform()` family. It creates and signals a bare condition.
+
 * New `interrupt()` function to simulate an user interrupt from R
   code.
 

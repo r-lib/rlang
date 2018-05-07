@@ -13,7 +13,7 @@ extern bool rlang_is_quosure(sexp*);
 extern sexp* rlang_is_null(sexp*);
 extern sexp* r_f_lhs(sexp*);
 extern sexp* r_f_rhs(sexp*);
-extern sexp* r_new_condition(sexp*, sexp*, sexp*);
+extern sexp* r_new_condition(sexp*, sexp*, sexp*, sexp*);
 extern sexp* r_env_clone(sexp*, sexp*);
 extern sexp* rlang_env_unbind(sexp*, sexp*);
 extern sexp* rlang_env_poke_parent(sexp*, sexp*);
@@ -55,10 +55,7 @@ extern sexp* rlang_unescape_character(sexp*);
 extern sexp* rlang_capturearginfo(sexp*, sexp*, sexp*, sexp*);
 extern sexp* rlang_capturedots(sexp*, sexp*, sexp*, sexp*);
 extern sexp* rlang_new_call_node(sexp*, sexp*);
-extern sexp* rlang_cnd_abort(sexp*, sexp*);
-extern sexp* rlang_cnd_inform(sexp*, sexp*);
-extern sexp* rlang_cnd_signal(sexp*, sexp*);
-extern sexp* rlang_cnd_warn(sexp*, sexp*);
+extern sexp* rlang_cnd_signal(sexp*);
 extern sexp* rlang_r_string(sexp*);
 extern sexp* rlang_exprs_interp(sexp*, sexp*, sexp*, sexp*);
 extern sexp* rlang_quos_interp(sexp*, sexp*, sexp*, sexp*);
@@ -128,7 +125,7 @@ static const r_callable r_callables[] = {
   {"rlang_library_unload",      (r_fn_ptr_t) &rlang_library_unload, 0},
   {"r_f_lhs",                   (r_fn_ptr_t) &r_f_lhs, 1},
   {"r_f_rhs",                   (r_fn_ptr_t) &r_f_rhs, 1},
-  {"rlang_new_condition",       (r_fn_ptr_t) &r_new_condition, 3},
+  {"rlang_new_condition",       (r_fn_ptr_t) &r_new_condition, 4},
   {"rlang_replace_na",          (r_fn_ptr_t) &rlang_replace_na, 2},
   {"rlang_capturearginfo",      (r_fn_ptr_t) &rlang_capturearginfo, 4},
   {"rlang_capturedots",         (r_fn_ptr_t) &rlang_capturedots, 4},
@@ -175,10 +172,7 @@ static const r_callable r_callables[] = {
   {"rlang_tilde_eval",          (r_fn_ptr_t) &rlang_tilde_eval, 4},
   {"rlang_unescape_character",  (r_fn_ptr_t) &rlang_unescape_character, 1},
   {"rlang_new_call",            (r_fn_ptr_t) &rlang_new_call_node, 2},
-  {"rlang_cnd_abort",           (r_fn_ptr_t) &rlang_cnd_abort, 2},
-  {"rlang_cnd_inform",          (r_fn_ptr_t) &rlang_cnd_inform, 2},
-  {"rlang_cnd_signal",          (r_fn_ptr_t) &rlang_cnd_signal, 2},
-  {"rlang_cnd_warn",            (r_fn_ptr_t) &rlang_cnd_warn, 2},
+  {"rlang_cnd_signal",          (r_fn_ptr_t) &rlang_cnd_signal, 1},
   {"rlang_test_chr_prepend",    (r_fn_ptr_t) &chr_prepend, 2},
   {"rlang_test_chr_append",     (r_fn_ptr_t) &chr_append, 2},
   {"rlang_test_r_warn",         (r_fn_ptr_t) &rlang_test_r_warn, 1},

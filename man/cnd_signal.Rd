@@ -2,45 +2,17 @@
 % Please edit documentation in R/cnd.R
 \name{cnd_signal}
 \alias{cnd_signal}
-\alias{cnd_inform}
-\alias{cnd_warn}
-\alias{cnd_abort}
 \title{Signal a condition}
 \usage{
-cnd_signal(.cnd, ..., .msg = NULL, .call = NULL, .mufflable = TRUE)
-
-cnd_inform(.cnd, ..., .msg = NULL, .call = NULL, .mufflable = FALSE)
-
-cnd_warn(.cnd, ..., .msg = NULL, .call = NULL, .mufflable = FALSE)
-
-cnd_abort(.cnd, ..., .msg = NULL, .call = NULL, .mufflable = FALSE)
+cnd_signal(cnd, .cnd, .mufflable)
 }
 \arguments{
-\item{.cnd}{Either a condition object (see \code{\link[=cnd]{cnd()}}), or the
-name of a s3 class from which a new condition will be created.}
+\item{cnd}{A condition object (see \code{\link[=cnd]{cnd()}}).}
 
-\item{...}{Named data fields stored inside the condition
-object. These dots are evaluated with \link[=tidy-dots]{explicit
-splicing}.}
-
-\item{.msg}{A string to override the condition's default message.}
-
-\item{.call}{Whether to display the call of the frame in which the
-condition is signalled. If \code{TRUE}, the call is stored in the
-\code{call} field of the condition object: this field is displayed by
-R when an error is issued. If a number \code{n}, the call is taken
-from the nth frame on the \link[=call_stack]{call stack}. If \code{NULL},
-the call is taken from the \code{.call} field that was supplied to the
-condition constructor (e.g. \code{\link[=cnd]{cnd()}}). In all cases the \code{.call}
-field is updated with the actual call.}
-
-\item{.mufflable}{Whether to signal the condition with a muffling
-restart. This is useful to let \code{\link[=calling]{calling()}} handlers muffle a
-condition. It stops the condition from being passed to other
-handlers when the calling handler did not jump elsewhere. \code{TRUE}
-by default for benign conditions, but \code{FALSE} for critical ones,
-since in those cases execution should probably not be allowed to
-continue normally.}
+\item{.cnd, .mufflable}{These arguments are retired. \code{.cnd} has been
+renamed to \code{cnd} and \code{.mufflable} no longer has any effect as
+non-critical conditions are always signalled with a muffling
+restart.}
 }
 \description{
 Signal a condition to handlers that have been established on the
@@ -69,12 +41,24 @@ prevent the condition from being passed to other handlers, and
 resume execution from the place where the condition was
 signalled. The easiest way to accomplish this is by jumping to a
 restart point (see \code{\link[=with_restarts]{with_restarts()}}) established by the signalling
-function. If \code{.mufflable} is \code{TRUE}, a muffle restart is
-established. This allows calling handlers to muffle a signalled
-condition. See \code{\link[=rst_muffle]{rst_muffle()}} to jump to a muffling restart, and
-the \code{muffle} argument of \code{\link[=calling]{calling()}} for creating a muffling
-handler.
+function. \code{cnd_signal()} always installs a muffle restart (see
+\code{\link[=rst_muffle]{rst_muffle()}}).
 }
+\section{Lifecycle}{
+
+\itemize{
+\item Modifying a condition object with \code{cnd_signal()} is defunct.
+Consequently the \code{.msg} and \code{.call} arguments are retired and
+defunct as of rlang 0.3.0.  In addition \code{.cnd} is renamed to
+\code{cnd} and soft-deprecated.
+\item The \code{.mufflable} argument is soft-deprecated and no longer has
+any effect. Non-critical conditions are always signalled with a
+muffle restart.
+\item Creating a condition object with \code{\link[=cnd_signal]{cnd_signal()}} is
+soft-deprecated. Please use \code{\link[=signal]{signal()}} instead.
+}
+}
+
 \examples{
 # Creating a condition of type "foo"
 cnd <- cnd("foo")
@@ -101,47 +85,9 @@ muffling_handler <- calling(function(c) {
 
 with_handlers(foo = undesirable_handler,
   with_handlers(foo = muffling_handler, {
-    cnd_signal("foo")
+    cnd_signal(cnd("foo"))
     "return value"
   }))
-
-
-# cnd_warn() and cnd_inform() signal a condition and display a
-# warning or message:
-\dontrun{
-cnd_inform(cnd)
-cnd_warn(cnd)
-}
-
-# You can signal a critical condition with cnd_abort(). Unlike
-# cnd_signal() which has no side effect besides signalling the
-# condition, cnd_abort() makes the program terminate with an error
-# unless a handler can deal with the condition:
-\dontrun{
-cnd_abort(cnd)
-}
-
-# If you don't specify a .msg or .call, the default message/call
-# (supplied to cnd()) are displayed. Otherwise, the ones
-# supplied to cnd_abort() and cnd_signal() take precedence:
-\dontrun{
-critical <- cnd("my_error",
-  .msg = "default 'my_error' msg",
-  .call = quote(default(call))
-)
-cnd_abort(critical)
-cnd_abort(critical, .msg = "overridden msg")
-
-fn <- function(...) {
-  cnd_abort(critical, .call = TRUE)
-}
-fn(arg = foo(bar))
-}
-
-# Note that by default a condition signalled with cnd_abort() does
-# not have a muffle restart. That is because in most cases,
-# execution should not continue after signalling a critical
-# condition.
 }
 \seealso{
 \code{\link[=abort]{abort()}}, \code{\link[=warn]{warn()}} and \code{\link[=inform]{inform()}} for signalling typical

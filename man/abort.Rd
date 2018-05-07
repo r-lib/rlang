@@ -4,38 +4,42 @@
 \alias{abort}
 \alias{warn}
 \alias{inform}
+\alias{signal}
 \alias{interrupt}
 \title{Signal an error, warning, or message}
 \usage{
-abort(.msg, .type = NULL, ..., .call = FALSE, msg, type, call)
+abort(message, .subclass = NULL, ..., call = NULL, msg, type)
 
-warn(.msg, .type = NULL, ..., .call = FALSE, msg, type, call)
+warn(message, .subclass = NULL, ..., call = NULL, msg, type)
 
-inform(.msg, .type = NULL, ..., .call = FALSE, msg, type, call)
+inform(message, .subclass = NULL, ..., call = NULL, msg, type)
+
+signal(message, .subclass, ..., call = NULL)
 
 interrupt()
 }
 \arguments{
-\item{.msg}{The message to display.}
+\item{message}{The message to display.}
 
-\item{.type}{Subclass of the condition.}
+\item{.subclass}{Subclass of the condition. This allows your users
+to selectively handle the conditions signalled by your functions.}
 
 \item{...}{Additional data to be stored in the condition object.}
 
-\item{.call}{Whether to display the call. If a number \code{n}, the call
+\item{call}{Whether to display the call. If a number \code{n}, the call
 is taken from the nth frame on the \link[=call_stack]{call stack}.}
 
-\item{msg, type, call}{These arguments were renamed to be prefixed
-with a dot and are deprecated as of rlang 0.3.0.}
+\item{msg, type}{These arguments were renamed to \code{message} and
+\code{.type} and are deprecated as of rlang 0.3.0.}
 }
 \description{
 These functions are equivalent to base functions \code{\link[base:stop]{base::stop()}},
 \code{\link[base:warning]{base::warning()}} and \code{\link[base:message]{base::message()}}, but make it easy to supply
 condition metadata:
 \itemize{
-\item Supply \code{type} to create a classed condition. Typed conditions can
-be captured or handled selectively, allowing for finer-grained
-error handling.
+\item Supply \code{.subclass} to create a classed condition. Typed
+conditions can be captured or handled selectively, allowing for
+finer-grained error handling.
 \item Supply metadata with named \code{...} arguments. This data will be
 stored in the condition object and can be examined by handlers.
 }
@@ -70,7 +74,8 @@ guaranteed.
 These functions were changed in rlang 0.3.0 to take condition
 metadata with \code{...}. Consequently:
 \itemize{
-\item All arguments were renamed to be prefixed with a dot.
+\item All arguments were renamed to be prefixed with a dot, except for
+\code{type} which was renamed to \code{.subclass}.
 \item \code{.call} (previously \code{call}) can no longer be passed positionally.
 }
 }

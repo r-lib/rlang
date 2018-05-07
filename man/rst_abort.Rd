@@ -53,5 +53,5 @@ cat("`out` has now become:", out, "\\n")
 }
 }
 \seealso{
-\code{\link[=rst_jump]{rst_jump()}}, \code{\link[=abort]{abort()}} and \code{\link[=cnd_abort]{cnd_abort()}}.
+\code{\link[=rst_jump]{rst_jump()}}, \code{\link[=abort]{abort()}}
 }

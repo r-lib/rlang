@@ -1,8 +1,8 @@
 context("cnd")
 
 test_that("cnd() constructs all fields", {
-  cond <- cnd("cnd_class", .msg = "cnd message")
-  expect_equal(conditionMessage(cond), "cnd message")
+  cond <- cnd("cnd_class", message = "cnd message")
+  expect_identical(conditionMessage(cond), "cnd message")
   expect_is(cond, "cnd_class")
 })
 
@@ -11,32 +11,25 @@ test_that("cnd() throws with unnamed fields", {
 })
 
 test_that("cnd_signal() creates muffle restarts", {
-  withCallingHandlers(cnd_signal("foo", .mufflable = TRUE),
+  withCallingHandlers(cnd_signal(cnd("foo")),
     foo = function(c) {
       expect_true(rst_exists("muffle"))
-      expect_is(c, "mufflable")
+      expect_true(attr(c, "rlang_mufflable_cnd"))
     }
   )
 })
 
-test_that("cnd_signal() includes call info", {
-  cnd <- cnd("cnd", .call = quote(foo(bar)))
-  fn <- function(...) cnd_signal(cnd, .call = call)
+test_that("signal() includes call info", {
+  fn <- function(...) signal("msg", "cnd", call = call)
 
-  call <- FALSE
+  call <- NULL
   with_handlers(fn(foo(bar)), cnd = calling(function(c) {
-    expect_identical(c$.call, quote(fn(foo(bar))))
     expect_null(conditionCall(c))
   }))
 
   call <- TRUE
   with_handlers(fn(foo(bar)), cnd = calling(function(c) {
     expect_identical(conditionCall(c), quote(fn(foo(bar))))
-  }))
-
-  call <- NULL
-  with_handlers(fn(foo(bar)), cnd = calling(function(c) {
-    expect_identical(conditionCall(c), quote(foo(bar)))
   }))
 
 
@@ -54,11 +47,10 @@ test_that("cnd_signal() includes call info", {
 })
 
 test_that("abort() includes call info", {
-  fn <- function(...) abort("abort", "cnd", .call = call)
+  fn <- function(...) abort("abort", "cnd", call = call)
 
-  call <- FALSE
+  call <- NULL
   with_handlers(fn(foo(bar)), cnd = exiting(function(c) {
-    expect_identical(c$.call, quote(fn(foo(bar))))
     expect_null(conditionCall(c))
   }))
 
@@ -69,34 +61,30 @@ test_that("abort() includes call info", {
 })
 
 test_that("abort() accepts call number", {
-  fn <- function(...) abort("abort", "cnd", .call = call)
+  fn <- function(...) abort("abort", "cnd", call = call)
   wrapper <- function(...) fn(...)
 
   call <- FALSE
   with_handlers(wrapper(foo(bar)), cnd = exiting(function(c) {
-    expect_equal(c$.call, quote(fn(...)))
     expect_null(conditionCall(c))
   }))
 
   call <- TRUE
   with_handlers(wrapper(foo(bar)), cnd = exiting(function(c) {
-    expect_equal(c$.call, quote(fn(...)))
     expect_equal(conditionCall(c), quote(fn(...)))
   }))
 
   call <- 1
   with_handlers(wrapper(foo(bar)), cnd = exiting(function(c) {
-    expect_equal(c$.call, quote(fn(...)))
     expect_equal(conditionCall(c), quote(fn(...)))
   }))
 
   call <- 2
   with_handlers(wrapper(foo(bar)), cnd = exiting(function(c) {
-    expect_equal(c$.call, quote(wrapper(foo(bar))))
     expect_equal(conditionCall(c), quote(wrapper(foo(bar))))
   }))
 
-  expect_error(abort("foo", .call = na_int), "scalar logical or number")
+  expect_error(abort("foo", call = na_int), "scalar logical or number")
 })
 
 test_that("error when msg is not a string", {
@@ -114,7 +102,7 @@ test_that("restarts are established", {
 context("handlers") # ------------------------------------------------
 
 test_that("Local handlers can muffle mufflable conditions", {
-  signal_mufflable <- function() cnd_signal("foo", with_muffle = TRUE)
+  signal_mufflable <- function() signal("", "foo")
   muffling_handler <- calling(function(c) NULL, muffle = TRUE)
   non_muffling_handler <- calling(function(c) NULL, muffle = FALSE)
 
@@ -143,7 +131,7 @@ test_that("with_handlers() establishes inplace and exiting handlers", {
   expect_equal(with_handlers(stop(letters), splice(handlers)), "caught error")
   expect_equal(with_handlers(message(letters), splice(handlers)), "caught message")
   expect_warning(expect_equal(with_handlers({ warning("warn!"); letters }, splice(handlers)), identity(letters)), "warn!")
-  expect_output(expect_equal(with_handlers({ cnd_signal("foobar"); letters }, splice(handlers)), identity(letters)), "foobar")
+  expect_output(expect_equal(with_handlers({ signal("", "foobar"); letters }, splice(handlers)), identity(letters)), "foobar")
 })
 
 test_that("bare functions are treated as exiting handlers", {
@@ -162,7 +150,7 @@ test_that("set_names2() fills in empty names", {
 
 test_that("restarting() handlers pass along all requested arguments", {
   signal_foo <- function() {
-    cnd_signal("foo", foo_field = "foo_field")
+    signal("", "foo", foo_field = "foo_field")
   }
   fn <- function() {
     with_handlers(signal_foo(), foo = restart_handler)
@@ -180,32 +168,16 @@ test_that("restarting() handlers pass along all requested arguments", {
   with_restarts(fn(), rst_foo = rst_foo)
 })
 
-test_that("cnd_signal() returns NULL invisibly", {
-  expect_identical(withVisible(cnd_signal("foo")), withVisible(invisible(NULL)))
+test_that("cnd_signal() and signal() returns NULL invisibly", {
+  expect_identical(withVisible(cnd_signal(cnd("foo"))), withVisible(invisible(NULL)))
+  expect_identical(withVisible(signal("", "foo")), withVisible(invisible(NULL)))
 })
 
-test_that("cnd_signal() accepts character vectors (#195)", {
+test_that("signal() accepts character vectors of classes (#195)", {
   expect <- calling(function(cnd) {
-    expect_identical(class(cnd), c("mufflable", "foo", "bar", "condition"))
+    expect_identical(class(cnd), c("foo", "bar", "condition"))
   })
-  with_handlers(cnd_signal(c("foo", "bar")), foo = expect)
-})
-
-test_that("cnd_warn() transforms condition to warning", {
-  cnd <- cnd("type", attr = "baz", .msg = "warned")
-  expect_warning(cnd_warn(cnd), "warned")
-  expect_warning(cnd_warn("type", .msg = "warned"), "warned")
-})
-
-test_that("cnd_inform() transforms condition to message", {
-  cnd <- cnd("type", attr = "baz", .msg = "informed")
-  expect_message(cnd_inform(cnd), "informed")
-  expect_message(cnd_inform("type", .msg = "informed"), "informed")
-})
-
-test_that("cnd_abort() adds correct S3 classes for errors", {
-  expect_is(catch_cnd(cnd_abort("type")), "error")
-  expect_error(cnd_abort("type"))
+  with_handlers(signal("", c("foo", "bar")), foo = expect)
 })
 
 test_that("can pass condition metadata", {
@@ -223,7 +195,7 @@ test_that("cnd_type() detects condition type", {
   expect_error(cnd_type(list()), "not a condition object")
   expect_error(cnd_type(mtcars), "not a condition object")
   expect_error(cnd_type(env()), "not a condition object")
-  expect_identical(cnd_type(cnd()), "condition")
+  expect_identical(cnd_type(cnd("foo")), "condition")
   expect_identical(cnd_type(message_cnd()), "message")
   expect_identical(cnd_type(warning_cnd()), "warning")
   expect_identical(cnd_type(error_cnd()), "error")
@@ -232,6 +204,18 @@ test_that("cnd_type() detects condition type", {
 
 test_that("can signal and catch interrupts", {
   expect_is(catch_cnd(interrupt()), "interrupt")
+})
+
+test_that("bare conditions must be subclassed", {
+  expect_error(cnd(), "must be subclassed")
+  expect_error(signal(""), "must be subclassed")
+})
+
+test_that("can signal interrupts with cnd_signal()", {
+  intr <- catch_cnd(interrupt())
+  with_handlers(cnd_signal(intr),
+    condition = function(cnd) expect_is(cnd, "interrupt")
+  )
 })
 
 
@@ -246,11 +230,22 @@ test_that("deprecated arguments of abort() etc still work", {
   msgs <- pluck_conditions_msgs(cnds)
 
   warnings_msgs <- msgs$warnings
-  expect_length(warnings_msgs, 3L)
-  expect_match(warnings_msgs[[1]], "`msg` has been renamed to `.msg`")
-  expect_match(warnings_msgs[[2]], "`type` has been renamed to `.type`")
-  expect_match(warnings_msgs[[3]], "`call` has been renamed to `.call`")
+  expect_length(warnings_msgs, 2L)
+  expect_match(warnings_msgs[[1]], "`msg` has been renamed to `message`")
+  expect_match(warnings_msgs[[2]], "`type` has been renamed to `.subclass`")
 
   expect_match(msgs$error, "foo")
   expect_identical(conditionCall(cnds$error), quote(foo()))
+})
+
+test_that("deprecated arguments of cnd_signal() still work", {
+  with_non_verbose_retirement({
+    observed <- catch_cnd(cnd_signal("foo"))
+    expected <- catch_cnd(signal("", "foo"))
+    expect_identical(observed, expected)
+
+    with_handlers(cnd_signal(cnd("foo"), .mufflable = TRUE),
+      foo = calling(function(cnd) expect_true(rst_exists("muffle")))
+    )
+  })
 })

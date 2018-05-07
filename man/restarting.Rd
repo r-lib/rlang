@@ -45,7 +45,7 @@ rst_baz <- function() "baz"
 
 # Signalling a condition parameterised with a data frame
 fn <- function() {
-  with_restarts(cnd_signal("foo", foo_field = mtcars),
+  with_restarts(signal("A foobar condition occurred", "foo", foo_field = mtcars),
     rst_bar = rst_bar,
     rst_baz = rst_baz
   )
