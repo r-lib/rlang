@@ -8,20 +8,21 @@
 \alias{interrupt}
 \title{Signal an error, warning, or message}
 \usage{
-abort(message, .type = NULL, ..., call = NULL, msg, type)
+abort(message, .subclass = NULL, ..., call = NULL, msg, type)
 
-warn(message, .type = NULL, ..., call = NULL, msg, type)
+warn(message, .subclass = NULL, ..., call = NULL, msg, type)
 
-inform(message, .type = NULL, ..., call = NULL, msg, type)
+inform(message, .subclass = NULL, ..., call = NULL, msg, type)
 
-signal(message, .type, ..., call = NULL)
+signal(message, .subclass, ..., call = NULL)
 
 interrupt()
 }
 \arguments{
 \item{message}{The message to display.}
 
-\item{.type}{Subclass of the condition.}
+\item{.subclass}{Subclass of the condition. This allows your users
+to selectively handle the conditions signalled by your functions.}
 
 \item{...}{Additional data to be stored in the condition object.}
 
@@ -36,9 +37,9 @@ These functions are equivalent to base functions \code{\link[base:stop]{base::st
 \code{\link[base:warning]{base::warning()}} and \code{\link[base:message]{base::message()}}, but make it easy to supply
 condition metadata:
 \itemize{
-\item Supply \code{type} to create a classed condition. Typed conditions can
-be captured or handled selectively, allowing for finer-grained
-error handling.
+\item Supply \code{.subclass} to create a classed condition. Typed
+conditions can be captured or handled selectively, allowing for
+finer-grained error handling.
 \item Supply metadata with named \code{...} arguments. This data will be
 stored in the condition object and can be examined by handlers.
 }
@@ -73,7 +74,8 @@ guaranteed.
 These functions were changed in rlang 0.3.0 to take condition
 metadata with \code{...}. Consequently:
 \itemize{
-\item All arguments were renamed to be prefixed with a dot.
+\item All arguments were renamed to be prefixed with a dot, except for
+\code{type} which was renamed to \code{.subclass}.
 \item \code{.call} (previously \code{call}) can no longer be passed positionally.
 }
 }

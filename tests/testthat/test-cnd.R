@@ -232,7 +232,7 @@ test_that("deprecated arguments of abort() etc still work", {
   warnings_msgs <- msgs$warnings
   expect_length(warnings_msgs, 2L)
   expect_match(warnings_msgs[[1]], "`msg` has been renamed to `message`")
-  expect_match(warnings_msgs[[2]], "`type` has been renamed to `.type`")
+  expect_match(warnings_msgs[[2]], "`type` has been renamed to `.subclass`")
 
   expect_match(msgs$error, "foo")
   expect_identical(conditionCall(cnds$error), quote(foo()))

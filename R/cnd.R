@@ -10,10 +10,10 @@
 #'
 #' @section Lifecycle:
 #'
-#' The `.msg` argument has been renamed to `message` and is defunct as
-#' of rlang 0.3.0.
+#' The `.type` and `.msg` arguments have been renamed to `.subclass`
+#' and `message`. They are defunct as of rlang 0.3.0.
 #'
-#' @param .type The condition subclass.
+#' @param .subclass The condition subclass.
 #' @param ... Named data fields stored inside the condition
 #'   object. These dots are evaluated with [explicit
 #'   splicing][tidy-dots].
@@ -41,26 +41,26 @@
 #' # Signalling an error condition aborts the current computation:
 #' err <- error_cnd("foo", message = "I am an error")
 #' try(cnd_signal(err))
-cnd <- function(.type, ..., message = "", call = NULL) {
-  if (missing(.type)) {
+cnd <- function(.subclass, ..., message = "", call = NULL) {
+  if (missing(.subclass)) {
     abort("Bare conditions must be subclassed")
   }
-  .Call(rlang_new_condition, .type, message, call, dots_list(...))
+  .Call(rlang_new_condition, .subclass, message, call, dots_list(...))
 }
 #' @rdname cnd
 #' @export
-error_cnd <- function(.type = NULL, ..., message = "", call = NULL) {
-  .Call(rlang_new_condition, c(.type, "error"), message, call, dots_list(...))
+error_cnd <- function(.subclass = NULL, ..., message = "", call = NULL) {
+  .Call(rlang_new_condition, c(.subclass, "error"), message, call, dots_list(...))
 }
 #' @rdname cnd
 #' @export
-warning_cnd <- function(.type = NULL, ..., message = "", call = NULL) {
-  .Call(rlang_new_condition, c(.type, "warning"), message, call, dots_list(...))
+warning_cnd <- function(.subclass = NULL, ..., message = "", call = NULL) {
+  .Call(rlang_new_condition, c(.subclass, "warning"), message, call, dots_list(...))
 }
 #' @rdname cnd
 #' @export
-message_cnd <- function(.type = NULL, ..., message = "", call = NULL) {
-  .Call(rlang_new_condition, c(.type, "message"), message, call, dots_list(...))
+message_cnd <- function(.subclass = NULL, ..., message = "", call = NULL) {
+  .Call(rlang_new_condition, c(.subclass, "message"), message, call, dots_list(...))
 }
 
 #' Is object a condition?
@@ -220,9 +220,9 @@ muffle <- function(...) NULL
 #' [base::warning()] and [base::message()], but make it easy to supply
 #' condition metadata:
 #'
-#' * Supply `type` to create a classed condition. Typed conditions can
-#'   be captured or handled selectively, allowing for finer-grained
-#'   error handling.
+#' * Supply `.subclass` to create a classed condition. Typed
+#'   conditions can be captured or handled selectively, allowing for
+#'   finer-grained error handling.
 #'
 #' * Supply metadata with named `...` arguments. This data will be
 #'   stored in the condition object and can be examined by handlers.
@@ -255,11 +255,13 @@ muffle <- function(...) NULL
 #' These functions were changed in rlang 0.3.0 to take condition
 #' metadata with `...`. Consequently:
 #'
-#' * All arguments were renamed to be prefixed with a dot.
+#' * All arguments were renamed to be prefixed with a dot, except for
+#'   `type` which was renamed to `.subclass`.
 #' * `.call` (previously `call`) can no longer be passed positionally.
 #'
 #' @param message The message to display.
-#' @param .type Subclass of the condition.
+#' @param .subclass Subclass of the condition. This allows your users
+#'   to selectively handle the conditions signalled by your functions.
 #' @param ... Additional data to be stored in the condition object.
 #' @param call Whether to display the call. If a number `n`, the call
 #'   is taken from the nth frame on the [call stack][call_stack].
@@ -299,33 +301,33 @@ muffle <- function(...) NULL
 #' )
 #'
 #' }
-abort <- function(message, .type = NULL, ..., call = NULL, msg, type) {
+abort <- function(message, .subclass = NULL, ..., call = NULL, msg, type) {
   validate_signal_args(msg, type)
 
-  cnd <- error_cnd(.type, ..., message = message, call = cnd_call(call))
+  cnd <- error_cnd(.subclass, ..., message = message, call = cnd_call(call))
   stop(cnd)
 }
 #' @rdname abort
 #' @export
-warn <- function(message, .type = NULL, ..., call = NULL, msg, type) {
+warn <- function(message, .subclass = NULL, ..., call = NULL, msg, type) {
   validate_signal_args(msg, type)
 
-  cnd <- warning_cnd(.type, ..., message = message, call = cnd_call(call))
+  cnd <- warning_cnd(.subclass, ..., message = message, call = cnd_call(call))
   warning(cnd)
 }
 #' @rdname abort
 #' @export
-inform <- function(message, .type = NULL, ..., call = NULL, msg, type) {
+inform <- function(message, .subclass = NULL, ..., call = NULL, msg, type) {
   validate_signal_args(msg, type, call)
 
   message <- paste0(message, "\n")
-  cnd <- message_cnd(.type, ..., message = message, call = cnd_call(call))
+  cnd <- message_cnd(.subclass, ..., message = message, call = cnd_call(call))
   message(cnd)
 }
 #' @rdname abort
 #' @export
-signal <- function(message, .type, ..., call = NULL) {
-  cnd <- cnd(.type, ..., message = message, call = cnd_call(call))
+signal <- function(message, .subclass, ..., call = NULL) {
+  cnd <- cnd(.subclass, ..., message = message, call = cnd_call(call))
   cnd_signal(cnd)
 }
 validate_signal_args <- function(msg, type, env = parent.frame()) {
@@ -334,8 +336,8 @@ validate_signal_args <- function(msg, type, env = parent.frame()) {
     env$message <- msg
   }
   if (!missing(type)) {
-    warn("`type` has been renamed to `.type` and is deprecated as of rlang 0.3.0")
-    env$.type <- type
+    warn("`type` has been renamed to `.subclass` and is deprecated as of rlang 0.3.0")
+    env$.subclass <- type
   }
 }
 #' @rdname abort

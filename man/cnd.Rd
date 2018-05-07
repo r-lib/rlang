@@ -7,16 +7,16 @@
 \alias{message_cnd}
 \title{Create a condition object}
 \usage{
-cnd(.type, ..., message = "", call = NULL)
+cnd(.subclass, ..., message = "", call = NULL)
 
-error_cnd(.type = NULL, ..., message = "", call = NULL)
+error_cnd(.subclass = NULL, ..., message = "", call = NULL)
 
-warning_cnd(.type = NULL, ..., message = "", call = NULL)
+warning_cnd(.subclass = NULL, ..., message = "", call = NULL)
 
-message_cnd(.type = NULL, ..., message = "", call = NULL)
+message_cnd(.subclass = NULL, ..., message = "", call = NULL)
 }
 \arguments{
-\item{.type}{The condition subclass.}
+\item{.subclass}{The condition subclass.}
 
 \item{...}{Named data fields stored inside the condition
 object. These dots are evaluated with \link[=tidy-dots]{explicit
@@ -41,8 +41,8 @@ inherit from \code{error}, \code{warning} or \code{message}.
 \section{Lifecycle}{
 
 
-The \code{.msg} argument has been renamed to \code{message} and is defunct as
-of rlang 0.3.0.
+The \code{.type} and \code{.msg} arguments have been renamed to \code{.subclass}
+and \code{message}. They are defunct as of rlang 0.3.0.
 }
 
 \examples{
