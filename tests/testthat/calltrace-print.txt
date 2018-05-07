@@ -1,6 +1,6 @@
 █
-└─x <- i() testthat/test-calltrace.R:16:2
-  └─function(i) j(i) testthat/test-calltrace.R:8:7
+└─i() testthat/test-calltrace.R:16:2
+  └─j(i) testthat/test-calltrace.R:8:7
     └─k(i) testthat/test-calltrace.R:9:21
       └─l(i) testthat/test-calltrace.R:12:4
 
