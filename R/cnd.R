@@ -419,7 +419,7 @@ delayedAssign("cnd_muffle", {
       interrupt = invokeRestart("resume")
     )
 
-    if (inherits(cnd, "mufflable")) {
+    if (is_true(attr(cnd, "rlang_mufflable_cnd"))) {
       invokeRestart("muffle")
     }
 
