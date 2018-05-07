@@ -29,6 +29,18 @@ expect_no_error <- function(...) {
 expect_no_error_ <- function(object, ...) {
   expect_error(object, regexp = NA, ...)
 }
+expect_no_warning <- function(...) {
+  expect_warning(regexp = NA, ...)
+}
+expect_no_warning_ <- function(object, ...) {
+  expect_warning(object, regexp = NA, ...)
+}
+expect_no_message <- function(...) {
+  expect_message(regexp = NA, ...)
+}
+expect_no_message_ <- function(object, ...) {
+  expect_message(object, regexp = NA, ...)
+}
 
 with_verbose_retirement <- function(expr) {
   with_options(lifecycle_force_verbose_retirement = TRUE, expr)

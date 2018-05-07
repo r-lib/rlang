@@ -218,6 +218,20 @@ test_that("can signal interrupts with cnd_signal()", {
   )
 })
 
+test_that("can muffle conditions", {
+  expect_no_message(
+    expect_identical(with_handlers({ message(""); "foo" }, message = cnd_muffle), "foo")
+  )
+  expect_no_warning(
+    expect_identical(with_handlers({ warning(""); "foo" }, warning = cnd_muffle), "foo")
+  )
+  cnd_expect_muffle <- calling(function(cnd) {
+    expect_is(findRestart("muffle"), "restart")
+    cnd_muffle(cnd)
+  })
+  expect_identical(with_handlers({ cnd_signal("cnd"); "foo" }, cnd = cnd_expect_muffle), "foo")
+})
+
 
 # Lifecycle ----------------------------------------------------------
 

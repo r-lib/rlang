@@ -346,6 +346,87 @@ interrupt <- function() {
   .Call(rlang_interrupt)
 }
 
+#' Muffle a condition
+#'
+#' Unlike [exiting()] handlers, [calling()] handlers must be explicit
+#' that they have handled a condition to stop it from propagating to
+#' other handlers. Use `cnd_muffle()` within a calling handler (or as
+#' a calling handler, see examples) to prevent any other handlers from
+#' being called for that condition.
+#'
+#'
+#' @section Mufflable conditions:
+#'
+#' Not all conditions are signalled with a muffling restart.
+#' `cnd_muffle()` is compatible with:
+#'
+#' * `warning` and `message` conditions. In this case `cnd_muffle()`
+#'   is equivalent to [base::suppressMessages()] and
+#'   [base::suppressWarnings()].
+#'
+#' * Bare conditions signalled with `signal()` or [cnd_signal()].
+#'
+#' * Interrupts are sometimes signalled with a `resume` restart on
+#'   recent R versions.
+#'
+#' If you call `cnd_muffle()` with a condition that is not mufflable
+#' you will cause a new error to be signalled.
+#'
+#' * Errors are not mufflable since they are signalled in critical
+#'   situations where execution cannot continue safely.
+#'
+#' * Conditions captured with [base::tryCatch()], [with_handlers()] or
+#'   [catch_cnd()] are no longer mufflable. Muffling restarts _must_
+#'   be called from a [calling] handler.
+#'
+#' @param cnd A condition to muffle.
+#'
+#' @export
+#' @examples
+#' fn <- function() {
+#'   inform("Beware!", "my_particular_msg")
+#'   inform("On your guard!")
+#'   "foobar"
+#' }
+#'
+#' # Let's install a muffling handler for the condition thrown by `fn()`.
+#' # This will suppress all `my_particular_wng` warnings but let other
+#' # types of warnings go through:
+#' with_handlers(fn(),
+#'   my_particular_msg = calling(function(cnd) {
+#'     inform("Dealt with this particular message")
+#'     cnd_muffle(cnd)
+#'   })
+#' )
+#'
+#' # Note how execution of `fn()` continued normally after dealing
+#' # with that particular message.
+#'
+#' # Since cnd_muffle() is a calling handler itself, it can also be
+#' # passed to with_handlers() directly:
+#' with_handlers(fn(),
+#'   my_particular_msg = cnd_muffle
+#' )
+cnd_muffle <- NULL
+
+# Delay definition of `cnd_muffle()` after load-time because
+# `calling()` uses internal rlang functions
+delayedAssign("cnd_muffle", {
+  calling(function(cnd) {
+    switch(cnd_type(cnd),
+      message = invokeRestart("muffleMessage"),
+      warning = invokeRestart("muffleWarning"),
+      interrupt = invokeRestart("resume")
+    )
+
+    if (inherits(cnd, "mufflable")) {
+      invokeRestart("muffle")
+    }
+
+    abort("Can't find a muffling restart")
+  })
+})
+
 #' Catch a condition
 #'
 #' This is a small wrapper around `tryCatch()` that captures any
