@@ -42,7 +42,7 @@ resume execution from the place where the condition was
 signalled. The easiest way to accomplish this is by jumping to a
 restart point (see \code{\link[=with_restarts]{with_restarts()}}) established by the signalling
 function. \code{cnd_signal()} always installs a muffle restart (see
-\code{\link[=rst_muffle]{rst_muffle()}}).
+\code{\link[=cnd_muffle]{cnd_muffle()}}).
 }
 \section{Lifecycle}{
 
@@ -80,7 +80,7 @@ with_handlers(cnd_signal(cnd),
 undesirable_handler <- calling(function(c) cat("please don't call me\\n"))
 muffling_handler <- calling(function(c) {
   cat("muffling foo...\\n")
-  rst_muffle(c)
+  cnd_muffle(c)
 })
 
 with_handlers(foo = undesirable_handler,

@@ -178,6 +178,13 @@
 #' * `cnd_error()` => [error_cnd()]
 #'
 #'
+#' **Renamed in rlang 0.3.0:**
+#'
+#' * `inplace()` => [calling()]. The `muffle` argument of `inplace()`
+#'   has not been implemented in `calling()` and is now defunct.
+#' * `rst_muffle()` => [cnd_muffle()]
+#'
+#'
 #' **Retired in rlang 0.2.0:**
 #'
 #' * [:=][quasiquotation]

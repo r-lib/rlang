@@ -175,6 +175,13 @@ Since rlang 0.2.0:
 \item \code{cnd_error()} => \code{\link[=error_cnd]{error_cnd()}}
 }
 
+\strong{Renamed in rlang 0.3.0:}
+\itemize{
+\item \code{inplace()} => \code{\link[=calling]{calling()}}. The \code{muffle} argument of \code{inplace()}
+has not been implemented in \code{calling()} and is now defunct.
+\item \code{rst_muffle()} => \code{\link[=cnd_muffle]{cnd_muffle()}}
+}
+
 \strong{Retired in rlang 0.2.0:}
 \itemize{
 \item \link[=quasiquotation]{:=}

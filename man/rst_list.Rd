@@ -31,5 +31,5 @@ error is thrown.  \code{rst_maybe_jump()} first checks that a restart
 exists before jumping.
 }
 \seealso{
-\code{\link[=with_restarts]{with_restarts()}}, \code{\link[=rst_muffle]{rst_muffle()}}.
+\code{\link[=with_restarts]{with_restarts()}}
 }

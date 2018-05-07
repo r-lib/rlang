@@ -7,16 +7,12 @@
 \usage{
 exiting(handler)
 
-calling(handler, muffle = FALSE)
+calling(handler)
 }
 \arguments{
 \item{handler}{A handler function that takes a condition as
 argument. This is passed to \code{\link[=as_function]{as_function()}} and can thus be a
 formula describing a lambda function.}
-
-\item{muffle}{Whether to muffle the condition after executing a
-calling handler. The signalling function must have established a
-muffling restart. Otherwise, an error will be issued.}
 }
 \description{
 There are two types of condition handlers: exiting handlers, which

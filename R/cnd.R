@@ -113,7 +113,7 @@ cnd_type <- function(cnd) {
 #' signalled. The easiest way to accomplish this is by jumping to a
 #' restart point (see [with_restarts()]) established by the signalling
 #' function. `cnd_signal()` always installs a muffle restart (see
-#' [rst_muffle()]).
+#' [cnd_muffle()]).
 #'
 #' @section Lifecycle:
 #'
@@ -159,7 +159,7 @@ cnd_type <- function(cnd) {
 #' undesirable_handler <- calling(function(c) cat("please don't call me\n"))
 #' muffling_handler <- calling(function(c) {
 #'   cat("muffling foo...\n")
-#'   rst_muffle(c)
+#'   cnd_muffle(c)
 #' })
 #'
 #' with_handlers(foo = undesirable_handler,

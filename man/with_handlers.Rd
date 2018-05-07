@@ -39,8 +39,7 @@ signalling process. Sometimes, a muffling restart has been
 established for the purpose of jumping out of the signalling
 function but not out of the context where the condition was
 signalled, which allows execution to resume normally. See
-\code{\link[=rst_muffle]{rst_muffle()}} the \code{muffle} argument of \code{\link[=calling]{calling()}} and the
-\code{mufflable} argument of \code{\link[=cnd_signal]{cnd_signal()}}.
+\code{\link[=cnd_muffle]{cnd_muffle()}} and the \code{mufflable} argument of \code{\link[=cnd_signal]{cnd_signal()}}.
 
 Exiting handlers are established first by \code{with_handlers()}, and in
 place handlers are installed in second place. The latter handlers

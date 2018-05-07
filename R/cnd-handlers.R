@@ -20,8 +20,7 @@
 #' established for the purpose of jumping out of the signalling
 #' function but not out of the context where the condition was
 #' signalled, which allows execution to resume normally. See
-#' [rst_muffle()] the `muffle` argument of [calling()] and the
-#' `mufflable` argument of [cnd_signal()].
+#' [cnd_muffle()] and the `mufflable` argument of [cnd_signal()].
 #'
 #' Exiting handlers are established first by `with_handlers()`, and in
 #' place handlers are installed in second place. The latter handlers
@@ -129,9 +128,6 @@ with_handlers <- function(.expr, ...) {
 #' @param handler A handler function that takes a condition as
 #'   argument. This is passed to [as_function()] and can thus be a
 #'   formula describing a lambda function.
-#' @param muffle Whether to muffle the condition after executing a
-#'   calling handler. The signalling function must have established a
-#'   muffling restart. Otherwise, an error will be issued.
 #' @seealso [with_handlers()] for examples, [restarting()] for another
 #'   kind of calling handler.
 #' @export
@@ -151,17 +147,9 @@ exiting <- function(handler) {
 }
 #' @rdname exiting
 #' @export
-calling <- function(handler, muffle = FALSE) {
+calling <- function(handler) {
   handler <- as_function(handler)
-  if (muffle) {
-    handler_ <- function(c) {
-      handler(c)
-      rst_muffle(c)
-    }
-  } else {
-    handler_ <- handler
-  }
-  structure(handler_, class = c("calling", "handler"))
+  structure(handler, class = c("calling", "handler"))
 }
 
 #' Create a restarting handler
