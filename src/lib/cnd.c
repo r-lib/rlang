@@ -134,6 +134,11 @@ void r_cnd_abort(sexp* cnd, bool mufflable) {
   cnd_signal_impl("stop", cnd, mufflable);
 }
 
+#include <Rinterface.h>
+void r_interrupt() {
+  Rf_onintr();
+}
+
 
 enum r_condition_type r_cnd_type(sexp* cnd) {
   sexp* classes = r_get_class(cnd);
@@ -151,25 +156,31 @@ enum r_condition_type r_cnd_type(sexp* cnd) {
       if (strcmp(class_str, "condition")) {
         continue;
       } else {
-        return r_condition;
+        return r_cnd_type_condition;
       }
     case 'm':
       if (strcmp(class_str, "message")) {
         continue;
       } else {
-        return r_message;
+        return r_cnd_type_message;
       }
     case 'w':
       if (strcmp(class_str, "warning")) {
         continue;
       } else {
-        return r_warning;
+        return r_cnd_type_warning;
       }
     case 'e':
       if (strcmp(class_str, "error")) {
         continue;
       } else {
-        return r_error;
+        return r_cnd_type_error;
+      }
+    case 'i':
+      if (strcmp(class_str, "interrupt")) {
+        continue;
+      } else {
+        return r_cnd_type_interrupt;
       }
     default:
       continue;

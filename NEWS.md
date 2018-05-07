@@ -1,11 +1,14 @@
 
 # rlang 0.2.0.9000
 
+* New `interrupt()` function to simulate an user interrupt from R
+  code.
+
 * `inplace()` has been renamed to `calling()` to follow base R
   terminology more closely.
 
 * New `cnd_type()` helper to determine the type of a condition
-  (`"condition"`, `"message"`, `"warning"` or `"error"`).
+  (`"condition"`, `"message"`, `"warning"`, `"error"` or `"interrupt"`).
 
 * `abort()`, `warn()` and `inform()` now accepts metadata with `...`.
   The data are stored in the condition and can be examined by user

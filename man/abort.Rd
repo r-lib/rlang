@@ -4,6 +4,7 @@
 \alias{abort}
 \alias{warn}
 \alias{inform}
+\alias{interrupt}
 \title{Signal an error, warning, or message}
 \usage{
 abort(.msg, .type = NULL, ..., .call = FALSE, msg, type, call)
@@ -11,6 +12,8 @@ abort(.msg, .type = NULL, ..., .call = FALSE, msg, type, call)
 warn(.msg, .type = NULL, ..., .call = FALSE, msg, type, call)
 
 inform(.msg, .type = NULL, ..., .call = FALSE, msg, type, call)
+
+interrupt()
 }
 \arguments{
 \item{.msg}{The message to display.}
@@ -36,6 +39,10 @@ error handling.
 \item Supply metadata with named \code{...} arguments. This data will be
 stored in the condition object and can be examined by handlers.
 }
+
+\code{interrupt()} allows R code to simulate an user interrupt of the
+kind that is signalled with \code{Ctrl-C}. It is currently not possible
+to create custom interrupt condition objects.
 }
 \section{Call trace}{
 
@@ -51,6 +58,10 @@ and produces cleaner error messages.
 Signalling a condition with \code{inform()} or \code{warn()} causes a message
 to be displayed in the console. These messages can be muffled with
 \code{\link[base:suppressMessages]{base::suppressMessages()}} or \code{\link[base:suppressWarnings]{base::suppressWarnings()}}.
+
+On recent R versions (>= R 3.5.0), interrupts are typically
+signalled with a \code{"resume"} restart. This is however not
+guaranteed.
 }
 
 \section{Lifecycle}{
