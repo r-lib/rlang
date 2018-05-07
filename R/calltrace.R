@@ -148,7 +148,7 @@ trace_as_tree <- function(x, dir = getwd()) {
   nodes <- c(0, seq_along(x$calls))
   children <- map(nodes, function(id) seq_along(x$parents)[x$parents == id])
 
-  call_text <- map_chr(as.list(x$calls), expr_name)
+  call_text <- map(x$calls, src_text)
 
   refs <- map(x$calls, attr, "srcref")
   src_locs <- map_chr(refs, src_loc, dir = dir)
@@ -159,6 +159,14 @@ trace_as_tree <- function(x, dir = getwd()) {
   tree$call <- c(trace_root(), call_text)
 
   tree
+}
+
+src_text <- function(call) {
+  srcref <- attr(call, "srcref")
+  if (!is_null(srcref)) {
+    call <- parse_expr(as.character(srcref))
+  }
+  expr_name(call)
 }
 
 src_loc <- function(srcref, dir = getwd()) {
