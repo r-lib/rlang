@@ -407,25 +407,20 @@ interrupt <- function() {
 #' with_handlers(fn(),
 #'   my_particular_msg = cnd_muffle
 #' )
-cnd_muffle <- NULL
+cnd_muffle <- function(cnd) {
+  switch(cnd_type(cnd),
+    message = invokeRestart("muffleMessage"),
+    warning = invokeRestart("muffleWarning"),
+    interrupt = invokeRestart("resume")
+  )
 
-# Delay definition of `cnd_muffle()` after load-time because
-# `calling()` uses internal rlang functions
-delayedAssign("cnd_muffle", {
-  calling(function(cnd) {
-    switch(cnd_type(cnd),
-      message = invokeRestart("muffleMessage"),
-      warning = invokeRestart("muffleWarning"),
-      interrupt = invokeRestart("resume")
-    )
+  if (is_true(attr(cnd, "rlang_mufflable_cnd"))) {
+    invokeRestart("muffle")
+  }
 
-    if (is_true(attr(cnd, "rlang_mufflable_cnd"))) {
-      invokeRestart("muffle")
-    }
-
-    abort("Can't find a muffling restart")
-  })
-})
+  abort("Can't find a muffling restart")
+}
+class(cnd_muffle) <- c("calling", "handler")
 
 #' Catch a condition
 #'
