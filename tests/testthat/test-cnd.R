@@ -211,6 +211,13 @@ test_that("bare conditions must be subclassed", {
   expect_error(signal(""), "must be subclassed")
 })
 
+test_that("can signal interrupts with cnd_signal()", {
+  intr <- catch_cnd(interrupt())
+  with_handlers(cnd_signal(intr),
+    condition = function(cnd) expect_is(cnd, "interrupt")
+  )
+})
+
 
 # Lifecycle ----------------------------------------------------------
 

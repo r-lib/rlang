@@ -119,6 +119,9 @@ void r_cnd_signal(sexp* cnd) {
     call = err_signal_call;
     cnd_node = r_node_cdr(call);
     break;
+  case r_cnd_type_interrupt:
+    r_interrupt();
+    return;
   default:
     cnd = KEEP(r_set_attribute(cnd, r_sym("rlang_mufflable_cnd"), r_shared_true));
     ++ n_protect;

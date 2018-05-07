@@ -1,10 +1,10 @@
 
 # rlang 0.2.0.9000
 
-* `cnd_signal()` now dispatches messages, warnings and errors to the
-  relevant signallig functions (`message()`, `warning()` and
-  `stop()`). This makes it a good choice to resignal a captured
-  condition.
+* `cnd_signal()` now dispatches messages, warnings, errors and
+  interrupts to the relevant signalling functions (`message()`,
+  `warning()`, `stop()` and the C function `Rf_onintr()`). This makes
+  it a good choice to resignal a captured condition.
 
 * `cnd_signal()` now always installs a muffling restart for
   non-critical conditions. Consequently the `.mufflable` argument has
