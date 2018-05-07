@@ -10,12 +10,13 @@ cnd_type(cnd)
 \item{cnd}{A condition object.}
 }
 \value{
-A string, either \code{"condition"}, \code{"message"}, \code{"warning"} or
-\code{"error"}.
+A string, either \code{"condition"}, \code{"message"}, \code{"warning"},
+\code{"error"} or \code{"interrupt"}.
 }
 \description{
 Use \code{cnd_type()} to check what type a condition is.
 }
 \examples{
 cnd_type(catch_cnd(abort("Abort!")))
+cnd_type(catch_cnd(interrupt()))
 }

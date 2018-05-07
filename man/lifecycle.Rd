@@ -152,14 +152,6 @@ Since rlang 0.2.0:
 \item \code{\link[=UQE]{UQE()}}
 \item \code{\link[=is_quosureish]{is_quosureish()}}, \code{\link[=as_quosureish]{as_quosureish()}}
 }
-
-\strong{Renamed in rlang 0.2.0}
-\itemize{
-\item \code{\link[=new_cnd]{new_cnd()}} => \code{\link[=cnd]{cnd()}}
-\item \code{\link[=cnd_message]{cnd_message()}} => \code{\link[=message_cnd]{message_cnd()}}
-\item \code{\link[=cnd_warning]{cnd_warning()}} => \code{\link[=warning_cnd]{warning_cnd()}}
-\item \code{\link[=cnd_error]{cnd_error()}} => \code{\link[=error_cnd]{error_cnd()}}
-}
 }
 
 \section{Defunct functions and arguments}{
@@ -173,6 +165,14 @@ Since rlang 0.2.0:
 \code{.msg} => \code{message}.
 \item \code{\link[=cnd_signal]{cnd_signal()}}: \code{.msg} and \code{.call}.
 \item \code{cnd_inform()}, \code{cnd_warn()} and \code{cnd_abort()}
+}
+
+\strong{Renamed in rlang 0.2.0}
+\itemize{
+\item \code{new_cnd()} => \code{\link[=cnd]{cnd()}}
+\item \code{cnd_message()} => \code{\link[=message_cnd]{message_cnd()}}
+\item \code{cnd_warning()} => \code{\link[=warning_cnd]{warning_cnd()}}
+\item \code{cnd_error()} => \code{\link[=error_cnd]{error_cnd()}}
 }
 
 \strong{Retired in rlang 0.2.0:}

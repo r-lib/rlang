@@ -12,7 +12,8 @@
   no longer has any effect).
 
 * `cnd_inform()`, `cnd_warn()` and `cnd_abort()` are retired and
-  defunct.
+  defunct. The old `cnd_message()`, `cnd_warning()`, `cnd_error()` and
+  `new_cnd()` constructors deprecated in rlang 0.2.0 are now defunct.
 
 * Modifying a condition with `cnd_signal()` is defunct. Creating a
   condition with `cnd_signal()` is soft-deprecated, please use the new

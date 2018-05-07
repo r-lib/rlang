@@ -158,14 +158,6 @@
 #' * [is_quosureish()], [as_quosureish()]
 #'
 #'
-#' **Renamed in rlang 0.2.0**
-#'
-#' * [new_cnd()] => [cnd()]
-#' * [cnd_message()] => [message_cnd()]
-#' * [cnd_warning()] => [warning_cnd()]
-#' * [cnd_error()] => [error_cnd()]
-#'
-#'
 #' @section Defunct functions and arguments:
 #'
 #' \badgedefunct
@@ -176,6 +168,14 @@
 #'   `.msg` => `message`.
 #' * [cnd_signal()]: `.msg` and `.call`.
 #' * `cnd_inform()`, `cnd_warn()` and `cnd_abort()`
+#'
+#'
+#' **Renamed in rlang 0.2.0**
+#'
+#' * `new_cnd()` => [cnd()]
+#' * `cnd_message()` => [message_cnd()]
+#' * `cnd_warning()` => [warning_cnd()]
+#' * `cnd_error()` => [error_cnd()]
 #'
 #'
 #' **Retired in rlang 0.2.0:**

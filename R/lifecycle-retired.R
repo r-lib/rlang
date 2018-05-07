@@ -409,48 +409,6 @@ as_quosureish <- function(x, env = caller_env()) {
   }
 }
 
-#' Deprecated condition constructors
-#'
-#' These functions were deprecated in rlang 0.2.0 to follow the
-#' convention that return types are indicated as suffixes. Please use
-#' [cnd()], [error_cnd()], [warning_cnd()] and [message_cnd()]
-#' instead.
-#'
-#' @inheritParams cnd
-#' @name deprecated-cnd
-#' @keywords internal
-#' @export
-new_cnd <- function(.type = NULL, ..., .msg = NULL) {
-  # Deprecated in 0.1.2
-  warning("`new_cnd()` has been renamed to `cnd()` for consistency",
-    call. = FALSE)
-  cnd(.type = .type, ..., message = .msg)
-}
-#' @rdname deprecated-cnd
-#' @export
-cnd_error <- function(.type = NULL, ..., .msg = NULL) {
-  # Deprecated in 0.1.2
-  warning("`cnd_error()` has been renamed to `error_cnd()` for consistency",
-    call. = FALSE)
-  error_cnd(.type = .type, ..., message = .msg)
-}
-#' @rdname deprecated-cnd
-#' @export
-cnd_warning <- function(.type = NULL, ..., .msg = NULL) {
-  # Deprecated in 0.1.2
-  warning("`cnd_warning()` has been renamed to `warning_cnd()` for consistency",
-    call. = FALSE)
-  warning_cnd(.type = .type, ..., message = .msg)
-}
-#' @rdname deprecated-cnd
-#' @export
-cnd_message <- function(.type = NULL, ..., .msg = NULL) {
-  # Deprecated in 0.1.2
-  warning("`cnd_message()` has been renamed to `message_cnd()` for consistency",
-    call. = FALSE)
-  message_cnd(.type = .type, ..., message = .msg)
-}
-
 #' Retired vector construction by length
 #'
 #' These functions were soft-deprecated and renamed with `new_` prefix
