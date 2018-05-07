@@ -51,25 +51,21 @@ calltrace <- function(top_env = NULL) {
   parents <- sys.parents()
   envs <- map(sys.frames(), env_label)
 
-  funs <- map(1:sys.nframe(), sys.function)
-  refs <- map(funs, attr, "srcref")
-
-  trace <- new_calltrace(calls, parents, envs, refs)
+  trace <- new_calltrace(calls, parents, envs)
   trace <- trace_trim_env(trace, top_env)
   trace <- trace[-length(trace)] # remove call to self
 
   trace
 }
 
-new_calltrace <- function(calls, parents, envs, refs) {
+new_calltrace <- function(calls, parents, envs) {
   stopifnot(is.list(calls), is.integer(parents), length(calls) == length(parents))
 
   structure(
     list(
       calls = calls,
       parents = parents,
-      envs = envs,
-      refs = refs
+      envs = envs
     ),
     class = "calltrace"
   )
@@ -112,9 +108,8 @@ length.calltrace <- function(x) {
   calls <- x$calls[i]
   envs <- x$envs[i]
   parents <- match(as.character(x$parents[i]), as.character(i), nomatch = 0)
-  refs <- x$refs[i]
 
-  new_calltrace(calls, parents, envs, refs)
+  new_calltrace(calls, parents, envs)
 }
 
 # Trimming ----------------------------------------------------------------
@@ -154,7 +149,9 @@ trace_as_tree <- function(x, dir = getwd()) {
   children <- map(nodes, function(id) seq_along(x$parents)[x$parents == id])
 
   call_text <- map_chr(as.list(x$calls), expr_name)
-  src_locs <- map_chr(x$refs, src_loc, dir = dir)
+
+  refs <- map(x$calls, attr, "srcref")
+  src_locs <- map_chr(refs, src_loc, dir = dir)
   call_text <- paste0(call_text, " ", src_locs)
 
   tree <- data.frame(id = as.character(nodes), stringsAsFactors = FALSE)
@@ -178,7 +175,9 @@ src_loc <- function(srcref, dir = getwd()) {
     return("")
   }
 
-  paste0(relish(file, dir = dir), ":", srcref[[1]], ":", srcref[[5]])
+  line <- srcref[[1]]
+  column <- srcref[[5]] - 1L
+  paste0(relish(file, dir = dir), ":", line, ":", column)
 }
 
 relish <- function(x, dir = getwd()) {

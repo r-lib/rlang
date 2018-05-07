@@ -5,11 +5,15 @@ test_that("tree printing only changes deliberately", {
   dir <- normalizePath(test_path(".."))
 
   e <- environment()
-  j <- function(i) k(i)
-  k <- function(i) l(i)
+  i <- function(i) j(i)
+  j <- function(i) { k(i) }
+  k <- function(i) {
+    NULL
+    l(i)
+  }
   l <- function(i) calltrace(e)
 
-  x <- j()
+  x <- i()
 
   expect_known_output({
     print(x, dir = dir)
