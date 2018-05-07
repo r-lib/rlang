@@ -357,17 +357,23 @@ interrupt <- function() {
 #'
 #' @section Mufflable conditions:
 #'
-#' Not all conditions are signalled with a muffling restart.
-#' `cnd_muffle()` is compatible with:
+#' Most conditions signalled by base R are muffable, although the name
+#' of the restart varies. cnd_muffle() will automatically call the
+#' correct restart for you. It is compatible with the following
+#' conditions:
 #'
 #' * `warning` and `message` conditions. In this case `cnd_muffle()`
 #'   is equivalent to [base::suppressMessages()] and
 #'   [base::suppressWarnings()].
 #'
-#' * Bare conditions signalled with `signal()` or [cnd_signal()].
+#' * Bare conditions signalled with `signal()` or [cnd_signal()]. Note
+#'   that conditions signalled with [base::signalCondition()] are not
+#'   mufflable.
 #'
 #' * Interrupts are sometimes signalled with a `resume` restart on
-#'   recent R versions.
+#'   recent R versions. When this is the case, you can muffle the
+#'   interrupt with `cnd_muffle()`. Check if a restart is available
+#'   with `base::findRestart("resume")`.
 #'
 #' If you call `cnd_muffle()` with a condition that is not mufflable
 #' you will cause a new error to be signalled.

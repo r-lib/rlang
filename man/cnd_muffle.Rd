@@ -19,15 +19,21 @@ being called for that condition.
 \section{Mufflable conditions}{
 
 
-Not all conditions are signalled with a muffling restart.
-\code{cnd_muffle()} is compatible with:
+Most conditions signalled by base R are muffable, although the name
+of the restart varies. cnd_muffle() will automatically call the
+correct restart for you. It is compatible with the following
+conditions:
 \itemize{
 \item \code{warning} and \code{message} conditions. In this case \code{cnd_muffle()}
 is equivalent to \code{\link[base:suppressMessages]{base::suppressMessages()}} and
 \code{\link[base:suppressWarnings]{base::suppressWarnings()}}.
-\item Bare conditions signalled with \code{signal()} or \code{\link[=cnd_signal]{cnd_signal()}}.
+\item Bare conditions signalled with \code{signal()} or \code{\link[=cnd_signal]{cnd_signal()}}. Note
+that conditions signalled with \code{\link[base:signalCondition]{base::signalCondition()}} are not
+mufflable.
 \item Interrupts are sometimes signalled with a \code{resume} restart on
-recent R versions.
+recent R versions. When this is the case, you can muffle the
+interrupt with \code{cnd_muffle()}. Check if a restart is available
+with \code{base::findRestart("resume")}.
 }
 
 If you call \code{cnd_muffle()} with a condition that is not mufflable

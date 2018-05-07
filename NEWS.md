@@ -1,11 +1,11 @@
 
 # rlang 0.2.0.9000
 
-* The experimental function `rst_muffle()` has been renamed to
-  `cnd_muffle()` and is now defunct. Unlike its predecessor
-  `cnd_muffle()` is not generic. It is marked as a calling handler and
-  thus can be passed directly to `with_handlers()` to muffle specific
-  conditions (such as specific subclasses of warnings).
+* The experimental function `rst_muffle()` is now defunct. Please use
+  `cnd_muffle()` instead. Unlike its predecessor `cnd_muffle()` is not
+  generic. It is marked as a calling handler and thus can be passed
+  directly to `with_handlers()` to muffle specific conditions (such as
+  specific subclasses of warnings).
 
 * `cnd_signal()` now dispatches messages, warnings, errors and
   interrupts to the relevant signalling functions (`message()`,
