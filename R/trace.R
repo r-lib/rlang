@@ -5,10 +5,12 @@
 #' stack in R is actually a tree, which the print method of this object will
 #' reveal.
 #'
-#' @param top_env If non-null, this will be used to automatically trim the
-#'   call trace to only show calls after the last occurence of this enviroment.
-#'   This is needed when the code that calls `calltree()` is run indirectly,
-#'   for example in tests, or inside an RMarkdown document.
+#' @param to If non-null, this should be a frame environment. The
+#'   backtrace will only be recorded up to that frame. This is needed
+#'   in particular when you call `trace_back()` indirectly or from a
+#'   larger context, for example in tests or inside an RMarkdown
+#'   document where you don't want all the knitr evaluation mechanism
+#'   to appear in the backtrace.
 #' @examples
 #' f <- function() g()
 #' g <- function() h()
@@ -40,19 +42,19 @@
 #' # related to the execution environment:
 #' source(textConnection("f()"), echo = TRUE)
 #'
-#' # To automatically strip this off, pass `top_env = globalenv()`
+#' # To automatically strip this off, pass `to = globalenv()`
 #' # That will automatically trim of calls prior to the last appearance
 #' # of the global environment on the stack
 #' h <- function() trace_back(globalenv())
 #' source(textConnection("f()"), echo = TRUE)
 #' @export
-trace_back <- function(top_env = NULL) {
+trace_back <- function(to = NULL) {
   calls <- sys.calls()
   parents <- sys.parents()
   envs <- map(sys.frames(), env_label)
 
   trace <- new_trace(calls, parents, envs)
-  trace <- trace_trim_env(trace, top_env)
+  trace <- trace_trim_env(trace, to)
   trace <- trace[-length(trace)] # remove call to self
 
   trace
@@ -114,12 +116,12 @@ length.rlang_trace <- function(x) {
 
 # Trimming ----------------------------------------------------------------
 
-trace_trim_env <- function(x, top_env = globalenv()) {
-  if (is.null(top_env)) {
+trace_trim_env <- function(x, to = globalenv()) {
+  if (is.null(to)) {
     return(x)
   }
 
-  is_top <- x$envs == env_label(top_env)
+  is_top <- x$envs == env_label(to)
   if (!any(is_top)) {
     return(x)
   }
