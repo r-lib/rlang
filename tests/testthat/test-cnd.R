@@ -220,6 +220,12 @@ test_that("conditions have correct subclasses", {
   expect_true(inherits_all(catch_cnd(abort("", "foo")), c("foo", "rlang_error", "error", "condition")))
 })
 
+test_that("errors are signalled with backtrace", {
+  fn <- function() abort("")
+  err <- catch_cnd(fn())
+  expect_is(err$trace, "rlang_trace")
+})
+
 
 # Lifecycle ----------------------------------------------------------
 

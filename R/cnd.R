@@ -304,7 +304,16 @@ muffle <- function(...) NULL
 abort <- function(message, .subclass = NULL, ..., call = NULL, msg, type) {
   validate_signal_args(msg, type)
 
-  cnd <- error_cnd(.subclass, ..., message = message, call = cnd_call(call))
+  trace <- trace_back()
+  trace <- trace[-length(trace)]
+
+  cnd <- error_cnd(.subclass,
+    ...,
+    message = message,
+    call = cnd_call(call),
+    trace = trace
+  )
+
   stop(cnd)
 }
 #' @rdname abort
