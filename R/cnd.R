@@ -456,3 +456,22 @@ catch_cnd <- function(expr) {
     return(NULL)
   })
 }
+
+#' @export
+print.rlang_error <- function(x, ...) {
+  class <- class(x)[[1]]
+  if (class == "rlang_error") {
+    header <- ""
+  } else {
+    header <- sprintf(": %s", class)
+  }
+
+  meow(
+    sprintf("<error%s>", header),
+    sprintf("* Message: %s", conditionMessage(x)),
+    "* Backtrace:"
+  )
+  print(x$trace)
+
+  invisible(x)
+}
