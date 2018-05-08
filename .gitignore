@@ -5,3 +5,4 @@ inst/doc
 .httr-oauth
 revdep/checks
 revdep/library
+src/config.h
