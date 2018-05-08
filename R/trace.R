@@ -5,16 +5,18 @@
 #' stack in R is actually a tree, which the print method of this object will
 #' reveal.
 #'
-#' @param top_env If non-null, this will be used to automatically trim the
-#'   call trace to only show calls after the last occurence of this enviroment.
-#'   This is needed when the code that calls `calltree()` is run indirectly,
-#'   for example in tests, or inside an RMarkdown document.
+#' @param to If non-null, this should be a frame environment. The
+#'   backtrace will only be recorded up to that frame. This is needed
+#'   in particular when you call `trace_back()` indirectly or from a
+#'   larger context, for example in tests or inside an RMarkdown
+#'   document where you don't want all the knitr evaluation mechanism
+#'   to appear in the backtrace.
 #' @examples
 #' f <- function() g()
 #' g <- function() h()
-#' h <- function() calltrace()
+#' h <- function() trace_back()
 #'
-#' # When no lazy evaluation is involved the calltrack is linear
+#' # When no lazy evaluation is involved the backtrace is linear
 #' # (i.e. every call has only one child)
 #' f()
 #'
@@ -24,7 +26,7 @@
 #' try(identity(f()))
 #'
 #' # When printing, you can request to simplify this tree to only show
-#' # the direct sequence of calls that lead to `calltrace()`
+#' # the direct sequence of calls that lead to `trace_back()`
 #' x <- try(identity(f()))
 #' x
 #' print(x, simplify = TRUE)
@@ -40,25 +42,25 @@
 #' # related to the execution environment:
 #' source(textConnection("f()"), echo = TRUE)
 #'
-#' # To automatically strip this off, pass `top_env = globalenv()`
+#' # To automatically strip this off, pass `to = globalenv()`
 #' # That will automatically trim of calls prior to the last appearance
 #' # of the global environment on the stack
-#' h <- function() calltrace(globalenv())
+#' h <- function() trace_back(globalenv())
 #' source(textConnection("f()"), echo = TRUE)
 #' @export
-calltrace <- function(top_env = NULL) {
+trace_back <- function(to = NULL) {
   calls <- sys.calls()
   parents <- sys.parents()
   envs <- map(sys.frames(), env_label)
 
-  trace <- new_calltrace(calls, parents, envs)
-  trace <- trace_trim_env(trace, top_env)
+  trace <- new_trace(calls, parents, envs)
+  trace <- trace_trim_env(trace, to)
   trace <- trace[-length(trace)] # remove call to self
 
   trace
 }
 
-new_calltrace <- function(calls, parents, envs) {
+new_trace <- function(calls, parents, envs) {
   stopifnot(is.list(calls), is.integer(parents), length(calls) == length(parents))
 
   structure(
@@ -67,14 +69,14 @@ new_calltrace <- function(calls, parents, envs) {
       parents = parents,
       envs = envs
     ),
-    class = "calltrace"
+    class = "rlang_trace"
   )
 }
 
 # Methods -----------------------------------------------------------------
 
 #' @export
-format.calltrace <- function(x, simplify = FALSE, dir = getwd(), ...) {
+format.rlang_trace <- function(x, simplify = FALSE, dir = getwd(), ...) {
   if (length(x) == 0) {
     return(trace_root())
   }
@@ -87,18 +89,18 @@ format.calltrace <- function(x, simplify = FALSE, dir = getwd(), ...) {
 }
 
 #' @export
-print.calltrace <- function(x, simplify = FALSE, dir = getwd(), ...) {
+print.rlang_trace <- function(x, simplify = FALSE, dir = getwd(), ...) {
   meow(format(x, ..., simplify = simplify, dir = dir))
   invisible(x)
 }
 
 #' @export
-length.calltrace <- function(x) {
+length.rlang_trace <- function(x) {
   length(x$calls)
 }
 
 #' @export
-`[.calltrace` <- function(x, i, ...) {
+`[.rlang_trace` <- function(x, i, ...) {
   stopifnot(is.integer(i))
 
   if (all(i < 0L)) {
@@ -109,17 +111,17 @@ length.calltrace <- function(x) {
   envs <- x$envs[i]
   parents <- match(as.character(x$parents[i]), as.character(i), nomatch = 0)
 
-  new_calltrace(calls, parents, envs)
+  new_trace(calls, parents, envs)
 }
 
 # Trimming ----------------------------------------------------------------
 
-trace_trim_env <- function(x, top_env = globalenv()) {
-  if (is.null(top_env)) {
+trace_trim_env <- function(x, to = globalenv()) {
+  if (is.null(to)) {
     return(x)
   }
 
-  is_top <- x$envs == env_label(top_env)
+  is_top <- x$envs == env_label(to)
   if (!any(is_top)) {
     return(x)
   }
@@ -204,7 +206,7 @@ reprex_callstack <- function() {
   code <- expr({
     f <- function() g()
     g <- function() h()
-    h <- function() rlang::calltrace(globalenv())
+    h <- function() rlang::trace_back(globalenv())
 
     x <- try(identity(f()))
     saveRDS(x, !!path)

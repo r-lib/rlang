@@ -1,7 +1,0 @@
-█
-└─i() testthat/test-calltrace.R:18:2
-  └─j(i) testthat/test-calltrace.R:10:7
-    └─k(i) testthat/test-calltrace.R:11:21
-      └─l(i) testthat/test-calltrace.R:14:4
-
-█

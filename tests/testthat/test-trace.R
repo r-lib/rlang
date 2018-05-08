@@ -1,4 +1,4 @@
-context("calltrace.R")
+context("trace.R")
 
 # This test must come first because print method includes srcrefs
 test_that("tree printing only changes deliberately", {
@@ -13,7 +13,7 @@ test_that("tree printing only changes deliberately", {
     NULL
     l(i)
   }
-  l <- function(i) calltrace(e)
+  l <- function(i) trace_back(e)
 
   x <- i()
 
@@ -21,7 +21,7 @@ test_that("tree printing only changes deliberately", {
     print(x, dir = dir)
     cat("\n")
     print(x[0L], dir = dir)
-  }, test_path("calltrace-print.txt"))
+  }, test_path("test-trace-print.txt"))
 })
 
 test_that("trace_simplify() extracts last branch", {
@@ -29,7 +29,7 @@ test_that("trace_simplify() extracts last branch", {
   j <- function(i) k(i)
   k <- function(i) l(i)
   l <- function(i) eval(quote(m()), parent.frame(i))
-  m <- function() calltrace(e)
+  m <- function() trace_back(e)
 
   x1 <- j(1)
   expect_length(x1, 6)
