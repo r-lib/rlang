@@ -23,7 +23,7 @@ f <- function() g()
 g <- function() h()
 h <- function() trace_back()
 
-# When no lazy evaluation is involved the calltrack is linear
+# When no lazy evaluation is involved the backtrace is linear
 # (i.e. every call has only one child)
 f()
 
