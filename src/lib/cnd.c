@@ -72,7 +72,7 @@ static sexp* new_condition_names(sexp* data) {
   FREE(1);
   return nms;
 }
-sexp* r_new_condition(sexp* type, sexp* msg, sexp* call, sexp* data) {
+sexp* r_new_condition(sexp* subclass, sexp* msg, sexp* call, sexp* data) {
   if (msg == r_null) {
     msg = r_shared_empty_chr;
   } else if (!r_is_scalar_character(msg)) {
@@ -87,7 +87,7 @@ sexp* r_new_condition(sexp* type, sexp* msg, sexp* call, sexp* data) {
   r_vec_poke_n(cnd, 2, data, 0, r_length(cnd) - 2);
 
   r_poke_names(cnd, KEEP(new_condition_names(data)));
-  r_poke_class(cnd, KEEP(chr_append(type, r_string("condition"))));
+  r_poke_class(cnd, KEEP(chr_append(subclass, r_string("condition"))));
 
   FREE(3);
   return cnd;
