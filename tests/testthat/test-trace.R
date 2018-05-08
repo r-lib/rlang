@@ -1,4 +1,4 @@
-context("calltrace.R")
+context("trace.R")
 
 # This test must come first because print method includes srcrefs
 test_that("tree printing only changes deliberately", {
@@ -21,7 +21,7 @@ test_that("tree printing only changes deliberately", {
     print(x, dir = dir)
     cat("\n")
     print(x[0L], dir = dir)
-  }, test_path("calltrace-print.txt"))
+  }, test_path("test-trace-print.txt"))
 })
 
 test_that("trace_simplify() extracts last branch", {
