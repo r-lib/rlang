@@ -49,8 +49,16 @@ cnd <- function(.subclass, ..., message = "", call = NULL) {
 }
 #' @rdname cnd
 #' @export
-error_cnd <- function(.subclass = NULL, ..., message = "", call = NULL) {
-  .Call(rlang_new_condition, c(.subclass, "rlang_error", "error"), message, call, dots_list(...))
+error_cnd <- function(.subclass = NULL,
+                      ...,
+                      message = "",
+                      call = NULL,
+                      trace = NULL) {
+  if (!is_null(trace) && !inherits(trace, "rlang_trace")) {
+    abort("`trace` must be NULL or an rlang backtrace")
+  }
+  fields <- dots_list(trace = trace, ...)
+  .Call(rlang_new_condition, c(.subclass, "rlang_error", "error"), message, call, fields)
 }
 #' @rdname cnd
 #' @export
