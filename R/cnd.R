@@ -50,7 +50,7 @@ cnd <- function(.subclass, ..., message = "", call = NULL) {
 #' @rdname cnd
 #' @export
 error_cnd <- function(.subclass = NULL, ..., message = "", call = NULL) {
-  .Call(rlang_new_condition, c(.subclass, "error"), message, call, dots_list(...))
+  .Call(rlang_new_condition, c(.subclass, "rlang_error", "error"), message, call, dots_list(...))
 }
 #' @rdname cnd
 #' @export

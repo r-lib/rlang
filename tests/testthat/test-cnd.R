@@ -213,6 +213,13 @@ test_that("can muffle conditions", {
   expect_identical(with_handlers({ signal("", "cnd"); "foo" }, cnd = cnd_expect_muffle), "foo")
 })
 
+test_that("conditions have correct subclasses", {
+  expect_true(inherits_all(catch_cnd(signal("", "foo")), c("foo", "rlang_condition", "condition")))
+  expect_true(inherits_all(catch_cnd(inform("", "foo")), c("foo", "message", "condition")))
+  expect_true(inherits_all(catch_cnd(warn("", "foo")), c("foo", "warning", "condition")))
+  expect_true(inherits_all(catch_cnd(abort("", "foo")), c("foo", "rlang_error", "error", "condition")))
+})
+
 
 # Lifecycle ----------------------------------------------------------
 
