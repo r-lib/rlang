@@ -218,7 +218,7 @@ void r_init_library_cnd() {
   sexp* cnd_signal_core_call = KEEP(r_build_call_node(r_base_ns_get("signalCondition"), cnd_signal_cnd_node));
 
   sexp* cnd_signal_args;
-  cnd_signal_args = KEEP(r_new_tagged_node("muffle", rlang_ns_get("muffle"), r_null));
+  cnd_signal_args = KEEP(r_new_tagged_node("rlang_muffle", rlang_ns_get("muffle"), r_null));
   cnd_signal_args = KEEP(r_new_tagged_node("expr", cnd_signal_core_call, cnd_signal_args));
   cnd_signal_call = KEEP(r_build_call_node(r_sym("withRestarts"), cnd_signal_args));
 

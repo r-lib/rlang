@@ -420,7 +420,7 @@ cnd_muffle <- function(cnd) {
     interrupt = invokeRestart("resume")
   )
   if (inherits(cnd, "rlang_condition")) {
-    invokeRestart("muffle")
+    invokeRestart("rlang_muffle")
   }
 
   abort("Can't find a muffling restart")

@@ -13,7 +13,7 @@ test_that("cnd() throws with unnamed fields", {
 test_that("cnd_signal() creates muffle restarts", {
   withCallingHandlers(cnd_signal(cnd("foo")),
     foo = function(c) {
-      expect_true(rst_exists("muffle"))
+      expect_true(rst_exists("rlang_muffle"))
     }
   )
 })
@@ -207,7 +207,7 @@ test_that("can muffle conditions", {
     expect_identical(with_handlers({ warning(""); "foo" }, warning = cnd_muffle), "foo")
   )
   cnd_expect_muffle <- calling(function(cnd) {
-    expect_is(findRestart("muffle"), "restart")
+    expect_is(findRestart("rlang_muffle"), "restart")
     cnd_muffle(cnd)
   })
   expect_identical(with_handlers({ signal("", "cnd"); "foo" }, cnd = cnd_expect_muffle), "foo")
@@ -240,7 +240,7 @@ test_that("deprecated arguments of cnd_signal() still work", {
     expect_identical(observed, expected)
 
     with_handlers(cnd_signal(cnd("foo"), .mufflable = TRUE),
-      foo = calling(function(cnd) expect_true(rst_exists("muffle")))
+      foo = calling(function(cnd) expect_true(rst_exists("rlang_muffle")))
     )
   })
 })
