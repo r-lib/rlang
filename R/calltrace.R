@@ -12,7 +12,7 @@
 #' @examples
 #' f <- function() g()
 #' g <- function() h()
-#' h <- function() calltrace()
+#' h <- function() trace_back()
 #'
 #' # When no lazy evaluation is involved the calltrack is linear
 #' # (i.e. every call has only one child)
@@ -24,7 +24,7 @@
 #' try(identity(f()))
 #'
 #' # When printing, you can request to simplify this tree to only show
-#' # the direct sequence of calls that lead to `calltrace()`
+#' # the direct sequence of calls that lead to `trace_back()`
 #' x <- try(identity(f()))
 #' x
 #' print(x, simplify = TRUE)
@@ -43,22 +43,22 @@
 #' # To automatically strip this off, pass `top_env = globalenv()`
 #' # That will automatically trim of calls prior to the last appearance
 #' # of the global environment on the stack
-#' h <- function() calltrace(globalenv())
+#' h <- function() trace_back(globalenv())
 #' source(textConnection("f()"), echo = TRUE)
 #' @export
-calltrace <- function(top_env = NULL) {
+trace_back <- function(top_env = NULL) {
   calls <- sys.calls()
   parents <- sys.parents()
   envs <- map(sys.frames(), env_label)
 
-  trace <- new_calltrace(calls, parents, envs)
+  trace <- new_trace(calls, parents, envs)
   trace <- trace_trim_env(trace, top_env)
   trace <- trace[-length(trace)] # remove call to self
 
   trace
 }
 
-new_calltrace <- function(calls, parents, envs) {
+new_trace <- function(calls, parents, envs) {
   stopifnot(is.list(calls), is.integer(parents), length(calls) == length(parents))
 
   structure(
@@ -67,14 +67,14 @@ new_calltrace <- function(calls, parents, envs) {
       parents = parents,
       envs = envs
     ),
-    class = "calltrace"
+    class = "rlang_trace"
   )
 }
 
 # Methods -----------------------------------------------------------------
 
 #' @export
-format.calltrace <- function(x, simplify = FALSE, dir = getwd(), ...) {
+format.rlang_trace <- function(x, simplify = FALSE, dir = getwd(), ...) {
   if (length(x) == 0) {
     return(trace_root())
   }
@@ -87,18 +87,18 @@ format.calltrace <- function(x, simplify = FALSE, dir = getwd(), ...) {
 }
 
 #' @export
-print.calltrace <- function(x, simplify = FALSE, dir = getwd(), ...) {
+print.rlang_trace <- function(x, simplify = FALSE, dir = getwd(), ...) {
   meow(format(x, ..., simplify = simplify, dir = dir))
   invisible(x)
 }
 
 #' @export
-length.calltrace <- function(x) {
+length.rlang_trace <- function(x) {
   length(x$calls)
 }
 
 #' @export
-`[.calltrace` <- function(x, i, ...) {
+`[.rlang_trace` <- function(x, i, ...) {
   stopifnot(is.integer(i))
 
   if (all(i < 0L)) {
@@ -109,7 +109,7 @@ length.calltrace <- function(x) {
   envs <- x$envs[i]
   parents <- match(as.character(x$parents[i]), as.character(i), nomatch = 0)
 
-  new_calltrace(calls, parents, envs)
+  new_trace(calls, parents, envs)
 }
 
 # Trimming ----------------------------------------------------------------
@@ -204,7 +204,7 @@ reprex_callstack <- function() {
   code <- expr({
     f <- function() g()
     g <- function() h()
-    h <- function() rlang::calltrace(globalenv())
+    h <- function() rlang::trace_back(globalenv())
 
     x <- try(identity(f()))
     saveRDS(x, !!path)
