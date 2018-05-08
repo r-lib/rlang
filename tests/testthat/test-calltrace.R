@@ -2,6 +2,8 @@ context("calltrace.R")
 
 # This test must come first because print method includes srcrefs
 test_that("tree printing only changes deliberately", {
+  skip_on_os("windows")
+
   dir <- normalizePath(test_path(".."))
 
   e <- environment()
