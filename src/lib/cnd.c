@@ -139,10 +139,20 @@ void r_cnd_signal(sexp* cnd) {
 }
 
 
+#ifdef RLANG_HAS_RINTERFACE_H
 #include <Rinterface.h>
 void r_interrupt() {
   Rf_onintr();
+  r_abort("Internal error: Simulated interrupt not processed");
 }
+#else
+#include <Rembedded.h>
+void r_interrupt() {
+  UserBreak = 1;
+  R_CheckUserInterrupt();
+  r_abort("Internal error: Simulated interrupt not processed");
+}
+#endif
 
 enum r_condition_type r_cnd_type(sexp* cnd) {
   sexp* classes = r_get_class(cnd);
