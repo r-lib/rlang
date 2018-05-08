@@ -102,7 +102,6 @@ static sexp* err_signal_call = NULL;
 static sexp* cnd_signal_cnd_node = NULL;
 
 void r_cnd_signal(sexp* cnd) {
-  int n_protect = 0;
   sexp* call = r_null;
   sexp* cnd_node = r_null;
 
@@ -123,8 +122,6 @@ void r_cnd_signal(sexp* cnd) {
     r_interrupt();
     return;
   default:
-    cnd = KEEP(r_set_attribute(cnd, r_sym("rlang_mufflable_cnd"), r_shared_true));
-    ++ n_protect;
     call = cnd_signal_call;
     cnd_node = cnd_signal_cnd_node;
     break;
@@ -135,7 +132,6 @@ void r_cnd_signal(sexp* cnd) {
 
   // Release `cnd`
   r_node_poke_car(cnd_node, r_null);
-  FREE(n_protect);
 }
 
 
