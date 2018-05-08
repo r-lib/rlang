@@ -123,7 +123,7 @@ with_restarts <- function(.expr, ...) {
 #' @param .restart The name of a restart.
 #' @param ... Arguments passed on to the restart function. These
 #'   dots support [tidy dots][tidy-dots] features.
-#' @seealso [with_restarts()], [rst_muffle()].
+#' @seealso [with_restarts()]
 #' @export
 rst_list <- function() {
   computeRestarts()
@@ -198,83 +198,4 @@ rst_maybe_jump <- function(.restart, ...) {
 #' }
 rst_abort <- function() {
   rst_jump("abort")
-}
-
-#' Jump to a muffling restart
-#'
-#' Muffle restarts are established at the same location as where a
-#' condition is signalled. They are useful for two non-exclusive
-#' purposes: muffling signalling functions and muffling conditions. In
-#' the first case, `rst_muffle()` prevents any further side effects of
-#' a signalling function (a warning or message from being displayed,
-#' an aborting jump to top level, etc). In the second case, the
-#' muffling jump prevents a condition from being passed on to other
-#' handlers. In both cases, execution resumes normally from the point
-#' where the condition was signalled.
-#'
-#' @param c A condition to muffle.
-#' @seealso The `muffle` argument of [calling()], and the `mufflable`
-#'   argument of [cnd_signal()].
-#' @export
-#' @examples
-#' side_effect <- function() cat("side effect!\n")
-#' handler <- calling(function(c) side_effect())
-#'
-#' # A muffling handler is a calling handler that jumps to a muffle
-#' # restart:
-#' muffling_handler <- calling(function(c) {
-#'   side_effect()
-#'   rst_muffle(c)
-#' })
-#'
-#' # You can also create a muffling handler simply by setting
-#' # muffle = TRUE:
-#' muffling_handler <- calling(function(c) side_effect(), muffle = TRUE)
-#'
-#' # You can then muffle the signalling function:
-#' fn <- function(signal, msg) {
-#'   signal(msg)
-#'   "normal return value"
-#' }
-#' with_handlers(fn(message, "some message"), message = handler)
-#' with_handlers(fn(message, "some message"), message = muffling_handler)
-#' with_handlers(fn(warning, "some warning"), warning = muffling_handler)
-#'
-#' # Note that exiting handlers are thrown to the establishing point
-#' # before being executed. At that point, the restart (established
-#' # within the signalling function) does not exist anymore:
-#' \dontrun{
-#' with_handlers(fn(warning, "some warning"),
-#'   warning = exiting(function(c) rst_muffle(c)))
-#' }
-#'
-#'
-#' # Another use case for muffle restarts is to muffle conditions
-#' # themselves. That is, to prevent other condition handlers from
-#' # being called:
-#' undesirable_handler <- calling(function(c) cat("please don't call me\n"))
-#'
-#' with_handlers(foo = undesirable_handler,
-#'   with_handlers(foo = muffling_handler, {
-#'     cnd_signal(cnd("foo"))
-#'     "return value"
-#'   }))
-rst_muffle <- function(c) {
-  UseMethod("rst_muffle")
-}
-#' @export
-rst_muffle.default <- function(c) {
-  if (is_true(attr(c, "rlang_mufflable_cnd"))) {
-    rst_jump("muffle")
-  } else {
-    abort("No muffle restart defined for this condition", "control")
-  }
-}
-#' @export
-rst_muffle.simpleMessage <- function(c) {
-  rst_jump("muffleMessage")
-}
-#' @export
-rst_muffle.simpleWarning <- function(c) {
-  rst_jump("muffleWarning")
 }

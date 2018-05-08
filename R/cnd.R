@@ -113,7 +113,7 @@ cnd_type <- function(cnd) {
 #' signalled. The easiest way to accomplish this is by jumping to a
 #' restart point (see [with_restarts()]) established by the signalling
 #' function. `cnd_signal()` always installs a muffle restart (see
-#' [rst_muffle()]).
+#' [cnd_muffle()]).
 #'
 #' @section Lifecycle:
 #'
@@ -159,7 +159,7 @@ cnd_type <- function(cnd) {
 #' undesirable_handler <- calling(function(c) cat("please don't call me\n"))
 #' muffling_handler <- calling(function(c) {
 #'   cat("muffling foo...\n")
-#'   rst_muffle(c)
+#'   cnd_muffle(c)
 #' })
 #'
 #' with_handlers(foo = undesirable_handler,
@@ -345,6 +345,88 @@ validate_signal_args <- function(msg, type, env = parent.frame()) {
 interrupt <- function() {
   .Call(rlang_interrupt)
 }
+
+#' Muffle a condition
+#'
+#' Unlike [exiting()] handlers, [calling()] handlers must be explicit
+#' that they have handled a condition to stop it from propagating to
+#' other handlers. Use `cnd_muffle()` within a calling handler (or as
+#' a calling handler, see examples) to prevent any other handlers from
+#' being called for that condition.
+#'
+#'
+#' @section Mufflable conditions:
+#'
+#' Most conditions signalled by base R are muffable, although the name
+#' of the restart varies. cnd_muffle() will automatically call the
+#' correct restart for you. It is compatible with the following
+#' conditions:
+#'
+#' * `warning` and `message` conditions. In this case `cnd_muffle()`
+#'   is equivalent to [base::suppressMessages()] and
+#'   [base::suppressWarnings()].
+#'
+#' * Bare conditions signalled with `signal()` or [cnd_signal()]. Note
+#'   that conditions signalled with [base::signalCondition()] are not
+#'   mufflable.
+#'
+#' * Interrupts are sometimes signalled with a `resume` restart on
+#'   recent R versions. When this is the case, you can muffle the
+#'   interrupt with `cnd_muffle()`. Check if a restart is available
+#'   with `base::findRestart("resume")`.
+#'
+#' If you call `cnd_muffle()` with a condition that is not mufflable
+#' you will cause a new error to be signalled.
+#'
+#' * Errors are not mufflable since they are signalled in critical
+#'   situations where execution cannot continue safely.
+#'
+#' * Conditions captured with [base::tryCatch()], [with_handlers()] or
+#'   [catch_cnd()] are no longer mufflable. Muffling restarts _must_
+#'   be called from a [calling] handler.
+#'
+#' @param cnd A condition to muffle.
+#'
+#' @export
+#' @examples
+#' fn <- function() {
+#'   inform("Beware!", "my_particular_msg")
+#'   inform("On your guard!")
+#'   "foobar"
+#' }
+#'
+#' # Let's install a muffling handler for the condition thrown by `fn()`.
+#' # This will suppress all `my_particular_wng` warnings but let other
+#' # types of warnings go through:
+#' with_handlers(fn(),
+#'   my_particular_msg = calling(function(cnd) {
+#'     inform("Dealt with this particular message")
+#'     cnd_muffle(cnd)
+#'   })
+#' )
+#'
+#' # Note how execution of `fn()` continued normally after dealing
+#' # with that particular message.
+#'
+#' # Since cnd_muffle() is a calling handler itself, it can also be
+#' # passed to with_handlers() directly:
+#' with_handlers(fn(),
+#'   my_particular_msg = cnd_muffle
+#' )
+cnd_muffle <- function(cnd) {
+  switch(cnd_type(cnd),
+    message = invokeRestart("muffleMessage"),
+    warning = invokeRestart("muffleWarning"),
+    interrupt = invokeRestart("resume")
+  )
+
+  if (is_true(attr(cnd, "rlang_mufflable_cnd"))) {
+    invokeRestart("muffle")
+  }
+
+  abort("Can't find a muffling restart")
+}
+class(cnd_muffle) <- c("calling", "handler")
 
 #' Catch a condition
 #'

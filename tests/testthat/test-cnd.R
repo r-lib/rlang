@@ -101,24 +101,6 @@ test_that("restarts are established", {
 
 context("handlers") # ------------------------------------------------
 
-test_that("Local handlers can muffle mufflable conditions", {
-  signal_mufflable <- function() signal("", "foo")
-  muffling_handler <- calling(function(c) NULL, muffle = TRUE)
-  non_muffling_handler <- calling(function(c) NULL, muffle = FALSE)
-
-  expect_error(regexp = "not muffled!",
-    withCallingHandlers(foo = function(c) stop("not muffled!"), {
-      withCallingHandlers(foo = non_muffling_handler,
-        signal_mufflable())
-    }))
-
-  expect_error(regexp = NA,
-    withCallingHandlers(foo = function(c) stop("not muffled!"), {
-      withCallingHandlers(foo = muffling_handler,
-        signal_mufflable())
-    }))
-})
-
 test_that("with_handlers() establishes inplace and exiting handlers", {
   handlers <- list(
     error = exiting(function(c) "caught error"),
@@ -216,6 +198,20 @@ test_that("can signal interrupts with cnd_signal()", {
   with_handlers(cnd_signal(intr),
     condition = function(cnd) expect_is(cnd, "interrupt")
   )
+})
+
+test_that("can muffle conditions", {
+  expect_no_message(
+    expect_identical(with_handlers({ message(""); "foo" }, message = cnd_muffle), "foo")
+  )
+  expect_no_warning(
+    expect_identical(with_handlers({ warning(""); "foo" }, warning = cnd_muffle), "foo")
+  )
+  cnd_expect_muffle <- calling(function(cnd) {
+    expect_is(findRestart("muffle"), "restart")
+    cnd_muffle(cnd)
+  })
+  expect_identical(with_handlers({ signal("", "cnd"); "foo" }, cnd = cnd_expect_muffle), "foo")
 })
 
 
