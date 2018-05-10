@@ -144,7 +144,9 @@ length.rlang_trace <- function(x) {
 
 # Trimming ----------------------------------------------------------------
 
-trace_trim_env <- function(x, to = globalenv()) {
+trace_trim_env <- function(x, to = NULL) {
+  to <- to %||% peek_option("rlang_trace_top_env")
+
   if (is.null(to)) {
     return(x)
   }

@@ -109,3 +109,12 @@ test_that("trace formatting picks up `rlang_trace_format_srcrefs`", {
     expect_true(any(!!grepl("test-trace\\.R", format(trace))))
   )
 })
+
+test_that("trace picks up option `rlang_trace_top_env` for trimming trace", {
+  e <- current_env()
+  f1 <- function() trace_back()
+  f2 <- function() trace_back(e)
+  with_options(rlang_trace_top_env = current_env(),
+    expect_identical(length(f1()), length(f2()))
+  )
+})
