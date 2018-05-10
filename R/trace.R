@@ -170,8 +170,8 @@ trace_simplify <- function(x, simplify = c("branch", "collapsed", "none")) {
   )
 }
 
-trace_simplify_branch <- function(x) {
-  parents <- x$parents
+trace_simplify_branch <- function(trace) {
+  parents <- trace$parents
   path <- int()
   id <- length(parents)
 
@@ -180,7 +180,7 @@ trace_simplify_branch <- function(x) {
     id <- parents[id]
   }
 
-  x[path]
+  trace[path]
 }
 
 trace_simplify_collapsed <- function(trace) {
@@ -188,7 +188,7 @@ trace_simplify_collapsed <- function(trace) {
   path <- int()
   id <- length(parents)
 
-  while (id != 0L) {
+  while (id > 0L) {
     parent_id <- parents[[id]]
     path <- c(path, id)
     id <- id - 1L
