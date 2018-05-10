@@ -105,7 +105,7 @@ cli_branch <- function(x, style = NULL) {
     return(calls)
   }
 
-  calls[[n]] <- paste0(style$l, style$h, calls[[2]])
+  calls[[n]] <- paste0(style$l, style$h, calls[[n]])
   if (n >= 2) {
     idx <- seq2(2, n - 1L)
     calls[idx] <- paste0(style$j, style$h, calls[idx])
@@ -186,7 +186,7 @@ trace_simplify_branch <- function(trace) {
     id <- parents[id]
   }
 
-  trace[path]
+  trace[rev(path)]
 }
 
 trace_simplify_collapsed <- function(trace) {
