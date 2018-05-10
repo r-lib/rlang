@@ -1,34 +1,34 @@
 Full:
 █
-└─f() 
+└─f()
   ├─eval(quote(eval(quote(g())))) testthat/test-trace.R:48:7
-  │ └─eval(quote(eval(quote(g())))) 
-  ├─eval(quote(g())) 
-  │ └─eval(quote(g())) 
-  └─g() 
+  │ └─eval(quote(eval(quote(g()))))
+  ├─eval(quote(g()))
+  │ └─eval(quote(g()))
+  └─g()
     ├─tryCatch(eval(quote(h())), foo = identity, bar = identity) testthat/test-trace.R:49:7
-    │ └─tryCatchList(expr, classes, parentenv, handlers) 
-    │   ├─tryCatchOne(...) 
-    │   │ └─doTryCatch(return(expr), name, parentenv, handler) 
-    │   └─tryCatchList(expr, names[-nh], parentenv, handlers[-nh]) 
-    │     └─tryCatchOne(expr, names, parentenv, handlers[[1L]]) 
-    │       └─doTryCatch(return(expr), name, parentenv, handler) 
-    ├─eval(quote(h())) 
-    │ └─eval(quote(h())) 
-    └─h() 
+    │ └─tryCatchList(expr, classes, parentenv, handlers)
+    │   ├─tryCatchOne(...)
+    │   │ └─doTryCatch(return(expr), name, parentenv, handler)
+    │   └─tryCatchList(expr, names[-nh], parentenv, handlers[-nh])
+    │     └─tryCatchOne(expr, names, parentenv, handlers[[1L]])
+    │       └─doTryCatch(return(expr), name, parentenv, handler)
+    ├─eval(quote(h()))
+    │ └─eval(quote(h()))
+    └─h()
 
 Collapsed:
 █
-└─f() 
+└─f()
   ├─[ eval(...) ] ... +1 testthat/test-trace.R:48:7
-  ├─[ eval(...) ] ... +1 
-  └─g() 
+  ├─[ eval(...) ] ... +1
+  └─g()
     ├─[ tryCatch(...) ] ... +6 testthat/test-trace.R:49:7
-    ├─[ eval(...) ] ... +1 
-    └─h() 
+    ├─[ eval(...) ] ... +1
+    └─h()
 
 Branch:
 █
-├─f() 
-├─g() 
-└─h() 
+├─f()
+├─g()
+└─h()

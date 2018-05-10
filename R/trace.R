@@ -238,7 +238,8 @@ trace_as_tree <- function(x, dir = getwd(), srcrefs = NULL) {
   if (srcrefs) {
     refs <- map(x$calls, attr, "srcref")
     src_locs <- map_chr(refs, src_loc, dir = dir)
-    call_text <- paste0(call_text, " ", src_locs)
+    have_src_loc <- nzchar(src_locs)
+    call_text[have_src_loc] <- paste0(call_text[have_src_loc], " ", src_locs[have_src_loc])
   }
 
   tree <- data.frame(id = as.character(nodes), stringsAsFactors = FALSE)
