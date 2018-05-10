@@ -118,3 +118,19 @@ test_that("trace picks up option `rlang_trace_top_env` for trimming trace", {
     expect_identical(length(f1()), length(f2()))
   )
 })
+
+test_that("collapsed formatting doesn't collapse single frame siblings", {
+  e <- current_env()
+  f <- function() eval_bare(quote(g()))
+  g <- function() trace_back(e)
+  trace <- f()
+
+  full <- capture.output(print(trace, simplify = "none", srcrefs = FALSE))[[3]]
+  full <- substr(full, 5, nchar(full))
+
+  collapsed <- capture.output(print(trace, simplify = "collapsed", srcrefs = FALSE))[[3]]
+  collapsed <- substr(collapsed, 5, nchar(collapsed))
+
+  expect_identical(full, "eval_bare(quote(g()))")
+  expect_identical(collapsed, "[ eval_bare(...) ]")
+})

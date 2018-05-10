@@ -259,12 +259,12 @@ trace_call_text <- function(call, collapse) {
 
   text <- expr_name(call)
   if (collapse > 0L) {
-    n_collapsed_text <- sprintf(" +%d", collapse)
+    n_collapsed_text <- sprintf(" ... +%d", collapse)
   } else {
     n_collapsed_text <- ""
   }
 
-  sprintf("[ %s ] ...%s", text, n_collapsed_text)
+  sprintf("[ %s ]%s", text, n_collapsed_text)
 }
 
 src_loc <- function(srcref, dir = getwd()) {
