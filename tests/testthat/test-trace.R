@@ -35,7 +35,20 @@ test_that("can print tree with collapsed branches", {
   i <- function() { tryCatch(trace_back(e)) }
   trace <- eval(quote(f()))
 
-  expect_known_output(file = test_path("test-trace-collapsed.txt"), {
+  expect_known_output(file = test_path("test-trace-collapsed1.txt"), {
+    cat("Full:\n")
+    print(trace, siblings = "full", dir = dir)
+    cat("\nCollapsed:\n")
+    print(trace, siblings = "collapsed", dir = dir)
+  })
+
+  # With multiple siblings
+  f <- function() eval(quote(eval(quote(g()))))
+  g <- function() tryCatch(eval(quote(h())), foo = identity, bar = identity)
+  h <- function() trace_back(e)
+  trace <- eval(quote(f()))
+
+  expect_known_output(file = test_path("test-trace-collapsed2.txt"), {
     cat("Full:\n")
     print(trace, siblings = "full", dir = dir)
     cat("\nCollapsed:\n")
