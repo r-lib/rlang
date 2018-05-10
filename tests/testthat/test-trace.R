@@ -39,7 +39,7 @@ test_that("can print tree with collapsed branches", {
     cat("Full:\n")
     print(trace, simplify = "none", dir = dir)
     cat("\nCollapsed:\n")
-    print(trace, simplify = "collapsed", dir = dir)
+    print(trace, simplify = "collapse", dir = dir)
     cat("\nBranch:\n")
     print(trace, simplify = "branch", dir = dir)
   })
@@ -54,7 +54,7 @@ test_that("can print tree with collapsed branches", {
     cat("Full:\n")
     print(trace, simplify = "none", dir = dir)
     cat("\nCollapsed:\n")
-    print(trace, simplify = "collapsed", dir = dir)
+    print(trace, simplify = "collapse", dir = dir)
     cat("\nBranch:\n")
     print(trace, simplify = "branch", dir = dir)
   })
@@ -128,7 +128,7 @@ test_that("collapsed formatting doesn't collapse single frame siblings", {
   full <- capture.output(print(trace, simplify = "none", srcrefs = FALSE))[[3]]
   full <- substr(full, 5, nchar(full))
 
-  collapsed <- capture.output(print(trace, simplify = "collapsed", srcrefs = FALSE))[[3]]
+  collapsed <- capture.output(print(trace, simplify = "collapse", srcrefs = FALSE))[[3]]
   collapsed <- substr(collapsed, 5, nchar(collapsed))
 
   expect_identical(full, "eval_bare(quote(g()))")
@@ -149,7 +149,7 @@ test_that("recursive frames are rewired to the global env", {
     cat("Full:\n")
     print(trace, simplify = "none", dir = dir, srcrefs = FALSE)
     cat("\nCollapsed:\n")
-    print(trace, simplify = "collapsed", dir = dir, srcrefs = FALSE)
+    print(trace, simplify = "collapse", dir = dir, srcrefs = FALSE)
     cat("\nBranch:\n")
     print(trace, simplify = "branch", dir = dir, srcrefs = FALSE)
   })

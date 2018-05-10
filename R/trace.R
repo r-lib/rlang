@@ -93,7 +93,7 @@ new_trace <- function(calls, parents, envs) {
 #' @export
 format.rlang_trace <- function(x,
                                ...,
-                               simplify = c("collapsed", "branch", "none"),
+                               simplify = c("collapse", "branch", "none"),
                                dir = getwd(),
                                srcrefs = NULL) {
   if (length(x) == 0) {
@@ -132,7 +132,7 @@ cli_branch <- function(x, style = NULL) {
 #' @export
 print.rlang_trace <- function(x,
                               ...,
-                              siblings = c("full", "collapsed", "none"),
+                              siblings = c("full", "collapse", "none"),
                               dir = getwd(),
                               srcrefs = NULL) {
   meow(format(x, ...,
@@ -183,11 +183,11 @@ trace_trim_env <- function(x, to = NULL) {
   x[start:end]
 }
 
-trace_simplify <- function(x, simplify = c("branch", "collapsed", "none")) {
+trace_simplify <- function(x, simplify = c("branch", "collapse", "none")) {
   switch(arg_match(simplify),
     none = x,
     branch = trace_simplify_branch(x),
-    collapsed = trace_simplify_collapsed(x)
+    collapse = trace_simplify_collapsed(x)
   )
 }
 
