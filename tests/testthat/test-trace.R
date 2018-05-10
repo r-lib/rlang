@@ -37,9 +37,9 @@ test_that("can print tree with collapsed branches", {
 
   expect_known_output(file = test_path("test-trace-collapsed1.txt"), {
     cat("Full:\n")
-    print(trace, siblings = "full", dir = dir)
+    print(trace, simplify = "none", dir = dir)
     cat("\nCollapsed:\n")
-    print(trace, siblings = "collapsed", dir = dir)
+    print(trace, simplify = "collapsed", dir = dir)
   })
 
   # With multiple siblings
@@ -50,9 +50,9 @@ test_that("can print tree with collapsed branches", {
 
   expect_known_output(file = test_path("test-trace-collapsed2.txt"), {
     cat("Full:\n")
-    print(trace, siblings = "full", dir = dir)
+    print(trace, simplify = "none", dir = dir)
     cat("\nCollapsed:\n")
-    print(trace, siblings = "collapsed", dir = dir)
+    print(trace, simplify = "collapsed", dir = dir)
   })
 })
 

@@ -78,13 +78,13 @@ new_trace <- function(calls, parents, envs) {
 #' @export
 format.rlang_trace <- function(x,
                                ...,
-                               siblings = c("full", "collapsed", "none"),
+                               simplify = c("collapsed", "branch", "none"),
                                dir = getwd()) {
   if (length(x) == 0) {
     return(trace_root())
   }
 
-  x <- trace_maybe_simplify(x, siblings)
+  x <- trace_simplify(x, simplify)
   tree <- trace_as_tree(x, dir = dir)
   cli_tree(tree)
 }
@@ -136,15 +136,15 @@ trace_trim_env <- function(x, to = globalenv()) {
   x[start:end]
 }
 
-trace_maybe_simplify <- function(x, siblings = c("full", "collapsed", "none")) {
-  switch(arg_match(siblings),
-    full = x,
-    collapsed = trace_simplify_collapsed(x),
-    none = trace_simplify(x)
+trace_simplify <- function(x, simplify = c("branch", "collapsed", "none")) {
+  switch(arg_match(simplify),
+    none = x,
+    branch = trace_simplify_branch(x),
+    collapsed = trace_simplify_collapsed(x)
   )
 }
 
-trace_simplify <- function(x) {
+trace_simplify_branch <- function(x) {
   parents <- x$parents
   path <- int()
   id <- length(parents)
