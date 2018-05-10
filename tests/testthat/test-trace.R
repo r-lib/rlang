@@ -5,8 +5,8 @@ test_that("tree printing only changes deliberately", {
   skip_on_os("windows")
 
   dir <- normalizePath(test_path(".."))
-
   e <- environment()
+
   i <- function(i) j(i)
   j <- function(i) { k(i) }
   k <- function(i) {
@@ -14,14 +14,13 @@ test_that("tree printing only changes deliberately", {
     l(i)
   }
   l <- function(i) trace_back(e)
+  trace <- i()
 
-  x <- i()
-
-  expect_known_output({
-    print(x, dir = dir)
+  expect_known_output(file = test_path("test-trace-print.txt"), {
+    print(trace, dir = dir)
     cat("\n")
-    print(x[0L], dir = dir)
-  }, test_path("test-trace-print.txt"))
+    print(trace[0L], dir = dir)
+  })
 })
 
 test_that("trace_simplify() extracts last branch", {

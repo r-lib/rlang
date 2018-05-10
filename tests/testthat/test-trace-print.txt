@@ -1,5 +1,5 @@
 █
-└─i() testthat/test-trace.R:18:2
+└─i() testthat/test-trace.R:17:2
   └─j(i) testthat/test-trace.R:10:7
     └─k(i) testthat/test-trace.R:11:21
       └─l(i) testthat/test-trace.R:14:4
