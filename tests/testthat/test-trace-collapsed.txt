@@ -1,0 +1,30 @@
+Full:
+█
+└─f() 
+  └─g() testthat/test-trace.R:32:20
+    ├─tryCatch(h(), foo = identity, bar = identity) testthat/test-trace.R:33:20
+    │ └─tryCatchList(expr, classes, parentenv, handlers) 
+    │   ├─tryCatchOne(...) 
+    │   │ └─doTryCatch(return(expr), name, parentenv, handler) 
+    │   └─tryCatchList(expr, names[-nh], parentenv, handlers[-nh]) 
+    │     └─tryCatchOne(expr, names, parentenv, handlers[[1L]]) 
+    │       └─doTryCatch(return(expr), name, parentenv, handler) 
+    └─h() 
+      ├─tryCatch(i(), baz = identity) testthat/test-trace.R:34:20
+      │ └─tryCatchList(expr, classes, parentenv, handlers) 
+      │   └─tryCatchOne(expr, names, parentenv, handlers[[1L]]) 
+      │     └─doTryCatch(return(expr), name, parentenv, handler) 
+      └─i() 
+        └─tryCatch(trace_back(e)) testthat/test-trace.R:35:20
+          └─tryCatchList(expr, classes, parentenv, handlers) 
+
+Collapsed:
+█
+└─f() 
+  └─g() testthat/test-trace.R:32:20
+    ├─[ tryCatch(...) ] ... +6 testthat/test-trace.R:33:20
+    └─h() 
+      ├─[ tryCatch(...) ] ... +3 testthat/test-trace.R:34:20
+      └─i() 
+        └─tryCatch(trace_back(e)) testthat/test-trace.R:35:20
+          └─tryCatchList(expr, classes, parentenv, handlers) 

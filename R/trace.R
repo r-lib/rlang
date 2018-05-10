@@ -76,21 +76,25 @@ new_trace <- function(calls, parents, envs) {
 # Methods -----------------------------------------------------------------
 
 #' @export
-format.rlang_trace <- function(x, simplify = FALSE, dir = getwd(), ...) {
+format.rlang_trace <- function(x,
+                               ...,
+                               siblings = c("full", "collapsed", "none"),
+                               dir = getwd()) {
   if (length(x) == 0) {
     return(trace_root())
   }
 
-  if (simplify) {
-    x <- trace_simplify(x)
-  }
+  x <- trace_maybe_simplify(x, siblings)
   tree <- trace_as_tree(x, dir = dir)
   cli_tree(tree)
 }
 
 #' @export
-print.rlang_trace <- function(x, simplify = FALSE, dir = getwd(), ...) {
-  meow(format(x, ..., simplify = simplify, dir = dir))
+print.rlang_trace <- function(x,
+                              ...,
+                              siblings = c("full", "collapsed", "none"),
+                              dir = getwd()) {
+  meow(format(x, ..., siblings = siblings, dir = dir))
   invisible(x)
 }
 
@@ -132,13 +136,52 @@ trace_trim_env <- function(x, to = globalenv()) {
   x[start:end]
 }
 
+trace_maybe_simplify <- function(x, siblings = c("full", "collapsed", "none")) {
+  switch(arg_match(siblings),
+    full = x,
+    collapsed = trace_simplify_collapsed(x),
+    none = trace_simplify(x)
+  )
+}
+
 trace_simplify <- function(x) {
-  path <- integer()
-  id <- length(x$parents)
+  parents <- x$parents
+  path <- int()
+  id <- length(parents)
 
   while (id != 0L) {
     path <- c(path, id)
-    id <- x$parents[id]
+    id <- parents[id]
+  }
+
+  x[path]
+}
+
+trace_simplify_collapsed <- function(x) {
+  parents <- x$parents
+  path <- int()
+  id <- length(parents)
+
+  while (id != 0L) {
+    path <- c(path, id)
+    parent_id <- parents[id]
+    id <- id - 1L
+
+    # Collapse intervening call branches
+    if (id != parent_id) {
+      n_skipped <- 0L
+      next_id <- id - 1L
+      while (next_id != parent_id) {
+        n_skipped <- n_skipped + 1L
+        id <- next_id
+        next_id <- next_id - 1L
+      }
+
+      path <- c(path, id)
+      attr(x$calls[[id]], "collapsed") <- n_skipped
+
+      id <- next_id
+    }
   }
 
   x[rev(path)]
@@ -150,7 +193,9 @@ trace_as_tree <- function(x, dir = getwd()) {
   nodes <- c(0, seq_along(x$calls))
   children <- map(nodes, function(id) seq_along(x$parents)[x$parents == id])
 
-  call_text <- map_chr(as.list(x$calls), expr_name)
+  calls <- as.list(x$calls)
+  is_collapsed <- map(calls, attr, "collapsed")
+  call_text <- map2_chr(calls, is_collapsed, trace_call_text)
 
   refs <- map(x$calls, attr, "srcref")
   src_locs <- map_chr(refs, src_loc, dir = dir)
@@ -161,6 +206,25 @@ trace_as_tree <- function(x, dir = getwd()) {
   tree$call <- c(trace_root(), call_text)
 
   tree
+}
+
+trace_call_text <- function(call, collapse) {
+  if (is_null(collapse)) {
+    return(expr_name(call))
+  }
+
+  if (length(call) > 1L) {
+    call <- call2(node_car(call), quote(...))
+  }
+
+  text <- expr_name(call)
+  if (collapse > 0L) {
+    n_collapsed_text <- sprintf(" +%d", collapse)
+  } else {
+    n_collapsed_text <- ""
+  }
+
+  sprintf("[ %s ] ...%s", text, n_collapsed_text)
 }
 
 src_loc <- function(srcref, dir = getwd()) {

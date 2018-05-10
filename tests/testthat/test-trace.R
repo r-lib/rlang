@@ -1,6 +1,6 @@
 context("trace.R")
 
-# This test must come first because print method includes srcrefs
+# These tests must come first because print method includes srcrefs
 test_that("tree printing only changes deliberately", {
   skip_on_os("windows")
 
@@ -20,6 +20,26 @@ test_that("tree printing only changes deliberately", {
     print(trace, dir = dir)
     cat("\n")
     print(trace[0L], dir = dir)
+  })
+})
+
+test_that("can print tree with collapsed branches", {
+  skip_on_os("windows")
+
+  dir <- normalizePath(test_path(".."))
+  e <- environment()
+
+  f <- function() { g() }
+  g <- function() { tryCatch(h(), foo = identity, bar = identity) }
+  h <- function() { tryCatch(i(), baz = identity) }
+  i <- function() { tryCatch(trace_back(e)) }
+  trace <- eval(quote(f()))
+
+  expect_known_output(file = test_path("test-trace-collapsed.txt"), {
+    cat("Full:\n")
+    print(trace, siblings = "full", dir = dir)
+    cat("\nCollapsed:\n")
+    print(trace, siblings = "collapsed", dir = dir)
   })
 })
 
