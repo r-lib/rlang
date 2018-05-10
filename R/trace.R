@@ -79,13 +79,14 @@ new_trace <- function(calls, parents, envs) {
 format.rlang_trace <- function(x,
                                ...,
                                simplify = c("collapsed", "branch", "none"),
-                               dir = getwd()) {
+                               dir = getwd(),
+                               srcrefs = NULL) {
   if (length(x) == 0) {
     return(trace_root())
   }
 
   x <- trace_simplify(x, simplify)
-  tree <- trace_as_tree(x, dir = dir)
+  tree <- trace_as_tree(x, dir = dir, srcrefs = srcrefs)
 
   if (arg_match(simplify) == "branch") {
     cli_branch(tree)
@@ -117,8 +118,13 @@ cli_branch <- function(x, style = NULL) {
 print.rlang_trace <- function(x,
                               ...,
                               siblings = c("full", "collapsed", "none"),
-                              dir = getwd()) {
-  meow(format(x, ..., siblings = siblings, dir = dir))
+                              dir = getwd(),
+                              srcrefs = NULL) {
+  meow(format(x, ...,
+    siblings = siblings,
+    dir = dir,
+    srcrefs = srcrefs
+  ))
   invisible(x)
 }
 
