@@ -469,11 +469,22 @@ catch_cnd <- function(expr) {
 print.rlang_error <- function(x, ..., child = NULL) {
   meow(
     sprintf("<error>"),
-    sprintf("* Message: \"%s\"", conditionMessage(x)),
+    sprintf("* Message: \"%s\"", x$message),
     sprintf("* Class: `%s`", class(x)[[1]]),
     "* Backtrace:"
   )
   print(x$trace)
 
   invisible(x)
+}
+
+#' @export
+conditionMessage.rlang_error <- function(c) {
+  backtrace <- format(c$trace, simplify = "branch")
+
+  chr_lines(
+    c$message,
+    "Backtrace:",
+    backtrace
+  )
 }

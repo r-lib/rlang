@@ -231,6 +231,26 @@ test_that("error_cnd() checks its fields", {
   expect_error(error_cnd(trace = env()), "`trace` must be NULL or an rlang backtrace")
 })
 
+test_that("error is printed with backtrace", {
+  skip_on_os("windows")
+
+  f <- function() g()
+  g <- function() h()
+  h <- function() abort("Error message")
+
+  # Workaround as it is not straightforward to sink stderr and
+  # handle/muffle an error at the same time
+  msg <- with_options(
+    rlang_trace_format_srcrefs = FALSE,
+    rlang_trace_top_env = current_env(),
+    conditionMessage(catch_cnd(f()))
+  )
+
+  output <- strsplit(msg, "\n")[[1]]
+  expected <- readLines(test_path("test-cnd-error.txt"))
+  expect_identical(!!output, expected)
+})
+
 
 # Lifecycle ----------------------------------------------------------
 
