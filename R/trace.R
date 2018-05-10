@@ -86,7 +86,31 @@ format.rlang_trace <- function(x,
 
   x <- trace_simplify(x, simplify)
   tree <- trace_as_tree(x, dir = dir)
-  cli_tree(tree)
+
+  if (arg_match(simplify) == "branch") {
+    cli_branch(tree)
+  } else {
+    cli_tree(tree)
+  }
+}
+
+cli_branch <- function(x, style = NULL) {
+  style <- style %||% cli_box_chars()
+
+  n <- nrow(x)
+  calls <- x[["call"]]
+
+  if (n <= 1) {
+    return(calls)
+  }
+
+  calls[[n]] <- paste0(style$l, style$h, calls[[2]])
+  if (n >= 2) {
+    idx <- seq2(2, n - 1L)
+    calls[idx] <- paste0(style$j, style$h, calls[idx])
+  }
+
+  calls
 }
 
 #' @export
@@ -105,7 +129,7 @@ length.rlang_trace <- function(x) {
 
 #' @export
 `[.rlang_trace` <- function(x, i, ...) {
-  stopifnot(is.integer(i))
+  stopifnot(is_integerish(i))
 
   if (all(i < 0L)) {
     i <- setdiff(seq_along(x), abs(i))
@@ -192,7 +216,7 @@ trace_simplify_collapsed <- function(trace) {
 
 # Printing ----------------------------------------------------------------
 
-trace_as_tree <- function(x, dir = getwd()) {
+trace_as_tree <- function(x, dir = getwd(), srcrefs = TRUE) {
   nodes <- c(0, seq_along(x$calls))
   children <- map(nodes, function(id) seq_along(x$parents)[x$parents == id])
 
@@ -200,9 +224,11 @@ trace_as_tree <- function(x, dir = getwd()) {
   is_collapsed <- map(calls, attr, "collapsed")
   call_text <- map2_chr(calls, is_collapsed, trace_call_text)
 
-  refs <- map(x$calls, attr, "srcref")
-  src_locs <- map_chr(refs, src_loc, dir = dir)
-  call_text <- paste0(call_text, " ", src_locs)
+  if (srcrefs) {
+    refs <- map(x$calls, attr, "srcref")
+    src_locs <- map_chr(refs, src_loc, dir = dir)
+    call_text <- paste0(call_text, " ", src_locs)
+  }
 
   tree <- data.frame(id = as.character(nodes), stringsAsFactors = FALSE)
   tree$children <- map(children, as.character)

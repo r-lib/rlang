@@ -40,6 +40,8 @@ test_that("can print tree with collapsed branches", {
     print(trace, simplify = "none", dir = dir)
     cat("\nCollapsed:\n")
     print(trace, simplify = "collapsed", dir = dir)
+    cat("\nBranch:\n")
+    print(trace, simplify = "branch", dir = dir)
   })
 
   # With multiple siblings
@@ -53,6 +55,8 @@ test_that("can print tree with collapsed branches", {
     print(trace, simplify = "none", dir = dir)
     cat("\nCollapsed:\n")
     print(trace, simplify = "collapsed", dir = dir)
+    cat("\nBranch:\n")
+    print(trace, simplify = "branch", dir = dir)
   })
 })
 
@@ -74,4 +78,19 @@ test_that("trace_simplify() extracts last branch", {
   x3 <- j(3)
   expect_length(x2, 6)
   expect_length(trace_simplify(x3), 1)
+})
+
+test_that("integerish indices are allowed", {
+  trace <- trace_back()
+  expect_identical(trace[0], trace[0L])
+})
+
+test_that("cli_branch() handles edge case", {
+  e <- environment()
+  f <- function() trace_back(e)
+  trace <- f()
+
+  call <- paste0(cli_style$l, cli_style$h, "f()")
+  tree <- trace_as_tree(trace, srcrefs = FALSE)
+  expect_identical(cli_branch(tree), chr(trace_root(), call))
 })

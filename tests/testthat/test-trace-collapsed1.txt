@@ -28,3 +28,12 @@ Collapsed:
       └─i() 
         └─tryCatch(trace_back(e)) testthat/test-trace.R:35:20
           └─tryCatchList(expr, classes, parentenv, handlers) 
+
+Branch:
+█
+├─tryCatchList(expr, classes, parentenv, handlers) 
+├─tryCatch(trace_back(e)) testthat/test-trace.R:35:20
+├─i() 
+├─h() 
+├─g() testthat/test-trace.R:32:20
+└─tryCatchList(expr, classes, parentenv, handlers) 
