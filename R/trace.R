@@ -216,7 +216,7 @@ trace_simplify_collapsed <- function(trace) {
 
 # Printing ----------------------------------------------------------------
 
-trace_as_tree <- function(x, dir = getwd(), srcrefs = TRUE) {
+trace_as_tree <- function(x, dir = getwd(), srcrefs = NULL) {
   nodes <- c(0, seq_along(x$calls))
   children <- map(nodes, function(id) seq_along(x$parents)[x$parents == id])
 
@@ -224,6 +224,9 @@ trace_as_tree <- function(x, dir = getwd(), srcrefs = TRUE) {
   is_collapsed <- map(calls, attr, "collapsed")
   call_text <- map2_chr(calls, is_collapsed, trace_call_text)
 
+  srcrefs <- srcrefs %||% peek_option("rlang_trace_format_srcrefs")
+  srcrefs <- srcrefs %||% TRUE
+  stopifnot(is_scalar_logical(srcrefs))
   if (srcrefs) {
     refs <- map(x$calls, attr, "srcref")
     src_locs <- map_chr(refs, src_loc, dir = dir)

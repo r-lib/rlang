@@ -94,3 +94,18 @@ test_that("cli_branch() handles edge case", {
   tree <- trace_as_tree(trace, srcrefs = FALSE)
   expect_identical(cli_branch(tree), chr(trace_root(), call))
 })
+
+test_that("trace formatting picks up `rlang_trace_format_srcrefs`", {
+  e <- environment()
+  f <- function() trace_back(e)
+  trace <- f()
+
+  with_options(
+    rlang_trace_format_srcrefs = FALSE,
+    expect_false(any(grepl("testthat", format(trace))))
+  )
+  with_options(
+    rlang_trace_format_srcrefs = TRUE,
+    expect_true(any(!!grepl("test-trace\\.R", format(trace))))
+  )
+})
