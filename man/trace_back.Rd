@@ -21,6 +21,11 @@ stack in R is actually a tree, which the print method of this object will
 reveal.
 }
 \examples{
+# Trim backtraces automatically (this improves the generated
+# documentation for the rlang website and the same trick can be
+# useful within knitr documents):
+options(rlang_trace_top_env = current_env())
+
 f <- function() g()
 g <- function() h()
 h <- function() trace_back()
@@ -38,7 +43,7 @@ try(identity(f()))
 # the direct sequence of calls that lead to `trace_back()`
 x <- try(identity(f()))
 x
-print(x, simplify = TRUE)
+print(x, simplify = "branch")
 
 # With a little cunning you can also use it to capture the
 # tree from within a base NSE function
@@ -56,4 +61,7 @@ source(textConnection("f()"), echo = TRUE)
 # of the global environment on the stack
 h <- function() trace_back(globalenv())
 source(textConnection("f()"), echo = TRUE)
+
+# Restore defaults
+options(rlang_trace_top_env = NULL)
 }

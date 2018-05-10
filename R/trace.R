@@ -12,6 +12,11 @@
 #'   document where you don't want all the knitr evaluation mechanism
 #'   to appear in the backtrace.
 #' @examples
+#' # Trim backtraces automatically (this improves the generated
+#' # documentation for the rlang website and the same trick can be
+#' # useful within knitr documents):
+#' options(rlang_trace_top_env = current_env())
+#'
 #' f <- function() g()
 #' g <- function() h()
 #' h <- function() trace_back()
@@ -29,7 +34,7 @@
 #' # the direct sequence of calls that lead to `trace_back()`
 #' x <- try(identity(f()))
 #' x
-#' print(x, simplify = TRUE)
+#' print(x, simplify = "branch")
 #'
 #' # With a little cunning you can also use it to capture the
 #' # tree from within a base NSE function
@@ -47,6 +52,9 @@
 #' # of the global environment on the stack
 #' h <- function() trace_back(globalenv())
 #' source(textConnection("f()"), echo = TRUE)
+#'
+#' # Restore defaults
+#' options(rlang_trace_top_env = NULL)
 #' @export
 trace_back <- function(to = NULL) {
   calls <- sys.calls()
