@@ -50,7 +50,7 @@
 #' @export
 trace_back <- function(to = NULL) {
   calls <- sys.calls()
-  parents <- sys.parents()
+  parents <- normalise_parents(sys.parents())
   envs <- map(sys.frames(), env_label)
 
   trace <- new_trace(calls, parents, envs)
@@ -58,6 +58,13 @@ trace_back <- function(to = NULL) {
   trace <- trace[-length(trace)] # remove call to self
 
   trace
+}
+
+# Remove recursive frames which occur with quosures
+normalise_parents <- function(parents) {
+  recursive <- parents == seq_along(parents)
+  parents[recursive] <- 0L
+  parents
 }
 
 new_trace <- function(calls, parents, envs) {

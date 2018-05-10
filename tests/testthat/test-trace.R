@@ -134,3 +134,23 @@ test_that("collapsed formatting doesn't collapse single frame siblings", {
   expect_identical(full, "eval_bare(quote(g()))")
   expect_identical(collapsed, "[ eval_bare(...) ]")
 })
+
+test_that("recursive frames are rewired to the global env", {
+  skip_on_os("windows")
+
+  dir <- normalizePath(test_path(".."))
+  e <- environment()
+
+  f <- function() g()
+  g <- function() trace_back(e)
+  trace <- eval_tidy(quo(f()))
+
+  expect_known_output(file = test_path("test-trace-recursive.txt"), {
+    cat("Full:\n")
+    print(trace, simplify = "none", dir = dir, srcrefs = FALSE)
+    cat("\nCollapsed:\n")
+    print(trace, simplify = "collapsed", dir = dir, srcrefs = FALSE)
+    cat("\nBranch:\n")
+    print(trace, simplify = "branch", dir = dir, srcrefs = FALSE)
+  })
+})
