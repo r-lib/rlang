@@ -466,17 +466,11 @@ catch_cnd <- function(expr) {
 }
 
 #' @export
-print.rlang_error <- function(x, ...) {
-  class <- class(x)[[1]]
-  if (class == "rlang_error") {
-    header <- ""
-  } else {
-    header <- sprintf(": %s", class)
-  }
-
+print.rlang_error <- function(x, ..., child = NULL) {
   meow(
-    sprintf("<error%s>", header),
-    sprintf("* Message: %s", conditionMessage(x)),
+    sprintf("<error>"),
+    sprintf("* Message: \"%s\"", conditionMessage(x)),
+    sprintf("* Class: `%s`", class(x)[[1]]),
     "* Backtrace:"
   )
   print(x$trace)
