@@ -323,7 +323,13 @@ abort <- function(message, .subclass = NULL,
 
   if (is_null(trace)) {
     trace <- trace_back()
-    trace <- trace[-length(trace)]
+
+    if (is_null(parent)) {
+      context <- current_env()
+    } else {
+      context <- find_capture_context()
+    }
+    trace <- trace_trim_context(trace, context)
   }
 
   cnd <- error_cnd(.subclass,
@@ -337,16 +343,52 @@ abort <- function(message, .subclass = NULL,
   stop(cnd)
 }
 
+trace_trim_context <- function(trace, frame = caller_env()) {
+  idx <- detect_index(trace$envs, identical, env_label(frame))
+  trace[-seq2(idx, length(trace))]
+}
+# FIXME: Find more robust strategy of stripping catching context
+find_capture_context <- function(n = 3L) {
+  sys_parent <- sys.parent(n)
+  thrower_frame <- sys.frame(sys_parent)
+
+  call <- sys.call(sys_parent)
+  frame <- sys.frame(sys_parent)
+  if (!is_call(call, "tryCatchOne") || !env_inherits(frame, ns_env("base"))) {
+    return(thrower_frame)
+  }
+
+  sys_parents <- sys.parents()
+  while (!is_call(call, "tryCatch")) {
+    sys_parent <- sys_parents[sys_parent]
+    call <- sys.call(sys_parent)
+  }
+
+  next_parent <- sys_parents[sys_parent]
+  call <- sys.call(next_parent)
+  if (is_call(call, "with_handlers")) {
+    sys_parent <- next_parent
+  }
+
+  sys.frame(sys_parent)
+}
+
 rethrower <- function(message, .subclass = NULL, ..., .from = caller_env()) {
   force(.from)
   function(cnd) {
     trace <- trace_back()
 
     # Trim capturing context from backtrace
-    idx <- detect_index(trace$envs, identical, env_label(.from))
-    trace <- trace[-seq2(idx + 1, length(trace))]
+    trace <- trace_trim_context(trace, .from)
 
-    abort(message, .subclass, ..., trace = trace, parent = cnd)
+    child <- error_cnd(.subclass,
+      ...,
+      message = message,
+      parent = cnd,
+      trace = trace
+    )
+
+    stop(child)
   }
 }
 
@@ -510,7 +552,7 @@ print.rlang_error <- function(x, ..., child = NULL) {
   print(trace, simplify = "collapse")
 
   if (!is_null(x$parent)) {
-    meow("# This error was caused after seeing:")
+    meow("\n>>> Parent error:")
     print(x$parent, child = x)
   }
 
@@ -520,6 +562,7 @@ print.rlang_error <- function(x, ..., child = NULL) {
 #' @export
 conditionMessage.rlang_error <- function(c) {
   lines <- c$message
+  trace <- format(c$trace, simplify = "trail")
 
   parents <- chr()
   while(is_condition(c$parent)) {
@@ -535,12 +578,11 @@ conditionMessage.rlang_error <- function(c) {
     )
   }
 
-  if (!is_null(c$trace)) {
-    backtrace <- format(c$trace, simplify = "branch")
+  if (!is_null(trace)) {
     lines <- chr_lines(
       lines,
       "Backtrace:",
-      backtrace
+      trace
     )
   }
 
