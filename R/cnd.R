@@ -536,8 +536,13 @@ catch_cnd <- function(expr) {
 
 #' @export
 print.rlang_error <- function(x, ..., child = NULL) {
+  if (is_null(child)) {
+    header <- "<error>"
+  } else {
+    header <- "<error: parent>"
+  }
   meow(
-    sprintf("<error>"),
+    header,
     sprintf("* Message: \"%s\"", x$message),
     sprintf("* Class: `%s`", class(x)[[1]]),
     "* Backtrace:"
@@ -552,7 +557,6 @@ print.rlang_error <- function(x, ..., child = NULL) {
   print(trace, simplify = "collapse")
 
   if (!is_null(x$parent)) {
-    meow("\n>>> Parent error:")
     print(x$parent, child = x)
   }
 
