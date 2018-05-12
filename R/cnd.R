@@ -53,11 +53,15 @@ error_cnd <- function(.subclass = NULL,
                       ...,
                       message = "",
                       call = NULL,
-                      trace = NULL) {
+                      trace = NULL,
+                      parent = NULL) {
   if (!is_null(trace) && !inherits(trace, "rlang_trace")) {
     abort("`trace` must be NULL or an rlang backtrace")
   }
-  fields <- dots_list(trace = trace, ...)
+  if (!is_null(parent) && !inherits(parent, "condition")) {
+    abort("`parent` must be NULL or a condition object")
+  }
+  fields <- dots_list(trace = trace, parent = parent, ...)
   .Call(rlang_new_condition, c(.subclass, "rlang_error", "error"), message, call, fields)
 }
 #' @rdname cnd
@@ -309,21 +313,44 @@ muffle <- function(...) NULL
 #' )
 #'
 #' }
-abort <- function(message, .subclass = NULL, ..., call = NULL, msg, type) {
+abort <- function(message, .subclass = NULL,
+                  ...,
+                  trace = NULL,
+                  call = NULL,
+                  parent = NULL,
+                  msg, type) {
   validate_signal_args(msg, type)
 
-  trace <- trace_back()
-  trace <- trace[-length(trace)]
+  if (is_null(trace)) {
+    trace <- trace_back()
+    trace <- trace[-length(trace)]
+  }
 
   cnd <- error_cnd(.subclass,
     ...,
     message = message,
     call = cnd_call(call),
+    parent = parent,
     trace = trace
   )
 
   stop(cnd)
 }
+
+rethrower <- function(message, .subclass = NULL, ..., .from = caller_env()) {
+  force(.from)
+  function(cnd) {
+    trace <- trace_back()
+
+    # Trim capturing context from backtrace
+    idx <- detect_index(trace$envs, identical, env_label(.from))
+    trace <- trace[-seq2(idx + 1, length(trace))]
+
+    abort(message, .subclass, ..., trace = trace, parent = cnd)
+  }
+}
+
+
 #' @rdname abort
 #' @export
 warn <- function(message, .subclass = NULL, ..., call = NULL, msg, type) {
@@ -473,18 +500,49 @@ print.rlang_error <- function(x, ..., child = NULL) {
     sprintf("* Class: `%s`", class(x)[[1]]),
     "* Backtrace:"
   )
-  print(x$trace)
+
+  trace <- x$trace
+  if (!is_null(child)) {
+    child_trace <- child$trace
+    common <- map_lgl(trace$envs, `%in%`, child_trace$envs)
+    trace <- trace[which(!common)]
+  }
+  print(trace, simplify = "collapse")
+
+  if (!is_null(x$parent)) {
+    meow("# This error was caused after seeing:")
+    print(x$parent, child = x)
+  }
 
   invisible(x)
 }
 
 #' @export
 conditionMessage.rlang_error <- function(c) {
-  backtrace <- format(c$trace, simplify = "branch")
+  lines <- c$message
 
-  chr_lines(
-    c$message,
-    "Backtrace:",
-    backtrace
-  )
+  parents <- chr()
+  while(is_condition(c$parent)) {
+    c <- c$parent
+    parents <- chr(parents, c$message)
+  }
+
+  if (length(parents)) {
+    parents <- cli_branch(parents)
+    lines <- chr_lines(lines,
+      "Parents:",
+      parents
+    )
+  }
+
+  if (!is_null(c$trace)) {
+    backtrace <- format(c$trace, simplify = "branch")
+    lines <- chr_lines(
+      lines,
+      "Backtrace:",
+      backtrace
+    )
+  }
+
+  lines
 }

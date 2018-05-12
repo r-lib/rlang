@@ -9,7 +9,8 @@
 \usage{
 cnd(.subclass, ..., message = "", call = NULL)
 
-error_cnd(.subclass = NULL, ..., message = "", call = NULL)
+error_cnd(.subclass = NULL, ..., message = "", call = NULL,
+  trace = NULL, parent = NULL)
 
 warning_cnd(.subclass = NULL, ..., message = "", call = NULL)
 

@@ -229,6 +229,8 @@ test_that("errors are signalled with backtrace", {
 test_that("error_cnd() checks its fields", {
   expect_no_error(error_cnd(trace = NULL))
   expect_error(error_cnd(trace = env()), "`trace` must be NULL or an rlang backtrace")
+  expect_no_error(error_cnd(parent = NULL))
+  expect_error(error_cnd(parent = env()), "`parent` must be NULL or a condition object")
 })
 
 test_that("error is printed with backtrace", {
