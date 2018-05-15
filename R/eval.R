@@ -72,7 +72,7 @@
 #' # To explore the consequences of stack inconsistent semantics, let's
 #' # create a function that evaluates `parent.frame()` deep in the call
 #' # stack, in an environment corresponding to a frame in the middle of
-#' # the stack. For consistency we R's lazy evaluation semantics, we'd
+#' # the stack. For consistency with R's lazy evaluation semantics, we'd
 #' # expect to get the caller of that frame as result:
 #' fn <- function(eval_fn) {
 #'   list(
