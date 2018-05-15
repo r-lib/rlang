@@ -43,10 +43,10 @@ written by a programmer.
 than one expression (separated by semicolons or new lines), an error is
 issued. On the other hand \code{parse_exprs()} can handle multiple
 expressions. It always returns a list of expressions (compare to
-\code{\link[base:parse]{base::parse()}} which returns an base::expression vector). All
+\code{\link[base:parse]{base::parse()}} which returns a base::expression vector). All
 functions also support R connections.
 
-The versions suffixed with \code{_quo} and \code{quos} return
+The versions suffixed with \code{_quo} and \code{_quos} return
 \link[=quotation]{quosures} rather than raw expressions.
 }
 \section{Life cycle}{
