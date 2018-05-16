@@ -56,7 +56,7 @@
 #' with_data(data, apple)
 #' with_data(data, list(apple, kiwi))
 #'
-#' # Secondly eval_tidy() installs handy pronouns that allows users to
+#' # Secondly eval_tidy() installs handy pronouns that allow users to
 #' # be explicit about where to find symbols:
 #' with_data(data, .data$apple)
 #' with_data(data, .env$apple)
