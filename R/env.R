@@ -70,7 +70,7 @@
 #'   features.
 #' @param .parent,parent A parent environment. Can be an object
 #'   supported by [as_environment()].
-#' @seealso `scoped_env`, [env_has()], [env_bind()].
+#' @seealso [scoped_env()], [env_has()], [env_bind()].
 #' @export
 #' @examples
 #' # env() creates a new environment which has the current environment
