@@ -12,6 +12,11 @@
 #'   document where you don't want all the knitr evaluation mechanism
 #'   to appear in the backtrace.
 #' @examples
+#' # Trim backtraces automatically (this improves the generated
+#' # documentation for the rlang website and the same trick can be
+#' # useful within knitr documents):
+#' options(rlang_trace_top_env = current_env())
+#'
 #' f <- function() g()
 #' g <- function() h()
 #' h <- function() trace_back()
@@ -29,7 +34,7 @@
 #' # the direct sequence of calls that lead to `trace_back()`
 #' x <- try(identity(f()))
 #' x
-#' print(x, simplify = TRUE)
+#' print(x, simplify = "trail")
 #'
 #' # With a little cunning you can also use it to capture the
 #' # tree from within a base NSE function
@@ -47,10 +52,13 @@
 #' # of the global environment on the stack
 #' h <- function() trace_back(globalenv())
 #' source(textConnection("f()"), echo = TRUE)
+#'
+#' # Restore defaults
+#' options(rlang_trace_top_env = NULL)
 #' @export
 trace_back <- function(to = NULL) {
   calls <- sys.calls()
-  parents <- sys.parents()
+  parents <- normalise_parents(sys.parents())
   envs <- map(sys.frames(), env_label)
 
   trace <- new_trace(calls, parents, envs)
@@ -58,6 +66,13 @@ trace_back <- function(to = NULL) {
   trace <- trace[-length(trace)] # remove call to self
 
   trace
+}
+
+# Remove recursive frames which occur with quosures
+normalise_parents <- function(parents) {
+  recursive <- parents == seq_along(parents)
+  parents[recursive] <- 0L
+  parents
 }
 
 new_trace <- function(calls, parents, envs) {
@@ -76,21 +91,41 @@ new_trace <- function(calls, parents, envs) {
 # Methods -----------------------------------------------------------------
 
 #' @export
-format.rlang_trace <- function(x, simplify = FALSE, dir = getwd(), ...) {
+format.rlang_trace <- function(x,
+                               ...,
+                               simplify = c("collapse", "trail", "none"),
+                               dir = getwd(),
+                               srcrefs = NULL) {
   if (length(x) == 0) {
     return(trace_root())
   }
 
-  if (simplify) {
-    x <- trace_simplify(x)
+  x <- trace_simplify(x, simplify)
+  tree <- trace_as_tree(x, dir = dir, srcrefs = srcrefs)
+
+  if (arg_match(simplify) == "trail") {
+    cli_branch(tree[-1, ][["call"]])
+  } else {
+    cli_tree(tree)
   }
-  tree <- trace_as_tree(x, dir = dir)
-  cli_tree(tree)
+}
+
+cli_branch <- function(lines, style = NULL) {
+  style <- style %||% cli_box_chars()
+  paste0(" ", style$h, lines)
 }
 
 #' @export
-print.rlang_trace <- function(x, simplify = FALSE, dir = getwd(), ...) {
-  meow(format(x, ..., simplify = simplify, dir = dir))
+print.rlang_trace <- function(x,
+                              ...,
+                              siblings = c("full", "collapse", "none"),
+                              dir = getwd(),
+                              srcrefs = NULL) {
+  meow(format(x, ...,
+    siblings = siblings,
+    dir = dir,
+    srcrefs = srcrefs
+  ))
   invisible(x)
 }
 
@@ -101,7 +136,7 @@ length.rlang_trace <- function(x) {
 
 #' @export
 `[.rlang_trace` <- function(x, i, ...) {
-  stopifnot(is.integer(i))
+  stopifnot(is_integerish(i))
 
   if (all(i < 0L)) {
     i <- setdiff(seq_along(x), abs(i))
@@ -116,7 +151,9 @@ length.rlang_trace <- function(x) {
 
 # Trimming ----------------------------------------------------------------
 
-trace_trim_env <- function(x, to = globalenv()) {
+trace_trim_env <- function(x, to = NULL) {
+  to <- to %||% peek_option("rlang_trace_top_env")
+
   if (is.null(to)) {
     return(x)
   }
@@ -132,35 +169,104 @@ trace_trim_env <- function(x, to = globalenv()) {
   x[start:end]
 }
 
-trace_simplify <- function(x) {
-  path <- integer()
-  id <- length(x$parents)
+trace_simplify <- function(x, simplify = c("trail", "collapse", "none")) {
+  switch(arg_match(simplify),
+    none = x,
+    trail = trace_simplify_trail(x),
+    collapse = trace_simplify_collapsed(x)
+  )
+}
+
+trace_simplify_trail <- function(trace) {
+  parents <- trace$parents
+  path <- int()
+  id <- length(parents)
 
   while (id != 0L) {
     path <- c(path, id)
-    id <- x$parents[id]
+    id <- parents[id]
   }
 
-  x[rev(path)]
+  trace[rev(path)]
+}
+
+trace_simplify_collapsed <- function(trace) {
+  parents <- trace$parents
+  path <- int()
+  id <- length(parents)
+
+  while (id > 0L) {
+    parent_id <- parents[[id]]
+    path <- c(path, id)
+    id <- id - 1L
+
+    # Collapse intervening call branches
+    if (id != parent_id) {
+      n_skipped <- 0L
+
+      while (id != parent_id) {
+        sibling_parent_id <- parents[[id]]
+
+        if (sibling_parent_id == parent_id) {
+          attr(trace$calls[[id]], "collapsed") <- n_skipped
+          n_skipped <- 0L
+          path <- c(path, id)
+        } else {
+          n_skipped <- n_skipped + 1L
+        }
+
+        id <- id - 1L
+      }
+    }
+  }
+
+  trace[rev(path)]
 }
 
 # Printing ----------------------------------------------------------------
 
-trace_as_tree <- function(x, dir = getwd()) {
+trace_as_tree <- function(x, dir = getwd(), srcrefs = NULL) {
   nodes <- c(0, seq_along(x$calls))
   children <- map(nodes, function(id) seq_along(x$parents)[x$parents == id])
 
-  call_text <- map_chr(as.list(x$calls), expr_name)
+  calls <- as.list(x$calls)
+  is_collapsed <- map(calls, attr, "collapsed")
+  call_text <- map2_chr(calls, is_collapsed, trace_call_text)
 
-  refs <- map(x$calls, attr, "srcref")
-  src_locs <- map_chr(refs, src_loc, dir = dir)
-  call_text <- paste0(call_text, " ", src_locs)
+  srcrefs <- srcrefs %||% peek_option("rlang_trace_format_srcrefs")
+  srcrefs <- srcrefs %||% TRUE
+  stopifnot(is_scalar_logical(srcrefs))
+  if (srcrefs) {
+    refs <- map(x$calls, attr, "srcref")
+    src_locs <- map_chr(refs, src_loc, dir = dir)
+    have_src_loc <- nzchar(src_locs)
+    call_text[have_src_loc] <- paste0(call_text[have_src_loc], " ", src_locs[have_src_loc])
+  }
 
   tree <- data.frame(id = as.character(nodes), stringsAsFactors = FALSE)
   tree$children <- map(children, as.character)
   tree$call <- c(trace_root(), call_text)
 
   tree
+}
+
+trace_call_text <- function(call, collapse) {
+  if (is_null(collapse)) {
+    return(expr_name(call))
+  }
+
+  if (length(call) > 1L) {
+    call <- call2(node_car(call), quote(...))
+  }
+
+  text <- expr_name(call)
+  if (collapse > 0L) {
+    n_collapsed_text <- sprintf(" ... +%d", collapse)
+  } else {
+    n_collapsed_text <- ""
+  }
+
+  sprintf("[ %s ]%s", text, n_collapsed_text)
 }
 
 src_loc <- function(srcref, dir = getwd()) {

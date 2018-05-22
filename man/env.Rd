@@ -37,7 +37,7 @@ Environments are containers of uniquely named objects. Their most
 common use is to provide a scope for the evaluation of R
 expressions. Not all languages have first class environments,
 i.e. can manipulate scope as regular objects. Reification of scope
-is one of the most powerful feature of R as it allows you to change
+is one of the most powerful features of R as it allows you to change
 what objects a function or expression sees when it is evaluated.
 
 Environments also constitute a data structure in their own
@@ -157,5 +157,5 @@ env_parent(env)
 new_environment(list(a = "foo", b = "bar"))
 }
 \seealso{
-\code{scoped_env}, \code{\link[=env_has]{env_has()}}, \code{\link[=env_bind]{env_bind()}}.
+\code{\link[=env_has]{env_has()}}, \code{\link[=env_bind]{env_bind()}}.
 }

@@ -1,0 +1,15 @@
+Full:
+█
+├─eval_tidy(quo(f()))
+└─f()
+  └─g()
+
+Collapsed:
+█
+├─[ eval_tidy(...) ]
+└─f()
+  └─g()
+
+Trail:
+ ─f()
+ ─g()
