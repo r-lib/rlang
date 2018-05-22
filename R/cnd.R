@@ -373,25 +373,6 @@ find_capture_context <- function(n = 3L) {
   sys.frame(sys_parent)
 }
 
-rethrower <- function(message, .subclass = NULL, ..., .from = caller_env()) {
-  force(.from)
-  function(cnd) {
-    trace <- trace_back()
-
-    # Trim capturing context from backtrace
-    trace <- trace_trim_context(trace, .from)
-
-    child <- error_cnd(.subclass,
-      ...,
-      message = message,
-      parent = cnd,
-      trace = trace
-    )
-
-    stop(child)
-  }
-}
-
 
 #' @rdname abort
 #' @export
