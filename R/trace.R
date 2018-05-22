@@ -34,7 +34,7 @@
 #' # the direct sequence of calls that lead to `trace_back()`
 #' x <- try(identity(f()))
 #' x
-#' print(x, simplify = "branch")
+#' print(x, simplify = "trail")
 #'
 #' # With a little cunning you can also use it to capture the
 #' # tree from within a base NSE function
@@ -93,7 +93,7 @@ new_trace <- function(calls, parents, envs) {
 #' @export
 format.rlang_trace <- function(x,
                                ...,
-                               simplify = c("collapse", "branch", "none"),
+                               simplify = c("collapse", "trail", "none"),
                                dir = getwd(),
                                srcrefs = NULL) {
   if (length(x) == 0) {
@@ -103,7 +103,7 @@ format.rlang_trace <- function(x,
   x <- trace_simplify(x, simplify)
   tree <- trace_as_tree(x, dir = dir, srcrefs = srcrefs)
 
-  if (arg_match(simplify) == "branch") {
+  if (arg_match(simplify) == "trail") {
     cli_branch(tree[-1, ][["call"]])
   } else {
     cli_tree(tree)
@@ -169,15 +169,15 @@ trace_trim_env <- function(x, to = NULL) {
   x[start:end]
 }
 
-trace_simplify <- function(x, simplify = c("branch", "collapse", "none")) {
+trace_simplify <- function(x, simplify = c("trail", "collapse", "none")) {
   switch(arg_match(simplify),
     none = x,
-    branch = trace_simplify_branch(x),
+    trail = trace_simplify_trail(x),
     collapse = trace_simplify_collapsed(x)
   )
 }
 
-trace_simplify_branch <- function(trace) {
+trace_simplify_trail <- function(trace) {
   parents <- trace$parents
   path <- int()
   id <- length(parents)

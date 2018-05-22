@@ -41,8 +41,8 @@ test_that("can print tree with collapsed branches", {
     print(trace, simplify = "none", dir = dir)
     cat("\nCollapsed:\n")
     print(trace, simplify = "collapse", dir = dir)
-    cat("\nBranch:\n")
-    print(trace, simplify = "branch", dir = dir)
+    cat("\nTrail:\n")
+    print(trace, simplify = "trail", dir = dir)
   })
 
   # With multiple siblings
@@ -56,8 +56,8 @@ test_that("can print tree with collapsed branches", {
     print(trace, simplify = "none", dir = dir)
     cat("\nCollapsed:\n")
     print(trace, simplify = "collapse", dir = dir)
-    cat("\nBranch:\n")
-    print(trace, simplify = "branch", dir = dir)
+    cat("\nTrail:\n")
+    print(trace, simplify = "trail", dir = dir)
   })
 })
 
@@ -151,7 +151,7 @@ test_that("recursive frames are rewired to the global env", {
     print(trace, simplify = "none", dir = dir, srcrefs = FALSE)
     cat("\nCollapsed:\n")
     print(trace, simplify = "collapse", dir = dir, srcrefs = FALSE)
-    cat("\nBranch:\n")
-    print(trace, simplify = "branch", dir = dir, srcrefs = FALSE)
+    cat("\nTrail:\n")
+    print(trace, simplify = "trail", dir = dir, srcrefs = FALSE)
   })
 })

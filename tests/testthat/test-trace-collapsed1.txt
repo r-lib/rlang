@@ -29,7 +29,7 @@ Collapsed:
         └─tryCatch(trace_back(e)) testthat/test-trace.R:36:20
           └─tryCatchList(expr, classes, parentenv, handlers)
 
-Branch:
+Trail:
  ─f()
  ─g() testthat/test-trace.R:33:20
  ─h()
