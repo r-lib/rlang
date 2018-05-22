@@ -21,6 +21,8 @@
 #'   condition when it is signalled.
 #' @param call A call documenting what expression caused a condition
 #'   to be signalled.
+#' @param trace A `trace` object created by [trace_back()].
+#' @param parent A parent condition object created by [abort()].
 #' @seealso [cnd_signal()], [with_handlers()].
 #' @export
 #' @examples
@@ -271,6 +273,7 @@ muffle <- function(...) NULL
 #'   `type` which was renamed to `.subclass`.
 #' * `.call` (previously `call`) can no longer be passed positionally.
 #'
+#' @inheritParams cnd
 #' @param message The message to display.
 #' @param .subclass Subclass of the condition. This allows your users
 #'   to selectively handle the conditions signalled by your functions.
@@ -295,8 +298,8 @@ muffle <- function(...) NULL
 #' tryCatch(
 #'   somepkg_function(),
 #'   somepkg_bad_error = function(err) {
-#'     cnd_warn(err) # Demote the error to a warning
-#'     NA            # Return an alternative value
+#'     warn(err$message) # Demote the error to a warning
+#'     NA                # Return an alternative value
 #'   }
 #' )
 #'
@@ -311,6 +314,18 @@ muffle <- function(...) NULL
 #'     recover_error(err$data)
 #'   }
 #' )
+#'
+#' # If you call low-level APIs it is good practice to catch technical
+#' # errors and rethrow them with a more meaningful message. Pass on
+#' # the caught error as `parent` to get a nice decomposition of
+#' # errors and backtraces:
+#' file <- "http://foo.bar/baz"
+#' tryCatch(
+#'   download(file),
+#'   error = function(err) {
+#'     msg <- sprintf("Can't download `%s`", file)
+#'     abort(msg, parent = err)
+#' })
 #'
 #' }
 abort <- function(message, .subclass = NULL,
