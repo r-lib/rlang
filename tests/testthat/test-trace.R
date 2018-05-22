@@ -25,6 +25,7 @@ test_that("tree printing only changes deliberately", {
 
 test_that("can print tree with collapsed branches", {
   skip_on_os("windows")
+  skip_if(getRversion() < "3.5.0", "Old R versions have different eval() backtraces")
 
   dir <- normalizePath(test_path(".."))
   e <- environment()
