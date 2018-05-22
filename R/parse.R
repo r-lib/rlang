@@ -8,10 +8,10 @@
 #' than one expression (separated by semicolons or new lines), an error is
 #' issued. On the other hand `parse_exprs()` can handle multiple
 #' expressions. It always returns a list of expressions (compare to
-#' [base::parse()] which returns an base::expression vector). All
+#' [base::parse()] which returns a base::expression vector). All
 #' functions also support R connections.
 #'
-#' The versions suffixed with `_quo` and `quos` return
+#' The versions suffixed with `_quo` and `_quos` return
 #' [quosures][quotation] rather than raw expressions.
 #'
 #'
