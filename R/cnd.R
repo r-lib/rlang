@@ -599,7 +599,7 @@ conditionMessage.rlang_error <- function(c) {
   if (!is_null(trace)) {
     lines <- chr_lines(
       lines,
-      "Backtrace:",
+      "Backtrail:",
       trace
     )
   }
