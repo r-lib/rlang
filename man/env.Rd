@@ -157,5 +157,5 @@ env_parent(env)
 new_environment(list(a = "foo", b = "bar"))
 }
 \seealso{
-\code{scoped_env}, \code{\link[=env_has]{env_has()}}, \code{\link[=env_bind]{env_bind()}}.
+\code{\link[=env_has]{env_has()}}, \code{\link[=env_bind]{env_bind()}}.
 }
