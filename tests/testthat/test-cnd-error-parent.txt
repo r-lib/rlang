@@ -12,7 +12,6 @@
 * Class: `rlang_error`
 * Backtrace:
 █
-├─[ tryCatch(...) ] ... +3
 └─f()
   └─g()
     └─h()
