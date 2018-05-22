@@ -57,6 +57,12 @@ test_that("name symbols, calls, and scalars", {
   expect_identical(expr_name(expr(function() { a; b })), "function() ...")
 })
 
+test_that("supports special objects", {
+  expect_match(expr_name(quote(foo := bar)), ":=")
+  expect_identical(expr_name(quo(foo)), "~foo")
+  expect_identical(expr_name(~foo), "~foo")
+})
+
 
 # --------------------------------------------------------------------
 
