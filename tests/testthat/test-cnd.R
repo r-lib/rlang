@@ -253,6 +253,35 @@ test_that("error is printed with backtrace", {
   expect_identical(!!output, expected)
 })
 
+test_that("error is printed with parent backtrace", {
+  skip_on_os("windows")
+
+  f <- function() g()
+  g <- function() h()
+  h <- function() abort("Low-level message")
+
+  a <- function() b()
+  b <- function() c()
+  c <- function() {
+    tryCatch(
+      f(),
+      error = function(err) {
+        abort("High-level message", parent = err)
+      }
+    )
+  }
+
+  scoped_options(
+    rlang_trace_format_srcrefs = FALSE,
+    rlang_trace_top_env = current_env()
+  )
+  err <- catch_cnd(a())
+
+  expect_known_output(file = test_path("test-cnd-error-parent.txt"),
+    print(err)
+  )
+})
+
 
 # Lifecycle ----------------------------------------------------------
 

@@ -1,0 +1,18 @@
+<error>
+* Message: "High-level message"
+* Class: `rlang_error`
+* Backtrace:
+█
+├─[ catch_cnd(...) ] with 5 more calls
+└─a()
+  └─b()
+    └─c()
+<error: parent>
+* Message: "Low-level message"
+* Class: `rlang_error`
+* Backtrace:
+█
+├─[ tryCatch(...) ] ... +3
+└─f()
+  └─g()
+    └─h()
