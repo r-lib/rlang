@@ -340,7 +340,7 @@ abort <- function(message, .subclass = NULL,
     trace <- trace_back()
 
     if (is_null(parent)) {
-      context <- current_env()
+      context <- length(trace$calls)
     } else {
       context <- find_capture_context()
     }
@@ -359,7 +359,14 @@ abort <- function(message, .subclass = NULL,
 }
 
 trace_trim_context <- function(trace, frame = caller_env()) {
-  idx <- detect_index(trace$envs, identical, env_label(frame))
+  if (is_environment(frame)) {
+    idx <- detect_index(trace$envs, identical, env_label(frame))
+  } else if (is_scalar_integerish(frame)) {
+    idx <- frame
+  } else {
+    abort("`frame` must be a frame environment or index")
+  }
+
   trace[-seq2(idx, length(trace))]
 }
 # FIXME: Find more robust strategy of stripping catching context
