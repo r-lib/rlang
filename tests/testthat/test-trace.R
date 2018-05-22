@@ -91,9 +91,9 @@ test_that("cli_branch() handles edge case", {
   f <- function() trace_back(e)
   trace <- f()
 
-  call <- paste0(cli_style$l, cli_style$h, "f()")
+  call <- paste0(" ", cli_style$h, "f()")
   tree <- trace_as_tree(trace, srcrefs = FALSE)
-  expect_identical(cli_branch(tree), chr(trace_root(), call))
+  expect_identical(cli_branch(tree$call[-1]), call)
 })
 
 test_that("trace formatting picks up `rlang_trace_format_srcrefs`", {

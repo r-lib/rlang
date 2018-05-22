@@ -28,7 +28,6 @@ Collapsed:
     └─h()
 
 Branch:
-█
-├─f()
-├─g()
-└─h()
+ ─f()
+ ─g()
+ ─h()

@@ -104,29 +104,15 @@ format.rlang_trace <- function(x,
   tree <- trace_as_tree(x, dir = dir, srcrefs = srcrefs)
 
   if (arg_match(simplify) == "branch") {
-    cli_branch(tree)
+    cli_branch(tree[-1, ][["call"]])
   } else {
     cli_tree(tree)
   }
 }
 
-cli_branch <- function(x, style = NULL) {
+cli_branch <- function(lines, style = NULL) {
   style <- style %||% cli_box_chars()
-
-  n <- nrow(x)
-  calls <- x[["call"]]
-
-  if (n <= 1) {
-    return(calls)
-  }
-
-  calls[[n]] <- paste0(style$l, style$h, calls[[n]])
-  if (n >= 2) {
-    idx <- seq2(2, n - 1L)
-    calls[idx] <- paste0(style$j, style$h, calls[idx])
-  }
-
-  calls
+  paste0(" ", style$h, lines)
 }
 
 #' @export

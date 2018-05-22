@@ -11,6 +11,5 @@ Collapsed:
   └─g()
 
 Branch:
-█
-├─f()
-└─g()
+ ─f()
+ ─g()

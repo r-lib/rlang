@@ -30,10 +30,9 @@ Collapsed:
           └─tryCatchList(expr, classes, parentenv, handlers)
 
 Branch:
-█
-├─f()
-├─g() testthat/test-trace.R:33:20
-├─h()
-├─i()
-├─tryCatch(trace_back(e)) testthat/test-trace.R:36:20
-└─tryCatchList(expr, classes, parentenv, handlers)
+ ─f()
+ ─g() testthat/test-trace.R:33:20
+ ─h()
+ ─i()
+ ─tryCatch(trace_back(e)) testthat/test-trace.R:36:20
+ ─tryCatchList(expr, classes, parentenv, handlers)
