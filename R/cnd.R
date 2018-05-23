@@ -452,12 +452,17 @@ catch_cnd <- function(expr) {
 # This returns an expression that has to be evaluated at top-level
 # because the only way to add a top-level handler is from a delayed
 # binding
-enable_last_error_expr <- function() {
+enable_last_error_expr <- function(ask = TRUE) {
   expr({
-    sel <- utils::menu(
-      c("Yes", "No"),
-      title = "Would you like to enable `.Last.error` capture?"
-    )
+    if (ask) {
+      sel <- utils::menu(
+        c("Yes", "No"),
+        title = "Would you like to enable `.Last.error` capture?"
+      )
+    } else {
+      sel <- 1L
+    }
+
     if (sel == 1L) {
       get(".Internal")(.addCondHands("error", !!list(last_error_handler), globalenv(), NULL, TRUE))
       cat("Capture of uncaught errors in `.Last.error` is now enabled\n")
@@ -506,11 +511,11 @@ reset_last_error_binding <- function(...) {
     removeTaskCallback(id)
   }
 }
-set_last_error_binding <- function() {
-  env_bind_exprs(rlang_attached_env(), .Last.error = !!enable_last_error_expr())
+set_last_error_binding <- function(ask = TRUE) {
+  env_bind_exprs(rlang_attached_env(), .Last.error = !!enable_last_error_expr(ask))
 }
 
 enable_last_error <- function() {
-  reset_last_error_binding()
+  set_last_error_binding(ask = FALSE)
   cat("Now type `.Last.error` at the console to enable error recording\n")
 }
