@@ -10,6 +10,7 @@
 
 extern sexp* r_dot_environment_sym;
 extern sexp* r_function_sym;
+extern sexp* r_srcref_sym;
 extern sexp* r_tilde_sym;
 
 
