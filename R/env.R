@@ -1001,7 +1001,7 @@ env_print <- function(env) {
   if (is_empty_env(env)) {
     parent <- "NULL"
   } else {
-    parent <- paste0("<", rlang_type_sum(env_parent(env)), ">")
+    parent <- sprintf("<environment: %s>", env_label(env_parent(env)))
   }
 
   if (env_is_locked(env)) {

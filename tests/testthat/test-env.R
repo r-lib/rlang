@@ -367,3 +367,8 @@ test_that("can print environment containing missing argument", {
   expect_output(env_print(env), "x: <missing>")
   expect_output(env_print(env), "y: <sym>")
 })
+
+test_that("parent environment is printed with full header", {
+  env <- env(global_env())
+  expect_output(env_print(env), "parent: <environment: global>")
+})
