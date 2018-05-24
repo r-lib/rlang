@@ -253,7 +253,7 @@ void R_init_rlang(r_dll_info* dll) {
   // Experimental method for exporting C function pointers as actual R objects
   rlang_register_pointer("rlang", "rlang_test_is_spliceable", (r_fn_ptr_t) &rlang_is_clevel_spliceable);
 
-  r_register_r_callables(dll, r_callables);
+  r_register_r_callables(dll, r_callables, NULL);
 }
 
 

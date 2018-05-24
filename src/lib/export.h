@@ -13,6 +13,7 @@ DL_FUNC R_ExternalPtrAddrFn(sexp* s);
 
 typedef DL_FUNC r_fn_ptr_t;
 typedef R_CallMethodDef r_callable;
+typedef R_ExternalMethodDef r_external;
 typedef DllInfo r_dll_info;
 
 
@@ -22,8 +23,10 @@ static inline void r_register_c_callable(const char* pkg, const char* ptr_name, 
   R_RegisterCCallable(pkg, ptr_name, fn);
 }
 
-static inline void r_register_r_callables(r_dll_info* dll, const r_callable* const callables) {
-  R_registerRoutines(dll, NULL, callables, NULL, NULL);
+static inline void r_register_r_callables(r_dll_info* dll,
+                                          const r_callable* const callables,
+                                          const r_external* const externals) {
+  R_registerRoutines(dll, NULL, callables, NULL, externals);
   R_useDynamicSymbols(dll, FALSE);
 }
 

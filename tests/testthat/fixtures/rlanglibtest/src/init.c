@@ -22,5 +22,5 @@ static const r_callable r_callables[] = {
 };
 
 void R_init_rlanglibtest(r_dll_info* dll) {
-  r_register_r_callables(dll, r_callables);
+  r_register_r_callables(dll, r_callables, NULL);
 }
