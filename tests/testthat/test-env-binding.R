@@ -207,3 +207,13 @@ test_that("can lock and unlock bindings", {
   expect_identical(env_binding_unlock(env), locked)
   expect_identical(env_binding_are_locked(env), lgl(a = FALSE, b = FALSE))
 })
+
+test_that("can pluck missing arg from environment", {
+  env <- env(x = missing_arg())
+  expect_identical(env_get(env, "x"), missing_arg())
+  expect_identical(env_get_list(env, "x"), list(x = missing_arg()))
+
+  skip("Failing")
+  child <- env(env)
+  env_get(child, "x", inherit = TRUE)
+})

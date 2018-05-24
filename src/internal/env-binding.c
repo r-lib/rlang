@@ -26,3 +26,19 @@ sexp* rlang_env_binding_are_promise(sexp* env, sexp* syms) {
   FREE(1);
   return out;
 }
+
+sexp* rlang_env_get(sexp* env, sexp* nm) {
+  sexp* sym = r_sym(r_c_string(nm));
+
+  // Use r_env_find() instead of r_env_get() because `nm` might
+  // reference a missing argument
+  sexp* out = r_env_find(env, sym);
+
+  // Trigger `symbol not found` error if needed
+  if (out == r_unbound_sym) {
+    r_eval(sym, r_empty_env);
+    r_abort("Internal error: `rlang_env_get()` should have failed earlier");
+  }
+
+  return out;
+}

@@ -1,6 +1,9 @@
 
 # rlang 0.2.0.9000
 
+* `env_get()` now supports retrieving missing arguments when `inherit`
+  is `FALSE`.
+
 * The experimental function `rst_muffle()` is now defunct. Please use
   `cnd_muffle()` instead. Unlike its predecessor `cnd_muffle()` is not
   generic. It is marked as a calling handler and thus can be passed

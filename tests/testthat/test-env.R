@@ -361,3 +361,8 @@ test_that("envs printer: long lists are truncated", {
   x <- new_environments(x)
   expect_output(print(x), "empty>\n... and 5 more environments$")
 })
+
+test_that("can print environment containing missing argument", {
+  env <- env(x = missing_arg())
+  expect_output(env_print(env), "x: <symbol>")
+})
