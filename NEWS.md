@@ -1,4 +1,12 @@
 
+# rlang 0.2.1
+
+This is a maintenance release that fixes several tidy evaluation
+issues.
+
+* Quosures no longer capture the current `srcref`.
+
+
 # rlang 0.2.0
 
 This release of rlang is mostly an effort at polishing the tidy

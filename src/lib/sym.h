@@ -7,6 +7,8 @@
 #define r_names_sym R_NamesSymbol
 #define r_class_sym R_ClassSymbol
 
+extern sexp* r_srcref_sym;
+
 
 sexp* r_new_symbol(sexp* x, int* err);
 
