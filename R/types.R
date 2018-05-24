@@ -781,9 +781,15 @@ type_sum.default <- function(x) {
       character = "chr",
       complex = "cpl",
       closure = "fn",
-      environment = sprintf("env: %s", env_label(x)),
+      environment = "env",
       builtin = ,
       special = "primitive",
+      symbol =
+        if (is_missing(x)) {
+          "missing"
+        } else {
+          "sym"
+        },
       typeof(x)
     )
   } else if (!isS4(x)) {

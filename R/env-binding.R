@@ -407,7 +407,13 @@ env_get <- function(env = caller_env(), nm, inherit = FALSE, default) {
       return(default)
     }
   }
-  get(nm, envir = env, inherits = inherit)
+
+  # FIXME: The `inherit` case fails with missing arguments
+  if (inherit) {
+    return(get(nm, envir = env, inherits = TRUE))
+  }
+
+  .Call(rlang_env_get, env, nm)
 }
 #' @rdname env_get
 #' @export
