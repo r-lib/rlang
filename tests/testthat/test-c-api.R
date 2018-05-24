@@ -212,19 +212,9 @@ test_that("client library passes tests", {
   pkg_path <- file.path(temp_test_dir, "rlanglibtest")
 
 
-  # We store the library as a zip to avoid VCS noise
+  # We store the library as a zip to avoid VCS noise. Use
+  # fixtures/Makefile to regenerate it.
   utils::unzip(zip_file, exdir = file.path(pkg_path, "src"))
-
-  # For maintenance
-  regenerate_zip <- function() {
-    location <- file.path("..", "..", "src")
-    old <- setwd(location)
-    on.exit(setwd(old))
-
-    lib_files <- c("lib.c", "lib")
-    file.remove(zip_file)
-    utils::zip(zip_file, lib_files)
-  }
 
   install.packages(pkg_path,
     repos = NULL,
