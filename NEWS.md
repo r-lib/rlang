@@ -6,6 +6,10 @@ issues.
 
 * Quosures no longer capture the current `srcref`.
 
+* Formulas are now evaluated in the correct environment by
+  `eval_tidy()`. This fixes issues in dplyr and other tidy-evaluation
+  interfaces.
+
 
 # rlang 0.2.0
 

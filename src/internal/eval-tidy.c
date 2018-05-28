@@ -209,12 +209,13 @@ static sexp* base_tilde_eval(sexp* tilde, sexp* quo_env) {
 static sexp* env_poke_parent_fn = NULL;
 static sexp* env_poke_fn = NULL;
 
-sexp* rlang_tilde_eval(sexp* tilde, sexp* overscope, sexp* overscope_top, sexp* cur_frame) {
+sexp* rlang_tilde_eval(sexp* tilde, sexp* overscope, sexp* overscope_top,
+                       sexp* cur_frame, sexp* caller_frame) {
   // Remove srcrefs from system call
   r_poke_attribute(tilde, r_srcref_sym, r_null);
 
   if (!rlang_is_quosure(tilde)) {
-    return base_tilde_eval(tilde, overscope);
+    return base_tilde_eval(tilde, caller_frame);
   }
   if (quo_is_missing(tilde)) {
     return(r_missing_arg());

@@ -298,3 +298,13 @@ test_that("pronoun has print() and str() method", {
   data <- as_data_pronoun(list(a = 1))
   expect_output(print(data), "<pronoun>\n1 object")
 })
+
+test_that("inner formulas are evaluated in the current frame", {
+  quo <- quo(local(list(f_env = f_env(~foo), env = current_env())))
+  envs <- eval_tidy(quo)
+  expect_identical(envs$f_env, envs$env)
+
+  quo <- quo(as_function(~list(f_env = get_env(~foo), env = current_env()))())
+  envs <- eval_tidy(quo)
+  expect_identical(envs$f_env, envs$env)
+})
