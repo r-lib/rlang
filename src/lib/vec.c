@@ -26,7 +26,7 @@ bool r_is_integerish(sexp* x) {
   sexp* call = KEEP(r_build_call1(predicate, x));
   sexp* out = r_eval(call, r_empty_env);
   FREE(1);
-  return out;
+  return r_lgl_get(out, 0);
 }
 
 bool r_is_list(sexp* x) {
