@@ -1,6 +1,10 @@
 
 # rlang 0.2.0.9000
 
+* Formulas are now evaluated in the correct environment within
+  `eval_tidy()`. This fixes issues in dplyr and other tidy-evaluation
+  interfaces.
+
 * `env_get()` now supports retrieving missing arguments when `inherit`
   is `FALSE`.
 
