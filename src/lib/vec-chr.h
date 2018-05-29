@@ -84,7 +84,7 @@ static inline bool r_is_string(sexp* x, const char* string) {
 }
 
 static inline sexp* r_str_as_symbol(sexp* str) {
-  return r_sym(CHAR(str));
+  return r_sym(Rf_translateChar(str));
 }
 
 static inline bool r_str_is_name(sexp* str) {
