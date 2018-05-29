@@ -1015,6 +1015,12 @@ env_print <- function(env) {
     sprintf("  parent: %s", parent)
   )
 
+  class <- attr(env, "class")
+  if (is_character(class)) {
+    class <- paste(class, collapse = ", ")
+    meow(sprintf("  class: %s", class))
+  }
+
   nms <- env_names(env)
   n <- length(nms)
 

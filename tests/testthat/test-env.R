@@ -372,3 +372,15 @@ test_that("parent environment is printed with full header", {
   env <- env(global_env())
   expect_output(env_print(env), "parent: <environment: global>")
 })
+
+test_that("environment is printed with class if any", {
+  env <- env()
+  out <- capture.output(env_print(env))
+  expect_false(any(grepl("class", out)))
+
+  env <- structure(env(), class = "foo")
+  expect_output(env_print(env), "  class: foo")
+
+  env <- structure(env(), class = c("foo", "bar"))
+  expect_output(env_print(env), "  class: foo, bar")
+})
