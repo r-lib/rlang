@@ -99,6 +99,7 @@ new_trace <- function(calls, parents, envs) {
 format.rlang_trace <- function(x,
                                ...,
                                simplify = c("collapse", "trail", "none"),
+                               max_frames = NULL,
                                dir = getwd(),
                                srcrefs = NULL) {
   if (length(x) == 0) {
@@ -109,25 +110,69 @@ format.rlang_trace <- function(x,
   tree <- trace_as_tree(x, dir = dir, srcrefs = srcrefs)
 
   if (arg_match(simplify) == "trail") {
-    cli_branch(tree[-1, ][["call"]])
+    cli_branch(tree[-1, ][["call"]], max_frames)
   } else {
+    if (!is_null(max_frames)) {
+      abort("`max_frames` is currently only supported with `simplify = \"trail\"`")
+    }
     cli_tree(tree)
   }
 }
 
-cli_branch <- function(lines, style = NULL) {
+cli_branch <- function(lines, max = NULL, style = NULL) {
   style <- style %||% cli_box_chars()
-  paste0(" ", style$h, lines)
+  lines <- paste0(" ", style$h, lines)
+  cli_branch_truncate(lines, max)
 }
+
+cli_branch_truncate <- function(lines, max = NULL) {
+  if (is_null(max)) {
+    return(lines)
+  }
+
+  stopifnot(
+    is_scalar_integerish(max, finite = TRUE),
+    max > 0L
+  )
+
+  n <- length(lines)
+  if (n <= max) {
+    return(lines)
+  }
+
+  if (max == 1L) {
+    lines <- chr(
+      lines[1L],
+      " .",
+      sprintf(" . +%s", n - max)
+    )
+    return(lines)
+  }
+
+  half <- max / 2L
+  n_top <- ceiling(half)
+  n_bottom <- floor(half)
+
+  chr(
+    lines[seq(1, n_top)],
+    " .",
+    sprintf(" . +%s", n - max),
+    " .",
+    lines[seq(n - n_bottom, n)]
+  )
+}
+
 
 #' @export
 print.rlang_trace <- function(x,
                               ...,
                               simplify = c("collapse", "trail", "none"),
+                              max_frames = NULL,
                               dir = getwd(),
                               srcrefs = NULL) {
   meow(format(x, ...,
     simplify = simplify,
+    max_frames = max_frames,
     dir = dir,
     srcrefs = srcrefs
   ))
