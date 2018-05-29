@@ -21,6 +21,17 @@
 * You can now unquote quosured symbols as LHS of `:=`. The symbol is
   automatically unwrapped from the quosure.
 
+* Errors thrown with `abort()` now embed a backtrace in the condition
+  object. It is no longer necessary to record a trace with a calling
+  handler for such errors.
+
+* `abort()` gains a `parent` argument to specify a parent error. This
+  is meant for situations where a low-level error is expected
+  (e.g. download or parsing failed) and you'd like to throw an error
+  with higher level information. Specifying the low-level error as
+  parent makes it possible to partition the backtraces based on
+  ancestry.
+
 * Functions with tidy dots support now allow splicing atomic vectors.
 
 * Formulas are now evaluated in the correct environment within
