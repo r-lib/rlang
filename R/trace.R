@@ -118,11 +118,11 @@ cli_branch <- function(lines, style = NULL) {
 #' @export
 print.rlang_trace <- function(x,
                               ...,
-                              siblings = c("full", "collapse", "none"),
+                              simplify = c("collapse", "trail", "none"),
                               dir = getwd(),
                               srcrefs = NULL) {
   meow(format(x, ...,
-    siblings = siblings,
+    simplify = simplify,
     dir = dir,
     srcrefs = srcrefs
   ))
