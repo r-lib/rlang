@@ -4,6 +4,8 @@
 This is a maintenance release that fixes several tidy evaluation
 issues.
 
+* Functions with tidy dots support now allow splicing atomic vectors.
+
 * Quosures no longer capture the current `srcref`.
 
 * Formulas are now evaluated in the correct environment by

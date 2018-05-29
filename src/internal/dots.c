@@ -134,11 +134,15 @@ static sexp* set_value_spliced(sexp* x) {
     r_mark_shared(spliced_str);
   }
 
-  if (r_typeof(x) != r_type_list) {
-    r_abort("Can't use `!!!` on atomic vectors in non-quoting functions");
-  }
+  int n_protect = 0;
 
-  return r_set_attribute(x, r_class_sym, spliced_str);
+  if (r_typeof(x) != r_type_list) {
+    x = KEEP_N(r_vec_coerce(x, r_type_list), n_protect);
+  }
+  x = r_set_attribute(x, r_class_sym, spliced_str);
+
+  FREE(n_protect);
+  return x;
 }
 
 static inline bool should_ignore(int ignore_empty, r_ssize_t i, r_ssize_t n) {

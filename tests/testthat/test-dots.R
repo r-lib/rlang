@@ -109,3 +109,8 @@ test_that("dots_node() doesn't trim attributes from arguments", {
   dots <- eval(expr(dots_node(!! x)))
   expect_identical(node_car(dots), x)
 })
+
+test_that("can splice NULL and atomic vectors", {
+  expect_identical(list2(!!!letters), as.list(letters))
+  expect_identical(list2(!!!NULL), list())
+})
