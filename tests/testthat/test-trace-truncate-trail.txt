@@ -11,7 +11,7 @@ Full:
  ─f(n - 1)
  ─f(n - 1)
 
-Truncated:
+5 frames:
  ─f(10)
  ─f(n - 1)
  ─f(n - 1)
@@ -20,9 +20,15 @@ Truncated:
  .
  ─f(n - 1)
  ─f(n - 1)
+
+2 frames:
+ ─f(10)
+ .
+ . +9
+ .
  ─f(n - 1)
 
-Corner case:
+1 frame:
  ─f(10)
  .
  . +10

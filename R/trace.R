@@ -154,11 +154,11 @@ cli_branch_truncate <- function(lines, max = NULL) {
   n_bottom <- floor(half)
 
   chr(
-    lines[seq(1, n_top)],
+    lines[seq(1L, n_top)],
     " .",
     sprintf(" . +%s", n - max),
     " .",
-    lines[seq(n - n_bottom, n)]
+    lines[seq(n - n_bottom + 1L, n)]
   )
 }
 

@@ -171,9 +171,11 @@ test_that("long backtrails are truncated", {
   expect_known_output(file = test_path("test-trace-truncate-trail.txt"), {
     cat("Full:\n")
     print(trace, simplify = "trail", srcrefs = FALSE)
-    cat("\nTruncated:\n")
+    cat("\n5 frames:\n")
     print(trace, simplify = "trail", max_frames = 5, srcrefs = FALSE)
-    cat("\nCorner case:\n")
+    cat("\n2 frames:\n")
+    print(trace, simplify = "trail", max_frames = 2, srcrefs = FALSE)
+    cat("\n1 frame:\n")
     print(trace, simplify = "trail", max_frames = 1, srcrefs = FALSE)
   })
 
