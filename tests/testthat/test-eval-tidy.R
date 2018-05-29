@@ -313,3 +313,21 @@ test_that("inner formulas are evaluated in the current frame", {
   envs <- eval_tidy(quo)
   expect_identical(envs$f_env, envs$env)
 })
+
+test_that("names are translated to native when creating data mask", {
+  with_latin1_locale({
+    str_utf8 <- "\u00fc"
+    str_native <- enc2native(str_utf8)
+
+    d <- set_names(list("value"), str_utf8)
+    s <- sym(str_native)
+    expect_identical(eval_tidy(s, data = d), "value")
+
+    foreign_utf8 <- "\u5FCD"
+    foreign_native <- enc2native(foreign_utf8)
+
+    d <- setNames(list("value"), foreign_utf8)
+    s <- sym(foreign_native)
+    expect_identical(eval_tidy(s, data = d), "value")
+  })
+})
