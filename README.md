@@ -3,7 +3,7 @@ rlang <img src="man/figures/rlang.png" align="right" />
 
 [![Build Status](https://travis-ci.org/r-lib/rlang.svg?branch=master)](https://travis-ci.org/r-lib/rlang)
 [![Coverage Status](https://codecov.io/gh/r-lib/rlang/branch/master/graph/badge.svg)](https://codecov.io/github/r-lib/rlang?branch=master)
-![](https://img.shields.io/badge/lifecycle-maturing-blue.svg)
+[![Lifecycle Status](https://img.shields.io/badge/lifecycle-maturing-blue.svg)](https://www.tidyverse.org/lifecycle/)
 
 **Important**: The rlang API is still maturing. Please see
 `?rlang::lifecycle` for the list of functions that are considered
