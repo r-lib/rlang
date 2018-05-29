@@ -138,3 +138,8 @@ test_that("dots_split() fails if .n_unnamed doesn't match", {
   expect_identical(dots$named, list(a = 1))
   expect_identical(dots$unnamed, list(2))
 })
+
+test_that("can splice NULL and atomic vectors", {
+  expect_identical(list2(!!!letters), as.list(letters))
+  expect_identical(list2(!!!NULL), list())
+})
