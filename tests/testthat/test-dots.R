@@ -143,3 +143,9 @@ test_that("can splice NULL and atomic vectors", {
   expect_identical(list2(!!!letters), as.list(letters))
   expect_identical(list2(!!!NULL), list())
 })
+
+test_that("can unquote quosures in LHS", {
+  quo <- quo(foo)
+  expect_identical(list2(!!quo := NULL), list(foo = NULL))
+  expect_identical(exprs(!!quo := bar), exprs(foo = bar))
+})

@@ -56,6 +56,11 @@ static sexp* def_unquote_name(sexp* expr, sexp* env) {
     r_abort("The LHS of `:=` must be a string or a symbol");
   }
 
+  // Unwrap quosures for convenience
+  if (rlang_is_quosure(lhs)) {
+    lhs = rlang_quo_get_expr_(lhs);
+  }
+
   int err = 0;
   lhs = r_new_symbol(lhs, &err);
   if (err) {

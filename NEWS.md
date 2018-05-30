@@ -1,6 +1,9 @@
 
 # rlang 0.2.0.9000
 
+* You can now unquote quosured symbols as LHS of `:=`. The symbol is
+  automatically unwrapped from the quosure.
+
 * Functions with tidy dots support now allow splicing atomic vectors.
 
 * Formulas are now evaluated in the correct environment within
