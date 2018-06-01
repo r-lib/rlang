@@ -45,9 +45,9 @@ for the base R functions prefixed with \code{sys.} (which are all about
 the context stack), as well as for \code{\link[=parent.frame]{parent.frame()}} (which is the
 only base R function for querying the call stack). The context
 stack includes all R-level evaluation contexts. It is linear in
-terms of execution history but due to lazy evaluation it is
-potentially nonlinear in terms of call history. The call stack
-history, on the other hand, is homogenous.
+terms of execution history, but due to lazy evaluation it is
+potentially nonlinear in terms of call history. In contrast,
+the call stack history is homogenous.
 }
 \details{
 \code{ctxt_frame()} and \code{call_frame()} return a \code{frame} object
@@ -62,7 +62,7 @@ stack.
 
 The base R functions take two sorts of arguments to indicate which
 frame to query: \code{which} and \code{n}. The \code{n} argument is
-straightforward: it's the number of frames to go down the stack,
+straightforward: it is the number of frames to go down the stack,
 with \code{n = 1} referring to the current context. The \code{which} argument
 is more complicated and changes meaning for values lower than 1.
 For the sake of consistency, the rlang functions all take the
@@ -74,7 +74,7 @@ Note finally that \code{parent.frame(1)} corresponds to
 frame. This makes the \code{_frame()} and \code{_stack()} functions
 consistent: \code{ctxt_frame(2)} is the same as \code{ctxt_stack()[[2]]}.
 Also, \code{ctxt_depth()} returns one more frame than
-[base::sys.nframe()] because it counts the global frame. That is
+[base::sys.nframe()] because it counts the global frame. This is
 consistent with the \code{_stack()} functions which return the global
 frame as well. This way, \code{call_stack(call_depth())} is the same as
 \code{global_frame()}.
@@ -101,7 +101,7 @@ identity(identity(ctxt_depth())) # returns 2
 identity(identity(call_depth())) # returns 0
 
 # The context stacks includes all intervening execution frames. The
-# call stack doesn't:
+# call stack does not:
 f <- function(x) identity(x)
 f(f(ctxt_stack()))
 f(f(call_stack()))

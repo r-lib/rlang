@@ -40,10 +40,9 @@ and thus simpler to remember. Also, \code{na_lgl} is provided as an
 alias to \code{NA} that makes intent clearer.
 
 Since \code{na_lgl} is the default \code{NA}, expressions such as \code{c(NA, NA)}
-yield logical vectors as no data is available to give a clue of the
-target type. In the same way, since lists and environments can
-contain any types, expressions like \code{list(NA)} store a logical
-\code{NA}.
+yield logical vectors, as there is no data available to indicate the
+target type. In the same way, expressions like \code{list(NA)} store a
+logical \code{NA}, since lists and environments can contain any types.
 }
 \examples{
 typeof(NA)

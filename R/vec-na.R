@@ -17,10 +17,9 @@
 #' alias to `NA` that makes intent clearer.
 #'
 #' Since `na_lgl` is the default `NA`, expressions such as `c(NA, NA)`
-#' yield logical vectors as no data is available to give a clue of the
-#' target type. In the same way, since lists and environments can
-#' contain any types, expressions like `list(NA)` store a logical
-#' `NA`.
+#' yield logical vectors, as there is no data available to indicate the
+#' target type. In the same way, expressions like `list(NA)` store a
+#' logical `NA`, since lists and environments can contain any types.
 #'
 #' @seealso The [new-vector-along] family to create typed vectors filled
 #'   with missing values.
@@ -57,15 +56,15 @@ na_cpl <- NA_complex_
 #'
 #' `are_na()` checks for missing values in a vector and is equivalent
 #' to [base::is.na()]. It is a vectorised predicate, meaning that its
-#' output is always the same length as its input. On the other hand,
+#' output is always the same length as its input. In contrast,
 #' `is_na()` is a scalar predicate and always returns a scalar
 #' boolean, `TRUE` or `FALSE`. If its input is not scalar, it returns
 #' `FALSE`. Finally, there are typed versions that check for
 #' particular [missing types][missing].
 #'
 #' The scalar predicates accept non-vector inputs. They are equivalent
-#' to [is_null()] in that respect. In contrast the vectorised
-#' predicate `are_na()` requires a vector input since it is defined
+#' to [is_null()] in that respect. In contrast, the vectorised
+#' predicate `are_na()` requires a vector input, since it is defined
 #' over vector values.
 #'
 #' @param x An object to test

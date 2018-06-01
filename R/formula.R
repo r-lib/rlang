@@ -14,7 +14,7 @@ new_formula <- function(lhs, rhs, env = caller_env()) {
 
 #' Is object a formula?
 #'
-#' `is_formula()` tests if `x` is a call to `~`. `is_bare_formula()`
+#' `is_formula()` tests whether `x` is a call to `~`. `is_bare_formula()`
 #' tests in addition that `x` does not inherit from anything else than
 #' `"formula"`.
 #'

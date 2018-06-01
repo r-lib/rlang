@@ -5,7 +5,7 @@
 #' Language objects are (with symbols) one of the two types of
 #' [symbolic][is_symbolic] objects in R. These symbolic objects form
 #' the backbone of [expressions][is_expression]. They represent a value,
-#' unlike literal objects which are their own values. While symbols
+#' unlike literal objects which are their own values. Whereas symbols
 #' are directly [bound][env_bind] to a value, language objects
 #' represent _function calls_, which is why they are commonly referred
 #' to as calls.
@@ -101,7 +101,7 @@ is_callable <- function(x) {
 
 #' Is object a call?
 #'
-#' This function tests if `x` is a [call][call2]. This is a
+#' This function tests whether `x` is a [call][call2]. This is a
 #' pattern-matching predicate that returns `FALSE` if `name` and `n`
 #' are supplied and the call does not match these properties.
 #' `is_unary_call()` and `is_binary_call()` hardcode `n` to 1 and 2.
@@ -433,7 +433,7 @@ call_name <- function(call) {
 #' # object:
 #' call[-1]
 #'
-#' # On the other hand, call_args() returns a regular list that is
+#' # In contrast, call_args() returns a regular list that is
 #' # often easier to work with:
 #' str(call_args(call))
 #'

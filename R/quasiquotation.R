@@ -31,10 +31,10 @@
 #' @section Unquoting names:
 #'
 #' When a function takes multiple named arguments
-#' (e.g. `dplyr::mutate()`), it is difficult to supply a variable as
-#' name. Since the LHS of `=` is quoted, giving the name of a variable
+#' (e.g. `dplyr::mutate()`), it is difficult to supply the value of a variable as
+#' the argument name. Since the LHS of `=` is quoted, giving the name of a variable
 #' results in the argument having the name of the variable rather than
-#' the name stored in that variable. This problem is right up the
+#' the value stored in that variable. This problem is right up the
 #' alley for the unquoting operator `!!`. If you were able to unquote
 #' the variable when supplying the name, the argument would be named
 #' after the content of that variable.
@@ -85,7 +85,7 @@
 #'   prefix form of `a + b`).
 #'
 #'   Note that the prefix forms are not as relevant as before because
-#'   `!!` now has the right operator precedence, i.e. the same as
+#'   `!!` now has the correct operator precedence, i.e. the same as
 #'   unary `-` or `+`. It is thus safe to mingle it with other
 #'   operators, e.g. `!!a + !!b` does the right thing. In addition the
 #'   parser now strips one level of parentheses around unquoted

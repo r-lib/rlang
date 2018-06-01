@@ -29,8 +29,8 @@ is only one environment deep, \code{top} should be the same as
 A data mask that you can supply to \code{\link[=eval_tidy]{eval_tidy()}}.
 }
 \description{
-A data mask is an environment (or possibly multiple environments
-forming an ancestry) containing user-supplied objects. Objects in
+A data mask is an environment (or group of related environments
+that form an ancestry) containing user-supplied objects. Objects in
 the mask have precedence over objects in the environment (i.e. they
 mask those objects). Many R functions evaluate quoted expressions
 in a data mask so these expressions can refer to objects within the

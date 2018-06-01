@@ -68,8 +68,8 @@ last argument is ignored if it is empty.}
 Quotation is a mechanism by which an expression supplied as
 argument is captured by a function. Instead of seeing the value of
 the argument, the function sees the recipe (the R code) to make
-that value. This is possible because R \link[=is_expr]{expressions} are
-representable as regular objects in R:
+that value. This is possible because R \link[=is_expr]{expressions} can
+be represented as regular objects in R:
 \itemize{
 \item Calls represent the action of calling a function to
 compute a new value. Evaluating a call causes that value to be
@@ -79,9 +79,9 @@ particular context (an \link[=env]{environment}).
 }
 
 We call objects containing calls and symbols \link[=is_expr]{expressions}.
-There are two ways to create R expressions. First you can \strong{build}
+There are two ways to create R expressions. One way is to \strong{build}
 calls and symbols from parts and pieces (see \code{\link[=sym]{sym()}}, \code{\link[=syms]{syms()}} and
-\code{\link[=call2]{call2()}}). The other way is by \emph{quotation} or \emph{quasiquotation},
+\code{\link[=call2]{call2()}}). The other is via \emph{quotation} or \emph{quasiquotation},
 i.e. by intercepting an expression instead of evaluating it.
 }
 \section{User expressions versus your expressions}{
@@ -95,7 +95,7 @@ function. This is the purpose of \code{ensym()}, \code{enexpr()} and
 \code{enquo()} and their plural variants. These functions take an
 argument name and capture the expression that was supplied to
 that argument.
-\item You can capture the expressions that \emph{you} supply. To this end
+\item You can capture the expressions that \emph{you} supply. To this end,
 use \code{expr()} and \code{quo()} and their plural variants \code{exprs()} and
 \code{quos()}.
 }
@@ -105,10 +105,10 @@ use \code{expr()} and \code{quo()} and their plural variants \code{exprs()} and
 
 \itemize{
 \item \code{enexpr()} and \code{expr()} capture a single raw expression.
-\item \code{enexprs()} and \code{exprs()} capture a list of raw expressions
+\item \code{enexprs()} and \code{exprs()} capture a list of raw expressions,
 including expressions contained in \code{...}.
 \item \code{ensym()} and \code{ensyms()} are variants of \code{enexpr()} and
-\code{enexprs()} that check the captured expression is either a string
+\code{enexprs()} that check whether the captured expression is either a string
 (which they convert to symbol) or a symbol. If anything else
 is supplied they throw an error.
 }
@@ -144,14 +144,14 @@ See the \link{quosure} help topic about tools to work with quosures.
 \section{Quasiquotation}{
 
 
-All quotation functions in rlang have support for \link[=quasiquotation]{unquoting
+All quotation functions in rlang support \link[=quasiquotation]{unquoting
 operators}. The combination of quotation and
 unquotation is called \emph{quasiquotation}.
 
 Unquotation provides a way to refer to variables during quotation.
 Variables are problematic when quoting because a captured
 expression is essentially a constant, just like a string is a
-constant. For instance in all the following cases \code{apple} is a
+constant. For instance, in all of the following cases \code{apple} is a
 constant: \code{~apple}, \code{"apple"} and \code{expr(apple)}. Unquoting allows
 you to introduce a part of variability within a captured
 expression.
@@ -172,7 +172,7 @@ See the \link{quasiquotation} help topic for more about this as well as
 \section{Life cycle}{
 
 
-All the quotation functions mentioned here are stable.
+All the quotation functions described here are stable.
 }
 
 \examples{
@@ -199,7 +199,7 @@ sym_inputs(hello, "bonjour")
 expr_inputs(say(hello))
 
 
-# All these quoting functions have quasiquotation support. This
+# All these quoting functions support quasiquotation. This
 # means that you can unquote (evaluate and inline) part of the
 # captured expression:
 what <- sym("bonjour")

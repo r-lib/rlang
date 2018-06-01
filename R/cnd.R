@@ -91,7 +91,7 @@ cnd_type <- function(cnd) {
 #' stack. Conditions signalled with `cnd_signal()` are assumed to be
 #' benign. Control flow can resume normally once the condition has
 #' been signalled (if no handler jumped somewhere else on the
-#' evaluation stack). On the other hand, `cnd_abort()` treats the
+#' evaluation stack). In contrast, `cnd_abort()` treats the
 #' condition as critical and will jump out of the distressed call
 #' frame (see [rst_abort()]), unless a handler can deal with the
 #' condition.

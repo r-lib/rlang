@@ -81,7 +81,7 @@ to crash if you call them with unexpected objects.
 is_closure(base::c)
 is_primitive(base::c)
 
-# On the other hand, internal functions are wrapped in a closure
+# In contrast, internal functions are wrapped in a closure
 # and appear as such from the R side:
 is_closure(base::eval)
 

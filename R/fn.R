@@ -247,7 +247,7 @@ fn_body <- function(fn = caller_fn()) {
 #' is_closure(base::c)
 #' is_primitive(base::c)
 #'
-#' # On the other hand, internal functions are wrapped in a closure
+#' # In contrast, internal functions are wrapped in a closure
 #' # and appear as such from the R side:
 #' is_closure(base::eval)
 #'

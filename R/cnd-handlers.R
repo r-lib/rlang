@@ -11,7 +11,7 @@
 #' An exiting handler is taking charge of the condition. No other
 #' handler on the stack gets a chance to handle the condition. The
 #' handler is executed and `with_handlers()` returns the return value
-#' of that handler. On the other hand, in place handlers do not
+#' of that handler. In contrast, in place handlers do not
 #' necessarily take charge. If they return normally, they decline to
 #' handle the condition, and R looks for other handlers established on
 #' the evaluation stack. Only by jumping to an earlier call frame can
@@ -115,7 +115,7 @@ with_handlers <- function(.expr, ...) {
 #' established it ([with_handlers()]). That is, it interrupts the
 #' normal course of evaluation and jumps to `with_handlers()`
 #' evaluation frame (see [ctxt_stack()]), and only then and there the
-#' handler is called. On the other hand, if R finds a calling
+#' handler is called. In contrast, if R finds a calling
 #' handler, it executes it locally. The calling handler can choose to
 #' handle the condition by jumping out of the frame (see [rst_jump()]
 #' or [return_from()]). If it returns locally, it declines to handle

@@ -101,7 +101,7 @@ l <- list(missing_arg())
 # error.
 # x  # Not run
 
-# On the other hand accessing a missing argument contained in a
+# In contrast, accessing a missing argument contained in a
 # list does not trigger an error because subsetting is a function
 # call:
 l[[1]]

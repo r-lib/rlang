@@ -289,7 +289,7 @@ switch_expr <- function(.x, ...) {
 #' * It wraps inlined objects in angular brackets. For instance, an
 #'   integer vector unquoted in a function call (e.g.
 #'   `expr(foo(!!(1:3)))`) is printed like this: `foo(<int: 1L, 2L,
-#'   3L>)` while by default R prints the code to create that vector:
+#'   3L>)` whereas by default R prints the code to create that vector:
 #'   `foo(1:3)` which is ambiguous.
 #'
 #' * It respects the width boundary (from the global option `width`)

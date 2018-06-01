@@ -30,7 +30,7 @@ is_cpl_na(x)
 \description{
 \code{are_na()} checks for missing values in a vector and is equivalent
 to \code{\link[base:is.na]{base::is.na()}}. It is a vectorised predicate, meaning that its
-output is always the same length as its input. On the other hand,
+output is always the same length as its input. In contrast,
 \code{is_na()} is a scalar predicate and always returns a scalar
 boolean, \code{TRUE} or \code{FALSE}. If its input is not scalar, it returns
 \code{FALSE}. Finally, there are typed versions that check for
@@ -38,8 +38,8 @@ particular \link[=missing]{missing types}.
 }
 \details{
 The scalar predicates accept non-vector inputs. They are equivalent
-to \code{\link[=is_null]{is_null()}} in that respect. In contrast the vectorised
-predicate \code{are_na()} requires a vector input since it is defined
+to \code{\link[=is_null]{is_null()}} in that respect. In contrast, the vectorised
+predicate \code{are_na()} requires a vector input, since it is defined
 over vector values.
 }
 \examples{

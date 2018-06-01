@@ -5,7 +5,7 @@
 #' `eval_tidy()` is a variant of [base::eval()] that powers the tidy
 #' evaluation framework. Like `eval()` it accepts user data as
 #' argument. If supplied, it evaluates its input `expr` in a [data
-#' mask][as_data_mask]. In addition `eval_tidy()` supports:
+#' mask][as_data_mask]. In addition, `eval_tidy()` supports:
 #'
 #' - [Quosures][quotation]. The expression wrapped in the quosure
 #'   evaluates in its original context (masked by `data` if supplied).
@@ -47,7 +47,7 @@
 #' eval_tidy(expr, data)
 #'
 #'
-#' # In addition eval_tidy() has support for quosures:
+#' # In addition, eval_tidy() supports quosures:
 #' with_data <- function(data, expr) {
 #'   quo <- enquo(expr)
 #'   eval_tidy(quo, data)
@@ -56,19 +56,19 @@
 #' with_data(data, apple)
 #' with_data(data, list(apple, kiwi))
 #'
-#' # Secondly eval_tidy() installs handy pronouns that allow users to
+#' # eval_tidy() also provides handy pronouns that allow users to
 #' # be explicit about where to find symbols:
 #' with_data(data, .data$apple)
 #' with_data(data, .env$apple)
 #'
 #'
 #' # Note that instead of using `.env` it is often equivalent and may
-#' # be preferred to unquote a value. There are two differences. First
-#' # unquoting happens earlier, when the quosure is created. Secondly,
+#' # be preferred to unquote a value. There are two differences. First,
+#' # unquoting happens earlier, when the quosure is created. Second,
 #' # subsetting `.env` with the `$` operator may be brittle because
 #' # `$` does not look through the parents of the environment.
 #' #
-#' # For instance using `.env$name` in a magrittr pipeline is an
+#' # For example, using `.env$name` in a magrittr pipeline is an
 #' # instance where this poses problem, because the magrittr pipe
 #' # currently (as of v1.5.0) evaluates its operands in a *child* of
 #' # the current environment (this child environment is where it
@@ -91,11 +91,11 @@ eval_tidy <- function(expr, data = NULL, env = caller_env()) {
 #' the original data frame has several advantages:
 #'
 #' * Sometimes a computation is not about the whole data but about a
-#'   subset. For example if you supply a grouped data frame to a dplyr
+#'   subset. For example, if you supply a grouped data frame to a dplyr
 #'   verb, the `.data` pronoun contains the group subset.
 #'
 #' * It lets dplyr know that you're referring to a column from the
-#'   data which is helpful to generate correct queries when the source
+#'   data, which helps generate correct queries when the source
 #'   is a database.
 #'
 #' The `.data` object exported here is useful to import in your
@@ -112,8 +112,8 @@ delayedAssign(".data", as_data_pronoun(list()))
 #'
 #' @description
 #'
-#' A data mask is an environment (or possibly multiple environments
-#' forming an ancestry) containing user-supplied objects. Objects in
+#' A data mask is an environment (or group of related environments
+#' that form an ancestry) containing user-supplied objects. Objects in
 #' the mask have precedence over objects in the environment (i.e. they
 #' mask those objects). Many R functions evaluate quoted expressions
 #' in a data mask so these expressions can refer to objects within the

@@ -15,7 +15,7 @@ has_name(x, name)
 A logical vector of the same length as \code{name}
 }
 \description{
-This function returns a logical value that indicates if a data frame or
+This function returns a logical value that indicates whether a data frame or
 another named object contains an element with a specific name.
 }
 \details{

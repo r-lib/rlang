@@ -59,7 +59,7 @@ Compared to base R functions:
 pattern-matching on the vector length.
 \item Unlike \code{is.atomic()}, \code{is_atomic()} does not return \code{TRUE} for
 \code{NULL}.
-\item Unlike \code{is.vector()}, \code{is_vector()} tests if an object is an
+\item Unlike \code{is.vector()}, \code{is_vector()} tests whether an object is an
 atomic vector or a list. \code{is.vector} checks for the presence of
 attributes (other than name).
 }

@@ -94,7 +94,7 @@ set_class <- function(x, class) {
 #' @param x An object to test.
 #' @return `is_named()` and `is_dictionaryish()` are scalar predicates
 #'   and return `TRUE` or `FALSE`. `have_name()` is vectorised and
-#'   returns a logical vector as long as the input.
+#'   returns a logical vector the same length as the input.
 #' @export
 #' @examples
 #' # A data frame usually has valid, unique names
@@ -173,7 +173,7 @@ nms_are_invalid <- function(x) {
 
 #' Does an object have an element with this name?
 #'
-#' This function returns a logical value that indicates if a data frame or
+#' This function returns a logical value that indicates whether a data frame or
 #' another named object contains an element with a specific name.
 #'
 #' Unnamed objects are treated as if all names are empty strings. `NA`

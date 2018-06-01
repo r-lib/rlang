@@ -30,7 +30,7 @@ which are executed within the signal functions.
 An exiting handler is taking charge of the condition. No other
 handler on the stack gets a chance to handle the condition. The
 handler is executed and \code{with_handlers()} returns the return value
-of that handler. On the other hand, in place handlers do not
+of that handler. In contrast, in place handlers do not
 necessarily take charge. If they return normally, they decline to
 handle the condition, and R looks for other handlers established on
 the evaluation stack. Only by jumping to an earlier call frame can

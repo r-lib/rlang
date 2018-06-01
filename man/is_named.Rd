@@ -18,7 +18,7 @@ have_name(x)
 \value{
 \code{is_named()} and \code{is_dictionaryish()} are scalar predicates
 and return \code{TRUE} or \code{FALSE}. \code{have_name()} is vectorised and
-returns a logical vector as long as the input.
+returns a logical vector the same length as the input.
 }
 \description{
 \code{is_named()} checks that \code{x} has names attributes, and that none of

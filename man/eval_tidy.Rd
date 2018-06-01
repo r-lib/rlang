@@ -20,7 +20,7 @@ are evaluated in their own environment.}
 \code{eval_tidy()} is a variant of \code{\link[base:eval]{base::eval()}} that powers the tidy
 evaluation framework. Like \code{eval()} it accepts user data as
 argument. If supplied, it evaluates its input \code{expr} in a \link[=as_data_mask]{data
-mask}. In addition \code{eval_tidy()} supports:
+mask}. In addition, \code{eval_tidy()} supports:
 \itemize{
 \item \link[=quotation]{Quosures}. The expression wrapped in the quosure
 evaluates in its original context (masked by \code{data} if supplied).
@@ -54,7 +54,7 @@ eval(expr, data)
 eval_tidy(expr, data)
 
 
-# In addition eval_tidy() has support for quosures:
+# In addition, eval_tidy() supports quosures:
 with_data <- function(data, expr) {
   quo <- enquo(expr)
   eval_tidy(quo, data)
@@ -63,19 +63,19 @@ with_data(NULL, apple)
 with_data(data, apple)
 with_data(data, list(apple, kiwi))
 
-# Secondly eval_tidy() installs handy pronouns that allow users to
+# eval_tidy() also provides handy pronouns that allow users to
 # be explicit about where to find symbols:
 with_data(data, .data$apple)
 with_data(data, .env$apple)
 
 
 # Note that instead of using `.env` it is often equivalent and may
-# be preferred to unquote a value. There are two differences. First
-# unquoting happens earlier, when the quosure is created. Secondly,
+# be preferred to unquote a value. There are two differences. First,
+# unquoting happens earlier, when the quosure is created. Second,
 # subsetting `.env` with the `$` operator may be brittle because
 # `$` does not look through the parents of the environment.
 #
-# For instance using `.env$name` in a magrittr pipeline is an
+# For example, using `.env$name` in a magrittr pipeline is an
 # instance where this poses problem, because the magrittr pipe
 # currently (as of v1.5.0) evaluates its operands in a *child* of
 # the current environment (this child environment is where it

@@ -20,7 +20,7 @@ or symbol.}
 Language objects are (with symbols) one of the two types of
 \link[=is_symbolic]{symbolic} objects in R. These symbolic objects form
 the backbone of \link[=is_expression]{expressions}. They represent a value,
-unlike literal objects which are their own values. While symbols
+unlike literal objects which are their own values. Whereas symbols
 are directly \link[=env_bind]{bound} to a value, language objects
 represent \emph{function calls}, which is why they are commonly referred
 to as calls.

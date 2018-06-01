@@ -97,7 +97,7 @@ my_env$baz
 fn <- function() list(a, b)
 fn <- set_env(fn, child_env("base"))
 
-# This would fail if run since `a` etc are not defined in the
+# This would fail if run, since `a` etc. are not defined in the
 # enclosure of fn() (a child of the base environment):
 # fn()
 

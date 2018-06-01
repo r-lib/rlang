@@ -19,7 +19,7 @@ Signal a condition to handlers that have been established on the
 stack. Conditions signalled with \code{cnd_signal()} are assumed to be
 benign. Control flow can resume normally once the condition has
 been signalled (if no handler jumped somewhere else on the
-evaluation stack). On the other hand, \code{cnd_abort()} treats the
+evaluation stack). In contrast, \code{cnd_abort()} treats the
 condition as critical and will jump out of the distressed call
 frame (see \code{\link[=rst_abort]{rst_abort()}}), unless a handler can deal with the
 condition.

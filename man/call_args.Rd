@@ -34,7 +34,7 @@ call <- quote(f(a, b))
 # object:
 call[-1]
 
-# On the other hand, call_args() returns a regular list that is
+# In contrast, call_args() returns a regular list that is
 # often easier to work with:
 str(call_args(call))
 

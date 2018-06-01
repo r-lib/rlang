@@ -12,7 +12,7 @@
 #' * Unlike `is.atomic()`, `is_atomic()` does not return `TRUE` for
 #'   `NULL`.
 #'
-#' * Unlike `is.vector()`, `is_vector()` tests if an object is an
+#' * Unlike `is.vector()`, `is_vector()` tests whether an object is an
 #'   atomic vector or a list. `is.vector` checks for the presence of
 #'   attributes (other than name).
 #'
@@ -344,12 +344,12 @@ is_scalar_integerish <- function(x, finite = NULL) {
 #'
 #' # This is a bit inconsistent with the core language tenet that data
 #' # types are vectors. However, treating strings as a different
-#' # scalar type is quite helpful for switching on function inputs
+#' # scalar type is quite helpful for switching on function inputs,
 #' # since so many arguments expect strings:
 #' switch_type("foo", character = abort("vector!"), string = "result")
 #'
 #' # Special and builtin primitives are both treated as primitives.
-#' # That's because it is often irrelevant which type of primitive an
+#' # This is because it's often irrelevant which type of primitive an
 #' # input is:
 #' typeof(list)
 #' typeof(`$`)

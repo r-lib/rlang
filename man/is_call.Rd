@@ -25,7 +25,7 @@ doesn't participate in the pattern-matching. If an empty string
 namespaced within \code{ns}.}
 }
 \description{
-This function tests if \code{x} is a \link[=call2]{call}. This is a
+This function tests whether \code{x} is a \link[=call2]{call}. This is a
 pattern-matching predicate that returns \code{FALSE} if \code{name} and \code{n}
 are supplied and the call does not match these properties.
 \code{is_unary_call()} and \code{is_binary_call()} hardcode \code{n} to 1 and 2.

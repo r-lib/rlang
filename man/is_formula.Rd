@@ -21,7 +21,7 @@ or \link[=is_definition]{definition} has a left-hand side. If \code{NULL},
 the LHS is not inspected.}
 }
 \description{
-\code{is_formula()} tests if \code{x} is a call to \code{~}. \code{is_bare_formula()}
+\code{is_formula()} tests whether \code{x} is a call to \code{~}. \code{is_bare_formula()}
 tests in addition that \code{x} does not inherit from anything else than
 \code{"formula"}.
 }

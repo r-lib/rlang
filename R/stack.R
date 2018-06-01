@@ -35,9 +35,9 @@ current_fn <- function() {
 #' the context stack), as well as for [parent.frame()] (which is the
 #' only base R function for querying the call stack). The context
 #' stack includes all R-level evaluation contexts. It is linear in
-#' terms of execution history but due to lazy evaluation it is
-#' potentially nonlinear in terms of call history. The call stack
-#' history, on the other hand, is homogenous.
+#' terms of execution history, but due to lazy evaluation it is
+#' potentially nonlinear in terms of call history. In contrast,
+#' the call stack history is homogenous.
 #'
 #' `ctxt_frame()` and `call_frame()` return a `frame` object
 #' containing the following fields: `expr` and `env` (call expression
@@ -51,7 +51,7 @@ current_fn <- function() {
 #'
 #' The base R functions take two sorts of arguments to indicate which
 #' frame to query: `which` and `n`. The `n` argument is
-#' straightforward: it's the number of frames to go down the stack,
+#' straightforward: it is the number of frames to go down the stack,
 #' with `n = 1` referring to the current context. The `which` argument
 #' is more complicated and changes meaning for values lower than 1.
 #' For the sake of consistency, the rlang functions all take the
@@ -63,7 +63,7 @@ current_fn <- function() {
 #' frame. This makes the `_frame()` and `_stack()` functions
 #' consistent: `ctxt_frame(2)` is the same as `ctxt_stack()[[2]]`.
 #' Also, `ctxt_depth()` returns one more frame than
-#' [base::sys.nframe()] because it counts the global frame. That is
+#' [base::sys.nframe()] because it counts the global frame. This is
 #' consistent with the `_stack()` functions which return the global
 #' frame as well. This way, `call_stack(call_depth())` is the same as
 #' `global_frame()`.
@@ -95,7 +95,7 @@ current_fn <- function() {
 #' identity(identity(call_depth())) # returns 0
 #'
 #' # The context stacks includes all intervening execution frames. The
-#' # call stack doesn't:
+#' # call stack does not:
 #' f <- function(x) identity(x)
 #' f(f(ctxt_stack()))
 #' f(f(call_stack()))

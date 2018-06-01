@@ -125,7 +125,7 @@ env_parent(child_env(NULL))
 base_child <- child_env("base")
 env_has(base_child, c("lapply", "("), inherit = TRUE)
 
-# On the other hand, a child of the empty environment doesn't even
+# In contrast, a child of the empty environment doesn't even
 # see a definition for `(`
 empty_child <- child_env(NULL)
 env_has(empty_child, c("lapply", "("), inherit = TRUE)

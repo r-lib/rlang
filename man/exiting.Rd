@@ -32,7 +32,7 @@ it finds an exiting handler, it throws it to the function that
 established it (\code{\link[=with_handlers]{with_handlers()}}). That is, it interrupts the
 normal course of evaluation and jumps to \code{with_handlers()}
 evaluation frame (see \code{\link[=ctxt_stack]{ctxt_stack()}}), and only then and there the
-handler is called. On the other hand, if R finds a calling
+handler is called. In contrast, if R finds a calling
 handler, it executes it locally. The calling handler can choose to
 handle the condition by jumping out of the frame (see \code{\link[=rst_jump]{rst_jump()}}
 or \code{\link[=return_from]{return_from()}}). If it returns locally, it declines to handle

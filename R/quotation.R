@@ -5,8 +5,8 @@
 #' Quotation is a mechanism by which an expression supplied as
 #' argument is captured by a function. Instead of seeing the value of
 #' the argument, the function sees the recipe (the R code) to make
-#' that value. This is possible because R [expressions][is_expr] are
-#' representable as regular objects in R:
+#' that value. This is possible because R [expressions][is_expr] can
+#' be represented as regular objects in R:
 #'
 #' * Calls represent the action of calling a function to
 #'   compute a new value. Evaluating a call causes that value to be
@@ -16,9 +16,9 @@
 #'   particular context (an [environment][env]).
 #'
 #' We call objects containing calls and symbols [expressions][is_expr].
-#' There are two ways to create R expressions. First you can **build**
+#' There are two ways to create R expressions. One way is to **build**
 #' calls and symbols from parts and pieces (see [sym()], [syms()] and
-#' [call2()]). The other way is by *quotation* or *quasiquotation*,
+#' [call2()]). The other is via *quotation* or *quasiquotation*,
 #' i.e. by intercepting an expression instead of evaluating it.
 #'
 #'
@@ -33,7 +33,7 @@
 #'   argument name and capture the expression that was supplied to
 #'   that argument.
 #'
-#' * You can capture the expressions that _you_ supply. To this end
+#' * You can capture the expressions that _you_ supply. To this end,
 #'   use `expr()` and `quo()` and their plural variants `exprs()` and
 #'   `quos()`.
 #'
@@ -42,11 +42,11 @@
 #'
 #' * `enexpr()` and `expr()` capture a single raw expression.
 #'
-#' * `enexprs()` and `exprs()` capture a list of raw expressions
+#' * `enexprs()` and `exprs()` capture a list of raw expressions,
 #'   including expressions contained in `...`.
 #'
 #' * `ensym()` and `ensyms()` are variants of `enexpr()` and
-#'   `enexprs()` that check the captured expression is either a string
+#'   `enexprs()` that check whether the captured expression is either a string
 #'   (which they convert to symbol) or a symbol. If anything else
 #'   is supplied they throw an error.
 #'
@@ -79,14 +79,14 @@
 #'
 #' @section Quasiquotation:
 #'
-#' All quotation functions in rlang have support for [unquoting
+#' All quotation functions in rlang support [unquoting
 #' operators][quasiquotation]. The combination of quotation and
 #' unquotation is called *quasiquotation*.
 #'
 #' Unquotation provides a way to refer to variables during quotation.
 #' Variables are problematic when quoting because a captured
 #' expression is essentially a constant, just like a string is a
-#' constant. For instance in all the following cases `apple` is a
+#' constant. For instance, in all of the following cases `apple` is a
 #' constant: `~apple`, `"apple"` and `expr(apple)`. Unquoting allows
 #' you to introduce a part of variability within a captured
 #' expression.
@@ -106,7 +106,7 @@
 #'
 #' @section Life cycle:
 #'
-#' All the quotation functions mentioned here are stable.
+#' All the quotation functions described here are stable.
 #'
 #'
 #' @inheritParams tidy-dots
@@ -150,7 +150,7 @@
 #' expr_inputs(say(hello))
 #'
 #'
-#' # All these quoting functions have quasiquotation support. This
+#' # All these quoting functions support quasiquotation. This
 #' # means that you can unquote (evaluate and inline) part of the
 #' # captured expression:
 #' what <- sym("bonjour")

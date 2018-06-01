@@ -15,10 +15,10 @@ inside the data. Referring to the \code{.data} pronoun rather than to
 the original data frame has several advantages:
 \itemize{
 \item Sometimes a computation is not about the whole data but about a
-subset. For example if you supply a grouped data frame to a dplyr
+subset. For example, if you supply a grouped data frame to a dplyr
 verb, the \code{.data} pronoun contains the group subset.
 \item It lets dplyr know that you're referring to a column from the
-data which is helpful to generate correct queries when the source
+data, which helps generate correct queries when the source
 is a database.
 }
 

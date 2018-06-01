@@ -41,7 +41,7 @@ written by a programmer.
 \details{
 \code{parse_expr()} returns one expression. If the text contains more
 than one expression (separated by semicolons or new lines), an error is
-issued. On the other hand \code{parse_exprs()} can handle multiple
+issued. In contrast, \code{parse_exprs()} can handle multiple
 expressions. It always returns a list of expressions (compare to
 \code{\link[base:parse]{base::parse()}} which returns a base::expression vector). All
 functions also support R connections.

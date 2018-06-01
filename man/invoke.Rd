@@ -40,12 +40,12 @@ noise.
 
 
 \code{invoke()} is in the questioning stage. Now that we
-understand better the interaction between unquoting and dots
+better understand the interaction between unquoting and dots
 capture, we believe that \code{invoke()} should not take a \code{.args}
 argument. Instead it should take dots with \code{\link[=dots_list]{dots_list()}} in order
 to enable \code{!!!} syntax.
 
-We ask rlang users not to use \code{invoke()} in CRAN packages because
+We ask that rlang users not use \code{invoke()} in CRAN packages because
 we plan a breaking API update to remove the \code{.args} argument.
 }
 

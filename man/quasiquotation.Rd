@@ -60,10 +60,10 @@ the base R printer (see the \link[=expr_print]{documentation topic}).
 
 
 When a function takes multiple named arguments
-(e.g. \code{dplyr::mutate()}), it is difficult to supply a variable as
-name. Since the LHS of \code{=} is quoted, giving the name of a variable
+(e.g. \code{dplyr::mutate()}), it is difficult to supply the value of a variable as
+the argument name. Since the LHS of \code{=} is quoted, giving the name of a variable
 results in the argument having the name of the variable rather than
-the name stored in that variable. This problem is right up the
+the value stored in that variable. This problem is right up the
 alley for the unquoting operator \code{!!}. If you were able to unquote
 the variable when supplying the name, the argument would be named
 after the content of that variable.
@@ -112,7 +112,7 @@ consistent with other R operators (e.g. \code{`+`(a, b)} is the
 prefix form of \code{a + b}).
 
 Note that the prefix forms are not as relevant as before because
-\code{!!} now has the right operator precedence, i.e. the same as
+\code{!!} now has the correct operator precedence, i.e. the same as
 unary \code{-} or \code{+}. It is thus safe to mingle it with other
 operators, e.g. \code{!!a + !!b} does the right thing. In addition the
 parser now strips one level of parentheses around unquoted
