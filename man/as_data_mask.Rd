@@ -84,7 +84,7 @@ lists, i.e. when an object does not exist or if an user tries to
 overwrite an object.
 }
 
-To use a a data mask, just supply it to \code{\link[=eval_tidy]{eval_tidy()}} as \code{data}
+To use a data mask, just supply it to \code{\link[=eval_tidy]{eval_tidy()}} as \code{data}
 argument. You can repeat this as many times as needed. Note that
 any objects created there (perhaps because of a call to \code{<-}) will
 persist in subsequent evaluations:
