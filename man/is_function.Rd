@@ -29,7 +29,7 @@ kind of functions.
 \details{
 Closures are functions written in R, named after the way their
 arguments are scoped within nested environments (see
-https://en.wikipedia.org/wiki/Closure_(computer_programming)).  The
+https://en.wikipedia.org/wiki/Closure_(computer_programming)). The
 root environment of the closure is called the closure
 environment. When closures are evaluated, a new environment called
 the evaluation frame is created with the closure environment as
@@ -40,11 +40,11 @@ their own evaluation frame and never appear on the stack.
 
 Primitive functions are more efficient than closures for two
 reasons. First, they are written entirely in fast low-level
-code. Secondly, the mechanism by which they are passed arguments is
+code. Second, the mechanism by which they are passed arguments is
 more efficient because they often do not need the full procedure of
 argument matching (dealing with positional versus named arguments,
 partial matching, etc). One practical consequence of the special
-way in which primitives are passed arguments this is that they
+way in which primitives are passed arguments is that they
 technically do not have formal arguments, and \code{\link[=formals]{formals()}} will
 return \code{NULL} if called on a primitive function. See \code{\link[=fn_fmls]{fn_fmls()}}
 for a function that returns a representation of formal arguments

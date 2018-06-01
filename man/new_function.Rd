@@ -7,7 +7,7 @@
 new_function(args, body, env = caller_env())
 }
 \arguments{
-\item{args}{A named list of default arguments.  Note that if you
+\item{args}{A named list of default arguments. Note that if you
 want arguments that don't have defaults, you'll need to use the
 special function \link{alist}, e.g. \code{alist(a = , b = 1)}}
 
@@ -19,7 +19,7 @@ function. Usually this will be most easily generated with
 calling environment of \code{new_function()}}
 }
 \description{
-This constructs a new function given it's three components:
+This constructs a new function given its three components:
 list of arguments, body code and parent environment.
 }
 \examples{

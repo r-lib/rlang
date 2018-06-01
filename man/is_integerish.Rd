@@ -19,7 +19,7 @@ is_scalar_integerish(x, finite = NULL)
 
 \item{finite}{Whether all values of the vector are finite. The
 non-finite values are \code{NA}, \code{Inf}, \code{-Inf} and \code{NaN}. Setting this
-to something else than \code{NULL} can be expensive because the whole
+to something other than \code{NULL} can be expensive because the whole
 vector needs to be traversed and checked.}
 }
 \description{
@@ -30,7 +30,7 @@ data analysis, see the help for \code{\link[base:is.integer]{base::is.integer()}
 of how to check for whole numbers.
 
 Note that this check can be expensive for double vectors because
-they have to be traversed and check in their entirety.
+they have to be traversed and checked in their entirety.
 }
 \examples{
 is_integerish(10L)

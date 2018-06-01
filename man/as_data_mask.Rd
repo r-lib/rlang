@@ -60,8 +60,8 @@ data frame columns in dplyr data masks are implemented with
 
 Creating a data mask for \code{\link[base:eval]{base::eval()}} is a simple matter of
 creating an environment containing masking objects that has the
-user context as parent. \code{eval()} automates this task when you
-supply data as second argument. However a tidy eval data mask also
+user context as its parent. \code{eval()} automates this task when you
+supply data as the second argument. However, a tidy eval data mask also
 needs to enable support of \link[=quotation]{quosures} and \link[=tidyeval-data]{data
 pronouns}. These functions allow manual construction
 of tidy eval data masks:
@@ -84,7 +84,7 @@ lists, i.e. when an object does not exist or if an user tries to
 overwrite an object.
 }
 
-To use a data mask, just supply it to \code{\link[=eval_tidy]{eval_tidy()}} as \code{data}
+To use a data mask, just supply it to \code{\link[=eval_tidy]{eval_tidy()}} as the \code{data}
 argument. You can repeat this as many times as needed. Note that
 any objects created there (perhaps because of a call to \code{<-}) will
 persist in subsequent evaluations:
@@ -99,7 +99,7 @@ In early versions of rlang data masks were called overscopes. We
 think data mask is a more natural name in R. It makes reference to
 masking in the search path which occurs through the same mechanism
 (in technical terms, lexical scoping with hierarchically nested
-environments). We say that that objects from user data mask objects
+environments). We say that objects from user data mask objects
 in the current environment.
 
 Following this change in terminology, \code{as_data_mask()} and

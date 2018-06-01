@@ -1,7 +1,7 @@
 #' Add attributes to an object
 #'
 #' `set_attrs()` adds, changes, or zaps attributes of objects. Pass a
-#' single unnamed `NULL` as argument to zap all attributes. For
+#' single unnamed `NULL` argument to zap all attributes. For
 #' [uncopyable][is_copyable] types, use `mut_attrs()`.
 #'
 #' Unlike [structure()], these setters have no special handling of
@@ -22,7 +22,7 @@
 #'
 #' @param .x An object to decorate with attributes.
 #' @param ... A list of named attributes. These have [explicit
-#'   splicing semantics][tidy-dots]. Pass a single unnamed `NULL` to
+#'   splicing semantics][tidy-dots]. Pass a single unnamed `NULL` argument to
 #'   zap all attributes from `.x`.
 #' @return `set_attrs()` returns a modified [shallow copy][duplicate]
 #'   of `.x`. `mut_attrs()` invisibly returns the original `.x`

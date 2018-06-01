@@ -39,7 +39,7 @@ noise.
 \section{Life cycle}{
 
 
-\code{invoke()} is in questioning lifecycle stage. Now that we
+\code{invoke()} is in the questioning stage. Now that we
 understand better the interaction between unquoting and dots
 capture, we believe that \code{invoke()} should not take a \code{.args}
 argument. Instead it should take dots with \code{\link[=dots_list]{dots_list()}} in order

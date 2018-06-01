@@ -13,7 +13,7 @@ mut_attrs(.x, ...)
 \item{.x}{An object to decorate with attributes.}
 
 \item{...}{A list of named attributes. These have \link[=tidy-dots]{explicit
-splicing semantics}. Pass a single unnamed \code{NULL} to
+splicing semantics}. Pass a single unnamed \code{NULL} argument to
 zap all attributes from \code{.x}.}
 }
 \value{
@@ -23,7 +23,7 @@ modified in place.
 }
 \description{
 \code{set_attrs()} adds, changes, or zaps attributes of objects. Pass a
-single unnamed \code{NULL} as argument to zap all attributes. For
+single unnamed \code{NULL} argument to zap all attributes. For
 \link[=is_copyable]{uncopyable} types, use \code{mut_attrs()}.
 }
 \details{

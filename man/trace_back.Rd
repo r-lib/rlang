@@ -11,11 +11,11 @@ trace_back(to = NULL)
 backtrace will only be recorded up to that frame. This is needed
 in particular when you call \code{trace_back()} indirectly or from a
 larger context, for example in tests or inside an RMarkdown
-document where you don't want all the knitr evaluation mechanism
+document where you don't want all of the knitr evaluation mechanisms
 to appear in the backtrace.}
 }
 \description{
-A call trace captures sequence of calls that lead to the current function,
+A call trace captures the sequence of calls that lead to the current function,
 sometimes called the call stack. Because of lazy evaluation, the call
 stack in R is actually a tree, which the print method of this object will
 reveal.
@@ -56,8 +56,8 @@ x
 # related to the execution environment:
 source(textConnection("f()"), echo = TRUE)
 
-# To automatically strip this off, pass `to = globalenv()`
-# That will automatically trim of calls prior to the last appearance
+# To automatically strip this off, pass `to = globalenv()`.
+# This will automatically trim off calls prior to the last appearance
 # of the global environment on the stack
 h <- function() trace_back(globalenv())
 source(textConnection("f()"), echo = TRUE)

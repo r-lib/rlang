@@ -52,7 +52,7 @@ flatten_if(x, predicate = is_spliced)
 squash_if(x, predicate = is_spliced)
 }
 \arguments{
-\item{x}{A list of flatten or squash. The contents of the list can
+\item{x}{A list to flatten or squash. The contents of the list can
 be anything for unsuffixed functions \code{flatten()} and \code{squash()}
 (as a list is returned), but the contents must match the type for
 the other functions.}
@@ -88,7 +88,7 @@ flatten(flatten(deep))
 squash(deep)
 squash_dbl(deep)
 
-# The typed flattens remove one level and coerce to an atomic
+# The typed flatten functions remove one level and coerce to an atomic
 # vector at the same time:
 flatten_dbl(list(1, list(2)))
 

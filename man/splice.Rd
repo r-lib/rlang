@@ -78,14 +78,14 @@ arguments. To avoid this you can use \code{splice()} instead:\preformatted{purrr
 \section{Life cycle}{
 
 \itemize{
-\item \code{dots_splice()} is in \strong{questioning} stage. It is part of our
+\item \code{dots_splice()} is in the questioning stage. It is part of our
 experiments with dots semantics. Compared to \code{dots_list()},
 \code{dots_splice()} automatically splices lists. We now lean towards
 adopting a single type of dots semantics (those of \code{dots_list()})
 where splicing is explicit.
-\item \code{splice()} is in questioning stage. It is not clear whether it is
+\item \code{splice()} is in the questioning stage. It is not clear whether it is
 really needed as there are other ways to avoid the performance
-issue discussed in the section above.
+issue discussed above.
 }
 }
 

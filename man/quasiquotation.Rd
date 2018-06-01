@@ -44,7 +44,7 @@ forms for unquoting.
 \item The \code{!!} operator unquotes its argument. It gets evaluated
 immediately in the surrounding context.
 \item The \code{!!!} operator unquotes and splices its argument. The
-argument should represents a list or a vector. Each element will
+argument should represent a list or a vector. Each element will
 be embedded in the surrounding call, i.e. each element is
 inserted as an argument. If the vector is named, the names are
 used as argument names.
@@ -127,17 +127,17 @@ by the tidy eval parser interpreting \code{rlang::UQ()} as \code{!!}. In
 reality unquoting is \emph{not} a function call, it is a syntactic
 operation. The operator form makes it clearer that unquoting is
 special.
-\item \code{UQE()} was deprecated in rlang 0.2.0 in order to make the is
-deprecated in order to simplify the quasiquotation syntax. You
-can replace its use by a combination of \code{!!} and \code{get_expr()}.
-E.g. \code{!! get_expr(x)} is equivalent to \code{UQE(x)}.
-\item The use of \code{:=} as alias of \code{~} is defunct as of rlang 0.2.0. It
+\item \code{UQE()} was deprecated in rlang 0.2.0 in order to simplify the
+quasiquotation syntax. You can replace its use by a combination
+of \code{!!} and \code{get_expr()}: \code{!! get_expr(x)} is equivalent to
+\code{UQE(x)}.
+\item The use of \code{:=} as an alias of \code{~} is defunct as of rlang 0.2.0. It
 caused surprising results when invoked in wrong places. For
-instance in the expression \code{dots_list(name := 1)} this operator
+instance, in the expression \code{dots_list(name := 1)}, this operator
 was interpreted as a synonym to \code{=} that supports quasiquotation,
 but not in \code{dots_list(list(name := 1))}. Since \code{:=} was an alias
-for \code{~} the inner list would contain formula-like object. This
-kind of mistakes now trigger an error.
+for \code{~}, the inner list would contain formula-like object. This
+kind of mistake now triggers an error.
 }
 }
 

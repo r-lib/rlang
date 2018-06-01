@@ -176,7 +176,7 @@ locally <- function(expr) {
 #'
 #' @section Life cycle:
 #'
-#' `invoke()` is in questioning lifecycle stage. Now that we
+#' `invoke()` is in the questioning stage. Now that we
 #' understand better the interaction between unquoting and dots
 #' capture, we believe that `invoke()` should not take a `.args`
 #' argument. Instead it should take dots with [dots_list()] in order

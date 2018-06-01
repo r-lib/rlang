@@ -6,7 +6,7 @@
 #' environment) with:
 #'
 #' * [get_expr()] and [current_env()]. These getters also support other
-#'   kinds of objects such as formulas
+#'   kinds of objects such as formulas.
 #'
 #' * `quo_get_expr()` and `quo_get_env()`. These getters only work
 #'   with quosures and throw an error with other types of input.

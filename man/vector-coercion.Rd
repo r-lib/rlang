@@ -40,7 +40,7 @@ methods. They only attempt to coerce the base type of their
 input. In addition, they have stricter implicit coercion rules and
 will never attempt any kind of parsing. E.g. they will not try to
 figure out if a character vector represents integers or booleans.
-Finally, they have treat attributes consistently, unlike the base R
+Finally, they treat attributes consistently, unlike the base R
 functions: all attributes except names are removed.
 }
 \section{Coercion to logical and numeric atomic vectors}{

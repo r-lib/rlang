@@ -5,7 +5,7 @@
 #' `eval_tidy()` is a variant of [base::eval()] that powers the tidy
 #' evaluation framework. Like `eval()` it accepts user data as
 #' argument. If supplied, it evaluates its input `expr` in a [data
-#' mask][as_data_mask]. In additon `eval_tidy()` supports:
+#' mask][as_data_mask]. In addition `eval_tidy()` supports:
 #'
 #' - [Quosures][quotation]. The expression wrapped in the quosure
 #'   evaluates in its original context (masked by `data` if supplied).
@@ -144,8 +144,8 @@ delayedAssign(".data", as_data_pronoun(list()))
 #'
 #' Creating a data mask for [base::eval()] is a simple matter of
 #' creating an environment containing masking objects that has the
-#' user context as parent. `eval()` automates this task when you
-#' supply data as second argument. However a tidy eval data mask also
+#' user context as its parent. `eval()` automates this task when you
+#' supply data as the second argument. However, a tidy eval data mask also
 #' needs to enable support of [quosures][quotation] and [data
 #' pronouns][tidyeval-data]. These functions allow manual construction
 #' of tidy eval data masks:
@@ -167,7 +167,7 @@ delayedAssign(".data", as_data_pronoun(list()))
 #'   lists, i.e. when an object does not exist or if an user tries to
 #'   overwrite an object.
 #'
-#' To use a data mask, just supply it to [eval_tidy()] as `data`
+#' To use a data mask, just supply it to [eval_tidy()] as the `data`
 #' argument. You can repeat this as many times as needed. Note that
 #' any objects created there (perhaps because of a call to `<-`) will
 #' persist in subsequent evaluations:
@@ -181,7 +181,7 @@ delayedAssign(".data", as_data_pronoun(list()))
 #' think data mask is a more natural name in R. It makes reference to
 #' masking in the search path which occurs through the same mechanism
 #' (in technical terms, lexical scoping with hierarchically nested
-#' environments). We say that that objects from user data mask objects
+#' environments). We say that objects from user data mask objects
 #' in the current environment.
 #'
 #' Following this change in terminology, `as_data_mask()` and

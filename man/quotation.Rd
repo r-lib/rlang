@@ -134,7 +134,7 @@ functions and objects mentioned in the expression are defined.
 
 Quosures are objects that can be evaluated with \code{\link[=eval_tidy]{eval_tidy()}} just
 like symbols or function calls. Since they always evaluate in their
-original environment, quosures can be seen as a vehicle that allow
+original environment, quosures can be seen as vehicles that allow
 expressions to travel from function to function but that beam back
 instantly to their original environment upon evaluation.
 
@@ -206,7 +206,7 @@ what <- sym("bonjour")
 expr(say(what))
 expr(say(!!what))
 
-# This also applies to the expressions supplied the user. This is
+# This also applies to expressions supplied by the user. This is
 # like an escape hatch that allows control over the captured
 # expression:
 expr_inputs(say(!!what), !!what)

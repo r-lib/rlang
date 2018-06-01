@@ -31,7 +31,7 @@ new_list(n, names = NULL)
 \item{names}{Names for the new vector.}
 }
 \description{
-These functions construct vectors of given length, with attributes
+These functions construct vectors of a given length, with attributes
 specified via dots. Except for \code{new_list()} and \code{new_bytes()}, the
 empty vectors are filled with typed \link{missing} values. This is in
 contrast to the base function \code{\link[base:vector]{base::vector()}} which creates

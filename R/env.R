@@ -61,8 +61,8 @@
 #'
 #' @section Life cycle:
 #'
-#' - `child_env()` is in questioning lifecycle stage. It has become
-#'   redundant since `env()` now accepts parent environments.
+#' - `child_env()` is in the questioning stage. It is redundant now
+#'   that `env()` accepts parent environments.
 #'
 #' @param ...,data Named values. You can supply one unnamed to specify
 #'   a custom parent, otherwise it defaults to the current

@@ -20,7 +20,7 @@ are evaluated in their own environment.}
 \code{eval_tidy()} is a variant of \code{\link[base:eval]{base::eval()}} that powers the tidy
 evaluation framework. Like \code{eval()} it accepts user data as
 argument. If supplied, it evaluates its input \code{expr} in a \link[=as_data_mask]{data
-mask}. In additon \code{eval_tidy()} supports:
+mask}. In addition \code{eval_tidy()} supports:
 \itemize{
 \item \link[=quotation]{Quosures}. The expression wrapped in the quosure
 evaluates in its original context (masked by \code{data} if supplied).

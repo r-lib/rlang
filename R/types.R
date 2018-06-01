@@ -12,7 +12,7 @@
 #' * Unlike `is.atomic()`, `is_atomic()` does not return `TRUE` for
 #'   `NULL`.
 #'
-#' * Unlike `is.vector()`, `is_vector()` test if an object is an
+#' * Unlike `is.vector()`, `is_vector()` tests if an object is an
 #'   atomic vector or a list. `is.vector` checks for the presence of
 #'   attributes (other than name).
 #'
@@ -20,7 +20,7 @@
 #' @param n Expected length of a vector.
 #' @param finite Whether all values of the vector are finite. The
 #'   non-finite values are `NA`, `Inf`, `-Inf` and `NaN`. Setting this
-#'   to something else than `NULL` can be expensive because the whole
+#'   to something other than `NULL` can be expensive because the whole
 #'   vector needs to be traversed and checked.
 #' @param encoding Expected encoding of a string or character
 #'   vector. One of `UTF-8`, `latin1`, or `unknown`.
@@ -286,7 +286,7 @@ is_false <- function(x) {
 #' of how to check for whole numbers.
 #'
 #' Note that this check can be expensive for double vectors because
-#' they have to be traversed and check in their entirety.
+#' they have to be traversed and checked in their entirety.
 #'
 #' @seealso [is_bare_numeric()] for testing whether an object is a
 #'   base numeric type (a bare double or integer vector).

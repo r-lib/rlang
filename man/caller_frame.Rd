@@ -13,7 +13,7 @@ caller_fn(n = 1)
 current_fn()
 }
 \arguments{
-\item{n}{The number of generation to go back.}
+\item{n}{The number of generations to go back.}
 }
 \description{
 \itemize{

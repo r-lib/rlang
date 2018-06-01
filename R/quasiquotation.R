@@ -16,7 +16,7 @@
 #'   immediately in the surrounding context.
 #'
 #' - The `!!!` operator unquotes and splices its argument. The
-#'   argument should represents a list or a vector. Each element will
+#'   argument should represent a list or a vector. Each element will
 #'   be embedded in the surrounding call, i.e. each element is
 #'   inserted as an argument. If the vector is named, the names are
 #'   used as argument names.
@@ -101,18 +101,18 @@
 #'   operation. The operator form makes it clearer that unquoting is
 #'   special.
 #'
-#' * `UQE()` was deprecated in rlang 0.2.0 in order to make the is
-#'   deprecated in order to simplify the quasiquotation syntax. You
-#'   can replace its use by a combination of `!!` and `get_expr()`.
-#'   E.g. `!! get_expr(x)` is equivalent to `UQE(x)`.
+#' * `UQE()` was deprecated in rlang 0.2.0 in order to simplify the
+#'   quasiquotation syntax. You can replace its use by a combination
+#'   of `!!` and `get_expr()`: `!! get_expr(x)` is equivalent to
+#'   `UQE(x)`.
 #'
-#' * The use of `:=` as alias of `~` is defunct as of rlang 0.2.0. It
+#' * The use of `:=` as an alias of `~` is defunct as of rlang 0.2.0. It
 #'   caused surprising results when invoked in wrong places. For
-#'   instance in the expression `dots_list(name := 1)` this operator
+#'   instance, in the expression `dots_list(name := 1)`, this operator
 #'   was interpreted as a synonym to `=` that supports quasiquotation,
 #'   but not in `dots_list(list(name := 1))`. Since `:=` was an alias
-#'   for `~` the inner list would contain formula-like object. This
-#'   kind of mistakes now trigger an error.
+#'   for `~`, the inner list would contain formula-like object. This
+#'   kind of mistake now triggers an error.
 #'
 #' @param x An expression to unquote.
 #' @name quasiquotation

@@ -4,10 +4,10 @@
 #'
 #' **Important**: These functions are for expert R programmers only.
 #' You should only use them if you feel comfortable manipulating low
-#' level R data structures at the C level. We export them at R level
+#' level R data structures at the C level. We export them at the R level
 #' in order to make it easy to prototype C code. They don't perform
 #' any type checking and can crash R very easily (try to take the CAR
-#' of an integer vector --- save any important object beforehand!).
+#' of an integer vector --- save any important objects beforehand!).
 #'
 #' @param x A language or pairlist node. Note that these functions are
 #'   barebones and do not perform any type checking.
