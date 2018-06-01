@@ -167,7 +167,7 @@ delayedAssign(".data", as_data_pronoun(list()))
 #'   lists, i.e. when an object does not exist or if an user tries to
 #'   overwrite an object.
 #'
-#' To use a a data mask, just supply it to [eval_tidy()] as `data`
+#' To use a data mask, just supply it to [eval_tidy()] as `data`
 #' argument. You can repeat this as many times as needed. Note that
 #' any objects created there (perhaps because of a call to `<-`) will
 #' persist in subsequent evaluations:
