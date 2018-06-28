@@ -213,6 +213,34 @@ delayedAssign(".data", as_data_pronoun(list()))
 #' # subsequent calls:
 #' eval_tidy(quote(new <- cyl + am), mask)
 #' eval_tidy(quote(new * 2), mask)
+#'
+#' # You can create a data mask manually from environments.
+#' # In this example, we will create a mask from three environments.
+#' # There is a top environment,
+#' top <- new_environment(list(foo = 1, bar = "abc", baz = 2))
+#' # a middle environment which is a child of top and overrides bar,
+#' middle <- child_env(top, bar = 3)
+#' # and a bottom environment which is a child of middle and overrides baz
+#' # and adds a new variable qux
+#' bottom <- child_env(middle, baz = 4, qux = 5)
+#'
+#' # create a mask which specifies the top and bottom environments
+#' mask <- new_data_mask(bottom, top = top)
+#' eval_tidy(quo(foo + bar + baz), data = mask)
+#'
+#' # new_data_mask does not create data pronouns, but
+#' # data pronouns can be manually added
+#' mask$.top <- as_data_pronoun(top)
+#' mask$.middle <- as_data_pronoun(middle)
+#' mask$.bottom <- as_data_pronoun(bottom)
+#' # now we can reference the values of bar and baz from the top environmen't
+#' eval_tidy(quo(paste(.middle$bar, .top$bar)), data = mask)
+#' eval_tidy(quo(.top$baz + baz + bar), data = mask)
+#'
+#' # If we had instead used only bottom for the data environment of e'val_tidy()
+#' # this expression will not work. eval_tidy() will only look in bottom,
+#' # and will not find foo, even though foo is defined in a parent e'nvironment.
+#' try(eval_tidy(quo(foo + baz), data = bottom))
 as_data_mask <- function(data, parent = base_env()) {
   .Call(rlang_as_data_mask, data, parent)
 }
