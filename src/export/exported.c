@@ -235,6 +235,31 @@ sexp* rlang_unmark_object(sexp* x) {
   return x;
 }
 
+sexp* rlang_promise_expr(sexp* sym, sexp* env) {
+  if (r_typeof(sym) != r_type_symbol) {
+    r_abort("`x` must be a symbol or name");
+  }
+
+  sexp* prom = r_env_find(env, sym);
+  if (r_typeof(prom) != r_type_promise) {
+    r_abort("`x` must refer to a local promise");
+  }
+
+  return PREXPR(prom);
+}
+sexp* rlang_promise_env(sexp* sym, sexp* env) {
+  if (r_typeof(sym) != r_type_symbol) {
+    r_abort("`x` must be a symbol or name");
+  }
+
+  sexp* prom = r_env_find(env, sym);
+  if (r_typeof(prom) != r_type_promise) {
+    r_abort("`x` must refer to a local promise");
+  }
+
+  return PRENV(prom);
+}
+
 // vec.h
 
 sexp* rlang_vec_coerce(sexp* x, sexp* type) {

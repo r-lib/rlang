@@ -52,4 +52,11 @@ env_hash_table <- function(x) {
   .Call(rlang_env_hash_table, x)
 }
 
+promise_expr <- function(name) {
+  .Call(rlang_promise_expr, sym(name), caller_env())
+}
+promise_env <- function(name) {
+  .Call(rlang_promise_env, sym(name), caller_env())
+}
+
 # nocov end
