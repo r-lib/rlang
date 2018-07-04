@@ -268,6 +268,15 @@ sexp* rlang_promise_env(sexp* x, sexp* env) {
   sexp* prom = rlang_get_promise(x, env);
   return PRENV(prom);
 }
+sexp* rlang_promise_value(sexp* x, sexp* env) {
+  sexp* prom = rlang_get_promise(x, env);
+  sexp* value = PRVALUE(prom);
+  if (value == r_unbound_sym) {
+    return r_sym("R_UnboundValue");
+  } else {
+    return value;
+  }
+}
 
 // vec.h
 

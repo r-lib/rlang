@@ -26,3 +26,12 @@ test_that("can pluck promise and its properties from env", {
   }
   expect_identical(fn(foo), list(quote(foo), current_env()))
 })
+
+test_that("can pluck promise value", {
+  fn <- function(x) promise_value("x")
+  expect_identical(fn(foo), sym("R_UnboundValue"))
+
+  fn <- function(x) { force(x); promise_value("x") }
+  foo <- "foo"
+  expect_identical(fn(foo), "foo")
+})

@@ -58,5 +58,8 @@ promise_expr <- function(name) {
 promise_env <- function(name) {
   .Call(rlang_promise_env, name, caller_env())
 }
+promise_value <- function(name) {
+  .Call(rlang_promise_value, name, caller_env())
+}
 
 # nocov end

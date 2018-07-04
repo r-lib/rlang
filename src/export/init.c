@@ -72,6 +72,7 @@ extern sexp* rlang_vec_coerce(sexp*, sexp*);
 extern sexp* rlang_mark_object(sexp*);
 extern sexp* rlang_promise_expr(sexp*, sexp*);
 extern sexp* rlang_promise_env(sexp*, sexp*);
+extern sexp* rlang_promise_value(sexp*, sexp*);
 extern sexp* rlang_unmark_object(sexp*);
 extern sexp* rlang_quo_is_missing(sexp*);
 extern sexp* rlang_quo_is_symbol(sexp*);
@@ -167,6 +168,7 @@ static const r_callable r_callables[] = {
   {"rlang_mark_object",         (r_fn_ptr_t) &rlang_mark_object, 1},
   {"rlang_promise_expr",        (r_fn_ptr_t) &rlang_promise_expr, 2},
   {"rlang_promise_env",         (r_fn_ptr_t) &rlang_promise_env, 2},
+  {"rlang_promise_value",       (r_fn_ptr_t) &rlang_promise_value, 2},
   {"rlang_unmark_object",       (r_fn_ptr_t) &rlang_unmark_object, 1},
   {"rlang_node_tag",            (r_fn_ptr_t) &rlang_node_tag, 1},
   {"rlang_node_poke_tag",       (r_fn_ptr_t) &rlang_node_poke_tag, 2},
