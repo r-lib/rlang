@@ -24,6 +24,7 @@ sexp* rlang_cnd_type(sexp* cnd) {
   case r_cnd_type_warning: return r_scalar_chr("warning");
   case r_cnd_type_error: return r_scalar_chr("error");
   case r_cnd_type_interrupt: return r_scalar_chr("interrupt");
+  default: r_abort("Internal error: Unhandled `r_condition_type`");
   }
 }
 
