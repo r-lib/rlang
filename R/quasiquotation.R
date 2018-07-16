@@ -16,7 +16,7 @@
 #'   immediately in the surrounding context.
 #'
 #' - The `!!!` operator unquotes and splices its argument. The
-#'   argument should represents a list or a vector. Each element will
+#'   argument should represent a list or a vector. Each element will
 #'   be embedded in the surrounding call, i.e. each element is
 #'   inserted as an argument. If the vector is named, the names are
 #'   used as argument names.
