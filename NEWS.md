@@ -1,5 +1,5 @@
 
-# rlang 0.2.0.9000
+# rlang 0.2.1.9000
 
 * You can now unquote quosured symbols as LHS of `:=`. The symbol is
   automatically unwrapped from the quosure.
