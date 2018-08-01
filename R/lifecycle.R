@@ -185,10 +185,5 @@
 #' * `rst_muffle()` => [cnd_muffle()]
 #'
 #'
-#' **Retired in rlang 0.2.0:**
-#'
-#' * [:=][quasiquotation]
-#'
-#'
 #' @name lifecycle
 NULL
