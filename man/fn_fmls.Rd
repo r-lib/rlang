@@ -28,8 +28,7 @@ supplied.}
 \code{fn_fmls()} returns a named list of formal arguments.
 \code{fn_fmls_names()} returns the names of the arguments.
 \code{fn_fmls_syms()} returns formals as a named list of symbols. This
-is especially useful for forwarding arguments in \link[=lang]{constructed
-calls}.
+is especially useful for forwarding arguments in \link[=lang]{constructed calls}.
 }
 \details{
 Unlike \code{formals()}, these helpers also work with primitive

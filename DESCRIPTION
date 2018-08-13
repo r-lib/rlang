@@ -21,7 +21,7 @@ Suggests:
     pillar,
     testthat (>= 2.0.0),
     covr
-RoxygenNote: 6.0.1
+RoxygenNote: 6.1.0
 Roxygen: list(markdown = TRUE)
 URL: http://rlang.tidyverse.org, https://github.com/r-lib/rlang
 BugReports: https://github.com/r-lib/rlang/issues

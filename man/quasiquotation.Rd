@@ -5,9 +5,6 @@
 \alias{UQ}
 \alias{UQE}
 \alias{UQS}
-\alias{UQ}
-\alias{UQE}
-\alias{UQS}
 \alias{!!}
 \alias{!!!}
 \alias{:=}
