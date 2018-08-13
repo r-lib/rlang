@@ -1,6 +1,9 @@
 
 # rlang 0.2.1.9000
 
+* `env_get()` now evaluates promises and active bindings since these are
+  internal objects which should not be exposed at the R level (#554)
+
 * You can now unquote quosured symbols as LHS of `:=`. The symbol is
   automatically unwrapped from the quosure.
 
