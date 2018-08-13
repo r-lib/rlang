@@ -74,13 +74,10 @@ Note finally that \code{parent.frame(1)} corresponds to
 frame. This makes the \code{_frame()} and \code{_stack()} functions
 consistent: \code{ctxt_frame(2)} is the same as \code{ctxt_stack()[[2]]}.
 Also, \code{ctxt_depth()} returns one more frame than
-[base::sys.nframe()] because it counts the global frame. That is
+\code{\link[base:sys.nframe]{base::sys.nframe()}} because it counts the global frame. That is
 consistent with the \code{_stack()} functions which return the global
 frame as well. This way, \code{call_stack(call_depth())} is the same as
 \code{global_frame()}.
-
-[[2]: R:[2
-[base::sys.nframe()]: R:base::sys.nframe()
 }
 \section{Life cycle}{
 

@@ -64,9 +64,6 @@ return the missing argument and pass it to other C functions, this
 is not the case on the R side. If you're implementing your
 meta-programming algorithm in R, use \code{maybe_missing()} when an
 input might be the missing argument object.
-
-[[1]: R:[1
-[[1]: R:[1
 }
 
 \section{Life cycle}{

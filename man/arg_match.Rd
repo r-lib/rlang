@@ -10,8 +10,7 @@ arg_match(arg, values = NULL)
 \item{arg}{A symbol referring to an argument accepting strings.}
 
 \item{values}{The possible values that \code{arg} can take. If \code{NULL},
-the values are taken from the function definition of the \link[=caller_frame]{caller
-frame}.}
+the values are taken from the function definition of the \link[=caller_frame]{caller frame}.}
 }
 \value{
 The string supplied to \code{arg}.

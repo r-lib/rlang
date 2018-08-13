@@ -19,8 +19,7 @@ message_cnd(.subclass = NULL, ..., message = "", call = NULL)
 \item{.subclass}{The condition subclass.}
 
 \item{...}{Named data fields stored inside the condition
-object. These dots are evaluated with \link[=tidy-dots]{explicit
-splicing}.}
+object. These dots are evaluated with \link[=tidy-dots]{explicit splicing}.}
 
 \item{message}{A default message to inform the user about the
 condition when it is signalled.}

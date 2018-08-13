@@ -21,8 +21,7 @@ for instance to a file. If the supplied connection is not open,
 it will be automatically closed and destroyed.}
 
 \item{env}{The environment for the quosures. Depending on the use
-case, a good default might be the \link[=global_env]{global
-environment} but you might also want to evaluate the
+case, a good default might be the \link[=global_env]{global environment} but you might also want to evaluate the
 R code in an isolated context (perhaps a child of the global
 environment or of the \link[=base_env]{base environment}).}
 }

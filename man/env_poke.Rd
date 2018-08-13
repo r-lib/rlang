@@ -4,7 +4,8 @@
 \alias{env_poke}
 \title{Poke an object in an environment}
 \usage{
-env_poke(env = caller_env(), nm, value, inherit = FALSE, create = NULL)
+env_poke(env = caller_env(), nm, value, inherit = FALSE,
+  create = NULL)
 }
 \arguments{
 \item{env}{An environment or an object bundling an environment,
@@ -21,8 +22,7 @@ environments.}
 exist in the environment.}
 }
 \value{
-The old value of \code{nm} or the \link[=missing_arg]{missing
-argument} if it did not exist yet.
+The old value of \code{nm} or the \link[=missing_arg]{missing argument} if it did not exist yet.
 }
 \description{
 \badgeexperimental
