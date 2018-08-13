@@ -40,7 +40,7 @@ sexp* rlang_env_get(sexp* env, sexp* nm) {
     r_abort("Internal error: `rlang_env_get()` should have failed earlier");
   }
 
-  if (r_typeof(out) == r_type_promise || r_typeof(out) == r_type_function) {
+  if (r_typeof(out) == r_type_promise) {
     out = r_eval(out, r_empty_env);
   }
 
