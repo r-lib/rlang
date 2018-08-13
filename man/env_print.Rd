@@ -7,7 +7,8 @@
 env_print(env)
 }
 \arguments{
-\item{env}{An environment.}
+\item{env}{An environment, or object that can be converted to an
+environment by \code{\link[=get_env]{get_env()}}.}
 }
 \description{
 This prints:

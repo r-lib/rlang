@@ -290,6 +290,12 @@ test_that("can unlock environments", {
   expect_no_error(env_bind(env, a = 1))
 })
 
+test_that("env_print() has flexible input", {
+  # because it's primarily used interactively
+  f <- function() 1
+  expect_output(env_print(f), "environment: ")
+})
+
 test_that("active and promise bindings are pretty-printed", {
   env <- env()
   env_bind_exprs(env, a = "foo")
