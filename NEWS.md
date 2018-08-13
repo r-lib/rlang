@@ -4,6 +4,9 @@
 * `env_get()` now evaluates promises and active bindings since these are
   internal objects which should not be exposed at the R level (#554)
 
+* `env_print()` calls `get_env()` on its argument, making it easier to 
+  see the environment of closures and quosures (#567).
+
 * You can now unquote quosured symbols as LHS of `:=`. The symbol is
   automatically unwrapped from the quosure.
 
