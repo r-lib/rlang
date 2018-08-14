@@ -83,9 +83,9 @@ sexp* r_new_condition(sexp* type, sexp* data, sexp* msg) {
   r_vec_poke_n(cnd, 1, data, 0, r_length(cnd) - 1);
 
   r_poke_names(cnd, KEEP(new_condition_names(data)));
-  r_poke_class(cnd, KEEP(chr_append(type, r_string("condition"))));
+  r_poke_class(cnd, KEEP(chr_append(type, KEEP(r_string("condition")))));
 
-  FREE(3);
+  FREE(4);
   return cnd;
 }
 
