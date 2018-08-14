@@ -101,7 +101,7 @@ masking in the search path which occurs through the same mechanism
 environments). We say that that objects from user data mask objects
 in the current environment.
 
-Following this change in terminology, \code{as_data_mask()} and
+Following this change in terminology, \code{as_overscope()} and
 \code{new_overscope()} were soft-deprecated in rlang 0.2.0 in favour of
 \code{as_data_mask()} and \code{new_data_mask()}.
 }
