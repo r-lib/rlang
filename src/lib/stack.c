@@ -24,11 +24,11 @@ sexp* r_current_frame() {
 }
 
 
-sexp* sys_frame_call = NULL;
-sexp* sys_call_call = NULL;
+static sexp* sys_frame_call = NULL;
+static sexp* sys_call_call = NULL;
 
-int* sys_frame_n_addr = NULL;
-int* sys_call_n_addr = NULL;
+static int* sys_frame_n_addr = NULL;
+static int* sys_call_n_addr = NULL;
 
 sexp* r_sys_frame(int n, sexp* frame) {
   if (!frame) {
