@@ -1,4 +1,6 @@
 
+This release fixes the protection issues revealed by rchk.
+
 ## Test environments
 
 * local OS X install: release
@@ -13,12 +15,6 @@
 
 ## Reverse dependencies
 
-I have run R CMD check on the 219 downstream dependencies. (Summary at
-https://github.com/r-lib/rlang/tree/release-0.2.1/revdep).
+I have run R CMD check on the 285 downstream dependencies. (Summary at https://github.com/r-lib/rlang/tree/release-0.2.2/revdep).
 
-I couldn't install 21 packages. 1 package failed (pkgdown) but I
-couldn't reproduce this failure manually.
-
-In addition I have run the revdeps of dplyr, tidyr, and purrr. There
-was only one failure (GenomicDataCommons) which seemed unrelated (file
-copy failure).
+I couldn't install 8 packages. 1 package failed (Nmisc) but it doesn't seem like the failure is due to rlang. I have informed the author about the failure.
