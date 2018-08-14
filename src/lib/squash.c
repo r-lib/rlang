@@ -164,7 +164,9 @@ static sexp* squash(enum r_type kind, sexp* dots, bool (*is_spliceable)(sexp*), 
 
   sexp* out = KEEP(r_new_vector(kind, info.size));
   if (info.named) {
-    r_poke_names(out, r_new_vector(STRSXP, info.size));
+    sexp* nms = KEEP(r_new_vector(r_type_character, info.size));
+    r_poke_names(out, nms);
+    FREE(1);
   }
 
   if (recursive) {
