@@ -348,10 +348,11 @@ sexp* rlang_eval_tidy(sexp* expr, sexp* data, sexp* frame) {
   // for quosure thunks. Otherwise we create a heavier data mask with
   // all the masking objects, data pronouns, etc.
   if (data == r_null) {
-    mask = new_quosure_mask(env);
+    mask = KEEP(new_quosure_mask(env));
   } else {
-    mask = rlang_as_data_mask(data, env);
+    mask = KEEP(rlang_as_data_mask(data, env));
   }
+  ++n_protect;
 
   sexp* out = r_eval(expr, mask);
   FREE(n_protect);
