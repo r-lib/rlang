@@ -1,4 +1,10 @@
 
+# rlang 0.2.2
+
+This is a maintenance release that fixes several garbage collection
+protection issues.
+
+
 # rlang 0.2.1
 
 This is a maintenance release that fixes several tidy evaluation
