@@ -50,30 +50,45 @@ SEXP attribute_hidden new_captured_promise(SEXP x, SEXP env) {
 
 SEXP attribute_hidden rlang_capturearginfo(SEXP call, SEXP op, SEXP args, SEXP rho)
 {
+    int nProt = 0;
+
     // Unwrap first layer of promise
     SEXP sym = findVarInFrame3(rho, install("x"), TRUE);
+    PROTECT(sym); ++nProt;
 
     // May be a literal if compiler did not wrap in a promise
-    if (TYPEOF(sym) == PROMSXP)
-        sym = PREXPR(sym);
-    else
-        return new_captured_literal(sym);
+    if (TYPEOF(sym) != PROMSXP) {
+      SEXP value = new_captured_literal(sym);
+      UNPROTECT(nProt);
+      return value;
+    }
 
-    if (TYPEOF(sym) != SYMSXP)
+    sym = PREXPR(sym);
+
+    if (TYPEOF(sym) != SYMSXP) {
+        UNPROTECT(nProt);
         error(_("\"x\" must be an argument name"));
+    }
 
     SEXP frame = CAR(args);
     SEXP arg = findVar(sym, frame);
+    PROTECT(arg); ++nProt;
 
-    if (arg == R_UnboundValue)
+    if (arg == R_UnboundValue) {
+        UNPROTECT(nProt);
         error(_("object '%s' not found"), CHAR(PRINTNAME(sym)));
+    }
 
+    SEXP value;
     if (arg == R_MissingArg)
-        return new_captured_literal(arg);
+        value = new_captured_literal(arg);
     else if (TYPEOF(arg) == PROMSXP)
-        return new_captured_promise(arg, frame);
+        value = new_captured_promise(arg, frame);
     else
-        return new_captured_literal(arg);
+        value = new_captured_literal(arg);
+
+    UNPROTECT(nProt);
+    return value;
 }
 
 SEXP capturedots(SEXP frame) {
