@@ -21,11 +21,15 @@ static sexp* ns_env_get(sexp* env, const char* name) {
 
   return obj;
 }
-sexp* rlang_ns_get(const char* name) {
-  return ns_env_get(r_ns_env("rlang"), name);
-}
 sexp* r_base_ns_get(const char* name) {
   return ns_env_get(r_base_env, name);
+}
+
+
+static sexp* rlang_ns_env = NULL;
+
+sexp* rlang_ns_get(const char* name) {
+  return ns_env_get(rlang_ns_env, name);
 }
 
 
@@ -179,4 +183,6 @@ void r_init_library_env() {
   remove_call = r_new_call_node(r_base_ns_get("remove"), remove_args);
   r_mark_precious(remove_call);
   FREE(4);
+
+  rlang_ns_env = r_ns_env("rlang");
 }
