@@ -24,27 +24,37 @@ sexp* r_current_frame() {
 }
 
 
-sexp* sys_frame_call = NULL;
-sexp* sys_call_call = NULL;
+static sexp* sys_frame_call = NULL;
+static sexp* sys_call_call = NULL;
 
-int* sys_frame_n_addr = NULL;
-int* sys_call_n_addr = NULL;
+static int* sys_frame_n_addr = NULL;
+static int* sys_call_n_addr = NULL;
 
 sexp* r_sys_frame(int n, sexp* frame) {
+  int n_protect = 0;
   if (!frame) {
     frame = r_current_frame();
+    KEEP_N(frame, n_protect);
   }
 
   *sys_frame_n_addr = n;
-  return r_eval(sys_frame_call, frame);
+  SEXP value = r_eval(sys_frame_call, frame);
+
+  FREE(n_protect);
+  return value;
 }
 sexp* r_sys_call(int n, sexp* frame) {
+  int n_protect = 0;
   if (!frame) {
     frame = r_current_frame();
+    KEEP_N(frame, n_protect);
   }
 
   *sys_call_n_addr = n;
-  return r_eval(sys_call_call, frame);
+  SEXP value = r_eval(sys_call_call, frame);
+
+  FREE(n_protect);
+  return value;
 }
 
 
