@@ -1,7 +1,8 @@
 
 # rlang 0.2.2.9000
 
-* `exec()` is a simpler replacement to `invoke()` (#536).
+* `exec()` is a simpler replacement to `invoke()` (#536). `invoke()` has
+  been soft-deprecated.
 
 * `env_get()` now evaluates promises and active bindings since these are
   internal objects which should not be exposed at the R level (#554)
