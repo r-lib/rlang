@@ -175,15 +175,15 @@ locally <- function(expr) {
 #'
 #'
 #' @section Life cycle:
+#' \badgesoftdeprecated
 #'
-#' `invoke()` is in questioning lifecycle stage. Now that we
+#' `invoke()` is soft-deprecated in favour of [exec()]. Now that we
 #' understand better the interaction between unquoting and dots
-#' capture, we believe that `invoke()` should not take a `.args`
-#' argument. Instead it should take dots with [dots_list()] in order
-#' to enable `!!!` syntax.
+#' capture, we can take a simpler approach in `exec()`.
 #'
-#' We ask rlang users not to use `invoke()` in CRAN packages because
-#' we plan a breaking API update to remove the `.args` argument.
+#' If you need finer control over the generater call, you should construct
+#' an environment and call yourself, manually burying large objects
+#' or complex epxressions.
 #'
 #' @param .fn A function to invoke. Can be a function object or the
 #'   name of a function in scope of `.env`.
@@ -196,6 +196,7 @@ locally <- function(expr) {
 #'   prefix for the argument names. Set `.bury` to `NULL` if you
 #'   prefer to inline the function and its arguments in the call.
 #' @export
+#' @keywords internal
 #' @examples
 #' # invoke() has the same purpose as do.call():
 #' invoke(paste, letters)
