@@ -431,7 +431,7 @@ args_deparse <- function(x, lines = new_lines()) {
 }
 call_deparse <- function(x, lines = new_lines()) {
   car <- node_car(x)
-  if (car_needs_parens(car)) {
+  if (car_needs_parens(x)) {
     car <- call("(", car)
   }
   lines$deparse(car)
@@ -439,11 +439,15 @@ call_deparse <- function(x, lines = new_lines()) {
 }
 
 car_needs_parens <- function(x) {
-  if (typeof(x) != "language") {
+  car <- node_car(x)
+  if (typeof(car) != "language") {
     return(FALSE)
   }
 
-  op <- which_operator(x)
+  op <- which_operator(car)
+  if (op == "") {
+    return(FALSE)
+  }
   switch (op,
     `function` = ,
     `while` = ,
