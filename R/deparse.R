@@ -430,8 +430,67 @@ args_deparse <- function(x, lines = new_lines()) {
   lines$get_lines()
 }
 call_deparse <- function(x, lines = new_lines()) {
-  lines$deparse(node_car(x))
+  car <- node_car(x)
+  if (car_needs_parens(car)) {
+    car <- call("(", car)
+  }
+  lines$deparse(car)
   args_deparse(node_cdr(x), lines)
+}
+
+car_needs_parens <- function(x) {
+  if (typeof(x) != "language") {
+    return(FALSE)
+  }
+
+  op <- which_operator(x)
+  switch (op,
+    `function` = ,
+    `while` = ,
+    `for` = ,
+    `repeat` = ,
+    `if` = ,
+    `?` = ,
+    `<-` = ,
+    `<<-` = ,
+    `=` = ,
+    `:=` = ,
+    `~` = ,
+    `|` = ,
+    `||` = ,
+    `&` = ,
+    `&&` = ,
+    `>` = ,
+    `>=` = ,
+    `<` = ,
+    `<=` = ,
+    `==` = ,
+    `!=` = ,
+    `+` = ,
+    `-` = ,
+    `*` = ,
+    `/` = ,
+    `%%` = ,
+    `special` = ,
+    `:` = ,
+    `^` = TRUE,
+    `$` = ,
+    `@` = ,
+    `::` = ,
+    `:::` = FALSE,
+    `?unary` = ,
+    `~unary` = ,
+    `!` = ,
+    `!!!` = ,
+    `!!` = ,
+    `+unary` = ,
+    `-unary` =  TRUE,
+    `[` = ,
+    `[[` = ,
+    `(` = ,
+    `{` = FALSE,
+    abort("Internal error: Unexpected operator while deparsing")
+  )
 }
 
 op_deparse <- function(op, x, lines) {
