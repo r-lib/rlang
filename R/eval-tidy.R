@@ -214,33 +214,51 @@ delayedAssign(".data", as_data_pronoun(list()))
 #' eval_tidy(quote(new <- cyl + am), mask)
 #' eval_tidy(quote(new * 2), mask)
 #'
-#' # You can create a data mask manually from environments.
-#' # In this example, we will create a mask from three environments.
-#' # There is a top environment,
-#' top <- new_environment(list(foo = 1, bar = "abc", baz = 2))
-#' # a middle environment which is a child of top and overrides bar,
-#' middle <- child_env(top, bar = 3)
-#' # and a bottom environment which is a child of middle and overrides baz
-#' # and adds a new variable qux
-#' bottom <- child_env(middle, baz = 4, qux = 5)
 #'
-#' # create a mask which specifies the top and bottom environments
+#' # In some cases your data mask is a whole chain of environments
+#' # rather than a single environment. You'll have to use
+#' # `new_data_mask()` and let it know about the bottom of the mask
+#' # (the last child of the environment chain) and the topmost parent.
+#'
+#' # A common situation where you'll want a multiple-environment mask
+#' # is when you include functions in your mask. In that case you'll
+#' # put functions in the top environment and data in the bottom. This
+#' # will prevent the data from overwriting the functions.
+#' top <- new_environment(list(`+` = base::paste, c = base::paste))
+#'
+#' # Let's add a middle environment just for sport:
+#' middle <- env(top)
+#'
+#' # And finally the bottom environment containing data:
+#' bottom <- env(middle, a = "a", b = "b", c = "c")
+#'
+#' # We can now create a mask by supplying the top and bottom
+#' # environments:
 #' mask <- new_data_mask(bottom, top = top)
-#' eval_tidy(quo(foo + bar + baz), data = mask)
 #'
-#' # new_data_mask does not create data pronouns, but
-#' # data pronouns can be manually added
-#' mask$.top <- as_data_pronoun(top)
-#' mask$.middle <- as_data_pronoun(middle)
-#' mask$.bottom <- as_data_pronoun(bottom)
-#' # now we can reference the values of bar and baz from the top environmen't
-#' eval_tidy(quo(paste(.middle$bar, .top$bar)), data = mask)
-#' eval_tidy(quo(.top$baz + baz + bar), data = mask)
+#' # This data mask can be passed to eval_tidy() instead of a list or
+#' # data frame:
+#' eval_tidy(quote(a + b + c), data = mask)
 #'
-#' # If we had instead used only bottom for the data environment of e'val_tidy()
-#' # this expression will not work. eval_tidy() will only look in bottom,
-#' # and will not find foo, even though foo is defined in a parent e'nvironment.
-#' try(eval_tidy(quo(foo + baz), data = bottom))
+#' # Note how the function `c()` and the object `c` are looked up
+#' # properly because of the multi-level structure:
+#' eval_tidy(quote(c(a, b, c)), data = mask)
+#'
+#' # new_data_mask() does not create data pronouns, but
+#' # data pronouns can be added manually:
+#' mask$.fns <- as_data_pronoun(top)
+#' mask$.data <- as_data_pronoun(bottom)
+#'
+#' # Now we can reference the values with the pronouns:
+#' eval_tidy(quote(.fns$c(.data$a, .data$b, .data$c)), data = mask)
+#'
+#'
+#' # Passing a data mask built with an explicit `top` and `bottom` is
+#' # not the same as passing a simple environment to `eval_tidy()`. In
+#' # the latter case, the ancestry of the environment is entirely
+#' # ignored. The following does not work because `+` is defined in an
+#' # upper level:
+#' try(eval_tidy(quote(a + b), data = bottom))
 as_data_mask <- function(data, parent = base_env()) {
   .Call(rlang_as_data_mask, data, parent)
 }
