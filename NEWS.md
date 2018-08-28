@@ -1,6 +1,9 @@
 
 # rlang (development version)
 
+* `bang()` quasiquotes its argument and evaluates it immediately. It
+  allows you to use the `!!` and `!!!` operators with any R function.
+
 * New `enquo0()` and `enquos0()` operators for defusing function
   arguments without automatic injection (unquotation).
 

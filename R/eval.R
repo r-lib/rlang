@@ -327,3 +327,63 @@ exec <- function(.fn, ..., .env = caller_env()) {
 blast <- function(expr, env = caller_env()) {
   eval_bare(enexpr(expr), env)
 }
+
+#' Evaluate an expression with quasiquotation
+#'
+#' `bang()` evaluates an expression with
+#' [quasiquotation][quasiquotation] support. This is mostly useful for
+#' [splicing][!!!] lists of arguments in a call. Another use is to
+#' inline objects or expressions in quoted structures, for instance
+#' to create functions or formulas programmatically.
+#'
+#' @param expr An argument to evaluate. This argument is quasiquoted
+#'   and immediately evaluated in the current environment.
+#'
+#' @export
+#' @examples
+#' # bang() simply evaluates its argument. These two expressions are
+#' # equivalent:
+#' 2 * 3
+#' bang(2 * 3)
+#'
+#' # Quasiquotation is enabled within bang(). You can use `!!`:
+#' arg <- 3
+#' bang(2 * !!arg)
+#'
+#' # Splicing with big bang is extremely useful. It lets you call any
+#' # function with a list of arguments:
+#' args <- list(na.rm = TRUE, finite = 0.2)
+#' bang(mean(1:10, !!!args))
+#'
+#'
+#' # You can also unquote stuff in any base R quoted objects such as
+#' # formulas:
+#' lhs <- sym("foo")
+#' rhs <- sym("bar")
+#' bang(!!lhs ~ !!rhs + 10)
+#'
+#' # Note however that `!!!` can't be used to create a `+` sum of
+#' # terms inside a formula.
+#' args <- syms(c("foo", "bar", "baz"))
+#' bang(~!!!args)
+#'
+#' # Instead you need to reduce the arguments to a single expression:
+#' sum <- Reduce(function(x, y) expr(!!x + !!y), args)
+#' sum
+#'
+#' # You can then unquote the sum with !!
+#' bang(~!!sum)
+#'
+#'
+#' # bang() is the quoting counterpart to exec() which constructs a
+#' # call from its components:
+#' exec("mean", !!!args)
+#'
+#' # Because exec() is an evaluating function, it can be mapped over a
+#' # list of functions, unlike bang():
+#' fns <- list(mean, median)
+#' args <- list(na.rm = TRUE)
+#' lapply(fns, exec, mtcars$disp, !!!args)
+bang <- function(expr) {
+  eval_bare(enexpr(expr), caller_env())
+}
