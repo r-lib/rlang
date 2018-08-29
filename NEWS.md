@@ -22,6 +22,12 @@
 * `env_get()` now supports retrieving missing arguments when `inherit`
   is `FALSE`.
 
+* Uncaught error objects can now be recorded in `.Last.error` just
+  like `.Last.value` references the last value returned at top-level.
+  This is experimental and currently fails with errors thrown at top
+  level (i.e. from a primitive function called directly at the
+  console).
+
 * The experimental function `rst_muffle()` is now defunct. Please use
   `cnd_muffle()` instead. Unlike its predecessor `cnd_muffle()` is not
   generic. It is marked as a calling handler and thus can be passed
