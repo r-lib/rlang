@@ -141,12 +141,20 @@ cli_branch_truncate <- function(lines, max = NULL, style = NULL) {
   }
 
   style <- style %||% cli_box_chars()
+  n_collapsed <- n - max
+  call_str <- pluralise_n(n_collapsed, "call", "calls")
+
+  collapsed_line <- sprintf(
+    " %s[ ... +%s %s ]",
+    style$h,
+    n_collapsed,
+    call_str
+  )
 
   if (max == 1L) {
     lines <- chr(
       lines[1L],
-      " .",
-      sprintf(" . +%s", n - max)
+      collapsed_line
     )
     return(lines)
   }
@@ -154,15 +162,6 @@ cli_branch_truncate <- function(lines, max = NULL, style = NULL) {
   half <- max / 2L
   n_top <- ceiling(half)
   n_bottom <- floor(half)
-
-  n_collapsed <- n - max
-  call_str <- pluralise_n(n_collapsed, "call", "calls")
-  collapsed_line <- sprintf(
-    " %s[ ... +%s %s ]",
-    style$h,
-    n_collapsed,
-    call_str
-  )
 
   chr(
     lines[seq(1L, n_top)],
