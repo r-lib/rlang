@@ -10,7 +10,7 @@
 #'
 #' See the [call stack][stack] topic for more information.
 #'
-#' @param n The number of generation to go back.
+#' @param n The number of generations to go back.
 #'
 #' @seealso [caller_env()] and [current_env()]
 #' @export

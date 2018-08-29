@@ -16,7 +16,7 @@ conversion is not a rare occurrence and happens for instance to the
 names of a list of arguments converted to a call by \code{do.call()}.
 
 If the string contains unicode characters that cannot be
-represented in the native encoding, R serialises those as a ASCII
+represented in the native encoding, R serialises those as an ASCII
 sequence representing the unicode point. This is why Windows users
 with western locales often see strings looking like \code{<U+xxxx>}. To
 alleviate some of the pain, rlang parses strings and looks for

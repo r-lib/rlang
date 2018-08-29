@@ -1,7 +1,7 @@
 #' Duplicate an R object
 #'
 #' In R semantics, objects are copied by value. This means that
-#' modifying the copy leaves the original object intact. Since,
+#' modifying the copy leaves the original object intact. Since
 #' copying data in memory is an expensive operation, copies in R are
 #' as lazy as possible. They only happen when the new object is
 #' actually modified. However, some operations (like [node_poke_car()]

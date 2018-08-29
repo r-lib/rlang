@@ -122,7 +122,7 @@ as_native_string <- function(x) {
 #' names of a list of arguments converted to a call by `do.call()`.
 #'
 #' If the string contains unicode characters that cannot be
-#' represented in the native encoding, R serialises those as a ASCII
+#' represented in the native encoding, R serialises those as an ASCII
 #' sequence representing the unicode point. This is why Windows users
 #' with western locales often see strings looking like `<U+xxxx>`. To
 #' alleviate some of the pain, rlang parses strings and looks for
@@ -252,7 +252,7 @@ str_encoding <- function(x) {
 #' If you are changing the locale encoding for testing purposes, you
 #' need to be aware that R caches strings and symbols to save
 #' memory. If you change the locale during an R session, it can lead
-#' to surprising and difficult to reproduce results. In doubt, restart
+#' to surprising and difficult to reproduce results. When in doubt, restart
 #' your R session.
 #'
 #' Note that these helpers are only provided for testing interactively

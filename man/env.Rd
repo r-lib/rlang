@@ -82,8 +82,8 @@ references changes all other references as well.
 \section{Life cycle}{
 
 \itemize{
-\item \code{child_env()} is in questioning lifecycle stage. It has become
-redundant since \code{env()} now accepts parent environments.
+\item \code{child_env()} is in the questioning stage. It is redundant now
+that \code{env()} accepts parent environments.
 }
 }
 

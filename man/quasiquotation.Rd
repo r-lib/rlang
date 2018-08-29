@@ -41,7 +41,7 @@ forms for unquoting.
 \item The \code{!!} operator unquotes its argument. It gets evaluated
 immediately in the surrounding context.
 \item The \code{!!!} operator unquotes and splices its argument. The
-argument should represents a list or a vector. Each element will
+argument should represent a list or a vector. Each element will
 be embedded in the surrounding call, i.e. each element is
 inserted as an argument. If the vector is named, the names are
 used as argument names.
@@ -124,10 +124,10 @@ by the tidy eval parser interpreting \code{rlang::UQ()} as \code{!!}. In
 reality unquoting is \emph{not} a function call, it is a syntactic
 operation. The operator form makes it clearer that unquoting is
 special.
-\item \code{UQE()} was deprecated in rlang 0.2.0 in order to make the is
-deprecated in order to simplify the quasiquotation syntax. You
-can replace its use by a combination of \code{!!} and \code{get_expr()}.
-E.g. \code{!! get_expr(x)} is equivalent to \code{UQE(x)}.
+\item \code{UQE()} was deprecated in rlang 0.2.0 in order to simplify the
+quasiquotation syntax. You can replace its use by a combination
+of \code{!!} and \code{get_expr()}: \code{!! get_expr(x)} is equivalent to
+\code{UQE(x)}.
 }
 }
 

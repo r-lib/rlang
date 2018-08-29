@@ -25,7 +25,7 @@ for \code{\link[=with_handlers]{with_handlers()}}.
 \details{
 A subtle point in the R language is that conditions are not thrown,
 handlers are. \code{\link[base:tryCatch]{base::tryCatch()}} and \code{\link[=with_handlers]{with_handlers()}} actually
-catch handlers rather than conditions. When a critical condition
+catch handlers rather than conditions. When a critical condition is
 signalled with \code{\link[base:stop]{base::stop()}} or \code{\link[=abort]{abort()}}, R inspects the handler
 stack and looks for a handler that can deal with the condition. If
 it finds an exiting handler, it throws it to the function that

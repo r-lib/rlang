@@ -108,7 +108,7 @@ with_handlers <- function(.expr, ...) {
 #'
 #' A subtle point in the R language is that conditions are not thrown,
 #' handlers are. [base::tryCatch()] and [with_handlers()] actually
-#' catch handlers rather than conditions. When a critical condition
+#' catch handlers rather than conditions. When a critical condition is
 #' signalled with [base::stop()] or [abort()], R inspects the handler
 #' stack and looks for a handler that can deal with the condition. If
 #' it finds an exiting handler, it throws it to the function that

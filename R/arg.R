@@ -123,7 +123,7 @@ chr_enumerate <- function(chr, sep = ", ", final = "or") {
 #' argument without triggering a missing error.
 #'
 #' `maybe_missing()` is particularly useful for prototyping
-#' meta-programming algorithm in R. The missing argument is a likely
+#' meta-programming algorithms in R. The missing argument is a likely
 #' input when computing on the language because it is a standard
 #' object in formals lists. While C functions are always allowed to
 #' return the missing argument and pass it to other C functions, this

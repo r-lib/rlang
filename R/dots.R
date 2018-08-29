@@ -177,15 +177,15 @@ dots_split <- function(...,
 #'
 #' @section Life cycle:
 #'
-#' * `dots_splice()` is in **questioning** stage. It is part of our
+#' * `dots_splice()` is in the questioning stage. It is part of our
 #'   experiments with dots semantics. Compared to `dots_list()`,
 #'   `dots_splice()` automatically splices lists. We now lean towards
 #'   adopting a single type of dots semantics (those of `dots_list()`)
 #'   where splicing is explicit.
 #'
-#' * `splice()` is in questioning stage. It is not clear whether it is
+#' * `splice()` is in the questioning stage. It is not clear whether it is
 #'   really needed as there are other ways to avoid the performance
-#'   issue discussed in the section above.
+#'   issue discussed above.
 #'
 #'
 #' @param x A list to splice.

@@ -3,7 +3,7 @@
 \name{exprs_auto_name}
 \alias{exprs_auto_name}
 \alias{quos_auto_name}
-\title{Ensure that list of expressions are all named}
+\title{Ensure that all elements of a list of expressions are named}
 \usage{
 exprs_auto_name(exprs, width = 60L, printer = expr_text)
 
@@ -15,8 +15,8 @@ quos_auto_name(quos, width = 60L)
 \item{width}{Maximum width of names.}
 
 \item{printer}{A function that takes an expression and converts it
-to a string. This function must take an expression as first
-argument and \code{width} as second argument.}
+to a string. This function must take an expression as the first
+argument and \code{width} as the second argument.}
 
 \item{quos}{A list of quosures.}
 }

@@ -31,7 +31,7 @@ encoding conversions when R or packages handle strings (see
 If you are changing the locale encoding for testing purposes, you
 need to be aware that R caches strings and symbols to save
 memory. If you change the locale during an R session, it can lead
-to surprising and difficult to reproduce results. In doubt, restart
+to surprising and difficult to reproduce results. When in doubt, restart
 your R session.
 
 Note that these helpers are only provided for testing interactively

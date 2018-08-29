@@ -101,10 +101,10 @@
 #'   operation. The operator form makes it clearer that unquoting is
 #'   special.
 #'
-#' * `UQE()` was deprecated in rlang 0.2.0 in order to make the is
-#'   deprecated in order to simplify the quasiquotation syntax. You
-#'   can replace its use by a combination of `!!` and `get_expr()`.
-#'   E.g. `!! get_expr(x)` is equivalent to `UQE(x)`.
+#' * `UQE()` was deprecated in rlang 0.2.0 in order to simplify the
+#'   quasiquotation syntax. You can replace its use by a combination
+#'   of `!!` and `get_expr()`: `!! get_expr(x)` is equivalent to
+#'   `UQE(x)`.
 #'
 #' @param x An expression to unquote.
 #' @name quasiquotation

@@ -70,7 +70,7 @@
 #'
 #' Quosures are objects that can be evaluated with [eval_tidy()] just
 #' like symbols or function calls. Since they always evaluate in their
-#' original environment, quosures can be seen as a vehicle that allow
+#' original environment, quosures can be seen as vehicles that allow
 #' expressions to travel from function to function but that beam back
 #' instantly to their original environment upon evaluation.
 #'
@@ -157,7 +157,7 @@
 #' expr(say(what))
 #' expr(say(!!what))
 #'
-#' # This also applies to the expressions supplied the user. This is
+#' # This also applies to expressions supplied by the user. This is
 #' # like an escape hatch that allows control over the captured
 #' # expression:
 #' expr_inputs(say(!!what), !!what)
@@ -340,7 +340,7 @@ endots <- function(frame, env,
   dots
 }
 
-#' Ensure that list of expressions are all named
+#' Ensure that all elements of a list of expressions are named
 #'
 #' This gives default names to unnamed elements of a list of
 #' expressions (or expression wrappers such as formulas or
@@ -351,8 +351,8 @@ endots <- function(frame, env,
 #' @param exprs A list of expressions.
 #' @param width Maximum width of names.
 #' @param printer A function that takes an expression and converts it
-#'   to a string. This function must take an expression as first
-#'   argument and `width` as second argument.
+#'   to a string. This function must take an expression as the first
+#'   argument and `width` as the second argument.
 #' @export
 exprs_auto_name <- function(exprs, width = 60L, printer = expr_text) {
   have_name <- have_name(exprs)

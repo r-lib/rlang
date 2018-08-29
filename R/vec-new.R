@@ -111,7 +111,7 @@ ll <- function(...) {
 
 #' Create vectors matching a given length
 #'
-#' These functions construct vectors of given length, with attributes
+#' These functions construct vectors of a given length, with attributes
 #' specified via dots. Except for `new_list()` and `new_bytes()`, the
 #' empty vectors are filled with typed [missing] values. This is in
 #' contrast to the base function [base::vector()] which creates

@@ -5,7 +5,7 @@
 #' [unlist()] but they are type-stable so you always know what the
 #' type of the output is.
 #'
-#' @param x A list of flatten or squash. The contents of the list can
+#' @param x A list to flatten or squash. The contents of the list can
 #'   be anything for unsuffixed functions `flatten()` and `squash()`
 #'   (as a list is returned), but the contents must match the type for
 #'   the other functions.
@@ -30,7 +30,7 @@
 #' squash(deep)
 #' squash_dbl(deep)
 #'
-#' # The typed flattens remove one level and coerce to an atomic
+#' # The typed flatten functions remove one level and coerce to an atomic
 #' # vector at the same time:
 #' flatten_dbl(list(1, list(2)))
 #'

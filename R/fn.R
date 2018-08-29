@@ -1,9 +1,9 @@
 #' Create a function
 #'
-#' This constructs a new function given it's three components:
+#' This constructs a new function given its three components:
 #' list of arguments, body code and parent environment.
 #'
-#' @param args A named list of default arguments.  Note that if you
+#' @param args A named list of default arguments. Note that if you
 #'   want arguments that don't have defaults, you'll need to use the
 #'   special function [alist], e.g. `alist(a = , b = 1)`
 #' @param body A language object representing the code inside the
@@ -193,7 +193,7 @@ fn_body <- function(fn = caller_fn()) {
 #'
 #' Closures are functions written in R, named after the way their
 #' arguments are scoped within nested environments (see
-#' https://en.wikipedia.org/wiki/Closure_(computer_programming)).  The
+#' https://en.wikipedia.org/wiki/Closure_(computer_programming)). The
 #' root environment of the closure is called the closure
 #' environment. When closures are evaluated, a new environment called
 #' the evaluation frame is created with the closure environment as
@@ -204,11 +204,11 @@ fn_body <- function(fn = caller_fn()) {
 #'
 #' Primitive functions are more efficient than closures for two
 #' reasons. First, they are written entirely in fast low-level
-#' code. Secondly, the mechanism by which they are passed arguments is
+#' code. Second, the mechanism by which they are passed arguments is
 #' more efficient because they often do not need the full procedure of
 #' argument matching (dealing with positional versus named arguments,
 #' partial matching, etc). One practical consequence of the special
-#' way in which primitives are passed arguments this is that they
+#' way in which primitives are passed arguments is that they
 #' technically do not have formal arguments, and [formals()] will
 #' return `NULL` if called on a primitive function. See [fn_fmls()]
 #' for a function that returns a representation of formal arguments
