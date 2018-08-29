@@ -1,6 +1,10 @@
 
 # rlang 0.2.2.9000
 
+* `is_call()` now accepts multiple namespaces. For instance
+  `is_call(x, "list", ns = c("", "base"))` will match if `x` is
+  `list()` or if it's `base::list()`:
+
 * `exec()` is a simpler replacement to `invoke()` (#536). `invoke()` has
   been soft-deprecated.
 

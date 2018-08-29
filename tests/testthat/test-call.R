@@ -188,6 +188,16 @@ test_that("can specify ns in is_call()", {
   expect_false(is_call(expr, name = "baz", ns = "foo"))
 })
 
+test_that("can check multiple namespaces with is_call()", {
+  expect_true(is_call(quote(foo::quux()), ns = c("foo", "bar")))
+  expect_true(is_call(quote(bar::quux()), ns = c("foo", "bar")))
+  expect_false(is_call(quote(baz::quux()), ns = c("foo", "bar")))
+  expect_false(is_call(quote(quux()), ns = c("foo", "bar")))
+
+  expect_false(is_call(quote(baz::quux()), ns = c("foo", "bar", "")))
+  expect_true(is_call(quote(quux()), ns = c("foo", "bar", "")))
+})
+
 test_that("can unnamespace calls", {
   expect_identical(call_unnamespace(quote(bar(baz))), quote(bar(baz)))
   expect_identical(call_unnamespace(quote(foo::bar(baz))), quote(bar(baz)))

@@ -128,6 +128,10 @@ is_callable <- function(x) {
 #'   `""` and `x` is a namespaced call, `is_call()` returns
 #'   `FALSE`. If any other string, `is_call()` checks that `x` is
 #'   namespaced within `ns`.
+#'
+#'   Can be a character vector of namespaces, in which case the call
+#'   has to match at least one of them, otherwise `is_call()` returns
+#'   `FALSE`.
 #' @seealso [is_expression()]
 #' @export
 #' @examples
@@ -155,6 +159,15 @@ is_callable <- function(x) {
 #' is_call(ns_expr, "list", ns = "utils")
 #' is_call(ns_expr, "list", ns = "base")
 #'
+#' # You can supply multiple namespaces:
+#' is_call(ns_expr, "list", ns = c("utils", "base"))
+#' is_call(ns_expr, "list", ns = c("utils", "stats"))
+#'
+#' # If one of them is "", unnamespaced calls will match as well:
+#' is_call(quote(list()), "list", ns = "base")
+#' is_call(quote(list()), "list", ns = c("base", ""))
+#' is_call(quote(base::list()), "list", ns = c("base", ""))
+#'
 #'
 #' # The name argument is vectorised so you can supply a list of names
 #' # to match with:
@@ -167,9 +180,19 @@ is_call <- function(x, name = NULL, n = NULL, ns = NULL) {
   }
 
   if (!is_null(ns)) {
-    if (identical(ns, "") && is_namespaced_call(x, private = FALSE)) {
-      return(FALSE)
-    } else if (!is_namespaced_call(x, ns, private = FALSE)) {
+    good_ns <- FALSE
+
+    for (elt in ns) {
+      if (identical(elt, "") && !is_namespaced_call(x, private = FALSE)) {
+        good_ns <- TRUE
+        break
+      } else if (is_namespaced_call(x, elt, private = FALSE)) {
+        good_ns <- TRUE
+        break
+      }
+    }
+
+    if (!good_ns) {
       return(FALSE)
     }
   }

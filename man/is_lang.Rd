@@ -31,7 +31,11 @@ match.}
 doesn't participate in the pattern-matching. If an empty string
 \code{""} and \code{x} is a namespaced call, \code{is_call()} returns
 \code{FALSE}. If any other string, \code{is_call()} checks that \code{x} is
-namespaced within \code{ns}.}
+namespaced within \code{ns}.
+
+Can be a character vector of namespaces, in which case the call
+has to match at least one of them, otherwise \code{is_call()} returns
+\code{FALSE}.}
 
 \item{quo}{A quosure to test.}
 }

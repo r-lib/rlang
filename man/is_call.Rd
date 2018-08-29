@@ -22,7 +22,11 @@ match.}
 doesn't participate in the pattern-matching. If an empty string
 \code{""} and \code{x} is a namespaced call, \code{is_call()} returns
 \code{FALSE}. If any other string, \code{is_call()} checks that \code{x} is
-namespaced within \code{ns}.}
+namespaced within \code{ns}.
+
+Can be a character vector of namespaces, in which case the call
+has to match at least one of them, otherwise \code{is_call()} returns
+\code{FALSE}.}
 }
 \description{
 This function tests if \code{x} is a \link[=call2]{call}. This is a
@@ -64,6 +68,15 @@ is_call(ns_expr, "list", ns = "")
 # Or if it should have a namespace:
 is_call(ns_expr, "list", ns = "utils")
 is_call(ns_expr, "list", ns = "base")
+
+# You can supply multiple namespaces:
+is_call(ns_expr, "list", ns = c("utils", "base"))
+is_call(ns_expr, "list", ns = c("utils", "stats"))
+
+# If one of them is "", unnamespaced calls will match as well:
+is_call(quote(list()), "list", ns = "base")
+is_call(quote(list()), "list", ns = c("base", ""))
+is_call(quote(base::list()), "list", ns = c("base", ""))
 
 
 # The name argument is vectorised so you can supply a list of names
