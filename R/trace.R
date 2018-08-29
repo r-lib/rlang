@@ -122,10 +122,10 @@ format.rlang_trace <- function(x,
 cli_branch <- function(lines, max = NULL, style = NULL) {
   style <- style %||% cli_box_chars()
   lines <- paste0(" ", style$h, lines)
-  cli_branch_truncate(lines, max)
+  cli_branch_truncate(lines, max, style)
 }
 
-cli_branch_truncate <- function(lines, max = NULL) {
+cli_branch_truncate <- function(lines, max = NULL, style = NULL) {
   if (is_null(max)) {
     return(lines)
   }
@@ -140,6 +140,8 @@ cli_branch_truncate <- function(lines, max = NULL) {
     return(lines)
   }
 
+  style <- style %||% cli_box_chars()
+
   if (max == 1L) {
     lines <- chr(
       lines[1L],
@@ -153,11 +155,18 @@ cli_branch_truncate <- function(lines, max = NULL) {
   n_top <- ceiling(half)
   n_bottom <- floor(half)
 
+  n_collapsed <- n - max
+  call_str <- pluralise_n(n_collapsed, "call", "calls")
+  collapsed_line <- sprintf(
+    " %s[ ... +%s %s ]",
+    style$h,
+    n_collapsed,
+    call_str
+  )
+
   chr(
     lines[seq(1L, n_top)],
-    " .",
-    sprintf(" . +%s", n - max),
-    " .",
+    collapsed_line,
     lines[seq(n - n_bottom + 1L, n)]
   )
 }
