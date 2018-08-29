@@ -155,3 +155,30 @@ test_that("recursive frames are rewired to the global env", {
     print(trace, simplify = "trail", dir = dir, srcrefs = FALSE)
   })
 })
+
+test_that("long backtrails are truncated", {
+  skip_on_os("windows")
+
+  e <- current_env()
+  f <- function(n) {
+    if (n) {
+      return(f(n - 1))
+    }
+    trace_back(e)
+  }
+  trace <- f(10)
+
+  expect_known_output(file = test_path("test-trace-truncate-trail.txt"), {
+    cat("Full:\n")
+    print(trace, simplify = "trail", srcrefs = FALSE)
+    cat("\n5 frames:\n")
+    print(trace, simplify = "trail", max_frames = 5, srcrefs = FALSE)
+    cat("\n2 frames:\n")
+    print(trace, simplify = "trail", max_frames = 2, srcrefs = FALSE)
+    cat("\n1 frame:\n")
+    print(trace, simplify = "trail", max_frames = 1, srcrefs = FALSE)
+  })
+
+  expect_error(print(trace, simplify = "none", max_frames = 5), "currently only supported with")
+  expect_error(print(trace, simplify = "collapse", max_frames = 5), "currently only supported with")
+})

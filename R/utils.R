@@ -226,3 +226,17 @@ inc <- function(x) {
 dec <- function(x) {
   x - 1L
 }
+
+pluralise <- function(n, singular, plural) {
+  if (n == 1) {
+    singular
+  } else {
+    plural
+  }
+}
+pluralise_along <- function(x, singular, plural) {
+  pluralise(length(x), singular, plural)
+}
+pluralise_n <- function(n, singular, plural) {
+  pluralise(n, singular, plural)
+}
