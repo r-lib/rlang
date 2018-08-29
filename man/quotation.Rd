@@ -18,16 +18,16 @@ expr(expr)
 
 enexpr(arg)
 
-exprs(..., .named = FALSE, .ignore_empty = c("trailing", "none", "all"),
-  .unquote_names = TRUE)
+exprs(..., .named = FALSE, .ignore_empty = c("trailing", "none",
+  "all"), .unquote_names = TRUE)
 
-enexprs(..., .named = FALSE, .ignore_empty = c("trailing", "none", "all"),
-  .unquote_names = TRUE)
+enexprs(..., .named = FALSE, .ignore_empty = c("trailing", "none",
+  "all"), .unquote_names = TRUE)
 
 ensym(arg)
 
-ensyms(..., .named = FALSE, .ignore_empty = c("trailing", "none", "all"),
-  .unquote_names = TRUE)
+ensyms(..., .named = FALSE, .ignore_empty = c("trailing", "none",
+  "all"), .unquote_names = TRUE)
 
 quo(expr)
 
@@ -36,8 +36,8 @@ enquo(arg)
 quos(..., .named = FALSE, .ignore_empty = c("trailing", "none", "all"),
   .unquote_names = TRUE)
 
-enquos(..., .named = FALSE, .ignore_empty = c("trailing", "none", "all"),
-  .unquote_names = TRUE)
+enquos(..., .named = FALSE, .ignore_empty = c("trailing", "none",
+  "all"), .unquote_names = TRUE)
 }
 \arguments{
 \item{expr}{An expression.}
@@ -144,8 +144,7 @@ See the \link{quosure} help topic about tools to work with quosures.
 \section{Quasiquotation}{
 
 
-All quotation functions in rlang have support for \link[=quasiquotation]{unquoting
-operators}. The combination of quotation and
+All quotation functions in rlang have support for \link[=quasiquotation]{unquoting operators}. The combination of quotation and
 unquotation is called \emph{quasiquotation}.
 
 Unquotation provides a way to refer to variables during quotation.

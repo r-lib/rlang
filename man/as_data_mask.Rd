@@ -62,8 +62,7 @@ Creating a data mask for \code{\link[base:eval]{base::eval()}} is a simple matte
 creating an environment containing masking objects that has the
 user context as its parent. \code{eval()} automates this task when you
 supply data as the second argument. However, a tidy eval data mask also
-needs to enable support of \link[=quotation]{quosures} and \link[=tidyeval-data]{data
-pronouns}. These functions allow manual construction
+needs to enable support of \link[=quotation]{quosures} and \link[=tidyeval-data]{data pronouns}. These functions allow manual construction
 of tidy eval data masks:
 \itemize{
 \item \code{as_data_mask()} transforms a data frame, named vector or
@@ -102,7 +101,7 @@ masking in the search path which occurs through the same mechanism
 environments). We say that objects from user data mask objects
 in the current environment.
 
-Following this change in terminology, \code{as_data_mask()} and
+Following this change in terminology, \code{as_overscope()} and
 \code{new_overscope()} were soft-deprecated in rlang 0.2.0 in favour of
 \code{as_data_mask()} and \code{new_data_mask()}.
 }

@@ -24,6 +24,7 @@ sexp* rlang_cnd_type(sexp* cnd) {
   case r_cnd_type_warning: return r_scalar_chr("warning");
   case r_cnd_type_error: return r_scalar_chr("error");
   case r_cnd_type_interrupt: return r_scalar_chr("interrupt");
+  default: r_abort("Internal error: Unhandled `r_condition_type`");
   }
 }
 
@@ -233,6 +234,48 @@ sexp* rlang_mark_object(sexp* x) {
 sexp* rlang_unmark_object(sexp* x) {
   SET_OBJECT(x, 0);
   return x;
+}
+
+sexp* rlang_get_promise(sexp* x, sexp* env) {
+  switch (r_typeof(x)) {
+  case r_type_promise:
+    return x;
+  case r_type_character:
+    if (r_length(x) == 1) {
+      x = r_sym(r_chr_get_c_string(x, 0));
+    } else {
+      goto error;
+    }
+    // fallthrough
+  case r_type_symbol: {
+      sexp* prom = r_env_find(env, x);
+      if (r_typeof(prom) == r_type_promise) {
+        return prom;
+      }
+      // fallthrough
+    }
+  error:
+  default:
+    r_abort("`x` must be or refer to a local promise");
+  }
+}
+
+sexp* rlang_promise_expr(sexp* x, sexp* env) {
+  sexp* prom = rlang_get_promise(x, env);
+  return PREXPR(prom);
+}
+sexp* rlang_promise_env(sexp* x, sexp* env) {
+  sexp* prom = rlang_get_promise(x, env);
+  return PRENV(prom);
+}
+sexp* rlang_promise_value(sexp* x, sexp* env) {
+  sexp* prom = rlang_get_promise(x, env);
+  sexp* value = PRVALUE(prom);
+  if (value == r_unbound_sym) {
+    return r_sym("R_UnboundValue");
+  } else {
+    return value;
+  }
 }
 
 // vec.h

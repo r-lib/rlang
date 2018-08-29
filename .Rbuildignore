@@ -10,3 +10,4 @@
 ^docs$
 ^appveyor\.yml$
 ^TAGS$
+^\.github$

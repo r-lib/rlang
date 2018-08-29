@@ -717,5 +717,4 @@ return_to <- function(frame, value = NULL) {
 #' @export
 #' @examples
 #' call_inspect(foo(bar), "" %>% identity())
-#' invoke(call_inspect, list(a = mtcars, b = letters))
 call_inspect <- function(...) match.call()

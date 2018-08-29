@@ -18,5 +18,4 @@ tests for instance. Note that this is just a simple wrapper around
 }
 \examples{
 call_inspect(foo(bar), "" \%>\% identity())
-invoke(call_inspect, list(a = mtcars, b = letters))
 }

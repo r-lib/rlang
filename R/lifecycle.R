@@ -83,7 +83,6 @@
 #' * [UQ()], [UQS()]
 #'
 #' * [dots_splice()], [splice()]
-#' * [invoke()]
 #'
 #' * [is_frame()], [global_frame()], [current_frame()],
 #'   [ctxt_frame()], [call_frame()], [frame_position()]
@@ -100,6 +99,7 @@
 #'
 #' * [get_env()]: The `env` argument no longer has a default and must be supplied
 #' * [cnd_signal()]: The `.mufflable` argument no longer has any effect
+#' * [invoke()]: use the simpler `exec()` instead.
 #'
 #'
 #' **Renamed in rlang 0.2.0.9000**
@@ -183,11 +183,6 @@
 #' * `inplace()` => [calling()]. The `muffle` argument of `inplace()`
 #'   has not been implemented in `calling()` and is now defunct.
 #' * `rst_muffle()` => [cnd_muffle()]
-#'
-#'
-#' **Retired in rlang 0.2.0:**
-#'
-#' * [:=][quasiquotation]
 #'
 #'
 #' @name lifecycle

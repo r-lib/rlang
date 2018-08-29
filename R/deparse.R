@@ -159,10 +159,10 @@ new_lines <- function(width = peek_option("width"),
       status <- node_car(self$indent_status)
 
       if (self$next_indent_sticky) {
-        node_poke_cdr(status, inc(node_cdr(status)))
+        node_poke_cadr(status, inc(node_cadr(status)))
       } else {
         self$indent <- self$indent + 2L
-        self$indent_status <- new_node(new_node(FALSE, 0L), self$indent_status)
+        self$indent_status <- new_node(new_node(FALSE, new_node(0L, NULL)), self$indent_status)
         self$next_indent_sticky <- TRUE
       }
 
@@ -176,7 +176,7 @@ new_lines <- function(width = peek_option("width"),
       }
 
       reset <- node_car(status)
-      n_sticky <- node_cdr(status)
+      n_sticky <- node_cadr(status)
 
       # Decrease indent level only once for all the openers that were
       # on a single line
@@ -187,7 +187,7 @@ new_lines <- function(width = peek_option("width"),
       }
 
       if (n_sticky >= 1L) {
-        node_poke_cdr(status, dec(n_sticky))
+        node_poke_cadr(status, dec(n_sticky))
       } else {
         self$indent_status <- node_cdr(self$indent_status)
         self$next_indent_sticky <- FALSE

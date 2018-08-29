@@ -45,13 +45,18 @@
 #' # When code is executed indirectly, i.e. via source or within an
 #' # RMarkdown document, you'll tend to get a lot of guff at the beginning
 #' # related to the execution environment:
-#' source(textConnection("f()"), echo = TRUE)
+#' conn <- textConnection("f()")
+#' source(conn, echo = TRUE)
+#' close(conn)
 #'
 #' # To automatically strip this off, pass `to = globalenv()`.
 #' # This will automatically trim off calls prior to the last appearance
 #' # of the global environment on the stack
 #' h <- function() trace_back(globalenv())
-#' source(textConnection("f()"), echo = TRUE)
+#'
+#' conn <- textConnection("f()")
+#' source(conn, echo = TRUE)
+#' close(conn)
 #'
 #' # Restore defaults
 #' options(rlang_trace_top_env = NULL)

@@ -106,14 +106,6 @@
 #'   of `!!` and `get_expr()`: `!! get_expr(x)` is equivalent to
 #'   `UQE(x)`.
 #'
-#' * The use of `:=` as an alias of `~` is defunct as of rlang 0.2.0. It
-#'   caused surprising results when invoked in wrong places. For
-#'   instance, in the expression `dots_list(name := 1)`, this operator
-#'   was interpreted as a synonym to `=` that supports quasiquotation,
-#'   but not in `dots_list(list(name := 1))`. Since `:=` was an alias
-#'   for `~`, the inner list would contain formula-like object. This
-#'   kind of mistake now triggers an error.
-#'
 #' @param x An expression to unquote.
 #' @name quasiquotation
 #' @aliases UQ UQE UQS

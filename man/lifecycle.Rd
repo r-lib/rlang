@@ -79,7 +79,6 @@ Since rlang 0.2.0:
 \itemize{
 \item \code{\link[=UQ]{UQ()}}, \code{\link[=UQS]{UQS()}}
 \item \code{\link[=dots_splice]{dots_splice()}}, \code{\link[=splice]{splice()}}
-\item \code{\link[=invoke]{invoke()}}
 \item \code{\link[=is_frame]{is_frame()}}, \code{\link[=global_frame]{global_frame()}}, \code{\link[=current_frame]{current_frame()}},
 \code{\link[=ctxt_frame]{ctxt_frame()}}, \code{\link[=call_frame]{call_frame()}}, \code{\link[=frame_position]{frame_position()}}
 \item \code{\link[=ctxt_depth]{ctxt_depth()}}, \code{\link[=call_depth]{call_depth()}}, \code{\link[=ctxt_stack]{ctxt_stack()}}, \code{\link[=call_stack]{call_stack()}},
@@ -96,6 +95,7 @@ Since rlang 0.2.0:
 \itemize{
 \item \code{\link[=get_env]{get_env()}}: The \code{env} argument no longer has a default and must be supplied
 \item \code{\link[=cnd_signal]{cnd_signal()}}: The \code{.mufflable} argument no longer has any effect
+\item \code{\link[=invoke]{invoke()}}: use the simpler \code{exec()} instead.
 }
 
 \strong{Renamed in rlang 0.2.0.9000}
@@ -180,11 +180,6 @@ Since rlang 0.2.0:
 \item \code{inplace()} => \code{\link[=calling]{calling()}}. The \code{muffle} argument of \code{inplace()}
 has not been implemented in \code{calling()} and is now defunct.
 \item \code{rst_muffle()} => \code{\link[=cnd_muffle]{cnd_muffle()}}
-}
-
-\strong{Retired in rlang 0.2.0:}
-\itemize{
-\item \link[=quasiquotation]{:=}
 }
 }
 

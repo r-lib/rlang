@@ -4,8 +4,8 @@
 \alias{invoke}
 \title{Invoke a function with a list of arguments}
 \usage{
-invoke(.fn, .args = list(), ..., .env = caller_env(), .bury = c(".fn",
-  ""))
+invoke(.fn, .args = list(), ..., .env = caller_env(),
+  .bury = c(".fn", ""))
 }
 \arguments{
 \item{.fn}{A function to invoke. Can be a function object or the
@@ -38,15 +38,15 @@ noise.
 }
 \section{Life cycle}{
 
+\badgesoftdeprecated
 
-\code{invoke()} is in the questioning stage. Now that we
+\code{invoke()} is soft-deprecated in favour of \code{\link[=exec]{exec()}}. Now that we
 understand better the interaction between unquoting and dots
-capture, we believe that \code{invoke()} should not take a \code{.args}
-argument. Instead it should take dots with \code{\link[=dots_list]{dots_list()}} in order
-to enable \code{!!!} syntax.
+capture, we can take a simpler approach in \code{exec()}.
 
-We ask rlang users not to use \code{invoke()} in CRAN packages because
-we plan a breaking API update to remove the \code{.args} argument.
+If you need finer control over the generater call, you should construct
+an environment and call yourself, manually burying large objects
+or complex epxressions.
 }
 
 \examples{
@@ -73,3 +73,4 @@ invoke("call_inspect", letters)
 # the argument prefix:
 invoke(call_inspect, mtcars, .bury = c("inspect!", "col"))
 }
+\keyword{internal}

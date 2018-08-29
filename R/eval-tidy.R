@@ -184,7 +184,7 @@ delayedAssign(".data", as_data_pronoun(list()))
 #' environments). We say that objects from user data mask objects
 #' in the current environment.
 #'
-#' Following this change in terminology, `as_data_mask()` and
+#' Following this change in terminology, `as_overscope()` and
 #' `new_overscope()` were soft-deprecated in rlang 0.2.0 in favour of
 #' `as_data_mask()` and `new_data_mask()`.
 #'

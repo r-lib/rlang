@@ -12,8 +12,7 @@ mut_attrs(.x, ...)
 \arguments{
 \item{.x}{An object to decorate with attributes.}
 
-\item{...}{A list of named attributes. These have \link[=tidy-dots]{explicit
-splicing semantics}. Pass a single unnamed \code{NULL} argument to
+\item{...}{A list of named attributes. These have \link[=tidy-dots]{explicit splicing semantics}. Pass a single unnamed \code{NULL} argument to
 zap all attributes from \code{.x}.}
 }
 \value{

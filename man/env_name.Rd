@@ -22,8 +22,7 @@ names. \code{env_name()} returns:
 the search path).
 \item "namespace:pkg" if \code{env} is the namespace of the package "pkg".
 \item The \code{name} attribute of \code{env} if it exists. This is how the
-\link[=scoped_env]{package environments} and the \link[=ns_imports_env]{imports
-environments} store their names. The name of package
+\link[=scoped_env]{package environments} and the \link[=ns_imports_env]{imports environments} store their names. The name of package
 environments is typically "package:pkg".
 \item The empty string \code{""} otherwise.
 }

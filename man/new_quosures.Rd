@@ -29,17 +29,6 @@ the following invariants:
 
 \code{new_quosures()} takes a list of quosures and adds the \code{quosures}
 class and a vector of empty names if needed. \code{as_quosures()} calls
-[as_quosure()] on all elements before creating the \code{quosures}
+\code{\link[=as_quosure]{as_quosure()}} on all elements before creating the \code{quosures}
 object.
-
-[\code{and}c()` and ensures
-the following invariants:
-\itemize{
-\item The list only contains quosures.
-\item It is always named, possibly with a vector of empty strings.
-}
-
-\code{new_quosures()} takes a list of quosures and adds the \code{quosures}
-class and a vector of empty names if needed. \code{as_quosures()} calls
-[as_quosure()]: R:%60%20and%20%60c()%60%20and%20ensures%0Athe%20following%20invariants:%0A%0A*%20The%20list%20only%20contains%20quosures.%0A*%20It%20is%20always%20named,%20possibly%20with%20a%20vector%20of%20empty%20strings.%0A%0A%60new_quosures()%60%20takes%20a%20list%20of%20quosures%20and%20adds%20the%20%60quosures%60%0Aclass%20and%20a%20vector%20of%20empty%20names%20if%20needed.%20%60as_quosures()%60%20calls%0A[as_quosure()
 }

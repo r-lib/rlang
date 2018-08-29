@@ -53,6 +53,15 @@ test_that("env_poke() inherits from parents if `inherit` is TRUE", {
   expect_identical(env_get(env, "bar"), "bar")
 })
 
+test_that("env_get() evaluates promises and active bindings", {
+  e <- env()
+  env_bind_exprs(e, x = 1)
+  env_bind_fns(e, y = function() 2)
+
+  expect_equal(env_get(e, "x"), 1)
+  expect_equal(env_get(e, "y"), 2)
+})
+
 test_that("env_get_list() retrieves multiple bindings", {
   env <- env(foo = 1L, bar = 2L)
   expect_identical(env_get_list(env, c("foo", "bar")), list(foo = 1L, bar =2L))

@@ -21,11 +21,15 @@ static sexp* ns_env_get(sexp* env, const char* name) {
 
   return obj;
 }
-sexp* rlang_ns_get(const char* name) {
-  return ns_env_get(r_ns_env("rlang"), name);
-}
 sexp* r_base_ns_get(const char* name) {
   return ns_env_get(r_base_env, name);
+}
+
+
+static sexp* rlang_ns_env = NULL;
+
+sexp* rlang_ns_get(const char* name) {
+  return ns_env_get(rlang_ns_env, name);
 }
 
 
@@ -144,6 +148,10 @@ sexp* r_env_unbind(sexp* env, const char* name, bool inherits) {
   return r_env_unbind_all(env, names, inherits);
 }
 
+
+void r_init_rlang_ns_env() {
+  rlang_ns_env = r_ns_env("rlang");
+}
 
 void r_init_library_env() {
   sexp* new_env_args = r_null;

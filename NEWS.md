@@ -1,5 +1,14 @@
 
-# rlang 0.2.0.9000
+# rlang 0.2.2.9000
+
+* `exec()` is a simpler replacement to `invoke()` (#536). `invoke()` has
+  been soft-deprecated.
+
+* `env_get()` now evaluates promises and active bindings since these are
+  internal objects which should not be exposed at the R level (#554)
+
+* `env_print()` calls `get_env()` on its argument, making it easier to 
+  see the environment of closures and quosures (#567).
 
 * You can now unquote quosured symbols as LHS of `:=`. The symbol is
   automatically unwrapped from the quosure.
@@ -155,6 +164,26 @@
 * Using `get_env()` without supplying an environment is now
   soft-deprecated. Please use `current_env()` to retrieve the current
   environment.
+
+
+# rlang 0.2.2
+
+This is a maintenance release that fixes several garbage collection
+protection issues.
+
+
+# rlang 0.2.1
+
+This is a maintenance release that fixes several tidy evaluation
+issues.
+
+* Functions with tidy dots support now allow splicing atomic vectors.
+
+* Quosures no longer capture the current `srcref`.
+
+* Formulas are now evaluated in the correct environment by
+  `eval_tidy()`. This fixes issues in dplyr and other tidy-evaluation
+  interfaces.
 
 
 # rlang 0.2.0

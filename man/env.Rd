@@ -45,7 +45,7 @@ right. They are a collection of uniquely named objects, subsettable
 by name and modifiable by reference. This latter property (see
 section on reference semantics) is especially useful for creating
 mutable OO systems (cf the \href{https://github.com/wch/R6}{R6 package}
-and the \href{http://ggplot2.tidyverse.org/articles/extending-ggplot2.html}{ggprotosystem}
+and the \href{http://ggplot2.tidyverse.org/articles/extending-ggplot2.html}{ggproto system}
 for extending ggplot2).
 }
 
@@ -55,7 +55,7 @@ for extending ggplot2).
 All R environments (except the \link[=empty_env]{empty environment}) are
 defined with a parent environment. An environment and its
 grandparents thus form a linear hierarchy that is the basis for
-\href{https://en.wikipedia.org/wiki/Scope_(computer_science)}{lexicalscoping} in
+\href{https://en.wikipedia.org/wiki/Scope_(computer_science)}{lexical scoping} in
 R. When R evaluates an expression, it looks up symbols in a given
 environment. If it cannot find these symbols there, it keeps
 looking them up in parent environments. This way, objects defined

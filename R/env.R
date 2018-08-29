@@ -994,10 +994,13 @@ env_label <- function(env) {
 #'
 #' * Locked bindings get a `[L]` tag
 #'
-#' @param env An environment.
+#' @param env An environment, or object that can be converted to an
+#'   environment by [get_env()].
 #'
 #' @export
 env_print <- function(env) {
+  env <- get_env(env)
+
   if (is_empty_env(env)) {
     parent <- "NULL"
   } else {
