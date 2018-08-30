@@ -544,7 +544,7 @@ print.rlang_error <- function(x, ..., child = NULL) {
   } else {
     header <- "<error: parent>"
   }
-  meow(
+  cat_line(
     header,
     sprintf("* Message: \"%s\"", x$message),
     sprintf("* Class: `%s`", class(x)[[1]]),
