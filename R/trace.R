@@ -238,9 +238,22 @@ trace_trim_env <- function(x, to = NULL) {
   x[start:end]
 }
 
-set_trace_collapsed <- function(trace, id, n) {
+set_trace_skipped <- function(trace, id, n) {
   attr(trace$calls[[id]], "collapsed") <- n
   trace
+}
+set_trace_collapsed <- function(trace, id, n) {
+  attr(trace$calls[[id - n]], "collapsed") <- n
+  trace
+}
+n_collapsed <- function(trace, id) {
+  call <- trace$calls[[id]]
+
+  if (is_call(call, "eval", ns = c("", "base"))) {
+    1L
+  } else {
+    0L
+  }
 }
 
 trace_simplify_trail <- function(trace) {
@@ -249,6 +262,13 @@ trace_simplify_trail <- function(trace) {
   id <- length(parents)
 
   while (id != 0L) {
+    n_collapsed <- n_collapsed(trace, id)
+
+    if (n_collapsed) {
+      trace <- set_trace_collapsed(trace, id, n_collapsed)
+      id <- id - n_collapsed
+    }
+
     path <- c(path, id)
     id <- parents[id]
   }
@@ -262,27 +282,31 @@ trace_simplify_collapse <- function(trace) {
   id <- length(parents)
 
   while (id > 0L) {
-    parent_id <- parents[[id]]
+    n_collapsed <- n_collapsed(trace, id)
+
+    if (n_collapsed) {
+      trace <- set_trace_collapsed(trace, id, n_collapsed)
+      id <- id - n_collapsed
+    }
+
     path <- c(path, id)
+    parent_id <- parents[[id]]
     id <- dec(id)
 
     # Collapse intervening call branches
-    if (id != parent_id) {
-      n_skipped <- 0L
+    n_skipped <- 0L
+    while (id != parent_id) {
+      sibling_parent_id <- parents[[id]]
 
-      while (id != parent_id) {
-        sibling_parent_id <- parents[[id]]
-
-        if (sibling_parent_id == parent_id) {
-          trace <- set_trace_collapsed(trace, id, n_skipped)
-          n_skipped <- 0L
-          path <- c(path, id)
-        } else {
-          n_skipped <- inc(n_skipped)
-        }
-
-        id <- dec(id)
+      if (sibling_parent_id == parent_id) {
+        trace <- set_trace_skipped(trace, id, n_skipped)
+        path <- c(path, id)
+        n_skipped <- 0L
+      } else {
+        n_skipped <- inc(n_skipped)
       }
+
+      id <- dec(id)
     }
   }
 

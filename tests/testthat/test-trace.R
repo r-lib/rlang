@@ -182,3 +182,21 @@ test_that("long backtrails are truncated", {
   expect_error(print(trace, simplify = "none", max_frames = 5), "currently only supported with")
   expect_error(print(trace, simplify = "collapse", max_frames = 5), "currently only supported with")
 })
+
+test_that("eval() frames are collapsed", {
+  skip_on_os("windows")
+
+  e <- current_env()
+  f <- function() base::eval(quote(g()))
+  g <- function() eval(quote(trace_back(e)))
+  trace <- f()
+
+  expect_known_output(file = test_path("test-trace-collapse-eval.txt"), {
+    cat("Full:\n")
+    print(trace, simplify = "none", srcrefs = FALSE)
+    cat("\nCollapsed:\n")
+    print(trace, simplify = "collapse", srcrefs = FALSE)
+    cat("\nTrail:\n")
+    print(trace, simplify = "trail", srcrefs = FALSE)
+  })
+})
