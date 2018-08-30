@@ -235,6 +235,11 @@ trace_simplify <- function(x, simplify = c("trail", "collapse", "none")) {
   )
 }
 
+set_trace_collapsed <- function(trace, id, n) {
+  attr(trace$calls[[id]], "collapsed") <- n
+  trace
+}
+
 trace_simplify_trail <- function(trace) {
   parents <- trace$parents
   path <- int()
@@ -256,7 +261,7 @@ trace_simplify_collapsed <- function(trace) {
   while (id > 0L) {
     parent_id <- parents[[id]]
     path <- c(path, id)
-    id <- id - 1L
+    id <- dec(id)
 
     # Collapse intervening call branches
     if (id != parent_id) {
@@ -266,14 +271,14 @@ trace_simplify_collapsed <- function(trace) {
         sibling_parent_id <- parents[[id]]
 
         if (sibling_parent_id == parent_id) {
-          attr(trace$calls[[id]], "collapsed") <- n_skipped
+          trace <- set_trace_collapsed(trace, id, n_skipped)
           n_skipped <- 0L
           path <- c(path, id)
         } else {
-          n_skipped <- n_skipped + 1L
+          n_skipped <- inc(n_skipped)
         }
 
-        id <- id - 1L
+        id <- dec(id)
       }
     }
   }
