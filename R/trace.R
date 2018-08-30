@@ -106,17 +106,31 @@ format.rlang_trace <- function(x,
     return(trace_root())
   }
 
-  x <- trace_simplify(x, simplify)
-  tree <- trace_as_tree(x, dir = dir, srcrefs = srcrefs)
+  switch(arg_match(simplify),
+    none = trace_format(x, max_frames, dir, srcrefs),
+    collapse = trace_format_collapse(x, max_frames, dir, srcrefs),
+    trail = trace_format_trail(x, max_frames, dir, srcrefs)
+  )
+}
 
-  if (arg_match(simplify) == "trail") {
-    cli_branch(tree[-1, ][["call"]], max_frames)
-  } else {
-    if (!is_null(max_frames)) {
-      abort("`max_frames` is currently only supported with `simplify = \"trail\"`")
-    }
-    cli_tree(tree)
+trace_format <- function(trace, max_frames, dir, srcrefs) {
+  if (!is_null(max_frames)) {
+    abort("`max_frames` is currently only supported with `simplify = \"trail\"`")
   }
+
+  tree <- trace_as_tree(trace, dir = dir, srcrefs = srcrefs)
+  cli_tree(tree)
+}
+trace_format_collapse <- function(trace, max_frames, dir, srcrefs) {
+  trace <- trace_simplify_collapse(trace)
+  trace_format(trace, max_frames, dir, srcrefs)
+}
+trace_format_trail <- function(trace, max_frames, dir, srcrefs) {
+  trace <- trace_simplify_trail(trace)
+  tree <- trace_as_tree(trace, dir = dir, srcrefs = srcrefs)
+
+  branch <- tree[-1, ][["call"]]
+  cli_branch(branch, max_frames)
 }
 
 cli_branch <- function(lines, max = NULL, style = NULL) {
@@ -224,14 +238,6 @@ trace_trim_env <- function(x, to = NULL) {
   x[start:end]
 }
 
-trace_simplify <- function(x, simplify = c("trail", "collapse", "none")) {
-  switch(arg_match(simplify),
-    none = x,
-    trail = trace_simplify_trail(x),
-    collapse = trace_simplify_collapsed(x)
-  )
-}
-
 set_trace_collapsed <- function(trace, id, n) {
   attr(trace$calls[[id]], "collapsed") <- n
   trace
@@ -250,7 +256,7 @@ trace_simplify_trail <- function(trace) {
   trace[rev(path)]
 }
 
-trace_simplify_collapsed <- function(trace) {
+trace_simplify_collapse <- function(trace) {
   parents <- trace$parents
   path <- int()
   id <- length(parents)

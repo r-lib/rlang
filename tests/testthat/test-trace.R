@@ -61,7 +61,7 @@ test_that("can print tree with collapsed branches", {
   })
 })
 
-test_that("trace_simplify() extracts last branch", {
+test_that("trace_simplify_trail() extracts last branch", {
   e <- environment()
   j <- function(i) k(i)
   k <- function(i) l(i)
@@ -70,15 +70,15 @@ test_that("trace_simplify() extracts last branch", {
 
   x1 <- j(1)
   expect_length(x1, 6)
-  expect_length(trace_simplify(x1), 3)
+  expect_length(trace_simplify_trail(x1), 3)
 
   x2 <- j(2)
   expect_length(x2, 6)
-  expect_length(trace_simplify(x2), 2)
+  expect_length(trace_simplify_trail(x2), 2)
 
   x3 <- j(3)
   expect_length(x2, 6)
-  expect_length(trace_simplify(x3), 1)
+  expect_length(trace_simplify_trail(x3), 1)
 })
 
 test_that("integerish indices are allowed", {
