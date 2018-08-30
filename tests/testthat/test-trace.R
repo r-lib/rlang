@@ -200,3 +200,21 @@ test_that("eval() frames are collapsed", {
     print(trace, simplify = "trail", srcrefs = FALSE)
   })
 })
+
+test_that("children of collapsed frames are rechained to correct parent", {
+  skip_on_os("windows")
+
+  e <- current_env()
+  f <- function() eval(quote(g()), env())
+  g <- function() trace_back(e)
+  trace <- f()
+
+  expect_known_output(file = test_path("test-trace-collapse-children.txt"), {
+    cat("Full:\n")
+    print(trace, simplify = "none", srcrefs = FALSE)
+    cat("\nCollapsed:\n")
+    print(trace, simplify = "collapse", srcrefs = FALSE)
+    cat("\nTrail:\n")
+    print(trace, simplify = "trail", srcrefs = FALSE)
+  })
+})

@@ -266,13 +266,19 @@ trace_simplify_trail <- function(trace) {
 
     if (n_collapsed) {
       trace <- set_trace_collapsed(trace, id, n_collapsed)
-      id <- id - n_collapsed
+      next_id <- id - n_collapsed
+
+      # Rechain child of collapsed parent to correct parent
+      parents[[id + 1L]] <- next_id
+
+      id <- next_id
     }
 
     path <- c(path, id)
     id <- parents[id]
   }
 
+  trace$parents <- parents
   trace[rev(path)]
 }
 
@@ -286,7 +292,12 @@ trace_simplify_collapse <- function(trace) {
 
     if (n_collapsed) {
       trace <- set_trace_collapsed(trace, id, n_collapsed)
-      id <- id - n_collapsed
+      next_id <- id - n_collapsed
+
+      # Rechain child of collapsed parent to correct parent
+      parents[[id + 1L]] <- next_id
+
+      id <- next_id
     }
 
     path <- c(path, id)
@@ -310,6 +321,7 @@ trace_simplify_collapse <- function(trace) {
     }
   }
 
+  trace$parents <- parents
   trace[rev(path)]
 }
 
