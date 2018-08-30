@@ -201,6 +201,26 @@ test_that("eval() frames are collapsed", {
   })
 })
 
+test_that("%>% frames are collapsed", {
+  skip_on_os("windows")
+  skip_if_not_installed("magrittr")
+
+  e <- current_env()
+  f <- function(x, ...) x
+  g <- function(x, ...) x
+  h <- function(x, ...) trace_back(e)
+  trace <- NULL %>% f() %>% g() %>% h()
+
+  expect_known_output(file = test_path("test-trace-collapse-magrittr.txt"), {
+    cat("Full:\n")
+    print(trace, simplify = "none", srcrefs = FALSE)
+    cat("\nCollapsed:\n")
+    print(trace, simplify = "collapse", srcrefs = FALSE)
+    cat("\nTrail:\n")
+    print(trace, simplify = "trail", srcrefs = FALSE)
+  })
+})
+
 test_that("children of collapsed frames are rechained to correct parent", {
   skip_on_os("windows")
 

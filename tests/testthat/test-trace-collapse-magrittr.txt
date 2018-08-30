@@ -1,0 +1,20 @@
+Full:
+█
+└─NULL %>% f() %>% g() %>% h()
+  ├─withVisible(eval(quote(`_fseq`(`_lhs`)), env, env))
+  └─eval(quote(`_fseq`(`_lhs`)), env, env)
+    └─eval(quote(`_fseq`(`_lhs`)), env, env)
+      └─`_fseq`(`_lhs`)
+        └─freduce(value, `_function_list`)
+          ├─withVisible(function_list[[k]](value))
+          └─function_list[[k]](value)
+            └─h(.)
+
+Collapsed:
+█
+└─[ %>% ] ... +7
+  └─h(.)
+
+Trail:
+ ─[ %>% ] ... +7
+ ─h(.)

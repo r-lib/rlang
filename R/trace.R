@@ -250,10 +250,14 @@ n_collapsed <- function(trace, id) {
   call <- trace$calls[[id]]
 
   if (is_call(call, "eval", ns = c("", "base"))) {
-    1L
-  } else {
-    0L
+    return(1L)
   }
+
+  if (identical(call, quote(function_list[[k]](value)))) {
+    return(7L)
+  }
+
+  0L
 }
 
 trace_simplify_trail <- function(trace) {
@@ -357,7 +361,9 @@ trace_call_text <- function(call, collapse) {
     return(expr_name(call))
   }
 
-  if (length(call) > 1L) {
+  if (is_call(call, "%>%")) {
+    call <- quote(`%>%`)
+  } else if (length(call) > 1L) {
     call <- call2(node_car(call), quote(...))
   }
 
