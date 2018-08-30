@@ -127,6 +127,7 @@ trace_format_collapse <- function(trace, max_frames, dir, srcrefs) {
 }
 trace_format_trail <- function(trace, max_frames, dir, srcrefs) {
   trace <- trace_simplify_trail(trace)
+  trace <- trail_uncollapse_pipe(trace)
   tree <- trace_as_tree(trace, dir = dir, srcrefs = srcrefs)
 
   branch <- tree[-1, ][["call"]]
@@ -218,6 +219,17 @@ length.rlang_trace <- function(x) {
   new_trace(calls, parents, envs)
 }
 
+# For internal use only
+c.rlang_trace <- function(...) {
+  traces <- list(...)
+
+  calls <- flatten(map(traces, `[[`, "calls"))
+  parents <- flatten_int(map(traces, `[[`, "parents"))
+  envs <- flatten(map(traces, `[[`, "envs"))
+
+  new_trace(calls, parents, envs)
+}
+
 # Trimming ----------------------------------------------------------------
 
 trace_trim_env <- function(x, to = NULL) {
@@ -258,6 +270,72 @@ n_collapsed <- function(trace, id) {
   }
 
   0L
+}
+
+pipe_collect_calls <- function(pipe) {
+  node <- node_cdr(pipe)
+  last_call <- pipe_add_dot(node_cadr(node))
+  calls <- new_node(last_call, NULL)
+
+  while (is_call(node_car(node), "%>%")) {
+    node <- node_cdar(node)
+    call <- pipe_add_dot(node_cadr(node))
+    calls <- new_node(call, calls)
+  }
+
+  # The first call doesn't need a dot
+  first_call <- node_car(node)
+  if (is_call(first_call)) {
+    calls <- new_node(first_call, calls)
+  }
+
+  as.list(calls)
+}
+pipe_add_dot <- function(call) {
+  if (!is_call(call)) {
+    return(call2(call, dot_sym))
+  }
+
+  node <- node_cdr(call)
+  while (!is_null(node)) {
+    if (identical(node_car(node), dot_sym)) {
+      return(call)
+    }
+    node <- node_cdr(node)
+  }
+
+  args <- new_node(dot_sym, node_cdr(call))
+  new_call(node_car(call), args)
+}
+
+# Assumes a backtrail with collapsed pipe
+trail_uncollapse_pipe <- function(trace) {
+  while (idx <- detect_index(trace$calls, is_call, "%>%")) {
+    pipe <- trace$calls[[idx]]
+
+    pipe_calls <- pipe_collect_calls(pipe)
+    n_pipe <- length(pipe_calls)
+
+    parent <- trace$parents[[idx]]
+    pipe_parents <- seq(parent, parent + n_pipe - 1L)
+
+    # Assign the pipe frame as dummy envs for uncollapsed frames
+    pipe_envs <- rep(trace$envs[idx], n_pipe)
+
+    # Remove last pipe call as it will get unfolded from the first
+    trace <- trace[-c(idx, idx + 1L)]
+
+    # Add the number of uncollapsed frames to children's
+    # ancestry. This assumes a backtrail.
+    tail <- seq2_along(idx, trace$parents)
+    trace$parents[tail] <- trace$parents[tail] + n_pipe
+
+    trace$calls <- c(pipe_calls, trace$calls)
+    trace$parents <- c(pipe_parents, trace$parents)
+    trace$envs <- c(pipe_envs, trace$envs)
+  }
+
+  trace
 }
 
 trace_simplify_trail <- function(trace) {
@@ -362,7 +440,7 @@ trace_call_text <- function(call, collapse) {
   }
 
   if (is_call(call, "%>%")) {
-    call <- quote(`%>%`)
+    call <- call
   } else if (length(call) > 1L) {
     call <- call2(node_car(call), quote(...))
   }

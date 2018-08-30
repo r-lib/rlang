@@ -205,20 +205,38 @@ test_that("%>% frames are collapsed", {
   skip_on_os("windows")
   skip_if_not_installed("magrittr")
 
+  `%>%` <- magrittr::`%>%`
+
   e <- current_env()
   f <- function(x, ...) x
   g <- function(x, ...) x
   h <- function(x, ...) trace_back(e)
-  trace <- NULL %>% f() %>% g() %>% h()
 
-  expect_known_output(file = test_path("test-trace-collapse-magrittr.txt"), {
-    cat("Full:\n")
-    print(trace, simplify = "none", srcrefs = FALSE)
-    cat("\nCollapsed:\n")
-    print(trace, simplify = "collapse", srcrefs = FALSE)
-    cat("\nTrail:\n")
-    print(trace, simplify = "trail", srcrefs = FALSE)
-  })
+  trace <- NULL %>% f() %>% g(1, 2) %>% h(3, ., 4)
+  expect_known_trace_output(trace, "test-trace-collapse-magrittr.txt")
+
+  trace <- f(NULL) %>% g(list(.)) %>% h(3, ., list(.))
+  expect_known_trace_output(trace, "test-trace-collapse-magrittr2.txt")
+
+  trace <- f(g(NULL %>% f()) %>% h())
+  expect_known_trace_output(trace, "test-trace-collapse-magrittr3.txt")
+})
+
+test_that("children of collapsed %>% frames have correct parent", {
+  skip_on_os("windows")
+  skip_if_not_installed("magrittr")
+
+  `%>%` <- magrittr::`%>%`
+
+  e <- current_env()
+  F <- function(x, ...) x
+  G <- function(x, ...) x
+  H <- function(x) f()
+  f <- function() h()
+  h <- function() trace_back(e)
+
+  trace <- NA %>% F() %>% G() %>% H()
+  expect_known_trace_output(trace, "test-trace-collapse-magrittr-children.txt")
 })
 
 test_that("children of collapsed frames are rechained to correct parent", {
@@ -237,4 +255,17 @@ test_that("children of collapsed frames are rechained to correct parent", {
     cat("\nTrail:\n")
     print(trace, simplify = "trail", srcrefs = FALSE)
   })
+})
+
+test_that("pipe_collect_calls() collects calls", {
+  exprs2 <- function(...) unname(exprs(...))
+
+  call <- quote(a(A %>% B) %>% b)
+  expect_identical(pipe_collect_calls(call), exprs2(a(A %>% B), b(.)))
+
+  call <- quote(a %>% b %>% c)
+  expect_identical(pipe_collect_calls(call), exprs2(b(.), c(.)))
+
+  call <- quote(a() %>% b %>% c)
+  expect_identical(pipe_collect_calls(call), exprs2(a(), b(.), c(.)))
 })

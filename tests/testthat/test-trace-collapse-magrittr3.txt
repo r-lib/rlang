@@ -1,6 +1,7 @@
 Full:
 █
-└─NULL %>% f() %>% g(1, 2) %>% h(3, ., 4)
+├─f(g(NULL %>% f()) %>% h())
+└─g(NULL %>% f()) %>% h()
   ├─withVisible(eval(quote(`_fseq`(`_lhs`)), env, env))
   └─eval(quote(`_fseq`(`_lhs`)), env, env)
     └─eval(quote(`_fseq`(`_lhs`)), env, env)
@@ -8,14 +9,14 @@ Full:
         └─freduce(value, `_function_list`)
           ├─withVisible(function_list[[k]](value))
           └─function_list[[k]](value)
-            └─h(3, ., 4)
+            └─h(.)
 
 Collapsed:
 █
-└─[ NULL %>% f() %>% g(1, 2) %>% h(3, ., 4) ] ... +7
-  └─h(3, ., 4)
+├─[ f(...) ]
+└─[ g(NULL %>% f()) %>% h() ] ... +7
+  └─h(.)
 
 Trail:
- ─f(.)
- ─g(., 1, 2)
- ─h(3, ., 4)
+ ─g(NULL %>% f())
+ ─h(.)
