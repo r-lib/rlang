@@ -122,10 +122,7 @@ format.rlang_trace <- function(x,
 cli_branch <- function(lines, max = NULL, style = NULL) {
   style <- style %||% cli_box_chars()
   lines <- paste0(" ", style$h, lines)
-  cli_branch_truncate(lines, max, style)
-}
 
-cli_branch_truncate <- function(lines, max = NULL, style = NULL) {
   if (is_null(max)) {
     return(lines)
   }
