@@ -261,7 +261,7 @@ set_trace_collapsed <- function(trace, id, n) {
 n_collapsed <- function(trace, id) {
   call <- trace$calls[[id]]
 
-  if (is_call(call, "eval", ns = c("", "base"))) {
+  if (is_call(call, c("eval", "evalq"), ns = c("", "base"))) {
     return(1L)
   }
 

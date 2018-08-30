@@ -179,6 +179,12 @@ test_that("eval() frames are collapsed", {
   trace <- f()
 
   expect_known_trace_output(trace, file = "test-trace-collapse-eval.txt")
+
+  f <- function() base::evalq(g())
+  g <- function() evalq(trace_back(e))
+  trace <- f()
+
+  expect_known_trace_output(trace, file = "test-trace-collapse-evalq.txt")
 })
 
 test_that("%>% frames are collapsed", {
