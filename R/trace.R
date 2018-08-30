@@ -189,7 +189,7 @@ print.rlang_trace <- function(x,
                               max_frames = NULL,
                               dir = getwd(),
                               srcrefs = NULL) {
-  meow(format(x, ...,
+  cat_line(format(x, ...,
     simplify = simplify,
     max_frames = max_frames,
     dir = dir,

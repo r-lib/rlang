@@ -389,12 +389,12 @@ quo_squash_impl <- function(x, parent = NULL, warn = FALSE) {
 
 #' @export
 print.quosure <- function(x, ...) {
-  meow(.trailing = FALSE,
+  cat_line(.trailing = FALSE,
     "<quosure>",
     "  expr: "
   )
   quo_print(x)
-  meow(.trailing = FALSE,
+  cat_line(.trailing = FALSE,
     "  env:  "
   )
 
@@ -521,5 +521,5 @@ quo_env_print <- function(env) {
     nm <- blue(nm)
   }
 
-  meow(nm)
+  cat_line(nm)
 }

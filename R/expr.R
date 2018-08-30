@@ -327,7 +327,7 @@ switch_expr <- function(.x, ...) {
 #' wrapper_quo <- local(quo(bar(!!local_quo, baz)))
 #' expr_print(wrapper_quo)
 expr_print <- function(x, width = peek_option("width")) {
-  meow(expr_deparse(x, width = width))
+  cat_line(expr_deparse(x, width = width))
 }
 #' @rdname expr_print
 #' @export

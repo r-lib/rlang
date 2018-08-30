@@ -135,6 +135,6 @@ unbox <- function(box) {
   box[[1]]
 }
 print.box <- function(x, ...) {
-  meow("<box>")
+  cat_line("<box>")
   print(unbox(x))
 }
