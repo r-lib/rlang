@@ -36,14 +36,11 @@ test_that("can print tree with collapsed branches", {
   i <- function() { tryCatch(trace_back(e)) }
   trace <- eval(quote(f()))
 
-  expect_known_output(file = test_path("test-trace-collapsed1.txt"), {
-    cat("Full:\n")
-    print(trace, simplify = "none", dir = dir)
-    cat("\nCollapsed:\n")
-    print(trace, simplify = "collapse", dir = dir)
-    cat("\nTrail:\n")
-    print(trace, simplify = "trail", dir = dir)
-  })
+  expect_known_trace_output(trace,
+    file = test_path("test-trace-collapsed1.txt"),
+    dir = dir,
+    srcrefs = TRUE
+  )
 
   # With multiple siblings
   f <- function() eval(quote(eval(quote(g()))))
@@ -51,14 +48,11 @@ test_that("can print tree with collapsed branches", {
   h <- function() trace_back(e)
   trace <- eval(quote(f()))
 
-  expect_known_output(file = test_path("test-trace-collapsed2.txt"), {
-    cat("Full:\n")
-    print(trace, simplify = "none", dir = dir)
-    cat("\nCollapsed:\n")
-    print(trace, simplify = "collapse", dir = dir)
-    cat("\nTrail:\n")
-    print(trace, simplify = "trail", dir = dir)
-  })
+  expect_known_trace_output(trace,
+    file = test_path("test-trace-collapsed2.txt"),
+    dir = dir,
+    srcrefs = TRUE
+  )
 })
 
 test_that("trace_simplify_trail() extracts last branch", {
@@ -146,14 +140,7 @@ test_that("recursive frames are rewired to the global env", {
   g <- function() trace_back(e)
   trace <- eval_tidy(quo(f()))
 
-  expect_known_output(file = test_path("test-trace-recursive.txt"), {
-    cat("Full:\n")
-    print(trace, simplify = "none", dir = dir, srcrefs = FALSE)
-    cat("\nCollapsed:\n")
-    print(trace, simplify = "collapse", dir = dir, srcrefs = FALSE)
-    cat("\nTrail:\n")
-    print(trace, simplify = "trail", dir = dir, srcrefs = FALSE)
-  })
+  expect_known_trace_output(trace, file = "test-trace-recursive.txt")
 })
 
 test_that("long backtrails are truncated", {
@@ -191,14 +178,7 @@ test_that("eval() frames are collapsed", {
   g <- function() eval(quote(trace_back(e)))
   trace <- f()
 
-  expect_known_output(file = test_path("test-trace-collapse-eval.txt"), {
-    cat("Full:\n")
-    print(trace, simplify = "none", srcrefs = FALSE)
-    cat("\nCollapsed:\n")
-    print(trace, simplify = "collapse", srcrefs = FALSE)
-    cat("\nTrail:\n")
-    print(trace, simplify = "trail", srcrefs = FALSE)
-  })
+  expect_known_trace_output(trace, file = "test-trace-collapse-eval.txt")
 })
 
 test_that("%>% frames are collapsed", {
