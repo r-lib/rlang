@@ -62,15 +62,67 @@
 #' options(rlang_trace_top_env = NULL)
 #' @export
 trace_back <- function(to = NULL) {
-  calls <- sys.calls()
+  calls <- as.list(sys.calls())
   parents <- normalise_parents(sys.parents())
-  envs <- map(sys.frames(), env_label)
+  frames <- sys.frames()
+  envs <- map(frames, env_label)
+
+  calls <- add_pipe_pointer(calls, frames)
 
   trace <- new_trace(calls, parents, envs)
   trace <- trace_trim_env(trace, to)
   trace <- trace[-length(trace)] # remove call to self
 
   trace
+}
+
+# Assumes magrittr 1.5
+add_pipe_pointer <- function(calls, frames) {
+  pipe_begs <- which(map_lgl(calls, is_call, "%>%"))
+  pipe_kinds <- map_int(pipe_begs, pipe_call_kind, calls)
+
+  pipe_calls <- map2(pipe_begs, pipe_kinds, function(beg, kind) {
+    call <- calls[[beg]]
+
+    if (kind == 0L) {
+      return(call)
+    }
+
+    if (kind == 1L) {
+      v <- "i"
+    } else if (kind == 2L) {
+      v <- "k"
+    }
+
+    i <- beg + 5L
+    structure(call, pipe_pointer = frames[[i]][[v]])
+  })
+
+  calls[pipe_begs] <- pipe_calls
+  calls
+}
+
+pipe_call_kind <- function(beg, calls) {
+  end1 <- beg + 6L
+  end2 <- beg + 7L
+
+  if (end2 > length(calls)) {
+    return(0L)
+  }
+
+  # Uncomplete pipe call
+  magrittr_call1 <- quote(function_list[[i]](value))
+
+  # Last call of the pipe
+  magrittr_call2 <- quote(function_list[[k]](value))
+
+  if (identical(calls[[end1]], magrittr_call1)) {
+    return(1L)
+  }
+  if (identical(calls[[end2]], magrittr_call2)) {
+    return(2L)
+  }
+  0L
 }
 
 # Remove recursive frames which occur with quosures
