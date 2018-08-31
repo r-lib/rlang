@@ -1,5 +1,6 @@
 Error message
 Backtrail:
+ ─with_options(...)
  ─f()
  ─g()
  ─h()

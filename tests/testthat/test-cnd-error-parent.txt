@@ -46,6 +46,7 @@ Trail:
 * Message: "High-level message"
 * Class: `rlang_error`
 * Backtrace:
+ ─catch_cnd(a())
  ─a()
  ─b()
  ─c()
