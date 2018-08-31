@@ -317,6 +317,10 @@ n_collapsed <- function(trace, id) {
     return(1L)
   }
 
+  if (identical(call, quote(function_list[[i]](value)))) {
+    return(6L)
+  }
+
   if (identical(call, quote(function_list[[k]](value)))) {
     return(7L)
   }
@@ -339,9 +343,12 @@ pipe_collect_calls <- function(pipe) {
   first_call <- node_car(node)
   if (is_call(first_call)) {
     calls <- new_node(first_call, calls)
+    leading <- TRUE
+  } else {
+    leading <- FALSE
   }
 
-  as.list(calls)
+  list(calls = as.list(calls), leading = leading)
 }
 pipe_add_dot <- function(call) {
   if (!is_call(call)) {
@@ -360,19 +367,36 @@ pipe_add_dot <- function(call) {
   new_call(node_car(call), args)
 }
 
+has_pipe_pointer <- function(x) {
+  !is_null(attr(x, "pipe_pointer"))
+}
+
 # Assumes a backtrail with collapsed pipe
 trail_uncollapse_pipe <- function(trace) {
-  while (idx <- detect_index(trace$calls, is_call, "%>%")) {
+  while (idx <- detect_index(trace$calls, has_pipe_pointer)) {
     pipe <- trace$calls[[idx]]
+    pipe_info <- pipe_collect_calls(pipe)
+    pipe_calls <- pipe_info$calls
 
-    pipe_calls <- pipe_collect_calls(pipe)
-    n_pipe <- length(pipe_calls)
+    pointer <- attr(pipe, "pipe_pointer")
+    if (!is_scalar_integer(pointer)) {
+      stop("Internal error: Invalid pipe pointer")
+    }
+
+    if (pipe_info$leading) {
+      pointer <- inc(pointer)
+    }
+
+    incomplete <- seq2(pointer + 1L, length(pipe_calls))
+    if (length(incomplete)) {
+      pipe_calls <- pipe_calls[-incomplete]
+    }
 
     parent <- trace$parents[[idx]]
-    pipe_parents <- seq(parent, parent + n_pipe - 1L)
+    pipe_parents <- seq(parent, parent + pointer - 1L)
 
     # Assign the pipe frame as dummy envs for uncollapsed frames
-    pipe_envs <- rep(trace$envs[idx], n_pipe)
+    pipe_envs <- rep(trace$envs[idx], pointer)
 
     # Remove last pipe call as it will get unfolded from the first
     trace <- trace[-c(idx, idx + 1L)]
@@ -380,7 +404,7 @@ trail_uncollapse_pipe <- function(trace) {
     # Add the number of uncollapsed frames to children's
     # ancestry. This assumes a backtrail.
     tail <- seq2_along(idx, trace$parents)
-    trace$parents[tail] <- trace$parents[tail] + n_pipe
+    trace$parents[tail] <- trace$parents[tail] + pointer
 
     trace$calls <- c(pipe_calls, trace$calls)
     trace$parents <- c(pipe_parents, trace$parents)

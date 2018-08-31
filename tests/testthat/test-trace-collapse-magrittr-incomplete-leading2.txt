@@ -1,0 +1,20 @@
+Full:
+█
+└─F(NA) %>% F() %>% T() %>% F() %>% F()
+  ├─withVisible(eval(quote(`_fseq`(`_lhs`)), env, env))
+  └─eval(quote(`_fseq`(`_lhs`)), env, env)
+    └─eval(quote(`_fseq`(`_lhs`)), env, env)
+      └─`_fseq`(`_lhs`)
+        └─freduce(value, `_function_list`)
+          └─function_list[[i]](value)
+            └─T(.)
+
+Collapsed:
+█
+└─[ F(NA) %>% F() %>% T() %>% F() %>% F() ] ... +6
+  └─T(.)
+
+Trail:
+ ─F(NA)
+ ─F(.)
+ ─T(.)

@@ -247,11 +247,50 @@ test_that("pipe_collect_calls() collects calls", {
   exprs2 <- function(...) unname(exprs(...))
 
   call <- quote(a(A %>% B) %>% b)
-  expect_identical(pipe_collect_calls(call), exprs2(a(A %>% B), b(.)))
+  out <- pipe_collect_calls(call)
+  expect_identical(out$calls, exprs2(a(A %>% B), b(.)))
+  expect_true(out$leading)
 
   call <- quote(a %>% b %>% c)
-  expect_identical(pipe_collect_calls(call), exprs2(b(.), c(.)))
+  out <- pipe_collect_calls(call)
+  expect_identical(out$calls, exprs2(b(.), c(.)))
+  expect_false(out$leading)
 
   call <- quote(a() %>% b %>% c)
-  expect_identical(pipe_collect_calls(call), exprs2(a(), b(.), c(.)))
+  out <- pipe_collect_calls(call)
+  expect_identical(out$calls, exprs2(a(), b(.), c(.)))
+  expect_true(out$leading)
+})
+
+test_that("combinations of incomplete and leading pipes collapse properly", {
+  skip_on_os("windows")
+  skip_if_not_installed("magrittr")
+
+  `%>%` <- magrittr::`%>%`
+
+  e <- current_env()
+
+  F <- function(x, ...) x
+  T <- function(x) trace_back(e)
+
+  trace <- NA %>% F() %>% T() %>% F() %>% F()
+  expect_known_trace_output(trace, "test-trace-collapse-magrittr-incomplete.txt")
+
+  trace <- T(NA) %>% F()
+  expect_known_trace_output(trace, "test-trace-collapse-magrittr-incomplete-leading1.txt")
+
+  trace <- F(NA) %>% F() %>% T() %>% F() %>% F()
+  expect_known_trace_output(trace, "test-trace-collapse-magrittr-incomplete-leading2.txt")
+
+  trace <- NA %>% T()
+  expect_known_trace_output(trace, "test-trace-collapse-magrittr-complete1.txt")
+
+  trace <- NA %>% F() %>% T()
+  expect_known_trace_output(trace, "test-trace-collapse-magrittr-complete2.txt")
+
+  trace <- F(NA) %>% T()
+  expect_known_trace_output(trace, "test-trace-collapse-magrittr-complete-leading1.txt")
+
+  trace <- F(NA) %>% F() %>%  T()
+  expect_known_trace_output(trace, "test-trace-collapse-magrittr-complete-leading2.txt")
 })
