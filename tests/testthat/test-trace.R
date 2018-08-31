@@ -173,6 +173,9 @@ test_that("long backtrails are truncated", {
 test_that("eval() frames are collapsed", {
   skip_on_os("windows")
 
+  # Fake eval() call does not have same signature on 3.1
+  skip_if(getRversion() < "3.2")
+
   e <- current_env()
   f <- function() base::eval(quote(g()))
   g <- function() eval(quote(trace_back(e)))
@@ -190,6 +193,9 @@ test_that("eval() frames are collapsed", {
 test_that("%>% frames are collapsed", {
   skip_on_os("windows")
   skip_if_not_installed("magrittr")
+
+  # Fake eval() call does not have same signature on 3.1
+  skip_if(getRversion() < "3.2")
 
   `%>%` <- magrittr::`%>%`
 
@@ -212,6 +218,9 @@ test_that("children of collapsed %>% frames have correct parent", {
   skip_on_os("windows")
   skip_if_not_installed("magrittr")
 
+  # Fake eval() call does not have same signature on 3.1
+  skip_if(getRversion() < "3.2")
+
   `%>%` <- magrittr::`%>%`
 
   e <- current_env()
@@ -227,6 +236,9 @@ test_that("children of collapsed %>% frames have correct parent", {
 
 test_that("children of collapsed frames are rechained to correct parent", {
   skip_on_os("windows")
+
+  # Fake eval() call does not have same signature on 3.1
+  skip_if(getRversion() < "3.2")
 
   e <- current_env()
   f <- function() eval(quote(g()), env())
@@ -265,6 +277,9 @@ test_that("pipe_collect_calls() collects calls", {
 test_that("combinations of incomplete and leading pipes collapse properly", {
   skip_on_os("windows")
   skip_if_not_installed("magrittr")
+
+  # Fake eval() call does not have same signature on 3.1
+  skip_if(getRversion() < "3.2")
 
   `%>%` <- magrittr::`%>%`
 
