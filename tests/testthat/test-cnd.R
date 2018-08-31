@@ -277,9 +277,10 @@ test_that("error is printed with parent backtrace", {
   )
   err <- catch_cnd(a())
 
-  expect_known_output(file = test_path("test-cnd-error-parent.txt"),
+  expect_known_output(file = test_path("test-cnd-error-parent-default.txt"),
     print(err)
   )
+  expect_known_trace_output(err, file = "test-cnd-error-parent.txt")
 })
 
 

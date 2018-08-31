@@ -538,7 +538,10 @@ catch_cnd <- function(expr) {
 }
 
 #' @export
-print.rlang_error <- function(x, ..., child = NULL) {
+print.rlang_error <- function(x,
+                              ...,
+                              child = NULL,
+                              simplify = c("collapse", "trail", "none")) {
   if (is_null(child)) {
     header <- "<error>"
   } else {
@@ -568,10 +571,12 @@ print.rlang_error <- function(x, ..., child = NULL) {
       }
     }
   }
-  print(trace, simplify = "collapse")
+
+  simplify <- arg_match(simplify, c("collapse", "trail", "none"))
+  print(trace, ..., simplify = simplify)
 
   if (!is_null(x$parent)) {
-    print(x$parent, child = x)
+    print(x$parent, ..., child = x, simplify = simplify)
   }
 
   invisible(x)
