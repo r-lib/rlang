@@ -11,5 +11,6 @@ Collapsed:
   └─g()
 
 Trail:
+ ─eval_tidy(quo(f()))
  ─f()
  ─g()

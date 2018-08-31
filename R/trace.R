@@ -259,6 +259,9 @@ length.rlang_trace <- function(x) {
 #' @export
 `[.rlang_trace` <- function(x, i, ...) {
   stopifnot(is_integerish(i))
+  if (!length(i)) {
+    return(new_trace(list(), int(), list()))
+  }
 
   if (all(i < 0L)) {
     i <- setdiff(seq_along(x), abs(i))
@@ -374,6 +377,9 @@ has_pipe_pointer <- function(x) {
 # Assumes a backtrail with collapsed pipe
 trail_uncollapse_pipe <- function(trace) {
   while (idx <- detect_index(trace$calls, has_pipe_pointer)) {
+    trace_before <- trace[seq2(1L, idx - 1L)]
+    trace_after <- trace[seq2(idx + 2L, length(trace$calls))]
+
     pipe <- trace$calls[[idx]]
     pipe_info <- pipe_collect_calls(pipe)
     pipe_calls <- pipe_info$calls
@@ -398,17 +404,13 @@ trail_uncollapse_pipe <- function(trace) {
     # Assign the pipe frame as dummy envs for uncollapsed frames
     pipe_envs <- rep(trace$envs[idx], pointer)
 
-    # Remove last pipe call as it will get unfolded from the first
-    trace <- trace[-c(idx, idx + 1L)]
-
     # Add the number of uncollapsed frames to children's
     # ancestry. This assumes a backtrail.
-    tail <- seq2_along(idx, trace$parents)
-    trace$parents[tail] <- trace$parents[tail] + pointer
+    trace_after$parents <- trace_after$parents + pointer
 
-    trace$calls <- c(pipe_calls, trace$calls)
-    trace$parents <- c(pipe_parents, trace$parents)
-    trace$envs <- c(pipe_envs, trace$envs)
+    trace$calls <- c(trace_before$calls, pipe_calls, trace_after$calls)
+    trace$parents <- c(trace_before$parents, pipe_parents, trace_after$parents)
+    trace$envs <- c(trace_before$envs, pipe_envs, trace$envs)
   }
 
   trace

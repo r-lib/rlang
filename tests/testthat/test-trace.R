@@ -284,7 +284,6 @@ test_that("combinations of incomplete and leading pipes collapse properly", {
   `%>%` <- magrittr::`%>%`
 
   e <- current_env()
-
   F <- function(x, ...) x
   T <- function(x) trace_back(e)
 
@@ -308,4 +307,29 @@ test_that("combinations of incomplete and leading pipes collapse properly", {
 
   trace <- F(NA) %>% F() %>%  T()
   expect_known_trace_output(trace, "test-trace-collapse-magrittr-complete-leading2.txt")
+})
+
+test_that("calls before and after pipe are preserved", {
+  skip_on_os("windows")
+  skip_if_not_installed("magrittr")
+
+  # Fake eval() call does not have same signature on 3.1
+  skip_if(getRversion() < "3.2")
+
+  `%>%` <- magrittr::`%>%`
+
+  e <- current_env()
+  F <- function(x, ...) x
+  T <- function(x) trace_back(e)
+  C <- function(x) f()
+  f <- function() trace_back(e)
+
+  trace <- F(NA %>% T())
+  expect_known_trace_output(trace, "test-trace-collapse-magrittr-before-after1.txt")
+
+  trace <- NA %>% C()
+  expect_known_trace_output(trace, "test-trace-collapse-magrittr-before-after2.txt")
+
+  trace <- F(NA %>% C())
+  expect_known_trace_output(trace, "test-trace-collapse-magrittr-before-after3.txt")
 })
