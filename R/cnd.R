@@ -585,7 +585,7 @@ print.rlang_error <- function(x,
 #' @export
 conditionMessage.rlang_error <- function(c) {
   lines <- c$message
-  trace <- format(c$trace, simplify = "trail")
+  trace <- format(c$trace, simplify = "trail", max_frames = 10L)
 
   parents <- chr()
   while(is_condition(c$parent)) {
