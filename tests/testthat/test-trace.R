@@ -333,3 +333,18 @@ test_that("calls before and after pipe are preserved", {
   trace <- F(NA %>% C())
   expect_known_trace_output(trace, "test-trace-collapse-magrittr-before-after3.txt")
 })
+
+test_that("always keep very first frame as part of backtrail", {
+  skip_on_os("windows")
+
+  # Fake eval() call does not have same signature on 3.1
+  skip_if(getRversion() < "3.2")
+
+  e <- current_env()
+
+  gen <- function(x) UseMethod("gen")
+  gen.default <- function(x) trace_back(e)
+
+  trace <- gen()
+  expect_known_trace_output(trace, "test-trace-backtrail-first-frame.txt")
+})

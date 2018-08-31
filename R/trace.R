@@ -438,8 +438,14 @@ trace_simplify_trail <- function(trace) {
     id <- parents[id]
   }
 
+  # Always include very first call
+  path <- rev(path)
+  if (path[[1]] != 1L) {
+    path <- c(1L, path)
+  }
+
   trace$parents <- parents
-  trace[rev(path)]
+  trace[path]
 }
 
 trace_simplify_collapse <- function(trace) {
