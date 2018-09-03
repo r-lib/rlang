@@ -10,11 +10,11 @@ Full:
 Collapsed:
 █
 └─f()
-  ├─[ base::eval(...) ] ... +1
+  ├─[ base::eval(...) ] +1 call
   └─g()
-    └─[ eval(...) ] ... +1
+    └─[ eval(...) ] +1 call
 
 Trail:
  ─f()
  ─g()
- ─[ eval(...) ] ... +1
+ ─[ eval(...) ] +1 call

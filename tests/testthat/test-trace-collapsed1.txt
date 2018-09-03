@@ -22,9 +22,9 @@ Collapsed:
 █
 └─f()
   └─g() testthat/test-trace.R:33:20
-    ├─[ tryCatch(...) ] ... +6 testthat/test-trace.R:34:20
+    ├─[ tryCatch(...) ] +6 calls testthat/test-trace.R:34:20
     └─h()
-      ├─[ tryCatch(...) ] ... +3 testthat/test-trace.R:35:20
+      ├─[ tryCatch(...) ] +3 calls testthat/test-trace.R:35:20
       └─i()
         └─tryCatch(trace_back(e)) testthat/test-trace.R:36:20
           └─tryCatchList(expr, classes, parentenv, handlers)

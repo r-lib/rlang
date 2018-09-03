@@ -8,10 +8,10 @@ Full:
 Collapsed:
 █
 └─f()
-  └─[ eval(...) ] ... +1
+  └─[ eval(...) ] +1 call
     └─g()
 
 Trail:
  ─f()
- ─[ eval(...) ] ... +1
+ ─[ eval(...) ] +1 call
  ─g()

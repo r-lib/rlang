@@ -186,6 +186,22 @@ trace_format_trail <- function(trace, max_frames, dir, srcrefs) {
   cli_branch(branch, max_frames)
 }
 
+format_collapsed <- function(what, n) {
+  if (n > 0L) {
+    call_text <- pluralise_n(n, "call", "calls")
+    n_text <- sprintf(" +%d %s", n, call_text)
+  } else {
+    n_text <- ""
+  }
+
+  paste0(what, n_text)
+}
+format_collapsed_trail <- function(what, n, style = NULL) {
+  style <- style %||% cli_box_chars()
+  what <- sprintf(" %s %s", style$h, what)
+  format_collapsed(what, n)
+}
+
 cli_branch <- function(lines, max = NULL, style = NULL) {
   style <- style %||% cli_box_chars()
   lines <- paste0(" ", style$h, lines)
@@ -206,14 +222,8 @@ cli_branch <- function(lines, max = NULL, style = NULL) {
 
   style <- style %||% cli_box_chars()
   n_collapsed <- n - max
-  call_str <- pluralise_n(n_collapsed, "call", "calls")
 
-  collapsed_line <- sprintf(
-    " %s[ ... +%s %s ]",
-    style$h,
-    n_collapsed,
-    call_str
-  )
+  collapsed_line <- format_collapsed_trail("...", n_collapsed, style = style)
 
   if (max == 1L) {
     lines <- chr(
@@ -536,7 +546,9 @@ trace_call_text <- function(call, collapse) {
     n_collapsed_text <- ""
   }
 
-  sprintf("[ %s ]%s", text, n_collapsed_text)
+  format_collapsed(paste0("[ ", text, " ]"), collapse)
+
+  ## sprintf("[ %s ]%s", text, n_collapsed_text)
 }
 
 src_loc <- function(srcref, dir = getwd()) {

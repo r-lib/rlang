@@ -14,7 +14,7 @@ Full:
 Collapsed:
 █
 ├─[ F(...) ]
-└─[ NA %>% T() ] ... +7
+└─[ NA %>% T() ] +7 calls
   └─T(.)
 
 Trail:
