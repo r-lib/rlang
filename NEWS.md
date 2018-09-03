@@ -1,6 +1,8 @@
 
 # rlang 0.2.2.9000
 
+* `new_data_mask()` now throws an error when `bottom` is not a child of `top` (#551).
+
 * `env_clone()` no longer forces promises and recreates active bindings correctly.
 
 * `is_call()` now accepts multiple namespaces. For instance

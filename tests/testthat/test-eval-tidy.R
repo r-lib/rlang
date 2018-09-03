@@ -331,3 +331,10 @@ test_that("names are translated to native when creating data mask", {
     expect_identical(eval_tidy(s, data = d), "value")
   })
 })
+
+test_that("new_data_mask() checks `top` is a parent of `bottom`", {
+  top <- env()
+  bottom <- env(top)
+  expect_no_error(new_data_mask(bottom, top))
+  expect_error(new_data_mask(top, bottom), "`top` is not a parent of `bottom`")
+})

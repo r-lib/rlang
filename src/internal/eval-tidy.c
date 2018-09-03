@@ -98,6 +98,19 @@ static void check_data_mask_input(sexp* env, const char* arg) {
     r_abort("Can't create data mask because `%s` must be an environment", arg);
   }
 }
+static void check_data_mask_top(sexp* bottom, sexp* top) {
+  sexp* cur = bottom;
+
+  while (cur != r_empty_env) {
+    if (cur == top) {
+      return ;
+    }
+    cur = r_env_parent(cur);
+  }
+
+  r_abort("Can't create data mask because `top` is not a parent of `bottom`");
+}
+
 sexp* rlang_new_data_mask(sexp* bottom, sexp* top, sexp* parent) {
   check_data_mask_input(parent, "parent");
   sexp* data_mask;
@@ -116,6 +129,10 @@ sexp* rlang_new_data_mask(sexp* bottom, sexp* top, sexp* parent) {
     top = bottom;
   } else {
     check_data_mask_input(top, "top");
+  }
+
+  if (top != bottom) {
+    check_data_mask_top(bottom, top);
   }
 
   r_env_poke(data_mask, r_tilde_sym, new_tilde_thunk(data_mask, top));
