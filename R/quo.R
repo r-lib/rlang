@@ -189,6 +189,30 @@ print.quosures <- function(x, ...) {
   print(unclass(x), ...)
 }
 
+#' @export
+`[<-.quosures` <- function(x, i, value) {
+  if (idx <- detect_index(value, negate(is_quosure))) {
+    abort_quosure_assign(value[[idx]])
+  }
+  NextMethod()
+}
+#' @export
+`[[<-.quosures` <- function(x, i, value) {
+  if (!is_quosure(value)) {
+    abort_quosure_assign(value)
+  }
+  NextMethod()
+}
+#' @export
+`$<-.quosures` <- function(x, name, value) {
+  x[[name]] <- value
+  x
+}
+abort_quosure_assign <- function(x) {
+  type <- friendly_type_of(x)
+  msg <- sprintf("Can't assign %s to a list of quosures", type)
+  abort(msg)
+}
 
 #' Coerce object to quosure
 #'
