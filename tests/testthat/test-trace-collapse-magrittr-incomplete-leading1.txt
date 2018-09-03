@@ -1,0 +1,10 @@
+Full:
+█
+└─T(NA)
+
+Collapsed:
+█
+└─T(NA)
+
+Trail:
+ ─T(NA)

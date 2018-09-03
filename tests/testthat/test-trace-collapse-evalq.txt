@@ -1,0 +1,20 @@
+Full:
+█
+└─f()
+  ├─base::evalq(g())
+  │ └─base::evalq(g())
+  └─g()
+    └─evalq(trace_back(e))
+      └─evalq(trace_back(e))
+
+Collapsed:
+█
+└─f()
+  ├─[ base::evalq(...) ] with 1 more call
+  └─g()
+    └─[ evalq(...) ] with 1 more call
+
+Trail:
+ ─f()
+ ─g()
+ ─[ evalq(...) ] with 1 more call

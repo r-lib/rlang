@@ -1013,7 +1013,7 @@ env_print <- function(env) {
     locked <- ""
   }
 
-  meow(
+  cat_line(
     sprintf("<environment: %s>%s", env_label(env), locked),
     sprintf("  parent: %s", parent)
   )
@@ -1021,14 +1021,14 @@ env_print <- function(env) {
   class <- attr(env, "class")
   if (is_character(class)) {
     class <- paste(class, collapse = ", ")
-    meow(sprintf("  class: %s", class))
+    cat_line(sprintf("  class: %s", class))
   }
 
   nms <- env_names(env)
   n <- length(nms)
 
   if (n) {
-    meow("  bindings:")
+    cat_line("  bindings:")
 
     if (n > 20) {
       other <- nms[seq(21L, n)]
@@ -1046,11 +1046,11 @@ env_print <- function(env) {
     locked <- ifelse(locked, " [L]", "")
     types <- paste0(types, locked)
 
-    meow(types)
+    cat_line(types)
 
     n_other <- length(other)
     if (n_other) {
-      meow(sprintf("   * ... with %s more bindings", n_other))
+      cat_line(sprintf("   * ... with %s more bindings", n_other))
     }
   }
 
@@ -1086,7 +1086,7 @@ print.rlang_envs <- function(x, ...) {
   labels <- map_chr(x, env_label)
   nms_tags <- names_tags(names(x))
 
-  meow(
+  cat_line(
     paste0(pads, "[[", seq_along(x), "]]", nms_tags, " <env: ", labels, ">"),
     footer
   )

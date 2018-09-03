@@ -1,0 +1,13 @@
+Full:
+█
+├─gen()
+└─gen.default()
+
+Collapsed:
+█
+├─[ gen() ]
+└─gen.default()
+
+Trail:
+ ─gen()
+ ─gen.default()

@@ -62,15 +62,67 @@
 #' options(rlang_trace_top_env = NULL)
 #' @export
 trace_back <- function(to = NULL) {
-  calls <- sys.calls()
+  calls <- as.list(sys.calls())
   parents <- normalise_parents(sys.parents())
-  envs <- map(sys.frames(), env_label)
+  frames <- sys.frames()
+  envs <- map(frames, env_label)
+
+  calls <- add_pipe_pointer(calls, frames)
 
   trace <- new_trace(calls, parents, envs)
   trace <- trace_trim_env(trace, to)
   trace <- trace[-length(trace)] # remove call to self
 
   trace
+}
+
+# Assumes magrittr 1.5
+add_pipe_pointer <- function(calls, frames) {
+  pipe_begs <- which(map_lgl(calls, is_call, "%>%"))
+  pipe_kinds <- map_int(pipe_begs, pipe_call_kind, calls)
+
+  pipe_calls <- map2(pipe_begs, pipe_kinds, function(beg, kind) {
+    call <- calls[[beg]]
+
+    if (kind == 0L) {
+      return(call)
+    }
+
+    if (kind == 1L) {
+      v <- "i"
+    } else if (kind == 2L) {
+      v <- "k"
+    }
+
+    i <- beg + 5L
+    structure(call, pipe_pointer = frames[[i]][[v]])
+  })
+
+  calls[pipe_begs] <- pipe_calls
+  calls
+}
+
+pipe_call_kind <- function(beg, calls) {
+  end1 <- beg + 6L
+  end2 <- beg + 7L
+
+  if (end2 > length(calls)) {
+    return(0L)
+  }
+
+  # Uncomplete pipe call
+  magrittr_call1 <- quote(function_list[[i]](value))
+
+  # Last call of the pipe
+  magrittr_call2 <- quote(function_list[[k]](value))
+
+  if (identical(calls[[end1]], magrittr_call1)) {
+    return(1L)
+  }
+  if (identical(calls[[end2]], magrittr_call2)) {
+    return(2L)
+  }
+  0L
 }
 
 # Remove recursive frames which occur with quosures
@@ -106,26 +158,54 @@ format.rlang_trace <- function(x,
     return(trace_root())
   }
 
-  x <- trace_simplify(x, simplify)
-  tree <- trace_as_tree(x, dir = dir, srcrefs = srcrefs)
+  switch(arg_match(simplify),
+    none = trace_format(x, max_frames, dir, srcrefs),
+    collapse = trace_format_collapse(x, max_frames, dir, srcrefs),
+    trail = trace_format_trail(x, max_frames, dir, srcrefs)
+  )
+}
 
-  if (arg_match(simplify) == "trail") {
-    cli_branch(tree[-1, ][["call"]], max_frames)
-  } else {
-    if (!is_null(max_frames)) {
-      abort("`max_frames` is currently only supported with `simplify = \"trail\"`")
-    }
-    cli_tree(tree)
+trace_format <- function(trace, max_frames, dir, srcrefs) {
+  if (!is_null(max_frames)) {
+    abort("`max_frames` is currently only supported with `simplify = \"trail\"`")
   }
+
+  tree <- trace_as_tree(trace, dir = dir, srcrefs = srcrefs)
+  cli_tree(tree)
+}
+trace_format_collapse <- function(trace, max_frames, dir, srcrefs) {
+  trace <- trace_simplify_collapse(trace)
+  trace_format(trace, max_frames, dir, srcrefs)
+}
+trace_format_trail <- function(trace, max_frames, dir, srcrefs) {
+  trace <- trace_simplify_trail(trace)
+  trace <- trail_uncollapse_pipe(trace)
+  tree <- trace_as_tree(trace, dir = dir, srcrefs = srcrefs)
+
+  branch <- tree[-1, ][["call"]]
+  cli_branch(branch, max_frames)
+}
+
+format_collapsed <- function(what, n) {
+  if (n > 0L) {
+    call_text <- pluralise_n(n, "call", "calls")
+    n_text <- sprintf(" with %d more %s", n, call_text)
+  } else {
+    n_text <- ""
+  }
+
+  paste0(what, n_text)
+}
+format_collapsed_trail <- function(what, n, style = NULL) {
+  style <- style %||% cli_box_chars()
+  what <- sprintf(" %s %s", style$h, what)
+  format_collapsed(what, n)
 }
 
 cli_branch <- function(lines, max = NULL, style = NULL) {
   style <- style %||% cli_box_chars()
   lines <- paste0(" ", style$h, lines)
-  cli_branch_truncate(lines, max, style)
-}
 
-cli_branch_truncate <- function(lines, max = NULL, style = NULL) {
   if (is_null(max)) {
     return(lines)
   }
@@ -142,14 +222,8 @@ cli_branch_truncate <- function(lines, max = NULL, style = NULL) {
 
   style <- style %||% cli_box_chars()
   n_collapsed <- n - max
-  call_str <- pluralise_n(n_collapsed, "call", "calls")
 
-  collapsed_line <- sprintf(
-    " %s[ ... +%s %s ]",
-    style$h,
-    n_collapsed,
-    call_str
-  )
+  collapsed_line <- format_collapsed_trail("...", n_collapsed, style = style)
 
   if (max == 1L) {
     lines <- chr(
@@ -178,7 +252,7 @@ print.rlang_trace <- function(x,
                               max_frames = NULL,
                               dir = getwd(),
                               srcrefs = NULL) {
-  meow(format(x, ...,
+  cat_line(format(x, ...,
     simplify = simplify,
     max_frames = max_frames,
     dir = dir,
@@ -195,6 +269,9 @@ length.rlang_trace <- function(x) {
 #' @export
 `[.rlang_trace` <- function(x, i, ...) {
   stopifnot(is_integerish(i))
+  if (!length(i)) {
+    return(new_trace(list(), int(), list()))
+  }
 
   if (all(i < 0L)) {
     i <- setdiff(seq_along(x), abs(i))
@@ -203,6 +280,17 @@ length.rlang_trace <- function(x) {
   calls <- x$calls[i]
   envs <- x$envs[i]
   parents <- match(as.character(x$parents[i]), as.character(i), nomatch = 0)
+
+  new_trace(calls, parents, envs)
+}
+
+# For internal use only
+c.rlang_trace <- function(...) {
+  traces <- list(...)
+
+  calls <- flatten(map(traces, `[[`, "calls"))
+  parents <- flatten_int(map(traces, `[[`, "parents"))
+  envs <- flatten(map(traces, `[[`, "envs"))
 
   new_trace(calls, parents, envs)
 }
@@ -227,12 +315,115 @@ trace_trim_env <- function(x, to = NULL) {
   x[start:end]
 }
 
-trace_simplify <- function(x, simplify = c("trail", "collapse", "none")) {
-  switch(arg_match(simplify),
-    none = x,
-    trail = trace_simplify_trail(x),
-    collapse = trace_simplify_collapsed(x)
-  )
+set_trace_skipped <- function(trace, id, n) {
+  attr(trace$calls[[id]], "collapsed") <- n
+  trace
+}
+set_trace_collapsed <- function(trace, id, n) {
+  attr(trace$calls[[id - n]], "collapsed") <- n
+  trace
+}
+n_collapsed <- function(trace, id) {
+  call <- trace$calls[[id]]
+
+  if (is_call(call, c("eval", "evalq"), ns = c("", "base"))) {
+    return(1L)
+  }
+
+  if (identical(call, quote(function_list[[i]](value)))) {
+    return(6L)
+  }
+
+  if (identical(call, quote(function_list[[k]](value)))) {
+    return(7L)
+  }
+
+  0L
+}
+
+pipe_collect_calls <- function(pipe) {
+  node <- node_cdr(pipe)
+  last_call <- pipe_add_dot(node_cadr(node))
+  calls <- new_node(last_call, NULL)
+
+  while (is_call(node_car(node), "%>%")) {
+    node <- node_cdar(node)
+    call <- pipe_add_dot(node_cadr(node))
+    calls <- new_node(call, calls)
+  }
+
+  # The first call doesn't need a dot
+  first_call <- node_car(node)
+  if (is_call(first_call)) {
+    calls <- new_node(first_call, calls)
+    leading <- TRUE
+  } else {
+    leading <- FALSE
+  }
+
+  list(calls = as.list(calls), leading = leading)
+}
+pipe_add_dot <- function(call) {
+  if (!is_call(call)) {
+    return(call2(call, dot_sym))
+  }
+
+  node <- node_cdr(call)
+  while (!is_null(node)) {
+    if (identical(node_car(node), dot_sym)) {
+      return(call)
+    }
+    node <- node_cdr(node)
+  }
+
+  args <- new_node(dot_sym, node_cdr(call))
+  new_call(node_car(call), args)
+}
+
+has_pipe_pointer <- function(x) {
+  !is_null(attr(x, "pipe_pointer"))
+}
+
+# Assumes a backtrail with collapsed pipe
+trail_uncollapse_pipe <- function(trace) {
+  while (idx <- detect_index(trace$calls, has_pipe_pointer)) {
+    trace_before <- trace[seq2(1L, idx - 1L)]
+    trace_after <- trace[seq2(idx + 2L, length(trace$calls))]
+
+    pipe <- trace$calls[[idx]]
+    pipe_info <- pipe_collect_calls(pipe)
+    pipe_calls <- pipe_info$calls
+
+    pointer <- attr(pipe, "pipe_pointer")
+    if (!is_scalar_integer(pointer)) {
+      stop("Internal error: Invalid pipe pointer")
+    }
+
+    if (pipe_info$leading) {
+      pointer <- inc(pointer)
+    }
+
+    incomplete <- seq2(pointer + 1L, length(pipe_calls))
+    if (length(incomplete)) {
+      pipe_calls <- pipe_calls[-incomplete]
+    }
+
+    parent <- trace$parents[[idx]]
+    pipe_parents <- seq(parent, parent + pointer - 1L)
+
+    # Assign the pipe frame as dummy envs for uncollapsed frames
+    pipe_envs <- rep(trace$envs[idx], pointer)
+
+    # Add the number of uncollapsed frames to children's
+    # ancestry. This assumes a backtrail.
+    trace_after$parents <- trace_after$parents + pointer
+
+    trace$calls <- c(trace_before$calls, pipe_calls, trace_after$calls)
+    trace$parents <- c(trace_before$parents, pipe_parents, trace_after$parents)
+    trace$envs <- c(trace_before$envs, pipe_envs, trace$envs)
+  }
+
+  trace
 }
 
 trace_simplify_trail <- function(trace) {
@@ -241,43 +432,72 @@ trace_simplify_trail <- function(trace) {
   id <- length(parents)
 
   while (id != 0L) {
+    n_collapsed <- n_collapsed(trace, id)
+
+    if (n_collapsed) {
+      trace <- set_trace_collapsed(trace, id, n_collapsed)
+      next_id <- id - n_collapsed
+
+      # Rechain child of collapsed parent to correct parent
+      parents[[id + 1L]] <- next_id
+
+      id <- next_id
+    }
+
     path <- c(path, id)
     id <- parents[id]
   }
 
-  trace[rev(path)]
+  # Always include very first call
+  path <- rev(path)
+  if (path[[1]] != 1L) {
+    path <- c(1L, path)
+  }
+
+  trace$parents <- parents
+  trace[path]
 }
 
-trace_simplify_collapsed <- function(trace) {
+trace_simplify_collapse <- function(trace) {
   parents <- trace$parents
   path <- int()
   id <- length(parents)
 
   while (id > 0L) {
-    parent_id <- parents[[id]]
+    n_collapsed <- n_collapsed(trace, id)
+
+    if (n_collapsed) {
+      trace <- set_trace_collapsed(trace, id, n_collapsed)
+      next_id <- id - n_collapsed
+
+      # Rechain child of collapsed parent to correct parent
+      parents[[id + 1L]] <- next_id
+
+      id <- next_id
+    }
+
     path <- c(path, id)
-    id <- id - 1L
+    parent_id <- parents[[id]]
+    id <- dec(id)
 
     # Collapse intervening call branches
-    if (id != parent_id) {
-      n_skipped <- 0L
+    n_skipped <- 0L
+    while (id != parent_id) {
+      sibling_parent_id <- parents[[id]]
 
-      while (id != parent_id) {
-        sibling_parent_id <- parents[[id]]
-
-        if (sibling_parent_id == parent_id) {
-          attr(trace$calls[[id]], "collapsed") <- n_skipped
-          n_skipped <- 0L
-          path <- c(path, id)
-        } else {
-          n_skipped <- n_skipped + 1L
-        }
-
-        id <- id - 1L
+      if (sibling_parent_id == parent_id) {
+        trace <- set_trace_skipped(trace, id, n_skipped)
+        path <- c(path, id)
+        n_skipped <- 0L
+      } else {
+        n_skipped <- inc(n_skipped)
       }
+
+      id <- dec(id)
     }
   }
 
+  trace$parents <- parents
   trace[rev(path)]
 }
 
@@ -313,7 +533,9 @@ trace_call_text <- function(call, collapse) {
     return(expr_name(call))
   }
 
-  if (length(call) > 1L) {
+  if (is_call(call, "%>%")) {
+    call <- call
+  } else if (length(call) > 1L) {
     call <- call2(node_car(call), quote(...))
   }
 
@@ -324,7 +546,9 @@ trace_call_text <- function(call, collapse) {
     n_collapsed_text <- ""
   }
 
-  sprintf("[ %s ]%s", text, n_collapsed_text)
+  format_collapsed(paste0("[ ", text, " ]"), collapse)
+
+  ## sprintf("[ %s ]%s", text, n_collapsed_text)
 }
 
 src_loc <- function(srcref, dir = getwd()) {

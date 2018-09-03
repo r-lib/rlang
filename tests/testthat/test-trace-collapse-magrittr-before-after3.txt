@@ -1,0 +1,25 @@
+Full:
+█
+├─F(NA %>% C())
+└─NA %>% C()
+  ├─withVisible(eval(quote(`_fseq`(`_lhs`)), env, env))
+  └─eval(quote(`_fseq`(`_lhs`)), env, env)
+    └─eval(quote(`_fseq`(`_lhs`)), env, env)
+      └─`_fseq`(`_lhs`)
+        └─freduce(value, `_function_list`)
+          ├─withVisible(function_list[[k]](value))
+          └─function_list[[k]](value)
+            └─C(.)
+              └─f()
+
+Collapsed:
+█
+├─[ F(...) ]
+└─[ NA %>% C() ] with 7 more calls
+  └─C(.)
+    └─f()
+
+Trail:
+ ─F(NA %>% C())
+ ─C(.)
+ ─f()

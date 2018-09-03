@@ -1,0 +1,17 @@
+Full:
+█
+└─f()
+  └─eval(quote(g()), env())
+    └─eval(quote(g()), env())
+      └─g()
+
+Collapsed:
+█
+└─f()
+  └─[ eval(...) ] with 1 more call
+    └─g()
+
+Trail:
+ ─f()
+ ─[ eval(...) ] with 1 more call
+ ─g()
