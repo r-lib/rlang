@@ -10,11 +10,11 @@ Full:
 Collapsed:
 █
 └─f()
-  ├─[ base::evalq(...) ] +1 call
+  ├─[ base::evalq(...) ] with 1 more call
   └─g()
-    └─[ evalq(...) ] +1 call
+    └─[ evalq(...) ] with 1 more call
 
 Trail:
  ─f()
  ─g()
- ─[ evalq(...) ] +1 call
+ ─[ evalq(...) ] with 1 more call

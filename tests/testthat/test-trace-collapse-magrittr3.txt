@@ -14,7 +14,7 @@ Full:
 Collapsed:
 █
 ├─[ f(...) ]
-└─[ g(NULL %>% f()) %>% h() ] +7 calls
+└─[ g(NULL %>% f()) %>% h() ] with 7 more calls
   └─h(.)
 
 Trail:

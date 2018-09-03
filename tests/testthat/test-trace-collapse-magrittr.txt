@@ -12,7 +12,7 @@ Full:
 
 Collapsed:
 █
-└─[ NULL %>% f() %>% g(1, 2) %>% h(3, ., 4) ] +7 calls
+└─[ NULL %>% f() %>% g(1, 2) %>% h(3, ., 4) ] with 7 more calls
   └─h(3, ., 4)
 
 Trail:

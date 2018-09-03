@@ -11,7 +11,7 @@ Full:
 
 Collapsed:
 █
-└─[ F(NA) %>% F() %>% T() %>% F() %>% F() ] +6 calls
+└─[ F(NA) %>% F() %>% T() %>% F() %>% F() ] with 6 more calls
   └─T(.)
 
 Trail:

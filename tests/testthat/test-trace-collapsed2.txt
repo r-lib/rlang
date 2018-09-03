@@ -20,11 +20,11 @@ Full:
 Collapsed:
 █
 └─f()
-  ├─[ eval(...) ] +1 call testthat/test-trace.R:46:7
-  ├─[ eval(...) ] +1 call
+  ├─[ eval(...) ] with 1 more call testthat/test-trace.R:46:7
+  ├─[ eval(...) ] with 1 more call
   └─g()
-    ├─[ tryCatch(...) ] +6 calls testthat/test-trace.R:47:7
-    ├─[ eval(...) ] +1 call
+    ├─[ tryCatch(...) ] with 6 more calls testthat/test-trace.R:47:7
+    ├─[ eval(...) ] with 1 more call
     └─h()
 
 Trail:

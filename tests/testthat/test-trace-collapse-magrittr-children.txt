@@ -14,7 +14,7 @@ Full:
 
 Collapsed:
 █
-└─[ NA %>% F() %>% G() %>% H() ] +7 calls
+└─[ NA %>% F() %>% G() %>% H() ] with 7 more calls
   └─H(.)
     └─f()
       └─h()

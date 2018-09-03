@@ -189,7 +189,7 @@ trace_format_trail <- function(trace, max_frames, dir, srcrefs) {
 format_collapsed <- function(what, n) {
   if (n > 0L) {
     call_text <- pluralise_n(n, "call", "calls")
-    n_text <- sprintf(" +%d %s", n, call_text)
+    n_text <- sprintf(" with %d more %s", n, call_text)
   } else {
     n_text <- ""
   }

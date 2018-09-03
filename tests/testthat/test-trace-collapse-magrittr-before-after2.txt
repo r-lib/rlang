@@ -13,7 +13,7 @@ Full:
 
 Collapsed:
 █
-└─[ NA %>% C() ] +7 calls
+└─[ NA %>% C() ] with 7 more calls
   └─C(.)
     └─f()
 
