@@ -96,11 +96,15 @@ sexp* r_env_clone(sexp* env, sexp* parent) {
   if (parent == NULL) {
     parent = r_env_parent(env);
   }
-  sexp* list = KEEP(r_env_as_list(env));
-  sexp* clone = r_list_as_environment(list, parent);
+  sexp* out = KEEP(r_new_environment(parent, 0));
+  sexp* frame = KEEP(r_duplicate(FRAME(env), true));
+  sexp* hashtab = KEEP(r_duplicate(HASHTAB(env), true));
 
-  FREE(1);
-  return clone;
+  SET_FRAME(out, frame);
+  SET_HASHTAB(out, hashtab);
+
+  FREE(3);
+  return out;
 }
 
 

@@ -390,3 +390,17 @@ test_that("environment is printed with class if any", {
   env <- structure(env(), class = c("foo", "bar"))
   expect_output(env_print(env), "  class: foo, bar")
 })
+
+test_that("env_clone() recreates active bindings", {
+  e <- env()
+  env_bind_fns(e, foo = function() "foo")
+  out <- env_clone(e)
+  expect_identical(out$foo, "foo")
+})
+
+test_that("env_clone() does not force promises", {
+  e <- env()
+  env_bind_exprs(e, foo = abort("forced"))
+  out <- env_clone(e)
+  expect_error(out$foo, "forced")
+})

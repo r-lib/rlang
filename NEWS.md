@@ -1,6 +1,8 @@
 
 # rlang 0.2.2.9000
 
+* `env_clone()` no longer forces promises and recreates active bindings correctly.
+
 * `is_call()` now accepts multiple namespaces. For instance
   `is_call(x, "list", ns = c("", "base"))` will match if `x` is
   `list()` or if it's `base::list()`:
