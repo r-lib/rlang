@@ -204,3 +204,21 @@ test_that("as_quosures() auto-names if requested", {
   x <- list(quote(foo), quote(bar))
   expect_named(as_quosures(x, global_env(), named = TRUE), c("foo", "bar"))
 })
+
+test_that("quosures class has subset assign methods", {
+  x <- quos(1, 2)
+
+  x[1:2] <- list(quo(3), quo(4))
+  expect_identical(x, quos(3, 4))
+  expect_error(x[2] <- list(4), "Can't assign a double vector to a list of quosures")
+
+  x[[2]] <- quo(10)
+  expect_identical(x, quos(3, 10))
+  expect_error(x[[2]] <- list(4), "Can't assign a list to a list of quosures")
+
+  x <- quos(foo = 1, bar = 2)
+
+  x$bar <- quo(100)
+  expect_identical(x, quos(foo = 1, bar = 100))
+  expect_error(x$foo <- list(4), "Can't assign a list to a list of quosures")
+})
