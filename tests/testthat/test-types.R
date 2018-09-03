@@ -58,6 +58,11 @@ test_that("types are friendly", {
   expect_identical(friendly_type("language"), "a call")
 })
 
+test_that("friendly_type_of() supports objects", {
+  expect_identical(friendly_type_of(mtcars), "a `data.frame` object")
+  expect_identical(friendly_type_of(quo(1)), "a `quosure` object")
+})
+
 test_that("is_integerish() heeds type requirement", {
   for (n in 0:2) {
     expect_true(is_integerish(integer(n)))

@@ -101,7 +101,7 @@ env_bind <- function(.env, ...) {
 }
 env_bind_impl <- function(env, data) {
   if (!is_vector(data)) {
-    type <- friendly_type_of(type_of(data))
+    type <- as_friendly_type(type_of(data))
     abort(sprintf("`data` must be a vector not a %s", type))
   }
   if (length(data)) {

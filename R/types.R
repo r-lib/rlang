@@ -490,7 +490,7 @@ abort_coercion <- function(x, to_type) {
 #' friendly_type("string")
 #' @export
 friendly_type <- function(type) {
-  friendly <- friendly_type_of(type)
+  friendly <- as_friendly_type(type)
   if (!is_null(friendly)) {
     return(friendly)
   }
@@ -508,7 +508,14 @@ friendly_type <- function(type) {
   type
 }
 
-friendly_type_of <- function(type) {
+friendly_type_of <- function(x) {
+  if (is.object(x)) {
+    sprintf("a `%s` object", class(x)[[1]])
+  } else {
+    as_friendly_type(typeof(x))
+  }
+}
+as_friendly_type <- function(type) {
   switch(type,
     logical = "a logical vector",
     integer = "an integer vector",
