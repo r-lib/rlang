@@ -1108,3 +1108,15 @@ names_tags <- function(nms) {
 
   ifelse(invalid, "  ", " $")
 }
+
+#' @export
+str.rlang_envs <- function(object, ...) {
+  i <- 0
+  for (env in object) {
+    i <- inc(i)
+    cat(sprintf("[[%s]]\n", i))
+    env_print(env)
+    cat("\n")
+  }
+  invisible(object)
+}
