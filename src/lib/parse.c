@@ -1,16 +1,24 @@
 #include "rlang.h"
 #include <R_ext/Parse.h>
 
+
+static void abort_parse(sexp* code, const char* why) {
+  if (r_peek_option("rlang__verbose_errors") != r_null) {
+    r_sexp_print(code);
+  }
+  r_abort("Internal error: %s", why);
+}
+
 sexp* r_parse(const char* str) {
   sexp* str_ = KEEP(r_scalar_chr(str));
 
   ParseStatus status;
   sexp* out = KEEP(R_ParseVector(str_, -1, &status, r_null));
   if (status != PARSE_OK) {
-    r_abort("Internal error while parsing");
+    abort_parse(str_, "Parsing failed");
   }
   if (r_length(out) != 1) {
-    r_abort("Internal error: Expected a single expression");
+    abort_parse(str_, "Expected a single expression");
   }
 
   out = r_list_get(out, 0);
@@ -18,7 +26,6 @@ sexp* r_parse(const char* str) {
   FREE(2);
   return out;
 }
-
 sexp* r_parse_eval(const char* str, sexp* env) {
   sexp* out = r_eval(KEEP(r_parse(str)), env);
   FREE(1);

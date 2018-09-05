@@ -384,3 +384,13 @@ test_that("r_parse_eval()", {
   expect_identical(parse_eval("toupper(foo)"), "QUUX")
   expect_error(parse_eval("toupper(foo); foo"), "single expression")
 })
+
+test_that("failed parses are printed if `rlang__verbose_errors` is non-NULL", {
+  err <- catch_cnd(expect_output(
+      regexp =  "foo; bar",
+      with_options(rlang__verbose_errors = TRUE,
+        .Call(rlang_test_parse, "foo; bar")
+      )
+    ))
+  expect_error(cnd_signal(err), regexp = "single expression")
+})
