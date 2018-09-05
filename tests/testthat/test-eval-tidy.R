@@ -259,20 +259,6 @@ test_that("Arguments to formulas are not stripped from their attributes (#227)",
   expect_identical(f_lhs(f), quo)
 })
 
-test_that("tilde thunks are unique", {
-  new_tilde_thunk <- function(data_mask, data_mask_top) {
-    .Call(rlang_new_tilde_thunk, data_mask, data_mask_top)
-  }
-
-  thunk1 <- new_tilde_thunk(1, 2)
-  thunk2 <- new_tilde_thunk(1, 2)
-  expect_false(is_reference(thunk1, thunk2))
-
-  body1 <- body(thunk1)
-  body2 <- body(thunk2)
-  expect_false(is_reference(body1, body2))
-})
-
 test_that("evaluating an empty quosure fails", {
   expect_error(eval_tidy(quo()), "not found")
 })

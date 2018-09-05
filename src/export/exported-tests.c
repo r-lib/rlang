@@ -17,6 +17,15 @@ sexp* rlang_test_base_ns_get(sexp* name) {
 }
 
 
+// parse.c
+
+sexp* rlang_test_parse(sexp* str) {
+  return r_parse(r_c_string(str));
+}
+sexp* rlang_test_parse_eval(sexp* str, sexp* env) {
+  return r_parse_eval(r_c_string(str), env);
+}
+
 // node.c
 
 sexp* rlang_test_node_list_clone_until(sexp* node, sexp* sentinel) {

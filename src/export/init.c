@@ -50,7 +50,7 @@ extern sexp* rlang_new_data_pronoun(sexp*, sexp*, sexp*);
 extern sexp* rlang_squash(sexp*, sexp*, sexp*, sexp*);
 extern sexp* rlang_symbol(sexp*);
 extern sexp* rlang_symbol_to_character(sexp*);
-extern sexp* rlang_tilde_eval(sexp*, sexp*, sexp*, sexp*, sexp*);
+extern sexp* rlang_tilde_eval(sexp*, sexp*, sexp*);
 extern sexp* rlang_unescape_character(sexp*);
 extern sexp* rlang_capturearginfo(sexp*, sexp*, sexp*, sexp*);
 extern sexp* rlang_capturedots(sexp*, sexp*, sexp*, sexp*);
@@ -118,11 +118,12 @@ extern sexp* rlang_test_r_warn(sexp*);
 extern sexp* rlang_on_exit(sexp*, sexp*);
 extern sexp* rlang_test_is_special_op_sym(sexp*);
 extern sexp* rlang_test_base_ns_get(sexp*);
+extern sexp* rlang_test_parse(sexp*);
+extern sexp* rlang_test_parse_eval(sexp*, sexp*);
 extern sexp* r_current_frame();
 extern sexp* rlang_test_node_list_clone_until(sexp*, sexp*);
 extern sexp* rlang_test_sys_frame(sexp*);
 extern sexp* rlang_test_sys_call(sexp*);
-extern sexp* new_tilde_thunk(sexp*, sexp*);
 
 static const r_callable r_callables[] = {
   {"rlang_library_load",        (r_fn_ptr_t) &rlang_library_load, 0},
@@ -176,7 +177,7 @@ static const r_callable r_callables[] = {
   {"rlang_sexp_address",         (r_fn_ptr_t) &rlang_sexp_address, 1},
   {"rlang_symbol",              (r_fn_ptr_t) &rlang_symbol, 1},
   {"rlang_symbol_to_character", (r_fn_ptr_t) &rlang_symbol_to_character, 1},
-  {"rlang_tilde_eval",          (r_fn_ptr_t) &rlang_tilde_eval, 5},
+  {"rlang_tilde_eval",          (r_fn_ptr_t) &rlang_tilde_eval, 3},
   {"rlang_unescape_character",  (r_fn_ptr_t) &rlang_unescape_character, 1},
   {"rlang_new_call",            (r_fn_ptr_t) &rlang_new_call_node, 2},
   {"rlang_cnd_signal",          (r_fn_ptr_t) &rlang_cnd_signal, 1},
@@ -187,11 +188,12 @@ static const r_callable r_callables[] = {
   {"rlang_test_is_special_op_sym", (r_fn_ptr_t) &rlang_test_is_special_op_sym, 1},
   {"rlang_test_base_ns_get",    (r_fn_ptr_t) &rlang_test_base_ns_get, 1},
   {"rlang_test_current_frame",  (r_fn_ptr_t) &r_current_frame, 0},
+  {"rlang_test_parse",          (r_fn_ptr_t) &rlang_test_parse, 1},
+  {"rlang_test_parse_eval",     (r_fn_ptr_t) &rlang_test_parse_eval, 2},
   {"rlang_test_node_list_clone_until", (r_fn_ptr_t) &rlang_test_node_list_clone_until, 2},
   {"rlang_test_set_attribute",  (r_fn_ptr_t) &r_set_attribute, 3},
   {"rlang_test_sys_frame",      (r_fn_ptr_t) &rlang_test_sys_frame, 1},
   {"rlang_test_sys_call",       (r_fn_ptr_t) &rlang_test_sys_call, 1},
-  {"rlang_new_tilde_thunk",     (r_fn_ptr_t) &new_tilde_thunk, 2},
   {"rlang_r_string",            (r_fn_ptr_t) &rlang_r_string, 1},
   {"rlang_exprs_interp",        (r_fn_ptr_t) &rlang_exprs_interp, 4},
   {"rlang_quos_interp",         (r_fn_ptr_t) &rlang_quos_interp, 4},

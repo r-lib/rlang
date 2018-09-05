@@ -357,7 +357,6 @@ test_that("r_set_attribute() zaps several elements", {
   expect_false(is_reference(node_cdr(attrs3), node_cdr(attrs)))
 })
 
-
 test_that("can zap non-existing attributes", {
   x <- list()
   out <- c_set_attribute(x, "foo", NULL)
@@ -369,4 +368,29 @@ test_that("can zap non-existing attributes", {
   attrs2 <- get_attributes(out2)
   expect_identical(attrs2, pairlist(foo = 1, bar = 2))
   expect_reference(attrs2, get_attributes(x2))
+})
+
+test_that("r_parse()", {
+  expect_equal(.Call(rlang_test_parse, "{ foo; bar }"), quote({ foo; bar }))
+  expect_error(.Call(rlang_test_parse, "foo; bar"), "single expression")
+  expect_error(.Call(rlang_test_parse, "foo\n bar"), "single expression")
+})
+
+test_that("r_parse_eval()", {
+  parse_eval <- function(x, env = caller_env()) {
+    .Call(rlang_test_parse_eval, x, env)
+  }
+  foo <- "quux"
+  expect_identical(parse_eval("toupper(foo)"), "QUUX")
+  expect_error(parse_eval("toupper(foo); foo"), "single expression")
+})
+
+test_that("failed parses are printed if `rlang__verbose_errors` is non-NULL", {
+  err <- catch_cnd(expect_output(
+      regexp =  "foo; bar",
+      with_options(rlang__verbose_errors = TRUE,
+        .Call(rlang_test_parse, "foo; bar")
+      )
+    ))
+  expect_error(cnd_signal(err), regexp = "single expression")
 })

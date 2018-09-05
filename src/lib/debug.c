@@ -12,3 +12,11 @@ void r_sexp_inspect(sexp* x, sexp* env) {
 
   FREE(4);
 }
+
+void r_browse(sexp* env) {
+  // The NULL expression is needed because of a limitation in ESS
+  if (!env) {
+    env = r_current_frame();
+  }
+  r_parse_eval("{ browser(); NULL }", env);
+}
