@@ -2,17 +2,6 @@
 #include "internal.h"
 
 
-static sexp* tilde_thunk_fmls = NULL;
-static sexp* tilde_thunk_body = NULL;
-
-sexp* new_tilde_thunk(sexp* data_mask, sexp* data_mask_top) {
-  sexp* body = KEEP(r_duplicate(tilde_thunk_body, false));
-  sexp* fn = KEEP(r_new_function(tilde_thunk_fmls, body, r_base_env));
-
-  FREE(2);
-  return fn;
-}
-
 static sexp* data_pronoun_names = NULL;
 static sexp* data_pronoun_class = NULL;
 
@@ -110,6 +99,7 @@ static sexp* env_sym = NULL;
 static sexp* old_sym = NULL;
 static sexp* mask_sym = NULL;
 
+static sexp* tilde_fn = NULL;
 static sexp* restore_mask_fn = NULL;
 
 static void on_exit_restore_lexical_env(sexp* mask, sexp* old, sexp* frame) {
@@ -148,7 +138,7 @@ sexp* rlang_new_data_mask(sexp* bottom, sexp* top, sexp* parent) {
     check_data_mask_top(bottom, top);
   }
 
-  r_env_poke(data_mask, r_tilde_sym, new_tilde_thunk(data_mask, top));
+  r_env_poke(data_mask, r_tilde_sym, tilde_fn);
   r_env_poke(data_mask, data_mask_flag_sym, data_mask);
   r_env_poke(data_mask, data_mask_env_sym, parent);
   r_env_poke(data_mask, data_mask_top_env_sym, top);
@@ -321,7 +311,7 @@ sexp* rlang_data_mask_clean(sexp* mask) {
 
 static sexp* new_quosure_mask(sexp* env) {
   sexp* mask = KEEP(r_new_environment(env, 3));
-  r_env_poke(mask, r_tilde_sym, new_tilde_thunk(mask, mask));
+  r_env_poke(mask, r_tilde_sym, tilde_fn);
   r_env_poke(mask, data_mask_flag_sym, mask);
   FREE(1);
   return mask;
@@ -387,8 +377,17 @@ sexp* rlang_eval_tidy(sexp* expr, sexp* data, sexp* frame) {
 const char* data_pronoun_c_names[4] = { "src", "lookup_msg", "read_only", NULL };
 
 void rlang_init_eval_tidy() {
-  tilde_thunk_fmls = rlang_constants_get("tilde_thunk_fmls");
-  tilde_thunk_body = rlang_constants_get("tilde_thunk_body");
+  tilde_fn = r_parse_eval(
+    "function(...) {                          \n"
+    "  .Call(rlang_tilde_eval,                \n"
+    "    sys.call(),     # Quosure env        \n"
+    "    environment(),  # Unwind-protect env \n"
+    "    parent.frame()  # Lexical env        \n"
+    "  )                                      \n"
+    "}                                        \n",
+    r_ns_env("rlang")
+  );
+  r_mark_precious(tilde_fn);
 
   data_pronoun_names = r_new_character(data_pronoun_c_names);
   r_mark_precious(data_pronoun_names);
