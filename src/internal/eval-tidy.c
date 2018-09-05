@@ -322,11 +322,9 @@ static sexp* new_quosure_mask(sexp* env) {
 
 
 bool is_data_mask(sexp* env) {
-  if (r_typeof(env) != r_type_environment) {
-    return false;
-  } else {
-    return r_env_find(env, data_mask_flag_sym) != r_unbound_sym;
-  }
+  return
+    r_typeof(env) == r_type_environment &&
+    r_env_has(env, data_mask_flag_sym);
 }
 
 
