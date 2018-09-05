@@ -118,6 +118,8 @@ extern sexp* rlang_test_r_warn(sexp*);
 extern sexp* rlang_on_exit(sexp*, sexp*);
 extern sexp* rlang_test_is_special_op_sym(sexp*);
 extern sexp* rlang_test_base_ns_get(sexp*);
+extern sexp* rlang_test_parse(sexp*);
+extern sexp* rlang_test_parse_eval(sexp*, sexp*);
 extern sexp* r_current_frame();
 extern sexp* rlang_test_node_list_clone_until(sexp*, sexp*);
 extern sexp* rlang_test_sys_frame(sexp*);
@@ -187,6 +189,8 @@ static const r_callable r_callables[] = {
   {"rlang_test_is_special_op_sym", (r_fn_ptr_t) &rlang_test_is_special_op_sym, 1},
   {"rlang_test_base_ns_get",    (r_fn_ptr_t) &rlang_test_base_ns_get, 1},
   {"rlang_test_current_frame",  (r_fn_ptr_t) &r_current_frame, 0},
+  {"rlang_test_parse",          (r_fn_ptr_t) &rlang_test_parse, 1},
+  {"rlang_test_parse_eval",     (r_fn_ptr_t) &rlang_test_parse_eval, 2},
   {"rlang_test_node_list_clone_until", (r_fn_ptr_t) &rlang_test_node_list_clone_until, 2},
   {"rlang_test_set_attribute",  (r_fn_ptr_t) &r_set_attribute, 3},
   {"rlang_test_sys_frame",      (r_fn_ptr_t) &rlang_test_sys_frame, 1},

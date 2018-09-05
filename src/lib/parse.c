@@ -1,5 +1,29 @@
 #include "rlang.h"
+#include <R_ext/Parse.h>
 
+sexp* r_parse(const char* str) {
+  sexp* str_ = KEEP(r_scalar_chr(str));
+
+  ParseStatus status;
+  sexp* out = KEEP(R_ParseVector(str_, -1, &status, r_null));
+  if (status != PARSE_OK) {
+    r_abort("Internal error while parsing");
+  }
+  if (r_length(out) != 1) {
+    r_abort("Internal error: Expected a single expression");
+  }
+
+  out = r_list_get(out, 0);
+
+  FREE(2);
+  return out;
+}
+
+sexp* r_parse_eval(const char* str, sexp* env) {
+  sexp* out = r_eval(KEEP(r_parse(str)), env);
+  FREE(1);
+  return out;
+}
 
 const struct r_op_precedence r_ops_precedence[R_OP_MAX] = {
   [R_OP_NONE]           = { .power =   0,  .assoc =  0,  .unary = false,  .delimited = false },
