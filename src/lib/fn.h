@@ -5,9 +5,15 @@
 static inline sexp* r_fn_body(sexp* fn) {
   return BODY_EXPR(fn);
 }
-static inline sexp* r_fn_poke_body(sexp* fn, sexp* body) {
+static inline void r_fn_poke_body(sexp* fn, sexp* body) {
   SET_BODY(fn, body);
-  return fn;
+}
+
+static inline sexp* r_fn_env(sexp* fn) {
+  return CLOENV(fn);
+}
+static inline void r_fn_poke_env(sexp* fn, sexp* env) {
+  SET_CLOENV(fn, env);
 }
 
 sexp* r_new_function(sexp* formals, sexp* body, sexp* env);
