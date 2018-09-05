@@ -35,6 +35,10 @@ static inline bool r_is_environment(sexp* x) {
 static inline sexp* r_env_find(sexp* env, sexp* sym) {
   return Rf_findVarInFrame3(env, sym, TRUE);
 }
+static inline sexp* r_env_find_anywhere(sexp* env, sexp* sym) {
+  return Rf_findVar(sym, env);
+}
+
 static inline bool r_env_has(sexp* env, sexp* sym) {
   return Rf_findVarInFrame3(env, sym, TRUE) != R_UnboundValue;
 }
