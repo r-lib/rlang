@@ -7,11 +7,9 @@ init_c_constants <- function() {
       formals(function(...) NULL),
 
     tilde_thunk_body = bquote(.(.Call)(.(rlang_tilde_eval),
-      sys.call(),
-      "data_mask_arg",
-      "data_mask_top_arg",
-      environment(),
-      parent.frame()
+      sys.call(),     # Quosure env
+      environment(),  # Unwind-protect env
+      parent.frame()  # Lexical env
     ))
   )
 

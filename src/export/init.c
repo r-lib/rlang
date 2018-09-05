@@ -50,7 +50,7 @@ extern sexp* rlang_new_data_pronoun(sexp*, sexp*, sexp*);
 extern sexp* rlang_squash(sexp*, sexp*, sexp*, sexp*);
 extern sexp* rlang_symbol(sexp*);
 extern sexp* rlang_symbol_to_character(sexp*);
-extern sexp* rlang_tilde_eval(sexp*, sexp*, sexp*, sexp*, sexp*);
+extern sexp* rlang_tilde_eval(sexp*, sexp*, sexp*);
 extern sexp* rlang_unescape_character(sexp*);
 extern sexp* rlang_capturearginfo(sexp*, sexp*, sexp*, sexp*);
 extern sexp* rlang_capturedots(sexp*, sexp*, sexp*, sexp*);
@@ -178,7 +178,7 @@ static const r_callable r_callables[] = {
   {"rlang_sexp_address",         (r_fn_ptr_t) &rlang_sexp_address, 1},
   {"rlang_symbol",              (r_fn_ptr_t) &rlang_symbol, 1},
   {"rlang_symbol_to_character", (r_fn_ptr_t) &rlang_symbol_to_character, 1},
-  {"rlang_tilde_eval",          (r_fn_ptr_t) &rlang_tilde_eval, 5},
+  {"rlang_tilde_eval",          (r_fn_ptr_t) &rlang_tilde_eval, 3},
   {"rlang_unescape_character",  (r_fn_ptr_t) &rlang_unescape_character, 1},
   {"rlang_new_call",            (r_fn_ptr_t) &rlang_new_call_node, 2},
   {"rlang_cnd_signal",          (r_fn_ptr_t) &rlang_cnd_signal, 1},

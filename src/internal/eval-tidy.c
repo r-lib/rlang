@@ -9,14 +9,9 @@ sexp* new_tilde_thunk(sexp* data_mask, sexp* data_mask_top) {
   sexp* body = KEEP(r_duplicate(tilde_thunk_body, false));
   sexp* fn = KEEP(r_new_function(tilde_thunk_fmls, body, r_base_env));
 
-  sexp* args = r_node_cdr(r_node_cddr(body));
-  r_node_poke_car(args, data_mask);
-  r_node_poke_cadr(args, data_mask_top);
-
   FREE(2);
   return fn;
 }
-
 
 static sexp* data_pronoun_names = NULL;
 static sexp* data_pronoun_class = NULL;
@@ -109,6 +104,24 @@ static void check_data_mask_top(sexp* bottom, sexp* top) {
   }
 
   r_abort("Can't create data mask because `top` is not a parent of `bottom`");
+}
+
+static sexp* env_sym = NULL;
+static sexp* old_sym = NULL;
+static sexp* mask_sym = NULL;
+
+static sexp* restore_mask_fn = NULL;
+
+static void on_exit_restore_lexical_env(sexp* mask, sexp* old, sexp* frame) {
+  sexp* fn = r_duplicate(restore_mask_fn, true);
+
+  sexp* env = r_new_environment(r_base_env, 2);
+  r_env_poke(env, mask_sym, mask);
+  r_env_poke(env, old_sym, old);
+  r_fn_poke_env(fn, env);
+
+  sexp* call = r_new_call(fn, r_null);
+  r_on_exit(call, frame);
 }
 
 sexp* rlang_new_data_mask(sexp* bottom, sexp* top, sexp* parent) {
@@ -226,8 +239,7 @@ static sexp* base_tilde_eval(sexp* tilde, sexp* quo_env) {
 static sexp* env_poke_parent_fn = NULL;
 static sexp* env_poke_fn = NULL;
 
-sexp* rlang_tilde_eval(sexp* tilde, sexp* overscope, sexp* overscope_top,
-                       sexp* cur_frame, sexp* caller_frame) {
+sexp* rlang_tilde_eval(sexp* tilde, sexp* current_frame, sexp* caller_frame) {
   // Remove srcrefs from system call
   r_poke_attribute(tilde, r_srcref_sym, r_null);
 
@@ -248,38 +260,32 @@ sexp* rlang_tilde_eval(sexp* tilde, sexp* overscope, sexp* overscope_top,
     r_abort("Internal error: Quosure environment is corrupt");
   }
 
-  int n_protect = 0;
-
-  sexp* prev_env;
-  sexp* flag = r_env_find(overscope, data_mask_flag_sym);
-  if (flag == r_unbound_sym) {
-    prev_env = r_env_parent(overscope);
-  } else {
-    prev_env = r_env_get(overscope, data_mask_env_sym);
-    KEEP_N(prev_env, n_protect); // Help rchk
-
-    // Update .env pronoun to current quosure env temporarily
-    r_env_poke(overscope, data_mask_env_sym, quo_env);
-
-    sexp* exit_args = r_build_pairlist3(overscope, r_scalar_chr(".env"), prev_env);
-    sexp* exit_lang = KEEP(r_build_call_node(env_poke_fn, exit_args));
-    r_on_exit(exit_lang, cur_frame);
-    FREE(1);
+  sexp* mask = r_env_find_anywhere(caller_frame, data_mask_flag_sym);
+  if (mask == r_unbound_sym) {
+    r_abort("Internal error: Can't find the data mask");
+  }
+  if (r_typeof(mask) != r_type_environment) {
+    r_abort("Internal error: Unexpected type for data mask flag: `%s`",
+            r_type_c_string(r_typeof(mask)));
   }
 
+  sexp* top = r_env_find(mask, data_mask_top_env_sym);
+  if (top == r_unbound_sym) {
+    // Quosure mask case
+    top = mask;
+  } else {
+    // Update `.env` pronoun to current quosure env temporarily
+    r_env_poke(mask, data_mask_env_sym, quo_env);
+  }
 
-  // Swap enclosures temporarily by rechaining the top of the dynamic
-  // scope to the enclosure of the new formula, if it has one
-  r_env_poke_parent(overscope_top, quo_env);
+  // Unwind-protect the restoration of original parents
+  on_exit_restore_lexical_env(mask, r_env_parent(top), current_frame);
 
-  sexp* exit_args = r_build_pairlist2(overscope_top, prev_env);
-  sexp* exit_lang = r_build_call_node(env_poke_parent_fn, exit_args);
-  KEEP_N(exit_lang, n_protect);
-  r_on_exit(exit_lang, cur_frame);
+  // Swap lexical contexts temporarily by rechaining the top of the
+  // mask to the quosure environment
+  r_env_poke_parent(top, quo_env);
 
-  sexp* out = r_eval(expr, overscope);
-  FREE(n_protect);
-  return out;
+  return r_eval(expr, mask);
 }
 
 static const char* data_mask_objects_names[5] = {
@@ -316,6 +322,7 @@ sexp* rlang_data_mask_clean(sexp* mask) {
 static sexp* new_quosure_mask(sexp* env) {
   sexp* mask = KEEP(r_new_environment(env, 3));
   r_env_poke(mask, r_tilde_sym, new_tilde_thunk(mask, mask));
+  r_env_poke(mask, data_mask_flag_sym, mask);
   FREE(1);
   return mask;
 }
@@ -327,9 +334,7 @@ bool is_data_mask(sexp* env) {
     r_env_has(env, data_mask_flag_sym);
 }
 
-
 static sexp* data_mask_clean_fn = NULL;
-static sexp* env_sym = NULL;
 
 sexp* rlang_eval_tidy(sexp* expr, sexp* data, sexp* frame) {
   int n_protect = 0;
@@ -347,7 +352,12 @@ sexp* rlang_eval_tidy(sexp* expr, sexp* data, sexp* frame) {
   // cleaning the mask if needed.
   if (is_data_mask(data)) {
     r_env_poke(data, data_mask_env_sym, env);
-    sexp* top = r_env_get(data, data_mask_top_env_sym);
+    sexp* top = r_env_find(data, data_mask_top_env_sym);
+
+    if (top == r_unbound_sym) {
+      r_abort("Internal error: Can't find top pronoun in data mask");
+    }
+
     r_env_poke_parent(top, env);
 
     sexp* out = r_eval(expr, data);
@@ -403,4 +413,21 @@ void rlang_init_eval_tidy() {
   data_mask_clean_fn = rlang_ns_get("overscope_clean");
 
   env_sym = r_sym("env");
+  old_sym = r_sym("old");
+  mask_sym = r_sym("mask");
+
+  restore_mask_fn = r_parse_eval(
+    "function() {                \n"
+    "  mask$.env <- `old`        \n"
+    "                            \n"
+    "  top <- `mask`$.top_env    \n"
+    "  if (is.null(top)) {       \n"
+    "    top <- `mask`           \n"
+    "  }                         \n"
+    "                            \n"
+    "  parent.env(top) <- `old`  \n"
+    "}                           \n",
+    r_base_env
+  );
+  r_mark_precious(restore_mask_fn);
 }
