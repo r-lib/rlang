@@ -50,7 +50,7 @@ test_that("can interpolate in specific env", {
 })
 
 test_that("can qualify operators with namespace", {
-  with_non_verbose_retirement({
+  suppressWarnings({
     # Should remove prefix only if rlang-qualified:
     expect_identical(quo(rlang::UQ(toupper("a"))), new_quosure("A", empty_env()))
     expect_identical(quo(list(rlang::UQS(list(a = 1, b = 2)))), quo(list(a = 1, b = 2)))
@@ -173,14 +173,14 @@ test_that("UQ() fails if called without argument", {
     quo <- quo(UQ(NULL))
     expect_equal(quo, ~NULL)
 
-    quo <- quo(rlang::UQ(NULL))
+    quo <- suppressWarnings(quo(rlang::UQ(NULL)))
     expect_equal(quo, ~NULL)
 
     quo <- tryCatch(quo(UQ()), error = identity)
     expect_is(quo, "error")
     expect_match(quo$message, "must be called with an argument")
 
-    quo <- tryCatch(quo(rlang::UQ()), error = identity)
+    quo <- suppressWarnings(tryCatch(quo(rlang::UQ()), error = identity))
     expect_is(quo, "error")
     expect_match(quo$message, "must be called with an argument")
   })
@@ -374,7 +374,7 @@ test_that("can unquote-splice symbols", {
 test_that("can unquote symbols", {
   expect_error_(dots_values(!! quote(.)), "`!!` in a non-quoting function")
 
-  with_non_verbose_retirement(
+  suppressWarnings(
     expect_error_(dots_values(rlang::UQ(quote(.))), "`!!` in a non-quoting function")
   )
 })
@@ -414,14 +414,7 @@ test_that("Unquote operators fail when called outside quasiquoted arguments", {
 
 # Lifecycle ----------------------------------------------------------
 
-test_that("namespaced unquoting is soft-deprecated", {
-  with_non_verbose_retirement({
-    expect_no_warning_(exprs(rlang::UQS(1:2)))
-    expect_no_warning_(quo(list(rlang::UQ(1:2))))
-  })
-
-  with_verbose_retirement({
-    expect_warning_(exprs(rlang::UQS(1:2)), "`UQS()` with a namespace is soft-deprecated", fixed = TRUE)
-    expect_warning_(quo(list(rlang::UQ(1:2))), "`UQ()` with a namespace is soft-deprecated", fixed = TRUE)
-  })
+test_that("unquoting with rlang namespace is deprecated", {
+  expect_warning_(exprs(rlang::UQS(1:2)), regexp = "deprecated as of rlang 0.3.0")
+  expect_warning_(quo(list(rlang::UQ(1:2))), regexp = "deprecated as of rlang 0.3.0")
 })

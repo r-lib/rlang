@@ -1,6 +1,23 @@
 
 # rlang 0.2.2.9000
 
+* Calling `UQ()` and `UQS()` with the rlang namespace qualifier is
+  deprecated as of rlang 0.3.0. Just use the unqualified forms
+  instead:
+
+  ```
+  # Bad
+  rlang::expr(mean(rlang::UQ(var) * 100))
+
+  # Ok
+  rlang::expr(mean(UQ(var) * 100))
+
+  # Good
+  rlang::expr(mean(!!var * 100))
+  ```
+
+  Although soft-deprecated since rlang 0.2.0, `UQ()` and `UQS()` can still be used for now.
+
 * `new_data_mask()` now throws an error when `bottom` is not a child of `top` (#551).
 
 * `env_clone()` no longer forces promises and recreates active bindings correctly.
