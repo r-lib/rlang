@@ -112,9 +112,9 @@
 #'   operation. The operator form makes it clearer that unquoting is
 #'   special.
 #'
-#' * `UQE()` was deprecated in rlang 0.2.0 in order to simplify the
+#' * `UQE()` is defunct as of rlang 0.3.0 in order to simplify the
 #'   quasiquotation syntax. You can replace its use by a combination
-#'   of `!!` and `get_expr()`: `!! get_expr(x)` is equivalent to
+#'   of `!!` and `get_expr()`: `!!get_expr(x)` is equivalent to
 #'   `UQE(x)`.
 #'
 #' @param x An expression to unquote.
@@ -202,7 +202,7 @@ UQ <- function(x) {
 #' @usage NULL
 #' @export
 UQE <- function(x) {
-  warn("`UQE()` is deprecated. Please use `!! get_expr(x)`")
+  .Defunct(msg = "`UQE()` is defunct. Please use `!!get_expr(x)`")
   abort("`UQE()` can only be used within a quasiquoted argument")
 }
 #' @rdname quasiquotation

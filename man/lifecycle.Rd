@@ -149,7 +149,6 @@ Since rlang 0.2.0:
 
 \strong{Retired in rlang 0.2.0:}
 \itemize{
-\item \code{\link[=UQE]{UQE()}}
 \item \code{\link[=is_quosureish]{is_quosureish()}}, \code{\link[=as_quosureish]{as_quosureish()}}
 }
 }
@@ -159,12 +158,20 @@ Since rlang 0.2.0:
 
 \badgedefunct
 
-\strong{Retired in rlang 0.3.0:}
+\strong{Defunct as of rlang 0.3.0:}
 \itemize{
 \item \code{\link[=cnd]{cnd()}}, \code{\link[=error_cnd]{error_cnd()}}, \code{\link[=warning_cnd]{warning_cnd()}} and \code{\link[=message_cnd]{message_cnd()}}:
 \code{.msg} => \code{message}.
 \item \code{\link[=cnd_signal]{cnd_signal()}}: \code{.msg} and \code{.call}.
 \item \code{cnd_inform()}, \code{cnd_warn()} and \code{cnd_abort()}
+\item \code{\link[=UQE]{UQE()}}
+}
+
+\strong{Renamed in rlang 0.3.0:}
+\itemize{
+\item \code{inplace()} => \code{\link[=calling]{calling()}}. The \code{muffle} argument of \code{inplace()}
+has not been implemented in \code{calling()} and is now defunct.
+\item \code{rst_muffle()} => \code{\link[=cnd_muffle]{cnd_muffle()}}
 }
 
 \strong{Renamed in rlang 0.2.0}
@@ -173,13 +180,6 @@ Since rlang 0.2.0:
 \item \code{cnd_message()} => \code{\link[=message_cnd]{message_cnd()}}
 \item \code{cnd_warning()} => \code{\link[=warning_cnd]{warning_cnd()}}
 \item \code{cnd_error()} => \code{\link[=error_cnd]{error_cnd()}}
-}
-
-\strong{Renamed in rlang 0.3.0:}
-\itemize{
-\item \code{inplace()} => \code{\link[=calling]{calling()}}. The \code{muffle} argument of \code{inplace()}
-has not been implemented in \code{calling()} and is now defunct.
-\item \code{rst_muffle()} => \code{\link[=cnd_muffle]{cnd_muffle()}}
 }
 }
 

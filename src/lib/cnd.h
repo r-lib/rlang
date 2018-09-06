@@ -9,6 +9,8 @@ void r_warn(const char* fmt, ...);
 void r_abort(const char* fmt, ...) __attribute__((noreturn));
 void r_interrupt();
 
+void r_abort_defunct(const char* fmt, ...);
+
 sexp* r_interp_str(const char* fmt, ...);
 
 sexp* r_new_condition(sexp* type, sexp* msg, sexp* call, sexp* data);

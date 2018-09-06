@@ -282,25 +282,6 @@ test_that("`!!!` doesn't modify spliced inputs by reference", {
 })
 
 
-# UQE ----------------------------------------------------------------
-
-test_that("UQE() extracts right-hand side", {
-  var <- ~cyl
-  expect_warning_(expect_identical_(quo(mtcars$UQE(var)), quo(mtcars$cyl)), "deprecated")
-})
-
-test_that("UQE() throws a deprecation warning", {
-  expect_warning_(exprs(UQE("foo")), "deprecated")
-  expect_warning_(quos(UQE("foo")), "deprecated")
-  expect_warning_(expr(UQE("foo")), "deprecated")
-  expect_warning_(quo(UQE("foo")), "deprecated")
-})
-
-test_that("UQE() can't be used in by-value dots", {
-  expect_error_(dots_list(UQE("foo")), "non-quoting function")
-})
-
-
 # bang ---------------------------------------------------------------
 
 test_that("single ! is not treated as shortcut", {
@@ -404,7 +385,6 @@ test_that("`:=` chaining is detected at dots capture", {
 test_that("Unquote operators fail when called outside quasiquoted arguments", {
   expect_qq_error <- function(object) expect_error(object, regexp = "within a quasiquoted argument")
   expect_qq_error(UQ())
-  expect_warning_(expect_qq_error(UQE()), "deprecated")
   expect_qq_error(UQS())
   expect_qq_error(`!!`())
   expect_qq_error(`!!!`())
@@ -417,4 +397,9 @@ test_that("Unquote operators fail when called outside quasiquoted arguments", {
 test_that("unquoting with rlang namespace is deprecated", {
   expect_warning_(exprs(rlang::UQS(1:2)), regexp = "deprecated as of rlang 0.3.0")
   expect_warning_(quo(list(rlang::UQ(1:2))), regexp = "deprecated as of rlang 0.3.0")
+})
+
+test_that("UQE() is defunct", {
+  expect_error_(expr(foo$UQE(NULL)), "defunct")
+  expect_error_(UQE(), "defunct")
 })

@@ -53,6 +53,20 @@ sexp* r_interp_str(const char* fmt, ...) {
   return r_scalar_chr(buf);
 }
 
+void r_abort_defunct(const char* fmt, ...) {
+  char buf[BUFSIZE];
+  INTERP(buf, fmt, ...);
+
+  sexp* args = KEEP(r_new_node_list(
+    KEEP(r_scalar_chr(buf)))
+  );
+  r_node_poke_tag(args, r_sym("msg"));
+  sexp* call = KEEP(r_new_call(r_sym(".Defunct"), args));
+  r_eval(call, r_base_env);
+
+  while (1); // No return
+}
+
 static sexp* new_condition_names(sexp* data) {
   if (!r_is_named(data)) {
     r_abort("Conditions must have named data fields");
