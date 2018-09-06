@@ -57,12 +57,11 @@ void r_abort_defunct(const char* fmt, ...) {
   char buf[BUFSIZE];
   INTERP(buf, fmt, ...);
 
-  sexp* args = KEEP(r_new_node_list(
-    KEEP(r_scalar_chr(buf)))
-  );
-  r_node_poke_tag(args, r_sym("msg"));
-  sexp* call = KEEP(r_new_call(r_sym(".Defunct"), args));
-  r_eval(call, r_base_env);
+  sexp* call = KEEP(r_parse(".Defunct(msg = msg)"));
+  sexp* env = KEEP(r_new_environment(r_base_env, 1));
+  r_env_poke(env, r_sym("msg"), KEEP(r_scalar_chr(buf)));
+
+  r_eval(call, env);
 
   while (1); // No return
 }
