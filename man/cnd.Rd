@@ -9,7 +9,8 @@
 \usage{
 cnd(.subclass, ..., message = "", call = NULL)
 
-error_cnd(.subclass = NULL, ..., message = "", call = NULL)
+error_cnd(.subclass = NULL, ..., message = "", call = NULL,
+  trace = NULL, parent = NULL)
 
 warning_cnd(.subclass = NULL, ..., message = "", call = NULL)
 
@@ -26,6 +27,10 @@ condition when it is signalled.}
 
 \item{call}{A call documenting what expression caused a condition
 to be signalled.}
+
+\item{trace}{A \code{trace} object created by \code{\link[=trace_back]{trace_back()}}.}
+
+\item{parent}{A parent condition object created by \code{\link[=abort]{abort()}}.}
 }
 \description{
 These constructors make it easy to create subclassed conditions.

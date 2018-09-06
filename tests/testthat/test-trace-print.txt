@@ -1,7 +1,7 @@
 █
-└─i() testthat/test-trace.R:17:2
-  └─j(i) testthat/test-trace.R:10:7
-    └─k(i) testthat/test-trace.R:11:21
-      └─l(i) testthat/test-trace.R:14:4
+└─i() testthat/test-trace.R:19:2
+  └─j(i) testthat/test-trace.R:12:7
+    └─k(i) testthat/test-trace.R:13:21
+      └─l(i) testthat/test-trace.R:16:4
 
 █

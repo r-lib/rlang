@@ -21,6 +21,8 @@
 #'   condition when it is signalled.
 #' @param call A call documenting what expression caused a condition
 #'   to be signalled.
+#' @param trace A `trace` object created by [trace_back()].
+#' @param parent A parent condition object created by [abort()].
 #' @seealso [cnd_signal()], [with_handlers()].
 #' @export
 #' @examples
@@ -49,8 +51,20 @@ cnd <- function(.subclass, ..., message = "", call = NULL) {
 }
 #' @rdname cnd
 #' @export
-error_cnd <- function(.subclass = NULL, ..., message = "", call = NULL) {
-  .Call(rlang_new_condition, c(.subclass, "rlang_error", "error"), message, call, dots_list(...))
+error_cnd <- function(.subclass = NULL,
+                      ...,
+                      message = "",
+                      call = NULL,
+                      trace = NULL,
+                      parent = NULL) {
+  if (!is_null(trace) && !inherits(trace, "rlang_trace")) {
+    abort("`trace` must be NULL or an rlang backtrace")
+  }
+  if (!is_null(parent) && !inherits(parent, "condition")) {
+    abort("`parent` must be NULL or a condition object")
+  }
+  fields <- dots_list(trace = trace, parent = parent, ...)
+  .Call(rlang_new_condition, c(.subclass, "rlang_error", "error"), message, call, fields)
 }
 #' @rdname cnd
 #' @export
@@ -259,6 +273,7 @@ muffle <- function(...) NULL
 #'   `type` which was renamed to `.subclass`.
 #' * `.call` (previously `call`) can no longer be passed positionally.
 #'
+#' @inheritParams cnd
 #' @param message The message to display.
 #' @param .subclass Subclass of the condition. This allows your users
 #'   to selectively handle the conditions signalled by your functions.
@@ -283,8 +298,8 @@ muffle <- function(...) NULL
 #' tryCatch(
 #'   somepkg_function(),
 #'   somepkg_bad_error = function(err) {
-#'     cnd_warn(err) # Demote the error to a warning
-#'     NA            # Return an alternative value
+#'     warn(err$message) # Demote the error to a warning
+#'     NA                # Return an alternative value
 #'   }
 #' )
 #'
@@ -300,13 +315,87 @@ muffle <- function(...) NULL
 #'   }
 #' )
 #'
+#' # If you call low-level APIs it is good practice to catch technical
+#' # errors and rethrow them with a more meaningful message. Pass on
+#' # the caught error as `parent` to get a nice decomposition of
+#' # errors and backtraces:
+#' file <- "http://foo.bar/baz"
+#' tryCatch(
+#'   download(file),
+#'   error = function(err) {
+#'     msg <- sprintf("Can't download `%s`", file)
+#'     abort(msg, parent = err)
+#' })
+#'
 #' }
-abort <- function(message, .subclass = NULL, ..., call = NULL, msg, type) {
+abort <- function(message, .subclass = NULL,
+                  ...,
+                  trace = NULL,
+                  call = NULL,
+                  parent = NULL,
+                  msg, type) {
   validate_signal_args(msg, type)
 
-  cnd <- error_cnd(.subclass, ..., message = message, call = cnd_call(call))
+  if (is_null(trace)) {
+    trace <- trace_back()
+
+    if (is_null(parent)) {
+      context <- length(trace$calls)
+    } else {
+      context <- find_capture_context()
+    }
+    trace <- trace_trim_context(trace, context)
+  }
+
+  cnd <- error_cnd(.subclass,
+    ...,
+    message = message,
+    call = cnd_call(call),
+    parent = parent,
+    trace = trace
+  )
+
   stop(cnd)
 }
+
+trace_trim_context <- function(trace, frame = caller_env()) {
+  if (is_environment(frame)) {
+    idx <- detect_index(trace$envs, identical, env_label(frame))
+  } else if (is_scalar_integerish(frame)) {
+    idx <- frame
+  } else {
+    abort("`frame` must be a frame environment or index")
+  }
+
+  trace[-seq2(idx, length(trace))]
+}
+# FIXME: Find more robust strategy of stripping catching context
+find_capture_context <- function(n = 3L) {
+  sys_parent <- sys.parent(n)
+  thrower_frame <- sys.frame(sys_parent)
+
+  call <- sys.call(sys_parent)
+  frame <- sys.frame(sys_parent)
+  if (!is_call(call, "tryCatchOne") || !env_inherits(frame, ns_env("base"))) {
+    return(thrower_frame)
+  }
+
+  sys_parents <- sys.parents()
+  while (!is_call(call, "tryCatch")) {
+    sys_parent <- sys_parents[sys_parent]
+    call <- sys.call(sys_parent)
+  }
+
+  next_parent <- sys_parents[sys_parent]
+  call <- sys.call(next_parent)
+  if (is_call(call, "with_handlers")) {
+    sys_parent <- next_parent
+  }
+
+  sys.frame(sys_parent)
+}
+
+
 #' @rdname abort
 #' @export
 warn <- function(message, .subclass = NULL, ..., call = NULL, msg, type) {
@@ -446,4 +535,79 @@ catch_cnd <- function(expr) {
     force(expr)
     return(NULL)
   })
+}
+
+#' @export
+print.rlang_error <- function(x,
+                              ...,
+                              child = NULL,
+                              simplify = c("collapse", "trail", "none")) {
+  if (is_null(child)) {
+    header <- "<error>"
+  } else {
+    header <- "<error: parent>"
+  }
+  cat_line(
+    header,
+    sprintf("* Message: \"%s\"", x$message),
+    sprintf("* Class: `%s`", class(x)[[1]]),
+    "* Backtrace:"
+  )
+
+  trace <- x$trace
+  if (!is_null(child)) {
+    # Trim common portions of backtrace
+    child_trace <- child$trace
+    common <- map_lgl(trace$envs, `%in%`, child_trace$envs)
+    trace <- trace[which(!common)]
+
+    # Trim catching context if any
+    calls <- trace$calls
+    if (length(calls) && is_call(calls[[1]], c("tryCatch", "with_handlers"))) {
+      parent <- trace$parents[[1]]
+      next_sibling <- which(trace$parents[-1] == parent)
+      if (length(next_sibling)) {
+        trace <- trace[-seq2(1L, next_sibling)]
+      }
+    }
+  }
+
+  simplify <- arg_match(simplify, c("collapse", "trail", "none"))
+  print(trace, ..., simplify = simplify)
+
+  if (!is_null(x$parent)) {
+    print(x$parent, ..., child = x, simplify = simplify)
+  }
+
+  invisible(x)
+}
+
+#' @export
+conditionMessage.rlang_error <- function(c) {
+  lines <- c$message
+  trace <- format(c$trace, simplify = "trail", max_frames = 10L)
+
+  parents <- chr()
+  while(is_condition(c$parent)) {
+    c <- c$parent
+    parents <- chr(parents, c$message)
+  }
+
+  if (length(parents)) {
+    parents <- cli_branch(parents)
+    lines <- chr_lines(lines,
+      "Parents:",
+      parents
+    )
+  }
+
+  if (!is_null(trace)) {
+    lines <- chr_lines(
+      lines,
+      "Backtrail:",
+      trace
+    )
+  }
+
+  lines
 }

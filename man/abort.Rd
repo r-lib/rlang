@@ -8,7 +8,8 @@
 \alias{interrupt}
 \title{Signal an error, warning, or message}
 \usage{
-abort(message, .subclass = NULL, ..., call = NULL, msg, type)
+abort(message, .subclass = NULL, ..., trace = NULL, call = NULL,
+  parent = NULL, msg, type)
 
 warn(message, .subclass = NULL, ..., call = NULL, msg, type)
 
@@ -26,8 +27,12 @@ to selectively handle the conditions signalled by your functions.}
 
 \item{...}{Additional data to be stored in the condition object.}
 
+\item{trace}{A \code{trace} object created by \code{\link[=trace_back]{trace_back()}}.}
+
 \item{call}{Whether to display the call. If a number \code{n}, the call
 is taken from the nth frame on the \link[=call_stack]{call stack}.}
+
+\item{parent}{A parent condition object created by \code{\link[=abort]{abort()}}.}
 
 \item{msg, type}{These arguments were renamed to \code{message} and
 \code{.type} and are deprecated as of rlang 0.3.0.}
@@ -94,8 +99,8 @@ abort("Something bad happened", "somepkg_bad_error")
 tryCatch(
   somepkg_function(),
   somepkg_bad_error = function(err) {
-    cnd_warn(err) # Demote the error to a warning
-    NA            # Return an alternative value
+    warn(err$message) # Demote the error to a warning
+    NA                # Return an alternative value
   }
 )
 
@@ -110,6 +115,18 @@ tryCatch(
     recover_error(err$data)
   }
 )
+
+# If you call low-level APIs it is good practice to catch technical
+# errors and rethrow them with a more meaningful message. Pass on
+# the caught error as `parent` to get a nice decomposition of
+# errors and backtraces:
+file <- "http://foo.bar/baz"
+tryCatch(
+  download(file),
+  error = function(err) {
+    msg <- sprintf("Can't download `\%s`", file)
+    abort(msg, parent = err)
+})
 
 }
 }

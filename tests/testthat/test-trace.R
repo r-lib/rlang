@@ -4,6 +4,8 @@ context("trace.R")
 test_that("tree printing only changes deliberately", {
   skip_on_os("windows")
 
+  scoped_options(rlang_trace_format_srcrefs = TRUE)
+
   dir <- normalizePath(test_path(".."))
   e <- environment()
 
@@ -26,6 +28,8 @@ test_that("tree printing only changes deliberately", {
 test_that("can print tree with collapsed branches", {
   skip_on_os("windows")
   skip_if(getRversion() < "3.5.0", "Old R versions have different eval() backtraces")
+
+  scoped_options(rlang_trace_format_srcrefs = TRUE)
 
   dir <- normalizePath(test_path(".."))
   e <- environment()

@@ -1,0 +1,59 @@
+Full:
+<error>
+* Message: "High-level message"
+* Class: `rlang_error`
+* Backtrace:
+█
+├─catch_cnd(a())
+│ ├─tryCatch(...)
+│ │ └─tryCatchList(expr, classes, parentenv, handlers)
+│ │   └─tryCatchOne(expr, names, parentenv, handlers[[1L]])
+│ │     └─doTryCatch(return(expr), name, parentenv, handler)
+│ └─force(expr)
+└─a()
+  └─b()
+    └─c()
+<error: parent>
+* Message: "Low-level message"
+* Class: `rlang_error`
+* Backtrace:
+█
+└─f()
+  └─g()
+    └─h()
+
+Collapsed:
+<error>
+* Message: "High-level message"
+* Class: `rlang_error`
+* Backtrace:
+█
+├─[ catch_cnd(...) ] with 5 more calls
+└─a()
+  └─b()
+    └─c()
+<error: parent>
+* Message: "Low-level message"
+* Class: `rlang_error`
+* Backtrace:
+█
+└─f()
+  └─g()
+    └─h()
+
+Trail:
+<error>
+* Message: "High-level message"
+* Class: `rlang_error`
+* Backtrace:
+ ─catch_cnd(a())
+ ─a()
+ ─b()
+ ─c()
+<error: parent>
+* Message: "Low-level message"
+* Class: `rlang_error`
+* Backtrace:
+ ─f()
+ ─g()
+ ─h()

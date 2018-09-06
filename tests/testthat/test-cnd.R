@@ -220,6 +220,69 @@ test_that("conditions have correct subclasses", {
   expect_true(inherits_all(catch_cnd(abort("", "foo")), c("foo", "rlang_error", "error", "condition")))
 })
 
+test_that("errors are signalled with backtrace", {
+  fn <- function() abort("")
+  err <- catch_cnd(fn())
+  expect_is(err$trace, "rlang_trace")
+})
+
+test_that("error_cnd() checks its fields", {
+  expect_no_error(error_cnd(trace = NULL))
+  expect_error(error_cnd(trace = env()), "`trace` must be NULL or an rlang backtrace")
+  expect_no_error(error_cnd(parent = NULL))
+  expect_error(error_cnd(parent = env()), "`parent` must be NULL or a condition object")
+})
+
+test_that("error is printed with backtrace", {
+  skip_on_os("windows")
+
+  f <- function() g()
+  g <- function() h()
+  h <- function() abort("Error message")
+
+  # Workaround as it is not straightforward to sink stderr and
+  # handle/muffle an error at the same time
+  msg <- with_options(
+    rlang_trace_format_srcrefs = FALSE,
+    rlang_trace_top_env = current_env(),
+    conditionMessage(catch_cnd(f()))
+  )
+
+  output <- strsplit(msg, "\n")[[1]]
+  expected <- readLines(test_path("test-cnd-error.txt"))
+  expect_identical(!!output, expected)
+})
+
+test_that("error is printed with parent backtrace", {
+  skip_on_os("windows")
+
+  f <- function() g()
+  g <- function() h()
+  h <- function() abort("Low-level message")
+
+  a <- function() b()
+  b <- function() c()
+  c <- function() {
+    tryCatch(
+      f(),
+      error = function(err) {
+        abort("High-level message", parent = err)
+      }
+    )
+  }
+
+  scoped_options(
+    rlang_trace_format_srcrefs = FALSE,
+    rlang_trace_top_env = current_env()
+  )
+  err <- catch_cnd(a())
+
+  expect_known_output(file = test_path("test-cnd-error-parent-default.txt"),
+    print(err)
+  )
+  expect_known_trace_output(err, file = "test-cnd-error-parent.txt")
+})
+
 
 # Lifecycle ----------------------------------------------------------
 
