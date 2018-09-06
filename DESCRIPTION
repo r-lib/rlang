@@ -22,6 +22,7 @@ Suggests:
     pillar,
     testthat (>= 2.0.0),
     covr
+Encoding: UTF-8
 RoxygenNote: 6.1.0
 Roxygen: list(markdown = TRUE)
 URL: http://rlang.tidyverse.org, https://github.com/r-lib/rlang
