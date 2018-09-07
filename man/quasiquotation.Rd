@@ -95,12 +95,20 @@ and
 
 \itemize{
 \item Calling \code{UQ()} and \code{UQS()} with the rlang namespace qualifier is
-soft-deprecated as of rlang 0.2.0. Just use the unqualified forms
-instead.
+deprecated as of rlang 0.3.0. Just use the unqualified forms
+instead:\preformatted{# Bad
+rlang::expr(mean(rlang::UQ(var) * 100))
+
+# Ok
+rlang::expr(mean(UQ(var) * 100))
+
+# Good
+rlang::expr(mean(!!var * 100))
+}
 
 Supporting namespace qualifiers complicates the implementation of
 unquotation and is misleading as to the nature of unquoting
-operators (these are syntactic operators that operates at
+operators (which are syntactic operators that operates at
 quotation-time rather than function calls at evaluation-time).
 \item \code{UQ()} and \code{UQS()} were soft-deprecated in rlang 0.2.0 in order
 to make the syntax of quasiquotation more consistent. The prefix
@@ -124,9 +132,9 @@ by the tidy eval parser interpreting \code{rlang::UQ()} as \code{!!}. In
 reality unquoting is \emph{not} a function call, it is a syntactic
 operation. The operator form makes it clearer that unquoting is
 special.
-\item \code{UQE()} was deprecated in rlang 0.2.0 in order to simplify the
+\item \code{UQE()} is defunct as of rlang 0.3.0 in order to simplify the
 quasiquotation syntax. You can replace its use by a combination
-of \code{!!} and \code{get_expr()}: \code{!! get_expr(x)} is equivalent to
+of \code{!!} and \code{get_expr()}: \code{!!get_expr(x)} is equivalent to
 \code{UQE(x)}.
 }
 }

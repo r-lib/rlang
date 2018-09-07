@@ -611,3 +611,5 @@ conditionMessage.rlang_error <- function(c) {
 
   lines
 }
+
+deprecation_env <- new.env(parent = emptyenv())

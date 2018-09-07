@@ -70,12 +70,23 @@
 #' @section Life cycle:
 #'
 #' * Calling `UQ()` and `UQS()` with the rlang namespace qualifier is
-#'   soft-deprecated as of rlang 0.2.0. Just use the unqualified forms
-#'   instead.
+#'   deprecated as of rlang 0.3.0. Just use the unqualified forms
+#'   instead:
+#'
+#'   ```
+#'   # Bad
+#'   rlang::expr(mean(rlang::UQ(var) * 100))
+#'
+#'   # Ok
+#'   rlang::expr(mean(UQ(var) * 100))
+#'
+#'   # Good
+#'   rlang::expr(mean(!!var * 100))
+#'   ```
 #'
 #'   Supporting namespace qualifiers complicates the implementation of
 #'   unquotation and is misleading as to the nature of unquoting
-#'   operators (these are syntactic operators that operates at
+#'   operators (which are syntactic operators that operates at
 #'   quotation-time rather than function calls at evaluation-time).
 #'
 #' * `UQ()` and `UQS()` were soft-deprecated in rlang 0.2.0 in order
@@ -101,9 +112,9 @@
 #'   operation. The operator form makes it clearer that unquoting is
 #'   special.
 #'
-#' * `UQE()` was deprecated in rlang 0.2.0 in order to simplify the
+#' * `UQE()` is defunct as of rlang 0.3.0 in order to simplify the
 #'   quasiquotation syntax. You can replace its use by a combination
-#'   of `!!` and `get_expr()`: `!! get_expr(x)` is equivalent to
+#'   of `!!` and `get_expr()`: `!!get_expr(x)` is equivalent to
 #'   `UQE(x)`.
 #'
 #' @param x An expression to unquote.
@@ -191,7 +202,7 @@ UQ <- function(x) {
 #' @usage NULL
 #' @export
 UQE <- function(x) {
-  warn("`UQE()` is deprecated. Please use `!! get_expr(x)`")
+  .Defunct(msg = "`UQE()` is defunct. Please use `!!get_expr(x)`")
   abort("`UQE()` can only be used within a quasiquoted argument")
 }
 #' @rdname quasiquotation

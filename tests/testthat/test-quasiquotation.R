@@ -50,15 +50,8 @@ test_that("can interpolate in specific env", {
 })
 
 test_that("can qualify operators with namespace", {
-  with_non_verbose_retirement({
-    # Should remove prefix only if rlang-qualified:
-    expect_identical(quo(rlang::UQ(toupper("a"))), new_quosure("A", empty_env()))
-    expect_identical(quo(list(rlang::UQS(list(a = 1, b = 2)))), quo(list(a = 1, b = 2)))
-
-    # Should keep prefix otherwise:
     expect_identical(quo(other::UQ(toupper("a"))), quo(other::"A"))
     expect_identical(quo(x$UQ(toupper("a"))), quo(x$"A"))
-  })
 })
 
 test_that("unquoting is frame-consistent", {
@@ -173,14 +166,7 @@ test_that("UQ() fails if called without argument", {
     quo <- quo(UQ(NULL))
     expect_equal(quo, ~NULL)
 
-    quo <- quo(rlang::UQ(NULL))
-    expect_equal(quo, ~NULL)
-
     quo <- tryCatch(quo(UQ()), error = identity)
-    expect_is(quo, "error")
-    expect_match(quo$message, "must be called with an argument")
-
-    quo <- tryCatch(quo(rlang::UQ()), error = identity)
     expect_is(quo, "error")
     expect_match(quo$message, "must be called with an argument")
   })
@@ -282,25 +268,6 @@ test_that("`!!!` doesn't modify spliced inputs by reference", {
 })
 
 
-# UQE ----------------------------------------------------------------
-
-test_that("UQE() extracts right-hand side", {
-  var <- ~cyl
-  expect_warning_(expect_identical_(quo(mtcars$UQE(var)), quo(mtcars$cyl)), "deprecated")
-})
-
-test_that("UQE() throws a deprecation warning", {
-  expect_warning_(exprs(UQE("foo")), "deprecated")
-  expect_warning_(quos(UQE("foo")), "deprecated")
-  expect_warning_(expr(UQE("foo")), "deprecated")
-  expect_warning_(quo(UQE("foo")), "deprecated")
-})
-
-test_that("UQE() can't be used in by-value dots", {
-  expect_error_(dots_list(UQE("foo")), "non-quoting function")
-})
-
-
 # bang ---------------------------------------------------------------
 
 test_that("single ! is not treated as shortcut", {
@@ -373,10 +340,6 @@ test_that("can unquote-splice symbols", {
 
 test_that("can unquote symbols", {
   expect_error_(dots_values(!! quote(.)), "`!!` in a non-quoting function")
-
-  with_non_verbose_retirement(
-    expect_error_(dots_values(rlang::UQ(quote(.))), "`!!` in a non-quoting function")
-  )
 })
 
 
@@ -404,7 +367,6 @@ test_that("`:=` chaining is detected at dots capture", {
 test_that("Unquote operators fail when called outside quasiquoted arguments", {
   expect_qq_error <- function(object) expect_error(object, regexp = "within a quasiquoted argument")
   expect_qq_error(UQ())
-  expect_warning_(expect_qq_error(UQE()), "deprecated")
   expect_qq_error(UQS())
   expect_qq_error(`!!`())
   expect_qq_error(`!!!`())
@@ -414,14 +376,26 @@ test_that("Unquote operators fail when called outside quasiquoted arguments", {
 
 # Lifecycle ----------------------------------------------------------
 
-test_that("namespaced unquoting is soft-deprecated", {
-  with_non_verbose_retirement({
-    expect_no_warning_(exprs(rlang::UQS(1:2)))
-    expect_no_warning_(quo(list(rlang::UQ(1:2))))
-  })
+test_that("unquoting with rlang namespace is deprecated", {
+  expect_warning_(exprs(rlang::UQS(1:2)), regexp = "deprecated as of rlang 0.3.0")
+  expect_warning_(quo(list(rlang::UQ(1:2))), regexp = "deprecated as of rlang 0.3.0")
 
-  with_verbose_retirement({
-    expect_warning_(exprs(rlang::UQS(1:2)), "`UQS()` with a namespace is soft-deprecated", fixed = TRUE)
-    expect_warning_(quo(list(rlang::UQ(1:2))), "`UQ()` with a namespace is soft-deprecated", fixed = TRUE)
-  })
+  # Old tests
+
+  expect_identical(quo(rlang::UQ(toupper("a"))), new_quosure("A", empty_env()))
+  expect_identical(quo(list(rlang::UQS(list(a = 1, b = 2)))), quo(list(a = 1, b = 2)))
+
+  quo <- quo(rlang::UQ(NULL))
+  expect_equal(quo, ~NULL)
+
+  quo <- tryCatch(quo(rlang::UQ()), error = identity)
+  expect_is(quo, "error")
+  expect_match(quo$message, "must be called with an argument")
+
+  expect_error_(dots_values(rlang::UQ(quote(.))), "`!!` in a non-quoting function")
+})
+
+test_that("UQE() is defunct", {
+  expect_error_(expr(foo$UQE(NULL)), "defunct")
+  expect_error_(UQE(), "defunct")
 })

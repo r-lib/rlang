@@ -154,7 +154,6 @@
 #'
 #' **Retired in rlang 0.2.0:**
 #'
-#' * [UQE()]
 #' * [is_quosureish()], [as_quosureish()]
 #'
 #'
@@ -162,20 +161,13 @@
 #'
 #' \badgedefunct
 #'
-#' **Retired in rlang 0.3.0:**
+#' **Defunct as of rlang 0.3.0:**
 #'
 #' * [cnd()], [error_cnd()], [warning_cnd()] and [message_cnd()]:
 #'   `.msg` => `message`.
 #' * [cnd_signal()]: `.msg` and `.call`.
 #' * `cnd_inform()`, `cnd_warn()` and `cnd_abort()`
-#'
-#'
-#' **Renamed in rlang 0.2.0**
-#'
-#' * `new_cnd()` => [cnd()]
-#' * `cnd_message()` => [message_cnd()]
-#' * `cnd_warning()` => [warning_cnd()]
-#' * `cnd_error()` => [error_cnd()]
+#' * [UQE()]
 #'
 #'
 #' **Renamed in rlang 0.3.0:**
@@ -184,6 +176,13 @@
 #'   has not been implemented in `calling()` and is now defunct.
 #' * `rst_muffle()` => [cnd_muffle()]
 #'
+#'
+#' **Renamed in rlang 0.2.0**
+#'
+#' * `new_cnd()` => [cnd()]
+#' * `cnd_message()` => [message_cnd()]
+#' * `cnd_warning()` => [warning_cnd()]
+#' * `cnd_error()` => [error_cnd()]
 #'
 #' @name lifecycle
 NULL
