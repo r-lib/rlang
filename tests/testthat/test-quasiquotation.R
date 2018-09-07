@@ -50,15 +50,8 @@ test_that("can interpolate in specific env", {
 })
 
 test_that("can qualify operators with namespace", {
-  suppressWarnings({
-    # Should remove prefix only if rlang-qualified:
-    expect_identical(quo(rlang::UQ(toupper("a"))), new_quosure("A", empty_env()))
-    expect_identical(quo(list(rlang::UQS(list(a = 1, b = 2)))), quo(list(a = 1, b = 2)))
-
-    # Should keep prefix otherwise:
     expect_identical(quo(other::UQ(toupper("a"))), quo(other::"A"))
     expect_identical(quo(x$UQ(toupper("a"))), quo(x$"A"))
-  })
 })
 
 test_that("unquoting is frame-consistent", {
@@ -173,14 +166,7 @@ test_that("UQ() fails if called without argument", {
     quo <- quo(UQ(NULL))
     expect_equal(quo, ~NULL)
 
-    quo <- suppressWarnings(quo(rlang::UQ(NULL)))
-    expect_equal(quo, ~NULL)
-
     quo <- tryCatch(quo(UQ()), error = identity)
-    expect_is(quo, "error")
-    expect_match(quo$message, "must be called with an argument")
-
-    quo <- suppressWarnings(tryCatch(quo(rlang::UQ()), error = identity))
     expect_is(quo, "error")
     expect_match(quo$message, "must be called with an argument")
   })
@@ -354,10 +340,6 @@ test_that("can unquote-splice symbols", {
 
 test_that("can unquote symbols", {
   expect_error_(dots_values(!! quote(.)), "`!!` in a non-quoting function")
-
-  suppressWarnings(
-    expect_error_(dots_values(rlang::UQ(quote(.))), "`!!` in a non-quoting function")
-  )
 })
 
 
@@ -397,6 +379,20 @@ test_that("Unquote operators fail when called outside quasiquoted arguments", {
 test_that("unquoting with rlang namespace is deprecated", {
   expect_warning_(exprs(rlang::UQS(1:2)), regexp = "deprecated as of rlang 0.3.0")
   expect_warning_(quo(list(rlang::UQ(1:2))), regexp = "deprecated as of rlang 0.3.0")
+
+  # Old tests
+
+  expect_identical(quo(rlang::UQ(toupper("a"))), new_quosure("A", empty_env()))
+  expect_identical(quo(list(rlang::UQS(list(a = 1, b = 2)))), quo(list(a = 1, b = 2)))
+
+  quo <- quo(rlang::UQ(NULL))
+  expect_equal(quo, ~NULL)
+
+  quo <- tryCatch(quo(rlang::UQ()), error = identity)
+  expect_is(quo, "error")
+  expect_match(quo$message, "must be called with an argument")
+
+  expect_error_(dots_values(rlang::UQ(quote(.))), "`!!` in a non-quoting function")
 })
 
 test_that("UQE() is defunct", {

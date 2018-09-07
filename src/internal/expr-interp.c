@@ -72,7 +72,7 @@ void signal_uqs_soft_deprecation() {
 }
 
 void signal_namespaced_uq_deprecation() {
-  r_warn(
+  r_warn_deprecated_once("namespaced rlang::UQ()",
     "Prefixing `UQ()` with the rlang namespace is deprecated as of rlang 0.3.0.\n"
     "Please use the non-prefixed form or `!!` instead.\n"
     "\n"
@@ -84,10 +84,12 @@ void signal_namespaced_uq_deprecation() {
     "\n"
     "  # Good:\n"
     "  rlang::expr(mean(!!var * 100))\n"
+    "\n"
+    "This warning is only displayed once per session."
   );
 }
 void signal_namespaced_uqs_deprecation() {
-  r_warn(
+  r_warn_deprecated_once("namespaced rlang::UQS()",
     "Prefixing `UQS()` with the rlang namespace is deprecated as of rlang 0.3.0.\n"
     "Please use the non-prefixed form or `!!!` instead.\n"
     "\n"
@@ -99,6 +101,8 @@ void signal_namespaced_uqs_deprecation() {
     "\n"
     "  # Good:\n"
     "  rlang::expr(mean(!!!args))\n"
+    "\n"
+    "This warning is only displayed once per session."
   );
 }
 
