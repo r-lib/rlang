@@ -105,7 +105,6 @@ Since rlang 0.2.0:
 
 \strong{Retired in rlang 0.2.0:}
 \itemize{
-\item \code{\link[=eval_tidy_]{eval_tidy_()}}
 \item \code{\link[=overscope_clean]{overscope_clean()}}
 \item \code{\link[=overscope_eval_next]{overscope_eval_next()}} => \code{\link[=eval_tidy]{eval_tidy()}}
 \item \code{\link[=lang_head]{lang_head()}}, \code{\link[=lang_tail]{lang_tail()}}
@@ -165,6 +164,7 @@ Since rlang 0.2.0:
 \item \code{\link[=cnd_signal]{cnd_signal()}}: \code{.msg} and \code{.call}.
 \item \code{cnd_inform()}, \code{cnd_warn()} and \code{cnd_abort()}
 \item \code{\link[=UQE]{UQE()}}
+\item \code{\link[=eval_tidy_]{eval_tidy_()}}
 }
 
 \strong{Renamed in rlang 0.3.0:}

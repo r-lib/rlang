@@ -181,7 +181,7 @@ overscope_clean <- function(overscope) {
 
 #' Tidy evaluation in a custom environment
 #'
-#' This function is soft-deprecated as of rlang 0.2.0.
+#' This function is defunct as of rlang 0.3.0.
 #'
 #' @inheritParams eval_tidy
 #' @inheritParams as_data_mask
@@ -189,9 +189,7 @@ overscope_clean <- function(overscope) {
 #' @keywords internal
 #' @export
 eval_tidy_ <- function(expr, bottom, top = NULL, env = caller_env()) {
-  data_mask <- new_overscope(bottom, top %||% bottom)
-  on.exit(overscope_clean(data_mask))
-  .Call(rlang_eval_tidy, expr, data_mask, environment())
+  abort_defunct("`eval_tidy_()` is defunct as of rlang 0.3.0. Use `eval_tidy()` instead.")
 }
 #' Evaluate next quosure in a data mask
 #'

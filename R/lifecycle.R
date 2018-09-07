@@ -109,7 +109,6 @@
 #'
 #' **Retired in rlang 0.2.0:**
 #'
-#' * [eval_tidy_()]
 #' * [overscope_clean()]
 #' * [overscope_eval_next()] => [eval_tidy()]
 #'
@@ -168,6 +167,7 @@
 #' * [cnd_signal()]: `.msg` and `.call`.
 #' * `cnd_inform()`, `cnd_warn()` and `cnd_abort()`
 #' * [UQE()]
+#' * [eval_tidy_()]
 #'
 #'
 #' **Renamed in rlang 0.3.0:**
