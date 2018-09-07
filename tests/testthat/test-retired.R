@@ -79,8 +79,6 @@ test_that("overscope functions forward to mask functions", {
   mask <- new_overscope(bottom, top)
   expect_true(env_has(mask, ".__tidyeval_data_mask__."))
 
-  expect_identical(eval_tidy_(quote(foo), bottom, top), "bar")
-
   overscope_clean(mask)
   expect_false(env_has(env_parent(mask), "foo"))
 

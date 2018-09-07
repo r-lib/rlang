@@ -114,12 +114,12 @@ static void on_exit_restore_lexical_env(sexp* mask, sexp* old, sexp* frame) {
   r_on_exit(call, frame);
 }
 
-sexp* rlang_new_data_mask(sexp* bottom, sexp* top, sexp* parent) {
-  check_data_mask_input(parent, "parent");
+sexp* rlang_new_data_mask(sexp* bottom, sexp* top) {
   sexp* data_mask;
 
   if (bottom == r_null) {
-    data_mask = bottom = KEEP(r_new_environment(parent, 0));
+    bottom = KEEP(r_new_environment(r_empty_env, 0));
+    data_mask = bottom;
   } else {
     check_data_mask_input(bottom, "bottom");
     // Create a child because we don't know what might be in `bottom`
@@ -133,14 +133,13 @@ sexp* rlang_new_data_mask(sexp* bottom, sexp* top, sexp* parent) {
   } else {
     check_data_mask_input(top, "top");
   }
-
   if (top != bottom) {
     check_data_mask_top(bottom, top);
   }
 
   r_env_poke(data_mask, r_tilde_sym, tilde_fn);
   r_env_poke(data_mask, data_mask_flag_sym, data_mask);
-  r_env_poke(data_mask, data_mask_env_sym, parent);
+  r_env_poke(data_mask, data_mask_env_sym, r_env_parent(top));
   r_env_poke(data_mask, data_mask_top_env_sym, top);
 
   FREE(1);
@@ -148,12 +147,22 @@ sexp* rlang_new_data_mask(sexp* bottom, sexp* top, sexp* parent) {
 }
 
 
+static bool is_data_mask(sexp* env) {
+  return
+    r_typeof(env) == r_type_environment &&
+    r_env_has(env, data_mask_flag_sym);
+}
+
 static sexp* data_pronoun_sym = NULL;
 
-sexp* rlang_as_data_mask(sexp* data, sexp* parent) {
-  if (data == r_null) {
-    return rlang_new_data_mask(r_null, r_null, parent);
+sexp* rlang_as_data_mask(sexp* data) {
+  if (is_data_mask(data)) {
+    return data;
   }
+  if (data == r_null) {
+    return rlang_new_data_mask(r_null, r_null);
+  }
+
   sexp* data_pronoun = rlang_as_data_pronoun(data);
   sexp* bottom = NULL;
 
@@ -161,7 +170,7 @@ sexp* rlang_as_data_mask(sexp* data, sexp* parent) {
 
   switch (r_typeof(data)) {
   case r_type_environment:
-    bottom = KEEP_N(r_env_clone(data, parent), n_protect);
+    bottom = KEEP_N(r_env_clone(data, NULL), n_protect);
     break;
 
   case r_type_logical:
@@ -176,7 +185,7 @@ sexp* rlang_as_data_mask(sexp* data, sexp* parent) {
 
   case r_type_list: {
     sexp* names = r_vec_names(data);
-    bottom = KEEP_N(r_new_environment(parent, 0), n_protect);
+    bottom = KEEP_N(r_new_environment(r_empty_env, 0), n_protect);
 
     if (names != r_null) {
       r_ssize_t n = r_length(data);
@@ -199,10 +208,19 @@ sexp* rlang_as_data_mask(sexp* data, sexp* parent) {
   }
 
   r_env_poke(bottom, data_pronoun_sym, data_pronoun);
-  sexp* data_mask = rlang_new_data_mask(bottom, bottom, parent);
+  sexp* data_mask = rlang_new_data_mask(bottom, bottom);
 
   FREE(n_protect);
   return data_mask;
+}
+
+// For compatibility of the exported C callable
+// TODO: warn
+sexp* rlang_new_data_mask_compat(sexp* bottom, sexp* top, sexp* parent) {
+  return rlang_new_data_mask(bottom, top);
+}
+sexp* rlang_as_data_mask_compat(sexp* data, sexp* parent) {
+  return rlang_as_data_mask(data);
 }
 
 
@@ -318,14 +336,6 @@ static sexp* new_quosure_mask(sexp* env) {
 }
 
 
-bool is_data_mask(sexp* env) {
-  return
-    r_typeof(env) == r_type_environment &&
-    r_env_has(env, data_mask_flag_sym);
-}
-
-static sexp* data_mask_clean_fn = NULL;
-
 sexp* rlang_eval_tidy(sexp* expr, sexp* data, sexp* frame) {
   int n_protect = 0;
 
@@ -337,36 +347,43 @@ sexp* rlang_eval_tidy(sexp* expr, sexp* data, sexp* frame) {
     env = KEEP_N(r_eval(env_sym, frame), n_protect);
   }
 
-  // If `data` is already a data mask, update env pronouns and
-  // evaluate in that environment. The caller is responsible for
-  // cleaning the mask if needed.
-  if (is_data_mask(data)) {
-    r_env_poke(data, data_mask_env_sym, env);
-    sexp* top = r_env_find(data, data_mask_top_env_sym);
-
-    if (top == r_unbound_sym) {
-      r_abort("Internal error: Can't find top pronoun in data mask");
-    }
-
-    r_env_poke_parent(top, env);
-
-    sexp* out = r_eval(expr, data);
-    FREE(n_protect);
-    return out;
-  }
-
-
-  sexp* mask;
-
   // If there is no data, we only need to mask `~` with the definition
   // for quosure thunks. Otherwise we create a heavier data mask with
   // all the masking objects, data pronouns, etc.
   if (data == r_null) {
-    mask = KEEP(new_quosure_mask(env));
-  } else {
-    mask = KEEP(rlang_as_data_mask(data, env));
+    sexp* mask = KEEP_N(new_quosure_mask(env), n_protect);
+    sexp* out = r_eval(expr, mask);
+    FREE(n_protect);
+    return out;
   }
-  ++n_protect;
+
+  sexp* mask = KEEP_N(rlang_as_data_mask(data), n_protect);
+
+  sexp* top = r_env_find(mask, data_mask_top_env_sym);
+  if (top == r_unbound_sym) {
+    r_abort("Internal error: Can't find .top pronoun in data mask");
+  }
+  if (r_typeof(top) != r_type_environment) {
+    r_abort("Internal error: Unexpected .top pronoun type");
+  }
+
+  // Rechain the mask on the new lexical env but don't restore it on
+  // exit. This way leaked masks inherit from a somewhat sensible
+  // environment. We could do better with ALTENV and two-parent data
+  // masks:
+  //
+  // * We'd create a new two-parents evaluation env for each quosure.
+  //   The first parent would be the mask and the second the lexical
+  //   environment.
+  //
+  // * The data mask top would always inherit from the empty
+  //   environment.
+  //
+  // * Look-up in leaked environments would proceed from the data mask
+  //   to the appropriate lexical environment (from quosures or from
+  //   the `env` argument of eval_tidy()).
+  r_env_poke(mask, data_mask_env_sym, env);
+  r_env_poke_parent(top, env);
 
   sexp* out = r_eval(expr, mask);
   FREE(n_protect);
@@ -408,8 +425,6 @@ void rlang_init_eval_tidy() {
   tilde_prim = r_base_ns_get("~");
   env_poke_parent_fn = rlang_ns_get("env_poke_parent");
   env_poke_fn = rlang_ns_get("env_poke");
-
-  data_mask_clean_fn = rlang_ns_get("overscope_clean");
 
   env_sym = r_sym("env");
   old_sym = r_sym("old");

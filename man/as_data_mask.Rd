@@ -6,16 +6,21 @@
 \alias{new_data_mask}
 \title{Create a data mask}
 \usage{
-as_data_mask(data, parent = base_env())
+as_data_mask(data, parent = NULL)
 
 as_data_pronoun(data)
 
-new_data_mask(bottom, top = bottom, parent = base_env())
+new_data_mask(bottom, top = bottom, parent = NULL)
 }
 \arguments{
 \item{data}{A data frame or named vector of masking data.}
 
-\item{parent}{The parent environment of the data mask.}
+\item{parent}{Soft-deprecated. This argument no longer has any effect.
+The parent of the data mask is determined from either:
+\itemize{
+\item The \code{env} argument of \code{eval_tidy()}
+\item Quosure environments when applicable
+}}
 
 \item{bottom}{The environment containing masking objects if the
 data mask is one environment deep. The bottom environment if the
@@ -93,6 +98,17 @@ persist in subsequent evaluations:
 
 
 All these functions are now stable.
+
+\strong{rlang 0.3.0}
+
+The \code{parent} argument no longer has any effect. The parent of the
+data mask is determined from either:
+\itemize{
+\item The \code{env} argument of \code{eval_tidy()}
+\item Quosure environments when applicable
+}
+
+\strong{rlang 0.2.0}
 
 In early versions of rlang data masks were called overscopes. We
 think data mask is a more natural name in R. It makes reference to

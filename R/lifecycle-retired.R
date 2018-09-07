@@ -169,7 +169,7 @@ as_overscope <- function(quo, data = NULL) {
 #' @rdname as_overscope
 #' @param enclosure The `parent` argument of [new_data_mask()].
 #' @export
-new_overscope <- function(bottom, top = NULL, enclosure = base_env()) {
+new_overscope <- function(bottom, top = NULL, enclosure = NULL) {
   new_data_mask(bottom, top, enclosure)
 }
 #' @rdname as_overscope

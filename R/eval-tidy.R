@@ -25,8 +25,8 @@
 #' @param data A data frame, or named list or vector. Alternatively, a
 #'   data mask created with [as_data_mask()] or [new_data_mask()].
 #' @param env The environment in which to evaluate `expr`. This
-#'   environment is always ignored when evaluating quosures. Quosures
-#'   are evaluated in their own environment.
+#'   environment is not applicable for quosures because they have
+#'   their own environments.
 #' @seealso [quasiquotation] for the second leg of the tidy evaluation
 #'   framework.
 #' @export
@@ -177,6 +177,16 @@ delayedAssign(".data", as_data_pronoun(list()))
 #'
 #' All these functions are now stable.
 #'
+#' **rlang 0.3.0**
+#'
+#' The `parent` argument no longer has any effect. The parent of the
+#' data mask is determined from either:
+#'
+#'   * The `env` argument of `eval_tidy()`
+#'   * Quosure environments when applicable
+#'
+#' **rlang 0.2.0**
+#'
 #' In early versions of rlang data masks were called overscopes. We
 #' think data mask is a more natural name in R. It makes reference to
 #' masking in the search path which occurs through the same mechanism
@@ -189,7 +199,10 @@ delayedAssign(".data", as_data_pronoun(list()))
 #' `as_data_mask()` and `new_data_mask()`.
 #'
 #' @param data A data frame or named vector of masking data.
-#' @param parent The parent environment of the data mask.
+#' @param parent Soft-deprecated. This argument no longer has any effect.
+#'   The parent of the data mask is determined from either:
+#'   * The `env` argument of `eval_tidy()`
+#'   * Quosure environments when applicable
 #' @return A data mask that you can supply to [eval_tidy()].
 #'
 #' @export
@@ -259,8 +272,19 @@ delayedAssign(".data", as_data_pronoun(list()))
 #' # ignored. The following does not work because `+` is defined in an
 #' # upper level:
 #' try(eval_tidy(quote(a + b), data = bottom))
-as_data_mask <- function(data, parent = base_env()) {
-  .Call(rlang_as_data_mask, data, parent)
+as_data_mask <- function(data, parent = NULL) {
+  if (!is_null(parent)) {
+    id <- "rlang::as_data_mask() - parent argument"
+    msg <- paste(sep = "\n",
+      "The `parent` argument of `as_data_mask()` is deprecated.",
+      "The parent of the data mask is determined from either:\n",
+      "  * The `env` argument of `eval_tidy()`",
+      "  * Quosure environments when applicable\n",
+      "This warning is displayed once per session."
+    )
+    warn_deprecated_once(id, msg)
+  }
+  .Call(rlang_as_data_mask, data)
 }
 #' @rdname as_data_mask
 #' @export
@@ -276,8 +300,19 @@ as_data_pronoun <- function(data) {
 #'   is only one environment deep, `top` should be the same as
 #'   `bottom`.
 #' @export
-new_data_mask <- function(bottom, top = bottom, parent = base_env()) {
-  .Call(rlang_new_data_mask, bottom, top, parent)
+new_data_mask <- function(bottom, top = bottom, parent = NULL) {
+  if (!is_null(parent)) {
+    id <- "rlang::new_data_mask() - parent argument"
+    msg <- paste(sep = "\n",
+      "The `parent` argument of `new_data_mask()` is deprecated.",
+      "The parent of the data mask is determined from either:\n",
+      "  * The `env` argument of `eval_tidy()`",
+      "  * Quosure environments when applicable\n",
+      "This warning is displayed once per session."
+    )
+    warn_deprecated_once(id, msg)
+  }
+  .Call(rlang_new_data_mask, bottom, top)
 }
 
 
