@@ -12,11 +12,6 @@ sexp* rlang_test_r_warn(sexp* x) {
   return r_null;
 }
 
-sexp* rlang_test_warn_deprecated_once(sexp* id, sexp* msg) {
-  r_warn_deprecated_once(r_c_string(id), r_c_string(msg));
-  return r_null;
-}
-
 
 // env.c
 

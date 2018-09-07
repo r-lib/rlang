@@ -612,4 +612,7 @@ conditionMessage.rlang_error <- function(c) {
   lines
 }
 
+warn_deprecated_once <- function(id, msg) {
+  .Call(rlang_warn_deprecated_once, id, msg)
+}
 deprecation_env <- new.env(parent = emptyenv())
