@@ -394,3 +394,9 @@ test_that("failed parses are printed if `rlang__verbose_errors` is non-NULL", {
     ))
   expect_error(cnd_signal(err), regexp = "single expression")
 })
+
+test_that("r_warn_deprecated_once() warns once", {
+  expect_warning(.Call(rlang_test_warn_deprecated_once, "foo", "retired"), "retired")
+  expect_no_warning(.Call(rlang_test_warn_deprecated_once, "foo", "retired"))
+  expect_warning(.Call(rlang_test_warn_deprecated_once, "bar", "retired"), "retired")
+})

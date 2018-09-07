@@ -1,12 +1,20 @@
 #include <rlang.h>
 
+sexp* rlang_r_string(sexp* str) {
+  return STRING_ELT(str, 0);
+}
+
+
+// cnd.c
+
 sexp* rlang_test_r_warn(sexp* x) {
   r_warn(CHAR(STRING_ELT(x, 0)));
   return r_null;
 }
 
-sexp* rlang_r_string(sexp* str) {
-  return STRING_ELT(str, 0);
+sexp* rlang_test_warn_deprecated_once(sexp* id, sexp* msg) {
+  r_warn_deprecated_once(r_c_string(id), r_c_string(msg));
+  return r_null;
 }
 
 

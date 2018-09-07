@@ -53,17 +53,47 @@ sexp* r_interp_str(const char* fmt, ...) {
   return r_scalar_chr(buf);
 }
 
+static void signal_retirement(const char* source, char* buf);
+static sexp* deprecated_env = NULL;
+
+void r_warn_deprecated(const char* fmt, ...) {
+  char buf[BUFSIZE];
+  INTERP(buf, fmt, ...);
+
+  signal_retirement(".Deprecated(msg = msg)", buf);
+}
+void r_warn_deprecated_once(const char* id, const char* fmt, ...) {
+  sexp* id_ = r_sym(id);
+
+  // Warn once per session
+  if (r_env_has(deprecated_env, id_)) {
+    return;
+  }
+  r_env_poke(deprecated_env, id_, r_shared_true);
+
+  char buf[BUFSIZE];
+  INTERP(buf, fmt, ...);
+
+  signal_retirement(".Deprecated(msg = msg)", buf);
+}
+
 void r_abort_defunct(const char* fmt, ...) {
   char buf[BUFSIZE];
   INTERP(buf, fmt, ...);
 
-  sexp* call = KEEP(r_parse(".Defunct(msg = msg)"));
+  signal_retirement(".Defunct(msg = msg)", buf);
+
+  r_abort("Internal error: Unexpected return after `.Defunct()`");
+}
+
+static void signal_retirement(const char* source, char* buf) {
+  sexp* call = KEEP(r_parse(source));
   sexp* env = KEEP(r_new_environment(r_base_env, 1));
   r_env_poke(env, r_sym("msg"), KEEP(r_scalar_chr(buf)));
 
   r_eval(call, env);
 
-  while (1); // No return
+  FREE(3);
 }
 
 static sexp* new_condition_names(sexp* data) {
@@ -237,4 +267,6 @@ void r_init_library_cnd() {
 
   r_mark_precious(cnd_signal_call);
   FREE(5);
+
+  deprecated_env = rlang_ns_get("deprecation_env");
 }
