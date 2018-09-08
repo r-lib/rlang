@@ -178,6 +178,14 @@ test_that("call_deparse() handles multi-line arguments", {
   expect_identical(sexp_deparse(quote(foo(one = 1, two = nested(one = 1, two = 2))), ctxt), c("foo(one = 1, two = nested(", "  one = 1, two = 2))"))
 })
 
+test_that("call_deparse() adds parentheses to call CAR when needed", {
+  call <- as.call(c(quote(function(x) x + 1), quote(x)))
+  expect_identical(call_deparse(call), "(function(x) x + 1)(x)")
+
+  call <- as.call(c(quote(f + g), quote(x)))
+  expect_identical(call_deparse(call), "(f + g)(x)")
+})
+
 test_that("literal functions are deparsed", {
   expect_identical_(sexp_deparse(function(a) 1), "<function(a) 1>")
   expect_identical_(sexp_deparse(expr(foo(!!function(a) 1))), "foo(<function(a) 1>)")
