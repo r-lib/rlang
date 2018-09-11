@@ -209,12 +209,6 @@ test_that("formulas are not evaluated as quosures", {
   expect_identical(eval_tidy(~letters), ~letters)
 })
 
-test_that("can supply environment as data", {
-  `_x` <- "foo"
-  expect_identical(eval_tidy(quo(`_x`), environment()), "foo")
-  expect_error(eval_tidy(quo(`_y`), environment()), "not found")
-})
-
 test_that("tilde calls are evaluated in overscope", {
   quo <- quo({
     foo <- "foo"
@@ -343,3 +337,9 @@ test_that("as_data_mask() and new_data_mask() warn once when passed a parent", {
   expect_no_warning(new_data_mask(NULL, NULL, parent = env()))
 })
 
+test_that("supplying environment as data is deprecated", {
+  `_x` <- "foo"
+  expect_warning(eval_tidy("foo", current_env()), "deprecated")
+  expect_identical(eval_tidy(quo(`_x`), current_env()), "foo")
+  expect_error(eval_tidy(quo(`_y`), current_env()), "not found")
+})

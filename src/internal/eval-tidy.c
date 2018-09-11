@@ -155,6 +155,24 @@ static bool is_data_mask(sexp* env) {
 
 static sexp* data_pronoun_sym = NULL;
 
+static void warn_env_as_mask_once() {
+  r_warn_deprecated_once("environment passed to rlang::as_data_mask()",
+    "Passing an environment as data mask is deprecated.\n"
+    "Please use `new_data_mask()` to transform your environment to a mask.\n"
+    "\n"
+    "  env <- env(foo = \"bar\")\n"
+    "\n"
+    "  # Bad:\n"
+    "  as_data_mask(env)\n"
+    "  eval_tidy(expr, env)\n"
+    "\n"
+    "  # Good:\n"
+    "  mask <- new_data_mask(env)\n"
+    "  eval_tidy(expr, mask)\n"
+    "\n"
+    "This warning is displayed once per session."
+  );
+}
 sexp* rlang_as_data_mask(sexp* data) {
   if (is_data_mask(data)) {
     return data;
@@ -170,6 +188,7 @@ sexp* rlang_as_data_mask(sexp* data) {
 
   switch (r_typeof(data)) {
   case r_type_environment:
+    warn_env_as_mask_once();
     bottom = KEEP_N(r_env_clone(data, NULL), n_protect);
     break;
 
