@@ -595,14 +595,14 @@ conditionMessage.rlang_error <- function(c) {
 
   if (length(parents)) {
     parents <- cli_branch(parents)
-    lines <- chr_lines(lines,
+    lines <- paste_line(lines,
       "Parents:",
       parents
     )
   }
 
   if (!is_null(trace)) {
-    lines <- chr_lines(
+    lines <- paste_line(
       lines,
       "Backtrail:",
       trace

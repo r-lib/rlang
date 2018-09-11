@@ -298,11 +298,13 @@ delayedAssign(".data", as_data_pronoun(list()))
 as_data_mask <- function(data, parent = NULL) {
   if (!is_null(parent)) {
     id <- "rlang::as_data_mask() - parent argument"
-    msg <- paste(sep = "\n",
+    msg <- paste_line(
       "The `parent` argument of `as_data_mask()` is deprecated.",
-      "The parent of the data mask is determined from either:\n",
+      "The parent of the data mask is determined from either:",
+      "",
       "  * The `env` argument of `eval_tidy()`",
-      "  * Quosure environments when applicable\n",
+      "  * Quosure environments when applicable",
+      "",
       "This warning is displayed once per session."
     )
     warn_deprecated_once(id, msg)
@@ -326,11 +328,13 @@ as_data_pronoun <- function(data) {
 new_data_mask <- function(bottom, top = bottom, parent = NULL) {
   if (!is_null(parent)) {
     id <- "rlang::new_data_mask() - parent argument"
-    msg <- paste(sep = "\n",
+    msg <- paste_line(
       "The `parent` argument of `new_data_mask()` is deprecated.",
-      "The parent of the data mask is determined from either:\n",
+      "The parent of the data mask is determined from either:",
+      "",
       "  * The `env` argument of `eval_tidy()`",
-      "  * Quosure environments when applicable\n",
+      "  * Quosure environments when applicable",
+      "",
       "This warning is displayed once per session."
     )
     warn_deprecated_once(id, msg)
