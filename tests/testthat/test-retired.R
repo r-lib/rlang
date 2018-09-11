@@ -79,8 +79,6 @@ test_that("overscope functions forward to mask functions", {
   mask <- new_overscope(bottom, top)
   expect_true(env_has(mask, ".__tidyeval_data_mask__."))
 
-  expect_identical(eval_tidy_(quote(foo), bottom, top), "bar")
-
   overscope_clean(mask)
   expect_false(env_has(env_parent(mask), "foo"))
 
@@ -120,4 +118,8 @@ test_that("is_quosureish() and as_quosureish() still work", {
 
 test_that("node() still works", {
   expect_identical(node(1, NULL), new_node(1, NULL))
+})
+
+test_that("eval_tidy_() is defunct", {
+  expect_error(eval_tidy_(), "defunct")
 })

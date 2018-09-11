@@ -18,10 +18,10 @@ is only one environment deep, \code{top} should be the same as
 \code{bottom}.}
 
 \item{env}{The environment in which to evaluate \code{expr}. This
-environment is always ignored when evaluating quosures. Quosures
-are evaluated in their own environment.}
+environment is not applicable for quosures because they have
+their own environments.}
 }
 \description{
-This function is soft-deprecated as of rlang 0.2.0.
+This function is defunct as of rlang 0.3.0.
 }
 \keyword{internal}

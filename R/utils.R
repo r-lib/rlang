@@ -82,9 +82,9 @@ captureDots <- function() {
 }
 
 cat_line <- function(..., .trailing = TRUE) {
-  cat(chr_lines(..., .trailing = .trailing))
+  cat(paste_line(..., .trailing = .trailing))
 }
-chr_lines <- function(..., .trailing = FALSE) {
+paste_line <- function(..., .trailing = FALSE) {
   lines <- paste(chr(...), collapse = "\n")
   if (.trailing) {
     lines <- paste0(lines, "\n")

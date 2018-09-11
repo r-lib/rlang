@@ -105,7 +105,6 @@ Since rlang 0.2.0:
 
 \strong{Retired in rlang 0.2.0:}
 \itemize{
-\item \code{\link[=eval_tidy_]{eval_tidy_()}}
 \item \code{\link[=overscope_clean]{overscope_clean()}}
 \item \code{\link[=overscope_eval_next]{overscope_eval_next()}} => \code{\link[=eval_tidy]{eval_tidy()}}
 \item \code{\link[=lang_head]{lang_head()}}, \code{\link[=lang_tail]{lang_tail()}}
@@ -140,7 +139,13 @@ Since rlang 0.2.0:
 
 \badgedeprecated
 
-\strong{Renamed in rlang 0.2.0.9000}
+\strong{Deprecated as of rlang 0.3.0}
+\itemize{
+\item \code{\link[=as_data_mask]{as_data_mask()}}: \code{parent} argument
+\item \code{\link[=new_data_mask]{new_data_mask()}}: \code{parent} argument
+}
+
+\strong{Renamed in rlang 0.3.0}
 \itemize{
 \item \code{\link[=env_tail]{env_tail()}}: \code{sentinel} => \code{last}
 \item \code{\link[=abort]{abort()}}, \code{\link[=warn]{warn()}}, \code{\link[=inform]{inform()}}: \code{msg}, \code{type} and \code{call} =>
@@ -165,6 +170,7 @@ Since rlang 0.2.0:
 \item \code{\link[=cnd_signal]{cnd_signal()}}: \code{.msg} and \code{.call}.
 \item \code{cnd_inform()}, \code{cnd_warn()} and \code{cnd_abort()}
 \item \code{\link[=UQE]{UQE()}}
+\item \code{\link[=eval_tidy_]{eval_tidy_()}}
 }
 
 \strong{Renamed in rlang 0.3.0:}

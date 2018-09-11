@@ -8,7 +8,7 @@
 \usage{
 as_overscope(quo, data = NULL)
 
-new_overscope(bottom, top = NULL, enclosure = base_env())
+new_overscope(bottom, top = NULL, enclosure = NULL)
 
 overscope_clean(overscope)
 }

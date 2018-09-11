@@ -86,8 +86,10 @@ extern sexp* rlang_quo_set_expr(sexp*, sexp*);
 extern sexp* rlang_quo_get_env(sexp*);
 extern sexp* rlang_quo_set_env(sexp*, sexp*);
 extern sexp* rlang_which_operator(sexp*);
-extern sexp* rlang_new_data_mask(sexp*, sexp*, sexp*);
-extern sexp* rlang_as_data_mask(sexp*, sexp*);
+extern sexp* rlang_new_data_mask(sexp*, sexp*);
+extern sexp* rlang_new_data_mask_compat(sexp*, sexp*, sexp*);
+extern sexp* rlang_as_data_mask(sexp*);
+extern sexp* rlang_as_data_mask_compat(sexp*, sexp*);
 extern sexp* rlang_data_mask_clean(sexp*);
 extern sexp* rlang_eval_tidy(sexp*, sexp*, sexp*);
 extern sexp* rlang_as_data_pronoun(sexp*);
@@ -106,6 +108,7 @@ extern sexp* rlang_is_integerish(sexp*, sexp*, sexp*);
 extern sexp* rlang_is_character(sexp*, sexp*);
 extern sexp* rlang_is_raw(sexp*, sexp*);
 extern sexp* rlang_cnd_type(sexp*);
+extern sexp* rlang_warn_deprecated_once(sexp*, sexp*);
 
 // Library initialisation defined below
 sexp* rlang_library_load();
@@ -124,7 +127,6 @@ extern sexp* r_current_frame();
 extern sexp* rlang_test_node_list_clone_until(sexp*, sexp*);
 extern sexp* rlang_test_sys_frame(sexp*);
 extern sexp* rlang_test_sys_call(sexp*);
-extern sexp* rlang_test_warn_deprecated_once(sexp*, sexp*);
 
 static const r_callable r_callables[] = {
   {"rlang_library_load",        (r_fn_ptr_t) &rlang_library_load, 0},
@@ -195,7 +197,6 @@ static const r_callable r_callables[] = {
   {"rlang_test_set_attribute",  (r_fn_ptr_t) &r_set_attribute, 3},
   {"rlang_test_sys_frame",      (r_fn_ptr_t) &rlang_test_sys_frame, 1},
   {"rlang_test_sys_call",       (r_fn_ptr_t) &rlang_test_sys_call, 1},
-  {"rlang_test_warn_deprecated_once", (r_fn_ptr_t) &rlang_test_warn_deprecated_once, 2},
   {"rlang_r_string",            (r_fn_ptr_t) &rlang_r_string, 1},
   {"rlang_exprs_interp",        (r_fn_ptr_t) &rlang_exprs_interp, 4},
   {"rlang_quos_interp",         (r_fn_ptr_t) &rlang_quos_interp, 4},
@@ -222,8 +223,8 @@ static const r_callable r_callables[] = {
   {"rlang_vec_poke_range",      (r_fn_ptr_t) &rlang_vec_poke_range, 5},
   {"rlang_which_operator",      (r_fn_ptr_t) &rlang_which_operator, 1},
   {"rlang_call_has_precedence", (r_fn_ptr_t) &rlang_call_has_precedence, 3},
-  {"rlang_new_data_mask",       (r_fn_ptr_t) &rlang_new_data_mask, 3},
-  {"rlang_as_data_mask",        (r_fn_ptr_t) &rlang_as_data_mask, 2},
+  {"rlang_new_data_mask",       (r_fn_ptr_t) &rlang_new_data_mask, 2},
+  {"rlang_as_data_mask",        (r_fn_ptr_t) &rlang_as_data_mask, 1},
   {"rlang_data_mask_clean",     (r_fn_ptr_t) &rlang_data_mask_clean, 1},
   {"rlang_eval_tidy",           (r_fn_ptr_t) &rlang_eval_tidy, 3},
   {"rlang_as_data_pronoun",     (r_fn_ptr_t) &rlang_as_data_pronoun, 1},
@@ -242,6 +243,7 @@ static const r_callable r_callables[] = {
   {"rlang_is_character",        (r_fn_ptr_t) &rlang_is_character, 2},
   {"rlang_is_raw",              (r_fn_ptr_t) &rlang_is_raw, 2},
   {"rlang_cnd_type",            (r_fn_ptr_t) &rlang_cnd_type, 1},
+  {"rlang_warn_deprecated_once", (r_fn_ptr_t) &rlang_warn_deprecated_once, 2},
   {NULL, NULL, 0}
 };
 
@@ -259,11 +261,15 @@ void R_init_rlang(r_dll_info* dll) {
 
   // The data mask functions are stable
   r_register_c_callable("rlang", "rlang_as_data_pronoun", (r_fn_ptr_t) &rlang_as_data_pronoun);
-  r_register_c_callable("rlang", "rlang_as_data_mask", (r_fn_ptr_t) &rlang_as_data_mask);
-  r_register_c_callable("rlang", "rlang_new_data_mask", (r_fn_ptr_t) &rlang_new_data_mask);
+  r_register_c_callable("rlang", "rlang_as_data_mask_3.0.0", (r_fn_ptr_t) &rlang_as_data_mask);
+  r_register_c_callable("rlang", "rlang_new_data_mask_3.0.0", (r_fn_ptr_t) &rlang_new_data_mask);
 
   // Experimental method for exporting C function pointers as actual R objects
   rlang_register_pointer("rlang", "rlang_test_is_spliceable", (r_fn_ptr_t) &rlang_is_clevel_spliceable);
+
+  // Compatibility
+  r_register_c_callable("rlang", "rlang_as_data_mask", (r_fn_ptr_t) &rlang_as_data_mask_compat);
+  r_register_c_callable("rlang", "rlang_new_data_mask", (r_fn_ptr_t) &rlang_new_data_mask_compat);
 
   r_register_r_callables(dll, r_callables, NULL);
 }

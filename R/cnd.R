@@ -595,14 +595,14 @@ conditionMessage.rlang_error <- function(c) {
 
   if (length(parents)) {
     parents <- cli_branch(parents)
-    lines <- chr_lines(lines,
+    lines <- paste_line(lines,
       "Parents:",
       parents
     )
   }
 
   if (!is_null(trace)) {
-    lines <- chr_lines(
+    lines <- paste_line(
       lines,
       "Backtrail:",
       trace
@@ -612,4 +612,11 @@ conditionMessage.rlang_error <- function(c) {
   lines
 }
 
+warn_deprecated_once <- function(id, msg) {
+  .Call(rlang_warn_deprecated_once, id, msg)
+}
 deprecation_env <- new.env(parent = emptyenv())
+
+abort_defunct <- function(msg) {
+  .Defunct(msg = msg)
+}

@@ -396,7 +396,7 @@ test_that("failed parses are printed if `rlang__verbose_errors` is non-NULL", {
 })
 
 test_that("r_warn_deprecated_once() warns once", {
-  expect_warning(.Call(rlang_test_warn_deprecated_once, "foo", "retired"), "retired")
-  expect_no_warning(.Call(rlang_test_warn_deprecated_once, "foo", "retired"))
-  expect_warning(.Call(rlang_test_warn_deprecated_once, "bar", "retired"), "retired")
+  expect_warning(warn_deprecated_once("foo", "retired"), "retired")
+  expect_no_warning(warn_deprecated_once("foo", "retired"))
+  expect_warning(warn_deprecated_once("bar", "retired"), "retired")
 })

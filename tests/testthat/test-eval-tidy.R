@@ -175,12 +175,6 @@ test_that("inner formulas are rechained to evaluation env", {
   expect_true(env_inherits(env$eval_env2, get_env(f2)))
 })
 
-test_that("dyn scope is chained to lexical env", {
-  foo <- "bar"
-  overscope <- child_env(NULL)
-  expect_identical(eval_tidy_(quo(foo), overscope), "bar")
-})
-
 test_that("whole scope is purged", {
   outside <- child_env(NULL, important = TRUE)
   top <- child_env(outside, foo = "bar", hunoz = 1)
@@ -213,12 +207,6 @@ test_that("cannot replace elements of pronouns", {
 
 test_that("formulas are not evaluated as quosures", {
   expect_identical(eval_tidy(~letters), ~letters)
-})
-
-test_that("can supply environment as data", {
-  `_x` <- "foo"
-  expect_identical(eval_tidy(quo(`_x`), environment()), "foo")
-  expect_error(eval_tidy(quo(`_y`), environment()), "not found")
 })
 
 test_that("tilde calls are evaluated in overscope", {
@@ -323,4 +311,35 @@ test_that("new_data_mask() checks `top` is a parent of `bottom`", {
   bottom <- env(top)
   expect_no_error(new_data_mask(bottom, top))
   expect_error(new_data_mask(top, bottom), "`top` is not a parent of `bottom`")
+})
+
+test_that("data mask inherits from last environment", {
+  mask <- new_data_mask(NULL, NULL)
+  expect_reference(env_parent(mask), empty_env())
+
+  eval_tidy(NULL, mask)
+  expect_reference(env_parent(mask), current_env())
+
+  env <- env()
+  quo <- new_quosure(NULL, env)
+  eval_tidy(quo, mask)
+  expect_reference(env_parent(mask), env)
+})
+
+
+# Lifecycle ----------------------------------------------------------
+
+test_that("as_data_mask() and new_data_mask() warn once when passed a parent", {
+  expect_warning(as_data_mask(mtcars, env()), "deprecated")
+  expect_no_warning(as_data_mask(mtcars, env()))
+
+  expect_warning(new_data_mask(NULL, NULL, parent = env()), "deprecated")
+  expect_no_warning(new_data_mask(NULL, NULL, parent = env()))
+})
+
+test_that("supplying environment as data is deprecated", {
+  `_x` <- "foo"
+  expect_warning(eval_tidy("foo", current_env()), "deprecated")
+  expect_identical(eval_tidy(quo(`_x`), current_env()), "foo")
+  expect_error(eval_tidy(quo(`_y`), current_env()), "not found")
 })

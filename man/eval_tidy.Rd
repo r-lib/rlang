@@ -13,8 +13,8 @@ eval_tidy(expr, data = NULL, env = caller_env())
 data mask created with \code{\link[=as_data_mask]{as_data_mask()}} or \code{\link[=new_data_mask]{new_data_mask()}}.}
 
 \item{env}{The environment in which to evaluate \code{expr}. This
-environment is always ignored when evaluating quosures. Quosures
-are evaluated in their own environment.}
+environment is not applicable for quosures because they have
+their own environments.}
 }
 \description{
 \code{eval_tidy()} is a variant of \code{\link[base:eval]{base::eval()}} that powers the tidy
@@ -34,6 +34,11 @@ values and throw errors if you try to access non-existent values.
 
 
 \code{eval_tidy()} is stable.
+
+\strong{rlang 0.3.0}
+
+Passing an environment to \code{data} is deprecated. Please construct an
+rlang data mask with \code{\link[=new_data_mask]{new_data_mask()}}.
 }
 
 \examples{
