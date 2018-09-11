@@ -34,6 +34,11 @@ values and throw errors if you try to access non-existent values.
 
 
 \code{eval_tidy()} is stable.
+
+\strong{rlang 0.3.0}
+
+Passing an environment to \code{data} is deprecated. Please construct an
+rlang data mask with \code{\link[=new_data_mask]{new_data_mask()}}.
 }
 
 \examples{

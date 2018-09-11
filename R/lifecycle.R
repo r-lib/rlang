@@ -144,7 +144,12 @@
 #'
 #' \badgedeprecated
 #'
-#' **Renamed in rlang 0.2.0.9000**
+#' **Deprecated as of rlang 0.3.0**
+#'
+#' * [as_data_mask()]: `parent` argument
+#' * [new_data_mask()]: `parent` argument
+#'
+#' **Renamed in rlang 0.3.0**
 #'
 #' * [env_tail()]: `sentinel` => `last`
 #' * [abort()], [warn()], [inform()]: `msg`, `type` and `call` =>

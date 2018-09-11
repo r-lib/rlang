@@ -139,7 +139,13 @@ Since rlang 0.2.0:
 
 \badgedeprecated
 
-\strong{Renamed in rlang 0.2.0.9000}
+\strong{Deprecated as of rlang 0.3.0}
+\itemize{
+\item \code{\link[=as_data_mask]{as_data_mask()}}: \code{parent} argument
+\item \code{\link[=new_data_mask]{new_data_mask()}}: \code{parent} argument
+}
+
+\strong{Renamed in rlang 0.3.0}
 \itemize{
 \item \code{\link[=env_tail]{env_tail()}}: \code{sentinel} => \code{last}
 \item \code{\link[=abort]{abort()}}, \code{\link[=warn]{warn()}}, \code{\link[=inform]{inform()}}: \code{msg}, \code{type} and \code{call} =>

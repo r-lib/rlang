@@ -21,6 +21,11 @@
 #'
 #' `eval_tidy()` is stable.
 #'
+#' **rlang 0.3.0**
+#'
+#' Passing an environment to `data` is deprecated. Please construct an
+#' rlang data mask with [new_data_mask()].
+#'
 #' @param expr An expression to evaluate.
 #' @param data A data frame, or named list or vector. Alternatively, a
 #'   data mask created with [as_data_mask()] or [new_data_mask()].
@@ -121,19 +126,25 @@ delayedAssign(".data", as_data_pronoun(list()))
 #'
 #' These functions let you construct a tidy eval data mask manually.
 #' They are meant for developers of tidy eval interfaces rather than
-#' for end users. Most of the time you can just call [eval_tidy()]
-#' with user data and the data mask will be constructed automatically.
+#' for end users.
+#'
+#'
+#' @section Why build a data mask?:
+#'
+#' Most of the time you can just call [eval_tidy()] with a list or a
+#' data frame and the data mask will be constructed automatically.
 #' There are three main use cases for manual creation of data masks:
 #'
 #' * When [eval_tidy()] is called with the same data in a tight loop.
-#'   Tidy eval data masks are a bit expensive to build so it is best
-#'   to construct it once and reuse it the other times for optimal
-#'   performance.
+#'   Because there is some overhead to creating tidy eval data masks,
+#'   constructing the mask once and reusing it for subsequent
+#'   evaluations may improve performance.
 #'
-#' * When several expressions should be evaluated in the same
+#' * When several expressions should be evaluated in the exact same
 #'   environment because a quoted expression might create new objects
 #'   that can be referred in other quoted expressions evaluated at a
-#'   later time.
+#'   later time. One example of this is `tibble::lst()` where new
+#'   columns can refer to previous ones.
 #'
 #' * When your data mask requires special features. For instance the
 #'   data frame columns in dplyr data masks are implemented with
@@ -142,42 +153,62 @@ delayedAssign(".data", as_data_pronoun(list()))
 #'
 #' @section Building your own data mask:
 #'
-#' Creating a data mask for [base::eval()] is a simple matter of
-#' creating an environment containing masking objects that has the
-#' user context as its parent. `eval()` automates this task when you
-#' supply data as the second argument. However, a tidy eval data mask also
-#' needs to enable support of [quosures][quotation] and [data
-#' pronouns][tidyeval-data]. These functions allow manual construction
-#' of tidy eval data masks:
+#' Unlike [base::eval()] which takes any kind of environments as data
+#' mask, [eval_tidy()] has specific requirements in order to support
+#' [quosures][quotation]. For this reason you can't supply bare
+#' environments.
 #'
-#' * `as_data_mask()` transforms a data frame, named vector or
-#'   environment to a data mask. If an environment, its ancestry is
-#'   ignored. It automatically installs a data pronoun.
+#' There are two ways of constructing an rlang data mask manually:
+#'
+#' * `as_data_mask()` transforms a list or data frame to a data mask.
+#'   It automatically installs the data pronoun [`.data`][.data].
 #'
 #' * `new_data_mask()` is a bare bones data mask constructor for
 #'   environments. You can supply a bottom and a top environment in
-#'   case your data mask comprises multiple environments.
+#'   case your data mask comprises multiple environments (see section
+#'   below).
 #'
 #'   Unlike `as_data_mask()` it does not install the `.data` pronoun
 #'   so you need to provide one yourself. You can provide a pronoun
 #'   constructed with `as_data_pronoun()` or your own pronoun class.
 #'
-#' - `as_data_pronoun()` constructs a tidy eval data pronoun that
-#'   gives more useful error messages than regular data frames or
-#'   lists, i.e. when an object does not exist or if an user tries to
-#'   overwrite an object.
+#' Once you have built a data mask, simply pass it to [eval_tidy()] as
+#' the `data` argument. You can repeat this as many times as
+#' needed. Note that any objects created there (perhaps because of a
+#' call to `<-`) will persist in subsequent evaluations.
 #'
-#' To use a data mask, just supply it to [eval_tidy()] as the `data`
-#' argument. You can repeat this as many times as needed. Note that
-#' any objects created there (perhaps because of a call to `<-`) will
-#' persist in subsequent evaluations:
 #'
+#' @section Top and bottom of data mask:
+#'
+#' In some cases you'll need several levels in your data mask. One
+#' good reason is when you include functions in the mask. It's a good
+#' idea to keep data objects one level lower than function objects, so
+#' that the former cannot override the definitions of the latter (see
+#' examples).
+#'
+#' In that case, set up all your environments and keep track of the
+#' bottom child and the top parent. You'll need to pass both to
+#' `new_data_mask()`.
+#'
+#' Note that the parent of the top environment is completely
+#' undetermined, you shouldn't expect it to remain the same at all
+#' times. This parent is replaced during evaluation by [eval_tidy()]
+#' to one of the following environments:
+#'
+#' * The default environment passed as the `env` argument of `eval_tidy()`.
+#' * The environment of the current quosure being evaluated, if applicable.
+#'
+#' Consequently, all masking data should be contained between the
+#' bottom and top environment of the data mask.
 #'
 #' @section Life cycle:
 #'
 #' All these functions are now stable.
 #'
 #' **rlang 0.3.0**
+#'
+#' Passing environments to `as_data_mask()` is deprecated. Please
+#' build a data mask with `new_data_mask()`.
 #'
 #' The `parent` argument no longer has any effect. The parent of the
 #' data mask is determined from either:
@@ -264,14 +295,6 @@ delayedAssign(".data", as_data_pronoun(list()))
 #'
 #' # Now we can reference the values with the pronouns:
 #' eval_tidy(quote(.fns$c(.data$a, .data$b, .data$c)), data = mask)
-#'
-#'
-#' # Passing a data mask built with an explicit `top` and `bottom` is
-#' # not the same as passing a simple environment to `eval_tidy()`. In
-#' # the latter case, the ancestry of the environment is entirely
-#' # ignored. The following does not work because `+` is defined in an
-#' # upper level:
-#' try(eval_tidy(quote(a + b), data = bottom))
 as_data_mask <- function(data, parent = NULL) {
   if (!is_null(parent)) {
     id <- "rlang::as_data_mask() - parent argument"
