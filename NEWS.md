@@ -1,6 +1,8 @@
 
 # rlang 0.2.2.9000
 
+* `is_string()` now returns `FALSE` for `NA_character_`.
+
 * Calling `UQ()` and `UQS()` with the rlang namespace qualifier is
   deprecated as of rlang 0.3.0. Just use the unqualified forms
   instead:

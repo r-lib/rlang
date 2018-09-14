@@ -148,7 +148,9 @@ is_scalar_raw <- function(x) {
 }
 #' @export
 #' @rdname scalar-type-predicates
-is_string <- is_scalar_character
+is_string <- function(x, encoding = NULL) {
+  is_character(x, encoding = encoding, n = 1L) && !is.na(x)
+}
 #' @export
 #' @rdname scalar-type-predicates
 is_scalar_bytes <- is_scalar_raw

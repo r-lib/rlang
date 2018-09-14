@@ -71,3 +71,7 @@ test_that("vector pokers fail if parameters are not integerish", {
   expect_error(vec_poke_range(x, 2L, y, 2.5, 4L), "integerish")
   expect_error(vec_poke_range(x, 2L, y, 2L, 4.5), "integerish")
 })
+
+test_that("is_string() returns FALSE for `NA`", {
+  expect_false(is_string(na_chr))
+})
