@@ -403,3 +403,44 @@ test_that("No backtrace is displayed with top-level active bindings", {
   env_bind_fns(current_env(), foo = function() abort("msg"))
   expect_error(foo, "^msg$")
 })
+
+test_that("Invalid on_error option resets itself", {
+  with_options(
+    rlang__backtrace_on_error = NA,
+    {
+      expect_warning(tryCatch(abort("foo"), error = identity), "Invalid")
+      expect_null(peek_option("rlang__backtrace_on_error"))
+    }
+  )
+})
+
+test_that("on_error option can be tweaked", {
+  skip_on_os("windows")
+
+  scoped_options(
+    rlang_trace_top_env = current_env(),
+    rlang_trace_format_srcrefs = FALSE
+  )
+
+  f <- function() tryCatch(g())
+  g <- function() h()
+  h <- function() abort("The error message")
+  msg <- function() cat(conditionMessage(catch_cnd(f())))
+
+  expect_known_output(file = test_path("test-on-error-message-options.txt"), {
+    cat_line("", ">>> Default:", "")
+    with_options(rlang__backtrace_on_error = NULL, msg())
+
+    cat_line("", "", "", ">>> Reminder:", "")
+    with_options(rlang__backtrace_on_error = "reminder", msg())
+
+    cat_line("", "", "", ">>> Branch:", "")
+    with_options(rlang__backtrace_on_error = "branch", msg())
+
+    cat_line("", "", "", ">>> Collapsed:", "")
+    with_options(rlang__backtrace_on_error = "collapse", msg())
+
+    cat_line("", "", "", ">>> Full:", "")
+    with_options(rlang__backtrace_on_error = "full", msg())
+  })
+})

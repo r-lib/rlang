@@ -1,0 +1,72 @@
+
+>>> Default:
+
+The error message
+Backtrace:
+ ─expect_known_output(...)
+ ─msg()
+ ─f()
+ ─g()
+ ─h()
+
+
+>>> Reminder:
+
+The error message
+Call `rlang::last_error()` to see a backtrace
+
+
+>>> Branch:
+
+The error message
+Backtrace:
+ ─expect_known_output(...)
+ ─msg()
+ ─f()
+ ─g()
+ ─h()
+
+
+>>> Collapsed:
+
+The error message
+Backtrace:
+█
+├─[ expect_known_output(...) ] with 5 more calls
+├─[ with_options(...) ]
+└─msg()
+  ├─[ cat(...) ]
+  ├─[ conditionMessage(...) ]
+  ├─[ catch_cnd(...) ] with 5 more calls
+  └─f()
+    ├─[ tryCatch(...) ] with 1 more call
+    └─g()
+      └─h()
+
+
+>>> Full:
+
+The error message
+Backtrace:
+█
+├─expect_known_output(...)
+│ ├─append(act, eval_with_output(object, print = print, width = width))
+│ └─eval_with_output(object, print = print, width = width)
+│   ├─withr::with_output_sink(temp, withVisible(code))
+│   │ └─force(code)
+│   └─withVisible(code)
+├─with_options(rlang__backtrace_on_error = "full", msg())
+└─msg()
+  ├─cat(conditionMessage(catch_cnd(f())))
+  ├─conditionMessage(catch_cnd(f()))
+  ├─catch_cnd(f())
+  │ ├─tryCatch(...)
+  │ │ └─tryCatchList(expr, classes, parentenv, handlers)
+  │ │   └─tryCatchOne(expr, names, parentenv, handlers[[1L]])
+  │ │     └─doTryCatch(return(expr), name, parentenv, handler)
+  │ └─force(expr)
+  └─f()
+    ├─tryCatch(g())
+    │ └─tryCatchList(expr, classes, parentenv, handlers)
+    └─g()
+      └─h()

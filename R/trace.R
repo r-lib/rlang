@@ -169,7 +169,8 @@ format.rlang_trace <- function(x,
 
 trace_format <- function(trace, max_frames, dir, srcrefs) {
   if (!is_null(max_frames)) {
-    abort("`max_frames` is currently only supported with `simplify = \"branch\"`")
+    msg <- "`max_frames` is currently only supported with `simplify = \"branch\"`"
+    stop(msg, call. = FALSE)
   }
 
   tree <- trace_as_tree(trace, dir = dir, srcrefs = srcrefs)

@@ -263,6 +263,16 @@ cnd_call <- function(call) {
 #' simplified backtrace of the last error by calling [last_error()]
 #' and a full backtrace with `summary(last_error())`.
 #'
+#' You can also display a backtrace with the error message by setting
+#' the experimental option `rlang__backtrace_on_error`. It supports the
+#' following values:
+#'
+#' * `"reminder"`: Invite users to call `rlang::last_error()` to see a
+#'   backtrace.
+#' * `"branch"`: Display a simplified backtrace.
+#' * `"collapse"`: Display a collapsed backtrace tree.
+#' * `"full"`: Display a full backtrace tree.
+#'
 #'
 #' @section Mufflable conditions:
 #'
@@ -627,32 +637,61 @@ summary.rlang_error <- function(object, ...) {
 conditionMessage.rlang_error <- function(c) {
   last_error_env$cnd <- c
 
-  lines <- c$message
-  trace <- format(c$trace, simplify = "branch", max_frames = 10L)
+  message <- c$message
 
   parents <- chr()
-  while(is_condition(c$parent)) {
+  while (is_condition(c$parent)) {
     c <- c$parent
     parents <- chr(parents, c$message)
   }
 
   if (length(parents)) {
     parents <- cli_branch(parents)
-    lines <- paste_line(lines,
+    message <- paste_line(message,
       "Parents:",
       parents
     )
   }
 
+  show_trace <- peek_option("rlang__backtrace_on_error") %||% "branch"
+  if (is_null(show_trace)) {
+    return(message)
+  }
+
+  if (!is_string(show_trace) || !show_trace %in% c("reminder", "branch", "collapse", "full")) {
+    options(rlang__backtrace_on_error = NULL)
+    warn("Invalid `rlang__backtrace_on_error` option (resetting to `NULL`)")
+    return(message)
+  }
+
+  if (show_trace == "reminder") {
+    reminder <- silver("Call `rlang::last_error()` to see a backtrace")
+    message <- paste_line(message, reminder)
+    return(message)
+  }
+
+  if (show_trace == "branch") {
+    max_frames <- 10L
+  } else {
+    max_frames <- NULL
+  }
+
+  if (show_trace == "full") {
+    simplify <- "none"
+  } else {
+    simplify  <- show_trace
+  }
+  trace <- format(c$trace, simplify = simplify, max_frames = max_frames)
+
   if (length(trace)) {
-    lines <- paste_line(
-      lines,
+    message <- paste_line(
+      message,
       "Backtrace:",
       trace
     )
   }
 
-  lines
+  message
 }
 
 #' Signal deprecation

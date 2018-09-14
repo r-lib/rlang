@@ -63,6 +63,17 @@ and produces cleaner error messages.
 A backtrace is always saved into error objects. You can print a
 simplified backtrace of the last error by calling \code{\link[=last_error]{last_error()}}
 and a full backtrace with \code{summary(last_error())}.
+
+You can also display a backtrace with the error message by setting
+the experimental option \code{rlang__backtrace_on_error}. It supports the
+following values:
+\itemize{
+\item \code{"reminder"}: Invite users to call \code{rlang::last_error()} to see a
+backtrace.
+\item \code{"branch"}: Display a simplified backtrace.
+\item \code{"collapse"}: Display a collapsed backtrace tree.
+\item \code{"full"}: Display a full backtrace tree.
+}
 }
 
 \section{Mufflable conditions}{
