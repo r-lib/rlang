@@ -19,7 +19,7 @@ Collapsed:
   └─C(.)
     └─f()
 
-Trail:
+Branch:
  ─F(NA %>% C())
  ─C(.)
  ─f()

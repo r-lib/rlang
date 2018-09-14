@@ -17,7 +17,7 @@ Collapsed:
 └─[ g(NULL %>% f()) %>% h() ] with 7 more calls
   └─h(.)
 
-Trail:
+Branch:
  ─f(g(NULL %>% f()) %>% h())
  ─g(NULL %>% f())
  ─h(.)

@@ -59,7 +59,7 @@ test_that("can print tree with collapsed branches", {
   )
 })
 
-test_that("trace_simplify_trail() extracts last branch", {
+test_that("trace_simplify_branch() extracts last branch", {
   e <- environment()
   j <- function(i) k(i)
   k <- function(i) l(i)
@@ -68,15 +68,15 @@ test_that("trace_simplify_trail() extracts last branch", {
 
   x1 <- j(1)
   expect_length(x1, 6)
-  expect_length(trace_simplify_trail(x1), 3)
+  expect_length(trace_simplify_branch(x1), 3)
 
   x2 <- j(2)
   expect_length(x2, 6)
-  expect_length(trace_simplify_trail(x2), 2)
+  expect_length(trace_simplify_branch(x2), 2)
 
   x3 <- j(3)
   expect_length(x2, 6)
-  expect_length(trace_simplify_trail(x3), 1)
+  expect_length(trace_simplify_branch(x3), 1)
 })
 
 test_that("integerish indices are allowed", {
@@ -147,7 +147,7 @@ test_that("recursive frames are rewired to the global env", {
   expect_known_trace_output(trace, file = "test-trace-recursive.txt")
 })
 
-test_that("long backtrails are truncated", {
+test_that("long backtrace branches are truncated", {
   skip_on_os("windows")
 
   e <- current_env()
@@ -159,15 +159,15 @@ test_that("long backtrails are truncated", {
   }
   trace <- f(10)
 
-  expect_known_output(file = test_path("test-trace-truncate-trail.txt"), {
+  expect_known_output(file = test_path("test-trace-truncate-backtrace-branch.txt"), {
     cat("Full:\n")
-    print(trace, simplify = "trail", srcrefs = FALSE)
+    print(trace, simplify = "branch", srcrefs = FALSE)
     cat("\n5 frames:\n")
-    print(trace, simplify = "trail", max_frames = 5, srcrefs = FALSE)
+    print(trace, simplify = "branch", max_frames = 5, srcrefs = FALSE)
     cat("\n2 frames:\n")
-    print(trace, simplify = "trail", max_frames = 2, srcrefs = FALSE)
+    print(trace, simplify = "branch", max_frames = 2, srcrefs = FALSE)
     cat("\n1 frame:\n")
-    print(trace, simplify = "trail", max_frames = 1, srcrefs = FALSE)
+    print(trace, simplify = "branch", max_frames = 1, srcrefs = FALSE)
   })
 
   expect_error(print(trace, simplify = "none", max_frames = 5), "currently only supported with")
@@ -254,8 +254,8 @@ test_that("children of collapsed frames are rechained to correct parent", {
     print(trace, simplify = "none", srcrefs = FALSE)
     cat("\nCollapsed:\n")
     print(trace, simplify = "collapse", srcrefs = FALSE)
-    cat("\nTrail:\n")
-    print(trace, simplify = "trail", srcrefs = FALSE)
+    cat("\nBranch:\n")
+    print(trace, simplify = "branch", srcrefs = FALSE)
   })
 })
 
@@ -338,7 +338,7 @@ test_that("calls before and after pipe are preserved", {
   expect_known_trace_output(trace, "test-trace-collapse-magrittr-before-after3.txt")
 })
 
-test_that("always keep very first frame as part of backtrail", {
+test_that("always keep very first frame as part of backtrace branch", {
   skip_on_os("windows")
 
   # Fake eval() call does not have same signature on 3.1
@@ -350,5 +350,5 @@ test_that("always keep very first frame as part of backtrail", {
   gen.default <- function(x) trace_back(e)
 
   trace <- gen()
-  expect_known_trace_output(trace, "test-trace-backtrail-first-frame.txt")
+  expect_known_trace_output(trace, "test-trace-backtrace-branch-first-frame.txt")
 })

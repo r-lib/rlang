@@ -17,6 +17,6 @@ Collapsed:
   └─C(.)
     └─f()
 
-Trail:
+Branch:
  ─C(.)
  ─f()

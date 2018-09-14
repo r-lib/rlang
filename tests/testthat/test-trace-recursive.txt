@@ -10,7 +10,7 @@ Collapsed:
 └─f()
   └─g()
 
-Trail:
+Branch:
  ─eval_tidy(quo(f()))
  ─f()
  ─g()

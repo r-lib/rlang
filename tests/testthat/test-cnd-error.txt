@@ -1,5 +1,5 @@
 Error message
-Backtrail:
+Backtrace:
  ─with_options(...)
  ─f()
  ─g()

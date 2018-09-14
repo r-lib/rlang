@@ -15,5 +15,5 @@ Collapsed:
 └─[ NA %>% T() ] with 7 more calls
   └─T(.)
 
-Trail:
+Branch:
  ─T(.)

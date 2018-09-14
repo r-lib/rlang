@@ -541,7 +541,7 @@ catch_cnd <- function(expr) {
 print.rlang_error <- function(x,
                               ...,
                               child = NULL,
-                              simplify = c("collapse", "trail", "none")) {
+                              simplify = c("collapse", "branch", "none")) {
   if (is_null(child)) {
     header <- "<error>"
   } else {
@@ -572,7 +572,7 @@ print.rlang_error <- function(x,
     }
   }
 
-  simplify <- arg_match(simplify, c("collapse", "trail", "none"))
+  simplify <- arg_match(simplify, c("collapse", "branch", "none"))
   print(trace, ..., simplify = simplify)
 
   if (!is_null(x$parent)) {
@@ -585,7 +585,7 @@ print.rlang_error <- function(x,
 #' @export
 conditionMessage.rlang_error <- function(c) {
   lines <- c$message
-  trace <- format(c$trace, simplify = "trail", max_frames = 10L)
+  trace <- format(c$trace, simplify = "branch", max_frames = 10L)
 
   parents <- chr()
   while(is_condition(c$parent)) {
@@ -604,7 +604,7 @@ conditionMessage.rlang_error <- function(c) {
   if (!is_null(trace)) {
     lines <- paste_line(
       lines,
-      "Backtrail:",
+      "Backtrace:",
       trace
     )
   }

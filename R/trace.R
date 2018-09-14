@@ -34,7 +34,7 @@
 #' # the direct sequence of calls that lead to `trace_back()`
 #' x <- try(identity(f()))
 #' x
-#' print(x, simplify = "trail")
+#' print(x, simplify = "branch")
 #'
 #' # With a little cunning you can also use it to capture the
 #' # tree from within a base NSE function
@@ -150,7 +150,7 @@ new_trace <- function(calls, parents, envs) {
 #' @export
 format.rlang_trace <- function(x,
                                ...,
-                               simplify = c("collapse", "trail", "none"),
+                               simplify = c("collapse", "branch", "none"),
                                max_frames = NULL,
                                dir = getwd(),
                                srcrefs = NULL) {
@@ -161,13 +161,13 @@ format.rlang_trace <- function(x,
   switch(arg_match(simplify),
     none = trace_format(x, max_frames, dir, srcrefs),
     collapse = trace_format_collapse(x, max_frames, dir, srcrefs),
-    trail = trace_format_trail(x, max_frames, dir, srcrefs)
+    branch = trace_format_trail(x, max_frames, dir, srcrefs)
   )
 }
 
 trace_format <- function(trace, max_frames, dir, srcrefs) {
   if (!is_null(max_frames)) {
-    abort("`max_frames` is currently only supported with `simplify = \"trail\"`")
+    abort("`max_frames` is currently only supported with `simplify = \"branch\"`")
   }
 
   tree <- trace_as_tree(trace, dir = dir, srcrefs = srcrefs)
@@ -178,7 +178,7 @@ trace_format_collapse <- function(trace, max_frames, dir, srcrefs) {
   trace_format(trace, max_frames, dir, srcrefs)
 }
 trace_format_trail <- function(trace, max_frames, dir, srcrefs) {
-  trace <- trace_simplify_trail(trace)
+  trace <- trace_simplify_branch(trace)
   trace <- trail_uncollapse_pipe(trace)
   tree <- trace_as_tree(trace, dir = dir, srcrefs = srcrefs)
 
@@ -248,7 +248,7 @@ cli_branch <- function(lines, max = NULL, style = NULL) {
 #' @export
 print.rlang_trace <- function(x,
                               ...,
-                              simplify = c("collapse", "trail", "none"),
+                              simplify = c("collapse", "branch", "none"),
                               max_frames = NULL,
                               dir = getwd(),
                               srcrefs = NULL) {
@@ -384,7 +384,7 @@ has_pipe_pointer <- function(x) {
   !is_null(attr(x, "pipe_pointer"))
 }
 
-# Assumes a backtrail with collapsed pipe
+# Assumes a backtrace branch with collapsed pipe
 trail_uncollapse_pipe <- function(trace) {
   while (idx <- detect_index(trace$calls, has_pipe_pointer)) {
     trace_before <- trace[seq2(1L, idx - 1L)]
@@ -415,7 +415,7 @@ trail_uncollapse_pipe <- function(trace) {
     pipe_envs <- rep(trace$envs[idx], pointer)
 
     # Add the number of uncollapsed frames to children's
-    # ancestry. This assumes a backtrail.
+    # ancestry. This assumes a backtrace branch.
     trace_after$parents <- trace_after$parents + pointer
 
     trace$calls <- c(trace_before$calls, pipe_calls, trace_after$calls)
@@ -426,7 +426,7 @@ trail_uncollapse_pipe <- function(trace) {
   trace
 }
 
-trace_simplify_trail <- function(trace) {
+trace_simplify_branch <- function(trace) {
   parents <- trace$parents
   path <- int()
   id <- length(parents)

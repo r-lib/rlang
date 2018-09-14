@@ -14,7 +14,7 @@ Collapsed:
   └─g()
     └─[ eval(...) ] with 1 more call
 
-Trail:
+Branch:
  ─f()
  ─g()
  ─[ eval(...) ] with 1 more call

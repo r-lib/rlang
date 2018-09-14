@@ -15,7 +15,7 @@ Collapsed:
 └─[ f(NULL) %>% g(list(.)) %>% h(3, ., list(.)) ] with 7 more calls
   └─h(3, ., list(.))
 
-Trail:
+Branch:
  ─f(NULL)
  ─g(., list(.))
  ─h(3, ., list(.))

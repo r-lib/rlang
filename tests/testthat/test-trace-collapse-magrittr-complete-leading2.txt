@@ -15,7 +15,7 @@ Collapsed:
 └─[ F(NA) %>% F() %>% T() ] with 7 more calls
   └─T(.)
 
-Trail:
+Branch:
  ─F(NA)
  ─F(.)
  ─T(.)

@@ -19,7 +19,7 @@ Collapsed:
     └─f()
       └─h()
 
-Trail:
+Branch:
  ─F(.)
  ─G(.)
  ─H(.)

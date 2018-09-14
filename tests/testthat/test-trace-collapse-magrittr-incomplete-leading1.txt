@@ -6,5 +6,5 @@ Collapsed:
 █
 └─T(NA)
 
-Trail:
+Branch:
  ─T(NA)

@@ -41,7 +41,7 @@ Collapsed:
   └─g()
     └─h()
 
-Trail:
+Branch:
 <error>
 * Message: "High-level message"
 * Class: `rlang_error`

@@ -5,7 +5,7 @@ expect_known_trace_output <- function(trace, file, dir, srcrefs = FALSE) {
     print(trace, simplify = "none", dir = dir, srcrefs = srcrefs)
     cat("\nCollapsed:\n")
     print(trace, simplify = "collapse", dir = dir, srcrefs = srcrefs)
-    cat("\nTrail:\n")
-    print(trace, simplify = "trail", dir = dir, srcrefs = srcrefs)
+    cat("\nBranch:\n")
+    print(trace, simplify = "branch", dir = dir, srcrefs = srcrefs)
   })
 }

@@ -43,7 +43,7 @@ try(identity(f()))
 # the direct sequence of calls that lead to `trace_back()`
 x <- try(identity(f()))
 x
-print(x, simplify = "trail")
+print(x, simplify = "branch")
 
 # With a little cunning you can also use it to capture the
 # tree from within a base NSE function
