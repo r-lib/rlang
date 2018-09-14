@@ -53,12 +53,15 @@ stored in the condition object and can be examined by handlers.
 kind that is signalled with \code{Ctrl-C}. It is currently not possible
 to create custom interrupt condition objects.
 }
-\section{Call trace}{
+\section{Backtrace}{
 
 
 Unlike \code{stop()} and \code{warning()}, these functions don't include call
 information by default. This saves you from typing \code{call. = FALSE}
 and produces cleaner error messages.
+
+A backtrace is always saved into error objects. You can print the
+backtrace of the last error by calling \code{\link[=last_error]{last_error()}}.
 }
 
 \section{Mufflable conditions}{
@@ -127,6 +130,11 @@ tryCatch(
     msg <- sprintf("Can't download `\%s`", file)
     abort(msg, parent = err)
 })
+
+# Unhandled errors are saved automatically by `abort()` and can be
+# retrieved with `last_error()`:
+abort("Saved error?")
+last_error()
 
 }
 }

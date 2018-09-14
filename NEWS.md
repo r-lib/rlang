@@ -1,6 +1,10 @@
 
 # rlang 0.2.2.9000
 
+* Unhandled errors thrown by `abort()` are now automatically saved and
+  can be retrieved with `rlang::last_error()`. The error prints with
+  its backtrace.
+
 * `is_string()` now returns `FALSE` for `NA_character_`.
 
 * Calling `UQ()` and `UQS()` with the rlang namespace qualifier is

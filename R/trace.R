@@ -501,6 +501,18 @@ trace_simplify_collapse <- function(trace) {
   trace[rev(path)]
 }
 
+
+#' Last `abort()` error
+#'
+#' This returns the last error thrown with [abort()]. The error is
+#' printed with a backtrace.
+#'
+#' @export
+last_error <- function() {
+  last_error_env$cnd
+}
+
+
 # Printing ----------------------------------------------------------------
 
 trace_as_tree <- function(x, dir = getwd(), srcrefs = NULL) {
