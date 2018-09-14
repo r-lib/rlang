@@ -245,6 +245,7 @@ test_that("error is printed with backtrace", {
   msg <- with_options(
     rlang_trace_format_srcrefs = FALSE,
     rlang_trace_top_env = current_env(),
+    rlang__backtrace_on_error = "branch",
     conditionMessage(catch_cnd(f()))
   )
 

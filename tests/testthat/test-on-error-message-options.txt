@@ -2,12 +2,6 @@
 >>> Default:
 
 The error message
-Backtrace:
- ─expect_known_output(...)
- ─msg()
- ─f()
- ─g()
- ─h()
 
 
 >>> Reminder:

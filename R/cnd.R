@@ -653,7 +653,7 @@ conditionMessage.rlang_error <- function(c) {
     )
   }
 
-  show_trace <- peek_option("rlang__backtrace_on_error") %||% "branch"
+  show_trace <- peek_option("rlang__backtrace_on_error")
   if (is_null(show_trace)) {
     return(message)
   }
