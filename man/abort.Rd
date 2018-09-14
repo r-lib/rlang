@@ -60,8 +60,9 @@ Unlike \code{stop()} and \code{warning()}, these functions don't include call
 information by default. This saves you from typing \code{call. = FALSE}
 and produces cleaner error messages.
 
-A backtrace is always saved into error objects. You can print the
-backtrace of the last error by calling \code{\link[=last_error]{last_error()}}.
+A backtrace is always saved into error objects. You can print a
+simplified backtrace of the last error by calling \code{\link[=last_error]{last_error()}}
+and a full backtrace with \code{summary(last_error())}.
 }
 
 \section{Mufflable conditions}{
@@ -132,9 +133,13 @@ tryCatch(
 })
 
 # Unhandled errors are saved automatically by `abort()` and can be
-# retrieved with `last_error()`:
+# retrieved with `last_error()`. The error prints with a simplified
+# backtrace:
 abort("Saved error?")
 last_error()
+
+# Use `summary()` to print the full backtrace and the condition fields:
+summary(last_error())
 
 }
 }
