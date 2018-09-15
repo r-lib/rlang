@@ -445,3 +445,9 @@ test_that("on_error option can be tweaked", {
     with_options(rlang__backtrace_on_error = "full", msg())
   })
 })
+
+test_that("format_onerror_backtrace handles empty traces", {
+  scoped_options(rlang__backtrace_on_error = "branch")
+  trace <- new_trace(list(), int(), chr())
+  expect_identical(format_onerror_backtrace(trace), chr())
+})

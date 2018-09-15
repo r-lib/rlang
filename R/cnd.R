@@ -647,27 +647,32 @@ conditionMessage.rlang_error <- function(c) {
 
   if (length(parents)) {
     parents <- cli_branch(parents)
-    message <- paste_line(message,
+    message <- paste_line(
+      message,
       "Parents:",
       parents
     )
   }
 
+  backtrace <- format_onerror_backtrace(c$trace)
+  paste_line(message, backtrace)
+}
+
+format_onerror_backtrace <- function(trace) {
   show_trace <- peek_option("rlang__backtrace_on_error")
   if (is_null(show_trace)) {
-    return(message)
+    return(NULL)
   }
 
   if (!is_string(show_trace) || !show_trace %in% c("reminder", "branch", "collapse", "full")) {
     options(rlang__backtrace_on_error = NULL)
     warn("Invalid `rlang__backtrace_on_error` option (resetting to `NULL`)")
-    return(message)
+    return(NULL)
   }
 
   if (show_trace == "reminder") {
     reminder <- silver("Call `rlang::last_error()` to see a backtrace")
-    message <- paste_line(message, reminder)
-    return(message)
+    return(reminder)
   }
 
   if (show_trace == "branch") {
@@ -675,23 +680,21 @@ conditionMessage.rlang_error <- function(c) {
   } else {
     max_frames <- NULL
   }
-
   if (show_trace == "full") {
     simplify <- "none"
   } else {
     simplify  <- show_trace
   }
-  trace <- format(c$trace, simplify = simplify, max_frames = max_frames)
+  backtrace_lines <- format(trace, simplify = simplify, max_frames = max_frames)
 
-  if (length(trace)) {
-    message <- paste_line(
-      message,
+  if (length(backtrace_lines)) {
+    backtrace_lines <- paste_line(
       "Backtrace:",
-      trace
+      backtrace_lines
     )
   }
 
-  message
+  backtrace_lines
 }
 
 #' Signal deprecation

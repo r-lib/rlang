@@ -156,10 +156,6 @@ format.rlang_trace <- function(x,
                                max_frames = NULL,
                                dir = getwd(),
                                srcrefs = NULL) {
-  if (trace_length(x) == 0) {
-    return(trace_root())
-  }
-
   switch(arg_match(simplify),
     none = trace_format(x, max_frames, dir, srcrefs),
     collapse = trace_format_collapse(x, max_frames, dir, srcrefs),
@@ -171,6 +167,9 @@ trace_format <- function(trace, max_frames, dir, srcrefs) {
   if (!is_null(max_frames)) {
     msg <- "`max_frames` is currently only supported with `simplify = \"branch\"`"
     stop(msg, call. = FALSE)
+  }
+  if (!trace_length(trace)) {
+    return(trace_root())
   }
 
   tree <- trace_as_tree(trace, dir = dir, srcrefs = srcrefs)
