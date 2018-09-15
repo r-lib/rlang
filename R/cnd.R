@@ -658,6 +658,51 @@ conditionMessage.rlang_error <- function(c) {
   paste_line(message, backtrace)
 }
 
+#' Display backtrace on error
+#'
+#' @description
+#'
+#' Errors thrown with [abort()] automatically save a backtrace that
+#' can be inspected by calling [last_error()]. Optionally, you can
+#' also display the backtrace alongside the error message by setting
+#' the experimental option `rlang__backtrace_on_error` to one of the
+#' following values:
+#'
+#' * `"reminder"`: Display a reminder that the backtrace can be
+#'   inspected by calling [rlang::last_error()].
+#' * `"branch"`: Display a simplified backtrace.
+#' * `"collapse"`: Display a collapsed backtrace tree.
+#' * `"full"`: Display the full backtrace tree.
+#'
+#'
+#' @section Promote base errors to rlang errors:
+#'
+#' Call `options(error = rlang:::add_backtrace)` to instrument base
+#' errors with rlang features. This handler does two things:
+#'
+#' * It saves the base error as an rlang object. This allows you to
+#'   call [last_error()] to print the backtrace or inspect its data.
+#'
+#' * It prints the backtrace for the current error according to the
+#'   [`rlang__backtrace_on_error`] option.
+#'
+#' This experimental handler is not exported because it is meant for
+#' interactive use only.
+#'
+#' @name rlang__backtrace_on_error
+#' @aliases add_backtrace
+#'
+#' @examples
+#' # Display a simplified backtrace on error for both base and rlang
+#' # errors:
+#'
+#' # options(
+#' #   rlang__backtrace_on_error = "branch",
+#' #   error = rlang:::add_backtrace
+#' # )
+#' # stop("foo")
+NULL
+
 format_onerror_backtrace <- function(trace) {
   show_trace <- peek_option("rlang__backtrace_on_error")
   if (is_null(show_trace)) {
@@ -695,6 +740,46 @@ format_onerror_backtrace <- function(trace) {
   }
 
   backtrace_lines
+}
+
+add_backtrace <- function() {
+  trace <- trace_back()
+  trace <- trace_subset(trace, -trace_length(trace))
+
+  stop_call <- sys.call(-1)
+  stop_frame <- sys.frame(-1)
+  cnd <- stop_frame$cond
+
+  # False for errors thrown from the C side
+  from_stop <- is_call(stop_call, "stop", ns = c("", "base"))
+
+  # No need to do anything for rlang errors
+  if (from_stop && inherits(cnd, "rlang_error")) {
+    return(NULL)
+  }
+
+  if (from_stop) {
+    if (is_null(cnd)) {
+      msg_call <- quote(.makeMessage(..., domain = domain))
+      msg <- eval_bare(msg_call, stop_frame)
+    } else {
+      msg <- cnd$message
+    }
+  } else {
+    msg <- "*Couldn't retrieve the error message*"
+  }
+
+  # Save a fake rlang error containing the backtrace
+  err <- error_cnd(message = msg, trace = trace, parent = cnd)
+  last_error_env$cnd <- err
+
+  # Print backtrace for current error
+  backtrace_lines <- format_onerror_backtrace(trace)
+  if (length(backtrace_lines)) {
+    cat_line(backtrace_lines)
+  }
+
+  NULL
 }
 
 #' Signal deprecation
