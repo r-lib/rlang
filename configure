@@ -15,6 +15,7 @@ then
         -e 's/^\\badgedefunct/\\strong{Defunct}/' \
         man/*.Rd
     rm -f man/*.bak
+    rm man/macros/*.Rd
 fi
 
 # Assume all Unix platforms have Rinterface.h
