@@ -432,7 +432,7 @@ env_get_list <- function(env = caller_env(), nms, inherit = FALSE, default) {
 #'
 #' @description
 #'
-#' \badgeexperimental
+#' \Sexpr[results=rd, stage=render]{rlang:::lifecycle("experimental")}
 #'
 #' `env_poke()` will assign or reassign a binding in `env` if `create`
 #' is `TRUE`. If `create` is `FALSE` and a binding does not already
@@ -558,7 +558,7 @@ env_names <- function(env) {
 #'
 #' @description
 #'
-#' \badgeexperimental
+#' \Sexpr[results=rd, stage=render]{rlang:::lifecycle("experimental")}
 #'
 #' Locked environment bindings trigger an error when an attempt is
 #' made to redefine the binding.
@@ -618,7 +618,7 @@ env_binding_are_locked <- function(env, nms = NULL) {
 
 #' What kind of environment binding?
 #'
-#' \badgeexperimental
+#' \Sexpr[results=rd, stage=render]{rlang:::lifecycle("experimental")}
 #'
 #' @inheritParams env_binding_lock
 #'

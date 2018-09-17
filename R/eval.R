@@ -175,7 +175,8 @@ locally <- function(expr) {
 #'
 #'
 #' @section Life cycle:
-#' \badgesoftdeprecated
+#'
+#' \Sexpr[results=rd, stage=render]{rlang:::lifecycle("soft-deprecated")}
 #'
 #' `invoke()` is soft-deprecated in favour of [exec()]. Now that we
 #' understand better the interaction between unquoting and dots

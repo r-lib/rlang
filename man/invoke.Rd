@@ -38,7 +38,8 @@ noise.
 }
 \section{Life cycle}{
 
-\badgesoftdeprecated
+
+\Sexpr[results=rd, stage=render]{rlang:::lifecycle("soft-deprecated")}
 
 \code{invoke()} is soft-deprecated in favour of \code{\link[=exec]{exec()}}. Now that we
 understand better the interaction between unquoting and dots

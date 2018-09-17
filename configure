@@ -2,22 +2,6 @@
 
 rm -f src/config.h
 
-if ! tools/hasmacros.sh
-then
-    echo "Deleting badge macros because R is too old"
-    sed -i.bak \
-        -e 's/^\\badgeexperimental/\\strong{Experimental}/' \
-        -e 's/^\\badgematuring/\\strong{Maturing}/' \
-        -e 's/^\\badgestable/\\strong{Stable}/' \
-        -e 's/^\\badgequestioning/\\strong{Questioning}/' \
-        -e 's/^\\badgesoftdeprecated/\\strong{Soft-deprecated}/' \
-        -e 's/^\\badgedeprecated/\\strong{Deprecated}/' \
-        -e 's/^\\badgedefunct/\\strong{Defunct}/' \
-        man/*.Rd
-    rm -f man/*.bak
-    rm man/macros/*.Rd
-fi
-
 # Assume all Unix platforms have Rinterface.h
 echo '#define RLANG_HAS_RINTERFACE_H 1' >> src/config.h
 

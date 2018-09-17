@@ -24,7 +24,7 @@ long as \code{nms} and named after it. \code{env_binding_lock()} and
 \code{env_binding_are_unlocked()} invisibly.
 }
 \description{
-\badgeexperimental
+\Sexpr[results=rd, stage=render]{rlang:::lifecycle("experimental")}
 
 Locked environment bindings trigger an error when an attempt is
 made to redefine the binding.
