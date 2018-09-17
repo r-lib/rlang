@@ -19,7 +19,8 @@ lifecycle_img <- function(stage, url) {
     experimental = ,
     maturing = ,
     stable = ,
-    questioning =
+    questioning = ,
+    archived =
       sprintf(
         "\\out{<a href='%s'><img src='%s' alt='%s lifecycle'></a>}",
         url,
@@ -215,27 +216,36 @@ upcase1 <- function(x) {
 #'
 #' **Defunct as of rlang 0.3.0:**
 #'
-#' * [cnd()], [error_cnd()], [warning_cnd()] and [message_cnd()]:
-#'   `.msg` => `message`.
 #' * [cnd_signal()]: `.msg` and `.call`.
-#' * `cnd_inform()`, `cnd_warn()` and `cnd_abort()`
+#'
 #' * [UQE()]
 #' * [eval_tidy_()]
 #'
 #'
 #' **Renamed in rlang 0.3.0:**
 #'
-#' * `inplace()` => [calling()]. The `muffle` argument of `inplace()`
-#'   has not been implemented in `calling()` and is now defunct.
-#' * `rst_muffle()` => [cnd_muffle()]
+#' * [cnd()], [error_cnd()], [warning_cnd()] and [message_cnd()]:
+#'   `.msg` => `message`.
 #'
 #'
-#' **Renamed in rlang 0.2.0**
+#' @section Archived:
+#'
+#' \Sexpr[results=rd, stage=render]{rlang:::lifecycle("archived")}
+#'
+#' These functions were entirely removed from the package. You will
+#' find them in the commit history and previous releases.
+#'
+#' **Archived in rlang 0.3.0:**
+#'
+#' * `cnd_inform()`, `cnd_warn()` and `cnd_abort()`
 #'
 #' * `new_cnd()` => [cnd()]
 #' * `cnd_message()` => [message_cnd()]
 #' * `cnd_warning()` => [warning_cnd()]
 #' * `cnd_error()` => [error_cnd()]
+#' * `rst_muffle()` => [cnd_muffle()]
+#' * `inplace()` => [calling()]. The `muffle` argument of `inplace()`
+#'   has not been implemented in `calling()` and is now defunct.
 #'
 #' @name lifecycle
 NULL
