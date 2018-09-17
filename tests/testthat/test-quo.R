@@ -128,6 +128,10 @@ test_that("quosures are spliced", {
   expect_identical(quo_text(q), "foo(bar(baz))")
 })
 
+test_that("expr_text() interprets unicode tags (#611)", {
+  expect_equal(expr_text(quote(`<U+006F>`)), "o")
+})
+
 test_that("formulas are not spliced", {
   expect_identical(quo_text(quo(~foo(~bar))), "~foo(~bar)")
 })
