@@ -345,6 +345,8 @@ fn_env <- function(fn) {
 #'
 #' @description
 #'
+#' \Sexpr[results=rd, stage=render]{rlang:::lifecycle("stable")}
+#'
 #' * `as_function()` transform objects to functions. It fetches
 #'   functions by name if supplied a string or transforms
 #'   [quosures][quotation] to a proper function.

@@ -12,6 +12,8 @@ eval_bare(expr, env = parent.frame())
 \item{env}{The environment in which to evaluate the expression.}
 }
 \description{
+\Sexpr[results=rd, stage=render]{rlang:::lifecycle("stable")}
+
 \code{eval_bare()} is a lower-level version of function \code{\link[base:eval]{base::eval()}}.
 Technically, it is a simple wrapper around the C function
 \code{Rf_eval()}. You generally don't need to use \code{eval_bare()} instead
@@ -50,12 +52,6 @@ The flip side of the semantics of \code{eval_bare()} is that it can't
 evaluate \code{break} or \code{next} expressions even if called within a
 loop.
 }
-\section{Life cycle}{
-
-
-\code{eval_bare()} is stable.
-}
-
 \examples{
 # eval_bare() works just like base::eval() but you have to create
 # the evaluation environment yourself:

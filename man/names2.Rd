@@ -10,6 +10,8 @@ names2(x)
 \item{x}{A vector.}
 }
 \description{
+\Sexpr[results=rd, stage=render]{rlang:::lifecycle("stable")}
+
 This names getter always returns a character vector, even when an
 object does not have a \code{names} attribute. In this case, it returns
 a vector of empty names \code{""}. It also standardises missing names to

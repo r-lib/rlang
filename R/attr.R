@@ -192,6 +192,10 @@ has_name <- function(x, name) {
 
 #' Set names of a vector
 #'
+#' @description
+#'
+#' \Sexpr[results=rd, stage=render]{rlang:::lifecycle("stable")}
+#'
 #' This is equivalent to [stats::setNames()], with more features and
 #' stricter argument checking.
 #'
@@ -258,6 +262,10 @@ set_names_impl <- function(x, mold, nm, ...) {
 }
 
 #' Get names of a vector
+#'
+#' @description
+#'
+#' \Sexpr[results=rd, stage=render]{rlang:::lifecycle("stable")}
 #'
 #' This names getter always returns a character vector, even when an
 #' object does not have a `names` attribute. In this case, it returns

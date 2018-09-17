@@ -22,6 +22,8 @@ to the function.
 }}
 }
 \description{
+\Sexpr[results=rd, stage=render]{rlang:::lifecycle("stable")}
+
 This is equivalent to \code{\link[stats:setNames]{stats::setNames()}}, with more features and
 stricter argument checking.
 }

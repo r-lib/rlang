@@ -65,6 +65,8 @@ last argument is ignored if it is empty.}
 \code{:=} syntax supports \code{!!} unquoting on the LHS.}
 }
 \description{
+\Sexpr[results=rd, stage=render]{rlang:::lifecycle("stable")}
+
 Quotation is a mechanism by which an expression supplied as
 argument is captured by a function. Instead of seeing the value of
 the argument, the function sees the recipe (the R code) to make
@@ -166,12 +168,6 @@ that are unquoted).
 
 See the \link{quasiquotation} help topic for more about this as well as
 \href{https://adv-r.hadley.nz/quasiquotation.html}{the chapter in Advanced R}.
-}
-
-\section{Life cycle}{
-
-
-All the quotation functions mentioned here are stable.
 }
 
 \examples{

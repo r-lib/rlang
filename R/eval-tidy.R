@@ -2,6 +2,8 @@
 #'
 #' @description
 #'
+#' \Sexpr[results=rd, stage=render]{rlang:::lifecycle("stable")}
+#'
 #' `eval_tidy()` is a variant of [base::eval()] that powers the tidy
 #' evaluation framework. Like `eval()` it accepts user data as
 #' argument. If supplied, it evaluates its input `expr` in a [data
@@ -18,8 +20,6 @@
 #'
 #'
 #' @section Life cycle:
-#'
-#' `eval_tidy()` is stable.
 #'
 #' **rlang 0.3.0**
 #'
@@ -117,6 +117,8 @@ delayedAssign(".data", as_data_pronoun(list()))
 #'
 #' @description
 #'
+#' \Sexpr[results=rd, stage=render]{rlang:::lifecycle("stable")}
+#'
 #' A data mask is an environment (or possibly multiple environments
 #' forming an ancestry) containing user-supplied objects. Objects in
 #' the mask have precedence over objects in the environment (i.e. they
@@ -202,8 +204,6 @@ delayedAssign(".data", as_data_pronoun(list()))
 #' bottom and top environment of the data mask.
 #'
 #' @section Life cycle:
-#'
-#' All these functions are now stable.
 #'
 #' **rlang 0.3.0**
 #'

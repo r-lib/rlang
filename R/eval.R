@@ -1,5 +1,9 @@
 #' Evaluate an expression in an environment
 #'
+#' @description
+#'
+#' \Sexpr[results=rd, stage=render]{rlang:::lifecycle("stable")}
+#'
 #' `eval_bare()` is a lower-level version of function [base::eval()].
 #' Technically, it is a simple wrapper around the C function
 #' `Rf_eval()`. You generally don't need to use `eval_bare()` instead
@@ -7,6 +11,8 @@
 #' (calls such as `return()`, `on.exit()` or `parent.frame()`) more
 #' consistently when you pass an enviroment of a frame on the call
 #' stack.
+#'
+#' @details
 #'
 #' These semantics are possible because `eval_bare()` creates only one
 #' frame on the call stack whereas `eval()` creates two frames, the
@@ -37,10 +43,6 @@
 #' evaluate `break` or `next` expressions even if called within a
 #' loop.
 #'
-#'
-#' @section Life cycle:
-#'
-#' `eval_bare()` is stable.
 #'
 #' @param expr An expression to evaluate.
 #' @param env The environment in which to evaluate the expression.

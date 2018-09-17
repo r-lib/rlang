@@ -34,6 +34,8 @@ is only one environment deep, \code{top} should be the same as
 A data mask that you can supply to \code{\link[=eval_tidy]{eval_tidy()}}.
 }
 \description{
+\Sexpr[results=rd, stage=render]{rlang:::lifecycle("stable")}
+
 A data mask is an environment (or possibly multiple environments
 forming an ancestry) containing user-supplied objects. Objects in
 the mask have precedence over objects in the environment (i.e. they
@@ -123,8 +125,6 @@ bottom and top environment of the data mask.
 
 \section{Life cycle}{
 
-
-All these functions are now stable.
 
 \strong{rlang 0.3.0}
 

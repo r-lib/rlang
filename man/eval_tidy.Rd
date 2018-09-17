@@ -17,6 +17,8 @@ environment is not applicable for quosures because they have
 their own environments.}
 }
 \description{
+\Sexpr[results=rd, stage=render]{rlang:::lifecycle("stable")}
+
 \code{eval_tidy()} is a variant of \code{\link[base:eval]{base::eval()}} that powers the tidy
 evaluation framework. Like \code{eval()} it accepts user data as
 argument. If supplied, it evaluates its input \code{expr} in a \link[=as_data_mask]{data mask}. In addition \code{eval_tidy()} supports:
@@ -32,8 +34,6 @@ values and throw errors if you try to access non-existent values.
 }
 \section{Life cycle}{
 
-
-\code{eval_tidy()} is stable.
 
 \strong{rlang 0.3.0}
 

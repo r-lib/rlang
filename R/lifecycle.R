@@ -45,8 +45,6 @@ upcase1 <- function(x) {
 }
 
 
-# \Sexpr[results=rd, stage=render]{rlang:::lifecycle("maturing")}
-
 #' Life cycle of the rlang package
 #'
 #' @description

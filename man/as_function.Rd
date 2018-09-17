@@ -22,6 +22,7 @@ create very compact anonymous functions with up to two inputs.}
 is a string.}
 }
 \description{
+\Sexpr[results=rd, stage=render]{rlang:::lifecycle("stable")}
 \itemize{
 \item \code{as_function()} transform objects to functions. It fetches
 functions by name if supplied a string or transforms

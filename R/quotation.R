@@ -2,6 +2,8 @@
 #'
 #' @description
 #'
+#' \Sexpr[results=rd, stage=render]{rlang:::lifecycle("stable")}
+#'
 #' Quotation is a mechanism by which an expression supplied as
 #' argument is captured by a function. Instead of seeing the value of
 #' the argument, the function sees the recipe (the R code) to make
@@ -102,11 +104,6 @@
 #'
 #' See the [quasiquotation] help topic for more about this as well as
 #' [the chapter in Advanced R](https://adv-r.hadley.nz/quasiquotation.html).
-#'
-#'
-#' @section Life cycle:
-#'
-#' All the quotation functions mentioned here are stable.
 #'
 #'
 #' @inheritParams tidy-dots
