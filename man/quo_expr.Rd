@@ -17,6 +17,8 @@ is likely to cause subtle bugs and it is good practice to warn
 the user about it.}
 }
 \description{
+\Sexpr[results=rd, stage=render]{rlang:::lifecycle("soft-deprecated")}
+
 This function is soft-deprecated, please use \code{\link[=quo_squash]{quo_squash()}} instead.
 }
 \keyword{internal}

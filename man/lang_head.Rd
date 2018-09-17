@@ -13,6 +13,8 @@ lang_tail(lang)
 \item{lang}{A call.}
 }
 \description{
+\Sexpr[results=rd, stage=render]{rlang:::lifecycle("soft-deprecated")}
+
 As of rlang 0.2.0 these functions are retired (soft-deprecated for
 now) because they are low level accessors that are rarely needed
 for end users.

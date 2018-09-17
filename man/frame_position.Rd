@@ -18,6 +18,8 @@ bottom of the evaluation stack), or from the current frame (the
 top of the evaluation stack).}
 }
 \description{
+\Sexpr[results=rd, stage=render]{rlang:::lifecycle("questioning")}
+
 The frame position on the stack can be computed by counting frames
 from the global frame (the bottom of the stack, the default) or
 from the current frame (the top of the stack).

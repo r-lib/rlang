@@ -11,6 +11,10 @@ signal_soft_deprecated <- function(msg) {
 
 #' Parse text into a quosure
 #'
+#' @description
+#'
+#' \Sexpr[results=rd, stage=render]{rlang:::lifecycle("soft-deprecated")}
+#'
 #' These functions were soft-deprecated and renamed to [parse_quo()]
 #' and [parse_quos()] in rlang 0.2.0. This is for consistency with the
 #' convention that suffixes indicating return types are not
@@ -38,6 +42,10 @@ parse_quosures <- function(x, env = caller_env()) {
 
 #' Squash a quosure
 #'
+#' @description
+#'
+#' \Sexpr[results=rd, stage=render]{rlang:::lifecycle("soft-deprecated")}
+#'
 #' This function is soft-deprecated, please use [quo_squash()] instead.
 #'
 #' @inheritParams quo_squash
@@ -52,6 +60,10 @@ quo_expr <- function(quo, warn = FALSE) {
 }
 
 #' Create a call
+#'
+#' @description
+#'
+#' \Sexpr[results=rd, stage=render]{rlang:::lifecycle("soft-deprecated")}
 #'
 #' These functions are soft-deprecated, please use [call2()] and
 #' [new_call()] instead.
@@ -78,6 +90,10 @@ new_language <- function(head, tail = NULL) {
 }
 
 #' Is object a call?
+#'
+#' @description
+#'
+#' \Sexpr[results=rd, stage=render]{rlang:::lifecycle("soft-deprecated")}
 #'
 #' These functions are soft-deprecated, please use [is_call()] and its
 #' `n` argument instead.
@@ -122,6 +138,10 @@ quo_is_lang <- function(quo) {
 }
 
 #' Manipulate or access a call
+#'
+#' @description
+#'
+#' \Sexpr[results=rd, stage=render]{rlang:::lifecycle("soft-deprecated")}
 #'
 #' These functions are soft-deprecated, please use [call_modify()],
 #' [call_standardise()], or [call_fn()] instead.
@@ -187,6 +207,10 @@ lang_args_names <- function(lang) {
 
 #' Return the head or tail of a call
 #'
+#' @description
+#'
+#' \Sexpr[results=rd, stage=render]{rlang:::lifecycle("soft-deprecated")}
+#'
 #' As of rlang 0.2.0 these functions are retired (soft-deprecated for
 #' now) because they are low level accessors that are rarely needed
 #' for end users.
@@ -209,6 +233,10 @@ lang_tail <- function(lang) {
 }
 
 #' Create an overscope
+#'
+#' @description
+#'
+#' \Sexpr[results=rd, stage=render]{rlang:::lifecycle("soft-deprecated")}
 #'
 #' These functions have been soft-deprecated in rlang 0.2.0. Please
 #' use [as_data_mask()] and [new_data_mask()] instead. We no longer
@@ -247,6 +275,10 @@ overscope_clean <- function(overscope) {
 
 #' Tidy evaluation in a custom environment
 #'
+#' @description
+#'
+#' \Sexpr[results=rd, stage=render]{rlang:::lifecycle("defunct")}
+#'
 #' This function is defunct as of rlang 0.3.0.
 #'
 #' @inheritParams eval_tidy
@@ -258,6 +290,10 @@ eval_tidy_ <- function(expr, bottom, top = NULL, env = caller_env()) {
   abort_defunct("`eval_tidy_()` is defunct as of rlang 0.3.0. Use `eval_tidy()` instead.")
 }
 #' Evaluate next quosure in a data mask
+#'
+#' @description
+#'
+#' \Sexpr[results=rd, stage=render]{rlang:::lifecycle("soft-deprecated")}
 #'
 #' `overscope_eval_next()` is soft-deprecated as of rlang
 #' 0.2.0. Please use `eval_tidy()` to which you can now supply an
@@ -283,6 +319,10 @@ overscope_eval_next <- function(overscope, quo, env = base_env()) {
 
 
 #' Create a dictionary
+#'
+#' @description
+#'
+#' \Sexpr[results=rd, stage=render]{rlang:::lifecycle("soft-deprecated")}
 #'
 #' The dictionary class was soft-deprecated in rlang 0.2.0. It was
 #' trying to be too general and did not prove useful. Please use
@@ -363,6 +403,10 @@ is_dictionary <- function(x) {
 
 #' Coerce to an environment
 #'
+#' @description
+#'
+#' \Sexpr[results=rd, stage=render]{rlang:::lifecycle("soft-deprecated")}
+#'
 #' This function is soft-deprecated as it was renamed to
 #' [as_environment()] in rlang 0.2.0.
 #'
@@ -374,6 +418,10 @@ as_env <- function(x, parent = NULL) {
 }
 
 #' Mutate node components
+#'
+#' @description
+#'
+#' \Sexpr[results=rd, stage=render]{rlang:::lifecycle("soft-deprecated")}
 #'
 #' These functions were soft-deprecated and renamed with `node_poke_`
 #' prefix in rlang 0.2.0. This change follows a new naming convention
@@ -426,6 +474,10 @@ mut_node_tag <- function(x, newtag) {
 
 #' Is an object an expression?
 #'
+#' @description
+#'
+#' \Sexpr[results=rd, stage=render]{rlang:::lifecycle("soft-deprecated")}
+#'
 #' This function was soft-deprecated and renamed to [is_expression()]
 #' in rlang 0.2.0. This is for consistency with other type predicates
 #' which are not abbreviated.
@@ -442,6 +494,10 @@ is_expr <- function(x) {
 }
 
 #' Is an object an environment?
+#'
+#' @description
+#'
+#' \Sexpr[results=rd, stage=render]{rlang:::lifecycle("soft-deprecated")}
 #'
 #' These functions were soft-deprecated and renamed to
 #' [is_environment()] and [is_bare_environment()] in rlang 0.2.0. This
@@ -473,6 +529,10 @@ is_bare_env <- function(x) {
 
 #' Test for or coerce to quosure-like objects
 #'
+#' @description
+#'
+#' \Sexpr[results=rd, stage=render]{rlang:::lifecycle("deprecated")}
+#'
 #' These functions are deprecated as of rlang 0.2.0 because they make
 #' the assumption that quosures are a subtype of formula, which we are
 #' now considering to be an implementation detail.
@@ -483,13 +543,13 @@ is_bare_env <- function(x) {
 #' @keywords internal
 #' @export
 is_quosureish <- function(x, scoped = NULL) {
-  warn("`is_quosureish()` is deprecated as of rlang 0.2.0")
+  warn_deprecated_once("`is_quosureish()` is deprecated as of rlang 0.2.0")
   is_formula(x, scoped = scoped, lhs = FALSE)
 }
 #' @rdname is_quosureish
 #' @export
 as_quosureish <- function(x, env = caller_env()) {
-  warn("`as_quosureish()` is deprecated as of rlang 0.2.0")
+  warn_deprecated_once("`as_quosureish()` is deprecated as of rlang 0.2.0")
   if (is_quosureish(x)) {
     if (!is_environment(get_env(x))) {
       set_env(x, env)
@@ -503,6 +563,10 @@ as_quosureish <- function(x, env = caller_env()) {
 }
 
 #' Retired vector construction by length
+#'
+#' @description
+#'
+#' \Sexpr[results=rd, stage=render]{rlang:::lifecycle("soft-deprecated")}
 #'
 #' These functions were soft-deprecated and renamed with `new_` prefix
 #' in rlang 0.2.0. This is for consistency with other non-variadic

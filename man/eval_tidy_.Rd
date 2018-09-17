@@ -22,6 +22,8 @@ environment is not applicable for quosures because they have
 their own environments.}
 }
 \description{
+\Sexpr[results=rd, stage=render]{rlang:::lifecycle("defunct")}
+
 This function is defunct as of rlang 0.3.0.
 }
 \keyword{internal}

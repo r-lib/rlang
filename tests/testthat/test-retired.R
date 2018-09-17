@@ -113,9 +113,11 @@ test_that("is_expr() forwards to is_expression()", {
 })
 
 test_that("is_quosureish() and as_quosureish() still work", {
-  expect_warning(expect_true(is_quosureish(~foo)), "deprecated")
-  expect_warning(expect_false(is_quosureish(~foo, scoped = FALSE)), "deprecated")
-  expect_warning(expect_identical(as_quosureish(quote(foo)), quo(foo)), "deprecated")
+  expect_warning(is_quosureish(~foo), "deprecated")
+  expect_warning(as_quosureish(~foo), "deprecated")
+  expect_true(is_quosureish(~foo))
+  expect_false(is_quosureish(~foo, scoped = FALSE))
+  expect_identical(as_quosureish(quote(foo)), quo(foo))
 })
 
 test_that("node() still works", {

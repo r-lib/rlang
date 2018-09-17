@@ -16,5 +16,5 @@ is_call_stack(x)
 \item{x}{An object to test}
 }
 \description{
-Is object a stack?
+\Sexpr[results=rd, stage=render]{rlang:::lifecycle("questioning")}
 }

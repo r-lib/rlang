@@ -27,13 +27,10 @@ of \code{"trailing"}, \code{"none"}, \code{"all"}. If \code{"trailing"}, only th
 last argument is ignored if it is empty.}
 }
 \description{
+\Sexpr[results=rd, stage=render]{rlang:::lifecycle("questioning")}
 \itemize{
 \item \code{splice} marks an object to be spliced. It is equivalent to using
 \code{!!!} in a function with \link[=tidy-dots]{tidy dots semantics}.
-}
-}
-\details{
-\itemize{
 \item \code{dots_splice()} is like \code{\link[=dots_list]{dots_list()}} but automatically splices
 list inputs.
 }

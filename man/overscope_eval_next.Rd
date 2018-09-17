@@ -18,6 +18,8 @@ scoped quosure. This is the \link[=base_env]{base environment} by
 default.}
 }
 \description{
+\Sexpr[results=rd, stage=render]{rlang:::lifecycle("soft-deprecated")}
+
 \code{overscope_eval_next()} is soft-deprecated as of rlang
 0.2.0. Please use \code{eval_tidy()} to which you can now supply an
 overscope.

@@ -30,6 +30,8 @@ is only one environment deep, \code{top} should be the same as
 \item{overscope}{A data mask.}
 }
 \description{
+\Sexpr[results=rd, stage=render]{rlang:::lifecycle("soft-deprecated")}
+
 These functions have been soft-deprecated in rlang 0.2.0. Please
 use \code{\link[=as_data_mask]{as_data_mask()}} and \code{\link[=new_data_mask]{new_data_mask()}} instead. We no longer
 require the mask to be cleaned up so \code{overscope_clean()} does not

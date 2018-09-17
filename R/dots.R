@@ -126,6 +126,10 @@ dots_split <- function(...,
 
 #' Splice lists
 #'
+#' @description
+#'
+#' \Sexpr[results=rd, stage=render]{rlang:::lifecycle("questioning")}
+#'
 #' - `splice` marks an object to be spliced. It is equivalent to using
 #'   `!!!` in a function with [tidy dots semantics][tidy-dots].
 #'

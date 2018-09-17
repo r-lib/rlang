@@ -145,7 +145,8 @@ upcase1 <- function(x) {
 #'
 #' * [get_env()]: The `env` argument no longer has a default and must be supplied
 #' * [cnd_signal()]: The `.mufflable` argument no longer has any effect
-#' * [invoke()]: use the simpler `exec()` instead.
+#'
+#' * [invoke()]: Use the simpler [exec()] instead.
 #' * [set_attrs()], [mut_attrs()]
 #'
 #'

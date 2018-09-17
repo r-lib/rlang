@@ -19,6 +19,8 @@ is not inspected.}
 \item{env}{The original context of the context expression.}
 }
 \description{
+\Sexpr[results=rd, stage=render]{rlang:::lifecycle("deprecated")}
+
 These functions are deprecated as of rlang 0.2.0 because they make
 the assumption that quosures are a subtype of formula, which we are
 now considering to be an implementation detail.

@@ -94,7 +94,7 @@ Since rlang 0.2.0:
 \itemize{
 \item \code{\link[=get_env]{get_env()}}: The \code{env} argument no longer has a default and must be supplied
 \item \code{\link[=cnd_signal]{cnd_signal()}}: The \code{.mufflable} argument no longer has any effect
-\item \code{\link[=invoke]{invoke()}}: use the simpler \code{exec()} instead.
+\item \code{\link[=invoke]{invoke()}}: Use the simpler \code{\link[=exec]{exec()}} instead.
 \item \code{\link[=set_attrs]{set_attrs()}}, \code{\link[=mut_attrs]{mut_attrs()}}
 }
 

@@ -10,5 +10,6 @@ is_frame(x)
 \item{x}{Object to test}
 }
 \description{
-Is object a frame?
+\Sexpr[results=rd, stage=render]{rlang:::lifecycle("questioning")}
 }
+\keyword{internal}

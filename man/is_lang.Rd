@@ -40,6 +40,8 @@ has to match at least one of them, otherwise \code{is_call()} returns
 \item{quo}{A quosure to test.}
 }
 \description{
+\Sexpr[results=rd, stage=render]{rlang:::lifecycle("soft-deprecated")}
+
 These functions are soft-deprecated, please use \code{\link[=is_call]{is_call()}} and its
 \code{n} argument instead.
 }

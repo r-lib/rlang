@@ -30,6 +30,10 @@ current_fn <- function() {
 
 #' Call stack information
 #'
+#' @description
+#'
+#' \Sexpr[results=rd, stage=render]{rlang:::lifecycle("questioning")}
+#'
 #' The `eval_` and `call_` families of functions provide a replacement
 #' for the base R functions prefixed with `sys.` (which are all about
 #' the context stack), as well as for [parent.frame()] (which is the
@@ -38,6 +42,8 @@ current_fn <- function() {
 #' terms of execution history but due to lazy evaluation it is
 #' potentially nonlinear in terms of call history. The call stack
 #' history, on the other hand, is homogenous.
+#'
+#' @details
 #'
 #' `ctxt_frame()` and `call_frame()` return a `frame` object
 #' containing the following fields: `expr` and `env` (call expression
@@ -171,7 +177,10 @@ print.frame <- function(x, ...) {
 }
 #' Is object a frame?
 #'
+#' \Sexpr[results=rd, stage=render]{rlang:::lifecycle("questioning")}
+#'
 #' @param x Object to test
+#' @keywords internal
 #' @export
 is_frame <- function(x) {
   inherits(x, "frame")
@@ -439,6 +448,9 @@ frame_clean_eval <- function(frame) {
 }
 
 #' Is object a stack?
+#'
+#' \Sexpr[results=rd, stage=render]{rlang:::lifecycle("questioning")}
+#'
 #' @param x An object to test
 #' @export
 is_stack <- function(x) inherits(x, "stack")
@@ -467,9 +479,15 @@ sys_frame <- function(n) {
 
 #' Find the position or distance of a frame on the evaluation stack
 #'
+#' @description
+#'
+#' \Sexpr[results=rd, stage=render]{rlang:::lifecycle("questioning")}
+#'
 #' The frame position on the stack can be computed by counting frames
 #' from the global frame (the bottom of the stack, the default) or
 #' from the current frame (the top of the stack).
+#'
+#' @details
 #'
 #' While this function returns the position of the frame on the
 #' evaluation stack, it can safely be called with intervening frames
@@ -560,6 +578,10 @@ frame_position_current <- function(frame, stack = NULL,
 
 
 #' Trim top call layers from the evaluation stack
+#'
+#' @description
+#'
+#' \Sexpr[results=rd, stage=render]{rlang:::lifecycle("questioning")}
 #'
 #' [ctxt_stack()] can be tricky to use in real code because all
 #' intervening frames are returned with the stack, including those at

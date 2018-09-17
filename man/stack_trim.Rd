@@ -14,6 +14,8 @@ the top of the stack. In other words, the number of layers of
 intervening frames to trim.}
 }
 \description{
+\Sexpr[results=rd, stage=render]{rlang:::lifecycle("questioning")}
+
 \code{\link[=ctxt_stack]{ctxt_stack()}} can be tricky to use in real code because all
 intervening frames are returned with the stack, including those at
 \code{ctxt_stack()} own call site. \code{stack_trim()} makes it easy to
