@@ -128,16 +128,7 @@ test_that("quosures are spliced", {
   expect_identical(quo_text(q), "foo(bar(baz))")
 })
 
-test_that("quo_text() uses as_string encoding repair (#611)", {
-  old <- Sys.getlocale("LC_CTYPE")
-  on.exit(Sys.setlocale("LC_CTYPE", old))
-  Sys.setlocale("LC_CTYPE", "C")
-
-  s <- sym("\u4e2d")
-  expect_equal(quo_text(s), as_string(s))
-})
-
-test_that("expr_text() interprets unicode notation", {
+test_that("expr_text() interprets unicode tags (#611)", {
   expect_equal(expr_text(quote(`<U+006F>`)), "o")
 })
 
