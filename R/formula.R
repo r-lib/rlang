@@ -166,7 +166,7 @@ f_env <- function(f) {
   if (!is_formula(x)) {
     abort("`f` must be a formula")
   }
-  set_attrs(x, .Environment = value)
+  structure(x, .Environment = value)
 }
 
 #' Turn RHS of formula into a string or label

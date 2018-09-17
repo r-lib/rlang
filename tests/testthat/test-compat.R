@@ -59,7 +59,7 @@ test_that("compat_lazy() handles missing arguments", {
 })
 
 test_that("compat_lazy_dots() takes lazy objects", {
-  lazy <- set_attrs(list(expr = quote(foo), env = empty_env()), class = "lazy")
+  lazy <- structure(list(expr = quote(foo), env = empty_env()), class = "lazy")
   expect_identical(compat_lazy_dots(lazy), named_list(new_quosure(quote(foo), empty_env())))
 })
 

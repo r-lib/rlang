@@ -447,7 +447,7 @@ op_as_closure <- function(prim_nm) {
     `@` = ,
     `$` = function(.x, .i) {
       op <- sym(prim_nm)
-      expr <- expr((!!op)(.x, !! quo_expr(enexpr(.i), warn = TRUE)))
+      expr <- expr((!!op)(.x, !!quo_squash(enexpr(.i), warn = TRUE)))
       eval_bare(expr)
     },
     `[[<-` = function(.x, .i, .value) {
@@ -537,7 +537,7 @@ op_as_closure <- function(prim_nm) {
 #' @param fn A closure.
 #' @return An object of class `c("fn", "function")`.
 #' @examples
-#' fn <- set_attrs(function() "foo", attribute = "foobar")
+#' fn <- structure(function() "foo", attribute = "foobar")
 #' print(fn)
 #'
 #' # The `fn` object doesn't print with attributes:
@@ -545,11 +545,11 @@ op_as_closure <- function(prim_nm) {
 #' print(fn)
 new_fn <- function(fn) {
   stopifnot(is_closure(fn))
-  set_attrs(fn, class = c("fn", "function"))
+  structure(fn, class = c("fn", "function"))
 }
 print.fn <- function(x, ...) {
   srcref <- attr(x, "srcref")
-  x <- set_attrs(x, NULL)
-  x <- set_attrs(x, srcref = srcref)
+  attributes(x) <- NULL
+  x <- structure(x, srcref = srcref)
   print(x)
 }

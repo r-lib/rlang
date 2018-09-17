@@ -668,3 +668,86 @@ node <- function(car, cdr = NULL) {
   ))
   new_node(car, cdr)
 }
+
+#' Add attributes to an object
+#'
+#' @description
+#'
+#' \Sexpr[results=rd, stage=render]{rlang:::lifecycle("experimental")}
+#' \Sexpr[results=rd, stage=render]{rlang:::lifecycle("soft-deprecated")}
+#'
+#' `set_attrs()` adds, changes, or zaps attributes of objects. Pass a
+#' single unnamed `NULL` argument to zap all attributes. For
+#' [uncopyable][is_copyable] types, use `mut_attrs()`.
+#'
+#' @details
+#'
+#' Unlike [structure()], these setters have no special handling of
+#' internal attributes names like `.Dim`, `.Dimnames` or `.Names`.
+#'
+#'
+#' @section Life cycle:
+#'
+#' These functions are soft-deprecated since rlang 0.3.0.
+#'
+#' @param .x An object to decorate with attributes.
+#' @param ... A list of named attributes. These have [explicit
+#'   splicing semantics][tidy-dots]. Pass a single unnamed `NULL` argument to
+#'   zap all attributes from `.x`.
+#' @return `set_attrs()` returns a modified [shallow copy][duplicate]
+#'   of `.x`. `mut_attrs()` invisibly returns the original `.x`
+#'   modified in place.
+#'
+#' @keywords internal
+#' @export
+#' @examples
+#' set_attrs(letters, names = 1:26, class = "my_chr")
+#'
+#' # Splice a list of attributes:
+#' attrs <- list(attr = "attr", names = 1:26, class = "my_chr")
+#' obj <- set_attrs(letters, splice(attrs))
+#' obj
+#'
+#' # Zap attributes by passing a single unnamed NULL argument:
+#' set_attrs(obj, NULL)
+#' set_attrs(obj, !!! list(NULL))
+#'
+#' # Note that set_attrs() never modifies objects in place:
+#' obj
+#'
+#' # For uncopyable types, mut_attrs() lets you modify in place:
+#' env <- env()
+#' mut_attrs(env, foo = "bar")
+#' env
+set_attrs <- function(.x, ...) {
+  signal_soft_deprecated("`set_attrs()` is soft-deprecated as of rlang 0.3.0")
+
+  if (!is_copyable(.x)) {
+    abort("`.x` is uncopyable: use `mut_attrs()` to change attributes in place")
+  }
+  set_attrs_impl(.x, ...)
+}
+#' @rdname set_attrs
+#' @export
+mut_attrs <- function(.x, ...) {
+  signal_soft_deprecated("`set_attrs()` is soft-deprecated as of rlang 0.3.0")
+
+  if (is_copyable(.x)) {
+    abort("`.x` is copyable: use `set_attrs()` to change attributes without side effect")
+  }
+  invisible(set_attrs_impl(.x, ...))
+}
+set_attrs_impl <- function(.x, ...) {
+  attrs <- dots_list(...)
+
+  # If passed a single unnamed NULL, zap attributes
+  if (identical(attrs, set_attrs_null)) {
+    attributes(.x) <- NULL
+  } else {
+    attributes(.x) <- c(attributes(.x), attrs)
+  }
+
+  .x
+}
+set_attrs_null <- list(NULL)
+names(set_attrs_null) <- ""

@@ -368,7 +368,7 @@ new_data_mask <- function(bottom, top = bottom, parent = NULL) {
   }
 
   dict$src[[i]] <- value
-  set_attrs(dict, class = class(x))
+  structure(dict, class = class(x))
 }
 #' @export
 `[[<-.rlang_data_pronoun` <- function(x, i, value) {
@@ -382,7 +382,7 @@ new_data_mask <- function(bottom, top = bottom, parent = NULL) {
   }
 
   dict$src[[i]] <- value
-  set_attrs(dict, class = class(x))
+  structure(dict, class = class(x))
 }
 
 #' @export

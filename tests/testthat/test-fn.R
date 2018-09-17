@@ -116,7 +116,7 @@ test_that("fn_fmls<- and fn_fmls_names<- handle primitive functions", {
 })
 
 test_that("assignment methods preserve attributes", {
-  orig <- set_attrs(function(foo) NULL, foo = "foo", bar = "bar")
+  orig <- structure(function(foo) NULL, foo = "foo", bar = "bar")
 
   fn <- orig
   fn_fmls(fn) <- list(arg = 1)
@@ -134,7 +134,7 @@ test_that("assignment methods preserve attributes", {
 })
 
 test_that("print method for `fn` discards attributes", {
-  fn <- set_attrs(function() NULL, foo = "foo")
+  fn <- structure(function() NULL, foo = "foo")
   fn <- new_fn(fn)
 
   temp <- file()

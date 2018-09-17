@@ -21,7 +21,7 @@ test_that("lists are squashed", {
 
 test_that("squash_if() handles custom predicate", {
   is_foo <- function(x) inherits(x, "foo") || is_bare_list(x)
-  foo <- set_attrs(list("bar"), class = "foo")
+  foo <- structure(list("bar"), class = "foo")
   x <- list(1, list(foo, list(foo, 100)))
   expect_identical(squash_if(x, is_foo), list(1, "bar", "bar", 100))
 })
@@ -57,7 +57,7 @@ test_that("is_spliced_bare() is TRUE for bare lists", {
 })
 
 test_that("flatten_if() handles custom predicate", {
-  obj <- set_attrs(list(1:2), class = "foo")
+  obj <- structure(list(1:2), class = "foo")
   x <- list(obj, splice(obj), unclass(obj))
 
   expect_identical(flatten_if(x), list(obj, obj[[1]], unclass(obj)))
@@ -68,7 +68,7 @@ test_that("flatten_if() handles custom predicate", {
 })
 
 test_that("flatten_if() handles external pointers", {
-  obj <- set_attrs(list(1:2), class = "foo")
+  obj <- structure(list(1:2), class = "foo")
   x <- list(obj, splice(obj), unclass(obj))
 
   expect_identical(flatten_if(x, rlang_test_is_spliceable), list(obj[[1]], splice(obj), unclass(obj)))

@@ -50,7 +50,7 @@ test_that("new_quosure() checks inputs", {
 
 test_that("new_quosure() produces expected internal structure", {
   quo <- new_quosure(quote(abc))
-  expect_identical(set_attrs(~abc, class = c("quosure", "formula")), quo)
+  expect_identical(structure(~abc, class = c("quosure", "formula")), quo)
 })
 
 test_that("new_quosure() double wraps", {

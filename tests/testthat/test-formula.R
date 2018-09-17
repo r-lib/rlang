@@ -64,31 +64,31 @@ test_that("can modify environment", {
 test_that("setting RHS preserves attributes", {
   attrs <- list(foo = "bar", class = "baz")
 
-  f <- set_attrs(~foo, !!! attrs)
+  f <- structure2(~foo, !!!attrs)
   f_rhs(f) <- quote(bar)
 
-  expect_identical(f, set_attrs(~bar, !!! attrs))
+  expect_identical(f, structure2(~bar, !!!attrs))
 })
 
 test_that("setting LHS preserves attributes", {
   attrs <- list(foo = "bar", class = "baz")
 
-  f <- set_attrs(~foo, !!! attrs)
+  f <- structure2(~foo, !!!attrs)
   f_lhs(f) <- quote(bar)
 
-  expect_identical(f, set_attrs(bar ~ foo, !!! attrs))
+  expect_identical(f, structure2(bar ~ foo, !!!attrs))
 
   f_lhs(f) <- quote(baz)
-  expect_identical(f, set_attrs(baz ~ foo, !!! attrs))
+  expect_identical(f, structure2(baz ~ foo, !!!attrs))
 })
 
 test_that("setting environment preserves attributes", {
   attrs <- list(foo = "bar", class = "baz")
   env <- env()
 
-  f <- set_attrs(~foo, !!! attrs)
+  f <- structure2(~foo, !!!attrs)
   f_env(f) <- env
-  expect_identical(f, set_attrs(~foo, !!! attrs, .Environment = env))
+  expect_identical(f, structure2(~foo, !!!attrs, .Environment = env))
 })
 
 
