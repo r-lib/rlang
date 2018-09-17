@@ -178,6 +178,9 @@ expr_name <- function(expr) {
 #' @param width Width of each line.
 #' @param nlines Maximum number of lines to extract.
 expr_text <- function(expr, width = 60L, nlines = Inf) {
+  if (is_symbol(expr)) {
+    return(as_string(expr))
+  }
   str <- deparse(expr, width.cutoff = width)
 
   if (length(str) > nlines) {
