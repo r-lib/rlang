@@ -113,11 +113,11 @@ upcase1 <- function(x) {
 #' * [prepend()], [modify()]
 #'
 #'
-#' @section Questioning functions:
+#' @section Questioning stage:
 #'
 #' \Sexpr[results=rd, stage=render]{rlang:::lifecycle("questioning")}
 #'
-#' Since rlang 0.3.0:
+#' **In the questioning stage as of rlang 0.3.0**
 #'
 #' * [child_env()]
 #' * [type_of()], [switch_type()], [coerce_type()]
@@ -125,7 +125,7 @@ upcase1 <- function(x) {
 #' * [lang_type_of()], [switch_lang()], [coerce_lang()]
 #'
 #'
-#' Since rlang 0.2.0:
+#' **In the questioning stage as of rlang 0.2.0**
 #'
 #' * [UQ()], [UQS()]
 #'
@@ -142,29 +142,22 @@ upcase1 <- function(x) {
 #'
 #' \Sexpr[results=rd, stage=render]{rlang:::lifecycle("soft-deprecated")}
 #'
-#' **Retired in rlang 0.3.0**
+#' **Soft-deprecated as of rlang 0.3.0**
 #'
 #' * [get_env()]: The `env` argument no longer has a default and must be supplied
 #' * [cnd_signal()]: The `.mufflable` argument no longer has any effect
-#'
 #' * [invoke()]: Use the simpler [exec()] instead.
 #' * [set_attrs()], [mut_attrs()]
-#'
-#'
-#' **Renamed in rlang 0.3.0**
 #'
 #' * [cnd_signal()]: `.cnd` => `cnd`
 #'
 #'
-#' **Retired in rlang 0.2.0:**
+#' **Soft-deprecated as of rlang 0.2.0:**
 #'
 #' * [overscope_clean()]
 #' * [overscope_eval_next()] => [eval_tidy()]
 #'
 #' * [lang_head()], [lang_tail()]
-#'
-#'
-#' **Renamed in rlang 0.2.0:**
 #'
 #' * [quo_expr()] => [quo_squash()]
 #' * [parse_quosure()] => [parse_quo()]
@@ -198,14 +191,12 @@ upcase1 <- function(x) {
 #' * [as_data_mask()]: `parent` argument
 #' * [new_data_mask()]: `parent` argument
 #'
-#' **Renamed in rlang 0.3.0**
-#'
 #' * [env_tail()]: `sentinel` => `last`
 #' * [abort()], [warn()], [inform()]: `msg`, `type` and `call` =>
 #'   `.msg`, `.type` and `.call`
 #'
 #'
-#' **Retired in rlang 0.2.0:**
+#' **Deprecated as of rlang 0.2.0:**
 #'
 #' * [is_quosureish()], [as_quosureish()]
 #'
@@ -220,9 +211,6 @@ upcase1 <- function(x) {
 #'
 #' * [UQE()]
 #' * [eval_tidy_()]
-#'
-#'
-#' **Renamed in rlang 0.3.0:**
 #'
 #' * [cnd()], [error_cnd()], [warning_cnd()] and [message_cnd()]:
 #'   `.msg` => `message`.

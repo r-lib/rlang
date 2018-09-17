@@ -61,12 +61,12 @@ changes.
 }
 }
 
-\section{Questioning functions}{
+\section{Questioning stage}{
 
 
 \Sexpr[results=rd, stage=render]{rlang:::lifecycle("questioning")}
 
-Since rlang 0.3.0:
+\strong{In the questioning stage as of rlang 0.3.0}
 \itemize{
 \item \code{\link[=child_env]{child_env()}}
 \item \code{\link[=type_of]{type_of()}}, \code{\link[=switch_type]{switch_type()}}, \code{\link[=coerce_type]{coerce_type()}}
@@ -74,7 +74,7 @@ Since rlang 0.3.0:
 \item \code{\link[=lang_type_of]{lang_type_of()}}, \code{\link[=switch_lang]{switch_lang()}}, \code{\link[=coerce_lang]{coerce_lang()}}
 }
 
-Since rlang 0.2.0:
+\strong{In the questioning stage as of rlang 0.2.0}
 \itemize{
 \item \code{\link[=UQ]{UQ()}}, \code{\link[=UQS]{UQS()}}
 \item \code{\link[=dots_splice]{dots_splice()}}, \code{\link[=splice]{splice()}}
@@ -90,28 +90,20 @@ Since rlang 0.2.0:
 
 \Sexpr[results=rd, stage=render]{rlang:::lifecycle("soft-deprecated")}
 
-\strong{Retired in rlang 0.3.0}
+\strong{Soft-deprecated as of rlang 0.3.0}
 \itemize{
 \item \code{\link[=get_env]{get_env()}}: The \code{env} argument no longer has a default and must be supplied
 \item \code{\link[=cnd_signal]{cnd_signal()}}: The \code{.mufflable} argument no longer has any effect
 \item \code{\link[=invoke]{invoke()}}: Use the simpler \code{\link[=exec]{exec()}} instead.
 \item \code{\link[=set_attrs]{set_attrs()}}, \code{\link[=mut_attrs]{mut_attrs()}}
-}
-
-\strong{Renamed in rlang 0.3.0}
-\itemize{
 \item \code{\link[=cnd_signal]{cnd_signal()}}: \code{.cnd} => \code{cnd}
 }
 
-\strong{Retired in rlang 0.2.0:}
+\strong{Soft-deprecated as of rlang 0.2.0:}
 \itemize{
 \item \code{\link[=overscope_clean]{overscope_clean()}}
 \item \code{\link[=overscope_eval_next]{overscope_eval_next()}} => \code{\link[=eval_tidy]{eval_tidy()}}
 \item \code{\link[=lang_head]{lang_head()}}, \code{\link[=lang_tail]{lang_tail()}}
-}
-
-\strong{Renamed in rlang 0.2.0:}
-\itemize{
 \item \code{\link[=quo_expr]{quo_expr()}} => \code{\link[=quo_squash]{quo_squash()}}
 \item \code{\link[=parse_quosure]{parse_quosure()}} => \code{\link[=parse_quo]{parse_quo()}}
 \item \code{\link[=parse_quosures]{parse_quosures()}} => \code{\link[=parse_quos]{parse_quos()}}
@@ -143,16 +135,12 @@ Since rlang 0.2.0:
 \itemize{
 \item \code{\link[=as_data_mask]{as_data_mask()}}: \code{parent} argument
 \item \code{\link[=new_data_mask]{new_data_mask()}}: \code{parent} argument
-}
-
-\strong{Renamed in rlang 0.3.0}
-\itemize{
 \item \code{\link[=env_tail]{env_tail()}}: \code{sentinel} => \code{last}
 \item \code{\link[=abort]{abort()}}, \code{\link[=warn]{warn()}}, \code{\link[=inform]{inform()}}: \code{msg}, \code{type} and \code{call} =>
 \code{.msg}, \code{.type} and \code{.call}
 }
 
-\strong{Retired in rlang 0.2.0:}
+\strong{Deprecated as of rlang 0.2.0:}
 \itemize{
 \item \code{\link[=is_quosureish]{is_quosureish()}}, \code{\link[=as_quosureish]{as_quosureish()}}
 }
@@ -168,10 +156,6 @@ Since rlang 0.2.0:
 \item \code{\link[=cnd_signal]{cnd_signal()}}: \code{.msg} and \code{.call}.
 \item \code{\link[=UQE]{UQE()}}
 \item \code{\link[=eval_tidy_]{eval_tidy_()}}
-}
-
-\strong{Renamed in rlang 0.3.0:}
-\itemize{
 \item \code{\link[=cnd]{cnd()}}, \code{\link[=error_cnd]{error_cnd()}}, \code{\link[=warning_cnd]{warning_cnd()}} and \code{\link[=message_cnd]{message_cnd()}}:
 \code{.msg} => \code{message}.
 }
