@@ -446,7 +446,7 @@ is_empty_env <- function(env) {
 #' identical(get_env(f, default), default)
 get_env <- function(env, default = NULL) {
   if (missing(env)) {
-    # This is soft-deprecated
+    signal_soft_deprecation("The `env` argument of `get_env()` must now be supplied")
     env <- caller_env()
   }
 
