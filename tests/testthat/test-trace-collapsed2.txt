@@ -1,12 +1,12 @@
 Full:
 █
 └─f()
-  ├─eval(quote(eval(quote(g())))) testthat/test-trace.R:50:7
+  ├─eval(quote(eval(quote(g())))) testthat/test-trace.R:52:7
   │ └─eval(quote(eval(quote(g()))))
   ├─eval(quote(g()))
   │ └─eval(quote(g()))
   └─g()
-    ├─tryCatch(eval(quote(h())), foo = identity, bar = identity) testthat/test-trace.R:51:7
+    ├─tryCatch(eval(quote(h())), foo = identity, bar = identity) testthat/test-trace.R:53:7
     │ └─tryCatchList(expr, classes, parentenv, handlers)
     │   ├─tryCatchOne(...)
     │   │ └─doTryCatch(return(expr), name, parentenv, handler)
@@ -20,10 +20,10 @@ Full:
 Collapsed:
 █
 └─f()
-  ├─[ eval(...) ] with 1 more call testthat/test-trace.R:50:7
+  ├─[ eval(...) ] with 1 more call testthat/test-trace.R:52:7
   ├─[ eval(...) ] with 1 more call
   └─g()
-    ├─[ tryCatch(...) ] with 6 more calls testthat/test-trace.R:51:7
+    ├─[ tryCatch(...) ] with 6 more calls testthat/test-trace.R:53:7
     ├─[ eval(...) ] with 1 more call
     └─h()
 

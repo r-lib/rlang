@@ -341,7 +341,7 @@ test_that("deprecated arguments of cnd_signal() still work", {
 
 test_that("errors are saved", {
   # `outFile` argument
-  skip_if(getRversion() < "3.2")
+  skip_if(getRversion() < "3.4")
 
   file <- tempfile()
   on.exit(unlink(file))

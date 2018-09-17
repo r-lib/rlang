@@ -4,7 +4,7 @@
 \alias{lifecycle}
 \title{Life cycle of the rlang package}
 \description{
-\badgematuring
+\Sexpr[results=rd, stage=render]{rlang:::lifecycle("maturing")}
 
 The rlang package is currently maturing. Unless otherwise stated,
 this applies to all its exported functions. Maturing functions are
@@ -18,7 +18,7 @@ sections that explain the reasons for their retirements.
 \section{Stable functions}{
 
 
-\badgestable
+\Sexpr[results=rd, stage=render]{rlang:::lifecycle("stable")}
 \itemize{
 \item \code{\link[=eval_tidy]{eval_tidy()}}
 \item \link{!!}, \link{!!!}
@@ -38,7 +38,7 @@ sections that explain the reasons for their retirements.
 \section{Experimental functions}{
 
 
-\badgeexperimental
+\Sexpr[results=rd, stage=render]{rlang:::lifecycle("experimental")}
 
 These functions are not yet part of the rlang API. Expect breaking
 changes.
@@ -68,7 +68,7 @@ changes.
 \section{Questioning functions}{
 
 
-\badgequestioning
+\Sexpr[results=rd, stage=render]{rlang:::lifecycle("questioning")}
 
 Since rlang 0.2.0.9000:
 \itemize{
@@ -89,7 +89,7 @@ Since rlang 0.2.0:
 \section{Soft-deprecated functions and arguments}{
 
 
-\badgesoftdeprecated
+\Sexpr[results=rd, stage=render]{rlang:::lifecycle("soft-deprecated")}
 
 \strong{Retired in rlang 0.2.0.9000}
 \itemize{
@@ -137,7 +137,7 @@ Since rlang 0.2.0:
 \section{Deprecated functions and arguments}{
 
 
-\badgedeprecated
+\Sexpr[results=rd, stage=render]{rlang:::lifecycle("deprecated")}
 
 \strong{Deprecated as of rlang 0.3.0}
 \itemize{
@@ -161,7 +161,7 @@ Since rlang 0.2.0:
 \section{Defunct functions and arguments}{
 
 
-\badgedefunct
+\Sexpr[results=rd, stage=render]{rlang:::lifecycle("defunct")}
 
 \strong{Defunct as of rlang 0.3.0:}
 \itemize{

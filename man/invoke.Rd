@@ -23,6 +23,8 @@ prefix for the argument names. Set \code{.bury} to \code{NULL} if you
 prefer to inline the function and its arguments in the call.}
 }
 \description{
+\Sexpr[results=rd, stage=render]{rlang:::lifecycle("soft-deprecated")}
+
 Normally, you invoke a R function by typing arguments manually. A
 powerful alternative is to call a function with a list of arguments
 assembled programmatically. This is the purpose of \code{invoke()}.
@@ -38,15 +40,14 @@ noise.
 }
 \section{Life cycle}{
 
-\badgesoftdeprecated
 
 \code{invoke()} is soft-deprecated in favour of \code{\link[=exec]{exec()}}. Now that we
 understand better the interaction between unquoting and dots
 capture, we can take a simpler approach in \code{exec()}.
 
-If you need finer control over the generater call, you should construct
+If you need finer control over the generated call, you should construct
 an environment and call yourself, manually burying large objects
-or complex epxressions.
+or complex expressions.
 }
 
 \examples{

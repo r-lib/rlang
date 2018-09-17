@@ -1,8 +1,57 @@
+
+lifecycle <- function(stage) {
+  url <- paste0("https://www.tidyverse.org/lifecycle/#", stage)
+  img <- lifecycle_img(stage, url)
+
+  sprintf(
+    "\\ifelse{html}{%s}{\\strong{%s}}",
+    img,
+    upcase1(stage)
+  )
+}
+
+lifecycle_img <- function(stage, url) {
+  file <- sprintf("lifecycle-%s.svg", stage)
+  stage_alt <- upcase1(stage)
+
+  switch(stage,
+
+    experimental = ,
+    maturing = ,
+    stable = ,
+    questioning =
+      sprintf(
+        "\\out{<a href='%s'><img src='%s' alt='%s lifecycle'></a>}",
+        url,
+        file.path("figures", file),
+        stage_alt
+      )
+   ,
+
+    `soft-deprecated` = ,
+    deprecated = ,
+    defunct =
+      sprintf(
+        "\\figure{%s}{options: alt='%s lifecycle'}",
+        file,
+        stage_alt
+      )
+
+  )
+}
+upcase1 <- function(x) {
+  substr(x, 1, 1) <- toupper(substr(x, 1, 1))
+  x
+}
+
+
+# \Sexpr[results=rd, stage=render]{rlang:::lifecycle("maturing")}
+
 #' Life cycle of the rlang package
 #'
 #' @description
 #'
-#' \badgematuring
+#' \Sexpr[results=rd, stage=render]{rlang:::lifecycle("maturing")}
 #'
 #' The rlang package is currently maturing. Unless otherwise stated,
 #' this applies to all its exported functions. Maturing functions are
@@ -16,7 +65,7 @@
 #'
 #' @section Stable functions:
 #'
-#' \badgestable
+#' \Sexpr[results=rd, stage=render]{rlang:::lifecycle("stable")}
 #'
 #' * [eval_tidy()]
 #' * [!!], [!!!]
@@ -37,7 +86,7 @@
 #'
 #' @section Experimental functions:
 #'
-#' \badgeexperimental
+#' \Sexpr[results=rd, stage=render]{rlang:::lifecycle("experimental")}
 #'
 #' These functions are not yet part of the rlang API. Expect breaking
 #' changes.
@@ -71,7 +120,7 @@
 #'
 #' @section Questioning functions:
 #'
-#' \badgequestioning
+#' \Sexpr[results=rd, stage=render]{rlang:::lifecycle("questioning")}
 #'
 #' Since rlang 0.2.0.9000:
 #'
@@ -93,7 +142,7 @@
 #'
 #' @section Soft-deprecated functions and arguments:
 #'
-#' \badgesoftdeprecated
+#' \Sexpr[results=rd, stage=render]{rlang:::lifecycle("soft-deprecated")}
 #'
 #' **Retired in rlang 0.2.0.9000**
 #'
@@ -142,7 +191,7 @@
 #'
 #' @section Deprecated functions and arguments:
 #'
-#' \badgedeprecated
+#' \Sexpr[results=rd, stage=render]{rlang:::lifecycle("deprecated")}
 #'
 #' **Deprecated as of rlang 0.3.0**
 #'
@@ -163,7 +212,7 @@
 #'
 #' @section Defunct functions and arguments:
 #'
-#' \badgedefunct
+#' \Sexpr[results=rd, stage=render]{rlang:::lifecycle("defunct")}
 #'
 #' **Defunct as of rlang 0.3.0:**
 #'

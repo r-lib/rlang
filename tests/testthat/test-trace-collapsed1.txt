@@ -1,8 +1,8 @@
 Full:
 █
 └─f()
-  └─g() testthat/test-trace.R:37:20
-    ├─tryCatch(h(), foo = identity, bar = identity) testthat/test-trace.R:38:20
+  └─g() testthat/test-trace.R:39:20
+    ├─tryCatch(h(), foo = identity, bar = identity) testthat/test-trace.R:40:20
     │ └─tryCatchList(expr, classes, parentenv, handlers)
     │   ├─tryCatchOne(...)
     │   │ └─doTryCatch(return(expr), name, parentenv, handler)
@@ -10,29 +10,29 @@ Full:
     │     └─tryCatchOne(expr, names, parentenv, handlers[[1L]])
     │       └─doTryCatch(return(expr), name, parentenv, handler)
     └─h()
-      ├─tryCatch(i(), baz = identity) testthat/test-trace.R:39:20
+      ├─tryCatch(i(), baz = identity) testthat/test-trace.R:41:20
       │ └─tryCatchList(expr, classes, parentenv, handlers)
       │   └─tryCatchOne(expr, names, parentenv, handlers[[1L]])
       │     └─doTryCatch(return(expr), name, parentenv, handler)
       └─i()
-        └─tryCatch(trace_back(e)) testthat/test-trace.R:40:20
+        └─tryCatch(trace_back(e)) testthat/test-trace.R:42:20
           └─tryCatchList(expr, classes, parentenv, handlers)
 
 Collapsed:
 █
 └─f()
-  └─g() testthat/test-trace.R:37:20
-    ├─[ tryCatch(...) ] with 6 more calls testthat/test-trace.R:38:20
+  └─g() testthat/test-trace.R:39:20
+    ├─[ tryCatch(...) ] with 6 more calls testthat/test-trace.R:40:20
     └─h()
-      ├─[ tryCatch(...) ] with 3 more calls testthat/test-trace.R:39:20
+      ├─[ tryCatch(...) ] with 3 more calls testthat/test-trace.R:41:20
       └─i()
-        └─tryCatch(trace_back(e)) testthat/test-trace.R:40:20
+        └─tryCatch(trace_back(e)) testthat/test-trace.R:42:20
           └─tryCatchList(expr, classes, parentenv, handlers)
 
 Branch:
  ─f()
- ─g() testthat/test-trace.R:37:20
+ ─g() testthat/test-trace.R:39:20
  ─h()
  ─i()
- ─tryCatch(trace_back(e)) testthat/test-trace.R:40:20
+ ─tryCatch(trace_back(e)) testthat/test-trace.R:42:20
  ─tryCatchList(expr, classes, parentenv, handlers)

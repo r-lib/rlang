@@ -16,7 +16,7 @@ env_is_locked(env)
 The old value of \code{env_is_locked()} invisibly.
 }
 \description{
-\badgeexperimental
+\Sexpr[results=rd, stage=render]{rlang:::lifecycle("experimental")}
 
 Locked environments cannot be modified. An important example is
 namespace environments which are locked by R when loaded in a

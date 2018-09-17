@@ -25,7 +25,7 @@ exist in the environment.}
 The old value of \code{nm} or the \link[=missing_arg]{missing argument} if it did not exist yet.
 }
 \description{
-\badgeexperimental
+\Sexpr[results=rd, stage=render]{rlang:::lifecycle("experimental")}
 
 \code{env_poke()} will assign or reassign a binding in \code{env} if \code{create}
 is \code{TRUE}. If \code{create} is \code{FALSE} and a binding does not already

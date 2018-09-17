@@ -18,5 +18,5 @@ env_binding_are_promise(env, nms = NULL)
 A logical vector as long as \code{nms} and named after it.
 }
 \description{
-\badgeexperimental
+\Sexpr[results=rd, stage=render]{rlang:::lifecycle("experimental")}
 }
