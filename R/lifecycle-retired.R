@@ -815,3 +815,21 @@ set_attrs_impl <- function(.x, ...) {
 }
 set_attrs_null <- list(NULL)
 names(set_attrs_null) <- ""
+
+
+#' Unquote as a bare expression
+#'
+#' @description
+#'
+#' \Sexpr[results=rd, stage=render]{rlang:::lifecycle("defunct")}
+#'
+#' `UQE()` is defunct as of rlang 0.3.0 in order to simplify the
+#' quasiquotation syntax. You can replace its use by a combination of
+#' `!!` and `get_expr()`: `!!get_expr(x)` is equivalent to `UQE(x)`.
+#'
+#' @param x Object to unquote.
+#' @keywords internal
+#' @export
+UQE <- function(x) {
+  abort_defunct(msg = "`UQE()` is defunct. Please use `!!get_expr(x)`")
+}

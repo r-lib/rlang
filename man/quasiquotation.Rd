@@ -3,7 +3,6 @@
 \name{quasiquotation}
 \alias{quasiquotation}
 \alias{UQ}
-\alias{UQE}
 \alias{UQS}
 \alias{!!}
 \alias{!!!}
@@ -132,10 +131,6 @@ by the tidy eval parser interpreting \code{rlang::UQ()} as \code{!!}. In
 reality unquoting is \emph{not} a function call, it is a syntactic
 operation. The operator form makes it clearer that unquoting is
 special.
-\item \code{UQE()} is defunct as of rlang 0.3.0 in order to simplify the
-quasiquotation syntax. You can replace its use by a combination
-of \code{!!} and \code{get_expr()}: \code{!!get_expr(x)} is equivalent to
-\code{UQE(x)}.
 }
 }
 
