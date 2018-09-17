@@ -252,8 +252,9 @@ muffle <- function(...) NULL
 #' information by default. This saves you from typing `call. = FALSE`
 #' and produces cleaner error messages.
 #'
-#' A backtrace is always saved into error objects. You can print the
-#' backtrace of the last error by calling [last_error()].
+#' A backtrace is always saved into error objects. You can print a
+#' simplified backtrace of the last error by calling [last_error()]
+#' and a full backtrace with `summary(last_error())`.
 #'
 #'
 #' @section Mufflable conditions:
@@ -331,9 +332,13 @@ muffle <- function(...) NULL
 #' })
 #'
 #' # Unhandled errors are saved automatically by `abort()` and can be
-#' # retrieved with `last_error()`:
+#' # retrieved with `last_error()`. The error prints with a simplified
+#' # backtrace:
 #' abort("Saved error?")
 #' last_error()
+#'
+#' # Use `summary()` to print the full backtrace and the condition fields:
+#' summary(last_error())
 #'
 #' }
 abort <- function(message, .subclass = NULL,
@@ -549,7 +554,8 @@ catch_cnd <- function(expr) {
 print.rlang_error <- function(x,
                               ...,
                               child = NULL,
-                              simplify = c("collapse", "branch", "none")) {
+                              simplify = c("collapse", "branch", "none"),
+                              fields = FALSE) {
   if (is_null(child)) {
     header <- "<error>"
   } else {
@@ -558,9 +564,15 @@ print.rlang_error <- function(x,
   cat_line(
     header,
     sprintf("* Message: \"%s\"", x$message),
-    sprintf("* Class: `%s`", class(x)[[1]]),
-    "* Backtrace:"
+    sprintf("* Class: `%s`", class(x)[[1]])
   )
+
+  if (fields) {
+    nms <- chr_enumerate(chr_quoted(names(x)), final = "and")
+    cat_line(sprintf("* Fields: %s", nms))
+  }
+
+  cat_line("* Backtrace:")
 
   trace <- x$trace
   if (!is_null(child)) {
@@ -584,7 +596,7 @@ print.rlang_error <- function(x,
   print(trace, ..., simplify = simplify)
 
   if (!is_null(x$parent)) {
-    print(x$parent, ..., child = x, simplify = simplify)
+    print(x$parent, ..., child = x, simplify = simplify, fields = fields)
   }
 
   invisible(x)
@@ -593,6 +605,11 @@ print.rlang_error <- function(x,
 # Last error to be returned in last_error()
 last_error_env <- new.env(parent = emptyenv())
 last_error_env$cnd <- NULL
+
+#' @export
+summary.rlang_error <- function(object, ...) {
+  print(object, simplify = "none", fields = TRUE)
+}
 
 #' @export
 conditionMessage.rlang_error <- function(c) {

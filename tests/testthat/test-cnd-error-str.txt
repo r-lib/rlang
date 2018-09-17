@@ -1,0 +1,28 @@
+<error>
+* Message: "The high-level error message"
+* Class: `rlang_error`
+* Fields: `message`, `call`, `trace` and `parent`
+* Backtrace:
+█
+├─catch_cnd(a())
+│ ├─tryCatch(...)
+│ │ └─tryCatchList(expr, classes, parentenv, handlers)
+│ │   └─tryCatchOne(expr, names, parentenv, handlers[[1L]])
+│ │     └─doTryCatch(return(expr), name, parentenv, handler)
+│ └─force(expr)
+└─a()
+  ├─tryCatch(b())
+  │ └─tryCatchList(expr, classes, parentenv, handlers)
+  └─b()
+    └─c()
+<error: parent>
+* Message: "The low-level error message"
+* Class: `rlang_error`
+* Fields: `message`, `call`, `trace`, `parent` and `foo`
+* Backtrace:
+█
+└─f()
+  ├─tryCatch(g())
+  │ └─tryCatchList(expr, classes, parentenv, handlers)
+  └─g()
+    └─h()
