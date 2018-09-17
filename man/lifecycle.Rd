@@ -46,7 +46,6 @@ changes.
 \item \code{\link[=type_of]{type_of()}}, \code{\link[=switch_type]{switch_type()}}, \code{\link[=coerce_type]{coerce_type()}}
 \item \code{\link[=switch_class]{switch_class()}}, \code{\link[=coerce_class]{coerce_class()}}
 \item \code{\link[=lang_type_of]{lang_type_of()}}, \code{\link[=switch_lang]{switch_lang()}}, \code{\link[=coerce_lang]{coerce_lang()}}
-\item \code{\link[=set_attrs]{set_attrs()}}, \code{\link[=mut_attrs]{mut_attrs()}}
 \item \code{\link[=with_env]{with_env()}}, \code{\link[=locally]{locally()}}
 \item \code{\link[=env_poke]{env_poke()}}
 \item \code{\link[=env_bind_fns]{env_bind_fns()}}, \code{\link[=env_bind_exprs]{env_bind_exprs()}}
@@ -91,14 +90,15 @@ Since rlang 0.2.0:
 
 \Sexpr[results=rd, stage=render]{rlang:::lifecycle("soft-deprecated")}
 
-\strong{Retired in rlang 0.2.0.9000}
+\strong{Retired in rlang 0.3.0}
 \itemize{
+\item \code{\link[=set_attrs]{set_attrs()}}, \code{\link[=mut_attrs]{mut_attrs()}}
 \item \code{\link[=get_env]{get_env()}}: The \code{env} argument no longer has a default and must be supplied
 \item \code{\link[=cnd_signal]{cnd_signal()}}: The \code{.mufflable} argument no longer has any effect
 \item \code{\link[=invoke]{invoke()}}: use the simpler \code{exec()} instead.
 }
 
-\strong{Renamed in rlang 0.2.0.9000}
+\strong{Renamed in rlang 0.3.0}
 \itemize{
 \item \code{\link[=cnd_signal]{cnd_signal()}}: \code{.cnd} => \code{cnd}
 }

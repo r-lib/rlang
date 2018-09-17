@@ -1,8 +1,15 @@
 #' Add attributes to an object
 #'
+#' @description
+#'
+#' \Sexpr[results=rd, stage=render]{rlang:::lifecycle("experimental")}
+#' \Sexpr[results=rd, stage=render]{rlang:::lifecycle("soft-deprecated")}
+#'
 #' `set_attrs()` adds, changes, or zaps attributes of objects. Pass a
 #' single unnamed `NULL` argument to zap all attributes. For
 #' [uncopyable][is_copyable] types, use `mut_attrs()`.
+#'
+#' @details
 #'
 #' Unlike [structure()], these setters have no special handling of
 #' internal attributes names like `.Dim`, `.Dimnames` or `.Names`.
@@ -50,6 +57,8 @@
 #' mut_attrs(env, foo = "bar")
 #' env
 set_attrs <- function(.x, ...) {
+  signal_soft_deprecation("`set_attrs()` is soft-deprecated as of rlang 0.3.0")
+
   if (!is_copyable(.x)) {
     abort("`.x` is uncopyable: use `mut_attrs()` to change attributes in place")
   }
@@ -58,6 +67,8 @@ set_attrs <- function(.x, ...) {
 #' @rdname set_attrs
 #' @export
 mut_attrs <- function(.x, ...) {
+  signal_soft_deprecation("`set_attrs()` is soft-deprecated as of rlang 0.3.0")
+
   if (is_copyable(.x)) {
     abort("`.x` is copyable: use `set_attrs()` to change attributes without side effect")
   }

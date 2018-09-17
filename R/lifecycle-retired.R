@@ -1,7 +1,7 @@
 
 signal_soft_deprecation <- function(msg) {
   if (is_true(peek_option("lifecycle_force_verbose_retirement"))) {
-    warn(msg)
+    warn_deprecated(msg)
   }
   invisible(NULL)
 }

@@ -92,7 +92,6 @@ upcase1 <- function(x) {
 #' * [type_of()], [switch_type()], [coerce_type()]
 #' * [switch_class()], [coerce_class()]
 #' * [lang_type_of()], [switch_lang()], [coerce_lang()]
-#' * [set_attrs()], [mut_attrs()]
 #' * [with_env()], [locally()]
 #' * [env_poke()]
 #'
@@ -142,14 +141,15 @@ upcase1 <- function(x) {
 #'
 #' \Sexpr[results=rd, stage=render]{rlang:::lifecycle("soft-deprecated")}
 #'
-#' **Retired in rlang 0.2.0.9000**
+#' **Retired in rlang 0.3.0**
 #'
 #' * [get_env()]: The `env` argument no longer has a default and must be supplied
 #' * [cnd_signal()]: The `.mufflable` argument no longer has any effect
 #' * [invoke()]: use the simpler `exec()` instead.
+#' * [set_attrs()], [mut_attrs()]
 #'
 #'
-#' **Renamed in rlang 0.2.0.9000**
+#' **Renamed in rlang 0.3.0**
 #'
 #' * [cnd_signal()]: `.cnd` => `cnd`
 #'

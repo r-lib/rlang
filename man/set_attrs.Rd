@@ -21,6 +21,9 @@ of \code{.x}. \code{mut_attrs()} invisibly returns the original \code{.x}
 modified in place.
 }
 \description{
+\Sexpr[results=rd, stage=render]{rlang:::lifecycle("experimental")}
+\Sexpr[results=rd, stage=render]{rlang:::lifecycle("soft-deprecated")}
+
 \code{set_attrs()} adds, changes, or zaps attributes of objects. Pass a
 single unnamed \code{NULL} argument to zap all attributes. For
 \link[=is_copyable]{uncopyable} types, use \code{mut_attrs()}.
