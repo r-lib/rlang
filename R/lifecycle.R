@@ -89,9 +89,6 @@ upcase1 <- function(x) {
 #' These functions are not yet part of the rlang API. Expect breaking
 #' changes.
 #'
-#' * [type_of()], [switch_type()], [coerce_type()]
-#' * [switch_class()], [coerce_class()]
-#' * [lang_type_of()], [switch_lang()], [coerce_lang()]
 #' * [with_env()], [locally()]
 #' * [env_poke()]
 #'
@@ -119,9 +116,12 @@ upcase1 <- function(x) {
 #'
 #' \Sexpr[results=rd, stage=render]{rlang:::lifecycle("questioning")}
 #'
-#' Since rlang 0.2.0.9000:
+#' Since rlang 0.3.0:
 #'
 #' * [child_env()]
+#' * [type_of()], [switch_type()], [coerce_type()]
+#' * [switch_class()], [coerce_class()]
+#' * [lang_type_of()], [switch_lang()], [coerce_lang()]
 #'
 #'
 #' Since rlang 0.2.0:

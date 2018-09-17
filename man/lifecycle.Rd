@@ -43,9 +43,6 @@ sections that explain the reasons for their retirements.
 These functions are not yet part of the rlang API. Expect breaking
 changes.
 \itemize{
-\item \code{\link[=type_of]{type_of()}}, \code{\link[=switch_type]{switch_type()}}, \code{\link[=coerce_type]{coerce_type()}}
-\item \code{\link[=switch_class]{switch_class()}}, \code{\link[=coerce_class]{coerce_class()}}
-\item \code{\link[=lang_type_of]{lang_type_of()}}, \code{\link[=switch_lang]{switch_lang()}}, \code{\link[=coerce_lang]{coerce_lang()}}
 \item \code{\link[=with_env]{with_env()}}, \code{\link[=locally]{locally()}}
 \item \code{\link[=env_poke]{env_poke()}}
 \item \code{\link[=env_bind_fns]{env_bind_fns()}}, \code{\link[=env_bind_exprs]{env_bind_exprs()}}
@@ -69,9 +66,12 @@ changes.
 
 \Sexpr[results=rd, stage=render]{rlang:::lifecycle("questioning")}
 
-Since rlang 0.2.0.9000:
+Since rlang 0.3.0:
 \itemize{
 \item \code{\link[=child_env]{child_env()}}
+\item \code{\link[=type_of]{type_of()}}, \code{\link[=switch_type]{switch_type()}}, \code{\link[=coerce_type]{coerce_type()}}
+\item \code{\link[=switch_class]{switch_class()}}, \code{\link[=coerce_class]{coerce_class()}}
+\item \code{\link[=lang_type_of]{lang_type_of()}}, \code{\link[=switch_lang]{switch_lang()}}, \code{\link[=coerce_lang]{coerce_lang()}}
 }
 
 Since rlang 0.2.0:
