@@ -26,6 +26,9 @@ stating the conversion failure. This type is prettified unless
 \code{.to} inherits from the S3 class \code{"AsIs"} (see \code{\link[base:I]{base::I()}}).}
 }
 \description{
+\Sexpr[results=rd, stage=render]{rlang:::lifecycle("experimental")}
+\Sexpr[results=rd, stage=render]{rlang:::lifecycle("questioning")}
+
 \code{switch_lang()} dispatches clauses based on the subtype of call, as
 determined by \code{lang_type_of()}. The subtypes are based on the type
 of call head (see details).

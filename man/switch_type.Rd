@@ -28,6 +28,9 @@ stating the conversion failure. This type is prettified unless
 \code{.to} inherits from the S3 class \code{"AsIs"} (see \code{\link[base:I]{base::I()}}).}
 }
 \description{
+\Sexpr[results=rd, stage=render]{rlang:::lifecycle("experimental")}
+\Sexpr[results=rd, stage=render]{rlang:::lifecycle("questioning")}
+
 \code{switch_type()} is equivalent to
 \code{\link[base]{switch}(\link{type_of}(x, ...))}, while
 \code{switch_class()} switchpatches based on \code{class(x)}. The \code{coerce_}

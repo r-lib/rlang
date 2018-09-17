@@ -316,6 +316,11 @@ is_scalar_integerish <- function(x, finite = NULL) {
 
 #' Base type of an object
 #'
+#' @description
+#'
+#' \Sexpr[results=rd, stage=render]{rlang:::lifecycle("experimental")}
+#' \Sexpr[results=rd, stage=render]{rlang:::lifecycle("questioning")}
+#'
 #' This is equivalent to [base::typeof()] with a few differences that
 #' make dispatching easier:
 #' * The type of one-sided formulas is "quote".
@@ -375,6 +380,11 @@ type_of <- function(x) {
 }
 
 #' Dispatch on base types
+#'
+#' @description
+#'
+#' \Sexpr[results=rd, stage=render]{rlang:::lifecycle("experimental")}
+#' \Sexpr[results=rd, stage=render]{rlang:::lifecycle("questioning")}
 #'
 #' `switch_type()` is equivalent to
 #' \code{\link[base]{switch}(\link{type_of}(x, ...))}, while
@@ -578,9 +588,16 @@ friendly_expr_type_of <- function(type) {
 
 #' Dispatch on call type
 #'
+#' @description
+#'
+#' \Sexpr[results=rd, stage=render]{rlang:::lifecycle("experimental")}
+#' \Sexpr[results=rd, stage=render]{rlang:::lifecycle("questioning")}
+#'
 #' `switch_lang()` dispatches clauses based on the subtype of call, as
 #' determined by `lang_type_of()`. The subtypes are based on the type
 #' of call head (see details).
+#'
+#' @details
 #'
 #' Calls (objects of type `language`) do not necessarily call a named
 #' function. They can also call an anonymous function or the result of
