@@ -27,7 +27,9 @@ test_that("tree printing only changes deliberately", {
 
 test_that("can print tree with collapsed branches", {
   skip_on_os("windows")
-  skip_if(getRversion() < "3.5.0", "Old R versions have different eval() backtraces")
+
+  # Fake eval() call does not have same signature on old R
+  skip_if(getRversion() < "3.4")
 
   scoped_options(rlang_trace_format_srcrefs = TRUE)
 
@@ -177,8 +179,8 @@ test_that("long backtrace branches are truncated", {
 test_that("eval() frames are collapsed", {
   skip_on_os("windows")
 
-  # Fake eval() call does not have same signature on 3.1
-  skip_if(getRversion() < "3.2")
+  # Fake eval() call does not have same signature on old R
+  skip_if(getRversion() < "3.4")
 
   e <- current_env()
   f <- function() base::eval(quote(g()))
@@ -198,8 +200,8 @@ test_that("%>% frames are collapsed", {
   skip_on_os("windows")
   skip_if_not_installed("magrittr")
 
-  # Fake eval() call does not have same signature on 3.1
-  skip_if(getRversion() < "3.2")
+  # Fake eval() call does not have same signature on old R
+  skip_if(getRversion() < "3.4")
 
   `%>%` <- magrittr::`%>%`
 
@@ -222,8 +224,8 @@ test_that("children of collapsed %>% frames have correct parent", {
   skip_on_os("windows")
   skip_if_not_installed("magrittr")
 
-  # Fake eval() call does not have same signature on 3.1
-  skip_if(getRversion() < "3.2")
+  # Fake eval() call does not have same signature on old R
+  skip_if(getRversion() < "3.4")
 
   `%>%` <- magrittr::`%>%`
 
@@ -241,8 +243,8 @@ test_that("children of collapsed %>% frames have correct parent", {
 test_that("children of collapsed frames are rechained to correct parent", {
   skip_on_os("windows")
 
-  # Fake eval() call does not have same signature on 3.1
-  skip_if(getRversion() < "3.2")
+  # Fake eval() call does not have same signature on old R
+  skip_if(getRversion() < "3.4")
 
   e <- current_env()
   f <- function() eval(quote(g()), env())
@@ -282,8 +284,8 @@ test_that("combinations of incomplete and leading pipes collapse properly", {
   skip_on_os("windows")
   skip_if_not_installed("magrittr")
 
-  # Fake eval() call does not have same signature on 3.1
-  skip_if(getRversion() < "3.2")
+  # Fake eval() call does not have same signature on old R
+  skip_if(getRversion() < "3.4")
 
   `%>%` <- magrittr::`%>%`
 
@@ -317,8 +319,8 @@ test_that("calls before and after pipe are preserved", {
   skip_on_os("windows")
   skip_if_not_installed("magrittr")
 
-  # Fake eval() call does not have same signature on 3.1
-  skip_if(getRversion() < "3.2")
+  # Fake eval() call does not have same signature on old R
+  skip_if(getRversion() < "3.4")
 
   `%>%` <- magrittr::`%>%`
 
@@ -341,8 +343,8 @@ test_that("calls before and after pipe are preserved", {
 test_that("always keep very first frame as part of backtrace branch", {
   skip_on_os("windows")
 
-  # Fake eval() call does not have same signature on 3.1
-  skip_if(getRversion() < "3.2")
+  # Fake eval() call does not have same signature on old R
+  skip_if(getRversion() < "3.4")
 
   e <- current_env()
 
