@@ -137,6 +137,10 @@ test_that("quo_text() uses as_string encoding repair (#611)", {
   expect_equal(quo_text(s), as_string(s))
 })
 
+test_that("expr_text() interprets unicode notation", {
+  expect_equal(expr_text(quote(`<U+006F>`)), "o")
+})
+
 test_that("formulas are not spliced", {
   expect_identical(quo_text(quo(~foo(~bar))), "~foo(~bar)")
 })
