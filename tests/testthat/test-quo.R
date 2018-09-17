@@ -128,6 +128,15 @@ test_that("quosures are spliced", {
   expect_identical(quo_text(q), "foo(bar(baz))")
 })
 
+test_that("quo_text() uses as_string encoding repair (#611)", {
+  old <- Sys.getlocale("LC_CTYPE")
+  on.exit(Sys.setlocale("LC_CTYPE", old))
+  Sys.setlocale("LC_CTYPE", "C")
+
+  s <- sym("\u4e2d")
+  expect_equal(quo_text(s), as_string(s))
+})
+
 test_that("formulas are not spliced", {
   expect_identical(quo_text(quo(~foo(~bar))), "~foo(~bar)")
 })
