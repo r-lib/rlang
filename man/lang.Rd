@@ -20,6 +20,7 @@ support \link[=tidy-dots]{tidy dots} features.}
 or symbol.}
 }
 \description{
-This function is soft-deprecated, please use \code{\link[=call2]{call2()}} instead.
+These functions are soft-deprecated, please use \code{\link[=call2]{call2()}} and
+\code{\link[=new_call]{new_call()}} instead.
 }
 \keyword{internal}

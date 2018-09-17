@@ -58,14 +58,14 @@ struct expansion_info which_bang_op(sexp* first) {
 // future
 void signal_uq_soft_deprecation() {
   return ;
-  signal_soft_deprecation(
+  signal_soft_deprecated(
     "`UQ()` is soft-deprecated as of rlang 0.2.0. "
     "Please use the prefix form of `!!` instead."
   );
 }
 void signal_uqs_soft_deprecation() {
   return ;
-  signal_soft_deprecation(
+  signal_soft_deprecated(
     "`UQS()` is soft-deprecated as of rlang 0.2.0. "
     "Please use the prefix form of `!!!` instead."
   );

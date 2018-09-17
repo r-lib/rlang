@@ -57,7 +57,7 @@
 #' mut_attrs(env, foo = "bar")
 #' env
 set_attrs <- function(.x, ...) {
-  signal_soft_deprecation("`set_attrs()` is soft-deprecated as of rlang 0.3.0")
+  signal_soft_deprecated("`set_attrs()` is soft-deprecated as of rlang 0.3.0")
 
   if (!is_copyable(.x)) {
     abort("`.x` is uncopyable: use `mut_attrs()` to change attributes in place")
@@ -67,7 +67,7 @@ set_attrs <- function(.x, ...) {
 #' @rdname set_attrs
 #' @export
 mut_attrs <- function(.x, ...) {
-  signal_soft_deprecation("`set_attrs()` is soft-deprecated as of rlang 0.3.0")
+  signal_soft_deprecated("`set_attrs()` is soft-deprecated as of rlang 0.3.0")
 
   if (is_copyable(.x)) {
     abort("`.x` is copyable: use `set_attrs()` to change attributes without side effect")

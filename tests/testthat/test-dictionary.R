@@ -1,6 +1,10 @@
 context("dictionary")
 
+# FIXME: Port tests to data pronoun
+scoped_options(lifecycle_force_verbose_retirement = FALSE)
+
 test_that("can't access non-existent list members", {
+
   x1 <- list(y = 1)
   x2 <- as_dictionary(x1)
 

@@ -3,7 +3,7 @@
 
 
 sexp* new_preserved_empty_list();
-void signal_soft_deprecation(const char* msg);
+void signal_soft_deprecated(const char* msg);
 sexp* rlang_ns_get(const char* name);
 
 

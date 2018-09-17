@@ -283,7 +283,7 @@ test_that("double and triple ! are treated as syntactic shortcuts", {
 
 test_that("`!!` works in prefixed calls", {
   var <- quo(cyl)
-  expect_identical(expr_interp(~mtcars$`!!`(quo_expr(var))), ~mtcars$cyl)
+  expect_identical(expr_interp(~mtcars$`!!`(quo_squash(var))), ~mtcars$cyl)
   expect_identical(expr_interp(~foo$`!!`(quote(bar))), ~foo$bar)
   expect_identical(expr_interp(~base::`!!`(quote(list))()), ~base::list())
 })

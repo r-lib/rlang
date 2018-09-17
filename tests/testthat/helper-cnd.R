@@ -49,9 +49,6 @@ with_non_verbose_retirement <- function(expr) {
   with_options(lifecycle_force_verbose_retirement = NULL, expr)
 }
 
-# This is set automatically with newer testthat versions. However it
-# is easier to develop rlang with the older testthat for now because
-# of the dangling pointers after a load_all().
 options(lifecycle_force_verbose_retirement = TRUE)
 
 

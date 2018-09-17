@@ -1,9 +1,11 @@
 context("retired")
 
+scoped_options(lifecycle_force_verbose_retirement = FALSE)
+
 test_that("parse_quosure() forwards to parse_quo()", {
   env <- env()
-  expect_warning(expect_identical(parse_quosure("foo", env), parse_quo("foo", env)), "soft-deprecated")
-  expect_warning(expect_identical(parse_quosures("foo; bar", env), parse_quos("foo; bar", env)), "soft-deprecated")
+  expect_identical(parse_quosure("foo", env), parse_quo("foo", env))
+  expect_identical(parse_quosures("foo; bar", env), parse_quos("foo; bar", env))
 })
 
 test_that("quo_expr() forwards to quo_squash()", {

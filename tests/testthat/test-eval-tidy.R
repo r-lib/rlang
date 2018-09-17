@@ -176,6 +176,8 @@ test_that("inner formulas are rechained to evaluation env", {
 })
 
 test_that("whole scope is purged", {
+  scoped_options(lifecycle_force_verbose_retirement = FALSE)
+
   outside <- child_env(NULL, important = TRUE)
   top <- child_env(outside, foo = "bar", hunoz = 1)
   mid <- child_env(top, bar = "baz", hunoz = 2)

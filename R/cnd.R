@@ -188,20 +188,20 @@ cnd_signal <- function(cnd, .cnd, .mufflable) {
 validate_cnd_signal_args <- function(cnd, .cnd, .mufflable,
                                      env = parent.frame()) {
   if (is_character(cnd)) {
-    signal_soft_deprecation("Creating a condition with `cnd_signal()` is soft-deprecated")
+    signal_soft_deprecated("Creating a condition with `cnd_signal()` is soft-deprecated")
     env$cnd <- cnd(cnd)
   }
   if (!missing(.cnd)) {
-    signal_soft_deprecation("`.cnd` is deprecated as of rlang 0.3.0, please use `cnd` instead")
+    signal_soft_deprecated("`.cnd` is deprecated as of rlang 0.3.0, please use `cnd` instead")
     if (is_character(.cnd)) {
-      signal_soft_deprecation("Creating a condition with `cnd_signal()` is soft-deprecated")
+      signal_soft_deprecated("Creating a condition with `cnd_signal()` is soft-deprecated")
       .cnd <- cnd(.cnd)
     }
     env$cnd <- .cnd
   }
   if (!missing(.mufflable)) {
     msg <- "`.mufflable` is soft-deprecated as of rlang 0.3.0 and has no longer any effect"
-    signal_soft_deprecation(msg)
+    signal_soft_deprecated(msg)
   }
 }
 

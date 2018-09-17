@@ -125,6 +125,7 @@ test_that("vector _along() ctors pick up names", {
 })
 
 test_that("retired _len() ctors still work", {
+  scoped_options(lifecycle_force_verbose_retirement = FALSE)
   expect_identical(lgl_len(2), new_logical(2))
   expect_identical(int_len(2), new_integer(2))
   expect_identical(dbl_len(2), new_double(2))
@@ -136,6 +137,7 @@ test_that("retired _len() ctors still work", {
 })
 
 test_that("retired _along() ctors still work", {
+  scoped_options(lifecycle_force_verbose_retirement = FALSE)
   expect_identical(lgl_along(1:2), new_logical_along(1:2))
   expect_identical(int_along(1:2), new_integer_along(1:2))
   expect_identical(dbl_along(1:2), new_double_along(1:2))

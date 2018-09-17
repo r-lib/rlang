@@ -1,7 +1,7 @@
 
-signal_soft_deprecation <- function(msg) {
+signal_soft_deprecated <- function(msg) {
   if (is_true(peek_option("lifecycle_force_verbose_retirement"))) {
-    warn_deprecated(msg)
+    warn_deprecated_once(msg)
   }
   invisible(NULL)
 }
@@ -20,17 +20,19 @@ signal_soft_deprecation <- function(msg) {
 #' @keywords internal
 #' @export
 parse_quosure <- function(x, env = caller_env()) {
-  signal_soft_deprecation(
-    "`parse_quosure()` is soft-deprecated as of rlang 0.2.0. Please use `parse_quo()` instead."
-  )
+  signal_soft_deprecated(paste_line(
+    "`parse_quosure()` is soft-deprecated as of rlang 0.2.0.",
+    "Please use `parse_quo()` instead"
+  ))
   parse_quo(x, env = env)
 }
 #' @rdname parse_expr
 #' @export
 parse_quosures <- function(x, env = caller_env()) {
-  signal_soft_deprecation(
-    "`parse_quosures()` is soft-deprecated as of rlang 0.2.0. Please use `parse_quos()` instead."
-  )
+  signal_soft_deprecated(paste_line(
+    "`parse_quosures()` is soft-deprecated as of rlang 0.2.0.",
+    "Please use `parse_quos()` instead"
+  ))
   parse_quos(x, env = env)
 }
 
@@ -42,23 +44,36 @@ parse_quosures <- function(x, env = caller_env()) {
 #' @keywords internal
 #' @export
 quo_expr <- function(quo, warn = FALSE) {
+  signal_soft_deprecated(paste_line(
+    "`quo_expr()` is soft-deprecated as of rlang 0.2.0.",
+    "Please use `quo_squash()` instead"
+  ))
   quo_squash(quo, warn = warn)
 }
 
 #' Create a call
 #'
-#' This function is soft-deprecated, please use [call2()] instead.
+#' These functions are soft-deprecated, please use [call2()] and
+#' [new_call()] instead.
 #'
 #' @inheritParams call2
 #' @keywords internal
 #' @export
 lang <- function(.fn, ..., .ns = NULL) {
+  signal_soft_deprecated(paste_line(
+    "`lang()` is soft-deprecated as of rlang 0.2.0.",
+    "Please use `call2()` instead"
+  ))
   call2(.fn, ..., .ns = .ns)
 }
 #' @rdname lang
 #' @inheritParams new_call
 #' @export
 new_language <- function(head, tail = NULL) {
+  signal_soft_deprecated(paste_line(
+    "`new_language()` is soft-deprecated as of rlang 0.2.0.",
+    "Please use `new_call()` instead"
+  ))
   new_call(head, tail)
 }
 
@@ -71,22 +86,38 @@ new_language <- function(head, tail = NULL) {
 #' @keywords internal
 #' @export
 is_lang <- function(x, name = NULL, n = NULL, ns = NULL) {
+  signal_soft_deprecated(paste_line(
+    "`is_lang()` is soft-deprecated as of rlang 0.2.0.",
+    "Please use `is_call()` instead"
+  ))
   is_call(x, name, n, ns)
 }
 #' @rdname is_lang
 #' @export
 is_unary_lang <- function(x, name = NULL, ns = NULL) {
+  signal_soft_deprecated(paste_line(
+    "`is_unary_lang()` is soft-deprecated as of rlang 0.2.0.",
+    "Please use `is_call()` instead"
+  ))
   is_call(x, name, n = 1L, ns = ns)
 }
 #' @rdname is_lang
 #' @export
 is_binary_lang <- function(x, name = NULL, ns = NULL) {
+  signal_soft_deprecated(paste_line(
+    "`is_binary_lang()` is soft-deprecated as of rlang 0.2.0.",
+    "Please use `is_call()` instead"
+  ))
   is_call(x, name, n = 2L, ns = ns)
 }
 #' @rdname is_lang
 #' @param quo A quosure to test.
 #' @export
 quo_is_lang <- function(quo) {
+  signal_soft_deprecated(paste_line(
+    "`quo_is_lang()` is soft-deprecated as of rlang 0.2.0.",
+    "Please use `quo_is_call()` instead"
+  ))
   .Call(rlang_quo_is_call, quo)
 }
 
@@ -101,31 +132,55 @@ quo_is_lang <- function(quo) {
 #' @keywords internal
 #' @export
 lang_modify <- function(.lang, ..., .standardise = FALSE) {
+  signal_soft_deprecated(paste_line(
+    "`lang_modify()` is soft-deprecated as of rlang 0.2.0.",
+    "Please use `call_modify()` instead"
+  ))
   call_modify(.lang, ..., .standardise = .standardise, .env = caller_env())
 }
 #' @rdname lang_modify
 #' @export
 lang_standardise <- function(lang) {
+  signal_soft_deprecated(paste_line(
+    "`lang_standardise()` is soft-deprecated as of rlang 0.2.0.",
+    "Please use `call_standardise()` instead"
+  ))
   call_standardise(lang, env = caller_env())
 }
 #' @rdname lang_modify
 #' @export
 lang_fn <- function(lang) {
+  signal_soft_deprecated(paste_line(
+    "`lang_fn()` is soft-deprecated as of rlang 0.2.0.",
+    "Please use `call_fn()` instead"
+  ))
   call_fn(lang, caller_env())
 }
 #' @rdname lang_modify
 #' @export
 lang_name <- function(lang) {
+  signal_soft_deprecated(paste_line(
+    "`lang_name()` is soft-deprecated as of rlang 0.2.0.",
+    "Please use `call_name()` instead"
+  ))
   call_name(lang)
 }
 #' @rdname lang_modify
 #' @export
 lang_args <- function(lang) {
+  signal_soft_deprecated(paste_line(
+    "`lang_args()` is soft-deprecated as of rlang 0.2.0.",
+    "Please use `call_args()` instead"
+  ))
   call_args(lang)
 }
 #' @rdname lang_modify
 #' @export
 lang_args_names <- function(lang) {
+  signal_soft_deprecated(paste_line(
+    "`lang_args_names()` is soft-deprecated as of rlang 0.2.0.",
+    "Please use `call_args_names()` instead"
+  ))
   call_args_names(lang)
 }
 
@@ -139,6 +194,7 @@ lang_args_names <- function(lang) {
 #' @param lang A call.
 #' @export
 lang_head <- function(lang) {
+  signal_soft_deprecated("`lang_head()` is soft-deprecated as of rlang 0.2.0.")
   call <- get_expr(lang)
   stopifnot(is_call(call))
   node_car(call)
@@ -146,6 +202,7 @@ lang_head <- function(lang) {
 #' @rdname lang_head
 #' @export
 lang_tail <- function(lang) {
+  signal_soft_deprecated("`lang_tail()` is soft-deprecated as of rlang 0.2.0.")
   call <- get_expr(lang)
   stopifnot(is_call(call))
   node_cdr(call)
@@ -164,18 +221,27 @@ lang_tail <- function(lang) {
 #' @keywords internal
 #' @export
 as_overscope <- function(quo, data = NULL) {
+  signal_soft_deprecated(paste_line(
+    "`as_overscope()` is soft-deprecated as of rlang 0.2.0.",
+    "Please use `as_data_mask()` instead"
+  ))
   as_data_mask(data, quo_get_env(quo))
 }
 #' @rdname as_overscope
 #' @param enclosure The `parent` argument of [new_data_mask()].
 #' @export
 new_overscope <- function(bottom, top = NULL, enclosure = NULL) {
+  signal_soft_deprecated(paste_line(
+    "`new_overscope()` is soft-deprecated as of rlang 0.2.0.",
+    "Please use `new_data_mask()` instead"
+  ))
   new_data_mask(bottom, top, enclosure)
 }
 #' @rdname as_overscope
 #' @param overscope A data mask.
 #' @export
 overscope_clean <- function(overscope) {
+  signal_soft_deprecated("`overscope_clean()` is soft-deprecated as of rlang 0.2.0.")
   invisible(.Call(rlang_data_mask_clean, overscope))
 }
 
@@ -208,6 +274,10 @@ eval_tidy_ <- function(expr, bottom, top = NULL, env = caller_env()) {
 #' @keywords internal
 #' @export
 overscope_eval_next <- function(overscope, quo, env = base_env()) {
+  signal_soft_deprecated(paste_line(
+    "`overscope_eval_next()` is soft-deprecated as of rlang 0.2.0.",
+    "Please use `eval_tidy()` with a data mask instead"
+  ))
   .Call(rlang_eval_tidy, quo, overscope, environment())
 }
 
@@ -228,6 +298,10 @@ overscope_eval_next <- function(overscope, quo, env = base_env()) {
 #' @keywords internal
 #' @export
 as_dictionary <- function(x, lookup_msg = NULL, read_only = FALSE) {
+  signal_soft_deprecated(paste_line(
+    "`as_dictionary()` is soft-deprecated as of rlang 0.2.0.",
+    "Please use `as_data_pronoun()` instead"
+  ))
   UseMethod("as_dictionary")
 }
 #' @export
@@ -283,6 +357,7 @@ new_dictionary <- function(x, lookup_msg, read_only) {
 #' @rdname dictionary
 #' @export
 is_dictionary <- function(x) {
+  signal_soft_deprecated("`is_dictionary()` is soft-deprecated as of rlang 0.2.0.")
   inherits(x, "rlang_data_pronoun")
 }
 
@@ -294,6 +369,7 @@ is_dictionary <- function(x) {
 #' @keywords internal
 #' @export
 as_env <- function(x, parent = NULL) {
+  signal_soft_deprecated("`is_dictionary()` is soft-deprecated as of rlang 0.2.0.")
   as_environment(x, parent)
 }
 
@@ -308,36 +384,43 @@ as_env <- function(x, parent = NULL) {
 #' @keywords internal
 #' @export
 mut_node_car <- function(x, newcar) {
+  signal_soft_deprecated("`mut_node_car()` is soft-deprecated as of rlang 0.2.0.")
   invisible(.Call(rlang_node_poke_car, x, newcar))
 }
 #' @rdname mut_node_car
 #' @export
 mut_node_cdr <- function(x, newcdr) {
+  signal_soft_deprecated("`mut_node_cdr()` is soft-deprecated as of rlang 0.2.0.")
   invisible(.Call(rlang_node_poke_cdr, x, newcdr))
 }
 #' @rdname mut_node_car
 #' @export
 mut_node_caar <- function(x, newcar) {
+  signal_soft_deprecated("`mut_node_caar()` is soft-deprecated as of rlang 0.2.0.")
   invisible(.Call(rlang_node_poke_caar, x, newcar))
 }
 #' @rdname mut_node_car
 #' @export
 mut_node_cadr <- function(x, newcar) {
+  signal_soft_deprecated("`mut_node_cadr()` is soft-deprecated as of rlang 0.2.0.")
   invisible(.Call(rlang_node_poke_cadr, x, newcar))
 }
 #' @rdname mut_node_car
 #' @export
 mut_node_cdar <- function(x, newcdr) {
+  signal_soft_deprecated("`mut_node_cdar()` is soft-deprecated as of rlang 0.2.0.")
   invisible(.Call(rlang_node_poke_cdar, x, newcdr))
 }
 #' @rdname mut_node_car
 #' @export
 mut_node_cddr <- function(x, newcdr) {
+  signal_soft_deprecated("`mut_node_cddr()` is soft-deprecated as of rlang 0.2.0.")
   invisible(.Call(rlang_node_poke_cddr, x, newcdr))
 }
 #' @rdname mut_node_car
 #' @export
 mut_node_tag <- function(x, newtag) {
+  signal_soft_deprecated("`mut_node_tag()` is soft-deprecated as of rlang 0.2.0.")
   invisible(.Call(rlang_node_poke_tag, x, newtag))
 }
 
@@ -351,6 +434,10 @@ mut_node_tag <- function(x, newtag) {
 #' @keywords internal
 #' @export
 is_expr <- function(x) {
+  signal_soft_deprecated(paste_line(
+    "`is_expr()` is soft-deprecated as of rlang 0.2.0.",
+    "Please use `is_expression()` instead"
+  ))
   is_expression(x)
 }
 
@@ -365,11 +452,19 @@ is_expr <- function(x) {
 #' @keywords internal
 #' @export
 is_env <- function(x) {
+  signal_soft_deprecated(paste_line(
+    "`is_env()` is soft-deprecated as of rlang 0.2.0.",
+    "Please use `is_environment()` instead"
+  ))
   is_environment(x)
 }
 #' @rdname is_env
 #' @export
 is_bare_env <- function(x) {
+  signal_soft_deprecated(paste_line(
+    "`is_bare_env()` is soft-deprecated as of rlang 0.2.0.",
+    "Please use `is_bare_environment()` instead"
+  ))
   is_bare_environment(x)
 }
 
@@ -422,86 +517,154 @@ NULL
 #' @rdname vector-old-ctors
 #' @export
 lgl_len <- function(.n) {
+  signal_soft_deprecated(paste_line(
+    "`lgl_len()` is soft-deprecated as of rlang 0.2.0.",
+    "Please use `new_logical()` instead"
+  ))
   new_logical(.n)
 }
 #' @rdname vector-old-ctors
 #' @export
 int_len <- function(.n) {
+  signal_soft_deprecated(paste_line(
+    "`int_len()` is soft-deprecated as of rlang 0.2.0.",
+    "Please use `new_integer()` instead"
+  ))
   new_integer(.n)
 }
 #' @rdname vector-old-ctors
 #' @export
 dbl_len <- function(.n) {
+  signal_soft_deprecated(paste_line(
+    "`dbl_len()` is soft-deprecated as of rlang 0.2.0.",
+    "Please use `new_double()` instead"
+  ))
   new_double(.n)
 }
 #' @rdname vector-old-ctors
 #' @export
 chr_len <- function(.n) {
+  signal_soft_deprecated(paste_line(
+    "`chr_len()` is soft-deprecated as of rlang 0.2.0.",
+    "Please use `new_character()` instead"
+  ))
   new_character(.n)
 }
 #' @rdname vector-old-ctors
 #' @export
 cpl_len <- function(.n) {
+  signal_soft_deprecated(paste_line(
+    "`cpl_len()` is soft-deprecated as of rlang 0.2.0.",
+    "Please use `new_complex()` instead"
+  ))
   new_complex(.n)
 }
 #' @rdname vector-old-ctors
 #' @export
 raw_len <- function(.n) {
+  signal_soft_deprecated(paste_line(
+    "`raw_len()` is soft-deprecated as of rlang 0.2.0.",
+    "Please use `new_raw()` instead"
+  ))
   new_raw(.n)
 }
 #' @rdname vector-old-ctors
 #' @export
 bytes_len <- function(.n) {
+  signal_soft_deprecated(paste_line(
+    "`bytes_len()` is soft-deprecated as of rlang 0.2.0.",
+    "Please use `new_raw()` instead"
+  ))
   new_raw(.n)
 }
 #' @rdname vector-old-ctors
 #' @export
 list_len <- function(.n) {
+  signal_soft_deprecated(paste_line(
+    "`list_len()` is soft-deprecated as of rlang 0.2.0.",
+    "Please use `new_list()` instead"
+  ))
   new_list(.n)
 }
 
 #' @rdname vector-old-ctors
 #' @export
 lgl_along <- function(.x) {
+  signal_soft_deprecated(paste_line(
+    "`lgl_along()` is soft-deprecated as of rlang 0.2.0.",
+    "Please use `new_logical_along()` instead"
+  ))
   new_logical_along(.x, NULL)
 }
 #' @rdname vector-old-ctors
 #' @export
 int_along <- function(.x) {
+  signal_soft_deprecated(paste_line(
+    "`int_along()` is soft-deprecated as of rlang 0.2.0.",
+    "Please use `new_integer_along()` instead"
+  ))
   new_integer_along(.x, NULL)
 }
 #' @rdname vector-old-ctors
 #' @export
 dbl_along <- function(.x) {
+  signal_soft_deprecated(paste_line(
+    "`dbl_along()` is soft-deprecated as of rlang 0.2.0.",
+    "Please use `new_double_along()` instead"
+  ))
   new_double_along(.x, NULL)
 }
 #' @rdname vector-old-ctors
 #' @export
 chr_along <- function(.x) {
+  signal_soft_deprecated(paste_line(
+    "`chr_along()` is soft-deprecated as of rlang 0.2.0.",
+    "Please use `new_character_along()` instead"
+  ))
   new_character_along(.x, NULL)
 }
 #' @rdname vector-old-ctors
 #' @export
 cpl_along <- function(.x) {
+  signal_soft_deprecated(paste_line(
+    "`cpl_along()` is soft-deprecated as of rlang 0.2.0.",
+    "Please use `new_complex_along()` instead"
+  ))
   new_complex_along(.x, NULL)
 }
 #' @rdname vector-old-ctors
 #' @export
 raw_along <- function(.x) {
+  signal_soft_deprecated(paste_line(
+    "`raw_along()` is soft-deprecated as of rlang 0.2.0.",
+    "Please use `new_raw_along()` instead"
+  ))
   new_raw_along(.x, NULL)
 }
 #' @rdname vector-old-ctors
 #' @export
 bytes_along <- function(.x) {
+  signal_soft_deprecated(paste_line(
+    "`bytes_along()` is soft-deprecated as of rlang 0.2.0.",
+    "Please use `new_raw_along()` instead"
+  ))
   new_raw_along(.x, NULL)
 }
 #' @rdname vector-old-ctors
 #' @export
 list_along <- function(.x) {
+  signal_soft_deprecated(paste_line(
+    "`list_along()` is soft-deprecated as of rlang 0.2.0.",
+    "Please use `new_list_along()` instead"
+  ))
   new_list_along(.x, NULL)
 }
 #' @rdname vector-old-ctors
 #' @export
 node <- function(car, cdr = NULL) {
+  signal_soft_deprecated(paste_line(
+    "`node()` is soft-deprecated as of rlang 0.2.0.",
+    "Please use `new_node()` instead"
+  ))
   new_node(car, cdr)
 }

@@ -41,7 +41,7 @@ test_that("generic setters work on quosures", {
 })
 
 test_that("can flatten empty quosure", {
-  expect_identical(quo_expr(quo()), missing_arg())
+  expect_identical(quo_squash(quo()), missing_arg())
 })
 
 test_that("new_quosure() checks inputs", {
@@ -146,9 +146,9 @@ test_that("as_quosure() coerces formulas", {
   expect_identical(as_quosure(~foo), quo(foo))
 })
 
-test_that("quo_expr() warns", {
-  expect_warning(regex = NA, quo_expr(quo(foo), warn = TRUE))
-  expect_warning(quo_expr(quo(list(!! quo(foo))), warn = TRUE), "inner quosure")
+test_that("quo_squash() warns", {
+  expect_warning(regex = NA, quo_squash(quo(foo), warn = TRUE))
+  expect_warning(quo_squash(quo(list(!! quo(foo))), warn = TRUE), "inner quosure")
 })
 
 test_that("quo_deparse() indicates quosures with `^`", {
