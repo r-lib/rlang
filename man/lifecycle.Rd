@@ -31,7 +31,7 @@ sections that explain the reasons for their retirements.
 \item \code{\link[=quo_get_env]{quo_get_env()}}, \code{\link[=quo_set_env]{quo_set_env()}}
 \item \code{\link[=eval_bare]{eval_bare()}}
 \item \code{\link[=set_names]{set_names()}}, \code{\link[=names2]{names2()}}
-\item \code{\link[=as_function]{as_function()}}
+\item \code{\link[=as_function]{as_function()}}, \code{\link[=new_function]{new_function()}}
 }
 }
 

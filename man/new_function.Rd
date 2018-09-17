@@ -19,6 +19,8 @@ function. Usually this will be most easily generated with
 calling environment of \code{new_function()}}
 }
 \description{
+\Sexpr[results=rd, stage=render]{rlang:::lifecycle("stable")}
+
 This constructs a new function given its three components:
 list of arguments, body code and parent environment.
 }

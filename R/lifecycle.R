@@ -79,7 +79,7 @@ upcase1 <- function(x) {
 #' * [eval_bare()]
 #'
 #' * [set_names()], [names2()]
-#' * [as_function()]
+#' * [as_function()], [new_function()]
 #'
 #'
 #' @section Experimental functions:

@@ -1,5 +1,9 @@
 #' Create a function
 #'
+#' @description
+#'
+#' \Sexpr[results=rd, stage=render]{rlang:::lifecycle("stable")}
+#'
 #' This constructs a new function given its three components:
 #' list of arguments, body code and parent environment.
 #'
