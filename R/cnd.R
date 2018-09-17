@@ -246,11 +246,14 @@ muffle <- function(...) NULL
 #' to create custom interrupt condition objects.
 #'
 #'
-#' @section Call trace:
+#' @section Backtrace:
 #'
 #' Unlike `stop()` and `warning()`, these functions don't include call
 #' information by default. This saves you from typing `call. = FALSE`
 #' and produces cleaner error messages.
+#'
+#' A backtrace is always saved into error objects. You can print the
+#' backtrace of the last error by calling [last_error()].
 #'
 #'
 #' @section Mufflable conditions:
@@ -326,6 +329,11 @@ muffle <- function(...) NULL
 #'     msg <- sprintf("Can't download `%s`", file)
 #'     abort(msg, parent = err)
 #' })
+#'
+#' # Unhandled errors are saved automatically by `abort()` and can be
+#' # retrieved with `last_error()`:
+#' abort("Saved error?")
+#' last_error()
 #'
 #' }
 abort <- function(message, .subclass = NULL,
@@ -582,8 +590,14 @@ print.rlang_error <- function(x,
   invisible(x)
 }
 
+# Last error to be returned in last_error()
+last_error_env <- new.env(parent = emptyenv())
+last_error_env$cnd <- NULL
+
 #' @export
 conditionMessage.rlang_error <- function(c) {
+  last_error_env$cnd <- c
+
   lines <- c$message
   trace <- format(c$trace, simplify = "branch", max_frames = 10L)
 

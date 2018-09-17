@@ -314,3 +314,17 @@ test_that("deprecated arguments of cnd_signal() still work", {
     )
   })
 })
+
+test_that("errors are saved", {
+  # `outFile` argument
+  skip_if(getRversion() < "3.2")
+
+  file <- tempfile()
+  on.exit(unlink(file))
+
+  # Verbose try() triggers conditionMessage() and thus saves the error.
+  # This simulates an unhandled error.
+  try(abort("foo", "bar"), outFile = file)
+
+  expect_true(inherits_all(last_error(), c("bar", "rlang_error")))
+})
