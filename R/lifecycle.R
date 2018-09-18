@@ -110,8 +110,6 @@ upcase1 <- function(x) {
 #'
 #' * [mut_utf8_locale()], [mut_latin1_locale()], [mut_mbcs_locale()]
 #'
-#' * [prepend()], [modify()]
-#'
 #'
 #' @section Questioning stage:
 #'
@@ -124,6 +122,7 @@ upcase1 <- function(x) {
 #' * [switch_class()], [coerce_class()]
 #' * [lang_type_of()], [switch_lang()], [coerce_lang()]
 #' * [flatten()], [squash()], and their atomic vector variants
+#' * [modify()] and [prepend()]
 #'
 #'
 #' **In the questioning stage as of rlang 0.2.0**

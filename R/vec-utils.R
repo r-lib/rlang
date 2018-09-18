@@ -1,5 +1,10 @@
 #' Prepend a vector
 #'
+#' @description
+#'
+#' \Sexpr[results=rd, stage=render]{rlang:::lifecycle("questioning")}
+#' \Sexpr[results=rd, stage=render]{rlang:::lifecycle("experimental")}
+#'
 #' This is a companion to [base::append()] to help merging two lists
 #' or atomic vectors. `prepend()` is a clearer semantic signal than
 #' `c()` that a vector is to be merged at the beginning of another,
@@ -9,8 +14,8 @@
 #' @keywords internal
 #' @section Life cycle:
 #'
-#' `prepend()` is experimental, expect API changes. We are still
-#' figuring out what vector tools belong in rlang.
+#' `prepend()` is in the qestioning stage. We are still figuring out
+#' what vector tools belong in rlang.
 #'
 #' @param x the vector to be modified.
 #' @param values to be included in the modified vector.
@@ -37,6 +42,11 @@ prepend <- function(x, values, before = 1) {
 
 #' Modify a vector
 #'
+#' @description
+#'
+#' \Sexpr[results=rd, stage=render]{rlang:::lifecycle("questioning")}
+#' \Sexpr[results=rd, stage=render]{rlang:::lifecycle("experimental")}
+#'
 #' This function merges a list of arguments into a vector. It always
 #' returns a list.
 #'
@@ -44,8 +54,8 @@ prepend <- function(x, values, before = 1) {
 #' @keywords internal
 #' @section Life cycle:
 #'
-#' `modify()` is experimental, expect API changes. We are still
-#' figuring out what vector tools belong in rlang.
+#' `modify()` is in the qestioning stage. We are still figuring out
+#' what vector tools belong in rlang.
 #'
 #' @param .x A vector to modify.
 #' @param ... List of elements to merge into `.x`. Named elements

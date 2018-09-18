@@ -18,14 +18,17 @@ have new or no names are inserted at the end. These dots support
 A modified vector upcasted to a list.
 }
 \description{
+\Sexpr[results=rd, stage=render]{rlang:::lifecycle("questioning")}
+\Sexpr[results=rd, stage=render]{rlang:::lifecycle("experimental")}
+
 This function merges a list of arguments into a vector. It always
 returns a list.
 }
 \section{Life cycle}{
 
 
-\code{modify()} is experimental, expect API changes. We are still
-figuring out what vector tools belong in rlang.
+\code{modify()} is in the qestioning stage. We are still figuring out
+what vector tools belong in rlang.
 }
 
 \examples{

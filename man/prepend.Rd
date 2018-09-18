@@ -17,6 +17,9 @@ prepend(x, values, before = 1)
 A merged vector.
 }
 \description{
+\Sexpr[results=rd, stage=render]{rlang:::lifecycle("questioning")}
+\Sexpr[results=rd, stage=render]{rlang:::lifecycle("experimental")}
+
 This is a companion to \code{\link[base:append]{base::append()}} to help merging two lists
 or atomic vectors. \code{prepend()} is a clearer semantic signal than
 \code{c()} that a vector is to be merged at the beginning of another,
@@ -25,8 +28,8 @@ especially in a pipe chain.
 \section{Life cycle}{
 
 
-\code{prepend()} is experimental, expect API changes. We are still
-figuring out what vector tools belong in rlang.
+\code{prepend()} is in the qestioning stage. We are still figuring out
+what vector tools belong in rlang.
 }
 
 \examples{

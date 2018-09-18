@@ -57,7 +57,6 @@ changes.
 \item \code{\link[=as_bytes]{as_bytes()}}, \code{\link[=chr_unserialise_unicode]{chr_unserialise_unicode()}}, \code{\link[=set_chr_encoding]{set_chr_encoding()}},
 \code{\link[=chr_encoding]{chr_encoding()}}, \code{\link[=set_str_encoding]{set_str_encoding()}}, \code{\link[=str_encoding]{str_encoding()}}
 \item \code{\link[=mut_utf8_locale]{mut_utf8_locale()}}, \code{\link[=mut_latin1_locale]{mut_latin1_locale()}}, \code{\link[=mut_mbcs_locale]{mut_mbcs_locale()}}
-\item \code{\link[=prepend]{prepend()}}, \code{\link[=modify]{modify()}}
 }
 }
 
@@ -73,6 +72,7 @@ changes.
 \item \code{\link[=switch_class]{switch_class()}}, \code{\link[=coerce_class]{coerce_class()}}
 \item \code{\link[=lang_type_of]{lang_type_of()}}, \code{\link[=switch_lang]{switch_lang()}}, \code{\link[=coerce_lang]{coerce_lang()}}
 \item \code{\link[=flatten]{flatten()}}, \code{\link[=squash]{squash()}}, and their atomic vector variants
+\item \code{\link[=modify]{modify()}} and \code{\link[=prepend]{prepend()}}
 }
 
 \strong{In the questioning stage as of rlang 0.2.0}

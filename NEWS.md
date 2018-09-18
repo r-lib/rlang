@@ -1,6 +1,9 @@
 
 # rlang 0.2.2.9000
 
+* `prepend()` and `modify()` are in the questioning stage. We are
+  still figuring out what vector tools belong in rlang.
+
 * `flatten()`, `squash()` and their atomic variants are now in the
   questioning lifecycle stage. They have slightly different semantics
   than the flattening functions in purrr and we are currently
