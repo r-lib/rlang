@@ -143,11 +143,6 @@ changes.
 \item \code{\link[=abort]{abort()}}, \code{\link[=warn]{warn()}}, \code{\link[=inform]{inform()}}: \code{msg}, \code{type} and \code{call} =>
 \code{.msg}, \code{.type} and \code{.call}
 }
-
-\strong{Deprecated as of rlang 0.2.0:}
-\itemize{
-\item \code{\link[=is_quosureish]{is_quosureish()}}, \code{\link[=as_quosureish]{as_quosureish()}}
-}
 }
 
 \section{Defunct functions and arguments}{
@@ -157,9 +152,10 @@ changes.
 
 \strong{Defunct as of rlang 0.3.0:}
 \itemize{
-\item \code{\link[=cnd_signal]{cnd_signal()}}: \code{.msg} and \code{.call}.
 \item \code{\link[=UQE]{UQE()}}
 \item \code{\link[=eval_tidy_]{eval_tidy_()}}
+\item \code{\link[=is_quosureish]{is_quosureish()}}, \code{\link[=as_quosureish]{as_quosureish()}}
+\item \code{\link[=cnd_signal]{cnd_signal()}}: \code{.msg} and \code{.call}.
 \item \code{\link[=cnd]{cnd()}}, \code{\link[=error_cnd]{error_cnd()}}, \code{\link[=warning_cnd]{warning_cnd()}} and \code{\link[=message_cnd]{message_cnd()}}:
 \code{.msg} => \code{message}.
 }

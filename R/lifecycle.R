@@ -199,21 +199,17 @@ upcase1 <- function(x) {
 #'   `.msg`, `.type` and `.call`
 #'
 #'
-#' **Deprecated as of rlang 0.2.0:**
-#'
-#' * [is_quosureish()], [as_quosureish()]
-#'
-#'
 #' @section Defunct functions and arguments:
 #'
 #' \Sexpr[results=rd, stage=render]{rlang:::lifecycle("defunct")}
 #'
 #' **Defunct as of rlang 0.3.0:**
 #'
-#' * [cnd_signal()]: `.msg` and `.call`.
-#'
 #' * [UQE()]
 #' * [eval_tidy_()]
+#' * [is_quosureish()], [as_quosureish()]
+#'
+#' * [cnd_signal()]: `.msg` and `.call`.
 #'
 #' * [cnd()], [error_cnd()], [warning_cnd()] and [message_cnd()]:
 #'   `.msg` => `message`.

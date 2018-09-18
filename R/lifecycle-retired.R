@@ -882,7 +882,7 @@ is_dictionary <- function(x) {
 #'
 #' @description
 #'
-#' \Sexpr[results=rd, stage=render]{rlang:::lifecycle("deprecated")}
+#' \Sexpr[results=rd, stage=render]{rlang:::lifecycle("defunct")}
 #'
 #' These functions are deprecated as of rlang 0.2.0 because they make
 #' the assumption that quosures are a subtype of formula, which we are
@@ -894,23 +894,12 @@ is_dictionary <- function(x) {
 #' @keywords internal
 #' @export
 is_quosureish <- function(x, scoped = NULL) {
-  warn_deprecated("`is_quosureish()` is deprecated as of rlang 0.2.0")
-  is_formula(x, scoped = scoped, lhs = FALSE)
+  abort_defunct("`is_quosureish()` is defunct as of rlang 0.3.0")
 }
 #' @rdname is_quosureish
 #' @export
 as_quosureish <- function(x, env = caller_env()) {
-  warn_deprecated("`as_quosureish()` is deprecated as of rlang 0.2.0")
-  if (is_quosureish(x)) {
-    if (!is_environment(get_env(x))) {
-      set_env(x, env)
-    }
-    x
-  } else if (is_frame(x)) {
-    new_quosure(x$expr, sys_frame(x$caller_pos))
-  } else {
-    new_quosure(get_expr(x), get_env(x, env))
-  }
+  abort_defunct("`as_quosureish()` is defunct as of rlang 0.3.0")
 }
 
 
