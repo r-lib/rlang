@@ -1,6 +1,12 @@
 #include "rlang.h"
 
-sexp* rlang_ns_get(const char* name);
+
+static sexp* x_sym = NULL;
+static sexp* msg_call = NULL;
+static sexp* wng_call = NULL;
+static sexp* cnd_signal_call = NULL;
+static sexp* wng_signal_call = NULL;
+static sexp* err_signal_call = NULL;
 
 
 #define BUFSIZE 8192
@@ -15,28 +21,25 @@ sexp* rlang_ns_get(const char* name);
     BUF[BUFSIZE - 1] = '\0';                    \
   }
 
-
 void r_inform(const char* fmt, ...) {
   char buf[BUFSIZE];
   INTERP(buf, fmt, ...);
 
-  sexp* buf_chr = KEEP(r_scalar_chr(buf));
-  sexp* call = KEEP(r_build_call_node(r_sym("message"), buf_chr));
-  r_eval(call, R_BaseEnv);
+  sexp* env = KEEP(r_new_environment(r_base_env, 1));
+  r_env_poke(env, x_sym, KEEP(r_scalar_chr(buf)));
+  r_eval(msg_call, env);
+
   FREE(2);
 }
 void r_warn(const char* fmt, ...) {
   char buf[BUFSIZE];
   INTERP(buf, fmt, ...);
 
-  sexp* args = KEEP(r_build_node(Rf_ScalarLogical(0), r_null));
-  r_node_poke_tag(args, r_sym("call."));
+  sexp* env = KEEP(r_new_environment(r_base_env, 1));
+  r_env_poke(env, x_sym, KEEP(r_scalar_chr(buf)));
+  r_eval(wng_call, env);
 
-  args = KEEP(r_build_node(r_scalar_chr(buf), args));
-  sexp* call = KEEP(r_build_call_node(r_sym("warning"), args));
-
-  r_eval(call, R_BaseEnv);
-  FREE(3);
+  FREE(2);
 }
 void r_abort(const char* fmt, ...) {
   char buf[BUFSIZE];
@@ -74,25 +77,25 @@ void r_warn_deprecated_once(const char* id, const char* fmt, ...) {
   char buf[BUFSIZE];
   INTERP(buf, fmt, ...);
 
-  signal_retirement(".Deprecated(msg = msg)", buf);
+  signal_retirement(".Deprecated(msg = x)", buf);
 }
 
 void r_abort_defunct(const char* fmt, ...) {
   char buf[BUFSIZE];
   INTERP(buf, fmt, ...);
 
-  signal_retirement(".Defunct(msg = msg)", buf);
+  signal_retirement(".Defunct(msg = x)", buf);
 
   r_abort("Internal error: Unexpected return after `.Defunct()`");
 }
 
 static void signal_retirement(const char* source, char* buf) {
   sexp* call = KEEP(r_parse(source));
+
   sexp* env = KEEP(r_new_environment(r_base_env, 1));
-  r_env_poke(env, r_sym("msg"), KEEP(r_scalar_chr(buf)));
+  r_env_poke(env, x_sym, KEEP(r_scalar_chr(buf)));
 
   r_eval(call, env);
-
   FREE(3);
 }
 
@@ -137,44 +140,34 @@ sexp* r_new_condition(sexp* subclass, sexp* msg, sexp* call, sexp* data) {
 }
 
 
-static sexp* cnd_signal_call = NULL;
-static sexp* msg_signal_call = NULL;
-static sexp* wng_signal_call = NULL;
-static sexp* err_signal_call = NULL;
-
-static sexp* cnd_signal_cnd_node = NULL;
+static sexp* rlang_ns_env;
 
 void r_cnd_signal(sexp* cnd) {
   sexp* call = r_null;
-  sexp* cnd_node = r_null;
 
   switch (r_cnd_type(cnd)) {
   case r_cnd_type_message:
-    call = msg_signal_call;
-    cnd_node = r_node_cdr(call);
+    call = msg_call;
     break;
   case r_cnd_type_warning:
     call = wng_signal_call;
-    cnd_node = r_node_cdr(call);
     break;
   case r_cnd_type_error:
     call = err_signal_call;
-    cnd_node = r_node_cdr(call);
     break;
   case r_cnd_type_interrupt:
     r_interrupt();
     return;
   default:
     call = cnd_signal_call;
-    cnd_node = cnd_signal_cnd_node;
     break;
   }
 
-  r_node_poke_car(cnd_node, cnd);
-  r_eval(call, r_base_env);
+  sexp* env = KEEP(r_new_environment(rlang_ns_env, 1));
+  r_env_poke(env, x_sym, cnd);
 
-  // Release `cnd`
-  r_node_poke_car(cnd_node, r_null);
+  r_eval(call, env);
+  FREE(1);
 }
 
 
@@ -244,29 +237,25 @@ enum r_condition_type r_cnd_type(sexp* cnd) {
   r_abort("`cnd` is not a condition object");
 }
 
-void r_init_library_cnd() {
-  msg_signal_call = r_build_call1(r_base_ns_get("message"), r_null);
-  r_mark_precious(msg_signal_call);
+sexp* rlang_ns_get(const char* name);
 
-  wng_signal_call = r_build_call1(r_base_ns_get("warning"), r_null);
+void r_init_library_cnd() {
+  x_sym = r_sym("x");
+
+  msg_call = r_parse("message(x)");
+  r_mark_precious(msg_call);
+
+  wng_call = r_parse("warning(x, call. = FALSE)");
+  r_mark_precious(wng_call);
+
+  wng_signal_call = r_parse("warning(x)");
   r_mark_precious(wng_signal_call);
 
-  err_signal_call = r_build_call1(r_base_ns_get("stop"), r_null);
+  err_signal_call = r_parse("stop(x)");
   r_mark_precious(err_signal_call);
 
-  // This is a handle to the node that holds the condition to signal
-  cnd_signal_cnd_node = KEEP(r_new_node(r_null, r_null));
-
-  // The signalCondition() call is wrapped with a muffle restart
-  sexp* cnd_signal_core_call = KEEP(r_build_call_node(r_base_ns_get("signalCondition"), cnd_signal_cnd_node));
-
-  sexp* cnd_signal_args;
-  cnd_signal_args = KEEP(r_new_tagged_node("rlang_muffle", rlang_ns_get("muffle"), r_null));
-  cnd_signal_args = KEEP(r_new_tagged_node("expr", cnd_signal_core_call, cnd_signal_args));
-  cnd_signal_call = KEEP(r_build_call_node(r_sym("withRestarts"), cnd_signal_args));
-
+  cnd_signal_call = r_parse("withRestarts(rlang_muffle = muffle, signalCondition(x))");
   r_mark_precious(cnd_signal_call);
-  FREE(5);
 
   deprecated_env = rlang_ns_get("deprecation_env");
 }
