@@ -1,5 +1,9 @@
 #' Coerce an object to a base type
 #'
+#' @description
+#'
+#' \Sexpr[results=rd, stage=render]{rlang:::lifecycle("questioning")}
+#'
 #' These are equivalent to the base functions (e.g. [as.logical()],
 #' [as.list()], etc), but perform coercion rather than conversion.
 #' This means they are not generic and will not call S3 conversion
@@ -62,6 +66,8 @@
 #'
 #' @inheritParams string
 #' @param x An object to coerce to a base type.
+#'
+#' @keywords internal
 #' @examples
 #' # Coercing atomic vectors removes attributes with both base R and rlang:
 #' x <- structure(TRUE, class = "foo", bar = "baz")

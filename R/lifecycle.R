@@ -123,6 +123,7 @@ upcase1 <- function(x) {
 #' * [lang_type_of()], [switch_lang()], [coerce_lang()]
 #' * [flatten()], [squash()], and their atomic vector variants
 #' * [modify()] and [prepend()]
+#' * [as_logical()], [as_character()], etc.
 #'
 #'
 #' **In the questioning stage as of rlang 0.2.0**

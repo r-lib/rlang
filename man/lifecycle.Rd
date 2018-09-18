@@ -73,6 +73,7 @@ changes.
 \item \code{\link[=lang_type_of]{lang_type_of()}}, \code{\link[=switch_lang]{switch_lang()}}, \code{\link[=coerce_lang]{coerce_lang()}}
 \item \code{\link[=flatten]{flatten()}}, \code{\link[=squash]{squash()}}, and their atomic vector variants
 \item \code{\link[=modify]{modify()}} and \code{\link[=prepend]{prepend()}}
+\item \code{\link[=as_logical]{as_logical()}}, \code{\link[=as_character]{as_character()}}, etc.
 }
 
 \strong{In the questioning stage as of rlang 0.2.0}

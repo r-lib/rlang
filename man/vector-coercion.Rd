@@ -33,6 +33,8 @@ an encoding mark. This is only declarative, no encoding
 conversion is performed.}
 }
 \description{
+\Sexpr[results=rd, stage=render]{rlang:::lifecycle("questioning")}
+
 These are equivalent to the base functions (e.g. \code{\link[=as.logical]{as.logical()}},
 \code{\link[=as.list]{as.list()}}, etc), but perform coercion rather than conversion.
 This means they are not generic and will not call S3 conversion
@@ -135,3 +137,4 @@ x <- structure(as_environment(mtcars[1:2]), class = "foobar")
 as.list.foobar <- function(x) abort("dont call me")
 as_list(x)
 }
+\keyword{internal}
