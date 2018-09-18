@@ -147,8 +147,6 @@ sexp* r_new_condition(sexp* subclass, sexp* msg, sexp* call, sexp* data) {
 }
 
 
-static sexp* rlang_ns_env;
-
 void r_cnd_signal(sexp* cnd) {
   sexp* call = r_null;
 
@@ -170,7 +168,7 @@ void r_cnd_signal(sexp* cnd) {
     break;
   }
 
-  sexp* env = KEEP(r_new_environment(rlang_ns_env, 1));
+  sexp* env = KEEP(r_new_environment(r_base_env, 1));
   r_env_poke(env, x_sym, cnd);
 
   r_eval(call, env);
@@ -261,7 +259,9 @@ void r_init_library_cnd() {
   err_signal_call = r_parse("stop(x)");
   r_mark_precious(err_signal_call);
 
-  cnd_signal_call = r_parse("withRestarts(rlang_muffle = muffle, signalCondition(x))");
+  const char* cnd_signal_source =
+    "withRestarts(rlang_muffle = function() NULL, signalCondition(x))";
+  cnd_signal_call = r_parse(cnd_signal_source);
   r_mark_precious(cnd_signal_call);
 
   deprecated_env = rlang_ns_get("deprecation_env");

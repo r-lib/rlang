@@ -232,9 +232,6 @@ cnd_call <- function(call) {
   sys.call(sys.parent(call + 1L))
 }
 
-# Used in C implementation
-muffle <- function(...) NULL
-
 
 #' Signal an error, warning, or message
 #'
