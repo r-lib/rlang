@@ -1,7 +1,7 @@
 context("dictionary")
 
 # FIXME: Port tests to data pronoun
-scoped_options(lifecycle_force_verbose_retirement = FALSE)
+scoped_options(lifecycle_disable_verbose_retirement = TRUE)
 
 test_that("can't access non-existent list members", {
 

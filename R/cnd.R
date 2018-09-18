@@ -643,7 +643,60 @@ conditionMessage.rlang_error <- function(c) {
   lines
 }
 
-warn_deprecated_once <- function(msg, id = msg) {
+#' Signal deprecation
+#'
+#' `signal_soft_deprecated()` warns only if option is set, the package
+#'  is attached, or if called from the global environment.
+#'  `warn_deprecated()` warns unconditionally. Both functions warn
+#'  only once.
+#'
+#' @param msg The deprecation message.
+#' @param id The id of the deprecation. A warning is issued only once
+#'   for each `id`. Defaults to `msg`, but you should give a unique ID
+#'   when the message is built programmatically and depends on inputs.
+#' @param package The soft-deprecation warning is forced when this
+#'   package is attached. Automatically detected from the caller
+#'   environment.
+#'
+#' @noRd
+NULL
+
+signal_soft_deprecated <- function(msg, id = msg, package = NULL) {
+  if (is_true(peek_option("lifecycle_disable_verbose_retirement"))) {
+    return(invisible(NULL))
+  }
+
+  if (is_true(peek_option("lifecycle_force_verbose_retirement")) ||
+      is_reference(caller_env(2), global_env())) {
+    warn_deprecated(msg, id)
+    return(invisible(NULL))
+  }
+
+  if (is_null(package)) {
+    top <- topenv(caller_env())
+    if (!is_namespace(top)) {
+      abort("`warn_deprecated()` must be called from a package function")
+    }
+    package <- ns_env_name(top)
+  } else {
+    stopifnot(is_string(package))
+  }
+
+  package <- paste0("package:", package)
+
+  if (package %in% search()) {
+    warn_deprecated(msg, id)
+    return(invisible(NULL))
+  }
+
+  signal(msg, "lifecycle_soft_deprecated")
+}
+
+warn_deprecated <- function(msg, id = msg) {
+  if (is_true(peek_option("lifecycle_disable_verbose_retirement"))) {
+    return(invisible(NULL))
+  }
+
   .Call(rlang_warn_deprecated_once, id, msg)
 }
 deprecation_env <- new.env(parent = emptyenv())

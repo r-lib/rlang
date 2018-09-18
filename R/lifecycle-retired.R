@@ -1,12 +1,4 @@
 
-signal_soft_deprecated <- function(msg) {
-  if (is_true(peek_option("lifecycle_force_verbose_retirement"))) {
-    warn_deprecated_once(msg)
-  }
-  invisible(NULL)
-}
-
-
 #  Stack and frames  -------------------------------------------------
 
 #' Get caller frame
@@ -902,13 +894,13 @@ is_dictionary <- function(x) {
 #' @keywords internal
 #' @export
 is_quosureish <- function(x, scoped = NULL) {
-  warn_deprecated_once("`is_quosureish()` is deprecated as of rlang 0.2.0")
+  warn_deprecated("`is_quosureish()` is deprecated as of rlang 0.2.0")
   is_formula(x, scoped = scoped, lhs = FALSE)
 }
 #' @rdname is_quosureish
 #' @export
 as_quosureish <- function(x, env = caller_env()) {
-  warn_deprecated_once("`as_quosureish()` is deprecated as of rlang 0.2.0")
+  warn_deprecated("`as_quosureish()` is deprecated as of rlang 0.2.0")
   if (is_quosureish(x)) {
     if (!is_environment(get_env(x))) {
       set_env(x, env)
@@ -1202,7 +1194,7 @@ node <- function(car, cdr = NULL) {
 #' @keywords internal
 #' @export
 as_env <- function(x, parent = NULL) {
-  signal_soft_deprecated("`is_dictionary()` is soft-deprecated as of rlang 0.2.0.")
+  signal_soft_deprecated("`as_env()` is soft-deprecated as of rlang 0.2.0.")
   as_environment(x, parent)
 }
 

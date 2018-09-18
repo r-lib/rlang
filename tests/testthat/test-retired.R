@@ -1,6 +1,6 @@
 context("retired")
 
-scoped_options(lifecycle_force_verbose_retirement = FALSE)
+scoped_options(lifecycle_disable_verbose_retirement = TRUE)
 
 test_that("parse_quosure() forwards to parse_quo()", {
   env <- env()
@@ -113,8 +113,6 @@ test_that("is_expr() forwards to is_expression()", {
 })
 
 test_that("is_quosureish() and as_quosureish() still work", {
-  expect_warning(is_quosureish(~foo), "deprecated")
-  expect_warning(as_quosureish(~foo), "deprecated")
   expect_true(is_quosureish(~foo))
   expect_false(is_quosureish(~foo, scoped = FALSE))
   expect_identical(as_quosureish(quote(foo)), quo(foo))
@@ -258,9 +256,6 @@ test_that("call frames are cleaned", {
   expect_identical(ctxt_frame_clean$fn, base::eval)
 })
 
-
-context("evaluation stacks") # ---------------------------------------
-
 test_that("ctxt_stack_callers() agrees with sys.parents()", {
   parents <- sys.parents()
   callers <- ctxt_stack_callers()
@@ -397,9 +392,6 @@ test_that("ctxt_stack() trims layers of calls", {
   expect_identical(stack, current_stack)
 })
 
-
-context("frame utils") # ---------------------------------------------
-
 test_that("frame_position() returns correct position", {
   fn <- function() {
     env <- environment()
@@ -446,4 +438,51 @@ test_that("call is not modified in place", {
 
 test_that("finds correct env type - frame", {
   expect_identical(identity(env_type(ctxt_frame(2)$env)), "frame")
+})
+
+test_that("retired _len() ctors still work", {
+  scoped_options(lifecycle_force_verbose_retirement = FALSE)
+  expect_identical(lgl_len(2), new_logical(2))
+  expect_identical(int_len(2), new_integer(2))
+  expect_identical(dbl_len(2), new_double(2))
+  expect_identical(chr_len(2), new_character(2))
+  expect_identical(cpl_len(2), new_complex(2))
+  expect_identical(raw_len(2), new_raw(2))
+  expect_identical(bytes_len(2), new_raw(2))
+  expect_identical(list_len(2), new_list(2))
+})
+
+test_that("retired _along() ctors still work", {
+  scoped_options(lifecycle_force_verbose_retirement = FALSE)
+  expect_identical(lgl_along(1:2), new_logical_along(1:2))
+  expect_identical(int_along(1:2), new_integer_along(1:2))
+  expect_identical(dbl_along(1:2), new_double_along(1:2))
+  expect_identical(chr_along(1:2), new_character_along(1:2))
+  expect_identical(cpl_along(1:2), new_complex_along(1:2))
+  expect_identical(raw_along(1:2), new_raw_along(1:2))
+  expect_identical(bytes_along(1:2), new_raw_along(1:2))
+  expect_identical(list_along(1:2), new_list_along(1:2))
+})
+
+test_that("whole scope is purged", {
+  scoped_options(lifecycle_force_verbose_retirement = FALSE)
+
+  outside <- child_env(NULL, important = TRUE)
+  top <- child_env(outside, foo = "bar", hunoz = 1)
+  mid <- child_env(top, bar = "baz", hunoz = 2)
+
+  data_mask_objects <- list(
+    .top_env = top,
+    .env = 1,
+    `~` = 2,
+    .__tidyeval_data_mask__. = env()
+  )
+  bottom <- child_env(mid, !!! data_mask_objects)
+
+  overscope_clean(bottom)
+
+  expect_identical(names(bottom), character(0))
+  expect_identical(names(mid), character(0))
+  expect_identical(names(top), character(0))
+  expect_identical(names(outside), "important")
 })

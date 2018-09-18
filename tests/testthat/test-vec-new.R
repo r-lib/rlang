@@ -123,27 +123,3 @@ test_that("vector _along() ctors pick up names", {
   expect_identical(new_raw_along(x, toupper), set_names(raw(2), c("A", "B")))
   expect_identical(new_list_along(x, toupper), list(A = NULL, B = NULL))
 })
-
-test_that("retired _len() ctors still work", {
-  scoped_options(lifecycle_force_verbose_retirement = FALSE)
-  expect_identical(lgl_len(2), new_logical(2))
-  expect_identical(int_len(2), new_integer(2))
-  expect_identical(dbl_len(2), new_double(2))
-  expect_identical(chr_len(2), new_character(2))
-  expect_identical(cpl_len(2), new_complex(2))
-  expect_identical(raw_len(2), new_raw(2))
-  expect_identical(bytes_len(2), new_raw(2))
-  expect_identical(list_len(2), new_list(2))
-})
-
-test_that("retired _along() ctors still work", {
-  scoped_options(lifecycle_force_verbose_retirement = FALSE)
-  expect_identical(lgl_along(1:2), new_logical_along(1:2))
-  expect_identical(int_along(1:2), new_integer_along(1:2))
-  expect_identical(dbl_along(1:2), new_double_along(1:2))
-  expect_identical(chr_along(1:2), new_character_along(1:2))
-  expect_identical(cpl_along(1:2), new_complex_along(1:2))
-  expect_identical(raw_along(1:2), new_raw_along(1:2))
-  expect_identical(bytes_along(1:2), new_raw_along(1:2))
-  expect_identical(list_along(1:2), new_list_along(1:2))
-})

@@ -175,29 +175,6 @@ test_that("inner formulas are rechained to evaluation env", {
   expect_true(env_inherits(env$eval_env2, get_env(f2)))
 })
 
-test_that("whole scope is purged", {
-  scoped_options(lifecycle_force_verbose_retirement = FALSE)
-
-  outside <- child_env(NULL, important = TRUE)
-  top <- child_env(outside, foo = "bar", hunoz = 1)
-  mid <- child_env(top, bar = "baz", hunoz = 2)
-
-  data_mask_objects <- list(
-    .top_env = top,
-    .env = 1,
-    `~` = 2,
-    .__tidyeval_data_mask__. = env()
-  )
-  bottom <- child_env(mid, !!! data_mask_objects)
-
-  overscope_clean(bottom)
-
-  expect_identical(names(bottom), character(0))
-  expect_identical(names(mid), character(0))
-  expect_identical(names(top), character(0))
-  expect_identical(names(outside), "important")
-})
-
 test_that("empty quosure self-evaluates", {
   quo <- quo(is_missing(!! quo()))
   expect_true(eval_tidy(quo))

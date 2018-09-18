@@ -46,7 +46,7 @@ with_verbose_retirement <- function(expr) {
   with_options(lifecycle_force_verbose_retirement = TRUE, expr)
 }
 with_non_verbose_retirement <- function(expr) {
-  with_options(lifecycle_force_verbose_retirement = NULL, expr)
+  with_options(lifecycle_disable_verbose_retirement = TRUE, expr)
 }
 
 options(lifecycle_force_verbose_retirement = TRUE)

@@ -297,7 +297,7 @@ delayedAssign(".data", as_data_pronoun(list()))
 #' eval_tidy(quote(.fns$c(.data$a, .data$b, .data$c)), data = mask)
 as_data_mask <- function(data, parent = NULL) {
   if (!is_null(parent)) {
-    warn_deprecated_once(paste_line(
+    warn_deprecated(paste_line(
       "The `parent` argument of `as_data_mask()` is deprecated.",
       "The parent of the data mask is determined from either:",
       "",
@@ -325,7 +325,7 @@ as_data_pronoun <- function(data) {
 #' @export
 new_data_mask <- function(bottom, top = bottom, parent = NULL) {
   if (!is_null(parent)) {
-    warn_deprecated_once(paste_line(
+    warn_deprecated(paste_line(
       "The `parent` argument of `new_data_mask()` is deprecated.",
       "The parent of the data mask is determined from either:",
       "",
