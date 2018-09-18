@@ -354,3 +354,9 @@ test_that("always keep very first frame as part of backtrace branch", {
   trace <- gen()
   expect_known_trace_output(trace, "test-trace-backtrace-branch-first-frame.txt")
 })
+
+test_that("can take the str() of a trace (#615)", {
+  e <- current_env()
+  f <- function(n) if (n < 10) f(n - 1) else trace_back(e)
+  expect_output(expect_no_error(str(f(10))))
+})

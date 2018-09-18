@@ -389,3 +389,8 @@ test_that("errors are saved", {
 
   expect_true(inherits_all(last_error(), c("bar", "rlang_error")))
 })
+
+test_that("can take the str() of an rlang error (#615)", {
+  err <- catch_cnd(abort("foo"))
+  expect_output(expect_no_error(str(err)))
+})

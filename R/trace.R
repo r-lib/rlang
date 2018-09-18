@@ -284,6 +284,11 @@ length.rlang_trace <- function(x) {
   new_trace(calls, parents, envs)
 }
 
+#' @export
+str.rlang_trace <- function(object, ...) {
+  str(unclass(object), ...)
+}
+
 # For internal use only
 c.rlang_trace <- function(...) {
   traces <- list(...)
