@@ -10,7 +10,7 @@ caller_env(n = 1)
 current_env()
 }
 \arguments{
-\item{n}{The number of generations to go back.}
+\item{n}{Number of frames to go back.}
 }
 \description{
 \itemize{

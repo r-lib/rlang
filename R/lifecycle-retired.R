@@ -9,7 +9,12 @@ signal_soft_deprecated <- function(msg) {
 
 #  Stack and frames  -------------------------------------------------
 
-#' @rdname caller_frame
+#' Get caller frame
+#'
+#' \Sexpr[results=rd, stage=render]{rlang:::lifecycle("soft-deprecated")}
+#'
+#' @param n Number of frames to go back.
+#' @keywords internal
 #' @export
 caller_frame <- function(n = 1) {
   signal_soft_deprecated("`caller_frame()` is soft-deprecated as of rlang 0.3.0.")
