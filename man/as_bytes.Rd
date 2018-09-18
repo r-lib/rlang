@@ -13,6 +13,8 @@ as_bytes(x)
 A raw vector of bytes.
 }
 \description{
+\Sexpr[results=rd, stage=render]{rlang:::lifecycle("experimental")}
+
 This currently only works with strings, and returns its hexadecimal
 representation.
 }

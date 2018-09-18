@@ -37,9 +37,8 @@ perform non-local jumps.
 \section{Life cycle}{
 
 
-The support for \code{frame} object is experimental. The stack and frame
-objects are likely to be moved from rlang to another package.
-Please pass simple environments to \code{return_from()} and \code{return_to()}.
+The support for \code{frame} object is soft-deprecated.  Please pass
+simple environments to \code{return_from()} and \code{return_to()}.
 }
 
 \examples{

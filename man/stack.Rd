@@ -40,6 +40,7 @@ non-standard frames. If \code{TRUE}, suboptimal call-stack entries by
 the stack. See \code{\link[=stack_trim]{stack_trim()}} and examples.}
 }
 \description{
+\Sexpr[results=rd, stage=render]{rlang:::lifecycle("soft-deprecated")}
 \Sexpr[results=rd, stage=render]{rlang:::lifecycle("questioning")}
 
 The \code{eval_} and \code{call_} families of functions provide a replacement
@@ -84,10 +85,7 @@ frame as well. This way, \code{call_stack(call_depth())} is the same as
 \section{Life cycle}{
 
 
-These functions are in the questioning stage. We are no longer
-convinced they belong in rlang as they are mostly for REPL
-interaction and runtime inspection rather than function
-development.
+These functions are soft-deprecated and replaced by \code{\link[=trace_back]{trace_back()}}.
 }
 
 \examples{

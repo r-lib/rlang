@@ -1,6 +1,9 @@
 
 # rlang 0.2.2.9000
 
+* The frame and stack API is soft-deprecated. Some of the
+  functionality has been replaced by `trace_back()`.
+
 * `prepend()` and `modify()` are in the questioning stage, as well as
   `as_logical()`, `as_character()`, etc. We are still figuring out
   what vector tools belong in rlang.

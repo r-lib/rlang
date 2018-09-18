@@ -16,5 +16,5 @@ is_call_stack(x)
 \item{x}{An object to test}
 }
 \description{
-\Sexpr[results=rd, stage=render]{rlang:::lifecycle("questioning")}
+\Sexpr[results=rd, stage=render]{rlang:::lifecycle("soft-deprecated")}
 }

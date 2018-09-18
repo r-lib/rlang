@@ -11,6 +11,10 @@ new_bytes <- function(x) {
 
 #' Coerce to a raw vector
 #'
+#' @description
+#'
+#' \Sexpr[results=rd, stage=render]{rlang:::lifecycle("experimental")}
+#'
 #' This currently only works with strings, and returns its hexadecimal
 #' representation.
 #'

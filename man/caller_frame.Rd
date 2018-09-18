@@ -16,6 +16,7 @@ current_fn()
 \item{n}{The number of generations to go back.}
 }
 \description{
+\Sexpr[results=rd, stage=render]{rlang:::lifecycle("experimental")}
 \itemize{
 \item The current frame is the execution context of the function that
 is currently being evaluated.
@@ -25,6 +26,13 @@ called the function currently being evaluated.
 
 See the \link[=stack]{call stack} topic for more information.
 }
+\section{Life cycle}{
+
+
+These functions are experimental. In addition \code{caller_frame()} is
+soft-deprecated.
+}
+
 \seealso{
 \code{\link[=caller_env]{caller_env()}} and \code{\link[=current_env]{current_env()}}
 }
