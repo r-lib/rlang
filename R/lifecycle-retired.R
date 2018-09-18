@@ -643,7 +643,24 @@ stack_trim <- function(stack, n = 1) {
 }
 
 
-#  Misc  -------------------------------------------------------------
+#  Tidy eval  --------------------------------------------------------
+
+#' Unquote as a bare expression
+#'
+#' @description
+#'
+#' \Sexpr[results=rd, stage=render]{rlang:::lifecycle("defunct")}
+#'
+#' `UQE()` is defunct as of rlang 0.3.0 in order to simplify the
+#' quasiquotation syntax. You can replace its use by a combination of
+#' `!!` and `get_expr()`: `!!get_expr(x)` is equivalent to `UQE(x)`.
+#'
+#' @param x Object to unquote.
+#' @keywords internal
+#' @export
+UQE <- function(x) {
+  abort_defunct(msg = "`UQE()` is defunct. Please use `!!get_expr(x)`")
+}
 
 #' Parse text into a quosure
 #'
@@ -694,6 +711,214 @@ quo_expr <- function(quo, warn = FALSE) {
   ))
   quo_squash(quo, warn = warn)
 }
+
+#' Create an overscope
+#'
+#' @description
+#'
+#' \Sexpr[results=rd, stage=render]{rlang:::lifecycle("soft-deprecated")}
+#'
+#' These functions have been soft-deprecated in rlang 0.2.0. Please
+#' use [as_data_mask()] and [new_data_mask()] instead. We no longer
+#' require the mask to be cleaned up so `overscope_clean()` does not
+#' have a replacement.
+#'
+#' @inheritParams as_data_mask
+#' @param quo A [quosure][quotation].
+#'
+#' @keywords internal
+#' @export
+as_overscope <- function(quo, data = NULL) {
+  signal_soft_deprecated(paste_line(
+    "`as_overscope()` is soft-deprecated as of rlang 0.2.0.",
+    "Please use `as_data_mask()` instead"
+  ))
+  as_data_mask(data, quo_get_env(quo))
+}
+#' @rdname as_overscope
+#' @param enclosure The `parent` argument of [new_data_mask()].
+#' @export
+new_overscope <- function(bottom, top = NULL, enclosure = NULL) {
+  signal_soft_deprecated(paste_line(
+    "`new_overscope()` is soft-deprecated as of rlang 0.2.0.",
+    "Please use `new_data_mask()` instead"
+  ))
+  new_data_mask(bottom, top, enclosure)
+}
+#' @rdname as_overscope
+#' @param overscope A data mask.
+#' @export
+overscope_clean <- function(overscope) {
+  signal_soft_deprecated("`overscope_clean()` is soft-deprecated as of rlang 0.2.0.")
+  invisible(.Call(rlang_data_mask_clean, overscope))
+}
+
+#' Tidy evaluation in a custom environment
+#'
+#' @description
+#'
+#' \Sexpr[results=rd, stage=render]{rlang:::lifecycle("defunct")}
+#'
+#' This function is defunct as of rlang 0.3.0.
+#'
+#' @inheritParams eval_tidy
+#' @inheritParams as_data_mask
+#'
+#' @keywords internal
+#' @export
+eval_tidy_ <- function(expr, bottom, top = NULL, env = caller_env()) {
+  abort_defunct("`eval_tidy_()` is defunct as of rlang 0.3.0. Use `eval_tidy()` instead.")
+}
+#' Evaluate next quosure in a data mask
+#'
+#' @description
+#'
+#' \Sexpr[results=rd, stage=render]{rlang:::lifecycle("soft-deprecated")}
+#'
+#' `overscope_eval_next()` is soft-deprecated as of rlang
+#' 0.2.0. Please use `eval_tidy()` to which you can now supply an
+#' overscope.
+#'
+#' @param quo A quosure.
+#' @param overscope A valid overscope containing bindings for `~`,
+#'   `.top_env` and `_F` and whose parents contain overscoped bindings
+#'   for tidy evaluation.
+#' @param env The lexical enclosure in case `quo` is not a validly
+#'   scoped quosure. This is the [base environment][base_env] by
+#'   default.
+#'
+#' @keywords internal
+#' @export
+overscope_eval_next <- function(overscope, quo, env = base_env()) {
+  signal_soft_deprecated(paste_line(
+    "`overscope_eval_next()` is soft-deprecated as of rlang 0.2.0.",
+    "Please use `eval_tidy()` with a data mask instead"
+  ))
+  .Call(rlang_eval_tidy, quo, overscope, environment())
+}
+
+
+#' Create a dictionary
+#'
+#' @description
+#'
+#' \Sexpr[results=rd, stage=render]{rlang:::lifecycle("soft-deprecated")}
+#'
+#' The dictionary class was soft-deprecated in rlang 0.2.0. It was
+#' trying to be too general and did not prove useful. Please use
+#' [as_data_pronoun()] or your own pronoun class instead.
+#'
+#' @param x An object for which you want to find associated data.
+#' @param lookup_msg An error message when your data source is
+#'   accessed inappropriately (by position rather than name).
+#' @param read_only Whether users can replace elements of the
+#'   dictionary.
+#'
+#' @name dictionary
+#' @keywords internal
+#' @export
+as_dictionary <- function(x, lookup_msg = NULL, read_only = FALSE) {
+  signal_soft_deprecated(paste_line(
+    "`as_dictionary()` is soft-deprecated as of rlang 0.2.0.",
+    "Please use `as_data_pronoun()` instead"
+  ))
+  UseMethod("as_dictionary")
+}
+#' @export
+as_dictionary.default <- function(x, lookup_msg = NULL, read_only = FALSE) {
+  x <- discard_unnamed(x)
+  check_dictionaryish(x)
+  new_dictionary(as.list(x), lookup_msg, read_only)
+}
+#' @export
+as_dictionary.dictionary <- function(x, lookup_msg = NULL, read_only = FALSE) {
+  dict <- unclass_data_pronoun(x)
+  dict$lookup_msg <- lookup_msg %||% x$lookup_msg
+  dict$read_only <- read_only
+  set_attrs(dict, class = class(x))
+}
+#' @export
+as_dictionary.NULL <- function(x, lookup_msg = NULL, read_only = FALSE) {
+  new_dictionary(list(), lookup_msg, read_only)
+}
+#' @export
+as_dictionary.environment <- function(x, lookup_msg = NULL, read_only = FALSE) {
+  lookup_msg <- lookup_msg %||% "Object `%s` not found in environment"
+  new_dictionary(x, lookup_msg, read_only)
+}
+#' @export
+as_dictionary.data.frame <- function(x, lookup_msg = NULL, read_only = FALSE) {
+  check_dictionaryish(x)
+  lookup_msg <- lookup_msg %||% "Column `%s` not found in data"
+  new_dictionary(x, lookup_msg, read_only)
+}
+
+check_dictionaryish <- function(x) {
+  if (!length(x)) {
+    return(NULL)
+  }
+  if (!is_named(x)) {
+    abort("Data must be uniquely named but some variables are unnamed")
+  }
+  nms <- names(x)
+  dups <- duplicated(nms)
+  if (any(dups)) {
+    dups <- unique(nms[dups])
+    dups <- chr_enumerate(chr_quoted(dups), final = "and")
+    abort(paste0(
+      "Data must be uniquely named but the following variables have duplicates: ", dups
+    ))
+  }
+}
+new_dictionary <- function(x, lookup_msg, read_only) {
+  .Call(rlang_new_data_pronoun, x, lookup_msg, read_only)
+}
+
+#' @rdname dictionary
+#' @export
+is_dictionary <- function(x) {
+  signal_soft_deprecated("`is_dictionary()` is soft-deprecated as of rlang 0.2.0.")
+  inherits(x, "rlang_data_pronoun")
+}
+
+#' Test for or coerce to quosure-like objects
+#'
+#' @description
+#'
+#' \Sexpr[results=rd, stage=render]{rlang:::lifecycle("deprecated")}
+#'
+#' These functions are deprecated as of rlang 0.2.0 because they make
+#' the assumption that quosures are a subtype of formula, which we are
+#' now considering to be an implementation detail.
+#'
+#' @inheritParams is_formula
+#' @inheritParams as_quosure
+#'
+#' @keywords internal
+#' @export
+is_quosureish <- function(x, scoped = NULL) {
+  warn_deprecated_once("`is_quosureish()` is deprecated as of rlang 0.2.0")
+  is_formula(x, scoped = scoped, lhs = FALSE)
+}
+#' @rdname is_quosureish
+#' @export
+as_quosureish <- function(x, env = caller_env()) {
+  warn_deprecated_once("`as_quosureish()` is deprecated as of rlang 0.2.0")
+  if (is_quosureish(x)) {
+    if (!is_environment(get_env(x))) {
+      set_env(x, env)
+    }
+    x
+  } else if (is_frame(x)) {
+    new_quosure(x$expr, sys_frame(x$caller_pos))
+  } else {
+    new_quosure(get_expr(x), get_env(x, env))
+  }
+}
+
+
+
+#  Expressions  ------------------------------------------------------
 
 #' Create a call
 #'
@@ -868,190 +1093,29 @@ lang_tail <- function(lang) {
   node_cdr(call)
 }
 
-#' Create an overscope
+#' Is an object an expression?
 #'
 #' @description
 #'
 #' \Sexpr[results=rd, stage=render]{rlang:::lifecycle("soft-deprecated")}
 #'
-#' These functions have been soft-deprecated in rlang 0.2.0. Please
-#' use [as_data_mask()] and [new_data_mask()] instead. We no longer
-#' require the mask to be cleaned up so `overscope_clean()` does not
-#' have a replacement.
+#' This function was soft-deprecated and renamed to [is_expression()]
+#' in rlang 0.2.0. This is for consistency with other type predicates
+#' which are not abbreviated.
 #'
-#' @inheritParams as_data_mask
-#' @param quo A [quosure][quotation].
-#'
+#' @inheritParams is_expression
 #' @keywords internal
 #' @export
-as_overscope <- function(quo, data = NULL) {
+is_expr <- function(x) {
   signal_soft_deprecated(paste_line(
-    "`as_overscope()` is soft-deprecated as of rlang 0.2.0.",
-    "Please use `as_data_mask()` instead"
+    "`is_expr()` is soft-deprecated as of rlang 0.2.0.",
+    "Please use `is_expression()` instead"
   ))
-  as_data_mask(data, quo_get_env(quo))
-}
-#' @rdname as_overscope
-#' @param enclosure The `parent` argument of [new_data_mask()].
-#' @export
-new_overscope <- function(bottom, top = NULL, enclosure = NULL) {
-  signal_soft_deprecated(paste_line(
-    "`new_overscope()` is soft-deprecated as of rlang 0.2.0.",
-    "Please use `new_data_mask()` instead"
-  ))
-  new_data_mask(bottom, top, enclosure)
-}
-#' @rdname as_overscope
-#' @param overscope A data mask.
-#' @export
-overscope_clean <- function(overscope) {
-  signal_soft_deprecated("`overscope_clean()` is soft-deprecated as of rlang 0.2.0.")
-  invisible(.Call(rlang_data_mask_clean, overscope))
-}
-
-#' Tidy evaluation in a custom environment
-#'
-#' @description
-#'
-#' \Sexpr[results=rd, stage=render]{rlang:::lifecycle("defunct")}
-#'
-#' This function is defunct as of rlang 0.3.0.
-#'
-#' @inheritParams eval_tidy
-#' @inheritParams as_data_mask
-#'
-#' @keywords internal
-#' @export
-eval_tidy_ <- function(expr, bottom, top = NULL, env = caller_env()) {
-  abort_defunct("`eval_tidy_()` is defunct as of rlang 0.3.0. Use `eval_tidy()` instead.")
-}
-#' Evaluate next quosure in a data mask
-#'
-#' @description
-#'
-#' \Sexpr[results=rd, stage=render]{rlang:::lifecycle("soft-deprecated")}
-#'
-#' `overscope_eval_next()` is soft-deprecated as of rlang
-#' 0.2.0. Please use `eval_tidy()` to which you can now supply an
-#' overscope.
-#'
-#' @param quo A quosure.
-#' @param overscope A valid overscope containing bindings for `~`,
-#'   `.top_env` and `_F` and whose parents contain overscoped bindings
-#'   for tidy evaluation.
-#' @param env The lexical enclosure in case `quo` is not a validly
-#'   scoped quosure. This is the [base environment][base_env] by
-#'   default.
-#'
-#' @keywords internal
-#' @export
-overscope_eval_next <- function(overscope, quo, env = base_env()) {
-  signal_soft_deprecated(paste_line(
-    "`overscope_eval_next()` is soft-deprecated as of rlang 0.2.0.",
-    "Please use `eval_tidy()` with a data mask instead"
-  ))
-  .Call(rlang_eval_tidy, quo, overscope, environment())
+  is_expression(x)
 }
 
 
-#' Create a dictionary
-#'
-#' @description
-#'
-#' \Sexpr[results=rd, stage=render]{rlang:::lifecycle("soft-deprecated")}
-#'
-#' The dictionary class was soft-deprecated in rlang 0.2.0. It was
-#' trying to be too general and did not prove useful. Please use
-#' [as_data_pronoun()] or your own pronoun class instead.
-#'
-#' @param x An object for which you want to find associated data.
-#' @param lookup_msg An error message when your data source is
-#'   accessed inappropriately (by position rather than name).
-#' @param read_only Whether users can replace elements of the
-#'   dictionary.
-#'
-#' @name dictionary
-#' @keywords internal
-#' @export
-as_dictionary <- function(x, lookup_msg = NULL, read_only = FALSE) {
-  signal_soft_deprecated(paste_line(
-    "`as_dictionary()` is soft-deprecated as of rlang 0.2.0.",
-    "Please use `as_data_pronoun()` instead"
-  ))
-  UseMethod("as_dictionary")
-}
-#' @export
-as_dictionary.default <- function(x, lookup_msg = NULL, read_only = FALSE) {
-  x <- discard_unnamed(x)
-  check_dictionaryish(x)
-  new_dictionary(as.list(x), lookup_msg, read_only)
-}
-#' @export
-as_dictionary.dictionary <- function(x, lookup_msg = NULL, read_only = FALSE) {
-  dict <- unclass_data_pronoun(x)
-  dict$lookup_msg <- lookup_msg %||% x$lookup_msg
-  dict$read_only <- read_only
-  set_attrs(dict, class = class(x))
-}
-#' @export
-as_dictionary.NULL <- function(x, lookup_msg = NULL, read_only = FALSE) {
-  new_dictionary(list(), lookup_msg, read_only)
-}
-#' @export
-as_dictionary.environment <- function(x, lookup_msg = NULL, read_only = FALSE) {
-  lookup_msg <- lookup_msg %||% "Object `%s` not found in environment"
-  new_dictionary(x, lookup_msg, read_only)
-}
-#' @export
-as_dictionary.data.frame <- function(x, lookup_msg = NULL, read_only = FALSE) {
-  check_dictionaryish(x)
-  lookup_msg <- lookup_msg %||% "Column `%s` not found in data"
-  new_dictionary(x, lookup_msg, read_only)
-}
-
-check_dictionaryish <- function(x) {
-  if (!length(x)) {
-    return(NULL)
-  }
-  if (!is_named(x)) {
-    abort("Data must be uniquely named but some variables are unnamed")
-  }
-  nms <- names(x)
-  dups <- duplicated(nms)
-  if (any(dups)) {
-    dups <- unique(nms[dups])
-    dups <- chr_enumerate(chr_quoted(dups), final = "and")
-    abort(paste0(
-      "Data must be uniquely named but the following variables have duplicates: ", dups
-    ))
-  }
-}
-new_dictionary <- function(x, lookup_msg, read_only) {
-  .Call(rlang_new_data_pronoun, x, lookup_msg, read_only)
-}
-
-#' @rdname dictionary
-#' @export
-is_dictionary <- function(x) {
-  signal_soft_deprecated("`is_dictionary()` is soft-deprecated as of rlang 0.2.0.")
-  inherits(x, "rlang_data_pronoun")
-}
-
-#' Coerce to an environment
-#'
-#' @description
-#'
-#' \Sexpr[results=rd, stage=render]{rlang:::lifecycle("soft-deprecated")}
-#'
-#' This function is soft-deprecated as it was renamed to
-#' [as_environment()] in rlang 0.2.0.
-#'
-#' @keywords internal
-#' @export
-as_env <- function(x, parent = NULL) {
-  signal_soft_deprecated("`is_dictionary()` is soft-deprecated as of rlang 0.2.0.")
-  as_environment(x, parent)
-}
+#  Nodes  ------------------------------------------------------------
 
 #' Mutate node components
 #'
@@ -1108,25 +1172,33 @@ mut_node_tag <- function(x, newtag) {
   invisible(.Call(rlang_node_poke_tag, x, newtag))
 }
 
-#' Is an object an expression?
+#' @rdname vector-old-ctors
+#' @export
+node <- function(car, cdr = NULL) {
+  signal_soft_deprecated(paste_line(
+    "`node()` is soft-deprecated as of rlang 0.2.0.",
+    "Please use `new_node()` instead"
+  ))
+  new_node(car, cdr)
+}
+
+
+#  Environments  -----------------------------------------------------
+
+#' Coerce to an environment
 #'
 #' @description
 #'
 #' \Sexpr[results=rd, stage=render]{rlang:::lifecycle("soft-deprecated")}
 #'
-#' This function was soft-deprecated and renamed to [is_expression()]
-#' in rlang 0.2.0. This is for consistency with other type predicates
-#' which are not abbreviated.
+#' This function is soft-deprecated as it was renamed to
+#' [as_environment()] in rlang 0.2.0.
 #'
-#' @inheritParams is_expression
 #' @keywords internal
 #' @export
-is_expr <- function(x) {
-  signal_soft_deprecated(paste_line(
-    "`is_expr()` is soft-deprecated as of rlang 0.2.0.",
-    "Please use `is_expression()` instead"
-  ))
-  is_expression(x)
+as_env <- function(x, parent = NULL) {
+  signal_soft_deprecated("`is_dictionary()` is soft-deprecated as of rlang 0.2.0.")
+  as_environment(x, parent)
 }
 
 #' Is an object an environment?
@@ -1161,42 +1233,7 @@ is_bare_env <- function(x) {
 }
 
 
-# Deprecated ---------------------------------------------------------
-
-#' Test for or coerce to quosure-like objects
-#'
-#' @description
-#'
-#' \Sexpr[results=rd, stage=render]{rlang:::lifecycle("deprecated")}
-#'
-#' These functions are deprecated as of rlang 0.2.0 because they make
-#' the assumption that quosures are a subtype of formula, which we are
-#' now considering to be an implementation detail.
-#'
-#' @inheritParams is_formula
-#' @inheritParams as_quosure
-#'
-#' @keywords internal
-#' @export
-is_quosureish <- function(x, scoped = NULL) {
-  warn_deprecated_once("`is_quosureish()` is deprecated as of rlang 0.2.0")
-  is_formula(x, scoped = scoped, lhs = FALSE)
-}
-#' @rdname is_quosureish
-#' @export
-as_quosureish <- function(x, env = caller_env()) {
-  warn_deprecated_once("`as_quosureish()` is deprecated as of rlang 0.2.0")
-  if (is_quosureish(x)) {
-    if (!is_environment(get_env(x))) {
-      set_env(x, env)
-    }
-    x
-  } else if (is_frame(x)) {
-    new_quosure(x$expr, sys_frame(x$caller_pos))
-  } else {
-    new_quosure(get_expr(x), get_env(x, env))
-  }
-}
+#  Vectors  ----------------------------------------------------------
 
 #' Retired vector construction by length
 #'
@@ -1359,15 +1396,9 @@ list_along <- function(.x) {
   ))
   new_list_along(.x, NULL)
 }
-#' @rdname vector-old-ctors
-#' @export
-node <- function(car, cdr = NULL) {
-  signal_soft_deprecated(paste_line(
-    "`node()` is soft-deprecated as of rlang 0.2.0.",
-    "Please use `new_node()` instead"
-  ))
-  new_node(car, cdr)
-}
+
+
+#  Attributes  -------------------------------------------------------
 
 #' Add attributes to an object
 #'
@@ -1451,21 +1482,3 @@ set_attrs_impl <- function(.x, ...) {
 }
 set_attrs_null <- list(NULL)
 names(set_attrs_null) <- ""
-
-
-#' Unquote as a bare expression
-#'
-#' @description
-#'
-#' \Sexpr[results=rd, stage=render]{rlang:::lifecycle("defunct")}
-#'
-#' `UQE()` is defunct as of rlang 0.3.0 in order to simplify the
-#' quasiquotation syntax. You can replace its use by a combination of
-#' `!!` and `get_expr()`: `!!get_expr(x)` is equivalent to `UQE(x)`.
-#'
-#' @param x Object to unquote.
-#' @keywords internal
-#' @export
-UQE <- function(x) {
-  abort_defunct(msg = "`UQE()` is defunct. Please use `!!get_expr(x)`")
-}
