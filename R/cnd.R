@@ -444,11 +444,11 @@ signal <- function(message, .subclass, ..., call = NULL) {
 }
 validate_signal_args <- function(msg, type, env = parent.frame()) {
   if (!missing(msg)) {
-    warn("`msg` has been renamed to `message` and is deprecated as of rlang 0.3.0")
+    warn_deprecated("`msg` has been renamed to `message` and is deprecated as of rlang 0.3.0")
     env$message <- msg
   }
   if (!missing(type)) {
-    warn("`type` has been renamed to `.subclass` and is deprecated as of rlang 0.3.0")
+    warn_deprecated("`type` has been renamed to `.subclass` and is deprecated as of rlang 0.3.0")
     env$.subclass <- type
   }
 }
@@ -685,7 +685,7 @@ signal_soft_deprecated <- function(msg, id = msg, package = NULL) {
   if (is_null(package)) {
     top <- topenv(caller_env())
     if (!is_namespace(top)) {
-      abort("`warn_deprecated()` must be called from a package function")
+      abort("`signal_soft_deprecated()` must be called from a package function")
     }
     package <- ns_env_name(top)
   } else {
