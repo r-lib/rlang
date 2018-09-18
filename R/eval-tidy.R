@@ -302,9 +302,7 @@ as_data_mask <- function(data, parent = NULL) {
       "The parent of the data mask is determined from either:",
       "",
       "  * The `env` argument of `eval_tidy()`",
-      "  * Quosure environments when applicable",
-      "",
-      "This warning is displayed once per session."
+      "  * Quosure environments when applicable"
     ))
   }
   .Call(rlang_as_data_mask, data)
@@ -330,9 +328,7 @@ new_data_mask <- function(bottom, top = bottom, parent = NULL) {
       "The parent of the data mask is determined from either:",
       "",
       "  * The `env` argument of `eval_tidy()`",
-      "  * Quosure environments when applicable",
-      "",
-      "This warning is displayed once per session."
+      "  * Quosure environments when applicable"
     ))
   }
   .Call(rlang_new_data_mask, bottom, top)

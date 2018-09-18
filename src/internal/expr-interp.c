@@ -83,9 +83,7 @@ void signal_namespaced_uq_deprecation() {
     "  rlang::expr(mean(UQ(var) * 100))\n"
     "\n"
     "  # Good:\n"
-    "  rlang::expr(mean(!!var * 100))\n"
-    "\n"
-    "This warning is displayed once per session."
+    "  rlang::expr(mean(!!var * 100))"
   );
 }
 void signal_namespaced_uqs_deprecation() {
@@ -100,9 +98,7 @@ void signal_namespaced_uqs_deprecation() {
     "  rlang::expr(mean(UQS(args)))\n"
     "\n"
     "  # Good:\n"
-    "  rlang::expr(mean(!!!args))\n"
-    "\n"
-    "This warning is displayed once per session."
+    "  rlang::expr(mean(!!!args))"
   );
 }
 
