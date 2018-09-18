@@ -1,9 +1,21 @@
 #' Flatten or squash a list of lists into a simpler vector
 #'
+#' @description
+#'
+#' \Sexpr[results=rd, stage=render]{rlang:::lifecycle("questioning")}
+#'
 #' `flatten()` removes one level hierarchy from a list, while
 #' `squash()` removes all levels. These functions are similar to
 #' [unlist()] but they are type-stable so you always know what the
 #' type of the output is.
+#'
+#'
+#' @section Life cycle:
+#'
+#' These functions are in the questioning stage. They have slightly
+#' different semantics than the flattening functions in purrr and we
+#' are currently rethinking our approach to flattening with the new
+#' typing facilities of the vctrs package.
 #'
 #' @param x A list to flatten or squash. The contents of the list can
 #'   be anything for unsuffixed functions `flatten()` and `squash()`
@@ -14,6 +26,7 @@
 #'   double vector, and `flatten_chr()` a character vector. Similarly
 #'   for `squash()` and the typed variants (`squash_lgl()` etc).
 #' @export
+#' @keywords internal
 #' @examples
 #' x <- replicate(2, sample(4), simplify = FALSE)
 #' x
