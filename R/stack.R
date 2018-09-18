@@ -2,6 +2,8 @@
 #'
 #' @description
 #'
+#' \Sexpr[results=rd, stage=render]{rlang:::lifecycle("experimental")}
+#'
 #' * The current frame is the execution context of the function that
 #'   is currently being evaluated.
 #'
@@ -9,6 +11,12 @@
 #'   called the function currently being evaluated.
 #'
 #' See the [call stack][stack] topic for more information.
+#'
+#'
+#' @section Life cycle:
+#'
+#' These functions are experimental. In addition `caller_frame()` is
+#' soft-deprecated.
 #'
 #' @param n The number of generations to go back.
 #'
@@ -32,6 +40,7 @@ current_fn <- function() {
 #'
 #' @description
 #'
+#' \Sexpr[results=rd, stage=render]{rlang:::lifecycle("soft-deprecated")}
 #' \Sexpr[results=rd, stage=render]{rlang:::lifecycle("questioning")}
 #'
 #' The `eval_` and `call_` families of functions provide a replacement
@@ -77,10 +86,7 @@ current_fn <- function() {
 #'
 #' @section Life cycle:
 #'
-#' These functions are in the questioning stage. We are no longer
-#' convinced they belong in rlang as they are mostly for REPL
-#' interaction and runtime inspection rather than function
-#' development.
+#' These functions are soft-deprecated and replaced by [trace_back()].
 #'
 #' @param n The number of frames to go back in the stack.
 #' @param clean Whether to post-process the call stack to clean
@@ -449,7 +455,7 @@ frame_clean_eval <- function(frame) {
 
 #' Is object a stack?
 #'
-#' \Sexpr[results=rd, stage=render]{rlang:::lifecycle("questioning")}
+#' \Sexpr[results=rd, stage=render]{rlang:::lifecycle("soft-deprecated")}
 #'
 #' @param x An object to test
 #' @export
@@ -481,6 +487,7 @@ sys_frame <- function(n) {
 #'
 #' @description
 #'
+#' \Sexpr[results=rd, stage=render]{rlang:::lifecycle("soft-deprecated")}
 #' \Sexpr[results=rd, stage=render]{rlang:::lifecycle("questioning")}
 #'
 #' The frame position on the stack can be computed by counting frames
@@ -496,10 +503,7 @@ sys_frame <- function(n) {
 #'
 #' @section Life cycle:
 #'
-#' These functions are in the questioning stage. We are no longer
-#' convinced they belong in rlang as they are mostly for REPL
-#' interaction and runtime inspection rather than function
-#' development.
+#' These functions are soft-deprecated and replaced by [trace_back()].
 #'
 #' @param frame The environment of a frame. Can be any object with a
 #'   [get_env()] method. Note that for frame objects, the position from
@@ -581,6 +585,7 @@ frame_position_current <- function(frame, stack = NULL,
 #'
 #' @description
 #'
+#' \Sexpr[results=rd, stage=render]{rlang:::lifecycle("soft-deprecated")}
 #' \Sexpr[results=rd, stage=render]{rlang:::lifecycle("questioning")}
 #'
 #' [ctxt_stack()] can be tricky to use in real code because all
@@ -591,10 +596,7 @@ frame_position_current <- function(frame, stack = NULL,
 #'
 #' @section Life cycle:
 #'
-#' These functions are in the questioning stage. We are no longer
-#' convinced they belong in rlang as they are mostly for REPL
-#' interaction and runtime inspection rather than function
-#' development.
+#' These functions are soft-deprecated and replaced by [trace_back()].
 #'
 #' @param stack An evaluation stack.
 #' @param n The number of call frames (not eval frames) to trim off
@@ -675,9 +677,8 @@ is_frame_env <- function(env) {
 #'
 #' @section Life cycle:
 #'
-#' The support for `frame` object is experimental. The stack and frame
-#' objects are likely to be moved from rlang to another package.
-#' Please pass simple environments to `return_from()` and `return_to()`.
+#' The support for `frame` object is soft-deprecated.  Please pass
+#' simple environments to `return_from()` and `return_to()`.
 #'
 #' @param frame An environment, a frame object, or any object with an
 #'   [get_env()] method. The environment should be an evaluation

@@ -14,6 +14,7 @@ the top of the stack. In other words, the number of layers of
 intervening frames to trim.}
 }
 \description{
+\Sexpr[results=rd, stage=render]{rlang:::lifecycle("soft-deprecated")}
 \Sexpr[results=rd, stage=render]{rlang:::lifecycle("questioning")}
 
 \code{\link[=ctxt_stack]{ctxt_stack()}} can be tricky to use in real code because all
@@ -24,10 +25,7 @@ remove layers of intervening calls.
 \section{Life cycle}{
 
 
-These functions are in the questioning stage. We are no longer
-convinced they belong in rlang as they are mostly for REPL
-interaction and runtime inspection rather than function
-development.
+These functions are soft-deprecated and replaced by \code{\link[=trace_back]{trace_back()}}.
 }
 
 \examples{

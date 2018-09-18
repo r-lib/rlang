@@ -110,6 +110,8 @@ upcase1 <- function(x) {
 #'
 #' * [mut_utf8_locale()], [mut_latin1_locale()], [mut_mbcs_locale()]
 #'
+#' * [caller_fn()], [current_fn()]
+#'
 #'
 #' @section Questioning stage:
 #'
@@ -129,14 +131,7 @@ upcase1 <- function(x) {
 #' **In the questioning stage as of rlang 0.2.0**
 #'
 #' * [UQ()], [UQS()]
-#'
 #' * [dots_splice()], [splice()]
-#'
-#' * [is_frame()], [global_frame()], [current_frame()],
-#'   [ctxt_frame()], [call_frame()], [frame_position()]
-#'
-#' * [ctxt_depth()], [call_depth()], [ctxt_stack()], [call_stack()],
-#'   [stack_trim()]
 #'
 #'
 #' @section Soft-deprecated functions and arguments:
@@ -151,6 +146,13 @@ upcase1 <- function(x) {
 #' * [set_attrs()], [mut_attrs()]
 #'
 #' * [cnd_signal()]: `.cnd` => `cnd`
+#'
+#' * [is_frame()], [global_frame()], [current_frame()],
+#'   [ctxt_frame()], [call_frame()], [frame_position()],
+#'   [caller_frame()]
+#'
+#' * [ctxt_depth()], [call_depth()], [ctxt_stack()], [call_stack()],
+#'   [stack_trim()]
 #'
 #'
 #' **Soft-deprecated as of rlang 0.2.0:**

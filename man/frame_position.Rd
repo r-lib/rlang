@@ -18,6 +18,7 @@ bottom of the evaluation stack), or from the current frame (the
 top of the evaluation stack).}
 }
 \description{
+\Sexpr[results=rd, stage=render]{rlang:::lifecycle("soft-deprecated")}
 \Sexpr[results=rd, stage=render]{rlang:::lifecycle("questioning")}
 
 The frame position on the stack can be computed by counting frames
@@ -32,10 +33,7 @@ as those will be discarded.
 \section{Life cycle}{
 
 
-These functions are in the questioning stage. We are no longer
-convinced they belong in rlang as they are mostly for REPL
-interaction and runtime inspection rather than function
-development.
+These functions are soft-deprecated and replaced by \code{\link[=trace_back]{trace_back()}}.
 }
 
 \examples{
