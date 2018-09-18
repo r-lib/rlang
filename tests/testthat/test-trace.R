@@ -21,7 +21,7 @@ test_that("tree printing only changes deliberately", {
   expect_known_output(file = test_path("test-trace-print.txt"), {
     print(trace, dir = dir)
     cat("\n")
-    print(trace[0L], dir = dir)
+    print(trace_subset(trace, 0L), dir = dir)
   })
 })
 
@@ -69,21 +69,21 @@ test_that("trace_simplify_branch() extracts last branch", {
   m <- function() trace_back(e)
 
   x1 <- j(1)
-  expect_length(x1, 6)
-  expect_length(trace_simplify_branch(x1), 3)
+  expect_trace_length(x1, 6)
+  expect_trace_length(trace_simplify_branch(x1), 3)
 
   x2 <- j(2)
-  expect_length(x2, 6)
-  expect_length(trace_simplify_branch(x2), 2)
+  expect_trace_length(x2, 6)
+  expect_trace_length(trace_simplify_branch(x2), 2)
 
   x3 <- j(3)
-  expect_length(x2, 6)
-  expect_length(trace_simplify_branch(x3), 1)
+  expect_trace_length(x2, 6)
+  expect_trace_length(trace_simplify_branch(x3), 1)
 })
 
 test_that("integerish indices are allowed", {
   trace <- trace_back()
-  expect_identical(trace[0], trace[0L])
+  expect_identical(trace_subset(trace, 0), trace_subset(trace, 0L))
 })
 
 test_that("cli_branch() handles edge case", {
@@ -116,7 +116,7 @@ test_that("trace picks up option `rlang_trace_top_env` for trimming trace", {
   f1 <- function() trace_back()
   f2 <- function() trace_back(e)
   with_options(rlang_trace_top_env = current_env(),
-    expect_identical(length(f1()), length(f2()))
+    expect_identical(trace_length(f1()), trace_length(f2()))
   )
 })
 

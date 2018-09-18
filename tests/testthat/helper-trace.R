@@ -9,3 +9,7 @@ expect_known_trace_output <- function(trace, file, dir, srcrefs = FALSE) {
     print(trace, simplify = "branch", dir = dir, srcrefs = srcrefs)
   })
 }
+
+expect_trace_length <- function(x, n) {
+  expect_equal(trace_length(x), n)
+}
