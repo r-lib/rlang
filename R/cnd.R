@@ -210,7 +210,7 @@ validate_cnd_signal_args <- function(cnd, .cnd, .mufflable,
   }
   if (!missing(.mufflable)) {
     signal_soft_deprecated(
-      "`.mufflable` is soft-deprecated as of rlang 0.3.0 and has no longer any effect"
+      "`.mufflable` is soft-deprecated as of rlang 0.3.0 and no longer has any effect"
     )
   }
 }
