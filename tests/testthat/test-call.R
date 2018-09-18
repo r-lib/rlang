@@ -26,21 +26,6 @@ test_that("succeeds with literal functions", {
 })
 
 
-# Standardisation ---------------------------------------------------------
-
-test_that("can standardise call frame", {
-  fn <- function(foo = "bar") call_standardise(call_frame())
-  expect_identical(fn(), quote(fn()))
-  expect_identical(fn("baz"), quote(fn(foo = "baz")))
-})
-
-test_that("can modify call frame", {
-  fn <- function(foo = "bar") call_modify(call_frame(), baz = "bam", .standardise = TRUE)
-  expect_identical(fn(), quote(fn(baz = "bam")))
-  expect_identical(fn("foo"), quote(fn(foo = "foo", baz = "bam")))
-})
-
-
 # Modification ------------------------------------------------------------
 
 test_that("can modify formulas inplace", {

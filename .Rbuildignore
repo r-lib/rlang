@@ -11,3 +11,4 @@
 ^appveyor\.yml$
 ^TAGS$
 ^\.github$
+^.dir-locals.el$
