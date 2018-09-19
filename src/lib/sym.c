@@ -70,6 +70,7 @@ sexp* r_srcref_sym;
 sexp* r_tilde_sym;
 sexp* r_x_sym;
 sexp* r_y_sym;
+sexp* r_z_sym;
 
 void r_init_library_sym() {
   r_dot_environment_sym = r_sym(".Environment");
@@ -78,4 +79,5 @@ void r_init_library_sym() {
   r_tilde_sym = r_sym("~");
   r_x_sym = r_sym("x");
   r_y_sym = r_sym("y");
+  r_z_sym = r_sym("z");
 }

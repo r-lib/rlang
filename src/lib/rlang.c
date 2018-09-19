@@ -12,6 +12,7 @@ sexp* r_shared_false;
 
 static sexp* shared_x_env;
 static sexp* shared_xy_env;
+static sexp* shared_xyz_env;
 
 // This *must* be called before making any calls to the functions
 // provided in the library
@@ -39,6 +40,9 @@ void r_init_library() {
 
   shared_xy_env = r_parse_eval("new.env(hash = TRUE, parent = baseenv(), size = 1L)", r_base_env);
   r_mark_precious(shared_xy_env);
+
+  shared_xyz_env = r_parse_eval("new.env(hash = FALSE, parent = baseenv(), size = 1L)", r_base_env);
+  r_mark_precious(shared_xyz_env);
 
   r_quo_get_expr = (sexp* (*)(sexp*)) r_peek_c_callable("rlang", "rlang_quo_get_expr");
   r_quo_set_expr = (sexp* (*)(sexp*, sexp*)) r_peek_c_callable("rlang", "rlang_quo_set_expr");

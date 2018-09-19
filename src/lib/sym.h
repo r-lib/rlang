@@ -14,6 +14,7 @@ extern sexp* r_srcref_sym;
 extern sexp* r_tilde_sym;
 extern sexp* r_x_sym;
 extern sexp* r_y_sym;
+extern sexp* r_z_sym;
 
 
 sexp* r_new_symbol(sexp* x, int* err);
