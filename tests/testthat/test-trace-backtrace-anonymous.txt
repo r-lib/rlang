@@ -1,0 +1,10 @@
+Full:
+█
+└─(function() {...
+
+Collapsed:
+█
+└─(function() {...
+
+Branch:
+

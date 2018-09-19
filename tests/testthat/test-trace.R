@@ -360,3 +360,14 @@ test_that("can take the str() of a trace (#615)", {
   f <- function(n) if (n < 10) f(n - 1) else trace_back(e)
   expect_output(expect_no_error(str(f(10))))
 })
+
+test_that("anonymous calls are stripped from backtraces", {
+  e <- current_env()
+  trace <- (function() {
+    "foo"
+    "bar"
+    trace_back(e)
+  })()
+  expect_identical(format(trace, simplify = "branch"), chr())
+  expect_known_trace_output(trace, "test-trace-backtrace-anonymous.txt")
+})

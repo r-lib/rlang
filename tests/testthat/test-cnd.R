@@ -394,3 +394,12 @@ test_that("can take the str() of an rlang error (#615)", {
   err <- catch_cnd(abort("foo"))
   expect_output(expect_no_error(str(err)))
 })
+
+test_that("No backtrace is displayed with top-level active bindings", {
+  scoped_options(
+    rlang_trace_top_env = current_env()
+  )
+
+  env_bind_fns(current_env(), foo = function() abort("msg"))
+  expect_error(foo, "^msg$")
+})

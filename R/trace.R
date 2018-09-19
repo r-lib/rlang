@@ -205,6 +205,10 @@ format_collapsed_trail <- function(what, n, style = NULL) {
 }
 
 cli_branch <- function(lines, max = NULL, style = NULL) {
+  if (!length(lines)) {
+    return(chr())
+  }
+
   style <- style %||% cli_box_chars()
   lines <- paste0(" ", style$h, lines)
 
@@ -446,18 +450,41 @@ trace_simplify_branch <- function(trace) {
       id <- next_id
     }
 
-    path <- c(path, id)
+    if (!is_uninformative_call(trace$calls[[id]])) {
+      path <- c(path, id)
+    }
+
     id <- parents[id]
   }
 
   # Always include very first call
   path <- rev(path)
-  if (path[[1]] != 1L) {
+  if (length(path) && path[[1]] != 1L) {
     path <- c(1L, path)
   }
 
   trace$parents <- parents
   trace_subset(trace, path)
+}
+
+# Bypass calls with inlined functions
+is_uninformative_call <- function(call) {
+  fn <- call[[1]]
+
+  # Inlined functions occur with active bindings
+  if (is_function(fn)) {
+    return(TRUE)
+  }
+
+  # If a call, might be wrapped in parentheses
+  while (is_call(fn, "(")) {
+    fn <- fn[[2]]
+    if (is_call(fn, "function")) {
+      return(TRUE)
+    }
+  }
+
+  FALSE
 }
 
 trace_simplify_collapse <- function(trace) {

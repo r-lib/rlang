@@ -644,7 +644,7 @@ conditionMessage.rlang_error <- function(c) {
     )
   }
 
-  if (!is_null(trace)) {
+  if (length(trace)) {
     lines <- paste_line(
       lines,
       "Backtrace:",
