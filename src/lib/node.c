@@ -71,3 +71,14 @@ sexp* r_node_list_clone_until(sexp* node, sexp* sentinel, sexp** parent_out) {
 
   r_abort("Internal error in r_node_list_clone_until()");
 }
+
+sexp* r_node_list_find_tag(sexp* node, sexp* tag) {
+  while (node != r_null) {
+    if (r_node_tag(node) == tag) {
+      return node;
+    }
+    node = r_node_cdr(node);
+  }
+
+  return r_null;
+}
