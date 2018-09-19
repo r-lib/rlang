@@ -84,22 +84,20 @@ sexp* r_env_clone(sexp* env, sexp* parent) {
 
 
 static sexp* remove_call = NULL;
+static sexp* remove__list_node = NULL;
+static sexp* remove__envir_node = NULL;
+static sexp* remove__inherits_node = NULL;
 
 sexp* r_env_unbind_names(sexp* env, sexp* names, bool inherits) {
-  sexp* names_node = r_node_cdr(remove_call);
-  r_node_poke_car(names_node, names);
-
-  sexp* env_node = r_node_cdr(names_node);
-  r_node_poke_car(env_node, env);
-
-  sexp* inherits_node = r_node_cdr(env_node);
-  r_node_poke_car(inherits_node, r_bool_as_logical(inherits));
-
+  r_node_poke_car(remove__list_node, names);
+  r_node_poke_car(remove__envir_node, env);
+  r_node_poke_car(remove__inherits_node, inherits ? r_shared_true : r_shared_false);
 
   // Evaluate call and free arguments for GC
   r_eval(remove_call, r_base_env);
-  r_node_poke_car(names_node, r_null);
-  r_node_poke_car(env_node, r_null);
+
+  r_node_poke_car(remove__list_node, r_null);
+  r_node_poke_car(remove__envir_node, r_null);
 
   return env;
 }
@@ -139,18 +137,18 @@ void r_init_library_env() {
   new_env__parent_node = r_node_cddr(new_env_call);
   new_env__size_node = r_node_cdr(new_env__parent_node);
 
+
+  remove_call = r_parse_eval("as.call(list(remove, list = NULL, envir = NULL, inherits = NULL))", r_base_env);
+  r_mark_precious(remove_call);
+
+  remove__list_node = r_node_cdr(remove_call);
+  remove__envir_node = r_node_cdr(remove__list_node);
+  remove__inherits_node = r_node_cdr(remove__envir_node);
+
+
   env2list_call = r_parse("as.list.environment(x, all.names = TRUE)");
   r_mark_precious(env2list_call);
 
   list2env_call = r_parse("list2env(x, envir = NULL, parent = y, hash = TRUE)");
   r_mark_precious(list2env_call);
-
-  sexp* remove_args = r_null;
-  sexp* inherits = KEEP(r_bool_as_logical(0));
-  remove_args = KEEP(r_new_tagged_node("inherits", inherits, remove_args));
-  remove_args = KEEP(r_new_tagged_node("envir", r_null, remove_args));
-  remove_args = KEEP(r_new_tagged_node("list", r_null, remove_args));
-  remove_call = r_new_call(r_base_ns_get("remove"), remove_args);
-  r_mark_precious(remove_call);
-  FREE(4);
 }
