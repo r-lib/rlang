@@ -35,10 +35,10 @@ void r_init_library() {
   r_mark_shared(r_shared_false);
   *r_lgl_deref(r_shared_false) = 0;
 
-  shared_x_env = r_parse_eval("new.env(hash = TRUE, parent = baseenv(), size = 1L)", r_base_env);
+  shared_x_env = r_parse_eval("new.env(hash = FALSE, parent = baseenv(), size = 1L)", r_base_env);
   r_mark_precious(shared_x_env);
 
-  shared_xy_env = r_parse_eval("new.env(hash = TRUE, parent = baseenv(), size = 1L)", r_base_env);
+  shared_xy_env = r_parse_eval("new.env(hash = FALSE, parent = baseenv(), size = 1L)", r_base_env);
   r_mark_precious(shared_xy_env);
 
   shared_xyz_env = r_parse_eval("new.env(hash = FALSE, parent = baseenv(), size = 1L)", r_base_env);
