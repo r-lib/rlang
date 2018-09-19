@@ -178,12 +178,28 @@ test_that("call_deparse() handles multi-line arguments", {
   expect_identical(sexp_deparse(quote(foo(one = 1, two = nested(one = 1, two = 2))), ctxt), c("foo(one = 1, two = nested(", "  one = 1, two = 2))"))
 })
 
-test_that("call_deparse() adds parentheses to call CAR when needed", {
-  call <- as.call(c(quote(function(x) x + 1), quote(x)))
-  expect_identical(call_deparse(call), "(function(x) x + 1)(x)")
+test_that("call_deparse() delimits CAR when needed", {
+  call <- expr((!!quote(function() x + 1))())
+  expect_identical(call_deparse(call), "(function() x + 1)()")
 
-  call <- as.call(c(quote(f + g), quote(x)))
-  expect_identical(call_deparse(call), "(f + g)(x)")
+  # Only equal because of the extra parentheses
+  expect_equal(parse_expr(expr_deparse(call)), call)
+
+  call <- expr((!!quote(f + g))(x))
+  expect_identical(call_deparse(call), "`+`(f, g)(x)")
+  expect_identical(parse_expr(expr_deparse(call)), call)
+
+  call <- expr((!!quote(+f))(x))
+  expect_identical(call_deparse(call), "`+`(f)(x)")
+  expect_identical(parse_expr(expr_deparse(call)), call)
+
+  call <- expr((!!quote(while (TRUE) NULL))(x))
+  expect_identical(call_deparse(call), "`while`(TRUE, NULL)(x)")
+  expect_identical(parse_expr(expr_deparse(call)), call)
+
+  call <- expr(foo::bar(x))
+  expect_identical(call_deparse(call), "foo::bar(x)")
+  expect_identical(parse_expr(expr_deparse(call)), call)
 })
 
 test_that("literal functions are deparsed", {
