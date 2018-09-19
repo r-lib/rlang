@@ -360,7 +360,7 @@ abort <- function(message, .subclass = NULL,
     trace <- trace_back()
 
     if (is_null(parent)) {
-      context <- length(trace$calls)
+      context <- trace_length(trace)
     } else {
       context <- find_capture_context()
     }
@@ -387,7 +387,12 @@ trace_trim_context <- function(trace, frame = caller_env()) {
     abort("`frame` must be a frame environment or index")
   }
 
-  trace[-seq2(idx, length(trace))]
+  to_trim <- seq2(idx, trace_length(trace))
+  if (length(to_trim)) {
+    trace <- trace_subset(trace, -to_trim)
+  }
+
+  trace
 }
 # FIXME: Find more robust strategy of stripping catching context
 find_capture_context <- function(n = 3L) {
@@ -586,7 +591,7 @@ print.rlang_error <- function(x,
     # Trim common portions of backtrace
     child_trace <- child$trace
     common <- map_lgl(trace$envs, `%in%`, child_trace$envs)
-    trace <- trace[which(!common)]
+    trace <- trace_subset(trace, which(!common))
 
     # Trim catching context if any
     calls <- trace$calls
@@ -594,7 +599,7 @@ print.rlang_error <- function(x,
       parent <- trace$parents[[1]]
       next_sibling <- which(trace$parents[-1] == parent)
       if (length(next_sibling)) {
-        trace <- trace[-seq2(1L, next_sibling)]
+        trace <- trace_subset(trace, -seq2(1L, next_sibling))
       }
     }
   }

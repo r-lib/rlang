@@ -71,7 +71,9 @@ trace_back <- function(to = NULL) {
 
   trace <- new_trace(calls, parents, envs)
   trace <- trace_trim_env(trace, to)
-  trace <- trace[-length(trace)] # remove call to self
+
+  # remove call to self
+  trace <- trace_subset(trace, -trace_length(trace))
 
   trace
 }
@@ -154,7 +156,7 @@ format.rlang_trace <- function(x,
                                max_frames = NULL,
                                dir = getwd(),
                                srcrefs = NULL) {
-  if (length(x) == 0) {
+  if (trace_length(x) == 0) {
     return(trace_root())
   }
 
@@ -261,20 +263,20 @@ print.rlang_trace <- function(x,
   invisible(x)
 }
 
-#' @export
-length.rlang_trace <- function(x) {
+trace_length <- function(x) {
   length(x$calls)
 }
 
-#' @export
-`[.rlang_trace` <- function(x, i, ...) {
+trace_subset <- function(x, i) {
   stopifnot(is_integerish(i))
   if (!length(i)) {
     return(new_trace(list(), int(), list()))
   }
 
+  n <- trace_length(x)
+
   if (all(i < 0L)) {
-    i <- setdiff(seq_along(x), abs(i))
+    i <- setdiff(seq_len(n), abs(i))
   }
 
   calls <- x$calls[i]
@@ -312,7 +314,7 @@ trace_trim_env <- function(x, to = NULL) {
   start <- last(which(is_top)) + 1
   end <- length(x$envs)
 
-  x[start:end]
+  trace_subset(x, start:end)
 }
 
 set_trace_skipped <- function(trace, id, n) {
@@ -387,8 +389,8 @@ has_pipe_pointer <- function(x) {
 # Assumes a backtrace branch with collapsed pipe
 trail_uncollapse_pipe <- function(trace) {
   while (idx <- detect_index(trace$calls, has_pipe_pointer)) {
-    trace_before <- trace[seq2(1L, idx - 1L)]
-    trace_after <- trace[seq2(idx + 2L, length(trace$calls))]
+    trace_before <- trace_subset(trace, seq2(1L, idx - 1L))
+    trace_after <- trace_subset(trace, seq2(idx + 2L, trace_length(trace)))
 
     pipe <- trace$calls[[idx]]
     pipe_info <- pipe_collect_calls(pipe)
@@ -455,7 +457,7 @@ trace_simplify_branch <- function(trace) {
   }
 
   trace$parents <- parents
-  trace[path]
+  trace_subset(trace, path)
 }
 
 trace_simplify_collapse <- function(trace) {
@@ -498,7 +500,7 @@ trace_simplify_collapse <- function(trace) {
   }
 
   trace$parents <- parents
-  trace[rev(path)]
+  trace_subset(trace, rev(path))
 }
 
 
