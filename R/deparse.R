@@ -430,8 +430,86 @@ args_deparse <- function(x, lines = new_lines()) {
   lines$get_lines()
 }
 call_deparse <- function(x, lines = new_lines()) {
-  lines$deparse(node_car(x))
+  car <- node_car(x)
+
+  type <- call_delimited_type(car)
+  switch(type,
+    parens = {
+      car <- call("(", car)
+      lines$deparse(car)
+    },
+    backticks = {
+      lines$push_sticky("`")
+      lines$deparse(node_car(car))
+      lines$push_sticky("`")
+      args_deparse(node_cdr(car), lines)
+    },
+    lines$deparse(car)
+  )
+
   args_deparse(node_cdr(x), lines)
+}
+
+call_delimited_type <- function(call) {
+  if (!is_call(call)) {
+    return("none")
+  }
+
+  op <- which_operator(call)
+  if (op == "") {
+    return("none")
+  }
+
+  switch (op,
+    `function` =
+      "parens",
+    `while` = ,
+    `for` = ,
+    `repeat` = ,
+    `if` = ,
+    `?` = ,
+    `<-` = ,
+    `<<-` = ,
+    `=` = ,
+    `:=` = ,
+    `~` = ,
+    `|` = ,
+    `||` = ,
+    `&` = ,
+    `&&` = ,
+    `>` = ,
+    `>=` = ,
+    `<` = ,
+    `<=` = ,
+    `==` = ,
+    `!=` = ,
+    `+` = ,
+    `-` = ,
+    `*` = ,
+    `/` = ,
+    `%%` = ,
+    `special` = ,
+    `:` = ,
+    `^` = ,
+    `?unary` = ,
+    `~unary` = ,
+    `!` = ,
+    `!!!` = ,
+    `!!` = ,
+    `+unary` = ,
+    `-unary` =
+      "backticks",
+    `$` = ,
+    `@` = ,
+    `::` = ,
+    `:::` = ,
+    `[` = ,
+    `[[` = ,
+    `(` = ,
+    `{` =
+      "none",
+    abort("Internal error: Unexpected operator while deparsing")
+  )
 }
 
 op_deparse <- function(op, x, lines) {
