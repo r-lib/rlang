@@ -2,6 +2,7 @@
 
 static sexp* eval_with_x(sexp* call, sexp* x);
 static sexp* eval_with_xy(sexp* call, sexp* x, sexp* y);
+static sexp* eval_with_xyz(sexp* call, sexp* x, sexp* y, sexp* z);
 
 
 sexp* r_ns_env(const char* pkg) {
@@ -89,17 +90,7 @@ static sexp* remove__envir_node = NULL;
 static sexp* remove__inherits_node = NULL;
 
 sexp* r_env_unbind_names(sexp* env, sexp* names, bool inherits) {
-  r_node_poke_car(remove__list_node, names);
-  r_node_poke_car(remove__envir_node, env);
-  r_node_poke_car(remove__inherits_node, inherits ? r_shared_true : r_shared_false);
-
-  // Evaluate call and free arguments for GC
-  r_eval(remove_call, r_base_env);
-
-  r_node_poke_car(remove__list_node, r_null);
-  r_node_poke_car(remove__envir_node, r_null);
-
-  return env;
+  return eval_with_xyz(remove_call, env, names, inherits ? r_shared_true : r_shared_false);
 }
 
 sexp* rlang_env_unbind(sexp* env, sexp* names, sexp* inherits) {
@@ -137,18 +128,12 @@ void r_init_library_env() {
   new_env__parent_node = r_node_cddr(new_env_call);
   new_env__size_node = r_node_cdr(new_env__parent_node);
 
-
-  remove_call = r_parse_eval("as.call(list(remove, list = NULL, envir = NULL, inherits = NULL))", r_base_env);
-  r_mark_precious(remove_call);
-
-  remove__list_node = r_node_cdr(remove_call);
-  remove__envir_node = r_node_cdr(remove__list_node);
-  remove__inherits_node = r_node_cdr(remove__envir_node);
-
-
   env2list_call = r_parse("as.list.environment(x, all.names = TRUE)");
   r_mark_precious(env2list_call);
 
   list2env_call = r_parse("list2env(x, envir = NULL, parent = y, hash = TRUE)");
   r_mark_precious(list2env_call);
+
+  remove_call = r_parse("remove(list = y, envir = x, inherits = z)");
+  r_mark_precious(remove_call);
 }
