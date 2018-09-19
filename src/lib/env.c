@@ -1,5 +1,8 @@
 #include "rlang.h"
 
+static sexp* eval_with_x(sexp* call, sexp* x);
+static sexp* eval_with_xy(sexp* call, sexp* x, sexp* y);
+
 
 sexp* r_ns_env(const char* pkg) {
   sexp* ns = r_env_get(R_NamespaceRegistry, r_sym(pkg));
@@ -54,40 +57,14 @@ sexp* r_new_environment(sexp* parent, r_ssize_t size) {
 
 
 static sexp* env2list_call = NULL;
-
-sexp* r_env_as_list(sexp* x) {
-  sexp* arg_node = r_node_cdr(env2list_call);
-  r_node_poke_car(arg_node, x);
-
-  sexp* env = r_eval(env2list_call, r_empty_env);
-
-  // Release input node for GC
-  r_node_poke_car(arg_node, r_null);
-
-  return env;
-}
-
-
 static sexp* list2env_call = NULL;
 
+sexp* r_env_as_list(sexp* x) {
+  return eval_with_x(env2list_call, x);
+}
 sexp* r_list_as_environment(sexp* x, sexp* parent) {
-  if (parent == NULL) {
-    parent = r_empty_env;
-  }
-
-  sexp* input_node = r_node_cdr(list2env_call);
-  r_node_poke_car(input_node, x);
-
-  sexp* parent_node = r_node_cddr(input_node);
-  r_node_poke_car(parent_node, parent);
-
-  sexp* env = r_eval(list2env_call, r_empty_env);
-
-  // Release input list for GC
-  r_node_poke_car(input_node, r_null);
-  r_node_poke_car(parent_node, r_null);
-
-  return env;
+  parent = parent ? parent : r_empty_env;
+  return eval_with_xy(list2env_call, x, parent);
 }
 
 sexp* r_env_clone(sexp* env, sexp* parent) {
@@ -162,23 +139,11 @@ void r_init_library_env() {
   new_env__parent_node = r_node_cddr(new_env_call);
   new_env__size_node = r_node_cdr(new_env__parent_node);
 
-  sexp* env2list_args;
-  env2list_args = KEEP(r_bool_as_logical(1));
-  env2list_args = KEEP(r_new_tagged_node("all.names", env2list_args, r_null));
-  env2list_args = KEEP(r_new_tagged_node("x", r_null, env2list_args));
-  env2list_call = r_new_call(r_base_ns_get("as.list.environment"), env2list_args);
+  env2list_call = r_parse("as.list.environment(x, all.names = TRUE)");
   r_mark_precious(env2list_call);
-  FREE(3);
 
-  sexp* list2env_args;
-  list2env_args = KEEP(r_bool_as_logical(1));
-  list2env_args = KEEP(r_new_tagged_node("hash", list2env_args, r_null));
-  list2env_args = KEEP(r_new_tagged_node("parent", r_null, list2env_args));
-  list2env_args = KEEP(r_new_tagged_node("envir", r_null, list2env_args));
-  list2env_args = KEEP(r_new_tagged_node("x", r_null, list2env_args));
-  list2env_call = r_new_call(r_base_ns_get("list2env"), list2env_args);
+  list2env_call = r_parse("list2env(x, envir = NULL, parent = y, hash = TRUE)");
   r_mark_precious(list2env_call);
-  FREE(5);
 
   sexp* remove_args = r_null;
   sexp* inherits = KEEP(r_bool_as_logical(0));
