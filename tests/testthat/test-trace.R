@@ -362,12 +362,15 @@ test_that("can take the str() of a trace (#615)", {
 })
 
 test_that("anonymous calls are stripped from backtraces", {
+  skip_on_os("windows")
+
   e <- current_env()
   trace <- (function() {
     "foo"
     "bar"
     trace_back(e)
   })()
+
   expect_identical(format(trace, simplify = "branch"), chr())
   expect_known_trace_output(trace, "test-trace-backtrace-anonymous.txt")
 })
