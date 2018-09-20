@@ -101,6 +101,14 @@ changes.
 \code{\link[=caller_frame]{caller_frame()}}
 \item \code{\link[=ctxt_depth]{ctxt_depth()}}, \code{\link[=call_depth]{call_depth()}}, \code{\link[=ctxt_stack]{ctxt_stack()}}, \code{\link[=call_stack]{call_stack()}},
 \code{\link[=stack_trim]{stack_trim()}}
+\item Passing a function or formula to \code{env_depth()},
+\code{env_poke_parent()}, \code{env_parent<-}, \code{env_tail()}, \code{set_env()},
+\code{env_clone()}, \code{env_inherits()}, \code{env_bind()},
+\code{scoped_bindings()}, \code{with_bindings()}, \code{env_poke()},
+\code{env_has()}, \code{env_get()}, \code{env_names()}, \code{env_bind_exprs()} and
+\code{env_bind_fns()}. This internal genericity was causing confusion
+(see issue #427). You should now extract the environment
+separately before calling these functions.
 }
 
 \strong{Soft-deprecated as of rlang 0.2.0:}

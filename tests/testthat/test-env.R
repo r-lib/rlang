@@ -422,3 +422,31 @@ test_that("env_poke_parent() fails with namespaces, package envs, and locked env
   env_lock(env)
   expect_error(env_poke_parent(env, env()), "locked environment")
 })
+
+
+#  Lifecycle ---------------------------------------------------------
+
+test_that("env API warns with non-environments", {
+  scoped_options(lifecycle_force_verbose_retirement = TRUE)
+
+  f <- local(~foo)
+  expect_warning(env_parent(f) <- empty_env(), "deprecated")
+
+  expect_warning(env_depth(function() foo), "deprecated")
+  expect_warning(env_poke_parent(local(~foo), empty_env()), "deprecated")
+  expect_warning(env_parent(~foo), "deprecated")
+  expect_warning(env_tail(~foo), "deprecated")
+  expect_warning(set_env(~foo, ~bar), "deprecated")
+  expect_warning(env_clone(~foo), "deprecated")
+  expect_warning(env_inherits(~foo, empty_env()), "deprecated")
+
+  expect_warning(env_bind(~foo, a = 1), "deprecated")
+  expect_warning(scoped_bindings(.env = ~foo), "deprecated")
+  expect_warning(with_bindings(NULL, a = 1, .env = ~foo), "deprecated")
+  expect_warning(env_poke(~foo, "a", NULL), "deprecated")
+  expect_warning(env_has(~foo, "a"), "deprecated")
+  expect_warning(env_get(~foo, "a"), "deprecated")
+  expect_warning(env_names(~foo), "deprecated")
+  expect_warning(env_bind_exprs(~foo, foo = list()), "deprecated")
+  expect_warning(env_bind_fns(~foo, a = function() "foo"), "deprecated")
+})

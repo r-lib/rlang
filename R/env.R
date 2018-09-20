@@ -291,7 +291,7 @@ as_env_ <- function(x, parent = NULL) {
 #' fn <- set_env(function() env_parent(), enclos_env)
 #' identical(enclos_env, fn())
 env_parent <- function(env = caller_env(), n = 1) {
-  env_ <- get_env(env)
+  env_ <- get_env_retired(env, "env_parent()")
 
   while (n > 0) {
     if (is_empty_env(env_)) {
@@ -315,7 +315,7 @@ env_tail <- function(env = caller_env(), last = global_env(),
     last <- sentinel
   }
 
-  env_ <- get_env(env)
+  env_ <- get_env_retired(env, "env_tail()")
   parent <- env_parent(env_)
 
   while (!is_reference(parent, last) && !is_empty_env(parent)) {
@@ -376,7 +376,7 @@ env_parents <- function(env = caller_env(), last = global_env()) {
 #' env_depth(empty_env())
 #' env_depth(pkg_env("rlang"))
 env_depth <- function(env) {
-  env_ <- get_env(env)
+  env_ <- get_env_retired(env, "env_depth()")
 
   n <- 0L
   while (!is_empty_env(env_)) {
@@ -411,12 +411,17 @@ is_empty_env <- function(env) {
 #'
 #' @section Life cycle:
 #'
-#' Using `get_env()` without supplying `env` is soft-deprecated as of
-#' rlang 0.2.0.9000. Please use [current_env()] to retrieve the
-#' current environment.
+#' - Using `get_env()` without supplying `env` is soft-deprecated as
+#'   of rlang 0.3.0. Please use [current_env()] to retrieve the
+#'   current environment.
 #'
-#' @param env An environment or an object bundling an environment,
-#'   e.g. a formula, [quosure][quotation] or [closure][is_closure].
+#' - Passing environment wrappers like formulas or functions instead
+#'   of bare environments is soft-deprecated as of rlang 0.3.0. This
+#'   internal genericity was causing confusion (see issue #427). You
+#'   should now extract the environment separately before calling
+#'   these functions.
+#'
+#' @param env An environment.
 #' @param default The default environment in case `env` does not wrap
 #'   an environment. If `NULL` and no environment could be extracted,
 #'   an error is issued.
@@ -471,9 +476,22 @@ get_env <- function(env, default = NULL) {
     out
   }
 }
+get_env_retired <- function(x, fn, env = caller_env(2)) {
+  if (is_environment(x)) {
+    return(x)
+  }
+
+  type <- friendly_type_of(x)
+  signal_soft_deprecated(env = env, paste_line(
+    sprintf("Passing an environment wrapper like %s is deprecated.", type),
+    sprintf("Please retrieve the environment before calling `%s`", fn)
+  ))
+
+  get_env(x)
+}
+
 #' @rdname get_env
-#' @param new_env An environment to replace `env` with. Can be an
-#'   object handled by `get_env()`.
+#' @param new_env An environment to replace `env` with.
 #' @export
 #' @examples
 #'
@@ -497,14 +515,16 @@ get_env <- function(env, default = NULL) {
 #' fn <- set_env(fn, other_env)
 #' identical(get_env(fn), other_env)
 set_env <- function(env, new_env = caller_env()) {
+  new_env <- get_env_retired(new_env, "set_env()")
+
   switch_type(env,
     definition = ,
     formula = ,
     closure = {
-      environment(env) <- get_env(new_env)
+      environment(env) <- new_env
       env
     },
-    environment = get_env(new_env),
+    environment = new_env,
     abort(paste0(
       "Can't set environment for ", friendly_type(type_of(env)), ""
     ))
@@ -513,10 +533,13 @@ set_env <- function(env, new_env = caller_env()) {
 #' @rdname get_env
 #' @export
 env_poke_parent <- function(env, new_env) {
-  .Call(rlang_env_poke_parent, get_env(env), get_env(new_env))
+  env <- get_env_retired(env, "env_poke_parent()")
+  new_env <- get_env_retired(new_env, "env_poke_parent()")
+  .Call(rlang_env_poke_parent, env, new_env)
 }
 `env_parent<-` <- function(x, value) {
-  .Call(rlang_env_poke_parent, get_env(x), value)
+  env <- get_env_retired(x, "env_poke_parent<-")
+  .Call(rlang_env_poke_parent, env, value)
 }
 
 
@@ -534,7 +557,8 @@ env_poke_parent <- function(env, new_env) {
 #' identical(env, clone)
 #' identical(env$cyl, clone$cyl)
 env_clone <- function(env, parent = env_parent(env)) {
-  .Call(rlang_env_clone, get_env(env), parent)
+  env <- get_env_retired(env, "env_clone()")
+  .Call(rlang_env_clone, env, parent)
 }
 
 #' Does environment inherit from another environment?
@@ -545,7 +569,7 @@ env_clone <- function(env, parent = env_parent(env)) {
 #' @param ancestor Another environment from which `x` might inherit.
 #' @export
 env_inherits <- function(env, ancestor) {
-  env <- get_env(env)
+  env <- get_env_retired(env, "env_inherits()")
   stopifnot(is_environment(ancestor) && is_environment(env))
 
   while (!is_empty_env(env_parent(env))) {

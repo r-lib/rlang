@@ -551,6 +551,7 @@ as_friendly_type <- function(type) {
     pairlist = "a pairlist node",
     expression = "an expression vector",
     quosure = "a quosure",
+    formula = "a formula",
 
     char = "an internal string",
     promise = "an internal promise",

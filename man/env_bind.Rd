@@ -7,9 +7,7 @@
 env_bind(.env, ...)
 }
 \arguments{
-\item{.env}{An environment or an object bundling an environment,
-e.g. a formula, \link[=quotation]{quosure} or \link[=is_closure]{closure}.
-This argument is passed to \code{\link[=get_env]{get_env()}}.}
+\item{.env}{An environment.}
 
 \item{...}{Pairs of names and expressions, values or functions.
 These dots support \link[=tidy-dots]{tidy dots} features.}
@@ -62,6 +60,16 @@ As they are called primarily for their side effects, these
 functions follow the convention of returning their input invisibly.
 }
 
+\section{Life cycle}{
+
+
+Passing an environment wrapper like a formula or a function instead
+of an environment is soft-deprecated as of rlang 0.3.0. This
+internal genericity was causing confusion (see issue #427). You
+should now extract the environment separately before calling these
+functions.
+}
+
 \examples{
 # env_bind() is a programmatic way of assigning values to symbols
 # with `<-`. We can add bindings in the current environment:
@@ -89,21 +97,4 @@ my_env$c
 var <- "baz"
 env_bind(my_env, !!var := "BAZ")
 my_env$baz
-
-
-# env_bind() and its variants are generic over formulas, quosures
-# and closures. To illustrate this, let's create a closure function
-# referring to undefined bindings:
-fn <- function() list(a, b)
-fn <- set_env(fn, child_env("base"))
-
-# This would fail if run since `a` etc are not defined in the
-# enclosure of fn() (a child of the base environment):
-# fn()
-
-# Let's define those symbols:
-env_bind(fn, a = "a", b = "b")
-
-# fn() now sees the objects:
-fn()
 }

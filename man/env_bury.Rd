@@ -7,9 +7,7 @@
 env_bury(.env, ...)
 }
 \arguments{
-\item{.env}{An environment or an object bundling an environment,
-e.g. a formula, \link[=quotation]{quosure} or \link[=is_closure]{closure}.
-This argument is passed to \code{\link[=get_env]{get_env()}}.}
+\item{.env}{An environment.}
 
 \item{...}{Pairs of names and expressions, values or functions.
 These dots support \link[=tidy-dots]{tidy dots} features.}

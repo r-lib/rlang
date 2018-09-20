@@ -13,15 +13,13 @@ set_env(env, new_env = caller_env())
 env_poke_parent(env, new_env)
 }
 \arguments{
-\item{env}{An environment or an object bundling an environment,
-e.g. a formula, \link[=quotation]{quosure} or \link[=is_closure]{closure}.}
+\item{env}{An environment.}
 
 \item{default}{The default environment in case \code{env} does not wrap
 an environment. If \code{NULL} and no environment could be extracted,
 an error is issued.}
 
-\item{new_env}{An environment to replace \code{env} with. Can be an
-object handled by \code{get_env()}.}
+\item{new_env}{An environment to replace \code{env} with.}
 }
 \description{
 These functions dispatch internally with methods for functions,
@@ -42,10 +40,16 @@ package.
 }
 \section{Life cycle}{
 
-
-Using \code{get_env()} without supplying \code{env} is soft-deprecated as of
-rlang 0.2.0.9000. Please use \code{\link[=current_env]{current_env()}} to retrieve the
+\itemize{
+\item Using \code{get_env()} without supplying \code{env} is soft-deprecated as
+of rlang 0.3.0. Please use \code{\link[=current_env]{current_env()}} to retrieve the
 current environment.
+\item Passing environment wrappers like formulas or functions instead
+of bare environments is soft-deprecated as of rlang 0.3.0. This
+internal genericity was causing confusion (see issue #427). You
+should now extract the environment separately before calling
+these functions.
+}
 }
 
 \examples{

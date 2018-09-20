@@ -7,8 +7,7 @@
 env_depth(env)
 }
 \arguments{
-\item{env}{An environment or an object bundling an environment,
-e.g. a formula, \link[=quotation]{quosure} or \link[=is_closure]{closure}.}
+\item{env}{An environment.}
 }
 \value{
 An integer.

@@ -154,6 +154,15 @@ upcase1 <- function(x) {
 #' * [ctxt_depth()], [call_depth()], [ctxt_stack()], [call_stack()],
 #'   [stack_trim()]
 #'
+#' * Passing a function or formula to `env_depth()`,
+#'   `env_poke_parent()`, `env_parent<-`, `env_tail()`, `set_env()`,
+#'   `env_clone()`, `env_inherits()`, `env_bind()`,
+#'   `scoped_bindings()`, `with_bindings()`, `env_poke()`,
+#'   `env_has()`, `env_get()`, `env_names()`, `env_bind_exprs()` and
+#'   `env_bind_fns()`. This internal genericity was causing confusion
+#'   (see issue #427). You should now extract the environment
+#'   separately before calling these functions.
+#'
 #'
 #' **Soft-deprecated as of rlang 0.2.0:**
 #'

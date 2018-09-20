@@ -34,6 +34,7 @@
 #'   bound to the symbol (the expressions are thus evaluated only
 #'   once, if at all).
 #'
+#'
 #' @section Side effects:
 #'
 #' Since environments have reference semantics (see relevant section
@@ -44,9 +45,16 @@
 #' As they are called primarily for their side effects, these
 #' functions follow the convention of returning their input invisibly.
 #'
-#' @param .env An environment or an object bundling an environment,
-#'   e.g. a formula, [quosure][quotation] or [closure][is_closure].
-#'   This argument is passed to [get_env()].
+#'
+#' @section Life cycle:
+#'
+#' Passing an environment wrapper like a formula or a function instead
+#' of an environment is soft-deprecated as of rlang 0.3.0. This
+#' internal genericity was causing confusion (see issue #427). You
+#' should now extract the environment separately before calling these
+#' functions.
+#'
+#' @param .env An environment.
 #' @param ... Pairs of names and expressions, values or functions.
 #'   These dots support [tidy dots][tidy-dots] features.
 #' @return The input object `.env`, with its associated environment
@@ -79,27 +87,10 @@
 #' var <- "baz"
 #' env_bind(my_env, !!var := "BAZ")
 #' my_env$baz
-#'
-#'
-#' # env_bind() and its variants are generic over formulas, quosures
-#' # and closures. To illustrate this, let's create a closure function
-#' # referring to undefined bindings:
-#' fn <- function() list(a, b)
-#' fn <- set_env(fn, child_env("base"))
-#'
-#' # This would fail if run since `a` etc are not defined in the
-#' # enclosure of fn() (a child of the base environment):
-#' # fn()
-#'
-#' # Let's define those symbols:
-#' env_bind(fn, a = "a", b = "b")
-#'
-#' # fn() now sees the objects:
-#' fn()
 env_bind <- function(.env, ...) {
-  invisible(env_bind_impl(.env, list2(...)))
+  invisible(env_bind_impl(.env, list2(...), "env_bind()"))
 }
-env_bind_impl <- function(env, data) {
+env_bind_impl <- function(env, data, fn) {
   if (!is_vector(data)) {
     type <- as_friendly_type(type_of(data))
     abort(sprintf("`data` must be a vector not a %s", type))
@@ -115,7 +106,7 @@ env_bind_impl <- function(env, data) {
   }
 
   nms <- names(data)
-  env_ <- get_env(env)
+  env_ <- get_env_retired(env, fn, caller_env(2))
 
   for (i in seq_along(data)) {
     nm <- nms[[i]]
@@ -156,7 +147,7 @@ env_bind_exprs <- function(.env, ..., .eval_env = caller_env()) {
   stopifnot(is_named(exprs))
 
   nms <- names(exprs)
-  env_ <- get_env(.env)
+  env_ <- get_env_retired(.env, "env_bind_exprs()")
 
   for (i in seq_along(exprs)) {
     do.call("delayedAssign", list(
@@ -206,7 +197,7 @@ env_bind_fns <- function(.env, ...) {
   fns <- map(fns, as_function)
 
   nms <- names(fns)
-  env_ <- get_env(.env)
+  env_ <- get_env_retired(.env, "env_bind_fns()")
 
   exist <- env_has(env_, nms)
   env_unbind(env_, nms[exist])
@@ -248,7 +239,8 @@ env_bind_fns <- function(.env, ...) {
 #' with_bindings(paste(foo, bar), foo = "rebinded")
 #' paste(foo, bar)
 scoped_bindings <- function(..., .env = .frame, .frame = caller_env()) {
-  env <- get_env(.env)
+  env <- get_env_retired(.env, "scoped_bindings()")
+
   bindings <- list2(...)
   if (!length(bindings)) {
     return(list())
@@ -267,13 +259,14 @@ scoped_bindings <- function(..., .env = .frame, .frame = caller_env()) {
     !! rebind_lang
   })
 
-  env_bind_impl(env, bindings)
+  env_bind_impl(env, bindings, "scoped_bindings()")
   invisible(old)
 }
 #' @rdname scoped_bindings
 #' @param .expr An expression to evaluate with temporary bindings.
 #' @export
 with_bindings <- function(.expr, ..., .env = caller_env()) {
+  env <- get_env_retired(.env, "with_bindings()")
   scoped_bindings(..., .env = .env)
   .expr
 }
@@ -341,14 +334,12 @@ env_bury <- function(.env, ...) {
 #' env_unbind(env, "foo", inherit = TRUE)
 #' env_has(env, "foo", inherit = TRUE)
 env_unbind <- function(env = caller_env(), nms, inherit = FALSE) {
-  env_ <- get_env(env)
-
   if (inherit) {
-    while (any(exist <- env_has(env_, nms, inherit = TRUE))) {
+    while (any(exist <- env_has(env, nms, inherit = TRUE))) {
       rm(list = nms[exist], envir = env, inherits = TRUE)
     }
   } else {
-    exist <- env_has(env_, nms, inherit = FALSE)
+    exist <- env_has(env, nms, inherit = FALSE)
     rm(list = nms[exist], envir = env)
   }
 
@@ -373,8 +364,9 @@ env_unbind <- function(env = caller_env(), nms, inherit = FALSE) {
 #' env_has(env, "foo")
 #' env_has(env, "foo", inherit = TRUE)
 env_has <- function(env = caller_env(), nms, inherit = FALSE) {
+  env <- get_env_retired(env, "env_has()")
   nms <- set_names(nms)
-  map_lgl(nms, exists, envir = get_env(env), inherits = inherit)
+  map_lgl(nms, exists, envir = env, inherits = inherit)
 }
 
 #' Get an object in an environment
@@ -404,7 +396,7 @@ env_has <- function(env = caller_env(), nms, inherit = FALSE) {
 #' # You can also avoid an error by supplying a default value:
 #' env_get(env, "foo", default = "FOO")
 env_get <- function(env = caller_env(), nm, inherit = FALSE, default) {
-  env <- get_env(env)
+  env <- get_env_retired(env, "env_get()")
   if (!missing(default)) {
     exists <- env_has(env, nm, inherit = inherit)
     if (!exists) {
@@ -422,6 +414,8 @@ env_get <- function(env = caller_env(), nm, inherit = FALSE, default) {
 #' @rdname env_get
 #' @export
 env_get_list <- function(env = caller_env(), nms, inherit = FALSE, default) {
+  env <- get_env_retired(env, "env_get_list()")
+
   nms <- set_names(nms)
 
   # FIXME R 3.1: missingness of `default` is not passed through dots on 3.1
@@ -478,7 +472,7 @@ env_get_list <- function(env = caller_env(), nms, inherit = FALSE, default) {
 env_poke <- function(env = caller_env(), nm, value,
                      inherit = FALSE, create = NULL) {
   stopifnot(is_string(nm))
-  env_ <- get_env(env)
+  env_ <- get_env_retired(env, "env_poke()")
   old <- env_get(env_, nm, inherit = inherit, default = missing_arg())
 
   # It is safer not to create a new binding when inherit is TRUE,
@@ -488,7 +482,7 @@ env_poke <- function(env = caller_env(), nm, value,
   }
 
   if (inherit) {
-    scope_poke(env, nm, value, create)
+    scope_poke(env_, nm, value, create)
   } else if (create || env_has(env_, nm)) {
     assign(nm, value, envir = env_)
   } else {
@@ -498,8 +492,7 @@ env_poke <- function(env = caller_env(), nm, value,
   invisible(maybe_missing(old))
 }
 scope_poke <- function(env, nm, value, create) {
-  env_ <- get_env(env)
-  cur <- env_
+  cur <- env
 
   while (!env_has(cur, nm) && !is_empty_env(cur)) {
     cur <- env_parent(cur)
@@ -509,7 +502,7 @@ scope_poke <- function(env, nm, value, create) {
     if (!create) {
       abort(paste0("Can't find existing binding in `env` for \"", nm, "\""))
     }
-    cur <- env_
+    cur <- env
   }
 
   assign(nm, value, envir = cur)
@@ -553,7 +546,8 @@ scope_poke <- function(env, nm, value, create) {
 #' env <- env(a = 1, b = 2)
 #' env_names(env)
 env_names <- function(env) {
-  nms <- names(get_env(env))
+  env <- get_env_retired(env, "env_names()")
+  nms <- names(env)
   .Call(rlang_unescape_character, nms)
 }
 

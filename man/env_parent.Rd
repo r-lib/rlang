@@ -13,8 +13,7 @@ env_tail(env = caller_env(), last = global_env(), sentinel = NULL)
 env_parents(env = caller_env(), last = global_env())
 }
 \arguments{
-\item{env}{An environment or an object bundling an environment,
-e.g. a formula, \link[=quotation]{quosure} or \link[=is_closure]{closure}.}
+\item{env}{An environment.}
 
 \item{n}{The number of generations to go up.}
 
