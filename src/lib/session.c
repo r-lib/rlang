@@ -14,7 +14,21 @@ bool r_is_installed(const char* pkg) {
 }
 
 
+static sexp* has_colour_call = NULL;
+
+bool r_has_colour() {
+  if (!r_is_installed("crayon")) {
+    return false;
+  }
+
+  return r_lgl_deref(r_eval(has_colour_call, r_base_env));
+}
+
+
 void r_init_library_session() {
   is_installed_call = r_parse("requireNamespace(x, quietly = TRUE)");
   r_mark_precious(is_installed_call);
+
+  has_colour_call = r_parse("crayon::has_color()");
+  r_mark_precious(has_colour_call);
 }

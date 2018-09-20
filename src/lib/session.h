@@ -3,6 +3,7 @@
 
 
 bool r_is_installed(const char* pkg);
+bool r_has_colour();
 
 
 #endif
