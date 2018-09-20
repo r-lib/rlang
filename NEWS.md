@@ -1,6 +1,8 @@
 
 # rlang 0.2.2.9000
 
+* `as.list()` and `as.character()` can no longer be used on quosures (#523).
+
 * Passing environment wrappers like formulas or functions to `env_`
   functions is now soft-deprecated. This internal genericity was
   causing confusion (see issue #427). You should now extract the

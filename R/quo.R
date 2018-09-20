@@ -432,6 +432,18 @@ str.quosure <- function(object, ...) {
   str(unclass(object), ...)
 }
 
+#' @export
+as.character.quosure <- function(x, ...) {
+  abort(paste_line(
+    "Can't cast a quosure to a character vector.",
+    "Please use `quo_text()` intead."
+  ))
+}
+#' @export
+as.list.quosure <- function(x, ...) {
+  abort("Can't cast a quosure to a list")
+}
+
 # Create a circular list of colours. This infloops if printed in the REPL!
 new_quo_palette <- function() {
   last_node <- new_node(open_cyan, NULL)

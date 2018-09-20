@@ -226,3 +226,8 @@ test_that("quosures class has subset assign methods", {
   expect_identical(x, quos(foo = 1, bar = 100))
   expect_error(x$foo <- list(4), "Can't assign a list to a list of quosures")
 })
+
+test_that("can't cast a quosure to base types (#523)", {
+  expect_error(as.character(quo(foo)), "Can't cast")
+  expect_error(as.list(quo(foo)), "Can't cast")
+})
