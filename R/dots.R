@@ -46,6 +46,10 @@
 #' @param .ignore_empty Whether to ignore empty arguments. Can be one
 #'   of `"trailing"`, `"none"`, `"all"`. If `"trailing"`, only the
 #'   last argument is ignored if it is empty.
+#' @param .preserve_empty Whether to preserve the empty arguments that
+#'   were not ignored. If `TRUE`, empty arguments are stored with
+#'   [missing_arg()] values. If `FALSE` (the default) an error is
+#'   thrown when an empty argument is detected.
 #' @return A list of arguments. This list is always named: unnamed
 #'   arguments are named with the empty string `""`.
 #'
@@ -85,18 +89,34 @@
 #' # provides a workaround:
 #' fn("wrong!", data = letters)  # exact matching of `data`
 #' fn("wrong!", dat = letters)   # partial matching of `data`
-#' fn(some_data, !!! list(data = letters))  # no matching
+#' fn(some_data, !!!list(data = letters))  # no matching
+#'
+#'
+#' # Empty arguments trigger an error by default:
+#' try(fn(, ))
+#'
+#' # You can choose to preserve empty arguments instead:
+#' list3 <- function(...) dots_list(..., .preserve_empty = TRUE)
+#'
+#' # Note how the last empty argument is still ignored because
+#' # `.ignore_empty` defaults to "trailing":
+#' list3(, )
+#'
+#' # The list with preserved empty arguments is equivalent to:
+#' list(missing_arg())
 dots_list <- function(...,
-                      .ignore_empty = c("trailing", "none", "all")) {
-  dots <- .Call(rlang_dots_list, environment(), FALSE, .ignore_empty, TRUE)
+                      .ignore_empty = c("trailing", "none", "all"),
+                      .preserve_empty = FALSE) {
+  dots <- .Call(rlang_dots_list, environment(), FALSE, .ignore_empty, .preserve_empty, TRUE)
   names(dots) <- names2(dots)
   dots
 }
 
 dots_split <- function(...,
                        .n_unnamed = NULL,
-                       .ignore_empty = c("trailing", "none", "all")) {
-  dots <- .Call(rlang_dots_list, environment(), FALSE, .ignore_empty, TRUE)
+                       .ignore_empty = c("trailing", "none", "all"),
+                       .preserve_empty = FALSE) {
+  dots <- .Call(rlang_dots_list, environment(), FALSE, .ignore_empty, .preserve_empty, TRUE)
 
   if (is_null(names(dots))) {
     if (length(dots)) {
@@ -216,8 +236,9 @@ is_spliced_bare <- function(x) {
 #' @inheritParams tidy-dots
 #' @export
 dots_splice <- function(...,
-                        .ignore_empty = c("trailing", "none", "all")) {
-  dots <- .Call(rlang_dots_flat_list, environment(), FALSE, .ignore_empty, TRUE)
+                        .ignore_empty = c("trailing", "none", "all"),
+                        .preserve_empty = FALSE) {
+  dots <- .Call(rlang_dots_flat_list, environment(), FALSE, .ignore_empty, .preserve_empty, TRUE)
   names(dots) <- names2(dots)
   dots
 }
@@ -242,8 +263,9 @@ dots_splice <- function(...,
 #' # Flatten the objects marked as spliced:
 #' flatten_if(dots, is_spliced)
 dots_values <- function(...,
-                        .ignore_empty = c("trailing", "none", "all")) {
-  .Call(rlang_dots_values, environment(), FALSE, .ignore_empty, TRUE)
+                        .ignore_empty = c("trailing", "none", "all"),
+                        .preserve_empty = FALSE) {
+  .Call(rlang_dots_values, environment(), FALSE, .ignore_empty, .preserve_empty, TRUE)
 }
 
 #' Capture definition objects

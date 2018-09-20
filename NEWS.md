@@ -1,6 +1,9 @@
 
 # rlang 0.2.2.9000
 
+* `dots_list()` gains a `.preserve_empty` argument. When `TRUE`, empty
+  arguments are stored as missing arguments (see `?missing_arg`).
+
 * New experimental option `rlang__backtrace_on_error` to display
   backtraces alongside error messages. See `?rlang::abort` for
   supported options.

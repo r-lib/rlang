@@ -6,7 +6,8 @@
 \alias{list2}
 \title{Collect dots tidily}
 \usage{
-dots_list(..., .ignore_empty = c("trailing", "none", "all"))
+dots_list(..., .ignore_empty = c("trailing", "none", "all"),
+  .preserve_empty = FALSE)
 
 list2(...)
 }
@@ -18,6 +19,11 @@ arguments are embedded in the returned list.}
 \item{.ignore_empty}{Whether to ignore empty arguments. Can be one
 of \code{"trailing"}, \code{"none"}, \code{"all"}. If \code{"trailing"}, only the
 last argument is ignored if it is empty.}
+
+\item{.preserve_empty}{Whether to preserve the empty arguments that
+were not ignored. If \code{TRUE}, empty arguments are stored with
+\code{\link[=missing_arg]{missing_arg()}} values. If \code{FALSE} (the default) an error is
+thrown when an empty argument is detected.}
 }
 \value{
 A list of arguments. This list is always named: unnamed
@@ -91,7 +97,21 @@ fn <- function(data, ...) {
 # provides a workaround:
 fn("wrong!", data = letters)  # exact matching of `data`
 fn("wrong!", dat = letters)   # partial matching of `data`
-fn(some_data, !!! list(data = letters))  # no matching
+fn(some_data, !!!list(data = letters))  # no matching
+
+
+# Empty arguments trigger an error by default:
+try(fn(, ))
+
+# You can choose to preserve empty arguments instead:
+list3 <- function(...) dots_list(..., .preserve_empty = TRUE)
+
+# Note how the last empty argument is still ignored because
+# `.ignore_empty` defaults to "trailing":
+list3(, )
+
+# The list with preserved empty arguments is equivalent to:
+list(missing_arg())
 }
 \seealso{
 \code{\link[=exprs]{exprs()}} for extracting dots without evaluation.
