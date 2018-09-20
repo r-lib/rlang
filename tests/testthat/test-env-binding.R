@@ -226,3 +226,8 @@ test_that("can pluck missing arg from environment", {
   child <- env(env)
   env_get(child, "x", inherit = TRUE)
 })
+
+test_that("can call scoped_bindings() and with_bindings() without arguments", {
+  expect_no_error(scoped_bindings())
+  expect_no_error(with_bindings("foo"))
+})

@@ -250,6 +250,10 @@ env_bind_fns <- function(.env, ...) {
 scoped_bindings <- function(..., .env = .frame, .frame = caller_env()) {
   env <- get_env(.env)
   bindings <- list2(...)
+  if (!length(bindings)) {
+    return(list())
+  }
+
   stopifnot(is_named(bindings))
 
   nms <- names(bindings)

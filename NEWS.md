@@ -1,6 +1,9 @@
 
 # rlang 0.2.2.9000
 
+* `scoped_bindings()` and `with_bindings()` can now be called without
+  bindings.
+
 * The frame and stack API is soft-deprecated. Some of the
   functionality has been replaced by `trace_back()`.
 
