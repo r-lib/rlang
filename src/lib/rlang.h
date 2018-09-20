@@ -80,6 +80,7 @@ extern sexp* r_shared_false;
 #include "node.h"
 #include "parse.h"
 #include "quo.h"
+#include "session.h"
 #include "squash.h"
 #include "stack.h"
 #include "state.h"
