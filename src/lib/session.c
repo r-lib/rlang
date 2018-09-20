@@ -7,7 +7,7 @@ static sexp* is_installed_call = NULL;
 
 bool r_is_installed(const char* pkg) {
   sexp* installed = eval_with_x(is_installed_call, KEEP(r_scalar_chr(pkg)));
-  bool out = r_lgl_deref(installed);
+  bool out = *r_lgl_deref(installed);
 
   FREE(1);
   return out;
@@ -21,7 +21,7 @@ bool r_has_colour() {
     return false;
   }
 
-  return r_lgl_deref(r_eval(has_colour_call, r_base_env));
+  return *r_lgl_deref(r_eval(has_colour_call, r_base_env));
 }
 
 
