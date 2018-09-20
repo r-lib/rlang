@@ -48,6 +48,25 @@ sexp* rlang_warn_deprecated_once(sexp* id, sexp* msg) {
 // env.c
 
 sexp* rlang_env_poke_parent(sexp* env, sexp* new_parent) {
+  if (R_IsNamespaceEnv(env)) {
+    r_abort("Can't change the parent of a namespace environment");
+  }
+  if (R_IsPackageEnv(env)) {
+    r_abort("Can't change the parent of a package environment");
+  }
+  if (R_EnvironmentIsLocked(env)) {
+    r_abort("Can't change the parent of a locked environment");
+  }
+  if (env == r_global_env) {
+    r_abort("Can't change the parent of the global environment");
+  }
+  if (env == r_base_env) {
+    r_abort("Can't change the parent of the base environment");
+  }
+  if (env == r_empty_env) {
+    r_abort("Can't change the parent of the empty environment");
+  }
+
   SET_ENCLOS(env, new_parent);
   return env;
 }

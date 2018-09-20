@@ -403,3 +403,22 @@ test_that("env_clone() does not force promises", {
   out <- env_clone(e)
   expect_error(out$foo, "forced")
 })
+
+test_that("env_poke_parent() pokes parent", {
+  e <- env()
+  env_poke_parent(e, empty_env())
+  expect_reference(env_parent(e), empty_env())
+})
+
+test_that("env_poke_parent() fails with namespaces, package envs, and locked envs", {
+  expect_error(env_poke_parent(ns_env("rlang"), env()), "namespace environment")
+  expect_error(env_poke_parent(pkg_env("rlang"), env()), "package environment")
+
+  expect_error(env_poke_parent(global_env(), env()), "global")
+  expect_error(env_poke_parent(empty_env(), env()), "empty")
+  expect_error(env_poke_parent(base_env(), env()), "base")
+
+  env <- env()
+  env_lock(env)
+  expect_error(env_poke_parent(env, env()), "locked environment")
+})
