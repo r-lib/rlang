@@ -308,7 +308,10 @@ env_parent <- function(env = caller_env(), n = 1) {
 env_tail <- function(env = caller_env(), last = global_env(),
                      sentinel = NULL) {
   if (!is_null(sentinel)) {
-    warning("`sentinel` is deprecated as of version 0.2.0.9000, please use `last` instead")
+    warn_deprecated(paste_line(
+      "`sentinel` is deprecated as of version 0.3.0.",
+      "Please use `last` instead."
+    ))
     last <- sentinel
   }
 
