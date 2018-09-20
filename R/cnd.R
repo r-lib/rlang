@@ -673,13 +673,16 @@ conditionMessage.rlang_error <- function(c) {
 #' @noRd
 NULL
 
-signal_soft_deprecated <- function(msg, id = msg, package = NULL) {
+signal_soft_deprecated <- function(msg,
+                                   id = msg,
+                                   package = NULL,
+                                   env = caller_env(2)) {
   if (is_true(peek_option("lifecycle_disable_verbose_retirement"))) {
     return(invisible(NULL))
   }
 
   if (is_true(peek_option("lifecycle_force_verbose_retirement")) ||
-      is_reference(caller_env(2), global_env())) {
+      is_reference(env, global_env())) {
     warn_deprecated(msg, id)
     return(invisible(NULL))
   }
