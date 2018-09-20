@@ -83,7 +83,7 @@ void signal_namespaced_uq_deprecation() {
     "  rlang::expr(mean(UQ(var) * 100))\n"
     "\n"
     "  # Good:\n"
-    "  rlang::expr(mean(!!var * 100))"
+    "  rlang::expr(mean(!!var * 100))\n"
   );
 }
 void signal_namespaced_uqs_deprecation() {
@@ -98,7 +98,7 @@ void signal_namespaced_uqs_deprecation() {
     "  rlang::expr(mean(UQS(args)))\n"
     "\n"
     "  # Good:\n"
-    "  rlang::expr(mean(!!!args))"
+    "  rlang::expr(mean(!!!args))\n"
   );
 }
 

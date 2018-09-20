@@ -168,7 +168,7 @@ static void warn_env_as_mask_once() {
     "\n"
     "  # Good:\n"
     "  mask <- new_data_mask(env)\n"
-    "  eval_tidy(expr, mask)"
+    "  eval_tidy(expr, mask)\n"
   );
 }
 sexp* rlang_as_data_mask(sexp* data) {

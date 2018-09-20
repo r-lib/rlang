@@ -78,7 +78,7 @@ void r_warn_deprecated_once(const char* id, const char* fmt, ...) {
   INTERP(buf, fmt, ...);
 
   static const char* note =
-    "\n\nThis warning is displayed once per session.";
+    "\nThis warning is displayed once per session.";
 
   if (strlen(buf) + strlen(note) + 1 < BUFSIZE) {
     strcat(buf, note);
