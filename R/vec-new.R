@@ -108,6 +108,11 @@ ll <- function(...) {
   .Call(rlang_dots_list, environment(), FALSE, "trailing", FALSE, TRUE)
 }
 
+# Preserves empty arguments
+list3 <- function(...) {
+  .Call(rlang_dots_list, environment(), FALSE, "trailing", TRUE, TRUE)
+}
+
 
 #' Create vectors matching a given length
 #'

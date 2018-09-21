@@ -80,7 +80,7 @@ test_that("scoped_bindings binds temporarily", {
       bar = "BAR",
       baz = "BAZ"
     )
-    expect_identical(old, list(foo = "foo", bar = "bar"))
+    expect_identical(old, list3(foo = "foo", bar = "bar", baz = ))
     temp_bindings <- env_get_list(env, c("foo", "bar", "baz"))
     expect_identical(temp_bindings, list(foo = "FOO", bar = "BAR", baz = "BAZ"))
   })
@@ -234,4 +234,13 @@ test_that("can pluck missing arg from environment", {
 test_that("can call scoped_bindings() and with_bindings() without arguments", {
   expect_no_error(scoped_bindings())
   expect_no_error(with_bindings("foo"))
+})
+
+test_that("can remove bindings by supplying empty arguments", {
+  empty <- env()
+  expect_no_error(env_bind(empty, foo = ))
+
+  env <- env(foo = "foo", bar = "bar")
+  env_bind(env, foo = , bar = )
+  expect_identical(env_names(env), chr())
 })
