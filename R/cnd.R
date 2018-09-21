@@ -704,10 +704,7 @@ conditionMessage.rlang_error <- function(c) {
 NULL
 
 format_onerror_backtrace <- function(trace) {
-  show_trace <- peek_option("rlang__backtrace_on_error")
-  if (is_null(show_trace)) {
-    return(NULL)
-  }
+  show_trace <- peek_option("rlang__backtrace_on_error") %||% "reminder"
 
   if (!is_string(show_trace) || !show_trace %in% c("reminder", "branch", "collapse", "full")) {
     options(rlang__backtrace_on_error = NULL)

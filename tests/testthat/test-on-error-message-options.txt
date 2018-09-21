@@ -2,6 +2,7 @@
 >>> Default:
 
 The error message
+Call `rlang::last_error()` to see a backtrace
 
 
 >>> Reminder:
