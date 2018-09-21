@@ -5,20 +5,20 @@
 \alias{env_get_list}
 \title{Get an object in an environment}
 \usage{
-env_get(env = caller_env(), nm, inherit = FALSE, default)
+env_get(env = caller_env(), nm, default, inherit = FALSE)
 
-env_get_list(env = caller_env(), nms, inherit = FALSE, default)
+env_get_list(env = caller_env(), nms, default, inherit = FALSE)
 }
 \arguments{
 \item{env}{An environment.}
 
 \item{nm, nms}{Names of bindings. \code{nm} must be a single string.}
 
-\item{inherit}{Whether to look for bindings in the parent
-environments.}
-
 \item{default}{A default value in case there is no binding for \code{nm}
 in \code{env}.}
+
+\item{inherit}{Whether to look for bindings in the parent
+environments.}
 }
 \value{
 An object if it exists. Otherwise, throws an error.

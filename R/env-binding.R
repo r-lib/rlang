@@ -395,7 +395,7 @@ env_has <- function(env = caller_env(), nms, inherit = FALSE) {
 #'
 #' # You can also avoid an error by supplying a default value:
 #' env_get(env, "foo", default = "FOO")
-env_get <- function(env = caller_env(), nm, inherit = FALSE, default) {
+env_get <- function(env = caller_env(), nm, default, inherit = FALSE) {
   env <- get_env_retired(env, "env_get()")
   if (!missing(default)) {
     exists <- env_has(env, nm, inherit = inherit)
@@ -413,7 +413,7 @@ env_get <- function(env = caller_env(), nm, inherit = FALSE, default) {
 }
 #' @rdname env_get
 #' @export
-env_get_list <- function(env = caller_env(), nms, inherit = FALSE, default) {
+env_get_list <- function(env = caller_env(), nms, default, inherit = FALSE) {
   env <- get_env_retired(env, "env_get_list()")
 
   nms <- set_names(nms)

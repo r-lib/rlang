@@ -1,6 +1,9 @@
 
 # rlang 0.2.2.9000
 
+* The `inherit` argument of `env_get()` and `env_get_list()` has
+  changed position. It now comes after `default`.
+
 * `as.character()` can no longer be used on quosures (#523).
 
 * Passing environment wrappers like formulas or functions to `env_`
