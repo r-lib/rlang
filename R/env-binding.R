@@ -570,6 +570,8 @@ env_names <- function(env) {
 #'   `env_binding_are_unlocked()` invisibly.
 #'
 #' @seealso [env_lock()] for locking an environment.
+#'
+#' @keywords internal
 #' @export
 #' @examples
 #' # Bindings are unlocked by default:
@@ -620,6 +622,7 @@ env_binding_are_locked <- function(env, nms = NULL) {
 #'
 #' @inheritParams env_binding_lock
 #'
+#' @keywords internal
 #' @return A logical vector as long as `nms` and named after it.
 #' @export
 env_binding_are_active <- function(env, nms = NULL) {

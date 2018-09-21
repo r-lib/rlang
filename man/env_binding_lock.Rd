@@ -55,3 +55,4 @@ env$a
 \seealso{
 \code{\link[=env_lock]{env_lock()}} for locking an environment.
 }
+\keyword{internal}

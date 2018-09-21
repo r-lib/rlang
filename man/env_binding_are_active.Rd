@@ -20,3 +20,4 @@ A logical vector as long as \code{nms} and named after it.
 \description{
 \Sexpr[results=rd, stage=render]{rlang:::lifecycle("experimental")}
 }
+\keyword{internal}
