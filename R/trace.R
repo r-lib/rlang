@@ -480,6 +480,10 @@ trace_simplify_branch <- function(trace) {
 
 # Bypass calls with inlined functions
 is_uninformative_call <- function(call) {
+  if (!is_call(call)) {
+    return(FALSE)
+  }
+
   fn <- call[[1]]
 
   # Inlined functions occur with active bindings
