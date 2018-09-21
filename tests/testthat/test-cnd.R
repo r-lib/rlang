@@ -428,6 +428,11 @@ test_that("format_onerror_backtrace handles empty and size 1 traces", {
   expect_match(format_onerror_backtrace(trace), "foo.*bar")
 })
 
+test_that("don't print message or backtrace fields if empty", {
+  err <- error_cnd("foo", message = "")
+  expect_known_output(print(err), test_path("test-cnd-error-print-no-message.txt"))
+})
+
 
 # Lifecycle ----------------------------------------------------------
 

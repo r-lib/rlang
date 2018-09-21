@@ -583,9 +583,17 @@ print.rlang_error <- function(x,
   } else {
     header <- "<error: parent>"
   }
+
+  message <- x$message
+  if (is_string(message) && nzchar(message)) {
+    message <- sprintf("* Message: \"%s\"", message)
+  } else {
+    message <- NULL
+  }
+
   cat_line(
     header,
-    sprintf("* Message: \"%s\"", x$message),
+    message,
     sprintf("* Class: `%s`", class(x)[[1]])
   )
 
@@ -594,28 +602,31 @@ print.rlang_error <- function(x,
     cat_line(sprintf("* Fields: %s", nms))
   }
 
-  cat_line("* Backtrace:")
-
   trace <- x$trace
-  if (!is_null(child)) {
-    # Trim common portions of backtrace
-    child_trace <- child$trace
-    common <- map_lgl(trace$envs, `%in%`, child_trace$envs)
-    trace <- trace_subset(trace, which(!common))
 
-    # Trim catching context if any
-    calls <- trace$calls
-    if (length(calls) && is_call(calls[[1]], c("tryCatch", "with_handlers"))) {
-      parent <- trace$parents[[1]]
-      next_sibling <- which(trace$parents[-1] == parent)
-      if (length(next_sibling)) {
-        trace <- trace_subset(trace, -seq2(1L, next_sibling))
+  if (!is_null(trace)) {
+    cat_line("* Backtrace:")
+
+    if (!is_null(child)) {
+      # Trim common portions of backtrace
+      child_trace <- child$trace
+      common <- map_lgl(trace$envs, `%in%`, child_trace$envs)
+      trace <- trace_subset(trace, which(!common))
+
+      # Trim catching context if any
+      calls <- trace$calls
+      if (length(calls) && is_call(calls[[1]], c("tryCatch", "with_handlers"))) {
+        parent <- trace$parents[[1]]
+        next_sibling <- which(trace$parents[-1] == parent)
+        if (length(next_sibling)) {
+          trace <- trace_subset(trace, -seq2(1L, next_sibling))
+        }
       }
     }
-  }
 
-  simplify <- arg_match(simplify, c("collapse", "branch", "none"))
-  print(trace, ..., simplify = simplify)
+    simplify <- arg_match(simplify, c("collapse", "branch", "none"))
+    print(trace, ..., simplify = simplify)
+  }
 
   if (!is_null(x$parent)) {
     print(x$parent, ..., child = x, simplify = simplify, fields = fields)
@@ -766,7 +777,7 @@ add_backtrace <- function() {
       msg <- cnd$message
     }
   } else {
-    msg <- "*Couldn't retrieve the error message*"
+    msg <- NULL
   }
 
   # Save a fake rlang error containing the backtrace
