@@ -712,31 +712,34 @@ format_onerror_backtrace <- function(trace) {
     return(NULL)
   }
 
-  if (show_trace == "reminder") {
-    reminder <- silver("Call `rlang::last_error()` to see a backtrace")
-    return(reminder)
-  }
-
   if (show_trace == "branch") {
     max_frames <- 10L
   } else {
     max_frames <- NULL
   }
-  if (show_trace == "full") {
-    simplify <- "none"
-  } else {
-    simplify  <- show_trace
-  }
+
+  simplify <- switch(show_trace,
+    full = "none",
+    reminder = "branch", # Check size of backtrace branch
+    show_trace
+  )
+
   backtrace_lines <- format(trace, simplify = simplify, max_frames = max_frames)
 
-  if (length(backtrace_lines)) {
-    backtrace_lines <- paste_line(
-      "Backtrace:",
-      backtrace_lines
-    )
+  # Backtraces of size 0 and 1 are uninteresting
+  if (length(backtrace_lines) <= 1L) {
+    return(NULL)
   }
 
-  backtrace_lines
+  if (show_trace == "reminder") {
+    reminder <- silver("Call `rlang::last_error()` to see a backtrace")
+    return(reminder)
+  }
+
+  paste_line(
+    "Backtrace:",
+    backtrace_lines
+  )
 }
 
 add_backtrace <- function() {
