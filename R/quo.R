@@ -439,10 +439,6 @@ as.character.quosure <- function(x, ...) {
     "Please use `quo_text()` intead."
   ))
 }
-#' @export
-as.list.quosure <- function(x, ...) {
-  abort("Can't cast a quosure to a list")
-}
 
 # Create a circular list of colours. This infloops if printed in the REPL!
 new_quo_palette <- function() {

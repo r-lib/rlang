@@ -229,5 +229,4 @@ test_that("quosures class has subset assign methods", {
 
 test_that("can't cast a quosure to base types (#523)", {
   expect_error(as.character(quo(foo)), "Can't cast")
-  expect_error(as.list(quo(foo)), "Can't cast")
 })
