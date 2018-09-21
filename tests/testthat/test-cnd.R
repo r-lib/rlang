@@ -346,37 +346,6 @@ test_that("signal_soft_deprecated() warns when option is set", {
 })
 
 
-# Lifecycle ----------------------------------------------------------
-
-test_that("deprecated arguments of abort() etc still work", {
-  foo <- function() {
-    abort(msg = "foo", type = "bar", call = TRUE)
-  }
-
-  cnds <- catch_cnds(foo())
-  msgs <- pluck_conditions_msgs(cnds)
-
-  warnings_msgs <- msgs$warnings
-  expect_length(warnings_msgs, 2L)
-  expect_match(warnings_msgs[[1]], "`msg` has been renamed to `message`")
-  expect_match(warnings_msgs[[2]], "`type` has been renamed to `.subclass`")
-
-  expect_match(msgs$error, "foo")
-  expect_identical(conditionCall(cnds$error), quote(foo()))
-})
-
-test_that("deprecated arguments of cnd_signal() still work", {
-  with_non_verbose_retirement({
-    observed <- catch_cnd(cnd_signal("foo"))
-    expected <- catch_cnd(signal("", "foo"))
-    expect_identical(observed, expected)
-
-    with_handlers(cnd_signal(cnd("foo"), .mufflable = TRUE),
-      foo = calling(function(cnd) expect_true(rst_exists("rlang_muffle")))
-    )
-  })
-})
-
 test_that("errors are saved", {
   # `outFile` argument
   skip_if(getRversion() < "3.4")
@@ -450,4 +419,36 @@ test_that("format_onerror_backtrace handles empty traces", {
   scoped_options(rlang__backtrace_on_error = "branch")
   trace <- new_trace(list(), int(), chr())
   expect_identical(format_onerror_backtrace(trace), chr())
+})
+
+
+# Lifecycle ----------------------------------------------------------
+
+test_that("deprecated arguments of abort() etc still work", {
+  foo <- function() {
+    abort(msg = "foo", type = "bar", call = TRUE)
+  }
+
+  cnds <- catch_cnds(foo())
+  msgs <- pluck_conditions_msgs(cnds)
+
+  warnings_msgs <- msgs$warnings
+  expect_length(warnings_msgs, 2L)
+  expect_match(warnings_msgs[[1]], "`msg` has been renamed to `message`")
+  expect_match(warnings_msgs[[2]], "`type` has been renamed to `.subclass`")
+
+  expect_match(msgs$error, "foo")
+  expect_identical(conditionCall(cnds$error), quote(foo()))
+})
+
+test_that("deprecated arguments of cnd_signal() still work", {
+  with_non_verbose_retirement({
+    observed <- catch_cnd(cnd_signal("foo"))
+    expected <- catch_cnd(signal("", "foo"))
+    expect_identical(observed, expected)
+
+    with_handlers(cnd_signal(cnd("foo"), .mufflable = TRUE),
+      foo = calling(function(cnd) expect_true(rst_exists("rlang_muffle")))
+    )
+  })
 })
