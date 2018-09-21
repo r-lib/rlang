@@ -61,6 +61,7 @@ test_that("supports special objects", {
   expect_match(expr_name(quote(foo := bar)), ":=")
   expect_identical(expr_name(quo(foo)), "~foo")
   expect_identical(expr_name(~foo), "~foo")
+  expect_identical(expr_name(NULL), "NULL")
 })
 
 
