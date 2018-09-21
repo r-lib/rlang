@@ -576,7 +576,7 @@ catch_cnd <- function(expr) {
 print.rlang_error <- function(x,
                               ...,
                               child = NULL,
-                              simplify = c("collapse", "branch", "none"),
+                              simplify = c("branch", "collapse", "none"),
                               fields = FALSE) {
   if (is_null(child)) {
     header <- "<error>"
