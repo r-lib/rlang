@@ -164,19 +164,13 @@ env_bind_exprs <- function(.env, ..., .eval_env = caller_env()) {
 #' @export
 #' @examples
 #'
-#' # You can create active bindings with env_bind_fns()
-#' # Let's create some bindings in the lexical enclosure of `fn`:
-#' counter <- 0
-#'
-#' # And now a function that increments the counter and returns a
-#' # string with the count:
+#' # You can create active bindings with env_bind_fns(). Active
+#' # bindings execute a function each time they are evaluated:
 #' fn <- function() {
-#'   counter <<- counter + 1
-#'   paste("my counter:", counter)
+#'   cat("I have been called\n")
+#'   rnorm(1)
 #' }
 #'
-#' # Now we create an active binding in a child of the current
-#' # environment:
 #' env <- env()
 #' env_bind_fns(env, symbol = fn)
 #'
