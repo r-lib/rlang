@@ -103,7 +103,7 @@
 env_bind <- function(.env, ...) {
   env_bind_impl(.env, list3(...), "env_bind()", bind = TRUE)
 }
-env_bind_impl <- function(env, data, fn, bind = FALSE) {
+env_bind_impl <- function(env, data, fn, bind = FALSE, binder = NULL) {
   if (!is_vector(data)) {
     type <- as_friendly_type(type_of(data))
     abort(sprintf("`data` must be a vector not a %s", type))
@@ -128,13 +128,18 @@ env_bind_impl <- function(env, data, fn, bind = FALSE) {
     old[!overwritten] <- list(missing_arg())
   }
 
-  for (i in seq_along(data)) {
-    nm <- nms[[i]]
-    if (bind && overwritten[[i]] && is_missing(data[[i]])) {
-      base::rm(list = nm, envir = env_)
-    } else {
-      base::assign(nm, data[[nm]], envir = env_)
+  if (is_null(binder)) {
+    binder <- function(env, nm, value) {
+      if (bind && overwritten[[i]] && is_missing(data[[i]])) {
+        base::rm(list = nm, envir = env)
+      } else {
+        base::assign(nm, data[[nm]], envir = env)
+      }
     }
+  }
+
+  for (i in seq_along(data)) {
+    binder(env_, nms[[i]], data[[i]])
   }
 
   if (bind) {
@@ -172,21 +177,17 @@ env_bind_impl <- function(env, data, fn, bind = FALSE) {
 #' env$name
 env_bind_exprs <- function(.env, ..., .eval_env = caller_env()) {
   exprs <- exprs(...)
-  stopifnot(is_named(exprs))
 
-  nms <- names(exprs)
-  env_ <- get_env_retired(.env, "env_bind_exprs()")
-
-  for (i in seq_along(exprs)) {
+  binder <- function(env, nm, value) {
     do.call("delayedAssign", list(
-      x = nms[[i]],
-      value = exprs[[i]],
+      x = nm,
+      value = value,
       eval.env = .eval_env,
-      assign.env = env_
+      assign.env = env
     ))
   }
 
-  invisible(.env)
+  env_bind_impl(.env, exprs(...), "env_bind_exprs()", TRUE, binder)
 }
 #' @rdname env_bind_exprs
 #' @export
@@ -214,21 +215,19 @@ env_bind_exprs <- function(.env, ..., .eval_env = caller_env()) {
 #' env$foo
 #' env$foo
 env_bind_fns <- function(.env, ...) {
-  fns <- dots_splice(...)
-  stopifnot(is_named(fns))
-  fns <- map(fns, as_function)
+  fns <- map(list2(...), as_function)
 
-  nms <- names(fns)
-  env_ <- get_env_retired(.env, "env_bind_fns()")
+  # makeActiveBinding() fails if there is already a regular binding
+  existing <- env_names(.env)
 
-  exist <- env_has(env_, nms)
-  env_unbind(env_, nms[exist])
-
-  for (i in seq_along(fns)) {
-    makeActiveBinding(nms[[i]], fns[[i]], env_)
+  binder <- function(env, nm, value) {
+    if (nm %in% existing) {
+      env_unbind(env, nm)
+    }
+    makeActiveBinding(nm, value, env)
   }
 
-  invisible(.env)
+  env_bind_impl(.env, fns, "env_bind_fns()", TRUE, binder)
 }
 
 #' Temporarily change bindings of an environment

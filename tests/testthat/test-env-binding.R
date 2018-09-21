@@ -14,7 +14,8 @@ test_that("promises are created", {
 })
 
 test_that("env_bind_fns() creates active bindings", {
-  env <- env_bind_fns(env(), a = function() "foo")
+  env <- env()
+  env_bind_fns(env, a = function() "foo")
   expect_identical(env$a, "foo")
   expect_identical(env$a, "foo")
 })
@@ -186,7 +187,8 @@ test_that("applies predicates to all bindings by default", {
 })
 
 test_that("env_binding_are_active() doesn't force promises", {
-  env <- env_bind_exprs(env(), foo = stop("kaboom"))
+  env <- env()
+  env_bind_exprs(env, foo = stop("kaboom"))
   expect_no_error(env_binding_are_active(env))
   expect_identical(env_binding_are_promise(env), lgl(foo = TRUE))
   expect_identical(env_binding_are_promise(env), lgl(foo = TRUE))
