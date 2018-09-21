@@ -464,16 +464,10 @@ env_get_list <- function(env = caller_env(), nms, default, inherit = FALSE) {
 #' @keywords internal
 #' @export
 env_poke <- function(env = caller_env(), nm, value,
-                     inherit = FALSE, create = NULL) {
+                     inherit = FALSE, create = !inherit) {
   stopifnot(is_string(nm))
   env_ <- get_env_retired(env, "env_poke()")
   old <- env_get(env_, nm, inherit = inherit, default = missing_arg())
-
-  # It is safer not to create a new binding when inherit is TRUE,
-  # since the main purpose is to override an existing binding
-  if (is_null(create)) {
-    create <- if (inherit) FALSE else TRUE
-  }
 
   if (inherit) {
     scope_poke(env_, nm, value, create)

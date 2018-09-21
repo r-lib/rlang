@@ -5,7 +5,7 @@
 \title{Poke an object in an environment}
 \usage{
 env_poke(env = caller_env(), nm, value, inherit = FALSE,
-  create = NULL)
+  create = !inherit)
 }
 \arguments{
 \item{env}{An environment.}
