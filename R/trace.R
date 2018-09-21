@@ -332,8 +332,15 @@ set_trace_collapsed <- function(trace, id, n) {
 n_collapsed <- function(trace, id) {
   call <- trace$calls[[id]]
 
-  if (is_call(call, c("eval", "evalq"), ns = c("", "base"))) {
-    return(1L)
+  if (is_eval_call(call)) {
+    # When error occurs inside eval()'s frame at top level, there
+    # might be only one frame and nothing to collapse
+    if (id > 1L && is_eval_call(trace$calls[[id - 1L]])) {
+      n <- 1L
+    } else {
+      n <- 0L
+    }
+    return(n)
   }
 
   if (identical(call, quote(function_list[[i]](value)))) {
@@ -345,6 +352,10 @@ n_collapsed <- function(trace, id) {
   }
 
   0L
+}
+
+is_eval_call <- function(call) {
+  is_call(call, c("eval", "evalq"), ns = c("", "base"))
 }
 
 pipe_collect_calls <- function(pipe) {
