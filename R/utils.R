@@ -134,6 +134,20 @@ cyan <- function(x) {
     x
   }
 }
+blurred <- function(x) {
+  if (is_installed("crayon")) {
+    crayon::blurred(x)
+  } else {
+    x
+  }
+}
+silver <- function(x) {
+  if (is_installed("crayon")) {
+    crayon::silver(x)
+  } else {
+    x
+  }
+}
 
 has_crayon <- function() {
   is_installed("crayon") && crayon::has_color()

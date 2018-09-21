@@ -155,6 +155,7 @@ expr_label <- function(expr) {
 #' @export
 expr_name <- function(expr) {
   switch(typeof(expr),
+    NULL = "NULL",
     symbol = as_string(expr),
     language = {
       name <- deparse_one(expr)

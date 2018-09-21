@@ -1,6 +1,10 @@
 
 # rlang 0.2.2.9000
 
+* New experimental option `rlang__backtrace_on_error` to display
+  backtraces alongside error messages. See `?rlang::abort` for
+  supported options.
+
 * The `inherit` argument of `env_get()` and `env_get_list()` has
   changed position. It now comes after `default`.
 

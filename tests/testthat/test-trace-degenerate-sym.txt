@@ -1,0 +1,10 @@
+Full:
+█
+└─foo
+
+Collapsed:
+█
+└─foo
+
+Branch:
+ ─foo

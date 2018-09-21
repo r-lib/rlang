@@ -2,16 +2,14 @@
 * Message: "High-level message"
 * Class: `rlang_error`
 * Backtrace:
-█
-├─[ catch_cnd(...) ] with 5 more calls
-└─a()
-  └─b()
-    └─c()
+ ─catch_cnd(a())
+ ─a()
+ ─b()
+ ─c()
 <error: parent>
 * Message: "Low-level message"
 * Class: `rlang_error`
 * Backtrace:
-█
-└─f()
-  └─g()
-    └─h()
+ ─f()
+ ─g()
+ ─h()

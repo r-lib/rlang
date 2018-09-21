@@ -374,3 +374,38 @@ test_that("anonymous calls are stripped from backtraces", {
   expect_identical(format(trace, simplify = "branch"), chr())
   expect_known_trace_output(trace, "test-trace-backtrace-anonymous.txt")
 })
+
+test_that("collapsing of eval() frames detects when error occurs within eval()", {
+  skip_on_os("windows")
+
+  e <- NULL
+  trace <- NULL
+
+  fn <- function() {
+    scoped_options(
+      rlang_trace_format_srcrefs = FALSE
+    )
+    e <<- current_env()
+    eval()
+  }
+
+  catch_cnd(with_handlers(
+    fn(),
+    error = calling(function(err) trace <<- trace_back(e))
+  ))
+
+  expect_known_trace_output(trace, "test-trace-non-collapsed-eval")
+})
+
+test_that("can print degenerate backtraces", {
+  skip_on_os("windows")
+
+  trace_sym <- new_trace(list(quote(foo)), int(0), chr(""))
+  expect_known_trace_output(trace_sym, file = "test-trace-degenerate-sym.txt")
+
+  trace_null <- new_trace(list(NULL), int(0), chr(""))
+  expect_known_trace_output(trace_null, file = "test-trace-degenerate-null.txt")
+
+  trace_scalar <- new_trace(list(1L), int(0), chr(""))
+  expect_known_trace_output(trace_scalar, file = "test-trace-degenerate-scalar.txt")
+})

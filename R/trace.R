@@ -156,10 +156,6 @@ format.rlang_trace <- function(x,
                                max_frames = NULL,
                                dir = getwd(),
                                srcrefs = NULL) {
-  if (trace_length(x) == 0) {
-    return(trace_root())
-  }
-
   switch(arg_match(simplify),
     none = trace_format(x, max_frames, dir, srcrefs),
     collapse = trace_format_collapse(x, max_frames, dir, srcrefs),
@@ -169,7 +165,11 @@ format.rlang_trace <- function(x,
 
 trace_format <- function(trace, max_frames, dir, srcrefs) {
   if (!is_null(max_frames)) {
-    abort("`max_frames` is currently only supported with `simplify = \"branch\"`")
+    msg <- "`max_frames` is currently only supported with `simplify = \"branch\"`"
+    stop(msg, call. = FALSE)
+  }
+  if (!trace_length(trace)) {
+    return(trace_root())
   }
 
   tree <- trace_as_tree(trace, dir = dir, srcrefs = srcrefs)
@@ -332,8 +332,15 @@ set_trace_collapsed <- function(trace, id, n) {
 n_collapsed <- function(trace, id) {
   call <- trace$calls[[id]]
 
-  if (is_call(call, c("eval", "evalq"), ns = c("", "base"))) {
-    return(1L)
+  if (is_eval_call(call)) {
+    # When error occurs inside eval()'s frame at top level, there
+    # might be only one frame and nothing to collapse
+    if (id > 1L && is_eval_call(trace$calls[[id - 1L]])) {
+      n <- 1L
+    } else {
+      n <- 0L
+    }
+    return(n)
   }
 
   if (identical(call, quote(function_list[[i]](value)))) {
@@ -345,6 +352,10 @@ n_collapsed <- function(trace, id) {
   }
 
   0L
+}
+
+is_eval_call <- function(call) {
+  is_call(call, c("eval", "evalq"), ns = c("", "base"))
 }
 
 pipe_collect_calls <- function(pipe) {
@@ -469,6 +480,10 @@ trace_simplify_branch <- function(trace) {
 
 # Bypass calls with inlined functions
 is_uninformative_call <- function(call) {
+  if (!is_call(call)) {
+    return(FALSE)
+  }
+
   fn <- call[[1]]
 
   # Inlined functions occur with active bindings

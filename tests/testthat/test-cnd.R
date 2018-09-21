@@ -245,6 +245,7 @@ test_that("error is printed with backtrace", {
   msg <- with_options(
     rlang_trace_format_srcrefs = FALSE,
     rlang_trace_top_env = current_env(),
+    rlang__backtrace_on_error = "branch",
     conditionMessage(catch_cnd(f()))
   )
 
@@ -345,6 +346,89 @@ test_that("signal_soft_deprecated() warns when option is set", {
 })
 
 
+test_that("errors are saved", {
+  # `outFile` argument
+  skip_if(getRversion() < "3.4")
+
+  file <- tempfile()
+  on.exit(unlink(file))
+
+  # Verbose try() triggers conditionMessage() and thus saves the error.
+  # This simulates an unhandled error.
+  try(abort("foo", "bar"), outFile = file)
+
+  expect_true(inherits_all(last_error(), c("bar", "rlang_error")))
+})
+
+test_that("can take the str() of an rlang error (#615)", {
+  err <- catch_cnd(abort("foo"))
+  expect_output(expect_no_error(str(err)))
+})
+
+test_that("No backtrace is displayed with top-level active bindings", {
+  scoped_options(
+    rlang_trace_top_env = current_env()
+  )
+
+  env_bind_fns(current_env(), foo = function() abort("msg"))
+  expect_error(foo, "^msg$")
+})
+
+test_that("Invalid on_error option resets itself", {
+  with_options(
+    rlang__backtrace_on_error = NA,
+    {
+      expect_warning(tryCatch(abort("foo"), error = identity), "Invalid")
+      expect_null(peek_option("rlang__backtrace_on_error"))
+    }
+  )
+})
+
+test_that("on_error option can be tweaked", {
+  skip_on_os("windows")
+
+  scoped_options(
+    rlang_trace_top_env = current_env(),
+    rlang_trace_format_srcrefs = FALSE
+  )
+
+  f <- function() tryCatch(g())
+  g <- function() h()
+  h <- function() abort("The error message")
+  msg <- function() cat(conditionMessage(catch_cnd(f())))
+
+  expect_known_output(file = test_path("test-on-error-message-options.txt"), {
+    cat_line("", ">>> Default:", "")
+    with_options(rlang__backtrace_on_error = NULL, msg())
+
+    cat_line("", "", "", ">>> Reminder:", "")
+    with_options(rlang__backtrace_on_error = "reminder", msg())
+
+    cat_line("", "", "", ">>> Branch:", "")
+    with_options(rlang__backtrace_on_error = "branch", msg())
+
+    cat_line("", "", "", ">>> Collapsed:", "")
+    with_options(rlang__backtrace_on_error = "collapse", msg())
+
+    cat_line("", "", "", ">>> Full:", "")
+    with_options(rlang__backtrace_on_error = "full", msg())
+  })
+})
+
+test_that("format_onerror_backtrace handles empty and size 1 traces", {
+  scoped_options(rlang__backtrace_on_error = "branch")
+
+  trace <- new_trace(list(), int(), chr())
+  expect_identical(format_onerror_backtrace(trace), NULL)
+
+  trace <- new_trace(list(quote(foo)), int(0), chr(""))
+  expect_identical(format_onerror_backtrace(trace), NULL)
+
+  trace <- new_trace(list(quote(foo), quote(bar)), int(0, 1), chr("", ""))
+  expect_match(format_onerror_backtrace(trace), "foo.*bar")
+})
+
+
 # Lifecycle ----------------------------------------------------------
 
 test_that("deprecated arguments of abort() etc still work", {
@@ -374,32 +458,4 @@ test_that("deprecated arguments of cnd_signal() still work", {
       foo = calling(function(cnd) expect_true(rst_exists("rlang_muffle")))
     )
   })
-})
-
-test_that("errors are saved", {
-  # `outFile` argument
-  skip_if(getRversion() < "3.4")
-
-  file <- tempfile()
-  on.exit(unlink(file))
-
-  # Verbose try() triggers conditionMessage() and thus saves the error.
-  # This simulates an unhandled error.
-  try(abort("foo", "bar"), outFile = file)
-
-  expect_true(inherits_all(last_error(), c("bar", "rlang_error")))
-})
-
-test_that("can take the str() of an rlang error (#615)", {
-  err <- catch_cnd(abort("foo"))
-  expect_output(expect_no_error(str(err)))
-})
-
-test_that("No backtrace is displayed with top-level active bindings", {
-  scoped_options(
-    rlang_trace_top_env = current_env()
-  )
-
-  env_bind_fns(current_env(), foo = function() abort("msg"))
-  expect_error(foo, "^msg$")
 })
