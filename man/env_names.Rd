@@ -2,9 +2,12 @@
 % Please edit documentation in R/env-binding.R
 \name{env_names}
 \alias{env_names}
-\title{Names of symbols bound in an environment}
+\alias{env_length}
+\title{Names and numbers of symbols bound in an environment}
 \usage{
 env_names(env)
+
+env_length(env)
 }
 \arguments{
 \item{env}{An environment.}
@@ -15,7 +18,7 @@ A character vector of object names.
 \description{
 \code{env_names()} returns object names from an enviroment \code{env} as a
 character vector. All names are returned, even those starting with
-a dot.
+a dot. \code{env_length()} returns the number of bindings.
 }
 \section{Names of symbols and objects}{
 

@@ -497,11 +497,11 @@ scope_poke <- function(env, nm, value, create) {
   env
 }
 
-#' Names of symbols bound in an environment
+#' Names and numbers of symbols bound in an environment
 #'
 #' `env_names()` returns object names from an enviroment `env` as a
 #' character vector. All names are returned, even those starting with
-#' a dot.
+#' a dot. `env_length()` returns the number of bindings.
 #'
 #' @section Names of symbols and objects:
 #'
@@ -539,6 +539,14 @@ env_names <- function(env) {
   .Call(rlang_unescape_character, nms)
 }
 
+#' @rdname env_names
+#' @export
+env_length <- function(env) {
+  if (!is_environment(env)) {
+    abort("`env` must be an environment")
+  }
+  length(env)
+}
 
 #' Lock or unlock environment bindings
 #'

@@ -423,6 +423,12 @@ test_that("env_poke_parent() fails with namespaces, package envs, and locked env
   expect_error(env_poke_parent(env, env()), "locked environment")
 })
 
+test_that("env_length() gives env length", {
+  expect_error(env_length(1), "must be an environment")
+  expect_identical(env_length(env()), 0L)
+  expect_identical(env_length(env(a = "a")), 1L)
+})
+
 
 #  Lifecycle ---------------------------------------------------------
 
