@@ -224,10 +224,10 @@ sexp* rlang_quo_is_null(sexp* quo) {
 // sexp.h
 
 sexp* rlang_length(sexp* x) {
-  return Rf_ScalarInteger(r_length(x));
+  return r_int(r_length(x));
 }
 sexp* rlang_true_length(sexp* x) {
-  return Rf_ScalarInteger(XTRUELENGTH(x));
+  return r_int(XTRUELENGTH(x));
 }
 
 sexp* rlang_is_reference(sexp* x, sexp* y) {
