@@ -15,7 +15,7 @@ sexp* rlang_symbol(sexp* chr) {
 
 sexp* rlang_symbol_to_character(sexp* chr) {
   sexp* name = PRINTNAME(chr);
-  return Rf_ScalarString(r_str_unserialise_unicode(name));
+  return r_str_as_character(r_str_unserialise_unicode(name));
 }
 
 sexp* rlang_unescape_character(sexp* chr) {

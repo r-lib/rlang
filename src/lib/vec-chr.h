@@ -47,9 +47,6 @@ static inline sexp* r_string(const char* c_string) {
 static inline sexp* r_chr(const char* c_string) {
   return Rf_mkString(c_string);
 }
-static inline sexp* r_as_scalar_chr(sexp* x) {
-  return Rf_ScalarString(x);
-}
 
 
 sexp* chr_prepend(sexp* chr, sexp* r_string);
@@ -78,6 +75,9 @@ static inline bool r_is_string(sexp* x, const char* string) {
 
 static inline sexp* r_str_as_symbol(sexp* str) {
   return r_sym(Rf_translateChar(str));
+}
+static inline sexp* r_str_as_character(sexp* x) {
+  return Rf_ScalarString(x);
 }
 
 static inline bool r_str_is_name(sexp* str) {
