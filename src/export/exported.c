@@ -19,11 +19,11 @@ sexp* rlang_cnd_signal(sexp* cnd) {
 sexp* rlang_cnd_type(sexp* cnd) {
   enum r_condition_type type = r_cnd_type(cnd);
   switch (type) {
-  case r_cnd_type_condition: return r_scalar_chr("condition");
-  case r_cnd_type_message: return r_scalar_chr("message");
-  case r_cnd_type_warning: return r_scalar_chr("warning");
-  case r_cnd_type_error: return r_scalar_chr("error");
-  case r_cnd_type_interrupt: return r_scalar_chr("interrupt");
+  case r_cnd_type_condition: return r_chr("condition");
+  case r_cnd_type_message: return r_chr("message");
+  case r_cnd_type_warning: return r_chr("warning");
+  case r_cnd_type_error: return r_chr("error");
+  case r_cnd_type_interrupt: return r_chr("interrupt");
   default: r_abort("Internal error: Unhandled `r_condition_type`");
   }
 }
@@ -115,7 +115,7 @@ sexp* rlang_call_has_precedence(sexp* x, sexp* y, sexp* side) {
 
 sexp* rlang_which_operator(sexp* call) {
   const char* op = r_op_as_c_string(r_which_operator(call));
-  return r_scalar_chr(op);
+  return r_chr(op);
 }
 
 

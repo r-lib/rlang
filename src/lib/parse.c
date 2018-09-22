@@ -10,7 +10,7 @@ static void abort_parse(sexp* code, const char* why) {
 }
 
 sexp* r_parse(const char* str) {
-  sexp* str_ = KEEP(r_scalar_chr(str));
+  sexp* str_ = KEEP(r_chr(str));
 
   ParseStatus status;
   sexp* out = KEEP(R_ParseVector(str_, -1, &status, r_null));

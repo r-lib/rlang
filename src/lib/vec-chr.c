@@ -99,6 +99,6 @@ sexp* chr_append(sexp* chr, sexp* r_str) {
 sexp* r_shared_empty_chr = NULL;
 
 void r_init_library_vec_chr() {
-  r_shared_empty_chr = r_scalar_chr("");
+  r_shared_empty_chr = r_chr("");
   r_mark_precious(r_shared_empty_chr);
 }

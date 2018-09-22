@@ -134,7 +134,7 @@ static sexp* dots_big_bang(struct dots_capture_info* capture_info,
 static sexp* set_value_spliced(sexp* x) {
   static sexp* spliced_str = NULL;
   if (!spliced_str) {
-    spliced_str = r_scalar_chr("spliced");
+    spliced_str = r_chr("spliced");
     r_mark_precious(spliced_str);
     r_mark_shared(spliced_str);
   }
@@ -347,7 +347,7 @@ static sexp* maybe_auto_name(sexp* x, sexp* named) {
 
   if (names_width && (!names || r_chr_has(names, ""))) {
     sexp* auto_fn = KEEP(rlang_ns_get("quos_auto_name"));
-    sexp* width = KEEP(r_scalar_int(names_width));
+    sexp* width = KEEP(r_int(names_width));
     sexp* auto_call = KEEP(r_build_call2(auto_fn, x, width));
     x = r_eval(auto_call, r_empty_env);
     FREE(3);

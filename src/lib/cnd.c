@@ -26,7 +26,7 @@ void r_inform(const char* fmt, ...) {
   INTERP(buf, fmt, ...);
 
   sexp* env = KEEP(r_new_environment(r_base_env, 1));
-  r_env_poke(env, x_sym, KEEP(r_scalar_chr(buf)));
+  r_env_poke(env, x_sym, KEEP(r_chr(buf)));
   r_eval(msg_call, env);
 
   FREE(2);
@@ -36,7 +36,7 @@ void r_warn(const char* fmt, ...) {
   INTERP(buf, fmt, ...);
 
   sexp* env = KEEP(r_new_environment(r_base_env, 1));
-  r_env_poke(env, x_sym, KEEP(r_scalar_chr(buf)));
+  r_env_poke(env, x_sym, KEEP(r_chr(buf)));
   r_eval(wng_call, env);
 
   FREE(2);
@@ -53,7 +53,7 @@ sexp* r_interp_str(const char* fmt, ...) {
   char buf[BUFSIZE];
   INTERP(buf, fmt, ...);
 
-  return r_scalar_chr(buf);
+  return r_chr(buf);
 }
 
 static void signal_retirement(const char* source, char* buf);
@@ -104,7 +104,7 @@ static void signal_retirement(const char* source, char* buf) {
   sexp* call = KEEP(r_parse(source));
 
   sexp* env = KEEP(r_new_environment(r_base_env, 1));
-  r_env_poke(env, x_sym, KEEP(r_scalar_chr(buf)));
+  r_env_poke(env, x_sym, KEEP(r_chr(buf)));
 
   r_eval(call, env);
   FREE(3);

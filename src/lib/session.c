@@ -6,7 +6,7 @@ static sexp* eval_with_x(sexp* call, sexp* x);
 static sexp* is_installed_call = NULL;
 
 bool r_is_installed(const char* pkg) {
-  sexp* installed = eval_with_x(is_installed_call, KEEP(r_scalar_chr(pkg)));
+  sexp* installed = eval_with_x(is_installed_call, KEEP(r_chr(pkg)));
   bool out = *r_lgl_deref(installed);
 
   FREE(1);

@@ -46,7 +46,7 @@ sexp* r_new_environment(sexp* parent, r_ssize_t size) {
   r_node_poke_car(new_env__parent_node, parent);
 
   size = size ? size : 29;
-  r_node_poke_car(new_env__size_node, r_scalar_int(size));
+  r_node_poke_car(new_env__size_node, r_int(size));
 
   sexp* env = r_eval(new_env_call, r_base_env);
 

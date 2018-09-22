@@ -47,7 +47,7 @@ static inline bool r_is_r_string(sexp* x) {
   return r_typeof(x) == CHARSXP;
 }
 
-static inline sexp* r_scalar_chr(const char* c_string) {
+static inline sexp* r_chr(const char* c_string) {
   return Rf_mkString(c_string);
 }
 static inline sexp* r_as_scalar_chr(sexp* x) {
