@@ -85,9 +85,6 @@ sexp* r_env_clone(sexp* env, sexp* parent) {
 
 
 static sexp* remove_call = NULL;
-static sexp* remove__list_node = NULL;
-static sexp* remove__envir_node = NULL;
-static sexp* remove__inherits_node = NULL;
 
 sexp* r_env_unbind_names(sexp* env, sexp* names, bool inherits) {
   return eval_with_xyz(remove_call, env, names, inherits ? r_shared_true : r_shared_false);
