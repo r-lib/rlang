@@ -47,7 +47,7 @@ sexp* rlang_test_node_list_clone_until(sexp* node, sexp* sentinel) {
 // sym.c
 
 sexp* rlang_test_is_special_op_sym(sexp* x) {
-  return Rf_ScalarLogical(r_is_special_op_sym(x));
+  return r_lgl(r_is_special_op_sym(x));
 }
 
 

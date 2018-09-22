@@ -65,7 +65,7 @@ sexp* rlang_as_data_pronoun(sexp* x) {
   }
 
   sexp* lookup_msg = KEEP_N(r_chr("Column `%s` not found in `.data`"), n_kept);
-  sexp* read_only = KEEP_N(r_bool_as_logical(1), n_kept);
+  sexp* read_only = KEEP_N(r_lgl(1), n_kept);
   sexp* pronoun = rlang_new_data_pronoun(x, lookup_msg, read_only);
 
   FREE(n_kept);
