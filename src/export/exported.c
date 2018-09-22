@@ -387,47 +387,47 @@ static int validate_finite(sexp* finite) {
 }
 
 sexp* rlang_is_finite(sexp* x) {
-  return r_bool_as_shared_logical(r_is_finite(x));
+  return r_shared_lgl(r_is_finite(x));
 }
 
 sexp* rlang_is_list(sexp* x, sexp* n_) {
   r_ssize_t n = validate_n(n_);
-  return r_bool_as_shared_logical(r_is_list(x, n));
+  return r_shared_lgl(r_is_list(x, n));
 }
 
 sexp* rlang_is_atomic(sexp* x, sexp* n_) {
   r_ssize_t n = validate_n(n_);
-  return r_bool_as_shared_logical(r_is_atomic(x, n));
+  return r_shared_lgl(r_is_atomic(x, n));
 }
 sexp* rlang_is_vector(sexp* x, sexp* n_) {
   r_ssize_t n = validate_n(n_);
-  return r_bool_as_shared_logical(r_is_vector(x, n));
+  return r_shared_lgl(r_is_vector(x, n));
 }
 
 sexp* rlang_is_logical(sexp* x, sexp* n_) {
   r_ssize_t n = validate_n(n_);
-  return r_bool_as_shared_logical(r_is_logical(x, n));
+  return r_shared_lgl(r_is_logical(x, n));
 }
 sexp* rlang_is_integer(sexp* x, sexp* n_) {
   r_ssize_t n = validate_n(n_);
-  return r_bool_as_shared_logical(r_is_integer(x, n, -1));
+  return r_shared_lgl(r_is_integer(x, n, -1));
 }
 sexp* rlang_is_double(sexp* x, sexp* n_, sexp* finite_) {
   r_ssize_t n = validate_n(n_);
   int finite = validate_finite(finite_);
-  return r_bool_as_shared_logical(r_is_double(x, n, finite));
+  return r_shared_lgl(r_is_double(x, n, finite));
 }
 sexp* rlang_is_integerish(sexp* x, sexp* n_, sexp* finite_) {
   r_ssize_t n = validate_n(n_);
   int finite = validate_finite(finite_);
-  return r_bool_as_shared_logical(r_is_integerish(x, n, finite));
+  return r_shared_lgl(r_is_integerish(x, n, finite));
 }
 
 sexp* rlang_is_character(sexp* x, sexp* n_) {
   r_ssize_t n = validate_n(n_);
-  return r_bool_as_shared_logical(r_is_character(x, n));
+  return r_shared_lgl(r_is_character(x, n));
 }
 sexp* rlang_is_raw(sexp* x, sexp* n_) {
   r_ssize_t n = validate_n(n_);
-  return r_bool_as_shared_logical(r_is_raw(x, n));
+  return r_shared_lgl(r_is_raw(x, n));
 }

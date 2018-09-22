@@ -11,7 +11,7 @@ static inline sexp* r_lgl(bool x) {
 
 bool r_is_true(sexp* x);
 
-static inline sexp* r_bool_as_shared_logical(bool x) {
+static inline sexp* r_shared_lgl(bool x) {
   if (x) {
     return r_shared_true;
   } else {
