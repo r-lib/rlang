@@ -43,9 +43,6 @@ sexp* r_new_character(const char** strings);
 static inline sexp* r_string(const char* c_string) {
   return Rf_mkChar(c_string);
 }
-static inline bool r_is_r_string(sexp* x) {
-  return r_typeof(x) == CHARSXP;
-}
 
 static inline sexp* r_chr(const char* c_string) {
   return Rf_mkString(c_string);

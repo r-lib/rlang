@@ -59,7 +59,7 @@ static void validate_chr_setter(sexp* chr, sexp* r_string) {
   if (r_typeof(chr) != r_type_character) {
     r_abort("`chr` must be a character vector");
   }
-  if (!r_is_r_string(r_string)) {
+  if (r_typeof(r_string) != r_type_string) {
     r_abort("`r_string` must be an internal R string");
   }
 }
