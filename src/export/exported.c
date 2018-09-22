@@ -227,7 +227,7 @@ sexp* rlang_length(sexp* x) {
   return Rf_ScalarInteger(r_length(x));
 }
 sexp* rlang_true_length(sexp* x) {
-  return Rf_ScalarInteger(TRUELENGTH(x));
+  return Rf_ScalarInteger(XTRUELENGTH(x));
 }
 
 sexp* rlang_is_reference(sexp* x, sexp* y) {

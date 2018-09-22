@@ -20,7 +20,7 @@ static inline const char* r_str_deref(sexp* str) {
   return CHAR(str);
 }
 
-static inline const char* r_chr_get_c_string(sexp* scalar_chr, r_long_ssize_t i) {
+static inline const char* r_chr_get_c_string(sexp* scalar_chr, r_ssize_t i) {
   return CHAR(r_chr_get(scalar_chr, i));
 }
 

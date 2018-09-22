@@ -147,7 +147,7 @@ r_ssize_t r_vec_length(sexp* x) {
   case r_type_raw:
   case r_type_list:
   case r_type_string:
-    return LENGTH(x);
+    return XLENGTH(x);
   default:
     r_abort("Internal error: expected a vector");
   }
@@ -164,7 +164,7 @@ sexp* r_vec_get(sexp* vec, r_ssize_t i) {
   }
 }
 
-bool r_vec_find_first_identical_any(sexp* x, sexp* y, r_long_ssize_t* index) {
+bool r_vec_find_first_identical_any(sexp* x, sexp* y, r_ssize_t* index) {
   if (r_typeof(x) != r_type_list && r_typeof(x) != r_type_character) {
     r_abort("Internal error: `x` must be a list or character vector in `r_vec_find_first_identical_any()`");
   }
