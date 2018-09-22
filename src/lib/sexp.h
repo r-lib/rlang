@@ -70,7 +70,7 @@ static inline sexp* r_poke_str_type(sexp* x, const char* type) {
   return x;
 }
 
-static inline const char* r_type_c_string(enum r_type type) {
+static inline const char* r_type_as_c_string(enum r_type type) {
   return CHAR(Rf_type2str(type));
 }
 

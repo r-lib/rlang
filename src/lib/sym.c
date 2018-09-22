@@ -19,7 +19,7 @@ sexp* r_new_symbol(sexp* x, int* err) {
       *err = -1;
       return r_null;
     } else {
-      const char* type = r_type_c_string(r_typeof(x));
+      const char* type = r_type_as_c_string(r_typeof(x));
       r_abort("Can't create a symbol with a %s", type);
     }
   }}

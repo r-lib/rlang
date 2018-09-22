@@ -291,7 +291,7 @@ sexp* rlang_tilde_eval(sexp* tilde, sexp* current_frame, sexp* caller_frame) {
   }
   if (r_typeof(mask) != r_type_environment) {
     r_abort("Internal error: Unexpected type for data mask flag: `%s`",
-            r_type_c_string(r_typeof(mask)));
+            r_type_as_c_string(r_typeof(mask)));
   }
 
   sexp* top = r_env_find(mask, data_mask_top_env_sym);
