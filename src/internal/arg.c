@@ -48,7 +48,7 @@ sexp* rlang_ensym(sexp* sym, sexp* frame) {
   case r_type_character:
     if (r_length(expr) == 1) {
       KEEP(expr);
-      expr = r_sym(r_c_string(expr));
+      expr = r_sym(r_chr_get_c_string(expr, 0));
       FREE(1);
       break;
     }

@@ -16,17 +16,17 @@ sexp* rlang_test_r_warn(sexp* x) {
 // env.c
 
 sexp* rlang_test_base_ns_get(sexp* name) {
-  return r_base_ns_get(r_c_string(name));
+  return r_base_ns_get(r_chr_get_c_string(name, 0));
 }
 
 
 // parse.c
 
 sexp* rlang_test_parse(sexp* str) {
-  return r_parse(r_c_string(str));
+  return r_parse(r_chr_get_c_string(str, 0));
 }
 sexp* rlang_test_parse_eval(sexp* str, sexp* env) {
-  return r_parse_eval(r_c_string(str), env);
+  return r_parse_eval(r_chr_get_c_string(str, 0), env);
 }
 
 // node.c

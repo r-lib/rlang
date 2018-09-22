@@ -305,7 +305,7 @@ static int match_ignore_empty_arg(sexp* ignore_empty) {
   if (r_typeof(ignore_empty) != r_type_character || r_length(ignore_empty) == 0) {
     r_abort("`.ignore_empty` must be a character vector");
   }
-  const char* arg = r_c_string(ignore_empty);
+  const char* arg = r_chr_get_c_string(ignore_empty, 0);
   switch(arg[0]) {
   case 't': if (!strcmp(arg, "trailing")) return -1; else break;
   case 'n': if (!strcmp(arg, "none")) return 0; else break;

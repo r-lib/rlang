@@ -28,7 +28,7 @@ sexp* rlang_env_binding_are_promise(sexp* env, sexp* syms) {
 }
 
 sexp* rlang_env_get(sexp* env, sexp* nm) {
-  sexp* sym = r_sym(r_c_string(nm));
+  sexp* sym = r_sym(r_chr_get_c_string(nm, 0));
 
   // Use r_env_find() instead of r_env_get() because `nm` might
   // reference a missing argument

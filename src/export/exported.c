@@ -40,7 +40,7 @@ sexp* rlang_warn_deprecated_once(sexp* id, sexp* msg) {
       r_length(msg) != 1) {
     r_abort("`id` and `msg` must be scalar strings");
   }
-  r_warn_deprecated_once(r_c_string(id), r_c_string(msg));
+  r_warn_deprecated_once(r_chr_get_c_string(id, 0), r_chr_get_c_string(msg, 0));
   return r_null;
 }
 
@@ -253,7 +253,7 @@ sexp* rlang_sexp_address(sexp* x) {
 }
 
 sexp* rlang_poke_type(sexp* x, sexp* type) {
-  SET_TYPEOF(x, Rf_str2type(r_c_string(type)));
+  SET_TYPEOF(x, Rf_str2type(r_chr_get_c_string(type, 0)));
   return x;
 }
 
@@ -311,7 +311,7 @@ sexp* rlang_promise_value(sexp* x, sexp* env) {
 // vec.h
 
 sexp* rlang_vec_coerce(sexp* x, sexp* type) {
-  return Rf_coerceVector(x, Rf_str2type(r_c_string(type)));
+  return Rf_coerceVector(x, Rf_str2type(r_chr_get_c_string(type, 0)));
 }
 
 // TODO: C-level check for scalar integerish

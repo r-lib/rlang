@@ -20,8 +20,8 @@ static inline const char* r_str_deref(sexp* str) {
   return CHAR(str);
 }
 
-static inline const char* r_chr_get_c_string(sexp* chr, r_ssize_t i) {
-  return CHAR(STRING_ELT(chr, i));
+static inline const char* r_chr_get_c_string(sexp* scalar_chr, r_long_ssize_t i) {
+  return CHAR(r_chr_get(scalar_chr, i));
 }
 
 static inline sexp* r_nms_get(sexp* nms, r_ssize_t i) {
@@ -54,10 +54,6 @@ static inline sexp* r_as_scalar_chr(sexp* x) {
   return Rf_ScalarString(x);
 }
 
-static inline const char* r_c_string(sexp* scalar_chr) {
-  return CHAR(r_chr_get(scalar_chr, 0));
-}
-
 
 sexp* chr_prepend(sexp* chr, sexp* r_string);
 sexp* chr_append(sexp* chr, sexp* r_string);
@@ -77,7 +73,7 @@ static inline bool r_is_string(sexp* x, const char* string) {
   if (r_typeof(x) != r_type_character || r_length(x) != 1) {
     return false;
   }
-  if (string && strcmp(r_c_string(x), string) != 0) {
+  if (string && strcmp(r_chr_get_c_string(x, 0), string) != 0) {
     return false;
   }
   return true;
