@@ -325,9 +325,9 @@ int r_as_int(sexp* x) {
 
 sexp* rlang_vec_poke_n(sexp* x, sexp* offset,
                        sexp* y, sexp* from, sexp* n) {
-  r_ssize_t offset_size = r_as_int(offset) - 1;
-  r_ssize_t from_size = r_as_int(from) - 1;
-  r_ssize_t n_size = r_as_int(n);
+  r_ssize_t offset_size = r_as_ssize(offset) - 1;
+  r_ssize_t from_size = r_as_ssize(from) - 1;
+  r_ssize_t n_size = r_as_ssize(n);
 
   r_vec_poke_n(x, offset_size, y, from_size, n_size);
   return x;
@@ -335,9 +335,9 @@ sexp* rlang_vec_poke_n(sexp* x, sexp* offset,
 
 sexp* rlang_vec_poke_range(sexp* x, sexp* offset,
                            sexp* y, sexp* from, sexp* to) {
-  r_ssize_t offset_size = r_as_int(offset) - 1;
-  r_ssize_t from_size = r_as_int(from) - 1;
-  r_ssize_t to_size = r_as_int(to) - 1;
+  r_ssize_t offset_size = r_as_ssize(offset) - 1;
+  r_ssize_t from_size = r_as_ssize(from) - 1;
+  r_ssize_t to_size = r_as_ssize(to) - 1;
 
   r_vec_poke_range(x, offset_size, y, from_size, to_size);
   return x;
@@ -347,27 +347,24 @@ sexp* rlang_vec_poke_range(sexp* x, sexp* offset,
 // vec-list.h
 
 static r_ssize_t validate_n(sexp* n) {
-  switch (r_typeof(n)) {
-  case r_type_null:
+  if (n == r_null) {
     return -1;
-  // Just coerce doubles to int for efficiency
+  }
+
+  switch (r_typeof(n)) {
+  case r_type_integer:
   case r_type_double:
     if (r_length(n) == 1) {
-      return r_dbl_get(n, 0);
-    } else {
-      goto error;
+      break;
     }
-  case r_type_integer:
-    if (r_length(n) == 1) {
-      return r_int_get(n, 0);
-    } else {
-      goto error;
-    }
-  error:
+    // fallthrough
   default:
     r_abort("`n` must be NULL or a scalar integer");
   }
+
+  return r_as_ssize(n);
 }
+
 static int validate_finite(sexp* finite) {
   switch (r_typeof(finite)) {
   case r_type_null:

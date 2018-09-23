@@ -1,5 +1,34 @@
 #include <rlang.h>
 
+
+// Allows long vectors to be indexed with doubles
+r_ssize_t r_as_ssize(sexp* n) {
+  switch (r_typeof(n)) {
+
+  case r_type_double: {
+    if (r_length(n) != 1) {
+      goto invalid;
+    }
+    double out = r_dbl_get(n, 0);
+    if (out > R_SSIZE_MAX) {
+      r_abort("`n` is too large a number");
+    }
+    return (r_ssize_t) floor(out);
+  }
+
+  case r_type_integer: {
+    if (r_length(n) != 1) {
+      goto invalid;
+    }
+    return (r_ssize_t) r_int_get(n, 0);
+  }
+
+  invalid:
+  default:
+    r_abort("Expected a scalar integer or double");
+  }
+}
+
 void r_init_rlang_ns_env();
 void r_init_library_cnd();
 void r_init_library_env();
