@@ -15,7 +15,7 @@ typedef Rbyte r_byte_t;
 typedef Rcomplex r_complex_t;
 
 typedef R_xlen_t r_ssize_t;
-#define R_SSIZE_MAX R_LEN_T_MAX
+#define R_SSIZE_MAX R_XLEN_T_MAX
 
 enum r_type {
   r_type_null        = 0,
