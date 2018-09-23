@@ -14,11 +14,11 @@ sexp* rlang_env_binding_are_promise(sexp* env, sexp* syms) {
     r_abort("Internal error: Expected list of symbols in active binding predicate");
   }
 
-  size_t n = r_vec_length(syms);
+  r_ssize_t n = r_vec_length(syms);
   sexp* out = KEEP(r_new_vector(r_type_logical, n));
   int* out_array = r_lgl_deref(out);
 
-  for (size_t i = 0; i < n; ++i) {
+  for (r_ssize_t i = 0; i < n; ++i) {
     sexp* sym = r_list_get(syms, i);
     out_array[i] = rlang__env_binding_is_promise(env, sym);
   }

@@ -55,7 +55,7 @@ bool r_is_special_op_sym(sexp* x) {
   }
 
   const char* name = CHAR(PRINTNAME(x));
-  size_t len = strlen(name);
+  int len = strlen(name);
 
   return
     len > 2 &&

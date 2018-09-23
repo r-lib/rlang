@@ -42,12 +42,12 @@ bool r_is_logical(sexp* x, r_ssize_t n) {
 }
 
 bool r_is_finite(sexp* x) {
-  size_t n = r_length(x);
+  r_ssize_t n = r_length(x);
 
   switch(r_typeof(x)) {
   case r_type_integer: {
     int* ptr = r_int_deref(x);
-    for (size_t i = 0; i < n; ++i, ++ptr) {
+    for (r_ssize_t i = 0; i < n; ++i, ++ptr) {
       if (*ptr == NA_INTEGER) {
         return false;
       }
@@ -56,7 +56,7 @@ bool r_is_finite(sexp* x) {
   }
   case r_type_double: {
     double* ptr = r_dbl_deref(x);
-    for (size_t i = 0; i < n; ++i, ++ptr) {
+    for (r_ssize_t i = 0; i < n; ++i, ++ptr) {
       if (!isfinite(*ptr)) {
         return false;
       }
@@ -65,7 +65,7 @@ bool r_is_finite(sexp* x) {
   }
   case r_type_complex: {
     r_complex_t* ptr = r_cpl_deref(x);
-    for (size_t i = 0; i < n; ++i, ++ptr) {
+    for (r_ssize_t i = 0; i < n; ++i, ++ptr) {
       if (!isfinite(ptr->r) || !isfinite(ptr->i)) {
         return false;
       }
@@ -105,11 +105,11 @@ bool r_is_integerish(sexp* x, r_ssize_t n, int finite) {
     return false;
   }
 
-  size_t actual_n = r_length(x);
+  r_ssize_t actual_n = r_length(x);
   double* ptr = r_dbl_deref(x);
   bool actual_finite = true;
 
-  for (size_t i = 0; i < actual_n; ++i, ++ptr) {
+  for (r_ssize_t i = 0; i < actual_n; ++i, ++ptr) {
     double elt = *ptr;
 
     if (!isfinite(elt)) {

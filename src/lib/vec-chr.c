@@ -2,8 +2,8 @@
 #include "rlang.h"
 
 
-size_t ptrs_array_length(void** ptrs) {
-  size_t n = 0;
+r_ssize_t ptrs_array_length(void** ptrs) {
+  r_ssize_t n = 0;
 
   while (*ptrs) {
     ++ptrs;
@@ -14,10 +14,10 @@ size_t ptrs_array_length(void** ptrs) {
 }
 
 sexp* r_new_character(const char** strings) {
-  size_t n = ptrs_array_length((void**) strings);
+  r_ssize_t n = ptrs_array_length((void**) strings);
   sexp* out = KEEP(r_new_vector(STRSXP, n));
 
-  for (int i = 0; i < n; ++i) {
+  for (r_ssize_t i = 0; i < n; ++i) {
     r_chr_poke(out, i, r_string(strings[i]));
   }
 
@@ -26,9 +26,9 @@ sexp* r_new_character(const char** strings) {
 }
 
 bool r_chr_has(sexp* chr, const char* c_string) {
-  size_t n = r_length(chr);
+  r_ssize_t n = r_length(chr);
 
-  for (int i = 0; i != n; ++i) {
+  for (r_ssize_t i = 0; i != n; ++i) {
     const char* cur = CHAR(STRING_ELT(chr, i));
     if (strcmp(cur, c_string) == 0) {
       return true;
@@ -39,9 +39,9 @@ bool r_chr_has(sexp* chr, const char* c_string) {
 }
 
 bool r_chr_has_any(sexp* chr, const char** c_strings) {
-  size_t n = r_length(chr);
+  r_ssize_t n = r_length(chr);
 
-  for (int i = 0; i != n; ++i) {
+  for (r_ssize_t i = 0; i != n; ++i) {
     const char* cur = CHAR(STRING_ELT(chr, i));
 
     while (*c_strings) {
