@@ -136,7 +136,7 @@ sexp* r_new_condition(sexp* subclass, sexp* msg, sexp* call, sexp* data) {
     r_abort("Condition message must be a string");
   }
 
-  r_ssize_t n_data = r_length(data);
+  r_ssize n_data = r_length(data);
   sexp* cnd = KEEP(r_new_vector(VECSXP, n_data + 2));
 
   r_list_poke(cnd, 0, msg);
@@ -202,9 +202,9 @@ enum r_condition_type r_cnd_type(sexp* cnd) {
     goto error;
   }
 
-  r_ssize_t n_classes = r_length(classes);
+  r_ssize n_classes = r_length(classes);
 
-  for (r_ssize_t i = 0; i < n_classes; ++i) {
+  for (r_ssize i = 0; i < n_classes; ++i) {
     const char* class_str = r_str_deref(r_chr_get(classes, i));
     switch (class_str[0]) {
     case 'c':

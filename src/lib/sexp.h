@@ -2,7 +2,7 @@
 #define RLANG_SEXP_H
 
 
-static inline r_ssize_t r_length(sexp* x) {
+static inline r_ssize r_length(sexp* x) {
   return Rf_xlength(x);
 }
 

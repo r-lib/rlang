@@ -61,7 +61,7 @@ static inline void r_poke_names(sexp* x, sexp* nms) {
   r_poke_attribute(x, r_names_sym, nms);
 }
 
-bool r_has_name_at(sexp* x, r_ssize_t i);
+bool r_has_name_at(sexp* x, r_ssize i);
 bool r_is_named(sexp* x);
 
 

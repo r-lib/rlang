@@ -325,9 +325,9 @@ int r_as_int(sexp* x) {
 
 sexp* rlang_vec_poke_n(sexp* x, sexp* offset,
                        sexp* y, sexp* from, sexp* n) {
-  r_ssize_t offset_size = r_as_ssize(offset) - 1;
-  r_ssize_t from_size = r_as_ssize(from) - 1;
-  r_ssize_t n_size = r_as_ssize(n);
+  r_ssize offset_size = r_as_ssize(offset) - 1;
+  r_ssize from_size = r_as_ssize(from) - 1;
+  r_ssize n_size = r_as_ssize(n);
 
   r_vec_poke_n(x, offset_size, y, from_size, n_size);
   return x;
@@ -335,9 +335,9 @@ sexp* rlang_vec_poke_n(sexp* x, sexp* offset,
 
 sexp* rlang_vec_poke_range(sexp* x, sexp* offset,
                            sexp* y, sexp* from, sexp* to) {
-  r_ssize_t offset_size = r_as_ssize(offset) - 1;
-  r_ssize_t from_size = r_as_ssize(from) - 1;
-  r_ssize_t to_size = r_as_ssize(to) - 1;
+  r_ssize offset_size = r_as_ssize(offset) - 1;
+  r_ssize from_size = r_as_ssize(from) - 1;
+  r_ssize to_size = r_as_ssize(to) - 1;
 
   r_vec_poke_range(x, offset_size, y, from_size, to_size);
   return x;
@@ -346,7 +346,7 @@ sexp* rlang_vec_poke_range(sexp* x, sexp* offset,
 
 // vec-list.h
 
-static r_ssize_t validate_n(sexp* n) {
+static r_ssize validate_n(sexp* n) {
   if (n == r_null) {
     return -1;
   }
@@ -388,43 +388,43 @@ sexp* rlang_is_finite(sexp* x) {
 }
 
 sexp* rlang_is_list(sexp* x, sexp* n_) {
-  r_ssize_t n = validate_n(n_);
+  r_ssize n = validate_n(n_);
   return r_shared_lgl(r_is_list(x, n));
 }
 
 sexp* rlang_is_atomic(sexp* x, sexp* n_) {
-  r_ssize_t n = validate_n(n_);
+  r_ssize n = validate_n(n_);
   return r_shared_lgl(r_is_atomic(x, n));
 }
 sexp* rlang_is_vector(sexp* x, sexp* n_) {
-  r_ssize_t n = validate_n(n_);
+  r_ssize n = validate_n(n_);
   return r_shared_lgl(r_is_vector(x, n));
 }
 
 sexp* rlang_is_logical(sexp* x, sexp* n_) {
-  r_ssize_t n = validate_n(n_);
+  r_ssize n = validate_n(n_);
   return r_shared_lgl(r_is_logical(x, n));
 }
 sexp* rlang_is_integer(sexp* x, sexp* n_) {
-  r_ssize_t n = validate_n(n_);
+  r_ssize n = validate_n(n_);
   return r_shared_lgl(r_is_integer(x, n, -1));
 }
 sexp* rlang_is_double(sexp* x, sexp* n_, sexp* finite_) {
-  r_ssize_t n = validate_n(n_);
+  r_ssize n = validate_n(n_);
   int finite = validate_finite(finite_);
   return r_shared_lgl(r_is_double(x, n, finite));
 }
 sexp* rlang_is_integerish(sexp* x, sexp* n_, sexp* finite_) {
-  r_ssize_t n = validate_n(n_);
+  r_ssize n = validate_n(n_);
   int finite = validate_finite(finite_);
   return r_shared_lgl(r_is_integerish(x, n, finite));
 }
 
 sexp* rlang_is_character(sexp* x, sexp* n_) {
-  r_ssize_t n = validate_n(n_);
+  r_ssize n = validate_n(n_);
   return r_shared_lgl(r_is_character(x, n));
 }
 sexp* rlang_is_raw(sexp* x, sexp* n_) {
-  r_ssize_t n = validate_n(n_);
+  r_ssize n = validate_n(n_);
   return r_shared_lgl(r_is_raw(x, n));
 }

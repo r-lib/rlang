@@ -1,11 +1,11 @@
 #include "rlang.h"
 #include <math.h>
 
-static bool has_correct_length(sexp* x, r_ssize_t n) {
+static bool has_correct_length(sexp* x, r_ssize n) {
   return n < 0 || r_length(x) == n;
 }
 
-bool r_is_atomic(sexp* x, r_ssize_t n) {
+bool r_is_atomic(sexp* x, r_ssize n) {
   switch(r_typeof(x)) {
   case LGLSXP:
   case INTSXP:
@@ -22,7 +22,7 @@ bool r_is_scalar_atomic(sexp* x) {
   return r_is_atomic(x, 1);
 }
 
-bool r_is_vector(sexp* x, r_ssize_t n) {
+bool r_is_vector(sexp* x, r_ssize n) {
   switch(r_typeof(x)) {
   case LGLSXP:
   case INTSXP:
@@ -37,17 +37,17 @@ bool r_is_vector(sexp* x, r_ssize_t n) {
   }
 }
 
-bool r_is_logical(sexp* x, r_ssize_t n) {
+bool r_is_logical(sexp* x, r_ssize n) {
   return r_typeof(x) == r_type_logical && has_correct_length(x, n);
 }
 
 bool r_is_finite(sexp* x) {
-  r_ssize_t n = r_length(x);
+  r_ssize n = r_length(x);
 
   switch(r_typeof(x)) {
   case r_type_integer: {
     int* ptr = r_int_deref(x);
-    for (r_ssize_t i = 0; i < n; ++i, ++ptr) {
+    for (r_ssize i = 0; i < n; ++i, ++ptr) {
       if (*ptr == NA_INTEGER) {
         return false;
       }
@@ -56,7 +56,7 @@ bool r_is_finite(sexp* x) {
   }
   case r_type_double: {
     double* ptr = r_dbl_deref(x);
-    for (r_ssize_t i = 0; i < n; ++i, ++ptr) {
+    for (r_ssize i = 0; i < n; ++i, ++ptr) {
       if (!isfinite(*ptr)) {
         return false;
       }
@@ -65,7 +65,7 @@ bool r_is_finite(sexp* x) {
   }
   case r_type_complex: {
     r_complex_t* ptr = r_cpl_deref(x);
-    for (r_ssize_t i = 0; i < n; ++i, ++ptr) {
+    for (r_ssize i = 0; i < n; ++i, ++ptr) {
       if (!isfinite(ptr->r) || !isfinite(ptr->i)) {
         return false;
       }
@@ -78,7 +78,7 @@ bool r_is_finite(sexp* x) {
 
   return true;
 }
-bool r_is_integer(sexp* x, r_ssize_t n, int finite) {
+bool r_is_integer(sexp* x, r_ssize n, int finite) {
   if (r_typeof(x) != r_type_integer || !has_correct_length(x, n)) {
     return false;
   }
@@ -87,7 +87,7 @@ bool r_is_integer(sexp* x, r_ssize_t n, int finite) {
   }
   return true;
 }
-bool r_is_double(sexp* x, r_ssize_t n, int finite) {
+bool r_is_double(sexp* x, r_ssize n, int finite) {
   if (r_typeof(x) != r_type_double || !has_correct_length(x, n)) {
     return false;
   }
@@ -97,7 +97,7 @@ bool r_is_double(sexp* x, r_ssize_t n, int finite) {
   return true;
 }
 
-bool r_is_integerish(sexp* x, r_ssize_t n, int finite) {
+bool r_is_integerish(sexp* x, r_ssize n, int finite) {
   if (r_typeof(x) == r_type_integer) {
     return r_is_integer(x, n, finite);
   }
@@ -105,11 +105,11 @@ bool r_is_integerish(sexp* x, r_ssize_t n, int finite) {
     return false;
   }
 
-  r_ssize_t actual_n = r_length(x);
+  r_ssize actual_n = r_length(x);
   double* ptr = r_dbl_deref(x);
   bool actual_finite = true;
 
-  for (r_ssize_t i = 0; i < actual_n; ++i, ++ptr) {
+  for (r_ssize i = 0; i < actual_n; ++i, ++ptr) {
     double elt = *ptr;
 
     if (!isfinite(elt)) {
@@ -128,14 +128,14 @@ bool r_is_integerish(sexp* x, r_ssize_t n, int finite) {
   return true;
 }
 
-bool r_is_character(sexp* x, r_ssize_t n) {
+bool r_is_character(sexp* x, r_ssize n) {
   return r_typeof(x) == r_type_character && has_correct_length(x, n);
 }
-bool r_is_raw(sexp* x, r_ssize_t n) {
+bool r_is_raw(sexp* x, r_ssize n) {
   return r_typeof(x) == r_type_raw && has_correct_length(x, n);
 }
 
-r_ssize_t r_vec_length(sexp* x) {
+r_ssize r_vec_length(sexp* x) {
   switch(r_typeof(x)) {
   case r_type_null:
     return 0;
@@ -153,7 +153,7 @@ r_ssize_t r_vec_length(sexp* x) {
   }
 }
 
-sexp* r_vec_get(sexp* vec, r_ssize_t i) {
+sexp* r_vec_get(sexp* vec, r_ssize i) {
   switch (r_typeof(vec)) {
   case r_type_character:
     return r_chr_get(vec, i);
@@ -164,20 +164,20 @@ sexp* r_vec_get(sexp* vec, r_ssize_t i) {
   }
 }
 
-bool r_vec_find_first_identical_any(sexp* x, sexp* y, r_ssize_t* index) {
+bool r_vec_find_first_identical_any(sexp* x, sexp* y, r_ssize* index) {
   if (r_typeof(x) != r_type_list && r_typeof(x) != r_type_character) {
     r_abort("Internal error: `x` must be a list or character vector in `r_vec_find_first_identical_any()`");
   }
   if (r_typeof(y) != r_type_list && r_typeof(y) != r_type_character) {
     r_abort("Internal error: `y` must be a list or character vector in `r_vec_find_first_identical_any()`");
   }
-  r_ssize_t n = r_length(x);
-  r_ssize_t n_comparisons = r_length(y);
+  r_ssize n = r_length(x);
+  r_ssize n_comparisons = r_length(y);
 
-  for (r_ssize_t i = 0; i < n; ++i) {
+  for (r_ssize i = 0; i < n; ++i) {
     sexp* elt = r_vec_get(x, i);
 
-    for (r_ssize_t j = 0; j < n_comparisons; ++j) {
+    for (r_ssize j = 0; j < n_comparisons; ++j) {
       if (r_is_identical(elt, r_vec_get(y, j))) {
         if (index) {
           *index = i;
@@ -193,8 +193,8 @@ bool r_vec_find_first_identical_any(sexp* x, sexp* y, r_ssize_t* index) {
 
 // Copy --------------------------------------------------------------
 
-void r_vec_poke_n(sexp* x, r_ssize_t offset,
-                  sexp* y, r_ssize_t from, r_ssize_t n) {
+void r_vec_poke_n(sexp* x, r_ssize offset,
+                  sexp* y, r_ssize from, r_ssize n) {
 
   if ((r_length(x) - offset) < n) {
     r_abort("Can't copy data to `x` because it is too small");
@@ -207,41 +207,41 @@ void r_vec_poke_n(sexp* x, r_ssize_t offset,
   case LGLSXP: {
     int* src_data = LOGICAL(y);
     int* dest_data = LOGICAL(x);
-    for (r_ssize_t i = 0; i != n; ++i)
+    for (r_ssize i = 0; i != n; ++i)
       dest_data[i + offset] = src_data[i + from];
     break;
   }
   case INTSXP: {
     int* src_data = INTEGER(y);
     int* dest_data = INTEGER(x);
-    for (r_ssize_t i = 0; i != n; ++i)
+    for (r_ssize i = 0; i != n; ++i)
       dest_data[i + offset] = src_data[i + from];
     break;
   }
   case REALSXP: {
     double* src_data = REAL(y);
     double* dest_data = REAL(x);
-    for (r_ssize_t i = 0; i != n; ++i)
+    for (r_ssize i = 0; i != n; ++i)
       dest_data[i + offset] = src_data[i + from];
     break;
   }
   case CPLXSXP: {
     r_complex_t* src_data = COMPLEX(y);
     r_complex_t* dest_data = COMPLEX(x);
-    for (r_ssize_t i = 0; i != n; ++i)
+    for (r_ssize i = 0; i != n; ++i)
       dest_data[i + offset] = src_data[i + from];
     break;
   }
   case RAWSXP: {
     r_byte_t* src_data = RAW(y);
     r_byte_t* dest_data = RAW(x);
-    for (r_ssize_t i = 0; i != n; ++i)
+    for (r_ssize i = 0; i != n; ++i)
       dest_data[i + offset] = src_data[i + from];
     break;
   }
   case STRSXP: {
     sexp* elt;
-    for (r_ssize_t i = 0; i != n; ++i) {
+    for (r_ssize i = 0; i != n; ++i) {
       elt = STRING_ELT(y, i + from);
       SET_STRING_ELT(x, i + offset, elt);
     }
@@ -249,7 +249,7 @@ void r_vec_poke_n(sexp* x, r_ssize_t offset,
   }
   case VECSXP: {
     sexp* elt;
-    for (r_ssize_t i = 0; i != n; ++i) {
+    for (r_ssize i = 0; i != n; ++i) {
       elt = VECTOR_ELT(y, i + from);
       SET_VECTOR_ELT(x, i + offset, elt);
     }
@@ -260,8 +260,8 @@ void r_vec_poke_n(sexp* x, r_ssize_t offset,
   }
 }
 
-void r_vec_poke_range(sexp* x, r_ssize_t offset,
-                      sexp* y, r_ssize_t from, r_ssize_t to) {
+void r_vec_poke_range(sexp* x, r_ssize offset,
+                      sexp* y, r_ssize from, r_ssize to) {
   r_vec_poke_n(x, offset, y, from, to - from + 1);
 }
 
@@ -280,8 +280,8 @@ sexp* rlang_vec_coercer(sexp* dest) {
   }
 }
 
-void r_vec_poke_coerce_n(sexp* x, r_ssize_t offset,
-                         sexp* y, r_ssize_t from, r_ssize_t n) {
+void r_vec_poke_coerce_n(sexp* x, r_ssize offset,
+                         sexp* y, r_ssize from, r_ssize n) {
   if (r_typeof(y) == r_typeof(x)) {
     r_vec_poke_n(x, offset, y, from, n);
     return ;
@@ -299,7 +299,7 @@ void r_vec_poke_coerce_n(sexp* x, r_ssize_t offset,
   FREE(2);
 }
 
-void r_vec_poke_coerce_range(sexp* x, r_ssize_t offset,
-                             sexp* y, r_ssize_t from, r_ssize_t to) {
+void r_vec_poke_coerce_range(sexp* x, r_ssize offset,
+                             sexp* y, r_ssize from, r_ssize to) {
   r_vec_poke_coerce_n(x, offset, y, from, to - from + 1);
 }

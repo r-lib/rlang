@@ -14,10 +14,10 @@ typedef struct SEXPREC sexp;
 typedef Rbyte r_byte_t;
 typedef Rcomplex r_complex_t;
 
-typedef R_xlen_t r_ssize_t;
+typedef R_xlen_t r_ssize;
 #define R_SSIZE_MAX R_XLEN_T_MAX
 
-r_ssize_t r_as_ssize(sexp* n);
+r_ssize r_as_ssize(sexp* n);
 
 enum r_type {
   r_type_null        = 0,

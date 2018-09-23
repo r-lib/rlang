@@ -2,7 +2,7 @@
 
 
 // Allows long vectors to be indexed with doubles
-r_ssize_t r_as_ssize(sexp* n) {
+r_ssize r_as_ssize(sexp* n) {
   switch (r_typeof(n)) {
 
   case r_type_double: {
@@ -13,14 +13,14 @@ r_ssize_t r_as_ssize(sexp* n) {
     if (out > R_SSIZE_MAX) {
       r_abort("`n` is too large a number");
     }
-    return (r_ssize_t) floor(out);
+    return (r_ssize) floor(out);
   }
 
   case r_type_integer: {
     if (r_length(n) != 1) {
       goto invalid;
     }
-    return (r_ssize_t) r_int_get(n, 0);
+    return (r_ssize) r_int_get(n, 0);
   }
 
   invalid:

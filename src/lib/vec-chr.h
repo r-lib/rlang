@@ -9,10 +9,10 @@
 extern sexp* r_shared_empty_chr;
 
 
-static inline sexp* r_chr_get(sexp* chr, r_ssize_t i) {
+static inline sexp* r_chr_get(sexp* chr, r_ssize i) {
   return STRING_ELT(chr, i);
 }
-static inline void r_chr_poke(sexp* chr, r_ssize_t i, sexp* elt) {
+static inline void r_chr_poke(sexp* chr, r_ssize i, sexp* elt) {
   SET_STRING_ELT(chr, i, elt);
 }
 
@@ -20,11 +20,11 @@ static inline const char* r_str_deref(sexp* str) {
   return CHAR(str);
 }
 
-static inline const char* r_chr_get_c_string(sexp* scalar_chr, r_ssize_t i) {
+static inline const char* r_chr_get_c_string(sexp* scalar_chr, r_ssize i) {
   return CHAR(r_chr_get(scalar_chr, i));
 }
 
-static inline sexp* r_nms_get(sexp* nms, r_ssize_t i) {
+static inline sexp* r_nms_get(sexp* nms, r_ssize i) {
   if (nms == r_null) {
     static sexp* empty_str = NULL;
     if (!empty_str) empty_str = Rf_mkChar("");
@@ -57,7 +57,7 @@ static inline bool r_is_empty_string(sexp* str) {
   return strcmp(c_str, "") == 0;
 }
 
-static inline bool r_chr_has_empty_string_at(sexp* chr, r_ssize_t i) {
+static inline bool r_chr_has_empty_string_at(sexp* chr, r_ssize i) {
   return r_is_empty_string(r_chr_get(chr, i));
 }
 
