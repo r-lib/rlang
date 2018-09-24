@@ -109,6 +109,8 @@ changes.
 \code{env_bind_fns()}. This internal genericity was causing confusion
 (see issue #427). You should now extract the environment
 separately before calling these functions.
+\item \code{env_bind_exprs()} => \code{\link[=env_bind_promise]{env_bind_promise()}}
+\item \code{env_bind_fns()} => \code{\link[=env_bind_active]{env_bind_active()}}
 }
 
 \strong{Soft-deprecated as of rlang 0.2.0:}

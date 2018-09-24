@@ -370,7 +370,7 @@ test_that("No backtrace is displayed with top-level active bindings", {
     rlang_trace_top_env = current_env()
   )
 
-  env_bind_fns(current_env(), foo = function() abort("msg"))
+  env_bind_active(current_env(), foo = function() abort("msg"))
   expect_error(foo, "^msg$")
 })
 

@@ -1019,7 +1019,7 @@ env_label <- function(env) {
 #' * The bindings in the environment (up to 20 bindings). They are
 #'   printed succintly using `pillar::type_sum()` (if available,
 #'   otherwise uses an internal version of that generic). In addition
-#'   [fancy bindings][env_bind_exprs] (actives and promises) are
+#'   [fancy bindings][env_bind_promise] (actives and promises) are
 #'   indicated as such.
 #'
 #' * Locked bindings get a `[L]` tag

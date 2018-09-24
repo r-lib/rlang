@@ -12,7 +12,7 @@
 #' - `env_bind()` takes named _values_ which are bound in `.env`.
 #'   `env_bind()` is equivalent to [base::assign()].
 #'
-#' - `env_bind_fns()` takes named _functions_ and creates active
+#' - `env_bind_active()` takes named _functions_ and creates active
 #'   bindings in `.env`. This is equivalent to
 #'   [base::makeActiveBinding()]. An active binding executes a
 #'   function each time it is evaluated. The arguments are passed to
@@ -25,7 +25,7 @@
 #'   to difficult problems (see the implementations of `dplyr::do()`
 #'   methods for an example).
 #'
-#' - `env_bind_exprs()` takes named _expressions_. This is equivalent
+#' - `env_bind_promise()` takes named _expressions_. This is equivalent
 #'   to [base::delayedAssign()]. The arguments are captured with
 #'   [exprs()] (and thus support call-splicing and unquoting) and
 #'   assigned to symbols in `.env`. These expressions are not
@@ -149,33 +149,28 @@ env_bind_impl <- function(env, data, fn, bind = FALSE, binder = NULL) {
   }
 }
 
-# FIXME: Should these be env_bind_promises() and env_bind_actives()?
-
-#' Bind lazy or active bindings
-#'
-#' @keywords internal
-#' @section Life cycle:
-#'
-#' These functions are experimental. Expect API changes.
-#'
-#' @inheritParams env_bind
+#' @rdname env_bind
 #' @param .eval_env The environment where the expressions will be
 #'   evaluated when the symbols are forced.
 #' @export
 #' @examples
 #'
-#' # env_bind_exprs() assigns expressions lazily:
+#' # env_bind_promise() assigns expressions lazily:
 #' env <- env()
-#' env_bind_exprs(env, name = cat("forced!\n"))
+#' env_bind_promise(env, name = { cat("forced!\n"); "value" })
+#'
+#' # Referring to the binding will cause evaluation:
 #' env$name
+#'
+#' # But only once, subsequent references yield the final value:
 #' env$name
 #'
 #' # You can unquote expressions. Note that quosures are not
 #' # supported, only raw expressions:
 #' expr <- quote(message("forced!"))
-#' env_bind_exprs(env, name = !! expr)
+#' env_bind_promise(env, name = !! expr)
 #' env$name
-env_bind_exprs <- function(.env, ..., .eval_env = caller_env()) {
+env_bind_promise <- function(.env, ..., .eval_env = caller_env()) {
   exprs <- exprs(...)
 
   binder <- function(env, nm, value) {
@@ -187,13 +182,13 @@ env_bind_exprs <- function(.env, ..., .eval_env = caller_env()) {
     ))
   }
 
-  env_bind_impl(.env, exprs(...), "env_bind_exprs()", TRUE, binder)
+  env_bind_impl(.env, exprs(...), "env_bind_promise()", TRUE, binder)
 }
-#' @rdname env_bind_exprs
+#' @rdname env_bind
 #' @export
 #' @examples
 #'
-#' # You can create active bindings with env_bind_fns(). Active
+#' # You can create active bindings with env_bind_active(). Active
 #' # bindings execute a function each time they are evaluated:
 #' fn <- function() {
 #'   cat("I have been called\n")
@@ -201,7 +196,7 @@ env_bind_exprs <- function(.env, ..., .eval_env = caller_env()) {
 #' }
 #'
 #' env <- env()
-#' env_bind_fns(env, symbol = fn)
+#' env_bind_active(env, symbol = fn)
 #'
 #' # `fn` is executed each time `symbol` is evaluated or retrieved:
 #' env$symbol
@@ -211,10 +206,10 @@ env_bind_exprs <- function(.env, ..., .eval_env = caller_env()) {
 #'
 #' # All arguments are passed to as_function() so you can use the
 #' # formula shortcut:
-#' env_bind_fns(env, foo = ~runif(1))
+#' env_bind_active(env, foo = ~ runif(1))
 #' env$foo
 #' env$foo
-env_bind_fns <- function(.env, ...) {
+env_bind_active <- function(.env, ...) {
   fns <- map(list2(...), as_function)
 
   # makeActiveBinding() fails if there is already a regular binding
@@ -227,7 +222,7 @@ env_bind_fns <- function(.env, ...) {
     makeActiveBinding(nm, value, env)
   }
 
-  env_bind_impl(.env, fns, "env_bind_fns()", TRUE, binder)
+  env_bind_impl(.env, fns, "env_bind_active()", TRUE, binder)
 }
 
 #' Temporarily change bindings of an environment

@@ -1218,6 +1218,38 @@ is_bare_env <- function(x) {
   is_bare_environment(x)
 }
 
+#' Bind a promise or active binding
+#'
+#' @description
+#'
+#' \Sexpr[results=rd, stage=render]{rlang:::lifecycle("soft-deprecated")}
+#'
+#' As of rlang 0.3.0, `env_bind_exprs()` and `env_bind_fns()` have
+#' been renamed to [env_bind_promise()] and [env_bind_active()] for
+#' consistency.
+#'
+#' @inheritParams env_bind
+#'
+#' @keywords internal
+#' @export
+env_bind_exprs <- function(.env, ..., .eval_env = caller_env()) {
+  signal_soft_deprecated(paste_line(
+    "`env_bind_exprs()` is soft-deprecated as of rlang 0.3.0.",
+    "Please use `env_bind_promise()` instead."
+  ))
+  env_bind_promise(.env, ..., .eval_env = .eval_env)
+}
+#' @rdname env_bind_exprs
+#' @export
+env_bind_fns <- function(.env, ...) {
+  signal_soft_deprecated(paste_line(
+    "`env_bind_fns()` is soft-deprecated as of rlang 0.3.0.",
+    "Please use `env_bind_active()` instead."
+  ))
+  env_bind_active(.env, ...)
+}
+
+
 
 #  Vectors  ----------------------------------------------------------
 

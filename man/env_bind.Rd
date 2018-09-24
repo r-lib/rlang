@@ -2,15 +2,24 @@
 % Please edit documentation in R/env-binding.R
 \name{env_bind}
 \alias{env_bind}
+\alias{env_bind_promise}
+\alias{env_bind_active}
 \title{Bind symbols to objects in an environment}
 \usage{
 env_bind(.env, ...)
+
+env_bind_promise(.env, ..., .eval_env = caller_env())
+
+env_bind_active(.env, ...)
 }
 \arguments{
 \item{.env}{An environment.}
 
 \item{...}{Pairs of names and expressions, values or functions.
 These dots support \link[=tidy-dots]{tidy dots} features.}
+
+\item{.eval_env}{The environment where the expressions will be
+evaluated when the symbols are forced.}
 }
 \value{
 The input object \code{.env}, with its associated environment
@@ -26,7 +35,7 @@ specific problems.
 \itemize{
 \item \code{env_bind()} takes named \emph{values} which are bound in \code{.env}.
 \code{env_bind()} is equivalent to \code{\link[base:assign]{base::assign()}}.
-\item \code{env_bind_fns()} takes named \emph{functions} and creates active
+\item \code{env_bind_active()} takes named \emph{functions} and creates active
 bindings in \code{.env}. This is equivalent to
 \code{\link[base:makeActiveBinding]{base::makeActiveBinding()}}. An active binding executes a
 function each time it is evaluated. The arguments are passed to
@@ -38,7 +47,7 @@ that are not actually in scope in the dynamic environment where
 the active bindings are invoked. This allows creative solutions
 to difficult problems (see the implementations of \code{dplyr::do()}
 methods for an example).
-\item \code{env_bind_exprs()} takes named \emph{expressions}. This is equivalent
+\item \code{env_bind_promise()} takes named \emph{expressions}. This is equivalent
 to \code{\link[base:delayedAssign]{base::delayedAssign()}}. The arguments are captured with
 \code{\link[=exprs]{exprs()}} (and thus support call-splicing and unquoting) and
 assigned to symbols in \code{.env}. These expressions are not
@@ -110,4 +119,42 @@ old
 # You can restore the original environment state by supplying the
 # old values back:
 env_bind(my_env, !!!old)
+
+# env_bind_promise() assigns expressions lazily:
+env <- env()
+env_bind_promise(env, name = { cat("forced!\\n"); "value" })
+
+# Referring to the binding will cause evaluation:
+env$name
+
+# But only once, subsequent references yield the final value:
+env$name
+
+# You can unquote expressions. Note that quosures are not
+# supported, only raw expressions:
+expr <- quote(message("forced!"))
+env_bind_promise(env, name = !! expr)
+env$name
+
+# You can create active bindings with env_bind_active(). Active
+# bindings execute a function each time they are evaluated:
+fn <- function() {
+  cat("I have been called\\n")
+  rnorm(1)
+}
+
+env <- env()
+env_bind_active(env, symbol = fn)
+
+# `fn` is executed each time `symbol` is evaluated or retrieved:
+env$symbol
+env$symbol
+eval_bare(quote(symbol), env)
+eval_bare(quote(symbol), env)
+
+# All arguments are passed to as_function() so you can use the
+# formula shortcut:
+env_bind_active(env, foo = ~ runif(1))
+env$foo
+env$foo
 }

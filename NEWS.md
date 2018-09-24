@@ -1,6 +1,10 @@
 
 # rlang 0.2.2.9000
 
+* `env_bind_exprs()` and `env_bind_fns()` are soft-deprecated and
+  renamed to `env_bind_promise()` and `env_bind_active()` for clarity
+  and consistency.
+
 * `env_bind()`, `env_bind_exprs()`, and `env_bind_fns()` now return
   the list of old binding values (or missing arguments when there is
   no old value). This makes it easy to restore the original
