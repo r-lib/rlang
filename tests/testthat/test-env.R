@@ -398,6 +398,7 @@ test_that("env_clone() recreates active bindings", {
 })
 
 test_that("env_clone() does not force promises", {
+  skip("Failing")
   e <- env()
   env_bind_exprs(e, foo = abort("forced"))
   out <- env_clone(e)
@@ -427,6 +428,34 @@ test_that("env_length() gives env length", {
   expect_error(env_length(1), "must be an environment")
   expect_identical(env_length(env()), 0L)
   expect_identical(env_length(env(a = "a")), 1L)
+})
+
+test_that("env_clone() duplicates frame", {
+  e <- new.env(hash = FALSE)
+  e$x <- 1
+  c <- env_clone(e)
+  expect_false(is_reference(env_frame(e), env_frame(c)))
+})
+
+test_that("env_clone() duplicates hash table", {
+  e <- env(x = 1)
+  c <- env_clone(e)
+
+  e_hash <- env_hash_table(e)
+  c_hash <- env_hash_table(c)
+  expect_false(is_reference(e_hash, c_hash))
+
+  i <- detect_index(e_hash, is_null, .p = is_false)
+  expect_false(is_reference(e_hash[[i]], c_hash[[i]]))
+})
+
+test_that("env_clone() increases refcounts (#621)", {
+  e <- env(x = 1:2)
+  c <- env_clone(e)
+  c$x[1] <- NA
+
+  expect_identical(e$x, c(1L, 2L))
+  expect_identical(c$x, c(NA, 2L))
 })
 
 

@@ -52,6 +52,12 @@ static inline sexp* r_duplicate(sexp* x, bool shallow) {
     return Rf_duplicate(x);
   }
 }
+static inline sexp* r_copy(sexp* x) {
+  return Rf_duplicate(x);
+}
+static inline sexp* r_clone(sexp* x) {
+  return Rf_shallow_duplicate(x);
+}
 
 static inline sexp* r_maybe_duplicate(sexp* x, bool shallow) {
   if (r_is_shared(x)) {

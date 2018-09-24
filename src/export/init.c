@@ -93,7 +93,6 @@ extern sexp* rlang_as_data_mask_compat(sexp*, sexp*);
 extern sexp* rlang_data_mask_clean(sexp*);
 extern sexp* rlang_eval_tidy(sexp*, sexp*, sexp*);
 extern sexp* rlang_as_data_pronoun(sexp*);
-extern sexp* rlang_env_binding_are_promise(sexp*, sexp*);
 extern sexp* rlang_env_get(sexp*, sexp*);
 extern sexp* rlang_env_unlock(sexp*);
 extern sexp* rlang_interrupt();
@@ -228,7 +227,7 @@ static const r_callable r_callables[] = {
   {"rlang_data_mask_clean",     (r_fn_ptr_t) &rlang_data_mask_clean, 1},
   {"rlang_eval_tidy",           (r_fn_ptr_t) &rlang_eval_tidy, 3},
   {"rlang_as_data_pronoun",     (r_fn_ptr_t) &rlang_as_data_pronoun, 1},
-  {"rlang_env_binding_are_promise", (r_fn_ptr_t) &rlang_env_binding_are_promise, 2},
+  {"rlang_env_binding_types",   (r_fn_ptr_t) &r_env_binding_types, 2},
   {"rlang_env_get",             (r_fn_ptr_t) &rlang_env_get, 2},
   {"rlang_env_unlock",          (r_fn_ptr_t) &rlang_env_unlock, 1},
   {"rlang_interrupt",           (r_fn_ptr_t) &rlang_interrupt, 0},

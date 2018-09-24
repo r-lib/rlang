@@ -170,6 +170,10 @@ test_that("binding predicates detect special bindings", {
 
   force(env$b)
   expect_identical(env_binding_are_promise(env, c("a", "b", "c")), c(a = FALSE, b = FALSE, c = FALSE))
+
+  env <- env(a = 1, b = 2)
+  expect_identical(env_binding_are_active(env), c(a = FALSE, b = FALSE))
+  expect_identical(env_binding_are_promise(env), c(a = FALSE, b = FALSE))
 })
 
 test_that("applies predicates to all bindings by default", {

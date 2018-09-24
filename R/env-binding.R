@@ -622,14 +622,23 @@ env_binding_are_locked <- function(env, nms = NULL) {
 #' @return A logical vector as long as `nms` and named after it.
 #' @export
 env_binding_are_active <- function(env, nms = NULL) {
-  nms <- env_binding_validate_names(env, nms)
-  set_names(map_lgl(nms, bindingIsActive, env = env), nms)
+  env_binding_are_type(env, nms, 2L)
 }
 #' @rdname env_binding_are_active
 #' @export
 env_binding_are_promise <- function(env, nms = NULL) {
+  env_binding_are_type(env, nms, 1L)
+}
+env_binding_are_type <- function(env, nms, type) {
   nms <- env_binding_validate_names(env, nms)
-  set_names(.Call(rlang_env_binding_are_promise, env, syms(nms)), nms)
+  promise <- env_binding_types(env, nms)
+
+  if (is_null(promise)) {
+    promise <- rep(FALSE, length(nms))
+  } else {
+    promise <- promise == type
+  }
+  set_names(promise, nms)
 }
 
 env_binding_validate_names <- function(env, nms) {
@@ -641,6 +650,9 @@ env_binding_validate_names <- function(env, nms) {
     }
   }
   nms
+}
+env_binding_types <- function(env, nms = env_names(env)) {
+  .Call(rlang_env_binding_types, env, nms)
 }
 
 env_binding_type_sum <- function(env, nms = NULL) {

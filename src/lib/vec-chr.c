@@ -25,17 +25,21 @@ sexp* r_new_character(const char** strings) {
   return out;
 }
 
-bool r_chr_has(sexp* chr, const char* c_string) {
+r_ssize r_chr_detect_index(sexp* chr, const char* c_string) {
   r_ssize n = r_length(chr);
 
   for (r_ssize i = 0; i != n; ++i) {
     const char* cur = CHAR(STRING_ELT(chr, i));
     if (strcmp(cur, c_string) == 0) {
-      return true;
+      return i;
     }
   }
 
-  return false;
+  return -1;
+}
+bool r_chr_has(sexp* chr, const char* c_string) {
+  r_ssize idx = r_chr_detect_index(chr, c_string);
+  return idx >= 0;
 }
 
 bool r_chr_has_any(sexp* chr, const char** c_strings) {
