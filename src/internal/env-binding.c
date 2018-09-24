@@ -1,24 +1,6 @@
 #include <rlang.h>
 
 
-sexp* rlang_env_binding_are_promise(sexp* env, sexp* syms) {
-  if (r_typeof(syms) != r_type_list) {
-    r_abort("Internal error: Expected list of symbols in active binding predicate");
-  }
-
-  r_ssize n = r_vec_length(syms);
-  sexp* out = KEEP(r_new_vector(r_type_logical, n));
-  int* out_array = r_lgl_deref(out);
-
-  for (r_ssize i = 0; i < n; ++i) {
-    sexp* sym = r_list_get(syms, i);
-    out_array[i] = r_env_binding_is_promise(env, sym);
-  }
-
-  FREE(1);
-  return out;
-}
-
 sexp* rlang_env_get(sexp* env, sexp* nm) {
   sexp* sym = r_sym(r_chr_get_c_string(nm, 0));
 
