@@ -20,6 +20,12 @@ static inline r_complex_t* r_cpl_deref(sexp* x) {
 static inline r_byte_t* r_raw_deref(sexp* x) {
   return RAW(x);
 }
+static inline sexp** r_chr_deref(sexp* x) {
+  return STRING_PTR(x);
+}
+static inline sexp** r_list_deref(sexp* x) {
+  return VECTOR_PTR(x);
+}
 
 static inline int r_lgl_get(sexp* x, r_ssize i) {
   return LOGICAL(x)[i];
