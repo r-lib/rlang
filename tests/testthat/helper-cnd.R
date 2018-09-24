@@ -103,3 +103,8 @@ pluck_conditions_msgs <- function(cnds) {
   cnds$error <- cnds$error$message
   cnds
 }
+
+skip_silently <- function(reason, env = caller_env()) {
+  expect_true(TRUE)
+  return_from(env)
+}

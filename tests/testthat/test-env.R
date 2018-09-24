@@ -431,6 +431,8 @@ test_that("env_length() gives env length", {
 })
 
 test_that("env_clone() duplicates frame", {
+  skip_silently("Would fail on non-GNU R")
+
   e <- new.env(hash = FALSE)
   e$x <- 1
   c <- env_clone(e)
@@ -438,6 +440,8 @@ test_that("env_clone() duplicates frame", {
 })
 
 test_that("env_clone() duplicates hash table", {
+  skip_silently("Would fail on non-GNU R")
+
   e <- env(x = 1)
   c <- env_clone(e)
 
