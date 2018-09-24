@@ -42,8 +42,8 @@
 #' produces effects in all other references to that environment. In
 #' other words, `env_bind()` and its variants have side effects.
 #'
-#' As they are called primarily for their side effects, these
-#' functions follow the convention of returning their input invisibly.
+#' Like other side-effecty functions like `par()` and `options()`,
+#' `env_bind()` and variants return the old values invisibly.
 #'
 #'
 #' @section Life cycle:
@@ -71,6 +71,10 @@
 #' env_bind(current_env(), bar = "BAR")
 #' bar
 #'
+#' # You can remove bindings by supplying empty arguments:
+#' env_bind(current_env(), foo = , bar = )
+#' try(foo)
+#'
 #' # It is most useful to change other environments:
 #' my_env <- env()
 #' env_bind(my_env, foo = "foo")
@@ -78,7 +82,7 @@
 #'
 #' # A useful feature is to splice lists of named values:
 #' vals <- list(a = 10, b = 20)
-#' env_bind(my_env, !!! vals, c = 30)
+#' env_bind(my_env, !!!vals, c = 30)
 #' my_env$b
 #' my_env$c
 #'
@@ -87,10 +91,19 @@
 #' var <- "baz"
 #' env_bind(my_env, !!var := "BAZ")
 #' my_env$baz
+#'
+#'
+#' # The old values of the bindings are returned invisibly:
+#' old <- env_bind(my_env, a = 1, b = 2, baz = "baz")
+#' old
+#'
+#' # You can restore the original environment state by supplying the
+#' # old values back:
+#' env_bind(my_env, !!!old)
 env_bind <- function(.env, ...) {
-  invisible(env_bind_impl(.env, list2(...), "env_bind()"))
+  env_bind_impl(.env, list3(...), "env_bind()", bind = TRUE)
 }
-env_bind_impl <- function(env, data, fn) {
+env_bind_impl <- function(env, data, fn, bind = FALSE, binder = NULL) {
   if (!is_vector(data)) {
     type <- as_friendly_type(type_of(data))
     abort(sprintf("`data` must be a vector not a %s", type))
@@ -105,15 +118,35 @@ env_bind_impl <- function(env, data, fn) {
     }
   }
 
-  nms <- names(data)
   env_ <- get_env_retired(env, fn, caller_env(2))
+  nms <- names2(data)
 
-  for (i in seq_along(data)) {
-    nm <- nms[[i]]
-    base::assign(nm, data[[nm]], envir = env_)
+  if (bind) {
+    old <- new_list_along(nms, nms)
+    overwritten <- env_has(env_, nms)
+    old[overwritten] <- env_get_list(env_, nms[overwritten])
+    old[!overwritten] <- list(missing_arg())
   }
 
-  env
+  if (is_null(binder)) {
+    binder <- function(env, nm, value) {
+      if (bind && overwritten[[i]] && is_missing(data[[i]])) {
+        base::rm(list = nm, envir = env)
+      } else {
+        base::assign(nm, data[[nm]], envir = env)
+      }
+    }
+  }
+
+  for (i in seq_along(data)) {
+    binder(env_, nms[[i]], data[[i]])
+  }
+
+  if (bind) {
+    invisible(old)
+  } else {
+    invisible(env_)
+  }
 }
 
 # FIXME: Should these be env_bind_promises() and env_bind_actives()?
@@ -144,21 +177,17 @@ env_bind_impl <- function(env, data, fn) {
 #' env$name
 env_bind_exprs <- function(.env, ..., .eval_env = caller_env()) {
   exprs <- exprs(...)
-  stopifnot(is_named(exprs))
 
-  nms <- names(exprs)
-  env_ <- get_env_retired(.env, "env_bind_exprs()")
-
-  for (i in seq_along(exprs)) {
+  binder <- function(env, nm, value) {
     do.call("delayedAssign", list(
-      x = nms[[i]],
-      value = exprs[[i]],
+      x = nm,
+      value = value,
       eval.env = .eval_env,
-      assign.env = env_
+      assign.env = env
     ))
   }
 
-  invisible(.env)
+  env_bind_impl(.env, exprs(...), "env_bind_exprs()", TRUE, binder)
 }
 #' @rdname env_bind_exprs
 #' @export
@@ -186,21 +215,19 @@ env_bind_exprs <- function(.env, ..., .eval_env = caller_env()) {
 #' env$foo
 #' env$foo
 env_bind_fns <- function(.env, ...) {
-  fns <- dots_splice(...)
-  stopifnot(is_named(fns))
-  fns <- map(fns, as_function)
+  fns <- map(list2(...), as_function)
 
-  nms <- names(fns)
-  env_ <- get_env_retired(.env, "env_bind_fns()")
+  # makeActiveBinding() fails if there is already a regular binding
+  existing <- env_names(.env)
 
-  exist <- env_has(env_, nms)
-  env_unbind(env_, nms[exist])
-
-  for (i in seq_along(fns)) {
-    makeActiveBinding(nms[[i]], fns[[i]], env_)
+  binder <- function(env, nm, value) {
+    if (nm %in% existing) {
+      env_unbind(env, nm)
+    }
+    makeActiveBinding(nm, value, env)
   }
 
-  invisible(.env)
+  env_bind_impl(.env, fns, "env_bind_fns()", TRUE, binder)
 }
 
 #' Temporarily change bindings of an environment
@@ -240,20 +267,9 @@ scoped_bindings <- function(..., .env = .frame, .frame = caller_env()) {
     return(list())
   }
 
-  stopifnot(is_named(bindings))
+  old <- env_bind_impl(env, bindings, "scoped_bindings()", bind = TRUE)
+  scoped_exit(frame = .frame, !!call2(env_bind_impl, env, old, bind = TRUE))
 
-  nms <- names(bindings)
-  is_old <- env_has(env, nms)
-  old <- env_get_list(env, nms[is_old])
-
-  unbind_lang <- call2(env_unbind, env, nms[!is_old])
-  rebind_lang <- call2(env_bind_impl, env, old)
-  scoped_exit(frame = .frame, {
-    !! unbind_lang
-    !! rebind_lang
-  })
-
-  env_bind_impl(env, bindings, "scoped_bindings()")
   invisible(old)
 }
 #' @rdname scoped_bindings

@@ -151,18 +151,21 @@ env <- function(...) {
 
   env <- new.env(parent = parent)
   env_bind_impl(env, dots$named)
+  env
 }
 #' @rdname env
 #' @export
 child_env <- function(.parent, ...) {
   env <- new.env(parent = as_environment(.parent))
   env_bind_impl(env, list2(...))
+  env
 }
 #' @rdname env
 #' @export
 new_environment <- function(data = list(), parent = empty_env()) {
   env <- new.env(parent = parent)
   env_bind_impl(env, data)
+  env
 }
 
 #' Coerce to an environment

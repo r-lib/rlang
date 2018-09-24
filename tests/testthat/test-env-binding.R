@@ -14,7 +14,8 @@ test_that("promises are created", {
 })
 
 test_that("env_bind_fns() creates active bindings", {
-  env <- env_bind_fns(env(), a = function() "foo")
+  env <- env()
+  env_bind_fns(env, a = function() "foo")
   expect_identical(env$a, "foo")
   expect_identical(env$a, "foo")
 })
@@ -80,7 +81,7 @@ test_that("scoped_bindings binds temporarily", {
       bar = "BAR",
       baz = "BAZ"
     )
-    expect_identical(old, list(foo = "foo", bar = "bar"))
+    expect_identical(old, list3(foo = "foo", bar = "bar", baz = ))
     temp_bindings <- env_get_list(env, c("foo", "bar", "baz"))
     expect_identical(temp_bindings, list(foo = "FOO", bar = "BAR", baz = "BAZ"))
   })
@@ -186,7 +187,8 @@ test_that("applies predicates to all bindings by default", {
 })
 
 test_that("env_binding_are_active() doesn't force promises", {
-  env <- env_bind_exprs(env(), foo = stop("kaboom"))
+  env <- env()
+  env_bind_exprs(env, foo = stop("kaboom"))
   expect_no_error(env_binding_are_active(env))
   expect_identical(env_binding_are_promise(env), lgl(foo = TRUE))
   expect_identical(env_binding_are_promise(env), lgl(foo = TRUE))
@@ -234,4 +236,13 @@ test_that("can pluck missing arg from environment", {
 test_that("can call scoped_bindings() and with_bindings() without arguments", {
   expect_no_error(scoped_bindings())
   expect_no_error(with_bindings("foo"))
+})
+
+test_that("can remove bindings by supplying empty arguments", {
+  empty <- env()
+  expect_no_error(env_bind(empty, foo = ))
+
+  env <- env(foo = "foo", bar = "bar")
+  env_bind(env, foo = , bar = )
+  expect_identical(env_names(env), chr())
 })

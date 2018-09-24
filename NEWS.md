@@ -1,6 +1,19 @@
 
 # rlang 0.2.2.9000
 
+* `env_bind()`, `env_bind_exprs()`, and `env_bind_fns()` now return
+  the list of old binding values (or missing arguments when there is
+  no old value). This makes it easy to restore the original
+  environment state:
+
+  ```
+  old <- env_bind(env, foo = "foo", bar = "bar")
+  env_bind(env, !!!old)
+  ```
+
+* `env_bind()` now supports removing bindings with empty arguments.
+  `env_bind(env, foo = )` removes the `foo` binding.
+
 * `dots_list()` gains a `.preserve_empty` argument. When `TRUE`, empty
   arguments are stored as missing arguments (see `?missing_arg`).
 

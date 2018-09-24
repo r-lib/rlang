@@ -56,8 +56,8 @@ in \code{\link[=env]{env()}} documentation), modifying the bindings of an enviro
 produces effects in all other references to that environment. In
 other words, \code{env_bind()} and its variants have side effects.
 
-As they are called primarily for their side effects, these
-functions follow the convention of returning their input invisibly.
+Like other side-effecty functions like \code{par()} and \code{options()},
+\code{env_bind()} and variants return the old values invisibly.
 }
 
 \section{Life cycle}{
@@ -81,6 +81,10 @@ bar <- "bar"
 env_bind(current_env(), bar = "BAR")
 bar
 
+# You can remove bindings by supplying empty arguments:
+env_bind(current_env(), foo = , bar = )
+try(foo)
+
 # It is most useful to change other environments:
 my_env <- env()
 env_bind(my_env, foo = "foo")
@@ -88,7 +92,7 @@ my_env$foo
 
 # A useful feature is to splice lists of named values:
 vals <- list(a = 10, b = 20)
-env_bind(my_env, !!! vals, c = 30)
+env_bind(my_env, !!!vals, c = 30)
 my_env$b
 my_env$c
 
@@ -97,4 +101,13 @@ my_env$c
 var <- "baz"
 env_bind(my_env, !!var := "BAZ")
 my_env$baz
+
+
+# The old values of the bindings are returned invisibly:
+old <- env_bind(my_env, a = 1, b = 2, baz = "baz")
+old
+
+# You can restore the original environment state by supplying the
+# old values back:
+env_bind(my_env, !!!old)
 }
