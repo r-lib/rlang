@@ -8,6 +8,7 @@
 #include "lib/cnd.c"
 #include "lib/debug.c"
 #include "lib/env.c"
+#include "lib/env-binding.c"
 #include "lib/eval.c"
 #include "lib/export.c"
 #include "lib/fn.c"

@@ -6,6 +6,7 @@ lib-files = \
         lib/cnd.c \
         lib/debug.c \
         lib/env.c \
+        lib/env-binding.c \
         lib/eval.c \
         lib/export.c \
         lib/fn.c \
