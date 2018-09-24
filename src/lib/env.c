@@ -72,14 +72,44 @@ sexp* r_env_clone(sexp* env, sexp* parent) {
   if (parent == NULL) {
     parent = r_env_parent(env);
   }
-  sexp* out = KEEP(r_new_environment(parent, 0));
-  sexp* frame = KEEP(r_duplicate(FRAME(env), true));
-  sexp* hashtab = KEEP(r_duplicate(HASHTAB(env), true));
 
-  SET_FRAME(out, frame);
-  SET_HASHTAB(out, hashtab);
+  sexp* nms = KEEP(r_env_names(env));
+  sexp* types = KEEP(r_env_binding_types(env, nms));
 
-  FREE(3);
+  sexp* out_list = KEEP(r_env_as_list(env));
+  sexp* out = KEEP(r_list_as_environment(out_list, parent));
+
+  if (types == r_null) {
+    FREE(4);
+    return out;
+  }
+
+  r_ssize n = r_length(nms);
+  sexp** nms_ptr = r_chr_deref(nms);
+  int* types_ptr = r_int_deref(types);
+
+  // There is currently no way of accessing the function of an active
+  // binding except through env2list. This makes it impossible to
+  // preserve active bindings without forcing promises.
+
+  for (r_ssize i = 0; i < n; ++i, ++nms_ptr, ++types_ptr) {
+    enum r_env_binding_type type = *types_ptr;
+    if (type == R_ENV_BINDING_ACTIVE) {
+      sexp* str = *nms_ptr;
+      sexp* sym = r_str_as_symbol(str);
+
+      r_ssize fn_idx = r_chr_detect_index(nms, r_str_deref(str));
+      if (fn_idx >= 0) {
+        r_env_unbind_names(out, r_str_as_character(str), false);
+        sexp* fn = r_list_get(out_list, fn_idx);
+        R_MakeActiveBinding(sym, fn, out);
+      } else {
+        r_abort("Internal error: Can't find active binding in temporary list");
+      }
+    }
+  }
+
+  FREE(4);
   return out;
 }
 
