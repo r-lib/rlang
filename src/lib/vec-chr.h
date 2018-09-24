@@ -36,6 +36,7 @@ static inline sexp* r_nms_get(sexp* nms, r_ssize i) {
 
 bool r_chr_has(sexp* chr, const char* c_string);
 bool r_chr_has_any(sexp* chr, const char** c_strings);
+r_ssize r_chr_detect_index(sexp* chr, const char* c_string);
 
 
 sexp* r_new_character(const char** strings);
