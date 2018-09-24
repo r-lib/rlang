@@ -11,6 +11,7 @@ struct dots_capture_info {
   sexp* named;
   bool needs_expansion;
   int ignore_empty;
+  bool preserve_empty;
   bool unquote_names;
 };
 
@@ -20,6 +21,7 @@ static int find_auto_names_width(sexp* named);
 struct dots_capture_info init_capture_info(enum dots_capture_type type,
                                            sexp* named,
                                            sexp* ignore_empty,
+                                           sexp* preserve_empty,
                                            sexp* unquote_names) {
   struct dots_capture_info info;
 
@@ -28,6 +30,7 @@ struct dots_capture_info init_capture_info(enum dots_capture_type type,
   info.needs_expansion = false;
   info.named = named;
   info.ignore_empty = match_ignore_empty_arg(ignore_empty);
+  info.preserve_empty = r_lgl_get(preserve_empty, 0);
   info.unquote_names = r_as_bool(unquote_names);
 
   return info;
@@ -260,9 +263,12 @@ static sexp* dots_unquote(sexp* dots, struct dots_capture_info* capture_info) {
     case OP_VALUE_FIXUP:
     case OP_VALUE_NONE:
       if (expr == r_missing_sym) {
-        r_abort("Argument %d is empty", i + 1);
+        if (!capture_info->preserve_empty) {
+          r_abort("Argument %d is empty", i + 1);
+        }
+      } else {
+        expr = r_eval(expr, env);
       }
-      expr = r_eval(expr, env);
       if (r_inherits(expr, "spliced")) {
         capture_info->needs_expansion = true;
       }
@@ -444,10 +450,18 @@ sexp* dots_init(struct dots_capture_info* capture_info, sexp* frame_env) {
   return dots;
 }
 
-sexp* rlang_exprs_interp(sexp* frame_env, sexp* named,
-                         sexp* ignore_empty, sexp* unquote_names) {
+sexp* rlang_exprs_interp(sexp* frame_env,
+                         sexp* named,
+                         sexp* ignore_empty,
+                         sexp* unquote_names) {
+
   struct dots_capture_info capture_info;
-  capture_info = init_capture_info(DOTS_EXPR, named, ignore_empty, unquote_names);
+  capture_info = init_capture_info(DOTS_EXPR,
+                                   named,
+                                   ignore_empty,
+                                   r_shared_true,
+                                   unquote_names);
+
   sexp* dots = dots_init(&capture_info, frame_env);
 
   if (capture_info.needs_expansion) {
@@ -457,12 +471,19 @@ sexp* rlang_exprs_interp(sexp* frame_env, sexp* named,
   }
   return dots;
 }
-sexp* rlang_quos_interp(sexp* frame_env, sexp* named,
-                        sexp* ignore_empty, sexp* unquote_names) {
+sexp* rlang_quos_interp(sexp* frame_env,
+                        sexp* named,
+                        sexp* ignore_empty,
+                        sexp* unquote_names) {
   int n_protect = 0;
 
   struct dots_capture_info capture_info;
-  capture_info = init_capture_info(DOTS_QUO, named, ignore_empty, unquote_names);
+  capture_info = init_capture_info(DOTS_QUO,
+                                   named,
+                                   ignore_empty,
+                                   r_shared_true,
+                                   unquote_names);
+
   sexp* dots = KEEP_N(dots_init(&capture_info, frame_env), n_protect);
 
   if (capture_info.needs_expansion) {
@@ -500,11 +521,20 @@ static bool is_spliced_bare_dots_value(sexp* x) {
   return true;
 }
 
-static sexp* dots_values_impl(sexp* frame_env, sexp* named,
-                              sexp* ignore_empty, sexp* unquote_names,
+static sexp* dots_values_impl(sexp* frame_env,
+                              sexp* named,
+                              sexp* ignore_empty,
+                              sexp* preserve_empty,
+                              sexp* unquote_names,
                               bool (*is_spliced)(sexp*)) {
+
   struct dots_capture_info capture_info;
-  capture_info = init_capture_info(DOTS_VALUE, named, ignore_empty, unquote_names);
+  capture_info = init_capture_info(DOTS_VALUE,
+                                   named,
+                                   ignore_empty,
+                                   preserve_empty,
+                                   unquote_names);
+
   sexp* dots = dots_init(&capture_info, frame_env);
 
   KEEP(dots);
@@ -519,18 +549,43 @@ static sexp* dots_values_impl(sexp* frame_env, sexp* named,
   FREE(1);
   return dots;
 }
-sexp* rlang_dots_values(sexp* frame_env, sexp* named,
-                        sexp* ignore_empty, sexp* unquote_names) {
-  return dots_values_impl(frame_env, named, ignore_empty, unquote_names, NULL);
+sexp* rlang_dots_values(sexp* frame_env,
+                        sexp* named,
+                        sexp* ignore_empty,
+                        sexp* preserve_empty,
+                        sexp* unquote_names) {
+  return dots_values_impl(frame_env,
+                          named,
+                          ignore_empty,
+                          preserve_empty,
+                          unquote_names,
+                          NULL);
 }
-sexp* rlang_dots_list(sexp* frame_env, sexp* named,
-                      sexp* ignore_empty, sexp* unquote_names) {
-  return dots_values_impl(frame_env, named, ignore_empty, unquote_names, is_spliced_dots_value);
+sexp* rlang_dots_list(sexp* frame_env,
+                      sexp* named,
+                      sexp* ignore_empty,
+                      sexp* preserve_empty,
+                      sexp* unquote_names) {
+  return dots_values_impl(frame_env,
+                          named,
+                          ignore_empty,
+                          preserve_empty,
+                          unquote_names,
+                          is_spliced_dots_value);
 }
-sexp* rlang_dots_flat_list(sexp* frame_env, sexp* named,
-                           sexp* ignore_empty, sexp* unquote_names) {
+sexp* rlang_dots_flat_list(sexp* frame_env,
+                           sexp* named,
+                           sexp* ignore_empty,
+                           sexp* preserve_empty,
+                           sexp* unquote_names) {
+
   struct dots_capture_info capture_info;
-  capture_info = init_capture_info(DOTS_VALUE, named, ignore_empty, unquote_names);
+  capture_info = init_capture_info(DOTS_VALUE,
+                                   named,
+                                   ignore_empty,
+                                   preserve_empty,
+                                   unquote_names);
+
   sexp* dots = dots_init(&capture_info, frame_env);
 
   KEEP(dots);

@@ -13,7 +13,8 @@ is_spliced(x)
 
 is_spliced_bare(x)
 
-dots_splice(..., .ignore_empty = c("trailing", "none", "all"))
+dots_splice(..., .ignore_empty = c("trailing", "none", "all"),
+  .preserve_empty = FALSE)
 }
 \arguments{
 \item{x}{A list to splice.}
@@ -25,6 +26,11 @@ arguments are embedded in the returned list.}
 \item{.ignore_empty}{Whether to ignore empty arguments. Can be one
 of \code{"trailing"}, \code{"none"}, \code{"all"}. If \code{"trailing"}, only the
 last argument is ignored if it is empty.}
+
+\item{.preserve_empty}{Whether to preserve the empty arguments that
+were not ignored. If \code{TRUE}, empty arguments are stored with
+\code{\link[=missing_arg]{missing_arg()}} values. If \code{FALSE} (the default) an error is
+thrown when an empty argument is detected.}
 }
 \description{
 \Sexpr[results=rd, stage=render]{rlang:::lifecycle("questioning")}

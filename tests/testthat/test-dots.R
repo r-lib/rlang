@@ -149,3 +149,10 @@ test_that("can unquote quosures in LHS", {
   expect_identical(list2(!!quo := NULL), list(foo = NULL))
   expect_identical(exprs(!!quo := bar), exprs(foo = bar))
 })
+
+test_that("can preserve empty arguments", {
+  list3 <- function(...) unname(dots_list(..., .preserve_empty = TRUE))
+  expect_identical(list3(, ), list(missing_arg()))
+  expect_identical(list3(, , .ignore_empty = "none"), list(missing_arg(), missing_arg()))
+  expect_identical(list3(, , .ignore_empty = "all"), list())
+})

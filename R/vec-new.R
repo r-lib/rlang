@@ -100,12 +100,12 @@ bytes <- function(...) {
 #' @rdname tidy-dots
 #' @export
 list2 <- function(...) {
-  .Call(rlang_dots_list, environment(), FALSE, "trailing", TRUE)
+  .Call(rlang_dots_list, environment(), FALSE, "trailing", FALSE, TRUE)
 }
 #' @rdname vector-construction
 #' @export
 ll <- function(...) {
-  .Call(rlang_dots_list, environment(), FALSE, "trailing", TRUE)
+  .Call(rlang_dots_list, environment(), FALSE, "trailing", FALSE, TRUE)
 }
 
 
