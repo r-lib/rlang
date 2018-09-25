@@ -106,6 +106,16 @@ modify <- function(.x, ...) {
 #'
 #' seq2_along(10, letters)
 seq2 <- function(from, to) {
+  n_from <- length(from)
+  n_to <- length(to)
+
+  if (n_from == 0 || n_to == 0) {
+    return(int())
+  }
+  if (n_from > 1 || n_to > 1) {
+    abort("`from` and `to` must be length zero or one")
+  }
+
   if (from > to) {
     int()
   } else {
