@@ -20,7 +20,7 @@ test_that("search_envs() includes the global and base env", {
 })
 
 test_that("search_envs() returns named environments", {
-  expect_identical(names(search_envs()), search())
+  expect_identical(names(search_envs()), c("global", search()[-1]))
 })
 
 test_that("search_envs() returns an rlang_envs object", {
@@ -35,7 +35,7 @@ test_that("is_namespace() recognises namespaces", {
 test_that("env_name() returns proper environment name", {
   expect_identical(env_name(global_env()), "global")
   expect_identical(env_name(empty_env()), "empty")
-  expect_identical(env_name(base_env()), "base")
+  expect_identical(env_name(base_env()), "package:base")
 
   expect_identical(env_name(pkg_env("rlang")), "package:rlang")
   expect_identical(env_name(ns_imports_env("rlang")), "imports:rlang")

@@ -223,7 +223,7 @@ test_that("env_parents() stops at the sentinel if supplied", {
 
 test_that("env_parents() returns a named list", {
   env <- env(structure(env(base_env()), name = "foobar"))
-  expect_identical(names(env_parents(env)), c("foobar", "base", "empty"))
+  expect_identical(names(env_parents(env)), c("foobar", "package:base", "empty"))
 })
 
 test_that("can lock environments", {

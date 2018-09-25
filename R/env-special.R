@@ -346,7 +346,9 @@ env_name <- function(env) {
   if (is_reference(env, global_env())) {
     return("global")
   }
-
+  if (is_reference(env, base_env())) {
+    return("package:base")
+  }
   if (is_reference(env, empty_env())) {
     return("empty")
   }
