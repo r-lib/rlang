@@ -4,7 +4,7 @@
 \alias{env_print}
 \title{Pretty-print an environment}
 \usage{
-env_print(env)
+env_print(env = caller_env())
 }
 \arguments{
 \item{env}{An environment, or object that can be converted to an

@@ -1028,7 +1028,7 @@ env_label <- function(env) {
 #'   environment by [get_env()].
 #'
 #' @export
-env_print <- function(env) {
+env_print <- function(env = caller_env()) {
   env <- get_env(env)
 
   if (is_empty_env(env)) {
