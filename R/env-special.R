@@ -339,6 +339,10 @@ env_format <- function(env) {
 #' env_name(env())
 #' env_label(env())
 env_name <- function(env) {
+  if (!is_environment(env)) {
+    abort("`env` must be an environment")
+  }
+
   if (is_reference(env, global_env())) {
     return("global")
   }

@@ -437,6 +437,10 @@ test_that("can concatenate `rlang_envs` lists", {
   expect_is(out, "rlang_envs")
 })
 
+test_that("env_name() requires an environment", {
+  expect_error(env_name("base"), "must be an environment")
+})
+
 
 #  Lifecycle ---------------------------------------------------------
 
