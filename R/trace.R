@@ -319,7 +319,7 @@ trace_trim_env <- function(x, to = NULL) {
   start <- last(which(is_top)) + 1
   end <- length(x$envs)
 
-  trace_subset(x, start:end)
+  trace_subset(x, seq2(start, end) %0% expr())
 }
 
 set_trace_skipped <- function(trace, id, n) {

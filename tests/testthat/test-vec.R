@@ -75,3 +75,18 @@ test_that("vector pokers fail if parameters are not integerish", {
 test_that("is_string() returns FALSE for `NA`", {
   expect_false(is_string(na_chr))
 })
+
+test_that("seq2() does empty punning on its arguments", {
+  expect_identical(seq2(int(), 1), int())
+  expect_identical(seq2(0, int()), int())
+})
+
+test_that("seq2() fails when arguments are length > 1", {
+  expect_error(seq2(1, 1:2), "must be length")
+  expect_error(seq2(1:2, 1), "must be length")
+})
+
+test_that("match2() returns empty vector on failed match", {
+  expect_identical(match2(1:3, 2), 2L)
+  expect_identical(match2(1:3, 10), int())
+})

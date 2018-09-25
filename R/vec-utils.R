@@ -106,6 +106,16 @@ modify <- function(.x, ...) {
 #'
 #' seq2_along(10, letters)
 seq2 <- function(from, to) {
+  n_from <- length(from)
+  n_to <- length(to)
+
+  if (n_from == 0 || n_to == 0) {
+    return(int())
+  }
+  if (n_from > 1 || n_to > 1) {
+    abort("`from` and `to` must be length zero or one")
+  }
+
   if (from > to) {
     int()
   } else {
@@ -116,6 +126,16 @@ seq2 <- function(from, to) {
 #' @export
 seq2_along <- function(from, x) {
   seq2(from, length(x))
+}
+
+# Better argument ordering and empty punning when no match
+match2 <- function(vec, elt) {
+  idx <- match(elt, vec)
+  if (identical(idx, na_int)) {
+    int()
+  } else {
+    idx
+  }
 }
 
 first <- function(x) {
