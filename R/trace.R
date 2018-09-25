@@ -192,6 +192,7 @@ format_collapsed <- function(what, n) {
   if (n > 0L) {
     call_text <- pluralise_n(n, "call", "calls")
     n_text <- sprintf(" with %d more %s", n, call_text)
+    n_text <- silver(n_text)
   } else {
     n_text <- ""
   }
@@ -574,7 +575,8 @@ trace_as_tree <- function(x, dir = getwd(), srcrefs = NULL) {
     refs <- map(x$calls, attr, "srcref")
     src_locs <- map_chr(refs, src_loc, dir = dir)
     have_src_loc <- nzchar(src_locs)
-    call_text[have_src_loc] <- paste0(call_text[have_src_loc], " ", src_locs[have_src_loc])
+    src_locs <- silver(src_locs[have_src_loc])
+    call_text[have_src_loc] <- paste0(call_text[have_src_loc], " ", src_locs)
   }
 
   tree <- data.frame(id = as.character(nodes), stringsAsFactors = FALSE)
