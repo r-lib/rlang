@@ -130,10 +130,31 @@ env$name
 # But only once, subsequent references yield the final value:
 env$name
 
-# You can unquote expressions. Note that quosures are not
-# supported, only raw expressions:
+# You can unquote expressions:
 expr <- quote(message("forced!"))
-env_bind_promise(env, name = !! expr)
+env_bind_promise(env, name = !!expr)
+env$name
+
+
+# By default the expressions are evaluated in the current
+# environment. For instance we can create a local binding and refer
+# to it, even though the variable is bound in a different
+# environment:
+who <- "mickey"
+env_bind_promise(env, name = paste(who, "mouse"))
+env$name
+
+# You can specify another evaluation environment with `.eval_env`:
+eval_env <- env(who = "minnie")
+env_bind_promise(env, name = paste(who, "mouse"), .eval_env = eval_env)
+env$name
+
+# Or by unquoting a quosure:
+quo <- local({
+  who <- "fievel"
+  quo(paste(who, "mouse"))
+})
+env_bind_promise(env, name = !!quo)
 env$name
 
 # You can create active bindings with env_bind_active(). Active

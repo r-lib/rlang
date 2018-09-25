@@ -165,13 +165,41 @@ env_bind_impl <- function(env, data, fn, bind = FALSE, binder = NULL) {
 #' # But only once, subsequent references yield the final value:
 #' env$name
 #'
-#' # You can unquote expressions. Note that quosures are not
-#' # supported, only raw expressions:
+#' # You can unquote expressions:
 #' expr <- quote(message("forced!"))
-#' env_bind_promise(env, name = !! expr)
+#' env_bind_promise(env, name = !!expr)
+#' env$name
+#'
+#'
+#' # By default the expressions are evaluated in the current
+#' # environment. For instance we can create a local binding and refer
+#' # to it, even though the variable is bound in a different
+#' # environment:
+#' who <- "mickey"
+#' env_bind_promise(env, name = paste(who, "mouse"))
+#' env$name
+#'
+#' # You can specify another evaluation environment with `.eval_env`:
+#' eval_env <- env(who = "minnie")
+#' env_bind_promise(env, name = paste(who, "mouse"), .eval_env = eval_env)
+#' env$name
+#'
+#' # Or by unquoting a quosure:
+#' quo <- local({
+#'   who <- "fievel"
+#'   quo(paste(who, "mouse"))
+#' })
+#' env_bind_promise(env, name = !!quo)
 #' env$name
 env_bind_promise <- function(.env, ..., .eval_env = caller_env()) {
   exprs <- exprs(...)
+
+  # Use eval_tidy() because there might be nested quosures
+  exprs <- map_if(exprs, is_quosure, function(quo) {
+    force(quo)
+    fn <- function() eval_tidy(quo)
+    call2(fn)
+  })
 
   binder <- function(env, nm, value) {
     do.call("delayedAssign", list(
@@ -182,7 +210,7 @@ env_bind_promise <- function(.env, ..., .eval_env = caller_env()) {
     ))
   }
 
-  env_bind_impl(.env, exprs(...), "env_bind_promise()", TRUE, binder)
+  env_bind_impl(.env, exprs, "env_bind_promise()", TRUE, binder)
 }
 #' @rdname env_bind
 #' @export
