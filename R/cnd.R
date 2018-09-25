@@ -625,7 +625,8 @@ print.rlang_error <- function(x,
     }
 
     simplify <- arg_match(simplify, c("collapse", "branch", "none"))
-    print(trace, ..., simplify = simplify)
+    trace_lines <- format(trace, ..., simplify = simplify)
+    cat_line(red(trace_lines))
   }
 
   if (!is_null(x$parent)) {
