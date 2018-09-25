@@ -294,6 +294,23 @@ test_that("env_bind_promise() supports nested quosures", {
   expect_identical(env$x, "quux hunoz")
 })
 
+test_that("env_bind_active() supports nested quosures", {
+  env <- env()
+
+  quo <- local({
+    lhs <- "quux"
+    rhs <- local({ rhs <- "hunoz"; quo(rhs) })
+    quo(paste(lhs, !!rhs))
+  })
+
+  env_bind_active(env, x = quo)
+  expect_identical(env$x, "quux hunoz")
+
+  quo <- quo_set_env(quo, env(lhs = "QUUX"))
+  env_bind_active(env, x = quo)
+  expect_identical(env$x, "QUUX hunoz")
+})
+
 
 # Lifecycle ----------------------------------------------------------
 

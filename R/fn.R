@@ -391,8 +391,12 @@ as_function <- function(x, env = caller_env()) {
       if (length(x) > 2) {
         abort("Can't convert a two-sided formula to a function")
       }
-      args <- list(... = missing_arg(), .x = quote(..1), .y = quote(..2), . = quote(..1))
-      new_function(args, f_rhs(x), f_env(x))
+      if (is_quosure(x)) {
+        eval(expr(function(...) eval_tidy(!!x)))
+      } else {
+        args <- list(... = missing_arg(), .x = quote(..1), .y = quote(..2), . = quote(..1))
+        new_function(args, f_rhs(x), f_env(x))
+      }
     },
     string = {
       get(x, envir = env, mode = "function")
