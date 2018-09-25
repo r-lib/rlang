@@ -130,16 +130,16 @@ env_bind_impl <- function(env, data, fn, bind = FALSE, binder = NULL) {
 
   if (is_null(binder)) {
     binder <- function(env, nm, value) {
-      if (bind && overwritten[[i]] && is_missing(data[[i]])) {
-        base::rm(list = nm, envir = env)
-      } else {
-        base::assign(nm, data[[nm]], envir = env)
-      }
+      base::assign(nm, data[[nm]], envir = env)
     }
   }
 
   for (i in seq_along(data)) {
-    binder(env_, nms[[i]], data[[i]])
+    if (bind && overwritten[[i]] && is_missing(data[[i]])) {
+      base::rm(list = nms[[i]], envir = env)
+    } else {
+      binder(env_, nms[[i]], data[[i]])
+    }
   }
 
   if (bind) {
@@ -210,12 +210,11 @@ env_bind_promise <- function(.env, ..., .eval_env = caller_env()) {
 #' env$foo
 #' env$foo
 env_bind_active <- function(.env, ...) {
-  fns <- map(list2(...), as_function)
+  fns <- map_if(list3(...), negate(is_missing), as_function)
 
-  # makeActiveBinding() fails if there is already a regular binding
   existing <- env_names(.env)
-
   binder <- function(env, nm, value) {
+    # makeActiveBinding() fails if there is already a regular binding
     if (nm %in% existing) {
       env_unbind(env, nm)
     }

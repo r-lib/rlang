@@ -245,6 +245,13 @@ test_that("can remove bindings by supplying empty arguments", {
   env <- env(foo = "foo", bar = "bar")
   env_bind(env, foo = , bar = )
   expect_identical(env_names(env), chr())
+
+  env <- env(foo = "foo", bar = "bar")
+  env_bind_active(env, foo = )
+  expect_identical(env_names(env), "bar")
+
+  env_bind_promise(env, bar = )
+  expect_identical(env_names(env), chr())
 })
 
 
