@@ -85,3 +85,8 @@ test_that("seq2() fails when arguments are length > 1", {
   expect_error(seq2(1, 1:2), "must be length")
   expect_error(seq2(1:2, 1), "must be length")
 })
+
+test_that("match2() returns empty vector on failed match", {
+  expect_identical(match2(1:3, 2), 2L)
+  expect_identical(match2(1:3, 10), int())
+})

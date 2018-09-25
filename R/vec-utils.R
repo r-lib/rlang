@@ -128,6 +128,16 @@ seq2_along <- function(from, x) {
   seq2(from, length(x))
 }
 
+# Better argument ordering and empty punning when no match
+match2 <- function(vec, elt) {
+  idx <- match(elt, vec)
+  if (identical(idx, na_int)) {
+    int()
+  } else {
+    idx
+  }
+}
+
 first <- function(x) {
   .subset2(x, 1L)
 }
