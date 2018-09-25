@@ -783,6 +783,15 @@ names_tags <- function(nms) {
 }
 
 #' @export
+c.rlang_envs <- function(...) {
+  new_environments(NextMethod())
+}
+#' @export
+`[.rlang_envs` <- function(x, i) {
+  new_environments(NextMethod())
+}
+
+#' @export
 str.rlang_envs <- function(object, ...) {
   i <- 0
   for (env in object) {
