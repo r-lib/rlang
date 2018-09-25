@@ -106,6 +106,13 @@ modify <- function(.x, ...) {
 #'
 #' seq2_along(10, letters)
 seq2 <- function(from, to) {
+  if (length(from) != 1) {
+    abort("`from` must be length one")
+  }
+  if (length(to) != 1) {
+    abort("`to` must be length one")
+  }
+
   if (from > to) {
     int()
   } else {
