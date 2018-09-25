@@ -617,9 +617,9 @@ print.rlang_error <- function(x,
       calls <- trace$calls
       if (length(calls) && is_call(calls[[1]], c("tryCatch", "with_handlers"))) {
         parent <- trace$parents[[1]]
-        next_sibling <- which(trace$parents[-1] == parent)
-        if (length(next_sibling)) {
-          trace <- trace_subset(trace, -seq2(1L, next_sibling))
+        next_sibling_idx <- seq2(1L, match2(trace$parents[-1], parent))
+        if (length(next_sibling_idx)) {
+          trace <- trace_subset(trace, -next_sibling_idx)
         }
       }
     }
