@@ -216,6 +216,11 @@ test_that("env_parents() always stops at the empty env", {
   expect_identical(env_parents(pkg_env("base")), new_environments(list(empty_env())))
 })
 
+test_that("env_parents() stops at the sentinel if supplied", {
+  expect_reference(last(env_parents(pkg_env("utils"))), empty_env())
+  expect_reference(last(env_parents(pkg_env("utils"), base_env())), base_env())
+})
+
 test_that("env_parents() returns a named list", {
   env <- env(structure(env(base_env()), name = "foobar"))
   expect_identical(names(env_parents(env)), c("foobar", "base", "empty"))

@@ -347,18 +347,18 @@ env_parents <- function(env = caller_env(), last = global_env()) {
 
   while (TRUE) {
     out[[i]] <- parent
-    i <- i + 1L
 
     if (is_reference(parent, last) || is_empty_env(parent)) {
       break
     }
 
+    i <- i + 1L
     env <- parent
     parent <- env_parent(env)
   }
 
   if (i < n) {
-    out <- out[seq_len(i - 1L)]
+    out <- out[seq_len(i)]
   }
 
   new_environments(out)
