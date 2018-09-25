@@ -193,13 +193,7 @@ env_bind_impl <- function(env, data, fn, bind = FALSE, binder = NULL) {
 #' env$name
 env_bind_promise <- function(.env, ..., .eval_env = caller_env()) {
   exprs <- exprs(...)
-
-  # Use eval_tidy() because there might be nested quosures
-  exprs <- map_if(exprs, is_quosure, function(quo) {
-    force(quo)
-    fn <- function() eval_tidy(quo)
-    call2(fn)
-  })
+  exprs <- map_if(exprs, is_quosure, function(quo) call2(as_function(quo)))
 
   binder <- function(env, nm, value) {
     do.call("delayedAssign", list(
