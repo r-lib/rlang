@@ -32,6 +32,14 @@
   .Call(rlang_replace_na, x, y)
 }
 
+`%0%` <- function(x, y) {
+  if (length(x)) {
+    x
+  } else {
+    y
+  }
+}
+
 #' Infix attribute accessor
 #'
 #' @param x Object

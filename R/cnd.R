@@ -398,11 +398,7 @@ trace_trim_context <- function(trace, frame = caller_env()) {
   }
 
   to_trim <- seq2(idx, trace_length(trace))
-  if (length(to_trim)) {
-    trace <- trace_subset(trace, -to_trim)
-  }
-
-  trace
+  trace_subset(trace, -to_trim %0% expr())
 }
 # FIXME: Find more robust strategy of stripping catching context
 find_capture_context <- function(n = 3L) {
@@ -618,9 +614,7 @@ print.rlang_error <- function(x,
       if (length(calls) && is_call(calls[[1]], c("tryCatch", "with_handlers"))) {
         parent <- trace$parents[[1]]
         next_sibling_idx <- seq2(1L, match2(trace$parents[-1], parent))
-        if (length(next_sibling_idx)) {
-          trace <- trace_subset(trace, -next_sibling_idx)
-        }
+        trace <- trace_subset(trace, -next_sibling_idx %0% expr())
       }
     }
 
