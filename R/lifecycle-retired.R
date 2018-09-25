@@ -1258,7 +1258,25 @@ env_bind_fns <- function(.env, ...) {
 #' These functions are soft-deprecated as of rlang 0.3.0. They are
 #' replaced by [is_attached()], ...
 #'
+#' @param nm The name of an environment attached to the search
+#'   path. Call [base::search()] to see what is currently on the path.
+#'
 #' @keywords internal
+#' @export
+scoped_env <- function(nm) {
+  signal_soft_deprecated(paste_line(
+    "`scoped_env()` is soft-deprecated as of rlang 0.3.0.",
+    "Please use `search_env()` instead."
+  ))
+  if (identical(nm, "NULL")) {
+    return(empty_env())
+  }
+  if (!is_scoped(nm)) {
+    stop(paste0(nm, " is not in scope"), call. = FALSE)
+  }
+  as.environment(nm)
+}
+#' @rdname scoped_env
 #' @export
 is_scoped <- function(nm) {
   signal_soft_deprecated(paste_line(

@@ -47,8 +47,10 @@
 #' These functions are experimental and may not belong to the rlang
 #' package. Expect API changes.
 #'
-#' @param nm The name of an environment attached to the search
-#'   path. Call [base::search()] to see what is currently on the path.
+#' @param name The name of an environment attached to the search
+#'   path. Call [base::search()] to get the names of environments
+#'   currently attached to the search path. Note that the search name
+#'   of a package environment is prefixed with `"package:"`.
 #'
 #' @keywords internal
 #' @export
@@ -70,19 +72,22 @@
 #' # Packages appear in the search path with a special name. Use
 #' # pkg_env_name() to create that name:
 #' pkg_env_name("rlang")
-#' scoped_env(pkg_env_name("rlang"))
+#' search_env(pkg_env_name("rlang"))
 #'
 #' # Alternatively, get the scoped environment of a package with
 #' # pkg_env():
 #' pkg_env("utils")
-scoped_env <- function(nm) {
-  if (identical(nm, "NULL")) {
-    return(empty_env())
+search_env <- function(name) {
+  if (!is_string(name)) {
+    abort("`name` must be a string")
   }
-  if (!is_scoped(nm)) {
-    stop(paste0(nm, " is not in scope"), call. = FALSE)
+  if (!is_attached(name)) {
+    abort(paste_line(
+      sprintf("`%s` is not attached.", name),
+      "Do you need to prefix it with \"package:\"?"
+    ))
   }
-  as.environment(nm)
+  as.environment(name)
 }
 #' @rdname scoped_env
 #' @param pkg The name of a package.

@@ -167,6 +167,7 @@ upcase1 <- function(x) {
 #' * `env_bind_fns()` => [env_bind_active()]
 #'
 #' * `is_scoped()` => [is_attached()]
+#' * `scoped_env()` => [search_env()]
 #'
 #'
 #' **Soft-deprecated as of rlang 0.2.0:**
