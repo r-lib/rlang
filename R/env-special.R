@@ -55,15 +55,17 @@
 #' @keywords internal
 #' @export
 #' @examples
-#' # List the names of scoped environments:
-#' nms <- scoped_names()
-#' nms
+#' # List the search names of environments attached to the search path:
+#' search()
 #'
-#' # The global environment is always the first in the chain:
-#' scoped_env(nms[[1]])
+#' # Get the corresponding environments:
+#' search_envs()
 #'
-#' # And the scoped environment of the base package is always the last:
-#' scoped_env(nms[[length(nms)]])
+#' # The global environment and the base package are always first and
+#' # last in the chain, respectively:
+#' envs <- search_envs()
+#' envs[[1]]
+#' envs[[length(envs)]]
 #'
 #' # These two environments have their own shortcuts:
 #' global_env()
@@ -77,6 +79,11 @@
 #' # Alternatively, get the scoped environment of a package with
 #' # pkg_env():
 #' pkg_env("utils")
+search_envs <- function() {
+  env_parents(env(.GlobalEnv), last = base_env())
+}
+#' @rdname search_envs
+#' @export
 search_env <- function(name) {
   if (!is_string(name)) {
     abort("`name` must be a string")
@@ -89,31 +96,18 @@ search_env <- function(name) {
   }
   as.environment(name)
 }
-#' @rdname scoped_env
+#' @rdname search_envs
 #' @param pkg The name of a package.
 #' @export
 pkg_env <- function(pkg) {
-  pkg_name <- pkg_env_name(pkg)
-  scoped_env(pkg_name)
+  search_env(pkg_env_name(pkg))
 }
-#' @rdname scoped_env
+#' @rdname search_envs
 #' @export
 pkg_env_name <- function(pkg) {
   paste0("package:", pkg)
 }
-
-#' @rdname scoped_env
-#' @export
-scoped_names <- function() {
-  c(search(), "NULL")
-}
-#' @rdname scoped_env
-#' @export
-scoped_envs <- function() {
-  envs <- c(.GlobalEnv, env_parents(.GlobalEnv))
-  set_names(envs, scoped_names())
-}
-#' @rdname scoped_env
+#' @rdname search_envs
 #' @rdname x An environment or a search name.
 #' @export
 is_attached <- function(x) {
@@ -135,18 +129,18 @@ is_attached <- function(x) {
   FALSE
 }
 
-#' @rdname scoped_env
+#' @rdname search_envs
 #' @export
 base_env <- baseenv
-#' @rdname scoped_env
+#' @rdname search_envs
 #' @export
 global_env <- globalenv
 
 #' Get the empty environment
 #'
 #' The empty environment is the only one that does not have a parent.
-#' It is always used as the tail of a scope chain such as the search
-#' path (see [scoped_names()]).
+#' It is always used as the tail of an environment chain such as the
+#' search path (see [search_envs()]).
 #'
 #' @export
 #' @examples
@@ -323,7 +317,7 @@ env_format <- function(env) {
 #' * "namespace:pkg" if `env` is the namespace of the package "pkg".
 #'
 #' * The `name` attribute of `env` if it exists. This is how the
-#'   [package environments][scoped_env] and the [imports
+#'   [package environments][search_envs] and the [imports
 #'   environments][ns_imports_env] store their names. The name of package
 #'   environments is typically "package:pkg".
 #'

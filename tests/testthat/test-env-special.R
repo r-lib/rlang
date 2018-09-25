@@ -13,18 +13,18 @@ test_that("ns_env_name() returns namespace name", {
   expect_identical(ns_env_name(rlang::get_env), "rlang")
 })
 
-test_that("scoped_envs() includes global and empty envs", {
-  envs <- scoped_envs()
+test_that("search_envs() includes the global and base env", {
+  envs <- search_envs()
   expect_identical(envs[[1]], global_env())
-  expect_identical(envs[[length(envs)]], empty_env())
+  expect_identical(envs[[length(envs)]], base_env())
 })
 
-test_that("scoped_envs() returns named environments", {
-  expect_identical(names(scoped_envs()), scoped_names())
+test_that("search_envs() returns named environments", {
+  expect_identical(names(search_envs()), search())
 })
 
-test_that("scoped_env() deals with empty environment", {
-  expect_identical(scoped_env("NULL"), empty_env())
+test_that("search_envs() returns an rlang_envs object", {
+  expect_is(search_envs(), "rlang_envs")
 })
 
 test_that("is_namespace() recognises namespaces", {

@@ -1288,6 +1288,25 @@ is_scoped <- function(nm) {
   }
   nm %in% scoped_names()
 }
+#' @rdname scoped_env
+#' @export
+scoped_envs <- function() {
+  signal_soft_deprecated(paste_line(
+    "`scoped_envs()` is soft-deprecated as of rlang 0.3.0.",
+    "Please use `search_envs()` instead."
+  ))
+  envs <- c(.GlobalEnv, env_parents(.GlobalEnv))
+  set_names(envs, scoped_names())
+}
+#' @rdname scoped_env
+#' @export
+scoped_names <- function() {
+  signal_soft_deprecated(paste_line(
+    "`scoped_names()` is soft-deprecated as of rlang 0.3.0.",
+    "Please use `base::search()` instead."
+  ))
+  c(search(), "NULL")
+}
 
 
 #  Vectors  ----------------------------------------------------------

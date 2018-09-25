@@ -732,8 +732,9 @@ env_print <- function(env = caller_env()) {
 
 new_environments <- function(envs, names) {
   stopifnot(is_list(envs))
-  structure(envs,
-    names = map_chr(envs, env_name),
+  structure(
+    envs,
+    names = map_chr(unname(envs), env_name),
     class = "rlang_envs"
   )
 }
