@@ -172,3 +172,19 @@ test_that("primitive predicates work", {
   expect_false(is_primitive_eager(`$`))
   expect_false(is_primitive_lazy(`c`))
 })
+
+test_that("quosures converted to functions ignore their arguments", {
+  fn <- as_function(quo("foo"))
+  expect_no_error(expect_identical(fn(NULL), "foo"))
+})
+
+test_that("as_function() supports nested quosures", {
+  quo <- local({
+    lhs <- "quux"
+    rhs <- local({ rhs <- "hunoz"; quo(rhs) })
+    quo(paste(lhs, !!rhs))
+  })
+
+  fn <- as_function(quo)
+  expect_identical(fn(), "quux hunoz")
+})

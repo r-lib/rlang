@@ -1,6 +1,11 @@
 
 # rlang 0.2.2.9000
 
+* Quosures converted to functions with `as_function()` now support
+  nested quosures.
+
+* `env_bind_promise()` and `env_bind_active()` now support quosures.
+
 * `env_bind_exprs()` and `env_bind_fns()` are soft-deprecated and
   renamed to `env_bind_promise()` and `env_bind_active()` for clarity
   and consistency.

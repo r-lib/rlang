@@ -254,6 +254,63 @@ test_that("can remove bindings by supplying empty arguments", {
   expect_identical(env_names(env), chr())
 })
 
+test_that("env_bind_promise() supports quosures", {
+  env <- env()
+  foo <- "foo"
+
+  quo <- local({
+    foo <- "quux"
+    quo(paste(foo, "bar"))
+  })
+
+  env_bind_promise(env, x = !!quo)
+  expect_identical(env$x, "quux bar")
+
+  foo <- "FOO"
+  expect_identical(env$x, "quux bar")
+})
+
+test_that("env_bind_active() supports quosures", {
+  env <- env()
+  foo <- "foo"
+
+  env_bind_active(env, x = quo(paste(foo, "bar")))
+  expect_identical(env$x, "foo bar")
+
+  foo <- "FOO"
+  expect_identical(env$x, "FOO bar")
+})
+
+test_that("env_bind_promise() supports nested quosures", {
+  env <- env()
+
+  quo <- local({
+    lhs <- "quux"
+    rhs <- local({ rhs <- "hunoz"; quo(rhs) })
+    quo(paste(lhs, !!rhs))
+  })
+
+  env_bind_promise(env, x = !!quo)
+  expect_identical(env$x, "quux hunoz")
+})
+
+test_that("env_bind_active() supports nested quosures", {
+  env <- env()
+
+  quo <- local({
+    lhs <- "quux"
+    rhs <- local({ rhs <- "hunoz"; quo(rhs) })
+    quo(paste(lhs, !!rhs))
+  })
+
+  env_bind_active(env, x = quo)
+  expect_identical(env$x, "quux hunoz")
+
+  quo <- quo_set_env(quo, env(lhs = "QUUX"))
+  env_bind_active(env, x = quo)
+  expect_identical(env$x, "QUUX hunoz")
+})
+
 
 # Lifecycle ----------------------------------------------------------
 
