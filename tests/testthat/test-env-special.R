@@ -50,3 +50,11 @@ test_that("env_label() returns memory address for anonymous envs", {
   expect_identical(env_label(env), sexp_address(env))
 })
 
+test_that("is_attached() detects environments on the search path", {
+  expect_false(is_attached("utils"))
+  expect_true(is_attached("package:utils"))
+
+  expect_true(is_attached(base_env()))
+  expect_true(is_attached(global_env()))
+  expect_false(is_attached(ns_env("base")))
+})

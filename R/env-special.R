@@ -109,12 +109,25 @@ scoped_envs <- function() {
   set_names(envs, scoped_names())
 }
 #' @rdname scoped_env
+#' @rdname x An environment or a search name.
 #' @export
-is_scoped <- function(nm) {
-  if (!is_scalar_character(nm)) {
-    stop("`nm` must be a string", call. = FALSE)
+is_attached <- function(x) {
+  if (is_string(x)) {
+    return(x %in% search())
   }
-  nm %in% scoped_names()
+  if (!is_environment(x)) {
+    abort("`x` must be an environment or a name")
+  }
+
+  env <- global_env()
+  while (!is_reference(env, empty_env())) {
+    if (is_reference(x, env)) {
+      return(TRUE)
+    }
+    env <- env_parent(env)
+  }
+
+  FALSE
 }
 
 #' @rdname scoped_env

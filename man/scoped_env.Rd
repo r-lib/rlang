@@ -6,7 +6,7 @@
 \alias{pkg_env_name}
 \alias{scoped_names}
 \alias{scoped_envs}
-\alias{is_scoped}
+\alias{is_attached}
 \alias{base_env}
 \alias{global_env}
 \title{Scoped environments}
@@ -21,7 +21,7 @@ scoped_names()
 
 scoped_envs()
 
-is_scoped(nm)
+is_attached(x)
 
 base_env()
 

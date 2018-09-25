@@ -111,6 +111,7 @@ changes.
 separately before calling these functions.
 \item \code{env_bind_exprs()} => \code{\link[=env_bind_promise]{env_bind_promise()}}
 \item \code{env_bind_fns()} => \code{\link[=env_bind_active]{env_bind_active()}}
+\item \code{is_scoped()} => \code{\link[=is_attached]{is_attached()}}
 }
 
 \strong{Soft-deprecated as of rlang 0.2.0:}

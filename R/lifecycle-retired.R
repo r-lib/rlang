@@ -1249,6 +1249,27 @@ env_bind_fns <- function(.env, ...) {
   env_bind_active(.env, ...)
 }
 
+#' Retired `scoped` functions
+#'
+#' @description
+#'
+#' \Sexpr[results=rd, stage=render]{rlang:::lifecycle("soft-deprecated")}
+#'
+#' These functions are soft-deprecated as of rlang 0.3.0. They are
+#' replaced by [is_attached()], ...
+#'
+#' @keywords internal
+#' @export
+is_scoped <- function(nm) {
+  signal_soft_deprecated(paste_line(
+    "`is_scoped()` is soft-deprecated as of rlang 0.3.0.",
+    "Please use `is_attached()` instead."
+  ))
+  if (!is_scalar_character(nm)) {
+    stop("`nm` must be a string", call. = FALSE)
+  }
+  nm %in% scoped_names()
+}
 
 
 #  Vectors  ----------------------------------------------------------
