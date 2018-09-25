@@ -1268,6 +1268,8 @@ scoped_env <- function(nm) {
     "`scoped_env()` is soft-deprecated as of rlang 0.3.0.",
     "Please use `search_env()` instead."
   ))
+  scoped_options(lifecycle_disable_verbose_retirement = TRUE)
+
   if (identical(nm, "NULL")) {
     return(empty_env())
   }
@@ -1283,6 +1285,8 @@ is_scoped <- function(nm) {
     "`is_scoped()` is soft-deprecated as of rlang 0.3.0.",
     "Please use `is_attached()` instead."
   ))
+  scoped_options(lifecycle_disable_verbose_retirement = TRUE)
+
   if (!is_scalar_character(nm)) {
     stop("`nm` must be a string", call. = FALSE)
   }
@@ -1295,7 +1299,9 @@ scoped_envs <- function() {
     "`scoped_envs()` is soft-deprecated as of rlang 0.3.0.",
     "Please use `search_envs()` instead."
   ))
-  envs <- c(.GlobalEnv, env_parents(.GlobalEnv))
+  scoped_options(lifecycle_disable_verbose_retirement = TRUE)
+
+  envs <- c(list(.GlobalEnv), env_parents(.GlobalEnv))
   set_names(envs, scoped_names())
 }
 #' @rdname scoped_env
