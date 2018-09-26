@@ -1,6 +1,6 @@
 #include "rlang.h"
 
-static sexp* eval_with_x(sexp* call, sexp* x);
+sexp* eval_with_x(sexp* call, sexp* x);
 
 
 static sexp* is_installed_call = NULL;

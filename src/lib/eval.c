@@ -12,7 +12,7 @@ static sexp* shared_xyz_env;
 // chance of recursing into the C library. It should only be used to
 // evaluate pure R calls or functions from other packages, such as the
 // base package.
-static sexp* eval_with_x(sexp* call, sexp* x) {
+sexp* eval_with_x(sexp* call, sexp* x) {
   r_env_poke(shared_x_env, r_x_sym, x);
 
   sexp* out = KEEP(r_eval(call, shared_x_env));
@@ -24,7 +24,7 @@ static sexp* eval_with_x(sexp* call, sexp* x) {
   return out;
 }
 
-static sexp* eval_with_xy(sexp* call, sexp* x, sexp* y) {
+sexp* eval_with_xy(sexp* call, sexp* x, sexp* y) {
   r_env_poke(shared_xy_env, r_x_sym, x);
   r_env_poke(shared_xy_env, r_y_sym, y);
 
@@ -38,7 +38,7 @@ static sexp* eval_with_xy(sexp* call, sexp* x, sexp* y) {
   return out;
 }
 
-static sexp* eval_with_xyz(sexp* call, sexp* x, sexp* y, sexp* z) {
+sexp* eval_with_xyz(sexp* call, sexp* x, sexp* y, sexp* z) {
   r_env_poke(shared_xyz_env, r_x_sym, x);
   r_env_poke(shared_xyz_env, r_y_sym, y);
   r_env_poke(shared_xyz_env, r_z_sym, z);

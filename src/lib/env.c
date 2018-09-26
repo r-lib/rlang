@@ -1,8 +1,8 @@
 #include "rlang.h"
 
-static sexp* eval_with_x(sexp* call, sexp* x);
-static sexp* eval_with_xy(sexp* call, sexp* x, sexp* y);
-static sexp* eval_with_xyz(sexp* call, sexp* x, sexp* y, sexp* z);
+sexp* eval_with_x(sexp* call, sexp* x);
+sexp* eval_with_xy(sexp* call, sexp* x, sexp* y);
+sexp* eval_with_xyz(sexp* call, sexp* x, sexp* y, sexp* z);
 
 
 sexp* r_ns_env(const char* pkg) {
