@@ -72,7 +72,7 @@ void signal_uqs_soft_deprecation() {
 }
 
 void signal_namespaced_uq_deprecation() {
-  r_warn_deprecated_once("namespaced rlang::UQ()",
+  r_warn_deprecated("namespaced rlang::UQ()",
     "Prefixing `UQ()` with the rlang namespace is deprecated as of rlang 0.3.0.\n"
     "Please use the non-prefixed form or `!!` instead.\n"
     "\n"
@@ -87,7 +87,7 @@ void signal_namespaced_uq_deprecation() {
   );
 }
 void signal_namespaced_uqs_deprecation() {
-  r_warn_deprecated_once("namespaced rlang::UQS()",
+  r_warn_deprecated("namespaced rlang::UQS()",
     "Prefixing `UQS()` with the rlang namespace is deprecated as of rlang 0.3.0.\n"
     "Please use the non-prefixed form or `!!!` instead.\n"
     "\n"

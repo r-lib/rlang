@@ -156,7 +156,7 @@ static bool is_data_mask(sexp* env) {
 static sexp* data_pronoun_sym = NULL;
 
 static void warn_env_as_mask_once() {
-  r_warn_deprecated_once("environment passed to rlang::as_data_mask()",
+  r_warn_deprecated("environment passed to rlang::as_data_mask()",
     "Passing an environment as data mask is deprecated.\n"
     "Please use `new_data_mask()` to transform your environment to a mask.\n"
     "\n"

@@ -40,7 +40,7 @@ sexp* rlang_warn_deprecated_once(sexp* id, sexp* msg) {
       r_length(msg) != 1) {
     r_abort("`id` and `msg` must be scalar strings");
   }
-  r_warn_deprecated_once(r_chr_get_c_string(id, 0), r_chr_get_c_string(msg, 0));
+  r_warn_deprecated(r_chr_get_c_string(id, 0), r_chr_get_c_string(msg, 0));
   return r_null;
 }
 
