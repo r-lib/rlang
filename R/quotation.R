@@ -219,7 +219,8 @@ exprs <- function(...,
     frame_env = environment(),
     named = .named,
     ignore_empty = .ignore_empty,
-    unquote_names = .unquote_names
+    unquote_names = .unquote_names,
+    check_assign = FALSE
   )
 }
 #' @rdname quotation
@@ -227,7 +228,8 @@ exprs <- function(...,
 enexprs <- function(...,
                    .named = FALSE,
                    .ignore_empty = c("trailing", "none", "all"),
-                   .unquote_names = TRUE) {
+                   .unquote_names = TRUE,
+                   .check_assign = TRUE) {
   endots(
     call = sys.call(),
     frame_env = parent.frame(),
@@ -235,7 +237,8 @@ enexprs <- function(...,
     capture_dots = rlang_exprs_interp,
     named = .named,
     ignore_empty = .ignore_empty,
-    unquote_names = .unquote_names
+    unquote_names = .unquote_names,
+    check_assign = .check_assign
   )
 }
 
@@ -249,7 +252,8 @@ ensym <- function(arg) {
 ensyms <- function(...,
                    .named = FALSE,
                    .ignore_empty = c("trailing", "none", "all"),
-                   .unquote_names = TRUE) {
+                   .unquote_names = TRUE,
+                   .check_assign = TRUE) {
   exprs <- endots(
     call = sys.call(),
     frame_env = parent.frame(),
@@ -257,7 +261,8 @@ ensyms <- function(...,
     capture_dots = rlang_exprs_interp,
     named = .named,
     ignore_empty = .ignore_empty,
-    unquote_names = .unquote_names
+    unquote_names = .unquote_names,
+    check_assign = .check_assign
   )
   if (!every(exprs, function(x) is_symbol(x) || is_string(x))) {
     abort("Must supply symbols or strings as argument")
@@ -287,7 +292,8 @@ quos <- function(...,
     frame_env = environment(),
     named = .named,
     ignore_empty = .ignore_empty,
-    unquote_names = .unquote_names
+    unquote_names = .unquote_names,
+    check_assign = FALSE
   )
 }
 #' @rdname quotation
@@ -295,7 +301,8 @@ quos <- function(...,
 enquos <- function(...,
                    .named = FALSE,
                    .ignore_empty = c("trailing", "none", "all"),
-                   .unquote_names = TRUE) {
+                   .unquote_names = TRUE,
+                   .check_assign = TRUE) {
   quos <- endots(
     call = sys.call(),
     frame_env = parent.frame(),
@@ -303,11 +310,14 @@ enquos <- function(...,
     capture_dots = rlang_quos_interp,
     named = .named,
     ignore_empty = .ignore_empty,
-    unquote_names = .unquote_names
+    unquote_names = .unquote_names,
+    check_assign = .check_assign
   )
   structure(quos, class = "quosures")
 }
 
+
+capture_args <- c(".named", ".ignore_empty", ".unquote_names", ".check_assign")
 
 endots <- function(call,
                    frame_env,
@@ -315,11 +325,12 @@ endots <- function(call,
                    capture_dots,
                    named,
                    ignore_empty,
-                   unquote_names) {
+                   unquote_names,
+                   check_assign) {
   syms <- as.list(node_cdr(call))
 
   if (!is_null(names(syms))) {
-    is_arg <- names(syms) %in% c(".named", ".ignore_empty", ".unquote_names")
+    is_arg <- names(syms) %in% capture_args
     syms <- syms[!is_arg]
   }
 
@@ -333,7 +344,13 @@ endots <- function(call,
     }
     if (identical(sym, dots_sym)) {
       splice_dots <<- TRUE
-      splice(dot_call(capture_dots, frame_env, named, ignore_empty, unquote_names))
+      splice(dot_call(capture_dots,
+        frame_env = frame_env,
+        named = named,
+        ignore_empty = ignore_empty,
+        unquote_names = unquote_names,
+        check_assign = check_assign
+      ))
     } else {
       dot_call(capture_arg, sym, frame_env)
     }

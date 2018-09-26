@@ -105,7 +105,8 @@ list2 <- function(...) {
     named = FALSE,
     ignore_empty = "trailing",
     preserve_empty = FALSE,
-    unquote_names = TRUE
+    unquote_names = TRUE,
+    check_assign = TRUE
   )
 }
 #' @rdname vector-construction
@@ -120,7 +121,8 @@ list3 <- function(...) {
     named = FALSE,
     ignore_empty = "trailing",
     preserve_empty = TRUE,
-    unquote_names = TRUE
+    unquote_names = TRUE,
+    check_assign = TRUE
   )
 }
 
