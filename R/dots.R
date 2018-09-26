@@ -107,7 +107,13 @@
 dots_list <- function(...,
                       .ignore_empty = c("trailing", "none", "all"),
                       .preserve_empty = FALSE) {
-  dots <- .Call(rlang_dots_list, environment(), FALSE, .ignore_empty, .preserve_empty, TRUE)
+  dots <- .Call(rlang_dots_list,
+    frame_env = environment(),
+    named = FALSE,
+    ignore_empty = .ignore_empty,
+    preserve_empty = .preserve_empty,
+    unquote_names = TRUE
+  )
   names(dots) <- names2(dots)
   dots
 }
@@ -116,7 +122,13 @@ dots_split <- function(...,
                        .n_unnamed = NULL,
                        .ignore_empty = c("trailing", "none", "all"),
                        .preserve_empty = FALSE) {
-  dots <- .Call(rlang_dots_list, environment(), FALSE, .ignore_empty, .preserve_empty, TRUE)
+  dots <- .Call(rlang_dots_list,
+    frame_env = environment(),
+    named = FALSE,
+    ignore_empty = .ignore_empty,
+    preserve_empty = .preserve_empty,
+    unquote_names = TRUE
+  )
 
   if (is_null(names(dots))) {
     if (length(dots)) {
@@ -238,7 +250,13 @@ is_spliced_bare <- function(x) {
 dots_splice <- function(...,
                         .ignore_empty = c("trailing", "none", "all"),
                         .preserve_empty = FALSE) {
-  dots <- .Call(rlang_dots_flat_list, environment(), FALSE, .ignore_empty, .preserve_empty, TRUE)
+  dots <- .Call(rlang_dots_flat_list,
+    frame_env = environment(),
+    named = FALSE,
+    ignore_empty = .ignore_empty,
+    preserve_empty = .preserve_empty,
+    unquote_names = TRUE
+  )
   names(dots) <- names2(dots)
   dots
 }
@@ -265,7 +283,13 @@ dots_splice <- function(...,
 dots_values <- function(...,
                         .ignore_empty = c("trailing", "none", "all"),
                         .preserve_empty = FALSE) {
-  .Call(rlang_dots_values, environment(), FALSE, .ignore_empty, .preserve_empty, TRUE)
+  .Call(rlang_dots_values,
+    frame_env = environment(),
+    named = FALSE,
+    ignore_empty = .ignore_empty,
+    preserve_empty = .preserve_empty,
+    unquote_names = TRUE
+  )
 }
 
 #' Capture definition objects
@@ -281,7 +305,12 @@ dots_values <- function(...,
 dots_definitions <- function(...,
                              .named = FALSE,
                              .ignore_empty = c("trailing", "none", "all")) {
-  dots <- .Call(rlang_quos_interp, environment(), .named, .ignore_empty, FALSE)
+  dots <- .Call(rlang_quos_interp,
+    frame_env = environment(),
+    named = .named,
+    ignore_empty = .ignore_empty,
+    unquote_names = FALSE
+  )
 
   is_def <- map_lgl(dots, function(dot) is_definition(quo_get_expr(dot)))
   defs <- map(dots[is_def], as_definition)

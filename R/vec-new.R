@@ -100,7 +100,13 @@ bytes <- function(...) {
 #' @rdname tidy-dots
 #' @export
 list2 <- function(...) {
-  .Call(rlang_dots_list, environment(), FALSE, "trailing", FALSE, TRUE)
+  .Call(rlang_dots_list,
+    frame_env = environment(),
+    named = FALSE,
+    ignore_empty = "trailing",
+    preserve_empty = FALSE,
+    unquote_names = TRUE
+  )
 }
 #' @rdname vector-construction
 #' @usage NULL
@@ -109,7 +115,13 @@ ll <- list2
 
 # Preserves empty arguments
 list3 <- function(...) {
-  .Call(rlang_dots_list, environment(), FALSE, "trailing", TRUE, TRUE)
+  .Call(rlang_dots_list,
+    frame_env = environment(),
+    named = FALSE,
+    ignore_empty = "trailing",
+    preserve_empty = TRUE,
+    unquote_names = TRUE
+  )
 }
 
 
