@@ -165,3 +165,14 @@ test_that("forced symbolic objects are not evaluated", {
   x <- unname(exprs(stop("tilt")))
   expect_identical_(lapply(x, list2), list(x))
 })
+
+test_that("list2() and dots_list() warn with bare `<-` arguments", {
+  expect_warning(list2(a <- 1), "`<-` as argument")
+  expect_warning(dots_list(a <- 1), "`<-` as argument")
+
+  expect_no_warning(list2((a <- 1)))
+  expect_no_warning(dots_list((a <- 1)))
+
+  expect_no_warning(exprs(a <- 1))
+  expect_no_warning(quos(a <- 1))
+})
