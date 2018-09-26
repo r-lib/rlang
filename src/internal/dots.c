@@ -213,7 +213,7 @@ static sexp* dots_unquote(sexp* dots, struct dots_capture_info* capture_info) {
       FREE(1);
     }
 
-    if (capture_info->type == DOTS_VALUE && r_is_call(expr, "<-")) {
+    if (capture_info->check_assign && r_is_call(expr, "<-")) {
       r_warn(
         "Using `<-` as argument is often a mistake.\n"
         "Do you need to use `=` to match an argument?\n"
@@ -221,11 +221,11 @@ static sexp* dots_unquote(sexp* dots, struct dots_capture_info* capture_info) {
         "If you really want to use `<-`, please wrap in parentheses:\n"
         "\n"
         "  # Bad:\n"
-        "  list2(a <- 1)\n"
+        "  fn(a <- 1)\n"
         "\n"
         "  # Good:\n"
-        "  list2(a = 1)     # Match 1 to parameter `a`\n"
-        "  list2((a <- 1))  # Assign 1 to variable `a`"
+        "  fn(a = 1)     # Match 1 to parameter `a`\n"
+        "  fn((a <- 1))  # Assign 1 to variable `a`"
       );
     }
 

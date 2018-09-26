@@ -166,13 +166,22 @@ test_that("forced symbolic objects are not evaluated", {
   expect_identical_(lapply(x, list2), list(x))
 })
 
-test_that("list2() and dots_list() warn with bare `<-` arguments", {
+test_that("dots collectors warn with bare `<-` arguments", {
   expect_warning(list2(a <- 1), "`<-` as argument")
-  expect_warning(dots_list(a <- 1), "`<-` as argument")
-
   expect_no_warning(list2((a <- 1)))
+
+  expect_warning(dots_list(a <- 1), "`<-` as argument")
   expect_no_warning(dots_list((a <- 1)))
+  expect_no_warning(dots_list(a <- 1, .check_assign = FALSE))
 
   expect_no_warning(exprs(a <- 1))
   expect_no_warning(quos(a <- 1))
+
+  myexprs <- function(check, ...) enexprs(..., .check_assign = check)
+  expect_warning(myexprs(TRUE, a <- 1), "`<-` as argument")
+  expect_no_warning(myexprs(FALSE, a <- 1))
+
+  myquos <- function(check, ...) enexprs(..., .check_assign = check)
+  expect_warning(myquos(TRUE, a <- 1), "`<-` as argument")
+  expect_no_warning(myquos(FALSE, a <- 1))
 })
