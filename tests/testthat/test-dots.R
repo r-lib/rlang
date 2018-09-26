@@ -185,3 +185,16 @@ test_that("dots collectors warn with bare `<-` arguments", {
   expect_warning(myquos(TRUE, a <- 1), "`<-` as argument")
   expect_no_warning(myquos(FALSE, a <- 1))
 })
+
+test_that("dots collectors never warn for <- when option is set", {
+  scoped_options(rlang_dots_disable_assign_warning = TRUE)
+
+  expect_no_warning(list2(a <- 1))
+
+  myexprs <- function(check, ...) enexprs(...)
+  expect_no_warning(myexprs(a <- 1))
+
+  myquos <- function(check, ...) enexprs(...)
+  expect_no_warning(myquos(a <- 1))
+})
+
