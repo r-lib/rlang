@@ -22,8 +22,6 @@ cpl(...)
 chr(..., .encoding = NULL)
 
 bytes(...)
-
-ll(...)
 }
 \arguments{
 \item{...}{Components of the new vector. Bare lists and explicitly

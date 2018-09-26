@@ -103,10 +103,9 @@ list2 <- function(...) {
   .Call(rlang_dots_list, environment(), FALSE, "trailing", FALSE, TRUE)
 }
 #' @rdname vector-construction
+#' @usage NULL
 #' @export
-ll <- function(...) {
-  .Call(rlang_dots_list, environment(), FALSE, "trailing", FALSE, TRUE)
-}
+ll <- list2
 
 # Preserves empty arguments
 list3 <- function(...) {
