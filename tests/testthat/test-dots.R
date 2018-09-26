@@ -197,3 +197,30 @@ test_that("dots collectors never warn for <- when option is set", {
   expect_no_warning(myquos(a <- 1))
 })
 
+test_that("list2() !!! fails with non-vectors", {
+  expect_error_(list2(!!!env()), "not a vector")
+  expect_error_(list2(!!!function() NULL), "not a vector")
+  expect_error_(list2(!!!base::c), "not a vector")
+  expect_error_(list2(!!!base::`{`), "not a vector")
+  expect_error_(list2(!!!~foo), "not a vector")
+  expect_error_(list2(!!!quote(foo(bar))), "not a vector")
+  expect_error_(list2(!!!expression()), "not a vector")
+})
+
+test_that("list2() succeeds with vectors and pairlists", {
+  expect_identical_(list2(!!!NULL), list())
+  expect_identical_(list2(!!!pairlist(1)), list(1))
+  expect_identical_(list2(!!!list(1)), list(1))
+  expect_identical_(list2(!!!TRUE), list(TRUE))
+  expect_identical_(list2(!!!1L), list(1L))
+  expect_identical_(list2(!!!1), list(1))
+  expect_identical_(list2(!!!1i), list(1i))
+  expect_identical_(list2(!!!"foo"), list("foo"))
+  expect_identical_(list2(!!!bytes(0)), list(bytes(0)))
+})
+
+test_that("list2() calls as.list()", {
+  expect_identical_(list2(!!!mtcars), as.list(mtcars))
+  fct <- factor(c("a", "b"))
+  expect_identical_(list2(!!!fct), as.list(fct))
+})

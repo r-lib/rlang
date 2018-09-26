@@ -9,9 +9,11 @@ sexp* rlang_constants_get(const char* name) {
 }
 
 
+void rlang_init_dots();
 void rlang_init_eval_tidy();
 
 void rlang_init_internal() {
+  rlang_init_dots();
   rlang_init_eval_tidy();
 
   /* dots.c - enum dots_expansion_op */

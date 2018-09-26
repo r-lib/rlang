@@ -3,7 +3,9 @@
 #include "expr-interp.h"
 #include "utils.h"
 
+sexp* eval_with_x(sexp* call, sexp* x);
 sexp* rlang_ns_get(const char* name);
+
 
 struct dots_capture_info {
   enum dots_capture_type type;
@@ -137,20 +139,34 @@ static sexp* dots_big_bang(struct dots_capture_info* capture_info,
   return value;
 }
 
+static sexp* spliced_class = NULL;
+static sexp* as_list_call = NULL;
+
 static sexp* set_value_spliced(sexp* x) {
-  static sexp* spliced_str = NULL;
-  if (!spliced_str) {
-    spliced_str = r_chr("spliced");
-    r_mark_precious(spliced_str);
-    r_mark_shared(spliced_str);
+  // Allow pairlists and vectors
+  switch (r_typeof(x)) {
+  case r_type_pairlist:
+  case r_type_logical:
+  case r_type_integer:
+  case r_type_double:
+  case r_type_complex:
+  case r_type_character:
+  case r_type_raw:
+  case r_type_list:
+    break;
+  default:
+    r_abort("Can't splice an object of type `%s` because it is not a vector",
+            r_type_as_c_string(r_typeof(x)));
   }
 
   int n_protect = 0;
 
-  if (r_typeof(x) != r_type_list) {
+  if (r_is_object(x)) {
+    x = KEEP_N(eval_with_x(as_list_call, x), n_protect);
+  } else if (r_typeof(x) != r_type_list) {
     x = KEEP_N(r_vec_coerce(x, r_type_list), n_protect);
   }
-  x = r_set_class(x, spliced_str);
+  x = r_set_class(x, spliced_class);
 
   FREE(n_protect);
   return x;
@@ -629,4 +645,13 @@ sexp* rlang_dots_flat_list(sexp* frame_env,
 
   FREE(1);
   return dots;
+}
+
+void rlang_init_dots() {
+  spliced_class = r_chr("spliced");
+  r_mark_precious(spliced_class);
+  r_mark_shared(spliced_class);
+
+  as_list_call = r_parse("as.list(x)");
+  r_mark_precious(as_list_call);
 }
