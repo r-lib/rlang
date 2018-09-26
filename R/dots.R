@@ -50,6 +50,12 @@
 #'   were not ignored. If `TRUE`, empty arguments are stored with
 #'   [missing_arg()] values. If `FALSE` (the default) an error is
 #'   thrown when an empty argument is detected.
+#' @param .check_assign Whether to check for `<-` calls passed in
+#'   dots. When `TRUE` and a `<-` call is detected, a warning is
+#'   issued to advise users to use `=` if they meant to match a
+#'   function parameter, or wrap the `<-` call in parentheses
+#'   otherwise. Hardcoded to `TRUE` in `list2()` and to `FALSE` in
+#'   `quos()`, and `exprs()`.
 #' @return A list of arguments. This list is always named: unnamed
 #'   arguments are named with the empty string `""`.
 #'
@@ -104,6 +110,16 @@
 #'
 #' # The list with preserved empty arguments is equivalent to:
 #' list(missing_arg())
+#'
+#'
+#' # list2() always warns when a `<-` call is detected, unless it is
+#' # wrapped in parentheses:
+#' list2(a <- 1)
+#' list2((a <- 1))
+#'
+#' # dots_list() can be configured not to warn:
+#' my_list <- function(...) dots_list(..., .check_assign = FALSE)
+#' my_list(a <- 1)
 dots_list <- function(...,
                       .ignore_empty = c("trailing", "none", "all"),
                       .preserve_empty = FALSE,
