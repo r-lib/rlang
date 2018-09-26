@@ -157,6 +157,25 @@ sexp* rlang_is_data_mask(sexp* env) {
 }
 static sexp* data_pronoun_sym = NULL;
 
+static bool data_mask_has(sexp* mask, sexp* sym) {
+  sexp* top_env = r_env_get(mask, data_mask_top_env_sym);
+  if (r_typeof(top_env) != r_type_environment) {
+    r_abort("Corrupt data mask, missing the `.top_env` environment");
+  }
+  if (r_typeof(sym) != r_type_symbol) {
+    r_abort("`sym` must be a symbol");
+  }
+  sexp* env = mask;
+  do {
+    env = r_env_parent(env);
+    if (Rf_findVarInFrame3(env, sym, FALSE) != R_UnboundValue) return true;
+  } while (env != top_env);
+  return false;
+}
+sexp* rlang_data_mask_has(sexp* mask, sexp* sym) {
+  return r_lgl(data_mask_has(mask, sym));
+}
+
 static void warn_env_as_mask_once() {
   r_warn_deprecated("environment passed to rlang::as_data_mask()",
     "Passing an environment as data mask is deprecated.\n"

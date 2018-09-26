@@ -334,6 +334,19 @@ new_data_mask <- function(bottom, top = bottom, parent = NULL) {
   .Call(rlang_new_data_mask, bottom, top)
 }
 
+is_data_mask <- function(x) {
+  .Call(rlang_is_data_mask, x)
+}
+data_mask_has <- function(x, name) {
+  .Call(rlang_data_mask_has, x, name)
+}
+data_pronoun_get <- function(x, name, ...){
+  if (is_data_mask(x)){
+    env_get(env_parent(x), name, inherit = TRUE)
+  } else {
+    x[[name, ...]]
+  }
+}
 
 #' @export
 `$.rlang_data_pronoun` <- function(x, name) {
@@ -341,7 +354,7 @@ new_data_mask <- function(bottom, top = bottom, parent = NULL) {
   if (!has_binding(src, name)) {
     abort(sprintf(.subset2(x, "lookup_msg"), name), "rlang_data_pronoun_not_found")
   }
-  src[[name]]
+  data_pronoun_get(src, name)
 }
 #' @export
 `[[.rlang_data_pronoun` <- function(x, i, ...) {
@@ -352,7 +365,11 @@ new_data_mask <- function(bottom, top = bottom, parent = NULL) {
   if (!has_binding(src, i)) {
     abort(sprintf(.subset2(x, "lookup_msg"), i), "rlang_data_pronoun_not_found")
   }
-  src[[i, ...]]
+  data_pronoun_get(src, i, ...)
+}
+#' @export
+`[.rlang_data_pronoun` <- function(x, i, ...) {
+  abort("`[` is not supported by .data pronoun, use `[[` or $ instead")
 }
 
 #' @export
@@ -383,15 +400,27 @@ new_data_mask <- function(bottom, top = bottom, parent = NULL) {
 
 #' @export
 names.rlang_data_pronoun <- function(x) {
-  names(unclass(x)$src)
+  src <- unclass(x)$src
+  if (is_data_mask(src)) {
+    abort("`names()` is not supported by .data pronoun")
+  } else {
+    names(src)
+  }
 }
 #' @export
 length.rlang_data_pronoun <- function(x) {
-  length(unclass(x)$src)
+  src <- unclass(x)$src
+  if (is_data_mask(src)) {
+    abort("`length()` is not supported by .data pronoun")
+  } else {
+    length(src)
+  }
 }
 
 has_binding <- function(x, name) {
-  if (is_environment(x)) {
+  if (is_data_mask(x)) {
+    data_mask_has(x, sym(name))
+  } else if (is_environment(x)) {
     env_has(x, name)
   } else {
     has_name(x, name)
@@ -401,8 +430,12 @@ has_binding <- function(x, name) {
 #' @export
 print.rlang_data_pronoun <- function(x, ...) {
   src <- unclass_data_pronoun(x)$src
-  objs <- glue_countable(length(src), "object")
-  cat(paste0("<pronoun>\n", objs, "\n"))
+  if (is_data_mask(src)) {
+    cat("<pronoun>\n")
+  } else {
+    objs <- glue_countable(length(src), "object")
+    cat(paste0("<pronoun>\n", objs, "\n"))
+  }
   invisible(x)
 }
 #' @importFrom utils str
@@ -418,6 +451,7 @@ glue_countable <- function(n, str) {
     paste0(n, " ", str, "s")
   }
 }
+
 # Unclassing before print() or str() is necessary because default
 # methods index objects with integers
 unclass_data_pronoun <- function(x) {

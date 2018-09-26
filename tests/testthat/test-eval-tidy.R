@@ -326,6 +326,38 @@ test_that("data_pronoun_name() extracts name", {
   expect_identical(data_pronoun_name(quote(.data$foo)), "foo")
 })
 
+test_that(".data pronoun walks the ancestry of environments", {
+  e  <- 0
+  e1 <- env(a = 1, b = 1, c = 1)
+  e2 <- env(a = 2, b = 2, e1)
+  e3 <- env(a = 3, e2)
+
+  data_mask <- new_data_mask(e3, e1)
+  .data <- as_data_pronoun(data_mask)
+
+  expect_equal(.data$a, 3)
+  expect_equal(.data$b, 2)
+  expect_equal(.data$c, 1)
+  expect_error(.data$d, "Column `d` not found in `.data`")
+  expect_error(.data$e, "Column `e` not found in `.data`")
+  expect_error(.data$.data, "Column `.data` not found in `.data`")
+  expect_error(.data$.env, "Column `.env` not found in `.data`")
+  expect_error(.data$.top_env, "Column `.top_env` not found in `.data`")
+
+  expect_equal(.data[["a"]], 3)
+  expect_equal(.data[["b"]], 2)
+  expect_equal(.data[["c"]], 1)
+  expect_error(.data[["d"]], "Column `d` not found in `.data`")
+  expect_error(.data[["e"]], "Column `e` not found in `.data`")
+  expect_error(.data[[".data"]], "Column `.data` not found in `.data`")
+  expect_error(.data[[".env"]], "Column `.env` not found in `.data`")
+  expect_error(.data[[".top_env"]], "Column `.top_env` not found in `.data`")
+
+  expect_error(.data["a"])
+  expect_error(names(.data))
+  expect_error(length(.data))
+})
+
 
 # Lifecycle ----------------------------------------------------------
 

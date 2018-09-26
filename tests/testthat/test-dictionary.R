@@ -34,7 +34,7 @@ test_that("subsetting .data pronoun fails when not supplied", {
   expect_error(eval_tidy(f), "not found in `.data`")
 })
 
-test_that("names() and length() methods", {
+test_that("names() and length() methods abort", {
   x <- as_dictionary(mtcars)
   expect_identical(names(x), names(mtcars))
   expect_identical(length(x), length(mtcars))
