@@ -152,7 +152,9 @@ static bool is_data_mask(sexp* env) {
     r_typeof(env) == r_type_environment &&
     r_env_has(env, data_mask_flag_sym);
 }
-
+sexp* rlang_is_data_mask(sexp* env) {
+  return r_lgl(is_data_mask(env));
+}
 static sexp* data_pronoun_sym = NULL;
 
 static void warn_env_as_mask_once() {

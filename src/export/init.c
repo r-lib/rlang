@@ -106,6 +106,7 @@ extern sexp* rlang_is_double(sexp*, sexp*, sexp*);
 extern sexp* rlang_is_integerish(sexp*, sexp*, sexp*);
 extern sexp* rlang_is_character(sexp*, sexp*);
 extern sexp* rlang_is_raw(sexp*, sexp*);
+extern sexp* rlang_is_data_mask(sexp*);
 extern sexp* rlang_cnd_type(sexp*);
 extern sexp* rlang_warn_deprecated_once(sexp*, sexp*);
 
@@ -226,6 +227,7 @@ static const r_callable r_callables[] = {
   {"rlang_call_has_precedence", (r_fn_ptr_t) &rlang_call_has_precedence, 3},
   {"rlang_new_data_mask",       (r_fn_ptr_t) &rlang_new_data_mask, 2},
   {"rlang_as_data_mask",        (r_fn_ptr_t) &rlang_as_data_mask, 1},
+  {"rlang_is_data_mask",        (r_fn_ptr_t) &rlang_is_data_mask, 1},
   {"rlang_data_mask_clean",     (r_fn_ptr_t) &rlang_data_mask_clean, 1},
   {"rlang_eval_tidy",           (r_fn_ptr_t) &rlang_eval_tidy, 3},
   {"rlang_as_data_pronoun",     (r_fn_ptr_t) &rlang_as_data_pronoun, 1},
@@ -251,6 +253,7 @@ static const r_callable r_callables[] = {
 void R_init_rlang(r_dll_info* dll) {
   /* r_register_c_callable("rlang", "rlang_new_data_pronoun", (r_fn_ptr_t) &rlang_new_dictionary); */
   r_register_c_callable("rlang", "rlang_squash_if", (r_fn_ptr_t) &r_squash_if);
+  r_register_c_callable("rlang", "rlang_is_data_mask", (r_fn_ptr_t) &rlang_is_data_mask);
 
   // The quosure functions are stable
   r_register_c_callable("rlang", "rlang_new_quosure", (r_fn_ptr_t) &rlang_new_quosure);
