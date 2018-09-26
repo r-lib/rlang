@@ -5,6 +5,8 @@
   `is_attached()`. It now supports environments in addition to search
   names.
 
+* `lapply(list(quote(foo)), list2)` no longer evaluates `foo` (#580).
+
 * Quosures converted to functions with `as_function()` now support
   nested quosures.
 

@@ -266,7 +266,10 @@ static sexp* dots_unquote(sexp* dots, struct dots_capture_info* capture_info) {
         if (!capture_info->preserve_empty) {
           r_abort("Argument %d is empty", i + 1);
         }
-      } else {
+      } else if (env != r_empty_env) {
+        // Don't evaluate when `env` is the empty environment. This
+        // happens when the argument was forced (and thus already
+        // evaluated), for instance by lapply() or map().
         expr = r_eval(expr, env);
       }
       if (r_inherits(expr, "spliced")) {

@@ -156,3 +156,12 @@ test_that("can preserve empty arguments", {
   expect_identical(list3(, , .ignore_empty = "none"), list(missing_arg(), missing_arg()))
   expect_identical(list3(, , .ignore_empty = "all"), list())
 })
+
+test_that("forced symbolic objects are not evaluated", {
+  x <- list(quote(`_foo`))
+  expect_identical_(lapply(x, list2), list(x))
+  expect_identical_(list2(!!!x), x)
+
+  x <- unname(exprs(stop("tilt")))
+  expect_identical_(lapply(x, list2), list(x))
+})
