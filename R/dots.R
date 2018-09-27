@@ -54,8 +54,7 @@
 #'   dots. When `TRUE` and a `<-` call is detected, a warning is
 #'   issued to advise users to use `=` if they meant to match a
 #'   function parameter, or wrap the `<-` call in parentheses
-#'   otherwise. Hardcoded to `TRUE` in `list2()` and to `FALSE` in
-#'   `quos()`, and `exprs()`.
+#'   otherwise. This ensures assignments are explicit.
 #' @return A list of arguments. This list is always named: unnamed
 #'   arguments are named with the empty string `""`.
 #'
@@ -123,7 +122,7 @@
 dots_list <- function(...,
                       .ignore_empty = c("trailing", "none", "all"),
                       .preserve_empty = FALSE,
-                      .check_assign = TRUE) {
+                      .check_assign = FALSE) {
   dots <- .Call(rlang_dots_list,
     frame_env = environment(),
     named = FALSE,
@@ -140,7 +139,7 @@ dots_split <- function(...,
                        .n_unnamed = NULL,
                        .ignore_empty = c("trailing", "none", "all"),
                        .preserve_empty = FALSE,
-                       .check_assign = TRUE) {
+                       .check_assign = FALSE) {
   dots <- .Call(rlang_dots_list,
     frame_env = environment(),
     named = FALSE,
@@ -270,7 +269,7 @@ is_spliced_bare <- function(x) {
 dots_splice <- function(...,
                         .ignore_empty = c("trailing", "none", "all"),
                         .preserve_empty = FALSE,
-                        .check_assign = TRUE) {
+                        .check_assign = FALSE) {
   dots <- .Call(rlang_dots_flat_list,
     frame_env = environment(),
     named = FALSE,
@@ -305,7 +304,7 @@ dots_splice <- function(...,
 dots_values <- function(...,
                         .ignore_empty = c("trailing", "none", "all"),
                         .preserve_empty = FALSE,
-                        .check_assign = TRUE) {
+                        .check_assign = FALSE) {
   .Call(rlang_dots_values,
     frame_env = environment(),
     named = FALSE,
@@ -334,7 +333,7 @@ dots_definitions <- function(...,
     named = .named,
     ignore_empty = .ignore_empty,
     unquote_names = FALSE,
-    check_assign = TRUE
+    check_assign = FALSE
   )
 
   is_def <- map_lgl(dots, function(dot) is_definition(quo_get_expr(dot)))

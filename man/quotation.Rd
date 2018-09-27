@@ -22,12 +22,12 @@ exprs(..., .named = FALSE, .ignore_empty = c("trailing", "none",
   "all"), .unquote_names = TRUE)
 
 enexprs(..., .named = FALSE, .ignore_empty = c("trailing", "none",
-  "all"), .unquote_names = TRUE, .check_assign = TRUE)
+  "all"), .unquote_names = TRUE, .check_assign = FALSE)
 
 ensym(arg)
 
 ensyms(..., .named = FALSE, .ignore_empty = c("trailing", "none",
-  "all"), .unquote_names = TRUE, .check_assign = TRUE)
+  "all"), .unquote_names = TRUE, .check_assign = FALSE)
 
 quo(expr)
 
@@ -37,7 +37,7 @@ quos(..., .named = FALSE, .ignore_empty = c("trailing", "none", "all"),
   .unquote_names = TRUE)
 
 enquos(..., .named = FALSE, .ignore_empty = c("trailing", "none",
-  "all"), .unquote_names = TRUE, .check_assign = TRUE)
+  "all"), .unquote_names = TRUE, .check_assign = FALSE)
 }
 \arguments{
 \item{expr}{An expression.}
@@ -68,8 +68,7 @@ last argument is ignored if it is empty.}
 dots. When \code{TRUE} and a \code{<-} call is detected, a warning is
 issued to advise users to use \code{=} if they meant to match a
 function parameter, or wrap the \code{<-} call in parentheses
-otherwise. Hardcoded to \code{TRUE} in \code{list2()} and to \code{FALSE} in
-\code{quos()}, and \code{exprs()}.}
+otherwise. This ensures assignments are explicit.}
 }
 \description{
 \Sexpr[results=rd, stage=render]{rlang:::lifecycle("stable")}

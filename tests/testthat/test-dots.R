@@ -166,35 +166,34 @@ test_that("forced symbolic objects are not evaluated", {
   expect_identical_(lapply(x, list2), list(x))
 })
 
-test_that("dots collectors warn with bare `<-` arguments", {
-  expect_warning(list2(a <- 1), "`<-` as argument")
-  expect_no_warning(list2((a <- 1)))
-
-  expect_warning(dots_list(a <- 1), "`<-` as argument")
-  expect_no_warning(dots_list((a <- 1)))
-  expect_no_warning(dots_list(a <- 1, .check_assign = FALSE))
+test_that("dots collectors do not warn by default with bare `<-` arguments", {
+  expect_no_warning(list2(a <- 1))
+  expect_no_warning(dots_list(a <- 1))
 
   expect_no_warning(exprs(a <- 1))
   expect_no_warning(quos(a <- 1))
 
-  myexprs <- function(check, ...) enexprs(..., .check_assign = check)
-  expect_warning(myexprs(TRUE, a <- 1), "`<-` as argument")
-  expect_no_warning(myexprs(FALSE, a <- 1))
+  myexprs <- function(...) enexprs(...)
+  myquos <- function(...) enexprs(...)
+  expect_no_warning(myexprs(a <- 1))
+  expect_no_warning(myquos(a <- 1))
+})
 
-  myquos <- function(check, ...) enexprs(..., .check_assign = check)
+test_that("dots collectors can elect to warn with bare `<-` arguments", {
+  expect_warning(dots_list(a <- 1, .check_assign = TRUE), "`<-` as argument")
+  myexprs <- function(...) enexprs(..., .check_assign = TRUE)
+  myquos <- function(...) enexprs(..., .check_assign = TRUE)
+  expect_warning(myexprs(TRUE, a <- 1), "`<-` as argument")
   expect_warning(myquos(TRUE, a <- 1), "`<-` as argument")
-  expect_no_warning(myquos(FALSE, a <- 1))
 })
 
 test_that("dots collectors never warn for <- when option is set", {
   scoped_options(rlang_dots_disable_assign_warning = TRUE)
 
   expect_no_warning(list2(a <- 1))
-
-  myexprs <- function(check, ...) enexprs(...)
+  myexprs <- function(...) enexprs(..., .check_assign = TRUE)
+  myquos <- function(...) enquos(..., .check_assign = TRUE)
   expect_no_warning(myexprs(a <- 1))
-
-  myquos <- function(check, ...) enexprs(...)
   expect_no_warning(myquos(a <- 1))
 })
 

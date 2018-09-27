@@ -1,6 +1,14 @@
 
 # rlang 0.2.2.9000
 
+* `dots_list()`, `enexprs()` and `enquos()` gain a `.check_assign`
+  argument. When `TRUE`, a warning is issued when a `<-` call is
+  detected in `...`. No warning is issued if the assignment is wrapped
+  in parentheses like `(a <- 1)`. The warning lets users know about a
+  possible typo in their code (assigning instead of matching a
+  function parameter) and requires them to be explicit that they
+  really want to assign to a variable by wrapping in parentheses.
+
 * `is_scoped()` has been soft-deprecated and renamed to
   `is_attached()`. It now supports environments in addition to search
   names.

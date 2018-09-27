@@ -7,7 +7,7 @@
 \title{Collect dots tidily}
 \usage{
 dots_list(..., .ignore_empty = c("trailing", "none", "all"),
-  .preserve_empty = FALSE, .check_assign = TRUE)
+  .preserve_empty = FALSE, .check_assign = FALSE)
 
 list2(...)
 }
@@ -29,8 +29,7 @@ thrown when an empty argument is detected.}
 dots. When \code{TRUE} and a \code{<-} call is detected, a warning is
 issued to advise users to use \code{=} if they meant to match a
 function parameter, or wrap the \code{<-} call in parentheses
-otherwise. Hardcoded to \code{TRUE} in \code{list2()} and to \code{FALSE} in
-\code{quos()}, and \code{exprs()}.}
+otherwise. This ensures assignments are explicit.}
 }
 \value{
 A list of arguments. This list is always named: unnamed

@@ -229,7 +229,7 @@ enexprs <- function(...,
                    .named = FALSE,
                    .ignore_empty = c("trailing", "none", "all"),
                    .unquote_names = TRUE,
-                   .check_assign = TRUE) {
+                   .check_assign = FALSE) {
   endots(
     call = sys.call(),
     frame_env = parent.frame(),
@@ -253,7 +253,7 @@ ensyms <- function(...,
                    .named = FALSE,
                    .ignore_empty = c("trailing", "none", "all"),
                    .unquote_names = TRUE,
-                   .check_assign = TRUE) {
+                   .check_assign = FALSE) {
   exprs <- endots(
     call = sys.call(),
     frame_env = parent.frame(),
@@ -302,7 +302,7 @@ enquos <- function(...,
                    .named = FALSE,
                    .ignore_empty = c("trailing", "none", "all"),
                    .unquote_names = TRUE,
-                   .check_assign = TRUE) {
+                   .check_assign = FALSE) {
   quos <- endots(
     call = sys.call(),
     frame_env = parent.frame(),
