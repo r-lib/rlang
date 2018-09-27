@@ -89,12 +89,43 @@ static sexp* def_unquote_name(sexp* expr, sexp* env) {
 
 
 static sexp* rlang_spliced_flag = NULL;
+static sexp* spliced_class = NULL;
+static sexp* as_list_call = NULL;
 
 static inline bool is_spliced_dots(sexp* x) {
   return r_get_attribute(x, rlang_spliced_flag) != r_null;
 }
 static inline void mark_spliced_dots(sexp* x) {
   r_poke_attribute(x, rlang_spliced_flag, rlang_spliced_flag);
+}
+
+static sexp* dots_value_big_bang_coerce(sexp* x) {
+  // Allow pairlists and vectors
+  switch (r_typeof(x)) {
+  case r_type_pairlist:
+  case r_type_logical:
+  case r_type_integer:
+  case r_type_double:
+  case r_type_complex:
+  case r_type_character:
+  case r_type_raw:
+    if (r_is_object(x)) {
+      return eval_with_x(as_list_call, x);
+    } else {
+      return r_vec_coerce(x, r_type_list);
+    }
+  case r_type_list:
+    if (r_is_object(x)) {
+      return eval_with_x(as_list_call, x);
+    } else {
+      return x;
+    }
+  default:
+    r_abort(
+      "Can't splice an object of type `%s` because it is not a vector",
+      r_type_as_c_string(r_typeof(x))
+    );
+  }
 }
 
 static sexp* dots_big_bang_coerce(sexp* expr) {
@@ -119,6 +150,15 @@ static sexp* dots_big_bang_coerce(sexp* expr) {
     return r_new_list(expr, NULL);
   }
 }
+
+static sexp* dots_value_big_bang(sexp* x) {
+  x = KEEP(dots_value_big_bang_coerce(x));
+  x = r_set_class(x, spliced_class);
+
+  FREE(1);
+  return x;
+}
+
 static sexp* dots_big_bang(struct dots_capture_info* capture_info,
                            sexp* expr, sexp* env, bool quosured) {
   sexp* value = KEEP(r_eval(expr, env));
@@ -138,39 +178,6 @@ static sexp* dots_big_bang(struct dots_capture_info* capture_info,
 
   FREE(2);
   return value;
-}
-
-static sexp* spliced_class = NULL;
-static sexp* as_list_call = NULL;
-
-static sexp* set_value_spliced(sexp* x) {
-  // Allow pairlists and vectors
-  switch (r_typeof(x)) {
-  case r_type_pairlist:
-  case r_type_logical:
-  case r_type_integer:
-  case r_type_double:
-  case r_type_complex:
-  case r_type_character:
-  case r_type_raw:
-  case r_type_list:
-    break;
-  default:
-    r_abort("Can't splice an object of type `%s` because it is not a vector",
-            r_type_as_c_string(r_typeof(x)));
-  }
-
-  int n_protect = 0;
-
-  if (r_is_object(x)) {
-    x = KEEP_N(eval_with_x(as_list_call, x), n_protect);
-  } else if (r_typeof(x) != r_type_list) {
-    x = KEEP_N(r_vec_coerce(x, r_type_list), n_protect);
-  }
-  x = r_set_class(x, spliced_class);
-
-  FREE(n_protect);
-  return x;
 }
 
 static inline bool should_ignore(int ignore_empty, r_ssize i, r_ssize n) {
@@ -315,7 +322,7 @@ static sexp* dots_unquote(sexp* dots, struct dots_capture_info* capture_info) {
       if (expr == r_null) {
         expr = empty_spliced_list();
       } else {
-        expr = set_value_spliced(expr);
+        expr = dots_value_big_bang(expr);
         capture_info->count += 1;
       }
       FREE(1);
