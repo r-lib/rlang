@@ -128,8 +128,8 @@ static sexp* dots_value_big_bang_coerce(sexp* x) {
   }
 }
 
-static sexp* dots_big_bang_coerce(sexp* expr) {
-  switch (r_typeof(expr)) {
+static sexp* dots_big_bang_coerce(sexp* x) {
+  switch (r_typeof(x)) {
   case r_type_null:
   case r_type_pairlist:
   case r_type_logical:
@@ -138,16 +138,30 @@ static sexp* dots_big_bang_coerce(sexp* expr) {
   case r_type_complex:
   case r_type_character:
   case r_type_raw:
-    return r_vec_coerce(expr, r_type_list);
-  case r_type_list:
-    return r_duplicate(expr, true);
-  case r_type_call:
-    if (r_is_symbol(r_node_car(expr), "{")) {
-      return r_vec_coerce(r_node_cdr(expr), r_type_list);
+    if (r_is_object(x)) {
+      return eval_with_x(as_list_call, x);
+    } else {
+      return r_vec_coerce(x, r_type_list);
     }
-    // else fallthrough
+  case r_type_list:
+    if (r_is_object(x)) {
+      return eval_with_x(as_list_call, x);
+    } else {
+      return r_duplicate(x, true);
+    }
+  case r_type_call:
+    if (r_is_symbol(r_node_car(x), "{")) {
+      return r_vec_coerce(r_node_cdr(x), r_type_list);
+    } else {
+      return r_new_list(x, NULL);
+    }
+  case r_type_symbol:
+    return r_new_list(x, NULL);
   default:
-    return r_new_list(expr, NULL);
+    r_abort(
+      "Can't splice an object of type `%s` because it is not a vector",
+      r_type_as_c_string(r_typeof(x))
+    );
   }
 }
 

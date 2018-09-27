@@ -273,6 +273,60 @@ test_that("exprs() preserves spliced quosures", {
   expect_identical(out, named_list(quo(a), quo(b)))
 })
 
+test_that("exprs() and quos() !!! fails with non-vectors", {
+  expect_error_(exprs(!!!env()), "not a vector")
+  expect_error_(exprs(!!!function() NULL), "not a vector")
+  expect_error_(exprs(!!!base::c), "not a vector")
+  expect_error_(exprs(!!!base::`{`), "not a vector")
+  expect_error_(exprs(!!!expression()), "not a vector")
+
+  expect_error_(quos(!!!env()), "not a vector")
+  expect_error_(quos(!!!function() NULL), "not a vector")
+  expect_error_(quos(!!!base::c), "not a vector")
+  expect_error_(quos(!!!base::`{`), "not a vector")
+  expect_error_(quos(!!!expression()), "not a vector")
+})
+
+test_that("exprs() and quos() succeed with vectors, pairlists and language objects", {
+  expect_identical_(exprs(!!!NULL), named_list())
+  expect_identical_(exprs(!!!pairlist(1)), named_list(1))
+  expect_identical_(exprs(!!!list(1)), named_list(1))
+  expect_identical_(exprs(!!!TRUE), named_list(TRUE))
+  expect_identical_(exprs(!!!1L), named_list(1L))
+  expect_identical_(exprs(!!!1), named_list(1))
+  expect_identical_(exprs(!!!1i), named_list(1i))
+  expect_identical_(exprs(!!!"foo"), named_list("foo"))
+  expect_identical_(exprs(!!!bytes(0)), named_list(bytes(0)))
+  expect_identical_(exprs(!!!~foo), named_list(~foo))
+  expect_identical_(exprs(!!!quote(foo(bar))), named_list(quote(foo(bar))))
+
+  expect_identical_(quos(!!!NULL), quos_list())
+  expect_identical_(quos(!!!pairlist(1)), quos_list(quo(1)))
+  expect_identical_(quos(!!!list(1)), quos_list(quo(1)))
+  expect_identical_(quos(!!!TRUE), quos_list(quo(TRUE)))
+  expect_identical_(quos(!!!1L), quos_list(quo(1L)))
+  expect_identical_(quos(!!!1), quos_list(quo(1)))
+  expect_identical_(quos(!!!1i), quos_list(quo(1i)))
+  expect_identical_(quos(!!!"foo"), quos_list(quo("foo")))
+  expect_identical_(quos(!!!bytes(0)), quos_list(quo(!!bytes(0))))
+  expect_identical_(quos(!!!~foo), quos_list(quo(!!~foo)))
+  expect_identical_(quos(!!!quote(foo(bar))), quos_list(quo(foo(bar))))
+})
+
+test_that("exprs() and quos() call as.list()", {
+  as_quos_list <- function(x, env = empty_env()) {
+    new_quosures(map(x, new_quosure, env = env))
+  }
+  exp <- as.list(mtcars)
+  expect_identical_(exprs(!!!mtcars), exp)
+  expect_identical_(quos(!!!mtcars), as_quos_list(exp))
+
+  fct <- factor(c("a", "b"))
+  exp <- set_names(as.list(fct), c("", ""))
+  expect_identical_(exprs(!!!fct), exp)
+  expect_identical_(quos(!!!fct), as_quos_list(exp))
+})
+
 
 # bang ---------------------------------------------------------------
 
