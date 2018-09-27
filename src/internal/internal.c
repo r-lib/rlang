@@ -2,13 +2,6 @@
 #include "internal.h"
 
 
-sexp* rlang_constants_env;
-
-sexp* rlang_constants_get(const char* name) {
-  return r_env_get(rlang_constants_env, r_sym(name));
-}
-
-
 void rlang_init_dots();
 void rlang_init_eval_tidy();
 
