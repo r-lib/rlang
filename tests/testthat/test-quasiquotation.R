@@ -175,11 +175,6 @@ test_that("UQ() fails if called without argument", {
 
 # !!! ---------------------------------------------------------------------
 
-test_that("`!!!` treats atomic objects as scalar vectors", {
-  expect_identical(quo(list(!!! current_env())), quo(list(!! current_env())))
-  expect_identical(expr(c(!!! expression(1, 2))), expr(c(!! expression(1, 2))))
-})
-
 test_that("values of `!!!` spliced into expression", {
   f <- quo(f(a, !!! list(quote(b), quote(c)), d))
   expect_identical(f, quo(f(a, b, c, d)))
@@ -220,10 +215,10 @@ test_that("can't splice at top level", {
 
 test_that("can splice function body even if not a `{` block", {
   fn <- function(x) { x }
-  expect_identical(exprs(!!! body(fn)), named_list(quote(x)))
+  expect_identical(exprs(!!!fn_body(fn)), named_list(quote(x)))
 
   fn <- function(x) x
-  expect_identical(exprs(!!! body(fn)), named_list(quote(x)))
+  expect_identical(exprs(!!!fn_body(fn)), named_list(quote(x)))
 })
 
 test_that("splicing a pairlist has no side effect", {
@@ -265,6 +260,114 @@ test_that("`!!!` doesn't modify spliced inputs by reference", {
   x <- quote({ 1L; 2L; 3L })
   quos(!!! x)
   expect_equal(x, quote({ 1L; 2L; 3L }))  # equal because of srcrefs
+})
+
+test_that("exprs() preserves spliced quosures", {
+  out <- exprs(!!!quos(a, b))
+  expect_identical(out, exprs(!!quo(a), !!quo(b)))
+  expect_identical(out, named_list(quo(a), quo(b)))
+})
+
+test_that("!!! fails with non-vectors", {
+  expect_error_(exprs(!!!env()), "not a vector")
+  expect_error_(exprs(!!!function() NULL), "not a vector")
+  expect_error_(exprs(!!!base::c), "not a vector")
+  expect_error_(exprs(!!!base::`{`), "not a vector")
+  expect_error_(exprs(!!!expression()), "not a vector")
+
+  expect_error_(quos(!!!env()), "not a vector")
+  expect_error_(quos(!!!function() NULL), "not a vector")
+  expect_error_(quos(!!!base::c), "not a vector")
+  expect_error_(quos(!!!base::`{`), "not a vector")
+  expect_error_(quos(!!!expression()), "not a vector")
+
+  expect_error_(expr(list(!!!env())), "not a vector")
+  expect_error_(expr(list(!!!function() NULL)), "not a vector")
+  expect_error_(expr(list(!!!base::c)), "not a vector")
+  expect_error_(expr(list(!!!base::`{`)), "not a vector")
+  expect_error_(expr(list(!!!expression())), "not a vector")
+
+  expect_error_(list2(!!!env()), "not a vector")
+  expect_error_(list2(!!!function() NULL), "not a vector")
+  expect_error_(list2(!!!base::c), "not a vector")
+  expect_error_(list2(!!!base::`{`), "not a vector")
+  expect_error_(list2(!!!expression()), "not a vector")
+})
+
+test_that("!!! succeeds with vectors, pairlists and language objects", {
+  expect_identical_(exprs(!!!NULL), named_list())
+  expect_identical_(exprs(!!!pairlist(1)), named_list(1))
+  expect_identical_(exprs(!!!list(1)), named_list(1))
+  expect_identical_(exprs(!!!TRUE), named_list(TRUE))
+  expect_identical_(exprs(!!!1L), named_list(1L))
+  expect_identical_(exprs(!!!1), named_list(1))
+  expect_identical_(exprs(!!!1i), named_list(1i))
+  expect_identical_(exprs(!!!"foo"), named_list("foo"))
+  expect_identical_(exprs(!!!bytes(0)), named_list(bytes(0)))
+
+  expect_identical_(quos(!!!NULL), quos_list())
+  expect_identical_(quos(!!!pairlist(1)), quos_list(quo(1)))
+  expect_identical_(quos(!!!list(1)), quos_list(quo(1)))
+  expect_identical_(quos(!!!TRUE), quos_list(quo(TRUE)))
+  expect_identical_(quos(!!!1L), quos_list(quo(1L)))
+  expect_identical_(quos(!!!1), quos_list(quo(1)))
+  expect_identical_(quos(!!!1i), quos_list(quo(1i)))
+  expect_identical_(quos(!!!"foo"), quos_list(quo("foo")))
+  expect_identical_(quos(!!!bytes(0)), quos_list(quo(!!bytes(0))))
+
+  expect_identical_(expr(foo(!!!NULL)), quote(foo()))
+  expect_identical_(expr(foo(!!!pairlist(1))), quote(foo(1)))
+  expect_identical_(expr(foo(!!!list(1))), quote(foo(1)))
+  expect_identical_(expr(foo(!!!TRUE)), quote(foo(TRUE)))
+  expect_identical_(expr(foo(!!!1L)), quote(foo(1L)))
+  expect_identical_(expr(foo(!!!1)), quote(foo(1)))
+  expect_identical_(expr(foo(!!!1i)), quote(foo(1i)))
+  expect_identical_(expr(foo(!!!"foo")), quote(foo("foo")))
+  expect_identical_(expr(foo(!!!bytes(0))), expr(foo(!!bytes(0))))
+
+  expect_identical_(list2(!!!NULL), list())
+  expect_identical_(list2(!!!pairlist(1)), list(1))
+  expect_identical_(list2(!!!list(1)), list(1))
+  expect_identical_(list2(!!!TRUE), list(TRUE))
+  expect_identical_(list2(!!!1L), list(1L))
+  expect_identical_(list2(!!!1), list(1))
+  expect_identical_(list2(!!!1i), list(1i))
+  expect_identical_(list2(!!!"foo"), list("foo"))
+  expect_identical_(list2(!!!bytes(0)), list(bytes(0)))
+})
+
+test_that("!!! calls as.list()", {
+  as_quos_list <- function(x, env = empty_env()) {
+    new_quosures(map(x, new_quosure, env = env))
+  }
+  exp <- as.list(mtcars)
+  expect_identical_(exprs(!!!mtcars), exp)
+  expect_identical_(quos(!!!mtcars), as_quos_list(exp))
+  expect_identical_(expr(foo(!!!mtcars)), do.call(call, c(list("foo"), exp)))
+  expect_identical_(list2(!!!mtcars), as.list(mtcars))
+
+  fct <- factor(c("a", "b"))
+  exp <- set_names(as.list(fct), c("", ""))
+  expect_identical_(exprs(!!!fct), exp)
+  expect_identical_(quos(!!!fct), as_quos_list(exp))
+  expect_identical_(expr(foo(!!!fct)), do.call(call, c(list("foo"), exp)))
+  expect_identical_(list2(!!!fct), as.list(fct))
+})
+
+test_that("!!! calls methods::as()", {
+  as_quos_list <- function(x, env = empty_env()) {
+    new_quosures(map(x, new_quosure, env = env))
+  }
+
+  .Person <- setClass("Person", slots = c(name = "character", species = "character"))
+  fievel <- .Person(name = "Fievel", species = "mouse")
+  methods::setAs("Person", "list", function(from, to) list(name = from@name, species = from@species))
+
+  exp <- list(name = "Fievel", species = "mouse")
+  expect_identical_(exprs(!!!fievel), exp)
+  expect_identical_(quos(!!!fievel), as_quos_list(exp))
+  expect_identical_(expr(foo(!!!fievel)), quote(foo(name = "Fievel", species = "mouse")))
+  expect_identical_(list2(!!!fievel), exp)
 })
 
 
@@ -398,4 +501,20 @@ test_that("unquoting with rlang namespace is deprecated", {
 test_that("UQE() is defunct", {
   expect_error_(expr(foo$UQE(NULL)), "defunct")
   expect_error_(UQE(), "defunct")
+})
+
+test_that("splicing language objects still works", {
+  scoped_silent_retirement()
+
+  expect_identical_(exprs(!!!~foo), named_list(~foo))
+  expect_identical_(exprs(!!!quote(foo(bar))), named_list(quote(foo(bar))))
+
+  expect_identical_(quos(!!!~foo), quos_list(quo(!!~foo)))
+  expect_identical_(quos(!!!quote(foo(bar))), quos_list(quo(foo(bar))))
+
+  expect_identical_(expr(foo(!!!~foo)), expr(foo(!!~foo)))
+  expect_identical_(expr(foo(!!!quote(foo(bar)))), expr(foo(foo(bar))))
+
+  expect_identical_(list2(!!!~foo), list(~foo))
+  expect_identical_(list2(!!!quote(foo(bar))), list(quote(foo(bar))))
 })

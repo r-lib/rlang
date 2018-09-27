@@ -1,6 +1,36 @@
 
 # rlang 0.2.2.9000
 
+* The input types of `!!!` have been standardised. `!!!` is generally
+  defined on vectors: it takes a vector (typically, a list) and
+  unquotes each element as a separate argument. The standardisation
+  makes `!!!` behave the same in functions taking dots with `list2()`
+  and in quoting functions. `!!!` accepts these types:
+
+  - Lists, pairlists, and atomic vectors. If they have a class, they
+    are converted with `base::as.list()` to allow S3 dispatch.
+    Following this change, objects like factors can now be spliced
+    without data loss.
+
+  - S4 objects. These are converted with `as(obj, "list")` before
+    splicing.
+
+  - Quoted blocks of expressions, i.e. `{ }` calls
+
+  `!!!` disallows:
+
+  - Any other objects like functions or environments, but also
+    language objects like formula, symbols, or quosures.
+
+  Quoting functions used to automatically wrap language objects in
+  lists to make them spliceable. This behaviour is now soft-deprecated
+  and it is no longer valid to write `!!!enquo(x)`. Please unquote
+  scalar objects with `!!` instead.
+
+* `fn_body()` always returns a `{` block, even if the function has a
+  single expression. For instance `fn_body(function(x) do()) ` returns
+  `quote({ do() })`.
+
 * `dots_list()`, `enexprs()` and `enquos()` gain a `.check_assign`
   argument. When `TRUE`, a warning is issued when a `<-` call is
   detected in `...`. No warning is issued if the assignment is wrapped

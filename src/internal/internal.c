@@ -2,17 +2,21 @@
 #include "internal.h"
 
 
-sexp* rlang_constants_env;
+sexp* as_list_call = NULL;
+sexp* as_list_s4_call = NULL;
 
-sexp* rlang_constants_get(const char* name) {
-  return r_env_get(rlang_constants_env, r_sym(name));
-}
-
-
+void rlang_init_dots();
 void rlang_init_eval_tidy();
 
 void rlang_init_internal() {
+  rlang_init_dots();
   rlang_init_eval_tidy();
+
+  as_list_call = r_parse("as.list(x)");
+  r_mark_precious(as_list_call);
+
+  as_list_s4_call = r_parse("as(x, 'list')");
+  r_mark_precious(as_list_s4_call);
 
   /* dots.c - enum dots_expansion_op */
   RLANG_ASSERT(OP_DOTS_MAX == DOTS_CAPTURE_TYPE_MAX * EXPANSION_OP_MAX);

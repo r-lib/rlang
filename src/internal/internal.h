@@ -4,10 +4,11 @@
 #include "quo.h"
 
 
-sexp* rlang_constants_env;
+extern sexp* as_list_call;
+extern sexp* as_list_s4_call;
+
 void rlang_init_internal();
 sexp* rlang_ns_get(const char* name);
-sexp* rlang_constants_get(const char* name);
 
 
 #endif

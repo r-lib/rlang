@@ -9,6 +9,9 @@
 #define r_base_env R_BaseEnv
 #define r_empty_env R_EmptyEnv
 
+extern sexp* r_methods_ns_env;
+
+
 #if (!defined(R_VERSION) || R_VERSION < R_Version(3, 2, 0))
 static inline sexp* r_env_names(sexp* env) {
   return R_lsInternal(env, true);

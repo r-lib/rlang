@@ -16,6 +16,17 @@ supplied.}
 \item{value}{New formals or formals names for \code{fn}.}
 }
 \description{
-\code{fn_body()} is a simple wrapper around \code{base::body()}. The setter
+\code{fn_body()} is a simple wrapper around \code{\link[base:body]{base::body()}}. It always
+returns a \code{\{} expression and throws an error when the input is a
+primitive function (whereas \code{body()} returns \code{NULL}). The setter
 version preserves attributes, unlike \code{body<-}.
+}
+\examples{
+# fn_body() is like body() but always returns a block:
+fn <- function() do()
+body(fn)
+fn_body(fn)
+
+# It also throws an error when used on a primitive function:
+try(fn_body(base::list))
 }

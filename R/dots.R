@@ -40,9 +40,7 @@
 #' default. `list2()` does not have this issue.
 #'
 #'
-#' @param ... Arguments with explicit (`dots_list()`) or list
-#'   (`dots_splice()`) splicing semantics. The contents of spliced
-#'   arguments are embedded in the returned list.
+#' @param ... Arguments to collect with `!!!` support.
 #' @param .ignore_empty Whether to ignore empty arguments. Can be one
 #'   of `"trailing"`, `"none"`, `"all"`. If `"trailing"`, only the
 #'   last argument is ignored if it is empty.

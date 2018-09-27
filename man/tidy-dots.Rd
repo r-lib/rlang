@@ -12,9 +12,7 @@ dots_list(..., .ignore_empty = c("trailing", "none", "all"),
 list2(...)
 }
 \arguments{
-\item{...}{Arguments with explicit (\code{dots_list()}) or list
-(\code{dots_splice()}) splicing semantics. The contents of spliced
-arguments are embedded in the returned list.}
+\item{...}{Arguments to collect with \code{!!!} support.}
 
 \item{.ignore_empty}{Whether to ignore empty arguments. Can be one
 of \code{"trailing"}, \code{"none"}, \code{"all"}. If \code{"trailing"}, only the
