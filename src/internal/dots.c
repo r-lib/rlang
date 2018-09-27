@@ -4,6 +4,7 @@
 #include "utils.h"
 
 sexp* eval_with_x(sexp* call, sexp* x);
+sexp* eval_with_xy(sexp* call, sexp* x, sexp* y);
 sexp* rlang_ns_get(const char* name);
 
 
@@ -387,16 +388,16 @@ static int find_auto_names_width(sexp* named) {
   r_abort("`.named` must be a scalar logical or number");
 }
 
+static sexp* auto_name_call = NULL;
+
 static sexp* maybe_auto_name(sexp* x, sexp* named) {
   int names_width = find_auto_names_width(named);
   sexp* names = r_vec_names(x);
 
   if (names_width && (!names || r_chr_has(names, ""))) {
-    sexp* auto_fn = KEEP(rlang_ns_get("quos_auto_name"));
     sexp* width = KEEP(r_int(names_width));
-    sexp* auto_call = KEEP(r_build_call2(auto_fn, x, width));
-    x = r_eval(auto_call, r_empty_env);
-    FREE(3);
+    x = eval_with_xy(auto_name_call, x, width);
+    FREE(1);
   }
 
   return x;
@@ -654,4 +655,8 @@ void rlang_init_dots() {
 
   as_list_call = r_parse("as.list(x)");
   r_mark_precious(as_list_call);
+
+  auto_name_call = r_parse_eval("as.call(list(rlang:::quos_auto_name, quote(x), quote(y)))",
+                                r_base_env);
+  r_mark_precious(auto_name_call);
 }
