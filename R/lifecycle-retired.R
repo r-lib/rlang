@@ -1249,6 +1249,70 @@ env_bind_fns <- function(.env, ...) {
   env_bind_active(.env, ...)
 }
 
+#' Retired `scoped` functions
+#'
+#' @description
+#'
+#' \Sexpr[results=rd, stage=render]{rlang:::lifecycle("soft-deprecated")}
+#'
+#' These functions are soft-deprecated as of rlang 0.3.0. They are
+#' replaced by [is_attached()], ...
+#'
+#' @param nm The name of an environment attached to the search
+#'   path. Call [base::search()] to see what is currently on the path.
+#'
+#' @keywords internal
+#' @export
+scoped_env <- function(nm) {
+  signal_soft_deprecated(paste_line(
+    "`scoped_env()` is soft-deprecated as of rlang 0.3.0.",
+    "Please use `search_env()` instead."
+  ))
+  scoped_options(lifecycle_disable_verbose_retirement = TRUE)
+
+  if (identical(nm, "NULL")) {
+    return(empty_env())
+  }
+  if (!is_scoped(nm)) {
+    stop(paste0(nm, " is not in scope"), call. = FALSE)
+  }
+  as.environment(nm)
+}
+#' @rdname scoped_env
+#' @export
+is_scoped <- function(nm) {
+  signal_soft_deprecated(paste_line(
+    "`is_scoped()` is soft-deprecated as of rlang 0.3.0.",
+    "Please use `is_attached()` instead."
+  ))
+  scoped_options(lifecycle_disable_verbose_retirement = TRUE)
+
+  if (!is_scalar_character(nm)) {
+    stop("`nm` must be a string", call. = FALSE)
+  }
+  nm %in% scoped_names()
+}
+#' @rdname scoped_env
+#' @export
+scoped_envs <- function() {
+  signal_soft_deprecated(paste_line(
+    "`scoped_envs()` is soft-deprecated as of rlang 0.3.0.",
+    "Please use `search_envs()` instead."
+  ))
+  scoped_options(lifecycle_disable_verbose_retirement = TRUE)
+
+  envs <- c(list(.GlobalEnv), env_parents(.GlobalEnv))
+  set_names(envs, scoped_names())
+}
+#' @rdname scoped_env
+#' @export
+scoped_names <- function() {
+  signal_soft_deprecated(paste_line(
+    "`scoped_names()` is soft-deprecated as of rlang 0.3.0.",
+    "Please use `base::search()` instead."
+  ))
+  c(search(), "NULL")
+}
 
 
 #  Vectors  ----------------------------------------------------------

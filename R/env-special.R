@@ -1,67 +1,67 @@
-#' Scoped environments
+#' Search path environments
 #'
 #' @description
 #'
-#' Scoped environments are named environments which form a
-#' parent-child hierarchy called the search path. They define what
-#' objects you can see (are in scope) from your workspace. They
-#' typically are package environments, i.e. special environments
-#' containing all exported functions from a package (and whose parent
-#' environment is the package namespace, which also contains
-#' unexported functions). Package environments are attached to the
-#' search path with [base::library()]. Note however that any
-#' environment can be attached to the search path, for example with
-#' the unrecommended [base::attach()] base function which transforms
-#' vectors to scoped environments.
+#' The search path is a chain of environments containing exported
+#' functions of attached packages.
 #'
-#' - You can list all scoped environments with `scoped_names()`. Unlike
-#'   [base::search()], it also mentions the empty environment that
-#'   terminates the search path (it is given the name `"NULL"`).
+#' The API includes:
 #'
-#' - `scoped_envs()` returns all environments on the search path,
-#'   including the empty environment.
+#' - [base::search()] to get the names of environments attached to the
+#'   search path.
 #'
-#' - `pkg_env()` takes a package name and returns the scoped
+#' - `search_envs()` returns the environments on the search path as a
+#'   list.
+#'
+#' - `pkg_env_name()` takes a bare package name and prefixes it with
+#'   `"package:"`. Attached package environments have search names of
+#'   the form `package:name`.
+#'
+#' - `pkg_env()` takes a bare package name and returns the scoped
 #'   environment of packages if they are attached to the search path,
-#'   and throws an error otherwise.
+#'   and throws an error otherwise. It is a shortcut for
+#'   `search_env(pkg_env_name("pkgname"))`.
 #'
-#' - `is_scoped()` allows you to check whether a named environment is
-#'   on the search path.
-#'
-#'
-#' @section Search path:
-#'
-#' The search path is a chain of scoped environments where newly
-#' attached environments are the childs of earlier ones. However, the
-#' global environment, where everything you define at top-level ends
-#' up, is pinned as the head of that linked chain. Likewise, the base
-#' package environment is pinned as the tail of the chain. You can
-#' retrieve those environments with `global_env()` and `base_env()`
-#' respectively. The global environment is also the environment of the
-#' very first evaluation frame on the stack, see [global_frame()] and
-#' [ctxt_stack()].
+#' - `is_attached()` returns `TRUE` when its argument (a search name
+#'   or a package environment) is attached to the search path.
 #'
 #'
-#' @section Life cycle:
+#' @section The search path:
 #'
-#' These functions are experimental and may not belong to the rlang
-#' package. Expect API changes.
+#' This chain of environments determines what objects are visible from
+#' the global workspace. It contains the following elements:
 #'
-#' @param nm The name of an environment attached to the search
-#'   path. Call [base::search()] to see what is currently on the path.
+#' - The chain always starts with `global_env()` and finishes with
+#'   `base_env()` (technically, it finishes with the `empty_env()`
+#'   which the base package environment inherits from).
+#'
+#' - Each [base::library()] call attaches a new package environment to
+#'   the search path. Attached packages are associated with a [search
+#'   name][env_name].
+#'
+#' - In addition, any list, data frame, or environment can be attached
+#'   to the search path with [base::attach()].
+#'
+#'
+#' @param name The name of an environment attached to the search
+#'   path. Call [base::search()] to get the names of environments
+#'   currently attached to the search path. Note that the search name
+#'   of a package environment is prefixed with `"package:"`.
 #'
 #' @keywords internal
 #' @export
 #' @examples
-#' # List the names of scoped environments:
-#' nms <- scoped_names()
-#' nms
+#' # List the search names of environments attached to the search path:
+#' search()
 #'
-#' # The global environment is always the first in the chain:
-#' scoped_env(nms[[1]])
+#' # Get the corresponding environments:
+#' search_envs()
 #'
-#' # And the scoped environment of the base package is always the last:
-#' scoped_env(nms[[length(nms)]])
+#' # The global environment and the base package are always first and
+#' # last in the chain, respectively:
+#' envs <- search_envs()
+#' envs[[1]]
+#' envs[[length(envs)]]
 #'
 #' # These two environments have their own shortcuts:
 #' global_env()
@@ -70,65 +70,73 @@
 #' # Packages appear in the search path with a special name. Use
 #' # pkg_env_name() to create that name:
 #' pkg_env_name("rlang")
-#' scoped_env(pkg_env_name("rlang"))
+#' search_env(pkg_env_name("rlang"))
 #'
 #' # Alternatively, get the scoped environment of a package with
 #' # pkg_env():
 #' pkg_env("utils")
-scoped_env <- function(nm) {
-  if (identical(nm, "NULL")) {
-    return(empty_env())
-  }
-  if (!is_scoped(nm)) {
-    stop(paste0(nm, " is not in scope"), call. = FALSE)
-  }
-  as.environment(nm)
+search_envs <- function() {
+  env_parents(env(.GlobalEnv), last = base_env())
 }
-#' @rdname scoped_env
+#' @rdname search_envs
+#' @export
+search_env <- function(name) {
+  if (!is_string(name)) {
+    abort("`name` must be a string")
+  }
+  if (!is_attached(name)) {
+    abort(paste_line(
+      sprintf("`%s` is not attached.", name),
+      "Do you need to prefix it with \"package:\"?"
+    ))
+  }
+  as.environment(name)
+}
+#' @rdname search_envs
 #' @param pkg The name of a package.
 #' @export
 pkg_env <- function(pkg) {
-  pkg_name <- pkg_env_name(pkg)
-  scoped_env(pkg_name)
+  search_env(pkg_env_name(pkg))
 }
-#' @rdname scoped_env
+#' @rdname search_envs
 #' @export
 pkg_env_name <- function(pkg) {
   paste0("package:", pkg)
 }
-
-#' @rdname scoped_env
+#' @rdname search_envs
+#' @rdname x An environment or a search name.
 #' @export
-scoped_names <- function() {
-  c(search(), "NULL")
-}
-#' @rdname scoped_env
-#' @export
-scoped_envs <- function() {
-  envs <- c(.GlobalEnv, env_parents(.GlobalEnv))
-  set_names(envs, scoped_names())
-}
-#' @rdname scoped_env
-#' @export
-is_scoped <- function(nm) {
-  if (!is_scalar_character(nm)) {
-    stop("`nm` must be a string", call. = FALSE)
+is_attached <- function(x) {
+  if (is_string(x)) {
+    return(x %in% search())
   }
-  nm %in% scoped_names()
+  if (!is_environment(x)) {
+    abort("`x` must be an environment or a name")
+  }
+
+  env <- global_env()
+  while (!is_reference(env, empty_env())) {
+    if (is_reference(x, env)) {
+      return(TRUE)
+    }
+    env <- env_parent(env)
+  }
+
+  FALSE
 }
 
-#' @rdname scoped_env
+#' @rdname search_envs
 #' @export
 base_env <- baseenv
-#' @rdname scoped_env
+#' @rdname search_envs
 #' @export
 global_env <- globalenv
 
 #' Get the empty environment
 #'
 #' The empty environment is the only one that does not have a parent.
-#' It is always used as the tail of a scope chain such as the search
-#' path (see [scoped_names()]).
+#' It is always used as the tail of an environment chain such as the
+#' search path (see [search_envs()]).
 #'
 #' @export
 #' @examples
@@ -305,7 +313,7 @@ env_format <- function(env) {
 #' * "namespace:pkg" if `env` is the namespace of the package "pkg".
 #'
 #' * The `name` attribute of `env` if it exists. This is how the
-#'   [package environments][scoped_env] and the [imports
+#'   [package environments][search_envs] and the [imports
 #'   environments][ns_imports_env] store their names. The name of package
 #'   environments is typically "package:pkg".
 #'
@@ -327,10 +335,16 @@ env_format <- function(env) {
 #' env_name(env())
 #' env_label(env())
 env_name <- function(env) {
+  if (!is_environment(env)) {
+    abort("`env` must be an environment")
+  }
+
   if (is_reference(env, global_env())) {
     return("global")
   }
-
+  if (is_reference(env, base_env())) {
+    return("package:base")
+  }
   if (is_reference(env, empty_env())) {
     return("empty")
   }

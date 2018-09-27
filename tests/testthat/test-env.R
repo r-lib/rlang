@@ -208,7 +208,7 @@ test_that("env_parents() stops at the global env by default", {
 
   rlang_parents <- env_parents(ns_env("rlang"))
   expected <- list(`namespace:base` = ns_env("base"), global = global_env())
-  expect_identical(rlang_parents[2:3], expected)
+  expect_identical(unclass(rlang_parents[2:3]), expected)
 })
 
 test_that("env_parents() always stops at the empty env", {
@@ -216,9 +216,14 @@ test_that("env_parents() always stops at the empty env", {
   expect_identical(env_parents(pkg_env("base")), new_environments(list(empty_env())))
 })
 
+test_that("env_parents() stops at the sentinel if supplied", {
+  expect_reference(last(env_parents(pkg_env("utils"))), empty_env())
+  expect_reference(last(env_parents(pkg_env("utils"), base_env())), base_env())
+})
+
 test_that("env_parents() returns a named list", {
   env <- env(structure(env(base_env()), name = "foobar"))
-  expect_identical(names(env_parents(env)), c("foobar", "base", "empty"))
+  expect_identical(names(env_parents(env)), c("foobar", "package:base", "empty"))
 })
 
 test_that("can lock environments", {
@@ -410,6 +415,30 @@ test_that("env_clone() increases refcounts (#621)", {
 
   expect_identical(e$x, c(1L, 2L))
   expect_identical(c$x, c(NA, 2L))
+})
+
+test_that("can subset `rlang_envs` list", {
+  envs <- new_environments(list(env(), env(), env()))
+
+  out <- envs[1:2]
+  expect_length(out, 2)
+  expect_is(out, "rlang_envs")
+
+  out <- envs[3]
+  expect_length(out, 1)
+  expect_is(out, "rlang_envs")
+})
+
+test_that("can concatenate `rlang_envs` lists", {
+  envs1 <- new_environments(list(env()))
+  envs2 <- new_environments(list(env(), env()))
+  out <- c(envs1, envs2)
+  expect_length(out, 3)
+  expect_is(out, "rlang_envs")
+})
+
+test_that("env_name() requires an environment", {
+  expect_error(env_name("base"), "must be an environment")
 })
 
 

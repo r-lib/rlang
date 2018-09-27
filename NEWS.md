@@ -1,6 +1,10 @@
 
 # rlang 0.2.2.9000
 
+* `is_scoped()` has been soft-deprecated and renamed to
+  `is_attached()`. It now supports environments in addition to search
+  names.
+
 * Quosures converted to functions with `as_function()` now support
   nested quosures.
 

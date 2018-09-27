@@ -13,18 +13,18 @@ test_that("ns_env_name() returns namespace name", {
   expect_identical(ns_env_name(rlang::get_env), "rlang")
 })
 
-test_that("scoped_envs() includes global and empty envs", {
-  envs <- scoped_envs()
+test_that("search_envs() includes the global and base env", {
+  envs <- search_envs()
   expect_identical(envs[[1]], global_env())
-  expect_identical(envs[[length(envs)]], empty_env())
+  expect_identical(envs[[length(envs)]], base_env())
 })
 
-test_that("scoped_envs() returns named environments", {
-  expect_identical(names(scoped_envs()), scoped_names())
+test_that("search_envs() returns named environments", {
+  expect_identical(names(search_envs()), c("global", search()[-1]))
 })
 
-test_that("scoped_env() deals with empty environment", {
-  expect_identical(scoped_env("NULL"), empty_env())
+test_that("search_envs() returns an rlang_envs object", {
+  expect_is(search_envs(), "rlang_envs")
 })
 
 test_that("is_namespace() recognises namespaces", {
@@ -35,7 +35,7 @@ test_that("is_namespace() recognises namespaces", {
 test_that("env_name() returns proper environment name", {
   expect_identical(env_name(global_env()), "global")
   expect_identical(env_name(empty_env()), "empty")
-  expect_identical(env_name(base_env()), "base")
+  expect_identical(env_name(base_env()), "package:base")
 
   expect_identical(env_name(pkg_env("rlang")), "package:rlang")
   expect_identical(env_name(ns_imports_env("rlang")), "imports:rlang")
@@ -50,3 +50,11 @@ test_that("env_label() returns memory address for anonymous envs", {
   expect_identical(env_label(env), sexp_address(env))
 })
 
+test_that("is_attached() detects environments on the search path", {
+  expect_false(is_attached("utils"))
+  expect_true(is_attached("package:utils"))
+
+  expect_true(is_attached(base_env()))
+  expect_true(is_attached(global_env()))
+  expect_false(is_attached(ns_env("base")))
+})
