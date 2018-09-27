@@ -44,6 +44,10 @@ argument should represent a list or a vector. Each element will
 be embedded in the surrounding call, i.e. each element is
 inserted as an argument. If the vector is named, the names are
 used as argument names.
+
+If the vector is a classed object (like a factor), it is
+converted to a list with \code{\link[base:as.list]{base::as.list()}} to ensure proper
+dispatch.
 }
 
 Use \code{qq_show()} to experiment with quasiquotation or debug the

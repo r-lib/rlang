@@ -21,6 +21,10 @@
 #'   inserted as an argument. If the vector is named, the names are
 #'   used as argument names.
 #'
+#'   If the vector is a classed object (like a factor), it is
+#'   converted to a list with [base::as.list()] to ensure proper
+#'   dispatch.
+#'
 #' Use `qq_show()` to experiment with quasiquotation or debug the
 #' effect of unquoting operators. `qq_show()` quotes its input,
 #' processes unquoted parts, and prints the result with
