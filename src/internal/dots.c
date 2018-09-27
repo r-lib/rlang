@@ -1,6 +1,7 @@
 #include <rlang.h>
 #include "dots.h"
 #include "expr-interp.h"
+#include "internal.h"
 #include "utils.h"
 
 sexp* rlang_ns_get(const char* name);
@@ -88,7 +89,6 @@ static sexp* def_unquote_name(sexp* expr, sexp* env) {
 
 static sexp* rlang_spliced_flag = NULL;
 static sexp* spliced_class = NULL;
-static sexp* as_list_call = NULL;
 
 static inline bool is_spliced_dots(sexp* x) {
   return r_get_attribute(x, rlang_spliced_flag) != r_null;
@@ -126,6 +126,21 @@ static sexp* dots_value_big_bang_coerce(sexp* x) {
   }
 }
 
+void signal_retired_splice() {
+  const char* msg =
+    "Unquoting language objects with `!!!` is soft-deprecated as of rlang 0.3.0.\n"
+    "Please use `!!` instead.\n"
+    "\n"
+    "  # Bad:\n"
+    "  dplyr::select(data, !!!enquo(x))\n"
+    "\n"
+    "  # Good:\n"
+    "  dplyr::select(data, !!enquo(x))    # Unquote single quosure\n"
+    "  dplyr::select(data, !!!enquos(x))  # Splice list of quosures\n";
+    r_signal_soft_deprecated(msg, msg, "rlang", r_empty_env);
+}
+
+// Maintain parity with big_bang_coerce() in expr-interp.c
 static sexp* dots_big_bang_coerce(sexp* x) {
   switch (r_typeof(x)) {
   case r_type_null:
@@ -152,20 +167,10 @@ static sexp* dots_big_bang_coerce(sexp* x) {
       return r_vec_coerce(r_node_cdr(x), r_type_list);
     }
     // else fallthrough
-  case r_type_symbol: {
-    const char* msg =
-      "Unquoting language objects with `!!!` is soft-deprecated as of rlang 0.3.0.\n"
-      "Please use `!!` instead.\n"
-      "\n"
-      "  # Bad:\n"
-      "  dplyr::select(data, !!!enquo(x))\n"
-      "\n"
-      "  # Good:\n"
-      "  dplyr::select(data, !!enquo(x))    # Unquote single quosure\n"
-      "  dplyr::select(data, !!!enquos(x))  # Splice list of quosures\n";
-      r_signal_soft_deprecated(msg, msg, "rlang", r_empty_env);
+  case r_type_symbol:
+    signal_retired_splice();
     return r_new_list(x, NULL);
-  }
+
   default:
     r_abort(
       "Can't splice an object of type `%s` because it is not a vector",
@@ -672,9 +677,6 @@ void rlang_init_dots() {
   spliced_class = r_chr("spliced");
   r_mark_precious(spliced_class);
   r_mark_shared(spliced_class);
-
-  as_list_call = r_parse("as.list(x)");
-  r_mark_precious(as_list_call);
 
   auto_name_call = r_parse("rlang:::quos_auto_name(x, y)");
   r_mark_precious(auto_name_call);

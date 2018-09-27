@@ -175,11 +175,6 @@ test_that("UQ() fails if called without argument", {
 
 # !!! ---------------------------------------------------------------------
 
-test_that("`!!!` treats atomic objects as scalar vectors", {
-  expect_identical(quo(list(!!! current_env())), quo(list(!! current_env())))
-  expect_identical(expr(c(!!! expression(1, 2))), expr(c(!! expression(1, 2))))
-})
-
 test_that("values of `!!!` spliced into expression", {
   f <- quo(f(a, !!! list(quote(b), quote(c)), d))
   expect_identical(f, quo(f(a, b, c, d)))
@@ -220,10 +215,10 @@ test_that("can't splice at top level", {
 
 test_that("can splice function body even if not a `{` block", {
   fn <- function(x) { x }
-  expect_identical(exprs(!!! body(fn)), named_list(quote(x)))
+  expect_identical(exprs(!!!fn_body(fn)), named_list(quote(x)))
 
   fn <- function(x) x
-  expect_identical(exprs(!!! body(fn)), named_list(quote(x)))
+  expect_identical(exprs(!!!fn_body(fn)), named_list(quote(x)))
 })
 
 test_that("splicing a pairlist has no side effect", {
@@ -273,7 +268,7 @@ test_that("exprs() preserves spliced quosures", {
   expect_identical(out, named_list(quo(a), quo(b)))
 })
 
-test_that("exprs() and quos() !!! fails with non-vectors", {
+test_that("quoting-!!! fails with non-vectors", {
   expect_error_(exprs(!!!env()), "not a vector")
   expect_error_(exprs(!!!function() NULL), "not a vector")
   expect_error_(exprs(!!!base::c), "not a vector")
@@ -285,9 +280,15 @@ test_that("exprs() and quos() !!! fails with non-vectors", {
   expect_error_(quos(!!!base::c), "not a vector")
   expect_error_(quos(!!!base::`{`), "not a vector")
   expect_error_(quos(!!!expression()), "not a vector")
+
+  expect_error_(expr(list(!!!env())), "not a vector")
+  expect_error_(expr(list(!!!function() NULL)), "not a vector")
+  expect_error_(expr(list(!!!base::c)), "not a vector")
+  expect_error_(expr(list(!!!base::`{`)), "not a vector")
+  expect_error_(expr(list(!!!expression())), "not a vector")
 })
 
-test_that("exprs() and quos() succeed with vectors, pairlists and language objects", {
+test_that("quoting-!!! succeed with vectors, pairlists and language objects", {
   expect_identical_(exprs(!!!NULL), named_list())
   expect_identical_(exprs(!!!pairlist(1)), named_list(1))
   expect_identical_(exprs(!!!list(1)), named_list(1))
@@ -307,20 +308,32 @@ test_that("exprs() and quos() succeed with vectors, pairlists and language objec
   expect_identical_(quos(!!!1i), quos_list(quo(1i)))
   expect_identical_(quos(!!!"foo"), quos_list(quo("foo")))
   expect_identical_(quos(!!!bytes(0)), quos_list(quo(!!bytes(0))))
+
+  expect_identical_(expr(foo(!!!NULL)), quote(foo()))
+  expect_identical_(expr(foo(!!!pairlist(1))), quote(foo(1)))
+  expect_identical_(expr(foo(!!!list(1))), quote(foo(1)))
+  expect_identical_(expr(foo(!!!TRUE)), quote(foo(TRUE)))
+  expect_identical_(expr(foo(!!!1L)), quote(foo(1L)))
+  expect_identical_(expr(foo(!!!1)), quote(foo(1)))
+  expect_identical_(expr(foo(!!!1i)), quote(foo(1i)))
+  expect_identical_(expr(foo(!!!"foo")), quote(foo("foo")))
+  expect_identical_(expr(foo(!!!bytes(0))), expr(foo(!!bytes(0))))
 })
 
-test_that("exprs() and quos() call as.list()", {
+test_that("quoting-!!! call as.list()", {
   as_quos_list <- function(x, env = empty_env()) {
     new_quosures(map(x, new_quosure, env = env))
   }
   exp <- as.list(mtcars)
   expect_identical_(exprs(!!!mtcars), exp)
   expect_identical_(quos(!!!mtcars), as_quos_list(exp))
+  expect_identical_(expr(foo(!!!mtcars)), do.call(call, c(list("foo"), exp)))
 
   fct <- factor(c("a", "b"))
   exp <- set_names(as.list(fct), c("", ""))
   expect_identical_(exprs(!!!fct), exp)
   expect_identical_(quos(!!!fct), as_quos_list(exp))
+  expect_identical_(expr(foo(!!!fct)), do.call(call, c(list("foo"), exp)))
 })
 
 

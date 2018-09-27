@@ -256,33 +256,51 @@ static sexp* bang_bang_expression(struct expansion_info info, sexp* env) {
   return value;
 }
 
-sexp* big_bang_coerce(sexp* expr) {
-  switch (r_typeof(expr)) {
+// From dots.c
+void signal_retired_splice();
+
+// Maintain parity with dots_big_bang_coerce() in dots.c
+sexp* deep_big_bang_coerce(sexp* x) {
+  switch (r_typeof(x)) {
   case r_type_null:
-    return expr;
+    return x;
   case r_type_pairlist:
-    return r_duplicate(expr, true);
+    return r_duplicate(x, true);
   case r_type_logical:
   case r_type_integer:
   case r_type_double:
   case r_type_complex:
   case r_type_character:
   case r_type_raw:
-  case r_type_list:
-    return r_vec_coerce(expr, r_type_pairlist);
+  case r_type_list: {
+    int n_protect = 0;
+    if (r_is_object(x)) {
+      x = KEEP_N(r_eval_with_x(as_list_call, r_base_env, x), n_protect);
+    }
+    x = r_vec_coerce(x, r_type_pairlist);
+    FREE(n_protect);
+    return x;
+  }
   case r_type_call:
-    if (r_is_symbol(r_node_car(expr), "{")) {
-      return r_node_cdr(expr);
+    if (r_is_symbol(r_node_car(x), "{")) {
+      return r_node_cdr(x);
     }
     // else fallthrough
+  case r_type_symbol: {
+    signal_retired_splice();
+    return r_new_node(x, r_null);
+  }
   default:
-    return r_new_node(expr, r_null);
+    r_abort(
+      "Can't splice an object of type `%s` because it is not a vector",
+      r_type_as_c_string(r_typeof(x))
+    );
   }
 }
 
 sexp* big_bang(sexp* operand, sexp* env, sexp* node, sexp* next) {
   sexp* value = KEEP(r_eval(operand, env));
-  value = big_bang_coerce(value);
+  value = deep_big_bang_coerce(value);
 
   if (value == r_null) {
     r_node_poke_cdr(node, r_node_cdr(next));
