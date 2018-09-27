@@ -162,17 +162,34 @@ fn_fmls_syms <- function(fn = caller_fn()) {
 
 #' Get or set function body
 #'
-#' `fn_body()` is a simple wrapper around `base::body()`. The setter
+#' `fn_body()` is a simple wrapper around [base::body()]. It always
+#' returns a `\{` expression and throws an error when the input is a
+#' primitive function (whereas `body()` returns `NULL`). The setter
 #' version preserves attributes, unlike `body<-`.
 #'
 #' @inheritParams fn_fmls
 #'
 #' @export
+#' @examples
+#' # fn_body() is like body() but always returns a block:
+#' fn <- function() do()
+#' body(fn)
+#' fn_body(fn)
+#'
+#' # It also throws an error when used on a primitive function:
+#' try(fn_body(base::list))
 fn_body <- function(fn = caller_fn()) {
   if(!is_closure(fn)) {
     abort("`fn` is not a closure")
   }
-  body(fn)
+
+  body <- body(fn)
+
+  if (is_call(body, "{")) {
+    body
+  } else {
+    call("{", body)
+  }
 }
 #' @rdname fn_body
 #' @export

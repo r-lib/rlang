@@ -24,6 +24,10 @@
   and it is no longer valid to write `!!!enquo(x)`. Please unquote
   scalar objects with `!!` instead.
 
+* `fn_body()` always returns a `{` block, even if the function has a
+  single expression. For instance `fn_body(function(x) do()) ` returns
+  `quote({ do() })`.
+
 * `dots_list()`, `enexprs()` and `enquos()` gain a `.check_assign`
   argument. When `TRUE`, a warning is issued when a `<-` call is
   detected in `...`. No warning is issued if the assignment is wrapped

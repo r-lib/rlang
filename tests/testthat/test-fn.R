@@ -152,7 +152,8 @@ test_that("print method for `fn` discards attributes", {
 
 test_that("fn_body() requires a closure to extract body", {
   expect_error(fn_body(c), "`fn` is not a closure")
-  expect_null(fn_body(function() NULL))
+  expect_equal(fn_body(function() { NULL }), quote({ NULL }))
+  expect_equal(fn_body(function() NULL), quote({ NULL }))
 })
 
 test_that("fn_env() requires a function to extract env", {
@@ -187,4 +188,8 @@ test_that("as_function() supports nested quosures", {
 
   fn <- as_function(quo)
   expect_identical(fn(), "quux hunoz")
+})
+
+test_that("fn_body() always returns a `{` block", {
+  expect_equal(fn_body(function() "foo"), quote({ "foo" }))
 })
