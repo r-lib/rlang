@@ -297,8 +297,6 @@ test_that("exprs() and quos() succeed with vectors, pairlists and language objec
   expect_identical_(exprs(!!!1i), named_list(1i))
   expect_identical_(exprs(!!!"foo"), named_list("foo"))
   expect_identical_(exprs(!!!bytes(0)), named_list(bytes(0)))
-  expect_identical_(exprs(!!!~foo), named_list(~foo))
-  expect_identical_(exprs(!!!quote(foo(bar))), named_list(quote(foo(bar))))
 
   expect_identical_(quos(!!!NULL), quos_list())
   expect_identical_(quos(!!!pairlist(1)), quos_list(quo(1)))
@@ -309,8 +307,6 @@ test_that("exprs() and quos() succeed with vectors, pairlists and language objec
   expect_identical_(quos(!!!1i), quos_list(quo(1i)))
   expect_identical_(quos(!!!"foo"), quos_list(quo("foo")))
   expect_identical_(quos(!!!bytes(0)), quos_list(quo(!!bytes(0))))
-  expect_identical_(quos(!!!~foo), quos_list(quo(!!~foo)))
-  expect_identical_(quos(!!!quote(foo(bar))), quos_list(quo(foo(bar))))
 })
 
 test_that("exprs() and quos() call as.list()", {
@@ -458,4 +454,14 @@ test_that("unquoting with rlang namespace is deprecated", {
 test_that("UQE() is defunct", {
   expect_error_(expr(foo$UQE(NULL)), "defunct")
   expect_error_(UQE(), "defunct")
+})
+
+test_that("splicing language objects still works", {
+  scoped_silent_retirement()
+
+  expect_identical_(exprs(!!!~foo), named_list(~foo))
+  expect_identical_(exprs(!!!quote(foo(bar))), named_list(quote(foo(bar))))
+
+  expect_identical_(quos(!!!~foo), quos_list(quo(!!~foo)))
+  expect_identical_(quos(!!!quote(foo(bar))), quos_list(quo(foo(bar))))
 })

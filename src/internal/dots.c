@@ -152,11 +152,22 @@ static sexp* dots_big_bang_coerce(sexp* x) {
   case r_type_call:
     if (r_is_symbol(r_node_car(x), "{")) {
       return r_vec_coerce(r_node_cdr(x), r_type_list);
-    } else {
-      return r_new_list(x, NULL);
     }
-  case r_type_symbol:
+    // else fallthrough
+  case r_type_symbol: {
+    const char* msg =
+      "Unquoting language objects with `!!!` is soft-deprecated as of rlang 0.3.0.\n"
+      "Please use `!!` instead.\n"
+      "\n"
+      "  # Bad:\n"
+      "  dplyr::select(data, !!!enquo(x))\n"
+      "\n"
+      "  # Good:\n"
+      "  dplyr::select(data, !!enquo(x))    # Unquote single quosure\n"
+      "  dplyr::select(data, !!!enquos(x))  # Splice list of quosures\n";
+      r_signal_soft_deprecated(msg, msg, "rlang", r_empty_env);
     return r_new_list(x, NULL);
+  }
   default:
     r_abort(
       "Can't splice an object of type `%s` because it is not a vector",

@@ -108,3 +108,7 @@ skip_silently <- function(reason, env = caller_env()) {
   expect_true(TRUE)
   return_from(env)
 }
+
+scoped_silent_retirement <- function(env = caller_env()) {
+  scoped_options(lifecycle_disable_verbose_retirement = TRUE, .frame = env)
+}
