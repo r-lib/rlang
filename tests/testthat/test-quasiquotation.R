@@ -267,6 +267,12 @@ test_that("`!!!` doesn't modify spliced inputs by reference", {
   expect_equal(x, quote({ 1L; 2L; 3L }))  # equal because of srcrefs
 })
 
+test_that("exprs() preserves spliced quosures", {
+  out <- exprs(!!!quos(a, b))
+  expect_identical(out, exprs(!!quo(a), !!quo(b)))
+  expect_identical(out, named_list(quo(a), quo(b)))
+})
+
 
 # bang ---------------------------------------------------------------
 

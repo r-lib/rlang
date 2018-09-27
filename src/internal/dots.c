@@ -271,18 +271,7 @@ static sexp* dots_unquote(sexp* dots, struct dots_capture_info* capture_info) {
       break;
     case OP_EXPR_UQS:
       capture_info->needs_expansion = true;
-      expr = KEEP(dots_big_bang(capture_info, info.operand, env, false));
-
-      // Work around bug in dplyr 0.7.4
-      int n = r_length(expr);
-      for (int i = 0; i < n; ++i) {
-        sexp* elt = r_list_get(expr, i);
-        if (rlang_is_quosure(elt)) {
-          r_list_poke(expr, i, rlang_quo_get_expr(elt));
-        }
-      }
-
-      FREE(1);
+      expr = dots_big_bang(capture_info, info.operand, env, false);
       break;
     case OP_QUO_NONE:
     case OP_QUO_UQ:
