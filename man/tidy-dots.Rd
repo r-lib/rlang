@@ -125,9 +125,15 @@ list(missing_arg())
 list2(a <- 1)
 list2((a <- 1))
 
-# dots_list() can be configured not to warn:
-my_list <- function(...) dots_list(..., .check_assign = FALSE)
+# dots_list() can be configured to warn when a `<-` call is
+# detected:
+my_list <- function(...) dots_list(..., .check_assign = TRUE)
 my_list(a <- 1)
+
+# There is no warning if the assignment is wrapped in
+# parentheses. This requires users to be explicit about their
+# intent:
+my_list((a <- 1))
 }
 \seealso{
 \code{\link[=exprs]{exprs()}} for extracting dots without evaluation.
