@@ -3,8 +3,6 @@
 #include "expr-interp.h"
 #include "utils.h"
 
-sexp* eval_with_x(sexp* call, sexp* x);
-sexp* eval_with_xy(sexp* call, sexp* x, sexp* y);
 sexp* rlang_ns_get(const char* name);
 
 
@@ -110,13 +108,13 @@ static sexp* dots_value_big_bang_coerce(sexp* x) {
   case r_type_character:
   case r_type_raw:
     if (r_is_object(x)) {
-      return eval_with_x(as_list_call, x);
+      return r_eval_with_x(as_list_call, r_base_env, x);
     } else {
       return r_vec_coerce(x, r_type_list);
     }
   case r_type_list:
     if (r_is_object(x)) {
-      return eval_with_x(as_list_call, x);
+      return r_eval_with_x(as_list_call, r_base_env, x);
     } else {
       return x;
     }
@@ -139,13 +137,13 @@ static sexp* dots_big_bang_coerce(sexp* x) {
   case r_type_character:
   case r_type_raw:
     if (r_is_object(x)) {
-      return eval_with_x(as_list_call, x);
+      return r_eval_with_x(as_list_call, r_base_env, x);
     } else {
       return r_vec_coerce(x, r_type_list);
     }
   case r_type_list:
     if (r_is_object(x)) {
-      return eval_with_x(as_list_call, x);
+      return r_eval_with_x(as_list_call, r_base_env, x);
     } else {
       return r_duplicate(x, true);
     }
@@ -418,7 +416,7 @@ static sexp* maybe_auto_name(sexp* x, sexp* named) {
 
   if (names_width && (!names || r_chr_has(names, ""))) {
     sexp* width = KEEP(r_int(names_width));
-    x = eval_with_xy(auto_name_call, x, width);
+    x = r_eval_with_xy(auto_name_call, r_base_env, x, width);
     FREE(1);
   }
 
@@ -678,7 +676,6 @@ void rlang_init_dots() {
   as_list_call = r_parse("as.list(x)");
   r_mark_precious(as_list_call);
 
-  auto_name_call = r_parse_eval("as.call(list(rlang:::quos_auto_name, quote(x), quote(y)))",
-                                r_base_env);
+  auto_name_call = r_parse("rlang:::quos_auto_name(x, y)");
   r_mark_precious(auto_name_call);
 }
