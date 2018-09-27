@@ -271,7 +271,7 @@ static sexp* dots_unquote(sexp* dots, struct dots_capture_info* capture_info) {
       break;
     case OP_EXPR_UQS:
       capture_info->needs_expansion = true;
-      expr = dots_big_bang(capture_info, info.operand, env, false);
+      expr = KEEP(dots_big_bang(capture_info, info.operand, env, false));
 
       // Work around bug in dplyr 0.7.4
       int n = r_length(expr);
@@ -282,6 +282,7 @@ static sexp* dots_unquote(sexp* dots, struct dots_capture_info* capture_info) {
         }
       }
 
+      FREE(1);
       break;
     case OP_QUO_NONE:
     case OP_QUO_UQ:
