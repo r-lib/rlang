@@ -38,3 +38,8 @@ test_that("parse_exprs() and parse_quos() handle character vectors", {
 test_that("parse_exprs() requires connections or character vectors", {
   expect_error(parse_exprs(env()), "must be a character vector or an R connection")
 })
+
+test_that("parse_exprs() and parse_quos() support empty input", {
+  expect_identical(parse_exprs(chr()), list())
+  expect_identical(parse_quos(chr(), env()), quos_list())
+})
