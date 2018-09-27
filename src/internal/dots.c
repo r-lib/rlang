@@ -131,6 +131,8 @@ static sexp* dots_big_bang_coerce(sexp* x) {
     } else {
       return r_duplicate(x, true);
     }
+  case r_type_s4:
+    return r_eval_with_x(as_list_s4_call, r_methods_ns_env, x);
   case r_type_call:
     if (r_is_symbol(r_node_car(x), "{")) {
       return r_vec_coerce(r_node_cdr(x), r_type_list);

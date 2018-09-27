@@ -148,6 +148,8 @@ void r_init_rlang_ns_env() {
   rlang_ns_env = r_ns_env("rlang");
 }
 
+sexp* r_methods_ns_env = NULL;
+
 void r_init_library_env() {
   new_env_call = r_parse_eval("as.call(list(new.env, TRUE, NULL, NULL))", r_base_env);
   r_mark_precious(new_env_call);
@@ -163,4 +165,6 @@ void r_init_library_env() {
 
   remove_call = r_parse("remove(list = y, envir = x, inherits = z)");
   r_mark_precious(remove_call);
+
+  r_methods_ns_env = r_parse_eval("asNamespace('methods')", r_base_env);
 }

@@ -23,7 +23,8 @@
 #'
 #'   If the vector is a classed object (like a factor), it is
 #'   converted to a list with [base::as.list()] to ensure proper
-#'   dispatch.
+#'   dispatch. If it is an S4 objects, it is converted to a list with
+#'   [methods::as()].
 #'
 #' Use `qq_show()` to experiment with quasiquotation or debug the
 #' effect of unquoting operators. `qq_show()` quotes its input,

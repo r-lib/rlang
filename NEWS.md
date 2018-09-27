@@ -8,9 +8,12 @@
   and in quoting functions. `!!!` accepts these types:
 
   - Lists, pairlists, and atomic vectors. If they have a class, they
-    are converted with `base::as.list()` to allow S3 and S4 dispatch.
+    are converted with `base::as.list()` to allow S3 dispatch.
     Following this change, objects like factors can now be spliced
     without data loss.
+
+  - S4 objects. These are converted with `as(obj, "list")` before
+    splicing.
 
   - Quoted blocks of expressions, i.e. `{ }` calls
 

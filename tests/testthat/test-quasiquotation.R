@@ -354,6 +354,22 @@ test_that("!!! calls as.list()", {
   expect_identical_(list2(!!!fct), as.list(fct))
 })
 
+test_that("!!! calls methods::as()", {
+  as_quos_list <- function(x, env = empty_env()) {
+    new_quosures(map(x, new_quosure, env = env))
+  }
+
+  .Person <- setClass("Person", slots = c(name = "character", species = "character"))
+  fievel <- .Person(name = "Fievel", species = "mouse")
+  methods::setAs("Person", "list", function(from, to) list(name = from@name, species = from@species))
+
+  exp <- list(name = "Fievel", species = "mouse")
+  expect_identical_(exprs(!!!fievel), exp)
+  expect_identical_(quos(!!!fievel), as_quos_list(exp))
+  expect_identical_(expr(foo(!!!fievel)), quote(foo(name = "Fievel", species = "mouse")))
+  expect_identical_(list2(!!!fievel), exp)
+})
+
 
 # bang ---------------------------------------------------------------
 

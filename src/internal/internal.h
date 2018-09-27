@@ -5,6 +5,7 @@
 
 
 extern sexp* as_list_call;
+extern sexp* as_list_s4_call;
 
 void rlang_init_internal();
 sexp* rlang_ns_get(const char* name);
