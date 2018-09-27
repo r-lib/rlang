@@ -249,8 +249,8 @@ static sexp* dots_unquote(sexp* dots, struct dots_capture_info* capture_info) {
         "  fn(a <- 1)\n"
         "\n"
         "  # Good:\n"
-        "  fn(a = 1)     # Match 1 to parameter `a`\n"
-        "  fn((a <- 1))  # Assign 1 to variable `a`"
+        "  fn(a = 1)       # Match 1 to parameter `a`\n"
+        "  fn({ a <- 1 })  # Assign 1 to variable `a`"
       );
     }
 

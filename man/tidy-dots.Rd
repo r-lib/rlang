@@ -26,7 +26,7 @@ thrown when an empty argument is detected.}
 \item{.check_assign}{Whether to check for \code{<-} calls passed in
 dots. When \code{TRUE} and a \code{<-} call is detected, a warning is
 issued to advise users to use \code{=} if they meant to match a
-function parameter, or wrap the \code{<-} call in parentheses
+function parameter, or wrap the \code{<-} call in brackets
 otherwise. This ensures assignments are explicit.}
 }
 \value{
@@ -128,10 +128,9 @@ list2((a <- 1))
 my_list <- function(...) dots_list(..., .check_assign = TRUE)
 my_list(a <- 1)
 
-# There is no warning if the assignment is wrapped in
-# parentheses. This requires users to be explicit about their
-# intent:
-my_list((a <- 1))
+# There is no warning if the assignment is wrapped in brackets.
+# This requires users to be explicit about their intent:
+my_list({ a <- 1 })
 }
 \seealso{
 \code{\link[=exprs]{exprs()}} for extracting dots without evaluation.
