@@ -88,42 +88,11 @@ static sexp* def_unquote_name(sexp* expr, sexp* env) {
 
 
 static sexp* rlang_spliced_flag = NULL;
-static sexp* spliced_class = NULL;
-
 static inline bool is_spliced_dots(sexp* x) {
   return r_get_attribute(x, rlang_spliced_flag) != r_null;
 }
 static inline void mark_spliced_dots(sexp* x) {
   r_poke_attribute(x, rlang_spliced_flag, rlang_spliced_flag);
-}
-
-static sexp* dots_value_big_bang_coerce(sexp* x) {
-  // Allow pairlists and vectors
-  switch (r_typeof(x)) {
-  case r_type_pairlist:
-  case r_type_logical:
-  case r_type_integer:
-  case r_type_double:
-  case r_type_complex:
-  case r_type_character:
-  case r_type_raw:
-    if (r_is_object(x)) {
-      return r_eval_with_x(as_list_call, r_base_env, x);
-    } else {
-      return r_vec_coerce(x, r_type_list);
-    }
-  case r_type_list:
-    if (r_is_object(x)) {
-      return r_eval_with_x(as_list_call, r_base_env, x);
-    } else {
-      return x;
-    }
-  default:
-    r_abort(
-      "Can't splice an object of type `%s` because it is not a vector",
-      r_type_as_c_string(r_typeof(x))
-    );
-  }
 }
 
 void signal_retired_splice() {
@@ -140,7 +109,7 @@ void signal_retired_splice() {
     r_signal_soft_deprecated(msg, msg, "rlang", r_empty_env);
 }
 
-// Maintain parity with big_bang_coerce() in expr-interp.c
+// Maintain parity with deep_big_bang_coerce() in expr-interp.c
 static sexp* dots_big_bang_coerce(sexp* x) {
   switch (r_typeof(x)) {
   case r_type_null:
@@ -180,8 +149,8 @@ static sexp* dots_big_bang_coerce(sexp* x) {
 }
 
 static sexp* dots_value_big_bang(sexp* x) {
-  x = KEEP(dots_value_big_bang_coerce(x));
-  x = r_set_class(x, spliced_class);
+  x = KEEP(dots_big_bang_coerce(x));
+  r_push_class(x, "spliced");
 
   FREE(1);
   return x;
@@ -674,10 +643,6 @@ sexp* rlang_dots_flat_list(sexp* frame_env,
 }
 
 void rlang_init_dots() {
-  spliced_class = r_chr("spliced");
-  r_mark_precious(spliced_class);
-  r_mark_shared(spliced_class);
-
   auto_name_call = r_parse("rlang:::quos_auto_name(x, y)");
   r_mark_precious(auto_name_call);
 }

@@ -260,7 +260,7 @@ static sexp* bang_bang_expression(struct expansion_info info, sexp* env) {
 void signal_retired_splice();
 
 // Maintain parity with dots_big_bang_coerce() in dots.c
-sexp* deep_big_bang_coerce(sexp* x) {
+static sexp* deep_big_bang_coerce(sexp* x) {
   switch (r_typeof(x)) {
   case r_type_null:
     return x;

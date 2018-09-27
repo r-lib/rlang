@@ -268,7 +268,7 @@ test_that("exprs() preserves spliced quosures", {
   expect_identical(out, named_list(quo(a), quo(b)))
 })
 
-test_that("quoting-!!! fails with non-vectors", {
+test_that("!!! fails with non-vectors", {
   expect_error_(exprs(!!!env()), "not a vector")
   expect_error_(exprs(!!!function() NULL), "not a vector")
   expect_error_(exprs(!!!base::c), "not a vector")
@@ -286,9 +286,15 @@ test_that("quoting-!!! fails with non-vectors", {
   expect_error_(expr(list(!!!base::c)), "not a vector")
   expect_error_(expr(list(!!!base::`{`)), "not a vector")
   expect_error_(expr(list(!!!expression())), "not a vector")
+
+  expect_error_(list2(!!!env()), "not a vector")
+  expect_error_(list2(!!!function() NULL), "not a vector")
+  expect_error_(list2(!!!base::c), "not a vector")
+  expect_error_(list2(!!!base::`{`), "not a vector")
+  expect_error_(list2(!!!expression()), "not a vector")
 })
 
-test_that("quoting-!!! succeed with vectors, pairlists and language objects", {
+test_that("!!! succeeds with vectors, pairlists and language objects", {
   expect_identical_(exprs(!!!NULL), named_list())
   expect_identical_(exprs(!!!pairlist(1)), named_list(1))
   expect_identical_(exprs(!!!list(1)), named_list(1))
@@ -318,9 +324,19 @@ test_that("quoting-!!! succeed with vectors, pairlists and language objects", {
   expect_identical_(expr(foo(!!!1i)), quote(foo(1i)))
   expect_identical_(expr(foo(!!!"foo")), quote(foo("foo")))
   expect_identical_(expr(foo(!!!bytes(0))), expr(foo(!!bytes(0))))
+
+  expect_identical_(list2(!!!NULL), list())
+  expect_identical_(list2(!!!pairlist(1)), list(1))
+  expect_identical_(list2(!!!list(1)), list(1))
+  expect_identical_(list2(!!!TRUE), list(TRUE))
+  expect_identical_(list2(!!!1L), list(1L))
+  expect_identical_(list2(!!!1), list(1))
+  expect_identical_(list2(!!!1i), list(1i))
+  expect_identical_(list2(!!!"foo"), list("foo"))
+  expect_identical_(list2(!!!bytes(0)), list(bytes(0)))
 })
 
-test_that("quoting-!!! call as.list()", {
+test_that("!!! calls as.list()", {
   as_quos_list <- function(x, env = empty_env()) {
     new_quosures(map(x, new_quosure, env = env))
   }
@@ -328,12 +344,14 @@ test_that("quoting-!!! call as.list()", {
   expect_identical_(exprs(!!!mtcars), exp)
   expect_identical_(quos(!!!mtcars), as_quos_list(exp))
   expect_identical_(expr(foo(!!!mtcars)), do.call(call, c(list("foo"), exp)))
+  expect_identical_(list2(!!!mtcars), as.list(mtcars))
 
   fct <- factor(c("a", "b"))
   exp <- set_names(as.list(fct), c("", ""))
   expect_identical_(exprs(!!!fct), exp)
   expect_identical_(quos(!!!fct), as_quos_list(exp))
   expect_identical_(expr(foo(!!!fct)), do.call(call, c(list("foo"), exp)))
+  expect_identical_(list2(!!!fct), as.list(fct))
 })
 
 
@@ -477,4 +495,10 @@ test_that("splicing language objects still works", {
 
   expect_identical_(quos(!!!~foo), quos_list(quo(!!~foo)))
   expect_identical_(quos(!!!quote(foo(bar))), quos_list(quo(foo(bar))))
+
+  expect_identical_(expr(foo(!!!~foo)), expr(foo(!!~foo)))
+  expect_identical_(expr(foo(!!!quote(foo(bar)))), expr(foo(foo(bar))))
+
+  expect_identical_(list2(!!!~foo), list(~foo))
+  expect_identical_(list2(!!!quote(foo(bar))), list(quote(foo(bar))))
 })
