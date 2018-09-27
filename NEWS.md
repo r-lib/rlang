@@ -1,6 +1,10 @@
 
 # rlang 0.2.2.9000
 
+* Quosure methods have been defined for common operations like
+  `==`. These methods fail with an informative error message
+  suggesting to unquote the quosure (#478, #tidyverse/dplyr#3476).
+
 * The input types of `!!!` have been standardised. `!!!` is generally
   defined on vectors: it takes a vector (typically, a list) and
   unquotes each element as a separate argument. The standardisation

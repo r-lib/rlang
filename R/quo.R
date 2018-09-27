@@ -555,3 +555,62 @@ quo_env_print <- function(env) {
 
   cat_line(nm)
 }
+
+#' @export
+Ops.quosure <- function(e1, e2) {
+  if (is_quosure(e1) && is_quosure(e2)) {
+    bad <- c("myquosure1", "myquosure2")
+    good <- c("!!myquosure1", "!!myquosure2")
+  } else if (is_quosure(e1)) {
+    bad <- c("myquosure", "rhs")
+    good <- c("!!myquosure", "rhs")
+  } else {
+    bad <- c("lhs", "myquosure")
+    good <- c("lhs", "!!myquosure")
+  }
+  abort(paste_line(
+    "Base operators are not defined for quosures.",
+    "Do you need to unquote the quosure?",
+    "",
+    "  # Bad:",
+    sprintf("  %s %s %s", bad[[1]], .Generic, bad[[2]]),
+    "",
+    "  # Good:",
+    sprintf("  %s %s %s", good[[1]], .Generic, good[[2]]),
+  ))
+}
+
+abort_quosure_op <- function(group, op) {
+  abort(paste_line(
+    sprintf("%s operations are not defined for quosures.", group),
+    "Do you need to unquote the quosure?",
+    "",
+    "  # Bad:",
+    sprintf("  %s(myquosure)", op),
+    "",
+    "  # Good:",
+    sprintf("  %s(!!myquosure)", op),
+  ))
+}
+#' @export
+Math.quosure <- function(x, ...) {
+  abort_quosure_op("Math", .Generic)
+}
+#' @export
+Summary.quosure <- function(x, ...) {
+  abort_quosure_op("Summary", .Generic)
+}
+#' @export
+mean.quosure <- function(x, na.rm = TRUE, ...) {
+  abort_quosure_op("Summary", "mean")
+}
+#' @importFrom stats median
+#' @export
+median.quosure <- function(x, na.rm = TRUE, ...) {
+  abort_quosure_op("Summary", "median")
+}
+#' @importFrom stats quantile
+#' @export
+quantile.quosure <- function(x, na.rm = TRUE, ...) {
+  abort_quosure_op("Summary", "quantile")
+}
