@@ -230,3 +230,16 @@ test_that("quosures class has subset assign methods", {
 test_that("can't cast a quosure to base types (#523)", {
   expect_error(as.character(quo(foo)), "Can't cast")
 })
+
+test_that("quosures fail with common operations (#478, tidyverse/dplyr#3476)", {
+  q <- quo(NULL)
+
+  expect_error(q + 10, "!!myquosure \\+ rhs")
+  expect_error(q > q, "!!myquosure1 > !!myquosure2")
+  expect_error(10 == q, "lhs == !!myquosure")
+
+  expect_error(abs(q), "abs\\(!!myquosure\\)")
+  expect_error(mean(q), "mean\\(!!myquosure\\)")
+  expect_error(stats::median(q), "median\\(!!myquosure\\)")
+  expect_error(stats::quantile(q), "quantile\\(!!myquosure\\)")
+})
