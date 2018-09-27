@@ -10,6 +10,39 @@ sexp* r_eval_with_x(sexp* call, sexp* parent, sexp* x) {
   FREE(1);
   return out;
 }
+sexp* r_eval_with_xy(sexp* call, sexp* parent, sexp* x, sexp* y) {
+  sexp* env = KEEP(r_new_environment(parent, 1));
+  r_env_poke(env, r_x_sym, x);
+  r_env_poke(env, r_y_sym, y);
+
+  sexp* out = r_eval(call, env);
+
+  FREE(1);
+  return out;
+}
+sexp* r_eval_with_xyz(sexp* call, sexp* parent, sexp* x, sexp* y, sexp* z) {
+  sexp* env = KEEP(r_new_environment(parent, 1));
+  r_env_poke(env, r_x_sym, x);
+  r_env_poke(env, r_y_sym, y);
+  r_env_poke(env, r_z_sym, z);
+
+  sexp* out = r_eval(call, env);
+
+  FREE(1);
+  return out;
+}
+sexp* r_eval_with_wxyz(sexp* call, sexp* parent, sexp* w, sexp* x, sexp* y, sexp* z) {
+  sexp* env = KEEP(r_new_environment(parent, 1));
+  r_env_poke(env, r_w_sym, w);
+  r_env_poke(env, r_x_sym, x);
+  r_env_poke(env, r_y_sym, y);
+  r_env_poke(env, r_z_sym, z);
+
+  sexp* out = r_eval(call, env);
+
+  FREE(1);
+  return out;
+}
 
 
 static sexp* shared_x_env;

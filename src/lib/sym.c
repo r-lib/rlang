@@ -68,6 +68,8 @@ sexp* r_dot_environment_sym;
 sexp* r_function_sym;
 sexp* r_srcref_sym;
 sexp* r_tilde_sym;
+
+sexp* r_w_sym;
 sexp* r_x_sym;
 sexp* r_y_sym;
 sexp* r_z_sym;
@@ -77,6 +79,8 @@ void r_init_library_sym() {
   r_function_sym = r_sym("function");
   r_srcref_sym = r_sym("srcref");
   r_tilde_sym = r_sym("~");
+
+  r_w_sym = r_sym("w");
   r_x_sym = r_sym("x");
   r_y_sym = r_sym("y");
   r_z_sym = r_sym("z");
