@@ -1,9 +1,20 @@
 #include "rlang.h"
 
+
+sexp* r_eval_with_x(sexp* call, sexp* parent, sexp* x) {
+  sexp* env = KEEP(r_new_environment(parent, 1));
+  r_env_poke(env, r_x_sym, x);
+
+  sexp* out = r_eval(call, env);
+
+  FREE(1);
+  return out;
+}
+
+
 static sexp* shared_x_env;
 static sexp* shared_xy_env;
 static sexp* shared_xyz_env;
-
 
 // Evaluate call with a preallocated environment containing a single
 // `x` binding and inheriting from base env.

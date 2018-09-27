@@ -1,14 +1,6 @@
 #include "rlang.h"
 
 
-static sexp* x_sym = NULL;
-static sexp* msg_call = NULL;
-static sexp* wng_call = NULL;
-static sexp* cnd_signal_call = NULL;
-static sexp* wng_signal_call = NULL;
-static sexp* err_signal_call = NULL;
-
-
 #define BUFSIZE 8192
 
 #define INTERP(BUF, FMT, DOTS)                  \
@@ -21,26 +13,26 @@ static sexp* err_signal_call = NULL;
     BUF[BUFSIZE - 1] = '\0';                    \
   }
 
+static sexp* msg_call = NULL;
 void r_inform(const char* fmt, ...) {
   char buf[BUFSIZE];
   INTERP(buf, fmt, ...);
 
-  sexp* env = KEEP(r_new_environment(r_base_env, 1));
-  r_env_poke(env, x_sym, KEEP(r_chr(buf)));
-  r_eval(msg_call, env);
+  r_eval_with_x(msg_call, r_base_env, KEEP(r_chr(buf)));
 
-  FREE(2);
+  FREE(1);
 }
+
+static sexp* wng_call = NULL;
 void r_warn(const char* fmt, ...) {
   char buf[BUFSIZE];
   INTERP(buf, fmt, ...);
 
-  sexp* env = KEEP(r_new_environment(r_base_env, 1));
-  r_env_poke(env, x_sym, KEEP(r_chr(buf)));
-  r_eval(wng_call, env);
+  r_eval_with_x(wng_call, r_base_env, KEEP(r_chr(buf)));
 
-  FREE(2);
+  FREE(1);
 }
+
 void r_abort(const char* fmt, ...) {
   char buf[BUFSIZE];
   INTERP(buf, fmt, ...);
@@ -98,12 +90,11 @@ void r_abort_defunct(const char* fmt, ...) {
 
 static void signal_retirement(const char* source, const char* buf) {
   sexp* call = KEEP(r_parse(source));
+  sexp* msg = KEEP(r_chr(buf));
 
-  sexp* env = KEEP(r_new_environment(r_base_env, 1));
-  r_env_poke(env, x_sym, KEEP(r_chr(buf)));
+  r_eval_with_x(call, r_base_env, msg);
 
-  r_eval(call, env);
-  FREE(3);
+  FREE(2);
 }
 
 static sexp* new_condition_names(sexp* data) {
@@ -147,6 +138,10 @@ sexp* r_new_condition(sexp* subclass, sexp* msg, sexp* call, sexp* data) {
 }
 
 
+static sexp* cnd_signal_call = NULL;
+static sexp* wng_signal_call = NULL;
+static sexp* err_signal_call = NULL;
+
 void r_cnd_signal(sexp* cnd) {
   sexp* call = r_null;
 
@@ -168,11 +163,7 @@ void r_cnd_signal(sexp* cnd) {
     break;
   }
 
-  sexp* env = KEEP(r_new_environment(r_base_env, 1));
-  r_env_poke(env, x_sym, cnd);
-
-  r_eval(call, env);
-  FREE(1);
+  r_eval_with_x(call, r_base_env, cnd);
 }
 
 
@@ -245,8 +236,6 @@ enum r_condition_type r_cnd_type(sexp* cnd) {
 sexp* rlang_ns_get(const char* name);
 
 void r_init_library_cnd() {
-  x_sym = r_sym("x");
-
   msg_call = r_parse("message(x)");
   r_mark_precious(msg_call);
 
