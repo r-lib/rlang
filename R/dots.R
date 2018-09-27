@@ -50,6 +50,11 @@
 #'   were not ignored. If `TRUE`, empty arguments are stored with
 #'   [missing_arg()] values. If `FALSE` (the default) an error is
 #'   thrown when an empty argument is detected.
+#' @param .check_assign Whether to check for `<-` calls passed in
+#'   dots. When `TRUE` and a `<-` call is detected, a warning is
+#'   issued to advise users to use `=` if they meant to match a
+#'   function parameter, or wrap the `<-` call in parentheses
+#'   otherwise. This ensures assignments are explicit.
 #' @return A list of arguments. This list is always named: unnamed
 #'   arguments are named with the empty string `""`.
 #'
@@ -104,10 +109,28 @@
 #'
 #' # The list with preserved empty arguments is equivalent to:
 #' list(missing_arg())
+#'
+#'
+#' # list2() always warns when a `<-` call is detected, unless it is
+#' # wrapped in parentheses:
+#' list2(a <- 1)
+#' list2((a <- 1))
+#'
+#' # dots_list() can be configured not to warn:
+#' my_list <- function(...) dots_list(..., .check_assign = FALSE)
+#' my_list(a <- 1)
 dots_list <- function(...,
                       .ignore_empty = c("trailing", "none", "all"),
-                      .preserve_empty = FALSE) {
-  dots <- .Call(rlang_dots_list, environment(), FALSE, .ignore_empty, .preserve_empty, TRUE)
+                      .preserve_empty = FALSE,
+                      .check_assign = FALSE) {
+  dots <- .Call(rlang_dots_list,
+    frame_env = environment(),
+    named = FALSE,
+    ignore_empty = .ignore_empty,
+    preserve_empty = .preserve_empty,
+    unquote_names = TRUE,
+    check_assign = .check_assign
+  )
   names(dots) <- names2(dots)
   dots
 }
@@ -115,8 +138,16 @@ dots_list <- function(...,
 dots_split <- function(...,
                        .n_unnamed = NULL,
                        .ignore_empty = c("trailing", "none", "all"),
-                       .preserve_empty = FALSE) {
-  dots <- .Call(rlang_dots_list, environment(), FALSE, .ignore_empty, .preserve_empty, TRUE)
+                       .preserve_empty = FALSE,
+                       .check_assign = FALSE) {
+  dots <- .Call(rlang_dots_list,
+    frame_env = environment(),
+    named = FALSE,
+    ignore_empty = .ignore_empty,
+    preserve_empty = .preserve_empty,
+    unquote_names = TRUE,
+    check_assign = .check_assign
+  )
 
   if (is_null(names(dots))) {
     if (length(dots)) {
@@ -237,8 +268,16 @@ is_spliced_bare <- function(x) {
 #' @export
 dots_splice <- function(...,
                         .ignore_empty = c("trailing", "none", "all"),
-                        .preserve_empty = FALSE) {
-  dots <- .Call(rlang_dots_flat_list, environment(), FALSE, .ignore_empty, .preserve_empty, TRUE)
+                        .preserve_empty = FALSE,
+                        .check_assign = FALSE) {
+  dots <- .Call(rlang_dots_flat_list,
+    frame_env = environment(),
+    named = FALSE,
+    ignore_empty = .ignore_empty,
+    preserve_empty = .preserve_empty,
+    unquote_names = TRUE,
+    check_assign = .check_assign
+  )
   names(dots) <- names2(dots)
   dots
 }
@@ -264,8 +303,16 @@ dots_splice <- function(...,
 #' flatten_if(dots, is_spliced)
 dots_values <- function(...,
                         .ignore_empty = c("trailing", "none", "all"),
-                        .preserve_empty = FALSE) {
-  .Call(rlang_dots_values, environment(), FALSE, .ignore_empty, .preserve_empty, TRUE)
+                        .preserve_empty = FALSE,
+                        .check_assign = FALSE) {
+  .Call(rlang_dots_values,
+    frame_env = environment(),
+    named = FALSE,
+    ignore_empty = .ignore_empty,
+    preserve_empty = .preserve_empty,
+    unquote_names = TRUE,
+    check_assign = .check_assign
+  )
 }
 
 #' Capture definition objects
@@ -281,7 +328,13 @@ dots_values <- function(...,
 dots_definitions <- function(...,
                              .named = FALSE,
                              .ignore_empty = c("trailing", "none", "all")) {
-  dots <- .Call(rlang_quos_interp, environment(), .named, .ignore_empty, FALSE)
+  dots <- .Call(rlang_quos_interp,
+    frame_env = environment(),
+    named = .named,
+    ignore_empty = .ignore_empty,
+    unquote_names = FALSE,
+    check_assign = FALSE
+  )
 
   is_def <- map_lgl(dots, function(dot) is_definition(quo_get_expr(dot)))
   defs <- map(dots[is_def], as_definition)

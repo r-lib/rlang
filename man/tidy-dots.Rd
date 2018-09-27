@@ -7,7 +7,7 @@
 \title{Collect dots tidily}
 \usage{
 dots_list(..., .ignore_empty = c("trailing", "none", "all"),
-  .preserve_empty = FALSE)
+  .preserve_empty = FALSE, .check_assign = FALSE)
 
 list2(...)
 }
@@ -24,6 +24,12 @@ last argument is ignored if it is empty.}
 were not ignored. If \code{TRUE}, empty arguments are stored with
 \code{\link[=missing_arg]{missing_arg()}} values. If \code{FALSE} (the default) an error is
 thrown when an empty argument is detected.}
+
+\item{.check_assign}{Whether to check for \code{<-} calls passed in
+dots. When \code{TRUE} and a \code{<-} call is detected, a warning is
+issued to advise users to use \code{=} if they meant to match a
+function parameter, or wrap the \code{<-} call in parentheses
+otherwise. This ensures assignments are explicit.}
 }
 \value{
 A list of arguments. This list is always named: unnamed
@@ -112,6 +118,16 @@ list3(, )
 
 # The list with preserved empty arguments is equivalent to:
 list(missing_arg())
+
+
+# list2() always warns when a `<-` call is detected, unless it is
+# wrapped in parentheses:
+list2(a <- 1)
+list2((a <- 1))
+
+# dots_list() can be configured not to warn:
+my_list <- function(...) dots_list(..., .check_assign = FALSE)
+my_list(a <- 1)
 }
 \seealso{
 \code{\link[=exprs]{exprs()}} for extracting dots without evaluation.

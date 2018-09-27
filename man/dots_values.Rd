@@ -5,7 +5,7 @@
 \title{Evaluate dots with preliminary splicing}
 \usage{
 dots_values(..., .ignore_empty = c("trailing", "none", "all"),
-  .preserve_empty = FALSE)
+  .preserve_empty = FALSE, .check_assign = FALSE)
 }
 \arguments{
 \item{...}{Arguments to evaluate and process splicing operators.}
@@ -18,6 +18,12 @@ last argument is ignored if it is empty.}
 were not ignored. If \code{TRUE}, empty arguments are stored with
 \code{\link[=missing_arg]{missing_arg()}} values. If \code{FALSE} (the default) an error is
 thrown when an empty argument is detected.}
+
+\item{.check_assign}{Whether to check for \code{<-} calls passed in
+dots. When \code{TRUE} and a \code{<-} call is detected, a warning is
+issued to advise users to use \code{=} if they meant to match a
+function parameter, or wrap the \code{<-} call in parentheses
+otherwise. This ensures assignments are explicit.}
 }
 \description{
 This is a tool for advanced users. It captures dots, processes
