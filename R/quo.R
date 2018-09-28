@@ -5,7 +5,7 @@
 #' You can access the quosure components (its expression and its
 #' environment) with:
 #'
-#' * [get_expr()] and [current_env()]. These getters also support other
+#' * [get_expr()] and [get_env()]. These getters also support other
 #'   kinds of objects such as formulas.
 #'
 #' * `quo_get_expr()` and `quo_get_env()`. These getters only work
