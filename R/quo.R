@@ -11,6 +11,11 @@
 #' * `quo_get_expr()` and `quo_get_env()`. These getters only work
 #'   with quosures and throw an error with other types of input.
 #'
+#' Note that a quosure usually does not carry environments for
+#' [literal objects][is_syntactic_literal] like strings or
+#' numbers. [quo()] and [enquo()] only capture an environment for
+#' [symbolic expressions][is_symbolic].
+#'
 #' Test if an object is a quosure with `is_quosure()`. If you know an
 #' object is a quosure, use the `quo_` prefixed predicates to check
 #' its contents, `quo_is_missing()`, `quo_is_symbol()`, etc.

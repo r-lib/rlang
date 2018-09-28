@@ -69,6 +69,11 @@ kinds of objects such as formulas.
 with quosures and throw an error with other types of input.
 }
 
+Note that a quosure usually does not carry environments for
+\link[=is_syntactic_literal]{literal objects} like strings or
+numbers. \code{\link[=quo]{quo()}} and \code{\link[=enquo]{enquo()}} only capture an environment for
+\link[=is_symbolic]{symbolic expressions}.
+
 Test if an object is a quosure with \code{is_quosure()}. If you know an
 object is a quosure, use the \code{quo_} prefixed predicates to check
 its contents, \code{quo_is_missing()}, \code{quo_is_symbol()}, etc.
