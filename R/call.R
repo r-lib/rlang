@@ -237,11 +237,11 @@ is_call <- function(x, name = NULL, n = NULL, ns = NULL) {
 #'   operators with more than 2 arguments like \code{`+`(1, 2, 3)}
 #'   (the latter can be obtained by building calls manually).
 #'
-#' * `"postfix"` for subscripting calls like `foo[]` and `foo[[]]`.
-#'
 #' * `"infix"` for operators like `1 + 2` or `foo$bar`.
 #'
-#' * `"control-flow"` for calls like `function() foo` or `{ foo }`.
+#' * `"special"` for function definitions, control-flow calls like
+#'   `if` or `for`, and subscripting calls like `foo[]` and `foo[[]]`.
+#'
 #'
 #' @param call A quoted function call. An error is raised if not a call.
 #' @export
@@ -286,11 +286,10 @@ call_print_type <- function(call) {
     `repeat` = ,
     `if` = ,
     `(` = ,
-    `{` =
-      "control-flow",
+    `{` = ,
     `[` = ,
     `[[` =
-      "postfix",
+      "special",
     # These operators always print in prefix form even if they have
     # more arguments
     `<-` = ,

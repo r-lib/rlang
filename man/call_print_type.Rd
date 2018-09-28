@@ -17,9 +17,9 @@ code. The types of calls are:
 \item \code{"prefix"} for calls like \code{foo()}, unary operators, \code{-1}, and
 operators with more than 2 arguments like \code{`+`(1, 2, 3)}
 (the latter can be obtained by building calls manually).
-\item \code{"postfix"} for subscripting calls like \code{foo[]} and \code{foo[[]]}.
 \item \code{"infix"} for operators like \code{1 + 2} or \code{foo$bar}.
-\item \code{"control-flow"} for calls like \code{function() foo} or \code{{ foo }}.
+\item \code{"special"} for function definitions, control-flow calls like
+\code{if} or \code{for}, and subscripting calls like \code{foo[]} and \code{foo[[]]}.
 }
 }
 \examples{

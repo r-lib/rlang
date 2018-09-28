@@ -231,15 +231,14 @@ test_that("call_print_type() returns correct enum", {
   expect_identical(call_print_type(quote(+a)), "prefix")
   expect_identical(call_print_type(quote(-a)), "prefix")
 
-  expect_identical(call_print_type(quote(while (a) b)), "control-flow")
-  expect_identical(call_print_type(quote(for (a in b) b)), "control-flow")
-  expect_identical(call_print_type(quote(repeat a)), "control-flow")
-  expect_identical(call_print_type(quote(if (a) b)), "control-flow")
-  expect_identical(call_print_type(quote((a))), "control-flow")
-  expect_identical(call_print_type(quote({ a })), "control-flow")
-
-  expect_identical(call_print_type(quote(a[b])), "postfix")
-  expect_identical(call_print_type(quote(a[[b]])), "postfix")
+  expect_identical(call_print_type(quote(while (a) b)), "special")
+  expect_identical(call_print_type(quote(for (a in b) b)), "special")
+  expect_identical(call_print_type(quote(repeat a)), "special")
+  expect_identical(call_print_type(quote(if (a) b)), "special")
+  expect_identical(call_print_type(quote((a))), "special")
+  expect_identical(call_print_type(quote({ a })), "special")
+  expect_identical(call_print_type(quote(a[b])), "special")
+  expect_identical(call_print_type(quote(a[[b]])), "special")
 
   expect_identical(call_print_type(quote(a ? b)), "infix")
   expect_identical(call_print_type(quote(a ~ b)), "infix")
