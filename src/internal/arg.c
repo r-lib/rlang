@@ -5,16 +5,22 @@
 
 sexp* rlang_ns_get(const char* name);
 
-static sexp* capture_call = NULL;
-
 sexp* capture(sexp* sym, sexp* frame, SEXP* arg_env) {
+  static sexp* capture_call = NULL;
+  if (!capture_call) {
+    sexp* args = KEEP(r_new_node(r_null, r_null));
+    capture_call = r_new_call(rlang_ns_get("captureArgInfo"), args);
+    r_mark_precious(capture_call);
+    r_mark_shared(capture_call);
+    FREE(1);
+  }
+
   if (r_typeof(sym) != SYMSXP) {
     r_abort("`arg` must be a symbol");
   }
 
   r_node_poke_cadr(capture_call, sym);
   sexp* arg_info = KEEP(r_eval(capture_call, frame));
-
   sexp* expr = r_list_get(arg_info, 0);
   sexp* env = r_list_get(arg_info, 1);
 
@@ -61,11 +67,4 @@ sexp* rlang_enquo(sexp* sym, sexp* frame) {
   sexp* quo = forward_quosure(expr, env);
   FREE(1);
   return quo;
-}
-
-
-void rlang_init_arg() {
-  capture_call = r_parse("captureArgInfo(x)");
-  r_mark_precious(capture_call);
-  r_mark_shared(capture_call);
 }
