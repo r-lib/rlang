@@ -312,3 +312,14 @@ test_that("needs_backticks() detects non-syntactic symbols", {
 
   expect_false(any(map_lgl(c(".foo", "bar", "baz_baz", "quux.", "hunoz_", "..."), needs_backticks)))
 })
+
+test_that("expr_text() interprets unicode tags (#611)", {
+  expect_equal(expr_text(quote(`<U+006F>`)), "o")
+})
+
+test_that("expr_text() deparses non-syntactic symbols with backticks (#211)", {
+  expect_identical(expr_text(sym("~foo")), "`~foo`")
+  expect_identical(expr_text(sym("~f<U+006F><U+006F>")), "`~foo`")
+  expect_identical(expr_text(call("~foo")), "`~foo`()")
+})
+

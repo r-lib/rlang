@@ -180,15 +180,27 @@ expr_name <- function(expr) {
 #' @param nlines Maximum number of lines to extract.
 expr_text <- function(expr, width = 60L, nlines = Inf) {
   if (is_symbol(expr)) {
-    return(as_string(expr))
+    return(sym_text(expr))
   }
-  str <- deparse(expr, width.cutoff = width)
+
+  str <- deparse(expr, width.cutoff = width, backtick = TRUE)
 
   if (length(str) > nlines) {
     str <- c(str[seq_len(nlines - 1)], "...")
   }
 
   paste0(str, collapse = "\n")
+}
+
+sym_text <- function(sym) {
+  # Use as_string() to translate unicode tags
+  text <- as_string(sym)
+
+  if (needs_backticks(text)) {
+    text <- sprintf("`%s`", text)
+  }
+
+  text
 }
 
 deparse_one <- function(expr) {

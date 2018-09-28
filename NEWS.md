@@ -1,6 +1,8 @@
 
 # rlang 0.2.2.9000
 
+* `expr_text()` now deparses non-syntactic symbols with backticks (#211).
+
 * `call_print_type()` indicates how a call is deparsed and printed at
   the console by R: prefix, infix, and special form.
 
