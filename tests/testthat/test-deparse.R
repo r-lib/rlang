@@ -300,3 +300,15 @@ test_that("missing values are deparsed", {
   expect_identical(sexp_deparse(quote(call(NA_complex_))), "call(<cpl: NA>)")
   expect_identical(sexp_deparse(quote(call(NA_character_))), "call(<chr: NA>)")
 })
+
+test_that("needs_backticks() detects non-syntactic symbols", {
+  expect_true(all(map_lgl(reserved_words, needs_backticks)))
+
+  expect_false(any(map_lgl(c(".", "a", "Z"), needs_backticks)))
+
+  expect_true(all(map_lgl(c("1", ".1", "~", "!"), needs_backticks)))
+  expect_true(all(map_lgl(c("_", "_foo", "1foo"), needs_backticks)))
+  expect_true(all(map_lgl(c(".fo!o", "b&ar", "baz <- _baz", "~quux.", "h~unoz_"), needs_backticks)))
+
+  expect_false(any(map_lgl(c(".foo", "bar", "baz_baz", "quux.", "hunoz_", "..."), needs_backticks)))
+})
