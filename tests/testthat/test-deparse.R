@@ -310,7 +310,7 @@ test_that("needs_backticks() detects non-syntactic symbols", {
   expect_true(all(map_lgl(c("_", "_foo", "1foo"), needs_backticks)))
   expect_true(all(map_lgl(c(".fo!o", "b&ar", "baz <- _baz", "~quux.", "h~unoz_"), needs_backticks)))
 
-  expect_false(any(map_lgl(c(".foo", "bar", "baz_baz", "quux.", "hunoz_", "..."), needs_backticks)))
+  expect_false(any(map_lgl(c(".foo", "._1", "bar", "baz_baz", "quux.", "hunoz_", "..."), needs_backticks)))
 })
 
 test_that("expr_text() interprets unicode tags (#611)", {
