@@ -35,3 +35,7 @@ test_that("set_names() coerces to character", {
   expect_identical(set_names(1L, TRUE), c(`TRUE` = 1L))
   expect_identical(set_names(1:2, "a", TRUE), c(a = 1L, `TRUE` = 2L))
 })
+
+test_that("has_name() works with pairlists", {
+  expect_true(has_name(fn_fmls(`[.data.frame`), "drop"))
+})
