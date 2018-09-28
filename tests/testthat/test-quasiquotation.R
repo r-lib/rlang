@@ -419,11 +419,30 @@ test_that("can use prefix form of `!!` with qualifying operators", {
 })
 
 test_that("can unquote within for loop (#417)", {
+  # Checks for an issue caused by wrong refcount of unquoted objects
+
   x <- new_list(3)
+
   for (i in 1:3) {
     x[[i]] <- expr(!!i)
   }
   expect_identical(x, as.list(1:3))
+
+  for (i in 1:3) {
+    x[[i]] <- quo(!!i)
+  }
+  expect_identical(x, map(1:3, new_quosure, env = empty_env()))
+
+  for (i in 1:3) {
+    x[[i]] <- quo(foo(!!i))
+  }
+  exp <- list(quo(foo(1L)), quo(foo(2L)), quo(foo(3L)))
+  expect_identical(x, exp)
+
+  for (i in 1:3) {
+    x[[i]] <- quo(foo(!!!i))
+  }
+  expect_identical(x, exp)
 })
 
 

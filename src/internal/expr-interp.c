@@ -229,6 +229,8 @@ struct expansion_info is_big_bang_op(sexp* x) {
 
 
 static sexp* bang_bang_teardown(sexp* value, struct expansion_info info) {
+  r_mark_shared(value);
+
   if (info.parent != r_null) {
     r_node_poke_car(info.parent, value);
   }
