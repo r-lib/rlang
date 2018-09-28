@@ -1,6 +1,9 @@
 
 # rlang 0.2.2.9000
 
+* `call_print_type()` indicates how a call is deparsed and printed at
+  the console by R: prefix, infix, and special form.
+
 * The operator `%@%` has now a replacement version to update
   attributes of an object (#207).
 
