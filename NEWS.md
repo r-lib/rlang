@@ -1,6 +1,9 @@
 
 # rlang 0.2.2.9000
 
+* The `call_` functions such as `call_modify()` now correctly check
+  that their input is the right type (#187).
+
 * Quosure methods have been defined for common operations like
   `==`. These methods fail with an informative error message
   suggesting to unquote the quosure (#478, #tidyverse/dplyr#3476).

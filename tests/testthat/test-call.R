@@ -200,3 +200,21 @@ test_that("precedence of associative ops", {
   expect_false(call_has_precedence(quote(1^2), quote(1^2^3), "lhs"))
   expect_true(call_has_precedence(quote(2^3), quote(1^2^3), "rhs"))
 })
+
+test_that("call functions type-check their input (#187)", {
+  x <- list(a = 1)
+  expect_error(call_modify(x, NULL), "must be a quoted call")
+  expect_error(call_standardise(x), "must be a quoted call")
+  expect_error(call_fn(x), "must be a quoted call")
+  expect_error(call_name(x), "must be a quoted call")
+  expect_error(call_args(x), "must be a quoted call")
+  expect_error(call_args_names(x), "must be a quoted call")
+
+  q <- quo(!!x)
+  expect_error(call_modify(q, NULL), "must be a quoted call")
+  expect_error(call_standardise(q), "must be a quoted call")
+  expect_error(call_fn(q), "must be a quoted call")
+  expect_error(call_name(q), "must be a quoted call")
+  expect_error(call_args(q), "must be a quoted call")
+  expect_error(call_args_names(q), "must be a quoted call")
+})

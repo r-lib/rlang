@@ -296,6 +296,10 @@ call_modify <- function(.call, ...,
     expr <- get_expr(.call)
   }
 
+  if (!is_call(expr)) {
+    abort_call_input_type()
+  }
+
   # Named arguments can be spliced by R
   named <- have_name(args)
   for (nm in names(args)[named]) {
@@ -313,6 +317,10 @@ call_modify <- function(.call, ...,
   }
 
   set_expr(.call, expr)
+}
+
+abort_call_input_type <- function() {
+  abort("`.call` must be a quoted call")
 }
 
 #' Standardise a call
@@ -336,6 +344,10 @@ call_modify <- function(.call, ...,
 #' @export
 call_standardise <- function(call, env = caller_env()) {
   expr <- get_expr(call)
+  if (!is_call(expr)) {
+    abort_call_input_type()
+  }
+
   if (is_frame(call)) {
     fn <- call$fn
   } else {
@@ -381,7 +393,7 @@ call_fn <- function(call, env = caller_env()) {
   env <- get_env(call, env)
 
   if (!is_call(expr)) {
-    abort("`call` must quote a call")
+    abort_call_input_type()
   }
 
   switch_lang(expr,
@@ -426,7 +438,7 @@ call_fn <- function(call, env = caller_env()) {
 call_name <- function(call) {
   call <- get_expr(call)
   if (!is_call(call)) {
-    abort("`call` must be a call or must wrap a call (e.g. in a quosure)")
+    abort_call_input_type()
   }
 
   switch_lang(call,
@@ -465,6 +477,10 @@ call_name <- function(call) {
 #' call_args_names(call)
 call_args <- function(call) {
   call <- get_expr(call)
+  if (!is_call(call)) {
+    abort_call_input_type()
+  }
+
   args <- as.list(call[-1])
   set_names((args), names2(args))
 }
@@ -472,6 +488,9 @@ call_args <- function(call) {
 #' @export
 call_args_names <- function(call) {
   call <- get_expr(call)
+  if (!is_call(call)) {
+    abort_call_input_type()
+  }
   names2(call[-1])
 }
 
