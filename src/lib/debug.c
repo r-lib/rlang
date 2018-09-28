@@ -1,16 +1,10 @@
 #include "rlang.h"
 
 
-void r_sexp_inspect(sexp* x, sexp* env) {
-  sexp* inspect_args = KEEP(r_new_node(x, r_null));
-  sexp* inspect_call = KEEP(r_new_call(r_sym("inspect"), inspect_args));
-
-  sexp* internal = r_base_ns_get(".I""nternal");
-  sexp* internal_args = KEEP(r_new_node(inspect_call, r_null));
-  sexp* internal_call = KEEP(r_new_call(internal, internal_args));
-  r_eval(internal_call, env);
-
-  FREE(4);
+void r_sexp_inspect(sexp* x) {
+  sexp* call = KEEP(r_parse(".Internal(inspect(x))"));
+  r_eval_with_x(call, r_base_env, x);
+  FREE(1);
 }
 
 void r_browse(sexp* env) {
