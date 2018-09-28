@@ -418,6 +418,14 @@ test_that("can use prefix form of `!!` with qualifying operators", {
   expect_identical(expr(rlang:::`!!`(quote(bar))), quote(rlang:::bar))
 })
 
+test_that("can unquote within for loop (#417)", {
+  x <- new_list(3)
+  for (i in 1:3) {
+    x[[i]] <- expr(!!i)
+  }
+  expect_identical(x, as.list(1:3))
+})
+
 
 # quosures -----------------------------------------------------------
 
