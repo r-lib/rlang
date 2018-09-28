@@ -87,6 +87,9 @@ test_that("r_which_operator() returns correct tokens", {
   expect_identical(which_operator(quote(foo())), "")
   expect_identical(which_operator(""), "")
 
+  expect_identical(which_operator(quote(?a)), "?unary")
+  expect_identical(which_operator(quote(a ? b)), "?")
+
   expect_identical(which_operator(quote(while (a) b)), "while")
   expect_identical(which_operator(quote(for (a in b) b)), "for")
   expect_identical(which_operator(quote(repeat a)), "repeat")
