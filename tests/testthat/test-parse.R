@@ -40,6 +40,6 @@ test_that("parse_exprs() requires connections or character vectors", {
 })
 
 test_that("parse_exprs() and parse_quos() support empty input", {
-  expect_identical(parse_exprs(chr()), list())
-  expect_identical(parse_quos(chr(), env()), quos_list())
+  expect_identical(zap_srcref_attributes(parse_exprs(chr())), list())
+  expect_identical(zap_srcref_attributes(parse_quos(chr(), env())), quos_list())
 })
