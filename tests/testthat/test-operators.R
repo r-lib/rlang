@@ -27,6 +27,13 @@ test_that("%@% returns attribute", {
   expect_null(mtcars %@% "row")
 })
 
+test_that("%@% has replacement version", {
+  x <- structure(list(), foo = "bar")
+  x %@% foo <- NULL
+  x %@% baz <- "quux"
+  expect_identical(x, structure(list(), baz = "quux"))
+})
+
 test_that("new_definition() returns new `:=` call", {
   def <- "foo" ~ "bar"
   node_poke_car(def, quote(`:=`))

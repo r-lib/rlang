@@ -32,7 +32,7 @@
   .Call(rlang_replace_na, x, y)
 }
 
-#' Infix attribute accessor
+#' Infix attribute accessor and setter
 #'
 #' @param x Object
 #' @param name Attribute name
@@ -41,8 +41,19 @@
 #' @examples
 #' factor(1:3) %@% "levels"
 #' mtcars %@% "class"
+#'
+#' mtcars %@% class <- NULL
+#' mtcars
 `%@%` <- function(x, name) {
   attr(x, name, exact = TRUE)
+}
+#' @rdname op-get-attr
+#' @usage x %@% name <- value
+#' @export
+`%@%<-` <- function(x, name, value) {
+  name <- as_string(substitute(name))
+  eval_bare(expr(attr(x, !!name) <- value))
+  x
 }
 
 #' Definition operator

@@ -3,9 +3,12 @@
 \name{op-get-attr}
 \alias{op-get-attr}
 \alias{\%@\%}
-\title{Infix attribute accessor}
+\alias{\%@\%<-}
+\title{Infix attribute accessor and setter}
 \usage{
 x \%@\% name
+
+x %@% name <- value
 }
 \arguments{
 \item{x}{Object}
@@ -13,9 +16,12 @@ x \%@\% name
 \item{name}{Attribute name}
 }
 \description{
-Infix attribute accessor
+Infix attribute accessor and setter
 }
 \examples{
 factor(1:3) \%@\% "levels"
 mtcars \%@\% "class"
+
+mtcars \%@\% class <- NULL
+mtcars
 }

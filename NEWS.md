@@ -1,6 +1,9 @@
 
 # rlang 0.2.2.9000
 
+* The operator `%@%` has now a replacement version to update
+  attributes of an object (#207).
+
 * The `call_` functions such as `call_modify()` now correctly check
   that their input is the right type (#187).
 
