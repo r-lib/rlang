@@ -225,6 +225,111 @@ is_call <- function(x, name = NULL, n = NULL, ns = NULL) {
   TRUE
 }
 
+#' How does a call print at the console?
+#'
+#' @description
+#'
+#' `call_print_type()` returns the way a call is deparsed and printed
+#' at the console. This is useful when generating documents based on R
+#' code. The types of calls are:
+#'
+#' * `"prefix"` for calls like `foo()`, unary operators, `-1`, and
+#'   operators with more than 2 arguments like \code{`+`(1, 2, 3)}
+#'   (the latter can be obtained by building calls manually).
+#'
+#' * `"postfix"` for subscripting calls like `foo[]` and `foo[[]]`.
+#'
+#' * `"infix"` for operators like `1 + 2` or `foo$bar`.
+#'
+#' * `"control-flow"` for calls like `function() foo` or `{ foo }`.
+#'
+#' @param call A quoted function call. An error is raised if not a call.
+#' @export
+#' @examples
+#' call_print_type(quote(foo(bar)))
+#' call_print_type(quote(foo[[bar]]))
+#' call_print_type(quote(+foo))
+#' call_print_type(quote(function() foo))
+#'
+#' # When an operator call has an artificial number of arguments, R
+#' # often prints it in prefix form:
+#' call <- call("+", 1, 2, 3)
+#' call
+#' call_print_type(call)
+#'
+#' # But not always:
+#' call <- call("$", 1, 2, 3)
+#' call
+#' call_print_type(call)
+call_print_type <- function(call) {
+  if (!is_call(call)) {
+    abort("`call` must be a call")
+  }
+
+  op <- which_operator(call)
+  if (op == "") {
+    return("prefix")
+  }
+
+  switch(op,
+    `+unary` = ,
+    `-unary` = ,
+    `~unary` = ,
+    `?unary` = ,
+    `!` = ,
+    `!!` = ,
+    `!!!` =
+      "prefix",
+    `function` = ,
+    `while` = ,
+    `for` = ,
+    `repeat` = ,
+    `if` = ,
+    `(` = ,
+    `{` =
+      "control-flow",
+    `[` = ,
+    `[[` =
+      "postfix",
+    # These operators always print in prefix form even if they have
+    # more arguments
+    `<-` = ,
+    `<<-` = ,
+    `=` = ,
+    `::` = ,
+    `:::` = ,
+    `$` = ,
+    `@` =
+      "infix",
+    `+` = ,
+    `-` = ,
+    `?` = ,
+    `~` = ,
+    `:=` = ,
+    `|` = ,
+    `||` = ,
+    `&` = ,
+    `&&` = ,
+    `>` = ,
+    `>=` = ,
+    `<` = ,
+    `<=` = ,
+    `==` = ,
+    `!=` = ,
+    `*` = ,
+    `/` = ,
+    `%%` = ,
+    `special` = ,
+    `:` = ,
+    `^` =
+      if (length(node_cdr(call)) == 2) {
+        "infix"
+      } else {
+        "prefix"
+      }
+  )
+}
+
 
 #' Modify the arguments of a call
 #'
