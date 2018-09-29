@@ -1,9 +1,10 @@
 
 # rlang 0.2.2.9000
 
-* `expr_deparse()` (used to print quosures) now escapes newlines so
-  that they print as `"\n"` (#484). This also ensures that the
-  roundtrip `parse_expr(expr_deparse(x))` is not lossy.
+* `expr_deparse()` (used to print quosures) now escape special
+  characters. For instance, newlines now print as `"\n"` (#484). This
+  ensures that the roundtrip `parse_expr(expr_deparse(x))` is not
+  lossy.
 
 * `expr_text()` now deparses non-syntactic symbols with backticks (#211).
 

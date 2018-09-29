@@ -341,3 +341,15 @@ test_that("expr_deparse() handles newlines in strings (#484)", {
   roundtrip <- parse_expr(expr_deparse(x))
   expect_identical(x, roundtrip)
 })
+
+test_that("expr_deparse() handles ANSI escapes in strings", {
+  expect_identical(expr_deparse("\\"), deparse("\\"))
+  expect_identical(expr_deparse("\\a"), deparse("\\a"))
+  expect_identical(expr_deparse("\\b"), deparse("\\b"))
+  expect_identical(expr_deparse("\\f"), deparse("\\f"))
+  expect_identical(expr_deparse("\\n"), deparse("\\n"))
+  expect_identical(expr_deparse("\\r"), deparse("\\r"))
+  expect_identical(expr_deparse("\\t"), deparse("\\t"))
+  expect_identical(expr_deparse("\\v"), deparse("\\v"))
+  expect_identical(expr_deparse("\\0"), deparse("\\0"))
+})
