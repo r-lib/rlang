@@ -731,7 +731,7 @@ needs_backticks <- function(str) {
 
   n <- nchar(str)
   if (!n) {
-    return(TRUE)
+    return(FALSE)
   }
 
   if (str %in% reserved_words) {
