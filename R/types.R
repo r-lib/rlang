@@ -478,9 +478,9 @@ coerce_class <- function(.x, .to, ...) {
   switch(class(.x), ..., abort_coercion(.x, .to))
 }
 abort_coercion <- function(x, to_type) {
-  x_type <- friendly_type(type_of(x))
+  x_type <- friendly_type_of(x)
   if (!inherits(to_type, "AsIs")) {
-    to_type <- friendly_type(to_type)
+    to_type <- as_friendly_type(to_type)
   }
   abort(paste0("Can't convert ", x_type, " to ", to_type))
 }
@@ -562,7 +562,9 @@ as_friendly_type <- function(type) {
     primitive = ,
     builtin = ,
     special = "a primitive function",
-    closure = "a function"
+    closure = "a function",
+
+    type
   )
 }
 
