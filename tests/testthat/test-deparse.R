@@ -331,3 +331,13 @@ test_that("expr_text() deparses empty arguments", {
   expect_identical(quo_text(quo()), "")
   expect_identical(names(quos_auto_name(quos(, ))), "")
 })
+
+test_that("expr_deparse() handles newlines in strings (#484)", {
+  x <- "foo\n"
+
+  expect_identical(expr_deparse(x), "\"foo\\n\"")
+  expect_output(expr_print(x), "foo\\n", fixed = TRUE)
+
+  roundtrip <- parse_expr(expr_deparse(x))
+  expect_identical(x, roundtrip)
+})

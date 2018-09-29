@@ -581,7 +581,7 @@ atom_elements <- function(x) {
 
   elts[!na_pos] <- switch (typeof(x),
     integer = paste0(elts[!na_pos], "L"),
-    character = paste0("\"", elts[!na_pos], "\""),
+    character = chr_elements(elts[!na_pos]),
     elts[!na_pos]
   )
 
@@ -597,6 +597,12 @@ is_scalar_deparsable <- function(x) {
   }
 
   TRUE
+}
+
+chr_elements <- function(x) {
+  x <- paste0("\"", x, "\"")
+  x <- gsub("\n", "\\\\n", x)
+  x
 }
 
 atom_deparse <- function(x, lines = new_lines()) {
