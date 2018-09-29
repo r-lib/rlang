@@ -33,8 +33,8 @@ thrown when an empty argument is detected.}
 \item{.check_assign}{Whether to check for \code{<-} calls passed in
 dots. When \code{TRUE} and a \code{<-} call is detected, a warning is
 issued to advise users to use \code{=} if they meant to match a
-function parameter, or wrap the \code{<-} call in brackets
-otherwise. This ensures assignments are explicit.}
+function parameter, or wrap the \code{<-} call in braces otherwise.
+This ensures assignments are explicit.}
 }
 \description{
 \Sexpr[results=rd, stage=render]{rlang:::lifecycle("questioning")}

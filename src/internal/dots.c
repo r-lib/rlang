@@ -243,7 +243,7 @@ static sexp* dots_unquote(sexp* dots, struct dots_capture_info* capture_info) {
         "Using `<-` as argument is often a mistake.\n"
         "Do you need to use `=` to match an argument?\n"
         "\n"
-        "If you really want to use `<-`, please wrap in parentheses:\n"
+        "If you really want to use `<-`, please wrap in braces:\n"
         "\n"
         "  # Bad:\n"
         "  fn(a <- 1)\n"

@@ -51,8 +51,8 @@
 #' @param .check_assign Whether to check for `<-` calls passed in
 #'   dots. When `TRUE` and a `<-` call is detected, a warning is
 #'   issued to advise users to use `=` if they meant to match a
-#'   function parameter, or wrap the `<-` call in brackets
-#'   otherwise. This ensures assignments are explicit.
+#'   function parameter, or wrap the `<-` call in braces otherwise.
+#'   This ensures assignments are explicit.
 #' @return A list of arguments. This list is always named: unnamed
 #'   arguments are named with the empty string `""`.
 #'
@@ -109,17 +109,12 @@
 #' list(missing_arg())
 #'
 #'
-#' # list2() always warns when a `<-` call is detected, unless it is
-#' # wrapped in parentheses:
-#' list2(a <- 1)
-#' list2((a <- 1))
-#'
 #' # dots_list() can be configured to warn when a `<-` call is
 #' # detected:
 #' my_list <- function(...) dots_list(..., .check_assign = TRUE)
 #' my_list(a <- 1)
 #'
-#' # There is no warning if the assignment is wrapped in brackets.
+#' # There is no warning if the assignment is wrapped in braces.
 #' # This requires users to be explicit about their intent:
 #' my_list({ a <- 1 })
 dots_list <- function(...,
