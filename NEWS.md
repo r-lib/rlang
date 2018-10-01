@@ -1,6 +1,9 @@
 
 # rlang 0.2.2.9000
 
+* `call_standardise()` now handles primitive functions like `~`
+  properly (#473).
+
 * The `%@%` operator now quotes its input and supports S4 objects.
   This makes it directly equivalent to `@` except that it extracts
   attributes for non-S4 objects (#207).

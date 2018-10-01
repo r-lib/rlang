@@ -460,8 +460,12 @@ call_standardise <- function(call, env = caller_env()) {
     fn <- eval_bare(node_car(expr), env)
   }
 
-  matched <- match.call(as_closure(fn), expr)
-  set_expr(call, matched)
+  if (is_primitive(fn)) {
+    call
+  } else {
+    matched <- match.call(fn, expr)
+    set_expr(call, matched)
+  }
 }
 
 #' Extract function from a call

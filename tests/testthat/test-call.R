@@ -40,6 +40,11 @@ test_that("call_standardise() supports quosures", {
   expect_identical(call_standardise(quo), exp)
 })
 
+test_that("can standardise primitive functions (#473)", {
+  expect_identical(call_standardise(foo ~ bar), foo ~ bar)
+  expect_identical(call_standardise(quote(1 + 2)), quote(1 + 2))
+})
+
 
 # Modification ------------------------------------------------------------
 
