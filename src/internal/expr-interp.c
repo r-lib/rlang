@@ -360,6 +360,8 @@ sexp* call_interp_impl(sexp* x, sexp* env, struct expansion_info info) {
     r_abort("Can't use `!!!` at top level");
   case OP_EXPAND_UQN:
     r_abort("Internal error: Deep `:=` unquoting");
+  case OP_EXPAND_DOT_DATA:
+    r_abort("TODO: .data");
   }
 
   // Silence mistaken noreturn warning on GCC
