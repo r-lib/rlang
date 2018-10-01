@@ -38,7 +38,8 @@
   .data[["name"]])` and `group_by(df, name)` produce the same column
   name.
 
-* `call_modify()` supports removing unexisting arguments (#393).
+* `call_modify()` now supports removing unexisting arguments (#393)
+  and passing multiple arguments with the same name (#398).
 
 * `call_standardise()` now handles primitive functions like `~`
   properly (#473).

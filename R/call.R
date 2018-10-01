@@ -390,9 +390,6 @@ call_modify <- function(.call, ...,
                         .standardise = FALSE,
                         .env = caller_env()) {
   args <- list2(...)
-  if (any(duplicated(names(args)) & names(args) != "")) {
-    abort("Duplicate arguments")
-  }
 
   if (.standardise) {
     expr <- get_expr(call_standardise(.call, env = .env))

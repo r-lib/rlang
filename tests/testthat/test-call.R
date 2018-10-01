@@ -83,9 +83,9 @@ test_that("accepts unnamed arguments", {
   )
 })
 
-test_that("fails with duplicated arguments", {
-  expect_error(call_modify(~mean(), na.rm = TRUE, na.rm = FALSE), "Duplicate arguments")
-  expect_error(call_modify(~mean(), TRUE, FALSE), NA)
+test_that("allows duplicated arguments (#398)", {
+  expect_identical(call_modify(~mean(), na.rm = TRUE, na.rm = FALSE), ~mean(na.rm = FALSE))
+  expect_identical(call_modify(~mean(), TRUE, FALSE), ~mean(TRUE, FALSE))
 })
 
 test_that("can remove unexisting arguments (#393)", {
