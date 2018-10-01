@@ -26,6 +26,21 @@ test_that("succeeds with literal functions", {
 })
 
 
+# Standardisation ---------------------------------------------------------
+
+test_that("call_standardise() supports quosures", {
+  fn <- function(foo, bar) "Not this one"
+
+  quo <- local({
+    fn <- function(baz, quux) "This one"
+    quo(fn(this, that))
+  })
+
+  exp <- new_quosure(quote(fn(baz = this, quux = that)), quo_get_env(quo))
+  expect_identical(call_standardise(quo), exp)
+})
+
+
 # Modification ------------------------------------------------------------
 
 test_that("can modify formulas inplace", {
