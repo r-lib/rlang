@@ -525,6 +525,11 @@ test_that(".data[[ on the LHS of := fails", {
   expect_error(exprs(.data[["foo"]] := foo), "Can't use the `.data` pronoun on the LHS")
 })
 
+test_that("it is still possible to use .data[[ in list2()", {
+  .data <- mtcars
+  expect_identical_(list2(.data$cyl), list(mtcars$cyl))
+})
+
 
 # Lifecycle ----------------------------------------------------------
 
