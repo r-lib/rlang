@@ -503,6 +503,13 @@ test_that("Unquote operators fail when called outside quasiquoted arguments", {
   expect_qq_error(a := b)
 })
 
+test_that("`.data[[` unquotes", {
+  foo <- "bar"
+  expect_identical_(expr(.data[[foo]]), quote(.data[["bar"]]))
+  expect_identical_(expr(deep(.data[[foo]])), quote(deep(.data[["bar"]])))
+  expect_identical_(exprs(.data[[foo]]), named_list(quote(.data[["bar"]])))
+})
+
 
 # Lifecycle ----------------------------------------------------------
 

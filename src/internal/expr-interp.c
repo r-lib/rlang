@@ -130,6 +130,8 @@ void maybe_poke_big_bang_op(sexp* x, struct expansion_info* info) {
   }
 }
 
+static sexp* dot_data_sym = NULL;
+
 struct expansion_info which_expansion_op(sexp* x, bool unquote_names) {
   struct expansion_info info = which_bang_op(x);
 
@@ -211,6 +213,14 @@ struct expansion_info which_expansion_op(sexp* x, bool unquote_names) {
   if (r_is_call_any(x, uqe_names, UQE_N)) {
     info.op = OP_EXPAND_UQE;
     info.operand = r_node_cadr(x);
+    return info;
+  }
+
+  if (r_is_call(x, "[[") && r_node_cadr(x) == dot_data_sym) {
+    info.op = OP_EXPAND_DOT_DATA;
+    info.root = x;
+    info.parent = r_node_cddr(x);
+    info.operand = r_node_car(info.parent);
     return info;
   }
 
@@ -347,6 +357,7 @@ sexp* call_interp_impl(sexp* x, sexp* env, struct expansion_info info) {
       return node_list_interp(x, env);
     }
   case OP_EXPAND_UQ:
+  case OP_EXPAND_DOT_DATA:
     return bang_bang(info, env);
   case OP_EXPAND_UQE:
     return bang_bang_expression(info, env);
@@ -360,8 +371,6 @@ sexp* call_interp_impl(sexp* x, sexp* env, struct expansion_info info) {
     r_abort("Can't use `!!!` at top level");
   case OP_EXPAND_UQN:
     r_abort("Internal error: Deep `:=` unquoting");
-  case OP_EXPAND_DOT_DATA:
-    r_abort("TODO: .data");
   }
 
   // Silence mistaken noreturn warning on GCC
@@ -397,4 +406,9 @@ sexp* rlang_interp(sexp* x, sexp* env) {
 
   FREE(1);
   return x;
+}
+
+
+void rlang_init_expr_interp() {
+  dot_data_sym = r_sym(".data");
 }
