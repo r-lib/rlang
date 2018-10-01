@@ -1,6 +1,11 @@
 
 # rlang 0.2.2.9000
 
+* Automatic naming of expressions now uses `quo_name()` instead of
+  `quo_text()`. This makes it compatible with all object types,
+  prevents multi-line names, and ensures `name` and `.data[["name"]]`
+  are given the same default name.
+
 * `quo_name()` now uses `pillar::type_sum()` to create default names
   for constant objects.
 

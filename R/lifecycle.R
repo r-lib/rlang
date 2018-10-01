@@ -171,6 +171,12 @@ upcase1 <- function(x) {
 #' * `scoped_env()` => [search_env()]
 #' * `scoped_envs()` => [search_envs()]
 #'
+#' * The `width` argument of [exprs_auto_name()] and
+#'   [quos_auto_name()] no longer has any effect because [quo_name()]
+#'   is used for deparsing instead of [quo_text()]. For the same
+#'   reason, passing a width as `.named` argument of dots collectors
+#'   like `quos()` is soft-deprecated.
+#'
 #'
 #' **Soft-deprecated as of rlang 0.2.0:**
 #'

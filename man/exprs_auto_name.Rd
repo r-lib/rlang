@@ -5,14 +5,14 @@
 \alias{quos_auto_name}
 \title{Ensure that all elements of a list of expressions are named}
 \usage{
-exprs_auto_name(exprs, width = 60L, printer = expr_text)
+exprs_auto_name(exprs, width = NULL, printer = expr_name)
 
-quos_auto_name(quos, width = 60L)
+quos_auto_name(quos, width = NULL)
 }
 \arguments{
 \item{exprs}{A list of expressions.}
 
-\item{width}{Maximum width of names.}
+\item{width}{Soft-deprecated. Maximum width of names.}
 
 \item{printer}{A function that takes an expression and converts it
 to a string. This function must take an expression as the first
@@ -24,6 +24,6 @@ argument and \code{width} as the second argument.}
 This gives default names to unnamed elements of a list of
 expressions (or expression wrappers such as formulas or
 quosures). \code{exprs_auto_name()} deparses the expressions with
-\code{\link[=expr_text]{expr_text()}} by default. \code{quos_auto_name()} deparses with
-\code{\link[=quo_text]{quo_text()}}.
+\code{\link[=expr_name]{expr_name()}} by default. \code{quos_auto_name()} deparses with
+\code{\link[=quo_name]{quo_name()}}.
 }

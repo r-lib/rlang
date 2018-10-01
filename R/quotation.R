@@ -116,10 +116,8 @@
 #'   `exprs()` and `quos()`, the expressions to capture unevaluated
 #'   (including expressions contained in `...`).
 #' @param .named Whether to ensure all dots are named. Unnamed
-#'   elements are processed with [expr_text()] to figure out a default
-#'   name. If an integer, it is passed to the `width` argument of
-#'   `expr_text()`, if `TRUE`, the default width is used. See
-#'   [exprs_auto_name()].
+#'   elements are processed with [quo_name()] to build a default
+#'   name. See also [quos_auto_name()].
 #' @param .unquote_names Whether to treat `:=` as `=`. Unlike `=`, the
 #'   `:=` syntax supports `!!` unquoting on the LHS.
 #' @name quotation
@@ -372,20 +370,25 @@ endots <- function(call,
 #' This gives default names to unnamed elements of a list of
 #' expressions (or expression wrappers such as formulas or
 #' quosures). `exprs_auto_name()` deparses the expressions with
-#' [expr_text()] by default. `quos_auto_name()` deparses with
-#' [quo_text()].
+#' [expr_name()] by default. `quos_auto_name()` deparses with
+#' [quo_name()].
 #'
 #' @param exprs A list of expressions.
-#' @param width Maximum width of names.
+#' @param width Soft-deprecated. Maximum width of names.
 #' @param printer A function that takes an expression and converts it
 #'   to a string. This function must take an expression as the first
 #'   argument and `width` as the second argument.
 #' @export
-exprs_auto_name <- function(exprs, width = 60L, printer = expr_text) {
+exprs_auto_name <- function(exprs, width = NULL, printer = expr_name) {
+  if (!is_null(width)) {
+    signal_soft_deprecated(env = empty_env(), paste_line(
+      "The `width` argument is soft-deprecated as of rlang 0.3.0."
+    ))
+  }
   have_name <- have_name(exprs)
 
   if (any(!have_name)) {
-    nms <- map_chr(exprs[!have_name], printer, width = width)
+    nms <- map_chr(exprs[!have_name], printer)
     names(exprs)[!have_name] <- nms
   }
 
@@ -394,6 +397,6 @@ exprs_auto_name <- function(exprs, width = 60L, printer = expr_text) {
 #' @rdname exprs_auto_name
 #' @param quos A list of quosures.
 #' @export
-quos_auto_name <- function(quos, width = 60L) {
-  exprs_auto_name(quos, width = width, printer = quo_text)
+quos_auto_name <- function(quos, width = NULL) {
+  exprs_auto_name(quos, width = width, printer = quo_name)
 }

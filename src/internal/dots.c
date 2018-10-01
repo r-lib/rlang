@@ -19,8 +19,6 @@ struct dots_capture_info {
 };
 
 static int match_ignore_empty_arg(sexp* ignore_empty);
-static int find_auto_names_width(sexp* named);
-
 struct dots_capture_info init_capture_info(enum dots_capture_type type,
                                            sexp* named,
                                            sexp* ignore_empty,
@@ -362,22 +360,24 @@ static int match_ignore_empty_arg(sexp* ignore_empty) {
   r_abort("`.ignore_empty` should be one of: \"trailing\", \"none\" or \"all\"");
 }
 
-static int find_auto_names_width(sexp* named) {
+void signal_soft_deprecated_width() {
+  const char* msg = "`.named` can no longer be a width";
+  r_signal_soft_deprecated(msg, msg, "rlang", r_empty_env);
+}
+static bool should_auto_name(sexp* named) {
   if (r_length(named) != 1) {
     goto error;
   }
 
   switch (r_typeof(named)) {
   case r_type_logical:
-    if (r_as_bool(named)) {
-      return 60;
-    } else {
-      return 0;
-    }
+    return r_as_bool(named);
   case r_type_integer:
+    signal_soft_deprecated_width();
     return INTEGER(named)[0];
   case r_type_double:
     if (r_is_integerish(named, -1, true)) {
+      signal_soft_deprecated_width();
       return REAL(named)[0];
     }
     // else fallthrough
@@ -386,19 +386,16 @@ static int find_auto_names_width(sexp* named) {
   }
 
  error:
-  r_abort("`.named` must be a scalar logical or number");
+  r_abort("`.named` must be a scalar logical");
 }
 
 static sexp* auto_name_call = NULL;
 
 static sexp* maybe_auto_name(sexp* x, sexp* named) {
-  int names_width = find_auto_names_width(named);
   sexp* names = r_vec_names(x);
 
-  if (names_width && (!names || r_chr_has(names, ""))) {
-    sexp* width = KEEP(r_int(names_width));
-    x = r_eval_with_xy(auto_name_call, r_base_env, x, width);
-    FREE(1);
+  if (should_auto_name(named) && (!names || r_chr_has(names, ""))) {
+    x = r_eval_with_x(auto_name_call, r_base_env, x);
   }
 
   return x;
@@ -650,6 +647,6 @@ sexp* rlang_dots_flat_list(sexp* frame_env,
 }
 
 void rlang_init_dots() {
-  auto_name_call = r_parse("rlang:::quos_auto_name(x, y)");
+  auto_name_call = r_parse("rlang:::quos_auto_name(x)");
   r_mark_precious(auto_name_call);
 }
