@@ -52,6 +52,7 @@ is_symbol <- function(x, name = NULL) {
 namespace_sym <- quote(`::`)
 namespace2_sym <- quote(`:::`)
 dollar_sym <- quote(`$`)
+dot_data_sym <- quote(.data)
 at_sym <- quote(`@`)
 tilde_sym <- quote(`~`)
 colon_equals_sym <- quote(`:=`)

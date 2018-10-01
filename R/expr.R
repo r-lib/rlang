@@ -158,9 +158,13 @@ expr_name <- function(expr) {
     NULL = "NULL",
     symbol = as_string(expr),
     language = {
-      name <- deparse_one(expr)
-      name <- gsub("\n.*$", "...", name)
-      name
+      if (is_data_pronoun(expr)) {
+        data_pronoun_name(expr) %||% "<unknown>"
+      } else {
+        name <- deparse_one(expr)
+        name <- gsub("\n.*$", "...", name)
+        name
+      }
     },
     if (is_scalar_atomic(expr)) {
       # So 1L is translated to "1" and not "1L"

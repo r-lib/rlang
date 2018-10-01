@@ -353,3 +353,8 @@ test_that("expr_deparse() handles ANSI escapes in strings", {
   expect_identical(expr_deparse("\\v"), deparse("\\v"))
   expect_identical(expr_deparse("\\0"), deparse("\\0"))
 })
+
+test_that("expr_name() handles .data pronoun", {
+  expect_identical(expr_name(quote(.data[["bar"]])), "bar")
+  expect_identical(quo_name(quo(.data[["bar"]])), "bar")
+})
