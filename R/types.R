@@ -639,8 +639,8 @@ friendly_expr_type_of <- function(type) {
 #'
 #' @section Life cycle:
 #'
-#' * `lang_type_of()` is an experimental function.
-#' * `switch_lang()` and `coerce_lang()` are experimental functions.
+#' All these functions are in the questioning stage and likely to be
+#' removed from the package.
 #'
 #' @inheritParams switch_type
 #' @param .x,x A language object (a call). If a formula quote, the RHS
@@ -695,6 +695,10 @@ lang_type_of <- function(x) {
     abort("corrupt language object")
   }
 }
+
+# Exported `switch_lang()` function is likely to be deprecated in the
+# future. Use switch_call() internally:
+switch_call <- switch_lang
 
 #' Is an object copyable?
 #'

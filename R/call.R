@@ -504,7 +504,7 @@ call_fn <- function(call, env = caller_env()) {
     abort_call_input_type()
   }
 
-  switch_lang(expr,
+  switch_call(expr,
     recursive = abort("`call` does not call a named or inlined function"),
     inlined = node_car(expr),
     named = ,
@@ -549,7 +549,7 @@ call_name <- function(call) {
     abort_call_input_type()
   }
 
-  switch_lang(call,
+  switch_call(call,
     named = as_string(node_car(call)),
     namespaced = as_string(node_cadr(node_cdar(call))),
     NULL

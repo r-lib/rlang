@@ -68,10 +68,9 @@ determined by the order of operations. See \link{node} for more on this.
 }
 \section{Life cycle}{
 
-\itemize{
-\item \code{lang_type_of()} is an experimental function.
-\item \code{switch_lang()} and \code{coerce_lang()} are experimental functions.
-}
+
+All these functions are in the questioning stage and likely to be
+removed from the package.
 }
 
 \examples{
