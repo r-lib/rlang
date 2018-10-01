@@ -370,11 +370,11 @@ call_print_type <- function(call) {
 #' call_modify(call, trim = 0.1)
 #'
 #' # Add an explicit missing argument
-#' call_modify(call, na.rm = quote(expr = ))
+#' call_modify(call, na.rm = missing_arg())
 #'
 #' # Supply a list of new arguments with `!!!`
 #' newargs <- list(na.rm = NULL, trim = 0.1)
-#' call_modify(call, !!! newargs)
+#' call_modify(call, !!!newargs)
 #'
 #' # Supply a call frame to extract the frame expression:
 #' f <- function(bool = TRUE) {
