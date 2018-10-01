@@ -1,6 +1,9 @@
 
 # rlang 0.2.2.9000
 
+* `quo_name()` now uses `pillar::type_sum()` to create default names
+  for constant objects.
+
 * `.data[[foo]]` is now an unquote operator. This guarantees that
   `foo` is evaluated in the context rather than the data mask and
   makes it easier to treat `.data[["bar"]]` the same way as a

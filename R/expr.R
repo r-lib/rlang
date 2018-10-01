@@ -174,7 +174,7 @@ expr_name <- function(expr) {
       name <- gsub("\n.*$", "...", name)
       name
     } else {
-      abort("`expr` must quote a symbol, scalar, or call")
+      paste0("<", rlang_type_sum(expr), ">")
     }
   )
 }
