@@ -407,7 +407,9 @@ call_modify <- function(.call, ...,
   # Named arguments can be spliced by R
   named <- have_name(args)
   for (nm in names(args)[named]) {
-    expr[[nm]] <- args[[nm]]
+    if (!is_null(args[[nm]])) {
+      expr[[nm]] <- args[[nm]]
+    }
   }
 
   if (any(!named)) {

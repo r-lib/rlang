@@ -1,6 +1,8 @@
 
 # rlang 0.2.2.9000
 
+* `call_modify()` supports removing unexisting arguments (#393).
+
 * `call_standardise()` now handles primitive functions like `~`
   properly (#473).
 

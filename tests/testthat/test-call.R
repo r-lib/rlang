@@ -88,6 +88,10 @@ test_that("fails with duplicated arguments", {
   expect_error(call_modify(~mean(), TRUE, FALSE), NA)
 })
 
+test_that("can remove unexisting arguments (#393)", {
+  expect_identical(call_modify(quote(foo()), ... = NULL), quote(foo()))
+})
+
 
 # Utils --------------------------------------------------------------
 
