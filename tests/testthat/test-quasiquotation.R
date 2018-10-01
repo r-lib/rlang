@@ -521,6 +521,10 @@ test_that(".data[[ argument is not masked", {
   expect_identical_(eval_tidy(expr(.data[[cyl]]), mtcars), mtcars$carb)
 })
 
+test_that(".data[[ on the LHS of := fails", {
+  expect_error(exprs(.data[["foo"]] := foo), "Can't use the `.data` pronoun on the LHS")
+})
+
 
 # Lifecycle ----------------------------------------------------------
 

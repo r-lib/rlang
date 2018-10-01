@@ -63,7 +63,7 @@ static sexp* def_unquote_name(sexp* expr, sexp* env) {
   case OP_EXPAND_FIXUP:
     r_abort("The LHS of `:=` must be a string or a symbol");
   case OP_EXPAND_DOT_DATA:
-    r_abort("TODO: .data");
+    r_abort("Can't use the `.data` pronoun on the LHS of `:=`");
   }
 
   // Unwrap quosures for convenience
