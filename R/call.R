@@ -404,20 +404,44 @@ call_modify <- function(.call, ...,
     abort_call_input_type()
   }
 
-  # Named arguments can be spliced by R
+  expr <- duplicate(expr, shallow = TRUE)
+
+  # Discard "" names
   named <- have_name(args)
-  for (nm in names(args)[named]) {
-    if (!is_null(args[[nm]])) {
-      expr[[nm]] <- args[[nm]]
+  named_args <- args[named]
+  nms <- names(named_args)
+
+  for (i in seq_along(named_args)) {
+    tag <- sym(nms[[i]])
+    arg <- named_args[[i]]
+
+    prev <- expr
+    node <- node_cdr(expr)
+
+    while (!is_null(node)) {
+      if (identical(node_tag(node), tag)) {
+        # Remove argument from the list if `NULL`
+        if (is_null(arg)) {
+          node <- node_cdr(node)
+          node_poke_cdr(prev, node)
+          next
+        }
+
+        node_poke_car(node, arg)
+        break
+      }
+
+      prev <- node
+      node <- node_cdr(node)
+    }
+    if (is_null(node) && !is_null(arg)) {
+      node <- new_node(arg, NULL)
+      node_poke_tag(node, tag)
+      node_poke_cdr(prev, node)
     }
   }
 
   if (any(!named)) {
-    # Duplicate list structure in case it wasn't before
-    if (!any(named)) {
-      expr <- duplicate(expr, shallow = TRUE)
-    }
-
     remaining_args <- as.pairlist(args[!named])
     expr <- node_append(expr, remaining_args)
   }
