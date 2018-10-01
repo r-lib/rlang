@@ -1,6 +1,13 @@
 
 # rlang 0.2.2.9000
 
+* `.data[[foo]]` is now an unquote operator. This guarantees that
+  `foo` is evaluated in the context rather than the data mask and
+  makes it easier to treat `.data[["bar"]]` the same way as a
+  symbol. For instance, this will help ensuring that `group_by(df,
+  .data[["name"]])` and `group_by(df, name)` produce the same column
+  name.
+
 * `call_modify()` supports removing unexisting arguments (#393).
 
 * `call_standardise()` now handles primitive functions like `~`
