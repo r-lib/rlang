@@ -221,6 +221,15 @@ struct expansion_info which_expansion_op(sexp* x, bool unquote_names) {
     info.root = x;
     info.parent = r_node_cddr(x);
     info.operand = r_node_car(info.parent);
+
+    // User had to unquote operand manually before .data[[ was unquote syntax
+    struct expansion_info nested = which_expansion_op(info.operand, false);
+    if (nested.op == OP_EXPAND_UQ) {
+      const char* msg = "It is no longer necessary to unquote within the `.data` pronoun";
+      r_signal_soft_deprecated(msg, msg, "dplyr", r_empty_env);
+      info.operand = nested.operand;
+    }
+
     return info;
   }
 

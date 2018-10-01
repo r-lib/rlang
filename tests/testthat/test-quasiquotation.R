@@ -510,6 +510,12 @@ test_that("`.data[[` unquotes", {
   expect_identical_(exprs(.data[[foo]]), named_list(quote(.data[["bar"]])))
 })
 
+test_that("it is still possible to unquote manually within `.data[[`", {
+  scoped_silent_retirement()
+  foo <- "baz"
+  expect_identical(expr(.data[[!!toupper(foo)]]), quote(.data[["BAZ"]]))
+})
+
 
 # Lifecycle ----------------------------------------------------------
 
