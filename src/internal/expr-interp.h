@@ -40,9 +40,9 @@ enum expansion_op {
 
 struct expansion_info {
   enum expansion_op op;
-  sexp* operand;
-  sexp* parent;
-  sexp* root;
+  sexp* operand;  // Expression being unquoted
+  sexp* parent;   // Node pointing to the future unquoted value
+  sexp* root;     // Expression wrapping the unquoted value (optional)
 };
 
 static inline struct expansion_info init_expansion_info() {
