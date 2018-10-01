@@ -40,18 +40,19 @@
 #' @name op-get-attr
 #' @examples
 #' factor(1:3) %@% "levels"
-#' mtcars %@% "class"
+#' mtcars %@% class
 #'
 #' mtcars %@% class <- NULL
 #' mtcars
 `%@%` <- function(x, name) {
+  name <- as_string(ensym(name))
   attr(x, name, exact = TRUE)
 }
 #' @rdname op-get-attr
 #' @usage x %@% name <- value
 #' @export
 `%@%<-` <- function(x, name, value) {
-  name <- as_string(substitute(name))
+  name <- as_string(ensym(name))
   eval_bare(expr(attr(x, !!name) <- value))
   x
 }

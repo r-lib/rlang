@@ -23,6 +23,7 @@ test_that("%|% fails with wrong types", {
 })
 
 test_that("%@% returns attribute", {
+  expect_identical(mtcars %@% row.names, row.names(mtcars))
   expect_identical(mtcars %@% "row.names", row.names(mtcars))
   expect_null(mtcars %@% "row")
 })

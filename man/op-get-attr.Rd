@@ -20,7 +20,7 @@ Infix attribute accessor and setter
 }
 \examples{
 factor(1:3) \%@\% "levels"
-mtcars \%@\% "class"
+mtcars \%@\% class
 
 mtcars \%@\% class <- NULL
 mtcars

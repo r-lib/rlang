@@ -1,6 +1,8 @@
 
 # rlang 0.2.2.9000
 
+* The `%@%` operator now quotes its input to make it closer to `@`.
+
 * `expr_deparse()` (used to print quosures) now escape special
   characters. For instance, newlines now print as `"\n"` (#484). This
   ensures that the roundtrip `parse_expr(expr_deparse(x))` is not
