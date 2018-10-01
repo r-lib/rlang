@@ -516,6 +516,11 @@ test_that("it is still possible to unquote manually within `.data[[`", {
   expect_identical(expr(.data[[!!toupper(foo)]]), quote(.data[["BAZ"]]))
 })
 
+test_that(".data[[ argument is not masked", {
+  cyl <- "carb"
+  expect_identical_(eval_tidy(expr(.data[[cyl]]), mtcars), mtcars$carb)
+})
+
 
 # Lifecycle ----------------------------------------------------------
 
