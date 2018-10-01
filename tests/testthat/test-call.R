@@ -92,6 +92,10 @@ test_that("can remove unexisting arguments (#393)", {
   expect_identical(call_modify(quote(foo()), ... = NULL), quote(foo()))
 })
 
+test_that("can add a missing argument", {
+  expect_identical(call_modify(quote(foo()), bar = expr()), quote(foo(bar = )))
+})
+
 
 # Utils --------------------------------------------------------------
 

@@ -421,21 +421,21 @@ call_modify <- function(.call, ...,
     while (!is_null(node)) {
       if (identical(node_tag(node), tag)) {
         # Remove argument from the list if `NULL`
-        if (is_null(arg)) {
+        if (is_null(maybe_missing(arg))) {
           node <- node_cdr(node)
           node_poke_cdr(prev, node)
           next
         }
 
-        node_poke_car(node, arg)
+        node_poke_car(node, maybe_missing(arg))
         break
       }
 
       prev <- node
       node <- node_cdr(node)
     }
-    if (is_null(node) && !is_null(arg)) {
-      node <- new_node(arg, NULL)
+    if (is_null(node) && !is_null(maybe_missing(arg))) {
+      node <- new_node(maybe_missing(arg), NULL)
       node_poke_tag(node, tag)
       node_poke_cdr(prev, node)
     }
