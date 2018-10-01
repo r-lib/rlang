@@ -40,3 +40,16 @@ test_that("new_definition() returns new `:=` call", {
   node_poke_car(def, quote(`:=`))
   expect_identical(new_definition("foo", "bar"), def)
 })
+
+test_that("%@% works with S4 objects (#207)", {
+  .Person <- setClass("Person", slots = c(name = "character", species = "character"))
+  fievel <- .Person(name = "Fievel", species = "mouse")
+
+  expect_identical(fievel %@% name, "Fievel")
+  expect_identical(fievel %@% "species", "mouse")
+
+  fievel %@% name <- "Bernard"
+  fievel %@% "species" <- "MOUSE"
+  expect_identical(fievel@name, "Bernard")
+  expect_identical(fievel@species, "MOUSE")
+})

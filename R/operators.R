@@ -34,26 +34,44 @@
 
 #' Infix attribute accessor and setter
 #'
+#' This operator extracts or sets attributes for regular objects and
+#' S4 fields for S4 objects.
+#'
 #' @param x Object
 #' @param name Attribute name
 #' @export
 #' @name op-get-attr
 #' @examples
+#' # Unlike `@`, this operator extracts attributes for any kind of
+#' # objects:
 #' factor(1:3) %@% "levels"
 #' mtcars %@% class
 #'
 #' mtcars %@% class <- NULL
 #' mtcars
+#'
+#' # It also works on S4 objects:
+#' .Person <- setClass("Person", slots = c(name = "character", species = "character"))
+#' fievel <- .Person(name = "Fievel", species = "mouse")
+#' fievel %@% name
 `%@%` <- function(x, name) {
   name <- as_string(ensym(name))
-  attr(x, name, exact = TRUE)
+  if (isS4(x)) {
+    eval_bare(expr(`@`(x, !!name)))
+  } else {
+    attr(x, name, exact = TRUE)
+  }
 }
 #' @rdname op-get-attr
 #' @usage x %@% name <- value
 #' @export
 `%@%<-` <- function(x, name, value) {
   name <- as_string(ensym(name))
-  eval_bare(expr(attr(x, !!name) <- value))
+  if (isS4(x)) {
+    eval_bare(expr(`@`(x, !!name) <- value))
+  } else {
+    eval_bare(expr(attr(x, !!name) <- value))
+  }
   x
 }
 

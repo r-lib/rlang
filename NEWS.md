@@ -1,7 +1,9 @@
 
 # rlang 0.2.2.9000
 
-* The `%@%` operator now quotes its input to make it closer to `@`.
+* The `%@%` operator now quotes its input and supports S4 objects.
+  This makes it directly equivalent to `@` except that it extracts
+  attributes for non-S4 objects (#207).
 
 * `expr_deparse()` (used to print quosures) now escape special
   characters. For instance, newlines now print as `"\n"` (#484). This
