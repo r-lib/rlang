@@ -5,7 +5,8 @@
 \title{Evaluate dots with preliminary splicing}
 \usage{
 dots_values(..., .ignore_empty = c("trailing", "none", "all"),
-  .preserve_empty = FALSE, .check_assign = FALSE)
+  .preserve_empty = FALSE, .homonyms = c("keep", "first", "last",
+  "error"), .check_assign = FALSE)
 }
 \arguments{
 \item{...}{Arguments to evaluate and process splicing operators.}
@@ -18,6 +19,13 @@ last argument is ignored if it is empty.}
 were not ignored. If \code{TRUE}, empty arguments are stored with
 \code{\link[=missing_arg]{missing_arg()}} values. If \code{FALSE} (the default) an error is
 thrown when an empty argument is detected.}
+
+\item{.homonyms}{How to treat arguments with the same name. The
+default, \code{"keep"}, preserves these arguments. Set \code{.homonyms} to
+\code{"first"} to only keep the first occurrences, to \code{"last"} to keep
+the last occurrences, and to \code{"error"} to raise an informative
+error and indicate to the user what arguments have duplicated
+names.}
 
 \item{.check_assign}{Whether to check for \code{<-} calls passed in
 dots. When \code{TRUE} and a \code{<-} call is detected, a warning is

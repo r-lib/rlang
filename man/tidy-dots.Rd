@@ -7,7 +7,8 @@
 \title{Collect dots tidily}
 \usage{
 dots_list(..., .ignore_empty = c("trailing", "none", "all"),
-  .preserve_empty = FALSE, .check_assign = FALSE)
+  .preserve_empty = FALSE, .homonyms = c("keep", "first", "last",
+  "error"), .check_assign = FALSE)
 
 list2(...)
 }
@@ -22,6 +23,13 @@ last argument is ignored if it is empty.}
 were not ignored. If \code{TRUE}, empty arguments are stored with
 \code{\link[=missing_arg]{missing_arg()}} values. If \code{FALSE} (the default) an error is
 thrown when an empty argument is detected.}
+
+\item{.homonyms}{How to treat arguments with the same name. The
+default, \code{"keep"}, preserves these arguments. Set \code{.homonyms} to
+\code{"first"} to only keep the first occurrences, to \code{"last"} to keep
+the last occurrences, and to \code{"error"} to raise an informative
+error and indicate to the user what arguments have duplicated
+names.}
 
 \item{.check_assign}{Whether to check for \code{<-} calls passed in
 dots. When \code{TRUE} and a \code{<-} call is detected, a warning is
@@ -116,6 +124,19 @@ list3(, )
 
 # The list with preserved empty arguments is equivalent to:
 list(missing_arg())
+
+
+# Arguments with duplicated names are kept by default:
+list2(a = 1, a = 2, b = 3, b = 4, 5, 6)
+
+# Use the `.homonyms` argument to keep only the first of these:
+dots_list(a = 1, a = 2, b = 3, b = 4, 5, 6, .homonyms = "first")
+
+# Or the last:
+dots_list(a = 1, a = 2, b = 3, b = 4, 5, 6, .homonyms = "last")
+
+# Or raise an informative error:
+try(dots_list(a = 1, a = 2, b = 3, b = 4, 5, 6, .homonyms = "error"))
 
 
 # dots_list() can be configured to warn when a `<-` call is

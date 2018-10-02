@@ -48,6 +48,12 @@
 #'   were not ignored. If `TRUE`, empty arguments are stored with
 #'   [missing_arg()] values. If `FALSE` (the default) an error is
 #'   thrown when an empty argument is detected.
+#' @param .homonyms How to treat arguments with the same name. The
+#'   default, `"keep"`, preserves these arguments. Set `.homonyms` to
+#'   `"first"` to only keep the first occurrences, to `"last"` to keep
+#'   the last occurrences, and to `"error"` to raise an informative
+#'   error and indicate to the user what arguments have duplicated
+#'   names.
 #' @param .check_assign Whether to check for `<-` calls passed in
 #'   dots. When `TRUE` and a `<-` call is detected, a warning is
 #'   issued to advise users to use `=` if they meant to match a
@@ -107,6 +113,19 @@
 #'
 #' # The list with preserved empty arguments is equivalent to:
 #' list(missing_arg())
+#'
+#'
+#' # Arguments with duplicated names are kept by default:
+#' list2(a = 1, a = 2, b = 3, b = 4, 5, 6)
+#'
+#' # Use the `.homonyms` argument to keep only the first of these:
+#' dots_list(a = 1, a = 2, b = 3, b = 4, 5, 6, .homonyms = "first")
+#'
+#' # Or the last:
+#' dots_list(a = 1, a = 2, b = 3, b = 4, 5, 6, .homonyms = "last")
+#'
+#' # Or raise an informative error:
+#' try(dots_list(a = 1, a = 2, b = 3, b = 4, 5, 6, .homonyms = "error"))
 #'
 #'
 #' # dots_list() can be configured to warn when a `<-` call is

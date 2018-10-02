@@ -22,12 +22,14 @@ exprs(..., .named = FALSE, .ignore_empty = c("trailing", "none",
   "all"), .unquote_names = TRUE)
 
 enexprs(..., .named = FALSE, .ignore_empty = c("trailing", "none",
-  "all"), .unquote_names = TRUE, .check_assign = FALSE)
+  "all"), .unquote_names = TRUE, .homonyms = c("keep", "first", "last",
+  "error"), .check_assign = FALSE)
 
 ensym(arg)
 
 ensyms(..., .named = FALSE, .ignore_empty = c("trailing", "none",
-  "all"), .unquote_names = TRUE, .check_assign = FALSE)
+  "all"), .unquote_names = TRUE, .homonyms = c("keep", "first", "last",
+  "error"), .check_assign = FALSE)
 
 quo(expr)
 
@@ -37,7 +39,8 @@ quos(..., .named = FALSE, .ignore_empty = c("trailing", "none", "all"),
   .unquote_names = TRUE)
 
 enquos(..., .named = FALSE, .ignore_empty = c("trailing", "none",
-  "all"), .unquote_names = TRUE, .check_assign = FALSE)
+  "all"), .unquote_names = TRUE, .homonyms = c("keep", "first", "last",
+  "error"), .check_assign = FALSE)
 }
 \arguments{
 \item{expr}{An expression.}
@@ -61,6 +64,13 @@ last argument is ignored if it is empty.}
 
 \item{.unquote_names}{Whether to treat \code{:=} as \code{=}. Unlike \code{=}, the
 \code{:=} syntax supports \code{!!} unquoting on the LHS.}
+
+\item{.homonyms}{How to treat arguments with the same name. The
+default, \code{"keep"}, preserves these arguments. Set \code{.homonyms} to
+\code{"first"} to only keep the first occurrences, to \code{"last"} to keep
+the last occurrences, and to \code{"error"} to raise an informative
+error and indicate to the user what arguments have duplicated
+names.}
 
 \item{.check_assign}{Whether to check for \code{<-} calls passed in
 dots. When \code{TRUE} and a \code{<-} call is detected, a warning is
