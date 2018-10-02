@@ -88,3 +88,11 @@ test_that("trimws() trims", {
   expect_identical(trimws(x, "l"), "foo.  ")
   expect_identical(trimws(x, "r"), "  foo.")
 })
+
+test_that("map2() sets names", {
+  expect_identical(map2(list(foo = NULL, bar = NULL), 1:2, function(...) NULL), list(foo = NULL, bar = NULL))
+})
+
+test_that("map2() discards recycled names", {
+  expect_identical(map2(list(foo = NULL), 1:3, function(...) NULL), new_list(3))
+})
