@@ -126,6 +126,7 @@ extern sexp* r_current_frame();
 extern sexp* rlang_test_node_list_clone_until(sexp*, sexp*);
 extern sexp* rlang_test_sys_frame(sexp*);
 extern sexp* rlang_test_sys_call(sexp*);
+extern sexp* rlang_test_nms_are_duplicated(sexp*, sexp*);
 
 static const r_callable r_callables[] = {
   {"rlang_library_load",        (r_fn_ptr_t) &rlang_library_load, 0},
@@ -162,7 +163,7 @@ static const r_callable r_callables[] = {
   {"rlang_node_poke_cdar",      (r_fn_ptr_t) &rlang_node_poke_cdar, 2},
   {"rlang_node_poke_cddr",      (r_fn_ptr_t) &rlang_node_poke_cddr, 2},
   {"rlang_new_node",            (r_fn_ptr_t) &rlang_new_node_, 2},
-  {"rlang_nms_are_duplicated",  (r_fn_ptr_t) &r_nms_are_duplicated, 1},
+  {"rlang_nms_are_duplicated",  (r_fn_ptr_t) &rlang_test_nms_are_duplicated, 2},
   {"rlang_env_clone",           (r_fn_ptr_t) &r_env_clone, 2},
   {"rlang_env_unbind",          (r_fn_ptr_t) &rlang_env_unbind, 3},
   {"rlang_env_poke_parent",     (r_fn_ptr_t) &rlang_env_poke_parent, 2},

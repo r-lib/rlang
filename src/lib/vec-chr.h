@@ -63,7 +63,7 @@ static inline bool r_chr_has_empty_string_at(sexp* chr, r_ssize i) {
   return r_is_empty_string(r_chr_get(chr, i));
 }
 
-sexp* r_nms_are_duplicated(sexp* nms);
+sexp* r_nms_are_duplicated(sexp* nms, bool from_last);
 
 sexp* r_str_unserialise_unicode(sexp* r_string);
 
