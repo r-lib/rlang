@@ -14,7 +14,8 @@ expression.}
 
 \item{...}{Named or unnamed expressions (constants, names or calls)
 used to modify the call. Use \code{NULL} to remove arguments. These
-dots support \link[=tidy-dots]{tidy dots} features.}
+dots support \link[=tidy-dots]{tidy dots} features. Empty arguments are
+allowed and preserved.}
 
 \item{.homonyms}{How to treat arguments with the same name. The
 default, \code{"keep"}, preserves these arguments. Set \code{.homonyms} to
@@ -58,8 +59,8 @@ call_modify(call, na.rm = NULL)
 # Add a new argument
 call_modify(call, trim = 0.1)
 
-# Add an explicit missing argument
-call_modify(call, na.rm = missing_arg())
+# Add an explicit missing argument:
+call_modify(call, na.rm = )
 
 # Supply a list of new arguments with `!!!`
 newargs <- list(na.rm = NULL, trim = 0.1)

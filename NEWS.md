@@ -38,6 +38,11 @@
   .data[["name"]])` and `group_by(df, name)` produce the same column
   name.
 
+* `call_modify()` now preserves empty arguments. It is no longer
+  necessary to use `missing_arg()` to add a missing argument to a
+  call. This is possible thanks to the new `.preserve_empty` option of
+  `dots_list()`.
+
 * `call_modify()` now supports removing unexisting arguments (#393)
   and passing multiple arguments with the same name (#398). The new
   `.homonyms` argument controls how to treat these arguments.

@@ -345,7 +345,8 @@ call_print_type <- function(call) {
 #'   expression.
 #' @param ... Named or unnamed expressions (constants, names or calls)
 #'   used to modify the call. Use `NULL` to remove arguments. These
-#'   dots support [tidy dots][tidy-dots] features.
+#'   dots support [tidy dots][tidy-dots] features. Empty arguments are
+#'   allowed and preserved.
 #' @param .standardise If `TRUE`, the call is standardised beforehand
 #'   to match existing unnamed arguments to their argument names. This
 #'   prevents new named arguments from accidentally replacing original
@@ -370,8 +371,8 @@ call_print_type <- function(call) {
 #' # Add a new argument
 #' call_modify(call, trim = 0.1)
 #'
-#' # Add an explicit missing argument
-#' call_modify(call, na.rm = missing_arg())
+#' # Add an explicit missing argument:
+#' call_modify(call, na.rm = )
 #'
 #' # Supply a list of new arguments with `!!!`
 #' newargs <- list(na.rm = NULL, trim = 0.1)
@@ -405,7 +406,7 @@ call_modify <- function(.call,
                         .homonyms = c("keep", "first", "last", "error"),
                         .standardise = FALSE,
                         .env = caller_env()) {
-  args <- dots_list(..., .homonyms = .homonyms)
+  args <- dots_list(..., .preserve_empty = TRUE, .homonyms = .homonyms)
 
   if (.standardise) {
     expr <- get_expr(call_standardise(.call, env = .env))
