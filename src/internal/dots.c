@@ -549,7 +549,12 @@ static sexp* dots_init(struct dots_capture_info* capture_info, sexp* frame_env) 
     dots = KEEP_N(maybe_auto_name(dots, capture_info->named), n_kept);
   }
 
+  FREE(n_kept);
+  return dots;
+}
+static sexp* dots_finalise(struct dots_capture_info* capture_info, sexp* dots) {
   sexp* nms = r_vec_names(dots);
+
   if (nms != r_null) {
     switch (capture_info->homonyms) {
     case DOTS_HOMONYMS_KEEP: break;
@@ -559,7 +564,6 @@ static sexp* dots_init(struct dots_capture_info* capture_info, sexp* frame_env) 
     }
   }
 
-  FREE(n_kept);
   return dots;
 }
 
@@ -579,13 +583,16 @@ sexp* rlang_exprs_interp(sexp* frame_env,
                                    homonyms,
                                    check_assign);
 
-  sexp* dots = dots_init(&capture_info, frame_env);
+  int n_protect = 0;
+  sexp* dots = KEEP_N(dots_init(&capture_info, frame_env), n_protect);
 
   if (capture_info.needs_expansion) {
-    KEEP(dots);
-    dots = dots_expand(dots, &capture_info);
-    FREE(1);
+    dots = KEEP_N(dots_expand(dots, &capture_info), n_protect);
   }
+
+  dots = dots_finalise(&capture_info, dots);
+
+  FREE(n_protect);
   return dots;
 }
 sexp* rlang_quos_interp(sexp* frame_env,
@@ -611,6 +618,8 @@ sexp* rlang_quos_interp(sexp* frame_env,
     dots = dots_expand(dots, &capture_info);
     KEEP_N(dots, n_protect);
   }
+
+  dots = KEEP_N(dots_finalise(&capture_info, dots), n_protect);
   r_push_class(dots, "quosures");
 
   FREE(n_protect);
@@ -660,18 +669,21 @@ static sexp* dots_values_impl(sexp* frame_env,
                                    homonyms,
                                    check_assign);
 
-  sexp* dots = dots_init(&capture_info, frame_env);
+  int n_protect = 0;
+  sexp* dots = KEEP_N(dots_init(&capture_info, frame_env), n_protect);
 
-  KEEP(dots);
   if (capture_info.needs_expansion) {
     if (is_spliced) {
-      dots = r_squash_if(dots, r_type_list, is_spliced, 1);
+      dots = KEEP(r_squash_if(dots, r_type_list, is_spliced, 1));
     } else {
-      dots = dots_expand(dots, &capture_info);
+      dots = KEEP(dots_expand(dots, &capture_info));
     }
+    ++n_protect;
   }
 
-  FREE(1);
+  dots = dots_finalise(&capture_info, dots);
+
+  FREE(n_protect);
   return dots;
 }
 sexp* rlang_dots_values(sexp* frame_env,
@@ -723,12 +735,12 @@ sexp* rlang_dots_flat_list(sexp* frame_env,
                                    homonyms,
                                    check_assign);
 
-  sexp* dots = dots_init(&capture_info, frame_env);
+  sexp* dots = KEEP(dots_init(&capture_info, frame_env));
 
-  KEEP(dots);
-  dots = r_squash_if(dots, r_type_list, is_spliced_bare_dots_value, 1);
+  dots = KEEP(r_squash_if(dots, r_type_list, is_spliced_bare_dots_value, 1));
+  dots = dots_finalise(&capture_info, dots);
 
-  FREE(1);
+  FREE(2);
   return dots;
 }
 

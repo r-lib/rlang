@@ -323,7 +323,13 @@ enquos <- function(...,
 }
 
 
-capture_args <- c(".named", ".ignore_empty", ".unquote_names", ".check_assign")
+capture_args <- c(
+  ".named",
+  ".ignore_empty",
+  ".unquote_names",
+  ".homonyms",
+  ".check_assign"
+)
 
 endots <- function(call,
                    frame_env,

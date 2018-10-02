@@ -244,3 +244,14 @@ test_that("`.homonyms` = 'error' fails with homonyms", {
   expect_error(list_error(1, a = 2, b = 3, 4, b = 5, b = 6, 7, a = 8), "\\* Multiple arguments named `a` at positions 2 and 8")
   expect_error(list_error(1, a = 2, b = 3, 4, b = 5, b = 6, 7, a = 8), "\\* Multiple arguments named `b` at positions 3, 5 and 6")
 })
+
+test_that("`.homonyms` works with spliced arguments", {
+  args <- list(a = 1, b = 2, a = 3, a = 4, 5, 6)
+  expect_identical(dots_list(!!!args, .homonyms = "first"), list(a = 1, b = 2, 5, 6))
+
+  myexprs <- function(...) enexprs(..., .homonyms = "last")
+  expect_identical(myexprs(!!!args), list(b = 2, a = 4, 5, 6))
+
+  myquos <- function(...) enquos(..., .homonyms = "first")
+  expect_identical(myquos(!!!args), quos_list(a = quo(1), b = quo(2), quo(5), quo(6)))
+})
