@@ -503,6 +503,33 @@ test_that("Unquote operators fail when called outside quasiquoted arguments", {
   expect_qq_error(a := b)
 })
 
+test_that("`.data[[` unquotes", {
+  foo <- "bar"
+  expect_identical_(expr(.data[[foo]]), quote(.data[["bar"]]))
+  expect_identical_(expr(deep(.data[[foo]])), quote(deep(.data[["bar"]])))
+  expect_identical_(exprs(.data[[foo]]), named_list(quote(.data[["bar"]])))
+})
+
+test_that("it is still possible to unquote manually within `.data[[`", {
+  scoped_silent_retirement()
+  foo <- "baz"
+  expect_identical(expr(.data[[!!toupper(foo)]]), quote(.data[["BAZ"]]))
+})
+
+test_that(".data[[ argument is not masked", {
+  cyl <- "carb"
+  expect_identical_(eval_tidy(expr(.data[[cyl]]), mtcars), mtcars$carb)
+})
+
+test_that(".data[[ on the LHS of := fails", {
+  expect_error(exprs(.data[["foo"]] := foo), "Can't use the `.data` pronoun on the LHS")
+})
+
+test_that("it is still possible to use .data[[ in list2()", {
+  .data <- mtcars
+  expect_identical_(list2(.data$cyl), list(mtcars$cyl))
+})
+
 
 # Lifecycle ----------------------------------------------------------
 

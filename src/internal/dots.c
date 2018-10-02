@@ -62,6 +62,8 @@ static sexp* def_unquote_name(sexp* expr, sexp* env) {
     r_abort("Internal error: Chained `:=` should have been detected earlier");
   case OP_EXPAND_FIXUP:
     r_abort("The LHS of `:=` must be a string or a symbol");
+  case OP_EXPAND_DOT_DATA:
+    r_abort("Can't use the `.data` pronoun on the LHS of `:=`");
   }
 
   // Unwrap quosures for convenience
@@ -272,6 +274,7 @@ static sexp* dots_unquote(sexp* dots, struct dots_capture_info* capture_info) {
     case OP_EXPR_UQ:
     case OP_EXPR_UQE:
     case OP_EXPR_FIXUP:
+    case OP_EXPR_DOT_DATA:
       expr = call_interp_impl(expr, env, info);
       capture_info->count += 1;
       break;
@@ -282,7 +285,8 @@ static sexp* dots_unquote(sexp* dots, struct dots_capture_info* capture_info) {
     case OP_QUO_NONE:
     case OP_QUO_UQ:
     case OP_QUO_UQE:
-    case OP_QUO_FIXUP: {
+    case OP_QUO_FIXUP:
+    case OP_QUO_DOT_DATA: {
       expr = KEEP(call_interp_impl(expr, env, info));
       expr = forward_quosure(expr, env);
       FREE(1);
@@ -294,8 +298,9 @@ static sexp* dots_unquote(sexp* dots, struct dots_capture_info* capture_info) {
       expr = dots_big_bang(capture_info, info.operand, env, true);
       break;
     }
-    case OP_VALUE_FIXUP:
     case OP_VALUE_NONE:
+    case OP_VALUE_FIXUP:
+    case OP_VALUE_DOT_DATA:
       if (expr == r_missing_sym) {
         if (!capture_info->preserve_empty) {
           r_abort("Argument %d is empty", i + 1);

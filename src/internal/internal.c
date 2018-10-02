@@ -6,10 +6,12 @@ sexp* as_list_call = NULL;
 sexp* as_list_s4_call = NULL;
 
 void rlang_init_dots();
+void rlang_init_expr_interp();
 void rlang_init_eval_tidy();
 
 void rlang_init_internal() {
   rlang_init_dots();
+  rlang_init_expr_interp();
   rlang_init_eval_tidy();
 
   as_list_call = r_parse("as.list(x)");
