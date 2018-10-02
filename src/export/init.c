@@ -57,11 +57,11 @@ extern sexp* rlang_capturedots(sexp*, sexp*, sexp*, sexp*);
 extern sexp* rlang_new_call_node(sexp*, sexp*);
 extern sexp* rlang_cnd_signal(sexp*);
 extern sexp* rlang_r_string(sexp*);
-extern sexp* rlang_exprs_interp(sexp*, sexp*, sexp*, sexp*);
-extern sexp* rlang_quos_interp(sexp*, sexp*, sexp*, sexp*);
-extern sexp* rlang_dots_values(sexp*, sexp*, sexp*, sexp*, sexp*);
-extern sexp* rlang_dots_list(sexp*, sexp*, sexp*, sexp*, sexp*);
-extern sexp* rlang_dots_flat_list(sexp*, sexp*, sexp*, sexp*, sexp*);
+extern sexp* rlang_exprs_interp(sexp*, sexp*, sexp*, sexp*, sexp*);
+extern sexp* rlang_quos_interp(sexp*, sexp*, sexp*, sexp*, sexp*);
+extern sexp* rlang_dots_values(sexp*, sexp*, sexp*, sexp*, sexp*, sexp*);
+extern sexp* rlang_dots_list(sexp*, sexp*, sexp*, sexp*, sexp*, sexp*);
+extern sexp* rlang_dots_flat_list(sexp*, sexp*, sexp*, sexp*, sexp*, sexp*);
 extern sexp* r_new_formula(sexp*, sexp*, sexp*);
 extern sexp* rlang_new_quosure(sexp*, sexp*);
 extern sexp* rlang_enexpr(sexp*, sexp*);
@@ -197,11 +197,11 @@ static const r_callable r_callables[] = {
   {"rlang_test_sys_frame",      (r_fn_ptr_t) &rlang_test_sys_frame, 1},
   {"rlang_test_sys_call",       (r_fn_ptr_t) &rlang_test_sys_call, 1},
   {"rlang_r_string",            (r_fn_ptr_t) &rlang_r_string, 1},
-  {"rlang_exprs_interp",        (r_fn_ptr_t) &rlang_exprs_interp, 5},
-  {"rlang_quos_interp",         (r_fn_ptr_t) &rlang_quos_interp, 5},
-  {"rlang_dots_values",         (r_fn_ptr_t) &rlang_dots_values, 6},
-  {"rlang_dots_list",           (r_fn_ptr_t) &rlang_dots_list, 6},
-  {"rlang_dots_flat_list",      (r_fn_ptr_t) &rlang_dots_flat_list, 6},
+  {"rlang_exprs_interp",        (r_fn_ptr_t) &rlang_exprs_interp, 6},
+  {"rlang_quos_interp",         (r_fn_ptr_t) &rlang_quos_interp, 6},
+  {"rlang_dots_values",         (r_fn_ptr_t) &rlang_dots_values, 7},
+  {"rlang_dots_list",           (r_fn_ptr_t) &rlang_dots_list, 7},
+  {"rlang_dots_flat_list",      (r_fn_ptr_t) &rlang_dots_flat_list, 7},
   {"rlang_new_formula",         (r_fn_ptr_t) &r_new_formula, 3},
   {"rlang_new_quosure",         (r_fn_ptr_t) &rlang_new_quosure, 2},
   {"rlang_enexpr",              (r_fn_ptr_t) &rlang_enexpr, 2},

@@ -120,6 +120,7 @@
 dots_list <- function(...,
                       .ignore_empty = c("trailing", "none", "all"),
                       .preserve_empty = FALSE,
+                      .homonyms = c("keep", "first", "last", "error"),
                       .check_assign = FALSE) {
   dots <- .Call(rlang_dots_list,
     frame_env = environment(),
@@ -127,6 +128,7 @@ dots_list <- function(...,
     ignore_empty = .ignore_empty,
     preserve_empty = .preserve_empty,
     unquote_names = TRUE,
+    homonyms = .homonyms,
     check_assign = .check_assign
   )
   names(dots) <- names2(dots)
@@ -137,6 +139,7 @@ dots_split <- function(...,
                        .n_unnamed = NULL,
                        .ignore_empty = c("trailing", "none", "all"),
                        .preserve_empty = FALSE,
+                       .homonyms = c("keep", "first", "last", "error"),
                        .check_assign = FALSE) {
   dots <- .Call(rlang_dots_list,
     frame_env = environment(),
@@ -144,6 +147,7 @@ dots_split <- function(...,
     ignore_empty = .ignore_empty,
     preserve_empty = .preserve_empty,
     unquote_names = TRUE,
+    homonyms = .homonyms,
     check_assign = .check_assign
   )
 
@@ -267,6 +271,7 @@ is_spliced_bare <- function(x) {
 dots_splice <- function(...,
                         .ignore_empty = c("trailing", "none", "all"),
                         .preserve_empty = FALSE,
+                        .homonyms = c("keep", "first", "last", "error"),
                         .check_assign = FALSE) {
   dots <- .Call(rlang_dots_flat_list,
     frame_env = environment(),
@@ -274,6 +279,7 @@ dots_splice <- function(...,
     ignore_empty = .ignore_empty,
     preserve_empty = .preserve_empty,
     unquote_names = TRUE,
+    homonyms = .homonyms,
     check_assign = .check_assign
   )
   names(dots) <- names2(dots)
@@ -302,6 +308,7 @@ dots_splice <- function(...,
 dots_values <- function(...,
                         .ignore_empty = c("trailing", "none", "all"),
                         .preserve_empty = FALSE,
+                        .homonyms = c("keep", "first", "last", "error"),
                         .check_assign = FALSE) {
   .Call(rlang_dots_values,
     frame_env = environment(),
@@ -309,6 +316,7 @@ dots_values <- function(...,
     ignore_empty = .ignore_empty,
     preserve_empty = .preserve_empty,
     unquote_names = TRUE,
+    homonyms = .homonyms,
     check_assign = .check_assign
   )
 }
@@ -331,6 +339,7 @@ dots_definitions <- function(...,
     named = .named,
     ignore_empty = .ignore_empty,
     unquote_names = FALSE,
+    homonyms = "keep",
     check_assign = FALSE
   )
 

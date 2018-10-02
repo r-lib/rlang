@@ -196,3 +196,7 @@ test_that("dots collectors never warn for <- when option is set", {
   expect_no_warning(myexprs(a <- 1))
   expect_no_warning(myquos(a <- 1))
 })
+
+test_that("`.homonyms` is matched exactly", {
+  expect_error(dots_list(.homonyms = "k"), "must be one of")
+})
