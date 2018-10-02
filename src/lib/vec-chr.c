@@ -101,8 +101,11 @@ sexp* chr_append(sexp* chr, sexp* r_str) {
 
 
 sexp* r_shared_empty_chr = NULL;
+sexp* r_empty_str = NULL;
 
 void r_init_library_vec_chr() {
   r_shared_empty_chr = r_chr("");
   r_mark_precious(r_shared_empty_chr);
+
+  r_empty_str = r_chr_get(r_shared_empty_chr, 0);
 }

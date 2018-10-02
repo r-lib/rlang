@@ -7,6 +7,7 @@
 #define r_missing_str R_NaString
 
 extern sexp* r_shared_empty_chr;
+extern sexp* r_empty_str;
 
 
 static inline sexp* r_chr_get(sexp* chr, r_ssize i) {
