@@ -52,8 +52,7 @@
 #'   default, `"keep"`, preserves these arguments. Set `.homonyms` to
 #'   `"first"` to only keep the first occurrences, to `"last"` to keep
 #'   the last occurrences, and to `"error"` to raise an informative
-#'   error and indicate to the user what arguments have duplicated
-#'   names.
+#'   error and indicate what arguments have duplicated names.
 #' @param .check_assign Whether to check for `<-` calls passed in
 #'   dots. When `TRUE` and a `<-` call is detected, a warning is
 #'   issued to advise users to use `=` if they meant to match a

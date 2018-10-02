@@ -24,8 +24,7 @@ thrown when an empty argument is detected.}
 default, \code{"keep"}, preserves these arguments. Set \code{.homonyms} to
 \code{"first"} to only keep the first occurrences, to \code{"last"} to keep
 the last occurrences, and to \code{"error"} to raise an informative
-error and indicate to the user what arguments have duplicated
-names.}
+error and indicate what arguments have duplicated names.}
 
 \item{.check_assign}{Whether to check for \code{<-} calls passed in
 dots. When \code{TRUE} and a \code{<-} call is detected, a warning is
