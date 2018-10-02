@@ -218,6 +218,7 @@ exprs <- function(...,
     named = .named,
     ignore_empty = .ignore_empty,
     unquote_names = .unquote_names,
+    homonyms = "keep",
     check_assign = FALSE
   )
 }
@@ -227,6 +228,7 @@ enexprs <- function(...,
                    .named = FALSE,
                    .ignore_empty = c("trailing", "none", "all"),
                    .unquote_names = TRUE,
+                   .homonyms = c("keep", "first", "last", "error"),
                    .check_assign = FALSE) {
   endots(
     call = sys.call(),
@@ -236,6 +238,7 @@ enexprs <- function(...,
     named = .named,
     ignore_empty = .ignore_empty,
     unquote_names = .unquote_names,
+    homonyms = .homonyms,
     check_assign = .check_assign
   )
 }
@@ -251,6 +254,7 @@ ensyms <- function(...,
                    .named = FALSE,
                    .ignore_empty = c("trailing", "none", "all"),
                    .unquote_names = TRUE,
+                   .homonyms = c("keep", "first", "last", "error"),
                    .check_assign = FALSE) {
   exprs <- endots(
     call = sys.call(),
@@ -260,6 +264,7 @@ ensyms <- function(...,
     named = .named,
     ignore_empty = .ignore_empty,
     unquote_names = .unquote_names,
+    homonyms = .homonyms,
     check_assign = .check_assign
   )
   if (!every(exprs, function(x) is_symbol(x) || is_string(x))) {
@@ -291,6 +296,7 @@ quos <- function(...,
     named = .named,
     ignore_empty = .ignore_empty,
     unquote_names = .unquote_names,
+    homonyms = "keep",
     check_assign = FALSE
   )
 }
@@ -300,6 +306,7 @@ enquos <- function(...,
                    .named = FALSE,
                    .ignore_empty = c("trailing", "none", "all"),
                    .unquote_names = TRUE,
+                   .homonyms = c("keep", "first", "last", "error"),
                    .check_assign = FALSE) {
   quos <- endots(
     call = sys.call(),
@@ -309,6 +316,7 @@ enquos <- function(...,
     named = .named,
     ignore_empty = .ignore_empty,
     unquote_names = .unquote_names,
+    homonyms = .homonyms,
     check_assign = .check_assign
   )
   structure(quos, class = "quosures")
@@ -324,6 +332,7 @@ endots <- function(call,
                    named,
                    ignore_empty,
                    unquote_names,
+                   homonyms,
                    check_assign) {
   syms <- as.list(node_cdr(call))
 
@@ -347,6 +356,7 @@ endots <- function(call,
         named = named,
         ignore_empty = ignore_empty,
         unquote_names = unquote_names,
+        homonyms = homonyms,
         check_assign = check_assign
       ))
     } else {

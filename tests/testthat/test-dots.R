@@ -196,3 +196,51 @@ test_that("dots collectors never warn for <- when option is set", {
   expect_no_warning(myexprs(a <- 1))
   expect_no_warning(myquos(a <- 1))
 })
+
+test_that("`.homonyms` is matched exactly", {
+  expect_error(dots_list(.homonyms = "k"), "must be one of")
+})
+
+test_that("`.homonyms = 'first'` matches first homonym", {
+  list_first <- function(...) {
+    dots_list(..., .homonyms = "first")
+  }
+
+  out <- list_first(1, 2)
+  expect_identical(out, named_list(1, 2))
+
+  out <- list_first(a = 1, b = 2, 3, 4)
+  expect_identical(out, list(a = 1, b = 2, 3, 4))
+
+  out <- list_first(a = 1, b = 2, a = 3, a = 4, 5, 6)
+  expect_identical(out, list(a = 1, b = 2, 5, 6))
+})
+
+test_that("`.homonyms = 'last'` matches last homonym", {
+  list_last <- function(...) {
+    dots_list(..., .homonyms = "last")
+  }
+
+  out <- list_last(1, 2)
+  expect_identical(out, named_list(1, 2))
+
+  out <- list_last(a = 1, b = 2, 3, 4)
+  expect_identical(out, list(a = 1, b = 2, 3, 4))
+
+  out <- list_last(a = 1, b = 2, a = 3, a = 4, 5, 6)
+  expect_identical(out, list(b = 2, a = 4, 5, 6))
+})
+
+test_that("`.homonyms` = 'error' fails with homonyms", {
+  list_error <- function(...) {
+    dots_list(..., .homonyms = "error")
+  }
+
+  expect_identical(list_error(1, 2), named_list(1, 2))
+  expect_identical(list_error(a = 1, b = 2), list(a = 1, b = 2))
+
+  expect_error(list_error(1, a = 2, a = 3), "multiple arguments named `a` at positions 2 and 3")
+
+  expect_error(list_error(1, a = 2, b = 3, 4, b = 5, b = 6, 7, a = 8), "\\* Multiple arguments named `a` at positions 2 and 8")
+  expect_error(list_error(1, a = 2, b = 3, 4, b = 5, b = 6, 7, a = 8), "\\* Multiple arguments named `b` at positions 3, 5 and 6")
+})

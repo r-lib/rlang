@@ -7,6 +7,13 @@
 sexp* rlang_ns_get(const char* name);
 
 
+enum dots_homonyms {
+  DOTS_HOMONYMS_KEEP = 0,
+  DOTS_HOMONYMS_FIRST,
+  DOTS_HOMONYMS_LAST,
+  DOTS_HOMONYMS_ERROR
+};
+
 struct dots_capture_info {
   enum dots_capture_type type;
   r_ssize count;
@@ -15,15 +22,19 @@ struct dots_capture_info {
   int ignore_empty;
   bool preserve_empty;
   bool unquote_names;
+  enum dots_homonyms homonyms;
   bool check_assign;
 };
 
-static int match_ignore_empty_arg(sexp* ignore_empty);
+static int arg_match_ignore_empty(sexp* ignore_empty);
+static enum dots_homonyms arg_match_homonyms(sexp* homonyms);
+
 struct dots_capture_info init_capture_info(enum dots_capture_type type,
                                            sexp* named,
                                            sexp* ignore_empty,
                                            sexp* preserve_empty,
                                            sexp* unquote_names,
+                                           sexp* homonyms,
                                            sexp* check_assign) {
   struct dots_capture_info info;
 
@@ -31,9 +42,10 @@ struct dots_capture_info init_capture_info(enum dots_capture_type type,
   info.count = 0;
   info.needs_expansion = false;
   info.named = named;
-  info.ignore_empty = match_ignore_empty_arg(ignore_empty);
+  info.ignore_empty = arg_match_ignore_empty(ignore_empty);
   info.preserve_empty = r_lgl_get(preserve_empty, 0);
   info.unquote_names = r_as_bool(unquote_names);
+  info.homonyms = arg_match_homonyms(homonyms);
   info.check_assign = r_as_bool(check_assign);
 
   return info;
@@ -347,7 +359,7 @@ static sexp* dots_unquote(sexp* dots, struct dots_capture_info* capture_info) {
 }
 
 
-static int match_ignore_empty_arg(sexp* ignore_empty) {
+static int arg_match_ignore_empty(sexp* ignore_empty) {
   if (r_typeof(ignore_empty) != r_type_character || r_length(ignore_empty) == 0) {
     r_abort("`.ignore_empty` must be a character vector");
   }
@@ -357,7 +369,21 @@ static int match_ignore_empty_arg(sexp* ignore_empty) {
   case 'n': if (!strcmp(arg, "none")) return 0; else break;
   case 'a': if (!strcmp(arg, "all")) return 1; else break;
   }
-  r_abort("`.ignore_empty` should be one of: \"trailing\", \"none\" or \"all\"");
+  r_abort("`.ignore_empty` must be one of: \"trailing\", \"none\", or \"all\"");
+}
+
+static enum dots_homonyms arg_match_homonyms(sexp* homonyms) {
+  if (r_typeof(homonyms) != r_type_character || r_length(homonyms) == 0) {
+    r_abort("`.homonyms` must be a character vector");
+  }
+  const char* arg = r_chr_get_c_string(homonyms, 0);
+  switch(arg[0]) {
+  case 'k': if (!strcmp(arg, "keep")) return DOTS_HOMONYMS_KEEP; else break;
+  case 'f': if (!strcmp(arg, "first")) return DOTS_HOMONYMS_FIRST; else break;
+  case 'l': if (!strcmp(arg, "last")) return DOTS_HOMONYMS_LAST; else break;
+  case 'e': if (!strcmp(arg, "error")) return DOTS_HOMONYMS_ERROR; else break;
+  }
+  r_abort("`.homonyms` must be one of: \"keep\", \"first\", \"last\", or \"error\"");
 }
 
 void signal_soft_deprecated_width() {
@@ -471,9 +497,47 @@ sexp* dots_expand(sexp* dots, struct dots_capture_info* capture_info) {
   return out;
 }
 
-sexp* dots_init(struct dots_capture_info* capture_info, sexp* frame_env) {
+static sexp* dots_keep(sexp* dots, sexp* nms, bool first) {
+  r_ssize n = r_length(dots);
 
-  sexp* dots = KEEP(capturedots(frame_env));
+  sexp* dups = r_nms_are_duplicated(nms, !first);
+  r_ssize out_n = n - r_lgl_sum(dups);
+
+  sexp* out = KEEP(r_new_vector(r_type_list, out_n));
+  sexp* out_nms = KEEP(r_new_vector(r_type_character, out_n));
+  r_push_names(out, out_nms);
+
+  sexp** nms_ptr = r_chr_deref(nms);
+  int* dups_ptr = r_lgl_deref(dups);
+
+  for (r_ssize i = 0, out_i = 0; i < n; ++i, ++nms_ptr, ++dups_ptr) {
+    if (!*dups_ptr) {
+      r_list_poke(out, out_i, r_list_get(dots, i));
+      r_chr_poke(out_nms, out_i, *nms_ptr);
+      ++out_i;
+    }
+  }
+
+  FREE(2);
+  return out;
+}
+
+static sexp* abort_dots_homonyms_call = NULL;
+static void dots_check_homonyms(sexp* dots, sexp* nms) {
+  sexp* dups = KEEP(r_nms_are_duplicated(nms, false));
+
+  if (r_lgl_sum(dups)) {
+    r_eval_with_xy(abort_dots_homonyms_call, r_base_env, dots, dups);
+    r_abort("Internal error: `dots_check_homonyms()` should have failed earlier");
+  }
+
+  FREE(1);
+}
+
+static sexp* dots_init(struct dots_capture_info* capture_info, sexp* frame_env) {
+  int n_kept = 0;
+
+  sexp* dots = KEEP_N(capturedots(frame_env), n_kept);
   dots = dots_unquote(dots, capture_info);
 
   // Initialise the names only if there is no expansion to avoid
@@ -482,10 +546,20 @@ sexp* dots_init(struct dots_capture_info* capture_info, sexp* frame_env) {
     if (capture_info->type != DOTS_VALUE && r_vec_names(dots) == r_null) {
       init_names(dots);
     }
-    dots = maybe_auto_name(dots, capture_info->named);
+    dots = KEEP_N(maybe_auto_name(dots, capture_info->named), n_kept);
   }
 
-  FREE(1);
+  sexp* nms = r_vec_names(dots);
+  if (nms != r_null) {
+    switch (capture_info->homonyms) {
+    case DOTS_HOMONYMS_KEEP: break;
+    case DOTS_HOMONYMS_FIRST: dots = dots_keep(dots, nms, true); break;
+    case DOTS_HOMONYMS_LAST: dots = dots_keep(dots, nms, false); break;
+    case DOTS_HOMONYMS_ERROR: dots_check_homonyms(dots, nms); break;
+    }
+  }
+
+  FREE(n_kept);
   return dots;
 }
 
@@ -493,6 +567,7 @@ sexp* rlang_exprs_interp(sexp* frame_env,
                          sexp* named,
                          sexp* ignore_empty,
                          sexp* unquote_names,
+                         sexp* homonyms,
                          sexp* check_assign) {
 
   struct dots_capture_info capture_info;
@@ -501,6 +576,7 @@ sexp* rlang_exprs_interp(sexp* frame_env,
                                    ignore_empty,
                                    r_shared_true,
                                    unquote_names,
+                                   homonyms,
                                    check_assign);
 
   sexp* dots = dots_init(&capture_info, frame_env);
@@ -516,6 +592,7 @@ sexp* rlang_quos_interp(sexp* frame_env,
                         sexp* named,
                         sexp* ignore_empty,
                         sexp* unquote_names,
+                        sexp* homonyms,
                         sexp* check_assign) {
   int n_protect = 0;
 
@@ -525,6 +602,7 @@ sexp* rlang_quos_interp(sexp* frame_env,
                                    ignore_empty,
                                    r_shared_true,
                                    unquote_names,
+                                   homonyms,
                                    check_assign);
 
   sexp* dots = KEEP_N(dots_init(&capture_info, frame_env), n_protect);
@@ -569,6 +647,7 @@ static sexp* dots_values_impl(sexp* frame_env,
                               sexp* ignore_empty,
                               sexp* preserve_empty,
                               sexp* unquote_names,
+                              sexp* homonyms,
                               sexp* check_assign,
                               bool (*is_spliced)(sexp*)) {
 
@@ -578,6 +657,7 @@ static sexp* dots_values_impl(sexp* frame_env,
                                    ignore_empty,
                                    preserve_empty,
                                    unquote_names,
+                                   homonyms,
                                    check_assign);
 
   sexp* dots = dots_init(&capture_info, frame_env);
@@ -599,12 +679,14 @@ sexp* rlang_dots_values(sexp* frame_env,
                         sexp* ignore_empty,
                         sexp* preserve_empty,
                         sexp* unquote_names,
+                        sexp* homonyms,
                         sexp* check_assign) {
   return dots_values_impl(frame_env,
                           named,
                           ignore_empty,
                           preserve_empty,
                           unquote_names,
+                          homonyms,
                           check_assign,
                           NULL);
 }
@@ -613,12 +695,14 @@ sexp* rlang_dots_list(sexp* frame_env,
                       sexp* ignore_empty,
                       sexp* preserve_empty,
                       sexp* unquote_names,
+                      sexp* homonyms,
                       sexp* check_assign) {
   return dots_values_impl(frame_env,
                           named,
                           ignore_empty,
                           preserve_empty,
                           unquote_names,
+                          homonyms,
                           check_assign,
                           &is_spliced_dots_value);
 }
@@ -627,6 +711,7 @@ sexp* rlang_dots_flat_list(sexp* frame_env,
                            sexp* ignore_empty,
                            sexp* preserve_empty,
                            sexp* unquote_names,
+                           sexp* homonyms,
                            sexp* check_assign) {
 
   struct dots_capture_info capture_info;
@@ -635,6 +720,7 @@ sexp* rlang_dots_flat_list(sexp* frame_env,
                                    ignore_empty,
                                    preserve_empty,
                                    unquote_names,
+                                   homonyms,
                                    check_assign);
 
   sexp* dots = dots_init(&capture_info, frame_env);
@@ -649,4 +735,7 @@ sexp* rlang_dots_flat_list(sexp* frame_env,
 void rlang_init_dots() {
   auto_name_call = r_parse("rlang:::quos_auto_name(x)");
   r_mark_precious(auto_name_call);
+
+  abort_dots_homonyms_call = r_parse("rlang:::abort_dots_homonyms(x, y)");
+  r_mark_precious(abort_dots_homonyms_call);
 }

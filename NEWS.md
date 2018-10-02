@@ -1,6 +1,12 @@
 
 # rlang 0.2.2.9000
 
+* `dots_list()`, `enexprs()` and `enquos()` gain a `.homonyms`
+  argument to control how to treat arguments with the same name.
+  The default is to keep them. Set it to `"first"` or `"last"` to keep
+  only the first or last occurrences. Set it to `"error"` to raise an
+  informative error about the arguments with duplicated names.
+
 * Automatic naming of expressions now uses `quo_name()` instead of
   `quo_text()`. This makes it compatible with all object types,
   prevents multi-line names, and ensures `name` and `.data[["name"]]`

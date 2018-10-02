@@ -50,7 +50,12 @@ pluck_cpl <- function(.x, .f) {
 }
 
 map2 <- function(.x, .y, .f, ...) {
-  mapply(.f, .x, .y, MoreArgs = list(...), SIMPLIFY = FALSE)
+  out <- mapply(.f, .x, .y, MoreArgs = list(...), SIMPLIFY = FALSE)
+  if (length(out) == length(.x)) {
+    set_names(out, names(.x))
+  } else {
+    set_names(out, NULL)
+  }
 }
 map2_lgl <- function(.x, .y, .f, ...) {
   as.vector(map2(.x, .y, .f, ...), "logical")

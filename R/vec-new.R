@@ -106,6 +106,7 @@ list2 <- function(...) {
     ignore_empty = "trailing",
     preserve_empty = FALSE,
     unquote_names = TRUE,
+    homonyms = "keep",
     check_assign = FALSE
   )
 }
@@ -122,6 +123,7 @@ list3 <- function(...) {
     ignore_empty = "trailing",
     preserve_empty = TRUE,
     unquote_names = TRUE,
+    homonyms = "keep",
     check_assign = FALSE
   )
 }

@@ -48,6 +48,12 @@
 #'   were not ignored. If `TRUE`, empty arguments are stored with
 #'   [missing_arg()] values. If `FALSE` (the default) an error is
 #'   thrown when an empty argument is detected.
+#' @param .homonyms How to treat arguments with the same name. The
+#'   default, `"keep"`, preserves these arguments. Set `.homonyms` to
+#'   `"first"` to only keep the first occurrences, to `"last"` to keep
+#'   the last occurrences, and to `"error"` to raise an informative
+#'   error and indicate to the user what arguments have duplicated
+#'   names.
 #' @param .check_assign Whether to check for `<-` calls passed in
 #'   dots. When `TRUE` and a `<-` call is detected, a warning is
 #'   issued to advise users to use `=` if they meant to match a
@@ -109,6 +115,19 @@
 #' list(missing_arg())
 #'
 #'
+#' # Arguments with duplicated names are kept by default:
+#' list2(a = 1, a = 2, b = 3, b = 4, 5, 6)
+#'
+#' # Use the `.homonyms` argument to keep only the first of these:
+#' dots_list(a = 1, a = 2, b = 3, b = 4, 5, 6, .homonyms = "first")
+#'
+#' # Or the last:
+#' dots_list(a = 1, a = 2, b = 3, b = 4, 5, 6, .homonyms = "last")
+#'
+#' # Or raise an informative error:
+#' try(dots_list(a = 1, a = 2, b = 3, b = 4, 5, 6, .homonyms = "error"))
+#'
+#'
 #' # dots_list() can be configured to warn when a `<-` call is
 #' # detected:
 #' my_list <- function(...) dots_list(..., .check_assign = TRUE)
@@ -120,6 +139,7 @@
 dots_list <- function(...,
                       .ignore_empty = c("trailing", "none", "all"),
                       .preserve_empty = FALSE,
+                      .homonyms = c("keep", "first", "last", "error"),
                       .check_assign = FALSE) {
   dots <- .Call(rlang_dots_list,
     frame_env = environment(),
@@ -127,6 +147,7 @@ dots_list <- function(...,
     ignore_empty = .ignore_empty,
     preserve_empty = .preserve_empty,
     unquote_names = TRUE,
+    homonyms = .homonyms,
     check_assign = .check_assign
   )
   names(dots) <- names2(dots)
@@ -137,6 +158,7 @@ dots_split <- function(...,
                        .n_unnamed = NULL,
                        .ignore_empty = c("trailing", "none", "all"),
                        .preserve_empty = FALSE,
+                       .homonyms = c("keep", "first", "last", "error"),
                        .check_assign = FALSE) {
   dots <- .Call(rlang_dots_list,
     frame_env = environment(),
@@ -144,6 +166,7 @@ dots_split <- function(...,
     ignore_empty = .ignore_empty,
     preserve_empty = .preserve_empty,
     unquote_names = TRUE,
+    homonyms = .homonyms,
     check_assign = .check_assign
   )
 
@@ -267,6 +290,7 @@ is_spliced_bare <- function(x) {
 dots_splice <- function(...,
                         .ignore_empty = c("trailing", "none", "all"),
                         .preserve_empty = FALSE,
+                        .homonyms = c("keep", "first", "last", "error"),
                         .check_assign = FALSE) {
   dots <- .Call(rlang_dots_flat_list,
     frame_env = environment(),
@@ -274,6 +298,7 @@ dots_splice <- function(...,
     ignore_empty = .ignore_empty,
     preserve_empty = .preserve_empty,
     unquote_names = TRUE,
+    homonyms = .homonyms,
     check_assign = .check_assign
   )
   names(dots) <- names2(dots)
@@ -302,6 +327,7 @@ dots_splice <- function(...,
 dots_values <- function(...,
                         .ignore_empty = c("trailing", "none", "all"),
                         .preserve_empty = FALSE,
+                        .homonyms = c("keep", "first", "last", "error"),
                         .check_assign = FALSE) {
   .Call(rlang_dots_values,
     frame_env = environment(),
@@ -309,6 +335,7 @@ dots_values <- function(...,
     ignore_empty = .ignore_empty,
     preserve_empty = .preserve_empty,
     unquote_names = TRUE,
+    homonyms = .homonyms,
     check_assign = .check_assign
   )
 }
@@ -331,6 +358,7 @@ dots_definitions <- function(...,
     named = .named,
     ignore_empty = .ignore_empty,
     unquote_names = FALSE,
+    homonyms = "keep",
     check_assign = FALSE
   )
 
@@ -366,4 +394,46 @@ dots_node <- function(...) {
 #' fn(foo, bar)
 dots_n <- function(...) {
   nargs()
+}
+
+abort_dots_homonyms <- function(dots, dups) {
+  nms <- names(dots)
+
+  # This includes the first occurrence as well
+  dups_all <- nms %in% nms[dups]
+
+  dups_nms <- unique(nms[dups_all])
+  dups_n <- length(dups_nms)
+
+  if (!dups_n) {
+    abort("Internal error: Expected dots duplicates")
+  }
+
+  if (dups_n == 1L) {
+    nm <- dups_nms
+    enum <- homonym_enum(nm, dups_all, nms)
+    pos_msg <- sprintf(
+      "We found multiple arguments named `%s` at positions %s",
+      nm,
+      enum
+    )
+    abort(paste_line(
+      "Arguments can't have the same name.",
+      pos_msg
+    ))
+  }
+
+  enums <- map(dups_nms, homonym_enum, dups_all, nms)
+  line <- "* Multiple arguments named `%s` at positions %s"
+  enums_lines <- map2(dups_nms, enums, sprintf, fmt = line)
+
+  abort(paste_line(
+    "Arguments can't have the same name. We found these problems:",
+    !!!enums_lines
+  ))
+}
+
+homonym_enum <- function(nm, dups, nms) {
+  dups[nms != nm] <- FALSE
+  chr_enumerate(as.character(which(dups)), final = "and")
 }

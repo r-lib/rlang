@@ -7,6 +7,7 @@
 #define r_missing_str R_NaString
 
 extern sexp* r_shared_empty_chr;
+extern sexp* r_empty_str;
 
 
 static inline sexp* r_chr_get(sexp* chr, r_ssize i) {
@@ -61,6 +62,8 @@ static inline bool r_is_empty_string(sexp* str) {
 static inline bool r_chr_has_empty_string_at(sexp* chr, r_ssize i) {
   return r_is_empty_string(r_chr_get(chr, i));
 }
+
+sexp* r_nms_are_duplicated(sexp* nms, bool from_last);
 
 sexp* r_str_unserialise_unicode(sexp* r_string);
 
