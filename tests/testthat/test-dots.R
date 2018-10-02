@@ -216,6 +216,21 @@ test_that("`.homonyms = 'first'` matches first homonym", {
   expect_identical(out, list(a = 1, b = 2, 5, 6))
 })
 
+test_that("`.homonyms = 'last'` matches last homonym", {
+  list_last <- function(...) {
+    dots_list(..., .homonyms = "last")
+  }
+
+  out <- list_last(1, 2)
+  expect_identical(out, named_list(1, 2))
+
+  out <- list_last(a = 1, b = 2, 3, 4)
+  expect_identical(out, list(a = 1, b = 2, 3, 4))
+
+  out <- list_last(a = 1, b = 2, a = 3, a = 4, 5, 6)
+  expect_identical(out, list(b = 2, a = 4, 5, 6))
+})
+
 test_that("`.homonyms` = 'error' fails with homonyms", {
   list_error <- function(...) {
     dots_list(..., .homonyms = "error")

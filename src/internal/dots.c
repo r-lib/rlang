@@ -497,10 +497,10 @@ sexp* dots_expand(sexp* dots, struct dots_capture_info* capture_info) {
   return out;
 }
 
-static sexp* dots_keep_first(sexp* dots, sexp* nms) {
+static sexp* dots_keep(sexp* dots, sexp* nms, bool first) {
   r_ssize n = r_length(dots);
 
-  sexp* dups = r_nms_are_duplicated(nms, false);
+  sexp* dups = r_nms_are_duplicated(nms, !first);
   r_ssize out_n = n - r_lgl_sum(dups);
 
   sexp* out = KEEP(r_new_vector(r_type_list, out_n));
@@ -549,12 +549,12 @@ static sexp* dots_init(struct dots_capture_info* capture_info, sexp* frame_env) 
     dots = KEEP_N(maybe_auto_name(dots, capture_info->named), n_kept);
   }
 
-  case DOTS_HOMONYMS_LAST: r_abort("TODO last"); break;
   sexp* nms = r_vec_names(dots);
   if (nms != r_null) {
     switch (capture_info->homonyms) {
     case DOTS_HOMONYMS_KEEP: break;
-    case DOTS_HOMONYMS_FIRST: dots = dots_keep_first(dots, nms); break;
+    case DOTS_HOMONYMS_FIRST: dots = dots_keep(dots, nms, true); break;
+    case DOTS_HOMONYMS_LAST: dots = dots_keep(dots, nms, false); break;
     case DOTS_HOMONYMS_ERROR: dots_check_homonyms(dots, nms); break;
     }
   }
