@@ -452,5 +452,17 @@ test_that("missing names are forwarded", {
 })
 
 test_that("`.named` must be integerish", {
-  expect_error(exprs(foo, .named = 100.5), "scalar logical or number")
+  expect_error(exprs(foo, .named = 100.5), "must be a scalar logical")
+})
+
+test_that("auto-naming uses type_sum() (#573)", {
+  expect_named(quos(foo, !!(1:3), .named = TRUE), c("foo", "<int>"))
+
+  x <- list(env(), 1:3, letters)
+  expect_named(exprs_auto_name(x), c("<env>", "<int>", "<chr>"))
+})
+
+test_that("auto-naming supports the .data pronoun", {
+  exprs <- exprs(.data[[toupper("foo")]], .data$bar, .named = TRUE)
+  expect_named(exprs, c("FOO", "bar"))
 })

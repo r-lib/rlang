@@ -47,14 +47,15 @@ test_that("expr_label() truncates long calls", {
 
 # expr_name() --------------------------------------------------------
 
-test_that("name symbols, calls, and scalars", {
+test_that("name symbols, calls, and literals", {
   expect_identical(expr_name(quote(foo)), "foo")
   expect_identical(expr_name(quote(foo(bar))), "foo(bar)")
   expect_identical(expr_name(1L), "1")
   expect_identical(expr_name("foo"), "foo")
   expect_identical(expr_name(function() NULL), "function () ...")
-  expect_error(expr_name(1:2), "must quote a symbol, scalar, or call")
   expect_identical(expr_name(expr(function() { a; b })), "function() ...")
+  expect_identical(expr_name(1:2), "<int>")
+  expect_identical(expr_name(env()), "<env>")
 })
 
 test_that("supports special objects", {

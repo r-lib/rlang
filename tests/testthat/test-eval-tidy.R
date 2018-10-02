@@ -305,6 +305,27 @@ test_that("data mask inherits from last environment", {
   expect_reference(env_parent(mask), env)
 })
 
+test_that("is_data_pronoun() detects pronouns", {
+  expect_true(!!is_data_pronoun(quote(.data$foo)))
+  expect_true(!!is_data_pronoun(quote(.data[[foo]])))
+  expect_false(!!is_data_pronoun(quote(.data[foo])))
+  expect_false(!!is_data_pronoun(quote(data[[foo]])))
+})
+
+test_that("data_pronoun_name() extracts name", {
+  expr <- quote(.data[[foo]])
+  expect_null(data_pronoun_name(expr))
+
+  expr <- quote(.data[[toupper("foo")]])
+  expect_null(data_pronoun_name(expr))
+
+  expr <- quote(`$`(.data, toupper("foo")))
+  expect_null(data_pronoun_name(expr))
+
+  expect_identical(data_pronoun_name(quote(.data[["foo"]])), "foo")
+  expect_identical(data_pronoun_name(quote(.data$foo)), "foo")
+})
+
 
 # Lifecycle ----------------------------------------------------------
 

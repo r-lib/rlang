@@ -425,3 +425,27 @@ unclass_data_pronoun <- function(x) {
   class(x) <- class(x)[-i]
   x
 }
+
+is_data_pronoun <- function(x) {
+  is_call(x, c("[[", "$")) && identical(node_cadr(x), dot_data_sym)
+}
+
+data_pronoun_name <- function(x) {
+  if (is_call(x, "$")) {
+    arg <- node_cadr(node_cdr(x))
+    if (is_symbol(arg)) {
+      return(as_string(arg))
+    } else {
+      return(NULL)
+    }
+  }
+
+  if (is_call(x, "[[")) {
+    arg <- node_cadr(node_cdr(x))
+    if (is_string(arg)) {
+      return(arg)
+    } else {
+      return(NULL)
+    }
+  }
+}
