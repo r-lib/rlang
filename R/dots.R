@@ -376,3 +376,45 @@ dots_node <- function(...) {
 dots_n <- function(...) {
   nargs()
 }
+
+abort_dots_homonyms <- function(dots, dups) {
+  nms <- names(dots)
+
+  # This includes the first occurrence as well
+  dups_all <- nms %in% nms[dups]
+
+  dups_nms <- unique(nms[dups_all])
+  dups_n <- length(dups_nms)
+
+  if (!dups_n) {
+    abort("Internal error: Expected dots duplicates")
+  }
+
+  if (dups_n == 1L) {
+    nm <- dups_nms
+    enum <- homonym_enum(nm, dups_all, nms)
+    pos_msg <- sprintf(
+      "We found multiple arguments named `%s` at positions %s",
+      nm,
+      enum
+    )
+    abort(paste_line(
+      "Arguments can't have the same name.",
+      pos_msg
+    ))
+  }
+
+  enums <- map(dups_nms, homonym_enum, dups_all, nms)
+  line <- "* Multiple arguments named `%s` at positions %s"
+  enums_lines <- map2(dups_nms, enums, sprintf, fmt = line)
+
+  abort(paste_line(
+    "Arguments can't have the same name. We found these problems:",
+    !!!enums_lines
+  ))
+}
+
+homonym_enum <- function(nm, dups, nms) {
+  dups[nms != nm] <- FALSE
+  chr_enumerate(as.character(which(dups)), final = "and")
+}

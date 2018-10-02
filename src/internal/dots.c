@@ -497,12 +497,7 @@ sexp* dots_expand(sexp* dots, struct dots_capture_info* capture_info) {
   return out;
 }
 
-static sexp* dots_keep_first(sexp* dots) {
-  sexp* nms = r_vec_names(dots);
-  if (nms == r_null) {
-    return dots;
-  }
-
+static sexp* dots_keep_first(sexp* dots, sexp* nms) {
   r_ssize n = r_length(dots);
 
   sexp* dups = r_nms_are_duplicated(nms);
@@ -527,6 +522,18 @@ static sexp* dots_keep_first(sexp* dots) {
   return out;
 }
 
+static sexp* abort_dots_homonyms_call = NULL;
+static void dots_check_homonyms(sexp* dots, sexp* nms) {
+  sexp* dups = KEEP(r_nms_are_duplicated(nms));
+
+  if (r_lgl_sum(dups)) {
+    r_eval_with_xy(abort_dots_homonyms_call, r_base_env, dots, dups);
+    r_abort("Internal error: `dots_check_homonyms()` should have failed earlier");
+  }
+
+  FREE(1);
+}
+
 static sexp* dots_init(struct dots_capture_info* capture_info, sexp* frame_env) {
   int n_kept = 0;
 
@@ -542,11 +549,14 @@ static sexp* dots_init(struct dots_capture_info* capture_info, sexp* frame_env) 
     dots = KEEP_N(maybe_auto_name(dots, capture_info->named), n_kept);
   }
 
-  switch (capture_info->homonyms) {
-  case DOTS_HOMONYMS_KEEP: break;
-  case DOTS_HOMONYMS_FIRST: dots = dots_keep_first(dots); break;
   case DOTS_HOMONYMS_LAST: r_abort("TODO last"); break;
-  case DOTS_HOMONYMS_ERROR: r_abort("TODO error");  break;
+  sexp* nms = r_vec_names(dots);
+  if (nms != r_null) {
+    switch (capture_info->homonyms) {
+    case DOTS_HOMONYMS_KEEP: break;
+    case DOTS_HOMONYMS_FIRST: dots = dots_keep_first(dots, nms); break;
+    case DOTS_HOMONYMS_ERROR: dots_check_homonyms(dots, nms); break;
+    }
   }
 
   FREE(n_kept);
@@ -725,4 +735,7 @@ sexp* rlang_dots_flat_list(sexp* frame_env,
 void rlang_init_dots() {
   auto_name_call = r_parse("rlang:::quos_auto_name(x)");
   r_mark_precious(auto_name_call);
+
+  abort_dots_homonyms_call = r_parse("rlang:::abort_dots_homonyms(x, y)");
+  r_mark_precious(abort_dots_homonyms_call);
 }
