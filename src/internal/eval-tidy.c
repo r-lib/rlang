@@ -179,10 +179,10 @@ sexp* rlang_as_data_mask(sexp* data) {
     return rlang_new_data_mask(r_null, r_null);
   }
 
-  sexp* data_pronoun = rlang_as_data_pronoun(data);
-  sexp* bottom = NULL;
-
   int n_protect = 0;
+
+  sexp* bottom = NULL;
+  sexp* data_pronoun = KEEP_N(rlang_as_data_pronoun(data), n_protect);
 
   switch (r_typeof(data)) {
   case r_type_environment:
