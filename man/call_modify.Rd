@@ -4,7 +4,8 @@
 \alias{call_modify}
 \title{Modify the arguments of a call}
 \usage{
-call_modify(.call, ..., .standardise = FALSE, .env = caller_env())
+call_modify(.call, ..., .homonyms = c("keep", "first", "last", "error"),
+  .standardise = FALSE, .env = caller_env())
 }
 \arguments{
 \item{.call}{Can be a call, a formula quoting a call in the
@@ -14,6 +15,12 @@ expression.}
 \item{...}{Named or unnamed expressions (constants, names or calls)
 used to modify the call. Use \code{NULL} to remove arguments. These
 dots support \link[=tidy-dots]{tidy dots} features.}
+
+\item{.homonyms}{How to treat arguments with the same name. The
+default, \code{"keep"}, preserves these arguments. Set \code{.homonyms} to
+\code{"first"} to only keep the first occurrences, to \code{"last"} to keep
+the last occurrences, and to \code{"error"} to raise an informative
+error and indicate what arguments have duplicated names.}
 
 \item{.standardise}{If \code{TRUE}, the call is standardised beforehand
 to match existing unnamed arguments to their argument names. This
@@ -68,6 +75,19 @@ f()
 # You can also modify quosures inplace:
 f <- quo(matrix(bar))
 call_modify(f, quote(foo))
+
+
+# By default, arguments with the same name are kept. This has
+# subtle implications, for instance you can move an argument to
+# last position by removing it and remapping it:
+call <- quote(foo(bar = , baz))
+call_modify(call, bar = NULL, bar = missing_arg())
+
+# You can also choose to keep only the first or last homonym
+# arguments:
+args <-  list(bar = NULL, bar = missing_arg())
+call_modify(call, !!!args, .homonyms = "first")
+call_modify(call, !!!args, .homonyms = "last")
 }
 \seealso{
 lang

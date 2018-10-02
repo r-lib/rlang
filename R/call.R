@@ -339,6 +339,7 @@ call_print_type <- function(call) {
 #' `call_modify()`. See lifecycle section in [call2()] for more about
 #' this change.
 #'
+#' @inheritParams tidy-dots
 #' @param .call Can be a call, a formula quoting a call in the
 #'   right-hand side, or a frame object from which to extract the call
 #'   expression.
@@ -386,10 +387,25 @@ call_print_type <- function(call) {
 #' # You can also modify quosures inplace:
 #' f <- quo(matrix(bar))
 #' call_modify(f, quote(foo))
-call_modify <- function(.call, ...,
+#'
+#'
+#' # By default, arguments with the same name are kept. This has
+#' # subtle implications, for instance you can move an argument to
+#' # last position by removing it and remapping it:
+#' call <- quote(foo(bar = , baz))
+#' call_modify(call, bar = NULL, bar = missing_arg())
+#'
+#' # You can also choose to keep only the first or last homonym
+#' # arguments:
+#' args <-  list(bar = NULL, bar = missing_arg())
+#' call_modify(call, !!!args, .homonyms = "first")
+#' call_modify(call, !!!args, .homonyms = "last")
+call_modify <- function(.call,
+                        ...,
+                        .homonyms = c("keep", "first", "last", "error"),
                         .standardise = FALSE,
                         .env = caller_env()) {
-  args <- list2(...)
+  args <- dots_list(..., .homonyms = .homonyms)
 
   if (.standardise) {
     expr <- get_expr(call_standardise(.call, env = .env))

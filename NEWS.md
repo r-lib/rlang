@@ -39,7 +39,8 @@
   name.
 
 * `call_modify()` now supports removing unexisting arguments (#393)
-  and passing multiple arguments with the same name (#398).
+  and passing multiple arguments with the same name (#398). The new
+  `.homonyms` argument controls how to treat these arguments.
 
 * `call_standardise()` now handles primitive functions like `~`
   properly (#473).
