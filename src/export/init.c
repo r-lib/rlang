@@ -162,6 +162,7 @@ static const r_callable r_callables[] = {
   {"rlang_node_poke_cdar",      (r_fn_ptr_t) &rlang_node_poke_cdar, 2},
   {"rlang_node_poke_cddr",      (r_fn_ptr_t) &rlang_node_poke_cddr, 2},
   {"rlang_new_node",            (r_fn_ptr_t) &rlang_new_node_, 2},
+  {"rlang_nms_are_duplicated",  (r_fn_ptr_t) &r_nms_are_duplicated, 1},
   {"rlang_env_clone",           (r_fn_ptr_t) &r_env_clone, 2},
   {"rlang_env_unbind",          (r_fn_ptr_t) &rlang_env_unbind, 3},
   {"rlang_env_poke_parent",     (r_fn_ptr_t) &rlang_env_poke_parent, 2},
