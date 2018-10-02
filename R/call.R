@@ -378,6 +378,11 @@ call_print_type <- function(call) {
 #' call_modify(call, !!!newargs)
 #'
 #'
+#' # Modify the `...` arguments as if it were a named argument:
+#' call_modify(call, ... = )
+#' call_modify(quote(foo(...)), ... = NULL)
+#'
+#'
 #' # You can also modify quosures inplace:
 #' f <- quo(matrix(bar))
 #' call_modify(f, quote(foo))
@@ -422,11 +427,20 @@ call_modify <- function(.call,
     tag <- sym(nms[[i]])
     arg <- named_args[[i]]
 
+    if (identical(tag, dots_sym)) {
+      if (!is_missing(arg) && !is_null(arg)) {
+        abort("`...` arguments must be NULL or empty")
+      }
+      node_accessor <- node_car
+    } else {
+      node_accessor <- node_tag
+    }
+
     prev <- expr
     node <- node_cdr(expr)
 
     while (!is_null(node)) {
-      if (identical(node_tag(node), tag)) {
+      if (identical(node_accessor(node), tag)) {
         # Remove argument from the list if `NULL`
         if (is_null(maybe_missing(arg))) {
           node <- node_cdr(node)
@@ -434,17 +448,28 @@ call_modify <- function(.call,
           next
         }
 
-        node_poke_car(node, maybe_missing(arg))
+        # If `...` it can only be missing at this point, which means
+        # we keep it in the argument list as is
+        if (!identical(tag, dots_sym)) {
+          node_poke_car(node, maybe_missing(arg))
+        }
+
         break
       }
 
       prev <- node
       node <- node_cdr(node)
     }
+
     if (is_null(node) && !is_null(maybe_missing(arg))) {
-      node <- new_node(maybe_missing(arg), NULL)
-      node_poke_tag(node, tag)
-      node_poke_cdr(prev, node)
+      if (identical(tag, dots_sym)) {
+        node <- new_node(dots_sym, NULL)
+        node_poke_cdr(prev, node)
+      } else {
+        node <- new_node(maybe_missing(arg), NULL)
+        node_poke_tag(node, tag)
+        node_poke_cdr(prev, node)
+      }
     }
   }
 

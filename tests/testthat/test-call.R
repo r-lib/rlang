@@ -97,6 +97,13 @@ test_that("can add a missing argument", {
   expect_identical(call_modify(quote(foo()), bar = ), quote(foo(bar = )))
 })
 
+test_that("can refer to dots as named argument", {
+  expect_error(call_modify(quote(foo(...)), ... = "foo"), "must be NULL or empty")
+  expect_identical(call_modify(quote(foo(x, ..., y)), ... = ), quote(foo(x, ..., y)))
+  expect_identical(call_modify(quote(foo(x)), ... = ), quote(foo(x, ...)))
+  expect_identical(call_modify(quote(foo(x, ..., y)), ... = NULL), quote(foo(x, y)))
+})
+
 
 # Utils --------------------------------------------------------------
 

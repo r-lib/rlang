@@ -67,6 +67,11 @@ newargs <- list(na.rm = NULL, trim = 0.1)
 call_modify(call, !!!newargs)
 
 
+# Modify the `...` arguments as if it were a named argument:
+call_modify(call, ... = )
+call_modify(quote(foo(...)), ... = NULL)
+
+
 # You can also modify quosures inplace:
 f <- quo(matrix(bar))
 call_modify(f, quote(foo))

@@ -38,6 +38,10 @@
   .data[["name"]])` and `group_by(df, name)` produce the same column
   name.
 
+* `call_modify()` has better support for `...` and now treats it like
+  a named argument. `call_modify(call, ... = )` adds `...` to the call
+  and `call_modify(call, ... = NULL)` removes it.
+
 * `call_modify()` now preserves empty arguments. It is no longer
   necessary to use `missing_arg()` to add a missing argument to a
   call. This is possible thanks to the new `.preserve_empty` option of
