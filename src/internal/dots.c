@@ -497,9 +497,40 @@ sexp* dots_expand(sexp* dots, struct dots_capture_info* capture_info) {
   return out;
 }
 
-sexp* dots_init(struct dots_capture_info* capture_info, sexp* frame_env) {
+static sexp* dots_keep_first(sexp* dots) {
+  sexp* nms = r_vec_names(dots);
+  if (nms == r_null) {
+    return dots;
+  }
 
-  sexp* dots = KEEP(capturedots(frame_env));
+  r_ssize n = r_length(dots);
+
+  sexp* dups = r_nms_are_duplicated(nms);
+  r_ssize out_n = n - r_lgl_sum(dups);
+
+  sexp* out = KEEP(r_new_vector(r_type_list, out_n));
+  sexp* out_nms = KEEP(r_new_vector(r_type_character, out_n));
+  r_push_names(out, out_nms);
+
+  sexp** nms_ptr = r_chr_deref(nms);
+  int* dups_ptr = r_lgl_deref(dups);
+
+  for (r_ssize i = 0, out_i = 0; i < n; ++i, ++nms_ptr, ++dups_ptr) {
+    if (!*dups_ptr) {
+      r_list_poke(out, out_i, r_list_get(dots, i));
+      r_chr_poke(out_nms, out_i, *nms_ptr);
+      ++out_i;
+    }
+  }
+
+  FREE(2);
+  return out;
+}
+
+static sexp* dots_init(struct dots_capture_info* capture_info, sexp* frame_env) {
+  int n_kept = 0;
+
+  sexp* dots = KEEP_N(capturedots(frame_env), n_kept);
   dots = dots_unquote(dots, capture_info);
 
   // Initialise the names only if there is no expansion to avoid
@@ -508,10 +539,17 @@ sexp* dots_init(struct dots_capture_info* capture_info, sexp* frame_env) {
     if (capture_info->type != DOTS_VALUE && r_vec_names(dots) == r_null) {
       init_names(dots);
     }
-    dots = maybe_auto_name(dots, capture_info->named);
+    dots = KEEP_N(maybe_auto_name(dots, capture_info->named), n_kept);
   }
 
-  FREE(1);
+  switch (capture_info->homonyms) {
+  case DOTS_HOMONYMS_KEEP: break;
+  case DOTS_HOMONYMS_FIRST: dots = dots_keep_first(dots); break;
+  case DOTS_HOMONYMS_LAST: r_abort("TODO last"); break;
+  case DOTS_HOMONYMS_ERROR: r_abort("TODO error");  break;
+  }
+
+  FREE(n_kept);
   return dots;
 }
 

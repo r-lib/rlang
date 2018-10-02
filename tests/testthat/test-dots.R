@@ -200,3 +200,18 @@ test_that("dots collectors never warn for <- when option is set", {
 test_that("`.homonyms` is matched exactly", {
   expect_error(dots_list(.homonyms = "k"), "must be one of")
 })
+
+test_that("`.homonyms = 'first'` matches first homonym", {
+  list_first <- function(...) {
+    dots_list(..., .homonyms = "first")
+  }
+
+  out <- list_first(1, 2)
+  expect_identical(out, named_list(1, 2))
+
+  out <- list_first(a = 1, b = 2, 3, 4)
+  expect_identical(out, list(a = 1, b = 2, 3, 4))
+
+  out <- list_first(a = 1, b = 2, a = 3, a = 4, 5, 6)
+  expect_identical(out, list(a = 1, b = 2, 5, 6))
+})
