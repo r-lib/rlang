@@ -66,12 +66,6 @@ call_modify(call, na.rm = )
 newargs <- list(na.rm = NULL, trim = 0.1)
 call_modify(call, !!!newargs)
 
-# Supply a call frame to extract the frame expression:
-f <- function(bool = TRUE) {
-  call_modify(call_frame(), splice(list(bool = FALSE)))
-}
-f()
-
 
 # You can also modify quosures inplace:
 f <- quo(matrix(bar))
@@ -89,7 +83,4 @@ call_modify(call, bar = NULL, bar = missing_arg())
 args <-  list(bar = NULL, bar = missing_arg())
 call_modify(call, !!!args, .homonyms = "first")
 call_modify(call, !!!args, .homonyms = "last")
-}
-\seealso{
-lang
 }

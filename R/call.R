@@ -356,7 +356,6 @@ call_print_type <- function(call) {
 #'   `call_standardise()` if `.standardise` is `TRUE`.
 #'
 #' @return A quosure if `.call` is a quosure, a call otherwise.
-#' @seealso lang
 #' @export
 #' @examples
 #' call <- quote(mean(x, na.rm = TRUE))
@@ -377,12 +376,6 @@ call_print_type <- function(call) {
 #' # Supply a list of new arguments with `!!!`
 #' newargs <- list(na.rm = NULL, trim = 0.1)
 #' call_modify(call, !!!newargs)
-#'
-#' # Supply a call frame to extract the frame expression:
-#' f <- function(bool = TRUE) {
-#'   call_modify(call_frame(), splice(list(bool = FALSE)))
-#' }
-#' f()
 #'
 #'
 #' # You can also modify quosures inplace:
