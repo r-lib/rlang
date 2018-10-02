@@ -19,5 +19,7 @@ static inline sexp* r_shared_lgl(bool x) {
   }
 }
 
+r_ssize r_lgl_sum(sexp* lgl);
+
 
 #endif
