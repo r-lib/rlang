@@ -424,3 +424,22 @@ test_that("check for dangling promise in call CAR (#492)", {
     print(foo)
   }))
 })
+
+test_that("dangling srcrefs are not printed", {
+  skip_on_os("windows")
+
+  from <- test_path("fixtures", "trace-srcref.R")
+  to <- test_path("fixtures", "trace-srcref2.R")
+
+  file.copy(from, to)
+  on.exit(unlink(to))
+
+  source(to, local = TRUE, keep.source = TRUE)
+  unlink(to)
+
+  expect_known_trace_output(
+    local(f(current_env())),
+    file ="test-trace-dangling-srcref.txt",
+    srcrefs = TRUE
+  )
+})

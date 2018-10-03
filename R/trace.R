@@ -615,8 +615,6 @@ trace_call_text <- function(call, collapse) {
   }
 
   format_collapsed(paste0("[ ", text, " ]"), collapse)
-
-  ## sprintf("[ %s ]%s", text, n_collapsed_text)
 }
 
 src_loc <- function(srcref, dir = getwd()) {
@@ -628,8 +626,12 @@ src_loc <- function(srcref, dir = getwd()) {
   if (is.null(srcfile)) {
     return("")
   }
+
   file <- srcfile$filename
   if (identical(file, "") || identical(file, "<text>")) {
+    return("")
+  }
+  if (!file.exists(file)) {
     return("")
   }
 
