@@ -20,7 +20,7 @@ The error message
 
 The error message
 Backtrace:
- ─expect_known_output(...)
+ ─with_options(rlang__backtrace_on_error = "branch", msg())
  ─msg()
  ─f()
  ─g()
@@ -32,7 +32,6 @@ Backtrace:
 The error message
 Backtrace:
 █
-├─[ expect_known_output(...) ] with 5 more calls
 ├─[ with_options(...) ]
 └─msg()
   ├─[ cat(...) ]

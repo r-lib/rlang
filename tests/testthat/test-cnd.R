@@ -319,17 +319,17 @@ test_that("Invalid on_error option resets itself", {
 test_that("on_error option can be tweaked", {
   skip_on_os("windows")
 
-  scoped_options(
-    rlang_trace_top_env = current_env(),
-    rlang_trace_format_srcrefs = FALSE
-  )
-
   f <- function() tryCatch(g())
   g <- function() h()
   h <- function() abort("The error message")
   msg <- function() cat(conditionMessage(catch_cnd(f())))
 
-  expect_known_output(file = test_path("test-on-error-message-options.txt"), {
+  expect_known_output(file = test_path("test-on-error-message-options.txt"), local({
+    scoped_options(
+      rlang_trace_top_env = current_env(),
+      rlang_trace_format_srcrefs = FALSE
+    )
+
     cat_line("", ">>> Default:", "")
     with_options(
       rlang__backtrace_on_error = NULL,
@@ -356,7 +356,7 @@ test_that("on_error option can be tweaked", {
 
     cat_line("", "", "", ">>> Collapsed:", "")
     with_options(rlang__backtrace_on_error = "collapse", msg())
-  })
+  }))
 })
 
 test_that("format_onerror_backtrace handles empty and size 1 traces", {
