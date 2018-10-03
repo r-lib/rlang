@@ -572,3 +572,7 @@ test_that("splicing language objects still works", {
   expect_identical_(list2(!!!~foo), list(~foo))
   expect_identical_(list2(!!!quote(foo(bar))), list(quote(foo(bar))))
 })
+
+test_that("can unquote string in function position", {
+  expect_identical(expr((!!"foo")()), quote("foo"()))
+})

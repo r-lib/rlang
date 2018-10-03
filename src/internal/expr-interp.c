@@ -344,6 +344,7 @@ sexp* big_bang(sexp* operand, sexp* env, sexp* node, sexp* next) {
 
 // Defined below
 static sexp* node_list_interp(sexp* x, sexp* env);
+static void call_maybe_poke_string_head(sexp* call);
 
 sexp* call_interp(sexp* x, sexp* env)  {
   struct expansion_info info = which_expansion_op(x, false);
@@ -363,7 +364,9 @@ sexp* call_interp_impl(sexp* x, sexp* env, struct expansion_info info) {
     if (r_typeof(x) != r_type_call) {
       return x;
     } else {
-      return node_list_interp(x, env);
+      sexp* out = node_list_interp(x, env);
+      call_maybe_poke_string_head(out);
+      return out;
     }
   case OP_EXPAND_UQ:
   case OP_EXPAND_DOT_DATA:
@@ -384,6 +387,20 @@ sexp* call_interp_impl(sexp* x, sexp* env, struct expansion_info info) {
 
   // Silence mistaken noreturn warning on GCC
   r_abort("Never reached");
+}
+
+// Make (!!"foo")() and "foo"() equivalent
+static void call_maybe_poke_string_head(sexp* call) {
+  sexp* head = r_node_car(call);
+  if (r_typeof(head) != r_type_character) {
+    return ;
+  }
+
+  r_ssize n = r_length(head);
+  if (n != 1) {
+    r_abort("Unquoted function name must be a character vector of length 1");
+  }
+  r_node_poke_car(call, r_sym(r_chr_get_c_string(head, 0)));
 }
 
 static sexp* node_list_interp(sexp* x, sexp* env) {

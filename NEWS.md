@@ -1,6 +1,10 @@
 
 # rlang 0.2.2.9000
 
+* It is now possible to unquote strings in function position. This is
+  consistent with how the R parser coerces strings to symbols in this
+  kind of expressions: `"foo"()`.
+
 * The functions from the restart API are now in the questioning
   lifecycle stage. It is not clear yet whether we want to recommend
   restarts as a style of programming in R.
