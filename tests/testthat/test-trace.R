@@ -411,6 +411,8 @@ test_that("can print degenerate backtraces", {
 })
 
 test_that("check for dangling promise in call CAR (#492)", {
+  skip_on_os("windows")
+
   expect_known_trace_output(file = "test-trace-call-car-promise.txt", local({
     e <- current_env()
 
