@@ -90,9 +90,13 @@ bar <- "bar"
 env_bind(current_env(), bar = "BAR")
 bar
 
-# You can remove bindings by supplying empty arguments:
-env_bind(current_env(), foo = , bar = )
+# You can remove bindings by supplying zap sentinels:
+env_bind(current_env(), foo = zap())
 try(foo)
+
+# Unquote-splice a named list with zaps()
+env_bind(current_env(), !!!zaps(c("foo", "bar")))
+try(bar)
 
 # It is most useful to change other environments:
 my_env <- env()
