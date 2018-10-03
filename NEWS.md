@@ -1,6 +1,9 @@
 
 # rlang 0.2.2.9000
 
+* `zap()` and `zaps()` create sentinels to instruct functions like
+  `env_bind()` or `call_modify()` that objects are to be removed.
+
 * `as_quosure()` now requires an explicit environment for symbols and
   calls. This should typically be the environment in which the
   expression was created.
