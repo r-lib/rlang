@@ -36,11 +36,30 @@ current_fn <- function() {
 
 #' Jump to or from a frame
 #'
+#' @description
+#'
+#' \Sexpr[results=rd, stage=render]{rlang:::lifecycle("questioning")}
+#'
 #' While [base::return()] can only return from the current local
 #' frame, these two functions will return from any frame on the
 #' current evaluation stack, between the global and the currently
 #' active context. They provide a way of performing arbitrary
 #' non-local jumps out of the function currently under evaluation.
+#'
+#' @section Life cycle:
+#'
+#' The support for `frame` object is soft-deprecated.  Please pass
+#' simple environments to `return_from()` and `return_to()`.
+#'
+#' These functions are in the questioning lifecycle because we are
+#' considering simpler alternatives.
+#'
+#' @param frame An environment, a frame object, or any object with an
+#'   [get_env()] method. The environment should be an evaluation
+#'   environment currently on the stack.
+#' @param value The return value.
+#'
+#' @details
 #'
 #' `return_from()` will jump out of `frame`. `return_to()` is a bit
 #' trickier. It will jump out of the frame located just before `frame`
@@ -53,15 +72,6 @@ current_fn <- function() {
 #' perform non-local jumps.
 #'
 #'
-#' @section Life cycle:
-#'
-#' The support for `frame` object is soft-deprecated.  Please pass
-#' simple environments to `return_from()` and `return_to()`.
-#'
-#' @param frame An environment, a frame object, or any object with an
-#'   [get_env()] method. The environment should be an evaluation
-#'   environment currently on the stack.
-#' @param value The return value.
 #' @export
 #' @examples
 #' # Passing fn() evaluation frame to g():

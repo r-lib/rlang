@@ -78,6 +78,7 @@ changes.
 \item \code{\link[=with_restarts]{with_restarts()}}, \code{\link[=rst_list]{rst_list()}}, \code{\link[=rst_exists]{rst_exists()}}, \code{\link[=rst_jump]{rst_jump()}},
 \code{\link[=rst_maybe_jump]{rst_maybe_jump()}}, \code{\link[=rst_abort]{rst_abort()}}. It is not clear yet whether we
 want to recommend restarts as a style of programming in R.
+\item \code{\link[=return_from]{return_from()}} and \code{\link[=return_to]{return_to()}}.
 }
 
 \strong{In the questioning stage as of rlang 0.2.0}

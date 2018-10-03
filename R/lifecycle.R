@@ -129,6 +129,7 @@ upcase1 <- function(x) {
 #' * [with_restarts()], [rst_list()], [rst_exists()], [rst_jump()],
 #'   [rst_maybe_jump()], [rst_abort()]. It is not clear yet whether we
 #'   want to recommend restarts as a style of programming in R.
+#' * [return_from()] and [return_to()].
 #'
 #'
 #' **In the questioning stage as of rlang 0.2.0**
