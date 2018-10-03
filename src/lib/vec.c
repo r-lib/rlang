@@ -1,5 +1,6 @@
 #include "rlang.h"
 #include <math.h>
+#include <stdint.h>
 
 static bool has_correct_length(sexp* x, r_ssize n) {
   return n < 0 || r_length(x) == n;
@@ -97,6 +98,10 @@ bool r_is_double(sexp* x, r_ssize n, int finite) {
   return true;
 }
 
+// Allow integers up to 2^52, same as R_XLEN_T_MAX when long vector
+// support is enabled
+#define RLANG_MAX_DOUBLE_INT 4503599627370496
+
 bool r_is_integerish(sexp* x, r_ssize n, int finite) {
   if (r_typeof(x) == r_type_integer) {
     return r_is_integer(x, n, finite);
@@ -116,7 +121,14 @@ bool r_is_integerish(sexp* x, r_ssize n, int finite) {
       actual_finite = false;
       continue;
     }
-    if (elt != (int) elt) {
+
+    if (elt > RLANG_MAX_DOUBLE_INT) {
+      r_abort("Double value is too large for an integer check");
+    }
+
+    // C99 guarantees existence of the int_least_N_t types, even on
+    // machines that don't support arithmetic on width N:
+    if (elt != (int_least64_t) elt) {
       return false;
     }
   }
@@ -127,6 +139,8 @@ bool r_is_integerish(sexp* x, r_ssize n, int finite) {
 
   return true;
 }
+
+#undef RLANG_MAX_DOUBLE_INT
 
 bool r_is_character(sexp* x, r_ssize n) {
   return r_typeof(x) == r_type_character && has_correct_length(x, n);

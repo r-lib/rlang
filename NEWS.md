@@ -1,6 +1,8 @@
 
 # rlang 0.2.2.9000
 
+* `is_integerish()` now supports large double values (#578).
+
 * The sentinel for removing arguments in `call_modify()` has been
   changed from `NULL` to `zap()`. This breaking change is motivated
   by the ambiguity of `NULL` with valid argument values.
