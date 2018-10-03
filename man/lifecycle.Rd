@@ -75,6 +75,9 @@ changes.
 \item \code{\link[=flatten]{flatten()}}, \code{\link[=squash]{squash()}}, and their atomic vector variants
 \item \code{\link[=modify]{modify()}} and \code{\link[=prepend]{prepend()}}
 \item \code{\link[=as_logical]{as_logical()}}, \code{\link[=as_character]{as_character()}}, etc.
+\item \code{\link[=with_restarts]{with_restarts()}}, \code{\link[=rst_list]{rst_list()}}, \code{\link[=rst_exists]{rst_exists()}}, \code{\link[=rst_jump]{rst_jump()}},
+\code{\link[=rst_maybe_jump]{rst_maybe_jump()}}, \code{\link[=rst_abort]{rst_abort()}}. It is not clear yet whether we
+want to recommend restarts as a style of programming in R.
 }
 
 \strong{In the questioning stage as of rlang 0.2.0}

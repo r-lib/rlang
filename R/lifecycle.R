@@ -126,6 +126,9 @@ upcase1 <- function(x) {
 #' * [flatten()], [squash()], and their atomic vector variants
 #' * [modify()] and [prepend()]
 #' * [as_logical()], [as_character()], etc.
+#' * [with_restarts()], [rst_list()], [rst_exists()], [rst_jump()],
+#'   [rst_maybe_jump()], [rst_abort()]. It is not clear yet whether we
+#'   want to recommend restarts as a style of programming in R.
 #'
 #'
 #' **In the questioning stage as of rlang 0.2.0**

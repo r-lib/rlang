@@ -17,6 +17,8 @@ restart name and the function is executed after the jump. These
 dots support \link[=tidy-dots]{tidy dots} features.}
 }
 \description{
+\Sexpr[results=rd, stage=render]{rlang:::lifecycle("questioning")}
+
 Restart points are named functions that are established with
 \code{with_restarts()}. Once established, you can interrupt the normal
 execution of R code, jump to the restart, and resume execution from
@@ -27,9 +29,17 @@ from the establishing point (i.e., a return value for
 }
 \details{
 Restarts are not the only way of jumping to a previous call frame
-(see \code{\link[=return_from]{return_from()}} or \code{\link[=return_to]{return_to()}}). However, they have the advantage of
-being callable by name once established.
+(see \code{\link[=return_from]{return_from()}} or \code{\link[=return_to]{return_to()}}). However, they have the
+advantage of being callable by name once established.
 }
+\section{Life cycle}{
+
+
+All the restart functions are in the questioning stage. It is not
+clear yet whether we want to recommend restarts as a style of
+programming in R.
+}
+
 \examples{
 # Restarts are not the only way to jump to a previous frame, but
 # they have the advantage of being callable by name:

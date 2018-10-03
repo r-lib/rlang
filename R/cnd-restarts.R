@@ -1,5 +1,9 @@
 #' Establish a restart point on the stack
 #'
+#' @description
+#'
+#' \Sexpr[results=rd, stage=render]{rlang:::lifecycle("questioning")}
+#'
 #' Restart points are named functions that are established with
 #' `with_restarts()`. Once established, you can interrupt the normal
 #' execution of R code, jump to the restart, and resume execution from
@@ -7,10 +11,6 @@
 #' that is executed after the jump and that provides a return value
 #' from the establishing point (i.e., a return value for
 #' `with_restarts()`).
-#'
-#' Restarts are not the only way of jumping to a previous call frame
-#' (see [return_from()] or [return_to()]). However, they have the advantage of
-#' being callable by name once established.
 #'
 #' @param .expr An expression to execute with new restarts established
 #'   on the stack. This argument is passed by expression and supports
@@ -21,6 +21,19 @@
 #'   dots support [tidy dots][tidy-dots] features.
 #' @seealso [return_from()] and [return_to()] for a more flexible way
 #'   of performing a non-local jump to an arbitrary call frame.
+#'
+#' @details
+#'
+#' Restarts are not the only way of jumping to a previous call frame
+#' (see [return_from()] or [return_to()]). However, they have the
+#' advantage of being callable by name once established.
+#'
+#' @section Life cycle:
+#'
+#' All the restart functions are in the questioning stage. It is not
+#' clear yet whether we want to recommend restarts as a style of
+#' programming in R.
+#'
 #' @export
 #' @examples
 #' # Restarts are not the only way to jump to a previous frame, but
@@ -112,6 +125,10 @@ with_restarts <- function(.expr, ...) {
 
 #' Restarts utilities
 #'
+#' @description
+#'
+#' \Sexpr[results=rd, stage=render]{rlang:::lifecycle("questioning")}
+#'
 #' Restarts are named jumping points established by [with_restarts()].
 #' `rst_list()` returns the names of all restarts currently
 #' established. `rst_exists()` checks if a given restart is
@@ -124,6 +141,13 @@ with_restarts <- function(.expr, ...) {
 #' @param ... Arguments passed on to the restart function. These
 #'   dots support [tidy dots][tidy-dots] features.
 #' @seealso [with_restarts()]
+#'
+#' @section Life cycle:
+#'
+#' All the restart functions are in the questioning stage. It is not
+#' clear yet whether we want to recommend restarts as a style of
+#' programming in R.
+#'
 #' @export
 rst_list <- function() {
   computeRestarts()
@@ -150,10 +174,20 @@ rst_maybe_jump <- function(.restart, ...) {
 
 #' Jump to the abort restart
 #'
+#' @description
+#'
+#' \Sexpr[results=rd, stage=render]{rlang:::lifecycle("questioning")}
+#'
 #' The abort restart is the only restart that is established at top
 #' level. It is used by R as a top-level target, most notably when an
 #' error is issued (see [abort()]) that no handler is able
 #' to deal with (see [with_handlers()]).
+#'
+#' @section Life cycle:
+#'
+#' All the restart functions are in the questioning stage. It is not
+#' clear yet whether we want to recommend restarts as a style of
+#' programming in R.
 #'
 #' @seealso [rst_jump()], [abort()]
 #' @export

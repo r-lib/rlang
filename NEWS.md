@@ -1,6 +1,10 @@
 
 # rlang 0.2.2.9000
 
+* The functions from the restart API are now in the questioning
+  lifecycle stage. It is not clear yet whether we want to recommend
+  restarts as a style of programming in R.
+
 * `are_na()` now requires atomic vectors (#558).
 
 * `dots_list()`, `enexprs()` and `enquos()` gain a `.homonyms`

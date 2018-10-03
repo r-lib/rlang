@@ -7,11 +7,21 @@
 rst_abort()
 }
 \description{
+\Sexpr[results=rd, stage=render]{rlang:::lifecycle("questioning")}
+
 The abort restart is the only restart that is established at top
 level. It is used by R as a top-level target, most notably when an
 error is issued (see \code{\link[=abort]{abort()}}) that no handler is able
 to deal with (see \code{\link[=with_handlers]{with_handlers()}}).
 }
+\section{Life cycle}{
+
+
+All the restart functions are in the questioning stage. It is not
+clear yet whether we want to recommend restarts as a style of
+programming in R.
+}
+
 \examples{
 # The `abort` restart is a bit special in that it is always
 # registered in a R session. You will always find it on the restart

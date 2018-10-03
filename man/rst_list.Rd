@@ -22,6 +22,8 @@ rst_maybe_jump(.restart, ...)
 dots support \link[=tidy-dots]{tidy dots} features.}
 }
 \description{
+\Sexpr[results=rd, stage=render]{rlang:::lifecycle("questioning")}
+
 Restarts are named jumping points established by \code{\link[=with_restarts]{with_restarts()}}.
 \code{rst_list()} returns the names of all restarts currently
 established. \code{rst_exists()} checks if a given restart is
@@ -30,6 +32,14 @@ and jumps to a restart point. If the restart does not exist, an
 error is thrown.  \code{rst_maybe_jump()} first checks that a restart
 exists before jumping.
 }
+\section{Life cycle}{
+
+
+All the restart functions are in the questioning stage. It is not
+clear yet whether we want to recommend restarts as a style of
+programming in R.
+}
+
 \seealso{
 \code{\link[=with_restarts]{with_restarts()}}
 }
