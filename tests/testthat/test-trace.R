@@ -4,7 +4,10 @@ context("trace.R")
 test_that("tree printing only changes deliberately", {
   skip_on_os("windows")
 
-  scoped_options(rlang_trace_format_srcrefs = TRUE)
+  scoped_options(
+    rlang_trace_format_srcrefs = TRUE,
+    rlang_trace__force_dangling_srcrefs = TRUE
+  )
 
   dir <- normalizePath(test_path(".."))
   e <- environment()
@@ -31,7 +34,10 @@ test_that("can print tree with collapsed branches", {
   # Fake eval() call does not have same signature on old R
   skip_if(getRversion() < "3.4")
 
-  scoped_options(rlang_trace_format_srcrefs = TRUE)
+  scoped_options(
+    rlang_trace_format_srcrefs = TRUE,
+    rlang_trace__force_dangling_srcrefs = TRUE
+  )
 
   dir <- normalizePath(test_path(".."))
   e <- environment()
@@ -97,6 +103,8 @@ test_that("cli_branch() handles edge case", {
 })
 
 test_that("trace formatting picks up `rlang_trace_format_srcrefs`", {
+  scoped_options(rlang_trace__force_dangling_srcrefs = TRUE)
+
   e <- environment()
   f <- function() trace_back(e)
   trace <- f()
