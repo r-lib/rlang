@@ -15,7 +15,7 @@ void r_abort_defunct(const char* fmt, ...);
 
 sexp* r_interp_str(const char* fmt, ...);
 
-sexp* r_new_condition(sexp* type, sexp* msg, sexp* call, sexp* data);
+sexp* r_new_condition(sexp* type, sexp* msg, sexp* data);
 
 static inline bool r_is_condition(sexp* x) {
   return TYPEOF(x) == VECSXP && Rf_inherits(x, "condition");

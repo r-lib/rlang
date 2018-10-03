@@ -7,14 +7,14 @@
 \alias{message_cnd}
 \title{Create a condition object}
 \usage{
-cnd(.subclass, ..., message = "", call = NULL)
+cnd(.subclass, ..., message = "")
 
-error_cnd(.subclass = NULL, ..., message = "", call = NULL,
-  trace = NULL, parent = NULL)
+error_cnd(.subclass = NULL, ..., message = "", trace = NULL,
+  parent = NULL)
 
-warning_cnd(.subclass = NULL, ..., message = "", call = NULL)
+warning_cnd(.subclass = NULL, ..., message = "")
 
-message_cnd(.subclass = NULL, ..., message = "", call = NULL)
+message_cnd(.subclass = NULL, ..., message = "")
 }
 \arguments{
 \item{.subclass}{The condition subclass.}
@@ -24,9 +24,6 @@ object. These dots are evaluated with \link[=tidy-dots]{explicit splicing}.}
 
 \item{message}{A default message to inform the user about the
 condition when it is signalled.}
-
-\item{call}{A call documenting what expression caused a condition
-to be signalled.}
 
 \item{trace}{A \code{trace} object created by \code{\link[=trace_back]{trace_back()}}.}
 

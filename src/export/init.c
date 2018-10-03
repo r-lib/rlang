@@ -13,7 +13,7 @@ extern bool rlang_is_quosure(sexp*);
 extern sexp* rlang_is_null(sexp*);
 extern sexp* r_f_lhs(sexp*);
 extern sexp* r_f_rhs(sexp*);
-extern sexp* r_new_condition(sexp*, sexp*, sexp*, sexp*);
+extern sexp* r_new_condition(sexp*, sexp*, sexp*);
 extern sexp* r_env_clone(sexp*, sexp*);
 extern sexp* rlang_env_unbind(sexp*, sexp*);
 extern sexp* rlang_env_poke_parent(sexp*, sexp*);
@@ -133,7 +133,7 @@ static const r_callable r_callables[] = {
   {"rlang_library_unload",      (r_fn_ptr_t) &rlang_library_unload, 0},
   {"r_f_lhs",                   (r_fn_ptr_t) &r_f_lhs, 1},
   {"r_f_rhs",                   (r_fn_ptr_t) &r_f_rhs, 1},
-  {"rlang_new_condition",       (r_fn_ptr_t) &r_new_condition, 4},
+  {"rlang_new_condition",       (r_fn_ptr_t) &r_new_condition, 3},
   {"rlang_replace_na",          (r_fn_ptr_t) &rlang_replace_na, 2},
   {"rlang_capturearginfo",      (r_fn_ptr_t) &rlang_capturearginfo, 4},
   {"rlang_capturedots",         (r_fn_ptr_t) &rlang_capturedots, 4},

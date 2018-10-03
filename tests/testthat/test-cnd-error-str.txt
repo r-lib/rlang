@@ -1,7 +1,7 @@
 <error>
 * Message: "The high-level error message"
 * Class: `rlang_error`
-* Fields: `message`, `call`, `trace` and `parent`
+* Fields: `message`, `trace` and `parent`
 * Backtrace:
 █
 ├─catch_cnd(a())
@@ -18,7 +18,7 @@
 <error: parent>
 * Message: "The low-level error message"
 * Class: `rlang_error`
-* Fields: `message`, `call`, `trace`, `parent` and `foo`
+* Fields: `message`, `trace`, `parent` and `foo`
 * Backtrace:
 █
 └─f()

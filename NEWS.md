@@ -1,6 +1,9 @@
 
 # rlang 0.2.2.9000
 
+* The `call` argument of `abort()` and condition constructors is now
+  deprecated in favour of storing full backtraces.
+
 * It is now possible to unquote strings in function position. This is
   consistent with how the R parser coerces strings to symbols in this
   kind of expressions: `"foo"()`.

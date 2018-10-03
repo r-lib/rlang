@@ -15,7 +15,7 @@ warn(message, .subclass = NULL, ..., call = NULL, msg, type)
 
 inform(message, .subclass = NULL, ..., call = NULL, msg, type)
 
-signal(message, .subclass, ..., call = NULL)
+signal(message, .subclass, ...)
 
 interrupt()
 }
@@ -29,8 +29,8 @@ to selectively handle the conditions signalled by your functions.}
 
 \item{trace}{A \code{trace} object created by \code{\link[=trace_back]{trace_back()}}.}
 
-\item{call}{Whether to display the call. If a number \code{n}, the call
-is taken from the nth frame on the \link[=call_stack]{call stack}.}
+\item{call}{Deprecated as of rlang 0.3.0. Storing the full
+backtrace is now preferred to storing a simple call.}
 
 \item{parent}{A parent condition object created by \code{\link[=abort]{abort()}}.}
 
