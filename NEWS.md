@@ -38,6 +38,9 @@
   .data[["name"]])` and `group_by(df, name)` produce the same column
   name.
 
+* The `.standardise` argument of `call_modify()` is deprecated. Please
+  use `call_standardise()` beforehand.
+
 * `call_modify()` has better support for `...` and now treats it like
   a named argument. `call_modify(call, ... = )` adds `...` to the call
   and `call_modify(call, ... = NULL)` removes it.

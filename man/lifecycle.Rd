@@ -166,6 +166,7 @@ like \code{quos()} is soft-deprecated.
 \item \code{\link[=abort]{abort()}}, \code{\link[=warn]{warn()}}, \code{\link[=inform]{inform()}}: \code{msg}, \code{type} => \code{.msg}, \code{.type}
 \item \code{\link[=abort]{abort()}}, \code{\link[=warn]{warn()}}, \code{\link[=inform]{inform()}}, \code{\link[=cnd]{cnd()}}, \code{\link[=error_cnd]{error_cnd()}},
 \code{\link[=warning_cnd]{warning_cnd()}}, \code{\link[=message_cnd]{message_cnd()}}: \code{call} argument.
+\item \code{\link[=call_modify]{call_modify()}}: \code{.standardise} and \code{.env} arguments.
 }
 }
 

@@ -332,12 +332,10 @@ call_print_type <- function(call) {
 
 #' Modify the arguments of a call
 #'
+#' If you are working with a user-supplied call, make sure the
+#' arguments are standardised with [call_standardise()] before
+#' modifying the call.
 #'
-#' @section Life cycle:
-#'
-#' In rlang 0.2.0, `lang_modify()` was soft-deprecated and renamed to
-#' `call_modify()`. See lifecycle section in [call2()] for more about
-#' this change.
 #'
 #' @inheritParams tidy-dots
 #' @param .call Can be a call, a formula quoting a call in the
@@ -347,13 +345,16 @@ call_print_type <- function(call) {
 #'   used to modify the call. Use `NULL` to remove arguments. These
 #'   dots support [tidy dots][tidy-dots] features. Empty arguments are
 #'   allowed and preserved.
-#' @param .standardise If `TRUE`, the call is standardised beforehand
-#'   to match existing unnamed arguments to their argument names. This
-#'   prevents new named arguments from accidentally replacing original
-#'   unnamed arguments.
-#' @param .env The environment where to find the `call` definition in
-#'   case `call` is not wrapped in a quosure. This is passed to
-#'   `call_standardise()` if `.standardise` is `TRUE`.
+#' @param .standardise,.env Deprecated as of rlang 0.3.0. Please call
+#'   [call_standardise()] manually.
+#'
+#' @section Life cycle:
+#'
+#' * The `.standardise` argument is deprecated as of rlang 0.3.0.
+#'
+#' * In rlang 0.2.0, `lang_modify()` was soft-deprecated and renamed to
+#'   `call_modify()`. See lifecycle section in [call2()] for more about
+#'   this change.
 #'
 #' @return A quosure if `.call` is a quosure, a call otherwise.
 #' @export
@@ -383,6 +384,17 @@ call_print_type <- function(call) {
 #' call_modify(quote(foo(...)), ... = NULL)
 #'
 #'
+#' # When you're working with a user-supplied call, standardise it
+#' # beforehand because it might contain unmatched arguments:
+#' user_call <- quote(matrix(x, nc = 3))
+#' call_modify(user_call, ncol = 1)
+#'
+#' # Standardising applies the usual argument matching rules:
+#' user_call <- call_standardise(user_call)
+#' user_call
+#' call_modify(user_call, ncol = 1)
+#'
+#'
 #' # You can also modify quosures inplace:
 #' f <- quo(matrix(bar))
 #' call_modify(f, quote(foo))
@@ -402,14 +414,19 @@ call_print_type <- function(call) {
 call_modify <- function(.call,
                         ...,
                         .homonyms = c("keep", "first", "last", "error"),
-                        .standardise = FALSE,
+                        .standardise = NULL,
                         .env = caller_env()) {
   args <- dots_list(..., .preserve_empty = TRUE, .homonyms = .homonyms)
+  expr <- get_expr(.call)
 
-  if (.standardise) {
-    expr <- get_expr(call_standardise(.call, env = .env))
-  } else {
-    expr <- get_expr(.call)
+  if (!is_null(.standardise)) {
+    warn_deprecated(paste_line(
+      "`.standardise` is deprecated as of rlang 0.3.0.",
+      "Please use `call_standardise()` prior to calling `call_modify()`."
+    ))
+    if (.standardise) {
+      expr <- get_expr(call_standardise(.call, env = .env))
+    }
   }
 
   if (!is_call(expr)) {

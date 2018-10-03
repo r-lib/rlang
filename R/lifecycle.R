@@ -227,6 +227,8 @@ upcase1 <- function(x) {
 #' * [abort()], [warn()], [inform()], [cnd()], [error_cnd()],
 #'   [warning_cnd()], [message_cnd()]: `call` argument.
 #'
+#' * [call_modify()]: `.standardise` and `.env` arguments.
+#'
 #'
 #' @section Defunct functions and arguments:
 #'

@@ -52,10 +52,6 @@ test_that("can modify formulas inplace", {
   expect_identical(call_modify(~matrix(bar), quote(foo)), ~matrix(bar, foo))
 })
 
-test_that("optional standardisation", {
-  expect_identical(call_modify(~matrix(bar), quote(foo), .standardise = TRUE), ~matrix(data = bar, foo))
-})
-
 test_that("new args inserted at end", {
   call <- quote(matrix(1:10))
   out <- call_modify(call, nrow = 3, .standardise = TRUE)
