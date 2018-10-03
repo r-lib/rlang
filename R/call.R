@@ -332,29 +332,31 @@ call_print_type <- function(call) {
 
 #' Modify the arguments of a call
 #'
+#' If you are working with a user-supplied call, make sure the
+#' arguments are standardised with [call_standardise()] before
+#' modifying the call.
 #'
-#' @section Life cycle:
 #'
-#' In rlang 0.2.0, `lang_modify()` was soft-deprecated and renamed to
-#' `call_modify()`. See lifecycle section in [call2()] for more about
-#' this change.
-#'
+#' @inheritParams tidy-dots
 #' @param .call Can be a call, a formula quoting a call in the
 #'   right-hand side, or a frame object from which to extract the call
 #'   expression.
 #' @param ... Named or unnamed expressions (constants, names or calls)
 #'   used to modify the call. Use `NULL` to remove arguments. These
-#'   dots support [tidy dots][tidy-dots] features.
-#' @param .standardise If `TRUE`, the call is standardised beforehand
-#'   to match existing unnamed arguments to their argument names. This
-#'   prevents new named arguments from accidentally replacing original
-#'   unnamed arguments.
-#' @param .env The environment where to find the `call` definition in
-#'   case `call` is not wrapped in a quosure. This is passed to
-#'   `call_standardise()` if `.standardise` is `TRUE`.
+#'   dots support [tidy dots][tidy-dots] features. Empty arguments are
+#'   allowed and preserved.
+#' @param .standardise,.env Deprecated as of rlang 0.3.0. Please call
+#'   [call_standardise()] manually.
+#'
+#' @section Life cycle:
+#'
+#' * The `.standardise` argument is deprecated as of rlang 0.3.0.
+#'
+#' * In rlang 0.2.0, `lang_modify()` was soft-deprecated and renamed to
+#'   `call_modify()`. See lifecycle section in [call2()] for more about
+#'   this change.
 #'
 #' @return A quosure if `.call` is a quosure, a call otherwise.
-#' @seealso lang
 #' @export
 #' @examples
 #' call <- quote(mean(x, na.rm = TRUE))
@@ -369,55 +371,126 @@ call_print_type <- function(call) {
 #' # Add a new argument
 #' call_modify(call, trim = 0.1)
 #'
-#' # Add an explicit missing argument
-#' call_modify(call, na.rm = quote(expr = ))
+#' # Add an explicit missing argument:
+#' call_modify(call, na.rm = )
 #'
 #' # Supply a list of new arguments with `!!!`
 #' newargs <- list(na.rm = NULL, trim = 0.1)
-#' call_modify(call, !!! newargs)
+#' call_modify(call, !!!newargs)
 #'
-#' # Supply a call frame to extract the frame expression:
-#' f <- function(bool = TRUE) {
-#'   call_modify(call_frame(), splice(list(bool = FALSE)))
-#' }
-#' f()
+#'
+#' # Modify the `...` arguments as if it were a named argument:
+#' call_modify(call, ... = )
+#' call_modify(quote(foo(...)), ... = NULL)
+#'
+#'
+#' # When you're working with a user-supplied call, standardise it
+#' # beforehand because it might contain unmatched arguments:
+#' user_call <- quote(matrix(x, nc = 3))
+#' call_modify(user_call, ncol = 1)
+#'
+#' # Standardising applies the usual argument matching rules:
+#' user_call <- call_standardise(user_call)
+#' user_call
+#' call_modify(user_call, ncol = 1)
 #'
 #'
 #' # You can also modify quosures inplace:
 #' f <- quo(matrix(bar))
 #' call_modify(f, quote(foo))
-call_modify <- function(.call, ...,
-                        .standardise = FALSE,
+#'
+#'
+#' # By default, arguments with the same name are kept. This has
+#' # subtle implications, for instance you can move an argument to
+#' # last position by removing it and remapping it:
+#' call <- quote(foo(bar = , baz))
+#' call_modify(call, bar = NULL, bar = missing_arg())
+#'
+#' # You can also choose to keep only the first or last homonym
+#' # arguments:
+#' args <-  list(bar = NULL, bar = missing_arg())
+#' call_modify(call, !!!args, .homonyms = "first")
+#' call_modify(call, !!!args, .homonyms = "last")
+call_modify <- function(.call,
+                        ...,
+                        .homonyms = c("keep", "first", "last", "error"),
+                        .standardise = NULL,
                         .env = caller_env()) {
-  args <- list2(...)
-  if (any(duplicated(names(args)) & names(args) != "")) {
-    abort("Duplicate arguments")
-  }
+  args <- dots_list(..., .preserve_empty = TRUE, .homonyms = .homonyms)
+  expr <- get_expr(.call)
 
-  if (.standardise) {
-    expr <- get_expr(call_standardise(.call, env = .env))
-  } else {
-    expr <- get_expr(.call)
+  if (!is_null(.standardise)) {
+    warn_deprecated(paste_line(
+      "`.standardise` is deprecated as of rlang 0.3.0.",
+      "Please use `call_standardise()` prior to calling `call_modify()`."
+    ))
+    if (.standardise) {
+      expr <- get_expr(call_standardise(.call, env = .env))
+    }
   }
 
   if (!is_call(expr)) {
     abort_call_input_type()
   }
 
-  # Named arguments can be spliced by R
+  expr <- duplicate(expr, shallow = TRUE)
+
+  # Discard "" names
   named <- have_name(args)
-  for (nm in names(args)[named]) {
-    if (!is_null(args[[nm]])) {
-      expr[[nm]] <- args[[nm]]
+  named_args <- args[named]
+  nms <- names(named_args)
+
+  for (i in seq_along(named_args)) {
+    tag <- sym(nms[[i]])
+    arg <- named_args[[i]]
+
+    if (identical(tag, dots_sym)) {
+      if (!is_missing(arg) && !is_null(arg)) {
+        abort("`...` arguments must be NULL or empty")
+      }
+      node_accessor <- node_car
+    } else {
+      node_accessor <- node_tag
+    }
+
+    prev <- expr
+    node <- node_cdr(expr)
+
+    while (!is_null(node)) {
+      if (identical(node_accessor(node), tag)) {
+        # Remove argument from the list if `NULL`
+        if (is_null(maybe_missing(arg))) {
+          node <- node_cdr(node)
+          node_poke_cdr(prev, node)
+          next
+        }
+
+        # If `...` it can only be missing at this point, which means
+        # we keep it in the argument list as is
+        if (!identical(tag, dots_sym)) {
+          node_poke_car(node, maybe_missing(arg))
+        }
+
+        break
+      }
+
+      prev <- node
+      node <- node_cdr(node)
+    }
+
+    if (is_null(node) && !is_null(maybe_missing(arg))) {
+      if (identical(tag, dots_sym)) {
+        node <- new_node(dots_sym, NULL)
+        node_poke_cdr(prev, node)
+      } else {
+        node <- new_node(maybe_missing(arg), NULL)
+        node_poke_tag(node, tag)
+        node_poke_cdr(prev, node)
+      }
     }
   }
 
   if (any(!named)) {
-    # Duplicate list structure in case it wasn't before
-    if (!any(named)) {
-      expr <- duplicate(expr, shallow = TRUE)
-    }
-
     remaining_args <- as.pairlist(args[!named])
     expr <- node_append(expr, remaining_args)
   }

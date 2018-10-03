@@ -52,10 +52,6 @@ test_that("can modify formulas inplace", {
   expect_identical(call_modify(~matrix(bar), quote(foo)), ~matrix(bar, foo))
 })
 
-test_that("optional standardisation", {
-  expect_identical(call_modify(~matrix(bar), quote(foo), .standardise = TRUE), ~matrix(data = bar, foo))
-})
-
 test_that("new args inserted at end", {
   call <- quote(matrix(1:10))
   out <- call_modify(call, nrow = 3, .standardise = TRUE)
@@ -83,13 +79,25 @@ test_that("accepts unnamed arguments", {
   )
 })
 
-test_that("fails with duplicated arguments", {
-  expect_error(call_modify(~mean(), na.rm = TRUE, na.rm = FALSE), "Duplicate arguments")
-  expect_error(call_modify(~mean(), TRUE, FALSE), NA)
+test_that("allows duplicated arguments (#398)", {
+  expect_identical(call_modify(~mean(), na.rm = TRUE, na.rm = FALSE), ~mean(na.rm = FALSE))
+  expect_identical(call_modify(~mean(), TRUE, FALSE), ~mean(TRUE, FALSE))
 })
 
 test_that("can remove unexisting arguments (#393)", {
   expect_identical(call_modify(quote(foo()), ... = NULL), quote(foo()))
+})
+
+test_that("can add a missing argument", {
+  expect_identical(call_modify(quote(foo()), bar = expr()), quote(foo(bar = )))
+  expect_identical(call_modify(quote(foo()), bar = ), quote(foo(bar = )))
+})
+
+test_that("can refer to dots as named argument", {
+  expect_error(call_modify(quote(foo(...)), ... = "foo"), "must be NULL or empty")
+  expect_identical(call_modify(quote(foo(x, ..., y)), ... = ), quote(foo(x, ..., y)))
+  expect_identical(call_modify(quote(foo(x)), ... = ), quote(foo(x, ...)))
+  expect_identical(call_modify(quote(foo(x, ..., y)), ... = NULL), quote(foo(x, y)))
 })
 
 

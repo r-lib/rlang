@@ -4,7 +4,8 @@
 \alias{call_modify}
 \title{Modify the arguments of a call}
 \usage{
-call_modify(.call, ..., .standardise = FALSE, .env = caller_env())
+call_modify(.call, ..., .homonyms = c("keep", "first", "last", "error"),
+  .standardise = NULL, .env = caller_env())
 }
 \arguments{
 \item{.call}{Can be a call, a formula quoting a call in the
@@ -13,29 +14,34 @@ expression.}
 
 \item{...}{Named or unnamed expressions (constants, names or calls)
 used to modify the call. Use \code{NULL} to remove arguments. These
-dots support \link[=tidy-dots]{tidy dots} features.}
+dots support \link[=tidy-dots]{tidy dots} features. Empty arguments are
+allowed and preserved.}
 
-\item{.standardise}{If \code{TRUE}, the call is standardised beforehand
-to match existing unnamed arguments to their argument names. This
-prevents new named arguments from accidentally replacing original
-unnamed arguments.}
+\item{.homonyms}{How to treat arguments with the same name. The
+default, \code{"keep"}, preserves these arguments. Set \code{.homonyms} to
+\code{"first"} to only keep the first occurrences, to \code{"last"} to keep
+the last occurrences, and to \code{"error"} to raise an informative
+error and indicate what arguments have duplicated names.}
 
-\item{.env}{The environment where to find the \code{call} definition in
-case \code{call} is not wrapped in a quosure. This is passed to
-\code{call_standardise()} if \code{.standardise} is \code{TRUE}.}
+\item{.standardise, .env}{Deprecated as of rlang 0.3.0. Please call
+\code{\link[=call_standardise]{call_standardise()}} manually.}
 }
 \value{
 A quosure if \code{.call} is a quosure, a call otherwise.
 }
 \description{
-Modify the arguments of a call
+If you are working with a user-supplied call, make sure the
+arguments are standardised with \code{\link[=call_standardise]{call_standardise()}} before
+modifying the call.
 }
 \section{Life cycle}{
 
-
-In rlang 0.2.0, \code{lang_modify()} was soft-deprecated and renamed to
+\itemize{
+\item The \code{.standardise} argument is deprecated as of rlang 0.3.0.
+\item In rlang 0.2.0, \code{lang_modify()} was soft-deprecated and renamed to
 \code{call_modify()}. See lifecycle section in \code{\link[=call2]{call2()}} for more about
 this change.
+}
 }
 
 \examples{
@@ -51,24 +57,44 @@ call_modify(call, na.rm = NULL)
 # Add a new argument
 call_modify(call, trim = 0.1)
 
-# Add an explicit missing argument
-call_modify(call, na.rm = quote(expr = ))
+# Add an explicit missing argument:
+call_modify(call, na.rm = )
 
 # Supply a list of new arguments with `!!!`
 newargs <- list(na.rm = NULL, trim = 0.1)
-call_modify(call, !!! newargs)
+call_modify(call, !!!newargs)
 
-# Supply a call frame to extract the frame expression:
-f <- function(bool = TRUE) {
-  call_modify(call_frame(), splice(list(bool = FALSE)))
-}
-f()
+
+# Modify the `...` arguments as if it were a named argument:
+call_modify(call, ... = )
+call_modify(quote(foo(...)), ... = NULL)
+
+
+# When you're working with a user-supplied call, standardise it
+# beforehand because it might contain unmatched arguments:
+user_call <- quote(matrix(x, nc = 3))
+call_modify(user_call, ncol = 1)
+
+# Standardising applies the usual argument matching rules:
+user_call <- call_standardise(user_call)
+user_call
+call_modify(user_call, ncol = 1)
 
 
 # You can also modify quosures inplace:
 f <- quo(matrix(bar))
 call_modify(f, quote(foo))
-}
-\seealso{
-lang
+
+
+# By default, arguments with the same name are kept. This has
+# subtle implications, for instance you can move an argument to
+# last position by removing it and remapping it:
+call <- quote(foo(bar = , baz))
+call_modify(call, bar = NULL, bar = missing_arg())
+
+# You can also choose to keep only the first or last homonym
+# arguments:
+args <-  list(bar = NULL, bar = missing_arg())
+call_modify(call, !!!args, .homonyms = "first")
+call_modify(call, !!!args, .homonyms = "last")
 }

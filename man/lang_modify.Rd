@@ -24,12 +24,11 @@ lang_args_names(lang)
 \arguments{
 \item{...}{Named or unnamed expressions (constants, names or calls)
 used to modify the call. Use \code{NULL} to remove arguments. These
-dots support \link[=tidy-dots]{tidy dots} features.}
+dots support \link[=tidy-dots]{tidy dots} features. Empty arguments are
+allowed and preserved.}
 
-\item{.standardise}{If \code{TRUE}, the call is standardised beforehand
-to match existing unnamed arguments to their argument names. This
-prevents new named arguments from accidentally replacing original
-unnamed arguments.}
+\item{.standardise}{Deprecated as of rlang 0.3.0. Please call
+\code{\link[=call_standardise]{call_standardise()}} manually.}
 
 \item{lang, .lang}{The \code{call} or \code{.call} argument of the renamed
 functions.}
