@@ -75,3 +75,12 @@ test_that("vector pokers fail if parameters are not integerish", {
 test_that("is_string() returns FALSE for `NA`", {
   expect_false(is_string(na_chr))
 })
+
+test_that("are_na() requires vector input but not is_na()", {
+  expect_error(are_na(base::eval), "must be an atomic vector")
+  expect_false(is_na(base::eval))
+})
+
+test_that("are_na() fails with lists (#558)", {
+  expect_error(are_na(mtcars), "must be an atomic vector")
+})

@@ -1,6 +1,8 @@
 
 # rlang 0.2.2.9000
 
+* `are_na()` now requires atomic vectors (#558).
+
 * `dots_list()`, `enexprs()` and `enquos()` gain a `.homonyms`
   argument to control how to treat arguments with the same name.
   The default is to keep them. Set it to `"first"` or `"last"` to keep

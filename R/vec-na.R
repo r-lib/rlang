@@ -84,8 +84,8 @@ na_cpl <- NA_complex_
 #' is_lgl_na(NA)
 #' is_lgl_na(na_dbl)
 are_na <- function(x) {
-  if (!is_vector(x)) {
-    abort("`x` must be a vector")
+  if (!is_atomic(x)) {
+    abort("`x` must be an atomic vector")
   }
   is.na(x)
 }
