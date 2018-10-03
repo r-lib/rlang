@@ -148,7 +148,9 @@ test_that("scalar predicates heed type and length", {
 test_that("is_integerish() supports large numbers (#578)", {
   expect_true(is_integerish(1e10))
   expect_true(is_integerish(2^52))
-  expect_error(is_integerish(2^52 + 1), "too large for an integer check")
+
+  expect_false(is_integerish(2^52 + 1))
+
   expect_false(is_integerish(2^50 - 0.1))
   expect_false(is_integerish(2^49 - 0.05))
   expect_false(is_integerish(2^40 - 0.0001))

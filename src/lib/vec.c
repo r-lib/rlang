@@ -123,7 +123,7 @@ bool r_is_integerish(sexp* x, r_ssize n, int finite) {
     }
 
     if (elt > RLANG_MAX_DOUBLE_INT) {
-      r_abort("Double value is too large for an integer check");
+      return false;
     }
 
     // C99 guarantees existence of the int_least_N_t types, even on
