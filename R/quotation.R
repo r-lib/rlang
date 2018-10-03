@@ -118,6 +118,12 @@
 #' @param .named Whether to ensure all dots are named. Unnamed
 #'   elements are processed with [quo_name()] to build a default
 #'   name. See also [quos_auto_name()].
+#' @param .ignore_empty Whether to ignore empty arguments. Can be one
+#'   of `"trailing"`, `"none"`, `"all"`. If `"trailing"`, only the
+#'   last argument is ignored if it is empty. Note that `"trailing"`
+#'   applies only to arguments passed in `...`, not to named
+#'   arguments. On the other hand, `"all"` also applies to named
+#'   arguments.
 #' @param .unquote_names Whether to treat `:=` as `=`. Unlike `=`, the
 #'   `:=` syntax supports `!!` unquoting on the LHS.
 #' @name quotation
@@ -340,6 +346,7 @@ endots <- function(call,
                    unquote_names,
                    homonyms,
                    check_assign) {
+  ignore_empty <- arg_match(ignore_empty, c("trailing", "none", "all"))
   syms <- as.list(node_cdr(call))
 
   if (!is_null(names(syms))) {
@@ -360,7 +367,7 @@ endots <- function(call,
       splice(dot_call(capture_dots,
         frame_env = frame_env,
         named = named,
-        ignore_empty = "none",
+        ignore_empty = ignore_empty,
         unquote_names = unquote_names,
         homonyms = homonyms,
         check_assign = check_assign
@@ -374,24 +381,14 @@ endots <- function(call,
     dots <- flatten_if(dots, is_spliced)
   }
 
-  ignore_empty <- arg_match(ignore_empty, c("trailing", "none", "all"))
-  if (identical(capture_arg, rlang_enquo)) {
-    dot_is_missing <- quo_is_missing
-  } else {
-    dot_is_missing <- is_missing
+  if (ignore_empty == "all") {
+    if (identical(capture_arg, rlang_enquo)) {
+      dot_is_missing <- quo_is_missing
+    } else {
+      dot_is_missing <- is_missing
+    }
+    dots <- keep(dots, negate(dot_is_missing))
   }
-  dots <- switch(ignore_empty,
-    trailing = {
-      n <- length(dots)
-      if (n && dot_is_missing(dots[[n]])) {
-        dots[-n]
-      } else {
-        dots
-      }
-    },
-    all = keep(dots, negate(dot_is_missing)),
-    none = dots
-  )
 
   if (named) {
     dots <- quos_auto_name(dots)

@@ -19,7 +19,10 @@ name. See also \code{\link[=quos_auto_name]{quos_auto_name()}}.}
 
 \item{.ignore_empty}{Whether to ignore empty arguments. Can be one
 of \code{"trailing"}, \code{"none"}, \code{"all"}. If \code{"trailing"}, only the
-last argument is ignored if it is empty.}
+last argument is ignored if it is empty. Note that \code{"trailing"}
+applies only to arguments passed in \code{...}, not to named
+arguments. On the other hand, \code{"all"} also applies to named
+arguments.}
 }
 \description{
 Capture definition objects

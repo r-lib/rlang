@@ -1,8 +1,8 @@
 
 # rlang 0.2.2.9000
 
-* `enexprs()` and `enquos()` now fully support the `.ignore_empty`
-  option, even with named arguments (#414).
+* `enexprs()` and `enquos()` now support `.ignore_empty = "all"`
+  with named arguments as well (#414).
 
 * The `call` argument of `abort()` and condition constructors is now
   deprecated in favour of storing full backtraces.
