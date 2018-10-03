@@ -341,9 +341,6 @@ test_that("on_error option can be tweaked", {
 
     cat_line("", "", "", ">>> Collapsed:", "")
     with_options(rlang__backtrace_on_error = "collapse", msg())
-
-    cat_line("", "", "", ">>> Full:", "")
-    with_options(rlang__backtrace_on_error = "full", msg())
   })
 })
 
