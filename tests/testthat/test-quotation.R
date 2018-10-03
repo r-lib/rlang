@@ -332,13 +332,13 @@ test_that("endots() requires symbols", {
 
 test_that("endots() returns a named list", {
   # enquos()
-  fn <- function(foo, bar) enquos(foo, bar)
+  fn <- function(foo, bar) enquos(foo, bar, .ignore_empty = "none")
   expect_identical(names(fn()), c("", ""))
   fn <- function(arg, ...) enquos(other = arg, ...)
   expect_identical(fn(arg = 1, b = 2), quos(other = 1, b = 2))
 
   # enexprs()
-  fn <- function(foo, bar) enexprs(foo, bar)
+  fn <- function(foo, bar) enexprs(foo, bar, .ignore_empty = "none")
   expect_identical(names(fn()), c("", ""))
   fn <- function(arg, ...) enexprs(other = arg, ...)
   expect_identical(fn(arg = 1, b = 2), exprs(other = 1, b = 2))
@@ -346,13 +346,13 @@ test_that("endots() returns a named list", {
 
 test_that("endots() captures missing arguments", {
   # enquos()
-  fn <- function(foo) enquos(foo)[[1]]
+  fn <- function(foo) enquos(foo, .ignore_empty = "none")[[1]]
   expect_identical(fn(), quo())
   fn <- function(...) enquos(...)
   expect_identical(fn(), quos())
 
   # enexprs()
-  fn <- function(foo) enexprs(foo)[[1]]
+  fn <- function(foo) enexprs(foo, .ignore_empty = "none")[[1]]
   expect_identical(fn(), expr())
   fn <- function(...) enexprs(...)
   expect_identical(fn(), exprs())
@@ -465,4 +465,28 @@ test_that("auto-naming uses type_sum() (#573)", {
 test_that("auto-naming supports the .data pronoun", {
   exprs <- exprs(.data[[toupper("foo")]], .data$bar, .named = TRUE)
   expect_named(exprs, c("FOO", "bar"))
+})
+
+test_that("enexprs() and enquos() fully support `.ignore_empty` (#414)", {
+  myexprs <- function(what, x, y) enexprs(x = x, y = y, .ignore_empty = what)
+  expect_identical(myexprs("none"), exprs(x = , y = ))
+  expect_identical(myexprs("trailing"), exprs(x = ))
+  expect_identical(myexprs("all"), exprs())
+
+  myquos <- function(what, x, y) enquos(x = x, y = y, .ignore_empty = what)
+  expect_identical(myquos("none"), quos(x = , y = ))
+  expect_identical(myquos("trailing"), quos(x = ))
+  expect_identical(myquos("all"), quos())
+})
+
+test_that("enexprs() and enquos() support empty dots", {
+  myexprs <- function(what, ...) enexprs(..., .ignore_empty = what)
+  expect_identical(myexprs("none"), exprs())
+  expect_identical(myexprs("trailing"), exprs())
+  expect_identical(myexprs("all"), exprs())
+
+  myquos <- function(what, ...) enquos(..., .ignore_empty = what)
+  expect_identical(myquos("none"), quos())
+  expect_identical(myquos("trailing"), quos())
+  expect_identical(myquos("all"), quos())
 })

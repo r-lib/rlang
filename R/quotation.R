@@ -360,7 +360,7 @@ endots <- function(call,
       splice(dot_call(capture_dots,
         frame_env = frame_env,
         named = named,
-        ignore_empty = ignore_empty,
+        ignore_empty = "none",
         unquote_names = unquote_names,
         homonyms = homonyms,
         check_assign = check_assign
@@ -373,6 +373,26 @@ endots <- function(call,
   if (splice_dots) {
     dots <- flatten_if(dots, is_spliced)
   }
+
+  ignore_empty <- arg_match(ignore_empty, c("trailing", "none", "all"))
+  if (identical(capture_arg, rlang_enquo)) {
+    dot_is_missing <- quo_is_missing
+  } else {
+    dot_is_missing <- is_missing
+  }
+  dots <- switch(ignore_empty,
+    trailing = {
+      n <- length(dots)
+      if (n && dot_is_missing(dots[[n]])) {
+        dots[-n]
+      } else {
+        dots
+      }
+    },
+    all = keep(dots, negate(dot_is_missing)),
+    none = dots
+  )
+
   if (named) {
     dots <- quos_auto_name(dots)
   }
