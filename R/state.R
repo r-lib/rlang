@@ -88,3 +88,14 @@ peek_options <- function(...) {
 peek_option <- function(name) {
   getOption(name)
 }
+
+
+# Easier to test than `interactive()`
+is_interactive <- function() {
+  opt <- peek_option("rlang_force_interactive")
+  if (!is_null(opt)) {
+    return(is_true(opt))
+  }
+
+  interactive()
+}

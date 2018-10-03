@@ -11,6 +11,11 @@ The error message
 Call `rlang::last_error()` to see a backtrace
 
 
+>>> Reminder (not interactive):
+
+The error message
+
+
 >>> Branch:
 
 The error message

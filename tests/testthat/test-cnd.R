@@ -331,10 +331,25 @@ test_that("on_error option can be tweaked", {
 
   expect_known_output(file = test_path("test-on-error-message-options.txt"), {
     cat_line("", ">>> Default:", "")
-    with_options(rlang__backtrace_on_error = NULL, msg())
+    with_options(
+      rlang__backtrace_on_error = NULL,
+      rlang_force_interactive = TRUE,
+      msg()
+    )
 
     cat_line("", "", "", ">>> Reminder:", "")
-    with_options(rlang__backtrace_on_error = "reminder", msg())
+    with_options(
+      rlang__backtrace_on_error = "reminder",
+      rlang_force_interactive = TRUE,
+      msg()
+    )
+
+    cat_line("", "", "", ">>> Reminder (not interactive):", "")
+    with_options(
+      rlang__backtrace_on_error = "reminder",
+      rlang_force_interactive = FALSE,
+      msg()
+    )
 
     cat_line("", "", "", ">>> Branch:", "")
     with_options(rlang__backtrace_on_error = "branch", msg())
