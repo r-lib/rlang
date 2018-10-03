@@ -1,0 +1,13 @@
+Full:
+█
+├─print(foo)
+└─print.foo(foo)
+
+Collapsed:
+█
+├─[ print(...) ]
+└─print.foo(foo)
+
+Branch:
+ ─print(foo)
+ ─print.foo(foo)

@@ -63,6 +63,8 @@
 #' @export
 trace_back <- function(to = NULL) {
   calls <- as.list(sys.calls())
+  calls <- map(calls, call_fix_car)
+
   parents <- normalise_parents(sys.parents())
   frames <- sys.frames()
   envs <- map(frames, env_label)
@@ -76,6 +78,14 @@ trace_back <- function(to = NULL) {
   trace <- trace_subset(trace, -trace_length(trace))
 
   trace
+}
+
+# Work around R bug causing promises to leak in frame calls
+call_fix_car <- function(call) {
+  if (typeof(node_car(call)) == "promise") {
+    node_poke_car(call, eval_bare(node_car(call)))
+  }
+  call
 }
 
 # Assumes magrittr 1.5
