@@ -163,8 +163,9 @@ like \code{quos()} is soft-deprecated.
 \item \code{\link[=as_data_mask]{as_data_mask()}}: \code{parent} argument
 \item \code{\link[=new_data_mask]{new_data_mask()}}: \code{parent} argument
 \item \code{\link[=env_tail]{env_tail()}}: \code{sentinel} => \code{last}
-\item \code{\link[=abort]{abort()}}, \code{\link[=warn]{warn()}}, \code{\link[=inform]{inform()}}: \code{msg}, \code{type} and \code{call} =>
-\code{.msg}, \code{.type} and \code{.call}
+\item \code{\link[=abort]{abort()}}, \code{\link[=warn]{warn()}}, \code{\link[=inform]{inform()}}: \code{msg}, \code{type} => \code{.msg}, \code{.type}
+\item \code{\link[=abort]{abort()}}, \code{\link[=warn]{warn()}}, \code{\link[=inform]{inform()}}, \code{\link[=cnd]{cnd()}}, \code{\link[=error_cnd]{error_cnd()}},
+\code{\link[=warning_cnd]{warning_cnd()}}, \code{\link[=message_cnd]{message_cnd()}}: \code{call} argument.
 }
 }
 

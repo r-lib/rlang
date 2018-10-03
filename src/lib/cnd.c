@@ -124,19 +124,18 @@ static sexp* new_condition_names(sexp* data) {
 
   sexp* data_nms = r_vec_names(data);
 
-  if (r_chr_has_any(data_nms, (const char* []) { "message", "call", NULL })) {
-    r_abort("Conditions can't have `message` or `call` data fields");
+  if (r_chr_has_any(data_nms, (const char* []) { "message", NULL })) {
+    r_abort("Conditions can't have a `message` data field");
   }
 
-  sexp* nms = KEEP(r_new_vector(r_type_character, r_length(data) + 2));
+  sexp* nms = KEEP(r_new_vector(r_type_character, r_length(data) + 1));
   r_chr_poke(nms, 0, r_string("message"));
-  r_chr_poke(nms, 1, r_string("call"));
-  r_vec_poke_n(nms, 2, data_nms, 0, r_length(nms) - 2);
+  r_vec_poke_n(nms, 1, data_nms, 0, r_length(nms) - 1);
 
   FREE(1);
   return nms;
 }
-sexp* r_new_condition(sexp* subclass, sexp* msg, sexp* call, sexp* data) {
+sexp* r_new_condition(sexp* subclass, sexp* msg, sexp* data) {
   if (msg == r_null) {
     msg = r_shared_empty_chr;
   } else if (!r_is_scalar_character(msg)) {
@@ -144,11 +143,10 @@ sexp* r_new_condition(sexp* subclass, sexp* msg, sexp* call, sexp* data) {
   }
 
   r_ssize n_data = r_length(data);
-  sexp* cnd = KEEP(r_new_vector(VECSXP, n_data + 2));
+  sexp* cnd = KEEP(r_new_vector(VECSXP, n_data + 1));
 
   r_list_poke(cnd, 0, msg);
-  r_list_poke(cnd, 1, call);
-  r_vec_poke_n(cnd, 2, data, 0, r_length(cnd) - 2);
+  r_vec_poke_n(cnd, 1, data, 0, r_length(cnd) - 1);
 
   r_poke_names(cnd, KEEP(new_condition_names(data)));
   r_poke_class(cnd, KEEP(chr_append(subclass, KEEP(r_string("condition")))));

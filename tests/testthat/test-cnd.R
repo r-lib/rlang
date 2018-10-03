@@ -18,74 +18,6 @@ test_that("cnd_signal() creates muffle restarts", {
   )
 })
 
-test_that("signal() includes call info", {
-  fn <- function(...) signal("msg", "cnd", call = call)
-
-  call <- NULL
-  with_handlers(fn(foo(bar)), cnd = calling(function(c) {
-    expect_null(conditionCall(c))
-  }))
-
-  call <- TRUE
-  with_handlers(fn(foo(bar)), cnd = calling(function(c) {
-    expect_identical(conditionCall(c), quote(fn(foo(bar))))
-  }))
-
-
-  wrapper <- function(...) fn(...)
-
-  call <- 1
-  with_handlers(wrapper(foo(bar)), cnd = calling(function(c) {
-    expect_equal(conditionCall(c), quote(fn(...)))
-  }))
-
-  call <- 2
-  with_handlers(wrapper(foo(bar)), cnd = calling(function(c) {
-    expect_equal(conditionCall(c), quote(wrapper(foo(bar))))
-  }))
-})
-
-test_that("abort() includes call info", {
-  fn <- function(...) abort("abort", "cnd", call = call)
-
-  call <- NULL
-  with_handlers(fn(foo(bar)), cnd = exiting(function(c) {
-    expect_null(conditionCall(c))
-  }))
-
-  call <- TRUE
-  with_handlers(fn(foo(bar)), cnd = exiting(function(c) {
-    expect_identical(conditionCall(c), quote(fn(foo(bar))))
-  }))
-})
-
-test_that("abort() accepts call number", {
-  fn <- function(...) abort("abort", "cnd", call = call)
-  wrapper <- function(...) fn(...)
-
-  call <- FALSE
-  with_handlers(wrapper(foo(bar)), cnd = exiting(function(c) {
-    expect_null(conditionCall(c))
-  }))
-
-  call <- TRUE
-  with_handlers(wrapper(foo(bar)), cnd = exiting(function(c) {
-    expect_equal(conditionCall(c), quote(fn(...)))
-  }))
-
-  call <- 1
-  with_handlers(wrapper(foo(bar)), cnd = exiting(function(c) {
-    expect_equal(conditionCall(c), quote(fn(...)))
-  }))
-
-  call <- 2
-  with_handlers(wrapper(foo(bar)), cnd = exiting(function(c) {
-    expect_equal(conditionCall(c), quote(wrapper(foo(bar))))
-  }))
-
-  expect_error(abort("foo", call = na_int), "scalar logical or number")
-})
-
 test_that("error when msg is not a string", {
   expect_error(warn(letters), "must be a string")
 })
@@ -445,12 +377,12 @@ test_that("deprecated arguments of abort() etc still work", {
   msgs <- pluck_conditions_msgs(cnds)
 
   warnings_msgs <- msgs$warnings
-  expect_length(warnings_msgs, 2L)
+  expect_length(warnings_msgs, 3L)
   expect_match(warnings_msgs[[1]], "`msg` has been renamed to `message`")
   expect_match(warnings_msgs[[2]], "`type` has been renamed to `.subclass`")
+  expect_match(warnings_msgs[[3]], "`call` is deprecated")
 
   expect_match(msgs$error, "foo")
-  expect_identical(conditionCall(cnds$error), quote(foo()))
 })
 
 test_that("deprecated arguments of cnd_signal() still work", {
