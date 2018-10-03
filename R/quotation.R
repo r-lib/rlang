@@ -118,6 +118,12 @@
 #' @param .named Whether to ensure all dots are named. Unnamed
 #'   elements are processed with [quo_name()] to build a default
 #'   name. See also [quos_auto_name()].
+#' @param .ignore_empty Whether to ignore empty arguments. Can be one
+#'   of `"trailing"`, `"none"`, `"all"`. If `"trailing"`, only the
+#'   last argument is ignored if it is empty. Note that `"trailing"`
+#'   applies only to arguments passed in `...`, not to named
+#'   arguments. On the other hand, `"all"` also applies to named
+#'   arguments.
 #' @param .unquote_names Whether to treat `:=` as `=`. Unlike `=`, the
 #'   `:=` syntax supports `!!` unquoting on the LHS.
 #' @name quotation
@@ -340,6 +346,7 @@ endots <- function(call,
                    unquote_names,
                    homonyms,
                    check_assign) {
+  ignore_empty <- arg_match(ignore_empty, c("trailing", "none", "all"))
   syms <- as.list(node_cdr(call))
 
   if (!is_null(names(syms))) {
@@ -373,6 +380,16 @@ endots <- function(call,
   if (splice_dots) {
     dots <- flatten_if(dots, is_spliced)
   }
+
+  if (ignore_empty == "all") {
+    if (identical(capture_arg, rlang_enquo)) {
+      dot_is_missing <- quo_is_missing
+    } else {
+      dot_is_missing <- is_missing
+    }
+    dots <- keep(dots, negate(dot_is_missing))
+  }
+
   if (named) {
     dots <- quos_auto_name(dots)
   }

@@ -466,3 +466,27 @@ test_that("auto-naming supports the .data pronoun", {
   exprs <- exprs(.data[[toupper("foo")]], .data$bar, .named = TRUE)
   expect_named(exprs, c("FOO", "bar"))
 })
+
+test_that("enexprs() and enquos() support `.ignore_empty = 'all'` (#414)", {
+  myexprs <- function(what, x, y) enexprs(x = x, y = y, .ignore_empty = what)
+  expect_identical(myexprs("none"), exprs(x = , y = ))
+  expect_identical(myexprs("trailing"), exprs(x = , y = ))
+  expect_identical(myexprs("all"), exprs())
+
+  myquos <- function(what, x, y) enquos(x = x, y = y, .ignore_empty = what)
+  expect_identical(myquos("none"), quos(x = , y = ))
+  expect_identical(myquos("trailing"), quos(x = , y = ))
+  expect_identical(myquos("all"), quos())
+})
+
+test_that("enexprs() and enquos() support empty dots", {
+  myexprs <- function(what, ...) enexprs(..., .ignore_empty = what)
+  expect_identical(myexprs("none"), exprs())
+  expect_identical(myexprs("trailing"), exprs())
+  expect_identical(myexprs("all"), exprs())
+
+  myquos <- function(what, ...) enquos(..., .ignore_empty = what)
+  expect_identical(myquos("none"), quos())
+  expect_identical(myquos("trailing"), quos())
+  expect_identical(myquos("all"), quos())
+})
