@@ -334,136 +334,63 @@ new_data_mask <- function(bottom, top = bottom, parent = NULL) {
   .Call(rlang_new_data_mask, bottom, top)
 }
 
-is_data_mask <- function(x) {
-  .Call(rlang_is_data_mask, x)
-}
-data_mask_has <- function(x, name) {
-  .Call(rlang_data_mask_has, x, name)
-}
-data_pronoun_get <- function(x, name, ...){
-  if (is_data_mask(x)){
-    env_get(env_parent(x), name, inherit = TRUE)
-  } else {
-    x[[name, ...]]
-  }
-}
-
 #' @export
-`$.rlang_data_pronoun` <- function(x, name) {
-  src <- .subset2(x, "src")
-  if (!has_binding(src, name)) {
-    abort(sprintf(.subset2(x, "lookup_msg"), name), "rlang_data_pronoun_not_found")
-  }
-  data_pronoun_get(src, name)
+`$.rlang_data_pronoun` <- function(x, nm) {
+  data_pronoun_get(x, nm)
 }
 #' @export
 `[[.rlang_data_pronoun` <- function(x, i, ...) {
   if (!is_string(i)) {
     abort("Must subset the data pronoun with a string")
   }
-  src <- .subset2(x, "src")
-  if (!has_binding(src, i)) {
-    abort(sprintf(.subset2(x, "lookup_msg"), i), "rlang_data_pronoun_not_found")
-  }
-  data_pronoun_get(src, i, ...)
+  data_pronoun_get(x, i)
 }
-#' @export
-`[.rlang_data_pronoun` <- function(x, i, ...) {
-  abort("`[` is not supported by .data pronoun, use `[[` or $ instead")
+data_pronoun_get <- function(x, nm) {
+  mask <- .subset2(x, 1)
+  .Call(rlang_data_pronoun_get, mask, sym(nm))
+}
+abort_data_pronoun <- function(nm) {
+  msg <- sprintf("Column `%s` not found in `.data`", as_string(nm))
+  abort(msg, "rlang_data_pronoun_not_found")
 }
 
 #' @export
 `$<-.rlang_data_pronoun` <- function(x, i, value) {
-  dict <- unclass_data_pronoun(x)
-
-  if (dict$read_only) {
-    abort("Can't modify the data pronoun")
-  }
-
-  dict$src[[i]] <- value
-  structure(dict, class = class(x))
+  abort("Can't modify the data pronoun")
 }
 #' @export
 `[[<-.rlang_data_pronoun` <- function(x, i, value) {
-  dict <- unclass_data_pronoun(x)
-
-  if (dict$read_only) {
-    abort("Can't modify the data pronoun")
-  }
-  if (!is_string(i)) {
-    abort("Must subset the data pronoun with a string")
-  }
-
-  dict$src[[i]] <- value
-  structure(dict, class = class(x))
+  abort("Can't modify the data pronoun")
 }
 
 #' @export
+`[.rlang_data_pronoun` <- function(x, i, ...) {
+  abort("`[` is not supported by .data pronoun, use `[[` or $ instead")
+}
+#' @export
 names.rlang_data_pronoun <- function(x) {
-  src <- unclass(x)$src
-  if (is_data_mask(src)) {
-    abort("`names()` is not supported by .data pronoun")
-  } else {
-    names(src)
-  }
+  abort("`names()` is not supported by .data pronoun")
 }
 #' @export
 length.rlang_data_pronoun <- function(x) {
-  src <- unclass(x)$src
-  if (is_data_mask(src)) {
-    abort("`length()` is not supported by .data pronoun")
-  } else {
-    length(src)
-  }
-}
-
-has_binding <- function(x, name) {
-  if (is_data_mask(x)) {
-    data_mask_has(x, sym(name))
-  } else if (is_environment(x)) {
-    env_has(x, name)
-  } else {
-    has_name(x, name)
-  }
+  abort("`length()` is not supported by .data pronoun")
 }
 
 #' @export
 print.rlang_data_pronoun <- function(x, ...) {
-  src <- unclass_data_pronoun(x)$src
-  if (is_data_mask(src)) {
-    cat("<pronoun>\n")
-  } else {
-    objs <- glue_countable(length(src), "object")
-    cat(paste0("<pronoun>\n", objs, "\n"))
-  }
+  cat_line("<pronoun>")
   invisible(x)
 }
 #' @importFrom utils str
 #' @export
 str.rlang_data_pronoun <- function(object, ...) {
-  str(unclass_data_pronoun(object)$src, ...)
+  cat_line("<pronoun>")
 }
 
-glue_countable <- function(n, str) {
-  if (n == 1) {
-    paste0(n, " ", str)
-  } else {
-    paste0(n, " ", str, "s")
-  }
-}
-
-# Unclassing before print() or str() is necessary because default
-# methods index objects with integers
-unclass_data_pronoun <- function(x) {
-  i <- match("rlang_data_pronoun", class(x))
-  class(x) <- class(x)[-i]
-  x
-}
-
+# Used for deparsing
 is_data_pronoun <- function(x) {
   is_call(x, c("[[", "$")) && identical(node_cadr(x), dot_data_sym)
 }
-
 data_pronoun_name <- function(x) {
   if (is_call(x, "$")) {
     arg <- node_cadr(node_cdr(x))

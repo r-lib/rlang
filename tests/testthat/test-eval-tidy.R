@@ -239,17 +239,33 @@ test_that("can supply a data mask as data", {
 test_that("as_data_pronoun() creates pronoun", {
   data <- as_data_pronoun(mtcars)
   expect_is(data, "rlang_data_pronoun")
+
+  data_env <- .subset2(data, 1)
+  expect_reference(env_parent(data_env), empty_env())
+  expect_true(all(env_names(data_env) %in% names(mtcars)))
+
   expect_error(data$foobar, "Column `foobar` not found in `.data`")
   expect_identical(data[["cyl"]], mtcars$cyl)
 })
 
+test_that("can create pronoun from a mask", {
+  top <- env(a = 1)
+  bottom <- env(top, b = 2)
+  mask <- new_data_mask(bottom, top)
+
+  .data <- as_data_pronoun(mask)
+  expect_is(.data, "rlang_data_pronoun")
+  expect_identical(.data$a, 1)
+  expect_identical(.data$b, 2)
+})
+
 test_that("pronoun has print() and str() method", {
   data <- as_data_pronoun(mtcars)
-  expect_output(print(data), "<pronoun>\n11 objects")
-  expect_output(str(data), "32 obs")
+  expect_output(print(data), "<pronoun>")
+  expect_output(str(data), "<pronoun>")
 
   data <- as_data_pronoun(list(a = 1))
-  expect_output(print(data), "<pronoun>\n1 object")
+  expect_output(print(data), "<pronoun>")
 })
 
 test_that("data mask can escape", {
