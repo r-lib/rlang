@@ -220,5 +220,5 @@ mask$.data <- as_data_pronoun(mask)
 mask$.data$c
 
 # Now we can reference the values with the pronouns:
-eval_tidy(quote(.fns$c(.data$a, .data$b, .data$c)), data = mask)
+eval_tidy(quote(c(.data$a, .data$b, .data$c)), data = mask)
 }

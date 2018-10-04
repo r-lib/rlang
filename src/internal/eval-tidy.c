@@ -161,7 +161,7 @@ static sexp* mask_find(sexp* env, sexp* sym) {
   sexp* cur = env;
   do {
     sexp* obj = r_env_find(cur, sym);
-    if (obj != r_unbound_sym) {
+    if (obj != r_unbound_sym && !r_is_function(obj)) {
       return obj;
     }
 

@@ -18,5 +18,16 @@ static inline void r_fn_poke_env(sexp* fn, sexp* env) {
 
 sexp* r_new_function(sexp* formals, sexp* body, sexp* env);
 
+static inline bool r_is_function(sexp* x) {
+  switch (r_typeof(x)) {
+  case r_type_closure:
+  case r_type_builtin:
+  case r_type_special:
+    return true;
+  default:
+    return false;
+  }
+}
+
 
 #endif

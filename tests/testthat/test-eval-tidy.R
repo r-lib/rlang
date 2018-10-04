@@ -378,6 +378,15 @@ test_that("can inspect the exported pronoun", {
   expect_output(print(rlang::.data), "<pronoun>")
 })
 
+test_that("data pronoun always skips functions", {
+  top <- env(c = "c")
+  bottom <- env(top, c = base::c)
+  mask <- new_data_mask(bottom, top)
+
+  .data <- as_data_pronoun(mask)
+  expect_identical(.data$c, "c")
+})
+
 
 # Lifecycle ----------------------------------------------------------
 

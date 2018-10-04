@@ -317,7 +317,7 @@ print.rlang_fake_data_pronoun <- function(...) cat_line("<pronoun>")
 #' mask$.data$c
 #'
 #' # Now we can reference the values with the pronouns:
-#' eval_tidy(quote(.fns$c(.data$a, .data$b, .data$c)), data = mask)
+#' eval_tidy(quote(c(.data$a, .data$b, .data$c)), data = mask)
 as_data_mask <- function(data, parent = NULL) {
   if (!is_null(parent)) {
     warn_deprecated(paste_line(
