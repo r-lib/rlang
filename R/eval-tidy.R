@@ -435,7 +435,7 @@ str.rlang_data_pronoun <- function(object, ...) {
 
 # Used for deparsing
 is_data_pronoun <- function(x) {
-  is_call(x, c("[[", "$")) && identical(node_cadr(x), dot_data_sym)
+  is_call(x, c("[[", "$"), n = 2L) && identical(node_cadr(x), dot_data_sym)
 }
 data_pronoun_name <- function(x) {
   if (is_call(x, "$")) {
