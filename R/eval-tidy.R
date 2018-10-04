@@ -87,6 +87,18 @@ eval_tidy <- function(expr, data = NULL, env = caller_env()) {
   .Call(rlang_eval_tidy, expr, data, environment())
 }
 
+# Helps work around roxygen loading issues
+#' @export
+length.rlang_fake_data_pronoun <- function(...) NULL
+#' @export
+names.rlang_fake_data_pronoun <- function(...) NULL
+#' @export
+`$.rlang_fake_data_pronoun` <- function(...) NULL
+#' @export
+`[[.rlang_fake_data_pronoun` <- function(...) NULL
+#' @export
+print.rlang_fake_data_pronoun <- function(...) cat_line("<pronoun>")
+
 #' Data pronoun for tidy evaluation
 #'
 #' @description
@@ -108,9 +120,9 @@ eval_tidy <- function(expr, data = NULL, env = caller_env()) {
 #' objects from the data mask.
 #'
 #' @name tidyeval-data
+#' @format NULL
 #' @export
-.data <- NULL
-delayedAssign(".data", as_data_pronoun(list()))
+.data <- structure(list(), class = "rlang_fake_data_pronoun")
 
 
 #' Create a data mask
@@ -369,11 +381,21 @@ abort_data_pronoun <- function(nm) {
 }
 #' @export
 names.rlang_data_pronoun <- function(x) {
-  abort("`names()` is not supported by .data pronoun")
+  warn_deprecated("Taking the `names()` of the `.data` pronoun is deprecated")
+  env <- .subset2(x, 1)
+  if (is_data_mask(env)) {
+    env <- env_parent(env)
+  }
+  env_names(env)
 }
 #' @export
 length.rlang_data_pronoun <- function(x) {
-  abort("`length()` is not supported by .data pronoun")
+  warn_deprecated("Taking the `length()` of the `.data` pronoun is deprecated")
+  env <- .subset2(x, 1)
+  if (is_data_mask(env)) {
+    env <- env_parent(env)
+  }
+  env_length(env)
 }
 
 #' @export
@@ -409,4 +431,8 @@ data_pronoun_name <- function(x) {
       return(NULL)
     }
   }
+}
+
+is_data_mask <- function(x) {
+  is_environment(x) && env_has(x, ".__rlang_data_mask__.")
 }

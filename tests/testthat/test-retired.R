@@ -476,3 +476,9 @@ test_that("whole scope is purged", {
   expect_identical(names(top), character(0))
   expect_identical(names(outside), "important")
 })
+
+test_that("names() and length() still work on data pronouns", {
+  pronoun <- as_data_pronoun(mtcars)
+  expect_true(all(names(pronoun) %in% names(mtcars)))
+  expect_length(pronoun, length(mtcars))
+})

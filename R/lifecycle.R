@@ -228,6 +228,8 @@ upcase1 <- function(x) {
 #'
 #' * [call_modify()]: `.standardise` and `.env` arguments.
 #'
+#' * `length()` and `names()` on tidy eval `.data` pronouns.
+#'
 #'
 #' @section Defunct functions and arguments:
 #'

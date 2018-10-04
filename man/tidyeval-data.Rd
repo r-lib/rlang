@@ -5,7 +5,6 @@
 \alias{tidyeval-data}
 \alias{.data}
 \title{Data pronoun for tidy evaluation}
-\format{An object of class \code{rlang_data_pronoun} of length 0.}
 \usage{
 .data
 }

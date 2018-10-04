@@ -181,7 +181,7 @@ test_that("empty quosure self-evaluates", {
 })
 
 test_that("cannot replace elements of pronouns", {
-  expect_error(eval_tidy(quo(.data$foo <- "bar")), "Can't modify the data pronoun")
+  expect_error(eval_tidy(quo(.data$foo <- "bar"), mtcars), "Can't modify the data pronoun")
 })
 
 test_that("formulas are not evaluated as quosures", {
@@ -370,8 +370,12 @@ test_that(".data pronoun walks the ancestry of environments", {
   expect_error(.data[[".top_env"]], "Column `.top_env` not found in `.data`")
 
   expect_error(.data["a"])
-  expect_error(names(.data))
-  expect_error(length(.data))
+  expect_warning(names(.data), "deprecated")
+  expect_warning(length(.data), "deprecated")
+})
+
+test_that("can inspect the exported pronoun", {
+  expect_output(print(rlang::.data), "<pronoun>")
 })
 
 

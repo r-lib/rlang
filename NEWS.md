@@ -1,6 +1,8 @@
 
 # rlang 0.2.2.9000
 
+* `names()` and `length()` methods for data pronouns are deprecated.
+
 * `as_dictionary()` is now defunct.
 
 * `enexprs()` and `enquos()` now support `.ignore_empty = "all"`
