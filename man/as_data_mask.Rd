@@ -89,6 +89,11 @@ below).
 Unlike \code{as_data_mask()} it does not install the \code{.data} pronoun
 so you need to provide one yourself. You can provide a pronoun
 constructed with \code{as_data_pronoun()} or your own pronoun class.
+
+\code{as_data_pronoun()} will create a pronoun from a list, an
+environment, or an rlang data mask. In the latter case, the whole
+ancestry is looked up from the bottom to the top of the mask.
+Functions stored in the mask are bypassed by the pronoun.
 }
 
 Once you have built a data mask, simply pass it to \code{\link[=eval_tidy]{eval_tidy()}} as
@@ -206,7 +211,13 @@ eval_tidy(quote(c(a, b, c)), data = mask)
 # new_data_mask() does not create data pronouns, but
 # data pronouns can be added manually:
 mask$.fns <- as_data_pronoun(top)
-mask$.data <- as_data_pronoun(bottom)
+
+# The `.data` pronoun should generally be created from the
+# mask. This will ensure data is looked up throughout the whole
+# ancestry. Only non-function objects are looked up from this
+# pronoun:
+mask$.data <- as_data_pronoun(mask)
+mask$.data$c
 
 # Now we can reference the values with the pronouns:
 eval_tidy(quote(.fns$c(.data$a, .data$b, .data$c)), data = mask)

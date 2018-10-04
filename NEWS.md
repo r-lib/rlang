@@ -1,6 +1,10 @@
 
 # rlang 0.2.2.9000
 
+* `as_data_pronoun()` now accepts data masks. If the mask has multiple
+  environments, all of these are looked up when subsetting the pronoun.
+  Function objects stored in the mask are bypassed.
+
 * `names()` and `length()` methods for data pronouns are deprecated.
 
 * `as_dictionary()` is now defunct.
