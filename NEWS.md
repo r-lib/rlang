@@ -1,6 +1,10 @@
 
 # rlang 0.2.2.9000
 
+* The sentinel for removing arguments in `call_modify()` has been
+  changed from `NULL` to `zap()`. This breaking change is motivated
+  by the ambiguity of `NULL` with valid argument values.
+
 * `zap()` and `zaps()` create sentinels to instruct functions like
   `env_bind()` or `call_modify()` that objects are to be removed.
 

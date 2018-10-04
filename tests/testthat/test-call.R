@@ -82,10 +82,16 @@ test_that("accepts unnamed arguments", {
 test_that("allows duplicated arguments (#398)", {
   expect_identical(call_modify(~mean(), na.rm = TRUE, na.rm = FALSE), ~mean(na.rm = FALSE))
   expect_identical(call_modify(~mean(), TRUE, FALSE), ~mean(TRUE, FALSE))
+  expect_identical(call_modify(~mean(), foo = zap(), foo = zap()), ~mean())
+})
+
+test_that("zaps remove arguments", {
+  expect_identical(call_modify(quote(foo(bar = )), bar = zap()), quote(foo()))
+  expect_identical_(call_modify(quote(foo(bar = , baz = )), !!!zaps(c("foo", "bar", "baz"))), quote(foo()))
 })
 
 test_that("can remove unexisting arguments (#393)", {
-  expect_identical(call_modify(quote(foo()), ... = NULL), quote(foo()))
+  expect_identical(call_modify(quote(foo()), ... = zap()), quote(foo()))
 })
 
 test_that("can add a missing argument", {
@@ -94,10 +100,11 @@ test_that("can add a missing argument", {
 })
 
 test_that("can refer to dots as named argument", {
-  expect_error(call_modify(quote(foo(...)), ... = "foo"), "must be NULL or empty")
+  expect_error(call_modify(quote(foo()), ... = NULL), "must be `zap\\(\\)` or empty")
+  expect_error(call_modify(quote(foo()), ... = "foo"), "must be `zap\\(\\)` or empty")
   expect_identical(call_modify(quote(foo(x, ..., y)), ... = ), quote(foo(x, ..., y)))
   expect_identical(call_modify(quote(foo(x)), ... = ), quote(foo(x, ...)))
-  expect_identical(call_modify(quote(foo(x, ..., y)), ... = NULL), quote(foo(x, y)))
+  expect_identical(call_modify(quote(foo(x, ..., y)), ... = zap()), quote(foo(x, y)))
 })
 
 
