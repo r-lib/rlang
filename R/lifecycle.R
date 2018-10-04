@@ -194,7 +194,6 @@ upcase1 <- function(x) {
 #' * [parse_quosures()] => [parse_quos()]
 #' * [as_overscope()] => [as_data_mask()]
 #' * [new_overscope()] => [new_data_mask()]
-#' * [as_dictionary()] => [as_data_pronoun()]
 #'
 #' * [lang()] => [call2()]
 #' * [new_language()] => [new_call()]
@@ -239,6 +238,7 @@ upcase1 <- function(x) {
 #' * [UQE()]
 #' * [eval_tidy_()]
 #' * [is_quosureish()], [as_quosureish()]
+#' * `as_dictionary()` => [as_data_pronoun()]
 #'
 #' * [cnd_signal()]: `.msg` and `.call`.
 #'

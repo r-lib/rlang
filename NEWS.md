@@ -1,6 +1,8 @@
 
 # rlang 0.2.2.9000
 
+* `as_dictionary()` is now defunct.
+
 * `enexprs()` and `enquos()` now support `.ignore_empty = "all"`
   with named arguments as well (#414).
 

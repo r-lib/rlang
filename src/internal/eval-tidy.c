@@ -5,8 +5,7 @@
 static sexp* data_pronoun_names = NULL;
 static sexp* data_pronoun_class = NULL;
 
-// Exported for deprecated as_dictionary() generic
-sexp* rlang_new_data_pronoun(sexp* x, sexp* lookup_msg, sexp* read_only) {
+static sexp* rlang_new_data_pronoun(sexp* x, sexp* lookup_msg, sexp* read_only) {
   sexp* dict = KEEP(r_new_vector(r_type_list, 3));
 
   r_list_poke(dict, 0, x);
