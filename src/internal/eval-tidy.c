@@ -2,23 +2,12 @@
 #include "internal.h"
 
 
-static sexp* data_pronoun_names = NULL;
 static sexp* data_pronoun_class = NULL;
 
-// Exported for deprecated as_dictionary() generic
-sexp* rlang_new_data_pronoun(sexp* x, sexp* lookup_msg, sexp* read_only) {
-  sexp* dict = KEEP(r_new_vector(r_type_list, 3));
+static sexp* rlang_new_data_pronoun(sexp* mask) {
+  sexp* dict = KEEP(r_new_vector(r_type_list, 1));
 
-  r_list_poke(dict, 0, x);
-  r_list_poke(dict, 2, read_only);
-
-  if (lookup_msg == r_null) {
-    r_list_poke(dict, 1, r_chr("Object `%s` not found in `.data`"));
-  } else {
-    r_list_poke(dict, 1, lookup_msg);
-  }
-
-  r_poke_attribute(dict, r_names_sym, data_pronoun_names);
+  r_list_poke(dict, 0, mask);
   r_poke_attribute(dict, r_class_sym, data_pronoun_class);
 
   FREE(1);
@@ -52,11 +41,11 @@ sexp* rlang_as_data_pronoun(sexp* x) {
   case r_type_complex:
   case r_type_character:
   case r_type_raw:
-    check_unique_names(x);
     x = KEEP_N(r_vec_coerce(x, r_type_list), n_kept);
-    break;
+    // fallthrough
   case r_type_list:
     check_unique_names(x);
+    x = KEEP_N(r_list_as_environment(x, r_empty_env), n_kept);
     break;
   case r_type_environment:
     break;
@@ -64,9 +53,7 @@ sexp* rlang_as_data_pronoun(sexp* x) {
     r_abort("`data` must be an uniquely named vector, list, data frame or environment");
   }
 
-  sexp* lookup_msg = KEEP_N(r_chr("Column `%s` not found in `.data`"), n_kept);
-  sexp* read_only = KEEP_N(r_lgl(1), n_kept);
-  sexp* pronoun = rlang_new_data_pronoun(x, lookup_msg, read_only);
+  sexp* pronoun = rlang_new_data_pronoun(x);
 
   FREE(n_kept);
   return pronoun;
@@ -152,8 +139,56 @@ static bool is_data_mask(sexp* env) {
     r_typeof(env) == r_type_environment &&
     r_env_has(env, data_mask_flag_sym);
 }
+sexp* rlang_is_data_mask(sexp* env) {
+  return r_lgl(is_data_mask(env));
+}
 
-static sexp* data_pronoun_sym = NULL;
+static sexp* mask_find(sexp* env, sexp* sym) {
+  if (r_typeof(sym) != r_type_symbol) {
+    r_abort("Internal error: Data pronoun must be subset with a symbol");
+  }
+
+  sexp* top_env = r_env_find(env, data_mask_top_env_sym);
+  if (r_typeof(top_env) == r_type_environment) {
+    // Start lookup in the parent if the pronoun wraps a data mask
+    env = r_env_parent(env);
+  } else {
+    // Data pronouns created from lists or data frames are converted
+    // to a simple environment whose ancestry shouldn't be looked up.
+    top_env = env;
+  }
+
+  sexp* cur = env;
+  do {
+    sexp* obj = r_env_find(cur, sym);
+    if (obj != r_unbound_sym && !r_is_function(obj)) {
+      return obj;
+    }
+
+    if (cur == top_env) {
+      break;
+    } else {
+      cur = r_env_parent(cur);
+    }
+  } while (cur != r_empty_env);
+
+  return r_unbound_sym;
+}
+sexp* rlang_data_pronoun_get(sexp* pronoun, sexp* sym) {
+  if (r_typeof(pronoun) != r_type_environment) {
+    r_abort("Internal error: Data pronoun must wrap an environment");
+  }
+
+  sexp* obj = mask_find(pronoun, sym);
+
+  if (obj == r_unbound_sym) {
+    sexp* call = KEEP(r_parse("rlang:::abort_data_pronoun(x)"));
+    r_eval_with_x(call, r_base_env, sym);
+    r_abort("Internal error: .data subsetting should have failed earlier");
+  }
+
+  return obj;
+}
 
 static void warn_env_as_mask_once() {
   r_warn_deprecated("environment passed to rlang::as_data_mask()",
@@ -171,6 +206,9 @@ static void warn_env_as_mask_once() {
     "  eval_tidy(expr, mask)\n"
   );
 }
+
+static sexp* data_pronoun_sym = NULL;
+
 sexp* rlang_as_data_mask(sexp* data) {
   if (is_data_mask(data)) {
     return data;
@@ -182,7 +220,6 @@ sexp* rlang_as_data_mask(sexp* data) {
   int n_protect = 0;
 
   sexp* bottom = NULL;
-  sexp* data_pronoun = KEEP_N(rlang_as_data_pronoun(data), n_protect);
 
   switch (r_typeof(data)) {
   case r_type_environment:
@@ -201,6 +238,8 @@ sexp* rlang_as_data_mask(sexp* data) {
     // fallthrough:
 
   case r_type_list: {
+    check_unique_names(data);
+
     sexp* names = r_vec_names(data);
     bottom = KEEP_N(r_new_environment(r_empty_env, 0), n_protect);
 
@@ -224,8 +263,10 @@ sexp* rlang_as_data_mask(sexp* data) {
     r_abort("`data` must be a vector, list, data frame, or environment");
   }
 
-  r_env_poke(bottom, data_pronoun_sym, data_pronoun);
   sexp* data_mask = rlang_new_data_mask(bottom, bottom);
+
+  sexp* data_pronoun = KEEP_N(rlang_as_data_pronoun(data_mask), n_protect);
+  r_env_poke(bottom, data_pronoun_sym, data_pronoun);
 
   FREE(n_protect);
   return data_mask;
@@ -408,8 +449,6 @@ sexp* rlang_eval_tidy(sexp* expr, sexp* data, sexp* frame) {
 }
 
 
-const char* data_pronoun_c_names[4] = { "src", "lookup_msg", "read_only", NULL };
-
 void rlang_init_eval_tidy() {
   tilde_fn = r_parse_eval(
     "function(...) {                          \n"
@@ -422,9 +461,6 @@ void rlang_init_eval_tidy() {
     r_ns_env("rlang")
   );
   r_mark_precious(tilde_fn);
-
-  data_pronoun_names = r_new_character(data_pronoun_c_names);
-  r_mark_precious(data_pronoun_names);
 
   data_pronoun_class = r_chr("rlang_data_pronoun");
   r_mark_precious(data_pronoun_class);

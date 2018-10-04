@@ -4,7 +4,6 @@
 #include <rlang.h>
 
 // Callable from other packages
-extern sexp* rlang_new_data_pronoun(sexp*, sexp*, sexp*);
 extern sexp* r_squash_if(sexp*, enum r_type, bool (*is_spliceable)(sexp*), int);
 extern bool rlang_is_clevel_spliceable(sexp*);
 extern bool rlang_is_quosure(sexp*);
@@ -46,7 +45,6 @@ extern sexp* rlang_is_reference(sexp*, sexp*);
 extern sexp* rlang_sexp_address(sexp*);
 extern sexp* rlang_length(sexp*);
 extern sexp* rlang_true_length(sexp* x);
-extern sexp* rlang_new_data_pronoun(sexp*, sexp*, sexp*);
 extern sexp* rlang_squash(sexp*, sexp*, sexp*, sexp*);
 extern sexp* rlang_symbol(sexp*);
 extern sexp* rlang_symbol_to_character(sexp*);
@@ -106,6 +104,8 @@ extern sexp* rlang_is_double(sexp*, sexp*, sexp*);
 extern sexp* rlang_is_integerish(sexp*, sexp*, sexp*);
 extern sexp* rlang_is_character(sexp*, sexp*);
 extern sexp* rlang_is_raw(sexp*, sexp*);
+extern sexp* rlang_is_data_mask(sexp*);
+extern sexp* rlang_data_pronoun_get(sexp*, sexp*);
 extern sexp* rlang_cnd_type(sexp*);
 extern sexp* rlang_warn_deprecated_once(sexp*, sexp*);
 
@@ -146,7 +146,6 @@ static const r_callable r_callables[] = {
   {"rlang_is_reference",        (r_fn_ptr_t) &rlang_is_reference, 2},
   {"rlang_length",              (r_fn_ptr_t) &rlang_length, 1},
   {"rlang_true_length",         (r_fn_ptr_t) &rlang_true_length, 1},
-  {"rlang_new_data_pronoun",    (r_fn_ptr_t) &rlang_new_data_pronoun, 3},
   {"rlang_get_attributes",      (r_fn_ptr_t) &r_get_attributes, 1},
   {"rlang_poke_attributes",     (r_fn_ptr_t) &r_poke_attributes, 2},
   {"rlang_missing_arg",         (r_fn_ptr_t) &rlang_missing_arg, 0},
@@ -226,6 +225,8 @@ static const r_callable r_callables[] = {
   {"rlang_call_has_precedence", (r_fn_ptr_t) &rlang_call_has_precedence, 3},
   {"rlang_new_data_mask",       (r_fn_ptr_t) &rlang_new_data_mask, 2},
   {"rlang_as_data_mask",        (r_fn_ptr_t) &rlang_as_data_mask, 1},
+  {"rlang_is_data_mask",        (r_fn_ptr_t) &rlang_is_data_mask, 1},
+  {"rlang_data_pronoun_get",       (r_fn_ptr_t) &rlang_data_pronoun_get, 2},
   {"rlang_data_mask_clean",     (r_fn_ptr_t) &rlang_data_mask_clean, 1},
   {"rlang_eval_tidy",           (r_fn_ptr_t) &rlang_eval_tidy, 3},
   {"rlang_as_data_pronoun",     (r_fn_ptr_t) &rlang_as_data_pronoun, 1},
@@ -249,7 +250,6 @@ static const r_callable r_callables[] = {
 };
 
 void R_init_rlang(r_dll_info* dll) {
-  /* r_register_c_callable("rlang", "rlang_new_data_pronoun", (r_fn_ptr_t) &rlang_new_dictionary); */
   r_register_c_callable("rlang", "rlang_squash_if", (r_fn_ptr_t) &r_squash_if);
 
   // The quosure functions are stable

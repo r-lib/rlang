@@ -181,7 +181,7 @@ test_that("empty quosure self-evaluates", {
 })
 
 test_that("cannot replace elements of pronouns", {
-  expect_error(eval_tidy(quo(.data$foo <- "bar")), "Can't modify the data pronoun")
+  expect_error(eval_tidy(quo(.data$foo <- "bar"), mtcars), "Can't modify the data pronoun")
 })
 
 test_that("formulas are not evaluated as quosures", {
@@ -239,17 +239,33 @@ test_that("can supply a data mask as data", {
 test_that("as_data_pronoun() creates pronoun", {
   data <- as_data_pronoun(mtcars)
   expect_is(data, "rlang_data_pronoun")
+
+  data_env <- .subset2(data, 1)
+  expect_reference(env_parent(data_env), empty_env())
+  expect_true(all(env_names(data_env) %in% names(mtcars)))
+
   expect_error(data$foobar, "Column `foobar` not found in `.data`")
   expect_identical(data[["cyl"]], mtcars$cyl)
 })
 
+test_that("can create pronoun from a mask", {
+  top <- env(a = 1)
+  bottom <- env(top, b = 2)
+  mask <- new_data_mask(bottom, top)
+
+  .data <- as_data_pronoun(mask)
+  expect_is(.data, "rlang_data_pronoun")
+  expect_identical(.data$a, 1)
+  expect_identical(.data$b, 2)
+})
+
 test_that("pronoun has print() and str() method", {
   data <- as_data_pronoun(mtcars)
-  expect_output(print(data), "<pronoun>\n11 objects")
-  expect_output(str(data), "32 obs")
+  expect_output(print(data), "<pronoun>")
+  expect_output(str(data), "<pronoun>")
 
   data <- as_data_pronoun(list(a = 1))
-  expect_output(print(data), "<pronoun>\n1 object")
+  expect_output(print(data), "<pronoun>")
 })
 
 test_that("data mask can escape", {
@@ -324,6 +340,51 @@ test_that("data_pronoun_name() extracts name", {
 
   expect_identical(data_pronoun_name(quote(.data[["foo"]])), "foo")
   expect_identical(data_pronoun_name(quote(.data$foo)), "foo")
+})
+
+test_that(".data pronoun walks the ancestry of environments", {
+  e  <- 0
+  e1 <- env(a = 1, b = 1, c = 1)
+  e2 <- env(a = 2, b = 2, e1)
+  e3 <- env(a = 3, e2)
+
+  data_mask <- new_data_mask(e3, e1)
+  .data <- as_data_pronoun(data_mask)
+
+  expect_equal(.data$a, 3)
+  expect_equal(.data$b, 2)
+  expect_equal(.data$c, 1)
+  expect_error(.data$d, "Column `d` not found in `.data`")
+  expect_error(.data$e, "Column `e` not found in `.data`")
+  expect_error(.data$.data, "Column `.data` not found in `.data`")
+  expect_error(.data$.env, "Column `.env` not found in `.data`")
+  expect_error(.data$.top_env, "Column `.top_env` not found in `.data`")
+
+  expect_equal(.data[["a"]], 3)
+  expect_equal(.data[["b"]], 2)
+  expect_equal(.data[["c"]], 1)
+  expect_error(.data[["d"]], "Column `d` not found in `.data`")
+  expect_error(.data[["e"]], "Column `e` not found in `.data`")
+  expect_error(.data[[".data"]], "Column `.data` not found in `.data`")
+  expect_error(.data[[".env"]], "Column `.env` not found in `.data`")
+  expect_error(.data[[".top_env"]], "Column `.top_env` not found in `.data`")
+
+  expect_error(.data["a"])
+  expect_warning(names(.data), "deprecated")
+  expect_warning(length(.data), "deprecated")
+})
+
+test_that("can inspect the exported pronoun", {
+  expect_output(print(rlang::.data), "<pronoun>")
+})
+
+test_that("data pronoun always skips functions", {
+  top <- env(c = "c")
+  bottom <- env(top, c = base::c)
+  mask <- new_data_mask(bottom, top)
+
+  .data <- as_data_pronoun(mask)
+  expect_identical(.data$c, "c")
 })
 
 

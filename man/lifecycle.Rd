@@ -136,7 +136,6 @@ like \code{quos()} is soft-deprecated.
 \item \code{\link[=parse_quosures]{parse_quosures()}} => \code{\link[=parse_quos]{parse_quos()}}
 \item \code{\link[=as_overscope]{as_overscope()}} => \code{\link[=as_data_mask]{as_data_mask()}}
 \item \code{\link[=new_overscope]{new_overscope()}} => \code{\link[=new_data_mask]{new_data_mask()}}
-\item \code{\link[=as_dictionary]{as_dictionary()}} => \code{\link[=as_data_pronoun]{as_data_pronoun()}}
 \item \code{\link[=lang]{lang()}} => \code{\link[=call2]{call2()}}
 \item \code{\link[=new_language]{new_language()}} => \code{\link[=new_call]{new_call()}}
 \item \code{\link[=is_lang]{is_lang()}} => \code{\link[=is_call]{is_call()}}
@@ -167,6 +166,7 @@ like \code{quos()} is soft-deprecated.
 \item \code{\link[=abort]{abort()}}, \code{\link[=warn]{warn()}}, \code{\link[=inform]{inform()}}, \code{\link[=cnd]{cnd()}}, \code{\link[=error_cnd]{error_cnd()}},
 \code{\link[=warning_cnd]{warning_cnd()}}, \code{\link[=message_cnd]{message_cnd()}}: \code{call} argument.
 \item \code{\link[=call_modify]{call_modify()}}: \code{.standardise} and \code{.env} arguments.
+\item \code{length()} and \code{names()} on tidy eval \code{.data} pronouns.
 }
 }
 
@@ -180,6 +180,7 @@ like \code{quos()} is soft-deprecated.
 \item \code{\link[=UQE]{UQE()}}
 \item \code{\link[=eval_tidy_]{eval_tidy_()}}
 \item \code{\link[=is_quosureish]{is_quosureish()}}, \code{\link[=as_quosureish]{as_quosureish()}}
+\item \code{as_dictionary()} => \code{\link[=as_data_pronoun]{as_data_pronoun()}}
 \item \code{\link[=cnd_signal]{cnd_signal()}}: \code{.msg} and \code{.call}.
 \item \code{\link[=cnd]{cnd()}}, \code{\link[=error_cnd]{error_cnd()}}, \code{\link[=warning_cnd]{warning_cnd()}} and \code{\link[=message_cnd]{message_cnd()}}:
 \code{.msg} => \code{message}.

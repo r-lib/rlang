@@ -5,7 +5,6 @@
 \alias{tidyeval-data}
 \alias{.data}
 \title{Data pronoun for tidy evaluation}
-\format{An object of class \code{rlang_data_pronoun} of length 0.}
 \usage{
 .data
 }
@@ -14,6 +13,15 @@ This pronoun allows you to be explicit when you refer to an object
 inside the data. Referring to the \code{.data} pronoun rather than to
 the original data frame has several advantages:
 \itemize{
+\item It makes it easy to refer to column names stored as strings. If
+\code{var} contains the column \code{"height"}, the pronoun will subset that
+column:\preformatted{var <- "height"
+dplyr::summarise(df, mean(.data[[var]]))
+}
+
+The index variable \code{var} is \link[=quasiquotation]{unquoted}, which
+ensures a column named \code{var} in the data frame cannot mask it.
+This makes the pronoun safe to use in functions and packages.
 \item Sometimes a computation is not about the whole data but about a
 subset. For example if you supply a grouped data frame to a dplyr
 verb, the \code{.data} pronoun contains the group subset.

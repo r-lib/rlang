@@ -72,7 +72,8 @@ test_that("lang_head() still works", {
 
 test_that("as_overscope() forwards to as_data_mask()", {
   quo <- quo(foo)
-  expect_equal(as_overscope(quo, mtcars), as_data_mask(mtcars, quo_get_env(quo)))
+  mask <- as_overscope(quo, mtcars)
+  expect_true(".__tidyeval_data_mask__." %in% env_names(mask))
 })
 
 test_that("overscope functions forward to mask functions", {
@@ -88,16 +89,6 @@ test_that("overscope functions forward to mask functions", {
   x <- 10
   expect_identical(overscope_eval_next(mask, quote(cyl * x), current_env()), mtcars$cyl * x)
   expect_identical(overscope_eval_next(mask, quote(am * x), current_env()), mtcars$am * x)
-})
-
-test_that("as_dictionary() forwards to as_data_pronoun()", {
-  dict <- as_dictionary(mtcars, "Column `%s` not found in `.data`", TRUE)
-  expect_identical(dict, as_data_pronoun(mtcars))
-
-  dict <- as_dictionary(list2env(mtcars), "Column `%s` not found in `.data`", TRUE)
-  expect_equal(dict, as_data_pronoun(list2env(mtcars)))
-
-  expect_true(is_dictionary(dict))
 })
 
 test_that("as_env() forwards to as_environment()", {
@@ -484,4 +475,10 @@ test_that("whole scope is purged", {
   expect_identical(names(mid), character(0))
   expect_identical(names(top), character(0))
   expect_identical(names(outside), "important")
+})
+
+test_that("names() and length() still work on data pronouns", {
+  pronoun <- as_data_pronoun(mtcars)
+  expect_true(all(names(pronoun) %in% names(mtcars)))
+  expect_length(pronoun, length(mtcars))
 })

@@ -20,9 +20,9 @@ accessed inappropriately (by position rather than name).}
 dictionary.}
 }
 \description{
-\Sexpr[results=rd, stage=render]{rlang:::lifecycle("soft-deprecated")}
+\Sexpr[results=rd, stage=render]{rlang:::lifecycle("defunct")}
 
-The dictionary class was soft-deprecated in rlang 0.2.0. It was
+The dictionary class is defunct as of rlang 0.2.0. It was
 trying to be too general and did not prove useful. Please use
 \code{\link[=as_data_pronoun]{as_data_pronoun()}} or your own pronoun class instead.
 }

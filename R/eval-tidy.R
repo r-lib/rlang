@@ -87,6 +87,18 @@ eval_tidy <- function(expr, data = NULL, env = caller_env()) {
   .Call(rlang_eval_tidy, expr, data, environment())
 }
 
+# Helps work around roxygen loading issues
+#' @export
+length.rlang_fake_data_pronoun <- function(...) NULL
+#' @export
+names.rlang_fake_data_pronoun <- function(...) NULL
+#' @export
+`$.rlang_fake_data_pronoun` <- function(...) NULL
+#' @export
+`[[.rlang_fake_data_pronoun` <- function(...) NULL
+#' @export
+print.rlang_fake_data_pronoun <- function(...) cat_line("<pronoun>")
+
 #' Data pronoun for tidy evaluation
 #'
 #' @description
@@ -94,6 +106,19 @@ eval_tidy <- function(expr, data = NULL, env = caller_env()) {
 #' This pronoun allows you to be explicit when you refer to an object
 #' inside the data. Referring to the `.data` pronoun rather than to
 #' the original data frame has several advantages:
+#'
+#' * It makes it easy to refer to column names stored as strings. If
+#'   `var` contains the column `"height"`, the pronoun will subset that
+#'   column:
+#'
+#'     ```
+#'     var <- "height"
+#'     dplyr::summarise(df, mean(.data[[var]]))
+#'     ```
+#'
+#'   The index variable `var` is [unquoted][quasiquotation], which
+#'   ensures a column named `var` in the data frame cannot mask it.
+#'   This makes the pronoun safe to use in functions and packages.
 #'
 #' * Sometimes a computation is not about the whole data but about a
 #'   subset. For example if you supply a grouped data frame to a dplyr
@@ -108,9 +133,9 @@ eval_tidy <- function(expr, data = NULL, env = caller_env()) {
 #' objects from the data mask.
 #'
 #' @name tidyeval-data
+#' @format NULL
 #' @export
-.data <- NULL
-delayedAssign(".data", as_data_pronoun(list()))
+.data <- structure(list(), class = "rlang_fake_data_pronoun")
 
 
 #' Create a data mask
@@ -173,6 +198,11 @@ delayedAssign(".data", as_data_pronoun(list()))
 #'   Unlike `as_data_mask()` it does not install the `.data` pronoun
 #'   so you need to provide one yourself. You can provide a pronoun
 #'   constructed with `as_data_pronoun()` or your own pronoun class.
+#'
+#'   `as_data_pronoun()` will create a pronoun from a list, an
+#'   environment, or an rlang data mask. In the latter case, the whole
+#'   ancestry is looked up from the bottom to the top of the mask.
+#'   Functions stored in the mask are bypassed by the pronoun.
 #'
 #' Once you have built a data mask, simply pass it to [eval_tidy()] as
 #' the `data` argument. You can repeat this as many times as
@@ -291,10 +321,16 @@ delayedAssign(".data", as_data_pronoun(list()))
 #' # new_data_mask() does not create data pronouns, but
 #' # data pronouns can be added manually:
 #' mask$.fns <- as_data_pronoun(top)
-#' mask$.data <- as_data_pronoun(bottom)
+#'
+#' # The `.data` pronoun should generally be created from the
+#' # mask. This will ensure data is looked up throughout the whole
+#' # ancestry. Only non-function objects are looked up from this
+#' # pronoun:
+#' mask$.data <- as_data_pronoun(mask)
+#' mask$.data$c
 #'
 #' # Now we can reference the values with the pronouns:
-#' eval_tidy(quote(.fns$c(.data$a, .data$b, .data$c)), data = mask)
+#' eval_tidy(quote(c(.data$a, .data$b, .data$c)), data = mask)
 as_data_mask <- function(data, parent = NULL) {
   if (!is_null(parent)) {
     warn_deprecated(paste_line(
@@ -334,102 +370,73 @@ new_data_mask <- function(bottom, top = bottom, parent = NULL) {
   .Call(rlang_new_data_mask, bottom, top)
 }
 
-
 #' @export
-`$.rlang_data_pronoun` <- function(x, name) {
-  src <- .subset2(x, "src")
-  if (!has_binding(src, name)) {
-    abort(sprintf(.subset2(x, "lookup_msg"), name), "rlang_data_pronoun_not_found")
-  }
-  src[[name]]
+`$.rlang_data_pronoun` <- function(x, nm) {
+  data_pronoun_get(x, nm)
 }
 #' @export
 `[[.rlang_data_pronoun` <- function(x, i, ...) {
   if (!is_string(i)) {
     abort("Must subset the data pronoun with a string")
   }
-  src <- .subset2(x, "src")
-  if (!has_binding(src, i)) {
-    abort(sprintf(.subset2(x, "lookup_msg"), i), "rlang_data_pronoun_not_found")
-  }
-  src[[i, ...]]
+  data_pronoun_get(x, i)
+}
+data_pronoun_get <- function(x, nm) {
+  mask <- .subset2(x, 1)
+  .Call(rlang_data_pronoun_get, mask, sym(nm))
+}
+abort_data_pronoun <- function(nm) {
+  msg <- sprintf("Column `%s` not found in `.data`", as_string(nm))
+  abort(msg, "rlang_data_pronoun_not_found")
 }
 
 #' @export
 `$<-.rlang_data_pronoun` <- function(x, i, value) {
-  dict <- unclass_data_pronoun(x)
-
-  if (dict$read_only) {
-    abort("Can't modify the data pronoun")
-  }
-
-  dict$src[[i]] <- value
-  structure(dict, class = class(x))
+  abort("Can't modify the data pronoun")
 }
 #' @export
 `[[<-.rlang_data_pronoun` <- function(x, i, value) {
-  dict <- unclass_data_pronoun(x)
-
-  if (dict$read_only) {
-    abort("Can't modify the data pronoun")
-  }
-  if (!is_string(i)) {
-    abort("Must subset the data pronoun with a string")
-  }
-
-  dict$src[[i]] <- value
-  structure(dict, class = class(x))
+  abort("Can't modify the data pronoun")
 }
 
 #' @export
+`[.rlang_data_pronoun` <- function(x, i, ...) {
+  abort("`[` is not supported by .data pronoun, use `[[` or $ instead")
+}
+#' @export
 names.rlang_data_pronoun <- function(x) {
-  names(unclass(x)$src)
+  warn_deprecated("Taking the `names()` of the `.data` pronoun is deprecated")
+  env <- .subset2(x, 1)
+  if (is_data_mask(env)) {
+    env <- env_parent(env)
+  }
+  env_names(env)
 }
 #' @export
 length.rlang_data_pronoun <- function(x) {
-  length(unclass(x)$src)
-}
-
-has_binding <- function(x, name) {
-  if (is_environment(x)) {
-    env_has(x, name)
-  } else {
-    has_name(x, name)
+  warn_deprecated("Taking the `length()` of the `.data` pronoun is deprecated")
+  env <- .subset2(x, 1)
+  if (is_data_mask(env)) {
+    env <- env_parent(env)
   }
+  env_length(env)
 }
 
 #' @export
 print.rlang_data_pronoun <- function(x, ...) {
-  src <- unclass_data_pronoun(x)$src
-  objs <- glue_countable(length(src), "object")
-  cat(paste0("<pronoun>\n", objs, "\n"))
+  cat_line("<pronoun>")
   invisible(x)
 }
 #' @importFrom utils str
 #' @export
 str.rlang_data_pronoun <- function(object, ...) {
-  str(unclass_data_pronoun(object)$src, ...)
+  cat_line("<pronoun>")
 }
 
-glue_countable <- function(n, str) {
-  if (n == 1) {
-    paste0(n, " ", str)
-  } else {
-    paste0(n, " ", str, "s")
-  }
-}
-# Unclassing before print() or str() is necessary because default
-# methods index objects with integers
-unclass_data_pronoun <- function(x) {
-  i <- match("rlang_data_pronoun", class(x))
-  class(x) <- class(x)[-i]
-  x
-}
-
+# Used for deparsing
 is_data_pronoun <- function(x) {
-  is_call(x, c("[[", "$")) && identical(node_cadr(x), dot_data_sym)
+  is_call(x, c("[[", "$"), n = 2L) && identical(node_cadr(x), dot_data_sym)
 }
-
 data_pronoun_name <- function(x) {
   if (is_call(x, "$")) {
     arg <- node_cadr(node_cdr(x))
@@ -448,4 +455,8 @@ data_pronoun_name <- function(x) {
       return(NULL)
     }
   }
+}
+
+is_data_mask <- function(x) {
+  is_environment(x) && env_has(x, ".__rlang_data_mask__.")
 }
