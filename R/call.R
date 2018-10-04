@@ -506,8 +506,13 @@ call_modify <- function(.call,
   }
 
   if (any(!named)) {
-    remaining_args <- as.pairlist(args[!named])
-    expr <- node_append(expr, remaining_args)
+    remaining_args <- args[!named]
+
+    if (some(remaining_args, is_zap)) {
+      abort("Zap sentinels can't be unnamed")
+    }
+
+    expr <- node_append(expr, as.pairlist(remaining_args))
   }
 
   set_expr(.call, expr)

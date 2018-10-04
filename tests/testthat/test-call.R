@@ -107,6 +107,10 @@ test_that("can refer to dots as named argument", {
   expect_identical(call_modify(quote(foo(x, ..., y)), ... = zap()), quote(foo(x, y)))
 })
 
+test_that("can't supply unnamed zaps", {
+  expect_error(call_modify(quote(foo(bar)), zap()), "can't be unnamed")
+})
+
 
 # Utils --------------------------------------------------------------
 
