@@ -1185,7 +1185,7 @@ env_bind_exprs <- function(.env, ..., .eval_env = caller_env()) {
     "`env_bind_exprs()` is soft-deprecated as of rlang 0.3.0.",
     "Please use `env_bind_promise()` instead."
   ))
-  env_bind_promise(.env, ..., .eval_env = .eval_env)
+  env_bind_promise(.env = .env, ..., .eval_env = .eval_env)
 }
 #' @rdname env_bind_exprs
 #' @export
@@ -1194,7 +1194,7 @@ env_bind_fns <- function(.env, ...) {
     "`env_bind_fns()` is soft-deprecated as of rlang 0.3.0.",
     "Please use `env_bind_active()` instead."
   ))
-  env_bind_active(.env, ...)
+  env_bind_active(.env = .env, ...)
 }
 
 #' Retired `scoped` functions
