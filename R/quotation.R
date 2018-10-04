@@ -413,6 +413,12 @@ endots <- function(call,
 #'   argument and `width` as the second argument.
 #' @export
 exprs_auto_name <- function(exprs, width = NULL, printer = expr_name) {
+  if (is_installed("dplyr") &&
+        utils::packageVersion("dplyr") < "0.7.99" &&
+        is_reference(fn_env(printer), ns_env("dplyr"))) {
+    printer <- quo_name
+  }
+
   if (!is_null(width)) {
     signal_soft_deprecated(env = empty_env(), paste_line(
       "The `width` argument is soft-deprecated as of rlang 0.3.0."
