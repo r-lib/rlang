@@ -181,6 +181,8 @@ upcase1 <- function(x) {
 #'   reason, passing a width as `.named` argument of dots collectors
 #'   like `quos()` is soft-deprecated.
 #'
+#' * [call_modify()]: `.standardise` and `.env` arguments.
+#'
 #'
 #' **Soft-deprecated as of rlang 0.2.0:**
 #'
@@ -225,8 +227,6 @@ upcase1 <- function(x) {
 #' * [abort()], [warn()], [inform()]: `msg`, `type` => `.msg`, `.type`
 #' * [abort()], [warn()], [inform()], [cnd()], [error_cnd()],
 #'   [warning_cnd()], [message_cnd()]: `call` argument.
-#'
-#' * [call_modify()]: `.standardise` and `.env` arguments.
 #'
 #' * `length()` and `names()` on tidy eval `.data` pronouns.
 #'

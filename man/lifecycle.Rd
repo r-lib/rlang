@@ -124,6 +124,7 @@ separately before calling these functions.
 is used for deparsing instead of \code{\link[=quo_text]{quo_text()}}. For the same
 reason, passing a width as \code{.named} argument of dots collectors
 like \code{quos()} is soft-deprecated.
+\item \code{\link[=call_modify]{call_modify()}}: \code{.standardise} and \code{.env} arguments.
 }
 
 \strong{Soft-deprecated as of rlang 0.2.0:}
@@ -165,7 +166,6 @@ like \code{quos()} is soft-deprecated.
 \item \code{\link[=abort]{abort()}}, \code{\link[=warn]{warn()}}, \code{\link[=inform]{inform()}}: \code{msg}, \code{type} => \code{.msg}, \code{.type}
 \item \code{\link[=abort]{abort()}}, \code{\link[=warn]{warn()}}, \code{\link[=inform]{inform()}}, \code{\link[=cnd]{cnd()}}, \code{\link[=error_cnd]{error_cnd()}},
 \code{\link[=warning_cnd]{warning_cnd()}}, \code{\link[=message_cnd]{message_cnd()}}: \code{call} argument.
-\item \code{\link[=call_modify]{call_modify()}}: \code{.standardise} and \code{.env} arguments.
 \item \code{length()} and \code{names()} on tidy eval \code{.data} pronouns.
 }
 }

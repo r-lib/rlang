@@ -345,12 +345,12 @@ call_print_type <- function(call) {
 #'   used to modify the call. Use `NULL` to remove arguments. These
 #'   dots support [tidy dots][tidy-dots] features. Empty arguments are
 #'   allowed and preserved.
-#' @param .standardise,.env Deprecated as of rlang 0.3.0. Please call
-#'   [call_standardise()] manually.
+#' @param .standardise,.env Soft-deprecated as of rlang 0.3.0. Please
+#'   call [call_standardise()] manually.
 #'
 #' @section Life cycle:
 #'
-#' * The `.standardise` argument is deprecated as of rlang 0.3.0.
+#' * The `.standardise` argument is soft-deprecated as of rlang 0.3.0.
 #'
 #' * In rlang 0.2.0, `lang_modify()` was soft-deprecated and renamed to
 #'   `call_modify()`. See lifecycle section in [call2()] for more about
@@ -420,8 +420,8 @@ call_modify <- function(.call,
   expr <- get_expr(.call)
 
   if (!is_null(.standardise)) {
-    warn_deprecated(paste_line(
-      "`.standardise` is deprecated as of rlang 0.3.0.",
+    signal_soft_deprecated(paste_line(
+      "`.standardise` is soft-deprecated as of rlang 0.3.0.",
       "Please use `call_standardise()` prior to calling `call_modify()`."
     ))
     if (.standardise) {

@@ -23,8 +23,8 @@ default, \code{"keep"}, preserves these arguments. Set \code{.homonyms} to
 the last occurrences, and to \code{"error"} to raise an informative
 error and indicate what arguments have duplicated names.}
 
-\item{.standardise, .env}{Deprecated as of rlang 0.3.0. Please call
-\code{\link[=call_standardise]{call_standardise()}} manually.}
+\item{.standardise, .env}{Soft-deprecated as of rlang 0.3.0. Please
+call \code{\link[=call_standardise]{call_standardise()}} manually.}
 }
 \value{
 A quosure if \code{.call} is a quosure, a call otherwise.
@@ -37,7 +37,7 @@ modifying the call.
 \section{Life cycle}{
 
 \itemize{
-\item The \code{.standardise} argument is deprecated as of rlang 0.3.0.
+\item The \code{.standardise} argument is soft-deprecated as of rlang 0.3.0.
 \item In rlang 0.2.0, \code{lang_modify()} was soft-deprecated and renamed to
 \code{call_modify()}. See lifecycle section in \code{\link[=call2]{call2()}} for more about
 this change.
