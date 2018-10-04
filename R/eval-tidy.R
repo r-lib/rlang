@@ -107,6 +107,19 @@ print.rlang_fake_data_pronoun <- function(...) cat_line("<pronoun>")
 #' inside the data. Referring to the `.data` pronoun rather than to
 #' the original data frame has several advantages:
 #'
+#' * It makes it easy to refer to column names stored as strings. If
+#'   `var` contains the column `"height"`, the pronoun will subset that
+#'   column:
+#'
+#'     ```
+#'     var <- "height"
+#'     dplyr::summarise(df, mean(.data[[var]]))
+#'     ```
+#'
+#'   The index variable `var` is [unquoted][quasiquotation], which
+#'   ensures a column named `var` in the data frame cannot mask it.
+#'   This makes the pronoun safe to use in functions and packages.
+#'
 #' * Sometimes a computation is not about the whole data but about a
 #'   subset. For example if you supply a grouped data frame to a dplyr
 #'   verb, the `.data` pronoun contains the group subset.
