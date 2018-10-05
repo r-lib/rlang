@@ -2,12 +2,12 @@
 % Please edit documentation in R/env-binding.R
 \name{env_binding_are_active}
 \alias{env_binding_are_active}
-\alias{env_binding_are_promise}
+\alias{env_binding_are_lazy}
 \title{What kind of environment binding?}
 \usage{
 env_binding_are_active(env, nms = NULL)
 
-env_binding_are_promise(env, nms = NULL)
+env_binding_are_lazy(env, nms = NULL)
 }
 \arguments{
 \item{env}{An environment.}

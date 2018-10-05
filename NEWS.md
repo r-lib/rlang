@@ -372,7 +372,7 @@
   changing the default.
 
 * New predicates `env_binding_are_active()` and
-  `env_binding_are_promise()` detect the kind of bindings in an
+  `env_binding_are_lazy()` detect the kind of bindings in an
   environment.
 
 * `env_binding_lock()` and `env_binding_unlock()` allows to lock and

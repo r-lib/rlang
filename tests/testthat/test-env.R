@@ -254,7 +254,7 @@ test_that("active and promise bindings are pretty-printed", {
   env <- env()
   env_bind_lazy(env, a = "foo")
   env_bind_active(env, b = ~"foo")
-  expect_output(env_print(env), "a: <promise>.*b: <active>")
+  expect_output(env_print(env), "a: <lazy>.*b: <active>")
 })
 
 test_that("locked environments are pretty-printed", {

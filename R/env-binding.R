@@ -663,7 +663,7 @@ env_binding_are_active <- function(env, nms = NULL) {
 }
 #' @rdname env_binding_are_active
 #' @export
-env_binding_are_promise <- function(env, nms = NULL) {
+env_binding_are_lazy <- function(env, nms = NULL) {
   env_binding_are_type(env, nms, 1L)
 }
 env_binding_are_type <- function(env, nms, type) {
@@ -696,12 +696,12 @@ env_binding_type_sum <- function(env, nms = NULL) {
   nms <- env_binding_validate_names(env, nms)
 
   active <- env_binding_are_active(env, nms)
-  promise <- env_binding_are_promise(env, nms)
+  promise <- env_binding_are_lazy(env, nms)
   other <- !active & !promise
 
   types <- new_character(length(nms), nms)
   types[active] <- "active"
-  types[promise] <- "promise"
+  types[promise] <- "lazy"
   types[other] <- map_chr(env_get_list(env, nms[other]), rlang_type_sum)
 
   types

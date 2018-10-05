@@ -167,14 +167,14 @@ test_that("binding predicates detect special bindings", {
   env_bind(env, c = toupper("foo"), d = "irrelevant")
 
   expect_identical(env_binding_are_active(env, c("a", "b", "c")), c(a = TRUE, b = FALSE, c = FALSE))
-  expect_identical(env_binding_are_promise(env, c("a", "b", "c")), c(a = FALSE, b = TRUE, c = FALSE))
+  expect_identical(env_binding_are_lazy(env, c("a", "b", "c")), c(a = FALSE, b = TRUE, c = FALSE))
 
   force(env$b)
-  expect_identical(env_binding_are_promise(env, c("a", "b", "c")), c(a = FALSE, b = FALSE, c = FALSE))
+  expect_identical(env_binding_are_lazy(env, c("a", "b", "c")), c(a = FALSE, b = FALSE, c = FALSE))
 
   env <- env(a = 1, b = 2)
   expect_identical(env_binding_are_active(env), c(a = FALSE, b = FALSE))
-  expect_identical(env_binding_are_promise(env), c(a = FALSE, b = FALSE))
+  expect_identical(env_binding_are_lazy(env), c(a = FALSE, b = FALSE))
 })
 
 test_that("applies predicates to all bindings by default", {
@@ -183,15 +183,15 @@ test_that("applies predicates to all bindings by default", {
   env_bind_lazy(env, b = toupper("foo"))
   env_bind(env, c = toupper("foo"))
   expect_identical(env_binding_are_active(env), c(a = TRUE, b = FALSE, c = FALSE))
-  expect_identical(env_binding_are_promise(env), c(a = FALSE, b = TRUE, c = FALSE))
+  expect_identical(env_binding_are_lazy(env), c(a = FALSE, b = TRUE, c = FALSE))
 })
 
 test_that("env_binding_are_active() doesn't force promises", {
   env <- env()
   env_bind_lazy(env, foo = stop("kaboom"))
   expect_no_error(env_binding_are_active(env))
-  expect_identical(env_binding_are_promise(env), lgl(foo = TRUE))
-  expect_identical(env_binding_are_promise(env), lgl(foo = TRUE))
+  expect_identical(env_binding_are_lazy(env), lgl(foo = TRUE))
+  expect_identical(env_binding_are_lazy(env), lgl(foo = TRUE))
 })
 
 test_that("env_binding_type_sum() detects types", {
@@ -206,7 +206,7 @@ test_that("env_binding_type_sum() detects types", {
 
   expect_error(env_binding_type_sum(env, 1L), "must be a character vector")
 
-  types <- c(a = "active", b = "promise", c = "chr", d = "int", e = "dbl")
+  types <- c(a = "active", b = "lazy", c = "chr", d = "int", e = "dbl")
   expect_identical(env_binding_type_sum(env), types)
 })
 
