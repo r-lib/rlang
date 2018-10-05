@@ -29,8 +29,15 @@ fact delegated to the C library). This function is not adapted to
 data analysis, see the help for \code{\link[base:is.integer]{base::is.integer()}} for examples
 of how to check for whole numbers.
 
-Note that this check can be expensive for double vectors because
-they have to be traversed and checked in their entirety.
+Things to consider when checking for integer-like doubles:
+\itemize{
+\item This check can be expensive because the whole double vector has
+to be traversed and checked.
+\item Large double values may be integerish but may still not be
+coercible to integer. This is because integers in R only support
+values up to \code{2^31 - 1} while numbers stored as double can be
+much larger.
+}
 }
 \examples{
 is_integerish(10L)
