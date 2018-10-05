@@ -230,8 +230,8 @@ abort_quosure_assign <- function(x) {
 #'
 #' @section Life cycle:
 #'
-#' - Like the rest of the rlang package, `new_quosure()` and
-#'   `as_quosure()` are maturing.
+#' - `as_quosure()` now requires an explicit default environment for
+#'   creating quosures from symbols and calls.
 #'
 #' - `as_quosureish()` is deprecated as of rlang 0.2.0. This function
 #'   assumes that quosures are formulas which is currently true but
@@ -239,37 +239,54 @@ abort_quosure_assign <- function(x) {
 #'
 #' @param x An object to convert. Either an [expression][is_expression] or a
 #'   formula.
-#' @param env The original context of the context expression.
+#' @param env The environment in which the expression should be
+#'   evaluated. Only used for symbols and calls. This should typically
+#'   be the environment in which the expression was created.
 #' @seealso [quo()], [is_quosure()]
 #' @export
 #' @examples
 #' # as_quosure() converts expressions or any R object to a validly
 #' # scoped quosure:
-#' as_quosure(quote(expr), base_env())
-#' as_quosure(10L, base_env())
+#' env <- env(var = "thing")
+#' as_quosure(quote(var), env)
 #'
 #'
-#' # Sometimes you get unscoped formulas because of quotation:
-#' f <- ~~expr
-#' inner_f <- f_rhs(f)
-#' str(inner_f)
+#' # The environment is ignored for formulas:
+#' as_quosure(~foo, env)
+#' as_quosure(~foo)
 #'
-#' # In that case testing for a scoped formula returns FALSE:
-#' is_formula(inner_f, scoped = TRUE)
-#'
-#' # With as_quosure() you ensure that this kind of unscoped formulas
-#' # will be granted a default environment:
-#' as_quosure(inner_f, base_env())
-as_quosure <- function(x, env = caller_env()) {
+#' # However you must supply it for symbols and calls:
+#' try(as_quosure(quote(var)))
+as_quosure <- function(x, env = NULL) {
   if (is_quosure(x)) {
-    x
-  } else if (is_bare_formula(x)) {
-    new_quosure(f_rhs(x), f_env(x) %||% env)
-  } else if (is_symbolic(x)) {
-    new_quosure(x, env)
-  } else {
-    new_quosure(x, empty_env())
+    return(x)
   }
+
+  if (is_bare_formula(x)) {
+    env <- f_env(x)
+    if (is_null(env)) {
+      abort(paste_line(
+        "The formula does not have an environment.",
+        "This is a quoted formula that was never evaluated."
+      ))
+    }
+
+    return(new_quosure(f_rhs(x), env))
+  }
+
+  if (is_symbolic(x)) {
+    if (is_null(env)) {
+      signal_soft_deprecated(paste_line(
+        "`as_quosure()` requires an explicit environment as of rlang 0.3.0.",
+        "Please supply `env`."
+      ))
+      env <- caller_env()
+    }
+
+    return(new_quosure(x, env))
+  }
+
+  new_quosure(x, empty_env())
 }
 #' @rdname as_quosure
 #' @param expr The expression wrapped by the quosure.

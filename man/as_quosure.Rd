@@ -5,7 +5,7 @@
 \alias{new_quosure}
 \title{Coerce object to quosure}
 \usage{
-as_quosure(x, env = caller_env())
+as_quosure(x, env = NULL)
 
 new_quosure(expr, env = caller_env())
 }
@@ -13,7 +13,9 @@ new_quosure(expr, env = caller_env())
 \item{x}{An object to convert. Either an \link[=is_expression]{expression} or a
 formula.}
 
-\item{env}{The original context of the context expression.}
+\item{env}{The environment in which the expression should be
+evaluated. Only used for symbols and calls. This should typically
+be the environment in which the expression was created.}
 
 \item{expr}{The expression wrapped by the quosure.}
 }
@@ -25,8 +27,8 @@ converts formulas and quosures and does not double-wrap.
 \section{Life cycle}{
 
 \itemize{
-\item Like the rest of the rlang package, \code{new_quosure()} and
-\code{as_quosure()} are maturing.
+\item \code{as_quosure()} now requires an explicit default environment for
+creating quosures from symbols and calls.
 \item \code{as_quosureish()} is deprecated as of rlang 0.2.0. This function
 assumes that quosures are formulas which is currently true but
 might not be in the future.
@@ -36,21 +38,16 @@ might not be in the future.
 \examples{
 # as_quosure() converts expressions or any R object to a validly
 # scoped quosure:
-as_quosure(quote(expr), base_env())
-as_quosure(10L, base_env())
+env <- env(var = "thing")
+as_quosure(quote(var), env)
 
 
-# Sometimes you get unscoped formulas because of quotation:
-f <- ~~expr
-inner_f <- f_rhs(f)
-str(inner_f)
+# The environment is ignored for formulas:
+as_quosure(~foo, env)
+as_quosure(~foo)
 
-# In that case testing for a scoped formula returns FALSE:
-is_formula(inner_f, scoped = TRUE)
-
-# With as_quosure() you ensure that this kind of unscoped formulas
-# will be granted a default environment:
-as_quosure(inner_f, base_env())
+# However you must supply it for symbols and calls:
+try(as_quosure(quote(var)))
 }
 \seealso{
 \code{\link[=quo]{quo()}}, \code{\link[=is_quosure]{is_quosure()}}
