@@ -187,6 +187,8 @@ upcase1 <- function(x) {
 #'   `new_double_along()`, `new_complex_along()`,
 #'   `new_character_along()`, `new_raw_along()`, `new_list_along()`.
 #'
+#' * `as.character()` on quosures.
+#'
 #'
 #' **Soft-deprecated as of rlang 0.2.0:**
 #'

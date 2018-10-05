@@ -234,7 +234,8 @@ test_that("can remove quosures by assigning NULL", {
 })
 
 test_that("can't cast a quosure to base types (#523)", {
-  expect_error(as.character(quo(foo)), "Can't cast")
+  expect_warning(as.character(quo(foo)), "`as.character\\(\\)` on a quosure")
+  expect_identical(as.character(quo(foo)), c("~", "foo"))
 })
 
 test_that("quosures fail with common operations (#478, tidyverse/dplyr#3476)", {

@@ -469,10 +469,11 @@ str.quosure <- function(object, ...) {
 
 #' @export
 as.character.quosure <- function(x, ...) {
-  abort(paste_line(
-    "Can't cast a quosure to a character vector.",
+  signal_soft_deprecated(paste_line(
+    "Using `as.character()` on a quosure is soft-deprecated as of rlang 0.3.0.",
     "Please use `quo_text()` intead."
   ))
+  NextMethod()
 }
 
 # Create a circular list of colours. This infloops if printed in the REPL!

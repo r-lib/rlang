@@ -128,6 +128,7 @@ like \code{quos()} is soft-deprecated.
 \item \code{new_logical_along()}, \code{new_integer_along()},
 \code{new_double_along()}, \code{new_complex_along()},
 \code{new_character_along()}, \code{new_raw_along()}, \code{new_list_along()}.
+\item \code{as.character()} on quosures.
 }
 
 \strong{Soft-deprecated as of rlang 0.2.0:}

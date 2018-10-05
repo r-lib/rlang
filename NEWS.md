@@ -186,7 +186,7 @@
 * The `inherit` argument of `env_get()` and `env_get_list()` has
   changed position. It now comes after `default`.
 
-* `as.character()` can no longer be used on quosures (#523).
+* Using `as.character()` on quosures is soft-deprecated (#523).
 
 * Passing environment wrappers like formulas or functions to `env_`
   functions is now soft-deprecated. This internal genericity was
