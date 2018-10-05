@@ -50,8 +50,8 @@ test_that("expr_label() truncates long calls", {
 test_that("name symbols, calls, and literals", {
   expect_identical(expr_name(quote(foo)), "foo")
   expect_identical(expr_name(quote(foo(bar))), "foo(bar)")
-  expect_identical(expr_name(1L), "1")
-  expect_identical(expr_name("foo"), "foo")
+  expect_identical(expr_name(1L), "1L")
+  expect_identical(expr_name("foo"), "\"foo\"")
   expect_identical(expr_name(function() NULL), "function () ...")
   expect_identical(expr_name(expr(function() { a; b })), "function() ...")
   expect_identical(expr_name(1:2), "<int>")

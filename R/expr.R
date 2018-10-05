@@ -171,10 +171,7 @@ expr_name <- function(expr) {
         name
       }
     },
-    if (is_scalar_atomic(expr)) {
-      # So 1L is translated to "1" and not "1L"
-      as.character(expr)
-    } else if (length(expr) == 1) {
+    if (length(expr) == 1) {
       name <- expr_text(expr)
       name <- gsub("\n.*$", "...", name)
       name
