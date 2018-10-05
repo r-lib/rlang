@@ -191,7 +191,7 @@ sexp* rlang_data_pronoun_get(sexp* pronoun, sexp* sym) {
 }
 
 static void warn_env_as_mask_once() {
-  r_warn_deprecated("environment passed to rlang::as_data_mask()",
+  const char* msg =
     "Passing an environment as data mask is deprecated.\n"
     "Please use `new_data_mask()` to transform your environment to a mask.\n"
     "\n"
@@ -203,8 +203,8 @@ static void warn_env_as_mask_once() {
     "\n"
     "  # Good:\n"
     "  mask <- new_data_mask(env)\n"
-    "  eval_tidy(expr, mask)\n"
-  );
+    "  eval_tidy(expr, mask)";
+  r_signal_soft_deprecated(msg, msg, "rlang", r_empty_env);
 }
 
 static sexp* data_pronoun_sym = NULL;

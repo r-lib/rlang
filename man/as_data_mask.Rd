@@ -133,7 +133,7 @@ bottom and top environment of the data mask.
 
 \strong{rlang 0.3.0}
 
-Passing environments to \code{as_data_mask()} is deprecated. Please
+Passing environments to \code{as_data_mask()} is soft-deprecated. Please
 build a data mask with \code{new_data_mask()}.
 
 The \code{parent} argument no longer has any effect. The parent of the
