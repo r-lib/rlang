@@ -5,7 +5,7 @@
   changed from `NULL` to `zap()`. This breaking change is motivated
   by the ambiguity of `NULL` with valid argument values.
 
-* `zap()` and `zaps()` create sentinels to instruct functions like
+* `zap()` returns a sentinel that instructs functions like
   `env_bind()` or `call_modify()` that objects are to be removed.
 
 * `rep_named()` repeats value along a character vector of names.

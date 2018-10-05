@@ -75,8 +75,9 @@
 #' env_bind(current_env(), foo = zap())
 #' try(foo)
 #'
-#' # Unquote-splice a named list with zaps()
-#' env_bind(current_env(), !!!zaps(c("foo", "bar")))
+#' # Unquote-splice a named list of zaps
+#' zaps <- rep_named(c("foo", "bar"), list(zap()))
+#' env_bind(current_env(), !!!zaps)
 #' try(bar)
 #'
 #' # It is most useful to change other environments:

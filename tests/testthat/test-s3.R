@@ -78,11 +78,3 @@ test_that("zap() creates a zap", {
   expect_is(zap(), "rlang_zap")
   expect_true(is_zap(zap()))
 })
-
-test_that("zaps() create many zaps", {
-  expect_identical(zaps(2), list(zap(), zap()))
-  expect_identical(zaps(c("foo", "bar")), list(foo = zap(), bar = zap()))
-  expect_true(every(zaps(2), is_zap))
-  expect_error(zaps(1:2), "must be a length or a character vector of names")
-  expect_error(zaps(env()), "must be a length or a character vector of names")
-})

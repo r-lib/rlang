@@ -386,7 +386,7 @@ call_print_type <- function(call) {
 #' call
 #'
 #' # Remove multiple arguments by splicing zaps:
-#' newargs <- zaps(c("na.rm", "trim"))
+#' newargs <- rep_named(c("na.rm", "trim"), list(zap()))
 #' call <- call_modify(call, !!!newargs)
 #' call
 #'

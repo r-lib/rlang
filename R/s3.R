@@ -154,9 +154,6 @@ print.box <- function(x, ...) {
 #' [missing_arg()] are ambiguous because they represent valid R
 #' objects.
 #'
-#' @param n Either the length of the zap list, or a character vector
-#'   of names for the zaps. In the latter case, the length of the list
-#'   is deduced from the length of the character vector.
 #' @param x An object to test.
 #'
 #' @export
@@ -165,24 +162,10 @@ print.box <- function(x, ...) {
 #' zap()
 #'
 #' # Create a list of zaps:
-#' zaps(2)
-#' zaps(letters[1:3])
+#' rep(list(zap()), 3)
+#' rep_named(c("foo", "bar"), list(zap()))
 zap <- function() {
   `zap!`
-}
-#' @rdname zap
-#' @export
-zaps <- function(n) {
-  if (is_integerish(n, 1L)) {
-    return(rep_len(list(`zap!`), n))
-  }
-
-  if (is_character(n)) {
-    zaps <- rep_len(list(`zap!`), length(n))
-    return(set_names(zaps, n))
-  }
-
-  abort("`n` must be a length or a character vector of names")
 }
 #' @rdname zap
 #' @export

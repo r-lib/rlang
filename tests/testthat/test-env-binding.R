@@ -258,7 +258,7 @@ test_that("can remove bindings by supplying zaps", {
   expect_identical(env_names(env), chr())
 
   env <- env(foo = "foo", bar = "bar")
-  env_bind(env, !!!zaps(c("foo", "bar")))
+  env_bind(env, !!!rep_named(c("foo", "bar"), list(zap())))
   expect_identical(env_names(env), chr())
 
   env <- env(foo = "foo", bar = "bar")
@@ -268,7 +268,7 @@ test_that("can remove bindings by supplying zaps", {
   env_bind_promise(env, bar = !!zap())
   expect_identical(env_names(env), chr())
 
-  env_bind(current_env(), !!!zaps(c("foo", "bar")))
+  env_bind(current_env(), !!!rep_named(c("foo", "bar"), list(zap())))
 })
 
 test_that("env_bind_promise() supports quosures", {

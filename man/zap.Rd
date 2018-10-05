@@ -2,21 +2,14 @@
 % Please edit documentation in R/s3.R
 \name{zap}
 \alias{zap}
-\alias{zaps}
 \alias{is_zap}
 \title{Create zap objects}
 \usage{
 zap()
 
-zaps(n)
-
 is_zap(x)
 }
 \arguments{
-\item{n}{Either the length of the zap list, or a character vector
-of names for the zaps. In the latter case, the length of the list
-is deduced from the length of the character vector.}
-
 \item{x}{An object to test.}
 }
 \description{
@@ -35,6 +28,6 @@ objects.
 zap()
 
 # Create a list of zaps:
-zaps(2)
-zaps(letters[1:3])
+rep(list(zap()), 3)
+rep_named(c("foo", "bar"), list(zap()))
 }

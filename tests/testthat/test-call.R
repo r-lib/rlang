@@ -87,7 +87,7 @@ test_that("allows duplicated arguments (#398)", {
 
 test_that("zaps remove arguments", {
   expect_identical(call_modify(quote(foo(bar = )), bar = zap()), quote(foo()))
-  expect_identical_(call_modify(quote(foo(bar = , baz = )), !!!zaps(c("foo", "bar", "baz"))), quote(foo()))
+  expect_identical_(call_modify(quote(foo(bar = , baz = )), !!!rep_named(c("foo", "bar", "baz"), list(zap()))), quote(foo()))
 })
 
 test_that("can remove unexisting arguments (#393)", {
