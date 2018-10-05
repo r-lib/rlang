@@ -123,3 +123,10 @@ test_that("vector _along() ctors pick up names", {
   expect_identical(new_raw_along(x, toupper), set_names(raw(2), c("A", "B")))
   expect_identical(new_list_along(x, toupper), list(A = NULL, B = NULL))
 })
+
+test_that("rep_named() repeats along names", {
+  expect_error(rep_named(1, list(1)), "must be `NULL` or a character vector")
+  expect_identical(rep_named(NULL, list(1)), named_list())
+  expect_identical(rep_named(chr(), list(1)), named_list())
+  expect_identical(rep_named(c("foo", "bar"), list(1)), list(foo = 1, bar = 1))
+})

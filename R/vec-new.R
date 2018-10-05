@@ -191,9 +191,9 @@ new_list <- function(n, names = NULL) {
 #'
 #' @param x,.x A vector.
 #' @param .y Values to repeat.
-#' @param names Names for the new vector. Defaults to the names of
-#'   `x`. This can be a function to apply to the names of `x` as in
-#'   [set_names()].
+#' @param names Names for the new vector. For `new_` functions,
+#'   defaults to the names of `x` and can be a function to apply to
+#'   the names of `x`. See [set_names()].
 #' @examples
 #' x <- 0:5
 #' rep_along(x, 1:2)
@@ -203,6 +203,9 @@ new_list <- function(n, names = NULL) {
 #' # The default names are picked up from the input vector
 #' x <- c(a = "foo", b = "bar")
 #' new_character_along(x)
+#'
+#' # rep_named() repeats a value along a names vectors
+#' rep_named(c("foo", "bar"), list(letters))
 #' @name new-vector-along
 #' @seealso new-vector
 NULL
@@ -247,4 +250,14 @@ new_list_along <- function(x, names = base::names(x)) {
 #' @rdname new-vector-along
 rep_along <- function(.x, .y) {
   rep(.y, length.out = length(.x))
+}
+#' @export
+#' @rdname new-vector-along
+rep_named <- function(names, x) {
+  names <- names %||% chr()
+  if (!is_character(names)) {
+    abort("`names` must be `NULL` or a character vector")
+  }
+
+  set_names(rep_len(x, length(names)), names)
 }

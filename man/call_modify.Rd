@@ -13,7 +13,7 @@ right-hand side, or a frame object from which to extract the call
 expression.}
 
 \item{...}{Named or unnamed expressions (constants, names or calls)
-used to modify the call. Use \code{NULL} to remove arguments. These
+used to modify the call. Use \code{\link[=zap]{zap()}} to remove arguments. These
 dots support \link[=tidy-dots]{tidy dots} features. Empty arguments are
 allowed and preserved.}
 
@@ -37,6 +37,11 @@ modifying the call.
 \section{Life cycle}{
 
 \itemize{
+\item Prior to rlang 0.3.0, \code{NULL} was the sentinel for removing
+arguments. As of 0.3.0, \code{\link[=zap]{zap()}} objects remove arguments and
+\code{NULL} simply adds an argument set to \code{NULL}. This breaking
+change allows the deletion sentinel to be distinct from valid
+argument values.
 \item The \code{.standardise} argument is soft-deprecated as of rlang 0.3.0.
 \item In rlang 0.2.0, \code{lang_modify()} was soft-deprecated and renamed to
 \code{call_modify()}. See lifecycle section in \code{\link[=call2]{call2()}} for more about
@@ -52,7 +57,7 @@ call_modify(call, na.rm = FALSE)
 call_modify(call, x = quote(y))
 
 # Remove an argument
-call_modify(call, na.rm = NULL)
+call_modify(call, na.rm = zap())
 
 # Add a new argument
 call_modify(call, trim = 0.1)
@@ -62,12 +67,21 @@ call_modify(call, na.rm = )
 
 # Supply a list of new arguments with `!!!`
 newargs <- list(na.rm = NULL, trim = 0.1)
-call_modify(call, !!!newargs)
+call <- call_modify(call, !!!newargs)
+call
+
+# Remove multiple arguments by splicing zaps:
+newargs <- rep_named(c("na.rm", "trim"), list(zap()))
+call <- call_modify(call, !!!newargs)
+call
 
 
 # Modify the `...` arguments as if it were a named argument:
-call_modify(call, ... = )
-call_modify(quote(foo(...)), ... = NULL)
+call <- call_modify(call, ... = )
+call
+
+call <- call_modify(call, ... = zap())
+call
 
 
 # When you're working with a user-supplied call, standardise it

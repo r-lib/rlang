@@ -73,3 +73,8 @@ test_that("as_box_if() ensures boxed value if predicate returns TRUE", {
 test_that("unboxing a non-boxed value is an error", {
   expect_error(unbox(NULL), "must be a box")
 })
+
+test_that("zap() creates a zap", {
+  expect_is(zap(), "rlang_zap")
+  expect_true(is_zap(zap()))
+})

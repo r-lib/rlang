@@ -23,7 +23,7 @@ lang_args_names(lang)
 }
 \arguments{
 \item{...}{Named or unnamed expressions (constants, names or calls)
-used to modify the call. Use \code{NULL} to remove arguments. These
+used to modify the call. Use \code{\link[=zap]{zap()}} to remove arguments. These
 dots support \link[=tidy-dots]{tidy dots} features. Empty arguments are
 allowed and preserved.}
 

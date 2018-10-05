@@ -342,13 +342,19 @@ call_print_type <- function(call) {
 #'   right-hand side, or a frame object from which to extract the call
 #'   expression.
 #' @param ... Named or unnamed expressions (constants, names or calls)
-#'   used to modify the call. Use `NULL` to remove arguments. These
+#'   used to modify the call. Use [zap()] to remove arguments. These
 #'   dots support [tidy dots][tidy-dots] features. Empty arguments are
 #'   allowed and preserved.
 #' @param .standardise,.env Soft-deprecated as of rlang 0.3.0. Please
 #'   call [call_standardise()] manually.
 #'
 #' @section Life cycle:
+#'
+#' * Prior to rlang 0.3.0, `NULL` was the sentinel for removing
+#'   arguments. As of 0.3.0, [zap()] objects remove arguments and
+#'   `NULL` simply adds an argument set to `NULL`. This breaking
+#'   change allows the deletion sentinel to be distinct from valid
+#'   argument values.
 #'
 #' * The `.standardise` argument is soft-deprecated as of rlang 0.3.0.
 #'
@@ -366,7 +372,7 @@ call_print_type <- function(call) {
 #' call_modify(call, x = quote(y))
 #'
 #' # Remove an argument
-#' call_modify(call, na.rm = NULL)
+#' call_modify(call, na.rm = zap())
 #'
 #' # Add a new argument
 #' call_modify(call, trim = 0.1)
@@ -376,12 +382,21 @@ call_print_type <- function(call) {
 #'
 #' # Supply a list of new arguments with `!!!`
 #' newargs <- list(na.rm = NULL, trim = 0.1)
-#' call_modify(call, !!!newargs)
+#' call <- call_modify(call, !!!newargs)
+#' call
+#'
+#' # Remove multiple arguments by splicing zaps:
+#' newargs <- rep_named(c("na.rm", "trim"), list(zap()))
+#' call <- call_modify(call, !!!newargs)
+#' call
 #'
 #'
 #' # Modify the `...` arguments as if it were a named argument:
-#' call_modify(call, ... = )
-#' call_modify(quote(foo(...)), ... = NULL)
+#' call <- call_modify(call, ... = )
+#' call
+#'
+#' call <- call_modify(call, ... = zap())
+#' call
 #'
 #'
 #' # When you're working with a user-supplied call, standardise it
@@ -445,8 +460,8 @@ call_modify <- function(.call,
     arg <- named_args[[i]]
 
     if (identical(tag, dots_sym)) {
-      if (!is_missing(arg) && !is_null(arg)) {
-        abort("`...` arguments must be NULL or empty")
+      if (!is_missing(arg) && !is_zap(arg)) {
+        abort("`...` arguments must be `zap()` or empty")
       }
       node_accessor <- node_car
     } else {
@@ -458,8 +473,8 @@ call_modify <- function(.call,
 
     while (!is_null(node)) {
       if (identical(node_accessor(node), tag)) {
-        # Remove argument from the list if `NULL`
-        if (is_null(maybe_missing(arg))) {
+        # Remove argument from the list if a zap sentinel
+        if (is_zap(maybe_missing(arg))) {
           node <- node_cdr(node)
           node_poke_cdr(prev, node)
           next
@@ -478,7 +493,7 @@ call_modify <- function(.call,
       node <- node_cdr(node)
     }
 
-    if (is_null(node) && !is_null(maybe_missing(arg))) {
+    if (is_null(node) && !is_zap(maybe_missing(arg))) {
       if (identical(tag, dots_sym)) {
         node <- new_node(dots_sym, NULL)
         node_poke_cdr(prev, node)
@@ -491,8 +506,13 @@ call_modify <- function(.call,
   }
 
   if (any(!named)) {
-    remaining_args <- as.pairlist(args[!named])
-    expr <- node_append(expr, remaining_args)
+    remaining_args <- args[!named]
+
+    if (some(remaining_args, is_zap)) {
+      abort("Zap sentinels can't be unnamed")
+    }
+
+    expr <- node_append(expr, as.pairlist(remaining_args))
   }
 
   set_expr(.call, expr)

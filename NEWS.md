@@ -1,6 +1,15 @@
 
 # rlang 0.2.2.9000
 
+* The sentinel for removing arguments in `call_modify()` has been
+  changed from `NULL` to `zap()`. This breaking change is motivated
+  by the ambiguity of `NULL` with valid argument values.
+
+* `zap()` returns a sentinel that instructs functions like
+  `env_bind()` or `call_modify()` that objects are to be removed.
+
+* `rep_named()` repeats value along a character vector of names.
+
 * `as_quosure()` now requires an explicit environment for symbols and
   calls. This should typically be the environment in which the
   expression was created.
@@ -156,8 +165,10 @@
   env_bind(env, !!!old)
   ```
 
-* `env_bind()` now supports removing bindings with empty arguments.
-  `env_bind(env, foo = )` removes the `foo` binding.
+* `env_bind()` now supports binding missing arguments and removing
+  bindings with zap sentinels. `env_bind(env, foo = )` binds a missing
+  argument and `env_bind(env, foo = zap())` removes the `foo`
+  binding.
 
 * `dots_list()` gains a `.preserve_empty` argument. When `TRUE`, empty
   arguments are stored as missing arguments (see `?missing_arg`).

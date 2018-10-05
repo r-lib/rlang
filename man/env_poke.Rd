@@ -21,7 +21,8 @@ environments.}
 exist in the environment.}
 }
 \value{
-The old value of \code{nm} or the \link[=missing_arg]{missing argument} if it did not exist yet.
+The old value of \code{nm} or a \link[=zap]{zap sentinel} if the
+binding did not exist yet.
 }
 \description{
 \Sexpr[results=rd, stage=render]{rlang:::lifecycle("experimental")}

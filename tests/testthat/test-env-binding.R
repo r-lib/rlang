@@ -22,7 +22,7 @@ test_that("env_bind_active() creates active bindings", {
 
 test_that("env_poke() returns previous value", {
   env <- env(env(empty_env(), bar = "bar"))
-  expect_identical(env_poke(env, "foo", "foo"), missing_arg())
+  expect_identical(env_poke(env, "foo", "foo"), zap())
   expect_identical(env_poke(env, "foo", "FOO"), "foo")
   expect_identical(env_poke(env, "bar", "foo", inherit = TRUE), "bar")
 })
@@ -81,7 +81,7 @@ test_that("scoped_bindings binds temporarily", {
       bar = "BAR",
       baz = "BAZ"
     )
-    expect_identical(old, list3(foo = "foo", bar = "bar", baz = ))
+    expect_identical(old, list3(foo = "foo", bar = "bar", baz = zap()))
     temp_bindings <- env_get_list(env, c("foo", "bar", "baz"))
     expect_identical(temp_bindings, list(foo = "FOO", bar = "BAR", baz = "BAZ"))
   })
@@ -238,20 +238,37 @@ test_that("can call scoped_bindings() and with_bindings() without arguments", {
   expect_no_error(with_bindings("foo"))
 })
 
-test_that("can remove bindings by supplying empty arguments", {
+test_that("can bind missing args", {
+  e <- env()
+
+  expect_no_error(env_bind(e, foo = ))
+  expect_identical(e$foo, missing_arg())
+
+  args <- list(bar = expr(), baz = expr())
+  expect_no_error(env_bind(e, !!!args))
+  expect_identical(env_get_list(e, c("bar", "baz")), args)
+})
+
+test_that("can remove bindings by supplying zaps", {
   empty <- env()
-  expect_no_error(env_bind(empty, foo = ))
+  expect_no_error(env_bind(empty, foo = zap()))
 
   env <- env(foo = "foo", bar = "bar")
-  env_bind(env, foo = , bar = )
+  env_bind(env, foo = zap(), bar = zap())
   expect_identical(env_names(env), chr())
 
   env <- env(foo = "foo", bar = "bar")
-  env_bind_active(env, foo = )
+  env_bind(env, !!!rep_named(c("foo", "bar"), list(zap())))
+  expect_identical(env_names(env), chr())
+
+  env <- env(foo = "foo", bar = "bar")
+  env_bind_active(env, foo = zap())
   expect_identical(env_names(env), "bar")
 
-  env_bind_promise(env, bar = )
+  env_bind_promise(env, bar = !!zap())
   expect_identical(env_names(env), chr())
+
+  env_bind(current_env(), !!!rep_named(c("foo", "bar"), list(zap())))
 })
 
 test_that("env_bind_promise() supports quosures", {

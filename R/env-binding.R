@@ -71,9 +71,14 @@
 #' env_bind(current_env(), bar = "BAR")
 #' bar
 #'
-#' # You can remove bindings by supplying empty arguments:
-#' env_bind(current_env(), foo = , bar = )
+#' # You can remove bindings by supplying zap sentinels:
+#' env_bind(current_env(), foo = zap())
 #' try(foo)
+#'
+#' # Unquote-splice a named list of zaps
+#' zaps <- rep_named(c("foo", "bar"), list(zap()))
+#' env_bind(current_env(), !!!zaps)
+#' try(bar)
 #'
 #' # It is most useful to change other environments:
 #' my_env <- env()
@@ -125,7 +130,7 @@ env_bind_impl <- function(env, data, fn, bind = FALSE, binder = NULL) {
     old <- new_list_along(nms, nms)
     overwritten <- env_has(env_, nms)
     old[overwritten] <- env_get_list(env_, nms[overwritten])
-    old[!overwritten] <- list(missing_arg())
+    old[!overwritten] <- list(zap())
   }
 
   if (is_null(binder)) {
@@ -135,7 +140,7 @@ env_bind_impl <- function(env, data, fn, bind = FALSE, binder = NULL) {
   }
 
   for (i in seq_along(data)) {
-    if (bind && overwritten[[i]] && is_missing(data[[i]])) {
+    if (bind && overwritten[[i]] && is_zap(maybe_missing(data[[i]]))) {
       base::rm(list = nms[[i]], envir = env)
     } else {
       binder(env_, nms[[i]], data[[i]])
@@ -232,7 +237,7 @@ env_bind_promise <- function(.env, ..., .eval_env = caller_env()) {
 #' env$foo
 #' env$foo
 env_bind_active <- function(.env, ...) {
-  fns <- map_if(list3(...), negate(is_missing), as_function)
+  fns <- map_if(list3(...), negate(is_zap), as_function)
 
   existing <- env_names(.env)
   binder <- function(env, nm, value) {
@@ -490,8 +495,8 @@ env_get_list <- function(env = caller_env(), nms, default, inherit = FALSE) {
 #' @param value The value for a new binding.
 #' @param create Whether to create a binding if it does not already
 #'   exist in the environment.
-#' @return The old value of `nm` or the [missing
-#'   argument][missing_arg()] if it did not exist yet.
+#' @return The old value of `nm` or a [zap sentinel][zap] if the
+#'   binding did not exist yet.
 #'
 #' @keywords internal
 #' @export
@@ -499,7 +504,7 @@ env_poke <- function(env = caller_env(), nm, value,
                      inherit = FALSE, create = !inherit) {
   stopifnot(is_string(nm))
   env_ <- get_env_retired(env, "env_poke()")
-  old <- env_get(env_, nm, inherit = inherit, default = missing_arg())
+  old <- env_get(env_, nm, inherit = inherit, default = zap())
 
   if (inherit) {
     scope_poke(env_, nm, value, create)
