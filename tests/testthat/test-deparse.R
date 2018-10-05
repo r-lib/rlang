@@ -315,8 +315,9 @@ test_that("needs_backticks() detects non-syntactic symbols", {
   expect_false(needs_backticks(expr()))
 })
 
-test_that("expr_text() interprets unicode tags (#611)", {
-  expect_equal(expr_text(quote(`<U+006F>`)), "o")
+test_that("expr_text() and expr_name() interpret unicode tags (#611)", {
+  expect_identical(expr_text(quote(`<U+006F>`)), "o")
+  expect_identical(expr_name(quote(`~f<U+006F><U+006F>`)), "~foo")
 })
 
 test_that("expr_text() deparses non-syntactic symbols with backticks (#211)", {
@@ -329,7 +330,12 @@ test_that("expr_text() deparses empty arguments", {
   expect_identical(expr_text(expr()), "")
   expect_identical(quo_text(expr()), "")
   expect_identical(quo_text(quo()), "")
-  expect_identical(names(quos_auto_name(quos(, ))), "")
+})
+
+test_that("expr_name() deparses empty arguments", {
+  expect_identical(expr_name(expr()), "<empty>")
+  expect_identical(quo_name(quo()), "<empty>")
+  expect_identical(names(quos_auto_name(quos(, ))), "<empty>")
 })
 
 test_that("expr_deparse() handles newlines in strings (#484)", {
