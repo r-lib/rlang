@@ -65,6 +65,9 @@ is_double <- function(x, n = NULL, finite = NULL) {
 #' @export
 #' @rdname type-predicates
 is_character <- function(x, n = NULL, encoding = NULL) {
+  if (!is_null(encoding)) {
+    warn_deprecated("The `encoding` argument is deprecated as of rlang 0.3.0.")
+  }
   if (!.Call(rlang_is_character, x, n)) {
     return(FALSE)
   }
@@ -134,6 +137,9 @@ is_scalar_double <- function(x) {
 #' @export
 #' @rdname scalar-type-predicates
 is_scalar_character <- function(x, encoding = NULL) {
+  if (!is_null(encoding)) {
+    warn_deprecated("The `encoding` argument is deprecated as of rlang 0.3.0.")
+  }
   is_character(x, encoding = encoding, n = 1L)
 }
 #' @export
@@ -149,6 +155,9 @@ is_scalar_raw <- function(x) {
 #' @export
 #' @rdname scalar-type-predicates
 is_string <- function(x, encoding = NULL) {
+  if (!is_null(encoding)) {
+    warn_deprecated("The `encoding` argument is deprecated as of rlang 0.3.0.")
+  }
   is_character(x, encoding = encoding, n = 1L) && !is.na(x)
 }
 #' @export
@@ -208,6 +217,9 @@ is_bare_numeric <- function(x, n = NULL) {
 #' @export
 #' @rdname bare-type-predicates
 is_bare_character <- function(x, n = NULL, encoding = NULL) {
+  if (!is_null(encoding)) {
+    warn_deprecated("The `encoding` argument is deprecated as of rlang 0.3.0.")
+  }
   !is.object(x) && is_character(x, n, encoding = encoding)
 }
 #' @export

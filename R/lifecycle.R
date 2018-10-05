@@ -230,6 +230,9 @@ upcase1 <- function(x) {
 #'
 #' * `length()` and `names()` on tidy eval `.data` pronouns.
 #'
+#' * [is_character()], [is_string()], and variants: The `encoding`
+#'   argument.
+#'
 #'
 #' @section Defunct functions and arguments:
 #'

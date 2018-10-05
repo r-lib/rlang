@@ -17,16 +17,6 @@ test_that("can bypass string serialisation", {
   expect_identical(str_encoding(bar[[2]]), "latin1")
 })
 
-test_that("pattern match on string encoding", {
-  expect_true(is_character(letters, encoding = "unknown"))
-  expect_false(is_character(letters, encoding = "UTF-8"))
-
-  chr <- chr(c("foo", "fo\uE9"))
-  expect_false(is_character(chr, encoding = "UTF-8"))
-  expect_false(is_character(chr, encoding = "unknown"))
-  expect_true(is_character(chr, encoding = c("unknown", "UTF-8")))
-})
-
 test_that("type_of() returns correct type", {
   expect_identical(type_of("foo"), "string")
   expect_identical(type_of(letters), "character")

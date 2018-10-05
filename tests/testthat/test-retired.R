@@ -482,3 +482,13 @@ test_that("names() and length() still work on data pronouns", {
   expect_true(all(names(pronoun) %in% names(mtcars)))
   expect_length(pronoun, length(mtcars))
 })
+
+test_that("pattern match on string encoding", {
+  expect_true(is_character(letters, encoding = "unknown"))
+  expect_false(is_character(letters, encoding = "UTF-8"))
+
+  chr <- chr(c("foo", "fo\uE9"))
+  expect_false(is_character(chr, encoding = "UTF-8"))
+  expect_false(is_character(chr, encoding = "unknown"))
+  expect_true(is_character(chr, encoding = c("unknown", "UTF-8")))
+})
