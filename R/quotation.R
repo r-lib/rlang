@@ -413,9 +413,7 @@ endots <- function(call,
 #'   argument and `width` as the second argument.
 #' @export
 exprs_auto_name <- function(exprs, width = NULL, printer = expr_name) {
-  if (is_installed("dplyr") &&
-        utils::packageVersion("dplyr") < "0.7.99" &&
-        is_reference(fn_env(printer), ns_env("dplyr"))) {
+  if (needs_compat && is_reference(fn_env(printer), ns_env("dplyr"))) {
     printer <- quo_name
   }
 
@@ -439,3 +437,7 @@ exprs_auto_name <- function(exprs, width = NULL, printer = expr_name) {
 quos_auto_name <- function(quos, width = NULL) {
   exprs_auto_name(quos, width = width, printer = quo_name)
 }
+
+delayedAssign("needs_compat", {
+  is_installed("dplyr") && utils::packageVersion("dplyr") <= "0.7.6"
+})
