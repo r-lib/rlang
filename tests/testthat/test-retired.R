@@ -492,3 +492,25 @@ test_that("pattern match on string encoding", {
   expect_false(is_character(chr, encoding = "unknown"))
   expect_true(is_character(chr, encoding = c("unknown", "UTF-8")))
 })
+
+test_that("vector _along() ctors pick up names", {
+  x <- list(a = NULL, b = NULL)
+  expect_identical(new_logical_along(x), c(a = NA, b = NA))
+  expect_identical(new_integer_along(x), c(a = na_int, b = na_int))
+  expect_identical(new_double_along(x), c(a = na_dbl, b = na_dbl))
+  expect_identical(new_complex_along(x), c(a = na_cpl, b = na_cpl))
+  expect_identical(new_character_along(x), c(a = na_chr, b = na_chr))
+  expect_identical(new_raw_along(x), set_names(raw(2), c("a", "b")))
+  expect_identical(new_list_along(x), list(a = NULL, b = NULL))
+})
+
+test_that("vector _along() ctors pick up names", {
+  x <- list(a = NULL, b = NULL)
+  expect_identical(new_logical_along(x, toupper), c(A = NA, B = NA))
+  expect_identical(new_integer_along(x, toupper), c(A = na_int, B = na_int))
+  expect_identical(new_double_along(x, toupper), c(A = na_dbl, B = na_dbl))
+  expect_identical(new_complex_along(x, toupper), c(A = na_cpl, B = na_cpl))
+  expect_identical(new_character_along(x, toupper), c(A = na_chr, B = na_chr))
+  expect_identical(new_raw_along(x, toupper), set_names(raw(2), c("A", "B")))
+  expect_identical(new_list_along(x, toupper), list(A = NULL, B = NULL))
+})

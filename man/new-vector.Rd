@@ -42,5 +42,5 @@ new_list(10)
 new_logical(10)
 }
 \seealso{
-new-vector-along
+rep_along
 }

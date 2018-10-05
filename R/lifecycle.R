@@ -183,6 +183,10 @@ upcase1 <- function(x) {
 #'
 #' * [call_modify()]: `.standardise` and `.env` arguments.
 #'
+#' * `new_logical_along()`, `new_integer_along()`,
+#'   `new_double_along()`, `new_complex_along()`,
+#'   `new_character_along()`, `new_raw_along()`, `new_list_along()`.
+#'
 #'
 #' **Soft-deprecated as of rlang 0.2.0:**
 #'

@@ -127,7 +127,7 @@ env_bind_impl <- function(env, data, fn, bind = FALSE, binder = NULL) {
   nms <- names2(data)
 
   if (bind) {
-    old <- new_list_along(nms, nms)
+    old <- new_list(length(nms), nms)
     overwritten <- env_has(env_, nms)
     old[overwritten] <- env_get_list(env_, nms[overwritten])
     old[!overwritten] <- list(zap())

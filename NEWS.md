@@ -1,6 +1,10 @@
 
 # rlang 0.2.2.9000
 
+* The `new_vector_along()` family is soft-deprecated because these
+  functions are longer to type than the equivalent `rep_along()` or
+  `rep_named()` calls without added clarity.
+
 * `is_integerish()` now supports large double values (#578).
 
 * The sentinel for removing arguments in `call_modify()` has been

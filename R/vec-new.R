@@ -143,7 +143,7 @@ list3 <- function(...) {
 #' new_list(10)
 #' new_logical(10)
 #' @name new-vector
-#' @seealso new-vector-along
+#' @seealso rep_along
 NULL
 
 #' @rdname new-vector
@@ -184,76 +184,33 @@ new_list <- function(n, names = NULL) {
 
 #' Create vectors matching the length of a given vector
 #'
-#' These functions take the idea of [seq_along()] and generalise it to
-#' creating lists (`new_list_along`) and repeating values (`rep_along`).
-#' Except for `new_list_along()` and `new_raw_along()`, the empty
-#' vectors are filled with typed `missing` values.
+#' These functions take the idea of [seq_along()] and apply it to
+#' repeating values.
 #'
 #' @param x Values to repeat.
 #' @param along Vector whose length determine how many times `x`
-#'   should be repeated.
-#' @param names Names for the new vector. For `new_` functions,
-#'   defaults to the names of `x` and can be a function to apply to
-#'   the names of `x`. See [set_names()].
+#'   is repeated.
+#' @param names Names for the new vector. The length of `names`
+#'   determines how many times `x` is repeated.
+#'
+#' @seealso new-vector
+#' @export
 #' @examples
 #' x <- 0:5
 #' rep_along(x, 1:2)
 #' rep_along(x, 1)
-#' new_list_along(x)
 #'
-#' # The default names are picked up from the input vector
-#' x <- c(a = "foo", b = "bar")
-#' new_character_along(x)
+#' # Create fresh vectors by repeating missing values:
+#' rep_along(x, na_int)
+#' rep_along(x, na_chr)
 #'
 #' # rep_named() repeats a value along a names vectors
 #' rep_named(c("foo", "bar"), list(letters))
-#' @name new-vector-along
-#' @seealso new-vector
-NULL
-
-#' @export
-#' @rdname new-vector-along
-new_logical_along <- function(x, names = base::names(x)) {
-  set_names_impl(rep_len(na_lgl, length(x)), x, names)
-}
-#' @export
-#' @rdname new-vector-along
-new_integer_along <- function(x, names = base::names(x)) {
-  set_names_impl(rep_len(na_int, length(x)), x, names)
-}
-#' @export
-#' @rdname new-vector-along
-new_double_along <- function(x, names = base::names(x)) {
-  set_names_impl(rep_len(na_dbl, length(x)), x, names)
-}
-#' @export
-#' @rdname new-vector-along
-new_character_along <- function(x, names = base::names(x)) {
-  set_names_impl(rep_len(na_chr, length(x)), x, names)
-}
-#' @export
-#' @rdname new-vector-along
-new_complex_along <- function(x, names = base::names(x)) {
-  set_names_impl(rep_len(na_cpl, length(x)), x, names)
-}
-#' @export
-#' @rdname new-vector-along
-new_raw_along <- function(x, names = base::names(x)) {
-  set_names_impl(vector("raw", length(x)), x, names)
-}
-#' @export
-#' @rdname new-vector-along
-new_list_along <- function(x, names = base::names(x)) {
-  set_names_impl(vector("list", length(x)), x, names)
-}
-
-#' @export
-#' @rdname new-vector-along
 rep_along <- function(along, x) {
   rep_len(x, length(along))
 }
 #' @export
-#' @rdname new-vector-along
+#' @rdname rep_along
 rep_named <- function(names, x) {
   names <- names %||% chr()
   if (!is_character(names)) {

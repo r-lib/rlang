@@ -1277,7 +1277,7 @@ scoped_names <- function() {
 #'
 #' @param .x A vector.
 #' @inheritParams new-vector
-#' @inheritParams new-vector-along
+#' @inheritParams new-vector-along-retired
 #' @name vector-old-ctors
 #' @keywords internal
 NULL
@@ -1358,74 +1358,117 @@ list_len <- function(.n) {
 #' @rdname vector-old-ctors
 #' @export
 lgl_along <- function(.x) {
-  signal_soft_deprecated(paste_line(
-    "`lgl_along()` is soft-deprecated as of rlang 0.2.0.",
-    "Please use `new_logical_along()` instead"
-  ))
+  signal_soft_deprecated("`lgl_along()` is soft-deprecated as of rlang 0.2.0.")
+  scoped_options(lifecycle_disable_verbose_retirement = TRUE)
   new_logical_along(.x, NULL)
 }
 #' @rdname vector-old-ctors
 #' @export
 int_along <- function(.x) {
-  signal_soft_deprecated(paste_line(
-    "`int_along()` is soft-deprecated as of rlang 0.2.0.",
-    "Please use `new_integer_along()` instead"
-  ))
+  signal_soft_deprecated("`int_along()` is soft-deprecated as of rlang 0.2.0.")
+  scoped_options(lifecycle_disable_verbose_retirement = TRUE)
   new_integer_along(.x, NULL)
 }
 #' @rdname vector-old-ctors
 #' @export
 dbl_along <- function(.x) {
-  signal_soft_deprecated(paste_line(
-    "`dbl_along()` is soft-deprecated as of rlang 0.2.0.",
-    "Please use `new_double_along()` instead"
-  ))
+  signal_soft_deprecated("`dbl_along()` is soft-deprecated as of rlang 0.2.0.")
+  scoped_options(lifecycle_disable_verbose_retirement = TRUE)
   new_double_along(.x, NULL)
 }
 #' @rdname vector-old-ctors
 #' @export
 chr_along <- function(.x) {
-  signal_soft_deprecated(paste_line(
-    "`chr_along()` is soft-deprecated as of rlang 0.2.0.",
-    "Please use `new_character_along()` instead"
-  ))
+  signal_soft_deprecated("`chr_along()` is soft-deprecated as of rlang 0.2.0.")
+  scoped_options(lifecycle_disable_verbose_retirement = TRUE)
   new_character_along(.x, NULL)
 }
 #' @rdname vector-old-ctors
 #' @export
 cpl_along <- function(.x) {
-  signal_soft_deprecated(paste_line(
-    "`cpl_along()` is soft-deprecated as of rlang 0.2.0.",
-    "Please use `new_complex_along()` instead"
-  ))
+  signal_soft_deprecated("`cpl_along()` is soft-deprecated as of rlang 0.2.0.")
+  scoped_options(lifecycle_disable_verbose_retirement = TRUE)
   new_complex_along(.x, NULL)
 }
 #' @rdname vector-old-ctors
 #' @export
 raw_along <- function(.x) {
-  signal_soft_deprecated(paste_line(
-    "`raw_along()` is soft-deprecated as of rlang 0.2.0.",
-    "Please use `new_raw_along()` instead"
-  ))
+  signal_soft_deprecated("`raw_along()` is soft-deprecated as of rlang 0.2.0.")
+  scoped_options(lifecycle_disable_verbose_retirement = TRUE)
   new_raw_along(.x, NULL)
 }
 #' @rdname vector-old-ctors
 #' @export
 bytes_along <- function(.x) {
-  signal_soft_deprecated(paste_line(
-    "`bytes_along()` is soft-deprecated as of rlang 0.2.0.",
-    "Please use `new_raw_along()` instead"
-  ))
+  signal_soft_deprecated("`bytes_along()` is soft-deprecated as of rlang 0.2.0.")
+  scoped_options(lifecycle_disable_verbose_retirement = TRUE)
   new_raw_along(.x, NULL)
 }
 #' @rdname vector-old-ctors
 #' @export
 list_along <- function(.x) {
-  signal_soft_deprecated(paste_line(
-    "`list_along()` is soft-deprecated as of rlang 0.2.0.",
-    "Please use `new_list_along()` instead"
-  ))
+  signal_soft_deprecated("`list_along()` is soft-deprecated as of rlang 0.2.0.")
+  scoped_options(lifecycle_disable_verbose_retirement = TRUE)
   new_list_along(.x, NULL)
+}
+
+#' Create vectors matching the length of a given vector
+#'
+#' These functions are soft-deprecated as of rlang 0.3.0 because they
+#' are longer to type than the equivalent [rep_along()] or
+#' [rep_named()] calls without added clarity.
+#'
+#' @param x A vector.
+#' @param names Names for the new vector.
+#' @name new-vector-along-retired
+
+#' @export
+#' @rdname new-vector-along-retired
+new_logical_along <- function(x, names = base::names(x)) {
+  signal_soft_deprecated_along("logical", "NA")
+  set_names_impl(rep_len(na_lgl, length(x)), x, names)
+}
+#' @export
+#' @rdname new-vector-along-retired
+new_integer_along <- function(x, names = base::names(x)) {
+  signal_soft_deprecated_along("integer", "na_int")
+  set_names_impl(rep_len(na_int, length(x)), x, names)
+}
+#' @export
+#' @rdname new-vector-along-retired
+new_double_along <- function(x, names = base::names(x)) {
+  signal_soft_deprecated_along("double", "na_dbl")
+  set_names_impl(rep_len(na_dbl, length(x)), x, names)
+}
+#' @export
+#' @rdname new-vector-along-retired
+new_character_along <- function(x, names = base::names(x)) {
+  signal_soft_deprecated_along("character", "na_chr")
+  set_names_impl(rep_len(na_chr, length(x)), x, names)
+}
+#' @export
+#' @rdname new-vector-along-retired
+new_complex_along <- function(x, names = base::names(x)) {
+  signal_soft_deprecated_along("complex", "na_cpl")
+  set_names_impl(rep_len(na_cpl, length(x)), x, names)
+}
+#' @export
+#' @rdname new-vector-along-retired
+new_raw_along <- function(x, names = base::names(x)) {
+  signal_soft_deprecated_along("raw", "new_raw(1)")
+  set_names_impl(vector("raw", length(x)), x, names)
+}
+#' @export
+#' @rdname new-vector-along-retired
+new_list_along <- function(x, names = base::names(x)) {
+  signal_soft_deprecated_along("list", "list(NULL)")
+  set_names_impl(vector("list", length(x)), x, names)
+}
+signal_soft_deprecated_along <- function(type, na, env = caller_env(2)) {
+  signal_soft_deprecated(env = env, paste_line(
+    sprintf("`new_%s_along()` is soft-deprecated as of rlang 0.3.0.", type),
+    sprintf("Please use `rep_along(x, %s)` or `rep_named(nms, %s)` instead.", na, na)
+  ))
 }
 
 

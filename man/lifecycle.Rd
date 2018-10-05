@@ -125,6 +125,9 @@ is used for deparsing instead of \code{\link[=quo_text]{quo_text()}}. For the sa
 reason, passing a width as \code{.named} argument of dots collectors
 like \code{quos()} is soft-deprecated.
 \item \code{\link[=call_modify]{call_modify()}}: \code{.standardise} and \code{.env} arguments.
+\item \code{new_logical_along()}, \code{new_integer_along()},
+\code{new_double_along()}, \code{new_complex_along()},
+\code{new_character_along()}, \code{new_raw_along()}, \code{new_list_along()}.
 }
 
 \strong{Soft-deprecated as of rlang 0.2.0:}
