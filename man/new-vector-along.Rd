@@ -27,18 +27,19 @@ new_raw_along(x, names = base::names(x))
 
 new_list_along(x, names = base::names(x))
 
-rep_along(.x, .y)
+rep_along(along, x)
 
 rep_named(names, x)
 }
 \arguments{
-\item{x, .x}{A vector.}
+\item{x}{Values to repeat.}
 
 \item{names}{Names for the new vector. For \code{new_} functions,
 defaults to the names of \code{x} and can be a function to apply to
 the names of \code{x}. See \code{\link[=set_names]{set_names()}}.}
 
-\item{.y}{Values to repeat.}
+\item{along}{Vector whose length determine how many times \code{x}
+should be repeated.}
 }
 \description{
 These functions take the idea of \code{\link[=seq_along]{seq_along()}} and generalise it to

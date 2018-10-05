@@ -189,8 +189,9 @@ new_list <- function(n, names = NULL) {
 #' Except for `new_list_along()` and `new_raw_along()`, the empty
 #' vectors are filled with typed `missing` values.
 #'
-#' @param x,.x A vector.
-#' @param .y Values to repeat.
+#' @param x Values to repeat.
+#' @param along Vector whose length determine how many times `x`
+#'   should be repeated.
 #' @param names Names for the new vector. For `new_` functions,
 #'   defaults to the names of `x` and can be a function to apply to
 #'   the names of `x`. See [set_names()].
@@ -248,8 +249,8 @@ new_list_along <- function(x, names = base::names(x)) {
 
 #' @export
 #' @rdname new-vector-along
-rep_along <- function(.x, .y) {
-  rep(.y, length.out = length(.x))
+rep_along <- function(along, x) {
+  rep_len(x, length(along))
 }
 #' @export
 #' @rdname new-vector-along

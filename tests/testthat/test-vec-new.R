@@ -130,3 +130,7 @@ test_that("rep_named() repeats along names", {
   expect_identical(rep_named(chr(), list(1)), named_list())
   expect_identical(rep_named(c("foo", "bar"), list(1)), list(foo = 1, bar = 1))
 })
+
+test_that("rep_along() reps along vector", {
+  expect_identical(rep_along(1:2, list(zap())), list(zap(), zap()))
+})

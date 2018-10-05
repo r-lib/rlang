@@ -1275,6 +1275,7 @@ scoped_names <- function() {
 #' in rlang 0.2.0. This is for consistency with other non-variadic
 #' object constructors.
 #'
+#' @param .x A vector.
 #' @inheritParams new-vector
 #' @inheritParams new-vector-along
 #' @name vector-old-ctors
