@@ -239,3 +239,11 @@ test_that("quosures fail with common operations (#478, tidyverse/dplyr#3476)", {
   expect_error(stats::median(q), "median\\(!!myquosure\\)")
   expect_error(stats::quantile(q), "quantile\\(!!myquosure\\)")
 })
+
+
+# Lifecycle ----------------------------------------------------------
+
+test_that("as_quosure() still provides default env", {
+  quo <- expect_warning(as_quosure(quote(foo)), "explicit environment")
+  expect_reference(quo_get_env(quo), current_env())
+})

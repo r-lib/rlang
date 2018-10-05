@@ -16,7 +16,9 @@ as_quosureish(x, env = caller_env())
 that is, has a valid environment attribute. If \code{NULL}, the scope
 is not inspected.}
 
-\item{env}{The original context of the context expression.}
+\item{env}{The environment in which the expression should be
+evaluated. Only used for symbols and calls. This should typically
+be the environment in which the expression was created.}
 }
 \description{
 \Sexpr[results=rd, stage=render]{rlang:::lifecycle("defunct")}

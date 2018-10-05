@@ -1,6 +1,10 @@
 
 # rlang 0.2.2.9000
 
+* `as_quosure()` now requires an explicit environment for symbols and
+  calls. This should typically be the environment in which the
+  expression was created.
+
 * `as_data_pronoun()` now accepts data masks. If the mask has multiple
   environments, all of these are looked up when subsetting the pronoun.
   Function objects stored in the mask are bypassed.
