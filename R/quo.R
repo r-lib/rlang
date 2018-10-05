@@ -203,7 +203,7 @@ print.quosures <- function(x, ...) {
 }
 #' @export
 `[[<-.quosures` <- function(x, i, value) {
-  if (!is_quosure(value)) {
+  if (!is_quosure(value) && !is_null(value)) {
     abort_quosure_assign(value)
   }
   NextMethod()
