@@ -193,6 +193,10 @@ c.quosures <- function(..., recursive = FALSE) {
 print.quosures <- function(x, ...) {
   print(unclass(x), ...)
 }
+#' @export
+as.list.quosures <- function(x, ...) {
+  unclass(x)
+}
 
 #' @export
 `[<-.quosures` <- function(x, i, value) {

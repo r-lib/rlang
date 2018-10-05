@@ -251,6 +251,10 @@ test_that("quosures fail with common operations (#478, tidyverse/dplyr#3476)", {
   expect_error(stats::quantile(q), "quantile\\(!!myquosure\\)")
 })
 
+test_that("can cast quosure lists to bare lists", {
+  expect_identical(as.list(quos(a)), named_list(quo(a)))
+})
+
 
 # Lifecycle ----------------------------------------------------------
 
