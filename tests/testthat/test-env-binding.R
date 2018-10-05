@@ -3,13 +3,13 @@ context("env-binding")
 test_that("promises are created", {
   env <- child_env(NULL)
 
-  env_bind_promise(env, foo = bar <- "bar")
+  env_bind_lazy(env, foo = bar <- "bar")
   expect_false(env_has(current_env(), "bar"))
 
   force(env$foo)
   expect_true(env_has(current_env(), "bar"))
 
-  env_bind_promise(env, stop = stop("forced"))
+  env_bind_lazy(env, stop = stop("forced"))
   expect_error(env$stop, "forced")
 })
 
@@ -56,7 +56,7 @@ test_that("env_poke() inherits from parents if `inherit` is TRUE", {
 
 test_that("env_get() evaluates promises and active bindings", {
   e <- env()
-  env_bind_promise(e, x = 1)
+  env_bind_lazy(e, x = 1)
   env_bind_active(e, y = function() 2)
 
   expect_equal(env_get(e, "x"), 1)
@@ -153,17 +153,17 @@ test_that("env_bind_active() uses as_function()", {
   expect_identical(foo, 5)
 })
 
-test_that("env_bind_active() and env_bind_promise() redefine bindings", {
+test_that("env_bind_active() and env_bind_lazy() redefine bindings", {
   env <- env(a = 1, b = 2)
   env_bind_active(env, a = ~"foo")
-  env_bind_promise(env, b = "bar")
+  env_bind_lazy(env, b = "bar")
   expect_identical(c(env$a, env$b), c("foo", "bar"))
 })
 
 test_that("binding predicates detect special bindings", {
   env <- env()
   env_bind_active(env, a = ~toupper("foo"))
-  env_bind_promise(env, b = toupper("foo"))
+  env_bind_lazy(env, b = toupper("foo"))
   env_bind(env, c = toupper("foo"), d = "irrelevant")
 
   expect_identical(env_binding_are_active(env, c("a", "b", "c")), c(a = TRUE, b = FALSE, c = FALSE))
@@ -180,7 +180,7 @@ test_that("binding predicates detect special bindings", {
 test_that("applies predicates to all bindings by default", {
   env <- env()
   env_bind_active(env, a = ~toupper("foo"))
-  env_bind_promise(env, b = toupper("foo"))
+  env_bind_lazy(env, b = toupper("foo"))
   env_bind(env, c = toupper("foo"))
   expect_identical(env_binding_are_active(env), c(a = TRUE, b = FALSE, c = FALSE))
   expect_identical(env_binding_are_promise(env), c(a = FALSE, b = TRUE, c = FALSE))
@@ -188,7 +188,7 @@ test_that("applies predicates to all bindings by default", {
 
 test_that("env_binding_are_active() doesn't force promises", {
   env <- env()
-  env_bind_promise(env, foo = stop("kaboom"))
+  env_bind_lazy(env, foo = stop("kaboom"))
   expect_no_error(env_binding_are_active(env))
   expect_identical(env_binding_are_promise(env), lgl(foo = TRUE))
   expect_identical(env_binding_are_promise(env), lgl(foo = TRUE))
@@ -197,7 +197,7 @@ test_that("env_binding_are_active() doesn't force promises", {
 test_that("env_binding_type_sum() detects types", {
   env <- env()
   env_bind_active(env, a = ~"foo")
-  env_bind_promise(env, b = identity("foo"))
+  env_bind_lazy(env, b = identity("foo"))
   env_bind(env,
     c = "foo",
     d = 1L,
@@ -265,13 +265,13 @@ test_that("can remove bindings by supplying zaps", {
   env_bind_active(env, foo = zap())
   expect_identical(env_names(env), "bar")
 
-  env_bind_promise(env, bar = !!zap())
+  env_bind_lazy(env, bar = !!zap())
   expect_identical(env_names(env), chr())
 
   env_bind(current_env(), !!!rep_named(c("foo", "bar"), list(zap())))
 })
 
-test_that("env_bind_promise() supports quosures", {
+test_that("env_bind_lazy() supports quosures", {
   env <- env()
   foo <- "foo"
 
@@ -280,7 +280,7 @@ test_that("env_bind_promise() supports quosures", {
     quo(paste(foo, "bar"))
   })
 
-  env_bind_promise(env, x = !!quo)
+  env_bind_lazy(env, x = !!quo)
   expect_identical(env$x, "quux bar")
 
   foo <- "FOO"
@@ -298,7 +298,7 @@ test_that("env_bind_active() supports quosures", {
   expect_identical(env$x, "FOO bar")
 })
 
-test_that("env_bind_promise() supports nested quosures", {
+test_that("env_bind_lazy() supports nested quosures", {
   env <- env()
 
   quo <- local({
@@ -307,7 +307,7 @@ test_that("env_bind_promise() supports nested quosures", {
     quo(paste(lhs, !!rhs))
   })
 
-  env_bind_promise(env, x = !!quo)
+  env_bind_lazy(env, x = !!quo)
   expect_identical(env$x, "quux hunoz")
 })
 

@@ -113,7 +113,7 @@ want to recommend restarts as a style of programming in R.
 \code{env_bind_fns()}. This internal genericity was causing confusion
 (see issue #427). You should now extract the environment
 separately before calling these functions.
-\item \code{env_bind_exprs()} => \code{\link[=env_bind_promise]{env_bind_promise()}}
+\item \code{env_bind_exprs()} => \code{\link[=env_bind_lazy]{env_bind_lazy()}}
 \item \code{env_bind_fns()} => \code{\link[=env_bind_active]{env_bind_active()}}
 \item \code{scoped_names()} => \code{\link[base:search]{base::search()}}
 \item \code{is_scoped()} => \code{\link[=is_attached]{is_attached()}}

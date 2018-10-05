@@ -22,7 +22,7 @@ evaluated when the symbols are forced.}
 \Sexpr[results=rd, stage=render]{rlang:::lifecycle("soft-deprecated")}
 
 As of rlang 0.3.0, \code{env_bind_exprs()} and \code{env_bind_fns()} have
-been renamed to \code{\link[=env_bind_promise]{env_bind_promise()}} and \code{\link[=env_bind_active]{env_bind_active()}} for
+been renamed to \code{\link[=env_bind_lazy]{env_bind_lazy()}} and \code{\link[=env_bind_active]{env_bind_active()}} for
 consistency.
 }
 \keyword{internal}

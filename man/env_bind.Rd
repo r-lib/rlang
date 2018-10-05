@@ -2,13 +2,13 @@
 % Please edit documentation in R/env-binding.R
 \name{env_bind}
 \alias{env_bind}
-\alias{env_bind_promise}
+\alias{env_bind_lazy}
 \alias{env_bind_active}
 \title{Bind symbols to objects in an environment}
 \usage{
 env_bind(.env, ...)
 
-env_bind_promise(.env, ..., .eval_env = caller_env())
+env_bind_lazy(.env, ..., .eval_env = caller_env())
 
 env_bind_active(.env, ...)
 }
@@ -47,7 +47,7 @@ that are not actually in scope in the dynamic environment where
 the active bindings are invoked. This allows creative solutions
 to difficult problems (see the implementations of \code{dplyr::do()}
 methods for an example).
-\item \code{env_bind_promise()} takes named \emph{expressions}. This is equivalent
+\item \code{env_bind_lazy()} takes named \emph{expressions}. This is equivalent
 to \code{\link[base:delayedAssign]{base::delayedAssign()}}. The arguments are captured with
 \code{\link[=exprs]{exprs()}} (and thus support call-splicing and unquoting) and
 assigned to symbols in \code{.env}. These expressions are not
@@ -125,9 +125,9 @@ old
 # old values back:
 env_bind(my_env, !!!old)
 
-# env_bind_promise() assigns expressions lazily:
+# env_bind_lazy() assigns expressions lazily:
 env <- env()
-env_bind_promise(env, name = { cat("forced!\\n"); "value" })
+env_bind_lazy(env, name = { cat("forced!\\n"); "value" })
 
 # Referring to the binding will cause evaluation:
 env$name
@@ -137,7 +137,7 @@ env$name
 
 # You can unquote expressions:
 expr <- quote(message("forced!"))
-env_bind_promise(env, name = !!expr)
+env_bind_lazy(env, name = !!expr)
 env$name
 
 
@@ -146,12 +146,12 @@ env$name
 # to it, even though the variable is bound in a different
 # environment:
 who <- "mickey"
-env_bind_promise(env, name = paste(who, "mouse"))
+env_bind_lazy(env, name = paste(who, "mouse"))
 env$name
 
 # You can specify another evaluation environment with `.eval_env`:
 eval_env <- env(who = "minnie")
-env_bind_promise(env, name = paste(who, "mouse"), .eval_env = eval_env)
+env_bind_lazy(env, name = paste(who, "mouse"), .eval_env = eval_env)
 env$name
 
 # Or by unquoting a quosure:
@@ -159,7 +159,7 @@ quo <- local({
   who <- "fievel"
   quo(paste(who, "mouse"))
 })
-env_bind_promise(env, name = !!quo)
+env_bind_lazy(env, name = !!quo)
 env$name
 
 # You can create active bindings with env_bind_active(). Active

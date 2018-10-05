@@ -167,7 +167,7 @@ upcase1 <- function(x) {
 #'   (see issue #427). You should now extract the environment
 #'   separately before calling these functions.
 #'
-#' * `env_bind_exprs()` => [env_bind_promise()]
+#' * `env_bind_exprs()` => [env_bind_lazy()]
 #' * `env_bind_fns()` => [env_bind_active()]
 #'
 #' * `scoped_names()` => [base::search()]

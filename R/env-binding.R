@@ -25,7 +25,7 @@
 #'   to difficult problems (see the implementations of `dplyr::do()`
 #'   methods for an example).
 #'
-#' - `env_bind_promise()` takes named _expressions_. This is equivalent
+#' - `env_bind_lazy()` takes named _expressions_. This is equivalent
 #'   to [base::delayedAssign()]. The arguments are captured with
 #'   [exprs()] (and thus support call-splicing and unquoting) and
 #'   assigned to symbols in `.env`. These expressions are not
@@ -160,9 +160,9 @@ env_bind_impl <- function(env, data, fn, bind = FALSE, binder = NULL) {
 #' @export
 #' @examples
 #'
-#' # env_bind_promise() assigns expressions lazily:
+#' # env_bind_lazy() assigns expressions lazily:
 #' env <- env()
-#' env_bind_promise(env, name = { cat("forced!\n"); "value" })
+#' env_bind_lazy(env, name = { cat("forced!\n"); "value" })
 #'
 #' # Referring to the binding will cause evaluation:
 #' env$name
@@ -172,7 +172,7 @@ env_bind_impl <- function(env, data, fn, bind = FALSE, binder = NULL) {
 #'
 #' # You can unquote expressions:
 #' expr <- quote(message("forced!"))
-#' env_bind_promise(env, name = !!expr)
+#' env_bind_lazy(env, name = !!expr)
 #' env$name
 #'
 #'
@@ -181,12 +181,12 @@ env_bind_impl <- function(env, data, fn, bind = FALSE, binder = NULL) {
 #' # to it, even though the variable is bound in a different
 #' # environment:
 #' who <- "mickey"
-#' env_bind_promise(env, name = paste(who, "mouse"))
+#' env_bind_lazy(env, name = paste(who, "mouse"))
 #' env$name
 #'
 #' # You can specify another evaluation environment with `.eval_env`:
 #' eval_env <- env(who = "minnie")
-#' env_bind_promise(env, name = paste(who, "mouse"), .eval_env = eval_env)
+#' env_bind_lazy(env, name = paste(who, "mouse"), .eval_env = eval_env)
 #' env$name
 #'
 #' # Or by unquoting a quosure:
@@ -194,9 +194,9 @@ env_bind_impl <- function(env, data, fn, bind = FALSE, binder = NULL) {
 #'   who <- "fievel"
 #'   quo(paste(who, "mouse"))
 #' })
-#' env_bind_promise(env, name = !!quo)
+#' env_bind_lazy(env, name = !!quo)
 #' env$name
-env_bind_promise <- function(.env, ..., .eval_env = caller_env()) {
+env_bind_lazy <- function(.env, ..., .eval_env = caller_env()) {
   exprs <- exprs(...)
   exprs <- map_if(exprs, is_quosure, function(quo) call2(as_function(quo)))
 
@@ -209,7 +209,7 @@ env_bind_promise <- function(.env, ..., .eval_env = caller_env()) {
     ))
   }
 
-  env_bind_impl(.env, exprs, "env_bind_promise()", TRUE, binder)
+  env_bind_impl(.env, exprs, "env_bind_lazy()", TRUE, binder)
 }
 #' @rdname env_bind
 #' @export

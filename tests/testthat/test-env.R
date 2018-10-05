@@ -252,7 +252,7 @@ test_that("env_print() has flexible input", {
 
 test_that("active and promise bindings are pretty-printed", {
   env <- env()
-  env_bind_promise(env, a = "foo")
+  env_bind_lazy(env, a = "foo")
   env_bind_active(env, b = ~"foo")
   expect_output(env_print(env), "a: <promise>.*b: <active>")
 })
@@ -355,7 +355,7 @@ test_that("env_clone() recreates active bindings", {
 test_that("env_clone() does not force promises", {
   skip("Failing")
   e <- env()
-  env_bind_promise(e, foo = abort("forced"))
+  env_bind_lazy(e, foo = abort("forced"))
   out <- env_clone(e)
   expect_error(out$foo, "forced")
 })
@@ -465,6 +465,6 @@ test_that("env API warns with non-environments", {
   expect_warning(env_has(~foo, "a"), "deprecated")
   expect_warning(env_get(~foo, "a"), "deprecated")
   expect_warning(env_names(~foo), "deprecated")
-  expect_warning(env_bind_promise(~foo, foo = list()), "deprecated")
+  expect_warning(env_bind_lazy(~foo, foo = list()), "deprecated")
   expect_warning(env_bind_active(~foo, a = function() "foo"), "deprecated")
 })
