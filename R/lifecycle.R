@@ -189,6 +189,8 @@ upcase1 <- function(x) {
 #'
 #' * `as.character()` on quosures.
 #'
+#' * Assigning non-quosure objects to quosure lists.
+#'
 #'
 #' **Soft-deprecated as of rlang 0.2.0:**
 #'

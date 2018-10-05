@@ -1,6 +1,10 @@
 
 # rlang 0.2.2.9000
 
+* Assigning non-quosure objects to quosure lists (as returned by
+  `quos()` and `enquos()`) is soft-deprecated. Please coerce to a bare
+  list with `as.list()` beforehand.
+
 * The `new_vector_along()` family is soft-deprecated because these
   functions are longer to type than the equivalent `rep_along()` or
   `rep_named()` calls without added clarity.

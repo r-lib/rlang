@@ -201,14 +201,14 @@ as.list.quosures <- function(x, ...) {
 #' @export
 `[<-.quosures` <- function(x, i, value) {
   if (idx <- detect_index(value, negate(is_quosure))) {
-    abort_quosure_assign(value[[idx]])
+    signal_quosure_assign(value[[idx]])
   }
   NextMethod()
 }
 #' @export
 `[[<-.quosures` <- function(x, i, value) {
   if (!is_quosure(value) && !is_null(value)) {
-    abort_quosure_assign(value)
+    signal_quosure_assign(value)
   }
   NextMethod()
 }
@@ -217,10 +217,11 @@ as.list.quosures <- function(x, ...) {
   x[[name]] <- value
   x
 }
-abort_quosure_assign <- function(x) {
-  type <- friendly_type_of(x)
-  msg <- sprintf("Can't assign %s to a list of quosures", type)
-  abort(msg)
+signal_quosure_assign <- function(x, env = caller_env(2)) {
+  signal_soft_deprecated(env = env, paste_line(
+    "Assigning non-quosure objects to quosure lists is soft-deprecated.",
+    "Please coerce to a bare list beforehand with `as.list()`"
+  ))
 }
 
 #' Coerce object to quosure
