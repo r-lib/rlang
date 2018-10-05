@@ -393,8 +393,21 @@ quo_text <- function(quo, width = 60L, nlines = Inf) {
 #' @rdname quo_label
 #' @export
 quo_name <- function(quo) {
-  expr_name(quo_squash(quo))
+  expr <- quo_squash(quo)
+  if (is_missing(expr)) {
+    return("<empty>")
+  }
+  if (quo_name_needs_compat &&
+        is_scalar_atomic(expr) &&
+        is_reference(env_parent(caller_env()), ns_env("tidyr"))) {
+    return(as.character(expr))
+  }
+  expr_name(expr)
 }
+# COMPAT: tidyr 0.8.1
+delayedAssign("quo_name_needs_compat", {
+  is_installed("tidyr") && utils::packageVersion("tidyr") <= "0.8.1"
+})
 
 quo_squash_impl <- function(x, parent = NULL, warn = FALSE) {
   switch_expr(x,

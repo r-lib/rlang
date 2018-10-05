@@ -438,6 +438,7 @@ quos_auto_name <- function(quos, width = NULL) {
   exprs_auto_name(quos, width = width, printer = quo_name)
 }
 
+# COMPAT: dplyr 0.7.6
 delayedAssign("needs_compat", {
   is_installed("dplyr") && utils::packageVersion("dplyr") <= "0.7.6"
 })
