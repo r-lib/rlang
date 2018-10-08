@@ -441,6 +441,11 @@ sexp* capturedots(sexp* frame);
 sexp* dots_expand(sexp* dots, struct dots_capture_info* capture_info) {
   sexp* dots_names = r_vec_names(dots);
 
+  sexp** dots_names_ptr = NULL;
+  if (dots_names != r_null) {
+    dots_names_ptr = r_chr_deref(dots_names);
+  }
+
   sexp* out = KEEP(r_new_vector(r_type_list, capture_info->count));
 
   // Add default empty names unless dots are captured by values
@@ -450,10 +455,16 @@ sexp* dots_expand(sexp* dots, struct dots_capture_info* capture_info) {
   }
 
   r_ssize n = r_length(dots);
-  for (r_ssize i = 0, count = 0; i < n; ++i) {
+  for (r_ssize i = 0, count = 0;
+       i < n;
+       ++i, dots_names_ptr ? ++dots_names_ptr : NULL) {
     sexp* elt = r_list_get(dots, i);
 
     if (is_spliced_dots(elt)) {
+      if (dots_names_ptr && *dots_names_ptr != r_empty_str) {
+        r_warn("`!!!` shouldn't be supplied with a name. Only the operand's names are retained.");
+      }
+
       sexp* names = r_vec_names(elt);
 
       // FIXME: Should be able to avoid conversion to list for node

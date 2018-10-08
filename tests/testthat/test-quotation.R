@@ -490,3 +490,9 @@ test_that("enexprs() and enquos() support empty dots", {
   expect_identical(myquos("trailing"), quos())
   expect_identical(myquos("all"), quos())
 })
+
+test_that("supplying `!!!` with a name warns", {
+  expect_no_warning_(quos(!!!1, 2, !!!NULL))
+  expect_warning_(out <- quos(foo = !!!1, 2, bar = !!!NULL), "Only the operand's names are retained")
+  expect_identical(out, quos(1, 2))
+})
