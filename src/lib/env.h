@@ -50,10 +50,10 @@ static inline sexp* r_env_find_anywhere(sexp* env, sexp* sym) {
 }
 
 static inline bool r_env_has(sexp* env, sexp* sym) {
-  return Rf_findVarInFrame3(env, sym, TRUE) != R_UnboundValue;
+  return r_env_find(env, sym) != r_unbound_sym;
 }
 static inline bool r_env_has_anywhere(sexp* env, sexp* sym) {
-  return Rf_findVar(sym, env) != R_UnboundValue;
+  return r_env_find_anywhere(env, sym) != r_unbound_sym;
 }
 
 static inline sexp* r_env_get(sexp* env, sexp* sym) {
