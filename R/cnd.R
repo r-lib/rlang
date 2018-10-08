@@ -835,14 +835,6 @@ signal_soft_deprecated <- function(msg,
     return(invisible(NULL))
   }
 
-  if (is_installed("testthat")) {
-    topenvs <- map(sys.frames(), topenv)
-    testthat_ns_env <- detect(topenvs, is_reference, ns_env("testthat"))
-    if (!is_null(testthat_ns_env)) {
-      return(invisible(NULL))
-    }
-  }
-
   if (package_attached(package, caller_env())) {
     warn_deprecated(msg, id)
     return(invisible(NULL))
