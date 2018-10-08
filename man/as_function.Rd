@@ -2,10 +2,13 @@
 % Please edit documentation in R/fn.R
 \name{as_function}
 \alias{as_function}
+\alias{is_lambda}
 \alias{as_closure}
 \title{Convert to function or closure}
 \usage{
 as_function(x, env = caller_env())
+
+is_lambda(x)
 
 as_closure(x, env = caller_env())
 }
@@ -16,7 +19,9 @@ If a \strong{function}, it is used as is.
 
 If a \strong{formula}, e.g. \code{~ .x + 2}, it is converted to a function
 with two arguments, \code{.x} or \code{.} and \code{.y}. This allows you to
-create very compact anonymous functions with up to two inputs.}
+create very compact anonymous functions with up to two inputs.
+Functions created from formulas have a special class. Use
+\code{is_lambda()} to test for it.}
 
 \item{env}{Environment in which to fetch the function in case \code{x}
 is a string.}
@@ -25,8 +30,8 @@ is a string.}
 \Sexpr[results=rd, stage=render]{rlang:::lifecycle("stable")}
 \itemize{
 \item \code{as_function()} transform objects to functions. It fetches
-functions by name if supplied a string or transforms
-\link[=quotation]{quosures} to a proper function.
+functions by name if supplied a string or transforms formulas to
+function.
 \item \code{as_closure()} first passes its argument to \code{as_function()}. If
 the result is a primitive function, it regularises it to a proper
 \link{closure} (see \code{\link[=is_function]{is_function()}} about primitive functions).
@@ -35,6 +40,10 @@ the result is a primitive function, it regularises it to a proper
 \examples{
 f <- as_function(~ . + 1)
 f(10)
+
+# Functions created from a formula have a special class:
+is_lambda(f)
+is_lambda(as_function(function() "foo"))
 
 # Primitive functions are regularised as closures
 as_closure(list)

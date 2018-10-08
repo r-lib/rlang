@@ -369,8 +369,8 @@ fn_env <- function(fn) {
 #' \Sexpr[results=rd, stage=render]{rlang:::lifecycle("stable")}
 #'
 #' * `as_function()` transform objects to functions. It fetches
-#'   functions by name if supplied a string or transforms
-#'   [quosures][quotation] to a proper function.
+#'   functions by name if supplied a string or transforms formulas to
+#'   function.
 #'
 #' * `as_closure()` first passes its argument to `as_function()`. If
 #'   the result is a primitive function, it regularises it to a proper
@@ -383,12 +383,18 @@ fn_env <- function(fn) {
 #'   If a **formula**, e.g. `~ .x + 2`, it is converted to a function
 #'   with two arguments, `.x` or `.` and `.y`. This allows you to
 #'   create very compact anonymous functions with up to two inputs.
+#'   Functions created from formulas have a special class. Use
+#'   `is_lambda()` to test for it.
 #' @param env Environment in which to fetch the function in case `x`
 #'   is a string.
 #' @export
 #' @examples
 #' f <- as_function(~ . + 1)
 #' f(10)
+#'
+#' # Functions created from a formula have a special class:
+#' is_lambda(f)
+#' is_lambda(as_function(function() "foo"))
 #'
 #' # Primitive functions are regularised as closures
 #' as_closure(list)
@@ -412,7 +418,8 @@ as_function <- function(x, env = caller_env()) {
         eval(expr(function(...) eval_tidy(!!x)))
       } else {
         args <- list(... = missing_arg(), .x = quote(..1), .y = quote(..2), . = quote(..1))
-        new_function(args, f_rhs(x), f_env(x))
+        fn <- new_function(args, f_rhs(x), f_env(x))
+        structure(fn, class = "rlang_lambda_function")
       }
     },
     string = {
@@ -420,6 +427,17 @@ as_function <- function(x, env = caller_env()) {
     }
   )
 }
+#' @export
+print.rlang_lambda_function <- function(x, ...) {
+  cat_line("<lambda>")
+  NextMethod()
+}
+#' @rdname as_function
+#' @export
+is_lambda <- function(x) {
+  inherits(x, "rlang_lambda_function")
+}
+
 #' @rdname as_function
 #' @export
 as_closure <- function(x, env = caller_env()) {
