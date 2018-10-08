@@ -816,7 +816,7 @@ overscope_eval_next <- function(overscope, quo, env = base_env()) {
 #' @export
 as_dictionary <- function(x, lookup_msg = NULL, read_only = FALSE) {
   abort_defunct(paste_line(
-    "`as_dictionary()` is soft-deprecated as of rlang 0.3.0.",
+    "`as_dictionary()` is defunct as of rlang 0.3.0.",
     "Please use `as_data_pronoun()` instead"
   ))
 }
