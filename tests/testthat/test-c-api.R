@@ -43,7 +43,7 @@ test_that("r_is_special_op_sym() detects special operators", {
   expect_false(is_special_op(quote(`%%`)))
 })
 
-test_that("r_base_ns_get() and r_env_get() fail if object does not exist", {
+test_that("r_base_ns_get() fail if object does not exist", {
   expect_error(.Call(rlang_test_base_ns_get, "foobar"))
 })
 

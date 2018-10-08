@@ -3,9 +3,6 @@
 
 sexp* rlang_env_get(sexp* env, sexp* nm) {
   sexp* sym = r_sym(r_chr_get_c_string(nm, 0));
-
-  // Use r_env_find() instead of r_env_get() because `nm` might
-  // reference a missing argument
   sexp* out = r_env_find(env, sym);
 
   // Trigger `symbol not found` error if needed

@@ -56,9 +56,6 @@ static inline bool r_env_has_anywhere(sexp* env, sexp* sym) {
   return r_env_find_anywhere(env, sym) != r_unbound_sym;
 }
 
-static inline sexp* r_env_get(sexp* env, sexp* sym) {
-  return Rf_eval(sym, env);
-}
 static inline sexp* r_env_poke(sexp* env, sexp* sym, sexp* value) {
   Rf_defineVar(sym, value, env);
   return env;
