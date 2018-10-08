@@ -334,8 +334,8 @@ test_that("expr_text() deparses empty arguments", {
 })
 
 test_that("expr_name() deparses empty arguments", {
-  expect_identical(expr_name(expr()), "<empty>")
-  expect_identical(quo_name(quo()), "<empty>")
+  expect_identical(expr_name(expr()), "")
+  expect_identical(quo_name(quo()), "")
   expect_identical(names(quos_auto_name(quos(, ))), "<empty>")
   expect_identical(label(expr()), "<empty>")
 })

@@ -156,12 +156,7 @@ expr_label <- function(expr) {
 expr_name <- function(expr) {
   switch_type(expr,
     NULL = "NULL",
-    symbol =
-      if (is_missing(expr)) {
-        "<empty>"
-      } else {
-        as_string(expr)
-      },
+    symbol = as_string(expr),
     quosure = ,
     language =
       if (is_data_pronoun(expr)) {
