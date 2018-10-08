@@ -835,8 +835,25 @@ signal_soft_deprecated <- function(msg,
     return(invisible(NULL))
   }
 
+  if (is_installed("testthat")) {
+    topenvs <- map(sys.frames(), topenv)
+    testthat_ns_env <- detect(topenvs, is_reference, ns_env("testthat"))
+    if (!is_null(testthat_ns_env)) {
+      return(invisible(NULL))
+    }
+  }
+
+  if (package_attached(package, caller_env())) {
+    warn_deprecated(msg, id)
+    return(invisible(NULL))
+  }
+
+  signal(msg, "lifecycle_soft_deprecated")
+}
+
+package_attached <- function(package, env) {
   if (is_null(package)) {
-    top <- topenv(caller_env())
+    top <- topenv(env)
     if (!is_namespace(top)) {
       abort("`signal_soft_deprecated()` must be called from a package function")
     }
@@ -845,14 +862,7 @@ signal_soft_deprecated <- function(msg,
     stopifnot(is_string(package))
   }
 
-  package <- paste0("package:", package)
-
-  if (package %in% search()) {
-    warn_deprecated(msg, id)
-    return(invisible(NULL))
-  }
-
-  signal(msg, "lifecycle_soft_deprecated")
+  pkg_env_name(package) %in% search()
 }
 
 warn_deprecated <- function(msg, id = msg) {

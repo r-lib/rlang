@@ -241,14 +241,8 @@ test_that("summary.rlang_error() prints full backtrace", {
 })
 
 test_that("signal_soft_deprecated() warns when package is attached", {
-  retired <- function(pkg, id) signal_soft_deprecated("foo", id, package = pkg)
-
-  with_options(lifecycle_force_verbose_retirement = FALSE, {
-    locally({
-      expect_warning(retired("utils", "rlang_test1"), "foo")
-      expect_no_warning(retired("not-attached", "rlang_test2"), "foo")
-    })
-  })
+  expect_true(package_attached("utils", env()))
+  expect_false(package_attached("not-attached", env()))
 })
 
 test_that("signal_soft_deprecated() warns when called from global env", {
