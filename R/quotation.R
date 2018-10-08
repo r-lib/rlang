@@ -425,11 +425,10 @@ exprs_auto_name <- function(exprs, width = NULL, printer = NULL) {
       "The `printer` argument is soft-deprecated as of rlang 0.3.0."
     ))
   }
-  printer <- quo_name
 
   have_name <- have_name(exprs)
   if (any(!have_name)) {
-    nms <- map_chr(exprs[!have_name], printer)
+    nms <- map_chr(exprs[!have_name], label)
     names(exprs)[!have_name] <- nms
   }
 

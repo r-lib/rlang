@@ -318,6 +318,7 @@ test_that("needs_backticks() detects non-syntactic symbols", {
 test_that("expr_text() and expr_name() interpret unicode tags (#611)", {
   expect_identical(expr_text(quote(`<U+006F>`)), "o")
   expect_identical(expr_name(quote(`~f<U+006F><U+006F>`)), "~foo")
+  expect_identical(label(quote(`~f<U+006F><U+006F>`)), "~foo")
 })
 
 test_that("expr_text() deparses non-syntactic symbols with backticks (#211)", {
@@ -336,6 +337,7 @@ test_that("expr_name() deparses empty arguments", {
   expect_identical(expr_name(expr()), "<empty>")
   expect_identical(quo_name(quo()), "<empty>")
   expect_identical(names(quos_auto_name(quos(, ))), "<empty>")
+  expect_identical(label(expr()), "<empty>")
 })
 
 test_that("expr_deparse() handles newlines in strings (#484)", {
@@ -360,7 +362,9 @@ test_that("expr_deparse() handles ANSI escapes in strings", {
   expect_identical(expr_deparse("\\0"), deparse("\\0"))
 })
 
-test_that("expr_name() handles .data pronoun", {
+test_that("label() and expr_name() handles .data pronoun", {
   expect_identical(expr_name(quote(.data[["bar"]])), "bar")
   expect_identical(quo_name(quo(.data[["bar"]])), "bar")
+  expect_identical(label(quote(.data[["bar"]])), "bar")
+  expect_identical(label(quo(.data[["bar"]])), "bar")
 })

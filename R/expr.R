@@ -154,7 +154,7 @@ expr_label <- function(expr) {
 #' @rdname expr_label
 #' @export
 expr_name <- function(expr) {
-  switch(typeof(expr),
+  switch_type(expr,
     NULL = "NULL",
     symbol =
       if (is_missing(expr)) {
@@ -162,6 +162,37 @@ expr_name <- function(expr) {
       } else {
         as_string(expr)
       },
+    quosure = ,
+    language =
+      if (is_data_pronoun(expr)) {
+        data_pronoun_name(expr) %||% "<unknown>"
+      } else {
+        name <- deparse_one(expr)
+        name <- gsub("\n.*$", "...", name)
+        name
+      },
+    if (is_scalar_atomic(expr)) {
+      # So 1L is translated to "1" and not "1L"
+      as.character(expr)
+    } else if (length(expr) == 1) {
+      name <- expr_text(expr)
+      name <- gsub("\n.*$", "...", name)
+      name
+    } else {
+      abort("`expr` must quote a symbol, scalar, or call")
+    }
+  )
+}
+label <- function(expr) {
+  expr <- quo_squash(expr)
+
+  if (is_missing(expr)) {
+    return("<empty>")
+  }
+
+  switch(typeof(expr),
+    NULL = "NULL",
+    symbol = as_string(expr),
     language = {
       if (is_data_pronoun(expr)) {
         data_pronoun_name(expr) %||% "<unknown>"
