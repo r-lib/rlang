@@ -408,22 +408,26 @@ endots <- function(call,
 #'
 #' @param exprs A list of expressions.
 #' @param width Soft-deprecated. Maximum width of names.
-#' @param printer A function that takes an expression and converts it
-#'   to a string. This function must take an expression as the first
-#'   argument and `width` as the second argument.
+#' @param printer Soft-deprecated. A function that takes an expression
+#'   and converts it to a string. This function must take an
+#'   expression as the first argument and `width` as the second
+#'   argument.
 #' @export
-exprs_auto_name <- function(exprs, width = NULL, printer = expr_name) {
-  if (needs_compat && is_reference(fn_env(printer), ns_env("dplyr"))) {
-    printer <- quo_name
-  }
-
+exprs_auto_name <- function(exprs, width = NULL, printer = NULL) {
   if (!is_null(width)) {
     signal_soft_deprecated(env = empty_env(), paste_line(
       "The `width` argument is soft-deprecated as of rlang 0.3.0."
     ))
   }
-  have_name <- have_name(exprs)
 
+  if (!is_null(printer)) {
+    signal_soft_deprecated(env = empty_env(), paste_line(
+      "The `printer` argument is soft-deprecated as of rlang 0.3.0."
+    ))
+  }
+  printer <- quo_name
+
+  have_name <- have_name(exprs)
   if (any(!have_name)) {
     nms <- map_chr(exprs[!have_name], printer)
     names(exprs)[!have_name] <- nms
@@ -435,10 +439,5 @@ exprs_auto_name <- function(exprs, width = NULL, printer = expr_name) {
 #' @param quos A list of quosures.
 #' @export
 quos_auto_name <- function(quos, width = NULL) {
-  exprs_auto_name(quos, width = width, printer = quo_name)
+  exprs_auto_name(quos, width = width)
 }
-
-# COMPAT: dplyr 0.7.6
-delayedAssign("needs_compat", {
-  is_installed("dplyr") && utils::packageVersion("dplyr") <= "0.7.6"
-})

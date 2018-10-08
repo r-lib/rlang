@@ -5,7 +5,7 @@
 \alias{quos_auto_name}
 \title{Ensure that all elements of a list of expressions are named}
 \usage{
-exprs_auto_name(exprs, width = NULL, printer = expr_name)
+exprs_auto_name(exprs, width = NULL, printer = NULL)
 
 quos_auto_name(quos, width = NULL)
 }
@@ -14,9 +14,10 @@ quos_auto_name(quos, width = NULL)
 
 \item{width}{Soft-deprecated. Maximum width of names.}
 
-\item{printer}{A function that takes an expression and converts it
-to a string. This function must take an expression as the first
-argument and \code{width} as the second argument.}
+\item{printer}{Soft-deprecated. A function that takes an expression
+and converts it to a string. This function must take an
+expression as the first argument and \code{width} as the second
+argument.}
 
 \item{quos}{A list of quosures.}
 }

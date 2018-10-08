@@ -119,9 +119,8 @@ separately before calling these functions.
 \item \code{is_scoped()} => \code{\link[=is_attached]{is_attached()}}
 \item \code{scoped_env()} => \code{\link[=search_env]{search_env()}}
 \item \code{scoped_envs()} => \code{\link[=search_envs]{search_envs()}}
-\item The \code{width} argument of \code{\link[=exprs_auto_name]{exprs_auto_name()}} and
-\code{\link[=quos_auto_name]{quos_auto_name()}} no longer has any effect because \code{\link[=quo_name]{quo_name()}}
-is used for deparsing instead of \code{\link[=quo_text]{quo_text()}}. For the same
+\item The \code{width} and \code{printer} arguments of \code{\link[=exprs_auto_name]{exprs_auto_name()}} and
+\code{\link[=quos_auto_name]{quos_auto_name()}} no longer have any effect. For the same
 reason, passing a width as \code{.named} argument of dots collectors
 like \code{quos()} is soft-deprecated.
 \item \code{\link[=call_modify]{call_modify()}}: \code{.standardise} and \code{.env} arguments.
