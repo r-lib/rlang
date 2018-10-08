@@ -602,6 +602,7 @@ print.rlang_error <- function(x,
   }
 
   trace <- x$trace
+  simplify <- arg_match(simplify, c("collapse", "branch", "none"))
 
   if (!is_null(trace)) {
     cat_line("* Backtrace:")
@@ -623,13 +624,18 @@ print.rlang_error <- function(x,
       }
     }
 
-    simplify <- arg_match(simplify, c("collapse", "branch", "none"))
     trace_lines <- format(trace, ..., simplify = simplify)
     cat_line(red(trace_lines))
   }
 
   if (!is_null(x$parent)) {
     print(x$parent, ..., child = x, simplify = simplify, fields = fields)
+  }
+
+  # Recommend summary() for printing the full backtrace. Only do it
+  # after having printed all parent errors first.
+  if (simplify == "branch" && is_null(x$parent) && !is_null(trace)) {
+    cat_line(silver("Call `summary(rlang::last_error())` to see the full backtrace"))
   }
 
   invisible(x)

@@ -13,3 +13,4 @@
  ─f()
  ─g()
  ─h()
+Call `summary(rlang::last_error())` to see the full backtrace
