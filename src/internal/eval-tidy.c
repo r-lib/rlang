@@ -187,6 +187,7 @@ sexp* rlang_data_pronoun_get(sexp* pronoun, sexp* sym) {
     r_abort("Internal error: .data subsetting should have failed earlier");
   }
 
+  r_mark_shared(obj);
   return obj;
 }
 
