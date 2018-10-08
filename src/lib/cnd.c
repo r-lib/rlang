@@ -33,11 +33,12 @@ void r_warn(const char* fmt, ...) {
   FREE(1);
 }
 
+static sexp* err_call = NULL;
 void r_abort(const char* fmt, ...) {
   char buf[BUFSIZE];
   INTERP(buf, fmt, ...);
 
-  Rf_errorcall(r_null, buf);
+  r_eval_with_x(err_call, r_base_env, KEEP(r_chr(buf)));
 
   while (1); // No return
 }
@@ -259,6 +260,9 @@ void r_init_library_cnd() {
 
   wng_call = r_parse("warning(x, call. = FALSE)");
   r_mark_precious(wng_call);
+
+  err_call = r_parse("rlang::abort(x)");
+  r_mark_precious(err_call);
 
   wng_signal_call = r_parse("warning(x)");
   r_mark_precious(wng_signal_call);
