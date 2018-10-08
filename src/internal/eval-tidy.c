@@ -11,20 +11,29 @@ enum rlang_mask_type {
   RLANG_MASK_NONE
 };
 
-static enum rlang_mask_type mask_type(sexp* mask) {
+struct rlang_mask_info {
+  sexp* mask;
+  enum rlang_mask_type type;
+};
+
+static struct rlang_mask_info mask_info(sexp* mask) {
   if (r_typeof(mask) != r_type_environment) {
-    return RLANG_MASK_NONE;
+    return (struct rlang_mask_info) { r_null, RLANG_MASK_NONE };
   }
 
-  if (r_env_find(mask, data_mask_flag_sym) != r_unbound_sym) {
-    return RLANG_MASK_DATA;
+  sexp* flag;
+
+  flag = r_env_find(mask, data_mask_flag_sym);
+  if (flag != r_unbound_sym) {
+    return (struct rlang_mask_info) { flag, RLANG_MASK_DATA };
   }
 
-  if (r_env_find(mask, quo_mask_flag_sym) != r_unbound_sym) {
-    return RLANG_MASK_QUOSURE;
+  flag = r_env_find(mask, quo_mask_flag_sym);
+  if (flag != r_unbound_sym) {
+    return (struct rlang_mask_info) { flag, RLANG_MASK_QUOSURE };
   }
 
-  return RLANG_MASK_NONE;
+  return (struct rlang_mask_info) { r_null, RLANG_MASK_NONE };
 }
 
 
@@ -160,7 +169,7 @@ sexp* rlang_new_data_mask(sexp* bottom, sexp* top) {
 
 
 sexp* rlang_is_data_mask(sexp* env) {
-  return r_lgl(mask_type(env) == RLANG_MASK_DATA);
+  return r_lgl(mask_info(env).type == RLANG_MASK_DATA);
 }
 
 static sexp* mask_find(sexp* env, sexp* sym) {
@@ -231,7 +240,7 @@ static void warn_env_as_mask_once() {
 static sexp* data_pronoun_sym = NULL;
 
 sexp* rlang_as_data_mask(sexp* data) {
-  if (mask_type(data) == RLANG_MASK_DATA) {
+  if (mask_info(data).type == RLANG_MASK_DATA) {
     return data;
   }
   if (data == r_null) {
@@ -360,15 +369,15 @@ sexp* rlang_tilde_eval(sexp* tilde, sexp* current_frame, sexp* caller_frame) {
     r_abort("Internal error: Quosure environment is corrupt");
   }
 
-  enum rlang_mask_type type = mask_type(caller_frame);
+  struct rlang_mask_info info = mask_info(caller_frame);
 
-  if (type == RLANG_MASK_NONE) {
+  if (info.type == RLANG_MASK_NONE) {
     r_abort("Internal error: Can't find the data mask");
   }
   sexp* mask = caller_frame;
 
   sexp* top;
-  if (type == RLANG_MASK_QUOSURE) {
+  if (info.type == RLANG_MASK_QUOSURE) {
     // Quosure mask case
     top = mask;
   } else {
