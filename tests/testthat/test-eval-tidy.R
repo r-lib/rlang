@@ -393,6 +393,17 @@ test_that("leaked quosure masks are not mistaken with data masks", {
   expect_no_error(eval_tidy("foo", e))
 })
 
+test_that("quosures look for data masks lexically", {
+  out <- eval_tidy(data = mtcars, expr({
+    fn <- as_function(~ !!quo(cyl))
+    list(
+      fn(),
+      local(!!quo(disp))
+    )
+  }))
+  expect_identical(out, list(mtcars$cyl, mtcars$disp))
+})
+
 
 # Lifecycle ----------------------------------------------------------
 

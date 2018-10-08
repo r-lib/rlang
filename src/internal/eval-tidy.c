@@ -23,12 +23,12 @@ static struct rlang_mask_info mask_info(sexp* mask) {
 
   sexp* flag;
 
-  flag = r_env_find(mask, data_mask_flag_sym);
+  flag = r_env_find_anywhere(mask, data_mask_flag_sym);
   if (flag != r_unbound_sym) {
     return (struct rlang_mask_info) { flag, RLANG_MASK_DATA };
   }
 
-  flag = r_env_find(mask, quo_mask_flag_sym);
+  flag = r_env_find_anywhere(mask, quo_mask_flag_sym);
   if (flag != r_unbound_sym) {
     return (struct rlang_mask_info) { flag, RLANG_MASK_QUOSURE };
   }
@@ -369,31 +369,30 @@ sexp* rlang_tilde_eval(sexp* tilde, sexp* current_frame, sexp* caller_frame) {
     r_abort("Internal error: Quosure environment is corrupt");
   }
 
+  sexp* top;
   struct rlang_mask_info info = mask_info(caller_frame);
 
-  if (info.type == RLANG_MASK_NONE) {
-    r_abort("Internal error: Can't find the data mask");
-  }
-  sexp* mask = caller_frame;
-
-  sexp* top;
-  if (info.type == RLANG_MASK_QUOSURE) {
-    // Quosure mask case
-    top = mask;
-  } else {
-    top = env_get_top_binding(mask);
+  switch (info.type) {
+  case RLANG_MASK_DATA:
+    top = env_get_top_binding(info.mask);
     // Update `.env` pronoun to current quosure env temporarily
-    r_env_poke(mask, data_mask_env_sym, quo_env);
+    r_env_poke(info.mask, data_mask_env_sym, quo_env);
+    break;
+  case RLANG_MASK_QUOSURE:
+    top = info.mask;
+    break;
+  case RLANG_MASK_NONE:
+    r_abort("Internal error: Can't find the data mask");
   }
 
   // Unwind-protect the restoration of original parents
-  on_exit_restore_lexical_env(mask, r_env_parent(top), current_frame);
+  on_exit_restore_lexical_env(info.mask, r_env_parent(top), current_frame);
 
   // Swap lexical contexts temporarily by rechaining the top of the
   // mask to the quosure environment
   r_env_poke_parent(top, quo_env);
 
-  return r_eval(expr, mask);
+  return r_eval(expr, info.mask);
 }
 
 static const char* data_mask_objects_names[5] = {
