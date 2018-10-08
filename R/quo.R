@@ -187,10 +187,20 @@ is_quosures <- function(x) {
 }
 #' @export
 c.quosures <- function(..., recursive = FALSE) {
-  new_quosures(NextMethod())
+  out <- NextMethod()
+  if (every(out, is_quosure)) {
+    new_quosures(out)
+  } else {
+    signal_soft_deprecated(paste_line(
+      "Quosure lists can't be concatenated with objects other than quosures as of rlang 0.3.0.",
+      "Please call `as.list()` on the quosure list first."
+    ))
+    out
+  }
 }
 #' @export
 print.quosures <- function(x, ...) {
+  cat_line("<list_of<quosures>>\n")
   print(unclass(x), ...)
 }
 #' @export

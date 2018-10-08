@@ -256,10 +256,19 @@ test_that("can cast quosure lists to bare lists", {
   expect_identical(as.list(quos(a)), named_list(quo(a)))
 })
 
+test_that("can concatenate quosure lists", {
+  expect_identical(c(quos(a, b), quos(foo = c)), quos(a, b, foo = c))
+})
+
 
 # Lifecycle ----------------------------------------------------------
 
 test_that("as_quosure() still provides default env", {
   quo <- expect_warning(as_quosure(quote(foo)), "explicit environment")
   expect_reference(quo_get_env(quo), current_env())
+})
+
+test_that("can still concatenate quosure lists and non-quosures", {
+  scoped_silent_retirement()
+  expect_identical(c(quos(foo), list(1)), named_list(quo(foo), 1))
 })
