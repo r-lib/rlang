@@ -387,6 +387,12 @@ test_that("data pronoun always skips functions", {
   expect_identical(.data$c, "c")
 })
 
+test_that("leaked quosure masks are not mistaken with data masks", {
+  scoped_silent_retirement()
+  e <- eval_tidy(quote(current_env()))
+  expect_no_error(eval_tidy("foo", e))
+})
+
 
 # Lifecycle ----------------------------------------------------------
 

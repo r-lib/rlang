@@ -2,6 +2,32 @@
 #include "internal.h"
 
 
+static sexp* quo_mask_flag_sym = NULL;
+static sexp* data_mask_flag_sym = NULL;
+
+enum rlang_mask_type {
+  RLANG_MASK_DATA,     // Full data mask
+  RLANG_MASK_QUOSURE,  // Quosure mask with only `~` binding
+  RLANG_MASK_NONE
+};
+
+static enum rlang_mask_type mask_type(sexp* mask) {
+  if (r_typeof(mask) != r_type_environment) {
+    return RLANG_MASK_NONE;
+  }
+
+  if (r_env_find(mask, data_mask_flag_sym) != r_unbound_sym) {
+    return RLANG_MASK_DATA;
+  }
+
+  if (r_env_find(mask, quo_mask_flag_sym) != r_unbound_sym) {
+    return RLANG_MASK_QUOSURE;
+  }
+
+  return RLANG_MASK_NONE;
+}
+
+
 static sexp* data_pronoun_class = NULL;
 
 static sexp* rlang_new_data_pronoun(sexp* mask) {
@@ -60,7 +86,6 @@ sexp* rlang_as_data_pronoun(sexp* x) {
 }
 
 
-static sexp* data_mask_flag_sym = NULL;
 static sexp* data_mask_env_sym = NULL;
 static sexp* data_mask_top_env_sym = NULL;
 
@@ -134,13 +159,8 @@ sexp* rlang_new_data_mask(sexp* bottom, sexp* top) {
 }
 
 
-static bool is_data_mask(sexp* env) {
-  return
-    r_typeof(env) == r_type_environment &&
-    r_env_has(env, data_mask_flag_sym);
-}
 sexp* rlang_is_data_mask(sexp* env) {
-  return r_lgl(is_data_mask(env));
+  return r_lgl(mask_type(env) == RLANG_MASK_DATA);
 }
 
 static sexp* mask_find(sexp* env, sexp* sym) {
@@ -211,7 +231,7 @@ static void warn_env_as_mask_once() {
 static sexp* data_pronoun_sym = NULL;
 
 sexp* rlang_as_data_mask(sexp* data) {
-  if (is_data_mask(data)) {
+  if (mask_type(data) == RLANG_MASK_DATA) {
     return data;
   }
   if (data == r_null) {
@@ -302,6 +322,19 @@ static sexp* base_tilde_eval(sexp* tilde, sexp* quo_env) {
   return tilde;
 }
 
+sexp* env_get_top_binding(sexp* mask) {
+  sexp* top = r_env_find(mask, data_mask_top_env_sym);
+
+  if (top == r_unbound_sym) {
+    r_abort("Internal error: Can't find .top pronoun in data mask");
+  }
+  if (r_typeof(top) != r_type_environment) {
+    r_abort("Internal error: Unexpected .top pronoun type");
+  }
+
+  return top;
+}
+
 
 static sexp* env_poke_parent_fn = NULL;
 static sexp* env_poke_fn = NULL;
@@ -327,20 +360,19 @@ sexp* rlang_tilde_eval(sexp* tilde, sexp* current_frame, sexp* caller_frame) {
     r_abort("Internal error: Quosure environment is corrupt");
   }
 
-  sexp* mask = r_env_find_anywhere(caller_frame, data_mask_flag_sym);
-  if (mask == r_unbound_sym) {
+  enum rlang_mask_type type = mask_type(caller_frame);
+
+  if (type == RLANG_MASK_NONE) {
     r_abort("Internal error: Can't find the data mask");
   }
-  if (r_typeof(mask) != r_type_environment) {
-    r_abort("Internal error: Unexpected type for data mask flag: `%s`",
-            r_type_as_c_string(r_typeof(mask)));
-  }
+  sexp* mask = caller_frame;
 
-  sexp* top = r_env_find(mask, data_mask_top_env_sym);
-  if (top == r_unbound_sym) {
+  sexp* top;
+  if (type == RLANG_MASK_QUOSURE) {
     // Quosure mask case
     top = mask;
   } else {
+    top = env_get_top_binding(mask);
     // Update `.env` pronoun to current quosure env temporarily
     r_env_poke(mask, data_mask_env_sym, quo_env);
   }
@@ -389,7 +421,7 @@ sexp* rlang_data_mask_clean(sexp* mask) {
 static sexp* new_quosure_mask(sexp* env) {
   sexp* mask = KEEP(r_new_environment(env, 3));
   r_env_poke(mask, r_tilde_sym, tilde_fn);
-  r_env_poke(mask, data_mask_flag_sym, mask);
+  r_env_poke(mask, quo_mask_flag_sym, mask);
   FREE(1);
   return mask;
 }
@@ -417,14 +449,7 @@ sexp* rlang_eval_tidy(sexp* expr, sexp* data, sexp* frame) {
   }
 
   sexp* mask = KEEP_N(rlang_as_data_mask(data), n_protect);
-
-  sexp* top = r_env_find(mask, data_mask_top_env_sym);
-  if (top == r_unbound_sym) {
-    r_abort("Internal error: Can't find .top pronoun in data mask");
-  }
-  if (r_typeof(top) != r_type_environment) {
-    r_abort("Internal error: Unexpected .top pronoun type");
-  }
+  sexp* top = env_get_top_binding(mask);
 
   // Rechain the mask on the new lexical env but don't restore it on
   // exit. This way leaked masks inherit from a somewhat sensible
@@ -471,6 +496,7 @@ void rlang_init_eval_tidy() {
   r_chr_poke(empty_names_chr, 0, r_string(""));
   r_chr_poke(empty_names_chr, 1, r_missing_str);
 
+  quo_mask_flag_sym = r_sym(".__tidyeval_quosure_mask__.");
   data_mask_flag_sym = r_sym(".__tidyeval_data_mask__.");
   data_mask_env_sym = r_sym(".env");
   data_mask_top_env_sym = r_sym(".top_env");
