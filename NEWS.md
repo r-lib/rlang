@@ -1,73 +1,52 @@
 
-# rlang 0.2.2.9000
+# rlang 0.2.99.0000
 
-* Supplying a name with `!!!` calls is soft-deprecated. This name is
-  ignored because only the names of the spliced vector are applied.
+## Breaking changes
 
-* Lambda functions created from formulas with `as_function()` are now
-  classed. Use `is_lambda()` to check a function was created with the
-  formula shorthand.
+* `quo_text()` now deparses non-syntactic symbols with backticks. We
+  discovered in the revdep checks that `quo_text()` tends to be used
+  for converting symbols to strings. This is the wrong function for
+  this purpose because it is a general purpose deparser. The same can
+  be said of `quo_name()`. These functions should generally only be
+  used for printing outputs or creating default labels. If you need to
+  convert symbols to strings, please use `as_string()` rather than
+  `quo_text()`.
 
-* Assigning non-quosure objects to quosure lists (as returned by
-  `quos()` and `enquos()`) is soft-deprecated. Please coerce to a bare
-  list with `as.list()` beforehand.
-
-* The `new_vector_along()` family is soft-deprecated because these
-  functions are longer to type than the equivalent `rep_along()` or
-  `rep_named()` calls without added clarity.
-
-* `is_integerish()` now supports large double values (#578).
+* `exprs()` no longer flattens quosures.
 
 * The sentinel for removing arguments in `call_modify()` has been
   changed from `NULL` to `zap()`. This breaking change is motivated
   by the ambiguity of `NULL` with valid argument values.
 
-* `zap()` returns a sentinel that instructs functions like
-  `env_bind()` or `call_modify()` that objects are to be removed.
+  ```r
+  call_modify(call, arg = NULL)  # Add `arg = NULL` to the call
+  call_modify(call, arg = zap()) # Remove the `arg` argument from the call
+  ```
 
-* `rep_named()` repeats value along a character vector of names.
+* The `%@%` operator now quotes its input and supports S4 objects.
+  This makes it directly equivalent to `@` except that it extracts
+  attributes for non-S4 objects (#207).
 
-* `as_quosure()` now requires an explicit environment for symbols and
-  calls. This should typically be the environment in which the
-  expression was created.
+* Taking the `env_parent()` of the empty environment is now an error.
 
-* `as_data_pronoun()` now accepts data masks. If the mask has multiple
-  environments, all of these are looked up when subsetting the pronoun.
-  Function objects stored in the mask are bypassed.
 
-* `names()` and `length()` methods for data pronouns are deprecated.
+## Lifecycle
 
-* `as_dictionary()` is now defunct.
+### Soft-deprecated functions and arguments
 
-* `enexprs()` and `enquos()` now support `.ignore_empty = "all"`
-  with named arguments as well (#414).
+We now use a new warning mechanism for soft-deprecated functions and
+arguments. A warning is issued, but only when:
 
-* The `call` argument of `abort()` and condition constructors is now
-  deprecated in favour of storing full backtraces.
+* rlang has been attached with a `library()` call.
+* The deprecated function has been called from the global environment.
 
-* It is now possible to unquote strings in function position. This is
-  consistent with how the R parser coerces strings to symbols in this
-  kind of expressions: `"foo"()`.
+The warning appears only once per session. Such warnings shouldn't
+make R CMD check fail if you use testthat because it does not report
+warnings that occurred while checking. However, `expect_silent()` can
+transform the warning to a failure.
 
-* The functions from the restart API are now in the questioning
-  lifecycle stage. It is not clear yet whether we want to recommend
-  restarts as a style of programming in R.
 
-* `are_na()` now requires atomic vectors (#558).
-
-* `dots_list()`, `enexprs()` and `enquos()` gain a `.homonyms`
-  argument to control how to treat arguments with the same name.
-  The default is to keep them. Set it to `"first"` or `"last"` to keep
-  only the first or last occurrences. Set it to `"error"` to raise an
-  informative error about the arguments with duplicated names.
-
-* Automatic naming of expressions now uses `quo_name()` instead of
-  `quo_text()`. This makes it compatible with all object types,
-  prevents multi-line names, and ensures `name` and `.data[["name"]]`
-  are given the same default name.
-
-* `quo_name()` now uses `pillar::type_sum()` to create default names
-  for constant objects.
+#### tidyeval
 
 * `.data[[foo]]` is now an unquote operator. This guarantees that
   `foo` is evaluated in the context rather than the data mask and
@@ -76,48 +55,178 @@
   .data[["name"]])` and `group_by(df, name)` produce the same column
   name.
 
+* Automatic naming of expressions now uses a new deparser (still
+  unexported) instead of `quo_text()`. Following this change,
+  automatic naming is now compatible with all object types (via
+  `pillar::type_sum()` if available), prevents multi-line names, and
+  ensures `name` and `.data[["name"]]` are given the same default
+  name.
+
+* Supplying a name with `!!!` calls is soft-deprecated. This name is
+  ignored because only the names of the spliced vector are applied.
+
+* Quosure lists returned by `quos()` and `enquos()` now have "list-of"
+  behaviour: the types of new elements are checked when adding objects
+  to the list. Consequently, assigning non-quosure objects to quosure
+  lists is now soft-deprecated. Please coerce to a bare list with
+  `as.list()` beforehand.
+
+* `as_quosure()` now requires an explicit environment for symbols and
+  calls. This should typically be the environment in which the
+  expression was created.
+
+* `names()` and `length()` methods for data pronouns are deprecated.
+  It is no longer valid to write `names(.data)` or `length(.data)`.
+
+* Using `as.character()` on quosures is soft-deprecated (#523).
+
+
+#### Miscellaneous
+
+* Using `get_env()` without supplying an environment is now
+  soft-deprecated. Please use `current_env()` to retrieve the current
+  environment.
+
+* The frame and stack API is soft-deprecated. Some of the
+  functionality has been replaced by `trace_back()`.
+
+* The `new_vector_along()` family is soft-deprecated because these
+  functions are longer to type than the equivalent `rep_along()` or
+  `rep_named()` calls without added clarity.
+
+* Passing environment wrappers like formulas or functions to `env_`
+  functions is now soft-deprecated. This internal genericity was
+  causing confusion (see issue #427). You should now extract the
+  environment separately before calling these functions.
+
+  This change concerns `env_depth()`, `env_poke_parent()`,
+  `env_parent<-`, `env_tail()`, `set_env()`, `env_clone()`,
+  `env_inherits()`, `env_bind()`, `scoped_bindings()`,
+  `with_bindings()`, `env_poke()`, `env_has()`, `env_get()`,
+  `env_names()`, `env_bind_exprs()` and `env_bind_fns()`.
+
+* `cnd_signal()` now always installs a muffling restart for
+  non-critical conditions. Consequently the `.mufflable` argument has
+  been soft-deprecated and no longer has any effect.
+
+
+### Deprecated functions and arguments
+
+Deprecated functions and arguments issue a warning inconditionally,
+but only once per session.
+
+* Calling `UQ()` and `UQS()` with the rlang namespace qualifier is
+  deprecated as of rlang 0.3.0. Just use the unqualified forms
+  instead:
+
+  ```
+  # Bad
+  rlang::expr(mean(rlang::UQ(var) * 100))
+
+  # Ok
+  rlang::expr(mean(UQ(var) * 100))
+
+  # Good
+  rlang::expr(mean(!!var * 100))
+  ```
+
+  Although soft-deprecated since rlang 0.2.0, `UQ()` and `UQS()` can still be used for now.
+
+* The `call` argument of `abort()` and condition constructors is now
+  deprecated in favour of storing full backtraces.
+
 * The `.standardise` argument of `call_modify()` is deprecated. Please
   use `call_standardise()` beforehand.
 
-* `call_modify()` has better support for `...` and now treats it like
-  a named argument. `call_modify(call, ... = )` adds `...` to the call
-  and `call_modify(call, ... = NULL)` removes it.
+* The `sentinel` argument of `env_tail()` has been deprecated and
+  renamed to `last`.
 
-* `call_modify()` now preserves empty arguments. It is no longer
-  necessary to use `missing_arg()` to add a missing argument to a
-  call. This is possible thanks to the new `.preserve_empty` option of
-  `dots_list()`.
 
-* `call_modify()` now supports removing unexisting arguments (#393)
-  and passing multiple arguments with the same name (#398). The new
-  `.homonyms` argument controls how to treat these arguments.
+### Defunct functions and arguments
 
-* `call_standardise()` now handles primitive functions like `~`
-  properly (#473).
+Defunct functions and arguments throw an error when used.
 
-* The `%@%` operator now quotes its input and supports S4 objects.
-  This makes it directly equivalent to `@` except that it extracts
-  attributes for non-S4 objects (#207).
+* `as_dictionary()` is now defunct.
 
-* `expr_deparse()` (used to print quosures) now escape special
-  characters. For instance, newlines now print as `"\n"` (#484). This
-  ensures that the roundtrip `parse_expr(expr_deparse(x))` is not
-  lossy.
+* The experimental function `rst_muffle()` is now defunct. Please use
+  `cnd_muffle()` instead. Unlike its predecessor, `cnd_muffle()` is not
+  generic. It is marked as a calling handler and thus can be passed
+  directly to `with_handlers()` to muffle specific conditions (such as
+  specific subclasses of warnings).
 
-* `expr_text()` now deparses non-syntactic symbols with backticks (#211).
+* `cnd_inform()`, `cnd_warn()` and `cnd_abort()` are retired and
+  defunct. The old `cnd_message()`, `cnd_warning()`, `cnd_error()` and
+  `new_cnd()` constructors deprecated in rlang 0.2.0 are now defunct.
 
-* `call_print_type()` indicates how a call is deparsed and printed at
-  the console by R: prefix, infix, and special form.
+* Modifying a condition with `cnd_signal()` is defunct. In addition,
+  creating a condition with `cnd_signal()` is soft-deprecated, please
+  use the new function [signal()] instead.
 
-* The operator `%@%` has now a replacement version to update
-  attributes of an object (#207).
+* `inplace()` has been renamed to `calling()` to follow base R
+  terminology more closely.
 
-* The `call_` functions such as `call_modify()` now correctly check
-  that their input is the right type (#187).
+
+### Functions and arguments in the questioning stage
+
+We are no longer convinced these functions are the right approach but
+we do not have a precise alternative yet.
+
+* The functions from the restart API are now in the questioning
+  lifecycle stage. It is not clear yet whether we want to recommend
+  restarts as a style of programming in R.
+
+* `prepend()` and `modify()` are in the questioning stage, as well as
+  `as_logical()`, `as_character()`, etc. We are still figuring out
+  what vector tools belong in rlang.
+
+* `flatten()`, `squash()` and their atomic variants are now in the
+  questioning lifecycle stage. They have slightly different semantics
+  than the flattening functions in purrr and we are currently
+  rethinking our approach to flattening with the new typing facilities
+  of the vctrs package.
+
+
+## Tidy eval
+
+* You can now unquote quosured symbols as LHS of `:=`. The symbol is
+  automatically unwrapped from the quosure.
 
 * Quosure methods have been defined for common operations like
   `==`. These methods fail with an informative error message
   suggesting to unquote the quosure (#478, #tidyverse/dplyr#3476).
+
+* `as_data_pronoun()` now accepts data masks. If the mask has multiple
+  environments, all of these are looked up when subsetting the pronoun.
+  Function objects stored in the mask are bypassed.
+
+* It is now possible to unquote strings in function position. This is
+  consistent with how the R parser coerces strings to symbols. These
+  two expressions are now equivalent: `expr("foo"())` and
+  `expr((!!"foo")())`.
+
+* Quosures converted to functions with `as_function()` now support
+  nested quosures.
+
+* `expr_deparse()` (used to print quosures at the console) now escapes
+  special characters. For instance, newlines now print as `"\n"` (#484).
+  This ensures that the roundtrip `parse_expr(expr_deparse(x))` is not
+  lossy.
+
+* `new_data_mask()` now throws an error when `bottom` is not a child
+  of `top` (#551).
+
+* Formulas are now evaluated in the correct environment within
+  `eval_tidy()`. This fixes issues in dplyr and other tidy-evaluation
+  interfaces.
+
+* New functions `new_quosures()` and `as_quosures()` to create or
+  coerce to a list of quosures. This is a small S3 class that ensures
+  two invariants on subsetting and concatenation: that each element is
+  a quosure and that the list is always named even if only with a
+  vector of empty strings.
+
+
+## Tidy dots
 
 * The input types of `!!!` have been standardised. `!!!` is generally
   defined on vectors: it takes a vector (typically, a list) and
@@ -145,9 +254,17 @@
   and it is no longer valid to write `!!!enquo(x)`. Please unquote
   scalar objects with `!!` instead.
 
-* `fn_body()` always returns a `{` block, even if the function has a
-  single expression. For instance `fn_body(function(x) do()) ` returns
-  `quote({ do() })`.
+* `dots_list()`, `enexprs()` and `enquos()` gain a `.homonyms`
+  argument to control how to treat arguments with the same name.
+  The default is to keep them. Set it to `"first"` or `"last"` to keep
+  only the first or last occurrences. Set it to `"error"` to raise an
+  informative error about the arguments with duplicated names.
+
+* `enexprs()` and `enquos()` now support `.ignore_empty = "all"`
+  with named arguments as well (#414).
+
+* `dots_list()` gains a `.preserve_empty` argument. When `TRUE`, empty
+  arguments are stored as missing arguments (see `?missing_arg`).
 
 * `dots_list()`, `enexprs()` and `enquos()` gain a `.check_assign`
   argument. When `TRUE`, a warning is issued when a `<-` call is
@@ -157,203 +274,10 @@
   function parameter) and requires them to be explicit that they
   really want to assign to a variable by wrapping in parentheses.
 
-* `is_scoped()` has been soft-deprecated and renamed to
-  `is_attached()`. It now supports environments in addition to search
-  names.
-
 * `lapply(list(quote(foo)), list2)` no longer evaluates `foo` (#580).
 
-* Quosures converted to functions with `as_function()` now support
-  nested quosures.
 
-* `env_bind_lazy()` and `env_bind_active()` now support quosures.
-
-* `env_bind_exprs()` and `env_bind_fns()` are soft-deprecated and
-  renamed to `env_bind_lazy()` and `env_bind_active()` for clarity
-  and consistency.
-
-* `env_bind()`, `env_bind_exprs()`, and `env_bind_fns()` now return
-  the list of old binding values (or missing arguments when there is
-  no old value). This makes it easy to restore the original
-  environment state:
-
-  ```
-  old <- env_bind(env, foo = "foo", bar = "bar")
-  env_bind(env, !!!old)
-  ```
-
-* `env_bind()` now supports binding missing arguments and removing
-  bindings with zap sentinels. `env_bind(env, foo = )` binds a missing
-  argument and `env_bind(env, foo = zap())` removes the `foo`
-  binding.
-
-* `dots_list()` gains a `.preserve_empty` argument. When `TRUE`, empty
-  arguments are stored as missing arguments (see `?missing_arg`).
-
-* New experimental option `rlang__backtrace_on_error` to display
-  backtraces alongside error messages. See `?rlang::abort` for
-  supported options.
-
-* The `inherit` argument of `env_get()` and `env_get_list()` has
-  changed position. It now comes after `default`.
-
-* Using `as.character()` on quosures is soft-deprecated (#523).
-
-* Passing environment wrappers like formulas or functions to `env_`
-  functions is now soft-deprecated. This internal genericity was
-  causing confusion (see issue #427). You should now extract the
-  environment separately before calling these functions.
-
-  This change concerns `env_depth()`, `env_poke_parent()`,
-  `env_parent<-`, `env_tail()`, `set_env()`, `env_clone()`,
-  `env_inherits()`, `env_bind()`, `scoped_bindings()`,
-  `with_bindings()`, `env_poke()`, `env_has()`, `env_get()`,
-  `env_names()`, `env_bind_exprs()` and `env_bind_fns()`.
-
-* `scoped_bindings()` and `with_bindings()` can now be called without
-  bindings.
-
-* The frame and stack API is soft-deprecated. Some of the
-  functionality has been replaced by `trace_back()`.
-
-* `prepend()` and `modify()` are in the questioning stage, as well as
-  `as_logical()`, `as_character()`, etc. We are still figuring out
-  what vector tools belong in rlang.
-
-* `flatten()`, `squash()` and their atomic variants are now in the
-  questioning lifecycle stage. They have slightly different semantics
-  than the flattening functions in purrr and we are currently
-  rethinking our approach to flattening with the new typing facilities
-  of the vctrs package.
-
-* Unhandled errors thrown by `abort()` are now automatically saved and
-  can be retrieved with `rlang::last_error()`. The error prints with a
-  simplified backtrace. Call `summary(last_error())` to see the full
-  backtrace.
-
-* `is_string()` now returns `FALSE` for `NA_character_`.
-
-* Calling `UQ()` and `UQS()` with the rlang namespace qualifier is
-  deprecated as of rlang 0.3.0. Just use the unqualified forms
-  instead:
-
-  ```
-  # Bad
-  rlang::expr(mean(rlang::UQ(var) * 100))
-
-  # Ok
-  rlang::expr(mean(UQ(var) * 100))
-
-  # Good
-  rlang::expr(mean(!!var * 100))
-  ```
-
-  Although soft-deprecated since rlang 0.2.0, `UQ()` and `UQS()` can still be used for now.
-
-* `new_data_mask()` now throws an error when `bottom` is not a child of `top` (#551).
-
-* `env_clone()` no longer forces promises and recreates active bindings correctly.
-
-* `is_call()` now accepts multiple namespaces. For instance
-  `is_call(x, "list", ns = c("", "base"))` will match if `x` is
-  `list()` or if it's `base::list()`:
-
-* `exec()` is a simpler replacement to `invoke()` (#536). `invoke()` has
-  been soft-deprecated.
-
-* `env_get()` now evaluates promises and active bindings since these are
-  internal objects which should not be exposed at the R level (#554)
-
-* `env_print()` calls `get_env()` on its argument, making it easier to 
-  see the environment of closures and quosures (#567).
-
-* You can now unquote quosured symbols as LHS of `:=`. The symbol is
-  automatically unwrapped from the quosure.
-
-* Errors thrown with `abort()` now embed a backtrace in the condition
-  object. It is no longer necessary to record a trace with a calling
-  handler for such errors.
-
-* `abort()` gains a `parent` argument to specify a parent error. This
-  is meant for situations where a low-level error is expected
-  (e.g. download or parsing failed) and you'd like to throw an error
-  with higher level information. Specifying the low-level error as
-  parent makes it possible to partition the backtraces based on
-  ancestry.
-
-* Functions with tidy dots support now allow splicing atomic vectors.
-
-* Formulas are now evaluated in the correct environment within
-  `eval_tidy()`. This fixes issues in dplyr and other tidy-evaluation
-  interfaces.
-
-* `env_get()` now supports retrieving missing arguments when `inherit`
-  is `FALSE`.
-
-* The experimental function `rst_muffle()` is now defunct. Please use
-  `cnd_muffle()` instead. Unlike its predecessor `cnd_muffle()` is not
-  generic. It is marked as a calling handler and thus can be passed
-  directly to `with_handlers()` to muffle specific conditions (such as
-  specific subclasses of warnings).
-
-* `cnd_signal()` now dispatches messages, warnings, errors and
-  interrupts to the relevant signalling functions (`message()`,
-  `warning()`, `stop()` and the C function `Rf_onintr()`). This makes
-  it a good choice to resignal a captured condition.
-
-* `cnd_signal()` now always installs a muffling restart for
-  non-critical conditions. Consequently the `.mufflable` argument has
-  been soft-deprecated (it does not trigger a deprecation warning but
-  no longer has any effect).
-
-* `cnd_inform()`, `cnd_warn()` and `cnd_abort()` are retired and
-  defunct. The old `cnd_message()`, `cnd_warning()`, `cnd_error()` and
-  `new_cnd()` constructors deprecated in rlang 0.2.0 are now defunct.
-
-* Modifying a condition with `cnd_signal()` is defunct. Creating a
-  condition with `cnd_signal()` is soft-deprecated, please use the new
-  function [signal()] instead.
-
-* The new `signal()` function completes the `abort()`, `warn()` and
-  `inform()` family. It creates and signals a bare condition.
-
-* New `interrupt()` function to simulate an user interrupt from R
-  code.
-
-* `inplace()` has been renamed to `calling()` to follow base R
-  terminology more closely.
-
-* New `cnd_type()` helper to determine the type of a condition
-  (`"condition"`, `"message"`, `"warning"`, `"error"` or `"interrupt"`).
-
-* `abort()`, `warn()` and `inform()` now accepts metadata with `...`.
-  The data are stored in the condition and can be examined by user
-  handlers.
-
-  Consequently all arguments have been renamed to be prefixed with a
-  dot (to limit naming conflicts between arguments and metadata names)
-  and `.call` (previously `call`) can no longer be passed by position.
-
-* `with_handlers()` treats bare functions as exiting handlers
-  (equivalent to handlers supplied to `tryCatch()`). It also supports
-  the formula shortcut for lambda functions (as in purrr).
-
-* `with_handlers()` now produces a cleaner stack trace.
-
-* The vector predicates have been rewritten in C for performance.
-
-* The `finite` argument of `is_integerish()` is now `NULL` by
-  default. Missing values are now considered as non-finite for
-  consistency with `base::is.finite()`.
-
-* `is_bare_integerish()` and `is_scalar_integerish()` gain a `finite`
-  argument for consistency with `is_integerish()`.
-
-* New `trace_back()` captures a traceback. Compared to the base R
-  traceback, it contains additional structure about the relationship
-  between frames. It comes with tools for automatically restricting
-  to frames after a certain environment on the stack, and to simplify
-  when printing.
+## Environments
 
 * `env()` now treats a single unnamed argument as the parent of the
   new environment. Consequently, `child_env()` is now superfluous and
@@ -400,38 +324,185 @@
 * `env_print()` pretty-prints environments. It shows the contents (up
   to 20 elements) and the properties of the environment.
 
+* `is_scoped()` has been soft-deprecated and renamed to
+  `is_attached()`. It now supports environments in addition to search
+  names.
+
+* `env_bind_lazy()` and `env_bind_active()` now support quosures.
+
+* `env_bind_exprs()` and `env_bind_fns()` are soft-deprecated and
+  renamed to `env_bind_lazy()` and `env_bind_active()` for clarity
+  and consistency.
+
+* `env_bind()`, `env_bind_exprs()`, and `env_bind_fns()` now return
+  the list of old binding values (or missing arguments when there is
+  no old value). This makes it easy to restore the original
+  environment state:
+
+  ```
+  old <- env_bind(env, foo = "foo", bar = "bar")
+  env_bind(env, !!!old)
+  ```
+
+* `env_bind()` now supports binding missing arguments and removing
+  bindings with zap sentinels. `env_bind(env, foo = )` binds a missing
+  argument and `env_bind(env, foo = zap())` removes the `foo`
+  binding.
+
+* The `inherit` argument of `env_get()` and `env_get_list()` has
+  changed position. It now comes after `default`.
+
+* `scoped_bindings()` and `with_bindings()` can now be called without
+  bindings.
+
+* `env_clone()` now recreates active bindings correctly.
+
+* `env_get()` now evaluates promises and active bindings since these are
+  internal objects which should not be exposed at the R level (#554)
+
+* `env_print()` calls `get_env()` on its argument, making it easier to 
+  see the environment of closures and quosures (#567).
+
+* `env_get()` now supports retrieving missing arguments when `inherit`
+  is `FALSE`.
+
+
+## Conditions and errors
+
+* New `trace_back()` captures a backtrace. Compared to the base R
+  traceback, it contains additional structure about the relationship
+  between frames. It comes with tools for automatically restricting to
+  frames after a certain environment on the stack, and to simplify
+  when printing. These backtraces are now recorded in errors thrown by
+  `abort()` (see below).
+
+* `abort()` gains a `parent` argument to specify a parent error. This
+  is meant for situations where a low-level error is expected
+  (e.g. download or parsing failed) and you'd like to throw an error
+  with higher level information. Specifying the low-level error as
+  parent makes it possible to partition the backtraces based on
+  ancestry.
+
+* Errors thrown with `abort()` now embed a backtrace in the condition
+  object. It is no longer necessary to record a trace with a calling
+  handler for such errors.
+
+* Unhandled errors thrown by `abort()` are now automatically saved and
+  can be retrieved with `rlang::last_error()`. The error prints with a
+  simplified backtrace. Call `summary(last_error())` to see the full
+  backtrace.
+
+* New experimental option `rlang__backtrace_on_error` to display
+  backtraces alongside error messages. See `?rlang::abort` for
+  supported options.
+
+* The new `signal()` function completes the `abort()`, `warn()` and
+  `inform()` family. It creates and signals a bare condition.
+
+* New `interrupt()` function to simulate an user interrupt from R
+  code.
+
+* `cnd_signal()` now dispatches messages, warnings, errors and
+  interrupts to the relevant signalling functions (`message()`,
+  `warning()`, `stop()` and the C function `Rf_onintr()`). This makes
+  it a good choice to resignal a captured condition.
+
+* New `cnd_type()` helper to determine the type of a condition
+  (`"condition"`, `"message"`, `"warning"`, `"error"` or `"interrupt"`).
+
+* `abort()`, `warn()` and `inform()` now accepts metadata with `...`.
+  The data are stored in the condition and can be examined by user
+  handlers.
+
+  Consequently all arguments have been renamed and prefixed with a dot
+  (to limit naming conflicts between arguments and metadata names).
+
+* `with_handlers()` treats bare functions as exiting handlers
+  (equivalent to handlers supplied to `tryCatch()`). It also supports
+  the formula shortcut for lambda functions (as in purrr).
+
+* `with_handlers()` now produces a cleaner stack trace.
+
+
+## Calls
+
+* `is_call()` now accepts multiple namespaces. For instance
+  `is_call(x, "list", ns = c("", "base"))` will match if `x` is
+  `list()` or if it's `base::list()`:
+
+* `call_modify()` has better support for `...` and now treats it like
+  a named argument. `call_modify(call, ... = )` adds `...` to the call
+  and `call_modify(call, ... = NULL)` removes it.
+
+* `call_modify()` now preserves empty arguments. It is no longer
+  necessary to use `missing_arg()` to add a missing argument to a
+  call. This is possible thanks to the new `.preserve_empty` option of
+  `dots_list()`.
+
+* `call_modify()` now supports removing unexisting arguments (#393)
+  and passing multiple arguments with the same name (#398). The new
+  `.homonyms` argument controls how to treat these arguments.
+
+* `call_standardise()` now handles primitive functions like `~`
+  properly (#473).
+
+* `call_print_type()` indicates how a call is deparsed and printed at
+  the console by R: prefix, infix, and special form.
+
+* The `call_` functions such as `call_modify()` now correctly check
+  that their input is the right type (#187).
+
+
+## New functions
+
+* `zap()` returns a sentinel that instructs functions like
+  `env_bind()` or `call_modify()` that objects are to be removed.
+
+* `rep_named()` repeats value along a character vector of names.
+
+* `exec()` is a simpler replacement to `invoke()` (#536). `invoke()` has
+  been soft-deprecated.
+
+
+## Minor improvements and fixes
+
+* Lambda functions created from formulas with `as_function()` are now
+  classed. Use `is_lambda()` to check a function was created with the
+  formula shorthand.
+
+* `is_integerish()` now supports large double values (#578).
+
+* `are_na()` now requires atomic vectors (#558).
+
+* The operator `%@%` has now a replacement version to update
+  attributes of an object (#207).
+
+* `fn_body()` always returns a `{` block, even if the function has a
+  single expression. For instance `fn_body(function(x) do()) ` returns
+  `quote({ do() })`.
+
+* `is_string()` now returns `FALSE` for `NA_character_`.
+
+* The vector predicates have been rewritten in C for performance.
+
+* The `finite` argument of `is_integerish()` is now `NULL` by
+  default. Missing values are now considered as non-finite for
+  consistency with `base::is.finite()`.
+
+* `is_bare_integerish()` and `is_scalar_integerish()` gain a `finite`
+  argument for consistency with `is_integerish()`.
+
 * `flatten_if()` and `squash_if()` now handle primitive functions like
   `base::is.list()` as predicates.
 
-* New functions `new_quosures()` and `as_quosures()` to create or
-  coerce to a list of quosures. This is a small S3 class that ensures
-  two invariants on subsetting and concatenation: that each element is
-  a quosure and that the list is always named even if only with a
-  vector of empty strings.
-
 * `is_symbol()` now accepts a character vector of names to mach the
   symbol against.
-
-* `parse_quos()` now adds the `quosures` class to its output.
 
 * `parse_exprs()` and `parse_quos()` now support character vectors.
   Note that the output may be longer than the input as each string may
   yield multiple expressions (such as `"foo; bar"`).
 
-
-## Breaking changes
-
-* Taking the `env_parent()` of the empty environment is now an error.
-
-* The `sentinel` argument of `env_last()` has been deprecated and
-  renamed to `last`.
-
-
-## Upcoming breaking changes
-
-* Using `get_env()` without supplying an environment is now
-  soft-deprecated. Please use `current_env()` to retrieve the current
-  environment.
+* `parse_quos()` now adds the `quosures` class to its output.
 
 
 # rlang 0.2.2
