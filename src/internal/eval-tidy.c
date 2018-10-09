@@ -434,16 +434,12 @@ static sexp* new_quosure_mask(sexp* env) {
   return mask;
 }
 
-
-sexp* rlang_eval_tidy(sexp* expr, sexp* data, sexp* frame) {
+sexp* rlang_eval_tidy(sexp* expr, sexp* data, sexp* env) {
   int n_protect = 0;
 
-  sexp* env;
   if (rlang_is_quosure(expr)) {
     env = r_quo_get_env(expr);
     expr = r_quo_get_expr(expr);
-  } else {
-    env = KEEP_N(r_eval(env_sym, frame), n_protect);
   }
 
   // If there is no data, we only need to mask `~` with the definition

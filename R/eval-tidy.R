@@ -84,7 +84,7 @@
 #' }
 #' @name eval_tidy
 eval_tidy <- function(expr, data = NULL, env = caller_env()) {
-  .Call(rlang_eval_tidy, expr, data, environment())
+  .Call(rlang_eval_tidy, expr, data, env)
 }
 
 # Helps work around roxygen loading issues
