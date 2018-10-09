@@ -1,6 +1,10 @@
 
 # rlang 0.2.2.9000
 
+* Lambda functions created from formulas with `as_function()` are now
+  classed. Use `is_lambda()` to check a function was created with the
+  formula shorthand.
+
 * Assigning non-quosure objects to quosure lists (as returned by
   `quos()` and `enquos()`) is soft-deprecated. Please coerce to a bare
   list with `as.list()` beforehand.

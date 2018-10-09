@@ -193,3 +193,9 @@ test_that("as_function() supports nested quosures", {
 test_that("fn_body() always returns a `{` block", {
   expect_equal(fn_body(function() "foo"), quote({ "foo" }))
 })
+
+test_that("as_function() adds a class to lambda functions", {
+  out <- as_function(~foo)
+  expect_is(out, "rlang_lambda_function")
+  expect_output(print(out), "<lambda>")
+})
