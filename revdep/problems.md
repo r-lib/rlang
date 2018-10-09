@@ -43,15 +43,6 @@ Version: 0.0.1
     Execution halted
     ```
 
-# adaptalint
-
-Version: 0.2.3
-
-## In both
-
-*   R CMD check timed out
-    
-
 # adaptMT
 
 Version: 1.0.0
@@ -80,9 +71,9 @@ Version: 2.1.1
     ```
       installed size is  6.7Mb
       sub-directories of 1Mb or more:
+        R       3.0Mb
         data    1.3Mb
         files   1.7Mb
-        R       3.0Mb
     ```
 
 # admixturegraph
@@ -110,8 +101,8 @@ Version: 1.0.2
     ```
       installed size is  6.1Mb
       sub-directories of 1Mb or more:
-        data   2.0Mb
         R      3.1Mb
+        data   2.0Mb
     ```
 
 # ADPclust
@@ -147,7 +138,7 @@ Version: 0.0.1
 *   checking dependencies in R code ... NOTE
     ```
     Namespaces in Imports field not imported from:
-      ‘assertthat’ ‘DBI’ ‘tibble’
+      ‘DBI’ ‘assertthat’ ‘tibble’
       All declared Imports should be used.
     ```
 
@@ -239,10 +230,17 @@ Version: 1.0.14.1
 * installing *source* package ‘airGR’ ...
 ** package ‘airGR’ successfully unpacked and MD5 sums checked
 ** libs
-clang -I"/Library/Frameworks/R.framework/Resources/include" -DNDEBUG   -I/usr/local/include   -fPIC   -Wall -pedantic -O0 -c airGR.c -o airGR.o
+gcc-8 -I"/Library/Frameworks/R.framework/Resources/include" -DNDEBUG   -I/usr/local/include   -fPIC   -Wall -pedantic -O0 -c airGR.c -o airGR.o
 gfortran-7   -fPIC  -g -O2  -c frun_CEMANEIGE.f -o frun_CEMANEIGE.o
 make: gfortran-7: No such file or directory
+gfortran-7   -fPIC  -g -O2  -c frun_GR1A.f -o frun_GR1A.o
+make: gfortran-7: No such file or directory
+gfortran-7   -fPIC  -g -O2  -c frun_GR2M.f -o frun_GR2M.o
+make: gfortran-7: No such file or directory
 make: *** [frun_CEMANEIGE.o] Error 1
+make: *** Waiting for unfinished jobs....
+make: *** [frun_GR1A.o] Error 1
+make: *** [frun_GR2M.o] Error 1
 ERROR: compilation failed for package ‘airGR’
 * removing ‘/Users/lionel/Desktop/rlang/revdep/checks.noindex/airGR/new/airGR.Rcheck/airGR’
 
@@ -253,14 +251,29 @@ ERROR: compilation failed for package ‘airGR’
 * installing *source* package ‘airGR’ ...
 ** package ‘airGR’ successfully unpacked and MD5 sums checked
 ** libs
-clang -I"/Library/Frameworks/R.framework/Resources/include" -DNDEBUG   -I/usr/local/include   -fPIC   -Wall -pedantic -O0 -c airGR.c -o airGR.o
+gcc-8 -I"/Library/Frameworks/R.framework/Resources/include" -DNDEBUG   -I/usr/local/include   -fPIC   -Wall -pedantic -O0 -c airGR.c -o airGR.o
 gfortran-7   -fPIC  -g -O2  -c frun_CEMANEIGE.f -o frun_CEMANEIGE.o
 make: gfortran-7: No such file or directory
+gfortran-7   -fPIC  -g -O2  -c frun_GR1A.f -o frun_GR1A.o
+make: gfortran-7: No such file or directory
 make: *** [frun_CEMANEIGE.o] Error 1
+make: *** Waiting for unfinished jobs....
+make: *** [frun_GR1A.o] Error 1
 ERROR: compilation failed for package ‘airGR’
 * removing ‘/Users/lionel/Desktop/rlang/revdep/checks.noindex/airGR/old/airGR.Rcheck/airGR’
 
 ```
+# airportr
+
+Version: 0.1.2
+
+## In both
+
+*   checking data for non-ASCII characters ... NOTE
+    ```
+      Note: found 676 marked UTF-8 strings
+    ```
+
 # alphavantager
 
 Version: 0.1.0
@@ -363,7 +376,7 @@ Version: 0.0.5.0
 *   checking dependencies in R code ... NOTE
     ```
     Namespaces in Imports field not imported from:
-      ‘magrittr’ ‘Rcpp’
+      ‘Rcpp’ ‘magrittr’
       All declared Imports should be used.
     ```
 
@@ -513,71 +526,11 @@ Version: 1.6.0
 
 Version: 0.1.1
 
-## Newly broken
-
-*   checking examples ... ERROR
-    ```
-    ...
-    > tidyverse_cran_downloads %>%
-    +     filter(package == "tidyquant") %>%
-    +     ungroup() %>%
-    +     time_decompose(count, method = "stl") %>%
-    +     anomalize(remainder, method = "iqr") %>%
-    +     time_recompose() %>%
-    +     plot_anomalies(time_recomposed = TRUE)
-    frequency = 7 days
-    trend = 91 days
-    > 
-    > 
-    > #### MULTIPLE TIME SERIES ####
-    > tidyverse_cran_downloads %>%
-    +     time_decompose(count, method = "stl") %>%
-    +     anomalize(remainder, method = "iqr") %>%
-    +     time_recompose() %>%
-    +     plot_anomalies(time_recomposed = TRUE, ncol = 3)
-    Error in if (message) message(glue::glue("Converting from {cl} to {class(data)[[1]]}.\n                                    Auto-index message: index = {idx}")) : 
-      argument is not interpretable as logical
-    Calls: %>% ... time_recompose.grouped_df -> prep_tbl_time -> prep_tbl_time.data.frame
-    Execution halted
-    ```
-
-*   checking tests ...
-    ```
-     ERROR
-    Running the tests in ‘tests/testthat.R’ failed.
-    Last 13 lines of output:
-      6: freduce(value, `_function_list`)
-      7: withVisible(function_list[[k]](value))
-      8: function_list[[k]](value)
-      9: time_recompose(.)
-      10: time_recompose.grouped_df(.) at /Users/lionel/Desktop/rlang/revdep/checks.noindex/anomalize/new/anomalize.Rcheck/00_pkg_src/anomalize/R/time_recompose.R:40
-      11: prep_tbl_time(data, message = message) at /Users/lionel/Desktop/rlang/revdep/checks.noindex/anomalize/new/anomalize.Rcheck/00_pkg_src/anomalize/R/time_recompose.R:133
-      12: prep_tbl_time.data.frame(data, message = message) at /Users/lionel/Desktop/rlang/revdep/checks.noindex/anomalize/new/anomalize.Rcheck/00_pkg_src/anomalize/R/prep_tbl_time.R:27
-      
-      ══ testthat results  ═══════════════════════════════════════════════════════════
-      OK: 62 SKIPPED: 0 FAILED: 2
-      1. Error: returns a ggplot (@test-plot_anomalies.R#8) 
-      2. Error: time_recompose works on grouped_tbl_time (@test-time_recompose.R#9) 
-      
-      Error: testthat unit tests failed
-      Execution halted
-    ```
-
-*   checking re-building of vignette outputs ... WARNING
-    ```
-    Error in re-building vignettes:
-      ...
-    Quitting from lines 68-74 (anomalize_quick_start_guide.Rmd) 
-    Error: processing vignette 'anomalize_quick_start_guide.Rmd' failed with diagnostics:
-    argument is not interpretable as logical
-    Execution halted
-    ```
-
 ## In both
 
 *   checking installed package size ... NOTE
     ```
-      installed size is  5.6Mb
+      installed size is  5.5Mb
       sub-directories of 1Mb or more:
         help   4.7Mb
     ```
@@ -588,40 +541,34 @@ Version: 0.2.5
 
 ## In both
 
-*   checking whether package ‘anomalyDetection’ can be installed ... ERROR
+*   checking tests ...
     ```
-    Installation failed.
-    See ‘/Users/lionel/Desktop/rlang/revdep/checks.noindex/anomalyDetection/new/anomalyDetection.Rcheck/00install.out’ for details.
+     ERROR
+    Running the tests in ‘tests/testthat.R’ failed.
+    Last 13 lines of output:
+      33: tryCatchList(expr, classes, parentenv, handlers)
+      34: tryCatch(withCallingHandlers({    eval(code, test_env)    if (!handled && !is.null(test)) {        skip_empty()    }}, expectation = handle_expectation, skip = handle_skip, warning = handle_warning,     message = handle_message, error = handle_error), error = handle_fatal,     skip = function(e) {    })
+      35: test_code(NULL, exprs, env)
+      36: source_file(path, new.env(parent = env), chdir = TRUE, wrap = wrap)
+      37: force(code)
+      38: with_reporter(reporter = reporter, start_end_reporter = start_end_reporter,     {        lister$start_file(basename(path))        source_file(path, new.env(parent = env), chdir = TRUE,             wrap = wrap)        end_context()    })
+      39: FUN(X[[i]], ...)
+      40: lapply(paths, test_file, env = env, reporter = current_reporter,     start_end_reporter = FALSE, load_helpers = FALSE, wrap = wrap)
+      41: force(code)
+      42: with_reporter(reporter = current_reporter, results <- lapply(paths,     test_file, env = env, reporter = current_reporter, start_end_reporter = FALSE,     load_helpers = FALSE, wrap = wrap))
+      43: test_files(paths, reporter = reporter, env = env, stop_on_failure = stop_on_failure,     stop_on_warning = stop_on_warning, wrap = wrap)
+      44: test_dir(path = test_path, reporter = reporter, env = env, filter = filter,     ..., stop_on_failure = stop_on_failure, stop_on_warning = stop_on_warning,     wrap = wrap)
+      45: test_package_dir(package = package, test_path = test_path, filter = filter,     reporter = reporter, ..., stop_on_failure = stop_on_failure,     stop_on_warning = stop_on_warning, wrap = wrap)
+      46: test_check("anomalyDetection")
+      An irrecoverable exception occurred. R is aborting now ...
     ```
 
-## Installation
+*   checking dependencies in R code ... NOTE
+    ```
+    Namespace in Imports field not imported from: ‘caret’
+      All declared Imports should be used.
+    ```
 
-### Devel
-
-```
-* installing *source* package ‘anomalyDetection’ ...
-** package ‘anomalyDetection’ successfully unpacked and MD5 sums checked
-** libs
-clang++ -I"/Library/Frameworks/R.framework/Resources/include" -DNDEBUG  -I"/Users/lionel/Desktop/rlang/revdep/library.noindex/anomalyDetection/Rcpp/include" -I"/Users/lionel/Desktop/rlang/revdep/library.noindex/anomalyDetection/RcppArmadillo/include" -I/usr/local/include  -fopenmp  -fPIC  -arch x86_64 -ftemplate-depth-256 -Wall -pedantic -O0 -c RcppExports.cpp -o RcppExports.o
-clang: error: unsupported option '-fopenmp'
-make: *** [RcppExports.o] Error 1
-ERROR: compilation failed for package ‘anomalyDetection’
-* removing ‘/Users/lionel/Desktop/rlang/revdep/checks.noindex/anomalyDetection/new/anomalyDetection.Rcheck/anomalyDetection’
-
-```
-### CRAN
-
-```
-* installing *source* package ‘anomalyDetection’ ...
-** package ‘anomalyDetection’ successfully unpacked and MD5 sums checked
-** libs
-clang++ -I"/Library/Frameworks/R.framework/Resources/include" -DNDEBUG  -I"/Users/lionel/Desktop/rlang/revdep/library.noindex/anomalyDetection/Rcpp/include" -I"/Users/lionel/Desktop/rlang/revdep/library.noindex/anomalyDetection/RcppArmadillo/include" -I/usr/local/include  -fopenmp  -fPIC  -arch x86_64 -ftemplate-depth-256 -Wall -pedantic -O0 -c RcppExports.cpp -o RcppExports.o
-clang: error: unsupported option '-fopenmp'
-make: *** [RcppExports.o] Error 1
-ERROR: compilation failed for package ‘anomalyDetection’
-* removing ‘/Users/lionel/Desktop/rlang/revdep/checks.noindex/anomalyDetection/old/anomalyDetection.Rcheck/anomalyDetection’
-
-```
 # anyflights
 
 Version: 0.1.0
@@ -704,7 +651,7 @@ Version: 0.1.1
 *   checking dependencies in R code ... NOTE
     ```
     Namespaces in Imports field not imported from:
-      ‘broom’ ‘diptest’ ‘ggplot2’ ‘hexbin’ ‘MASS’ ‘moments’
+      ‘MASS’ ‘broom’ ‘diptest’ ‘ggplot2’ ‘hexbin’ ‘moments’
       All declared Imports should be used.
     ```
 
@@ -735,6 +682,18 @@ Version: 0.1.2
 # banR
 
 Version: 0.2.0
+
+## Newly fixed
+
+*   checking re-building of vignette outputs ... WARNING
+    ```
+    Error in re-building vignettes:
+      ...
+    Quitting from lines 47-49 (geocode.Rmd) 
+    Error: processing vignette 'geocode.Rmd' failed with diagnostics:
+    The API sent back an error 503
+    Execution halted
+    ```
 
 ## In both
 
@@ -776,26 +735,71 @@ Version: 1.5.1
 * installing *source* package ‘BAS’ ...
 ** package ‘BAS’ successfully unpacked and MD5 sums checked
 ** libs
-clang -I"/Library/Frameworks/R.framework/Resources/include" -DNDEBUG   -I/usr/local/include   -fPIC   -Wall -pedantic -O0 -c CHg_postzbeta.c -o CHg_postzbeta.o
-clang -I"/Library/Frameworks/R.framework/Resources/include" -DNDEBUG   -I/usr/local/include   -fPIC   -Wall -pedantic -O0 -c E.ZS.c -o E.ZS.o
-clang -I"/Library/Frameworks/R.framework/Resources/include" -DNDEBUG   -I/usr/local/include   -fPIC   -Wall -pedantic -O0 -c ZS.approx.full.np.c -o ZS.approx.full.np.o
-clang -I"/Library/Frameworks/R.framework/Resources/include" -DNDEBUG   -I/usr/local/include   -fPIC   -Wall -pedantic -O0 -c ZS.approx.null.np.c -o ZS.approx.null.np.o
-ZS.approx.null.np.c:108:30: warning: variable 'mode' is uninitialized when used here [-Wuninitialized]
-  REAL(Rtheta)[4] = (double) mode;
-                             ^~~~
-ZS.approx.null.np.c:90:14: note: initialize the variable 'mode' to silence this warning
-  double mode, logmarg, bound=0.0, epsabs, epsrel, result, abserr, *work, *ex;
-             ^
-              = 0.0
-1 warning generated.
-clang -I"/Library/Frameworks/R.framework/Resources/include" -DNDEBUG   -I/usr/local/include   -fPIC   -Wall -pedantic -O0 -c amcmc.c -o amcmc.o
-clang -I"/Library/Frameworks/R.framework/Resources/include" -DNDEBUG   -I/usr/local/include   -fPIC   -Wall -pedantic -O0 -c bayesglm.c -o bayesglm.o
-clang -I"/Library/Frameworks/R.framework/Resources/include" -DNDEBUG   -I/usr/local/include   -fPIC   -Wall -pedantic -O0 -c bayesreg.c -o bayesreg.o
-clang -I"/Library/Frameworks/R.framework/Resources/include" -DNDEBUG   -I/usr/local/include   -fPIC   -Wall -pedantic -O0 -c betapriorfamily.c -o betapriorfamily.o
-clang -I"/Library/Frameworks/R.framework/Resources/include" -DNDEBUG   -I/usr/local/include   -fPIC   -Wall -pedantic -O0 -c cch.c -o cch.o
+gcc-8 -I"/Library/Frameworks/R.framework/Resources/include" -DNDEBUG   -I/usr/local/include   -fPIC   -Wall -pedantic -O0 -c CHg_postzbeta.c -o CHg_postzbeta.o
+gcc-8 -I"/Library/Frameworks/R.framework/Resources/include" -DNDEBUG   -I/usr/local/include   -fPIC   -Wall -pedantic -O0 -c E.ZS.c -o E.ZS.o
+gcc-8 -I"/Library/Frameworks/R.framework/Resources/include" -DNDEBUG   -I/usr/local/include   -fPIC   -Wall -pedantic -O0 -c ZS.approx.full.np.c -o ZS.approx.full.np.o
+gcc-8 -I"/Library/Frameworks/R.framework/Resources/include" -DNDEBUG   -I/usr/local/include   -fPIC   -Wall -pedantic -O0 -c ZS.approx.null.np.c -o ZS.approx.null.np.o
+ZS.approx.null.np.c: In function 'ZS_logmarg':
+ZS.approx.null.np.c:44:99: warning: variable 'ex' set but not used [-Wunused-but-set-variable]
+   double mode = 0.0, status=1.0, root, bound=DBL_EPSILON, epsabs, epsrel, result, abserr, *work, *ex;
+                                                                                                   ^~
+ZS.approx.null.np.c: In function 'ZS_shrinkage':
+ZS.approx.null.np.c:90:76: warning: variable 'ex' set but not used [-Wunused-but-set-variable]
+   double mode, logmarg, bound=0.0, epsabs, epsrel, result, abserr, *work, *ex;
+                                                                            ^~
+In file included from CHg_postzbeta.c:1:
+gglm.h:17:53: warning: 'UPLO' defined but not used [-Wunused-variable]
+ static const char *TRANSYES = "T", *TRANSNO = "N", *UPLO = "U";
+                                                     ^~~~
+gglm.h:17:37: warning: 'TRANSNO' defined but not used [-Wunused-variable]
+ static const char *TRANSYES = "T", *TRANSNO = "N", *UPLO = "U";
+                                     ^~~~~~~
+gglm.h:17:20: warning: 'TRANSYES' defined but not used [-Wunused-variable]
+ static const char *TRANSYES = "T", *TRANSNO = "N", *UPLO = "U";
+                    ^~~~~~~~
+ZS.approx.null.np.c:108:19: warning: 'mode' may be used uninitialized in this function [-Wmaybe-uninitialized]
+   REAL(Rtheta)[4] = (double) mode;
+   ~~~~~~~~~~~~~~~~^~~~~~~~~~~~~~~
+gcc-8 -I"/Library/Frameworks/R.framework/Resources/include" -DNDEBUG   -I/usr/local/include   -fPIC   -Wall -pedantic -O0 -c amcmc.c -o amcmc.o
+gcc-8 -I"/Library/Frameworks/R.framework/Resources/include" -DNDEBUG   -I/usr/local/include   -fPIC   -Wall -pedantic -O0 -c bayesglm.c -o bayesglm.o
+gcc-8 -I"/Library/Frameworks/R.framework/Resources/include" -DNDEBUG   -I/usr/local/include   -fPIC   -Wall -pedantic -O0 -c bayesreg.c -o bayesreg.o
+gcc-8 -I"/Library/Frameworks/R.framework/Resources/include" -DNDEBUG   -I/usr/local/include   -fPIC   -Wall -pedantic -O0 -c betapriorfamily.c -o betapriorfamily.o
+amcmc.c: In function 'amcmc':
+amcmc.c:62:72: warning: variable 'hyper_parameters' set but not used [-Wunused-but-set-variable]
+   double  mod, rem, problocal, *pigamma, pigammaold, pigammanew, eps, *hyper_parameters;
+                                                                        ^~~~~~~~~~~~~~~~
+amcmc.c:57:68: warning: variable 'MCMC_probs' set but not used [-Wunused-but-set-variable]
+   double *Xwork, *Ywork, *wts, *coefficients,*probs, shrinkage_m, *MCMC_probs,
+                                                                    ^~~~~~~~~~
+bayesreg.c: In function 'cholregpivot':
+bayesreg.c:137:22: warning: variable 'zero' set but not used [-Wunused-but-set-variable]
+   double   ete, one, zero, tol=100*DBL_EPSILON, *work, *tmpcoef;
+                      ^~~~
+bayesreg.c:137:17: warning: variable 'one' set but not used [-Wunused-but-set-variable]
+   double   ete, one, zero, tol=100*DBL_EPSILON, *work, *tmpcoef;
+                 ^~~
+bayesreg.c: In function 'cholreg':
+bayesreg.c:212:22: warning: variable 'zero' set but not used [-Wunused-but-set-variable]
+   double   ete, one, zero;
+                      ^~~~
+bayesreg.c:212:17: warning: variable 'one' set but not used [-Wunused-but-set-variable]
+   double   ete, one, zero;
+                 ^~~
+bayesreg.c: In function 'log_laplace_2F1':
+bayesreg.c:441:65: warning: variable 'root2' set but not used [-Wunused-but-set-variable]
+    double ghat1, ghat2, ghat,logint,sigmahat, D, A, B, C,root1, root2;
+                                                                 ^~~~~
+bayesreg.c:441:58: warning: variable 'root1' set but not used [-Wunused-but-set-variable]
+    double ghat1, ghat2, ghat,logint,sigmahat, D, A, B, C,root1, root2;
+                                                          ^~~~~
+bayesreg.c:441:18: warning: variable 'ghat2' set but not used [-Wunused-but-set-variable]
+    double ghat1, ghat2, ghat,logint,sigmahat, D, A, B, C,root1, root2;
+                  ^~~~~
+gcc-8 -I"/Library/Frameworks/R.framework/Resources/include" -DNDEBUG   -I/usr/local/include   -fPIC   -Wall -pedantic -O0 -c cch.c -o cch.o
 gfortran-7   -fPIC  -g -O2  -c ch2inv.f -o ch2inv.o
 make: gfortran-7: No such file or directory
 make: *** [ch2inv.o] Error 1
+make: *** Waiting for unfinished jobs....
 ERROR: compilation failed for package ‘BAS’
 * removing ‘/Users/lionel/Desktop/rlang/revdep/checks.noindex/BAS/new/BAS.Rcheck/BAS’
 
@@ -806,26 +810,71 @@ ERROR: compilation failed for package ‘BAS’
 * installing *source* package ‘BAS’ ...
 ** package ‘BAS’ successfully unpacked and MD5 sums checked
 ** libs
-clang -I"/Library/Frameworks/R.framework/Resources/include" -DNDEBUG   -I/usr/local/include   -fPIC   -Wall -pedantic -O0 -c CHg_postzbeta.c -o CHg_postzbeta.o
-clang -I"/Library/Frameworks/R.framework/Resources/include" -DNDEBUG   -I/usr/local/include   -fPIC   -Wall -pedantic -O0 -c E.ZS.c -o E.ZS.o
-clang -I"/Library/Frameworks/R.framework/Resources/include" -DNDEBUG   -I/usr/local/include   -fPIC   -Wall -pedantic -O0 -c ZS.approx.full.np.c -o ZS.approx.full.np.o
-clang -I"/Library/Frameworks/R.framework/Resources/include" -DNDEBUG   -I/usr/local/include   -fPIC   -Wall -pedantic -O0 -c ZS.approx.null.np.c -o ZS.approx.null.np.o
-ZS.approx.null.np.c:108:30: warning: variable 'mode' is uninitialized when used here [-Wuninitialized]
-  REAL(Rtheta)[4] = (double) mode;
-                             ^~~~
-ZS.approx.null.np.c:90:14: note: initialize the variable 'mode' to silence this warning
-  double mode, logmarg, bound=0.0, epsabs, epsrel, result, abserr, *work, *ex;
-             ^
-              = 0.0
-1 warning generated.
-clang -I"/Library/Frameworks/R.framework/Resources/include" -DNDEBUG   -I/usr/local/include   -fPIC   -Wall -pedantic -O0 -c amcmc.c -o amcmc.o
-clang -I"/Library/Frameworks/R.framework/Resources/include" -DNDEBUG   -I/usr/local/include   -fPIC   -Wall -pedantic -O0 -c bayesglm.c -o bayesglm.o
-clang -I"/Library/Frameworks/R.framework/Resources/include" -DNDEBUG   -I/usr/local/include   -fPIC   -Wall -pedantic -O0 -c bayesreg.c -o bayesreg.o
-clang -I"/Library/Frameworks/R.framework/Resources/include" -DNDEBUG   -I/usr/local/include   -fPIC   -Wall -pedantic -O0 -c betapriorfamily.c -o betapriorfamily.o
-clang -I"/Library/Frameworks/R.framework/Resources/include" -DNDEBUG   -I/usr/local/include   -fPIC   -Wall -pedantic -O0 -c cch.c -o cch.o
+gcc-8 -I"/Library/Frameworks/R.framework/Resources/include" -DNDEBUG   -I/usr/local/include   -fPIC   -Wall -pedantic -O0 -c CHg_postzbeta.c -o CHg_postzbeta.o
+gcc-8 -I"/Library/Frameworks/R.framework/Resources/include" -DNDEBUG   -I/usr/local/include   -fPIC   -Wall -pedantic -O0 -c E.ZS.c -o E.ZS.o
+gcc-8 -I"/Library/Frameworks/R.framework/Resources/include" -DNDEBUG   -I/usr/local/include   -fPIC   -Wall -pedantic -O0 -c ZS.approx.full.np.c -o ZS.approx.full.np.o
+gcc-8 -I"/Library/Frameworks/R.framework/Resources/include" -DNDEBUG   -I/usr/local/include   -fPIC   -Wall -pedantic -O0 -c ZS.approx.null.np.c -o ZS.approx.null.np.o
+In file included from CHg_postzbeta.c:1:
+gglm.h:17:53: warning: 'UPLO' defined but not used [-Wunused-variable]
+ static const char *TRANSYES = "T", *TRANSNO = "N", *UPLO = "U";
+                                                     ^~~~
+gglm.h:17:37: warning: 'TRANSNO' defined but not used [-Wunused-variable]
+ static const char *TRANSYES = "T", *TRANSNO = "N", *UPLO = "U";
+                                     ^~~~~~~
+gglm.h:17:20: warning: 'TRANSYES' defined but not used [-Wunused-variable]
+ static const char *TRANSYES = "T", *TRANSNO = "N", *UPLO = "U";
+                    ^~~~~~~~
+ZS.approx.null.np.c: In function 'ZS_logmarg':
+ZS.approx.null.np.c:44:99: warning: variable 'ex' set but not used [-Wunused-but-set-variable]
+   double mode = 0.0, status=1.0, root, bound=DBL_EPSILON, epsabs, epsrel, result, abserr, *work, *ex;
+                                                                                                   ^~
+ZS.approx.null.np.c: In function 'ZS_shrinkage':
+ZS.approx.null.np.c:90:76: warning: variable 'ex' set but not used [-Wunused-but-set-variable]
+   double mode, logmarg, bound=0.0, epsabs, epsrel, result, abserr, *work, *ex;
+                                                                            ^~
+ZS.approx.null.np.c:108:19: warning: 'mode' may be used uninitialized in this function [-Wmaybe-uninitialized]
+   REAL(Rtheta)[4] = (double) mode;
+   ~~~~~~~~~~~~~~~~^~~~~~~~~~~~~~~
+gcc-8 -I"/Library/Frameworks/R.framework/Resources/include" -DNDEBUG   -I/usr/local/include   -fPIC   -Wall -pedantic -O0 -c amcmc.c -o amcmc.o
+gcc-8 -I"/Library/Frameworks/R.framework/Resources/include" -DNDEBUG   -I/usr/local/include   -fPIC   -Wall -pedantic -O0 -c bayesglm.c -o bayesglm.o
+gcc-8 -I"/Library/Frameworks/R.framework/Resources/include" -DNDEBUG   -I/usr/local/include   -fPIC   -Wall -pedantic -O0 -c bayesreg.c -o bayesreg.o
+gcc-8 -I"/Library/Frameworks/R.framework/Resources/include" -DNDEBUG   -I/usr/local/include   -fPIC   -Wall -pedantic -O0 -c betapriorfamily.c -o betapriorfamily.o
+amcmc.c: In function 'amcmc':
+amcmc.c:62:72: warning: variable 'hyper_parameters' set but not used [-Wunused-but-set-variable]
+   double  mod, rem, problocal, *pigamma, pigammaold, pigammanew, eps, *hyper_parameters;
+                                                                        ^~~~~~~~~~~~~~~~
+amcmc.c:57:68: warning: variable 'MCMC_probs' set but not used [-Wunused-but-set-variable]
+   double *Xwork, *Ywork, *wts, *coefficients,*probs, shrinkage_m, *MCMC_probs,
+                                                                    ^~~~~~~~~~
+bayesreg.c: In function 'cholregpivot':
+bayesreg.c:137:22: warning: variable 'zero' set but not used [-Wunused-but-set-variable]
+   double   ete, one, zero, tol=100*DBL_EPSILON, *work, *tmpcoef;
+                      ^~~~
+bayesreg.c:137:17: warning: variable 'one' set but not used [-Wunused-but-set-variable]
+   double   ete, one, zero, tol=100*DBL_EPSILON, *work, *tmpcoef;
+                 ^~~
+bayesreg.c: In function 'cholreg':
+bayesreg.c:212:22: warning: variable 'zero' set but not used [-Wunused-but-set-variable]
+   double   ete, one, zero;
+                      ^~~~
+bayesreg.c:212:17: warning: variable 'one' set but not used [-Wunused-but-set-variable]
+   double   ete, one, zero;
+                 ^~~
+bayesreg.c: In function 'log_laplace_2F1':
+bayesreg.c:441:65: warning: variable 'root2' set but not used [-Wunused-but-set-variable]
+    double ghat1, ghat2, ghat,logint,sigmahat, D, A, B, C,root1, root2;
+                                                                 ^~~~~
+bayesreg.c:441:58: warning: variable 'root1' set but not used [-Wunused-but-set-variable]
+    double ghat1, ghat2, ghat,logint,sigmahat, D, A, B, C,root1, root2;
+                                                          ^~~~~
+bayesreg.c:441:18: warning: variable 'ghat2' set but not used [-Wunused-but-set-variable]
+    double ghat1, ghat2, ghat,logint,sigmahat, D, A, B, C,root1, root2;
+                  ^~~~~
+gcc-8 -I"/Library/Frameworks/R.framework/Resources/include" -DNDEBUG   -I/usr/local/include   -fPIC   -Wall -pedantic -O0 -c cch.c -o cch.o
 gfortran-7   -fPIC  -g -O2  -c ch2inv.f -o ch2inv.o
 make: gfortran-7: No such file or directory
 make: *** [ch2inv.o] Error 1
+make: *** Waiting for unfinished jobs....
 ERROR: compilation failed for package ‘BAS’
 * removing ‘/Users/lionel/Desktop/rlang/revdep/checks.noindex/BAS/old/BAS.Rcheck/BAS’
 
@@ -862,15 +911,31 @@ Version: 0.1.0
 
 ## In both
 
-*   R CMD check timed out
-    
+*   checking whether the package can be loaded ... ERROR
+    ```
+    Loading this package had a fatal error status code 1
+    Loading log:
+    Loading required package: Rcpp
+    Error: package or namespace load failed for ‘bayesdfa’ in .doLoadActions(where, attach):
+     error in load action .__A__.1 for package bayesdfa: is(module, "character"): object 'm' not found
+    Execution halted
+    ```
 
 *   checking installed package size ... NOTE
     ```
-      installed size is 11.0Mb
+      installed size is 12.3Mb
       sub-directories of 1Mb or more:
-        libs  10.1Mb
+        libs  11.4Mb
     ```
+
+# BayesMallows
+
+Version: 0.1.0
+
+## In both
+
+*   R CMD check timed out
+    
 
 # bayesplot
 
@@ -880,10 +945,10 @@ Version: 1.6.0
 
 *   checking installed package size ... NOTE
     ```
-      installed size is  7.2Mb
+      installed size is  7.7Mb
       sub-directories of 1Mb or more:
+        R     3.1Mb
         doc   4.0Mb
-        R     2.6Mb
     ```
 
 # baystability
@@ -1042,18 +1107,18 @@ Version: 1.12.1
 *   checking R code for possible problems ... NOTE
     ```
     ...
+    tidy.qvalue: no visible binding for global variable ‘smoothed’
       (/Users/lionel/Desktop/rlang/revdep/checks.noindex/biobroom/new/biobroom.Rcheck/00_pkg_src/biobroom/R/qvalue_tidiers.R:65-66)
-    tidy.RangedSummarizedExperiment: no visible binding for global variable
-      ‘value’
-      (/Users/lionel/Desktop/rlang/revdep/checks.noindex/biobroom/new/biobroom.Rcheck/00_pkg_src/biobroom/R/SummarizedExperiment_tidiers.R:43-45)
-    tidy.RangedSummarizedExperiment: no visible binding for global variable
-      ‘gene’
-      (/Users/lionel/Desktop/rlang/revdep/checks.noindex/biobroom/new/biobroom.Rcheck/00_pkg_src/biobroom/R/SummarizedExperiment_tidiers.R:43-45)
-    tidy.RangedSummarizedExperiment: no visible global function definition
-      for ‘colData’
-      (/Users/lionel/Desktop/rlang/revdep/checks.noindex/biobroom/new/biobroom.Rcheck/00_pkg_src/biobroom/R/SummarizedExperiment_tidiers.R:48)
+    tidy.qvalue: no visible binding for global variable ‘pi0’
+      (/Users/lionel/Desktop/rlang/revdep/checks.noindex/biobroom/new/biobroom.Rcheck/00_pkg_src/biobroom/R/qvalue_tidiers.R:65-66)
+    tidy.qvalue: no visible binding for global variable ‘lambda’
+      (/Users/lionel/Desktop/rlang/revdep/checks.noindex/biobroom/new/biobroom.Rcheck/00_pkg_src/biobroom/R/qvalue_tidiers.R:65-66)
+    tidy_matrix: no visible binding for global variable ‘value’
+      (/Users/lionel/Desktop/rlang/revdep/checks.noindex/biobroom/new/biobroom.Rcheck/00_pkg_src/biobroom/R/limma_tidiers.R:197-199)
+    tidy_matrix: no visible binding for global variable ‘gene’
+      (/Users/lionel/Desktop/rlang/revdep/checks.noindex/biobroom/new/biobroom.Rcheck/00_pkg_src/biobroom/R/limma_tidiers.R:197-199)
     Undefined global functions or variables:
-      . calcNormFactors colData counts design DGEList end estimate
+      . DGEList calcNormFactors colData counts design end estimate
       estimateSizeFactors exprs<- fData<- gene gr is lambda model.matrix
       p.adjust pData pData<- pi0 protein rowRanges sample.id seqnames
       setNames smoothed start tbl_dt term value voom voomWithQualityWeights
@@ -1131,7 +1196,7 @@ Version: 1.0.3
     rainfall: no visible global function definition for ‘aes’
       (/Users/lionel/Desktop/rlang/revdep/checks.noindex/BiocOncoTK/new/BiocOncoTK.Rcheck/00_pkg_src/BiocOncoTK/R/rainfall3.R:173-174)
     Undefined global functions or variables:
-      aes BiocFileCache element_blank genome geom_point geom_text
+      BiocFileCache aes element_blank genome geom_point geom_text
       geom_vline ggplot ggtitle scale_x_continuous seqlengths theme xlab
       ylab
     ```
@@ -1225,12 +1290,6 @@ Version: 1.28.2
     transformToLinkInCircle : <anonymous>: no visible binding for global
       variable 'to.y'
       (/Users/lionel/Desktop/rlang/revdep/checks.noindex/biovizBase/new/biovizBase.Rcheck/00_pkg_src/biovizBase/R/transform.R:447)
-    mold,eSet: no visible global function definition for 'phenoData'
-      (/Users/lionel/Desktop/rlang/revdep/checks.noindex/biovizBase/new/biovizBase.Rcheck/00_pkg_src/biovizBase/R/mold-method.R:5)
-    mold,eSet: no visible global function definition for 'melt'
-      (/Users/lionel/Desktop/rlang/revdep/checks.noindex/biovizBase/new/biovizBase.Rcheck/00_pkg_src/biovizBase/R/mold-method.R:8)
-    mold,eSet: no visible global function definition for 'varLabels'
-      (/Users/lionel/Desktop/rlang/revdep/checks.noindex/biovizBase/new/biovizBase.Rcheck/00_pkg_src/biovizBase/R/mold-method.R:8)
     mold,ExpressionSet: no visible global function definition for 'exprs'
       (/Users/lionel/Desktop/rlang/revdep/checks.noindex/biovizBase/new/biovizBase.Rcheck/00_pkg_src/biovizBase/R/mold-method.R:55)
     mold,ExpressionSet: no visible global function definition for 'pData'
@@ -1239,6 +1298,12 @@ Version: 1.28.2
       (/Users/lionel/Desktop/rlang/revdep/checks.noindex/biovizBase/new/biovizBase.Rcheck/00_pkg_src/biovizBase/R/mold-method.R:57)
     mold,RleList: no visible binding for global variable 'xRleList'
       (/Users/lionel/Desktop/rlang/revdep/checks.noindex/biovizBase/new/biovizBase.Rcheck/00_pkg_src/biovizBase/R/mold-method.R:162)
+    mold,eSet: no visible global function definition for 'phenoData'
+      (/Users/lionel/Desktop/rlang/revdep/checks.noindex/biovizBase/new/biovizBase.Rcheck/00_pkg_src/biovizBase/R/mold-method.R:5)
+    mold,eSet: no visible global function definition for 'melt'
+      (/Users/lionel/Desktop/rlang/revdep/checks.noindex/biovizBase/new/biovizBase.Rcheck/00_pkg_src/biovizBase/R/mold-method.R:8)
+    mold,eSet: no visible global function definition for 'varLabels'
+      (/Users/lionel/Desktop/rlang/revdep/checks.noindex/biovizBase/new/biovizBase.Rcheck/00_pkg_src/biovizBase/R/mold-method.R:8)
     Undefined global functions or variables:
       .circle.x .circle.y Chromosome end_location exprs from.x from.y melt
       pData phenoData start_location symbol to.x to.y varLabels xRleList
@@ -1278,7 +1343,7 @@ Version: 1.0
     Unable to find any JVMs matching version "(null)".
     No Java runtime present, try --request to install.
     Namespaces in Imports field not imported from:
-      ‘glmnet’ ‘gtools’ ‘knitr’ ‘nnet’ ‘parallel’ ‘reshape’ ‘rJava’
+      ‘glmnet’ ‘gtools’ ‘knitr’ ‘nnet’ ‘parallel’ ‘rJava’ ‘reshape’
       ‘rmarkdown’ ‘shinyjs’
       All declared Imports should be used.
     Missing or unexported object: ‘xgboost::predict’
@@ -1420,14 +1485,21 @@ Version: 0.1
 
 ## In both
 
-*   R CMD check timed out
-    
+*   checking whether the package can be loaded ... ERROR
+    ```
+    Loading this package had a fatal error status code 1
+    Loading log:
+    Loading required package: Rcpp
+    Error: package or namespace load failed for ‘BMSC’ in .doLoadActions(where, attach):
+     error in load action .__A__.1 for package BMSC: is(module, "character"): object 'm' not found
+    Execution halted
+    ```
 
 *   checking installed package size ... NOTE
     ```
-      installed size is 10.8Mb
+      installed size is 11.6Mb
       sub-directories of 1Mb or more:
-        libs  10.5Mb
+        libs  11.2Mb
     ```
 
 # bodenmiller
@@ -1527,9 +1599,9 @@ Version: 0.29.1
     ```
       installed size is  5.6Mb
       sub-directories of 1Mb or more:
-        doc     1.3Mb
         R       2.1Mb
         Sound   1.0Mb
+        doc     1.3Mb
     ```
 
 # brazilmaps
@@ -1566,38 +1638,21 @@ Version: 0.4.3
 
 ## In both
 
-*   checking tests ...
+*   checking whether the package can be loaded ... ERROR
     ```
-     ERROR
-    Running the tests in ‘tests/testthat.R’ failed.
-    Last 13 lines of output:
-      Loading required package: Rcpp
-      > options(warn = 2)
-      > # Only one test per file to avoid hanging 32-bit compile
-      > #test_check("breathteststan", filter = "stan_fit")
-      > Sys.unsetenv("R_TESTS") # https://github.com/r-lib/testthat/issues/603
-      > test_check("breathteststan")
-      ── 1. Failure: Data that cannot be fitted with nls_list/nlme work with stan_fit 
-      sigma(fit) is not strictly more than 0.9. Difference: -0.00781
-      
-      ══ testthat results  ═══════════════════════════════════════════════════════════
-      OK: 27 SKIPPED: 7 FAILED: 1
-      1. Failure: Data that cannot be fitted with nls_list/nlme work with stan_fit (@test_stan_fit_2.R#28) 
-      
-      Error: testthat unit tests failed
-      Execution halted
+    Loading this package had a fatal error status code 1
+    Loading log:
+    Loading required package: Rcpp
+    Error: package or namespace load failed for ‘breathteststan’ in .doLoadActions(where, attach):
+     error in load action .__A__.1 for package breathteststan: is(module, "character"): object 'm' not found
+    Execution halted
     ```
 
 *   checking installed package size ... NOTE
     ```
-      installed size is  7.7Mb
+      installed size is  8.5Mb
       sub-directories of 1Mb or more:
-        libs   7.5Mb
-    ```
-
-*   checking for GNU extensions in Makefiles ... NOTE
-    ```
-    GNU make is a SystemRequirements.
+        libs   8.3Mb
     ```
 
 # broom.mixed
@@ -1735,11 +1790,11 @@ Version: 3.0
 
 *   checking installed package size ... NOTE
     ```
-      installed size is  5.4Mb
+      installed size is  5.3Mb
       sub-directories of 1Mb or more:
-        doc    1.1Mb
-        libs   1.1Mb
         R      3.1Mb
+        doc    1.1Mb
+        libs   1.0Mb
     ```
 
 # caret
@@ -1752,9 +1807,9 @@ Version: 6.0-80
     ```
       installed size is  9.4Mb
       sub-directories of 1Mb or more:
+        R        4.1Mb
         data     1.5Mb
         models   2.4Mb
-        R        4.1Mb
     ```
 
 # cartools
@@ -1777,10 +1832,18 @@ Version: 0.1
 
 ## In both
 
+*   checking installed package size ... NOTE
+    ```
+      installed size is  5.3Mb
+      sub-directories of 1Mb or more:
+        doc    3.5Mb
+        libs   1.1Mb
+    ```
+
 *   checking dependencies in R code ... NOTE
     ```
     Namespaces in Imports field not imported from:
-      ‘cowplot’ ‘dplyr’ ‘ranger’ ‘Rcpp’ ‘rms’ ‘survival’ ‘tidyverse’
+      ‘Rcpp’ ‘cowplot’ ‘dplyr’ ‘ranger’ ‘rms’ ‘survival’ ‘tidyverse’
       All declared Imports should be used.
     ```
 
@@ -1788,10 +1851,33 @@ Version: 0.1
 
 Version: 1.4.2
 
-## In both
+## Newly fixed
 
 *   R CMD check timed out
     
+
+## In both
+
+*   checking re-building of vignette outputs ... WARNING
+    ```
+    Error in re-building vignettes:
+      ...
+    using CATALYST 'daFrame' input object
+    using cluster IDs stored in column named 'cluster_id' in 'rowData' of 'daFrame' object
+    calculating features...
+    calculating DA tests...
+    using CATALYST 'daFrame' input object
+    using cluster IDs stored in column named 'cluster_id' in 'rowData' of 'daFrame' object
+    calculating features...
+    calculating DS tests...
+    Warning: Partial NA coefficients for 28 probe(s)
+    pandoc-citeproc: when expecting a product (:*:), encountered Object instead
+    Error running filter /usr/local/bin/pandoc-citeproc:
+    Filter returned error status 1
+    Error: processing vignette 'differential_analysis.Rmd' failed with diagnostics:
+    pandoc document conversion failed with error 83
+    Execution halted
+    ```
 
 *   checking for hidden files and directories ... NOTE
     ```
@@ -1805,9 +1891,9 @@ Version: 1.4.2
     ```
       installed size is 10.5Mb
       sub-directories of 1Mb or more:
+        R      2.0Mb
         data   3.1Mb
         doc    5.1Mb
-        R      2.0Mb
     ```
 
 *   checking R code for possible problems ... NOTE
@@ -1879,71 +1965,11 @@ Version: 0.1.2
 
 ## In both
 
-*   checking examples ... ERROR
-    ```
-    Running examples in ‘CDECRetrieve-Ex.R’ failed
-    The error most likely occurred in:
-    
-    > ### Name: cdec_rt
-    > ### Title: Get a rating table
-    > ### Aliases: cdec_rt
-    > 
-    > ### ** Examples
-    > 
-    > cdec_rt("abj") # get the stage to rating curve for ABJ
-    Error in open.connection(x, "rb") : 
-      Recv failure: Connection reset by peer
-    Calls: cdec_rt ... %in% -> cdec_rt_list -> <Anonymous> -> read_html.default
-    Execution halted
-    ```
-
-*   checking re-building of vignette outputs ... WARNING
-    ```
-    Error in re-building vignettes:
-      ...
-    Quitting from lines 36-45 (advanced-queries.Rmd) 
-    Error: processing vignette 'advanced-queries.Rmd' failed with diagnostics:
-    cannot open URL 'http://cdec.water.ca.gov/cgi-progs/querySHEF?station_id=kwk&sensor_num=25&dur_code=h&start_date=2018-10-04&end_date=2018-10-07&data_wish=Download+SHEF+Data+Now'
-    Execution halted
-    ```
-
 *   checking dependencies in R code ... NOTE
     ```
     Namespaces in Imports field not imported from:
       ‘lazyeval’ ‘purrr’ ‘roxygen2’
       All declared Imports should be used.
-    ```
-
-# cellbaseR
-
-Version: 1.4.0
-
-## Newly broken
-
-*   checking re-building of vignette outputs ... WARNING
-    ```
-    ...
-    Attaching package: 'Biostrings'
-    
-    The following object is masked from 'package:DelayedArray':
-    
-        type
-    
-    The following object is masked from 'package:base':
-    
-        strsplit
-    
-    
-    Attaching package: 'VariantAnnotation'
-    
-    The following object is masked from 'package:base':
-    
-        tabulate
-    
-    Quitting from lines 153-163 (cellbaseR.Rmd) 
-    Error: processing vignette 'cellbaseR.Rmd' failed with diagnostics:
-    error writing to connection
-    Execution halted
     ```
 
 # cellscape
@@ -1988,9 +2014,9 @@ Version: 1.4.0
 *   checking R code for possible problems ... NOTE
     ```
     ...
-      (/Users/lionel/Desktop/rlang/revdep/checks.noindex/cellscape/new/cellscape.Rcheck/00_pkg_src/cellscape/R/cellscape.R:1134)
-    getMutOrder: no visible global function definition for ‘coef’
-      (/Users/lionel/Desktop/rlang/revdep/checks.noindex/cellscape/new/cellscape.Rcheck/00_pkg_src/cellscape/R/cellscape.R:1135)
+    getMutationsData: no visible binding for global variable
+      ‘show_warnings’
+      (/Users/lionel/Desktop/rlang/revdep/checks.noindex/cellscape/new/cellscape.Rcheck/00_pkg_src/cellscape/R/cellscape.R:1620-1624)
     getTargetedHeatmapForEachSC: no visible binding for global variable
       ‘single_cell_id’
       (/Users/lionel/Desktop/rlang/revdep/checks.noindex/cellscape/new/cellscape.Rcheck/00_pkg_src/cellscape/R/cellscape.R:1156)
@@ -2001,9 +2027,9 @@ Version: 1.4.0
       ‘coord’
       (/Users/lionel/Desktop/rlang/revdep/checks.noindex/cellscape/new/cellscape.Rcheck/00_pkg_src/cellscape/R/cellscape.R:1156)
     Undefined global functions or variables:
-      chr chrom_index coef combn coord copy_number cumsum_values dist
+      VAF chr chrom_index coef combn coord copy_number cumsum_values dist
       genotype hclust lm melt mode_cnv n n_gt na.omit px px_width sc_id
-      setNames show_warnings single_cell_id site timepoint VAF
+      setNames show_warnings single_cell_id site timepoint
     Consider adding
       importFrom("stats", "coef", "dist", "hclust", "lm", "na.omit",
                  "setNames")
@@ -2146,14 +2172,16 @@ Version: 1.16.1
 
 Version: 0.1.7
 
-## In both
+## Newly fixed
 
 *   checking installed package size ... NOTE
     ```
-      installed size is  5.3Mb
+      installed size is  5.6Mb
       sub-directories of 1Mb or more:
-        data   5.0Mb
+        data   5.3Mb
     ```
+
+## In both
 
 *   checking data for non-ASCII characters ... NOTE
     ```
@@ -2191,12 +2219,12 @@ Version: 1.8.0
 *   checking re-building of vignette outputs ... WARNING
     ```
     ...
-        eval, evalq, Filter, Find, get, grep, grepl, intersect,
-        is.unsorted, lapply, lengths, Map, mapply, match, mget, order,
-        paste, pmax, pmax.int, pmin, pmin.int, Position, rank, rbind,
-        Reduce, rowMeans, rownames, rowSums, sapply, setdiff, sort,
-        table, tapply, union, unique, unsplit, which, which.max,
-        which.min
+        as.data.frame, basename, cbind, colMeans, colSums, colnames,
+        dirname, do.call, duplicated, eval, evalq, get, grep, grepl,
+        intersect, is.unsorted, lapply, lengths, mapply, match, mget,
+        order, paste, pmax, pmax.int, pmin, pmin.int, rank, rbind,
+        rowMeans, rowSums, rownames, sapply, setdiff, sort, table,
+        tapply, union, unique, unsplit, which, which.max, which.min
     
     Loading required package: S4Vectors
     
@@ -2247,53 +2275,13 @@ Version: 1.8.0
     run.cin.cyto: no visible global function definition for ‘is’
       (/Users/lionel/Desktop/rlang/revdep/checks.noindex/CINdex/new/CINdex.Rcheck/00_pkg_src/CINdex/R/run.cin.cyto.R:53-84)
     Undefined global functions or variables:
-      chrom dataMatrix ID is midpoint name stain
+      ID chrom dataMatrix is midpoint name stain
     Consider adding
       importFrom("methods", "is")
     to your NAMESPACE file (and ensure that your DESCRIPTION Imports
     field contains 'methods').
     ```
 
-# circumplex
-
-Version: 0.1.2
-
-## In both
-
-*   checking whether package ‘circumplex’ can be installed ... ERROR
-    ```
-    Installation failed.
-    See ‘/Users/lionel/Desktop/rlang/revdep/checks.noindex/circumplex/new/circumplex.Rcheck/00install.out’ for details.
-    ```
-
-## Installation
-
-### Devel
-
-```
-* installing *source* package ‘circumplex’ ...
-** package ‘circumplex’ successfully unpacked and MD5 sums checked
-** libs
-clang++ -std=c++11 -I"/Library/Frameworks/R.framework/Resources/include" -DNDEBUG  -I"/Users/lionel/Desktop/rlang/revdep/library.noindex/circumplex/Rcpp/include" -I"/Users/lionel/Desktop/rlang/revdep/library.noindex/circumplex/RcppArmadillo/include" -I/usr/local/include  -fopenmp  -fPIC  -arch x86_64 -ftemplate-depth-256 -Wall -pedantic -O0 -c RcppExports.cpp -o RcppExports.o
-clang: error: unsupported option '-fopenmp'
-make: *** [RcppExports.o] Error 1
-ERROR: compilation failed for package ‘circumplex’
-* removing ‘/Users/lionel/Desktop/rlang/revdep/checks.noindex/circumplex/new/circumplex.Rcheck/circumplex’
-
-```
-### CRAN
-
-```
-* installing *source* package ‘circumplex’ ...
-** package ‘circumplex’ successfully unpacked and MD5 sums checked
-** libs
-clang++ -std=c++11 -I"/Library/Frameworks/R.framework/Resources/include" -DNDEBUG  -I"/Users/lionel/Desktop/rlang/revdep/library.noindex/circumplex/Rcpp/include" -I"/Users/lionel/Desktop/rlang/revdep/library.noindex/circumplex/RcppArmadillo/include" -I/usr/local/include  -fopenmp  -fPIC  -arch x86_64 -ftemplate-depth-256 -Wall -pedantic -O0 -c RcppExports.cpp -o RcppExports.o
-clang: error: unsupported option '-fopenmp'
-make: *** [RcppExports.o] Error 1
-ERROR: compilation failed for package ‘circumplex’
-* removing ‘/Users/lionel/Desktop/rlang/revdep/checks.noindex/circumplex/old/circumplex.Rcheck/circumplex’
-
-```
 # civis
 
 Version: 1.5.1
@@ -2302,10 +2290,10 @@ Version: 1.5.1
 
 *   checking installed package size ... NOTE
     ```
-      installed size is  5.9Mb
+      installed size is  6.0Mb
       sub-directories of 1Mb or more:
+        R      3.3Mb
         help   2.1Mb
-        R      3.2Mb
     ```
 
 # cleanNLP
@@ -2332,7 +2320,7 @@ Version: 0.8.5
 *   checking dependencies in R code ... NOTE
     ```
     Namespaces in Imports field not imported from:
-      ‘infuser’ ‘purrr’ ‘R6’
+      ‘R6’ ‘infuser’ ‘purrr’
       All declared Imports should be used.
     ```
 
@@ -2375,11 +2363,11 @@ Version: 1.10.0
 
 *   checking installed package size ... NOTE
     ```
-      installed size is  9.9Mb
+      installed size is  9.4Mb
       sub-directories of 1Mb or more:
-        doc    3.4Mb
-        libs   2.4Mb
         R      3.1Mb
+        doc    3.4Mb
+        libs   1.9Mb
     ```
 
 *   checking R code for possible problems ... NOTE
@@ -2392,34 +2380,6 @@ Version: 1.10.0
       (/Users/lionel/Desktop/rlang/revdep/checks.noindex/CNPBayes/new/CNPBayes.Rcheck/00_pkg_src/CNPBayes/R/copynumber-models.R:150-151)
     Undefined global functions or variables:
       theta.star
-    ```
-
-# coalitions
-
-Version: 0.6.4
-
-## In both
-
-*   checking tests ...
-    ```
-     ERROR
-    Running the tests in ‘tests/testthat.R’ failed.
-    Last 13 lines of output:
-      > library(testthat)
-      > library(checkmate)
-      > library(coalitions)
-      > 
-      > test_check("coalitions")
-      ── 1. Failure: Federal german scrapers work (@test-scrapers.R#44)  ─────────────
-      Check on surveys_by isn't true.
-      Must have exactly 6 rows, but has 7 rows
-      
-      ══ testthat results  ═══════════════════════════════════════════════════════════
-      OK: 95 SKIPPED: 0 FAILED: 1
-      1. Failure: Federal german scrapers work (@test-scrapers.R#44) 
-      
-      Error: testthat unit tests failed
-      Execution halted
     ```
 
 # cocktailApp
@@ -2489,7 +2449,7 @@ Version: 2.0.0
     pandoc-citeproc: when expecting a product (:*:), encountered Object instead
     Error running filter /usr/local/bin/pandoc-citeproc:
     Filter returned error status 1
-    Error: processing vignette 'codyn_overview.Rmd' failed with diagnostics:
+    Error: processing vignette 'Community_Stability_Metrics.Rmd' failed with diagnostics:
     pandoc document conversion failed with error 83
     Execution halted
     ```
@@ -2521,7 +2481,7 @@ Version: 1.14.0
 
 *   checking installed package size ... NOTE
     ```
-      installed size is  6.5Mb
+      installed size is  6.4Mb
       sub-directories of 1Mb or more:
         doc       1.9Mb
         extdata   3.1Mb
@@ -2543,10 +2503,10 @@ Version: 1.14.0
       lines median mtext order.dendrogram p.adjust par phyper plot.new
       rainbow rect reorder sd text title topo.colors
     Consider adding
+      importFrom("grDevices", "rainbow", "topo.colors")
       importFrom("graphics", "abline", "axis", "hist", "image", "layout",
                  "legend", "lines", "mtext", "par", "plot.new", "rect",
                  "text", "title")
-      importFrom("grDevices", "rainbow", "topo.colors")
       importFrom("stats", "as.dist", "cor", "density", "dist", "median",
                  "order.dendrogram", "p.adjust", "phyper", "reorder", "sd")
       importFrom("utils", "data")
@@ -2630,46 +2590,6 @@ Version: 0.1.7
       ‘knitr’ ‘shiny’
     ```
 
-# colorednoise
-
-Version: 1.0.3
-
-## In both
-
-*   checking whether package ‘colorednoise’ can be installed ... ERROR
-    ```
-    Installation failed.
-    See ‘/Users/lionel/Desktop/rlang/revdep/checks.noindex/colorednoise/new/colorednoise.Rcheck/00install.out’ for details.
-    ```
-
-## Installation
-
-### Devel
-
-```
-* installing *source* package ‘colorednoise’ ...
-** package ‘colorednoise’ successfully unpacked and MD5 sums checked
-** libs
-clang++ -I"/Library/Frameworks/R.framework/Resources/include" -DNDEBUG  -I"/Users/lionel/Desktop/rlang/revdep/library.noindex/colorednoise/Rcpp/include" -I"/Users/lionel/Desktop/rlang/revdep/library.noindex/colorednoise/RcppArmadillo/include" -I/usr/local/include  -fopenmp -fPIC  -arch x86_64 -ftemplate-depth-256 -Wall -pedantic -O0 -c RcppExports.cpp -o RcppExports.o
-clang: error: unsupported option '-fopenmp'
-make: *** [RcppExports.o] Error 1
-ERROR: compilation failed for package ‘colorednoise’
-* removing ‘/Users/lionel/Desktop/rlang/revdep/checks.noindex/colorednoise/new/colorednoise.Rcheck/colorednoise’
-
-```
-### CRAN
-
-```
-* installing *source* package ‘colorednoise’ ...
-** package ‘colorednoise’ successfully unpacked and MD5 sums checked
-** libs
-clang++ -I"/Library/Frameworks/R.framework/Resources/include" -DNDEBUG  -I"/Users/lionel/Desktop/rlang/revdep/library.noindex/colorednoise/Rcpp/include" -I"/Users/lionel/Desktop/rlang/revdep/library.noindex/colorednoise/RcppArmadillo/include" -I/usr/local/include  -fopenmp -fPIC  -arch x86_64 -ftemplate-depth-256 -Wall -pedantic -O0 -c RcppExports.cpp -o RcppExports.o
-clang: error: unsupported option '-fopenmp'
-make: *** [RcppExports.o] Error 1
-ERROR: compilation failed for package ‘colorednoise’
-* removing ‘/Users/lionel/Desktop/rlang/revdep/checks.noindex/colorednoise/old/colorednoise.Rcheck/colorednoise’
-
-```
 # compareDF
 
 Version: 1.5.0
@@ -2918,17 +2838,6 @@ Version: 0.1.0
       Note: found 1 marked UTF-8 string
     ```
 
-# cowplot
-
-Version: 0.9.3
-
-## In both
-
-*   checking package dependencies ... NOTE
-    ```
-    Package suggested but not available for checking: ‘magick’
-    ```
-
 # coxed
 
 Version: 0.2.0
@@ -3039,6 +2948,34 @@ Version: 1.10.2
         help   2.7Mb
     ```
 
+# cutpointr
+
+Version: 0.7.4
+
+## Newly broken
+
+*   checking tests ...
+    ```
+     ERROR
+    Running the tests in ‘tests/testthat.R’ failed.
+    Last 13 lines of output:
+             }
+             return(boot_g)
+         }))
+      14: transmute(.data, !!!dots)
+      15: transmute.default(.data, !!!dots)
+      16: mutate(.data, !!!dots)
+      17: mutate.tbl_df(.data, !!!dots)
+      18: mutate_impl(.data, dots)
+      
+      ══ testthat results  ═══════════════════════════════════════════════════════════
+      OK: 371 SKIPPED: 0 FAILED: 1
+      1. Error: Bootstrap does not return duplicate colnames (@test-cutpointr.R#86) 
+      
+      Error: testthat unit tests failed
+      Execution halted
+    ```
+
 # d3r
 
 Version: 0.8.3
@@ -3094,9 +3031,9 @@ Version: 0.3.0
     ```
       installed size is  5.2Mb
       sub-directories of 1Mb or more:
-        doc                  1.1Mb
         Pied_Flycatchers_1   2.4Mb
         Pied_Flycatchers_2   1.2Mb
+        doc                  1.1Mb
     ```
 
 # DAPAR
@@ -3183,12 +3120,22 @@ Version: 0.2.7
 
 ## In both
 
+*   checking whether the package can be loaded ... ERROR
+    ```
+    Loading this package had a fatal error status code 1
+    Loading log:
+    Loading required package: Rcpp
+    Error: package or namespace load failed for ‘datastructures’ in .doLoadActions(where, attach):
+     error in load action .__A__.1 for package datastructures: Rcpp::loadModule(module = "bimap_module", what = TRUE, env = ns, : Unable to load module "bimap_module": vector memory exhausted (limit reached?)
+    Execution halted
+    ```
+
 *   checking installed package size ... NOTE
     ```
-      installed size is 13.0Mb
+      installed size is 16.6Mb
       sub-directories of 1Mb or more:
         doc    1.2Mb
-        libs  10.8Mb
+        libs  14.4Mb
     ```
 
 # datasus
@@ -3217,6 +3164,34 @@ Version: 1.1.1
     Error: processing vignette 'DataVisualizations.Rmd' failed with diagnostics:
     package 'sm' required by 'vioplot' could not be found
     Execution halted
+    ```
+
+# dbplot
+
+Version: 0.3.0
+
+## Newly broken
+
+*   checking tests ...
+    ```
+     ERROR
+    Running the tests in ‘tests/testthat.R’ failed.
+    Last 13 lines of output:
+      
+      ── 2. Failure: A no warnings or errors are returned (@test-dbplots.R#13)  ──────
+      `dbplot_bar(mtcars, am, mean(wt))` produced warnings.
+      
+      ── 3. Failure: A no warnings or errors are returned (@test-dbplots.R#14)  ──────
+      `dbplot_line(mtcars, am)` produced warnings.
+      
+      ══ testthat results  ═══════════════════════════════════════════════════════════
+      OK: 22 SKIPPED: 0 FAILED: 3
+      1. Failure: A no warnings or errors are returned (@test-dbplots.R#12) 
+      2. Failure: A no warnings or errors are returned (@test-dbplots.R#13) 
+      3. Failure: A no warnings or errors are returned (@test-dbplots.R#14) 
+      
+      Error: testthat unit tests failed
+      Execution halted
     ```
 
 # DChIPRep
@@ -3368,16 +3343,16 @@ Version: 1.16.0
     degPlotWide : <anonymous>: no visible binding for global variable
       ‘count’
       (/Users/lionel/Desktop/rlang/revdep/checks.noindex/DEGreport/new/DEGreport.Rcheck/00_pkg_src/DEGreport/R/genePlots.R:155-158)
-    significants,list : <anonymous>: no visible binding for global variable
-      ‘gene’
-      (/Users/lionel/Desktop/rlang/revdep/checks.noindex/DEGreport/new/DEGreport.Rcheck/00_pkg_src/DEGreport/R/AllMethods.R:225)
     significants,TopTags: no visible binding for global variable ‘FDR’
       (/Users/lionel/Desktop/rlang/revdep/checks.noindex/DEGreport/new/DEGreport.Rcheck/00_pkg_src/DEGreport/R/AllMethods.R:147-151)
     significants,TopTags: no visible binding for global variable ‘logFC’
       (/Users/lionel/Desktop/rlang/revdep/checks.noindex/DEGreport/new/DEGreport.Rcheck/00_pkg_src/DEGreport/R/AllMethods.R:147-151)
+    significants,list : <anonymous>: no visible binding for global variable
+      ‘gene’
+      (/Users/lionel/Desktop/rlang/revdep/checks.noindex/DEGreport/new/DEGreport.Rcheck/00_pkg_src/DEGreport/R/AllMethods.R:225)
     Undefined global functions or variables:
-      .x base_mean comp compare count counts covar enrichGO FDR gene genes
-      keys log2fc log2FoldChange logFC max_sd min_median ratios rowMedians
+      .x FDR base_mean comp compare count counts covar enrichGO gene genes
+      keys log2FoldChange log2fc logFC max_sd min_median ratios rowMedians
       simplify
     ```
 
@@ -3385,10 +3360,33 @@ Version: 1.16.0
 
 Version: 1.4.1
 
-## Newly broken
+## In both
 
-*   R CMD check timed out
-    
+*   checking re-building of vignette outputs ... WARNING
+    ```
+    ...
+    Joining, by = "gene"
+    Joining, by = "gene"
+    Joining, by = "gene"
+    Joining, by = "gene"
+    Joining, by = "gene"
+    Joining, by = "gene"
+    Joining, by = "cell"
+    Joining, by = c("cell", "capture")
+    Have 35 cells after filtering
+    Joining, by = "cell"
+    Have 20 genes after filtering
+    Joining, by = "gene"
+    Joining, by = "gene"
+    Joining, by = "gene"
+    Joining, by = "cell"
+    Joining, by = c("cell", "capture")
+    Compiling model
+    Quitting from lines 145-146 (DeLorean.Rmd) 
+    Error: processing vignette 'DeLorean.Rmd' failed with diagnostics:
+    vector memory exhausted (limit reached?)
+    Execution halted
+    ```
 
 # dendroTools
 
@@ -3462,9 +3460,9 @@ Version: 1.2.0
     ```
       installed size is  6.0Mb
       sub-directories of 1Mb or more:
+        R      1.2Mb
         data   1.4Mb
         doc    3.1Mb
-        R      1.2Mb
     ```
 
 # DepthProc
@@ -3507,13 +3505,13 @@ Version: 2.10.2
 *   checking running R code from vignettes ...
     ```
     ...
-      When tangling ‘Diffusion-Maps.ipynbmeta’:
+      When tangling ‘Diffusion-Map-recap.ipynbmeta’:
     Error: Either IPython 3+ or Jupyter has to be installed, but neither could be called.
     Execution halted
-    when running code in ‘DPT.ipynbmeta’
+    when running code in ‘Diffusion-Maps.ipynbmeta’
       ...
     
-      When tangling ‘DPT.ipynbmeta’:
+      When tangling ‘Diffusion-Maps.ipynbmeta’:
     Error: Either IPython 3+ or Jupyter has to be installed, but neither could be called.
     Execution halted
     when running code in ‘Global-Sigma.ipynbmeta’
@@ -3537,10 +3535,11 @@ Version: 2.10.2
 
 *   checking installed package size ... NOTE
     ```
-      installed size is  7.6Mb
+      installed size is  8.2Mb
       sub-directories of 1Mb or more:
-        doc   4.3Mb
-        R     2.0Mb
+        R      2.1Mb
+        doc    4.3Mb
+        libs   1.5Mb
     ```
 
 *   checking DESCRIPTION meta-information ... NOTE
@@ -3575,7 +3574,7 @@ Version: 2.10.2
     '::' or ':::' imports not declared from:
       ‘gridExtra’ ‘viridis’
     'library' or 'require' calls not declared from:
-      ‘base64enc’ ‘forcats’ ‘IRdisplay’ ‘IRkernel’ ‘readxl’ ‘repr’
+      ‘IRdisplay’ ‘IRkernel’ ‘base64enc’ ‘forcats’ ‘readxl’ ‘repr’
       ‘tidyverse’
     ```
 
@@ -3583,7 +3582,7 @@ Version: 2.10.2
     ```
     Error in re-building vignettes:
       ...
-    Error: processing vignette 'Diffusion-Map-recap.ipynbmeta' failed with diagnostics:
+    Error: processing vignette 'DPT.ipynbmeta' failed with diagnostics:
     Either IPython 3+ or Jupyter has to be installed, but neither could be called.
     Execution halted
     ```
@@ -3594,6 +3593,28 @@ Version: 0.5.1
 
 ## In both
 
+*   checking tests ...
+    ```
+     ERROR
+    Running the tests in ‘tests/testthat.R’ failed.
+    Last 13 lines of output:
+      30: tryCatchList(expr, classes, parentenv, handlers)
+      31: tryCatch(withCallingHandlers({    eval(code, test_env)    if (!handled && !is.null(test)) {        skip_empty()    }}, expectation = handle_expectation, skip = handle_skip, warning = handle_warning,     message = handle_message, error = handle_error), error = handle_fatal,     skip = function(e) {    })
+      32: test_code(NULL, exprs, env)
+      33: source_file(path, new.env(parent = env), chdir = TRUE, wrap = wrap)
+      34: force(code)
+      35: with_reporter(reporter = reporter, start_end_reporter = start_end_reporter,     {        lister$start_file(basename(path))        source_file(path, new.env(parent = env), chdir = TRUE,             wrap = wrap)        end_context()    })
+      36: FUN(X[[i]], ...)
+      37: lapply(paths, test_file, env = env, reporter = current_reporter,     start_end_reporter = FALSE, load_helpers = FALSE, wrap = wrap)
+      38: force(code)
+      39: with_reporter(reporter = current_reporter, results <- lapply(paths,     test_file, env = env, reporter = current_reporter, start_end_reporter = FALSE,     load_helpers = FALSE, wrap = wrap))
+      40: test_files(paths, reporter = reporter, env = env, stop_on_failure = stop_on_failure,     stop_on_warning = stop_on_warning, wrap = wrap)
+      41: test_dir(path = test_path, reporter = reporter, env = env, filter = filter,     ..., stop_on_failure = stop_on_failure, stop_on_warning = stop_on_warning,     wrap = wrap)
+      42: test_package_dir(package = package, test_path = test_path, filter = filter,     reporter = reporter, ..., stop_on_failure = stop_on_failure,     stop_on_warning = stop_on_warning, wrap = wrap)
+      43: test_check("detrendr")
+      An irrecoverable exception occurred. R is aborting now ...
+    ```
+
 *   checking for GNU extensions in Makefiles ... NOTE
     ```
     GNU make is a SystemRequirements.
@@ -3603,111 +3624,26 @@ Version: 0.5.1
 
 Version: 0.8.1
 
-## Newly broken
-
-*   checking examples ... ERROR
-    ```
-    ...
-    $items
-     [1] "S1DoCurse"   "S1DoScold"   "S1DoShout"   "S1WantCurse" "S1WantScold"
-     [6] "S1WantShout" "S2DoCurse"   "S2DoScold"   "S2DoShout"   "S2WantCurse"
-    [11] "S2WantScold" "S2WantShout" "S3DoCurse"   "S3DoScold"   "S3DoShout"  
-    [16] "S3WantCurse" "S3WantScold" "S3WantShout" "S4DoCurse"   "S4DoScold"  
-    [21] "S4DoShout"   "S4WantCurse" "S4WantScold" "S4WantShout"
-    
-    $person_properties
-    [1] "gender"
-    
-    $columns_ignored
-    [1] "anger"
-    
-    > add_item_properties(db, verbAggrProperties)
-    4 item properties for 24 items added or updated
-    > 
-    > f=fit_enorm(db)
-    Error in fit_enorm_(dataSrc, qtpredicate = qtpredicate, fixed_params = fixed_params,  : 
-      One or more items are without score variation
-    Calls: fit_enorm -> fit_enorm_
-    Execution halted
-    ```
-
-*   checking tests ...
-    ```
-     ERROR
-    Running the tests in ‘tests/testthat.R’ failed.
-    Last 13 lines of output:
-             nIterations = nIterations, env = caller_env()) at /Users/lionel/Desktop/rlang/revdep/checks.noindex/dexter/new/dexter.Rcheck/00_pkg_src/dexter/R/enorm.R:34
-      3: stop("One or more items are without score variation") at /Users/lionel/Desktop/rlang/revdep/checks.noindex/dexter/new/dexter.Rcheck/00_pkg_src/dexter/R/enorm.R:115
-      
-      ══ testthat results  ═══════════════════════════════════════════════════════════
-      OK: 33 SKIPPED: 4 FAILED: 5
-      1. Error: inconsistencies between data and parms are handled correctly (@test_ability.R#13) 
-      2. Error: verbAgg abilities are monotone increasing (@test_ability.R#31) 
-      3. Error: calibration of verbal aggression dataset matches oplm results, with fixed and unfixed (@test_enorm.R#16) 
-      4. Error: populations work (@test_plausible_values.R#7) 
-      5. Error: profile analysis verb agg (@test_profiles.R#25) 
-      
-      Error: testthat unit tests failed
-      In addition: Warning message:
-      call dbDisconnect() when finished working with a connection 
-      Execution halted
-    ```
-
 ## In both
 
 *   checking re-building of vignette outputs ... WARNING
     ```
     Error in re-building vignettes:
       ...
-    
-    Attaching package: 'dplyr'
-    
-    The following objects are masked from 'package:stats':
-    
-        filter, lag
-    
-    The following objects are masked from 'package:base':
-    
-        intersect, setdiff, setequal, union
-    
-    Loading required package: RSQLite
-    Quitting from lines 132-134 (dexter.Rmd) 
-    Error: processing vignette 'dexter.Rmd' failed with diagnostics:
-    vector size cannot be NA/NaN
+    no column `person_id` provided, automatically generating unique person id's
+    no column `person_id` provided, automatically generating unique person id's
+    no column `person_id` provided, automatically generating unique person id's
+    pandoc-citeproc: when expecting a product (:*:), encountered Object instead
+    Error running filter /usr/local/bin/pandoc-citeproc:
+    Filter returned error status 1
+    Error: processing vignette 'Equating.Rmd' failed with diagnostics:
+    pandoc document conversion failed with error 83
     Execution halted
     ```
 
 # dextergui
 
 Version: 0.1.4
-
-## Newly broken
-
-*   checking re-building of vignette outputs ... WARNING
-    ```
-    ...
-    Error in re-building vignettes:
-      ...
-    Warning in engine$weave(file, quiet = quiet, encoding = enc) :
-      The vignette engine knitr::rmarkdown is not available, because the rmarkdown package is not installed. Please install it.
-    
-    Attaching package: 'dplyr'
-    
-    The following objects are masked from 'package:stats':
-    
-        filter, lag
-    
-    The following objects are masked from 'package:base':
-    
-        intersect, setdiff, setequal, union
-    
-    Loading required package: RSQLite
-    no column `person_id` provided, automatically generating unique person id's
-    Quitting from lines 151-154 (dextergui.Rmd) 
-    Error: processing vignette 'dextergui.Rmd' failed with diagnostics:
-    vector size cannot be NA/NaN
-    Execution halted
-    ```
 
 ## In both
 
@@ -3718,76 +3654,43 @@ Version: 0.1.4
       See the note in ?`:::` about the use of this operator.
     ```
 
-# dexterMST
-
-Version: 0.1.0
-
-## Newly broken
-
-*   checking tests ...
-    ```
-     ERROR
-    Running the tests in ‘tests/testthat.R’ failed.
-    Last 13 lines of output:
-      ======
-      4 item properties for 24 items added or updated
-      ── 1. Error: can import from dexter and calbration comparable to dexter (@test_i
-      One or more items are without score variation
-      1: fit_enorm(dxdb) at testthat/test_inputs.R:67
-      2: fit_enorm_(dataSrc, qtpredicate = qtpredicate, fixed_params = fixed_params, method = method, 
-             nIterations = nIterations, env = caller_env())
-      3: stop("One or more items are without score variation")
-      
-      ══ testthat results  ═══════════════════════════════════════════════════════════
-      OK: 10 SKIPPED: 0 FAILED: 1
-      1. Error: can import from dexter and calbration comparable to dexter (@test_inputs.R#67) 
-      
-      Error: testthat unit tests failed
-      Execution halted
-    ```
-
-*   checking re-building of vignette outputs ... WARNING
-    ```
-    Error in re-building vignettes:
-      ...
-    Warning in engine$weave(file, quiet = quiet, encoding = enc) :
-      The vignette engine knitr::rmarkdown is not available, because the rmarkdown package is not installed. Please install it.
-    Quitting from lines 364-400 (multistage_fundamentals.Rmd) 
-    Error: processing vignette 'multistage_fundamentals.Rmd' failed with diagnostics:
-    One or more items are without score variation
-    Execution halted
-    ```
-
 # dggridR
 
 Version: 2.0.3
 
 ## In both
 
-*   checking re-building of vignette outputs ... WARNING
+*   checking whether the package can be loaded ... ERROR
     ```
     ...
+     Path to GDAL shared files: /Users/lionel/Desktop/rlang/revdep/library.noindex/dggridR/rgdal/gdal
+     GDAL binary built with GEOS: FALSE 
+     Loaded PROJ.4 runtime: Rel. 4.9.3, 15 August 2016, [PJ_VERSION: 493]
+     Path to PROJ.4 shared files: /Users/lionel/Desktop/rlang/revdep/library.noindex/dggridR/rgdal/proj
      Linking to sp version: 1.3-1 
     Loading required package: ggplot2
     Loading required package: dplyr
     
-    Attaching package: 'dplyr'
+    Attaching package: ‘dplyr’
     
-    The following objects are masked from 'package:stats':
+    The following objects are masked from ‘package:stats’:
     
         filter, lag
     
-    The following objects are masked from 'package:base':
+    The following objects are masked from ‘package:base’:
     
         intersect, setdiff, setequal, union
     
-    Regions defined for each Polygons
-    pandoc-citeproc: when expecting a product (:*:), encountered Object instead
-    Error running filter /usr/local/bin/pandoc-citeproc:
-    Filter returned error status 1
-    Error: processing vignette 'dggridR.Rmd' failed with diagnostics:
-    pandoc document conversion failed with error 83
+    Error: package or namespace load failed for ‘dggridR’ in .doLoadActions(where, attach):
+     error in load action .__A__.1 for package dggridR: Rcpp::loadModule(module = "dgfuncs", what = TRUE, env = ns, loadNow = TRUE): Unable to load module "dgfuncs": vector memory exhausted (limit reached?)
     Execution halted
+    ```
+
+*   checking whether package ‘dggridR’ can be installed ... WARNING
+    ```
+    Found the following significant warnings:
+      clipper.cpp:721:34: warning: 'void* memset(void*, int, size_t)' clearing an object of non-trivial type 'struct ClipperLib::TEdge'; use assignment or value-initialization instead [-Wclass-memaccess]
+    See ‘/Users/lionel/Desktop/rlang/revdep/checks.noindex/dggridR/new/dggridR.Rcheck/00install.out’ for details.
     ```
 
 # DiagrammeR
@@ -3800,27 +3703,13 @@ Version: 1.0.0
     ```
       installed size is  6.9Mb
       sub-directories of 1Mb or more:
-        htmlwidgets   3.0Mb
         R             3.0Mb
+        htmlwidgets   3.0Mb
     ```
 
 *   checking data for non-ASCII characters ... NOTE
     ```
       Note: found 1 marked UTF-8 string
-    ```
-
-# diceR
-
-Version: 0.5.1
-
-## In both
-
-*   checking package dependencies ... ERROR
-    ```
-    Package required but not available: ‘blockcluster’
-    
-    See section ‘The DESCRIPTION file’ in the ‘Writing R Extensions’
-    manual.
     ```
 
 # DiffBind
@@ -3848,27 +3737,31 @@ Version: 2.8.0
 ```
 * installing *source* package ‘DiffBind’ ...
 ** libs
-clang++ -I"/Library/Frameworks/R.framework/Resources/include" -DNDEBUG -D_USE_KNETFILE -DBGZF_CACHE -D_FILE_OFFSET_BITS=64 -D_LARGEFILE64_SOURCE -I"/Users/lionel/Desktop/rlang/revdep/library.noindex/DiffBind/Rsamtools/include" -I"/Users/lionel/Desktop/rlang/revdep/library.noindex/DiffBind/Rcpp/include" -I/usr/local/include   -fPIC  -arch x86_64 -ftemplate-depth-256 -Wall -pedantic -O0 -c RcppExports.cpp -o RcppExports.o
-clang++ -I"/Library/Frameworks/R.framework/Resources/include" -DNDEBUG -D_USE_KNETFILE -DBGZF_CACHE -D_FILE_OFFSET_BITS=64 -D_LARGEFILE64_SOURCE -I"/Users/lionel/Desktop/rlang/revdep/library.noindex/DiffBind/Rsamtools/include" -I"/Users/lionel/Desktop/rlang/revdep/library.noindex/DiffBind/Rcpp/include" -I/usr/local/include   -fPIC  -arch x86_64 -ftemplate-depth-256 -Wall -pedantic -O0 -c bamReader.cpp -o bamReader.o
-clang++ -I"/Library/Frameworks/R.framework/Resources/include" -DNDEBUG -D_USE_KNETFILE -DBGZF_CACHE -D_FILE_OFFSET_BITS=64 -D_LARGEFILE64_SOURCE -I"/Users/lionel/Desktop/rlang/revdep/library.noindex/DiffBind/Rsamtools/include" -I"/Users/lionel/Desktop/rlang/revdep/library.noindex/DiffBind/Rcpp/include" -I/usr/local/include   -fPIC  -arch x86_64 -ftemplate-depth-256 -Wall -pedantic -O0 -c bedReader.cpp -o bedReader.o
-clang++ -I"/Library/Frameworks/R.framework/Resources/include" -DNDEBUG -D_USE_KNETFILE -DBGZF_CACHE -D_FILE_OFFSET_BITS=64 -D_LARGEFILE64_SOURCE -I"/Users/lionel/Desktop/rlang/revdep/library.noindex/DiffBind/Rsamtools/include" -I"/Users/lionel/Desktop/rlang/revdep/library.noindex/DiffBind/Rcpp/include" -I/usr/local/include   -fPIC  -arch x86_64 -ftemplate-depth-256 -Wall -pedantic -O0 -c bitBucket.cpp -o bitBucket.o
-clang++ -I"/Library/Frameworks/R.framework/Resources/include" -DNDEBUG -D_USE_KNETFILE -DBGZF_CACHE -D_FILE_OFFSET_BITS=64 -D_LARGEFILE64_SOURCE -I"/Users/lionel/Desktop/rlang/revdep/library.noindex/DiffBind/Rsamtools/include" -I"/Users/lionel/Desktop/rlang/revdep/library.noindex/DiffBind/Rcpp/include" -I/usr/local/include   -fPIC  -arch x86_64 -ftemplate-depth-256 -Wall -pedantic -O0 -c croi_func.cpp -o croi_func.o
-clang++ -I"/Library/Frameworks/R.framework/Resources/include" -DNDEBUG -D_USE_KNETFILE -DBGZF_CACHE -D_FILE_OFFSET_BITS=64 -D_LARGEFILE64_SOURCE -I"/Users/lionel/Desktop/rlang/revdep/library.noindex/DiffBind/Rsamtools/include" -I"/Users/lionel/Desktop/rlang/revdep/library.noindex/DiffBind/Rcpp/include" -I/usr/local/include   -fPIC  -arch x86_64 -ftemplate-depth-256 -Wall -pedantic -O0 -c croi_main.cpp -o croi_main.o
-clang++ -I"/Library/Frameworks/R.framework/Resources/include" -DNDEBUG -D_USE_KNETFILE -DBGZF_CACHE -D_FILE_OFFSET_BITS=64 -D_LARGEFILE64_SOURCE -I"/Users/lionel/Desktop/rlang/revdep/library.noindex/DiffBind/Rsamtools/include" -I"/Users/lionel/Desktop/rlang/revdep/library.noindex/DiffBind/Rcpp/include" -I/usr/local/include   -fPIC  -arch x86_64 -ftemplate-depth-256 -Wall -pedantic -O0 -c densitySet.cpp -o densitySet.o
-clang++ -I"/Library/Frameworks/R.framework/Resources/include" -DNDEBUG -D_USE_KNETFILE -DBGZF_CACHE -D_FILE_OFFSET_BITS=64 -D_LARGEFILE64_SOURCE -I"/Users/lionel/Desktop/rlang/revdep/library.noindex/DiffBind/Rsamtools/include" -I"/Users/lionel/Desktop/rlang/revdep/library.noindex/DiffBind/Rcpp/include" -I/usr/local/include   -fPIC  -arch x86_64 -ftemplate-depth-256 -Wall -pedantic -O0 -c iBucket.cpp -o iBucket.o
-clang++ -I"/Library/Frameworks/R.framework/Resources/include" -DNDEBUG -D_USE_KNETFILE -DBGZF_CACHE -D_FILE_OFFSET_BITS=64 -D_LARGEFILE64_SOURCE -I"/Users/lionel/Desktop/rlang/revdep/library.noindex/DiffBind/Rsamtools/include" -I"/Users/lionel/Desktop/rlang/revdep/library.noindex/DiffBind/Rcpp/include" -I/usr/local/include   -fPIC  -arch x86_64 -ftemplate-depth-256 -Wall -pedantic -O0 -c interval.cpp -o interval.o
-clang++ -I"/Library/Frameworks/R.framework/Resources/include" -DNDEBUG -D_USE_KNETFILE -DBGZF_CACHE -D_FILE_OFFSET_BITS=64 -D_LARGEFILE64_SOURCE -I"/Users/lionel/Desktop/rlang/revdep/library.noindex/DiffBind/Rsamtools/include" -I"/Users/lionel/Desktop/rlang/revdep/library.noindex/DiffBind/Rcpp/include" -I/usr/local/include   -fPIC  -arch x86_64 -ftemplate-depth-256 -Wall -pedantic -O0 -c intervalDensity.cpp -o intervalDensity.o
-clang++ -I"/Library/Frameworks/R.framework/Resources/include" -DNDEBUG -D_USE_KNETFILE -DBGZF_CACHE -D_FILE_OFFSET_BITS=64 -D_LARGEFILE64_SOURCE -I"/Users/lionel/Desktop/rlang/revdep/library.noindex/DiffBind/Rsamtools/include" -I"/Users/lionel/Desktop/rlang/revdep/library.noindex/DiffBind/Rcpp/include" -I/usr/local/include   -fPIC  -arch x86_64 -ftemplate-depth-256 -Wall -pedantic -O0 -c intervalNode.cpp -o intervalNode.o
-clang++ -I"/Library/Frameworks/R.framework/Resources/include" -DNDEBUG -D_USE_KNETFILE -DBGZF_CACHE -D_FILE_OFFSET_BITS=64 -D_LARGEFILE64_SOURCE -I"/Users/lionel/Desktop/rlang/revdep/library.noindex/DiffBind/Rsamtools/include" -I"/Users/lionel/Desktop/rlang/revdep/library.noindex/DiffBind/Rcpp/include" -I/usr/local/include   -fPIC  -arch x86_64 -ftemplate-depth-256 -Wall -pedantic -O0 -c intervalSet.cpp -o intervalSet.o
-clang++ -I"/Library/Frameworks/R.framework/Resources/include" -DNDEBUG -D_USE_KNETFILE -DBGZF_CACHE -D_FILE_OFFSET_BITS=64 -D_LARGEFILE64_SOURCE -I"/Users/lionel/Desktop/rlang/revdep/library.noindex/DiffBind/Rsamtools/include" -I"/Users/lionel/Desktop/rlang/revdep/library.noindex/DiffBind/Rcpp/include" -I/usr/local/include   -fPIC  -arch x86_64 -ftemplate-depth-256 -Wall -pedantic -O0 -c intervalTree.cpp -o intervalTree.o
-clang++ -I"/Library/Frameworks/R.framework/Resources/include" -DNDEBUG -D_USE_KNETFILE -DBGZF_CACHE -D_FILE_OFFSET_BITS=64 -D_LARGEFILE64_SOURCE -I"/Users/lionel/Desktop/rlang/revdep/library.noindex/DiffBind/Rsamtools/include" -I"/Users/lionel/Desktop/rlang/revdep/library.noindex/DiffBind/Rcpp/include" -I/usr/local/include   -fPIC  -arch x86_64 -ftemplate-depth-256 -Wall -pedantic -O0 -c merge.cpp -o merge.o
-clang -I"/Library/Frameworks/R.framework/Resources/include" -DNDEBUG -D_USE_KNETFILE -DBGZF_CACHE -D_FILE_OFFSET_BITS=64 -D_LARGEFILE64_SOURCE -I"/Users/lionel/Desktop/rlang/revdep/library.noindex/DiffBind/Rsamtools/include" -I"/Users/lionel/Desktop/rlang/revdep/library.noindex/DiffBind/Rcpp/include" -I/usr/local/include   -fPIC   -Wall -pedantic -O0 -c mergeOne.c -o mergeOne.o
-clang++ -I"/Library/Frameworks/R.framework/Resources/include" -DNDEBUG -D_USE_KNETFILE -DBGZF_CACHE -D_FILE_OFFSET_BITS=64 -D_LARGEFILE64_SOURCE -I"/Users/lionel/Desktop/rlang/revdep/library.noindex/DiffBind/Rsamtools/include" -I"/Users/lionel/Desktop/rlang/revdep/library.noindex/DiffBind/Rcpp/include" -I/usr/local/include   -fPIC  -arch x86_64 -ftemplate-depth-256 -Wall -pedantic -O0 -c nodeGroup.cpp -o nodeGroup.o
-clang++ -I"/Library/Frameworks/R.framework/Resources/include" -DNDEBUG -D_USE_KNETFILE -DBGZF_CACHE -D_FILE_OFFSET_BITS=64 -D_LARGEFILE64_SOURCE -I"/Users/lionel/Desktop/rlang/revdep/library.noindex/DiffBind/Rsamtools/include" -I"/Users/lionel/Desktop/rlang/revdep/library.noindex/DiffBind/Rcpp/include" -I/usr/local/include   -fPIC  -arch x86_64 -ftemplate-depth-256 -Wall -pedantic -O0 -c peakOrder.cpp -o peakOrder.o
-clang++ -I"/Library/Frameworks/R.framework/Resources/include" -DNDEBUG -D_USE_KNETFILE -DBGZF_CACHE -D_FILE_OFFSET_BITS=64 -D_LARGEFILE64_SOURCE -I"/Users/lionel/Desktop/rlang/revdep/library.noindex/DiffBind/Rsamtools/include" -I"/Users/lionel/Desktop/rlang/revdep/library.noindex/DiffBind/Rcpp/include" -I/usr/local/include   -fPIC  -arch x86_64 -ftemplate-depth-256 -Wall -pedantic -O0 -c reader.cpp -o reader.o
-clang++ -I"/Library/Frameworks/R.framework/Resources/include" -DNDEBUG -D_USE_KNETFILE -DBGZF_CACHE -D_FILE_OFFSET_BITS=64 -D_LARGEFILE64_SOURCE -I"/Users/lionel/Desktop/rlang/revdep/library.noindex/DiffBind/Rsamtools/include" -I"/Users/lionel/Desktop/rlang/revdep/library.noindex/DiffBind/Rcpp/include" -I/usr/local/include   -fPIC  -arch x86_64 -ftemplate-depth-256 -Wall -pedantic -O0 -c sequence.cpp -o sequence.o
-clang++ -I"/Library/Frameworks/R.framework/Resources/include" -DNDEBUG -D_USE_KNETFILE -DBGZF_CACHE -D_FILE_OFFSET_BITS=64 -D_LARGEFILE64_SOURCE -I"/Users/lionel/Desktop/rlang/revdep/library.noindex/DiffBind/Rsamtools/include" -I"/Users/lionel/Desktop/rlang/revdep/library.noindex/DiffBind/Rcpp/include" -I/usr/local/include   -fPIC  -arch x86_64 -ftemplate-depth-256 -Wall -pedantic -O0 -c util.cpp -o util.o
-clang++ -dynamiclib -Wl,-headerpad_max_install_names -undefined dynamic_lookup -single_module -multiply_defined suppress -L/Library/Frameworks/R.framework/Resources/lib -L/usr/local/lib -o DiffBind.so RcppExports.o bamReader.o bedReader.o bitBucket.o croi_func.o croi_main.o densitySet.o iBucket.o interval.o intervalDensity.o intervalNode.o intervalSet.o intervalTree.o merge.o mergeOne.o nodeGroup.o peakOrder.o reader.o sequence.o util.o /Users/lionel/Desktop/rlang/revdep/library.noindex/DiffBind/Rsamtools/usrlib//libbam.a /Users/lionel/Desktop/rlang/revdep/library.noindex/DiffBind/Rsamtools/usrlib//libbcf.a /Users/lionel/Desktop/rlang/revdep/library.noindex/DiffBind/Rsamtools/usrlib//libtabix.a -lz -pthread -F/Library/Frameworks/R.framework/.. -framework R -Wl,-framework -Wl,CoreFoundation
+g++-8 -I"/Library/Frameworks/R.framework/Resources/include" -DNDEBUG -D_USE_KNETFILE -DBGZF_CACHE -D_FILE_OFFSET_BITS=64 -D_LARGEFILE64_SOURCE -I"/Users/lionel/Desktop/rlang/revdep/library.noindex/DiffBind/Rsamtools/include" -I"/Users/lionel/Desktop/rlang/revdep/library.noindex/DiffBind/Rcpp/include" -I/usr/local/include   -fPIC  -arch x86_64 -ftemplate-depth-256 -Wall -pedantic -O0 -c RcppExports.cpp -o RcppExports.o
+g++-8 -I"/Library/Frameworks/R.framework/Resources/include" -DNDEBUG -D_USE_KNETFILE -DBGZF_CACHE -D_FILE_OFFSET_BITS=64 -D_LARGEFILE64_SOURCE -I"/Users/lionel/Desktop/rlang/revdep/library.noindex/DiffBind/Rsamtools/include" -I"/Users/lionel/Desktop/rlang/revdep/library.noindex/DiffBind/Rcpp/include" -I/usr/local/include   -fPIC  -arch x86_64 -ftemplate-depth-256 -Wall -pedantic -O0 -c bamReader.cpp -o bamReader.o
+g++-8 -I"/Library/Frameworks/R.framework/Resources/include" -DNDEBUG -D_USE_KNETFILE -DBGZF_CACHE -D_FILE_OFFSET_BITS=64 -D_LARGEFILE64_SOURCE -I"/Users/lionel/Desktop/rlang/revdep/library.noindex/DiffBind/Rsamtools/include" -I"/Users/lionel/Desktop/rlang/revdep/library.noindex/DiffBind/Rcpp/include" -I/usr/local/include   -fPIC  -arch x86_64 -ftemplate-depth-256 -Wall -pedantic -O0 -c bedReader.cpp -o bedReader.o
+g++-8 -I"/Library/Frameworks/R.framework/Resources/include" -DNDEBUG -D_USE_KNETFILE -DBGZF_CACHE -D_FILE_OFFSET_BITS=64 -D_LARGEFILE64_SOURCE -I"/Users/lionel/Desktop/rlang/revdep/library.noindex/DiffBind/Rsamtools/include" -I"/Users/lionel/Desktop/rlang/revdep/library.noindex/DiffBind/Rcpp/include" -I/usr/local/include   -fPIC  -arch x86_64 -ftemplate-depth-256 -Wall -pedantic -O0 -c bitBucket.cpp -o bitBucket.o
+g++-8 -I"/Library/Frameworks/R.framework/Resources/include" -DNDEBUG -D_USE_KNETFILE -DBGZF_CACHE -D_FILE_OFFSET_BITS=64 -D_LARGEFILE64_SOURCE -I"/Users/lionel/Desktop/rlang/revdep/library.noindex/DiffBind/Rsamtools/include" -I"/Users/lionel/Desktop/rlang/revdep/library.noindex/DiffBind/Rcpp/include" -I/usr/local/include   -fPIC  -arch x86_64 -ftemplate-depth-256 -Wall -pedantic -O0 -c croi_func.cpp -o croi_func.o
+g++-8 -I"/Library/Frameworks/R.framework/Resources/include" -DNDEBUG -D_USE_KNETFILE -DBGZF_CACHE -D_FILE_OFFSET_BITS=64 -D_LARGEFILE64_SOURCE -I"/Users/lionel/Desktop/rlang/revdep/library.noindex/DiffBind/Rsamtools/include" -I"/Users/lionel/Desktop/rlang/revdep/library.noindex/DiffBind/Rcpp/include" -I/usr/local/include   -fPIC  -arch x86_64 -ftemplate-depth-256 -Wall -pedantic -O0 -c croi_main.cpp -o croi_main.o
+g++-8 -I"/Library/Frameworks/R.framework/Resources/include" -DNDEBUG -D_USE_KNETFILE -DBGZF_CACHE -D_FILE_OFFSET_BITS=64 -D_LARGEFILE64_SOURCE -I"/Users/lionel/Desktop/rlang/revdep/library.noindex/DiffBind/Rsamtools/include" -I"/Users/lionel/Desktop/rlang/revdep/library.noindex/DiffBind/Rcpp/include" -I/usr/local/include   -fPIC  -arch x86_64 -ftemplate-depth-256 -Wall -pedantic -O0 -c densitySet.cpp -o densitySet.o
+croi_func.cpp: In member function 'int Croi::load(int, bode::NodeGroup*, IBucket*, bode::DensitySet*, int)':
+croi_func.cpp:68:36: warning: catching polymorphic type 'class std::out_of_range' by value [-Wcatch-value=]
+         } catch (std::out_of_range oor) {
+                                    ^~~
+g++-8 -I"/Library/Frameworks/R.framework/Resources/include" -DNDEBUG -D_USE_KNETFILE -DBGZF_CACHE -D_FILE_OFFSET_BITS=64 -D_LARGEFILE64_SOURCE -I"/Users/lionel/Desktop/rlang/revdep/library.noindex/DiffBind/Rsamtools/include" -I"/Users/lionel/Desktop/rlang/revdep/library.noindex/DiffBind/Rcpp/include" -I/usr/local/include   -fPIC  -arch x86_64 -ftemplate-depth-256 -Wall -pedantic -O0 -c iBucket.cpp -o iBucket.o
+g++-8 -I"/Library/Frameworks/R.framework/Resources/include" -DNDEBUG -D_USE_KNETFILE -DBGZF_CACHE -D_FILE_OFFSET_BITS=64 -D_LARGEFILE64_SOURCE -I"/Users/lionel/Desktop/rlang/revdep/library.noindex/DiffBind/Rsamtools/include" -I"/Users/lionel/Desktop/rlang/revdep/library.noindex/DiffBind/Rcpp/include" -I/usr/local/include   -fPIC  -arch x86_64 -ftemplate-depth-256 -Wall -pedantic -O0 -c interval.cpp -o interval.o
+g++-8 -I"/Library/Frameworks/R.framework/Resources/include" -DNDEBUG -D_USE_KNETFILE -DBGZF_CACHE -D_FILE_OFFSET_BITS=64 -D_LARGEFILE64_SOURCE -I"/Users/lionel/Desktop/rlang/revdep/library.noindex/DiffBind/Rsamtools/include" -I"/Users/lionel/Desktop/rlang/revdep/library.noindex/DiffBind/Rcpp/include" -I/usr/local/include   -fPIC  -arch x86_64 -ftemplate-depth-256 -Wall -pedantic -O0 -c intervalDensity.cpp -o intervalDensity.o
+g++-8 -I"/Library/Frameworks/R.framework/Resources/include" -DNDEBUG -D_USE_KNETFILE -DBGZF_CACHE -D_FILE_OFFSET_BITS=64 -D_LARGEFILE64_SOURCE -I"/Users/lionel/Desktop/rlang/revdep/library.noindex/DiffBind/Rsamtools/include" -I"/Users/lionel/Desktop/rlang/revdep/library.noindex/DiffBind/Rcpp/include" -I/usr/local/include   -fPIC  -arch x86_64 -ftemplate-depth-256 -Wall -pedantic -O0 -c intervalNode.cpp -o intervalNode.o
+g++-8 -I"/Library/Frameworks/R.framework/Resources/include" -DNDEBUG -D_USE_KNETFILE -DBGZF_CACHE -D_FILE_OFFSET_BITS=64 -D_LARGEFILE64_SOURCE -I"/Users/lionel/Desktop/rlang/revdep/library.noindex/DiffBind/Rsamtools/include" -I"/Users/lionel/Desktop/rlang/revdep/library.noindex/DiffBind/Rcpp/include" -I/usr/local/include   -fPIC  -arch x86_64 -ftemplate-depth-256 -Wall -pedantic -O0 -c intervalSet.cpp -o intervalSet.o
+g++-8 -I"/Library/Frameworks/R.framework/Resources/include" -DNDEBUG -D_USE_KNETFILE -DBGZF_CACHE -D_FILE_OFFSET_BITS=64 -D_LARGEFILE64_SOURCE -I"/Users/lionel/Desktop/rlang/revdep/library.noindex/DiffBind/Rsamtools/include" -I"/Users/lionel/Desktop/rlang/revdep/library.noindex/DiffBind/Rcpp/include" -I/usr/local/include   -fPIC  -arch x86_64 -ftemplate-depth-256 -Wall -pedantic -O0 -c intervalTree.cpp -o intervalTree.o
+g++-8 -I"/Library/Frameworks/R.framework/Resources/include" -DNDEBUG -D_USE_KNETFILE -DBGZF_CACHE -D_FILE_OFFSET_BITS=64 -D_LARGEFILE64_SOURCE -I"/Users/lionel/Desktop/rlang/revdep/library.noindex/DiffBind/Rsamtools/include" -I"/Users/lionel/Desktop/rlang/revdep/library.noindex/DiffBind/Rcpp/include" -I/usr/local/include   -fPIC  -arch x86_64 -ftemplate-depth-256 -Wall -pedantic -O0 -c merge.cpp -o merge.o
+gcc-8 -I"/Library/Frameworks/R.framework/Resources/include" -DNDEBUG -D_USE_KNETFILE -DBGZF_CACHE -D_FILE_OFFSET_BITS=64 -D_LARGEFILE64_SOURCE -I"/Users/lionel/Desktop/rlang/revdep/library.noindex/DiffBind/Rsamtools/include" -I"/Users/lionel/Desktop/rlang/revdep/library.noindex/DiffBind/Rcpp/include" -I/usr/local/include   -fPIC   -Wall -pedantic -O0 -c mergeOne.c -o mergeOne.o
+g++-8 -I"/Library/Frameworks/R.framework/Resources/include" -DNDEBUG -D_USE_KNETFILE -DBGZF_CACHE -D_FILE_OFFSET_BITS=64 -D_LARGEFILE64_SOURCE -I"/Users/lionel/Desktop/rlang/revdep/library.noindex/DiffBind/Rsamtools/include" -I"/Users/lionel/Desktop/rlang/revdep/library.noindex/DiffBind/Rcpp/include" -I/usr/local/include   -fPIC  -arch x86_64 -ftemplate-depth-256 -Wall -pedantic -O0 -c nodeGroup.cpp -o nodeGroup.o
+g++-8 -I"/Library/Frameworks/R.framework/Resources/include" -DNDEBUG -D_USE_KNETFILE -DBGZF_CACHE -D_FILE_OFFSET_BITS=64 -D_LARGEFILE64_SOURCE -I"/Users/lionel/Desktop/rlang/revdep/library.noindex/DiffBind/Rsamtools/include" -I"/Users/lionel/Desktop/rlang/revdep/library.noindex/DiffBind/Rcpp/include" -I/usr/local/include   -fPIC  -arch x86_64 -ftemplate-depth-256 -Wall -pedantic -O0 -c peakOrder.cpp -o peakOrder.o
+g++-8 -I"/Library/Frameworks/R.framework/Resources/include" -DNDEBUG -D_USE_KNETFILE -DBGZF_CACHE -D_FILE_OFFSET_BITS=64 -D_LARGEFILE64_SOURCE -I"/Users/lionel/Desktop/rlang/revdep/library.noindex/DiffBind/Rsamtools/include" -I"/Users/lionel/Desktop/rlang/revdep/library.noindex/DiffBind/Rcpp/include" -I/usr/local/include   -fPIC  -arch x86_64 -ftemplate-depth-256 -Wall -pedantic -O0 -c reader.cpp -o reader.o
+g++-8 -I"/Library/Frameworks/R.framework/Resources/include" -DNDEBUG -D_USE_KNETFILE -DBGZF_CACHE -D_FILE_OFFSET_BITS=64 -D_LARGEFILE64_SOURCE -I"/Users/lionel/Desktop/rlang/revdep/library.noindex/DiffBind/Rsamtools/include" -I"/Users/lionel/Desktop/rlang/revdep/library.noindex/DiffBind/Rcpp/include" -I/usr/local/include   -fPIC  -arch x86_64 -ftemplate-depth-256 -Wall -pedantic -O0 -c sequence.cpp -o sequence.o
+g++-8 -I"/Library/Frameworks/R.framework/Resources/include" -DNDEBUG -D_USE_KNETFILE -DBGZF_CACHE -D_FILE_OFFSET_BITS=64 -D_LARGEFILE64_SOURCE -I"/Users/lionel/Desktop/rlang/revdep/library.noindex/DiffBind/Rsamtools/include" -I"/Users/lionel/Desktop/rlang/revdep/library.noindex/DiffBind/Rcpp/include" -I/usr/local/include   -fPIC  -arch x86_64 -ftemplate-depth-256 -Wall -pedantic -O0 -c util.cpp -o util.o
+g++-8 -dynamiclib -Wl,-headerpad_max_install_names -undefined dynamic_lookup -single_module -multiply_defined suppress -L/Library/Frameworks/R.framework/Resources/lib -L/usr/local/lib -o DiffBind.so RcppExports.o bamReader.o bedReader.o bitBucket.o croi_func.o croi_main.o densitySet.o iBucket.o interval.o intervalDensity.o intervalNode.o intervalSet.o intervalTree.o merge.o mergeOne.o nodeGroup.o peakOrder.o reader.o sequence.o util.o /Users/lionel/Desktop/rlang/revdep/library.noindex/DiffBind/Rsamtools/usrlib//libbam.a /Users/lionel/Desktop/rlang/revdep/library.noindex/DiffBind/Rsamtools/usrlib//libbcf.a /Users/lionel/Desktop/rlang/revdep/library.noindex/DiffBind/Rsamtools/usrlib//libtabix.a -lz -pthread -F/Library/Frameworks/R.framework/.. -framework R -Wl,-framework -Wl,CoreFoundation
 installing to /Users/lionel/Desktop/rlang/revdep/checks.noindex/DiffBind/new/DiffBind.Rcheck/DiffBind/libs
 ** R
 ** data
@@ -3885,27 +3778,31 @@ ERROR: lazy loading failed for package ‘DiffBind’
 ```
 * installing *source* package ‘DiffBind’ ...
 ** libs
-clang++ -I"/Library/Frameworks/R.framework/Resources/include" -DNDEBUG -D_USE_KNETFILE -DBGZF_CACHE -D_FILE_OFFSET_BITS=64 -D_LARGEFILE64_SOURCE -I"/Users/lionel/Desktop/rlang/revdep/library.noindex/DiffBind/Rsamtools/include" -I"/Users/lionel/Desktop/rlang/revdep/library.noindex/DiffBind/Rcpp/include" -I/usr/local/include   -fPIC  -arch x86_64 -ftemplate-depth-256 -Wall -pedantic -O0 -c RcppExports.cpp -o RcppExports.o
-clang++ -I"/Library/Frameworks/R.framework/Resources/include" -DNDEBUG -D_USE_KNETFILE -DBGZF_CACHE -D_FILE_OFFSET_BITS=64 -D_LARGEFILE64_SOURCE -I"/Users/lionel/Desktop/rlang/revdep/library.noindex/DiffBind/Rsamtools/include" -I"/Users/lionel/Desktop/rlang/revdep/library.noindex/DiffBind/Rcpp/include" -I/usr/local/include   -fPIC  -arch x86_64 -ftemplate-depth-256 -Wall -pedantic -O0 -c bamReader.cpp -o bamReader.o
-clang++ -I"/Library/Frameworks/R.framework/Resources/include" -DNDEBUG -D_USE_KNETFILE -DBGZF_CACHE -D_FILE_OFFSET_BITS=64 -D_LARGEFILE64_SOURCE -I"/Users/lionel/Desktop/rlang/revdep/library.noindex/DiffBind/Rsamtools/include" -I"/Users/lionel/Desktop/rlang/revdep/library.noindex/DiffBind/Rcpp/include" -I/usr/local/include   -fPIC  -arch x86_64 -ftemplate-depth-256 -Wall -pedantic -O0 -c bedReader.cpp -o bedReader.o
-clang++ -I"/Library/Frameworks/R.framework/Resources/include" -DNDEBUG -D_USE_KNETFILE -DBGZF_CACHE -D_FILE_OFFSET_BITS=64 -D_LARGEFILE64_SOURCE -I"/Users/lionel/Desktop/rlang/revdep/library.noindex/DiffBind/Rsamtools/include" -I"/Users/lionel/Desktop/rlang/revdep/library.noindex/DiffBind/Rcpp/include" -I/usr/local/include   -fPIC  -arch x86_64 -ftemplate-depth-256 -Wall -pedantic -O0 -c bitBucket.cpp -o bitBucket.o
-clang++ -I"/Library/Frameworks/R.framework/Resources/include" -DNDEBUG -D_USE_KNETFILE -DBGZF_CACHE -D_FILE_OFFSET_BITS=64 -D_LARGEFILE64_SOURCE -I"/Users/lionel/Desktop/rlang/revdep/library.noindex/DiffBind/Rsamtools/include" -I"/Users/lionel/Desktop/rlang/revdep/library.noindex/DiffBind/Rcpp/include" -I/usr/local/include   -fPIC  -arch x86_64 -ftemplate-depth-256 -Wall -pedantic -O0 -c croi_func.cpp -o croi_func.o
-clang++ -I"/Library/Frameworks/R.framework/Resources/include" -DNDEBUG -D_USE_KNETFILE -DBGZF_CACHE -D_FILE_OFFSET_BITS=64 -D_LARGEFILE64_SOURCE -I"/Users/lionel/Desktop/rlang/revdep/library.noindex/DiffBind/Rsamtools/include" -I"/Users/lionel/Desktop/rlang/revdep/library.noindex/DiffBind/Rcpp/include" -I/usr/local/include   -fPIC  -arch x86_64 -ftemplate-depth-256 -Wall -pedantic -O0 -c croi_main.cpp -o croi_main.o
-clang++ -I"/Library/Frameworks/R.framework/Resources/include" -DNDEBUG -D_USE_KNETFILE -DBGZF_CACHE -D_FILE_OFFSET_BITS=64 -D_LARGEFILE64_SOURCE -I"/Users/lionel/Desktop/rlang/revdep/library.noindex/DiffBind/Rsamtools/include" -I"/Users/lionel/Desktop/rlang/revdep/library.noindex/DiffBind/Rcpp/include" -I/usr/local/include   -fPIC  -arch x86_64 -ftemplate-depth-256 -Wall -pedantic -O0 -c densitySet.cpp -o densitySet.o
-clang++ -I"/Library/Frameworks/R.framework/Resources/include" -DNDEBUG -D_USE_KNETFILE -DBGZF_CACHE -D_FILE_OFFSET_BITS=64 -D_LARGEFILE64_SOURCE -I"/Users/lionel/Desktop/rlang/revdep/library.noindex/DiffBind/Rsamtools/include" -I"/Users/lionel/Desktop/rlang/revdep/library.noindex/DiffBind/Rcpp/include" -I/usr/local/include   -fPIC  -arch x86_64 -ftemplate-depth-256 -Wall -pedantic -O0 -c iBucket.cpp -o iBucket.o
-clang++ -I"/Library/Frameworks/R.framework/Resources/include" -DNDEBUG -D_USE_KNETFILE -DBGZF_CACHE -D_FILE_OFFSET_BITS=64 -D_LARGEFILE64_SOURCE -I"/Users/lionel/Desktop/rlang/revdep/library.noindex/DiffBind/Rsamtools/include" -I"/Users/lionel/Desktop/rlang/revdep/library.noindex/DiffBind/Rcpp/include" -I/usr/local/include   -fPIC  -arch x86_64 -ftemplate-depth-256 -Wall -pedantic -O0 -c interval.cpp -o interval.o
-clang++ -I"/Library/Frameworks/R.framework/Resources/include" -DNDEBUG -D_USE_KNETFILE -DBGZF_CACHE -D_FILE_OFFSET_BITS=64 -D_LARGEFILE64_SOURCE -I"/Users/lionel/Desktop/rlang/revdep/library.noindex/DiffBind/Rsamtools/include" -I"/Users/lionel/Desktop/rlang/revdep/library.noindex/DiffBind/Rcpp/include" -I/usr/local/include   -fPIC  -arch x86_64 -ftemplate-depth-256 -Wall -pedantic -O0 -c intervalDensity.cpp -o intervalDensity.o
-clang++ -I"/Library/Frameworks/R.framework/Resources/include" -DNDEBUG -D_USE_KNETFILE -DBGZF_CACHE -D_FILE_OFFSET_BITS=64 -D_LARGEFILE64_SOURCE -I"/Users/lionel/Desktop/rlang/revdep/library.noindex/DiffBind/Rsamtools/include" -I"/Users/lionel/Desktop/rlang/revdep/library.noindex/DiffBind/Rcpp/include" -I/usr/local/include   -fPIC  -arch x86_64 -ftemplate-depth-256 -Wall -pedantic -O0 -c intervalNode.cpp -o intervalNode.o
-clang++ -I"/Library/Frameworks/R.framework/Resources/include" -DNDEBUG -D_USE_KNETFILE -DBGZF_CACHE -D_FILE_OFFSET_BITS=64 -D_LARGEFILE64_SOURCE -I"/Users/lionel/Desktop/rlang/revdep/library.noindex/DiffBind/Rsamtools/include" -I"/Users/lionel/Desktop/rlang/revdep/library.noindex/DiffBind/Rcpp/include" -I/usr/local/include   -fPIC  -arch x86_64 -ftemplate-depth-256 -Wall -pedantic -O0 -c intervalSet.cpp -o intervalSet.o
-clang++ -I"/Library/Frameworks/R.framework/Resources/include" -DNDEBUG -D_USE_KNETFILE -DBGZF_CACHE -D_FILE_OFFSET_BITS=64 -D_LARGEFILE64_SOURCE -I"/Users/lionel/Desktop/rlang/revdep/library.noindex/DiffBind/Rsamtools/include" -I"/Users/lionel/Desktop/rlang/revdep/library.noindex/DiffBind/Rcpp/include" -I/usr/local/include   -fPIC  -arch x86_64 -ftemplate-depth-256 -Wall -pedantic -O0 -c intervalTree.cpp -o intervalTree.o
-clang++ -I"/Library/Frameworks/R.framework/Resources/include" -DNDEBUG -D_USE_KNETFILE -DBGZF_CACHE -D_FILE_OFFSET_BITS=64 -D_LARGEFILE64_SOURCE -I"/Users/lionel/Desktop/rlang/revdep/library.noindex/DiffBind/Rsamtools/include" -I"/Users/lionel/Desktop/rlang/revdep/library.noindex/DiffBind/Rcpp/include" -I/usr/local/include   -fPIC  -arch x86_64 -ftemplate-depth-256 -Wall -pedantic -O0 -c merge.cpp -o merge.o
-clang -I"/Library/Frameworks/R.framework/Resources/include" -DNDEBUG -D_USE_KNETFILE -DBGZF_CACHE -D_FILE_OFFSET_BITS=64 -D_LARGEFILE64_SOURCE -I"/Users/lionel/Desktop/rlang/revdep/library.noindex/DiffBind/Rsamtools/include" -I"/Users/lionel/Desktop/rlang/revdep/library.noindex/DiffBind/Rcpp/include" -I/usr/local/include   -fPIC   -Wall -pedantic -O0 -c mergeOne.c -o mergeOne.o
-clang++ -I"/Library/Frameworks/R.framework/Resources/include" -DNDEBUG -D_USE_KNETFILE -DBGZF_CACHE -D_FILE_OFFSET_BITS=64 -D_LARGEFILE64_SOURCE -I"/Users/lionel/Desktop/rlang/revdep/library.noindex/DiffBind/Rsamtools/include" -I"/Users/lionel/Desktop/rlang/revdep/library.noindex/DiffBind/Rcpp/include" -I/usr/local/include   -fPIC  -arch x86_64 -ftemplate-depth-256 -Wall -pedantic -O0 -c nodeGroup.cpp -o nodeGroup.o
-clang++ -I"/Library/Frameworks/R.framework/Resources/include" -DNDEBUG -D_USE_KNETFILE -DBGZF_CACHE -D_FILE_OFFSET_BITS=64 -D_LARGEFILE64_SOURCE -I"/Users/lionel/Desktop/rlang/revdep/library.noindex/DiffBind/Rsamtools/include" -I"/Users/lionel/Desktop/rlang/revdep/library.noindex/DiffBind/Rcpp/include" -I/usr/local/include   -fPIC  -arch x86_64 -ftemplate-depth-256 -Wall -pedantic -O0 -c peakOrder.cpp -o peakOrder.o
-clang++ -I"/Library/Frameworks/R.framework/Resources/include" -DNDEBUG -D_USE_KNETFILE -DBGZF_CACHE -D_FILE_OFFSET_BITS=64 -D_LARGEFILE64_SOURCE -I"/Users/lionel/Desktop/rlang/revdep/library.noindex/DiffBind/Rsamtools/include" -I"/Users/lionel/Desktop/rlang/revdep/library.noindex/DiffBind/Rcpp/include" -I/usr/local/include   -fPIC  -arch x86_64 -ftemplate-depth-256 -Wall -pedantic -O0 -c reader.cpp -o reader.o
-clang++ -I"/Library/Frameworks/R.framework/Resources/include" -DNDEBUG -D_USE_KNETFILE -DBGZF_CACHE -D_FILE_OFFSET_BITS=64 -D_LARGEFILE64_SOURCE -I"/Users/lionel/Desktop/rlang/revdep/library.noindex/DiffBind/Rsamtools/include" -I"/Users/lionel/Desktop/rlang/revdep/library.noindex/DiffBind/Rcpp/include" -I/usr/local/include   -fPIC  -arch x86_64 -ftemplate-depth-256 -Wall -pedantic -O0 -c sequence.cpp -o sequence.o
-clang++ -I"/Library/Frameworks/R.framework/Resources/include" -DNDEBUG -D_USE_KNETFILE -DBGZF_CACHE -D_FILE_OFFSET_BITS=64 -D_LARGEFILE64_SOURCE -I"/Users/lionel/Desktop/rlang/revdep/library.noindex/DiffBind/Rsamtools/include" -I"/Users/lionel/Desktop/rlang/revdep/library.noindex/DiffBind/Rcpp/include" -I/usr/local/include   -fPIC  -arch x86_64 -ftemplate-depth-256 -Wall -pedantic -O0 -c util.cpp -o util.o
-clang++ -dynamiclib -Wl,-headerpad_max_install_names -undefined dynamic_lookup -single_module -multiply_defined suppress -L/Library/Frameworks/R.framework/Resources/lib -L/usr/local/lib -o DiffBind.so RcppExports.o bamReader.o bedReader.o bitBucket.o croi_func.o croi_main.o densitySet.o iBucket.o interval.o intervalDensity.o intervalNode.o intervalSet.o intervalTree.o merge.o mergeOne.o nodeGroup.o peakOrder.o reader.o sequence.o util.o /Users/lionel/Desktop/rlang/revdep/library.noindex/DiffBind/Rsamtools/usrlib//libbam.a /Users/lionel/Desktop/rlang/revdep/library.noindex/DiffBind/Rsamtools/usrlib//libbcf.a /Users/lionel/Desktop/rlang/revdep/library.noindex/DiffBind/Rsamtools/usrlib//libtabix.a -lz -pthread -F/Library/Frameworks/R.framework/.. -framework R -Wl,-framework -Wl,CoreFoundation
+g++-8 -I"/Library/Frameworks/R.framework/Resources/include" -DNDEBUG -D_USE_KNETFILE -DBGZF_CACHE -D_FILE_OFFSET_BITS=64 -D_LARGEFILE64_SOURCE -I"/Users/lionel/Desktop/rlang/revdep/library.noindex/DiffBind/Rsamtools/include" -I"/Users/lionel/Desktop/rlang/revdep/library.noindex/DiffBind/Rcpp/include" -I/usr/local/include   -fPIC  -arch x86_64 -ftemplate-depth-256 -Wall -pedantic -O0 -c RcppExports.cpp -o RcppExports.o
+g++-8 -I"/Library/Frameworks/R.framework/Resources/include" -DNDEBUG -D_USE_KNETFILE -DBGZF_CACHE -D_FILE_OFFSET_BITS=64 -D_LARGEFILE64_SOURCE -I"/Users/lionel/Desktop/rlang/revdep/library.noindex/DiffBind/Rsamtools/include" -I"/Users/lionel/Desktop/rlang/revdep/library.noindex/DiffBind/Rcpp/include" -I/usr/local/include   -fPIC  -arch x86_64 -ftemplate-depth-256 -Wall -pedantic -O0 -c bamReader.cpp -o bamReader.o
+g++-8 -I"/Library/Frameworks/R.framework/Resources/include" -DNDEBUG -D_USE_KNETFILE -DBGZF_CACHE -D_FILE_OFFSET_BITS=64 -D_LARGEFILE64_SOURCE -I"/Users/lionel/Desktop/rlang/revdep/library.noindex/DiffBind/Rsamtools/include" -I"/Users/lionel/Desktop/rlang/revdep/library.noindex/DiffBind/Rcpp/include" -I/usr/local/include   -fPIC  -arch x86_64 -ftemplate-depth-256 -Wall -pedantic -O0 -c bedReader.cpp -o bedReader.o
+g++-8 -I"/Library/Frameworks/R.framework/Resources/include" -DNDEBUG -D_USE_KNETFILE -DBGZF_CACHE -D_FILE_OFFSET_BITS=64 -D_LARGEFILE64_SOURCE -I"/Users/lionel/Desktop/rlang/revdep/library.noindex/DiffBind/Rsamtools/include" -I"/Users/lionel/Desktop/rlang/revdep/library.noindex/DiffBind/Rcpp/include" -I/usr/local/include   -fPIC  -arch x86_64 -ftemplate-depth-256 -Wall -pedantic -O0 -c bitBucket.cpp -o bitBucket.o
+g++-8 -I"/Library/Frameworks/R.framework/Resources/include" -DNDEBUG -D_USE_KNETFILE -DBGZF_CACHE -D_FILE_OFFSET_BITS=64 -D_LARGEFILE64_SOURCE -I"/Users/lionel/Desktop/rlang/revdep/library.noindex/DiffBind/Rsamtools/include" -I"/Users/lionel/Desktop/rlang/revdep/library.noindex/DiffBind/Rcpp/include" -I/usr/local/include   -fPIC  -arch x86_64 -ftemplate-depth-256 -Wall -pedantic -O0 -c croi_func.cpp -o croi_func.o
+g++-8 -I"/Library/Frameworks/R.framework/Resources/include" -DNDEBUG -D_USE_KNETFILE -DBGZF_CACHE -D_FILE_OFFSET_BITS=64 -D_LARGEFILE64_SOURCE -I"/Users/lionel/Desktop/rlang/revdep/library.noindex/DiffBind/Rsamtools/include" -I"/Users/lionel/Desktop/rlang/revdep/library.noindex/DiffBind/Rcpp/include" -I/usr/local/include   -fPIC  -arch x86_64 -ftemplate-depth-256 -Wall -pedantic -O0 -c croi_main.cpp -o croi_main.o
+g++-8 -I"/Library/Frameworks/R.framework/Resources/include" -DNDEBUG -D_USE_KNETFILE -DBGZF_CACHE -D_FILE_OFFSET_BITS=64 -D_LARGEFILE64_SOURCE -I"/Users/lionel/Desktop/rlang/revdep/library.noindex/DiffBind/Rsamtools/include" -I"/Users/lionel/Desktop/rlang/revdep/library.noindex/DiffBind/Rcpp/include" -I/usr/local/include   -fPIC  -arch x86_64 -ftemplate-depth-256 -Wall -pedantic -O0 -c densitySet.cpp -o densitySet.o
+croi_func.cpp: In member function 'int Croi::load(int, bode::NodeGroup*, IBucket*, bode::DensitySet*, int)':
+croi_func.cpp:68:36: warning: catching polymorphic type 'class std::out_of_range' by value [-Wcatch-value=]
+         } catch (std::out_of_range oor) {
+                                    ^~~
+g++-8 -I"/Library/Frameworks/R.framework/Resources/include" -DNDEBUG -D_USE_KNETFILE -DBGZF_CACHE -D_FILE_OFFSET_BITS=64 -D_LARGEFILE64_SOURCE -I"/Users/lionel/Desktop/rlang/revdep/library.noindex/DiffBind/Rsamtools/include" -I"/Users/lionel/Desktop/rlang/revdep/library.noindex/DiffBind/Rcpp/include" -I/usr/local/include   -fPIC  -arch x86_64 -ftemplate-depth-256 -Wall -pedantic -O0 -c iBucket.cpp -o iBucket.o
+g++-8 -I"/Library/Frameworks/R.framework/Resources/include" -DNDEBUG -D_USE_KNETFILE -DBGZF_CACHE -D_FILE_OFFSET_BITS=64 -D_LARGEFILE64_SOURCE -I"/Users/lionel/Desktop/rlang/revdep/library.noindex/DiffBind/Rsamtools/include" -I"/Users/lionel/Desktop/rlang/revdep/library.noindex/DiffBind/Rcpp/include" -I/usr/local/include   -fPIC  -arch x86_64 -ftemplate-depth-256 -Wall -pedantic -O0 -c interval.cpp -o interval.o
+g++-8 -I"/Library/Frameworks/R.framework/Resources/include" -DNDEBUG -D_USE_KNETFILE -DBGZF_CACHE -D_FILE_OFFSET_BITS=64 -D_LARGEFILE64_SOURCE -I"/Users/lionel/Desktop/rlang/revdep/library.noindex/DiffBind/Rsamtools/include" -I"/Users/lionel/Desktop/rlang/revdep/library.noindex/DiffBind/Rcpp/include" -I/usr/local/include   -fPIC  -arch x86_64 -ftemplate-depth-256 -Wall -pedantic -O0 -c intervalDensity.cpp -o intervalDensity.o
+g++-8 -I"/Library/Frameworks/R.framework/Resources/include" -DNDEBUG -D_USE_KNETFILE -DBGZF_CACHE -D_FILE_OFFSET_BITS=64 -D_LARGEFILE64_SOURCE -I"/Users/lionel/Desktop/rlang/revdep/library.noindex/DiffBind/Rsamtools/include" -I"/Users/lionel/Desktop/rlang/revdep/library.noindex/DiffBind/Rcpp/include" -I/usr/local/include   -fPIC  -arch x86_64 -ftemplate-depth-256 -Wall -pedantic -O0 -c intervalNode.cpp -o intervalNode.o
+g++-8 -I"/Library/Frameworks/R.framework/Resources/include" -DNDEBUG -D_USE_KNETFILE -DBGZF_CACHE -D_FILE_OFFSET_BITS=64 -D_LARGEFILE64_SOURCE -I"/Users/lionel/Desktop/rlang/revdep/library.noindex/DiffBind/Rsamtools/include" -I"/Users/lionel/Desktop/rlang/revdep/library.noindex/DiffBind/Rcpp/include" -I/usr/local/include   -fPIC  -arch x86_64 -ftemplate-depth-256 -Wall -pedantic -O0 -c intervalSet.cpp -o intervalSet.o
+g++-8 -I"/Library/Frameworks/R.framework/Resources/include" -DNDEBUG -D_USE_KNETFILE -DBGZF_CACHE -D_FILE_OFFSET_BITS=64 -D_LARGEFILE64_SOURCE -I"/Users/lionel/Desktop/rlang/revdep/library.noindex/DiffBind/Rsamtools/include" -I"/Users/lionel/Desktop/rlang/revdep/library.noindex/DiffBind/Rcpp/include" -I/usr/local/include   -fPIC  -arch x86_64 -ftemplate-depth-256 -Wall -pedantic -O0 -c intervalTree.cpp -o intervalTree.o
+g++-8 -I"/Library/Frameworks/R.framework/Resources/include" -DNDEBUG -D_USE_KNETFILE -DBGZF_CACHE -D_FILE_OFFSET_BITS=64 -D_LARGEFILE64_SOURCE -I"/Users/lionel/Desktop/rlang/revdep/library.noindex/DiffBind/Rsamtools/include" -I"/Users/lionel/Desktop/rlang/revdep/library.noindex/DiffBind/Rcpp/include" -I/usr/local/include   -fPIC  -arch x86_64 -ftemplate-depth-256 -Wall -pedantic -O0 -c merge.cpp -o merge.o
+gcc-8 -I"/Library/Frameworks/R.framework/Resources/include" -DNDEBUG -D_USE_KNETFILE -DBGZF_CACHE -D_FILE_OFFSET_BITS=64 -D_LARGEFILE64_SOURCE -I"/Users/lionel/Desktop/rlang/revdep/library.noindex/DiffBind/Rsamtools/include" -I"/Users/lionel/Desktop/rlang/revdep/library.noindex/DiffBind/Rcpp/include" -I/usr/local/include   -fPIC   -Wall -pedantic -O0 -c mergeOne.c -o mergeOne.o
+g++-8 -I"/Library/Frameworks/R.framework/Resources/include" -DNDEBUG -D_USE_KNETFILE -DBGZF_CACHE -D_FILE_OFFSET_BITS=64 -D_LARGEFILE64_SOURCE -I"/Users/lionel/Desktop/rlang/revdep/library.noindex/DiffBind/Rsamtools/include" -I"/Users/lionel/Desktop/rlang/revdep/library.noindex/DiffBind/Rcpp/include" -I/usr/local/include   -fPIC  -arch x86_64 -ftemplate-depth-256 -Wall -pedantic -O0 -c nodeGroup.cpp -o nodeGroup.o
+g++-8 -I"/Library/Frameworks/R.framework/Resources/include" -DNDEBUG -D_USE_KNETFILE -DBGZF_CACHE -D_FILE_OFFSET_BITS=64 -D_LARGEFILE64_SOURCE -I"/Users/lionel/Desktop/rlang/revdep/library.noindex/DiffBind/Rsamtools/include" -I"/Users/lionel/Desktop/rlang/revdep/library.noindex/DiffBind/Rcpp/include" -I/usr/local/include   -fPIC  -arch x86_64 -ftemplate-depth-256 -Wall -pedantic -O0 -c peakOrder.cpp -o peakOrder.o
+g++-8 -I"/Library/Frameworks/R.framework/Resources/include" -DNDEBUG -D_USE_KNETFILE -DBGZF_CACHE -D_FILE_OFFSET_BITS=64 -D_LARGEFILE64_SOURCE -I"/Users/lionel/Desktop/rlang/revdep/library.noindex/DiffBind/Rsamtools/include" -I"/Users/lionel/Desktop/rlang/revdep/library.noindex/DiffBind/Rcpp/include" -I/usr/local/include   -fPIC  -arch x86_64 -ftemplate-depth-256 -Wall -pedantic -O0 -c reader.cpp -o reader.o
+g++-8 -I"/Library/Frameworks/R.framework/Resources/include" -DNDEBUG -D_USE_KNETFILE -DBGZF_CACHE -D_FILE_OFFSET_BITS=64 -D_LARGEFILE64_SOURCE -I"/Users/lionel/Desktop/rlang/revdep/library.noindex/DiffBind/Rsamtools/include" -I"/Users/lionel/Desktop/rlang/revdep/library.noindex/DiffBind/Rcpp/include" -I/usr/local/include   -fPIC  -arch x86_64 -ftemplate-depth-256 -Wall -pedantic -O0 -c sequence.cpp -o sequence.o
+g++-8 -I"/Library/Frameworks/R.framework/Resources/include" -DNDEBUG -D_USE_KNETFILE -DBGZF_CACHE -D_FILE_OFFSET_BITS=64 -D_LARGEFILE64_SOURCE -I"/Users/lionel/Desktop/rlang/revdep/library.noindex/DiffBind/Rsamtools/include" -I"/Users/lionel/Desktop/rlang/revdep/library.noindex/DiffBind/Rcpp/include" -I/usr/local/include   -fPIC  -arch x86_64 -ftemplate-depth-256 -Wall -pedantic -O0 -c util.cpp -o util.o
+g++-8 -dynamiclib -Wl,-headerpad_max_install_names -undefined dynamic_lookup -single_module -multiply_defined suppress -L/Library/Frameworks/R.framework/Resources/lib -L/usr/local/lib -o DiffBind.so RcppExports.o bamReader.o bedReader.o bitBucket.o croi_func.o croi_main.o densitySet.o iBucket.o interval.o intervalDensity.o intervalNode.o intervalSet.o intervalTree.o merge.o mergeOne.o nodeGroup.o peakOrder.o reader.o sequence.o util.o /Users/lionel/Desktop/rlang/revdep/library.noindex/DiffBind/Rsamtools/usrlib//libbam.a /Users/lionel/Desktop/rlang/revdep/library.noindex/DiffBind/Rsamtools/usrlib//libbcf.a /Users/lionel/Desktop/rlang/revdep/library.noindex/DiffBind/Rsamtools/usrlib//libtabix.a -lz -pthread -F/Library/Frameworks/R.framework/.. -framework R -Wl,-framework -Wl,CoreFoundation
 installing to /Users/lionel/Desktop/rlang/revdep/checks.noindex/DiffBind/old/DiffBind.Rcheck/DiffBind/libs
 ** R
 ** data
@@ -4075,9 +3972,9 @@ Version: 5.2.3
     ```
       installed size is 10.2Mb
       sub-directories of 1Mb or more:
-        data   2.1Mb
-        libs   1.1Mb
         R      6.1Mb
+        data   2.1Mb
+        libs   1.2Mb
     ```
 
 # dlookr
@@ -4110,6 +4007,14 @@ Version: 0.0.3
     ```
     Error in re-building vignettes:
       ...
+    ```
+
+*   checking installed package size ... NOTE
+    ```
+      installed size is  5.1Mb
+      sub-directories of 1Mb or more:
+        doc    3.4Mb
+        libs   1.4Mb
     ```
 
 # dotwhisker
@@ -4146,7 +4051,7 @@ Version: 0.5.0
 
 Version: 0.7.6
 
-## Newly broken
+## In both
 
 *   checking tests ...
     ```
@@ -4154,43 +4059,54 @@ Version: 0.7.6
     Running the tests in ‘tests/testthat.R’ failed.
     Last 13 lines of output:
       
-      ── 2. Failure: funs() gives a clear error message (#3368) (@test-funs.R#36)  ───
-      `funs(~mp[.])` threw an error with unexpected message.
-      Expected match: "`~mp[.]` must be a function name (quoted or unquoted) or an unquoted call, not `~`"
-      Actual message: "`~mp[.]` must be a function name (quoted or unquoted) or an unquoted call, not ``~``"
+      The following object is masked from 'package:testthat':
       
-      ══ testthat results  ═══════════════════════════════════════════════════════════
-      OK: 2734 SKIPPED: 6 FAILED: 2
-      1. Failure: funs() gives a clear error message (#3368) (@test-funs.R#28) 
-      2. Failure: funs() gives a clear error message (#3368) (@test-funs.R#36) 
+          matches
       
-      Error: testthat unit tests failed
-      In addition: Warning message:
-      call dbDisconnect() when finished working with a connection 
-      Execution halted
+      The following objects are masked from 'package:stats':
+      
+          filter, lag
+      
+      The following objects are masked from 'package:base':
+      
+          intersect, setdiff, setequal, union
+      
+      > 
+      > test_check("dplyr")
     ```
 
 *   checking re-building of vignette outputs ... WARNING
     ```
-    Error in re-building vignettes:
-      ...
-    `geom_smooth()` using method = 'gam' and formula 'y ~ s(x, bs = "cs")'
-    Warning: Removed 1 rows containing non-finite values (stat_smooth).
-    Warning: Removed 1 rows containing missing values (geom_point).
-    Quitting from lines 651-653 (programming.Rmd) 
-    Error: processing vignette 'programming.Rmd' failed with diagnostics:
-    `UQE()` is defunct. Please use `!!get_expr(x)`
-    Execution halted
+    ...
+    14: timing_fn(handle(ev <- withCallingHandlers(withVisible(eval(expr,     envir, enclos)), warning = wHandler, error = eHandler, message = mHandler)))
+    15: evaluate_call(expr, parsed$src[[i]], envir = envir, enclos = enclos,     debug = debug, last = i == length(out), use_try = stop_on_error !=         2L, keep_warning = keep_warning, keep_message = keep_message,     output_handler = output_handler, include_timing = include_timing)
+    16: evaluate::evaluate(...)
+    17: evaluate(code, envir = env, new_device = FALSE, keep_warning = !isFALSE(options$warning),     keep_message = !isFALSE(options$message), stop_on_error = if (options$error &&         options$include) 0L else 2L, output_handler = knit_handlers(options$render,         options))
+    18: in_dir(input_dir(), evaluate(code, envir = env, new_device = FALSE,     keep_warning = !isFALSE(options$warning), keep_message = !isFALSE(options$message),     stop_on_error = if (options$error && options$include) 0L else 2L,     output_handler = knit_handlers(options$render, options)))
+    19: block_exec(params)
+    20: call_block(x)
+    21: process_group.block(group)
+    22: process_group(group)
+    23: withCallingHandlers(if (tangle) process_tangle(group) else process_group(group),     error = function(e) {        setwd(wd)        cat(res, sep = "\n", file = output %n% "")        message("Quitting from lines ", paste(current_lines(i),             collapse = "-"), " (", knit_concord$get("infile"),             ") ")    })
+    24: process_file(text, output)
+    25: knitr::knit(knit_input, knit_output, envir = envir, quiet = quiet,     encoding = encoding)
+    26: rmarkdown::render(file, encoding = encoding, quiet = quiet, envir = globalenv())
+    27: vweave_rmarkdown(...)
+    28: engine$weave(file, quiet = quiet, encoding = enc)
+    29: doTryCatch(return(expr), name, parentenv, handler)
+    30: tryCatchOne(expr, names, parentenv, handlers[[1L]])
+    31: tryCatchList(expr, classes, parentenv, handlers)
+    32: tryCatch({    engine$weave(file, quiet = quiet, encoding = enc)    setwd(startdir)    find_vignette_product(name, by = "weave", engine = engine)}, error = function(e) {    stop(gettextf("processing vignette '%s' failed with diagnostics:\n%s",         file, conditionMessage(e)), domain = NA, call. = FALSE)})
+    33: buildVignettes(dir = "/Users/lionel/Desktop/rlang/revdep/checks.noindex/dplyr/new/dplyr.Rcheck/vign_test/dplyr")
+    An irrecoverable exception occurred. R is aborting now ...
     ```
-
-## In both
 
 *   checking installed package size ... NOTE
     ```
-      installed size is  8.2Mb
+      installed size is  8.8Mb
       sub-directories of 1Mb or more:
-        libs   4.4Mb
         R      2.0Mb
+        libs   5.1Mb
     ```
 
 *   checking data for non-ASCII characters ... NOTE
@@ -4222,34 +4138,6 @@ Version: 0.1.0
     Namespaces in Imports field not imported from:
       ‘tidyr’ ‘tidyverse’
       All declared Imports should be used.
-    ```
-
-# driftR
-
-Version: 1.1.0
-
-## Newly broken
-
-*   checking tests ...
-    ```
-     ERROR
-    Running the tests in ‘tests/testthat.R’ failed.
-    Last 13 lines of output:
-      > library(driftR)
-      > 
-      > test_check("driftR")
-      ── 1. Error: (unknown) (@test_read.R#36)  ──────────────────────────────────────
-      Instrument value "Sonde" not acceptable - value should be one of Sonde, EXO, or HOBO
-      1: dr_read(system.file("extdata", "rawData.csv", package = "driftR"), instrument = "Sonde", 
-             defineVar = TRUE, cleanVar = FALSE) at testthat/test_read.R:36
-      2: stop(glue::glue("Instrument value {instrument} not acceptable - value should be one of Sonde, EXO, or HOBO")) at /Users/lionel/Desktop/rlang/revdep/checks.noindex/driftR/new/driftR.Rcheck/00_pkg_src/driftR/R/dr_read.R:73
-      
-      ══ testthat results  ═══════════════════════════════════════════════════════════
-      OK: 199 SKIPPED: 0 FAILED: 1
-      1. Error: (unknown) (@test_read.R#36) 
-      
-      Error: testthat unit tests failed
-      Execution halted
     ```
 
 # DSAIDE
@@ -4312,61 +4200,41 @@ Version: 0.4.0
       All declared Imports should be used.
     ```
 
-# dsr
-
-Version: 0.1.0
-
-## Newly broken
-
-*   checking examples ... ERROR
-    ```
-    ...
-    > #US standard population
-    > df_ref  <- data.frame(age=c('00-14','15-24','25-44','45-64','65+'),
-    +                      pop=c(23961000,15420000,21353000,19601000,10685000))
-    > 
-    > #Directly Standardized Rate Ratio (per 1000) - 95% log-normal CI's, Alaska as the refernce
-    > my_results2 <- dsrr(data=df_study,
-    +                    event=deaths,
-    +                    fu=fu,
-    +                    subgroup=state,
-    +                    age,
-    +                    refdata=df_ref,
-    +                    refgroup="Alaska",
-    +                    estimate="ratio",
-    +                    sig=0.95,
-    +                    mp=1000,
-    +                    decimals=4)
-    Joining, by = "age"
-    Error in mutate_impl(.data, dots) : 
-      Column `ratio` must be length 1 (the group size), not 0
-    Calls: dsrr ... <Anonymous> -> mutate -> mutate.tbl_df -> mutate_impl
-    Execution halted
-    ```
-
-*   checking re-building of vignette outputs ... WARNING
-    ```
-    Error in re-building vignettes:
-      ...
-    Quitting from lines 100-113 (dsr.Rmd) 
-    Error: processing vignette 'dsr.Rmd' failed with diagnostics:
-    Column `ratio` must be length 1 (the group size), not 0
-    Execution halted
-    ```
-
 # dtwclust
 
 Version: 5.5.1
 
 ## In both
 
+*   checking tests ...
+    ```
+     ERROR
+    Running the tests in ‘tests/testthat.R’ failed.
+    Last 13 lines of output:
+      35: tryCatchList(expr, classes, parentenv, handlers)
+      36: tryCatch(withCallingHandlers({    eval(code, test_env)  ...
+      37: test_code(NULL, exprs, env)
+      38: source_file(path, new.env(parent = env), chdir = TRUE, wrap = wrap)
+      39: force(code)
+      40: with_reporter(reporter = reporter, start_end_reporter = start_end_reporter,     {  ...
+      41: FUN(X[[i]], ...)
+      42: lapply(paths, test_file, env = env, reporter = current_reporter,     start_end_reporter = FALSE, load_helpers = FALSE, wrap = wrap)
+      43: force(code)
+      44: with_reporter(reporter = current_reporter, results <- lapply(paths,     test_file, env = env, reporter = current_reporter, start_end_reporter = FALSE,   ...
+      45: test_files(paths, reporter = reporter, env = env, stop_on_failure = stop_on_failure,     stop_on_warning = stop_on_warning, wrap = wrap)
+      46: test_dir(path = test_path, reporter = reporter, env = env, filter = filter,     ..., stop_on_failure = stop_on_failure, stop_on_warning = stop_on_warning,   ...
+      47: test_package_dir(package = package, test_path = test_path, filter = filter,     reporter = reporter, ..., stop_on_failure = stop_on_failure,   ...
+      48: testthat::test_check("dtwclust")
+      An irrecoverable exception occurred. R is aborting now ...
+    ```
+
 *   checking installed package size ... NOTE
     ```
-      installed size is  6.2Mb
+      installed size is  6.8Mb
       sub-directories of 1Mb or more:
-        doc    2.5Mb
-        libs   1.1Mb
         R      2.0Mb
+        doc    2.5Mb
+        libs   1.6Mb
     ```
 
 *   checking for GNU extensions in Makefiles ... NOTE
@@ -4387,56 +4255,38 @@ Version: 0.6.3
       All declared Imports should be used.
     ```
 
-# dynfrail
-
-Version: 0.5.2
-
-## In both
-
-*   checking whether package ‘dynfrail’ can be installed ... ERROR
-    ```
-    Installation failed.
-    See ‘/Users/lionel/Desktop/rlang/revdep/checks.noindex/dynfrail/new/dynfrail.Rcheck/00install.out’ for details.
-    ```
-
-## Installation
-
-### Devel
-
-```
-* installing *source* package ‘dynfrail’ ...
-** package ‘dynfrail’ successfully unpacked and MD5 sums checked
-** libs
-clang++ -I"/Library/Frameworks/R.framework/Resources/include" -DNDEBUG  -I"/Users/lionel/Desktop/rlang/revdep/library.noindex/dynfrail/Rcpp/include" -I"/Users/lionel/Desktop/rlang/revdep/library.noindex/dynfrail/RcppArmadillo/include" -I/usr/local/include  -fopenmp  -fPIC  -arch x86_64 -ftemplate-depth-256 -Wall -pedantic -O0 -c RcppExports.cpp -o RcppExports.o
-clang: error: unsupported option '-fopenmp'
-make: *** [RcppExports.o] Error 1
-ERROR: compilation failed for package ‘dynfrail’
-* removing ‘/Users/lionel/Desktop/rlang/revdep/checks.noindex/dynfrail/new/dynfrail.Rcheck/dynfrail’
-
-```
-### CRAN
-
-```
-* installing *source* package ‘dynfrail’ ...
-** package ‘dynfrail’ successfully unpacked and MD5 sums checked
-** libs
-clang++ -I"/Library/Frameworks/R.framework/Resources/include" -DNDEBUG  -I"/Users/lionel/Desktop/rlang/revdep/library.noindex/dynfrail/Rcpp/include" -I"/Users/lionel/Desktop/rlang/revdep/library.noindex/dynfrail/RcppArmadillo/include" -I/usr/local/include  -fopenmp  -fPIC  -arch x86_64 -ftemplate-depth-256 -Wall -pedantic -O0 -c RcppExports.cpp -o RcppExports.o
-clang: error: unsupported option '-fopenmp'
-make: *** [RcppExports.o] Error 1
-ERROR: compilation failed for package ‘dynfrail’
-* removing ‘/Users/lionel/Desktop/rlang/revdep/checks.noindex/dynfrail/old/dynfrail.Rcheck/dynfrail’
-
-```
 # dynutils
 
 Version: 1.0.0
 
 ## In both
 
+*   checking tests ...
+    ```
+     ERROR
+    Running the tests in ‘tests/testthat.R’ failed.
+    Last 13 lines of output:
+      30: tryCatchList(expr, classes, parentenv, handlers)
+      31: tryCatch(withCallingHandlers({    eval(code, test_env)    if (!handled && !is.null(test)) {        skip_empty()    }}, expectation = handle_expectation, skip = handle_skip, warning = handle_warning,     message = handle_message, error = handle_error), error = handle_fatal,     skip = function(e) {    })
+      32: test_code(NULL, exprs, env)
+      33: source_file(path, new.env(parent = env), chdir = TRUE, wrap = wrap)
+      34: force(code)
+      35: with_reporter(reporter = reporter, start_end_reporter = start_end_reporter,     {        lister$start_file(basename(path))        source_file(path, new.env(parent = env), chdir = TRUE,             wrap = wrap)        end_context()    })
+      36: FUN(X[[i]], ...)
+      37: lapply(paths, test_file, env = env, reporter = current_reporter,     start_end_reporter = FALSE, load_helpers = FALSE, wrap = wrap)
+      38: force(code)
+      39: with_reporter(reporter = current_reporter, results <- lapply(paths,     test_file, env = env, reporter = current_reporter, start_end_reporter = FALSE,     load_helpers = FALSE, wrap = wrap))
+      40: test_files(paths, reporter = reporter, env = env, stop_on_failure = stop_on_failure,     stop_on_warning = stop_on_warning, wrap = wrap)
+      41: test_dir(path = test_path, reporter = reporter, env = env, filter = filter,     ..., stop_on_failure = stop_on_failure, stop_on_warning = stop_on_warning,     wrap = wrap)
+      42: test_package_dir(package = package, test_path = test_path, filter = filter,     reporter = reporter, ..., stop_on_failure = stop_on_failure,     stop_on_warning = stop_on_warning, wrap = wrap)
+      43: test_check("dynutils")
+      An irrecoverable exception occurred. R is aborting now ...
+    ```
+
 *   checking dependencies in R code ... NOTE
     ```
     Namespaces in Imports field not imported from:
-      ‘processx’ ‘Rcpp’
+      ‘Rcpp’ ‘processx’
       All declared Imports should be used.
     ```
 
@@ -4499,9 +4349,9 @@ Version: 1.1
 
 *   checking installed package size ... NOTE
     ```
-      installed size is  7.1Mb
+      installed size is  6.6Mb
       sub-directories of 1Mb or more:
-        data   5.6Mb
+        data   5.1Mb
         doc    1.2Mb
     ```
 
@@ -4627,6 +4477,12 @@ Version: 2.4.4
 *   checking R code for possible problems ... NOTE
     ```
     ...
+      (/Users/lionel/Desktop/rlang/revdep/checks.noindex/ELMER/new/ELMER.Rcheck/00_pkg_src/ELMER/R/motif.TF.Plots.R:147)
+    motif.enrichment.plot: no visible binding for global variable 'lowerOR'
+      (/Users/lionel/Desktop/rlang/revdep/checks.noindex/ELMER/new/ELMER.Rcheck/00_pkg_src/ELMER/R/motif.TF.Plots.R:147)
+    motif.enrichment.plot: no visible binding for global variable 'motif'
+      (/Users/lionel/Desktop/rlang/revdep/checks.noindex/ELMER/new/ELMER.Rcheck/00_pkg_src/ELMER/R/motif.TF.Plots.R:148-157)
+    motif.enrichment.plot: no visible binding for global variable 'OR'
       (/Users/lionel/Desktop/rlang/revdep/checks.noindex/ELMER/new/ELMER.Rcheck/00_pkg_src/ELMER/R/motif.TF.Plots.R:148-157)
     scatter: no visible binding for global variable 'value'
       (/Users/lionel/Desktop/rlang/revdep/checks.noindex/ELMER/new/ELMER.Rcheck/00_pkg_src/ELMER/R/Scatter.plot.R:217-231)
@@ -4634,16 +4490,10 @@ Version: 2.4.4
       (/Users/lionel/Desktop/rlang/revdep/checks.noindex/ELMER/new/ELMER.Rcheck/00_pkg_src/ELMER/R/Scatter.plot.R:236-238)
     scatter: no visible binding for global variable 'mae'
       (/Users/lionel/Desktop/rlang/revdep/checks.noindex/ELMER/new/ELMER.Rcheck/00_pkg_src/ELMER/R/Scatter.plot.R:250-267)
-    TF.rank.plot: no visible binding for global variable 'pvalue'
-      (/Users/lionel/Desktop/rlang/revdep/checks.noindex/ELMER/new/ELMER.Rcheck/00_pkg_src/ELMER/R/motif.TF.Plots.R:291-304)
-    TF.rank.plot: no visible binding for global variable 'label'
-      (/Users/lionel/Desktop/rlang/revdep/checks.noindex/ELMER/new/ELMER.Rcheck/00_pkg_src/ELMER/R/motif.TF.Plots.R:291-304)
-    TF.rank.plot: no visible binding for global variable 'Gene'
-      (/Users/lionel/Desktop/rlang/revdep/checks.noindex/ELMER/new/ELMER.Rcheck/00_pkg_src/ELMER/R/motif.TF.Plots.R:308-320)
     Undefined global functions or variables:
-      cor.test fisher.test Gene GeneID gr hm450.hg38.manifest Hugo_Symbol
-      label lowerOR mae motif OR precede Probe pvalue subsetByOverlaps
-      Target TF upperOR value write.table x y z
+      Gene GeneID Hugo_Symbol OR Probe TF Target cor.test fisher.test gr
+      hm450.hg38.manifest label lowerOR mae motif precede pvalue
+      subsetByOverlaps upperOR value write.table x y z
     Consider adding
       importFrom("stats", "cor.test", "fisher.test")
       importFrom("utils", "write.table")
@@ -4704,7 +4554,7 @@ Version: 2.4.2
     ```
       Error in .requirePackage(package) : 
         unable to find required package 'MultiAssayExperiment'
-      Calls: <Anonymous> ... .extendsForS3 -> extends -> getClassDef -> .requirePackage
+      Calls: <Anonymous> ... getClass -> getClassDef -> .classEnv -> .requirePackage
       Execution halted
     ```
 
@@ -4725,13 +4575,10 @@ Version: 1.0.0
     
         norm
     
-    Warning: call dbDisconnect() when finished working with a connection
-    [WARNING] Could not parse YAML metadata at line 1 column 1: :3:79: Unexpected '
-      '
     pandoc-citeproc: when expecting a product (:*:), encountered Object instead
     Error running filter /usr/local/bin/pandoc-citeproc:
     Filter returned error status 1
-    Error: processing vignette 'emuDB.Rmd' failed with diagnostics:
+    Error: processing vignette 'EQL.Rmd' failed with diagnostics:
     pandoc document conversion failed with error 83
     Execution halted
     ```
@@ -4740,9 +4587,9 @@ Version: 1.0.0
     ```
       installed size is  7.1Mb
       sub-directories of 1Mb or more:
+        R         3.0Mb
         doc       1.2Mb
         extdata   1.5Mb
-        R         3.0Mb
     ```
 
 # ENCODExplorer
@@ -4774,13 +4621,13 @@ Version: 2.6.0
     step9: no visible binding for global variable ‘organism’
       (/Users/lionel/Desktop/rlang/revdep/checks.noindex/ENCODExplorer/new/ENCODExplorer.Rcheck/00_pkg_src/ENCODExplorer/R/prepare_data.R:449-450)
     Undefined global functions or variables:
-      . accession antibody_caption antibody_characterization
-      antibody_target assay biological_replicate_number biosample_name
-      biosample_type col_name controls data date_released download.file
-      encode_df Experiment file_accession file_format href investigated_as
-      lab nucleic_acid_term organism platform project replicate_antibody
-      replicate_library server status submitted_by target
-      technical_replicate_number treatment ui value Value
+      . Experiment Value accession antibody_caption
+      antibody_characterization antibody_target assay
+      biological_replicate_number biosample_name biosample_type col_name
+      controls data date_released download.file encode_df file_accession
+      file_format href investigated_as lab nucleic_acid_term organism
+      platform project replicate_antibody replicate_library server status
+      submitted_by target technical_replicate_number treatment ui value
     Consider adding
       importFrom("utils", "data", "download.file")
     to your NAMESPACE file.
@@ -4834,6 +4681,19 @@ Version: 0.1.2
       All declared Imports should be used.
     ```
 
+# epos
+
+Version: 0.1.0
+
+## In both
+
+*   checking dependencies in R code ... NOTE
+    ```
+    Namespaces in Imports field not imported from:
+      ‘dplyr’ ‘testthat’ ‘tidyr’
+      All declared Imports should be used.
+    ```
+
 # ergm
 
 Version: 3.9.4
@@ -4852,8 +4712,8 @@ Version: 3.9.4
     ```
       installed size is  7.2Mb
       sub-directories of 1Mb or more:
-        doc   1.7Mb
         R     4.0Mb
+        doc   1.7Mb
     ```
 
 *   checking Rd cross-references ... NOTE
@@ -4886,9 +4746,9 @@ Version: 0.12
 
 *   checking installed package size ... NOTE
     ```
-      installed size is  5.7Mb
+      installed size is  6.9Mb
       sub-directories of 1Mb or more:
-        libs   5.0Mb
+        libs   6.1Mb
     ```
 
 *   checking Rd cross-references ... NOTE
@@ -4900,39 +4760,39 @@ Version: 0.12
 
 Version: 3.2.9
 
+## Newly fixed
+
+*   checking re-building of vignette outputs ... WARNING
+    ```
+    ...
+        filter, lag
+    
+    The following objects are masked from 'package:base':
+    
+        intersect, setdiff, setequal, union
+    
+    trying URL 'https://ec.europa.eu/eurostat/estat-navtree-portlet-prod/BulkDownloadListing?sort=1&file=data%2Ften00081.tsv.gz'
+    Content type 'application/octet-stream;charset=UTF-8' length 13630 bytes (13 KB)
+    ==================================================
+    downloaded 13 KB
+    
+    Table ten00081 cached at /var/folders/b9/1vbq6rn93_1fk71sn95dqb8r0000gn/T//RtmpRHzzjc/eurostat/ten00081_date_code_TF.rds
+    trying URL 'https://ec.europa.eu/eurostat/estat-navtree-portlet-prod/BulkDownloadListing?sort=1&file=data%2Ftgs00026.tsv.gz'
+    Content type 'application/octet-stream;charset=UTF-8' length 5998 bytes
+    ==================================================
+    downloaded 5998 bytes
+    
+    Quitting from lines 435-447 (eurostat_tutorial.Rmd) 
+    Error: processing vignette 'eurostat_tutorial.Rmd' failed with diagnostics:
+    no applicable method for 'xmlAttrs' applied to an object of class "NULL"
+    Execution halted
+    ```
+
 ## In both
 
 *   checking data for non-ASCII characters ... NOTE
     ```
       Note: found 596 marked UTF-8 strings
-    ```
-
-# evaluator
-
-Version: 0.3.0
-
-## Newly broken
-
-*   checking tests ...
-    ```
-     ERROR
-    Running the tests in ‘tests/testthat.R’ failed.
-    Last 13 lines of output:
-      ── 1. Failure: Simulation summary (@test-summarize.R#6)  ───────────────────────
-      as.data.frame(dat) not equivalent to as.data.frame(scenario_summary).
-      Component "mean_diff_exceedance": Mean relative difference: 0.8232393
-      
-      ── 2. Failure: Domain summary (@test-summarize.R#21)  ──────────────────────────
-      summarize_domains(simulation_results) not equivalent to `domain_summary`.
-      Rows in x but not y: 14, 13, 11, 10, 9, 8, 7, 6, 5, 12, 4[...]. Rows in y but not x: 14, 13, 12, 11, 10, 9, 8, 7, 6, 5, 4[...]. 
-      
-      ══ testthat results  ═══════════════════════════════════════════════════════════
-      OK: 85 SKIPPED: 5 FAILED: 2
-      1. Failure: Simulation summary (@test-summarize.R#6) 
-      2. Failure: Domain summary (@test-summarize.R#21) 
-      
-      Error: testthat unit tests failed
-      Execution halted
     ```
 
 # EventStudy
@@ -5019,17 +4879,6 @@ Version: 0.1.7
     Execution halted
     ```
 
-# facerec
-
-Version: 0.1.0
-
-## In both
-
-*   checking package dependencies ... NOTE
-    ```
-    Package suggested but not available for checking: ‘magick’
-    ```
-
 # factoextra
 
 Version: 1.0.5
@@ -5060,40 +4909,13 @@ Version: 0.4.0
 
 ## In both
 
-*   checking whether package ‘fastLink’ can be installed ... ERROR
+*   checking installed package size ... NOTE
     ```
-    Installation failed.
-    See ‘/Users/lionel/Desktop/rlang/revdep/checks.noindex/fastLink/new/fastLink.Rcheck/00install.out’ for details.
+      installed size is  6.5Mb
+      sub-directories of 1Mb or more:
+        data   5.0Mb
     ```
 
-## Installation
-
-### Devel
-
-```
-* installing *source* package ‘fastLink’ ...
-** package ‘fastLink’ successfully unpacked and MD5 sums checked
-** libs
-clang++ -I"/Library/Frameworks/R.framework/Resources/include" -DNDEBUG  -I"/Users/lionel/Desktop/rlang/revdep/library.noindex/fastLink/RcppArmadillo/include" -I"/Users/lionel/Desktop/rlang/revdep/library.noindex/fastLink/Rcpp/include" -I"/Users/lionel/Desktop/rlang/revdep/library.noindex/fastLink/RcppEigen/include" -I/usr/local/include  -fopenmp  -fPIC  -arch x86_64 -ftemplate-depth-256 -Wall -pedantic -O0 -c RcppExports.cpp -o RcppExports.o
-clang: error: unsupported option '-fopenmp'
-make: *** [RcppExports.o] Error 1
-ERROR: compilation failed for package ‘fastLink’
-* removing ‘/Users/lionel/Desktop/rlang/revdep/checks.noindex/fastLink/new/fastLink.Rcheck/fastLink’
-
-```
-### CRAN
-
-```
-* installing *source* package ‘fastLink’ ...
-** package ‘fastLink’ successfully unpacked and MD5 sums checked
-** libs
-clang++ -I"/Library/Frameworks/R.framework/Resources/include" -DNDEBUG  -I"/Users/lionel/Desktop/rlang/revdep/library.noindex/fastLink/RcppArmadillo/include" -I"/Users/lionel/Desktop/rlang/revdep/library.noindex/fastLink/Rcpp/include" -I"/Users/lionel/Desktop/rlang/revdep/library.noindex/fastLink/RcppEigen/include" -I/usr/local/include  -fopenmp  -fPIC  -arch x86_64 -ftemplate-depth-256 -Wall -pedantic -O0 -c RcppExports.cpp -o RcppExports.o
-clang: error: unsupported option '-fopenmp'
-make: *** [RcppExports.o] Error 1
-ERROR: compilation failed for package ‘fastLink’
-* removing ‘/Users/lionel/Desktop/rlang/revdep/checks.noindex/fastLink/old/fastLink.Rcheck/fastLink’
-
-```
 # fastR2
 
 Version: 1.2.1
@@ -5102,9 +4924,37 @@ Version: 1.2.1
 
 *   checking installed package size ... NOTE
     ```
-      installed size is  5.0Mb
+      installed size is  5.1Mb
       sub-directories of 1Mb or more:
         snippet   3.7Mb
+    ```
+
+# feather
+
+Version: 0.3.1
+
+## In both
+
+*   checking tests ...
+    ```
+     ERROR
+    Running the tests in ‘tests/testthat.R’ failed.
+    Last 13 lines of output:
+      33: tryCatchList(expr, classes, parentenv, handlers)
+      34: tryCatch(withCallingHandlers({    eval(code, test_env)    if (!handled && !is.null(test)) {        skip_empty()    }}, expectation = handle_expectation, skip = handle_skip, warning = handle_warning,     message = handle_message, error = handle_error), error = handle_fatal,     skip = function(e) {    })
+      35: test_code(NULL, exprs, env)
+      36: source_file(path, new.env(parent = env), chdir = TRUE, wrap = wrap)
+      37: force(code)
+      38: with_reporter(reporter = reporter, start_end_reporter = start_end_reporter,     {        lister$start_file(basename(path))        source_file(path, new.env(parent = env), chdir = TRUE,             wrap = wrap)        end_context()    })
+      39: FUN(X[[i]], ...)
+      40: lapply(paths, test_file, env = env, reporter = current_reporter,     start_end_reporter = FALSE, load_helpers = FALSE, wrap = wrap)
+      41: force(code)
+      42: with_reporter(reporter = current_reporter, results <- lapply(paths,     test_file, env = env, reporter = current_reporter, start_end_reporter = FALSE,     load_helpers = FALSE, wrap = wrap))
+      43: test_files(paths, reporter = reporter, env = env, stop_on_failure = stop_on_failure,     stop_on_warning = stop_on_warning, wrap = wrap)
+      44: test_dir(path = test_path, reporter = reporter, env = env, filter = filter,     ..., stop_on_failure = stop_on_failure, stop_on_warning = stop_on_warning,     wrap = wrap)
+      45: test_package_dir(package = package, test_path = test_path, filter = filter,     reporter = reporter, ..., stop_on_failure = stop_on_failure,     stop_on_warning = stop_on_warning, wrap = wrap)
+      46: test_check("feather")
+      An irrecoverable exception occurred. R is aborting now ...
     ```
 
 # febr
@@ -5179,15 +5029,9 @@ Version: 1.10.0
 *   checking whether package ‘FindMyFriends’ can be installed ... WARNING
     ```
     Found the following significant warnings:
-      ./cdhit-common.h:536:3: warning: 'long long' is a C++11 extension [-Wc++11-long-long]
-      ./cdhit-common.h:537:3: warning: 'long long' is a C++11 extension [-Wc++11-long-long]
-      cdhit-common.cpp:1785:3: warning: 'long long' is a C++11 extension [-Wc++11-long-long]
-      cdhit-common.cpp:1909:9: warning: 'long long' is a C++11 extension [-Wc++11-long-long]
-      cdhit-common.cpp:1910:37: warning: 'long long' is a C++11 extension [-Wc++11-long-long]
-      cdhit-common.cpp:1945:12: warning: 'long long' is a C++11 extension [-Wc++11-long-long]
-      cdhit-common.cpp:1946:40: warning: 'long long' is a C++11 extension [-Wc++11-long-long]
-      cdhit-common.cpp:1964:9: warning: 'long long' is a C++11 extension [-Wc++11-long-long]
-      cdhit-common.cpp:1965:37: warning: 'long long' is a C++11 extension [-Wc++11-long-long]
+      cdhit-common.cpp:1556:42: warning: 'void* memcpy(void*, const void*, size_t)' writing to an object of non-trivially copyable type 'struct Sequence'; use copy-assignment or copy-initialization instead [-Wclass-memaccess]
+      cdhit-common.cpp:1558:45: warning: 'void* memcpy(void*, const void*, size_t)' writing to an object of non-trivially copyable type 'struct Sequence'; use copy-assignment or copy-initialization instead [-Wclass-memaccess]
+      cdhit-common.cpp:1559:39: warning: 'void* memset(void*, int, size_t)' clearing an object of non-trivial type 'struct Sequence'; use assignment or value-initialization instead [-Wclass-memaccess]
     See ‘/Users/lionel/Desktop/rlang/revdep/checks.noindex/FindMyFriends/new/FindMyFriends.Rcheck/00install.out’ for details.
     ```
 
@@ -5201,10 +5045,10 @@ Version: 1.10.0
     ```
       installed size is  6.8Mb
       sub-directories of 1Mb or more:
+        R         2.1Mb
         doc       1.5Mb
         extdata   1.8Mb
         libs      1.2Mb
-        R         2.1Mb
     ```
 
 *   checking dependencies in R code ... NOTE
@@ -5268,14 +5112,31 @@ Version: 3.28.2
 
 ## In both
 
+*   checking whether the package can be loaded ... ERROR
+    ```
+    Loading this package had a fatal error status code 1
+    Loading log:
+    Loading required package: flowCore
+    Loading required package: ncdfFlow
+    Loading required package: RcppArmadillo
+    Loading required package: BH
+    Error: package or namespace load failed for ‘flowWorkspace’ in dyn.load(file, DLLpath = DLLpath, ...):
+     unable to load shared object '/Users/lionel/Desktop/rlang/revdep/checks.noindex/flowWorkspace/new/flowWorkspace.Rcheck/flowWorkspace/libs/flowWorkspace.so':
+      dlopen(/Users/lionel/Desktop/rlang/revdep/checks.noindex/flowWorkspace/new/flowWorkspace.Rcheck/flowWorkspace/libs/flowWorkspace.so, 6): Symbol not found: __ZN6google8protobuf8internal13empty_string_B5cxx11E
+      Referenced from: /Users/lionel/Desktop/rlang/revdep/checks.noindex/flowWorkspace/new/flowWorkspace.Rcheck/flowWorkspace/libs/flowWorkspace.so
+      Expected in: flat namespace
+     in /Users/lionel/Desktop/rlang/revdep/checks.noindex/flowWorkspace/new/flowWorkspace.Rcheck/flowWorkspace/libs/flowWorkspace.so
+    Execution halted
+    ```
+
 *   checking installed package size ... NOTE
     ```
-      installed size is 17.4Mb
+      installed size is 19.0Mb
       sub-directories of 1Mb or more:
-        doc    1.4Mb
-        lib    8.2Mb
-        libs   5.4Mb
         R      2.0Mb
+        doc    1.4Mb
+        lib    8.7Mb
+        libs   6.5Mb
     ```
 
 *   checking DESCRIPTION meta-information ... NOTE
@@ -5283,68 +5144,6 @@ Version: 3.28.2
     Versioned 'LinkingTo' values for
       ‘BH’ ‘cytolib’
     are only usable in R >= 3.0.2
-    ```
-
-*   checking dependencies in R code ... NOTE
-    ```
-    Namespaces in Imports field not imported from:
-      ‘graphics’ ‘grDevices’ ‘RBGL’
-      All declared Imports should be used.
-    Unexported objects imported by ':::' calls:
-      ‘flowCore:::.estimateLogicle’ ‘flowCore:::checkClass’
-      ‘flowCore:::copyFlowSet’ ‘flowCore:::guid’
-      ‘flowCore:::logicle_transform’ ‘flowCore:::updateTransformKeywords’
-      ‘graph:::.makeEdgeKeys’ ‘lattice:::updateList’
-      ‘ncdfFlow:::.isValidSamples’ ‘stats:::.splinefun’
-      See the note in ?`:::` about the use of this operator.
-    There are ::: calls to the package's namespace in its code. A package
-      almost never needs to use ::: for its own objects:
-      ‘.cpp_setIndices’ ‘.getNodeInd’
-    ```
-
-*   checking R code for possible problems ... NOTE
-    ```
-    ...
-    show,flowJoWorkspace: no visible binding for global variable
-      ‘groupName’
-      (/Users/lionel/Desktop/rlang/revdep/checks.noindex/flowWorkspace/new/flowWorkspace.Rcheck/00_pkg_src/flowWorkspace/R/flowJoWorkspace_Methods.R:66)
-    transform,GatingSet: no visible global function definition for ‘is’
-      (/Users/lionel/Desktop/rlang/revdep/checks.noindex/flowWorkspace/new/flowWorkspace.Rcheck/00_pkg_src/flowWorkspace/R/GatingSet_Methods.R:2291-2296)
-    transform,GatingSet: no visible global function definition for ‘is’
-      (/Users/lionel/Desktop/rlang/revdep/checks.noindex/flowWorkspace/new/flowWorkspace.Rcheck/00_pkg_src/flowWorkspace/R/GatingSet_Methods.R:2298-2308)
-    transform,GatingSet : <anonymous>: no visible global function
-      definition for ‘is’
-      (/Users/lionel/Desktop/rlang/revdep/checks.noindex/flowWorkspace/new/flowWorkspace.Rcheck/00_pkg_src/flowWorkspace/R/GatingSet_Methods.R:2301-2302)
-    Undefined global functions or variables:
-      . .hasSlot as as.formula callNextMethod desc extends gray groupName
-      IQR is median new node old openCyto.count parallel sampleName
-      selectMethod slot validObject xml.count
-    Consider adding
-      importFrom("grDevices", "gray")
-      importFrom("methods", ".hasSlot", "as", "callNextMethod", "extends",
-                 "is", "new", "selectMethod", "slot", "validObject")
-      importFrom("stats", "as.formula", "IQR", "median")
-    to your NAMESPACE file (and ensure that your DESCRIPTION Imports
-    field contains 'methods').
-    ```
-
-*   checking for GNU extensions in Makefiles ... NOTE
-    ```
-    GNU make is a SystemRequirements.
-    ```
-
-*   checking compiled code ... NOTE
-    ```
-    File ‘flowWorkspace/libs/flowWorkspace.so’:
-      Found ‘__ZNSt3__14coutE’, possibly from ‘std::cout’ (C++)
-        Object: ‘R_GatingSet.o’
-    
-    Compiled code should not call entry points which might terminate R
-    nor write to stdout/stderr instead of to the console, nor use
-    Fortran I/O nor system RNGs.
-    
-    See ‘Writing portable packages’ in the ‘Writing R Extensions’
-    manual.
     ```
 
 # fold
@@ -5394,6 +5193,30 @@ Version: 0.1.3
 
 Version: 1.0.0
 
+## Newly fixed
+
+*   checking tests ...
+    ```
+     ERROR
+    Running the tests in ‘tests/testthat.R’ failed.
+    Last 13 lines of output:
+      4: withr::with_output_sink(temp, withCallingHandlers(withVisible(code), warning = handle_warning, 
+             message = handle_message))
+      5: force(code)
+      6: withCallingHandlers(withVisible(code), warning = handle_warning, message = handle_message)
+      7: withVisible(code)
+      8: eval_bare(get_expr(quo), get_env(quo))
+      9: fredr_docs(endpoint = "series", params = TRUE)
+      10: stop(paste("Bad endpoint:", url)) at /Users/lionel/Desktop/rlang/revdep/checks.noindex/fredr/old/fredr.Rcheck/00_pkg_src/fredr/R/fredr_docs.R:50
+      
+      ══ testthat results  ═══════════════════════════════════════════════════════════
+      OK: 66 SKIPPED: 38 FAILED: 1
+      1. Error: fredr_docs throws errors on invalid endpoints (@test_docs.R#15) 
+      
+      Error: testthat unit tests failed
+      Execution halted
+    ```
+
 ## In both
 
 *   checking data for non-ASCII characters ... NOTE
@@ -5427,9 +5250,9 @@ Version: 0.2.2
     ```
       installed size is  9.8Mb
       sub-directories of 1Mb or more:
+        R      2.0Mb
         data   5.3Mb
         doc    2.1Mb
-        R      2.0Mb
     ```
 
 # FSA
@@ -5449,10 +5272,38 @@ Version: 0.2.1
 
 ## In both
 
-*   checking whether package ‘FSelectorRcpp’ can be installed ... ERROR
+*   checking tests ...
     ```
-    Installation failed.
-    See ‘/Users/lionel/Desktop/rlang/revdep/checks.noindex/FSelectorRcpp/new/FSelectorRcpp.Rcheck/00install.out’ for details.
+     ERROR
+    Running the tests in ‘tests/testthat.R’ failed.
+    Last 13 lines of output:
+      32: tryCatchList(expr, classes, parentenv, handlers)
+      33: tryCatch(withCallingHandlers({    eval(code, test_env)    if (!handled && !is.null(test)) {        skip_empty()    }}, expectation = handle_expectation, skip = handle_skip, warning = handle_warning,     message = handle_message, error = handle_error), error = handle_fatal,     skip = function(e) {    })
+      34: test_code(NULL, exprs, env)
+      35: source_file(path, new.env(parent = env), chdir = TRUE, wrap = wrap)
+      36: force(code)
+      37: with_reporter(reporter = reporter, start_end_reporter = start_end_reporter,     {        lister$start_file(basename(path))        source_file(path, new.env(parent = env), chdir = TRUE,             wrap = wrap)        end_context()    })
+      38: FUN(X[[i]], ...)
+      39: lapply(paths, test_file, env = env, reporter = current_reporter,     start_end_reporter = FALSE, load_helpers = FALSE, wrap = wrap)
+      40: force(code)
+      41: with_reporter(reporter = current_reporter, results <- lapply(paths,     test_file, env = env, reporter = current_reporter, start_end_reporter = FALSE,     load_helpers = FALSE, wrap = wrap))
+      42: test_files(paths, reporter = reporter, env = env, stop_on_failure = stop_on_failure,     stop_on_warning = stop_on_warning, wrap = wrap)
+      43: test_dir(path = test_path, reporter = reporter, env = env, filter = filter,     ..., stop_on_failure = stop_on_failure, stop_on_warning = stop_on_warning,     wrap = wrap)
+      44: test_package_dir(package = package, test_path = test_path, filter = filter,     reporter = reporter, ..., stop_on_failure = stop_on_failure,     stop_on_warning = stop_on_warning, wrap = wrap)
+      45: test_check("FSelectorRcpp")
+      An irrecoverable exception occurred. R is aborting now ...
+    ```
+
+*   checking re-building of vignette outputs ... WARNING
+    ```
+    Error in re-building vignettes:
+      ...
+    pandoc-citeproc: when expecting a product (:*:), encountered Object instead
+    Error running filter /usr/local/bin/pandoc-citeproc:
+    Filter returned error status 1
+    Error: processing vignette 'benchmarks_discretize.Rmd' failed with diagnostics:
+    pandoc document conversion failed with error 83
+    Execution halted
     ```
 
 *   checking package dependencies ... NOTE
@@ -5460,34 +5311,14 @@ Version: 0.2.1
     Package suggested but not available for checking: ‘RTCGA.rnaseq’
     ```
 
-## Installation
+*   checking installed package size ... NOTE
+    ```
+      installed size is  6.6Mb
+      sub-directories of 1Mb or more:
+        doc    3.3Mb
+        libs   3.1Mb
+    ```
 
-### Devel
-
-```
-* installing *source* package ‘FSelectorRcpp’ ...
-** package ‘FSelectorRcpp’ successfully unpacked and MD5 sums checked
-** libs
-clang++ -std=c++11 -I"/Library/Frameworks/R.framework/Resources/include" -DNDEBUG -fopenmp -I../inst/include -I"/Users/lionel/Desktop/rlang/revdep/library.noindex/FSelectorRcpp/Rcpp/include" -I"/Users/lionel/Desktop/rlang/revdep/library.noindex/FSelectorRcpp/BH/include" -I"/Users/lionel/Desktop/rlang/revdep/library.noindex/FSelectorRcpp/RcppArmadillo/include" -I"/Users/lionel/Desktop/rlang/revdep/library.noindex/FSelectorRcpp/testthat/include" -I/usr/local/include   -fPIC  -arch x86_64 -ftemplate-depth-256 -Wall -pedantic -O0 -c RcppExports.cpp -o RcppExports.o
-clang: error: unsupported option '-fopenmp'
-make: *** [RcppExports.o] Error 1
-ERROR: compilation failed for package ‘FSelectorRcpp’
-* removing ‘/Users/lionel/Desktop/rlang/revdep/checks.noindex/FSelectorRcpp/new/FSelectorRcpp.Rcheck/FSelectorRcpp’
-
-```
-### CRAN
-
-```
-* installing *source* package ‘FSelectorRcpp’ ...
-** package ‘FSelectorRcpp’ successfully unpacked and MD5 sums checked
-** libs
-clang++ -std=c++11 -I"/Library/Frameworks/R.framework/Resources/include" -DNDEBUG -fopenmp -I../inst/include -I"/Users/lionel/Desktop/rlang/revdep/library.noindex/FSelectorRcpp/Rcpp/include" -I"/Users/lionel/Desktop/rlang/revdep/library.noindex/FSelectorRcpp/BH/include" -I"/Users/lionel/Desktop/rlang/revdep/library.noindex/FSelectorRcpp/RcppArmadillo/include" -I"/Users/lionel/Desktop/rlang/revdep/library.noindex/FSelectorRcpp/testthat/include" -I/usr/local/include   -fPIC  -arch x86_64 -ftemplate-depth-256 -Wall -pedantic -O0 -c RcppExports.cpp -o RcppExports.o
-clang: error: unsupported option '-fopenmp'
-make: *** [RcppExports.o] Error 1
-ERROR: compilation failed for package ‘FSelectorRcpp’
-* removing ‘/Users/lionel/Desktop/rlang/revdep/checks.noindex/FSelectorRcpp/old/FSelectorRcpp.Rcheck/FSelectorRcpp’
-
-```
 # ftDK
 
 Version: 1.0
@@ -5526,9 +5357,9 @@ Version: 1.8.0
 
 *   checking installed package size ... NOTE
     ```
-      installed size is 363.7Mb
+      installed size is 358.1Mb
       sub-directories of 1Mb or more:
-        data  362.6Mb
+        data  356.9Mb
     ```
 
 *   checking R code for possible problems ... NOTE
@@ -5550,9 +5381,9 @@ Version: 1.8.0
       abline axis median mtext par plot points polygon predict quantile rgb
       title
     Consider adding
+      importFrom("grDevices", "rgb")
       importFrom("graphics", "abline", "axis", "mtext", "par", "plot",
                  "points", "polygon", "title")
-      importFrom("grDevices", "rgb")
       importFrom("stats", "median", "predict", "quantile")
     to your NAMESPACE file.
     ```
@@ -5608,13 +5439,13 @@ Version: 1.4.0
     ...
     The following objects are masked from 'package:base':
     
-        anyDuplicated, append, as.data.frame, basename, cbind, colMeans,
-        colnames, colSums, dirname, do.call, duplicated, eval, evalq,
-        Filter, Find, get, grep, grepl, intersect, is.unsorted, lapply,
-        lengths, Map, mapply, match, mget, order, paste, pmax, pmax.int,
-        pmin, pmin.int, Position, rank, rbind, Reduce, rowMeans,
-        rownames, rowSums, sapply, setdiff, sort, table, tapply, union,
-        unique, unsplit, which, which.max, which.min
+        Filter, Find, Map, Position, Reduce, anyDuplicated, append,
+        as.data.frame, basename, cbind, colMeans, colSums, colnames,
+        dirname, do.call, duplicated, eval, evalq, get, grep, grepl,
+        intersect, is.unsorted, lapply, lengths, mapply, match, mget,
+        order, paste, pmax, pmax.int, pmin, pmin.int, rank, rbind,
+        rowMeans, rowSums, rownames, sapply, setdiff, sort, table,
+        tapply, union, unique, unsplit, which, which.max, which.min
     
     
     Attaching package: 'S4Vectors'
@@ -5708,11 +5539,20 @@ Version: 0.4.01
 
 ## In both
 
+*   checking whether the package can be loaded ... ERROR
+    ```
+    Loading this package had a fatal error status code 1
+    Loading log:
+    Error: package or namespace load failed for ‘gastempt’ in .doLoadActions(where, attach):
+     error in load action .__A__.1 for package gastempt: is(module, "character"): object 'm' not found
+    Execution halted
+    ```
+
 *   checking installed package size ... NOTE
     ```
-      installed size is 15.5Mb
+      installed size is 16.6Mb
       sub-directories of 1Mb or more:
-        libs  14.9Mb
+        libs  16.1Mb
     ```
 
 # geex
@@ -5735,7 +5575,7 @@ Version: 1.0.11
        ~~~~~~~~~~~~~~~~~~~~~~~~~ R code chunk ~~~~~~~~~~~~~~~~~~~~~~~~~~ 
        comparison 
        ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ 
-    ##------ Sat Oct  6 08:51:52 2018 ------##
+    ##------ Tue Oct  9 05:43:53 2018 ------##
     
       ordinary text without R code
     
@@ -5785,7 +5625,7 @@ Version: 2.10.1
       2: stop(txt, domain = NA)
       
       ══ testthat results  ═══════════════════════════════════════════════════════════
-      OK: 255 SKIPPED: 0 FAILED: 1
+      OK: 256 SKIPPED: 0 FAILED: 1
       1. Error: (unknown) (@test_assocTestMM.R#2) 
       
       Error: testthat unit tests failed
@@ -5824,34 +5664,6 @@ Version: 1.6.0
 # GenomicDataCommons
 
 Version: 1.4.3
-
-## Newly broken
-
-*   checking re-building of vignette outputs ... WARNING
-    ```
-    ...
-    Loading required package: magrittr
-    
-    Attaching package: 'GenomicDataCommons'
-    
-    The following object is masked from 'package:stats':
-    
-        filter
-    
-    Quitting from lines 145-146 (overview.Rmd) 
-    Error: processing vignette 'overview.Rmd' failed with diagnostics:
-    failed to rename downloaded file:
-    
-      from: '/Users/lionel/Library/Caches/GenomicDataCommons/691ec8c8-17b3-4c26-83f6-bd76817d9238/.partial_download'
-      to: '/Users/lionel/Library/Caches/GenomicDataCommons/691ec8c8-17b3-4c26-83f6-bd76817d9238/0315439e-694c-4b14-a27c-29dfa117c764.htseq.counts.gz'
-      reason:
-        cannot rename file
-        '/Users/lionel/Library/Caches/GenomicDataCommons/691ec8c8-17b3-4c26-83f6-bd76817d9238/.partial_download'
-        to
-        '/Users/lionel/Library/Caches/GenomicDataCommons/691ec8c8-17b3-4c26-83f6-bd76817d9238/0315439e-694c-4b14-a27c-29dfa117c764.htseq.counts.gz',
-        reason 'No such file or directory'
-    Execution halted
-    ```
 
 ## In both
 
@@ -5910,10 +5722,40 @@ Version: 2.0
 
 Version: 1.42.0
 
-## In both
+## Newly broken
 
 *   R CMD check timed out
     
+
+## Newly fixed
+
+*   checking re-building of vignette outputs ... WARNING
+    ```
+    ...
+    
+    The following object is masked from 'package:Biobase':
+    
+        combine
+    
+    The following objects are masked from 'package:BiocGenerics':
+    
+        combine, intersect, setdiff, union
+    
+    The following objects are masked from 'package:stats':
+    
+        filter, lag
+    
+    The following objects are masked from 'package:base':
+    
+        intersect, setdiff, setequal, union
+    
+    Quitting from lines 274-278 (GEOmetadb.Rmd) 
+    Error: processing vignette 'GEOmetadb.Rmd' failed with diagnostics:
+    The dbplyr package is required to communicate with database backends.
+    Execution halted
+    ```
+
+## In both
 
 *   checking for hidden files and directories ... NOTE
     ```
@@ -5943,7 +5785,7 @@ Version: 2.48.0
 
 *   checking installed package size ... NOTE
     ```
-      installed size is 14.0Mb
+      installed size is 13.9Mb
       sub-directories of 1Mb or more:
         extdata  12.8Mb
     ```
@@ -5985,7 +5827,7 @@ Version: 2.48.0
     parseGSEMatrix: no visible global function definition for ‘as’
       (/Users/lionel/Desktop/rlang/revdep/checks.noindex/GEOquery/new/GEOquery.Rcheck/00_pkg_src/GEOquery/R/parseGEO.R:606-610)
     Undefined global functions or variables:
-      . accession as characteristics k kvpair MA new read.delim read.table
+      . MA accession as characteristics k kvpair new read.delim read.table
       v
     Consider adding
       importFrom("methods", "as", "new")
@@ -6004,7 +5846,7 @@ Version: 0.17.4
     ```
       installed size is  5.2Mb
       sub-directories of 1Mb or more:
-        R           2.1Mb
+        R           2.0Mb
         test_data   2.9Mb
     ```
 
@@ -6069,65 +5911,6 @@ Version: 1.12.0
     to your NAMESPACE file.
     ```
 
-# gestalt
-
-Version: 0.1.4
-
-## Newly broken
-
-*   checking examples ... ERROR
-    ```
-    Running examples in ‘gestalt-Ex.R’ failed
-    The error most likely occurred in:
-    
-    > ### Name: constant
-    > ### Title: Values as Functions
-    > ### Aliases: constant variable
-    > 
-    > ### ** Examples
-    > 
-    > # Function with a constant return value
-    > val <- {message("Computing from scratch"); mtcars} %>>>%
-    +   split(.$cyl) %>>>%
-    +   lapply(function(data) lm(mpg ~ wt, data)) %>>>%
-    +   lapply(summary) %>>>%
-    +   sapply(`[[`, "r.squared")
-    Error: Internal error: Can't find .top pronoun in data mask
-    Execution halted
-    ```
-
-*   checking tests ...
-    ```
-     ERROR
-    Running the tests in ‘tests/testthat.R’ failed.
-    Last 13 lines of output:
-      4: tryCatch(expr, error = function(e) halt(failure, e$message)) at /Users/lionel/Desktop/rlang/revdep/checks.noindex/gestalt/new/gestalt.Rcheck/00_pkg_src/gestalt/R/utils.R:54
-      5: tryCatchList(expr, classes, parentenv, handlers)
-      6: tryCatchOne(expr, names, parentenv, handlers[[1L]])
-      7: value[[3L]](cond)
-      8: halt(failure, e$message) at /Users/lionel/Desktop/rlang/revdep/checks.noindex/gestalt/new/gestalt.Rcheck/00_pkg_src/gestalt/R/utils.R:54
-      9: stop(sprintf(msg, ...), call. = FALSE) at /Users/lionel/Desktop/rlang/revdep/checks.noindex/gestalt/new/gestalt.Rcheck/00_pkg_src/gestalt/R/utils.R:58
-      
-      ══ testthat results  ═══════════════════════════════════════════════════════════
-      OK: 814 SKIPPED: 0 FAILED: 3
-      1. Error: composition operator obeys magrittr semantics (#39) (@test-compose.R#210) 
-      2. Error: parentheses evaluate and group (@test-compose.R#321) 
-      3. Error: posure shows composite-function expression (@test-print.R#81) 
-      
-      Error: testthat unit tests failed
-      Execution halted
-    ```
-
-*   checking re-building of vignette outputs ... WARNING
-    ```
-    Error in re-building vignettes:
-      ...
-    Quitting from lines 42-54 (gestalt.Rmd) 
-    Error: processing vignette 'gestalt.Rmd' failed with diagnostics:
-    Internal error: Can't find .top pronoun in data mask
-    Execution halted
-    ```
-
 # GetDFPData
 
 Version: 1.0
@@ -6143,6 +5926,20 @@ Version: 1.0
 # GetITRData
 
 Version: 0.7
+
+## Newly broken
+
+*   checking re-building of vignette outputs ... WARNING
+    ```
+    Error in re-building vignettes:
+      ...
+    Quitting from lines 99-112 (gitrd-vignette-introduction.Rmd) 
+    Error: processing vignette 'gitrd-vignette-introduction.Rmd' failed with diagnostics:
+    Zipped file contains 0 files. This is likelly a problem with the downloaded file. Try running the code again as the corrupted zip file was deleted and will be downloaded again.
+    
+    If the problem persists, my suggestions is to remove the time period with problem.
+    Execution halted
+    ```
 
 ## In both
 
@@ -6203,51 +6000,6 @@ Version: 0.1.10
     ```
     Namespace in Imports field not imported from: ‘tidyr’
       All declared Imports should be used.
-    ```
-
-# ggalluvial
-
-Version: 0.9.0
-
-## Newly broken
-
-*   checking examples ... ERROR
-    ```
-    ...
-    [1] TRUE
-    > # Titanic data in lodes format
-    > titanic_lodes <- to_lodes_form(titanic_alluvia,
-    +                                key = "x", value = "stratum", id = "alluvium",
-    +                                axes = 1:4)
-    > head(titanic_lodes)
-      Freq "alluvium"   "x" "stratum"
-    1    0          1 Class       1st
-    2    0          2 Class       2nd
-    3   35          3 Class       3rd
-    4    0          4 Class      Crew
-    5    0          5 Class       1st
-    6    0          6 Class       2nd
-    > is_lodes_form(titanic_lodes,
-    +               key = "x", value = "stratum", id = "alluvium",
-    +               weight = "Freq")
-    Warning: 'glue::collapse' is deprecated.
-    Use 'glue_collapse' instead.
-    See help("Deprecated") and help("glue-deprecated").
-    Error: Strings must match column names. Unknown columns: x
-    Execution halted
-    ```
-
-*   checking re-building of vignette outputs ... WARNING
-    ```
-    Error in re-building vignettes:
-      ...
-    Warning in engine$weave(file, quiet = quiet, encoding = enc) :
-      The vignette engine knitr::rmarkdown is not available, because the rmarkdown package is not installed. Please install it.
-    Loading required package: ggplot2
-    Quitting from lines 33-43 (ggalluvial.rmd) 
-    Error: processing vignette 'ggalluvial.rmd' failed with diagnostics:
-    object 'stratum' not found
-    Execution halted
     ```
 
 # GGally
@@ -6344,8 +6096,8 @@ Version: 1.28.5
     ```
       installed size is  5.1Mb
       sub-directories of 1Mb or more:
+        R     3.1Mb
         doc   1.8Mb
-        R     3.0Mb
     ```
 
 *   checking dependencies in R code ... NOTE
@@ -6353,8 +6105,8 @@ Version: 1.28.5
     ':::' call which should be '::': 'ggplot2:::set_last_plot'
       See the note in ?`:::` about the use of this operator.
     Unexported objects imported by ':::' calls:
-      'ggplot2:::add_ggplot' 'ggplot2:::cunion' 'ggplot2:::rename_aes'
-      'ggplot2:::rescale01' 'S4Vectors:::top_prenv'
+      'S4Vectors:::top_prenv' 'ggplot2:::add_ggplot' 'ggplot2:::cunion'
+      'ggplot2:::rename_aes' 'ggplot2:::rescale01'
       See the note in ?`:::` about the use of this operator.
     ```
 
@@ -6388,34 +6140,6 @@ Version: 1.28.5
 
 Version: 1.8.2
 
-## Newly broken
-
-*   checking re-building of vignette outputs ... WARNING
-    ```
-    ...
-    Warning: Removed 142 rows containing missing values (geom_path).
-    Warning: Removed 4 rows containing missing values (geom_hex).
-    loading R object...
-    loading tree object...
-    Done
-    Warning: Removed 1 rows containing missing values (geom_hex).
-    Warning: Removed 5 rows containing missing values (geom_hex).
-    Warning: Removed 11864 rows containing non-finite values (stat_binhex).
-    Warning: Removed 15 rows containing missing values (geom_hex).
-    Warning: Removed 11892 rows containing non-finite values (stat_binhex).
-    Warning: Removed 26 rows containing missing values (geom_hex).
-    Warning: Removed 11815 rows containing non-finite values (stat_binhex).
-    Warning: Removed 26 rows containing missing values (geom_hex).
-    Warning: Removed 11863 rows containing non-finite values (stat_binhex).
-    Warning: Removed 27 rows containing missing values (geom_hex).
-    Warning: Removed 11858 rows containing non-finite values (stat_binhex).
-    Warning: Removed 25 rows containing missing values (geom_hex).
-    Quitting from lines 121-124 (Top_features_of_ggcyto.Rmd) 
-    Error: processing vignette 'Top_features_of_ggcyto.Rmd' failed with diagnostics:
-    can't find "CD4"
-    Execution halted
-    ```
-
 ## In both
 
 *   checking installed package size ... NOTE
@@ -6433,35 +6157,35 @@ Version: 1.8.2
       ‘flowWorkspace:::.mergeGates’ ‘flowWorkspace:::compact’
       ‘flowWorkspace:::fix_y_axis’ ‘flowWorkspace:::isNegated’
       ‘ggplot2:::+.gg’ ‘ggplot2:::add_group’ ‘ggplot2:::as_gg_data_frame’
-      ‘ggplot2:::check_aesthetics’ ‘ggplot2:::is_calculated_aes’
-      ‘ggplot2:::is.waive’ ‘ggplot2:::make_labels’ ‘ggplot2:::make_scale’
-      ‘ggplot2:::plot_clone’ ‘ggplot2:::print.ggplot’
-      ‘ggplot2:::scales_add_defaults’ ‘ggplot2:::scales_list’
-      ‘ggplot2:::update_theme’
+      ‘ggplot2:::check_aesthetics’ ‘ggplot2:::is.waive’
+      ‘ggplot2:::is_calculated_aes’ ‘ggplot2:::make_labels’
+      ‘ggplot2:::make_scale’ ‘ggplot2:::plot_clone’
+      ‘ggplot2:::print.ggplot’ ‘ggplot2:::scales_add_defaults’
+      ‘ggplot2:::scales_list’ ‘ggplot2:::update_theme’
       See the note in ?`:::` about the use of this operator.
     ```
 
 *   checking R code for possible problems ... NOTE
     ```
     ...
-      (/Users/lionel/Desktop/rlang/revdep/checks.noindex/ggcyto/new/ggcyto.Rcheck/00_pkg_src/ggcyto/R/ggcyto_GatingLayout.R:47)
     ggcyto.flowSet: no visible binding for global variable ‘name’
       (/Users/lionel/Desktop/rlang/revdep/checks.noindex/ggcyto/new/ggcyto.Rcheck/00_pkg_src/ggcyto/R/ggcyto_flowSet.R:61)
     ggcyto.flowSet: no visible binding for global variable ‘axis’
       (/Users/lionel/Desktop/rlang/revdep/checks.noindex/ggcyto/new/ggcyto.Rcheck/00_pkg_src/ggcyto/R/ggcyto_flowSet.R:63-64)
     ggcyto.flowSet: no visible binding for global variable ‘name’
       (/Users/lionel/Desktop/rlang/revdep/checks.noindex/ggcyto/new/ggcyto.Rcheck/00_pkg_src/ggcyto/R/ggcyto_flowSet.R:63-64)
-    ggcyto.GatingSetList: no visible global function definition for
-      ‘getS3method’
-      (/Users/lionel/Desktop/rlang/revdep/checks.noindex/ggcyto/new/ggcyto.Rcheck/00_pkg_src/ggcyto/R/ggcyto_GatingSet.R:45)
     ggcyto.ncdfFlowList: no visible global function definition for
       ‘getS3method’
       (/Users/lionel/Desktop/rlang/revdep/checks.noindex/ggcyto/new/ggcyto.Rcheck/00_pkg_src/ggcyto/R/ggcyto_flowSet.R:103)
+    ggcyto_arrange: no visible binding for global variable ‘name’
+      (/Users/lionel/Desktop/rlang/revdep/checks.noindex/ggcyto/new/ggcyto.Rcheck/00_pkg_src/ggcyto/R/ggcyto_GatingLayout.R:42)
+    ggcyto_arrange: no visible binding for global variable ‘name’
+      (/Users/lionel/Desktop/rlang/revdep/checks.noindex/ggcyto/new/ggcyto.Rcheck/00_pkg_src/ggcyto/R/ggcyto_GatingLayout.R:47)
     Undefined global functions or variables:
       approx axis density desc dist getS3method gray modifyList name
     Consider adding
-      importFrom("graphics", "axis")
       importFrom("grDevices", "gray")
+      importFrom("graphics", "axis")
       importFrom("stats", "approx", "density", "dist")
       importFrom("utils", "getS3method", "modifyList")
     to your NAMESPACE file.
@@ -6555,8 +6279,8 @@ Version: 0.9.0
     ```
       installed size is  6.0Mb
       sub-directories of 1Mb or more:
+        R     2.1Mb
         doc   2.7Mb
-        R     2.0Mb
     ```
 
 *   checking dependencies in R code ... NOTE
@@ -6670,18 +6394,21 @@ Version: 2.6.1
     Running examples in ‘ggmap-Ex.R’ failed
     The error most likely occurred in:
     
-    > ### Name: get_map
-    > ### Title: Grab a map.
-    > ### Aliases: get_map
+    > ### Name: print.ggmap
+    > ### Title: Print a map
+    > ### Aliases: print.ggmap
     > 
     > ### ** Examples
     > 
-    > map <- get_map()
+    > 
+    > get_map()
+    Map from URL : http://maps.googleapis.com/maps/api/staticmap?center=29.763284,-95.363271&zoom=10&size=640x640&scale=2&maptype=terrain&language=en-EN&sensor=false
+    1280x1280 terrain map image from Google Maps.  see ?ggmap to plot it.> ggmap(get_map())
     Warning in download.file(url, destfile = tmp, quiet = !messaging, mode = "wb") :
       cannot open URL 'http://maps.googleapis.com/maps/api/staticmap?center=29.763284,-95.363271&zoom=10&size=640x640&scale=2&maptype=terrain&language=en-EN&sensor=false': HTTP status was '403 Forbidden'
     Error in download.file(url, destfile = tmp, quiet = !messaging, mode = "wb") : 
       cannot open URL 'http://maps.googleapis.com/maps/api/staticmap?center=29.763284,-95.363271&zoom=10&size=640x640&scale=2&maptype=terrain&language=en-EN&sensor=false'
-    Calls: get_map -> get_googlemap -> download.file
+    Calls: ggmap -> get_map -> get_googlemap -> download.file
     Execution halted
     ```
 
@@ -6724,75 +6451,6 @@ Version: 1.1
     Execution halted
     ```
 
-# ggpage
-
-Version: 0.2.2
-
-## Newly broken
-
-*   checking examples ... ERROR
-    ```
-    Running examples in ‘ggpage-Ex.R’ failed
-    The error most likely occurred in:
-    
-    > ### Name: paper_shape
-    > ### Title: Identify the edges of the paper of each page
-    > ### Aliases: paper_shape
-    > 
-    > ### ** Examples
-    > 
-    > paper_shape(ggpage_build(tinderbox))
-    Error in check_input(x) : 
-      Input must be a character vector of any length or a list of character
-      vectors, each of which has a length of 1.
-    Calls: paper_shape ... tokenfunc -> tf -> tokenize_words.default -> check_input
-    Execution halted
-    ```
-
-*   checking tests ...
-    ```
-     ERROR
-    Running the tests in ‘tests/testthat.R’ failed.
-    Last 13 lines of output:
-      17: function_list[[i]](value)
-      18: tidytext::unnest_tokens(., output = "word", input = "text")
-      19: unnest_tokens.data.frame(., output = "word", input = "text")
-      20: tokenfunc(col, ...)
-      21: tf(col, lowercase = FALSE, ...)
-      22: tokenize_words.default(col, lowercase = FALSE, ...)
-      23: check_input(x)
-      24: stop("Input must be a character vector of any length or a list of character\n", "  vectors, each of which has a length of 1.")
-      
-      ══ testthat results  ═══════════════════════════════════════════════════════════
-      OK: 11 SKIPPED: 0 FAILED: 1
-      1. Error: The number of rows and cols are correct (@test-paper_shape.R#4) 
-      
-      Error: testthat unit tests failed
-      Execution halted
-    ```
-
-*   checking re-building of vignette outputs ... WARNING
-    ```
-    Error in re-building vignettes:
-      ...
-    
-    Attaching package: 'dplyr'
-    
-    The following objects are masked from 'package:stats':
-    
-        filter, lag
-    
-    The following objects are masked from 'package:base':
-    
-        intersect, setdiff, setequal, union
-    
-    Quitting from lines 24-40 (different-features.Rmd) 
-    Error: processing vignette 'different-features.Rmd' failed with diagnostics:
-    Input must be a character vector of any length or a list of character
-      vectors, each of which has a length of 1.
-    Execution halted
-    ```
-
 # ggplot2
 
 Version: 3.0.0
@@ -6803,8 +6461,8 @@ Version: 3.0.0
     ```
       installed size is  7.2Mb
       sub-directories of 1Mb or more:
-        doc   1.8Mb
         R     3.8Mb
+        doc   1.8Mb
     ```
 
 *   checking dependencies in R code ... NOTE
@@ -6883,9 +6541,9 @@ Version: 0.1.1
 *   checking dependencies in R code ... NOTE
     ```
     Namespaces in Imports field not imported from:
-      ‘colourpicker’ ‘dplyr’ ‘DT’ ‘Formula’ ‘ggpmisc’ ‘ggrepel’ ‘grDevices’
-      ‘gridExtra’ ‘Hmisc’ ‘lazyeval’ ‘markdown’ ‘plotly’ ‘quantreg’ ‘rlang’
-      ‘shinyjs’ ‘table1’ ‘tidyr’
+      ‘DT’ ‘Formula’ ‘Hmisc’ ‘colourpicker’ ‘dplyr’ ‘ggpmisc’ ‘ggrepel’
+      ‘grDevices’ ‘gridExtra’ ‘lazyeval’ ‘markdown’ ‘plotly’ ‘quantreg’
+      ‘rlang’ ‘shinyjs’ ‘table1’ ‘tidyr’
       All declared Imports should be used.
     ```
 
@@ -6911,8 +6569,8 @@ Version: 1.0.2
     ```
       installed size is  5.9Mb
       sub-directories of 1Mb or more:
-        doc   3.0Mb
         R     2.0Mb
+        doc   3.0Mb
     ```
 
 # ggridges
@@ -6942,61 +6600,10 @@ Version: 1.0.1
 
 Version: 0.0.6
 
-## Newly broken
-
-*   checking examples ... ERROR
-    ```
-    Running examples in ‘ggstatsplot-Ex.R’ failed
-    The error most likely occurred in:
-    
-    > ### Name: ggcoefstats
-    > ### Title: Model coefficients for fitted models with the model summary as a
-    > ###   caption.
-    > ### Aliases: ggcoefstats
-    > 
-    > ### ** Examples
-    > 
-    > 
-    > set.seed(123)
-    > ggcoefstats(x = lm(formula = mpg ~ cyl * am, data = mtcars))
-    Error in match.arg(package, unique(paletteer::palettes_d_names$package)) : 
-      'arg' should be one of “awtools”, “dichromat”, “dutchmasters”, “ggsci”, “ggpomological”, “ggthemes”, “ghibli”, “grDevices”, “jcolors”, “LaCroixColoR”, “NineteenEightyR”, “nord”, “ochRe”, “palettetown”, “pals”, “Polychrome”, “quickpalette”, “rcartocolor”, “RColorBrewer”, “Redmonder”, “RSkittleBrewer”, “wesanderson”, “yarrr”
-    Calls: ggcoefstats -> <Anonymous> -> match.arg
-    Execution halted
-    ```
-
-*   checking re-building of vignette outputs ... WARNING
-    ```
-    ...
-        intersect, setdiff, setequal, union
-    
-    -------------------------------------------------------------------------
-    You have loaded plyr after dplyr - this is likely to cause problems.
-    If you need functions from both plyr and dplyr, please load plyr first, then dplyr:
-    library(plyr); library(dplyr)
-    -------------------------------------------------------------------------
-    
-    Attaching package: 'plyr'
-    
-    The following objects are masked from 'package:dplyr':
-    
-        arrange, count, desc, failwith, id, mutate, rename, summarise,
-        summarize
-    
-    Scale for 'y' is already present. Adding another scale for 'y', which
-    will replace the existing scale.
-    Quitting from lines 79-107 (ggcoefstats.Rmd) 
-    Error: processing vignette 'ggcoefstats.Rmd' failed with diagnostics:
-    'arg' should be one of "awtools", "dichromat", "dutchmasters", "ggsci", "ggpomological", "ggthemes", "ghibli", "grDevices", "jcolors", "LaCroixColoR", "NineteenEightyR", "nord", "ochRe", "palettetown", "pals", "Polychrome", "quickpalette", "rcartocolor", "RColorBrewer", "Redmonder", "RSkittleBrewer", "wesanderson", "yarrr"
-    Execution halted
-    ```
-
-## Newly fixed
+## In both
 
 *   R CMD check timed out
     
-
-## In both
 
 *   checking installed package size ... NOTE
     ```
@@ -7060,11 +6667,21 @@ Version: 0.1.0
 
 ## In both
 
+*   checking whether the package can be loaded ... ERROR
+    ```
+    Loading this package had a fatal error status code 1
+    Loading log:
+    Loading required package: Rcpp
+    Error: package or namespace load failed for ‘glmmfields’ in .doLoadActions(where, attach):
+     error in load action .__A__.1 for package glmmfields: is(module, "character"): object 'm' not found
+    Execution halted
+    ```
+
 *   checking installed package size ... NOTE
     ```
-      installed size is  8.8Mb
+      installed size is 10.0Mb
       sub-directories of 1Mb or more:
-        libs   8.0Mb
+        libs   9.3Mb
     ```
 
 # gogamer
@@ -7088,22 +6705,6 @@ Version: 0.4.3
       Execution halted
     ```
 
-# googledrive
-
-Version: 0.1.1
-
-## In both
-
-*   checking examples ... WARNING
-    ```
-    Found the following significant warnings:
-    
-      Warning: 'collapse' is deprecated.
-    Deprecated functions may be defunct as soon as of the next release
-    of R.
-    See ?Deprecated.
-    ```
-
 # googlesheets
 
 Version: 0.3.0
@@ -7121,6 +6722,13 @@ Version: 0.3.0
 Version: 0.99.0
 
 ## In both
+
+*   checking whether package ‘gphmm’ can be installed ... WARNING
+    ```
+    Found the following significant warnings:
+      calculategphmm.cpp:217:13: warning: suggest parentheses around comparison in operand of '&' [-Wparentheses]
+    See ‘/Users/lionel/Desktop/rlang/revdep/checks.noindex/gphmm/new/gphmm.Rcheck/00install.out’ for details.
+    ```
 
 *   checking re-building of vignette outputs ... WARNING
     ```
@@ -7166,46 +6774,6 @@ Version: 1.12.0
     manual.
     ```
 
-# graphicalVAR
-
-Version: 0.2.2
-
-## In both
-
-*   checking whether package ‘graphicalVAR’ can be installed ... ERROR
-    ```
-    Installation failed.
-    See ‘/Users/lionel/Desktop/rlang/revdep/checks.noindex/graphicalVAR/new/graphicalVAR.Rcheck/00install.out’ for details.
-    ```
-
-## Installation
-
-### Devel
-
-```
-* installing *source* package ‘graphicalVAR’ ...
-** package ‘graphicalVAR’ successfully unpacked and MD5 sums checked
-** libs
-clang++ -std=c++11 -I"/Library/Frameworks/R.framework/Resources/include" -DNDEBUG  -I"/Users/lionel/Desktop/rlang/revdep/library.noindex/graphicalVAR/Rcpp/include" -I"/Users/lionel/Desktop/rlang/revdep/library.noindex/graphicalVAR/RcppArmadillo/include" -I/usr/local/include  -fopenmp  -fPIC  -arch x86_64 -ftemplate-depth-256 -Wall -pedantic -O0 -c RcppExports.cpp -o RcppExports.o
-clang: error: unsupported option '-fopenmp'
-make: *** [RcppExports.o] Error 1
-ERROR: compilation failed for package ‘graphicalVAR’
-* removing ‘/Users/lionel/Desktop/rlang/revdep/checks.noindex/graphicalVAR/new/graphicalVAR.Rcheck/graphicalVAR’
-
-```
-### CRAN
-
-```
-* installing *source* package ‘graphicalVAR’ ...
-** package ‘graphicalVAR’ successfully unpacked and MD5 sums checked
-** libs
-clang++ -std=c++11 -I"/Library/Frameworks/R.framework/Resources/include" -DNDEBUG  -I"/Users/lionel/Desktop/rlang/revdep/library.noindex/graphicalVAR/Rcpp/include" -I"/Users/lionel/Desktop/rlang/revdep/library.noindex/graphicalVAR/RcppArmadillo/include" -I/usr/local/include  -fopenmp  -fPIC  -arch x86_64 -ftemplate-depth-256 -Wall -pedantic -O0 -c RcppExports.cpp -o RcppExports.o
-clang: error: unsupported option '-fopenmp'
-make: *** [RcppExports.o] Error 1
-ERROR: compilation failed for package ‘graphicalVAR’
-* removing ‘/Users/lionel/Desktop/rlang/revdep/checks.noindex/graphicalVAR/old/graphicalVAR.Rcheck/graphicalVAR’
-
-```
 # graphTweets
 
 Version: 0.5.0
@@ -7230,7 +6798,7 @@ Version: 1.1.0
 *   checking for missing documentation entries ... WARNING
     ```
     Undocumented code objects:
-      ‘checkAnti’ ‘getJoinCompatible’ ‘GRASP2’
+      ‘GRASP2’ ‘checkAnti’ ‘getJoinCompatible’
     Undocumented data sets:
       ‘mml10p_nox’ ‘uniqueGexNames2.0’ ‘uniquePPDnames2.0’
     All user-level objects in a package should have documentation
@@ -7294,6 +6862,28 @@ Version: 1.1.0
 Version: 1.6.0.0
 
 ## In both
+
+*   checking tests ...
+    ```
+     ERROR
+    Running the tests in ‘tests/testthat.R’ failed.
+    Last 13 lines of output:
+      Loading required package: survival
+      
+      Attaching package: 'survey'
+      
+      The following object is masked from 'package:graphics':
+      
+          dotchart
+      
+      
+      Attaching package: 'zoo'
+      
+      The following objects are masked from 'package:base':
+      
+          as.Date, as.Date.numeric
+      
+    ```
 
 *   checking package dependencies ... NOTE
     ```
@@ -7378,40 +6968,32 @@ Version: 0.3.3
 
 ## In both
 
-*   checking whether package ‘heatwaveR’ can be installed ... ERROR
+*   checking re-building of vignette outputs ... WARNING
     ```
-    Installation failed.
-    See ‘/Users/lionel/Desktop/rlang/revdep/checks.noindex/heatwaveR/new/heatwaveR.Rcheck/00install.out’ for details.
+    ...
+    
+        extract
+    
+    Loading required package: data.table
+    
+    Attaching package: 'data.table'
+    
+    The following objects are masked from 'package:dplyr':
+    
+        between, first, last
+    
+    The following object is masked from 'package:purrr':
+    
+        transpose
+    
+    pandoc-citeproc: when expecting a product (:*:), encountered Object instead
+    Error running filter /usr/local/bin/pandoc-citeproc:
+    Filter returned error status 1
+    Error: processing vignette 'complex_clims.Rmd' failed with diagnostics:
+    pandoc document conversion failed with error 83
+    Execution halted
     ```
 
-## Installation
-
-### Devel
-
-```
-* installing *source* package ‘heatwaveR’ ...
-** package ‘heatwaveR’ successfully unpacked and MD5 sums checked
-** libs
-clang++ -std=c++11 -I"/Library/Frameworks/R.framework/Resources/include" -DNDEBUG  -I"/Users/lionel/Desktop/rlang/revdep/library.noindex/heatwaveR/Rcpp/include" -I"/Users/lionel/Desktop/rlang/revdep/library.noindex/heatwaveR/RcppArmadillo/include" -I/usr/local/include  -fopenmp -fPIC  -arch x86_64 -ftemplate-depth-256 -Wall -pedantic -O0 -c RcppExports.cpp -o RcppExports.o
-clang: error: unsupported option '-fopenmp'
-make: *** [RcppExports.o] Error 1
-ERROR: compilation failed for package ‘heatwaveR’
-* removing ‘/Users/lionel/Desktop/rlang/revdep/checks.noindex/heatwaveR/new/heatwaveR.Rcheck/heatwaveR’
-
-```
-### CRAN
-
-```
-* installing *source* package ‘heatwaveR’ ...
-** package ‘heatwaveR’ successfully unpacked and MD5 sums checked
-** libs
-clang++ -std=c++11 -I"/Library/Frameworks/R.framework/Resources/include" -DNDEBUG  -I"/Users/lionel/Desktop/rlang/revdep/library.noindex/heatwaveR/Rcpp/include" -I"/Users/lionel/Desktop/rlang/revdep/library.noindex/heatwaveR/RcppArmadillo/include" -I/usr/local/include  -fopenmp -fPIC  -arch x86_64 -ftemplate-depth-256 -Wall -pedantic -O0 -c RcppExports.cpp -o RcppExports.o
-clang: error: unsupported option '-fopenmp'
-make: *** [RcppExports.o] Error 1
-ERROR: compilation failed for package ‘heatwaveR’
-* removing ‘/Users/lionel/Desktop/rlang/revdep/checks.noindex/heatwaveR/old/heatwaveR.Rcheck/heatwaveR’
-
-```
 # heemod
 
 Version: 0.9.2
@@ -7420,10 +7002,10 @@ Version: 0.9.2
 
 *   checking installed package size ... NOTE
     ```
-      installed size is  5.2Mb
+      installed size is  5.3Mb
       sub-directories of 1Mb or more:
-        doc       1.5Mb
         R         2.1Mb
+        doc       1.5Mb
         tabular   1.2Mb
     ```
 
@@ -7463,7 +7045,7 @@ Version: 1.14.0
     makeGRanges: no visible global function definition for ‘seqlevels’
       (/Users/lionel/Desktop/rlang/revdep/checks.noindex/hiAnnotator/new/hiAnnotator.Rcheck/00_pkg_src/hiAnnotator/R/hiAnnotator.R:465)
     Undefined global functions or variables:
-      breakInChunks countQueryHits detectCores dist featureName IRanges
+      IRanges breakInChunks countQueryHits detectCores dist featureName
       keepSeqlevels mid n overlapsAny qStrand queryHits seqlengths
       seqlengths<- seqlevels seqlevels<- seqlevelsInUse sortSeqlevels
       subjectHits
@@ -7477,6 +7059,45 @@ Version: 1.14.0
     The following directory looks like a leftover from 'knitr':
       ‘figure’
     Please remove from your package.
+    ```
+
+# HiCcompare
+
+Version: 1.2.0
+
+## In both
+
+*   checking installed package size ... NOTE
+    ```
+      installed size is  7.0Mb
+      sub-directories of 1Mb or more:
+        data   5.8Mb
+    ```
+
+*   checking R code for possible problems ... NOTE
+    ```
+    ...
+      (/Users/lionel/Desktop/rlang/revdep/checks.noindex/HiCcompare/new/HiCcompare.Rcheck/00_pkg_src/HiCcompare/R/total_sum.R:62)
+    volcano: no visible binding for global variable ‘A’
+      (/Users/lionel/Desktop/rlang/revdep/checks.noindex/HiCcompare/new/HiCcompare.Rcheck/00_pkg_src/HiCcompare/R/volcano.R:2)
+    volcano: no visible binding for global variable ‘adj.IF1’
+      (/Users/lionel/Desktop/rlang/revdep/checks.noindex/HiCcompare/new/HiCcompare.Rcheck/00_pkg_src/HiCcompare/R/volcano.R:2)
+    volcano: no visible binding for global variable ‘adj.IF2’
+      (/Users/lionel/Desktop/rlang/revdep/checks.noindex/HiCcompare/new/HiCcompare.Rcheck/00_pkg_src/HiCcompare/R/volcano.R:2)
+    volcano: no visible binding for global variable ‘p.value’
+      (/Users/lionel/Desktop/rlang/revdep/checks.noindex/HiCcompare/new/HiCcompare.Rcheck/00_pkg_src/HiCcompare/R/volcano.R:5)
+    volcano: no visible binding for global variable ‘A’
+      (/Users/lionel/Desktop/rlang/revdep/checks.noindex/HiCcompare/new/HiCcompare.Rcheck/00_pkg_src/HiCcompare/R/volcano.R:5)
+    volcano: no visible binding for global variable ‘D’
+      (/Users/lionel/Desktop/rlang/revdep/checks.noindex/HiCcompare/new/HiCcompare.Rcheck/00_pkg_src/HiCcompare/R/volcano.R:5)
+    Undefined global functions or variables:
+      A D IF IF1 IF2 M Z adj.IF1 adj.IF2 adj.M axis bias.slope bp
+      centromere_locations chr1 chr2 count fold.change i j p.adj p.value
+      pnorm region1 region2 start1 start2
+    Consider adding
+      importFrom("graphics", "axis")
+      importFrom("stats", "D", "pnorm")
+    to your NAMESPACE file.
     ```
 
 # highcharter
@@ -7527,10 +7148,10 @@ Version: 1.16.0
     vpairwiseAlignSeqs: no visible global function definition for ‘IRanges’
       (/Users/lionel/Desktop/rlang/revdep/checks.noindex/hiReadsProcessor/new/hiReadsProcessor.Rcheck/00_pkg_src/hiReadsProcessor/R/hiReadsProcessor.R:1420-1424)
     Undefined global functions or variables:
-      breakInChunks clusteredValue clusteredValue.freq DataFrame
-      detectCores fasta.info IRanges IRangesList matches mclapply metadata
-      metadata<- misMatches qBaseInsert queryHits Rle runLength runValue
-      scanBamFlag ScanBamParam SimpleList tBaseInsert
+      DataFrame IRanges IRangesList Rle ScanBamParam SimpleList
+      breakInChunks clusteredValue clusteredValue.freq detectCores
+      fasta.info matches mclapply metadata metadata<- misMatches
+      qBaseInsert queryHits runLength runValue scanBamFlag tBaseInsert
     ```
 
 # HMMoce
@@ -7671,18 +7292,18 @@ Version: 0.10.8
      ERROR
     Running the tests in ‘tests/testthat.R’ failed.
     Last 13 lines of output:
-      iter  80 value 14.018282
-      iter  80 value 14.018282
-      iter  90 value 14.017126
-      final  value 14.015374 
-      converged
+      16: tryCatch(loadNamespace(name), error = function(e) stop(e))
+      17: tryCatchList(expr, classes, parentenv, handlers)
+      18: tryCatchOne(expr, names, parentenv, handlers[[1L]])
+      19: value[[3L]](cond)
+      
       ══ testthat results  ═══════════════════════════════════════════════════════════
       OK: 60 SKIPPED: 0 FAILED: 5
-      1. Error: compileDecisionModel (@test_compileDecisionModel.R#14) 
+      1. Error: (unknown) (@test-HydePosterior.R#11) 
       2. Error: (unknown) (@test-bindPosterior.R#12) 
       3. Error: compileJagsModel returns an object of class 'compiledHydeNetwork' (@test-compileJagsModel.R#14) 
-      4. Error: (unknown) (@test-HydePosterior.R#11) 
-      5. Error: (unknown) (@test-print.HydePosterior.R#11) 
+      4. Error: (unknown) (@test-print.HydePosterior.R#11) 
+      5. Error: compileDecisionModel (@test_compileDecisionModel.R#14) 
       
       Error: testthat unit tests failed
       Execution halted
@@ -7794,11 +7415,11 @@ Version: 1.8.0
 
 *   checking installed package size ... NOTE
     ```
-      installed size is  5.6Mb
+      installed size is  5.7Mb
       sub-directories of 1Mb or more:
+        R         2.0Mb
         doc       1.2Mb
         extdata   1.7Mb
-        R         2.0Mb
     ```
 
 # ideal
@@ -7882,7 +7503,7 @@ Version: 1.8.0
 
 *   checking installed package size ... NOTE
     ```
-      installed size is  6.3Mb
+      installed size is  6.2Mb
       sub-directories of 1Mb or more:
         doc   5.8Mb
     ```
@@ -7983,28 +7604,7 @@ Version: 1.7.0
     sim_fun_eval: no visible binding for global variable ‘FWER’
       (/Users/lionel/Desktop/rlang/revdep/checks.noindex/IHWpaper/new/IHWpaper.Rcheck/00_pkg_src/IHWpaper/R/benchmarking.R:61-63)
     Undefined global functions or variables:
-      FDP fdr_method fdr_pars FDRreg FPR FWER getFDR rj_ratio
-    ```
-
-# ijtiff
-
-Version: 1.4.1
-
-## In both
-
-*   checking re-building of vignette outputs ... WARNING
-    ```
-    Error in re-building vignettes:
-      ...
-    Quitting from lines 48-49 (the-imagej-problem.Rmd) 
-    Error: processing vignette 'the-imagej-problem.Rmd' failed with diagnostics:
-    there is no package called 'magick'
-    Execution halted
-    ```
-
-*   checking package dependencies ... NOTE
-    ```
-    Package suggested but not available for checking: ‘magick’
+      FDP FDRreg FPR FWER fdr_method fdr_pars getFDR rj_ratio
     ```
 
 # imager
@@ -8018,8 +7618,8 @@ Version: 0.41.1
      ERROR
     Running the tests in ‘tests/testthat.R’ failed.
     Last 13 lines of output:
-      clang++ -I"/Library/Frameworks/R.framework/Resources/include" -DNDEBUG -Dcimg_r_mode -fpermissive -I/usr/X11R6/include -I/opt/X11/include  -I"/Users/lionel/Desktop/rlang/revdep/library.noindex/imager/Rcpp/include" -I"/Users/lionel/Desktop/rlang/revdep/checks.noindex/imager/new/imager.Rcheck/imager/include" -I"/private/var/folders/b9/1vbq6rn93_1fk71sn95dqb8r0000gn/T/Rtmp0a87LL/sourceCpp-x86_64-apple-darwin15.6.0-0.12.19" -I/usr/local/include   -fPIC  -arch x86_64 -ftemplate-depth-256 -Wall -pedantic -O0 -c file270782dfef7.cpp -o file270782dfef7.o
-      clang++ -dynamiclib -Wl,-headerpad_max_install_names -undefined dynamic_lookup -single_module -multiply_defined suppress -L/Library/Frameworks/R.framework/Resources/lib -L/usr/local/lib -o sourceCpp_2.so file270782dfef7.o -lX11 -L/usr/X11R6/lib -L/opt/X11/include -F/Library/Frameworks/R.framework/.. -framework R -Wl,-framework -Wl,CoreFoundation
+      g++-8 -I"/Library/Frameworks/R.framework/Resources/include" -DNDEBUG -Dcimg_r_mode -fpermissive -I/usr/X11R6/include -I/opt/X11/include  -I"/Users/lionel/Desktop/rlang/revdep/library.noindex/imager/Rcpp/include" -I"/Users/lionel/Desktop/rlang/revdep/checks.noindex/imager/new/imager.Rcheck/imager/include" -I"/private/var/folders/b9/1vbq6rn93_1fk71sn95dqb8r0000gn/T/RtmpFDI96I/sourceCpp-x86_64-apple-darwin15.6.0-0.12.19" -I/usr/local/include   -fPIC  -arch x86_64 -ftemplate-depth-256 -Wall -pedantic -O0 -c file7d2a201a6905.cpp -o file7d2a201a6905.o
+      g++-8 -dynamiclib -Wl,-headerpad_max_install_names -undefined dynamic_lookup -single_module -multiply_defined suppress -L/Library/Frameworks/R.framework/Resources/lib -L/usr/local/lib -o sourceCpp_2.so file7d2a201a6905.o -lX11 -L/usr/X11R6/lib -L/opt/X11/include -F/Library/Frameworks/R.framework/.. -framework R -Wl,-framework -Wl,CoreFoundation
       ── 1. Error: cpp_plugin (@test_cpp_api.R#14)  ──────────────────────────────────
       Error 1 occurred building shared library.
       1: cppFunction(foo.inline, depends = "imager") at testthat/test_cpp_api.R:14
@@ -8035,14 +7635,40 @@ Version: 0.41.1
       Execution halted
     ```
 
+*   checking whether package ‘imager’ can be installed ... WARNING
+    ```
+    ...
+      ../inst/include/CImg.h:55933:33: warning: 'void* memcpy(void*, const void*, size_t)' writing to an object of type 'struct cimg_library::CImg<long unsigned int>' with no trivial copy-assignment; use copy-assignment or copy-initialization instead [-Wclass-memaccess]
+      ../inst/include/CImg.h:55934:41: warning: 'void* memcpy(void*, const void*, size_t)' writing to an object of type 'struct cimg_library::CImg<long unsigned int>' with no trivial copy-assignment; use copy-assignment or copy-initialization instead [-Wclass-memaccess]
+      ../inst/include/CImg.h:55935:52: warning: 'void* memset(void*, int, size_t)' clearing an object of type 'struct cimg_library::CImg<long unsigned int>' with no trivial copy-assignment; use assignment or value-initialization instead [-Wclass-memaccess]
+      ../inst/include/CImg.h:55936:22: warning: 'void* memset(void*, int, size_t)' clearing an object of type 'struct cimg_library::CImg<long unsigned int>' with no trivial copy-assignment; use assignment or value-initialization instead [-Wclass-memaccess]
+      ../inst/include/CImg.h:55774:32: warning: 'void* memcpy(void*, const void*, size_t)' writing to an object of type 'struct cimg_library::CImg<unsigned int>' with no trivial copy-assignment; use copy-assignment or copy-initialization instead [-Wclass-memaccess]
+      ../inst/include/CImg.h:55775:44: warning: 'void* memcpy(void*, const void*, size_t)' writing to an object of type 'struct cimg_library::CImg<unsigned int>' with no trivial copy-assignment; use copy-assignment or copy-initialization instead [-Wclass-memaccess]
+      ../inst/include/CImg.h:55788:22: warning: 'void* memset(void*, int, size_t)' clearing an object of type 'struct cimg_library::CImg<unsigned int>' with no trivial copy-assignment; use assignment or value-initialization instead [-Wclass-memaccess]
+      ../inst/include/CImg.h:55792:45: warning: 'void* memmove(void*, const void*, size_t)' writing to an object of type 'struct cimg_library::CImg<unsigned int>' with no trivial copy-assignment; use copy-assignment or copy-initialization instead [-Wclass-memaccess]
+      ../inst/include/CImg.h:55774:32: warning: 'void* memcpy(void*, const void*, size_t)' writing to an object of type 'struct cimg_library::CImg<double>' with no trivial copy-assignment; use copy-assignment or copy-initialization instead [-Wclass-memaccess]
+      ../inst/include/CImg.h:55775:44: warning: 'void* memcpy(void*, const void*, size_t)' writing to an object of type 'struct cimg_library::CImg<double>' with no trivial copy-assignment; use copy-assignment or copy-initialization instead [-Wclass-memaccess]
+      ../inst/include/CImg.h:55788:22: warning: 'void* memset(void*, int, size_t)' clearing an object of type 'struct cimg_library::CImg<double>' with no trivial copy-assignment; use assignment or value-initialization instead [-Wclass-memaccess]
+      ../inst/include/CImg.h:55792:45: warning: 'void* memmove(void*, const void*, size_t)' writing to an object of type 'struct cimg_library::CImg<double>' with no trivial copy-assignment; use copy-assignment or copy-initialization instead [-Wclass-memaccess]
+      ../inst/include/CImg.h:55774:32: warning: 'void* memcpy(void*, const void*, size_t)' writing to an object of type 'struct cimg_library::CImg<float>' with no trivial copy-assignment; use copy-assignment or copy-initialization instead [-Wclass-memaccess]
+      ../inst/include/CImg.h:55775:44: warning: 'void* memcpy(void*, const void*, size_t)' writing to an object of type 'struct cimg_library::CImg<float>' with no trivial copy-assignment; use copy-assignment or copy-initialization instead [-Wclass-memaccess]
+      ../inst/include/CImg.h:55788:22: warning: 'void* memset(void*, int, size_t)' clearing an object of type 'struct cimg_library::CImg<float>' with no trivial copy-assignment; use assignment or value-initialization instead [-Wclass-memaccess]
+      ../inst/include/CImg.h:55792:45: warning: 'void* memmove(void*, const void*, size_t)' writing to an object of type 'struct cimg_library::CImg<float>' with no trivial copy-assignment; use copy-assignment or copy-initialization instead [-Wclass-memaccess]
+      ../inst/include/CImg.h:55774:32: warning: 'void* memcpy(void*, const void*, size_t)' writing to an object of type 'struct cimg_library::CImg<int>' with no trivial copy-assignment; use copy-assignment or copy-initialization instead [-Wclass-memaccess]
+      ../inst/include/CImg.h:55775:44: warning: 'void* memcpy(void*, const void*, size_t)' writing to an object of type 'struct cimg_library::CImg<int>' with no trivial copy-assignment; use copy-assignment or copy-initialization instead [-Wclass-memaccess]
+      ../inst/include/CImg.h:55788:22: warning: 'void* memset(void*, int, size_t)' clearing an object of type 'struct cimg_library::CImg<int>' with no trivial copy-assignment; use assignment or value-initialization instead [-Wclass-memaccess]
+      ../inst/include/CImg.h:55792:45: warning: 'void* memmove(void*, const void*, size_t)' writing to an object of type 'struct cimg_library::CImg<int>' with no trivial copy-assignment; use copy-assignment or copy-initialization instead [-Wclass-memaccess]
+    See ‘/Users/lionel/Desktop/rlang/revdep/checks.noindex/imager/new/imager.Rcheck/00install.out’ for details.
+    ```
+
 *   checking installed package size ... NOTE
     ```
-      installed size is 12.2Mb
+      installed size is 11.6Mb
       sub-directories of 1Mb or more:
         data      1.4Mb
         doc       1.1Mb
         include   2.8Mb
-        libs      4.7Mb
+        libs      4.1Mb
     ```
 
 # implyr
@@ -8073,20 +7699,6 @@ Version: 0.2.4
       Execution halted
     ```
 
-# ImputeRobust
-
-Version: 1.3
-
-## In both
-
-*   checking package dependencies ... ERROR
-    ```
-    Package required but not available: ‘gamlss’
-    
-    See section ‘The DESCRIPTION file’ in the ‘Writing R Extensions’
-    manual.
-    ```
-
 # incadata
 
 Version: 0.6.4
@@ -8104,12 +7716,56 @@ Version: 1.0.1
 
 ## In both
 
-*   checking dependencies in R code ... NOTE
+*   checking whether package ‘incgraph’ can be installed ... ERROR
     ```
-    Namespace in Imports field not imported from: ‘testthat’
-      All declared Imports should be used.
+    Installation failed.
+    See ‘/Users/lionel/Desktop/rlang/revdep/checks.noindex/incgraph/new/incgraph.Rcheck/00install.out’ for details.
     ```
 
+## Installation
+
+### Devel
+
+```
+* installing *source* package ‘incgraph’ ...
+** package ‘incgraph’ successfully unpacked and MD5 sums checked
+** libs
+g++-8 -std=c++11 -I"/Library/Frameworks/R.framework/Resources/include" -DNDEBUG  -I"/Users/lionel/Desktop/rlang/revdep/library.noindex/incgraph/Rcpp/include" -I"/Users/lionel/Desktop/rlang/revdep/library.noindex/incgraph/BH/include" -I/usr/local/include   -fPIC  -arch x86_64 -ftemplate-depth-256 -Wall -pedantic -O0 -c RcppExports.cpp -o RcppExports.o
+g++-8 -std=c++11 -I"/Library/Frameworks/R.framework/Resources/include" -DNDEBUG  -I"/Users/lionel/Desktop/rlang/revdep/library.noindex/incgraph/Rcpp/include" -I"/Users/lionel/Desktop/rlang/revdep/library.noindex/incgraph/BH/include" -I/usr/local/include   -fPIC  -arch x86_64 -ftemplate-depth-256 -Wall -pedantic -O0 -c incgraph.cpp -o incgraph.o
+g++-8 -std=c++11 -dynamiclib -Wl,-headerpad_max_install_names -undefined dynamic_lookup -single_module -multiply_defined suppress -L/Library/Frameworks/R.framework/Resources/lib -L/usr/local/lib -o incgraph.so RcppExports.o incgraph.o -F/Library/Frameworks/R.framework/.. -framework R -Wl,-framework -Wl,CoreFoundation
+installing to /Users/lionel/Desktop/rlang/revdep/checks.noindex/incgraph/new/incgraph.Rcheck/incgraph/libs
+** R
+** byte-compile and prepare package for lazy loading
+** help
+*** installing help indices
+** building package indices
+** testing if installed package can be loaded
+sh: line 1: 38964 Abort trap: 6           '/Library/Frameworks/R.framework/Resources/bin/R' --no-save --slave 2>&1 < '/var/folders/b9/1vbq6rn93_1fk71sn95dqb8r0000gn/T//RtmpXTFkqp/file97e7193f71e'
+ERROR: loading failed
+* removing ‘/Users/lionel/Desktop/rlang/revdep/checks.noindex/incgraph/new/incgraph.Rcheck/incgraph’
+
+```
+### CRAN
+
+```
+* installing *source* package ‘incgraph’ ...
+** package ‘incgraph’ successfully unpacked and MD5 sums checked
+** libs
+g++-8 -std=c++11 -I"/Library/Frameworks/R.framework/Resources/include" -DNDEBUG  -I"/Users/lionel/Desktop/rlang/revdep/library.noindex/incgraph/Rcpp/include" -I"/Users/lionel/Desktop/rlang/revdep/library.noindex/incgraph/BH/include" -I/usr/local/include   -fPIC  -arch x86_64 -ftemplate-depth-256 -Wall -pedantic -O0 -c RcppExports.cpp -o RcppExports.o
+g++-8 -std=c++11 -I"/Library/Frameworks/R.framework/Resources/include" -DNDEBUG  -I"/Users/lionel/Desktop/rlang/revdep/library.noindex/incgraph/Rcpp/include" -I"/Users/lionel/Desktop/rlang/revdep/library.noindex/incgraph/BH/include" -I/usr/local/include   -fPIC  -arch x86_64 -ftemplate-depth-256 -Wall -pedantic -O0 -c incgraph.cpp -o incgraph.o
+g++-8 -std=c++11 -dynamiclib -Wl,-headerpad_max_install_names -undefined dynamic_lookup -single_module -multiply_defined suppress -L/Library/Frameworks/R.framework/Resources/lib -L/usr/local/lib -o incgraph.so RcppExports.o incgraph.o -F/Library/Frameworks/R.framework/.. -framework R -Wl,-framework -Wl,CoreFoundation
+installing to /Users/lionel/Desktop/rlang/revdep/checks.noindex/incgraph/old/incgraph.Rcheck/incgraph/libs
+** R
+** byte-compile and prepare package for lazy loading
+** help
+*** installing help indices
+** building package indices
+** testing if installed package can be loaded
+sh: line 1: 38940 Abort trap: 6           '/Library/Frameworks/R.framework/Resources/bin/R' --no-save --slave 2>&1 < '/var/folders/b9/1vbq6rn93_1fk71sn95dqb8r0000gn/T//Rtmp3mvkbv/file97ba536c732b'
+ERROR: loading failed
+* removing ‘/Users/lionel/Desktop/rlang/revdep/checks.noindex/incgraph/old/incgraph.Rcheck/incgraph’
+
+```
 # incR
 
 Version: 1.1.0
@@ -8131,9 +7787,10 @@ Version: 0.1.1
 
 *   checking installed package size ... NOTE
     ```
-      installed size is  5.6Mb
+      installed size is  5.2Mb
       sub-directories of 1Mb or more:
-        data   3.5Mb
+        R      1.0Mb
+        data   3.0Mb
         help   1.1Mb
     ```
 
@@ -8150,11 +7807,11 @@ Version: 2.1.9
 
 *   checking installed package size ... NOTE
     ```
-      installed size is  5.2Mb
+      installed size is  5.3Mb
       sub-directories of 1Mb or more:
+        R      2.0Mb
         data   1.1Mb
         misc   1.8Mb
-        R      2.0Mb
     ```
 
 *   checking Rd cross-references ... NOTE
@@ -8255,12 +7912,12 @@ Version: 2.4.0
     show,Fast5Summary: no visible binding for global variable ‘pass’
       (/Users/lionel/Desktop/rlang/revdep/checks.noindex/IONiseR/new/IONiseR.Rcheck/00_pkg_src/IONiseR/R/classes.R:77)
     Undefined global functions or variables:
-      := AAAAA accumulation baseCalledComplement baseCalledTemplate
+      := AAAAA TTTTT accumulation baseCalledComplement baseCalledTemplate
       bases_called category channel circleFun component duration error freq
-      full_2D group hour idx matrixCol matrixRow mean_value meanZValue
+      full_2D group hour idx matrixCol matrixRow meanZValue mean_value
       median_signal minute mux name nbases new_reads num_events oddEven
       pass pentamer rbindlist readIDs seq_length start_time time_bin
-      time_group TTTTT x y zvalue
+      time_group x y zvalue
     ```
 
 # ipeaData
@@ -8282,7 +7939,7 @@ Version: 0.0.2
     > 
     >     data <- ipeadata('ADMIS')
     Error in curl::curl_fetch_memory(url, handle = handle) : 
-      Timeout was reached: Connection timed out after 10010 milliseconds
+      Timeout was reached: Connection timed out after 10009 milliseconds
     Calls: ipeadata ... request_fetch -> request_fetch.write_memory -> <Anonymous>
     Execution halted
     ```
@@ -8349,9 +8006,40 @@ Version: 2.0.0
 * installing *source* package ‘iRF’ ...
 ** package ‘iRF’ successfully unpacked and MD5 sums checked
 ** libs
-clang++ -std=c++11 -I"/Library/Frameworks/R.framework/Resources/include" -DNDEBUG  -I"/Users/lionel/Desktop/rlang/revdep/library.noindex/iRF/Rcpp/include" -I/usr/local/include  -fopenmp -fPIC  -arch x86_64 -ftemplate-depth-256 -Wall -pedantic -O0 -c ExportedFunctionsRIT.cpp -o ExportedFunctionsRIT.o
-clang: error: unsupported option '-fopenmp'
-make: *** [ExportedFunctionsRIT.o] Error 1
+g++-8 -std=c++11 -I"/Library/Frameworks/R.framework/Resources/include" -DNDEBUG  -I"/Users/lionel/Desktop/rlang/revdep/library.noindex/iRF/Rcpp/include" -I/usr/local/include  -fopenmp -fPIC  -arch x86_64 -ftemplate-depth-256 -Wall -pedantic -O0 -c ExportedFunctionsRIT.cpp -o ExportedFunctionsRIT.o
+g++-8 -std=c++11 -I"/Library/Frameworks/R.framework/Resources/include" -DNDEBUG  -I"/Users/lionel/Desktop/rlang/revdep/library.noindex/iRF/Rcpp/include" -I/usr/local/include  -fopenmp -fPIC  -arch x86_64 -ftemplate-depth-256 -Wall -pedantic -O0 -c RcppExports.cpp -o RcppExports.o
+gcc-8 -I"/Library/Frameworks/R.framework/Resources/include" -DNDEBUG  -I"/Users/lionel/Desktop/rlang/revdep/library.noindex/iRF/Rcpp/include" -I/usr/local/include   -fPIC   -Wall -pedantic -O0 -c classTree.c -o classTree.o
+gcc-8 -I"/Library/Frameworks/R.framework/Resources/include" -DNDEBUG  -I"/Users/lionel/Desktop/rlang/revdep/library.noindex/iRF/Rcpp/include" -I/usr/local/include   -fPIC   -Wall -pedantic -O0 -c init.c -o init.o
+g++-8 -std=c++11 -I"/Library/Frameworks/R.framework/Resources/include" -DNDEBUG  -I"/Users/lionel/Desktop/rlang/revdep/library.noindex/iRF/Rcpp/include" -I/usr/local/include  -fopenmp -fPIC  -arch x86_64 -ftemplate-depth-256 -Wall -pedantic -O0 -c processNodes.cpp -o processNodes.o
+gcc-8 -I"/Library/Frameworks/R.framework/Resources/include" -DNDEBUG  -I"/Users/lionel/Desktop/rlang/revdep/library.noindex/iRF/Rcpp/include" -I/usr/local/include   -fPIC   -Wall -pedantic -O0 -c regTree.c -o regTree.o
+regTree.c: In function 'findBestSplit':
+regTree.c:209:9: warning: unused variable 'jj' [-Wunused-variable]
+     int jj, jold;
+         ^~
+regTree.c: In function 'selectsplit':
+regTree.c:416:14: warning: unused variable 'dum' [-Wunused-variable]
+  int i, tmp, dum;
+              ^~~
+gcc-8 -I"/Library/Frameworks/R.framework/Resources/include" -DNDEBUG  -I"/Users/lionel/Desktop/rlang/revdep/library.noindex/iRF/Rcpp/include" -I/usr/local/include   -fPIC   -Wall -pedantic -O0 -c regrf.c -o regrf.o
+regrf.c: In function 'regRF':
+regrf.c:58:23: warning: variable 'averrb' set but not used [-Wunused-but-set-variable]
+   double errts = 0.0, averrb, meanY, meanYts, varY, varYts, r, xrand,
+                       ^~~~~~
+gcc-8 -I"/Library/Frameworks/R.framework/Resources/include" -DNDEBUG  -I"/Users/lionel/Desktop/rlang/revdep/library.noindex/iRF/Rcpp/include" -I/usr/local/include   -fPIC   -Wall -pedantic -O0 -c rf.c -o rf.o
+rf.c: In function 'classRF':
+rf.c:113:11: warning: variable 'tp' set but not used [-Wunused-but-set-variable]
+          *tp, *wr;
+           ^~
+rf.c:96:9: warning: variable 'nimp' set but not used [-Wunused-but-set-variable]
+   mimp, nimp, near, nuse, noutall, nrightall, nrightimpall,
+         ^~~~
+rf.c:96:3: warning: variable 'mimp' set but not used [-Wunused-but-set-variable]
+   mimp, nimp, near, nuse, noutall, nrightall, nrightimpall,
+   ^~~~
+gfortran-7   -fPIC  -g -O2  -c rfsub.f -o rfsub.o
+make: gfortran-7: No such file or directory
+make: *** [rfsub.o] Error 1
+make: *** Waiting for unfinished jobs....
 ERROR: compilation failed for package ‘iRF’
 * removing ‘/Users/lionel/Desktop/rlang/revdep/checks.noindex/iRF/new/iRF.Rcheck/iRF’
 
@@ -8362,9 +8050,40 @@ ERROR: compilation failed for package ‘iRF’
 * installing *source* package ‘iRF’ ...
 ** package ‘iRF’ successfully unpacked and MD5 sums checked
 ** libs
-clang++ -std=c++11 -I"/Library/Frameworks/R.framework/Resources/include" -DNDEBUG  -I"/Users/lionel/Desktop/rlang/revdep/library.noindex/iRF/Rcpp/include" -I/usr/local/include  -fopenmp -fPIC  -arch x86_64 -ftemplate-depth-256 -Wall -pedantic -O0 -c ExportedFunctionsRIT.cpp -o ExportedFunctionsRIT.o
-clang: error: unsupported option '-fopenmp'
-make: *** [ExportedFunctionsRIT.o] Error 1
+g++-8 -std=c++11 -I"/Library/Frameworks/R.framework/Resources/include" -DNDEBUG  -I"/Users/lionel/Desktop/rlang/revdep/library.noindex/iRF/Rcpp/include" -I/usr/local/include  -fopenmp -fPIC  -arch x86_64 -ftemplate-depth-256 -Wall -pedantic -O0 -c ExportedFunctionsRIT.cpp -o ExportedFunctionsRIT.o
+g++-8 -std=c++11 -I"/Library/Frameworks/R.framework/Resources/include" -DNDEBUG  -I"/Users/lionel/Desktop/rlang/revdep/library.noindex/iRF/Rcpp/include" -I/usr/local/include  -fopenmp -fPIC  -arch x86_64 -ftemplate-depth-256 -Wall -pedantic -O0 -c RcppExports.cpp -o RcppExports.o
+gcc-8 -I"/Library/Frameworks/R.framework/Resources/include" -DNDEBUG  -I"/Users/lionel/Desktop/rlang/revdep/library.noindex/iRF/Rcpp/include" -I/usr/local/include   -fPIC   -Wall -pedantic -O0 -c classTree.c -o classTree.o
+gcc-8 -I"/Library/Frameworks/R.framework/Resources/include" -DNDEBUG  -I"/Users/lionel/Desktop/rlang/revdep/library.noindex/iRF/Rcpp/include" -I/usr/local/include   -fPIC   -Wall -pedantic -O0 -c init.c -o init.o
+g++-8 -std=c++11 -I"/Library/Frameworks/R.framework/Resources/include" -DNDEBUG  -I"/Users/lionel/Desktop/rlang/revdep/library.noindex/iRF/Rcpp/include" -I/usr/local/include  -fopenmp -fPIC  -arch x86_64 -ftemplate-depth-256 -Wall -pedantic -O0 -c processNodes.cpp -o processNodes.o
+gcc-8 -I"/Library/Frameworks/R.framework/Resources/include" -DNDEBUG  -I"/Users/lionel/Desktop/rlang/revdep/library.noindex/iRF/Rcpp/include" -I/usr/local/include   -fPIC   -Wall -pedantic -O0 -c regTree.c -o regTree.o
+regTree.c: In function 'findBestSplit':
+regTree.c:209:9: warning: unused variable 'jj' [-Wunused-variable]
+     int jj, jold;
+         ^~
+regTree.c: In function 'selectsplit':
+regTree.c:416:14: warning: unused variable 'dum' [-Wunused-variable]
+  int i, tmp, dum;
+              ^~~
+gcc-8 -I"/Library/Frameworks/R.framework/Resources/include" -DNDEBUG  -I"/Users/lionel/Desktop/rlang/revdep/library.noindex/iRF/Rcpp/include" -I/usr/local/include   -fPIC   -Wall -pedantic -O0 -c regrf.c -o regrf.o
+regrf.c: In function 'regRF':
+regrf.c:58:23: warning: variable 'averrb' set but not used [-Wunused-but-set-variable]
+   double errts = 0.0, averrb, meanY, meanYts, varY, varYts, r, xrand,
+                       ^~~~~~
+gcc-8 -I"/Library/Frameworks/R.framework/Resources/include" -DNDEBUG  -I"/Users/lionel/Desktop/rlang/revdep/library.noindex/iRF/Rcpp/include" -I/usr/local/include   -fPIC   -Wall -pedantic -O0 -c rf.c -o rf.o
+rf.c: In function 'classRF':
+rf.c:113:11: warning: variable 'tp' set but not used [-Wunused-but-set-variable]
+          *tp, *wr;
+           ^~
+rf.c:96:9: warning: variable 'nimp' set but not used [-Wunused-but-set-variable]
+   mimp, nimp, near, nuse, noutall, nrightall, nrightimpall,
+         ^~~~
+rf.c:96:3: warning: variable 'mimp' set but not used [-Wunused-but-set-variable]
+   mimp, nimp, near, nuse, noutall, nrightall, nrightimpall,
+   ^~~~
+gfortran-7   -fPIC  -g -O2  -c rfsub.f -o rfsub.o
+make: gfortran-7: No such file or directory
+make: *** [rfsub.o] Error 1
+make: *** Waiting for unfinished jobs....
 ERROR: compilation failed for package ‘iRF’
 * removing ‘/Users/lionel/Desktop/rlang/revdep/checks.noindex/iRF/old/iRF.Rcheck/iRF’
 
@@ -8380,7 +8099,7 @@ Version: 1.3.0
 
 *   checking installed package size ... NOTE
     ```
-      installed size is  5.3Mb
+      installed size is  5.4Mb
       sub-directories of 1Mb or more:
         data      2.1Mb
         extdata   1.9Mb
@@ -8492,11 +8211,12 @@ Version: 0.2.0
 
 ## In both
 
-*   checking dependencies in R code ... NOTE
+*   checking package dependencies ... ERROR
     ```
-    Namespaces in Imports field not imported from:
-      ‘animation’ ‘comtradr’ ‘Matrix’ ‘ndtv’ ‘statnet’ ‘xergm’
-      All declared Imports should be used.
+    Package required but not available: ‘ndtv’
+    
+    See section ‘The DESCRIPTION file’ in the ‘Writing R Extensions’
+    manual.
     ```
 
 # jaccard
@@ -8508,7 +8228,7 @@ Version: 0.1.0
 *   checking dependencies in R code ... NOTE
     ```
     Namespaces in Imports field not imported from:
-      ‘dplyr’ ‘magrittr’ ‘Rcpp’
+      ‘Rcpp’ ‘dplyr’ ‘magrittr’
       All declared Imports should be used.
     ```
 
@@ -8580,17 +8300,6 @@ Version: 0.3.3
     Namespaces in Imports field not imported from:
       ‘curl’ ‘readxl’
       All declared Imports should be used.
-    ```
-
-# kableExtra
-
-Version: 0.9.0
-
-## In both
-
-*   checking package dependencies ... NOTE
-    ```
-    Package suggested but not available for checking: ‘magick’
     ```
 
 # kitagawa
@@ -8675,81 +8384,32 @@ Version: 0.2
     Packages which this enhances but not available for checking: ‘stars’ ‘sf’
     ```
 
-# LexisNexisTools
+# later
 
-Version: 0.2.0
+Version: 0.7.5
 
-## Newly broken
-
-*   checking examples ... ERROR
-    ```
-    ...
-    	...metadata extracted [0.037 secs]
-    	...article texts extracted [0.042 secs]
-    	...paragraphs extracted [0.051 secs]
-    	...superfluous whitespace removed from articles [0.055 secs]
-    	...superfluous whitespace removed from paragraphs [0.06 secs]
-    Elapsed time: 0.06 secs
-    > 
-    > docs <- lnt_convert(LNToutput, to = "rDNA")
-    > 
-    > corpus <- lnt_convert(LNToutput, to = "quanteda")
-    > 
-    > dbloc <- lnt_convert(LNToutput, to = "lnt2SQLite")
-    > 
-    > tCorpus <- lnt_convert(LNToutput, to = "corpustools")
-    > 
-    > tidy <- lnt_convert(LNToutput, to = "tidytext")
-    Error in check_input(x) : 
-      Input must be a character vector of any length or a list of character
-      vectors, each of which has a length of 1.
-    Calls: lnt_convert ... tokenfunc -> tf -> tokenize_words.default -> check_input
-    Execution halted
-    ```
+## In both
 
 *   checking tests ...
     ```
      ERROR
     Running the tests in ‘tests/testthat.R’ failed.
     Last 13 lines of output:
-      	...processing date 2010-01-09: 0 duplicates found [0.049 secs]. 		
-      	...processing date 2010-01-10: 0 duplicates found [0.057 secs]. 		
-      	...processing date 2010-01-11: 8 duplicates found [4.01 secs]. 		
-      Threshold = 0.99; 4 days processed; 4 duplicates found; in 4.01 secsChecking similiarity for 10 articles over 3 dates...
-      	...quanteda dfm construced for similarity comparison [0.057 secs].
-      	...processing date 2010-01-08: 0 duplicates found [0.057 secs]. 		
-      	...processing date 2010-01-10: 0 duplicates found [0.066 secs]. 		
-      	...processing date 2010-01-11: 9 duplicates found [4.10 secs]. 		
-      Threshold = 0.99; 3 days processed; 4 duplicates found; in 4.10 secsCreating LNToutput from input 1 files...
-      ══ testthat results  ═══════════════════════════════════════════════════════════
-      OK: 45 SKIPPED: 0 FAILED: 1
-      1. Error: Convert LNToutput to tidytext (@test-lnt_convert.R#47) 
-      
-      Error: testthat unit tests failed
-      Execution halted
-    ```
-
-*   checking re-building of vignette outputs ... WARNING
-    ```
-    Error in re-building vignettes:
-      ...
-    LexisNexisTools Version 0.2.0
-    
-    Attaching package: 'dplyr'
-    
-    The following objects are masked from 'package:stats':
-    
-        filter, lag
-    
-    The following objects are masked from 'package:base':
-    
-        intersect, setdiff, setequal, union
-    
-    Quitting from lines 164-175 (demo.Rmd) 
-    Error: processing vignette 'demo.Rmd' failed with diagnostics:
-    Input must be a character vector of any length or a list of character
-      vectors, each of which has a length of 1.
-    Execution halted
+      31: tryCatchList(expr, classes, parentenv, handlers)
+      32: tryCatch(withCallingHandlers({    eval(code, test_env)    if (!handled && !is.null(test)) {        skip_empty()    }}, expectation = handle_expectation, skip = handle_skip, warning = handle_warning,     message = handle_message, error = handle_error), error = handle_fatal,     skip = function(e) {    })
+      33: test_code(NULL, exprs, env)
+      34: source_file(path, new.env(parent = env), chdir = TRUE, wrap = wrap)
+      35: force(code)
+      36: with_reporter(reporter = reporter, start_end_reporter = start_end_reporter,     {        lister$start_file(basename(path))        source_file(path, new.env(parent = env), chdir = TRUE,             wrap = wrap)        end_context()    })
+      37: FUN(X[[i]], ...)
+      38: lapply(paths, test_file, env = env, reporter = current_reporter,     start_end_reporter = FALSE, load_helpers = FALSE, wrap = wrap)
+      39: force(code)
+      40: with_reporter(reporter = current_reporter, results <- lapply(paths,     test_file, env = env, reporter = current_reporter, start_end_reporter = FALSE,     load_helpers = FALSE, wrap = wrap))
+      41: test_files(paths, reporter = reporter, env = env, stop_on_failure = stop_on_failure,     stop_on_warning = stop_on_warning, wrap = wrap)
+      42: test_dir(path = test_path, reporter = reporter, env = env, filter = filter,     ..., stop_on_failure = stop_on_failure, stop_on_warning = stop_on_warning,     wrap = wrap)
+      43: test_package_dir(package = package, test_path = test_path, filter = filter,     reporter = reporter, ..., stop_on_failure = stop_on_failure,     stop_on_warning = stop_on_warning, wrap = wrap)
+      44: test_check("later")
+      An irrecoverable exception occurred. R is aborting now ...
     ```
 
 # lilikoi
@@ -8910,56 +8570,6 @@ Version: 1.0.9
       All declared Imports should be used.
     ```
 
-# lpirfs
-
-Version: 0.1.3
-
-## In both
-
-*   checking whether package ‘lpirfs’ can be installed ... ERROR
-    ```
-    Installation failed.
-    See ‘/Users/lionel/Desktop/rlang/revdep/checks.noindex/lpirfs/new/lpirfs.Rcheck/00install.out’ for details.
-    ```
-
-## Installation
-
-### Devel
-
-```
-* installing *source* package ‘lpirfs’ ...
-** package ‘lpirfs’ successfully unpacked and MD5 sums checked
-** libs
-clang++ -std=c++11 -I"/Library/Frameworks/R.framework/Resources/include" -DNDEBUG  -I"/Users/lionel/Desktop/rlang/revdep/library.noindex/lpirfs/Rcpp/include" -I"/Users/lionel/Desktop/rlang/revdep/library.noindex/lpirfs/RcppArmadillo/include" -I/usr/local/include   -fPIC  -arch x86_64 -ftemplate-depth-256 -Wall -pedantic -O0 -c RcppExports.cpp -o RcppExports.o
-clang++ -std=c++11 -I"/Library/Frameworks/R.framework/Resources/include" -DNDEBUG  -I"/Users/lionel/Desktop/rlang/revdep/library.noindex/lpirfs/Rcpp/include" -I"/Users/lionel/Desktop/rlang/revdep/library.noindex/lpirfs/RcppArmadillo/include" -I/usr/local/include   -fPIC  -arch x86_64 -ftemplate-depth-256 -Wall -pedantic -O0 -c get_vals_lagcrit.cpp -o get_vals_lagcrit.o
-clang++ -std=c++11 -I"/Library/Frameworks/R.framework/Resources/include" -DNDEBUG  -I"/Users/lionel/Desktop/rlang/revdep/library.noindex/lpirfs/Rcpp/include" -I"/Users/lionel/Desktop/rlang/revdep/library.noindex/lpirfs/RcppArmadillo/include" -I/usr/local/include   -fPIC  -arch x86_64 -ftemplate-depth-256 -Wall -pedantic -O0 -c hp_filter.cpp -o hp_filter.o
-clang++ -std=c++11 -I"/Library/Frameworks/R.framework/Resources/include" -DNDEBUG  -I"/Users/lionel/Desktop/rlang/revdep/library.noindex/lpirfs/Rcpp/include" -I"/Users/lionel/Desktop/rlang/revdep/library.noindex/lpirfs/RcppArmadillo/include" -I/usr/local/include   -fPIC  -arch x86_64 -ftemplate-depth-256 -Wall -pedantic -O0 -c newey_west.cpp -o newey_west.o
-clang++ -std=c++11 -I"/Library/Frameworks/R.framework/Resources/include" -DNDEBUG  -I"/Users/lionel/Desktop/rlang/revdep/library.noindex/lpirfs/Rcpp/include" -I"/Users/lionel/Desktop/rlang/revdep/library.noindex/lpirfs/RcppArmadillo/include" -I/usr/local/include   -fPIC  -arch x86_64 -ftemplate-depth-256 -Wall -pedantic -O0 -c newey_west_tsls.cpp -o newey_west_tsls.o
-clang++ -std=c++11 -dynamiclib -Wl,-headerpad_max_install_names -undefined dynamic_lookup -single_module -multiply_defined suppress -L/Library/Frameworks/R.framework/Resources/lib -L/usr/local/lib -o lpirfs.so RcppExports.o get_vals_lagcrit.o hp_filter.o newey_west.o newey_west_tsls.o -L/Library/Frameworks/R.framework/Resources/lib -lRlapack -L/Library/Frameworks/R.framework/Resources/lib -lRblas -L/usr/local/gfortran/lib/gcc/x86_64-apple-darwin15/6.1.0 -L/usr/local/gfortran/lib -lgfortran -lquadmath -lm -fopenmp -F/Library/Frameworks/R.framework/.. -framework R -Wl,-framework -Wl,CoreFoundation
-clang: error: unsupported option '-fopenmp'
-make: *** [lpirfs.so] Error 1
-ERROR: compilation failed for package ‘lpirfs’
-* removing ‘/Users/lionel/Desktop/rlang/revdep/checks.noindex/lpirfs/new/lpirfs.Rcheck/lpirfs’
-
-```
-### CRAN
-
-```
-* installing *source* package ‘lpirfs’ ...
-** package ‘lpirfs’ successfully unpacked and MD5 sums checked
-** libs
-clang++ -std=c++11 -I"/Library/Frameworks/R.framework/Resources/include" -DNDEBUG  -I"/Users/lionel/Desktop/rlang/revdep/library.noindex/lpirfs/Rcpp/include" -I"/Users/lionel/Desktop/rlang/revdep/library.noindex/lpirfs/RcppArmadillo/include" -I/usr/local/include   -fPIC  -arch x86_64 -ftemplate-depth-256 -Wall -pedantic -O0 -c RcppExports.cpp -o RcppExports.o
-clang++ -std=c++11 -I"/Library/Frameworks/R.framework/Resources/include" -DNDEBUG  -I"/Users/lionel/Desktop/rlang/revdep/library.noindex/lpirfs/Rcpp/include" -I"/Users/lionel/Desktop/rlang/revdep/library.noindex/lpirfs/RcppArmadillo/include" -I/usr/local/include   -fPIC  -arch x86_64 -ftemplate-depth-256 -Wall -pedantic -O0 -c get_vals_lagcrit.cpp -o get_vals_lagcrit.o
-clang++ -std=c++11 -I"/Library/Frameworks/R.framework/Resources/include" -DNDEBUG  -I"/Users/lionel/Desktop/rlang/revdep/library.noindex/lpirfs/Rcpp/include" -I"/Users/lionel/Desktop/rlang/revdep/library.noindex/lpirfs/RcppArmadillo/include" -I/usr/local/include   -fPIC  -arch x86_64 -ftemplate-depth-256 -Wall -pedantic -O0 -c hp_filter.cpp -o hp_filter.o
-clang++ -std=c++11 -I"/Library/Frameworks/R.framework/Resources/include" -DNDEBUG  -I"/Users/lionel/Desktop/rlang/revdep/library.noindex/lpirfs/Rcpp/include" -I"/Users/lionel/Desktop/rlang/revdep/library.noindex/lpirfs/RcppArmadillo/include" -I/usr/local/include   -fPIC  -arch x86_64 -ftemplate-depth-256 -Wall -pedantic -O0 -c newey_west.cpp -o newey_west.o
-clang++ -std=c++11 -I"/Library/Frameworks/R.framework/Resources/include" -DNDEBUG  -I"/Users/lionel/Desktop/rlang/revdep/library.noindex/lpirfs/Rcpp/include" -I"/Users/lionel/Desktop/rlang/revdep/library.noindex/lpirfs/RcppArmadillo/include" -I/usr/local/include   -fPIC  -arch x86_64 -ftemplate-depth-256 -Wall -pedantic -O0 -c newey_west_tsls.cpp -o newey_west_tsls.o
-clang++ -std=c++11 -dynamiclib -Wl,-headerpad_max_install_names -undefined dynamic_lookup -single_module -multiply_defined suppress -L/Library/Frameworks/R.framework/Resources/lib -L/usr/local/lib -o lpirfs.so RcppExports.o get_vals_lagcrit.o hp_filter.o newey_west.o newey_west_tsls.o -L/Library/Frameworks/R.framework/Resources/lib -lRlapack -L/Library/Frameworks/R.framework/Resources/lib -lRblas -L/usr/local/gfortran/lib/gcc/x86_64-apple-darwin15/6.1.0 -L/usr/local/gfortran/lib -lgfortran -lquadmath -lm -fopenmp -F/Library/Frameworks/R.framework/.. -framework R -Wl,-framework -Wl,CoreFoundation
-clang: error: unsupported option '-fopenmp'
-make: *** [lpirfs.so] Error 1
-ERROR: compilation failed for package ‘lpirfs’
-* removing ‘/Users/lionel/Desktop/rlang/revdep/checks.noindex/lpirfs/old/lpirfs.Rcheck/lpirfs’
-
-```
 # lucid
 
 Version: 1.6
@@ -8989,20 +8599,6 @@ Version: 1.6
     Execution halted
     ```
 
-# lvnet
-
-Version: 0.3.3
-
-## In both
-
-*   checking package dependencies ... ERROR
-    ```
-    Package required but not available: ‘OpenMx’
-    
-    See section ‘The DESCRIPTION file’ in the ‘Writing R Extensions’
-    manual.
-    ```
-
 # LymphoSeq
 
 Version: 1.8.0
@@ -9026,8 +8622,8 @@ Version: 0.0.3
 *   checking dependencies in R code ... NOTE
     ```
     Namespaces in Imports field not imported from:
-      ‘cmprsk’ ‘colorspace’ ‘etm’ ‘fracdiff’ ‘gtable’ ‘munsell’ ‘numDeriv’
-      ‘plyr’ ‘quadprog’ ‘Rcpp’ ‘scales’ ‘timeDate’ ‘tseries’ ‘zoo’
+      ‘Rcpp’ ‘cmprsk’ ‘colorspace’ ‘etm’ ‘fracdiff’ ‘gtable’ ‘munsell’
+      ‘numDeriv’ ‘plyr’ ‘quadprog’ ‘scales’ ‘timeDate’ ‘tseries’ ‘zoo’
       All declared Imports should be used.
     ```
 
@@ -9080,8 +8676,8 @@ Version: 2.6.0
     ```
       installed size is  5.2Mb
       sub-directories of 1Mb or more:
-        extdata   1.0Mb
         R         2.0Mb
+        extdata   1.0Mb
     ```
 
 *   checking dependencies in R code ... NOTE
@@ -9125,20 +8721,6 @@ Version: 0.2.6
     Packages unavailable to check Rd xrefs: ‘ggplot2’, ‘pander’, ‘pixiedust’
     ```
 
-# mathpix
-
-Version: 0.3.0
-
-## In both
-
-*   checking package dependencies ... ERROR
-    ```
-    Package required but not available: ‘magick’
-    
-    See section ‘The DESCRIPTION file’ in the ‘Writing R Extensions’
-    manual.
-    ```
-
 # mbgraphic
 
 Version: 1.0.0
@@ -9159,11 +8741,11 @@ Version: 1.0.0
 * installing *source* package ‘mbgraphic’ ...
 ** package ‘mbgraphic’ successfully unpacked and MD5 sums checked
 ** libs
-clang++ -I"/Library/Frameworks/R.framework/Resources/include" -DNDEBUG  -I"/Users/lionel/Desktop/rlang/revdep/library.noindex/mbgraphic/Rcpp/include" -I/usr/local/include   -fPIC  -arch x86_64 -ftemplate-depth-256 -Wall -pedantic -O0 -c RcppExports.cpp -o RcppExports.o
-clang++ -I"/Library/Frameworks/R.framework/Resources/include" -DNDEBUG  -I"/Users/lionel/Desktop/rlang/revdep/library.noindex/mbgraphic/Rcpp/include" -I/usr/local/include   -fPIC  -arch x86_64 -ftemplate-depth-256 -Wall -pedantic -O0 -c cmasum.cpp -o cmasum.o
-clang -I"/Library/Frameworks/R.framework/Resources/include" -DNDEBUG  -I"/Users/lionel/Desktop/rlang/revdep/library.noindex/mbgraphic/Rcpp/include" -I/usr/local/include   -fPIC   -Wall -pedantic -O0 -c mbgraphic_init.c -o mbgraphic_init.o
-clang++ -I"/Library/Frameworks/R.framework/Resources/include" -DNDEBUG  -I"/Users/lionel/Desktop/rlang/revdep/library.noindex/mbgraphic/Rcpp/include" -I/usr/local/include   -fPIC  -arch x86_64 -ftemplate-depth-256 -Wall -pedantic -O0 -c variableflip.cpp -o variableflip.o
-clang++ -dynamiclib -Wl,-headerpad_max_install_names -undefined dynamic_lookup -single_module -multiply_defined suppress -L/Library/Frameworks/R.framework/Resources/lib -L/usr/local/lib -o mbgraphic.so RcppExports.o cmasum.o mbgraphic_init.o variableflip.o -F/Library/Frameworks/R.framework/.. -framework R -Wl,-framework -Wl,CoreFoundation
+g++-8 -I"/Library/Frameworks/R.framework/Resources/include" -DNDEBUG  -I"/Users/lionel/Desktop/rlang/revdep/library.noindex/mbgraphic/Rcpp/include" -I/usr/local/include   -fPIC  -arch x86_64 -ftemplate-depth-256 -Wall -pedantic -O0 -c RcppExports.cpp -o RcppExports.o
+g++-8 -I"/Library/Frameworks/R.framework/Resources/include" -DNDEBUG  -I"/Users/lionel/Desktop/rlang/revdep/library.noindex/mbgraphic/Rcpp/include" -I/usr/local/include   -fPIC  -arch x86_64 -ftemplate-depth-256 -Wall -pedantic -O0 -c cmasum.cpp -o cmasum.o
+gcc-8 -I"/Library/Frameworks/R.framework/Resources/include" -DNDEBUG  -I"/Users/lionel/Desktop/rlang/revdep/library.noindex/mbgraphic/Rcpp/include" -I/usr/local/include   -fPIC   -Wall -pedantic -O0 -c mbgraphic_init.c -o mbgraphic_init.o
+g++-8 -I"/Library/Frameworks/R.framework/Resources/include" -DNDEBUG  -I"/Users/lionel/Desktop/rlang/revdep/library.noindex/mbgraphic/Rcpp/include" -I/usr/local/include   -fPIC  -arch x86_64 -ftemplate-depth-256 -Wall -pedantic -O0 -c variableflip.cpp -o variableflip.o
+g++-8 -dynamiclib -Wl,-headerpad_max_install_names -undefined dynamic_lookup -single_module -multiply_defined suppress -L/Library/Frameworks/R.framework/Resources/lib -L/usr/local/lib -o mbgraphic.so RcppExports.o cmasum.o mbgraphic_init.o variableflip.o -F/Library/Frameworks/R.framework/.. -framework R -Wl,-framework -Wl,CoreFoundation
 installing to /Users/lionel/Desktop/rlang/revdep/checks.noindex/mbgraphic/new/mbgraphic.Rcheck/mbgraphic/libs
 ** R
 ** data
@@ -9190,11 +8772,11 @@ ERROR: lazy loading failed for package ‘mbgraphic’
 * installing *source* package ‘mbgraphic’ ...
 ** package ‘mbgraphic’ successfully unpacked and MD5 sums checked
 ** libs
-clang++ -I"/Library/Frameworks/R.framework/Resources/include" -DNDEBUG  -I"/Users/lionel/Desktop/rlang/revdep/library.noindex/mbgraphic/Rcpp/include" -I/usr/local/include   -fPIC  -arch x86_64 -ftemplate-depth-256 -Wall -pedantic -O0 -c RcppExports.cpp -o RcppExports.o
-clang++ -I"/Library/Frameworks/R.framework/Resources/include" -DNDEBUG  -I"/Users/lionel/Desktop/rlang/revdep/library.noindex/mbgraphic/Rcpp/include" -I/usr/local/include   -fPIC  -arch x86_64 -ftemplate-depth-256 -Wall -pedantic -O0 -c cmasum.cpp -o cmasum.o
-clang -I"/Library/Frameworks/R.framework/Resources/include" -DNDEBUG  -I"/Users/lionel/Desktop/rlang/revdep/library.noindex/mbgraphic/Rcpp/include" -I/usr/local/include   -fPIC   -Wall -pedantic -O0 -c mbgraphic_init.c -o mbgraphic_init.o
-clang++ -I"/Library/Frameworks/R.framework/Resources/include" -DNDEBUG  -I"/Users/lionel/Desktop/rlang/revdep/library.noindex/mbgraphic/Rcpp/include" -I/usr/local/include   -fPIC  -arch x86_64 -ftemplate-depth-256 -Wall -pedantic -O0 -c variableflip.cpp -o variableflip.o
-clang++ -dynamiclib -Wl,-headerpad_max_install_names -undefined dynamic_lookup -single_module -multiply_defined suppress -L/Library/Frameworks/R.framework/Resources/lib -L/usr/local/lib -o mbgraphic.so RcppExports.o cmasum.o mbgraphic_init.o variableflip.o -F/Library/Frameworks/R.framework/.. -framework R -Wl,-framework -Wl,CoreFoundation
+g++-8 -I"/Library/Frameworks/R.framework/Resources/include" -DNDEBUG  -I"/Users/lionel/Desktop/rlang/revdep/library.noindex/mbgraphic/Rcpp/include" -I/usr/local/include   -fPIC  -arch x86_64 -ftemplate-depth-256 -Wall -pedantic -O0 -c RcppExports.cpp -o RcppExports.o
+g++-8 -I"/Library/Frameworks/R.framework/Resources/include" -DNDEBUG  -I"/Users/lionel/Desktop/rlang/revdep/library.noindex/mbgraphic/Rcpp/include" -I/usr/local/include   -fPIC  -arch x86_64 -ftemplate-depth-256 -Wall -pedantic -O0 -c cmasum.cpp -o cmasum.o
+gcc-8 -I"/Library/Frameworks/R.framework/Resources/include" -DNDEBUG  -I"/Users/lionel/Desktop/rlang/revdep/library.noindex/mbgraphic/Rcpp/include" -I/usr/local/include   -fPIC   -Wall -pedantic -O0 -c mbgraphic_init.c -o mbgraphic_init.o
+g++-8 -I"/Library/Frameworks/R.framework/Resources/include" -DNDEBUG  -I"/Users/lionel/Desktop/rlang/revdep/library.noindex/mbgraphic/Rcpp/include" -I/usr/local/include   -fPIC  -arch x86_64 -ftemplate-depth-256 -Wall -pedantic -O0 -c variableflip.cpp -o variableflip.o
+g++-8 -dynamiclib -Wl,-headerpad_max_install_names -undefined dynamic_lookup -single_module -multiply_defined suppress -L/Library/Frameworks/R.framework/Resources/lib -L/usr/local/lib -o mbgraphic.so RcppExports.o cmasum.o mbgraphic_init.o variableflip.o -F/Library/Frameworks/R.framework/.. -framework R -Wl,-framework -Wl,CoreFoundation
 installing to /Users/lionel/Desktop/rlang/revdep/checks.noindex/mbgraphic/old/mbgraphic.Rcheck/mbgraphic/libs
 ** R
 ** data
@@ -9257,8 +8839,6 @@ Version: 2.13
     ```
     Package required but not available: ‘sm’
     
-    Package suggested but not available for checking: ‘magick’
-    
     See section ‘The DESCRIPTION file’ in the ‘Writing R Extensions’
     manual.
     ```
@@ -9269,16 +8849,11 @@ Version: 2.10
 
 ## In both
 
-*   checking package dependencies ... NOTE
-    ```
-    Package suggested but not available for checking: ‘magick’
-    ```
-
 *   checking dependencies in R code ... NOTE
     ```
     Namespaces in Imports field not imported from:
-      ‘dplyr’ ‘DT’ ‘foreign’ ‘formattable’ ‘ggplot2’ ‘haven’ ‘magrittr’
-      ‘mem’ ‘openxlsx’ ‘plotly’ ‘RColorBrewer’ ‘readxl’ ‘RODBC’ ‘shinyBS’
+      ‘DT’ ‘RColorBrewer’ ‘RODBC’ ‘dplyr’ ‘foreign’ ‘formattable’ ‘ggplot2’
+      ‘haven’ ‘magrittr’ ‘mem’ ‘openxlsx’ ‘plotly’ ‘readxl’ ‘shinyBS’
       ‘shinydashboard’ ‘shinyjs’ ‘shinythemes’ ‘stringi’ ‘stringr’ ‘tidyr’
       All declared Imports should be used.
     ```
@@ -9288,11 +8863,6 @@ Version: 2.10
 Version: 0.5.0
 
 ## In both
-
-*   checking package dependencies ... NOTE
-    ```
-    Package suggested but not available for checking: ‘magick’
-    ```
 
 *   checking dependencies in R code ... NOTE
     ```
@@ -9344,20 +8914,6 @@ Version: 1.2.1
       (/Users/lionel/Desktop/rlang/revdep/checks.noindex/MetaCyto/new/MetaCyto.Rcheck/00_pkg_src/MetaCyto/R/searchCluster.R:104)
     Undefined global functions or variables:
       antibodies lower parameter_name triS upper value
-    ```
-
-# metaDigitise
-
-Version: 1.0.0
-
-## In both
-
-*   checking package dependencies ... ERROR
-    ```
-    Package required but not available: ‘magick’
-    
-    See section ‘The DESCRIPTION file’ in the ‘Writing R Extensions’
-    manual.
     ```
 
 # metagene
@@ -9417,7 +8973,7 @@ Version: 2.0.0
     get_gg13.8_85MgDb: no visible binding for global variable ‘metadata’
       (/Users/lionel/Desktop/rlang/revdep/checks.noindex/metagenomeFeatures/new/metagenomeFeatures.Rcheck/00_pkg_src/metagenomeFeatures/R/gg13.8_85MgDb.R:23-25)
     Undefined global functions or variables:
-      . identifier Keys metadata
+      . Keys identifier metadata
     ```
 
 # MetaIntegrator
@@ -9428,17 +8984,16 @@ Version: 2.0.0
 
 *   checking installed package size ... NOTE
     ```
-      installed size is  5.4Mb
+      installed size is  5.3Mb
       sub-directories of 1Mb or more:
         data   1.9Mb
         doc    2.2Mb
-        R      1.0Mb
     ```
 
 *   checking dependencies in R code ... NOTE
     ```
     Namespaces in Imports field not imported from:
-      ‘DT’ ‘GEOmetadb’ ‘gplots’ ‘pheatmap’ ‘readr’ ‘RMySQL’ ‘RSQLite’
+      ‘DT’ ‘GEOmetadb’ ‘RMySQL’ ‘RSQLite’ ‘gplots’ ‘pheatmap’ ‘readr’
       All declared Imports should be used.
     ```
 
@@ -9547,40 +9102,15 @@ Version: 0.2.3
 
 ## In both
 
-*   checking whether package ‘miceFast’ can be installed ... ERROR
+*   checking whether the package can be loaded ... ERROR
     ```
-    Installation failed.
-    See ‘/Users/lionel/Desktop/rlang/revdep/checks.noindex/miceFast/new/miceFast.Rcheck/00install.out’ for details.
+    Loading this package had a fatal error status code 1
+    Loading log:
+    Error: package or namespace load failed for ‘miceFast’ in .doLoadActions(where, attach):
+     error in load action .__A__.1 for package miceFast: loadModule(module = "miceFast", what = TRUE, env = ns, loadNow = TRUE): Unable to load module "miceFast": vector memory exhausted (limit reached?)
+    Execution halted
     ```
 
-## Installation
-
-### Devel
-
-```
-* installing *source* package ‘miceFast’ ...
-** package ‘miceFast’ successfully unpacked and MD5 sums checked
-** libs
-clang++ -std=c++11 -I"/Library/Frameworks/R.framework/Resources/include" -DNDEBUG  -I"/Users/lionel/Desktop/rlang/revdep/library.noindex/miceFast/Rcpp/include" -I"/Users/lionel/Desktop/rlang/revdep/library.noindex/miceFast/RcppArmadillo/include" -I/usr/local/include  -fopenmp -fPIC  -arch x86_64 -ftemplate-depth-256 -Wall -pedantic -O0 -c R_funs.cpp -o R_funs.o
-clang: error: unsupported option '-fopenmp'
-make: *** [R_funs.o] Error 1
-ERROR: compilation failed for package ‘miceFast’
-* removing ‘/Users/lionel/Desktop/rlang/revdep/checks.noindex/miceFast/new/miceFast.Rcheck/miceFast’
-
-```
-### CRAN
-
-```
-* installing *source* package ‘miceFast’ ...
-** package ‘miceFast’ successfully unpacked and MD5 sums checked
-** libs
-clang++ -std=c++11 -I"/Library/Frameworks/R.framework/Resources/include" -DNDEBUG  -I"/Users/lionel/Desktop/rlang/revdep/library.noindex/miceFast/Rcpp/include" -I"/Users/lionel/Desktop/rlang/revdep/library.noindex/miceFast/RcppArmadillo/include" -I/usr/local/include  -fopenmp -fPIC  -arch x86_64 -ftemplate-depth-256 -Wall -pedantic -O0 -c R_funs.cpp -o R_funs.o
-clang: error: unsupported option '-fopenmp'
-make: *** [R_funs.o] Error 1
-ERROR: compilation failed for package ‘miceFast’
-* removing ‘/Users/lionel/Desktop/rlang/revdep/checks.noindex/miceFast/old/miceFast.Rcheck/miceFast’
-
-```
 # microbiome
 
 Version: 1.2.1
@@ -9635,8 +9165,8 @@ Version: 6.3.2
     ```
       installed size is  9.7Mb
       sub-directories of 1Mb or more:
-        data   4.0Mb
         R      5.1Mb
+        data   4.0Mb
     ```
 
 # MlBayesOpt
@@ -9655,6 +9185,11 @@ Version: 0.3.3
 # mlbgameday
 
 Version: 0.1.2
+
+## Newly fixed
+
+*   R CMD check timed out
+    
 
 ## In both
 
@@ -9692,6 +9227,18 @@ Version: 0.1.2
     Execution halted
     ```
 
+# mlflow
+
+Version: 0.7.0
+
+## In both
+
+*   checking dependencies in R code ... NOTE
+    ```
+    Namespace in Imports field not imported from: ‘aws.s3’
+      All declared Imports should be used.
+    ```
+
 # mlr
 
 Version: 2.13
@@ -9702,8 +9249,8 @@ Version: 2.13
     ```
       installed size is  8.5Mb
       sub-directories of 1Mb or more:
-        data   2.3Mb
         R      5.1Mb
+        data   2.3Mb
     ```
 
 *   checking dependencies in R code ... NOTE
@@ -9724,9 +9271,9 @@ Version: 0.1.1
 
 *   checking installed package size ... NOTE
     ```
-      installed size is 15.7Mb
+      installed size is 16.3Mb
       sub-directories of 1Mb or more:
-        libs  15.0Mb
+        libs  15.5Mb
     ```
 
 # modelgrid
@@ -9761,11 +9308,11 @@ Version: 1.4.2
 
 *   checking installed package size ... NOTE
     ```
-      installed size is  7.9Mb
+      installed size is  8.0Mb
       sub-directories of 1Mb or more:
+        R      3.1Mb
         data   2.1Mb
         doc    1.7Mb
-        R      3.1Mb
     ```
 
 # Momocs
@@ -9776,7 +9323,7 @@ Version: 1.2.9
 
 *   checking installed package size ... NOTE
     ```
-      installed size is  5.1Mb
+      installed size is  5.2Mb
       sub-directories of 1Mb or more:
         R   3.1Mb
     ```
@@ -9785,18 +9332,13 @@ Version: 1.2.9
 
 Version: 0.6.0
 
-## Newly broken
-
-*   R CMD check timed out
-    
-
 ## In both
 
 *   checking installed package size ... NOTE
     ```
-      installed size is  9.2Mb
+      installed size is  7.8Mb
       sub-directories of 1Mb or more:
-        libs   8.5Mb
+        libs   7.1Mb
     ```
 
 # monkeylearn
@@ -9820,10 +9362,10 @@ Version: 2.8.0
 *   checking dependencies in R code ... NOTE
     ```
     Namespaces in Imports field not imported from:
-      ‘biocViews’ ‘Rcpp’
+      ‘Rcpp’ ‘biocViews’
       All declared Imports should be used.
     Missing or unexported objects:
-      ‘scater::newSCESet’ ‘VGAM::gaussianff’
+      ‘VGAM::gaussianff’ ‘scater::newSCESet’
     ```
 
 *   checking R code for possible problems ... NOTE
@@ -9848,7 +9390,7 @@ Version: 2.8.0
     project2MST: no visible global function definition for ‘nei’
       (/Users/lionel/Desktop/rlang/revdep/checks.noindex/monocle/new/monocle.Rcheck/00_pkg_src/monocle/R/order_cells.R:1606)
     Undefined global functions or variables:
-      Branch gaussianff nei next_node pseudocount Size_Factor
+      Branch Size_Factor gaussianff nei next_node pseudocount
       use_for_ordering
     ```
 
@@ -9939,7 +9481,7 @@ Version: 1.0.1
     pandoc-citeproc: when expecting a product (:*:), encountered Object instead
     Error running filter /usr/local/bin/pandoc-citeproc:
     Filter returned error status 1
-    Error: processing vignette 'mortAAR_vignette_extended.Rmd' failed with diagnostics:
+    Error: processing vignette 'mortAAR_vignette-1.Rmd' failed with diagnostics:
     pandoc document conversion failed with error 83
     Execution halted
     ```
@@ -9975,10 +9517,10 @@ Version: 1.4.0
 
 *   checking installed package size ... NOTE
     ```
-      installed size is  6.6Mb
+      installed size is  6.5Mb
       sub-directories of 1Mb or more:
+        R     4.1Mb
         doc   1.9Mb
-        R     4.2Mb
     ```
 
 *   checking Rd cross-references ... NOTE
@@ -10006,7 +9548,7 @@ Version: 0.3.0
 *   checking dependencies in R code ... NOTE
     ```
     Namespaces in Imports field not imported from:
-      ‘caret’ ‘ggformula’ ‘knitr’ ‘MASS’ ‘testthat’ ‘tidyverse’
+      ‘MASS’ ‘caret’ ‘ggformula’ ‘knitr’ ‘testthat’ ‘tidyverse’
       All declared Imports should be used.
     ```
 
@@ -10053,18 +9595,555 @@ Version: 0.8.12
 * installing *source* package ‘mrgsolve’ ...
 ** package ‘mrgsolve’ successfully unpacked and MD5 sums checked
 ** libs
-clang++ -I"/Library/Frameworks/R.framework/Resources/include" -DNDEBUG -I../inst/include -I"/Users/lionel/Desktop/rlang/revdep/library.noindex/mrgsolve/Rcpp/include" -I"/Users/lionel/Desktop/rlang/revdep/library.noindex/mrgsolve/RcppArmadillo/include" -I"/Users/lionel/Desktop/rlang/revdep/library.noindex/mrgsolve/BH/include" -I/usr/local/include   -fPIC  -arch x86_64 -ftemplate-depth-256 -Wall -pedantic -O0 -c RcppExports.cpp -o RcppExports.o
-clang++ -I"/Library/Frameworks/R.framework/Resources/include" -DNDEBUG -I../inst/include -I"/Users/lionel/Desktop/rlang/revdep/library.noindex/mrgsolve/Rcpp/include" -I"/Users/lionel/Desktop/rlang/revdep/library.noindex/mrgsolve/RcppArmadillo/include" -I"/Users/lionel/Desktop/rlang/revdep/library.noindex/mrgsolve/BH/include" -I/usr/local/include   -fPIC  -arch x86_64 -ftemplate-depth-256 -Wall -pedantic -O0 -c dataobject.cpp -o dataobject.o
-clang++ -I"/Library/Frameworks/R.framework/Resources/include" -DNDEBUG -I../inst/include -I"/Users/lionel/Desktop/rlang/revdep/library.noindex/mrgsolve/Rcpp/include" -I"/Users/lionel/Desktop/rlang/revdep/library.noindex/mrgsolve/RcppArmadillo/include" -I"/Users/lionel/Desktop/rlang/revdep/library.noindex/mrgsolve/BH/include" -I/usr/local/include   -fPIC  -arch x86_64 -ftemplate-depth-256 -Wall -pedantic -O0 -c datarecord.cpp -o datarecord.o
-clang++ -I"/Library/Frameworks/R.framework/Resources/include" -DNDEBUG -I../inst/include -I"/Users/lionel/Desktop/rlang/revdep/library.noindex/mrgsolve/Rcpp/include" -I"/Users/lionel/Desktop/rlang/revdep/library.noindex/mrgsolve/RcppArmadillo/include" -I"/Users/lionel/Desktop/rlang/revdep/library.noindex/mrgsolve/BH/include" -I/usr/local/include   -fPIC  -arch x86_64 -ftemplate-depth-256 -Wall -pedantic -O0 -c devtran.cpp -o devtran.o
-clang++ -I"/Library/Frameworks/R.framework/Resources/include" -DNDEBUG -I../inst/include -I"/Users/lionel/Desktop/rlang/revdep/library.noindex/mrgsolve/Rcpp/include" -I"/Users/lionel/Desktop/rlang/revdep/library.noindex/mrgsolve/RcppArmadillo/include" -I"/Users/lionel/Desktop/rlang/revdep/library.noindex/mrgsolve/BH/include" -I/usr/local/include   -fPIC  -arch x86_64 -ftemplate-depth-256 -Wall -pedantic -O0 -c housemodel-mread-source.cpp -o housemodel-mread-source.o
-clang++ -I"/Library/Frameworks/R.framework/Resources/include" -DNDEBUG -I../inst/include -I"/Users/lionel/Desktop/rlang/revdep/library.noindex/mrgsolve/Rcpp/include" -I"/Users/lionel/Desktop/rlang/revdep/library.noindex/mrgsolve/RcppArmadillo/include" -I"/Users/lionel/Desktop/rlang/revdep/library.noindex/mrgsolve/BH/include" -I/usr/local/include   -fPIC  -arch x86_64 -ftemplate-depth-256 -Wall -pedantic -O0 -c mrgsolve.cpp -o mrgsolve.o
-clang++ -I"/Library/Frameworks/R.framework/Resources/include" -DNDEBUG -I../inst/include -I"/Users/lionel/Desktop/rlang/revdep/library.noindex/mrgsolve/Rcpp/include" -I"/Users/lionel/Desktop/rlang/revdep/library.noindex/mrgsolve/RcppArmadillo/include" -I"/Users/lionel/Desktop/rlang/revdep/library.noindex/mrgsolve/BH/include" -I/usr/local/include   -fPIC  -arch x86_64 -ftemplate-depth-256 -Wall -pedantic -O0 -c mrgsolve_init.cpp -o mrgsolve_init.o
-clang++ -I"/Library/Frameworks/R.framework/Resources/include" -DNDEBUG -I../inst/include -I"/Users/lionel/Desktop/rlang/revdep/library.noindex/mrgsolve/Rcpp/include" -I"/Users/lionel/Desktop/rlang/revdep/library.noindex/mrgsolve/RcppArmadillo/include" -I"/Users/lionel/Desktop/rlang/revdep/library.noindex/mrgsolve/BH/include" -I/usr/local/include   -fPIC  -arch x86_64 -ftemplate-depth-256 -Wall -pedantic -O0 -c odepack_dlsoda.cpp -o odepack_dlsoda.o
-clang++ -I"/Library/Frameworks/R.framework/Resources/include" -DNDEBUG -I../inst/include -I"/Users/lionel/Desktop/rlang/revdep/library.noindex/mrgsolve/Rcpp/include" -I"/Users/lionel/Desktop/rlang/revdep/library.noindex/mrgsolve/RcppArmadillo/include" -I"/Users/lionel/Desktop/rlang/revdep/library.noindex/mrgsolve/BH/include" -I/usr/local/include   -fPIC  -arch x86_64 -ftemplate-depth-256 -Wall -pedantic -O0 -c odeproblem.cpp -o odeproblem.o
+g++-8 -I"/Library/Frameworks/R.framework/Resources/include" -DNDEBUG -I../inst/include -I"/Users/lionel/Desktop/rlang/revdep/library.noindex/mrgsolve/Rcpp/include" -I"/Users/lionel/Desktop/rlang/revdep/library.noindex/mrgsolve/RcppArmadillo/include" -I"/Users/lionel/Desktop/rlang/revdep/library.noindex/mrgsolve/BH/include" -I/usr/local/include   -fPIC  -arch x86_64 -ftemplate-depth-256 -Wall -pedantic -O0 -c RcppExports.cpp -o RcppExports.o
+g++-8 -I"/Library/Frameworks/R.framework/Resources/include" -DNDEBUG -I../inst/include -I"/Users/lionel/Desktop/rlang/revdep/library.noindex/mrgsolve/Rcpp/include" -I"/Users/lionel/Desktop/rlang/revdep/library.noindex/mrgsolve/RcppArmadillo/include" -I"/Users/lionel/Desktop/rlang/revdep/library.noindex/mrgsolve/BH/include" -I/usr/local/include   -fPIC  -arch x86_64 -ftemplate-depth-256 -Wall -pedantic -O0 -c dataobject.cpp -o dataobject.o
+g++-8 -I"/Library/Frameworks/R.framework/Resources/include" -DNDEBUG -I../inst/include -I"/Users/lionel/Desktop/rlang/revdep/library.noindex/mrgsolve/Rcpp/include" -I"/Users/lionel/Desktop/rlang/revdep/library.noindex/mrgsolve/RcppArmadillo/include" -I"/Users/lionel/Desktop/rlang/revdep/library.noindex/mrgsolve/BH/include" -I/usr/local/include   -fPIC  -arch x86_64 -ftemplate-depth-256 -Wall -pedantic -O0 -c datarecord.cpp -o datarecord.o
+g++-8 -I"/Library/Frameworks/R.framework/Resources/include" -DNDEBUG -I../inst/include -I"/Users/lionel/Desktop/rlang/revdep/library.noindex/mrgsolve/Rcpp/include" -I"/Users/lionel/Desktop/rlang/revdep/library.noindex/mrgsolve/RcppArmadillo/include" -I"/Users/lionel/Desktop/rlang/revdep/library.noindex/mrgsolve/BH/include" -I/usr/local/include   -fPIC  -arch x86_64 -ftemplate-depth-256 -Wall -pedantic -O0 -c devtran.cpp -o devtran.o
+In file included from /Users/lionel/Desktop/rlang/revdep/library.noindex/mrgsolve/BH/include/boost/smart_ptr/shared_ptr.hpp:28,
+                 from /Users/lionel/Desktop/rlang/revdep/library.noindex/mrgsolve/BH/include/boost/shared_ptr.hpp:17,
+                 from devtran.cpp:37:
+/Users/lionel/Desktop/rlang/revdep/library.noindex/mrgsolve/BH/include/boost/smart_ptr/detail/shared_count.hpp:355:33: warning: 'template<class> class std::auto_ptr' is deprecated [-Wdeprecated-declarations]
+     explicit shared_count( std::auto_ptr<Y> & r ): pi_( new sp_counted_impl_p<Y>( r.get() ) )
+                                 ^~~~~~~~
+In file included from /usr/local/Cellar/gcc/8.2.0/include/c++/8.2.0/memory:80,
+                 from /Users/lionel/Desktop/rlang/revdep/library.noindex/mrgsolve/BH/include/boost/config/no_tr1/memory.hpp:21,
+                 from /Users/lionel/Desktop/rlang/revdep/library.noindex/mrgsolve/BH/include/boost/smart_ptr/shared_ptr.hpp:23,
+                 from /Users/lionel/Desktop/rlang/revdep/library.noindex/mrgsolve/BH/include/boost/shared_ptr.hpp:17,
+                 from devtran.cpp:37:
+/usr/local/Cellar/gcc/8.2.0/include/c++/8.2.0/bits/unique_ptr.h:53:28: note: declared here
+   template<typename> class auto_ptr;
+                            ^~~~~~~~
+In file included from /Users/lionel/Desktop/rlang/revdep/library.noindex/mrgsolve/BH/include/boost/shared_ptr.hpp:17,
+                 from devtran.cpp:37:
+/Users/lionel/Desktop/rlang/revdep/library.noindex/mrgsolve/BH/include/boost/smart_ptr/shared_ptr.hpp:256:65: warning: 'template<class> class std::auto_ptr' is deprecated [-Wdeprecated-declarations]
+ template< class T, class R > struct sp_enable_if_auto_ptr< std::auto_ptr< T >, R >
+                                                                 ^~~~~~~~
+In file included from /usr/local/Cellar/gcc/8.2.0/include/c++/8.2.0/memory:80,
+                 from /Users/lionel/Desktop/rlang/revdep/library.noindex/mrgsolve/BH/include/boost/config/no_tr1/memory.hpp:21,
+                 from /Users/lionel/Desktop/rlang/revdep/library.noindex/mrgsolve/BH/include/boost/smart_ptr/shared_ptr.hpp:23,
+                 from /Users/lionel/Desktop/rlang/revdep/library.noindex/mrgsolve/BH/include/boost/shared_ptr.hpp:17,
+                 from devtran.cpp:37:
+/usr/local/Cellar/gcc/8.2.0/include/c++/8.2.0/bits/unique_ptr.h:53:28: note: declared here
+   template<typename> class auto_ptr;
+                            ^~~~~~~~
+In file included from /Users/lionel/Desktop/rlang/revdep/library.noindex/mrgsolve/BH/include/boost/shared_ptr.hpp:17,
+                 from devtran.cpp:37:
+/Users/lionel/Desktop/rlang/revdep/library.noindex/mrgsolve/BH/include/boost/smart_ptr/shared_ptr.hpp:471:31: warning: 'template<class> class std::auto_ptr' is deprecated [-Wdeprecated-declarations]
+     explicit shared_ptr( std::auto_ptr<Y> & r ): px(r.get()), pn()
+                               ^~~~~~~~
+In file included from /usr/local/Cellar/gcc/8.2.0/include/c++/8.2.0/memory:80,
+                 from /Users/lionel/Desktop/rlang/revdep/library.noindex/mrgsolve/BH/include/boost/config/no_tr1/memory.hpp:21,
+                 from /Users/lionel/Desktop/rlang/revdep/library.noindex/mrgsolve/BH/include/boost/smart_ptr/shared_ptr.hpp:23,
+                 from /Users/lionel/Desktop/rlang/revdep/library.noindex/mrgsolve/BH/include/boost/shared_ptr.hpp:17,
+                 from devtran.cpp:37:
+/usr/local/Cellar/gcc/8.2.0/include/c++/8.2.0/bits/unique_ptr.h:53:28: note: declared here
+   template<typename> class auto_ptr;
+                            ^~~~~~~~
+In file included from /Users/lionel/Desktop/rlang/revdep/library.noindex/mrgsolve/BH/include/boost/shared_ptr.hpp:17,
+                 from devtran.cpp:37:
+/Users/lionel/Desktop/rlang/revdep/library.noindex/mrgsolve/BH/include/boost/smart_ptr/shared_ptr.hpp:484:22: warning: 'template<class> class std::auto_ptr' is deprecated [-Wdeprecated-declarations]
+     shared_ptr( std::auto_ptr<Y> && r ): px(r.get()), pn()
+                      ^~~~~~~~
+In file included from /usr/local/Cellar/gcc/8.2.0/include/c++/8.2.0/memory:80,
+                 from /Users/lionel/Desktop/rlang/revdep/library.noindex/mrgsolve/BH/include/boost/config/no_tr1/memory.hpp:21,
+                 from /Users/lionel/Desktop/rlang/revdep/library.noindex/mrgsolve/BH/include/boost/smart_ptr/shared_ptr.hpp:23,
+                 from /Users/lionel/Desktop/rlang/revdep/library.noindex/mrgsolve/BH/include/boost/shared_ptr.hpp:17,
+                 from devtran.cpp:37:
+/usr/local/Cellar/gcc/8.2.0/include/c++/8.2.0/bits/unique_ptr.h:53:28: note: declared here
+   template<typename> class auto_ptr;
+                            ^~~~~~~~
+In file included from /Users/lionel/Desktop/rlang/revdep/library.noindex/mrgsolve/BH/include/boost/shared_ptr.hpp:17,
+                 from devtran.cpp:37:
+/Users/lionel/Desktop/rlang/revdep/library.noindex/mrgsolve/BH/include/boost/smart_ptr/shared_ptr.hpp:567:34: warning: 'template<class> class std::auto_ptr' is deprecated [-Wdeprecated-declarations]
+     shared_ptr & operator=( std::auto_ptr<Y> & r )
+                                  ^~~~~~~~
+In file included from /usr/local/Cellar/gcc/8.2.0/include/c++/8.2.0/memory:80,
+                 from /Users/lionel/Desktop/rlang/revdep/library.noindex/mrgsolve/BH/include/boost/config/no_tr1/memory.hpp:21,
+                 from /Users/lionel/Desktop/rlang/revdep/library.noindex/mrgsolve/BH/include/boost/smart_ptr/shared_ptr.hpp:23,
+                 from /Users/lionel/Desktop/rlang/revdep/library.noindex/mrgsolve/BH/include/boost/shared_ptr.hpp:17,
+                 from devtran.cpp:37:
+/usr/local/Cellar/gcc/8.2.0/include/c++/8.2.0/bits/unique_ptr.h:53:28: note: declared here
+   template<typename> class auto_ptr;
+                            ^~~~~~~~
+In file included from /Users/lionel/Desktop/rlang/revdep/library.noindex/mrgsolve/BH/include/boost/shared_ptr.hpp:17,
+                 from devtran.cpp:37:
+/Users/lionel/Desktop/rlang/revdep/library.noindex/mrgsolve/BH/include/boost/smart_ptr/shared_ptr.hpp:576:34: warning: 'template<class> class std::auto_ptr' is deprecated [-Wdeprecated-declarations]
+     shared_ptr & operator=( std::auto_ptr<Y> && r )
+                                  ^~~~~~~~
+In file included from /usr/local/Cellar/gcc/8.2.0/include/c++/8.2.0/memory:80,
+                 from /Users/lionel/Desktop/rlang/revdep/library.noindex/mrgsolve/BH/include/boost/config/no_tr1/memory.hpp:21,
+                 from /Users/lionel/Desktop/rlang/revdep/library.noindex/mrgsolve/BH/include/boost/smart_ptr/shared_ptr.hpp:23,
+                 from /Users/lionel/Desktop/rlang/revdep/library.noindex/mrgsolve/BH/include/boost/shared_ptr.hpp:17,
+                 from devtran.cpp:37:
+/usr/local/Cellar/gcc/8.2.0/include/c++/8.2.0/bits/unique_ptr.h:53:28: note: declared here
+   template<typename> class auto_ptr;
+                            ^~~~~~~~
+In file included from /Users/lionel/Desktop/rlang/revdep/library.noindex/mrgsolve/BH/include/boost/shared_ptr.hpp:17,
+                 from devtran.cpp:37:
+/Users/lionel/Desktop/rlang/revdep/library.noindex/mrgsolve/BH/include/boost/smart_ptr/shared_ptr.hpp: In member function 'boost::shared_ptr<T>& boost::shared_ptr<T>::operator=(std::auto_ptr<_Up>&&)':
+/Users/lionel/Desktop/rlang/revdep/library.noindex/mrgsolve/BH/include/boost/smart_ptr/shared_ptr.hpp:578:38: warning: 'template<class> class std::auto_ptr' is deprecated [-Wdeprecated-declarations]
+         this_type( static_cast< std::auto_ptr<Y> && >( r ) ).swap( *this );
+                                      ^~~~~~~~
+In file included from /usr/local/Cellar/gcc/8.2.0/include/c++/8.2.0/memory:80,
+                 from /Users/lionel/Desktop/rlang/revdep/library.noindex/mrgsolve/BH/include/boost/config/no_tr1/memory.hpp:21,
+                 from /Users/lionel/Desktop/rlang/revdep/library.noindex/mrgsolve/BH/include/boost/smart_ptr/shared_ptr.hpp:23,
+                 from /Users/lionel/Desktop/rlang/revdep/library.noindex/mrgsolve/BH/include/boost/shared_ptr.hpp:17,
+                 from devtran.cpp:37:
+/usr/local/Cellar/gcc/8.2.0/include/c++/8.2.0/bits/unique_ptr.h:53:28: note: declared here
+   template<typename> class auto_ptr;
+                            ^~~~~~~~
+In file included from /Users/lionel/Desktop/rlang/revdep/library.noindex/mrgsolve/RcppArmadillo/include/armadillo:54,
+                 from /Users/lionel/Desktop/rlang/revdep/library.noindex/mrgsolve/RcppArmadillo/include/RcppArmadilloForward.h:46,
+                 from /Users/lionel/Desktop/rlang/revdep/library.noindex/mrgsolve/RcppArmadillo/include/RcppArmadillo.h:31,
+                 from ../inst/include/RcppInclude.h:19,
+                 from ../inst/include/mrgsolve.h:23,
+                 from RcppExports.cpp:4:
+/Users/lionel/Desktop/rlang/revdep/library.noindex/mrgsolve/RcppArmadillo/include/armadillo_bits/compiler_setup.hpp:509:108: note: #pragma message: NOTE: suggest to enable C++14 mode for faster code; add -std=c++14 to compiler flags
+     #pragma message ("NOTE: suggest to enable C++14 mode for faster code; add -std=c++14 to compiler flags")
+                                                                                                            ^
+In file included from /Users/lionel/Desktop/rlang/revdep/library.noindex/mrgsolve/RcppArmadillo/include/armadillo:54,
+                 from /Users/lionel/Desktop/rlang/revdep/library.noindex/mrgsolve/RcppArmadillo/include/RcppArmadilloForward.h:46,
+                 from /Users/lionel/Desktop/rlang/revdep/library.noindex/mrgsolve/RcppArmadillo/include/RcppArmadillo.h:31,
+                 from ../inst/include/RcppInclude.h:19,
+                 from dataobject.cpp:24:
+/Users/lionel/Desktop/rlang/revdep/library.noindex/mrgsolve/RcppArmadillo/include/armadillo_bits/compiler_setup.hpp:509:108: note: #pragma message: NOTE: suggest to enable C++14 mode for faster code; add -std=c++14 to compiler flags
+     #pragma message ("NOTE: suggest to enable C++14 mode for faster code; add -std=c++14 to compiler flags")
+                                                                                                            ^
+In file included from /Users/lionel/Desktop/rlang/revdep/library.noindex/mrgsolve/RcppArmadillo/include/armadillo:54,
+                 from /Users/lionel/Desktop/rlang/revdep/library.noindex/mrgsolve/RcppArmadillo/include/RcppArmadilloForward.h:46,
+                 from /Users/lionel/Desktop/rlang/revdep/library.noindex/mrgsolve/RcppArmadillo/include/RcppArmadillo.h:31,
+                 from ../inst/include/RcppInclude.h:19,
+                 from datarecord.cpp:24:
+/Users/lionel/Desktop/rlang/revdep/library.noindex/mrgsolve/RcppArmadillo/include/armadillo_bits/compiler_setup.hpp:509:108: note: #pragma message: NOTE: suggest to enable C++14 mode for faster code; add -std=c++14 to compiler flags
+     #pragma message ("NOTE: suggest to enable C++14 mode for faster code; add -std=c++14 to compiler flags")
+                                                                                                            ^
+In file included from /Users/lionel/Desktop/rlang/revdep/library.noindex/mrgsolve/RcppArmadillo/include/armadillo:54,
+                 from /Users/lionel/Desktop/rlang/revdep/library.noindex/mrgsolve/RcppArmadillo/include/RcppArmadilloForward.h:46,
+                 from /Users/lionel/Desktop/rlang/revdep/library.noindex/mrgsolve/RcppArmadillo/include/RcppArmadillo.h:31,
+                 from ../inst/include/RcppInclude.h:19,
+                 from ../inst/include/mrgsolve.h:23,
+                 from devtran.cpp:40:
+/Users/lionel/Desktop/rlang/revdep/library.noindex/mrgsolve/RcppArmadillo/include/armadillo_bits/compiler_setup.hpp: At global scope:
+/Users/lionel/Desktop/rlang/revdep/library.noindex/mrgsolve/RcppArmadillo/include/armadillo_bits/compiler_setup.hpp:509:108: note: #pragma message: NOTE: suggest to enable C++14 mode for faster code; add -std=c++14 to compiler flags
+     #pragma message ("NOTE: suggest to enable C++14 mode for faster code; add -std=c++14 to compiler flags")
+                                                                                                            ^
+In file included from /Users/lionel/Desktop/rlang/revdep/library.noindex/mrgsolve/BH/include/boost/smart_ptr/shared_ptr.hpp:28,
+                 from /Users/lionel/Desktop/rlang/revdep/library.noindex/mrgsolve/BH/include/boost/shared_ptr.hpp:17,
+                 from ../inst/include/datarecord.h:24,
+                 from datarecord.cpp:25:
+/Users/lionel/Desktop/rlang/revdep/library.noindex/mrgsolve/BH/include/boost/smart_ptr/detail/shared_count.hpp:355:33: warning: 'template<class> class std::auto_ptr' is deprecated [-Wdeprecated-declarations]
+     explicit shared_count( std::auto_ptr<Y> & r ): pi_( new sp_counted_impl_p<Y>( r.get() ) )
+                                 ^~~~~~~~
+In file included from /usr/local/Cellar/gcc/8.2.0/include/c++/8.2.0/bits/locale_conv.h:41,
+                 from /usr/local/Cellar/gcc/8.2.0/include/c++/8.2.0/locale:43,
+                 from /usr/local/Cellar/gcc/8.2.0/include/c++/8.2.0/iomanip:43,
+                 from /Users/lionel/Desktop/rlang/revdep/library.noindex/mrgsolve/Rcpp/include/RcppCommon.h:52,
+                 from /Users/lionel/Desktop/rlang/revdep/library.noindex/mrgsolve/RcppArmadillo/include/RcppArmadilloForward.h:26,
+                 from /Users/lionel/Desktop/rlang/revdep/library.noindex/mrgsolve/RcppArmadillo/include/RcppArmadillo.h:31,
+                 from ../inst/include/RcppInclude.h:19,
+                 from datarecord.cpp:24:
+/usr/local/Cellar/gcc/8.2.0/include/c++/8.2.0/bits/unique_ptr.h:53:28: note: declared here
+   template<typename> class auto_ptr;
+                            ^~~~~~~~
+In file included from /Users/lionel/Desktop/rlang/revdep/library.noindex/mrgsolve/BH/include/boost/smart_ptr/shared_ptr.hpp:28,
+                 from /Users/lionel/Desktop/rlang/revdep/library.noindex/mrgsolve/BH/include/boost/shared_ptr.hpp:17,
+                 from ../inst/include/dataobject.h:27,
+                 from dataobject.cpp:25:
+/Users/lionel/Desktop/rlang/revdep/library.noindex/mrgsolve/BH/include/boost/smart_ptr/detail/shared_count.hpp:355:33: warning: 'template<class> class std::auto_ptr' is deprecated [-Wdeprecated-declarations]
+     explicit shared_count( std::auto_ptr<Y> & r ): pi_( new sp_counted_impl_p<Y>( r.get() ) )
+                                 ^~~~~~~~
+In file included from /usr/local/Cellar/gcc/8.2.0/include/c++/8.2.0/bits/locale_conv.h:41,
+                 from /usr/local/Cellar/gcc/8.2.0/include/c++/8.2.0/locale:43,
+                 from /usr/local/Cellar/gcc/8.2.0/include/c++/8.2.0/iomanip:43,
+                 from /Users/lionel/Desktop/rlang/revdep/library.noindex/mrgsolve/Rcpp/include/RcppCommon.h:52,
+                 from /Users/lionel/Desktop/rlang/revdep/library.noindex/mrgsolve/RcppArmadillo/include/RcppArmadilloForward.h:26,
+                 from /Users/lionel/Desktop/rlang/revdep/library.noindex/mrgsolve/RcppArmadillo/include/RcppArmadillo.h:31,
+                 from ../inst/include/RcppInclude.h:19,
+                 from dataobject.cpp:24:
+/usr/local/Cellar/gcc/8.2.0/include/c++/8.2.0/bits/unique_ptr.h:53:28: note: declared here
+   template<typename> class auto_ptr;
+                            ^~~~~~~~
+In file included from /Users/lionel/Desktop/rlang/revdep/library.noindex/mrgsolve/BH/include/boost/shared_ptr.hpp:17,
+                 from ../inst/include/datarecord.h:24,
+                 from datarecord.cpp:25:
+/Users/lionel/Desktop/rlang/revdep/library.noindex/mrgsolve/BH/include/boost/smart_ptr/shared_ptr.hpp:256:65: warning: 'template<class> class std::auto_ptr' is deprecated [-Wdeprecated-declarations]
+ template< class T, class R > struct sp_enable_if_auto_ptr< std::auto_ptr< T >, R >
+                                                                 ^~~~~~~~
+In file included from /usr/local/Cellar/gcc/8.2.0/include/c++/8.2.0/bits/locale_conv.h:41,
+                 from /usr/local/Cellar/gcc/8.2.0/include/c++/8.2.0/locale:43,
+                 from /usr/local/Cellar/gcc/8.2.0/include/c++/8.2.0/iomanip:43,
+                 from /Users/lionel/Desktop/rlang/revdep/library.noindex/mrgsolve/Rcpp/include/RcppCommon.h:52,
+                 from /Users/lionel/Desktop/rlang/revdep/library.noindex/mrgsolve/RcppArmadillo/include/RcppArmadilloForward.h:26,
+                 from /Users/lionel/Desktop/rlang/revdep/library.noindex/mrgsolve/RcppArmadillo/include/RcppArmadillo.h:31,
+                 from ../inst/include/RcppInclude.h:19,
+                 from datarecord.cpp:24:
+/usr/local/Cellar/gcc/8.2.0/include/c++/8.2.0/bits/unique_ptr.h:53:28: note: declared here
+   template<typename> class auto_ptr;
+                            ^~~~~~~~
+In file included from /Users/lionel/Desktop/rlang/revdep/library.noindex/mrgsolve/BH/include/boost/shared_ptr.hpp:17,
+                 from ../inst/include/datarecord.h:24,
+                 from datarecord.cpp:25:
+/Users/lionel/Desktop/rlang/revdep/library.noindex/mrgsolve/BH/include/boost/smart_ptr/shared_ptr.hpp:471:31: warning: 'template<class> class std::auto_ptr' is deprecated [-Wdeprecated-declarations]
+     explicit shared_ptr( std::auto_ptr<Y> & r ): px(r.get()), pn()
+                               ^~~~~~~~
+In file included from /usr/local/Cellar/gcc/8.2.0/include/c++/8.2.0/bits/locale_conv.h:41,
+                 from /usr/local/Cellar/gcc/8.2.0/include/c++/8.2.0/locale:43,
+                 from /usr/local/Cellar/gcc/8.2.0/include/c++/8.2.0/iomanip:43,
+                 from /Users/lionel/Desktop/rlang/revdep/library.noindex/mrgsolve/Rcpp/include/RcppCommon.h:52,
+                 from /Users/lionel/Desktop/rlang/revdep/library.noindex/mrgsolve/RcppArmadillo/include/RcppArmadilloForward.h:26,
+                 from /Users/lionel/Desktop/rlang/revdep/library.noindex/mrgsolve/RcppArmadillo/include/RcppArmadillo.h:31,
+                 from ../inst/include/RcppInclude.h:19,
+                 from datarecord.cpp:24:
+/usr/local/Cellar/gcc/8.2.0/include/c++/8.2.0/bits/unique_ptr.h:53:28: note: declared here
+   template<typename> class auto_ptr;
+                            ^~~~~~~~
+In file included from /Users/lionel/Desktop/rlang/revdep/library.noindex/mrgsolve/BH/include/boost/shared_ptr.hpp:17,
+                 from ../inst/include/datarecord.h:24,
+                 from datarecord.cpp:25:
+/Users/lionel/Desktop/rlang/revdep/library.noindex/mrgsolve/BH/include/boost/smart_ptr/shared_ptr.hpp:484:22: warning: 'template<class> class std::auto_ptr' is deprecated [-Wdeprecated-declarations]
+     shared_ptr( std::auto_ptr<Y> && r ): px(r.get()), pn()
+                      ^~~~~~~~
+In file included from /usr/local/Cellar/gcc/8.2.0/include/c++/8.2.0/bits/locale_conv.h:41,
+                 from /usr/local/Cellar/gcc/8.2.0/include/c++/8.2.0/locale:43,
+                 from /usr/local/Cellar/gcc/8.2.0/include/c++/8.2.0/iomanip:43,
+                 from /Users/lionel/Desktop/rlang/revdep/library.noindex/mrgsolve/Rcpp/include/RcppCommon.h:52,
+                 from /Users/lionel/Desktop/rlang/revdep/library.noindex/mrgsolve/RcppArmadillo/include/RcppArmadilloForward.h:26,
+                 from /Users/lionel/Desktop/rlang/revdep/library.noindex/mrgsolve/RcppArmadillo/include/RcppArmadillo.h:31,
+                 from ../inst/include/RcppInclude.h:19,
+                 from datarecord.cpp:24:
+/usr/local/Cellar/gcc/8.2.0/include/c++/8.2.0/bits/unique_ptr.h:53:28: note: declared here
+   template<typename> class auto_ptr;
+                            ^~~~~~~~
+In file included from /Users/lionel/Desktop/rlang/revdep/library.noindex/mrgsolve/BH/include/boost/shared_ptr.hpp:17,
+                 from ../inst/include/datarecord.h:24,
+                 from datarecord.cpp:25:
+/Users/lionel/Desktop/rlang/revdep/library.noindex/mrgsolve/BH/include/boost/smart_ptr/shared_ptr.hpp:567:34: warning: 'template<class> class std::auto_ptr' is deprecated [-Wdeprecated-declarations]
+     shared_ptr & operator=( std::auto_ptr<Y> & r )
+                                  ^~~~~~~~
+In file included from /usr/local/Cellar/gcc/8.2.0/include/c++/8.2.0/bits/locale_conv.h:41,
+                 from /usr/local/Cellar/gcc/8.2.0/include/c++/8.2.0/locale:43,
+                 from /usr/local/Cellar/gcc/8.2.0/include/c++/8.2.0/iomanip:43,
+                 from /Users/lionel/Desktop/rlang/revdep/library.noindex/mrgsolve/Rcpp/include/RcppCommon.h:52,
+                 from /Users/lionel/Desktop/rlang/revdep/library.noindex/mrgsolve/RcppArmadillo/include/RcppArmadilloForward.h:26,
+                 from /Users/lionel/Desktop/rlang/revdep/library.noindex/mrgsolve/RcppArmadillo/include/RcppArmadillo.h:31,
+                 from ../inst/include/RcppInclude.h:19,
+                 from datarecord.cpp:24:
+/usr/local/Cellar/gcc/8.2.0/include/c++/8.2.0/bits/unique_ptr.h:53:28: note: declared here
+   template<typename> class auto_ptr;
+                            ^~~~~~~~
+In file included from /Users/lionel/Desktop/rlang/revdep/library.noindex/mrgsolve/BH/include/boost/shared_ptr.hpp:17,
+                 from ../inst/include/datarecord.h:24,
+                 from datarecord.cpp:25:
+/Users/lionel/Desktop/rlang/revdep/library.noindex/mrgsolve/BH/include/boost/smart_ptr/shared_ptr.hpp:576:34: warning: 'template<class> class std::auto_ptr' is deprecated [-Wdeprecated-declarations]
+     shared_ptr & operator=( std::auto_ptr<Y> && r )
+                                  ^~~~~~~~
+In file included from /usr/local/Cellar/gcc/8.2.0/include/c++/8.2.0/bits/locale_conv.h:41,
+                 from /usr/local/Cellar/gcc/8.2.0/include/c++/8.2.0/locale:43,
+                 from /usr/local/Cellar/gcc/8.2.0/include/c++/8.2.0/iomanip:43,
+                 from /Users/lionel/Desktop/rlang/revdep/library.noindex/mrgsolve/Rcpp/include/RcppCommon.h:52,
+                 from /Users/lionel/Desktop/rlang/revdep/library.noindex/mrgsolve/RcppArmadillo/include/RcppArmadilloForward.h:26,
+                 from /Users/lionel/Desktop/rlang/revdep/library.noindex/mrgsolve/RcppArmadillo/include/RcppArmadillo.h:31,
+                 from ../inst/include/RcppInclude.h:19,
+                 from datarecord.cpp:24:
+/usr/local/Cellar/gcc/8.2.0/include/c++/8.2.0/bits/unique_ptr.h:53:28: note: declared here
+   template<typename> class auto_ptr;
+                            ^~~~~~~~
+In file included from /Users/lionel/Desktop/rlang/revdep/library.noindex/mrgsolve/BH/include/boost/shared_ptr.hpp:17,
+                 from ../inst/include/datarecord.h:24,
+                 from datarecord.cpp:25:
+/Users/lionel/Desktop/rlang/revdep/library.noindex/mrgsolve/BH/include/boost/smart_ptr/shared_ptr.hpp: In member function 'boost::shared_ptr<T>& boost::shared_ptr<T>::operator=(std::auto_ptr<_Up>&&)':
+/Users/lionel/Desktop/rlang/revdep/library.noindex/mrgsolve/BH/include/boost/smart_ptr/shared_ptr.hpp:578:38: warning: 'template<class> class std::auto_ptr' is deprecated [-Wdeprecated-declarations]
+         this_type( static_cast< std::auto_ptr<Y> && >( r ) ).swap( *this );
+                                      ^~~~~~~~
+In file included from /usr/local/Cellar/gcc/8.2.0/include/c++/8.2.0/bits/locale_conv.h:41,
+                 from /usr/local/Cellar/gcc/8.2.0/include/c++/8.2.0/locale:43,
+                 from /usr/local/Cellar/gcc/8.2.0/include/c++/8.2.0/iomanip:43,
+                 from /Users/lionel/Desktop/rlang/revdep/library.noindex/mrgsolve/Rcpp/include/RcppCommon.h:52,
+                 from /Users/lionel/Desktop/rlang/revdep/library.noindex/mrgsolve/RcppArmadillo/include/RcppArmadilloForward.h:26,
+                 from /Users/lionel/Desktop/rlang/revdep/library.noindex/mrgsolve/RcppArmadillo/include/RcppArmadillo.h:31,
+                 from ../inst/include/RcppInclude.h:19,
+                 from datarecord.cpp:24:
+/usr/local/Cellar/gcc/8.2.0/include/c++/8.2.0/bits/unique_ptr.h:53:28: note: declared here
+   template<typename> class auto_ptr;
+                            ^~~~~~~~
+In file included from /Users/lionel/Desktop/rlang/revdep/library.noindex/mrgsolve/BH/include/boost/shared_ptr.hpp:17,
+                 from ../inst/include/dataobject.h:27,
+                 from dataobject.cpp:25:
+/Users/lionel/Desktop/rlang/revdep/library.noindex/mrgsolve/BH/include/boost/smart_ptr/shared_ptr.hpp:256:65: warning: 'template<class> class std::auto_ptr' is deprecated [-Wdeprecated-declarations]
+ template< class T, class R > struct sp_enable_if_auto_ptr< std::auto_ptr< T >, R >
+                                                                 ^~~~~~~~
+In file included from /usr/local/Cellar/gcc/8.2.0/include/c++/8.2.0/bits/locale_conv.h:41,
+                 from /usr/local/Cellar/gcc/8.2.0/include/c++/8.2.0/locale:43,
+                 from /usr/local/Cellar/gcc/8.2.0/include/c++/8.2.0/iomanip:43,
+                 from /Users/lionel/Desktop/rlang/revdep/library.noindex/mrgsolve/Rcpp/include/RcppCommon.h:52,
+                 from /Users/lionel/Desktop/rlang/revdep/library.noindex/mrgsolve/RcppArmadillo/include/RcppArmadilloForward.h:26,
+                 from /Users/lionel/Desktop/rlang/revdep/library.noindex/mrgsolve/RcppArmadillo/include/RcppArmadillo.h:31,
+                 from ../inst/include/RcppInclude.h:19,
+                 from dataobject.cpp:24:
+/usr/local/Cellar/gcc/8.2.0/include/c++/8.2.0/bits/unique_ptr.h:53:28: note: declared here
+   template<typename> class auto_ptr;
+                            ^~~~~~~~
+In file included from /Users/lionel/Desktop/rlang/revdep/library.noindex/mrgsolve/BH/include/boost/shared_ptr.hpp:17,
+                 from ../inst/include/dataobject.h:27,
+                 from dataobject.cpp:25:
+/Users/lionel/Desktop/rlang/revdep/library.noindex/mrgsolve/BH/include/boost/smart_ptr/shared_ptr.hpp:471:31: warning: 'template<class> class std::auto_ptr' is deprecated [-Wdeprecated-declarations]
+     explicit shared_ptr( std::auto_ptr<Y> & r ): px(r.get()), pn()
+                               ^~~~~~~~
+In file included from /usr/local/Cellar/gcc/8.2.0/include/c++/8.2.0/bits/locale_conv.h:41,
+                 from /usr/local/Cellar/gcc/8.2.0/include/c++/8.2.0/locale:43,
+                 from /usr/local/Cellar/gcc/8.2.0/include/c++/8.2.0/iomanip:43,
+                 from /Users/lionel/Desktop/rlang/revdep/library.noindex/mrgsolve/Rcpp/include/RcppCommon.h:52,
+                 from /Users/lionel/Desktop/rlang/revdep/library.noindex/mrgsolve/RcppArmadillo/include/RcppArmadilloForward.h:26,
+                 from /Users/lionel/Desktop/rlang/revdep/library.noindex/mrgsolve/RcppArmadillo/include/RcppArmadillo.h:31,
+                 from ../inst/include/RcppInclude.h:19,
+                 from dataobject.cpp:24:
+/usr/local/Cellar/gcc/8.2.0/include/c++/8.2.0/bits/unique_ptr.h:53:28: note: declared here
+   template<typename> class auto_ptr;
+                            ^~~~~~~~
+In file included from /Users/lionel/Desktop/rlang/revdep/library.noindex/mrgsolve/BH/include/boost/shared_ptr.hpp:17,
+                 from ../inst/include/dataobject.h:27,
+                 from dataobject.cpp:25:
+/Users/lionel/Desktop/rlang/revdep/library.noindex/mrgsolve/BH/include/boost/smart_ptr/shared_ptr.hpp:484:22: warning: 'template<class> class std::auto_ptr' is deprecated [-Wdeprecated-declarations]
+     shared_ptr( std::auto_ptr<Y> && r ): px(r.get()), pn()
+                      ^~~~~~~~
+In file included from /usr/local/Cellar/gcc/8.2.0/include/c++/8.2.0/bits/locale_conv.h:41,
+                 from /usr/local/Cellar/gcc/8.2.0/include/c++/8.2.0/locale:43,
+                 from /usr/local/Cellar/gcc/8.2.0/include/c++/8.2.0/iomanip:43,
+                 from /Users/lionel/Desktop/rlang/revdep/library.noindex/mrgsolve/Rcpp/include/RcppCommon.h:52,
+                 from /Users/lionel/Desktop/rlang/revdep/library.noindex/mrgsolve/RcppArmadillo/include/RcppArmadilloForward.h:26,
+                 from /Users/lionel/Desktop/rlang/revdep/library.noindex/mrgsolve/RcppArmadillo/include/RcppArmadillo.h:31,
+                 from ../inst/include/RcppInclude.h:19,
+                 from dataobject.cpp:24:
+/usr/local/Cellar/gcc/8.2.0/include/c++/8.2.0/bits/unique_ptr.h:53:28: note: declared here
+   template<typename> class auto_ptr;
+                            ^~~~~~~~
+In file included from /Users/lionel/Desktop/rlang/revdep/library.noindex/mrgsolve/BH/include/boost/shared_ptr.hpp:17,
+                 from ../inst/include/dataobject.h:27,
+                 from dataobject.cpp:25:
+/Users/lionel/Desktop/rlang/revdep/library.noindex/mrgsolve/BH/include/boost/smart_ptr/shared_ptr.hpp:567:34: warning: 'template<class> class std::auto_ptr' is deprecated [-Wdeprecated-declarations]
+     shared_ptr & operator=( std::auto_ptr<Y> & r )
+                                  ^~~~~~~~
+In file included from /usr/local/Cellar/gcc/8.2.0/include/c++/8.2.0/bits/locale_conv.h:41,
+                 from /usr/local/Cellar/gcc/8.2.0/include/c++/8.2.0/locale:43,
+                 from /usr/local/Cellar/gcc/8.2.0/include/c++/8.2.0/iomanip:43,
+                 from /Users/lionel/Desktop/rlang/revdep/library.noindex/mrgsolve/Rcpp/include/RcppCommon.h:52,
+                 from /Users/lionel/Desktop/rlang/revdep/library.noindex/mrgsolve/RcppArmadillo/include/RcppArmadilloForward.h:26,
+                 from /Users/lionel/Desktop/rlang/revdep/library.noindex/mrgsolve/RcppArmadillo/include/RcppArmadillo.h:31,
+                 from ../inst/include/RcppInclude.h:19,
+                 from dataobject.cpp:24:
+/usr/local/Cellar/gcc/8.2.0/include/c++/8.2.0/bits/unique_ptr.h:53:28: note: declared here
+   template<typename> class auto_ptr;
+                            ^~~~~~~~
+In file included from /Users/lionel/Desktop/rlang/revdep/library.noindex/mrgsolve/BH/include/boost/shared_ptr.hpp:17,
+                 from ../inst/include/dataobject.h:27,
+                 from dataobject.cpp:25:
+/Users/lionel/Desktop/rlang/revdep/library.noindex/mrgsolve/BH/include/boost/smart_ptr/shared_ptr.hpp:576:34: warning: 'template<class> class std::auto_ptr' is deprecated [-Wdeprecated-declarations]
+     shared_ptr & operator=( std::auto_ptr<Y> && r )
+                                  ^~~~~~~~
+In file included from /usr/local/Cellar/gcc/8.2.0/include/c++/8.2.0/bits/locale_conv.h:41,
+                 from /usr/local/Cellar/gcc/8.2.0/include/c++/8.2.0/locale:43,
+                 from /usr/local/Cellar/gcc/8.2.0/include/c++/8.2.0/iomanip:43,
+                 from /Users/lionel/Desktop/rlang/revdep/library.noindex/mrgsolve/Rcpp/include/RcppCommon.h:52,
+                 from /Users/lionel/Desktop/rlang/revdep/library.noindex/mrgsolve/RcppArmadillo/include/RcppArmadilloForward.h:26,
+                 from /Users/lionel/Desktop/rlang/revdep/library.noindex/mrgsolve/RcppArmadillo/include/RcppArmadillo.h:31,
+                 from ../inst/include/RcppInclude.h:19,
+                 from dataobject.cpp:24:
+/usr/local/Cellar/gcc/8.2.0/include/c++/8.2.0/bits/unique_ptr.h:53:28: note: declared here
+   template<typename> class auto_ptr;
+                            ^~~~~~~~
+In file included from /Users/lionel/Desktop/rlang/revdep/library.noindex/mrgsolve/BH/include/boost/shared_ptr.hpp:17,
+                 from ../inst/include/dataobject.h:27,
+                 from dataobject.cpp:25:
+/Users/lionel/Desktop/rlang/revdep/library.noindex/mrgsolve/BH/include/boost/smart_ptr/shared_ptr.hpp: In member function 'boost::shared_ptr<T>& boost::shared_ptr<T>::operator=(std::auto_ptr<_Up>&&)':
+/Users/lionel/Desktop/rlang/revdep/library.noindex/mrgsolve/BH/include/boost/smart_ptr/shared_ptr.hpp:578:38: warning: 'template<class> class std::auto_ptr' is deprecated [-Wdeprecated-declarations]
+         this_type( static_cast< std::auto_ptr<Y> && >( r ) ).swap( *this );
+                                      ^~~~~~~~
+In file included from /usr/local/Cellar/gcc/8.2.0/include/c++/8.2.0/bits/locale_conv.h:41,
+                 from /usr/local/Cellar/gcc/8.2.0/include/c++/8.2.0/locale:43,
+                 from /usr/local/Cellar/gcc/8.2.0/include/c++/8.2.0/iomanip:43,
+                 from /Users/lionel/Desktop/rlang/revdep/library.noindex/mrgsolve/Rcpp/include/RcppCommon.h:52,
+                 from /Users/lionel/Desktop/rlang/revdep/library.noindex/mrgsolve/RcppArmadillo/include/RcppArmadilloForward.h:26,
+                 from /Users/lionel/Desktop/rlang/revdep/library.noindex/mrgsolve/RcppArmadillo/include/RcppArmadillo.h:31,
+                 from ../inst/include/RcppInclude.h:19,
+                 from dataobject.cpp:24:
+/usr/local/Cellar/gcc/8.2.0/include/c++/8.2.0/bits/unique_ptr.h:53:28: note: declared here
+   template<typename> class auto_ptr;
+                            ^~~~~~~~
+g++-8 -I"/Library/Frameworks/R.framework/Resources/include" -DNDEBUG -I../inst/include -I"/Users/lionel/Desktop/rlang/revdep/library.noindex/mrgsolve/Rcpp/include" -I"/Users/lionel/Desktop/rlang/revdep/library.noindex/mrgsolve/RcppArmadillo/include" -I"/Users/lionel/Desktop/rlang/revdep/library.noindex/mrgsolve/BH/include" -I/usr/local/include   -fPIC  -arch x86_64 -ftemplate-depth-256 -Wall -pedantic -O0 -c housemodel-mread-source.cpp -o housemodel-mread-source.o
+g++-8 -I"/Library/Frameworks/R.framework/Resources/include" -DNDEBUG -I../inst/include -I"/Users/lionel/Desktop/rlang/revdep/library.noindex/mrgsolve/Rcpp/include" -I"/Users/lionel/Desktop/rlang/revdep/library.noindex/mrgsolve/RcppArmadillo/include" -I"/Users/lionel/Desktop/rlang/revdep/library.noindex/mrgsolve/BH/include" -I/usr/local/include   -fPIC  -arch x86_64 -ftemplate-depth-256 -Wall -pedantic -O0 -c mrgsolve.cpp -o mrgsolve.o
+g++-8 -I"/Library/Frameworks/R.framework/Resources/include" -DNDEBUG -I../inst/include -I"/Users/lionel/Desktop/rlang/revdep/library.noindex/mrgsolve/Rcpp/include" -I"/Users/lionel/Desktop/rlang/revdep/library.noindex/mrgsolve/RcppArmadillo/include" -I"/Users/lionel/Desktop/rlang/revdep/library.noindex/mrgsolve/BH/include" -I/usr/local/include   -fPIC  -arch x86_64 -ftemplate-depth-256 -Wall -pedantic -O0 -c mrgsolve_init.cpp -o mrgsolve_init.o
+g++-8 -I"/Library/Frameworks/R.framework/Resources/include" -DNDEBUG -I../inst/include -I"/Users/lionel/Desktop/rlang/revdep/library.noindex/mrgsolve/Rcpp/include" -I"/Users/lionel/Desktop/rlang/revdep/library.noindex/mrgsolve/RcppArmadillo/include" -I"/Users/lionel/Desktop/rlang/revdep/library.noindex/mrgsolve/BH/include" -I/usr/local/include   -fPIC  -arch x86_64 -ftemplate-depth-256 -Wall -pedantic -O0 -c odepack_dlsoda.cpp -o odepack_dlsoda.o
+g++-8 -I"/Library/Frameworks/R.framework/Resources/include" -DNDEBUG -I../inst/include -I"/Users/lionel/Desktop/rlang/revdep/library.noindex/mrgsolve/Rcpp/include" -I"/Users/lionel/Desktop/rlang/revdep/library.noindex/mrgsolve/RcppArmadillo/include" -I"/Users/lionel/Desktop/rlang/revdep/library.noindex/mrgsolve/BH/include" -I/usr/local/include   -fPIC  -arch x86_64 -ftemplate-depth-256 -Wall -pedantic -O0 -c odeproblem.cpp -o odeproblem.o
 gfortran-7   -fPIC  -g -O2  -c opk_dlsoda_mrg.f -o opk_dlsoda_mrg.o
 make: gfortran-7: No such file or directory
 make: *** [opk_dlsoda_mrg.o] Error 1
+make: *** Waiting for unfinished jobs....
+In file included from /Users/lionel/Desktop/rlang/revdep/library.noindex/mrgsolve/RcppArmadillo/include/armadillo:54,
+                 from /Users/lionel/Desktop/rlang/revdep/library.noindex/mrgsolve/RcppArmadillo/include/RcppArmadilloForward.h:46,
+                 from /Users/lionel/Desktop/rlang/revdep/library.noindex/mrgsolve/RcppArmadillo/include/RcppArmadillo.h:31,
+                 from ../inst/include/RcppInclude.h:19,
+                 from mrgsolve_init.cpp:18:
+/Users/lionel/Desktop/rlang/revdep/library.noindex/mrgsolve/RcppArmadillo/include/armadillo_bits/compiler_setup.hpp:509:108: note: #pragma message: NOTE: suggest to enable C++14 mode for faster code; add -std=c++14 to compiler flags
+     #pragma message ("NOTE: suggest to enable C++14 mode for faster code; add -std=c++14 to compiler flags")
+                                                                                                            ^
+In file included from /Users/lionel/Desktop/rlang/revdep/library.noindex/mrgsolve/RcppArmadillo/include/armadillo:54,
+                 from /Users/lionel/Desktop/rlang/revdep/library.noindex/mrgsolve/RcppArmadillo/include/RcppArmadilloForward.h:46,
+                 from /Users/lionel/Desktop/rlang/revdep/library.noindex/mrgsolve/RcppArmadillo/include/RcppArmadillo.h:31,
+                 from ../inst/include/RcppInclude.h:19,
+                 from mrgsolve.cpp:24:
+/Users/lionel/Desktop/rlang/revdep/library.noindex/mrgsolve/RcppArmadillo/include/armadillo_bits/compiler_setup.hpp:509:108: note: #pragma message: NOTE: suggest to enable C++14 mode for faster code; add -std=c++14 to compiler flags
+     #pragma message ("NOTE: suggest to enable C++14 mode for faster code; add -std=c++14 to compiler flags")
+                                                                                                            ^
+In file included from /Users/lionel/Desktop/rlang/revdep/library.noindex/mrgsolve/RcppArmadillo/include/armadillo:54,
+                 from /Users/lionel/Desktop/rlang/revdep/library.noindex/mrgsolve/RcppArmadillo/include/RcppArmadilloForward.h:46,
+                 from /Users/lionel/Desktop/rlang/revdep/library.noindex/mrgsolve/RcppArmadillo/include/RcppArmadillo.h:31,
+                 from ../inst/include/RcppInclude.h:19,
+                 from odeproblem.cpp:26:
+/Users/lionel/Desktop/rlang/revdep/library.noindex/mrgsolve/RcppArmadillo/include/armadillo_bits/compiler_setup.hpp:509:108: note: #pragma message: NOTE: suggest to enable C++14 mode for faster code; add -std=c++14 to compiler flags
+     #pragma message ("NOTE: suggest to enable C++14 mode for faster code; add -std=c++14 to compiler flags")
+                                                                                                            ^
+In file included from /Users/lionel/Desktop/rlang/revdep/library.noindex/mrgsolve/BH/include/boost/mpl/aux_/na_assert.hpp:23,
+                 from /Users/lionel/Desktop/rlang/revdep/library.noindex/mrgsolve/BH/include/boost/mpl/arg.hpp:25,
+                 from /Users/lionel/Desktop/rlang/revdep/library.noindex/mrgsolve/BH/include/boost/mpl/placeholders.hpp:24,
+                 from /Users/lionel/Desktop/rlang/revdep/library.noindex/mrgsolve/BH/include/boost/iterator/iterator_categories.hpp:16,
+                 from /Users/lionel/Desktop/rlang/revdep/library.noindex/mrgsolve/BH/include/boost/iterator/iterator_adaptor.hpp:12,
+                 from /Users/lionel/Desktop/rlang/revdep/library.noindex/mrgsolve/BH/include/boost/token_iterator.hpp:22,
+                 from /Users/lionel/Desktop/rlang/revdep/library.noindex/mrgsolve/BH/include/boost/tokenizer.hpp:20,
+                 from mrgsolve.cpp:28:
+/Users/lionel/Desktop/rlang/revdep/library.noindex/mrgsolve/BH/include/boost/mpl/assert.hpp:188:21: warning: unnecessary parentheses in declaration of 'assert_arg' [-Wparentheses]
+ failed ************ (Pred::************
+                     ^
+/Users/lionel/Desktop/rlang/revdep/library.noindex/mrgsolve/BH/include/boost/mpl/assert.hpp:193:21: warning: unnecessary parentheses in declaration of 'assert_not_arg' [-Wparentheses]
+ failed ************ (boost::mpl::not_<Pred>::************
+                     ^
+In file included from /Users/lionel/Desktop/rlang/revdep/library.noindex/mrgsolve/BH/include/boost/smart_ptr/shared_ptr.hpp:28,
+                 from /Users/lionel/Desktop/rlang/revdep/library.noindex/mrgsolve/BH/include/boost/shared_ptr.hpp:17,
+                 from ../inst/include/datarecord.h:24,
+                 from ../inst/include/odeproblem.h:30,
+                 from odeproblem.cpp:27:
+/Users/lionel/Desktop/rlang/revdep/library.noindex/mrgsolve/BH/include/boost/smart_ptr/detail/shared_count.hpp:355:33: warning: 'template<class> class std::auto_ptr' is deprecated [-Wdeprecated-declarations]
+     explicit shared_count( std::auto_ptr<Y> & r ): pi_( new sp_counted_impl_p<Y>( r.get() ) )
+                                 ^~~~~~~~
+In file included from /usr/local/Cellar/gcc/8.2.0/include/c++/8.2.0/bits/locale_conv.h:41,
+                 from /usr/local/Cellar/gcc/8.2.0/include/c++/8.2.0/locale:43,
+                 from /usr/local/Cellar/gcc/8.2.0/include/c++/8.2.0/iomanip:43,
+                 from /Users/lionel/Desktop/rlang/revdep/library.noindex/mrgsolve/Rcpp/include/RcppCommon.h:52,
+                 from /Users/lionel/Desktop/rlang/revdep/library.noindex/mrgsolve/RcppArmadillo/include/RcppArmadilloForward.h:26,
+                 from /Users/lionel/Desktop/rlang/revdep/library.noindex/mrgsolve/RcppArmadillo/include/RcppArmadillo.h:31,
+                 from ../inst/include/RcppInclude.h:19,
+                 from odeproblem.cpp:26:
+/usr/local/Cellar/gcc/8.2.0/include/c++/8.2.0/bits/unique_ptr.h:53:28: note: declared here
+   template<typename> class auto_ptr;
+                            ^~~~~~~~
+In file included from /Users/lionel/Desktop/rlang/revdep/library.noindex/mrgsolve/BH/include/boost/shared_ptr.hpp:17,
+                 from ../inst/include/datarecord.h:24,
+                 from ../inst/include/odeproblem.h:30,
+                 from odeproblem.cpp:27:
+/Users/lionel/Desktop/rlang/revdep/library.noindex/mrgsolve/BH/include/boost/smart_ptr/shared_ptr.hpp:256:65: warning: 'template<class> class std::auto_ptr' is deprecated [-Wdeprecated-declarations]
+ template< class T, class R > struct sp_enable_if_auto_ptr< std::auto_ptr< T >, R >
+                                                                 ^~~~~~~~
+In file included from /usr/local/Cellar/gcc/8.2.0/include/c++/8.2.0/bits/locale_conv.h:41,
+                 from /usr/local/Cellar/gcc/8.2.0/include/c++/8.2.0/locale:43,
+                 from /usr/local/Cellar/gcc/8.2.0/include/c++/8.2.0/iomanip:43,
+                 from /Users/lionel/Desktop/rlang/revdep/library.noindex/mrgsolve/Rcpp/include/RcppCommon.h:52,
+                 from /Users/lionel/Desktop/rlang/revdep/library.noindex/mrgsolve/RcppArmadillo/include/RcppArmadilloForward.h:26,
+                 from /Users/lionel/Desktop/rlang/revdep/library.noindex/mrgsolve/RcppArmadillo/include/RcppArmadillo.h:31,
+                 from ../inst/include/RcppInclude.h:19,
+                 from odeproblem.cpp:26:
+/usr/local/Cellar/gcc/8.2.0/include/c++/8.2.0/bits/unique_ptr.h:53:28: note: declared here
+   template<typename> class auto_ptr;
+                            ^~~~~~~~
+In file included from /Users/lionel/Desktop/rlang/revdep/library.noindex/mrgsolve/BH/include/boost/shared_ptr.hpp:17,
+                 from ../inst/include/datarecord.h:24,
+                 from ../inst/include/odeproblem.h:30,
+                 from odeproblem.cpp:27:
+/Users/lionel/Desktop/rlang/revdep/library.noindex/mrgsolve/BH/include/boost/smart_ptr/shared_ptr.hpp:471:31: warning: 'template<class> class std::auto_ptr' is deprecated [-Wdeprecated-declarations]
+     explicit shared_ptr( std::auto_ptr<Y> & r ): px(r.get()), pn()
+                               ^~~~~~~~
+In file included from /usr/local/Cellar/gcc/8.2.0/include/c++/8.2.0/bits/locale_conv.h:41,
+                 from /usr/local/Cellar/gcc/8.2.0/include/c++/8.2.0/locale:43,
+                 from /usr/local/Cellar/gcc/8.2.0/include/c++/8.2.0/iomanip:43,
+                 from /Users/lionel/Desktop/rlang/revdep/library.noindex/mrgsolve/Rcpp/include/RcppCommon.h:52,
+                 from /Users/lionel/Desktop/rlang/revdep/library.noindex/mrgsolve/RcppArmadillo/include/RcppArmadilloForward.h:26,
+                 from /Users/lionel/Desktop/rlang/revdep/library.noindex/mrgsolve/RcppArmadillo/include/RcppArmadillo.h:31,
+                 from ../inst/include/RcppInclude.h:19,
+                 from odeproblem.cpp:26:
+/usr/local/Cellar/gcc/8.2.0/include/c++/8.2.0/bits/unique_ptr.h:53:28: note: declared here
+   template<typename> class auto_ptr;
+                            ^~~~~~~~
+In file included from /Users/lionel/Desktop/rlang/revdep/library.noindex/mrgsolve/BH/include/boost/shared_ptr.hpp:17,
+                 from ../inst/include/datarecord.h:24,
+                 from ../inst/include/odeproblem.h:30,
+                 from odeproblem.cpp:27:
+/Users/lionel/Desktop/rlang/revdep/library.noindex/mrgsolve/BH/include/boost/smart_ptr/shared_ptr.hpp:484:22: warning: 'template<class> class std::auto_ptr' is deprecated [-Wdeprecated-declarations]
+     shared_ptr( std::auto_ptr<Y> && r ): px(r.get()), pn()
+                      ^~~~~~~~
+In file included from /usr/local/Cellar/gcc/8.2.0/include/c++/8.2.0/bits/locale_conv.h:41,
+                 from /usr/local/Cellar/gcc/8.2.0/include/c++/8.2.0/locale:43,
+                 from /usr/local/Cellar/gcc/8.2.0/include/c++/8.2.0/iomanip:43,
+                 from /Users/lionel/Desktop/rlang/revdep/library.noindex/mrgsolve/Rcpp/include/RcppCommon.h:52,
+                 from /Users/lionel/Desktop/rlang/revdep/library.noindex/mrgsolve/RcppArmadillo/include/RcppArmadilloForward.h:26,
+                 from /Users/lionel/Desktop/rlang/revdep/library.noindex/mrgsolve/RcppArmadillo/include/RcppArmadillo.h:31,
+                 from ../inst/include/RcppInclude.h:19,
+                 from odeproblem.cpp:26:
+/usr/local/Cellar/gcc/8.2.0/include/c++/8.2.0/bits/unique_ptr.h:53:28: note: declared here
+   template<typename> class auto_ptr;
+                            ^~~~~~~~
+In file included from /Users/lionel/Desktop/rlang/revdep/library.noindex/mrgsolve/BH/include/boost/shared_ptr.hpp:17,
+                 from ../inst/include/datarecord.h:24,
+                 from ../inst/include/odeproblem.h:30,
+                 from odeproblem.cpp:27:
+/Users/lionel/Desktop/rlang/revdep/library.noindex/mrgsolve/BH/include/boost/smart_ptr/shared_ptr.hpp:567:34: warning: 'template<class> class std::auto_ptr' is deprecated [-Wdeprecated-declarations]
+     shared_ptr & operator=( std::auto_ptr<Y> & r )
+                                  ^~~~~~~~
+In file included from /usr/local/Cellar/gcc/8.2.0/include/c++/8.2.0/bits/locale_conv.h:41,
+                 from /usr/local/Cellar/gcc/8.2.0/include/c++/8.2.0/locale:43,
+                 from /usr/local/Cellar/gcc/8.2.0/include/c++/8.2.0/iomanip:43,
+                 from /Users/lionel/Desktop/rlang/revdep/library.noindex/mrgsolve/Rcpp/include/RcppCommon.h:52,
+                 from /Users/lionel/Desktop/rlang/revdep/library.noindex/mrgsolve/RcppArmadillo/include/RcppArmadilloForward.h:26,
+                 from /Users/lionel/Desktop/rlang/revdep/library.noindex/mrgsolve/RcppArmadillo/include/RcppArmadillo.h:31,
+                 from ../inst/include/RcppInclude.h:19,
+                 from odeproblem.cpp:26:
+/usr/local/Cellar/gcc/8.2.0/include/c++/8.2.0/bits/unique_ptr.h:53:28: note: declared here
+   template<typename> class auto_ptr;
+                            ^~~~~~~~
+In file included from /Users/lionel/Desktop/rlang/revdep/library.noindex/mrgsolve/BH/include/boost/shared_ptr.hpp:17,
+                 from ../inst/include/datarecord.h:24,
+                 from ../inst/include/odeproblem.h:30,
+                 from odeproblem.cpp:27:
+/Users/lionel/Desktop/rlang/revdep/library.noindex/mrgsolve/BH/include/boost/smart_ptr/shared_ptr.hpp:576:34: warning: 'template<class> class std::auto_ptr' is deprecated [-Wdeprecated-declarations]
+     shared_ptr & operator=( std::auto_ptr<Y> && r )
+                                  ^~~~~~~~
+In file included from /usr/local/Cellar/gcc/8.2.0/include/c++/8.2.0/bits/locale_conv.h:41,
+                 from /usr/local/Cellar/gcc/8.2.0/include/c++/8.2.0/locale:43,
+                 from /usr/local/Cellar/gcc/8.2.0/include/c++/8.2.0/iomanip:43,
+                 from /Users/lionel/Desktop/rlang/revdep/library.noindex/mrgsolve/Rcpp/include/RcppCommon.h:52,
+                 from /Users/lionel/Desktop/rlang/revdep/library.noindex/mrgsolve/RcppArmadillo/include/RcppArmadilloForward.h:26,
+                 from /Users/lionel/Desktop/rlang/revdep/library.noindex/mrgsolve/RcppArmadillo/include/RcppArmadillo.h:31,
+                 from ../inst/include/RcppInclude.h:19,
+                 from odeproblem.cpp:26:
+/usr/local/Cellar/gcc/8.2.0/include/c++/8.2.0/bits/unique_ptr.h:53:28: note: declared here
+   template<typename> class auto_ptr;
+                            ^~~~~~~~
+In file included from /Users/lionel/Desktop/rlang/revdep/library.noindex/mrgsolve/BH/include/boost/shared_ptr.hpp:17,
+                 from ../inst/include/datarecord.h:24,
+                 from ../inst/include/odeproblem.h:30,
+                 from odeproblem.cpp:27:
+/Users/lionel/Desktop/rlang/revdep/library.noindex/mrgsolve/BH/include/boost/smart_ptr/shared_ptr.hpp: In member function 'boost::shared_ptr<T>& boost::shared_ptr<T>::operator=(std::auto_ptr<_Up>&&)':
+/Users/lionel/Desktop/rlang/revdep/library.noindex/mrgsolve/BH/include/boost/smart_ptr/shared_ptr.hpp:578:38: warning: 'template<class> class std::auto_ptr' is deprecated [-Wdeprecated-declarations]
+         this_type( static_cast< std::auto_ptr<Y> && >( r ) ).swap( *this );
+                                      ^~~~~~~~
+In file included from /usr/local/Cellar/gcc/8.2.0/include/c++/8.2.0/bits/locale_conv.h:41,
+                 from /usr/local/Cellar/gcc/8.2.0/include/c++/8.2.0/locale:43,
+                 from /usr/local/Cellar/gcc/8.2.0/include/c++/8.2.0/iomanip:43,
+                 from /Users/lionel/Desktop/rlang/revdep/library.noindex/mrgsolve/Rcpp/include/RcppCommon.h:52,
+                 from /Users/lionel/Desktop/rlang/revdep/library.noindex/mrgsolve/RcppArmadillo/include/RcppArmadilloForward.h:26,
+                 from /Users/lionel/Desktop/rlang/revdep/library.noindex/mrgsolve/RcppArmadillo/include/RcppArmadillo.h:31,
+                 from ../inst/include/RcppInclude.h:19,
+                 from odeproblem.cpp:26:
+/usr/local/Cellar/gcc/8.2.0/include/c++/8.2.0/bits/unique_ptr.h:53:28: note: declared here
+   template<typename> class auto_ptr;
+                            ^~~~~~~~
 ERROR: compilation failed for package ‘mrgsolve’
 * removing ‘/Users/lionel/Desktop/rlang/revdep/checks.noindex/mrgsolve/new/mrgsolve.Rcheck/mrgsolve’
 
@@ -10075,18 +10154,555 @@ ERROR: compilation failed for package ‘mrgsolve’
 * installing *source* package ‘mrgsolve’ ...
 ** package ‘mrgsolve’ successfully unpacked and MD5 sums checked
 ** libs
-clang++ -I"/Library/Frameworks/R.framework/Resources/include" -DNDEBUG -I../inst/include -I"/Users/lionel/Desktop/rlang/revdep/library.noindex/mrgsolve/Rcpp/include" -I"/Users/lionel/Desktop/rlang/revdep/library.noindex/mrgsolve/RcppArmadillo/include" -I"/Users/lionel/Desktop/rlang/revdep/library.noindex/mrgsolve/BH/include" -I/usr/local/include   -fPIC  -arch x86_64 -ftemplate-depth-256 -Wall -pedantic -O0 -c RcppExports.cpp -o RcppExports.o
-clang++ -I"/Library/Frameworks/R.framework/Resources/include" -DNDEBUG -I../inst/include -I"/Users/lionel/Desktop/rlang/revdep/library.noindex/mrgsolve/Rcpp/include" -I"/Users/lionel/Desktop/rlang/revdep/library.noindex/mrgsolve/RcppArmadillo/include" -I"/Users/lionel/Desktop/rlang/revdep/library.noindex/mrgsolve/BH/include" -I/usr/local/include   -fPIC  -arch x86_64 -ftemplate-depth-256 -Wall -pedantic -O0 -c dataobject.cpp -o dataobject.o
-clang++ -I"/Library/Frameworks/R.framework/Resources/include" -DNDEBUG -I../inst/include -I"/Users/lionel/Desktop/rlang/revdep/library.noindex/mrgsolve/Rcpp/include" -I"/Users/lionel/Desktop/rlang/revdep/library.noindex/mrgsolve/RcppArmadillo/include" -I"/Users/lionel/Desktop/rlang/revdep/library.noindex/mrgsolve/BH/include" -I/usr/local/include   -fPIC  -arch x86_64 -ftemplate-depth-256 -Wall -pedantic -O0 -c datarecord.cpp -o datarecord.o
-clang++ -I"/Library/Frameworks/R.framework/Resources/include" -DNDEBUG -I../inst/include -I"/Users/lionel/Desktop/rlang/revdep/library.noindex/mrgsolve/Rcpp/include" -I"/Users/lionel/Desktop/rlang/revdep/library.noindex/mrgsolve/RcppArmadillo/include" -I"/Users/lionel/Desktop/rlang/revdep/library.noindex/mrgsolve/BH/include" -I/usr/local/include   -fPIC  -arch x86_64 -ftemplate-depth-256 -Wall -pedantic -O0 -c devtran.cpp -o devtran.o
-clang++ -I"/Library/Frameworks/R.framework/Resources/include" -DNDEBUG -I../inst/include -I"/Users/lionel/Desktop/rlang/revdep/library.noindex/mrgsolve/Rcpp/include" -I"/Users/lionel/Desktop/rlang/revdep/library.noindex/mrgsolve/RcppArmadillo/include" -I"/Users/lionel/Desktop/rlang/revdep/library.noindex/mrgsolve/BH/include" -I/usr/local/include   -fPIC  -arch x86_64 -ftemplate-depth-256 -Wall -pedantic -O0 -c housemodel-mread-source.cpp -o housemodel-mread-source.o
-clang++ -I"/Library/Frameworks/R.framework/Resources/include" -DNDEBUG -I../inst/include -I"/Users/lionel/Desktop/rlang/revdep/library.noindex/mrgsolve/Rcpp/include" -I"/Users/lionel/Desktop/rlang/revdep/library.noindex/mrgsolve/RcppArmadillo/include" -I"/Users/lionel/Desktop/rlang/revdep/library.noindex/mrgsolve/BH/include" -I/usr/local/include   -fPIC  -arch x86_64 -ftemplate-depth-256 -Wall -pedantic -O0 -c mrgsolve.cpp -o mrgsolve.o
-clang++ -I"/Library/Frameworks/R.framework/Resources/include" -DNDEBUG -I../inst/include -I"/Users/lionel/Desktop/rlang/revdep/library.noindex/mrgsolve/Rcpp/include" -I"/Users/lionel/Desktop/rlang/revdep/library.noindex/mrgsolve/RcppArmadillo/include" -I"/Users/lionel/Desktop/rlang/revdep/library.noindex/mrgsolve/BH/include" -I/usr/local/include   -fPIC  -arch x86_64 -ftemplate-depth-256 -Wall -pedantic -O0 -c mrgsolve_init.cpp -o mrgsolve_init.o
-clang++ -I"/Library/Frameworks/R.framework/Resources/include" -DNDEBUG -I../inst/include -I"/Users/lionel/Desktop/rlang/revdep/library.noindex/mrgsolve/Rcpp/include" -I"/Users/lionel/Desktop/rlang/revdep/library.noindex/mrgsolve/RcppArmadillo/include" -I"/Users/lionel/Desktop/rlang/revdep/library.noindex/mrgsolve/BH/include" -I/usr/local/include   -fPIC  -arch x86_64 -ftemplate-depth-256 -Wall -pedantic -O0 -c odepack_dlsoda.cpp -o odepack_dlsoda.o
-clang++ -I"/Library/Frameworks/R.framework/Resources/include" -DNDEBUG -I../inst/include -I"/Users/lionel/Desktop/rlang/revdep/library.noindex/mrgsolve/Rcpp/include" -I"/Users/lionel/Desktop/rlang/revdep/library.noindex/mrgsolve/RcppArmadillo/include" -I"/Users/lionel/Desktop/rlang/revdep/library.noindex/mrgsolve/BH/include" -I/usr/local/include   -fPIC  -arch x86_64 -ftemplate-depth-256 -Wall -pedantic -O0 -c odeproblem.cpp -o odeproblem.o
+g++-8 -I"/Library/Frameworks/R.framework/Resources/include" -DNDEBUG -I../inst/include -I"/Users/lionel/Desktop/rlang/revdep/library.noindex/mrgsolve/Rcpp/include" -I"/Users/lionel/Desktop/rlang/revdep/library.noindex/mrgsolve/RcppArmadillo/include" -I"/Users/lionel/Desktop/rlang/revdep/library.noindex/mrgsolve/BH/include" -I/usr/local/include   -fPIC  -arch x86_64 -ftemplate-depth-256 -Wall -pedantic -O0 -c RcppExports.cpp -o RcppExports.o
+g++-8 -I"/Library/Frameworks/R.framework/Resources/include" -DNDEBUG -I../inst/include -I"/Users/lionel/Desktop/rlang/revdep/library.noindex/mrgsolve/Rcpp/include" -I"/Users/lionel/Desktop/rlang/revdep/library.noindex/mrgsolve/RcppArmadillo/include" -I"/Users/lionel/Desktop/rlang/revdep/library.noindex/mrgsolve/BH/include" -I/usr/local/include   -fPIC  -arch x86_64 -ftemplate-depth-256 -Wall -pedantic -O0 -c dataobject.cpp -o dataobject.o
+g++-8 -I"/Library/Frameworks/R.framework/Resources/include" -DNDEBUG -I../inst/include -I"/Users/lionel/Desktop/rlang/revdep/library.noindex/mrgsolve/Rcpp/include" -I"/Users/lionel/Desktop/rlang/revdep/library.noindex/mrgsolve/RcppArmadillo/include" -I"/Users/lionel/Desktop/rlang/revdep/library.noindex/mrgsolve/BH/include" -I/usr/local/include   -fPIC  -arch x86_64 -ftemplate-depth-256 -Wall -pedantic -O0 -c datarecord.cpp -o datarecord.o
+g++-8 -I"/Library/Frameworks/R.framework/Resources/include" -DNDEBUG -I../inst/include -I"/Users/lionel/Desktop/rlang/revdep/library.noindex/mrgsolve/Rcpp/include" -I"/Users/lionel/Desktop/rlang/revdep/library.noindex/mrgsolve/RcppArmadillo/include" -I"/Users/lionel/Desktop/rlang/revdep/library.noindex/mrgsolve/BH/include" -I/usr/local/include   -fPIC  -arch x86_64 -ftemplate-depth-256 -Wall -pedantic -O0 -c devtran.cpp -o devtran.o
+In file included from /Users/lionel/Desktop/rlang/revdep/library.noindex/mrgsolve/BH/include/boost/smart_ptr/shared_ptr.hpp:28,
+                 from /Users/lionel/Desktop/rlang/revdep/library.noindex/mrgsolve/BH/include/boost/shared_ptr.hpp:17,
+                 from devtran.cpp:37:
+/Users/lionel/Desktop/rlang/revdep/library.noindex/mrgsolve/BH/include/boost/smart_ptr/detail/shared_count.hpp:355:33: warning: 'template<class> class std::auto_ptr' is deprecated [-Wdeprecated-declarations]
+     explicit shared_count( std::auto_ptr<Y> & r ): pi_( new sp_counted_impl_p<Y>( r.get() ) )
+                                 ^~~~~~~~
+In file included from /usr/local/Cellar/gcc/8.2.0/include/c++/8.2.0/memory:80,
+                 from /Users/lionel/Desktop/rlang/revdep/library.noindex/mrgsolve/BH/include/boost/config/no_tr1/memory.hpp:21,
+                 from /Users/lionel/Desktop/rlang/revdep/library.noindex/mrgsolve/BH/include/boost/smart_ptr/shared_ptr.hpp:23,
+                 from /Users/lionel/Desktop/rlang/revdep/library.noindex/mrgsolve/BH/include/boost/shared_ptr.hpp:17,
+                 from devtran.cpp:37:
+/usr/local/Cellar/gcc/8.2.0/include/c++/8.2.0/bits/unique_ptr.h:53:28: note: declared here
+   template<typename> class auto_ptr;
+                            ^~~~~~~~
+In file included from /Users/lionel/Desktop/rlang/revdep/library.noindex/mrgsolve/BH/include/boost/shared_ptr.hpp:17,
+                 from devtran.cpp:37:
+/Users/lionel/Desktop/rlang/revdep/library.noindex/mrgsolve/BH/include/boost/smart_ptr/shared_ptr.hpp:256:65: warning: 'template<class> class std::auto_ptr' is deprecated [-Wdeprecated-declarations]
+ template< class T, class R > struct sp_enable_if_auto_ptr< std::auto_ptr< T >, R >
+                                                                 ^~~~~~~~
+In file included from /usr/local/Cellar/gcc/8.2.0/include/c++/8.2.0/memory:80,
+                 from /Users/lionel/Desktop/rlang/revdep/library.noindex/mrgsolve/BH/include/boost/config/no_tr1/memory.hpp:21,
+                 from /Users/lionel/Desktop/rlang/revdep/library.noindex/mrgsolve/BH/include/boost/smart_ptr/shared_ptr.hpp:23,
+                 from /Users/lionel/Desktop/rlang/revdep/library.noindex/mrgsolve/BH/include/boost/shared_ptr.hpp:17,
+                 from devtran.cpp:37:
+/usr/local/Cellar/gcc/8.2.0/include/c++/8.2.0/bits/unique_ptr.h:53:28: note: declared here
+   template<typename> class auto_ptr;
+                            ^~~~~~~~
+In file included from /Users/lionel/Desktop/rlang/revdep/library.noindex/mrgsolve/BH/include/boost/shared_ptr.hpp:17,
+                 from devtran.cpp:37:
+/Users/lionel/Desktop/rlang/revdep/library.noindex/mrgsolve/BH/include/boost/smart_ptr/shared_ptr.hpp:471:31: warning: 'template<class> class std::auto_ptr' is deprecated [-Wdeprecated-declarations]
+     explicit shared_ptr( std::auto_ptr<Y> & r ): px(r.get()), pn()
+                               ^~~~~~~~
+In file included from /usr/local/Cellar/gcc/8.2.0/include/c++/8.2.0/memory:80,
+                 from /Users/lionel/Desktop/rlang/revdep/library.noindex/mrgsolve/BH/include/boost/config/no_tr1/memory.hpp:21,
+                 from /Users/lionel/Desktop/rlang/revdep/library.noindex/mrgsolve/BH/include/boost/smart_ptr/shared_ptr.hpp:23,
+                 from /Users/lionel/Desktop/rlang/revdep/library.noindex/mrgsolve/BH/include/boost/shared_ptr.hpp:17,
+                 from devtran.cpp:37:
+/usr/local/Cellar/gcc/8.2.0/include/c++/8.2.0/bits/unique_ptr.h:53:28: note: declared here
+   template<typename> class auto_ptr;
+                            ^~~~~~~~
+In file included from /Users/lionel/Desktop/rlang/revdep/library.noindex/mrgsolve/BH/include/boost/shared_ptr.hpp:17,
+                 from devtran.cpp:37:
+/Users/lionel/Desktop/rlang/revdep/library.noindex/mrgsolve/BH/include/boost/smart_ptr/shared_ptr.hpp:484:22: warning: 'template<class> class std::auto_ptr' is deprecated [-Wdeprecated-declarations]
+     shared_ptr( std::auto_ptr<Y> && r ): px(r.get()), pn()
+                      ^~~~~~~~
+In file included from /usr/local/Cellar/gcc/8.2.0/include/c++/8.2.0/memory:80,
+                 from /Users/lionel/Desktop/rlang/revdep/library.noindex/mrgsolve/BH/include/boost/config/no_tr1/memory.hpp:21,
+                 from /Users/lionel/Desktop/rlang/revdep/library.noindex/mrgsolve/BH/include/boost/smart_ptr/shared_ptr.hpp:23,
+                 from /Users/lionel/Desktop/rlang/revdep/library.noindex/mrgsolve/BH/include/boost/shared_ptr.hpp:17,
+                 from devtran.cpp:37:
+/usr/local/Cellar/gcc/8.2.0/include/c++/8.2.0/bits/unique_ptr.h:53:28: note: declared here
+   template<typename> class auto_ptr;
+                            ^~~~~~~~
+In file included from /Users/lionel/Desktop/rlang/revdep/library.noindex/mrgsolve/BH/include/boost/shared_ptr.hpp:17,
+                 from devtran.cpp:37:
+/Users/lionel/Desktop/rlang/revdep/library.noindex/mrgsolve/BH/include/boost/smart_ptr/shared_ptr.hpp:567:34: warning: 'template<class> class std::auto_ptr' is deprecated [-Wdeprecated-declarations]
+     shared_ptr & operator=( std::auto_ptr<Y> & r )
+                                  ^~~~~~~~
+In file included from /usr/local/Cellar/gcc/8.2.0/include/c++/8.2.0/memory:80,
+                 from /Users/lionel/Desktop/rlang/revdep/library.noindex/mrgsolve/BH/include/boost/config/no_tr1/memory.hpp:21,
+                 from /Users/lionel/Desktop/rlang/revdep/library.noindex/mrgsolve/BH/include/boost/smart_ptr/shared_ptr.hpp:23,
+                 from /Users/lionel/Desktop/rlang/revdep/library.noindex/mrgsolve/BH/include/boost/shared_ptr.hpp:17,
+                 from devtran.cpp:37:
+/usr/local/Cellar/gcc/8.2.0/include/c++/8.2.0/bits/unique_ptr.h:53:28: note: declared here
+   template<typename> class auto_ptr;
+                            ^~~~~~~~
+In file included from /Users/lionel/Desktop/rlang/revdep/library.noindex/mrgsolve/BH/include/boost/shared_ptr.hpp:17,
+                 from devtran.cpp:37:
+/Users/lionel/Desktop/rlang/revdep/library.noindex/mrgsolve/BH/include/boost/smart_ptr/shared_ptr.hpp:576:34: warning: 'template<class> class std::auto_ptr' is deprecated [-Wdeprecated-declarations]
+     shared_ptr & operator=( std::auto_ptr<Y> && r )
+                                  ^~~~~~~~
+In file included from /usr/local/Cellar/gcc/8.2.0/include/c++/8.2.0/memory:80,
+                 from /Users/lionel/Desktop/rlang/revdep/library.noindex/mrgsolve/BH/include/boost/config/no_tr1/memory.hpp:21,
+                 from /Users/lionel/Desktop/rlang/revdep/library.noindex/mrgsolve/BH/include/boost/smart_ptr/shared_ptr.hpp:23,
+                 from /Users/lionel/Desktop/rlang/revdep/library.noindex/mrgsolve/BH/include/boost/shared_ptr.hpp:17,
+                 from devtran.cpp:37:
+/usr/local/Cellar/gcc/8.2.0/include/c++/8.2.0/bits/unique_ptr.h:53:28: note: declared here
+   template<typename> class auto_ptr;
+                            ^~~~~~~~
+In file included from /Users/lionel/Desktop/rlang/revdep/library.noindex/mrgsolve/BH/include/boost/shared_ptr.hpp:17,
+                 from devtran.cpp:37:
+/Users/lionel/Desktop/rlang/revdep/library.noindex/mrgsolve/BH/include/boost/smart_ptr/shared_ptr.hpp: In member function 'boost::shared_ptr<T>& boost::shared_ptr<T>::operator=(std::auto_ptr<_Up>&&)':
+/Users/lionel/Desktop/rlang/revdep/library.noindex/mrgsolve/BH/include/boost/smart_ptr/shared_ptr.hpp:578:38: warning: 'template<class> class std::auto_ptr' is deprecated [-Wdeprecated-declarations]
+         this_type( static_cast< std::auto_ptr<Y> && >( r ) ).swap( *this );
+                                      ^~~~~~~~
+In file included from /usr/local/Cellar/gcc/8.2.0/include/c++/8.2.0/memory:80,
+                 from /Users/lionel/Desktop/rlang/revdep/library.noindex/mrgsolve/BH/include/boost/config/no_tr1/memory.hpp:21,
+                 from /Users/lionel/Desktop/rlang/revdep/library.noindex/mrgsolve/BH/include/boost/smart_ptr/shared_ptr.hpp:23,
+                 from /Users/lionel/Desktop/rlang/revdep/library.noindex/mrgsolve/BH/include/boost/shared_ptr.hpp:17,
+                 from devtran.cpp:37:
+/usr/local/Cellar/gcc/8.2.0/include/c++/8.2.0/bits/unique_ptr.h:53:28: note: declared here
+   template<typename> class auto_ptr;
+                            ^~~~~~~~
+In file included from /Users/lionel/Desktop/rlang/revdep/library.noindex/mrgsolve/RcppArmadillo/include/armadillo:54,
+                 from /Users/lionel/Desktop/rlang/revdep/library.noindex/mrgsolve/RcppArmadillo/include/RcppArmadilloForward.h:46,
+                 from /Users/lionel/Desktop/rlang/revdep/library.noindex/mrgsolve/RcppArmadillo/include/RcppArmadillo.h:31,
+                 from ../inst/include/RcppInclude.h:19,
+                 from ../inst/include/mrgsolve.h:23,
+                 from RcppExports.cpp:4:
+/Users/lionel/Desktop/rlang/revdep/library.noindex/mrgsolve/RcppArmadillo/include/armadillo_bits/compiler_setup.hpp:509:108: note: #pragma message: NOTE: suggest to enable C++14 mode for faster code; add -std=c++14 to compiler flags
+     #pragma message ("NOTE: suggest to enable C++14 mode for faster code; add -std=c++14 to compiler flags")
+                                                                                                            ^
+In file included from /Users/lionel/Desktop/rlang/revdep/library.noindex/mrgsolve/RcppArmadillo/include/armadillo:54,
+                 from /Users/lionel/Desktop/rlang/revdep/library.noindex/mrgsolve/RcppArmadillo/include/RcppArmadilloForward.h:46,
+                 from /Users/lionel/Desktop/rlang/revdep/library.noindex/mrgsolve/RcppArmadillo/include/RcppArmadillo.h:31,
+                 from ../inst/include/RcppInclude.h:19,
+                 from datarecord.cpp:24:
+/Users/lionel/Desktop/rlang/revdep/library.noindex/mrgsolve/RcppArmadillo/include/armadillo_bits/compiler_setup.hpp:509:108: note: #pragma message: NOTE: suggest to enable C++14 mode for faster code; add -std=c++14 to compiler flags
+     #pragma message ("NOTE: suggest to enable C++14 mode for faster code; add -std=c++14 to compiler flags")
+                                                                                                            ^
+In file included from /Users/lionel/Desktop/rlang/revdep/library.noindex/mrgsolve/RcppArmadillo/include/armadillo:54,
+                 from /Users/lionel/Desktop/rlang/revdep/library.noindex/mrgsolve/RcppArmadillo/include/RcppArmadilloForward.h:46,
+                 from /Users/lionel/Desktop/rlang/revdep/library.noindex/mrgsolve/RcppArmadillo/include/RcppArmadillo.h:31,
+                 from ../inst/include/RcppInclude.h:19,
+                 from dataobject.cpp:24:
+/Users/lionel/Desktop/rlang/revdep/library.noindex/mrgsolve/RcppArmadillo/include/armadillo_bits/compiler_setup.hpp:509:108: note: #pragma message: NOTE: suggest to enable C++14 mode for faster code; add -std=c++14 to compiler flags
+     #pragma message ("NOTE: suggest to enable C++14 mode for faster code; add -std=c++14 to compiler flags")
+                                                                                                            ^
+In file included from /Users/lionel/Desktop/rlang/revdep/library.noindex/mrgsolve/RcppArmadillo/include/armadillo:54,
+                 from /Users/lionel/Desktop/rlang/revdep/library.noindex/mrgsolve/RcppArmadillo/include/RcppArmadilloForward.h:46,
+                 from /Users/lionel/Desktop/rlang/revdep/library.noindex/mrgsolve/RcppArmadillo/include/RcppArmadillo.h:31,
+                 from ../inst/include/RcppInclude.h:19,
+                 from ../inst/include/mrgsolve.h:23,
+                 from devtran.cpp:40:
+/Users/lionel/Desktop/rlang/revdep/library.noindex/mrgsolve/RcppArmadillo/include/armadillo_bits/compiler_setup.hpp: At global scope:
+/Users/lionel/Desktop/rlang/revdep/library.noindex/mrgsolve/RcppArmadillo/include/armadillo_bits/compiler_setup.hpp:509:108: note: #pragma message: NOTE: suggest to enable C++14 mode for faster code; add -std=c++14 to compiler flags
+     #pragma message ("NOTE: suggest to enable C++14 mode for faster code; add -std=c++14 to compiler flags")
+                                                                                                            ^
+In file included from /Users/lionel/Desktop/rlang/revdep/library.noindex/mrgsolve/BH/include/boost/smart_ptr/shared_ptr.hpp:28,
+                 from /Users/lionel/Desktop/rlang/revdep/library.noindex/mrgsolve/BH/include/boost/shared_ptr.hpp:17,
+                 from ../inst/include/dataobject.h:27,
+                 from dataobject.cpp:25:
+/Users/lionel/Desktop/rlang/revdep/library.noindex/mrgsolve/BH/include/boost/smart_ptr/detail/shared_count.hpp:355:33: warning: 'template<class> class std::auto_ptr' is deprecated [-Wdeprecated-declarations]
+     explicit shared_count( std::auto_ptr<Y> & r ): pi_( new sp_counted_impl_p<Y>( r.get() ) )
+                                 ^~~~~~~~
+In file included from /usr/local/Cellar/gcc/8.2.0/include/c++/8.2.0/bits/locale_conv.h:41,
+                 from /usr/local/Cellar/gcc/8.2.0/include/c++/8.2.0/locale:43,
+                 from /usr/local/Cellar/gcc/8.2.0/include/c++/8.2.0/iomanip:43,
+                 from /Users/lionel/Desktop/rlang/revdep/library.noindex/mrgsolve/Rcpp/include/RcppCommon.h:52,
+                 from /Users/lionel/Desktop/rlang/revdep/library.noindex/mrgsolve/RcppArmadillo/include/RcppArmadilloForward.h:26,
+                 from /Users/lionel/Desktop/rlang/revdep/library.noindex/mrgsolve/RcppArmadillo/include/RcppArmadillo.h:31,
+                 from ../inst/include/RcppInclude.h:19,
+                 from dataobject.cpp:24:
+/usr/local/Cellar/gcc/8.2.0/include/c++/8.2.0/bits/unique_ptr.h:53:28: note: declared here
+   template<typename> class auto_ptr;
+                            ^~~~~~~~
+In file included from /Users/lionel/Desktop/rlang/revdep/library.noindex/mrgsolve/BH/include/boost/shared_ptr.hpp:17,
+                 from ../inst/include/dataobject.h:27,
+                 from dataobject.cpp:25:
+/Users/lionel/Desktop/rlang/revdep/library.noindex/mrgsolve/BH/include/boost/smart_ptr/shared_ptr.hpp:256:65: warning: 'template<class> class std::auto_ptr' is deprecated [-Wdeprecated-declarations]
+ template< class T, class R > struct sp_enable_if_auto_ptr< std::auto_ptr< T >, R >
+                                                                 ^~~~~~~~
+In file included from /usr/local/Cellar/gcc/8.2.0/include/c++/8.2.0/bits/locale_conv.h:41,
+                 from /usr/local/Cellar/gcc/8.2.0/include/c++/8.2.0/locale:43,
+                 from /usr/local/Cellar/gcc/8.2.0/include/c++/8.2.0/iomanip:43,
+                 from /Users/lionel/Desktop/rlang/revdep/library.noindex/mrgsolve/Rcpp/include/RcppCommon.h:52,
+                 from /Users/lionel/Desktop/rlang/revdep/library.noindex/mrgsolve/RcppArmadillo/include/RcppArmadilloForward.h:26,
+                 from /Users/lionel/Desktop/rlang/revdep/library.noindex/mrgsolve/RcppArmadillo/include/RcppArmadillo.h:31,
+                 from ../inst/include/RcppInclude.h:19,
+                 from dataobject.cpp:24:
+/usr/local/Cellar/gcc/8.2.0/include/c++/8.2.0/bits/unique_ptr.h:53:28: note: declared here
+   template<typename> class auto_ptr;
+                            ^~~~~~~~
+In file included from /Users/lionel/Desktop/rlang/revdep/library.noindex/mrgsolve/BH/include/boost/shared_ptr.hpp:17,
+                 from ../inst/include/dataobject.h:27,
+                 from dataobject.cpp:25:
+/Users/lionel/Desktop/rlang/revdep/library.noindex/mrgsolve/BH/include/boost/smart_ptr/shared_ptr.hpp:471:31: warning: 'template<class> class std::auto_ptr' is deprecated [-Wdeprecated-declarations]
+     explicit shared_ptr( std::auto_ptr<Y> & r ): px(r.get()), pn()
+                               ^~~~~~~~
+In file included from /usr/local/Cellar/gcc/8.2.0/include/c++/8.2.0/bits/locale_conv.h:41,
+                 from /usr/local/Cellar/gcc/8.2.0/include/c++/8.2.0/locale:43,
+                 from /usr/local/Cellar/gcc/8.2.0/include/c++/8.2.0/iomanip:43,
+                 from /Users/lionel/Desktop/rlang/revdep/library.noindex/mrgsolve/Rcpp/include/RcppCommon.h:52,
+                 from /Users/lionel/Desktop/rlang/revdep/library.noindex/mrgsolve/RcppArmadillo/include/RcppArmadilloForward.h:26,
+                 from /Users/lionel/Desktop/rlang/revdep/library.noindex/mrgsolve/RcppArmadillo/include/RcppArmadillo.h:31,
+                 from ../inst/include/RcppInclude.h:19,
+                 from dataobject.cpp:24:
+/usr/local/Cellar/gcc/8.2.0/include/c++/8.2.0/bits/unique_ptr.h:53:28: note: declared here
+   template<typename> class auto_ptr;
+                            ^~~~~~~~
+In file included from /Users/lionel/Desktop/rlang/revdep/library.noindex/mrgsolve/BH/include/boost/shared_ptr.hpp:17,
+                 from ../inst/include/dataobject.h:27,
+                 from dataobject.cpp:25:
+/Users/lionel/Desktop/rlang/revdep/library.noindex/mrgsolve/BH/include/boost/smart_ptr/shared_ptr.hpp:484:22: warning: 'template<class> class std::auto_ptr' is deprecated [-Wdeprecated-declarations]
+     shared_ptr( std::auto_ptr<Y> && r ): px(r.get()), pn()
+                      ^~~~~~~~
+In file included from /usr/local/Cellar/gcc/8.2.0/include/c++/8.2.0/bits/locale_conv.h:41,
+                 from /usr/local/Cellar/gcc/8.2.0/include/c++/8.2.0/locale:43,
+                 from /usr/local/Cellar/gcc/8.2.0/include/c++/8.2.0/iomanip:43,
+                 from /Users/lionel/Desktop/rlang/revdep/library.noindex/mrgsolve/Rcpp/include/RcppCommon.h:52,
+                 from /Users/lionel/Desktop/rlang/revdep/library.noindex/mrgsolve/RcppArmadillo/include/RcppArmadilloForward.h:26,
+                 from /Users/lionel/Desktop/rlang/revdep/library.noindex/mrgsolve/RcppArmadillo/include/RcppArmadillo.h:31,
+                 from ../inst/include/RcppInclude.h:19,
+                 from dataobject.cpp:24:
+/usr/local/Cellar/gcc/8.2.0/include/c++/8.2.0/bits/unique_ptr.h:53:28: note: declared here
+   template<typename> class auto_ptr;
+                            ^~~~~~~~
+In file included from /Users/lionel/Desktop/rlang/revdep/library.noindex/mrgsolve/BH/include/boost/shared_ptr.hpp:17,
+                 from ../inst/include/dataobject.h:27,
+                 from dataobject.cpp:25:
+/Users/lionel/Desktop/rlang/revdep/library.noindex/mrgsolve/BH/include/boost/smart_ptr/shared_ptr.hpp:567:34: warning: 'template<class> class std::auto_ptr' is deprecated [-Wdeprecated-declarations]
+     shared_ptr & operator=( std::auto_ptr<Y> & r )
+                                  ^~~~~~~~
+In file included from /usr/local/Cellar/gcc/8.2.0/include/c++/8.2.0/bits/locale_conv.h:41,
+                 from /usr/local/Cellar/gcc/8.2.0/include/c++/8.2.0/locale:43,
+                 from /usr/local/Cellar/gcc/8.2.0/include/c++/8.2.0/iomanip:43,
+                 from /Users/lionel/Desktop/rlang/revdep/library.noindex/mrgsolve/Rcpp/include/RcppCommon.h:52,
+                 from /Users/lionel/Desktop/rlang/revdep/library.noindex/mrgsolve/RcppArmadillo/include/RcppArmadilloForward.h:26,
+                 from /Users/lionel/Desktop/rlang/revdep/library.noindex/mrgsolve/RcppArmadillo/include/RcppArmadillo.h:31,
+                 from ../inst/include/RcppInclude.h:19,
+                 from dataobject.cpp:24:
+/usr/local/Cellar/gcc/8.2.0/include/c++/8.2.0/bits/unique_ptr.h:53:28: note: declared here
+   template<typename> class auto_ptr;
+                            ^~~~~~~~
+In file included from /Users/lionel/Desktop/rlang/revdep/library.noindex/mrgsolve/BH/include/boost/shared_ptr.hpp:17,
+                 from ../inst/include/dataobject.h:27,
+                 from dataobject.cpp:25:
+/Users/lionel/Desktop/rlang/revdep/library.noindex/mrgsolve/BH/include/boost/smart_ptr/shared_ptr.hpp:576:34: warning: 'template<class> class std::auto_ptr' is deprecated [-Wdeprecated-declarations]
+     shared_ptr & operator=( std::auto_ptr<Y> && r )
+                                  ^~~~~~~~
+In file included from /usr/local/Cellar/gcc/8.2.0/include/c++/8.2.0/bits/locale_conv.h:41,
+                 from /usr/local/Cellar/gcc/8.2.0/include/c++/8.2.0/locale:43,
+                 from /usr/local/Cellar/gcc/8.2.0/include/c++/8.2.0/iomanip:43,
+                 from /Users/lionel/Desktop/rlang/revdep/library.noindex/mrgsolve/Rcpp/include/RcppCommon.h:52,
+                 from /Users/lionel/Desktop/rlang/revdep/library.noindex/mrgsolve/RcppArmadillo/include/RcppArmadilloForward.h:26,
+                 from /Users/lionel/Desktop/rlang/revdep/library.noindex/mrgsolve/RcppArmadillo/include/RcppArmadillo.h:31,
+                 from ../inst/include/RcppInclude.h:19,
+                 from dataobject.cpp:24:
+/usr/local/Cellar/gcc/8.2.0/include/c++/8.2.0/bits/unique_ptr.h:53:28: note: declared here
+   template<typename> class auto_ptr;
+                            ^~~~~~~~
+In file included from /Users/lionel/Desktop/rlang/revdep/library.noindex/mrgsolve/BH/include/boost/shared_ptr.hpp:17,
+                 from ../inst/include/dataobject.h:27,
+                 from dataobject.cpp:25:
+/Users/lionel/Desktop/rlang/revdep/library.noindex/mrgsolve/BH/include/boost/smart_ptr/shared_ptr.hpp: In member function 'boost::shared_ptr<T>& boost::shared_ptr<T>::operator=(std::auto_ptr<_Up>&&)':
+/Users/lionel/Desktop/rlang/revdep/library.noindex/mrgsolve/BH/include/boost/smart_ptr/shared_ptr.hpp:578:38: warning: 'template<class> class std::auto_ptr' is deprecated [-Wdeprecated-declarations]
+         this_type( static_cast< std::auto_ptr<Y> && >( r ) ).swap( *this );
+                                      ^~~~~~~~
+In file included from /usr/local/Cellar/gcc/8.2.0/include/c++/8.2.0/bits/locale_conv.h:41,
+                 from /usr/local/Cellar/gcc/8.2.0/include/c++/8.2.0/locale:43,
+                 from /usr/local/Cellar/gcc/8.2.0/include/c++/8.2.0/iomanip:43,
+                 from /Users/lionel/Desktop/rlang/revdep/library.noindex/mrgsolve/Rcpp/include/RcppCommon.h:52,
+                 from /Users/lionel/Desktop/rlang/revdep/library.noindex/mrgsolve/RcppArmadillo/include/RcppArmadilloForward.h:26,
+                 from /Users/lionel/Desktop/rlang/revdep/library.noindex/mrgsolve/RcppArmadillo/include/RcppArmadillo.h:31,
+                 from ../inst/include/RcppInclude.h:19,
+                 from dataobject.cpp:24:
+/usr/local/Cellar/gcc/8.2.0/include/c++/8.2.0/bits/unique_ptr.h:53:28: note: declared here
+   template<typename> class auto_ptr;
+                            ^~~~~~~~
+In file included from /Users/lionel/Desktop/rlang/revdep/library.noindex/mrgsolve/BH/include/boost/smart_ptr/shared_ptr.hpp:28,
+                 from /Users/lionel/Desktop/rlang/revdep/library.noindex/mrgsolve/BH/include/boost/shared_ptr.hpp:17,
+                 from ../inst/include/datarecord.h:24,
+                 from datarecord.cpp:25:
+/Users/lionel/Desktop/rlang/revdep/library.noindex/mrgsolve/BH/include/boost/smart_ptr/detail/shared_count.hpp:355:33: warning: 'template<class> class std::auto_ptr' is deprecated [-Wdeprecated-declarations]
+     explicit shared_count( std::auto_ptr<Y> & r ): pi_( new sp_counted_impl_p<Y>( r.get() ) )
+                                 ^~~~~~~~
+In file included from /usr/local/Cellar/gcc/8.2.0/include/c++/8.2.0/bits/locale_conv.h:41,
+                 from /usr/local/Cellar/gcc/8.2.0/include/c++/8.2.0/locale:43,
+                 from /usr/local/Cellar/gcc/8.2.0/include/c++/8.2.0/iomanip:43,
+                 from /Users/lionel/Desktop/rlang/revdep/library.noindex/mrgsolve/Rcpp/include/RcppCommon.h:52,
+                 from /Users/lionel/Desktop/rlang/revdep/library.noindex/mrgsolve/RcppArmadillo/include/RcppArmadilloForward.h:26,
+                 from /Users/lionel/Desktop/rlang/revdep/library.noindex/mrgsolve/RcppArmadillo/include/RcppArmadillo.h:31,
+                 from ../inst/include/RcppInclude.h:19,
+                 from datarecord.cpp:24:
+/usr/local/Cellar/gcc/8.2.0/include/c++/8.2.0/bits/unique_ptr.h:53:28: note: declared here
+   template<typename> class auto_ptr;
+                            ^~~~~~~~
+In file included from /Users/lionel/Desktop/rlang/revdep/library.noindex/mrgsolve/BH/include/boost/shared_ptr.hpp:17,
+                 from ../inst/include/datarecord.h:24,
+                 from datarecord.cpp:25:
+/Users/lionel/Desktop/rlang/revdep/library.noindex/mrgsolve/BH/include/boost/smart_ptr/shared_ptr.hpp:256:65: warning: 'template<class> class std::auto_ptr' is deprecated [-Wdeprecated-declarations]
+ template< class T, class R > struct sp_enable_if_auto_ptr< std::auto_ptr< T >, R >
+                                                                 ^~~~~~~~
+In file included from /usr/local/Cellar/gcc/8.2.0/include/c++/8.2.0/bits/locale_conv.h:41,
+                 from /usr/local/Cellar/gcc/8.2.0/include/c++/8.2.0/locale:43,
+                 from /usr/local/Cellar/gcc/8.2.0/include/c++/8.2.0/iomanip:43,
+                 from /Users/lionel/Desktop/rlang/revdep/library.noindex/mrgsolve/Rcpp/include/RcppCommon.h:52,
+                 from /Users/lionel/Desktop/rlang/revdep/library.noindex/mrgsolve/RcppArmadillo/include/RcppArmadilloForward.h:26,
+                 from /Users/lionel/Desktop/rlang/revdep/library.noindex/mrgsolve/RcppArmadillo/include/RcppArmadillo.h:31,
+                 from ../inst/include/RcppInclude.h:19,
+                 from datarecord.cpp:24:
+/usr/local/Cellar/gcc/8.2.0/include/c++/8.2.0/bits/unique_ptr.h:53:28: note: declared here
+   template<typename> class auto_ptr;
+                            ^~~~~~~~
+In file included from /Users/lionel/Desktop/rlang/revdep/library.noindex/mrgsolve/BH/include/boost/shared_ptr.hpp:17,
+                 from ../inst/include/datarecord.h:24,
+                 from datarecord.cpp:25:
+/Users/lionel/Desktop/rlang/revdep/library.noindex/mrgsolve/BH/include/boost/smart_ptr/shared_ptr.hpp:471:31: warning: 'template<class> class std::auto_ptr' is deprecated [-Wdeprecated-declarations]
+     explicit shared_ptr( std::auto_ptr<Y> & r ): px(r.get()), pn()
+                               ^~~~~~~~
+In file included from /usr/local/Cellar/gcc/8.2.0/include/c++/8.2.0/bits/locale_conv.h:41,
+                 from /usr/local/Cellar/gcc/8.2.0/include/c++/8.2.0/locale:43,
+                 from /usr/local/Cellar/gcc/8.2.0/include/c++/8.2.0/iomanip:43,
+                 from /Users/lionel/Desktop/rlang/revdep/library.noindex/mrgsolve/Rcpp/include/RcppCommon.h:52,
+                 from /Users/lionel/Desktop/rlang/revdep/library.noindex/mrgsolve/RcppArmadillo/include/RcppArmadilloForward.h:26,
+                 from /Users/lionel/Desktop/rlang/revdep/library.noindex/mrgsolve/RcppArmadillo/include/RcppArmadillo.h:31,
+                 from ../inst/include/RcppInclude.h:19,
+                 from datarecord.cpp:24:
+/usr/local/Cellar/gcc/8.2.0/include/c++/8.2.0/bits/unique_ptr.h:53:28: note: declared here
+   template<typename> class auto_ptr;
+                            ^~~~~~~~
+In file included from /Users/lionel/Desktop/rlang/revdep/library.noindex/mrgsolve/BH/include/boost/shared_ptr.hpp:17,
+                 from ../inst/include/datarecord.h:24,
+                 from datarecord.cpp:25:
+/Users/lionel/Desktop/rlang/revdep/library.noindex/mrgsolve/BH/include/boost/smart_ptr/shared_ptr.hpp:484:22: warning: 'template<class> class std::auto_ptr' is deprecated [-Wdeprecated-declarations]
+     shared_ptr( std::auto_ptr<Y> && r ): px(r.get()), pn()
+                      ^~~~~~~~
+In file included from /usr/local/Cellar/gcc/8.2.0/include/c++/8.2.0/bits/locale_conv.h:41,
+                 from /usr/local/Cellar/gcc/8.2.0/include/c++/8.2.0/locale:43,
+                 from /usr/local/Cellar/gcc/8.2.0/include/c++/8.2.0/iomanip:43,
+                 from /Users/lionel/Desktop/rlang/revdep/library.noindex/mrgsolve/Rcpp/include/RcppCommon.h:52,
+                 from /Users/lionel/Desktop/rlang/revdep/library.noindex/mrgsolve/RcppArmadillo/include/RcppArmadilloForward.h:26,
+                 from /Users/lionel/Desktop/rlang/revdep/library.noindex/mrgsolve/RcppArmadillo/include/RcppArmadillo.h:31,
+                 from ../inst/include/RcppInclude.h:19,
+                 from datarecord.cpp:24:
+/usr/local/Cellar/gcc/8.2.0/include/c++/8.2.0/bits/unique_ptr.h:53:28: note: declared here
+   template<typename> class auto_ptr;
+                            ^~~~~~~~
+In file included from /Users/lionel/Desktop/rlang/revdep/library.noindex/mrgsolve/BH/include/boost/shared_ptr.hpp:17,
+                 from ../inst/include/datarecord.h:24,
+                 from datarecord.cpp:25:
+/Users/lionel/Desktop/rlang/revdep/library.noindex/mrgsolve/BH/include/boost/smart_ptr/shared_ptr.hpp:567:34: warning: 'template<class> class std::auto_ptr' is deprecated [-Wdeprecated-declarations]
+     shared_ptr & operator=( std::auto_ptr<Y> & r )
+                                  ^~~~~~~~
+In file included from /usr/local/Cellar/gcc/8.2.0/include/c++/8.2.0/bits/locale_conv.h:41,
+                 from /usr/local/Cellar/gcc/8.2.0/include/c++/8.2.0/locale:43,
+                 from /usr/local/Cellar/gcc/8.2.0/include/c++/8.2.0/iomanip:43,
+                 from /Users/lionel/Desktop/rlang/revdep/library.noindex/mrgsolve/Rcpp/include/RcppCommon.h:52,
+                 from /Users/lionel/Desktop/rlang/revdep/library.noindex/mrgsolve/RcppArmadillo/include/RcppArmadilloForward.h:26,
+                 from /Users/lionel/Desktop/rlang/revdep/library.noindex/mrgsolve/RcppArmadillo/include/RcppArmadillo.h:31,
+                 from ../inst/include/RcppInclude.h:19,
+                 from datarecord.cpp:24:
+/usr/local/Cellar/gcc/8.2.0/include/c++/8.2.0/bits/unique_ptr.h:53:28: note: declared here
+   template<typename> class auto_ptr;
+                            ^~~~~~~~
+In file included from /Users/lionel/Desktop/rlang/revdep/library.noindex/mrgsolve/BH/include/boost/shared_ptr.hpp:17,
+                 from ../inst/include/datarecord.h:24,
+                 from datarecord.cpp:25:
+/Users/lionel/Desktop/rlang/revdep/library.noindex/mrgsolve/BH/include/boost/smart_ptr/shared_ptr.hpp:576:34: warning: 'template<class> class std::auto_ptr' is deprecated [-Wdeprecated-declarations]
+     shared_ptr & operator=( std::auto_ptr<Y> && r )
+                                  ^~~~~~~~
+In file included from /usr/local/Cellar/gcc/8.2.0/include/c++/8.2.0/bits/locale_conv.h:41,
+                 from /usr/local/Cellar/gcc/8.2.0/include/c++/8.2.0/locale:43,
+                 from /usr/local/Cellar/gcc/8.2.0/include/c++/8.2.0/iomanip:43,
+                 from /Users/lionel/Desktop/rlang/revdep/library.noindex/mrgsolve/Rcpp/include/RcppCommon.h:52,
+                 from /Users/lionel/Desktop/rlang/revdep/library.noindex/mrgsolve/RcppArmadillo/include/RcppArmadilloForward.h:26,
+                 from /Users/lionel/Desktop/rlang/revdep/library.noindex/mrgsolve/RcppArmadillo/include/RcppArmadillo.h:31,
+                 from ../inst/include/RcppInclude.h:19,
+                 from datarecord.cpp:24:
+/usr/local/Cellar/gcc/8.2.0/include/c++/8.2.0/bits/unique_ptr.h:53:28: note: declared here
+   template<typename> class auto_ptr;
+                            ^~~~~~~~
+In file included from /Users/lionel/Desktop/rlang/revdep/library.noindex/mrgsolve/BH/include/boost/shared_ptr.hpp:17,
+                 from ../inst/include/datarecord.h:24,
+                 from datarecord.cpp:25:
+/Users/lionel/Desktop/rlang/revdep/library.noindex/mrgsolve/BH/include/boost/smart_ptr/shared_ptr.hpp: In member function 'boost::shared_ptr<T>& boost::shared_ptr<T>::operator=(std::auto_ptr<_Up>&&)':
+/Users/lionel/Desktop/rlang/revdep/library.noindex/mrgsolve/BH/include/boost/smart_ptr/shared_ptr.hpp:578:38: warning: 'template<class> class std::auto_ptr' is deprecated [-Wdeprecated-declarations]
+         this_type( static_cast< std::auto_ptr<Y> && >( r ) ).swap( *this );
+                                      ^~~~~~~~
+In file included from /usr/local/Cellar/gcc/8.2.0/include/c++/8.2.0/bits/locale_conv.h:41,
+                 from /usr/local/Cellar/gcc/8.2.0/include/c++/8.2.0/locale:43,
+                 from /usr/local/Cellar/gcc/8.2.0/include/c++/8.2.0/iomanip:43,
+                 from /Users/lionel/Desktop/rlang/revdep/library.noindex/mrgsolve/Rcpp/include/RcppCommon.h:52,
+                 from /Users/lionel/Desktop/rlang/revdep/library.noindex/mrgsolve/RcppArmadillo/include/RcppArmadilloForward.h:26,
+                 from /Users/lionel/Desktop/rlang/revdep/library.noindex/mrgsolve/RcppArmadillo/include/RcppArmadillo.h:31,
+                 from ../inst/include/RcppInclude.h:19,
+                 from datarecord.cpp:24:
+/usr/local/Cellar/gcc/8.2.0/include/c++/8.2.0/bits/unique_ptr.h:53:28: note: declared here
+   template<typename> class auto_ptr;
+                            ^~~~~~~~
+g++-8 -I"/Library/Frameworks/R.framework/Resources/include" -DNDEBUG -I../inst/include -I"/Users/lionel/Desktop/rlang/revdep/library.noindex/mrgsolve/Rcpp/include" -I"/Users/lionel/Desktop/rlang/revdep/library.noindex/mrgsolve/RcppArmadillo/include" -I"/Users/lionel/Desktop/rlang/revdep/library.noindex/mrgsolve/BH/include" -I/usr/local/include   -fPIC  -arch x86_64 -ftemplate-depth-256 -Wall -pedantic -O0 -c housemodel-mread-source.cpp -o housemodel-mread-source.o
+g++-8 -I"/Library/Frameworks/R.framework/Resources/include" -DNDEBUG -I../inst/include -I"/Users/lionel/Desktop/rlang/revdep/library.noindex/mrgsolve/Rcpp/include" -I"/Users/lionel/Desktop/rlang/revdep/library.noindex/mrgsolve/RcppArmadillo/include" -I"/Users/lionel/Desktop/rlang/revdep/library.noindex/mrgsolve/BH/include" -I/usr/local/include   -fPIC  -arch x86_64 -ftemplate-depth-256 -Wall -pedantic -O0 -c mrgsolve.cpp -o mrgsolve.o
+g++-8 -I"/Library/Frameworks/R.framework/Resources/include" -DNDEBUG -I../inst/include -I"/Users/lionel/Desktop/rlang/revdep/library.noindex/mrgsolve/Rcpp/include" -I"/Users/lionel/Desktop/rlang/revdep/library.noindex/mrgsolve/RcppArmadillo/include" -I"/Users/lionel/Desktop/rlang/revdep/library.noindex/mrgsolve/BH/include" -I/usr/local/include   -fPIC  -arch x86_64 -ftemplate-depth-256 -Wall -pedantic -O0 -c mrgsolve_init.cpp -o mrgsolve_init.o
+g++-8 -I"/Library/Frameworks/R.framework/Resources/include" -DNDEBUG -I../inst/include -I"/Users/lionel/Desktop/rlang/revdep/library.noindex/mrgsolve/Rcpp/include" -I"/Users/lionel/Desktop/rlang/revdep/library.noindex/mrgsolve/RcppArmadillo/include" -I"/Users/lionel/Desktop/rlang/revdep/library.noindex/mrgsolve/BH/include" -I/usr/local/include   -fPIC  -arch x86_64 -ftemplate-depth-256 -Wall -pedantic -O0 -c odepack_dlsoda.cpp -o odepack_dlsoda.o
+g++-8 -I"/Library/Frameworks/R.framework/Resources/include" -DNDEBUG -I../inst/include -I"/Users/lionel/Desktop/rlang/revdep/library.noindex/mrgsolve/Rcpp/include" -I"/Users/lionel/Desktop/rlang/revdep/library.noindex/mrgsolve/RcppArmadillo/include" -I"/Users/lionel/Desktop/rlang/revdep/library.noindex/mrgsolve/BH/include" -I/usr/local/include   -fPIC  -arch x86_64 -ftemplate-depth-256 -Wall -pedantic -O0 -c odeproblem.cpp -o odeproblem.o
 gfortran-7   -fPIC  -g -O2  -c opk_dlsoda_mrg.f -o opk_dlsoda_mrg.o
 make: gfortran-7: No such file or directory
 make: *** [opk_dlsoda_mrg.o] Error 1
+make: *** Waiting for unfinished jobs....
+In file included from /Users/lionel/Desktop/rlang/revdep/library.noindex/mrgsolve/RcppArmadillo/include/armadillo:54,
+                 from /Users/lionel/Desktop/rlang/revdep/library.noindex/mrgsolve/RcppArmadillo/include/RcppArmadilloForward.h:46,
+                 from /Users/lionel/Desktop/rlang/revdep/library.noindex/mrgsolve/RcppArmadillo/include/RcppArmadillo.h:31,
+                 from ../inst/include/RcppInclude.h:19,
+                 from mrgsolve_init.cpp:18:
+/Users/lionel/Desktop/rlang/revdep/library.noindex/mrgsolve/RcppArmadillo/include/armadillo_bits/compiler_setup.hpp:509:108: note: #pragma message: NOTE: suggest to enable C++14 mode for faster code; add -std=c++14 to compiler flags
+     #pragma message ("NOTE: suggest to enable C++14 mode for faster code; add -std=c++14 to compiler flags")
+                                                                                                            ^
+In file included from /Users/lionel/Desktop/rlang/revdep/library.noindex/mrgsolve/RcppArmadillo/include/armadillo:54,
+                 from /Users/lionel/Desktop/rlang/revdep/library.noindex/mrgsolve/RcppArmadillo/include/RcppArmadilloForward.h:46,
+                 from /Users/lionel/Desktop/rlang/revdep/library.noindex/mrgsolve/RcppArmadillo/include/RcppArmadillo.h:31,
+                 from ../inst/include/RcppInclude.h:19,
+                 from mrgsolve.cpp:24:
+/Users/lionel/Desktop/rlang/revdep/library.noindex/mrgsolve/RcppArmadillo/include/armadillo_bits/compiler_setup.hpp:509:108: note: #pragma message: NOTE: suggest to enable C++14 mode for faster code; add -std=c++14 to compiler flags
+     #pragma message ("NOTE: suggest to enable C++14 mode for faster code; add -std=c++14 to compiler flags")
+                                                                                                            ^
+In file included from /Users/lionel/Desktop/rlang/revdep/library.noindex/mrgsolve/RcppArmadillo/include/armadillo:54,
+                 from /Users/lionel/Desktop/rlang/revdep/library.noindex/mrgsolve/RcppArmadillo/include/RcppArmadilloForward.h:46,
+                 from /Users/lionel/Desktop/rlang/revdep/library.noindex/mrgsolve/RcppArmadillo/include/RcppArmadillo.h:31,
+                 from ../inst/include/RcppInclude.h:19,
+                 from odeproblem.cpp:26:
+/Users/lionel/Desktop/rlang/revdep/library.noindex/mrgsolve/RcppArmadillo/include/armadillo_bits/compiler_setup.hpp:509:108: note: #pragma message: NOTE: suggest to enable C++14 mode for faster code; add -std=c++14 to compiler flags
+     #pragma message ("NOTE: suggest to enable C++14 mode for faster code; add -std=c++14 to compiler flags")
+                                                                                                            ^
+In file included from /Users/lionel/Desktop/rlang/revdep/library.noindex/mrgsolve/BH/include/boost/mpl/aux_/na_assert.hpp:23,
+                 from /Users/lionel/Desktop/rlang/revdep/library.noindex/mrgsolve/BH/include/boost/mpl/arg.hpp:25,
+                 from /Users/lionel/Desktop/rlang/revdep/library.noindex/mrgsolve/BH/include/boost/mpl/placeholders.hpp:24,
+                 from /Users/lionel/Desktop/rlang/revdep/library.noindex/mrgsolve/BH/include/boost/iterator/iterator_categories.hpp:16,
+                 from /Users/lionel/Desktop/rlang/revdep/library.noindex/mrgsolve/BH/include/boost/iterator/iterator_adaptor.hpp:12,
+                 from /Users/lionel/Desktop/rlang/revdep/library.noindex/mrgsolve/BH/include/boost/token_iterator.hpp:22,
+                 from /Users/lionel/Desktop/rlang/revdep/library.noindex/mrgsolve/BH/include/boost/tokenizer.hpp:20,
+                 from mrgsolve.cpp:28:
+/Users/lionel/Desktop/rlang/revdep/library.noindex/mrgsolve/BH/include/boost/mpl/assert.hpp:188:21: warning: unnecessary parentheses in declaration of 'assert_arg' [-Wparentheses]
+ failed ************ (Pred::************
+                     ^
+/Users/lionel/Desktop/rlang/revdep/library.noindex/mrgsolve/BH/include/boost/mpl/assert.hpp:193:21: warning: unnecessary parentheses in declaration of 'assert_not_arg' [-Wparentheses]
+ failed ************ (boost::mpl::not_<Pred>::************
+                     ^
+In file included from /Users/lionel/Desktop/rlang/revdep/library.noindex/mrgsolve/BH/include/boost/smart_ptr/shared_ptr.hpp:28,
+                 from /Users/lionel/Desktop/rlang/revdep/library.noindex/mrgsolve/BH/include/boost/shared_ptr.hpp:17,
+                 from ../inst/include/datarecord.h:24,
+                 from ../inst/include/odeproblem.h:30,
+                 from odeproblem.cpp:27:
+/Users/lionel/Desktop/rlang/revdep/library.noindex/mrgsolve/BH/include/boost/smart_ptr/detail/shared_count.hpp:355:33: warning: 'template<class> class std::auto_ptr' is deprecated [-Wdeprecated-declarations]
+     explicit shared_count( std::auto_ptr<Y> & r ): pi_( new sp_counted_impl_p<Y>( r.get() ) )
+                                 ^~~~~~~~
+In file included from /usr/local/Cellar/gcc/8.2.0/include/c++/8.2.0/bits/locale_conv.h:41,
+                 from /usr/local/Cellar/gcc/8.2.0/include/c++/8.2.0/locale:43,
+                 from /usr/local/Cellar/gcc/8.2.0/include/c++/8.2.0/iomanip:43,
+                 from /Users/lionel/Desktop/rlang/revdep/library.noindex/mrgsolve/Rcpp/include/RcppCommon.h:52,
+                 from /Users/lionel/Desktop/rlang/revdep/library.noindex/mrgsolve/RcppArmadillo/include/RcppArmadilloForward.h:26,
+                 from /Users/lionel/Desktop/rlang/revdep/library.noindex/mrgsolve/RcppArmadillo/include/RcppArmadillo.h:31,
+                 from ../inst/include/RcppInclude.h:19,
+                 from odeproblem.cpp:26:
+/usr/local/Cellar/gcc/8.2.0/include/c++/8.2.0/bits/unique_ptr.h:53:28: note: declared here
+   template<typename> class auto_ptr;
+                            ^~~~~~~~
+In file included from /Users/lionel/Desktop/rlang/revdep/library.noindex/mrgsolve/BH/include/boost/shared_ptr.hpp:17,
+                 from ../inst/include/datarecord.h:24,
+                 from ../inst/include/odeproblem.h:30,
+                 from odeproblem.cpp:27:
+/Users/lionel/Desktop/rlang/revdep/library.noindex/mrgsolve/BH/include/boost/smart_ptr/shared_ptr.hpp:256:65: warning: 'template<class> class std::auto_ptr' is deprecated [-Wdeprecated-declarations]
+ template< class T, class R > struct sp_enable_if_auto_ptr< std::auto_ptr< T >, R >
+                                                                 ^~~~~~~~
+In file included from /usr/local/Cellar/gcc/8.2.0/include/c++/8.2.0/bits/locale_conv.h:41,
+                 from /usr/local/Cellar/gcc/8.2.0/include/c++/8.2.0/locale:43,
+                 from /usr/local/Cellar/gcc/8.2.0/include/c++/8.2.0/iomanip:43,
+                 from /Users/lionel/Desktop/rlang/revdep/library.noindex/mrgsolve/Rcpp/include/RcppCommon.h:52,
+                 from /Users/lionel/Desktop/rlang/revdep/library.noindex/mrgsolve/RcppArmadillo/include/RcppArmadilloForward.h:26,
+                 from /Users/lionel/Desktop/rlang/revdep/library.noindex/mrgsolve/RcppArmadillo/include/RcppArmadillo.h:31,
+                 from ../inst/include/RcppInclude.h:19,
+                 from odeproblem.cpp:26:
+/usr/local/Cellar/gcc/8.2.0/include/c++/8.2.0/bits/unique_ptr.h:53:28: note: declared here
+   template<typename> class auto_ptr;
+                            ^~~~~~~~
+In file included from /Users/lionel/Desktop/rlang/revdep/library.noindex/mrgsolve/BH/include/boost/shared_ptr.hpp:17,
+                 from ../inst/include/datarecord.h:24,
+                 from ../inst/include/odeproblem.h:30,
+                 from odeproblem.cpp:27:
+/Users/lionel/Desktop/rlang/revdep/library.noindex/mrgsolve/BH/include/boost/smart_ptr/shared_ptr.hpp:471:31: warning: 'template<class> class std::auto_ptr' is deprecated [-Wdeprecated-declarations]
+     explicit shared_ptr( std::auto_ptr<Y> & r ): px(r.get()), pn()
+                               ^~~~~~~~
+In file included from /usr/local/Cellar/gcc/8.2.0/include/c++/8.2.0/bits/locale_conv.h:41,
+                 from /usr/local/Cellar/gcc/8.2.0/include/c++/8.2.0/locale:43,
+                 from /usr/local/Cellar/gcc/8.2.0/include/c++/8.2.0/iomanip:43,
+                 from /Users/lionel/Desktop/rlang/revdep/library.noindex/mrgsolve/Rcpp/include/RcppCommon.h:52,
+                 from /Users/lionel/Desktop/rlang/revdep/library.noindex/mrgsolve/RcppArmadillo/include/RcppArmadilloForward.h:26,
+                 from /Users/lionel/Desktop/rlang/revdep/library.noindex/mrgsolve/RcppArmadillo/include/RcppArmadillo.h:31,
+                 from ../inst/include/RcppInclude.h:19,
+                 from odeproblem.cpp:26:
+/usr/local/Cellar/gcc/8.2.0/include/c++/8.2.0/bits/unique_ptr.h:53:28: note: declared here
+   template<typename> class auto_ptr;
+                            ^~~~~~~~
+In file included from /Users/lionel/Desktop/rlang/revdep/library.noindex/mrgsolve/BH/include/boost/shared_ptr.hpp:17,
+                 from ../inst/include/datarecord.h:24,
+                 from ../inst/include/odeproblem.h:30,
+                 from odeproblem.cpp:27:
+/Users/lionel/Desktop/rlang/revdep/library.noindex/mrgsolve/BH/include/boost/smart_ptr/shared_ptr.hpp:484:22: warning: 'template<class> class std::auto_ptr' is deprecated [-Wdeprecated-declarations]
+     shared_ptr( std::auto_ptr<Y> && r ): px(r.get()), pn()
+                      ^~~~~~~~
+In file included from /usr/local/Cellar/gcc/8.2.0/include/c++/8.2.0/bits/locale_conv.h:41,
+                 from /usr/local/Cellar/gcc/8.2.0/include/c++/8.2.0/locale:43,
+                 from /usr/local/Cellar/gcc/8.2.0/include/c++/8.2.0/iomanip:43,
+                 from /Users/lionel/Desktop/rlang/revdep/library.noindex/mrgsolve/Rcpp/include/RcppCommon.h:52,
+                 from /Users/lionel/Desktop/rlang/revdep/library.noindex/mrgsolve/RcppArmadillo/include/RcppArmadilloForward.h:26,
+                 from /Users/lionel/Desktop/rlang/revdep/library.noindex/mrgsolve/RcppArmadillo/include/RcppArmadillo.h:31,
+                 from ../inst/include/RcppInclude.h:19,
+                 from odeproblem.cpp:26:
+/usr/local/Cellar/gcc/8.2.0/include/c++/8.2.0/bits/unique_ptr.h:53:28: note: declared here
+   template<typename> class auto_ptr;
+                            ^~~~~~~~
+In file included from /Users/lionel/Desktop/rlang/revdep/library.noindex/mrgsolve/BH/include/boost/shared_ptr.hpp:17,
+                 from ../inst/include/datarecord.h:24,
+                 from ../inst/include/odeproblem.h:30,
+                 from odeproblem.cpp:27:
+/Users/lionel/Desktop/rlang/revdep/library.noindex/mrgsolve/BH/include/boost/smart_ptr/shared_ptr.hpp:567:34: warning: 'template<class> class std::auto_ptr' is deprecated [-Wdeprecated-declarations]
+     shared_ptr & operator=( std::auto_ptr<Y> & r )
+                                  ^~~~~~~~
+In file included from /usr/local/Cellar/gcc/8.2.0/include/c++/8.2.0/bits/locale_conv.h:41,
+                 from /usr/local/Cellar/gcc/8.2.0/include/c++/8.2.0/locale:43,
+                 from /usr/local/Cellar/gcc/8.2.0/include/c++/8.2.0/iomanip:43,
+                 from /Users/lionel/Desktop/rlang/revdep/library.noindex/mrgsolve/Rcpp/include/RcppCommon.h:52,
+                 from /Users/lionel/Desktop/rlang/revdep/library.noindex/mrgsolve/RcppArmadillo/include/RcppArmadilloForward.h:26,
+                 from /Users/lionel/Desktop/rlang/revdep/library.noindex/mrgsolve/RcppArmadillo/include/RcppArmadillo.h:31,
+                 from ../inst/include/RcppInclude.h:19,
+                 from odeproblem.cpp:26:
+/usr/local/Cellar/gcc/8.2.0/include/c++/8.2.0/bits/unique_ptr.h:53:28: note: declared here
+   template<typename> class auto_ptr;
+                            ^~~~~~~~
+In file included from /Users/lionel/Desktop/rlang/revdep/library.noindex/mrgsolve/BH/include/boost/shared_ptr.hpp:17,
+                 from ../inst/include/datarecord.h:24,
+                 from ../inst/include/odeproblem.h:30,
+                 from odeproblem.cpp:27:
+/Users/lionel/Desktop/rlang/revdep/library.noindex/mrgsolve/BH/include/boost/smart_ptr/shared_ptr.hpp:576:34: warning: 'template<class> class std::auto_ptr' is deprecated [-Wdeprecated-declarations]
+     shared_ptr & operator=( std::auto_ptr<Y> && r )
+                                  ^~~~~~~~
+In file included from /usr/local/Cellar/gcc/8.2.0/include/c++/8.2.0/bits/locale_conv.h:41,
+                 from /usr/local/Cellar/gcc/8.2.0/include/c++/8.2.0/locale:43,
+                 from /usr/local/Cellar/gcc/8.2.0/include/c++/8.2.0/iomanip:43,
+                 from /Users/lionel/Desktop/rlang/revdep/library.noindex/mrgsolve/Rcpp/include/RcppCommon.h:52,
+                 from /Users/lionel/Desktop/rlang/revdep/library.noindex/mrgsolve/RcppArmadillo/include/RcppArmadilloForward.h:26,
+                 from /Users/lionel/Desktop/rlang/revdep/library.noindex/mrgsolve/RcppArmadillo/include/RcppArmadillo.h:31,
+                 from ../inst/include/RcppInclude.h:19,
+                 from odeproblem.cpp:26:
+/usr/local/Cellar/gcc/8.2.0/include/c++/8.2.0/bits/unique_ptr.h:53:28: note: declared here
+   template<typename> class auto_ptr;
+                            ^~~~~~~~
+In file included from /Users/lionel/Desktop/rlang/revdep/library.noindex/mrgsolve/BH/include/boost/shared_ptr.hpp:17,
+                 from ../inst/include/datarecord.h:24,
+                 from ../inst/include/odeproblem.h:30,
+                 from odeproblem.cpp:27:
+/Users/lionel/Desktop/rlang/revdep/library.noindex/mrgsolve/BH/include/boost/smart_ptr/shared_ptr.hpp: In member function 'boost::shared_ptr<T>& boost::shared_ptr<T>::operator=(std::auto_ptr<_Up>&&)':
+/Users/lionel/Desktop/rlang/revdep/library.noindex/mrgsolve/BH/include/boost/smart_ptr/shared_ptr.hpp:578:38: warning: 'template<class> class std::auto_ptr' is deprecated [-Wdeprecated-declarations]
+         this_type( static_cast< std::auto_ptr<Y> && >( r ) ).swap( *this );
+                                      ^~~~~~~~
+In file included from /usr/local/Cellar/gcc/8.2.0/include/c++/8.2.0/bits/locale_conv.h:41,
+                 from /usr/local/Cellar/gcc/8.2.0/include/c++/8.2.0/locale:43,
+                 from /usr/local/Cellar/gcc/8.2.0/include/c++/8.2.0/iomanip:43,
+                 from /Users/lionel/Desktop/rlang/revdep/library.noindex/mrgsolve/Rcpp/include/RcppCommon.h:52,
+                 from /Users/lionel/Desktop/rlang/revdep/library.noindex/mrgsolve/RcppArmadillo/include/RcppArmadilloForward.h:26,
+                 from /Users/lionel/Desktop/rlang/revdep/library.noindex/mrgsolve/RcppArmadillo/include/RcppArmadillo.h:31,
+                 from ../inst/include/RcppInclude.h:19,
+                 from odeproblem.cpp:26:
+/usr/local/Cellar/gcc/8.2.0/include/c++/8.2.0/bits/unique_ptr.h:53:28: note: declared here
+   template<typename> class auto_ptr;
+                            ^~~~~~~~
 ERROR: compilation failed for package ‘mrgsolve’
 * removing ‘/Users/lionel/Desktop/rlang/revdep/checks.noindex/mrgsolve/old/mrgsolve.Rcheck/mrgsolve’
 
@@ -10128,8 +10744,8 @@ Version: 1.14.0
     recalibrate,MSnID: no visible global function definition for ‘density’
       (/Users/lionel/Desktop/rlang/revdep/checks.noindex/MSnID/new/MSnID.Rcheck/00_pkg_src/MSnID/R/MSnID-methods.R:529)
     Undefined global functions or variables:
-      accession DatabaseAccess DatabaseDescription DBseqLength density i
-      location mass median modification N name optim pepSeq quantile rnorm
+      DBseqLength DatabaseAccess DatabaseDescription N accession density i
+      location mass median modification name optim pepSeq quantile rnorm
       spectrumID
     Consider adding
       importFrom("stats", "density", "median", "optim", "quantile", "rnorm")
@@ -10148,27 +10764,27 @@ Version: 3.12.3
 *   checking R code for possible problems ... NOTE
     ```
     ...
-    SpectronauttoMSstatsFormat: no visible binding for global variable
-      ‘missing.col’
-      (/Users/lionel/Desktop/rlang/revdep/checks.noindex/MSstats/new/MSstats.Rcheck/00_pkg_src/MSstats/R/SpectronauttoMSstatsFormat.R:46-47)
-    SpectronauttoMSstatsFormat: no visible binding for global variable
-      ‘fea’
-      (/Users/lionel/Desktop/rlang/revdep/checks.noindex/MSstats/new/MSstats.Rcheck/00_pkg_src/MSstats/R/SpectronauttoMSstatsFormat.R:188)
-    SpectronauttoMSstatsFormat: no visible binding for global variable
-      ‘Intensity’
-      (/Users/lionel/Desktop/rlang/revdep/checks.noindex/MSstats/new/MSstats.Rcheck/00_pkg_src/MSstats/R/SpectronauttoMSstatsFormat.R:188)
-    SpectronauttoMSstatsFormat: no visible binding for global variable
-      ‘PeptideSequence’
-      (/Users/lionel/Desktop/rlang/revdep/checks.noindex/MSstats/new/MSstats.Rcheck/00_pkg_src/MSstats/R/SpectronauttoMSstatsFormat.R:214)
-    SpectronauttoMSstatsFormat: no visible binding for global variable
-      ‘ProteinName’
-      (/Users/lionel/Desktop/rlang/revdep/checks.noindex/MSstats/new/MSstats.Rcheck/00_pkg_src/MSstats/R/SpectronauttoMSstatsFormat.R:214)
+      (/Users/lionel/Desktop/rlang/revdep/checks.noindex/MSstats/new/MSstats.Rcheck/00_pkg_src/MSstats/R/plot_quantlim.R:194-197)
+    plot_quantlim: no visible binding for global variable ‘ymax’
+      (/Users/lionel/Desktop/rlang/revdep/checks.noindex/MSstats/new/MSstats.Rcheck/00_pkg_src/MSstats/R/plot_quantlim.R:194-197)
+    plot_quantlim: no visible binding for global variable ‘x’
+      (/Users/lionel/Desktop/rlang/revdep/checks.noindex/MSstats/new/MSstats.Rcheck/00_pkg_src/MSstats/R/plot_quantlim.R:218-221)
+    plot_quantlim: no visible binding for global variable ‘y’
+      (/Users/lionel/Desktop/rlang/revdep/checks.noindex/MSstats/new/MSstats.Rcheck/00_pkg_src/MSstats/R/plot_quantlim.R:218-221)
+    plot_quantlim: no visible binding for global variable ‘shape’
+      (/Users/lionel/Desktop/rlang/revdep/checks.noindex/MSstats/new/MSstats.Rcheck/00_pkg_src/MSstats/R/plot_quantlim.R:218-221)
+    plot_quantlim: no visible binding for global variable ‘x’
+      (/Users/lionel/Desktop/rlang/revdep/checks.noindex/MSstats/new/MSstats.Rcheck/00_pkg_src/MSstats/R/plot_quantlim.R:223-226)
+    plot_quantlim: no visible binding for global variable ‘y’
+      (/Users/lionel/Desktop/rlang/revdep/checks.noindex/MSstats/new/MSstats.Rcheck/00_pkg_src/MSstats/R/plot_quantlim.R:223-226)
+    plot_quantlim: no visible binding for global variable ‘shape’
+      (/Users/lionel/Desktop/rlang/revdep/checks.noindex/MSstats/new/MSstats.Rcheck/00_pkg_src/MSstats/R/plot_quantlim.R:223-226)
     Undefined global functions or variables:
-      ABUNDANCE aggr_Fragment_Annotation aggr_Peak_Area analysis ciw
-      datafeature fea FEATURE FRACTION Intensity label LABEL logFC Mean
-      missing.col Name ncount ount PeptideSequence Protein Protein_number
-      ProteinName residual RUN Selected_fragments Selected_peptides shape
-      Train_size weight x y ymax ymin
+      ABUNDANCE FEATURE FRACTION Intensity LABEL Mean Name PeptideSequence
+      Protein ProteinName Protein_number RUN Selected_fragments
+      Selected_peptides Train_size aggr_Fragment_Annotation aggr_Peak_Area
+      analysis ciw datafeature fea label logFC missing.col ncount ount
+      residual shape weight x y ymax ymin
     ```
 
 # MSstatsQC
@@ -10213,78 +10829,16 @@ Version: 1.2.0
 
 ## In both
 
-*   checking examples ... ERROR
-    ```
-    ...
-    + })
-    > 
-    > # New individual to estimate transition probabilities for
-    > newdata <- data.frame(age="20-40", dissub="AML")
-    > 
-    > # Estimate length of stay in each state after a year, given starting in state 1
-    > length_of_stay(models, 
-    +                newdata=newdata,
-    +                tmat, times=365.25,
-    +                start=1)
-    
-     *** caught illegal operation ***
-    address 0x10a08c198, cause 'illegal opcode'
-    
-    Traceback:
-     1: desCpp(transitions, trans_mat, newdata_mat, start_times, start_states -     1, tcovs)
-     2: data.table::as.data.table(desCpp(transitions, trans_mat, newdata_mat,     start_times, start_states - 1, tcovs))
-     3: run_sim(transition_list, attr_mat, trans_mat, tcovs, start_times,     start_states)
-     4: state_occupancy(models, trans_mat, newdata_ext, tcovs, initial_times,     start_states, ci, M, agelimit, agecol, agescale)
-     5: length_of_stay(models, newdata = newdata, tmat, times = 365.25,     start = 1)
-    An irrecoverable exception occurred. R is aborting now ...
-    ```
-
-*   checking tests ...
-    ```
-     ERROR
-    Running the tests in ‘tests/testthat.R’ failed.
-    Last 13 lines of output:
-      26: tryCatchList(expr, classes, parentenv, handlers)
-      27: tryCatch(withCallingHandlers({    eval(code, test_env)    if (!handled && !is.null(test)) {        skip_empty()    }}, expectation = handle_expectation, skip = handle_skip, warning = handle_warning,     message = handle_message, error = handle_error), error = handle_fatal,     skip = function(e) {    })
-      28: test_code(NULL, exprs, env)
-      29: source_file(path, new.env(parent = env), chdir = TRUE, wrap = wrap)
-      30: force(code)
-      31: with_reporter(reporter = reporter, start_end_reporter = start_end_reporter,     {        lister$start_file(basename(path))        source_file(path, new.env(parent = env), chdir = TRUE,             wrap = wrap)        end_context()    })
-      32: FUN(X[[i]], ...)
-      33: lapply(paths, test_file, env = env, reporter = current_reporter,     start_end_reporter = FALSE, load_helpers = FALSE, wrap = wrap)
-      34: force(code)
-      35: with_reporter(reporter = current_reporter, results <- lapply(paths,     test_file, env = env, reporter = current_reporter, start_end_reporter = FALSE,     load_helpers = FALSE, wrap = wrap))
-      36: test_files(paths, reporter = reporter, env = env, stop_on_failure = stop_on_failure,     stop_on_warning = stop_on_warning, wrap = wrap)
-      37: test_dir(path = test_path, reporter = reporter, env = env, filter = filter,     ..., stop_on_failure = stop_on_failure, stop_on_warning = stop_on_warning,     wrap = wrap)
-      38: test_package_dir(package = package, test_path = test_path, filter = filter,     reporter = reporter, ..., stop_on_failure = stop_on_failure,     stop_on_warning = stop_on_warning, wrap = wrap)
-      39: test_check("multistateutils")
-      An irrecoverable exception occurred. R is aborting now ...
-    ```
-
 *   checking re-building of vignette outputs ... WARNING
     ```
-    ...
-    11: timing_fn(handle(ev <- withCallingHandlers(withVisible(eval(expr,     envir, enclos)), warning = wHandler, error = eHandler, message = mHandler)))
-    12: evaluate_call(expr, parsed$src[[i]], envir = envir, enclos = enclos,     debug = debug, last = i == length(out), use_try = stop_on_error !=         2L, keep_warning = keep_warning, keep_message = keep_message,     output_handler = output_handler, include_timing = include_timing)
-    13: evaluate::evaluate(...)
-    14: evaluate(code, envir = env, new_device = FALSE, keep_warning = !isFALSE(options$warning),     keep_message = !isFALSE(options$message), stop_on_error = if (options$error &&         options$include) 0L else 2L, output_handler = knit_handlers(options$render,         options))
-    15: in_dir(input_dir(), evaluate(code, envir = env, new_device = FALSE,     keep_warning = !isFALSE(options$warning), keep_message = !isFALSE(options$message),     stop_on_error = if (options$error && options$include) 0L else 2L,     output_handler = knit_handlers(options$render, options)))
-    16: block_exec(params)
-    17: call_block(x)
-    18: process_group.block(group)
-    19: process_group(group)
-    20: withCallingHandlers(if (tangle) process_tangle(group) else process_group(group),     error = function(e) {        setwd(wd)        cat(res, sep = "\n", file = output %n% "")        message("Quitting from lines ", paste(current_lines(i),             collapse = "-"), " (", knit_concord$get("infile"),             ") ")    })
-    21: process_file(text, output)
-    22: knitr::knit(knit_input, knit_output, envir = envir, quiet = quiet,     encoding = encoding)
-    23: rmarkdown::render(file, encoding = encoding, quiet = quiet, envir = globalenv())
-    24: vweave_rmarkdown(...)
-    25: engine$weave(file, quiet = quiet, encoding = enc)
-    26: doTryCatch(return(expr), name, parentenv, handler)
-    27: tryCatchOne(expr, names, parentenv, handlers[[1L]])
-    28: tryCatchList(expr, classes, parentenv, handlers)
-    29: tryCatch({    engine$weave(file, quiet = quiet, encoding = enc)    setwd(startdir)    find_vignette_product(name, by = "weave", engine = engine)}, error = function(e) {    stop(gettextf("processing vignette '%s' failed with diagnostics:\n%s",         file, conditionMessage(e)), domain = NA, call. = FALSE)})
-    30: buildVignettes(dir = "/Users/lionel/Desktop/rlang/revdep/checks.noindex/multistateutils/new/multistateutils.Rcheck/vign_test/multistateutils")
-    An irrecoverable exception occurred. R is aborting now ...
+    Error in re-building vignettes:
+      ...
+    pandoc-citeproc: when expecting a product (:*:), encountered Object instead
+    Error running filter /usr/local/bin/pandoc-citeproc:
+    Filter returned error status 1
+    Error: processing vignette 'Examples.Rmd' failed with diagnostics:
+    pandoc document conversion failed with error 83
+    Execution halted
     ```
 
 *   checking dependencies in R code ... NOTE
@@ -10304,8 +10858,8 @@ Version: 1.4.0
     ```
       installed size is 12.0Mb
       sub-directories of 1Mb or more:
-        doc   1.3Mb
         R    10.1Mb
+        doc   1.3Mb
     ```
 
 *   checking dependencies in R code ... NOTE
@@ -10322,7 +10876,7 @@ Version: 0.8.0
 
 *   checking installed package size ... NOTE
     ```
-      installed size is  5.7Mb
+      installed size is  5.6Mb
       sub-directories of 1Mb or more:
         data   2.0Mb
         doc    2.4Mb
@@ -10414,7 +10968,7 @@ Version: 1.2.0
     rcxgraph_toRCX: no visible binding for global variable ‘po’
       (/Users/lionel/Desktop/rlang/revdep/checks.noindex/ndexr/new/ndexr.Rcheck/00_pkg_src/ndexr/R/ndex_RCXgraph.r:294)
     Undefined global functions or variables:
-      E E<- packageVersion po tail V V<-
+      E E<- V V<- packageVersion po tail
     Consider adding
       importFrom("utils", "packageVersion", "tail")
     to your NAMESPACE file.
@@ -10480,7 +11034,7 @@ Version: 0.99.2
     ```
       installed size is  8.6Mb
       sub-directories of 1Mb or more:
-        data   8.0Mb
+        data   8.1Mb
     ```
 
 # nlmixr
@@ -10491,16 +11045,16 @@ Version: 1.0.0-7
 
 *   checking installed package size ... NOTE
     ```
-      installed size is  5.9Mb
+      installed size is  6.0Mb
       sub-directories of 1Mb or more:
-        libs   1.7Mb
-        R      3.0Mb
+        R      3.1Mb
+        libs   1.8Mb
     ```
 
 *   checking dependencies in R code ... NOTE
     ```
     Namespaces in Imports field not imported from:
-      ‘numDeriv’ ‘PreciseSums’
+      ‘PreciseSums’ ‘numDeriv’
       All declared Imports should be used.
     ```
 
@@ -10613,8 +11167,8 @@ Version: 0.1.0
 *   checking dependencies in R code ... NOTE
     ```
     Namespaces in Imports field not imported from:
-      ‘choroplethr’ ‘choroplethrMaps’ ‘data.table’ ‘forcats’
-      ‘hurricaneexposure’ ‘plyr’ ‘RColorBrewer’ ‘XML’
+      ‘RColorBrewer’ ‘XML’ ‘choroplethr’ ‘choroplethrMaps’ ‘data.table’
+      ‘forcats’ ‘hurricaneexposure’ ‘plyr’
       All declared Imports should be used.
     ```
 
@@ -10741,6 +11295,34 @@ Version: 2.7.8
       All declared Imports should be used.
     ```
 
+# ompr
+
+Version: 0.8.0
+
+## In both
+
+*   checking tests ...
+    ```
+     ERROR
+    Running the tests in ‘tests/testthat.R’ failed.
+    Last 13 lines of output:
+      31: tryCatchList(expr, classes, parentenv, handlers)
+      32: tryCatch(withCallingHandlers({    eval(code, test_env)    if (!handled && !is.null(test)) {        skip_empty()    }}, expectation = handle_expectation, skip = handle_skip, warning = handle_warning,     message = handle_message, error = handle_error), error = handle_fatal,     skip = function(e) {    })
+      33: test_code(NULL, exprs, env)
+      34: source_file(path, new.env(parent = env), chdir = TRUE, wrap = wrap)
+      35: force(code)
+      36: with_reporter(reporter = reporter, start_end_reporter = start_end_reporter,     {        lister$start_file(basename(path))        source_file(path, new.env(parent = env), chdir = TRUE,             wrap = wrap)        end_context()    })
+      37: FUN(X[[i]], ...)
+      38: lapply(paths, test_file, env = env, reporter = current_reporter,     start_end_reporter = FALSE, load_helpers = FALSE, wrap = wrap)
+      39: force(code)
+      40: with_reporter(reporter = current_reporter, results <- lapply(paths,     test_file, env = env, reporter = current_reporter, start_end_reporter = FALSE,     load_helpers = FALSE, wrap = wrap))
+      41: test_files(paths, reporter = reporter, env = env, stop_on_failure = stop_on_failure,     stop_on_warning = stop_on_warning, wrap = wrap)
+      42: test_dir(path = test_path, reporter = reporter, env = env, filter = filter,     ..., stop_on_failure = stop_on_failure, stop_on_warning = stop_on_warning,     wrap = wrap)
+      43: test_package_dir(package = package, test_path = test_path, filter = filter,     reporter = reporter, ..., stop_on_failure = stop_on_failure,     stop_on_warning = stop_on_warning, wrap = wrap)
+      44: test_check("ompr")
+      An irrecoverable exception occurred. R is aborting now ...
+    ```
+
 # OncoSimulR
 
 Version: 2.10.0
@@ -10752,10 +11334,10 @@ Version: 2.10.0
 
 *   checking installed package size ... NOTE
     ```
-      installed size is  8.0Mb
+      installed size is  8.2Mb
       sub-directories of 1Mb or more:
         doc    5.4Mb
-        libs   1.2Mb
+        libs   1.4Mb
     ```
 
 # openair
@@ -10801,8 +11383,8 @@ Version: 1.2.0
     ```
       installed size is 15.5Mb
       sub-directories of 1Mb or more:
+        R         4.1Mb
         extdata  10.2Mb
-        R         4.2Mb
     ```
 
 # openVA
@@ -10885,34 +11467,6 @@ Version: 2.0.2
 
 Version: 1.8.1
 
-## Newly fixed
-
-*   checking examples ... ERROR
-    ```
-    ...
-       [4]    chr20 44626456-44626599      - |  501393      <NA>         4    ADA
-       [5]    chr20 44625569-44625684      - |  501390      <NA>         5    ADA
-       ...      ...               ...    ... .     ...       ...       ...    ...
-       [8]    chr20 44622829-44622930      - |  501386      <NA>         8    ADA
-       [9]    chr20 44622588-44622652      - |  501385      <NA>         9    ADA
-      [10]    chr20 44621018-44621147      - |  501384      <NA>        10    ADA
-      [11]    chr20 44620299-44620401      - |  501382      <NA>        11    ADA
-      [12]    chr20 44619522-44619847      - |  501379      <NA>        12    ADA
-    
-    ...
-    <1 more element>
-    -------
-    seqinfo: 455 sequences (1 circular) from hg38 genome
-    > 
-    > ## intronsByTranscript
-    > intronsByTranscript(src, filter = SymbolFilter("ADA"))
-    Warning: Closing open result set, pending rows
-    Error in result_fetch(res@ptr, n = n) : Invalid result set
-    Calls: intronsByTranscript ... tryCatchList -> dbFetch -> dbFetch -> .local -> result_fetch
-    Warning: Expired, result set already closed
-    Execution halted
-    ```
-
 ## In both
 
 *   checking tests ...
@@ -10974,7 +11528,7 @@ Version: 1.8.1
       ‘OrgDb’
       (/Users/lionel/Desktop/rlang/revdep/checks.noindex/Organism.dplyr/new/Organism.dplyr.Rcheck/00_pkg_src/Organism.dplyr/R/src.R:434)
     Undefined global functions or variables:
-      . name organism OrgDb
+      . OrgDb name organism
     ```
 
 # PakPC2017
@@ -10992,48 +11546,6 @@ Version: 1.0.0
 # paletteer
 
 Version: 0.1.0
-
-## Newly broken
-
-*   checking examples ... ERROR
-    ```
-    Running examples in ‘paletteer-Ex.R’ failed
-    The error most likely occurred in:
-    
-    > ### Name: paletteer_d
-    > ### Title: Get discrete palette by package and name
-    > ### Aliases: paletteer_d
-    > 
-    > ### ** Examples
-    > 
-    > paletteer_d("nord", "frost")
-    Error in match.arg(package, unique(paletteer::palettes_d_names$package)) : 
-      'arg' should be one of “awtools”, “dichromat”, “dutchmasters”, “ggsci”, “ggpomological”, “ggthemes”, “ghibli”, “grDevices”, “jcolors”, “LaCroixColoR”, “NineteenEightyR”, “nord”, “ochRe”, “palettetown”, “pals”, “Polychrome”, “quickpalette”, “rcartocolor”, “RColorBrewer”, “Redmonder”, “RSkittleBrewer”, “wesanderson”, “yarrr”
-    Calls: paletteer_d -> match.arg
-    Execution halted
-    ```
-
-*   checking tests ...
-    ```
-     ERROR
-    Running the tests in ‘tests/testthat.R’ failed.
-    Last 13 lines of output:
-      ══ testthat results  ═══════════════════════════════════════════════════════════
-      OK: 50 SKIPPED: 0 FAILED: 14
-      1. Error: paletteer_c return correct number of colors (@test-paletteer_c.R#4) 
-      2. Error: paletteer_c returns characters (@test-paletteer_c.R#9) 
-      3. Error: paletteer_c works when package and name are provided as symbols (@test-paletteer_c.R#17) 
-      4. Error: direction works correctly in paletteer_c (@test-paletteer_c.R#23) 
-      5. Error: paletteer_d return correct number of colors (@test-paletteer_d.R#4) 
-      6. Error: paletteer_d returns characters (@test-paletteer_d.R#9) 
-      7. Error: paletteer_d returns something when n is unspecified (@test-paletteer_d.R#13) 
-      8. Error: paletteer_d return correct amount when type is set to continuous (@test-paletteer_d.R#21) 
-      9. Error: paletteer_d works when package and name are provided as symbols (@test-paletteer_d.R#29) 
-      1. ...
-      
-      Error: testthat unit tests failed
-      Execution halted
-    ```
 
 ## In both
 
@@ -11143,6 +11655,34 @@ Version: 2.6.0
     manual.
     ```
 
+# pccc
+
+Version: 1.0.2
+
+## In both
+
+*   checking tests ...
+    ```
+     ERROR
+    Running the tests in ‘tests/testthat.R’ failed.
+    Last 13 lines of output:
+      30: tryCatchList(expr, classes, parentenv, handlers)
+      31: tryCatch(withCallingHandlers({    eval(code, test_env)    if (!handled && !is.null(test)) {        skip_empty()    }}, expectation = handle_expectation, skip = handle_skip, warning = handle_warning,     message = handle_message, error = handle_error), error = handle_fatal,     skip = function(e) {    })
+      32: test_code(NULL, exprs, env)
+      33: source_file(path, new.env(parent = env), chdir = TRUE, wrap = wrap)
+      34: force(code)
+      35: with_reporter(reporter = reporter, start_end_reporter = start_end_reporter,     {        lister$start_file(basename(path))        source_file(path, new.env(parent = env), chdir = TRUE,             wrap = wrap)        end_context()    })
+      36: FUN(X[[i]], ...)
+      37: lapply(paths, test_file, env = env, reporter = current_reporter,     start_end_reporter = FALSE, load_helpers = FALSE, wrap = wrap)
+      38: force(code)
+      39: with_reporter(reporter = current_reporter, results <- lapply(paths,     test_file, env = env, reporter = current_reporter, start_end_reporter = FALSE,     load_helpers = FALSE, wrap = wrap))
+      40: test_files(paths, reporter = reporter, env = env, stop_on_failure = stop_on_failure,     stop_on_warning = stop_on_warning, wrap = wrap)
+      41: test_dir(path = test_path, reporter = reporter, env = env, filter = filter,     ..., stop_on_failure = stop_on_failure, stop_on_warning = stop_on_warning,     wrap = wrap)
+      42: test_package_dir(package = package, test_path = test_path, filter = filter,     reporter = reporter, ..., stop_on_failure = stop_on_failure,     stop_on_warning = stop_on_warning, wrap = wrap)
+      43: test_check("pccc")
+      An irrecoverable exception occurred. R is aborting now ...
+    ```
+
 # pcr
 
 Version: 1.1.2
@@ -11221,6 +11761,15 @@ Version: 0.7.0
 
 Version: 1.0.0
 
+## Newly broken
+
+*   checking installed package size ... NOTE
+    ```
+      installed size is  5.2Mb
+      sub-directories of 1Mb or more:
+        data   3.1Mb
+    ```
+
 ## In both
 
 *   checking re-building of vignette outputs ... WARNING
@@ -11241,13 +11790,6 @@ Version: 1.0.0
     Error: processing vignette 'perturbatr.Rmd' failed with diagnostics:
     pandoc document conversion failed with error 83
     Execution halted
-    ```
-
-*   checking installed package size ... NOTE
-    ```
-      installed size is  5.3Mb
-      sub-directories of 1Mb or more:
-        data   3.1Mb
     ```
 
 # petro.One
@@ -11382,6 +11924,16 @@ Version: 1.0.1
 
 ## In both
 
+*   checking tests ...
+    ```
+     ERROR
+    Running the tests in ‘tests/test-all.R’ failed.
+    Complete output:
+      > library(physiology)
+      > library(testthat)
+      > test_check("physiology")
+    ```
+
 *   checking re-building of vignette outputs ... WARNING
     ```
     Error in re-building vignettes:
@@ -11447,9 +11999,9 @@ Version: 0.4.0
     ```
       installed size is  7.6Mb
       sub-directories of 1Mb or more:
+        R      3.0Mb
         data   2.0Mb
         doc    2.4Mb
-        R      3.0Mb
     ```
 
 # pixiedust
@@ -11461,17 +12013,6 @@ Version: 0.8.5
 *   checking Rd cross-references ... NOTE
     ```
     Package unavailable to check Rd xrefs: ‘Hmisc’
-    ```
-
-# pkgdown
-
-Version: 1.1.0
-
-## In both
-
-*   checking package dependencies ... NOTE
-    ```
-    Package suggested but not available for checking: ‘magick’
     ```
 
 # pkggraph
@@ -11518,10 +12059,10 @@ Version: 4.8.0
 
 *   checking installed package size ... NOTE
     ```
-      installed size is  7.1Mb
+      installed size is  7.0Mb
       sub-directories of 1Mb or more:
-        htmlwidgets   3.1Mb
         R             2.3Mb
+        htmlwidgets   3.1Mb
     ```
 
 # plotrr
@@ -11541,34 +12082,6 @@ Version: 1.0.0
 
 Version: 1.0.3
 
-## Newly broken
-
-*   checking examples ... ERROR
-    ```
-    ...
-    > ### Aliases: chop_by_introns chop_by_gaps
-    > 
-    > ### ** Examples
-    > 
-    > if (require(pasillaBamSubset)) {
-    +    bamfile <- untreated1_chr4()
-    +    # define a region of interest
-    +    roi <- data.frame(seqnames = "chr4", start = 5e5, end = 7e5) %>%
-    +             as_granges()
-    +    # results in a grouped ranges object
-    +    rng <- read_bam(bamfile) %>% 
-    +             filter_by_overlaps(roi) %>%
-    +             chop_by_gaps()
-    +    # to find ranges that have gaps use filter with `n()`
-    +    rng %>% filter(n() > 2)
-    +   
-    + }
-    Loading required package: pasillaBamSubset
-    Error in FUN(X[[i]], ...) : object '"gaps"' not found
-    Calls: %>% ... new_grouped_gr -> make_group_inx -> as -> .class1 -> lapply -> FUN
-    Execution halted
-    ```
-
 ## In both
 
 *   checking tests ...
@@ -11576,18 +12089,18 @@ Version: 1.0.3
      ERROR
     Running the tests in ‘tests/testthat.R’ failed.
     Last 13 lines of output:
+             e$handled <- TRUE
+             test_error <<- e
          }, "could not find function \"WIGFile\"", quote(WIGFile(test_wig))) at testthat/test-io-wig.R:24
       2: eval(code, test_env)
       
       ══ testthat results  ═══════════════════════════════════════════════════════════
-      OK: 267 SKIPPED: 0 FAILED: 7
-      1. Error: grouping allows character names (@test-groups.R#22) 
-      2. Error: overlaps works as expected (@test-io-bam.R#30) 
-      3. Error: read_bed returns correct GRanges (@test-io-bed.R#67) 
-      4. Error: read_bed_graph returns correct GRanges (@test-io-bedGraph.R#39) 
-      5. Error: reading/ writing bigwig files returns correct GRanges (@test-io-bw.R#19) 
-      6. Error: reading GFF files returns correct GRanges (@test-io-gff.R#87) 
-      7. Error: reading WIG files (@test-io-wig.R#24) 
+      OK: 272 SKIPPED: 0 FAILED: 5
+      1. Error: read_bed returns correct GRanges (@test-io-bed.R#67) 
+      2. Error: read_bed_graph returns correct GRanges (@test-io-bedGraph.R#39) 
+      3. Error: reading/ writing bigwig files returns correct GRanges (@test-io-bw.R#19) 
+      4. Error: reading GFF files returns correct GRanges (@test-io-gff.R#87) 
+      5. Error: reading WIG files (@test-io-wig.R#24) 
       
       Error: testthat unit tests failed
       Execution halted
@@ -11659,40 +12172,40 @@ Version: 2.8.1
 
 ## In both
 
-*   checking whether package ‘poppr’ can be installed ... ERROR
+*   checking re-building of vignette outputs ... WARNING
     ```
-    Installation failed.
-    See ‘/Users/lionel/Desktop/rlang/revdep/checks.noindex/poppr/new/poppr.Rcheck/00install.out’ for details.
+    ...
+       > tutorials/doc/questions: 'adegenetWeb()' 
+       > bug reports/feature requests: adegenetIssues()
+    
+    
+    This is poppr version 2.8.1. To get started, type package?poppr
+    OMP parallel support: available
+    Loading required package: ape
+    
+    Attaching package: 'phangorn'
+    
+    The following object is masked from 'package:adegenet':
+    
+        AICc
+    
+    Error : cannot evaluate distance function, it might be missing.
+    pandoc-citeproc: when expecting a product (:*:), encountered Object instead
+    Error running filter /usr/local/bin/pandoc-citeproc:
+    Filter returned error status 1
+    Error: processing vignette 'mlg.Rmd' failed with diagnostics:
+    pandoc document conversion failed with error 83
+    Execution halted
     ```
 
-## Installation
+*   checking installed package size ... NOTE
+    ```
+      installed size is  5.6Mb
+      sub-directories of 1Mb or more:
+        R     3.1Mb
+        doc   1.9Mb
+    ```
 
-### Devel
-
-```
-* installing *source* package ‘poppr’ ...
-** package ‘poppr’ successfully unpacked and MD5 sums checked
-** libs
-clang -I"/Library/Frameworks/R.framework/Resources/include" -DNDEBUG   -I/usr/local/include  -fopenmp -fPIC   -Wall -pedantic -O0 -c adjust_missing.c -o adjust_missing.o
-clang: error: unsupported option '-fopenmp'
-make: *** [adjust_missing.o] Error 1
-ERROR: compilation failed for package ‘poppr’
-* removing ‘/Users/lionel/Desktop/rlang/revdep/checks.noindex/poppr/new/poppr.Rcheck/poppr’
-
-```
-### CRAN
-
-```
-* installing *source* package ‘poppr’ ...
-** package ‘poppr’ successfully unpacked and MD5 sums checked
-** libs
-clang -I"/Library/Frameworks/R.framework/Resources/include" -DNDEBUG   -I/usr/local/include  -fopenmp -fPIC   -Wall -pedantic -O0 -c adjust_missing.c -o adjust_missing.o
-clang: error: unsupported option '-fopenmp'
-make: *** [adjust_missing.o] Error 1
-ERROR: compilation failed for package ‘poppr’
-* removing ‘/Users/lionel/Desktop/rlang/revdep/checks.noindex/poppr/old/poppr.Rcheck/poppr’
-
-```
 # powerlmm
 
 Version: 0.4.0
@@ -11741,38 +12254,6 @@ Version: 0.1.1
     Error: processing vignette 'PPforest-vignette.Rmd' failed with diagnostics:
     pandoc document conversion failed with error 83
     Execution halted
-    ```
-
-# princurve
-
-Version: 2.1.2.1
-
-## In both
-
-*   checking re-building of vignette outputs ... WARNING
-    ```
-    Error in re-building vignettes:
-      ...
-    
-    Attaching package: 'dplyr'
-    
-    The following objects are masked from 'package:stats':
-    
-        filter, lag
-    
-    The following objects are masked from 'package:base':
-    
-        intersect, setdiff, setequal, union
-    
-    Quitting from lines 23-54 (intro.Rmd) 
-    Error: processing vignette 'intro.Rmd' failed with diagnostics:
-    there is no package called 'magick'
-    Execution halted
-    ```
-
-*   checking package dependencies ... NOTE
-    ```
-    Package suggested but not available for checking: ‘magick’
     ```
 
 # prisonbrief
@@ -11976,16 +12457,16 @@ Version: 1.20.2
     ```
       installed size is 15.1Mb
       sub-directories of 1Mb or more:
+        R     3.1Mb
         doc  10.6Mb
-        R     3.0Mb
     ```
 
 *   checking dependencies in R code ... NOTE
     ```
     Unexported objects imported by ':::' calls:
-      ‘caret:::predict.plsda’ ‘MLInterfaces:::.macroF1’
-      ‘MLInterfaces:::.precision’ ‘MLInterfaces:::.recall’
-      ‘MLInterfaces:::es2df’
+      ‘MLInterfaces:::.macroF1’ ‘MLInterfaces:::.precision’
+      ‘MLInterfaces:::.recall’ ‘MLInterfaces:::es2df’
+      ‘caret:::predict.plsda’
       See the note in ?`:::` about the use of this operator.
     There are ::: calls to the package's namespace in its code. A package
       almost never needs to use ::: for its own objects:
@@ -12078,6 +12559,41 @@ Version: 1.0.1
     Package unavailable to check Rd xrefs: ‘purrr’
     ```
 
+# prophet
+
+Version: 0.3.0.1
+
+## In both
+
+*   R CMD check timed out
+    
+
+*   checking whether the namespace can be loaded with stated dependencies ... NOTE
+    ```
+    ...
+    /Users/lionel/Desktop/rlang/revdep/library.noindex/prophet/RcppEigen/include/Eigen/src/Core/Matrix.h:225:24:   required from 'Eigen::Matrix<_Scalar, _Rows, _Cols, _Options, _MaxRows, _MaxCols>& Eigen::Matrix<_Scalar, _Rows, _Cols, _Options, _MaxRows, _MaxCols>::operator=(const Eigen::DenseBase<OtherDerived>&) [with OtherDerived = Eigen::Product<Eigen::Transpose<Eigen::Map<Eigen::Matrix<double, -1, -1>, 0, Eigen::Stride<0, 0> > >, Eigen::Matrix<double, -1, -1>, 0>; _Scalar = double; int _Rows = -1; int _Cols = -1; int _Options = 0; int _MaxRows = -1; int _MaxCols = -1]'
+    /Users/lionel/Desktop/rlang/revdep/library.noindex/prophet/StanHeaders/include/stan/math/rev/mat/fun/multiply.hpp:280:10:   required from 'void stan::math::multiply_mat_vari<double, Ra, Ca, Tb, Cb>::chain() [with int Ra = -1; int Ca = -1; Tb = stan::math::var; int Cb = 1]'
+    /Users/lionel/Desktop/rlang/revdep/library.noindex/prophet/StanHeaders/include/stan/math/rev/mat/fun/multiply.hpp:272:16:   required from here
+    /Users/lionel/Desktop/rlang/revdep/library.noindex/prophet/RcppEigen/include/Eigen/src/Core/DenseCoeffsBase.h:650:34: warning: ignoring attributes on template argument 'Eigen::internal::packet_traits<double>::type' {aka '__vector(2) double'} [-Wignored-attributes]
+       return internal::first_aligned<int(unpacket_traits<DefaultPacketType>::alignment),Derived>(m);
+                                      ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    In file included from /Users/lionel/Desktop/rlang/revdep/library.noindex/prophet/StanHeaders/include/stan/math/rev/core.hpp:44,
+                     from /Users/lionel/Desktop/rlang/revdep/library.noindex/prophet/StanHeaders/include/stan/math/rev/mat.hpp:4,
+                     from /Users/lionel/Desktop/rlang/revdep/library.noindex/prophet/StanHeaders/include/stan/math.hpp:4,
+                     from /Users/lionel/Desktop/rlang/revdep/library.noindex/prophet/StanHeaders/include/src/stan/model/model_header.hpp:4,
+                     from file37c227f32565.cpp:8:
+    /Users/lionel/Desktop/rlang/revdep/library.noindex/prophet/StanHeaders/include/stan/math/rev/core/set_zero_all_adjoints.hpp: At global scope:
+    /Users/lionel/Desktop/rlang/revdep/library.noindex/prophet/StanHeaders/include/stan/math/rev/core/set_zero_all_adjoints.hpp:14:13: warning: 'void stan::math::set_zero_all_adjoints()' defined but not used [-Wunused-function]
+     static void set_zero_all_adjoints() {
+                 ^~~~~~~~~~~~~~~~~~~~~
+    
+    A namespace must be able to be loaded with just the base namespace
+    loaded: otherwise if the namespace gets loaded by a saved object,
+    the session will be unable to start.
+    
+    Probably some imports need to be declared in the NAMESPACE file.
+    ```
+
 # proteoQC
 
 Version: 1.16.0
@@ -12126,10 +12642,10 @@ Version: 1.16.0
     qcHist2: no visible binding for global variable ‘fractile’
       (/Users/lionel/Desktop/rlang/revdep/checks.noindex/proteoQC/new/proteoQC.Rcheck/00_pkg_src/proteoQC/R/visualization.R:389-391)
     Undefined global functions or variables:
-      ..count.. bioRep curenv delta error exprs fractile fraction grid.draw
-      Intensity iTRAQ4 iTRAQ8 label MS1QC MS2QC peplength peptide_summary
-      precursorCharge quantify ratio readMgfData se Tag techRep TMT10 TMT6
-      V1 V2 V3 V4 V5 val x y
+      ..count.. Intensity MS1QC MS2QC TMT10 TMT6 Tag V1 V2 V3 V4 V5 bioRep
+      curenv delta error exprs fractile fraction grid.draw iTRAQ4 iTRAQ8
+      label peplength peptide_summary precursorCharge quantify ratio
+      readMgfData se techRep val x y
     ```
 
 # proustr
@@ -12215,8 +12731,8 @@ Version: 1.6.2
     ```
       installed size is  9.8Mb
       sub-directories of 1Mb or more:
-        doc   5.6Mb
         R     3.0Mb
+        doc   5.6Mb
     ```
 
 *   checking compiled code ... NOTE
@@ -12225,6 +12741,8 @@ Version: 1.6.2
       Found ‘___stdoutp’, possibly from ‘stdout’ (C)
         Object: ‘psiFastCalc.o’
       Found ‘_printf’, possibly from ‘printf’ (C)
+        Object: ‘psiFastCalc.o’
+      Found ‘_putchar’, possibly from ‘putchar’ (C)
         Object: ‘psiFastCalc.o’
     
     Compiled code should not call entry points which might terminate R
@@ -12243,9 +12761,9 @@ Version: 0.2.0
 
 *   checking installed package size ... NOTE
     ```
-      installed size is  5.2Mb
+      installed size is  5.3Mb
       sub-directories of 1Mb or more:
-        data   5.1Mb
+        data   5.2Mb
     ```
 
 *   checking data for non-ASCII characters ... NOTE
@@ -12336,6 +12854,34 @@ Version: 0.2.5
       
       Error: testthat unit tests failed
       Execution halted
+    ```
+
+# purrrlyr
+
+Version: 0.0.3
+
+## In both
+
+*   checking tests ...
+    ```
+     ERROR
+    Running the tests in ‘tests/testthat.R’ failed.
+    Last 13 lines of output:
+      30: tryCatchList(expr, classes, parentenv, handlers)
+      31: tryCatch(withCallingHandlers({    eval(code, test_env)    if (!handled && !is.null(test)) {        skip_empty()    }}, expectation = handle_expectation, skip = handle_skip, warning = handle_warning,     message = handle_message, error = handle_error), error = handle_fatal,     skip = function(e) {    })
+      32: test_code(NULL, exprs, env)
+      33: source_file(path, new.env(parent = env), chdir = TRUE, wrap = wrap)
+      34: force(code)
+      35: with_reporter(reporter = reporter, start_end_reporter = start_end_reporter,     {        lister$start_file(basename(path))        source_file(path, new.env(parent = env), chdir = TRUE,             wrap = wrap)        end_context()    })
+      36: FUN(X[[i]], ...)
+      37: lapply(paths, test_file, env = env, reporter = current_reporter,     start_end_reporter = FALSE, load_helpers = FALSE, wrap = wrap)
+      38: force(code)
+      39: with_reporter(reporter = current_reporter, results <- lapply(paths,     test_file, env = env, reporter = current_reporter, start_end_reporter = FALSE,     load_helpers = FALSE, wrap = wrap))
+      40: test_files(paths, reporter = reporter, env = env, stop_on_failure = stop_on_failure,     stop_on_warning = stop_on_warning, wrap = wrap)
+      41: test_dir(path = test_path, reporter = reporter, env = env, filter = filter,     ..., stop_on_failure = stop_on_failure, stop_on_warning = stop_on_warning,     wrap = wrap)
+      42: test_package_dir(package = package, test_path = test_path, filter = filter,     reporter = reporter, ..., stop_on_failure = stop_on_failure,     stop_on_warning = stop_on_warning, wrap = wrap)
+      43: test_check("purrrlyr")
+      An irrecoverable exception occurred. R is aborting now ...
     ```
 
 # pysd2r
@@ -12447,73 +12993,55 @@ Version: 0.1.0
     Package unavailable to check Rd xrefs: ‘rgl’
     ```
 
-# qualmap
-
-Version: 0.1.1
-
-## Newly broken
-
-*   checking examples ... ERROR
-    ```
-    ...
-    > stl <- stLouis
-    > stl <- dplyr::mutate(stl, TRACTCE = as.numeric(TRACTCE))
-    > 
-    > # create clusters
-    > cluster1 <- qm_define(118600, 119101, 119300)
-    > cluster2 <- qm_define(119300, 121200, 121100)
-    > 
-    > # create cluster objects
-    > cluster_obj1 <- qm_create(ref = stl, key = TRACTCE, value = cluster1,
-    +     rid = 1, cid = 1, category = "positive")
-    > cluster_obj2 <- qm_create(ref = stl, key = TRACTCE, value = cluster2,
-    +     rid = 1, cid = 2, category = "positive")
-    > 
-    > # combine cluster objects
-    > clusters <- qm_combine(cluster_obj1, cluster_obj2)
-    > 
-    > # summarize cluster objects
-    > positive1 <- qm_summarize(ref = stl, key = TRACTCE, clusters = clusters, category = "positive")
-    Error in qm_summarize(ref = stl, key = TRACTCE, clusters = clusters, category = "positive") : 
-      The specified category "positive" cannot be found in the clusters data.
-    Execution halted
-    ```
-
-*   checking tests ...
-    ```
-     ERROR
-    Running the tests in ‘tests/testthat.R’ failed.
-    Last 13 lines of output:
-      2: stop(glue("The specified category {categoryVarQ} cannot be found in the clusters data.")) at /Users/lionel/Desktop/rlang/revdep/checks.noindex/qualmap/new/qualmap.Rcheck/00_pkg_src/qualmap/R/qm_summarize.R:179
-      
-      ══ testthat results  ═══════════════════════════════════════════════════════════
-      OK: 55 SKIPPED: 0 FAILED: 8
-      1. Failure: (unknown) (@test_2_qm_validate.R#36) 
-      2. Failure: (unknown) (@test_2_qm_validate.R#49) 
-      3. Error: (unknown) (@test_2_qm_validate.R#54) 
-      4. Error: (unknown) (@test_4_qm_create.R#110) 
-      5. Failure: (unknown) (@test_6_qm_summarize.R#40) 
-      6. Failure: (unknown) (@test_6_qm_summarize.R#44) 
-      7. Failure: (unknown) (@test_6_qm_summarize.R#62) 
-      8. Error: (unknown) (@test_6_qm_summarize.R#77) 
-      
-      Error: testthat unit tests failed
-      Execution halted
-    ```
-
 # quanteda
 
 Version: 1.3.4
 
 ## In both
 
+*   checking tests ...
+    ```
+     ERROR
+    Running the tests in ‘tests/testthat.R’ failed.
+    Last 13 lines of output:
+      31: tryCatchList(expr, classes, parentenv, handlers)
+      32: tryCatch(withCallingHandlers({    eval(code, test_env)    if (!handled && !is.null(test)) {        skip_empty()    }}, expectation = handle_expectation, skip = handle_skip, warning = handle_warning,     message = handle_message, error = handle_error), error = handle_fatal,     skip = function(e) {    })
+      33: test_code(NULL, exprs, env)
+      34: source_file(path, new.env(parent = env), chdir = TRUE, wrap = wrap)
+      35: force(code)
+      36: with_reporter(reporter = reporter, start_end_reporter = start_end_reporter,     {        lister$start_file(basename(path))        source_file(path, new.env(parent = env), chdir = TRUE,             wrap = wrap)        end_context()    })
+      37: FUN(X[[i]], ...)
+      38: lapply(paths, test_file, env = env, reporter = current_reporter,     start_end_reporter = FALSE, load_helpers = FALSE, wrap = wrap)
+      39: force(code)
+      40: with_reporter(reporter = current_reporter, results <- lapply(paths,     test_file, env = env, reporter = current_reporter, start_end_reporter = FALSE,     load_helpers = FALSE, wrap = wrap))
+      41: test_files(paths, reporter = reporter, env = env, stop_on_failure = stop_on_failure,     stop_on_warning = stop_on_warning, wrap = wrap)
+      42: test_dir(path = test_path, reporter = reporter, env = env, filter = filter,     ..., stop_on_failure = stop_on_failure, stop_on_warning = stop_on_warning,     wrap = wrap)
+      43: test_package_dir(package = package, test_path = test_path, filter = filter,     reporter = reporter, ..., stop_on_failure = stop_on_failure,     stop_on_warning = stop_on_warning, wrap = wrap)
+      44: test_check("quanteda")
+      An irrecoverable exception occurred. R is aborting now ...
+    ```
+
+*   checking whether package ‘quanteda’ can be installed ... WARNING
+    ```
+    Found the following significant warnings:
+      /Users/lionel/Desktop/rlang/revdep/library.noindex/quanteda/RcppParallel/include/tbb/internal/_concurrent_unordered_impl.h:1481:24: warning: 'void* memset(void*, int, size_t)' clearing an object of non-trivial type 'tbb::interface5::internal::concurrent_unordered_base<tbb::interface5::concurrent_unordered_map_traits<std::vector<unsigned int>, std::pair<tbb::atomic<unsigned int>, tbb::atomic<unsigned int> >, tbb::interface5::internal::hash_compare<std::vector<unsigned int>, quanteda::hash_ngram, quanteda::equal_ngram>, tbb::tbb_allocator<std::pair<const std::vector<unsigned int>, std::pair<tbb::atomic<unsigned int>, tbb::atomic<unsigned int> > > >, false> >::raw_iterator' {aka 'class tbb::interface5::internal::flist_iterator<tbb::interface5::internal::split_ordered_list<std::pair<const std::vector<unsigned int>, std::pair<tbb::atomic<unsigned int>, tbb::atomic<unsigned int> > >, tbb::tbb_allocator<std::pair<const std::vector<unsigned int>, std::pair<tbb::atomic<unsigned int>, tbb::atomic<unsigned int> > > > >, std::pair<const std::vector<unsigned int>, std::pair<tbb::atomic<unsigned int>, tbb::atomic<unsigned int> > > >'}; use assignment or value-initialization instead [-Wclass-memaccess]
+      /Users/lionel/Desktop/rlang/revdep/library.noindex/quanteda/RcppParallel/include/tbb/concurrent_vector.h:88:20: warning: 'void* memset(void*, int, size_t)' clearing an object of type 'struct std::pair<std::vector<unsigned int>, tbb::atomic<unsigned int> >' with no trivial copy-assignment; use assignment instead [-Wclass-memaccess]
+      /Users/lionel/Desktop/rlang/revdep/library.noindex/quanteda/RcppParallel/include/tbb/concurrent_vector.h:88:20: warning: 'void* memset(void*, int, size_t)' clearing an object of type 'class std::vector<unsigned int>' with no trivial copy-assignment; use assignment or value-initialization instead [-Wclass-memaccess]
+      /Users/lionel/Desktop/rlang/revdep/library.noindex/quanteda/RcppParallel/include/tbb/internal/_concurrent_unordered_impl.h:1481:24: warning: 'void* memset(void*, int, size_t)' clearing an object of non-trivial type 'tbb::interface5::internal::concurrent_unordered_base<tbb::interface5::concurrent_unordered_set_traits<unsigned int, tbb::interface5::internal::hash_compare<unsigned int, tbb::tbb_hash<unsigned int>, std::equal_to<unsigned int> >, tbb::tbb_allocator<unsigned int>, false> >::raw_iterator' {aka 'class tbb::interface5::internal::flist_iterator<tbb::interface5::internal::split_ordered_list<unsigned int, tbb::tbb_allocator<unsigned int> >, unsigned int>'}; use assignment or value-initialization instead [-Wclass-memaccess]
+      /Users/lionel/Desktop/rlang/revdep/library.noindex/quanteda/RcppParallel/include/tbb/internal/_concurrent_unordered_impl.h:1481:24: warning: 'void* memset(void*, int, size_t)' clearing an object of non-trivial type 'tbb::interface5::internal::concurrent_unordered_base<tbb::interface5::concurrent_unordered_set_traits<std::vector<unsigned int>, tbb::interface5::internal::hash_compare<std::vector<unsigned int>, quanteda::hash_ngram, quanteda::equal_ngram>, tbb::tbb_allocator<std::vector<unsigned int> >, false> >::raw_iterator' {aka 'class tbb::interface5::internal::flist_iterator<tbb::interface5::internal::split_ordered_list<std::vector<unsigned int>, tbb::tbb_allocator<std::vector<unsigned int> > >, std::vector<unsigned int> >'}; use assignment or value-initialization instead [-Wclass-memaccess]
+      /Users/lionel/Desktop/rlang/revdep/library.noindex/quanteda/RcppParallel/include/tbb/internal/_concurrent_unordered_impl.h:1481:24: warning: 'void* memset(void*, int, size_t)' clearing an object of non-trivial type 'tbb::interface5::internal::concurrent_unordered_base<tbb::interface5::concurrent_unordered_map_traits<std::vector<unsigned int>, tbb::atomic<unsigned int>, tbb::interface5::internal::hash_compare<std::vector<unsigned int>, quanteda::hash_ngram, quanteda::equal_ngram>, tbb::tbb_allocator<std::pair<const std::vector<unsigned int>, tbb::atomic<unsigned int> > >, false> >::raw_iterator' {aka 'class tbb::interface5::internal::flist_iterator<tbb::interface5::internal::split_ordered_list<std::pair<const std::vector<unsigned int>, tbb::atomic<unsigned int> >, tbb::tbb_allocator<std::pair<const std::vector<unsigned int>, tbb::atomic<unsigned int> > > >, std::pair<const std::vector<unsigned int>, tbb::atomic<unsigned int> > >'}; use assignment or value-initialization instead [-Wclass-memaccess]
+      /Users/lionel/Desktop/rlang/revdep/library.noindex/quanteda/RcppParallel/include/tbb/concurrent_vector.h:88:20: warning: 'void* memset(void*, int, size_t)' clearing an object of type 'class std::tuple<unsigned int, unsigned int, double>' with no trivial copy-assignment; use assignment instead [-Wclass-memaccess]
+      /Users/lionel/Desktop/rlang/revdep/library.noindex/quanteda/RcppParallel/include/tbb/internal/_concurrent_unordered_impl.h:1481:24: warning: 'void* memset(void*, int, size_t)' clearing an object of non-trivial type 'tbb::interface5::internal::concurrent_unordered_base<tbb::interface5::concurrent_unordered_map_traits<std::vector<unsigned int>, tbb::atomic<unsigned int>, tbb::interface5::internal::hash_compare<std::vector<unsigned int>, quanteda::hash_ngram, quanteda::equal_ngram>, tbb::tbb_allocator<std::pair<const std::vector<unsigned int>, tbb::atomic<unsigned int> > >, true> >::raw_iterator' {aka 'class tbb::interface5::internal::flist_iterator<tbb::interface5::internal::split_ordered_list<std::pair<const std::vector<unsigned int>, tbb::atomic<unsigned int> >, tbb::tbb_allocator<std::pair<const std::vector<unsigned int>, tbb::atomic<unsigned int> > > >, std::pair<const std::vector<unsigned int>, tbb::atomic<unsigned int> > >'}; use assignment or value-initialization instead [-Wclass-memaccess]
+    See ‘/Users/lionel/Desktop/rlang/revdep/checks.noindex/quanteda/new/quanteda.Rcheck/00install.out’ for details.
+    ```
+
 *   checking installed package size ... NOTE
     ```
-      installed size is  8.0Mb
+      installed size is  8.6Mb
       sub-directories of 1Mb or more:
-        data   1.2Mb
-        libs   2.7Mb
         R      3.1Mb
+        data   1.2Mb
+        libs   3.3Mb
     ```
 
 *   checking Rd cross-references ... NOTE
@@ -12595,10 +13123,14 @@ Version: 0.1.0
 * installing *source* package ‘quokar’ ...
 ** package ‘quokar’ successfully unpacked and MD5 sums checked
 ** libs
-clang -I"/Library/Frameworks/R.framework/Resources/include" -DNDEBUG   -I/usr/local/include   -fPIC   -Wall -pedantic -O0 -c init.c -o init.o
+gcc-8 -I"/Library/Frameworks/R.framework/Resources/include" -DNDEBUG   -I/usr/local/include   -fPIC   -Wall -pedantic -O0 -c init.c -o init.o
 gfortran-7   -fPIC  -g -O2  -c rqbr.f -o rqbr.o
 make: gfortran-7: No such file or directory
+gfortran-7   -fPIC  -g -O2  -c rqfnb.f -o rqfnb.o
+make: gfortran-7: No such file or directory
 make: *** [rqbr.o] Error 1
+make: *** Waiting for unfinished jobs....
+make: *** [rqfnb.o] Error 1
 ERROR: compilation failed for package ‘quokar’
 * removing ‘/Users/lionel/Desktop/rlang/revdep/checks.noindex/quokar/new/quokar.Rcheck/quokar’
 
@@ -12609,10 +13141,14 @@ ERROR: compilation failed for package ‘quokar’
 * installing *source* package ‘quokar’ ...
 ** package ‘quokar’ successfully unpacked and MD5 sums checked
 ** libs
-clang -I"/Library/Frameworks/R.framework/Resources/include" -DNDEBUG   -I/usr/local/include   -fPIC   -Wall -pedantic -O0 -c init.c -o init.o
+gcc-8 -I"/Library/Frameworks/R.framework/Resources/include" -DNDEBUG   -I/usr/local/include   -fPIC   -Wall -pedantic -O0 -c init.c -o init.o
 gfortran-7   -fPIC  -g -O2  -c rqbr.f -o rqbr.o
 make: gfortran-7: No such file or directory
+gfortran-7   -fPIC  -g -O2  -c rqfnb.f -o rqfnb.o
+make: gfortran-7: No such file or directory
 make: *** [rqbr.o] Error 1
+make: *** Waiting for unfinished jobs....
+make: *** [rqfnb.o] Error 1
 ERROR: compilation failed for package ‘quokar’
 * removing ‘/Users/lionel/Desktop/rlang/revdep/checks.noindex/quokar/old/quokar.Rcheck/quokar’
 
@@ -12628,20 +13164,6 @@ Version: 0.1.2
     Namespaces in Imports field not imported from:
       ‘data.table’ ‘dplyr’ ‘lmerTest’
       All declared Imports should be used.
-    ```
-
-# r4lineups
-
-Version: 0.1.1
-
-## In both
-
-*   checking package dependencies ... ERROR
-    ```
-    Package required but not available: ‘magick’
-    
-    See section ‘The DESCRIPTION file’ in the ‘Writing R Extensions’
-    manual.
     ```
 
 # r511
@@ -12668,141 +13190,6 @@ Version: 0.9.7
       All declared Imports should be used.
     ```
 
-# radiant.model
-
-Version: 0.9.5
-
-## In both
-
-*   checking examples ... ERROR
-    ```
-    Running examples in ‘radiant.model-Ex.R’ failed
-    The error most likely occurred in:
-    
-    > ### Name: write.coeff
-    > ### Title: Write coefficient table for linear and logistic regression
-    > ### Aliases: write.coeff
-    > 
-    > ### ** Examples
-    > 
-    > regress(diamonds, rvar = "price", evar = c("carat", "clarity", "x"), check = "standardize") %>%
-    +   write.coeff(sort = TRUE) %>%
-    +   format_df(dec = 3)
-    Standardized coefficients selected
-    
-    Warning: Unknown or uninitialised column: 'OR'.
-    Warning: Unknown or uninitialised column: 'coeff'.
-    Error in abs(object$coeff) : 
-      non-numeric argument to mathematical function
-    Calls: %>% ... eval -> _fseq -> freduce -> <Anonymous> -> write.coeff
-    Execution halted
-    ```
-
-*   checking tests ...
-    ```
-     ERROR
-    Running the tests in ‘tests/testthat.R’ failed.
-    Last 13 lines of output:
-      x[1]: "2 \"pclass|2nd \" 0.409 -0.893      0.208     -4.290  < .001  ***"
-      y[1]: "sex|male    0.080      -2.522     0.163 -15.447  < .001 ***"
-      
-      2nd female      0.779 0.712 0.833
-      1st female      0.896 0.856 0.926
-      ══ testthat results  ═══════════════════════════════════════════════════════════
-      OK: 13 SKIPPED: 0 FAILED: 5
-      1. Failure: regress (@test_stats.R#13) 
-      2. Failure: regress (@test_stats.R#17) 
-      3. Failure: regress (@test_stats.R#23) 
-      4. Failure: logistic (@test_stats.R#45) 
-      5. Failure: logistic (@test_stats.R#49) 
-      
-      Error: testthat unit tests failed
-      Execution halted
-    ```
-
-*   checking dependencies in R code ... NOTE
-    ```
-    Namespace in Imports field not imported from: ‘rstudioapi’
-      All declared Imports should be used.
-    ```
-
-*   checking data for non-ASCII characters ... NOTE
-    ```
-      Note: found 2 marked UTF-8 strings
-    ```
-
-# radiant.multivariate
-
-Version: 0.9.5
-
-## In both
-
-*   checking examples ... ERROR
-    ```
-    ...
-     Price        $100         -6.833
-     Price        $150        -33.833
-     Shape        Circular      0.000
-     Shape        Rectangular -27.833
-     Shape        Square      -13.333
-     Base utility ~            58.111
-    
-    Conjoint importance weights:
-     Attributes    IW
-         Memory 0.280
-         Radio  0.058
-         Size   0.080
-         Price  0.319
-         Shape  0.263
-    
-    Conjoint regression results:
-    
-    Error in sprintf(paste0("%.", dec, "f"), .) : 
-      (list) object cannot be coerced to type 'double'
-    Calls: summary ... _fseq -> freduce -> withVisible -> <Anonymous> -> sprintf
-    Execution halted
-    ```
-
-*   checking tests ...
-    ```
-     ERROR
-    Running the tests in ‘tests/testthat.R’ failed.
-    Last 13 lines of output:
-      10: withVisible(eval(quote(`_fseq`(`_lhs`)), env, env))
-      11: eval(quote(`_fseq`(`_lhs`)), env, env)
-      12: eval(quote(`_fseq`(`_lhs`)), env, env)
-      13: `_fseq`(`_lhs`)
-      14: freduce(value, `_function_list`)
-      15: withVisible(function_list[[k]](value))
-      16: function_list[[k]](value)
-      17: sprintf(paste0("%.", dec, "f"), .) at /Users/lionel/Desktop/rlang/revdep/checks.noindex/radiant.multivariate/new/radiant.multivariate.Rcheck/00_pkg_src/radiant.multivariate/R/conjoint.R:169
-      
-      ══ testthat results  ═══════════════════════════════════════════════════════════
-      OK: 6 SKIPPED: 0 FAILED: 1
-      1. Error: Conjoint on mp3 data (@test_stats.R#109) 
-      
-      Error: testthat unit tests failed
-      Execution halted
-    ```
-
-*   checking installed package size ... NOTE
-    ```
-      installed size is  5.0Mb
-      sub-directories of 1Mb or more:
-        app   4.5Mb
-    ```
-
-*   checking dependencies in R code ... NOTE
-    ```
-    Namespace in Imports field not imported from: ‘rstudioapi’
-      All declared Imports should be used.
-    ```
-
-*   checking data for non-ASCII characters ... NOTE
-    ```
-      Note: found 1 marked UTF-8 string
-    ```
-
 # railtrails
 
 Version: 0.1.1
@@ -12823,7 +13210,7 @@ Version: 0.9
 *   checking dependencies in R code ... NOTE
     ```
     Namespaces in Imports field not imported from:
-      ‘dtplyr’ ‘MASS’
+      ‘MASS’ ‘dtplyr’
       All declared Imports should be used.
     ```
 
@@ -12840,11 +13227,10 @@ Version: 0.1.2
 
 *   checking installed package size ... NOTE
     ```
-      installed size is  7.9Mb
+      installed size is  8.4Mb
       sub-directories of 1Mb or more:
         data   3.6Mb
-        libs   2.0Mb
-        R      1.0Mb
+        libs   2.6Mb
     ```
 
 # Rariant
@@ -12886,7 +13272,7 @@ Version: 1.16.0
 
 *   checking installed package size ... NOTE
     ```
-      installed size is  8.0Mb
+      installed size is  7.9Mb
       sub-directories of 1Mb or more:
         doc       2.3Mb
         extdata   5.2Mb
@@ -12902,7 +13288,7 @@ Version: 1.16.0
     tallyBamRegion: no visible global function definition for 'pileup'
       (/Users/lionel/Desktop/rlang/revdep/checks.noindex/Rariant/new/Rariant.Rcheck/00_pkg_src/Rariant/R/tally.R:114)
     Undefined global functions or variables:
-      pileup PileupParam ScanBamParam
+      PileupParam ScanBamParam pileup
     ```
 
 *   checking installed files from ‘inst/doc’ ... NOTE
@@ -12931,10 +13317,10 @@ Version: 5.2.0
     ```
       installed size is 10.9Mb
       sub-directories of 1Mb or more:
+        R      4.0Mb
         data   3.0Mb
         etc    1.9Mb
         po     1.2Mb
-        R      4.0Mb
     ```
 
 # RBesT
@@ -12943,21 +13329,22 @@ Version: 1.3-3
 
 ## In both
 
-*   R CMD check timed out
-    
+*   checking whether the package can be loaded ... ERROR
+    ```
+    Loading this package had a fatal error status code 1
+    Loading log:
+    Loading required package: Rcpp
+    Error: package or namespace load failed for ‘RBesT’ in .doLoadActions(where, attach):
+     error in load action .__A__.1 for package RBesT: is(module, "character"): object 'm' not found
+    Execution halted
+    ```
 
 *   checking installed package size ... NOTE
     ```
-      installed size is  8.5Mb
+      installed size is  9.5Mb
       sub-directories of 1Mb or more:
-        libs   6.3Mb
         R      1.1Mb
-    ```
-
-*   checking dependencies in R code ... NOTE
-    ```
-    Namespace in Imports field not imported from: ‘lme4’
-      All declared Imports should be used.
+        libs   7.3Mb
     ```
 
 # rccmisc
@@ -12981,55 +13368,6 @@ Version: 1.0.2
 *   checking data for non-ASCII characters ... NOTE
     ```
       Note: found 24 marked UTF-8 strings
-    ```
-
-# rcongresso
-
-Version: 0.4.6
-
-## In both
-
-*   checking tests ...
-    ```
-     ERROR
-    Running the tests in ‘tests/testthat.R’ failed.
-    Last 13 lines of output:
-      16: withVisible(function_list[[k]](value))
-      17: function_list[[k]](value)
-      18: dplyr::do(., .congresso_api(API_path, .))
-      19: do.rowwise_df(., .congresso_api(API_path, .))
-      20: overscope_eval_next(overscope, args[[j]])
-      21: .congresso_api(API_path, .) at /private/var/folders/b9/1vbq6rn93_1fk71sn95dqb8r0000gn/T/RtmpbSBfQ2/R.INSTALL38e96c47fc7c/rlang/R/lifecycle-retired.R:794
-      22: .get_from_api(path, query) at /Users/lionel/Desktop/rlang/revdep/checks.noindex/rcongresso/new/rcongresso.Rcheck/00_pkg_src/rcongresso/R/utils.R:55
-      23: stop(.ERRO_RETORNO_JSON, call. = FALSE) at /Users/lionel/Desktop/rlang/revdep/checks.noindex/rcongresso/new/rcongresso.Rcheck/00_pkg_src/rcongresso/R/utils.R:38
-      
-      ══ testthat results  ═══════════════════════════════════════════════════════════
-      OK: 71 SKIPPED: 0 FAILED: 1
-      1. Error: Quantidade de itens por requisição (@test_proposicoes.R#81) 
-      
-      Error: testthat unit tests failed
-      Execution halted
-    ```
-
-*   checking re-building of vignette outputs ... WARNING
-    ```
-    Error in re-building vignettes:
-      ...
-    
-    Attaching package: 'dplyr'
-    
-    The following objects are masked from 'package:stats':
-    
-        filter, lag
-    
-    The following objects are masked from 'package:base':
-    
-        intersect, setdiff, setequal, union
-    
-    Quitting from lines 150-156 (utilizando-fetch-proposicao.Rmd) 
-    Error: processing vignette 'utilizando-fetch-proposicao.Rmd' failed with diagnostics:
-    API did not return json
-    Execution halted
     ```
 
 # rcv
@@ -13060,8 +13398,8 @@ Version: 0.9-9
     ```
       installed size is  6.5Mb
       sub-directories of 1Mb or more:
-        doc   2.4Mb
         R     3.0Mb
+        doc   2.4Mb
     ```
 
 # rdomains
@@ -13231,7 +13569,7 @@ Version: 0.1.0
 *   checking dependencies in R code ... NOTE
     ```
     Namespaces in Imports field not imported from:
-      ‘nnet’ ‘purrr’ ‘R6’
+      ‘R6’ ‘nnet’ ‘purrr’
       All declared Imports should be used.
     ```
 
@@ -13314,6 +13652,37 @@ Version: 0.4.2
     Package which this enhances but not available for checking: ‘taxize’
     ```
 
+# reReg
+
+Version: 1.1.5
+
+## In both
+
+*   checking examples ... ERROR
+    ```
+    Running examples in ‘reReg-Ex.R’ failed
+    The error most likely occurred in:
+    
+    > ### Name: plot.reReg
+    > ### Title: Plotting Baseline Cumulative Rate Function and Baseline
+    > ###   Cumulative Hazard Function
+    > ### Aliases: plot.reReg
+    > ### Keywords: Plots
+    > 
+    > ### ** Examples
+    > 
+    > data(readmission, package = "frailtypack")
+    Error in find.package(package, lib.loc, verbose = verbose) : 
+      there is no package called ‘frailtypack’
+    Calls: data -> find.package
+    Execution halted
+    ```
+
+*   checking package dependencies ... NOTE
+    ```
+    Packages suggested but not available for checking: ‘frailtypack’ ‘reda’
+    ```
+
 # restfulSE
 
 Version: 1.2.3
@@ -13360,9 +13729,60 @@ Version: 2.1.2
 
 ## In both
 
+*   checking re-building of vignette outputs ... WARNING
+    ```
+    Error in re-building vignettes:
+      ...
+    Warning: FishBase says that 'Salmo trutta' can also be misapplied to other species
+                        but is returning only the best match.  
+                        See synonyms('Salmo trutta') for details
+    Quitting from lines 96-97 (tutorial.Rmd) 
+    Error: processing vignette 'tutorial.Rmd' failed with diagnostics:
+    Column `Emblematic` can't be converted from logical to integer
+    Execution halted
+    ```
+
 *   checking data for non-ASCII characters ... NOTE
     ```
       Note: found 44 marked UTF-8 strings
+    ```
+
+# rgho
+
+Version: 1.0.1
+
+## In both
+
+*   checking examples ... ERROR
+    ```
+    Running examples in ‘rgho-Ex.R’ failed
+    The error most likely occurred in:
+    
+    > ### Name: get_gho_data
+    > ### Title: Returns GHO Data
+    > ### Aliases: get_gho_data
+    > 
+    > ### ** Examples
+    > 
+    > 
+    > result <- get_gho_data(
+    +   dimension = "GHO",
+    +   code = "MDG_0000000001"
+    + )
+    Error in dimension %in% get_gho_dimensions() : 
+      Unexpected type: 'text/html', expected 'application/json'.
+    Calls: get_gho_data ... tryCatch -> tryCatchList -> tryCatchOne -> <Anonymous>
+    Execution halted
+    ```
+
+*   checking re-building of vignette outputs ... WARNING
+    ```
+    Error in re-building vignettes:
+      ...
+    Quitting from lines 30-31 (a-intro.Rmd) 
+    Error: processing vignette 'a-intro.Rmd' failed with diagnostics:
+    Unexpected type: 'text/html', expected 'application/json'.
+    Execution halted
     ```
 
 # RGMQL
@@ -13507,7 +13927,7 @@ Version: 1.8.0
 
 # rmapzen
 
-Version: 0.4.0
+Version: 0.4.1
 
 ## In both
 
@@ -13694,7 +14114,7 @@ Version: 1.4.1
 
 *   checking installed package size ... NOTE
     ```
-      installed size is  5.2Mb
+      installed size is  5.3Mb
       sub-directories of 1Mb or more:
         data   2.9Mb
         doc    1.6Mb
@@ -13839,9 +14259,51 @@ Version: 1.2
 
 ## In both
 
+*   checking compiled code ... WARNING
+    ```
+    File ‘rPref/libs/rPref.so’:
+      Found ‘_abort’, possibly from ‘abort’ (C)
+        Objects: ‘bnl.o’, ‘psel-par-top.o’, ‘psel-par.o’
+    
+    Compiled code should not call entry points which might terminate R
+    nor write to stdout/stderr instead of to the console, nor use
+    Fortran I/O nor system RNGs.
+    
+    See ‘Writing portable packages’ in the ‘Writing R Extensions’
+    manual.
+    ```
+
 *   checking for GNU extensions in Makefiles ... NOTE
     ```
     GNU make is a SystemRequirements.
+    ```
+
+# RPresto
+
+Version: 1.3.1
+
+## In both
+
+*   checking tests ...
+    ```
+     ERROR
+    Running the tests in ‘tests/testthat.R’ failed.
+    Last 13 lines of output:
+      31: tryCatchList(expr, classes, parentenv, handlers)
+      32: tryCatch(withCallingHandlers({    eval(code, test_env)    if (!handled && !is.null(test)) {        skip_empty()    }}, expectation = handle_expectation, skip = handle_skip, warning = handle_warning,     message = handle_message, error = handle_error), error = handle_fatal,     skip = function(e) {    })
+      33: test_code(NULL, exprs, env)
+      34: source_file(path, new.env(parent = env), chdir = TRUE, wrap = wrap)
+      35: force(code)
+      36: with_reporter(reporter = reporter, start_end_reporter = start_end_reporter,     {        lister$start_file(basename(path))        source_file(path, new.env(parent = env), chdir = TRUE,             wrap = wrap)        end_context()    })
+      37: FUN(X[[i]], ...)
+      38: lapply(paths, test_file, env = env, reporter = current_reporter,     start_end_reporter = FALSE, load_helpers = FALSE, wrap = wrap)
+      39: force(code)
+      40: with_reporter(reporter = current_reporter, results <- lapply(paths,     test_file, env = env, reporter = current_reporter, start_end_reporter = FALSE,     load_helpers = FALSE, wrap = wrap))
+      41: test_files(paths, reporter = reporter, env = env, stop_on_failure = stop_on_failure,     stop_on_warning = stop_on_warning, wrap = wrap)
+      42: test_dir(path = test_path, reporter = reporter, env = env, filter = filter,     ..., stop_on_failure = stop_on_failure, stop_on_warning = stop_on_warning,     wrap = wrap)
+      43: test_package_dir(package = package, test_path = test_path, filter = filter,     reporter = reporter, ..., stop_on_failure = stop_on_failure,     stop_on_warning = stop_on_warning, wrap = wrap)
+      44: test_check("RPresto")
+      An irrecoverable exception occurred. R is aborting now ...
     ```
 
 # rprev
@@ -14148,70 +14610,6 @@ Version: 0.1.0
       All declared Imports should be used.
     ```
 
-# ruler
-
-Version: 0.1.3
-
-## Newly broken
-
-*   checking examples ... ERROR
-    ```
-    ...
-     1. dplyr::transmute_at(., c("disp", "qsec"), rules(z_score = abs(. -     mean(.))/sd(.) > 1))
-    
-    Use 'functions' to extract the individual functions. 
-    
-    > 
-    > # Dealing with one column edge case
-    > improper_pack <- . %>% dplyr::transmute_at(
-    +   dplyr::vars(vs),
-    +   rules(improper_is_neg = . < 0)
-    + )
-    > 
-    > proper_pack <- . %>% dplyr::transmute_at(
-    +   dplyr::vars(vs = vs),
-    +   rules(proper_is_neg = . < 0)
-    + )
-    > 
-    > mtcars[1:2, ] %>%
-    +   expose(cell_packs(improper_pack, proper_pack)) %>%
-    +   get_report()
-    Error: Expected a list of quosures
-    Execution halted
-    ```
-
-*   checking tests ...
-    ```
-     ERROR
-    Running the tests in ‘tests/testthat.R’ failed.
-    Last 13 lines of output:
-      2. Error: expose preserves pack names (@test-expose.R#218) 
-      3. Error: expose accounts for rule separator (@test-expose.R#250) 
-      4. Error: expose guesses (@test-expose.R#269) 
-      5. Error: expose_single.default guesses col pack (@test-expose.R#309) 
-      6. Error: expose_single.default guesses cell pack (@test-expose.R#335) 
-      7. Error: expose_single.col_pack works (@test-expose.R#402) 
-      8. Error: expose_single.cell_pack works (@test-expose.R#453) 
-      9. Error: rules works (@test-rules.R#6) 
-      
-      Error: testthat unit tests failed
-      In addition: Warning message:
-      `list_len()` is soft-deprecated as of rlang 0.2.0.
-      Please use `new_list()` instead
-      This warning is displayed once per session. 
-      Execution halted
-    ```
-
-*   checking re-building of vignette outputs ... WARNING
-    ```
-    Error in re-building vignettes:
-      ...
-    Quitting from lines 117-125 (validation.Rmd) 
-    Error: processing vignette 'validation.Rmd' failed with diagnostics:
-    Expected a list of quosures
-    Execution halted
-    ```
-
 # rwavelet
 
 Version: 0.1.0
@@ -14243,16 +14641,17 @@ Version: 0.8.0-8
 ```
 * installing *source* package ‘RxODE’ ...
 ** package ‘RxODE’ successfully unpacked and MD5 sums checked
-checking for gcc... clang
+checking for gcc... gcc-8
 checking whether the C compiler works... yes
 checking for C compiler default output file name... a.out
 checking for suffix of executables... 
 checking whether we are cross compiling... no
 checking for suffix of object files... o
 checking whether we are using the GNU C compiler... yes
-checking whether clang accepts -g... yes
-checking for clang option to accept ISO C89... none needed
-checking for clang option to support OpenMP... unsupported
+checking whether gcc-8 accepts -g... yes
+checking for gcc-8 option to accept ISO C89... none needed
+checking for gcc-8 option to support OpenMP... -fopenmp
+checking whether OpenMP will work in a package... yes
 configure: creating ./config.status
 config.status: creating src/Makevars
 --------[begin src/Makevars]--------
@@ -14261,12 +14660,12 @@ CXX_STD     = CXX11
 
 ################################################################################
 ## Package library flags.
-PKG_LIBS    = $(LAPACK_LIBS) $(BLAS_LIBS) $(FLIBS) 
+PKG_LIBS    = $(LAPACK_LIBS) $(BLAS_LIBS) $(FLIBS) -fopenmp
 ## add -lprofiler for access to gperftools;  You also have to have -g
 ## https://stackoverflow.com/questions/13224322/profiling-rcpp-code-on-os-x
 ## -Wl,--no-as-needed -lprofiler -Wl,--as-needed
 ## Clang UBSAN requires -lubsan
-# PKG_LIBS    = $(LAPACK_LIBS) $(BLAS_LIBS) $(FLIBS)  -lubsan
+# PKG_LIBS    = $(LAPACK_LIBS) $(BLAS_LIBS) $(FLIBS) -fopenmp -lubsan
 
 ################################################################################
 ## Compiling flags
@@ -14274,26 +14673,26 @@ PKG_LIBS    = $(LAPACK_LIBS) $(BLAS_LIBS) $(FLIBS)
 ## fsanitize=address = ASAN debugging with gcc
 # PKG_FFLAGS  = -g -ggdb -O0 -fno-inline-functions -fsanitize=address,undefined,bounds-strict -fno-omit-frame-pointer -Wall -Wextra $(FPICFLAGS) 
 # PKG_FCFLAGS = -g -ggdb -O0 -fno-inline-functions -fsanitize=address,undefined,bounds-strict -fno-omit-frame-pointer -Wall -Wextra $(FPICFLAGS)
-# PKG_CFLAGS  = -g -ggdb -O0 -fno-inline-functions -fsanitize=address,undefined,bounds-strict -fno-omit-frame-pointer -Wall -Wextra 
-# PKG_CPPFLAGS = -g -ggdb -O0 -fno-inline-functions -fsanitize=address,undefined,bounds-strict -fno-omit-frame-pointer -Wall -Wextra 
+# PKG_CFLAGS  = -g -ggdb -O0 -fno-inline-functions -fsanitize=address,undefined,bounds-strict -fno-omit-frame-pointer -Wall -Wextra -fopenmp
+# PKG_CPPFLAGS = -g -ggdb -O0 -fno-inline-functions -fsanitize=address,undefined,bounds-strict -fno-omit-frame-pointer -Wall -Wextra -fopenmp
 
 # Clang UBSAN debugging
 # PKG_FFLAGS  = -g -fsanitize=address,undefined -fno-sanitize=float-divide-by-zero -fno-omit-frame-pointer $(FPICFLAGS) 
 # PKG_FCFLAGS = -g -fsanitize=address,undefined -fno-sanitize=float-divide-by-zero -fno-omit-frame-pointer -frtti $(FPICFLAGS)
-# PKG_CFLAGS  = -g -fsanitize=address,undefined -fno-sanitize=float-divide-by-zero -fno-omit-frame-pointer -frtti 
-# PKG_CPPFLAGS = -g -fsanitize=address,undefined -fno-sanitize=float-divide-by-zero -fno-omit-frame-pointer -frtti 
+# PKG_CFLAGS  = -g -fsanitize=address,undefined -fno-sanitize=float-divide-by-zero -fno-omit-frame-pointer -frtti -fopenmp
+# PKG_CPPFLAGS = -g -fsanitize=address,undefined -fno-sanitize=float-divide-by-zero -fno-omit-frame-pointer -frtti -fopenmp
 
 ## Standard debug for gdb and valgrind
 # PKG_FFLAGS  = -g -ggdb -O0 -Wall -Wextra $(FPICFLAGS) 
 # PKG_FCFLAGS = -g -ggdb -O0 -Wall -Wextra $(FPICFLAGS)
-# PKG_CFLAGS  = -g -ggdb -O0 -Wall -Wextra 
-# PKG_CPPFLAGS = -g -ggdb -O0 -Wall -Wextra 
+# PKG_CFLAGS  = -g -ggdb -O0 -Wall -Wextra -fopenmp
+# PKG_CPPFLAGS = -g -ggdb -O0 -Wall -Wextra -fopenmp
 
 # Release options
 PKG_FFLAGS  = $(FPICFLAGS) 
 PKG_FCFLAGS = $(FPICFLAGS)
-PKG_CFLAGS  =  
-PKG_CPPFLAGS = 
+PKG_CFLAGS  =  -fopenmp
+PKG_CPPFLAGS = -fopenmp
 
 SOURCES_C = call_dvode.c dop853.c tran.c omegaChol.c init.c par_solve.c cfode.c common.c corfailure.c correction.c daxpy.c ddot.c dgefa.c dgesl.c dscal.c fnorm.c idamax.c intdy.c lsoda.c methodswitch.c orderswitch.c prja.c scaleh.c solsy.c stoda.c vmnorm.c strdup_printf.c rprintf.c box.c lbfgsR.c lincmt.c
 SOURCES_CPP = RcppExports.cpp WinDrive.cpp rxInv.cpp rxData.cpp eventTable.cpp inner.cpp
@@ -14304,40 +14703,41 @@ OBJECTS = $(SOURCES_C:.c=.o) $(SOURCES_FORTAN:.f=.o) $(SOURCES_CPP:.cpp=.o)
 
 --------[end src/Makevars]--------
 ** libs
-clang -I"/Library/Frameworks/R.framework/Resources/include" -DNDEBUG  -I"/Users/lionel/Desktop/rlang/revdep/library.noindex/RxODE/dparser/include" -I"/Users/lionel/Desktop/rlang/revdep/library.noindex/RxODE/Rcpp/include" -I"/Users/lionel/Desktop/rlang/revdep/library.noindex/RxODE/RcppArmadillo/include" -I"/Users/lionel/Desktop/rlang/revdep/library.noindex/RxODE/PreciseSums/include" -I/usr/local/include   -fPIC   -Wall -pedantic -O0 -c call_dvode.c -o call_dvode.o
-clang -I"/Library/Frameworks/R.framework/Resources/include" -DNDEBUG  -I"/Users/lionel/Desktop/rlang/revdep/library.noindex/RxODE/dparser/include" -I"/Users/lionel/Desktop/rlang/revdep/library.noindex/RxODE/Rcpp/include" -I"/Users/lionel/Desktop/rlang/revdep/library.noindex/RxODE/RcppArmadillo/include" -I"/Users/lionel/Desktop/rlang/revdep/library.noindex/RxODE/PreciseSums/include" -I/usr/local/include   -fPIC   -Wall -pedantic -O0 -c dop853.c -o dop853.o
-clang -I"/Library/Frameworks/R.framework/Resources/include" -DNDEBUG  -I"/Users/lionel/Desktop/rlang/revdep/library.noindex/RxODE/dparser/include" -I"/Users/lionel/Desktop/rlang/revdep/library.noindex/RxODE/Rcpp/include" -I"/Users/lionel/Desktop/rlang/revdep/library.noindex/RxODE/RcppArmadillo/include" -I"/Users/lionel/Desktop/rlang/revdep/library.noindex/RxODE/PreciseSums/include" -I/usr/local/include   -fPIC   -Wall -pedantic -O0 -c tran.c -o tran.o
-clang -I"/Library/Frameworks/R.framework/Resources/include" -DNDEBUG  -I"/Users/lionel/Desktop/rlang/revdep/library.noindex/RxODE/dparser/include" -I"/Users/lionel/Desktop/rlang/revdep/library.noindex/RxODE/Rcpp/include" -I"/Users/lionel/Desktop/rlang/revdep/library.noindex/RxODE/RcppArmadillo/include" -I"/Users/lionel/Desktop/rlang/revdep/library.noindex/RxODE/PreciseSums/include" -I/usr/local/include   -fPIC   -Wall -pedantic -O0 -c omegaChol.c -o omegaChol.o
-clang -I"/Library/Frameworks/R.framework/Resources/include" -DNDEBUG  -I"/Users/lionel/Desktop/rlang/revdep/library.noindex/RxODE/dparser/include" -I"/Users/lionel/Desktop/rlang/revdep/library.noindex/RxODE/Rcpp/include" -I"/Users/lionel/Desktop/rlang/revdep/library.noindex/RxODE/RcppArmadillo/include" -I"/Users/lionel/Desktop/rlang/revdep/library.noindex/RxODE/PreciseSums/include" -I/usr/local/include   -fPIC   -Wall -pedantic -O0 -c init.c -o init.o
-clang -I"/Library/Frameworks/R.framework/Resources/include" -DNDEBUG  -I"/Users/lionel/Desktop/rlang/revdep/library.noindex/RxODE/dparser/include" -I"/Users/lionel/Desktop/rlang/revdep/library.noindex/RxODE/Rcpp/include" -I"/Users/lionel/Desktop/rlang/revdep/library.noindex/RxODE/RcppArmadillo/include" -I"/Users/lionel/Desktop/rlang/revdep/library.noindex/RxODE/PreciseSums/include" -I/usr/local/include   -fPIC   -Wall -pedantic -O0 -c par_solve.c -o par_solve.o
-clang -I"/Library/Frameworks/R.framework/Resources/include" -DNDEBUG  -I"/Users/lionel/Desktop/rlang/revdep/library.noindex/RxODE/dparser/include" -I"/Users/lionel/Desktop/rlang/revdep/library.noindex/RxODE/Rcpp/include" -I"/Users/lionel/Desktop/rlang/revdep/library.noindex/RxODE/RcppArmadillo/include" -I"/Users/lionel/Desktop/rlang/revdep/library.noindex/RxODE/PreciseSums/include" -I/usr/local/include   -fPIC   -Wall -pedantic -O0 -c cfode.c -o cfode.o
-clang -I"/Library/Frameworks/R.framework/Resources/include" -DNDEBUG  -I"/Users/lionel/Desktop/rlang/revdep/library.noindex/RxODE/dparser/include" -I"/Users/lionel/Desktop/rlang/revdep/library.noindex/RxODE/Rcpp/include" -I"/Users/lionel/Desktop/rlang/revdep/library.noindex/RxODE/RcppArmadillo/include" -I"/Users/lionel/Desktop/rlang/revdep/library.noindex/RxODE/PreciseSums/include" -I/usr/local/include   -fPIC   -Wall -pedantic -O0 -c common.c -o common.o
-clang -I"/Library/Frameworks/R.framework/Resources/include" -DNDEBUG  -I"/Users/lionel/Desktop/rlang/revdep/library.noindex/RxODE/dparser/include" -I"/Users/lionel/Desktop/rlang/revdep/library.noindex/RxODE/Rcpp/include" -I"/Users/lionel/Desktop/rlang/revdep/library.noindex/RxODE/RcppArmadillo/include" -I"/Users/lionel/Desktop/rlang/revdep/library.noindex/RxODE/PreciseSums/include" -I/usr/local/include   -fPIC   -Wall -pedantic -O0 -c corfailure.c -o corfailure.o
-clang -I"/Library/Frameworks/R.framework/Resources/include" -DNDEBUG  -I"/Users/lionel/Desktop/rlang/revdep/library.noindex/RxODE/dparser/include" -I"/Users/lionel/Desktop/rlang/revdep/library.noindex/RxODE/Rcpp/include" -I"/Users/lionel/Desktop/rlang/revdep/library.noindex/RxODE/RcppArmadillo/include" -I"/Users/lionel/Desktop/rlang/revdep/library.noindex/RxODE/PreciseSums/include" -I/usr/local/include   -fPIC   -Wall -pedantic -O0 -c correction.c -o correction.o
-clang -I"/Library/Frameworks/R.framework/Resources/include" -DNDEBUG  -I"/Users/lionel/Desktop/rlang/revdep/library.noindex/RxODE/dparser/include" -I"/Users/lionel/Desktop/rlang/revdep/library.noindex/RxODE/Rcpp/include" -I"/Users/lionel/Desktop/rlang/revdep/library.noindex/RxODE/RcppArmadillo/include" -I"/Users/lionel/Desktop/rlang/revdep/library.noindex/RxODE/PreciseSums/include" -I/usr/local/include   -fPIC   -Wall -pedantic -O0 -c daxpy.c -o daxpy.o
-clang -I"/Library/Frameworks/R.framework/Resources/include" -DNDEBUG  -I"/Users/lionel/Desktop/rlang/revdep/library.noindex/RxODE/dparser/include" -I"/Users/lionel/Desktop/rlang/revdep/library.noindex/RxODE/Rcpp/include" -I"/Users/lionel/Desktop/rlang/revdep/library.noindex/RxODE/RcppArmadillo/include" -I"/Users/lionel/Desktop/rlang/revdep/library.noindex/RxODE/PreciseSums/include" -I/usr/local/include   -fPIC   -Wall -pedantic -O0 -c ddot.c -o ddot.o
-clang -I"/Library/Frameworks/R.framework/Resources/include" -DNDEBUG  -I"/Users/lionel/Desktop/rlang/revdep/library.noindex/RxODE/dparser/include" -I"/Users/lionel/Desktop/rlang/revdep/library.noindex/RxODE/Rcpp/include" -I"/Users/lionel/Desktop/rlang/revdep/library.noindex/RxODE/RcppArmadillo/include" -I"/Users/lionel/Desktop/rlang/revdep/library.noindex/RxODE/PreciseSums/include" -I/usr/local/include   -fPIC   -Wall -pedantic -O0 -c dgefa.c -o dgefa.o
-clang -I"/Library/Frameworks/R.framework/Resources/include" -DNDEBUG  -I"/Users/lionel/Desktop/rlang/revdep/library.noindex/RxODE/dparser/include" -I"/Users/lionel/Desktop/rlang/revdep/library.noindex/RxODE/Rcpp/include" -I"/Users/lionel/Desktop/rlang/revdep/library.noindex/RxODE/RcppArmadillo/include" -I"/Users/lionel/Desktop/rlang/revdep/library.noindex/RxODE/PreciseSums/include" -I/usr/local/include   -fPIC   -Wall -pedantic -O0 -c dgesl.c -o dgesl.o
-clang -I"/Library/Frameworks/R.framework/Resources/include" -DNDEBUG  -I"/Users/lionel/Desktop/rlang/revdep/library.noindex/RxODE/dparser/include" -I"/Users/lionel/Desktop/rlang/revdep/library.noindex/RxODE/Rcpp/include" -I"/Users/lionel/Desktop/rlang/revdep/library.noindex/RxODE/RcppArmadillo/include" -I"/Users/lionel/Desktop/rlang/revdep/library.noindex/RxODE/PreciseSums/include" -I/usr/local/include   -fPIC   -Wall -pedantic -O0 -c dscal.c -o dscal.o
-clang -I"/Library/Frameworks/R.framework/Resources/include" -DNDEBUG  -I"/Users/lionel/Desktop/rlang/revdep/library.noindex/RxODE/dparser/include" -I"/Users/lionel/Desktop/rlang/revdep/library.noindex/RxODE/Rcpp/include" -I"/Users/lionel/Desktop/rlang/revdep/library.noindex/RxODE/RcppArmadillo/include" -I"/Users/lionel/Desktop/rlang/revdep/library.noindex/RxODE/PreciseSums/include" -I/usr/local/include   -fPIC   -Wall -pedantic -O0 -c fnorm.c -o fnorm.o
-clang -I"/Library/Frameworks/R.framework/Resources/include" -DNDEBUG  -I"/Users/lionel/Desktop/rlang/revdep/library.noindex/RxODE/dparser/include" -I"/Users/lionel/Desktop/rlang/revdep/library.noindex/RxODE/Rcpp/include" -I"/Users/lionel/Desktop/rlang/revdep/library.noindex/RxODE/RcppArmadillo/include" -I"/Users/lionel/Desktop/rlang/revdep/library.noindex/RxODE/PreciseSums/include" -I/usr/local/include   -fPIC   -Wall -pedantic -O0 -c idamax.c -o idamax.o
-clang -I"/Library/Frameworks/R.framework/Resources/include" -DNDEBUG  -I"/Users/lionel/Desktop/rlang/revdep/library.noindex/RxODE/dparser/include" -I"/Users/lionel/Desktop/rlang/revdep/library.noindex/RxODE/Rcpp/include" -I"/Users/lionel/Desktop/rlang/revdep/library.noindex/RxODE/RcppArmadillo/include" -I"/Users/lionel/Desktop/rlang/revdep/library.noindex/RxODE/PreciseSums/include" -I/usr/local/include   -fPIC   -Wall -pedantic -O0 -c intdy.c -o intdy.o
-clang -I"/Library/Frameworks/R.framework/Resources/include" -DNDEBUG  -I"/Users/lionel/Desktop/rlang/revdep/library.noindex/RxODE/dparser/include" -I"/Users/lionel/Desktop/rlang/revdep/library.noindex/RxODE/Rcpp/include" -I"/Users/lionel/Desktop/rlang/revdep/library.noindex/RxODE/RcppArmadillo/include" -I"/Users/lionel/Desktop/rlang/revdep/library.noindex/RxODE/PreciseSums/include" -I/usr/local/include   -fPIC   -Wall -pedantic -O0 -c lsoda.c -o lsoda.o
-clang -I"/Library/Frameworks/R.framework/Resources/include" -DNDEBUG  -I"/Users/lionel/Desktop/rlang/revdep/library.noindex/RxODE/dparser/include" -I"/Users/lionel/Desktop/rlang/revdep/library.noindex/RxODE/Rcpp/include" -I"/Users/lionel/Desktop/rlang/revdep/library.noindex/RxODE/RcppArmadillo/include" -I"/Users/lionel/Desktop/rlang/revdep/library.noindex/RxODE/PreciseSums/include" -I/usr/local/include   -fPIC   -Wall -pedantic -O0 -c methodswitch.c -o methodswitch.o
-clang -I"/Library/Frameworks/R.framework/Resources/include" -DNDEBUG  -I"/Users/lionel/Desktop/rlang/revdep/library.noindex/RxODE/dparser/include" -I"/Users/lionel/Desktop/rlang/revdep/library.noindex/RxODE/Rcpp/include" -I"/Users/lionel/Desktop/rlang/revdep/library.noindex/RxODE/RcppArmadillo/include" -I"/Users/lionel/Desktop/rlang/revdep/library.noindex/RxODE/PreciseSums/include" -I/usr/local/include   -fPIC   -Wall -pedantic -O0 -c orderswitch.c -o orderswitch.o
-clang -I"/Library/Frameworks/R.framework/Resources/include" -DNDEBUG  -I"/Users/lionel/Desktop/rlang/revdep/library.noindex/RxODE/dparser/include" -I"/Users/lionel/Desktop/rlang/revdep/library.noindex/RxODE/Rcpp/include" -I"/Users/lionel/Desktop/rlang/revdep/library.noindex/RxODE/RcppArmadillo/include" -I"/Users/lionel/Desktop/rlang/revdep/library.noindex/RxODE/PreciseSums/include" -I/usr/local/include   -fPIC   -Wall -pedantic -O0 -c prja.c -o prja.o
-clang -I"/Library/Frameworks/R.framework/Resources/include" -DNDEBUG  -I"/Users/lionel/Desktop/rlang/revdep/library.noindex/RxODE/dparser/include" -I"/Users/lionel/Desktop/rlang/revdep/library.noindex/RxODE/Rcpp/include" -I"/Users/lionel/Desktop/rlang/revdep/library.noindex/RxODE/RcppArmadillo/include" -I"/Users/lionel/Desktop/rlang/revdep/library.noindex/RxODE/PreciseSums/include" -I/usr/local/include   -fPIC   -Wall -pedantic -O0 -c scaleh.c -o scaleh.o
-clang -I"/Library/Frameworks/R.framework/Resources/include" -DNDEBUG  -I"/Users/lionel/Desktop/rlang/revdep/library.noindex/RxODE/dparser/include" -I"/Users/lionel/Desktop/rlang/revdep/library.noindex/RxODE/Rcpp/include" -I"/Users/lionel/Desktop/rlang/revdep/library.noindex/RxODE/RcppArmadillo/include" -I"/Users/lionel/Desktop/rlang/revdep/library.noindex/RxODE/PreciseSums/include" -I/usr/local/include   -fPIC   -Wall -pedantic -O0 -c solsy.c -o solsy.o
-clang -I"/Library/Frameworks/R.framework/Resources/include" -DNDEBUG  -I"/Users/lionel/Desktop/rlang/revdep/library.noindex/RxODE/dparser/include" -I"/Users/lionel/Desktop/rlang/revdep/library.noindex/RxODE/Rcpp/include" -I"/Users/lionel/Desktop/rlang/revdep/library.noindex/RxODE/RcppArmadillo/include" -I"/Users/lionel/Desktop/rlang/revdep/library.noindex/RxODE/PreciseSums/include" -I/usr/local/include   -fPIC   -Wall -pedantic -O0 -c stoda.c -o stoda.o
-clang -I"/Library/Frameworks/R.framework/Resources/include" -DNDEBUG  -I"/Users/lionel/Desktop/rlang/revdep/library.noindex/RxODE/dparser/include" -I"/Users/lionel/Desktop/rlang/revdep/library.noindex/RxODE/Rcpp/include" -I"/Users/lionel/Desktop/rlang/revdep/library.noindex/RxODE/RcppArmadillo/include" -I"/Users/lionel/Desktop/rlang/revdep/library.noindex/RxODE/PreciseSums/include" -I/usr/local/include   -fPIC   -Wall -pedantic -O0 -c vmnorm.c -o vmnorm.o
-clang -I"/Library/Frameworks/R.framework/Resources/include" -DNDEBUG  -I"/Users/lionel/Desktop/rlang/revdep/library.noindex/RxODE/dparser/include" -I"/Users/lionel/Desktop/rlang/revdep/library.noindex/RxODE/Rcpp/include" -I"/Users/lionel/Desktop/rlang/revdep/library.noindex/RxODE/RcppArmadillo/include" -I"/Users/lionel/Desktop/rlang/revdep/library.noindex/RxODE/PreciseSums/include" -I/usr/local/include   -fPIC   -Wall -pedantic -O0 -c strdup_printf.c -o strdup_printf.o
-clang -I"/Library/Frameworks/R.framework/Resources/include" -DNDEBUG  -I"/Users/lionel/Desktop/rlang/revdep/library.noindex/RxODE/dparser/include" -I"/Users/lionel/Desktop/rlang/revdep/library.noindex/RxODE/Rcpp/include" -I"/Users/lionel/Desktop/rlang/revdep/library.noindex/RxODE/RcppArmadillo/include" -I"/Users/lionel/Desktop/rlang/revdep/library.noindex/RxODE/PreciseSums/include" -I/usr/local/include   -fPIC   -Wall -pedantic -O0 -c rprintf.c -o rprintf.o
-clang -I"/Library/Frameworks/R.framework/Resources/include" -DNDEBUG  -I"/Users/lionel/Desktop/rlang/revdep/library.noindex/RxODE/dparser/include" -I"/Users/lionel/Desktop/rlang/revdep/library.noindex/RxODE/Rcpp/include" -I"/Users/lionel/Desktop/rlang/revdep/library.noindex/RxODE/RcppArmadillo/include" -I"/Users/lionel/Desktop/rlang/revdep/library.noindex/RxODE/PreciseSums/include" -I/usr/local/include   -fPIC   -Wall -pedantic -O0 -c box.c -o box.o
-clang -I"/Library/Frameworks/R.framework/Resources/include" -DNDEBUG  -I"/Users/lionel/Desktop/rlang/revdep/library.noindex/RxODE/dparser/include" -I"/Users/lionel/Desktop/rlang/revdep/library.noindex/RxODE/Rcpp/include" -I"/Users/lionel/Desktop/rlang/revdep/library.noindex/RxODE/RcppArmadillo/include" -I"/Users/lionel/Desktop/rlang/revdep/library.noindex/RxODE/PreciseSums/include" -I/usr/local/include   -fPIC   -Wall -pedantic -O0 -c lbfgsR.c -o lbfgsR.o
-clang -I"/Library/Frameworks/R.framework/Resources/include" -DNDEBUG  -I"/Users/lionel/Desktop/rlang/revdep/library.noindex/RxODE/dparser/include" -I"/Users/lionel/Desktop/rlang/revdep/library.noindex/RxODE/Rcpp/include" -I"/Users/lionel/Desktop/rlang/revdep/library.noindex/RxODE/RcppArmadillo/include" -I"/Users/lionel/Desktop/rlang/revdep/library.noindex/RxODE/PreciseSums/include" -I/usr/local/include   -fPIC   -Wall -pedantic -O0 -c lincmt.c -o lincmt.o
+gcc-8 -I"/Library/Frameworks/R.framework/Resources/include" -DNDEBUG -fopenmp -I"/Users/lionel/Desktop/rlang/revdep/library.noindex/RxODE/dparser/include" -I"/Users/lionel/Desktop/rlang/revdep/library.noindex/RxODE/Rcpp/include" -I"/Users/lionel/Desktop/rlang/revdep/library.noindex/RxODE/RcppArmadillo/include" -I"/Users/lionel/Desktop/rlang/revdep/library.noindex/RxODE/PreciseSums/include" -I/usr/local/include  -fopenmp -fPIC   -Wall -pedantic -O0 -c call_dvode.c -o call_dvode.o
+gcc-8 -I"/Library/Frameworks/R.framework/Resources/include" -DNDEBUG -fopenmp -I"/Users/lionel/Desktop/rlang/revdep/library.noindex/RxODE/dparser/include" -I"/Users/lionel/Desktop/rlang/revdep/library.noindex/RxODE/Rcpp/include" -I"/Users/lionel/Desktop/rlang/revdep/library.noindex/RxODE/RcppArmadillo/include" -I"/Users/lionel/Desktop/rlang/revdep/library.noindex/RxODE/PreciseSums/include" -I/usr/local/include  -fopenmp -fPIC   -Wall -pedantic -O0 -c dop853.c -o dop853.o
+gcc-8 -I"/Library/Frameworks/R.framework/Resources/include" -DNDEBUG -fopenmp -I"/Users/lionel/Desktop/rlang/revdep/library.noindex/RxODE/dparser/include" -I"/Users/lionel/Desktop/rlang/revdep/library.noindex/RxODE/Rcpp/include" -I"/Users/lionel/Desktop/rlang/revdep/library.noindex/RxODE/RcppArmadillo/include" -I"/Users/lionel/Desktop/rlang/revdep/library.noindex/RxODE/PreciseSums/include" -I/usr/local/include  -fopenmp -fPIC   -Wall -pedantic -O0 -c tran.c -o tran.o
+gcc-8 -I"/Library/Frameworks/R.framework/Resources/include" -DNDEBUG -fopenmp -I"/Users/lionel/Desktop/rlang/revdep/library.noindex/RxODE/dparser/include" -I"/Users/lionel/Desktop/rlang/revdep/library.noindex/RxODE/Rcpp/include" -I"/Users/lionel/Desktop/rlang/revdep/library.noindex/RxODE/RcppArmadillo/include" -I"/Users/lionel/Desktop/rlang/revdep/library.noindex/RxODE/PreciseSums/include" -I/usr/local/include  -fopenmp -fPIC   -Wall -pedantic -O0 -c omegaChol.c -o omegaChol.o
+gcc-8 -I"/Library/Frameworks/R.framework/Resources/include" -DNDEBUG -fopenmp -I"/Users/lionel/Desktop/rlang/revdep/library.noindex/RxODE/dparser/include" -I"/Users/lionel/Desktop/rlang/revdep/library.noindex/RxODE/Rcpp/include" -I"/Users/lionel/Desktop/rlang/revdep/library.noindex/RxODE/RcppArmadillo/include" -I"/Users/lionel/Desktop/rlang/revdep/library.noindex/RxODE/PreciseSums/include" -I/usr/local/include  -fopenmp -fPIC   -Wall -pedantic -O0 -c init.c -o init.o
+gcc-8 -I"/Library/Frameworks/R.framework/Resources/include" -DNDEBUG -fopenmp -I"/Users/lionel/Desktop/rlang/revdep/library.noindex/RxODE/dparser/include" -I"/Users/lionel/Desktop/rlang/revdep/library.noindex/RxODE/Rcpp/include" -I"/Users/lionel/Desktop/rlang/revdep/library.noindex/RxODE/RcppArmadillo/include" -I"/Users/lionel/Desktop/rlang/revdep/library.noindex/RxODE/PreciseSums/include" -I/usr/local/include  -fopenmp -fPIC   -Wall -pedantic -O0 -c par_solve.c -o par_solve.o
+gcc-8 -I"/Library/Frameworks/R.framework/Resources/include" -DNDEBUG -fopenmp -I"/Users/lionel/Desktop/rlang/revdep/library.noindex/RxODE/dparser/include" -I"/Users/lionel/Desktop/rlang/revdep/library.noindex/RxODE/Rcpp/include" -I"/Users/lionel/Desktop/rlang/revdep/library.noindex/RxODE/RcppArmadillo/include" -I"/Users/lionel/Desktop/rlang/revdep/library.noindex/RxODE/PreciseSums/include" -I/usr/local/include  -fopenmp -fPIC   -Wall -pedantic -O0 -c cfode.c -o cfode.o
+gcc-8 -I"/Library/Frameworks/R.framework/Resources/include" -DNDEBUG -fopenmp -I"/Users/lionel/Desktop/rlang/revdep/library.noindex/RxODE/dparser/include" -I"/Users/lionel/Desktop/rlang/revdep/library.noindex/RxODE/Rcpp/include" -I"/Users/lionel/Desktop/rlang/revdep/library.noindex/RxODE/RcppArmadillo/include" -I"/Users/lionel/Desktop/rlang/revdep/library.noindex/RxODE/PreciseSums/include" -I/usr/local/include  -fopenmp -fPIC   -Wall -pedantic -O0 -c common.c -o common.o
+gcc-8 -I"/Library/Frameworks/R.framework/Resources/include" -DNDEBUG -fopenmp -I"/Users/lionel/Desktop/rlang/revdep/library.noindex/RxODE/dparser/include" -I"/Users/lionel/Desktop/rlang/revdep/library.noindex/RxODE/Rcpp/include" -I"/Users/lionel/Desktop/rlang/revdep/library.noindex/RxODE/RcppArmadillo/include" -I"/Users/lionel/Desktop/rlang/revdep/library.noindex/RxODE/PreciseSums/include" -I/usr/local/include  -fopenmp -fPIC   -Wall -pedantic -O0 -c corfailure.c -o corfailure.o
+gcc-8 -I"/Library/Frameworks/R.framework/Resources/include" -DNDEBUG -fopenmp -I"/Users/lionel/Desktop/rlang/revdep/library.noindex/RxODE/dparser/include" -I"/Users/lionel/Desktop/rlang/revdep/library.noindex/RxODE/Rcpp/include" -I"/Users/lionel/Desktop/rlang/revdep/library.noindex/RxODE/RcppArmadillo/include" -I"/Users/lionel/Desktop/rlang/revdep/library.noindex/RxODE/PreciseSums/include" -I/usr/local/include  -fopenmp -fPIC   -Wall -pedantic -O0 -c correction.c -o correction.o
+gcc-8 -I"/Library/Frameworks/R.framework/Resources/include" -DNDEBUG -fopenmp -I"/Users/lionel/Desktop/rlang/revdep/library.noindex/RxODE/dparser/include" -I"/Users/lionel/Desktop/rlang/revdep/library.noindex/RxODE/Rcpp/include" -I"/Users/lionel/Desktop/rlang/revdep/library.noindex/RxODE/RcppArmadillo/include" -I"/Users/lionel/Desktop/rlang/revdep/library.noindex/RxODE/PreciseSums/include" -I/usr/local/include  -fopenmp -fPIC   -Wall -pedantic -O0 -c daxpy.c -o daxpy.o
+gcc-8 -I"/Library/Frameworks/R.framework/Resources/include" -DNDEBUG -fopenmp -I"/Users/lionel/Desktop/rlang/revdep/library.noindex/RxODE/dparser/include" -I"/Users/lionel/Desktop/rlang/revdep/library.noindex/RxODE/Rcpp/include" -I"/Users/lionel/Desktop/rlang/revdep/library.noindex/RxODE/RcppArmadillo/include" -I"/Users/lionel/Desktop/rlang/revdep/library.noindex/RxODE/PreciseSums/include" -I/usr/local/include  -fopenmp -fPIC   -Wall -pedantic -O0 -c ddot.c -o ddot.o
+gcc-8 -I"/Library/Frameworks/R.framework/Resources/include" -DNDEBUG -fopenmp -I"/Users/lionel/Desktop/rlang/revdep/library.noindex/RxODE/dparser/include" -I"/Users/lionel/Desktop/rlang/revdep/library.noindex/RxODE/Rcpp/include" -I"/Users/lionel/Desktop/rlang/revdep/library.noindex/RxODE/RcppArmadillo/include" -I"/Users/lionel/Desktop/rlang/revdep/library.noindex/RxODE/PreciseSums/include" -I/usr/local/include  -fopenmp -fPIC   -Wall -pedantic -O0 -c dgefa.c -o dgefa.o
+gcc-8 -I"/Library/Frameworks/R.framework/Resources/include" -DNDEBUG -fopenmp -I"/Users/lionel/Desktop/rlang/revdep/library.noindex/RxODE/dparser/include" -I"/Users/lionel/Desktop/rlang/revdep/library.noindex/RxODE/Rcpp/include" -I"/Users/lionel/Desktop/rlang/revdep/library.noindex/RxODE/RcppArmadillo/include" -I"/Users/lionel/Desktop/rlang/revdep/library.noindex/RxODE/PreciseSums/include" -I/usr/local/include  -fopenmp -fPIC   -Wall -pedantic -O0 -c dgesl.c -o dgesl.o
+gcc-8 -I"/Library/Frameworks/R.framework/Resources/include" -DNDEBUG -fopenmp -I"/Users/lionel/Desktop/rlang/revdep/library.noindex/RxODE/dparser/include" -I"/Users/lionel/Desktop/rlang/revdep/library.noindex/RxODE/Rcpp/include" -I"/Users/lionel/Desktop/rlang/revdep/library.noindex/RxODE/RcppArmadillo/include" -I"/Users/lionel/Desktop/rlang/revdep/library.noindex/RxODE/PreciseSums/include" -I/usr/local/include  -fopenmp -fPIC   -Wall -pedantic -O0 -c dscal.c -o dscal.o
+gcc-8 -I"/Library/Frameworks/R.framework/Resources/include" -DNDEBUG -fopenmp -I"/Users/lionel/Desktop/rlang/revdep/library.noindex/RxODE/dparser/include" -I"/Users/lionel/Desktop/rlang/revdep/library.noindex/RxODE/Rcpp/include" -I"/Users/lionel/Desktop/rlang/revdep/library.noindex/RxODE/RcppArmadillo/include" -I"/Users/lionel/Desktop/rlang/revdep/library.noindex/RxODE/PreciseSums/include" -I/usr/local/include  -fopenmp -fPIC   -Wall -pedantic -O0 -c fnorm.c -o fnorm.o
+gcc-8 -I"/Library/Frameworks/R.framework/Resources/include" -DNDEBUG -fopenmp -I"/Users/lionel/Desktop/rlang/revdep/library.noindex/RxODE/dparser/include" -I"/Users/lionel/Desktop/rlang/revdep/library.noindex/RxODE/Rcpp/include" -I"/Users/lionel/Desktop/rlang/revdep/library.noindex/RxODE/RcppArmadillo/include" -I"/Users/lionel/Desktop/rlang/revdep/library.noindex/RxODE/PreciseSums/include" -I/usr/local/include  -fopenmp -fPIC   -Wall -pedantic -O0 -c idamax.c -o idamax.o
+gcc-8 -I"/Library/Frameworks/R.framework/Resources/include" -DNDEBUG -fopenmp -I"/Users/lionel/Desktop/rlang/revdep/library.noindex/RxODE/dparser/include" -I"/Users/lionel/Desktop/rlang/revdep/library.noindex/RxODE/Rcpp/include" -I"/Users/lionel/Desktop/rlang/revdep/library.noindex/RxODE/RcppArmadillo/include" -I"/Users/lionel/Desktop/rlang/revdep/library.noindex/RxODE/PreciseSums/include" -I/usr/local/include  -fopenmp -fPIC   -Wall -pedantic -O0 -c intdy.c -o intdy.o
+gcc-8 -I"/Library/Frameworks/R.framework/Resources/include" -DNDEBUG -fopenmp -I"/Users/lionel/Desktop/rlang/revdep/library.noindex/RxODE/dparser/include" -I"/Users/lionel/Desktop/rlang/revdep/library.noindex/RxODE/Rcpp/include" -I"/Users/lionel/Desktop/rlang/revdep/library.noindex/RxODE/RcppArmadillo/include" -I"/Users/lionel/Desktop/rlang/revdep/library.noindex/RxODE/PreciseSums/include" -I/usr/local/include  -fopenmp -fPIC   -Wall -pedantic -O0 -c lsoda.c -o lsoda.o
+gcc-8 -I"/Library/Frameworks/R.framework/Resources/include" -DNDEBUG -fopenmp -I"/Users/lionel/Desktop/rlang/revdep/library.noindex/RxODE/dparser/include" -I"/Users/lionel/Desktop/rlang/revdep/library.noindex/RxODE/Rcpp/include" -I"/Users/lionel/Desktop/rlang/revdep/library.noindex/RxODE/RcppArmadillo/include" -I"/Users/lionel/Desktop/rlang/revdep/library.noindex/RxODE/PreciseSums/include" -I/usr/local/include  -fopenmp -fPIC   -Wall -pedantic -O0 -c methodswitch.c -o methodswitch.o
+gcc-8 -I"/Library/Frameworks/R.framework/Resources/include" -DNDEBUG -fopenmp -I"/Users/lionel/Desktop/rlang/revdep/library.noindex/RxODE/dparser/include" -I"/Users/lionel/Desktop/rlang/revdep/library.noindex/RxODE/Rcpp/include" -I"/Users/lionel/Desktop/rlang/revdep/library.noindex/RxODE/RcppArmadillo/include" -I"/Users/lionel/Desktop/rlang/revdep/library.noindex/RxODE/PreciseSums/include" -I/usr/local/include  -fopenmp -fPIC   -Wall -pedantic -O0 -c orderswitch.c -o orderswitch.o
+gcc-8 -I"/Library/Frameworks/R.framework/Resources/include" -DNDEBUG -fopenmp -I"/Users/lionel/Desktop/rlang/revdep/library.noindex/RxODE/dparser/include" -I"/Users/lionel/Desktop/rlang/revdep/library.noindex/RxODE/Rcpp/include" -I"/Users/lionel/Desktop/rlang/revdep/library.noindex/RxODE/RcppArmadillo/include" -I"/Users/lionel/Desktop/rlang/revdep/library.noindex/RxODE/PreciseSums/include" -I/usr/local/include  -fopenmp -fPIC   -Wall -pedantic -O0 -c prja.c -o prja.o
+gcc-8 -I"/Library/Frameworks/R.framework/Resources/include" -DNDEBUG -fopenmp -I"/Users/lionel/Desktop/rlang/revdep/library.noindex/RxODE/dparser/include" -I"/Users/lionel/Desktop/rlang/revdep/library.noindex/RxODE/Rcpp/include" -I"/Users/lionel/Desktop/rlang/revdep/library.noindex/RxODE/RcppArmadillo/include" -I"/Users/lionel/Desktop/rlang/revdep/library.noindex/RxODE/PreciseSums/include" -I/usr/local/include  -fopenmp -fPIC   -Wall -pedantic -O0 -c scaleh.c -o scaleh.o
+gcc-8 -I"/Library/Frameworks/R.framework/Resources/include" -DNDEBUG -fopenmp -I"/Users/lionel/Desktop/rlang/revdep/library.noindex/RxODE/dparser/include" -I"/Users/lionel/Desktop/rlang/revdep/library.noindex/RxODE/Rcpp/include" -I"/Users/lionel/Desktop/rlang/revdep/library.noindex/RxODE/RcppArmadillo/include" -I"/Users/lionel/Desktop/rlang/revdep/library.noindex/RxODE/PreciseSums/include" -I/usr/local/include  -fopenmp -fPIC   -Wall -pedantic -O0 -c solsy.c -o solsy.o
+gcc-8 -I"/Library/Frameworks/R.framework/Resources/include" -DNDEBUG -fopenmp -I"/Users/lionel/Desktop/rlang/revdep/library.noindex/RxODE/dparser/include" -I"/Users/lionel/Desktop/rlang/revdep/library.noindex/RxODE/Rcpp/include" -I"/Users/lionel/Desktop/rlang/revdep/library.noindex/RxODE/RcppArmadillo/include" -I"/Users/lionel/Desktop/rlang/revdep/library.noindex/RxODE/PreciseSums/include" -I/usr/local/include  -fopenmp -fPIC   -Wall -pedantic -O0 -c stoda.c -o stoda.o
+gcc-8 -I"/Library/Frameworks/R.framework/Resources/include" -DNDEBUG -fopenmp -I"/Users/lionel/Desktop/rlang/revdep/library.noindex/RxODE/dparser/include" -I"/Users/lionel/Desktop/rlang/revdep/library.noindex/RxODE/Rcpp/include" -I"/Users/lionel/Desktop/rlang/revdep/library.noindex/RxODE/RcppArmadillo/include" -I"/Users/lionel/Desktop/rlang/revdep/library.noindex/RxODE/PreciseSums/include" -I/usr/local/include  -fopenmp -fPIC   -Wall -pedantic -O0 -c vmnorm.c -o vmnorm.o
+gcc-8 -I"/Library/Frameworks/R.framework/Resources/include" -DNDEBUG -fopenmp -I"/Users/lionel/Desktop/rlang/revdep/library.noindex/RxODE/dparser/include" -I"/Users/lionel/Desktop/rlang/revdep/library.noindex/RxODE/Rcpp/include" -I"/Users/lionel/Desktop/rlang/revdep/library.noindex/RxODE/RcppArmadillo/include" -I"/Users/lionel/Desktop/rlang/revdep/library.noindex/RxODE/PreciseSums/include" -I/usr/local/include  -fopenmp -fPIC   -Wall -pedantic -O0 -c strdup_printf.c -o strdup_printf.o
+gcc-8 -I"/Library/Frameworks/R.framework/Resources/include" -DNDEBUG -fopenmp -I"/Users/lionel/Desktop/rlang/revdep/library.noindex/RxODE/dparser/include" -I"/Users/lionel/Desktop/rlang/revdep/library.noindex/RxODE/Rcpp/include" -I"/Users/lionel/Desktop/rlang/revdep/library.noindex/RxODE/RcppArmadillo/include" -I"/Users/lionel/Desktop/rlang/revdep/library.noindex/RxODE/PreciseSums/include" -I/usr/local/include  -fopenmp -fPIC   -Wall -pedantic -O0 -c rprintf.c -o rprintf.o
+gcc-8 -I"/Library/Frameworks/R.framework/Resources/include" -DNDEBUG -fopenmp -I"/Users/lionel/Desktop/rlang/revdep/library.noindex/RxODE/dparser/include" -I"/Users/lionel/Desktop/rlang/revdep/library.noindex/RxODE/Rcpp/include" -I"/Users/lionel/Desktop/rlang/revdep/library.noindex/RxODE/RcppArmadillo/include" -I"/Users/lionel/Desktop/rlang/revdep/library.noindex/RxODE/PreciseSums/include" -I/usr/local/include  -fopenmp -fPIC   -Wall -pedantic -O0 -c box.c -o box.o
+gcc-8 -I"/Library/Frameworks/R.framework/Resources/include" -DNDEBUG -fopenmp -I"/Users/lionel/Desktop/rlang/revdep/library.noindex/RxODE/dparser/include" -I"/Users/lionel/Desktop/rlang/revdep/library.noindex/RxODE/Rcpp/include" -I"/Users/lionel/Desktop/rlang/revdep/library.noindex/RxODE/RcppArmadillo/include" -I"/Users/lionel/Desktop/rlang/revdep/library.noindex/RxODE/PreciseSums/include" -I/usr/local/include  -fopenmp -fPIC   -Wall -pedantic -O0 -c lbfgsR.c -o lbfgsR.o
+gcc-8 -I"/Library/Frameworks/R.framework/Resources/include" -DNDEBUG -fopenmp -I"/Users/lionel/Desktop/rlang/revdep/library.noindex/RxODE/dparser/include" -I"/Users/lionel/Desktop/rlang/revdep/library.noindex/RxODE/Rcpp/include" -I"/Users/lionel/Desktop/rlang/revdep/library.noindex/RxODE/RcppArmadillo/include" -I"/Users/lionel/Desktop/rlang/revdep/library.noindex/RxODE/PreciseSums/include" -I/usr/local/include  -fopenmp -fPIC   -Wall -pedantic -O0 -c lincmt.c -o lincmt.o
 gfortran-7  -fPIC  -fPIC  -g -O2  -c dlsoda.f -o dlsoda.o
 make: gfortran-7: No such file or directory
 make: *** [dlsoda.o] Error 1
+make: *** Waiting for unfinished jobs....
 ERROR: compilation failed for package ‘RxODE’
 * removing ‘/Users/lionel/Desktop/rlang/revdep/checks.noindex/RxODE/new/RxODE.Rcheck/RxODE’
 
@@ -14347,16 +14747,17 @@ ERROR: compilation failed for package ‘RxODE’
 ```
 * installing *source* package ‘RxODE’ ...
 ** package ‘RxODE’ successfully unpacked and MD5 sums checked
-checking for gcc... clang
+checking for gcc... gcc-8
 checking whether the C compiler works... yes
 checking for C compiler default output file name... a.out
 checking for suffix of executables... 
 checking whether we are cross compiling... no
 checking for suffix of object files... o
 checking whether we are using the GNU C compiler... yes
-checking whether clang accepts -g... yes
-checking for clang option to accept ISO C89... none needed
-checking for clang option to support OpenMP... unsupported
+checking whether gcc-8 accepts -g... yes
+checking for gcc-8 option to accept ISO C89... none needed
+checking for gcc-8 option to support OpenMP... -fopenmp
+checking whether OpenMP will work in a package... yes
 configure: creating ./config.status
 config.status: creating src/Makevars
 --------[begin src/Makevars]--------
@@ -14365,12 +14766,12 @@ CXX_STD     = CXX11
 
 ################################################################################
 ## Package library flags.
-PKG_LIBS    = $(LAPACK_LIBS) $(BLAS_LIBS) $(FLIBS) 
+PKG_LIBS    = $(LAPACK_LIBS) $(BLAS_LIBS) $(FLIBS) -fopenmp
 ## add -lprofiler for access to gperftools;  You also have to have -g
 ## https://stackoverflow.com/questions/13224322/profiling-rcpp-code-on-os-x
 ## -Wl,--no-as-needed -lprofiler -Wl,--as-needed
 ## Clang UBSAN requires -lubsan
-# PKG_LIBS    = $(LAPACK_LIBS) $(BLAS_LIBS) $(FLIBS)  -lubsan
+# PKG_LIBS    = $(LAPACK_LIBS) $(BLAS_LIBS) $(FLIBS) -fopenmp -lubsan
 
 ################################################################################
 ## Compiling flags
@@ -14378,26 +14779,26 @@ PKG_LIBS    = $(LAPACK_LIBS) $(BLAS_LIBS) $(FLIBS)
 ## fsanitize=address = ASAN debugging with gcc
 # PKG_FFLAGS  = -g -ggdb -O0 -fno-inline-functions -fsanitize=address,undefined,bounds-strict -fno-omit-frame-pointer -Wall -Wextra $(FPICFLAGS) 
 # PKG_FCFLAGS = -g -ggdb -O0 -fno-inline-functions -fsanitize=address,undefined,bounds-strict -fno-omit-frame-pointer -Wall -Wextra $(FPICFLAGS)
-# PKG_CFLAGS  = -g -ggdb -O0 -fno-inline-functions -fsanitize=address,undefined,bounds-strict -fno-omit-frame-pointer -Wall -Wextra 
-# PKG_CPPFLAGS = -g -ggdb -O0 -fno-inline-functions -fsanitize=address,undefined,bounds-strict -fno-omit-frame-pointer -Wall -Wextra 
+# PKG_CFLAGS  = -g -ggdb -O0 -fno-inline-functions -fsanitize=address,undefined,bounds-strict -fno-omit-frame-pointer -Wall -Wextra -fopenmp
+# PKG_CPPFLAGS = -g -ggdb -O0 -fno-inline-functions -fsanitize=address,undefined,bounds-strict -fno-omit-frame-pointer -Wall -Wextra -fopenmp
 
 # Clang UBSAN debugging
 # PKG_FFLAGS  = -g -fsanitize=address,undefined -fno-sanitize=float-divide-by-zero -fno-omit-frame-pointer $(FPICFLAGS) 
 # PKG_FCFLAGS = -g -fsanitize=address,undefined -fno-sanitize=float-divide-by-zero -fno-omit-frame-pointer -frtti $(FPICFLAGS)
-# PKG_CFLAGS  = -g -fsanitize=address,undefined -fno-sanitize=float-divide-by-zero -fno-omit-frame-pointer -frtti 
-# PKG_CPPFLAGS = -g -fsanitize=address,undefined -fno-sanitize=float-divide-by-zero -fno-omit-frame-pointer -frtti 
+# PKG_CFLAGS  = -g -fsanitize=address,undefined -fno-sanitize=float-divide-by-zero -fno-omit-frame-pointer -frtti -fopenmp
+# PKG_CPPFLAGS = -g -fsanitize=address,undefined -fno-sanitize=float-divide-by-zero -fno-omit-frame-pointer -frtti -fopenmp
 
 ## Standard debug for gdb and valgrind
 # PKG_FFLAGS  = -g -ggdb -O0 -Wall -Wextra $(FPICFLAGS) 
 # PKG_FCFLAGS = -g -ggdb -O0 -Wall -Wextra $(FPICFLAGS)
-# PKG_CFLAGS  = -g -ggdb -O0 -Wall -Wextra 
-# PKG_CPPFLAGS = -g -ggdb -O0 -Wall -Wextra 
+# PKG_CFLAGS  = -g -ggdb -O0 -Wall -Wextra -fopenmp
+# PKG_CPPFLAGS = -g -ggdb -O0 -Wall -Wextra -fopenmp
 
 # Release options
 PKG_FFLAGS  = $(FPICFLAGS) 
 PKG_FCFLAGS = $(FPICFLAGS)
-PKG_CFLAGS  =  
-PKG_CPPFLAGS = 
+PKG_CFLAGS  =  -fopenmp
+PKG_CPPFLAGS = -fopenmp
 
 SOURCES_C = call_dvode.c dop853.c tran.c omegaChol.c init.c par_solve.c cfode.c common.c corfailure.c correction.c daxpy.c ddot.c dgefa.c dgesl.c dscal.c fnorm.c idamax.c intdy.c lsoda.c methodswitch.c orderswitch.c prja.c scaleh.c solsy.c stoda.c vmnorm.c strdup_printf.c rprintf.c box.c lbfgsR.c lincmt.c
 SOURCES_CPP = RcppExports.cpp WinDrive.cpp rxInv.cpp rxData.cpp eventTable.cpp inner.cpp
@@ -14408,40 +14809,41 @@ OBJECTS = $(SOURCES_C:.c=.o) $(SOURCES_FORTAN:.f=.o) $(SOURCES_CPP:.cpp=.o)
 
 --------[end src/Makevars]--------
 ** libs
-clang -I"/Library/Frameworks/R.framework/Resources/include" -DNDEBUG  -I"/Users/lionel/Desktop/rlang/revdep/library.noindex/RxODE/dparser/include" -I"/Users/lionel/Desktop/rlang/revdep/library.noindex/RxODE/Rcpp/include" -I"/Users/lionel/Desktop/rlang/revdep/library.noindex/RxODE/RcppArmadillo/include" -I"/Users/lionel/Desktop/rlang/revdep/library.noindex/RxODE/PreciseSums/include" -I/usr/local/include   -fPIC   -Wall -pedantic -O0 -c call_dvode.c -o call_dvode.o
-clang -I"/Library/Frameworks/R.framework/Resources/include" -DNDEBUG  -I"/Users/lionel/Desktop/rlang/revdep/library.noindex/RxODE/dparser/include" -I"/Users/lionel/Desktop/rlang/revdep/library.noindex/RxODE/Rcpp/include" -I"/Users/lionel/Desktop/rlang/revdep/library.noindex/RxODE/RcppArmadillo/include" -I"/Users/lionel/Desktop/rlang/revdep/library.noindex/RxODE/PreciseSums/include" -I/usr/local/include   -fPIC   -Wall -pedantic -O0 -c dop853.c -o dop853.o
-clang -I"/Library/Frameworks/R.framework/Resources/include" -DNDEBUG  -I"/Users/lionel/Desktop/rlang/revdep/library.noindex/RxODE/dparser/include" -I"/Users/lionel/Desktop/rlang/revdep/library.noindex/RxODE/Rcpp/include" -I"/Users/lionel/Desktop/rlang/revdep/library.noindex/RxODE/RcppArmadillo/include" -I"/Users/lionel/Desktop/rlang/revdep/library.noindex/RxODE/PreciseSums/include" -I/usr/local/include   -fPIC   -Wall -pedantic -O0 -c tran.c -o tran.o
-clang -I"/Library/Frameworks/R.framework/Resources/include" -DNDEBUG  -I"/Users/lionel/Desktop/rlang/revdep/library.noindex/RxODE/dparser/include" -I"/Users/lionel/Desktop/rlang/revdep/library.noindex/RxODE/Rcpp/include" -I"/Users/lionel/Desktop/rlang/revdep/library.noindex/RxODE/RcppArmadillo/include" -I"/Users/lionel/Desktop/rlang/revdep/library.noindex/RxODE/PreciseSums/include" -I/usr/local/include   -fPIC   -Wall -pedantic -O0 -c omegaChol.c -o omegaChol.o
-clang -I"/Library/Frameworks/R.framework/Resources/include" -DNDEBUG  -I"/Users/lionel/Desktop/rlang/revdep/library.noindex/RxODE/dparser/include" -I"/Users/lionel/Desktop/rlang/revdep/library.noindex/RxODE/Rcpp/include" -I"/Users/lionel/Desktop/rlang/revdep/library.noindex/RxODE/RcppArmadillo/include" -I"/Users/lionel/Desktop/rlang/revdep/library.noindex/RxODE/PreciseSums/include" -I/usr/local/include   -fPIC   -Wall -pedantic -O0 -c init.c -o init.o
-clang -I"/Library/Frameworks/R.framework/Resources/include" -DNDEBUG  -I"/Users/lionel/Desktop/rlang/revdep/library.noindex/RxODE/dparser/include" -I"/Users/lionel/Desktop/rlang/revdep/library.noindex/RxODE/Rcpp/include" -I"/Users/lionel/Desktop/rlang/revdep/library.noindex/RxODE/RcppArmadillo/include" -I"/Users/lionel/Desktop/rlang/revdep/library.noindex/RxODE/PreciseSums/include" -I/usr/local/include   -fPIC   -Wall -pedantic -O0 -c par_solve.c -o par_solve.o
-clang -I"/Library/Frameworks/R.framework/Resources/include" -DNDEBUG  -I"/Users/lionel/Desktop/rlang/revdep/library.noindex/RxODE/dparser/include" -I"/Users/lionel/Desktop/rlang/revdep/library.noindex/RxODE/Rcpp/include" -I"/Users/lionel/Desktop/rlang/revdep/library.noindex/RxODE/RcppArmadillo/include" -I"/Users/lionel/Desktop/rlang/revdep/library.noindex/RxODE/PreciseSums/include" -I/usr/local/include   -fPIC   -Wall -pedantic -O0 -c cfode.c -o cfode.o
-clang -I"/Library/Frameworks/R.framework/Resources/include" -DNDEBUG  -I"/Users/lionel/Desktop/rlang/revdep/library.noindex/RxODE/dparser/include" -I"/Users/lionel/Desktop/rlang/revdep/library.noindex/RxODE/Rcpp/include" -I"/Users/lionel/Desktop/rlang/revdep/library.noindex/RxODE/RcppArmadillo/include" -I"/Users/lionel/Desktop/rlang/revdep/library.noindex/RxODE/PreciseSums/include" -I/usr/local/include   -fPIC   -Wall -pedantic -O0 -c common.c -o common.o
-clang -I"/Library/Frameworks/R.framework/Resources/include" -DNDEBUG  -I"/Users/lionel/Desktop/rlang/revdep/library.noindex/RxODE/dparser/include" -I"/Users/lionel/Desktop/rlang/revdep/library.noindex/RxODE/Rcpp/include" -I"/Users/lionel/Desktop/rlang/revdep/library.noindex/RxODE/RcppArmadillo/include" -I"/Users/lionel/Desktop/rlang/revdep/library.noindex/RxODE/PreciseSums/include" -I/usr/local/include   -fPIC   -Wall -pedantic -O0 -c corfailure.c -o corfailure.o
-clang -I"/Library/Frameworks/R.framework/Resources/include" -DNDEBUG  -I"/Users/lionel/Desktop/rlang/revdep/library.noindex/RxODE/dparser/include" -I"/Users/lionel/Desktop/rlang/revdep/library.noindex/RxODE/Rcpp/include" -I"/Users/lionel/Desktop/rlang/revdep/library.noindex/RxODE/RcppArmadillo/include" -I"/Users/lionel/Desktop/rlang/revdep/library.noindex/RxODE/PreciseSums/include" -I/usr/local/include   -fPIC   -Wall -pedantic -O0 -c correction.c -o correction.o
-clang -I"/Library/Frameworks/R.framework/Resources/include" -DNDEBUG  -I"/Users/lionel/Desktop/rlang/revdep/library.noindex/RxODE/dparser/include" -I"/Users/lionel/Desktop/rlang/revdep/library.noindex/RxODE/Rcpp/include" -I"/Users/lionel/Desktop/rlang/revdep/library.noindex/RxODE/RcppArmadillo/include" -I"/Users/lionel/Desktop/rlang/revdep/library.noindex/RxODE/PreciseSums/include" -I/usr/local/include   -fPIC   -Wall -pedantic -O0 -c daxpy.c -o daxpy.o
-clang -I"/Library/Frameworks/R.framework/Resources/include" -DNDEBUG  -I"/Users/lionel/Desktop/rlang/revdep/library.noindex/RxODE/dparser/include" -I"/Users/lionel/Desktop/rlang/revdep/library.noindex/RxODE/Rcpp/include" -I"/Users/lionel/Desktop/rlang/revdep/library.noindex/RxODE/RcppArmadillo/include" -I"/Users/lionel/Desktop/rlang/revdep/library.noindex/RxODE/PreciseSums/include" -I/usr/local/include   -fPIC   -Wall -pedantic -O0 -c ddot.c -o ddot.o
-clang -I"/Library/Frameworks/R.framework/Resources/include" -DNDEBUG  -I"/Users/lionel/Desktop/rlang/revdep/library.noindex/RxODE/dparser/include" -I"/Users/lionel/Desktop/rlang/revdep/library.noindex/RxODE/Rcpp/include" -I"/Users/lionel/Desktop/rlang/revdep/library.noindex/RxODE/RcppArmadillo/include" -I"/Users/lionel/Desktop/rlang/revdep/library.noindex/RxODE/PreciseSums/include" -I/usr/local/include   -fPIC   -Wall -pedantic -O0 -c dgefa.c -o dgefa.o
-clang -I"/Library/Frameworks/R.framework/Resources/include" -DNDEBUG  -I"/Users/lionel/Desktop/rlang/revdep/library.noindex/RxODE/dparser/include" -I"/Users/lionel/Desktop/rlang/revdep/library.noindex/RxODE/Rcpp/include" -I"/Users/lionel/Desktop/rlang/revdep/library.noindex/RxODE/RcppArmadillo/include" -I"/Users/lionel/Desktop/rlang/revdep/library.noindex/RxODE/PreciseSums/include" -I/usr/local/include   -fPIC   -Wall -pedantic -O0 -c dgesl.c -o dgesl.o
-clang -I"/Library/Frameworks/R.framework/Resources/include" -DNDEBUG  -I"/Users/lionel/Desktop/rlang/revdep/library.noindex/RxODE/dparser/include" -I"/Users/lionel/Desktop/rlang/revdep/library.noindex/RxODE/Rcpp/include" -I"/Users/lionel/Desktop/rlang/revdep/library.noindex/RxODE/RcppArmadillo/include" -I"/Users/lionel/Desktop/rlang/revdep/library.noindex/RxODE/PreciseSums/include" -I/usr/local/include   -fPIC   -Wall -pedantic -O0 -c dscal.c -o dscal.o
-clang -I"/Library/Frameworks/R.framework/Resources/include" -DNDEBUG  -I"/Users/lionel/Desktop/rlang/revdep/library.noindex/RxODE/dparser/include" -I"/Users/lionel/Desktop/rlang/revdep/library.noindex/RxODE/Rcpp/include" -I"/Users/lionel/Desktop/rlang/revdep/library.noindex/RxODE/RcppArmadillo/include" -I"/Users/lionel/Desktop/rlang/revdep/library.noindex/RxODE/PreciseSums/include" -I/usr/local/include   -fPIC   -Wall -pedantic -O0 -c fnorm.c -o fnorm.o
-clang -I"/Library/Frameworks/R.framework/Resources/include" -DNDEBUG  -I"/Users/lionel/Desktop/rlang/revdep/library.noindex/RxODE/dparser/include" -I"/Users/lionel/Desktop/rlang/revdep/library.noindex/RxODE/Rcpp/include" -I"/Users/lionel/Desktop/rlang/revdep/library.noindex/RxODE/RcppArmadillo/include" -I"/Users/lionel/Desktop/rlang/revdep/library.noindex/RxODE/PreciseSums/include" -I/usr/local/include   -fPIC   -Wall -pedantic -O0 -c idamax.c -o idamax.o
-clang -I"/Library/Frameworks/R.framework/Resources/include" -DNDEBUG  -I"/Users/lionel/Desktop/rlang/revdep/library.noindex/RxODE/dparser/include" -I"/Users/lionel/Desktop/rlang/revdep/library.noindex/RxODE/Rcpp/include" -I"/Users/lionel/Desktop/rlang/revdep/library.noindex/RxODE/RcppArmadillo/include" -I"/Users/lionel/Desktop/rlang/revdep/library.noindex/RxODE/PreciseSums/include" -I/usr/local/include   -fPIC   -Wall -pedantic -O0 -c intdy.c -o intdy.o
-clang -I"/Library/Frameworks/R.framework/Resources/include" -DNDEBUG  -I"/Users/lionel/Desktop/rlang/revdep/library.noindex/RxODE/dparser/include" -I"/Users/lionel/Desktop/rlang/revdep/library.noindex/RxODE/Rcpp/include" -I"/Users/lionel/Desktop/rlang/revdep/library.noindex/RxODE/RcppArmadillo/include" -I"/Users/lionel/Desktop/rlang/revdep/library.noindex/RxODE/PreciseSums/include" -I/usr/local/include   -fPIC   -Wall -pedantic -O0 -c lsoda.c -o lsoda.o
-clang -I"/Library/Frameworks/R.framework/Resources/include" -DNDEBUG  -I"/Users/lionel/Desktop/rlang/revdep/library.noindex/RxODE/dparser/include" -I"/Users/lionel/Desktop/rlang/revdep/library.noindex/RxODE/Rcpp/include" -I"/Users/lionel/Desktop/rlang/revdep/library.noindex/RxODE/RcppArmadillo/include" -I"/Users/lionel/Desktop/rlang/revdep/library.noindex/RxODE/PreciseSums/include" -I/usr/local/include   -fPIC   -Wall -pedantic -O0 -c methodswitch.c -o methodswitch.o
-clang -I"/Library/Frameworks/R.framework/Resources/include" -DNDEBUG  -I"/Users/lionel/Desktop/rlang/revdep/library.noindex/RxODE/dparser/include" -I"/Users/lionel/Desktop/rlang/revdep/library.noindex/RxODE/Rcpp/include" -I"/Users/lionel/Desktop/rlang/revdep/library.noindex/RxODE/RcppArmadillo/include" -I"/Users/lionel/Desktop/rlang/revdep/library.noindex/RxODE/PreciseSums/include" -I/usr/local/include   -fPIC   -Wall -pedantic -O0 -c orderswitch.c -o orderswitch.o
-clang -I"/Library/Frameworks/R.framework/Resources/include" -DNDEBUG  -I"/Users/lionel/Desktop/rlang/revdep/library.noindex/RxODE/dparser/include" -I"/Users/lionel/Desktop/rlang/revdep/library.noindex/RxODE/Rcpp/include" -I"/Users/lionel/Desktop/rlang/revdep/library.noindex/RxODE/RcppArmadillo/include" -I"/Users/lionel/Desktop/rlang/revdep/library.noindex/RxODE/PreciseSums/include" -I/usr/local/include   -fPIC   -Wall -pedantic -O0 -c prja.c -o prja.o
-clang -I"/Library/Frameworks/R.framework/Resources/include" -DNDEBUG  -I"/Users/lionel/Desktop/rlang/revdep/library.noindex/RxODE/dparser/include" -I"/Users/lionel/Desktop/rlang/revdep/library.noindex/RxODE/Rcpp/include" -I"/Users/lionel/Desktop/rlang/revdep/library.noindex/RxODE/RcppArmadillo/include" -I"/Users/lionel/Desktop/rlang/revdep/library.noindex/RxODE/PreciseSums/include" -I/usr/local/include   -fPIC   -Wall -pedantic -O0 -c scaleh.c -o scaleh.o
-clang -I"/Library/Frameworks/R.framework/Resources/include" -DNDEBUG  -I"/Users/lionel/Desktop/rlang/revdep/library.noindex/RxODE/dparser/include" -I"/Users/lionel/Desktop/rlang/revdep/library.noindex/RxODE/Rcpp/include" -I"/Users/lionel/Desktop/rlang/revdep/library.noindex/RxODE/RcppArmadillo/include" -I"/Users/lionel/Desktop/rlang/revdep/library.noindex/RxODE/PreciseSums/include" -I/usr/local/include   -fPIC   -Wall -pedantic -O0 -c solsy.c -o solsy.o
-clang -I"/Library/Frameworks/R.framework/Resources/include" -DNDEBUG  -I"/Users/lionel/Desktop/rlang/revdep/library.noindex/RxODE/dparser/include" -I"/Users/lionel/Desktop/rlang/revdep/library.noindex/RxODE/Rcpp/include" -I"/Users/lionel/Desktop/rlang/revdep/library.noindex/RxODE/RcppArmadillo/include" -I"/Users/lionel/Desktop/rlang/revdep/library.noindex/RxODE/PreciseSums/include" -I/usr/local/include   -fPIC   -Wall -pedantic -O0 -c stoda.c -o stoda.o
-clang -I"/Library/Frameworks/R.framework/Resources/include" -DNDEBUG  -I"/Users/lionel/Desktop/rlang/revdep/library.noindex/RxODE/dparser/include" -I"/Users/lionel/Desktop/rlang/revdep/library.noindex/RxODE/Rcpp/include" -I"/Users/lionel/Desktop/rlang/revdep/library.noindex/RxODE/RcppArmadillo/include" -I"/Users/lionel/Desktop/rlang/revdep/library.noindex/RxODE/PreciseSums/include" -I/usr/local/include   -fPIC   -Wall -pedantic -O0 -c vmnorm.c -o vmnorm.o
-clang -I"/Library/Frameworks/R.framework/Resources/include" -DNDEBUG  -I"/Users/lionel/Desktop/rlang/revdep/library.noindex/RxODE/dparser/include" -I"/Users/lionel/Desktop/rlang/revdep/library.noindex/RxODE/Rcpp/include" -I"/Users/lionel/Desktop/rlang/revdep/library.noindex/RxODE/RcppArmadillo/include" -I"/Users/lionel/Desktop/rlang/revdep/library.noindex/RxODE/PreciseSums/include" -I/usr/local/include   -fPIC   -Wall -pedantic -O0 -c strdup_printf.c -o strdup_printf.o
-clang -I"/Library/Frameworks/R.framework/Resources/include" -DNDEBUG  -I"/Users/lionel/Desktop/rlang/revdep/library.noindex/RxODE/dparser/include" -I"/Users/lionel/Desktop/rlang/revdep/library.noindex/RxODE/Rcpp/include" -I"/Users/lionel/Desktop/rlang/revdep/library.noindex/RxODE/RcppArmadillo/include" -I"/Users/lionel/Desktop/rlang/revdep/library.noindex/RxODE/PreciseSums/include" -I/usr/local/include   -fPIC   -Wall -pedantic -O0 -c rprintf.c -o rprintf.o
-clang -I"/Library/Frameworks/R.framework/Resources/include" -DNDEBUG  -I"/Users/lionel/Desktop/rlang/revdep/library.noindex/RxODE/dparser/include" -I"/Users/lionel/Desktop/rlang/revdep/library.noindex/RxODE/Rcpp/include" -I"/Users/lionel/Desktop/rlang/revdep/library.noindex/RxODE/RcppArmadillo/include" -I"/Users/lionel/Desktop/rlang/revdep/library.noindex/RxODE/PreciseSums/include" -I/usr/local/include   -fPIC   -Wall -pedantic -O0 -c box.c -o box.o
-clang -I"/Library/Frameworks/R.framework/Resources/include" -DNDEBUG  -I"/Users/lionel/Desktop/rlang/revdep/library.noindex/RxODE/dparser/include" -I"/Users/lionel/Desktop/rlang/revdep/library.noindex/RxODE/Rcpp/include" -I"/Users/lionel/Desktop/rlang/revdep/library.noindex/RxODE/RcppArmadillo/include" -I"/Users/lionel/Desktop/rlang/revdep/library.noindex/RxODE/PreciseSums/include" -I/usr/local/include   -fPIC   -Wall -pedantic -O0 -c lbfgsR.c -o lbfgsR.o
-clang -I"/Library/Frameworks/R.framework/Resources/include" -DNDEBUG  -I"/Users/lionel/Desktop/rlang/revdep/library.noindex/RxODE/dparser/include" -I"/Users/lionel/Desktop/rlang/revdep/library.noindex/RxODE/Rcpp/include" -I"/Users/lionel/Desktop/rlang/revdep/library.noindex/RxODE/RcppArmadillo/include" -I"/Users/lionel/Desktop/rlang/revdep/library.noindex/RxODE/PreciseSums/include" -I/usr/local/include   -fPIC   -Wall -pedantic -O0 -c lincmt.c -o lincmt.o
+gcc-8 -I"/Library/Frameworks/R.framework/Resources/include" -DNDEBUG -fopenmp -I"/Users/lionel/Desktop/rlang/revdep/library.noindex/RxODE/dparser/include" -I"/Users/lionel/Desktop/rlang/revdep/library.noindex/RxODE/Rcpp/include" -I"/Users/lionel/Desktop/rlang/revdep/library.noindex/RxODE/RcppArmadillo/include" -I"/Users/lionel/Desktop/rlang/revdep/library.noindex/RxODE/PreciseSums/include" -I/usr/local/include  -fopenmp -fPIC   -Wall -pedantic -O0 -c call_dvode.c -o call_dvode.o
+gcc-8 -I"/Library/Frameworks/R.framework/Resources/include" -DNDEBUG -fopenmp -I"/Users/lionel/Desktop/rlang/revdep/library.noindex/RxODE/dparser/include" -I"/Users/lionel/Desktop/rlang/revdep/library.noindex/RxODE/Rcpp/include" -I"/Users/lionel/Desktop/rlang/revdep/library.noindex/RxODE/RcppArmadillo/include" -I"/Users/lionel/Desktop/rlang/revdep/library.noindex/RxODE/PreciseSums/include" -I/usr/local/include  -fopenmp -fPIC   -Wall -pedantic -O0 -c dop853.c -o dop853.o
+gcc-8 -I"/Library/Frameworks/R.framework/Resources/include" -DNDEBUG -fopenmp -I"/Users/lionel/Desktop/rlang/revdep/library.noindex/RxODE/dparser/include" -I"/Users/lionel/Desktop/rlang/revdep/library.noindex/RxODE/Rcpp/include" -I"/Users/lionel/Desktop/rlang/revdep/library.noindex/RxODE/RcppArmadillo/include" -I"/Users/lionel/Desktop/rlang/revdep/library.noindex/RxODE/PreciseSums/include" -I/usr/local/include  -fopenmp -fPIC   -Wall -pedantic -O0 -c tran.c -o tran.o
+gcc-8 -I"/Library/Frameworks/R.framework/Resources/include" -DNDEBUG -fopenmp -I"/Users/lionel/Desktop/rlang/revdep/library.noindex/RxODE/dparser/include" -I"/Users/lionel/Desktop/rlang/revdep/library.noindex/RxODE/Rcpp/include" -I"/Users/lionel/Desktop/rlang/revdep/library.noindex/RxODE/RcppArmadillo/include" -I"/Users/lionel/Desktop/rlang/revdep/library.noindex/RxODE/PreciseSums/include" -I/usr/local/include  -fopenmp -fPIC   -Wall -pedantic -O0 -c omegaChol.c -o omegaChol.o
+gcc-8 -I"/Library/Frameworks/R.framework/Resources/include" -DNDEBUG -fopenmp -I"/Users/lionel/Desktop/rlang/revdep/library.noindex/RxODE/dparser/include" -I"/Users/lionel/Desktop/rlang/revdep/library.noindex/RxODE/Rcpp/include" -I"/Users/lionel/Desktop/rlang/revdep/library.noindex/RxODE/RcppArmadillo/include" -I"/Users/lionel/Desktop/rlang/revdep/library.noindex/RxODE/PreciseSums/include" -I/usr/local/include  -fopenmp -fPIC   -Wall -pedantic -O0 -c init.c -o init.o
+gcc-8 -I"/Library/Frameworks/R.framework/Resources/include" -DNDEBUG -fopenmp -I"/Users/lionel/Desktop/rlang/revdep/library.noindex/RxODE/dparser/include" -I"/Users/lionel/Desktop/rlang/revdep/library.noindex/RxODE/Rcpp/include" -I"/Users/lionel/Desktop/rlang/revdep/library.noindex/RxODE/RcppArmadillo/include" -I"/Users/lionel/Desktop/rlang/revdep/library.noindex/RxODE/PreciseSums/include" -I/usr/local/include  -fopenmp -fPIC   -Wall -pedantic -O0 -c par_solve.c -o par_solve.o
+gcc-8 -I"/Library/Frameworks/R.framework/Resources/include" -DNDEBUG -fopenmp -I"/Users/lionel/Desktop/rlang/revdep/library.noindex/RxODE/dparser/include" -I"/Users/lionel/Desktop/rlang/revdep/library.noindex/RxODE/Rcpp/include" -I"/Users/lionel/Desktop/rlang/revdep/library.noindex/RxODE/RcppArmadillo/include" -I"/Users/lionel/Desktop/rlang/revdep/library.noindex/RxODE/PreciseSums/include" -I/usr/local/include  -fopenmp -fPIC   -Wall -pedantic -O0 -c cfode.c -o cfode.o
+gcc-8 -I"/Library/Frameworks/R.framework/Resources/include" -DNDEBUG -fopenmp -I"/Users/lionel/Desktop/rlang/revdep/library.noindex/RxODE/dparser/include" -I"/Users/lionel/Desktop/rlang/revdep/library.noindex/RxODE/Rcpp/include" -I"/Users/lionel/Desktop/rlang/revdep/library.noindex/RxODE/RcppArmadillo/include" -I"/Users/lionel/Desktop/rlang/revdep/library.noindex/RxODE/PreciseSums/include" -I/usr/local/include  -fopenmp -fPIC   -Wall -pedantic -O0 -c common.c -o common.o
+gcc-8 -I"/Library/Frameworks/R.framework/Resources/include" -DNDEBUG -fopenmp -I"/Users/lionel/Desktop/rlang/revdep/library.noindex/RxODE/dparser/include" -I"/Users/lionel/Desktop/rlang/revdep/library.noindex/RxODE/Rcpp/include" -I"/Users/lionel/Desktop/rlang/revdep/library.noindex/RxODE/RcppArmadillo/include" -I"/Users/lionel/Desktop/rlang/revdep/library.noindex/RxODE/PreciseSums/include" -I/usr/local/include  -fopenmp -fPIC   -Wall -pedantic -O0 -c corfailure.c -o corfailure.o
+gcc-8 -I"/Library/Frameworks/R.framework/Resources/include" -DNDEBUG -fopenmp -I"/Users/lionel/Desktop/rlang/revdep/library.noindex/RxODE/dparser/include" -I"/Users/lionel/Desktop/rlang/revdep/library.noindex/RxODE/Rcpp/include" -I"/Users/lionel/Desktop/rlang/revdep/library.noindex/RxODE/RcppArmadillo/include" -I"/Users/lionel/Desktop/rlang/revdep/library.noindex/RxODE/PreciseSums/include" -I/usr/local/include  -fopenmp -fPIC   -Wall -pedantic -O0 -c correction.c -o correction.o
+gcc-8 -I"/Library/Frameworks/R.framework/Resources/include" -DNDEBUG -fopenmp -I"/Users/lionel/Desktop/rlang/revdep/library.noindex/RxODE/dparser/include" -I"/Users/lionel/Desktop/rlang/revdep/library.noindex/RxODE/Rcpp/include" -I"/Users/lionel/Desktop/rlang/revdep/library.noindex/RxODE/RcppArmadillo/include" -I"/Users/lionel/Desktop/rlang/revdep/library.noindex/RxODE/PreciseSums/include" -I/usr/local/include  -fopenmp -fPIC   -Wall -pedantic -O0 -c daxpy.c -o daxpy.o
+gcc-8 -I"/Library/Frameworks/R.framework/Resources/include" -DNDEBUG -fopenmp -I"/Users/lionel/Desktop/rlang/revdep/library.noindex/RxODE/dparser/include" -I"/Users/lionel/Desktop/rlang/revdep/library.noindex/RxODE/Rcpp/include" -I"/Users/lionel/Desktop/rlang/revdep/library.noindex/RxODE/RcppArmadillo/include" -I"/Users/lionel/Desktop/rlang/revdep/library.noindex/RxODE/PreciseSums/include" -I/usr/local/include  -fopenmp -fPIC   -Wall -pedantic -O0 -c ddot.c -o ddot.o
+gcc-8 -I"/Library/Frameworks/R.framework/Resources/include" -DNDEBUG -fopenmp -I"/Users/lionel/Desktop/rlang/revdep/library.noindex/RxODE/dparser/include" -I"/Users/lionel/Desktop/rlang/revdep/library.noindex/RxODE/Rcpp/include" -I"/Users/lionel/Desktop/rlang/revdep/library.noindex/RxODE/RcppArmadillo/include" -I"/Users/lionel/Desktop/rlang/revdep/library.noindex/RxODE/PreciseSums/include" -I/usr/local/include  -fopenmp -fPIC   -Wall -pedantic -O0 -c dgefa.c -o dgefa.o
+gcc-8 -I"/Library/Frameworks/R.framework/Resources/include" -DNDEBUG -fopenmp -I"/Users/lionel/Desktop/rlang/revdep/library.noindex/RxODE/dparser/include" -I"/Users/lionel/Desktop/rlang/revdep/library.noindex/RxODE/Rcpp/include" -I"/Users/lionel/Desktop/rlang/revdep/library.noindex/RxODE/RcppArmadillo/include" -I"/Users/lionel/Desktop/rlang/revdep/library.noindex/RxODE/PreciseSums/include" -I/usr/local/include  -fopenmp -fPIC   -Wall -pedantic -O0 -c dgesl.c -o dgesl.o
+gcc-8 -I"/Library/Frameworks/R.framework/Resources/include" -DNDEBUG -fopenmp -I"/Users/lionel/Desktop/rlang/revdep/library.noindex/RxODE/dparser/include" -I"/Users/lionel/Desktop/rlang/revdep/library.noindex/RxODE/Rcpp/include" -I"/Users/lionel/Desktop/rlang/revdep/library.noindex/RxODE/RcppArmadillo/include" -I"/Users/lionel/Desktop/rlang/revdep/library.noindex/RxODE/PreciseSums/include" -I/usr/local/include  -fopenmp -fPIC   -Wall -pedantic -O0 -c dscal.c -o dscal.o
+gcc-8 -I"/Library/Frameworks/R.framework/Resources/include" -DNDEBUG -fopenmp -I"/Users/lionel/Desktop/rlang/revdep/library.noindex/RxODE/dparser/include" -I"/Users/lionel/Desktop/rlang/revdep/library.noindex/RxODE/Rcpp/include" -I"/Users/lionel/Desktop/rlang/revdep/library.noindex/RxODE/RcppArmadillo/include" -I"/Users/lionel/Desktop/rlang/revdep/library.noindex/RxODE/PreciseSums/include" -I/usr/local/include  -fopenmp -fPIC   -Wall -pedantic -O0 -c fnorm.c -o fnorm.o
+gcc-8 -I"/Library/Frameworks/R.framework/Resources/include" -DNDEBUG -fopenmp -I"/Users/lionel/Desktop/rlang/revdep/library.noindex/RxODE/dparser/include" -I"/Users/lionel/Desktop/rlang/revdep/library.noindex/RxODE/Rcpp/include" -I"/Users/lionel/Desktop/rlang/revdep/library.noindex/RxODE/RcppArmadillo/include" -I"/Users/lionel/Desktop/rlang/revdep/library.noindex/RxODE/PreciseSums/include" -I/usr/local/include  -fopenmp -fPIC   -Wall -pedantic -O0 -c idamax.c -o idamax.o
+gcc-8 -I"/Library/Frameworks/R.framework/Resources/include" -DNDEBUG -fopenmp -I"/Users/lionel/Desktop/rlang/revdep/library.noindex/RxODE/dparser/include" -I"/Users/lionel/Desktop/rlang/revdep/library.noindex/RxODE/Rcpp/include" -I"/Users/lionel/Desktop/rlang/revdep/library.noindex/RxODE/RcppArmadillo/include" -I"/Users/lionel/Desktop/rlang/revdep/library.noindex/RxODE/PreciseSums/include" -I/usr/local/include  -fopenmp -fPIC   -Wall -pedantic -O0 -c intdy.c -o intdy.o
+gcc-8 -I"/Library/Frameworks/R.framework/Resources/include" -DNDEBUG -fopenmp -I"/Users/lionel/Desktop/rlang/revdep/library.noindex/RxODE/dparser/include" -I"/Users/lionel/Desktop/rlang/revdep/library.noindex/RxODE/Rcpp/include" -I"/Users/lionel/Desktop/rlang/revdep/library.noindex/RxODE/RcppArmadillo/include" -I"/Users/lionel/Desktop/rlang/revdep/library.noindex/RxODE/PreciseSums/include" -I/usr/local/include  -fopenmp -fPIC   -Wall -pedantic -O0 -c lsoda.c -o lsoda.o
+gcc-8 -I"/Library/Frameworks/R.framework/Resources/include" -DNDEBUG -fopenmp -I"/Users/lionel/Desktop/rlang/revdep/library.noindex/RxODE/dparser/include" -I"/Users/lionel/Desktop/rlang/revdep/library.noindex/RxODE/Rcpp/include" -I"/Users/lionel/Desktop/rlang/revdep/library.noindex/RxODE/RcppArmadillo/include" -I"/Users/lionel/Desktop/rlang/revdep/library.noindex/RxODE/PreciseSums/include" -I/usr/local/include  -fopenmp -fPIC   -Wall -pedantic -O0 -c methodswitch.c -o methodswitch.o
+gcc-8 -I"/Library/Frameworks/R.framework/Resources/include" -DNDEBUG -fopenmp -I"/Users/lionel/Desktop/rlang/revdep/library.noindex/RxODE/dparser/include" -I"/Users/lionel/Desktop/rlang/revdep/library.noindex/RxODE/Rcpp/include" -I"/Users/lionel/Desktop/rlang/revdep/library.noindex/RxODE/RcppArmadillo/include" -I"/Users/lionel/Desktop/rlang/revdep/library.noindex/RxODE/PreciseSums/include" -I/usr/local/include  -fopenmp -fPIC   -Wall -pedantic -O0 -c orderswitch.c -o orderswitch.o
+gcc-8 -I"/Library/Frameworks/R.framework/Resources/include" -DNDEBUG -fopenmp -I"/Users/lionel/Desktop/rlang/revdep/library.noindex/RxODE/dparser/include" -I"/Users/lionel/Desktop/rlang/revdep/library.noindex/RxODE/Rcpp/include" -I"/Users/lionel/Desktop/rlang/revdep/library.noindex/RxODE/RcppArmadillo/include" -I"/Users/lionel/Desktop/rlang/revdep/library.noindex/RxODE/PreciseSums/include" -I/usr/local/include  -fopenmp -fPIC   -Wall -pedantic -O0 -c prja.c -o prja.o
+gcc-8 -I"/Library/Frameworks/R.framework/Resources/include" -DNDEBUG -fopenmp -I"/Users/lionel/Desktop/rlang/revdep/library.noindex/RxODE/dparser/include" -I"/Users/lionel/Desktop/rlang/revdep/library.noindex/RxODE/Rcpp/include" -I"/Users/lionel/Desktop/rlang/revdep/library.noindex/RxODE/RcppArmadillo/include" -I"/Users/lionel/Desktop/rlang/revdep/library.noindex/RxODE/PreciseSums/include" -I/usr/local/include  -fopenmp -fPIC   -Wall -pedantic -O0 -c scaleh.c -o scaleh.o
+gcc-8 -I"/Library/Frameworks/R.framework/Resources/include" -DNDEBUG -fopenmp -I"/Users/lionel/Desktop/rlang/revdep/library.noindex/RxODE/dparser/include" -I"/Users/lionel/Desktop/rlang/revdep/library.noindex/RxODE/Rcpp/include" -I"/Users/lionel/Desktop/rlang/revdep/library.noindex/RxODE/RcppArmadillo/include" -I"/Users/lionel/Desktop/rlang/revdep/library.noindex/RxODE/PreciseSums/include" -I/usr/local/include  -fopenmp -fPIC   -Wall -pedantic -O0 -c solsy.c -o solsy.o
+gcc-8 -I"/Library/Frameworks/R.framework/Resources/include" -DNDEBUG -fopenmp -I"/Users/lionel/Desktop/rlang/revdep/library.noindex/RxODE/dparser/include" -I"/Users/lionel/Desktop/rlang/revdep/library.noindex/RxODE/Rcpp/include" -I"/Users/lionel/Desktop/rlang/revdep/library.noindex/RxODE/RcppArmadillo/include" -I"/Users/lionel/Desktop/rlang/revdep/library.noindex/RxODE/PreciseSums/include" -I/usr/local/include  -fopenmp -fPIC   -Wall -pedantic -O0 -c stoda.c -o stoda.o
+gcc-8 -I"/Library/Frameworks/R.framework/Resources/include" -DNDEBUG -fopenmp -I"/Users/lionel/Desktop/rlang/revdep/library.noindex/RxODE/dparser/include" -I"/Users/lionel/Desktop/rlang/revdep/library.noindex/RxODE/Rcpp/include" -I"/Users/lionel/Desktop/rlang/revdep/library.noindex/RxODE/RcppArmadillo/include" -I"/Users/lionel/Desktop/rlang/revdep/library.noindex/RxODE/PreciseSums/include" -I/usr/local/include  -fopenmp -fPIC   -Wall -pedantic -O0 -c vmnorm.c -o vmnorm.o
+gcc-8 -I"/Library/Frameworks/R.framework/Resources/include" -DNDEBUG -fopenmp -I"/Users/lionel/Desktop/rlang/revdep/library.noindex/RxODE/dparser/include" -I"/Users/lionel/Desktop/rlang/revdep/library.noindex/RxODE/Rcpp/include" -I"/Users/lionel/Desktop/rlang/revdep/library.noindex/RxODE/RcppArmadillo/include" -I"/Users/lionel/Desktop/rlang/revdep/library.noindex/RxODE/PreciseSums/include" -I/usr/local/include  -fopenmp -fPIC   -Wall -pedantic -O0 -c strdup_printf.c -o strdup_printf.o
+gcc-8 -I"/Library/Frameworks/R.framework/Resources/include" -DNDEBUG -fopenmp -I"/Users/lionel/Desktop/rlang/revdep/library.noindex/RxODE/dparser/include" -I"/Users/lionel/Desktop/rlang/revdep/library.noindex/RxODE/Rcpp/include" -I"/Users/lionel/Desktop/rlang/revdep/library.noindex/RxODE/RcppArmadillo/include" -I"/Users/lionel/Desktop/rlang/revdep/library.noindex/RxODE/PreciseSums/include" -I/usr/local/include  -fopenmp -fPIC   -Wall -pedantic -O0 -c rprintf.c -o rprintf.o
+gcc-8 -I"/Library/Frameworks/R.framework/Resources/include" -DNDEBUG -fopenmp -I"/Users/lionel/Desktop/rlang/revdep/library.noindex/RxODE/dparser/include" -I"/Users/lionel/Desktop/rlang/revdep/library.noindex/RxODE/Rcpp/include" -I"/Users/lionel/Desktop/rlang/revdep/library.noindex/RxODE/RcppArmadillo/include" -I"/Users/lionel/Desktop/rlang/revdep/library.noindex/RxODE/PreciseSums/include" -I/usr/local/include  -fopenmp -fPIC   -Wall -pedantic -O0 -c box.c -o box.o
+gcc-8 -I"/Library/Frameworks/R.framework/Resources/include" -DNDEBUG -fopenmp -I"/Users/lionel/Desktop/rlang/revdep/library.noindex/RxODE/dparser/include" -I"/Users/lionel/Desktop/rlang/revdep/library.noindex/RxODE/Rcpp/include" -I"/Users/lionel/Desktop/rlang/revdep/library.noindex/RxODE/RcppArmadillo/include" -I"/Users/lionel/Desktop/rlang/revdep/library.noindex/RxODE/PreciseSums/include" -I/usr/local/include  -fopenmp -fPIC   -Wall -pedantic -O0 -c lbfgsR.c -o lbfgsR.o
+gcc-8 -I"/Library/Frameworks/R.framework/Resources/include" -DNDEBUG -fopenmp -I"/Users/lionel/Desktop/rlang/revdep/library.noindex/RxODE/dparser/include" -I"/Users/lionel/Desktop/rlang/revdep/library.noindex/RxODE/Rcpp/include" -I"/Users/lionel/Desktop/rlang/revdep/library.noindex/RxODE/RcppArmadillo/include" -I"/Users/lionel/Desktop/rlang/revdep/library.noindex/RxODE/PreciseSums/include" -I/usr/local/include  -fopenmp -fPIC   -Wall -pedantic -O0 -c lincmt.c -o lincmt.o
 gfortran-7  -fPIC  -fPIC  -g -O2  -c dlsoda.f -o dlsoda.o
 make: gfortran-7: No such file or directory
 make: *** [dlsoda.o] Error 1
+make: *** Waiting for unfinished jobs....
 ERROR: compilation failed for package ‘RxODE’
 * removing ‘/Users/lionel/Desktop/rlang/revdep/checks.noindex/RxODE/old/RxODE.Rcheck/RxODE’
 
@@ -14525,33 +14927,212 @@ Version: 1.8.4
 
 ## In both
 
-*   checking examples ... WARNING
+*   checking whether package ‘scater’ can be installed ... ERROR
     ```
-    Found the following significant warnings:
-    
-      Warning: 'read10xResults' is deprecated.
-      Warning: 'downsampleCounts' is deprecated.
-      Warning: 'normalizeExprs' is deprecated.
-      Warning: 'normalizeExprs' is deprecated.
-      Warning: 'normalizeExprs' is deprecated.
-      Warning: 'normalizeExprs' is deprecated.
-      Warning: 'normalizeExprs' is deprecated.
-      Warning: 'normalizeExprs' is deprecated.
-      Warning: 'read10xResults' is deprecated.
-    Deprecated functions may be defunct as soon as of the next release
-    of R.
-    See ?Deprecated.
+    Installation failed.
+    See ‘/Users/lionel/Desktop/rlang/revdep/checks.noindex/scater/new/scater.Rcheck/00install.out’ for details.
     ```
 
-*   checking installed package size ... NOTE
-    ```
-      installed size is 15.5Mb
-      sub-directories of 1Mb or more:
-        doc       5.4Mb
-        extdata   2.9Mb
-        libs      4.9Mb
-    ```
+## Installation
 
+### Devel
+
+```
+* installing *source* package ‘scater’ ...
+** libs
+g++-8 -std=c++11 -I"/Library/Frameworks/R.framework/Resources/include" -DNDEBUG  -I"/Users/lionel/Desktop/rlang/revdep/library.noindex/scater/Rhdf5lib/include" -I"/Users/lionel/Desktop/rlang/revdep/library.noindex/scater/Rcpp/include" -I"/Users/lionel/Desktop/rlang/revdep/library.noindex/scater/beachmat/include" -I/usr/local/include   -fPIC  -arch x86_64 -ftemplate-depth-256 -Wall -pedantic -O0 -c calc_exprs.cpp -o calc_exprs.o
+g++-8 -std=c++11 -I"/Library/Frameworks/R.framework/Resources/include" -DNDEBUG  -I"/Users/lionel/Desktop/rlang/revdep/library.noindex/scater/Rhdf5lib/include" -I"/Users/lionel/Desktop/rlang/revdep/library.noindex/scater/Rcpp/include" -I"/Users/lionel/Desktop/rlang/revdep/library.noindex/scater/beachmat/include" -I/usr/local/include   -fPIC  -arch x86_64 -ftemplate-depth-256 -Wall -pedantic -O0 -c calc_top_features.cpp -o calc_top_features.o
+g++-8 -std=c++11 -I"/Library/Frameworks/R.framework/Resources/include" -DNDEBUG  -I"/Users/lionel/Desktop/rlang/revdep/library.noindex/scater/Rhdf5lib/include" -I"/Users/lionel/Desktop/rlang/revdep/library.noindex/scater/Rcpp/include" -I"/Users/lionel/Desktop/rlang/revdep/library.noindex/scater/beachmat/include" -I/usr/local/include   -fPIC  -arch x86_64 -ftemplate-depth-256 -Wall -pedantic -O0 -c init.cpp -o init.o
+g++-8 -std=c++11 -I"/Library/Frameworks/R.framework/Resources/include" -DNDEBUG  -I"/Users/lionel/Desktop/rlang/revdep/library.noindex/scater/Rhdf5lib/include" -I"/Users/lionel/Desktop/rlang/revdep/library.noindex/scater/Rcpp/include" -I"/Users/lionel/Desktop/rlang/revdep/library.noindex/scater/beachmat/include" -I/usr/local/include   -fPIC  -arch x86_64 -ftemplate-depth-256 -Wall -pedantic -O0 -c matrix_stats.cpp -o matrix_stats.o
+calc_top_features.cpp: In instantiation of 'Rcpp::RObject calc_top_features_internal(M, Rcpp::RObject, Rcpp::RObject) [with T = int; V = Rcpp::Vector<13>; M = beachmat::lin_matrix<int, Rcpp::Vector<13> >*; Rcpp::RObject = Rcpp::RObject_Impl<Rcpp::PreserveStorage>]':
+calc_top_features.cpp:83:91:   required from here
+calc_top_features.cpp:27:44: warning: comparison of integer expressions of different signedness: 'Rcpp::traits::storage_type<13>::type' {aka 'int'} and 'const size_t' {aka 'const long unsigned int'} [-Wsign-compare]
+     if (ntop && (top[0] < 1 || top[ntop-1] > used_genes)) {
+calc_exprs.cpp: In instantiation of 'Rcpp::RObject calc_exprs_internal(M, Rcpp::List, Rcpp::IntegerVector, Rcpp::RObject, Rcpp::RObject, Rcpp::RObject, Rcpp::RObject) [with T = int; V = Rcpp::Vector<13>; M = beachmat::lin_matrix<int, Rcpp::Vector<13> >*; Rcpp::RObject = Rcpp::RObject_Impl<Rcpp::PreserveStorage>; Rcpp::List = Rcpp::Vector<19>; Rcpp::IntegerVector = Rcpp::Vector<13>]':
+calc_exprs.cpp:132:120:   required from here
+calc_exprs.cpp:23:26: warning: comparison of integer expressions of different signedness: 'R_xlen_t' {aka 'long int'} and 'const size_t' {aka 'const long unsigned int'} [-Wsign-compare]
+         if (sfIt->size() != ncells) {
+             ~~~~~~~~~~~~~^~~~~~~~~
+calc_exprs.cpp:30:25: warning: comparison of integer expressions of different signedness: 'R_xlen_t' {aka 'long int'} and 'const size_t' {aka 'const long unsigned int'} [-Wsign-compare]
+     if (sf_to_use.size()!=ngenes) {
+         ~~~~~~~~~~~~~~~~^~~~~~~~
+calc_exprs.cpp:37:36: warning: comparison of integer expressions of different signedness: 'const int' and 'const size_t' {aka 'const long unsigned int'} [-Wsign-compare]
+         if (current < 1 || current > nsfsets) {
+                            ~~~~~~~~^~~~~~~~~
+calc_top_features.cpp:61:40: warning: comparison of integer expressions of different signedness: 'size_t' {aka 'long unsigned int'} and 'R_xlen_t' {aka 'long int'} [-Wsign-compare]
+             while (x<=target_index && x<survivors.size()) {
+calc_top_features.cpp: In instantiation of 'Rcpp::RObject calc_top_features_internal(M, Rcpp::RObject, Rcpp::RObject) [with T = double; V = Rcpp::Vector<14, Rcpp::PreserveStorage>; M = beachmat::lin_matrix<double, Rcpp::Vector<14, Rcpp::PreserveStorage> >*; Rcpp::RObject = Rcpp::RObject_Impl<Rcpp::PreserveStorage>]':
+calc_top_features.cpp:86:94:   required from here
+calc_top_features.cpp:27:44: warning: comparison of integer expressions of different signedness: 'Rcpp::traits::storage_type<13>::type' {aka 'int'} and 'const size_t' {aka 'const long unsigned int'} [-Wsign-compare]
+     if (ntop && (top[0] < 1 || top[ntop-1] > used_genes)) {
+calc_top_features.cpp:61:40: warning: comparison of integer expressions of different signedness: 'size_t' {aka 'long unsigned int'} and 'R_xlen_t' {aka 'long int'} [-Wsign-compare]
+             while (x<=target_index && x<survivors.size()) {
+calc_exprs.cpp: In instantiation of 'Rcpp::RObject calc_exprs_internal(M, Rcpp::List, Rcpp::IntegerVector, Rcpp::RObject, Rcpp::RObject, Rcpp::RObject, Rcpp::RObject) [with T = double; V = Rcpp::Vector<14, Rcpp::PreserveStorage>; M = beachmat::lin_matrix<double, Rcpp::Vector<14, Rcpp::PreserveStorage> >*; Rcpp::RObject = Rcpp::RObject_Impl<Rcpp::PreserveStorage>; Rcpp::List = Rcpp::Vector<19>; Rcpp::IntegerVector = Rcpp::Vector<13>]':
+calc_exprs.cpp:135:123:   required from here
+calc_exprs.cpp:23:26: warning: comparison of integer expressions of different signedness: 'R_xlen_t' {aka 'long int'} and 'const size_t' {aka 'const long unsigned int'} [-Wsign-compare]
+         if (sfIt->size() != ncells) {
+             ~~~~~~~~~~~~~^~~~~~~~~
+calc_exprs.cpp:30:25: warning: comparison of integer expressions of different signedness: 'R_xlen_t' {aka 'long int'} and 'const size_t' {aka 'const long unsigned int'} [-Wsign-compare]
+     if (sf_to_use.size()!=ngenes) {
+         ~~~~~~~~~~~~~~~~^~~~~~~~
+calc_exprs.cpp:37:36: warning: comparison of integer expressions of different signedness: 'const int' and 'const size_t' {aka 'const long unsigned int'} [-Wsign-compare]
+         if (current < 1 || current > nsfsets) {
+                            ~~~~~~~~^~~~~~~~~
+In file included from /Users/lionel/Desktop/rlang/revdep/library.noindex/scater/beachmat/include/beachmat/LIN_matrix.h:174,
+                 from /Users/lionel/Desktop/rlang/revdep/library.noindex/scater/beachmat/include/beachmat/integer_matrix.h:4,
+                 from scater.h:5,
+                 from calc_top_features.cpp:1:
+/Users/lionel/Desktop/rlang/revdep/library.noindex/scater/beachmat/include/beachmat/LIN_methods.h: In instantiation of 'beachmat::const_col_indexed_info<V> beachmat::lin_matrix<T, V>::get_const_col_indexed(size_t, typename V::iterator, size_t, size_t) [with T = double; V = Rcpp::Vector<14, Rcpp::PreserveStorage>; beachmat::const_col_indexed_info<V> = std::tuple<long unsigned int, int*, double*>; typename V::iterator = double*; size_t = long unsigned int; typename V::iterator = double*]':
+/Users/lionel/Desktop/rlang/revdep/library.noindex/scater/beachmat/include/beachmat/LIN_methods.h:57:27:   required from here
+/Users/lionel/Desktop/rlang/revdep/library.noindex/scater/beachmat/include/beachmat/LIN_methods.h:58:23: warning: comparison of integer expressions of different signedness: 'R_xlen_t' {aka 'long int'} and 'size_t' {aka 'long unsigned int'} [-Wsign-compare]
+     if (indices.size()!=this->get_nrow()) {
+/Users/lionel/Desktop/rlang/revdep/library.noindex/scater/beachmat/include/beachmat/LIN_methods.h: In instantiation of 'beachmat::const_col_indexed_info<V> beachmat::lin_matrix<T, V>::get_const_col_indexed(size_t, typename V::iterator, size_t, size_t) [with T = int; V = Rcpp::Vector<13>; beachmat::const_col_indexed_info<V> = std::tuple<long unsigned int, int*, int*>; typename V::iterator = int*; size_t = long unsigned int; typename V::iterator = int*]':
+/Users/lionel/Desktop/rlang/revdep/library.noindex/scater/beachmat/include/beachmat/LIN_methods.h:57:27:   required from here
+/Users/lionel/Desktop/rlang/revdep/library.noindex/scater/beachmat/include/beachmat/LIN_methods.h:58:23: warning: comparison of integer expressions of different signedness: 'R_xlen_t' {aka 'long int'} and 'size_t' {aka 'long unsigned int'} [-Wsign-compare]
+In file included from /Users/lionel/Desktop/rlang/revdep/library.noindex/scater/beachmat/include/beachmat/LIN_matrix.h:174,
+                 from /Users/lionel/Desktop/rlang/revdep/library.noindex/scater/beachmat/include/beachmat/integer_matrix.h:4,
+                 from scater.h:5,
+                 from calc_exprs.cpp:1:
+/Users/lionel/Desktop/rlang/revdep/library.noindex/scater/beachmat/include/beachmat/LIN_methods.h: In instantiation of 'beachmat::const_col_indexed_info<V> beachmat::lin_matrix<T, V>::get_const_col_indexed(size_t, typename V::iterator, size_t, size_t) [with T = double; V = Rcpp::Vector<14, Rcpp::PreserveStorage>; beachmat::const_col_indexed_info<V> = std::tuple<long unsigned int, int*, double*>; typename V::iterator = double*; size_t = long unsigned int; typename V::iterator = double*]':
+/Users/lionel/Desktop/rlang/revdep/library.noindex/scater/beachmat/include/beachmat/LIN_methods.h:57:27:   required from here
+/Users/lionel/Desktop/rlang/revdep/library.noindex/scater/beachmat/include/beachmat/LIN_methods.h:58:23: warning: comparison of integer expressions of different signedness: 'R_xlen_t' {aka 'long int'} and 'size_t' {aka 'long unsigned int'} [-Wsign-compare]
+     if (indices.size()!=this->get_nrow()) {
+/Users/lionel/Desktop/rlang/revdep/library.noindex/scater/beachmat/include/beachmat/LIN_methods.h: In instantiation of 'beachmat::const_col_indexed_info<V> beachmat::lin_matrix<T, V>::get_const_col_indexed(size_t, typename V::iterator, size_t, size_t) [with T = int; V = Rcpp::Vector<13>; beachmat::const_col_indexed_info<V> = std::tuple<long unsigned int, int*, int*>; typename V::iterator = int*; size_t = long unsigned int; typename V::iterator = int*]':
+/Users/lionel/Desktop/rlang/revdep/library.noindex/scater/beachmat/include/beachmat/LIN_methods.h:57:27:   required from here
+/Users/lionel/Desktop/rlang/revdep/library.noindex/scater/beachmat/include/beachmat/LIN_methods.h:58:23: warning: comparison of integer expressions of different signedness: 'R_xlen_t' {aka 'long int'} and 'size_t' {aka 'long unsigned int'} [-Wsign-compare]
+In file included from /Users/lionel/Desktop/rlang/revdep/library.noindex/scater/beachmat/include/beachmat/LIN_matrix.h:174,
+                 from /Users/lionel/Desktop/rlang/revdep/library.noindex/scater/beachmat/include/beachmat/integer_matrix.h:4,
+                 from scater.h:5,
+                 from matrix_stats.cpp:1:
+/Users/lionel/Desktop/rlang/revdep/library.noindex/scater/beachmat/include/beachmat/LIN_methods.h: In instantiation of 'beachmat::const_col_indexed_info<V> beachmat::lin_matrix<T, V>::get_const_col_indexed(size_t, typename V::iterator, size_t, size_t) [with T = double; V = Rcpp::Vector<14, Rcpp::PreserveStorage>; beachmat::const_col_indexed_info<V> = std::tuple<long unsigned int, int*, double*>; typename V::iterator = double*; size_t = long unsigned int; typename V::iterator = double*]':
+/Users/lionel/Desktop/rlang/revdep/library.noindex/scater/beachmat/include/beachmat/LIN_methods.h:57:27:   required from here
+/Users/lionel/Desktop/rlang/revdep/library.noindex/scater/beachmat/include/beachmat/LIN_methods.h:58:23: warning: comparison of integer expressions of different signedness: 'R_xlen_t' {aka 'long int'} and 'size_t' {aka 'long unsigned int'} [-Wsign-compare]
+     if (indices.size()!=this->get_nrow()) {
+/Users/lionel/Desktop/rlang/revdep/library.noindex/scater/beachmat/include/beachmat/LIN_methods.h: In instantiation of 'beachmat::const_col_indexed_info<V> beachmat::lin_matrix<T, V>::get_const_col_indexed(size_t, typename V::iterator, size_t, size_t) [with T = int; V = Rcpp::Vector<13>; beachmat::const_col_indexed_info<V> = std::tuple<long unsigned int, int*, int*>; typename V::iterator = int*; size_t = long unsigned int; typename V::iterator = int*]':
+/Users/lionel/Desktop/rlang/revdep/library.noindex/scater/beachmat/include/beachmat/LIN_methods.h:57:27:   required from here
+/Users/lionel/Desktop/rlang/revdep/library.noindex/scater/beachmat/include/beachmat/LIN_methods.h:58:23: warning: comparison of integer expressions of different signedness: 'R_xlen_t' {aka 'long int'} and 'size_t' {aka 'long unsigned int'} [-Wsign-compare]
+g++-8 -std=c++11 -dynamiclib -Wl,-headerpad_max_install_names -undefined dynamic_lookup -single_module -multiply_defined suppress -L/Library/Frameworks/R.framework/Resources/lib -L/usr/local/lib -o scater.so calc_exprs.o calc_top_features.o init.o matrix_stats.o /Users/lionel/Desktop/rlang/revdep/library.noindex/scater/beachmat/lib/libbeachmat.a /Users/lionel/Desktop/rlang/revdep/library.noindex/scater/Rhdf5lib/lib/libhdf5_cpp.a /Users/lionel/Desktop/rlang/revdep/library.noindex/scater/Rhdf5lib/lib/libhdf5.a /Users/lionel/Desktop/rlang/revdep/library.noindex/scater/Rhdf5lib/lib/libsz.a -lz -pthread -F/Library/Frameworks/R.framework/.. -framework R -Wl,-framework -Wl,CoreFoundation
+installing to /Users/lionel/Desktop/rlang/revdep/checks.noindex/scater/new/scater.Rcheck/scater/libs
+** R
+** data
+*** moving datasets to lazyload DB
+** inst
+** byte-compile and prepare package for lazy loading
+Creating a new generic function for ‘mutate’ in package ‘scater’
+Creating a new generic function for ‘filter’ in package ‘scater’
+** help
+*** installing help indices
+** building package indices
+** installing vignettes
+** testing if installed package can be loaded
+sh: line 1: 32840 Segmentation fault: 11  '/Library/Frameworks/R.framework/Resources/bin/R' --no-save --slave 2>&1 < '/var/folders/b9/1vbq6rn93_1fk71sn95dqb8r0000gn/T//RtmpzBxecn/file7cd3539bdd36'
+
+ *** caught segfault ***
+address 0x0, cause 'memory not mapped'
+An irrecoverable exception occurred. R is aborting now ...
+ERROR: loading failed
+* removing ‘/Users/lionel/Desktop/rlang/revdep/checks.noindex/scater/new/scater.Rcheck/scater’
+
+```
+### CRAN
+
+```
+* installing *source* package ‘scater’ ...
+** libs
+g++-8 -std=c++11 -I"/Library/Frameworks/R.framework/Resources/include" -DNDEBUG  -I"/Users/lionel/Desktop/rlang/revdep/library.noindex/scater/Rhdf5lib/include" -I"/Users/lionel/Desktop/rlang/revdep/library.noindex/scater/Rcpp/include" -I"/Users/lionel/Desktop/rlang/revdep/library.noindex/scater/beachmat/include" -I/usr/local/include   -fPIC  -arch x86_64 -ftemplate-depth-256 -Wall -pedantic -O0 -c calc_exprs.cpp -o calc_exprs.o
+g++-8 -std=c++11 -I"/Library/Frameworks/R.framework/Resources/include" -DNDEBUG  -I"/Users/lionel/Desktop/rlang/revdep/library.noindex/scater/Rhdf5lib/include" -I"/Users/lionel/Desktop/rlang/revdep/library.noindex/scater/Rcpp/include" -I"/Users/lionel/Desktop/rlang/revdep/library.noindex/scater/beachmat/include" -I/usr/local/include   -fPIC  -arch x86_64 -ftemplate-depth-256 -Wall -pedantic -O0 -c calc_top_features.cpp -o calc_top_features.o
+g++-8 -std=c++11 -I"/Library/Frameworks/R.framework/Resources/include" -DNDEBUG  -I"/Users/lionel/Desktop/rlang/revdep/library.noindex/scater/Rhdf5lib/include" -I"/Users/lionel/Desktop/rlang/revdep/library.noindex/scater/Rcpp/include" -I"/Users/lionel/Desktop/rlang/revdep/library.noindex/scater/beachmat/include" -I/usr/local/include   -fPIC  -arch x86_64 -ftemplate-depth-256 -Wall -pedantic -O0 -c init.cpp -o init.o
+g++-8 -std=c++11 -I"/Library/Frameworks/R.framework/Resources/include" -DNDEBUG  -I"/Users/lionel/Desktop/rlang/revdep/library.noindex/scater/Rhdf5lib/include" -I"/Users/lionel/Desktop/rlang/revdep/library.noindex/scater/Rcpp/include" -I"/Users/lionel/Desktop/rlang/revdep/library.noindex/scater/beachmat/include" -I/usr/local/include   -fPIC  -arch x86_64 -ftemplate-depth-256 -Wall -pedantic -O0 -c matrix_stats.cpp -o matrix_stats.o
+calc_exprs.cpp: In instantiation of 'Rcpp::RObject calc_exprs_internal(M, Rcpp::List, Rcpp::IntegerVector, Rcpp::RObject, Rcpp::RObject, Rcpp::RObject, Rcpp::RObject) [with T = int; V = Rcpp::Vector<13>; M = beachmat::lin_matrix<int, Rcpp::Vector<13> >*; Rcpp::RObject = Rcpp::RObject_Impl<Rcpp::PreserveStorage>; Rcpp::List = Rcpp::Vector<19>; Rcpp::IntegerVector = Rcpp::Vector<13>]':
+calc_exprs.cpp:132:120:   required from here
+calc_exprs.cpp:23:26: warning: comparison of integer expressions of different signedness: 'R_xlen_t' {aka 'long int'} and 'const size_t' {aka 'const long unsigned int'} [-Wsign-compare]
+         if (sfIt->size() != ncells) {
+             ~~~~~~~~~~~~~^~~~~~~~~
+calc_exprs.cpp:30:25: warning: comparison of integer expressions of different signedness: 'R_xlen_t' {aka 'long int'} and 'const size_t' {aka 'const long unsigned int'} [-Wsign-compare]
+     if (sf_to_use.size()!=ngenes) {
+         ~~~~~~~~~~~~~~~~^~~~~~~~
+calc_exprs.cpp:37:36: warning: comparison of integer expressions of different signedness: 'const int' and 'const size_t' {aka 'const long unsigned int'} [-Wsign-compare]
+         if (current < 1 || current > nsfsets) {
+                            ~~~~~~~~^~~~~~~~~
+calc_top_features.cpp: In instantiation of 'Rcpp::RObject calc_top_features_internal(M, Rcpp::RObject, Rcpp::RObject) [with T = int; V = Rcpp::Vector<13>; M = beachmat::lin_matrix<int, Rcpp::Vector<13> >*; Rcpp::RObject = Rcpp::RObject_Impl<Rcpp::PreserveStorage>]':
+calc_top_features.cpp:83:91:   required from here
+calc_top_features.cpp:27:44: warning: comparison of integer expressions of different signedness: 'Rcpp::traits::storage_type<13>::type' {aka 'int'} and 'const size_t' {aka 'const long unsigned int'} [-Wsign-compare]
+     if (ntop && (top[0] < 1 || top[ntop-1] > used_genes)) {
+calc_top_features.cpp:61:40: warning: comparison of integer expressions of different signedness: 'size_t' {aka 'long unsigned int'} and 'R_xlen_t' {aka 'long int'} [-Wsign-compare]
+             while (x<=target_index && x<survivors.size()) {
+calc_exprs.cpp: In instantiation of 'Rcpp::RObject calc_exprs_internal(M, Rcpp::List, Rcpp::IntegerVector, Rcpp::RObject, Rcpp::RObject, Rcpp::RObject, Rcpp::RObject) [with T = double; V = Rcpp::Vector<14, Rcpp::PreserveStorage>; M = beachmat::lin_matrix<double, Rcpp::Vector<14, Rcpp::PreserveStorage> >*; Rcpp::RObject = Rcpp::RObject_Impl<Rcpp::PreserveStorage>; Rcpp::List = Rcpp::Vector<19>; Rcpp::IntegerVector = Rcpp::Vector<13>]':
+calc_exprs.cpp:135:123:   required from here
+calc_exprs.cpp:23:26: warning: comparison of integer expressions of different signedness: 'R_xlen_t' {aka 'long int'} and 'const size_t' {aka 'const long unsigned int'} [-Wsign-compare]
+         if (sfIt->size() != ncells) {
+             ~~~~~~~~~~~~~^~~~~~~~~
+calc_top_features.cpp: In instantiation of 'Rcpp::RObject calc_top_features_internal(M, Rcpp::RObject, Rcpp::RObject) [with T = double; V = Rcpp::Vector<14, Rcpp::PreserveStorage>; M = beachmat::lin_matrix<double, Rcpp::Vector<14, Rcpp::PreserveStorage> >*; Rcpp::RObject = Rcpp::RObject_Impl<Rcpp::PreserveStorage>]':
+calc_top_features.cpp:86:94:   required from here
+calc_top_features.cpp:27:44: warning: comparison of integer expressions of different signedness: 'Rcpp::traits::storage_type<13>::type' {aka 'int'} and 'const size_t' {aka 'const long unsigned int'} [-Wsign-compare]
+     if (ntop && (top[0] < 1 || top[ntop-1] > used_genes)) {
+calc_exprs.cpp:30:25: warning: comparison of integer expressions of different signedness: 'R_xlen_t' {aka 'long int'} and 'const size_t' {aka 'const long unsigned int'} [-Wsign-compare]
+     if (sf_to_use.size()!=ngenes) {
+         ~~~~~~~~~~~~~~~~^~~~~~~~
+calc_exprs.cpp:37:36: warning: comparison of integer expressions of different signedness: 'const int' and 'const size_t' {aka 'const long unsigned int'} [-Wsign-compare]
+         if (current < 1 || current > nsfsets) {
+                            ~~~~~~~~^~~~~~~~~
+calc_top_features.cpp:61:40: warning: comparison of integer expressions of different signedness: 'size_t' {aka 'long unsigned int'} and 'R_xlen_t' {aka 'long int'} [-Wsign-compare]
+             while (x<=target_index && x<survivors.size()) {
+In file included from /Users/lionel/Desktop/rlang/revdep/library.noindex/scater/beachmat/include/beachmat/LIN_matrix.h:174,
+                 from /Users/lionel/Desktop/rlang/revdep/library.noindex/scater/beachmat/include/beachmat/integer_matrix.h:4,
+                 from scater.h:5,
+                 from calc_top_features.cpp:1:
+/Users/lionel/Desktop/rlang/revdep/library.noindex/scater/beachmat/include/beachmat/LIN_methods.h: In instantiation of 'beachmat::const_col_indexed_info<V> beachmat::lin_matrix<T, V>::get_const_col_indexed(size_t, typename V::iterator, size_t, size_t) [with T = double; V = Rcpp::Vector<14, Rcpp::PreserveStorage>; beachmat::const_col_indexed_info<V> = std::tuple<long unsigned int, int*, double*>; typename V::iterator = double*; size_t = long unsigned int; typename V::iterator = double*]':
+/Users/lionel/Desktop/rlang/revdep/library.noindex/scater/beachmat/include/beachmat/LIN_methods.h:57:27:   required from here
+/Users/lionel/Desktop/rlang/revdep/library.noindex/scater/beachmat/include/beachmat/LIN_methods.h:58:23: warning: comparison of integer expressions of different signedness: 'R_xlen_t' {aka 'long int'} and 'size_t' {aka 'long unsigned int'} [-Wsign-compare]
+     if (indices.size()!=this->get_nrow()) {
+In file included from /Users/lionel/Desktop/rlang/revdep/library.noindex/scater/beachmat/include/beachmat/LIN_matrix.h:174,
+                 from /Users/lionel/Desktop/rlang/revdep/library.noindex/scater/beachmat/include/beachmat/integer_matrix.h:4,
+                 from scater.h:5,
+                 from calc_exprs.cpp:1:
+/Users/lionel/Desktop/rlang/revdep/library.noindex/scater/beachmat/include/beachmat/LIN_methods.h: In instantiation of 'beachmat::const_col_indexed_info<V> beachmat::lin_matrix<T, V>::get_const_col_indexed(size_t, typename V::iterator, size_t, size_t) [with T = double; V = Rcpp::Vector<14, Rcpp::PreserveStorage>; beachmat::const_col_indexed_info<V> = std::tuple<long unsigned int, int*, double*>; typename V::iterator = double*; size_t = long unsigned int; typename V::iterator = double*]':
+/Users/lionel/Desktop/rlang/revdep/library.noindex/scater/beachmat/include/beachmat/LIN_methods.h:57:27:   required from here
+/Users/lionel/Desktop/rlang/revdep/library.noindex/scater/beachmat/include/beachmat/LIN_methods.h:58:23: warning: comparison of integer expressions of different signedness: 'R_xlen_t' {aka 'long int'} and 'size_t' {aka 'long unsigned int'} [-Wsign-compare]
+     if (indices.size()!=this->get_nrow()) {
+In file included from /Users/lionel/Desktop/rlang/revdep/library.noindex/scater/beachmat/include/beachmat/LIN_matrix.h:174,
+                 from /Users/lionel/Desktop/rlang/revdep/library.noindex/scater/beachmat/include/beachmat/integer_matrix.h:4,
+                 from scater.h:5,
+                 from matrix_stats.cpp:1:
+/Users/lionel/Desktop/rlang/revdep/library.noindex/scater/beachmat/include/beachmat/LIN_methods.h: In instantiation of 'beachmat::const_col_indexed_info<V> beachmat::lin_matrix<T, V>::get_const_col_indexed(size_t, typename V::iterator, size_t, size_t) [with T = double; V = Rcpp::Vector<14, Rcpp::PreserveStorage>; beachmat::const_col_indexed_info<V> = std::tuple<long unsigned int, int*, double*>; typename V::iterator = double*; size_t = long unsigned int; typename V::iterator = double*]':
+/Users/lionel/Desktop/rlang/revdep/library.noindex/scater/beachmat/include/beachmat/LIN_methods.h:57:27:   required from here
+/Users/lionel/Desktop/rlang/revdep/library.noindex/scater/beachmat/include/beachmat/LIN_methods.h:58:23: warning: comparison of integer expressions of different signedness: 'R_xlen_t' {aka 'long int'} and 'size_t' {aka 'long unsigned int'} [-Wsign-compare]
+     if (indices.size()!=this->get_nrow()) {
+/Users/lionel/Desktop/rlang/revdep/library.noindex/scater/beachmat/include/beachmat/LIN_methods.h: In instantiation of 'beachmat::const_col_indexed_info<V> beachmat::lin_matrix<T, V>::get_const_col_indexed(size_t, typename V::iterator, size_t, size_t) [with T = int; V = Rcpp::Vector<13>; beachmat::const_col_indexed_info<V> = std::tuple<long unsigned int, int*, int*>; typename V::iterator = int*; size_t = long unsigned int; typename V::iterator = int*]':
+/Users/lionel/Desktop/rlang/revdep/library.noindex/scater/beachmat/include/beachmat/LIN_methods.h:57:27:   required from here
+/Users/lionel/Desktop/rlang/revdep/library.noindex/scater/beachmat/include/beachmat/LIN_methods.h:58:23: warning: comparison of integer expressions of different signedness: 'R_xlen_t' {aka 'long int'} and 'size_t' {aka 'long unsigned int'} [-Wsign-compare]
+/Users/lionel/Desktop/rlang/revdep/library.noindex/scater/beachmat/include/beachmat/LIN_methods.h: In instantiation of 'beachmat::const_col_indexed_info<V> beachmat::lin_matrix<T, V>::get_const_col_indexed(size_t, typename V::iterator, size_t, size_t) [with T = int; V = Rcpp::Vector<13>; beachmat::const_col_indexed_info<V> = std::tuple<long unsigned int, int*, int*>; typename V::iterator = int*; size_t = long unsigned int; typename V::iterator = int*]':
+/Users/lionel/Desktop/rlang/revdep/library.noindex/scater/beachmat/include/beachmat/LIN_methods.h:57:27:   required from here
+/Users/lionel/Desktop/rlang/revdep/library.noindex/scater/beachmat/include/beachmat/LIN_methods.h:58:23: warning: comparison of integer expressions of different signedness: 'R_xlen_t' {aka 'long int'} and 'size_t' {aka 'long unsigned int'} [-Wsign-compare]
+/Users/lionel/Desktop/rlang/revdep/library.noindex/scater/beachmat/include/beachmat/LIN_methods.h: In instantiation of 'beachmat::const_col_indexed_info<V> beachmat::lin_matrix<T, V>::get_const_col_indexed(size_t, typename V::iterator, size_t, size_t) [with T = int; V = Rcpp::Vector<13>; beachmat::const_col_indexed_info<V> = std::tuple<long unsigned int, int*, int*>; typename V::iterator = int*; size_t = long unsigned int; typename V::iterator = int*]':
+/Users/lionel/Desktop/rlang/revdep/library.noindex/scater/beachmat/include/beachmat/LIN_methods.h:57:27:   required from here
+/Users/lionel/Desktop/rlang/revdep/library.noindex/scater/beachmat/include/beachmat/LIN_methods.h:58:23: warning: comparison of integer expressions of different signedness: 'R_xlen_t' {aka 'long int'} and 'size_t' {aka 'long unsigned int'} [-Wsign-compare]
+g++-8 -std=c++11 -dynamiclib -Wl,-headerpad_max_install_names -undefined dynamic_lookup -single_module -multiply_defined suppress -L/Library/Frameworks/R.framework/Resources/lib -L/usr/local/lib -o scater.so calc_exprs.o calc_top_features.o init.o matrix_stats.o /Users/lionel/Desktop/rlang/revdep/library.noindex/scater/beachmat/lib/libbeachmat.a /Users/lionel/Desktop/rlang/revdep/library.noindex/scater/Rhdf5lib/lib/libhdf5_cpp.a /Users/lionel/Desktop/rlang/revdep/library.noindex/scater/Rhdf5lib/lib/libhdf5.a /Users/lionel/Desktop/rlang/revdep/library.noindex/scater/Rhdf5lib/lib/libsz.a -lz -pthread -F/Library/Frameworks/R.framework/.. -framework R -Wl,-framework -Wl,CoreFoundation
+installing to /Users/lionel/Desktop/rlang/revdep/checks.noindex/scater/old/scater.Rcheck/scater/libs
+** R
+** data
+*** moving datasets to lazyload DB
+** inst
+** byte-compile and prepare package for lazy loading
+Creating a new generic function for ‘mutate’ in package ‘scater’
+Creating a new generic function for ‘filter’ in package ‘scater’
+** help
+*** installing help indices
+** building package indices
+** installing vignettes
+** testing if installed package can be loaded
+sh: line 1: 32799 Segmentation fault: 11  '/Library/Frameworks/R.framework/Resources/bin/R' --no-save --slave 2>&1 < '/var/folders/b9/1vbq6rn93_1fk71sn95dqb8r0000gn/T//RtmpGeZo1S/file7b7620f4032a'
+
+ *** caught segfault ***
+address 0x0, cause 'memory not mapped'
+An irrecoverable exception occurred. R is aborting now ...
+ERROR: loading failed
+* removing ‘/Users/lionel/Desktop/rlang/revdep/checks.noindex/scater/old/scater.Rcheck/scater’
+
+```
 # scFeatureFilter
 
 Version: 1.0.0
@@ -14585,6 +15166,28 @@ Version: 1.0.0
 Version: 1.2.0
 
 ## In both
+
+*   checking tests ...
+    ```
+     ERROR
+    Running the tests in ‘tests/testthat.R’ failed.
+    Last 13 lines of output:
+      30: tryCatchList(expr, classes, parentenv, handlers)
+      31: tryCatch(withCallingHandlers({    eval(code, test_env)    if (!handled && !is.null(test)) {        skip_empty()    }}, expectation = handle_expectation, skip = handle_skip, warning = handle_warning,     message = handle_message, error = handle_error), error = handle_fatal,     skip = function(e) {    })
+      32: test_code(NULL, exprs, env)
+      33: source_file(path, new.env(parent = env), chdir = TRUE, wrap = wrap)
+      34: force(code)
+      35: with_reporter(reporter = reporter, start_end_reporter = start_end_reporter,     {        lister$start_file(basename(path))        source_file(path, new.env(parent = env), chdir = TRUE,             wrap = wrap)        end_context()    })
+      36: FUN(X[[i]], ...)
+      37: lapply(paths, test_file, env = env, reporter = current_reporter,     start_end_reporter = FALSE, load_helpers = FALSE, wrap = wrap)
+      38: force(code)
+      39: with_reporter(reporter = current_reporter, results <- lapply(paths,     test_file, env = env, reporter = current_reporter, start_end_reporter = FALSE,     load_helpers = FALSE, wrap = wrap))
+      40: test_files(paths, reporter = reporter, env = env, stop_on_failure = stop_on_failure,     stop_on_warning = stop_on_warning, wrap = wrap)
+      41: test_dir(path = test_path, reporter = reporter, env = env, filter = filter,     ..., stop_on_failure = stop_on_failure, stop_on_warning = stop_on_warning,     wrap = wrap)
+      42: test_package_dir(package = package, test_path = test_path, filter = filter,     reporter = reporter, ..., stop_on_failure = stop_on_failure,     stop_on_warning = stop_on_warning, wrap = wrap)
+      43: test_check("scfind")
+      An irrecoverable exception occurred. R is aborting now ...
+    ```
 
 *   checking re-building of vignette outputs ... WARNING
     ```
@@ -14663,46 +15266,6 @@ Version: 1.0.0
       All declared Imports should be used.
     ```
 
-# segclust2d
-
-Version: 0.1.0
-
-## In both
-
-*   checking whether package ‘segclust2d’ can be installed ... ERROR
-    ```
-    Installation failed.
-    See ‘/Users/lionel/Desktop/rlang/revdep/checks.noindex/segclust2d/new/segclust2d.Rcheck/00install.out’ for details.
-    ```
-
-## Installation
-
-### Devel
-
-```
-* installing *source* package ‘segclust2d’ ...
-** package ‘segclust2d’ successfully unpacked and MD5 sums checked
-** libs
-clang++ -I"/Library/Frameworks/R.framework/Resources/include" -DNDEBUG  -I"/Users/lionel/Desktop/rlang/revdep/library.noindex/segclust2d/Rcpp/include" -I"/Users/lionel/Desktop/rlang/revdep/library.noindex/segclust2d/RcppArmadillo/include" -I/usr/local/include  -fopenmp -fPIC  -arch x86_64 -ftemplate-depth-256 -Wall -pedantic -O0 -c RcppExports.cpp -o RcppExports.o
-clang: error: unsupported option '-fopenmp'
-make: *** [RcppExports.o] Error 1
-ERROR: compilation failed for package ‘segclust2d’
-* removing ‘/Users/lionel/Desktop/rlang/revdep/checks.noindex/segclust2d/new/segclust2d.Rcheck/segclust2d’
-
-```
-### CRAN
-
-```
-* installing *source* package ‘segclust2d’ ...
-** package ‘segclust2d’ successfully unpacked and MD5 sums checked
-** libs
-clang++ -I"/Library/Frameworks/R.framework/Resources/include" -DNDEBUG  -I"/Users/lionel/Desktop/rlang/revdep/library.noindex/segclust2d/Rcpp/include" -I"/Users/lionel/Desktop/rlang/revdep/library.noindex/segclust2d/RcppArmadillo/include" -I/usr/local/include  -fopenmp -fPIC  -arch x86_64 -ftemplate-depth-256 -Wall -pedantic -O0 -c RcppExports.cpp -o RcppExports.o
-clang: error: unsupported option '-fopenmp'
-make: *** [RcppExports.o] Error 1
-ERROR: compilation failed for package ‘segclust2d’
-* removing ‘/Users/lionel/Desktop/rlang/revdep/checks.noindex/segclust2d/old/segclust2d.Rcheck/segclust2d’
-
-```
 # sejmRP
 
 Version: 1.3.4
@@ -14714,31 +15277,6 @@ Version: 1.3.4
     Namespaces in Imports field not imported from:
       ‘cluster’ ‘factoextra’ ‘tidyr’
       All declared Imports should be used.
-    ```
-
-# seoR
-
-Version: 0.1.0
-
-## In both
-
-*   checking examples ... ERROR
-    ```
-    Running examples in ‘seoR-Ex.R’ failed
-    The error most likely occurred in:
-    
-    > ### Name: getBingResults
-    > ### Title: Function to retrive data from Google Suggest for a specific
-    > ###   keyword
-    > ### Aliases: getBingResults
-    > 
-    > ### ** Examples
-    > 
-    > getBingResults("R Project")
-    Error in data.frame(..., check.names = FALSE) : 
-      arguments imply differing number of rows: 9, 8
-    Calls: getBingResults -> as.data.frame -> cbind -> cbind -> data.frame
-    Execution halted
     ```
 
 # seqCAT
@@ -14823,6 +15361,28 @@ Version: 2.3.4
 
 ## In both
 
+*   checking tests ...
+    ```
+     ERROR
+    Running the tests in ‘tests/testthat.R’ failed.
+    Last 13 lines of output:
+      30: tryCatchList(expr, classes, parentenv, handlers)
+      31: tryCatch(withCallingHandlers({    eval(code, test_env)    if (!handled && !is.null(test)) {        skip_empty()    }}, expectation = handle_expectation, skip = handle_skip, warning = handle_warning,     message = handle_message, error = handle_error), error = handle_fatal,     skip = function(e) {    })
+      32: test_code(NULL, exprs, env)
+      33: source_file(path, new.env(parent = env), chdir = TRUE, wrap = wrap)
+      34: force(code)
+      35: with_reporter(reporter = reporter, start_end_reporter = start_end_reporter,     {        lister$start_file(basename(path))        source_file(path, new.env(parent = env), chdir = TRUE,             wrap = wrap)        end_context()    })
+      36: FUN(X[[i]], ...)
+      37: lapply(paths, test_file, env = env, reporter = current_reporter,     start_end_reporter = FALSE, load_helpers = FALSE, wrap = wrap)
+      38: force(code)
+      39: with_reporter(reporter = current_reporter, results <- lapply(paths,     test_file, env = env, reporter = current_reporter, start_end_reporter = FALSE,     load_helpers = FALSE, wrap = wrap))
+      40: test_files(paths, reporter = reporter, env = env, stop_on_failure = stop_on_failure,     stop_on_warning = stop_on_warning, wrap = wrap)
+      41: test_dir(path = test_path, reporter = reporter, env = env, filter = filter,     ..., stop_on_failure = stop_on_failure, stop_on_warning = stop_on_warning,     wrap = wrap)
+      42: test_package_dir(package = package, test_path = test_path, filter = filter,     reporter = reporter, ..., stop_on_failure = stop_on_failure,     stop_on_warning = stop_on_warning, wrap = wrap)
+      43: test_check("Seurat")
+      An irrecoverable exception occurred. R is aborting now ...
+    ```
+
 *   checking package dependencies ... NOTE
     ```
     Package suggested but not available for checking: ‘loomR’
@@ -14830,10 +15390,10 @@ Version: 2.3.4
 
 *   checking installed package size ... NOTE
     ```
-      installed size is  5.2Mb
+      installed size is  5.5Mb
       sub-directories of 1Mb or more:
-        libs   1.4Mb
         R      3.0Mb
+        libs   1.8Mb
     ```
 
 # sevenbridges
@@ -14846,8 +15406,8 @@ Version: 1.10.4
     ```
       installed size is  7.7Mb
       sub-directories of 1Mb or more:
-        doc   2.9Mb
         R     4.1Mb
+        doc   2.9Mb
     ```
 
 # sevenC
@@ -14894,126 +15454,42 @@ Version: 0.6-3
 
 ## In both
 
-*   checking whether package ‘sf’ can be installed ... ERROR
+*   checking tests ...
     ```
-    Installation failed.
-    See ‘/Users/lionel/Desktop/rlang/revdep/checks.noindex/sf/new/sf.Rcheck/00install.out’ for details.
+    ...
+    < Linking to GEOS 3.6.3, GDAL 2.3.1, proj.4 5.1.0
+    ---
+    > Linking to GEOS 3.6.2, GDAL 2.2.3, proj.4 4.9.3
+     ERROR
+    Running the tests in ‘tests/crs.R’ failed.
+    Last 13 lines of output:
+      POINT (111319.5 111325.1)
+      > try(sf_project("+proj=longlat", "+proj=bar", matrix(1:4,2)))
+      
+       *** caught segfault ***
+      address 0x80, cause 'memory not mapped'
+      
+      Traceback:
+       1: CPL_proj_direct(as.character(c(from[1], to[1])), as.matrix(pts))
+       2: sf_project("+proj=longlat", "+proj=bar", matrix(1:4, 2))
+       3: doTryCatch(return(expr), name, parentenv, handler)
+       4: tryCatchOne(expr, names, parentenv, handlers[[1L]])
+       5: tryCatchList(expr, classes, parentenv, handlers)
+       6: tryCatch(expr, error = function(e) {    call <- conditionCall(e)    if (!is.null(call)) {        if (identical(call[[1L]], quote(doTryCatch)))             call <- sys.call(-4L)        dcall <- deparse(call)[1L]        prefix <- paste("Error in", dcall, ": ")        LONG <- 75L        sm <- strsplit(conditionMessage(e), "\n")[[1L]]        w <- 14L + nchar(dcall, type = "w") + nchar(sm[1L], type = "w")        if (is.na(w))             w <- 14L + nchar(dcall, type = "b") + nchar(sm[1L],                 type = "b")        if (w > LONG)             prefix <- paste0(prefix, "\n  ")    }    else prefix <- "Error : "    msg <- paste0(prefix, conditionMessage(e), "\n")    .Internal(seterrmessage(msg[1L]))    if (!silent && isTRUE(getOption("show.error.messages"))) {        cat(msg, file = outFile)        .Internal(printDeferredWarnings())    }    invisible(structure(msg, class = "try-error", condition = e))})
+       7: try(sf_project("+proj=longlat", "+proj=bar", matrix(1:4, 2)))
+      An irrecoverable exception occurred. R is aborting now ...
     ```
 
-## Installation
+*   checking installed package size ... NOTE
+    ```
+      installed size is 17.7Mb
+      sub-directories of 1Mb or more:
+        R        2.0Mb
+        doc     10.8Mb
+        libs     1.2Mb
+        sqlite   1.5Mb
+    ```
 
-### Devel
-
-```
-* installing *source* package ‘sf’ ...
-** package ‘sf’ successfully unpacked and MD5 sums checked
-configure: CC: clang
-configure: CXX: clang++
-checking for gdal-config... /usr/local/bin/gdal-config
-checking gdal-config usability... yes
-configure: GDAL: 2.3.1
-checking GDAL version >= 2.0.0... yes
-checking for gcc... clang
-checking whether the C compiler works... yes
-checking for C compiler default output file name... a.out
-checking for suffix of executables... 
-checking whether we are cross compiling... no
-checking for suffix of object files... o
-checking whether we are using the GNU C compiler... yes
-checking whether clang accepts -g... yes
-checking for clang option to accept ISO C89... none needed
-checking how to run the C preprocessor... clang -E
-checking for grep that handles long lines and -e... /usr/bin/grep
-checking for egrep... /usr/bin/grep -E
-checking for ANSI C header files... yes
-checking for sys/types.h... yes
-checking for sys/stat.h... yes
-checking for stdlib.h... yes
-checking for string.h... yes
-checking for memory.h... yes
-checking for strings.h... yes
-checking for inttypes.h... yes
-checking for stdint.h... yes
-checking for unistd.h... yes
-checking gdal.h usability... yes
-checking gdal.h presence... yes
-checking for gdal.h... yes
-checking GDAL: linking with --libs only... no
-checking GDAL: linking with --libs and --dep-libs... no
-In file included from gdal_test.cpp:1:
-In file included from /usr/local/include/gdal.h:45:
-/usr/local/include/cpl_port.h:187:6: error: Must have C++11 or newer.
-#    error Must have C++11 or newer.
-     ^
-1 error generated.
-In file included from gdal_test.cpp:1:
-In file included from /usr/local/include/gdal.h:45:
-/usr/local/include/cpl_port.h:187:6: error: Must have C++11 or newer.
-#    error Must have C++11 or newer.
-     ^
-1 error generated.
-configure: Install failure: compilation and/or linkage problems.
-configure: error: GDALAllRegister not found in libgdal.
-ERROR: configuration failed for package ‘sf’
-* removing ‘/Users/lionel/Desktop/rlang/revdep/checks.noindex/sf/new/sf.Rcheck/sf’
-
-```
-### CRAN
-
-```
-* installing *source* package ‘sf’ ...
-** package ‘sf’ successfully unpacked and MD5 sums checked
-configure: CC: clang
-configure: CXX: clang++
-checking for gdal-config... /usr/local/bin/gdal-config
-checking gdal-config usability... yes
-configure: GDAL: 2.3.1
-checking GDAL version >= 2.0.0... yes
-checking for gcc... clang
-checking whether the C compiler works... yes
-checking for C compiler default output file name... a.out
-checking for suffix of executables... 
-checking whether we are cross compiling... no
-checking for suffix of object files... o
-checking whether we are using the GNU C compiler... yes
-checking whether clang accepts -g... yes
-checking for clang option to accept ISO C89... none needed
-checking how to run the C preprocessor... clang -E
-checking for grep that handles long lines and -e... /usr/bin/grep
-checking for egrep... /usr/bin/grep -E
-checking for ANSI C header files... yes
-checking for sys/types.h... yes
-checking for sys/stat.h... yes
-checking for stdlib.h... yes
-checking for string.h... yes
-checking for memory.h... yes
-checking for strings.h... yes
-checking for inttypes.h... yes
-checking for stdint.h... yes
-checking for unistd.h... yes
-checking gdal.h usability... yes
-checking gdal.h presence... yes
-checking for gdal.h... yes
-checking GDAL: linking with --libs only... no
-checking GDAL: linking with --libs and --dep-libs... no
-In file included from gdal_test.cpp:1:
-In file included from /usr/local/include/gdal.h:45:
-/usr/local/include/cpl_port.h:187:6: error: Must have C++11 or newer.
-#    error Must have C++11 or newer.
-     ^
-1 error generated.
-In file included from gdal_test.cpp:1:
-In file included from /usr/local/include/gdal.h:45:
-/usr/local/include/cpl_port.h:187:6: error: Must have C++11 or newer.
-#    error Must have C++11 or newer.
-     ^
-1 error generated.
-configure: Install failure: compilation and/or linkage problems.
-configure: error: GDALAllRegister not found in libgdal.
-ERROR: configuration failed for package ‘sf’
-* removing ‘/Users/lionel/Desktop/rlang/revdep/checks.noindex/sf/old/sf.Rcheck/sf’
-
-```
 # shiny
 
 Version: 1.1.0
@@ -15074,7 +15550,7 @@ Version: 0.1.0
 *   checking dependencies in R code ... NOTE
     ```
     Namespaces in Imports field not imported from:
-      ‘htmlwidgets’ ‘jsonlite’ ‘RColorBrewer’ ‘viridis’
+      ‘RColorBrewer’ ‘htmlwidgets’ ‘jsonlite’ ‘viridis’
       All declared Imports should be used.
     ```
 
@@ -15193,54 +15669,36 @@ Version: 4.0.1
 
 ## In both
 
+*   checking tests ...
+    ```
+     ERROR
+    Running the tests in ‘tests/testthat.R’ failed.
+    Last 13 lines of output:
+      41: tryCatchList(expr, classes, parentenv, handlers)
+      42: tryCatch(withCallingHandlers({    eval(code, test_env)    if (!handled && !is.null(test)) {        skip_empty()    }}, expectation = handle_expectation, skip = handle_skip, warning = handle_warning,     message = handle_message, error = handle_error), error = handle_fatal,     skip = function(e) {    })
+      43: test_code(NULL, exprs, env)
+      44: source_file(path, new.env(parent = env), chdir = TRUE, wrap = wrap)
+      45: force(code)
+      46: with_reporter(reporter = reporter, start_end_reporter = start_end_reporter,     {        lister$start_file(basename(path))        source_file(path, new.env(parent = env), chdir = TRUE,             wrap = wrap)        end_context()    })
+      47: FUN(X[[i]], ...)
+      48: lapply(paths, test_file, env = env, reporter = current_reporter,     start_end_reporter = FALSE, load_helpers = FALSE, wrap = wrap)
+      49: force(code)
+      50: with_reporter(reporter = current_reporter, results <- lapply(paths,     test_file, env = env, reporter = current_reporter, start_end_reporter = FALSE,     load_helpers = FALSE, wrap = wrap))
+      51: test_files(paths, reporter = reporter, env = env, stop_on_failure = stop_on_failure,     stop_on_warning = stop_on_warning, wrap = wrap)
+      52: test_dir(path = test_path, reporter = reporter, env = env, filter = filter,     ..., stop_on_failure = stop_on_failure, stop_on_warning = stop_on_warning,     wrap = wrap)
+      53: test_package_dir(package = package, test_path = test_path, filter = filter,     reporter = reporter, ..., stop_on_failure = stop_on_failure,     stop_on_warning = stop_on_warning, wrap = wrap)
+      54: test_check("simmer")
+      An irrecoverable exception occurred. R is aborting now ...
+    ```
+
 *   checking installed package size ... NOTE
     ```
-      installed size is  7.6Mb
+      installed size is  7.5Mb
       sub-directories of 1Mb or more:
         doc    2.1Mb
-        libs   4.4Mb
+        libs   4.3Mb
     ```
 
-# simputation
-
-Version: 0.2.2
-
-## In both
-
-*   checking whether package ‘simputation’ can be installed ... ERROR
-    ```
-    Installation failed.
-    See ‘/Users/lionel/Desktop/rlang/revdep/checks.noindex/simputation/new/simputation.Rcheck/00install.out’ for details.
-    ```
-
-## Installation
-
-### Devel
-
-```
-* installing *source* package ‘simputation’ ...
-** package ‘simputation’ successfully unpacked and MD5 sums checked
-** libs
-clang -I"/Library/Frameworks/R.framework/Resources/include" -DNDEBUG   -I/usr/local/include  -fopenmp -fPIC   -Wall -pedantic -O0 -c R_register_native.c -o R_register_native.o
-clang: error: unsupported option '-fopenmp'
-make: *** [R_register_native.o] Error 1
-ERROR: compilation failed for package ‘simputation’
-* removing ‘/Users/lionel/Desktop/rlang/revdep/checks.noindex/simputation/new/simputation.Rcheck/simputation’
-
-```
-### CRAN
-
-```
-* installing *source* package ‘simputation’ ...
-** package ‘simputation’ successfully unpacked and MD5 sums checked
-** libs
-clang -I"/Library/Frameworks/R.framework/Resources/include" -DNDEBUG   -I/usr/local/include  -fopenmp -fPIC   -Wall -pedantic -O0 -c R_register_native.c -o R_register_native.o
-clang: error: unsupported option '-fopenmp'
-make: *** [R_register_native.o] Error 1
-ERROR: compilation failed for package ‘simputation’
-* removing ‘/Users/lionel/Desktop/rlang/revdep/checks.noindex/simputation/old/simputation.Rcheck/simputation’
-
-```
 # SimRVPedigree
 
 Version: 0.3.0
@@ -15326,55 +15784,6 @@ Version: 1.0.0
     Error: processing vignette 'singscore.Rmd' failed with diagnostics:
     object 'tcga-EPI' not found
     Execution halted
-    ```
-
-# sjmisc
-
-Version: 2.7.5
-
-## Newly broken
-
-*   checking examples ... ERROR
-    ```
-    Running examples in ‘sjmisc-Ex.R’ failed
-    The error most likely occurred in:
-    
-    > ### Name: move_columns
-    > ### Title: Move columns to other positions in a data frame
-    > ### Aliases: move_columns
-    > 
-    > ### ** Examples
-    > 
-    > data(iris)
-    > 
-    > iris %>%
-    +   move_columns(Sepal.Width, .after = "Species") %>%
-    +   head()
-    Error in if (pos.after < 1) { : argument is of length zero
-    Calls: %>% ... eval -> _fseq -> freduce -> <Anonymous> -> move_columns
-    Execution halted
-    ```
-
-*   checking tests ...
-    ```
-     ERROR
-    Running the tests in ‘tests/testthat.R’ failed.
-    Last 13 lines of output:
-      10: select.data.frame(., !!group_name)
-      11: tidyselect::vars_select(names(.data), !!!quos(...))
-      12: vars_select_eval(.vars, quos)
-      13: map_if(ind_list, is_character, match_strings, names = TRUE)
-      14: map(.x[sel], .f, ...)
-      15: .f(.x[[i]], ...)
-      16: bad_unknown_vars(vars, unknown)
-      17: abort(glue("Unknown { thing } { fmt_args(unknown) } "))
-      
-      ══ testthat results  ═══════════════════════════════════════════════════════════
-      OK: 96 SKIPPED: 6 FAILED: 1
-      1. Error: de_mean (@test-demean.R#12) 
-      
-      Error: testthat unit tests failed
-      Execution halted
     ```
 
 # sjstats
@@ -15519,8 +15928,8 @@ Version: 0.2.2
     ```
       installed size is  5.1Mb
       sub-directories of 1Mb or more:
-        doc   1.2Mb
         R     3.0Mb
+        doc   1.2Mb
     ```
 
 # sparklyr
@@ -15533,8 +15942,8 @@ Version: 0.9.1
     ```
       installed size is  7.1Mb
       sub-directories of 1Mb or more:
+        R      4.1Mb
         java   1.9Mb
-        R      4.0Mb
     ```
 
 # SpatialBall
@@ -15563,9 +15972,9 @@ Version: 0.3
 *   checking dependencies in R code ... NOTE
     ```
     Namespaces in Imports field not imported from:
-      ‘dplyr’ ‘dygraphs’ ‘ggplot2’ ‘htmlwidgets’ ‘knitr’ ‘leaflet’
-      ‘mapproj’ ‘maptools’ ‘RColorBrewer’ ‘rgdal’ ‘rgeos’ ‘rmarkdown’
-      ‘shinyjs’ ‘SpatialEpi’ ‘spdep’ ‘xts’
+      ‘RColorBrewer’ ‘SpatialEpi’ ‘dplyr’ ‘dygraphs’ ‘ggplot2’
+      ‘htmlwidgets’ ‘knitr’ ‘leaflet’ ‘mapproj’ ‘maptools’ ‘rgdal’ ‘rgeos’
+      ‘rmarkdown’ ‘shinyjs’ ‘spdep’ ‘xts’
       All declared Imports should be used.
     ```
 
@@ -15585,20 +15994,6 @@ Version: 2.1.5
     Error: processing vignette 'spatial-modeling-use-case.Rmd' failed with diagnostics:
     pandoc document conversion failed with error 83
     Execution halted
-    ```
-
-# splashr
-
-Version: 0.4.1
-
-## In both
-
-*   checking package dependencies ... ERROR
-    ```
-    Package required but not available: ‘magick’
-    
-    See section ‘The DESCRIPTION file’ in the ‘Writing R Extensions’
-    manual.
     ```
 
 # sport
@@ -15638,8 +16033,7 @@ Version: 0.5.3.1
 
 *   checking package dependencies ... ERROR
     ```
-    Packages required but not available:
-      ‘stacomirtools’ ‘gWidgetsRGtk2’ ‘RGtk2’
+    Packages required but not available: ‘gWidgetsRGtk2’ ‘RGtk2’
     
     See section ‘The DESCRIPTION file’ in the ‘Writing R Extensions’
     manual.
@@ -15700,7 +16094,7 @@ Version: 0.1-1
 
 *   checking installed package size ... NOTE
     ```
-      installed size is  7.7Mb
+      installed size is  7.8Mb
       sub-directories of 1Mb or more:
         doc   3.5Mb
         nc    2.9Mb
@@ -15787,6 +16181,7 @@ Version: 0.1.0
 *   checking re-building of vignette outputs ... WARNING
     ```
     ...
+    The following objects are masked from 'package:stats':
     
         filter, lag
     
@@ -15801,12 +16196,11 @@ Version: 0.1.0
     
         combine
     
-    Map from URL : http://maps.googleapis.com/maps/api/staticmap?center=georgia&zoom=5&size=640x640&scale=2&maptype=terrain&language=en-EN&sensor=false
-    Information from URL : http://maps.googleapis.com/maps/api/geocode/json?address=georgia&sensor=false
-    Warning: geocode failed with status OVER_QUERY_LIMIT, location = "georgia"
+    Warning in download.file(url, destfile = tmp, quiet = !messaging, mode = "wb") :
+      cannot open URL 'http://maps.googleapis.com/maps/api/staticmap?center=georgia&zoom=5&size=640x640&scale=2&maptype=terrain&language=en-EN&sensor=false': HTTP status was '403 Forbidden'
     Quitting from lines 220-233 (Details.Rmd) 
     Error: processing vignette 'Details.Rmd' failed with diagnostics:
-    arguments imply differing number of rows: 0, 1
+    cannot open URL 'http://maps.googleapis.com/maps/api/staticmap?center=georgia&zoom=5&size=640x640&scale=2&maptype=terrain&language=en-EN&sensor=false'
     Execution halted
     ```
 
@@ -15826,6 +16220,34 @@ Version: 0.2.5
     Error: processing vignette 'introducing-stplanr.Rmd' failed with diagnostics:
     pandoc document conversion failed with error 83
     Execution halted
+    ```
+
+# strex
+
+Version: 0.1.1
+
+## In both
+
+*   checking tests ...
+    ```
+     ERROR
+    Running the tests in ‘tests/testthat.R’ failed.
+    Last 13 lines of output:
+      30: tryCatchList(expr, classes, parentenv, handlers)
+      31: tryCatch(withCallingHandlers({    eval(code, test_env)    if (!handled && !is.null(test)) {        skip_empty()    }}, expectation = handle_expectation, skip = handle_skip, warning = handle_warning,     message = handle_message, error = handle_error), error = handle_fatal,     skip = function(e) {    })
+      32: test_code(NULL, exprs, env)
+      33: source_file(path, new.env(parent = env), chdir = TRUE, wrap = wrap)
+      34: force(code)
+      35: with_reporter(reporter = reporter, start_end_reporter = start_end_reporter,     {        lister$start_file(basename(path))        source_file(path, new.env(parent = env), chdir = TRUE,             wrap = wrap)        end_context()    })
+      36: FUN(X[[i]], ...)
+      37: lapply(paths, test_file, env = env, reporter = current_reporter,     start_end_reporter = FALSE, load_helpers = FALSE, wrap = wrap)
+      38: force(code)
+      39: with_reporter(reporter = current_reporter, results <- lapply(paths,     test_file, env = env, reporter = current_reporter, start_end_reporter = FALSE,     load_helpers = FALSE, wrap = wrap))
+      40: test_files(paths, reporter = reporter, env = env, stop_on_failure = stop_on_failure,     stop_on_warning = stop_on_warning, wrap = wrap)
+      41: test_dir(path = test_path, reporter = reporter, env = env, filter = filter,     ..., stop_on_failure = stop_on_failure, stop_on_warning = stop_on_warning,     wrap = wrap)
+      42: test_package_dir(package = package, test_path = test_path, filter = filter,     reporter = reporter, ..., stop_on_failure = stop_on_failure,     stop_on_warning = stop_on_warning, wrap = wrap)
+      43: test_check("strex")
+      An irrecoverable exception occurred. R is aborting now ...
     ```
 
 # STRMPS
@@ -15849,14 +16271,14 @@ Version: 0.1.0
     ```
       installed size is  5.5Mb
       sub-directories of 1Mb or more:
+        R       3.0Mb
         paper   2.3Mb
-        R       3.1Mb
     ```
 
 *   checking dependencies in R code ... NOTE
     ```
     Namespaces in Imports field not imported from:
-      ‘alluvial’ ‘geoR’ ‘gridBase’ ‘UpSetR’
+      ‘UpSetR’ ‘alluvial’ ‘geoR’ ‘gridBase’
       All declared Imports should be used.
     ```
 
@@ -15879,9 +16301,9 @@ Version: 1.10.0
     voomLimma: no visible global function definition for ‘model.matrix’
       (/Users/lionel/Desktop/rlang/revdep/checks.noindex/subSeq/new/subSeq.Rcheck/00_pkg_src/subSeq/R/handlers.R:41)
     Undefined global functions or variables:
-      . average.depth average.value coefficient cor count cov depth estFDP
-      ID method metric model.matrix o.coefficient o.lfdr o.padj p.adjust
-      padj percent plot proportion pvalue rbinom replication rFDP
+      . ID average.depth average.value coefficient cor count cov depth
+      estFDP method metric model.matrix o.coefficient o.lfdr o.padj
+      p.adjust padj percent plot proportion pvalue rFDP rbinom replication
       selectMethod significant valid value var
     Consider adding
       importFrom("graphics", "plot")
@@ -15998,7 +16420,7 @@ Version: 1.0.4
     plotROC: no visible binding for global variable ‘method’
       (/Users/lionel/Desktop/rlang/revdep/checks.noindex/SummarizedBenchmark/new/SummarizedBenchmark.Rcheck/00_pkg_src/SummarizedBenchmark/R/PlottingFunctions.R:81-82)
     Undefined global functions or variables:
-      .id .method .val FDR method TPR
+      .id .method .val FDR TPR method
     ```
 
 # sunburstR
@@ -16142,6 +16564,7 @@ Version: 1.10.0
 *   checking R code for possible problems ... NOTE
     ```
     ...
+      (/Users/lionel/Desktop/rlang/revdep/checks.noindex/synlet/new/synlet.Rcheck/00_pkg_src/synlet/R/zFactor.R:33-34)
     zFactor: no visible binding for global variable ‘sd’
       (/Users/lionel/Desktop/rlang/revdep/checks.noindex/synlet/new/synlet.Rcheck/00_pkg_src/synlet/R/zFactor.R:37-38)
     zFactor: no visible binding for global variable ‘median’
@@ -16149,11 +16572,10 @@ Version: 1.10.0
     zFactor: no visible global function definition for ‘complete.cases’
       (/Users/lionel/Desktop/rlang/revdep/checks.noindex/synlet/new/synlet.Rcheck/00_pkg_src/synlet/R/zFactor.R:50)
     Undefined global functions or variables:
-      COL_NAME colorRampPalette complete.cases condition dev.off
-      EXPERIMENT_MODIFICATION EXPERIMENT_TYPE experiments is mad
-      MASTER_PLATE median medpolish p.adjust pdf phyper PLATE rainbow
-      READOUT ROW_NAME sd siRNA t.test value Var1 WELL_CONTENT_NAME
-      write.table
+      COL_NAME EXPERIMENT_MODIFICATION EXPERIMENT_TYPE MASTER_PLATE PLATE
+      READOUT ROW_NAME Var1 WELL_CONTENT_NAME colorRampPalette
+      complete.cases condition dev.off experiments is mad median medpolish
+      p.adjust pdf phyper rainbow sd siRNA t.test value write.table
     Consider adding
       importFrom("grDevices", "colorRampPalette", "dev.off", "pdf",
                  "rainbow")
@@ -16175,8 +16597,8 @@ Version: 1.0.4
     ```
       installed size is  5.8Mb
       sub-directories of 1Mb or more:
-        extdata   3.1Mb
         R         2.1Mb
+        extdata   3.1Mb
     ```
 
 # tabularaster
@@ -16201,9 +16623,9 @@ Version: 0.3.1
     ```
       installed size is  5.3Mb
       sub-directories of 1Mb or more:
+        R      2.1Mb
         data   1.1Mb
         doc    1.7Mb
-        R      2.1Mb
     ```
 
 *   checking dependencies in R code ... NOTE
@@ -16241,23 +16663,16 @@ Version: 2.8.4
 
 *   checking installed package size ... NOTE
     ```
-      installed size is 74.2Mb
+      installed size is 74.9Mb
       sub-directories of 1Mb or more:
-        data   3.5Mb
-        doc   66.4Mb
         R      4.1Mb
+        data   4.1Mb
+        doc   66.4Mb
     ```
 
 *   checking R code for possible problems ... NOTE
     ```
     ...
-    TCGAtumor_purity: no visible binding for global variable ‘Tumor.purity’
-      (/Users/lionel/Desktop/rlang/revdep/checks.noindex/TCGAbiolinks/new/TCGAbiolinks.Rcheck/00_pkg_src/TCGAbiolinks/R/clinical.R:639-640)
-    TCGAvisualize_oncoprint: no visible binding for global variable ‘value’
-      (/Users/lionel/Desktop/rlang/revdep/checks.noindex/TCGAbiolinks/new/TCGAbiolinks.Rcheck/00_pkg_src/TCGAbiolinks/R/visualize.R:944)
-    TCGAvisualize_SurvivalCoxNET: no visible global function definition for
-      ‘dNetInduce’
-      (/Users/lionel/Desktop/rlang/revdep/checks.noindex/TCGAbiolinks/new/TCGAbiolinks.Rcheck/00_pkg_src/TCGAbiolinks/R/visualize.R:156-157)
     TCGAvisualize_SurvivalCoxNET: no visible global function definition for
       ‘dNetPipeline’
       (/Users/lionel/Desktop/rlang/revdep/checks.noindex/TCGAbiolinks/new/TCGAbiolinks.Rcheck/00_pkg_src/TCGAbiolinks/R/visualize.R:161-162)
@@ -16267,10 +16682,17 @@ Version: 2.8.4
     TCGAvisualize_SurvivalCoxNET: no visible global function definition for
       ‘visNet’
       (/Users/lionel/Desktop/rlang/revdep/checks.noindex/TCGAbiolinks/new/TCGAbiolinks.Rcheck/00_pkg_src/TCGAbiolinks/R/visualize.R:184-189)
+    TCGAvisualize_oncoprint: no visible binding for global variable ‘value’
+      (/Users/lionel/Desktop/rlang/revdep/checks.noindex/TCGAbiolinks/new/TCGAbiolinks.Rcheck/00_pkg_src/TCGAbiolinks/R/visualize.R:944)
+    readExonQuantification: no visible binding for global variable ‘exon’
+      (/Users/lionel/Desktop/rlang/revdep/checks.noindex/TCGAbiolinks/new/TCGAbiolinks.Rcheck/00_pkg_src/TCGAbiolinks/R/prepare.R:234-235)
+    readExonQuantification: no visible binding for global variable
+      ‘coordinates’
+      (/Users/lionel/Desktop/rlang/revdep/checks.noindex/TCGAbiolinks/new/TCGAbiolinks.Rcheck/00_pkg_src/TCGAbiolinks/R/prepare.R:234-235)
     Undefined global functions or variables:
-      barcode c3net clinical coordinates dCommSignif dNetInduce
-      dNetPipeline exon knnmi.cross limmacontrasts.fit limmamakeContrasts
-      minet portions rse_gene TabSubtypesCol_merged Tumor.purity value
+      TabSubtypesCol_merged Tumor.purity barcode c3net clinical coordinates
+      dCommSignif dNetInduce dNetPipeline exon knnmi.cross
+      limmacontrasts.fit limmamakeContrasts minet portions rse_gene value
       visNet
     ```
 
@@ -16328,17 +16750,31 @@ Version: 2.2.2
 
 *   checking installed package size ... NOTE
     ```
-      installed size is  7.8Mb
+      installed size is  7.9Mb
       sub-directories of 1Mb or more:
+        R      2.1Mb
         data   1.4Mb
         doc    3.9Mb
-        R      2.0Mb
     ```
 
 *   checking dependencies in R code ... NOTE
     ```
     Namespace in Imports field not imported from: ‘scales’
       All declared Imports should be used.
+    ```
+
+# teachingApps
+
+Version: 1.0.4
+
+## In both
+
+*   checking installed package size ... NOTE
+    ```
+      installed size is  5.3Mb
+      sub-directories of 1Mb or more:
+        apps   2.0Mb
+        libs   2.3Mb
     ```
 
 # telefit
@@ -16349,10 +16785,10 @@ Version: 1.0.0
 
 *   checking installed package size ... NOTE
     ```
-      installed size is  5.3Mb
+      installed size is  5.7Mb
       sub-directories of 1Mb or more:
         data   2.4Mb
-        libs   2.5Mb
+        libs   2.9Mb
     ```
 
 # tempcyclesdata
@@ -16591,34 +17027,6 @@ Version: 0.1.0
     Packages unavailable to check Rd xrefs: ‘DESeq2’, ‘dada2’
     ```
 
-# tibbletime
-
-Version: 0.1.1
-
-## Newly broken
-
-*   checking tests ...
-    ```
-     ERROR
-    Running the tests in ‘tests/testthat.R’ failed.
-    Last 13 lines of output:
-      8: rlang::quo_name(get_index_quo(.tbl_time)) at /Users/lionel/Desktop/rlang/revdep/checks.noindex/tibbletime/new/tibbletime.Rcheck/00_pkg_src/tibbletime/R/getters.R:28
-      9: quo_squash(quo) at /private/var/folders/b9/1vbq6rn93_1fk71sn95dqb8r0000gn/T/RtmpbSBfQ2/R.INSTALL38e96c47fc7c/rlang/R/quo.R:401
-      10: is_quosure(quo) at /private/var/folders/b9/1vbq6rn93_1fk71sn95dqb8r0000gn/T/RtmpbSBfQ2/R.INSTALL38e96c47fc7c/rlang/R/quo.R:346
-      11: get_index_quo(.tbl_time) at /Users/lionel/Desktop/rlang/revdep/checks.noindex/tibbletime/new/tibbletime.Rcheck/00_pkg_src/tibbletime/R/getters.R:28
-      12: glue_stop("Object is not of class `tbl_time`.") at /Users/lionel/Desktop/rlang/revdep/checks.noindex/tibbletime/new/tibbletime.Rcheck/00_pkg_src/tibbletime/R/getters.R:12
-      13: stop(glue::glue(..., .sep, .envir = parent.frame()), call. = FALSE) at /Users/lionel/Desktop/rlang/revdep/checks.noindex/tibbletime/new/tibbletime.Rcheck/00_pkg_src/tibbletime/R/util.R:28
-      
-      ══ testthat results  ═══════════════════════════════════════════════════════════
-      OK: 126 SKIPPED: 0 FAILED: 3
-      1. Failure: nest() with index creates tbl_df (@test_compat-tidyr.R#25) 
-      2. Failure: unnest() with index goes back to tbl_time (@test_compat-tidyr.R#40) 
-      3. Error: unnest() with index goes back to tbl_time (@test_compat-tidyr.R#41) 
-      
-      Error: testthat unit tests failed
-      Execution halted
-    ```
-
 # tidybayes
 
 Version: 1.0.1
@@ -16761,6 +17169,28 @@ Version: 0.8.1
 
 ## In both
 
+*   checking tests ...
+    ```
+     ERROR
+    Running the tests in ‘tests/testthat.R’ failed.
+    Last 13 lines of output:
+      32: tryCatchList(expr, classes, parentenv, handlers)
+      33: tryCatch(withCallingHandlers({    eval(code, test_env)    if (!handled && !is.null(test)) {        skip_empty()    }}, expectation = handle_expectation, skip = handle_skip, warning = handle_warning,     message = handle_message, error = handle_error), error = handle_fatal,     skip = function(e) {    })
+      34: test_code(NULL, exprs, env)
+      35: source_file(path, new.env(parent = env), chdir = TRUE, wrap = wrap)
+      36: force(code)
+      37: with_reporter(reporter = reporter, start_end_reporter = start_end_reporter,     {        lister$start_file(basename(path))        source_file(path, new.env(parent = env), chdir = TRUE,             wrap = wrap)        end_context()    })
+      38: FUN(X[[i]], ...)
+      39: lapply(paths, test_file, env = env, reporter = current_reporter,     start_end_reporter = FALSE, load_helpers = FALSE, wrap = wrap)
+      40: force(code)
+      41: with_reporter(reporter = current_reporter, results <- lapply(paths,     test_file, env = env, reporter = current_reporter, start_end_reporter = FALSE,     load_helpers = FALSE, wrap = wrap))
+      42: test_files(paths, reporter = reporter, env = env, stop_on_failure = stop_on_failure,     stop_on_warning = stop_on_warning, wrap = wrap)
+      43: test_dir(path = test_path, reporter = reporter, env = env, filter = filter,     ..., stop_on_failure = stop_on_failure, stop_on_warning = stop_on_warning,     wrap = wrap)
+      44: test_package_dir(package = package, test_path = test_path, filter = filter,     reporter = reporter, ..., stop_on_failure = stop_on_failure,     stop_on_warning = stop_on_warning, wrap = wrap)
+      45: test_check("tidyr")
+      An irrecoverable exception occurred. R is aborting now ...
+    ```
+
 *   checking data for non-ASCII characters ... NOTE
     ```
       Note: found 23 marked UTF-8 strings
@@ -16776,6 +17206,34 @@ Version: 1.2.6
     ```
     Namespace in Imports field not imported from: ‘testthat’
       All declared Imports should be used.
+    ```
+
+# tidyselect
+
+Version: 0.2.4
+
+## In both
+
+*   checking tests ...
+    ```
+     ERROR
+    Running the tests in ‘tests/testthat.R’ failed.
+    Last 13 lines of output:
+      
+      The following objects are masked from 'package:testthat':
+      
+          is_false, is_null, is_true
+      
+      > library("tidyselect")
+      
+      Attaching package: 'tidyselect'
+      
+      The following object is masked from 'package:testthat':
+      
+          matches
+      
+      > 
+      > test_check("tidyselect")
     ```
 
 # tidystringdist
@@ -16794,90 +17252,12 @@ Version: 0.1.2
 
 Version: 0.1.9
 
-## Newly broken
-
-*   checking tests ...
-    ```
-     ERROR
-    Running the tests in ‘tests/testthat.R’ failed.
-    Last 13 lines of output:
-      15: stop("Input must be a character vector of any length or a list of character\n", "  vectors, each of which has a length of 1.")
-      
-      ══ testthat results  ═══════════════════════════════════════════════════════════
-      OK: 203 SKIPPED: 0 FAILED: 8
-      1. Error: Can cast tables into a sparse Matrix (@test-sparse-casters.R#13) 
-      2. Error: Can cast_sparse with tidyeval (@test-sparse-casters.R#40) 
-      3. Error: Can cast tables into a sparse DocumentTermMatrix (@test-sparse-casters.R#48) 
-      4. Error: Can cast tables into a sparse TermDocumentMatrix (@test-sparse-casters.R#61) 
-      5. Error: Can cast tables into a sparse dfm (@test-sparse-casters.R#74) 
-      6. Error: can augment an stm output (@test-stm-tidiers.R#61) 
-      7. Error: tf-idf with tidyeval works (@test-tf-idf.R#69) 
-      8. Error: tokenizing with tidyeval works (@test-unnest-tokens.R#150) 
-      
-      Error: testthat unit tests failed
-      Execution halted
-    ```
-
-*   checking re-building of vignette outputs ... WARNING
-    ```
-    ...
-        intersect, setdiff, setequal, union
-    
-    Joining, by = "book"
-    `stat_bin()` using `bins = 30`. Pick better value with `binwidth`.
-    Warning: Removed 896 rows containing non-finite values (stat_bin).
-    Loading required package: NLP
-    
-    Attaching package: 'NLP'
-    
-    The following object is masked from 'package:ggplot2':
-    
-        annotate
-    
-    Warning: Trying to compute distinct() for variables not found in the data:
-    - `row_col`, `column_col`
-    This is an error, but only a warning is raised for compatibility reasons.
-    The operation will return the input unchanged.
-    Quitting from lines 93-113 (tidying_casting.Rmd) 
-    Error: processing vignette 'tidying_casting.Rmd' failed with diagnostics:
-    not yet implemented for matrix with typeof NULL
-    Execution halted
-    ```
-
 ## In both
 
 *   checking dependencies in R code ... NOTE
     ```
     Unable to find any JVMs matching version "(null)".
     No Java runtime present, try --request to install.
-    ```
-
-# tidytidbits
-
-Version: 0.1.0
-
-## Newly broken
-
-*   checking examples ... ERROR
-    ```
-    Running examples in ‘tidytidbits-Ex.R’ failed
-    The error most likely occurred in:
-    
-    > ### Name: cross_tabulate
-    > ### Title: Create cross table from a tibble
-    > ### Aliases: cross_tabulate
-    > 
-    > ### ** Examples
-    > 
-    > library(magrittr)
-    > if (requireNamespace("survival", quietly = TRUE))
-    + {
-    +    survival::bladder1 %>%
-    +       cross_tabulate(treatment, recur) %>%
-    +       chisq.test()
-    + }
-    Error: Expected a list of quosures
-    Execution halted
     ```
 
 # tidytransit
@@ -16923,6 +17303,28 @@ Version: 1.2.1
 Version: 1.0.3
 
 ## In both
+
+*   checking tests ...
+    ```
+     ERROR
+    Running the tests in ‘tests/testthat.R’ failed.
+    Last 13 lines of output:
+      31: tryCatchList(expr, classes, parentenv, handlers)
+      32: tryCatch(withCallingHandlers({    eval(code, test_env)    if (!handled && !is.null(test)) {        skip_empty()    }}, expectation = handle_expectation, skip = handle_skip, warning = handle_warning,     message = handle_message, error = handle_error), error = handle_fatal,     skip = function(e) {    })
+      33: test_code(NULL, exprs, env)
+      34: source_file(path, new.env(parent = env), chdir = TRUE, wrap = wrap)
+      35: force(code)
+      36: with_reporter(reporter = reporter, start_end_reporter = start_end_reporter,     {        lister$start_file(basename(path))        source_file(path, new.env(parent = env), chdir = TRUE,             wrap = wrap)        end_context()    })
+      37: FUN(X[[i]], ...)
+      38: lapply(paths, test_file, env = env, reporter = current_reporter,     start_end_reporter = FALSE, load_helpers = FALSE, wrap = wrap)
+      39: force(code)
+      40: with_reporter(reporter = current_reporter, results <- lapply(paths,     test_file, env = env, reporter = current_reporter, start_end_reporter = FALSE,     load_helpers = FALSE, wrap = wrap))
+      41: test_files(paths, reporter = reporter, env = env, stop_on_failure = stop_on_failure,     stop_on_warning = stop_on_warning, wrap = wrap)
+      42: test_dir(path = test_path, reporter = reporter, env = env, filter = filter,     ..., stop_on_failure = stop_on_failure, stop_on_warning = stop_on_warning,     wrap = wrap)
+      43: test_package_dir(package = package, test_path = test_path, filter = filter,     reporter = reporter, ..., stop_on_failure = stop_on_failure,     stop_on_warning = stop_on_warning, wrap = wrap)
+      44: test_check("tidyxl")
+      An irrecoverable exception occurred. R is aborting now ...
+    ```
 
 *   checking compiled code ... WARNING
     ```
@@ -16992,8 +17394,8 @@ Version: 1.10.0
       approxfun axis mad median optimize par plot points polygon predict
       rainbow rgb rnorm
     Consider adding
-      importFrom("graphics", "axis", "par", "plot", "points", "polygon")
       importFrom("grDevices", "rainbow", "rgb")
+      importFrom("graphics", "axis", "par", "plot", "points", "polygon")
       importFrom("stats", "approxfun", "mad", "median", "optimize",
                  "predict", "rnorm")
     to your NAMESPACE file.
@@ -17127,7 +17529,7 @@ Version: 1.18.0
 
 *   checking installed package size ... NOTE
     ```
-      installed size is  8.0Mb
+      installed size is  8.1Mb
       sub-directories of 1Mb or more:
         data      1.7Mb
         extdata   4.9Mb
@@ -17136,18 +17538,18 @@ Version: 1.18.0
 *   checking R code for possible problems ... NOTE
     ```
     ...
-      filterByTargetedSequences haplotypeBin HaplotypeBinDepth.mean
-      HaplotypeBinDepth.sum HaplotypeDepth.mean
       HaplotypeDepth.mean.symmetric HaplotypeDepth.sum
       HaplotypeDepth.sum.symmetric HaplotypeFraction
       HaplotypeFraction.symmetric HaplotypeRatio HaplotypeRatio.1
-      HaplotypeRatio.2 head keepChr Length.snp. lines loess
-      logR_Copy_Number LogRatio lowess MajorCN Median_logR Median_Ratio
-      MinorCN mtext na.omit nonRef par phasedAlleleFraction phasedCount
-      phasedCount.haploSymmetric phaseSet phaseSet.aggr plot points predict
-      queryHits read.delim rowRanges rowRanges<- Sample seq.info SNPs Start
-      Start_Position.bp. Start.snp Start.telo subjectHits tail TITAN_call
-      TITANcall TITANstate tumDepth uniroot unstrsplit write.table xtabs
+      HaplotypeRatio.2 Length.snp. LogRatio MajorCN Median_Ratio
+      Median_logR MinorCN SNPs Sample Start Start.snp Start.telo
+      Start_Position.bp. TITAN_call TITANcall TITANstate abline approxfun
+      as axis depth dunif excludeCentromere filterByTargetedSequences
+      haplotypeBin head keepChr lines loess logR_Copy_Number lowess mtext
+      na.omit nonRef par phaseSet phaseSet.aggr phasedAlleleFraction
+      phasedCount phasedCount.haploSymmetric plot points predict queryHits
+      read.delim rowRanges rowRanges<- seq.info subjectHits tail tumDepth
+      uniroot unstrsplit write.table xtabs
     Consider adding
       importFrom("graphics", "abline", "axis", "lines", "mtext", "par",
                  "plot", "points")
@@ -17174,9 +17576,9 @@ Version: 2.1-1
     ```
       installed size is  6.8Mb
       sub-directories of 1Mb or more:
+        R      3.0Mb
         data   1.4Mb
         doc    2.1Mb
-        R      3.0Mb
     ```
 
 # totalcensus
@@ -17205,7 +17607,7 @@ Version: 0.1.1
 
 # TPP
 
-Version: 3.8.4
+Version: 3.8.5
 
 ## In both
 
@@ -17216,9 +17618,9 @@ Version: 3.8.4
     ```
       installed size is 15.1Mb
       sub-directories of 1Mb or more:
+        R              2.1Mb
         data           1.9Mb
         example_data   8.0Mb
-        R              2.1Mb
         test_data      1.9Mb
     ```
 
@@ -17340,24 +17742,21 @@ Version: 0.0.3
 
 ## In both
 
-*   checking re-building of vignette outputs ... WARNING
+*   checking whether the package can be loaded ... ERROR
     ```
-    Error in re-building vignettes:
-      ...
+    Loading this package had a fatal error status code 1
+    Loading log:
     Loading required package: Rcpp
-    pandoc-citeproc: when expecting a product (:*:), encountered Object instead
-    Error running filter /usr/local/bin/pandoc-citeproc:
-    Filter returned error status 1
-    Error: processing vignette 'BEBOP.Rmd' failed with diagnostics:
-    pandoc document conversion failed with error 83
+    Error: package or namespace load failed for ‘trialr’ in .doLoadActions(where, attach):
+     error in load action .__A__.1 for package trialr: is(module, "character"): object 'm' not found
     Execution halted
     ```
 
 *   checking installed package size ... NOTE
     ```
-      installed size is 14.5Mb
+      installed size is 15.2Mb
       sub-directories of 1Mb or more:
-        libs  12.7Mb
+        libs  13.3Mb
     ```
 
 # tricolore
@@ -17519,18 +17918,18 @@ Version: 0.5.2
      ERROR
     Running the tests in ‘tests/testthat.R’ failed.
     Last 13 lines of output:
+      13: tsibble_select(.data, ...) at /Users/lionel/Desktop/rlang/revdep/checks.noindex/tsibble/new/tsibble.Rcheck/00_pkg_src/tsibble/R/dplyr-verbs.R:124
+      14: build_tsibble(sel_data, key = new_key, index = !!idx, index2 = !!idx2, groups = new_grp, 
+             regular = is_regular(.data), validate = validate, ordered = is_ordered(.data), 
+             interval = interval(.data)) at /Users/lionel/Desktop/rlang/revdep/checks.noindex/tsibble/new/tsibble.Rcheck/00_pkg_src/tsibble/R/index-by.R:170
+      15: validate_tsibble(data = tbl, key = key_vars, index = index) at /Users/lionel/Desktop/rlang/revdep/checks.noindex/tsibble/new/tsibble.Rcheck/00_pkg_src/tsibble/R/as-tsibble.R:389
+      16: abort(msg) at /Users/lionel/Desktop/rlang/revdep/checks.noindex/tsibble/new/tsibble.Rcheck/00_pkg_src/tsibble/R/as-tsibble.R:574
+      
       ══ testthat results  ═══════════════════════════════════════════════════════════
-      OK: 618 SKIPPED: 1 FAILED: 10
-      1.  Failure: nest() (@test-tidyr.R#68) 
-      2.  Failure: nest() (@test-tidyr.R#69) 
-      3.  Failure: nest() (@test-tidyr.R#74) 
-      4.  Error: nest() (@test-tidyr.R#78) 
-      5.  Error: unnest() (@test-tidyr.R#89) 
-      6.  Failure: dplyr verbs for lst_ts (@test-tidyr.R#98) 
-      7.  Error: dplyr verbs for lst_ts (@test-tidyr.R#102) 
-      8.  Failure: Space in index variable (@test-tsibble.R#87) 
-      9.  Error: Spectial characters in column names (@test-tsibble.R#352) 
-      10. Error: a tsibble with more than one measured vars (@test-tsibble2ts.R#45) 
+      OK: 629 SKIPPED: 1 FAILED: 3
+      1. Failure: Space in index variable (@test-tsibble.R#87) 
+      2. Error: Spectial characters in column names (@test-tsibble.R#352) 
+      3. Error: a tsibble with more than one measured vars (@test-tsibble2ts.R#45) 
       
       Error: testthat unit tests failed
       Execution halted
@@ -17597,9 +17996,9 @@ Version: 0.8-7
     to your NAMESPACE file.
     ```
 
-# ubci
+# tweenr
 
-Version: 0.0.3
+Version: 1.0.0
 
 ## In both
 
@@ -17608,21 +18007,21 @@ Version: 0.0.3
      ERROR
     Running the tests in ‘tests/testthat.R’ failed.
     Last 13 lines of output:
-      10: httr::content(.)
-      11: parse_auto(raw, type, encoding, ...)
-      12: parser(x = content, type = type, encoding = encoding, ...)
-      13: need_package("xml2")
-      14: stop("Please install ", pkg, " package", call. = FALSE)
-      
-      ══ testthat results  ═══════════════════════════════════════════════════════════
-      OK: 12 SKIPPED: 0 FAILED: 4
-      1. Error: index colume chk (@test-ubci_index_options.R#9) 
-      2. Error: lang ko chk (@test-ubci_index_options.R#15) 
-      3. Error: index check 2 (@test-ubci_index.R#17) 
-      4. Error: index check 3 (@test-ubci_index.R#24) 
-      
-      Error: testthat unit tests failed
-      Execution halted
+      34: tryCatchList(expr, classes, parentenv, handlers)
+      35: tryCatch(withCallingHandlers({    eval(code, test_env)    if (!handled && !is.null(test)) {        skip_empty()    }}, expectation = handle_expectation, skip = handle_skip, warning = handle_warning,     message = handle_message, error = handle_error), error = handle_fatal,     skip = function(e) {    })
+      36: test_code(NULL, exprs, env)
+      37: source_file(path, new.env(parent = env), chdir = TRUE, wrap = wrap)
+      38: force(code)
+      39: with_reporter(reporter = reporter, start_end_reporter = start_end_reporter,     {        lister$start_file(basename(path))        source_file(path, new.env(parent = env), chdir = TRUE,             wrap = wrap)        end_context()    })
+      40: FUN(X[[i]], ...)
+      41: lapply(paths, test_file, env = env, reporter = current_reporter,     start_end_reporter = FALSE, load_helpers = FALSE, wrap = wrap)
+      42: force(code)
+      43: with_reporter(reporter = current_reporter, results <- lapply(paths,     test_file, env = env, reporter = current_reporter, start_end_reporter = FALSE,     load_helpers = FALSE, wrap = wrap))
+      44: test_files(paths, reporter = reporter, env = env, stop_on_failure = stop_on_failure,     stop_on_warning = stop_on_warning, wrap = wrap)
+      45: test_dir(path = test_path, reporter = reporter, env = env, filter = filter,     ..., stop_on_failure = stop_on_failure, stop_on_warning = stop_on_warning,     wrap = wrap)
+      46: test_package_dir(package = package, test_path = test_path, filter = filter,     reporter = reporter, ..., stop_on_failure = stop_on_failure,     stop_on_warning = stop_on_warning, wrap = wrap)
+      47: test_check("tweenr")
+      An irrecoverable exception occurred. R is aborting now ...
     ```
 
 # ukbtools
@@ -17684,50 +18083,6 @@ Version: 0.3.1
     Package suggested but not available for checking: ‘USAboundariesData’
     ```
 
-# useful
-
-Version: 1.2.5
-
-## In both
-
-*   checking tests ...
-    ```
-     ERROR
-    Running the tests in ‘tests/testthat.R’ failed.
-    Last 13 lines of output:
-      
-      x[5]: "8,750,038h"
-      y[5]: "8,750,037.80h"
-      
-      ══ testthat results  ═══════════════════════════════════════════════════════════
-      OK: 738 SKIPPED: 0 FAILED: 6
-      1. Failure: All functions return correct output (@test-formatters.r#80) 
-      2. Failure: All functions return correct output (@test-formatters.r#84) 
-      3. Failure: All functions return correct output (@test-formatters.r#89) 
-      4. Failure: All functions return correct output (@test-formatters.r#93) 
-      5. Failure: All functions return correct output (@test-formatters.r#102) 
-      6. Failure: All functions return correct output (@test-formatters.r#104) 
-      
-      Error: testthat unit tests failed
-      Execution halted
-    ```
-
-# usethis
-
-Version: 1.4.0
-
-## In both
-
-*   checking package dependencies ... NOTE
-    ```
-    Package suggested but not available for checking: ‘magick’
-    ```
-
-*   checking Rd cross-references ... NOTE
-    ```
-    Package unavailable to check Rd xrefs: ‘magick’
-    ```
-
 # utilsIPEA
 
 Version: 0.0.6
@@ -17775,132 +18130,34 @@ Version: 0.1.2
       All declared Imports should be used.
     ```
 
-# vapour
+# valr
 
-Version: 0.1.0
+Version: 0.4.1
 
 ## In both
 
-*   checking whether package ‘vapour’ can be installed ... ERROR
+*   checking tests ...
     ```
-    Installation failed.
-    See ‘/Users/lionel/Desktop/rlang/revdep/checks.noindex/vapour/new/vapour.Rcheck/00install.out’ for details.
+     ERROR
+    Running the tests in ‘tests/testthat.R’ failed.
+    Last 13 lines of output:
+      31: tryCatchList(expr, classes, parentenv, handlers)
+      32: tryCatch(withCallingHandlers({    eval(code, test_env)    if (!handled && !is.null(test)) {        skip_empty()    }}, expectation = handle_expectation, skip = handle_skip, warning = handle_warning,     message = handle_message, error = handle_error), error = handle_fatal,     skip = function(e) {    })
+      33: test_code(NULL, exprs, env)
+      34: source_file(path, new.env(parent = env), chdir = TRUE, wrap = wrap)
+      35: force(code)
+      36: with_reporter(reporter = reporter, start_end_reporter = start_end_reporter,     {        lister$start_file(basename(path))        source_file(path, new.env(parent = env), chdir = TRUE,             wrap = wrap)        end_context()    })
+      37: FUN(X[[i]], ...)
+      38: lapply(paths, test_file, env = env, reporter = current_reporter,     start_end_reporter = FALSE, load_helpers = FALSE, wrap = wrap)
+      39: force(code)
+      40: with_reporter(reporter = current_reporter, results <- lapply(paths,     test_file, env = env, reporter = current_reporter, start_end_reporter = FALSE,     load_helpers = FALSE, wrap = wrap))
+      41: test_files(paths, reporter = reporter, env = env, stop_on_failure = stop_on_failure,     stop_on_warning = stop_on_warning, wrap = wrap)
+      42: test_dir(path = test_path, reporter = reporter, env = env, filter = filter,     ..., stop_on_failure = stop_on_failure, stop_on_warning = stop_on_warning,     wrap = wrap)
+      43: test_package_dir(package = package, test_path = test_path, filter = filter,     reporter = reporter, ..., stop_on_failure = stop_on_failure,     stop_on_warning = stop_on_warning, wrap = wrap)
+      44: test_check("valr")
+      An irrecoverable exception occurred. R is aborting now ...
     ```
 
-## Installation
-
-### Devel
-
-```
-* installing *source* package ‘vapour’ ...
-** package ‘vapour’ successfully unpacked and MD5 sums checked
-configure: CC: clang
-configure: CXX: clang++
-checking for gdal-config... /usr/local/bin/gdal-config
-checking gdal-config usability... yes
-configure: GDAL: 2.3.1
-checking GDAL version >= 2.0.0... yes
-checking for gcc... clang
-checking whether the C compiler works... yes
-checking for C compiler default output file name... a.out
-checking for suffix of executables... 
-checking whether we are cross compiling... no
-checking for suffix of object files... o
-checking whether we are using the GNU C compiler... yes
-checking whether clang accepts -g... yes
-checking for clang option to accept ISO C89... none needed
-checking how to run the C preprocessor... clang -E
-checking for grep that handles long lines and -e... /usr/bin/grep
-checking for egrep... /usr/bin/grep -E
-checking for ANSI C header files... yes
-checking for sys/types.h... yes
-checking for sys/stat.h... yes
-checking for stdlib.h... yes
-checking for string.h... yes
-checking for memory.h... yes
-checking for strings.h... yes
-checking for inttypes.h... yes
-checking for stdint.h... yes
-checking for unistd.h... yes
-checking gdal.h usability... yes
-checking gdal.h presence... yes
-checking for gdal.h... yes
-checking GDAL: linking with --libs only... no
-checking GDAL: linking with --libs and --dep-libs... no
-In file included from gdal_test.cpp:1:
-In file included from /usr/local/include/gdal.h:45:
-/usr/local/include/cpl_port.h:187:6: error: Must have C++11 or newer.
-#    error Must have C++11 or newer.
-     ^
-1 error generated.
-In file included from gdal_test.cpp:1:
-In file included from /usr/local/include/gdal.h:45:
-/usr/local/include/cpl_port.h:187:6: error: Must have C++11 or newer.
-#    error Must have C++11 or newer.
-     ^
-1 error generated.
-configure: Install failure: compilation and/or linkage problems.
-configure: error: GDALAllRegister not found in libgdal.
-ERROR: configuration failed for package ‘vapour’
-* removing ‘/Users/lionel/Desktop/rlang/revdep/checks.noindex/vapour/new/vapour.Rcheck/vapour’
-
-```
-### CRAN
-
-```
-* installing *source* package ‘vapour’ ...
-** package ‘vapour’ successfully unpacked and MD5 sums checked
-configure: CC: clang
-configure: CXX: clang++
-checking for gdal-config... /usr/local/bin/gdal-config
-checking gdal-config usability... yes
-configure: GDAL: 2.3.1
-checking GDAL version >= 2.0.0... yes
-checking for gcc... clang
-checking whether the C compiler works... yes
-checking for C compiler default output file name... a.out
-checking for suffix of executables... 
-checking whether we are cross compiling... no
-checking for suffix of object files... o
-checking whether we are using the GNU C compiler... yes
-checking whether clang accepts -g... yes
-checking for clang option to accept ISO C89... none needed
-checking how to run the C preprocessor... clang -E
-checking for grep that handles long lines and -e... /usr/bin/grep
-checking for egrep... /usr/bin/grep -E
-checking for ANSI C header files... yes
-checking for sys/types.h... yes
-checking for sys/stat.h... yes
-checking for stdlib.h... yes
-checking for string.h... yes
-checking for memory.h... yes
-checking for strings.h... yes
-checking for inttypes.h... yes
-checking for stdint.h... yes
-checking for unistd.h... yes
-checking gdal.h usability... yes
-checking gdal.h presence... yes
-checking for gdal.h... yes
-checking GDAL: linking with --libs only... no
-checking GDAL: linking with --libs and --dep-libs... no
-In file included from gdal_test.cpp:1:
-In file included from /usr/local/include/gdal.h:45:
-/usr/local/include/cpl_port.h:187:6: error: Must have C++11 or newer.
-#    error Must have C++11 or newer.
-     ^
-1 error generated.
-In file included from gdal_test.cpp:1:
-In file included from /usr/local/include/gdal.h:45:
-/usr/local/include/cpl_port.h:187:6: error: Must have C++11 or newer.
-#    error Must have C++11 or newer.
-     ^
-1 error generated.
-configure: Install failure: compilation and/or linkage problems.
-configure: error: GDALAllRegister not found in libgdal.
-ERROR: configuration failed for package ‘vapour’
-* removing ‘/Users/lionel/Desktop/rlang/revdep/checks.noindex/vapour/old/vapour.Rcheck/vapour’
-
-```
 # vdmR
 
 Version: 0.2.6
@@ -17910,7 +18167,7 @@ Version: 0.2.6
 *   checking dependencies in R code ... NOTE
     ```
     Namespaces in Imports field not imported from:
-      ‘maptools’ ‘Rdpack’ ‘rgeos’
+      ‘Rdpack’ ‘maptools’ ‘rgeos’
       All declared Imports should be used.
     ```
 
@@ -17964,46 +18221,6 @@ Version: 0.5.1
       All declared Imports should be used.
     ```
 
-# vlad
-
-Version: 0.1.0
-
-## In both
-
-*   checking whether package ‘vlad’ can be installed ... ERROR
-    ```
-    Installation failed.
-    See ‘/Users/lionel/Desktop/rlang/revdep/checks.noindex/vlad/new/vlad.Rcheck/00install.out’ for details.
-    ```
-
-## Installation
-
-### Devel
-
-```
-* installing *source* package ‘vlad’ ...
-** package ‘vlad’ successfully unpacked and MD5 sums checked
-** libs
-clang++ -I"/Library/Frameworks/R.framework/Resources/include" -DNDEBUG  -I"/Users/lionel/Desktop/rlang/revdep/library.noindex/vlad/Rcpp/include" -I"/Users/lionel/Desktop/rlang/revdep/library.noindex/vlad/RcppArmadillo/include" -I/usr/local/include  -fopenmp -fPIC  -arch x86_64 -ftemplate-depth-256 -Wall -pedantic -O0 -c RcppExports.cpp -o RcppExports.o
-clang: error: unsupported option '-fopenmp'
-make: *** [RcppExports.o] Error 1
-ERROR: compilation failed for package ‘vlad’
-* removing ‘/Users/lionel/Desktop/rlang/revdep/checks.noindex/vlad/new/vlad.Rcheck/vlad’
-
-```
-### CRAN
-
-```
-* installing *source* package ‘vlad’ ...
-** package ‘vlad’ successfully unpacked and MD5 sums checked
-** libs
-clang++ -I"/Library/Frameworks/R.framework/Resources/include" -DNDEBUG  -I"/Users/lionel/Desktop/rlang/revdep/library.noindex/vlad/Rcpp/include" -I"/Users/lionel/Desktop/rlang/revdep/library.noindex/vlad/RcppArmadillo/include" -I/usr/local/include  -fopenmp -fPIC  -arch x86_64 -ftemplate-depth-256 -Wall -pedantic -O0 -c RcppExports.cpp -o RcppExports.o
-clang: error: unsupported option '-fopenmp'
-make: *** [RcppExports.o] Error 1
-ERROR: compilation failed for package ‘vlad’
-* removing ‘/Users/lionel/Desktop/rlang/revdep/checks.noindex/vlad/old/vlad.Rcheck/vlad’
-
-```
 # voxel
 
 Version: 1.3.5
@@ -18045,13 +18262,13 @@ Version: 3.48.1
     ...
     The following objects are masked from 'package:base':
     
-        anyDuplicated, append, as.data.frame, basename, cbind, colMeans,
-        colnames, colSums, dirname, do.call, duplicated, eval, evalq,
-        Filter, Find, get, grep, grepl, intersect, is.unsorted, lapply,
-        lengths, Map, mapply, match, mget, order, paste, pmax, pmax.int,
-        pmin, pmin.int, Position, rank, rbind, Reduce, rowMeans,
-        rownames, rowSums, sapply, setdiff, sort, table, tapply, union,
-        unique, unsplit, which, which.max, which.min
+        Filter, Find, Map, Position, Reduce, anyDuplicated, append,
+        as.data.frame, basename, cbind, colMeans, colSums, colnames,
+        dirname, do.call, duplicated, eval, evalq, get, grep, grepl,
+        intersect, is.unsorted, lapply, lengths, mapply, match, mget,
+        order, paste, pmax, pmax.int, pmin, pmin.int, rank, rbind,
+        rowMeans, rowSums, rownames, sapply, setdiff, sort, table,
+        tapply, union, unique, unsplit, which, which.max, which.min
     
     Welcome to Bioconductor
     
@@ -18099,29 +18316,50 @@ Version: 0.2.1
 
 ## In both
 
-*   R CMD check timed out
-    
+*   checking whether the package can be loaded ... ERROR
+    ```
+    Loading this package had a fatal error status code 1
+    Loading log:
+    Loading required package: Rcpp
+    Loading required package: bayesplot
+    This is bayesplot version 1.6.0
+    - Online documentation and vignettes at mc-stan.org/bayesplot
+    - bayesplot theme set to bayesplot::theme_default()
+       * Does _not_ affect other ggplot2 plots
+       * See ?bayesplot_theme_set for details on theme setting
+    Loading required package: rstan
+    Loading required package: ggplot2
+    Loading required package: StanHeaders
+    rstan (Version 2.17.4, GitRev: 2e1f913d3ca3)
+    For execution on a local, multicore CPU with excess RAM we recommend calling
+    options(mc.cores = parallel::detectCores()).
+    To avoid recompilation of unchanged Stan programs, we recommend calling
+    rstan_options(auto_write = TRUE)
+    Error: package or namespace load failed for ‘walker’ in .doLoadActions(where, attach):
+     error in load action .__A__.1 for package walker: is(module, "character"): object 'm' not found
+    Execution halted
+    ```
 
 *   checking installed package size ... NOTE
     ```
-      installed size is 14.2Mb
+      installed size is 15.4Mb
       sub-directories of 1Mb or more:
         doc    2.2Mb
-        libs  11.6Mb
+        libs  12.8Mb
     ```
 
 # wallace
 
-Version: 1.0.5
+Version: 1.0.6
 
 ## In both
 
 *   checking dependencies in R code ... NOTE
     ```
     Namespaces in Imports field not imported from:
-      ‘dismo’ ‘dplyr’ ‘DT’ ‘ENMeval’ ‘leaflet.extras’ ‘maptools’ ‘raster’
-      ‘RColorBrewer’ ‘rgdal’ ‘rgeos’ ‘rmarkdown’ ‘shinyjs’ ‘shinythemes’
-      ‘spocc’ ‘spThin’ ‘testthat’ ‘XML’
+      ‘DT’ ‘ENMeval’ ‘RColorBrewer’ ‘XML’ ‘dismo’ ‘dplyr’ ‘leaflet.extras’
+      ‘maptools’ ‘raster’ ‘rgdal’ ‘rgeos’ ‘rmarkdown’ ‘shinyjs’
+      ‘shinythemes’ ‘spThin’ ‘spocc’ ‘zip’
       All declared Imports should be used.
     ```
 
@@ -18146,20 +18384,15 @@ Version: 0.2.0
 ** package ‘wand’ successfully unpacked and MD5 sums checked
 Checking to see if libmagic is available...
 ** libs
-clang++ -I"/Library/Frameworks/R.framework/Resources/include" -DNDEBUG -L/usr/local/include -L/opt/local/include -I"/Users/lionel/Desktop/rlang/revdep/library.noindex/wand/Rcpp/include" -I/usr/local/include   -fPIC  -arch x86_64 -ftemplate-depth-256 -Wall -pedantic -O0 -c RcppExports.cpp -o RcppExports.o
-clang: warning: argument unused during compilation: '-L/usr/local/include' [-Wunused-command-line-argument]
-clang: warning: argument unused during compilation: '-L/opt/local/include' [-Wunused-command-line-argument]
-clang++ -I"/Library/Frameworks/R.framework/Resources/include" -DNDEBUG -L/usr/local/include -L/opt/local/include -I"/Users/lionel/Desktop/rlang/revdep/library.noindex/wand/Rcpp/include" -I/usr/local/include   -fPIC  -arch x86_64 -ftemplate-depth-256 -Wall -pedantic -O0 -c wand.cpp -o wand.o
-clang: warning: argument unused during compilation: '-L/usr/local/include' [-Wunused-command-line-argument]
-clang: warning: argument unused during compilation: '-L/opt/local/include' [-Wunused-command-line-argument]
+g++-8 -I"/Library/Frameworks/R.framework/Resources/include" -DNDEBUG -L/usr/local/include -L/opt/local/include -I"/Users/lionel/Desktop/rlang/revdep/library.noindex/wand/Rcpp/include" -I/usr/local/include   -fPIC  -arch x86_64 -ftemplate-depth-256 -Wall -pedantic -O0 -c RcppExports.cpp -o RcppExports.o
+g++-8 -I"/Library/Frameworks/R.framework/Resources/include" -DNDEBUG -L/usr/local/include -L/opt/local/include -I"/Users/lionel/Desktop/rlang/revdep/library.noindex/wand/Rcpp/include" -I/usr/local/include   -fPIC  -arch x86_64 -ftemplate-depth-256 -Wall -pedantic -O0 -c wand.cpp -o wand.o
 In file included from wand.cpp:13:
-./magic.h:123:2: warning: extra ';' outside of a function is a C++11 extension [-Wc++11-extra-semi]
-};
- ^
-1 warning generated.
-clang++ -dynamiclib -Wl,-headerpad_max_install_names -undefined dynamic_lookup -single_module -multiply_defined suppress -L/Library/Frameworks/R.framework/Resources/lib -L/usr/local/lib -o wand.so RcppExports.o wand.o -L/usr/local/lib -L/opt/local/lib -L/usr/lib -lmagic -F/Library/Frameworks/R.framework/.. -framework R -Wl,-framework -Wl,CoreFoundation
+magic.h:123:2: warning: extra ';' [-Wpedantic]
+ };
+  ^
+g++-8 -dynamiclib -Wl,-headerpad_max_install_names -undefined dynamic_lookup -single_module -multiply_defined suppress -L/Library/Frameworks/R.framework/Resources/lib -L/usr/local/lib -o wand.so RcppExports.o wand.o -L/usr/local/lib -L/opt/local/lib -L/usr/lib -lmagic -F/Library/Frameworks/R.framework/.. -framework R -Wl,-framework -Wl,CoreFoundation
 ld: library not found for -lmagic
-clang: error: linker command failed with exit code 1 (use -v to see invocation)
+collect2: error: ld returned 1 exit status
 make: *** [wand.so] Error 1
 ERROR: compilation failed for package ‘wand’
 * removing ‘/Users/lionel/Desktop/rlang/revdep/checks.noindex/wand/new/wand.Rcheck/wand’
@@ -18172,20 +18405,15 @@ ERROR: compilation failed for package ‘wand’
 ** package ‘wand’ successfully unpacked and MD5 sums checked
 Checking to see if libmagic is available...
 ** libs
-clang++ -I"/Library/Frameworks/R.framework/Resources/include" -DNDEBUG -L/usr/local/include -L/opt/local/include -I"/Users/lionel/Desktop/rlang/revdep/library.noindex/wand/Rcpp/include" -I/usr/local/include   -fPIC  -arch x86_64 -ftemplate-depth-256 -Wall -pedantic -O0 -c RcppExports.cpp -o RcppExports.o
-clang: warning: argument unused during compilation: '-L/usr/local/include' [-Wunused-command-line-argument]
-clang: warning: argument unused during compilation: '-L/opt/local/include' [-Wunused-command-line-argument]
-clang++ -I"/Library/Frameworks/R.framework/Resources/include" -DNDEBUG -L/usr/local/include -L/opt/local/include -I"/Users/lionel/Desktop/rlang/revdep/library.noindex/wand/Rcpp/include" -I/usr/local/include   -fPIC  -arch x86_64 -ftemplate-depth-256 -Wall -pedantic -O0 -c wand.cpp -o wand.o
-clang: warning: argument unused during compilation: '-L/usr/local/include' [-Wunused-command-line-argument]
-clang: warning: argument unused during compilation: '-L/opt/local/include' [-Wunused-command-line-argument]
+g++-8 -I"/Library/Frameworks/R.framework/Resources/include" -DNDEBUG -L/usr/local/include -L/opt/local/include -I"/Users/lionel/Desktop/rlang/revdep/library.noindex/wand/Rcpp/include" -I/usr/local/include   -fPIC  -arch x86_64 -ftemplate-depth-256 -Wall -pedantic -O0 -c RcppExports.cpp -o RcppExports.o
+g++-8 -I"/Library/Frameworks/R.framework/Resources/include" -DNDEBUG -L/usr/local/include -L/opt/local/include -I"/Users/lionel/Desktop/rlang/revdep/library.noindex/wand/Rcpp/include" -I/usr/local/include   -fPIC  -arch x86_64 -ftemplate-depth-256 -Wall -pedantic -O0 -c wand.cpp -o wand.o
 In file included from wand.cpp:13:
-./magic.h:123:2: warning: extra ';' outside of a function is a C++11 extension [-Wc++11-extra-semi]
-};
- ^
-1 warning generated.
-clang++ -dynamiclib -Wl,-headerpad_max_install_names -undefined dynamic_lookup -single_module -multiply_defined suppress -L/Library/Frameworks/R.framework/Resources/lib -L/usr/local/lib -o wand.so RcppExports.o wand.o -L/usr/local/lib -L/opt/local/lib -L/usr/lib -lmagic -F/Library/Frameworks/R.framework/.. -framework R -Wl,-framework -Wl,CoreFoundation
+magic.h:123:2: warning: extra ';' [-Wpedantic]
+ };
+  ^
+g++-8 -dynamiclib -Wl,-headerpad_max_install_names -undefined dynamic_lookup -single_module -multiply_defined suppress -L/Library/Frameworks/R.framework/Resources/lib -L/usr/local/lib -o wand.so RcppExports.o wand.o -L/usr/local/lib -L/opt/local/lib -L/usr/lib -lmagic -F/Library/Frameworks/R.framework/.. -framework R -Wl,-framework -Wl,CoreFoundation
 ld: library not found for -lmagic
-clang: error: linker command failed with exit code 1 (use -v to see invocation)
+collect2: error: ld returned 1 exit status
 make: *** [wand.so] Error 1
 ERROR: compilation failed for package ‘wand’
 * removing ‘/Users/lionel/Desktop/rlang/revdep/checks.noindex/wand/old/wand.Rcheck/wand’
@@ -18204,77 +18432,14 @@ Version: 0.2
 
 # weathercan
 
-Version: 0.2.7
+Version: 0.2.8
 
 ## In both
 
-*   checking examples ... ERROR
+*   checking dependencies in R code ... NOTE
     ```
-    ...
-    The error most likely occurred in:
-    
-    > ### Name: tz_calc
-    > ### Title: Get timezone from lat/lon
-    > ### Aliases: tz_calc get_tz
-    > 
-    > ### ** Examples
-    > 
-    > 
-    > # Daylight savings
-    > tz_calc(lat = 53.881857, lon = -122.786271)
-    character(0)
-    > tz_calc(coords = c(53.881857, -122.786271))
-    character(0)
-    > 
-    > # No daylight savings
-    > tz_calc(lat = 53.881857, lon = -122.786271, etc = TRUE)
-    Error in if (tz <= 0) tz <- paste0("+", abs(tz)) else tz <- paste0("-",  : 
-      argument is of length zero
-    Calls: tz_calc
-    Execution halted
-    ```
-
-*   checking tests ...
-    ```
-     ERROR
-    Running the tests in ‘tests/testthat.R’ failed.
-    Last 13 lines of output:
-      ══ testthat results  ═══════════════════════════════════════════════════════════
-      OK: 417 SKIPPED: 5 FAILED: 13
-      1. Failure: tz_calc() returns the correct tz (@test_02_utils.R#4) 
-      2. Error: tz_calc() returns the correct tz (@test_02_utils.R#6) 
-      3. Error: weather (hour) returns a data frame (@test_06_weather_dl.R#6) 
-      4. Error: weather (hour) formats timezone display (@test_06_weather_dl.R#34) 
-      5. Error: weather (hour) formats timezone to UTC with multiple zones (@test_06_weather_dl.R#44) 
-      6. Error: weather (hour) gets all (@test_06_weather_dl.R#61) 
-      7. Error: weather (hour) trims NAs (@test_06_weather_dl.R#73) 
-      8. Error: weather (hour) multiple stations (@test_06_weather_dl.R#80) 
-      9. Error: weather (hour) no data fails nicely (@test_06_weather_dl.R#95) 
-      1. ...
-      
-      Error: testthat unit tests failed
-      Execution halted
-    ```
-
-*   checking re-building of vignette outputs ... WARNING
-    ```
-    Error in re-building vignettes:
-      ...
-    
-    Attaching package: 'dplyr'
-    
-    The following objects are masked from 'package:stats':
-    
-        filter, lag
-    
-    The following objects are masked from 'package:base':
-    
-        intersect, setdiff, setequal, union
-    
-    Quitting from lines 87-90 (weathercan.Rmd) 
-    Error: processing vignette 'weathercan.Rmd' failed with diagnostics:
-    argument is of length zero
-    Execution halted
+    Namespace in Imports field not imported from: ‘xml2’
+      All declared Imports should be used.
     ```
 
 *   checking data for non-ASCII characters ... NOTE
@@ -18379,7 +18544,7 @@ Version: 1.2.1
 *   checking dependencies in R code ... NOTE
     ```
     Namespaces in Imports field not imported from:
-      ‘data.table’ ‘RandomFields’
+      ‘RandomFields’ ‘data.table’
       All declared Imports should be used.
     ```
 
@@ -18393,6 +18558,34 @@ Version: 0.3.0
     ```
     Namespace in Imports field not imported from: ‘dbplyr’
       All declared Imports should be used.
+    ```
+
+# wrswoR
+
+Version: 1.1
+
+## In both
+
+*   checking tests ...
+    ```
+     ERROR
+    Running the tests in ‘tests/testthat.R’ failed.
+    Last 13 lines of output:
+      30: tryCatchList(expr, classes, parentenv, handlers)
+      31: tryCatch(withCallingHandlers({    eval(code, test_env)    if (!handled && !is.null(test)) {        skip_empty()    }}, expectation = handle_expectation, skip = handle_skip, warning = handle_warning,     message = handle_message, error = handle_error), error = handle_fatal,     skip = function(e) {    })
+      32: test_code(NULL, exprs, env)
+      33: source_file(path, new.env(parent = env), chdir = TRUE, wrap = wrap)
+      34: force(code)
+      35: with_reporter(reporter = reporter, start_end_reporter = start_end_reporter,     {        lister$start_file(basename(path))        source_file(path, new.env(parent = env), chdir = TRUE,             wrap = wrap)        end_context()    })
+      36: FUN(X[[i]], ...)
+      37: lapply(paths, test_file, env = env, reporter = current_reporter,     start_end_reporter = FALSE, load_helpers = FALSE, wrap = wrap)
+      38: force(code)
+      39: with_reporter(reporter = current_reporter, results <- lapply(paths,     test_file, env = env, reporter = current_reporter, start_end_reporter = FALSE,     load_helpers = FALSE, wrap = wrap))
+      40: test_files(paths, reporter = reporter, env = env, stop_on_failure = stop_on_failure,     stop_on_warning = stop_on_warning, wrap = wrap)
+      41: test_dir(path = test_path, reporter = reporter, env = env, filter = filter,     ..., stop_on_failure = stop_on_failure, stop_on_warning = stop_on_warning,     wrap = wrap)
+      42: test_package_dir(package = package, test_path = test_path, filter = filter,     reporter = reporter, ..., stop_on_failure = stop_on_failure,     stop_on_warning = stop_on_warning, wrap = wrap)
+      43: test_check("wrswoR")
+      An irrecoverable exception occurred. R is aborting now ...
     ```
 
 # XBSeq
@@ -18427,14 +18620,14 @@ Version: 1.12.0
       ‘dispTable<-’
       (/Users/lionel/Desktop/rlang/revdep/checks.noindex/XBSeq/new/XBSeq.Rcheck/00_pkg_src/XBSeq/R/core_functions.R:108)
     Undefined global functions or variables:
-      ..count.. assay assay<- assays baseMean coefficients complete.cases
-      conditions cor data DataFrame ddelap dispTable dispTable<- dnbinom
-      dpois formula Gamma glm Group log2FoldChange median optim p.adjust
-      pbeta predict qbeta quantile rnbinom Sample scvBiasCorrectionFits
-      SummarizedExperiment
+      ..count.. DataFrame Gamma Group Sample SummarizedExperiment assay
+      assay<- assays baseMean coefficients complete.cases conditions cor
+      data ddelap dispTable dispTable<- dnbinom dpois formula glm
+      log2FoldChange median optim p.adjust pbeta predict qbeta quantile
+      rnbinom scvBiasCorrectionFits
     Consider adding
-      importFrom("stats", "coefficients", "complete.cases", "cor", "dnbinom",
-                 "dpois", "formula", "Gamma", "glm", "median", "optim",
+      importFrom("stats", "Gamma", "coefficients", "complete.cases", "cor",
+                 "dnbinom", "dpois", "formula", "glm", "median", "optim",
                  "p.adjust", "pbeta", "predict", "qbeta", "quantile",
                  "rnbinom")
       importFrom("utils", "data")
@@ -18449,10 +18642,10 @@ Version: 1.1.4
 
 *   checking installed package size ... NOTE
     ```
-      installed size is  6.8Mb
+      installed size is  6.9Mb
       sub-directories of 1Mb or more:
+        R      4.1Mb
         data   1.1Mb
-        R      4.0Mb
     ```
 
 # XKCDdata
@@ -18475,7 +18668,7 @@ Version: 4.6.1
 
 *   checking installed package size ... NOTE
     ```
-      installed size is  5.1Mb
+      installed size is  5.2Mb
       sub-directories of 1Mb or more:
         R   4.0Mb
     ```
