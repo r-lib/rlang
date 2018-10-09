@@ -2948,34 +2948,6 @@ Version: 1.10.2
         help   2.7Mb
     ```
 
-# cutpointr
-
-Version: 0.7.4
-
-## Newly broken
-
-*   checking tests ...
-    ```
-     ERROR
-    Running the tests in ‘tests/testthat.R’ failed.
-    Last 13 lines of output:
-             }
-             return(boot_g)
-         }))
-      14: transmute(.data, !!!dots)
-      15: transmute.default(.data, !!!dots)
-      16: mutate(.data, !!!dots)
-      17: mutate.tbl_df(.data, !!!dots)
-      18: mutate_impl(.data, dots)
-      
-      ══ testthat results  ═══════════════════════════════════════════════════════════
-      OK: 371 SKIPPED: 0 FAILED: 1
-      1. Error: Bootstrap does not return duplicate colnames (@test-cutpointr.R#86) 
-      
-      Error: testthat unit tests failed
-      Execution halted
-    ```
-
 # d3r
 
 Version: 0.8.3
@@ -3164,34 +3136,6 @@ Version: 1.1.1
     Error: processing vignette 'DataVisualizations.Rmd' failed with diagnostics:
     package 'sm' required by 'vioplot' could not be found
     Execution halted
-    ```
-
-# dbplot
-
-Version: 0.3.0
-
-## Newly broken
-
-*   checking tests ...
-    ```
-     ERROR
-    Running the tests in ‘tests/testthat.R’ failed.
-    Last 13 lines of output:
-      
-      ── 2. Failure: A no warnings or errors are returned (@test-dbplots.R#13)  ──────
-      `dbplot_bar(mtcars, am, mean(wt))` produced warnings.
-      
-      ── 3. Failure: A no warnings or errors are returned (@test-dbplots.R#14)  ──────
-      `dbplot_line(mtcars, am)` produced warnings.
-      
-      ══ testthat results  ═══════════════════════════════════════════════════════════
-      OK: 22 SKIPPED: 0 FAILED: 3
-      1. Failure: A no warnings or errors are returned (@test-dbplots.R#12) 
-      2. Failure: A no warnings or errors are returned (@test-dbplots.R#13) 
-      3. Failure: A no warnings or errors are returned (@test-dbplots.R#14) 
-      
-      Error: testthat unit tests failed
-      Execution halted
     ```
 
 # DChIPRep
@@ -5927,20 +5871,6 @@ Version: 1.0
 
 Version: 0.7
 
-## Newly broken
-
-*   checking re-building of vignette outputs ... WARNING
-    ```
-    Error in re-building vignettes:
-      ...
-    Quitting from lines 99-112 (gitrd-vignette-introduction.Rmd) 
-    Error: processing vignette 'gitrd-vignette-introduction.Rmd' failed with diagnostics:
-    Zipped file contains 0 files. This is likelly a problem with the downloaded file. Try running the code again as the corrupted zip file was deleted and will be downloaded again.
-    
-    If the problem persists, my suggestions is to remove the time period with problem.
-    Execution halted
-    ```
-
 ## In both
 
 *   checking dependencies in R code ... NOTE
@@ -7926,47 +7856,34 @@ Version: 0.0.2
 
 ## Newly broken
 
-*   checking examples ... ERROR
-    ```
-    Running examples in ‘ipeaData-Ex.R’ failed
-    The error most likely occurred in:
-    
-    > ### Name: ipeadata
-    > ### Title: Return values from a serie, its metadata and citation.
-    > ### Aliases: ipeadata
-    > 
-    > ### ** Examples
-    > 
-    >     data <- ipeadata('ADMIS')
-    Error in curl::curl_fetch_memory(url, handle = handle) : 
-      Timeout was reached: Connection timed out after 10009 milliseconds
-    Calls: ipeadata ... request_fetch -> request_fetch.write_memory -> <Anonymous>
-    Execution halted
-    ```
-
-## In both
-
 *   checking tests ...
     ```
      ERROR
     Running the tests in ‘tests/testthat.R’ failed.
     Last 13 lines of output:
-      2: basic_call(api_call, type) at /Users/lionel/Desktop/rlang/revdep/checks.noindex/ipeaData/new/ipeaData.Rcheck/00_pkg_src/ipeaData/R/ipeaData.R:139
-      3: GET(api) at /Users/lionel/Desktop/rlang/revdep/checks.noindex/ipeaData/new/ipeaData.Rcheck/00_pkg_src/ipeaData/R/ipeaData.R:61
-      4: request_perform(req, hu$handle$handle)
-      5: request_fetch(req$output, req$url, handle)
-      6: request_fetch.write_memory(req$output, req$url, handle)
-      7: curl::curl_fetch_memory(url, handle = handle)
+      3: ipeadata("SERIE SEM RETORNO")
+      4: get_metadata(serie) at /Users/lionel/Desktop/rlang/revdep/checks.noindex/ipeaData/new/ipeaData.Rcheck/00_pkg_src/ipeaData/R/ipeaData.R:169
+      5: basic_call(api_call, type) at /Users/lionel/Desktop/rlang/revdep/checks.noindex/ipeaData/new/ipeaData.Rcheck/00_pkg_src/ipeaData/R/ipeaData.R:111
+      6: GET(api) at /Users/lionel/Desktop/rlang/revdep/checks.noindex/ipeaData/new/ipeaData.Rcheck/00_pkg_src/ipeaData/R/ipeaData.R:61
+      7: request_perform(req, hu$handle$handle)
+      8: request_fetch(req$output, req$url, handle)
+      9: request_fetch.write_memory(req$output, req$url, handle)
+      10: curl::curl_fetch_memory(url, handle = handle)
       
       ══ testthat results  ═══════════════════════════════════════════════════════════
-      OK: 3 SKIPPED: 0 FAILED: 3
-      1. Error: basic call (@test_functions_ipea_data.R#12) 
-      2. Error: ipeaData (@test_functions_ipea_data.R#17) 
-      3. Error: search_serie (@test_functions_ipea_data.R#24) 
+      OK: 6 SKIPPED: 0 FAILED: 1
+      1. Error: ipeaData (@test_functions_ipea_data.R#19) 
       
       Error: testthat unit tests failed
       Execution halted
     ```
+
+## Newly fixed
+
+*   R CMD check timed out
+    
+
+## In both
 
 *   checking dependencies in R code ... NOTE
     ```
