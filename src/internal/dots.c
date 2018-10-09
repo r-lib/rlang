@@ -462,7 +462,8 @@ sexp* dots_expand(sexp* dots, struct dots_capture_info* capture_info) {
 
     if (is_spliced_dots(elt)) {
       if (dots_names_ptr && *dots_names_ptr != r_empty_str) {
-        r_warn("`!!!` shouldn't be supplied with a name. Only the operand's names are retained.");
+        const char* msg = "`!!!` shouldn't be supplied with a name. Only the operand's names are retained.";
+        r_signal_soft_deprecated(msg, msg, "rlang", r_empty_env);
       }
 
       sexp* names = r_vec_names(elt);

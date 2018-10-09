@@ -129,6 +129,7 @@ like \code{quos()} is soft-deprecated.
 \code{new_character_along()}, \code{new_raw_along()}, \code{new_list_along()}.
 \item \code{as.character()} on quosures.
 \item Assigning non-quosure objects to quosure lists.
+\item Supplying a named \code{!!!} call.
 }
 
 \strong{Soft-deprecated as of rlang 0.2.0:}

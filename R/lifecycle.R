@@ -190,6 +190,8 @@ upcase1 <- function(x) {
 #'
 #' * Assigning non-quosure objects to quosure lists.
 #'
+#' * Supplying a named `!!!` call.
+#'
 #'
 #' **Soft-deprecated as of rlang 0.2.0:**
 #'

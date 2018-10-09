@@ -1,6 +1,9 @@
 
 # rlang 0.2.2.9000
 
+* Supplying a name with `!!!` calls is soft-deprecated. This name is
+  ignored because only the names of the spliced vector are applied.
+
 * Lambda functions created from formulas with `as_function()` are now
   classed. Use `is_lambda()` to check a function was created with the
   formula shorthand.
