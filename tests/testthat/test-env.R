@@ -236,14 +236,6 @@ test_that("can lock environments", {
   expect_true(env_lock(env))
 })
 
-test_that("can unlock environments", {
-  env <- env()
-  env_lock(env)
-  expect_true(env_unlock(env))
-  expect_false(env_is_locked(env))
-  expect_no_error(env_bind(env, a = 1))
-})
-
 test_that("env_print() has flexible input", {
   # because it's primarily used interactively
   f <- function() 1
