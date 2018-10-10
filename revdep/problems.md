@@ -541,34 +541,48 @@ Version: 0.2.5
 
 ## In both
 
-*   checking tests ...
+*   checking whether package ‘anomalyDetection’ can be installed ... ERROR
     ```
-     ERROR
-    Running the tests in ‘tests/testthat.R’ failed.
-    Last 13 lines of output:
-      33: tryCatchList(expr, classes, parentenv, handlers)
-      34: tryCatch(withCallingHandlers({    eval(code, test_env)    if (!handled && !is.null(test)) {        skip_empty()    }}, expectation = handle_expectation, skip = handle_skip, warning = handle_warning,     message = handle_message, error = handle_error), error = handle_fatal,     skip = function(e) {    })
-      35: test_code(NULL, exprs, env)
-      36: source_file(path, new.env(parent = env), chdir = TRUE, wrap = wrap)
-      37: force(code)
-      38: with_reporter(reporter = reporter, start_end_reporter = start_end_reporter,     {        lister$start_file(basename(path))        source_file(path, new.env(parent = env), chdir = TRUE,             wrap = wrap)        end_context()    })
-      39: FUN(X[[i]], ...)
-      40: lapply(paths, test_file, env = env, reporter = current_reporter,     start_end_reporter = FALSE, load_helpers = FALSE, wrap = wrap)
-      41: force(code)
-      42: with_reporter(reporter = current_reporter, results <- lapply(paths,     test_file, env = env, reporter = current_reporter, start_end_reporter = FALSE,     load_helpers = FALSE, wrap = wrap))
-      43: test_files(paths, reporter = reporter, env = env, stop_on_failure = stop_on_failure,     stop_on_warning = stop_on_warning, wrap = wrap)
-      44: test_dir(path = test_path, reporter = reporter, env = env, filter = filter,     ..., stop_on_failure = stop_on_failure, stop_on_warning = stop_on_warning,     wrap = wrap)
-      45: test_package_dir(package = package, test_path = test_path, filter = filter,     reporter = reporter, ..., stop_on_failure = stop_on_failure,     stop_on_warning = stop_on_warning, wrap = wrap)
-      46: test_check("anomalyDetection")
-      An irrecoverable exception occurred. R is aborting now ...
+    Installation failed.
+    See ‘/Users/lionel/Desktop/rlang/revdep/checks.noindex/anomalyDetection/new/anomalyDetection.Rcheck/00install.out’ for details.
     ```
 
-*   checking dependencies in R code ... NOTE
-    ```
-    Namespace in Imports field not imported from: ‘caret’
-      All declared Imports should be used.
-    ```
+## Installation
 
+### Devel
+
+```
+* installing *source* package ‘anomalyDetection’ ...
+** package ‘anomalyDetection’ successfully unpacked and MD5 sums checked
+** libs
+clang++ -I"/Library/Frameworks/R.framework/Resources/include" -DNDEBUG  -I"/Users/lionel/Desktop/rlang/revdep/library.noindex/anomalyDetection/Rcpp/include" -I"/Users/lionel/Desktop/rlang/revdep/library.noindex/anomalyDetection/RcppArmadillo/include" -I/usr/local/include  -fopenmp  -fPIC  -arch x86_64 -ftemplate-depth-256 -Wall -pedantic -O0 -c RcppExports.cpp -o RcppExports.o
+clang++ -I"/Library/Frameworks/R.framework/Resources/include" -DNDEBUG  -I"/Users/lionel/Desktop/rlang/revdep/library.noindex/anomalyDetection/Rcpp/include" -I"/Users/lionel/Desktop/rlang/revdep/library.noindex/anomalyDetection/RcppArmadillo/include" -I/usr/local/include  -fopenmp  -fPIC  -arch x86_64 -ftemplate-depth-256 -Wall -pedantic -O0 -c bottlenecks.cpp -o bottlenecks.o
+clang: error: unsupported option '-fopenmp'
+make: *** [RcppExports.o] Error 1
+make: *** Waiting for unfinished jobs....
+clang: error: unsupported option '-fopenmp'
+make: *** [bottlenecks.o] Error 1
+ERROR: compilation failed for package ‘anomalyDetection’
+* removing ‘/Users/lionel/Desktop/rlang/revdep/checks.noindex/anomalyDetection/new/anomalyDetection.Rcheck/anomalyDetection’
+
+```
+### CRAN
+
+```
+* installing *source* package ‘anomalyDetection’ ...
+** package ‘anomalyDetection’ successfully unpacked and MD5 sums checked
+** libs
+clang++ -I"/Library/Frameworks/R.framework/Resources/include" -DNDEBUG  -I"/Users/lionel/Desktop/rlang/revdep/library.noindex/anomalyDetection/Rcpp/include" -I"/Users/lionel/Desktop/rlang/revdep/library.noindex/anomalyDetection/RcppArmadillo/include" -I/usr/local/include  -fopenmp  -fPIC  -arch x86_64 -ftemplate-depth-256 -Wall -pedantic -O0 -c RcppExports.cpp -o RcppExports.o
+clang++ -I"/Library/Frameworks/R.framework/Resources/include" -DNDEBUG  -I"/Users/lionel/Desktop/rlang/revdep/library.noindex/anomalyDetection/Rcpp/include" -I"/Users/lionel/Desktop/rlang/revdep/library.noindex/anomalyDetection/RcppArmadillo/include" -I/usr/local/include  -fopenmp  -fPIC  -arch x86_64 -ftemplate-depth-256 -Wall -pedantic -O0 -c bottlenecks.cpp -o bottlenecks.o
+clang: error: unsupported option '-fopenmp'clang: error: unsupported option '-fopenmp'
+
+make: *** [bottlenecks.o] Error 1
+make: *** Waiting for unfinished jobs....
+make: *** [RcppExports.o] Error 1
+ERROR: compilation failed for package ‘anomalyDetection’
+* removing ‘/Users/lionel/Desktop/rlang/revdep/checks.noindex/anomalyDetection/old/anomalyDetection.Rcheck/anomalyDetection’
+
+```
 # anyflights
 
 Version: 0.1.0
@@ -3537,28 +3551,6 @@ Version: 0.5.1
 
 ## In both
 
-*   checking tests ...
-    ```
-     ERROR
-    Running the tests in ‘tests/testthat.R’ failed.
-    Last 13 lines of output:
-      30: tryCatchList(expr, classes, parentenv, handlers)
-      31: tryCatch(withCallingHandlers({    eval(code, test_env)    if (!handled && !is.null(test)) {        skip_empty()    }}, expectation = handle_expectation, skip = handle_skip, warning = handle_warning,     message = handle_message, error = handle_error), error = handle_fatal,     skip = function(e) {    })
-      32: test_code(NULL, exprs, env)
-      33: source_file(path, new.env(parent = env), chdir = TRUE, wrap = wrap)
-      34: force(code)
-      35: with_reporter(reporter = reporter, start_end_reporter = start_end_reporter,     {        lister$start_file(basename(path))        source_file(path, new.env(parent = env), chdir = TRUE,             wrap = wrap)        end_context()    })
-      36: FUN(X[[i]], ...)
-      37: lapply(paths, test_file, env = env, reporter = current_reporter,     start_end_reporter = FALSE, load_helpers = FALSE, wrap = wrap)
-      38: force(code)
-      39: with_reporter(reporter = current_reporter, results <- lapply(paths,     test_file, env = env, reporter = current_reporter, start_end_reporter = FALSE,     load_helpers = FALSE, wrap = wrap))
-      40: test_files(paths, reporter = reporter, env = env, stop_on_failure = stop_on_failure,     stop_on_warning = stop_on_warning, wrap = wrap)
-      41: test_dir(path = test_path, reporter = reporter, env = env, filter = filter,     ..., stop_on_failure = stop_on_failure, stop_on_warning = stop_on_warning,     wrap = wrap)
-      42: test_package_dir(package = package, test_path = test_path, filter = filter,     reporter = reporter, ..., stop_on_failure = stop_on_failure,     stop_on_warning = stop_on_warning, wrap = wrap)
-      43: test_check("detrendr")
-      An irrecoverable exception occurred. R is aborting now ...
-    ```
-
 *   checking for GNU extensions in Makefiles ... NOTE
     ```
     GNU make is a SystemRequirements.
@@ -3995,7 +3987,7 @@ Version: 0.5.0
 
 Version: 0.7.6
 
-## In both
+## Newly broken
 
 *   checking tests ...
     ```
@@ -4003,54 +3995,43 @@ Version: 0.7.6
     Running the tests in ‘tests/testthat.R’ failed.
     Last 13 lines of output:
       
-      The following object is masked from 'package:testthat':
+      ── 2. Failure: funs() gives a clear error message (#3368) (@test-funs.R#36)  ───
+      `funs(~mp[.])` threw an error with unexpected message.
+      Expected match: "`~mp[.]` must be a function name (quoted or unquoted) or an unquoted call, not `~`"
+      Actual message: "`~mp[.]` must be a function name (quoted or unquoted) or an unquoted call, not ``~``"
       
-          matches
+      ══ testthat results  ═══════════════════════════════════════════════════════════
+      OK: 2734 SKIPPED: 6 FAILED: 2
+      1. Failure: funs() gives a clear error message (#3368) (@test-funs.R#28) 
+      2. Failure: funs() gives a clear error message (#3368) (@test-funs.R#36) 
       
-      The following objects are masked from 'package:stats':
-      
-          filter, lag
-      
-      The following objects are masked from 'package:base':
-      
-          intersect, setdiff, setequal, union
-      
-      > 
-      > test_check("dplyr")
+      Error: testthat unit tests failed
+      In addition: Warning message:
+      call dbDisconnect() when finished working with a connection 
+      Execution halted
     ```
 
 *   checking re-building of vignette outputs ... WARNING
     ```
-    ...
-    14: timing_fn(handle(ev <- withCallingHandlers(withVisible(eval(expr,     envir, enclos)), warning = wHandler, error = eHandler, message = mHandler)))
-    15: evaluate_call(expr, parsed$src[[i]], envir = envir, enclos = enclos,     debug = debug, last = i == length(out), use_try = stop_on_error !=         2L, keep_warning = keep_warning, keep_message = keep_message,     output_handler = output_handler, include_timing = include_timing)
-    16: evaluate::evaluate(...)
-    17: evaluate(code, envir = env, new_device = FALSE, keep_warning = !isFALSE(options$warning),     keep_message = !isFALSE(options$message), stop_on_error = if (options$error &&         options$include) 0L else 2L, output_handler = knit_handlers(options$render,         options))
-    18: in_dir(input_dir(), evaluate(code, envir = env, new_device = FALSE,     keep_warning = !isFALSE(options$warning), keep_message = !isFALSE(options$message),     stop_on_error = if (options$error && options$include) 0L else 2L,     output_handler = knit_handlers(options$render, options)))
-    19: block_exec(params)
-    20: call_block(x)
-    21: process_group.block(group)
-    22: process_group(group)
-    23: withCallingHandlers(if (tangle) process_tangle(group) else process_group(group),     error = function(e) {        setwd(wd)        cat(res, sep = "\n", file = output %n% "")        message("Quitting from lines ", paste(current_lines(i),             collapse = "-"), " (", knit_concord$get("infile"),             ") ")    })
-    24: process_file(text, output)
-    25: knitr::knit(knit_input, knit_output, envir = envir, quiet = quiet,     encoding = encoding)
-    26: rmarkdown::render(file, encoding = encoding, quiet = quiet, envir = globalenv())
-    27: vweave_rmarkdown(...)
-    28: engine$weave(file, quiet = quiet, encoding = enc)
-    29: doTryCatch(return(expr), name, parentenv, handler)
-    30: tryCatchOne(expr, names, parentenv, handlers[[1L]])
-    31: tryCatchList(expr, classes, parentenv, handlers)
-    32: tryCatch({    engine$weave(file, quiet = quiet, encoding = enc)    setwd(startdir)    find_vignette_product(name, by = "weave", engine = engine)}, error = function(e) {    stop(gettextf("processing vignette '%s' failed with diagnostics:\n%s",         file, conditionMessage(e)), domain = NA, call. = FALSE)})
-    33: buildVignettes(dir = "/Users/lionel/Desktop/rlang/revdep/checks.noindex/dplyr/new/dplyr.Rcheck/vign_test/dplyr")
-    An irrecoverable exception occurred. R is aborting now ...
+    Error in re-building vignettes:
+      ...
+    `geom_smooth()` using method = 'gam' and formula 'y ~ s(x, bs = "cs")'
+    Warning: Removed 1 rows containing non-finite values (stat_smooth).
+    Warning: Removed 1 rows containing missing values (geom_point).
+    Quitting from lines 651-653 (programming.Rmd) 
+    Error: processing vignette 'programming.Rmd' failed with diagnostics:
+    `UQE()` is defunct. Please use `!!get_expr(x)`
+    Execution halted
     ```
+
+## In both
 
 *   checking installed package size ... NOTE
     ```
-      installed size is  8.8Mb
+      installed size is  8.2Mb
       sub-directories of 1Mb or more:
         R      2.0Mb
-        libs   5.1Mb
+        libs   4.4Mb
     ```
 
 *   checking data for non-ASCII characters ... NOTE
@@ -4150,35 +4131,13 @@ Version: 5.5.1
 
 ## In both
 
-*   checking tests ...
-    ```
-     ERROR
-    Running the tests in ‘tests/testthat.R’ failed.
-    Last 13 lines of output:
-      35: tryCatchList(expr, classes, parentenv, handlers)
-      36: tryCatch(withCallingHandlers({    eval(code, test_env)  ...
-      37: test_code(NULL, exprs, env)
-      38: source_file(path, new.env(parent = env), chdir = TRUE, wrap = wrap)
-      39: force(code)
-      40: with_reporter(reporter = reporter, start_end_reporter = start_end_reporter,     {  ...
-      41: FUN(X[[i]], ...)
-      42: lapply(paths, test_file, env = env, reporter = current_reporter,     start_end_reporter = FALSE, load_helpers = FALSE, wrap = wrap)
-      43: force(code)
-      44: with_reporter(reporter = current_reporter, results <- lapply(paths,     test_file, env = env, reporter = current_reporter, start_end_reporter = FALSE,   ...
-      45: test_files(paths, reporter = reporter, env = env, stop_on_failure = stop_on_failure,     stop_on_warning = stop_on_warning, wrap = wrap)
-      46: test_dir(path = test_path, reporter = reporter, env = env, filter = filter,     ..., stop_on_failure = stop_on_failure, stop_on_warning = stop_on_warning,   ...
-      47: test_package_dir(package = package, test_path = test_path, filter = filter,     reporter = reporter, ..., stop_on_failure = stop_on_failure,   ...
-      48: testthat::test_check("dtwclust")
-      An irrecoverable exception occurred. R is aborting now ...
-    ```
-
 *   checking installed package size ... NOTE
     ```
-      installed size is  6.8Mb
+      installed size is  6.2Mb
       sub-directories of 1Mb or more:
         R      2.0Mb
         doc    2.5Mb
-        libs   1.6Mb
+        libs   1.1Mb
     ```
 
 *   checking for GNU extensions in Makefiles ... NOTE
@@ -4204,28 +4163,6 @@ Version: 0.6.3
 Version: 1.0.0
 
 ## In both
-
-*   checking tests ...
-    ```
-     ERROR
-    Running the tests in ‘tests/testthat.R’ failed.
-    Last 13 lines of output:
-      30: tryCatchList(expr, classes, parentenv, handlers)
-      31: tryCatch(withCallingHandlers({    eval(code, test_env)    if (!handled && !is.null(test)) {        skip_empty()    }}, expectation = handle_expectation, skip = handle_skip, warning = handle_warning,     message = handle_message, error = handle_error), error = handle_fatal,     skip = function(e) {    })
-      32: test_code(NULL, exprs, env)
-      33: source_file(path, new.env(parent = env), chdir = TRUE, wrap = wrap)
-      34: force(code)
-      35: with_reporter(reporter = reporter, start_end_reporter = start_end_reporter,     {        lister$start_file(basename(path))        source_file(path, new.env(parent = env), chdir = TRUE,             wrap = wrap)        end_context()    })
-      36: FUN(X[[i]], ...)
-      37: lapply(paths, test_file, env = env, reporter = current_reporter,     start_end_reporter = FALSE, load_helpers = FALSE, wrap = wrap)
-      38: force(code)
-      39: with_reporter(reporter = current_reporter, results <- lapply(paths,     test_file, env = env, reporter = current_reporter, start_end_reporter = FALSE,     load_helpers = FALSE, wrap = wrap))
-      40: test_files(paths, reporter = reporter, env = env, stop_on_failure = stop_on_failure,     stop_on_warning = stop_on_warning, wrap = wrap)
-      41: test_dir(path = test_path, reporter = reporter, env = env, filter = filter,     ..., stop_on_failure = stop_on_failure, stop_on_warning = stop_on_warning,     wrap = wrap)
-      42: test_package_dir(package = package, test_path = test_path, filter = filter,     reporter = reporter, ..., stop_on_failure = stop_on_failure,     stop_on_warning = stop_on_warning, wrap = wrap)
-      43: test_check("dynutils")
-      An irrecoverable exception occurred. R is aborting now ...
-    ```
 
 *   checking dependencies in R code ... NOTE
     ```
@@ -4873,34 +4810,6 @@ Version: 1.2.1
         snippet   3.7Mb
     ```
 
-# feather
-
-Version: 0.3.1
-
-## In both
-
-*   checking tests ...
-    ```
-     ERROR
-    Running the tests in ‘tests/testthat.R’ failed.
-    Last 13 lines of output:
-      33: tryCatchList(expr, classes, parentenv, handlers)
-      34: tryCatch(withCallingHandlers({    eval(code, test_env)    if (!handled && !is.null(test)) {        skip_empty()    }}, expectation = handle_expectation, skip = handle_skip, warning = handle_warning,     message = handle_message, error = handle_error), error = handle_fatal,     skip = function(e) {    })
-      35: test_code(NULL, exprs, env)
-      36: source_file(path, new.env(parent = env), chdir = TRUE, wrap = wrap)
-      37: force(code)
-      38: with_reporter(reporter = reporter, start_end_reporter = start_end_reporter,     {        lister$start_file(basename(path))        source_file(path, new.env(parent = env), chdir = TRUE,             wrap = wrap)        end_context()    })
-      39: FUN(X[[i]], ...)
-      40: lapply(paths, test_file, env = env, reporter = current_reporter,     start_end_reporter = FALSE, load_helpers = FALSE, wrap = wrap)
-      41: force(code)
-      42: with_reporter(reporter = current_reporter, results <- lapply(paths,     test_file, env = env, reporter = current_reporter, start_end_reporter = FALSE,     load_helpers = FALSE, wrap = wrap))
-      43: test_files(paths, reporter = reporter, env = env, stop_on_failure = stop_on_failure,     stop_on_warning = stop_on_warning, wrap = wrap)
-      44: test_dir(path = test_path, reporter = reporter, env = env, filter = filter,     ..., stop_on_failure = stop_on_failure, stop_on_warning = stop_on_warning,     wrap = wrap)
-      45: test_package_dir(package = package, test_path = test_path, filter = filter,     reporter = reporter, ..., stop_on_failure = stop_on_failure,     stop_on_warning = stop_on_warning, wrap = wrap)
-      46: test_check("feather")
-      An irrecoverable exception occurred. R is aborting now ...
-    ```
-
 # febr
 
 Version: 1.0-0
@@ -5216,38 +5125,10 @@ Version: 0.2.1
 
 ## In both
 
-*   checking tests ...
+*   checking whether package ‘FSelectorRcpp’ can be installed ... ERROR
     ```
-     ERROR
-    Running the tests in ‘tests/testthat.R’ failed.
-    Last 13 lines of output:
-      32: tryCatchList(expr, classes, parentenv, handlers)
-      33: tryCatch(withCallingHandlers({    eval(code, test_env)    if (!handled && !is.null(test)) {        skip_empty()    }}, expectation = handle_expectation, skip = handle_skip, warning = handle_warning,     message = handle_message, error = handle_error), error = handle_fatal,     skip = function(e) {    })
-      34: test_code(NULL, exprs, env)
-      35: source_file(path, new.env(parent = env), chdir = TRUE, wrap = wrap)
-      36: force(code)
-      37: with_reporter(reporter = reporter, start_end_reporter = start_end_reporter,     {        lister$start_file(basename(path))        source_file(path, new.env(parent = env), chdir = TRUE,             wrap = wrap)        end_context()    })
-      38: FUN(X[[i]], ...)
-      39: lapply(paths, test_file, env = env, reporter = current_reporter,     start_end_reporter = FALSE, load_helpers = FALSE, wrap = wrap)
-      40: force(code)
-      41: with_reporter(reporter = current_reporter, results <- lapply(paths,     test_file, env = env, reporter = current_reporter, start_end_reporter = FALSE,     load_helpers = FALSE, wrap = wrap))
-      42: test_files(paths, reporter = reporter, env = env, stop_on_failure = stop_on_failure,     stop_on_warning = stop_on_warning, wrap = wrap)
-      43: test_dir(path = test_path, reporter = reporter, env = env, filter = filter,     ..., stop_on_failure = stop_on_failure, stop_on_warning = stop_on_warning,     wrap = wrap)
-      44: test_package_dir(package = package, test_path = test_path, filter = filter,     reporter = reporter, ..., stop_on_failure = stop_on_failure,     stop_on_warning = stop_on_warning, wrap = wrap)
-      45: test_check("FSelectorRcpp")
-      An irrecoverable exception occurred. R is aborting now ...
-    ```
-
-*   checking re-building of vignette outputs ... WARNING
-    ```
-    Error in re-building vignettes:
-      ...
-    pandoc-citeproc: when expecting a product (:*:), encountered Object instead
-    Error running filter /usr/local/bin/pandoc-citeproc:
-    Filter returned error status 1
-    Error: processing vignette 'benchmarks_discretize.Rmd' failed with diagnostics:
-    pandoc document conversion failed with error 83
-    Execution halted
+    Installation failed.
+    See ‘/Users/lionel/Desktop/rlang/revdep/checks.noindex/FSelectorRcpp/new/FSelectorRcpp.Rcheck/00install.out’ for details.
     ```
 
 *   checking package dependencies ... NOTE
@@ -5255,14 +5136,54 @@ Version: 0.2.1
     Package suggested but not available for checking: ‘RTCGA.rnaseq’
     ```
 
-*   checking installed package size ... NOTE
-    ```
-      installed size is  6.6Mb
-      sub-directories of 1Mb or more:
-        doc    3.3Mb
-        libs   3.1Mb
-    ```
+## Installation
 
+### Devel
+
+```
+* installing *source* package ‘FSelectorRcpp’ ...
+** package ‘FSelectorRcpp’ successfully unpacked and MD5 sums checked
+** libs
+clang++ -std=c++11 -I"/Library/Frameworks/R.framework/Resources/include" -DNDEBUG -fopenmp -I../inst/include -I"/Users/lionel/Desktop/rlang/revdep/library.noindex/FSelectorRcpp/Rcpp/include" -I"/Users/lionel/Desktop/rlang/revdep/library.noindex/FSelectorRcpp/BH/include" -I"/Users/lionel/Desktop/rlang/revdep/library.noindex/FSelectorRcpp/RcppArmadillo/include" -I"/Users/lionel/Desktop/rlang/revdep/library.noindex/FSelectorRcpp/testthat/include" -I/usr/local/include   -fPIC  -arch x86_64 -ftemplate-depth-256 -Wall -pedantic -O0 -c RcppExports.cpp -o RcppExports.o
+clang++ -std=c++11 -I"/Library/Frameworks/R.framework/Resources/include" -DNDEBUG -fopenmp -I../inst/include -I"/Users/lionel/Desktop/rlang/revdep/library.noindex/FSelectorRcpp/Rcpp/include" -I"/Users/lionel/Desktop/rlang/revdep/library.noindex/FSelectorRcpp/BH/include" -I"/Users/lionel/Desktop/rlang/revdep/library.noindex/FSelectorRcpp/RcppArmadillo/include" -I"/Users/lionel/Desktop/rlang/revdep/library.noindex/FSelectorRcpp/testthat/include" -I/usr/local/include   -fPIC  -arch x86_64 -ftemplate-depth-256 -Wall -pedantic -O0 -c cutOff.cpp -o cutOff.o
+clang++ -std=c++11 -I"/Library/Frameworks/R.framework/Resources/include" -DNDEBUG -fopenmp -I../inst/include -I"/Users/lionel/Desktop/rlang/revdep/library.noindex/FSelectorRcpp/Rcpp/include" -I"/Users/lionel/Desktop/rlang/revdep/library.noindex/FSelectorRcpp/BH/include" -I"/Users/lionel/Desktop/rlang/revdep/library.noindex/FSelectorRcpp/RcppArmadillo/include" -I"/Users/lionel/Desktop/rlang/revdep/library.noindex/FSelectorRcpp/testthat/include" -I/usr/local/include   -fPIC  -arch x86_64 -ftemplate-depth-256 -Wall -pedantic -O0 -c discretize.cpp -o discretize.o
+clang++ -std=c++11 -I"/Library/Frameworks/R.framework/Resources/include" -DNDEBUG -fopenmp -I../inst/include -I"/Users/lionel/Desktop/rlang/revdep/library.noindex/FSelectorRcpp/Rcpp/include" -I"/Users/lionel/Desktop/rlang/revdep/library.noindex/FSelectorRcpp/BH/include" -I"/Users/lionel/Desktop/rlang/revdep/library.noindex/FSelectorRcpp/RcppArmadillo/include" -I"/Users/lionel/Desktop/rlang/revdep/library.noindex/FSelectorRcpp/testthat/include" -I/usr/local/include   -fPIC  -arch x86_64 -ftemplate-depth-256 -Wall -pedantic -O0 -c discretizeControl.cpp -o discretizeControl.o
+clang: error: unsupported option '-fopenmp'
+clang: error: unsupported option '-fopenmp'
+clang: error: unsupported option '-fopenmp'
+make: *** [discretize.o] Error 1
+make: *** Waiting for unfinished jobs....
+make: *** [discretizeControl.o] Error 1
+clang: error: unsupported option '-fopenmp'
+make: *** [cutOff.o] Error 1
+make: *** [RcppExports.o] Error 1
+ERROR: compilation failed for package ‘FSelectorRcpp’
+* removing ‘/Users/lionel/Desktop/rlang/revdep/checks.noindex/FSelectorRcpp/new/FSelectorRcpp.Rcheck/FSelectorRcpp’
+
+```
+### CRAN
+
+```
+* installing *source* package ‘FSelectorRcpp’ ...
+** package ‘FSelectorRcpp’ successfully unpacked and MD5 sums checked
+** libs
+clang++ -std=c++11 -I"/Library/Frameworks/R.framework/Resources/include" -DNDEBUG -fopenmp -I../inst/include -I"/Users/lionel/Desktop/rlang/revdep/library.noindex/FSelectorRcpp/Rcpp/include" -I"/Users/lionel/Desktop/rlang/revdep/library.noindex/FSelectorRcpp/BH/include" -I"/Users/lionel/Desktop/rlang/revdep/library.noindex/FSelectorRcpp/RcppArmadillo/include" -I"/Users/lionel/Desktop/rlang/revdep/library.noindex/FSelectorRcpp/testthat/include" -I/usr/local/include   -fPIC  -arch x86_64 -ftemplate-depth-256 -Wall -pedantic -O0 -c RcppExports.cpp -o RcppExports.o
+clang++ -std=c++11 -I"/Library/Frameworks/R.framework/Resources/include" -DNDEBUG -fopenmp -I../inst/include -I"/Users/lionel/Desktop/rlang/revdep/library.noindex/FSelectorRcpp/Rcpp/include" -I"/Users/lionel/Desktop/rlang/revdep/library.noindex/FSelectorRcpp/BH/include" -I"/Users/lionel/Desktop/rlang/revdep/library.noindex/FSelectorRcpp/RcppArmadillo/include" -I"/Users/lionel/Desktop/rlang/revdep/library.noindex/FSelectorRcpp/testthat/include" -I/usr/local/include   -fPIC  -arch x86_64 -ftemplate-depth-256 -Wall -pedantic -O0 -c cutOff.cpp -o cutOff.o
+clang++ -std=c++11 -I"/Library/Frameworks/R.framework/Resources/include" -DNDEBUG -fopenmp -I../inst/include -I"/Users/lionel/Desktop/rlang/revdep/library.noindex/FSelectorRcpp/Rcpp/include" -I"/Users/lionel/Desktop/rlang/revdep/library.noindex/FSelectorRcpp/BH/include" -I"/Users/lionel/Desktop/rlang/revdep/library.noindex/FSelectorRcpp/RcppArmadillo/include" -I"/Users/lionel/Desktop/rlang/revdep/library.noindex/FSelectorRcpp/testthat/include" -I/usr/local/include   -fPIC  -arch x86_64 -ftemplate-depth-256 -Wall -pedantic -O0 -c discretize.cpp -o discretize.o
+clang++ -std=c++11 -I"/Library/Frameworks/R.framework/Resources/include" -DNDEBUG -fopenmp -I../inst/include -I"/Users/lionel/Desktop/rlang/revdep/library.noindex/FSelectorRcpp/Rcpp/include" -I"/Users/lionel/Desktop/rlang/revdep/library.noindex/FSelectorRcpp/BH/include" -I"/Users/lionel/Desktop/rlang/revdep/library.noindex/FSelectorRcpp/RcppArmadillo/include" -I"/Users/lionel/Desktop/rlang/revdep/library.noindex/FSelectorRcpp/testthat/include" -I/usr/local/include   -fPIC  -arch x86_64 -ftemplate-depth-256 -Wall -pedantic -O0 -c discretizeControl.cpp -o discretizeControl.o
+clang: error: unsupported option '-fopenmp'
+clang: error: unsupported option '-fopenmp'
+clang: error: unsupported option '-fopenmp'
+make: *** [discretize.o] Error 1
+make: *** Waiting for unfinished jobs....
+make: *** [RcppExports.o] Error 1
+clang: error: unsupported option '-fopenmp'
+make: *** [cutOff.o] Error 1
+make: *** [discretizeControl.o] Error 1
+ERROR: compilation failed for package ‘FSelectorRcpp’
+* removing ‘/Users/lionel/Desktop/rlang/revdep/checks.noindex/FSelectorRcpp/old/FSelectorRcpp.Rcheck/FSelectorRcpp’
+
+```
 # ftDK
 
 Version: 1.0
@@ -6793,28 +6714,6 @@ Version: 1.6.0.0
 
 ## In both
 
-*   checking tests ...
-    ```
-     ERROR
-    Running the tests in ‘tests/testthat.R’ failed.
-    Last 13 lines of output:
-      Loading required package: survival
-      
-      Attaching package: 'survey'
-      
-      The following object is masked from 'package:graphics':
-      
-          dotchart
-      
-      
-      Attaching package: 'zoo'
-      
-      The following objects are masked from 'package:base':
-      
-          as.Date, as.Date.numeric
-      
-    ```
-
 *   checking package dependencies ... NOTE
     ```
     Package suggested but not available for checking: ‘taxstats’
@@ -8299,34 +8198,6 @@ Version: 0.2
 *   checking package dependencies ... NOTE
     ```
     Packages which this enhances but not available for checking: ‘stars’ ‘sf’
-    ```
-
-# later
-
-Version: 0.7.5
-
-## In both
-
-*   checking tests ...
-    ```
-     ERROR
-    Running the tests in ‘tests/testthat.R’ failed.
-    Last 13 lines of output:
-      31: tryCatchList(expr, classes, parentenv, handlers)
-      32: tryCatch(withCallingHandlers({    eval(code, test_env)    if (!handled && !is.null(test)) {        skip_empty()    }}, expectation = handle_expectation, skip = handle_skip, warning = handle_warning,     message = handle_message, error = handle_error), error = handle_fatal,     skip = function(e) {    })
-      33: test_code(NULL, exprs, env)
-      34: source_file(path, new.env(parent = env), chdir = TRUE, wrap = wrap)
-      35: force(code)
-      36: with_reporter(reporter = reporter, start_end_reporter = start_end_reporter,     {        lister$start_file(basename(path))        source_file(path, new.env(parent = env), chdir = TRUE,             wrap = wrap)        end_context()    })
-      37: FUN(X[[i]], ...)
-      38: lapply(paths, test_file, env = env, reporter = current_reporter,     start_end_reporter = FALSE, load_helpers = FALSE, wrap = wrap)
-      39: force(code)
-      40: with_reporter(reporter = current_reporter, results <- lapply(paths,     test_file, env = env, reporter = current_reporter, start_end_reporter = FALSE,     load_helpers = FALSE, wrap = wrap))
-      41: test_files(paths, reporter = reporter, env = env, stop_on_failure = stop_on_failure,     stop_on_warning = stop_on_warning, wrap = wrap)
-      42: test_dir(path = test_path, reporter = reporter, env = env, filter = filter,     ..., stop_on_failure = stop_on_failure, stop_on_warning = stop_on_warning,     wrap = wrap)
-      43: test_package_dir(package = package, test_path = test_path, filter = filter,     reporter = reporter, ..., stop_on_failure = stop_on_failure,     stop_on_warning = stop_on_warning, wrap = wrap)
-      44: test_check("later")
-      An irrecoverable exception occurred. R is aborting now ...
     ```
 
 # lilikoi
@@ -11212,34 +11083,6 @@ Version: 2.7.8
       All declared Imports should be used.
     ```
 
-# ompr
-
-Version: 0.8.0
-
-## In both
-
-*   checking tests ...
-    ```
-     ERROR
-    Running the tests in ‘tests/testthat.R’ failed.
-    Last 13 lines of output:
-      31: tryCatchList(expr, classes, parentenv, handlers)
-      32: tryCatch(withCallingHandlers({    eval(code, test_env)    if (!handled && !is.null(test)) {        skip_empty()    }}, expectation = handle_expectation, skip = handle_skip, warning = handle_warning,     message = handle_message, error = handle_error), error = handle_fatal,     skip = function(e) {    })
-      33: test_code(NULL, exprs, env)
-      34: source_file(path, new.env(parent = env), chdir = TRUE, wrap = wrap)
-      35: force(code)
-      36: with_reporter(reporter = reporter, start_end_reporter = start_end_reporter,     {        lister$start_file(basename(path))        source_file(path, new.env(parent = env), chdir = TRUE,             wrap = wrap)        end_context()    })
-      37: FUN(X[[i]], ...)
-      38: lapply(paths, test_file, env = env, reporter = current_reporter,     start_end_reporter = FALSE, load_helpers = FALSE, wrap = wrap)
-      39: force(code)
-      40: with_reporter(reporter = current_reporter, results <- lapply(paths,     test_file, env = env, reporter = current_reporter, start_end_reporter = FALSE,     load_helpers = FALSE, wrap = wrap))
-      41: test_files(paths, reporter = reporter, env = env, stop_on_failure = stop_on_failure,     stop_on_warning = stop_on_warning, wrap = wrap)
-      42: test_dir(path = test_path, reporter = reporter, env = env, filter = filter,     ..., stop_on_failure = stop_on_failure, stop_on_warning = stop_on_warning,     wrap = wrap)
-      43: test_package_dir(package = package, test_path = test_path, filter = filter,     reporter = reporter, ..., stop_on_failure = stop_on_failure,     stop_on_warning = stop_on_warning, wrap = wrap)
-      44: test_check("ompr")
-      An irrecoverable exception occurred. R is aborting now ...
-    ```
-
 # OncoSimulR
 
 Version: 2.10.0
@@ -11572,34 +11415,6 @@ Version: 2.6.0
     manual.
     ```
 
-# pccc
-
-Version: 1.0.2
-
-## In both
-
-*   checking tests ...
-    ```
-     ERROR
-    Running the tests in ‘tests/testthat.R’ failed.
-    Last 13 lines of output:
-      30: tryCatchList(expr, classes, parentenv, handlers)
-      31: tryCatch(withCallingHandlers({    eval(code, test_env)    if (!handled && !is.null(test)) {        skip_empty()    }}, expectation = handle_expectation, skip = handle_skip, warning = handle_warning,     message = handle_message, error = handle_error), error = handle_fatal,     skip = function(e) {    })
-      32: test_code(NULL, exprs, env)
-      33: source_file(path, new.env(parent = env), chdir = TRUE, wrap = wrap)
-      34: force(code)
-      35: with_reporter(reporter = reporter, start_end_reporter = start_end_reporter,     {        lister$start_file(basename(path))        source_file(path, new.env(parent = env), chdir = TRUE,             wrap = wrap)        end_context()    })
-      36: FUN(X[[i]], ...)
-      37: lapply(paths, test_file, env = env, reporter = current_reporter,     start_end_reporter = FALSE, load_helpers = FALSE, wrap = wrap)
-      38: force(code)
-      39: with_reporter(reporter = current_reporter, results <- lapply(paths,     test_file, env = env, reporter = current_reporter, start_end_reporter = FALSE,     load_helpers = FALSE, wrap = wrap))
-      40: test_files(paths, reporter = reporter, env = env, stop_on_failure = stop_on_failure,     stop_on_warning = stop_on_warning, wrap = wrap)
-      41: test_dir(path = test_path, reporter = reporter, env = env, filter = filter,     ..., stop_on_failure = stop_on_failure, stop_on_warning = stop_on_warning,     wrap = wrap)
-      42: test_package_dir(package = package, test_path = test_path, filter = filter,     reporter = reporter, ..., stop_on_failure = stop_on_failure,     stop_on_warning = stop_on_warning, wrap = wrap)
-      43: test_check("pccc")
-      An irrecoverable exception occurred. R is aborting now ...
-    ```
-
 # pcr
 
 Version: 1.1.2
@@ -11840,16 +11655,6 @@ Version: 1.6.0
 Version: 1.0.1
 
 ## In both
-
-*   checking tests ...
-    ```
-     ERROR
-    Running the tests in ‘tests/test-all.R’ failed.
-    Complete output:
-      > library(physiology)
-      > library(testthat)
-      > test_check("physiology")
-    ```
 
 *   checking re-building of vignette outputs ... WARNING
     ```
@@ -12773,34 +12578,6 @@ Version: 0.2.5
       Execution halted
     ```
 
-# purrrlyr
-
-Version: 0.0.3
-
-## In both
-
-*   checking tests ...
-    ```
-     ERROR
-    Running the tests in ‘tests/testthat.R’ failed.
-    Last 13 lines of output:
-      30: tryCatchList(expr, classes, parentenv, handlers)
-      31: tryCatch(withCallingHandlers({    eval(code, test_env)    if (!handled && !is.null(test)) {        skip_empty()    }}, expectation = handle_expectation, skip = handle_skip, warning = handle_warning,     message = handle_message, error = handle_error), error = handle_fatal,     skip = function(e) {    })
-      32: test_code(NULL, exprs, env)
-      33: source_file(path, new.env(parent = env), chdir = TRUE, wrap = wrap)
-      34: force(code)
-      35: with_reporter(reporter = reporter, start_end_reporter = start_end_reporter,     {        lister$start_file(basename(path))        source_file(path, new.env(parent = env), chdir = TRUE,             wrap = wrap)        end_context()    })
-      36: FUN(X[[i]], ...)
-      37: lapply(paths, test_file, env = env, reporter = current_reporter,     start_end_reporter = FALSE, load_helpers = FALSE, wrap = wrap)
-      38: force(code)
-      39: with_reporter(reporter = current_reporter, results <- lapply(paths,     test_file, env = env, reporter = current_reporter, start_end_reporter = FALSE,     load_helpers = FALSE, wrap = wrap))
-      40: test_files(paths, reporter = reporter, env = env, stop_on_failure = stop_on_failure,     stop_on_warning = stop_on_warning, wrap = wrap)
-      41: test_dir(path = test_path, reporter = reporter, env = env, filter = filter,     ..., stop_on_failure = stop_on_failure, stop_on_warning = stop_on_warning,     wrap = wrap)
-      42: test_package_dir(package = package, test_path = test_path, filter = filter,     reporter = reporter, ..., stop_on_failure = stop_on_failure,     stop_on_warning = stop_on_warning, wrap = wrap)
-      43: test_check("purrrlyr")
-      An irrecoverable exception occurred. R is aborting now ...
-    ```
-
 # pysd2r
 
 Version: 0.1.0
@@ -12916,49 +12693,13 @@ Version: 1.3.4
 
 ## In both
 
-*   checking tests ...
-    ```
-     ERROR
-    Running the tests in ‘tests/testthat.R’ failed.
-    Last 13 lines of output:
-      31: tryCatchList(expr, classes, parentenv, handlers)
-      32: tryCatch(withCallingHandlers({    eval(code, test_env)    if (!handled && !is.null(test)) {        skip_empty()    }}, expectation = handle_expectation, skip = handle_skip, warning = handle_warning,     message = handle_message, error = handle_error), error = handle_fatal,     skip = function(e) {    })
-      33: test_code(NULL, exprs, env)
-      34: source_file(path, new.env(parent = env), chdir = TRUE, wrap = wrap)
-      35: force(code)
-      36: with_reporter(reporter = reporter, start_end_reporter = start_end_reporter,     {        lister$start_file(basename(path))        source_file(path, new.env(parent = env), chdir = TRUE,             wrap = wrap)        end_context()    })
-      37: FUN(X[[i]], ...)
-      38: lapply(paths, test_file, env = env, reporter = current_reporter,     start_end_reporter = FALSE, load_helpers = FALSE, wrap = wrap)
-      39: force(code)
-      40: with_reporter(reporter = current_reporter, results <- lapply(paths,     test_file, env = env, reporter = current_reporter, start_end_reporter = FALSE,     load_helpers = FALSE, wrap = wrap))
-      41: test_files(paths, reporter = reporter, env = env, stop_on_failure = stop_on_failure,     stop_on_warning = stop_on_warning, wrap = wrap)
-      42: test_dir(path = test_path, reporter = reporter, env = env, filter = filter,     ..., stop_on_failure = stop_on_failure, stop_on_warning = stop_on_warning,     wrap = wrap)
-      43: test_package_dir(package = package, test_path = test_path, filter = filter,     reporter = reporter, ..., stop_on_failure = stop_on_failure,     stop_on_warning = stop_on_warning, wrap = wrap)
-      44: test_check("quanteda")
-      An irrecoverable exception occurred. R is aborting now ...
-    ```
-
-*   checking whether package ‘quanteda’ can be installed ... WARNING
-    ```
-    Found the following significant warnings:
-      /Users/lionel/Desktop/rlang/revdep/library.noindex/quanteda/RcppParallel/include/tbb/internal/_concurrent_unordered_impl.h:1481:24: warning: 'void* memset(void*, int, size_t)' clearing an object of non-trivial type 'tbb::interface5::internal::concurrent_unordered_base<tbb::interface5::concurrent_unordered_map_traits<std::vector<unsigned int>, std::pair<tbb::atomic<unsigned int>, tbb::atomic<unsigned int> >, tbb::interface5::internal::hash_compare<std::vector<unsigned int>, quanteda::hash_ngram, quanteda::equal_ngram>, tbb::tbb_allocator<std::pair<const std::vector<unsigned int>, std::pair<tbb::atomic<unsigned int>, tbb::atomic<unsigned int> > > >, false> >::raw_iterator' {aka 'class tbb::interface5::internal::flist_iterator<tbb::interface5::internal::split_ordered_list<std::pair<const std::vector<unsigned int>, std::pair<tbb::atomic<unsigned int>, tbb::atomic<unsigned int> > >, tbb::tbb_allocator<std::pair<const std::vector<unsigned int>, std::pair<tbb::atomic<unsigned int>, tbb::atomic<unsigned int> > > > >, std::pair<const std::vector<unsigned int>, std::pair<tbb::atomic<unsigned int>, tbb::atomic<unsigned int> > > >'}; use assignment or value-initialization instead [-Wclass-memaccess]
-      /Users/lionel/Desktop/rlang/revdep/library.noindex/quanteda/RcppParallel/include/tbb/concurrent_vector.h:88:20: warning: 'void* memset(void*, int, size_t)' clearing an object of type 'struct std::pair<std::vector<unsigned int>, tbb::atomic<unsigned int> >' with no trivial copy-assignment; use assignment instead [-Wclass-memaccess]
-      /Users/lionel/Desktop/rlang/revdep/library.noindex/quanteda/RcppParallel/include/tbb/concurrent_vector.h:88:20: warning: 'void* memset(void*, int, size_t)' clearing an object of type 'class std::vector<unsigned int>' with no trivial copy-assignment; use assignment or value-initialization instead [-Wclass-memaccess]
-      /Users/lionel/Desktop/rlang/revdep/library.noindex/quanteda/RcppParallel/include/tbb/internal/_concurrent_unordered_impl.h:1481:24: warning: 'void* memset(void*, int, size_t)' clearing an object of non-trivial type 'tbb::interface5::internal::concurrent_unordered_base<tbb::interface5::concurrent_unordered_set_traits<unsigned int, tbb::interface5::internal::hash_compare<unsigned int, tbb::tbb_hash<unsigned int>, std::equal_to<unsigned int> >, tbb::tbb_allocator<unsigned int>, false> >::raw_iterator' {aka 'class tbb::interface5::internal::flist_iterator<tbb::interface5::internal::split_ordered_list<unsigned int, tbb::tbb_allocator<unsigned int> >, unsigned int>'}; use assignment or value-initialization instead [-Wclass-memaccess]
-      /Users/lionel/Desktop/rlang/revdep/library.noindex/quanteda/RcppParallel/include/tbb/internal/_concurrent_unordered_impl.h:1481:24: warning: 'void* memset(void*, int, size_t)' clearing an object of non-trivial type 'tbb::interface5::internal::concurrent_unordered_base<tbb::interface5::concurrent_unordered_set_traits<std::vector<unsigned int>, tbb::interface5::internal::hash_compare<std::vector<unsigned int>, quanteda::hash_ngram, quanteda::equal_ngram>, tbb::tbb_allocator<std::vector<unsigned int> >, false> >::raw_iterator' {aka 'class tbb::interface5::internal::flist_iterator<tbb::interface5::internal::split_ordered_list<std::vector<unsigned int>, tbb::tbb_allocator<std::vector<unsigned int> > >, std::vector<unsigned int> >'}; use assignment or value-initialization instead [-Wclass-memaccess]
-      /Users/lionel/Desktop/rlang/revdep/library.noindex/quanteda/RcppParallel/include/tbb/internal/_concurrent_unordered_impl.h:1481:24: warning: 'void* memset(void*, int, size_t)' clearing an object of non-trivial type 'tbb::interface5::internal::concurrent_unordered_base<tbb::interface5::concurrent_unordered_map_traits<std::vector<unsigned int>, tbb::atomic<unsigned int>, tbb::interface5::internal::hash_compare<std::vector<unsigned int>, quanteda::hash_ngram, quanteda::equal_ngram>, tbb::tbb_allocator<std::pair<const std::vector<unsigned int>, tbb::atomic<unsigned int> > >, false> >::raw_iterator' {aka 'class tbb::interface5::internal::flist_iterator<tbb::interface5::internal::split_ordered_list<std::pair<const std::vector<unsigned int>, tbb::atomic<unsigned int> >, tbb::tbb_allocator<std::pair<const std::vector<unsigned int>, tbb::atomic<unsigned int> > > >, std::pair<const std::vector<unsigned int>, tbb::atomic<unsigned int> > >'}; use assignment or value-initialization instead [-Wclass-memaccess]
-      /Users/lionel/Desktop/rlang/revdep/library.noindex/quanteda/RcppParallel/include/tbb/concurrent_vector.h:88:20: warning: 'void* memset(void*, int, size_t)' clearing an object of type 'class std::tuple<unsigned int, unsigned int, double>' with no trivial copy-assignment; use assignment instead [-Wclass-memaccess]
-      /Users/lionel/Desktop/rlang/revdep/library.noindex/quanteda/RcppParallel/include/tbb/internal/_concurrent_unordered_impl.h:1481:24: warning: 'void* memset(void*, int, size_t)' clearing an object of non-trivial type 'tbb::interface5::internal::concurrent_unordered_base<tbb::interface5::concurrent_unordered_map_traits<std::vector<unsigned int>, tbb::atomic<unsigned int>, tbb::interface5::internal::hash_compare<std::vector<unsigned int>, quanteda::hash_ngram, quanteda::equal_ngram>, tbb::tbb_allocator<std::pair<const std::vector<unsigned int>, tbb::atomic<unsigned int> > >, true> >::raw_iterator' {aka 'class tbb::interface5::internal::flist_iterator<tbb::interface5::internal::split_ordered_list<std::pair<const std::vector<unsigned int>, tbb::atomic<unsigned int> >, tbb::tbb_allocator<std::pair<const std::vector<unsigned int>, tbb::atomic<unsigned int> > > >, std::pair<const std::vector<unsigned int>, tbb::atomic<unsigned int> > >'}; use assignment or value-initialization instead [-Wclass-memaccess]
-    See ‘/Users/lionel/Desktop/rlang/revdep/checks.noindex/quanteda/new/quanteda.Rcheck/00install.out’ for details.
-    ```
-
 *   checking installed package size ... NOTE
     ```
-      installed size is  8.6Mb
+      installed size is  7.9Mb
       sub-directories of 1Mb or more:
         R      3.1Mb
         data   1.2Mb
-        libs   3.3Mb
+        libs   2.7Mb
     ```
 
 *   checking Rd cross-references ... NOTE
@@ -14195,34 +13936,6 @@ Version: 1.2
     GNU make is a SystemRequirements.
     ```
 
-# RPresto
-
-Version: 1.3.1
-
-## In both
-
-*   checking tests ...
-    ```
-     ERROR
-    Running the tests in ‘tests/testthat.R’ failed.
-    Last 13 lines of output:
-      31: tryCatchList(expr, classes, parentenv, handlers)
-      32: tryCatch(withCallingHandlers({    eval(code, test_env)    if (!handled && !is.null(test)) {        skip_empty()    }}, expectation = handle_expectation, skip = handle_skip, warning = handle_warning,     message = handle_message, error = handle_error), error = handle_fatal,     skip = function(e) {    })
-      33: test_code(NULL, exprs, env)
-      34: source_file(path, new.env(parent = env), chdir = TRUE, wrap = wrap)
-      35: force(code)
-      36: with_reporter(reporter = reporter, start_end_reporter = start_end_reporter,     {        lister$start_file(basename(path))        source_file(path, new.env(parent = env), chdir = TRUE,             wrap = wrap)        end_context()    })
-      37: FUN(X[[i]], ...)
-      38: lapply(paths, test_file, env = env, reporter = current_reporter,     start_end_reporter = FALSE, load_helpers = FALSE, wrap = wrap)
-      39: force(code)
-      40: with_reporter(reporter = current_reporter, results <- lapply(paths,     test_file, env = env, reporter = current_reporter, start_end_reporter = FALSE,     load_helpers = FALSE, wrap = wrap))
-      41: test_files(paths, reporter = reporter, env = env, stop_on_failure = stop_on_failure,     stop_on_warning = stop_on_warning, wrap = wrap)
-      42: test_dir(path = test_path, reporter = reporter, env = env, filter = filter,     ..., stop_on_failure = stop_on_failure, stop_on_warning = stop_on_warning,     wrap = wrap)
-      43: test_package_dir(package = package, test_path = test_path, filter = filter,     reporter = reporter, ..., stop_on_failure = stop_on_failure,     stop_on_warning = stop_on_warning, wrap = wrap)
-      44: test_check("RPresto")
-      An irrecoverable exception occurred. R is aborting now ...
-    ```
-
 # rprev
 
 Version: 1.0.0
@@ -15084,28 +14797,6 @@ Version: 1.2.0
 
 ## In both
 
-*   checking tests ...
-    ```
-     ERROR
-    Running the tests in ‘tests/testthat.R’ failed.
-    Last 13 lines of output:
-      30: tryCatchList(expr, classes, parentenv, handlers)
-      31: tryCatch(withCallingHandlers({    eval(code, test_env)    if (!handled && !is.null(test)) {        skip_empty()    }}, expectation = handle_expectation, skip = handle_skip, warning = handle_warning,     message = handle_message, error = handle_error), error = handle_fatal,     skip = function(e) {    })
-      32: test_code(NULL, exprs, env)
-      33: source_file(path, new.env(parent = env), chdir = TRUE, wrap = wrap)
-      34: force(code)
-      35: with_reporter(reporter = reporter, start_end_reporter = start_end_reporter,     {        lister$start_file(basename(path))        source_file(path, new.env(parent = env), chdir = TRUE,             wrap = wrap)        end_context()    })
-      36: FUN(X[[i]], ...)
-      37: lapply(paths, test_file, env = env, reporter = current_reporter,     start_end_reporter = FALSE, load_helpers = FALSE, wrap = wrap)
-      38: force(code)
-      39: with_reporter(reporter = current_reporter, results <- lapply(paths,     test_file, env = env, reporter = current_reporter, start_end_reporter = FALSE,     load_helpers = FALSE, wrap = wrap))
-      40: test_files(paths, reporter = reporter, env = env, stop_on_failure = stop_on_failure,     stop_on_warning = stop_on_warning, wrap = wrap)
-      41: test_dir(path = test_path, reporter = reporter, env = env, filter = filter,     ..., stop_on_failure = stop_on_failure, stop_on_warning = stop_on_warning,     wrap = wrap)
-      42: test_package_dir(package = package, test_path = test_path, filter = filter,     reporter = reporter, ..., stop_on_failure = stop_on_failure,     stop_on_warning = stop_on_warning, wrap = wrap)
-      43: test_check("scfind")
-      An irrecoverable exception occurred. R is aborting now ...
-    ```
-
 *   checking re-building of vignette outputs ... WARNING
     ```
     Error in re-building vignettes:
@@ -15278,28 +14969,6 @@ Version: 2.3.4
 
 ## In both
 
-*   checking tests ...
-    ```
-     ERROR
-    Running the tests in ‘tests/testthat.R’ failed.
-    Last 13 lines of output:
-      30: tryCatchList(expr, classes, parentenv, handlers)
-      31: tryCatch(withCallingHandlers({    eval(code, test_env)    if (!handled && !is.null(test)) {        skip_empty()    }}, expectation = handle_expectation, skip = handle_skip, warning = handle_warning,     message = handle_message, error = handle_error), error = handle_fatal,     skip = function(e) {    })
-      32: test_code(NULL, exprs, env)
-      33: source_file(path, new.env(parent = env), chdir = TRUE, wrap = wrap)
-      34: force(code)
-      35: with_reporter(reporter = reporter, start_end_reporter = start_end_reporter,     {        lister$start_file(basename(path))        source_file(path, new.env(parent = env), chdir = TRUE,             wrap = wrap)        end_context()    })
-      36: FUN(X[[i]], ...)
-      37: lapply(paths, test_file, env = env, reporter = current_reporter,     start_end_reporter = FALSE, load_helpers = FALSE, wrap = wrap)
-      38: force(code)
-      39: with_reporter(reporter = current_reporter, results <- lapply(paths,     test_file, env = env, reporter = current_reporter, start_end_reporter = FALSE,     load_helpers = FALSE, wrap = wrap))
-      40: test_files(paths, reporter = reporter, env = env, stop_on_failure = stop_on_failure,     stop_on_warning = stop_on_warning, wrap = wrap)
-      41: test_dir(path = test_path, reporter = reporter, env = env, filter = filter,     ..., stop_on_failure = stop_on_failure, stop_on_warning = stop_on_warning,     wrap = wrap)
-      42: test_package_dir(package = package, test_path = test_path, filter = filter,     reporter = reporter, ..., stop_on_failure = stop_on_failure,     stop_on_warning = stop_on_warning, wrap = wrap)
-      43: test_check("Seurat")
-      An irrecoverable exception occurred. R is aborting now ...
-    ```
-
 *   checking package dependencies ... NOTE
     ```
     Package suggested but not available for checking: ‘loomR’
@@ -15307,10 +14976,10 @@ Version: 2.3.4
 
 *   checking installed package size ... NOTE
     ```
-      installed size is  5.5Mb
+      installed size is  5.2Mb
       sub-directories of 1Mb or more:
-        R      3.0Mb
-        libs   1.8Mb
+        R      3.1Mb
+        libs   1.4Mb
     ```
 
 # sevenbridges
@@ -15371,42 +15040,126 @@ Version: 0.6-3
 
 ## In both
 
-*   checking tests ...
+*   checking whether package ‘sf’ can be installed ... ERROR
     ```
-    ...
-    < Linking to GEOS 3.6.3, GDAL 2.3.1, proj.4 5.1.0
-    ---
-    > Linking to GEOS 3.6.2, GDAL 2.2.3, proj.4 4.9.3
-     ERROR
-    Running the tests in ‘tests/crs.R’ failed.
-    Last 13 lines of output:
-      POINT (111319.5 111325.1)
-      > try(sf_project("+proj=longlat", "+proj=bar", matrix(1:4,2)))
-      
-       *** caught segfault ***
-      address 0x80, cause 'memory not mapped'
-      
-      Traceback:
-       1: CPL_proj_direct(as.character(c(from[1], to[1])), as.matrix(pts))
-       2: sf_project("+proj=longlat", "+proj=bar", matrix(1:4, 2))
-       3: doTryCatch(return(expr), name, parentenv, handler)
-       4: tryCatchOne(expr, names, parentenv, handlers[[1L]])
-       5: tryCatchList(expr, classes, parentenv, handlers)
-       6: tryCatch(expr, error = function(e) {    call <- conditionCall(e)    if (!is.null(call)) {        if (identical(call[[1L]], quote(doTryCatch)))             call <- sys.call(-4L)        dcall <- deparse(call)[1L]        prefix <- paste("Error in", dcall, ": ")        LONG <- 75L        sm <- strsplit(conditionMessage(e), "\n")[[1L]]        w <- 14L + nchar(dcall, type = "w") + nchar(sm[1L], type = "w")        if (is.na(w))             w <- 14L + nchar(dcall, type = "b") + nchar(sm[1L],                 type = "b")        if (w > LONG)             prefix <- paste0(prefix, "\n  ")    }    else prefix <- "Error : "    msg <- paste0(prefix, conditionMessage(e), "\n")    .Internal(seterrmessage(msg[1L]))    if (!silent && isTRUE(getOption("show.error.messages"))) {        cat(msg, file = outFile)        .Internal(printDeferredWarnings())    }    invisible(structure(msg, class = "try-error", condition = e))})
-       7: try(sf_project("+proj=longlat", "+proj=bar", matrix(1:4, 2)))
-      An irrecoverable exception occurred. R is aborting now ...
+    Installation failed.
+    See ‘/Users/lionel/Desktop/rlang/revdep/checks.noindex/sf/new/sf.Rcheck/00install.out’ for details.
     ```
 
-*   checking installed package size ... NOTE
-    ```
-      installed size is 17.7Mb
-      sub-directories of 1Mb or more:
-        R        2.0Mb
-        doc     10.8Mb
-        libs     1.2Mb
-        sqlite   1.5Mb
-    ```
+## Installation
 
+### Devel
+
+```
+* installing *source* package ‘sf’ ...
+** package ‘sf’ successfully unpacked and MD5 sums checked
+configure: CC: clang
+configure: CXX: clang++
+checking for gdal-config... /usr/local/bin/gdal-config
+checking gdal-config usability... yes
+configure: GDAL: 2.3.1
+checking GDAL version >= 2.0.0... yes
+checking for gcc... clang
+checking whether the C compiler works... yes
+checking for C compiler default output file name... a.out
+checking for suffix of executables... 
+checking whether we are cross compiling... no
+checking for suffix of object files... o
+checking whether we are using the GNU C compiler... yes
+checking whether clang accepts -g... yes
+checking for clang option to accept ISO C89... none needed
+checking how to run the C preprocessor... clang -E
+checking for grep that handles long lines and -e... /usr/bin/grep
+checking for egrep... /usr/bin/grep -E
+checking for ANSI C header files... yes
+checking for sys/types.h... yes
+checking for sys/stat.h... yes
+checking for stdlib.h... yes
+checking for string.h... yes
+checking for memory.h... yes
+checking for strings.h... yes
+checking for inttypes.h... yes
+checking for stdint.h... yes
+checking for unistd.h... yes
+checking gdal.h usability... yes
+checking gdal.h presence... yes
+checking for gdal.h... yes
+checking GDAL: linking with --libs only... no
+checking GDAL: linking with --libs and --dep-libs... no
+In file included from gdal_test.cpp:1:
+In file included from /usr/local/include/gdal.h:45:
+/usr/local/include/cpl_port.h:187:6: error: Must have C++11 or newer.
+#    error Must have C++11 or newer.
+     ^
+1 error generated.
+In file included from gdal_test.cpp:1:
+In file included from /usr/local/include/gdal.h:45:
+/usr/local/include/cpl_port.h:187:6: error: Must have C++11 or newer.
+#    error Must have C++11 or newer.
+     ^
+1 error generated.
+configure: Install failure: compilation and/or linkage problems.
+configure: error: GDALAllRegister not found in libgdal.
+ERROR: configuration failed for package ‘sf’
+* removing ‘/Users/lionel/Desktop/rlang/revdep/checks.noindex/sf/new/sf.Rcheck/sf’
+
+```
+### CRAN
+
+```
+* installing *source* package ‘sf’ ...
+** package ‘sf’ successfully unpacked and MD5 sums checked
+configure: CC: clang
+configure: CXX: clang++
+checking for gdal-config... /usr/local/bin/gdal-config
+checking gdal-config usability... yes
+configure: GDAL: 2.3.1
+checking GDAL version >= 2.0.0... yes
+checking for gcc... clang
+checking whether the C compiler works... yes
+checking for C compiler default output file name... a.out
+checking for suffix of executables... 
+checking whether we are cross compiling... no
+checking for suffix of object files... o
+checking whether we are using the GNU C compiler... yes
+checking whether clang accepts -g... yes
+checking for clang option to accept ISO C89... none needed
+checking how to run the C preprocessor... clang -E
+checking for grep that handles long lines and -e... /usr/bin/grep
+checking for egrep... /usr/bin/grep -E
+checking for ANSI C header files... yes
+checking for sys/types.h... yes
+checking for sys/stat.h... yes
+checking for stdlib.h... yes
+checking for string.h... yes
+checking for memory.h... yes
+checking for strings.h... yes
+checking for inttypes.h... yes
+checking for stdint.h... yes
+checking for unistd.h... yes
+checking gdal.h usability... yes
+checking gdal.h presence... yes
+checking for gdal.h... yes
+checking GDAL: linking with --libs only... no
+checking GDAL: linking with --libs and --dep-libs... no
+In file included from gdal_test.cpp:1:
+In file included from /usr/local/include/gdal.h:45:
+/usr/local/include/cpl_port.h:187:6: error: Must have C++11 or newer.
+#    error Must have C++11 or newer.
+     ^
+1 error generated.
+In file included from gdal_test.cpp:1:
+In file included from /usr/local/include/gdal.h:45:
+/usr/local/include/cpl_port.h:187:6: error: Must have C++11 or newer.
+#    error Must have C++11 or newer.
+     ^
+1 error generated.
+configure: Install failure: compilation and/or linkage problems.
+configure: error: GDALAllRegister not found in libgdal.
+ERROR: configuration failed for package ‘sf’
+* removing ‘/Users/lionel/Desktop/rlang/revdep/checks.noindex/sf/old/sf.Rcheck/sf’
+
+```
 # shiny
 
 Version: 1.1.0
@@ -15586,34 +15339,12 @@ Version: 4.0.1
 
 ## In both
 
-*   checking tests ...
-    ```
-     ERROR
-    Running the tests in ‘tests/testthat.R’ failed.
-    Last 13 lines of output:
-      41: tryCatchList(expr, classes, parentenv, handlers)
-      42: tryCatch(withCallingHandlers({    eval(code, test_env)    if (!handled && !is.null(test)) {        skip_empty()    }}, expectation = handle_expectation, skip = handle_skip, warning = handle_warning,     message = handle_message, error = handle_error), error = handle_fatal,     skip = function(e) {    })
-      43: test_code(NULL, exprs, env)
-      44: source_file(path, new.env(parent = env), chdir = TRUE, wrap = wrap)
-      45: force(code)
-      46: with_reporter(reporter = reporter, start_end_reporter = start_end_reporter,     {        lister$start_file(basename(path))        source_file(path, new.env(parent = env), chdir = TRUE,             wrap = wrap)        end_context()    })
-      47: FUN(X[[i]], ...)
-      48: lapply(paths, test_file, env = env, reporter = current_reporter,     start_end_reporter = FALSE, load_helpers = FALSE, wrap = wrap)
-      49: force(code)
-      50: with_reporter(reporter = current_reporter, results <- lapply(paths,     test_file, env = env, reporter = current_reporter, start_end_reporter = FALSE,     load_helpers = FALSE, wrap = wrap))
-      51: test_files(paths, reporter = reporter, env = env, stop_on_failure = stop_on_failure,     stop_on_warning = stop_on_warning, wrap = wrap)
-      52: test_dir(path = test_path, reporter = reporter, env = env, filter = filter,     ..., stop_on_failure = stop_on_failure, stop_on_warning = stop_on_warning,     wrap = wrap)
-      53: test_package_dir(package = package, test_path = test_path, filter = filter,     reporter = reporter, ..., stop_on_failure = stop_on_failure,     stop_on_warning = stop_on_warning, wrap = wrap)
-      54: test_check("simmer")
-      An irrecoverable exception occurred. R is aborting now ...
-    ```
-
 *   checking installed package size ... NOTE
     ```
-      installed size is  7.5Mb
+      installed size is  7.6Mb
       sub-directories of 1Mb or more:
         doc    2.1Mb
-        libs   4.3Mb
+        libs   4.4Mb
     ```
 
 # SimRVPedigree
@@ -16137,34 +15868,6 @@ Version: 0.2.5
     Error: processing vignette 'introducing-stplanr.Rmd' failed with diagnostics:
     pandoc document conversion failed with error 83
     Execution halted
-    ```
-
-# strex
-
-Version: 0.1.1
-
-## In both
-
-*   checking tests ...
-    ```
-     ERROR
-    Running the tests in ‘tests/testthat.R’ failed.
-    Last 13 lines of output:
-      30: tryCatchList(expr, classes, parentenv, handlers)
-      31: tryCatch(withCallingHandlers({    eval(code, test_env)    if (!handled && !is.null(test)) {        skip_empty()    }}, expectation = handle_expectation, skip = handle_skip, warning = handle_warning,     message = handle_message, error = handle_error), error = handle_fatal,     skip = function(e) {    })
-      32: test_code(NULL, exprs, env)
-      33: source_file(path, new.env(parent = env), chdir = TRUE, wrap = wrap)
-      34: force(code)
-      35: with_reporter(reporter = reporter, start_end_reporter = start_end_reporter,     {        lister$start_file(basename(path))        source_file(path, new.env(parent = env), chdir = TRUE,             wrap = wrap)        end_context()    })
-      36: FUN(X[[i]], ...)
-      37: lapply(paths, test_file, env = env, reporter = current_reporter,     start_end_reporter = FALSE, load_helpers = FALSE, wrap = wrap)
-      38: force(code)
-      39: with_reporter(reporter = current_reporter, results <- lapply(paths,     test_file, env = env, reporter = current_reporter, start_end_reporter = FALSE,     load_helpers = FALSE, wrap = wrap))
-      40: test_files(paths, reporter = reporter, env = env, stop_on_failure = stop_on_failure,     stop_on_warning = stop_on_warning, wrap = wrap)
-      41: test_dir(path = test_path, reporter = reporter, env = env, filter = filter,     ..., stop_on_failure = stop_on_failure, stop_on_warning = stop_on_warning,     wrap = wrap)
-      42: test_package_dir(package = package, test_path = test_path, filter = filter,     reporter = reporter, ..., stop_on_failure = stop_on_failure,     stop_on_warning = stop_on_warning, wrap = wrap)
-      43: test_check("strex")
-      An irrecoverable exception occurred. R is aborting now ...
     ```
 
 # STRMPS
@@ -17086,28 +16789,6 @@ Version: 0.8.1
 
 ## In both
 
-*   checking tests ...
-    ```
-     ERROR
-    Running the tests in ‘tests/testthat.R’ failed.
-    Last 13 lines of output:
-      32: tryCatchList(expr, classes, parentenv, handlers)
-      33: tryCatch(withCallingHandlers({    eval(code, test_env)    if (!handled && !is.null(test)) {        skip_empty()    }}, expectation = handle_expectation, skip = handle_skip, warning = handle_warning,     message = handle_message, error = handle_error), error = handle_fatal,     skip = function(e) {    })
-      34: test_code(NULL, exprs, env)
-      35: source_file(path, new.env(parent = env), chdir = TRUE, wrap = wrap)
-      36: force(code)
-      37: with_reporter(reporter = reporter, start_end_reporter = start_end_reporter,     {        lister$start_file(basename(path))        source_file(path, new.env(parent = env), chdir = TRUE,             wrap = wrap)        end_context()    })
-      38: FUN(X[[i]], ...)
-      39: lapply(paths, test_file, env = env, reporter = current_reporter,     start_end_reporter = FALSE, load_helpers = FALSE, wrap = wrap)
-      40: force(code)
-      41: with_reporter(reporter = current_reporter, results <- lapply(paths,     test_file, env = env, reporter = current_reporter, start_end_reporter = FALSE,     load_helpers = FALSE, wrap = wrap))
-      42: test_files(paths, reporter = reporter, env = env, stop_on_failure = stop_on_failure,     stop_on_warning = stop_on_warning, wrap = wrap)
-      43: test_dir(path = test_path, reporter = reporter, env = env, filter = filter,     ..., stop_on_failure = stop_on_failure, stop_on_warning = stop_on_warning,     wrap = wrap)
-      44: test_package_dir(package = package, test_path = test_path, filter = filter,     reporter = reporter, ..., stop_on_failure = stop_on_failure,     stop_on_warning = stop_on_warning, wrap = wrap)
-      45: test_check("tidyr")
-      An irrecoverable exception occurred. R is aborting now ...
-    ```
-
 *   checking data for non-ASCII characters ... NOTE
     ```
       Note: found 23 marked UTF-8 strings
@@ -17123,34 +16804,6 @@ Version: 1.2.6
     ```
     Namespace in Imports field not imported from: ‘testthat’
       All declared Imports should be used.
-    ```
-
-# tidyselect
-
-Version: 0.2.4
-
-## In both
-
-*   checking tests ...
-    ```
-     ERROR
-    Running the tests in ‘tests/testthat.R’ failed.
-    Last 13 lines of output:
-      
-      The following objects are masked from 'package:testthat':
-      
-          is_false, is_null, is_true
-      
-      > library("tidyselect")
-      
-      Attaching package: 'tidyselect'
-      
-      The following object is masked from 'package:testthat':
-      
-          matches
-      
-      > 
-      > test_check("tidyselect")
     ```
 
 # tidystringdist
@@ -17220,28 +16873,6 @@ Version: 1.2.1
 Version: 1.0.3
 
 ## In both
-
-*   checking tests ...
-    ```
-     ERROR
-    Running the tests in ‘tests/testthat.R’ failed.
-    Last 13 lines of output:
-      31: tryCatchList(expr, classes, parentenv, handlers)
-      32: tryCatch(withCallingHandlers({    eval(code, test_env)    if (!handled && !is.null(test)) {        skip_empty()    }}, expectation = handle_expectation, skip = handle_skip, warning = handle_warning,     message = handle_message, error = handle_error), error = handle_fatal,     skip = function(e) {    })
-      33: test_code(NULL, exprs, env)
-      34: source_file(path, new.env(parent = env), chdir = TRUE, wrap = wrap)
-      35: force(code)
-      36: with_reporter(reporter = reporter, start_end_reporter = start_end_reporter,     {        lister$start_file(basename(path))        source_file(path, new.env(parent = env), chdir = TRUE,             wrap = wrap)        end_context()    })
-      37: FUN(X[[i]], ...)
-      38: lapply(paths, test_file, env = env, reporter = current_reporter,     start_end_reporter = FALSE, load_helpers = FALSE, wrap = wrap)
-      39: force(code)
-      40: with_reporter(reporter = current_reporter, results <- lapply(paths,     test_file, env = env, reporter = current_reporter, start_end_reporter = FALSE,     load_helpers = FALSE, wrap = wrap))
-      41: test_files(paths, reporter = reporter, env = env, stop_on_failure = stop_on_failure,     stop_on_warning = stop_on_warning, wrap = wrap)
-      42: test_dir(path = test_path, reporter = reporter, env = env, filter = filter,     ..., stop_on_failure = stop_on_failure, stop_on_warning = stop_on_warning,     wrap = wrap)
-      43: test_package_dir(package = package, test_path = test_path, filter = filter,     reporter = reporter, ..., stop_on_failure = stop_on_failure,     stop_on_warning = stop_on_warning, wrap = wrap)
-      44: test_check("tidyxl")
-      An irrecoverable exception occurred. R is aborting now ...
-    ```
 
 *   checking compiled code ... WARNING
     ```
@@ -17913,34 +17544,6 @@ Version: 0.8-7
     to your NAMESPACE file.
     ```
 
-# tweenr
-
-Version: 1.0.0
-
-## In both
-
-*   checking tests ...
-    ```
-     ERROR
-    Running the tests in ‘tests/testthat.R’ failed.
-    Last 13 lines of output:
-      34: tryCatchList(expr, classes, parentenv, handlers)
-      35: tryCatch(withCallingHandlers({    eval(code, test_env)    if (!handled && !is.null(test)) {        skip_empty()    }}, expectation = handle_expectation, skip = handle_skip, warning = handle_warning,     message = handle_message, error = handle_error), error = handle_fatal,     skip = function(e) {    })
-      36: test_code(NULL, exprs, env)
-      37: source_file(path, new.env(parent = env), chdir = TRUE, wrap = wrap)
-      38: force(code)
-      39: with_reporter(reporter = reporter, start_end_reporter = start_end_reporter,     {        lister$start_file(basename(path))        source_file(path, new.env(parent = env), chdir = TRUE,             wrap = wrap)        end_context()    })
-      40: FUN(X[[i]], ...)
-      41: lapply(paths, test_file, env = env, reporter = current_reporter,     start_end_reporter = FALSE, load_helpers = FALSE, wrap = wrap)
-      42: force(code)
-      43: with_reporter(reporter = current_reporter, results <- lapply(paths,     test_file, env = env, reporter = current_reporter, start_end_reporter = FALSE,     load_helpers = FALSE, wrap = wrap))
-      44: test_files(paths, reporter = reporter, env = env, stop_on_failure = stop_on_failure,     stop_on_warning = stop_on_warning, wrap = wrap)
-      45: test_dir(path = test_path, reporter = reporter, env = env, filter = filter,     ..., stop_on_failure = stop_on_failure, stop_on_warning = stop_on_warning,     wrap = wrap)
-      46: test_package_dir(package = package, test_path = test_path, filter = filter,     reporter = reporter, ..., stop_on_failure = stop_on_failure,     stop_on_warning = stop_on_warning, wrap = wrap)
-      47: test_check("tweenr")
-      An irrecoverable exception occurred. R is aborting now ...
-    ```
-
 # ukbtools
 
 Version: 0.11.0
@@ -18045,34 +17648,6 @@ Version: 0.1.2
     ```
     Namespace in Imports field not imported from: ‘purrr’
       All declared Imports should be used.
-    ```
-
-# valr
-
-Version: 0.4.1
-
-## In both
-
-*   checking tests ...
-    ```
-     ERROR
-    Running the tests in ‘tests/testthat.R’ failed.
-    Last 13 lines of output:
-      31: tryCatchList(expr, classes, parentenv, handlers)
-      32: tryCatch(withCallingHandlers({    eval(code, test_env)    if (!handled && !is.null(test)) {        skip_empty()    }}, expectation = handle_expectation, skip = handle_skip, warning = handle_warning,     message = handle_message, error = handle_error), error = handle_fatal,     skip = function(e) {    })
-      33: test_code(NULL, exprs, env)
-      34: source_file(path, new.env(parent = env), chdir = TRUE, wrap = wrap)
-      35: force(code)
-      36: with_reporter(reporter = reporter, start_end_reporter = start_end_reporter,     {        lister$start_file(basename(path))        source_file(path, new.env(parent = env), chdir = TRUE,             wrap = wrap)        end_context()    })
-      37: FUN(X[[i]], ...)
-      38: lapply(paths, test_file, env = env, reporter = current_reporter,     start_end_reporter = FALSE, load_helpers = FALSE, wrap = wrap)
-      39: force(code)
-      40: with_reporter(reporter = current_reporter, results <- lapply(paths,     test_file, env = env, reporter = current_reporter, start_end_reporter = FALSE,     load_helpers = FALSE, wrap = wrap))
-      41: test_files(paths, reporter = reporter, env = env, stop_on_failure = stop_on_failure,     stop_on_warning = stop_on_warning, wrap = wrap)
-      42: test_dir(path = test_path, reporter = reporter, env = env, filter = filter,     ..., stop_on_failure = stop_on_failure, stop_on_warning = stop_on_warning,     wrap = wrap)
-      43: test_package_dir(package = package, test_path = test_path, filter = filter,     reporter = reporter, ..., stop_on_failure = stop_on_failure,     stop_on_warning = stop_on_warning, wrap = wrap)
-      44: test_check("valr")
-      An irrecoverable exception occurred. R is aborting now ...
     ```
 
 # vdmR
@@ -18475,34 +18050,6 @@ Version: 0.3.0
     ```
     Namespace in Imports field not imported from: ‘dbplyr’
       All declared Imports should be used.
-    ```
-
-# wrswoR
-
-Version: 1.1
-
-## In both
-
-*   checking tests ...
-    ```
-     ERROR
-    Running the tests in ‘tests/testthat.R’ failed.
-    Last 13 lines of output:
-      30: tryCatchList(expr, classes, parentenv, handlers)
-      31: tryCatch(withCallingHandlers({    eval(code, test_env)    if (!handled && !is.null(test)) {        skip_empty()    }}, expectation = handle_expectation, skip = handle_skip, warning = handle_warning,     message = handle_message, error = handle_error), error = handle_fatal,     skip = function(e) {    })
-      32: test_code(NULL, exprs, env)
-      33: source_file(path, new.env(parent = env), chdir = TRUE, wrap = wrap)
-      34: force(code)
-      35: with_reporter(reporter = reporter, start_end_reporter = start_end_reporter,     {        lister$start_file(basename(path))        source_file(path, new.env(parent = env), chdir = TRUE,             wrap = wrap)        end_context()    })
-      36: FUN(X[[i]], ...)
-      37: lapply(paths, test_file, env = env, reporter = current_reporter,     start_end_reporter = FALSE, load_helpers = FALSE, wrap = wrap)
-      38: force(code)
-      39: with_reporter(reporter = current_reporter, results <- lapply(paths,     test_file, env = env, reporter = current_reporter, start_end_reporter = FALSE,     load_helpers = FALSE, wrap = wrap))
-      40: test_files(paths, reporter = reporter, env = env, stop_on_failure = stop_on_failure,     stop_on_warning = stop_on_warning, wrap = wrap)
-      41: test_dir(path = test_path, reporter = reporter, env = env, filter = filter,     ..., stop_on_failure = stop_on_failure, stop_on_warning = stop_on_warning,     wrap = wrap)
-      42: test_package_dir(package = package, test_path = test_path, filter = filter,     reporter = reporter, ..., stop_on_failure = stop_on_failure,     stop_on_warning = stop_on_warning, wrap = wrap)
-      43: test_check("wrswoR")
-      An irrecoverable exception occurred. R is aborting now ...
     ```
 
 # XBSeq
