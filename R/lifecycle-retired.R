@@ -951,7 +951,10 @@ lang_modify <- function(.lang, ..., .standardise = FALSE) {
     "`lang_modify()` is soft-deprecated as of rlang 0.2.0.",
     "Please use `call_modify()` instead"
   ))
-  call_modify(.lang, ..., .standardise = .standardise, .env = caller_env())
+  if (.standardise) {
+    .lang <- call_standardise(.lang, caller_env())
+  }
+  call_modify(.lang, ...)
 }
 #' @rdname lang_modify
 #' @export
