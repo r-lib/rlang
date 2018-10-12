@@ -40,8 +40,6 @@ static inline bool r_is_environment(sexp* x) {
   return TYPEOF(x) == ENVSXP;
 }
 
-// TODO A more complete family that optionally looks up ancestry
-// The `find` variant does not fail if object does not exist
 static inline sexp* r_env_find(sexp* env, sexp* sym) {
   return Rf_findVarInFrame3(env, sym, FALSE);
 }
