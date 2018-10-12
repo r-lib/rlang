@@ -373,7 +373,7 @@ test_that("label() handles literals", {
   expect_identical(label(1:2), "<int>")
   expect_identical(label(c(1, 2)), "<dbl>")
   expect_identical(label(letters), "<chr>")
-  expect_identical(label(base::list), "<primitive>")
+  expect_identical(label(base::list), "<fn>")
   expect_identical(label(base::mean), "<fn>")
 })
 

@@ -832,10 +832,10 @@ type_sum.default <- function(x) {
       double = "dbl",
       character = "chr",
       complex = "cpl",
+      builtin = ,
+      special = ,
       closure = "fn",
       environment = "env",
-      builtin = ,
-      special = "primitive",
       symbol =
         if (is_missing(x)) {
           "missing"
