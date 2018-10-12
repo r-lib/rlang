@@ -7,3 +7,7 @@ NULL
 .onUnload <- function(lib) {
   .Call(rlang_library_unload)
 }
+
+runs_gnu <- function() {
+  .Call(rlang_runs_gnu)
+}

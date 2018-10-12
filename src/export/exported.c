@@ -221,6 +221,13 @@ sexp* rlang_quo_is_null(sexp* quo) {
 }
 
 
+// session.h
+
+sexp* rlang_runs_gnu() {
+  return r_lgl(r_runs_gnu());
+}
+
+
 // sexp.h
 
 sexp* rlang_length(sexp* x) {
