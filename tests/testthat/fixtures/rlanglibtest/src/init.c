@@ -13,11 +13,11 @@ sexp* rlanglibtest_library_load() {
 }
 
 static const r_callable r_callables[] = {
-  {"rlanglibtest_library_load",   (r_fn_ptr_t) &rlanglibtest_library_load, 0},
-  {"rlanglibtest_r_quo_get_expr", (r_fn_ptr_t) &rlanglibtest_r_quo_get_expr, 1},
-  {"rlanglibtest_r_quo_set_expr", (r_fn_ptr_t) &rlanglibtest_r_quo_set_expr, 2},
-  {"rlanglibtest_r_quo_get_env",  (r_fn_ptr_t) &rlanglibtest_r_quo_get_env, 1},
-  {"rlanglibtest_r_quo_set_env",  (r_fn_ptr_t) &rlanglibtest_r_quo_set_env, 2},
+  {"rlanglibtest_library_load",   (r_fn_ptr) &rlanglibtest_library_load, 0},
+  {"rlanglibtest_r_quo_get_expr", (r_fn_ptr) &rlanglibtest_r_quo_get_expr, 1},
+  {"rlanglibtest_r_quo_set_expr", (r_fn_ptr) &rlanglibtest_r_quo_set_expr, 2},
+  {"rlanglibtest_r_quo_get_env",  (r_fn_ptr) &rlanglibtest_r_quo_get_env, 1},
+  {"rlanglibtest_r_quo_set_env",  (r_fn_ptr) &rlanglibtest_r_quo_set_env, 2},
   {NULL, NULL, 0}
 };
 
