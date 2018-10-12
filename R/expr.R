@@ -197,7 +197,7 @@ label <- function(expr) {
         name
       }
     },
-    if (length(expr) == 1) {
+    if (is_bare_atomic(expr, n = 1)) {
       name <- expr_text(expr)
       name <- gsub("\n.*$", "...", name)
       name

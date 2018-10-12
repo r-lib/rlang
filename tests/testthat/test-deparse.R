@@ -368,3 +368,16 @@ test_that("label() and expr_name() handles .data pronoun", {
   expect_identical(label(quote(.data[["bar"]])), "bar")
   expect_identical(label(quo(.data[["bar"]])), "bar")
 })
+
+test_that("label() handles literals", {
+  expect_identical(label(1:2), "<int>")
+  expect_identical(label(c(1, 2)), "<dbl>")
+  expect_identical(label(letters), "<chr>")
+  expect_identical(label(base::list), "<primitive>")
+  expect_identical(label(base::mean), "<fn>")
+})
+
+test_that("label() handles objects", {
+  expect_identical(label(mtcars), "<data.frame>")
+  expect_identical(label(structure(1, class = "foo")), "<S3: foo>")
+})
