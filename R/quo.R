@@ -200,7 +200,7 @@ c.quosures <- function(..., recursive = FALSE) {
 }
 #' @export
 print.quosures <- function(x, ...) {
-  cat_line("<list_of<quosures>>\n")
+  cat_line("<listof<quosures>>\n")
   print(unclass(x), ...)
 }
 #' @export
