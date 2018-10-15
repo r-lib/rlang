@@ -4,6 +4,8 @@
 #include "quo.h"
 
 
+extern sexp* rlang_zap;
+
 extern sexp* as_list_call;
 extern sexp* as_list_s4_call;
 

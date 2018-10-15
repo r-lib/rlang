@@ -2,6 +2,8 @@
 #include "internal.h"
 
 
+sexp* rlang_zap = NULL;
+
 sexp* as_list_call = NULL;
 sexp* as_list_s4_call = NULL;
 
@@ -13,6 +15,8 @@ void rlang_init_internal() {
   rlang_init_dots();
   rlang_init_expr_interp();
   rlang_init_eval_tidy();
+
+  rlang_zap = rlang_ns_get("zap!");
 
   as_list_call = r_parse("as.list(x)");
   r_mark_precious(as_list_call);
