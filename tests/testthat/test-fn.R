@@ -199,3 +199,7 @@ test_that("as_function() adds a class to lambda functions", {
   expect_is(out, "rlang_lambda_function")
   expect_output(print(out), "<lambda>")
 })
+
+test_that("fn_env() returns base namespace for primitives", {
+  expect_reference(fn_env(base::list), ns_env("base"))
+})

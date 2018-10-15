@@ -345,10 +345,15 @@ is_primitive_lazy <- function(x) {
 #' fn_env(fn) <- other_env
 #' identical(fn_env(fn), other_env)
 fn_env <- function(fn) {
-  if(!is_function(fn)) {
-    abort("`fn` is not a function")
+  if (is_primitive(fn)) {
+    return(ns_env("base"))
   }
-  environment(fn)
+
+  if(is_closure(fn)) {
+    return(environment(fn))
+  }
+
+  abort("`fn` is not a function")
 }
 
 #' @export
