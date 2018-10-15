@@ -477,3 +477,13 @@ test_that("unexported functions have `:::` prefix", {
 
   expect_known_trace_output(trace, file = "test-trace-unexported-prefix.txt")
 })
+
+test_that("global functions have `global::` prefix", {
+  skip_on_os("windows")
+
+  f <- eval_bare(expr(function(e) rlang::trace_back(e)), global_env())
+  g <- function(e) f(e)
+  trace <- g(current_env())
+
+  expect_known_trace_output(trace, file = "test-trace-global-prefix.txt")
+})

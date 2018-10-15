@@ -163,18 +163,18 @@ maybe_add_namespace <- function(call, fn) {
     fn <- sys.function(fn)
   }
 
-  ns <- topenv(fn_env(fn))
-  if (!is_namespace(ns)) {
+  env <- topenv(fn_env(fn))
+  if (is_reference(env, global_env())) {
+    prefix <- "global"
+    op <- "::"
+  } else if (is_namespace(env)) {
+    prefix <- ns_env_name(env)
+    op <- if (nm %in% ns_exports(env)) "::" else ":::"
+  } else {
     return(call)
   }
 
-  if (nm %in% ns_exports(ns)) {
-    op <- "::"
-  } else {
-    op <- ":::"
-  }
-  namespaced_sym <- call(op, sym(ns_env_name(ns)), sym)
-
+  namespaced_sym <- call(op, sym(prefix), sym)
   call[[1]] <- namespaced_sym
   call
 }
