@@ -7,3 +7,7 @@ NULL
 
   .Call(rlanglibtest_library_load)
 }
+
+test_trace_unexported <- function(e) {
+  trace_back(e)
+}

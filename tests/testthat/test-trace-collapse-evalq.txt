@@ -4,7 +4,7 @@ Full:
   ├─base::evalq(g())
   │ └─base::evalq(g())
   └─g()
-    └─evalq(trace_back(e))
+    └─base::evalq(trace_back(e))
       └─evalq(trace_back(e))
 
 Collapsed:
@@ -12,9 +12,9 @@ Collapsed:
 └─f()
   ├─[ base::evalq(...) ] with 1 more call
   └─g()
-    └─[ evalq(...) ] with 1 more call
+    └─[ base::evalq(...) ] with 1 more call
 
 Branch:
  ─f()
  ─g()
- ─[ evalq(...) ] with 1 more call
+ ─[ base::evalq(...) ] with 1 more call

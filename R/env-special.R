@@ -237,6 +237,9 @@ ns_env_name <- function(pkg = NULL) {
   unname(getNamespaceName(pkg))
 }
 
+ns_exports <- function(ns) getNamespaceExports(ns)
+ns_imports <- function(ns) getNamespaceImports(ns)
+
 #' Is an object a namespace environment?
 #'
 #' @param x An object to test.

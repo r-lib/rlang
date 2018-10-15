@@ -140,8 +140,8 @@ test_that("collapsed formatting doesn't collapse single frame siblings", {
   collapsed <- capture.output(print(trace, simplify = "collapse", srcrefs = FALSE))[[3]]
   collapsed <- substr(collapsed, 5, nchar(collapsed))
 
-  expect_identical(full, "eval_bare(quote(g()))")
-  expect_identical(collapsed, "[ eval_bare(...) ]")
+  expect_identical(full, "rlang::eval_bare(quote(g()))")
+  expect_identical(collapsed, "[ rlang::eval_bare(...) ]")
 })
 
 test_that("recursive frames are rewired to the global env", {
@@ -461,4 +461,18 @@ test_that("summary.rlang_trace() prints the full tree", {
   h <- function() trace_back(e)
   trace <- f()
   expect_known_output(summary(trace, srcrefs = FALSE), file = test_path("test-trace-summary.txt"))
+})
+
+test_that("unexported functions have `:::` prefix", {
+  skip_on_os("windows")
+
+  # Should be installed as part of the C API tests
+  skip_if_not_installed("rlanglibtest")
+  g <- env_get(ns_env("rlanglibtest"), "test_trace_unexported")
+
+  e <- current_env()
+  f <- function() g(e)
+  trace <- f()
+
+  expect_known_trace_output(trace, file = "test-trace-unexported-prefix.txt")
 })

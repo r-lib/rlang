@@ -4,14 +4,14 @@
 * Fields: `message`, `trace` and `parent`
 * Backtrace:
 █
-├─catch_cnd(a())
-│ ├─tryCatch(...)
+├─rlang::catch_cnd(a())
+│ ├─base::tryCatch(...)
 │ │ └─tryCatchList(expr, classes, parentenv, handlers)
 │ │   └─tryCatchOne(expr, names, parentenv, handlers[[1L]])
 │ │     └─doTryCatch(return(expr), name, parentenv, handler)
-│ └─force(expr)
+│ └─base::force(expr)
 └─a()
-  ├─tryCatch(b())
+  ├─base::tryCatch(b())
   │ └─tryCatchList(expr, classes, parentenv, handlers)
   └─b()
     └─c()
@@ -22,7 +22,7 @@
 * Backtrace:
 █
 └─f()
-  ├─tryCatch(g())
+  ├─base::tryCatch(g())
   │ └─tryCatchList(expr, classes, parentenv, handlers)
   └─g()
     └─h()

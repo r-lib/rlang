@@ -1,30 +1,30 @@
 Full:
 █
 └─f()
-  ├─eval(quote(eval(quote(g())))) testthat/test-trace.R:58:7
+  ├─base::eval(quote(eval(quote(g())))) testthat/test-trace.R:58:7
   │ └─eval(quote(eval(quote(g()))))
-  ├─eval(quote(g()))
+  ├─base::eval(quote(g()))
   │ └─eval(quote(g()))
   └─g()
-    ├─tryCatch(eval(quote(h())), foo = identity, bar = identity) testthat/test-trace.R:59:7
+    ├─base::tryCatch(eval(quote(h())), foo = identity, bar = identity) testthat/test-trace.R:59:7
     │ └─tryCatchList(expr, classes, parentenv, handlers)
     │   ├─tryCatchOne(...)
     │   │ └─doTryCatch(return(expr), name, parentenv, handler)
     │   └─tryCatchList(expr, names[-nh], parentenv, handlers[-nh])
     │     └─tryCatchOne(expr, names, parentenv, handlers[[1L]])
     │       └─doTryCatch(return(expr), name, parentenv, handler)
-    ├─eval(quote(h()))
+    ├─base::eval(quote(h()))
     │ └─eval(quote(h()))
     └─h()
 
 Collapsed:
 █
 └─f()
-  ├─[ eval(...) ] with 1 more call testthat/test-trace.R:58:7
-  ├─[ eval(...) ] with 1 more call
+  ├─[ base::eval(...) ] with 1 more call testthat/test-trace.R:58:7
+  ├─[ base::eval(...) ] with 1 more call
   └─g()
-    ├─[ tryCatch(...) ] with 6 more calls testthat/test-trace.R:59:7
-    ├─[ eval(...) ] with 1 more call
+    ├─[ base::tryCatch(...) ] with 6 more calls testthat/test-trace.R:59:7
+    ├─[ base::eval(...) ] with 1 more call
     └─h()
 
 Branch:

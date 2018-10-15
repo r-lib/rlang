@@ -4,12 +4,12 @@ Full:
 * Class: `rlang_error`
 * Backtrace:
 █
-├─catch_cnd(a())
-│ ├─tryCatch(...)
+├─rlang::catch_cnd(a())
+│ ├─base::tryCatch(...)
 │ │ └─tryCatchList(expr, classes, parentenv, handlers)
 │ │   └─tryCatchOne(expr, names, parentenv, handlers[[1L]])
 │ │     └─doTryCatch(return(expr), name, parentenv, handler)
-│ └─force(expr)
+│ └─base::force(expr)
 └─a()
   └─b()
     └─c()
@@ -28,7 +28,7 @@ Collapsed:
 * Class: `rlang_error`
 * Backtrace:
 █
-├─[ catch_cnd(...) ] with 5 more calls
+├─[ rlang::catch_cnd(...) ] with 5 more calls
 └─a()
   └─b()
     └─c()
@@ -46,7 +46,7 @@ Branch:
 * Message: "High-level message"
 * Class: `rlang_error`
 * Backtrace:
- ─catch_cnd(a())
+ ─rlang::catch_cnd(a())
  ─a()
  ─b()
  ─c()

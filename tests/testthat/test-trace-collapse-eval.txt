@@ -4,7 +4,7 @@ Full:
   ├─base::eval(quote(g()))
   │ └─base::eval(quote(g()))
   └─g()
-    └─eval(quote(trace_back(e)))
+    └─base::eval(quote(trace_back(e)))
       └─eval(quote(trace_back(e)))
 
 Collapsed:
@@ -12,9 +12,9 @@ Collapsed:
 └─f()
   ├─[ base::eval(...) ] with 1 more call
   └─g()
-    └─[ eval(...) ] with 1 more call
+    └─[ base::eval(...) ] with 1 more call
 
 Branch:
  ─f()
  ─g()
- ─[ eval(...) ] with 1 more call
+ ─[ base::eval(...) ] with 1 more call

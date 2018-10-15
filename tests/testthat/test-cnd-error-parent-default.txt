@@ -2,7 +2,7 @@
 * Message: "High-level message"
 * Class: `rlang_error`
 * Backtrace:
- ─catch_cnd(a())
+ ─rlang::catch_cnd(a())
  ─a()
  ─b()
  ─c()

@@ -1,6 +1,6 @@
 Error message
 Backtrace:
- ─with_options(...)
+ ─rlang::with_options(...)
  ─f()
  ─g()
  ─h()

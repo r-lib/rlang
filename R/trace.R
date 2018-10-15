@@ -62,14 +62,15 @@
 #' options(rlang_trace_top_env = NULL)
 #' @export
 trace_back <- function(to = NULL) {
-  calls <- as.list(sys.calls())
-  calls <- map(calls, call_fix_car)
-
-  parents <- normalise_parents(sys.parents())
   frames <- sys.frames()
   envs <- map(frames, env_label)
 
+  calls <- as.list(sys.calls())
+  calls <- map(calls, call_fix_car)
   calls <- add_pipe_pointer(calls, frames)
+  calls <- map2(calls, frames, maybe_add_namespace)
+
+  parents <- normalise_parents(sys.parents())
 
   trace <- new_trace(calls, parents, envs)
   trace <- trace_trim_env(trace, to)
@@ -135,6 +136,34 @@ pipe_call_kind <- function(beg, calls) {
     return(2L)
   }
   0L
+}
+
+maybe_add_namespace <- function(call, frame) {
+  if (call_print_fine_type(call) != "call") {
+    return(call)
+  }
+
+  sym <- node_car(call)
+
+  # Covers the `::` and `:::` cases
+  if (!is_symbol(sym)) {
+    return(call)
+  }
+
+  ns <- env_parent(frame)
+  if (!is_namespace(ns)) {
+    return(call)
+  }
+
+  if (as_string(sym) %in% ns_exports(ns)) {
+    op <- "::"
+  } else {
+    op <- ":::"
+  }
+  namespaced_sym <- call(op, sym(ns_env_name(ns)), sym)
+
+  call[[1]] <- namespaced_sym
+  call
 }
 
 # Remove recursive frames which occur with quosures

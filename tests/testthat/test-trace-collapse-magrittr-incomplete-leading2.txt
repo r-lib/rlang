@@ -1,11 +1,11 @@
 Full:
 █
 └─F(NA) %>% F() %>% T() %>% F() %>% F()
-  ├─withVisible(eval(quote(`_fseq`(`_lhs`)), env, env))
-  └─eval(quote(`_fseq`(`_lhs`)), env, env)
+  ├─base::withVisible(eval(quote(`_fseq`(`_lhs`)), env, env))
+  └─base::eval(quote(`_fseq`(`_lhs`)), env, env)
     └─eval(quote(`_fseq`(`_lhs`)), env, env)
       └─`_fseq`(`_lhs`)
-        └─freduce(value, `_function_list`)
+        └─magrittr::freduce(value, `_function_list`)
           └─function_list[[i]](value)
             └─T(.)
 
