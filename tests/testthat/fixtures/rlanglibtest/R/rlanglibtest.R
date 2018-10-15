@@ -11,3 +11,6 @@ NULL
 test_trace_unexported <- function(e) {
   trace_back(e)
 }
+test_trace_unexported_child <- local(function(e) {
+  test_trace_unexported(e)
+})

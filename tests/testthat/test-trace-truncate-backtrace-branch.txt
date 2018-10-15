@@ -1,29 +1,29 @@
 Full:
- ─f(10)
- ─f(n - 1)
- ─f(n - 1)
- ─f(n - 1)
- ─f(n - 1)
- ─f(n - 1)
- ─f(n - 1)
- ─f(n - 1)
- ─f(n - 1)
- ─f(n - 1)
- ─f(n - 1)
+ ─rlang:::f(10)
+ ─rlang:::f(n - 1)
+ ─rlang:::f(n - 1)
+ ─rlang:::f(n - 1)
+ ─rlang:::f(n - 1)
+ ─rlang:::f(n - 1)
+ ─rlang:::f(n - 1)
+ ─rlang:::f(n - 1)
+ ─rlang:::f(n - 1)
+ ─rlang:::f(n - 1)
+ ─rlang:::f(n - 1)
 
 5 frames:
- ─f(10)
- ─f(n - 1)
- ─f(n - 1)
+ ─rlang:::f(10)
+ ─rlang:::f(n - 1)
+ ─rlang:::f(n - 1)
  ─ ... with 6 more calls
- ─f(n - 1)
- ─f(n - 1)
+ ─rlang:::f(n - 1)
+ ─rlang:::f(n - 1)
 
 2 frames:
- ─f(10)
+ ─rlang:::f(10)
  ─ ... with 9 more calls
- ─f(n - 1)
+ ─rlang:::f(n - 1)
 
 1 frame:
- ─f(10)
+ ─rlang:::f(10)
  ─ ... with 10 more calls

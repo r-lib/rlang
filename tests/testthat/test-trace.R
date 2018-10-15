@@ -97,7 +97,7 @@ test_that("cli_branch() handles edge case", {
   f <- function() trace_back(e)
   trace <- f()
 
-  call <- paste0(" ", cli_style$h, "f()")
+  call <- paste0(" ", cli_style$h, "rlang:::f()")
   tree <- trace_as_tree(trace, srcrefs = FALSE)
   expect_identical(cli_branch(tree$call[-1]), call)
 })
@@ -468,10 +468,10 @@ test_that("unexported functions have `:::` prefix", {
 
   # Should be installed as part of the C API tests
   skip_if_not_installed("rlanglibtest")
-  g <- env_get(ns_env("rlanglibtest"), "test_trace_unexported")
+  test_trace_unexported_child <- env_get(ns_env("rlanglibtest"), "test_trace_unexported_child")
 
   e <- current_env()
-  f <- function() g(e)
+  f <- function() test_trace_unexported_child(e)
   trace <- f()
 
   expect_known_trace_output(trace, file = "test-trace-unexported-prefix.txt")

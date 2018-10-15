@@ -1,13 +1,13 @@
 Full:
 █
 ├─base::print(foo)
-└─print.foo(foo)
+└─rlang:::print.foo(foo)
 
 Collapsed:
 █
 ├─[ base::print(...) ]
-└─print.foo(foo)
+└─rlang:::print.foo(foo)
 
 Branch:
  ─base::print(foo)
- ─print.foo(foo)
+ ─rlang:::print.foo(foo)

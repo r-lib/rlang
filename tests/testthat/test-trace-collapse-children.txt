@@ -1,17 +1,17 @@
 Full:
 █
-└─f()
+└─rlang:::f()
   └─base::eval(quote(g()), env())
-    └─eval(quote(g()), env())
-      └─g()
+    └─base::eval(quote(g()), env())
+      └─rlang:::g()
 
 Collapsed:
 █
-└─f()
+└─rlang:::f()
   └─[ base::eval(...) ] with 1 more call
-    └─g()
+    └─rlang:::g()
 
 Branch:
- ─f()
+ ─rlang:::f()
  ─[ base::eval(...) ] with 1 more call
- ─g()
+ ─rlang:::g()

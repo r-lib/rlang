@@ -6,23 +6,23 @@
 █
 ├─rlang::catch_cnd(a())
 │ ├─base::tryCatch(...)
-│ │ └─tryCatchList(expr, classes, parentenv, handlers)
-│ │   └─tryCatchOne(expr, names, parentenv, handlers[[1L]])
-│ │     └─doTryCatch(return(expr), name, parentenv, handler)
+│ │ └─base:::tryCatchList(expr, classes, parentenv, handlers)
+│ │   └─base:::tryCatchOne(expr, names, parentenv, handlers[[1L]])
+│ │     └─base:::doTryCatch(return(expr), name, parentenv, handler)
 │ └─base::force(expr)
-└─a()
+└─rlang:::a()
   ├─base::tryCatch(b())
-  │ └─tryCatchList(expr, classes, parentenv, handlers)
-  └─b()
-    └─c()
+  │ └─base:::tryCatchList(expr, classes, parentenv, handlers)
+  └─rlang:::b()
+    └─rlang:::c()
 <error: parent>
 * Message: "The low-level error message"
 * Class: `rlang_error`
 * Fields: `message`, `trace`, `parent` and `foo`
 * Backtrace:
 █
-└─f()
+└─rlang:::f()
   ├─base::tryCatch(g())
-  │ └─tryCatchList(expr, classes, parentenv, handlers)
-  └─g()
-    └─h()
+  │ └─base:::tryCatchList(expr, classes, parentenv, handlers)
+  └─rlang:::g()
+    └─rlang:::h()

@@ -6,21 +6,21 @@ Full:
 █
 ├─rlang::catch_cnd(a())
 │ ├─base::tryCatch(...)
-│ │ └─tryCatchList(expr, classes, parentenv, handlers)
-│ │   └─tryCatchOne(expr, names, parentenv, handlers[[1L]])
-│ │     └─doTryCatch(return(expr), name, parentenv, handler)
+│ │ └─base:::tryCatchList(expr, classes, parentenv, handlers)
+│ │   └─base:::tryCatchOne(expr, names, parentenv, handlers[[1L]])
+│ │     └─base:::doTryCatch(return(expr), name, parentenv, handler)
 │ └─base::force(expr)
-└─a()
-  └─b()
-    └─c()
+└─rlang:::a()
+  └─rlang:::b()
+    └─rlang:::c()
 <error: parent>
 * Message: "Low-level message"
 * Class: `rlang_error`
 * Backtrace:
 █
-└─f()
-  └─g()
-    └─h()
+└─rlang:::f()
+  └─rlang:::g()
+    └─rlang:::h()
 
 Collapsed:
 <error>
@@ -29,17 +29,17 @@ Collapsed:
 * Backtrace:
 █
 ├─[ rlang::catch_cnd(...) ] with 5 more calls
-└─a()
-  └─b()
-    └─c()
+└─rlang:::a()
+  └─rlang:::b()
+    └─rlang:::c()
 <error: parent>
 * Message: "Low-level message"
 * Class: `rlang_error`
 * Backtrace:
 █
-└─f()
-  └─g()
-    └─h()
+└─rlang:::f()
+  └─rlang:::g()
+    └─rlang:::h()
 
 Branch:
 <error>
@@ -47,14 +47,14 @@ Branch:
 * Class: `rlang_error`
 * Backtrace:
  ─rlang::catch_cnd(a())
- ─a()
- ─b()
- ─c()
+ ─rlang:::a()
+ ─rlang:::b()
+ ─rlang:::c()
 <error: parent>
 * Message: "Low-level message"
 * Class: `rlang_error`
 * Backtrace:
- ─f()
- ─g()
- ─h()
+ ─rlang:::f()
+ ─rlang:::g()
+ ─rlang:::h()
 Call `summary(rlang::last_error())` to see the full backtrace

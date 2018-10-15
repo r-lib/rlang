@@ -1,16 +1,16 @@
 Full:
 █
 ├─rlang::eval_tidy(quo(f()))
-└─f()
-  └─g()
+└─rlang:::f()
+  └─rlang:::g()
 
 Collapsed:
 █
 ├─[ rlang::eval_tidy(...) ]
-└─f()
-  └─g()
+└─rlang:::f()
+  └─rlang:::g()
 
 Branch:
  ─rlang::eval_tidy(quo(f()))
- ─f()
- ─g()
+ ─rlang:::f()
+ ─rlang:::g()

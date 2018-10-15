@@ -65,12 +65,12 @@ trace_back <- function(to = NULL) {
   frames <- sys.frames()
   envs <- map(frames, env_label)
 
+  parents <- normalise_parents(sys.parents())
+
   calls <- as.list(sys.calls())
   calls <- map(calls, call_fix_car)
   calls <- add_pipe_pointer(calls, frames)
-  calls <- map2(calls, frames, maybe_add_namespace)
-
-  parents <- normalise_parents(sys.parents())
+  calls <- map2(calls, seq_along(calls), maybe_add_namespace)
 
   trace <- new_trace(calls, parents, envs)
   trace <- trace_trim_env(trace, to)
@@ -138,24 +138,25 @@ pipe_call_kind <- function(beg, calls) {
   0L
 }
 
-maybe_add_namespace <- function(call, frame) {
+maybe_add_namespace <- function(call, index) {
   if (call_print_fine_type(call) != "call") {
     return(call)
   }
 
+  # Checking for bare symbols covers the `::` and `:::` cases
   sym <- node_car(call)
-
-  # Covers the `::` and `:::` cases
   if (!is_symbol(sym)) {
     return(call)
   }
 
-  ns <- env_parent(frame)
+  fn <- sys.function(index)
+  ns <- topenv(fn_env(fn))
   if (!is_namespace(ns)) {
     return(call)
   }
 
-  if (as_string(sym) %in% ns_exports(ns)) {
+  nm <- as_string(sym)
+  if (nm %in% ns_exports(ns)) {
     op <- "::"
   } else {
     op <- ":::"

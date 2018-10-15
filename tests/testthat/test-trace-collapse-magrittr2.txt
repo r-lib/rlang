@@ -3,17 +3,17 @@ Full:
 └─f(NULL) %>% g(list(.)) %>% h(3, ., list(.))
   ├─base::withVisible(eval(quote(`_fseq`(`_lhs`)), env, env))
   └─base::eval(quote(`_fseq`(`_lhs`)), env, env)
-    └─eval(quote(`_fseq`(`_lhs`)), env, env)
-      └─`_fseq`(`_lhs`)
+    └─base::eval(quote(`_fseq`(`_lhs`)), env, env)
+      └─rlang:::`_fseq`(`_lhs`)
         └─magrittr::freduce(value, `_function_list`)
           ├─base::withVisible(function_list[[k]](value))
           └─function_list[[k]](value)
-            └─h(3, ., list(.))
+            └─rlang:::h(3, ., list(.))
 
 Collapsed:
 █
 └─[ f(NULL) %>% g(list(.)) %>% h(3, ., list(.)) ] with 7 more calls
-  └─h(3, ., list(.))
+  └─rlang:::h(3, ., list(.))
 
 Branch:
  ─f(NULL)

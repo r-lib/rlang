@@ -21,10 +21,10 @@ The error message
 The error message
 Backtrace:
  ─rlang::with_options(rlang__backtrace_on_error = "branch", msg())
- ─msg()
- ─f()
- ─g()
- ─h()
+ ─rlang:::msg()
+ ─rlang:::f()
+ ─rlang:::g()
+ ─rlang:::h()
 
 
 >>> Collapsed:
@@ -33,11 +33,11 @@ The error message
 Backtrace:
 █
 ├─[ rlang::with_options(...) ]
-└─msg()
+└─rlang:::msg()
   ├─[ base::cat(...) ]
   ├─[ base::conditionMessage(...) ]
   ├─[ rlang::catch_cnd(...) ] with 5 more calls
-  └─f()
+  └─rlang:::f()
     ├─[ base::tryCatch(...) ] with 1 more call
-    └─g()
-      └─h()
+    └─rlang:::g()
+      └─rlang:::h()

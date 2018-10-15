@@ -1,13 +1,16 @@
 Full:
 █
-└─f()
-  └─rlanglibtest:::g(e)
+└─rlang:::f()
+  └─rlanglibtest:::test_trace_unexported_child(e)
+    └─rlanglibtest:::test_trace_unexported(e)
 
 Collapsed:
 █
-└─f()
-  └─rlanglibtest:::g(e)
+└─rlang:::f()
+  └─rlanglibtest:::test_trace_unexported_child(e)
+    └─rlanglibtest:::test_trace_unexported(e)
 
 Branch:
- ─f()
- ─rlanglibtest:::g(e)
+ ─rlang:::f()
+ ─rlanglibtest:::test_trace_unexported_child(e)
+ ─rlanglibtest:::test_trace_unexported(e)
