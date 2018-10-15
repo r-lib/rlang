@@ -20,8 +20,8 @@ Collapsed:
       └─rlang:::h()
 
 Branch:
- ─F(.)
- ─G(.)
- ─H(.)
+ ─rlang:::F(.)
+ ─rlang:::G(.)
+ ─rlang:::H(.)
  ─rlang:::f()
  ─rlang:::h()

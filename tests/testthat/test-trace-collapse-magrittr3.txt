@@ -19,5 +19,5 @@ Collapsed:
 
 Branch:
  ─rlang:::f(g(NULL %>% f()) %>% h())
- ─g(NULL %>% f())
- ─h(.)
+ ─rlang:::g(NULL %>% f())
+ ─rlang:::h(.)

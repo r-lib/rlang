@@ -16,6 +16,6 @@ Collapsed:
   └─rlang:::h(3, ., list(.))
 
 Branch:
- ─f(NULL)
- ─g(., list(.))
- ─h(3, ., list(.))
+ ─rlang:::f(NULL)
+ ─rlang:::g(., list(.))
+ ─rlang:::h(3, ., list(.))

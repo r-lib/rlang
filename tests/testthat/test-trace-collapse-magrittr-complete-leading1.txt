@@ -16,5 +16,5 @@ Collapsed:
   └─rlang:::T(.)
 
 Branch:
- ─F(NA)
- ─T(.)
+ ─rlang:::F(NA)
+ ─rlang:::T(.)

@@ -19,4 +19,4 @@ Collapsed:
 
 Branch:
  ─rlang:::F(NA %>% T())
- ─T(.)
+ ─rlang:::T(.)

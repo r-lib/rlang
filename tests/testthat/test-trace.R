@@ -271,20 +271,21 @@ test_that("children of collapsed frames are rechained to correct parent", {
 
 test_that("pipe_collect_calls() collects calls", {
   exprs2 <- function(...) unname(exprs(...))
+  placeholder <- function() NULL
 
   call <- quote(a(A %>% B) %>% b)
-  out <- pipe_collect_calls(call)
-  expect_identical(out$calls, exprs2(a(A %>% B), b(.)))
+  out <- pipe_collect_calls(call, placeholder)
+  expect_identical(out$calls, exprs2(rlang:::a(A %>% B), rlang:::b(.)))
   expect_true(out$leading)
 
   call <- quote(a %>% b %>% c)
-  out <- pipe_collect_calls(call)
-  expect_identical(out$calls, exprs2(b(.), c(.)))
+  out <- pipe_collect_calls(call, placeholder)
+  expect_identical(out$calls, exprs2(rlang:::b(.), rlang:::c(.)))
   expect_false(out$leading)
 
   call <- quote(a() %>% b %>% c)
-  out <- pipe_collect_calls(call)
-  expect_identical(out$calls, exprs2(a(), b(.), c(.)))
+  out <- pipe_collect_calls(call, placeholder)
+  expect_identical(out$calls, exprs2(rlang:::a(), rlang:::b(.), rlang:::c(.)))
   expect_true(out$leading)
 })
 

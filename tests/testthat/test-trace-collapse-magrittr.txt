@@ -16,6 +16,6 @@ Collapsed:
   └─rlang:::h(3, ., 4)
 
 Branch:
- ─f(.)
- ─g(., 1, 2)
- ─h(3, ., 4)
+ ─rlang:::f(.)
+ ─rlang:::g(., 1, 2)
+ ─rlang:::h(3, ., 4)
