@@ -27,35 +27,51 @@ static inline sexp** r_list_deref(sexp* x) {
   return VECTOR_PTR(x);
 }
 
+static inline void r_vec_get_check(sexp*x, r_ssize i, const char* fn) {
+  if ((r_length(x) - 1) < i) {
+    r_abort("Internal error in `%s()`: Vector is too small", fn);
+  }
+}
+
 static inline int r_lgl_get(sexp* x, r_ssize i) {
+  r_vec_get_check(x, i, "r_lgl_get");
   return LOGICAL(x)[i];
 }
 static inline int r_int_get(sexp* x, r_ssize i) {
+  r_vec_get_check(x, i, "r_int_get");
   return INTEGER(x)[i];
 }
 static inline double r_dbl_get(sexp* x, r_ssize i) {
+  r_vec_get_check(x, i, "r_dbl_get");
   return REAL(x)[i];
 }
 static inline r_complex_t r_cpl_get(sexp* x, r_ssize i) {
+  r_vec_get_check(x, i, "r_cpl_get");
   return COMPLEX(x)[i];
 }
 static inline r_byte_t r_raw_get(sexp* x, r_ssize i) {
+  r_vec_get_check(x, i, "r_raw_get");
   return RAW(x)[i];
 }
 
 static inline void r_lgl_poke(sexp* x, r_ssize i, int y) {
+  r_vec_get_check(x, i, "r_lgl_poke");
   LOGICAL(x)[i] = y;
 }
 static inline void r_int_poke(sexp* x, r_ssize i, int y) {
+  r_vec_get_check(x, i, "r_int_poke");
   INTEGER(x)[i] = y;
 }
 static inline void r_dbl_poke(sexp* x, r_ssize i, double y) {
+  r_vec_get_check(x, i, "r_dbl_poke");
   REAL(x)[i] = y;
 }
 static inline void r_cpl_poke(sexp* x, r_ssize i, r_complex_t y) {
+  r_vec_get_check(x, i, "r_cpl_poke");
   COMPLEX(x)[i] = y;
 }
 static inline void r_raw_poke(sexp* x, r_ssize i, r_byte_t y) {
+  r_vec_get_check(x, i, "r_raw_poke");
   RAW(x)[i] = y;
 }
 
