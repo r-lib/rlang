@@ -47,7 +47,7 @@ export-files = \
 
 all: $(SHLIB)
 
-$(SHLIB): lib.c internal.c export.c
+$(SHLIB): lib.o internal.o export.o
 
 lib.c: $(lib-files)
 	touch lib.c
