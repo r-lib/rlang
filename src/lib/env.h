@@ -39,6 +39,9 @@ static inline void r_env_poke_parent(sexp* env, sexp* new_parent) {
 static inline bool r_is_environment(sexp* x) {
   return TYPEOF(x) == ENVSXP;
 }
+static inline bool r_is_namespace(sexp* x) {
+  return R_IsNamespaceEnv(x);
+}
 
 static inline sexp* r_env_find(sexp* env, sexp* sym) {
   return Rf_findVarInFrame3(env, sym, FALSE);
