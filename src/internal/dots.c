@@ -44,9 +44,9 @@ struct dots_capture_info init_capture_info(enum dots_capture_type type,
   info.named = named;
   info.ignore_empty = arg_match_ignore_empty(ignore_empty);
   info.preserve_empty = r_lgl_get(preserve_empty, 0);
-  info.unquote_names = r_as_bool(unquote_names);
+  info.unquote_names = r_lgl_get(unquote_names, 0);
   info.homonyms = arg_match_homonyms(homonyms);
-  info.check_assign = r_as_bool(check_assign);
+  info.check_assign = r_lgl_get(check_assign, 0);
 
   return info;
 }
@@ -397,7 +397,7 @@ static bool should_auto_name(sexp* named) {
 
   switch (r_typeof(named)) {
   case r_type_logical:
-    return r_as_bool(named);
+    return r_lgl_get(named, 0);
   case r_type_integer:
     signal_soft_deprecated_width();
     return INTEGER(named)[0];

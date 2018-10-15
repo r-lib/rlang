@@ -252,7 +252,7 @@ static bool is_spliceable_closure(sexp* x) {
   SETCADR(clo_spliceable, x);
 
   sexp* out = r_eval(clo_spliceable, R_GlobalEnv);
-  return r_as_bool(out);
+  return r_lgl_get(out, 0);
 }
 
 
