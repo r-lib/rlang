@@ -114,7 +114,7 @@ void maybe_poke_big_bang_op(sexp* x, struct expansion_info* info) {
 
   // Handle expressions like foo::`!!`(bar) or foo$`!!`(bar)
   if (r_is_prefixed_call(x, "!!!")) {
-    const char* name = r_sym_c_str(r_node_caar(x));
+    const char* name = r_sym_get_c_string(r_node_caar(x));
     r_abort("Prefix form of `!!!` can't be used with `%s`", name);
   }
 

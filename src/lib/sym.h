@@ -28,7 +28,7 @@ static inline sexp* r_sym(const char* c_string) {
 static inline sexp* r_sym_get_string(sexp* sym) {
   return PRINTNAME(sym);
 }
-static inline const char* r_sym_c_str(sexp* sym) {
+static inline const char* r_sym_get_c_string(sexp* sym) {
   return CHAR(PRINTNAME(sym));
 }
 

@@ -90,7 +90,7 @@ enum r_operator r_which_operator(sexp* call) {
     return R_OP_NONE;
   }
 
-  const char* name = r_sym_c_str(head);
+  const char* name = r_sym_get_c_string(head);
   int len = strlen(name);
   bool is_unary = r_node_cddr(call) == r_null;
 
