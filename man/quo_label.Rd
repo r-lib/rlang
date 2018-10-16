@@ -20,14 +20,22 @@ quo_name(quo)
 \item{nlines}{Maximum number of lines to extract.}
 }
 \description{
+These functions take an arbitrary R object, typically an
+\link[=is_expression]{expression}, and represent it as a string.
 \itemize{
-\item \code{quo_text()} and \code{quo_label()} are equivalent to \code{\link[=expr_text]{expr_text()}},
-\code{\link[=expr_label]{expr_label()}}, etc, but they first squash all quosures with
-\code{\link[=quo_squash]{quo_squash()}} so they print more nicely.
-\item \code{quo_name()} squashes a quosure and transforms it into a simple
-string. It is suitable to give an unnamed quosure a default name,
-for instance a column name in a data frame.
+\item \code{quo_name()} returns an abbreviated representation of the object
+as a single line string. It is suitable for default names.
+\item \code{quo_text()} returns a multiline string. For instance block
+expressions like \code{{ foo; bar }} are represented on 4 lines (one
+for each symbol, and the curly braces on their own lines).
 }
+
+These deparsers are only suitable for creating default names or
+printing output at the console. The behaviour of your functions
+should not depend on deparsed objects. If you are looking for a way
+of transforming symbols to strings, use \code{\link[=as_string]{as_string()}} instead of
+\code{quo_name()}. Unlike deparsing, the transformation between symbols
+and strings is non-lossy and well defined.
 }
 \examples{
 # Quosures can contain nested quosures:
