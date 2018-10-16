@@ -87,7 +87,7 @@ static sexp* def_unquote_name(sexp* expr, sexp* env) {
     r_abort("The LHS of `:=` must be a string or a symbol");
   }
 
-  sexp* name = r_sym_str(lhs);
+  sexp* name = r_sym_get_string(lhs);
 
   // Unserialise unicode points such as <U+xxx> that arise when
   // UTF-8 names are converted to symbols and the native encoding
