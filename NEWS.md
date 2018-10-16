@@ -55,6 +55,10 @@ transform the warning to a failure.
   .data[["name"]])` and `group_by(df, name)` produce the same column
   name.
 
+* `.data[[` now supports symbols, just like you can use symbols to
+  subset regular R vectors. This makes it easy to use the pronoun with
+  variables quoted with `ensym()`.
+
 * Automatic naming of expressions now uses a new deparser (still
   unexported) instead of `quo_text()`. Following this change,
   automatic naming is now compatible with all object types (via

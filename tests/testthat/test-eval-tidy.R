@@ -404,6 +404,12 @@ test_that("quosures look for data masks lexically", {
   expect_identical(out, list(mtcars$cyl, mtcars$disp))
 })
 
+test_that("can subset data pronoun with a symbol", {
+  var <- quote(cyl)
+  expect_identical(expr(.data[[var]]), expr(.data[["cyl"]]))
+  expect_identical(eval_tidy(quote(.data[[var]]), mtcars), mtcars$cyl)
+})
+
 
 # Lifecycle ----------------------------------------------------------
 
