@@ -11,6 +11,11 @@
 #'   larger context, for example in tests or inside an RMarkdown
 #'   document where you don't want all of the knitr evaluation mechanisms
 #'   to appear in the backtrace.
+#' @param trim The number of parent contexts to trim from the bottom
+#'   of the backtrace, starting from the rightmost leaf (the newest
+#'   call frame in the tree). Contexts containing several frames
+#'   (these appear as sibling nodes in the backtrace tree) are fully
+#'   trimmed from the backtrace.
 #' @examples
 #' # Trim backtraces automatically (this improves the generated
 #' # documentation for the rlang website and the same trick can be
@@ -61,22 +66,23 @@
 #' # Restore defaults
 #' options(rlang_trace_top_env = NULL)
 #' @export
-trace_back <- function(to = NULL) {
-  frames <- sys.frames()
-  envs <- map(frames, env_label)
+trace_back <- function(to = NULL, trim = 1) {
+  top <- sys.parent(trim)
+  idx <- seq_len(top)
 
-  parents <- normalise_parents(sys.parents())
+  frames <- sys.frames()[idx]
+  parents <- sys.parents()[idx]
+  calls <- as.list(sys.calls()[idx])
 
-  calls <- as.list(sys.calls())
   calls <- map(calls, call_fix_car)
   calls <- add_pipe_pointer(calls, frames)
   calls <- map2(calls, seq_along(calls), maybe_add_namespace)
 
+  parents <- normalise_parents(parents)
+  envs <- map(frames, env_label)
+
   trace <- new_trace(calls, parents, envs)
   trace <- trace_trim_env(trace, to)
-
-  # remove call to self
-  trace <- trace_subset(trace, -trace_length(trace))
 
   trace
 }

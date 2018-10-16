@@ -4,7 +4,7 @@
 \alias{trace_back}
 \title{Capture a call trace.}
 \usage{
-trace_back(to = NULL)
+trace_back(to = NULL, trim = 1)
 }
 \arguments{
 \item{to}{If non-null, this should be a frame environment. The
@@ -13,6 +13,12 @@ in particular when you call \code{trace_back()} indirectly or from a
 larger context, for example in tests or inside an RMarkdown
 document where you don't want all of the knitr evaluation mechanisms
 to appear in the backtrace.}
+
+\item{trim}{The number of parent contexts to trim from the bottom
+of the backtrace, starting from the rightmost leaf (the newest
+call frame in the tree). Contexts containing several frames
+(these appear as sibling nodes in the backtrace tree) are fully
+trimmed from the backtrace.}
 }
 \description{
 A call trace captures the sequence of calls that lead to the current function,

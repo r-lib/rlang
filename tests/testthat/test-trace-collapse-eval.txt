@@ -4,17 +4,13 @@ Full:
   ├─base::eval(quote(g()))
   │ └─base::eval(quote(g()))
   └─rlang:::g()
-    └─base::eval(quote(trace_back(e)))
-      └─base::eval(quote(trace_back(e)))
 
 Collapsed:
 █
 └─rlang:::f()
   ├─[ base::eval(...) ] with 1 more call
   └─rlang:::g()
-    └─[ base::eval(...) ] with 1 more call
 
 Branch:
  ─rlang:::f()
  ─rlang:::g()
- ─[ base::eval(...) ] with 1 more call

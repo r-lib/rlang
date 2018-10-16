@@ -487,3 +487,33 @@ test_that("global functions have `global::` prefix", {
 
   expect_known_trace_output(trace, file = "test-trace-global-prefix.txt")
 })
+
+test_that("can trim layers of backtraces", {
+  skip_on_os("windows")
+
+  e <- current_env()
+  f <- function(n) identity(identity(g(n)))
+  g <- function(n) identity(identity(h(n)))
+  h <- function(n) identity(identity(trace_back(e, trim = n)))
+
+  trace0 <- f(0)
+  trace1 <- f(1)
+  trace2 <- f(2)
+  trace3 <- f(3)
+
+  expect_known_output(file = test_path("test-trace-trim.txt"), {
+    scoped_options(rlang_trace_format_srcrefs = FALSE)
+
+    cat_line("No trimming:")
+    summary(trace0)
+
+    cat_line("", "", "One layer (the default):")
+    summary(trace1)
+
+    cat_line("", "", "Two layers:")
+    summary(trace2)
+
+    cat_line("", "", "Three layers:")
+    summary(trace3)
+  })
+})

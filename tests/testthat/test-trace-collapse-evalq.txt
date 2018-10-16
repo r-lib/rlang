@@ -4,17 +4,13 @@ Full:
   ├─base::evalq(g())
   │ └─base::evalq(g())
   └─rlang:::g()
-    └─base::evalq(trace_back(e))
-      └─base::evalq(trace_back(e))
 
 Collapsed:
 █
 └─rlang:::f()
   ├─[ base::evalq(...) ] with 1 more call
   └─rlang:::g()
-    └─[ base::evalq(...) ] with 1 more call
 
 Branch:
  ─rlang:::f()
  ─rlang:::g()
- ─[ base::evalq(...) ] with 1 more call

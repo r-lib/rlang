@@ -1,0 +1,36 @@
+No trimming:
+█
+└─rlang:::f(0)
+  ├─base::identity(identity(g(n)))
+  ├─base::identity(g(n))
+  └─rlang:::g(n)
+    ├─base::identity(identity(h(n)))
+    ├─base::identity(h(n))
+    └─rlang:::h(n)
+      ├─base::identity(identity(trace_back(e, trim = n)))
+      ├─base::identity(trace_back(e, trim = n))
+      └─rlang::trace_back(e, trim = n)
+
+
+One layer (the default):
+█
+└─rlang:::f(1)
+  ├─base::identity(identity(g(n)))
+  ├─base::identity(g(n))
+  └─rlang:::g(n)
+    ├─base::identity(identity(h(n)))
+    ├─base::identity(h(n))
+    └─rlang:::h(n)
+
+
+Two layers:
+█
+└─rlang:::f(2)
+  ├─base::identity(identity(g(n)))
+  ├─base::identity(g(n))
+  └─rlang:::g(n)
+
+
+Three layers:
+█
+└─rlang:::f(3)
