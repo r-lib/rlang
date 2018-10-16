@@ -113,6 +113,10 @@ is_symbolic <- function(x) {
 
 #' Turn an expression to a label
 #'
+#' @description
+#'
+#' \Sexpr[results=rd, stage=render]{rlang:::lifecycle("questioning")}
+#'
 #' `expr_text()` turns the expression into a single string, which
 #' might be multi-line. `expr_name()` is suitable for formatting
 #' names. It works best with symbols and scalar types, but also
@@ -120,7 +124,12 @@ is_symbolic <- function(x) {
 #' in messages.
 #'
 #' @param expr An expression to labellise.
-#' @export
+#'
+#' @section Life cycle:
+#'
+#' These functions are in the questioning stage because they are
+#' redundant with the `quo_` variants and do not handle quosures.
+#'
 #' @examples
 #' # To labellise a function argument, first capture it with
 #' # substitute():
@@ -139,6 +148,7 @@ is_symbolic <- function(x) {
 #'   1 + 2
 #'   print(x)
 #' })))
+#' @export
 expr_label <- function(expr) {
   if (is.character(expr)) {
     encodeString(expr, quote = '"')

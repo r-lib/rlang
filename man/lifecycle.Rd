@@ -79,6 +79,7 @@ changes.
 \code{\link[=rst_maybe_jump]{rst_maybe_jump()}}, \code{\link[=rst_abort]{rst_abort()}}. It is not clear yet whether we
 want to recommend restarts as a style of programming in R.
 \item \code{\link[=return_from]{return_from()}} and \code{\link[=return_to]{return_to()}}.
+\item \code{\link[=expr_label]{expr_label()}}, \code{\link[=expr_name]{expr_name()}}, and \code{\link[=expr_text]{expr_text()}}.
 }
 
 \strong{In the questioning stage as of rlang 0.2.0}

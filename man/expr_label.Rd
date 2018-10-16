@@ -20,12 +20,21 @@ expr_text(expr, width = 60L, nlines = Inf)
 \item{nlines}{Maximum number of lines to extract.}
 }
 \description{
+\Sexpr[results=rd, stage=render]{rlang:::lifecycle("questioning")}
+
 \code{expr_text()} turns the expression into a single string, which
 might be multi-line. \code{expr_name()} is suitable for formatting
 names. It works best with symbols and scalar types, but also
 accepts calls. \code{expr_label()} formats the expression nicely for use
 in messages.
 }
+\section{Life cycle}{
+
+
+These functions are in the questioning stage because they are
+redundant with the \code{quo_} variants and do not handle quosures.
+}
+
 \examples{
 # To labellise a function argument, first capture it with
 # substitute():
