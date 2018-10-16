@@ -451,3 +451,14 @@ test_that("dangling srcrefs are not printed", {
     srcrefs = TRUE
   )
 })
+
+test_that("summary.rlang_trace() prints the full tree", {
+  skip_on_os("windows")
+
+  e <- current_env()
+  f <- function() g()
+  g <- function() h()
+  h <- function() trace_back(e)
+  trace <- f()
+  expect_known_output(summary(trace, srcrefs = FALSE), file = test_path("test-trace-summary.txt"))
+})

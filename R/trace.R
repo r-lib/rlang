@@ -277,6 +277,20 @@ print.rlang_trace <- function(x,
   ))
   invisible(x)
 }
+#' @export
+summary.rlang_trace <- function(object,
+                                ...,
+                                max_frames = NULL,
+                                dir = getwd(),
+                                srcrefs = NULL) {
+  cat_line(format(object, ...,
+    simplify = "none",
+    max_frames = max_frames,
+    dir = dir,
+    srcrefs = srcrefs
+  ))
+  invisible(object)
+}
 
 trace_length <- function(x) {
   length(x$calls)
