@@ -154,3 +154,6 @@ summary(last_error())
 
 }
 }
+\seealso{
+\code{\link[=with_abort]{with_abort()}} to convert all errors to rlang errors.
+}

@@ -371,6 +371,39 @@ test_that("don't print message or backtrace fields if empty", {
   expect_known_output(print(err), test_path("test-cnd-error-print-no-message.txt"))
 })
 
+test_that("with_abort() promotes base errors to rlang errors", {
+  skip_on_os("windows")
+
+  f <- function() g()
+  g <- function() h()
+  h <- function() stop("Low-level message")
+
+  a <- function() b()
+  b <- function() c()
+  c <- function() {
+    tryCatch(
+      with_abort(f()),
+      error = function(err) {
+        abort("High-level message", parent = err)
+      }
+    )
+  }
+
+  scoped_options(
+    rlang_trace_format_srcrefs = FALSE,
+    rlang_trace_top_env = current_env()
+  )
+  err <- identity(catch_cnd(a()))
+
+  expect_known_output(file = test_path("test-with-abort.txt"), {
+    cat_line("print():", "")
+    print(err)
+
+    cat_line("", "", "summary():", "")
+    summary(err)
+  })
+})
+
 
 # Lifecycle ----------------------------------------------------------
 

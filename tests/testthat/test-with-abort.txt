@@ -1,0 +1,52 @@
+print():
+
+<error>
+message: High-level message
+class:   `rlang_error`
+backtrace:
+ ─base::identity(catch_cnd(a()))
+ ─rlang:::a()
+ ─rlang:::b()
+ ─rlang:::c()
+<error: parent>
+message: Low-level message
+class:   `rlang_error`
+backtrace:
+ ─rlang::with_abort(f())
+ ─rlang:::f()
+ ─rlang:::g()
+ ─rlang:::h()
+ ─base::stop("Low-level message")
+Call `summary(rlang::last_error())` to see the full backtrace
+
+
+summary():
+
+<error>
+message: High-level message
+class:   `rlang_error`
+fields:  `message`, `trace` and `parent`
+backtrace:
+█
+├─base::identity(catch_cnd(a()))
+├─rlang::catch_cnd(a())
+│ ├─base::tryCatch(...)
+│ │ └─base:::tryCatchList(expr, classes, parentenv, handlers)
+│ │   └─base:::tryCatchOne(expr, names, parentenv, handlers[[1L]])
+│ │     └─base:::doTryCatch(return(expr), name, parentenv, handler)
+│ └─base::force(expr)
+└─rlang:::a()
+  └─rlang:::b()
+    └─rlang:::c()
+<error: parent>
+message: Low-level message
+class:   `rlang_error`
+fields:  `message`, `trace`, `parent` and `error`
+backtrace:
+█
+├─rlang::with_abort(f())
+│ └─base::withCallingHandlers(...)
+└─rlang:::f()
+  └─rlang:::g()
+    └─rlang:::h()
+      └─base::stop("Low-level message")
