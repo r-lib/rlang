@@ -368,13 +368,22 @@ quo_squash <- function(quo, warn = FALSE) {
 #'
 #' @description
 #'
-#' * `quo_text()` and `quo_label()` are equivalent to [expr_text()],
-#'   [expr_label()], etc, but they first squash all quosures with
-#'   [quo_squash()] so they print more nicely.
+#' These functions take an arbitrary R object, typically an
+#' [expression][is_expression], and represent it as a string.
 #'
-#' * `quo_name()` squashes a quosure and transforms it into a simple
-#'   string. It is suitable to give an unnamed quosure a default name,
-#'   for instance a column name in a data frame.
+#' * `quo_name()` returns an abbreviated representation of the object
+#'   as a single line string. It is suitable for default names.
+#'
+#' * `quo_text()` returns a multiline string. For instance block
+#'   expressions like `{ foo; bar }` are represented on 4 lines (one
+#'   for each symbol, and the curly braces on their own lines).
+#'
+#' These deparsers are only suitable for creating default names or
+#' printing output at the console. The behaviour of your functions
+#' should not depend on deparsed objects. If you are looking for a way
+#' of transforming symbols to strings, use [as_string()] instead of
+#' `quo_name()`. Unlike deparsing, the transformation between symbols
+#' and strings is non-lossy and well defined.
 #'
 #' @inheritParams quo_squash
 #' @inheritParams expr_label
