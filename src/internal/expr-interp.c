@@ -265,6 +265,13 @@ static sexp* bang_bang(struct expansion_info info, sexp* env) {
   sexp* value = r_eval(info.operand, env);
   return bang_bang_teardown(value, info);
 }
+static sexp* bang_bang_dot_data(struct expansion_info info, sexp* env) {
+  sexp* value = r_eval(info.operand, env);
+  if (r_typeof(value) == r_type_symbol) {
+    value = r_chr(r_sym_get_c_string(value));
+  }
+  return bang_bang_teardown(value, info);
+}
 static sexp* bang_bang_expression(struct expansion_info info, sexp* env) {
   sexp* value = KEEP(r_eval(info.operand, env));
 
@@ -369,8 +376,9 @@ sexp* call_interp_impl(sexp* x, sexp* env, struct expansion_info info) {
       return out;
     }
   case OP_EXPAND_UQ:
-  case OP_EXPAND_DOT_DATA:
     return bang_bang(info, env);
+  case OP_EXPAND_DOT_DATA:
+    return bang_bang_dot_data(info, env);
   case OP_EXPAND_UQE:
     return bang_bang_expression(info, env);
   case OP_EXPAND_FIXUP:

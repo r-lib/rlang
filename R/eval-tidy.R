@@ -376,8 +376,8 @@ new_data_mask <- function(bottom, top = bottom, parent = NULL) {
 }
 #' @export
 `[[.rlang_data_pronoun` <- function(x, i, ...) {
-  if (!is_string(i)) {
-    abort("Must subset the data pronoun with a string")
+  if (!is_string(i) && !is_symbol(i)) {
+    abort("Must subset the data pronoun with a string or symbol")
   }
   data_pronoun_get(x, i)
 }
