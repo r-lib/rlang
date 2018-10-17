@@ -618,12 +618,8 @@ print.rlang_error <- function(x,
 
       # Trim catching context if any
       calls <- trace$calls
-      if (length(calls) && is_call(calls[[1]], c("tryCatch", "with_handlers"))) {
-        parent <- trace$parents[[1]]
-        next_sibling <- which(trace$parents[-1] == parent)
-        if (length(next_sibling)) {
-          trace <- trace_subset(trace, -seq2(1L, next_sibling))
-        }
+      if (length(calls) && is_call(calls[[1]], c("tryCatch", "with_handlers", "catch_cnd"))) {
+        trace <- trace_subset_across(trace, -1, 1)
       }
     }
 
