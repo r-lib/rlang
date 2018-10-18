@@ -45,7 +45,7 @@ test_that("can print tree with collapsed branches", {
   f <- function() { g() }
   g <- function() { tryCatch(h(), foo = identity, bar = identity) }
   h <- function() { tryCatch(i(), baz = identity) }
-  i <- function() { tryCatch(trace_back(e)) }
+  i <- function() { tryCatch(trace_back(e, bottom = 0)) }
   trace <- eval(quote(f()))
 
   expect_known_trace_output(trace,
@@ -192,13 +192,13 @@ test_that("eval() frames are collapsed", {
 
   e <- current_env()
   f <- function() base::eval(quote(g()))
-  g <- function() eval(quote(trace_back(e)))
+  g <- function() eval(quote(trace_back(e, bottom = 0)))
   trace <- f()
 
   expect_known_trace_output(trace, file = "test-trace-collapse-eval.txt")
 
   f <- function() base::evalq(g())
-  g <- function() evalq(trace_back(e))
+  g <- function() evalq(trace_back(e, bottom = 0))
   trace <- f()
 
   expect_known_trace_output(trace, file = "test-trace-collapse-evalq.txt")
@@ -486,4 +486,48 @@ test_that("global functions have `global::` prefix", {
   trace <- g(current_env())
 
   expect_known_trace_output(trace, file = "test-trace-global-prefix.txt")
+})
+
+test_that("can trim layers of backtraces", {
+  skip_on_os("windows")
+
+  e <- current_env()
+  f <- function(n) identity(identity(g(n)))
+  g <- function(n) identity(identity(h(n)))
+  h <- function(n) identity(identity(trace_back(e, bottom = n)))
+
+  trace0 <- f(0)
+  trace1 <- f(1)
+  trace2 <- f(2)
+  trace3 <- f(3)
+
+  expect_known_output(file = test_path("test-trace-trim.txt"), {
+    scoped_options(rlang_trace_format_srcrefs = FALSE)
+
+    cat_line("No trimming:")
+    summary(trace0)
+
+    cat_line("", "", "One layer (the default):")
+    summary(trace1)
+
+    cat_line("", "", "Two layers:")
+    summary(trace2)
+
+    cat_line("", "", "Three layers:")
+    summary(trace3)
+  })
+
+  # Test that trimming with frame environment is equivalent
+  e <- current_env()
+  f <- function(n) identity(identity(g(n)))
+  g <- function(n) identity(identity(h(n)))
+  h <- function(n) identity(identity(trace_back(e, bottom = caller_env(n - 1L))))
+
+  trace1_env <- f(1)
+  trace2_env <- f(2)
+  trace3_env <- f(3)
+
+  expect_equal_trace(trace1, trace1_env)
+  expect_equal_trace(trace2, trace2_env)
+  expect_equal_trace(trace3, trace3_env)
 })

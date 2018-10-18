@@ -5,12 +5,22 @@
 #' stack in R is actually a tree, which the print method of this object will
 #' reveal.
 #'
-#' @param to If non-null, this should be a frame environment. The
-#'   backtrace will only be recorded up to that frame. This is needed
-#'   in particular when you call `trace_back()` indirectly or from a
-#'   larger context, for example in tests or inside an RMarkdown
-#'   document where you don't want all of the knitr evaluation mechanisms
-#'   to appear in the backtrace.
+#' @param top The first frame environment to be included in the
+#'   backtrace. This becomes the top of the backtrace tree and
+#'   represents the oldest call in the backtrace.
+#'
+#'   This is needed in particular when you call `trace_back()`
+#'   indirectly or from a larger context, for example in tests or
+#'   inside an RMarkdown document where you don't want all of the
+#'   knitr evaluation mechanisms to appear in the backtrace.
+#' @param bottom The last frame environment to be included in the
+#'   backtrace. This becomes the rightmost leaf of the backtrace tree
+#'   and represents the youngest call in the backtrace.
+#'
+#'   Set this when you would like to capture a backtrace without the
+#'   capture context.
+#'
+#'   Can also be an integer that will be passed to [caller_env()].
 #' @examples
 #' # Trim backtraces automatically (this improves the generated
 #' # documentation for the rlang website and the same trick can be
@@ -49,7 +59,7 @@
 #' source(conn, echo = TRUE)
 #' close(conn)
 #'
-#' # To automatically strip this off, pass `to = globalenv()`.
+#' # To automatically strip this off, pass `top = globalenv()`.
 #' # This will automatically trim off calls prior to the last appearance
 #' # of the global environment on the stack
 #' h <- function() trace_back(globalenv())
@@ -61,24 +71,46 @@
 #' # Restore defaults
 #' options(rlang_trace_top_env = NULL)
 #' @export
-trace_back <- function(to = NULL) {
+trace_back <- function(top = NULL, bottom = NULL) {
   frames <- sys.frames()
-  envs <- map(frames, env_label)
+  idx <- trace_find_bottom(bottom, frames)
 
-  parents <- normalise_parents(sys.parents())
+  frames <- frames[idx]
+  parents <- sys.parents()[idx]
+  calls <- as.list(sys.calls()[idx])
 
-  calls <- as.list(sys.calls())
   calls <- map(calls, call_fix_car)
   calls <- add_pipe_pointer(calls, frames)
   calls <- map2(calls, seq_along(calls), maybe_add_namespace)
 
-  trace <- new_trace(calls, parents, envs)
-  trace <- trace_trim_env(trace, to)
+  parents <- normalise_parents(parents)
+  envs <- map(frames, env_label)
 
-  # remove call to self
-  trace <- trace_subset(trace, -trace_length(trace))
+  trace <- new_trace(calls, parents, envs)
+  trace <- trace_trim_env(trace, top)
 
   trace
+}
+
+trace_find_bottom <- function(bottom, frames) {
+  if (is_null(bottom)) {
+    return(seq_len(sys.parent(2L)))
+  }
+
+  if (is_environment(bottom)) {
+    top <- detect_index(frames, is_reference, bottom)
+    if (!length(top)) {
+      abort("Can't find `bottom` on the call tree")
+    }
+
+    return(seq_len(top))
+  }
+
+  if (is_integerish(bottom, n = 1)) {
+    return(seq_len(sys.parent(bottom + 1L)))
+  }
+
+  abort("`bottom` must be `NULL`, a frame environment, or an integer")
 }
 
 # Work around R bug causing promises to leak in frame calls

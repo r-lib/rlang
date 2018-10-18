@@ -4,15 +4,26 @@
 \alias{trace_back}
 \title{Capture a call trace.}
 \usage{
-trace_back(to = NULL)
+trace_back(top = NULL, bottom = NULL)
 }
 \arguments{
-\item{to}{If non-null, this should be a frame environment. The
-backtrace will only be recorded up to that frame. This is needed
-in particular when you call \code{trace_back()} indirectly or from a
-larger context, for example in tests or inside an RMarkdown
-document where you don't want all of the knitr evaluation mechanisms
-to appear in the backtrace.}
+\item{top}{The first frame environment to be included in the
+backtrace. This becomes the top of the backtrace tree and
+represents the oldest call in the backtrace.
+
+This is needed in particular when you call \code{trace_back()}
+indirectly or from a larger context, for example in tests or
+inside an RMarkdown document where you don't want all of the
+knitr evaluation mechanisms to appear in the backtrace.}
+
+\item{bottom}{The last frame environment to be included in the
+backtrace. This becomes the rightmost leaf of the backtrace tree
+and represents the youngest call in the backtrace.
+
+Set this when you would like to capture a backtrace without the
+capture context.
+
+Can also be an integer that will be passed to \code{\link[=caller_env]{caller_env()}}.}
 }
 \description{
 A call trace captures the sequence of calls that lead to the current function,
@@ -58,7 +69,7 @@ conn <- textConnection("f()")
 source(conn, echo = TRUE)
 close(conn)
 
-# To automatically strip this off, pass `to = globalenv()`.
+# To automatically strip this off, pass `top = globalenv()`.
 # This will automatically trim off calls prior to the last appearance
 # of the global environment on the stack
 h <- function() trace_back(globalenv())
