@@ -97,7 +97,7 @@ test_that("cli_branch() handles edge case", {
   f <- function() trace_back(e)
   trace <- f()
 
-  call <- paste0(" ", cli_style$h, "f()")
+  call <- paste0(" ", cli_style$h, "rlang:::f()")
   tree <- trace_as_tree(trace, srcrefs = FALSE)
   expect_identical(cli_branch(tree$call[-1]), call)
 })
@@ -140,8 +140,8 @@ test_that("collapsed formatting doesn't collapse single frame siblings", {
   collapsed <- capture.output(print(trace, simplify = "collapse", srcrefs = FALSE))[[3]]
   collapsed <- substr(collapsed, 5, nchar(collapsed))
 
-  expect_identical(full, "eval_bare(quote(g()))")
-  expect_identical(collapsed, "[ eval_bare(...) ]")
+  expect_identical(full, "rlang::eval_bare(quote(g()))")
+  expect_identical(collapsed, "[ rlang::eval_bare(...) ]")
 })
 
 test_that("recursive frames are rewired to the global env", {
@@ -271,20 +271,21 @@ test_that("children of collapsed frames are rechained to correct parent", {
 
 test_that("pipe_collect_calls() collects calls", {
   exprs2 <- function(...) unname(exprs(...))
+  placeholder <- function() NULL
 
   call <- quote(a(A %>% B) %>% b)
-  out <- pipe_collect_calls(call)
-  expect_identical(out$calls, exprs2(a(A %>% B), b(.)))
+  out <- pipe_collect_calls(call, placeholder)
+  expect_identical(out$calls, exprs2(rlang:::a(A %>% B), rlang:::b(.)))
   expect_true(out$leading)
 
   call <- quote(a %>% b %>% c)
-  out <- pipe_collect_calls(call)
-  expect_identical(out$calls, exprs2(b(.), c(.)))
+  out <- pipe_collect_calls(call, placeholder)
+  expect_identical(out$calls, exprs2(rlang:::b(.), rlang:::c(.)))
   expect_false(out$leading)
 
   call <- quote(a() %>% b %>% c)
-  out <- pipe_collect_calls(call)
-  expect_identical(out$calls, exprs2(a(), b(.), c(.)))
+  out <- pipe_collect_calls(call, placeholder)
+  expect_identical(out$calls, exprs2(rlang:::a(), rlang:::b(.), rlang:::c(.)))
   expect_true(out$leading)
 })
 
@@ -461,4 +462,28 @@ test_that("summary.rlang_trace() prints the full tree", {
   h <- function() trace_back(e)
   trace <- f()
   expect_known_output(summary(trace, srcrefs = FALSE), file = test_path("test-trace-summary.txt"))
+})
+
+test_that("unexported functions have `:::` prefix", {
+  skip_on_os("windows")
+
+  # Should be installed as part of the C API tests
+  skip_if_not_installed("rlanglibtest")
+  test_trace_unexported_child <- env_get(ns_env("rlanglibtest"), "test_trace_unexported_child")
+
+  e <- current_env()
+  f <- function() test_trace_unexported_child(e)
+  trace <- f()
+
+  expect_known_trace_output(trace, file = "test-trace-unexported-prefix.txt")
+})
+
+test_that("global functions have `global::` prefix", {
+  skip_on_os("windows")
+
+  f <- eval_bare(expr(function(e) rlang::trace_back(e)), global_env())
+  g <- function(e) f(e)
+  trace <- g(current_env())
+
+  expect_known_trace_output(trace, file = "test-trace-global-prefix.txt")
 })

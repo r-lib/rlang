@@ -2,15 +2,15 @@
 * Message: "High-level message"
 * Class: `rlang_error`
 * Backtrace:
- ─catch_cnd(a())
- ─a()
- ─b()
- ─c()
+ ─rlang::catch_cnd(a())
+ ─rlang:::a()
+ ─rlang:::b()
+ ─rlang:::c()
 <error: parent>
 * Message: "Low-level message"
 * Class: `rlang_error`
 * Backtrace:
- ─f()
- ─g()
- ─h()
+ ─rlang:::f()
+ ─rlang:::g()
+ ─rlang:::h()
 Call `summary(rlang::last_error())` to see the full backtrace

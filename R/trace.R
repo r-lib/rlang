@@ -62,14 +62,15 @@
 #' options(rlang_trace_top_env = NULL)
 #' @export
 trace_back <- function(to = NULL) {
-  calls <- as.list(sys.calls())
-  calls <- map(calls, call_fix_car)
-
-  parents <- normalise_parents(sys.parents())
   frames <- sys.frames()
   envs <- map(frames, env_label)
 
+  parents <- normalise_parents(sys.parents())
+
+  calls <- as.list(sys.calls())
+  calls <- map(calls, call_fix_car)
   calls <- add_pipe_pointer(calls, frames)
+  calls <- map2(calls, seq_along(calls), maybe_add_namespace)
 
   trace <- new_trace(calls, parents, envs)
   trace <- trace_trim_env(trace, to)
@@ -106,8 +107,13 @@ add_pipe_pointer <- function(calls, frames) {
       v <- "k"
     }
 
-    i <- beg + 5L
-    structure(call, pipe_pointer = frames[[i]][[v]])
+    frame <- frames[[beg + 5L]]
+    pointer <- frame[[v]]
+
+    fn <- frame[["function_list"]][[1]]
+    info <- pipe_collect_calls(call, fn_env(fn))
+
+    structure(call, pipe_pointer = pointer, pipe_info = info)
   })
 
   calls[pipe_begs] <- pipe_calls
@@ -135,6 +141,42 @@ pipe_call_kind <- function(beg, calls) {
     return(2L)
   }
   0L
+}
+
+maybe_add_namespace <- function(call, fn) {
+  if (call_print_fine_type(call) != "call") {
+    return(call)
+  }
+
+  # Checking for bare symbols covers the `::` and `:::` cases
+  sym <- node_car(call)
+  if (!is_symbol(sym)) {
+    return(call)
+  }
+
+  nm <- as_string(sym)
+  if (is_environment(fn)) {
+    fn <- get(nm, envir = fn, mode = "function")
+  } else if (is_function(fn)) {
+    fn <- fn
+  } else {
+    fn <- sys.function(fn)
+  }
+
+  env <- topenv(fn_env(fn))
+  if (is_reference(env, global_env())) {
+    prefix <- "global"
+    op <- "::"
+  } else if (is_namespace(env)) {
+    prefix <- ns_env_name(env)
+    op <- if (nm %in% ns_exports(env)) "::" else ":::"
+  } else {
+    return(call)
+  }
+
+  namespaced_sym <- call(op, sym(prefix), sym)
+  call[[1]] <- namespaced_sym
+  call
 }
 
 # Remove recursive frames which occur with quosures
@@ -383,20 +425,25 @@ is_eval_call <- function(call) {
   is_call(call, c("eval", "evalq"), ns = c("", "base"))
 }
 
-pipe_collect_calls <- function(pipe) {
+pipe_collect_calls <- function(pipe, env) {
   node <- node_cdr(pipe)
+
   last_call <- pipe_add_dot(node_cadr(node))
+  last_call <- maybe_add_namespace(last_call, env)
+
   calls <- new_node(last_call, NULL)
 
   while (is_call(node_car(node), "%>%")) {
     node <- node_cdar(node)
     call <- pipe_add_dot(node_cadr(node))
+    call <- maybe_add_namespace(call, env)
     calls <- new_node(call, calls)
   }
 
-  # The first call doesn't need a dot
   first_call <- node_car(node)
   if (is_call(first_call)) {
+    # The first call doesn't need a dot
+    first_call <- maybe_add_namespace(first_call, env)
     calls <- new_node(first_call, calls)
     leading <- TRUE
   } else {
@@ -433,13 +480,14 @@ trail_uncollapse_pipe <- function(trace) {
     trace_after <- trace_subset(trace, seq2(idx + 2L, trace_length(trace)))
 
     pipe <- trace$calls[[idx]]
-    pipe_info <- pipe_collect_calls(pipe)
-    pipe_calls <- pipe_info$calls
 
     pointer <- attr(pipe, "pipe_pointer")
     if (!is_scalar_integer(pointer)) {
       stop("Internal error: Invalid pipe pointer")
     }
+
+    pipe_info <- attr(pipe, "pipe_info")
+    pipe_calls <- pipe_info$calls
 
     if (pipe_info$leading) {
       pointer <- inc(pointer)

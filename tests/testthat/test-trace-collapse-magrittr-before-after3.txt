@@ -1,25 +1,25 @@
 Full:
 █
-├─F(NA %>% C())
+├─rlang:::F(NA %>% C())
 └─NA %>% C()
-  ├─withVisible(eval(quote(`_fseq`(`_lhs`)), env, env))
-  └─eval(quote(`_fseq`(`_lhs`)), env, env)
-    └─eval(quote(`_fseq`(`_lhs`)), env, env)
-      └─`_fseq`(`_lhs`)
-        └─freduce(value, `_function_list`)
-          ├─withVisible(function_list[[k]](value))
+  ├─base::withVisible(eval(quote(`_fseq`(`_lhs`)), env, env))
+  └─base::eval(quote(`_fseq`(`_lhs`)), env, env)
+    └─base::eval(quote(`_fseq`(`_lhs`)), env, env)
+      └─rlang:::`_fseq`(`_lhs`)
+        └─magrittr::freduce(value, `_function_list`)
+          ├─base::withVisible(function_list[[k]](value))
           └─function_list[[k]](value)
-            └─C(.)
-              └─f()
+            └─rlang:::C(.)
+              └─rlang:::f()
 
 Collapsed:
 █
-├─[ F(...) ]
+├─[ rlang:::F(...) ]
 └─[ NA %>% C() ] with 7 more calls
-  └─C(.)
-    └─f()
+  └─rlang:::C(.)
+    └─rlang:::f()
 
 Branch:
- ─F(NA %>% C())
- ─C(.)
- ─f()
+ ─rlang:::F(NA %>% C())
+ ─rlang:::C(.)
+ ─rlang:::f()

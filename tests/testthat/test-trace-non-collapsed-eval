@@ -1,16 +1,16 @@
 Full:
 █
-├─eval()
-└─.handleSimpleError(...)
-  └─h(simpleError(msg, call))
+├─base::eval()
+└─base::.handleSimpleError(...)
+  └─rlang:::h(simpleError(msg, call))
 
 Collapsed:
 █
-├─[ eval() ]
-└─.handleSimpleError(...)
-  └─h(simpleError(msg, call))
+├─[ base::eval() ]
+└─base::.handleSimpleError(...)
+  └─rlang:::h(simpleError(msg, call))
 
 Branch:
- ─eval()
- ─.handleSimpleError(...)
- ─h(simpleError(msg, call))
+ ─base::eval()
+ ─base::.handleSimpleError(...)
+ ─rlang:::h(simpleError(msg, call))

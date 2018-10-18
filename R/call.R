@@ -262,13 +262,24 @@ is_call <- function(x, name = NULL, n = NULL, ns = NULL) {
 #' call
 #' call_print_type(call)
 call_print_type <- function(call) {
+  type <- call_print_fine_type(call)
+
+  switch(type,
+    call = "prefix",
+    control = ,
+    delim = ,
+    subset = "special",
+    type
+  )
+}
+call_print_fine_type <- function(call) {
   if (!is_call(call)) {
     abort("`call` must be a call")
   }
 
   op <- which_operator(call)
   if (op == "") {
-    return("prefix")
+    return("call")
   }
 
   switch(op,
@@ -284,13 +295,15 @@ call_print_type <- function(call) {
     `while` = ,
     `for` = ,
     `repeat` = ,
-    `if` = ,
+    `if` =
+      "control",
     `(` = ,
-    `{` = ,
+    `{` =
+      "delim",
     `[` = ,
     `[[` =
-      "special",
-    # These operators always print in prefix form even if they have
+      "subset",
+    # These operators always print in infix form even if they have
     # more arguments
     `<-` = ,
     `<<-` = ,
@@ -324,7 +337,7 @@ call_print_type <- function(call) {
       if (length(node_cdr(call)) == 2) {
         "infix"
       } else {
-        "prefix"
+        "call"
       }
   )
 }

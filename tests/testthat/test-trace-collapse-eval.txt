@@ -1,20 +1,20 @@
 Full:
 █
-└─f()
+└─rlang:::f()
   ├─base::eval(quote(g()))
   │ └─base::eval(quote(g()))
-  └─g()
-    └─eval(quote(trace_back(e)))
-      └─eval(quote(trace_back(e)))
+  └─rlang:::g()
+    └─base::eval(quote(trace_back(e)))
+      └─base::eval(quote(trace_back(e)))
 
 Collapsed:
 █
-└─f()
+└─rlang:::f()
   ├─[ base::eval(...) ] with 1 more call
-  └─g()
-    └─[ eval(...) ] with 1 more call
+  └─rlang:::g()
+    └─[ base::eval(...) ] with 1 more call
 
 Branch:
- ─f()
- ─g()
- ─[ eval(...) ] with 1 more call
+ ─rlang:::f()
+ ─rlang:::g()
+ ─[ base::eval(...) ] with 1 more call

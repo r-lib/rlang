@@ -4,23 +4,23 @@ Full:
 * Class: `rlang_error`
 * Backtrace:
 █
-├─catch_cnd(a())
-│ ├─tryCatch(...)
-│ │ └─tryCatchList(expr, classes, parentenv, handlers)
-│ │   └─tryCatchOne(expr, names, parentenv, handlers[[1L]])
-│ │     └─doTryCatch(return(expr), name, parentenv, handler)
-│ └─force(expr)
-└─a()
-  └─b()
-    └─c()
+├─rlang::catch_cnd(a())
+│ ├─base::tryCatch(...)
+│ │ └─base:::tryCatchList(expr, classes, parentenv, handlers)
+│ │   └─base:::tryCatchOne(expr, names, parentenv, handlers[[1L]])
+│ │     └─base:::doTryCatch(return(expr), name, parentenv, handler)
+│ └─base::force(expr)
+└─rlang:::a()
+  └─rlang:::b()
+    └─rlang:::c()
 <error: parent>
 * Message: "Low-level message"
 * Class: `rlang_error`
 * Backtrace:
 █
-└─f()
-  └─g()
-    └─h()
+└─rlang:::f()
+  └─rlang:::g()
+    └─rlang:::h()
 
 Collapsed:
 <error>
@@ -28,33 +28,33 @@ Collapsed:
 * Class: `rlang_error`
 * Backtrace:
 █
-├─[ catch_cnd(...) ] with 5 more calls
-└─a()
-  └─b()
-    └─c()
+├─[ rlang::catch_cnd(...) ] with 5 more calls
+└─rlang:::a()
+  └─rlang:::b()
+    └─rlang:::c()
 <error: parent>
 * Message: "Low-level message"
 * Class: `rlang_error`
 * Backtrace:
 █
-└─f()
-  └─g()
-    └─h()
+└─rlang:::f()
+  └─rlang:::g()
+    └─rlang:::h()
 
 Branch:
 <error>
 * Message: "High-level message"
 * Class: `rlang_error`
 * Backtrace:
- ─catch_cnd(a())
- ─a()
- ─b()
- ─c()
+ ─rlang::catch_cnd(a())
+ ─rlang:::a()
+ ─rlang:::b()
+ ─rlang:::c()
 <error: parent>
 * Message: "Low-level message"
 * Class: `rlang_error`
 * Backtrace:
- ─f()
- ─g()
- ─h()
+ ─rlang:::f()
+ ─rlang:::g()
+ ─rlang:::h()
 Call `summary(rlang::last_error())` to see the full backtrace
