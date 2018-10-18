@@ -7,9 +7,9 @@ No trimming:
     ├─base::identity(identity(h(n)))
     ├─base::identity(h(n))
     └─rlang:::h(n)
-      ├─base::identity(identity(trace_back(e, trim = n)))
-      ├─base::identity(trace_back(e, trim = n))
-      └─rlang::trace_back(e, trim = n)
+      ├─base::identity(identity(trace_back(e, bottom = n)))
+      ├─base::identity(trace_back(e, bottom = n))
+      └─rlang::trace_back(e, bottom = n)
 
 
 One layer (the default):

@@ -4,9 +4,9 @@ Full:
   ├─base::eval(quote(g()))
   │ └─base::eval(quote(g()))
   └─rlang:::g()
-    ├─base::eval(quote(trace_back(e, trim = 0)))
-    │ └─base::eval(quote(trace_back(e, trim = 0)))
-    └─rlang::trace_back(e, trim = 0)
+    ├─base::eval(quote(trace_back(e, bottom = 0)))
+    │ └─base::eval(quote(trace_back(e, bottom = 0)))
+    └─rlang::trace_back(e, bottom = 0)
 
 Collapsed:
 █
@@ -14,9 +14,9 @@ Collapsed:
   ├─[ base::eval(...) ] with 1 more call
   └─rlang:::g()
     ├─[ base::eval(...) ] with 1 more call
-    └─rlang::trace_back(e, trim = 0)
+    └─rlang::trace_back(e, bottom = 0)
 
 Branch:
  ─rlang:::f()
  ─rlang:::g()
- ─rlang::trace_back(e, trim = 0)
+ ─rlang::trace_back(e, bottom = 0)

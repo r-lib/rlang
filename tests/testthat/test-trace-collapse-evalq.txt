@@ -4,9 +4,9 @@ Full:
   ├─base::evalq(g())
   │ └─base::evalq(g())
   └─rlang:::g()
-    ├─base::evalq(trace_back(e, trim = 0))
-    │ └─base::evalq(trace_back(e, trim = 0))
-    └─rlang::trace_back(e, trim = 0)
+    ├─base::evalq(trace_back(e, bottom = 0))
+    │ └─base::evalq(trace_back(e, bottom = 0))
+    └─rlang::trace_back(e, bottom = 0)
 
 Collapsed:
 █
@@ -14,9 +14,9 @@ Collapsed:
   ├─[ base::evalq(...) ] with 1 more call
   └─rlang:::g()
     ├─[ base::evalq(...) ] with 1 more call
-    └─rlang::trace_back(e, trim = 0)
+    └─rlang::trace_back(e, bottom = 0)
 
 Branch:
  ─rlang:::f()
  ─rlang:::g()
- ─rlang::trace_back(e, trim = 0)
+ ─rlang::trace_back(e, bottom = 0)
