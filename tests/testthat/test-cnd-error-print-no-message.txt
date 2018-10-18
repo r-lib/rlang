@@ -1,2 +1,2 @@
 <error>
-* Class: `foo`
+class:   `foo`

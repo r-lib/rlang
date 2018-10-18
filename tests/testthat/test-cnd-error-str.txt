@@ -1,8 +1,8 @@
 <error>
-* Message: "The high-level error message"
-* Class: `rlang_error`
-* Fields: `message`, `trace` and `parent`
-* Backtrace:
+message: The high-level error message
+class:   `rlang_error`
+fields:  `message`, `trace` and `parent`
+backtrace:
 █
 ├─rlang::catch_cnd(a())
 │ ├─base::tryCatch(...)
@@ -16,10 +16,10 @@
   └─rlang:::b()
     └─rlang:::c()
 <error: parent>
-* Message: "The low-level error message"
-* Class: `rlang_error`
-* Fields: `message`, `trace`, `parent` and `foo`
-* Backtrace:
+message: The low-level error message
+class:   `rlang_error`
+fields:  `message`, `trace`, `parent` and `foo`
+backtrace:
 █
 └─rlang:::f()
   ├─base::tryCatch(g())

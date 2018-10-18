@@ -288,7 +288,7 @@ test_that("special names are backticked", {
 })
 
 test_that("empty environment is pretty printed", {
-  expect_output(env_print(empty_env()), "<environment: empty>\n  parent: NULL$")
+  expect_output(env_print(empty_env()), "<environment: empty>\nparent: NULL$")
 })
 
 test_that("envs printer: padding is added to right-align indices", {
@@ -344,10 +344,10 @@ test_that("environment is printed with class if any", {
   expect_false(any(grepl("class", out)))
 
   env <- structure(env(), class = "foo")
-  expect_output(env_print(env), "  class: foo")
+  expect_output(env_print(env), "class: foo")
 
   env <- structure(env(), class = c("foo", "bar"))
-  expect_output(env_print(env), "  class: foo, bar")
+  expect_output(env_print(env), "class: foo, bar")
 })
 
 test_that("env_clone() recreates active bindings", {

@@ -693,21 +693,21 @@ env_print <- function(env = caller_env()) {
   }
 
   cat_line(
-    sprintf("<environment: %s>%s", env_label(env), locked),
-    sprintf("  parent: %s", parent)
+    bold(sprintf("<environment: %s>%s", env_label(env), locked)),
+    sprintf("parent: %s", parent)
   )
 
   class <- attr(env, "class")
   if (is_character(class)) {
     class <- paste(class, collapse = ", ")
-    cat_line(sprintf("  class: %s", class))
+    cat_line(sprintf("class: %s", class))
   }
 
   nms <- env_names(env)
   n <- length(nms)
 
   if (n) {
-    cat_line("  bindings:")
+    cat_line("bindings:")
 
     if (n > 20) {
       other <- nms[seq(21L, n)]
@@ -719,7 +719,7 @@ env_print <- function(env = caller_env()) {
     escaped_nms <- map_chr(syms(nms), deparse, backtick = TRUE)
 
     types <- env_binding_type_sum(env, nms)
-    types <- paste0("   * ", escaped_nms, ": <", types, ">")
+    types <- paste0(" ", bullet(paste0(escaped_nms, ": <", types, ">")))
 
     locked <- env_binding_are_locked(env, nms)
     locked <- ifelse(locked, " [L]", "")

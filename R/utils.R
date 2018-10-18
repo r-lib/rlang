@@ -92,79 +92,38 @@ paste_line <- function(..., .trailing = FALSE) {
   lines
 }
 
-red <- function(x) {
-  if (is_installed("crayon")) {
-    crayon::red(x)
-  } else {
-    x
-  }
-}
-blue <- function(x) {
-  if (is_installed("crayon")) {
-    crayon::blue(x)
-  } else {
-    x
-  }
-}
-green <- function(x) {
-  if (is_installed("crayon")) {
-    crayon::green(x)
-  } else {
-    x
-  }
-}
-yellow <- function(x) {
-  if (is_installed("crayon")) {
-    crayon::yellow(x)
-  } else {
-    x
-  }
-}
-magenta <- function(x) {
-  if (is_installed("crayon")) {
-    crayon::magenta(x)
-  } else {
-    x
-  }
-}
-cyan <- function(x) {
-  if (is_installed("crayon")) {
-    crayon::cyan(x)
-  } else {
-    x
-  }
-}
-blurred <- function(x) {
-  if (is_installed("crayon")) {
-    crayon::blurred(x)
-  } else {
-    x
-  }
-}
-silver <- function(x) {
-  if (is_installed("crayon")) {
-    crayon::silver(x)
-  } else {
-    x
-  }
-}
-
 has_crayon <- function() {
   is_installed("crayon") && crayon::has_color()
 }
-open_red <- function() if (has_crayon()) open_style("red")
-open_blue <- function() if (has_crayon()) open_style("blue")
-open_green <- function() if (has_crayon()) open_style("green")
-open_yellow <- function() if (has_crayon()) open_style("yellow")
-open_magenta <- function() if (has_crayon()) open_style("magenta")
-open_cyan <- function() if (has_crayon()) open_style("cyan")
 
+red       <- function(x) if (has_crayon()) crayon::red(x)       else x
+blue      <- function(x) if (has_crayon()) crayon::blue(x)      else x
+green     <- function(x) if (has_crayon()) crayon::green(x)     else x
+yellow    <- function(x) if (has_crayon()) crayon::yellow(x)    else x
+magenta   <- function(x) if (has_crayon()) crayon::magenta(x)   else x
+cyan      <- function(x) if (has_crayon()) crayon::cyan(x)      else x
+blurred   <- function(x) if (has_crayon()) crayon::blurred(x)   else x
+silver    <- function(x) if (has_crayon()) crayon::silver(x)    else x
+bold      <- function(x) if (has_crayon()) crayon::bold(x)      else x
+italic    <- function(x) if (has_crayon()) crayon::italic(x)    else x
+underline <- function(x) if (has_crayon()) crayon::underline(x) else x
+
+open_red     <- function() if (has_crayon()) open_style("red")
+open_blue    <- function() if (has_crayon()) open_style("blue")
+open_green   <- function() if (has_crayon()) open_style("green")
+open_yellow  <- function() if (has_crayon()) open_style("yellow")
+open_magenta <- function() if (has_crayon()) open_style("magenta")
+open_cyan    <- function() if (has_crayon()) open_style("cyan")
 close_colour <- function() if (has_crayon()) "\u001b[39m"
 close_italic <- function() if (has_crayon()) "\u001b[23m"
 
-open_yellow_italic <- function() if (has_crayon()) "\u001b[33m\u001b[3m"
-open_blurred_italic <- function() if (has_crayon()) "\u001b[2m\u001b[3m"
+open_yellow_italic   <- function() if (has_crayon()) "\u001b[33m\u001b[3m"
+open_blurred_italic  <- function() if (has_crayon()) "\u001b[2m\u001b[3m"
 close_blurred_italic <- function() if (has_crayon()) "\u001b[23m\u001b[22m"
+
+bullet <- function(x) {
+  paste0(bold(silver("* ")), x)
+}
 
 
 open_style <- function(style) {
