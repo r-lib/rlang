@@ -460,12 +460,12 @@ quo_squash_impl <- function(x, parent = NULL, warn = FALSE) {
 #' @export
 print.quosure <- function(x, ...) {
   cat_line(.trailing = FALSE,
-    "<quosure>",
-    "  expr: "
+    bold("<quosure>"),
+    "expr: "
   )
   quo_print(x)
   cat_line(.trailing = FALSE,
-    "  env:  "
+    "env:  "
   )
 
   env <- quo_get_env(x)

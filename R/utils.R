@@ -148,6 +148,13 @@ silver <- function(x) {
     x
   }
 }
+bold <- function(x) {
+  if (is_installed("crayon")) {
+    crayon::bold(x)
+  } else {
+    x
+  }
+}
 
 has_crayon <- function() {
   is_installed("crayon") && crayon::has_color()
