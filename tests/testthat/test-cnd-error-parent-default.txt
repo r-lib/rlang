@@ -1,15 +1,15 @@
 <error>
-* Message: "High-level message"
-* Class: `rlang_error`
-* Backtrace:
+message: High-level message
+class:   `rlang_error`
+backtrace:
  ─rlang::catch_cnd(a())
  ─rlang:::a()
  ─rlang:::b()
  ─rlang:::c()
 <error: parent>
-* Message: "Low-level message"
-* Class: `rlang_error`
-* Backtrace:
+message: Low-level message
+class:   `rlang_error`
+backtrace:
  ─rlang:::f()
  ─rlang:::g()
  ─rlang:::h()
