@@ -15,6 +15,9 @@ Full:
       │   └─base:::tryCatchOne(expr, names, parentenv, handlers[[1L]])
       │     └─base:::doTryCatch(return(expr), name, parentenv, handler)
       └─rlang:::i()
+        ├─base::tryCatch(trace_back(e, trim = 0)) testthat/test-trace.R:48:20
+        │ └─base:::tryCatchList(expr, classes, parentenv, handlers)
+        └─rlang::trace_back(e, trim = 0)
 
 Collapsed:
 █
@@ -24,9 +27,12 @@ Collapsed:
     └─rlang:::h()
       ├─[ base::tryCatch(...) ] with 3 more calls testthat/test-trace.R:47:20
       └─rlang:::i()
+        ├─[ base::tryCatch(...) ] with 1 more call testthat/test-trace.R:48:20
+        └─rlang::trace_back(e, trim = 0)
 
 Branch:
  ─rlang:::f()
  ─rlang:::g() testthat/test-trace.R:45:20
  ─rlang:::h()
  ─rlang:::i()
+ ─rlang::trace_back(e, trim = 0)

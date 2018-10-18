@@ -45,7 +45,7 @@ test_that("can print tree with collapsed branches", {
   f <- function() { g() }
   g <- function() { tryCatch(h(), foo = identity, bar = identity) }
   h <- function() { tryCatch(i(), baz = identity) }
-  i <- function() { tryCatch(trace_back(e)) }
+  i <- function() { tryCatch(trace_back(e, trim = 0)) }
   trace <- eval(quote(f()))
 
   expect_known_trace_output(trace,
@@ -192,13 +192,13 @@ test_that("eval() frames are collapsed", {
 
   e <- current_env()
   f <- function() base::eval(quote(g()))
-  g <- function() eval(quote(trace_back(e)))
+  g <- function() eval(quote(trace_back(e, trim = 0)))
   trace <- f()
 
   expect_known_trace_output(trace, file = "test-trace-collapse-eval.txt")
 
   f <- function() base::evalq(g())
-  g <- function() evalq(trace_back(e))
+  g <- function() evalq(trace_back(e, trim = 0))
   trace <- f()
 
   expect_known_trace_output(trace, file = "test-trace-collapse-evalq.txt")
