@@ -16,3 +16,8 @@ expect_known_trace_output <- function(trace,
 expect_trace_length <- function(x, n) {
   expect_equal(trace_length(x), n)
 }
+
+expect_equal_trace <- function(x, y) {
+  expect_identical(x$parents, y$parents)
+  expect_equal(x$calls, y$calls)
+}

@@ -66,11 +66,11 @@
 #' # Restore defaults
 #' options(rlang_trace_top_env = NULL)
 #' @export
-trace_back <- function(to = NULL, trim = 1) {
-  top <- sys.parent(trim)
-  idx <- seq_len(top)
+trace_back <- function(to = NULL, trim = NULL) {
+  frames <- sys.frames()
+  idx <- trace_find_idx(trim, frames)
 
-  frames <- sys.frames()[idx]
+  frames <- frames[idx]
   parents <- sys.parents()[idx]
   calls <- as.list(sys.calls()[idx])
 
@@ -85,6 +85,27 @@ trace_back <- function(to = NULL, trim = 1) {
   trace <- trace_trim_env(trace, to)
 
   trace
+}
+
+trace_find_idx <- function(trim, frames) {
+  if (is_null(trim)) {
+    return(seq_len(sys.parent(2L)))
+  }
+
+  if (is_environment(trim)) {
+    top <- detect_index(frames, is_reference, trim)
+    if (!length(top)) {
+      abort("Can't find `trim` on the call tree")
+    }
+
+    return(seq_len(top))
+  }
+
+  if (is_integerish(trim, n = 1)) {
+    return(seq_len(sys.parent(trim + 1L)))
+  }
+
+  abort("`trim` must be `NULL`, a frame environment, or an integer")
 }
 
 # Work around R bug causing promises to leak in frame calls

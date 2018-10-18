@@ -516,4 +516,18 @@ test_that("can trim layers of backtraces", {
     cat_line("", "", "Three layers:")
     summary(trace3)
   })
+
+  # Test that trimming with frame environment is equivalent
+  e <- current_env()
+  f <- function(n) identity(identity(g(n)))
+  g <- function(n) identity(identity(h(n)))
+  h <- function(n) identity(identity(trace_back(e, trim = caller_env(n - 1L))))
+
+  trace1_env <- f(1)
+  trace2_env <- f(2)
+  trace3_env <- f(3)
+
+  expect_equal_trace(trace1, trace1_env)
+  expect_equal_trace(trace2, trace2_env)
+  expect_equal_trace(trace3, trace3_env)
 })
