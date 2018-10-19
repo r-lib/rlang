@@ -237,11 +237,6 @@ test_that("can lock environments", {
 })
 
 test_that("can unlock environments", {
-  if (!runs_gnu()) {
-    expect_error(env_unlock(env()), "non GNU")
-    return()
-  }
-
   env <- env()
   env_lock(env)
   expect_true(env_unlock(env))

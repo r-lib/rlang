@@ -645,12 +645,6 @@ env_is_locked <- function(env) {
 #' @keywords internal
 #' @export
 env_unlock <- function(env) {
-  if (!runs_gnu()) {
-    abort(paste_line(
-      "`env_unlock()` isn't supported on non GNU implementations of R.",
-      "Unlocking environments is not part of the official API and is only meant for development tools."
-    ))
-  }
   invisible(.Call(rlang_env_unlock, env))
 }
 

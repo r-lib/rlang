@@ -108,7 +108,6 @@ extern sexp* rlang_is_data_mask(sexp*);
 extern sexp* rlang_data_pronoun_get(sexp*, sexp*);
 extern sexp* rlang_cnd_type(sexp*);
 extern sexp* rlang_warn_deprecated_once(sexp*, sexp*);
-extern sexp* rlang_runs_gnu();
 
 // Library initialisation defined below
 sexp* rlang_library_load();
@@ -247,7 +246,6 @@ static const r_callable r_callables[] = {
   {"rlang_is_raw",                      (r_fn_ptr) &rlang_is_raw, 2},
   {"rlang_cnd_type",                    (r_fn_ptr) &rlang_cnd_type, 1},
   {"rlang_warn_deprecated_once",        (r_fn_ptr) &rlang_warn_deprecated_once, 2},
-  {"rlang_runs_gnu",                    (r_fn_ptr) &rlang_runs_gnu, 0},
   {NULL, NULL, 0}
 };
 
