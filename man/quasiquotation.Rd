@@ -10,20 +10,9 @@
 \alias{qq_show}
 \title{Quasiquotation of an expression}
 \usage{
-"!!"(x)
-
-"!!!"(x)
-
-":="(x, y)
-
 qq_show(expr)
 }
 \arguments{
-\item{x}{An expression to unquote.}
-
-\item{y}{An R expression that will be given the argument name
-supplied to \code{x}.}
-
 \item{expr}{An expression to be quasiquoted.}
 }
 \description{

@@ -117,7 +117,6 @@
 #'   operation. The operator form makes it clearer that unquoting is
 #'   special.
 #'
-#' @param x An expression to unquote.
 #' @name quasiquotation
 #' @aliases UQ UQS
 #' @examples
@@ -205,18 +204,19 @@ UQS <- function(x) {
   abort("`UQS()` can only be used within a quasiquoted argument")
 }
 #' @rdname quasiquotation
+#' @usage NULL
 #' @export
 `!!` <- function(x) {
   abort("`!!` can only be used within a quasiquoted argument")
 }
 #' @rdname quasiquotation
+#' @usage NULL
 #' @export
 `!!!` <- function(x) {
   abort("`!!!` can only be used within a quasiquoted argument")
 }
 #' @rdname quasiquotation
-#' @param y An R expression that will be given the argument name
-#'   supplied to `x`.
+#' @usage NULL
 #' @export
 `:=` <- function(x, y) {
   abort("`:=` can only be used within a quasiquoted argument")
