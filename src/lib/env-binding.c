@@ -25,6 +25,18 @@ static sexp* new_binding_types(r_ssize n) {
   return types;
 }
 
+static enum r_env_binding_type which_env_binding(sexp* env, sexp* sym) {
+  if (r_env_binding_is_promise(env, sym)) {
+    return R_ENV_BINDING_PROMISE;
+  }
+
+  if (r_env_binding_is_active(env, sym)) {
+    return R_ENV_BINDING_ACTIVE;
+  }
+
+  return R_ENV_BINDING_VALUE;
+}
+
 // Returns NULL if all values to spare an alloc
 sexp* r_env_binding_types(sexp* env, sexp* bindings) {
   bool all_values = true;
@@ -50,13 +62,9 @@ sexp* r_env_binding_types(sexp* env, sexp* bindings) {
       sym = r_str_as_symbol(r_chr_get(bindings, i));
     }
 
-    enum r_env_binding_type type = R_ENV_BINDING_VALUE;
-    if (r_env_binding_is_promise(env, sym)) {
+    enum r_env_binding_type type = which_env_binding(env, sym);
+    if (type != R_ENV_BINDING_VALUE) {
       all_values = false;
-      type = R_ENV_BINDING_PROMISE;
-    } else if (r_env_binding_is_active(env, sym)) {
-      all_values = false;
-      type = R_ENV_BINDING_ACTIVE;
     }
 
     if (type) {
