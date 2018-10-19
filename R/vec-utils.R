@@ -131,3 +131,7 @@ first <- function(x) {
 last <- function(x) {
   .subset2(x, length_(x))
 }
+
+validate_index <- function(i, n) {
+  seq_len(n)[i]
+}

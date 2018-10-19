@@ -301,7 +301,7 @@ cnd_call <- function(call) {
 #' @param msg,type These arguments were renamed to `message` and
 #'   `.type` and are deprecated as of rlang 0.3.0.
 #'
-#' @export
+#' @seealso [with_abort()] to convert all errors to rlang errors.
 #' @examples
 #' # These examples are guarded to avoid throwing errors
 #' if (FALSE) {
@@ -355,6 +355,7 @@ cnd_call <- function(call) {
 #' summary(last_error())
 #'
 #' }
+#' @export
 abort <- function(message, .subclass = NULL,
                   ...,
                   trace = NULL,
@@ -618,12 +619,8 @@ print.rlang_error <- function(x,
 
       # Trim catching context if any
       calls <- trace$calls
-      if (length(calls) && is_call(calls[[1]], c("tryCatch", "with_handlers"))) {
-        parent <- trace$parents[[1]]
-        next_sibling <- which(trace$parents[-1] == parent)
-        if (length(next_sibling)) {
-          trace <- trace_subset(trace, -seq2(1L, next_sibling))
-        }
+      if (length(calls) && is_call(calls[[1]], c("tryCatch", "with_handlers", "catch_cnd"))) {
+        trace <- trace_subset_across(trace, -1, 1)
       }
     }
 
@@ -804,6 +801,66 @@ add_backtrace <- function() {
   }
 
   NULL
+}
+
+#' Promote all errors to rlang errors
+#'
+#' @description
+#'
+#' `with_abort()` promotes all errors as if they were thrown with
+#' [abort()]. These errors embed a [backtrace][trace_back]. They are
+#' particularly suitable to be set as *parent errors* (see `parent`
+#' argument of [abort()]).
+#'
+#' @param expr An expression run in a context where errors are
+#'   promoted to rlang errors.
+#'
+#' @details
+#'
+#' `with_abort()` installs a [calling handler][calling] for errors and
+#' rethrows non-rlang errors with [abort()]. However, error handlers
+#' installed *within* `with_abort()` have priority. For this reason,
+#' you should use [tryCatch()] and [exiting] handlers outside
+#' `with_abort()` rather than inside.
+#'
+#' @examples
+#' # with_abort() automatically casts simple errors thrown by stop()
+#' # to rlang errors:
+#' fn <- function() stop("Base error")
+#' try(with_abort(fn()))
+#' last_error()
+#'
+#' # with_abort() is handy for rethrowing low level errors. The
+#' # backtraces are then segmented between the low level and high
+#' # level contexts.
+#' low_level1 <- function() low_level2()
+#' low_level2 <- function() stop("Low level error")
+#'
+#' high_level <- function() {
+#'   with_handlers(
+#'     with_abort(low_level1()),
+#'     error = ~ abort("High level error", parent = .x)
+#'   )
+#' }
+#'
+#' try(high_level())
+#' last_error()
+#' summary(last_error())
+#' @export
+with_abort <- function(expr) {
+  withCallingHandlers(expr, error = function(err) {
+    if (inherits(err, "rlang_error")) {
+      return()
+    }
+
+    trace <- trace_back(bottom = 2)
+
+    # Find second-to-last tree - last tree is handleSimpleError()
+    i <- length(trace_level(trace)) - 1L
+    trace <- trace_subset_across(trace, i)
+
+    abort(err$message %||% "", error = err, trace = trace)
+  })
 }
 
 #' Signal deprecation

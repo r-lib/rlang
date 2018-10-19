@@ -387,6 +387,9 @@ we do not have a precise alternative yet.
   object. It is no longer necessary to record a trace with a calling
   handler for such errors.
 
+* `with_abort()` runs expressions in a context where all errors are
+  promoted to rlang errors and gain a backtrace.
+
 * Unhandled errors thrown by `abort()` are now automatically saved and
   can be retrieved with `rlang::last_error()`. The error prints with a
   simplified backtrace. Call `summary(last_error())` to see the full
