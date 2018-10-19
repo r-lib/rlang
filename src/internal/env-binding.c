@@ -3,7 +3,7 @@
 
 sexp* rlang_env_get(sexp* env, sexp* nm) {
   sexp* sym = r_sym(r_chr_get_c_string(nm, 0));
-  sexp* out = r_env_find(env, sym);
+  sexp* out = KEEP(r_env_find(env, sym));
 
   // Trigger `symbol not found` error if needed
   if (out == r_unbound_sym) {
@@ -15,5 +15,6 @@ sexp* rlang_env_get(sexp* env, sexp* nm) {
     out = r_eval(out, r_empty_env);
   }
 
+  FREE(1);
   return out;
 }

@@ -186,11 +186,13 @@ static sexp* mask_find(sexp* env, sexp* sym) {
     // to a simple environment whose ancestry shouldn't be looked up.
     top_env = env;
   }
+  KEEP(top_env); // Help rchk
 
   sexp* cur = env;
   do {
     sexp* obj = r_env_find(cur, sym);
     if (obj != r_unbound_sym && !r_is_function(obj)) {
+      FREE(1);
       return obj;
     }
 
@@ -201,6 +203,7 @@ static sexp* mask_find(sexp* env, sexp* sym) {
     }
   } while (cur != r_empty_env);
 
+  FREE(1);
   return r_unbound_sym;
 }
 sexp* rlang_data_pronoun_get(sexp* pronoun, sexp* sym) {
@@ -369,12 +372,13 @@ sexp* rlang_tilde_eval(sexp* tilde, sexp* current_frame, sexp* caller_frame) {
     r_abort("Internal error: Quosure environment is corrupt");
   }
 
+  int n_protect = 0;
   sexp* top;
   struct rlang_mask_info info = mask_info(caller_frame);
 
   switch (info.type) {
   case RLANG_MASK_DATA:
-    top = env_get_top_binding(info.mask);
+    top = KEEP_N(env_get_top_binding(info.mask), n_protect);
     // Update `.env` pronoun to current quosure env temporarily
     r_env_poke(info.mask, data_mask_env_sym, quo_env);
     break;
@@ -392,6 +396,7 @@ sexp* rlang_tilde_eval(sexp* tilde, sexp* current_frame, sexp* caller_frame) {
   // mask to the quosure environment
   r_env_poke_parent(top, quo_env);
 
+  FREE(n_protect);
   return r_eval(expr, info.mask);
 }
 
@@ -453,7 +458,7 @@ sexp* rlang_eval_tidy(sexp* expr, sexp* data, sexp* env) {
   }
 
   sexp* mask = KEEP_N(rlang_as_data_mask(data), n_protect);
-  sexp* top = env_get_top_binding(mask);
+  sexp* top = KEEP_N(env_get_top_binding(mask), n_protect);
 
   // Rechain the mask on the new lexical env but don't restore it on
   // exit. This way leaked masks inherit from a somewhat sensible
@@ -480,6 +485,8 @@ sexp* rlang_eval_tidy(sexp* expr, sexp* data, sexp* env) {
 
 
 void rlang_init_eval_tidy() {
+  sexp* rlang_ns_env = KEEP(r_ns_env("rlang"));
+
   tilde_fn = r_parse_eval(
     "function(...) {                          \n"
     "  .Call(rlang_tilde_eval,                \n"
@@ -488,7 +495,7 @@ void rlang_init_eval_tidy() {
     "    parent.frame()  # Lexical env        \n"
     "  )                                      \n"
     "}                                        \n",
-    r_ns_env("rlang")
+    rlang_ns_env
   );
   r_mark_precious(tilde_fn);
 
@@ -528,4 +535,6 @@ void rlang_init_eval_tidy() {
     r_base_env
   );
   r_mark_precious(restore_mask_fn);
+
+  FREE(1);
 }

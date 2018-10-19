@@ -8,7 +8,7 @@ void r_sexp_inspect(sexp* x) {
 }
 
 void r_browse() {
-  r_browse_at(r_current_frame());
+  r_browse_at(KEEP(r_current_frame())); FREE(1);
 }
 void r_browse_at(sexp* env) {
   // The NULL expression is needed because of a limitation in ESS
