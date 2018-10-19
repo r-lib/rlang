@@ -600,3 +600,7 @@ test_that("can subset in middle level", {
   expect_equal(out$calls, exp)
   expect_identical(out$parents, c(0L, 1L, 2L, 2L, 2L))
 })
+
+test_that("fails when `bottom` is not on the stack", {
+  expect_error(trace_back(bottom = env()), "Can't find `bottom`")
+})
