@@ -36,6 +36,8 @@ sexp* r_env_binding_types(sexp* env, sexp* bindings) {
   default: r_abort("Internal error: Unexpected `bindings` type in `r_env_binding_types()`");
   }
 
+  int n_protect = 0;
+
   r_ssize n = r_length(bindings);
   sexp* types = NULL;
   int* types_ptr = NULL;
@@ -59,17 +61,17 @@ sexp* r_env_binding_types(sexp* env, sexp* bindings) {
 
     if (type) {
       if (!types) {
-        types = KEEP(new_binding_types(n));
+        types = KEEP_N(new_binding_types(n), n_protect);
         types_ptr = r_int_deref(types);
       }
       types_ptr[i] = type;
     }
   }
 
+  FREE(n_protect);
   if (all_values) {
     return r_null;
   } else {
-    FREE(1);
     return types;
   }
 }

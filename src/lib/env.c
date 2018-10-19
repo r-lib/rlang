@@ -103,13 +103,16 @@ sexp* r_env_clone(sexp* env, sexp* parent) {
       sexp* sym = r_str_as_symbol(str);
 
       r_ssize fn_idx = r_chr_detect_index(nms, r_str_deref(str));
-      if (fn_idx >= 0) {
-        r_env_unbind_names(out, r_str_as_character(str), false);
-        sexp* fn = r_list_get(out_list, fn_idx);
-        R_MakeActiveBinding(sym, fn, out);
-      } else {
+      if (fn_idx < 0) {
         r_abort("Internal error: Can't find active binding in temporary list");
       }
+
+      sexp* nms = KEEP(r_str_as_character(str));
+      r_env_unbind_names(out, nms, false);
+      FREE(1);
+
+      sexp* fn = r_list_get(out_list, fn_idx);
+      R_MakeActiveBinding(sym, fn, out);
     }
   }
 

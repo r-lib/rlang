@@ -124,15 +124,17 @@ static sexp* tilde_fn = NULL;
 static sexp* restore_mask_fn = NULL;
 
 static void on_exit_restore_lexical_env(sexp* mask, sexp* old, sexp* frame) {
-  sexp* fn = r_duplicate(restore_mask_fn, true);
+  sexp* fn = KEEP(r_duplicate(restore_mask_fn, true));
 
-  sexp* env = r_new_environment(r_base_env, 2);
+  sexp* env = KEEP(r_new_environment(r_base_env, 2));
   r_env_poke(env, mask_sym, mask);
   r_env_poke(env, old_sym, old);
   r_fn_poke_env(fn, env);
 
-  sexp* call = r_new_call(fn, r_null);
+  sexp* call = KEEP(r_new_call(fn, r_null));
   r_on_exit(call, frame);
+
+  FREE(3);
 }
 
 sexp* rlang_new_data_mask(sexp* bottom, sexp* top) {
@@ -422,7 +424,9 @@ sexp* rlang_data_mask_clean(sexp* mask) {
   sexp* env = bottom;
   sexp* parent = r_env_parent(top);
   while (env != parent) {
-    r_env_unbind_names(env, r_env_names(env), false);
+    sexp* nms = KEEP(r_env_names(env));
+    r_env_unbind_names(env, nms, false);
+    FREE(1);
     env = r_env_parent(env);
   }
 
