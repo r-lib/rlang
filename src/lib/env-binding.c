@@ -76,12 +76,14 @@ sexp* r_env_binding_types(sexp* env, sexp* bindings) {
 
   r_ssize n = r_length(bindings);
   sexp* types = KEEP(new_binding_types(n));
-  int* types_ptr = r_int_deref(types);
+  int* types_ptr = r_int_deref(types) + i;
 
   while (i < n) {
     sexp* sym = binding_as_sym(symbols, bindings, i);
-    types_ptr[i] = which_env_binding(env, sym);
+    *types_ptr = which_env_binding(env, sym);
+
     ++i;
+    ++types_ptr;
   }
 
   FREE(1);
