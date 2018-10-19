@@ -45,10 +45,23 @@ static inline sexp* binding_as_sym(bool list, sexp* bindings, r_ssize i) {
   }
 }
 
+static r_ssize detect_special_binding(sexp* env,
+                                      sexp* bindings,
+                                      bool symbols) {
+  r_ssize n = r_length(bindings);
+
+  for (r_ssize i = 0; i < n; ++i) {
+    sexp* sym = binding_as_sym(symbols, bindings, i);
+    if (which_env_binding(env, sym)) {
+      return i;
+    }
+  }
+
+  return -1;
+}
+
 // Returns NULL if all values to spare an alloc
 sexp* r_env_binding_types(sexp* env, sexp* bindings) {
-  bool all_values = true;
-
   bool symbols;
   switch (r_typeof(bindings)) {
   case r_type_list: symbols = true; break;
@@ -56,33 +69,21 @@ sexp* r_env_binding_types(sexp* env, sexp* bindings) {
   default: r_abort("Internal error: Unexpected `bindings` type in `r_env_binding_types()`");
   }
 
-  int n_protect = 0;
+  r_ssize i = detect_special_binding(env, bindings, symbols);
+  if (i < 0) {
+    return r_null;
+  }
 
   r_ssize n = r_length(bindings);
-  sexp* types = NULL;
-  int* types_ptr = NULL;
+  sexp* types = KEEP(new_binding_types(n));
+  int* types_ptr = r_int_deref(types);
 
-  for (r_ssize i = 0; i < n; ++i) {
+  while (i < n) {
     sexp* sym = binding_as_sym(symbols, bindings, i);
-
-    enum r_env_binding_type type = which_env_binding(env, sym);
-    if (type != R_ENV_BINDING_VALUE) {
-      all_values = false;
-    }
-
-    if (type) {
-      if (!types) {
-        types = KEEP_N(new_binding_types(n), n_protect);
-        types_ptr = r_int_deref(types);
-      }
-      types_ptr[i] = type;
-    }
+    types_ptr[i] = which_env_binding(env, sym);
+    ++i;
   }
 
-  FREE(n_protect);
-  if (all_values) {
-    return r_null;
-  } else {
-    return types;
-  }
+  FREE(1);
+  return types;
 }
