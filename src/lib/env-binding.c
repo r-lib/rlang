@@ -37,6 +37,14 @@ static enum r_env_binding_type which_env_binding(sexp* env, sexp* sym) {
   return R_ENV_BINDING_VALUE;
 }
 
+static inline sexp* binding_as_sym(bool list, sexp* bindings, r_ssize i) {
+  if (list) {
+    return r_list_get(bindings, i);
+  } else {
+    return r_str_as_symbol(r_chr_get(bindings, i));
+  }
+}
+
 // Returns NULL if all values to spare an alloc
 sexp* r_env_binding_types(sexp* env, sexp* bindings) {
   bool all_values = true;
@@ -55,12 +63,7 @@ sexp* r_env_binding_types(sexp* env, sexp* bindings) {
   int* types_ptr = NULL;
 
   for (r_ssize i = 0; i < n; ++i) {
-    sexp* sym;
-    if (symbols) {
-      sym = r_list_get(bindings, i);
-    } else {
-      sym = r_str_as_symbol(r_chr_get(bindings, i));
-    }
+    sexp* sym = binding_as_sym(symbols, bindings, i);
 
     enum r_env_binding_type type = which_env_binding(env, sym);
     if (type != R_ENV_BINDING_VALUE) {
