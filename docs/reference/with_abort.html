@@ -142,7 +142,10 @@ you should use <code>tryCatch()</code> and <a href='exiting.html'>exiting</a> ha
     
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><div class='input'><span class='co'># with_abort() automatically casts simple errors thrown by stop()</span>
+    <pre class="examples"><div class='input'><span class='co'># For cleaner backtraces:</span>
+<span class='fu'>options</span>(<span class='kw'>rlang_trace_top_env</span> <span class='kw'>=</span> <span class='fu'><a href='caller_env.html'>current_env</a></span>())
+
+<span class='co'># with_abort() automatically casts simple errors thrown by stop()</span>
 <span class='co'># to rlang errors:</span>
 <span class='no'>fn</span> <span class='kw'>&lt;-</span> <span class='kw'>function</span>() <span class='fu'>stop</span>(<span class='st'>"Base error"</span>)
 <span class='fu'>try</span>(<span class='fu'>with_abort</span>(<span class='fu'>fn</span>()))
@@ -150,19 +153,6 @@ you should use <code>tryCatch()</code> and <a href='exiting.html'>exiting</a> ha
 #&gt; message: Base error
 #&gt; class:   `rlang_error`
 #&gt; backtrace:
-#&gt;  ─(function (...) ...
-#&gt;  ─pkgdown::build_site(...)
-#&gt;  ─pkgdown:::build_site_local(...)
-#&gt;  ─pkgdown::build_reference(...)
-#&gt;  ─purrr::map(...)
-#&gt;  ─pkgdown:::.f(.x[[i]], ...)
-#&gt;  ─pkgdown:::data_reference_topic(...)
-#&gt;  ─pkgdown:::as_data.tag_examples(...)
-#&gt;  ─purrr::pmap_chr(...)
-#&gt;  ─pkgdown:::.f(...)
-#&gt;  ─evaluate::evaluate(code, env, new_device = TRUE)
-#&gt;  ─evaluate:::evaluate_call(...)
-#&gt;  ─[ base::eval(...) ] with 1 more call
 #&gt;  ─global::fn()
 #&gt;  ─base::stop("Base error")
 #&gt; Call `summary(rlang::last_error())` to see the full backtrace</div><div class='input'>
@@ -184,19 +174,7 @@ you should use <code>tryCatch()</code> and <a href='exiting.html'>exiting</a> ha
 #&gt; message: High level error
 #&gt; class:   `rlang_error`
 #&gt; backtrace:
-#&gt;  ─base::tryCatch(...)
-#&gt;  ─pkgdown::build_site(...)
-#&gt;  ─pkgdown:::build_site_local(...)
-#&gt;  ─pkgdown::build_reference(...)
-#&gt;  ─purrr::map(...)
-#&gt;  ─pkgdown:::.f(.x[[i]], ...)
-#&gt;  ─pkgdown:::data_reference_topic(...)
-#&gt;  ─pkgdown:::as_data.tag_examples(...)
-#&gt;  ─purrr::pmap_chr(...)
-#&gt;  ─pkgdown:::.f(...)
-#&gt;  ─evaluate::evaluate(code, env, new_device = TRUE)
-#&gt;  ─evaluate:::evaluate_call(...)
-#&gt;  ─[ base::eval(...) ] with 1 more call
+#&gt;  ─base::try(high_level())
 #&gt;  ─global::high_level()
 #&gt; &lt;error: parent&gt;
 #&gt; message: Low level error
@@ -212,47 +190,12 @@ you should use <code>tryCatch()</code> and <a href='exiting.html'>exiting</a> ha
 #&gt; fields:  `message`, `trace` and `parent`
 #&gt; backtrace:
 #&gt; █
-#&gt; ├─base::tryCatch(...)
-#&gt; │ └─base:::tryCatchList(expr, classes, parentenv, handlers)
-#&gt; │   ├─base:::tryCatchOne(...)
-#&gt; │   │ └─base:::doTryCatch(return(expr), name, parentenv, handler)
-#&gt; │   └─base:::tryCatchList(expr, names[-nh], parentenv, handlers[-nh])
+#&gt; ├─base::try(high_level())
+#&gt; │ └─base::tryCatch(...)
+#&gt; │   └─base:::tryCatchList(expr, classes, parentenv, handlers)
 #&gt; │     └─base:::tryCatchOne(expr, names, parentenv, handlers[[1L]])
 #&gt; │       └─base:::doTryCatch(return(expr), name, parentenv, handler)
-#&gt; ├─base::withCallingHandlers(...)
-#&gt; ├─base::saveRDS(...)
-#&gt; ├─base::do.call(...)
-#&gt; ├─(function (what, args, quote = FALSE, envir = parent.frame()) ...
-#&gt; └─(function (...) ...
-#&gt;   └─pkgdown::build_site(...)
-#&gt;     └─pkgdown:::build_site_local(...)
-#&gt;       └─pkgdown::build_reference(...)
-#&gt;         └─purrr::map(...)
-#&gt;           └─pkgdown:::.f(.x[[i]], ...)
-#&gt;             └─pkgdown:::data_reference_topic(...)
-#&gt;               ├─pkgdown:::as_data(...)
-#&gt;               └─pkgdown:::as_data.tag_examples(...)
-#&gt;                 └─purrr::pmap_chr(...)
-#&gt;                   └─pkgdown:::.f(...)
-#&gt;                     └─evaluate::evaluate(code, env, new_device = TRUE)
-#&gt;                       └─evaluate:::evaluate_call(...)
-#&gt;                         ├─evaluate:::timing_fn(...)
-#&gt;                         ├─evaluate:::handle(...)
-#&gt;                         │ └─base::try(f, silent = TRUE)
-#&gt;                         │   └─base::tryCatch(...)
-#&gt;                         │     └─base:::tryCatchList(expr, classes, parentenv, handlers)
-#&gt;                         │       └─base:::tryCatchOne(expr, names, parentenv, handlers[[1L]])
-#&gt;                         │         └─base:::doTryCatch(return(expr), name, parentenv, handler)
-#&gt;                         ├─base::withCallingHandlers(...)
-#&gt;                         ├─base::withVisible(eval(expr, envir, enclos))
-#&gt;                         └─base::eval(expr, envir, enclos)
-#&gt;                           └─base::eval(expr, envir, enclos)
-#&gt;                             ├─base::try(high_level())
-#&gt;                             │ └─base::tryCatch(...)
-#&gt;                             │   └─base:::tryCatchList(expr, classes, parentenv, handlers)
-#&gt;                             │     └─base:::tryCatchOne(expr, names, parentenv, handlers[[1L]])
-#&gt;                             │       └─base:::doTryCatch(return(expr), name, parentenv, handler)
-#&gt;                             └─global::high_level()
+#&gt; └─global::high_level()
 #&gt; &lt;error: parent&gt;
 #&gt; message: Low level error
 #&gt; class:   `rlang_error`
@@ -260,10 +203,12 @@ you should use <code>tryCatch()</code> and <a href='exiting.html'>exiting</a> ha
 #&gt; backtrace:
 #&gt; █
 #&gt; ├─rlang::with_abort(low_level1())
-#&gt; │ └─base::withCallingHandlers(...) /Users/lionel/Dropbox/Projects/R/hadley/rlang/R/cnd.R:851:2
+#&gt; │ └─base::withCallingHandlers(...) /Users/lionel/Dropbox/Projects/R/hadley/rlang/R/cnd.R:857:2
 #&gt; └─global::low_level1()
 #&gt;   └─global::low_level2()
-#&gt;     └─base::stop("Low level error")</div></pre>
+#&gt;     └─base::stop("Low level error")</div><div class='input'>
+<span class='co'># Reset to default</span>
+<span class='fu'>options</span>(<span class='kw'>rlang_trace_top_env</span> <span class='kw'>=</span> <span class='kw'>NULL</span>)</div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
     <h2>Contents</h2>

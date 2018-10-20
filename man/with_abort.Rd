@@ -24,6 +24,9 @@ you should use \code{\link[=tryCatch]{tryCatch()}} and \link{exiting} handlers o
 \code{with_abort()} rather than inside.
 }
 \examples{
+# For cleaner backtraces:
+options(rlang_trace_top_env = current_env())
+
 # with_abort() automatically casts simple errors thrown by stop()
 # to rlang errors:
 fn <- function() stop("Base error")
@@ -46,4 +49,7 @@ high_level <- function() {
 try(high_level())
 last_error()
 summary(last_error())
+
+# Reset to default
+options(rlang_trace_top_env = NULL)
 }
