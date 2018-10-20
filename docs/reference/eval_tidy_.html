@@ -21,16 +21,23 @@
 <!-- clipboard.js -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/1.7.1/clipboard.min.js" integrity="sha384-cV+rhyOuRHc9Ub/91rihWcGmMmCXDeksTtCihMupQHSsi8GIIRDG0ThDc3HGQFJ3" crossorigin="anonymous"></script>
 
+<!-- sticky kit -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/sticky-kit/1.1.3/sticky-kit.min.js" integrity="sha256-c4Rlo1ZozqTPE2RLuvbusY3+SU1pQaJC0TjuhygMipw=" crossorigin="anonymous"></script>
+
 <!-- pkgdown -->
 <link href="../pkgdown.css" rel="stylesheet">
-<script src="../jquery.sticky-kit.min.js"></script>
 <script src="../pkgdown.js"></script>
-  
-  
+
+
+
 <meta property="og:title" content="Tidy evaluation in a custom environment — eval_tidy_" />
 
-<meta property="og:description" content="This function is soft-deprecated as of rlang 0.2.0." />
+<meta property="og:description" content="
+This function is defunct as of rlang 0.3.0." />
 <meta name="twitter:card" content="summary" />
+
+
+
 <!-- mathjax -->
 <script src='https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML'></script>
 
@@ -53,8 +60,12 @@
         <span class="icon-bar"></span>
         <span class="icon-bar"></span>
       </button>
-      <a class="navbar-brand" href="../index.html">rlang</a>
+      <span class="navbar-brand">
+        <a class="navbar-link" href="../index.html">rlang</a>
+        <span class="label label-default" data-toggle="tooltip" data-placement="bottom" title="Released package">0.3.0</span>
+      </span>
     </div>
+
     <div id="navbar" class="navbar-collapse collapse">
       <ul class="nav navbar-nav">
         <li>
@@ -76,6 +87,7 @@
   </a>
 </li>
       </ul>
+      
     </div><!--/.nav-collapse -->
   </div><!--/.container -->
 </div><!--/.navbar -->
@@ -83,19 +95,24 @@
       
       </header>
 
-      <div class="row">
+<div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
     <h1>Tidy evaluation in a custom environment</h1>
+    <small class="dont-index">Source: <a href='https://github.com/r-lib/rlang/blob/master/R/lifecycle-retired.R'><code>R/lifecycle-retired.R</code></a></small>
+    <div class="hidden name"><code>eval_tidy_.Rd</code></div>
     </div>
 
+    <div class="ref-description">
     
-    <p>This function is soft-deprecated as of rlang 0.2.0.</p>
+    <p><img src='figures/lifecycle-defunct.svg' alt='Defunct lifecycle' /></p>
+<p>This function is defunct as of rlang 0.3.0.</p>
     
+    </div>
 
     <pre class="usage"><span class='fu'>eval_tidy_</span>(<span class='no'>expr</span>, <span class='no'>bottom</span>, <span class='kw'>top</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>env</span> <span class='kw'>=</span> <span class='fu'><a href='caller_env.html'>caller_env</a></span>())</pre>
     
-    <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a> Arguments</h2>
+    <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
     <colgroup><col class="name" /><col class="desc" /></colgroup>
     <tr>
@@ -117,8 +134,8 @@ is only one environment deep, <code>top</code> should be the same as
     <tr>
       <th>env</th>
       <td><p>The environment in which to evaluate <code>expr</code>. This
-environment is always ignored when evaluating quosures. Quosures
-are evaluated in their own environment.</p></td>
+environment is not applicable for quosures because they have
+their own environments.</p></td>
     </tr>
     </table>
     
@@ -145,5 +162,8 @@ are evaluated in their own environment.</p></td>
       </footer>
    </div>
 
+  
+
   </body>
 </html>
+

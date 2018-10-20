@@ -21,12 +21,15 @@
 <!-- clipboard.js -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/1.7.1/clipboard.min.js" integrity="sha384-cV+rhyOuRHc9Ub/91rihWcGmMmCXDeksTtCihMupQHSsi8GIIRDG0ThDc3HGQFJ3" crossorigin="anonymous"></script>
 
+<!-- sticky kit -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/sticky-kit/1.1.3/sticky-kit.min.js" integrity="sha256-c4Rlo1ZozqTPE2RLuvbusY3+SU1pQaJC0TjuhygMipw=" crossorigin="anonymous"></script>
+
 <!-- pkgdown -->
 <link href="../pkgdown.css" rel="stylesheet">
-<script src="../jquery.sticky-kit.min.js"></script>
 <script src="../pkgdown.js"></script>
-  
-  
+
+
+
 <meta property="og:title" content="Establish handlers on the stack — with_handlers" />
 
 <meta property="og:description" content="Condition handlers are functions established on the evaluation
@@ -34,9 +37,12 @@ stack (see ctxt_stack()) that are called by R when a condition is
 signalled (see cnd_signal() and abort() for two common signal
 functions). They come in two types: exiting handlers, which jump
 out of the signalling context and are transferred to
-with_handlers() before being executed. And inplace handlers,
+with_handlers() before being executed. And calling handlers,
 which are executed within the signal functions." />
 <meta name="twitter:card" content="summary" />
+
+
+
 <!-- mathjax -->
 <script src='https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML'></script>
 
@@ -59,8 +65,12 @@ which are executed within the signal functions." />
         <span class="icon-bar"></span>
         <span class="icon-bar"></span>
       </button>
-      <a class="navbar-brand" href="../index.html">rlang</a>
+      <span class="navbar-brand">
+        <a class="navbar-link" href="../index.html">rlang</a>
+        <span class="label label-default" data-toggle="tooltip" data-placement="bottom" title="Released package">0.3.0</span>
+      </span>
     </div>
+
     <div id="navbar" class="navbar-collapse collapse">
       <ul class="nav navbar-nav">
         <li>
@@ -82,6 +92,7 @@ which are executed within the signal functions." />
   </a>
 </li>
       </ul>
+      
     </div><!--/.nav-collapse -->
   </div><!--/.container -->
 </div><!--/.navbar -->
@@ -89,25 +100,29 @@ which are executed within the signal functions." />
       
       </header>
 
-      <div class="row">
+<div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
     <h1>Establish handlers on the stack</h1>
+    <small class="dont-index">Source: <a href='https://github.com/r-lib/rlang/blob/master/R/cnd-handlers.R'><code>R/cnd-handlers.R</code></a></small>
+    <div class="hidden name"><code>with_handlers.Rd</code></div>
     </div>
 
+    <div class="ref-description">
     
     <p>Condition handlers are functions established on the evaluation
 stack (see <code><a href='stack.html'>ctxt_stack()</a></code>) that are called by R when a condition is
 signalled (see <code><a href='cnd_signal.html'>cnd_signal()</a></code> and <code><a href='abort.html'>abort()</a></code> for two common signal
 functions). They come in two types: exiting handlers, which jump
 out of the signalling context and are transferred to
-<code>with_handlers()</code> before being executed. And inplace handlers,
+<code>with_handlers()</code> before being executed. And calling handlers,
 which are executed within the signal functions.</p>
     
+    </div>
 
     <pre class="usage"><span class='fu'>with_handlers</span>(<span class='no'>.expr</span>, <span class='no'>...</span>)</pre>
     
-    <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a> Arguments</h2>
+    <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
     <colgroup><col class="name" /><col class="desc" /></colgroup>
     <tr>
@@ -118,10 +133,11 @@ expression or a quoted formula.</p></td>
     </tr>
     <tr>
       <th>...</th>
-      <td><p>Named handlers. Handlers should inherit from <code>exiting</code>
-or <code>inplace</code>. See <code><a href='exiting.html'>exiting()</a></code> and <code><a href='exiting.html'>inplace()</a></code> for constructing
-such handlers. Dots are evaluated with <a href='tidy-dots.html'>explicit
-splicing</a>.</p></td>
+      <td><p>Named handlers. These should be functions of one
+argument. These handlers are treated as exiting by default. Use
+<code><a href='exiting.html'>calling()</a></code> to specify a calling handler. These dots support
+<a href='tidy-dots.html'>tidy dots</a> features and are passed to <code><a href='as_function.html'>as_function()</a></code>
+to enable the formula shortcut for lambda functions.</p></td>
     </tr>
     </table>
     
@@ -134,24 +150,23 @@ of that handler. On the other hand, in place handlers do not
 necessarily take charge. If they return normally, they decline to
 handle the condition, and R looks for other handlers established on
 the evaluation stack. Only by jumping to an earlier call frame can
-an inplace handler take charge of the condition and stop the
+a calling handler take charge of the condition and stop the
 signalling process. Sometimes, a muffling restart has been
 established for the purpose of jumping out of the signalling
 function but not out of the context where the condition was
 signalled, which allows execution to resume normally. See
-<code><a href='rst_muffle.html'>rst_muffle()</a></code> the <code>muffle</code> argument of <code><a href='exiting.html'>inplace()</a></code> and the
-<code>mufflable</code> argument of <code><a href='cnd_signal.html'>cnd_signal()</a></code>.</p>
+<code><a href='cnd_muffle.html'>cnd_muffle()</a></code> and the <code>mufflable</code> argument of <code><a href='cnd_signal.html'>cnd_signal()</a></code>.</p>
 <p>Exiting handlers are established first by <code>with_handlers()</code>, and in
 place handlers are installed in second place. The latter handlers
 thus take precedence over the former.</p>
     
     <h2 class="hasAnchor" id="see-also"><a class="anchor" href="#see-also"></a>See also</h2>
 
-    <p><code><a href='exiting.html'>exiting()</a></code>, <code><a href='exiting.html'>inplace()</a></code>.</p>
+    <div class='dont-index'><p><code><a href='exiting.html'>exiting()</a></code>, <code><a href='exiting.html'>calling()</a></code>.</p></div>
     
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><div class='input'><span class='co'># Signal a condition with cnd_signal():</span>
+    <pre class="examples"><div class='input'><span class='co'># Signal a condition with signal():</span>
 <span class='no'>fn</span> <span class='kw'>&lt;-</span> <span class='kw'>function</span>() {
   <span class='fu'>g</span>()
   <span class='fu'>cat</span>(<span class='st'>"called?\n"</span>)
@@ -162,7 +177,7 @@ thus take precedence over the former.</p>
   <span class='fu'>cat</span>(<span class='st'>"called?\n"</span>)
 }
 <span class='no'>h</span> <span class='kw'>&lt;-</span> <span class='kw'>function</span>() {
-  <span class='fu'><a href='cnd_signal.html'>cnd_signal</a></span>(<span class='st'>"foo"</span>)
+  <span class='fu'><a href='abort.html'>signal</a></span>(<span class='st'>"A foobar condition occurred"</span>, <span class='st'>"foo"</span>)
   <span class='fu'>cat</span>(<span class='st'>"called?\n"</span>)
 }
 
@@ -170,13 +185,15 @@ thus take precedence over the former.</p>
 <span class='co'># executed. Their return value is handed over:</span>
 <span class='no'>handler</span> <span class='kw'>&lt;-</span> <span class='kw'>function</span>(<span class='no'>c</span>) <span class='st'>"handler return value"</span>
 <span class='fu'>with_handlers</span>(<span class='fu'>fn</span>(), <span class='kw'>foo</span> <span class='kw'>=</span> <span class='fu'><a href='exiting.html'>exiting</a></span>(<span class='no'>handler</span>))</div><div class='output co'>#&gt; [1] "handler return value"</div><div class='input'>
+<span class='co'># Handlers are exiting by default so you can omit the adjective:</span>
+<span class='fu'>with_handlers</span>(<span class='fu'>fn</span>(), <span class='kw'>foo</span> <span class='kw'>=</span> <span class='no'>handler</span>)</div><div class='output co'>#&gt; [1] "handler return value"</div><div class='input'>
 <span class='co'># In place handlers are called in turn and their return value is</span>
 <span class='co'># ignored. Returning just means they are declining to take charge of</span>
 <span class='co'># the condition. However, they can produce side-effects such as</span>
 <span class='co'># displaying a message:</span>
 <span class='no'>some_handler</span> <span class='kw'>&lt;-</span> <span class='kw'>function</span>(<span class='no'>c</span>) <span class='fu'>cat</span>(<span class='st'>"some handler!\n"</span>)
 <span class='no'>other_handler</span> <span class='kw'>&lt;-</span> <span class='kw'>function</span>(<span class='no'>c</span>) <span class='fu'>cat</span>(<span class='st'>"other handler!\n"</span>)
-<span class='fu'>with_handlers</span>(<span class='fu'>fn</span>(), <span class='kw'>foo</span> <span class='kw'>=</span> <span class='fu'><a href='exiting.html'>inplace</a></span>(<span class='no'>some_handler</span>), <span class='kw'>foo</span> <span class='kw'>=</span> <span class='fu'><a href='exiting.html'>inplace</a></span>(<span class='no'>other_handler</span>))</div><div class='output co'>#&gt; some handler!
+<span class='fu'>with_handlers</span>(<span class='fu'>fn</span>(), <span class='kw'>foo</span> <span class='kw'>=</span> <span class='fu'><a href='exiting.html'>calling</a></span>(<span class='no'>some_handler</span>), <span class='kw'>foo</span> <span class='kw'>=</span> <span class='fu'><a href='exiting.html'>calling</a></span>(<span class='no'>other_handler</span>))</div><div class='output co'>#&gt; some handler!
 #&gt; other handler!
 #&gt; called?
 #&gt; called?
@@ -190,7 +207,7 @@ thus take precedence over the former.</p>
 <span class='no'>fn2</span> <span class='kw'>&lt;-</span> <span class='kw'>function</span>() {
   <span class='fu'><a href='with_restarts.html'>with_restarts</a></span>(<span class='fu'>g</span>(), <span class='kw'>rst_foo</span> <span class='kw'>=</span> <span class='kw'>function</span>() <span class='st'>"restart value"</span>)
 }
-<span class='fu'>with_handlers</span>(<span class='fu'>fn2</span>(), <span class='kw'>foo</span> <span class='kw'>=</span> <span class='fu'><a href='exiting.html'>inplace</a></span>(<span class='no'>exiting_handler</span>), <span class='kw'>foo</span> <span class='kw'>=</span> <span class='fu'><a href='exiting.html'>inplace</a></span>(<span class='no'>other_handler</span>))</div><div class='output co'>#&gt; [1] "restart value"</div></pre>
+<span class='fu'>with_handlers</span>(<span class='fu'>fn2</span>(), <span class='kw'>foo</span> <span class='kw'>=</span> <span class='fu'><a href='exiting.html'>calling</a></span>(<span class='no'>exiting_handler</span>), <span class='kw'>foo</span> <span class='kw'>=</span> <span class='fu'><a href='exiting.html'>calling</a></span>(<span class='no'>other_handler</span>))</div><div class='output co'>#&gt; [1] "restart value"</div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
     <h2>Contents</h2>
@@ -219,5 +236,8 @@ thus take precedence over the former.</p>
       </footer>
    </div>
 
+  
+
   </body>
 </html>
+

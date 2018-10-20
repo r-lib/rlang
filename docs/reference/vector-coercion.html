@@ -21,24 +21,31 @@
 <!-- clipboard.js -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/1.7.1/clipboard.min.js" integrity="sha384-cV+rhyOuRHc9Ub/91rihWcGmMmCXDeksTtCihMupQHSsi8GIIRDG0ThDc3HGQFJ3" crossorigin="anonymous"></script>
 
+<!-- sticky kit -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/sticky-kit/1.1.3/sticky-kit.min.js" integrity="sha256-c4Rlo1ZozqTPE2RLuvbusY3+SU1pQaJC0TjuhygMipw=" crossorigin="anonymous"></script>
+
 <!-- pkgdown -->
 <link href="../pkgdown.css" rel="stylesheet">
-<script src="../jquery.sticky-kit.min.js"></script>
 <script src="../pkgdown.js"></script>
-  
-  
+
+
+
 <meta property="og:title" content="Coerce an object to a base type — vector-coercion" />
 
-<meta property="og:description" content="These are equivalent to the base functions (e.g. as.logical(),
+<meta property="og:description" content="
+These are equivalent to the base functions (e.g. as.logical(),
 as.list(), etc), but perform coercion rather than conversion.
 This means they are not generic and will not call S3 conversion
 methods. They only attempt to coerce the base type of their
 input. In addition, they have stricter implicit coercion rules and
 will never attempt any kind of parsing. E.g. they will not try to
 figure out if a character vector represents integers or booleans.
-Finally, they have treat attributes consistently, unlike the base R
+Finally, they treat attributes consistently, unlike the base R
 functions: all attributes except names are removed." />
 <meta name="twitter:card" content="summary" />
+
+
+
 <!-- mathjax -->
 <script src='https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML'></script>
 
@@ -61,8 +68,12 @@ functions: all attributes except names are removed." />
         <span class="icon-bar"></span>
         <span class="icon-bar"></span>
       </button>
-      <a class="navbar-brand" href="../index.html">rlang</a>
+      <span class="navbar-brand">
+        <a class="navbar-link" href="../index.html">rlang</a>
+        <span class="label label-default" data-toggle="tooltip" data-placement="bottom" title="Released package">0.3.0</span>
+      </span>
     </div>
+
     <div id="navbar" class="navbar-collapse collapse">
       <ul class="nav navbar-nav">
         <li>
@@ -84,6 +95,7 @@ functions: all attributes except names are removed." />
   </a>
 </li>
       </ul>
+      
     </div><!--/.nav-collapse -->
   </div><!--/.container -->
 </div><!--/.navbar -->
@@ -91,23 +103,28 @@ functions: all attributes except names are removed." />
       
       </header>
 
-      <div class="row">
+<div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
     <h1>Coerce an object to a base type</h1>
+    <small class="dont-index">Source: <a href='https://github.com/r-lib/rlang/blob/master/R/vec-coerce.R'><code>R/vec-coerce.R</code></a></small>
+    <div class="hidden name"><code>vector-coercion.Rd</code></div>
     </div>
 
+    <div class="ref-description">
     
-    <p>These are equivalent to the base functions (e.g. <code>as.logical()</code>,
+    <p><a href='https://www.tidyverse.org/lifecycle/#questioning'><img src='figures/lifecycle-questioning.svg' alt='Questioning lifecycle'></a></p>
+<p>These are equivalent to the base functions (e.g. <code>as.logical()</code>,
 <code>as.list()</code>, etc), but perform coercion rather than conversion.
 This means they are not generic and will not call S3 conversion
 methods. They only attempt to coerce the base type of their
 input. In addition, they have stricter implicit coercion rules and
 will never attempt any kind of parsing. E.g. they will not try to
 figure out if a character vector represents integers or booleans.
-Finally, they have treat attributes consistently, unlike the base R
+Finally, they treat attributes consistently, unlike the base R
 functions: all attributes except names are removed.</p>
     
+    </div>
 
     <pre class="usage"><span class='fu'>as_logical</span>(<span class='no'>x</span>)
 
@@ -123,7 +140,7 @@ functions: all attributes except names are removed.</p>
 
 <span class='fu'>as_list</span>(<span class='no'>x</span>)</pre>
     
-    <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a> Arguments</h2>
+    <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
     <colgroup><col class="name" /><col class="desc" /></colgroup>
     <tr>
@@ -264,5 +281,8 @@ place and has side-effects.</p>
       </footer>
    </div>
 
+  
+
   </body>
 </html>
+

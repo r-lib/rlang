@@ -21,12 +21,15 @@
 <!-- clipboard.js -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/1.7.1/clipboard.min.js" integrity="sha384-cV+rhyOuRHc9Ub/91rihWcGmMmCXDeksTtCihMupQHSsi8GIIRDG0ThDc3HGQFJ3" crossorigin="anonymous"></script>
 
+<!-- sticky kit -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/sticky-kit/1.1.3/sticky-kit.min.js" integrity="sha256-c4Rlo1ZozqTPE2RLuvbusY3+SU1pQaJC0TjuhygMipw=" crossorigin="anonymous"></script>
+
 <!-- pkgdown -->
 <link href="../pkgdown.css" rel="stylesheet">
-<script src="../jquery.sticky-kit.min.js"></script>
 <script src="../pkgdown.js"></script>
-  
-  
+
+
+
 <meta property="og:title" content="Get parent environments — env_parent" />
 
 <meta property="og:description" content="
@@ -35,11 +38,14 @@ with n = 1, the grandparent with n = 2, etc.
 env_tail() searches through the parents and returns the one
 which has empty_env() as parent.
 env_parents() returns the list of all parents, including the
-empty environment.
+empty environment. This list is named using env_name().
 " />
 
 <meta property="og:description" content="See the section on inheritance in env()'s documentation." />
 <meta name="twitter:card" content="summary" />
+
+
+
 <!-- mathjax -->
 <script src='https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML'></script>
 
@@ -62,8 +68,12 @@ empty environment.
         <span class="icon-bar"></span>
         <span class="icon-bar"></span>
       </button>
-      <a class="navbar-brand" href="../index.html">rlang</a>
+      <span class="navbar-brand">
+        <a class="navbar-link" href="../index.html">rlang</a>
+        <span class="label label-default" data-toggle="tooltip" data-placement="bottom" title="Released package">0.3.0</span>
+      </span>
     </div>
+
     <div id="navbar" class="navbar-collapse collapse">
       <ul class="nav navbar-nav">
         <li>
@@ -85,6 +95,7 @@ empty environment.
   </a>
 </li>
       </ul>
+      
     </div><!--/.nav-collapse -->
   </div><!--/.container -->
 </div><!--/.navbar -->
@@ -92,12 +103,15 @@ empty environment.
       
       </header>
 
-      <div class="row">
+<div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
     <h1>Get parent environments</h1>
+    <small class="dont-index">Source: <a href='https://github.com/r-lib/rlang/blob/master/R/env.R'><code>R/env.R</code></a></small>
+    <div class="hidden name"><code>env_parent.Rd</code></div>
     </div>
 
+    <div class="ref-description">
     
     <ul>
 <li><p><code>env_parent()</code> returns the parent environment of <code>env</code> if called
@@ -105,35 +119,43 @@ with <code>n = 1</code>, the grandparent with <code>n = 2</code>, etc.</p></li>
 <li><p><code>env_tail()</code> searches through the parents and returns the one
 which has <code><a href='empty_env.html'>empty_env()</a></code> as parent.</p></li>
 <li><p><code>env_parents()</code> returns the list of all parents, including the
-empty environment.</p></li>
+empty environment. This list is named using <code><a href='env_name.html'>env_name()</a></code>.</p></li>
 </ul>
 
     <p>See the section on <em>inheritance</em> in <code><a href='env.html'>env()</a></code>'s documentation.</p>
     
+    </div>
 
     <pre class="usage"><span class='fu'>env_parent</span>(<span class='kw'>env</span> <span class='kw'>=</span> <span class='fu'><a href='caller_env.html'>caller_env</a></span>(), <span class='kw'>n</span> <span class='kw'>=</span> <span class='fl'>1</span>)
 
-<span class='fu'>env_tail</span>(<span class='kw'>env</span> <span class='kw'>=</span> <span class='fu'><a href='caller_env.html'>caller_env</a></span>(), <span class='kw'>sentinel</span> <span class='kw'>=</span> <span class='fu'><a href='empty_env.html'>empty_env</a></span>())
+<span class='fu'>env_tail</span>(<span class='kw'>env</span> <span class='kw'>=</span> <span class='fu'><a href='caller_env.html'>caller_env</a></span>(), <span class='kw'>last</span> <span class='kw'>=</span> <span class='fu'><a href='search_envs.html'>global_env</a></span>(), <span class='kw'>sentinel</span> <span class='kw'>=</span> <span class='kw'>NULL</span>)
 
-<span class='fu'>env_parents</span>(<span class='kw'>env</span> <span class='kw'>=</span> <span class='fu'><a href='caller_env.html'>caller_env</a></span>())</pre>
+<span class='fu'>env_parents</span>(<span class='kw'>env</span> <span class='kw'>=</span> <span class='fu'><a href='caller_env.html'>caller_env</a></span>(), <span class='kw'>last</span> <span class='kw'>=</span> <span class='fu'><a href='search_envs.html'>global_env</a></span>())</pre>
     
-    <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a> Arguments</h2>
+    <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
     <colgroup><col class="name" /><col class="desc" /></colgroup>
     <tr>
       <th>env</th>
-      <td><p>An environment or an object bundling an environment,
-e.g. a formula, <a href='quotation.html'>quosure</a> or <a href='is_function.html'>closure</a>.</p></td>
+      <td><p>An environment.</p></td>
     </tr>
     <tr>
       <th>n</th>
       <td><p>The number of generations to go up.</p></td>
     </tr>
     <tr>
+      <th>last</th>
+      <td><p>The environment at which to stop. Defaults to the
+global environment. The empty environment is always a stopping
+condition so it is safe to leave the default even when taking the
+tail or the parents of an environment on the search path.</p>
+<p><code>env_tail()</code> returns the environment which has <code>last</code> as parent
+and <code>env_parents()</code> returns the list of environments up to <code>last</code>.</p></td>
+    </tr>
+    <tr>
       <th>sentinel</th>
-      <td><p>The environment signalling the end of the linear
-search. <code>env_tail()</code> returns the environment which has <code>sentinel</code>
-as parent.</p></td>
+      <td><p>This argument is soft-deprecated, please use <code>last</code>
+instead.</p></td>
     </tr>
     </table>
     
@@ -142,20 +164,26 @@ as parent.</p></td>
     <p>An environment for <code>env_parent()</code> and <code>env_tail()</code>, a list
 of environments for <code>env_parents()</code>.</p>
     
+    <h2 class="hasAnchor" id="life-cycle"><a class="anchor" href="#life-cycle"></a>Life cycle</h2>
+
+    
+    <p>The <code>sentinel</code> argument of <code>env_tail()</code> has been deprecated in
+rlang 0.2.0 and renamed to <code>last</code>.</p>
+    
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
     <pre class="examples"><div class='input'><span class='co'># Get the parent environment with env_parent():</span>
-<span class='fu'>env_parent</span>(<span class='fu'><a href='scoped_env.html'>global_env</a></span>())</div><div class='output co'>#&gt; &lt;environment: package:rlang&gt;
+<span class='fu'>env_parent</span>(<span class='fu'><a href='search_envs.html'>global_env</a></span>())</div><div class='output co'>#&gt; &lt;environment: package:rlang&gt;
 #&gt; attr(,"name")
 #&gt; [1] "package:rlang"
 #&gt; attr(,"path")
 #&gt; [1] "/Users/lionel/Dropbox/Projects/R/hadley/rlang"</div><div class='input'>
 <span class='co'># Or the tail environment with env_tail():</span>
-<span class='fu'>env_tail</span>(<span class='fu'><a href='scoped_env.html'>global_env</a></span>())</div><div class='output co'>#&gt; &lt;environment: base&gt;</div><div class='input'>
+<span class='fu'>env_tail</span>(<span class='fu'><a href='search_envs.html'>global_env</a></span>())</div><div class='output co'>#&gt; &lt;environment: base&gt;</div><div class='input'>
 <span class='co'># By default, env_parent() returns the parent environment of the</span>
 <span class='co'># current evaluation frame. If called at top-level (the global</span>
 <span class='co'># frame), the following two expressions are equivalent:</span>
-<span class='fu'>env_parent</span>()</div><div class='output co'>#&gt; &lt;environment: 0x7f8295fd63b8&gt;</div><div class='input'><span class='fu'>env_parent</span>(<span class='fu'><a href='scoped_env.html'>base_env</a></span>())</div><div class='output co'>#&gt; &lt;environment: R_EmptyEnv&gt;</div><div class='input'>
+<span class='fu'>env_parent</span>()</div><div class='output co'>#&gt; &lt;environment: 0x7f85c9072e18&gt;</div><div class='input'><span class='fu'>env_parent</span>(<span class='fu'><a href='search_envs.html'>base_env</a></span>())</div><div class='output co'>#&gt; &lt;environment: R_EmptyEnv&gt;</div><div class='input'>
 <span class='co'># This default is more handy when called within a function. In this</span>
 <span class='co'># case, the enclosure environment of the function is returned</span>
 <span class='co'># (since it is the parent of the evaluation frame):</span>
@@ -169,6 +197,8 @@ of environments for <code>env_parents()</code>.</p>
       <li><a href="#arguments">Arguments</a></li>
       
       <li><a href="#value">Value</a></li>
+
+      <li><a href="#life-cycle">Life cycle</a></li>
       
       <li><a href="#examples">Examples</a></li>
     </ul>
@@ -188,5 +218,8 @@ of environments for <code>env_parents()</code>.</p>
       </footer>
    </div>
 
+  
+
   </body>
 </html>
+

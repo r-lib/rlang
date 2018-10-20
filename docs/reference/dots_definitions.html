@@ -21,16 +21,22 @@
 <!-- clipboard.js -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/1.7.1/clipboard.min.js" integrity="sha384-cV+rhyOuRHc9Ub/91rihWcGmMmCXDeksTtCihMupQHSsi8GIIRDG0ThDc3HGQFJ3" crossorigin="anonymous"></script>
 
+<!-- sticky kit -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/sticky-kit/1.1.3/sticky-kit.min.js" integrity="sha256-c4Rlo1ZozqTPE2RLuvbusY3+SU1pQaJC0TjuhygMipw=" crossorigin="anonymous"></script>
+
 <!-- pkgdown -->
 <link href="../pkgdown.css" rel="stylesheet">
-<script src="../jquery.sticky-kit.min.js"></script>
 <script src="../pkgdown.js"></script>
-  
-  
+
+
+
 <meta property="og:title" content="Capture definition objects — dots_definitions" />
 
 <meta property="og:description" content="Capture definition objects" />
 <meta name="twitter:card" content="summary" />
+
+
+
 <!-- mathjax -->
 <script src='https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML'></script>
 
@@ -53,8 +59,12 @@
         <span class="icon-bar"></span>
         <span class="icon-bar"></span>
       </button>
-      <a class="navbar-brand" href="../index.html">rlang</a>
+      <span class="navbar-brand">
+        <a class="navbar-link" href="../index.html">rlang</a>
+        <span class="label label-default" data-toggle="tooltip" data-placement="bottom" title="Released package">0.3.0</span>
+      </span>
     </div>
+
     <div id="navbar" class="navbar-collapse collapse">
       <ul class="nav navbar-nav">
         <li>
@@ -76,6 +86,7 @@
   </a>
 </li>
       </ul>
+      
     </div><!--/.nav-collapse -->
   </div><!--/.container -->
 </div><!--/.navbar -->
@@ -83,20 +94,24 @@
       
       </header>
 
-      <div class="row">
+<div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
     <h1>Capture definition objects</h1>
+    <small class="dont-index">Source: <a href='https://github.com/r-lib/rlang/blob/master/R/dots.R'><code>R/dots.R</code></a></small>
+    <div class="hidden name"><code>dots_definitions.Rd</code></div>
     </div>
 
+    <div class="ref-description">
     
     <p>Capture definition objects</p>
     
+    </div>
 
-    <pre class="usage"><span class='fu'>dots_definitions</span>(<span class='no'>...</span>, <span class='kw'>.named</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>, <span class='kw'>.ignore_empty</span> <span class='kw'>=</span> <span class='fu'>c</span>(<span class='st'>"trailing"</span>, <span class='st'>"none"</span>,
-  <span class='st'>"all"</span>))</pre>
+    <pre class="usage"><span class='fu'>dots_definitions</span>(<span class='no'>...</span>, <span class='kw'>.named</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>, <span class='kw'>.ignore_empty</span> <span class='kw'>=</span> <span class='fu'>c</span>(<span class='st'>"trailing"</span>,
+  <span class='st'>"none"</span>, <span class='st'>"all"</span>))</pre>
     
-    <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a> Arguments</h2>
+    <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
     <colgroup><col class="name" /><col class="desc" /></colgroup>
     <tr>
@@ -109,16 +124,17 @@ arguments to capture without evaluation (including <code>...</code>). For
     <tr>
       <th>.named</th>
       <td><p>Whether to ensure all dots are named. Unnamed
-elements are processed with <code><a href='expr_label.html'>expr_text()</a></code> to figure out a default
-name. If an integer, it is passed to the <code>width</code> argument of
-<code><a href='expr_label.html'>expr_text()</a></code>, if <code>TRUE</code>, the default width is used. See
-<code><a href='exprs_auto_name.html'>exprs_auto_name()</a></code>.</p></td>
+elements are processed with <code><a href='quo_label.html'>quo_name()</a></code> to build a default
+name. See also <code><a href='exprs_auto_name.html'>quos_auto_name()</a></code>.</p></td>
     </tr>
     <tr>
       <th>.ignore_empty</th>
       <td><p>Whether to ignore empty arguments. Can be one
 of <code>"trailing"</code>, <code>"none"</code>, <code>"all"</code>. If <code>"trailing"</code>, only the
-last argument is ignored if it is empty.</p></td>
+last argument is ignored if it is empty. Note that <code>"trailing"</code>
+applies only to arguments passed in <code>...</code>, not to named
+arguments. On the other hand, <code>"all"</code> also applies to named
+arguments.</p></td>
     </tr>
     </table>
     
@@ -152,5 +168,8 @@ last argument is ignored if it is empty.</p></td>
       </footer>
    </div>
 
+  
+
   </body>
 </html>
+

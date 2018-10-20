@@ -21,12 +21,15 @@
 <!-- clipboard.js -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/1.7.1/clipboard.min.js" integrity="sha384-cV+rhyOuRHc9Ub/91rihWcGmMmCXDeksTtCihMupQHSsi8GIIRDG0ThDc3HGQFJ3" crossorigin="anonymous"></script>
 
+<!-- sticky kit -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/sticky-kit/1.1.3/sticky-kit.min.js" integrity="sha256-c4Rlo1ZozqTPE2RLuvbusY3+SU1pQaJC0TjuhygMipw=" crossorigin="anonymous"></script>
+
 <!-- pkgdown -->
 <link href="../pkgdown.css" rel="stylesheet">
-<script src="../jquery.sticky-kit.min.js"></script>
 <script src="../pkgdown.js"></script>
-  
-  
+
+
+
 <meta property="og:title" content="Print an expression — expr_print" />
 
 <meta property="og:description" content="expr_print(), powered by expr_deparse(), is an alternative
@@ -38,12 +41,15 @@ quosures from local environments are printed in unique colour (or
 in italic when all colours are taken).
 It wraps inlined objects in angular brackets. For instance, an
 integer vector unquoted in a function call (e.g.
-expr(foo(!!(1:3)))) is printed like this: foo(&lt;int: 1L, 2L, 3L&gt;) while by default R prints the code to create that vector:
+expr(foo(!!(1:3)))) is printed like this: foo(&amp;lt;int: 1L, 2L, 3L&amp;gt;) while by default R prints the code to create that vector:
 foo(1:3) which is ambiguous.
 It respects the width boundary (from the global option width)
 in more cases.
 " />
 <meta name="twitter:card" content="summary" />
+
+
+
 <!-- mathjax -->
 <script src='https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML'></script>
 
@@ -66,8 +72,12 @@ in more cases.
         <span class="icon-bar"></span>
         <span class="icon-bar"></span>
       </button>
-      <a class="navbar-brand" href="../index.html">rlang</a>
+      <span class="navbar-brand">
+        <a class="navbar-link" href="../index.html">rlang</a>
+        <span class="label label-default" data-toggle="tooltip" data-placement="bottom" title="Released package">0.3.0</span>
+      </span>
     </div>
+
     <div id="navbar" class="navbar-collapse collapse">
       <ul class="nav navbar-nav">
         <li>
@@ -89,6 +99,7 @@ in more cases.
   </a>
 </li>
       </ul>
+      
     </div><!--/.nav-collapse -->
   </div><!--/.container -->
 </div><!--/.navbar -->
@@ -96,12 +107,15 @@ in more cases.
       
       </header>
 
-      <div class="row">
+<div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
     <h1>Print an expression</h1>
+    <small class="dont-index">Source: <a href='https://github.com/r-lib/rlang/blob/master/R/expr.R'><code>R/expr.R</code></a></small>
+    <div class="hidden name"><code>expr_print.Rd</code></div>
     </div>
 
+    <div class="ref-description">
     
     <p><code>expr_print()</code>, powered by <code>expr_deparse()</code>, is an alternative
 printer for R expressions with a few improvements over the base R
@@ -118,12 +132,13 @@ integer vector unquoted in a function call (e.g.
 in more cases.</p></li>
 </ul>
     
+    </div>
 
     <pre class="usage"><span class='fu'>expr_print</span>(<span class='no'>x</span>, <span class='kw'>width</span> <span class='kw'>=</span> <span class='fu'><a href='scoped_options.html'>peek_option</a></span>(<span class='st'>"width"</span>))
 
 <span class='fu'>expr_deparse</span>(<span class='no'>x</span>, <span class='kw'>width</span> <span class='kw'>=</span> <span class='fu'><a href='scoped_options.html'>peek_option</a></span>(<span class='st'>"width"</span>))</pre>
     
-    <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a> Arguments</h2>
+    <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
     <colgroup><col class="name" /><col class="desc" /></colgroup>
     <tr>
@@ -180,5 +195,8 @@ Defaults to the global option <code>width</code>.</p></td>
       </footer>
    </div>
 
+  
+
   </body>
 </html>
+

@@ -21,15 +21,19 @@
 <!-- clipboard.js -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/1.7.1/clipboard.min.js" integrity="sha384-cV+rhyOuRHc9Ub/91rihWcGmMmCXDeksTtCihMupQHSsi8GIIRDG0ThDc3HGQFJ3" crossorigin="anonymous"></script>
 
+<!-- sticky kit -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/sticky-kit/1.1.3/sticky-kit.min.js" integrity="sha256-c4Rlo1ZozqTPE2RLuvbusY3+SU1pQaJC0TjuhygMipw=" crossorigin="anonymous"></script>
+
 <!-- pkgdown -->
 <link href="../pkgdown.css" rel="stylesheet">
-<script src="../jquery.sticky-kit.min.js"></script>
 <script src="../pkgdown.js"></script>
-  
-  
+
+
+
 <meta property="og:title" content="Restarts utilities — rst_list" />
 
-<meta property="og:description" content="Restarts are named jumping points established by with_restarts().
+<meta property="og:description" content="
+Restarts are named jumping points established by with_restarts().
 rst_list() returns the names of all restarts currently
 established. rst_exists() checks if a given restart is
 established. rst_jump() stops execution of the current function
@@ -37,6 +41,9 @@ and jumps to a restart point. If the restart does not exist, an
 error is thrown.  rst_maybe_jump() first checks that a restart
 exists before jumping." />
 <meta name="twitter:card" content="summary" />
+
+
+
 <!-- mathjax -->
 <script src='https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML'></script>
 
@@ -59,8 +66,12 @@ exists before jumping." />
         <span class="icon-bar"></span>
         <span class="icon-bar"></span>
       </button>
-      <a class="navbar-brand" href="../index.html">rlang</a>
+      <span class="navbar-brand">
+        <a class="navbar-link" href="../index.html">rlang</a>
+        <span class="label label-default" data-toggle="tooltip" data-placement="bottom" title="Released package">0.3.0</span>
+      </span>
     </div>
+
     <div id="navbar" class="navbar-collapse collapse">
       <ul class="nav navbar-nav">
         <li>
@@ -82,6 +93,7 @@ exists before jumping." />
   </a>
 </li>
       </ul>
+      
     </div><!--/.nav-collapse -->
   </div><!--/.container -->
 </div><!--/.navbar -->
@@ -89,14 +101,18 @@ exists before jumping." />
       
       </header>
 
-      <div class="row">
+<div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
     <h1>Restarts utilities</h1>
+    <small class="dont-index">Source: <a href='https://github.com/r-lib/rlang/blob/master/R/cnd-restarts.R'><code>R/cnd-restarts.R</code></a></small>
+    <div class="hidden name"><code>rst_list.Rd</code></div>
     </div>
 
+    <div class="ref-description">
     
-    <p>Restarts are named jumping points established by <code><a href='with_restarts.html'>with_restarts()</a></code>.
+    <p><a href='https://www.tidyverse.org/lifecycle/#questioning'><img src='figures/lifecycle-questioning.svg' alt='Questioning lifecycle'></a></p>
+<p>Restarts are named jumping points established by <code><a href='with_restarts.html'>with_restarts()</a></code>.
 <code>rst_list()</code> returns the names of all restarts currently
 established. <code>rst_exists()</code> checks if a given restart is
 established. <code>rst_jump()</code> stops execution of the current function
@@ -104,6 +120,7 @@ and jumps to a restart point. If the restart does not exist, an
 error is thrown.  <code>rst_maybe_jump()</code> first checks that a restart
 exists before jumping.</p>
     
+    </div>
 
     <pre class="usage"><span class='fu'>rst_list</span>()
 
@@ -113,7 +130,7 @@ exists before jumping.</p>
 
 <span class='fu'>rst_maybe_jump</span>(<span class='no'>.restart</span>, <span class='no'>...</span>)</pre>
     
-    <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a> Arguments</h2>
+    <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
     <colgroup><col class="name" /><col class="desc" /></colgroup>
     <tr>
@@ -127,9 +144,16 @@ dots support <a href='tidy-dots.html'>tidy dots</a> features.</p></td>
     </tr>
     </table>
     
+    <h2 class="hasAnchor" id="life-cycle"><a class="anchor" href="#life-cycle"></a>Life cycle</h2>
+
+    
+    <p>All the restart functions are in the questioning stage. It is not
+clear yet whether we want to recommend restarts as a style of
+programming in R.</p>
+    
     <h2 class="hasAnchor" id="see-also"><a class="anchor" href="#see-also"></a>See also</h2>
 
-    <p><code><a href='with_restarts.html'>with_restarts()</a></code>, <code><a href='rst_muffle.html'>rst_muffle()</a></code>.</p>
+    <div class='dont-index'><p><code><a href='with_restarts.html'>with_restarts()</a></code></p></div>
     
 
   </div>
@@ -138,6 +162,8 @@ dots support <a href='tidy-dots.html'>tidy dots</a> features.</p></td>
     <ul class="nav nav-pills nav-stacked">
       <li><a href="#arguments">Arguments</a></li>
       
+      <li><a href="#life-cycle">Life cycle</a></li>
+
       <li><a href="#see-also">See also</a></li>
           </ul>
 
@@ -156,5 +182,8 @@ dots support <a href='tidy-dots.html'>tidy dots</a> features.</p></td>
       </footer>
    </div>
 
+  
+
   </body>
 </html>
+

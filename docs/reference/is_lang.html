@@ -21,17 +21,24 @@
 <!-- clipboard.js -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/1.7.1/clipboard.min.js" integrity="sha384-cV+rhyOuRHc9Ub/91rihWcGmMmCXDeksTtCihMupQHSsi8GIIRDG0ThDc3HGQFJ3" crossorigin="anonymous"></script>
 
+<!-- sticky kit -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/sticky-kit/1.1.3/sticky-kit.min.js" integrity="sha256-c4Rlo1ZozqTPE2RLuvbusY3+SU1pQaJC0TjuhygMipw=" crossorigin="anonymous"></script>
+
 <!-- pkgdown -->
 <link href="../pkgdown.css" rel="stylesheet">
-<script src="../jquery.sticky-kit.min.js"></script>
 <script src="../pkgdown.js"></script>
-  
-  
+
+
+
 <meta property="og:title" content="Is object a call? — is_lang" />
 
-<meta property="og:description" content="These functions are soft-deprecated, please use is_call() and its
+<meta property="og:description" content="
+These functions are soft-deprecated, please use is_call() and its
 n argument instead." />
 <meta name="twitter:card" content="summary" />
+
+
+
 <!-- mathjax -->
 <script src='https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML'></script>
 
@@ -54,8 +61,12 @@ n argument instead." />
         <span class="icon-bar"></span>
         <span class="icon-bar"></span>
       </button>
-      <a class="navbar-brand" href="../index.html">rlang</a>
+      <span class="navbar-brand">
+        <a class="navbar-link" href="../index.html">rlang</a>
+        <span class="label label-default" data-toggle="tooltip" data-placement="bottom" title="Released package">0.3.0</span>
+      </span>
     </div>
+
     <div id="navbar" class="navbar-collapse collapse">
       <ul class="nav navbar-nav">
         <li>
@@ -77,6 +88,7 @@ n argument instead." />
   </a>
 </li>
       </ul>
+      
     </div><!--/.nav-collapse -->
   </div><!--/.container -->
 </div><!--/.navbar -->
@@ -84,16 +96,21 @@ n argument instead." />
       
       </header>
 
-      <div class="row">
+<div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
     <h1>Is object a call?</h1>
+    <small class="dont-index">Source: <a href='https://github.com/r-lib/rlang/blob/master/R/lifecycle-retired.R'><code>R/lifecycle-retired.R</code></a></small>
+    <div class="hidden name"><code>is_lang.Rd</code></div>
     </div>
 
+    <div class="ref-description">
     
-    <p>These functions are soft-deprecated, please use <code><a href='is_call.html'>is_call()</a></code> and its
+    <p><img src='figures/lifecycle-soft-deprecated.svg' alt='Soft-deprecated lifecycle' /></p>
+<p>These functions are soft-deprecated, please use <code><a href='is_call.html'>is_call()</a></code> and its
 <code>n</code> argument instead.</p>
     
+    </div>
 
     <pre class="usage"><span class='fu'>is_lang</span>(<span class='no'>x</span>, <span class='kw'>name</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>n</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>ns</span> <span class='kw'>=</span> <span class='kw'>NULL</span>)
 
@@ -103,7 +120,7 @@ n argument instead." />
 
 <span class='fu'>quo_is_lang</span>(<span class='no'>quo</span>)</pre>
     
-    <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a> Arguments</h2>
+    <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
     <colgroup><col class="name" /><col class="desc" /></colgroup>
     <tr>
@@ -129,7 +146,10 @@ match.</p></td>
 doesn't participate in the pattern-matching. If an empty string
 <code>""</code> and <code>x</code> is a namespaced call, <code><a href='is_call.html'>is_call()</a></code> returns
 <code>FALSE</code>. If any other string, <code><a href='is_call.html'>is_call()</a></code> checks that <code>x</code> is
-namespaced within <code>ns</code>.</p></td>
+namespaced within <code>ns</code>.</p>
+<p>Can be a character vector of namespaces, in which case the call
+has to match at least one of them, otherwise <code><a href='is_call.html'>is_call()</a></code> returns
+<code>FALSE</code>.</p></td>
     </tr>
     <tr>
       <th>quo</th>
@@ -160,5 +180,8 @@ namespaced within <code>ns</code>.</p></td>
       </footer>
    </div>
 
+  
+
   </body>
 </html>
+

@@ -21,12 +21,15 @@
 <!-- clipboard.js -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/1.7.1/clipboard.min.js" integrity="sha384-cV+rhyOuRHc9Ub/91rihWcGmMmCXDeksTtCihMupQHSsi8GIIRDG0ThDc3HGQFJ3" crossorigin="anonymous"></script>
 
+<!-- sticky kit -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/sticky-kit/1.1.3/sticky-kit.min.js" integrity="sha256-c4Rlo1ZozqTPE2RLuvbusY3+SU1pQaJC0TjuhygMipw=" crossorigin="anonymous"></script>
+
 <!-- pkgdown -->
 <link href="../pkgdown.css" rel="stylesheet">
-<script src="../jquery.sticky-kit.min.js"></script>
 <script src="../pkgdown.js"></script>
-  
-  
+
+
+
 <meta property="og:title" content="Mask bindings by defining symbols deeper in a scope — env_bury" />
 
 <meta property="og:description" content="env_bury() is like env_bind() but it creates the bindings in a
@@ -35,6 +38,9 @@ precedence over old ones, without altering existing environments.
 Unlike env_bind(), this function does not have side effects and
 returns a new environment (or object wrapping that environment)." />
 <meta name="twitter:card" content="summary" />
+
+
+
 <!-- mathjax -->
 <script src='https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML'></script>
 
@@ -57,8 +63,12 @@ returns a new environment (or object wrapping that environment)." />
         <span class="icon-bar"></span>
         <span class="icon-bar"></span>
       </button>
-      <a class="navbar-brand" href="../index.html">rlang</a>
+      <span class="navbar-brand">
+        <a class="navbar-link" href="../index.html">rlang</a>
+        <span class="label label-default" data-toggle="tooltip" data-placement="bottom" title="Released package">0.3.0</span>
+      </span>
     </div>
+
     <div id="navbar" class="navbar-collapse collapse">
       <ul class="nav navbar-nav">
         <li>
@@ -80,6 +90,7 @@ returns a new environment (or object wrapping that environment)." />
   </a>
 </li>
       </ul>
+      
     </div><!--/.nav-collapse -->
   </div><!--/.container -->
 </div><!--/.navbar -->
@@ -87,12 +98,15 @@ returns a new environment (or object wrapping that environment)." />
       
       </header>
 
-      <div class="row">
+<div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
     <h1>Mask bindings by defining symbols deeper in a scope</h1>
+    <small class="dont-index">Source: <a href='https://github.com/r-lib/rlang/blob/master/R/env-binding.R'><code>R/env-binding.R</code></a></small>
+    <div class="hidden name"><code>env_bury.Rd</code></div>
     </div>
 
+    <div class="ref-description">
     
     <p><code>env_bury()</code> is like <code><a href='env_bind.html'>env_bind()</a></code> but it creates the bindings in a
 new child environment. This makes sure the new bindings have
@@ -100,17 +114,16 @@ precedence over old ones, without altering existing environments.
 Unlike <code><a href='env_bind.html'>env_bind()</a></code>, this function does not have side effects and
 returns a new environment (or object wrapping that environment).</p>
     
+    </div>
 
     <pre class="usage"><span class='fu'>env_bury</span>(<span class='no'>.env</span>, <span class='no'>...</span>)</pre>
     
-    <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a> Arguments</h2>
+    <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
     <colgroup><col class="name" /><col class="desc" /></colgroup>
     <tr>
       <th>.env</th>
-      <td><p>An environment or an object bundling an environment,
-e.g. a formula, <a href='quotation.html'>quosure</a> or <a href='is_function.html'>closure</a>.
-This argument is passed to <code><a href='get_env.html'>get_env()</a></code>.</p></td>
+      <td><p>An environment.</p></td>
     </tr>
     <tr>
       <th>...</th>
@@ -126,7 +139,7 @@ bindings to <code>...</code> arguments.</p>
     
     <h2 class="hasAnchor" id="see-also"><a class="anchor" href="#see-also"></a>See also</h2>
 
-    <p><code><a href='env_bind.html'>env_bind()</a></code>, <code><a href='env_unbind.html'>env_unbind()</a></code></p>
+    <div class='dont-index'><p><code><a href='env_bind.html'>env_bind()</a></code>, <code><a href='env_unbind.html'>env_unbind()</a></code></p></div>
     
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
@@ -169,5 +182,8 @@ bindings to <code>...</code> arguments.</p>
       </footer>
    </div>
 
+  
+
   </body>
 </html>
+

@@ -21,18 +21,24 @@
 <!-- clipboard.js -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/1.7.1/clipboard.min.js" integrity="sha384-cV+rhyOuRHc9Ub/91rihWcGmMmCXDeksTtCihMupQHSsi8GIIRDG0ThDc3HGQFJ3" crossorigin="anonymous"></script>
 
+<!-- sticky kit -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/sticky-kit/1.1.3/sticky-kit.min.js" integrity="sha256-c4Rlo1ZozqTPE2RLuvbusY3+SU1pQaJC0TjuhygMipw=" crossorigin="anonymous"></script>
+
 <!-- pkgdown -->
 <link href="../pkgdown.css" rel="stylesheet">
-<script src="../jquery.sticky-kit.min.js"></script>
 <script src="../pkgdown.js"></script>
-  
-  
+
+
+
 <meta property="og:title" content="Parse R code — parse_quosures" />
 
 <meta property="og:description" content="These functions parse and transform text into R expressions. This
 is the first step to interpret or evaluate a piece of R code
 written by a programmer." />
 <meta name="twitter:card" content="summary" />
+
+
+
 <!-- mathjax -->
 <script src='https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML'></script>
 
@@ -55,8 +61,12 @@ written by a programmer." />
         <span class="icon-bar"></span>
         <span class="icon-bar"></span>
       </button>
-      <a class="navbar-brand" href="../index.html">rlang</a>
+      <span class="navbar-brand">
+        <a class="navbar-link" href="../index.html">rlang</a>
+        <span class="label label-default" data-toggle="tooltip" data-placement="bottom" title="Released package">0.3.0</span>
+      </span>
     </div>
+
     <div id="navbar" class="navbar-collapse collapse">
       <ul class="nav navbar-nav">
         <li>
@@ -78,6 +88,7 @@ written by a programmer." />
   </a>
 </li>
       </ul>
+      
     </div><!--/.nav-collapse -->
   </div><!--/.container -->
 </div><!--/.navbar -->
@@ -85,17 +96,21 @@ written by a programmer." />
       
       </header>
 
-      <div class="row">
+<div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
     <h1>Parse R code</h1>
+    <small class="dont-index">Source: <a href='https://github.com/r-lib/rlang/blob/master/R/lifecycle-retired.R'><code>R/lifecycle-retired.R</code></a>, <a href='https://github.com/r-lib/rlang/blob/master/R/parse.R'><code>R/parse.R</code></a></small>
+    <div class="hidden name"><code>parse_expr.Rd</code></div>
     </div>
 
+    <div class="ref-description">
     
     <p>These functions parse and transform text into R expressions. This
 is the first step to interpret or evaluate a piece of R code
 written by a programmer.</p>
     
+    </div>
 
     <pre class="usage"><span class='fu'>parse_quosures</span>(<span class='no'>x</span>, <span class='kw'>env</span> <span class='kw'>=</span> <span class='fu'><a href='caller_env.html'>caller_env</a></span>())
 
@@ -103,7 +118,7 @@ written by a programmer.</p>
 
 <span class='fu'>parse_exprs</span>(<span class='no'>x</span>)</pre>
     
-    <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a> Arguments</h2>
+    <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
     <colgroup><col class="name" /><col class="desc" /></colgroup>
     <tr>
@@ -116,17 +131,19 @@ it will be automatically closed and destroyed.</p></td>
     <tr>
       <th>env</th>
       <td><p>The environment for the quosures. Depending on the use
-case, a good default might be the <a href='scoped_env.html'>global
-environment</a> but you might also want to evaluate the
+case, a good default might be the <a href='search_envs.html'>global environment</a> but you might also want to evaluate the
 R code in an isolated context (perhaps a child of the global
-environment or of the <a href='scoped_env.html'>base environment</a>).</p></td>
+environment or of the <a href='search_envs.html'>base environment</a>).</p></td>
     </tr>
     </table>
     
     <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
 
     <p><code>parse_expr()</code> returns an <a href='is_expression.html'>expression</a>,
-<code>parse_exprs()</code> returns a list of expressions.</p>
+<code>parse_exprs()</code> returns a list of expressions. Note that for the
+plural variants the length of the output may be greater than the
+length of the input. This would happen is one of the strings
+contain several expressions (such as <code>"foo; bar"</code>).</p>
     
     <h2 class="hasAnchor" id="details"><a class="anchor" href="#details"></a>Details</h2>
 
@@ -134,9 +151,9 @@ environment or of the <a href='scoped_env.html'>base environment</a>).</p></td>
 than one expression (separated by semicolons or new lines), an error is
 issued. On the other hand <code>parse_exprs()</code> can handle multiple
 expressions. It always returns a list of expressions (compare to
-<code><a href='http://www.rdocumentation.org/packages/base/topics/parse'>base::parse()</a></code> which returns an base::expression vector). All
+<code><a href='http://www.rdocumentation.org/packages/base/topics/parse'>base::parse()</a></code> which returns a base::expression vector). All
 functions also support R connections.</p>
-<p>The versions suffixed with <code>_quo</code> and <code>quos</code> return
+<p>The versions suffixed with <code>_quo</code> and <code>_quos</code> return
 <a href='quotation.html'>quosures</a> rather than raw expressions.</p>
     
     <h2 class="hasAnchor" id="life-cycle"><a class="anchor" href="#life-cycle"></a>Life cycle</h2>
@@ -151,7 +168,7 @@ the return type of a function.</p></li>
     
     <h2 class="hasAnchor" id="see-also"><a class="anchor" href="#see-also"></a>See also</h2>
 
-    <p><code><a href='http://www.rdocumentation.org/packages/base/topics/parse'>base::parse()</a></code></p>
+    <div class='dont-index'><p><code><a href='http://www.rdocumentation.org/packages/base/topics/parse'>base::parse()</a></code></p></div>
     
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
@@ -214,5 +231,8 @@ the return type of a function.</p></li>
       </footer>
    </div>
 
+  
+
   </body>
 </html>
+

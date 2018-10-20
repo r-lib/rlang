@@ -21,18 +21,24 @@
 <!-- clipboard.js -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/1.7.1/clipboard.min.js" integrity="sha384-cV+rhyOuRHc9Ub/91rihWcGmMmCXDeksTtCihMupQHSsi8GIIRDG0ThDc3HGQFJ3" crossorigin="anonymous"></script>
 
+<!-- sticky kit -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/sticky-kit/1.1.3/sticky-kit.min.js" integrity="sha256-c4Rlo1ZozqTPE2RLuvbusY3+SU1pQaJC0TjuhygMipw=" crossorigin="anonymous"></script>
+
 <!-- pkgdown -->
 <link href="../pkgdown.css" rel="stylesheet">
-<script src="../jquery.sticky-kit.min.js"></script>
 <script src="../pkgdown.js"></script>
-  
-  
+
+
+
 <meta property="og:title" content="Create a condition object — cnd" />
 
 <meta property="og:description" content="These constructors make it easy to create subclassed conditions.
 Conditions are objects that power the error system in R. They can
 also be used for passing messages to pre-established handlers." />
 <meta name="twitter:card" content="summary" />
+
+
+
 <!-- mathjax -->
 <script src='https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML'></script>
 
@@ -55,8 +61,12 @@ also be used for passing messages to pre-established handlers." />
         <span class="icon-bar"></span>
         <span class="icon-bar"></span>
       </button>
-      <a class="navbar-brand" href="../index.html">rlang</a>
+      <span class="navbar-brand">
+        <a class="navbar-link" href="../index.html">rlang</a>
+        <span class="label label-default" data-toggle="tooltip" data-placement="bottom" title="Released package">0.3.0</span>
+      </span>
     </div>
+
     <div id="navbar" class="navbar-collapse collapse">
       <ul class="nav navbar-nav">
         <li>
@@ -78,6 +88,7 @@ also be used for passing messages to pre-established handlers." />
   </a>
 </li>
       </ul>
+      
     </div><!--/.nav-collapse -->
   </div><!--/.container -->
 </div><!--/.navbar -->
@@ -85,43 +96,55 @@ also be used for passing messages to pre-established handlers." />
       
       </header>
 
-      <div class="row">
+<div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
     <h1>Create a condition object</h1>
+    <small class="dont-index">Source: <a href='https://github.com/r-lib/rlang/blob/master/R/cnd.R'><code>R/cnd.R</code></a></small>
+    <div class="hidden name"><code>cnd.Rd</code></div>
     </div>
 
+    <div class="ref-description">
     
     <p>These constructors make it easy to create subclassed conditions.
 Conditions are objects that power the error system in R. They can
 also be used for passing messages to pre-established handlers.</p>
     
+    </div>
 
-    <pre class="usage"><span class='fu'>cnd</span>(<span class='kw'>.type</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='no'>...</span>, <span class='kw'>.msg</span> <span class='kw'>=</span> <span class='kw'>NULL</span>)
+    <pre class="usage"><span class='fu'>cnd</span>(<span class='no'>.subclass</span>, <span class='no'>...</span>, <span class='kw'>message</span> <span class='kw'>=</span> <span class='st'>""</span>)
 
-<span class='fu'>error_cnd</span>(<span class='kw'>.type</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='no'>...</span>, <span class='kw'>.msg</span> <span class='kw'>=</span> <span class='kw'>NULL</span>)
+<span class='fu'>error_cnd</span>(<span class='kw'>.subclass</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='no'>...</span>, <span class='kw'>message</span> <span class='kw'>=</span> <span class='st'>""</span>, <span class='kw'>trace</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
+  <span class='kw'>parent</span> <span class='kw'>=</span> <span class='kw'>NULL</span>)
 
-<span class='fu'>warning_cnd</span>(<span class='kw'>.type</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='no'>...</span>, <span class='kw'>.msg</span> <span class='kw'>=</span> <span class='kw'>NULL</span>)
+<span class='fu'>warning_cnd</span>(<span class='kw'>.subclass</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='no'>...</span>, <span class='kw'>message</span> <span class='kw'>=</span> <span class='st'>""</span>)
 
-<span class='fu'>message_cnd</span>(<span class='kw'>.type</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='no'>...</span>, <span class='kw'>.msg</span> <span class='kw'>=</span> <span class='kw'>NULL</span>)</pre>
+<span class='fu'>message_cnd</span>(<span class='kw'>.subclass</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='no'>...</span>, <span class='kw'>message</span> <span class='kw'>=</span> <span class='st'>""</span>)</pre>
     
-    <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a> Arguments</h2>
+    <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
     <colgroup><col class="name" /><col class="desc" /></colgroup>
     <tr>
-      <th>.type</th>
+      <th>.subclass</th>
       <td><p>The condition subclass.</p></td>
     </tr>
     <tr>
       <th>...</th>
       <td><p>Named data fields stored inside the condition
-object. These dots are evaluated with <a href='tidy-dots.html'>explicit
-splicing</a>.</p></td>
+object. These dots are evaluated with <a href='tidy-dots.html'>explicit splicing</a>.</p></td>
     </tr>
     <tr>
-      <th>.msg</th>
+      <th>message</th>
       <td><p>A default message to inform the user about the
 condition when it is signalled.</p></td>
+    </tr>
+    <tr>
+      <th>trace</th>
+      <td><p>A <code>trace</code> object created by <code><a href='trace_back.html'>trace_back()</a></code>.</p></td>
+    </tr>
+    <tr>
+      <th>parent</th>
+      <td><p>A parent condition object created by <code><a href='abort.html'>abort()</a></code>.</p></td>
     </tr>
     </table>
     
@@ -131,33 +154,34 @@ condition when it is signalled.</p></td>
 created with <code>error_cnd()</code>, <code>warning_cnd()</code> and <code>message_cnd()</code>
 inherit from <code>error</code>, <code>warning</code> or <code>message</code>.</p>
     
+    <h2 class="hasAnchor" id="lifecycle"><a class="anchor" href="#lifecycle"></a>Lifecycle</h2>
+
+    
+    <p>The <code>.type</code> and <code>.msg</code> arguments have been renamed to <code>.subclass</code>
+and <code>message</code>. They are defunct as of rlang 0.3.0.</p>
+    
     <h2 class="hasAnchor" id="see-also"><a class="anchor" href="#see-also"></a>See also</h2>
 
-    <p><code><a href='cnd_signal.html'>cnd_signal()</a></code>, <code><a href='with_handlers.html'>with_handlers()</a></code>.</p>
+    <div class='dont-index'><p><code><a href='cnd_signal.html'>cnd_signal()</a></code>, <code><a href='with_handlers.html'>with_handlers()</a></code>.</p></div>
     
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
     <pre class="examples"><div class='input'><span class='co'># Create a condition inheriting from the s3 type "foo":</span>
 <span class='no'>cnd</span> <span class='kw'>&lt;-</span> <span class='fu'>cnd</span>(<span class='st'>"foo"</span>)
 
-<span class='co'># Signal the condition to potential handlers. This has no effect if no</span>
-<span class='co'># handler is registered to deal with conditions of type "foo":</span>
+<span class='co'># Signal the condition to potential handlers. Since this is a bare</span>
+<span class='co'># condition the signal has no effect if no handlers are set up:</span>
 <span class='fu'><a href='cnd_signal.html'>cnd_signal</a></span>(<span class='no'>cnd</span>)
 
-<span class='co'># If a relevant handler is on the current evaluation stack, it will be</span>
-<span class='co'># called by cnd_signal():</span>
+<span class='co'># When a relevant handler is set up, the signal causes the handler</span>
+<span class='co'># to be called:</span>
 <span class='fu'><a href='with_handlers.html'>with_handlers</a></span>(<span class='fu'><a href='cnd_signal.html'>cnd_signal</a></span>(<span class='no'>cnd</span>), <span class='kw'>foo</span> <span class='kw'>=</span> <span class='fu'><a href='exiting.html'>exiting</a></span>(<span class='kw'>function</span>(<span class='no'>c</span>) <span class='st'>"caught!"</span>))</div><div class='output co'>#&gt; [1] "caught!"</div><div class='input'>
 <span class='co'># Handlers can be thrown or executed inplace. See with_handlers()</span>
 <span class='co'># documentation for more on this.</span>
 
-
-<span class='co'># Note that merely signalling a condition inheriting of "error" is</span>
-<span class='co'># not sufficient to stop a program:</span>
-<span class='fu'><a href='cnd_signal.html'>cnd_signal</a></span>(<span class='fu'>error_cnd</span>(<span class='st'>"my_error"</span>))</div><div class='output co'>#&gt; <span class='error'>Error: </span></div><div class='input'>
-# you need to use stop() to signal a critical condition that should
-# terminate the program if not handled:
-# stop(error_cnd("my_error"))
-</div></pre>
+<span class='co'># Signalling an error condition aborts the current computation:</span>
+<span class='no'>err</span> <span class='kw'>&lt;-</span> <span class='fu'>error_cnd</span>(<span class='st'>"foo"</span>, <span class='kw'>message</span> <span class='kw'>=</span> <span class='st'>"I am an error"</span>)
+<span class='fu'>try</span>(<span class='fu'><a href='cnd_signal.html'>cnd_signal</a></span>(<span class='no'>err</span>))</div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
     <h2>Contents</h2>
@@ -165,6 +189,8 @@ inherit from <code>error</code>, <code>warning</code> or <code>message</code>.</
       <li><a href="#arguments">Arguments</a></li>
       
       <li><a href="#details">Details</a></li>
+
+      <li><a href="#lifecycle">Lifecycle</a></li>
 
       <li><a href="#see-also">See also</a></li>
       
@@ -186,5 +212,8 @@ inherit from <code>error</code>, <code>warning</code> or <code>message</code>.</
       </footer>
    </div>
 
+  
+
   </body>
 </html>
+

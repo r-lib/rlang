@@ -21,18 +21,25 @@
 <!-- clipboard.js -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/1.7.1/clipboard.min.js" integrity="sha384-cV+rhyOuRHc9Ub/91rihWcGmMmCXDeksTtCihMupQHSsi8GIIRDG0ThDc3HGQFJ3" crossorigin="anonymous"></script>
 
+<!-- sticky kit -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/sticky-kit/1.1.3/sticky-kit.min.js" integrity="sha256-c4Rlo1ZozqTPE2RLuvbusY3+SU1pQaJC0TjuhygMipw=" crossorigin="anonymous"></script>
+
 <!-- pkgdown -->
 <link href="../pkgdown.css" rel="stylesheet">
-<script src="../jquery.sticky-kit.min.js"></script>
 <script src="../pkgdown.js"></script>
-  
-  
+
+
+
 <meta property="og:title" content="Invoke a function with a list of arguments — invoke" />
 
-<meta property="og:description" content="Normally, you invoke a R function by typing arguments manually. A
+<meta property="og:description" content="
+Normally, you invoke a R function by typing arguments manually. A
 powerful alternative is to call a function with a list of arguments
 assembled programmatically. This is the purpose of invoke()." />
 <meta name="twitter:card" content="summary" />
+
+
+
 <!-- mathjax -->
 <script src='https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML'></script>
 
@@ -55,8 +62,12 @@ assembled programmatically. This is the purpose of invoke()." />
         <span class="icon-bar"></span>
         <span class="icon-bar"></span>
       </button>
-      <a class="navbar-brand" href="../index.html">rlang</a>
+      <span class="navbar-brand">
+        <a class="navbar-link" href="../index.html">rlang</a>
+        <span class="label label-default" data-toggle="tooltip" data-placement="bottom" title="Released package">0.3.0</span>
+      </span>
     </div>
+
     <div id="navbar" class="navbar-collapse collapse">
       <ul class="nav navbar-nav">
         <li>
@@ -78,6 +89,7 @@ assembled programmatically. This is the purpose of invoke()." />
   </a>
 </li>
       </ul>
+      
     </div><!--/.nav-collapse -->
   </div><!--/.container -->
 </div><!--/.navbar -->
@@ -85,22 +97,27 @@ assembled programmatically. This is the purpose of invoke()." />
       
       </header>
 
-      <div class="row">
+<div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
     <h1>Invoke a function with a list of arguments</h1>
+    <small class="dont-index">Source: <a href='https://github.com/r-lib/rlang/blob/master/R/eval.R'><code>R/eval.R</code></a></small>
+    <div class="hidden name"><code>invoke.Rd</code></div>
     </div>
 
+    <div class="ref-description">
     
-    <p>Normally, you invoke a R function by typing arguments manually. A
+    <p><img src='figures/lifecycle-soft-deprecated.svg' alt='Soft-deprecated lifecycle' /></p>
+<p>Normally, you invoke a R function by typing arguments manually. A
 powerful alternative is to call a function with a list of arguments
 assembled programmatically. This is the purpose of <code>invoke()</code>.</p>
     
+    </div>
 
-    <pre class="usage"><span class='fu'>invoke</span>(<span class='no'>.fn</span>, <span class='kw'>.args</span> <span class='kw'>=</span> <span class='fu'>list</span>(), <span class='no'>...</span>, <span class='kw'>.env</span> <span class='kw'>=</span> <span class='fu'><a href='caller_env.html'>caller_env</a></span>(), <span class='kw'>.bury</span> <span class='kw'>=</span> <span class='fu'>c</span>(<span class='st'>".fn"</span>,
-  <span class='st'>""</span>))</pre>
+    <pre class="usage"><span class='fu'>invoke</span>(<span class='no'>.fn</span>, <span class='kw'>.args</span> <span class='kw'>=</span> <span class='fu'>list</span>(), <span class='no'>...</span>, <span class='kw'>.env</span> <span class='kw'>=</span> <span class='fu'><a href='caller_env.html'>caller_env</a></span>(),
+  <span class='kw'>.bury</span> <span class='kw'>=</span> <span class='fu'>c</span>(<span class='st'>".fn"</span>, <span class='st'>""</span>))</pre>
     
-    <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a> Arguments</h2>
+    <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
     <colgroup><col class="name" /><col class="desc" /></colgroup>
     <tr>
@@ -140,13 +157,12 @@ noise.</p>
     <h2 class="hasAnchor" id="life-cycle"><a class="anchor" href="#life-cycle"></a>Life cycle</h2>
 
     
-    <p><code>invoke()</code> is in questioning lifecycle stage. Now that we
+    <p><code>invoke()</code> is soft-deprecated in favour of <code><a href='exec.html'>exec()</a></code>. Now that we
 understand better the interaction between unquoting and dots
-capture, we believe that <code>invoke()</code> should not take a <code>.args</code>
-argument. Instead it should take dots with <code><a href='tidy-dots.html'>dots_list()</a></code> in order
-to enable <code>!!!</code> syntax.</p>
-<p>We ask rlang users not to use <code>invoke()</code> in CRAN packages because
-we plan a breaking API update to remove the <code>.args</code> argument.</p>
+capture, we can take a simpler approach in <code><a href='exec.html'>exec()</a></code>.</p>
+<p>If you need finer control over the generated call, you should construct
+an environment and call yourself, manually burying large objects
+or complex expressions.</p>
     
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
@@ -158,64 +174,185 @@ we plan a breaking API update to remove the <code>.args</code> argument.</p>
 <span class='co'># and stacktraces:</span>
 <span class='no'>fn</span> <span class='kw'>&lt;-</span> <span class='kw'>function</span>(<span class='no'>...</span>) <span class='fu'>sys.calls</span>()
 <span class='fu'>invoke</span>(<span class='no'>fn</span>, <span class='fu'>list</span>(<span class='no'>mtcars</span>))</div><div class='output co'>#&gt; [[1]]
-#&gt; pkgdown::build_site()
+#&gt; tryCatch(withCallingHandlers({
+#&gt;     NULL
+#&gt;     saveRDS(do.call(do.call, c(readRDS("/var/folders/b9/1vbq6rn93_1fk71sn95dqb8r0000gn/T//Rtmpgg6zPp/fileee10610f48f9"), 
+#&gt;         list(envir = .GlobalEnv)), envir = .GlobalEnv), file = "/var/folders/b9/1vbq6rn93_1fk71sn95dqb8r0000gn/T//Rtmpgg6zPp/fileee1032800537")
+#&gt;     flush(stdout())
+#&gt;     flush(stderr())
+#&gt;     NULL
+#&gt;     invisible()
+#&gt; }, error = function(e) {
+#&gt;     saveRDS(list("error", e), file = paste0("/var/folders/b9/1vbq6rn93_1fk71sn95dqb8r0000gn/T//Rtmpgg6zPp/fileee1032800537", 
+#&gt;         ".error"))
+#&gt; }, interrupt = function(e) {
+#&gt;     saveRDS(list("error", e), file = paste0("/var/folders/b9/1vbq6rn93_1fk71sn95dqb8r0000gn/T//Rtmpgg6zPp/fileee1032800537", 
+#&gt;         ".error"))
+#&gt; }, callr_message = function(e) {
+#&gt;     {
+#&gt;         if (is.null(e$code)) 
+#&gt;             e$code &lt;- "301"
+#&gt;         msg &lt;- paste0("base64::", base64enc::base64encode(serialize(e, 
+#&gt;             NULL)))
+#&gt;         data &lt;- paste(e$code, msg, "\n")
+#&gt;         con &lt;- processx::conn_create_fd(3, close = FALSE)
+#&gt;         while (1) {
+#&gt;             data &lt;- processx::conn_write(con, data)
+#&gt;             if (!length(data)) 
+#&gt;                 break
+#&gt;             Sys.sleep(0.1)
+#&gt;         }
+#&gt;     }
+#&gt; }), error = function(e) {
+#&gt;     NULL
+#&gt;     try(stop(e))
+#&gt; }, interrupt = function(e) {
+#&gt;     NULL
+#&gt;     e
+#&gt; })
 #&gt; 
 #&gt; [[2]]
-#&gt; build_reference(pkg, lazy = FALSE, examples = examples, run_dont_run = run_dont_run, 
-#&gt;     mathjax = mathjax, seed = seed, path = file.path(path, "reference"), 
-#&gt;     depth = 1L, preview = FALSE)
+#&gt; tryCatchList(expr, classes, parentenv, handlers)
 #&gt; 
 #&gt; [[3]]
-#&gt; purrr::map(topics, build_reference_topic, path, pkg = pkg, lazy = lazy, 
-#&gt;     depth = depth, examples = examples, run_dont_run = run_dont_run, 
-#&gt;     mathjax = mathjax)
+#&gt; tryCatchOne(tryCatchList(expr, names[-nh], parentenv, handlers[-nh]), 
+#&gt;     names[nh], parentenv, handlers[[nh]])
 #&gt; 
 #&gt; [[4]]
-#&gt; .f(.x[[i]], ...)
+#&gt; doTryCatch(return(expr), name, parentenv, handler)
 #&gt; 
 #&gt; [[5]]
-#&gt; data_reference_topic(topic, pkg, path = path, examples = examples, 
-#&gt;     run_dont_run = run_dont_run, mathjax = mathjax, depth = depth)
+#&gt; tryCatchList(expr, names[-nh], parentenv, handlers[-nh])
 #&gt; 
 #&gt; [[6]]
-#&gt; as_data(tags$tag_examples[[1]], env = new.env(parent = globalenv()), 
-#&gt;     topic = tools::file_path_sans_ext(topic$file_in), path = path, 
-#&gt;     examples = examples, run_dont_run = run_dont_run, depth = depth)
+#&gt; tryCatchOne(expr, names, parentenv, handlers[[1L]])
 #&gt; 
 #&gt; [[7]]
-#&gt; as_data.tag_examples(tags$tag_examples[[1]], env = new.env(parent = globalenv()), 
-#&gt;     topic = tools::file_path_sans_ext(topic$file_in), path = path, 
-#&gt;     examples = examples, run_dont_run = run_dont_run, depth = depth)
+#&gt; doTryCatch(return(expr), name, parentenv, handler)
 #&gt; 
 #&gt; [[8]]
-#&gt; purrr::pmap_chr(list(code = code, run = run, show = show), format_example_chunk, 
-#&gt;     env = child_env(env), path = path, topic = topic, obj_id = id_generator$id)
+#&gt; withCallingHandlers({
+#&gt;     NULL
+#&gt;     saveRDS(do.call(do.call, c(readRDS("/var/folders/b9/1vbq6rn93_1fk71sn95dqb8r0000gn/T//Rtmpgg6zPp/fileee10610f48f9"), 
+#&gt;         list(envir = .GlobalEnv)), envir = .GlobalEnv), file = "/var/folders/b9/1vbq6rn93_1fk71sn95dqb8r0000gn/T//Rtmpgg6zPp/fileee1032800537")
+#&gt;     flush(stdout())
+#&gt;     flush(stderr())
+#&gt;     NULL
+#&gt;     invisible()
+#&gt; }, error = function(e) {
+#&gt;     saveRDS(list("error", e), file = paste0("/var/folders/b9/1vbq6rn93_1fk71sn95dqb8r0000gn/T//Rtmpgg6zPp/fileee1032800537", 
+#&gt;         ".error"))
+#&gt; }, interrupt = function(e) {
+#&gt;     saveRDS(list("error", e), file = paste0("/var/folders/b9/1vbq6rn93_1fk71sn95dqb8r0000gn/T//Rtmpgg6zPp/fileee1032800537", 
+#&gt;         ".error"))
+#&gt; }, callr_message = function(e) {
+#&gt;     {
+#&gt;         if (is.null(e$code)) 
+#&gt;             e$code &lt;- "301"
+#&gt;         msg &lt;- paste0("base64::", base64enc::base64encode(serialize(e, 
+#&gt;             NULL)))
+#&gt;         data &lt;- paste(e$code, msg, "\n")
+#&gt;         con &lt;- processx::conn_create_fd(3, close = FALSE)
+#&gt;         while (1) {
+#&gt;             data &lt;- processx::conn_write(con, data)
+#&gt;             if (!length(data)) 
+#&gt;                 break
+#&gt;             Sys.sleep(0.1)
+#&gt;         }
+#&gt;     }
+#&gt; })
 #&gt; 
 #&gt; [[9]]
+#&gt; saveRDS(do.call(do.call, c(readRDS("/var/folders/b9/1vbq6rn93_1fk71sn95dqb8r0000gn/T//Rtmpgg6zPp/fileee10610f48f9"), 
+#&gt;     list(envir = .GlobalEnv)), envir = .GlobalEnv), file = "/var/folders/b9/1vbq6rn93_1fk71sn95dqb8r0000gn/T//Rtmpgg6zPp/fileee1032800537")
+#&gt; 
+#&gt; [[10]]
+#&gt; do.call(do.call, c(readRDS("/var/folders/b9/1vbq6rn93_1fk71sn95dqb8r0000gn/T//Rtmpgg6zPp/fileee10610f48f9"), 
+#&gt;     list(envir = .GlobalEnv)), envir = .GlobalEnv)
+#&gt; 
+#&gt; [[11]]
+#&gt; (function (what, args, quote = FALSE, envir = parent.frame()) 
+#&gt; {
+#&gt;     if (!is.list(args)) 
+#&gt;         stop("second argument must be a list")
+#&gt;     if (quote) 
+#&gt;         args &lt;- lapply(args, enquote)
+#&gt;     .Internal(do.call(what, args, envir))
+#&gt; })(function (...) 
+#&gt; pkgdown::build_site(...), list(pkg = ".", examples = TRUE, document = TRUE, 
+#&gt;     run_dont_run = FALSE, seed = 1014, mathjax = TRUE, lazy = FALSE, 
+#&gt;     override = list(), preview = FALSE, new_process = FALSE), 
+#&gt;     envir = &lt;environment&gt;)
+#&gt; 
+#&gt; [[12]]
+#&gt; (function (...) 
+#&gt; pkgdown::build_site(...))(pkg = ".", examples = TRUE, document = TRUE, 
+#&gt;     run_dont_run = FALSE, seed = 1014, mathjax = TRUE, lazy = FALSE, 
+#&gt;     override = list(), preview = FALSE, new_process = FALSE)
+#&gt; 
+#&gt; [[13]]
+#&gt; pkgdown::build_site(...)
+#&gt; 
+#&gt; [[14]]
+#&gt; build_site_local(pkg = pkg, examples = examples, document = document, 
+#&gt;     run_dont_run = run_dont_run, seed = seed, mathjax = mathjax, 
+#&gt;     lazy = lazy, override = override, preview = preview)
+#&gt; 
+#&gt; [[15]]
+#&gt; build_reference(pkg, lazy = lazy, document = document, examples = examples, 
+#&gt;     run_dont_run = run_dont_run, mathjax = mathjax, seed = seed, 
+#&gt;     override = override, preview = FALSE)
+#&gt; 
+#&gt; [[16]]
+#&gt; purrr::map(topics, build_reference_topic, pkg = pkg, lazy = lazy, 
+#&gt;     examples = examples, run_dont_run = run_dont_run, mathjax = mathjax)
+#&gt; 
+#&gt; [[17]]
+#&gt; .f(.x[[i]], ...)
+#&gt; 
+#&gt; [[18]]
+#&gt; data_reference_topic(topic, pkg, examples = examples, run_dont_run = run_dont_run, 
+#&gt;     mathjax = mathjax)
+#&gt; 
+#&gt; [[19]]
+#&gt; as_data(tags$tag_examples[[1]], env = new.env(parent = globalenv()), 
+#&gt;     topic = tools::file_path_sans_ext(topic$file_in), examples = examples, 
+#&gt;     run_dont_run = run_dont_run)
+#&gt; 
+#&gt; [[20]]
+#&gt; as_data.tag_examples(tags$tag_examples[[1]], env = new.env(parent = globalenv()), 
+#&gt;     topic = tools::file_path_sans_ext(topic$file_in), examples = examples, 
+#&gt;     run_dont_run = run_dont_run)
+#&gt; 
+#&gt; [[21]]
+#&gt; purrr::pmap_chr(list(code = code, run = run, show = show), format_example_chunk, 
+#&gt;     env = child_env(env), topic = topic, obj_id = id_generator$id)
+#&gt; 
+#&gt; [[22]]
 #&gt; .f(code = .l[[c(1L, 1L)]], run = .l[[c(2L, 1L)]], show = .l[[c(3L, 
 #&gt;     1L)]], ...)
 #&gt; 
-#&gt; [[10]]
+#&gt; [[23]]
 #&gt; evaluate::evaluate(code, env, new_device = TRUE)
 #&gt; 
-#&gt; [[11]]
+#&gt; [[24]]
 #&gt; evaluate_call(expr, parsed$src[[i]], envir = envir, enclos = enclos, 
 #&gt;     debug = debug, last = i == length(out), use_try = stop_on_error != 
 #&gt;         2L, keep_warning = keep_warning, keep_message = keep_message, 
 #&gt;     output_handler = output_handler, include_timing = include_timing)
 #&gt; 
-#&gt; [[12]]
+#&gt; [[25]]
 #&gt; timing_fn(handle(ev &lt;- withCallingHandlers(withVisible(eval(expr, 
 #&gt;     envir, enclos)), warning = wHandler, error = eHandler, message = mHandler)))
 #&gt; 
-#&gt; [[13]]
+#&gt; [[26]]
 #&gt; handle(ev &lt;- withCallingHandlers(withVisible(eval(expr, envir, 
 #&gt;     enclos)), warning = wHandler, error = eHandler, message = mHandler))
 #&gt; 
-#&gt; [[14]]
+#&gt; [[27]]
 #&gt; try(f, silent = TRUE)
 #&gt; 
-#&gt; [[15]]
+#&gt; [[28]]
 #&gt; tryCatch(expr, error = function(e) {
 #&gt;     call &lt;- conditionCall(e)
 #&gt;     if (!is.null(call)) {
@@ -224,8 +361,7 @@ we plan a breaking API update to remove the <code>.args</code> argument.</p>
 #&gt;         dcall &lt;- deparse(call)[1L]
 #&gt;         prefix &lt;- paste("Error in", dcall, ": ")
 #&gt;         LONG &lt;- 75L
-#&gt;         msg &lt;- conditionMessage(e)
-#&gt;         sm &lt;- strsplit(msg, "\n")[[1L]]
+#&gt;         sm &lt;- strsplit(conditionMessage(e), "\n")[[1L]]
 #&gt;         w &lt;- 14L + nchar(dcall, type = "w") + nchar(sm[1L], type = "w")
 #&gt;         if (is.na(w)) 
 #&gt;             w &lt;- 14L + nchar(dcall, type = "b") + nchar(sm[1L], 
@@ -236,40 +372,39 @@ we plan a breaking API update to remove the <code>.args</code> argument.</p>
 #&gt;     else prefix &lt;- "Error : "
 #&gt;     msg &lt;- paste0(prefix, conditionMessage(e), "\n")
 #&gt;     .Internal(seterrmessage(msg[1L]))
-#&gt;     if (!silent &amp;&amp; identical(getOption("show.error.messages"), 
-#&gt;         TRUE)) {
+#&gt;     if (!silent &amp;&amp; isTRUE(getOption("show.error.messages"))) {
 #&gt;         cat(msg, file = outFile)
 #&gt;         .Internal(printDeferredWarnings())
 #&gt;     }
 #&gt;     invisible(structure(msg, class = "try-error", condition = e))
 #&gt; })
 #&gt; 
-#&gt; [[16]]
+#&gt; [[29]]
 #&gt; tryCatchList(expr, classes, parentenv, handlers)
 #&gt; 
-#&gt; [[17]]
+#&gt; [[30]]
 #&gt; tryCatchOne(expr, names, parentenv, handlers[[1L]])
 #&gt; 
-#&gt; [[18]]
+#&gt; [[31]]
 #&gt; doTryCatch(return(expr), name, parentenv, handler)
 #&gt; 
-#&gt; [[19]]
+#&gt; [[32]]
 #&gt; withCallingHandlers(withVisible(eval(expr, envir, enclos)), warning = wHandler, 
 #&gt;     error = eHandler, message = mHandler)
 #&gt; 
-#&gt; [[20]]
+#&gt; [[33]]
 #&gt; withVisible(eval(expr, envir, enclos))
 #&gt; 
-#&gt; [[21]]
+#&gt; [[34]]
 #&gt; eval(expr, envir, enclos)
 #&gt; 
-#&gt; [[22]]
+#&gt; [[35]]
 #&gt; eval(expr, envir, enclos)
 #&gt; 
-#&gt; [[23]]
+#&gt; [[36]]
 #&gt; invoke(fn, list(mtcars))
 #&gt; 
-#&gt; [[24]]
+#&gt; [[37]]
 #&gt; .fn(`1`)
 #&gt; </div><div class='input'>
 <span class='co'># Compare to do.call():</span>
@@ -302,64 +437,185 @@ we plan a breaking API update to remove the <code>.args</code> argument.</p>
 #&gt;     3, 4, 5, 5, 5, 5, 5, 4), carb = c(4, 4, 1, 1, 2, 1, 4, 2, 
 #&gt;     2, 4, 4, 3, 3, 3, 4, 4, 4, 1, 2, 1, 1, 2, 2, 4, 2, 1, 2, 
 #&gt;     2, 4, 6, 8, 2))</div><div class='input'><span class='fu'>do.call</span>(<span class='no'>fn</span>, <span class='fu'>list</span>(<span class='no'>mtcars</span>))</div><div class='output co'>#&gt; [[1]]
-#&gt; pkgdown::build_site()
+#&gt; tryCatch(withCallingHandlers({
+#&gt;     NULL
+#&gt;     saveRDS(do.call(do.call, c(readRDS("/var/folders/b9/1vbq6rn93_1fk71sn95dqb8r0000gn/T//Rtmpgg6zPp/fileee10610f48f9"), 
+#&gt;         list(envir = .GlobalEnv)), envir = .GlobalEnv), file = "/var/folders/b9/1vbq6rn93_1fk71sn95dqb8r0000gn/T//Rtmpgg6zPp/fileee1032800537")
+#&gt;     flush(stdout())
+#&gt;     flush(stderr())
+#&gt;     NULL
+#&gt;     invisible()
+#&gt; }, error = function(e) {
+#&gt;     saveRDS(list("error", e), file = paste0("/var/folders/b9/1vbq6rn93_1fk71sn95dqb8r0000gn/T//Rtmpgg6zPp/fileee1032800537", 
+#&gt;         ".error"))
+#&gt; }, interrupt = function(e) {
+#&gt;     saveRDS(list("error", e), file = paste0("/var/folders/b9/1vbq6rn93_1fk71sn95dqb8r0000gn/T//Rtmpgg6zPp/fileee1032800537", 
+#&gt;         ".error"))
+#&gt; }, callr_message = function(e) {
+#&gt;     {
+#&gt;         if (is.null(e$code)) 
+#&gt;             e$code &lt;- "301"
+#&gt;         msg &lt;- paste0("base64::", base64enc::base64encode(serialize(e, 
+#&gt;             NULL)))
+#&gt;         data &lt;- paste(e$code, msg, "\n")
+#&gt;         con &lt;- processx::conn_create_fd(3, close = FALSE)
+#&gt;         while (1) {
+#&gt;             data &lt;- processx::conn_write(con, data)
+#&gt;             if (!length(data)) 
+#&gt;                 break
+#&gt;             Sys.sleep(0.1)
+#&gt;         }
+#&gt;     }
+#&gt; }), error = function(e) {
+#&gt;     NULL
+#&gt;     try(stop(e))
+#&gt; }, interrupt = function(e) {
+#&gt;     NULL
+#&gt;     e
+#&gt; })
 #&gt; 
 #&gt; [[2]]
-#&gt; build_reference(pkg, lazy = FALSE, examples = examples, run_dont_run = run_dont_run, 
-#&gt;     mathjax = mathjax, seed = seed, path = file.path(path, "reference"), 
-#&gt;     depth = 1L, preview = FALSE)
+#&gt; tryCatchList(expr, classes, parentenv, handlers)
 #&gt; 
 #&gt; [[3]]
-#&gt; purrr::map(topics, build_reference_topic, path, pkg = pkg, lazy = lazy, 
-#&gt;     depth = depth, examples = examples, run_dont_run = run_dont_run, 
-#&gt;     mathjax = mathjax)
+#&gt; tryCatchOne(tryCatchList(expr, names[-nh], parentenv, handlers[-nh]), 
+#&gt;     names[nh], parentenv, handlers[[nh]])
 #&gt; 
 #&gt; [[4]]
-#&gt; .f(.x[[i]], ...)
+#&gt; doTryCatch(return(expr), name, parentenv, handler)
 #&gt; 
 #&gt; [[5]]
-#&gt; data_reference_topic(topic, pkg, path = path, examples = examples, 
-#&gt;     run_dont_run = run_dont_run, mathjax = mathjax, depth = depth)
+#&gt; tryCatchList(expr, names[-nh], parentenv, handlers[-nh])
 #&gt; 
 #&gt; [[6]]
-#&gt; as_data(tags$tag_examples[[1]], env = new.env(parent = globalenv()), 
-#&gt;     topic = tools::file_path_sans_ext(topic$file_in), path = path, 
-#&gt;     examples = examples, run_dont_run = run_dont_run, depth = depth)
+#&gt; tryCatchOne(expr, names, parentenv, handlers[[1L]])
 #&gt; 
 #&gt; [[7]]
-#&gt; as_data.tag_examples(tags$tag_examples[[1]], env = new.env(parent = globalenv()), 
-#&gt;     topic = tools::file_path_sans_ext(topic$file_in), path = path, 
-#&gt;     examples = examples, run_dont_run = run_dont_run, depth = depth)
+#&gt; doTryCatch(return(expr), name, parentenv, handler)
 #&gt; 
 #&gt; [[8]]
-#&gt; purrr::pmap_chr(list(code = code, run = run, show = show), format_example_chunk, 
-#&gt;     env = child_env(env), path = path, topic = topic, obj_id = id_generator$id)
+#&gt; withCallingHandlers({
+#&gt;     NULL
+#&gt;     saveRDS(do.call(do.call, c(readRDS("/var/folders/b9/1vbq6rn93_1fk71sn95dqb8r0000gn/T//Rtmpgg6zPp/fileee10610f48f9"), 
+#&gt;         list(envir = .GlobalEnv)), envir = .GlobalEnv), file = "/var/folders/b9/1vbq6rn93_1fk71sn95dqb8r0000gn/T//Rtmpgg6zPp/fileee1032800537")
+#&gt;     flush(stdout())
+#&gt;     flush(stderr())
+#&gt;     NULL
+#&gt;     invisible()
+#&gt; }, error = function(e) {
+#&gt;     saveRDS(list("error", e), file = paste0("/var/folders/b9/1vbq6rn93_1fk71sn95dqb8r0000gn/T//Rtmpgg6zPp/fileee1032800537", 
+#&gt;         ".error"))
+#&gt; }, interrupt = function(e) {
+#&gt;     saveRDS(list("error", e), file = paste0("/var/folders/b9/1vbq6rn93_1fk71sn95dqb8r0000gn/T//Rtmpgg6zPp/fileee1032800537", 
+#&gt;         ".error"))
+#&gt; }, callr_message = function(e) {
+#&gt;     {
+#&gt;         if (is.null(e$code)) 
+#&gt;             e$code &lt;- "301"
+#&gt;         msg &lt;- paste0("base64::", base64enc::base64encode(serialize(e, 
+#&gt;             NULL)))
+#&gt;         data &lt;- paste(e$code, msg, "\n")
+#&gt;         con &lt;- processx::conn_create_fd(3, close = FALSE)
+#&gt;         while (1) {
+#&gt;             data &lt;- processx::conn_write(con, data)
+#&gt;             if (!length(data)) 
+#&gt;                 break
+#&gt;             Sys.sleep(0.1)
+#&gt;         }
+#&gt;     }
+#&gt; })
 #&gt; 
 #&gt; [[9]]
+#&gt; saveRDS(do.call(do.call, c(readRDS("/var/folders/b9/1vbq6rn93_1fk71sn95dqb8r0000gn/T//Rtmpgg6zPp/fileee10610f48f9"), 
+#&gt;     list(envir = .GlobalEnv)), envir = .GlobalEnv), file = "/var/folders/b9/1vbq6rn93_1fk71sn95dqb8r0000gn/T//Rtmpgg6zPp/fileee1032800537")
+#&gt; 
+#&gt; [[10]]
+#&gt; do.call(do.call, c(readRDS("/var/folders/b9/1vbq6rn93_1fk71sn95dqb8r0000gn/T//Rtmpgg6zPp/fileee10610f48f9"), 
+#&gt;     list(envir = .GlobalEnv)), envir = .GlobalEnv)
+#&gt; 
+#&gt; [[11]]
+#&gt; (function (what, args, quote = FALSE, envir = parent.frame()) 
+#&gt; {
+#&gt;     if (!is.list(args)) 
+#&gt;         stop("second argument must be a list")
+#&gt;     if (quote) 
+#&gt;         args &lt;- lapply(args, enquote)
+#&gt;     .Internal(do.call(what, args, envir))
+#&gt; })(function (...) 
+#&gt; pkgdown::build_site(...), list(pkg = ".", examples = TRUE, document = TRUE, 
+#&gt;     run_dont_run = FALSE, seed = 1014, mathjax = TRUE, lazy = FALSE, 
+#&gt;     override = list(), preview = FALSE, new_process = FALSE), 
+#&gt;     envir = &lt;environment&gt;)
+#&gt; 
+#&gt; [[12]]
+#&gt; (function (...) 
+#&gt; pkgdown::build_site(...))(pkg = ".", examples = TRUE, document = TRUE, 
+#&gt;     run_dont_run = FALSE, seed = 1014, mathjax = TRUE, lazy = FALSE, 
+#&gt;     override = list(), preview = FALSE, new_process = FALSE)
+#&gt; 
+#&gt; [[13]]
+#&gt; pkgdown::build_site(...)
+#&gt; 
+#&gt; [[14]]
+#&gt; build_site_local(pkg = pkg, examples = examples, document = document, 
+#&gt;     run_dont_run = run_dont_run, seed = seed, mathjax = mathjax, 
+#&gt;     lazy = lazy, override = override, preview = preview)
+#&gt; 
+#&gt; [[15]]
+#&gt; build_reference(pkg, lazy = lazy, document = document, examples = examples, 
+#&gt;     run_dont_run = run_dont_run, mathjax = mathjax, seed = seed, 
+#&gt;     override = override, preview = FALSE)
+#&gt; 
+#&gt; [[16]]
+#&gt; purrr::map(topics, build_reference_topic, pkg = pkg, lazy = lazy, 
+#&gt;     examples = examples, run_dont_run = run_dont_run, mathjax = mathjax)
+#&gt; 
+#&gt; [[17]]
+#&gt; .f(.x[[i]], ...)
+#&gt; 
+#&gt; [[18]]
+#&gt; data_reference_topic(topic, pkg, examples = examples, run_dont_run = run_dont_run, 
+#&gt;     mathjax = mathjax)
+#&gt; 
+#&gt; [[19]]
+#&gt; as_data(tags$tag_examples[[1]], env = new.env(parent = globalenv()), 
+#&gt;     topic = tools::file_path_sans_ext(topic$file_in), examples = examples, 
+#&gt;     run_dont_run = run_dont_run)
+#&gt; 
+#&gt; [[20]]
+#&gt; as_data.tag_examples(tags$tag_examples[[1]], env = new.env(parent = globalenv()), 
+#&gt;     topic = tools::file_path_sans_ext(topic$file_in), examples = examples, 
+#&gt;     run_dont_run = run_dont_run)
+#&gt; 
+#&gt; [[21]]
+#&gt; purrr::pmap_chr(list(code = code, run = run, show = show), format_example_chunk, 
+#&gt;     env = child_env(env), topic = topic, obj_id = id_generator$id)
+#&gt; 
+#&gt; [[22]]
 #&gt; .f(code = .l[[c(1L, 1L)]], run = .l[[c(2L, 1L)]], show = .l[[c(3L, 
 #&gt;     1L)]], ...)
 #&gt; 
-#&gt; [[10]]
+#&gt; [[23]]
 #&gt; evaluate::evaluate(code, env, new_device = TRUE)
 #&gt; 
-#&gt; [[11]]
+#&gt; [[24]]
 #&gt; evaluate_call(expr, parsed$src[[i]], envir = envir, enclos = enclos, 
 #&gt;     debug = debug, last = i == length(out), use_try = stop_on_error != 
 #&gt;         2L, keep_warning = keep_warning, keep_message = keep_message, 
 #&gt;     output_handler = output_handler, include_timing = include_timing)
 #&gt; 
-#&gt; [[12]]
+#&gt; [[25]]
 #&gt; timing_fn(handle(ev &lt;- withCallingHandlers(withVisible(eval(expr, 
 #&gt;     envir, enclos)), warning = wHandler, error = eHandler, message = mHandler)))
 #&gt; 
-#&gt; [[13]]
+#&gt; [[26]]
 #&gt; handle(ev &lt;- withCallingHandlers(withVisible(eval(expr, envir, 
 #&gt;     enclos)), warning = wHandler, error = eHandler, message = mHandler))
 #&gt; 
-#&gt; [[14]]
+#&gt; [[27]]
 #&gt; try(f, silent = TRUE)
 #&gt; 
-#&gt; [[15]]
+#&gt; [[28]]
 #&gt; tryCatch(expr, error = function(e) {
 #&gt;     call &lt;- conditionCall(e)
 #&gt;     if (!is.null(call)) {
@@ -368,8 +624,7 @@ we plan a breaking API update to remove the <code>.args</code> argument.</p>
 #&gt;         dcall &lt;- deparse(call)[1L]
 #&gt;         prefix &lt;- paste("Error in", dcall, ": ")
 #&gt;         LONG &lt;- 75L
-#&gt;         msg &lt;- conditionMessage(e)
-#&gt;         sm &lt;- strsplit(msg, "\n")[[1L]]
+#&gt;         sm &lt;- strsplit(conditionMessage(e), "\n")[[1L]]
 #&gt;         w &lt;- 14L + nchar(dcall, type = "w") + nchar(sm[1L], type = "w")
 #&gt;         if (is.na(w)) 
 #&gt;             w &lt;- 14L + nchar(dcall, type = "b") + nchar(sm[1L], 
@@ -380,40 +635,39 @@ we plan a breaking API update to remove the <code>.args</code> argument.</p>
 #&gt;     else prefix &lt;- "Error : "
 #&gt;     msg &lt;- paste0(prefix, conditionMessage(e), "\n")
 #&gt;     .Internal(seterrmessage(msg[1L]))
-#&gt;     if (!silent &amp;&amp; identical(getOption("show.error.messages"), 
-#&gt;         TRUE)) {
+#&gt;     if (!silent &amp;&amp; isTRUE(getOption("show.error.messages"))) {
 #&gt;         cat(msg, file = outFile)
 #&gt;         .Internal(printDeferredWarnings())
 #&gt;     }
 #&gt;     invisible(structure(msg, class = "try-error", condition = e))
 #&gt; })
 #&gt; 
-#&gt; [[16]]
+#&gt; [[29]]
 #&gt; tryCatchList(expr, classes, parentenv, handlers)
 #&gt; 
-#&gt; [[17]]
+#&gt; [[30]]
 #&gt; tryCatchOne(expr, names, parentenv, handlers[[1L]])
 #&gt; 
-#&gt; [[18]]
+#&gt; [[31]]
 #&gt; doTryCatch(return(expr), name, parentenv, handler)
 #&gt; 
-#&gt; [[19]]
+#&gt; [[32]]
 #&gt; withCallingHandlers(withVisible(eval(expr, envir, enclos)), warning = wHandler, 
 #&gt;     error = eHandler, message = mHandler)
 #&gt; 
-#&gt; [[20]]
+#&gt; [[33]]
 #&gt; withVisible(eval(expr, envir, enclos))
 #&gt; 
-#&gt; [[21]]
+#&gt; [[34]]
 #&gt; eval(expr, envir, enclos)
 #&gt; 
-#&gt; [[22]]
+#&gt; [[35]]
 #&gt; eval(expr, envir, enclos)
 #&gt; 
-#&gt; [[23]]
+#&gt; [[36]]
 #&gt; do.call(fn, list(mtcars))
 #&gt; 
-#&gt; [[24]]
+#&gt; [[37]]
 #&gt; (function (...) 
 #&gt; sys.calls())(list(mpg = c(21, 21, 22.8, 21.4, 18.7, 18.1, 14.3, 
 #&gt; 24.4, 22.8, 19.2, 17.8, 16.4, 17.3, 15.2, 10.4, 10.4, 14.7, 32.4, 
@@ -484,5 +738,8 @@ we plan a breaking API update to remove the <code>.args</code> argument.</p>
       </footer>
    </div>
 
+  
+
   </body>
 </html>
+

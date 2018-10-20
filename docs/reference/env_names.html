@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Names of symbols bound in an environment — env_names • rlang</title>
+<title>Names and numbers of symbols bound in an environment — env_names • rlang</title>
 
 <!-- jquery -->
 <script src="https://code.jquery.com/jquery-3.1.0.min.js" integrity="sha384-nrOSfDHtoPMzJHjVTdCopGqIqeYETSXhZDFyniQ8ZHcVy08QesyHcnOUpMpqnmWq" crossorigin="anonymous"></script>
@@ -21,18 +21,24 @@
 <!-- clipboard.js -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/1.7.1/clipboard.min.js" integrity="sha384-cV+rhyOuRHc9Ub/91rihWcGmMmCXDeksTtCihMupQHSsi8GIIRDG0ThDc3HGQFJ3" crossorigin="anonymous"></script>
 
+<!-- sticky kit -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/sticky-kit/1.1.3/sticky-kit.min.js" integrity="sha256-c4Rlo1ZozqTPE2RLuvbusY3+SU1pQaJC0TjuhygMipw=" crossorigin="anonymous"></script>
+
 <!-- pkgdown -->
 <link href="../pkgdown.css" rel="stylesheet">
-<script src="../jquery.sticky-kit.min.js"></script>
 <script src="../pkgdown.js"></script>
-  
-  
-<meta property="og:title" content="Names of symbols bound in an environment — env_names" />
+
+
+
+<meta property="og:title" content="Names and numbers of symbols bound in an environment — env_names" />
 
 <meta property="og:description" content="env_names() returns object names from an enviroment env as a
 character vector. All names are returned, even those starting with
-a dot." />
+a dot. env_length() returns the number of bindings." />
 <meta name="twitter:card" content="summary" />
+
+
+
 <!-- mathjax -->
 <script src='https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML'></script>
 
@@ -55,8 +61,12 @@ a dot." />
         <span class="icon-bar"></span>
         <span class="icon-bar"></span>
       </button>
-      <a class="navbar-brand" href="../index.html">rlang</a>
+      <span class="navbar-brand">
+        <a class="navbar-link" href="../index.html">rlang</a>
+        <span class="label label-default" data-toggle="tooltip" data-placement="bottom" title="Released package">0.3.0</span>
+      </span>
     </div>
+
     <div id="navbar" class="navbar-collapse collapse">
       <ul class="nav navbar-nav">
         <li>
@@ -78,6 +88,7 @@ a dot." />
   </a>
 </li>
       </ul>
+      
     </div><!--/.nav-collapse -->
   </div><!--/.container -->
 </div><!--/.navbar -->
@@ -85,27 +96,32 @@ a dot." />
       
       </header>
 
-      <div class="row">
+<div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-    <h1>Names of symbols bound in an environment</h1>
+    <h1>Names and numbers of symbols bound in an environment</h1>
+    <small class="dont-index">Source: <a href='https://github.com/r-lib/rlang/blob/master/R/env-binding.R'><code>R/env-binding.R</code></a></small>
+    <div class="hidden name"><code>env_names.Rd</code></div>
     </div>
 
+    <div class="ref-description">
     
     <p><code>env_names()</code> returns object names from an enviroment <code>env</code> as a
 character vector. All names are returned, even those starting with
-a dot.</p>
+a dot. <code>env_length()</code> returns the number of bindings.</p>
     
+    </div>
 
-    <pre class="usage"><span class='fu'>env_names</span>(<span class='no'>env</span>)</pre>
+    <pre class="usage"><span class='fu'>env_names</span>(<span class='no'>env</span>)
+
+<span class='fu'>env_length</span>(<span class='no'>env</span>)</pre>
     
-    <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a> Arguments</h2>
+    <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
     <colgroup><col class="name" /><col class="desc" /></colgroup>
     <tr>
       <th>env</th>
-      <td><p>An environment or an object bundling an environment,
-e.g. a formula, <a href='quotation.html'>quosure</a> or <a href='is_function.html'>closure</a>.</p></td>
+      <td><p>An environment.</p></td>
     </tr>
     </table>
     
@@ -172,5 +188,8 @@ with unicode points unserialised.</p>
       </footer>
    </div>
 
+  
+
   </body>
 </html>
+

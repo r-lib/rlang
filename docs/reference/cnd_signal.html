@@ -21,23 +21,29 @@
 <!-- clipboard.js -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/1.7.1/clipboard.min.js" integrity="sha384-cV+rhyOuRHc9Ub/91rihWcGmMmCXDeksTtCihMupQHSsi8GIIRDG0ThDc3HGQFJ3" crossorigin="anonymous"></script>
 
+<!-- sticky kit -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/sticky-kit/1.1.3/sticky-kit.min.js" integrity="sha256-c4Rlo1ZozqTPE2RLuvbusY3+SU1pQaJC0TjuhygMipw=" crossorigin="anonymous"></script>
+
 <!-- pkgdown -->
 <link href="../pkgdown.css" rel="stylesheet">
-<script src="../jquery.sticky-kit.min.js"></script>
 <script src="../pkgdown.js"></script>
-  
-  
+
+
+
 <meta property="og:title" content="Signal a condition — cnd_signal" />
 
 <meta property="og:description" content="Signal a condition to handlers that have been established on the
 stack. Conditions signalled with cnd_signal() are assumed to be
-benign. Control flow can resume normally once the conditions has
+benign. Control flow can resume normally once the condition has
 been signalled (if no handler jumped somewhere else on the
 evaluation stack). On the other hand, cnd_abort() treats the
 condition as critical and will jump out of the distressed call
 frame (see rst_abort()), unless a handler can deal with the
 condition." />
 <meta name="twitter:card" content="summary" />
+
+
+
 <!-- mathjax -->
 <script src='https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML'></script>
 
@@ -60,8 +66,12 @@ condition." />
         <span class="icon-bar"></span>
         <span class="icon-bar"></span>
       </button>
-      <a class="navbar-brand" href="../index.html">rlang</a>
+      <span class="navbar-brand">
+        <a class="navbar-link" href="../index.html">rlang</a>
+        <span class="label label-default" data-toggle="tooltip" data-placement="bottom" title="Released package">0.3.0</span>
+      </span>
     </div>
+
     <div id="navbar" class="navbar-collapse collapse">
       <ul class="nav navbar-nav">
         <li>
@@ -83,6 +93,7 @@ condition." />
   </a>
 </li>
       </ul>
+      
     </div><!--/.nav-collapse -->
   </div><!--/.container -->
 </div><!--/.navbar -->
@@ -90,69 +101,42 @@ condition." />
       
       </header>
 
-      <div class="row">
+<div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
     <h1>Signal a condition</h1>
+    <small class="dont-index">Source: <a href='https://github.com/r-lib/rlang/blob/master/R/cnd.R'><code>R/cnd.R</code></a></small>
+    <div class="hidden name"><code>cnd_signal.Rd</code></div>
     </div>
 
+    <div class="ref-description">
     
     <p>Signal a condition to handlers that have been established on the
 stack. Conditions signalled with <code>cnd_signal()</code> are assumed to be
-benign. Control flow can resume normally once the conditions has
+benign. Control flow can resume normally once the condition has
 been signalled (if no handler jumped somewhere else on the
 evaluation stack). On the other hand, <code>cnd_abort()</code> treats the
 condition as critical and will jump out of the distressed call
 frame (see <code><a href='rst_abort.html'>rst_abort()</a></code>), unless a handler can deal with the
 condition.</p>
     
+    </div>
 
-    <pre class="usage"><span class='fu'>cnd_signal</span>(<span class='no'>.cnd</span>, <span class='no'>...</span>, <span class='kw'>.msg</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>.call</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>.mufflable</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>)
-
-<span class='fu'>cnd_inform</span>(<span class='no'>.cnd</span>, <span class='no'>...</span>, <span class='kw'>.msg</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>.call</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>.mufflable</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>)
-
-<span class='fu'>cnd_warn</span>(<span class='no'>.cnd</span>, <span class='no'>...</span>, <span class='kw'>.msg</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>.call</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>.mufflable</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>)
-
-<span class='fu'>cnd_abort</span>(<span class='no'>.cnd</span>, <span class='no'>...</span>, <span class='kw'>.msg</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>.call</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>.mufflable</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>)</pre>
+    <pre class="usage"><span class='fu'>cnd_signal</span>(<span class='no'>cnd</span>, <span class='no'>.cnd</span>, <span class='no'>.mufflable</span>)</pre>
     
-    <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a> Arguments</h2>
+    <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
     <colgroup><col class="name" /><col class="desc" /></colgroup>
     <tr>
-      <th>.cnd</th>
-      <td><p>Either a condition object (see <code><a href='cnd.html'>cnd()</a></code>), or the
-name of a s3 class from which a new condition will be created.</p></td>
+      <th>cnd</th>
+      <td><p>A condition object (see <code><a href='cnd.html'>cnd()</a></code>).</p></td>
     </tr>
     <tr>
-      <th>...</th>
-      <td><p>Named data fields stored inside the condition
-object. These dots are evaluated with <a href='tidy-dots.html'>explicit
-splicing</a>.</p></td>
-    </tr>
-    <tr>
-      <th>.msg</th>
-      <td><p>A string to override the condition's default message.</p></td>
-    </tr>
-    <tr>
-      <th>.call</th>
-      <td><p>Whether to display the call of the frame in which the
-condition is signalled. If <code>TRUE</code>, the call is stored in the
-<code>call</code> field of the condition object: this field is displayed by
-R when an error is issued. If a number <code>n</code>, the call is taken
-from the nth frame on the <a href='stack.html'>call stack</a>. If <code>NULL</code>,
-the call is taken from the <code>.call</code> field that was supplied to the
-condition constructor (e.g. <code><a href='cnd.html'>cnd()</a></code>). In all cases the <code>.call</code>
-field is updated with the actual call.</p></td>
-    </tr>
-    <tr>
-      <th>.mufflable</th>
-      <td><p>Whether to signal the condition with a muffling
-restart. This is useful to let <code><a href='exiting.html'>inplace()</a></code> handlers muffle a
-condition. It stops the condition from being passed to other
-handlers when the inplace handler did not jump elsewhere. <code>TRUE</code>
-by default for benign conditions, but <code>FALSE</code> for critical ones,
-since in those cases execution should probably not be allowed to
-continue normally.</p></td>
+      <th>.cnd, .mufflable</th>
+      <td><p>These arguments are retired. <code>.cnd</code> has been
+renamed to <code>cnd</code> and <code>.mufflable</code> no longer has any effect as
+non-critical conditions are always signalled with a muffling
+restart.</p></td>
     </tr>
     </table>
     
@@ -164,26 +148,38 @@ after signalling the condition (unless a handler jumped somewhere
 else via <code><a href='rst_list.html'>rst_jump()</a></code> or by being <code><a href='exiting.html'>exiting()</a></code>). If <code>.critical</code> is
 <code>TRUE</code>, the condition is signalled via <code><a href='http://www.rdocumentation.org/packages/base/topics/stop'>base::stop()</a></code> and the
 program will terminate if no handler dealt with the condition by
-jumping out of the distressed call frame.
-    <code><a href='exiting.html'>inplace()</a></code> handlers are called in turn when they decline to handle
+jumping out of the distressed call frame.</p>
+<p><code><a href='exiting.html'>calling()</a></code> handlers are called in turn when they decline to handle
 the condition by returning normally. However, it is sometimes
-useful for an inplace handler to produce a side effect (signalling
+useful for a calling handler to produce a side effect (signalling
 another condition, displaying a message, logging something, etc),
 prevent the condition from being passed to other handlers, and
 resume execution from the place where the condition was
 signalled. The easiest way to accomplish this is by jumping to a
 restart point (see <code><a href='with_restarts.html'>with_restarts()</a></code>) established by the signalling
-function. If <code>.mufflable</code> is <code>TRUE</code>, a muffle restart is
-established. This allows inplace handler to muffle a signalled
-condition. See <code><a href='rst_muffle.html'>rst_muffle()</a></code> to jump to a muffling restart, and
-the <code>muffle</code> argument of <code><a href='exiting.html'>inplace()</a></code> for creating a muffling
-handler.</p>
+function. <code>cnd_signal()</code> always installs a muffle restart (see
+<code><a href='cnd_muffle.html'>cnd_muffle()</a></code>).</p>
+    
+    <h2 class="hasAnchor" id="lifecycle"><a class="anchor" href="#lifecycle"></a>Lifecycle</h2>
+
+    
+    <ul>
+<li><p>Modifying a condition object with <code>cnd_signal()</code> is defunct.
+Consequently the <code>.msg</code> and <code>.call</code> arguments are retired and
+defunct as of rlang 0.3.0.  In addition <code>.cnd</code> is renamed to
+<code>cnd</code> and soft-deprecated.</p></li>
+<li><p>The <code>.mufflable</code> argument is soft-deprecated and no longer has
+any effect. Non-critical conditions are always signalled with a
+muffle restart.</p></li>
+<li><p>Creating a condition object with <code>cnd_signal()</code> is
+soft-deprecated. Please use <code><a href='abort.html'>signal()</a></code> instead.</p></li>
+</ul>
     
     <h2 class="hasAnchor" id="see-also"><a class="anchor" href="#see-also"></a>See also</h2>
 
-    <p><code><a href='abort.html'>abort()</a></code>, <code><a href='abort.html'>warn()</a></code> and <code><a href='abort.html'>inform()</a></code> for signalling typical
+    <div class='dont-index'><p><code><a href='abort.html'>abort()</a></code>, <code><a href='abort.html'>warn()</a></code> and <code><a href='abort.html'>inform()</a></code> for signalling typical
 R conditions. See <code><a href='with_handlers.html'>with_handlers()</a></code> for establishing condition
-handlers.</p>
+handlers.</p></div>
     
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
@@ -195,60 +191,25 @@ handlers.</p>
 <span class='fu'>cnd_signal</span>(<span class='no'>cnd</span>)
 
 <span class='co'># To learn more about establishing condition handlers, see</span>
-<span class='co'># documentation for with_handlers(), exiting() and inplace():</span>
+<span class='co'># documentation for with_handlers(), exiting() and calling():</span>
 <span class='fu'><a href='with_handlers.html'>with_handlers</a></span>(<span class='fu'>cnd_signal</span>(<span class='no'>cnd</span>),
-  <span class='kw'>foo</span> <span class='kw'>=</span> <span class='fu'><a href='exiting.html'>inplace</a></span>(<span class='kw'>function</span>(<span class='no'>c</span>) <span class='fu'>cat</span>(<span class='st'>"side effect!\n"</span>))
+  <span class='kw'>foo</span> <span class='kw'>=</span> <span class='fu'><a href='exiting.html'>calling</a></span>(<span class='kw'>function</span>(<span class='no'>c</span>) <span class='fu'>cat</span>(<span class='st'>"side effect!\n"</span>))
 )</div><div class='output co'>#&gt; side effect!</div><div class='output co'>#&gt; NULL</div><div class='input'>
 
 <span class='co'># By default, cnd_signal() creates a muffling restart which allows</span>
-<span class='co'># inplace handlers to prevent a condition from being passed on to</span>
+<span class='co'># calling handlers to prevent a condition from being passed on to</span>
 <span class='co'># other handlers and to resume execution:</span>
-<span class='no'>undesirable_handler</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='exiting.html'>inplace</a></span>(<span class='kw'>function</span>(<span class='no'>c</span>) <span class='fu'>cat</span>(<span class='st'>"please don't call me\n"</span>))
-<span class='no'>muffling_handler</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='exiting.html'>inplace</a></span>(<span class='kw'>function</span>(<span class='no'>c</span>) {
+<span class='no'>undesirable_handler</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='exiting.html'>calling</a></span>(<span class='kw'>function</span>(<span class='no'>c</span>) <span class='fu'>cat</span>(<span class='st'>"please don't call me\n"</span>))
+<span class='no'>muffling_handler</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='exiting.html'>calling</a></span>(<span class='kw'>function</span>(<span class='no'>c</span>) {
   <span class='fu'>cat</span>(<span class='st'>"muffling foo...\n"</span>)
-  <span class='fu'><a href='rst_muffle.html'>rst_muffle</a></span>(<span class='no'>c</span>)
+  <span class='fu'><a href='cnd_muffle.html'>cnd_muffle</a></span>(<span class='no'>c</span>)
 })
 
 <span class='fu'><a href='with_handlers.html'>with_handlers</a></span>(<span class='kw'>foo</span> <span class='kw'>=</span> <span class='no'>undesirable_handler</span>,
   <span class='fu'><a href='with_handlers.html'>with_handlers</a></span>(<span class='kw'>foo</span> <span class='kw'>=</span> <span class='no'>muffling_handler</span>, {
-    <span class='fu'>cnd_signal</span>(<span class='st'>"foo"</span>)
+    <span class='fu'>cnd_signal</span>(<span class='fu'><a href='cnd.html'>cnd</a></span>(<span class='st'>"foo"</span>))
     <span class='st'>"return value"</span>
-  }))</div><div class='output co'>#&gt; muffling foo...</div><div class='output co'>#&gt; [1] "return value"</div><div class='input'>
-
-# cnd_warn() and cnd_inform() signal a condition and display a
-# warning or message:
-</div><span class='co'># NOT RUN {</span>
-<span class='fu'>cnd_inform</span>(<span class='no'>cnd</span>)
-<span class='fu'>cnd_warn</span>(<span class='no'>cnd</span>)
-<span class='co'># }</span><div class='input'>
-# You can signal a critical condition with cnd_abort(). Unlike
-# cnd_signal() which has no side effect besides signalling the
-# condition, cnd_abort() makes the program terminate with an error
-# unless a handler can deal with the condition:
-</div><span class='co'># NOT RUN {</span>
-<span class='fu'>cnd_abort</span>(<span class='no'>cnd</span>)
-<span class='co'># }</span><div class='input'>
-# If you don't specify a .msg or .call, the default message/call
-# (supplied to cnd()) are displayed. Otherwise, the ones
-# supplied to cnd_abort() and cnd_signal() take precedence:
-</div><span class='co'># NOT RUN {</span>
-<span class='no'>critical</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='cnd.html'>cnd</a></span>(<span class='st'>"my_error"</span>,
-  <span class='kw'>.msg</span> <span class='kw'>=</span> <span class='st'>"default 'my_error' msg"</span>,
-  <span class='kw'>.call</span> <span class='kw'>=</span> <span class='fu'>quote</span>(<span class='fu'>default</span>(<span class='no'>call</span>))
-)
-<span class='fu'>cnd_abort</span>(<span class='no'>critical</span>)
-<span class='fu'>cnd_abort</span>(<span class='no'>critical</span>, <span class='kw'>.msg</span> <span class='kw'>=</span> <span class='st'>"overridden msg"</span>)
-
-<span class='no'>fn</span> <span class='kw'>&lt;-</span> <span class='kw'>function</span>(<span class='no'>...</span>) {
-  <span class='fu'>cnd_abort</span>(<span class='no'>critical</span>, <span class='kw'>.call</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>)
-}
-<span class='fu'>fn</span>(<span class='kw'>arg</span> <span class='kw'>=</span> <span class='fu'>foo</span>(<span class='no'>bar</span>))
-<span class='co'># }</span><div class='input'>
-# Note that by default a condition signalled with cnd_abort() does
-# not have a muffle restart. That is because in most cases,
-# execution should not continue after signalling a critical
-# condition.
-</div></pre>
+  }))</div><div class='output co'>#&gt; muffling foo...</div><div class='output co'>#&gt; [1] "return value"</div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
     <h2>Contents</h2>
@@ -256,6 +217,8 @@ handlers.</p>
       <li><a href="#arguments">Arguments</a></li>
       
       <li><a href="#details">Details</a></li>
+
+      <li><a href="#lifecycle">Lifecycle</a></li>
 
       <li><a href="#see-also">See also</a></li>
       
@@ -277,5 +240,8 @@ handlers.</p>
       </footer>
    </div>
 
+  
+
   </body>
 </html>
+

@@ -21,26 +21,36 @@
 <!-- clipboard.js -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/1.7.1/clipboard.min.js" integrity="sha384-cV+rhyOuRHc9Ub/91rihWcGmMmCXDeksTtCihMupQHSsi8GIIRDG0ThDc3HGQFJ3" crossorigin="anonymous"></script>
 
+<!-- sticky kit -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/sticky-kit/1.1.3/sticky-kit.min.js" integrity="sha256-c4Rlo1ZozqTPE2RLuvbusY3+SU1pQaJC0TjuhygMipw=" crossorigin="anonymous"></script>
+
 <!-- pkgdown -->
 <link href="../pkgdown.css" rel="stylesheet">
-<script src="../jquery.sticky-kit.min.js"></script>
 <script src="../pkgdown.js"></script>
-  
-  
+
+
+
 <meta property="og:title" content="Quosure getters, setters and testers — quosure" />
 
 <meta property="og:description" content="You can access the quosure components (its expression and its
 environment) with:
 get_expr() and get_env(). These getters also support other
-kinds of objects such as formulas
+kinds of objects such as formulas.
 quo_get_expr() and quo_get_env(). These getters only work
 with quosures and throw an error with other types of input.
 " />
 
-<meta property="og:description" content="Test if an object is a quosure with is_quosure(). If you know an
+<meta property="og:description" content="Note that a quosure usually does not carry environments for
+literal objects like strings or
+numbers. quo() and enquo() only capture an environment for
+symbolic expressions.
+Test if an object is a quosure with is_quosure(). If you know an
 object is a quosure, use the quo_ prefixed predicates to check
 its contents, quo_is_missing(), quo_is_symbol(), etc." />
 <meta name="twitter:card" content="summary" />
+
+
+
 <!-- mathjax -->
 <script src='https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML'></script>
 
@@ -63,8 +73,12 @@ its contents, quo_is_missing(), quo_is_symbol(), etc." />
         <span class="icon-bar"></span>
         <span class="icon-bar"></span>
       </button>
-      <a class="navbar-brand" href="../index.html">rlang</a>
+      <span class="navbar-brand">
+        <a class="navbar-link" href="../index.html">rlang</a>
+        <span class="label label-default" data-toggle="tooltip" data-placement="bottom" title="Released package">0.3.0</span>
+      </span>
     </div>
+
     <div id="navbar" class="navbar-collapse collapse">
       <ul class="nav navbar-nav">
         <li>
@@ -86,6 +100,7 @@ its contents, quo_is_missing(), quo_is_symbol(), etc." />
   </a>
 </li>
       </ul>
+      
     </div><!--/.nav-collapse -->
   </div><!--/.container -->
 </div><!--/.navbar -->
@@ -93,25 +108,33 @@ its contents, quo_is_missing(), quo_is_symbol(), etc." />
       
       </header>
 
-      <div class="row">
+<div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
     <h1>Quosure getters, setters and testers</h1>
+    <small class="dont-index">Source: <a href='https://github.com/r-lib/rlang/blob/master/R/quo.R'><code>R/quo.R</code></a></small>
+    <div class="hidden name"><code>quosure.Rd</code></div>
     </div>
 
+    <div class="ref-description">
     
     <p>You can access the quosure components (its expression and its
 environment) with:</p><ul>
 <li><p><code><a href='set_expr.html'>get_expr()</a></code> and <code><a href='get_env.html'>get_env()</a></code>. These getters also support other
-kinds of objects such as formulas</p></li>
+kinds of objects such as formulas.</p></li>
 <li><p><code>quo_get_expr()</code> and <code>quo_get_env()</code>. These getters only work
 with quosures and throw an error with other types of input.</p></li>
 </ul>
 
-    <p>Test if an object is a quosure with <code>is_quosure()</code>. If you know an
+    <p>Note that a quosure usually does not carry environments for
+<a href='is_expression.html'>literal objects</a> like strings or
+numbers. <code><a href='quotation.html'>quo()</a></code> and <code><a href='quotation.html'>enquo()</a></code> only capture an environment for
+<a href='is_expression.html'>symbolic expressions</a>.</p>
+<p>Test if an object is a quosure with <code>is_quosure()</code>. If you know an
 object is a quosure, use the <code>quo_</code> prefixed predicates to check
 its contents, <code>quo_is_missing()</code>, <code>quo_is_symbol()</code>, etc.</p>
     
+    </div>
 
     <pre class="usage"><span class='fu'>is_quosure</span>(<span class='no'>x</span>)
 
@@ -131,11 +154,9 @@ its contents, <code>quo_is_missing()</code>, <code>quo_is_symbol()</code>, etc.<
 
 <span class='fu'>quo_set_expr</span>(<span class='no'>quo</span>, <span class='no'>expr</span>)
 
-<span class='fu'>quo_set_env</span>(<span class='no'>quo</span>, <span class='no'>env</span>)
-
-<span class='fu'>is_quosures</span>(<span class='no'>x</span>)</pre>
+<span class='fu'>quo_set_env</span>(<span class='no'>quo</span>, <span class='no'>env</span>)</pre>
     
-    <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a> Arguments</h2>
+    <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
     <colgroup><col class="name" /><col class="desc" /></colgroup>
     <tr>
@@ -162,7 +183,10 @@ match.</p></td>
 doesn't participate in the pattern-matching. If an empty string
 <code>""</code> and <code>x</code> is a namespaced call, <code><a href='is_call.html'>is_call()</a></code> returns
 <code>FALSE</code>. If any other string, <code><a href='is_call.html'>is_call()</a></code> checks that <code>x</code> is
-namespaced within <code>ns</code>.</p></td>
+namespaced within <code>ns</code>.</p>
+<p>Can be a character vector of namespaces, in which case the call
+has to match at least one of them, otherwise <code><a href='is_call.html'>is_call()</a></code> returns
+<code>FALSE</code>.</p></td>
     </tr>
     <tr>
       <th>expr</th>
@@ -195,23 +219,23 @@ might not be in the future.</p></li>
     
     <h2 class="hasAnchor" id="see-also"><a class="anchor" href="#see-also"></a>See also</h2>
 
-    <p><code><a href='quotation.html'>quo()</a></code> for creating quosures by quotation; <code><a href='as_quosure.html'>as_quosure()</a></code>
-and <code><a href='as_quosure.html'>new_quosure()</a></code> for constructing quosures manually.</p>
+    <div class='dont-index'><p><code><a href='quotation.html'>quo()</a></code> for creating quosures by quotation; <code><a href='as_quosure.html'>as_quosure()</a></code>
+and <code><a href='as_quosure.html'>new_quosure()</a></code> for constructing quosures manually.</p></div>
     
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
     <pre class="examples"><div class='input'><span class='no'>quo</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='quotation.html'>quo</a></span>(<span class='no'>my_quosure</span>)
 <span class='no'>quo</span></div><div class='output co'>#&gt; &lt;quosure&gt;
-#&gt;   expr: ^my_quosure
-#&gt;   env:  0x7f827c7edb20</div><div class='input'>
+#&gt; expr: ^my_quosure
+#&gt; env:  0x7f85c314b5f0</div><div class='input'>
 
 <span class='co'># Access and set the components of a quosure:</span>
-<span class='fu'>quo_get_expr</span>(<span class='no'>quo</span>)</div><div class='output co'>#&gt; my_quosure</div><div class='input'><span class='fu'>quo_get_env</span>(<span class='no'>quo</span>)</div><div class='output co'>#&gt; &lt;environment: 0x7f827c7edb20&gt;</div><div class='input'>
+<span class='fu'>quo_get_expr</span>(<span class='no'>quo</span>)</div><div class='output co'>#&gt; my_quosure</div><div class='input'><span class='fu'>quo_get_env</span>(<span class='no'>quo</span>)</div><div class='output co'>#&gt; &lt;environment: 0x7f85c314b5f0&gt;</div><div class='input'>
 <span class='no'>quo</span> <span class='kw'>&lt;-</span> <span class='fu'>quo_set_expr</span>(<span class='no'>quo</span>, <span class='fu'>quote</span>(<span class='no'>baz</span>))
 <span class='no'>quo</span> <span class='kw'>&lt;-</span> <span class='fu'>quo_set_env</span>(<span class='no'>quo</span>, <span class='fu'><a href='empty_env.html'>empty_env</a></span>())
 <span class='no'>quo</span></div><div class='output co'>#&gt; &lt;quosure&gt;
-#&gt;   expr: ^baz
-#&gt;   env:  empty</div><div class='input'>
+#&gt; expr: ^baz
+#&gt; env:  empty</div><div class='input'>
 <span class='co'># Test wether an object is a quosure:</span>
 <span class='fu'>is_quosure</span>(<span class='no'>quo</span>)</div><div class='output co'>#&gt; [1] TRUE</div><div class='input'>
 <span class='co'># If it is a quosure, you can use the specialised type predicates</span>
@@ -220,12 +244,12 @@ and <code><a href='as_quosure.html'>new_quosure()</a></code> for constructing qu
 <span class='co'># quo_is_missing() checks for a special kind of quosure, the one</span>
 <span class='co'># that contains the missing argument:</span>
 <span class='fu'><a href='quotation.html'>quo</a></span>()</div><div class='output co'>#&gt; &lt;quosure&gt;
-#&gt;   expr: ^
-#&gt;   env:  empty</div><div class='input'><span class='fu'>quo_is_missing</span>(<span class='fu'><a href='quotation.html'>quo</a></span>())</div><div class='output co'>#&gt; [1] TRUE</div><div class='input'>
+#&gt; expr: ^
+#&gt; env:  empty</div><div class='input'><span class='fu'>quo_is_missing</span>(<span class='fu'><a href='quotation.html'>quo</a></span>())</div><div class='output co'>#&gt; [1] TRUE</div><div class='input'>
 <span class='no'>fn</span> <span class='kw'>&lt;-</span> <span class='kw'>function</span>(<span class='no'>arg</span>) <span class='fu'><a href='quotation.html'>enquo</a></span>(<span class='no'>arg</span>)
 <span class='fu'>fn</span>()</div><div class='output co'>#&gt; &lt;quosure&gt;
-#&gt;   expr: ^
-#&gt;   env:  empty</div><div class='input'><span class='fu'>quo_is_missing</span>(<span class='fu'>fn</span>())</div><div class='output co'>#&gt; [1] TRUE</div></pre>
+#&gt; expr: ^
+#&gt; env:  empty</div><div class='input'><span class='fu'>quo_is_missing</span>(<span class='fu'>fn</span>())</div><div class='output co'>#&gt; [1] TRUE</div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
     <h2>Contents</h2>
@@ -256,5 +280,8 @@ and <code><a href='as_quosure.html'>new_quosure()</a></code> for constructing qu
       </footer>
    </div>
 
+  
+
   </body>
 </html>
+

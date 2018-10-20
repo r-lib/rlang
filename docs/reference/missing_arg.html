@@ -21,12 +21,15 @@
 <!-- clipboard.js -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/1.7.1/clipboard.min.js" integrity="sha384-cV+rhyOuRHc9Ub/91rihWcGmMmCXDeksTtCihMupQHSsi8GIIRDG0ThDc3HGQFJ3" crossorigin="anonymous"></script>
 
+<!-- sticky kit -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/sticky-kit/1.1.3/sticky-kit.min.js" integrity="sha256-c4Rlo1ZozqTPE2RLuvbusY3+SU1pQaJC0TjuhygMipw=" crossorigin="anonymous"></script>
+
 <!-- pkgdown -->
 <link href="../pkgdown.css" rel="stylesheet">
-<script src="../jquery.sticky-kit.min.js"></script>
 <script src="../pkgdown.js"></script>
-  
-  
+
+
+
 <meta property="og:title" content="Generate or handle a missing argument — missing_arg" />
 
 <meta property="og:description" content="These functions help using the missing argument as a regular R
@@ -37,9 +40,12 @@ testing for missing arguments contained in other objects like
 lists.
 maybe_missing() is useful to pass down an input that might be
 missing to another function. It avoids triggering an
-"argument is missing" error.
+&quot;argument is missing&quot; error.
 " />
 <meta name="twitter:card" content="summary" />
+
+
+
 <!-- mathjax -->
 <script src='https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML'></script>
 
@@ -62,8 +68,12 @@ missing to another function. It avoids triggering an
         <span class="icon-bar"></span>
         <span class="icon-bar"></span>
       </button>
-      <a class="navbar-brand" href="../index.html">rlang</a>
+      <span class="navbar-brand">
+        <a class="navbar-link" href="../index.html">rlang</a>
+        <span class="label label-default" data-toggle="tooltip" data-placement="bottom" title="Released package">0.3.0</span>
+      </span>
     </div>
+
     <div id="navbar" class="navbar-collapse collapse">
       <ul class="nav navbar-nav">
         <li>
@@ -85,6 +95,7 @@ missing to another function. It avoids triggering an
   </a>
 </li>
       </ul>
+      
     </div><!--/.nav-collapse -->
   </div><!--/.container -->
 </div><!--/.navbar -->
@@ -92,12 +103,15 @@ missing to another function. It avoids triggering an
       
       </header>
 
-      <div class="row">
+<div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
     <h1>Generate or handle a missing argument</h1>
+    <small class="dont-index">Source: <a href='https://github.com/r-lib/rlang/blob/master/R/arg.R'><code>R/arg.R</code></a></small>
+    <div class="hidden name"><code>missing_arg.Rd</code></div>
     </div>
 
+    <div class="ref-description">
     
     <p>These functions help using the missing argument as a regular R
 object.</p><ul>
@@ -110,6 +124,7 @@ missing to another function. It avoids triggering an
 "argument is missing" error.</p></li>
 </ul>
     
+    </div>
 
     <pre class="usage"><span class='fu'>missing_arg</span>()
 
@@ -117,7 +132,7 @@ missing to another function. It avoids triggering an
 
 <span class='fu'>maybe_missing</span>(<span class='no'>x</span>)</pre>
     
-    <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a> Arguments</h2>
+    <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
     <colgroup><col class="name" /><col class="desc" /></colgroup>
     <tr>
@@ -151,17 +166,15 @@ functions through an argument, you're at risk of triggering a
 missing error. This is because arguments are passed through
 symbols. To work around this, <code>is_missing()</code> and <code>maybe_missing(x)</code>
 use a bit of magic to determine if the input is the missing
-argument without triggering a missing error.
-    <code>maybe_missing()</code> is particularly useful for prototyping
-meta-programming algorithm in R. The missing argument is a likely
+argument without triggering a missing error.</p>
+<p><code>maybe_missing()</code> is particularly useful for prototyping
+meta-programming algorithms in R. The missing argument is a likely
 input when computing on the language because it is a standard
 object in formals lists. While C functions are always allowed to
 return the missing argument and pass it to other C functions, this
 is not the case on the R side. If you're implementing your
 meta-programming algorithm in R, use <code>maybe_missing()</code> when an
 input might be the missing argument object.</p>
-<p>[[1]: R:[1
-[[1]: R:[1</p>
     
     <h2 class="hasAnchor" id="life-cycle"><a class="anchor" href="#life-cycle"></a>Life cycle</h2>
 
@@ -180,8 +193,8 @@ input might be the missing argument object.</p>
 <span class='co'># Creating a missing argument can also be useful to generate calls</span>
 <span class='no'>args</span> <span class='kw'>&lt;-</span> <span class='fu'>list</span>(<span class='fl'>1</span>, <span class='fu'>missing_arg</span>(), <span class='fl'>3</span>, <span class='fu'>missing_arg</span>())
 <span class='fu'><a href='quotation.html'>quo</a></span>(<span class='fu'>fn</span>(!!! <span class='no'>args</span>))</div><div class='output co'>#&gt; &lt;quosure&gt;
-#&gt;   expr: ^fn(1, , 3, )
-#&gt;   env:  0x7f829905cd48</div><div class='input'>
+#&gt; expr: ^fn(1, , 3, )
+#&gt; env:  0x7f85c82be0b0</div><div class='input'>
 <span class='co'># Other ways to create that object include:</span>
 <span class='fu'>quote</span>(<span class='kw'>expr</span> <span class='kw'>=</span> )</div><div class='output co'>#&gt; </div><div class='input'><span class='fu'><a href='quotation.html'>expr</a></span>()</div><div class='output co'>#&gt; </div><div class='input'>
 <span class='co'># It is perfectly valid to generate and assign the missing</span>
@@ -241,5 +254,8 @@ input might be the missing argument object.</p>
       </footer>
    </div>
 
+  
+
   </body>
 </html>
+

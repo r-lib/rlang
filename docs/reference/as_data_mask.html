@@ -21,15 +21,19 @@
 <!-- clipboard.js -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/1.7.1/clipboard.min.js" integrity="sha384-cV+rhyOuRHc9Ub/91rihWcGmMmCXDeksTtCihMupQHSsi8GIIRDG0ThDc3HGQFJ3" crossorigin="anonymous"></script>
 
+<!-- sticky kit -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/sticky-kit/1.1.3/sticky-kit.min.js" integrity="sha256-c4Rlo1ZozqTPE2RLuvbusY3+SU1pQaJC0TjuhygMipw=" crossorigin="anonymous"></script>
+
 <!-- pkgdown -->
 <link href="../pkgdown.css" rel="stylesheet">
-<script src="../jquery.sticky-kit.min.js"></script>
 <script src="../pkgdown.js"></script>
-  
-  
+
+
+
 <meta property="og:title" content="Create a data mask — as_data_mask" />
 
-<meta property="og:description" content="A data mask is an environment (or possibly multiple environments
+<meta property="og:description" content="
+A data mask is an environment (or possibly multiple environments
 forming an ancestry) containing user-supplied objects. Objects in
 the mask have precedence over objects in the environment (i.e. they
 mask those objects). Many R functions evaluate quoted expressions
@@ -37,22 +41,11 @@ in a data mask so these expressions can refer to objects within the
 user data.
 These functions let you construct a tidy eval data mask manually.
 They are meant for developers of tidy eval interfaces rather than
-for end users. Most of the time you can just call eval_tidy()
-with user data and the data mask will be constructed automatically.
-There are three main use cases for manual creation of data masks:
-When eval_tidy() is called with the same data in a tight loop.
-Tidy eval data masks are a bit expensive to build so it is best
-to construct it once and reuse it the other times for optimal
-performance.
-When several expressions should be evaluated in the same
-environment because a quoted expression might create new objects
-that can be referred in other quoted expressions evaluated at a
-later time.
-When your data mask requires special features. For instance the
-data frame columns in dplyr data masks are implemented with
-active bindings.
-" />
+for end users." />
 <meta name="twitter:card" content="summary" />
+
+
+
 <!-- mathjax -->
 <script src='https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML'></script>
 
@@ -75,8 +68,12 @@ active bindings.
         <span class="icon-bar"></span>
         <span class="icon-bar"></span>
       </button>
-      <a class="navbar-brand" href="../index.html">rlang</a>
+      <span class="navbar-brand">
+        <a class="navbar-link" href="../index.html">rlang</a>
+        <span class="label label-default" data-toggle="tooltip" data-placement="bottom" title="Released package">0.3.0</span>
+      </span>
     </div>
+
     <div id="navbar" class="navbar-collapse collapse">
       <ul class="nav navbar-nav">
         <li>
@@ -98,6 +95,7 @@ active bindings.
   </a>
 </li>
       </ul>
+      
     </div><!--/.nav-collapse -->
   </div><!--/.container -->
 </div><!--/.navbar -->
@@ -105,14 +103,18 @@ active bindings.
       
       </header>
 
-      <div class="row">
+<div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
     <h1>Create a data mask</h1>
+    <small class="dont-index">Source: <a href='https://github.com/r-lib/rlang/blob/master/R/eval-tidy.R'><code>R/eval-tidy.R</code></a></small>
+    <div class="hidden name"><code>as_data_mask.Rd</code></div>
     </div>
 
+    <div class="ref-description">
     
-    <p>A data mask is an environment (or possibly multiple environments
+    <p><a href='https://www.tidyverse.org/lifecycle/#stable'><img src='figures/lifecycle-stable.svg' alt='Stable lifecycle'></a></p>
+<p>A data mask is an environment (or possibly multiple environments
 forming an ancestry) containing user-supplied objects. Objects in
 the mask have precedence over objects in the environment (i.e. they
 mask those objects). Many R functions evaluate quoted expressions
@@ -120,30 +122,17 @@ in a data mask so these expressions can refer to objects within the
 user data.</p>
 <p>These functions let you construct a tidy eval data mask manually.
 They are meant for developers of tidy eval interfaces rather than
-for end users. Most of the time you can just call <code><a href='eval_tidy.html'>eval_tidy()</a></code>
-with user data and the data mask will be constructed automatically.
-There are three main use cases for manual creation of data masks:</p><ul>
-<li><p>When <code><a href='eval_tidy.html'>eval_tidy()</a></code> is called with the same data in a tight loop.
-Tidy eval data masks are a bit expensive to build so it is best
-to construct it once and reuse it the other times for optimal
-performance.</p></li>
-<li><p>When several expressions should be evaluated in the same
-environment because a quoted expression might create new objects
-that can be referred in other quoted expressions evaluated at a
-later time.</p></li>
-<li><p>When your data mask requires special features. For instance the
-data frame columns in dplyr data masks are implemented with
-<a href='http://www.rdocumentation.org/packages/base/topics/delayedAssign'>active bindings</a>.</p></li>
-</ul>
+for end users.</p>
     
+    </div>
 
-    <pre class="usage"><span class='fu'>as_data_mask</span>(<span class='no'>data</span>, <span class='kw'>parent</span> <span class='kw'>=</span> <span class='fu'><a href='scoped_env.html'>base_env</a></span>())
+    <pre class="usage"><span class='fu'>as_data_mask</span>(<span class='no'>data</span>, <span class='kw'>parent</span> <span class='kw'>=</span> <span class='kw'>NULL</span>)
 
 <span class='fu'>as_data_pronoun</span>(<span class='no'>data</span>)
 
-<span class='fu'>new_data_mask</span>(<span class='no'>bottom</span>, <span class='kw'>top</span> <span class='kw'>=</span> <span class='no'>bottom</span>, <span class='kw'>parent</span> <span class='kw'>=</span> <span class='fu'><a href='scoped_env.html'>base_env</a></span>())</pre>
+<span class='fu'>new_data_mask</span>(<span class='no'>bottom</span>, <span class='kw'>top</span> <span class='kw'>=</span> <span class='no'>bottom</span>, <span class='kw'>parent</span> <span class='kw'>=</span> <span class='kw'>NULL</span>)</pre>
     
-    <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a> Arguments</h2>
+    <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
     <colgroup><col class="name" /><col class="desc" /></colgroup>
     <tr>
@@ -152,7 +141,11 @@ data frame columns in dplyr data masks are implemented with
     </tr>
     <tr>
       <th>parent</th>
-      <td><p>The parent environment of the data mask.</p></td>
+      <td><p>Soft-deprecated. This argument no longer has any effect.
+The parent of the data mask is determined from either:</p><ul>
+<li><p>The <code>env</code> argument of <code><a href='eval_tidy.html'>eval_tidy()</a></code></p></li>
+<li><p>Quosure environments when applicable</p></li>
+</ul></td>
     </tr>
     <tr>
       <th>bottom</th>
@@ -172,48 +165,93 @@ is only one environment deep, <code>top</code> should be the same as
 
     <p>A data mask that you can supply to <code><a href='eval_tidy.html'>eval_tidy()</a></code>.</p>
     
+    <h2 class="hasAnchor" id="why-build-a-data-mask-"><a class="anchor" href="#why-build-a-data-mask-"></a>Why build a data mask?</h2>
+
+    
+    <p>Most of the time you can just call <code><a href='eval_tidy.html'>eval_tidy()</a></code> with a list or a
+data frame and the data mask will be constructed automatically.
+There are three main use cases for manual creation of data masks:</p><ul>
+<li><p>When <code><a href='eval_tidy.html'>eval_tidy()</a></code> is called with the same data in a tight loop.
+Because there is some overhead to creating tidy eval data masks,
+constructing the mask once and reusing it for subsequent
+evaluations may improve performance.</p></li>
+<li><p>When several expressions should be evaluated in the exact same
+environment because a quoted expression might create new objects
+that can be referred in other quoted expressions evaluated at a
+later time. One example of this is <code><a href='http://www.rdocumentation.org/packages/tibble/topics/tibble'>tibble::lst()</a></code> where new
+columns can refer to previous ones.</p></li>
+<li><p>When your data mask requires special features. For instance the
+data frame columns in dplyr data masks are implemented with
+<a href='http://www.rdocumentation.org/packages/base/topics/delayedAssign'>active bindings</a>.</p></li>
+</ul>
+    
     <h2 class="hasAnchor" id="building-your-own-data-mask"><a class="anchor" href="#building-your-own-data-mask"></a>Building your own data mask</h2>
 
     
-    <p>Creating a data mask for <code><a href='http://www.rdocumentation.org/packages/base/topics/eval'>base::eval()</a></code> is a simple matter of
-creating an environment containing masking objects that has the
-user context as parent. <code>eval()</code> automates this task when you
-supply data as second argument. However a tidy eval data mask also
-needs to enable support of <a href='quotation.html'>quosures</a> and <a href='tidyeval-data.html'>data
-pronouns</a>. These functions allow manual construction
-of tidy eval data masks:</p><ul>
-<li><p><code>as_data_mask()</code> transforms a data frame, named vector or
-environment to a data mask. If an environment, its ancestry is
-ignored. It automatically installs a data pronoun.</p></li>
+    <p>Unlike <code><a href='http://www.rdocumentation.org/packages/base/topics/eval'>base::eval()</a></code> which takes any kind of environments as data
+mask, <code><a href='eval_tidy.html'>eval_tidy()</a></code> has specific requirements in order to support
+<a href='quotation.html'>quosures</a>. For this reason you can't supply bare
+environments.</p>
+<p>There are two ways of constructing an rlang data mask manually:</p><ul>
+<li><p><code>as_data_mask()</code> transforms a list or data frame to a data mask.
+It automatically installs the data pronoun <code><a href='tidyeval-data.html'>.data</a></code>.</p></li>
 <li><p><code>new_data_mask()</code> is a bare bones data mask constructor for
 environments. You can supply a bottom and a top environment in
-case your data mask comprises multiple environments.</p>
+case your data mask comprises multiple environments (see section
+below).</p>
 <p>Unlike <code>as_data_mask()</code> it does not install the <code>.data</code> pronoun
 so you need to provide one yourself. You can provide a pronoun
-constructed with <code>as_data_pronoun()</code> or your own pronoun class.</p></li>
+constructed with <code>as_data_pronoun()</code> or your own pronoun class.</p>
+<p><code>as_data_pronoun()</code> will create a pronoun from a list, an
+environment, or an rlang data mask. In the latter case, the whole
+ancestry is looked up from the bottom to the top of the mask.
+Functions stored in the mask are bypassed by the pronoun.</p></li>
 </ul>
-<ul>
-<li><p><code>as_data_pronoun()</code> constructs a tidy eval data pronoun that
-gives more useful error messages than regular data frames or
-lists, i.e. when an object does not exist or if an user tries to
-overwrite an object.</p></li>
+    <p>Once you have built a data mask, simply pass it to <code><a href='eval_tidy.html'>eval_tidy()</a></code> as
+the <code>data</code> argument. You can repeat this as many times as
+needed. Note that any objects created there (perhaps because of a
+call to <code>&lt;-</code>) will persist in subsequent evaluations.</p>
+    
+    <h2 class="hasAnchor" id="top-and-bottom-of-data-mask"><a class="anchor" href="#top-and-bottom-of-data-mask"></a>Top and bottom of data mask</h2>
+
+    
+    <p>In some cases you'll need several levels in your data mask. One
+good reason is when you include functions in the mask. It's a good
+idea to keep data objects one level lower than function objects, so
+that the former cannot override the definitions of the latter (see
+examples).</p>
+<p>In that case, set up all your environments and keep track of the
+bottom child and the top parent. You'll need to pass both to
+<code>new_data_mask()</code>.</p>
+<p>Note that the parent of the top environment is completely
+undetermined, you shouldn't expect it to remain the same at all
+times. This parent is replaced during evaluation by <code><a href='eval_tidy.html'>eval_tidy()</a></code>
+to one of the following environments:</p><ul>
+<li><p>The default environment passed as the <code>env</code> argument of <code><a href='eval_tidy.html'>eval_tidy()</a></code>.</p></li>
+<li><p>The environment of the current quosure being evaluated, if applicable.</p></li>
 </ul>
-    <p>To use a a data mask, just supply it to <code><a href='eval_tidy.html'>eval_tidy()</a></code> as <code>data</code>
-argument. You can repeat this as many times as needed. Note that
-any objects created there (perhaps because of a call to <code>&lt;-</code>) will
-persist in subsequent evaluations:</p>
+    <p>Consequently, all masking data should be contained between the
+bottom and top environment of the data mask.</p>
     
     <h2 class="hasAnchor" id="life-cycle"><a class="anchor" href="#life-cycle"></a>Life cycle</h2>
 
     
-    <p>All these functions are now stable.</p>
+    <p><strong>rlang 0.3.0</strong></p>
+<p>Passing environments to <code>as_data_mask()</code> is soft-deprecated. Please
+build a data mask with <code>new_data_mask()</code>.</p>
+<p>The <code>parent</code> argument no longer has any effect. The parent of the
+data mask is determined from either:</p><ul>
+<li><p>The <code>env</code> argument of <code><a href='eval_tidy.html'>eval_tidy()</a></code></p></li>
+<li><p>Quosure environments when applicable</p></li>
+</ul>
+    <p><strong>rlang 0.2.0</strong></p>
 <p>In early versions of rlang data masks were called overscopes. We
 think data mask is a more natural name in R. It makes reference to
 masking in the search path which occurs through the same mechanism
 (in technical terms, lexical scoping with hierarchically nested
-environments). We say that that objects from user data mask objects
+environments). We say that objects from user data mask objects
 in the current environment.</p>
-<p>Following this change in terminology, <code>as_data_mask()</code> and
+<p>Following this change in terminology, <code><a href='as_overscope.html'>as_overscope()</a></code> and
 <code><a href='as_overscope.html'>new_overscope()</a></code> were soft-deprecated in rlang 0.2.0 in favour of
 <code>as_data_mask()</code> and <code>new_data_mask()</code>.</p>
     
@@ -235,7 +273,47 @@ in the current environment.</p>
 <span class='co'># If new objects are created in the mask, they persist in the</span>
 <span class='co'># subsequent calls:</span>
 <span class='fu'><a href='eval_tidy.html'>eval_tidy</a></span>(<span class='fu'>quote</span>(<span class='no'>new</span> <span class='kw'>&lt;-</span> <span class='no'>cyl</span> + <span class='no'>am</span>), <span class='no'>mask</span>)</div><div class='output co'>#&gt;  [1] 7 7 5 6 8 6 8 4 4 6 6 8 8 8 8 8 8 5 5 5 4 8 8 8 8 5 5 5 9 7 9 5</div><div class='input'><span class='fu'><a href='eval_tidy.html'>eval_tidy</a></span>(<span class='fu'>quote</span>(<span class='no'>new</span> * <span class='fl'>2</span>), <span class='no'>mask</span>)</div><div class='output co'>#&gt;  [1] 14 14 10 12 16 12 16  8  8 12 12 16 16 16 16 16 16 10 10 10  8 16 16 16 16
-#&gt; [26] 10 10 10 18 14 18 10</div></pre>
+#&gt; [26] 10 10 10 18 14 18 10</div><div class='input'>
+
+<span class='co'># In some cases your data mask is a whole chain of environments</span>
+<span class='co'># rather than a single environment. You'll have to use</span>
+<span class='co'># `new_data_mask()` and let it know about the bottom of the mask</span>
+<span class='co'># (the last child of the environment chain) and the topmost parent.</span>
+
+<span class='co'># A common situation where you'll want a multiple-environment mask</span>
+<span class='co'># is when you include functions in your mask. In that case you'll</span>
+<span class='co'># put functions in the top environment and data in the bottom. This</span>
+<span class='co'># will prevent the data from overwriting the functions.</span>
+<span class='no'>top</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='env.html'>new_environment</a></span>(<span class='fu'>list</span>(<span class='kw'>`+`</span> <span class='kw'>=</span> <span class='kw pkg'>base</span><span class='kw ns'>::</span><span class='no'><a href='http://www.rdocumentation.org/packages/base/topics/paste'>paste</a></span>, <span class='kw'>c</span> <span class='kw'>=</span> <span class='kw pkg'>base</span><span class='kw ns'>::</span><span class='no'><a href='http://www.rdocumentation.org/packages/base/topics/paste'>paste</a></span>))
+
+<span class='co'># Let's add a middle environment just for sport:</span>
+<span class='no'>middle</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='env.html'>env</a></span>(<span class='no'>top</span>)
+
+<span class='co'># And finally the bottom environment containing data:</span>
+<span class='no'>bottom</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='env.html'>env</a></span>(<span class='no'>middle</span>, <span class='kw'>a</span> <span class='kw'>=</span> <span class='st'>"a"</span>, <span class='kw'>b</span> <span class='kw'>=</span> <span class='st'>"b"</span>, <span class='kw'>c</span> <span class='kw'>=</span> <span class='st'>"c"</span>)
+
+<span class='co'># We can now create a mask by supplying the top and bottom</span>
+<span class='co'># environments:</span>
+<span class='no'>mask</span> <span class='kw'>&lt;-</span> <span class='fu'>new_data_mask</span>(<span class='no'>bottom</span>, <span class='kw'>top</span> <span class='kw'>=</span> <span class='no'>top</span>)
+
+<span class='co'># This data mask can be passed to eval_tidy() instead of a list or</span>
+<span class='co'># data frame:</span>
+<span class='fu'><a href='eval_tidy.html'>eval_tidy</a></span>(<span class='fu'>quote</span>(<span class='no'>a</span> + <span class='no'>b</span> + <span class='no'>c</span>), <span class='kw'>data</span> <span class='kw'>=</span> <span class='no'>mask</span>)</div><div class='output co'>#&gt; [1] "a b c"</div><div class='input'>
+<span class='co'># Note how the function `c()` and the object `c` are looked up</span>
+<span class='co'># properly because of the multi-level structure:</span>
+<span class='fu'><a href='eval_tidy.html'>eval_tidy</a></span>(<span class='fu'>quote</span>(<span class='fu'>c</span>(<span class='no'>a</span>, <span class='no'>b</span>, <span class='no'>c</span>)), <span class='kw'>data</span> <span class='kw'>=</span> <span class='no'>mask</span>)</div><div class='output co'>#&gt; [1] "a b c"</div><div class='input'>
+<span class='co'># new_data_mask() does not create data pronouns, but</span>
+<span class='co'># data pronouns can be added manually:</span>
+<span class='no'>mask</span>$<span class='no'>.fns</span> <span class='kw'>&lt;-</span> <span class='fu'>as_data_pronoun</span>(<span class='no'>top</span>)
+
+<span class='co'># The `.data` pronoun should generally be created from the</span>
+<span class='co'># mask. This will ensure data is looked up throughout the whole</span>
+<span class='co'># ancestry. Only non-function objects are looked up from this</span>
+<span class='co'># pronoun:</span>
+<span class='no'>mask</span>$<span class='no'>.data</span> <span class='kw'>&lt;-</span> <span class='fu'>as_data_pronoun</span>(<span class='no'>mask</span>)
+<span class='no'>mask</span>$<span class='no'>.data</span>$<span class='no'>c</span></div><div class='output co'>#&gt; [1] "c"</div><div class='input'>
+<span class='co'># Now we can reference the values with the pronouns:</span>
+<span class='fu'><a href='eval_tidy.html'>eval_tidy</a></span>(<span class='fu'>quote</span>(<span class='fu'>c</span>(<span class='no'>.data</span>$<span class='no'>a</span>, <span class='no'>.data</span>$<span class='no'>b</span>, <span class='no'>.data</span>$<span class='no'>c</span>)), <span class='kw'>data</span> <span class='kw'>=</span> <span class='no'>mask</span>)</div><div class='output co'>#&gt; [1] "a b c"</div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
     <h2>Contents</h2>
@@ -244,7 +322,11 @@ in the current environment.</p>
       
       <li><a href="#value">Value</a></li>
 
+      <li><a href="#why-build-a-data-mask-">Why build a data mask?</a></li>
+
       <li><a href="#building-your-own-data-mask">Building your own data mask</a></li>
+
+      <li><a href="#top-and-bottom-of-data-mask">Top and bottom of data mask</a></li>
 
       <li><a href="#life-cycle">Life cycle</a></li>
       
@@ -266,5 +348,8 @@ in the current environment.</p>
       </footer>
    </div>
 
+  
+
   </body>
 </html>
+

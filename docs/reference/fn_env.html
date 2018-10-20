@@ -21,12 +21,15 @@
 <!-- clipboard.js -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/1.7.1/clipboard.min.js" integrity="sha384-cV+rhyOuRHc9Ub/91rihWcGmMmCXDeksTtCihMupQHSsi8GIIRDG0ThDc3HGQFJ3" crossorigin="anonymous"></script>
 
+<!-- sticky kit -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/sticky-kit/1.1.3/sticky-kit.min.js" integrity="sha256-c4Rlo1ZozqTPE2RLuvbusY3+SU1pQaJC0TjuhygMipw=" crossorigin="anonymous"></script>
+
 <!-- pkgdown -->
 <link href="../pkgdown.css" rel="stylesheet">
-<script src="../jquery.sticky-kit.min.js"></script>
 <script src="../pkgdown.js"></script>
-  
-  
+
+
+
 <meta property="og:title" content="Return the closure environment of a function — fn_env" />
 
 <meta property="og:description" content="Closure environments define the scope of functions (see env()).
@@ -35,6 +38,9 @@ When a function call is evaluated, R creates an evaluation frame
 This makes all objects defined in the closure environment and all
 its parents available to code executed within the function." />
 <meta name="twitter:card" content="summary" />
+
+
+
 <!-- mathjax -->
 <script src='https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML'></script>
 
@@ -57,8 +63,12 @@ its parents available to code executed within the function." />
         <span class="icon-bar"></span>
         <span class="icon-bar"></span>
       </button>
-      <a class="navbar-brand" href="../index.html">rlang</a>
+      <span class="navbar-brand">
+        <a class="navbar-link" href="../index.html">rlang</a>
+        <span class="label label-default" data-toggle="tooltip" data-placement="bottom" title="Released package">0.3.0</span>
+      </span>
     </div>
+
     <div id="navbar" class="navbar-collapse collapse">
       <ul class="nav navbar-nav">
         <li>
@@ -80,6 +90,7 @@ its parents available to code executed within the function." />
   </a>
 </li>
       </ul>
+      
     </div><!--/.nav-collapse -->
   </div><!--/.container -->
 </div><!--/.navbar -->
@@ -87,12 +98,15 @@ its parents available to code executed within the function." />
       
       </header>
 
-      <div class="row">
+<div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
     <h1>Return the closure environment of a function</h1>
+    <small class="dont-index">Source: <a href='https://github.com/r-lib/rlang/blob/master/R/fn.R'><code>R/fn.R</code></a></small>
+    <div class="hidden name"><code>fn_env.Rd</code></div>
     </div>
 
+    <div class="ref-description">
     
     <p>Closure environments define the scope of functions (see <code><a href='env.html'>env()</a></code>).
 When a function call is evaluated, R creates an evaluation frame
@@ -100,12 +114,13 @@ When a function call is evaluated, R creates an evaluation frame
 This makes all objects defined in the closure environment and all
 its parents available to code executed within the function.</p>
     
+    </div>
 
     <pre class="usage"><span class='fu'>fn_env</span>(<span class='no'>fn</span>)
 
 <span class='fu'>fn_env</span>(<span class='no'>x</span>) <span class='kw'>&lt;-</span> <span class='no'>value</span></pre>
     
-    <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a> Arguments</h2>
+    <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
     <colgroup><col class="name" /><col class="desc" /></colgroup>
     <tr>
@@ -157,5 +172,8 @@ an assignment method to set a new closure environment.</p>
       </footer>
    </div>
 
+  
+
   </body>
 </html>
+

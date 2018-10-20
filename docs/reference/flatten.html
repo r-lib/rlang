@@ -21,19 +21,26 @@
 <!-- clipboard.js -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/1.7.1/clipboard.min.js" integrity="sha384-cV+rhyOuRHc9Ub/91rihWcGmMmCXDeksTtCihMupQHSsi8GIIRDG0ThDc3HGQFJ3" crossorigin="anonymous"></script>
 
+<!-- sticky kit -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/sticky-kit/1.1.3/sticky-kit.min.js" integrity="sha256-c4Rlo1ZozqTPE2RLuvbusY3+SU1pQaJC0TjuhygMipw=" crossorigin="anonymous"></script>
+
 <!-- pkgdown -->
 <link href="../pkgdown.css" rel="stylesheet">
-<script src="../jquery.sticky-kit.min.js"></script>
 <script src="../pkgdown.js"></script>
-  
-  
+
+
+
 <meta property="og:title" content="Flatten or squash a list of lists into a simpler vector — flatten" />
 
-<meta property="og:description" content="flatten() removes one level hierarchy from a list, while
+<meta property="og:description" content="
+flatten() removes one level hierarchy from a list, while
 squash() removes all levels. These functions are similar to
 unlist() but they are type-stable so you always know what the
 type of the output is." />
 <meta name="twitter:card" content="summary" />
+
+
+
 <!-- mathjax -->
 <script src='https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML'></script>
 
@@ -56,8 +63,12 @@ type of the output is." />
         <span class="icon-bar"></span>
         <span class="icon-bar"></span>
       </button>
-      <a class="navbar-brand" href="../index.html">rlang</a>
+      <span class="navbar-brand">
+        <a class="navbar-link" href="../index.html">rlang</a>
+        <span class="label label-default" data-toggle="tooltip" data-placement="bottom" title="Released package">0.3.0</span>
+      </span>
     </div>
+
     <div id="navbar" class="navbar-collapse collapse">
       <ul class="nav navbar-nav">
         <li>
@@ -79,6 +90,7 @@ type of the output is." />
   </a>
 </li>
       </ul>
+      
     </div><!--/.nav-collapse -->
   </div><!--/.container -->
 </div><!--/.navbar -->
@@ -86,18 +98,23 @@ type of the output is." />
       
       </header>
 
-      <div class="row">
+<div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
     <h1>Flatten or squash a list of lists into a simpler vector</h1>
+    <small class="dont-index">Source: <a href='https://github.com/r-lib/rlang/blob/master/R/vec-squash.R'><code>R/vec-squash.R</code></a></small>
+    <div class="hidden name"><code>flatten.Rd</code></div>
     </div>
 
+    <div class="ref-description">
     
-    <p><code>flatten()</code> removes one level hierarchy from a list, while
+    <p><a href='https://www.tidyverse.org/lifecycle/#questioning'><img src='figures/lifecycle-questioning.svg' alt='Questioning lifecycle'></a></p>
+<p><code>flatten()</code> removes one level hierarchy from a list, while
 <code>squash()</code> removes all levels. These functions are similar to
 <code>unlist()</code> but they are type-stable so you always know what the
 type of the output is.</p>
     
+    </div>
 
     <pre class="usage"><span class='fu'>flatten</span>(<span class='no'>x</span>)
 
@@ -131,12 +148,12 @@ type of the output is.</p>
 
 <span class='fu'>squash_if</span>(<span class='no'>x</span>, <span class='kw'>predicate</span> <span class='kw'>=</span> <span class='no'>is_spliced</span>)</pre>
     
-    <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a> Arguments</h2>
+    <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
     <colgroup><col class="name" /><col class="desc" /></colgroup>
     <tr>
       <th>x</th>
-      <td><p>A list of flatten or squash. The contents of the list can
+      <td><p>A list to flatten or squash. The contents of the list can
 be anything for unsuffixed functions <code>flatten()</code> and <code>squash()</code>
 (as a list is returned), but the contents must match the type for
 the other functions.</p></td>
@@ -155,21 +172,29 @@ vector, <code>flatten_int()</code> an integer vector, <code>flatten_dbl()</code>
 double vector, and <code>flatten_chr()</code> a character vector. Similarly
 for <code>squash()</code> and the typed variants (<code>squash_lgl()</code> etc).</p>
     
+    <h2 class="hasAnchor" id="life-cycle"><a class="anchor" href="#life-cycle"></a>Life cycle</h2>
+
+    
+    <p>These functions are in the questioning stage. They have slightly
+different semantics than the flattening functions in purrr and we
+are currently rethinking our approach to flattening with the new
+typing facilities of the vctrs package.</p>
+    
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
     <pre class="examples"><div class='input'><span class='no'>x</span> <span class='kw'>&lt;-</span> <span class='fu'>replicate</span>(<span class='fl'>2</span>, <span class='fu'>sample</span>(<span class='fl'>4</span>), <span class='kw'>simplify</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>)
 <span class='no'>x</span></div><div class='output co'>#&gt; [[1]]
-#&gt; [1] 1 3 2 4
+#&gt; [1] 4 1 3 2
 #&gt; 
 #&gt; [[2]]
-#&gt; [1] 1 2 4 3
+#&gt; [1] 2 1 3 4
 #&gt; </div><div class='input'>
 <span class='fu'>flatten</span>(<span class='no'>x</span>)</div><div class='output co'>#&gt; [[1]]
-#&gt; [1] 1 3 2 4
+#&gt; [1] 4 1 3 2
 #&gt; 
 #&gt; [[2]]
-#&gt; [1] 1 2 4 3
-#&gt; </div><div class='input'><span class='fu'>flatten_int</span>(<span class='no'>x</span>)</div><div class='output co'>#&gt; [1] 1 3 2 4 1 2 4 3</div><div class='input'>
+#&gt; [1] 2 1 3 4
+#&gt; </div><div class='input'><span class='fu'>flatten_int</span>(<span class='no'>x</span>)</div><div class='output co'>#&gt; [1] 4 1 3 2 2 1 3 4</div><div class='input'>
 <span class='co'># With flatten(), only one level gets removed at a time:</span>
 <span class='no'>deep</span> <span class='kw'>&lt;-</span> <span class='fu'>list</span>(<span class='fl'>1</span>, <span class='fu'>list</span>(<span class='fl'>2</span>, <span class='fu'>list</span>(<span class='fl'>3</span>)))
 <span class='fu'>flatten</span>(<span class='no'>deep</span>)</div><div class='output co'>#&gt; [[1]]
@@ -201,13 +226,13 @@ for <code>squash()</code> and the typed variants (<code>squash_lgl()</code> etc)
 #&gt; [[3]]
 #&gt; [1] 3
 #&gt; </div><div class='input'><span class='fu'>squash_dbl</span>(<span class='no'>deep</span>)</div><div class='output co'>#&gt; [1] 1 2 3</div><div class='input'>
-<span class='co'># The typed flattens remove one level and coerce to an atomic</span>
+<span class='co'># The typed flatten functions remove one level and coerce to an atomic</span>
 <span class='co'># vector at the same time:</span>
 <span class='fu'>flatten_dbl</span>(<span class='fu'>list</span>(<span class='fl'>1</span>, <span class='fu'>list</span>(<span class='fl'>2</span>)))</div><div class='output co'>#&gt; [1] 1 2</div><div class='input'>
 <span class='co'># Only bare lists are flattened, but you can splice S3 lists</span>
 <span class='co'># explicitly:</span>
-<span class='no'>foo</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='set_attrs.html'>set_attrs</a></span>(<span class='fu'>list</span>(<span class='st'>"bar"</span>), <span class='kw'>class</span> <span class='kw'>=</span> <span class='st'>"foo"</span>)
-<span class='fu'>str</span>(<span class='fu'>flatten</span>(<span class='fu'>list</span>(<span class='fl'>1</span>, <span class='no'>foo</span>, <span class='fu'>list</span>(<span class='fl'>100</span>))))</div><div class='output co'>#&gt; List of 3
+<span class='no'>foo</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='set_attrs.html'>set_attrs</a></span>(<span class='fu'>list</span>(<span class='st'>"bar"</span>), <span class='kw'>class</span> <span class='kw'>=</span> <span class='st'>"foo"</span>)</div><div class='output co'>#&gt; <span class='warning'>Warning: `set_attrs()` is soft-deprecated as of rlang 0.3.0</span>
+#&gt; <span class='warning'>This warning is displayed once per session.</span></div><div class='input'><span class='fu'>str</span>(<span class='fu'>flatten</span>(<span class='fu'>list</span>(<span class='fl'>1</span>, <span class='no'>foo</span>, <span class='fu'>list</span>(<span class='fl'>100</span>))))</div><div class='output co'>#&gt; List of 3
 #&gt;  $ : num 1
 #&gt;  $ :List of 1
 #&gt;   ..$ : chr "bar"
@@ -256,6 +281,8 @@ for <code>squash()</code> and the typed variants (<code>squash_lgl()</code> etc)
       <li><a href="#arguments">Arguments</a></li>
       
       <li><a href="#value">Value</a></li>
+
+      <li><a href="#life-cycle">Life cycle</a></li>
       
       <li><a href="#examples">Examples</a></li>
     </ul>
@@ -275,5 +302,8 @@ for <code>squash()</code> and the typed variants (<code>squash_lgl()</code> etc)
       </footer>
    </div>
 
+  
+
   </body>
 </html>
+

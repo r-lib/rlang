@@ -21,21 +21,27 @@
 <!-- clipboard.js -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/1.7.1/clipboard.min.js" integrity="sha384-cV+rhyOuRHc9Ub/91rihWcGmMmCXDeksTtCihMupQHSsi8GIIRDG0ThDc3HGQFJ3" crossorigin="anonymous"></script>
 
+<!-- sticky kit -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/sticky-kit/1.1.3/sticky-kit.min.js" integrity="sha256-c4Rlo1ZozqTPE2RLuvbusY3+SU1pQaJC0TjuhygMipw=" crossorigin="anonymous"></script>
+
 <!-- pkgdown -->
 <link href="../pkgdown.css" rel="stylesheet">
-<script src="../jquery.sticky-kit.min.js"></script>
 <script src="../pkgdown.js"></script>
-  
-  
+
+
+
 <meta property="og:title" content="Create an exiting or in place handler — exiting" />
 
 <meta property="og:description" content="There are two types of condition handlers: exiting handlers, which
 are thrown to the place where they have been established (e.g.,
 with_handlers()'s evaluation frame), and local handlers, which
 are executed in place (e.g., where the condition has been
-signalled). exiting() and inplace() create handlers suitable
+signalled). exiting() and calling() create handlers suitable
 for with_handlers()." />
 <meta name="twitter:card" content="summary" />
+
+
+
 <!-- mathjax -->
 <script src='https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML'></script>
 
@@ -58,8 +64,12 @@ for with_handlers()." />
         <span class="icon-bar"></span>
         <span class="icon-bar"></span>
       </button>
-      <a class="navbar-brand" href="../index.html">rlang</a>
+      <span class="navbar-brand">
+        <a class="navbar-link" href="../index.html">rlang</a>
+        <span class="label label-default" data-toggle="tooltip" data-placement="bottom" title="Released package">0.3.0</span>
+      </span>
     </div>
+
     <div id="navbar" class="navbar-collapse collapse">
       <ul class="nav navbar-nav">
         <li>
@@ -81,6 +91,7 @@ for with_handlers()." />
   </a>
 </li>
       </ul>
+      
     </div><!--/.nav-collapse -->
   </div><!--/.container -->
 </div><!--/.navbar -->
@@ -88,26 +99,30 @@ for with_handlers()." />
       
       </header>
 
-      <div class="row">
+<div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
     <h1>Create an exiting or in place handler</h1>
+    <small class="dont-index">Source: <a href='https://github.com/r-lib/rlang/blob/master/R/cnd-handlers.R'><code>R/cnd-handlers.R</code></a></small>
+    <div class="hidden name"><code>exiting.Rd</code></div>
     </div>
 
+    <div class="ref-description">
     
     <p>There are two types of condition handlers: exiting handlers, which
 are thrown to the place where they have been established (e.g.,
 <code><a href='with_handlers.html'>with_handlers()</a></code>'s evaluation frame), and local handlers, which
 are executed in place (e.g., where the condition has been
-signalled). <code>exiting()</code> and <code>inplace()</code> create handlers suitable
+signalled). <code>exiting()</code> and <code>calling()</code> create handlers suitable
 for <code><a href='with_handlers.html'>with_handlers()</a></code>.</p>
     
+    </div>
 
     <pre class="usage"><span class='fu'>exiting</span>(<span class='no'>handler</span>)
 
-<span class='fu'>inplace</span>(<span class='no'>handler</span>, <span class='kw'>muffle</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>)</pre>
+<span class='fu'>calling</span>(<span class='no'>handler</span>)</pre>
     
-    <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a> Arguments</h2>
+    <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
     <colgroup><col class="name" /><col class="desc" /></colgroup>
     <tr>
@@ -116,27 +131,21 @@ for <code><a href='with_handlers.html'>with_handlers()</a></code>.</p>
 argument. This is passed to <code><a href='as_function.html'>as_function()</a></code> and can thus be a
 formula describing a lambda function.</p></td>
     </tr>
-    <tr>
-      <th>muffle</th>
-      <td><p>Whether to muffle the condition after executing an
-inplace handler. The signalling function must have established a
-muffling restart. Otherwise, an error will be issued.</p></td>
-    </tr>
     </table>
     
     <h2 class="hasAnchor" id="details"><a class="anchor" href="#details"></a>Details</h2>
 
     <p>A subtle point in the R language is that conditions are not thrown,
 handlers are. <code><a href='http://www.rdocumentation.org/packages/base/topics/conditions'>base::tryCatch()</a></code> and <code><a href='with_handlers.html'>with_handlers()</a></code> actually
-catch handlers rather than conditions. When a critical condition
+catch handlers rather than conditions. When a critical condition is
 signalled with <code><a href='http://www.rdocumentation.org/packages/base/topics/stop'>base::stop()</a></code> or <code><a href='abort.html'>abort()</a></code>, R inspects the handler
 stack and looks for a handler that can deal with the condition. If
 it finds an exiting handler, it throws it to the function that
 established it (<code><a href='with_handlers.html'>with_handlers()</a></code>). That is, it interrupts the
 normal course of evaluation and jumps to <code><a href='with_handlers.html'>with_handlers()</a></code>
 evaluation frame (see <code><a href='stack.html'>ctxt_stack()</a></code>), and only then and there the
-handler is called. On the other hand, if R finds an inplace
-handler, it executes it locally. The inplace handler can choose to
+handler is called. On the other hand, if R finds a calling
+handler, it executes it locally. The calling handler can choose to
 handle the condition by jumping out of the frame (see <code><a href='rst_list.html'>rst_jump()</a></code>
 or <code><a href='return_from.html'>return_from()</a></code>). If it returns locally, it declines to handle
 the condition which is passed to the next relevant handler on the
@@ -147,17 +156,17 @@ the faulty evaluation frame to top-level, via the abort restart
     
     <h2 class="hasAnchor" id="see-also"><a class="anchor" href="#see-also"></a>See also</h2>
 
-    <p><code><a href='with_handlers.html'>with_handlers()</a></code> for examples, <code><a href='restarting.html'>restarting()</a></code> for another
-kind of inplace handler.</p>
+    <div class='dont-index'><p><code><a href='with_handlers.html'>with_handlers()</a></code> for examples, <code><a href='restarting.html'>restarting()</a></code> for another
+kind of calling handler.</p></div>
     
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
     <pre class="examples"><div class='input'><span class='co'># You can supply a function taking a condition as argument:</span>
 <span class='no'>hnd</span> <span class='kw'>&lt;-</span> <span class='fu'>exiting</span>(<span class='kw'>function</span>(<span class='no'>c</span>) <span class='fu'>cat</span>(<span class='st'>"handled foo\n"</span>))
-<span class='fu'><a href='with_handlers.html'>with_handlers</a></span>(<span class='fu'><a href='cnd_signal.html'>cnd_signal</a></span>(<span class='st'>"foo"</span>), <span class='kw'>foo</span> <span class='kw'>=</span> <span class='no'>hnd</span>)</div><div class='output co'>#&gt; handled foo</div><div class='output co'>#&gt; NULL</div><div class='input'>
+<span class='fu'><a href='with_handlers.html'>with_handlers</a></span>(<span class='fu'><a href='abort.html'>signal</a></span>(<span class='st'>"A foobar condition occurred"</span>, <span class='st'>"foo"</span>), <span class='kw'>foo</span> <span class='kw'>=</span> <span class='no'>hnd</span>)</div><div class='output co'>#&gt; handled foo</div><div class='output co'>#&gt; NULL</div><div class='input'>
 <span class='co'># Or a lambda-formula where "." is bound to the condition:</span>
-<span class='fu'><a href='with_handlers.html'>with_handlers</a></span>(<span class='kw'>foo</span> <span class='kw'>=</span> <span class='fu'>inplace</span>(~<span class='fu'>cat</span>(<span class='st'>"hello"</span>, <span class='no'>.</span>$<span class='no'>attr</span>, <span class='st'>"\n"</span>)), {
-  <span class='fu'><a href='cnd_signal.html'>cnd_signal</a></span>(<span class='st'>"foo"</span>, <span class='kw'>attr</span> <span class='kw'>=</span> <span class='st'>"there"</span>)
+<span class='fu'><a href='with_handlers.html'>with_handlers</a></span>(<span class='kw'>foo</span> <span class='kw'>=</span> <span class='fu'>calling</span>(~<span class='fu'>cat</span>(<span class='st'>"hello"</span>, <span class='no'>.</span>$<span class='no'>attr</span>, <span class='st'>"\n"</span>)), {
+  <span class='fu'><a href='abort.html'>signal</a></span>(<span class='st'>"A foobar condition occurred"</span>, <span class='st'>"foo"</span>, <span class='kw'>attr</span> <span class='kw'>=</span> <span class='st'>"there"</span>)
   <span class='st'>"foo"</span>
 })</div><div class='output co'>#&gt; hello there </div><div class='output co'>#&gt; [1] "foo"</div></pre>
   </div>
@@ -188,5 +197,8 @@ kind of inplace handler.</p>
       </footer>
    </div>
 
+  
+
   </body>
 </html>
+

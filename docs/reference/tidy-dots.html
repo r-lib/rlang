@@ -21,12 +21,15 @@
 <!-- clipboard.js -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/1.7.1/clipboard.min.js" integrity="sha384-cV+rhyOuRHc9Ub/91rihWcGmMmCXDeksTtCihMupQHSsi8GIIRDG0ThDc3HGQFJ3" crossorigin="anonymous"></script>
 
+<!-- sticky kit -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/sticky-kit/1.1.3/sticky-kit.min.js" integrity="sha256-c4Rlo1ZozqTPE2RLuvbusY3+SU1pQaJC0TjuhygMipw=" crossorigin="anonymous"></script>
+
 <!-- pkgdown -->
 <link href="../pkgdown.css" rel="stylesheet">
-<script src="../jquery.sticky-kit.min.js"></script>
 <script src="../pkgdown.js"></script>
-  
-  
+
+
+
 <meta property="og:title" content="Collect dots tidily — tidy-dots" />
 
 <meta property="og:description" content="list2() is equivalent to list(...) but provides tidy
@@ -41,11 +44,13 @@ operator !! on the left-hand side of :=.
 functions taking dots with list2() tidy dots functions.
 Quasiquotation is an alternative to do.call() idioms and gives
 the users of your functions an uniform syntax to supply a variable
-number of arguments or a variable name." />
-
-<meta property="og:description" content="dots_list() is a lower-level version of list2() that offers
+number of arguments or a variable name.
+dots_list() is a lower-level version of list2() that offers
 additional parameters for dots capture." />
 <meta name="twitter:card" content="summary" />
+
+
+
 <!-- mathjax -->
 <script src='https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML'></script>
 
@@ -68,8 +73,12 @@ additional parameters for dots capture." />
         <span class="icon-bar"></span>
         <span class="icon-bar"></span>
       </button>
-      <a class="navbar-brand" href="../index.html">rlang</a>
+      <span class="navbar-brand">
+        <a class="navbar-link" href="../index.html">rlang</a>
+        <span class="label label-default" data-toggle="tooltip" data-placement="bottom" title="Released package">0.3.0</span>
+      </span>
     </div>
+
     <div id="navbar" class="navbar-collapse collapse">
       <ul class="nav navbar-nav">
         <li>
@@ -91,6 +100,7 @@ additional parameters for dots capture." />
   </a>
 </li>
       </ul>
+      
     </div><!--/.nav-collapse -->
   </div><!--/.container -->
 </div><!--/.navbar -->
@@ -98,12 +108,15 @@ additional parameters for dots capture." />
       
       </header>
 
-      <div class="row">
+<div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
     <h1>Collect dots tidily</h1>
+    <small class="dont-index">Source: <a href='https://github.com/r-lib/rlang/blob/master/R/dots.R'><code>R/dots.R</code></a>, <a href='https://github.com/r-lib/rlang/blob/master/R/vec-new.R'><code>R/vec-new.R</code></a></small>
+    <div class="hidden name"><code>tidy-dots.Rd</code></div>
     </div>
 
+    <div class="ref-description">
     
     <p><code>list2()</code> is equivalent to <code>list(...)</code> but provides tidy
 dots semantics:</p><ul>
@@ -117,30 +130,53 @@ operator <code>!!</code> on the left-hand side of <code>:=</code>.</p></li>
 functions taking dots with <code>list2()</code> tidy dots functions.
 Quasiquotation is an alternative to <code>do.call()</code> idioms and gives
 the users of your functions an uniform syntax to supply a variable
-number of arguments or a variable name.
-
-    <code>dots_list()</code> is a lower-level version of <code>list2()</code> that offers
+number of arguments or a variable name.</p>
+<p><code>dots_list()</code> is a lower-level version of <code>list2()</code> that offers
 additional parameters for dots capture.</p>
     
+    </div>
 
-    <pre class="usage"><span class='fu'>dots_list</span>(<span class='no'>...</span>, <span class='kw'>.ignore_empty</span> <span class='kw'>=</span> <span class='fu'>c</span>(<span class='st'>"trailing"</span>, <span class='st'>"none"</span>, <span class='st'>"all"</span>))
+    <pre class="usage"><span class='fu'>dots_list</span>(<span class='no'>...</span>, <span class='kw'>.ignore_empty</span> <span class='kw'>=</span> <span class='fu'>c</span>(<span class='st'>"trailing"</span>, <span class='st'>"none"</span>, <span class='st'>"all"</span>),
+  <span class='kw'>.preserve_empty</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>, <span class='kw'>.homonyms</span> <span class='kw'>=</span> <span class='fu'>c</span>(<span class='st'>"keep"</span>, <span class='st'>"first"</span>, <span class='st'>"last"</span>,
+  <span class='st'>"error"</span>), <span class='kw'>.check_assign</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>)
 
 <span class='fu'>list2</span>(<span class='no'>...</span>)</pre>
     
-    <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a> Arguments</h2>
+    <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
     <colgroup><col class="name" /><col class="desc" /></colgroup>
     <tr>
       <th>...</th>
-      <td><p>Arguments with explicit (<code>dots_list()</code>) or list
-(<code><a href='splice.html'>dots_splice()</a></code>) splicing semantics. The contents of spliced
-arguments are embedded in the returned list.</p></td>
+      <td><p>Arguments to collect with <code>!!!</code> support.</p></td>
     </tr>
     <tr>
       <th>.ignore_empty</th>
       <td><p>Whether to ignore empty arguments. Can be one
 of <code>"trailing"</code>, <code>"none"</code>, <code>"all"</code>. If <code>"trailing"</code>, only the
 last argument is ignored if it is empty.</p></td>
+    </tr>
+    <tr>
+      <th>.preserve_empty</th>
+      <td><p>Whether to preserve the empty arguments that
+were not ignored. If <code>TRUE</code>, empty arguments are stored with
+<code><a href='missing_arg.html'>missing_arg()</a></code> values. If <code>FALSE</code> (the default) an error is
+thrown when an empty argument is detected.</p></td>
+    </tr>
+    <tr>
+      <th>.homonyms</th>
+      <td><p>How to treat arguments with the same name. The
+default, <code>"keep"</code>, preserves these arguments. Set <code>.homonyms</code> to
+<code>"first"</code> to only keep the first occurrences, to <code>"last"</code> to keep
+the last occurrences, and to <code>"error"</code> to raise an informative
+error and indicate what arguments have duplicated names.</p></td>
+    </tr>
+    <tr>
+      <th>.check_assign</th>
+      <td><p>Whether to check for <code>&lt;-</code> calls passed in
+dots. When <code>TRUE</code> and a <code>&lt;-</code> call is detected, a warning is
+issued to advise users to use <code>=</code> if they meant to match a
+function parameter, or wrap the <code>&lt;-</code> call in braces otherwise.
+This ensures assignments are explicit.</p></td>
     </tr>
     </table>
     
@@ -169,7 +205,7 @@ default. <code>list2()</code> does not have this issue.</p>
     
     <h2 class="hasAnchor" id="see-also"><a class="anchor" href="#see-also"></a>See also</h2>
 
-    <p><code><a href='quotation.html'>exprs()</a></code> for extracting dots without evaluation.</p>
+    <div class='dont-index'><p><code><a href='quotation.html'>exprs()</a></code> for extracting dots without evaluation.</p></div>
     
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
@@ -203,9 +239,95 @@ default. <code>list2()</code> does not have this issue.</p>
 #&gt; [1] "wrong!"
 #&gt; </div><div class='input'><span class='fu'>fn</span>(<span class='st'>"wrong!"</span>, <span class='kw'>dat</span> <span class='kw'>=</span> <span class='no'>letters</span>)   <span class='co'># partial matching of `data`</span></div><div class='output co'>#&gt; [[1]]
 #&gt; [1] "wrong!"
-#&gt; </div><div class='input'><span class='fu'>fn</span>(<span class='no'>some_data</span>, !!! <span class='fu'>list</span>(<span class='kw'>data</span> <span class='kw'>=</span> <span class='no'>letters</span>))  <span class='co'># no matching</span></div><div class='output co'>#&gt; $data
+#&gt; </div><div class='input'><span class='fu'>fn</span>(<span class='no'>some_data</span>, !!!<span class='fu'>list</span>(<span class='kw'>data</span> <span class='kw'>=</span> <span class='no'>letters</span>))  <span class='co'># no matching</span></div><div class='output co'>#&gt; $data
 #&gt;  [1] "a" "b" "c" "d" "e" "f" "g" "h" "i" "j" "k" "l" "m" "n" "o" "p" "q" "r" "s"
 #&gt; [20] "t" "u" "v" "w" "x" "y" "z"
+#&gt; </div><div class='input'>
+
+<span class='co'># Empty arguments trigger an error by default:</span>
+<span class='fu'>try</span>(<span class='fu'>fn</span>(, ))</div><div class='output co'>#&gt; list()</div><div class='input'>
+<span class='co'># You can choose to preserve empty arguments instead:</span>
+<span class='no'>list3</span> <span class='kw'>&lt;-</span> <span class='kw'>function</span>(<span class='no'>...</span>) <span class='fu'>dots_list</span>(<span class='no'>...</span>, <span class='kw'>.preserve_empty</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>)
+
+<span class='co'># Note how the last empty argument is still ignored because</span>
+<span class='co'># `.ignore_empty` defaults to "trailing":</span>
+<span class='fu'>list3</span>(, )</div><div class='output co'>#&gt; [[1]]
+#&gt; 
+#&gt; </div><div class='input'>
+<span class='co'># The list with preserved empty arguments is equivalent to:</span>
+<span class='fu'>list</span>(<span class='fu'><a href='missing_arg.html'>missing_arg</a></span>())</div><div class='output co'>#&gt; [[1]]
+#&gt; 
+#&gt; </div><div class='input'>
+
+<span class='co'># Arguments with duplicated names are kept by default:</span>
+<span class='fu'>list2</span>(<span class='kw'>a</span> <span class='kw'>=</span> <span class='fl'>1</span>, <span class='kw'>a</span> <span class='kw'>=</span> <span class='fl'>2</span>, <span class='kw'>b</span> <span class='kw'>=</span> <span class='fl'>3</span>, <span class='kw'>b</span> <span class='kw'>=</span> <span class='fl'>4</span>, <span class='fl'>5</span>, <span class='fl'>6</span>)</div><div class='output co'>#&gt; $a
+#&gt; [1] 1
+#&gt; 
+#&gt; $a
+#&gt; [1] 2
+#&gt; 
+#&gt; $b
+#&gt; [1] 3
+#&gt; 
+#&gt; $b
+#&gt; [1] 4
+#&gt; 
+#&gt; [[5]]
+#&gt; [1] 5
+#&gt; 
+#&gt; [[6]]
+#&gt; [1] 6
+#&gt; </div><div class='input'>
+<span class='co'># Use the `.homonyms` argument to keep only the first of these:</span>
+<span class='fu'>dots_list</span>(<span class='kw'>a</span> <span class='kw'>=</span> <span class='fl'>1</span>, <span class='kw'>a</span> <span class='kw'>=</span> <span class='fl'>2</span>, <span class='kw'>b</span> <span class='kw'>=</span> <span class='fl'>3</span>, <span class='kw'>b</span> <span class='kw'>=</span> <span class='fl'>4</span>, <span class='fl'>5</span>, <span class='fl'>6</span>, <span class='kw'>.homonyms</span> <span class='kw'>=</span> <span class='st'>"first"</span>)</div><div class='output co'>#&gt; $a
+#&gt; [1] 1
+#&gt; 
+#&gt; $b
+#&gt; [1] 3
+#&gt; 
+#&gt; [[3]]
+#&gt; [1] 5
+#&gt; 
+#&gt; [[4]]
+#&gt; [1] 6
+#&gt; </div><div class='input'>
+<span class='co'># Or the last:</span>
+<span class='fu'>dots_list</span>(<span class='kw'>a</span> <span class='kw'>=</span> <span class='fl'>1</span>, <span class='kw'>a</span> <span class='kw'>=</span> <span class='fl'>2</span>, <span class='kw'>b</span> <span class='kw'>=</span> <span class='fl'>3</span>, <span class='kw'>b</span> <span class='kw'>=</span> <span class='fl'>4</span>, <span class='fl'>5</span>, <span class='fl'>6</span>, <span class='kw'>.homonyms</span> <span class='kw'>=</span> <span class='st'>"last"</span>)</div><div class='output co'>#&gt; $a
+#&gt; [1] 2
+#&gt; 
+#&gt; $b
+#&gt; [1] 4
+#&gt; 
+#&gt; [[3]]
+#&gt; [1] 5
+#&gt; 
+#&gt; [[4]]
+#&gt; [1] 6
+#&gt; </div><div class='input'>
+<span class='co'># Or raise an informative error:</span>
+<span class='fu'>try</span>(<span class='fu'>dots_list</span>(<span class='kw'>a</span> <span class='kw'>=</span> <span class='fl'>1</span>, <span class='kw'>a</span> <span class='kw'>=</span> <span class='fl'>2</span>, <span class='kw'>b</span> <span class='kw'>=</span> <span class='fl'>3</span>, <span class='kw'>b</span> <span class='kw'>=</span> <span class='fl'>4</span>, <span class='fl'>5</span>, <span class='fl'>6</span>, <span class='kw'>.homonyms</span> <span class='kw'>=</span> <span class='st'>"error"</span>))
+
+
+<span class='co'># dots_list() can be configured to warn when a `&lt;-` call is</span>
+<span class='co'># detected:</span>
+<span class='no'>my_list</span> <span class='kw'>&lt;-</span> <span class='kw'>function</span>(<span class='no'>...</span>) <span class='fu'>dots_list</span>(<span class='no'>...</span>, <span class='kw'>.check_assign</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>)
+<span class='fu'>my_list</span>(<span class='no'>a</span> <span class='kw'>&lt;-</span> <span class='fl'>1</span>)</div><div class='output co'>#&gt; <span class='warning'>Warning: Using `&lt;-` as argument is often a mistake.</span>
+#&gt; <span class='warning'>Do you need to use `=` to match an argument?</span>
+#&gt; <span class='warning'></span>
+#&gt; <span class='warning'>If you really want to use `&lt;-`, please wrap in braces:</span>
+#&gt; <span class='warning'></span>
+#&gt; <span class='warning'>  # Bad:</span>
+#&gt; <span class='warning'>  fn(a &lt;- 1)</span>
+#&gt; <span class='warning'></span>
+#&gt; <span class='warning'>  # Good:</span>
+#&gt; <span class='warning'>  fn(a = 1)       # Match 1 to parameter `a`</span>
+#&gt; <span class='warning'>  fn({ a &lt;- 1 })  # Assign 1 to variable `a`</span></div><div class='output co'>#&gt; [[1]]
+#&gt; [1] 1
+#&gt; </div><div class='input'>
+<span class='co'># There is no warning if the assignment is wrapped in braces.</span>
+<span class='co'># This requires users to be explicit about their intent:</span>
+<span class='fu'>my_list</span>({ <span class='no'>a</span> <span class='kw'>&lt;-</span> <span class='fl'>1</span> })</div><div class='output co'>#&gt; [[1]]
+#&gt; [1] 1
 #&gt; </div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
@@ -239,5 +361,8 @@ default. <code>list2()</code> does not have this issue.</p>
       </footer>
    </div>
 
+  
+
   </body>
 </html>
+

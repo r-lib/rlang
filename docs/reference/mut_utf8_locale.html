@@ -21,12 +21,15 @@
 <!-- clipboard.js -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/1.7.1/clipboard.min.js" integrity="sha384-cV+rhyOuRHc9Ub/91rihWcGmMmCXDeksTtCihMupQHSsi8GIIRDG0ThDc3HGQFJ3" crossorigin="anonymous"></script>
 
+<!-- sticky kit -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/sticky-kit/1.1.3/sticky-kit.min.js" integrity="sha256-c4Rlo1ZozqTPE2RLuvbusY3+SU1pQaJC0TjuhygMipw=" crossorigin="anonymous"></script>
+
 <!-- pkgdown -->
 <link href="../pkgdown.css" rel="stylesheet">
-<script src="../jquery.sticky-kit.min.js"></script>
 <script src="../pkgdown.js"></script>
-  
-  
+
+
+
 <meta property="og:title" content="Set the locale's codeset for testing — mut_utf8_locale" />
 
 <meta property="og:description" content="Setting a locale's codeset (specifically, the LC_CTYPE category)
@@ -40,6 +43,9 @@ consistent encoding markers, as they determine a number of internal
 encoding conversions when R or packages handle strings (see
 set_str_encoding() for some examples)." />
 <meta name="twitter:card" content="summary" />
+
+
+
 <!-- mathjax -->
 <script src='https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML'></script>
 
@@ -62,8 +68,12 @@ set_str_encoding() for some examples)." />
         <span class="icon-bar"></span>
         <span class="icon-bar"></span>
       </button>
-      <a class="navbar-brand" href="../index.html">rlang</a>
+      <span class="navbar-brand">
+        <a class="navbar-link" href="../index.html">rlang</a>
+        <span class="label label-default" data-toggle="tooltip" data-placement="bottom" title="Released package">0.3.0</span>
+      </span>
     </div>
+
     <div id="navbar" class="navbar-collapse collapse">
       <ul class="nav navbar-nav">
         <li>
@@ -85,6 +95,7 @@ set_str_encoding() for some examples)." />
   </a>
 </li>
       </ul>
+      
     </div><!--/.nav-collapse -->
   </div><!--/.container -->
 </div><!--/.navbar -->
@@ -92,12 +103,15 @@ set_str_encoding() for some examples)." />
       
       </header>
 
-      <div class="row">
+<div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
     <h1>Set the locale's codeset for testing</h1>
+    <small class="dont-index">Source: <a href='https://github.com/r-lib/rlang/blob/master/R/vec-chr.R'><code>R/vec-chr.R</code></a></small>
+    <div class="hidden name"><code>mut_utf8_locale.Rd</code></div>
     </div>
 
+    <div class="ref-description">
     
     <p>Setting a locale's codeset (specifically, the <code>LC_CTYPE</code> category)
 produces side effects in R's handling of strings. The most
@@ -110,6 +124,7 @@ consistent encoding markers, as they determine a number of internal
 encoding conversions when R or packages handle strings (see
 <code><a href='set_chr_encoding.html'>set_str_encoding()</a></code> for some examples).</p>
     
+    </div>
 
     <pre class="usage"><span class='fu'>mut_utf8_locale</span>()
 
@@ -126,7 +141,7 @@ encoding conversions when R or packages handle strings (see
     <p>If you are changing the locale encoding for testing purposes, you
 need to be aware that R caches strings and symbols to save
 memory. If you change the locale during an R session, it can lead
-to surprising and difficult to reproduce results. In doubt, restart
+to surprising and difficult to reproduce results. When in doubt, restart
 your R session.</p>
 <p>Note that these helpers are only provided for testing interactively
 the effects of changing locale codeset. They let you quickly change
@@ -172,5 +187,8 @@ future because they don't bring anything new over the base API.</p>
       </footer>
    </div>
 
+  
+
   </body>
 </html>
+

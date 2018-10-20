@@ -21,18 +21,24 @@
 <!-- clipboard.js -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/1.7.1/clipboard.min.js" integrity="sha384-cV+rhyOuRHc9Ub/91rihWcGmMmCXDeksTtCihMupQHSsi8GIIRDG0ThDc3HGQFJ3" crossorigin="anonymous"></script>
 
+<!-- sticky kit -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/sticky-kit/1.1.3/sticky-kit.min.js" integrity="sha256-c4Rlo1ZozqTPE2RLuvbusY3+SU1pQaJC0TjuhygMipw=" crossorigin="anonymous"></script>
+
 <!-- pkgdown -->
 <link href="../pkgdown.css" rel="stylesheet">
-<script src="../jquery.sticky-kit.min.js"></script>
 <script src="../pkgdown.js"></script>
-  
-  
+
+
+
 <meta property="og:title" content="Catch a condition — catch_cnd" />
 
 <meta property="og:description" content="This is a small wrapper around tryCatch() that captures any
 condition signalled while evaluating its argument. It is useful for
 debugging and unit testing." />
 <meta name="twitter:card" content="summary" />
+
+
+
 <!-- mathjax -->
 <script src='https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML'></script>
 
@@ -55,8 +61,12 @@ debugging and unit testing." />
         <span class="icon-bar"></span>
         <span class="icon-bar"></span>
       </button>
-      <a class="navbar-brand" href="../index.html">rlang</a>
+      <span class="navbar-brand">
+        <a class="navbar-link" href="../index.html">rlang</a>
+        <span class="label label-default" data-toggle="tooltip" data-placement="bottom" title="Released package">0.3.0</span>
+      </span>
     </div>
+
     <div id="navbar" class="navbar-collapse collapse">
       <ul class="nav navbar-nav">
         <li>
@@ -78,6 +88,7 @@ debugging and unit testing." />
   </a>
 </li>
       </ul>
+      
     </div><!--/.nav-collapse -->
   </div><!--/.container -->
 </div><!--/.navbar -->
@@ -85,21 +96,25 @@ debugging and unit testing." />
       
       </header>
 
-      <div class="row">
+<div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
     <h1>Catch a condition</h1>
+    <small class="dont-index">Source: <a href='https://github.com/r-lib/rlang/blob/master/R/cnd.R'><code>R/cnd.R</code></a></small>
+    <div class="hidden name"><code>catch_cnd.Rd</code></div>
     </div>
 
+    <div class="ref-description">
     
     <p>This is a small wrapper around <code>tryCatch()</code> that captures any
 condition signalled while evaluating its argument. It is useful for
 debugging and unit testing.</p>
     
+    </div>
 
     <pre class="usage"><span class='fu'>catch_cnd</span>(<span class='no'>expr</span>)</pre>
     
-    <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a> Arguments</h2>
+    <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
     <colgroup><col class="name" /><col class="desc" /></colgroup>
     <tr>
@@ -115,7 +130,26 @@ handler.</p></td>
     
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><div class='input'><span class='fu'>catch_cnd</span>(<span class='fl'>10</span>)</div><div class='output co'>#&gt; NULL</div><div class='input'><span class='fu'>catch_cnd</span>(<span class='fu'><a href='abort.html'>abort</a></span>(<span class='st'>"an error"</span>))</div><div class='output co'>#&gt; &lt;error: an error&gt;</div><div class='input'><span class='fu'>catch_cnd</span>(<span class='fu'><a href='cnd_signal.html'>cnd_signal</a></span>(<span class='st'>"my_condition"</span>, <span class='kw'>.msg</span> <span class='kw'>=</span> <span class='st'>"a condition"</span>))</div><div class='output co'>#&gt; &lt;mufflable: a condition&gt;</div></pre>
+    <pre class="examples"><div class='input'><span class='fu'>catch_cnd</span>(<span class='fl'>10</span>)</div><div class='output co'>#&gt; NULL</div><div class='input'><span class='fu'>catch_cnd</span>(<span class='fu'><a href='abort.html'>abort</a></span>(<span class='st'>"an error"</span>))</div><div class='output co'>#&gt; &lt;error&gt;
+#&gt; message: an error
+#&gt; class:   `rlang_error`
+#&gt; backtrace:
+#&gt;  ─base::tryCatch(...)
+#&gt;  ─pkgdown::build_site(...)
+#&gt;  ─pkgdown:::build_site_local(...)
+#&gt;  ─pkgdown::build_reference(...)
+#&gt;  ─purrr::map(...)
+#&gt;  ─pkgdown:::.f(.x[[i]], ...)
+#&gt;  ─pkgdown:::data_reference_topic(...)
+#&gt;  ─pkgdown:::as_data.tag_examples(...)
+#&gt;  ─purrr::pmap_chr(...)
+#&gt;  ─pkgdown:::.f(...)
+#&gt;  ─evaluate::evaluate(code, env, new_device = TRUE)
+#&gt;  ─evaluate:::evaluate_call(...)
+#&gt;  ─[ base::eval(...) ] with 1 more call
+#&gt;  ─rlang::catch_cnd(abort("an error"))
+#&gt;  ─base::force(expr) /Users/lionel/Dropbox/Projects/R/hadley/rlang/R/cnd.R:573:4
+#&gt; Call `summary(rlang::last_error())` to see the full backtrace</div><div class='input'><span class='fu'>catch_cnd</span>(<span class='fu'><a href='cnd_signal.html'>cnd_signal</a></span>(<span class='st'>"my_condition"</span>, <span class='kw'>.msg</span> <span class='kw'>=</span> <span class='st'>"a condition"</span>))</div><div class='output co'>#&gt; &lt;simpleError in cnd_signal("my_condition", .msg = "a condition"): unused argument (.msg = "a condition")&gt;</div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
     <h2>Contents</h2>
@@ -142,5 +176,8 @@ handler.</p></td>
       </footer>
    </div>
 
+  
+
   </body>
 </html>
+

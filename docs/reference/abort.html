@@ -21,21 +21,34 @@
 <!-- clipboard.js -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/1.7.1/clipboard.min.js" integrity="sha384-cV+rhyOuRHc9Ub/91rihWcGmMmCXDeksTtCihMupQHSsi8GIIRDG0ThDc3HGQFJ3" crossorigin="anonymous"></script>
 
+<!-- sticky kit -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/sticky-kit/1.1.3/sticky-kit.min.js" integrity="sha256-c4Rlo1ZozqTPE2RLuvbusY3+SU1pQaJC0TjuhygMipw=" crossorigin="anonymous"></script>
+
 <!-- pkgdown -->
 <link href="../pkgdown.css" rel="stylesheet">
-<script src="../jquery.sticky-kit.min.js"></script>
 <script src="../pkgdown.js"></script>
-  
-  
+
+
+
 <meta property="og:title" content="Signal an error, warning, or message — abort" />
 
 <meta property="og:description" content="These functions are equivalent to base functions base::stop(),
-base::warning() and base::message(), but the type argument
-makes it easy to create subclassed conditions. They also don't
-include call information by default. This saves you from typing
-call. = FALSE to make error messages cleaner within package
-functions." />
+base::warning() and base::message(), but make it easy to supply
+condition metadata:
+Supply .subclass to create a classed condition. Typed
+conditions can be captured or handled selectively, allowing for
+finer-grained error handling.
+Supply metadata with named ... arguments. This data will be
+stored in the condition object and can be examined by handlers.
+" />
+
+<meta property="og:description" content="interrupt() allows R code to simulate a user interrupt of the
+kind that is signalled with Ctrl-C. It is currently not possible
+to create custom interrupt condition objects." />
 <meta name="twitter:card" content="summary" />
+
+
+
 <!-- mathjax -->
 <script src='https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML'></script>
 
@@ -58,8 +71,12 @@ functions." />
         <span class="icon-bar"></span>
         <span class="icon-bar"></span>
       </button>
-      <a class="navbar-brand" href="../index.html">rlang</a>
+      <span class="navbar-brand">
+        <a class="navbar-link" href="../index.html">rlang</a>
+        <span class="label label-default" data-toggle="tooltip" data-placement="bottom" title="Released package">0.3.0</span>
+      </span>
     </div>
+
     <div id="navbar" class="navbar-collapse collapse">
       <ul class="nav navbar-nav">
         <li>
@@ -81,6 +98,7 @@ functions." />
   </a>
 </li>
       </ul>
+      
     </div><!--/.nav-collapse -->
   </div><!--/.container -->
 </div><!--/.navbar -->
@@ -88,74 +106,192 @@ functions." />
       
       </header>
 
-      <div class="row">
+<div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
     <h1>Signal an error, warning, or message</h1>
+    <small class="dont-index">Source: <a href='https://github.com/r-lib/rlang/blob/master/R/cnd.R'><code>R/cnd.R</code></a></small>
+    <div class="hidden name"><code>abort.Rd</code></div>
     </div>
 
+    <div class="ref-description">
     
     <p>These functions are equivalent to base functions <code><a href='http://www.rdocumentation.org/packages/base/topics/stop'>base::stop()</a></code>,
-<code><a href='http://www.rdocumentation.org/packages/base/topics/warning'>base::warning()</a></code> and <code><a href='http://www.rdocumentation.org/packages/base/topics/message'>base::message()</a></code>, but the <code>type</code> argument
-makes it easy to create subclassed conditions. They also don't
-include call information by default. This saves you from typing
-<code>call. = FALSE</code> to make error messages cleaner within package
-functions.</p>
+<code><a href='http://www.rdocumentation.org/packages/base/topics/warning'>base::warning()</a></code> and <code><a href='http://www.rdocumentation.org/packages/base/topics/message'>base::message()</a></code>, but make it easy to supply
+condition metadata:</p><ul>
+<li><p>Supply <code>.subclass</code> to create a classed condition. Typed
+conditions can be captured or handled selectively, allowing for
+finer-grained error handling.</p></li>
+<li><p>Supply metadata with named <code>...</code> arguments. This data will be
+stored in the condition object and can be examined by handlers.</p></li>
+</ul>
+
+    <p><code>interrupt()</code> allows R code to simulate a user interrupt of the
+kind that is signalled with <code>Ctrl-C</code>. It is currently not possible
+to create custom interrupt condition objects.</p>
     
+    </div>
 
-    <pre class="usage"><span class='fu'>abort</span>(<span class='no'>msg</span>, <span class='kw'>type</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>call</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>)
+    <pre class="usage"><span class='fu'>abort</span>(<span class='no'>message</span>, <span class='kw'>.subclass</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='no'>...</span>, <span class='kw'>trace</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>call</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
+  <span class='kw'>parent</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='no'>msg</span>, <span class='no'>type</span>)
 
-<span class='fu'>warn</span>(<span class='no'>msg</span>, <span class='kw'>type</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>call</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>)
+<span class='fu'>warn</span>(<span class='no'>message</span>, <span class='kw'>.subclass</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='no'>...</span>, <span class='kw'>call</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='no'>msg</span>, <span class='no'>type</span>)
 
-<span class='fu'>inform</span>(<span class='no'>msg</span>, <span class='kw'>type</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>call</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>)</pre>
+<span class='fu'>inform</span>(<span class='no'>message</span>, <span class='kw'>.subclass</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='no'>...</span>, <span class='kw'>call</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='no'>msg</span>, <span class='no'>type</span>)
+
+<span class='fu'>signal</span>(<span class='no'>message</span>, <span class='no'>.subclass</span>, <span class='no'>...</span>)
+
+<span class='fu'>interrupt</span>()</pre>
     
-    <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a> Arguments</h2>
+    <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
     <colgroup><col class="name" /><col class="desc" /></colgroup>
     <tr>
-      <th>msg</th>
-      <td><p>A message to display.</p></td>
+      <th>message</th>
+      <td><p>The message to display.</p></td>
     </tr>
     <tr>
-      <th>type</th>
-      <td><p>Subclass of the condition to signal.</p></td>
+      <th>.subclass</th>
+      <td><p>Subclass of the condition. This allows your users
+to selectively handle the conditions signalled by your functions.</p></td>
+    </tr>
+    <tr>
+      <th>...</th>
+      <td><p>Additional data to be stored in the condition object.</p></td>
+    </tr>
+    <tr>
+      <th>trace</th>
+      <td><p>A <code>trace</code> object created by <code><a href='trace_back.html'>trace_back()</a></code>.</p></td>
     </tr>
     <tr>
       <th>call</th>
-      <td><p>Whether to display the call. If a number <code>n</code>, the call
-is taken from the nth frame on the <a href='stack.html'>call stack</a>.</p></td>
+      <td><p>Deprecated as of rlang 0.3.0. Storing the full
+backtrace is now preferred to storing a simple call.</p></td>
+    </tr>
+    <tr>
+      <th>parent</th>
+      <td><p>A parent condition object created by <code>abort()</code>.</p></td>
+    </tr>
+    <tr>
+      <th>msg, type</th>
+      <td><p>These arguments were renamed to <code>message</code> and
+<code>.type</code> and are deprecated as of rlang 0.3.0.</p></td>
     </tr>
     </table>
     
-    <h2 class="hasAnchor" id="details"><a class="anchor" href="#details"></a>Details</h2>
+    <h2 class="hasAnchor" id="backtrace"><a class="anchor" href="#backtrace"></a>Backtrace</h2>
 
-    <p>Like <code>stop()</code> and <code><a href='cnd_signal.html'>cnd_abort()</a></code>, <code>abort()</code> signals a critical
-condition and interrupts execution by jumping to top level (see
-<code><a href='rst_abort.html'>rst_abort()</a></code>). Only a handler of the relevant type can prevent
-this jump by making another jump to a different target on the stack
-(see <code><a href='with_handlers.html'>with_handlers()</a></code>).
-    <code>warn()</code> and <code>inform()</code> both have the side effect of displaying a
-message. These messages will not be displayed if a handler
-transfers control. Transfer can be achieved by establishing an
-exiting handler that transfers control to <code><a href='with_handlers.html'>with_handlers()</a></code>). In
-this case, the current function stops and execution resumes at the
-point where handlers were established.</p>
-<p>Since it is often desirable to continue normally after a message or
-warning, both <code>warn()</code> and <code>inform()</code> (and their base R equivalent)
-establish a muffle restart where handlers can jump to prevent the
-message from being displayed. Execution resumes normally after
-that. See <code><a href='rst_muffle.html'>rst_muffle()</a></code> to jump to a muffling restart, and the
-<code>muffle</code> argument of <code><a href='exiting.html'>inplace()</a></code> for creating a muffling handler.</p>
+    
+    <p>Unlike <code>stop()</code> and <code>warning()</code>, these functions don't include call
+information by default. This saves you from typing <code>call. = FALSE</code>
+and produces cleaner error messages.</p>
+<p>A backtrace is always saved into error objects. You can print a
+simplified backtrace of the last error by calling <code><a href='last_error.html'>last_error()</a></code>
+and a full backtrace with <code>summary(last_error())</code>.</p>
+<p>You can also display a backtrace with the error message by setting
+the experimental option <code>rlang__backtrace_on_error</code>. It supports the
+following values:</p><ul>
+<li><p><code>"reminder"</code>: Invite users to call <code><a href='last_error.html'>rlang::last_error()</a></code> to see a
+backtrace.</p></li>
+<li><p><code>"branch"</code>: Display a simplified backtrace.</p></li>
+<li><p><code>"collapse"</code>: Display a collapsed backtrace tree.</p></li>
+<li><p><code>"full"</code>: Display a full backtrace tree.</p></li>
+</ul>
+    
+    <h2 class="hasAnchor" id="mufflable-conditions"><a class="anchor" href="#mufflable-conditions"></a>Mufflable conditions</h2>
+
+    
+    <p>Signalling a condition with <code>inform()</code> or <code>warn()</code> causes a message
+to be displayed in the console. These messages can be muffled with
+<code><a href='http://www.rdocumentation.org/packages/base/topics/message'>base::suppressMessages()</a></code> or <code><a href='http://www.rdocumentation.org/packages/base/topics/warning'>base::suppressWarnings()</a></code>.</p>
+<p>On recent R versions (&gt;= R 3.5.0), interrupts are typically
+signalled with a <code>"resume"</code> restart. This is however not
+guaranteed.</p>
+    
+    <h2 class="hasAnchor" id="lifecycle"><a class="anchor" href="#lifecycle"></a>Lifecycle</h2>
+
+    
+    <p>These functions were changed in rlang 0.3.0 to take condition
+metadata with <code>...</code>. Consequently:</p><ul>
+<li><p>All arguments were renamed to be prefixed with a dot, except for
+<code>type</code> which was renamed to <code>.subclass</code>.</p></li>
+<li><p><code>.call</code> (previously <code>call</code>) can no longer be passed positionally.</p></li>
+</ul>
+    
+    <h2 class="hasAnchor" id="see-also"><a class="anchor" href="#see-also"></a>See also</h2>
+
+    <div class='dont-index'><p><code><a href='with_abort.html'>with_abort()</a></code> to convert all errors to rlang errors.</p></div>
     
 
+    <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
+    <pre class="examples"><div class='input'><span class='co'># These examples are guarded to avoid throwing errors</span>
+<span class='kw'>if</span> (<span class='fl'>FALSE</span>) {
+
+<span class='co'># Signal an error with a message just like stop():</span>
+<span class='fu'>abort</span>(<span class='st'>"Something bad happened"</span>)
+
+<span class='co'># Give a class to the error:</span>
+<span class='fu'>abort</span>(<span class='st'>"Something bad happened"</span>, <span class='st'>"somepkg_bad_error"</span>)
+
+<span class='co'># This will allow your users to handle the error selectively</span>
+<span class='fu'>tryCatch</span>(
+  <span class='fu'>somepkg_function</span>(),
+  <span class='kw'>somepkg_bad_error</span> <span class='kw'>=</span> <span class='kw'>function</span>(<span class='no'>err</span>) {
+    <span class='fu'>warn</span>(<span class='no'>err</span>$<span class='no'>message</span>) <span class='co'># Demote the error to a warning</span>
+    <span class='fl'>NA</span>                <span class='co'># Return an alternative value</span>
+  }
+)
+
+<span class='co'># You can also specify metadata that will be stored in the condition:</span>
+<span class='fu'>abort</span>(<span class='st'>"Something bad happened"</span>, <span class='st'>"somepkg_bad_error"</span>, <span class='kw'>data</span> <span class='kw'>=</span> <span class='fl'>1</span>:<span class='fl'>10</span>)
+
+<span class='co'># This data can then be consulted by user handlers:</span>
+<span class='fu'>tryCatch</span>(
+  <span class='fu'>somepkg_function</span>(),
+  <span class='kw'>somepkg_bad_error</span> <span class='kw'>=</span> <span class='kw'>function</span>(<span class='no'>err</span>) {
+    <span class='co'># Compute an alternative return value with the data:</span>
+    <span class='fu'>recover_error</span>(<span class='no'>err</span>$<span class='no'>data</span>)
+  }
+)
+
+<span class='co'># If you call low-level APIs it is good practice to catch technical</span>
+<span class='co'># errors and rethrow them with a more meaningful message. Pass on</span>
+<span class='co'># the caught error as `parent` to get a nice decomposition of</span>
+<span class='co'># errors and backtraces:</span>
+<span class='no'>file</span> <span class='kw'>&lt;-</span> <span class='st'>"http://foo.bar/baz"</span>
+<span class='fu'>tryCatch</span>(
+  <span class='fu'>download</span>(<span class='no'>file</span>),
+  <span class='kw'>error</span> <span class='kw'>=</span> <span class='kw'>function</span>(<span class='no'>err</span>) {
+    <span class='no'>msg</span> <span class='kw'>&lt;-</span> <span class='fu'>sprintf</span>(<span class='st'>"Can't download `%s`"</span>, <span class='no'>file</span>)
+    <span class='fu'>abort</span>(<span class='no'>msg</span>, <span class='kw'>parent</span> <span class='kw'>=</span> <span class='no'>err</span>)
+})
+
+<span class='co'># Unhandled errors are saved automatically by `abort()` and can be</span>
+<span class='co'># retrieved with `last_error()`. The error prints with a simplified</span>
+<span class='co'># backtrace:</span>
+<span class='fu'>abort</span>(<span class='st'>"Saved error?"</span>)
+<span class='fu'><a href='last_error.html'>last_error</a></span>()
+
+<span class='co'># Use `summary()` to print the full backtrace and the condition fields:</span>
+<span class='fu'>summary</span>(<span class='fu'><a href='last_error.html'>last_error</a></span>())
+
+}</div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
     <h2>Contents</h2>
     <ul class="nav nav-pills nav-stacked">
       <li><a href="#arguments">Arguments</a></li>
       
-      <li><a href="#details">Details</a></li>
-          </ul>
+      <li><a href="#backtrace">Backtrace</a></li>
+
+      <li><a href="#mufflable-conditions">Mufflable conditions</a></li>
+
+      <li><a href="#lifecycle">Lifecycle</a></li>
+
+      <li><a href="#see-also">See also</a></li>
+      
+      <li><a href="#examples">Examples</a></li>
+    </ul>
 
   </div>
 </div>
@@ -172,5 +308,8 @@ that. See <code><a href='rst_muffle.html'>rst_muffle()</a></code> to jump to a m
       </footer>
    </div>
 
+  
+
   </body>
 </html>
+

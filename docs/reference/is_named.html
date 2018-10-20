@@ -21,20 +21,26 @@
 <!-- clipboard.js -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/1.7.1/clipboard.min.js" integrity="sha384-cV+rhyOuRHc9Ub/91rihWcGmMmCXDeksTtCihMupQHSsi8GIIRDG0ThDc3HGQFJ3" crossorigin="anonymous"></script>
 
+<!-- sticky kit -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/sticky-kit/1.1.3/sticky-kit.min.js" integrity="sha256-c4Rlo1ZozqTPE2RLuvbusY3+SU1pQaJC0TjuhygMipw=" crossorigin="anonymous"></script>
+
 <!-- pkgdown -->
 <link href="../pkgdown.css" rel="stylesheet">
-<script src="../jquery.sticky-kit.min.js"></script>
 <script src="../pkgdown.js"></script>
-  
-  
+
+
+
 <meta property="og:title" content="Is object named? — is_named" />
 
 <meta property="og:description" content="is_named() checks that x has names attributes, and that none of
-the names are missing or empty (NA or ""). is_dictionaryish()
+the names are missing or empty (NA or &quot;&quot;). is_dictionaryish()
 checks that an object is a dictionary: that it has actual names and
 in addition that there are no duplicated names. have_name()
 is a vectorised version of is_named()." />
 <meta name="twitter:card" content="summary" />
+
+
+
 <!-- mathjax -->
 <script src='https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML'></script>
 
@@ -57,8 +63,12 @@ is a vectorised version of is_named()." />
         <span class="icon-bar"></span>
         <span class="icon-bar"></span>
       </button>
-      <a class="navbar-brand" href="../index.html">rlang</a>
+      <span class="navbar-brand">
+        <a class="navbar-link" href="../index.html">rlang</a>
+        <span class="label label-default" data-toggle="tooltip" data-placement="bottom" title="Released package">0.3.0</span>
+      </span>
     </div>
+
     <div id="navbar" class="navbar-collapse collapse">
       <ul class="nav navbar-nav">
         <li>
@@ -80,6 +90,7 @@ is a vectorised version of is_named()." />
   </a>
 </li>
       </ul>
+      
     </div><!--/.nav-collapse -->
   </div><!--/.container -->
 </div><!--/.navbar -->
@@ -87,12 +98,15 @@ is a vectorised version of is_named()." />
       
       </header>
 
-      <div class="row">
+<div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
     <h1>Is object named?</h1>
+    <small class="dont-index">Source: <a href='https://github.com/r-lib/rlang/blob/master/R/attr.R'><code>R/attr.R</code></a></small>
+    <div class="hidden name"><code>is_named.Rd</code></div>
     </div>
 
+    <div class="ref-description">
     
     <p><code>is_named()</code> checks that <code>x</code> has names attributes, and that none of
 the names are missing or empty (<code>NA</code> or <code>""</code>). <code>is_dictionaryish()</code>
@@ -100,6 +114,7 @@ checks that an object is a dictionary: that it has actual names and
 in addition that there are no duplicated names. <code>have_name()</code>
 is a vectorised version of <code>is_named()</code>.</p>
     
+    </div>
 
     <pre class="usage"><span class='fu'>is_named</span>(<span class='no'>x</span>)
 
@@ -107,7 +122,7 @@ is a vectorised version of <code>is_named()</code>.</p>
 
 <span class='fu'>have_name</span>(<span class='no'>x</span>)</pre>
     
-    <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a> Arguments</h2>
+    <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
     <colgroup><col class="name" /><col class="desc" /></colgroup>
     <tr>
@@ -179,5 +194,8 @@ returns a logical vector as long as the input.</p>
       </footer>
    </div>
 
+  
+
   </body>
 </html>
+

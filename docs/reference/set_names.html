@@ -21,17 +21,24 @@
 <!-- clipboard.js -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/1.7.1/clipboard.min.js" integrity="sha384-cV+rhyOuRHc9Ub/91rihWcGmMmCXDeksTtCihMupQHSsi8GIIRDG0ThDc3HGQFJ3" crossorigin="anonymous"></script>
 
+<!-- sticky kit -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/sticky-kit/1.1.3/sticky-kit.min.js" integrity="sha256-c4Rlo1ZozqTPE2RLuvbusY3+SU1pQaJC0TjuhygMipw=" crossorigin="anonymous"></script>
+
 <!-- pkgdown -->
 <link href="../pkgdown.css" rel="stylesheet">
-<script src="../jquery.sticky-kit.min.js"></script>
 <script src="../pkgdown.js"></script>
-  
-  
+
+
+
 <meta property="og:title" content="Set names of a vector — set_names" />
 
-<meta property="og:description" content="This is equivalent to stats::setNames(), with more features and
+<meta property="og:description" content="
+This is equivalent to stats::setNames(), with more features and
 stricter argument checking." />
 <meta name="twitter:card" content="summary" />
+
+
+
 <!-- mathjax -->
 <script src='https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML'></script>
 
@@ -54,8 +61,12 @@ stricter argument checking." />
         <span class="icon-bar"></span>
         <span class="icon-bar"></span>
       </button>
-      <a class="navbar-brand" href="../index.html">rlang</a>
+      <span class="navbar-brand">
+        <a class="navbar-link" href="../index.html">rlang</a>
+        <span class="label label-default" data-toggle="tooltip" data-placement="bottom" title="Released package">0.3.0</span>
+      </span>
     </div>
+
     <div id="navbar" class="navbar-collapse collapse">
       <ul class="nav navbar-nav">
         <li>
@@ -77,6 +88,7 @@ stricter argument checking." />
   </a>
 </li>
       </ul>
+      
     </div><!--/.nav-collapse -->
   </div><!--/.container -->
 </div><!--/.navbar -->
@@ -84,20 +96,25 @@ stricter argument checking." />
       
       </header>
 
-      <div class="row">
+<div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
     <h1>Set names of a vector</h1>
+    <small class="dont-index">Source: <a href='https://github.com/r-lib/rlang/blob/master/R/attr.R'><code>R/attr.R</code></a></small>
+    <div class="hidden name"><code>set_names.Rd</code></div>
     </div>
 
+    <div class="ref-description">
     
-    <p>This is equivalent to <code><a href='http://www.rdocumentation.org/packages/stats/topics/setNames'>stats::setNames()</a></code>, with more features and
+    <p><a href='https://www.tidyverse.org/lifecycle/#stable'><img src='figures/lifecycle-stable.svg' alt='Stable lifecycle'></a></p>
+<p>This is equivalent to <code><a href='http://www.rdocumentation.org/packages/stats/topics/setNames'>stats::setNames()</a></code>, with more features and
 stricter argument checking.</p>
     
+    </div>
 
     <pre class="usage"><span class='fu'>set_names</span>(<span class='no'>x</span>, <span class='kw'>nm</span> <span class='kw'>=</span> <span class='no'>x</span>, <span class='no'>...</span>)</pre>
     
-    <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a> Arguments</h2>
+    <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
     <colgroup><col class="name" /><col class="desc" /></colgroup>
     <tr>
@@ -134,21 +151,21 @@ to the function.</p></li>
 #&gt; "a" "b" "c" "d" "e" </div><div class='input'>
 <span class='co'># Alternatively you can supply a function</span>
 <span class='fu'>set_names</span>(<span class='fl'>1</span>:<span class='fl'>10</span>, ~ <span class='no'>letters</span>[<span class='fu'>seq_along</span>(<span class='no'>.</span>)])</div><div class='output co'>#&gt;  a  b  c  d  e  f  g  h  i  j 
-#&gt;  1  2  3  4  5  6  7  8  9 10 </div><div class='input'><span class='fu'>set_names</span>(<span class='fu'>head</span>(<span class='no'>mtcars</span>), <span class='no'>toupper</span>)</div><div class='output co'>#&gt;                    MPG CYL DISP  HP DRAT   WT QSEC VS AM GEAR CARB
-#&gt; Mazda RX4         21.0   6  160 110 3.90 2.62 16.5  0  1    4    4
-#&gt; Mazda RX4 Wag     21.0   6  160 110 3.90 2.88 17.0  0  1    4    4
-#&gt; Datsun 710        22.8   4  108  93 3.85 2.32 18.6  1  1    4    1
-#&gt; Hornet 4 Drive    21.4   6  258 110 3.08 3.21 19.4  1  0    3    1
-#&gt; Hornet Sportabout 18.7   8  360 175 3.15 3.44 17.0  0  0    3    2
-#&gt; Valiant           18.1   6  225 105 2.76 3.46 20.2  1  0    3    1</div><div class='input'>
+#&gt;  1  2  3  4  5  6  7  8  9 10 </div><div class='input'><span class='fu'>set_names</span>(<span class='fu'>head</span>(<span class='no'>mtcars</span>), <span class='no'>toupper</span>)</div><div class='output co'>#&gt;                    MPG CYL DISP  HP DRAT    WT  QSEC VS AM GEAR CARB
+#&gt; Mazda RX4         21.0   6  160 110 3.90 2.620 16.46  0  1    4    4
+#&gt; Mazda RX4 Wag     21.0   6  160 110 3.90 2.875 17.02  0  1    4    4
+#&gt; Datsun 710        22.8   4  108  93 3.85 2.320 18.61  1  1    4    1
+#&gt; Hornet 4 Drive    21.4   6  258 110 3.08 3.215 19.44  1  0    3    1
+#&gt; Hornet Sportabout 18.7   8  360 175 3.15 3.440 17.02  0  0    3    2
+#&gt; Valiant           18.1   6  225 105 2.76 3.460 20.22  1  0    3    1</div><div class='input'>
 <span class='co'># `...` is passed to the function:</span>
 <span class='fu'>set_names</span>(<span class='fu'>head</span>(<span class='no'>mtcars</span>), <span class='no'>paste0</span>, <span class='st'>"_foo"</span>)</div><div class='output co'>#&gt;                   mpg_foo cyl_foo disp_foo hp_foo drat_foo wt_foo qsec_foo
-#&gt; Mazda RX4            21.0       6      160    110     3.90   2.62     16.5
-#&gt; Mazda RX4 Wag        21.0       6      160    110     3.90   2.88     17.0
-#&gt; Datsun 710           22.8       4      108     93     3.85   2.32     18.6
-#&gt; Hornet 4 Drive       21.4       6      258    110     3.08   3.21     19.4
-#&gt; Hornet Sportabout    18.7       8      360    175     3.15   3.44     17.0
-#&gt; Valiant              18.1       6      225    105     2.76   3.46     20.2
+#&gt; Mazda RX4            21.0       6      160    110     3.90  2.620    16.46
+#&gt; Mazda RX4 Wag        21.0       6      160    110     3.90  2.875    17.02
+#&gt; Datsun 710           22.8       4      108     93     3.85  2.320    18.61
+#&gt; Hornet 4 Drive       21.4       6      258    110     3.08  3.215    19.44
+#&gt; Hornet Sportabout    18.7       8      360    175     3.15  3.440    17.02
+#&gt; Valiant              18.1       6      225    105     2.76  3.460    20.22
 #&gt;                   vs_foo am_foo gear_foo carb_foo
 #&gt; Mazda RX4              0      1        4        4
 #&gt; Mazda RX4 Wag          0      1        4        4
@@ -182,5 +199,8 @@ to the function.</p></li>
       </footer>
    </div>
 
+  
+
   </body>
 </html>
+

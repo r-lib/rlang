@@ -21,12 +21,15 @@
 <!-- clipboard.js -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/1.7.1/clipboard.min.js" integrity="sha384-cV+rhyOuRHc9Ub/91rihWcGmMmCXDeksTtCihMupQHSsi8GIIRDG0ThDc3HGQFJ3" crossorigin="anonymous"></script>
 
+<!-- sticky kit -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/sticky-kit/1.1.3/sticky-kit.min.js" integrity="sha256-c4Rlo1ZozqTPE2RLuvbusY3+SU1pQaJC0TjuhygMipw=" crossorigin="anonymous"></script>
+
 <!-- pkgdown -->
 <link href="../pkgdown.css" rel="stylesheet">
-<script src="../jquery.sticky-kit.min.js"></script>
 <script src="../pkgdown.js"></script>
-  
-  
+
+
+
 <meta property="og:title" content="Is an object an expression? — is_expression" />
 
 <meta property="og:description" content="is_expression() tests for expressions, the set of objects that can be
@@ -44,6 +47,9 @@ Note that we are using the term expression in its colloquial sense
 and not to refer to expression() vectors, a data type that wraps
 expressions in a vector and which isn't used much in modern R code." />
 <meta name="twitter:card" content="summary" />
+
+
+
 <!-- mathjax -->
 <script src='https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML'></script>
 
@@ -66,8 +72,12 @@ expressions in a vector and which isn't used much in modern R code." />
         <span class="icon-bar"></span>
         <span class="icon-bar"></span>
       </button>
-      <a class="navbar-brand" href="../index.html">rlang</a>
+      <span class="navbar-brand">
+        <a class="navbar-link" href="../index.html">rlang</a>
+        <span class="label label-default" data-toggle="tooltip" data-placement="bottom" title="Released package">0.3.0</span>
+      </span>
     </div>
+
     <div id="navbar" class="navbar-collapse collapse">
       <ul class="nav navbar-nav">
         <li>
@@ -89,6 +99,7 @@ expressions in a vector and which isn't used much in modern R code." />
   </a>
 </li>
       </ul>
+      
     </div><!--/.nav-collapse -->
   </div><!--/.container -->
 </div><!--/.navbar -->
@@ -96,12 +107,15 @@ expressions in a vector and which isn't used much in modern R code." />
       
       </header>
 
-      <div class="row">
+<div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
     <h1>Is an object an expression?</h1>
+    <small class="dont-index">Source: <a href='https://github.com/r-lib/rlang/blob/master/R/expr.R'><code>R/expr.R</code></a></small>
+    <div class="hidden name"><code>is_expression.Rd</code></div>
     </div>
 
+    <div class="ref-description">
     
     <p><code>is_expression()</code> tests for expressions, the set of objects that can be
 obtained from parsing R code. An expression can be one of two
@@ -118,6 +132,7 @@ using <code><a href='parse_expr.html'>parse_expr()</a></code>).</p>
 and not to refer to <code>expression()</code> vectors, a data type that wraps
 expressions in a vector and which isn't used much in modern R code.</p>
     
+    </div>
 
     <pre class="usage"><span class='fu'>is_expression</span>(<span class='no'>x</span>)
 
@@ -125,7 +140,7 @@ expressions in a vector and which isn't used much in modern R code.</p>
 
 <span class='fu'>is_symbolic</span>(<span class='no'>x</span>)</pre>
     
-    <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a> Arguments</h2>
+    <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
     <colgroup><col class="name" /><col class="desc" /></colgroup>
     <tr>
@@ -140,15 +155,15 @@ expressions in a vector and which isn't used much in modern R code.</p>
 type <code>language</code>). Symbolic objects are replaced by their value
 during evaluation. Literals are the complement of symbolic
 objects. They are their own value and return themselves during
-evaluation.
-    <code>is_syntactic_literal()</code> is a predicate that returns <code>TRUE</code> for the
+evaluation.</p>
+<p><code>is_syntactic_literal()</code> is a predicate that returns <code>TRUE</code> for the
 subset of literals that are created by R when parsing text (see
 <code><a href='parse_expr.html'>parse_expr()</a></code>): numbers, strings and <code>NULL</code>. Along with symbols,
 these literals are the terminating nodes in an AST.</p>
 <p>Note that in the most general sense, a literal is any R object that
 evaluates to itself and that can be evaluated in the empty
 environment. For instance, <code>quote(c(1, 2))</code> is not a literal, it is
-a call. However, the result of evaluating it in <code><a href='scoped_env.html'>base_env()</a></code> is a
+a call. However, the result of evaluating it in <code><a href='search_envs.html'>base_env()</a></code> is a
 literal(in this case an atomic vector).</p>
 <p>Pairlists are also a kind of language objects. However, since they
 are mostly an internal data structure, <code>is_expression()</code> returns <code>FALSE</code>
@@ -163,7 +178,7 @@ list of a closure with <code><a href='http://www.rdocumentation.org/packages/bas
     
     <h2 class="hasAnchor" id="see-also"><a class="anchor" href="#see-also"></a>See also</h2>
 
-    <p><code><a href='is_call.html'>is_call()</a></code> for a call predicate.</p>
+    <div class='dont-index'><p><code><a href='is_call.html'>is_call()</a></code> for a call predicate.</p></div>
     
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
@@ -223,5 +238,8 @@ list of a closure with <code><a href='http://www.rdocumentation.org/packages/bas
       </footer>
    </div>
 
+  
+
   </body>
 </html>
+

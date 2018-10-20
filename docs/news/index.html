@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>All news • rlang</title>
+<title>Changelog • rlang</title>
 
 <!-- jquery -->
 <script src="https://code.jquery.com/jquery-3.1.0.min.js" integrity="sha384-nrOSfDHtoPMzJHjVTdCopGqIqeYETSXhZDFyniQ8ZHcVy08QesyHcnOUpMpqnmWq" crossorigin="anonymous"></script>
@@ -21,13 +21,19 @@
 <!-- clipboard.js -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/1.7.1/clipboard.min.js" integrity="sha384-cV+rhyOuRHc9Ub/91rihWcGmMmCXDeksTtCihMupQHSsi8GIIRDG0ThDc3HGQFJ3" crossorigin="anonymous"></script>
 
+<!-- sticky kit -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/sticky-kit/1.1.3/sticky-kit.min.js" integrity="sha256-c4Rlo1ZozqTPE2RLuvbusY3+SU1pQaJC0TjuhygMipw=" crossorigin="anonymous"></script>
+
 <!-- pkgdown -->
 <link href="../pkgdown.css" rel="stylesheet">
-<script src="../jquery.sticky-kit.min.js"></script>
 <script src="../pkgdown.js"></script>
-  
-  
-<meta property="og:title" content="All news" />
+
+
+
+<meta property="og:title" content="Changelog" />
+
+
+
 <!-- mathjax -->
 <script src='https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML'></script>
 
@@ -50,8 +56,12 @@
         <span class="icon-bar"></span>
         <span class="icon-bar"></span>
       </button>
-      <a class="navbar-brand" href="../index.html">rlang</a>
+      <span class="navbar-brand">
+        <a class="navbar-link" href="../index.html">rlang</a>
+        <span class="label label-default" data-toggle="tooltip" data-placement="bottom" title="Released package">0.3.0</span>
+      </span>
     </div>
+
     <div id="navbar" class="navbar-collapse collapse">
       <ul class="nav navbar-nav">
         <li>
@@ -73,6 +83,7 @@
   </a>
 </li>
       </ul>
+      
     </div><!--/.nav-collapse -->
   </div><!--/.container -->
 </div><!--/.navbar -->
@@ -80,17 +91,290 @@
       
       </header>
 
-      <div class="row">
-
-  <div class="col-md-9">
+<div class="row">
+  <div class="col-md-9 contents">
     <div class="page-header">
-      <h1>Change log <small>All releases</small></h1>
+      <h1>Changelog <small></small></h1>
+      <small>Source: <a href='https://github.com/r-lib/rlang/blob/master/NEWS.md'><code>NEWS.md</code></a></small>
     </div>
 
-    <div class="contents">
+    <div id="rlang-0-3-0" class="section level1">
+<h1 class="page-header">
+<a href="#rlang-0-3-0" class="anchor"></a>rlang 0.3.0<small> Unreleased </small>
+</h1>
+<div id="breaking-changes" class="section level2">
+<h2 class="hasAnchor">
+<a href="#breaking-changes" class="anchor"></a>Breaking changes</h2>
+<p>The rlang API is still maturing. In these sections you’ll find hard breaking changes. See the life cycle section below for an exhaustive list of API changes.</p>
+<ul>
+<li>
+<p><code><a href="../reference/quo_label.html">quo_text()</a></code> now deparses non-syntactic symbols with backticks:</p>
+<pre><code><a href="../reference/quo_label.html">quo_text(sym("foo+"))
+#&gt; [1] "`foo+`"</a></code></pre>
+<p>This caused a number of issues in reverse dependencies as <code><a href="../reference/quo_label.html">quo_text()</a></code> tends to be used for converting symbols to strings. <code><a href="../reference/quo_label.html">quo_text()</a></code> and <code><a href="../reference/quo_label.html">quo_name()</a></code> should not be used for this purpose because they are general purpose deparsers. These functions should generally only be used for printing outputs or creating default labels. If you need to convert symbols to strings, please use <code><a href="../reference/vector-coercion.html">as_string()</a></code> rather than <code><a href="../reference/quo_label.html">quo_text()</a></code>.</p>
+<p>We have extended the documentation of <code><a href="../reference/quo_label.html">?quo_text</a></code> and <code><a href="../reference/quo_label.html">?quo_name</a></code> to make these points clearer.</p>
+</li>
+<li><p><code><a href="../reference/quotation.html">exprs()</a></code> no longer flattens quosures. <code><a href="../reference/quotation.html">exprs(!!!quos(x, y))</a></code> is now equivalent to <code><a href="../reference/quotation.html">quos(x, y)</a></code>.</p></li>
+<li>
+<p>The sentinel for removing arguments in <code><a href="../reference/call_modify.html">call_modify()</a></code> has been changed from <code>NULL</code> to <code><a href="../reference/zap.html">zap()</a></code>. This breaking change is motivated by the ambiguity of <code>NULL</code> with valid argument values.</p>
+<div class="sourceCode" id="cb2"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb2-1" data-line-number="1"><span class="kw"><a href="../reference/call_modify.html">call_modify</a></span>(call, <span class="dt">arg =</span> <span class="ot">NULL</span>)  <span class="co"># Add `arg = NULL` to the call</span></a>
+<a class="sourceLine" id="cb2-2" data-line-number="2"><span class="kw"><a href="../reference/call_modify.html">call_modify</a></span>(call, <span class="dt">arg =</span> <span class="kw"><a href="../reference/zap.html">zap</a></span>()) <span class="co"># Remove the `arg` argument from the call</span></a></code></pre></div>
+</li>
+<li><p>The <code>%@%</code> operator now quotes its input and supports S4 objects. This makes it directly equivalent to <code>@</code> except that it extracts attributes for non-S4 objects (<a href='https://github.com/r-lib/rlang/issues/207'>#207</a>).</p></li>
+<li><p>Taking the <code><a href="../reference/env_parent.html">env_parent()</a></code> of the empty environment is now an error.</p></li>
+</ul>
+</div>
+<div id="summary" class="section level2">
+<h2 class="hasAnchor">
+<a href="#summary" class="anchor"></a>Summary</h2>
+<p>The changes for this version are organised around three main themes: error reporting, tidy eval, and tidy dots.</p>
+<ul>
+<li>
+<p><code><a href="../reference/abort.html">abort()</a></code> now records backtraces automatically in the error object. Errors thrown with <code><a href="../reference/abort.html">abort()</a></code> invite users to call <code><a href="../reference/last_error.html">rlang::last_error()</a></code> to see a backtrace and help identifying where and why the error occurred. The backtraces created by rlang (you can create one manually with <code><a href="../reference/trace_back.html">trace_back()</a></code>) are printed in a simplified form by default that removes implementation details from the backtrace. To see the full backtrace, call <code>summary(rlang::last_error())</code>.</p>
+<p><code><a href="../reference/abort.html">abort()</a></code> also gains a <code>parent</code> argument. This is meant for situations where you’re calling a low level API (to download a file, parse a JSON file, etc) and would like to intercept errors with <code><a href="http://www.rdocumentation.org/packages/base/topics/conditions">base::tryCatch()</a></code> or <code><a href="../reference/with_handlers.html">rlang::with_handlers()</a></code> and rethrow them with a high-level message. Call <code><a href="../reference/abort.html">abort()</a></code> with the intercepted error as the <code>parent</code> argument. When the user prints <code><a href="../reference/last_error.html">rlang::last_error()</a></code>, the backtrace will be shown in two sections corresponding to the high-level and low-level contexts.</p>
+<p>In order to get segmented backtraces, the low-level error has to be thrown with <code><a href="../reference/abort.html">abort()</a></code>. When that’s not the case, you can call the low-level function within <code><a href="../reference/with_abort.html">with_abort()</a></code> to automatically promote all errors to rlang errors.</p>
+</li>
+<li><p>The tidy eval changes are mostly for developers of data masking APIs. The main user-facing change is that <code>.data[[</code> is now an unquote operator so that <code>var</code> in <code>.data[[var]]</code> is never masked by data frame columns and always picked from the environment. This makes the pronoun safe for programming in functions.</p></li>
+<li><p>The <code>!!!</code> operator now supports all classed objects like factors. It calls <code>as.list()</code> on S3 objects and <code>as(x, "list")</code> on S4 objects.</p></li>
+<li><p><code><a href="../reference/tidy-dots.html">dots_list()</a></code> gains several arguments to control how dots are collected. You can control the selection of arguments with the same name with <code>.homonyms</code> (keep first, last, all, or abort). You can also elect to preserve empty arguments with <code>.preserve_empty</code>.</p></li>
+</ul>
+</div>
+<div id="conditions-and-errors" class="section level2">
+<h2 class="hasAnchor">
+<a href="#conditions-and-errors" class="anchor"></a>Conditions and errors</h2>
+<ul>
+<li><p>New <code><a href="../reference/trace_back.html">trace_back()</a></code> captures a backtrace. Compared to the base R traceback, it contains additional structure about the relationship between frames. It comes with tools for automatically restricting to frames after a certain environment on the stack, and to simplify when printing. These backtraces are now recorded in errors thrown by <code><a href="../reference/abort.html">abort()</a></code> (see below).</p></li>
+<li><p><code><a href="../reference/abort.html">abort()</a></code> gains a <code>parent</code> argument to specify a parent error. This is meant for situations where a low-level error is expected (e.g. download or parsing failed) and you’d like to throw an error with higher level information. Specifying the low-level error as parent makes it possible to partition the backtraces based on ancestry.</p></li>
+<li><p>Errors thrown with <code><a href="../reference/abort.html">abort()</a></code> now embed a backtrace in the condition object. It is no longer necessary to record a trace with a calling handler for such errors.</p></li>
+<li><p><code><a href="../reference/with_abort.html">with_abort()</a></code> runs expressions in a context where all errors are promoted to rlang errors and gain a backtrace.</p></li>
+<li><p>Unhandled errors thrown by <code><a href="../reference/abort.html">abort()</a></code> are now automatically saved and can be retrieved with <code><a href="../reference/last_error.html">rlang::last_error()</a></code>. The error prints with a simplified backtrace. Call <code>summary(last_error())</code> to see the full backtrace.</p></li>
+<li><p>New experimental option <code>rlang__backtrace_on_error</code> to display backtraces alongside error messages. See <code><a href="../reference/abort.html">?rlang::abort</a></code> for supported options.</p></li>
+<li><p>The new <code><a href="../reference/abort.html">signal()</a></code> function completes the <code><a href="../reference/abort.html">abort()</a></code>, <code><a href="../reference/abort.html">warn()</a></code> and <code><a href="../reference/abort.html">inform()</a></code> family. It creates and signals a bare condition.</p></li>
+<li><p>New <code><a href="../reference/abort.html">interrupt()</a></code> function to simulate an user interrupt from R code.</p></li>
+<li><p><code><a href="../reference/cnd_signal.html">cnd_signal()</a></code> now dispatches messages, warnings, errors and interrupts to the relevant signalling functions (<code>message()</code>, <code>warning()</code>, <code>stop()</code> and the C function <code>Rf_onintr()</code>). This makes it a good choice to resignal a captured condition.</p></li>
+<li><p>New <code><a href="../reference/cnd_type.html">cnd_type()</a></code> helper to determine the type of a condition (<code>"condition"</code>, <code>"message"</code>, <code>"warning"</code>, <code>"error"</code> or <code>"interrupt"</code>).</p></li>
+<li>
+<p><code><a href="../reference/abort.html">abort()</a></code>, <code><a href="../reference/abort.html">warn()</a></code> and <code><a href="../reference/abort.html">inform()</a></code> now accepts metadata with <code>...</code>. The data are stored in the condition and can be examined by user handlers.</p>
+<p>Consequently all arguments have been renamed and prefixed with a dot (to limit naming conflicts between arguments and metadata names).</p>
+</li>
+<li><p><code><a href="../reference/with_handlers.html">with_handlers()</a></code> treats bare functions as exiting handlers (equivalent to handlers supplied to <code>tryCatch()</code>). It also supports the formula shortcut for lambda functions (as in purrr).</p></li>
+<li><p><code><a href="../reference/with_handlers.html">with_handlers()</a></code> now produces a cleaner stack trace.</p></li>
+</ul>
+</div>
+<div id="tidy-dots" class="section level2">
+<h2 class="hasAnchor">
+<a href="#tidy-dots" class="anchor"></a>Tidy dots</h2>
+<ul>
+<li>
+<p>The input types of <code>!!!</code> have been standardised. <code>!!!</code> is generally defined on vectors: it takes a vector (typically, a list) and unquotes each element as a separate argument. The standardisation makes <code>!!!</code> behave the same in functions taking dots with <code><a href="../reference/tidy-dots.html">list2()</a></code> and in quoting functions. <code>!!!</code> accepts these types:</p>
+<ul>
+<li><p>Lists, pairlists, and atomic vectors. If they have a class, they are converted with <code><a href="http://www.rdocumentation.org/packages/base/topics/list">base::as.list()</a></code> to allow S3 dispatch. Following this change, objects like factors can now be spliced without data loss.</p></li>
+<li><p>S4 objects. These are converted with <code>as(obj, "list")</code> before splicing.</p></li>
+<li><p>Quoted blocks of expressions, i.e. <code>{ }</code> calls</p></li>
+</ul>
+<p><code>!!!</code> disallows:</p>
+<ul>
+<li>Any other objects like functions or environments, but also language objects like formula, symbols, or quosures.</li>
+</ul>
+<p>Quoting functions used to automatically wrap language objects in lists to make them spliceable. This behaviour is now soft-deprecated and it is no longer valid to write <code>!!!enquo(x)</code>. Please unquote scalar objects with <code>!!</code> instead.</p>
+</li>
+<li><p><code><a href="../reference/tidy-dots.html">dots_list()</a></code>, <code><a href="../reference/quotation.html">enexprs()</a></code> and <code><a href="../reference/quotation.html">enquos()</a></code> gain a <code>.homonyms</code> argument to control how to treat arguments with the same name. The default is to keep them. Set it to <code>"first"</code> or <code>"last"</code> to keep only the first or last occurrences. Set it to <code>"error"</code> to raise an informative error about the arguments with duplicated names.</p></li>
+<li><p><code><a href="../reference/quotation.html">enexprs()</a></code> and <code><a href="../reference/quotation.html">enquos()</a></code> now support <code>.ignore_empty = "all"</code> with named arguments as well (<a href='https://github.com/r-lib/rlang/issues/414'>#414</a>).</p></li>
+<li><p><code><a href="../reference/tidy-dots.html">dots_list()</a></code> gains a <code>.preserve_empty</code> argument. When <code>TRUE</code>, empty arguments are stored as missing arguments (see <code><a href="../reference/missing_arg.html">?missing_arg</a></code>).</p></li>
+<li><p><code><a href="../reference/tidy-dots.html">dots_list()</a></code>, <code><a href="../reference/quotation.html">enexprs()</a></code> and <code><a href="../reference/quotation.html">enquos()</a></code> gain a <code>.check_assign</code> argument. When <code>TRUE</code>, a warning is issued when a <code>&lt;-</code> call is detected in <code>...</code>. No warning is issued if the assignment is wrapped in brackets like <code>{ a &lt;- 1 }</code>. The warning lets users know about a possible typo in their code (assigning instead of matching a function parameter) and requires them to be explicit that they really want to assign to a variable by wrapping in parentheses.</p></li>
+<li><p><code>lapply(list(quote(foo)), list2)</code> no longer evaluates <code>foo</code> (<a href='https://github.com/r-lib/rlang/issues/580'>#580</a>).</p></li>
+</ul>
+</div>
+<div id="tidy-eval" class="section level2">
+<h2 class="hasAnchor">
+<a href="#tidy-eval" class="anchor"></a>Tidy eval</h2>
+<ul>
+<li><p>You can now unquote quosured symbols as LHS of <code>:=</code>. The symbol is automatically unwrapped from the quosure.</p></li>
+<li><p>Quosure methods have been defined for common operations like <code>==</code>. These methods fail with an informative error message suggesting to unquote the quosure (<a href='https://github.com/r-lib/rlang/issues/478'>#478</a>, #tidyverse/dplyr<a href='https://github.com/r-lib/rlang/issues/3476'>#3476</a>).</p></li>
+<li><p><code><a href="../reference/as_data_mask.html">as_data_pronoun()</a></code> now accepts data masks. If the mask has multiple environments, all of these are looked up when subsetting the pronoun. Function objects stored in the mask are bypassed.</p></li>
+<li><p>It is now possible to unquote strings in function position. This is consistent with how the R parser coerces strings to symbols. These two expressions are now equivalent: <code><a href="../reference/quotation.html">expr("foo"())</a></code> and <code><a href="../reference/quotation.html">expr((!!"foo")())</a></code>.</p></li>
+<li><p>Quosures converted to functions with <code><a href="../reference/as_function.html">as_function()</a></code> now support nested quosures.</p></li>
+<li><p><code><a href="../reference/expr_print.html">expr_deparse()</a></code> (used to print quosures at the console) now escapes special characters. For instance, newlines now print as <code>"\n"</code> (<a href='https://github.com/r-lib/rlang/issues/484'>#484</a>). This ensures that the roundtrip <code><a href="../reference/parse_expr.html">parse_expr(expr_deparse(x))</a></code> is not lossy.</p></li>
+<li><p><code><a href="../reference/as_data_mask.html">new_data_mask()</a></code> now throws an error when <code>bottom</code> is not a child of <code>top</code> (<a href='https://github.com/r-lib/rlang/issues/551'>#551</a>).</p></li>
+<li><p>Formulas are now evaluated in the correct environment within <code><a href="../reference/eval_tidy.html">eval_tidy()</a></code>. This fixes issues in dplyr and other tidy-evaluation interfaces.</p></li>
+<li><p>New functions <code><a href="../reference/new_quosures.html">new_quosures()</a></code> and <code><a href="../reference/new_quosures.html">as_quosures()</a></code> to create or coerce to a list of quosures. This is a small S3 class that ensures two invariants on subsetting and concatenation: that each element is a quosure and that the list is always named even if only with a vector of empty strings.</p></li>
+</ul>
+</div>
+<div id="environments" class="section level2">
+<h2 class="hasAnchor">
+<a href="#environments" class="anchor"></a>Environments</h2>
+<ul>
+<li><p><code><a href="../reference/env.html">env()</a></code> now treats a single unnamed argument as the parent of the new environment. Consequently, <code><a href="../reference/env.html">child_env()</a></code> is now superfluous and is now in questioning life cycle.</p></li>
+<li><p>New <code><a href="../reference/caller_env.html">current_env()</a></code> and <code><a href="../reference/caller_fn.html">current_fn()</a></code> functions to retrieve the current environment or the function being evaluated. They are equivalent to <code><a href="http://www.rdocumentation.org/packages/base/topics/environment">base::environment()</a></code> and <code><a href="http://www.rdocumentation.org/packages/base/topics/sys.parent">base::sys.function()</a></code> called without argument.</p></li>
+<li><p><code><a href="../reference/env_get.html">env_get()</a></code> and <code><a href="../reference/env_get.html">env_get_list()</a></code> gain a <code>default</code> argument to provide a default value for non-existing bindings.</p></li>
+<li><p><code><a href="../reference/env_poke.html">env_poke()</a></code> now returns the old value invisibly rather than the input environment.</p></li>
+<li><p>The new function <code><a href="../reference/env_name.html">env_name()</a></code> returns the name of an environment. It always adds the “namespace:” prefix to namespace names. It returns “global” instead of “.GlobalEnv” or “R_GlobalEnv”, “empty” instead of “R_EmptyEnv”. The companion <code><a href="../reference/env_name.html">env_label()</a></code> is like <code><a href="../reference/env_name.html">env_name()</a></code> but returns the memory address for anonymous environments.</p></li>
+<li><p><code><a href="../reference/env_parent.html">env_parents()</a></code> now returns a named list. The names are taken with <code><a href="../reference/env_name.html">env_name()</a></code>.</p></li>
+<li><p><code><a href="../reference/env_parent.html">env_parents()</a></code> and <code><a href="../reference/env_parent.html">env_tail()</a></code> now stop at the global environment by default. This can be changed with the <code>last</code> argument. The empty environment is always a stopping condition so you can take the parents or the tail of an environment on the search path without changing the default.</p></li>
+<li><p>New predicates <code><a href="../reference/env_binding_are_active.html">env_binding_are_active()</a></code> and <code><a href="../reference/env_binding_are_active.html">env_binding_are_lazy()</a></code> detect the kind of bindings in an environment.</p></li>
+<li><p><code><a href="../reference/env_binding_lock.html">env_binding_lock()</a></code> and <code><a href="../reference/env_binding_lock.html">env_binding_unlock()</a></code> allows to lock and unlock multiple bindings. The predicate <code><a href="../reference/env_binding_lock.html">env_binding_are_locked()</a></code> tests if bindings are locked.</p></li>
+<li><p><code><a href="../reference/env_lock.html">env_lock()</a></code> and <code><a href="../reference/env_lock.html">env_is_locked()</a></code> lock an environment or test if an environment is locked.</p></li>
+<li><p><code><a href="../reference/env_print.html">env_print()</a></code> pretty-prints environments. It shows the contents (up to 20 elements) and the properties of the environment.</p></li>
+<li><p><code><a href="../reference/scoped_env.html">is_scoped()</a></code> has been soft-deprecated and renamed to <code><a href="../reference/search_envs.html">is_attached()</a></code>. It now supports environments in addition to search names.</p></li>
+<li><p><code><a href="../reference/env_bind.html">env_bind_lazy()</a></code> and <code><a href="../reference/env_bind.html">env_bind_active()</a></code> now support quosures.</p></li>
+<li><p><code><a href="../reference/env_bind_exprs.html">env_bind_exprs()</a></code> and <code><a href="../reference/env_bind_exprs.html">env_bind_fns()</a></code> are soft-deprecated and renamed to <code><a href="../reference/env_bind.html">env_bind_lazy()</a></code> and <code><a href="../reference/env_bind.html">env_bind_active()</a></code> for clarity and consistency.</p></li>
+<li>
+<p><code><a href="../reference/env_bind.html">env_bind()</a></code>, <code><a href="../reference/env_bind_exprs.html">env_bind_exprs()</a></code>, and <code><a href="../reference/env_bind_exprs.html">env_bind_fns()</a></code> now return the list of old binding values (or missing arguments when there is no old value). This makes it easy to restore the original environment state:</p>
+<pre><code>old &lt;- env_bind(env, foo = "foo", bar = "bar")
+env_bind(env, !!!old)</code></pre>
+</li>
+<li><p><code><a href="../reference/env_bind.html">env_bind()</a></code> now supports binding missing arguments and removing bindings with zap sentinels. <code><a href="../reference/env_bind.html">env_bind(env, foo = )</a></code> binds a missing argument and <code><a href="../reference/env_bind.html">env_bind(env, foo = zap())</a></code> removes the <code>foo</code> binding.</p></li>
+<li><p>The <code>inherit</code> argument of <code><a href="../reference/env_get.html">env_get()</a></code> and <code><a href="../reference/env_get.html">env_get_list()</a></code> has changed position. It now comes after <code>default</code>.</p></li>
+<li><p><code><a href="../reference/scoped_bindings.html">scoped_bindings()</a></code> and <code><a href="../reference/scoped_bindings.html">with_bindings()</a></code> can now be called without bindings.</p></li>
+<li><p><code><a href="../reference/env_clone.html">env_clone()</a></code> now recreates active bindings correctly.</p></li>
+<li><p><code><a href="../reference/env_get.html">env_get()</a></code> now evaluates promises and active bindings since these are internal objects which should not be exposed at the R level (<a href='https://github.com/r-lib/rlang/issues/554'>#554</a>)</p></li>
+<li><p><code><a href="../reference/env_print.html">env_print()</a></code> calls <code><a href="../reference/get_env.html">get_env()</a></code> on its argument, making it easier to see the environment of closures and quosures (<a href='https://github.com/r-lib/rlang/issues/567'>#567</a>).</p></li>
+<li><p><code><a href="../reference/env_get.html">env_get()</a></code> now supports retrieving missing arguments when <code>inherit</code> is <code>FALSE</code>.</p></li>
+</ul>
+</div>
+<div id="calls" class="section level2">
+<h2 class="hasAnchor">
+<a href="#calls" class="anchor"></a>Calls</h2>
+<ul>
+<li><p><code><a href="../reference/is_call.html">is_call()</a></code> now accepts multiple namespaces. For instance <code><a href="../reference/is_call.html">is_call(x, "list", ns = c("", "base"))</a></code> will match if <code>x</code> is <code>list()</code> or if it’s <code><a href="http://www.rdocumentation.org/packages/base/topics/list">base::list()</a></code>:</p></li>
+<li><p><code><a href="../reference/call_modify.html">call_modify()</a></code> has better support for <code>...</code> and now treats it like a named argument. <code><a href="../reference/call_modify.html">call_modify(call, ... = )</a></code> adds <code>...</code> to the call and <code><a href="../reference/call_modify.html">call_modify(call, ... = NULL)</a></code> removes it.</p></li>
+<li><p><code><a href="../reference/call_modify.html">call_modify()</a></code> now preserves empty arguments. It is no longer necessary to use <code><a href="../reference/missing_arg.html">missing_arg()</a></code> to add a missing argument to a call. This is possible thanks to the new <code>.preserve_empty</code> option of <code><a href="../reference/tidy-dots.html">dots_list()</a></code>.</p></li>
+<li><p><code><a href="../reference/call_modify.html">call_modify()</a></code> now supports removing unexisting arguments (<a href='https://github.com/r-lib/rlang/issues/393'>#393</a>) and passing multiple arguments with the same name (<a href='https://github.com/r-lib/rlang/issues/398'>#398</a>). The new <code>.homonyms</code> argument controls how to treat these arguments.</p></li>
+<li><p><code><a href="../reference/call_standardise.html">call_standardise()</a></code> now handles primitive functions like <code>~</code> properly (<a href='https://github.com/r-lib/rlang/issues/473'>#473</a>).</p></li>
+<li><p><code><a href="../reference/call_print_type.html">call_print_type()</a></code> indicates how a call is deparsed and printed at the console by R: prefix, infix, and special form.</p></li>
+<li><p>The <code>call_</code> functions such as <code><a href="../reference/call_modify.html">call_modify()</a></code> now correctly check that their input is the right type (<a href='https://github.com/r-lib/rlang/issues/187'>#187</a>).</p></li>
+</ul>
+</div>
+<div id="other-improvements-and-fixes" class="section level2">
+<h2 class="hasAnchor">
+<a href="#other-improvements-and-fixes" class="anchor"></a>Other improvements and fixes</h2>
+<ul>
+<li><p>New function <code><a href="../reference/zap.html">zap()</a></code> returns a sentinel that instructs functions like <code><a href="../reference/env_bind.html">env_bind()</a></code> or <code><a href="../reference/call_modify.html">call_modify()</a></code> that objects are to be removed.</p></li>
+<li><p>New function <code><a href="../reference/rep_along.html">rep_named()</a></code> repeats value along a character vector of names.</p></li>
+<li><p>New function <code><a href="../reference/exec.html">exec()</a></code> is a simpler replacement to <code><a href="../reference/invoke.html">invoke()</a></code> (<a href='https://github.com/r-lib/rlang/issues/536'>#536</a>). <code><a href="../reference/invoke.html">invoke()</a></code> has been soft-deprecated.</p></li>
+<li><p>Lambda functions created from formulas with <code><a href="../reference/as_function.html">as_function()</a></code> are now classed. Use <code><a href="../reference/as_function.html">is_lambda()</a></code> to check a function was created with the formula shorthand.</p></li>
+<li><p><code><a href="../reference/is_integerish.html">is_integerish()</a></code> now supports large double values (<a href='https://github.com/r-lib/rlang/issues/578'>#578</a>).</p></li>
+<li><p><code><a href="../reference/are_na.html">are_na()</a></code> now requires atomic vectors (<a href='https://github.com/r-lib/rlang/issues/558'>#558</a>).</p></li>
+<li><p>The operator <code>%@%</code> has now a replacement version to update attributes of an object (<a href='https://github.com/r-lib/rlang/issues/207'>#207</a>).</p></li>
+<li><p><code><a href="../reference/fn_body.html">fn_body()</a></code> always returns a <code>{</code> block, even if the function has a single expression. For instance <code><a href="../reference/fn_body.html">fn_body(function(x) do())</a></code> returns <code>quote({ do() })</code>.</p></li>
+<li><p><code><a href="../reference/scalar-type-predicates.html">is_string()</a></code> now returns <code>FALSE</code> for <code>NA_character_</code>.</p></li>
+<li><p>The vector predicates have been rewritten in C for performance.</p></li>
+<li><p>The <code>finite</code> argument of <code><a href="../reference/is_integerish.html">is_integerish()</a></code> is now <code>NULL</code> by default. Missing values are now considered as non-finite for consistency with <code><a href="http://www.rdocumentation.org/packages/base/topics/is.finite">base::is.finite()</a></code>.</p></li>
+<li><p><code><a href="../reference/is_integerish.html">is_bare_integerish()</a></code> and <code><a href="../reference/is_integerish.html">is_scalar_integerish()</a></code> gain a <code>finite</code> argument for consistency with <code><a href="../reference/is_integerish.html">is_integerish()</a></code>.</p></li>
+<li><p><code><a href="../reference/flatten.html">flatten_if()</a></code> and <code><a href="../reference/flatten.html">squash_if()</a></code> now handle primitive functions like <code><a href="http://www.rdocumentation.org/packages/base/topics/list">base::is.list()</a></code> as predicates.</p></li>
+<li><p><code><a href="../reference/is_symbol.html">is_symbol()</a></code> now accepts a character vector of names to mach the symbol against.</p></li>
+<li><p><code><a href="../reference/parse_expr.html">parse_exprs()</a></code> and <code><a href="../reference/parse_expr.html">parse_quos()</a></code> now support character vectors. Note that the output may be longer than the input as each string may yield multiple expressions (such as <code>"foo; bar"</code>).</p></li>
+<li><p><code><a href="../reference/parse_expr.html">parse_quos()</a></code> now adds the <code>quosures</code> class to its output.</p></li>
+</ul>
+</div>
+<div id="lifecycle" class="section level2">
+<h2 class="hasAnchor">
+<a href="#lifecycle" class="anchor"></a>Lifecycle</h2>
+<div id="soft-deprecated-functions-and-arguments" class="section level3">
+<h3 class="hasAnchor">
+<a href="#soft-deprecated-functions-and-arguments" class="anchor"></a>Soft-deprecated functions and arguments</h3>
+<p>rlang 0.3.0 introduces a new warning mechanism for soft-deprecated functions and arguments. A warning is issued, but only under one of these circumstances:</p>
+<ul>
+<li>rlang has been attached with a <code>library()</code> call.</li>
+<li>The deprecated function has been called from the global environment.</li>
+</ul>
+<p>In addition, deprecation warnings appear only once per session in order to not be disruptive.</p>
+<p>Deprecation warnings shouldn’t make R CMD check fail for packages using testthat. However, <code>expect_silent()</code> can transform the warning to a hard failure.</p>
+<div id="tidyeval" class="section level4">
+<h4 class="hasAnchor">
+<a href="#tidyeval" class="anchor"></a>tidyeval</h4>
+<ul>
+<li><p><code>.data[[foo]]</code> is now an unquote operator. This guarantees that <code>foo</code> is evaluated in the context rather than the data mask and makes it easier to treat <code>.data[["bar"]]</code> the same way as a symbol. For instance, this will help ensuring that <code>group_by(df, .data[["name"]])</code> and <code>group_by(df, name)</code> produce the same column name.</p></li>
+<li><p>Automatic naming of expressions now uses a new deparser (still unexported) instead of <code><a href="../reference/quo_label.html">quo_text()</a></code>. Following this change, automatic naming is now compatible with all object types (via <code><a href="http://www.rdocumentation.org/packages/pillar/topics/type_sum">pillar::type_sum()</a></code> if available), prevents multi-line names, and ensures <code>name</code> and <code>.data[["name"]]</code> are given the same default name.</p></li>
+<li><p>Supplying a name with <code>!!!</code> calls is soft-deprecated. This name is ignored because only the names of the spliced vector are applied.</p></li>
+<li><p>Quosure lists returned by <code><a href="../reference/quotation.html">quos()</a></code> and <code><a href="../reference/quotation.html">enquos()</a></code> now have “list-of” behaviour: the types of new elements are checked when adding objects to the list. Consequently, assigning non-quosure objects to quosure lists is now soft-deprecated. Please coerce to a bare list with <code>as.list()</code> beforehand.</p></li>
+<li><p><code><a href="../reference/as_quosure.html">as_quosure()</a></code> now requires an explicit environment for symbols and calls. This should typically be the environment in which the expression was created.</p></li>
+<li><p><code>names()</code> and <code>length()</code> methods for data pronouns are deprecated. It is no longer valid to write <code>names(.data)</code> or <code>length(.data)</code>.</p></li>
+<li><p>Using <code>as.character()</code> on quosures is soft-deprecated (<a href='https://github.com/r-lib/rlang/issues/523'>#523</a>).</p></li>
+</ul>
+</div>
+<div id="miscellaneous" class="section level4">
+<h4 class="hasAnchor">
+<a href="#miscellaneous" class="anchor"></a>Miscellaneous</h4>
+<ul>
+<li><p>Using <code><a href="../reference/get_env.html">get_env()</a></code> without supplying an environment is now soft-deprecated. Please use <code><a href="../reference/caller_env.html">current_env()</a></code> to retrieve the current environment.</p></li>
+<li><p>The frame and stack API is soft-deprecated. Some of the functionality has been replaced by <code><a href="../reference/trace_back.html">trace_back()</a></code>.</p></li>
+<li><p>The <code>new_vector_along()</code> family is soft-deprecated because these functions are longer to type than the equivalent <code><a href="../reference/rep_along.html">rep_along()</a></code> or <code><a href="../reference/rep_along.html">rep_named()</a></code> calls without added clarity.</p></li>
+<li>
+<p>Passing environment wrappers like formulas or functions to <code>env_</code> functions is now soft-deprecated. This internal genericity was causing confusion (see issue <a href='https://github.com/r-lib/rlang/issues/427'>#427</a>). You should now extract the environment separately before calling these functions.</p>
+<p>This change concerns <code><a href="../reference/env_depth.html">env_depth()</a></code>, <code><a href="../reference/get_env.html">env_poke_parent()</a></code>, <code>env_parent&lt;-</code>, <code><a href="../reference/env_parent.html">env_tail()</a></code>, <code><a href="../reference/get_env.html">set_env()</a></code>, <code><a href="../reference/env_clone.html">env_clone()</a></code>, <code><a href="../reference/env_inherits.html">env_inherits()</a></code>, <code><a href="../reference/env_bind.html">env_bind()</a></code>, <code><a href="../reference/scoped_bindings.html">scoped_bindings()</a></code>, <code><a href="../reference/scoped_bindings.html">with_bindings()</a></code>, <code><a href="../reference/env_poke.html">env_poke()</a></code>, <code><a href="../reference/env_has.html">env_has()</a></code>, <code><a href="../reference/env_get.html">env_get()</a></code>, <code><a href="../reference/env_names.html">env_names()</a></code>, <code><a href="../reference/env_bind_exprs.html">env_bind_exprs()</a></code> and <code><a href="../reference/env_bind_exprs.html">env_bind_fns()</a></code>.</p>
+</li>
+<li><p><code><a href="../reference/cnd_signal.html">cnd_signal()</a></code> now always installs a muffling restart for non-critical conditions. Consequently the <code>.mufflable</code> argument has been soft-deprecated and no longer has any effect.</p></li>
+</ul>
+</div>
+</div>
+<div id="deprecated-functions-and-arguments" class="section level3">
+<h3 class="hasAnchor">
+<a href="#deprecated-functions-and-arguments" class="anchor"></a>Deprecated functions and arguments</h3>
+<p>Deprecated functions and arguments issue a warning inconditionally, but only once per session.</p>
+<ul>
+<li>
+<p>Calling <code><a href="../reference/quasiquotation.html">UQ()</a></code> and <code><a href="../reference/quasiquotation.html">UQS()</a></code> with the rlang namespace qualifier is deprecated as of rlang 0.3.0. Just use the unqualified forms instead:</p>
+<pre><code><a href="../reference/quotation.html"># Bad
+rlang::expr(mean(rlang::UQ(var) * 100))
+
+# Ok
+rlang::expr(mean(UQ(var) * 100))
+
+# Good
+rlang::expr(mean(!!var * 100))</a></code></pre>
+<p>Although soft-deprecated since rlang 0.2.0, <code><a href="../reference/quasiquotation.html">UQ()</a></code> and <code><a href="../reference/quasiquotation.html">UQS()</a></code> can still be used for now.</p>
+</li>
+<li><p>The <code>call</code> argument of <code><a href="../reference/abort.html">abort()</a></code> and condition constructors is now deprecated in favour of storing full backtraces.</p></li>
+<li><p>The <code>.standardise</code> argument of <code><a href="../reference/call_modify.html">call_modify()</a></code> is deprecated. Please use <code><a href="../reference/call_standardise.html">call_standardise()</a></code> beforehand.</p></li>
+<li><p>The <code>sentinel</code> argument of <code><a href="../reference/env_parent.html">env_tail()</a></code> has been deprecated and renamed to <code>last</code>.</p></li>
+</ul>
+</div>
+<div id="defunct-functions-and-arguments" class="section level3">
+<h3 class="hasAnchor">
+<a href="#defunct-functions-and-arguments" class="anchor"></a>Defunct functions and arguments</h3>
+<p>Defunct functions and arguments throw an error when used.</p>
+<ul>
+<li><p><code><a href="../reference/dictionary.html">as_dictionary()</a></code> is now defunct.</p></li>
+<li><p>The experimental function <code>rst_muffle()</code> is now defunct. Please use <code><a href="../reference/cnd_muffle.html">cnd_muffle()</a></code> instead. Unlike its predecessor, <code><a href="../reference/cnd_muffle.html">cnd_muffle()</a></code> is not generic. It is marked as a calling handler and thus can be passed directly to <code><a href="../reference/with_handlers.html">with_handlers()</a></code> to muffle specific conditions (such as specific subclasses of warnings).</p></li>
+<li><p><code>cnd_inform()</code>, <code>cnd_warn()</code> and <code>cnd_abort()</code> are retired and defunct. The old <code>cnd_message()</code>, <code>cnd_warning()</code>, <code>cnd_error()</code> and <code>new_cnd()</code> constructors deprecated in rlang 0.2.0 are now defunct.</p></li>
+<li><p>Modifying a condition with <code><a href="../reference/cnd_signal.html">cnd_signal()</a></code> is defunct. In addition, creating a condition with <code><a href="../reference/cnd_signal.html">cnd_signal()</a></code> is soft-deprecated, please use the new function [signal()] instead.</p></li>
+<li><p><code>inplace()</code> has been renamed to <code><a href="../reference/exiting.html">calling()</a></code> to follow base R terminology more closely.</p></li>
+</ul>
+</div>
+<div id="functions-and-arguments-in-the-questioning-stage" class="section level3">
+<h3 class="hasAnchor">
+<a href="#functions-and-arguments-in-the-questioning-stage" class="anchor"></a>Functions and arguments in the questioning stage</h3>
+<p>We are no longer convinced these functions are the right approach but we do not have a precise alternative yet.</p>
+<ul>
+<li><p>The functions from the restart API are now in the questioning lifecycle stage. It is not clear yet whether we want to recommend restarts as a style of programming in R.</p></li>
+<li><p><code><a href="../reference/prepend.html">prepend()</a></code> and <code><a href="../reference/modify.html">modify()</a></code> are in the questioning stage, as well as <code><a href="../reference/vector-coercion.html">as_logical()</a></code>, <code><a href="../reference/vector-coercion.html">as_character()</a></code>, etc. We are still figuring out what vector tools belong in rlang.</p></li>
+<li><p><code><a href="../reference/flatten.html">flatten()</a></code>, <code><a href="../reference/flatten.html">squash()</a></code> and their atomic variants are now in the questioning lifecycle stage. They have slightly different semantics than the flattening functions in purrr and we are currently rethinking our approach to flattening with the new typing facilities of the vctrs package.</p></li>
+</ul>
+</div>
+</div>
+</div>
+    <div id="rlang-0-2-2" class="section level1">
+<h1 class="page-header">
+<a href="#rlang-0-2-2" class="anchor"></a>rlang 0.2.2<small> 2018-08-16 </small>
+</h1>
+<p>This is a maintenance release that fixes several garbage collection protection issues.</p>
+</div>
+    <div id="rlang-0-2-1" class="section level1">
+<h1 class="page-header">
+<a href="#rlang-0-2-1" class="anchor"></a>rlang 0.2.1<small> 2018-05-30 </small>
+</h1>
+<p>This is a maintenance release that fixes several tidy evaluation issues.</p>
+<ul>
+<li><p>Functions with tidy dots support now allow splicing atomic vectors.</p></li>
+<li><p>Quosures no longer capture the current <code>srcref</code>.</p></li>
+<li><p>Formulas are now evaluated in the correct environment by <code><a href="../reference/eval_tidy.html">eval_tidy()</a></code>. This fixes issues in dplyr and other tidy-evaluation interfaces.</p></li>
+</ul>
+</div>
     <div id="rlang-0-2-0" class="section level1">
-<h1 class="hasAnchor">
-<a href="#rlang-0-2-0" class="anchor"></a>rlang 0.2.0</h1>
+<h1 class="page-header">
+<a href="#rlang-0-2-0" class="anchor"></a>rlang 0.2.0<small> 2018-02-20 </small>
+</h1>
 <p>This release of rlang is mostly an effort at polishing the tidy evaluation framework. All tidy eval functions and operators have been rewritten in C in order to improve performance. Capture of expression, quasiquotation, and evaluation of quosures are now vastly faster. On the UI side, many of the inconveniences that affected the first release of rlang have been solved:</p>
 <ul>
 <li><p>The <code>!!</code> operator now has the precedence of unary <code>+</code> and <code>-</code> which allows a much more natural syntax: <code>!!a &gt; b</code> only unquotes <code>a</code> rather than the whole <code>a &gt; b</code> expression.</p></li>
@@ -104,20 +388,22 @@
 <a href="#tidy-evaluation" class="anchor"></a>Tidy evaluation</h2>
 <ul>
 <li><p>The backend for <code><a href="../reference/quotation.html">quos()</a></code>, <code><a href="../reference/quotation.html">exprs()</a></code>, <code><a href="../reference/tidy-dots.html">list2()</a></code>, <code><a href="../reference/tidy-dots.html">dots_list()</a></code>, etc is now written in C. This greatly improve the performance of dots capture, especially with the splicing operator <code>!!!</code> which now scales much better (you’ll see a 1000x performance gain in some cases). The unquoting algorithm has also been improved which makes <code><a href="../reference/quotation.html">enexpr()</a></code> and <code><a href="../reference/quotation.html">enquo()</a></code> more efficient as well.</p></li>
-<li><p>The tidy eval <code>!!</code> operator now binds tightly. You no longer have to wrap it in parentheses, i.e. <code>!!x &gt; y</code> will only unquote <code>x</code>.</p></li>
-</ul>
+<li>
+<p>The tidy eval <code>!!</code> operator now binds tightly. You no longer have to wrap it in parentheses, i.e. <code>!!x &gt; y</code> will only unquote <code>x</code>.</p>
 <p>Technically the <code>!!</code> operator has the same precedence as unary <code>-</code> and <code>+</code>. This means that <code>!!a:b</code> and <code>!!a + b</code> are equivalent to <code>(!!a):b</code> and <code>(!!a) + b</code>. On the other hand <code>!!a^b</code> and <code>!!a$b</code> are equivalent to<code>!!(a^b)</code> and <code>!!(a$b)</code>.</p>
-<ul>
+</li>
 <li><p>The print method for quosures has been greatly improved. Quosures no longer appear as formulas but as expressions prefixed with <code>^</code>; quosures are colourised according to their environment; unquoted objects are displayed between angular brackets instead of code (i.e. an unquoted integer vector is shown as <code>&lt;int: 1, 2&gt;</code> rather than <code>1:2</code>); unquoted S3 objects are displayed using <code><a href="http://www.rdocumentation.org/packages/pillar/topics/type_sum">pillar::type_sum()</a></code> if available.</p></li>
-<li><p>New <code><a href="../reference/quotation.html">enquos()</a></code> function to capture arguments. It treats <code>...</code> the same way as <code><a href="../reference/quotation.html">quos()</a></code> but can also capture named arguments just like <code><a href="../reference/quotation.html">enquo()</a></code>, i.e. one level up. By comparison <code><a href="../reference/quotation.html">quos(arg)</a></code> only captures the name <code>arg</code> rather than the expression supplied to the <code>arg</code> argument.</p></li>
-</ul>
+<li>
+<p>New <code><a href="../reference/quotation.html">enquos()</a></code> function to capture arguments. It treats <code>...</code> the same way as <code><a href="../reference/quotation.html">quos()</a></code> but can also capture named arguments just like <code><a href="../reference/quotation.html">enquo()</a></code>, i.e. one level up. By comparison <code><a href="../reference/quotation.html">quos(arg)</a></code> only captures the name <code>arg</code> rather than the expression supplied to the <code>arg</code> argument.</p>
 <p>In addition, <code><a href="../reference/quotation.html">enexprs()</a></code> is like <code><a href="../reference/quotation.html">enquos()</a></code> but like <code><a href="../reference/quotation.html">exprs()</a></code> it returns bare expressions. And <code><a href="../reference/quotation.html">ensyms()</a></code> expects strings or symbols.</p>
-<ul>
-<li>It is now possible to use <code><a href="../reference/quotation.html">enquo()</a></code> within a magrittr pipe:</li>
-</ul>
-<p><code>select_one &lt;- function(df, var) {     df %&gt;% dplyr::select(!!enquo(var))   }</code></p>
+</li>
+<li>
+<p>It is now possible to use <code><a href="../reference/quotation.html">enquo()</a></code> within a magrittr pipe:</p>
+<pre><code>select_one &lt;- function(df, var) {
+  df %&gt;% dplyr::select(!!enquo(var))
+}</code></pre>
 <p>Technically, this is because <code><a href="../reference/quotation.html">enquo()</a></code> now also captures arguments in parents of the current environment rather than just in the current environment. The flip side of this increased flexibility is that if you made a typo in the name of the variable you want to capture, and if an object of that name exists anywhere in the parent contexts, you will capture that object rather than getting an error.</p>
-<ul>
+</li>
 <li><p><code><a href="../reference/quo_expr.html">quo_expr()</a></code> has been renamed to <code><a href="../reference/quo_squash.html">quo_squash()</a></code> in order to better reflect that it is a lossy operation that flattens all nested quosures.</p></li>
 <li><p><code>!!!</code> now accepts any kind of objects for consistency. Scalar types are treated as vectors of length 1. Previously only symbolic objects like symbols and calls were treated as such.</p></li>
 <li><p><code><a href="../reference/quotation.html">ensym()</a></code> is a new variant of <code><a href="../reference/quotation.html">enexpr()</a></code> that expects a symbol or a string and always returns a symbol. If a complex expression is supplied it fails with an error.</p></li>
@@ -127,11 +413,12 @@
 <li><p>Functions taking dots with <code><a href="../reference/tidy-dots.html">list2()</a></code> or <code><a href="../reference/tidy-dots.html">dots_list()</a></code> now support splicing of <code>NULL</code> values. <code>!!! NULL</code> is equivalent to <code>!!! list()</code> (<a href='https://github.com/r-lib/rlang/issues/242'>#242</a>).</p></li>
 <li><p>Capture operators now support evaluated arguments. Capturing a forced or evaluated argument is exactly the same as unquoting that argument: the actual object (even if a vector) is inlined in the expression. Capturing a forced argument occurs when you use <code><a href="../reference/quotation.html">enquo()</a></code>, <code><a href="../reference/quotation.html">enexpr()</a></code>, etc too late. It also happens when your quoting function is supplied to <code>lapply()</code> or when you try to quote the first argument of an S3 method (which is necessarily evaluated in order to detect which class to dispatch to). (<a href='https://github.com/r-lib/rlang/issues/295'>#295</a>, <a href='https://github.com/r-lib/rlang/issues/300'>#300</a>).</p></li>
 <li><p>Parentheses around <code>!!</code> are automatically removed. This makes the generated expression call cleaner: <code>(!! sym("name"))(arg)</code>. Note that removing the parentheses will never affect the actual precedence within the expression as the parentheses are only useful when parsing code as text. The parentheses will also be added by R when printing code if needed (<a href='https://github.com/r-lib/rlang/issues/296'>#296</a>).</p></li>
-<li><p>Quasiquotation now supports <code>!!</code> and <code>!!!</code> as functional forms:</p></li>
-</ul>
-<p><code>expr(`!!`(var))   quo(call(`!!!`(var)))</code></p>
-<p>This is consistent with the way native R operators parses to function calls. These new functional forms are to be preferred to <code>UQ()</code> and <code>UQS()</code>. We are now questioning the latter and might deprecate them in a future release.</p>
-<ul>
+<li>
+<p>Quasiquotation now supports <code>!!</code> and <code>!!!</code> as functional forms:</p>
+<pre><code><a href="../reference/quotation.html">expr(`!!`(var))
+quo(call(`!!!`(var)))</a></code></pre>
+<p>This is consistent with the way native R operators parses to function calls. These new functional forms are to be preferred to <code><a href="../reference/quasiquotation.html">UQ()</a></code> and <code><a href="../reference/quasiquotation.html">UQS()</a></code>. We are now questioning the latter and might deprecate them in a future release.</p>
+</li>
 <li><p>The quasiquotation parser now gives meaningful errors in corner cases to help you figure out what is wrong.</p></li>
 <li><p>New getters and setters for quosures: <code><a href="../reference/quosure.html">quo_get_expr()</a></code>, <code><a href="../reference/quosure.html">quo_get_env()</a></code>, <code><a href="../reference/quosure.html">quo_set_expr()</a></code>, and <code><a href="../reference/quosure.html">quo_set_env()</a></code>. Compared to <code><a href="../reference/set_expr.html">get_expr()</a></code> etc, these accessors only work on quosures and are slightly more efficient.</p></li>
 <li><p><code><a href="../reference/quosure.html">quo_is_symbol()</a></code> and <code><a href="../reference/quosure.html">quo_is_call()</a></code> now take the same set of arguments as <code><a href="../reference/is_symbol.html">is_symbol()</a></code> and <code><a href="../reference/is_call.html">is_call()</a></code>.</p></li>
@@ -143,18 +430,18 @@
 <h2 class="hasAnchor">
 <a href="#conditions" class="anchor"></a>Conditions</h2>
 <ul>
-<li><p>The new functions <code><a href="../reference/cnd_signal.html">cnd_warn()</a></code> and <code><a href="../reference/cnd_signal.html">cnd_inform()</a></code> transform conditions to warnings or messages before signalling them.</p></li>
+<li><p>The new functions <code>cnd_warn()</code> and <code>cnd_inform()</code> transform conditions to warnings or messages before signalling them.</p></li>
 <li><p><code><a href="../reference/cnd_signal.html">cnd_signal()</a></code> now returns invisibly.</p></li>
-<li><p><code><a href="../reference/cnd_signal.html">cnd_signal()</a></code> and <code><a href="../reference/cnd_signal.html">cnd_abort()</a></code> now accept character vectors to create typed conditions with several S3 subclasses.</p></li>
+<li><p><code><a href="../reference/cnd_signal.html">cnd_signal()</a></code> and <code>cnd_abort()</code> now accept character vectors to create typed conditions with several S3 subclasses.</p></li>
 <li><p><code><a href="../reference/is_condition.html">is_condition()</a></code> is now properly exported.</p></li>
 <li><p>Condition signallers such as <code><a href="../reference/cnd_signal.html">cnd_signal()</a></code> and <code><a href="../reference/abort.html">abort()</a></code> now accept a call depth as <code>call</code> arguments. This allows plucking a call from further up the call stack (<a href='https://github.com/r-lib/rlang/issues/30'>#30</a>).</p></li>
 <li><p>New helper <code><a href="../reference/catch_cnd.html">catch_cnd()</a></code>. This is a small wrapper around <code>tryCatch()</code> that captures and returns any signalled condition. It returns <code>NULL</code> if none was signalled.</p></li>
-<li><p><code><a href="../reference/cnd_signal.html">cnd_abort()</a></code> now adds the correct S3 classes for error conditions. This fixes error catching, for instance by <code><a href="http://www.rdocumentation.org/packages/testthat/topics/output-expectations">testthat::expect_error()</a></code>.</p></li>
+<li><p><code>cnd_abort()</code> now adds the correct S3 classes for error conditions. This fixes error catching, for instance by <code><a href="http://www.rdocumentation.org/packages/testthat/topics/output-expectations">testthat::expect_error()</a></code>.</p></li>
 </ul>
 </div>
-<div id="environments" class="section level2">
+<div id="environments-1" class="section level2">
 <h2 class="hasAnchor">
-<a href="#environments" class="anchor"></a>Environments</h2>
+<a href="#environments-1" class="anchor"></a>Environments</h2>
 <ul>
 <li><p><code><a href="../reference/env_get.html">env_get_list()</a></code> retrieves muliple bindings from an environment into a named list.</p></li>
 <li><p><code><a href="../reference/scoped_bindings.html">with_bindings()</a></code> and <code><a href="../reference/scoped_bindings.html">scoped_bindings()</a></code> establish temporary bindings in an environment.</p></li>
@@ -172,7 +459,7 @@
 <li><p><code><a href="../reference/call_modify.html">call_modify()</a></code> and <code><a href="../reference/call_standardise.html">call_standardise()</a></code> gain an argument to specify an environment. The call definition is looked up in that environment when the call to modify or standardise is not wrapped in a quosure.</p></li>
 <li><p><code><a href="../reference/is_symbol.html">is_symbol()</a></code> gains a <code>name</code> argument to check that that the symbol name matches a string (<a href='https://github.com/r-lib/rlang/issues/287'>#287</a>).</p></li>
 <li><p>New <code>rlang_box</code> class. Its purpose is similar to the <code>AsIs</code> class from <code><a href="http://www.rdocumentation.org/packages/base/topics/AsIs">base::I()</a></code>, i.e. it protects a value temporarily. However it does so by wrapping the value in a scalar list. Use <code><a href="../reference/box.html">new_box()</a></code> to create a boxed value, <code><a href="../reference/box.html">is_box()</a></code> to test for a boxed value, and <code><a href="../reference/box.html">unbox()</a></code> to unbox it. <code><a href="../reference/box.html">new_box()</a></code> and <code><a href="../reference/box.html">is_box()</a></code> accept optional subclass.</p></li>
-<li><p>The vector constructors such as <code><a href="../reference/new-vector.html">new_integer()</a></code>, <code><a href="../reference/new-vector-along.html">new_double_along()</a></code> etc gain a <code>names</code> argument. In the case of the <code>_along</code> family it defaults to the names of the input vector.</p></li>
+<li><p>The vector constructors such as <code><a href="../reference/new-vector.html">new_integer()</a></code>, <code><a href="../reference/new-vector-along-retired.html">new_double_along()</a></code> etc gain a <code>names</code> argument. In the case of the <code>_along</code> family it defaults to the names of the input vector.</p></li>
 </ul>
 </div>
 <div id="bugfixes" class="section level2">
@@ -200,27 +487,25 @@
 <code><a href="../reference/is_lang.html">is_lang()</a></code> has been renamed to <code><a href="../reference/is_call.html">is_call()</a></code>. We haven’t replaced the <code><a href="../reference/is_lang.html">is_unary_lang()</a></code> and <code><a href="../reference/is_lang.html">is_binary_lang()</a></code> because they are redundant with the <code>n</code> argument of <code><a href="../reference/is_call.html">is_call()</a></code>.</li>
 <li>All call accessors such as <code><a href="../reference/lang_modify.html">lang_fn()</a></code>, <code><a href="../reference/lang_modify.html">lang_name()</a></code>, <code><a href="../reference/lang_modify.html">lang_args()</a></code> etc are soft-deprecated and renamed with <code>call_</code> prefix.</li>
 </ul>
-</li>
-</ul>
 <p>In rlang 0.1 calls were called “language” objects in order to follow the R type nomenclature as returned by <code><a href="http://www.rdocumentation.org/packages/base/topics/typeof">base::typeof()</a></code>. We wanted to avoid adding to the confusion between S modes and R types. With hindsight we find it is better to use more meaningful type names.</p>
-<ul>
-<li>We now use the term “data mask” instead of “overscope”. We think data mask is a more natural name in the context of R. We say that that objects from user data mask objects in the current environment. This makes reference to object masking in the search path which is due to the same mechanism (in technical terms, lexical scoping with hierarchically nested environments).</li>
-</ul>
+</li>
+<li>
+<p>We now use the term “data mask” instead of “overscope”. We think data mask is a more natural name in the context of R. We say that that objects from user data mask objects in the current environment. This makes reference to object masking in the search path which is due to the same mechanism (in technical terms, lexical scoping with hierarchically nested environments).</p>
 <p>Following this new terminology, the new functions <code><a href="../reference/as_data_mask.html">as_data_mask()</a></code> and <code><a href="../reference/as_data_mask.html">new_data_mask()</a></code> replace <code><a href="../reference/as_overscope.html">as_overscope()</a></code> and <code><a href="../reference/as_overscope.html">new_overscope()</a></code>. <code><a href="../reference/as_data_mask.html">as_data_mask()</a></code> has also a more consistent interface. These functions are only meant for developers of tidy evaluation interfaces.</p>
-<ul>
-<li>We no longer require a data mask (previously called overscope) to be cleaned up after evaluation. <code><a href="../reference/as_overscope.html">overscope_clean()</a></code> is thus soft-deprecated without replacement.</li>
+</li>
+<li><p>We no longer require a data mask (previously called overscope) to be cleaned up after evaluation. <code><a href="../reference/as_overscope.html">overscope_clean()</a></code> is thus soft-deprecated without replacement.</p></li>
 </ul>
-<div id="breaking-changes" class="section level3">
+<div id="breaking-changes-1" class="section level3">
 <h3 class="hasAnchor">
-<a href="#breaking-changes" class="anchor"></a>Breaking changes</h3>
+<a href="#breaking-changes-1" class="anchor"></a>Breaking changes</h3>
 <ul>
 <li><p><code>!!</code> now binds tightly in order to match intuitive parsing of tidy eval code, e.g. <code>!! x &gt; y</code> is now equivalent to <code>(!! x) &gt; y</code>. A corollary of this new syntax is that you now have to be explicit when you want to unquote the whole expression on the right of <code>!!</code>. For instance you have to explicitly write <code>!! (x &gt; y)</code> to unquote <code>x &gt; y</code> rather than just <code>x</code>.</p></li>
-<li><p><code>UQ()</code>, <code>UQS()</code> and <code>:=</code> now issue an error when called directly. The previous definitions caused surprising results when the operators were invoked in wrong places (i.e. not in quasiquoted arguments).</p></li>
-<li><p>The prefix form <code><a href="../reference/quasiquotation.html">`!!`()</a></code> is now an alias to <code>!!</code> rather than <code>UQE()</code>. This makes it more in line with regular R syntax where operators are parsed as regular calls, e.g. <code>a + b</code> is parsed as <code>`+`(a, b)</code> and both forms are completely equivalent. Also the prefix form <code><a href="../reference/quasiquotation.html">`!!!`()</a></code> is now equivalent to <code>!!!</code>.</p></li>
-<li><p><code>UQE()</code> is now deprecated in order to simplify the syntax of quasiquotation. Please use <code>!! get_expr(x)</code> instead.</p></li>
+<li><p><code><a href="../reference/quasiquotation.html">UQ()</a></code>, <code><a href="../reference/quasiquotation.html">UQS()</a></code> and <code>:=</code> now issue an error when called directly. The previous definitions caused surprising results when the operators were invoked in wrong places (i.e. not in quasiquoted arguments).</p></li>
+<li><p>The prefix form <code><a href="../reference/quasiquotation.html">`!!`()</a></code> is now an alias to <code>!!</code> rather than <code><a href="../reference/UQE.html">UQE()</a></code>. This makes it more in line with regular R syntax where operators are parsed as regular calls, e.g. <code>a + b</code> is parsed as <code>`+`(a, b)</code> and both forms are completely equivalent. Also the prefix form <code><a href="../reference/quasiquotation.html">`!!!`()</a></code> is now equivalent to <code>!!!</code>.</p></li>
+<li><p><code><a href="../reference/UQE.html">UQE()</a></code> is now deprecated in order to simplify the syntax of quasiquotation. Please use <code>!! get_expr(x)</code> instead.</p></li>
 <li><p><code><a href="../reference/expr_interp.html">expr_interp()</a></code> now returns a formula instead of a quosure when supplied a formula.</p></li>
 <li><p><code><a href="../reference/is_quosureish.html">is_quosureish()</a></code> and <code><a href="../reference/is_quosureish.html">as_quosureish()</a></code> are deprecated. These functions assumed that quosures are formulas but that is only an implementation detail.</p></li>
-<li><p><code><a href="../reference/deprecated-cnd.html">new_cnd()</a></code> is now <code><a href="../reference/cnd.html">cnd()</a></code> for consistency with other constructors. Also, <code><a href="../reference/deprecated-cnd.html">cnd_error()</a></code>, <code><a href="../reference/deprecated-cnd.html">cnd_warning()</a></code> and <code><a href="../reference/deprecated-cnd.html">cnd_message()</a></code> are now <code><a href="../reference/cnd.html">error_cnd()</a></code>, <code><a href="../reference/cnd.html">warning_cnd()</a></code> and <code><a href="../reference/cnd.html">message_cnd()</a></code> to follow our naming scheme according to which the type of output is a suffix rather than a prefix.</p></li>
+<li><p><code>new_cnd()</code> is now <code><a href="../reference/cnd.html">cnd()</a></code> for consistency with other constructors. Also, <code>cnd_error()</code>, <code>cnd_warning()</code> and <code>cnd_message()</code> are now <code><a href="../reference/cnd.html">error_cnd()</a></code>, <code><a href="../reference/cnd.html">warning_cnd()</a></code> and <code><a href="../reference/cnd.html">message_cnd()</a></code> to follow our naming scheme according to which the type of output is a suffix rather than a prefix.</p></li>
 <li><p><code><a href="../reference/is_pairlist.html">is_node()</a></code> now returns <code>TRUE</code> for calls as well and <code><a href="../reference/is_pairlist.html">is_pairlist()</a></code> does not return <code>TRUE</code> for <code>NULL</code> objects. Use <code><a href="../reference/is_pairlist.html">is_node_list()</a></code> to determine whether an object either of type <code>pairlist</code> or <code>NULL</code>. Note that all these functions are still experimental.</p></li>
 <li><p><code><a href="../reference/set_names.html">set_names()</a></code> no longer automatically splices lists of character vectors as we are moving away from automatic splicing semantics.</p></li>
 </ul>
@@ -229,15 +514,15 @@
 <h3 class="hasAnchor">
 <a href="#upcoming-breaking-changes" class="anchor"></a>Upcoming breaking changes</h3>
 <ul>
-<li><p>Calling the functional forms of unquote operators with the rlang namespace qualifier is soft-deprecated. <code>UQ()</code> and <code>UQS()</code> are not function calls so it does not make sense to namespace them. Supporting namespace qualifiers complicates the implementation of unquotation and is misleading as to the nature of unquoting (which are syntactic operators at quotation-time rather than function calls at evaluation-time).</p></li>
-<li><p>We are now questioning <code>UQ()</code> and <code>UQS()</code> as functional forms of <code>!!</code>. If <code>!!</code> and <code>!!!</code> were native R operators, they would parse to the functional calls <code><a href="../reference/quasiquotation.html">`!!`()</a></code> and <code><a href="../reference/quasiquotation.html">`!!!`()</a></code>. This is now the preferred way to unquote with a function call rather than with the operators. We haven’t decided yet whether we will deprecate <code>UQ()</code> and <code>UQS()</code> in the future. In any case we recommend using the new functional forms.</p></li>
+<li><p>Calling the functional forms of unquote operators with the rlang namespace qualifier is soft-deprecated. <code><a href="../reference/quasiquotation.html">UQ()</a></code> and <code><a href="../reference/quasiquotation.html">UQS()</a></code> are not function calls so it does not make sense to namespace them. Supporting namespace qualifiers complicates the implementation of unquotation and is misleading as to the nature of unquoting (which are syntactic operators at quotation-time rather than function calls at evaluation-time).</p></li>
+<li><p>We are now questioning <code><a href="../reference/quasiquotation.html">UQ()</a></code> and <code><a href="../reference/quasiquotation.html">UQS()</a></code> as functional forms of <code>!!</code>. If <code>!!</code> and <code>!!!</code> were native R operators, they would parse to the functional calls <code><a href="../reference/quasiquotation.html">`!!`()</a></code> and <code><a href="../reference/quasiquotation.html">`!!!`()</a></code>. This is now the preferred way to unquote with a function call rather than with the operators. We haven’t decided yet whether we will deprecate <code><a href="../reference/quasiquotation.html">UQ()</a></code> and <code><a href="../reference/quasiquotation.html">UQS()</a></code> in the future. In any case we recommend using the new functional forms.</p></li>
 <li><p><code><a href="../reference/parse_quosure.html">parse_quosure()</a></code> and <code><a href="../reference/parse_expr.html">parse_quosures()</a></code> are soft-deprecated in favour of <code><a href="../reference/parse_expr.html">parse_quo()</a></code> and <code><a href="../reference/parse_expr.html">parse_quos()</a></code>. These new names are consistent with the rule that abbreviated suffixes indicate the return type of a function. In addition the new functions require their callers to explicitly supply an environment for the quosures.</p></li>
 <li><p>Using <code><a href="../reference/f_rhs.html">f_rhs()</a></code> and <code><a href="../reference/f_rhs.html">f_env()</a></code> on quosures is soft-deprecated. The fact that quosures are formulas is an implementation detail that might change in the future. Please use <code><a href="../reference/quosure.html">quo_get_expr()</a></code> and <code><a href="../reference/quosure.html">quo_get_env()</a></code> instead.</p></li>
 <li><p><code><a href="../reference/quo_expr.html">quo_expr()</a></code> is soft-deprecated in favour of <code><a href="../reference/quo_squash.html">quo_squash()</a></code>. <code><a href="../reference/quo_expr.html">quo_expr()</a></code> was a misnomer because it implied that it was a mere expression acccessor for quosures whereas it was really a lossy operation that squashed all nested quosures.</p></li>
-<li><p>With the renaming of the <code>lang</code> particle to <code>call</code>, all these functions are soft-deprecated: <code><a href="../reference/lang.html">lang()</a></code>, <code><a href="../reference/is_lang.html">is_lang()</a></code>, <code><a href="../reference/lang_modify.html">lang_fn()</a></code>, <code><a href="../reference/lang_modify.html">lang_name()</a></code>, <code><a href="../reference/lang_modify.html">lang_args()</a></code>.</p></li>
-</ul>
+<li>
+<p>With the renaming of the <code>lang</code> particle to <code>call</code>, all these functions are soft-deprecated: <code><a href="../reference/lang.html">lang()</a></code>, <code><a href="../reference/is_lang.html">is_lang()</a></code>, <code><a href="../reference/lang_modify.html">lang_fn()</a></code>, <code><a href="../reference/lang_modify.html">lang_name()</a></code>, <code><a href="../reference/lang_modify.html">lang_args()</a></code>.</p>
 <p>In addition, <code><a href="../reference/lang_head.html">lang_head()</a></code> and <code><a href="../reference/lang_head.html">lang_tail()</a></code> are soft-deprecated without replacement because these are low level accessors that are rarely needed.</p>
-<ul>
+</li>
 <li><p><code><a href="../reference/as_overscope.html">as_overscope()</a></code> is soft-deprecated in favour of <code><a href="../reference/as_data_mask.html">as_data_mask()</a></code>.</p></li>
 <li><p>The node setters were renamed from <code>mut_node_</code> prefix to <code>node_poke_</code>. This change follows a new naming convention in rlang where mutation is referred to as “poking”.</p></li>
 <li><p><code><a href="../reference/splice.html">splice()</a></code> is now in questioning stage as it is not needed given the <code>!!!</code> operator works in functions taking dots with <code><a href="../reference/tidy-dots.html">dots_list()</a></code>.</p></li>
@@ -249,29 +534,33 @@
 </div>
 </div>
     <div id="rlang-0-1-6" class="section level1">
-<h1 class="hasAnchor">
-<a href="#rlang-0-1-6" class="anchor"></a>rlang 0.1.6</h1>
+<h1 class="page-header">
+<a href="#rlang-0-1-6" class="anchor"></a>rlang 0.1.6<small> 2017-12-21 </small>
+</h1>
 <ul>
 <li><p>This is a maintenance release in anticipation of a forthcoming change to R’s C API (use <code>MARK_NOT_MUTABLE()</code> instead of <code>SET_NAMED()</code>).</p></li>
 <li><p>New function <code><a href="../reference/is_reference.html">is_reference()</a></code> to check whether two objects are one and the same.</p></li>
 </ul>
 </div>
     <div id="rlang-0-1-4" class="section level1">
-<h1 class="hasAnchor">
-<a href="#rlang-0-1-4" class="anchor"></a>rlang 0.1.4</h1>
+<h1 class="page-header">
+<a href="#rlang-0-1-4" class="anchor"></a>rlang 0.1.4<small> 2017-11-05 </small>
+</h1>
 <ul>
 <li>
 <code><a href="../reference/eval_tidy.html">eval_tidy()</a></code> no longer maps over lists but returns them literally. This behaviour is an overlook from past refactorings and was never documented.</li>
 </ul>
 </div>
     <div id="rlang-0-1-2" class="section level1">
-<h1 class="hasAnchor">
-<a href="#rlang-0-1-2" class="anchor"></a>rlang 0.1.2</h1>
+<h1 class="page-header">
+<a href="#rlang-0-1-2" class="anchor"></a>rlang 0.1.2<small> 2017-08-09 </small>
+</h1>
 <p>This hotfix release makes rlang compatible with the R 3.1 branch.</p>
 </div>
     <div id="rlang-0-1-1" class="section level1">
-<h1 class="hasAnchor">
-<a href="#rlang-0-1-1" class="anchor"></a>rlang 0.1.1</h1>
+<h1 class="page-header">
+<a href="#rlang-0-1-1" class="anchor"></a>rlang 0.1.1<small> 2017-05-18 </small>
+</h1>
 <p>This release includes two important fixes for tidy evaluation:</p>
 <ul>
 <li><p>Bare formulas are now evaluated in the correct environment in tidyeval functions.</p></li>
@@ -304,17 +593,20 @@
 </div>
 </div>
     <div id="rlang-0-1-0" class="section level1">
-<h1 class="hasAnchor">
-<a href="#rlang-0-1-0" class="anchor"></a>rlang 0.1.0</h1>
+<h1 class="page-header">
+<a href="#rlang-0-1-0" class="anchor"></a>rlang 0.1.0<small> Unreleased </small>
+</h1>
 <p>Initial release.</p>
 </div>
-    </div>
   </div>
 
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
     <div id="tocnav">
       <h2>Contents</h2>
       <ul class="nav nav-pills nav-stacked">
+        <li><a href="#rlang-0-3-0">0.3.0</a></li>
+        <li><a href="#rlang-0-2-2">0.2.2</a></li>
+        <li><a href="#rlang-0-2-1">0.2.1</a></li>
         <li><a href="#rlang-0-2-0">0.2.0</a></li>
         <li><a href="#rlang-0-1-6">0.1.6</a></li>
         <li><a href="#rlang-0-1-4">0.1.4</a></li>
@@ -339,5 +631,8 @@
       </footer>
    </div>
 
+  
+
   </body>
 </html>
+

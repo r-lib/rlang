@@ -21,19 +21,26 @@
 <!-- clipboard.js -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/1.7.1/clipboard.min.js" integrity="sha384-cV+rhyOuRHc9Ub/91rihWcGmMmCXDeksTtCihMupQHSsi8GIIRDG0ThDc3HGQFJ3" crossorigin="anonymous"></script>
 
+<!-- sticky kit -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/sticky-kit/1.1.3/sticky-kit.min.js" integrity="sha256-c4Rlo1ZozqTPE2RLuvbusY3+SU1pQaJC0TjuhygMipw=" crossorigin="anonymous"></script>
+
 <!-- pkgdown -->
 <link href="../pkgdown.css" rel="stylesheet">
-<script src="../jquery.sticky-kit.min.js"></script>
 <script src="../pkgdown.js"></script>
-  
-  
+
+
+
 <meta property="og:title" content="Jump to the abort restart — rst_abort" />
 
-<meta property="og:description" content="The abort restart is the only restart that is established at top
+<meta property="og:description" content="
+The abort restart is the only restart that is established at top
 level. It is used by R as a top-level target, most notably when an
 error is issued (see abort()) that no handler is able
 to deal with (see with_handlers())." />
 <meta name="twitter:card" content="summary" />
+
+
+
 <!-- mathjax -->
 <script src='https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML'></script>
 
@@ -56,8 +63,12 @@ to deal with (see with_handlers())." />
         <span class="icon-bar"></span>
         <span class="icon-bar"></span>
       </button>
-      <a class="navbar-brand" href="../index.html">rlang</a>
+      <span class="navbar-brand">
+        <a class="navbar-link" href="../index.html">rlang</a>
+        <span class="label label-default" data-toggle="tooltip" data-placement="bottom" title="Released package">0.3.0</span>
+      </span>
     </div>
+
     <div id="navbar" class="navbar-collapse collapse">
       <ul class="nav navbar-nav">
         <li>
@@ -79,6 +90,7 @@ to deal with (see with_handlers())." />
   </a>
 </li>
       </ul>
+      
     </div><!--/.nav-collapse -->
   </div><!--/.container -->
 </div><!--/.navbar -->
@@ -86,24 +98,36 @@ to deal with (see with_handlers())." />
       
       </header>
 
-      <div class="row">
+<div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
     <h1>Jump to the abort restart</h1>
+    <small class="dont-index">Source: <a href='https://github.com/r-lib/rlang/blob/master/R/cnd-restarts.R'><code>R/cnd-restarts.R</code></a></small>
+    <div class="hidden name"><code>rst_abort.Rd</code></div>
     </div>
 
+    <div class="ref-description">
     
-    <p>The abort restart is the only restart that is established at top
+    <p><a href='https://www.tidyverse.org/lifecycle/#questioning'><img src='figures/lifecycle-questioning.svg' alt='Questioning lifecycle'></a></p>
+<p>The abort restart is the only restart that is established at top
 level. It is used by R as a top-level target, most notably when an
 error is issued (see <code><a href='abort.html'>abort()</a></code>) that no handler is able
 to deal with (see <code><a href='with_handlers.html'>with_handlers()</a></code>).</p>
     
+    </div>
 
     <pre class="usage"><span class='fu'>rst_abort</span>()</pre>
         
+    <h2 class="hasAnchor" id="life-cycle"><a class="anchor" href="#life-cycle"></a>Life cycle</h2>
+
+    
+    <p>All the restart functions are in the questioning stage. It is not
+clear yet whether we want to recommend restarts as a style of
+programming in R.</p>
+    
     <h2 class="hasAnchor" id="see-also"><a class="anchor" href="#see-also"></a>See also</h2>
 
-    <p><code><a href='rst_list.html'>rst_jump()</a></code>, <code><a href='abort.html'>abort()</a></code> and <code><a href='cnd_signal.html'>cnd_abort()</a></code>.</p>
+    <div class='dont-index'><p><code><a href='rst_list.html'>rst_jump()</a></code>, <code><a href='abort.html'>abort()</a></code></p></div>
     
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
@@ -149,6 +173,8 @@ to deal with (see <code><a href='with_handlers.html'>with_handlers()</a></code>)
     <h2>Contents</h2>
     <ul class="nav nav-pills nav-stacked">
       
+      <li><a href="#life-cycle">Life cycle</a></li>
+
       <li><a href="#see-also">See also</a></li>
       
       <li><a href="#examples">Examples</a></li>
@@ -169,5 +195,8 @@ to deal with (see <code><a href='with_handlers.html'>with_handlers()</a></code>)
       </footer>
    </div>
 
+  
+
   </body>
 </html>
+

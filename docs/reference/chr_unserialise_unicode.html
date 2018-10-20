@@ -21,12 +21,15 @@
 <!-- clipboard.js -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/1.7.1/clipboard.min.js" integrity="sha384-cV+rhyOuRHc9Ub/91rihWcGmMmCXDeksTtCihMupQHSsi8GIIRDG0ThDc3HGQFJ3" crossorigin="anonymous"></script>
 
+<!-- sticky kit -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/sticky-kit/1.1.3/sticky-kit.min.js" integrity="sha256-c4Rlo1ZozqTPE2RLuvbusY3+SU1pQaJC0TjuhygMipw=" crossorigin="anonymous"></script>
+
 <!-- pkgdown -->
 <link href="../pkgdown.css" rel="stylesheet">
-<script src="../jquery.sticky-kit.min.js"></script>
 <script src="../pkgdown.js"></script>
-  
-  
+
+
+
 <meta property="og:title" content="Translate unicode points to UTF-8 — chr_unserialise_unicode" />
 
 <meta property="og:description" content="For historical reasons, R translates strings to the native encoding
@@ -34,15 +37,18 @@ when they are converted to symbols. This string-to-symbol
 conversion is not a rare occurrence and happens for instance to the
 names of a list of arguments converted to a call by do.call().
 If the string contains unicode characters that cannot be
-represented in the native encoding, R serialises those as a ASCII
+represented in the native encoding, R serialises those as an ASCII
 sequence representing the unicode point. This is why Windows users
-with western locales often see strings looking like &lt;U+xxxx&gt;. To
+with western locales often see strings looking like &amp;lt;U+xxxx&amp;gt;. To
 alleviate some of the pain, rlang parses strings and looks for
 serialised unicode points to translate them back to the proper
 UTF-8 representation. This transformation occurs automatically in
 functions like env_names() and can be manually triggered with
 as_utf8_character() and chr_unserialise_unicode()." />
 <meta name="twitter:card" content="summary" />
+
+
+
 <!-- mathjax -->
 <script src='https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML'></script>
 
@@ -65,8 +71,12 @@ as_utf8_character() and chr_unserialise_unicode()." />
         <span class="icon-bar"></span>
         <span class="icon-bar"></span>
       </button>
-      <a class="navbar-brand" href="../index.html">rlang</a>
+      <span class="navbar-brand">
+        <a class="navbar-link" href="../index.html">rlang</a>
+        <span class="label label-default" data-toggle="tooltip" data-placement="bottom" title="Released package">0.3.0</span>
+      </span>
     </div>
+
     <div id="navbar" class="navbar-collapse collapse">
       <ul class="nav navbar-nav">
         <li>
@@ -88,6 +98,7 @@ as_utf8_character() and chr_unserialise_unicode()." />
   </a>
 </li>
       </ul>
+      
     </div><!--/.nav-collapse -->
   </div><!--/.container -->
 </div><!--/.navbar -->
@@ -95,19 +106,22 @@ as_utf8_character() and chr_unserialise_unicode()." />
       
       </header>
 
-      <div class="row">
+<div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
     <h1>Translate unicode points to UTF-8</h1>
+    <small class="dont-index">Source: <a href='https://github.com/r-lib/rlang/blob/master/R/vec-chr.R'><code>R/vec-chr.R</code></a></small>
+    <div class="hidden name"><code>chr_unserialise_unicode.Rd</code></div>
     </div>
 
+    <div class="ref-description">
     
     <p>For historical reasons, R translates strings to the native encoding
 when they are converted to symbols. This string-to-symbol
 conversion is not a rare occurrence and happens for instance to the
 names of a list of arguments converted to a call by <code>do.call()</code>.</p>
 <p>If the string contains unicode characters that cannot be
-represented in the native encoding, R serialises those as a ASCII
+represented in the native encoding, R serialises those as an ASCII
 sequence representing the unicode point. This is why Windows users
 with western locales often see strings looking like <code>&lt;U+xxxx&gt;</code>. To
 alleviate some of the pain, rlang parses strings and looks for
@@ -116,10 +130,11 @@ UTF-8 representation. This transformation occurs automatically in
 functions like <code><a href='env_names.html'>env_names()</a></code> and can be manually triggered with
 <code><a href='as_utf8_character.html'>as_utf8_character()</a></code> and <code>chr_unserialise_unicode()</code>.</p>
     
+    </div>
 
     <pre class="usage"><span class='fu'>chr_unserialise_unicode</span>(<span class='no'>chr</span>)</pre>
     
-    <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a> Arguments</h2>
+    <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
     <colgroup><col class="name" /><col class="desc" /></colgroup>
     <tr>
@@ -164,5 +179,8 @@ functions like <code><a href='env_names.html'>env_names()</a></code> and can be 
       </footer>
    </div>
 
+  
+
   </body>
 </html>
+

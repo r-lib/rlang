@@ -21,12 +21,15 @@
 <!-- clipboard.js -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/1.7.1/clipboard.min.js" integrity="sha384-cV+rhyOuRHc9Ub/91rihWcGmMmCXDeksTtCihMupQHSsi8GIIRDG0ThDc3HGQFJ3" crossorigin="anonymous"></script>
 
+<!-- sticky kit -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/sticky-kit/1.1.3/sticky-kit.min.js" integrity="sha256-c4Rlo1ZozqTPE2RLuvbusY3+SU1pQaJC0TjuhygMipw=" crossorigin="anonymous"></script>
+
 <!-- pkgdown -->
 <link href="../pkgdown.css" rel="stylesheet">
-<script src="../jquery.sticky-kit.min.js"></script>
 <script src="../pkgdown.js"></script>
-  
-  
+
+
+
 <meta property="og:title" content="Depth of an environment chain — env_depth" />
 
 <meta property="og:description" content="This function returns the number of environments between env and
@@ -34,6 +37,9 @@ the empty environment, including env. The depth of
 env is also the number of parents of env (since the empty
 environment counts as a parent)." />
 <meta name="twitter:card" content="summary" />
+
+
+
 <!-- mathjax -->
 <script src='https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML'></script>
 
@@ -56,8 +62,12 @@ environment counts as a parent)." />
         <span class="icon-bar"></span>
         <span class="icon-bar"></span>
       </button>
-      <a class="navbar-brand" href="../index.html">rlang</a>
+      <span class="navbar-brand">
+        <a class="navbar-link" href="../index.html">rlang</a>
+        <span class="label label-default" data-toggle="tooltip" data-placement="bottom" title="Released package">0.3.0</span>
+      </span>
     </div>
+
     <div id="navbar" class="navbar-collapse collapse">
       <ul class="nav navbar-nav">
         <li>
@@ -79,6 +89,7 @@ environment counts as a parent)." />
   </a>
 </li>
       </ul>
+      
     </div><!--/.nav-collapse -->
   </div><!--/.container -->
 </div><!--/.navbar -->
@@ -86,28 +97,31 @@ environment counts as a parent)." />
       
       </header>
 
-      <div class="row">
+<div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
     <h1>Depth of an environment chain</h1>
+    <small class="dont-index">Source: <a href='https://github.com/r-lib/rlang/blob/master/R/env.R'><code>R/env.R</code></a></small>
+    <div class="hidden name"><code>env_depth.Rd</code></div>
     </div>
 
+    <div class="ref-description">
     
     <p>This function returns the number of environments between <code>env</code> and
 the <a href='empty_env.html'>empty environment</a>, including <code>env</code>. The depth of
 <code>env</code> is also the number of parents of <code>env</code> (since the empty
 environment counts as a parent).</p>
     
+    </div>
 
     <pre class="usage"><span class='fu'>env_depth</span>(<span class='no'>env</span>)</pre>
     
-    <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a> Arguments</h2>
+    <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
     <colgroup><col class="name" /><col class="desc" /></colgroup>
     <tr>
       <th>env</th>
-      <td><p>An environment or an object bundling an environment,
-e.g. a formula, <a href='quotation.html'>quosure</a> or <a href='is_function.html'>closure</a>.</p></td>
+      <td><p>An environment.</p></td>
     </tr>
     </table>
     
@@ -117,11 +131,11 @@ e.g. a formula, <a href='quotation.html'>quosure</a> or <a href='is_function.htm
     
     <h2 class="hasAnchor" id="see-also"><a class="anchor" href="#see-also"></a>See also</h2>
 
-    <p>The section on inheritance in <code><a href='env.html'>env()</a></code> documentation.</p>
+    <div class='dont-index'><p>The section on inheritance in <code><a href='env.html'>env()</a></code> documentation.</p></div>
     
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><div class='input'><span class='fu'>env_depth</span>(<span class='fu'><a href='empty_env.html'>empty_env</a></span>())</div><div class='output co'>#&gt; [1] 0</div><div class='input'><span class='fu'>env_depth</span>(<span class='fu'><a href='scoped_env.html'>pkg_env</a></span>(<span class='st'>"rlang"</span>))</div><div class='output co'>#&gt; [1] 12</div></pre>
+    <pre class="examples"><div class='input'><span class='fu'>env_depth</span>(<span class='fu'><a href='empty_env.html'>empty_env</a></span>())</div><div class='output co'>#&gt; [1] 0</div><div class='input'><span class='fu'>env_depth</span>(<span class='fu'><a href='search_envs.html'>pkg_env</a></span>(<span class='st'>"rlang"</span>))</div><div class='output co'>#&gt; [1] 11</div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
     <h2>Contents</h2>
@@ -150,5 +164,8 @@ e.g. a formula, <a href='quotation.html'>quosure</a> or <a href='is_function.htm
       </footer>
    </div>
 
+  
+
   </body>
 </html>
+

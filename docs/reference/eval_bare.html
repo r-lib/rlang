@@ -21,15 +21,19 @@
 <!-- clipboard.js -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/1.7.1/clipboard.min.js" integrity="sha384-cV+rhyOuRHc9Ub/91rihWcGmMmCXDeksTtCihMupQHSsi8GIIRDG0ThDc3HGQFJ3" crossorigin="anonymous"></script>
 
+<!-- sticky kit -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/sticky-kit/1.1.3/sticky-kit.min.js" integrity="sha256-c4Rlo1ZozqTPE2RLuvbusY3+SU1pQaJC0TjuhygMipw=" crossorigin="anonymous"></script>
+
 <!-- pkgdown -->
 <link href="../pkgdown.css" rel="stylesheet">
-<script src="../jquery.sticky-kit.min.js"></script>
 <script src="../pkgdown.js"></script>
-  
-  
+
+
+
 <meta property="og:title" content="Evaluate an expression in an environment — eval_bare" />
 
-<meta property="og:description" content="eval_bare() is a lower-level version of function base::eval().
+<meta property="og:description" content="
+eval_bare() is a lower-level version of function base::eval().
 Technically, it is a simple wrapper around the C function
 Rf_eval(). You generally don't need to use eval_bare() instead
 of eval(). Its main advantage is that it handles stack-sensitive
@@ -37,6 +41,9 @@ of eval(). Its main advantage is that it handles stack-sensitive
 consistently when you pass an enviroment of a frame on the call
 stack." />
 <meta name="twitter:card" content="summary" />
+
+
+
 <!-- mathjax -->
 <script src='https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML'></script>
 
@@ -59,8 +66,12 @@ stack." />
         <span class="icon-bar"></span>
         <span class="icon-bar"></span>
       </button>
-      <a class="navbar-brand" href="../index.html">rlang</a>
+      <span class="navbar-brand">
+        <a class="navbar-link" href="../index.html">rlang</a>
+        <span class="label label-default" data-toggle="tooltip" data-placement="bottom" title="Released package">0.3.0</span>
+      </span>
     </div>
+
     <div id="navbar" class="navbar-collapse collapse">
       <ul class="nav navbar-nav">
         <li>
@@ -82,6 +93,7 @@ stack." />
   </a>
 </li>
       </ul>
+      
     </div><!--/.nav-collapse -->
   </div><!--/.container -->
 </div><!--/.navbar -->
@@ -89,14 +101,18 @@ stack." />
       
       </header>
 
-      <div class="row">
+<div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
     <h1>Evaluate an expression in an environment</h1>
+    <small class="dont-index">Source: <a href='https://github.com/r-lib/rlang/blob/master/R/eval.R'><code>R/eval.R</code></a></small>
+    <div class="hidden name"><code>eval_bare.Rd</code></div>
     </div>
 
+    <div class="ref-description">
     
-    <p><code>eval_bare()</code> is a lower-level version of function <code><a href='http://www.rdocumentation.org/packages/base/topics/eval'>base::eval()</a></code>.
+    <p><a href='https://www.tidyverse.org/lifecycle/#stable'><img src='figures/lifecycle-stable.svg' alt='Stable lifecycle'></a></p>
+<p><code>eval_bare()</code> is a lower-level version of function <code><a href='http://www.rdocumentation.org/packages/base/topics/eval'>base::eval()</a></code>.
 Technically, it is a simple wrapper around the C function
 <code>Rf_eval()</code>. You generally don't need to use <code>eval_bare()</code> instead
 of <code>eval()</code>. Its main advantage is that it handles stack-sensitive
@@ -104,10 +120,11 @@ of <code>eval()</code>. Its main advantage is that it handles stack-sensitive
 consistently when you pass an enviroment of a frame on the call
 stack.</p>
     
+    </div>
 
     <pre class="usage"><span class='fu'>eval_bare</span>(<span class='no'>expr</span>, <span class='kw'>env</span> <span class='kw'>=</span> <span class='fu'>parent.frame</span>())</pre>
     
-    <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a> Arguments</h2>
+    <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
     <colgroup><col class="name" /><col class="desc" /></colgroup>
     <tr>
@@ -148,15 +165,10 @@ around several times.</p></li>
 evaluate <code>break</code> or <code>next</code> expressions even if called within a
 loop.</p>
     
-    <h2 class="hasAnchor" id="life-cycle"><a class="anchor" href="#life-cycle"></a>Life cycle</h2>
-
-    
-    <p><code>eval_bare()</code> is stable.</p>
-    
     <h2 class="hasAnchor" id="see-also"><a class="anchor" href="#see-also"></a>See also</h2>
 
-    <p><code><a href='eval_tidy.html'>eval_tidy()</a></code> for evaluation with data mask and quosure
-support.</p>
+    <div class='dont-index'><p><code><a href='eval_tidy.html'>eval_tidy()</a></code> for evaluation with data mask and quosure
+support.</p></div>
     
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
@@ -181,16 +193,16 @@ support.</p>
 <span class='co'># To explore the consequences of stack inconsistent semantics, let's</span>
 <span class='co'># create a function that evaluates `parent.frame()` deep in the call</span>
 <span class='co'># stack, in an environment corresponding to a frame in the middle of</span>
-<span class='co'># the stack. For consistency we R's lazy evaluation semantics, we'd</span>
+<span class='co'># the stack. For consistency with R's lazy evaluation semantics, we'd</span>
 <span class='co'># expect to get the caller of that frame as result:</span>
 <span class='no'>fn</span> <span class='kw'>&lt;-</span> <span class='kw'>function</span>(<span class='no'>eval_fn</span>) {
   <span class='fu'>list</span>(
     <span class='kw'>returned_env</span> <span class='kw'>=</span> <span class='fu'>middle</span>(<span class='no'>eval_fn</span>),
-    <span class='kw'>actual_env</span> <span class='kw'>=</span> <span class='fu'><a href='get_env.html'>get_env</a></span>()
+    <span class='kw'>actual_env</span> <span class='kw'>=</span> <span class='fu'><a href='caller_env.html'>current_env</a></span>()
   )
 }
 <span class='no'>middle</span> <span class='kw'>&lt;-</span> <span class='kw'>function</span>(<span class='no'>eval_fn</span>) {
-  <span class='fu'>deep</span>(<span class='no'>eval_fn</span>, <span class='fu'><a href='get_env.html'>get_env</a></span>())
+  <span class='fu'>deep</span>(<span class='no'>eval_fn</span>, <span class='fu'><a href='caller_env.html'>current_env</a></span>())
 }
 <span class='no'>deep</span> <span class='kw'>&lt;-</span> <span class='kw'>function</span>(<span class='no'>eval_fn</span>, <span class='no'>eval_env</span>) {
   <span class='no'>expr</span> <span class='kw'>&lt;-</span> <span class='fu'>quote</span>(<span class='fu'>parent.frame</span>())
@@ -199,17 +211,17 @@ support.</p>
 
 <span class='co'># With eval_bare(), we do get the expected environment:</span>
 <span class='fu'>fn</span>(<span class='kw pkg'>rlang</span><span class='kw ns'>::</span><span class='no'><a href='http://www.rdocumentation.org/packages/rlang/topics/eval_bare'>eval_bare</a></span>)</div><div class='output co'>#&gt; $returned_env
-#&gt; &lt;environment: 0x7f8293923c60&gt;
+#&gt; &lt;environment: 0x7f85c056aab8&gt;
 #&gt; 
 #&gt; $actual_env
-#&gt; &lt;environment: 0x7f8293923c60&gt;
+#&gt; &lt;environment: 0x7f85c056aab8&gt;
 #&gt; </div><div class='input'>
 <span class='co'># But that's not the case with base::eval():</span>
 <span class='fu'>fn</span>(<span class='kw pkg'>base</span><span class='kw ns'>::</span><span class='no'><a href='http://www.rdocumentation.org/packages/base/topics/eval'>eval</a></span>)</div><div class='output co'>#&gt; $returned_env
-#&gt; &lt;environment: 0x7f8293889758&gt;
+#&gt; &lt;environment: 0x7f85c2a3be78&gt;
 #&gt; 
 #&gt; $actual_env
-#&gt; &lt;environment: 0x7f829388bfc8&gt;
+#&gt; &lt;environment: 0x7f85c2a43c70&gt;
 #&gt; </div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
@@ -218,8 +230,6 @@ support.</p>
       <li><a href="#arguments">Arguments</a></li>
       
       <li><a href="#details">Details</a></li>
-
-      <li><a href="#life-cycle">Life cycle</a></li>
 
       <li><a href="#see-also">See also</a></li>
       
@@ -241,5 +251,8 @@ support.</p>
       </footer>
    </div>
 
+  
+
   </body>
 </html>
+

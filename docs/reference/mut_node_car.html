@@ -21,18 +21,25 @@
 <!-- clipboard.js -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/1.7.1/clipboard.min.js" integrity="sha384-cV+rhyOuRHc9Ub/91rihWcGmMmCXDeksTtCihMupQHSsi8GIIRDG0ThDc3HGQFJ3" crossorigin="anonymous"></script>
 
+<!-- sticky kit -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/sticky-kit/1.1.3/sticky-kit.min.js" integrity="sha256-c4Rlo1ZozqTPE2RLuvbusY3+SU1pQaJC0TjuhygMipw=" crossorigin="anonymous"></script>
+
 <!-- pkgdown -->
 <link href="../pkgdown.css" rel="stylesheet">
-<script src="../jquery.sticky-kit.min.js"></script>
 <script src="../pkgdown.js"></script>
-  
-  
+
+
+
 <meta property="og:title" content="Mutate node components — mut_node_car" />
 
-<meta property="og:description" content="These functions were soft-deprecated and renamed with node_poke_
+<meta property="og:description" content="
+These functions were soft-deprecated and renamed with node_poke_
 prefix in rlang 0.2.0. This change follows a new naming convention
-where mutation is referred to as "poking"." />
+where mutation is referred to as &quot;poking&quot;." />
 <meta name="twitter:card" content="summary" />
+
+
+
 <!-- mathjax -->
 <script src='https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML'></script>
 
@@ -55,8 +62,12 @@ where mutation is referred to as "poking"." />
         <span class="icon-bar"></span>
         <span class="icon-bar"></span>
       </button>
-      <a class="navbar-brand" href="../index.html">rlang</a>
+      <span class="navbar-brand">
+        <a class="navbar-link" href="../index.html">rlang</a>
+        <span class="label label-default" data-toggle="tooltip" data-placement="bottom" title="Released package">0.3.0</span>
+      </span>
     </div>
+
     <div id="navbar" class="navbar-collapse collapse">
       <ul class="nav navbar-nav">
         <li>
@@ -78,6 +89,7 @@ where mutation is referred to as "poking"." />
   </a>
 </li>
       </ul>
+      
     </div><!--/.nav-collapse -->
   </div><!--/.container -->
 </div><!--/.navbar -->
@@ -85,17 +97,22 @@ where mutation is referred to as "poking"." />
       
       </header>
 
-      <div class="row">
+<div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
     <h1>Mutate node components</h1>
+    <small class="dont-index">Source: <a href='https://github.com/r-lib/rlang/blob/master/R/lifecycle-retired.R'><code>R/lifecycle-retired.R</code></a></small>
+    <div class="hidden name"><code>mut_node_car.Rd</code></div>
     </div>
 
+    <div class="ref-description">
     
-    <p>These functions were soft-deprecated and renamed with <code>node_poke_</code>
+    <p><img src='figures/lifecycle-soft-deprecated.svg' alt='Soft-deprecated lifecycle' /></p>
+<p>These functions were soft-deprecated and renamed with <code>node_poke_</code>
 prefix in rlang 0.2.0. This change follows a new naming convention
 where mutation is referred to as "poking".</p>
     
+    </div>
 
     <pre class="usage"><span class='fu'>mut_node_car</span>(<span class='no'>x</span>, <span class='no'>newcar</span>)
 
@@ -111,7 +128,7 @@ where mutation is referred to as "poking".</p>
 
 <span class='fu'>mut_node_tag</span>(<span class='no'>x</span>, <span class='no'>newtag</span>)</pre>
     
-    <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a> Arguments</h2>
+    <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
     <colgroup><col class="name" /><col class="desc" /></colgroup>
     <tr>
@@ -158,5 +175,8 @@ can be any R objects.</p></td>
       </footer>
    </div>
 
+  
+
   </body>
 </html>
+

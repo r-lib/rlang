@@ -21,12 +21,15 @@
 <!-- clipboard.js -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/1.7.1/clipboard.min.js" integrity="sha384-cV+rhyOuRHc9Ub/91rihWcGmMmCXDeksTtCihMupQHSsi8GIIRDG0ThDc3HGQFJ3" crossorigin="anonymous"></script>
 
+<!-- sticky kit -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/sticky-kit/1.1.3/sticky-kit.min.js" integrity="sha256-c4Rlo1ZozqTPE2RLuvbusY3+SU1pQaJC0TjuhygMipw=" crossorigin="anonymous"></script>
+
 <!-- pkgdown -->
 <link href="../pkgdown.css" rel="stylesheet">
-<script src="../jquery.sticky-kit.min.js"></script>
 <script src="../pkgdown.js"></script>
-  
-  
+
+
+
 <meta property="og:title" content="Coerce to a character vector and attempt encoding conversion — as_utf8_character" />
 
 <meta property="og:description" content="Unlike specifying the encoding argument in as_string() and
@@ -39,7 +42,7 @@ same encoding is a no-op, and converting to native always works
 as expected, as long as the native encoding, the one specified by
 the LC_CTYPE locale (see mut_utf8_locale()) has support for
 all characters occurring in the strings. Unrepresentable
-characters are serialised as unicode points: "&lt;U+xxxx&gt;".
+characters are serialised as unicode points: &quot;&amp;lt;U+xxxx&amp;gt;&quot;.
 The string is not tagged. R assumes that it is encoded in the
 native encoding. Conversion to native is a no-op, and conversion
 to UTF-8 should work as long as the string is actually encoded in
@@ -47,11 +50,14 @@ the locale codeset.
 " />
 
 <meta property="og:description" content="When translating to UTF-8, the strings are parsed for serialised
-unicode points (e.g. strings looking like "U+xxxx") with
+unicode points (e.g. strings looking like &quot;U+xxxx&quot;) with
 chr_unserialise_unicode(). This helps to alleviate the effects of
 character-to-symbol-to-character roundtrips on systems with
 non-UTF-8 native encoding." />
 <meta name="twitter:card" content="summary" />
+
+
+
 <!-- mathjax -->
 <script src='https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML'></script>
 
@@ -74,8 +80,12 @@ non-UTF-8 native encoding." />
         <span class="icon-bar"></span>
         <span class="icon-bar"></span>
       </button>
-      <a class="navbar-brand" href="../index.html">rlang</a>
+      <span class="navbar-brand">
+        <a class="navbar-link" href="../index.html">rlang</a>
+        <span class="label label-default" data-toggle="tooltip" data-placement="bottom" title="Released package">0.3.0</span>
+      </span>
     </div>
+
     <div id="navbar" class="navbar-collapse collapse">
       <ul class="nav navbar-nav">
         <li>
@@ -97,6 +107,7 @@ non-UTF-8 native encoding." />
   </a>
 </li>
       </ul>
+      
     </div><!--/.nav-collapse -->
   </div><!--/.container -->
 </div><!--/.navbar -->
@@ -104,12 +115,15 @@ non-UTF-8 native encoding." />
       
       </header>
 
-      <div class="row">
+<div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
     <h1>Coerce to a character vector and attempt encoding conversion</h1>
+    <small class="dont-index">Source: <a href='https://github.com/r-lib/rlang/blob/master/R/vec-chr.R'><code>R/vec-chr.R</code></a></small>
+    <div class="hidden name"><code>as_utf8_character.Rd</code></div>
     </div>
 
+    <div class="ref-description">
     
     <p>Unlike specifying the <code>encoding</code> argument in <code><a href='vector-coercion.html'>as_string()</a></code> and
 <code><a href='vector-coercion.html'>as_character()</a></code>, which is only declarative, these functions
@@ -134,6 +148,7 @@ unicode points (e.g. strings looking like "U+xxxx") with
 character-to-symbol-to-character roundtrips on systems with
 non-UTF-8 native encoding.</p>
     
+    </div>
 
     <pre class="usage"><span class='fu'>as_utf8_character</span>(<span class='no'>x</span>)
 
@@ -143,7 +158,7 @@ non-UTF-8 native encoding.</p>
 
 <span class='fu'>as_native_string</span>(<span class='no'>x</span>)</pre>
     
-    <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a> Arguments</h2>
+    <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
     <colgroup><col class="name" /><col class="desc" /></colgroup>
     <tr>
@@ -190,5 +205,8 @@ non-UTF-8 native encoding.</p>
       </footer>
    </div>
 
+  
+
   </body>
 </html>
+

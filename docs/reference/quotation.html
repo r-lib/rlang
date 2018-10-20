@@ -21,15 +21,19 @@
 <!-- clipboard.js -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/1.7.1/clipboard.min.js" integrity="sha384-cV+rhyOuRHc9Ub/91rihWcGmMmCXDeksTtCihMupQHSsi8GIIRDG0ThDc3HGQFJ3" crossorigin="anonymous"></script>
 
+<!-- sticky kit -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/sticky-kit/1.1.3/sticky-kit.min.js" integrity="sha256-c4Rlo1ZozqTPE2RLuvbusY3+SU1pQaJC0TjuhygMipw=" crossorigin="anonymous"></script>
+
 <!-- pkgdown -->
 <link href="../pkgdown.css" rel="stylesheet">
-<script src="../jquery.sticky-kit.min.js"></script>
 <script src="../pkgdown.js"></script>
-  
-  
+
+
+
 <meta property="og:title" content="Quotation — quotation" />
 
-<meta property="og:description" content="Quotation is a mechanism by which an expression supplied as
+<meta property="og:description" content="
+Quotation is a mechanism by which an expression supplied as
 argument is captured by a function. Instead of seeing the value of
 the argument, the function sees the recipe (the R code) to make
 that value. This is possible because R expressions are
@@ -47,6 +51,9 @@ calls and symbols from parts and pieces (see sym(), syms() and
 call2()). The other way is by quotation or quasiquotation,
 i.e. by intercepting an expression instead of evaluating it." />
 <meta name="twitter:card" content="summary" />
+
+
+
 <!-- mathjax -->
 <script src='https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML'></script>
 
@@ -69,8 +76,12 @@ i.e. by intercepting an expression instead of evaluating it." />
         <span class="icon-bar"></span>
         <span class="icon-bar"></span>
       </button>
-      <a class="navbar-brand" href="../index.html">rlang</a>
+      <span class="navbar-brand">
+        <a class="navbar-link" href="../index.html">rlang</a>
+        <span class="label label-default" data-toggle="tooltip" data-placement="bottom" title="Released package">0.3.0</span>
+      </span>
     </div>
+
     <div id="navbar" class="navbar-collapse collapse">
       <ul class="nav navbar-nav">
         <li>
@@ -92,6 +103,7 @@ i.e. by intercepting an expression instead of evaluating it." />
   </a>
 </li>
       </ul>
+      
     </div><!--/.nav-collapse -->
   </div><!--/.container -->
 </div><!--/.navbar -->
@@ -99,14 +111,18 @@ i.e. by intercepting an expression instead of evaluating it." />
       
       </header>
 
-      <div class="row">
+<div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
     <h1>Quotation</h1>
+    <small class="dont-index">Source: <a href='https://github.com/r-lib/rlang/blob/master/R/quotation.R'><code>R/quotation.R</code></a></small>
+    <div class="hidden name"><code>quotation.Rd</code></div>
     </div>
 
+    <div class="ref-description">
     
-    <p>Quotation is a mechanism by which an expression supplied as
+    <p><a href='https://www.tidyverse.org/lifecycle/#stable'><img src='figures/lifecycle-stable.svg' alt='Stable lifecycle'></a></p>
+<p>Quotation is a mechanism by which an expression supplied as
 argument is captured by a function. Instead of seeing the value of
 the argument, the function sees the recipe (the R code) to make
 that value. This is possible because R <a href='is_expr.html'>expressions</a> are
@@ -124,21 +140,24 @@ calls and symbols from parts and pieces (see <code><a href='sym.html'>sym()</a><
 <code><a href='call2.html'>call2()</a></code>). The other way is by <em>quotation</em> or <em>quasiquotation</em>,
 i.e. by intercepting an expression instead of evaluating it.</p>
     
+    </div>
 
     <pre class="usage"><span class='fu'>expr</span>(<span class='no'>expr</span>)
 
 <span class='fu'>enexpr</span>(<span class='no'>arg</span>)
 
-<span class='fu'>exprs</span>(<span class='no'>...</span>, <span class='kw'>.named</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>, <span class='kw'>.ignore_empty</span> <span class='kw'>=</span> <span class='fu'>c</span>(<span class='st'>"trailing"</span>, <span class='st'>"none"</span>, <span class='st'>"all"</span>),
-  <span class='kw'>.unquote_names</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>)
+<span class='fu'>exprs</span>(<span class='no'>...</span>, <span class='kw'>.named</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>, <span class='kw'>.ignore_empty</span> <span class='kw'>=</span> <span class='fu'>c</span>(<span class='st'>"trailing"</span>, <span class='st'>"none"</span>,
+  <span class='st'>"all"</span>), <span class='kw'>.unquote_names</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>)
 
-<span class='fu'>enexprs</span>(<span class='no'>...</span>, <span class='kw'>.named</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>, <span class='kw'>.ignore_empty</span> <span class='kw'>=</span> <span class='fu'>c</span>(<span class='st'>"trailing"</span>, <span class='st'>"none"</span>, <span class='st'>"all"</span>),
-  <span class='kw'>.unquote_names</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>)
+<span class='fu'>enexprs</span>(<span class='no'>...</span>, <span class='kw'>.named</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>, <span class='kw'>.ignore_empty</span> <span class='kw'>=</span> <span class='fu'>c</span>(<span class='st'>"trailing"</span>, <span class='st'>"none"</span>,
+  <span class='st'>"all"</span>), <span class='kw'>.unquote_names</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>, <span class='kw'>.homonyms</span> <span class='kw'>=</span> <span class='fu'>c</span>(<span class='st'>"keep"</span>, <span class='st'>"first"</span>, <span class='st'>"last"</span>,
+  <span class='st'>"error"</span>), <span class='kw'>.check_assign</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>)
 
 <span class='fu'>ensym</span>(<span class='no'>arg</span>)
 
-<span class='fu'>ensyms</span>(<span class='no'>...</span>, <span class='kw'>.named</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>, <span class='kw'>.ignore_empty</span> <span class='kw'>=</span> <span class='fu'>c</span>(<span class='st'>"trailing"</span>, <span class='st'>"none"</span>, <span class='st'>"all"</span>),
-  <span class='kw'>.unquote_names</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>)
+<span class='fu'>ensyms</span>(<span class='no'>...</span>, <span class='kw'>.named</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>, <span class='kw'>.ignore_empty</span> <span class='kw'>=</span> <span class='fu'>c</span>(<span class='st'>"trailing"</span>, <span class='st'>"none"</span>,
+  <span class='st'>"all"</span>), <span class='kw'>.unquote_names</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>, <span class='kw'>.homonyms</span> <span class='kw'>=</span> <span class='fu'>c</span>(<span class='st'>"keep"</span>, <span class='st'>"first"</span>, <span class='st'>"last"</span>,
+  <span class='st'>"error"</span>), <span class='kw'>.check_assign</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>)
 
 <span class='fu'>quo</span>(<span class='no'>expr</span>)
 
@@ -147,10 +166,11 @@ i.e. by intercepting an expression instead of evaluating it.</p>
 <span class='fu'>quos</span>(<span class='no'>...</span>, <span class='kw'>.named</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>, <span class='kw'>.ignore_empty</span> <span class='kw'>=</span> <span class='fu'>c</span>(<span class='st'>"trailing"</span>, <span class='st'>"none"</span>, <span class='st'>"all"</span>),
   <span class='kw'>.unquote_names</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>)
 
-<span class='fu'>enquos</span>(<span class='no'>...</span>, <span class='kw'>.named</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>, <span class='kw'>.ignore_empty</span> <span class='kw'>=</span> <span class='fu'>c</span>(<span class='st'>"trailing"</span>, <span class='st'>"none"</span>, <span class='st'>"all"</span>),
-  <span class='kw'>.unquote_names</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>)</pre>
+<span class='fu'>enquos</span>(<span class='no'>...</span>, <span class='kw'>.named</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>, <span class='kw'>.ignore_empty</span> <span class='kw'>=</span> <span class='fu'>c</span>(<span class='st'>"trailing"</span>, <span class='st'>"none"</span>,
+  <span class='st'>"all"</span>), <span class='kw'>.unquote_names</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>, <span class='kw'>.homonyms</span> <span class='kw'>=</span> <span class='fu'>c</span>(<span class='st'>"keep"</span>, <span class='st'>"first"</span>, <span class='st'>"last"</span>,
+  <span class='st'>"error"</span>), <span class='kw'>.check_assign</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>)</pre>
     
-    <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a> Arguments</h2>
+    <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
     <colgroup><col class="name" /><col class="desc" /></colgroup>
     <tr>
@@ -173,21 +193,38 @@ arguments to capture without evaluation (including <code>...</code>). For
     <tr>
       <th>.named</th>
       <td><p>Whether to ensure all dots are named. Unnamed
-elements are processed with <code><a href='expr_label.html'>expr_text()</a></code> to figure out a default
-name. If an integer, it is passed to the <code>width</code> argument of
-<code><a href='expr_label.html'>expr_text()</a></code>, if <code>TRUE</code>, the default width is used. See
-<code><a href='exprs_auto_name.html'>exprs_auto_name()</a></code>.</p></td>
+elements are processed with <code><a href='quo_label.html'>quo_name()</a></code> to build a default
+name. See also <code><a href='exprs_auto_name.html'>quos_auto_name()</a></code>.</p></td>
     </tr>
     <tr>
       <th>.ignore_empty</th>
       <td><p>Whether to ignore empty arguments. Can be one
 of <code>"trailing"</code>, <code>"none"</code>, <code>"all"</code>. If <code>"trailing"</code>, only the
-last argument is ignored if it is empty.</p></td>
+last argument is ignored if it is empty. Note that <code>"trailing"</code>
+applies only to arguments passed in <code>...</code>, not to named
+arguments. On the other hand, <code>"all"</code> also applies to named
+arguments.</p></td>
     </tr>
     <tr>
       <th>.unquote_names</th>
       <td><p>Whether to treat <code>:=</code> as <code>=</code>. Unlike <code>=</code>, the
 <code>:=</code> syntax supports <code>!!</code> unquoting on the LHS.</p></td>
+    </tr>
+    <tr>
+      <th>.homonyms</th>
+      <td><p>How to treat arguments with the same name. The
+default, <code>"keep"</code>, preserves these arguments. Set <code>.homonyms</code> to
+<code>"first"</code> to only keep the first occurrences, to <code>"last"</code> to keep
+the last occurrences, and to <code>"error"</code> to raise an informative
+error and indicate what arguments have duplicated names.</p></td>
+    </tr>
+    <tr>
+      <th>.check_assign</th>
+      <td><p>Whether to check for <code>&lt;-</code> calls passed in
+dots. When <code>TRUE</code> and a <code>&lt;-</code> call is detected, a warning is
+issued to advise users to use <code>=</code> if they meant to match a
+function parameter, or wrap the <code>&lt;-</code> call in braces otherwise.
+This ensures assignments are explicit.</p></td>
     </tr>
     </table>
     
@@ -219,12 +256,12 @@ including expressions contained in <code>...</code>.</p></li>
 is supplied they throw an error.</p></li>
 </ul>
     <p>In terms of base functions, <code>enexpr(arg)</code> corresponds to
-<code><a href='http://www.rdocumentation.org/packages/base/topics/substitute'>base::substitute(arg)</a></code> (though that function has complex
-semantics) and <code>expr()</code> is like <code>quote()</code> (and <code>bquote()</code> if we
-consider unquotation syntax). The plural variant <code>exprs()</code> is
-equivalent to <code><a href='http://www.rdocumentation.org/packages/base/topics/list'>base::alist()</a></code>. Finally there is no function in base
-R that is equivalent to <code>enexprs()</code> but you can reproduce its
-behaviour with <code>eval(substitute(alist(...)))</code>.</p>
+<code><a href='http://www.rdocumentation.org/packages/base/topics/substitute'>base::substitute(arg)</a></code> (though that function also features complex
+substitution semantics) and <code>expr()</code> is like <code>quote()</code> (and
+<code>bquote()</code> if we consider unquotation syntax). The plural variant
+<code>exprs()</code> is equivalent to <code><a href='http://www.rdocumentation.org/packages/base/topics/list'>base::alist()</a></code>. Finally there is no
+function in base R that is equivalent to <code>enexprs()</code> but you can
+reproduce its behaviour with <code>eval(substitute(alist(...)))</code>.</p>
     
     <h2 class="hasAnchor" id="capture-expressions-in-quosures"><a class="anchor" href="#capture-expressions-in-quosures"></a>Capture expressions in quosures</h2>
 
@@ -237,7 +274,7 @@ the environments of expressions is important because this is where
 functions and objects mentioned in the expression are defined.</p>
 <p>Quosures are objects that can be evaluated with <code><a href='eval_tidy.html'>eval_tidy()</a></code> just
 like symbols or function calls. Since they always evaluate in their
-original environment, quosures can be seen as a vehicle that allow
+original environment, quosures can be seen as vehicles that allow
 expressions to travel from function to function but that beam back
 instantly to their original environment upon evaluation.</p>
 <p>See the <a href='quosure.html'>quosure</a> help topic about tools to work with quosures.</p>
@@ -245,8 +282,7 @@ instantly to their original environment upon evaluation.</p>
     <h2 class="hasAnchor" id="quasiquotation"><a class="anchor" href="#quasiquotation"></a>Quasiquotation</h2>
 
     
-    <p>All quotation functions in rlang have support for <a href='quasiquotation.html'>unquoting
-operators</a>. The combination of quotation and
+    <p>All quotation functions in rlang have support for <a href='quasiquotation.html'>unquoting operators</a>. The combination of quotation and
 unquotation is called <em>quasiquotation</em>.</p>
 <p>Unquotation provides a way to refer to variables during quotation.
 Variables are problematic when quoting because a captured
@@ -265,11 +301,6 @@ that are unquoted).</p></li>
 </ul>
     <p>See the <a href='quasiquotation.html'>quasiquotation</a> help topic for more about this as well as
 <a href='https://adv-r.hadley.nz/quasiquotation.html'>the chapter in Advanced R</a>.</p>
-    
-    <h2 class="hasAnchor" id="life-cycle"><a class="anchor" href="#life-cycle"></a>Life cycle</h2>
-
-    
-    <p>All the quotation functions mentioned here are stable.</p>
     
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
@@ -320,7 +351,7 @@ that are unquoted).</p></li>
 <span class='co'># captured expression:</span>
 <span class='no'>what</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='sym.html'>sym</a></span>(<span class='st'>"bonjour"</span>)
 <span class='fu'>expr</span>(<span class='fu'>say</span>(<span class='no'>what</span>))</div><div class='output co'>#&gt; say(what)</div><div class='input'><span class='fu'>expr</span>(<span class='fu'>say</span>(!!<span class='no'>what</span>))</div><div class='output co'>#&gt; say(bonjour)</div><div class='input'>
-<span class='co'># This also applies to the expressions supplied the user. This is</span>
+<span class='co'># This also applies to expressions supplied by the user. This is</span>
 <span class='co'># like an escape hatch that allows control over the captured</span>
 <span class='co'># expression:</span>
 <span class='fu'>expr_inputs</span>(<span class='fu'>say</span>(!!<span class='no'>what</span>), !!<span class='no'>what</span>)</div><div class='output co'>#&gt; [[1]]
@@ -334,9 +365,9 @@ that are unquoted).</p></li>
 <span class='co'># object that contains both the expression and its environment:</span>
 <span class='no'>quo</span> <span class='kw'>&lt;-</span> <span class='fu'>quo</span>(<span class='no'>letters</span>)
 <span class='no'>quo</span></div><div class='output co'>#&gt; &lt;quosure&gt;
-#&gt;   expr: ^letters
-#&gt;   env:  0x7f8290e61c28</div><div class='input'>
-<span class='fu'><a href='set_expr.html'>get_expr</a></span>(<span class='no'>quo</span>)</div><div class='output co'>#&gt; letters</div><div class='input'><span class='fu'><a href='get_env.html'>get_env</a></span>(<span class='no'>quo</span>)</div><div class='output co'>#&gt; &lt;environment: 0x7f8290e61c28&gt;</div><div class='input'>
+#&gt; expr: ^letters
+#&gt; env:  0x7f85c9bd17b8</div><div class='input'>
+<span class='fu'><a href='set_expr.html'>get_expr</a></span>(<span class='no'>quo</span>)</div><div class='output co'>#&gt; letters</div><div class='input'><span class='fu'><a href='get_env.html'>get_env</a></span>(<span class='no'>quo</span>)</div><div class='output co'>#&gt; &lt;environment: 0x7f85c9bd17b8&gt;</div><div class='input'>
 <span class='co'># Quosures can be evaluated with eval_tidy():</span>
 <span class='fu'><a href='eval_tidy.html'>eval_tidy</a></span>(<span class='no'>quo</span>)</div><div class='output co'>#&gt;  [1] "a" "b" "c" "d" "e" "f" "g" "h" "i" "j" "k" "l" "m" "n" "o" "p" "q" "r" "s"
 #&gt; [20] "t" "u" "v" "w" "x" "y" "z"</div><div class='input'>
@@ -360,8 +391,8 @@ that are unquoted).</p></li>
 <span class='co'># The local parts of the quosure are printed in colour if your</span>
 <span class='co'># terminal is capable of displaying colours:</span>
 <span class='no'>quo</span></div><div class='output co'>#&gt; &lt;quosure&gt;
-#&gt;   expr: ^(^2 + 3) * local_ten
-#&gt;   env:  0x7f829236b270</div><div class='input'>
+#&gt; expr: ^(^2 + 3) * local_ten
+#&gt; env:  0x7f85ca37dd40</div><div class='input'>
 <span class='co'># All the quosures in the expression evaluate in their original</span>
 <span class='co'># context. The local objects are looked up properly and we get the</span>
 <span class='co'># expected result:</span>
@@ -379,8 +410,6 @@ that are unquoted).</p></li>
       <li><a href="#capture-expressions-in-quosures">Capture expressions in quosures</a></li>
 
       <li><a href="#quasiquotation">Quasiquotation</a></li>
-
-      <li><a href="#life-cycle">Life cycle</a></li>
       
       <li><a href="#examples">Examples</a></li>
     </ul>
@@ -400,5 +429,8 @@ that are unquoted).</p></li>
       </footer>
    </div>
 
+  
+
   </body>
 </html>
+

@@ -21,17 +21,29 @@
 <!-- clipboard.js -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/1.7.1/clipboard.min.js" integrity="sha384-cV+rhyOuRHc9Ub/91rihWcGmMmCXDeksTtCihMupQHSsi8GIIRDG0ThDc3HGQFJ3" crossorigin="anonymous"></script>
 
+<!-- sticky kit -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/sticky-kit/1.1.3/sticky-kit.min.js" integrity="sha256-c4Rlo1ZozqTPE2RLuvbusY3+SU1pQaJC0TjuhygMipw=" crossorigin="anonymous"></script>
+
 <!-- pkgdown -->
 <link href="../pkgdown.css" rel="stylesheet">
-<script src="../jquery.sticky-kit.min.js"></script>
 <script src="../pkgdown.js"></script>
-  
-  
+
+
+
 <meta property="og:title" content="Data pronoun for tidy evaluation — tidyeval-data" />
 
 <meta property="og:description" content="This pronoun allows you to be explicit when you refer to an object
 inside the data. Referring to the .data pronoun rather than to
 the original data frame has several advantages:
+It makes it easy to refer to column names stored as strings. If
+var contains the column &quot;height&quot;, the pronoun will subset that
+column:var &amp;lt;- &quot;height&quot;
+dplyr::summarise(df, mean(.data[[var]]))
+" />
+
+<meta property="og:description" content="The index variable var is unquoted, which
+ensures a column named var in the data frame cannot mask it.
+This makes the pronoun safe to use in functions and packages.
 Sometimes a computation is not about the whole data but about a
 subset. For example if you supply a grouped data frame to a dplyr
 verb, the .data pronoun contains the group subset.
@@ -44,6 +56,9 @@ is a database.
 package namespace to avoid a R CMD check note when referring to
 objects from the data mask." />
 <meta name="twitter:card" content="summary" />
+
+
+
 <!-- mathjax -->
 <script src='https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML'></script>
 
@@ -66,8 +81,12 @@ objects from the data mask." />
         <span class="icon-bar"></span>
         <span class="icon-bar"></span>
       </button>
-      <a class="navbar-brand" href="../index.html">rlang</a>
+      <span class="navbar-brand">
+        <a class="navbar-link" href="../index.html">rlang</a>
+        <span class="label label-default" data-toggle="tooltip" data-placement="bottom" title="Released package">0.3.0</span>
+      </span>
     </div>
+
     <div id="navbar" class="navbar-collapse collapse">
       <ul class="nav navbar-nav">
         <li>
@@ -89,6 +108,7 @@ objects from the data mask." />
   </a>
 </li>
       </ul>
+      
     </div><!--/.nav-collapse -->
   </div><!--/.container -->
 </div><!--/.navbar -->
@@ -96,16 +116,28 @@ objects from the data mask." />
       
       </header>
 
-      <div class="row">
+<div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
     <h1>Data pronoun for tidy evaluation</h1>
+    <small class="dont-index">Source: <a href='https://github.com/r-lib/rlang/blob/master/R/eval-tidy.R'><code>R/eval-tidy.R</code></a></small>
+    <div class="hidden name"><code>tidyeval-data.Rd</code></div>
     </div>
 
+    <div class="ref-description">
     
     <p>This pronoun allows you to be explicit when you refer to an object
 inside the data. Referring to the <code>.data</code> pronoun rather than to
 the original data frame has several advantages:</p><ul>
+<li><p>It makes it easy to refer to column names stored as strings. If
+<code>var</code> contains the column <code>"height"</code>, the pronoun will subset that
+column:</p><pre>var &lt;- "height"
+dplyr::summarise(df, mean(.data[[var]]))
+</pre>
+
+    <p>The index variable <code>var</code> is <a href='quasiquotation.html'>unquoted</a>, which
+ensures a column named <code>var</code> in the data frame cannot mask it.
+This makes the pronoun safe to use in functions and packages.</p></li>
 <li><p>Sometimes a computation is not about the whole data but about a
 subset. For example if you supply a grouped data frame to a dplyr
 verb, the <code>.data</code> pronoun contains the group subset.</p></li>
@@ -118,21 +150,16 @@ is a database.</p></li>
 package namespace to avoid a <code>R CMD check</code> note when referring to
 objects from the data mask.</p>
     
+    </div>
 
     <pre class="usage"><span class='no'>.data</span></pre>
         
-    <h2 class="hasAnchor" id="format"><a class="anchor" href="#format"></a>Format</h2>
-
-    <p>An object of class <code>rlang_data_pronoun</code> of length 0.</p>
-    
 
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
     <h2>Contents</h2>
     <ul class="nav nav-pills nav-stacked">
-      
-      <li><a href="#format">Format</a></li>
-          </ul>
+                </ul>
 
   </div>
 </div>
@@ -149,5 +176,8 @@ objects from the data mask.</p>
       </footer>
    </div>
 
+  
+
   </body>
 </html>
+

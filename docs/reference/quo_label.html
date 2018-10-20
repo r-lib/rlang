@@ -21,23 +21,36 @@
 <!-- clipboard.js -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/1.7.1/clipboard.min.js" integrity="sha384-cV+rhyOuRHc9Ub/91rihWcGmMmCXDeksTtCihMupQHSsi8GIIRDG0ThDc3HGQFJ3" crossorigin="anonymous"></script>
 
+<!-- sticky kit -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/sticky-kit/1.1.3/sticky-kit.min.js" integrity="sha256-c4Rlo1ZozqTPE2RLuvbusY3+SU1pQaJC0TjuhygMipw=" crossorigin="anonymous"></script>
+
 <!-- pkgdown -->
 <link href="../pkgdown.css" rel="stylesheet">
-<script src="../jquery.sticky-kit.min.js"></script>
 <script src="../pkgdown.js"></script>
-  
-  
+
+
+
 <meta property="og:title" content="Format quosures for printing or labelling — quo_label" />
 
-<meta property="og:description" content="
-quo_text() and quo_label() are equivalent to expr_text(),
-expr_label(), etc, but they first squash all quosures with
-quo_squash() so they print more nicely.
-quo_name() squashes a quosure and transforms it into a simple
-string. It is suitable to give an unnamed quosure a default name,
-for instance a column name in a data frame.
+<meta property="og:description" content="These functions take an arbitrary R object, typically an
+expression, and represent it as a string.
+quo_name() returns an abbreviated representation of the object
+as a single line string. It is suitable for default names.
+quo_text() returns a multiline string. For instance block
+expressions like { foo; bar } are represented on 4 lines (one
+for each symbol, and the curly braces on their own lines).
 " />
+
+<meta property="og:description" content="These deparsers are only suitable for creating default names or
+printing output at the console. The behaviour of your functions
+should not depend on deparsed objects. If you are looking for a way
+of transforming symbols to strings, use as_string() instead of
+quo_name(). Unlike deparsing, the transformation between symbols
+and strings is non-lossy and well defined." />
 <meta name="twitter:card" content="summary" />
+
+
+
 <!-- mathjax -->
 <script src='https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML'></script>
 
@@ -60,8 +73,12 @@ for instance a column name in a data frame.
         <span class="icon-bar"></span>
         <span class="icon-bar"></span>
       </button>
-      <a class="navbar-brand" href="../index.html">rlang</a>
+      <span class="navbar-brand">
+        <a class="navbar-link" href="../index.html">rlang</a>
+        <span class="label label-default" data-toggle="tooltip" data-placement="bottom" title="Released package">0.3.0</span>
+      </span>
     </div>
+
     <div id="navbar" class="navbar-collapse collapse">
       <ul class="nav navbar-nav">
         <li>
@@ -83,6 +100,7 @@ for instance a column name in a data frame.
   </a>
 </li>
       </ul>
+      
     </div><!--/.nav-collapse -->
   </div><!--/.container -->
 </div><!--/.navbar -->
@@ -90,22 +108,33 @@ for instance a column name in a data frame.
       
       </header>
 
-      <div class="row">
+<div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
     <h1>Format quosures for printing or labelling</h1>
+    <small class="dont-index">Source: <a href='https://github.com/r-lib/rlang/blob/master/R/quo.R'><code>R/quo.R</code></a></small>
+    <div class="hidden name"><code>quo_label.Rd</code></div>
     </div>
 
+    <div class="ref-description">
     
-    <ul>
-<li><p><code>quo_text()</code> and <code>quo_label()</code> are equivalent to <code><a href='expr_label.html'>expr_text()</a></code>,
-<code><a href='expr_label.html'>expr_label()</a></code>, etc, but they first squash all quosures with
-<code><a href='quo_squash.html'>quo_squash()</a></code> so they print more nicely.</p></li>
-<li><p><code>quo_name()</code> squashes a quosure and transforms it into a simple
-string. It is suitable to give an unnamed quosure a default name,
-for instance a column name in a data frame.</p></li>
+    <p>These functions take an arbitrary R object, typically an
+<a href='is_expression.html'>expression</a>, and represent it as a string.</p><ul>
+<li><p><code>quo_name()</code> returns an abbreviated representation of the object
+as a single line string. It is suitable for default names.</p></li>
+<li><p><code>quo_text()</code> returns a multiline string. For instance block
+expressions like <code>{ foo; bar }</code> are represented on 4 lines (one
+for each symbol, and the curly braces on their own lines).</p></li>
 </ul>
+
+    <p>These deparsers are only suitable for creating default names or
+printing output at the console. The behaviour of your functions
+should not depend on deparsed objects. If you are looking for a way
+of transforming symbols to strings, use <code><a href='vector-coercion.html'>as_string()</a></code> instead of
+<code>quo_name()</code>. Unlike deparsing, the transformation between symbols
+and strings is non-lossy and well defined.</p>
     
+    </div>
 
     <pre class="usage"><span class='fu'>quo_label</span>(<span class='no'>quo</span>)
 
@@ -113,7 +142,7 @@ for instance a column name in a data frame.</p></li>
 
 <span class='fu'>quo_name</span>(<span class='no'>quo</span>)</pre>
     
-    <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a> Arguments</h2>
+    <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
     <colgroup><col class="name" /><col class="desc" /></colgroup>
     <tr>
@@ -132,15 +161,15 @@ for instance a column name in a data frame.</p></li>
     
     <h2 class="hasAnchor" id="see-also"><a class="anchor" href="#see-also"></a>See also</h2>
 
-    <p><code><a href='expr_label.html'>expr_label()</a></code>, <code><a href='f_text.html'>f_label()</a></code></p>
+    <div class='dont-index'><p><code><a href='expr_label.html'>expr_label()</a></code>, <code><a href='f_text.html'>f_label()</a></code></p></div>
     
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
     <pre class="examples"><div class='input'><span class='co'># Quosures can contain nested quosures:</span>
 <span class='no'>quo</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='quotation.html'>quo</a></span>(<span class='fu'>foo</span>(!! <span class='fu'><a href='quotation.html'>quo</a></span>(<span class='no'>bar</span>)))
 <span class='no'>quo</span></div><div class='output co'>#&gt; &lt;quosure&gt;
-#&gt;   expr: ^foo(^bar)
-#&gt;   env:  0x7f82939ca590</div><div class='input'>
+#&gt; expr: ^foo(^bar)
+#&gt; env:  0x7f85ca08f120</div><div class='input'>
 <span class='co'># quo_squash() unwraps all quosures and returns a raw expression:</span>
 <span class='fu'><a href='quo_squash.html'>quo_squash</a></span>(<span class='no'>quo</span>)</div><div class='output co'>#&gt; foo(bar)</div><div class='input'>
 <span class='co'># This is used by quo_text() and quo_label():</span>
@@ -175,5 +204,8 @@ for instance a column name in a data frame.</p></li>
       </footer>
    </div>
 
+  
+
   </body>
 </html>
+

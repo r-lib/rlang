@@ -21,22 +21,28 @@
 <!-- clipboard.js -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/1.7.1/clipboard.min.js" integrity="sha384-cV+rhyOuRHc9Ub/91rihWcGmMmCXDeksTtCihMupQHSsi8GIIRDG0ThDc3HGQFJ3" crossorigin="anonymous"></script>
 
+<!-- sticky kit -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/sticky-kit/1.1.3/sticky-kit.min.js" integrity="sha256-c4Rlo1ZozqTPE2RLuvbusY3+SU1pQaJC0TjuhygMipw=" crossorigin="anonymous"></script>
+
 <!-- pkgdown -->
 <link href="../pkgdown.css" rel="stylesheet">
-<script src="../jquery.sticky-kit.min.js"></script>
 <script src="../pkgdown.js"></script>
-  
-  
+
+
+
 <meta property="og:title" content="Is an object copyable? — is_copyable" />
 
 <meta property="og:description" content="When an object is modified, R generally copies it (sometimes
-lazily) to enforce valuesemantics.
+lazily) to enforce value semantics.
 However, some internal types are uncopyable. If you try to copy
-them, either with &lt;- or by argument passing, you actually create
+them, either with &amp;lt;- or by argument passing, you actually create
 references to the original object rather than actual
 copies. Modifying these references can thus have far reaching side
 effects." />
 <meta name="twitter:card" content="summary" />
+
+
+
 <!-- mathjax -->
 <script src='https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML'></script>
 
@@ -59,8 +65,12 @@ effects." />
         <span class="icon-bar"></span>
         <span class="icon-bar"></span>
       </button>
-      <a class="navbar-brand" href="../index.html">rlang</a>
+      <span class="navbar-brand">
+        <a class="navbar-link" href="../index.html">rlang</a>
+        <span class="label label-default" data-toggle="tooltip" data-placement="bottom" title="Released package">0.3.0</span>
+      </span>
     </div>
+
     <div id="navbar" class="navbar-collapse collapse">
       <ul class="nav navbar-nav">
         <li>
@@ -82,6 +92,7 @@ effects." />
   </a>
 </li>
       </ul>
+      
     </div><!--/.nav-collapse -->
   </div><!--/.container -->
 </div><!--/.navbar -->
@@ -89,25 +100,29 @@ effects." />
       
       </header>
 
-      <div class="row">
+<div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
     <h1>Is an object copyable?</h1>
+    <small class="dont-index">Source: <a href='https://github.com/r-lib/rlang/blob/master/R/types.R'><code>R/types.R</code></a></small>
+    <div class="hidden name"><code>is_copyable.Rd</code></div>
     </div>
 
+    <div class="ref-description">
     
     <p>When an object is modified, R generally copies it (sometimes
-lazily) to enforce <a href='https://en.wikipedia.org/wiki/Value_semantics'>valuesemantics</a>.
+lazily) to enforce <a href='https://en.wikipedia.org/wiki/Value_semantics'>value semantics</a>.
 However, some internal types are uncopyable. If you try to copy
 them, either with <code>&lt;-</code> or by argument passing, you actually create
 references to the original object rather than actual
 copies. Modifying these references can thus have far reaching side
 effects.</p>
     
+    </div>
 
     <pre class="usage"><span class='fu'>is_copyable</span>(<span class='no'>x</span>)</pre>
     
-    <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a> Arguments</h2>
+    <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
     <colgroup><col class="name" /><col class="desc" /></colgroup>
     <tr>
@@ -121,9 +136,9 @@ effects.</p>
     <pre class="examples"><div class='input'><span class='co'># Let's add attributes with structure() to uncopyable types. Since</span>
 <span class='co'># they are not copied, the attributes are changed in place:</span>
 <span class='no'>env</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='env.html'>env</a></span>()
-<span class='fu'>structure</span>(<span class='no'>env</span>, <span class='kw'>foo</span> <span class='kw'>=</span> <span class='st'>"bar"</span>)</div><div class='output co'>#&gt; &lt;environment: 0x7f8291244c28&gt;
+<span class='fu'>structure</span>(<span class='no'>env</span>, <span class='kw'>foo</span> <span class='kw'>=</span> <span class='st'>"bar"</span>)</div><div class='output co'>#&gt; &lt;environment: 0x7f85bfc2adc8&gt;
 #&gt; attr(,"foo")
-#&gt; [1] "bar"</div><div class='input'><span class='no'>env</span></div><div class='output co'>#&gt; &lt;environment: 0x7f8291244c28&gt;
+#&gt; [1] "bar"</div><div class='input'><span class='no'>env</span></div><div class='output co'>#&gt; &lt;environment: 0x7f85bfc2adc8&gt;
 #&gt; attr(,"foo")
 #&gt; [1] "bar"</div><div class='input'>
 <span class='co'># These objects that can only be changed with side effect are not</span>
@@ -155,5 +170,8 @@ effects.</p>
       </footer>
    </div>
 
+  
+
   </body>
 </html>
+
