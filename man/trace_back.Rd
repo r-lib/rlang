@@ -62,22 +62,24 @@ x <- NULL
 with(mtcars, {x <<- f(); 10})
 x
 
+
+# Restore default top env for next example
+options(rlang_trace_top_env = NULL)
+
 # When code is executed indirectly, i.e. via source or within an
 # RMarkdown document, you'll tend to get a lot of guff at the beginning
 # related to the execution environment:
-conn <- textConnection("f()")
-source(conn, echo = TRUE)
+conn <- textConnection("summary(f())")
+source(conn, echo = TRUE, local = TRUE)
 close(conn)
 
-# To automatically strip this off, pass `top = globalenv()`.
-# This will automatically trim off calls prior to the last appearance
-# of the global environment on the stack
-h <- function() trace_back(globalenv())
+# To automatically strip this off, specify which frame should be
+# the top of the backtrace. This will automatically trim off calls
+# prior to that frame:
+top <- current_env()
+h <- function() trace_back(top)
 
-conn <- textConnection("f()")
-source(conn, echo = TRUE)
+conn <- textConnection("summary(f())")
+source(conn, echo = TRUE, local = TRUE)
 close(conn)
-
-# Restore defaults
-options(rlang_trace_top_env = NULL)
 }
