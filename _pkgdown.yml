@@ -1,4 +1,9 @@
-url: http://rlang.r-lib.org
+url: https://rlang.r-lib.org
+
+home:
+  links:
+  - text: The tidy eval bookdown
+    href: https://tidyeval.tidyverse.org
 
 navbar:
   structure:

@@ -18,7 +18,7 @@ of R and the tidyverse:
 
 *   The __tidy eval__ framework, which is a well-founded system for
     non-standard evaluation built on quasiquotation (`!!`) and
-    quoted arguments (`enquo()`).
+    quoted arguments (`enquo()`). See <https://tidyeval.tidyverse.org>.
 
 *   User-friendly __error reporting__ with backtraces and chained errors
     (`abort()`, `trace_back()`, `with_abort()`).
