@@ -14,4 +14,10 @@ matrix:
     - r: 3.5
       after_success:
         - Rscript -e 'covr::codecov()'
+      deploy:
+        provider: script
+        script: Rscript -e 'pkgdown::deploy_site_github()'
+        skip_cleanup: true
     - r: devel
+
+r_github_packages: r-lib/pkgdown
