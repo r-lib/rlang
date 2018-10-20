@@ -244,7 +244,6 @@ is_call <- function(x, name = NULL, n = NULL, ns = NULL) {
 #'
 #'
 #' @param call A quoted function call. An error is raised if not a call.
-#' @export
 #' @examples
 #' call_print_type(quote(foo(bar)))
 #' call_print_type(quote(foo[[bar]]))
@@ -261,6 +260,7 @@ is_call <- function(x, name = NULL, n = NULL, ns = NULL) {
 #' call <- call("$", 1, 2, 3)
 #' call
 #' call_print_type(call)
+#' @noRd
 call_print_type <- function(call) {
   type <- call_print_fine_type(call)
 
