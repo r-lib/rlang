@@ -3,16 +3,30 @@
 
 ## Breaking changes
 
-* `quo_text()` now deparses non-syntactic symbols with backticks. We
-  discovered in the revdep checks that `quo_text()` tends to be used
-  for converting symbols to strings. This is the wrong function for
-  this purpose because it is a general purpose deparser. The same can
-  be said of `quo_name()`. These functions should generally only be
-  used for printing outputs or creating default labels. If you need to
-  convert symbols to strings, please use `as_string()` rather than
-  `quo_text()`.
+The rlang API is still maturing. In these sections you'll find hard
+breaking changes. See the life cycle section below for an exhaustive
+list of API changes.
 
-* `exprs()` no longer flattens quosures.
+* `quo_text()` now deparses non-syntactic symbols with backticks:
+
+  ```
+  quo_text(sym("foo+"))
+  #> [1] "`foo+`"
+  ```
+
+  This caused a number of issues in reverse dependencies as
+  `quo_text()` tends to be used for converting symbols to strings.
+  `quo_text()` and `quo_name()` should not be used for this purpose
+  because they are general purpose deparsers. These functions should
+  generally only be used for printing outputs or creating default
+  labels. If you need to convert symbols to strings, please use
+  `as_string()` rather than `quo_text()`.
+
+  We have extended the documentation of `?quo_text` and `?quo_name` to
+  make these points clearer.
+
+* `exprs()` no longer flattens quosures. `exprs(!!!quos(x, y))` is now
+  equivalent to `quos(x, y)`.
 
 * The sentinel for removing arguments in `call_modify()` has been
   changed from `NULL` to `zap()`. This breaking change is motivated
@@ -28,162 +42,6 @@
   attributes for non-S4 objects (#207).
 
 * Taking the `env_parent()` of the empty environment is now an error.
-
-
-## Lifecycle
-
-### Soft-deprecated functions and arguments
-
-We now use a new warning mechanism for soft-deprecated functions and
-arguments. A warning is issued, but only when:
-
-* rlang has been attached with a `library()` call.
-* The deprecated function has been called from the global environment.
-
-The warning appears only once per session. Such warnings shouldn't
-make R CMD check fail if you use testthat because it does not report
-warnings that occurred while checking. However, `expect_silent()` can
-transform the warning to a failure.
-
-
-#### tidyeval
-
-* `.data[[foo]]` is now an unquote operator. This guarantees that
-  `foo` is evaluated in the context rather than the data mask and
-  makes it easier to treat `.data[["bar"]]` the same way as a
-  symbol. For instance, this will help ensuring that `group_by(df,
-  .data[["name"]])` and `group_by(df, name)` produce the same column
-  name.
-
-* Automatic naming of expressions now uses a new deparser (still
-  unexported) instead of `quo_text()`. Following this change,
-  automatic naming is now compatible with all object types (via
-  `pillar::type_sum()` if available), prevents multi-line names, and
-  ensures `name` and `.data[["name"]]` are given the same default
-  name.
-
-* Supplying a name with `!!!` calls is soft-deprecated. This name is
-  ignored because only the names of the spliced vector are applied.
-
-* Quosure lists returned by `quos()` and `enquos()` now have "list-of"
-  behaviour: the types of new elements are checked when adding objects
-  to the list. Consequently, assigning non-quosure objects to quosure
-  lists is now soft-deprecated. Please coerce to a bare list with
-  `as.list()` beforehand.
-
-* `as_quosure()` now requires an explicit environment for symbols and
-  calls. This should typically be the environment in which the
-  expression was created.
-
-* `names()` and `length()` methods for data pronouns are deprecated.
-  It is no longer valid to write `names(.data)` or `length(.data)`.
-
-* Using `as.character()` on quosures is soft-deprecated (#523).
-
-
-#### Miscellaneous
-
-* Using `get_env()` without supplying an environment is now
-  soft-deprecated. Please use `current_env()` to retrieve the current
-  environment.
-
-* The frame and stack API is soft-deprecated. Some of the
-  functionality has been replaced by `trace_back()`.
-
-* The `new_vector_along()` family is soft-deprecated because these
-  functions are longer to type than the equivalent `rep_along()` or
-  `rep_named()` calls without added clarity.
-
-* Passing environment wrappers like formulas or functions to `env_`
-  functions is now soft-deprecated. This internal genericity was
-  causing confusion (see issue #427). You should now extract the
-  environment separately before calling these functions.
-
-  This change concerns `env_depth()`, `env_poke_parent()`,
-  `env_parent<-`, `env_tail()`, `set_env()`, `env_clone()`,
-  `env_inherits()`, `env_bind()`, `scoped_bindings()`,
-  `with_bindings()`, `env_poke()`, `env_has()`, `env_get()`,
-  `env_names()`, `env_bind_exprs()` and `env_bind_fns()`.
-
-* `cnd_signal()` now always installs a muffling restart for
-  non-critical conditions. Consequently the `.mufflable` argument has
-  been soft-deprecated and no longer has any effect.
-
-
-### Deprecated functions and arguments
-
-Deprecated functions and arguments issue a warning inconditionally,
-but only once per session.
-
-* Calling `UQ()` and `UQS()` with the rlang namespace qualifier is
-  deprecated as of rlang 0.3.0. Just use the unqualified forms
-  instead:
-
-  ```
-  # Bad
-  rlang::expr(mean(rlang::UQ(var) * 100))
-
-  # Ok
-  rlang::expr(mean(UQ(var) * 100))
-
-  # Good
-  rlang::expr(mean(!!var * 100))
-  ```
-
-  Although soft-deprecated since rlang 0.2.0, `UQ()` and `UQS()` can still be used for now.
-
-* The `call` argument of `abort()` and condition constructors is now
-  deprecated in favour of storing full backtraces.
-
-* The `.standardise` argument of `call_modify()` is deprecated. Please
-  use `call_standardise()` beforehand.
-
-* The `sentinel` argument of `env_tail()` has been deprecated and
-  renamed to `last`.
-
-
-### Defunct functions and arguments
-
-Defunct functions and arguments throw an error when used.
-
-* `as_dictionary()` is now defunct.
-
-* The experimental function `rst_muffle()` is now defunct. Please use
-  `cnd_muffle()` instead. Unlike its predecessor, `cnd_muffle()` is not
-  generic. It is marked as a calling handler and thus can be passed
-  directly to `with_handlers()` to muffle specific conditions (such as
-  specific subclasses of warnings).
-
-* `cnd_inform()`, `cnd_warn()` and `cnd_abort()` are retired and
-  defunct. The old `cnd_message()`, `cnd_warning()`, `cnd_error()` and
-  `new_cnd()` constructors deprecated in rlang 0.2.0 are now defunct.
-
-* Modifying a condition with `cnd_signal()` is defunct. In addition,
-  creating a condition with `cnd_signal()` is soft-deprecated, please
-  use the new function [signal()] instead.
-
-* `inplace()` has been renamed to `calling()` to follow base R
-  terminology more closely.
-
-
-### Functions and arguments in the questioning stage
-
-We are no longer convinced these functions are the right approach but
-we do not have a precise alternative yet.
-
-* The functions from the restart API are now in the questioning
-  lifecycle stage. It is not clear yet whether we want to recommend
-  restarts as a style of programming in R.
-
-* `prepend()` and `modify()` are in the questioning stage, as well as
-  `as_logical()`, `as_character()`, etc. We are still figuring out
-  what vector tools belong in rlang.
-
-* `flatten()`, `squash()` and their atomic variants are now in the
-  questioning lifecycle stage. They have slightly different semantics
-  than the flattening functions in purrr and we are currently
-  rethinking our approach to flattening with the new typing facilities
-  of the vctrs package.
 
 
 ## Tidy eval
@@ -506,6 +364,165 @@ we do not have a precise alternative yet.
   yield multiple expressions (such as `"foo; bar"`).
 
 * `parse_quos()` now adds the `quosures` class to its output.
+
+
+## Lifecycle
+
+### Soft-deprecated functions and arguments
+
+rlang 0.3.0 introduces a new warning mechanism for soft-deprecated
+functions and arguments. A warning is issued, but only under one of
+these circumstances:
+
+* rlang has been attached with a `library()` call.
+* The deprecated function has been called from the global environment.
+
+In addition, deprecation warnings appear only once per session in
+order to not be disruptive.
+
+Deprecation warnings shouldn't make R CMD check fail for packages
+using testthat. However, `expect_silent()` can transform the warning
+to a hard failure.
+
+
+#### tidyeval
+
+* `.data[[foo]]` is now an unquote operator. This guarantees that
+  `foo` is evaluated in the context rather than the data mask and
+  makes it easier to treat `.data[["bar"]]` the same way as a
+  symbol. For instance, this will help ensuring that `group_by(df,
+  .data[["name"]])` and `group_by(df, name)` produce the same column
+  name.
+
+* Automatic naming of expressions now uses a new deparser (still
+  unexported) instead of `quo_text()`. Following this change,
+  automatic naming is now compatible with all object types (via
+  `pillar::type_sum()` if available), prevents multi-line names, and
+  ensures `name` and `.data[["name"]]` are given the same default
+  name.
+
+* Supplying a name with `!!!` calls is soft-deprecated. This name is
+  ignored because only the names of the spliced vector are applied.
+
+* Quosure lists returned by `quos()` and `enquos()` now have "list-of"
+  behaviour: the types of new elements are checked when adding objects
+  to the list. Consequently, assigning non-quosure objects to quosure
+  lists is now soft-deprecated. Please coerce to a bare list with
+  `as.list()` beforehand.
+
+* `as_quosure()` now requires an explicit environment for symbols and
+  calls. This should typically be the environment in which the
+  expression was created.
+
+* `names()` and `length()` methods for data pronouns are deprecated.
+  It is no longer valid to write `names(.data)` or `length(.data)`.
+
+* Using `as.character()` on quosures is soft-deprecated (#523).
+
+
+#### Miscellaneous
+
+* Using `get_env()` without supplying an environment is now
+  soft-deprecated. Please use `current_env()` to retrieve the current
+  environment.
+
+* The frame and stack API is soft-deprecated. Some of the
+  functionality has been replaced by `trace_back()`.
+
+* The `new_vector_along()` family is soft-deprecated because these
+  functions are longer to type than the equivalent `rep_along()` or
+  `rep_named()` calls without added clarity.
+
+* Passing environment wrappers like formulas or functions to `env_`
+  functions is now soft-deprecated. This internal genericity was
+  causing confusion (see issue #427). You should now extract the
+  environment separately before calling these functions.
+
+  This change concerns `env_depth()`, `env_poke_parent()`,
+  `env_parent<-`, `env_tail()`, `set_env()`, `env_clone()`,
+  `env_inherits()`, `env_bind()`, `scoped_bindings()`,
+  `with_bindings()`, `env_poke()`, `env_has()`, `env_get()`,
+  `env_names()`, `env_bind_exprs()` and `env_bind_fns()`.
+
+* `cnd_signal()` now always installs a muffling restart for
+  non-critical conditions. Consequently the `.mufflable` argument has
+  been soft-deprecated and no longer has any effect.
+
+
+### Deprecated functions and arguments
+
+Deprecated functions and arguments issue a warning inconditionally,
+but only once per session.
+
+* Calling `UQ()` and `UQS()` with the rlang namespace qualifier is
+  deprecated as of rlang 0.3.0. Just use the unqualified forms
+  instead:
+
+  ```
+  # Bad
+  rlang::expr(mean(rlang::UQ(var) * 100))
+
+  # Ok
+  rlang::expr(mean(UQ(var) * 100))
+
+  # Good
+  rlang::expr(mean(!!var * 100))
+  ```
+
+  Although soft-deprecated since rlang 0.2.0, `UQ()` and `UQS()` can still be used for now.
+
+* The `call` argument of `abort()` and condition constructors is now
+  deprecated in favour of storing full backtraces.
+
+* The `.standardise` argument of `call_modify()` is deprecated. Please
+  use `call_standardise()` beforehand.
+
+* The `sentinel` argument of `env_tail()` has been deprecated and
+  renamed to `last`.
+
+
+### Defunct functions and arguments
+
+Defunct functions and arguments throw an error when used.
+
+* `as_dictionary()` is now defunct.
+
+* The experimental function `rst_muffle()` is now defunct. Please use
+  `cnd_muffle()` instead. Unlike its predecessor, `cnd_muffle()` is not
+  generic. It is marked as a calling handler and thus can be passed
+  directly to `with_handlers()` to muffle specific conditions (such as
+  specific subclasses of warnings).
+
+* `cnd_inform()`, `cnd_warn()` and `cnd_abort()` are retired and
+  defunct. The old `cnd_message()`, `cnd_warning()`, `cnd_error()` and
+  `new_cnd()` constructors deprecated in rlang 0.2.0 are now defunct.
+
+* Modifying a condition with `cnd_signal()` is defunct. In addition,
+  creating a condition with `cnd_signal()` is soft-deprecated, please
+  use the new function [signal()] instead.
+
+* `inplace()` has been renamed to `calling()` to follow base R
+  terminology more closely.
+
+
+### Functions and arguments in the questioning stage
+
+We are no longer convinced these functions are the right approach but
+we do not have a precise alternative yet.
+
+* The functions from the restart API are now in the questioning
+  lifecycle stage. It is not clear yet whether we want to recommend
+  restarts as a style of programming in R.
+
+* `prepend()` and `modify()` are in the questioning stage, as well as
+  `as_logical()`, `as_character()`, etc. We are still figuring out
+  what vector tools belong in rlang.
+
+* `flatten()`, `squash()` and their atomic variants are now in the
+  questioning lifecycle stage. They have slightly different semantics
+  than the flattening functions in purrr and we are currently
+  rethinking our approach to flattening with the new typing facilities
+  of the vctrs package.
 
 
 # rlang 0.2.2
