@@ -314,18 +314,16 @@ list of API changes.
   that their input is the right type (#187).
 
 
-## New functions
+## Other improvements and fixes
 
-* `zap()` returns a sentinel that instructs functions like
-  `env_bind()` or `call_modify()` that objects are to be removed.
+* New function `zap()` returns a sentinel that instructs functions
+  like `env_bind()` or `call_modify()` that objects are to be removed.
 
-* `rep_named()` repeats value along a character vector of names.
+* New function `rep_named()` repeats value along a character vector of
+  names.
 
-* `exec()` is a simpler replacement to `invoke()` (#536). `invoke()` has
-  been soft-deprecated.
-
-
-## Minor improvements and fixes
+* New function `exec()` is a simpler replacement to `invoke()`
+  (#536). `invoke()` has been soft-deprecated.
 
 * Lambda functions created from formulas with `as_function()` are now
   classed. Use `is_lambda()` to check a function was created with the
