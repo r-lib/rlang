@@ -75,13 +75,19 @@ closure (see is_function() about primitive functions).
     <div id="navbar" class="navbar-collapse collapse">
       <ul class="nav navbar-nav">
         <li>
+  <a href="../index.html">
+    <span class="fa fa-home fa-lg"></span>
+     
+  </a>
+</li>
+<li>
   <a href="../reference/index.html">Reference</a>
 </li>
 <li>
-  <a href="../reference/lifecycle.html">Lifecycle</a>
+  <a href="../reference/lifecycle.html">Life cycle</a>
 </li>
 <li>
-  <a href="../news/index.html">News</a>
+  <a href="../news/index.html">Changelog</a>
 </li>
       </ul>
       
@@ -163,16 +169,16 @@ is a string.</p></td>
 <span class='co'># Operators have `.x` and `.y` as arguments, just like lambda</span>
 <span class='co'># functions created with the formula syntax:</span>
 <span class='fu'>as_closure</span>(<span class='no'>`+`</span>)</div><div class='output co'>#&gt; function(.x, .y) if (missing(.y)) .x else .x + .y
-#&gt; &lt;bytecode: 0x7f880602a0b0&gt;
-#&gt; &lt;environment: 0x7f880561cd60&gt;</div><div class='input'><span class='fu'>as_closure</span>(<span class='no'>`~`</span>)</div><div class='output co'>#&gt; function(.x, .y) {
+#&gt; &lt;bytecode: 0x7fa6f63077f0&gt;
+#&gt; &lt;environment: 0x7fa6f53a1e88&gt;</div><div class='input'><span class='fu'>as_closure</span>(<span class='no'>`~`</span>)</div><div class='output co'>#&gt; function(.x, .y) {
 #&gt;       if (is_missing(substitute(.y))) {
 #&gt;         new_formula(NULL, substitute(.x), caller_env())
 #&gt;       } else {
 #&gt;         new_formula(substitute(.x), substitute(.y), caller_env())
 #&gt;       }
 #&gt;     }
-#&gt; &lt;bytecode: 0x7f88055d0270&gt;
-#&gt; &lt;environment: 0x7f880545fcb0&gt;</div></pre>
+#&gt; &lt;bytecode: 0x7fa6f60c0ba0&gt;
+#&gt; &lt;environment: 0x7fa6f4dc7a08&gt;</div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
     <h2>Contents</h2>

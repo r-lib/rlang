@@ -73,13 +73,19 @@ uncopyable types, use mut_attrs()." />
     <div id="navbar" class="navbar-collapse collapse">
       <ul class="nav navbar-nav">
         <li>
+  <a href="../index.html">
+    <span class="fa fa-home fa-lg"></span>
+     
+  </a>
+</li>
+<li>
   <a href="../reference/index.html">Reference</a>
 </li>
 <li>
-  <a href="../reference/lifecycle.html">Lifecycle</a>
+  <a href="../reference/lifecycle.html">Life cycle</a>
 </li>
 <li>
-  <a href="../news/index.html">News</a>
+  <a href="../news/index.html">Changelog</a>
 </li>
       </ul>
       
@@ -187,7 +193,7 @@ internal attributes names like <code>.Dim</code>, <code>.Dimnames</code> or <cod
 <span class='co'># For uncopyable types, mut_attrs() lets you modify in place:</span>
 <span class='no'>env</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='env.html'>env</a></span>()
 <span class='fu'>mut_attrs</span>(<span class='no'>env</span>, <span class='kw'>foo</span> <span class='kw'>=</span> <span class='st'>"bar"</span>)
-<span class='no'>env</span></div><div class='output co'>#&gt; &lt;environment: 0x7f880568b150&gt;
+<span class='no'>env</span></div><div class='output co'>#&gt; &lt;environment: 0x7fa6f561d4b8&gt;
 #&gt; attr(,"foo")
 #&gt; [1] "bar"</div></pre>
   </div>

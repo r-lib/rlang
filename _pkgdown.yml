@@ -1,5 +1,14 @@
 url: http://rlang.r-lib.org
 
+navbar:
+  structure:
+    left:  [home, reference, lifecycle, news]
+    right: [github]
+  components:
+    lifecycle:
+      text: Life cycle
+      href: reference/lifecycle.html
+
 reference:
   - title: Tidy evaluation
     desc: >
@@ -235,13 +244,3 @@ reference:
       - with_handlers
       - exiting
       - calling
-
-navbar:
-  type: default
-  left:
-  - text: Reference
-    href: reference/index.html
-  - text: Lifecycle
-    href: reference/lifecycle.html
-  - text: News
-    href: news/index.html

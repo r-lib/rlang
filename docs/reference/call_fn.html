@@ -70,13 +70,19 @@ frame." />
     <div id="navbar" class="navbar-collapse collapse">
       <ul class="nav navbar-nav">
         <li>
+  <a href="../index.html">
+    <span class="fa fa-home fa-lg"></span>
+     
+  </a>
+</li>
+<li>
   <a href="../reference/index.html">Reference</a>
 </li>
 <li>
-  <a href="../reference/lifecycle.html">Lifecycle</a>
+  <a href="../reference/lifecycle.html">Life cycle</a>
 </li>
 <li>
-  <a href="../news/index.html">News</a>
+  <a href="../news/index.html">Changelog</a>
 </li>
       </ul>
       
@@ -150,7 +156,7 @@ change.</p>
 #&gt;     .Internal(matrix(data, nrow, ncol, byrow, dimnames, missing(nrow), 
 #&gt;         missing(ncol)))
 #&gt; }
-#&gt; &lt;bytecode: 0x7f87fa3dfc00&gt;
+#&gt; &lt;bytecode: 0x7fa6ef9fe200&gt;
 #&gt; &lt;environment: namespace:base&gt;</div><div class='input'><span class='fu'>call_fn</span>(<span class='fu'><a href='quotation.html'>quo</a></span>(<span class='fu'>matrix</span>()))</div><div class='output co'>#&gt; function (data = NA, nrow = 1, ncol = 1, byrow = FALSE, dimnames = NULL) 
 #&gt; {
 #&gt;     if (is.object(data) || !is.atomic(data)) 
@@ -158,12 +164,12 @@ change.</p>
 #&gt;     .Internal(matrix(data, nrow, ncol, byrow, dimnames, missing(nrow), 
 #&gt;         missing(ncol)))
 #&gt; }
-#&gt; &lt;bytecode: 0x7f87fa3dfc00&gt;
+#&gt; &lt;bytecode: 0x7fa6ef9fe200&gt;
 #&gt; &lt;environment: namespace:base&gt;</div><div class='input'>
 <span class='co'># Extract the calling function</span>
 <span class='no'>test</span> <span class='kw'>&lt;-</span> <span class='kw'>function</span>() <span class='fu'>call_fn</span>(<span class='fu'><a href='stack.html'>call_frame</a></span>())
 <span class='fu'>test</span>()</div><div class='output co'>#&gt; function() call_fn(call_frame())
-#&gt; &lt;environment: 0x7f87fd9cf5f0&gt;</div></pre>
+#&gt; &lt;environment: 0x7fa6f63d5550&gt;</div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
     <h2>Contents</h2>

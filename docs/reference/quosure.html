@@ -82,13 +82,19 @@ its contents, quo_is_missing(), quo_is_symbol(), etc." />
     <div id="navbar" class="navbar-collapse collapse">
       <ul class="nav navbar-nav">
         <li>
+  <a href="../index.html">
+    <span class="fa fa-home fa-lg"></span>
+     
+  </a>
+</li>
+<li>
   <a href="../reference/index.html">Reference</a>
 </li>
 <li>
-  <a href="../reference/lifecycle.html">Lifecycle</a>
+  <a href="../reference/lifecycle.html">Life cycle</a>
 </li>
 <li>
-  <a href="../news/index.html">News</a>
+  <a href="../news/index.html">Changelog</a>
 </li>
       </ul>
       
@@ -227,10 +233,10 @@ and <code><a href='as_quosure.html'>new_quosure()</a></code> for constructing qu
     <pre class="examples"><div class='input'><span class='no'>quo</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='quotation.html'>quo</a></span>(<span class='no'>my_quosure</span>)
 <span class='no'>quo</span></div><div class='output co'>#&gt; &lt;quosure&gt;
 #&gt; expr: ^my_quosure
-#&gt; env:  0x7f88051d1150</div><div class='input'>
+#&gt; env:  0x7fa6f435b470</div><div class='input'>
 
 <span class='co'># Access and set the components of a quosure:</span>
-<span class='fu'>quo_get_expr</span>(<span class='no'>quo</span>)</div><div class='output co'>#&gt; my_quosure</div><div class='input'><span class='fu'>quo_get_env</span>(<span class='no'>quo</span>)</div><div class='output co'>#&gt; &lt;environment: 0x7f88051d1150&gt;</div><div class='input'>
+<span class='fu'>quo_get_expr</span>(<span class='no'>quo</span>)</div><div class='output co'>#&gt; my_quosure</div><div class='input'><span class='fu'>quo_get_env</span>(<span class='no'>quo</span>)</div><div class='output co'>#&gt; &lt;environment: 0x7fa6f435b470&gt;</div><div class='input'>
 <span class='no'>quo</span> <span class='kw'>&lt;-</span> <span class='fu'>quo_set_expr</span>(<span class='no'>quo</span>, <span class='fu'>quote</span>(<span class='no'>baz</span>))
 <span class='no'>quo</span> <span class='kw'>&lt;-</span> <span class='fu'>quo_set_env</span>(<span class='no'>quo</span>, <span class='fu'><a href='empty_env.html'>empty_env</a></span>())
 <span class='no'>quo</span></div><div class='output co'>#&gt; &lt;quosure&gt;

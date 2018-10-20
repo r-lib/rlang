@@ -82,13 +82,19 @@ and strings is non-lossy and well defined." />
     <div id="navbar" class="navbar-collapse collapse">
       <ul class="nav navbar-nav">
         <li>
+  <a href="../index.html">
+    <span class="fa fa-home fa-lg"></span>
+     
+  </a>
+</li>
+<li>
   <a href="../reference/index.html">Reference</a>
 </li>
 <li>
-  <a href="../reference/lifecycle.html">Lifecycle</a>
+  <a href="../reference/lifecycle.html">Life cycle</a>
 </li>
 <li>
-  <a href="../news/index.html">News</a>
+  <a href="../news/index.html">Changelog</a>
 </li>
       </ul>
       
@@ -169,7 +175,7 @@ and strings is non-lossy and well defined.</p>
 <span class='no'>quo</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='quotation.html'>quo</a></span>(<span class='fu'>foo</span>(!! <span class='fu'><a href='quotation.html'>quo</a></span>(<span class='no'>bar</span>)))
 <span class='no'>quo</span></div><div class='output co'>#&gt; &lt;quosure&gt;
 #&gt; expr: ^foo(^bar)
-#&gt; env:  0x7f88038e1630</div><div class='input'>
+#&gt; env:  0x7fa6fa386158</div><div class='input'>
 <span class='co'># quo_squash() unwraps all quosures and returns a raw expression:</span>
 <span class='fu'><a href='quo_squash.html'>quo_squash</a></span>(<span class='no'>quo</span>)</div><div class='output co'>#&gt; foo(bar)</div><div class='input'>
 <span class='co'># This is used by quo_text() and quo_label():</span>
