@@ -44,44 +44,107 @@ list of API changes.
 * Taking the `env_parent()` of the empty environment is now an error.
 
 
-## Tidy eval
+## Summary
 
-* You can now unquote quosured symbols as LHS of `:=`. The symbol is
-  automatically unwrapped from the quosure.
+The changes for this version are organised around three main themes:
+error reporting, tidy eval, and tidy dots.
 
-* Quosure methods have been defined for common operations like
-  `==`. These methods fail with an informative error message
-  suggesting to unquote the quosure (#478, #tidyverse/dplyr#3476).
+* `abort()` now records backtraces automatically in the error object.
+  Errors thrown with `abort()` invite users to call
+  `rlang::last_error()` to see a backtrace and help identifying where
+  and why the error occurred. The backtraces created by rlang (you can
+  create one manually with `trace_back()`) are printed in a simplified
+  form by default that removes implementation details from the
+  backtrace. To see the full backtrace, call
+  `summary(rlang::last_error())`.
 
-* `as_data_pronoun()` now accepts data masks. If the mask has multiple
-  environments, all of these are looked up when subsetting the pronoun.
-  Function objects stored in the mask are bypassed.
+  `abort()` also gains a `parent` argument. This is meant for
+  situations where you're calling a low level API (to download a file,
+  parse a JSON file, etc) and would like to intercept errors with
+  `base::tryCatch()` or `rlang::with_handlers()` and rethrow them with
+  a high-level message. Call `abort()` with the intercepted error as
+  the `parent` argument. When the user prints `rlang::last_error()`,
+  the backtrace will be shown in two sections corresponding to the
+  high-level and low-level contexts.
 
-* It is now possible to unquote strings in function position. This is
-  consistent with how the R parser coerces strings to symbols. These
-  two expressions are now equivalent: `expr("foo"())` and
-  `expr((!!"foo")())`.
+  In order to get segmented backtraces, the low-level error has to be
+  thrown with `abort()`. When that's not the case, you can call the
+  low-level function within `with_abort()` to automatically promote
+  all errors to rlang errors.
 
-* Quosures converted to functions with `as_function()` now support
-  nested quosures.
+* The tidy eval changes are mostly for developers of data masking
+  APIs. The main user-facing change is that `.data[[` is now an
+  unquote operator so that `var` in `.data[[var]]` is never masked by
+  data frame columns and always picked from the environment. This
+  makes the pronoun safe for programming in functions.
 
-* `expr_deparse()` (used to print quosures at the console) now escapes
-  special characters. For instance, newlines now print as `"\n"` (#484).
-  This ensures that the roundtrip `parse_expr(expr_deparse(x))` is not
-  lossy.
+* The `!!!` operator now supports all classed objects like factors. It
+  calls `as.list()` on S3 objects and `as(x, "list")` on S4 objects.
 
-* `new_data_mask()` now throws an error when `bottom` is not a child
-  of `top` (#551).
+* `dots_list()` gains several arguments to control how dots are
+  collected. You can control the selection of arguments with the same
+  name with `.homonyms` (keep first, last, all, or abort). You can
+  also elect to preserve empty arguments with `.preserve_empty`.
 
-* Formulas are now evaluated in the correct environment within
-  `eval_tidy()`. This fixes issues in dplyr and other tidy-evaluation
-  interfaces.
 
-* New functions `new_quosures()` and `as_quosures()` to create or
-  coerce to a list of quosures. This is a small S3 class that ensures
-  two invariants on subsetting and concatenation: that each element is
-  a quosure and that the list is always named even if only with a
-  vector of empty strings.
+## Conditions and errors
+
+* New `trace_back()` captures a backtrace. Compared to the base R
+  traceback, it contains additional structure about the relationship
+  between frames. It comes with tools for automatically restricting to
+  frames after a certain environment on the stack, and to simplify
+  when printing. These backtraces are now recorded in errors thrown by
+  `abort()` (see below).
+
+* `abort()` gains a `parent` argument to specify a parent error. This
+  is meant for situations where a low-level error is expected
+  (e.g. download or parsing failed) and you'd like to throw an error
+  with higher level information. Specifying the low-level error as
+  parent makes it possible to partition the backtraces based on
+  ancestry.
+
+* Errors thrown with `abort()` now embed a backtrace in the condition
+  object. It is no longer necessary to record a trace with a calling
+  handler for such errors.
+
+* `with_abort()` runs expressions in a context where all errors are
+  promoted to rlang errors and gain a backtrace.
+
+* Unhandled errors thrown by `abort()` are now automatically saved and
+  can be retrieved with `rlang::last_error()`. The error prints with a
+  simplified backtrace. Call `summary(last_error())` to see the full
+  backtrace.
+
+* New experimental option `rlang__backtrace_on_error` to display
+  backtraces alongside error messages. See `?rlang::abort` for
+  supported options.
+
+* The new `signal()` function completes the `abort()`, `warn()` and
+  `inform()` family. It creates and signals a bare condition.
+
+* New `interrupt()` function to simulate an user interrupt from R
+  code.
+
+* `cnd_signal()` now dispatches messages, warnings, errors and
+  interrupts to the relevant signalling functions (`message()`,
+  `warning()`, `stop()` and the C function `Rf_onintr()`). This makes
+  it a good choice to resignal a captured condition.
+
+* New `cnd_type()` helper to determine the type of a condition
+  (`"condition"`, `"message"`, `"warning"`, `"error"` or `"interrupt"`).
+
+* `abort()`, `warn()` and `inform()` now accepts metadata with `...`.
+  The data are stored in the condition and can be examined by user
+  handlers.
+
+  Consequently all arguments have been renamed and prefixed with a dot
+  (to limit naming conflicts between arguments and metadata names).
+
+* `with_handlers()` treats bare functions as exiting handlers
+  (equivalent to handlers supplied to `tryCatch()`). It also supports
+  the formula shortcut for lambda functions (as in purrr).
+
+* `with_handlers()` now produces a cleaner stack trace.
 
 
 ## Tidy dots
@@ -133,6 +196,46 @@ list of API changes.
   really want to assign to a variable by wrapping in parentheses.
 
 * `lapply(list(quote(foo)), list2)` no longer evaluates `foo` (#580).
+
+
+## Tidy eval
+
+* You can now unquote quosured symbols as LHS of `:=`. The symbol is
+  automatically unwrapped from the quosure.
+
+* Quosure methods have been defined for common operations like
+  `==`. These methods fail with an informative error message
+  suggesting to unquote the quosure (#478, #tidyverse/dplyr#3476).
+
+* `as_data_pronoun()` now accepts data masks. If the mask has multiple
+  environments, all of these are looked up when subsetting the pronoun.
+  Function objects stored in the mask are bypassed.
+
+* It is now possible to unquote strings in function position. This is
+  consistent with how the R parser coerces strings to symbols. These
+  two expressions are now equivalent: `expr("foo"())` and
+  `expr((!!"foo")())`.
+
+* Quosures converted to functions with `as_function()` now support
+  nested quosures.
+
+* `expr_deparse()` (used to print quosures at the console) now escapes
+  special characters. For instance, newlines now print as `"\n"` (#484).
+  This ensures that the roundtrip `parse_expr(expr_deparse(x))` is not
+  lossy.
+
+* `new_data_mask()` now throws an error when `bottom` is not a child
+  of `top` (#551).
+
+* Formulas are now evaluated in the correct environment within
+  `eval_tidy()`. This fixes issues in dplyr and other tidy-evaluation
+  interfaces.
+
+* New functions `new_quosures()` and `as_quosures()` to create or
+  coerce to a list of quosures. This is a small S3 class that ensures
+  two invariants on subsetting and concatenation: that each element is
+  a quosure and that the list is always named even if only with a
+  vector of empty strings.
 
 
 ## Environments
@@ -223,66 +326,6 @@ list of API changes.
 
 * `env_get()` now supports retrieving missing arguments when `inherit`
   is `FALSE`.
-
-
-## Conditions and errors
-
-* New `trace_back()` captures a backtrace. Compared to the base R
-  traceback, it contains additional structure about the relationship
-  between frames. It comes with tools for automatically restricting to
-  frames after a certain environment on the stack, and to simplify
-  when printing. These backtraces are now recorded in errors thrown by
-  `abort()` (see below).
-
-* `abort()` gains a `parent` argument to specify a parent error. This
-  is meant for situations where a low-level error is expected
-  (e.g. download or parsing failed) and you'd like to throw an error
-  with higher level information. Specifying the low-level error as
-  parent makes it possible to partition the backtraces based on
-  ancestry.
-
-* Errors thrown with `abort()` now embed a backtrace in the condition
-  object. It is no longer necessary to record a trace with a calling
-  handler for such errors.
-
-* `with_abort()` runs expressions in a context where all errors are
-  promoted to rlang errors and gain a backtrace.
-
-* Unhandled errors thrown by `abort()` are now automatically saved and
-  can be retrieved with `rlang::last_error()`. The error prints with a
-  simplified backtrace. Call `summary(last_error())` to see the full
-  backtrace.
-
-* New experimental option `rlang__backtrace_on_error` to display
-  backtraces alongside error messages. See `?rlang::abort` for
-  supported options.
-
-* The new `signal()` function completes the `abort()`, `warn()` and
-  `inform()` family. It creates and signals a bare condition.
-
-* New `interrupt()` function to simulate an user interrupt from R
-  code.
-
-* `cnd_signal()` now dispatches messages, warnings, errors and
-  interrupts to the relevant signalling functions (`message()`,
-  `warning()`, `stop()` and the C function `Rf_onintr()`). This makes
-  it a good choice to resignal a captured condition.
-
-* New `cnd_type()` helper to determine the type of a condition
-  (`"condition"`, `"message"`, `"warning"`, `"error"` or `"interrupt"`).
-
-* `abort()`, `warn()` and `inform()` now accepts metadata with `...`.
-  The data are stored in the condition and can be examined by user
-  handlers.
-
-  Consequently all arguments have been renamed and prefixed with a dot
-  (to limit naming conflicts between arguments and metadata names).
-
-* `with_handlers()` treats bare functions as exiting handlers
-  (equivalent to handlers supplied to `tryCatch()`). It also supports
-  the formula shortcut for lambda functions (as in purrr).
-
-* `with_handlers()` now produces a cleaner stack trace.
 
 
 ## Calls
