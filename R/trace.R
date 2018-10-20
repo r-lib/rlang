@@ -1,9 +1,9 @@
-#' Capture a call trace.
+#' Capture a backtrace
 #'
-#' A call trace captures the sequence of calls that lead to the current function,
-#' sometimes called the call stack. Because of lazy evaluation, the call
-#' stack in R is actually a tree, which the print method of this object will
-#' reveal.
+#' A backtrace captures the sequence of calls that lead to the current
+#' function, sometimes called the call stack. Because of lazy
+#' evaluation, the call stack in R is actually a tree, which the
+#' `summary()` method of this object will reveal.
 #'
 #' @param top The first frame environment to be included in the
 #'   backtrace. This becomes the top of the backtrace tree and

@@ -2,7 +2,7 @@
 % Please edit documentation in R/trace.R
 \name{trace_back}
 \alias{trace_back}
-\title{Capture a call trace.}
+\title{Capture a backtrace}
 \usage{
 trace_back(top = NULL, bottom = NULL)
 }
@@ -26,10 +26,10 @@ capture context.
 Can also be an integer that will be passed to \code{\link[=caller_env]{caller_env()}}.}
 }
 \description{
-A call trace captures the sequence of calls that lead to the current function,
-sometimes called the call stack. Because of lazy evaluation, the call
-stack in R is actually a tree, which the print method of this object will
-reveal.
+A backtrace captures the sequence of calls that lead to the current
+function, sometimes called the call stack. Because of lazy
+evaluation, the call stack in R is actually a tree, which the
+\code{summary()} method of this object will reveal.
 }
 \examples{
 # Trim backtraces automatically (this improves the generated
