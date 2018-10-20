@@ -85,7 +85,6 @@ parse_exprs <- function(x) {
 }
 
 #' @rdname parse_expr
-#' @usage NULL
 #' @export
 parse_quo <- function(x, env) {
   if (missing(env)) {
@@ -94,7 +93,6 @@ parse_quo <- function(x, env) {
   new_quosure(parse_expr(x), as_environment(env))
 }
 #' @rdname parse_expr
-#' @usage NULL
 #' @export
 parse_quos <- function(x, env) {
   if (missing(env)) {

@@ -2,4 +2,7 @@ pandoc: 2.2.3.2
 pkgdown: 1.1.0
 pkgdown_sha: ~
 articles: []
+urls:
+  reference: http://rlang.r-lib.org/reference
+  article: http://rlang.r-lib.org/articles
 

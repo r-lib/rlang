@@ -1,11 +1,10 @@
-home:
-  strip_header: true
+url: http://rlang.r-lib.org
 
 reference:
   - title: Tidy evaluation
     desc: >
-      These functions support quasiquotation. They return quosures or
-      raw expressions.
+      Quote arguments and expressions with unquoting support. The
+      quosure variants wrap an environment with the expression.
     contents:
       - quo
       - quos
@@ -16,21 +15,26 @@ reference:
       - enexpr
       - enexprs
       - quasiquotation
-  - title: Creating tidy evaluation APIs
+  - title: Tidy dots
     desc: >
-      This set of functions makes it easy to create tidy eval APIs.
-      They are meant for developers rather than users.
+      Collect arguments contained in `...` with `!!!` and
+      name-unquoting support.
     contents:
-      - "`tidyeval-data`"
-      - eval_tidy
-      - as_data_mask
-      - new_data_mask
-      - as_data_pronoun
+      - list2
+      - dots_list
+  - title: Errors, conditions, and backtraces
+    contents:
+      - abort
+      - warn
+      - inform
+      - signal
+      - trace_back
+      - with_abort
   - title: Evaluate expressions
     contents:
       - eval_tidy
       - eval_bare
-      - invoke
+      - exec
   - title: Symbols
     contents:
       - sym
@@ -38,16 +42,14 @@ reference:
       - is_symbol
   - title: Calls
     contents:
+      - starts_with("call_")
       - call2
       - is_call
-      - call_modify
-      - call_standardise
-      - call_fn
-      - call_name
-      - call_args
-      - call_args_names
   - title: Expressions
     contents:
+      - starts_with("expr_")
+      - starts_with("exprs_")
+      - starts_with("parse_")
       - is_expression
       - is_symbolic
       - expr_text
@@ -55,88 +57,73 @@ reference:
       - expr_name
       - set_expr
       - get_expr
-      - parse_expr
-      - parse_exprs
-      - parse_quo
-      - parse_quos
-      - expr_interp
-      - exprs_auto_name
-      - expr_print
-      - expr_deparse
   - title: Quosures
     contents:
+      - starts_with("quo_")
       - new_quosure
       - is_quosure
       - as_quosure
-      - quo_is_missing
-      - quo_is_symbol
-      - quo_is_call
-      - quo_is_symbolic
-      - quo_is_null
-      - quo_squash
-      - quo_text
-      - quo_label
-      - quo_name
       - is_quosures
       - quos_auto_name
   - title: Formulas
     contents:
+      - starts_with("f_")
       - new_formula
       - is_formula
       - is_bare_formula
-      - f_rhs
-      - f_lhs
-      - f_env
-      - "`f_env<-`"
-      - f_text
-      - f_label
-      - f_name
   - title: Functions
     contents:
+      - starts_with("fn_")
       - new_function
-      - fn_fmls
-      - fn_fmls_names
-      - fn_fmls_syms
       - is_function
       - is_closure
       - is_primitive
-      - fn_env
-      - "`fn_env<-`"
       - as_function
       - as_closure
   - title: Environments
     contents:
       - env
-      - child_env
+      - new_environment
+      - env_print
       - env_parent
       - env_tail
       - env_parents
       - env_depth
       - get_env
       - set_env
-      - env_bind
-      - env_bind_exprs
-      - env_bind_fns
-      - env_bury
-      - env_unbind
-      - env_has
-      - env_get
-      - env_get_list
-      - env_names
       - env_clone
       - env_inherits
       - is_environment
       - is_bare_environment
       - as_environment
-      - scoped_bindings
-      - with_bindings
       - caller_env
+  - title: Environment bindings
+    contents:
+      - env_bind
+      - env_bind_lazy
+      - env_bind_active
+      - env_unbind
+      - with_bindings
+      - scoped_bindings
+      - env_has
+      - env_get
+      - env_get_list
+      - env_names
+      - env_length
+      - env_poke
   - title: Search path and namespaces
     contents:
+      - search_envs
+      - search_env
       - base_env
       - global_env
       - empty_env
       - is_installed
+      - is_namespace
+      - ns_env
+      - pkg_env
+      - env_name
+      - env_label
   - title: S3
     contents:
       - inherits_any
@@ -147,6 +134,8 @@ reference:
       - as_box
       - as_box_if
       - unbox
+      - zap
+      - is_zap
   - title: Create vectors
     desc: >
       Atomic vector constructors have implicit splicing (i.e. splice
@@ -162,13 +151,9 @@ reference:
       - list2
       - string
       - rep_along
-      - new_logical_along
-      - new_integer_along
-      - new_double_along
-      - new_complex_along
-      - new_character_along
-      - new_raw_along
-      - new_list_along
+      - rep_named
+      - seq2
+      - seq2_along
       - new_logical
       - new_integer
       - new_double
@@ -176,60 +161,16 @@ reference:
       - new_character
       - new_raw
       - new_list
-  - title: Coerce vectors
-    desc: >
-      These coercers skip S3 dispatch and have stricter implicit
-      coercion rules.
-    contents:
-      - as_logical
-      - as_integer
-      - as_double
-      - as_complex
-      - as_character
-      - as_string
-      - as_list
-      - as_bytes
-  - title: Flatten and squash vectors
-    contents:
-      - flatten
-      - flatten_lgl
-      - flatten_int
-      - flatten_dbl
-      - flatten_cpl
-      - flatten_chr
-      - flatten_raw
-      - squash
-      - squash_lgl
-      - squash_int
-      - squash_dbl
-      - squash_cpl
-      - squash_chr
-      - squash_raw
-      - flatten_if
-      - squash_if
-  - title: Vectors tools
-    contents:
-      - seq2
-      - seq2_along
   - title: Missing values
     contents:
-      - na_lgl
-      - na_int
-      - na_dbl
-      - na_chr
-      - na_cpl
+      - starts_with("na_")
       - are_na
       - is_na
-      - is_lgl_na
-      - is_int_na
-      - is_dbl_na
-      - is_cpl_na
-      - is_chr_na
   - title: Attributes
     contents:
       - set_names
       - names2
-  - title: Vectors and lists predicates
+  - title: Type predicates
     contents:
       - is_list
       - is_atomic
@@ -263,59 +204,37 @@ reference:
       - is_integerish
       - is_bare_integerish
       - is_scalar_integerish
-  - title: Other R types and objects predicates
-    contents:
       - is_null
       - is_true
       - is_false
       - is_string
       - is_bare_string
-      - is_copyable
   - title: Operators
     contents:
       - "`%||%`"
       - "`%|%`"
       - "`%@%`"
-  - title: Capture dots
-    desc: >
-      Capture dots with different kinds of splicing semantics.
-    contents:
-      - dots_list
-      - dots_n
   - title: Function arguments
     contents:
       - arg_match
       - missing_arg
       - is_missing
       - maybe_missing
-  - title: Create conditions
+  - title: Create tidy evaluation APIs
     desc: >
-      These helpers make it easy to create typed conditions.
+      Create data masking APIs à-la dplyr or tidyr.
+      These functions are meant for developers rather than users.
     contents:
-      - ends_with("cnd")
-      - is_condition
-  - title: Signal conditions
-    contents:
-      - abort
-      - warn
-      - inform
-      - cnd_signal
-      - cnd_abort
-  - title: Restarts
-    contents:
-      - with_restarts
-      - rst_list
-      - rst_exists
-      - rst_jump
-      - rst_maybe_jump
-      - rst_abort
-      - rst_muffle
+      - "`tidyeval-data`"
+      - eval_tidy
+      - as_data_mask
+      - new_data_mask
+      - as_data_pronoun
   - title: Condition handlers
     contents:
       - with_handlers
       - exiting
-      - inplace
-      - restarting
+      - calling
 
 navbar:
   type: default

@@ -680,7 +680,7 @@ parse_quosure <- function(x, env = caller_env()) {
   ))
   parse_quo(x, env = env)
 }
-#' @rdname parse_expr
+#' @rdname parse_quosure
 #' @export
 parse_quosures <- function(x, env = caller_env()) {
   signal_soft_deprecated(paste_line(

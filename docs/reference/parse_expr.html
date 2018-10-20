@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Parse R code — parse_quosures • rlang</title>
+<title>Parse R code — parse_expr • rlang</title>
 
 <!-- jquery -->
 <script src="https://code.jquery.com/jquery-3.1.0.min.js" integrity="sha384-nrOSfDHtoPMzJHjVTdCopGqIqeYETSXhZDFyniQ8ZHcVy08QesyHcnOUpMpqnmWq" crossorigin="anonymous"></script>
@@ -30,7 +30,7 @@
 
 
 
-<meta property="og:title" content="Parse R code — parse_quosures" />
+<meta property="og:title" content="Parse R code — parse_expr" />
 
 <meta property="og:description" content="These functions parse and transform text into R expressions. This
 is the first step to interpret or evaluate a piece of R code
@@ -100,7 +100,7 @@ written by a programmer." />
   <div class="col-md-9 contents">
     <div class="page-header">
     <h1>Parse R code</h1>
-    <small class="dont-index">Source: <a href='https://github.com/r-lib/rlang/blob/master/R/lifecycle-retired.R'><code>R/lifecycle-retired.R</code></a>, <a href='https://github.com/r-lib/rlang/blob/master/R/parse.R'><code>R/parse.R</code></a></small>
+    <small class="dont-index">Source: <a href='https://github.com/r-lib/rlang/blob/master/R/parse.R'><code>R/parse.R</code></a></small>
     <div class="hidden name"><code>parse_expr.Rd</code></div>
     </div>
 
@@ -112,11 +112,13 @@ written by a programmer.</p>
     
     </div>
 
-    <pre class="usage"><span class='fu'>parse_quosures</span>(<span class='no'>x</span>, <span class='kw'>env</span> <span class='kw'>=</span> <span class='fu'><a href='caller_env.html'>caller_env</a></span>())
+    <pre class="usage"><span class='fu'>parse_expr</span>(<span class='no'>x</span>)
 
-<span class='fu'>parse_expr</span>(<span class='no'>x</span>)
+<span class='fu'>parse_exprs</span>(<span class='no'>x</span>)
 
-<span class='fu'>parse_exprs</span>(<span class='no'>x</span>)</pre>
+<span class='fu'>parse_quo</span>(<span class='no'>x</span>, <span class='no'>env</span>)
+
+<span class='fu'>parse_quos</span>(<span class='no'>x</span>, <span class='no'>env</span>)</pre>
     
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
@@ -160,7 +162,7 @@ functions also support R connections.</p>
 
     
     <ul>
-<li><p><code><a href='parse_quosure.html'>parse_quosure()</a></code> and <code>parse_quosures()</code> were soft-deprecated in
+<li><p><code><a href='parse_quosure.html'>parse_quosure()</a></code> and <code><a href='parse_quosure.html'>parse_quosures()</a></code> were soft-deprecated in
 rlang 0.2.0 and renamed to <code>parse_quo()</code> and <code>parse_quos()</code>. This
 is consistent with the rule that abbreviated suffixes indicate
 the return type of a function.</p></li>

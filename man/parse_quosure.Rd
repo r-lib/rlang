@@ -2,9 +2,12 @@
 % Please edit documentation in R/lifecycle-retired.R
 \name{parse_quosure}
 \alias{parse_quosure}
+\alias{parse_quosures}
 \title{Parse text into a quosure}
 \usage{
 parse_quosure(x, env = caller_env())
+
+parse_quosures(x, env = caller_env())
 }
 \arguments{
 \item{x}{Text containing expressions to parse_expr for
