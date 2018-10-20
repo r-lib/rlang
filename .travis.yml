@@ -16,7 +16,7 @@ matrix:
         - Rscript -e 'covr::codecov()'
       deploy:
         provider: script
-        script: Rscript -e 'pkgdown::deploy_site_github(verbose = TRUE)'
+        script: Rscript -e 'options(crayon.enabled = FALSE); pkgdown::deploy_site_github(verbose = TRUE)'
         skip_cleanup: true
     - r: devel
 
