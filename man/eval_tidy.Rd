@@ -42,6 +42,7 @@ rlang data mask with \code{\link[=new_data_mask]{new_data_mask()}}.
 }
 
 \examples{
+
 # With simple quoted expressions eval_tidy() works the same way as
 # eval():
 apple <- "apple"

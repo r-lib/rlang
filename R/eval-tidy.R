@@ -19,13 +19,6 @@
 #'   values and throw errors if you try to access non-existent values.
 #'
 #'
-#' @section Life cycle:
-#'
-#' **rlang 0.3.0**
-#'
-#' Passing an environment to `data` is deprecated. Please construct an
-#' rlang data mask with [new_data_mask()].
-#'
 #' @param expr An expression to evaluate.
 #' @param data A data frame, or named list or vector. Alternatively, a
 #'   data mask created with [as_data_mask()] or [new_data_mask()].
@@ -34,8 +27,18 @@
 #'   their own environments.
 #' @seealso [quasiquotation] for the second leg of the tidy evaluation
 #'   framework.
-#' @export
+#'
+#'
+#' @section Life cycle:
+#'
+#' **rlang 0.3.0**
+#'
+#' Passing an environment to `data` is deprecated. Please construct an
+#' rlang data mask with [new_data_mask()].
+#'
+#'
 #' @examples
+#'
 #' # With simple quoted expressions eval_tidy() works the same way as
 #' # eval():
 #' apple <- "apple"
@@ -82,7 +85,7 @@
 #'   data %>% with_data(!!kiwi)     # "kiwi"
 #'   data %>% with_data(.env$kiwi)  # NULL
 #' }
-#' @name eval_tidy
+#' @export
 eval_tidy <- function(expr, data = NULL, env = caller_env()) {
   .Call(rlang_eval_tidy, expr, data, env)
 }
