@@ -7,7 +7,7 @@
 eval_tidy(expr, data = NULL, env = caller_env())
 }
 \arguments{
-\item{expr}{An expression to evaluate.}
+\item{expr}{An expression or quosure to evaluate.}
 
 \item{data}{A data frame, or named list or vector. Alternatively, a
 data mask created with \code{\link[=as_data_mask]{as_data_mask()}} or \code{\link[=new_data_mask]{new_data_mask()}}.}
@@ -21,10 +21,15 @@ their own environments.}
 
 \code{eval_tidy()} is a variant of \code{\link[base:eval]{base::eval()}} that powers the tidy
 evaluation framework. Like \code{eval()} it accepts user data as
-argument. If supplied, it evaluates its input \code{expr} in a \link[=as_data_mask]{data mask}. In addition \code{eval_tidy()} supports:
+argument. Whereas \code{eval()} simply transforms the data to an
+environment, \code{eval_tidy()} transforms it to a \strong{data mask} with
+\code{\link[=as_data_mask]{as_data_mask()}}. Evaluating in a data mask enables the following
+features:
 \itemize{
-\item \link[=quotation]{Quosures}. The expression wrapped in the quosure
-evaluates in its original context (masked by \code{data} if supplied).
+\item \link[=quotation]{Quosures}. Quosures are expressions bundled with an
+environment. If \code{data} is supplied, objects in the data mask
+always have precedence over the quosure environment, i.e. the
+data masks the environment.
 \item \link[=.data]{Pronouns}. If \code{data} is supplied, the \code{.env} and \code{.data}
 pronouns are installed in the data mask. \code{.env} is a reference to
 the calling environment and \code{.data} refers to the \code{data} argument.
@@ -32,6 +37,35 @@ These pronouns lets you be explicit about where to find
 values and throw errors if you try to access non-existent values.
 }
 }
+\section{When should \code{eval_tidy()} be used instead of \code{base}{
+:eval()}?
+
+\code{base::eval()} is sufficient for simple evaluation. Use
+\code{eval_tidy()} when you'd like to support expressions referring to
+the \code{.data} pronoun, or when you need to support quosures.
+
+If you're evaluating an expression captured with quasiquotation
+support, it is recommended to use \code{eval_tidy()} because users will
+likely unquote quosures.
+
+Note that unwrapping a quosure with \code{\link[=quo_get_expr]{quo_get_expr()}} does not
+guarantee that there is no quosures inside the expression. Quosures
+might be unquoted anywhere. For instance, the following does not
+work reliably in the presence of nested quosures:\preformatted{my_quoting_fn <- function(x) {
+  x <- enquo(x)
+  expr <- quo_get_expr(x)
+  env <- quo_get_env(x)
+  eval(expr, env)
+}
+
+# Works:
+my_quoting_fn(toupper(letters))
+
+# Fails because of a nested quosure:
+my_quoting_fn(toupper(!!quo(letters)))
+}
+}
+
 \section{Life cycle}{
 
 

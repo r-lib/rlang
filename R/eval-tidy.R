@@ -6,11 +6,15 @@
 #'
 #' `eval_tidy()` is a variant of [base::eval()] that powers the tidy
 #' evaluation framework. Like `eval()` it accepts user data as
-#' argument. If supplied, it evaluates its input `expr` in a [data
-#' mask][as_data_mask]. In addition `eval_tidy()` supports:
+#' argument. Whereas `eval()` simply transforms the data to an
+#' environment, `eval_tidy()` transforms it to a **data mask** with
+#' [as_data_mask()]. Evaluating in a data mask enables the following
+#' features:
 #'
-#' - [Quosures][quotation]. The expression wrapped in the quosure
-#'   evaluates in its original context (masked by `data` if supplied).
+#' - [Quosures][quotation]. Quosures are expressions bundled with an
+#'   environment. If `data` is supplied, objects in the data mask
+#'   always have precedence over the quosure environment, i.e. the
+#'   data masks the environment.
 #'
 #' - [Pronouns][.data]. If `data` is supplied, the `.env` and `.data`
 #'   pronouns are installed in the data mask. `.env` is a reference to
@@ -19,7 +23,7 @@
 #'   values and throw errors if you try to access non-existent values.
 #'
 #'
-#' @param expr An expression to evaluate.
+#' @param expr An expression or quosure to evaluate.
 #' @param data A data frame, or named list or vector. Alternatively, a
 #'   data mask created with [as_data_mask()] or [new_data_mask()].
 #' @param env The environment in which to evaluate `expr`. This
@@ -27,6 +31,37 @@
 #'   their own environments.
 #' @seealso [quasiquotation] for the second leg of the tidy evaluation
 #'   framework.
+#'
+#'
+#' @section When should `eval_tidy()` be used instead of `base::eval()`?
+#'
+#' `base::eval()` is sufficient for simple evaluation. Use
+#' `eval_tidy()` when you'd like to support expressions referring to
+#' the `.data` pronoun, or when you need to support quosures.
+#'
+#' If you're evaluating an expression captured with quasiquotation
+#' support, it is recommended to use `eval_tidy()` because users will
+#' likely unquote quosures.
+#'
+#' Note that unwrapping a quosure with [quo_get_expr()] does not
+#' guarantee that there is no quosures inside the expression. Quosures
+#' might be unquoted anywhere. For instance, the following does not
+#' work reliably in the presence of nested quosures:
+#'
+#' ```
+#' my_quoting_fn <- function(x) {
+#'   x <- enquo(x)
+#'   expr <- quo_get_expr(x)
+#'   env <- quo_get_env(x)
+#'   eval(expr, env)
+#' }
+#'
+#' # Works:
+#' my_quoting_fn(toupper(letters))
+#'
+#' # Fails because of a nested quosure:
+#' my_quoting_fn(toupper(!!quo(letters)))
+#' ```
 #'
 #'
 #' @section Life cycle:
