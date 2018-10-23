@@ -5,7 +5,7 @@
 
 ## Breaking changes
 
-The rlang API is still maturing. In these sections you'll find hard
+The rlang API is still maturing. In this section, you'll find hard
 breaking changes. See the life cycle section below for an exhaustive
 list of API changes.
 
