@@ -7,7 +7,7 @@
 eval_tidy_(expr, bottom, top = NULL, env = caller_env())
 }
 \arguments{
-\item{expr}{An expression to evaluate.}
+\item{expr}{An expression or quosure to evaluate.}
 
 \item{bottom}{The environment containing masking objects if the
 data mask is one environment deep. The bottom environment if the
