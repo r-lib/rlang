@@ -65,9 +65,9 @@
 #'
 #' #' Can supply arguments individually or in a list
 #' call2(quote(f), a = 1, b = 2)
-#' call2(quote(f), splice(list(a = 1, b = 2)))
+#' call2(quote(f), !!!list(a = 1, b = 2))
 #'
-#' # Creating namespaced calls:
+#' # Creating namespaced calls is easy:
 #' call2("fun", arg = quote(baz), .ns = "mypkg")
 #' @export
 call2 <- function(.fn, ..., .ns = NULL) {
