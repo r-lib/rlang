@@ -14,6 +14,14 @@
 #' function to inline in the call) and a list of arguments.
 #'
 #'
+#' @param .fn Function to call. Must be a callable object: a string,
+#'   symbol, call, or a function.
+#' @param ... Arguments to the call either in or out of a list. These dots
+#'   support [tidy dots][tidy-dots] features.
+#' @param .ns Namespace with which to prefix `.fn`. Must be a string
+#'   or symbol.
+#'
+#'
 #' @section Life cycle:
 #'
 #' In rlang 0.2.0 `lang()` was soft-deprecated and renamed to
@@ -25,14 +33,8 @@
 #' between S modes and R types. With hindsight we find it is better to
 #' use more meaningful type names.
 #'
-#' @param .fn Function to call. Must be a callable object: a string,
-#'   symbol, call, or a function.
-#' @param ... Arguments to the call either in or out of a list. These dots
-#'   support [tidy dots][tidy-dots] features.
-#' @param .ns Namespace with which to prefix `.fn`. Must be a string
-#'   or symbol.
+#'
 #' @seealso call_modify
-#' @export
 #' @examples
 #' # fn can either be a string, a symbol or a call
 #' call2("f", a = 1)
@@ -45,6 +47,7 @@
 #'
 #' # Creating namespaced calls:
 #' call2("fun", arg = quote(baz), .ns = "mypkg")
+#' @export
 call2 <- function(.fn, ..., .ns = NULL) {
   if (is_character(.fn)) {
     if (length(.fn) != 1) {
