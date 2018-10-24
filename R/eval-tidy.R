@@ -25,12 +25,40 @@
 #'
 #' @param expr An expression or quosure to evaluate.
 #' @param data A data frame, or named list or vector. Alternatively, a
-#'   data mask created with [as_data_mask()] or [new_data_mask()].
+#'   data mask created with [as_data_mask()] or
+#'   [new_data_mask()]. Objects in `data` have priority over those in
+#'   `env`. See the section about data masking.
+#'
 #' @param env The environment in which to evaluate `expr`. This
 #'   environment is not applicable for quosures because they have
 #'   their own environments.
 #' @seealso [quasiquotation] for the second leg of the tidy evaluation
 #'   framework.
+#'
+#'
+#' @section Data masking:
+#'
+#' Data masking refers to how columns or objects inside `data` have
+#' priority over objects defined in `env` (or in the quosure
+#' environment, if applicable). If there is a column `var` in `data`
+#' and an object `var` in `env`, and `expr` refers to `var`, the
+#' column has priority:
+#'
+#' ```
+#' var <- "this one?"
+#' data <- data.frame(var = rep("Or that one?", 3))
+#'
+#' within <- function(data, expr) {
+#'   eval_tidy(enquo(expr), data)
+#' }
+#'
+#' within(data, toupper(var))
+#' #> [1] "OR THAT ONE?" "OR THAT ONE?" "OR THAT ONE?"
+#' ```
+#'
+#' Because the columns or objects in `data` are always found first,
+#' before objects from `env`, we say that the data "masks" the
+#' environment.
 #'
 #'
 #' @section When should `eval_tidy()` be used instead of `base::eval()`?

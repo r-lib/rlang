@@ -10,7 +10,9 @@ eval_tidy(expr, data = NULL, env = caller_env())
 \item{expr}{An expression or quosure to evaluate.}
 
 \item{data}{A data frame, or named list or vector. Alternatively, a
-data mask created with \code{\link[=as_data_mask]{as_data_mask()}} or \code{\link[=new_data_mask]{new_data_mask()}}.}
+data mask created with \code{\link[=as_data_mask]{as_data_mask()}} or
+\code{\link[=new_data_mask]{new_data_mask()}}. Objects in \code{data} have priority over those in
+\code{env}. See the section about data masking.}
 
 \item{env}{The environment in which to evaluate \code{expr}. This
 environment is not applicable for quosures because they have
@@ -37,6 +39,29 @@ These pronouns lets you be explicit about where to find
 values and throw errors if you try to access non-existent values.
 }
 }
+\section{Data masking}{
+
+
+Data masking refers to how columns or objects inside \code{data} have
+priority over objects defined in \code{env} (or in the quosure
+environment, if applicable). If there is a column \code{var} in \code{data}
+and an object \code{var} in \code{env}, and \code{expr} refers to \code{var}, the
+column has priority:\preformatted{var <- "this one?"
+data <- data.frame(var = rep("Or that one?", 3))
+
+within <- function(data, expr) {
+  eval_tidy(enquo(expr), data)
+}
+
+within(data, toupper(var))
+#> [1] "OR THAT ONE?" "OR THAT ONE?" "OR THAT ONE?"
+}
+
+Because the columns or objects in \code{data} are always found first,
+before objects from \code{env}, we say that the data "masks" the
+environment.
+}
+
 \section{When should \code{eval_tidy()} be used instead of \code{base}{
 :eval()}?
 
