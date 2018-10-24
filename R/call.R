@@ -458,7 +458,7 @@ call_modify <- function(.call,
   }
 
   if (!is_call(expr)) {
-    abort_call_input_type()
+    abort_call_input_type(".call")
   }
 
   expr <- duplicate(expr, shallow = TRUE)
@@ -531,8 +531,8 @@ call_modify <- function(.call,
   set_expr(.call, expr)
 }
 
-abort_call_input_type <- function() {
-  abort("`.call` must be a quoted call")
+abort_call_input_type <- function(arg) {
+  abort(sprintf("`%s` must be a quoted call", arg))
 }
 
 #' Standardise a call
@@ -557,7 +557,7 @@ abort_call_input_type <- function() {
 call_standardise <- function(call, env = caller_env()) {
   expr <- get_expr(call)
   if (!is_call(expr)) {
-    abort_call_input_type()
+    abort_call_input_type("call")
   }
 
   if (is_frame(call)) {
@@ -609,7 +609,7 @@ call_fn <- function(call, env = caller_env()) {
   env <- get_env(call, env)
 
   if (!is_call(expr)) {
-    abort_call_input_type()
+    abort_call_input_type("call")
   }
 
   switch_call(expr,
@@ -654,7 +654,7 @@ call_fn <- function(call, env = caller_env()) {
 call_name <- function(call) {
   call <- get_expr(call)
   if (!is_call(call)) {
-    abort_call_input_type()
+    abort_call_input_type("call")
   }
 
   switch_call(call,
@@ -694,7 +694,7 @@ call_name <- function(call) {
 call_args <- function(call) {
   call <- get_expr(call)
   if (!is_call(call)) {
-    abort_call_input_type()
+    abort_call_input_type("call")
   }
 
   args <- as.list(call[-1])
@@ -705,7 +705,7 @@ call_args <- function(call) {
 call_args_names <- function(call) {
   call <- get_expr(call)
   if (!is_call(call)) {
-    abort_call_input_type()
+    abort_call_input_type("call")
   }
   names2(call[-1])
 }
