@@ -61,7 +61,7 @@
 #' environment.
 #'
 #'
-#' @section When should `eval_tidy()` be used instead of `base::eval()`?
+#' @section When should eval_tidy() be used instead of base::eval()?:
 #'
 #' `base::eval()` is sufficient for simple evaluation. Use
 #' `eval_tidy()` when you'd like to support expressions referring to

@@ -62,8 +62,8 @@ before objects from \code{env}, we say that the data "masks" the
 environment.
 }
 
-\section{When should \code{eval_tidy()} be used instead of \code{base}{
-:eval()}?
+\section{When should eval_tidy() be used instead of base}{
+:eval()?:
 
 \code{base::eval()} is sufficient for simple evaluation. Use
 \code{eval_tidy()} when you'd like to support expressions referring to
