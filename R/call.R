@@ -653,7 +653,8 @@ call_fn <- function(call, env = caller_env()) {
 #' call_name(quote(foo()()))
 call_name <- function(call) {
   call <- get_expr(call)
-  if (!is_call(call)) {
+
+  if (!is_call(call) || is_call(call, c("::", ":::"))) {
     abort_call_input_type("call")
   }
 

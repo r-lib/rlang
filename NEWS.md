@@ -1,6 +1,11 @@
 
 # rlang 0.3.0.9000
 
+* `call_name()` now fails with namespaced objects.
+  E.g. `call_name(~foo::bar)` is an error while `call_name(~foo::bar())`
+  returns `bar`.
+
+
 # rlang 0.3.0
 
 ## Breaking changes

@@ -419,3 +419,8 @@ test_that("call_print_fine_type() returns correct enum", {
   expect_identical(call_print_fine_type(quote(`$`(a, b, c))), "infix")
   expect_identical(call_print_fine_type(quote(`@`(a, b, c))), "infix")
 })
+
+test_that("call_name() fails with namespaced objects (#670)", {
+  expect_error(call_name(~foo::bar), "`call` must be a quoted call")
+  expect_error(call_name(~foo:::bar), "`call` must be a quoted call")
+})
