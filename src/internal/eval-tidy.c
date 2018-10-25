@@ -298,7 +298,7 @@ sexp* rlang_as_data_mask(sexp* data) {
     r_abort("`data` must be a vector, list, data frame, or environment");
   }
 
-  sexp* data_mask = rlang_new_data_mask(bottom, bottom);
+  sexp* data_mask = KEEP_N(rlang_new_data_mask(bottom, bottom), n_protect);
 
   sexp* data_pronoun = KEEP_N(rlang_as_data_pronoun(data_mask), n_protect);
   r_env_poke(bottom, data_pronoun_sym, data_pronoun);
