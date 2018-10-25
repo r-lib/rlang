@@ -17,17 +17,51 @@ support \link[=tidy-dots]{tidy dots} features.}
 or symbol.}
 }
 \description{
-Language objects are (with symbols) one of the two types of
-\link[=is_symbolic]{symbolic} objects in R. These symbolic objects form
-the backbone of \link[=is_expression]{expressions}. They represent a value,
-unlike literal objects which are their own values. While symbols
-are directly \link[=env_bind]{bound} to a value, language objects
-represent \emph{function calls}, which is why they are commonly referred
-to as calls.
-
-\code{call2()} creates a call from a function name (or a literal
-function to inline in the call) and a list of arguments.
+Quoted function calls are one of the two types of
+\link[=is_symbolic]{symbolic} objects in R. They represent the action of
+calling a function, possibly with arguments. There are two ways of
+creating a quoted call:
+\itemize{
+\item By \link[=quotation]{quoting} it. Quoting prevents functions from being
+called. Instead, you get the description of the function call as
+an R object. That is, a quoted function call.
+\item By constructing it with \code{\link[base:call]{base::call()}}, \code{\link[base:as.call]{base::as.call()}}, or
+\code{call2()}. In this case, you pass the call elements (the function
+to call and the arguments to call it with) separately.
 }
+
+See section below for the difference between \code{call2()} and the base
+constructors.
+}
+\section{Difference with base constructors}{
+
+
+\code{call2()} is more flexible and convenient than \code{base::call()}:
+\itemize{
+\item The function to call can be a string or a \link[=is_callable]{callable}
+object: a symbol, another call (e.g. a \code{$} or \code{[[} call), or a
+function to inline. \code{base::call()} only supports strings and you
+need to use \code{base::as.call()} to construct a call with a callable
+object.\preformatted{call2(list, 1, 2)
+
+as.call(list(list, 1, 2))
+}
+\item The \code{.ns} argument is convenient for creating namespaced calls.\preformatted{call2("list", 1, 2, .ns = "base")
+
+ns_call <- as.call(list(as.name("::"), as.name("list"), as.name("base")))
+as.call(list(ns_call, 1, 2))
+}
+\item \code{call2()} has \link[=list2]{tidy dots} support and you can splice lists
+of arguments with \code{!!!}. With base R, you need to use \code{as.call()}
+instead of \code{call()} if the arguments are in a list.\preformatted{args <- list(na.rm = TRUE, trim = 0)
+
+call2("mean", 1:10, !!!args)
+
+as.call(c(list(as.name("mean"), 1:10), args))
+}
+}
+}
+
 \section{Life cycle}{
 
 
@@ -49,9 +83,9 @@ call2(quote(f()), a = 1)
 
 #' Can supply arguments individually or in a list
 call2(quote(f), a = 1, b = 2)
-call2(quote(f), splice(list(a = 1, b = 2)))
+call2(quote(f), !!!list(a = 1, b = 2))
 
-# Creating namespaced calls:
+# Creating namespaced calls is easy:
 call2("fun", arg = quote(baz), .ns = "mypkg")
 }
 \seealso{

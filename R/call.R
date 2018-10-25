@@ -2,16 +2,21 @@
 #'
 #' @description
 #'
-#' Language objects are (with symbols) one of the two types of
-#' [symbolic][is_symbolic] objects in R. These symbolic objects form
-#' the backbone of [expressions][is_expression]. They represent a value,
-#' unlike literal objects which are their own values. While symbols
-#' are directly [bound][env_bind] to a value, language objects
-#' represent _function calls_, which is why they are commonly referred
-#' to as calls.
+#' Quoted function calls are one of the two types of
+#' [symbolic][is_symbolic] objects in R. They represent the action of
+#' calling a function, possibly with arguments. There are two ways of
+#' creating a quoted call:
 #'
-#' `call2()` creates a call from a function name (or a literal
-#' function to inline in the call) and a list of arguments.
+#' * By [quoting][quotation] it. Quoting prevents functions from being
+#'   called. Instead, you get the description of the function call as
+#'   an R object. That is, a quoted function call.
+#'
+#' * By constructing it with [base::call()], [base::as.call()], or
+#'   `call2()`. In this case, you pass the call elements (the function
+#'   to call and the arguments to call it with) separately.
+#'
+#' See section below for the difference between `call2()` and the base
+#' constructors.
 #'
 #'
 #' @param .fn Function to call. Must be a callable object: a string,
@@ -20,6 +25,44 @@
 #'   support [tidy dots][tidy-dots] features.
 #' @param .ns Namespace with which to prefix `.fn`. Must be a string
 #'   or symbol.
+#'
+#'
+#' @section Difference with base constructors:
+#'
+#' `call2()` is more flexible and convenient than `base::call()`:
+#'
+#' * The function to call can be a string or a [callable][is_callable]
+#'   object: a symbol, another call (e.g. a `$` or `[[` call), or a
+#'   function to inline. `base::call()` only supports strings and you
+#'   need to use `base::as.call()` to construct a call with a callable
+#'   object.
+#'
+#'   ```
+#'   call2(list, 1, 2)
+#'
+#'   as.call(list(list, 1, 2))
+#'   ```
+#'
+#' * The `.ns` argument is convenient for creating namespaced calls.
+#'
+#'   ```
+#'   call2("list", 1, 2, .ns = "base")
+#'
+#'   ns_call <- as.call(list(as.name("::"), as.name("list"), as.name("base")))
+#'   as.call(list(ns_call, 1, 2))
+#'   ```
+#'
+#' * `call2()` has [tidy dots][list2] support and you can splice lists
+#'   of arguments with `!!!`. With base R, you need to use `as.call()`
+#'   instead of `call()` if the arguments are in a list.
+#'
+#'   ```
+#'   args <- list(na.rm = TRUE, trim = 0)
+#'
+#'   call2("mean", 1:10, !!!args)
+#'
+#'   as.call(c(list(as.name("mean"), 1:10), args))
+#'   ```
 #'
 #'
 #' @section Life cycle:
@@ -43,9 +86,9 @@
 #'
 #' #' Can supply arguments individually or in a list
 #' call2(quote(f), a = 1, b = 2)
-#' call2(quote(f), splice(list(a = 1, b = 2)))
+#' call2(quote(f), !!!list(a = 1, b = 2))
 #'
-#' # Creating namespaced calls:
+#' # Creating namespaced calls is easy:
 #' call2("fun", arg = quote(baz), .ns = "mypkg")
 #' @export
 call2 <- function(.fn, ..., .ns = NULL) {
