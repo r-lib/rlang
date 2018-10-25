@@ -42,11 +42,23 @@ constructors.
 object: a symbol, another call (e.g. a \code{$} or \code{[[} call), or a
 function to inline. \code{base::call()} only supports strings and you
 need to use \code{base::as.call()} to construct a call with a callable
-object.
-\item The \code{.ns} argument is convenient for creating namespaced calls.
+object.\preformatted{call2(list, 1, 2)
+
+as.call(list(list, 1, 2))
+}
+\item The \code{.ns} argument is convenient for creating namespaced calls.\preformatted{call2("list", 1, 2, .ns = "base")
+
+ns_call <- as.call(list(as.name("::"), as.name("list"), as.name("base")))
+as.call(list(ns_call, 1, 2))
+}
 \item \code{call2()} has \link[=list2]{tidy dots} support and you can splice lists
 of arguments with \code{!!!}. With base R, you need to use \code{as.call()}
-instead of \code{call()} if the arguments are in a list.
+instead of \code{call()} if the arguments are in a list.\preformatted{args <- list(na.rm = TRUE, trim = 0)
+
+call2("mean", 1:10, !!!args)
+
+as.call(c(list(as.name("mean"), 1:10), args))
+}
 }
 }
 

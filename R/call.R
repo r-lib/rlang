@@ -37,11 +37,32 @@
 #'   need to use `base::as.call()` to construct a call with a callable
 #'   object.
 #'
+#'   ```
+#'   call2(list, 1, 2)
+#'
+#'   as.call(list(list, 1, 2))
+#'   ```
+#'
 #' * The `.ns` argument is convenient for creating namespaced calls.
+#'
+#'   ```
+#'   call2("list", 1, 2, .ns = "base")
+#'
+#'   ns_call <- as.call(list(as.name("::"), as.name("list"), as.name("base")))
+#'   as.call(list(ns_call, 1, 2))
+#'   ```
 #'
 #' * `call2()` has [tidy dots][list2] support and you can splice lists
 #'   of arguments with `!!!`. With base R, you need to use `as.call()`
 #'   instead of `call()` if the arguments are in a list.
+#'
+#'   ```
+#'   args <- list(na.rm = TRUE, trim = 0)
+#'
+#'   call2("mean", 1:10, !!!args)
+#'
+#'   as.call(c(list(as.name("mean"), 1:10), args))
+#'   ```
 #'
 #'
 #' @section Life cycle:
