@@ -512,7 +512,7 @@ sexp* dots_expand(sexp* dots, struct dots_capture_info* capture_info) {
 static sexp* dots_keep(sexp* dots, sexp* nms, bool first) {
   r_ssize n = r_length(dots);
 
-  sexp* dups = r_nms_are_duplicated(nms, !first);
+  sexp* dups = KEEP(r_nms_are_duplicated(nms, !first));
   r_ssize out_n = n - r_lgl_sum(dups);
 
   sexp* out = KEEP(r_new_vector(r_type_list, out_n));
@@ -530,7 +530,7 @@ static sexp* dots_keep(sexp* dots, sexp* nms, bool first) {
     }
   }
 
-  FREE(2);
+  FREE(3);
   return out;
 }
 
