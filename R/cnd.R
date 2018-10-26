@@ -629,7 +629,7 @@ print.rlang_error <- function(x,
   }
 
   if (!is_null(x$parent)) {
-    print(x$parent, ..., child = x, simplify = simplify, fields = fields)
+    print.rlang_error(x$parent, ..., child = x, simplify = simplify, fields = fields)
   }
 
   # Recommend summary() for printing the full backtrace. Only do it

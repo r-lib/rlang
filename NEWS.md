@@ -1,6 +1,9 @@
 
 # rlang 0.3.0.9000
 
+* Base errors set as `parent` of rlang errors are now printed
+  correctly.
+
 * `call_name()` now fails with namespaced objects.
   E.g. `call_name(~foo::bar)` is an error while `call_name(~foo::bar())`
   returns `bar`.

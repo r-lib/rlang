@@ -404,6 +404,12 @@ test_that("with_abort() promotes base errors to rlang errors", {
   })
 })
 
+test_that("base parent errors are printed with rlang method", {
+  base_err <- simpleError("foo")
+  rlang_err <- error_cnd("bar", message = "", parent = base_err)
+  expect_known_output(print(rlang_err), test_path("test-cnd-error-print-base-parent.txt"))
+})
+
 
 # Lifecycle ----------------------------------------------------------
 
