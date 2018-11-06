@@ -1,4 +1,4 @@
-# nocov start - compat-purrr (last updated: rlang 0.3.0)
+# nocov start - compat-purrr (last updated: rlang 0.3.0.9000)
 
 # This file serves as a reference for compatibility functions for
 # purrr. They are not drop-in replacements but allow a similar style
@@ -186,6 +186,13 @@ index <- function(x, right = FALSE) {
     idx <- rev(idx)
   }
   idx
+}
+
+imap <- function(.x, .f, ...) {
+  map2(.x, vec_index(.x), .f, ...)
+}
+vec_index <- function(x) {
+  names(x) %||% seq_along(x)
 }
 
 
