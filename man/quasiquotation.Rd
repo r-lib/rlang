@@ -70,6 +70,16 @@ quos(!!name := 1 + 2)
 }
 
 Like \code{=}, the \code{:=} operator expects strings or symbols on its LHS.
+
+Note that unquoting on the LHS of \code{:=} only works in top level
+expressions. These are all valid:\preformatted{exprs(!!nm := x)
+tibble(!!nm := x)
+list2(!!nm := x)
+}
+
+But deep-unquoting names isn't supported:\preformatted{expr(foo(!!nm := x))
+exprs(foo(!!nm := x))
+}
 }
 
 \section{Theory}{

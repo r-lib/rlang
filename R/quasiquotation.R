@@ -60,6 +60,22 @@
 #'
 #' Like `=`, the `:=` operator expects strings or symbols on its LHS.
 #'
+#' Note that unquoting on the LHS of `:=` only works in top level
+#' expressions. These are all valid:
+#'
+#' ```
+#' exprs(!!nm := x)
+#' tibble(!!nm := x)
+#' list2(!!nm := x)
+#' ```
+#'
+#' But deep-unquoting names isn't supported:
+#'
+#' ```
+#' expr(foo(!!nm := x))
+#' exprs(foo(!!nm := x))
+#' ```
+#'
 #'
 #' @section Theory:
 #'
