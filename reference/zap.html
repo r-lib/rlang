@@ -8,8 +8,6 @@
 
 <title>Create zap objects — zap • rlang</title>
 
-<link rel="shortcut icon" type="image/x-icon" href="../favicon.ico">
-
 <!-- jquery -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=" crossorigin="anonymous"></script>
 <!-- Bootstrap -->
@@ -71,7 +69,7 @@ objects." />
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">rlang</a>
-        <span class="label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.3.0.9000</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.3.0.9000</span>
       </span>
     </div>
 
@@ -166,7 +164,7 @@ objects.</p>
     <pre class="examples"><div class='input'><span class='co'># Create one zap object:</span>
 <span class='fu'>zap</span>()</div><div class='output co'>#&gt; &lt;zap&gt;</div><div class='input'>
 <span class='co'># Create a list of zaps:</span>
-<span class='fu'>rep</span>(<span class='fu'>list</span>(<span class='fu'>zap</span>()), <span class='fl'>3</span>)</div><div class='output co'>#&gt; [[1]]
+<span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/rep'>rep</a></span>(<span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/list'>list</a></span>(<span class='fu'>zap</span>()), <span class='fl'>3</span>)</div><div class='output co'>#&gt; [[1]]
 #&gt; &lt;zap&gt;
 #&gt; 
 #&gt; [[2]]
@@ -174,7 +172,7 @@ objects.</p>
 #&gt; 
 #&gt; [[3]]
 #&gt; &lt;zap&gt;
-#&gt; </div><div class='input'><span class='fu'><a href='rep_along.html'>rep_named</a></span>(<span class='fu'>c</span>(<span class='st'>"foo"</span>, <span class='st'>"bar"</span>), <span class='fu'>list</span>(<span class='fu'>zap</span>()))</div><div class='output co'>#&gt; $foo
+#&gt; </div><div class='input'><span class='fu'><a href='rep_along.html'>rep_named</a></span>(<span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/c'>c</a></span>(<span class='st'>"foo"</span>, <span class='st'>"bar"</span>), <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/list'>list</a></span>(<span class='fu'>zap</span>()))</div><div class='output co'>#&gt; $foo
 #&gt; &lt;zap&gt;
 #&gt; 
 #&gt; $bar
@@ -198,7 +196,7 @@ objects.</p>
 </div>
 
 <div class="pkgdown">
-  <p>Site built with <a href="http://pkgdown.r-lib.org/">pkgdown</a>.</p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a>.</p>
 </div>
 
       </footer>

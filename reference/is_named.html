@@ -8,8 +8,6 @@
 
 <title>Is object named? — is_named • rlang</title>
 
-<link rel="shortcut icon" type="image/x-icon" href="../favicon.ico">
-
 <!-- jquery -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=" crossorigin="anonymous"></script>
 <!-- Bootstrap -->
@@ -68,7 +66,7 @@ is a vectorised version of is_named()." />
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">rlang</a>
-        <span class="label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.3.0.9000</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.3.0.9000</span>
       </span>
     </div>
 
@@ -168,23 +166,23 @@ returns a logical vector as long as the input.</p>
     <pre class="examples"><div class='input'><span class='co'># A data frame usually has valid, unique names</span>
 <span class='fu'>is_named</span>(<span class='no'>mtcars</span>)</div><div class='output co'>#&gt; [1] TRUE</div><div class='input'><span class='fu'>have_name</span>(<span class='no'>mtcars</span>)</div><div class='output co'>#&gt;  [1] TRUE TRUE TRUE TRUE TRUE TRUE TRUE TRUE TRUE TRUE TRUE</div><div class='input'><span class='fu'>is_dictionaryish</span>(<span class='no'>mtcars</span>)</div><div class='output co'>#&gt; [1] TRUE</div><div class='input'>
 <span class='co'># But data frames can also have duplicated columns:</span>
-<span class='no'>dups</span> <span class='kw'>&lt;-</span> <span class='fu'>cbind</span>(<span class='no'>mtcars</span>, <span class='kw'>cyl</span> <span class='kw'>=</span> <span class='fu'>seq_len</span>(<span class='fu'>nrow</span>(<span class='no'>mtcars</span>)))
+<span class='no'>dups</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/cbind'>cbind</a></span>(<span class='no'>mtcars</span>, <span class='kw'>cyl</span> <span class='kw'>=</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/seq'>seq_len</a></span>(<span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/nrow'>nrow</a></span>(<span class='no'>mtcars</span>)))
 <span class='fu'>is_dictionaryish</span>(<span class='no'>dups</span>)</div><div class='output co'>#&gt; [1] FALSE</div><div class='input'>
 <span class='co'># The names are still valid:</span>
 <span class='fu'>is_named</span>(<span class='no'>dups</span>)</div><div class='output co'>#&gt; [1] TRUE</div><div class='input'><span class='fu'>have_name</span>(<span class='no'>dups</span>)</div><div class='output co'>#&gt;  [1] TRUE TRUE TRUE TRUE TRUE TRUE TRUE TRUE TRUE TRUE TRUE TRUE</div><div class='input'>
 
 <span class='co'># For empty objects the semantics are slightly different.</span>
 <span class='co'># is_dictionaryish() returns TRUE for empty objects:</span>
-<span class='fu'>is_dictionaryish</span>(<span class='fu'>list</span>())</div><div class='output co'>#&gt; [1] TRUE</div><div class='input'>
+<span class='fu'>is_dictionaryish</span>(<span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/list'>list</a></span>())</div><div class='output co'>#&gt; [1] TRUE</div><div class='input'>
 <span class='co'># But is_named() will only return TRUE if there is a names</span>
 <span class='co'># attribute (a zero-length character vector in this case):</span>
-<span class='no'>x</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='set_names.html'>set_names</a></span>(<span class='fu'>list</span>(), <span class='fu'>character</span>(<span class='fl'>0</span>))
+<span class='no'>x</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='set_names.html'>set_names</a></span>(<span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/list'>list</a></span>(), <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/character'>character</a></span>(<span class='fl'>0</span>))
 <span class='fu'>is_named</span>(<span class='no'>x</span>)</div><div class='output co'>#&gt; [1] TRUE</div><div class='input'>
 
 <span class='co'># Empty and missing names are invalid:</span>
 <span class='no'>invalid</span> <span class='kw'>&lt;-</span> <span class='no'>dups</span>
-<span class='fu'>names</span>(<span class='no'>invalid</span>)[<span class='fl'>2</span>] <span class='kw'>&lt;-</span> <span class='st'>""</span>
-<span class='fu'>names</span>(<span class='no'>invalid</span>)[<span class='fl'>5</span>] <span class='kw'>&lt;-</span> <span class='fl'>NA</span>
+<span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/names'>names</a></span>(<span class='no'>invalid</span>)[<span class='fl'>2</span>] <span class='kw'>&lt;-</span> <span class='st'>""</span>
+<span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/names'>names</a></span>(<span class='no'>invalid</span>)[<span class='fl'>5</span>] <span class='kw'>&lt;-</span> <span class='fl'>NA</span>
 
 <span class='co'># is_named() performs a global check while have_name() can show you</span>
 <span class='co'># where the problem is:</span>
@@ -214,7 +212,7 @@ returns a logical vector as long as the input.</p>
 </div>
 
 <div class="pkgdown">
-  <p>Site built with <a href="http://pkgdown.r-lib.org/">pkgdown</a>.</p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a>.</p>
 </div>
 
       </footer>

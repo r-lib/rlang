@@ -8,8 +8,6 @@
 
 <title>Get or set function body — fn_body • rlang</title>
 
-<link rel="shortcut icon" type="image/x-icon" href="../favicon.ico">
-
 <!-- jquery -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=" crossorigin="anonymous"></script>
 <!-- Bootstrap -->
@@ -67,7 +65,7 @@ version preserves attributes, unlike body&amp;lt;-." />
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">rlang</a>
-        <span class="label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.3.0.9000</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.3.0.9000</span>
       </span>
     </div>
 
@@ -133,9 +131,9 @@ version preserves attributes, unlike body&amp;lt;-." />
 
     <div class="ref-description">
     
-    <p><code>fn_body()</code> is a simple wrapper around <code><a href='http://www.rdocumentation.org/packages/base/topics/body'>base::body()</a></code>. It always
+    <p><code>fn_body()</code> is a simple wrapper around <code><a href='https://www.rdocumentation.org/packages/base/topics/body'>base::body()</a></code>. It always
 returns a <code>{</code> expression and throws an error when the input is a
-primitive function (whereas <code>body()</code> returns <code>NULL</code>). The setter
+primitive function (whereas <code><a href='https://www.rdocumentation.org/packages/base/topics/body'>body()</a></code> returns <code>NULL</code>). The setter
 version preserves attributes, unlike <code>body&lt;-</code>.</p>
     
     </div>
@@ -162,11 +160,11 @@ supplied.</p></td>
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
     <pre class="examples"><div class='input'><span class='co'># fn_body() is like body() but always returns a block:</span>
 <span class='no'>fn</span> <span class='kw'>&lt;-</span> <span class='kw'>function</span>() <span class='fu'>do</span>()
-<span class='fu'>body</span>(<span class='no'>fn</span>)</div><div class='output co'>#&gt; do()</div><div class='input'><span class='fu'>fn_body</span>(<span class='no'>fn</span>)</div><div class='output co'>#&gt; {
+<span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/body'>body</a></span>(<span class='no'>fn</span>)</div><div class='output co'>#&gt; do()</div><div class='input'><span class='fu'>fn_body</span>(<span class='no'>fn</span>)</div><div class='output co'>#&gt; {
 #&gt;     do()
 #&gt; }</div><div class='input'>
 <span class='co'># It also throws an error when used on a primitive function:</span>
-<span class='fu'>try</span>(<span class='fu'>fn_body</span>(<span class='kw pkg'>base</span><span class='kw ns'>::</span><span class='no'><a href='http://www.rdocumentation.org/packages/base/topics/list'>list</a></span>))</div></pre>
+<span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/try'>try</a></span>(<span class='fu'>fn_body</span>(<span class='kw pkg'>base</span><span class='kw ns'>::</span><span class='no'><a href='https://www.rdocumentation.org/packages/base/topics/list'>list</a></span>))</div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
     <h2>Contents</h2>
@@ -185,7 +183,7 @@ supplied.</p></td>
 </div>
 
 <div class="pkgdown">
-  <p>Site built with <a href="http://pkgdown.r-lib.org/">pkgdown</a>.</p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a>.</p>
 </div>
 
       </footer>

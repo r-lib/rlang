@@ -8,8 +8,6 @@
 
 <title>Get parent environments — env_parent • rlang</title>
 
-<link rel="shortcut icon" type="image/x-icon" href="../favicon.ico">
-
 <!-- jquery -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=" crossorigin="anonymous"></script>
 <!-- Bootstrap -->
@@ -73,7 +71,7 @@ empty environment. This list is named using env_name().
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">rlang</a>
-        <span class="label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.3.0.9000</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.3.0.9000</span>
       </span>
     </div>
 
@@ -141,7 +139,7 @@ empty environment. This list is named using env_name().
     
     <ul>
 <li><p><code>env_parent()</code> returns the parent environment of <code>env</code> if called
-with <code>n = 1</code>, the grandparent with <code>n = 2</code>, etc.</p></li>
+with <code><a href='https://www.rdocumentation.org/packages/base/topics/assignOps'>n = 1</a></code>, the grandparent with <code><a href='https://www.rdocumentation.org/packages/base/topics/assignOps'>n = 2</a></code>, etc.</p></li>
 <li><p><code>env_tail()</code> searches through the parents and returns the one
 which has <code><a href='empty_env.html'>empty_env()</a></code> as parent.</p></li>
 <li><p><code>env_parents()</code> returns the list of all parents, including the
@@ -199,23 +197,21 @@ rlang 0.2.0 and renamed to <code>last</code>.</p>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
     <pre class="examples"><div class='input'><span class='co'># Get the parent environment with env_parent():</span>
-<span class='fu'>env_parent</span>(<span class='fu'><a href='search_envs.html'>global_env</a></span>())</div><div class='output co'>#&gt; &lt;environment: package:rlang&gt;
+<span class='fu'>env_parent</span>(<span class='fu'><a href='search_envs.html'>global_env</a></span>())</div><div class='output co'>#&gt; &lt;environment: 0x5b134e0&gt;
 #&gt; attr(,"name")
-#&gt; [1] "package:rlang"
-#&gt; attr(,"path")
-#&gt; [1] "/home/travis/build/r-lib/rlang"</div><div class='input'>
+#&gt; [1] "devtools_shims"</div><div class='input'>
 <span class='co'># Or the tail environment with env_tail():</span>
 <span class='fu'>env_tail</span>(<span class='fu'><a href='search_envs.html'>global_env</a></span>())</div><div class='output co'>#&gt; &lt;environment: base&gt;</div><div class='input'>
 <span class='co'># By default, env_parent() returns the parent environment of the</span>
 <span class='co'># current evaluation frame. If called at top-level (the global</span>
 <span class='co'># frame), the following two expressions are equivalent:</span>
-<span class='fu'>env_parent</span>()</div><div class='output co'>#&gt; &lt;environment: 0x9677b08&gt;</div><div class='input'><span class='fu'>env_parent</span>(<span class='fu'><a href='search_envs.html'>base_env</a></span>())</div><div class='output co'>#&gt; &lt;environment: R_EmptyEnv&gt;</div><div class='input'>
+<span class='fu'>env_parent</span>()</div><div class='output co'>#&gt; &lt;environment: 0x863e760&gt;</div><div class='input'><span class='fu'>env_parent</span>(<span class='fu'><a href='search_envs.html'>base_env</a></span>())</div><div class='output co'>#&gt; &lt;environment: R_EmptyEnv&gt;</div><div class='input'>
 <span class='co'># This default is more handy when called within a function. In this</span>
 <span class='co'># case, the enclosure environment of the function is returned</span>
 <span class='co'># (since it is the parent of the evaluation frame):</span>
 <span class='no'>enclos_env</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='env.html'>env</a></span>()
 <span class='no'>fn</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='get_env.html'>set_env</a></span>(<span class='kw'>function</span>() <span class='fu'>env_parent</span>(), <span class='no'>enclos_env</span>)
-<span class='fu'>identical</span>(<span class='no'>enclos_env</span>, <span class='fu'>fn</span>())</div><div class='output co'>#&gt; [1] TRUE</div></pre>
+<span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/identical'>identical</a></span>(<span class='no'>enclos_env</span>, <span class='fu'>fn</span>())</div><div class='output co'>#&gt; [1] TRUE</div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
     <h2>Contents</h2>
@@ -238,7 +234,7 @@ rlang 0.2.0 and renamed to <code>last</code>.</p>
 </div>
 
 <div class="pkgdown">
-  <p>Site built with <a href="http://pkgdown.r-lib.org/">pkgdown</a>.</p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a>.</p>
 </div>
 
       </footer>

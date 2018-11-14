@@ -8,8 +8,6 @@
 
 <title>Create vectors matching the length of a given vector — rep_along • rlang</title>
 
-<link rel="shortcut icon" type="image/x-icon" href="../favicon.ico">
-
 <!-- jquery -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=" crossorigin="anonymous"></script>
 <!-- Bootstrap -->
@@ -65,7 +63,7 @@ repeating values." />
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">rlang</a>
-        <span class="label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.3.0.9000</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.3.0.9000</span>
       </span>
     </div>
 
@@ -131,7 +129,7 @@ repeating values." />
 
     <div class="ref-description">
     
-    <p>These functions take the idea of <code>seq_along()</code> and apply it to
+    <p>These functions take the idea of <code><a href='https://www.rdocumentation.org/packages/base/topics/seq'>seq_along()</a></code> and apply it to
 repeating values.</p>
     
     </div>
@@ -170,7 +168,7 @@ determines how many times <code>x</code> is repeated.</p></td>
 <span class='co'># Create fresh vectors by repeating missing values:</span>
 <span class='fu'>rep_along</span>(<span class='no'>x</span>, <span class='no'>na_int</span>)</div><div class='output co'>#&gt; [1] NA NA NA NA NA NA</div><div class='input'><span class='fu'>rep_along</span>(<span class='no'>x</span>, <span class='no'>na_chr</span>)</div><div class='output co'>#&gt; [1] NA NA NA NA NA NA</div><div class='input'>
 <span class='co'># rep_named() repeats a value along a names vectors</span>
-<span class='fu'>rep_named</span>(<span class='fu'>c</span>(<span class='st'>"foo"</span>, <span class='st'>"bar"</span>), <span class='fu'>list</span>(<span class='no'>letters</span>))</div><div class='output co'>#&gt; $foo
+<span class='fu'>rep_named</span>(<span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/c'>c</a></span>(<span class='st'>"foo"</span>, <span class='st'>"bar"</span>), <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/list'>list</a></span>(<span class='no'>letters</span>))</div><div class='output co'>#&gt; $foo
 #&gt;  [1] "a" "b" "c" "d" "e" "f" "g" "h" "i" "j" "k" "l" "m" "n" "o" "p" "q" "r" "s"
 #&gt; [20] "t" "u" "v" "w" "x" "y" "z"
 #&gt; 
@@ -198,7 +196,7 @@ determines how many times <code>x</code> is repeated.</p></td>
 </div>
 
 <div class="pkgdown">
-  <p>Site built with <a href="http://pkgdown.r-lib.org/">pkgdown</a>.</p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a>.</p>
 </div>
 
       </footer>

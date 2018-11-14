@@ -8,8 +8,6 @@
 
 <title>Bare type predicates — bare-type-predicates • rlang</title>
 
-<link rel="shortcut icon" type="image/x-icon" href="../favicon.ico">
-
 <!-- jquery -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=" crossorigin="anonymous"></script>
 <!-- Bootstrap -->
@@ -66,7 +64,7 @@ a data frame is a list, but not a bare list." />
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">rlang</a>
-        <span class="label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.3.0.9000</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.3.0.9000</span>
       </span>
     </div>
 
@@ -174,7 +172,7 @@ a data frame is a list, but not a bare list.</p>
     <tr>
       <th>encoding</th>
       <td><p>Expected encoding of a string or character
-vector. One of <code>UTF-8</code>, <code>latin1</code>, or <code>unknown</code>.</p></td>
+vector. One of <code><a href='https://www.rdocumentation.org/packages/base/topics/Arithmetic'>UTF-8</a></code>, <code>latin1</code>, or <code>unknown</code>.</p></td>
     </tr>
     </table>
     
@@ -183,9 +181,9 @@ vector. One of <code>UTF-8</code>, <code>latin1</code>, or <code>unknown</code>.
     <ul>
 <li><p>The predicates for vectors include the <code>n</code> argument for
 pattern-matching on the vector length.</p></li>
-<li><p>Like <code><a href='type-predicates.html'>is_atomic()</a></code> and unlike base R <code>is.atomic()</code>,
+<li><p>Like <code><a href='type-predicates.html'>is_atomic()</a></code> and unlike base R <code><a href='https://www.rdocumentation.org/packages/base/topics/is.recursive'>is.atomic()</a></code>,
 <code>is_bare_atomic()</code> does not return <code>TRUE</code> for <code>NULL</code>.</p></li>
-<li><p>Unlike base R <code>is.numeric()</code>, <code>is_bare_double()</code> only returns
+<li><p>Unlike base R <code><a href='https://www.rdocumentation.org/packages/base/topics/numeric'>is.numeric()</a></code>, <code>is_bare_double()</code> only returns
 <code>TRUE</code> for floating point numbers.</p></li>
 </ul>
     
@@ -214,7 +212,7 @@ pattern-matching on the vector length.</p></li>
 </div>
 
 <div class="pkgdown">
-  <p>Site built with <a href="http://pkgdown.r-lib.org/">pkgdown</a>.</p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a>.</p>
 </div>
 
       </footer>

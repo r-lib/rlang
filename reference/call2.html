@@ -8,8 +8,6 @@
 
 <title>Create a call — call2 • rlang</title>
 
-<link rel="shortcut icon" type="image/x-icon" href="../favicon.ico">
-
 <!-- jquery -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=" crossorigin="anonymous"></script>
 <!-- Bootstrap -->
@@ -77,7 +75,7 @@ constructors." />
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">rlang</a>
-        <span class="label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.3.0.9000</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.3.0.9000</span>
       </span>
     </div>
 
@@ -150,7 +148,7 @@ creating a quoted call:</p><ul>
 <li><p>By <a href='quotation.html'>quoting</a> it. Quoting prevents functions from being
 called. Instead, you get the description of the function call as
 an R object. That is, a quoted function call.</p></li>
-<li><p>By constructing it with <code><a href='http://www.rdocumentation.org/packages/base/topics/call'>base::call()</a></code>, <code><a href='http://www.rdocumentation.org/packages/base/topics/call'>base::as.call()</a></code>, or
+<li><p>By constructing it with <code><a href='https://www.rdocumentation.org/packages/base/topics/call'>base::call()</a></code>, <code><a href='https://www.rdocumentation.org/packages/base/topics/call'>base::as.call()</a></code>, or
 <code>call2()</code>. In this case, you pass the call elements (the function
 to call and the arguments to call it with) separately.</p></li>
 </ul>
@@ -185,11 +183,11 @@ or symbol.</p></td>
     <h2 class="hasAnchor" id="difference-with-base-constructors"><a class="anchor" href="#difference-with-base-constructors"></a>Difference with base constructors</h2>
 
     
-    <p><code>call2()</code> is more flexible and convenient than <code><a href='http://www.rdocumentation.org/packages/base/topics/call'>base::call()</a></code>:</p><ul>
+    <p><code>call2()</code> is more flexible and convenient than <code><a href='https://www.rdocumentation.org/packages/base/topics/call'>base::call()</a></code>:</p><ul>
 <li><p>The function to call can be a string or a <a href='is_callable.html'>callable</a>
 object: a symbol, another call (e.g. a <code>$</code> or <code>[[</code> call), or a
-function to inline. <code><a href='http://www.rdocumentation.org/packages/base/topics/call'>base::call()</a></code> only supports strings and you
-need to use <code><a href='http://www.rdocumentation.org/packages/base/topics/call'>base::as.call()</a></code> to construct a call with a callable
+function to inline. <code><a href='https://www.rdocumentation.org/packages/base/topics/call'>base::call()</a></code> only supports strings and you
+need to use <code><a href='https://www.rdocumentation.org/packages/base/topics/call'>base::as.call()</a></code> to construct a call with a callable
 object.</p><pre>call2(list, 1, 2)
     as.call(list(list, 1, 2))
 </pre></li>
@@ -198,8 +196,8 @@ object.</p><pre>call2(list, 1, 2)
 as.call(list(ns_call, 1, 2))
 </pre></li>
 <li><p><code>call2()</code> has <a href='tidy-dots.html'>tidy dots</a> support and you can splice lists
-of arguments with <code>!!!</code>. With base R, you need to use <code>as.call()</code>
-instead of <code>call()</code> if the arguments are in a list.</p><pre>args &lt;- list(na.rm = TRUE, trim = 0)
+of arguments with <code>!!!</code>. With base R, you need to use <code><a href='https://www.rdocumentation.org/packages/base/topics/call'>as.call()</a></code>
+instead of <code><a href='https://www.rdocumentation.org/packages/base/topics/call'>call()</a></code> if the arguments are in a list.</p><pre>args &lt;- list(na.rm = TRUE, trim = 0)
     call2("mean", 1:10, !!!args)
     as.call(c(list(as.name("mean"), 1:10), args))
 </pre></li>
@@ -212,7 +210,7 @@ instead of <code>call()</code> if the arguments are in a list.</p><pre>args &lt;
 <code>call2()</code>.</p>
 <p>In early versions of rlang calls were called "language" objects in
 order to follow the R type nomenclature as returned by
-<code><a href='http://www.rdocumentation.org/packages/base/topics/typeof'>base::typeof()</a></code>. The goal was to avoid adding to the confusion
+<code><a href='https://www.rdocumentation.org/packages/base/topics/typeof'>base::typeof()</a></code>. The goal was to avoid adding to the confusion
 between S modes and R types. With hindsight we find it is better to
 use more meaningful type names.</p>
     
@@ -223,11 +221,11 @@ use more meaningful type names.</p>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
     <pre class="examples"><div class='input'><span class='co'># fn can either be a string, a symbol or a call</span>
-<span class='fu'>call2</span>(<span class='st'>"f"</span>, <span class='kw'>a</span> <span class='kw'>=</span> <span class='fl'>1</span>)</div><div class='output co'>#&gt; f(a = 1)</div><div class='input'><span class='fu'>call2</span>(<span class='fu'>quote</span>(<span class='no'>f</span>), <span class='kw'>a</span> <span class='kw'>=</span> <span class='fl'>1</span>)</div><div class='output co'>#&gt; f(a = 1)</div><div class='input'><span class='fu'>call2</span>(<span class='fu'>quote</span>(<span class='fu'>f</span>()), <span class='kw'>a</span> <span class='kw'>=</span> <span class='fl'>1</span>)</div><div class='output co'>#&gt; f()(a = 1)</div><div class='input'>
+<span class='fu'>call2</span>(<span class='st'>"f"</span>, <span class='kw'>a</span> <span class='kw'>=</span> <span class='fl'>1</span>)</div><div class='output co'>#&gt; f(a = 1)</div><div class='input'><span class='fu'>call2</span>(<span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/substitute'>quote</a></span>(<span class='no'>f</span>), <span class='kw'>a</span> <span class='kw'>=</span> <span class='fl'>1</span>)</div><div class='output co'>#&gt; f(a = 1)</div><div class='input'><span class='fu'>call2</span>(<span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/substitute'>quote</a></span>(<span class='fu'>f</span>()), <span class='kw'>a</span> <span class='kw'>=</span> <span class='fl'>1</span>)</div><div class='output co'>#&gt; f()(a = 1)</div><div class='input'>
 <span class='co'>#' Can supply arguments individually or in a list</span>
-<span class='fu'>call2</span>(<span class='fu'>quote</span>(<span class='no'>f</span>), <span class='kw'>a</span> <span class='kw'>=</span> <span class='fl'>1</span>, <span class='kw'>b</span> <span class='kw'>=</span> <span class='fl'>2</span>)</div><div class='output co'>#&gt; f(a = 1, b = 2)</div><div class='input'><span class='fu'>call2</span>(<span class='fu'>quote</span>(<span class='no'>f</span>), !!!<span class='fu'>list</span>(<span class='kw'>a</span> <span class='kw'>=</span> <span class='fl'>1</span>, <span class='kw'>b</span> <span class='kw'>=</span> <span class='fl'>2</span>))</div><div class='output co'>#&gt; f(a = 1, b = 2)</div><div class='input'>
+<span class='fu'>call2</span>(<span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/substitute'>quote</a></span>(<span class='no'>f</span>), <span class='kw'>a</span> <span class='kw'>=</span> <span class='fl'>1</span>, <span class='kw'>b</span> <span class='kw'>=</span> <span class='fl'>2</span>)</div><div class='output co'>#&gt; f(a = 1, b = 2)</div><div class='input'><span class='fu'>call2</span>(<span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/substitute'>quote</a></span>(<span class='no'>f</span>), !!!<span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/list'>list</a></span>(<span class='kw'>a</span> <span class='kw'>=</span> <span class='fl'>1</span>, <span class='kw'>b</span> <span class='kw'>=</span> <span class='fl'>2</span>))</div><div class='output co'>#&gt; f(a = 1, b = 2)</div><div class='input'>
 <span class='co'># Creating namespaced calls is easy:</span>
-<span class='fu'>call2</span>(<span class='st'>"fun"</span>, <span class='kw'>arg</span> <span class='kw'>=</span> <span class='fu'>quote</span>(<span class='no'>baz</span>), <span class='kw'>.ns</span> <span class='kw'>=</span> <span class='st'>"mypkg"</span>)</div><div class='output co'>#&gt; mypkg::fun(arg = baz)</div></pre>
+<span class='fu'>call2</span>(<span class='st'>"fun"</span>, <span class='kw'>arg</span> <span class='kw'>=</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/substitute'>quote</a></span>(<span class='no'>baz</span>), <span class='kw'>.ns</span> <span class='kw'>=</span> <span class='st'>"mypkg"</span>)</div><div class='output co'>#&gt; mypkg::fun(arg = baz)</div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
     <h2>Contents</h2>
@@ -252,7 +250,7 @@ use more meaningful type names.</p>
 </div>
 
 <div class="pkgdown">
-  <p>Site built with <a href="http://pkgdown.r-lib.org/">pkgdown</a>.</p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a>.</p>
 </div>
 
       </footer>

@@ -8,8 +8,6 @@
 
 <title>Capture a backtrace — trace_back • rlang</title>
 
-<link rel="shortcut icon" type="image/x-icon" href="../favicon.ico">
-
 <!-- jquery -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=" crossorigin="anonymous"></script>
 <!-- Bootstrap -->
@@ -67,7 +65,7 @@ summary() method of this object will reveal." />
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">rlang</a>
-        <span class="label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.3.0.9000</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.3.0.9000</span>
       </span>
     </div>
 
@@ -136,7 +134,7 @@ summary() method of this object will reveal." />
     <p>A backtrace captures the sequence of calls that lead to the current
 function, sometimes called the call stack. Because of lazy
 evaluation, the call stack in R is actually a tree, which the
-<code>summary()</code> method of this object will reveal.</p>
+<code><a href='https://www.rdocumentation.org/packages/base/topics/summary'>summary()</a></code> method of this object will reveal.</p>
     
     </div>
 
@@ -171,7 +169,7 @@ capture context.</p>
     <pre class="examples"><div class='input'><span class='co'># Trim backtraces automatically (this improves the generated</span>
 <span class='co'># documentation for the rlang website and the same trick can be</span>
 <span class='co'># useful within knitr documents):</span>
-<span class='fu'>options</span>(<span class='kw'>rlang_trace_top_env</span> <span class='kw'>=</span> <span class='fu'><a href='caller_env.html'>current_env</a></span>())
+<span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/options'>options</a></span>(<span class='kw'>rlang_trace_top_env</span> <span class='kw'>=</span> <span class='fu'><a href='caller_env.html'>current_env</a></span>())
 
 <span class='no'>f</span> <span class='kw'>&lt;-</span> <span class='kw'>function</span>() <span class='fu'>g</span>()
 <span class='no'>g</span> <span class='kw'>&lt;-</span> <span class='kw'>function</span>() <span class='fu'>h</span>()
@@ -184,17 +182,17 @@ capture context.</p>
 #&gt;   └─global::g()
 #&gt;     └─global::h()</div><div class='input'>
 <span class='co'># Lazy evaluation introduces a tree like structure</span>
-<span class='fu'>identity</span>(<span class='fu'>identity</span>(<span class='fu'>f</span>()))</div><div class='output co'>#&gt; █
+<span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/identity'>identity</a></span>(<span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/identity'>identity</a></span>(<span class='fu'>f</span>()))</div><div class='output co'>#&gt; █
 #&gt; ├─[ base::identity(...) ]
 #&gt; ├─[ base::identity(...) ]
 #&gt; └─global::f()
 #&gt;   └─global::g()
-#&gt;     └─global::h()</div><div class='input'><span class='fu'>identity</span>(<span class='fu'>try</span>(<span class='fu'>f</span>()))</div><div class='output co'>#&gt; █
+#&gt;     └─global::h()</div><div class='input'><span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/identity'>identity</a></span>(<span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/try'>try</a></span>(<span class='fu'>f</span>()))</div><div class='output co'>#&gt; █
 #&gt; ├─[ base::identity(...) ]
 #&gt; ├─[ base::try(...) ] with 4 more calls
 #&gt; └─global::f()
 #&gt;   └─global::g()
-#&gt;     └─global::h()</div><div class='input'><span class='fu'>try</span>(<span class='fu'>identity</span>(<span class='fu'>f</span>()))</div><div class='output co'>#&gt; █
+#&gt;     └─global::h()</div><div class='input'><span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/try'>try</a></span>(<span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/identity'>identity</a></span>(<span class='fu'>f</span>()))</div><div class='output co'>#&gt; █
 #&gt; ├─[ base::try(...) ] with 4 more calls
 #&gt; ├─[ base::identity(...) ]
 #&gt; └─global::f()
@@ -202,20 +200,20 @@ capture context.</p>
 #&gt;     └─global::h()</div><div class='input'>
 <span class='co'># When printing, you can request to simplify this tree to only show</span>
 <span class='co'># the direct sequence of calls that lead to `trace_back()`</span>
-<span class='no'>x</span> <span class='kw'>&lt;-</span> <span class='fu'>try</span>(<span class='fu'>identity</span>(<span class='fu'>f</span>()))
+<span class='no'>x</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/try'>try</a></span>(<span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/identity'>identity</a></span>(<span class='fu'>f</span>()))
 <span class='no'>x</span></div><div class='output co'>#&gt; █
 #&gt; ├─[ base::try(...) ] with 4 more calls
 #&gt; ├─[ base::identity(...) ]
 #&gt; └─global::f()
 #&gt;   └─global::g()
-#&gt;     └─global::h()</div><div class='input'><span class='fu'>print</span>(<span class='no'>x</span>, <span class='kw'>simplify</span> <span class='kw'>=</span> <span class='st'>"branch"</span>)</div><div class='output co'>#&gt;  ─base::try(identity(f()))
+#&gt;     └─global::h()</div><div class='input'><span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/print'>print</a></span>(<span class='no'>x</span>, <span class='kw'>simplify</span> <span class='kw'>=</span> <span class='st'>"branch"</span>)</div><div class='output co'>#&gt;  ─base::try(identity(f()))
 #&gt;  ─global::f()
 #&gt;  ─global::g()
 #&gt;  ─global::h()</div><div class='input'>
 <span class='co'># With a little cunning you can also use it to capture the</span>
 <span class='co'># tree from within a base NSE function</span>
 <span class='no'>x</span> <span class='kw'>&lt;-</span> <span class='kw'>NULL</span>
-<span class='fu'>with</span>(<span class='no'>mtcars</span>, {<span class='no'>x</span> <span class='kw'>&lt;&lt;-</span> <span class='fu'>f</span>(); <span class='fl'>10</span>})</div><div class='output co'>#&gt; [1] 10</div><div class='input'><span class='no'>x</span></div><div class='output co'>#&gt; █
+<span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/with'>with</a></span>(<span class='no'>mtcars</span>, {<span class='no'>x</span> <span class='kw'>&lt;&lt;-</span> <span class='fu'>f</span>(); <span class='fl'>10</span>})</div><div class='output co'>#&gt; [1] 10</div><div class='input'><span class='no'>x</span></div><div class='output co'>#&gt; █
 #&gt; ├─[ base::with(...) ]
 #&gt; └─base::with.default(...)
 #&gt;   └─[ base::eval(...) ] with 1 more call
@@ -224,13 +222,13 @@ capture context.</p>
 #&gt;         └─global::h()</div><div class='input'>
 
 <span class='co'># Restore default top env for next example</span>
-<span class='fu'>options</span>(<span class='kw'>rlang_trace_top_env</span> <span class='kw'>=</span> <span class='kw'>NULL</span>)
+<span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/options'>options</a></span>(<span class='kw'>rlang_trace_top_env</span> <span class='kw'>=</span> <span class='kw'>NULL</span>)
 
 <span class='co'># When code is executed indirectly, i.e. via source or within an</span>
 <span class='co'># RMarkdown document, you'll tend to get a lot of guff at the beginning</span>
 <span class='co'># related to the execution environment:</span>
-<span class='no'>conn</span> <span class='kw'>&lt;-</span> <span class='fu'>textConnection</span>(<span class='st'>"summary(f())"</span>)
-<span class='fu'>source</span>(<span class='no'>conn</span>, <span class='kw'>echo</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>, <span class='kw'>local</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>)</div><div class='output co'>#&gt; 
+<span class='no'>conn</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/textconnections'>textConnection</a></span>(<span class='st'>"summary(f())"</span>)
+<span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/source'>source</a></span>(<span class='no'>conn</span>, <span class='kw'>echo</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>, <span class='kw'>local</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>)</div><div class='output co'>#&gt; 
 #&gt; &gt; summary(f())
 #&gt; █
 #&gt; ├─base::tryCatch(...)
@@ -244,7 +242,7 @@ capture context.</p>
 #&gt; ├─base::saveRDS(...)
 #&gt; ├─base::do.call(...)
 #&gt; ├─(function (what, args, quote = FALSE, envir = parent.frame()) ...
-#&gt; └─(function (..., crayon_enabled, crayon_colors) ...
+#&gt; └─(function (..., crayon_enabled, crayon_colors, pkgdown_internet) ...
 #&gt;   └─pkgdown::build_site(...)
 #&gt;     └─pkgdown:::build_site_local(...)
 #&gt;       └─pkgdown::build_reference(...)
@@ -275,7 +273,7 @@ capture context.</p>
 #&gt;                             ├─base::summary(f())
 #&gt;                             └─global::f()
 #&gt;                               └─global::g()
-#&gt;                                 └─global::h()</div><div class='input'><span class='fu'>close</span>(<span class='no'>conn</span>)
+#&gt;                                 └─global::h()</div><div class='input'><span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/connections'>close</a></span>(<span class='no'>conn</span>)
 
 <span class='co'># To automatically strip this off, specify which frame should be</span>
 <span class='co'># the top of the backtrace. This will automatically trim off calls</span>
@@ -283,14 +281,14 @@ capture context.</p>
 <span class='no'>top</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='caller_env.html'>current_env</a></span>()
 <span class='no'>h</span> <span class='kw'>&lt;-</span> <span class='kw'>function</span>() <span class='fu'>trace_back</span>(<span class='no'>top</span>)
 
-<span class='no'>conn</span> <span class='kw'>&lt;-</span> <span class='fu'>textConnection</span>(<span class='st'>"summary(f())"</span>)
-<span class='fu'>source</span>(<span class='no'>conn</span>, <span class='kw'>echo</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>, <span class='kw'>local</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>)</div><div class='output co'>#&gt; 
+<span class='no'>conn</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/textconnections'>textConnection</a></span>(<span class='st'>"summary(f())"</span>)
+<span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/source'>source</a></span>(<span class='no'>conn</span>, <span class='kw'>echo</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>, <span class='kw'>local</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>)</div><div class='output co'>#&gt; 
 #&gt; &gt; summary(f())
 #&gt; █
 #&gt; ├─base::summary(f())
 #&gt; └─global::f()
 #&gt;   └─global::g()
-#&gt;     └─global::h()</div><div class='input'><span class='fu'>close</span>(<span class='no'>conn</span>)</div></pre>
+#&gt;     └─global::h()</div><div class='input'><span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/connections'>close</a></span>(<span class='no'>conn</span>)</div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
     <h2>Contents</h2>
@@ -309,7 +307,7 @@ capture context.</p>
 </div>
 
 <div class="pkgdown">
-  <p>Site built with <a href="http://pkgdown.r-lib.org/">pkgdown</a>.</p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a>.</p>
 </div>
 
       </footer>

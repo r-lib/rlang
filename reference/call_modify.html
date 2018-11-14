@@ -8,8 +8,6 @@
 
 <title>Modify the arguments of a call — call_modify • rlang</title>
 
-<link rel="shortcut icon" type="image/x-icon" href="../favicon.ico">
-
 <!-- jquery -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=" crossorigin="anonymous"></script>
 <!-- Bootstrap -->
@@ -66,7 +64,7 @@ modifying the call." />
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">rlang</a>
-        <span class="label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.3.0.9000</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.3.0.9000</span>
       </span>
     </div>
 
@@ -138,7 +136,7 @@ modifying the call.</p>
     
     </div>
 
-    <pre class="usage"><span class='fu'>call_modify</span>(<span class='no'>.call</span>, <span class='no'>...</span>, <span class='kw'>.homonyms</span> <span class='kw'>=</span> <span class='fu'>c</span>(<span class='st'>"keep"</span>, <span class='st'>"first"</span>, <span class='st'>"last"</span>, <span class='st'>"error"</span>),
+    <pre class="usage"><span class='fu'>call_modify</span>(<span class='no'>.call</span>, <span class='no'>...</span>, <span class='kw'>.homonyms</span> <span class='kw'>=</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/c'>c</a></span>(<span class='st'>"keep"</span>, <span class='st'>"first"</span>, <span class='st'>"last"</span>, <span class='st'>"error"</span>),
   <span class='kw'>.standardise</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>.env</span> <span class='kw'>=</span> <span class='fu'><a href='caller_env.html'>caller_env</a></span>())</pre>
     
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
@@ -193,10 +191,10 @@ this change.</p></li>
     
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><div class='input'><span class='no'>call</span> <span class='kw'>&lt;-</span> <span class='fu'>quote</span>(<span class='fu'>mean</span>(<span class='no'>x</span>, <span class='kw'>na.rm</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>))
+    <pre class="examples"><div class='input'><span class='no'>call</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/substitute'>quote</a></span>(<span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/mean'>mean</a></span>(<span class='no'>x</span>, <span class='kw'>na.rm</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>))
 
 <span class='co'># Modify an existing argument</span>
-<span class='fu'>call_modify</span>(<span class='no'>call</span>, <span class='kw'>na.rm</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>)</div><div class='output co'>#&gt; mean(x, na.rm = FALSE)</div><div class='input'><span class='fu'>call_modify</span>(<span class='no'>call</span>, <span class='kw'>x</span> <span class='kw'>=</span> <span class='fu'>quote</span>(<span class='no'>y</span>))</div><div class='output co'>#&gt; mean(x, na.rm = TRUE, x = y)</div><div class='input'>
+<span class='fu'>call_modify</span>(<span class='no'>call</span>, <span class='kw'>na.rm</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>)</div><div class='output co'>#&gt; mean(x, na.rm = FALSE)</div><div class='input'><span class='fu'>call_modify</span>(<span class='no'>call</span>, <span class='kw'>x</span> <span class='kw'>=</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/substitute'>quote</a></span>(<span class='no'>y</span>))</div><div class='output co'>#&gt; mean(x, na.rm = TRUE, x = y)</div><div class='input'>
 <span class='co'># Remove an argument</span>
 <span class='fu'>call_modify</span>(<span class='no'>call</span>, <span class='kw'>na.rm</span> <span class='kw'>=</span> <span class='fu'><a href='zap.html'>zap</a></span>())</div><div class='output co'>#&gt; mean(x)</div><div class='input'>
 <span class='co'># Add a new argument</span>
@@ -204,11 +202,11 @@ this change.</p></li>
 <span class='co'># Add an explicit missing argument:</span>
 <span class='fu'>call_modify</span>(<span class='no'>call</span>, <span class='kw'>na.rm</span> <span class='kw'>=</span> )</div><div class='output co'>#&gt; mean(x, na.rm = )</div><div class='input'>
 <span class='co'># Supply a list of new arguments with `!!!`</span>
-<span class='no'>newargs</span> <span class='kw'>&lt;-</span> <span class='fu'>list</span>(<span class='kw'>na.rm</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>trim</span> <span class='kw'>=</span> <span class='fl'>0.1</span>)
+<span class='no'>newargs</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/list'>list</a></span>(<span class='kw'>na.rm</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>trim</span> <span class='kw'>=</span> <span class='fl'>0.1</span>)
 <span class='no'>call</span> <span class='kw'>&lt;-</span> <span class='fu'>call_modify</span>(<span class='no'>call</span>, !!!<span class='no'>newargs</span>)
 <span class='no'>call</span></div><div class='output co'>#&gt; mean(x, na.rm = NULL, trim = 0.1)</div><div class='input'>
 <span class='co'># Remove multiple arguments by splicing zaps:</span>
-<span class='no'>newargs</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='rep_along.html'>rep_named</a></span>(<span class='fu'>c</span>(<span class='st'>"na.rm"</span>, <span class='st'>"trim"</span>), <span class='fu'>list</span>(<span class='fu'><a href='zap.html'>zap</a></span>()))
+<span class='no'>newargs</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='rep_along.html'>rep_named</a></span>(<span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/c'>c</a></span>(<span class='st'>"na.rm"</span>, <span class='st'>"trim"</span>), <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/list'>list</a></span>(<span class='fu'><a href='zap.html'>zap</a></span>()))
 <span class='no'>call</span> <span class='kw'>&lt;-</span> <span class='fu'>call_modify</span>(<span class='no'>call</span>, !!!<span class='no'>newargs</span>)
 <span class='no'>call</span></div><div class='output co'>#&gt; mean(x)</div><div class='input'>
 
@@ -220,26 +218,26 @@ this change.</p></li>
 
 <span class='co'># When you're working with a user-supplied call, standardise it</span>
 <span class='co'># beforehand because it might contain unmatched arguments:</span>
-<span class='no'>user_call</span> <span class='kw'>&lt;-</span> <span class='fu'>quote</span>(<span class='fu'>matrix</span>(<span class='no'>x</span>, <span class='kw'>nc</span> <span class='kw'>=</span> <span class='fl'>3</span>))
+<span class='no'>user_call</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/substitute'>quote</a></span>(<span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/matrix'>matrix</a></span>(<span class='no'>x</span>, <span class='kw'>nc</span> <span class='kw'>=</span> <span class='fl'>3</span>))
 <span class='fu'>call_modify</span>(<span class='no'>user_call</span>, <span class='kw'>ncol</span> <span class='kw'>=</span> <span class='fl'>1</span>)</div><div class='output co'>#&gt; matrix(x, nc = 3, ncol = 1)</div><div class='input'>
 <span class='co'># Standardising applies the usual argument matching rules:</span>
 <span class='no'>user_call</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='call_standardise.html'>call_standardise</a></span>(<span class='no'>user_call</span>)
 <span class='no'>user_call</span></div><div class='output co'>#&gt; matrix(data = x, ncol = 3)</div><div class='input'><span class='fu'>call_modify</span>(<span class='no'>user_call</span>, <span class='kw'>ncol</span> <span class='kw'>=</span> <span class='fl'>1</span>)</div><div class='output co'>#&gt; matrix(data = x, ncol = 1)</div><div class='input'>
 
 <span class='co'># You can also modify quosures inplace:</span>
-<span class='no'>f</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='quotation.html'>quo</a></span>(<span class='fu'>matrix</span>(<span class='no'>bar</span>))
-<span class='fu'>call_modify</span>(<span class='no'>f</span>, <span class='fu'>quote</span>(<span class='no'>foo</span>))</div><div class='output co'>#&gt; &lt;quosure&gt;
+<span class='no'>f</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='quotation.html'>quo</a></span>(<span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/matrix'>matrix</a></span>(<span class='no'>bar</span>))
+<span class='fu'>call_modify</span>(<span class='no'>f</span>, <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/substitute'>quote</a></span>(<span class='no'>foo</span>))</div><div class='output co'>#&gt; &lt;quosure&gt;
 #&gt; expr: ^matrix(bar, foo)
-#&gt; env:  0x9564328</div><div class='input'>
+#&gt; env:  0x8335858</div><div class='input'>
 
 <span class='co'># By default, arguments with the same name are kept. This has</span>
 <span class='co'># subtle implications, for instance you can move an argument to</span>
 <span class='co'># last position by removing it and remapping it:</span>
-<span class='no'>call</span> <span class='kw'>&lt;-</span> <span class='fu'>quote</span>(<span class='fu'>foo</span>(<span class='kw'>bar</span> <span class='kw'>=</span> , <span class='no'>baz</span>))
+<span class='no'>call</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/substitute'>quote</a></span>(<span class='fu'>foo</span>(<span class='kw'>bar</span> <span class='kw'>=</span> , <span class='no'>baz</span>))
 <span class='fu'>call_modify</span>(<span class='no'>call</span>, <span class='kw'>bar</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>bar</span> <span class='kw'>=</span> <span class='fu'><a href='missing_arg.html'>missing_arg</a></span>())</div><div class='output co'>#&gt; foo(bar = , baz)</div><div class='input'>
 <span class='co'># You can also choose to keep only the first or last homonym</span>
 <span class='co'># arguments:</span>
-<span class='no'>args</span> <span class='kw'>&lt;-</span>  <span class='fu'>list</span>(<span class='kw'>bar</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>bar</span> <span class='kw'>=</span> <span class='fu'><a href='missing_arg.html'>missing_arg</a></span>())
+<span class='no'>args</span> <span class='kw'>&lt;-</span>  <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/list'>list</a></span>(<span class='kw'>bar</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>bar</span> <span class='kw'>=</span> <span class='fu'><a href='missing_arg.html'>missing_arg</a></span>())
 <span class='fu'>call_modify</span>(<span class='no'>call</span>, !!!<span class='no'>args</span>, <span class='kw'>.homonyms</span> <span class='kw'>=</span> <span class='st'>"first"</span>)</div><div class='output co'>#&gt; foo(bar = NULL, baz)</div><div class='input'><span class='fu'>call_modify</span>(<span class='no'>call</span>, !!!<span class='no'>args</span>, <span class='kw'>.homonyms</span> <span class='kw'>=</span> <span class='st'>"last"</span>)</div><div class='output co'>#&gt; foo(bar = , baz)</div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
@@ -263,7 +261,7 @@ this change.</p></li>
 </div>
 
 <div class="pkgdown">
-  <p>Site built with <a href="http://pkgdown.r-lib.org/">pkgdown</a>.</p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a>.</p>
 </div>
 
       </footer>

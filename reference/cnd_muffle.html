@@ -8,8 +8,6 @@
 
 <title>Muffle a condition — cnd_muffle • rlang</title>
 
-<link rel="shortcut icon" type="image/x-icon" href="../favicon.ico">
-
 <!-- jquery -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=" crossorigin="anonymous"></script>
 <!-- Bootstrap -->
@@ -68,7 +66,7 @@ being called for that condition." />
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">rlang</a>
-        <span class="label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.3.0.9000</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.3.0.9000</span>
       </span>
     </div>
 
@@ -161,21 +159,21 @@ of the restart varies. cnd_muffle() will automatically call the
 correct restart for you. It is compatible with the following
 conditions:</p><ul>
 <li><p><code>warning</code> and <code>message</code> conditions. In this case <code>cnd_muffle()</code>
-is equivalent to <code><a href='http://www.rdocumentation.org/packages/base/topics/message'>base::suppressMessages()</a></code> and
-<code><a href='http://www.rdocumentation.org/packages/base/topics/warning'>base::suppressWarnings()</a></code>.</p></li>
+is equivalent to <code><a href='https://www.rdocumentation.org/packages/base/topics/message'>base::suppressMessages()</a></code> and
+<code><a href='https://www.rdocumentation.org/packages/base/topics/warning'>base::suppressWarnings()</a></code>.</p></li>
 <li><p>Bare conditions signalled with <code><a href='abort.html'>signal()</a></code> or <code><a href='cnd_signal.html'>cnd_signal()</a></code>. Note
-that conditions signalled with <code><a href='http://www.rdocumentation.org/packages/base/topics/conditions'>base::signalCondition()</a></code> are not
+that conditions signalled with <code><a href='https://www.rdocumentation.org/packages/base/topics/conditions'>base::signalCondition()</a></code> are not
 mufflable.</p></li>
 <li><p>Interrupts are sometimes signalled with a <code>resume</code> restart on
 recent R versions. When this is the case, you can muffle the
 interrupt with <code>cnd_muffle()</code>. Check if a restart is available
-with <code><a href='http://www.rdocumentation.org/packages/base/topics/conditions'>base::findRestart("resume")</a></code>.</p></li>
+with <code><a href='https://www.rdocumentation.org/packages/base/topics/conditions'>base::findRestart("resume")</a></code>.</p></li>
 </ul>
     <p>If you call <code>cnd_muffle()</code> with a condition that is not mufflable
 you will cause a new error to be signalled.</p><ul>
 <li><p>Errors are not mufflable since they are signalled in critical
 situations where execution cannot continue safely.</p></li>
-<li><p>Conditions captured with <code><a href='http://www.rdocumentation.org/packages/base/topics/conditions'>base::tryCatch()</a></code>, <code><a href='with_handlers.html'>with_handlers()</a></code> or
+<li><p>Conditions captured with <code><a href='https://www.rdocumentation.org/packages/base/topics/conditions'>base::tryCatch()</a></code>, <code><a href='with_handlers.html'>with_handlers()</a></code> or
 <code><a href='catch_cnd.html'>catch_cnd()</a></code> are no longer mufflable. Muffling restarts <em>must</em>
 be called from a <a href='exiting.html'>calling</a> handler.</p></li>
 </ul>
@@ -225,7 +223,7 @@ be called from a <a href='exiting.html'>calling</a> handler.</p></li>
 </div>
 
 <div class="pkgdown">
-  <p>Site built with <a href="http://pkgdown.r-lib.org/">pkgdown</a>.</p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a>.</p>
 </div>
 
       </footer>

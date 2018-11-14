@@ -8,8 +8,6 @@
 
 <title>Invoke a function with a list of arguments — invoke • rlang</title>
 
-<link rel="shortcut icon" type="image/x-icon" href="../favicon.ico">
-
 <!-- jquery -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=" crossorigin="anonymous"></script>
 <!-- Bootstrap -->
@@ -67,7 +65,7 @@ assembled programmatically. This is the purpose of invoke()." />
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">rlang</a>
-        <span class="label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.3.0.9000</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.3.0.9000</span>
       </span>
     </div>
 
@@ -140,8 +138,8 @@ assembled programmatically. This is the purpose of <code>invoke()</code>.</p>
     
     </div>
 
-    <pre class="usage"><span class='fu'>invoke</span>(<span class='no'>.fn</span>, <span class='kw'>.args</span> <span class='kw'>=</span> <span class='fu'>list</span>(), <span class='no'>...</span>, <span class='kw'>.env</span> <span class='kw'>=</span> <span class='fu'><a href='caller_env.html'>caller_env</a></span>(),
-  <span class='kw'>.bury</span> <span class='kw'>=</span> <span class='fu'>c</span>(<span class='st'>".fn"</span>, <span class='st'>""</span>))</pre>
+    <pre class="usage"><span class='fu'>invoke</span>(<span class='no'>.fn</span>, <span class='kw'>.args</span> <span class='kw'>=</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/list'>list</a></span>(), <span class='no'>...</span>, <span class='kw'>.env</span> <span class='kw'>=</span> <span class='fu'><a href='caller_env.html'>caller_env</a></span>(),
+  <span class='kw'>.bury</span> <span class='kw'>=</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/c'>c</a></span>(<span class='st'>".fn"</span>, <span class='st'>""</span>))</pre>
     
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
@@ -172,7 +170,7 @@ prefer to inline the function and its arguments in the call.</p></td>
     
     <h2 class="hasAnchor" id="details"><a class="anchor" href="#details"></a>Details</h2>
 
-    <p>Technically, <code>invoke()</code> is basically a version of <code><a href='http://www.rdocumentation.org/packages/base/topics/do.call'>base::do.call()</a></code>
+    <p>Technically, <code>invoke()</code> is basically a version of <code><a href='https://www.rdocumentation.org/packages/base/topics/do.call'>base::do.call()</a></code>
 that creates cleaner call traces because it does not inline the
 function and the arguments in the call (see examples). To achieve
 this, <code>invoke()</code> creates a child environment of <code>.env</code> with <code>.fn</code>
@@ -198,21 +196,21 @@ or complex expressions.</p>
 <span class='fu'>invoke</span>(<span class='no'>call_inspect</span>, <span class='no'>mtcars</span>)</div><div class='output co'>#&gt; .fn(mpg = `1`, cyl = `2`, disp = `3`, hp = `4`, drat = `5`, wt = `6`, 
 #&gt;     qsec = `7`, vs = `8`, am = `9`, gear = `10`, carb = `11`)</div><div class='input'>
 <span class='co'># and stacktraces:</span>
-<span class='no'>fn</span> <span class='kw'>&lt;-</span> <span class='kw'>function</span>(<span class='no'>...</span>) <span class='fu'>sys.calls</span>()
-<span class='fu'>invoke</span>(<span class='no'>fn</span>, <span class='fu'>list</span>(<span class='no'>mtcars</span>))</div><div class='output co'>#&gt; [[1]]
+<span class='no'>fn</span> <span class='kw'>&lt;-</span> <span class='kw'>function</span>(<span class='no'>...</span>) <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/sys.parent'>sys.calls</a></span>()
+<span class='fu'>invoke</span>(<span class='no'>fn</span>, <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/list'>list</a></span>(<span class='no'>mtcars</span>))</div><div class='output co'>#&gt; [[1]]
 #&gt; tryCatch(withCallingHandlers({
 #&gt;     NULL
-#&gt;     saveRDS(do.call(do.call, c(readRDS("/tmp/RtmpQJZnTZ/file380ca834703"), 
-#&gt;         list(envir = .GlobalEnv)), envir = .GlobalEnv), file = "/tmp/RtmpQJZnTZ/file380c6e55bb2e")
+#&gt;     saveRDS(do.call(do.call, c(readRDS("/tmp/RtmpLvKGyd/file3b3d6016e5ac"), 
+#&gt;         list(envir = .GlobalEnv)), envir = .GlobalEnv), file = "/tmp/RtmpLvKGyd/file3b3d12e95325")
 #&gt;     flush(stdout())
 #&gt;     flush(stderr())
 #&gt;     NULL
 #&gt;     invisible()
 #&gt; }, error = function(e) {
-#&gt;     saveRDS(list("error", e), file = paste0("/tmp/RtmpQJZnTZ/file380c6e55bb2e", 
+#&gt;     saveRDS(list("error", e), file = paste0("/tmp/RtmpLvKGyd/file3b3d12e95325", 
 #&gt;         ".error"))
 #&gt; }, interrupt = function(e) {
-#&gt;     saveRDS(list("error", e), file = paste0("/tmp/RtmpQJZnTZ/file380c6e55bb2e", 
+#&gt;     saveRDS(list("error", e), file = paste0("/tmp/RtmpLvKGyd/file3b3d12e95325", 
 #&gt;         ".error"))
 #&gt; }, callr_message = function(e) {
 #&gt;     {
@@ -257,17 +255,17 @@ or complex expressions.</p>
 #&gt; [[8]]
 #&gt; withCallingHandlers({
 #&gt;     NULL
-#&gt;     saveRDS(do.call(do.call, c(readRDS("/tmp/RtmpQJZnTZ/file380ca834703"), 
-#&gt;         list(envir = .GlobalEnv)), envir = .GlobalEnv), file = "/tmp/RtmpQJZnTZ/file380c6e55bb2e")
+#&gt;     saveRDS(do.call(do.call, c(readRDS("/tmp/RtmpLvKGyd/file3b3d6016e5ac"), 
+#&gt;         list(envir = .GlobalEnv)), envir = .GlobalEnv), file = "/tmp/RtmpLvKGyd/file3b3d12e95325")
 #&gt;     flush(stdout())
 #&gt;     flush(stderr())
 #&gt;     NULL
 #&gt;     invisible()
 #&gt; }, error = function(e) {
-#&gt;     saveRDS(list("error", e), file = paste0("/tmp/RtmpQJZnTZ/file380c6e55bb2e", 
+#&gt;     saveRDS(list("error", e), file = paste0("/tmp/RtmpLvKGyd/file3b3d12e95325", 
 #&gt;         ".error"))
 #&gt; }, interrupt = function(e) {
-#&gt;     saveRDS(list("error", e), file = paste0("/tmp/RtmpQJZnTZ/file380c6e55bb2e", 
+#&gt;     saveRDS(list("error", e), file = paste0("/tmp/RtmpLvKGyd/file3b3d12e95325", 
 #&gt;         ".error"))
 #&gt; }, callr_message = function(e) {
 #&gt;     {
@@ -285,11 +283,11 @@ or complex expressions.</p>
 #&gt; })
 #&gt; 
 #&gt; [[9]]
-#&gt; saveRDS(do.call(do.call, c(readRDS("/tmp/RtmpQJZnTZ/file380ca834703"), 
-#&gt;     list(envir = .GlobalEnv)), envir = .GlobalEnv), file = "/tmp/RtmpQJZnTZ/file380c6e55bb2e")
+#&gt; saveRDS(do.call(do.call, c(readRDS("/tmp/RtmpLvKGyd/file3b3d6016e5ac"), 
+#&gt;     list(envir = .GlobalEnv)), envir = .GlobalEnv), file = "/tmp/RtmpLvKGyd/file3b3d12e95325")
 #&gt; 
 #&gt; [[10]]
-#&gt; do.call(do.call, c(readRDS("/tmp/RtmpQJZnTZ/file380ca834703"), 
+#&gt; do.call(do.call, c(readRDS("/tmp/RtmpLvKGyd/file3b3d6016e5ac"), 
 #&gt;     list(envir = .GlobalEnv)), envir = .GlobalEnv)
 #&gt; 
 #&gt; [[11]]
@@ -300,48 +298,49 @@ or complex expressions.</p>
 #&gt;     if (quote) 
 #&gt;         args &lt;- lapply(args, enquote)
 #&gt;     .Internal(do.call(what, args, envir))
-#&gt; })(function (..., crayon_enabled, crayon_colors) 
+#&gt; })(function (..., crayon_enabled, crayon_colors, pkgdown_internet) 
 #&gt; {
-#&gt;     options(crayon.enabled = crayon_enabled, crayon.colors = crayon_colors)
+#&gt;     options(crayon.enabled = crayon_enabled, crayon.colors = crayon_colors, 
+#&gt;         pkgdown.internet = pkgdown_internet)
 #&gt;     pkgdown::build_site(...)
-#&gt; }, list(pkg = ".", examples = TRUE, document = TRUE, run_dont_run = FALSE, 
-#&gt;     seed = 1014, mathjax = TRUE, lazy = FALSE, override = list(), 
+#&gt; }, list(pkg = ".", examples = TRUE, document = FALSE, run_dont_run = FALSE, 
+#&gt;     seed = 1014, lazy = FALSE, override = list(destination = "/tmp/RtmpLvKGyd/file3b3d177476a4"), 
 #&gt;     preview = FALSE, new_process = FALSE, crayon_enabled = FALSE, 
-#&gt;     crayon_colors = 1), envir = &lt;environment&gt;)
+#&gt;     crayon_colors = 1, pkgdown_internet = TRUE), envir = &lt;environment&gt;)
 #&gt; 
 #&gt; [[12]]
-#&gt; (function (..., crayon_enabled, crayon_colors) 
+#&gt; (function (..., crayon_enabled, crayon_colors, pkgdown_internet) 
 #&gt; {
-#&gt;     options(crayon.enabled = crayon_enabled, crayon.colors = crayon_colors)
+#&gt;     options(crayon.enabled = crayon_enabled, crayon.colors = crayon_colors, 
+#&gt;         pkgdown.internet = pkgdown_internet)
 #&gt;     pkgdown::build_site(...)
-#&gt; })(pkg = ".", examples = TRUE, document = TRUE, run_dont_run = FALSE, 
-#&gt;     seed = 1014, mathjax = TRUE, lazy = FALSE, override = list(), 
+#&gt; })(pkg = ".", examples = TRUE, document = FALSE, run_dont_run = FALSE, 
+#&gt;     seed = 1014, lazy = FALSE, override = list(destination = "/tmp/RtmpLvKGyd/file3b3d177476a4"), 
 #&gt;     preview = FALSE, new_process = FALSE, crayon_enabled = FALSE, 
-#&gt;     crayon_colors = 1)
+#&gt;     crayon_colors = 1, pkgdown_internet = TRUE)
 #&gt; 
 #&gt; [[13]]
 #&gt; pkgdown::build_site(...)
 #&gt; 
 #&gt; [[14]]
 #&gt; build_site_local(pkg = pkg, examples = examples, document = document, 
-#&gt;     run_dont_run = run_dont_run, seed = seed, mathjax = mathjax, 
-#&gt;     lazy = lazy, override = override, preview = preview)
+#&gt;     run_dont_run = run_dont_run, seed = seed, lazy = lazy, override = override, 
+#&gt;     preview = preview)
 #&gt; 
 #&gt; [[15]]
 #&gt; build_reference(pkg, lazy = lazy, document = document, examples = examples, 
-#&gt;     run_dont_run = run_dont_run, mathjax = mathjax, seed = seed, 
-#&gt;     override = override, preview = FALSE)
+#&gt;     run_dont_run = run_dont_run, seed = seed, override = override, 
+#&gt;     preview = FALSE)
 #&gt; 
 #&gt; [[16]]
 #&gt; purrr::map(topics, build_reference_topic, pkg = pkg, lazy = lazy, 
-#&gt;     examples = examples, run_dont_run = run_dont_run, mathjax = mathjax)
+#&gt;     examples = examples, run_dont_run = run_dont_run)
 #&gt; 
 #&gt; [[17]]
 #&gt; .f(.x[[i]], ...)
 #&gt; 
 #&gt; [[18]]
-#&gt; data_reference_topic(topic, pkg, examples = examples, run_dont_run = run_dont_run, 
-#&gt;     mathjax = mathjax)
+#&gt; data_reference_topic(topic, pkg, examples = examples, run_dont_run = run_dont_run)
 #&gt; 
 #&gt; [[19]]
 #&gt; as_data(tags$tag_examples[[1]], env = new.env(parent = globalenv()), 
@@ -437,7 +436,7 @@ or complex expressions.</p>
 #&gt; .fn(`1`)
 #&gt; </div><div class='input'>
 <span class='co'># Compare to do.call():</span>
-<span class='fu'>do.call</span>(<span class='no'>call_inspect</span>, <span class='no'>mtcars</span>)</div><div class='output co'>#&gt; (function (...) 
+<span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/do.call'>do.call</a></span>(<span class='no'>call_inspect</span>, <span class='no'>mtcars</span>)</div><div class='output co'>#&gt; (function (...) 
 #&gt; match.call())(mpg = c(21, 21, 22.8, 21.4, 18.7, 18.1, 14.3, 24.4, 
 #&gt; 22.8, 19.2, 17.8, 16.4, 17.3, 15.2, 10.4, 10.4, 14.7, 32.4, 30.4, 
 #&gt; 33.9, 21.5, 15.5, 15.2, 13.3, 19.2, 27.3, 26, 30.4, 15.8, 19.7, 
@@ -465,20 +464,20 @@ or complex expressions.</p>
 #&gt;     3, 3, 4, 4, 4, 4, 3, 3, 3, 3, 3, 3, 4, 4, 4, 3, 3, 3, 3, 
 #&gt;     3, 4, 5, 5, 5, 5, 5, 4), carb = c(4, 4, 1, 1, 2, 1, 4, 2, 
 #&gt;     2, 4, 4, 3, 3, 3, 4, 4, 4, 1, 2, 1, 1, 2, 2, 4, 2, 1, 2, 
-#&gt;     2, 4, 6, 8, 2))</div><div class='input'><span class='fu'>do.call</span>(<span class='no'>fn</span>, <span class='fu'>list</span>(<span class='no'>mtcars</span>))</div><div class='output co'>#&gt; [[1]]
+#&gt;     2, 4, 6, 8, 2))</div><div class='input'><span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/do.call'>do.call</a></span>(<span class='no'>fn</span>, <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/list'>list</a></span>(<span class='no'>mtcars</span>))</div><div class='output co'>#&gt; [[1]]
 #&gt; tryCatch(withCallingHandlers({
 #&gt;     NULL
-#&gt;     saveRDS(do.call(do.call, c(readRDS("/tmp/RtmpQJZnTZ/file380ca834703"), 
-#&gt;         list(envir = .GlobalEnv)), envir = .GlobalEnv), file = "/tmp/RtmpQJZnTZ/file380c6e55bb2e")
+#&gt;     saveRDS(do.call(do.call, c(readRDS("/tmp/RtmpLvKGyd/file3b3d6016e5ac"), 
+#&gt;         list(envir = .GlobalEnv)), envir = .GlobalEnv), file = "/tmp/RtmpLvKGyd/file3b3d12e95325")
 #&gt;     flush(stdout())
 #&gt;     flush(stderr())
 #&gt;     NULL
 #&gt;     invisible()
 #&gt; }, error = function(e) {
-#&gt;     saveRDS(list("error", e), file = paste0("/tmp/RtmpQJZnTZ/file380c6e55bb2e", 
+#&gt;     saveRDS(list("error", e), file = paste0("/tmp/RtmpLvKGyd/file3b3d12e95325", 
 #&gt;         ".error"))
 #&gt; }, interrupt = function(e) {
-#&gt;     saveRDS(list("error", e), file = paste0("/tmp/RtmpQJZnTZ/file380c6e55bb2e", 
+#&gt;     saveRDS(list("error", e), file = paste0("/tmp/RtmpLvKGyd/file3b3d12e95325", 
 #&gt;         ".error"))
 #&gt; }, callr_message = function(e) {
 #&gt;     {
@@ -523,17 +522,17 @@ or complex expressions.</p>
 #&gt; [[8]]
 #&gt; withCallingHandlers({
 #&gt;     NULL
-#&gt;     saveRDS(do.call(do.call, c(readRDS("/tmp/RtmpQJZnTZ/file380ca834703"), 
-#&gt;         list(envir = .GlobalEnv)), envir = .GlobalEnv), file = "/tmp/RtmpQJZnTZ/file380c6e55bb2e")
+#&gt;     saveRDS(do.call(do.call, c(readRDS("/tmp/RtmpLvKGyd/file3b3d6016e5ac"), 
+#&gt;         list(envir = .GlobalEnv)), envir = .GlobalEnv), file = "/tmp/RtmpLvKGyd/file3b3d12e95325")
 #&gt;     flush(stdout())
 #&gt;     flush(stderr())
 #&gt;     NULL
 #&gt;     invisible()
 #&gt; }, error = function(e) {
-#&gt;     saveRDS(list("error", e), file = paste0("/tmp/RtmpQJZnTZ/file380c6e55bb2e", 
+#&gt;     saveRDS(list("error", e), file = paste0("/tmp/RtmpLvKGyd/file3b3d12e95325", 
 #&gt;         ".error"))
 #&gt; }, interrupt = function(e) {
-#&gt;     saveRDS(list("error", e), file = paste0("/tmp/RtmpQJZnTZ/file380c6e55bb2e", 
+#&gt;     saveRDS(list("error", e), file = paste0("/tmp/RtmpLvKGyd/file3b3d12e95325", 
 #&gt;         ".error"))
 #&gt; }, callr_message = function(e) {
 #&gt;     {
@@ -551,11 +550,11 @@ or complex expressions.</p>
 #&gt; })
 #&gt; 
 #&gt; [[9]]
-#&gt; saveRDS(do.call(do.call, c(readRDS("/tmp/RtmpQJZnTZ/file380ca834703"), 
-#&gt;     list(envir = .GlobalEnv)), envir = .GlobalEnv), file = "/tmp/RtmpQJZnTZ/file380c6e55bb2e")
+#&gt; saveRDS(do.call(do.call, c(readRDS("/tmp/RtmpLvKGyd/file3b3d6016e5ac"), 
+#&gt;     list(envir = .GlobalEnv)), envir = .GlobalEnv), file = "/tmp/RtmpLvKGyd/file3b3d12e95325")
 #&gt; 
 #&gt; [[10]]
-#&gt; do.call(do.call, c(readRDS("/tmp/RtmpQJZnTZ/file380ca834703"), 
+#&gt; do.call(do.call, c(readRDS("/tmp/RtmpLvKGyd/file3b3d6016e5ac"), 
 #&gt;     list(envir = .GlobalEnv)), envir = .GlobalEnv)
 #&gt; 
 #&gt; [[11]]
@@ -566,48 +565,49 @@ or complex expressions.</p>
 #&gt;     if (quote) 
 #&gt;         args &lt;- lapply(args, enquote)
 #&gt;     .Internal(do.call(what, args, envir))
-#&gt; })(function (..., crayon_enabled, crayon_colors) 
+#&gt; })(function (..., crayon_enabled, crayon_colors, pkgdown_internet) 
 #&gt; {
-#&gt;     options(crayon.enabled = crayon_enabled, crayon.colors = crayon_colors)
+#&gt;     options(crayon.enabled = crayon_enabled, crayon.colors = crayon_colors, 
+#&gt;         pkgdown.internet = pkgdown_internet)
 #&gt;     pkgdown::build_site(...)
-#&gt; }, list(pkg = ".", examples = TRUE, document = TRUE, run_dont_run = FALSE, 
-#&gt;     seed = 1014, mathjax = TRUE, lazy = FALSE, override = list(), 
+#&gt; }, list(pkg = ".", examples = TRUE, document = FALSE, run_dont_run = FALSE, 
+#&gt;     seed = 1014, lazy = FALSE, override = list(destination = "/tmp/RtmpLvKGyd/file3b3d177476a4"), 
 #&gt;     preview = FALSE, new_process = FALSE, crayon_enabled = FALSE, 
-#&gt;     crayon_colors = 1), envir = &lt;environment&gt;)
+#&gt;     crayon_colors = 1, pkgdown_internet = TRUE), envir = &lt;environment&gt;)
 #&gt; 
 #&gt; [[12]]
-#&gt; (function (..., crayon_enabled, crayon_colors) 
+#&gt; (function (..., crayon_enabled, crayon_colors, pkgdown_internet) 
 #&gt; {
-#&gt;     options(crayon.enabled = crayon_enabled, crayon.colors = crayon_colors)
+#&gt;     options(crayon.enabled = crayon_enabled, crayon.colors = crayon_colors, 
+#&gt;         pkgdown.internet = pkgdown_internet)
 #&gt;     pkgdown::build_site(...)
-#&gt; })(pkg = ".", examples = TRUE, document = TRUE, run_dont_run = FALSE, 
-#&gt;     seed = 1014, mathjax = TRUE, lazy = FALSE, override = list(), 
+#&gt; })(pkg = ".", examples = TRUE, document = FALSE, run_dont_run = FALSE, 
+#&gt;     seed = 1014, lazy = FALSE, override = list(destination = "/tmp/RtmpLvKGyd/file3b3d177476a4"), 
 #&gt;     preview = FALSE, new_process = FALSE, crayon_enabled = FALSE, 
-#&gt;     crayon_colors = 1)
+#&gt;     crayon_colors = 1, pkgdown_internet = TRUE)
 #&gt; 
 #&gt; [[13]]
 #&gt; pkgdown::build_site(...)
 #&gt; 
 #&gt; [[14]]
 #&gt; build_site_local(pkg = pkg, examples = examples, document = document, 
-#&gt;     run_dont_run = run_dont_run, seed = seed, mathjax = mathjax, 
-#&gt;     lazy = lazy, override = override, preview = preview)
+#&gt;     run_dont_run = run_dont_run, seed = seed, lazy = lazy, override = override, 
+#&gt;     preview = preview)
 #&gt; 
 #&gt; [[15]]
 #&gt; build_reference(pkg, lazy = lazy, document = document, examples = examples, 
-#&gt;     run_dont_run = run_dont_run, mathjax = mathjax, seed = seed, 
-#&gt;     override = override, preview = FALSE)
+#&gt;     run_dont_run = run_dont_run, seed = seed, override = override, 
+#&gt;     preview = FALSE)
 #&gt; 
 #&gt; [[16]]
 #&gt; purrr::map(topics, build_reference_topic, pkg = pkg, lazy = lazy, 
-#&gt;     examples = examples, run_dont_run = run_dont_run, mathjax = mathjax)
+#&gt;     examples = examples, run_dont_run = run_dont_run)
 #&gt; 
 #&gt; [[17]]
 #&gt; .f(.x[[i]], ...)
 #&gt; 
 #&gt; [[18]]
-#&gt; data_reference_topic(topic, pkg, examples = examples, run_dont_run = run_dont_run, 
-#&gt;     mathjax = mathjax)
+#&gt; data_reference_topic(topic, pkg, examples = examples, run_dont_run = run_dont_run)
 #&gt; 
 #&gt; [[19]]
 #&gt; as_data(tags$tag_examples[[1]], env = new.env(parent = globalenv()), 
@@ -739,7 +739,7 @@ or complex expressions.</p>
 #&gt;     `21`, `22`, `23`, `24`, `25`, `26`)</div><div class='input'>
 <span class='co'># Or by changing the .bury argument, with which you can also change</span>
 <span class='co'># the argument prefix:</span>
-<span class='fu'>invoke</span>(<span class='no'>call_inspect</span>, <span class='no'>mtcars</span>, <span class='kw'>.bury</span> <span class='kw'>=</span> <span class='fu'>c</span>(<span class='st'>"inspect!"</span>, <span class='st'>"col"</span>))</div><div class='output co'>#&gt; `inspect!`(mpg = col1, cyl = col2, disp = col3, hp = col4, drat = col5, 
+<span class='fu'>invoke</span>(<span class='no'>call_inspect</span>, <span class='no'>mtcars</span>, <span class='kw'>.bury</span> <span class='kw'>=</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/c'>c</a></span>(<span class='st'>"inspect!"</span>, <span class='st'>"col"</span>))</div><div class='output co'>#&gt; `inspect!`(mpg = col1, cyl = col2, disp = col3, hp = col4, drat = col5, 
 #&gt;     wt = col6, qsec = col7, vs = col8, am = col9, gear = col10, 
 #&gt;     carb = col11)</div></pre>
   </div>
@@ -764,7 +764,7 @@ or complex expressions.</p>
 </div>
 
 <div class="pkgdown">
-  <p>Site built with <a href="http://pkgdown.r-lib.org/">pkgdown</a>.</p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a>.</p>
 </div>
 
       </footer>

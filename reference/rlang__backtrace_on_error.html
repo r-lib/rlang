@@ -8,8 +8,6 @@
 
 <title>Display backtrace on error — rlang__backtrace_on_error • rlang</title>
 
-<link rel="shortcut icon" type="image/x-icon" href="../favicon.ico">
-
 <!-- jquery -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=" crossorigin="anonymous"></script>
 <!-- Bootstrap -->
@@ -74,7 +72,7 @@ inspected by calling rlang::last_error().
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">rlang</a>
-        <span class="label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.3.0.9000</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.3.0.9000</span>
       </span>
     </div>
 
@@ -158,7 +156,7 @@ inspected by calling <code><a href='last_error.html'>rlang::last_error()</a></co
     <h2 class="hasAnchor" id="promote-base-errors-to-rlang-errors"><a class="anchor" href="#promote-base-errors-to-rlang-errors"></a>Promote base errors to rlang errors</h2>
 
     
-    <p>Call <code>options(error = rlang:::add_backtrace)</code> to instrument base
+    <p>Call <code><a href='https://www.rdocumentation.org/packages/base/topics/options'>options(error = rlang:::add_backtrace)</a></code> to instrument base
 errors with rlang features. This handler does two things:</p><ul>
 <li><p>It saves the base error as an rlang object. This allows you to
 call <code><a href='last_error.html'>last_error()</a></code> to print the backtrace or inspect its data.</p></li>
@@ -198,7 +196,7 @@ interactive use only.</p>
 </div>
 
 <div class="pkgdown">
-  <p>Site built with <a href="http://pkgdown.r-lib.org/">pkgdown</a>.</p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a>.</p>
 </div>
 
       </footer>

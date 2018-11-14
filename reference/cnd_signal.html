@@ -8,8 +8,6 @@
 
 <title>Signal a condition — cnd_signal • rlang</title>
 
-<link rel="shortcut icon" type="image/x-icon" href="../favicon.ico">
-
 <!-- jquery -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=" crossorigin="anonymous"></script>
 <!-- Bootstrap -->
@@ -71,7 +69,7 @@ condition." />
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">rlang</a>
-        <span class="label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.3.0.9000</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.3.0.9000</span>
       </span>
     </div>
 
@@ -172,7 +170,7 @@ restart.</p></td>
 calling handlers. In particular, execution will continue normally
 after signalling the condition (unless a handler jumped somewhere
 else via <code><a href='rst_list.html'>rst_jump()</a></code> or by being <code><a href='exiting.html'>exiting()</a></code>). If <code>.critical</code> is
-<code>TRUE</code>, the condition is signalled via <code><a href='http://www.rdocumentation.org/packages/base/topics/stop'>base::stop()</a></code> and the
+<code>TRUE</code>, the condition is signalled via <code><a href='https://www.rdocumentation.org/packages/base/topics/stop'>base::stop()</a></code> and the
 program will terminate if no handler dealt with the condition by
 jumping out of the distressed call frame.</p>
 <p><code><a href='exiting.html'>calling()</a></code> handlers are called in turn when they decline to handle
@@ -219,15 +217,15 @@ handlers.</p></div>
 <span class='co'># To learn more about establishing condition handlers, see</span>
 <span class='co'># documentation for with_handlers(), exiting() and calling():</span>
 <span class='fu'><a href='with_handlers.html'>with_handlers</a></span>(<span class='fu'>cnd_signal</span>(<span class='no'>cnd</span>),
-  <span class='kw'>foo</span> <span class='kw'>=</span> <span class='fu'><a href='exiting.html'>calling</a></span>(<span class='kw'>function</span>(<span class='no'>c</span>) <span class='fu'>cat</span>(<span class='st'>"side effect!\n"</span>))
+  <span class='kw'>foo</span> <span class='kw'>=</span> <span class='fu'><a href='exiting.html'>calling</a></span>(<span class='kw'>function</span>(<span class='no'>c</span>) <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/cat'>cat</a></span>(<span class='st'>"side effect!\n"</span>))
 )</div><div class='output co'>#&gt; side effect!</div><div class='output co'>#&gt; NULL</div><div class='input'>
 
 <span class='co'># By default, cnd_signal() creates a muffling restart which allows</span>
 <span class='co'># calling handlers to prevent a condition from being passed on to</span>
 <span class='co'># other handlers and to resume execution:</span>
-<span class='no'>undesirable_handler</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='exiting.html'>calling</a></span>(<span class='kw'>function</span>(<span class='no'>c</span>) <span class='fu'>cat</span>(<span class='st'>"please don't call me\n"</span>))
+<span class='no'>undesirable_handler</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='exiting.html'>calling</a></span>(<span class='kw'>function</span>(<span class='no'>c</span>) <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/cat'>cat</a></span>(<span class='st'>"please don't call me\n"</span>))
 <span class='no'>muffling_handler</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='exiting.html'>calling</a></span>(<span class='kw'>function</span>(<span class='no'>c</span>) {
-  <span class='fu'>cat</span>(<span class='st'>"muffling foo...\n"</span>)
+  <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/cat'>cat</a></span>(<span class='st'>"muffling foo...\n"</span>)
   <span class='fu'><a href='cnd_muffle.html'>cnd_muffle</a></span>(<span class='no'>c</span>)
 })
 
@@ -260,7 +258,7 @@ handlers.</p></div>
 </div>
 
 <div class="pkgdown">
-  <p>Site built with <a href="http://pkgdown.r-lib.org/">pkgdown</a>.</p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a>.</p>
 </div>
 
       </footer>

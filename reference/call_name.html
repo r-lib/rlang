@@ -8,8 +8,6 @@
 
 <title>Extract function name of a call — call_name • rlang</title>
 
-<link rel="shortcut icon" type="image/x-icon" href="../favicon.ico">
-
 <!-- jquery -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=" crossorigin="anonymous"></script>
 <!-- Bootstrap -->
@@ -64,7 +62,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">rlang</a>
-        <span class="label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.3.0.9000</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.3.0.9000</span>
       </span>
     </div>
 
@@ -164,14 +162,14 @@ change.</p>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
     <pre class="examples"><div class='input'><span class='co'># Extract the function name from quoted calls:</span>
-<span class='fu'>call_name</span>(<span class='fu'>quote</span>(<span class='fu'>foo</span>(<span class='no'>bar</span>)))</div><div class='output co'>#&gt; [1] "foo"</div><div class='input'><span class='fu'>call_name</span>(<span class='fu'><a href='quotation.html'>quo</a></span>(<span class='fu'>foo</span>(<span class='no'>bar</span>)))</div><div class='output co'>#&gt; [1] "foo"</div><div class='input'>
+<span class='fu'>call_name</span>(<span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/substitute'>quote</a></span>(<span class='fu'>foo</span>(<span class='no'>bar</span>)))</div><div class='output co'>#&gt; [1] "foo"</div><div class='input'><span class='fu'>call_name</span>(<span class='fu'><a href='quotation.html'>quo</a></span>(<span class='fu'>foo</span>(<span class='no'>bar</span>)))</div><div class='output co'>#&gt; [1] "foo"</div><div class='input'>
 <span class='co'># Or from a frame:</span>
 <span class='no'>foo</span> <span class='kw'>&lt;-</span> <span class='kw'>function</span>(<span class='no'>bar</span>) <span class='fu'>call_name</span>(<span class='fu'><a href='stack.html'>call_frame</a></span>())
 <span class='fu'>foo</span>(<span class='no'>bar</span>)</div><div class='output co'>#&gt; [1] "foo"</div><div class='input'>
 <span class='co'># Namespaced calls are correctly handled:</span>
-<span class='fu'>call_name</span>(~<span class='kw pkg'>base</span><span class='kw ns'>::</span><span class='fu'><a href='http://www.rdocumentation.org/packages/base/topics/matrix'>matrix</a></span>(<span class='no'>baz</span>))</div><div class='output co'>#&gt; [1] "matrix"</div><div class='input'>
+<span class='fu'>call_name</span>(~<span class='kw pkg'>base</span><span class='kw ns'>::</span><span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/matrix'>matrix</a></span>(<span class='no'>baz</span>))</div><div class='output co'>#&gt; [1] "matrix"</div><div class='input'>
 <span class='co'># Anonymous and subsetted functions return NULL:</span>
-<span class='fu'>call_name</span>(<span class='fu'>quote</span>(<span class='no'>foo</span>$<span class='fu'>bar</span>()))</div><div class='output co'>#&gt; NULL</div><div class='input'><span class='fu'>call_name</span>(<span class='fu'>quote</span>(<span class='no'>foo</span><span class='kw'>[[</span><span class='no'>bar</span>]]()))</div><div class='output co'>#&gt; NULL</div><div class='input'><span class='fu'>call_name</span>(<span class='fu'>quote</span>(<span class='fu'>foo</span>()()))</div><div class='output co'>#&gt; NULL</div></pre>
+<span class='fu'>call_name</span>(<span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/substitute'>quote</a></span>(<span class='no'>foo</span>$<span class='fu'><a href='https://www.rdocumentation.org/packages/grDevices/topics/plotmath'>bar</a></span>()))</div><div class='output co'>#&gt; NULL</div><div class='input'><span class='fu'>call_name</span>(<span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/substitute'>quote</a></span>(<span class='no'>foo</span><span class='kw'>[[</span><span class='no'>bar</span>]]()))</div><div class='output co'>#&gt; NULL</div><div class='input'><span class='fu'>call_name</span>(<span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/substitute'>quote</a></span>(<span class='fu'>foo</span>()()))</div><div class='output co'>#&gt; NULL</div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
     <h2>Contents</h2>
@@ -196,7 +194,7 @@ change.</p>
 </div>
 
 <div class="pkgdown">
-  <p>Site built with <a href="http://pkgdown.r-lib.org/">pkgdown</a>.</p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a>.</p>
 </div>
 
       </footer>

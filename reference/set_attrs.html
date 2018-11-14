@@ -8,8 +8,6 @@
 
 <title>Add attributes to an object — set_attrs • rlang</title>
 
-<link rel="shortcut icon" type="image/x-icon" href="../favicon.ico">
-
 <!-- jquery -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=" crossorigin="anonymous"></script>
 <!-- Bootstrap -->
@@ -69,7 +67,7 @@ uncopyable types, use mut_attrs()." />
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">rlang</a>
-        <span class="label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.3.0.9000</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.3.0.9000</span>
       </span>
     </div>
 
@@ -170,7 +168,7 @@ modified in place.</p>
     
     <h2 class="hasAnchor" id="details"><a class="anchor" href="#details"></a>Details</h2>
 
-    <p>Unlike <code>structure()</code>, these setters have no special handling of
+    <p>Unlike <code><a href='https://www.rdocumentation.org/packages/base/topics/structure'>structure()</a></code>, these setters have no special handling of
 internal attributes names like <code>.Dim</code>, <code>.Dimnames</code> or <code>.Names</code>.</p>
     
     <h2 class="hasAnchor" id="life-cycle"><a class="anchor" href="#life-cycle"></a>Life cycle</h2>
@@ -187,7 +185,7 @@ internal attributes names like <code>.Dim</code>, <code>.Dimnames</code> or <cod
 #&gt; attr(,"class")
 #&gt; [1] "my_chr"</div><div class='input'>
 <span class='co'># Splice a list of attributes:</span>
-<span class='no'>attrs</span> <span class='kw'>&lt;-</span> <span class='fu'>list</span>(<span class='kw'>attr</span> <span class='kw'>=</span> <span class='st'>"attr"</span>, <span class='kw'>names</span> <span class='kw'>=</span> <span class='fl'>1</span>:<span class='fl'>26</span>, <span class='kw'>class</span> <span class='kw'>=</span> <span class='st'>"my_chr"</span>)
+<span class='no'>attrs</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/list'>list</a></span>(<span class='kw'>attr</span> <span class='kw'>=</span> <span class='st'>"attr"</span>, <span class='kw'>names</span> <span class='kw'>=</span> <span class='fl'>1</span>:<span class='fl'>26</span>, <span class='kw'>class</span> <span class='kw'>=</span> <span class='st'>"my_chr"</span>)
 <span class='no'>obj</span> <span class='kw'>&lt;-</span> <span class='fu'>set_attrs</span>(<span class='no'>letters</span>, <span class='fu'><a href='splice.html'>splice</a></span>(<span class='no'>attrs</span>))
 <span class='no'>obj</span></div><div class='output co'>#&gt;   1   2   3   4   5   6   7   8   9  10  11  12  13  14  15  16  17  18  19  20 
 #&gt; "a" "b" "c" "d" "e" "f" "g" "h" "i" "j" "k" "l" "m" "n" "o" "p" "q" "r" "s" "t" 
@@ -199,7 +197,7 @@ internal attributes names like <code>.Dim</code>, <code>.Dimnames</code> or <cod
 #&gt; [1] "my_chr"</div><div class='input'>
 <span class='co'># Zap attributes by passing a single unnamed NULL argument:</span>
 <span class='fu'>set_attrs</span>(<span class='no'>obj</span>, <span class='kw'>NULL</span>)</div><div class='output co'>#&gt;  [1] "a" "b" "c" "d" "e" "f" "g" "h" "i" "j" "k" "l" "m" "n" "o" "p" "q" "r" "s"
-#&gt; [20] "t" "u" "v" "w" "x" "y" "z"</div><div class='input'><span class='fu'>set_attrs</span>(<span class='no'>obj</span>, !!! <span class='fu'>list</span>(<span class='kw'>NULL</span>))</div><div class='output co'>#&gt;  [1] "a" "b" "c" "d" "e" "f" "g" "h" "i" "j" "k" "l" "m" "n" "o" "p" "q" "r" "s"
+#&gt; [20] "t" "u" "v" "w" "x" "y" "z"</div><div class='input'><span class='fu'>set_attrs</span>(<span class='no'>obj</span>, !!! <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/list'>list</a></span>(<span class='kw'>NULL</span>))</div><div class='output co'>#&gt;  [1] "a" "b" "c" "d" "e" "f" "g" "h" "i" "j" "k" "l" "m" "n" "o" "p" "q" "r" "s"
 #&gt; [20] "t" "u" "v" "w" "x" "y" "z"</div><div class='input'>
 <span class='co'># Note that set_attrs() never modifies objects in place:</span>
 <span class='no'>obj</span></div><div class='output co'>#&gt;   1   2   3   4   5   6   7   8   9  10  11  12  13  14  15  16  17  18  19  20 
@@ -213,7 +211,7 @@ internal attributes names like <code>.Dim</code>, <code>.Dimnames</code> or <cod
 <span class='co'># For uncopyable types, mut_attrs() lets you modify in place:</span>
 <span class='no'>env</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='env.html'>env</a></span>()
 <span class='fu'>mut_attrs</span>(<span class='no'>env</span>, <span class='kw'>foo</span> <span class='kw'>=</span> <span class='st'>"bar"</span>)
-<span class='no'>env</span></div><div class='output co'>#&gt; &lt;environment: 0xb2e1938&gt;
+<span class='no'>env</span></div><div class='output co'>#&gt; &lt;environment: 0x19a5298&gt;
 #&gt; attr(,"foo")
 #&gt; [1] "bar"</div></pre>
   </div>
@@ -240,7 +238,7 @@ internal attributes names like <code>.Dim</code>, <code>.Dimnames</code> or <cod
 </div>
 
 <div class="pkgdown">
-  <p>Site built with <a href="http://pkgdown.r-lib.org/">pkgdown</a>.</p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a>.</p>
 </div>
 
       </footer>

@@ -8,8 +8,6 @@
 
 <title>Test for missing values — are_na • rlang</title>
 
-<link rel="shortcut icon" type="image/x-icon" href="../favicon.ico">
-
 <!-- jquery -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=" crossorigin="anonymous"></script>
 <!-- Bootstrap -->
@@ -70,7 +68,7 @@ particular missing types." />
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">rlang</a>
-        <span class="label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.3.0.9000</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.3.0.9000</span>
       </span>
     </div>
 
@@ -137,7 +135,7 @@ particular missing types." />
     <div class="ref-description">
     
     <p><code>are_na()</code> checks for missing values in a vector and is equivalent
-to <code><a href='http://www.rdocumentation.org/packages/base/topics/NA'>base::is.na()</a></code>. It is a vectorised predicate, meaning that its
+to <code><a href='https://www.rdocumentation.org/packages/base/topics/NA'>base::is.na()</a></code>. It is a vectorised predicate, meaning that its
 output is always the same length as its input. On the other hand,
 <code>is_na()</code> is a scalar predicate and always returns a scalar
 boolean, <code>TRUE</code> or <code>FALSE</code>. If its input is not scalar, it returns
@@ -179,9 +177,9 @@ over vector values.</p>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
     <pre class="examples"><div class='input'><span class='co'># are_na() is vectorised and works regardless of the type</span>
-<span class='fu'>are_na</span>(<span class='fu'>c</span>(<span class='fl'>1</span>, <span class='fl'>2</span>, <span class='fl'>NA</span>))</div><div class='output co'>#&gt; [1] FALSE FALSE  TRUE</div><div class='input'><span class='fu'>are_na</span>(<span class='fu'>c</span>(<span class='fl'>1L</span>, <span class='fl'>NA</span>, <span class='fl'>3L</span>))</div><div class='output co'>#&gt; [1] FALSE  TRUE FALSE</div><div class='input'>
+<span class='fu'>are_na</span>(<span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/c'>c</a></span>(<span class='fl'>1</span>, <span class='fl'>2</span>, <span class='fl'>NA</span>))</div><div class='output co'>#&gt; [1] FALSE FALSE  TRUE</div><div class='input'><span class='fu'>are_na</span>(<span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/c'>c</a></span>(<span class='fl'>1L</span>, <span class='fl'>NA</span>, <span class='fl'>3L</span>))</div><div class='output co'>#&gt; [1] FALSE  TRUE FALSE</div><div class='input'>
 <span class='co'># is_na() checks for scalar input and works for all types</span>
-<span class='fu'>is_na</span>(<span class='fl'>NA</span>)</div><div class='output co'>#&gt; [1] TRUE</div><div class='input'><span class='fu'>is_na</span>(<span class='no'>na_dbl</span>)</div><div class='output co'>#&gt; [1] TRUE</div><div class='input'><span class='fu'>is_na</span>(<span class='fu'>character</span>(<span class='fl'>0</span>))</div><div class='output co'>#&gt; [1] FALSE</div><div class='input'>
+<span class='fu'>is_na</span>(<span class='fl'>NA</span>)</div><div class='output co'>#&gt; [1] TRUE</div><div class='input'><span class='fu'>is_na</span>(<span class='no'>na_dbl</span>)</div><div class='output co'>#&gt; [1] TRUE</div><div class='input'><span class='fu'>is_na</span>(<span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/character'>character</a></span>(<span class='fl'>0</span>))</div><div class='output co'>#&gt; [1] FALSE</div><div class='input'>
 <span class='co'># There are typed versions as well:</span>
 <span class='fu'>is_lgl_na</span>(<span class='fl'>NA</span>)</div><div class='output co'>#&gt; [1] TRUE</div><div class='input'><span class='fu'>is_lgl_na</span>(<span class='no'>na_dbl</span>)</div><div class='output co'>#&gt; [1] FALSE</div></pre>
   </div>
@@ -204,7 +202,7 @@ over vector values.</p>
 </div>
 
 <div class="pkgdown">
-  <p>Site built with <a href="http://pkgdown.r-lib.org/">pkgdown</a>.</p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a>.</p>
 </div>
 
       </footer>

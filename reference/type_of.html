@@ -8,8 +8,6 @@
 
 <title>Base type of an object — type_of • rlang</title>
 
-<link rel="shortcut icon" type="image/x-icon" href="../favicon.ico">
-
 <!-- jquery -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=" crossorigin="anonymous"></script>
 <!-- Bootstrap -->
@@ -72,7 +70,7 @@ The type of special and builtin functions is &quot;primitive&quot;.
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">rlang</a>
-        <span class="label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.3.0.9000</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.3.0.9000</span>
       </span>
     </div>
 
@@ -141,7 +139,7 @@ The type of special and builtin functions is &quot;primitive&quot;.
     <p><a href='https://www.tidyverse.org/lifecycle/#experimental'><img src='figures/lifecycle-experimental.svg' alt='Experimental lifecycle'></a>
 
     <a href='https://www.tidyverse.org/lifecycle/#questioning'><img src='figures/lifecycle-questioning.svg' alt='Questioning lifecycle'></a></p>
-<p>This is equivalent to <code><a href='http://www.rdocumentation.org/packages/base/topics/typeof'>base::typeof()</a></code> with a few differences that
+<p>This is equivalent to <code><a href='https://www.rdocumentation.org/packages/base/topics/typeof'>base::typeof()</a></code> with a few differences that
 make dispatching easier:</p><ul>
 <li><p>The type of one-sided formulas is "quote".</p></li>
 <li><p>The type of character vectors of length 1 is "string".</p></li>
@@ -172,7 +170,7 @@ make dispatching easier:</p><ul>
 <span class='co'># Quosures are treated as a new base type but not formulas:</span>
 <span class='fu'>type_of</span>(<span class='fu'><a href='quotation.html'>quo</a></span>(<span class='fl'>10L</span>))</div><div class='output co'>#&gt; [1] "formula"</div><div class='input'><span class='fu'>type_of</span>(~<span class='fl'>10L</span>)</div><div class='output co'>#&gt; [1] "formula"</div><div class='input'>
 <span class='co'># Compare to base::typeof():</span>
-<span class='fu'>typeof</span>(<span class='fu'><a href='quotation.html'>quo</a></span>(<span class='fl'>10L</span>))</div><div class='output co'>#&gt; [1] "language"</div><div class='input'>
+<span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/typeof'>typeof</a></span>(<span class='fu'><a href='quotation.html'>quo</a></span>(<span class='fl'>10L</span>))</div><div class='output co'>#&gt; [1] "language"</div><div class='input'>
 <span class='co'># Strings are treated as a new base type:</span>
 <span class='fu'>type_of</span>(<span class='no'>letters</span>)</div><div class='output co'>#&gt; [1] "character"</div><div class='input'><span class='fu'>type_of</span>(<span class='no'>letters</span><span class='kw'>[[</span><span class='fl'>1</span>]])</div><div class='output co'>#&gt; [1] "string"</div><div class='input'>
 <span class='co'># This is a bit inconsistent with the core language tenet that data</span>
@@ -183,7 +181,7 @@ make dispatching easier:</p><ul>
 <span class='co'># Special and builtin primitives are both treated as primitives.</span>
 <span class='co'># That's because it is often irrelevant which type of primitive an</span>
 <span class='co'># input is:</span>
-<span class='fu'>typeof</span>(<span class='no'>list</span>)</div><div class='output co'>#&gt; [1] "builtin"</div><div class='input'><span class='fu'>typeof</span>(<span class='no'>`$`</span>)</div><div class='output co'>#&gt; [1] "special"</div><div class='input'><span class='fu'>type_of</span>(<span class='no'>list</span>)</div><div class='output co'>#&gt; [1] "primitive"</div><div class='input'><span class='fu'>type_of</span>(<span class='no'>`$`</span>)</div><div class='output co'>#&gt; [1] "primitive"</div></pre>
+<span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/typeof'>typeof</a></span>(<span class='no'>list</span>)</div><div class='output co'>#&gt; [1] "builtin"</div><div class='input'><span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/typeof'>typeof</a></span>(<span class='no'>`$`</span>)</div><div class='output co'>#&gt; [1] "special"</div><div class='input'><span class='fu'>type_of</span>(<span class='no'>list</span>)</div><div class='output co'>#&gt; [1] "primitive"</div><div class='input'><span class='fu'>type_of</span>(<span class='no'>`$`</span>)</div><div class='output co'>#&gt; [1] "primitive"</div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
     <h2>Contents</h2>
@@ -204,7 +202,7 @@ make dispatching easier:</p><ul>
 </div>
 
 <div class="pkgdown">
-  <p>Site built with <a href="http://pkgdown.r-lib.org/">pkgdown</a>.</p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a>.</p>
 </div>
 
       </footer>

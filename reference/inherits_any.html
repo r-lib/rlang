@@ -8,8 +8,6 @@
 
 <title>Does an object inherit from a set of classes? — inherits_any • rlang</title>
 
-<link rel="shortcut icon" type="image/x-icon" href="../favicon.ico">
-
 <!-- jquery -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=" crossorigin="anonymous"></script>
 <!-- Bootstrap -->
@@ -74,7 +72,7 @@ is a shortcut for identical(class(x), class).
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">rlang</a>
-        <span class="label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.3.0.9000</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.3.0.9000</span>
       </span>
     </div>
 
@@ -141,7 +139,7 @@ is a shortcut for identical(class(x), class).
     <div class="ref-description">
     
     <ul>
-<li><p><code>inherits_any()</code> is like <code><a href='http://www.rdocumentation.org/packages/base/topics/class'>base::inherits()</a></code> but is more explicit
+<li><p><code>inherits_any()</code> is like <code><a href='https://www.rdocumentation.org/packages/base/topics/class'>base::inherits()</a></code> but is more explicit
 about its behaviour with multiple classes. If <code>classes</code> contains
 several elements and the object inherits from at least one of
 them, <code>inherits_any()</code> returns <code>TRUE</code>.</p></li>
@@ -149,7 +147,7 @@ them, <code>inherits_any()</code> returns <code>TRUE</code>.</p></li>
 classes in the supplied order. This is usually the best way to
 test for inheritance of multiple classes.</p></li>
 <li><p><code>inherits_only()</code> tests that the class vectors are identical. It
-is a shortcut for <code>identical(class(x), class)</code>.</p></li>
+is a shortcut for <code><a href='https://www.rdocumentation.org/packages/base/topics/identical'>identical(class(x), class)</a></code>.</p></li>
 </ul>
     
     </div>
@@ -175,16 +173,16 @@ is a shortcut for <code>identical(class(x), class)</code>.</p></li>
     
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><div class='input'><span class='no'>obj</span> <span class='kw'>&lt;-</span> <span class='fu'>structure</span>(<span class='fu'>list</span>(), <span class='kw'>class</span> <span class='kw'>=</span> <span class='fu'>c</span>(<span class='st'>"foo"</span>, <span class='st'>"bar"</span>, <span class='st'>"baz"</span>))
+    <pre class="examples"><div class='input'><span class='no'>obj</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/structure'>structure</a></span>(<span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/list'>list</a></span>(), <span class='kw'>class</span> <span class='kw'>=</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/c'>c</a></span>(<span class='st'>"foo"</span>, <span class='st'>"bar"</span>, <span class='st'>"baz"</span>))
 
 <span class='co'># With the _any variant only one class must match:</span>
-<span class='fu'>inherits_any</span>(<span class='no'>obj</span>, <span class='fu'>c</span>(<span class='st'>"foobar"</span>, <span class='st'>"bazbaz"</span>))</div><div class='output co'>#&gt; [1] FALSE</div><div class='input'><span class='fu'>inherits_any</span>(<span class='no'>obj</span>, <span class='fu'>c</span>(<span class='st'>"foo"</span>, <span class='st'>"bazbaz"</span>))</div><div class='output co'>#&gt; [1] TRUE</div><div class='input'>
+<span class='fu'>inherits_any</span>(<span class='no'>obj</span>, <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/c'>c</a></span>(<span class='st'>"foobar"</span>, <span class='st'>"bazbaz"</span>))</div><div class='output co'>#&gt; [1] FALSE</div><div class='input'><span class='fu'>inherits_any</span>(<span class='no'>obj</span>, <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/c'>c</a></span>(<span class='st'>"foo"</span>, <span class='st'>"bazbaz"</span>))</div><div class='output co'>#&gt; [1] TRUE</div><div class='input'>
 <span class='co'># With the _all variant all classes must match:</span>
-<span class='fu'>inherits_all</span>(<span class='no'>obj</span>, <span class='fu'>c</span>(<span class='st'>"foo"</span>, <span class='st'>"bazbaz"</span>))</div><div class='output co'>#&gt; [1] FALSE</div><div class='input'><span class='fu'>inherits_all</span>(<span class='no'>obj</span>, <span class='fu'>c</span>(<span class='st'>"foo"</span>, <span class='st'>"baz"</span>))</div><div class='output co'>#&gt; [1] TRUE</div><div class='input'>
+<span class='fu'>inherits_all</span>(<span class='no'>obj</span>, <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/c'>c</a></span>(<span class='st'>"foo"</span>, <span class='st'>"bazbaz"</span>))</div><div class='output co'>#&gt; [1] FALSE</div><div class='input'><span class='fu'>inherits_all</span>(<span class='no'>obj</span>, <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/c'>c</a></span>(<span class='st'>"foo"</span>, <span class='st'>"baz"</span>))</div><div class='output co'>#&gt; [1] TRUE</div><div class='input'>
 <span class='co'># The order of classes must match as well:</span>
-<span class='fu'>inherits_all</span>(<span class='no'>obj</span>, <span class='fu'>c</span>(<span class='st'>"baz"</span>, <span class='st'>"foo"</span>))</div><div class='output co'>#&gt; [1] FALSE</div><div class='input'>
+<span class='fu'>inherits_all</span>(<span class='no'>obj</span>, <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/c'>c</a></span>(<span class='st'>"baz"</span>, <span class='st'>"foo"</span>))</div><div class='output co'>#&gt; [1] FALSE</div><div class='input'>
 <span class='co'># inherits_only() checks that the class vectors are identical:</span>
-<span class='fu'>inherits_only</span>(<span class='no'>obj</span>, <span class='fu'>c</span>(<span class='st'>"foo"</span>, <span class='st'>"baz"</span>))</div><div class='output co'>#&gt; [1] FALSE</div><div class='input'><span class='fu'>inherits_only</span>(<span class='no'>obj</span>, <span class='fu'>c</span>(<span class='st'>"foo"</span>, <span class='st'>"bar"</span>, <span class='st'>"baz"</span>))</div><div class='output co'>#&gt; [1] TRUE</div></pre>
+<span class='fu'>inherits_only</span>(<span class='no'>obj</span>, <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/c'>c</a></span>(<span class='st'>"foo"</span>, <span class='st'>"baz"</span>))</div><div class='output co'>#&gt; [1] FALSE</div><div class='input'><span class='fu'>inherits_only</span>(<span class='no'>obj</span>, <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/c'>c</a></span>(<span class='st'>"foo"</span>, <span class='st'>"bar"</span>, <span class='st'>"baz"</span>))</div><div class='output co'>#&gt; [1] TRUE</div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
     <h2>Contents</h2>
@@ -203,7 +201,7 @@ is a shortcut for <code>identical(class(x), class)</code>.</p></li>
 </div>
 
 <div class="pkgdown">
-  <p>Site built with <a href="http://pkgdown.r-lib.org/">pkgdown</a>.</p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a>.</p>
 </div>
 
       </footer>

@@ -8,8 +8,6 @@
 
 <title>Coerce object to quosure — as_quosure • rlang</title>
 
-<link rel="shortcut icon" type="image/x-icon" href="../favicon.ico">
-
 <!-- jquery -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=" crossorigin="anonymous"></script>
 <!-- Bootstrap -->
@@ -66,7 +64,7 @@ converts formulas and quosures and does not double-wrap." />
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">rlang</a>
-        <span class="label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.3.0.9000</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.3.0.9000</span>
       </span>
     </div>
 
@@ -182,22 +180,22 @@ might not be in the future.</p></li>
     <pre class="examples"><div class='input'><span class='co'># as_quosure() converts expressions or any R object to a validly</span>
 <span class='co'># scoped quosure:</span>
 <span class='no'>env</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='env.html'>env</a></span>(<span class='kw'>var</span> <span class='kw'>=</span> <span class='st'>"thing"</span>)
-<span class='fu'>as_quosure</span>(<span class='fu'>quote</span>(<span class='no'>var</span>), <span class='no'>env</span>)</div><div class='output co'>#&gt; &lt;quosure&gt;
+<span class='fu'>as_quosure</span>(<span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/substitute'>quote</a></span>(<span class='no'>var</span>), <span class='no'>env</span>)</div><div class='output co'>#&gt; &lt;quosure&gt;
 #&gt; expr: ^var
-#&gt; env:  0x47d1f28</div><div class='input'>
+#&gt; env:  0x3da1600</div><div class='input'>
 
 <span class='co'># The environment is ignored for formulas:</span>
 <span class='fu'>as_quosure</span>(~<span class='no'>foo</span>, <span class='no'>env</span>)</div><div class='output co'>#&gt; &lt;quosure&gt;
 #&gt; expr: ^foo
-#&gt; env:  0x48ba390</div><div class='input'><span class='fu'>as_quosure</span>(~<span class='no'>foo</span>)</div><div class='output co'>#&gt; &lt;quosure&gt;
+#&gt; env:  0x3f93a30</div><div class='input'><span class='fu'>as_quosure</span>(~<span class='no'>foo</span>)</div><div class='output co'>#&gt; &lt;quosure&gt;
 #&gt; expr: ^foo
-#&gt; env:  0x48ba390</div><div class='input'>
+#&gt; env:  0x3f93a30</div><div class='input'>
 <span class='co'># However you must supply it for symbols and calls:</span>
-<span class='fu'>try</span>(<span class='fu'>as_quosure</span>(<span class='fu'>quote</span>(<span class='no'>var</span>)))</div><div class='output co'>#&gt; <span class='warning'>Warning: `as_quosure()` requires an explicit environment as of rlang 0.3.0.</span>
+<span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/try'>try</a></span>(<span class='fu'>as_quosure</span>(<span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/substitute'>quote</a></span>(<span class='no'>var</span>)))</div><div class='output co'>#&gt; <span class='warning'>Warning: `as_quosure()` requires an explicit environment as of rlang 0.3.0.</span>
 #&gt; <span class='warning'>Please supply `env`.</span>
 #&gt; <span class='warning'>This warning is displayed once per session.</span></div><div class='output co'>#&gt; &lt;quosure&gt;
 #&gt; expr: ^var
-#&gt; env:  0x48ba390</div></pre>
+#&gt; env:  0x3f93a30</div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
     <h2>Contents</h2>
@@ -220,7 +218,7 @@ might not be in the future.</p></li>
 </div>
 
 <div class="pkgdown">
-  <p>Site built with <a href="http://pkgdown.r-lib.org/">pkgdown</a>.</p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a>.</p>
 </div>
 
       </footer>

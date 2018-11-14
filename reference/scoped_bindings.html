@@ -8,8 +8,6 @@
 
 <title>Temporarily change bindings of an environment — scoped_bindings • rlang</title>
 
-<link rel="shortcut icon" type="image/x-icon" href="../favicon.ico">
-
 <!-- jquery -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=" crossorigin="anonymous"></script>
 <!-- Bootstrap -->
@@ -72,7 +70,7 @@ values. It is a simple wrapper around scoped_bindings().
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">rlang</a>
-        <span class="label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.3.0.9000</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.3.0.9000</span>
       </span>
     </div>
 
@@ -189,7 +187,7 @@ invisibly; <code>with_bindings()</code> returns the value of <code>expr</code>.<
 <span class='no'>bar</span> <span class='kw'>&lt;-</span> <span class='st'>"bar"</span>
 
 <span class='co'># `foo` will be temporarily rebinded while executing `expr`</span>
-<span class='fu'>with_bindings</span>(<span class='fu'>paste</span>(<span class='no'>foo</span>, <span class='no'>bar</span>), <span class='kw'>foo</span> <span class='kw'>=</span> <span class='st'>"rebinded"</span>)</div><div class='output co'>#&gt; [1] "rebinded bar"</div><div class='input'><span class='fu'>paste</span>(<span class='no'>foo</span>, <span class='no'>bar</span>)</div><div class='output co'>#&gt; [1] "foo bar"</div></pre>
+<span class='fu'>with_bindings</span>(<span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/paste'>paste</a></span>(<span class='no'>foo</span>, <span class='no'>bar</span>), <span class='kw'>foo</span> <span class='kw'>=</span> <span class='st'>"rebinded"</span>)</div><div class='output co'>#&gt; [1] "rebinded bar"</div><div class='input'><span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/paste'>paste</a></span>(<span class='no'>foo</span>, <span class='no'>bar</span>)</div><div class='output co'>#&gt; [1] "foo bar"</div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
     <h2>Contents</h2>
@@ -210,7 +208,7 @@ invisibly; <code>with_bindings()</code> returns the value of <code>expr</code>.<
 </div>
 
 <div class="pkgdown">
-  <p>Site built with <a href="http://pkgdown.r-lib.org/">pkgdown</a>.</p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a>.</p>
 </div>
 
       </footer>

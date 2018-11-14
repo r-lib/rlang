@@ -8,8 +8,6 @@
 
 <title>Get names of a vector — names2 • rlang</title>
 
-<link rel="shortcut icon" type="image/x-icon" href="../favicon.ico">
-
 <!-- jquery -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=" crossorigin="anonymous"></script>
 <!-- Bootstrap -->
@@ -68,7 +66,7 @@ a vector of empty names &quot;&quot;. It also standardises missing names to
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">rlang</a>
-        <span class="label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.3.0.9000</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.3.0.9000</span>
       </span>
     </div>
 
@@ -163,7 +161,7 @@ a vector of empty names <code>""</code>. It also standardises missing names to
     <pre class="examples"><div class='input'><span class='fu'>names2</span>(<span class='no'>letters</span>)</div><div class='output co'>#&gt;  [1] "" "" "" "" "" "" "" "" "" "" "" "" "" "" "" "" "" "" "" "" "" "" "" "" ""
 #&gt; [26] ""</div><div class='input'>
 <span class='co'># It also takes care of standardising missing names:</span>
-<span class='no'>x</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='set_names.html'>set_names</a></span>(<span class='fl'>1</span>:<span class='fl'>3</span>, <span class='fu'>c</span>(<span class='st'>"a"</span>, <span class='fl'>NA</span>, <span class='st'>"b"</span>))
+<span class='no'>x</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='set_names.html'>set_names</a></span>(<span class='fl'>1</span>:<span class='fl'>3</span>, <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/c'>c</a></span>(<span class='st'>"a"</span>, <span class='fl'>NA</span>, <span class='st'>"b"</span>))
 <span class='fu'>names2</span>(<span class='no'>x</span>)</div><div class='output co'>#&gt; [1] "a" ""  "b"</div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
@@ -185,7 +183,7 @@ a vector of empty names <code>""</code>. It also standardises missing names to
 </div>
 
 <div class="pkgdown">
-  <p>Site built with <a href="http://pkgdown.r-lib.org/">pkgdown</a>.</p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a>.</p>
 </div>
 
       </footer>

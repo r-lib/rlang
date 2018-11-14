@@ -8,8 +8,6 @@
 
 <title>Is an object an expression? — is_expression • rlang</title>
 
-<link rel="shortcut icon" type="image/x-icon" href="../favicon.ico">
-
 <!-- jquery -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=" crossorigin="anonymous"></script>
 <!-- Bootstrap -->
@@ -77,7 +75,7 @@ expressions in a vector and which isn't used much in modern R code." />
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">rlang</a>
-        <span class="label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.3.0.9000</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.3.0.9000</span>
       </span>
     </div>
 
@@ -155,7 +153,7 @@ strings, <code>NULL</code>, symbols, and calls: this is the complete set of R
 objects that can be created when R parses source code (e.g. from
 using <code><a href='parse_expr.html'>parse_expr()</a></code>).</p>
 <p>Note that we are using the term expression in its colloquial sense
-and not to refer to <code>expression()</code> vectors, a data type that wraps
+and not to refer to <code><a href='https://www.rdocumentation.org/packages/base/topics/expression'>expression()</a></code> vectors, a data type that wraps
 expressions in a vector and which isn't used much in modern R code.</p>
     
     </div>
@@ -188,7 +186,7 @@ subset of literals that are created by R when parsing text (see
 these literals are the terminating nodes in an AST.</p>
 <p>Note that in the most general sense, a literal is any R object that
 evaluates to itself and that can be evaluated in the empty
-environment. For instance, <code>quote(c(1, 2))</code> is not a literal, it is
+environment. For instance, <code><a href='https://www.rdocumentation.org/packages/base/topics/substitute'>quote(c(1, 2))</a></code> is not a literal, it is
 a call. However, the result of evaluating it in <code><a href='search_envs.html'>base_env()</a></code> is a
 literal(in this case an atomic vector).</p>
 <p>Pairlists are also a kind of language objects. However, since they
@@ -200,7 +198,7 @@ type-preserving operation. However, you can obtain the pairlist of
 arguments by taking the CDR of the call object from C code. The
 rlang function <code><a href='new_node.html'>node_cdr()</a></code> will do it from R. Another way in
 which pairlist of arguments arise is by extracting the argument
-list of a closure with <code><a href='http://www.rdocumentation.org/packages/base/topics/formals'>base::formals()</a></code> or <code><a href='fn_fmls.html'>fn_fmls()</a></code>.</p>
+list of a closure with <code><a href='https://www.rdocumentation.org/packages/base/topics/formals'>base::formals()</a></code> or <code><a href='fn_fmls.html'>fn_fmls()</a></code>.</p>
     
     <h2 class="hasAnchor" id="see-also"><a class="anchor" href="#see-also"></a>See also</h2>
 
@@ -208,30 +206,30 @@ list of a closure with <code><a href='http://www.rdocumentation.org/packages/bas
     
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><div class='input'><span class='no'>q1</span> <span class='kw'>&lt;-</span> <span class='fu'>quote</span>(<span class='fl'>1</span>)
+    <pre class="examples"><div class='input'><span class='no'>q1</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/substitute'>quote</a></span>(<span class='fl'>1</span>)
 <span class='fu'>is_expression</span>(<span class='no'>q1</span>)</div><div class='output co'>#&gt; [1] TRUE</div><div class='input'><span class='fu'>is_syntactic_literal</span>(<span class='no'>q1</span>)</div><div class='output co'>#&gt; [1] TRUE</div><div class='input'>
-<span class='no'>q2</span> <span class='kw'>&lt;-</span> <span class='fu'>quote</span>(<span class='no'>x</span>)
+<span class='no'>q2</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/substitute'>quote</a></span>(<span class='no'>x</span>)
 <span class='fu'>is_expression</span>(<span class='no'>q2</span>)</div><div class='output co'>#&gt; [1] TRUE</div><div class='input'><span class='fu'><a href='is_symbol.html'>is_symbol</a></span>(<span class='no'>q2</span>)</div><div class='output co'>#&gt; [1] TRUE</div><div class='input'>
-<span class='no'>q3</span> <span class='kw'>&lt;-</span> <span class='fu'>quote</span>(<span class='no'>x</span> + <span class='fl'>1</span>)
+<span class='no'>q3</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/substitute'>quote</a></span>(<span class='no'>x</span> + <span class='fl'>1</span>)
 <span class='fu'>is_expression</span>(<span class='no'>q3</span>)</div><div class='output co'>#&gt; [1] TRUE</div><div class='input'><span class='fu'><a href='is_call.html'>is_call</a></span>(<span class='no'>q3</span>)</div><div class='output co'>#&gt; [1] TRUE</div><div class='input'>
 
 <span class='co'># Atomic expressions are the terminating nodes of a call tree:</span>
 <span class='co'># NULL or a scalar atomic vector:</span>
 <span class='fu'>is_syntactic_literal</span>(<span class='st'>"string"</span>)</div><div class='output co'>#&gt; [1] TRUE</div><div class='input'><span class='fu'>is_syntactic_literal</span>(<span class='kw'>NULL</span>)</div><div class='output co'>#&gt; [1] TRUE</div><div class='input'>
-<span class='fu'>is_syntactic_literal</span>(<span class='no'>letters</span>)</div><div class='output co'>#&gt; [1] FALSE</div><div class='input'><span class='fu'>is_syntactic_literal</span>(<span class='fu'>quote</span>(<span class='fu'>call</span>()))</div><div class='output co'>#&gt; [1] FALSE</div><div class='input'>
+<span class='fu'>is_syntactic_literal</span>(<span class='no'>letters</span>)</div><div class='output co'>#&gt; [1] FALSE</div><div class='input'><span class='fu'>is_syntactic_literal</span>(<span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/substitute'>quote</a></span>(<span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/call'>call</a></span>()))</div><div class='output co'>#&gt; [1] FALSE</div><div class='input'>
 <span class='co'># Parsable literals have the property of being self-quoting:</span>
-<span class='fu'>identical</span>(<span class='st'>"foo"</span>, <span class='fu'>quote</span>(<span class='st'>"foo"</span>))</div><div class='output co'>#&gt; [1] TRUE</div><div class='input'><span class='fu'>identical</span>(<span class='fl'>1L</span>, <span class='fu'>quote</span>(<span class='fl'>1L</span>))</div><div class='output co'>#&gt; [1] TRUE</div><div class='input'><span class='fu'>identical</span>(<span class='kw'>NULL</span>, <span class='fu'>quote</span>(<span class='kw'>NULL</span>))</div><div class='output co'>#&gt; [1] TRUE</div><div class='input'>
+<span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/identical'>identical</a></span>(<span class='st'>"foo"</span>, <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/substitute'>quote</a></span>(<span class='st'>"foo"</span>))</div><div class='output co'>#&gt; [1] TRUE</div><div class='input'><span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/identical'>identical</a></span>(<span class='fl'>1L</span>, <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/substitute'>quote</a></span>(<span class='fl'>1L</span>))</div><div class='output co'>#&gt; [1] TRUE</div><div class='input'><span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/identical'>identical</a></span>(<span class='kw'>NULL</span>, <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/substitute'>quote</a></span>(<span class='kw'>NULL</span>))</div><div class='output co'>#&gt; [1] TRUE</div><div class='input'>
 <span class='co'># Like any literals, they can be evaluated within the empty</span>
 <span class='co'># environment:</span>
-<span class='fu'><a href='eval_bare.html'>eval_bare</a></span>(<span class='fu'>quote</span>(<span class='fl'>1L</span>), <span class='fu'><a href='empty_env.html'>empty_env</a></span>())</div><div class='output co'>#&gt; [1] 1</div><div class='input'>
+<span class='fu'><a href='eval_bare.html'>eval_bare</a></span>(<span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/substitute'>quote</a></span>(<span class='fl'>1L</span>), <span class='fu'><a href='empty_env.html'>empty_env</a></span>())</div><div class='output co'>#&gt; [1] 1</div><div class='input'>
 <span class='co'># Whereas it would fail for symbolic expressions:</span>
 <span class='co'># eval_bare(quote(c(1L, 2L)), empty_env())</span>
 
 
 <span class='co'># Pairlists are also language objects representing argument lists.</span>
 <span class='co'># You will usually encounter them with extracted formals:</span>
-<span class='no'>fmls</span> <span class='kw'>&lt;-</span> <span class='fu'>formals</span>(<span class='no'>is_expression</span>)
-<span class='fu'>typeof</span>(<span class='no'>fmls</span>)</div><div class='output co'>#&gt; [1] "pairlist"</div><div class='input'>
+<span class='no'>fmls</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/formals'>formals</a></span>(<span class='no'>is_expression</span>)
+<span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/typeof'>typeof</a></span>(<span class='no'>fmls</span>)</div><div class='output co'>#&gt; [1] "pairlist"</div><div class='input'>
 <span class='co'># Since they are mostly an internal data structure, is_expression()</span>
 <span class='co'># returns FALSE for pairlists, so you will have to check explicitly</span>
 <span class='co'># for them:</span>
@@ -258,7 +256,7 @@ list of a closure with <code><a href='http://www.rdocumentation.org/packages/bas
 </div>
 
 <div class="pkgdown">
-  <p>Site built with <a href="http://pkgdown.r-lib.org/">pkgdown</a>.</p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a>.</p>
 </div>
 
       </footer>

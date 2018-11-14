@@ -8,8 +8,6 @@
 
 <title>Is a vector integer-like? — is_integerish • rlang</title>
 
-<link rel="shortcut icon" type="image/x-icon" href="../favicon.ico">
-
 <!-- jquery -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=" crossorigin="anonymous"></script>
 <!-- Bootstrap -->
@@ -76,7 +74,7 @@ much larger.
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">rlang</a>
-        <span class="label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.3.0.9000</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.3.0.9000</span>
       </span>
     </div>
 
@@ -145,14 +143,14 @@ much larger.
     <p>These predicates check whether R considers a number vector to be
 integer-like, according to its own tolerance check (which is in
 fact delegated to the C library). This function is not adapted to
-data analysis, see the help for <code><a href='http://www.rdocumentation.org/packages/base/topics/integer'>base::is.integer()</a></code> for examples
+data analysis, see the help for <code><a href='https://www.rdocumentation.org/packages/base/topics/integer'>base::is.integer()</a></code> for examples
 of how to check for whole numbers.</p>
 <p>Things to consider when checking for integer-like doubles:</p><ul>
 <li><p>This check can be expensive because the whole double vector has
 to be traversed and checked.</p></li>
 <li><p>Large double values may be integerish but may still not be
 coercible to integer. This is because integers in R only support
-values up to <code>2^31 - 1</code> while numbers stored as double can be
+values up to <code><a href='https://www.rdocumentation.org/packages/base/topics/Arithmetic'>2^31 - 1</a></code> while numbers stored as double can be
 much larger.</p></li>
 </ul>
     
@@ -178,7 +176,7 @@ much larger.</p></li>
     <tr>
       <th>finite</th>
       <td><p>Whether all values of the vector are finite. The
-non-finite values are <code>NA</code>, <code>Inf</code>, <code>-Inf</code> and <code>NaN</code>. Setting this
+non-finite values are <code>NA</code>, <code>Inf</code>, <code><a href='https://www.rdocumentation.org/packages/base/topics/Arithmetic'>-Inf</a></code> and <code>NaN</code>. Setting this
 to something other than <code>NULL</code> can be expensive because the whole
 vector needs to be traversed and checked.</p></td>
     </tr>
@@ -212,7 +210,7 @@ base numeric type (a bare double or integer vector).</p></div>
 </div>
 
 <div class="pkgdown">
-  <p>Site built with <a href="http://pkgdown.r-lib.org/">pkgdown</a>.</p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a>.</p>
 </div>
 
       </footer>

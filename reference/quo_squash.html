@@ -8,8 +8,6 @@
 
 <title>Squash a quosure — quo_squash • rlang</title>
 
-<link rel="shortcut icon" type="image/x-icon" href="../favicon.ico">
-
 <!-- jquery -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=" crossorigin="anonymous"></script>
 <!-- Bootstrap -->
@@ -72,7 +70,7 @@ let the user know about the lossy squashing." />
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">rlang</a>
-        <span class="label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.3.0.9000</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.3.0.9000</span>
       </span>
     </div>
 
@@ -184,7 +182,7 @@ a lossy operation that squashed all nested quosures.</p>
 <span class='no'>quo</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='quotation.html'>quo</a></span>(<span class='fu'>wrapper</span>(!!<span class='fu'><a href='quotation.html'>quo</a></span>(<span class='no'>wrappee</span>)))
 <span class='no'>quo</span></div><div class='output co'>#&gt; &lt;quosure&gt;
 #&gt; expr: ^wrapper(^wrappee)
-#&gt; env:  0x7ca2208</div><div class='input'>
+#&gt; env:  0x8465de8</div><div class='input'>
 <span class='co'># quo_squash() flattens all the quosures and returns a simple expression:</span>
 <span class='fu'>quo_squash</span>(<span class='no'>quo</span>)</div><div class='output co'>#&gt; wrapper(wrappee)</div></pre>
   </div>
@@ -207,7 +205,7 @@ a lossy operation that squashed all nested quosures.</p>
 </div>
 
 <div class="pkgdown">
-  <p>Site built with <a href="http://pkgdown.r-lib.org/">pkgdown</a>.</p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a>.</p>
 </div>
 
       </footer>

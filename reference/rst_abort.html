@@ -8,8 +8,6 @@
 
 <title>Jump to the abort restart — rst_abort • rlang</title>
 
-<link rel="shortcut icon" type="image/x-icon" href="../favicon.ico">
-
 <!-- jquery -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=" crossorigin="anonymous"></script>
 <!-- Bootstrap -->
@@ -68,7 +66,7 @@ to deal with (see with_handlers())." />
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">rlang</a>
-        <span class="label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.3.0.9000</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.3.0.9000</span>
       </span>
     </div>
 
@@ -167,13 +165,13 @@ programming in R.</p>
 # signalling an error:
 </div><span class='co'># NOT RUN {</span>
 <span class='no'>fn</span> <span class='kw'>&lt;-</span> <span class='kw'>function</span>() {
-  <span class='fu'>cat</span>(<span class='st'>"aborting...\n"</span>)
+  <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/cat'>cat</a></span>(<span class='st'>"aborting...\n"</span>)
   <span class='fu'>rst_abort</span>()
-  <span class='fu'>cat</span>(<span class='st'>"This is never called\n"</span>)
+  <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/cat'>cat</a></span>(<span class='st'>"This is never called\n"</span>)
 }
 {
   <span class='fu'>fn</span>()
-  <span class='fu'>cat</span>(<span class='st'>"This is never called\n"</span>)
+  <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/cat'>cat</a></span>(<span class='st'>"This is never called\n"</span>)
 }
 <span class='co'># }</span><div class='input'>
 # The `above` restart is the target that R uses to jump to top
@@ -181,7 +179,7 @@ programming in R.</p>
 </div><span class='co'># NOT RUN {</span>
 {
   <span class='fu'><a href='abort.html'>abort</a></span>(<span class='st'>"error"</span>)
-  <span class='fu'>cat</span>(<span class='st'>"This is never called\n"</span>)
+  <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/cat'>cat</a></span>(<span class='st'>"This is never called\n"</span>)
 }
 <span class='co'># }</span><div class='input'>
 # If another `abort` restart is specified, errors are signalled as
@@ -190,9 +188,9 @@ programming in R.</p>
 <span class='no'>out</span> <span class='kw'>&lt;-</span> <span class='kw'>NULL</span>
 {
   <span class='no'>out</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='with_restarts.html'>with_restarts</a></span>(<span class='fu'><a href='abort.html'>abort</a></span>(<span class='st'>"error"</span>), <span class='kw'>abort</span> <span class='kw'>=</span> <span class='kw'>function</span>() <span class='st'>"restart!"</span>)
-  <span class='fu'>cat</span>(<span class='st'>"This is called\n"</span>)
+  <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/cat'>cat</a></span>(<span class='st'>"This is called\n"</span>)
 }
-<span class='fu'>cat</span>(<span class='st'>"`out` has now become:"</span>, <span class='no'>out</span>, <span class='st'>"\n"</span>)
+<span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/cat'>cat</a></span>(<span class='st'>"`out` has now become:"</span>, <span class='no'>out</span>, <span class='st'>"\n"</span>)
 <span class='co'># }</span></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
@@ -215,7 +213,7 @@ programming in R.</p>
 </div>
 
 <div class="pkgdown">
-  <p>Site built with <a href="http://pkgdown.r-lib.org/">pkgdown</a>.</p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a>.</p>
 </div>
 
       </footer>

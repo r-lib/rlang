@@ -8,8 +8,6 @@
 
 <title>Establish handlers on the stack — with_handlers • rlang</title>
 
-<link rel="shortcut icon" type="image/x-icon" href="../favicon.ico">
-
 <!-- jquery -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=" crossorigin="anonymous"></script>
 <!-- Bootstrap -->
@@ -70,7 +68,7 @@ which are executed within the signal functions." />
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">rlang</a>
-        <span class="label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.3.0.9000</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.3.0.9000</span>
       </span>
     </div>
 
@@ -195,16 +193,16 @@ thus take precedence over the former.</p>
     <pre class="examples"><div class='input'><span class='co'># Signal a condition with signal():</span>
 <span class='no'>fn</span> <span class='kw'>&lt;-</span> <span class='kw'>function</span>() {
   <span class='fu'>g</span>()
-  <span class='fu'>cat</span>(<span class='st'>"called?\n"</span>)
+  <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/cat'>cat</a></span>(<span class='st'>"called?\n"</span>)
   <span class='st'>"fn() return value"</span>
 }
 <span class='no'>g</span> <span class='kw'>&lt;-</span> <span class='kw'>function</span>() {
   <span class='fu'>h</span>()
-  <span class='fu'>cat</span>(<span class='st'>"called?\n"</span>)
+  <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/cat'>cat</a></span>(<span class='st'>"called?\n"</span>)
 }
 <span class='no'>h</span> <span class='kw'>&lt;-</span> <span class='kw'>function</span>() {
   <span class='fu'><a href='abort.html'>signal</a></span>(<span class='st'>"A foobar condition occurred"</span>, <span class='st'>"foo"</span>)
-  <span class='fu'>cat</span>(<span class='st'>"called?\n"</span>)
+  <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/cat'>cat</a></span>(<span class='st'>"called?\n"</span>)
 }
 
 <span class='co'># Exiting handlers jump to with_handlers() before being</span>
@@ -217,8 +215,8 @@ thus take precedence over the former.</p>
 <span class='co'># ignored. Returning just means they are declining to take charge of</span>
 <span class='co'># the condition. However, they can produce side-effects such as</span>
 <span class='co'># displaying a message:</span>
-<span class='no'>some_handler</span> <span class='kw'>&lt;-</span> <span class='kw'>function</span>(<span class='no'>c</span>) <span class='fu'>cat</span>(<span class='st'>"some handler!\n"</span>)
-<span class='no'>other_handler</span> <span class='kw'>&lt;-</span> <span class='kw'>function</span>(<span class='no'>c</span>) <span class='fu'>cat</span>(<span class='st'>"other handler!\n"</span>)
+<span class='no'>some_handler</span> <span class='kw'>&lt;-</span> <span class='kw'>function</span>(<span class='no'>c</span>) <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/cat'>cat</a></span>(<span class='st'>"some handler!\n"</span>)
+<span class='no'>other_handler</span> <span class='kw'>&lt;-</span> <span class='kw'>function</span>(<span class='no'>c</span>) <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/cat'>cat</a></span>(<span class='st'>"other handler!\n"</span>)
 <span class='fu'>with_handlers</span>(<span class='fu'>fn</span>(), <span class='kw'>foo</span> <span class='kw'>=</span> <span class='fu'><a href='exiting.html'>calling</a></span>(<span class='no'>some_handler</span>), <span class='kw'>foo</span> <span class='kw'>=</span> <span class='fu'><a href='exiting.html'>calling</a></span>(<span class='no'>other_handler</span>))</div><div class='output co'>#&gt; some handler!
 #&gt; other handler!
 #&gt; called?
@@ -256,7 +254,7 @@ thus take precedence over the former.</p>
 </div>
 
 <div class="pkgdown">
-  <p>Site built with <a href="http://pkgdown.r-lib.org/">pkgdown</a>.</p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a>.</p>
 </div>
 
       </footer>

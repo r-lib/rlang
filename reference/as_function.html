@@ -8,8 +8,6 @@
 
 <title>Convert to function or closure — as_function • rlang</title>
 
-<link rel="shortcut icon" type="image/x-icon" href="../favicon.ico">
-
 <!-- jquery -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=" crossorigin="anonymous"></script>
 <!-- Bootstrap -->
@@ -71,7 +69,7 @@ closure (see is_function() about primitive functions).
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">rlang</a>
-        <span class="label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.3.0.9000</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.3.0.9000</span>
       </span>
     </div>
 
@@ -143,7 +141,7 @@ functions by name if supplied a string or transforms formulas to
 function.</p></li>
 <li><p><code>as_closure()</code> first passes its argument to <code>as_function()</code>. If
 the result is a primitive function, it regularises it to a proper
-closure (see <code><a href='is_function.html'>is_function()</a></code> about primitive functions).</p></li>
+<a href='https://www.rdocumentation.org/packages/base/topics/function'>closure</a> (see <code><a href='is_function.html'>is_function()</a></code> about primitive functions).</p></li>
 </ul>
     
     </div>
@@ -161,7 +159,7 @@ closure (see <code><a href='is_function.html'>is_function()</a></code> about pri
       <th>x</th>
       <td><p>A function or formula.</p>
 <p>If a <strong>function</strong>, it is used as is.</p>
-<p>If a <strong>formula</strong>, e.g. <code>~ .x + 2</code>, it is converted to a function
+<p>If a <strong>formula</strong>, e.g. <code><a href='https://www.rdocumentation.org/packages/base/topics/tilde'>~ .x + 2</a></code>, it is converted to a function
 with two arguments, <code>.x</code> or <code>.</code> and <code>.y</code>. This allows you to
 create very compact anonymous functions with up to two inputs.
 Functions created from formulas have a special class. Use
@@ -189,16 +187,16 @@ is a string.</p></td>
 <span class='co'># Operators have `.x` and `.y` as arguments, just like lambda</span>
 <span class='co'># functions created with the formula syntax:</span>
 <span class='fu'>as_closure</span>(<span class='no'>`+`</span>)</div><div class='output co'>#&gt; function(.x, .y) if (missing(.y)) .x else .x + .y
-#&gt; &lt;bytecode: 0x886f540&gt;
-#&gt; &lt;environment: 0x2154860&gt;</div><div class='input'><span class='fu'>as_closure</span>(<span class='no'>`~`</span>)</div><div class='output co'>#&gt; function(.x, .y) {
+#&gt; &lt;bytecode: 0x611c830&gt;
+#&gt; &lt;environment: 0x3d4da88&gt;</div><div class='input'><span class='fu'>as_closure</span>(<span class='no'>`~`</span>)</div><div class='output co'>#&gt; function(.x, .y) {
 #&gt;       if (is_missing(substitute(.y))) {
 #&gt;         new_formula(NULL, substitute(.x), caller_env())
 #&gt;       } else {
 #&gt;         new_formula(substitute(.x), substitute(.y), caller_env())
 #&gt;       }
 #&gt;     }
-#&gt; &lt;bytecode: 0x81e9c50&gt;
-#&gt; &lt;environment: 0x1e5f498&gt;</div></pre>
+#&gt; &lt;bytecode: 0x5139620&gt;
+#&gt; &lt;environment: 0x3550550&gt;</div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
     <h2>Contents</h2>
@@ -217,7 +215,7 @@ is a string.</p></td>
 </div>
 
 <div class="pkgdown">
-  <p>Site built with <a href="http://pkgdown.r-lib.org/">pkgdown</a>.</p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a>.</p>
 </div>
 
       </footer>

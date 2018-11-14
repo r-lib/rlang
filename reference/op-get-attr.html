@@ -8,8 +8,6 @@
 
 <title>Infix attribute accessor and setter — op-get-attr • rlang</title>
 
-<link rel="shortcut icon" type="image/x-icon" href="../favicon.ico">
-
 <!-- jquery -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=" crossorigin="anonymous"></script>
 <!-- Bootstrap -->
@@ -65,7 +63,7 @@ S4 fields for S4 objects." />
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">rlang</a>
-        <span class="label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.3.0.9000</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.3.0.9000</span>
       </span>
     </div>
 
@@ -157,7 +155,7 @@ x <!-- %@% name &lt;- value --></pre>
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
     <pre class="examples"><div class='input'><span class='co'># Unlike `@`, this operator extracts attributes for any kind of</span>
 <span class='co'># objects:</span>
-<span class='fu'>factor</span>(<span class='fl'>1</span>:<span class='fl'>3</span>) <span class='kw'>%@%</span> <span class='st'>"levels"</span></div><div class='output co'>#&gt; [1] "1" "2" "3"</div><div class='input'><span class='no'>mtcars</span> <span class='kw'>%@%</span> <span class='no'>class</span></div><div class='output co'>#&gt; [1] "data.frame"</div><div class='input'>
+<span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/factor'>factor</a></span>(<span class='fl'>1</span>:<span class='fl'>3</span>) <span class='kw'>%@%</span> <span class='st'>"levels"</span></div><div class='output co'>#&gt; [1] "1" "2" "3"</div><div class='input'><span class='no'>mtcars</span> <span class='kw'>%@%</span> <span class='no'>class</span></div><div class='output co'>#&gt; [1] "data.frame"</div><div class='input'>
 <span class='no'>mtcars</span> <span class='kw'>%@%</span> <span class='no'>class</span> <span class='kw'>&lt;-</span> <span class='kw'>NULL</span>
 <span class='no'>mtcars</span></div><div class='output co'>#&gt; $mpg
 #&gt;  [1] 21.0 21.0 22.8 21.4 18.7 18.1 14.3 24.4 22.8 19.2 17.8 16.4 17.3 15.2 10.4
@@ -216,7 +214,7 @@ x <!-- %@% name &lt;- value --></pre>
 #&gt; [28] "Lotus Europa"        "Ford Pantera L"      "Ferrari Dino"       
 #&gt; [31] "Maserati Bora"       "Volvo 142E"         </div><div class='input'>
 <span class='co'># It also works on S4 objects:</span>
-<span class='no'>.Person</span> <span class='kw'>&lt;-</span> <span class='fu'>setClass</span>(<span class='st'>"Person"</span>, <span class='kw'>slots</span> <span class='kw'>=</span> <span class='fu'>c</span>(<span class='kw'>name</span> <span class='kw'>=</span> <span class='st'>"character"</span>, <span class='kw'>species</span> <span class='kw'>=</span> <span class='st'>"character"</span>))
+<span class='no'>.Person</span> <span class='kw'>&lt;-</span> <span class='fu'>setClass</span>(<span class='st'>"Person"</span>, <span class='kw'>slots</span> <span class='kw'>=</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/c'>c</a></span>(<span class='kw'>name</span> <span class='kw'>=</span> <span class='st'>"character"</span>, <span class='kw'>species</span> <span class='kw'>=</span> <span class='st'>"character"</span>))
 <span class='no'>fievel</span> <span class='kw'>&lt;-</span> <span class='fu'>.Person</span>(<span class='kw'>name</span> <span class='kw'>=</span> <span class='st'>"Fievel"</span>, <span class='kw'>species</span> <span class='kw'>=</span> <span class='st'>"mouse"</span>)
 <span class='no'>fievel</span> <span class='kw'>%@%</span> <span class='no'>name</span></div><div class='output co'>#&gt; [1] "Fievel"</div></pre>
   </div>
@@ -237,7 +235,7 @@ x <!-- %@% name &lt;- value --></pre>
 </div>
 
 <div class="pkgdown">
-  <p>Site built with <a href="http://pkgdown.r-lib.org/">pkgdown</a>.</p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a>.</p>
 </div>
 
       </footer>

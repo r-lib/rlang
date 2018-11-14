@@ -8,8 +8,6 @@
 
 <title>Is object a formula? — is_formula • rlang</title>
 
-<link rel="shortcut icon" type="image/x-icon" href="../favicon.ico">
-
 <!-- jquery -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=" crossorigin="anonymous"></script>
 <!-- Bootstrap -->
@@ -66,7 +64,7 @@ tests in addition that x does not inherit from anything else than
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">rlang</a>
-        <span class="label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.3.0.9000</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.3.0.9000</span>
       </span>
     </div>
 
@@ -167,7 +165,7 @@ the LHS is not inspected.</p></td>
 
     <p>The <code>scoped</code> argument patterns-match on whether the scoped bundled
 with the quosure is valid or not. Invalid scopes may happen in
-nested quotations like <code>~~expr</code>, where the outer quosure is validly
+nested quotations like <code><a href='https://www.rdocumentation.org/packages/base/topics/tilde'>~~expr</a></code>, where the outer quosure is validly
 scoped but not the inner one. This is because <code>~</code> saves the
 environment when it is evaluated, and quoted formulas are by
 definition not evaluated.</p>
@@ -180,11 +178,11 @@ definition not evaluated.</p>
 <span class='fu'>is_formula</span>(<span class='fu'><a href='quotation.html'>quo</a></span>(<span class='no'>foo</span>))</div><div class='output co'>#&gt; [1] TRUE</div><div class='input'><span class='fu'>is_bare_formula</span>(<span class='fu'><a href='quotation.html'>quo</a></span>(<span class='no'>foo</span>))</div><div class='output co'>#&gt; [1] FALSE</div><div class='input'>
 <span class='co'># Note that unevaluated formulas are treated as bare formulas even</span>
 <span class='co'># though they don't inherit from "formula":</span>
-<span class='no'>f</span> <span class='kw'>&lt;-</span> <span class='fu'>quote</span>(~<span class='no'>foo</span>)
+<span class='no'>f</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/substitute'>quote</a></span>(~<span class='no'>foo</span>)
 <span class='fu'>is_bare_formula</span>(<span class='no'>f</span>)</div><div class='output co'>#&gt; [1] FALSE</div><div class='input'>
 <span class='co'># However you can specify `scoped` if you need the predicate to</span>
 <span class='co'># return FALSE for these unevaluated formulas:</span>
-<span class='fu'>is_bare_formula</span>(<span class='no'>f</span>, <span class='kw'>scoped</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>)</div><div class='output co'>#&gt; [1] FALSE</div><div class='input'><span class='fu'>is_bare_formula</span>(<span class='fu'>eval</span>(<span class='no'>f</span>), <span class='kw'>scoped</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>)</div><div class='output co'>#&gt; [1] TRUE</div></pre>
+<span class='fu'>is_bare_formula</span>(<span class='no'>f</span>, <span class='kw'>scoped</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>)</div><div class='output co'>#&gt; [1] FALSE</div><div class='input'><span class='fu'>is_bare_formula</span>(<span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/eval'>eval</a></span>(<span class='no'>f</span>), <span class='kw'>scoped</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>)</div><div class='output co'>#&gt; [1] TRUE</div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
     <h2>Contents</h2>
@@ -205,7 +203,7 @@ definition not evaluated.</p>
 </div>
 
 <div class="pkgdown">
-  <p>Site built with <a href="http://pkgdown.r-lib.org/">pkgdown</a>.</p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a>.</p>
 </div>
 
       </footer>

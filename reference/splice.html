@@ -8,8 +8,6 @@
 
 <title>Splice lists — splice • rlang</title>
 
-<link rel="shortcut icon" type="image/x-icon" href="../favicon.ico">
-
 <!-- jquery -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=" crossorigin="anonymous"></script>
 <!-- Bootstrap -->
@@ -69,7 +67,7 @@ list inputs.
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">rlang</a>
-        <span class="label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.3.0.9000</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.3.0.9000</span>
       </span>
     </div>
 
@@ -150,8 +148,8 @@ list inputs.</p></li>
 
 <span class='fu'>is_spliced_bare</span>(<span class='no'>x</span>)
 
-<span class='fu'>dots_splice</span>(<span class='no'>...</span>, <span class='kw'>.ignore_empty</span> <span class='kw'>=</span> <span class='fu'>c</span>(<span class='st'>"trailing"</span>, <span class='st'>"none"</span>, <span class='st'>"all"</span>),
-  <span class='kw'>.preserve_empty</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>, <span class='kw'>.homonyms</span> <span class='kw'>=</span> <span class='fu'>c</span>(<span class='st'>"keep"</span>, <span class='st'>"first"</span>, <span class='st'>"last"</span>,
+<span class='fu'>dots_splice</span>(<span class='no'>...</span>, <span class='kw'>.ignore_empty</span> <span class='kw'>=</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/c'>c</a></span>(<span class='st'>"trailing"</span>, <span class='st'>"none"</span>, <span class='st'>"all"</span>),
+  <span class='kw'>.preserve_empty</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>, <span class='kw'>.homonyms</span> <span class='kw'>=</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/c'>c</a></span>(<span class='st'>"keep"</span>, <span class='st'>"first"</span>, <span class='st'>"last"</span>,
   <span class='st'>"error"</span>), <span class='kw'>.check_assign</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>)</pre>
     
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
@@ -223,7 +221,7 @@ the behaviour of the quasiquoting function has priority. You might
 then observe some performance cost in edge cases. Here is one
 example where this would happen:</p><pre>purrr::rerun(10, dplyr::bind_rows(!!! x))
 </pre>
-    <p><code><a href='http://www.rdocumentation.org/packages/purrr/topics/rerun'>purrr::rerun()</a></code> is a quoting function and <code>dplyr::bind_rows()</code> is
+    <p><code><a href='https://www.rdocumentation.org/packages/purrr/topics/rerun'>purrr::rerun()</a></code> is a quoting function and <code>dplyr::bind_rows()</code> is
 a standard function. Because <code>bind_rows()</code> is called <em>inside</em>
 <code>rerun()</code>, the list <code>x</code> will be disaggregated into a pairlist of
 arguments. To avoid this you can use <code>splice()</code> instead:</p><pre>purrr::rerun(10, dplyr::bind_rows(splice(x)))
@@ -264,7 +262,7 @@ issue discussed above.</p></li>
 </div>
 
 <div class="pkgdown">
-  <p>Site built with <a href="http://pkgdown.r-lib.org/">pkgdown</a>.</p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a>.</p>
 </div>
 
       </footer>

@@ -8,8 +8,6 @@
 
 <title>Dispatch on call type — switch_lang • rlang</title>
 
-<link rel="shortcut icon" type="image/x-icon" href="../favicon.ico">
-
 <!-- jquery -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=" crossorigin="anonymous"></script>
 <!-- Bootstrap -->
@@ -69,7 +67,7 @@ of call head (see details)." />
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">rlang</a>
-        <span class="label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.3.0.9000</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.3.0.9000</span>
       </span>
     </div>
 
@@ -169,7 +167,7 @@ is extracted first.</p></td>
 function. If supplied, this should be a string indicating the
 target type. A catch-all clause is then added to signal an error
 stating the conversion failure. This type is prettified unless
-<code>.to</code> inherits from the S3 class <code>"AsIs"</code> (see <code><a href='http://www.rdocumentation.org/packages/base/topics/AsIs'>base::I()</a></code>).</p></td>
+<code>.to</code> inherits from the S3 class <code>"AsIs"</code> (see <code><a href='https://www.rdocumentation.org/packages/base/topics/AsIs'>base::I()</a></code>).</p></td>
     </tr>
     </table>
     
@@ -190,7 +188,7 @@ infix functions <code>$</code> or <code>@</code>). The call subtype is said to b
 <li><p>A special subset of recursive calls are namespaced calls like
 <code>foo::bar()</code>. <code>switch_lang()</code> returns "namespaced" for these
 calls. It is generally a good idea if your function treats
-<code>bar()</code> and <code>foo::bar()</code> similarly.</p></li>
+<code><a href='https://www.rdocumentation.org/packages/grDevices/topics/plotmath'>bar()</a></code> and <code>foo::bar()</code> similarly.</p></li>
 <li><p>Finally, it is possible to have a literal (see <code><a href='is_expression.html'>is_expression()</a></code> for a
 definition of literals) as call head. In most cases, this will be
 a function inlined in the call (this is sometimes an expedient
@@ -216,12 +214,12 @@ removed from the package.</p>
     <pre class="examples"><div class='input'><span class='co'># Named calls:</span>
 <span class='fu'>lang_type_of</span>(~<span class='fu'>foo</span>())</div><div class='output co'>#&gt; [1] "named"</div><div class='input'>
 <span class='co'># Recursive calls:</span>
-<span class='fu'>lang_type_of</span>(~<span class='no'>foo</span>$<span class='fu'>bar</span>())</div><div class='output co'>#&gt; [1] "recursive"</div><div class='input'><span class='fu'>lang_type_of</span>(~<span class='fu'>foo</span>()())</div><div class='output co'>#&gt; [1] "recursive"</div><div class='input'>
+<span class='fu'>lang_type_of</span>(~<span class='no'>foo</span>$<span class='fu'><a href='https://www.rdocumentation.org/packages/grDevices/topics/plotmath'>bar</a></span>())</div><div class='output co'>#&gt; [1] "recursive"</div><div class='input'><span class='fu'>lang_type_of</span>(~<span class='fu'>foo</span>()())</div><div class='output co'>#&gt; [1] "recursive"</div><div class='input'>
 <span class='co'># Namespaced calls:</span>
-<span class='fu'>lang_type_of</span>(~<span class='kw pkg'>base</span><span class='kw ns'>::</span><span class='fu'><a href='http://www.rdocumentation.org/packages/base/topics/list'>list</a></span>())</div><div class='output co'>#&gt; [1] "namespaced"</div><div class='input'>
+<span class='fu'>lang_type_of</span>(~<span class='kw pkg'>base</span><span class='kw ns'>::</span><span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/list'>list</a></span>())</div><div class='output co'>#&gt; [1] "namespaced"</div><div class='input'>
 <span class='co'># For an inlined call, let's inline a function in the head node:</span>
-<span class='no'>call</span> <span class='kw'>&lt;-</span> <span class='fu'>quote</span>(<span class='fu'>foo</span>(<span class='no'>letters</span>))
-<span class='no'>call</span><span class='kw'>[[</span><span class='fl'>1</span>]] <span class='kw'>&lt;-</span> <span class='kw pkg'>base</span><span class='kw ns'>::</span><span class='no'><a href='http://www.rdocumentation.org/packages/base/topics/chartr'>toupper</a></span>
+<span class='no'>call</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/substitute'>quote</a></span>(<span class='fu'>foo</span>(<span class='no'>letters</span>))
+<span class='no'>call</span><span class='kw'>[[</span><span class='fl'>1</span>]] <span class='kw'>&lt;-</span> <span class='kw pkg'>base</span><span class='kw ns'>::</span><span class='no'><a href='https://www.rdocumentation.org/packages/base/topics/chartr'>toupper</a></span>
 
 <span class='no'>call</span></div><div class='output co'>#&gt; (function (x) 
 #&gt; {
@@ -251,7 +249,7 @@ removed from the package.</p>
 </div>
 
 <div class="pkgdown">
-  <p>Site built with <a href="http://pkgdown.r-lib.org/">pkgdown</a>.</p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a>.</p>
 </div>
 
       </footer>

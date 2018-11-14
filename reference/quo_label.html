@@ -8,8 +8,6 @@
 
 <title>Format quosures for printing or labelling — quo_label • rlang</title>
 
-<link rel="shortcut icon" type="image/x-icon" href="../favicon.ico">
-
 <!-- jquery -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=" crossorigin="anonymous"></script>
 <!-- Bootstrap -->
@@ -78,7 +76,7 @@ and strings is non-lossy and well defined." />
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">rlang</a>
-        <span class="label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.3.0.9000</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.3.0.9000</span>
       </span>
     </div>
 
@@ -149,7 +147,7 @@ and strings is non-lossy and well defined." />
 <li><p><code>quo_name()</code> returns an abbreviated representation of the object
 as a single line string. It is suitable for default names.</p></li>
 <li><p><code>quo_text()</code> returns a multiline string. For instance block
-expressions like <code>{ foo; bar }</code> are represented on 4 lines (one
+expressions like <code><a href='https://www.rdocumentation.org/packages/base/topics/Paren'>{ foo; bar }</a></code> are represented on 4 lines (one
 for each symbol, and the curly braces on their own lines).</p></li>
 </ul>
 
@@ -195,7 +193,7 @@ and strings is non-lossy and well defined.</p>
 <span class='no'>quo</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='quotation.html'>quo</a></span>(<span class='fu'>foo</span>(!! <span class='fu'><a href='quotation.html'>quo</a></span>(<span class='no'>bar</span>)))
 <span class='no'>quo</span></div><div class='output co'>#&gt; &lt;quosure&gt;
 #&gt; expr: ^foo(^bar)
-#&gt; env:  0x8a93dc8</div><div class='input'>
+#&gt; env:  0x5183d30</div><div class='input'>
 <span class='co'># quo_squash() unwraps all quosures and returns a raw expression:</span>
 <span class='fu'><a href='quo_squash.html'>quo_squash</a></span>(<span class='no'>quo</span>)</div><div class='output co'>#&gt; foo(bar)</div><div class='input'>
 <span class='co'># This is used by quo_text() and quo_label():</span>
@@ -224,7 +222,7 @@ and strings is non-lossy and well defined.</p>
 </div>
 
 <div class="pkgdown">
-  <p>Site built with <a href="http://pkgdown.r-lib.org/">pkgdown</a>.</p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a>.</p>
 </div>
 
       </footer>

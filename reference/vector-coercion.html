@@ -8,8 +8,6 @@
 
 <title>Coerce an object to a base type — vector-coercion • rlang</title>
 
-<link rel="shortcut icon" type="image/x-icon" href="../favicon.ico">
-
 <!-- jquery -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=" crossorigin="anonymous"></script>
 <!-- Bootstrap -->
@@ -73,7 +71,7 @@ functions: all attributes except names are removed." />
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">rlang</a>
-        <span class="label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.3.0.9000</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.3.0.9000</span>
       </span>
     </div>
 
@@ -140,8 +138,8 @@ functions: all attributes except names are removed." />
     <div class="ref-description">
     
     <p><a href='https://www.tidyverse.org/lifecycle/#questioning'><img src='figures/lifecycle-questioning.svg' alt='Questioning lifecycle'></a></p>
-<p>These are equivalent to the base functions (e.g. <code>as.logical()</code>,
-<code>as.list()</code>, etc), but perform coercion rather than conversion.
+<p>These are equivalent to the base functions (e.g. <code><a href='https://www.rdocumentation.org/packages/base/topics/logical'>as.logical()</a></code>,
+<code><a href='https://www.rdocumentation.org/packages/base/topics/list'>as.list()</a></code>, etc), but perform coercion rather than conversion.
 This means they are not generic and will not call S3 conversion
 methods. They only attempt to coerce the base type of their
 input. In addition, they have stricter implicit coercion rules and
@@ -212,7 +210,7 @@ extra type check.</p>
 
     
     <p><code>as_list()</code> only coerces vector and dictionary types (environments
-are an example of dictionary type). Unlike <code><a href='http://www.rdocumentation.org/packages/base/topics/list'>base::as.list()</a></code>,
+are an example of dictionary type). Unlike <code><a href='https://www.rdocumentation.org/packages/base/topics/list'>base::as.list()</a></code>,
 <code>as_list()</code> removes all attributes except names.</p>
     
     <h2 class="hasAnchor" id="effects-of-removing-attributes"><a class="anchor" href="#effects-of-removing-attributes"></a>Effects of removing attributes</h2>
@@ -233,11 +231,11 @@ place and has side-effects.</p>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
     <pre class="examples"><div class='input'><span class='co'># Coercing atomic vectors removes attributes with both base R and rlang:</span>
-<span class='no'>x</span> <span class='kw'>&lt;-</span> <span class='fu'>structure</span>(<span class='fl'>TRUE</span>, <span class='kw'>class</span> <span class='kw'>=</span> <span class='st'>"foo"</span>, <span class='kw'>bar</span> <span class='kw'>=</span> <span class='st'>"baz"</span>)
-<span class='fu'>as.logical</span>(<span class='no'>x</span>)</div><div class='output co'>#&gt; [1] TRUE</div><div class='input'>
+<span class='no'>x</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/structure'>structure</a></span>(<span class='fl'>TRUE</span>, <span class='kw'>class</span> <span class='kw'>=</span> <span class='st'>"foo"</span>, <span class='kw'>bar</span> <span class='kw'>=</span> <span class='st'>"baz"</span>)
+<span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/logical'>as.logical</a></span>(<span class='no'>x</span>)</div><div class='output co'>#&gt; [1] TRUE</div><div class='input'>
 <span class='co'># But coercing lists preserves attributes in base R but not rlang:</span>
-<span class='no'>l</span> <span class='kw'>&lt;-</span> <span class='fu'>structure</span>(<span class='fu'>list</span>(<span class='fl'>TRUE</span>), <span class='kw'>class</span> <span class='kw'>=</span> <span class='st'>"foo"</span>, <span class='kw'>bar</span> <span class='kw'>=</span> <span class='st'>"baz"</span>)
-<span class='fu'>as.list</span>(<span class='no'>l</span>)</div><div class='output co'>#&gt; [[1]]
+<span class='no'>l</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/structure'>structure</a></span>(<span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/list'>list</a></span>(<span class='fl'>TRUE</span>), <span class='kw'>class</span> <span class='kw'>=</span> <span class='st'>"foo"</span>, <span class='kw'>bar</span> <span class='kw'>=</span> <span class='st'>"baz"</span>)
+<span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/list'>as.list</a></span>(<span class='no'>l</span>)</div><div class='output co'>#&gt; [[1]]
 #&gt; [1] TRUE
 #&gt; 
 #&gt; attr(,"class")
@@ -247,25 +245,25 @@ place and has side-effects.</p>
 #&gt; [1] TRUE
 #&gt; </div><div class='input'>
 <span class='co'># Implicit conversions are performed in base R but not rlang:</span>
-<span class='fu'>as.logical</span>(<span class='no'>l</span>)</div><div class='output co'>#&gt; [1] TRUE</div><span class='co'># NOT RUN {</span>
+<span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/logical'>as.logical</a></span>(<span class='no'>l</span>)</div><div class='output co'>#&gt; [1] TRUE</div><span class='co'># NOT RUN {</span>
 <span class='fu'>as_logical</span>(<span class='no'>l</span>)
 <span class='co'># }</span><div class='input'>
 <span class='co'># Conversion methods are bypassed, making the result of the</span>
 <span class='co'># coercion more predictable:</span>
 <span class='no'>as.list.foo</span> <span class='kw'>&lt;-</span> <span class='kw'>function</span>(<span class='no'>x</span>) <span class='st'>"wrong"</span>
-<span class='fu'>as.list</span>(<span class='no'>l</span>)</div><div class='output co'>#&gt; [1] "wrong"</div><div class='input'><span class='fu'>as_list</span>(<span class='no'>l</span>)</div><div class='output co'>#&gt; [[1]]
+<span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/list'>as.list</a></span>(<span class='no'>l</span>)</div><div class='output co'>#&gt; [1] "wrong"</div><div class='input'><span class='fu'>as_list</span>(<span class='no'>l</span>)</div><div class='output co'>#&gt; [[1]]
 #&gt; [1] TRUE
 #&gt; </div><div class='input'>
 <span class='co'># The input is never parsed. E.g. character vectors of numbers are</span>
 <span class='co'># not converted to numeric types:</span>
-<span class='fu'>as.integer</span>(<span class='st'>"33"</span>)</div><div class='output co'>#&gt; [1] 33</div><span class='co'># NOT RUN {</span>
+<span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/integer'>as.integer</a></span>(<span class='st'>"33"</span>)</div><div class='output co'>#&gt; [1] 33</div><span class='co'># NOT RUN {</span>
 <span class='fu'>as_integer</span>(<span class='st'>"33"</span>)
 <span class='co'># }</span><div class='input'>
 
 <span class='co'># With base R tools there is no way to convert an environment to a</span>
 <span class='co'># list without either triggering method dispatch, or changing the</span>
 <span class='co'># original environment. as_list() makes it easy:</span>
-<span class='no'>x</span> <span class='kw'>&lt;-</span> <span class='fu'>structure</span>(<span class='fu'><a href='as_environment.html'>as_environment</a></span>(<span class='no'>mtcars</span>[<span class='fl'>1</span>:<span class='fl'>2</span>]), <span class='kw'>class</span> <span class='kw'>=</span> <span class='st'>"foobar"</span>)
+<span class='no'>x</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/structure'>structure</a></span>(<span class='fu'><a href='as_environment.html'>as_environment</a></span>(<span class='no'>mtcars</span>[<span class='fl'>1</span>:<span class='fl'>2</span>]), <span class='kw'>class</span> <span class='kw'>=</span> <span class='st'>"foobar"</span>)
 <span class='no'>as.list.foobar</span> <span class='kw'>&lt;-</span> <span class='kw'>function</span>(<span class='no'>x</span>) <span class='fu'><a href='abort.html'>abort</a></span>(<span class='st'>"dont call me"</span>)
 <span class='fu'>as_list</span>(<span class='no'>x</span>)</div><div class='output co'>#&gt; $cyl
 #&gt;  [1] 6 6 4 6 8 6 8 4 4 6 6 8 8 8 8 8 8 4 4 4 4 8 8 8 8 4 4 4 8 6 8 4
@@ -301,7 +299,7 @@ place and has side-effects.</p>
 </div>
 
 <div class="pkgdown">
-  <p>Site built with <a href="http://pkgdown.r-lib.org/">pkgdown</a>.</p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a>.</p>
 </div>
 
       </footer>

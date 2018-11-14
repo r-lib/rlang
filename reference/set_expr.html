@@ -8,8 +8,6 @@
 
 <title>Set and get an expression — set_expr • rlang</title>
 
-<link rel="shortcut icon" type="image/x-icon" href="../favicon.ico">
-
 <!-- jquery -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=" crossorigin="anonymous"></script>
 <!-- Bootstrap -->
@@ -70,7 +68,7 @@ not change its input, it creates a new object." />
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">rlang</a>
-        <span class="label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.3.0.9000</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.3.0.9000</span>
       </span>
     </div>
 
@@ -182,12 +180,12 @@ expression for <code>get_expr()</code>.</p>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
     <pre class="examples"><div class='input'><span class='no'>f</span> <span class='kw'>&lt;-</span> ~<span class='fu'>foo</span>(<span class='no'>bar</span>)
-<span class='no'>e</span> <span class='kw'>&lt;-</span> <span class='fu'>quote</span>(<span class='fu'>foo</span>(<span class='no'>bar</span>))
-<span class='no'>frame</span> <span class='kw'>&lt;-</span> <span class='fu'>identity</span>(<span class='fu'>identity</span>(<span class='fu'><a href='stack.html'>ctxt_frame</a></span>()))</div><div class='output co'>#&gt; <span class='warning'>Warning: `ctxt_frame()` is soft-deprecated as of rlang 0.3.0.</span>
+<span class='no'>e</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/substitute'>quote</a></span>(<span class='fu'>foo</span>(<span class='no'>bar</span>))
+<span class='no'>frame</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/identity'>identity</a></span>(<span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/identity'>identity</a></span>(<span class='fu'><a href='stack.html'>ctxt_frame</a></span>()))</div><div class='output co'>#&gt; <span class='warning'>Warning: `ctxt_frame()` is soft-deprecated as of rlang 0.3.0.</span>
 #&gt; <span class='warning'>This warning is displayed once per session.</span></div><div class='input'>
 <span class='fu'>get_expr</span>(<span class='no'>f</span>)</div><div class='output co'>#&gt; foo(bar)</div><div class='input'><span class='fu'>get_expr</span>(<span class='no'>e</span>)</div><div class='output co'>#&gt; foo(bar)</div><div class='input'><span class='fu'>get_expr</span>(<span class='no'>frame</span>)</div><div class='output co'>#&gt; identity(ctxt_frame())</div><div class='input'>
-<span class='fu'>set_expr</span>(<span class='no'>f</span>, <span class='fu'>quote</span>(<span class='no'>baz</span>))</div><div class='output co'>#&gt; ~baz
-#&gt; &lt;environment: 0xaa325f0&gt;</div><div class='input'><span class='fu'>set_expr</span>(<span class='no'>e</span>, <span class='fu'>quote</span>(<span class='no'>baz</span>))</div><div class='output co'>#&gt; baz</div></pre>
+<span class='fu'>set_expr</span>(<span class='no'>f</span>, <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/substitute'>quote</a></span>(<span class='no'>baz</span>))</div><div class='output co'>#&gt; ~baz
+#&gt; &lt;environment: 0x8d10ca0&gt;</div><div class='input'><span class='fu'>set_expr</span>(<span class='no'>e</span>, <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/substitute'>quote</a></span>(<span class='no'>baz</span>))</div><div class='output co'>#&gt; baz</div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
     <h2>Contents</h2>
@@ -210,7 +208,7 @@ expression for <code>get_expr()</code>.</p>
 </div>
 
 <div class="pkgdown">
-  <p>Site built with <a href="http://pkgdown.r-lib.org/">pkgdown</a>.</p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a>.</p>
 </div>
 
       </footer>

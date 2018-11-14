@@ -8,8 +8,6 @@
 
 <title>Dispatch on base types — switch_type • rlang</title>
 
-<link rel="shortcut icon" type="image/x-icon" href="../favicon.ico">
-
 <!-- jquery -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=" crossorigin="anonymous"></script>
 <!-- Bootstrap -->
@@ -71,7 +69,7 @@ error message when conversion fails." />
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">rlang</a>
-        <span class="label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.3.0.9000</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.3.0.9000</span>
       </span>
     </div>
 
@@ -141,8 +139,8 @@ error message when conversion fails." />
 
     <a href='https://www.tidyverse.org/lifecycle/#questioning'><img src='figures/lifecycle-questioning.svg' alt='Questioning lifecycle'></a></p>
 <p><code>switch_type()</code> is equivalent to
-<code><a href='http://www.rdocumentation.org/packages/base/topics/switch'>switch</a>(<a href='type_of.html'>type_of</a>(x, ...))</code>, while
-<code>switch_class()</code> switchpatches based on <code>class(x)</code>. The <code>coerce_</code>
+<code><a href='https://www.rdocumentation.org/packages/base/topics/switch'>switch</a>(<a href='type_of.html'>type_of</a>(x, ...))</code>, while
+<code>switch_class()</code> switchpatches based on <code><a href='https://www.rdocumentation.org/packages/base/topics/class'>class(x)</a></code>. The <code>coerce_</code>
 versions are intended for type conversion and provide a standard
 error message when conversion fails.</p>
     
@@ -174,7 +172,7 @@ error message when conversion fails.</p>
 function. If supplied, this should be a string indicating the
 target type. A catch-all clause is then added to signal an error
 stating the conversion failure. This type is prettified unless
-<code>.to</code> inherits from the S3 class <code>"AsIs"</code> (see <code><a href='http://www.rdocumentation.org/packages/base/topics/AsIs'>base::I()</a></code>).</p></td>
+<code>.to</code> inherits from the S3 class <code>"AsIs"</code> (see <code><a href='https://www.rdocumentation.org/packages/base/topics/AsIs'>base::I()</a></code>).</p></td>
     </tr>
     </table>
     
@@ -202,8 +200,8 @@ experimental functions.</p></li>
 <span class='co'># type matches:</span>
 <span class='no'>to_chr</span> <span class='kw'>&lt;-</span> <span class='kw'>function</span>(<span class='no'>x</span>) {
   <span class='fu'>coerce_type</span>(<span class='no'>x</span>, <span class='st'>"a chr"</span>,
-    <span class='kw'>integer</span> <span class='kw'>=</span> <span class='fu'>as.character</span>(<span class='no'>x</span>),
-    <span class='kw'>double</span> <span class='kw'>=</span> <span class='fu'>as.character</span>(<span class='no'>x</span>)
+    <span class='kw'>integer</span> <span class='kw'>=</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/character'>as.character</a></span>(<span class='no'>x</span>),
+    <span class='kw'>double</span> <span class='kw'>=</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/character'>as.character</a></span>(<span class='no'>x</span>)
   )
 }
 <span class='fu'>to_chr</span>(<span class='fl'>3L</span>)</div><div class='output co'>#&gt; [1] "3"</div><div class='input'>
@@ -222,7 +220,7 @@ experimental functions.</p></li>
 )</div><div class='output co'>#&gt; [1] "foo"</div><div class='input'>
 <span class='co'># special and builtin functions are treated as primitive, since</span>
 <span class='co'># there is usually no reason to treat them differently:</span>
-<span class='fu'>switch_type</span>(<span class='kw pkg'>base</span><span class='kw ns'>::</span><span class='no'><a href='http://www.rdocumentation.org/packages/base/topics/list'>list</a></span>,
+<span class='fu'>switch_type</span>(<span class='kw pkg'>base</span><span class='kw ns'>::</span><span class='no'><a href='https://www.rdocumentation.org/packages/base/topics/list'>list</a></span>,
   <span class='kw'>primitive</span> <span class='kw'>=</span> <span class='st'>"foo"</span>,
   <span class='st'>"default"</span>
 )</div><div class='output co'>#&gt; [1] "foo"</div><div class='input'><span class='fu'>switch_type</span>(<span class='kw pkg'>base</span><span class='kw ns'>::</span><span class='no'>`$`</span>,
@@ -256,7 +254,7 @@ experimental functions.</p></li>
 </div>
 
 <div class="pkgdown">
-  <p>Site built with <a href="http://pkgdown.r-lib.org/">pkgdown</a>.</p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a>.</p>
 </div>
 
       </footer>

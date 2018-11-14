@@ -8,8 +8,6 @@
 
 <title>Jump to or from a frame — return_from • rlang</title>
 
-<link rel="shortcut icon" type="image/x-icon" href="../favicon.ico">
-
 <!-- jquery -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=" crossorigin="anonymous"></script>
 <!-- Bootstrap -->
@@ -69,7 +67,7 @@ non-local jumps out of the function currently under evaluation." />
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">rlang</a>
-        <span class="label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.3.0.9000</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.3.0.9000</span>
       </span>
     </div>
 
@@ -136,7 +134,7 @@ non-local jumps out of the function currently under evaluation." />
     <div class="ref-description">
     
     <p><a href='https://www.tidyverse.org/lifecycle/#questioning'><img src='figures/lifecycle-questioning.svg' alt='Questioning lifecycle'></a></p>
-<p>While <code><a href='http://www.rdocumentation.org/packages/base/topics/function'>base::return()</a></code> can only return from the current local
+<p>While <code><a href='https://www.rdocumentation.org/packages/base/topics/function'>base::return()</a></code> can only return from the current local
 frame, these two functions will return from any frame on the
 current evaluation stack, between the global and the currently
 active context. They provide a way of performing arbitrary
@@ -187,7 +185,7 @@ considering simpler alternatives.</p>
     <pre class="examples"><div class='input'><span class='co'># Passing fn() evaluation frame to g():</span>
 <span class='no'>fn</span> <span class='kw'>&lt;-</span> <span class='kw'>function</span>() {
   <span class='no'>val</span> <span class='kw'>&lt;-</span> <span class='fu'>g</span>(<span class='fu'><a href='caller_env.html'>current_env</a></span>())
-  <span class='fu'>cat</span>(<span class='st'>"g returned:"</span>, <span class='no'>val</span>, <span class='st'>"\n"</span>)
+  <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/cat'>cat</a></span>(<span class='st'>"g returned:"</span>, <span class='no'>val</span>, <span class='st'>"\n"</span>)
   <span class='st'>"normal return"</span>
 }
 <span class='no'>g</span> <span class='kw'>&lt;-</span> <span class='kw'>function</span>(<span class='no'>env</span>) <span class='fu'>h</span>(<span class='no'>env</span>)
@@ -221,7 +219,7 @@ considering simpler alternatives.</p>
 </div>
 
 <div class="pkgdown">
-  <p>Site built with <a href="http://pkgdown.r-lib.org/">pkgdown</a>.</p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a>.</p>
 </div>
 
       </footer>

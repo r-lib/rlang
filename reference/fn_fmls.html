@@ -8,8 +8,6 @@
 
 <title>Extract arguments from a function — fn_fmls • rlang</title>
 
-<link rel="shortcut icon" type="image/x-icon" href="../favicon.ico">
-
 <!-- jquery -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=" crossorigin="anonymous"></script>
 <!-- Bootstrap -->
@@ -67,7 +65,7 @@ is especially useful for forwarding arguments in constructed calls." />
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">rlang</a>
-        <span class="label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.3.0.9000</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.3.0.9000</span>
       </span>
     </div>
 
@@ -166,7 +164,7 @@ supplied.</p></td>
     
     <h2 class="hasAnchor" id="details"><a class="anchor" href="#details"></a>Details</h2>
 
-    <p>Unlike <code>formals()</code>, these helpers also work with primitive
+    <p>Unlike <code><a href='https://www.rdocumentation.org/packages/base/topics/formals'>formals()</a></code>, these helpers also work with primitive
 functions. See <code><a href='is_function.html'>is_function()</a></code> for a discussion of primitive and
 closure functions.</p>
 <p>Note that the argument names are taken from the closures that are
@@ -175,7 +173,7 @@ while the arguments of the primitive operator <code>+</code> are labelled <code>
 and <code>e2</code>, <code>fn_fmls_names()</code> will return <code>.x</code> and <code>.y</code>. Note that
 for many primitives the base R argument names are purely
 placeholders since they don't perform regular argument matching.
-E.g. this returns <code>5</code> instead of <code>-5</code>:</p><pre>`-`(e2 = 10, 5)
+E.g. this returns <code>5</code> instead of <code><a href='https://www.rdocumentation.org/packages/base/topics/Arithmetic'>-5</a></code>:</p><pre>`-`(e2 = 10, 5)
 </pre>
     <p>To regularise the semantics of primitive functions, it is usually a
 good idea to coerce them to a closure first:</p><pre>minus &lt;- as_closure(`-`)
@@ -197,7 +195,7 @@ minus(.y = 10, 5)
 #&gt; [1] 2
 #&gt; </div><div class='input'>
 <span class='co'># Works with primitive functions:</span>
-<span class='fu'>fn_fmls</span>(<span class='kw pkg'>base</span><span class='kw ns'>::</span><span class='no'><a href='http://www.rdocumentation.org/packages/base/topics/switch'>switch</a></span>)</div><div class='output co'>#&gt; $EXPR
+<span class='fu'>fn_fmls</span>(<span class='kw pkg'>base</span><span class='kw ns'>::</span><span class='no'><a href='https://www.rdocumentation.org/packages/base/topics/switch'>switch</a></span>)</div><div class='output co'>#&gt; $EXPR
 #&gt; 
 #&gt; 
 #&gt; $...
@@ -206,14 +204,14 @@ minus(.y = 10, 5)
 <span class='co'># fn_fmls_syms() makes it easy to forward arguments:</span>
 <span class='fu'><a href='call2.html'>call2</a></span>(<span class='st'>"apply"</span>, !!! <span class='fu'>fn_fmls_syms</span>(<span class='no'>lapply</span>))</div><div class='output co'>#&gt; apply(X = X, FUN = FUN, ...)</div><div class='input'>
 <span class='co'># You can also change the formals:</span>
-<span class='fu'>fn_fmls</span>(<span class='no'>fn</span>) <span class='kw'>&lt;-</span> <span class='fu'>list</span>(<span class='kw'>A</span> <span class='kw'>=</span> <span class='fl'>10</span>, <span class='kw'>B</span> <span class='kw'>=</span> <span class='fl'>20</span>)
+<span class='fu'>fn_fmls</span>(<span class='no'>fn</span>) <span class='kw'>&lt;-</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/list'>list</a></span>(<span class='kw'>A</span> <span class='kw'>=</span> <span class='fl'>10</span>, <span class='kw'>B</span> <span class='kw'>=</span> <span class='fl'>20</span>)
 <span class='fu'>fn</span>()</div><div class='output co'>#&gt; $A
 #&gt; [1] 10
 #&gt; 
 #&gt; $B
 #&gt; [1] 20
 #&gt; </div><div class='input'>
-<span class='fu'>fn_fmls_names</span>(<span class='no'>fn</span>) <span class='kw'>&lt;-</span> <span class='fu'>c</span>(<span class='st'>"foo"</span>, <span class='st'>"bar"</span>)
+<span class='fu'>fn_fmls_names</span>(<span class='no'>fn</span>) <span class='kw'>&lt;-</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/c'>c</a></span>(<span class='st'>"foo"</span>, <span class='st'>"bar"</span>)
 <span class='fu'>fn</span>()</div><div class='output co'>#&gt; $foo
 #&gt; [1] 10
 #&gt; 
@@ -242,7 +240,7 @@ minus(.y = 10, 5)
 </div>
 
 <div class="pkgdown">
-  <p>Site built with <a href="http://pkgdown.r-lib.org/">pkgdown</a>.</p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a>.</p>
 </div>
 
       </footer>

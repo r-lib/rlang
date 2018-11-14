@@ -8,8 +8,6 @@
 
 <title>Coerce to an environment — as_environment • rlang</title>
 
-<link rel="shortcut icon" type="image/x-icon" href="../favicon.ico">
-
 <!-- jquery -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=" crossorigin="anonymous"></script>
 <!-- Bootstrap -->
@@ -67,7 +65,7 @@ corresponding package environment (see pkg_env())." />
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">rlang</a>
-        <span class="label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.3.0.9000</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.3.0.9000</span>
       </span>
     </div>
 
@@ -177,7 +175,7 @@ be abbreviated.</p>
 <span class='no'>env</span> <span class='kw'>&lt;-</span> <span class='fu'>as_environment</span>(<span class='no'>mtcars</span>)
 
 <span class='co'># By default it gets the empty environment as parent:</span>
-<span class='fu'>identical</span>(<span class='fu'><a href='env_parent.html'>env_parent</a></span>(<span class='no'>env</span>), <span class='fu'><a href='empty_env.html'>empty_env</a></span>())</div><div class='output co'>#&gt; [1] TRUE</div><div class='input'>
+<span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/identical'>identical</a></span>(<span class='fu'><a href='env_parent.html'>env_parent</a></span>(<span class='no'>env</span>), <span class='fu'><a href='empty_env.html'>empty_env</a></span>())</div><div class='output co'>#&gt; [1] TRUE</div><div class='input'>
 
 <span class='co'># With strings it is a handy shortcut for pkg_env():</span>
 <span class='fu'>as_environment</span>(<span class='st'>"base"</span>)</div><div class='output co'>#&gt; &lt;environment: base&gt;</div><div class='input'><span class='fu'>as_environment</span>(<span class='st'>"rlang"</span>)</div><div class='output co'>#&gt; &lt;environment: package:rlang&gt;
@@ -209,7 +207,7 @@ be abbreviated.</p>
 </div>
 
 <div class="pkgdown">
-  <p>Site built with <a href="http://pkgdown.r-lib.org/">pkgdown</a>.</p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a>.</p>
 </div>
 
       </footer>

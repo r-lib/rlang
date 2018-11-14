@@ -8,8 +8,6 @@
 
 <title>Get the current or caller environment — caller_env • rlang</title>
 
-<link rel="shortcut icon" type="image/x-icon" href="../favicon.ico">
-
 <!-- jquery -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=" crossorigin="anonymous"></script>
 <!-- Bootstrap -->
@@ -69,7 +67,7 @@ function that called the current function.
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">rlang</a>
-        <span class="label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.3.0.9000</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.3.0.9000</span>
       </span>
     </div>
 
@@ -165,16 +163,16 @@ function that called the current function.</p></li>
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
     <pre class="examples"><div class='input'><span class='co'># Let's create a function that returns its current environment and</span>
 <span class='co'># its caller environment:</span>
-<span class='no'>fn</span> <span class='kw'>&lt;-</span> <span class='kw'>function</span>() <span class='fu'>list</span>(<span class='kw'>current</span> <span class='kw'>=</span> <span class='fu'>current_env</span>(), <span class='kw'>caller</span> <span class='kw'>=</span> <span class='fu'>caller_env</span>())
+<span class='no'>fn</span> <span class='kw'>&lt;-</span> <span class='kw'>function</span>() <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/list'>list</a></span>(<span class='kw'>current</span> <span class='kw'>=</span> <span class='fu'>current_env</span>(), <span class='kw'>caller</span> <span class='kw'>=</span> <span class='fu'>caller_env</span>())
 
 <span class='co'># The current environment is an unique execution environment</span>
 <span class='co'># created when `fn()` was called. The caller environment is the</span>
 <span class='co'># global env because that's where we called `fn()`.</span>
 <span class='fu'>fn</span>()</div><div class='output co'>#&gt; $current
-#&gt; &lt;environment: 0x96bc538&gt;
+#&gt; &lt;environment: 0x7db7b18&gt;
 #&gt; 
 #&gt; $caller
-#&gt; &lt;environment: 0x961b740&gt;
+#&gt; &lt;environment: 0x7abdf88&gt;
 #&gt; </div><div class='input'>
 <span class='co'># Let's call `fn()` again but this time within a function:</span>
 <span class='no'>g</span> <span class='kw'>&lt;-</span> <span class='kw'>function</span>() <span class='fu'>fn</span>()
@@ -182,10 +180,10 @@ function that called the current function.</p></li>
 <span class='co'># Now the caller environment is also an unique execution environment.</span>
 <span class='co'># This is the exec env created by R for our call to g():</span>
 <span class='fu'>g</span>()</div><div class='output co'>#&gt; $current
-#&gt; &lt;environment: 0x9760e18&gt;
+#&gt; &lt;environment: 0x807edb0&gt;
 #&gt; 
 #&gt; $caller
-#&gt; &lt;environment: 0x9760e88&gt;
+#&gt; &lt;environment: 0x807ee20&gt;
 #&gt; </div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
@@ -207,7 +205,7 @@ function that called the current function.</p></li>
 </div>
 
 <div class="pkgdown">
-  <p>Site built with <a href="http://pkgdown.r-lib.org/">pkgdown</a>.</p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a>.</p>
 </div>
 
       </footer>

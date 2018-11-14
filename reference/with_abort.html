@@ -8,8 +8,6 @@
 
 <title>Promote all errors to rlang errors — with_abort • rlang</title>
 
-<link rel="shortcut icon" type="image/x-icon" href="../favicon.ico">
-
 <!-- jquery -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=" crossorigin="anonymous"></script>
 <!-- Bootstrap -->
@@ -67,7 +65,7 @@ argument of abort())." />
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">rlang</a>
-        <span class="label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.3.0.9000</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.3.0.9000</span>
       </span>
     </div>
 
@@ -157,18 +155,18 @@ promoted to rlang errors.</p></td>
     <p><code>with_abort()</code> installs a <a href='exiting.html'>calling handler</a> for errors and
 rethrows non-rlang errors with <code><a href='abort.html'>abort()</a></code>. However, error handlers
 installed <em>within</em> <code>with_abort()</code> have priority. For this reason,
-you should use <code>tryCatch()</code> and <a href='exiting.html'>exiting</a> handlers outside
+you should use <code><a href='https://www.rdocumentation.org/packages/base/topics/conditions'>tryCatch()</a></code> and <a href='exiting.html'>exiting</a> handlers outside
 <code>with_abort()</code> rather than inside.</p>
     
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
     <pre class="examples"><div class='input'><span class='co'># For cleaner backtraces:</span>
-<span class='fu'>options</span>(<span class='kw'>rlang_trace_top_env</span> <span class='kw'>=</span> <span class='fu'><a href='caller_env.html'>current_env</a></span>())
+<span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/options'>options</a></span>(<span class='kw'>rlang_trace_top_env</span> <span class='kw'>=</span> <span class='fu'><a href='caller_env.html'>current_env</a></span>())
 
 <span class='co'># with_abort() automatically casts simple errors thrown by stop()</span>
 <span class='co'># to rlang errors:</span>
-<span class='no'>fn</span> <span class='kw'>&lt;-</span> <span class='kw'>function</span>() <span class='fu'>stop</span>(<span class='st'>"Base error"</span>)
-<span class='fu'>try</span>(<span class='fu'>with_abort</span>(<span class='fu'>fn</span>()))
+<span class='no'>fn</span> <span class='kw'>&lt;-</span> <span class='kw'>function</span>() <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/stop'>stop</a></span>(<span class='st'>"Base error"</span>)
+<span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/try'>try</a></span>(<span class='fu'>with_abort</span>(<span class='fu'>fn</span>()))
 <span class='fu'><a href='last_error.html'>last_error</a></span>()</div><div class='output co'>#&gt; &lt;error&gt;
 #&gt; message: Base error
 #&gt; class:   `rlang_error`
@@ -180,7 +178,7 @@ you should use <code>tryCatch()</code> and <a href='exiting.html'>exiting</a> ha
 <span class='co'># backtraces are then segmented between the low level and high</span>
 <span class='co'># level contexts.</span>
 <span class='no'>low_level1</span> <span class='kw'>&lt;-</span> <span class='kw'>function</span>() <span class='fu'>low_level2</span>()
-<span class='no'>low_level2</span> <span class='kw'>&lt;-</span> <span class='kw'>function</span>() <span class='fu'>stop</span>(<span class='st'>"Low level error"</span>)
+<span class='no'>low_level2</span> <span class='kw'>&lt;-</span> <span class='kw'>function</span>() <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/stop'>stop</a></span>(<span class='st'>"Low level error"</span>)
 
 <span class='no'>high_level</span> <span class='kw'>&lt;-</span> <span class='kw'>function</span>() {
   <span class='fu'><a href='with_handlers.html'>with_handlers</a></span>(
@@ -189,7 +187,7 @@ you should use <code>tryCatch()</code> and <a href='exiting.html'>exiting</a> ha
   )
 }
 
-<span class='fu'>try</span>(<span class='fu'>high_level</span>())
+<span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/try'>try</a></span>(<span class='fu'>high_level</span>())
 <span class='fu'><a href='last_error.html'>last_error</a></span>()</div><div class='output co'>#&gt; &lt;error&gt;
 #&gt; message: High level error
 #&gt; class:   `rlang_error`
@@ -204,7 +202,7 @@ you should use <code>tryCatch()</code> and <a href='exiting.html'>exiting</a> ha
 #&gt;  ─global::low_level1()
 #&gt;  ─global::low_level2()
 #&gt;  ─base::stop("Low level error")
-#&gt; Call `summary(rlang::last_error())` to see the full backtrace</div><div class='input'><span class='fu'>summary</span>(<span class='fu'><a href='last_error.html'>last_error</a></span>())</div><div class='output co'>#&gt; &lt;error&gt;
+#&gt; Call `summary(rlang::last_error())` to see the full backtrace</div><div class='input'><span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/summary'>summary</a></span>(<span class='fu'><a href='last_error.html'>last_error</a></span>())</div><div class='output co'>#&gt; &lt;error&gt;
 #&gt; message: High level error
 #&gt; class:   `rlang_error`
 #&gt; fields:  `message`, `trace` and `parent`
@@ -228,7 +226,7 @@ you should use <code>tryCatch()</code> and <a href='exiting.html'>exiting</a> ha
 #&gt;   └─global::low_level2()
 #&gt;     └─base::stop("Low level error")</div><div class='input'>
 <span class='co'># Reset to default</span>
-<span class='fu'>options</span>(<span class='kw'>rlang_trace_top_env</span> <span class='kw'>=</span> <span class='kw'>NULL</span>)</div></pre>
+<span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/options'>options</a></span>(<span class='kw'>rlang_trace_top_env</span> <span class='kw'>=</span> <span class='kw'>NULL</span>)</div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
     <h2>Contents</h2>
@@ -249,7 +247,7 @@ you should use <code>tryCatch()</code> and <a href='exiting.html'>exiting</a> ha
 </div>
 
 <div class="pkgdown">
-  <p>Site built with <a href="http://pkgdown.r-lib.org/">pkgdown</a>.</p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a>.</p>
 </div>
 
       </footer>

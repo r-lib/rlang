@@ -8,8 +8,6 @@
 
 <title>Increasing sequence of integers in an interval — seq2 • rlang</title>
 
-<link rel="shortcut icon" type="image/x-icon" href="../favicon.ico">
-
 <!-- jquery -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=" crossorigin="anonymous"></script>
 <!-- Bootstrap -->
@@ -68,7 +66,7 @@ a larger integer than the end point." />
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">rlang</a>
-        <span class="label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.3.0.9000</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.3.0.9000</span>
       </span>
     </div>
 
@@ -137,7 +135,7 @@ a larger integer than the end point." />
     <p>These helpers take two endpoints and return the sequence of all
 integers within that interval. For <code>seq2_along()</code>, the upper
 endpoint is taken from the length of a vector. Unlike
-<code><a href='http://www.rdocumentation.org/packages/base/topics/seq'>base::seq()</a></code>, they return an empty vector if the starting point is
+<code><a href='https://www.rdocumentation.org/packages/base/topics/seq'>base::seq()</a></code>, they return an empty vector if the starting point is
 a larger integer than the end point.</p>
     
     </div>
@@ -170,7 +168,7 @@ sequence.</p>
     
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><div class='input'><span class='fu'>seq2</span>(<span class='fl'>2</span>, <span class='fl'>10</span>)</div><div class='output co'>#&gt; [1]  2  3  4  5  6  7  8  9 10</div><div class='input'><span class='fu'>seq2</span>(<span class='fl'>10</span>, <span class='fl'>2</span>)</div><div class='output co'>#&gt; integer(0)</div><div class='input'><span class='fu'>seq</span>(<span class='fl'>10</span>, <span class='fl'>2</span>)</div><div class='output co'>#&gt; [1] 10  9  8  7  6  5  4  3  2</div><div class='input'>
+    <pre class="examples"><div class='input'><span class='fu'>seq2</span>(<span class='fl'>2</span>, <span class='fl'>10</span>)</div><div class='output co'>#&gt; [1]  2  3  4  5  6  7  8  9 10</div><div class='input'><span class='fu'>seq2</span>(<span class='fl'>10</span>, <span class='fl'>2</span>)</div><div class='output co'>#&gt; integer(0)</div><div class='input'><span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/seq'>seq</a></span>(<span class='fl'>10</span>, <span class='fl'>2</span>)</div><div class='output co'>#&gt; [1] 10  9  8  7  6  5  4  3  2</div><div class='input'>
 <span class='fu'>seq2_along</span>(<span class='fl'>10</span>, <span class='no'>letters</span>)</div><div class='output co'>#&gt;  [1] 10 11 12 13 14 15 16 17 18 19 20 21 22 23 24 25 26</div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
@@ -192,7 +190,7 @@ sequence.</p>
 </div>
 
 <div class="pkgdown">
-  <p>Site built with <a href="http://pkgdown.r-lib.org/">pkgdown</a>.</p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a>.</p>
 </div>
 
       </footer>

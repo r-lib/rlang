@@ -8,8 +8,6 @@
 
 <title>Evaluate an expression within a given environment — with_env • rlang</title>
 
-<link rel="shortcut icon" type="image/x-icon" href="../favicon.ico">
-
 <!-- jquery -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=" crossorigin="anonymous"></script>
 <!-- Bootstrap -->
@@ -69,7 +67,7 @@ some subtle implications when evaluting stack sensitive functions
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">rlang</a>
-        <span class="label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.3.0.9000</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.3.0.9000</span>
       </span>
     </div>
 
@@ -138,7 +136,7 @@ some subtle implications when evaluting stack sensitive functions
     <p>These functions evaluate <code>expr</code> within a given environment (<code>env</code>
 for <code>with_env()</code>, or the child of the current environment for
 <code>locally</code>). They rely on <code><a href='eval_bare.html'>eval_bare()</a></code> which features a lighter
-evaluation mechanism than base R <code><a href='http://www.rdocumentation.org/packages/base/topics/eval'>base::eval()</a></code>, and which also has
+evaluation mechanism than base R <code><a href='https://www.rdocumentation.org/packages/base/topics/eval'>base::eval()</a></code>, and which also has
 some subtle implications when evaluting stack sensitive functions
 (see help for <code><a href='eval_bare.html'>eval_bare()</a></code>).</p>
     
@@ -165,7 +163,7 @@ an object with a <code><a href='get_env.html'>get_env()</a></code> method.</p></
     <h2 class="hasAnchor" id="details"><a class="anchor" href="#details"></a>Details</h2>
 
     <p><code>locally()</code> is equivalent to the base function
-<code><a href='http://www.rdocumentation.org/packages/base/topics/eval'>base::local()</a></code> but it produces a much cleaner
+<code><a href='https://www.rdocumentation.org/packages/base/topics/eval'>base::local()</a></code> but it produces a much cleaner
 evaluation stack, and has stack-consistent semantics. It is thus
 more suited for experimenting with the R language.</p>
     
@@ -179,10 +177,10 @@ more suited for experimenting with the R language.</p>
     <pre class="examples"><div class='input'><span class='co'># with_env() is handy to create formulas with a given environment:</span>
 <span class='no'>env</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='env.html'>child_env</a></span>(<span class='st'>"rlang"</span>)
 <span class='no'>f</span> <span class='kw'>&lt;-</span> <span class='fu'>with_env</span>(<span class='no'>env</span>, ~<span class='fu'><a href='new_formula.html'>new_formula</a></span>())
-<span class='fu'>identical</span>(<span class='fu'><a href='f_rhs.html'>f_env</a></span>(<span class='no'>f</span>), <span class='no'>env</span>)</div><div class='output co'>#&gt; [1] TRUE</div><div class='input'>
+<span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/identical'>identical</a></span>(<span class='fu'><a href='f_rhs.html'>f_env</a></span>(<span class='no'>f</span>), <span class='no'>env</span>)</div><div class='output co'>#&gt; [1] TRUE</div><div class='input'>
 <span class='co'># Or functions with a given enclosure:</span>
 <span class='no'>fn</span> <span class='kw'>&lt;-</span> <span class='fu'>with_env</span>(<span class='no'>env</span>, <span class='kw'>function</span>() <span class='kw'>NULL</span>)
-<span class='fu'>identical</span>(<span class='fu'><a href='get_env.html'>get_env</a></span>(<span class='no'>fn</span>), <span class='no'>env</span>)</div><div class='output co'>#&gt; [1] TRUE</div><div class='input'>
+<span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/identical'>identical</a></span>(<span class='fu'><a href='get_env.html'>get_env</a></span>(<span class='no'>fn</span>), <span class='no'>env</span>)</div><div class='output co'>#&gt; [1] TRUE</div><div class='input'>
 
 <span class='co'># Unlike eval() it doesn't create duplicates on the evaluation</span>
 <span class='co'># stack. You can thus use it e.g. to create non-local returns:</span>
@@ -191,7 +189,7 @@ more suited for experimenting with the R language.</p>
   <span class='st'>"normal return"</span>
 }
 <span class='no'>g</span> <span class='kw'>&lt;-</span> <span class='kw'>function</span>(<span class='no'>env</span>) {
-  <span class='fu'>with_env</span>(<span class='no'>env</span>, <span class='fu'>return</span>(<span class='st'>"early return"</span>))
+  <span class='fu'>with_env</span>(<span class='no'>env</span>, <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/function'>return</a></span>(<span class='st'>"early return"</span>))
 }
 <span class='fu'>fn</span>()</div><div class='output co'>#&gt; [1] "early return"</div><div class='input'>
 
@@ -223,7 +221,7 @@ more suited for experimenting with the R language.</p>
 </div>
 
 <div class="pkgdown">
-  <p>Site built with <a href="http://pkgdown.r-lib.org/">pkgdown</a>.</p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a>.</p>
 </div>
 
       </footer>

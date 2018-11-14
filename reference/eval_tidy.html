@@ -8,8 +8,6 @@
 
 <title>Evaluate an expression with quosures and pronoun support — eval_tidy • rlang</title>
 
-<link rel="shortcut icon" type="image/x-icon" href="../favicon.ico">
-
 <!-- jquery -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=" crossorigin="anonymous"></script>
 <!-- Bootstrap -->
@@ -80,7 +78,7 @@ values and throw errors if you try to access non-existent values.
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">rlang</a>
-        <span class="label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.3.0.9000</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.3.0.9000</span>
       </span>
     </div>
 
@@ -147,9 +145,9 @@ values and throw errors if you try to access non-existent values.
     <div class="ref-description">
     
     <p><a href='https://www.tidyverse.org/lifecycle/#stable'><img src='figures/lifecycle-stable.svg' alt='Stable lifecycle'></a></p>
-<p><code>eval_tidy()</code> is a variant of <code><a href='http://www.rdocumentation.org/packages/base/topics/eval'>base::eval()</a></code> that powers the tidy
-evaluation framework. Like <code>eval()</code> it accepts user data as
-argument. Whereas <code>eval()</code> simply transforms the data to an
+<p><code>eval_tidy()</code> is a variant of <code><a href='https://www.rdocumentation.org/packages/base/topics/eval'>base::eval()</a></code> that powers the tidy
+evaluation framework. Like <code><a href='https://www.rdocumentation.org/packages/base/topics/eval'>eval()</a></code> it accepts user data as
+argument. Whereas <code><a href='https://www.rdocumentation.org/packages/base/topics/eval'>eval()</a></code> simply transforms the data to an
 environment, <code>eval_tidy()</code> transforms it to a <strong>data mask</strong> with
 <code><a href='as_data_mask.html'>as_data_mask()</a></code>. Evaluating in a data mask enables the following
 features:</p><ul>
@@ -212,7 +210,7 @@ environment.</p>
     <h2 class="hasAnchor" id="when-should-eval-tidy-be-used-instead-of-eval-"><a class="anchor" href="#when-should-eval-tidy-be-used-instead-of-eval-"></a>When should eval_tidy() be used instead of eval()?</h2>
 
     
-    <p><code><a href='http://www.rdocumentation.org/packages/base/topics/eval'>base::eval()</a></code> is sufficient for simple evaluation. Use
+    <p><code><a href='https://www.rdocumentation.org/packages/base/topics/eval'>base::eval()</a></code> is sufficient for simple evaluation. Use
 <code>eval_tidy()</code> when you'd like to support expressions referring to
 the <code>.data</code> pronoun, or when you need to support quosures.</p>
 <p>If you're evaluating an expression captured with quasiquotation
@@ -252,19 +250,19 @@ framework.</p></div>
 <span class='co'># eval():</span>
 <span class='no'>apple</span> <span class='kw'>&lt;-</span> <span class='st'>"apple"</span>
 <span class='no'>kiwi</span> <span class='kw'>&lt;-</span> <span class='st'>"kiwi"</span>
-<span class='no'>expr</span> <span class='kw'>&lt;-</span> <span class='fu'>quote</span>(<span class='fu'>paste</span>(<span class='no'>apple</span>, <span class='no'>kiwi</span>))
+<span class='no'>expr</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/substitute'>quote</a></span>(<span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/paste'>paste</a></span>(<span class='no'>apple</span>, <span class='no'>kiwi</span>))
 <span class='no'>expr</span></div><div class='output co'>#&gt; paste(apple, kiwi)</div><div class='input'>
-<span class='fu'>eval</span>(<span class='no'>expr</span>)</div><div class='output co'>#&gt; [1] "apple kiwi"</div><div class='input'><span class='fu'>eval_tidy</span>(<span class='no'>expr</span>)</div><div class='output co'>#&gt; [1] "apple kiwi"</div><div class='input'>
+<span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/eval'>eval</a></span>(<span class='no'>expr</span>)</div><div class='output co'>#&gt; [1] "apple kiwi"</div><div class='input'><span class='fu'>eval_tidy</span>(<span class='no'>expr</span>)</div><div class='output co'>#&gt; [1] "apple kiwi"</div><div class='input'>
 <span class='co'># Both accept a data mask as argument:</span>
-<span class='no'>data</span> <span class='kw'>&lt;-</span> <span class='fu'>list</span>(<span class='kw'>apple</span> <span class='kw'>=</span> <span class='st'>"CARROT"</span>, <span class='kw'>kiwi</span> <span class='kw'>=</span> <span class='st'>"TOMATO"</span>)
-<span class='fu'>eval</span>(<span class='no'>expr</span>, <span class='no'>data</span>)</div><div class='output co'>#&gt; [1] "CARROT TOMATO"</div><div class='input'><span class='fu'>eval_tidy</span>(<span class='no'>expr</span>, <span class='no'>data</span>)</div><div class='output co'>#&gt; [1] "CARROT TOMATO"</div><div class='input'>
+<span class='no'>data</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/list'>list</a></span>(<span class='kw'>apple</span> <span class='kw'>=</span> <span class='st'>"CARROT"</span>, <span class='kw'>kiwi</span> <span class='kw'>=</span> <span class='st'>"TOMATO"</span>)
+<span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/eval'>eval</a></span>(<span class='no'>expr</span>, <span class='no'>data</span>)</div><div class='output co'>#&gt; [1] "CARROT TOMATO"</div><div class='input'><span class='fu'>eval_tidy</span>(<span class='no'>expr</span>, <span class='no'>data</span>)</div><div class='output co'>#&gt; [1] "CARROT TOMATO"</div><div class='input'>
 
 <span class='co'># In addition eval_tidy() has support for quosures:</span>
 <span class='no'>with_data</span> <span class='kw'>&lt;-</span> <span class='kw'>function</span>(<span class='no'>data</span>, <span class='no'>expr</span>) {
   <span class='no'>quo</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='quotation.html'>enquo</a></span>(<span class='no'>expr</span>)
   <span class='fu'>eval_tidy</span>(<span class='no'>quo</span>, <span class='no'>data</span>)
 }
-<span class='fu'>with_data</span>(<span class='kw'>NULL</span>, <span class='no'>apple</span>)</div><div class='output co'>#&gt; [1] "apple"</div><div class='input'><span class='fu'>with_data</span>(<span class='no'>data</span>, <span class='no'>apple</span>)</div><div class='output co'>#&gt; [1] "CARROT"</div><div class='input'><span class='fu'>with_data</span>(<span class='no'>data</span>, <span class='fu'>list</span>(<span class='no'>apple</span>, <span class='no'>kiwi</span>))</div><div class='output co'>#&gt; [[1]]
+<span class='fu'>with_data</span>(<span class='kw'>NULL</span>, <span class='no'>apple</span>)</div><div class='output co'>#&gt; [1] "apple"</div><div class='input'><span class='fu'>with_data</span>(<span class='no'>data</span>, <span class='no'>apple</span>)</div><div class='output co'>#&gt; [1] "CARROT"</div><div class='input'><span class='fu'>with_data</span>(<span class='no'>data</span>, <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/list'>list</a></span>(<span class='no'>apple</span>, <span class='no'>kiwi</span>))</div><div class='output co'>#&gt; [[1]]
 #&gt; [1] "CARROT"
 #&gt; 
 #&gt; [[2]]
@@ -315,7 +313,7 @@ framework.</p></div>
 </div>
 
 <div class="pkgdown">
-  <p>Site built with <a href="http://pkgdown.r-lib.org/">pkgdown</a>.</p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a>.</p>
 </div>
 
       </footer>

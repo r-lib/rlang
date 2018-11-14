@@ -8,8 +8,6 @@
 
 <title>Establish a restart point on the stack — with_restarts • rlang</title>
 
-<link rel="shortcut icon" type="image/x-icon" href="../favicon.ico">
-
 <!-- jquery -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=" crossorigin="anonymous"></script>
 <!-- Bootstrap -->
@@ -71,7 +69,7 @@ with_restarts())." />
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">rlang</a>
-        <span class="label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.3.0.9000</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.3.0.9000</span>
       </span>
     </div>
 
@@ -204,11 +202,11 @@ of performing a non-local jump to an arbitrary call frame.</p></div>
 <span class='co'># rst_maybe_jump() checks that a restart exists before trying to jump:</span>
 <span class='no'>fn</span> <span class='kw'>&lt;-</span> <span class='kw'>function</span>() {
   <span class='fu'>g</span>()
-  <span class='fu'>cat</span>(<span class='st'>"will this be called?\n"</span>)
+  <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/cat'>cat</a></span>(<span class='st'>"will this be called?\n"</span>)
 }
 <span class='no'>g</span> <span class='kw'>&lt;-</span> <span class='kw'>function</span>() {
   <span class='fu'><a href='rst_list.html'>rst_maybe_jump</a></span>(<span class='st'>"my_restart"</span>)
-  <span class='fu'>cat</span>(<span class='st'>"will this be called?\n"</span>)
+  <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/cat'>cat</a></span>(<span class='st'>"will this be called?\n"</span>)
 }
 
 <span class='co'># Here no restart are on the stack:</span>
@@ -217,7 +215,7 @@ of performing a non-local jump to an arbitrary call frame.</p></div>
 <span class='co'># If a restart point called `my_restart` was established on the</span>
 <span class='co'># stack before calling fn(), the control flow will jump there:</span>
 <span class='no'>rst</span> <span class='kw'>&lt;-</span> <span class='kw'>function</span>() {
-  <span class='fu'>cat</span>(<span class='st'>"restarting...\n"</span>)
+  <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/cat'>cat</a></span>(<span class='st'>"restarting...\n"</span>)
   <span class='st'>"return value"</span>
 }
 <span class='fu'>with_restarts</span>(<span class='fu'>fn</span>(), <span class='kw'>my_restart</span> <span class='kw'>=</span> <span class='no'>rst</span>)</div><div class='output co'>#&gt; restarting...</div><div class='output co'>#&gt; [1] "return value"</div><div class='input'>
@@ -227,7 +225,7 @@ of performing a non-local jump to an arbitrary call frame.</p></div>
 
 <span class='no'>fn</span> <span class='kw'>&lt;-</span> <span class='kw'>function</span>(<span class='no'>valid_input</span>) {
   <span class='kw'>if</span> (<span class='no'>valid_input</span>) {
-    <span class='fu'>return</span>(<span class='st'>"normal value"</span>)
+    <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/function'>return</a></span>(<span class='st'>"normal value"</span>)
   }
 
   <span class='co'># We decide to return the empty string "" as default value. An</span>
@@ -235,8 +233,8 @@ of performing a non-local jump to an arbitrary call frame.</p></div>
   <span class='co'># we want to provide a way for the caller to get a different</span>
   <span class='co'># output. For this purpose, we provide two restart functions that</span>
   <span class='co'># returns alternative defaults:</span>
-  <span class='no'>restarts</span> <span class='kw'>&lt;-</span> <span class='fu'>list</span>(
-    <span class='kw'>rst_empty_chr</span> <span class='kw'>=</span> <span class='kw'>function</span>() <span class='fu'>character</span>(<span class='fl'>0</span>),
+  <span class='no'>restarts</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/list'>list</a></span>(
+    <span class='kw'>rst_empty_chr</span> <span class='kw'>=</span> <span class='kw'>function</span>() <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/character'>character</a></span>(<span class='fl'>0</span>),
     <span class='kw'>rst_null</span> <span class='kw'>=</span> <span class='kw'>function</span>() <span class='kw'>NULL</span>
   )
 
@@ -290,7 +288,7 @@ of performing a non-local jump to an arbitrary call frame.</p></div>
 </div>
 
 <div class="pkgdown">
-  <p>Site built with <a href="http://pkgdown.r-lib.org/">pkgdown</a>.</p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a>.</p>
 </div>
 
       </footer>

@@ -8,8 +8,6 @@
 
 <title>Create a data mask — as_data_mask • rlang</title>
 
-<link rel="shortcut icon" type="image/x-icon" href="../favicon.ico">
-
 <!-- jquery -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=" crossorigin="anonymous"></script>
 <!-- Bootstrap -->
@@ -73,7 +71,7 @@ for end users." />
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">rlang</a>
-        <span class="label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.3.0.9000</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.3.0.9000</span>
       </span>
     </div>
 
@@ -204,17 +202,17 @@ evaluations may improve performance.</p></li>
 <li><p>When several expressions should be evaluated in the exact same
 environment because a quoted expression might create new objects
 that can be referred in other quoted expressions evaluated at a
-later time. One example of this is <code><a href='http://www.rdocumentation.org/packages/tibble/topics/tibble'>tibble::lst()</a></code> where new
+later time. One example of this is <code><a href='https://www.rdocumentation.org/packages/tibble/topics/tibble'>tibble::lst()</a></code> where new
 columns can refer to previous ones.</p></li>
 <li><p>When your data mask requires special features. For instance the
 data frame columns in dplyr data masks are implemented with
-<a href='http://www.rdocumentation.org/packages/base/topics/delayedAssign'>active bindings</a>.</p></li>
+<a href='https://www.rdocumentation.org/packages/base/topics/delayedAssign'>active bindings</a>.</p></li>
 </ul>
     
     <h2 class="hasAnchor" id="building-your-own-data-mask"><a class="anchor" href="#building-your-own-data-mask"></a>Building your own data mask</h2>
 
     
-    <p>Unlike <code><a href='http://www.rdocumentation.org/packages/base/topics/eval'>base::eval()</a></code> which takes any kind of environments as data
+    <p>Unlike <code><a href='https://www.rdocumentation.org/packages/base/topics/eval'>base::eval()</a></code> which takes any kind of environments as data
 mask, <code><a href='eval_tidy.html'>eval_tidy()</a></code> has specific requirements in order to support
 <a href='quotation.html'>quosures</a>. For this reason you can't supply bare
 environments.</p>
@@ -289,16 +287,16 @@ in the current environment.</p>
 <span class='fu'><a href='eval_tidy.html'>eval_tidy</a></span>(<span class='fu'><a href='quotation.html'>quo</a></span>(<span class='no'>letters</span>), <span class='no'>mask</span>)</div><div class='output co'>#&gt;  [1] "a" "b" "c" "d" "e" "f" "g" "h" "i" "j" "k" "l" "m" "n" "o" "p" "q" "r" "s"
 #&gt; [20] "t" "u" "v" "w" "x" "y" "z"</div><div class='input'>
 <span class='co'># You can install new pronouns in the mask:</span>
-<span class='no'>mask</span>$<span class='no'>.pronoun</span> <span class='kw'>&lt;-</span> <span class='fu'>as_data_pronoun</span>(<span class='fu'>list</span>(<span class='kw'>foo</span> <span class='kw'>=</span> <span class='st'>"bar"</span>, <span class='kw'>baz</span> <span class='kw'>=</span> <span class='st'>"bam"</span>))
+<span class='no'>mask</span>$<span class='no'>.pronoun</span> <span class='kw'>&lt;-</span> <span class='fu'>as_data_pronoun</span>(<span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/list'>list</a></span>(<span class='kw'>foo</span> <span class='kw'>=</span> <span class='st'>"bar"</span>, <span class='kw'>baz</span> <span class='kw'>=</span> <span class='st'>"bam"</span>))
 <span class='fu'><a href='eval_tidy.html'>eval_tidy</a></span>(<span class='fu'><a href='quotation.html'>quo</a></span>(<span class='no'>.pronoun</span>$<span class='no'>foo</span>), <span class='no'>mask</span>)</div><div class='output co'>#&gt; [1] "bar"</div><div class='input'>
 <span class='co'># In some cases the data mask can leak to the user, for example if</span>
 <span class='co'># a function or formula is created in the data mask environment:</span>
 <span class='no'>cyl</span> <span class='kw'>&lt;-</span> <span class='st'>"user variable from the context"</span>
-<span class='no'>fn</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='eval_tidy.html'>eval_tidy</a></span>(<span class='fu'>quote</span>(<span class='kw'>function</span>() <span class='no'>cyl</span>), <span class='no'>mask</span>)
+<span class='no'>fn</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='eval_tidy.html'>eval_tidy</a></span>(<span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/substitute'>quote</a></span>(<span class='kw'>function</span>() <span class='no'>cyl</span>), <span class='no'>mask</span>)
 <span class='fu'>fn</span>()</div><div class='output co'>#&gt;  [1] 6 6 4 6 8 6 8 4 4 6 6 8 8 8 8 8 8 4 4 4 4 8 8 8 8 4 4 4 8 6 8 4</div><div class='input'>
 <span class='co'># If new objects are created in the mask, they persist in the</span>
 <span class='co'># subsequent calls:</span>
-<span class='fu'><a href='eval_tidy.html'>eval_tidy</a></span>(<span class='fu'>quote</span>(<span class='no'>new</span> <span class='kw'>&lt;-</span> <span class='no'>cyl</span> + <span class='no'>am</span>), <span class='no'>mask</span>)</div><div class='output co'>#&gt;  [1] 7 7 5 6 8 6 8 4 4 6 6 8 8 8 8 8 8 5 5 5 4 8 8 8 8 5 5 5 9 7 9 5</div><div class='input'><span class='fu'><a href='eval_tidy.html'>eval_tidy</a></span>(<span class='fu'>quote</span>(<span class='no'>new</span> * <span class='fl'>2</span>), <span class='no'>mask</span>)</div><div class='output co'>#&gt;  [1] 14 14 10 12 16 12 16  8  8 12 12 16 16 16 16 16 16 10 10 10  8 16 16 16 16
+<span class='fu'><a href='eval_tidy.html'>eval_tidy</a></span>(<span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/substitute'>quote</a></span>(<span class='no'>new</span> <span class='kw'>&lt;-</span> <span class='no'>cyl</span> + <span class='no'>am</span>), <span class='no'>mask</span>)</div><div class='output co'>#&gt;  [1] 7 7 5 6 8 6 8 4 4 6 6 8 8 8 8 8 8 5 5 5 4 8 8 8 8 5 5 5 9 7 9 5</div><div class='input'><span class='fu'><a href='eval_tidy.html'>eval_tidy</a></span>(<span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/substitute'>quote</a></span>(<span class='no'>new</span> * <span class='fl'>2</span>), <span class='no'>mask</span>)</div><div class='output co'>#&gt;  [1] 14 14 10 12 16 12 16  8  8 12 12 16 16 16 16 16 16 10 10 10  8 16 16 16 16
 #&gt; [26] 10 10 10 18 14 18 10</div><div class='input'>
 
 <span class='co'># In some cases your data mask is a whole chain of environments</span>
@@ -310,7 +308,7 @@ in the current environment.</p>
 <span class='co'># is when you include functions in your mask. In that case you'll</span>
 <span class='co'># put functions in the top environment and data in the bottom. This</span>
 <span class='co'># will prevent the data from overwriting the functions.</span>
-<span class='no'>top</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='env.html'>new_environment</a></span>(<span class='fu'>list</span>(<span class='kw'>`+`</span> <span class='kw'>=</span> <span class='kw pkg'>base</span><span class='kw ns'>::</span><span class='no'><a href='http://www.rdocumentation.org/packages/base/topics/paste'>paste</a></span>, <span class='kw'>c</span> <span class='kw'>=</span> <span class='kw pkg'>base</span><span class='kw ns'>::</span><span class='no'><a href='http://www.rdocumentation.org/packages/base/topics/paste'>paste</a></span>))
+<span class='no'>top</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='env.html'>new_environment</a></span>(<span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/list'>list</a></span>(<span class='kw'>`+`</span> <span class='kw'>=</span> <span class='kw pkg'>base</span><span class='kw ns'>::</span><span class='no'><a href='https://www.rdocumentation.org/packages/base/topics/paste'>paste</a></span>, <span class='kw'>c</span> <span class='kw'>=</span> <span class='kw pkg'>base</span><span class='kw ns'>::</span><span class='no'><a href='https://www.rdocumentation.org/packages/base/topics/paste'>paste</a></span>))
 
 <span class='co'># Let's add a middle environment just for sport:</span>
 <span class='no'>middle</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='env.html'>env</a></span>(<span class='no'>top</span>)
@@ -324,10 +322,10 @@ in the current environment.</p>
 
 <span class='co'># This data mask can be passed to eval_tidy() instead of a list or</span>
 <span class='co'># data frame:</span>
-<span class='fu'><a href='eval_tidy.html'>eval_tidy</a></span>(<span class='fu'>quote</span>(<span class='no'>a</span> + <span class='no'>b</span> + <span class='no'>c</span>), <span class='kw'>data</span> <span class='kw'>=</span> <span class='no'>mask</span>)</div><div class='output co'>#&gt; [1] "a b c"</div><div class='input'>
+<span class='fu'><a href='eval_tidy.html'>eval_tidy</a></span>(<span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/substitute'>quote</a></span>(<span class='no'>a</span> + <span class='no'>b</span> + <span class='no'>c</span>), <span class='kw'>data</span> <span class='kw'>=</span> <span class='no'>mask</span>)</div><div class='output co'>#&gt; [1] "a b c"</div><div class='input'>
 <span class='co'># Note how the function `c()` and the object `c` are looked up</span>
 <span class='co'># properly because of the multi-level structure:</span>
-<span class='fu'><a href='eval_tidy.html'>eval_tidy</a></span>(<span class='fu'>quote</span>(<span class='fu'>c</span>(<span class='no'>a</span>, <span class='no'>b</span>, <span class='no'>c</span>)), <span class='kw'>data</span> <span class='kw'>=</span> <span class='no'>mask</span>)</div><div class='output co'>#&gt; [1] "a b c"</div><div class='input'>
+<span class='fu'><a href='eval_tidy.html'>eval_tidy</a></span>(<span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/substitute'>quote</a></span>(<span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/c'>c</a></span>(<span class='no'>a</span>, <span class='no'>b</span>, <span class='no'>c</span>)), <span class='kw'>data</span> <span class='kw'>=</span> <span class='no'>mask</span>)</div><div class='output co'>#&gt; [1] "a b c"</div><div class='input'>
 <span class='co'># new_data_mask() does not create data pronouns, but</span>
 <span class='co'># data pronouns can be added manually:</span>
 <span class='no'>mask</span>$<span class='no'>.fns</span> <span class='kw'>&lt;-</span> <span class='fu'>as_data_pronoun</span>(<span class='no'>top</span>)
@@ -339,7 +337,7 @@ in the current environment.</p>
 <span class='no'>mask</span>$<span class='no'>.data</span> <span class='kw'>&lt;-</span> <span class='fu'>as_data_pronoun</span>(<span class='no'>mask</span>)
 <span class='no'>mask</span>$<span class='no'>.data</span>$<span class='no'>c</span></div><div class='output co'>#&gt; [1] "c"</div><div class='input'>
 <span class='co'># Now we can reference the values with the pronouns:</span>
-<span class='fu'><a href='eval_tidy.html'>eval_tidy</a></span>(<span class='fu'>quote</span>(<span class='fu'>c</span>(<span class='no'>.data</span>$<span class='no'>a</span>, <span class='no'>.data</span>$<span class='no'>b</span>, <span class='no'>.data</span>$<span class='no'>c</span>)), <span class='kw'>data</span> <span class='kw'>=</span> <span class='no'>mask</span>)</div><div class='output co'>#&gt; [1] "a b c"</div></pre>
+<span class='fu'><a href='eval_tidy.html'>eval_tidy</a></span>(<span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/substitute'>quote</a></span>(<span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/c'>c</a></span>(<span class='no'>.data</span>$<span class='no'>a</span>, <span class='no'>.data</span>$<span class='no'>b</span>, <span class='no'>.data</span>$<span class='no'>c</span>)), <span class='kw'>data</span> <span class='kw'>=</span> <span class='no'>mask</span>)</div><div class='output co'>#&gt; [1] "a b c"</div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
     <h2>Contents</h2>
@@ -368,7 +366,7 @@ in the current environment.</p>
 </div>
 
 <div class="pkgdown">
-  <p>Site built with <a href="http://pkgdown.r-lib.org/">pkgdown</a>.</p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a>.</p>
 </div>
 
       </footer>

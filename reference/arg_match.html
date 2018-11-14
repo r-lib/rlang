@@ -8,8 +8,6 @@
 
 <title>Match an argument to a character vector — arg_match • rlang</title>
 
-<link rel="shortcut icon" type="image/x-icon" href="../favicon.ico">
-
 <!-- jquery -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=" crossorigin="anonymous"></script>
 <!-- Bootstrap -->
@@ -68,7 +66,7 @@ standards.
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">rlang</a>
-        <span class="label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.3.0.9000</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.3.0.9000</span>
       </span>
     </div>
 
@@ -134,7 +132,7 @@ standards.
 
     <div class="ref-description">
     
-    <p>This is equivalent to <code><a href='http://www.rdocumentation.org/packages/base/topics/match.arg'>base::match.arg()</a></code> with a few differences:</p><ul>
+    <p>This is equivalent to <code><a href='https://www.rdocumentation.org/packages/base/topics/match.arg'>base::match.arg()</a></code> with a few differences:</p><ul>
 <li><p>Partial matches trigger an error.</p></li>
 <li><p>Error messages are a bit more informative and obey the tidyverse
 standards.</p></li>
@@ -164,7 +162,7 @@ the values are taken from the function definition of the <a href='caller_frame.h
     
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><div class='input'><span class='no'>fn</span> <span class='kw'>&lt;-</span> <span class='kw'>function</span>(<span class='no'>x</span> <span class='kw'>=</span> <span class='fu'>c</span>(<span class='st'>"foo"</span>, <span class='st'>"bar"</span>)) <span class='fu'>arg_match</span>(<span class='no'>x</span>)
+    <pre class="examples"><div class='input'><span class='no'>fn</span> <span class='kw'>&lt;-</span> <span class='kw'>function</span>(<span class='no'>x</span> <span class='kw'>=</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/c'>c</a></span>(<span class='st'>"foo"</span>, <span class='st'>"bar"</span>)) <span class='fu'>arg_match</span>(<span class='no'>x</span>)
 <span class='fu'>fn</span>(<span class='st'>"bar"</span>)</div><div class='output co'>#&gt; [1] "bar"</div><div class='input'>
 # This would throw an informative error if run:
 # fn("b")
@@ -190,7 +188,7 @@ the values are taken from the function definition of the <a href='caller_frame.h
 </div>
 
 <div class="pkgdown">
-  <p>Site built with <a href="http://pkgdown.r-lib.org/">pkgdown</a>.</p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a>.</p>
 </div>
 
       </footer>

@@ -8,8 +8,6 @@
 
 <title>Missing values — missing • rlang</title>
 
-<link rel="shortcut icon" type="image/x-icon" href="../favicon.ico">
-
 <!-- jquery -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=" crossorigin="anonymous"></script>
 <!-- Bootstrap -->
@@ -69,7 +67,7 @@ provided here are aliases for those typed NA objects." />
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">rlang</a>
-        <span class="label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.3.0.9000</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.3.0.9000</span>
       </span>
     </div>
 
@@ -168,19 +166,19 @@ missing values are <code>NA_integer_</code>, <code>NA_real_</code>, <code>NA_cha
 default <code>NA</code>. The aliases provided in rlang are consistently named
 and thus simpler to remember. Also, <code>na_lgl</code> is provided as an
 alias to <code>NA</code> that makes intent clearer.</p>
-<p>Since <code>na_lgl</code> is the default <code>NA</code>, expressions such as <code>c(NA, NA)</code>
+<p>Since <code>na_lgl</code> is the default <code>NA</code>, expressions such as <code><a href='https://www.rdocumentation.org/packages/base/topics/c'>c(NA, NA)</a></code>
 yield logical vectors as no data is available to give a clue of the
 target type. In the same way, since lists and environments can
-contain any types, expressions like <code>list(NA)</code> store a logical
+contain any types, expressions like <code><a href='https://www.rdocumentation.org/packages/base/topics/list'>list(NA)</a></code> store a logical
 <code>NA</code>.</p>
     
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><div class='input'><span class='fu'>typeof</span>(<span class='fl'>NA</span>)</div><div class='output co'>#&gt; [1] "logical"</div><div class='input'><span class='fu'>typeof</span>(<span class='no'>na_lgl</span>)</div><div class='output co'>#&gt; [1] "logical"</div><div class='input'><span class='fu'>typeof</span>(<span class='no'>na_int</span>)</div><div class='output co'>#&gt; [1] "integer"</div><div class='input'>
+    <pre class="examples"><div class='input'><span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/typeof'>typeof</a></span>(<span class='fl'>NA</span>)</div><div class='output co'>#&gt; [1] "logical"</div><div class='input'><span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/typeof'>typeof</a></span>(<span class='no'>na_lgl</span>)</div><div class='output co'>#&gt; [1] "logical"</div><div class='input'><span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/typeof'>typeof</a></span>(<span class='no'>na_int</span>)</div><div class='output co'>#&gt; [1] "integer"</div><div class='input'>
 <span class='co'># Note that while the base R missing symbols cannot be overwritten,</span>
 <span class='co'># that's not the case for rlang's aliases:</span>
 <span class='no'>na_dbl</span> <span class='kw'>&lt;-</span> <span class='fl'>NA</span>
-<span class='fu'>typeof</span>(<span class='no'>na_dbl</span>)</div><div class='output co'>#&gt; [1] "logical"</div></pre>
+<span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/typeof'>typeof</a></span>(<span class='no'>na_dbl</span>)</div><div class='output co'>#&gt; [1] "logical"</div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
     <h2>Contents</h2>
@@ -202,7 +200,7 @@ contain any types, expressions like <code>list(NA)</code> store a logical
 </div>
 
 <div class="pkgdown">
-  <p>Site built with <a href="http://pkgdown.r-lib.org/">pkgdown</a>.</p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a>.</p>
 </div>
 
       </footer>

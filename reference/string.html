@@ -8,8 +8,6 @@
 
 <title>Create a string — string • rlang</title>
 
-<link rel="shortcut icon" type="image/x-icon" href="../favicon.ico">
-
 <!-- jquery -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=" crossorigin="anonymous"></script>
 <!-- Bootstrap -->
@@ -67,7 +65,7 @@ string version checks that the input contains a scalar string." />
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">rlang</a>
-        <span class="label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.3.0.9000</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.3.0.9000</span>
       </span>
     </div>
 
@@ -176,7 +174,7 @@ about encodings in R.</p></div>
 <span class='co'># encodings other than UTF-8, you'll need to supply the bytes in</span>
 <span class='co'># hexadecimal form. If it is a latin1 encoding, you can mark the</span>
 <span class='co'># string explicitly:</span>
-<span class='no'>cafe_latin1</span> <span class='kw'>&lt;-</span> <span class='fu'>string</span>(<span class='fu'>c</span>(<span class='fl'>0x63</span>, <span class='fl'>0x61</span>, <span class='fl'>0x66</span>, <span class='fl'>0xE9</span>), <span class='st'>"latin1"</span>)
+<span class='no'>cafe_latin1</span> <span class='kw'>&lt;-</span> <span class='fu'>string</span>(<span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/c'>c</a></span>(<span class='fl'>0x63</span>, <span class='fl'>0x61</span>, <span class='fl'>0x66</span>, <span class='fl'>0xE9</span>), <span class='st'>"latin1"</span>)
 <span class='fu'><a href='set_chr_encoding.html'>str_encoding</a></span>(<span class='no'>cafe_latin1</span>)</div><div class='output co'>#&gt; [1] "latin1"</div><div class='input'><span class='fu'><a href='as_bytes.html'>as_bytes</a></span>(<span class='no'>cafe_latin1</span>)</div><div class='output co'>#&gt; [1] 63 61 66 e9</div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
@@ -198,7 +196,7 @@ about encodings in R.</p></div>
 </div>
 
 <div class="pkgdown">
-  <p>Site built with <a href="http://pkgdown.r-lib.org/">pkgdown</a>.</p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a>.</p>
 </div>
 
       </footer>

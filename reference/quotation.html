@@ -8,8 +8,6 @@
 
 <title>Quotation — quotation • rlang</title>
 
-<link rel="shortcut icon" type="image/x-icon" href="../favicon.ico">
-
 <!-- jquery -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=" crossorigin="anonymous"></script>
 <!-- Bootstrap -->
@@ -81,7 +79,7 @@ i.e. by intercepting an expression instead of evaluating it." />
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">rlang</a>
-        <span class="label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.3.0.9000</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.3.0.9000</span>
       </span>
     </div>
 
@@ -172,28 +170,28 @@ i.e. by intercepting an expression instead of evaluating it.</p>
 
 <span class='fu'>enexpr</span>(<span class='no'>arg</span>)
 
-<span class='fu'>exprs</span>(<span class='no'>...</span>, <span class='kw'>.named</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>, <span class='kw'>.ignore_empty</span> <span class='kw'>=</span> <span class='fu'>c</span>(<span class='st'>"trailing"</span>, <span class='st'>"none"</span>,
+<span class='fu'>exprs</span>(<span class='no'>...</span>, <span class='kw'>.named</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>, <span class='kw'>.ignore_empty</span> <span class='kw'>=</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/c'>c</a></span>(<span class='st'>"trailing"</span>, <span class='st'>"none"</span>,
   <span class='st'>"all"</span>), <span class='kw'>.unquote_names</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>)
 
-<span class='fu'>enexprs</span>(<span class='no'>...</span>, <span class='kw'>.named</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>, <span class='kw'>.ignore_empty</span> <span class='kw'>=</span> <span class='fu'>c</span>(<span class='st'>"trailing"</span>, <span class='st'>"none"</span>,
-  <span class='st'>"all"</span>), <span class='kw'>.unquote_names</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>, <span class='kw'>.homonyms</span> <span class='kw'>=</span> <span class='fu'>c</span>(<span class='st'>"keep"</span>, <span class='st'>"first"</span>, <span class='st'>"last"</span>,
+<span class='fu'>enexprs</span>(<span class='no'>...</span>, <span class='kw'>.named</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>, <span class='kw'>.ignore_empty</span> <span class='kw'>=</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/c'>c</a></span>(<span class='st'>"trailing"</span>, <span class='st'>"none"</span>,
+  <span class='st'>"all"</span>), <span class='kw'>.unquote_names</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>, <span class='kw'>.homonyms</span> <span class='kw'>=</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/c'>c</a></span>(<span class='st'>"keep"</span>, <span class='st'>"first"</span>, <span class='st'>"last"</span>,
   <span class='st'>"error"</span>), <span class='kw'>.check_assign</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>)
 
 <span class='fu'>ensym</span>(<span class='no'>arg</span>)
 
-<span class='fu'>ensyms</span>(<span class='no'>...</span>, <span class='kw'>.named</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>, <span class='kw'>.ignore_empty</span> <span class='kw'>=</span> <span class='fu'>c</span>(<span class='st'>"trailing"</span>, <span class='st'>"none"</span>,
-  <span class='st'>"all"</span>), <span class='kw'>.unquote_names</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>, <span class='kw'>.homonyms</span> <span class='kw'>=</span> <span class='fu'>c</span>(<span class='st'>"keep"</span>, <span class='st'>"first"</span>, <span class='st'>"last"</span>,
+<span class='fu'>ensyms</span>(<span class='no'>...</span>, <span class='kw'>.named</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>, <span class='kw'>.ignore_empty</span> <span class='kw'>=</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/c'>c</a></span>(<span class='st'>"trailing"</span>, <span class='st'>"none"</span>,
+  <span class='st'>"all"</span>), <span class='kw'>.unquote_names</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>, <span class='kw'>.homonyms</span> <span class='kw'>=</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/c'>c</a></span>(<span class='st'>"keep"</span>, <span class='st'>"first"</span>, <span class='st'>"last"</span>,
   <span class='st'>"error"</span>), <span class='kw'>.check_assign</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>)
 
 <span class='fu'>quo</span>(<span class='no'>expr</span>)
 
 <span class='fu'>enquo</span>(<span class='no'>arg</span>)
 
-<span class='fu'>quos</span>(<span class='no'>...</span>, <span class='kw'>.named</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>, <span class='kw'>.ignore_empty</span> <span class='kw'>=</span> <span class='fu'>c</span>(<span class='st'>"trailing"</span>, <span class='st'>"none"</span>, <span class='st'>"all"</span>),
+<span class='fu'>quos</span>(<span class='no'>...</span>, <span class='kw'>.named</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>, <span class='kw'>.ignore_empty</span> <span class='kw'>=</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/c'>c</a></span>(<span class='st'>"trailing"</span>, <span class='st'>"none"</span>, <span class='st'>"all"</span>),
   <span class='kw'>.unquote_names</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>)
 
-<span class='fu'>enquos</span>(<span class='no'>...</span>, <span class='kw'>.named</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>, <span class='kw'>.ignore_empty</span> <span class='kw'>=</span> <span class='fu'>c</span>(<span class='st'>"trailing"</span>, <span class='st'>"none"</span>,
-  <span class='st'>"all"</span>), <span class='kw'>.unquote_names</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>, <span class='kw'>.homonyms</span> <span class='kw'>=</span> <span class='fu'>c</span>(<span class='st'>"keep"</span>, <span class='st'>"first"</span>, <span class='st'>"last"</span>,
+<span class='fu'>enquos</span>(<span class='no'>...</span>, <span class='kw'>.named</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>, <span class='kw'>.ignore_empty</span> <span class='kw'>=</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/c'>c</a></span>(<span class='st'>"trailing"</span>, <span class='st'>"none"</span>,
+  <span class='st'>"all"</span>), <span class='kw'>.unquote_names</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>, <span class='kw'>.homonyms</span> <span class='kw'>=</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/c'>c</a></span>(<span class='st'>"keep"</span>, <span class='st'>"first"</span>, <span class='st'>"last"</span>,
   <span class='st'>"error"</span>), <span class='kw'>.check_assign</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>)</pre>
     
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
@@ -282,12 +280,12 @@ including expressions contained in <code>...</code>.</p></li>
 is supplied they throw an error.</p></li>
 </ul>
     <p>In terms of base functions, <code>enexpr(arg)</code> corresponds to
-<code><a href='http://www.rdocumentation.org/packages/base/topics/substitute'>base::substitute(arg)</a></code> (though that function also features complex
-substitution semantics) and <code>expr()</code> is like <code>quote()</code> (and
-<code>bquote()</code> if we consider unquotation syntax). The plural variant
-<code>exprs()</code> is equivalent to <code><a href='http://www.rdocumentation.org/packages/base/topics/list'>base::alist()</a></code>. Finally there is no
+<code><a href='https://www.rdocumentation.org/packages/base/topics/substitute'>base::substitute(arg)</a></code> (though that function also features complex
+substitution semantics) and <code>expr()</code> is like <code><a href='https://www.rdocumentation.org/packages/base/topics/substitute'>quote()</a></code> (and
+<code><a href='https://www.rdocumentation.org/packages/base/topics/bquote'>bquote()</a></code> if we consider unquotation syntax). The plural variant
+<code>exprs()</code> is equivalent to <code><a href='https://www.rdocumentation.org/packages/base/topics/list'>base::alist()</a></code>. Finally there is no
 function in base R that is equivalent to <code>enexprs()</code> but you can
-reproduce its behaviour with <code>eval(substitute(alist(...)))</code>.</p>
+reproduce its behaviour with <code><a href='https://www.rdocumentation.org/packages/base/topics/eval'>eval(substitute(alist(...)))</a></code>.</p>
     
     <h2 class="hasAnchor" id="capture-expressions-in-quosures"><a class="anchor" href="#capture-expressions-in-quosures"></a>Capture expressions in quosures</h2>
 
@@ -314,7 +312,7 @@ unquotation is called <em>quasiquotation</em>.</p>
 Variables are problematic when quoting because a captured
 expression is essentially a constant, just like a string is a
 constant. For instance in all the following cases <code>apple</code> is a
-constant: <code>~apple</code>, <code>"apple"</code> and <code>expr(apple)</code>. Unquoting allows
+constant: <code><a href='https://www.rdocumentation.org/packages/base/topics/tilde'>~apple</a></code>, <code>"apple"</code> and <code>expr(apple)</code>. Unquoting allows
 you to introduce a part of variability within a captured
 expression.</p><ul>
 <li><p>In the case of <code>enexpr()</code> and <code>enquo()</code>, unquoting provides an
@@ -392,8 +390,8 @@ that are unquoted).</p></li>
 <span class='no'>quo</span> <span class='kw'>&lt;-</span> <span class='fu'>quo</span>(<span class='no'>letters</span>)
 <span class='no'>quo</span></div><div class='output co'>#&gt; &lt;quosure&gt;
 #&gt; expr: ^letters
-#&gt; env:  0x8fc25d0</div><div class='input'>
-<span class='fu'><a href='set_expr.html'>get_expr</a></span>(<span class='no'>quo</span>)</div><div class='output co'>#&gt; letters</div><div class='input'><span class='fu'><a href='get_env.html'>get_env</a></span>(<span class='no'>quo</span>)</div><div class='output co'>#&gt; &lt;environment: 0x8fc25d0&gt;</div><div class='input'>
+#&gt; env:  0x7df72b0</div><div class='input'>
+<span class='fu'><a href='set_expr.html'>get_expr</a></span>(<span class='no'>quo</span>)</div><div class='output co'>#&gt; letters</div><div class='input'><span class='fu'><a href='get_env.html'>get_env</a></span>(<span class='no'>quo</span>)</div><div class='output co'>#&gt; &lt;environment: 0x7df72b0&gt;</div><div class='input'>
 <span class='co'># Quosures can be evaluated with eval_tidy():</span>
 <span class='fu'><a href='eval_tidy.html'>eval_tidy</a></span>(<span class='no'>quo</span>)</div><div class='output co'>#&gt;  [1] "a" "b" "c" "d" "e" "f" "g" "h" "i" "j" "k" "l" "m" "n" "o" "p" "q" "r" "s"
 #&gt; [20] "t" "u" "v" "w" "x" "y" "z"</div><div class='input'>
@@ -418,7 +416,7 @@ that are unquoted).</p></li>
 <span class='co'># terminal is capable of displaying colours:</span>
 <span class='no'>quo</span></div><div class='output co'>#&gt; &lt;quosure&gt;
 #&gt; expr: ^(^2 + 3) * local_ten
-#&gt; env:  0x3b449f8</div><div class='input'>
+#&gt; env:  0x243e818</div><div class='input'>
 <span class='co'># All the quosures in the expression evaluate in their original</span>
 <span class='co'># context. The local objects are looked up properly and we get the</span>
 <span class='co'># expected result:</span>
@@ -449,7 +447,7 @@ that are unquoted).</p></li>
 </div>
 
 <div class="pkgdown">
-  <p>Site built with <a href="http://pkgdown.r-lib.org/">pkgdown</a>.</p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a>.</p>
 </div>
 
       </footer>

@@ -8,8 +8,6 @@
 
 <title>Process unquote operators in a captured expression — expr_interp • rlang</title>
 
-<link rel="shortcut icon" type="image/x-icon" href="../favicon.ico">
-
 <!-- jquery -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=" crossorigin="anonymous"></script>
 <!-- Bootstrap -->
@@ -69,7 +67,7 @@ to provide the same quasiquotation functionality as NSE functions." />
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">rlang</a>
-        <span class="label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.3.0.9000</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.3.0.9000</span>
       </span>
     </div>
 
@@ -164,31 +162,31 @@ formula or a function, or the current environment otherwise.</p></td>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
     <pre class="examples"><div class='input'><span class='co'># All tidy NSE functions like quo() unquote on capture:</span>
-<span class='fu'><a href='quotation.html'>quo</a></span>(<span class='fu'>list</span>(!!(<span class='fl'>1</span> + <span class='fl'>2</span>)))</div><div class='output co'>#&gt; &lt;quosure&gt;
+<span class='fu'><a href='quotation.html'>quo</a></span>(<span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/list'>list</a></span>(!!(<span class='fl'>1</span> + <span class='fl'>2</span>)))</div><div class='output co'>#&gt; &lt;quosure&gt;
 #&gt; expr: ^list(3)
-#&gt; env:  0x7a14e08</div><div class='input'>
+#&gt; env:  0x4aa3200</div><div class='input'>
 <span class='co'># expr_interp() is meant to provide the same functionality when you</span>
 <span class='co'># have a formula or expression that might contain unquoting</span>
 <span class='co'># operators:</span>
-<span class='no'>f</span> <span class='kw'>&lt;-</span> ~<span class='fu'>list</span>(!!(<span class='fl'>1</span> + <span class='fl'>2</span>))
+<span class='no'>f</span> <span class='kw'>&lt;-</span> ~<span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/list'>list</a></span>(!!(<span class='fl'>1</span> + <span class='fl'>2</span>))
 <span class='fu'>expr_interp</span>(<span class='no'>f</span>)</div><div class='output co'>#&gt; ~list(3)
-#&gt; &lt;environment: 0x7a14e08&gt;</div><div class='input'>
+#&gt; &lt;environment: 0x4aa3200&gt;</div><div class='input'>
 <span class='co'># Note that only the outer formula is unquoted (which is a reason</span>
 <span class='co'># to use expr_interp() as early as possible in all user-facing</span>
 <span class='co'># functions):</span>
-<span class='no'>f</span> <span class='kw'>&lt;-</span> ~<span class='fu'>list</span>(~!!(<span class='fl'>1</span> + <span class='fl'>2</span>), !!(<span class='fl'>1</span> + <span class='fl'>2</span>))
+<span class='no'>f</span> <span class='kw'>&lt;-</span> ~<span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/list'>list</a></span>(~!!(<span class='fl'>1</span> + <span class='fl'>2</span>), !!(<span class='fl'>1</span> + <span class='fl'>2</span>))
 <span class='fu'>expr_interp</span>(<span class='no'>f</span>)</div><div class='output co'>#&gt; ~list(~3, 3)
-#&gt; &lt;environment: 0x7a14e08&gt;</div><div class='input'>
+#&gt; &lt;environment: 0x4aa3200&gt;</div><div class='input'>
 
 <span class='co'># Another purpose for expr_interp() is to interpolate a closure's</span>
 <span class='co'># body. This is useful to inline a function within another. The</span>
 <span class='co'># important limitation is that all formal arguments of the inlined</span>
 <span class='co'># function should be defined in the receiving function:</span>
-<span class='no'>other_fn</span> <span class='kw'>&lt;-</span> <span class='kw'>function</span>(<span class='no'>x</span>) <span class='fu'>toupper</span>(<span class='no'>x</span>)
+<span class='no'>other_fn</span> <span class='kw'>&lt;-</span> <span class='kw'>function</span>(<span class='no'>x</span>) <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/chartr'>toupper</a></span>(<span class='no'>x</span>)
 
 <span class='no'>fn</span> <span class='kw'>&lt;-</span> <span class='fu'>expr_interp</span>(<span class='kw'>function</span>(<span class='no'>x</span>) {
-  <span class='no'>x</span> <span class='kw'>&lt;-</span> <span class='fu'>paste0</span>(<span class='no'>x</span>, <span class='st'>"_suffix"</span>)
-  !!! <span class='fu'>body</span>(<span class='no'>other_fn</span>)
+  <span class='no'>x</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/paste'>paste0</a></span>(<span class='no'>x</span>, <span class='st'>"_suffix"</span>)
+  !!! <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/body'>body</a></span>(<span class='no'>other_fn</span>)
 })</div><div class='output co'>#&gt; <span class='warning'>Warning: Unquoting language objects with `!!!` is soft-deprecated as of rlang 0.3.0.</span>
 #&gt; <span class='warning'>Please use `!!` instead.</span>
 #&gt; <span class='warning'></span>
@@ -204,7 +202,7 @@ formula or a function, or the current environment otherwise.</p></td>
 #&gt;     x &lt;- paste0(x, "_suffix")
 #&gt;     toupper(x)
 #&gt; }
-#&gt; &lt;environment: 0x7a14e08&gt;</div><div class='input'><span class='fu'>fn</span>(<span class='st'>"foo"</span>)</div><div class='output co'>#&gt; [1] "FOO_SUFFIX"</div></pre>
+#&gt; &lt;environment: 0x4aa3200&gt;</div><div class='input'><span class='fu'>fn</span>(<span class='st'>"foo"</span>)</div><div class='output co'>#&gt; [1] "FOO_SUFFIX"</div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
     <h2>Contents</h2>
@@ -223,7 +221,7 @@ formula or a function, or the current environment otherwise.</p></td>
 </div>
 
 <div class="pkgdown">
-  <p>Site built with <a href="http://pkgdown.r-lib.org/">pkgdown</a>.</p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a>.</p>
 </div>
 
       </footer>

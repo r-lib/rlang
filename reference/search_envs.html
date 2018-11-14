@@ -8,8 +8,6 @@
 
 <title>Search path environments — search_envs • rlang</title>
 
-<link rel="shortcut icon" type="image/x-icon" href="../favicon.ico">
-
 <!-- jquery -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=" crossorigin="anonymous"></script>
 <!-- Bootstrap -->
@@ -80,7 +78,7 @@ or a package environment) is attached to the search path.
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">rlang</a>
-        <span class="label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.3.0.9000</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.3.0.9000</span>
       </span>
     </div>
 
@@ -149,13 +147,13 @@ or a package environment) is attached to the search path.
     <p>The search path is a chain of environments containing exported
 functions of attached packages.</p>
 <p>The API includes:</p><ul>
-<li><p><code><a href='http://www.rdocumentation.org/packages/base/topics/search'>base::search()</a></code> to get the names of environments attached to the
+<li><p><code><a href='https://www.rdocumentation.org/packages/base/topics/search'>base::search()</a></code> to get the names of environments attached to the
 search path.</p></li>
 <li><p><code>search_envs()</code> returns the environments on the search path as a
 list.</p></li>
 <li><p><code>pkg_env_name()</code> takes a bare package name and prefixes it with
 <code>"package:"</code>. Attached package environments have search names of
-the form <code>package:name</code>.</p></li>
+the form <code><a href='https://www.rdocumentation.org/packages/base/topics/Colon'>package:name</a></code>.</p></li>
 <li><p><code>pkg_env()</code> takes a bare package name and returns the scoped
 environment of packages if they are attached to the search path,
 and throws an error otherwise. It is a shortcut for
@@ -186,7 +184,7 @@ or a package environment) is attached to the search path.</p></li>
     <tr>
       <th>name</th>
       <td><p>The name of an environment attached to the search
-path. Call <code><a href='http://www.rdocumentation.org/packages/base/topics/search'>base::search()</a></code> to get the names of environments
+path. Call <code><a href='https://www.rdocumentation.org/packages/base/topics/search'>base::search()</a></code> to get the names of environments
 currently attached to the search path. Note that the search name
 of a package environment is prefixed with <code>"package:"</code>.</p></td>
     </tr>
@@ -204,23 +202,23 @@ the global workspace. It contains the following elements:</p><ul>
 <li><p>The chain always starts with <code>global_env()</code> and finishes with
 <code>base_env()</code> (technically, it finishes with the <code><a href='empty_env.html'>empty_env()</a></code>
 which the base package environment inherits from).</p></li>
-<li><p>Each <code><a href='http://www.rdocumentation.org/packages/base/topics/library'>base::library()</a></code> call attaches a new package environment to
+<li><p>Each <code><a href='https://www.rdocumentation.org/packages/base/topics/library'>base::library()</a></code> call attaches a new package environment to
 the search path. Attached packages are associated with a <a href='env_name.html'>search name</a>.</p></li>
 <li><p>In addition, any list, data frame, or environment can be attached
-to the search path with <code><a href='http://www.rdocumentation.org/packages/base/topics/attach'>base::attach()</a></code>.</p></li>
+to the search path with <code><a href='https://www.rdocumentation.org/packages/base/topics/attach'>base::attach()</a></code>.</p></li>
 </ul>
     
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
     <pre class="examples"><div class='input'><span class='co'># List the search names of environments attached to the search path:</span>
-<span class='fu'>search</span>()</div><div class='output co'>#&gt;  [1] ".GlobalEnv"        "package:rlang"     "devtools_shims"   
+<span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/search'>search</a></span>()</div><div class='output co'>#&gt;  [1] ".GlobalEnv"        "devtools_shims"    "package:rlang"    
 #&gt;  [4] "package:testthat"  "package:stats"     "package:graphics" 
 #&gt;  [7] "package:grDevices" "package:utils"     "package:datasets" 
 #&gt; [10] "package:methods"   "Autoloads"         "package:base"     </div><div class='input'>
 <span class='co'># Get the corresponding environments:</span>
 <span class='fu'>search_envs</span>()</div><div class='output co'>#&gt;  [[1]] $ &lt;env: global&gt;
-#&gt;  [[2]] $ &lt;env: package:rlang&gt;
-#&gt;  [[3]] $ &lt;env: devtools_shims&gt;
+#&gt;  [[2]] $ &lt;env: devtools_shims&gt;
+#&gt;  [[3]] $ &lt;env: package:rlang&gt;
 #&gt;  [[4]] $ &lt;env: package:testthat&gt;
 #&gt;  [[5]] $ &lt;env: package:stats&gt;
 #&gt;  [[6]] $ &lt;env: package:graphics&gt;
@@ -233,7 +231,7 @@ to the search path with <code><a href='http://www.rdocumentation.org/packages/ba
 <span class='co'># The global environment and the base package are always first and</span>
 <span class='co'># last in the chain, respectively:</span>
 <span class='no'>envs</span> <span class='kw'>&lt;-</span> <span class='fu'>search_envs</span>()
-<span class='no'>envs</span><span class='kw'>[[</span><span class='fl'>1</span>]]</div><div class='output co'>#&gt; &lt;environment: R_GlobalEnv&gt;</div><div class='input'><span class='no'>envs</span><span class='kw'>[[</span><span class='fu'>length</span>(<span class='no'>envs</span>)]]</div><div class='output co'>#&gt; &lt;environment: base&gt;</div><div class='input'>
+<span class='no'>envs</span><span class='kw'>[[</span><span class='fl'>1</span>]]</div><div class='output co'>#&gt; &lt;environment: R_GlobalEnv&gt;</div><div class='input'><span class='no'>envs</span><span class='kw'>[[</span><span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/length'>length</a></span>(<span class='no'>envs</span>)]]</div><div class='output co'>#&gt; &lt;environment: base&gt;</div><div class='input'>
 <span class='co'># These two environments have their own shortcuts:</span>
 <span class='fu'>global_env</span>()</div><div class='output co'>#&gt; &lt;environment: R_GlobalEnv&gt;</div><div class='input'><span class='fu'>base_env</span>()</div><div class='output co'>#&gt; &lt;environment: base&gt;</div><div class='input'>
 <span class='co'># Packages appear in the search path with a special name. Use</span>
@@ -270,7 +268,7 @@ to the search path with <code><a href='http://www.rdocumentation.org/packages/ba
 </div>
 
 <div class="pkgdown">
-  <p>Site built with <a href="http://pkgdown.r-lib.org/">pkgdown</a>.</p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a>.</p>
 </div>
 
       </footer>

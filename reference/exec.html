@@ -8,8 +8,6 @@
 
 <title>Execute a function — exec • rlang</title>
 
-<link rel="shortcut icon" type="image/x-icon" href="../favicon.ico">
-
 <!-- jquery -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=" crossorigin="anonymous"></script>
 <!-- Bootstrap -->
@@ -70,7 +68,7 @@ lapply())
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">rlang</a>
-        <span class="label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.3.0.9000</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.3.0.9000</span>
       </span>
     </div>
 
@@ -141,7 +139,7 @@ It was two primary uses:</p><ul>
 <li><p>To call a function with arguments stored in a list (if the function
 doesn't support <a href='tidy-dots.html'>tidy-dots</a>)</p></li>
 <li><p>To call every function stored in a list (in conjunction with <code>map()</code>/
-<code>lapply()</code>)</p></li>
+<code><a href='https://www.rdocumentation.org/packages/base/topics/lapply'>lapply()</a></code>)</p></li>
 </ul>
     
     </div>
@@ -169,10 +167,10 @@ most useful if <code>f</code> is a string, or the function has side-effects.</p>
     
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><div class='input'><span class='no'>args</span> <span class='kw'>&lt;-</span> <span class='fu'>list</span>(<span class='kw'>x</span> <span class='kw'>=</span> <span class='fu'>c</span>(<span class='fl'>1</span>:<span class='fl'>10</span>, <span class='fl'>100</span>, <span class='fl'>NA</span>), <span class='kw'>na.rm</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>)
+    <pre class="examples"><div class='input'><span class='no'>args</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/list'>list</a></span>(<span class='kw'>x</span> <span class='kw'>=</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/c'>c</a></span>(<span class='fl'>1</span>:<span class='fl'>10</span>, <span class='fl'>100</span>, <span class='fl'>NA</span>), <span class='kw'>na.rm</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>)
 <span class='fu'>exec</span>(<span class='st'>"mean"</span>, !!!<span class='no'>args</span>)</div><div class='output co'>#&gt; [1] 14.09091</div><div class='input'><span class='fu'>exec</span>(<span class='st'>"mean"</span>, !!!<span class='no'>args</span>, <span class='kw'>trim</span> <span class='kw'>=</span> <span class='fl'>0.2</span>)</div><div class='output co'>#&gt; [1] 6</div><div class='input'>
-<span class='no'>fs</span> <span class='kw'>&lt;-</span> <span class='fu'>list</span>(<span class='kw'>a</span> <span class='kw'>=</span> <span class='kw'>function</span>() <span class='st'>"a"</span>, <span class='kw'>b</span> <span class='kw'>=</span> <span class='kw'>function</span>() <span class='st'>"b"</span>)
-<span class='fu'>lapply</span>(<span class='no'>fs</span>, <span class='no'>exec</span>)</div><div class='output co'>#&gt; $a
+<span class='no'>fs</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/list'>list</a></span>(<span class='kw'>a</span> <span class='kw'>=</span> <span class='kw'>function</span>() <span class='st'>"a"</span>, <span class='kw'>b</span> <span class='kw'>=</span> <span class='kw'>function</span>() <span class='st'>"b"</span>)
+<span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/lapply'>lapply</a></span>(<span class='no'>fs</span>, <span class='no'>exec</span>)</div><div class='output co'>#&gt; $a
 #&gt; [1] "a"
 #&gt; 
 #&gt; $b
@@ -187,7 +185,7 @@ most useful if <code>f</code> is a string, or the function has side-effects.</p>
 #&gt; 
 #&gt; $x2
 #&gt; x * 2
-#&gt; </div><div class='input'><span class='fu'>do.call</span>(<span class='no'>list</span>, <span class='no'>args</span>)</div><div class='output co'>#&gt; $x1
+#&gt; </div><div class='input'><span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/do.call'>do.call</a></span>(<span class='no'>list</span>, <span class='no'>args</span>)</div><div class='output co'>#&gt; $x1
 #&gt; [1] 11
 #&gt; 
 #&gt; $x2
@@ -245,7 +243,7 @@ most useful if <code>f</code> is a string, or the function has side-effects.</p>
 <span class='co'># construct it yourself. This may require creating a new environment</span>
 <span class='co'># with carefully constructed bindings</span>
 <span class='no'>data_env</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='env.html'>env</a></span>(<span class='kw'>data</span> <span class='kw'>=</span> <span class='no'>mtcars</span>)
-<span class='fu'>eval</span>(<span class='fu'><a href='quotation.html'>expr</a></span>(<span class='fu'>lm</span>(!!<span class='no'>f</span>, <span class='no'>data</span>)), <span class='no'>data_env</span>)</div><div class='output co'>#&gt; 
+<span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/eval'>eval</a></span>(<span class='fu'><a href='quotation.html'>expr</a></span>(<span class='fu'><a href='https://www.rdocumentation.org/packages/stats/topics/lm'>lm</a></span>(!!<span class='no'>f</span>, <span class='no'>data</span>)), <span class='no'>data_env</span>)</div><div class='output co'>#&gt; 
 #&gt; Call:
 #&gt; lm(formula = disp ~ cyl, data = data)
 #&gt; 
@@ -271,7 +269,7 @@ most useful if <code>f</code> is a string, or the function has side-effects.</p>
 </div>
 
 <div class="pkgdown">
-  <p>Site built with <a href="http://pkgdown.r-lib.org/">pkgdown</a>.</p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a>.</p>
 </div>
 
       </footer>

@@ -8,8 +8,6 @@
 
 <title>Extract arguments from a call — call_args • rlang</title>
 
-<link rel="shortcut icon" type="image/x-icon" href="../favicon.ico">
-
 <!-- jquery -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=" crossorigin="anonymous"></script>
 <!-- Bootstrap -->
@@ -64,7 +62,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">rlang</a>
-        <span class="label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.3.0.9000</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.3.0.9000</span>
       </span>
     </div>
 
@@ -165,14 +163,14 @@ about this change.</p>
     
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><div class='input'><span class='no'>call</span> <span class='kw'>&lt;-</span> <span class='fu'>quote</span>(<span class='fu'>f</span>(<span class='no'>a</span>, <span class='no'>b</span>))
+    <pre class="examples"><div class='input'><span class='no'>call</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/substitute'>quote</a></span>(<span class='fu'>f</span>(<span class='no'>a</span>, <span class='no'>b</span>))
 
 <span class='co'># Subsetting a call returns the arguments converted to a language</span>
 <span class='co'># object:</span>
 <span class='no'>call</span>[-<span class='fl'>1</span>]</div><div class='output co'>#&gt; a(b)</div><div class='input'>
 <span class='co'># On the other hand, call_args() returns a regular list that is</span>
 <span class='co'># often easier to work with:</span>
-<span class='fu'>str</span>(<span class='fu'>call_args</span>(<span class='no'>call</span>))</div><div class='output co'>#&gt; List of 2
+<span class='fu'><a href='https://www.rdocumentation.org/packages/utils/topics/str'>str</a></span>(<span class='fu'>call_args</span>(<span class='no'>call</span>))</div><div class='output co'>#&gt; List of 2
 #&gt;  $ : symbol a
 #&gt;  $ : symbol b</div><div class='input'>
 <span class='co'># When the arguments are unnamed, a vector of empty strings is</span>
@@ -202,7 +200,7 @@ about this change.</p>
 </div>
 
 <div class="pkgdown">
-  <p>Site built with <a href="http://pkgdown.r-lib.org/">pkgdown</a>.</p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a>.</p>
 </div>
 
       </footer>

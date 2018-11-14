@@ -8,8 +8,6 @@
 
 <title>Create a function — new_function • rlang</title>
 
-<link rel="shortcut icon" type="image/x-icon" href="../favicon.ico">
-
 <!-- jquery -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=" crossorigin="anonymous"></script>
 <!-- Bootstrap -->
@@ -66,7 +64,7 @@ list of arguments, body code and parent environment." />
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">rlang</a>
-        <span class="label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.3.0.9000</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.3.0.9000</span>
       </span>
     </div>
 
@@ -147,13 +145,13 @@ list of arguments, body code and parent environment.</p>
       <th>args</th>
       <td><p>A named list of default arguments. Note that if you
 want arguments that don't have defaults, you'll need to use the
-special function alist, e.g. <code>alist(a = , b = 1)</code></p></td>
+special function <a href='https://www.rdocumentation.org/packages/base/topics/list'>alist</a>, e.g. <code><a href='https://www.rdocumentation.org/packages/base/topics/list'>alist(a = , b = 1)</a></code></p></td>
     </tr>
     <tr>
       <th>body</th>
       <td><p>A language object representing the code inside the
 function. Usually this will be most easily generated with
-<code><a href='http://www.rdocumentation.org/packages/base/topics/substitute'>base::quote()</a></code></p></td>
+<code><a href='https://www.rdocumentation.org/packages/base/topics/substitute'>base::quote()</a></code></p></td>
     </tr>
     <tr>
       <th>env</th>
@@ -165,15 +163,15 @@ calling environment of <code>new_function()</code></p></td>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
     <pre class="examples"><div class='input'><span class='no'>f</span> <span class='kw'>&lt;-</span> <span class='kw'>function</span>(<span class='no'>x</span>) <span class='no'>x</span> + <span class='fl'>3</span>
-<span class='no'>g</span> <span class='kw'>&lt;-</span> <span class='fu'>new_function</span>(<span class='fu'>alist</span>(<span class='kw'>x</span> <span class='kw'>=</span> ), <span class='fu'>quote</span>(<span class='no'>x</span> + <span class='fl'>3</span>))
+<span class='no'>g</span> <span class='kw'>&lt;-</span> <span class='fu'>new_function</span>(<span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/list'>alist</a></span>(<span class='kw'>x</span> <span class='kw'>=</span> ), <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/substitute'>quote</a></span>(<span class='no'>x</span> + <span class='fl'>3</span>))
 
 <span class='co'># The components of the functions are identical</span>
-<span class='fu'>identical</span>(<span class='fu'>formals</span>(<span class='no'>f</span>), <span class='fu'>formals</span>(<span class='no'>g</span>))</div><div class='output co'>#&gt; [1] TRUE</div><div class='input'><span class='fu'>identical</span>(<span class='fu'>body</span>(<span class='no'>f</span>), <span class='fu'>body</span>(<span class='no'>g</span>))</div><div class='output co'>#&gt; [1] TRUE</div><div class='input'><span class='fu'>identical</span>(<span class='fu'>environment</span>(<span class='no'>f</span>), <span class='fu'>environment</span>(<span class='no'>g</span>))</div><div class='output co'>#&gt; [1] TRUE</div><div class='input'>
+<span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/identical'>identical</a></span>(<span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/formals'>formals</a></span>(<span class='no'>f</span>), <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/formals'>formals</a></span>(<span class='no'>g</span>))</div><div class='output co'>#&gt; [1] TRUE</div><div class='input'><span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/identical'>identical</a></span>(<span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/body'>body</a></span>(<span class='no'>f</span>), <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/body'>body</a></span>(<span class='no'>g</span>))</div><div class='output co'>#&gt; [1] TRUE</div><div class='input'><span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/identical'>identical</a></span>(<span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/environment'>environment</a></span>(<span class='no'>f</span>), <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/environment'>environment</a></span>(<span class='no'>g</span>))</div><div class='output co'>#&gt; [1] TRUE</div><div class='input'>
 <span class='co'># But the functions are not identical because f has src code reference</span>
-<span class='fu'>identical</span>(<span class='no'>f</span>, <span class='no'>g</span>)</div><div class='output co'>#&gt; [1] TRUE</div><div class='input'>
-<span class='fu'>attr</span>(<span class='no'>f</span>, <span class='st'>"srcref"</span>) <span class='kw'>&lt;-</span> <span class='kw'>NULL</span>
+<span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/identical'>identical</a></span>(<span class='no'>f</span>, <span class='no'>g</span>)</div><div class='output co'>#&gt; [1] TRUE</div><div class='input'>
+<span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/attr'>attr</a></span>(<span class='no'>f</span>, <span class='st'>"srcref"</span>) <span class='kw'>&lt;-</span> <span class='kw'>NULL</span>
 <span class='co'># Now they are:</span>
-<span class='fu'>stopifnot</span>(<span class='fu'>identical</span>(<span class='no'>f</span>, <span class='no'>g</span>))</div></pre>
+<span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/stopifnot'>stopifnot</a></span>(<span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/identical'>identical</a></span>(<span class='no'>f</span>, <span class='no'>g</span>))</div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
     <h2>Contents</h2>
@@ -192,7 +190,7 @@ calling environment of <code>new_function()</code></p></td>
 </div>
 
 <div class="pkgdown">
-  <p>Site built with <a href="http://pkgdown.r-lib.org/">pkgdown</a>.</p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a>.</p>
 </div>
 
       </footer>
