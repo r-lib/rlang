@@ -54,3 +54,7 @@ Or install the development version from github with:
 # install.packages("devtools")
 devtools::install_github("r-lib/rlang", build_vignettes = TRUE)
 ```
+
+## Cheatsheet
+
+<a href="https://github.com/rstudio/cheatsheets/blob/master/tidyeval.pdf"><img src="https://raw.githubusercontent.com/rstudio/cheatsheets/master/pngs/thumbnails/tidy-eval-thumbs.png" alt = "tidy eval cheatsheet" width="630" height="252"/></a>  
