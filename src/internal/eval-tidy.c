@@ -391,12 +391,14 @@ sexp* rlang_tilde_eval(sexp* tilde, sexp* current_frame, sexp* caller_frame) {
     r_abort("Internal error: Can't find the data mask");
   }
 
-  // Unwind-protect the restoration of original parents
-  on_exit_restore_lexical_env(info.mask, r_env_parent(top), current_frame);
-
-  // Swap lexical contexts temporarily by rechaining the top of the
-  // mask to the quosure environment
-  r_env_poke_parent(top, quo_env);
+  // Unless the quosure was created in the mask, swap lexical contexts
+  // temporarily by rechaining the top of the mask to the quosure
+  // environment
+  if (!r_env_inherits(info.mask, quo_env, top)) {
+    // Unwind-protect the restoration of original parents
+    on_exit_restore_lexical_env(info.mask, r_env_parent(top), current_frame);
+    r_env_poke_parent(top, quo_env);
+  }
 
   FREE(n_protect);
   return r_eval(expr, info.mask);

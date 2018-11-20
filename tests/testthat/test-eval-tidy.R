@@ -404,6 +404,11 @@ test_that("quosures look for data masks lexically", {
   expect_identical(out, list(mtcars$cyl, mtcars$disp))
 })
 
+test_that("can evaluate quosures created in the data mask without infloop", {
+  quo <- eval_tidy(quote(quo(a)), list(a = "foo"))
+  expect_identical(eval_bare(quo, quo_get_env(quo)), "foo")
+})
+
 
 # Lifecycle ----------------------------------------------------------
 

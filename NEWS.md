@@ -1,6 +1,8 @@
 
 # rlang 0.3.0.9000
 
+* Fixed infinite loop with quosures created inside a data mask.
+
 * Base errors set as `parent` of rlang errors are now printed
   correctly.
 
