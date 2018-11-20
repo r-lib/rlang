@@ -75,5 +75,7 @@ sexp* r_env_unbind_names(sexp* env, sexp* names, bool inherits);
 sexp* r_env_unbind_all(sexp* env, const char** names, bool inherits);
 sexp* r_env_unbind(sexp* env, const char* name, bool inherits);
 
+bool r_env_inherits(sexp* env, sexp* ancestor, sexp* top);
+
 
 #endif

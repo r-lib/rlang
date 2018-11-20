@@ -78,6 +78,10 @@ sexp* rlang_env_hash_table(sexp* env) {
   return HASHTAB(env);
 }
 
+sexp* rlang_env_inherits(sexp* env, sexp* ancestor) {
+  return r_lgl(r_env_inherits(env, ancestor, r_empty_env));
+}
+
 
 // eval.c
 

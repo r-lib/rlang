@@ -65,12 +65,14 @@ test_that("as_environment() dispatches correctly", {
 })
 
 test_that("env_inherits() finds ancestor", {
-  env <- child_env(current_env())
-  env <- child_env(env)
+  env <- env(env(current_env()))
   expect_true(env_inherits(env, current_env()))
   expect_false(env_inherits(env, ns_env("utils")))
+})
 
-  expect_error(env_inherits(empty_env(), empty_env()), "has no parent")
+test_that("env_inherits() detects empty environment", {
+  expect_false(env_inherits(empty_env(), empty_env()))
+  expect_true(env_inherits(env(empty_env()), empty_env()))
 })
 
 test_that("env() creates child of current environment", {

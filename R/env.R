@@ -573,16 +573,7 @@ env_clone <- function(env, parent = env_parent(env)) {
 #' @export
 env_inherits <- function(env, ancestor) {
   env <- get_env_retired(env, "env_inherits()")
-  stopifnot(is_environment(ancestor) && is_environment(env))
-
-  while (!is_empty_env(env_parent(env))) {
-    env <- env_parent(env)
-    if (is_reference(env, ancestor)) {
-      return(TRUE)
-    }
-  }
-
-  is_empty_env(env)
+  .Call(rlang_env_inherits, env, ancestor)
 }
 
 #' Lock an environment
