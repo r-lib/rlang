@@ -12,14 +12,14 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=" crossorigin="anonymous"></script>
 <!-- Bootstrap -->
 
-<link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
-<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha256-916EbMg70RQy9LHiGkXzG8hSg9EdNy97GazNG/aiY1w=" crossorigin="anonymous" />
+<script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha256-U5ZEeKfGNOja007MMD3YBI0A3OSZOQbeG6z2f2Y0hu8=" crossorigin="anonymous"></script>
 
 <!-- Font Awesome icons -->
-<link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.6.3/css/font-awesome.min.css" rel="stylesheet" integrity="sha384-T8Gy5hrqNKT+hzMclPo118YTQO6cYprQmhrYwIiQ/3axmI1hQomh7Ud2hPOy8SP1" crossorigin="anonymous">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css" integrity="sha256-eZrrJcwDc/3uDhsdt61sL2oOBY362qM3lon1gyExkL0=" crossorigin="anonymous" />
 
 <!-- clipboard.js -->
-<script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.1/clipboard.min.js" integrity="sha256-hIvIxeqhGZF+VVeM55k0mJvWpQ6gTkWk3Emc+NmowYA=" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.4/clipboard.min.js" integrity="sha256-FiZwavyI2V6+EXO1U+xzLG3IKldpiTFf3153ea9zikQ=" crossorigin="anonymous"></script>
 
 <!-- sticky kit -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/sticky-kit/1.1.3/sticky-kit.min.js" integrity="sha256-c4Rlo1ZozqTPE2RLuvbusY3+SU1pQaJC0TjuhygMipw=" crossorigin="anonymous"></script>
@@ -41,7 +41,8 @@ assembled programmatically. This is the purpose of invoke()." />
 
 
 <!-- mathjax -->
-<script src='https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js?config=TeX-AMS-MML_HTMLorMML'></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js" integrity="sha256-nvJJv9wWKEm88qvoQl9ekL2J+k/RWIsaSScxxlsrv8k=" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/config/TeX-AMS-MML_HTMLorMML.js" integrity="sha256-84DKXVJXs0/F8OTMzX4UR909+jtl4G7SPypPavF+GfA=" crossorigin="anonymous"></script>
 
 <!--[if lt IE 9]>
 <script src="https://oss.maxcdn.com/html5shiv/3.7.3/html5shiv.min.js"></script>
@@ -200,17 +201,17 @@ or complex expressions.</p>
 <span class='fu'>invoke</span>(<span class='no'>fn</span>, <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/list'>list</a></span>(<span class='no'>mtcars</span>))</div><div class='output co'>#&gt; [[1]]
 #&gt; tryCatch(withCallingHandlers({
 #&gt;     NULL
-#&gt;     saveRDS(do.call(do.call, c(readRDS("/tmp/Rtmp6Vsgtd/file3a731a30f387"), 
-#&gt;         list(envir = .GlobalEnv)), envir = .GlobalEnv), file = "/tmp/Rtmp6Vsgtd/file3a73bfdef3f")
+#&gt;     saveRDS(do.call(do.call, c(readRDS("/tmp/RtmpCL1qTH/file3b624f4c2b38"), 
+#&gt;         list(envir = .GlobalEnv)), envir = .GlobalEnv), file = "/tmp/RtmpCL1qTH/file3b625a07f47c")
 #&gt;     flush(stdout())
 #&gt;     flush(stderr())
 #&gt;     NULL
 #&gt;     invisible()
 #&gt; }, error = function(e) {
-#&gt;     saveRDS(list("error", e), file = paste0("/tmp/Rtmp6Vsgtd/file3a73bfdef3f", 
+#&gt;     saveRDS(list("error", e), file = paste0("/tmp/RtmpCL1qTH/file3b625a07f47c", 
 #&gt;         ".error"))
 #&gt; }, interrupt = function(e) {
-#&gt;     saveRDS(list("error", e), file = paste0("/tmp/Rtmp6Vsgtd/file3a73bfdef3f", 
+#&gt;     saveRDS(list("error", e), file = paste0("/tmp/RtmpCL1qTH/file3b625a07f47c", 
 #&gt;         ".error"))
 #&gt; }, callr_message = function(e) {
 #&gt;     {
@@ -255,17 +256,17 @@ or complex expressions.</p>
 #&gt; [[8]]
 #&gt; withCallingHandlers({
 #&gt;     NULL
-#&gt;     saveRDS(do.call(do.call, c(readRDS("/tmp/Rtmp6Vsgtd/file3a731a30f387"), 
-#&gt;         list(envir = .GlobalEnv)), envir = .GlobalEnv), file = "/tmp/Rtmp6Vsgtd/file3a73bfdef3f")
+#&gt;     saveRDS(do.call(do.call, c(readRDS("/tmp/RtmpCL1qTH/file3b624f4c2b38"), 
+#&gt;         list(envir = .GlobalEnv)), envir = .GlobalEnv), file = "/tmp/RtmpCL1qTH/file3b625a07f47c")
 #&gt;     flush(stdout())
 #&gt;     flush(stderr())
 #&gt;     NULL
 #&gt;     invisible()
 #&gt; }, error = function(e) {
-#&gt;     saveRDS(list("error", e), file = paste0("/tmp/Rtmp6Vsgtd/file3a73bfdef3f", 
+#&gt;     saveRDS(list("error", e), file = paste0("/tmp/RtmpCL1qTH/file3b625a07f47c", 
 #&gt;         ".error"))
 #&gt; }, interrupt = function(e) {
-#&gt;     saveRDS(list("error", e), file = paste0("/tmp/Rtmp6Vsgtd/file3a73bfdef3f", 
+#&gt;     saveRDS(list("error", e), file = paste0("/tmp/RtmpCL1qTH/file3b625a07f47c", 
 #&gt;         ".error"))
 #&gt; }, callr_message = function(e) {
 #&gt;     {
@@ -283,11 +284,11 @@ or complex expressions.</p>
 #&gt; })
 #&gt; 
 #&gt; [[9]]
-#&gt; saveRDS(do.call(do.call, c(readRDS("/tmp/Rtmp6Vsgtd/file3a731a30f387"), 
-#&gt;     list(envir = .GlobalEnv)), envir = .GlobalEnv), file = "/tmp/Rtmp6Vsgtd/file3a73bfdef3f")
+#&gt; saveRDS(do.call(do.call, c(readRDS("/tmp/RtmpCL1qTH/file3b624f4c2b38"), 
+#&gt;     list(envir = .GlobalEnv)), envir = .GlobalEnv), file = "/tmp/RtmpCL1qTH/file3b625a07f47c")
 #&gt; 
 #&gt; [[10]]
-#&gt; do.call(do.call, c(readRDS("/tmp/Rtmp6Vsgtd/file3a731a30f387"), 
+#&gt; do.call(do.call, c(readRDS("/tmp/RtmpCL1qTH/file3b624f4c2b38"), 
 #&gt;     list(envir = .GlobalEnv)), envir = .GlobalEnv)
 #&gt; 
 #&gt; [[11]]
@@ -304,7 +305,7 @@ or complex expressions.</p>
 #&gt;         pkgdown.internet = pkgdown_internet)
 #&gt;     pkgdown::build_site(...)
 #&gt; }, list(pkg = ".", examples = TRUE, document = FALSE, run_dont_run = FALSE, 
-#&gt;     seed = 1014, lazy = FALSE, override = list(destination = "/tmp/Rtmp6Vsgtd/file3a737fbc5119"), 
+#&gt;     seed = 1014, lazy = FALSE, override = list(destination = "/tmp/RtmpCL1qTH/file3b62386fb780"), 
 #&gt;     preview = FALSE, new_process = FALSE, crayon_enabled = FALSE, 
 #&gt;     crayon_colors = 1, pkgdown_internet = TRUE), envir = &lt;environment&gt;)
 #&gt; 
@@ -315,7 +316,7 @@ or complex expressions.</p>
 #&gt;         pkgdown.internet = pkgdown_internet)
 #&gt;     pkgdown::build_site(...)
 #&gt; })(pkg = ".", examples = TRUE, document = FALSE, run_dont_run = FALSE, 
-#&gt;     seed = 1014, lazy = FALSE, override = list(destination = "/tmp/Rtmp6Vsgtd/file3a737fbc5119"), 
+#&gt;     seed = 1014, lazy = FALSE, override = list(destination = "/tmp/RtmpCL1qTH/file3b62386fb780"), 
 #&gt;     preview = FALSE, new_process = FALSE, crayon_enabled = FALSE, 
 #&gt;     crayon_colors = 1, pkgdown_internet = TRUE)
 #&gt; 
@@ -361,26 +362,35 @@ or complex expressions.</p>
 #&gt;     1L)]], ...)
 #&gt; 
 #&gt; [[23]]
-#&gt; evaluate::evaluate(code, env, new_device = TRUE)
+#&gt; withr::with_options(list(crayon.enabled = getOption("crayon.enabled", 
+#&gt;     crayon::has_color()), crayon.colors = getOption("crayon.colors", 
+#&gt;     crayon::num_colors())), expr &lt;- evaluate::evaluate(code, 
+#&gt;     env, new_device = TRUE))
 #&gt; 
 #&gt; [[24]]
+#&gt; force(code)
+#&gt; 
+#&gt; [[25]]
+#&gt; evaluate::evaluate(code, env, new_device = TRUE)
+#&gt; 
+#&gt; [[26]]
 #&gt; evaluate_call(expr, parsed$src[[i]], envir = envir, enclos = enclos, 
 #&gt;     debug = debug, last = i == length(out), use_try = stop_on_error != 
 #&gt;         2L, keep_warning = keep_warning, keep_message = keep_message, 
 #&gt;     output_handler = output_handler, include_timing = include_timing)
 #&gt; 
-#&gt; [[25]]
+#&gt; [[27]]
 #&gt; timing_fn(handle(ev &lt;- withCallingHandlers(withVisible(eval(expr, 
 #&gt;     envir, enclos)), warning = wHandler, error = eHandler, message = mHandler)))
 #&gt; 
-#&gt; [[26]]
+#&gt; [[28]]
 #&gt; handle(ev &lt;- withCallingHandlers(withVisible(eval(expr, envir, 
 #&gt;     enclos)), warning = wHandler, error = eHandler, message = mHandler))
 #&gt; 
-#&gt; [[27]]
+#&gt; [[29]]
 #&gt; try(f, silent = TRUE)
 #&gt; 
-#&gt; [[28]]
+#&gt; [[30]]
 #&gt; tryCatch(expr, error = function(e) {
 #&gt;     call &lt;- conditionCall(e)
 #&gt;     if (!is.null(call)) {
@@ -407,32 +417,32 @@ or complex expressions.</p>
 #&gt;     invisible(structure(msg, class = "try-error", condition = e))
 #&gt; })
 #&gt; 
-#&gt; [[29]]
+#&gt; [[31]]
 #&gt; tryCatchList(expr, classes, parentenv, handlers)
 #&gt; 
-#&gt; [[30]]
+#&gt; [[32]]
 #&gt; tryCatchOne(expr, names, parentenv, handlers[[1L]])
 #&gt; 
-#&gt; [[31]]
+#&gt; [[33]]
 #&gt; doTryCatch(return(expr), name, parentenv, handler)
 #&gt; 
-#&gt; [[32]]
+#&gt; [[34]]
 #&gt; withCallingHandlers(withVisible(eval(expr, envir, enclos)), warning = wHandler, 
 #&gt;     error = eHandler, message = mHandler)
 #&gt; 
-#&gt; [[33]]
+#&gt; [[35]]
 #&gt; withVisible(eval(expr, envir, enclos))
 #&gt; 
-#&gt; [[34]]
-#&gt; eval(expr, envir, enclos)
-#&gt; 
-#&gt; [[35]]
-#&gt; eval(expr, envir, enclos)
-#&gt; 
 #&gt; [[36]]
-#&gt; invoke(fn, list(mtcars))
+#&gt; eval(expr, envir, enclos)
 #&gt; 
 #&gt; [[37]]
+#&gt; eval(expr, envir, enclos)
+#&gt; 
+#&gt; [[38]]
+#&gt; invoke(fn, list(mtcars))
+#&gt; 
+#&gt; [[39]]
 #&gt; .fn(`1`)
 #&gt; </div><div class='input'>
 <span class='co'># Compare to do.call():</span>
@@ -467,17 +477,17 @@ or complex expressions.</p>
 #&gt;     2, 4, 6, 8, 2))</div><div class='input'><span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/do.call'>do.call</a></span>(<span class='no'>fn</span>, <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/list'>list</a></span>(<span class='no'>mtcars</span>))</div><div class='output co'>#&gt; [[1]]
 #&gt; tryCatch(withCallingHandlers({
 #&gt;     NULL
-#&gt;     saveRDS(do.call(do.call, c(readRDS("/tmp/Rtmp6Vsgtd/file3a731a30f387"), 
-#&gt;         list(envir = .GlobalEnv)), envir = .GlobalEnv), file = "/tmp/Rtmp6Vsgtd/file3a73bfdef3f")
+#&gt;     saveRDS(do.call(do.call, c(readRDS("/tmp/RtmpCL1qTH/file3b624f4c2b38"), 
+#&gt;         list(envir = .GlobalEnv)), envir = .GlobalEnv), file = "/tmp/RtmpCL1qTH/file3b625a07f47c")
 #&gt;     flush(stdout())
 #&gt;     flush(stderr())
 #&gt;     NULL
 #&gt;     invisible()
 #&gt; }, error = function(e) {
-#&gt;     saveRDS(list("error", e), file = paste0("/tmp/Rtmp6Vsgtd/file3a73bfdef3f", 
+#&gt;     saveRDS(list("error", e), file = paste0("/tmp/RtmpCL1qTH/file3b625a07f47c", 
 #&gt;         ".error"))
 #&gt; }, interrupt = function(e) {
-#&gt;     saveRDS(list("error", e), file = paste0("/tmp/Rtmp6Vsgtd/file3a73bfdef3f", 
+#&gt;     saveRDS(list("error", e), file = paste0("/tmp/RtmpCL1qTH/file3b625a07f47c", 
 #&gt;         ".error"))
 #&gt; }, callr_message = function(e) {
 #&gt;     {
@@ -522,17 +532,17 @@ or complex expressions.</p>
 #&gt; [[8]]
 #&gt; withCallingHandlers({
 #&gt;     NULL
-#&gt;     saveRDS(do.call(do.call, c(readRDS("/tmp/Rtmp6Vsgtd/file3a731a30f387"), 
-#&gt;         list(envir = .GlobalEnv)), envir = .GlobalEnv), file = "/tmp/Rtmp6Vsgtd/file3a73bfdef3f")
+#&gt;     saveRDS(do.call(do.call, c(readRDS("/tmp/RtmpCL1qTH/file3b624f4c2b38"), 
+#&gt;         list(envir = .GlobalEnv)), envir = .GlobalEnv), file = "/tmp/RtmpCL1qTH/file3b625a07f47c")
 #&gt;     flush(stdout())
 #&gt;     flush(stderr())
 #&gt;     NULL
 #&gt;     invisible()
 #&gt; }, error = function(e) {
-#&gt;     saveRDS(list("error", e), file = paste0("/tmp/Rtmp6Vsgtd/file3a73bfdef3f", 
+#&gt;     saveRDS(list("error", e), file = paste0("/tmp/RtmpCL1qTH/file3b625a07f47c", 
 #&gt;         ".error"))
 #&gt; }, interrupt = function(e) {
-#&gt;     saveRDS(list("error", e), file = paste0("/tmp/Rtmp6Vsgtd/file3a73bfdef3f", 
+#&gt;     saveRDS(list("error", e), file = paste0("/tmp/RtmpCL1qTH/file3b625a07f47c", 
 #&gt;         ".error"))
 #&gt; }, callr_message = function(e) {
 #&gt;     {
@@ -550,11 +560,11 @@ or complex expressions.</p>
 #&gt; })
 #&gt; 
 #&gt; [[9]]
-#&gt; saveRDS(do.call(do.call, c(readRDS("/tmp/Rtmp6Vsgtd/file3a731a30f387"), 
-#&gt;     list(envir = .GlobalEnv)), envir = .GlobalEnv), file = "/tmp/Rtmp6Vsgtd/file3a73bfdef3f")
+#&gt; saveRDS(do.call(do.call, c(readRDS("/tmp/RtmpCL1qTH/file3b624f4c2b38"), 
+#&gt;     list(envir = .GlobalEnv)), envir = .GlobalEnv), file = "/tmp/RtmpCL1qTH/file3b625a07f47c")
 #&gt; 
 #&gt; [[10]]
-#&gt; do.call(do.call, c(readRDS("/tmp/Rtmp6Vsgtd/file3a731a30f387"), 
+#&gt; do.call(do.call, c(readRDS("/tmp/RtmpCL1qTH/file3b624f4c2b38"), 
 #&gt;     list(envir = .GlobalEnv)), envir = .GlobalEnv)
 #&gt; 
 #&gt; [[11]]
@@ -571,7 +581,7 @@ or complex expressions.</p>
 #&gt;         pkgdown.internet = pkgdown_internet)
 #&gt;     pkgdown::build_site(...)
 #&gt; }, list(pkg = ".", examples = TRUE, document = FALSE, run_dont_run = FALSE, 
-#&gt;     seed = 1014, lazy = FALSE, override = list(destination = "/tmp/Rtmp6Vsgtd/file3a737fbc5119"), 
+#&gt;     seed = 1014, lazy = FALSE, override = list(destination = "/tmp/RtmpCL1qTH/file3b62386fb780"), 
 #&gt;     preview = FALSE, new_process = FALSE, crayon_enabled = FALSE, 
 #&gt;     crayon_colors = 1, pkgdown_internet = TRUE), envir = &lt;environment&gt;)
 #&gt; 
@@ -582,7 +592,7 @@ or complex expressions.</p>
 #&gt;         pkgdown.internet = pkgdown_internet)
 #&gt;     pkgdown::build_site(...)
 #&gt; })(pkg = ".", examples = TRUE, document = FALSE, run_dont_run = FALSE, 
-#&gt;     seed = 1014, lazy = FALSE, override = list(destination = "/tmp/Rtmp6Vsgtd/file3a737fbc5119"), 
+#&gt;     seed = 1014, lazy = FALSE, override = list(destination = "/tmp/RtmpCL1qTH/file3b62386fb780"), 
 #&gt;     preview = FALSE, new_process = FALSE, crayon_enabled = FALSE, 
 #&gt;     crayon_colors = 1, pkgdown_internet = TRUE)
 #&gt; 
@@ -628,26 +638,35 @@ or complex expressions.</p>
 #&gt;     1L)]], ...)
 #&gt; 
 #&gt; [[23]]
-#&gt; evaluate::evaluate(code, env, new_device = TRUE)
+#&gt; withr::with_options(list(crayon.enabled = getOption("crayon.enabled", 
+#&gt;     crayon::has_color()), crayon.colors = getOption("crayon.colors", 
+#&gt;     crayon::num_colors())), expr &lt;- evaluate::evaluate(code, 
+#&gt;     env, new_device = TRUE))
 #&gt; 
 #&gt; [[24]]
+#&gt; force(code)
+#&gt; 
+#&gt; [[25]]
+#&gt; evaluate::evaluate(code, env, new_device = TRUE)
+#&gt; 
+#&gt; [[26]]
 #&gt; evaluate_call(expr, parsed$src[[i]], envir = envir, enclos = enclos, 
 #&gt;     debug = debug, last = i == length(out), use_try = stop_on_error != 
 #&gt;         2L, keep_warning = keep_warning, keep_message = keep_message, 
 #&gt;     output_handler = output_handler, include_timing = include_timing)
 #&gt; 
-#&gt; [[25]]
+#&gt; [[27]]
 #&gt; timing_fn(handle(ev &lt;- withCallingHandlers(withVisible(eval(expr, 
 #&gt;     envir, enclos)), warning = wHandler, error = eHandler, message = mHandler)))
 #&gt; 
-#&gt; [[26]]
+#&gt; [[28]]
 #&gt; handle(ev &lt;- withCallingHandlers(withVisible(eval(expr, envir, 
 #&gt;     enclos)), warning = wHandler, error = eHandler, message = mHandler))
 #&gt; 
-#&gt; [[27]]
+#&gt; [[29]]
 #&gt; try(f, silent = TRUE)
 #&gt; 
-#&gt; [[28]]
+#&gt; [[30]]
 #&gt; tryCatch(expr, error = function(e) {
 #&gt;     call &lt;- conditionCall(e)
 #&gt;     if (!is.null(call)) {
@@ -674,32 +693,32 @@ or complex expressions.</p>
 #&gt;     invisible(structure(msg, class = "try-error", condition = e))
 #&gt; })
 #&gt; 
-#&gt; [[29]]
+#&gt; [[31]]
 #&gt; tryCatchList(expr, classes, parentenv, handlers)
 #&gt; 
-#&gt; [[30]]
+#&gt; [[32]]
 #&gt; tryCatchOne(expr, names, parentenv, handlers[[1L]])
 #&gt; 
-#&gt; [[31]]
+#&gt; [[33]]
 #&gt; doTryCatch(return(expr), name, parentenv, handler)
 #&gt; 
-#&gt; [[32]]
+#&gt; [[34]]
 #&gt; withCallingHandlers(withVisible(eval(expr, envir, enclos)), warning = wHandler, 
 #&gt;     error = eHandler, message = mHandler)
 #&gt; 
-#&gt; [[33]]
+#&gt; [[35]]
 #&gt; withVisible(eval(expr, envir, enclos))
 #&gt; 
-#&gt; [[34]]
-#&gt; eval(expr, envir, enclos)
-#&gt; 
-#&gt; [[35]]
-#&gt; eval(expr, envir, enclos)
-#&gt; 
 #&gt; [[36]]
-#&gt; do.call(fn, list(mtcars))
+#&gt; eval(expr, envir, enclos)
 #&gt; 
 #&gt; [[37]]
+#&gt; eval(expr, envir, enclos)
+#&gt; 
+#&gt; [[38]]
+#&gt; do.call(fn, list(mtcars))
+#&gt; 
+#&gt; [[39]]
 #&gt; (function (...) 
 #&gt; sys.calls())(list(mpg = c(21, 21, 22.8, 21.4, 18.7, 18.1, 14.3, 
 #&gt; 24.4, 22.8, 19.2, 17.8, 16.4, 17.3, 15.2, 10.4, 10.4, 14.7, 32.4, 
