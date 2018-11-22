@@ -33,17 +33,6 @@ sexp* rlang_interrupt() {
   return r_null;
 }
 
-sexp* rlang_warn_deprecated_once(sexp* id, sexp* msg) {
-  if (r_typeof(id) != r_type_character ||
-      r_length(id) != 1 ||
-      r_typeof(msg) != r_type_character ||
-      r_length(msg) != 1) {
-    r_abort("`id` and `msg` must be scalar strings");
-  }
-  r_warn_deprecated(r_chr_get_c_string(id, 0), r_chr_get_c_string(msg, 0));
-  return r_null;
-}
-
 
 // env.c
 

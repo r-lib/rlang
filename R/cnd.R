@@ -927,8 +927,16 @@ warn_deprecated <- function(msg, id = msg) {
   if (is_true(peek_option("lifecycle_disable_verbose_retirement"))) {
     return(invisible(NULL))
   }
+  if (env_has(deprecation_env, id)) {
+    return(invisible(NULL))
+  }
 
-  .Call(rlang_warn_deprecated_once, id, msg)
+  env_poke(deprecation_env, id, TRUE);
+
+  .Deprecated(msg = paste_line(
+    msg,
+    silver("This warning is displayed once per session.")
+  ))
 }
 deprecation_env <- new.env(parent = emptyenv())
 
