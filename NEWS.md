@@ -1,6 +1,9 @@
 
 # rlang 0.3.0.9000
 
+* `exec()` takes `.fn` as first argument instead of `f`, for
+  consistency with other rlang functions.
+
 * Fixed infinite loop with quosures created inside a data mask.
 
 * Base errors set as `parent` of rlang errors are now printed
