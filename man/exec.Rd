@@ -4,10 +4,10 @@
 \alias{exec}
 \title{Execute a function}
 \usage{
-exec(f, ..., .env = caller_env())
+exec(.fn, ..., .env = caller_env())
 }
 \arguments{
-\item{f}{A function, or function name as a string.}
+\item{.fn}{A function, or function name as a string.}
 
 \item{...}{Arguments to function.
 
@@ -17,8 +17,8 @@ These dots support \link{tidy-dots} features.}
 most useful if \code{f} is a string, or the function has side-effects.}
 }
 \description{
-This function constructs and evaluates a call to \code{f}.
-It was two primary uses:
+This function constructs and evaluates a call to \code{.fn}.
+It has two primary uses:
 \itemize{
 \item To call a function with arguments stored in a list (if the function
 doesn't support \link{tidy-dots})
