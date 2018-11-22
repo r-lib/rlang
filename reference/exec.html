@@ -32,8 +32,8 @@
 
 <meta property="og:title" content="Execute a function — exec" />
 
-<meta property="og:description" content="This function constructs and evaluates a call to f.
-It was two primary uses:
+<meta property="og:description" content="This function constructs and evaluates a call to .fn.
+It has two primary uses:
 To call a function with arguments stored in a list (if the function
 doesn't support tidy-dots)
 To call every function stored in a list (in conjunction with map()/
@@ -135,8 +135,8 @@ lapply())
 
     <div class="ref-description">
     
-    <p>This function constructs and evaluates a call to <code>f</code>.
-It was two primary uses:</p><ul>
+    <p>This function constructs and evaluates a call to <code>.fn</code>.
+It has two primary uses:</p><ul>
 <li><p>To call a function with arguments stored in a list (if the function
 doesn't support <a href='tidy-dots.html'>tidy-dots</a>)</p></li>
 <li><p>To call every function stored in a list (in conjunction with <code>map()</code>/
@@ -145,13 +145,13 @@ doesn't support <a href='tidy-dots.html'>tidy-dots</a>)</p></li>
     
     </div>
 
-    <pre class="usage"><span class='fu'>exec</span>(<span class='no'>f</span>, <span class='no'>...</span>, <span class='kw'>.env</span> <span class='kw'>=</span> <span class='fu'><a href='caller_env.html'>caller_env</a></span>())</pre>
+    <pre class="usage"><span class='fu'>exec</span>(<span class='no'>.fn</span>, <span class='no'>...</span>, <span class='kw'>.env</span> <span class='kw'>=</span> <span class='fu'><a href='caller_env.html'>caller_env</a></span>())</pre>
     
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
     <colgroup><col class="name" /><col class="desc" /></colgroup>
     <tr>
-      <th>f</th>
+      <th>.fn</th>
       <td><p>A function, or function name as a string.</p></td>
     </tr>
     <tr>
@@ -270,9 +270,8 @@ most useful if <code>f</code> is a string, or the function has side-effects.</p>
 </div>
 
 <div class="pkgdown">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a>.</p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.2.0.9000.</p>
 </div>
-
       </footer>
    </div>
 

@@ -1,6 +1,6 @@
 pandoc: '2.2'
-pkgdown: 1.1.0.9000
-pkgdown_sha: e1e6e6847e36c83f734baa6ca1627220ba8f9322
+pkgdown: 1.2.0.9000
+pkgdown_sha: 44460e6d6aae008684f68bf48a8a51e18c38a08a
 articles: []
 urls:
   reference: https://rlang.r-lib.org/reference
