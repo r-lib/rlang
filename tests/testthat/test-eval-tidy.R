@@ -421,6 +421,7 @@ test_that("as_data_mask() and new_data_mask() warn once when passed a parent", {
 })
 
 test_that("supplying environment as data is deprecated", {
+  scoped_options(lifecycle_verbose_soft_deprecation = TRUE)
   `_x` <- "foo"
   expect_warning(eval_tidy("foo", current_env()), "deprecated")
   expect_identical(eval_tidy(quo(`_x`), current_env()), "foo")

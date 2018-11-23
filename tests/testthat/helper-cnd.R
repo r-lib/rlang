@@ -49,9 +49,6 @@ with_non_verbose_retirement <- function(expr) {
   with_options(lifecycle_disable_warnings = TRUE, expr)
 }
 
-options(lifecycle_verbose_soft_deprecation = TRUE)
-
-
 catch_wngs <- function(expr) {
   wngs <- list()
 

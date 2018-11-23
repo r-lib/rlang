@@ -263,11 +263,8 @@ test_that("signal_soft_deprecated() warns when called from global env", {
 })
 
 test_that("signal_soft_deprecated() warns when called from package being tested", {
-  # Until https://github.com/r-lib/testthat/issues/787 is fixed
-  old <- Sys.getenv("TESTTHAT_PKG")
-  Sys.setenv("TESTTHAT_PKG" = "rlang")
-  on.exit(Sys.setenv("TESTTHAT_PKG" = old))
-
+  Sys.setenv("NOT_CRAN" = "true")
+  on.exit(Sys.setenv("NOT_CRAN" = ""))
   retired <- function() signal_soft_deprecated("warns from package being tested")
   expect_warning(retired(), "warns from")
 })
@@ -280,6 +277,8 @@ test_that("signal_soft_deprecated() warns when option is set", {
 })
 
 test_that("warn_deprecated() repeats warnings when option is set", {
+  scoped_options(lifecycle_verbose_soft_deprecation = TRUE)
+
   retired1 <- function() signal_soft_deprecated("soft deprecated repeats")
   retired2 <- function() warn_deprecated("deprecated repeats")
 
