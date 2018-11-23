@@ -6,11 +6,6 @@
 # DESCRIPTION field but you don't need to import rlang in your
 # namespace.
 
-local({
-
-  scope <- new.env(parent = asNamespace("rlang"))
-  local(envir = scope, {
-
 
 #' Signal deprecation
 #'
@@ -59,12 +54,12 @@ local({
 NULL
 
 signal_soft_deprecated <- function(msg, id = msg, env = caller_env(2)) {
-  if (is_true(peek_option("lifecycle_disable_warnings"))) {
+  if (rlang::is_true(rlang::peek_option("lifecycle_disable_warnings"))) {
     return(invisible(NULL))
   }
 
-  if (is_true(peek_option("lifecycle_verbose_soft_deprecation")) ||
-      is_reference(env, global_env())) {
+  if (rlang::is_true(rlang::peek_option("lifecycle_verbose_soft_deprecation")) ||
+      rlang::is_reference(env, rlang::global_env())) {
     warn_deprecated(msg, id)
     return(invisible(NULL))
   }
@@ -74,28 +69,32 @@ signal_soft_deprecated <- function(msg, id = msg, env = caller_env(2)) {
   tested_package <- Sys.getenv("TESTTHAT_PKG")
   if (nzchar(tested_package) &&
         identical(Sys.getenv("NOT_CRAN"), "true") &&
-        env_name(topenv(env)) == env_name(ns_env(tested_package))) {
+        rlang::env_name(topenv(env)) == rlang::env_name(ns_env(tested_package))) {
     warn_deprecated(msg, id)
     return(invisible(NULL))
   }
 
-  signal(msg, "lifecycle_soft_deprecated")
+  rlang::signal(msg, "lifecycle_soft_deprecated")
 }
 
 warn_deprecated <- function(msg, id = msg) {
-  if (is_true(peek_option("lifecycle_disable_warnings"))) {
+  if (rlang::is_true(rlang::peek_option("lifecycle_disable_warnings"))) {
     return(invisible(NULL))
   }
 
-  if (!is_true(peek_option("lifecycle_repeat_warnings")) &&
-        env_has(deprecation_env, id)) {
+  if (!rlang::is_true(rlang::peek_option("lifecycle_repeat_warnings")) &&
+        rlang::env_has(deprecation_env, id)) {
     return(invisible(NULL))
   }
 
-  env_poke(deprecation_env, id, TRUE);
+  rlang::env_poke(deprecation_env, id, TRUE);
 
-  .Deprecated(msg = paste_line(
+  has_colour <- function() rlang::is_installed("crayon") && crayon::has_color()
+  silver <- function(x) if (has_colour()) crayon::silver(x) else x
+
+  .Deprecated(msg = paste0(
     msg,
+    "\n",
     silver("This warning is displayed once per session.")
   ))
 }
@@ -170,7 +169,7 @@ lifecycle_img <- function(stage, url) {
         stage_alt
       ),
 
-    abort(sprintf("Unknown lifecycle stage `%s`", stage))
+    rlang::abort(sprintf("Unknown lifecycle stage `%s`", stage))
 
   )
 }
@@ -179,13 +178,5 @@ upcase1 <- function(x) {
   x
 }
 
-
-  })
-
-  for (obj in names(scope)) {
-    assign(obj, get(obj, envir = scope), parent.frame(2))
-  }
-
-})
 
 # nocov end
