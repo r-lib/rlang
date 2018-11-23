@@ -20,7 +20,7 @@
 #' * When `lifecycle_disable_warnings` is `TRUE`, no
 #'   warnings are issued in any circumstances.
 #'
-#' * When `lifecycle_force_verbose_retirement` is `TRUE`,
+#' * When `lifecycle_verbose_soft_deprecation` is `TRUE`,
 #'   soft-deprecated functions always warn, unless
 #'   `lifecycle_disable_warnings` is `TRUE`.
 #'
@@ -45,7 +45,7 @@ signal_soft_deprecated <- function(msg,
     return(invisible(NULL))
   }
 
-  if (is_true(peek_option("lifecycle_force_verbose_retirement")) ||
+  if (is_true(peek_option("lifecycle_verbose_soft_deprecation")) ||
       is_reference(env, global_env())) {
     warn_deprecated(msg, id)
     return(invisible(NULL))

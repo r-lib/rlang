@@ -250,13 +250,13 @@ test_that("signal_soft_deprecated() warns when called from global env", {
   env_bind(global_env(), retired = retired)
   on.exit(env_unbind(global_env(), "retired"))
 
-  with_options(lifecycle_force_verbose_retirement = FALSE, {
+  with_options(lifecycle_verbose_soft_deprecation = FALSE, {
     locally({
       expect_no_warning(retired("not-attached", "rlang_test3"), "foo")
     })
   })
 
-  with_options(lifecycle_force_verbose_retirement = FALSE, {
+  with_options(lifecycle_verbose_soft_deprecation = FALSE, {
     with_env(global_env(), {
       expect_warning(retired("not-attached", "rlang_test4"), "foo")
     })
@@ -265,7 +265,7 @@ test_that("signal_soft_deprecated() warns when called from global env", {
 
 test_that("signal_soft_deprecated() warns when option is set", {
   retired <- function(pkg, id) signal_soft_deprecated("foo", id, package = pkg)
-  with_options(lifecycle_force_verbose_retirement = TRUE, {
+  with_options(lifecycle_verbose_soft_deprecation = TRUE, {
     expect_warning(retired("utils", "rlang_test5"), "foo")
     expect_warning(retired("not-attached", "rlang_test6"), "foo")
   })
