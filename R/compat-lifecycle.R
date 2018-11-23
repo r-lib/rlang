@@ -16,31 +16,46 @@ local({
 #'
 #' @description
 #'
-#' `signal_soft_deprecated()` warns only if option is set, the package
-#'  is attached, or if called from the global environment.
-#'  `warn_deprecated()` warns unconditionally. Both functions warn
-#'  only once.
+#' These functions provide two levels of verbosity for deprecation
+#' warnings.
 #'
-#' Control the verbosity of retirement with scoped global options:
+#' * `signal_soft_deprecated()` warns only if called from the global
+#'   environment (so the user can change their script) or from the
+#'   package currently being tested (so the package developer can fix
+#'   the package).
 #'
-#' * When `lifecycle_disable_warnings` is `TRUE`, no
-#'   warnings are issued in any circumstances.
+#' * `warn_deprecated()` warns unconditionally.
 #'
-#' * When `lifecycle_verbose_soft_deprecation` is `TRUE`,
-#'   soft-deprecated functions always warn, unless
-#'   `lifecycle_disable_warnings` is `TRUE`.
+#' Both functions warn only once per session by default to avoid
+#' overwhelming the user with repeated warnings.
 #'
 #' @param msg The deprecation message.
 #' @param id The id of the deprecation. A warning is issued only once
 #'   for each `id`. Defaults to `msg`, but you should give a unique ID
 #'   when the message is built programmatically and depends on inputs.
-#' @param package The soft-deprecation warning is forced when this
-#'   package is attached. Automatically detected from the caller
-#'   environment.
-#' @param env The environment in which the deprecated function was
-#'   called.
+#' @param env The environment in which the soft-deprecated function
+#'   was called. A warning is issued if called from the global
+#'   environment. If testthat is running, a warning is also called if
+#'   the retired function was called from the package being tested.
+#'
+#' @section Controlling verbosity:
+#'
+#' The verbosity of retirement warnings can be controlled with global
+#' options. You'll generally want to set these options locally with
+#' `with_options()` or `scoped_options()`.
+#'
+#' * When `lifecycle_disable_warnings` is `TRUE`, no warnings are
+#'   issued in any circumstances.
+#'
+#' * When `lifecycle_verbose_soft_deprecation` is `TRUE`,
+#'   soft-deprecated functions always warn, unless
+#'   `lifecycle_disable_warnings` is `TRUE`.
+#'
+#' * When `lifecycle_repeat_warnings` is `TRUE`, deprecation warnings
+#'   are issued repeatedly rather than once per session.
 #'
 #' @noRd
+#' @seealso [lifecycle()]
 NULL
 
 signal_soft_deprecated <- function(msg, id = msg, env = caller_env(2)) {
@@ -71,7 +86,9 @@ warn_deprecated <- function(msg, id = msg) {
   if (is_true(peek_option("lifecycle_disable_warnings"))) {
     return(invisible(NULL))
   }
-  if (env_has(deprecation_env, id)) {
+
+  if (!is_true(peek_option("lifecycle_repeat_warnings")) &&
+        env_has(deprecation_env, id)) {
     return(invisible(NULL))
   }
 

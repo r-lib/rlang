@@ -279,6 +279,21 @@ test_that("signal_soft_deprecated() warns when option is set", {
   })
 })
 
+test_that("warn_deprecated() repeats warnings when option is set", {
+  retired1 <- function() signal_soft_deprecated("soft deprecated repeats")
+  retired2 <- function() warn_deprecated("deprecated repeats")
+
+  expect_warning(retired1(), "repeats")
+  expect_warning(retired2(), "repeats")
+
+  expect_no_warning(retired1())
+  expect_no_warning(retired2())
+
+  scoped_options(lifecycle_repeat_warnings = TRUE)
+  expect_warning(retired1(), "repeats")
+  expect_warning(retired2(), "repeats")
+})
+
 test_that("errors are saved", {
   # `outFile` argument
   skip_if(getRversion() < "3.4")
