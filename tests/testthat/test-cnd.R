@@ -240,37 +240,44 @@ test_that("summary.rlang_error() prints full backtrace", {
   expect_known_output(file = test_path("test-cnd-error-str.txt"), summary(err))
 })
 
-test_that("signal_soft_deprecated() warns when package is attached", {
-  expect_true(package_attached("utils", env()))
-  expect_false(package_attached("not-attached", env()))
-})
-
 test_that("signal_soft_deprecated() warns when called from global env", {
-  retired <- function(pkg, id) signal_soft_deprecated("foo", id, package = pkg)
+  old <- Sys.getenv("TESTTHAT_PKG")
+  Sys.setenv("TESTTHAT_PKG" = "")
+  on.exit(Sys.setenv("TESTTHAT_PKG" = old))
+
+  retired <- function(id) signal_soft_deprecated("foo", id)
   env_bind(global_env(), retired = retired)
-  on.exit(env_unbind(global_env(), "retired"))
+  on.exit(env_unbind(global_env(), "retired"), add = TRUE)
 
   with_options(lifecycle_verbose_soft_deprecation = FALSE, {
     locally({
-      expect_no_warning(retired("not-attached", "rlang_test3"), "foo")
+      expect_no_warning(retired("rlang_test3"), "foo")
     })
   })
 
   with_options(lifecycle_verbose_soft_deprecation = FALSE, {
     with_env(global_env(), {
-      expect_warning(retired("not-attached", "rlang_test4"), "foo")
+      expect_warning(retired("rlang_test4"), "foo")
     })
   })
 })
 
-test_that("signal_soft_deprecated() warns when option is set", {
-  retired <- function(pkg, id) signal_soft_deprecated("foo", id, package = pkg)
-  with_options(lifecycle_verbose_soft_deprecation = TRUE, {
-    expect_warning(retired("utils", "rlang_test5"), "foo")
-    expect_warning(retired("not-attached", "rlang_test6"), "foo")
-  })
+test_that("signal_soft_deprecated() warns when called from package being tested", {
+  # Until https://github.com/r-lib/testthat/issues/787 is fixed
+  old <- Sys.getenv("TESTTHAT_PKG")
+  Sys.setenv("TESTTHAT_PKG" = "rlang")
+  on.exit(Sys.setenv("TESTTHAT_PKG" = old))
+
+  retired <- function() signal_soft_deprecated("warns from package being tested")
+  expect_warning(retired(), "warns from")
 })
 
+test_that("signal_soft_deprecated() warns when option is set", {
+  retired <- function(id) signal_soft_deprecated("foo", id)
+  with_options(lifecycle_verbose_soft_deprecation = TRUE, {
+    expect_warning(retired("rlang_test5"), "foo")
+  })
+})
 
 test_that("errors are saved", {
   # `outFile` argument

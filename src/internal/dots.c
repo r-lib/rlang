@@ -118,7 +118,7 @@ void signal_retired_splice() {
     "  # Good:\n"
     "  dplyr::select(data, !!enquo(x))    # Unquote single quosure\n"
     "  dplyr::select(data, !!!enquos(x))  # Splice list of quosures\n";
-    r_signal_soft_deprecated(msg, msg, "rlang", r_empty_env);
+    r_signal_soft_deprecated(msg, msg, r_empty_env);
 }
 
 // Maintain parity with deep_big_bang_coerce() in expr-interp.c
@@ -388,7 +388,7 @@ static enum dots_homonyms arg_match_homonyms(sexp* homonyms) {
 
 void signal_soft_deprecated_width() {
   const char* msg = "`.named` can no longer be a width";
-  r_signal_soft_deprecated(msg, msg, "rlang", r_empty_env);
+  r_signal_soft_deprecated(msg, msg, r_empty_env);
 }
 static bool should_auto_name(sexp* named) {
   if (r_length(named) != 1) {
@@ -463,7 +463,7 @@ sexp* dots_expand(sexp* dots, struct dots_capture_info* capture_info) {
     if (is_spliced_dots(elt)) {
       if (dots_names_ptr && *dots_names_ptr != r_empty_str) {
         const char* msg = "`!!!` shouldn't be supplied with a name. Only the operand's names are retained.";
-        r_signal_soft_deprecated(msg, msg, "rlang", r_empty_env);
+        r_signal_soft_deprecated(msg, msg, r_empty_env);
       }
 
       sexp* names = r_vec_names(elt);

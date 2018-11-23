@@ -226,7 +226,7 @@ struct expansion_info which_expansion_op(sexp* x, bool unquote_names) {
     struct expansion_info nested = which_expansion_op(info.operand, false);
     if (nested.op == OP_EXPAND_UQ) {
       const char* msg = "It is no longer necessary to unquote within the `.data` pronoun";
-      r_signal_soft_deprecated(msg, msg, "dplyr", r_empty_env);
+      r_signal_soft_deprecated(msg, msg, r_empty_env);
       info.operand = nested.operand;
     }
 

@@ -43,10 +43,7 @@ local({
 #' @noRd
 NULL
 
-signal_soft_deprecated <- function(msg,
-                                   id = msg,
-                                   package = NULL,
-                                   env = caller_env(2)) {
+signal_soft_deprecated <- function(msg, id = msg, env = caller_env(2)) {
   if (is_true(peek_option("lifecycle_disable_warnings"))) {
     return(invisible(NULL))
   }
@@ -57,26 +54,17 @@ signal_soft_deprecated <- function(msg,
     return(invisible(NULL))
   }
 
-  if (package_attached(package, caller_env())) {
+  # Test for environment names rather than reference/contents because
+  # testthat clones the namespace
+  tested_package <- Sys.getenv("TESTTHAT_PKG")
+  if (nzchar(tested_package) &&
+        identical(Sys.getenv("NOT_CRAN"), "true") &&
+        env_name(topenv(env)) == env_name(ns_env(tested_package))) {
     warn_deprecated(msg, id)
     return(invisible(NULL))
   }
 
   signal(msg, "lifecycle_soft_deprecated")
-}
-
-package_attached <- function(package, env) {
-  if (is_null(package)) {
-    top <- topenv(env)
-    if (!is_namespace(top)) {
-      abort("`signal_soft_deprecated()` must be called from a package function")
-    }
-    package <- ns_env_name(top)
-  } else {
-    stopifnot(is_string(package))
-  }
-
-  pkg_env_name(package) %in% search()
 }
 
 warn_deprecated <- function(msg, id = msg) {
