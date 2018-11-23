@@ -2,8 +2,14 @@
 
 # This file serves as a reference for currently unexported rlang
 # lifecycle functions. Please find the most recent version in rlang's
-# repository. These functions expect rlang to be imported in your
+# repository. These functions require rlang in your `Imports`
+# DESCRIPTION field but you don't need to import rlang in your
 # namespace.
+
+local({
+
+  scope <- new.env(parent = asNamespace("rlang"))
+  local(envir = scope, {
 
 
 #' Signal deprecation
@@ -168,5 +174,13 @@ upcase1 <- function(x) {
   x
 }
 
+
+  })
+
+  for (obj in names(scope)) {
+    assign(obj, get(obj, envir = scope), parent.frame(2))
+  }
+
+})
 
 # nocov end
