@@ -332,7 +332,7 @@ test_that("env_bind_active() supports nested quosures", {
 # Lifecycle ----------------------------------------------------------
 
 test_that("env_bind_exprs() and env_bind_fns() still work", {
-  scoped_options(lifecycle_disable_verbose_retirement = TRUE)
+  scoped_options(lifecycle_disable_warnings = TRUE)
   e <- env()
 
   env_bind_exprs(e, foo = cat("foo\n"))

@@ -17,12 +17,12 @@
 #'
 #' Control the verbosity of retirement with scoped global options:
 #'
-#' * When `lifecycle_disable_verbose_retirement` is `TRUE`, no
+#' * When `lifecycle_disable_warnings` is `TRUE`, no
 #'   warnings are issued in any circumstances.
 #'
 #' * When `lifecycle_force_verbose_retirement` is `TRUE`,
 #'   soft-deprecated functions always warn, unless
-#'   `lifecycle_disable_verbose_retirement` is `TRUE`.
+#'   `lifecycle_disable_warnings` is `TRUE`.
 #'
 #' @param msg The deprecation message.
 #' @param id The id of the deprecation. A warning is issued only once
@@ -41,7 +41,7 @@ signal_soft_deprecated <- function(msg,
                                    id = msg,
                                    package = NULL,
                                    env = caller_env(2)) {
-  if (is_true(peek_option("lifecycle_disable_verbose_retirement"))) {
+  if (is_true(peek_option("lifecycle_disable_warnings"))) {
     return(invisible(NULL))
   }
 
@@ -74,7 +74,7 @@ package_attached <- function(package, env) {
 }
 
 warn_deprecated <- function(msg, id = msg) {
-  if (is_true(peek_option("lifecycle_disable_verbose_retirement"))) {
+  if (is_true(peek_option("lifecycle_disable_warnings"))) {
     return(invisible(NULL))
   }
   if (env_has(deprecation_env, id)) {

@@ -1,6 +1,6 @@
 context("retired")
 
-scoped_options(lifecycle_disable_verbose_retirement = TRUE)
+scoped_options(lifecycle_disable_warnings = TRUE)
 
 test_that("parse_quosure() forwards to parse_quo()", {
   env <- env()
