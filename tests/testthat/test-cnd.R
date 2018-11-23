@@ -293,6 +293,25 @@ test_that("warn_deprecated() repeats warnings when option is set", {
   expect_warning(retired2(), "repeats")
 })
 
+test_that("lifecycle warnings helper enable warnings", {
+  retired1 <- function() signal_soft_deprecated("soft deprecated wrn enabled by helper")
+  retired2 <- function() warn_deprecated("deprecated wrn enabled by helper")
+
+  with_options(
+    lifecycle_disable_warnings = TRUE,
+    {
+      evalq({
+        scoped_lifecycle_warnings()
+        expect_warning(retired1(), "enabled")
+        expect_warning(retired1(), "enabled")
+        expect_warning(retired2(), "enabled")
+        expect_warning(retired2(), "enabled")
+      })
+    }
+  )
+})
+
+
 test_that("errors are saved", {
   # `outFile` argument
   skip_if(getRversion() < "3.4")

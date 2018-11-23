@@ -49,6 +49,13 @@
 #' * When `lifecycle_repeat_warnings` is `TRUE`, deprecation warnings
 #'   are issued repeatedly rather than once per session.
 #'
+#' To force warnings in all cases, you need
+#' `lifecycle_disable_warnings` set to `FALSE`,
+#' `lifecycle_verbose_deprecation` set to `TRUE`, and
+#' `lifecycle_repeat_warnings` set to `TRUE`. The options helpers
+#' `scoped_lifecycle_warnings()` and `with_lifecycle_warnings()` set
+#' these for you.
+#'
 #' @noRd
 #' @seealso [lifecycle()]
 NULL
@@ -102,6 +109,18 @@ deprecation_env <- new.env(parent = emptyenv())
 
 abort_defunct <- function(msg) {
   .Defunct(msg = msg)
+}
+
+scoped_lifecycle_warnings <- function(frame = rlang::caller_env()) {
+  rlang::scoped_options(.frame = frame,
+    lifecycle_disable_warnings = FALSE,
+    lifecycle_verbose_soft_deprecation = TRUE,
+    lifecycle_repeat_warnings = TRUE
+  )
+}
+with_lifecycle_warnings <- function(expr) {
+  scoped_lifecycle_warnings()
+  expr
 }
 
 
