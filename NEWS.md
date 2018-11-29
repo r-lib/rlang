@@ -1,6 +1,8 @@
 
 # rlang 0.3.0.9000
 
+* `as_closure()` wrappers now dispatch properly on methods defined in the global environment (tidyverse/purrr#459).
+
 * `as_closure()` now supports both base-style (`e1` and `e2`) and
   purrr-style (`.x` and `.y`) arguments with binary primitives.
 

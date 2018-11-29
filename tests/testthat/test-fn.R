@@ -244,3 +244,11 @@ test_that("as_function() adds a class to lambda functions", {
 test_that("fn_env() returns base namespace for primitives", {
   expect_reference(fn_env(base::list), ns_env("base"))
 })
+
+test_that("as_closure() wrappers dispatch properly", {
+  scoped_bindings(.env = global_env(),
+    as.character.foobar = function(...) "dispatched!"
+  )
+  x <- structure(list(), class = "foobar")
+  expect_identical(as_closure(as.character)(x), "dispatched!")
+})
