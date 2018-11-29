@@ -263,3 +263,7 @@ test_that("as_closure() wrappers dispatch properly", {
   x <- structure(list(), class = "foobar")
   expect_identical(as_closure(as.character)(x), "dispatched!")
 })
+
+test_that("as_closure() wrappers don't add argument names (tidyverse/purrr#411)", {
+  expect_false(as_closure(isS4)("foo"))
+})
