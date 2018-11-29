@@ -548,6 +548,8 @@ op_as_closure <- function(prim_nm) {
       }
     },
 
+    `c` = function(...) c(...),
+
     # Unsupported primitives
     `break` = ,
     `for` = ,
