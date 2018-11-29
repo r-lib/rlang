@@ -1,6 +1,9 @@
 
 # rlang 0.3.0.9000
 
+* `as_closure()` now supports both base-style (`e1` and `e2`) and
+  purrr-style (`.x` and `.y`) arguments with binary primitives.
+
 * `exec()` takes `.fn` as first argument instead of `f`, for
   consistency with other rlang functions.
 

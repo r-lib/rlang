@@ -32,6 +32,52 @@ test_that("as_closure() handles primitive functions", {
   expect_identical(eval_clos(quote(data.frame), base_env()), data.frame)
 })
 
+test_that("as_closure() supports base-style and purrr-style arguments to binary operators", {
+  and <- as_closure(`&&`)
+
+  expect_error(and(), "Must supply `e1` or `.x` to binary operator")
+  expect_error(and(TRUE), "Must supply `e2` or `.y` to binary operator")
+
+  expect_error(and(.x = TRUE, e1 = TRUE), "Can't supply both `e1` and `.x` to binary operator")
+  expect_error(and(TRUE, .y = TRUE, e2 = TRUE), "Can't supply both `e2` and `.y` to binary operator")
+
+  expect_identical(and(FALSE, FALSE), FALSE)
+  expect_identical(and(TRUE, FALSE), FALSE)
+  expect_identical(and(FALSE, TRUE), FALSE)
+  expect_identical(and(TRUE, TRUE), TRUE)
+
+  expect_identical(and(.y = FALSE, TRUE), FALSE)
+  expect_identical(and(e2 = FALSE, TRUE), FALSE)
+  expect_identical(and(.y = FALSE, e1 = TRUE), FALSE)
+  expect_identical(and(e2 = FALSE, .x = TRUE), FALSE)
+  expect_identical(and(.y = FALSE, TRUE), FALSE)
+  expect_identical(and(e2 = FALSE, TRUE), FALSE)
+})
+
+test_that("as_closure() supports base-style and purrr-style arguments to versatile operators", {
+  minus <- as_closure(`-`)
+
+  expect_error(minus(), "Must supply `e1` or `.x` to binary operator")
+  expect_error(minus(.y = 3), "Must supply `e1` or `.x` to binary operator")
+
+  expect_error(minus(.x = 3, e1 = 1), "Can't supply both `e1` and `.x` to binary operator")
+  expect_error(minus(0, .y = 3, e2 = 1), "Can't supply both `e2` and `.y` to binary operator")
+
+  expect_identical(minus(3), -3)
+  expect_identical(minus(e1 = 3), -3)
+  expect_identical(minus(.x = 3), -3)
+
+  expect_identical(minus(1, 3), -2)
+  expect_identical(minus(3, 1), 2)
+
+  expect_identical(minus(.y = 3, 1), -2)
+  expect_identical(minus(e2 = 3, 1), -2)
+  expect_identical(minus(.y = 3, e1 = 1), -2)
+  expect_identical(minus(e2 = 3, .x = 1), -2)
+  expect_identical(minus(.y = 1, 3), 2)
+  expect_identical(minus(e2 = 1, 3), 2)
+})
+
 test_that("as_closure() handles operators", {
   expect_identical(as_closure(`-`)(.y = 10, .x = 5), -5)
   expect_identical(as_closure(`-`)(5), -5)

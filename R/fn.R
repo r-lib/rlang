@@ -206,6 +206,15 @@ fn_body <- function(fn = caller_fn()) {
   fn
 }
 
+fn_body_node <- function(fn) {
+  body <- body(fn)
+  if (is_call(body, "{")) {
+    node_cdr(fn)
+  } else {
+    pairlist(body)
+  }
+}
+
 #' Is object a function?
 #'
 #' The R language defines two different types of functions: primitive
@@ -522,25 +531,25 @@ op_as_closure <- function(prim_nm) {
       values <- list(...)
       values[[length(values)]]
     },
-    `&` = function(.x, .y) .x & .y,
-    `|` = function(.x, .y) .x | .y,
-    `&&` = function(.x, .y) .x && .y,
-    `||` = function(.x, .y) .x || .y,
-    `!` = function(.x) !.x,
-    `+` = function(.x, .y) if (missing(.y)) .x else .x + .y,
-    `-` = function(.x, .y) if (missing(.y)) -.x else .x - .y,
-    `*` = function(.x, .y) .x * .y,
-    `/` = function(.x, .y) .x / .y,
-    `^` = function(.x, .y) .x ^ .y,
-    `%%` = function(.x, .y) .x %% .y,
-    `<` = function(.x, .y) .x < .y,
-    `<=` = function(.x, .y) .x <= .y,
-    `>` = function(.x, .y) .x > .y,
-    `>=` = function(.x, .y) .x >= .y,
-    `==` = function(.x, .y) .x == .y,
-    `!=` = function(.x, .y) .x != .y,
-    `:` = function(.x, .y) .x : .y,
-    `~` = function(.x, .y) {
+    `&`  = new_binary_closure(function(.x, .y) .x & .y),
+    `|`  = new_binary_closure(function(.x, .y) .x | .y),
+    `&&` = new_binary_closure(function(.x, .y) .x && .y),
+    `||` = new_binary_closure(function(.x, .y) .x || .y),
+    `!`  = function(.x) !.x,
+    `+`  = new_binary_closure(function(.x, .y) if (missing(.y)) .x else .x + .y, versatile = TRUE),
+    `-`  = new_binary_closure(function(.x, .y) if (missing(.y)) -.x else .x - .y, versatile = TRUE),
+    `*`  = new_binary_closure(function(.x, .y) .x * .y),
+    `/`  = new_binary_closure(function(.x, .y) .x / .y),
+    `^`  = new_binary_closure(function(.x, .y) .x ^ .y),
+    `%%` = new_binary_closure(function(.x, .y) .x %% .y),
+    `<`  = new_binary_closure(function(.x, .y) .x < .y),
+    `<=` = new_binary_closure(function(.x, .y) .x <= .y),
+    `>`  = new_binary_closure(function(.x, .y) .x > .y),
+    `>=` = new_binary_closure(function(.x, .y) .x >= .y),
+    `==` = new_binary_closure(function(.x, .y) .x == .y),
+    `!=` = new_binary_closure(function(.x, .y) .x != .y),
+    `:`  = new_binary_closure(function(.x, .y) .x : .y),
+    `~`  = function(.x, .y) {
       if (is_missing(substitute(.y))) {
         new_formula(NULL, substitute(.x), caller_env())
       } else {
@@ -562,6 +571,61 @@ op_as_closure <- function(prim_nm) {
     }
   )
 }
+
+new_binary_closure <- function(fn, versatile = FALSE) {
+  node <- fn_body_node(fn)
+
+  if (versatile) {
+    node <- node_append(versatile_check_nodes, node)
+  } else {
+    node <- node_append(binary_check_nodes, node)
+  }
+  body <- new_call(brace_sym, node)
+
+  formals(fn) <- binary_fmls
+  body(fn) <- body
+
+  fn
+}
+
+binary_fmls <- as.pairlist(alist(
+  e1 = ,
+  e2 = ,
+  .x = e1,
+  .y = e2
+))
+binary_check_nodes <- pairlist(
+  quote(
+    if (missing(.x)) {
+      if (missing(e1)) {
+        abort("Must supply `e1` or `.x` to binary operator")
+      }
+      .x <- e1
+    } else if (!missing(e1)) {
+      abort("Can't supply both `e1` and `.x` to binary operator")
+    }
+  ),
+  quote(
+    if (missing(.y)) {
+      if (missing(e2)) {
+        abort("Must supply `e2` or `.y` to binary operator")
+      }
+      .y <- e2
+    } else if (!missing(e2)) {
+      abort("Can't supply both `e2` and `.y` to binary operator")
+    }
+  )
+)
+versatile_check_nodes <- as.pairlist(c(
+  binary_check_nodes[[1]],
+  quote(
+    if (missing(.y) && !missing(e2)) {
+      .y <- e2
+    } else if (!missing(e2)) {
+      abort("Can't supply both `e2` and `.y` to binary operator")
+    }
+  )
+))
 
 #' Make an `fn` object
 #'
