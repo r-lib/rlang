@@ -128,6 +128,9 @@
 <a href="#rlang-0-3-0-9000" class="anchor"></a>rlang 0.3.0.9000<small> Unreleased </small>
 </h1>
 <ul>
+<li><p><code><a href="../reference/as_function.html">as_closure()</a></code> wrappers now call primitives with positional arguments to avoid edge case issues of argument matching.</p></li>
+<li><p><code><a href="../reference/as_function.html">as_closure()</a></code> wrappers now dispatch properly on methods defined in the global environment (tidyverse/purrr<a href='https://github.com/r-lib/rlang/issues/459'>#459</a>).</p></li>
+<li><p><code><a href="../reference/as_function.html">as_closure()</a></code> now supports both base-style (<code>e1</code> and <code>e2</code>) and purrr-style (<code>.x</code> and <code>.y</code>) arguments with binary primitives.</p></li>
 <li><p><code><a href="../reference/exec.html">exec()</a></code> takes <code>.fn</code> as first argument instead of <code>f</code>, for consistency with other rlang functions.</p></li>
 <li><p>Fixed infinite loop with quosures created inside a data mask.</p></li>
 <li><p>Base errors set as <code>parent</code> of rlang errors are now printed correctly.</p></li>

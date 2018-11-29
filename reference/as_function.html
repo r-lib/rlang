@@ -181,23 +181,40 @@ is a string.</p></td>
 <span class='fu'>is_lambda</span>(<span class='no'>f</span>)</div><div class='output co'>#&gt; [1] TRUE</div><div class='input'><span class='fu'>is_lambda</span>(<span class='fu'>as_function</span>(<span class='kw'>function</span>() <span class='st'>"foo"</span>))</div><div class='output co'>#&gt; [1] FALSE</div><div class='input'>
 <span class='co'># Primitive functions are regularised as closures</span>
 <span class='fu'>as_closure</span>(<span class='no'>list</span>)</div><div class='output co'>#&gt; function (...) 
-#&gt; list(...)
-#&gt; &lt;environment: base&gt;</div><div class='input'><span class='fu'>as_closure</span>(<span class='st'>"list"</span>)</div><div class='output co'>#&gt; function (...) 
-#&gt; list(...)
-#&gt; &lt;environment: base&gt;</div><div class='input'>
+#&gt; list(...)</div><div class='input'><span class='fu'>as_closure</span>(<span class='st'>"list"</span>)</div><div class='output co'>#&gt; function (...) 
+#&gt; list(...)</div><div class='input'>
 <span class='co'># Operators have `.x` and `.y` as arguments, just like lambda</span>
 <span class='co'># functions created with the formula syntax:</span>
-<span class='fu'>as_closure</span>(<span class='no'>`+`</span>)</div><div class='output co'>#&gt; function(.x, .y) if (missing(.y)) .x else .x + .y
-#&gt; &lt;bytecode: 0x8fea728&gt;
-#&gt; &lt;environment: 0x8272fa8&gt;</div><div class='input'><span class='fu'>as_closure</span>(<span class='no'>`~`</span>)</div><div class='output co'>#&gt; function(.x, .y) {
+<span class='fu'>as_closure</span>(<span class='no'>`+`</span>)</div><div class='output co'>#&gt; function (e1, e2, .x = e1, .y = e2) 
+#&gt; {
+#&gt;     if (missing(.x)) {
+#&gt;         if (missing(e1)) {
+#&gt;             abort("Must supply `e1` or `.x` to binary operator")
+#&gt;         }
+#&gt;         .x &lt;- e1
+#&gt;     }
+#&gt;     else if (!missing(e1)) {
+#&gt;         abort("Can't supply both `e1` and `.x` to binary operator")
+#&gt;     }
+#&gt;     if (missing(.y) &amp;&amp; !missing(e2)) {
+#&gt;         .y &lt;- e2
+#&gt;     }
+#&gt;     else if (!missing(e2)) {
+#&gt;         abort("Can't supply both `e2` and `.y` to binary operator")
+#&gt;     }
+#&gt;     if (missing(.y)) 
+#&gt;         .x
+#&gt;     else .x + .y
+#&gt; }
+#&gt; &lt;environment: 0x6cf2b30&gt;</div><div class='input'><span class='fu'>as_closure</span>(<span class='no'>`~`</span>)</div><div class='output co'>#&gt; function(.x, .y) {
 #&gt;       if (is_missing(substitute(.y))) {
 #&gt;         new_formula(NULL, substitute(.x), caller_env())
 #&gt;       } else {
 #&gt;         new_formula(substitute(.x), substitute(.y), caller_env())
 #&gt;       }
 #&gt;     }
-#&gt; &lt;bytecode: 0x5ef0c30&gt;
-#&gt; &lt;environment: 0x8d65c88&gt;</div></pre>
+#&gt; &lt;bytecode: 0x5c1daa8&gt;
+#&gt; &lt;environment: 0x86b12f0&gt;</div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
     <h2>Contents</h2>
