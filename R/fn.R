@@ -529,7 +529,7 @@ op_as_closure <- function(prim_nm) {
     `&`  = new_binary_closure(function(.x, .y) .x & .y),
     `|`  = new_binary_closure(function(.x, .y) .x | .y),
     `&&` = new_binary_closure(function(.x, .y) .x && .y),
-    `||` = new_binary_closure(function(.x, .y) .x || .y),
+    `||` = new_binary_closure(function(.x, .y) .x || .y, shortcircuiting = TRUE),
     `!`  = function(.x) !.x,
     `+`  = new_binary_closure(function(.x, .y) if (missing(.y)) .x else .x + .y, versatile = TRUE),
     `-`  = new_binary_closure(function(.x, .y) if (missing(.y)) -.x else .x - .y, versatile = TRUE),
@@ -567,15 +567,20 @@ op_as_closure <- function(prim_nm) {
   )
 }
 
-new_binary_closure <- function(fn, versatile = FALSE) {
-  node <- fn_body_node(fn)
-
+new_binary_closure <- function(fn,
+                               versatile = FALSE,
+                               shortcircuiting = FALSE) {
   if (versatile) {
-    node <- node_append(versatile_check_nodes, node)
+    nodes <- versatile_check_nodes
+  } else if (shortcircuiting) {
+    nodes <- shortcircuiting_check_nodes
   } else {
-    node <- node_append(binary_check_nodes, node)
+    nodes <- binary_check_nodes
   }
-  body <- new_call(brace_sym, node)
+
+  nodes <- duplicate(nodes, shallow = TRUE)
+  nodes <- node_append(nodes, fn_body_node(fn))
+  body <- new_call(brace_sym, nodes)
 
   formals(fn) <- binary_fmls
   body(fn) <- body
@@ -620,6 +625,11 @@ versatile_check_nodes <- as.pairlist(c(
       abort("Can't supply both `e2` and `.y` to binary operator")
     }
   )
+))
+shortcircuiting_check_nodes <- as.pairlist(c(
+  binary_check_nodes[[1]],
+  quote(if (.x) return(TRUE)),
+  binary_check_nodes[[2]]
 ))
 
 #' Make an `fn` object

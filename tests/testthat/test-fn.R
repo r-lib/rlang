@@ -73,6 +73,17 @@ test_that("as_closure() supports base-style and purrr-style arguments to versati
   expect_identical(minus(e2 = 1, 3), 2)
 })
 
+test_that("as_closure(`||`) shortcircuits", {
+  or <- as_closure(`||`)
+
+  expect_error(or(), "Must supply `e1` or `.x` to binary operator")
+  expect_error(or(FALSE), "Must supply `e2` or `.y` to binary operator")
+
+  expect_identical(or(TRUE), TRUE)
+  expect_identical(or(.x = TRUE), TRUE)
+  expect_identical(or(e1 = TRUE), TRUE)
+})
+
 test_that("as_closure() handles operators", {
   expect_identical(as_closure(`-`)(.y = 10, .x = 5), -5)
   expect_identical(as_closure(`-`)(5), -5)
