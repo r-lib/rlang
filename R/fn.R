@@ -467,14 +467,7 @@ as_closure <- function(x, env = caller_env()) {
         return(fn)
       }
 
-      if (fn_name == "eval") {
-        # do_eval() starts a context with a fake primitive function as
-        # function definition. We replace it here with the .Internal()
-        # wrapper of eval() so we can match the arguments.
-        fmls <- formals(base::eval)
-      } else {
-        fmls <- formals(.ArgsEnv[[fn_name]] %||% .GenericArgsEnv[[fn_name]])
-      }
+      fmls <- formals(.ArgsEnv[[fn_name]] %||% .GenericArgsEnv[[fn_name]])
 
       args <- syms(names(fmls))
       args <- set_names(args)

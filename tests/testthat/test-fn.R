@@ -25,11 +25,6 @@ test_that("as_closure() handles primitive functions", {
   expect_identical(as_closure(`c`)(1, 3, 5), c(1, 3, 5))
   expect_identical(as_closure(is.null)(1), FALSE)
   expect_identical(as_closure(is.null)(NULL), TRUE)
-
-  eval_prim <- eval(quote(sys.function()))
-  eval_clos <- as_closure(eval_prim)
-  expect_identical(typeof(eval_clos), "closure")
-  expect_identical(eval_clos(quote(data.frame), base_env()), data.frame)
 })
 
 test_that("as_closure() supports base-style and purrr-style arguments to binary operators", {
