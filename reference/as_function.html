@@ -181,8 +181,8 @@ is a string.</p></td>
 <span class='fu'>is_lambda</span>(<span class='no'>f</span>)</div><div class='output co'>#&gt; [1] TRUE</div><div class='input'><span class='fu'>is_lambda</span>(<span class='fu'>as_function</span>(<span class='kw'>function</span>() <span class='st'>"foo"</span>))</div><div class='output co'>#&gt; [1] FALSE</div><div class='input'>
 <span class='co'># Primitive functions are regularised as closures</span>
 <span class='fu'>as_closure</span>(<span class='no'>list</span>)</div><div class='output co'>#&gt; function (...) 
-#&gt; list(...)</div><div class='input'><span class='fu'>as_closure</span>(<span class='st'>"list"</span>)</div><div class='output co'>#&gt; function (...) 
-#&gt; list(...)</div><div class='input'>
+#&gt; .Primitive("list")(...)</div><div class='input'><span class='fu'>as_closure</span>(<span class='st'>"list"</span>)</div><div class='output co'>#&gt; function (...) 
+#&gt; .Primitive("list")(...)</div><div class='input'>
 <span class='co'># Operators have `.x` and `.y` as arguments, just like lambda</span>
 <span class='co'># functions created with the formula syntax:</span>
 <span class='fu'>as_closure</span>(<span class='no'>`+`</span>)</div><div class='output co'>#&gt; function (e1, e2, .x = e1, .y = e2) 
@@ -206,15 +206,15 @@ is a string.</p></td>
 #&gt;         .x
 #&gt;     else .x + .y
 #&gt; }
-#&gt; &lt;environment: 0x9159130&gt;</div><div class='input'><span class='fu'>as_closure</span>(<span class='no'>`~`</span>)</div><div class='output co'>#&gt; function(.x, .y) {
+#&gt; &lt;environment: 0x5e3f620&gt;</div><div class='input'><span class='fu'>as_closure</span>(<span class='no'>`~`</span>)</div><div class='output co'>#&gt; function(.x, .y) {
 #&gt;       if (is_missing(substitute(.y))) {
 #&gt;         new_formula(NULL, substitute(.x), caller_env())
 #&gt;       } else {
 #&gt;         new_formula(substitute(.x), substitute(.y), caller_env())
 #&gt;       }
 #&gt;     }
-#&gt; &lt;bytecode: 0x6930d58&gt;
-#&gt; &lt;environment: 0x8db6730&gt;</div></pre>
+#&gt; &lt;bytecode: 0x5262a10&gt;
+#&gt; &lt;environment: 0x79161e0&gt;</div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
     <h2>Contents</h2>
