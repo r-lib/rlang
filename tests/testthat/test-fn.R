@@ -264,6 +264,14 @@ test_that("as_closure() wrappers dispatch properly", {
   expect_identical(as_closure(as.character)(x), "dispatched!")
 })
 
+test_that("as_closure() wrappers are not masked", {
+  scoped_bindings(
+    .env = global_env(),
+    as.character = function(...) abort("tilt")
+  )
+  expect_identical(as_closure(as.character)(1), "1")
+})
+
 test_that("as_closure() wrappers don't add argument names (tidyverse/purrr#411)", {
   expect_false(as_closure(isS4)("foo"))
 })
