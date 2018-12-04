@@ -32,7 +32,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="index.html">rlang</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.3.0.9000</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.3.0.9001</span>
       </span>
     </div>
 
@@ -87,7 +87,13 @@
 <!--/.navbar -->
 
       
-      </header><div class="row">
+      </header>
+
+$for(header-includes)$
+$header-includes$
+$endfor$
+
+<div class="row">
   <div class="contents col-md-9">
 <div id="rlang" class="section level1">
 <div class="page-header"><h1 class="hasAnchor">
@@ -173,6 +179,9 @@
 </div>
 </div>
 
+$for(include-after)$
+$include-after$
+$endfor$
 
       <footer><div class="copyright">
   <p>Developed by Lionel Henry, <a href="http://hadley.nz">Hadley Wickham</a>.</p>

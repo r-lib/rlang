@@ -60,7 +60,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">rlang</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.3.0.9000</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.3.0.9001</span>
       </span>
     </div>
 
@@ -128,6 +128,7 @@
 <a href="#rlang-0-3-0-9000" class="anchor"></a>rlang 0.3.0.9000<small> Unreleased </small>
 </h1>
 <ul>
+<li><p><code><a href="../reference/call_modify.html">call_modify()</a></code> now respects ordering of unnamed inputs. Before this fix, it would move all unnamed inputs after named ones.</p></li>
 <li><p><code><a href="../reference/as_function.html">as_closure()</a></code> wrappers now call primitives with positional arguments to avoid edge case issues of argument matching.</p></li>
 <li><p><code><a href="../reference/as_function.html">as_closure()</a></code> wrappers now dispatch properly on methods defined in the global environment (tidyverse/purrr<a href='https://github.com/r-lib/rlang/issues/459'>#459</a>).</p></li>
 <li><p><code><a href="../reference/as_function.html">as_closure()</a></code> now supports both base-style (<code>e1</code> and <code>e2</code>) and purrr-style (<code>.x</code> and <code>.y</code>) arguments with binary primitives.</p></li>
