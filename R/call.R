@@ -527,6 +527,11 @@ call_modify <- function(.call,
     }
 
     if (identical(tag, dots_sym)) {
+      # Unwrap empty quosures. Useful for passing captured arguments
+      # to `call_modify()`.
+      if (identical(maybe_missing(arg), quo())) {
+        arg <- missing_arg()
+      }
       if (!is_missing(arg) && !is_zap(arg)) {
         abort("`...` arguments must be `zap()` or empty")
       }

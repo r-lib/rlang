@@ -133,6 +133,10 @@ test_that("positions are not changed", {
   expect_identical(call_modify(quote(fn()), ... = , 1, ... = ), quote(fn(..., 1)))
 })
 
+test_that("empty quosures are treated as empty args", {
+  expect_identical(call_modify(quote(fn()), ... = quo()), quote(fn(...)))
+})
+
 
 # Utils --------------------------------------------------------------
 
