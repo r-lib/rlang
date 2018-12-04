@@ -510,13 +510,21 @@ call_modify <- function(.call,
   expr <- duplicate(expr, shallow = TRUE)
 
   # Discard "" names
+  nms <- names2(args)
   named <- have_name(args)
   named_args <- args[named]
-  nms <- names(named_args)
 
-  for (i in seq_along(named_args)) {
+  for (i in seq_along(args)) {
     tag <- sym(nms[[i]])
-    arg <- named_args[[i]]
+    arg <- args[[i]]
+
+    if (is_missing(tag)) {
+      if (is_zap(arg)) {
+        abort("Zap sentinels can't be unnamed")
+      }
+      node_append(expr, new_node(arg))
+      next
+    }
 
     if (identical(tag, dots_sym)) {
       if (!is_missing(arg) && !is_zap(arg)) {
@@ -562,16 +570,6 @@ call_modify <- function(.call,
         node_poke_cdr(prev, node)
       }
     }
-  }
-
-  if (any(!named)) {
-    remaining_args <- args[!named]
-
-    if (some(remaining_args, is_zap)) {
-      abort("Zap sentinels can't be unnamed")
-    }
-
-    expr <- node_append(expr, as.pairlist(remaining_args))
   }
 
   set_expr(.call, expr)

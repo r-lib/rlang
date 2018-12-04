@@ -75,7 +75,7 @@ test_that("can modify calls for functions containing dots", {
 test_that("accepts unnamed arguments", {
   expect_identical(
     call_modify(~get(), "foo", envir = "bar", "baz"),
-    ~get(envir = "bar", "foo", "baz")
+    ~get("foo", envir = "bar", "baz")
   )
 })
 
@@ -122,16 +122,14 @@ test_that("positions are not changed", {
   expect_identical(call_modify(quote(fn(1, ...)), ... = ), quote(fn(1, ...)))
   expect_identical(call_modify(quote(fn(..., 1)), ... = ), quote(fn(..., 1)))
 
-  skip("Failing")
-
-  expect_identical(call_modify(quote(fn()), 1, x = "foo"), quote(fn(1, x = "foo")))        # FIXME
+  expect_identical(call_modify(quote(fn()), 1, x = "foo"), quote(fn(1, x = "foo")))
   expect_identical(call_modify(quote(fn()), x = 1, x = "foo"), quote(fn(x = "foo")))
-  expect_identical(call_modify(quote(fn()), 1, x = 1, x = "foo"), quote(fn(1, x = "foo"))) # FIXME
+  expect_identical(call_modify(quote(fn()), 1, x = 1, x = "foo"), quote(fn(1, x = "foo")))
   expect_identical(call_modify(quote(fn()), x = 1, 1, x = "foo"), quote(fn(x = "foo", 1)))
 
-  expect_identical(call_modify(quote(fn()), 1, ... = ), quote(fn(1, ...)))                 # FIXME
+  expect_identical(call_modify(quote(fn()), 1, ... = ), quote(fn(1, ...)))
   expect_identical(call_modify(quote(fn()), ... = , ... = ), quote(fn(...)))
-  expect_identical(call_modify(quote(fn()), 1, ... = , ... = ), quote(fn(1, ...)))         # FIXME
+  expect_identical(call_modify(quote(fn()), 1, ... = , ... = ), quote(fn(1, ...)))
   expect_identical(call_modify(quote(fn()), ... = , 1, ... = ), quote(fn(..., 1)))
 })
 

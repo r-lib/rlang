@@ -1,6 +1,9 @@
 
 # rlang 0.3.0.9000
 
+* `call_modify()` now respects ordering of unnamed inputs. Before this
+  fix, it would move all unnamed inputs after named ones.
+
 * `as_closure()` wrappers now call primitives with positional
   arguments to avoid edge case issues of argument matching.
 
