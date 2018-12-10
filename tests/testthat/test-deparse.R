@@ -387,3 +387,9 @@ test_that("bracket deparsing is a form of argument deparsing", {
   expect_identical(expr_deparse(quote(foo[bar, , baz()])), "foo[bar, , baz()]")
   expect_identical(expr_deparse(quote(foo[[bar, , baz()]])), "foo[[bar, , baz()]]")
 })
+
+test_that("non-syntactic symbols are deparsed with backticks", {
+  expect_identical(expr_deparse(quote(`::foo`)), "`::foo`")
+  expect_identical(expr_deparse(quote(x(`_foo`))), "x(`_foo`)")
+  expect_identical(expr_deparse(quote(x[`::foo`])), "x[`::foo`]")
+})

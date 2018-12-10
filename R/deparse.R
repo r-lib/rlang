@@ -392,7 +392,13 @@ braces_deparse <- function(x, lines = new_lines()) {
 }
 
 sym_deparse <- function(x, lines = new_lines()) {
-  lines$push(as_string(x))$get_lines()
+  str <- as_string(x)
+
+  if (needs_backticks(str)) {
+    str <- sprintf("`%s`", str)
+  }
+
+  lines$push(str)$get_lines()
 }
 
 args_deparse <- function(x, lines = new_lines(), delims = c("(", ")")) {
@@ -431,9 +437,7 @@ call_deparse <- function(x, lines = new_lines()) {
       lines$deparse(car)
     },
     backticks = {
-      lines$push_sticky("`")
       lines$deparse(node_car(car))
-      lines$push_sticky("`")
       args_deparse(node_cdr(car), lines)
     },
     lines$deparse(car)

@@ -1,7 +1,8 @@
 
 # rlang 0.3.0.9000
 
-* `expr_print()` now handles `[` and `[[` operators correctly.
+* `expr_print()` now handles `[` and `[[` operators correctly, and
+  deparses non-syntactic symbols with backticks.
 
 * `call_modify()` now respects ordering of unnamed inputs. Before this
   fix, it would move all unnamed inputs after named ones.
