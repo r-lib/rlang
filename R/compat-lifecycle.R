@@ -37,24 +37,20 @@
 #'
 #' The verbosity of retirement warnings can be controlled with global
 #' options. You'll generally want to set these options locally with
-#' `with_options()` or `scoped_options()`.
+#' one of these helpers:
 #'
-#' * When `lifecycle_disable_warnings` is `TRUE`, no warnings are
-#'   issued in any circumstances.
+#' * `with_lifecycle_silence()` disables all soft-deprecation and
+#'   deprecation warnings.
 #'
-#' * When `lifecycle_verbose_soft_deprecation` is `TRUE`,
-#'   soft-deprecated functions always warn, unless
-#'   `lifecycle_disable_warnings` is `TRUE`.
+#' * `with_lifecycle_warnings()` enforces warnings for both
+#'   soft-deprecated and deprecated functions. The warnings are
+#'   repeated rather than signalled once per session.
 #'
-#' * When `lifecycle_repeat_warnings` is `TRUE`, deprecation warnings
-#'   are issued repeatedly rather than once per session.
+#' * `with_lifecycle_errors()` enforces errors for both
+#'   soft-deprecated and deprecated functions.
 #'
-#' To force warnings in all cases, you need
-#' `lifecycle_disable_warnings` set to `FALSE`,
-#' `lifecycle_verbose_deprecation` set to `TRUE`, and
-#' `lifecycle_repeat_warnings` set to `TRUE`. The options helpers
-#' `scoped_lifecycle_warnings()` and `with_lifecycle_warnings()` set
-#' these for you.
+#' All the `with_` helpers have `scoped_` variants that are
+#' particularly useful in testthat blocks.
 #'
 #' @noRd
 #' @seealso [lifecycle()]
