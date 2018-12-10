@@ -381,3 +381,9 @@ test_that("label() handles objects", {
   expect_identical(label(mtcars), "<data.frame>")
   expect_identical(label(structure(1, class = "foo")), "<S3: foo>")
 })
+
+test_that("bracket deparsing is a form of argument deparsing", {
+  expect_identical(expr_deparse(call("[", iris, missing_arg(), drop = FALSE)), "<data.frame>[, drop = FALSE]")
+  expect_identical(expr_deparse(quote(foo[bar, , baz()])), "foo[bar, , baz()]")
+  expect_identical(expr_deparse(quote(foo[[bar, , baz()]])), "foo[[bar, , baz()]]")
+})

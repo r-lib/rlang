@@ -1,6 +1,8 @@
 
 # rlang 0.3.0.9000
 
+* `expr_print()` now handles `[` and `[[` operators correctly.
+
 * `call_modify()` now respects ordering of unnamed inputs. Before this
   fix, it would move all unnamed inputs after named ones.
 

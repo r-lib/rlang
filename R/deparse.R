@@ -352,26 +352,16 @@ unary_op_deparse <- function(x, lines = new_lines()) {
 brackets_deparse <- function(x, lines = new_lines()) {
   x <- node_cdr(x)
   lines$deparse(node_car(x))
-  lines$push_sticky("[")
-  lines$increase_indent()
 
-  x <- node_cdr(x)
-  lines$deparse(node_car(x))
-  lines$push_sticky("]")
-  lines$decrease_indent()
+  args_deparse(node_cdr(x), lines, delims = c("[", "]"))
 
   lines$get_lines()
 }
 brackets2_deparse <- function(x, lines = new_lines()) {
   x <- node_cdr(x)
   lines$deparse(node_car(x))
-  lines$push_sticky("[[")
-  lines$increase_indent()
 
-  x <- node_cdr(x)
-  lines$deparse(node_car(x))
-  lines$push_sticky("]]")
-  lines$decrease_indent()
+  args_deparse(node_cdr(x), lines, delims = c("[[", "]]"))
 
   lines$get_lines()
 }
@@ -405,8 +395,10 @@ sym_deparse <- function(x, lines = new_lines()) {
   lines$push(as_string(x))$get_lines()
 }
 
-args_deparse <- function(x, lines = new_lines()) {
-  lines$push_sticky("(")
+args_deparse <- function(x, lines = new_lines(), delims = c("(", ")")) {
+  stopifnot(is_character(delims, n = 2))
+
+  lines$push_sticky(delims[[1]])
   lines$increase_indent()
 
   while (!is_null(x)) {
@@ -424,7 +416,7 @@ args_deparse <- function(x, lines = new_lines()) {
     }
   }
 
-  lines$push_sticky(")")
+  lines$push_sticky(delims[[2]])
   lines$decrease_indent()
 
   lines$get_lines()
