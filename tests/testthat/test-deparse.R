@@ -396,6 +396,7 @@ test_that("non-syntactic symbols are deparsed with backticks", {
 
 test_that("symbols with unicode are deparsed consistently (#691)", {
   skip_on_os("windows")
+  skip_if(getRversion() < "3.2")
 
   expect_identical(expr_text(sym("\u00e2a")), "\u00e2a")
   expect_identical(expr_deparse(sym("\u00e2a")), "\u00e2a")
