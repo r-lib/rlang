@@ -393,3 +393,13 @@ test_that("non-syntactic symbols are deparsed with backticks", {
   expect_identical(expr_deparse(quote(x(`_foo`))), "x(`_foo`)")
   expect_identical(expr_deparse(quote(x[`::foo`])), "x[`::foo`]")
 })
+
+test_that("symbols with unicode are deparsed consistently (#691)", {
+  skip_on_os("windows")
+
+  expect_identical(expr_text(sym("\u00e2a")), "\u00e2a")
+  expect_identical(expr_deparse(sym("\u00e2a")), "\u00e2a")
+
+  expect_identical(expr_text(sym("a\u00e2")), "a\u00e2")
+  expect_identical(expr_deparse(sym("a\u00e2")), "a\u00e2")
+})

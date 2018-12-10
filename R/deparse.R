@@ -750,7 +750,7 @@ needs_backticks <- function(str) {
     return(TRUE)
   }
 
-  !grepl("^[[:alnum:]_.]+$", remaining)
+  grepl("[^[:alnum:]_.]", remaining)
 }
 
 # From gram.y

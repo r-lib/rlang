@@ -1,6 +1,9 @@
 
 # rlang 0.3.0.9000
 
+* Fixed a deparsing issue with symbols containing non-ASCII
+  characters (#691).
+
 * `expr_print()` now handles `[` and `[[` operators correctly, and
   deparses non-syntactic symbols with backticks.
 
