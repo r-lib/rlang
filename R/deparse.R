@@ -378,6 +378,13 @@ braces_deparse <- function(x, lines = new_lines()) {
   lines$increase_indent()
 
   x <- node_cdr(x)
+
+  # No need for a newline if the block is empty
+  if (is_null(x)) {
+    lines$push(" }")
+    return(lines$get_lines())
+  }
+
   while (!is_null(x)) {
     lines$push_newline()
     lines$deparse(node_car(x))

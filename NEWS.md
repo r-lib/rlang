@@ -1,6 +1,8 @@
 
 # rlang 0.3.0.9000
 
+* Empty `{` blocks are now deparsed on the same line.
+
 * Fixed a deparsing issue with symbols containing non-ASCII
   characters (#691).
 

@@ -405,5 +405,9 @@ test_that("symbols with unicode are deparsed consistently (#691)", {
 })
 
 test_that("formal parameters are backticked if needed", {
-  expect_identical(expr_deparse(function(`^`) {}), c("<function(`^`) {", "}>"))
+  expect_identical(expr_deparse(function(`^`) {}), c("<function(`^`) { }>"))
+})
+
+test_that("empty blocks are deparsed on the same line", {
+  expect_identical(expr_deparse(quote({ })), "{ }")
 })
