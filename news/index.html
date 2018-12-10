@@ -128,6 +128,7 @@
 <a href="#rlang-0-3-0-9000" class="anchor"></a>rlang 0.3.0.9000<small> Unreleased </small>
 </h1>
 <ul>
+<li><p>New template file <code>R/lifecycle.R</code> containing functions and documentation for lifecycle management: retirement warnings and errors, and inclusion of lifecycle badges in documentation.</p></li>
 <li>
 <p><code><a href="../reference/exiting.html">exiting()</a></code> and <code><a href="../reference/exiting.html">calling()</a></code> handlers now inherit from the <code>function</code> class. Their subclasses are now prefixed with <code>"rlang_"</code>.</p>
 <div class="sourceCode" id="cb1"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb1-1" data-line-number="1"><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/class">class</a></span>(<span class="kw"><a href="../reference/exiting.html">exiting</a></span>(<span class="cf">function</span>(cnd) cnd))</a>

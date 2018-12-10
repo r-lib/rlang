@@ -177,11 +177,7 @@ as those will be discarded.</p>
 <span class='no'>g</span> <span class='kw'>&lt;-</span> <span class='kw'>function</span>(<span class='no'>env</span>) <span class='fu'>frame_position</span>(<span class='no'>env</span>)
 
 <span class='co'># frame_position() returns the position of the frame on the evaluation stack:</span>
-<span class='fu'>fn</span>()</div><div class='output co'>#&gt; <span class='warning'>Warning: `frame_position()` is soft-deprecated as of rlang 0.3.0.</span>
-#&gt; <span class='warning'>This warning is displayed once per session.</span></div><div class='output co'>#&gt; <span class='warning'>Warning: `stack_trim()` is soft-deprecated as of rlang 0.3.0.</span>
-#&gt; <span class='warning'>This warning is displayed once per session.</span></div><div class='output co'>#&gt; <span class='warning'>Warning: `ctxt_stack()` is soft-deprecated as of rlang 0.3.0.</span>
-#&gt; <span class='warning'>This warning is displayed once per session.</span></div><div class='output co'>#&gt; <span class='warning'>Warning: `global_frame()` is soft-deprecated as of rlang 0.3.0.</span>
-#&gt; <span class='warning'>This warning is displayed once per session.</span></div><div class='output co'>#&gt; [1] 38</div><div class='input'><span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/identity'>identity</a></span>(<span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/identity'>identity</a></span>(<span class='fu'>fn</span>()))</div><div class='output co'>#&gt; [1] 40</div><div class='input'>
+<span class='fu'>fn</span>()</div><div class='output co'>#&gt; [1] 38</div><div class='input'><span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/identity'>identity</a></span>(<span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/identity'>identity</a></span>(<span class='fu'>fn</span>()))</div><div class='output co'>#&gt; [1] 40</div><div class='input'>
 <span class='co'># Note that it trims off intervening calls before counting so you</span>
 <span class='co'># can safely nest it within other calls:</span>
 <span class='no'>g</span> <span class='kw'>&lt;-</span> <span class='kw'>function</span>(<span class='no'>env</span>) <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/identity'>identity</a></span>(<span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/identity'>identity</a></span>(<span class='fu'>frame_position</span>(<span class='no'>env</span>)))

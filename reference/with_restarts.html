@@ -253,9 +253,7 @@ of performing a non-local jump to an arbitrary call frame.</p></div>
 <span class='co'># Normal value for valid input:</span>
 <span class='fu'>fn</span>(<span class='fl'>TRUE</span>)</div><div class='output co'>#&gt; [1] "normal value"</div><div class='input'>
 <span class='co'># Default value for bad input:</span>
-<span class='fu'>fn</span>(<span class='fl'>FALSE</span>)</div><div class='output co'>#&gt; <span class='warning'>Warning: Creating a condition with `cnd_signal()` is soft-deprecated as of rlang 0.3.0.</span>
-#&gt; <span class='warning'>Please use `signal()` instead.</span>
-#&gt; <span class='warning'>This warning is displayed once per session.</span></div><div class='output co'>#&gt; [1] ""</div><div class='input'>
+<span class='fu'>fn</span>(<span class='fl'>FALSE</span>)</div><div class='output co'>#&gt; [1] ""</div><div class='input'>
 <span class='co'># Change the default value if you need an empty character vector by</span>
 <span class='co'># defining a calling handler that jumps to the restart. It has to</span>
 <span class='co'># be calling because exiting handlers jump to the place where they</span>
