@@ -410,6 +410,14 @@ test_that("base parent errors are printed with rlang method", {
   expect_known_output(print(rlang_err), test_path("test-cnd-error-print-base-parent.txt"))
 })
 
+test_that("handlers inherit from `function`", {
+  foo <- function(x) UseMethod("foo")
+  foo.function <- function(x) "dispatched!"
+  expect_identical(foo(cnd_muffle), "dispatched!")
+  expect_identical(foo(exiting(function() NULL)), "dispatched!")
+  expect_identical(foo(calling(function() NULL)), "dispatched!")
+})
+
 
 # Lifecycle ----------------------------------------------------------
 
