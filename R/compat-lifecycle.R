@@ -111,6 +111,16 @@ abort_defunct <- function(msg) {
   .Defunct(msg = msg)
 }
 
+scoped_lifecycle_silence <- function(frame = rlang::caller_env()) {
+  rlang::scoped_options(.frame = frame,
+    lifecycle_disable_warnings = TRUE
+  )
+}
+with_lifecycle_silence <- function(expr) {
+  scoped_lifecycle_silence()
+  expr
+}
+
 scoped_lifecycle_warnings <- function(frame = rlang::caller_env()) {
   rlang::scoped_options(.frame = frame,
     lifecycle_disable_warnings = FALSE,
