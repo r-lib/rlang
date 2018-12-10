@@ -82,7 +82,7 @@ void r_warn_deprecated(const char* id, const char* fmt, ...) {
   FREE(2);
 }
 
-void r_abort_defunct(const char* fmt, ...) {
+void r_stop_defunct(const char* fmt, ...) {
   char buf[BUFSIZE];
   INTERP(buf, fmt, ...);
 

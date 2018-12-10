@@ -21,6 +21,8 @@
 #'
 #' * `warn_deprecated()` warns unconditionally.
 #'
+#' * `stop_defunct()` fails unconditionally.
+#'
 #' Both functions warn only once per session by default to avoid
 #' overwhelming the user with repeated warnings.
 #'
@@ -109,7 +111,7 @@ warn_deprecated <- function(msg, id = msg) {
 }
 deprecation_env <- new.env(parent = emptyenv())
 
-abort_defunct <- function(msg) {
+stop_defunct <- function(msg) {
   .Defunct(msg = msg)
 }
 

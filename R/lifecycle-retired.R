@@ -656,7 +656,7 @@ stack_trim <- function(stack, n = 1) {
 #' @keywords internal
 #' @export
 UQE <- function(x) {
-  abort_defunct(msg = "`UQE()` is defunct. Please use `!!get_expr(x)`")
+  stop_defunct(msg = "`UQE()` is defunct. Please use `!!get_expr(x)`")
 }
 
 #' Parse text into a quosure
@@ -764,7 +764,7 @@ overscope_clean <- function(overscope) {
 #' @keywords internal
 #' @export
 eval_tidy_ <- function(expr, bottom, top = NULL, env = caller_env()) {
-  abort_defunct("`eval_tidy_()` is defunct as of rlang 0.3.0. Use `eval_tidy()` instead.")
+  stop_defunct("`eval_tidy_()` is defunct as of rlang 0.3.0. Use `eval_tidy()` instead.")
 }
 #' Evaluate next quosure in a data mask
 #'
@@ -815,7 +815,7 @@ overscope_eval_next <- function(overscope, quo, env = base_env()) {
 #' @keywords internal
 #' @export
 as_dictionary <- function(x, lookup_msg = NULL, read_only = FALSE) {
-  abort_defunct(paste_line(
+  stop_defunct(paste_line(
     "`as_dictionary()` is defunct as of rlang 0.3.0.",
     "Please use `as_data_pronoun()` instead"
   ))
@@ -823,7 +823,7 @@ as_dictionary <- function(x, lookup_msg = NULL, read_only = FALSE) {
 #' @rdname dictionary
 #' @export
 is_dictionary <- function(x) {
-  abort_defunct("`is_dictionary()` is defunct as of rlang 0.3.0.")
+  stop_defunct("`is_dictionary()` is defunct as of rlang 0.3.0.")
 }
 
 #' Test for or coerce to quosure-like objects
@@ -842,12 +842,12 @@ is_dictionary <- function(x) {
 #' @keywords internal
 #' @export
 is_quosureish <- function(x, scoped = NULL) {
-  abort_defunct("`is_quosureish()` is defunct as of rlang 0.3.0")
+  stop_defunct("`is_quosureish()` is defunct as of rlang 0.3.0")
 }
 #' @rdname is_quosureish
 #' @export
 as_quosureish <- function(x, env = caller_env()) {
-  abort_defunct("`as_quosureish()` is defunct as of rlang 0.3.0")
+  stop_defunct("`as_quosureish()` is defunct as of rlang 0.3.0")
 }
 
 

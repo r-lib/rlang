@@ -356,7 +356,7 @@ sexp* call_interp_impl(sexp* x, sexp* env, struct expansion_info info) {
     r_abort("`UQ()` and `UQS()` must be called with an argument");
   }
   if (info.op == OP_EXPAND_UQE) {
-    r_abort_defunct("`UQE()` is defunct. Please use `!!get_expr(x)`");
+    r_stop_defunct("`UQE()` is defunct. Please use `!!get_expr(x)`");
   }
 
   switch (info.op) {
