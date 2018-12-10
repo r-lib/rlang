@@ -52,21 +52,19 @@ sexp* r_interp_str(const char* fmt, ...) {
 static sexp* signal_soft_deprecated_call = NULL;
 void r_signal_soft_deprecated(const char* msg,
                               const char* id,
-                              const char* package,
                               sexp* env) {
   id = id ? id : msg;
   env = env ? env : r_empty_env;
-  if (!msg || !package) {
-    r_abort("Internal error: NULL `msg` or `package` in r_signal_soft_deprecated()");
+  if (!msg) {
+    r_abort("Internal error: NULL `msg` in r_signal_soft_deprecated()");
   }
 
   sexp* msg_ = KEEP(r_chr(msg));
   sexp* id_ = KEEP(r_chr(id));
-  sexp* package_ = KEEP(r_chr(package));
 
-  r_eval_with_wxyz(signal_soft_deprecated_call, r_base_env, msg_, id_, package_, env);
+  r_eval_with_xyz(signal_soft_deprecated_call, r_base_env, msg_, id_, env);
 
-  FREE(3);
+  FREE(2);
 }
 
 static void signal_retirement(const char* source, const char* buf);
@@ -84,7 +82,7 @@ void r_warn_deprecated(const char* id, const char* fmt, ...) {
   FREE(2);
 }
 
-void r_abort_defunct(const char* fmt, ...) {
+void r_stop_defunct(const char* fmt, ...) {
   char buf[BUFSIZE];
   INTERP(buf, fmt, ...);
 
@@ -262,6 +260,6 @@ void r_init_library_cnd() {
   warn_deprecated_call = r_parse("rlang:::warn_deprecated(x, id = y)");
   r_mark_precious(warn_deprecated_call);
 
-  signal_soft_deprecated_call = r_parse("rlang:::signal_soft_deprecated(w, id = x, package = y, env = z)");
+  signal_soft_deprecated_call = r_parse("rlang:::signal_soft_deprecated(x, id = y, env = z)");
   r_mark_precious(signal_soft_deprecated_call);
 }

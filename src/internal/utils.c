@@ -14,7 +14,7 @@ sexp* new_preserved_empty_list() {
 }
 
 void signal_soft_deprecated(const char* msg) {
-  sexp* opt = r_peek_option("lifecycle_force_verbose_retirement");
+  sexp* opt = r_peek_option("lifecycle_verbose_soft_deprecation");
   if (r_is_true(opt)) {
     r_warn(msg);
   }

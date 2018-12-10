@@ -22,14 +22,14 @@
 #' @seealso [caller_env()] and [current_env()]
 #' @export
 caller_fn <- function(n = 1) {
-  with_options(lifecycle_disable_verbose_retirement = TRUE,
+  with_options(lifecycle_disable_warnings = TRUE,
     call_frame(n + 2)$fn
   )
 }
 #' @rdname caller_fn
 #' @export
 current_fn <- function() {
-  with_options(lifecycle_disable_verbose_retirement = TRUE,
+  with_options(lifecycle_disable_warnings = TRUE,
     call_frame(2)$fn
   )
 }
@@ -103,7 +103,7 @@ return_from <- function(frame, value = NULL) {
 #' @rdname return_from
 #' @export
 return_to <- function(frame, value = NULL) {
-  with_options(lifecycle_disable_verbose_retirement = TRUE, {
+  with_options(lifecycle_disable_warnings = TRUE, {
     if (is_integerish(frame)) {
       prev_pos <- frame - 1
     } else {

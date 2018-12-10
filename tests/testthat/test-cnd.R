@@ -240,35 +240,75 @@ test_that("summary.rlang_error() prints full backtrace", {
   expect_known_output(file = test_path("test-cnd-error-str.txt"), summary(err))
 })
 
-test_that("signal_soft_deprecated() warns when package is attached", {
-  expect_true(package_attached("utils", env()))
-  expect_false(package_attached("not-attached", env()))
+test_that("signal_soft_deprecated() warns when called from global env", {
+  old <- Sys.getenv("TESTTHAT_PKG")
+  Sys.setenv("TESTTHAT_PKG" = "")
+  on.exit(Sys.setenv("TESTTHAT_PKG" = old))
+
+  retired <- function(id) signal_soft_deprecated("foo", id)
+  env_bind(global_env(), retired = retired)
+  on.exit(env_unbind(global_env(), "retired"), add = TRUE)
+
+  with_options(lifecycle_verbose_soft_deprecation = FALSE, {
+    locally({
+      expect_no_warning(retired("rlang_test3"), "foo")
+    })
+  })
+
+  with_options(lifecycle_verbose_soft_deprecation = FALSE, {
+    with_env(global_env(), {
+      expect_warning(retired("rlang_test4"), "foo")
+    })
+  })
 })
 
-test_that("signal_soft_deprecated() warns when called from global env", {
-  retired <- function(pkg, id) signal_soft_deprecated("foo", id, package = pkg)
-  env_bind(global_env(), retired = retired)
-  on.exit(env_unbind(global_env(), "retired"))
-
-  with_options(lifecycle_force_verbose_retirement = FALSE, {
-    locally({
-      expect_no_warning(retired("not-attached", "rlang_test3"), "foo")
-    })
-  })
-
-  with_options(lifecycle_force_verbose_retirement = FALSE, {
-    with_env(global_env(), {
-      expect_warning(retired("not-attached", "rlang_test4"), "foo")
-    })
-  })
+test_that("signal_soft_deprecated() warns when called from package being tested", {
+  Sys.setenv("NOT_CRAN" = "true")
+  on.exit(Sys.setenv("NOT_CRAN" = ""))
+  retired <- function() signal_soft_deprecated("warns from package being tested")
+  expect_warning(retired(), "warns from")
 })
 
 test_that("signal_soft_deprecated() warns when option is set", {
-  retired <- function(pkg, id) signal_soft_deprecated("foo", id, package = pkg)
-  with_options(lifecycle_force_verbose_retirement = TRUE, {
-    expect_warning(retired("utils", "rlang_test5"), "foo")
-    expect_warning(retired("not-attached", "rlang_test6"), "foo")
+  retired <- function(id) signal_soft_deprecated("foo", id)
+  with_options(lifecycle_verbose_soft_deprecation = TRUE, {
+    expect_warning(retired("rlang_test5"), "foo")
   })
+})
+
+test_that("warn_deprecated() repeats warnings when option is set", {
+  scoped_options(lifecycle_verbose_soft_deprecation = TRUE)
+
+  retired1 <- function() signal_soft_deprecated("soft deprecated repeats")
+  retired2 <- function() warn_deprecated("deprecated repeats")
+
+  expect_warning(retired1(), "repeats")
+  expect_warning(retired2(), "repeats")
+
+  expect_no_warning(retired1())
+  expect_no_warning(retired2())
+
+  scoped_options(lifecycle_repeat_warnings = TRUE)
+  expect_warning(retired1(), "repeats")
+  expect_warning(retired2(), "repeats")
+})
+
+test_that("lifecycle warnings helper enable warnings", {
+  retired1 <- function() signal_soft_deprecated("soft deprecated wrn enabled by helper")
+  retired2 <- function() warn_deprecated("deprecated wrn enabled by helper")
+
+  with_options(
+    lifecycle_disable_warnings = TRUE,
+    {
+      evalq({
+        scoped_lifecycle_warnings()
+        expect_warning(retired1(), "enabled")
+        expect_warning(retired1(), "enabled")
+        expect_warning(retired2(), "enabled")
+        expect_warning(retired2(), "enabled")
+      })
+    }
+  )
 })
 
 

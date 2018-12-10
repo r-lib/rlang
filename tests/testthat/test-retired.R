@@ -1,6 +1,6 @@
 context("retired")
 
-scoped_options(lifecycle_disable_verbose_retirement = TRUE)
+scoped_options(lifecycle_disable_warnings = TRUE)
 
 test_that("parse_quosure() forwards to parse_quo()", {
   env <- env()
@@ -431,7 +431,7 @@ test_that("finds correct env type - frame", {
 })
 
 test_that("retired _len() ctors still work", {
-  scoped_options(lifecycle_force_verbose_retirement = FALSE)
+  scoped_options(lifecycle_verbose_soft_deprecation = FALSE)
   expect_identical(lgl_len(2), new_logical(2))
   expect_identical(int_len(2), new_integer(2))
   expect_identical(dbl_len(2), new_double(2))
@@ -443,7 +443,7 @@ test_that("retired _len() ctors still work", {
 })
 
 test_that("retired _along() ctors still work", {
-  scoped_options(lifecycle_force_verbose_retirement = FALSE)
+  scoped_options(lifecycle_verbose_soft_deprecation = FALSE)
   expect_identical(lgl_along(1:2), new_logical_along(1:2))
   expect_identical(int_along(1:2), new_integer_along(1:2))
   expect_identical(dbl_along(1:2), new_double_along(1:2))
@@ -455,7 +455,7 @@ test_that("retired _along() ctors still work", {
 })
 
 test_that("whole scope is purged", {
-  scoped_options(lifecycle_force_verbose_retirement = FALSE)
+  scoped_options(lifecycle_verbose_soft_deprecation = FALSE)
 
   outside <- child_env(NULL, important = TRUE)
   top <- child_env(outside, foo = "bar", hunoz = 1)

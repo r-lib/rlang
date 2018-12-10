@@ -43,14 +43,11 @@ expect_no_message_ <- function(object, ...) {
 }
 
 with_verbose_retirement <- function(expr) {
-  with_options(lifecycle_force_verbose_retirement = TRUE, expr)
+  with_options(lifecycle_verbose_soft_deprecation = TRUE, expr)
 }
 with_non_verbose_retirement <- function(expr) {
-  with_options(lifecycle_disable_verbose_retirement = TRUE, expr)
+  with_options(lifecycle_disable_warnings = TRUE, expr)
 }
-
-options(lifecycle_force_verbose_retirement = TRUE)
-
 
 catch_wngs <- function(expr) {
   wngs <- list()
@@ -110,5 +107,5 @@ skip_silently <- function(reason, env = caller_env()) {
 }
 
 scoped_silent_retirement <- function(env = caller_env()) {
-  scoped_options(lifecycle_disable_verbose_retirement = TRUE, .frame = env)
+  scoped_options(lifecycle_disable_warnings = TRUE, .frame = env)
 }

@@ -9,9 +9,9 @@ void r_warn(const char* fmt, ...);
 void r_abort(const char* fmt, ...) __attribute__((noreturn));
 void r_interrupt();
 
-void r_signal_soft_deprecated(const char* msg, const char* id, const char* package, sexp* env);
+void r_signal_soft_deprecated(const char* msg, const char* id, sexp* env);
 void r_warn_deprecated(const char* id, const char* fmt, ...);
-void r_abort_defunct(const char* fmt, ...);
+void r_stop_defunct(const char* fmt, ...);
 
 sexp* r_interp_str(const char* fmt, ...);
 

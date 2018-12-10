@@ -226,7 +226,7 @@ struct expansion_info which_expansion_op(sexp* x, bool unquote_names) {
     struct expansion_info nested = which_expansion_op(info.operand, false);
     if (nested.op == OP_EXPAND_UQ) {
       const char* msg = "It is no longer necessary to unquote within the `.data` pronoun";
-      r_signal_soft_deprecated(msg, msg, "dplyr", r_empty_env);
+      r_signal_soft_deprecated(msg, msg, r_empty_env);
       info.operand = nested.operand;
     }
 
@@ -356,7 +356,7 @@ sexp* call_interp_impl(sexp* x, sexp* env, struct expansion_info info) {
     r_abort("`UQ()` and `UQS()` must be called with an argument");
   }
   if (info.op == OP_EXPAND_UQE) {
-    r_abort_defunct("`UQE()` is defunct. Please use `!!get_expr(x)`");
+    r_stop_defunct("`UQE()` is defunct. Please use `!!get_expr(x)`");
   }
 
   switch (info.op) {

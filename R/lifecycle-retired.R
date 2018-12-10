@@ -656,7 +656,7 @@ stack_trim <- function(stack, n = 1) {
 #' @keywords internal
 #' @export
 UQE <- function(x) {
-  abort_defunct(msg = "`UQE()` is defunct. Please use `!!get_expr(x)`")
+  stop_defunct(msg = "`UQE()` is defunct. Please use `!!get_expr(x)`")
 }
 
 #' Parse text into a quosure
@@ -764,7 +764,7 @@ overscope_clean <- function(overscope) {
 #' @keywords internal
 #' @export
 eval_tidy_ <- function(expr, bottom, top = NULL, env = caller_env()) {
-  abort_defunct("`eval_tidy_()` is defunct as of rlang 0.3.0. Use `eval_tidy()` instead.")
+  stop_defunct("`eval_tidy_()` is defunct as of rlang 0.3.0. Use `eval_tidy()` instead.")
 }
 #' Evaluate next quosure in a data mask
 #'
@@ -815,7 +815,7 @@ overscope_eval_next <- function(overscope, quo, env = base_env()) {
 #' @keywords internal
 #' @export
 as_dictionary <- function(x, lookup_msg = NULL, read_only = FALSE) {
-  abort_defunct(paste_line(
+  stop_defunct(paste_line(
     "`as_dictionary()` is defunct as of rlang 0.3.0.",
     "Please use `as_data_pronoun()` instead"
   ))
@@ -823,7 +823,7 @@ as_dictionary <- function(x, lookup_msg = NULL, read_only = FALSE) {
 #' @rdname dictionary
 #' @export
 is_dictionary <- function(x) {
-  abort_defunct("`is_dictionary()` is defunct as of rlang 0.3.0.")
+  stop_defunct("`is_dictionary()` is defunct as of rlang 0.3.0.")
 }
 
 #' Test for or coerce to quosure-like objects
@@ -842,12 +842,12 @@ is_dictionary <- function(x) {
 #' @keywords internal
 #' @export
 is_quosureish <- function(x, scoped = NULL) {
-  abort_defunct("`is_quosureish()` is defunct as of rlang 0.3.0")
+  stop_defunct("`is_quosureish()` is defunct as of rlang 0.3.0")
 }
 #' @rdname is_quosureish
 #' @export
 as_quosureish <- function(x, env = caller_env()) {
-  abort_defunct("`as_quosureish()` is defunct as of rlang 0.3.0")
+  stop_defunct("`as_quosureish()` is defunct as of rlang 0.3.0")
 }
 
 
@@ -1219,7 +1219,7 @@ scoped_env <- function(nm) {
     "`scoped_env()` is soft-deprecated as of rlang 0.3.0.",
     "Please use `search_env()` instead."
   ))
-  scoped_options(lifecycle_disable_verbose_retirement = TRUE)
+  scoped_options(lifecycle_disable_warnings = TRUE)
 
   if (identical(nm, "NULL")) {
     return(empty_env())
@@ -1236,7 +1236,7 @@ is_scoped <- function(nm) {
     "`is_scoped()` is soft-deprecated as of rlang 0.3.0.",
     "Please use `is_attached()` instead."
   ))
-  scoped_options(lifecycle_disable_verbose_retirement = TRUE)
+  scoped_options(lifecycle_disable_warnings = TRUE)
 
   if (!is_scalar_character(nm)) {
     stop("`nm` must be a string", call. = FALSE)
@@ -1250,7 +1250,7 @@ scoped_envs <- function() {
     "`scoped_envs()` is soft-deprecated as of rlang 0.3.0.",
     "Please use `search_envs()` instead."
   ))
-  scoped_options(lifecycle_disable_verbose_retirement = TRUE)
+  scoped_options(lifecycle_disable_warnings = TRUE)
 
   envs <- c(list(.GlobalEnv), env_parents(.GlobalEnv))
   set_names(envs, scoped_names())
@@ -1362,56 +1362,56 @@ list_len <- function(.n) {
 #' @export
 lgl_along <- function(.x) {
   signal_soft_deprecated("`lgl_along()` is soft-deprecated as of rlang 0.2.0.")
-  scoped_options(lifecycle_disable_verbose_retirement = TRUE)
+  scoped_options(lifecycle_disable_warnings = TRUE)
   new_logical_along(.x, NULL)
 }
 #' @rdname vector-old-ctors
 #' @export
 int_along <- function(.x) {
   signal_soft_deprecated("`int_along()` is soft-deprecated as of rlang 0.2.0.")
-  scoped_options(lifecycle_disable_verbose_retirement = TRUE)
+  scoped_options(lifecycle_disable_warnings = TRUE)
   new_integer_along(.x, NULL)
 }
 #' @rdname vector-old-ctors
 #' @export
 dbl_along <- function(.x) {
   signal_soft_deprecated("`dbl_along()` is soft-deprecated as of rlang 0.2.0.")
-  scoped_options(lifecycle_disable_verbose_retirement = TRUE)
+  scoped_options(lifecycle_disable_warnings = TRUE)
   new_double_along(.x, NULL)
 }
 #' @rdname vector-old-ctors
 #' @export
 chr_along <- function(.x) {
   signal_soft_deprecated("`chr_along()` is soft-deprecated as of rlang 0.2.0.")
-  scoped_options(lifecycle_disable_verbose_retirement = TRUE)
+  scoped_options(lifecycle_disable_warnings = TRUE)
   new_character_along(.x, NULL)
 }
 #' @rdname vector-old-ctors
 #' @export
 cpl_along <- function(.x) {
   signal_soft_deprecated("`cpl_along()` is soft-deprecated as of rlang 0.2.0.")
-  scoped_options(lifecycle_disable_verbose_retirement = TRUE)
+  scoped_options(lifecycle_disable_warnings = TRUE)
   new_complex_along(.x, NULL)
 }
 #' @rdname vector-old-ctors
 #' @export
 raw_along <- function(.x) {
   signal_soft_deprecated("`raw_along()` is soft-deprecated as of rlang 0.2.0.")
-  scoped_options(lifecycle_disable_verbose_retirement = TRUE)
+  scoped_options(lifecycle_disable_warnings = TRUE)
   new_raw_along(.x, NULL)
 }
 #' @rdname vector-old-ctors
 #' @export
 bytes_along <- function(.x) {
   signal_soft_deprecated("`bytes_along()` is soft-deprecated as of rlang 0.2.0.")
-  scoped_options(lifecycle_disable_verbose_retirement = TRUE)
+  scoped_options(lifecycle_disable_warnings = TRUE)
   new_raw_along(.x, NULL)
 }
 #' @rdname vector-old-ctors
 #' @export
 list_along <- function(.x) {
   signal_soft_deprecated("`list_along()` is soft-deprecated as of rlang 0.2.0.")
-  scoped_options(lifecycle_disable_verbose_retirement = TRUE)
+  scoped_options(lifecycle_disable_warnings = TRUE)
   new_list_along(.x, NULL)
 }
 
