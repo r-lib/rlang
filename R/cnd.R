@@ -552,7 +552,7 @@ cnd_muffle <- function(cnd) {
 
   abort("Can't find a muffling restart")
 }
-class(cnd_muffle) <- c("calling", "handler")
+class(cnd_muffle) <- c("rlang_handler_calling", "rlang_handler", "function")
 
 #' Catch a condition
 #'

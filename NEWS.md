@@ -1,6 +1,14 @@
 
 # rlang 0.3.0.9000
 
+* `exiting()` and `calling()` handlers now inherit from the `function`
+  class. Their subclasses are now prefixed with `"rlang_"`.
+
+  ```r
+  class(exiting(function(cnd) cnd))
+  #> [1] "rlang_handler_exiting" "rlang_handler"         "function"
+  ```
+
 * Top-level S3 objects are now deparsed properly.
 
 * Empty `{` blocks are now deparsed on the same line.

@@ -82,7 +82,7 @@
 with_handlers <- function(.expr, ...) {
   handlers <- map(list2(...), as_function)
 
-  is_calling <- map_lgl(handlers, inherits, "calling")
+  is_calling <- map_lgl(handlers, inherits, "rlang_handler_calling")
   calling <- handlers[is_calling]
   exiting <- handlers[!is_calling]
 
@@ -143,13 +143,13 @@ with_handlers <- function(.expr, ...) {
 #' })
 exiting <- function(handler) {
   handler <- as_function(handler)
-  structure(handler, class = c("exiting", "handler"))
+  structure(handler, class = c("rlang_handler_exiting", "rlang_handler", "function"))
 }
 #' @rdname exiting
 #' @export
 calling <- function(handler) {
   handler <- as_function(handler)
-  structure(handler, class = c("calling", "handler"))
+  structure(handler, class = c("rlang_handler_calling", "rlang_handler", "function"))
 }
 
 #' Create a restarting handler
@@ -221,5 +221,11 @@ restarting <- function(.restart, ..., .fields = NULL) {
     do.call("rst_jump", c(list(.restart = .restart), rst_args))
   }
 
-  structure(handler, class = c("restarting", "calling", "handler"))
+  classes <- c(
+    "rlang_handler_restarting",
+    "rlang_handler_calling",
+    "rlang_handler",
+    "function"
+  )
+  structure(handler, class = classes)
 }
