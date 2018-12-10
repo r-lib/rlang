@@ -99,7 +99,13 @@ warn_deprecated <- function(msg, id = msg) {
   has_colour <- function() rlang::is_installed("crayon") && crayon::has_color()
   silver <- function(x) if (has_colour()) crayon::silver(x) else x
 
-  .Deprecated(msg = paste0(
+  if (rlang::is_true(rlang::peek_option("lifecycle_warnings_as_errors"))) {
+    signal <- .Defunct
+  } else {
+    signal <- .Deprecated
+  }
+
+  signal(msg = paste0(
     msg,
     "\n",
     silver("This warning is displayed once per session.")
@@ -130,6 +136,17 @@ scoped_lifecycle_warnings <- function(frame = rlang::caller_env()) {
 }
 with_lifecycle_warnings <- function(expr) {
   scoped_lifecycle_warnings()
+  expr
+}
+
+scoped_lifecycle_errors <- function(frame = rlang::caller_env()) {
+  scoped_lifecycle_warnings(frame = frame)
+  rlang::scoped_options(.frame = frame,
+    lifecycle_warnings_as_errors = TRUE
+  )
+}
+with_lifecycle_warnings <- function(expr) {
+  scoped_lifecycle_errors()
   expr
 }
 
