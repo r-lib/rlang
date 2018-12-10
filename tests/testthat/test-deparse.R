@@ -403,3 +403,7 @@ test_that("symbols with unicode are deparsed consistently (#691)", {
   expect_identical(expr_text(sym("a\u00e2")), "a\u00e2")
   expect_identical(expr_deparse(sym("a\u00e2")), "a\u00e2")
 })
+
+test_that("formal parameters are backticked if needed", {
+  expect_identical(expr_deparse(function(`^`) {}), c("<function(`^`) {", "}>"))
+})

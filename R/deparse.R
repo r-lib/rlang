@@ -203,7 +203,7 @@ fmls_deparse <- function(x, lines = new_lines()) {
   lines$increase_indent()
 
   while (!is_null(x)) {
-    lines$push(as_string(node_tag(x)))
+    sym_deparse(node_tag(x), lines)
 
     car <- node_car(x)
     if (!is_missing(car)) {
