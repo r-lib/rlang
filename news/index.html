@@ -128,6 +128,7 @@
 <a href="#rlang-0-3-0-9000" class="anchor"></a>rlang 0.3.0.9000<small> Unreleased </small>
 </h1>
 <ul>
+<li><p>Fixed a deparsing issue with symbols containing non-ASCII characters (<a href='https://github.com/r-lib/rlang/issues/691'>#691</a>).</p></li>
 <li><p><code><a href="../reference/expr_print.html">expr_print()</a></code> now handles <code>[</code> and <code>[[</code> operators correctly, and deparses non-syntactic symbols with backticks.</p></li>
 <li><p><code><a href="../reference/call_modify.html">call_modify()</a></code> now respects ordering of unnamed inputs. Before this fix, it would move all unnamed inputs after named ones.</p></li>
 <li><p><code><a href="../reference/as_function.html">as_closure()</a></code> wrappers now call primitives with positional arguments to avoid edge case issues of argument matching.</p></li>
