@@ -1,6 +1,8 @@
 
 # rlang 0.3.0.9000
 
+* Top-level S3 objects are now deparsed properly.
+
 * Empty `{` blocks are now deparsed on the same line.
 
 * Fixed a deparsing issue with symbols containing non-ASCII

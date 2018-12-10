@@ -411,3 +411,8 @@ test_that("formal parameters are backticked if needed", {
 test_that("empty blocks are deparsed on the same line", {
   expect_identical(expr_deparse(quote({ })), "{ }")
 })
+
+test_that("top-level S3 objects are deparsed", {
+  f <- structure(function() { }, class = "lambda")
+  expect_identical(expr_deparse(f), "<S3: lambda>")
+})

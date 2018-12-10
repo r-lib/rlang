@@ -699,8 +699,7 @@ default_deparse <- function(x, lines = new_lines()) {
 
 sexp_deparse <- function(x, lines = new_lines()) {
   if (is.object(x)) {
-    s3_deparse(x, lines)
-    return(NULL)
+    return(s3_deparse(x, lines))
   }
 
   deparser <- switch (typeof(x),
