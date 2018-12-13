@@ -558,21 +558,29 @@ class(cnd_muffle) <- c("rlang_handler_calling", "rlang_handler", "function")
 #'
 #' This is a small wrapper around `tryCatch()` that captures any
 #' condition signalled while evaluating its argument. It is useful for
-#' debugging and unit testing.
+#' situations where you expect a specific condition to be signalled,
+#' for debugging, and for unit testing.
 #'
-#' @param expr Expression to be evaluated with a catch-all condition
+#' @param expr Expression to be evaluated with a catching condition
 #'   handler.
+#' @param class The class of the condition to catch. By default, catch
+#'   any condition.
 #' @return A condition if any was signalled, `NULL` otherwise.
 #' @export
 #' @examples
 #' catch_cnd(10)
 #' catch_cnd(abort("an error"))
 #' catch_cnd(cnd_signal("my_condition", .msg = "a condition"))
-catch_cnd <- function(expr) {
-  tryCatch(condition = identity, {
-    force(expr)
-    return(NULL)
-  })
+catch_cnd <- function(expr, class = "condition") {
+  stopifnot(is_string(class))
+  handler <- list2(!!class := identity)
+
+  eval_bare(rlang::expr(
+    tryCatch(!!!handler, {
+      force(expr)
+      return(NULL)
+    })
+  ))
 }
 
 #' @export

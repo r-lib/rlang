@@ -1,6 +1,10 @@
 
 # rlang 0.3.0.9000
 
+* `catch_cnd()` gains a `class` argument to specify which class of
+  condition to catch. It returns `NULL` if the expected condition
+  could not be caught (#696).
+
 * New `call_ns()` function to retrieve the namespace of a
   call. Returns `NULL` if the call is not namespaced.
 

@@ -458,6 +458,15 @@ test_that("handlers inherit from `function`", {
   expect_identical(foo(calling(function() NULL)), "dispatched!")
 })
 
+test_that("can catch condition of specific classes", {
+  expect_null(catch_cnd(signal("", "bar"), "foo"))
+  expect_is(catch_cnd(signal("", "bar"), "bar"), "bar")
+  expect_is(catch_cnd(stop(""), "error"), "error")
+
+  expect_is(catch_cnd(stop("tilt")), "error")
+  expect_error(catch_cnd(stop("tilt"), "foo"), "tilt")
+})
+
 
 # Lifecycle ----------------------------------------------------------
 

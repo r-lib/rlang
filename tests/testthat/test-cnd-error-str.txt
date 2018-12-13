@@ -5,6 +5,7 @@ fields:  `message`, `trace` and `parent`
 backtrace:
 █
 ├─rlang::catch_cnd(a())
+│ ├─rlang::eval_bare(...)
 │ ├─base::tryCatch(...)
 │ │ └─base:::tryCatchList(expr, classes, parentenv, handlers)
 │ │   └─base:::tryCatchOne(expr, names, parentenv, handlers[[1L]])

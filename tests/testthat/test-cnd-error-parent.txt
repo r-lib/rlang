@@ -5,6 +5,7 @@ class:   `rlang_error`
 backtrace:
 █
 ├─rlang::catch_cnd(a())
+│ ├─rlang::eval_bare(...)
 │ ├─base::tryCatch(...)
 │ │ └─base:::tryCatchList(expr, classes, parentenv, handlers)
 │ │   └─base:::tryCatchOne(expr, names, parentenv, handlers[[1L]])
@@ -28,7 +29,7 @@ message: High-level message
 class:   `rlang_error`
 backtrace:
 █
-├─[ rlang::catch_cnd(...) ] with 5 more calls
+├─[ rlang::catch_cnd(...) ] with 6 more calls
 └─rlang:::a()
   └─rlang:::b()
     └─rlang:::c()

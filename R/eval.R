@@ -260,3 +260,7 @@ invoke <- function(.fn, .args = list(), ...,
   call <- call2(.fn, !!! args)
   .Call(rlang_eval, call, .env)
 }
+
+value <- function(expr) {
+  eval_bare(enexpr(expr), caller_env())
+}

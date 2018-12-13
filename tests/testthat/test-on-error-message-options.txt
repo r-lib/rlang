@@ -36,7 +36,7 @@ Backtrace:
 └─rlang:::msg()
   ├─[ base::cat(...) ]
   ├─[ base::conditionMessage(...) ]
-  ├─[ rlang::catch_cnd(...) ] with 5 more calls
+  ├─[ rlang::catch_cnd(...) ] with 6 more calls
   └─rlang:::f()
     ├─[ base::tryCatch(...) ] with 1 more call
     └─rlang:::g()

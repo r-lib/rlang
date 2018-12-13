@@ -4,11 +4,14 @@
 \alias{catch_cnd}
 \title{Catch a condition}
 \usage{
-catch_cnd(expr)
+catch_cnd(expr, class = "condition")
 }
 \arguments{
-\item{expr}{Expression to be evaluated with a catch-all condition
+\item{expr}{Expression to be evaluated with a catching condition
 handler.}
+
+\item{class}{The class of the condition to catch. By default, catch
+any condition.}
 }
 \value{
 A condition if any was signalled, \code{NULL} otherwise.
@@ -16,7 +19,8 @@ A condition if any was signalled, \code{NULL} otherwise.
 \description{
 This is a small wrapper around \code{tryCatch()} that captures any
 condition signalled while evaluating its argument. It is useful for
-debugging and unit testing.
+situations where you expect a specific condition to be signalled,
+for debugging, and for unit testing.
 }
 \examples{
 catch_cnd(10)

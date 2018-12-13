@@ -30,6 +30,7 @@ backtrace:
 █
 ├─base::identity(catch_cnd(a()))
 ├─rlang::catch_cnd(a())
+│ ├─rlang::eval_bare(...)
 │ ├─base::tryCatch(...)
 │ │ └─base:::tryCatchList(expr, classes, parentenv, handlers)
 │ │   └─base:::tryCatchOne(expr, names, parentenv, handlers[[1L]])
