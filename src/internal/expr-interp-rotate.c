@@ -332,6 +332,11 @@ static sexp* maybe_rotate(sexp* op, sexp* env, struct ast_rotation_info* info) {
  * there is a &struct ast_rotation_info on the stack.
  */
 sexp* fixup_interp(sexp* x, sexp* env) {
+  // Happens with constructed calls without arguments such as `/`()
+  if (r_node_cdr(x) == r_null) {
+    return x;
+  }
+
   struct ast_rotation_info rotation_info;
   initialise_rotation_info(&rotation_info);
 

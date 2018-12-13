@@ -352,7 +352,7 @@ sexp* call_interp(sexp* x, sexp* env)  {
 }
 
 sexp* call_interp_impl(sexp* x, sexp* env, struct expansion_info info) {
-  if (info.op && r_node_cdr(x) == r_null) {
+  if (info.op && info.op != OP_EXPAND_FIXUP && r_node_cdr(x) == r_null) {
     r_abort("`UQ()` and `UQS()` must be called with an argument");
   }
   if (info.op == OP_EXPAND_UQE) {

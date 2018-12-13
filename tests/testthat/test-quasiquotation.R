@@ -149,7 +149,8 @@ test_that("LHS of nested `!!` is expanded (#405)", {
   expect_identical_(expr(!!1 + !!2 + foo(!!3) + !!4), quote(1 + 2 + foo(3) + 4))
 })
 
-test_that("operators with single argument work (#652)", {
+test_that("operators with zero or one argument work (#652)", {
+  expect_identical(quo(`/`()), new_quosure(quote(`/`())))
   expect_identical(expr(`/`(2)), quote(`/`(2)))
 })
 
