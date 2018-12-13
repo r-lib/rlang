@@ -468,13 +468,27 @@ as_closure <- function(x, env = caller_env()) {
       }
 
       fmls <- formals(.ArgsEnv[[fn_name]] %||% .GenericArgsEnv[[fn_name]])
-      prim_call <- call2(x, !!!syms(names(fmls)))
+      prim_call <- call2(x, !!!prim_args(fmls))
 
       # The closure wrapper should inherit from the global environment
       # to ensure proper lexical dispatch with methods defined there
       new_function(fmls, prim_call, global_env())
     }
   )
+}
+
+prim_args <- function(fmls) {
+  args <- names(fmls)
+
+  # Set argument names but only after `...`. Arguments before dots
+  # should be positionally matched.
+  dots_i <- match("...", args)
+  if (!is_na(dots_i)) {
+    idx <- seq2(dots_i + 1L, length(args))
+    names2(args)[idx] <- args[idx]
+  }
+
+  syms(args)
 }
 
 utils::globalVariables(c("!<-", "(<-", "enexpr<-"))

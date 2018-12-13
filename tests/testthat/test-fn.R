@@ -272,6 +272,12 @@ test_that("as_closure() wrappers are not masked", {
   expect_identical(as_closure(as.character)(1), "1")
 })
 
-test_that("as_closure() wrappers don't add argument names (tidyverse/purrr#411)", {
+test_that("arguments of closured primitives are matched by name before `...` (tidyverse/purrr#411)", {
   expect_false(as_closure(isS4)("foo"))
+})
+
+test_that("arguments of closured primitives are matched by name after `...`", {
+  fn <- as_closure(min)
+  expect_true(is_na(fn(1, NA)))
+  expect_identical(fn(na.rm = TRUE, 1, NA), 1)
 })
