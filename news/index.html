@@ -128,6 +128,7 @@
 <a href="#rlang-0-3-0-9000" class="anchor"></a>rlang 0.3.0.9000<small> Unreleased </small>
 </h1>
 <ul>
+<li><p>Fixed a quotation bug with binary operators of zero or one argument such as <code>`/`(1)</code> (<a href='https://github.com/r-lib/rlang/issues/652'>#652</a>). They are now deparsed and printed properly as well.</p></li>
 <li><p><code><a href="../reference/catch_cnd.html">catch_cnd()</a></code> gains a <code>class</code> argument to specify which class of condition to catch. It returns <code>NULL</code> if the expected condition could not be caught (<a href='https://github.com/r-lib/rlang/issues/696'>#696</a>).</p></li>
 <li><p>New <code><a href="../reference/call_name.html">call_ns()</a></code> function to retrieve the namespace of a call. Returns <code>NULL</code> if the call is not namespaced.</p></li>
 <li><p>New template file <code>R/lifecycle.R</code> containing functions and documentation for lifecycle management: retirement warnings and errors, and inclusion of lifecycle badges in documentation.</p></li>
