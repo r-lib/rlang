@@ -1,6 +1,9 @@
 
 # rlang 0.3.0.9000
 
+* New `call_ns()` function to retrieve the namespace of a
+  call. Returns `NULL` if the call is not namespaced.
+
 * New template file `R/lifecycle.R` containing functions and
   documentation for lifecycle management: retirement warnings and
   errors, and inclusion of lifecycle badges in documentation.

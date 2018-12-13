@@ -2,9 +2,12 @@
 % Please edit documentation in R/call.R
 \name{call_name}
 \alias{call_name}
-\title{Extract function name of a call}
+\alias{call_ns}
+\title{Extract function name or namespaced of a call}
 \usage{
 call_name(call)
+
+call_ns(call)
 }
 \arguments{
 \item{call}{Can be a call or a quosure that wraps a call.}
@@ -14,7 +17,7 @@ A string with the function name, or \code{NULL} if the function
 is anonymous.
 }
 \description{
-Extract function name of a call
+Extract function name or namespaced of a call
 }
 \section{Life cycle}{
 
@@ -29,10 +32,6 @@ change.
 call_name(quote(foo(bar)))
 call_name(quo(foo(bar)))
 
-# Or from a frame:
-foo <- function(bar) call_name(call_frame())
-foo(bar)
-
 # Namespaced calls are correctly handled:
 call_name(~base::matrix(baz))
 
@@ -40,6 +39,12 @@ call_name(~base::matrix(baz))
 call_name(quote(foo$bar()))
 call_name(quote(foo[[bar]]()))
 call_name(quote(foo()()))
+
+# Extract namespace of a call with call_ns():
+call_ns(quote(base::bar()))
+
+# If not namespaced, call_ns() returns NULL:
+call_ns(quote(bar()))
 }
 \seealso{
 \code{\link[=call_fn]{call_fn()}}

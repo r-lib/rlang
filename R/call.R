@@ -670,8 +670,7 @@ call_fn <- function(call, env = caller_env()) {
   )
 }
 
-#' Extract function name of a call
-#'
+#' Extract function name or namespaced of a call
 #'
 #' @section Life cycle:
 #'
@@ -689,10 +688,6 @@ call_fn <- function(call, env = caller_env()) {
 #' call_name(quote(foo(bar)))
 #' call_name(quo(foo(bar)))
 #'
-#' # Or from a frame:
-#' foo <- function(bar) call_name(call_frame())
-#' foo(bar)
-#'
 #' # Namespaced calls are correctly handled:
 #' call_name(~base::matrix(baz))
 #'
@@ -700,8 +695,16 @@ call_fn <- function(call, env = caller_env()) {
 #' call_name(quote(foo$bar()))
 #' call_name(quote(foo[[bar]]()))
 #' call_name(quote(foo()()))
+#'
+#' # Extract namespace of a call with call_ns():
+#' call_ns(quote(base::bar()))
+#'
+#' # If not namespaced, call_ns() returns NULL:
+#' call_ns(quote(bar()))
 call_name <- function(call) {
-  call <- get_expr(call)
+  if (is_quosure(call) || is_formula(call)) {
+    call <- get_expr(call)
+  }
 
   if (!is_call(call) || is_call(call, c("::", ":::"))) {
     abort_call_input_type("call")
@@ -712,6 +715,24 @@ call_name <- function(call) {
     namespaced = as_string(node_cadr(node_cdar(call))),
     NULL
   )
+}
+#' @rdname call_name
+#' @export
+call_ns <- function(call) {
+  if (is_quosure(call) || is_formula(call)) {
+    call <- get_expr(call)
+  }
+
+  if (!is_call(call)) {
+    abort_call_input_type("call")
+  }
+
+  head <- node_car(call)
+  if (is_call(head, c("::", ":::"))) {
+    as_string(node_cadr(head))
+  } else {
+    NULL
+  }
 }
 
 #' Extract arguments from a call

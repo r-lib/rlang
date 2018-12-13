@@ -181,11 +181,8 @@ test_that("call_name() handles namespaced and anonymous calls", {
   expect_null(call_name(quote((function() NULL)())))
 })
 
-test_that("call_name() handles formulas and frames", {
+test_that("call_name() handles formulas", {
   expect_identical(call_name(~foo(baz)), "foo")
-
-  fn <- function() call_name(call_frame())
-  expect_identical(fn(), "fn")
 })
 
 test_that("call_fn() extracts function", {
@@ -449,4 +446,11 @@ test_that("call_print_fine_type() returns correct enum", {
 test_that("call_name() fails with namespaced objects (#670)", {
   expect_error(call_name(~foo::bar), "`call` must be a quoted call")
   expect_error(call_name(~foo:::bar), "`call` must be a quoted call")
+})
+
+test_that("call_ns() retrieves namespaces", {
+  expect_error(call_ns(quote(foo)), "must be a quoted call")
+  expect_null(call_ns(quote(foo())))
+  expect_identical(call_ns(quote(foo::bar())), "foo")
+  expect_identical(call_ns(quote(foo:::bar())), "foo")
 })
