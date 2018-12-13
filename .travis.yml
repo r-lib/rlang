@@ -19,6 +19,8 @@ matrix:
         script: Rscript -e 'options(crayon.enabled = FALSE); pkgdown::deploy_site_github(verbose = TRUE)'
         skip_cleanup: true
     - r: devel
+  allow_failures:
+    - r: devel
 
 env:
   global:
