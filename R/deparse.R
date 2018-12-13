@@ -322,6 +322,11 @@ operand_deparse <- function(x, parent, side, lines) {
 }
 
 binary_op_deparse <- function(x, lines = new_lines(), space = " ") {
+  # Constructed call without second argument
+  if (is_null(node_cddr(x))) {
+    return(call_deparse(x, lines))
+  }
+
   outer <- x;
   op <- as_string(node_car(x))
 

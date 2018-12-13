@@ -417,3 +417,10 @@ test_that("top-level S3 objects are deparsed", {
   f <- structure(function() { }, class = "lambda")
   expect_identical(expr_deparse(f), "<S3: lambda>")
 })
+
+test_that("binary operators with 0 or 1 arguments are properly deparsed", {
+  expect_identical_(expr_deparse(quote(`/`())), "`/`()")
+  expect_identical(expr_deparse(quote(`/`("foo"))), "`/`(\"foo\")")
+  expect_identical_(expr_deparse(quote(`::`())), "`::`()")
+  expect_identical(expr_deparse(quote(`::`("foo"))), "`::`(\"foo\")")
+})

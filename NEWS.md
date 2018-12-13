@@ -1,7 +1,9 @@
 
 # rlang 0.3.0.9000
 
-* Fixed a quotation bug with binary operators of one argument such as `` `/`(1) `` (#652).
+* Fixed a quotation bug with binary operators of one argument such as
+  `` `/`(1) `` (#652). They are now deparsed and printed properly as
+  well.
 
 * `catch_cnd()` gains a `class` argument to specify which class of
   condition to catch. It returns `NULL` if the expected condition
