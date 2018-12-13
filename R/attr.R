@@ -220,6 +220,15 @@ names2 <- function(x) {
   }
 }
 
+# Avoids `NA` names on subset-assign with unnamed vectors
+`names2<-` <- function(x, value) {
+  if (is_null(names(x))) {
+    names(x) <- names2(x)
+  }
+  names(x) <- value
+  x
+}
+
 length_ <- function(x) {
   .Call(rlang_length, x)
 }
