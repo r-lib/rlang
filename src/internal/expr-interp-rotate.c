@@ -533,6 +533,11 @@ static sexp* node_list_interp_fixup(sexp* x, sexp* parent, sexp* env,
  */
 static void node_list_interp_fixup_rhs(sexp* rhs, sexp* rhs_node, sexp* parent,
                                        sexp* env, struct ast_rotation_info* info) {
+  // Happens with constructed calls like `/`(1)
+  if (rhs_node == r_null) {
+    return;
+  }
+
   // An upper pivot is an operand of a !! call that is a binary
   // operation whose precedence is problematic (between prec(`!`) and
   // prec(`!!`))
