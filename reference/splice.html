@@ -222,7 +222,7 @@ the behaviour of the quasiquoting function has priority. You might
 then observe some performance cost in edge cases. Here is one
 example where this would happen:</p><pre>purrr::rerun(10, dplyr::bind_rows(!!! x))
 </pre>
-    <p><code><a href='https://www.rdocumentation.org/packages/purrr/topics/rerun'>purrr::rerun()</a></code> is a quoting function and <code>dplyr::bind_rows()</code> is
+    <p><code><a href='https://purrr.tidyverse.org/reference/rerun.html'>purrr::rerun()</a></code> is a quoting function and <code>dplyr::bind_rows()</code> is
 a standard function. Because <code>bind_rows()</code> is called <em>inside</em>
 <code>rerun()</code>, the list <code>x</code> will be disaggregated into a pairlist of
 arguments. To avoid this you can use <code>splice()</code> instead:</p><pre>purrr::rerun(10, dplyr::bind_rows(splice(x)))

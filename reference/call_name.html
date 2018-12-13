@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Extract function name of a call — call_name • rlang</title>
+<title>Extract function name or namespaced of a call — call_name • rlang</title>
 
 <!-- jquery -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=" crossorigin="anonymous"></script>
@@ -30,9 +30,9 @@
 
 
 
-<meta property="og:title" content="Extract function name of a call — call_name" />
+<meta property="og:title" content="Extract function name or namespaced of a call — call_name" />
 
-<meta property="og:description" content="Extract function name of a call" />
+<meta property="og:description" content="Extract function name or namespaced of a call" />
 <meta name="twitter:card" content="summary" />
 
 
@@ -122,18 +122,20 @@
 <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-    <h1>Extract function name of a call</h1>
+    <h1>Extract function name or namespaced of a call</h1>
     <small class="dont-index">Source: <a href='https://github.com/r-lib/rlang/blob/master/R/call.R'><code>R/call.R</code></a></small>
     <div class="hidden name"><code>call_name.Rd</code></div>
     </div>
 
     <div class="ref-description">
     
-    <p>Extract function name of a call</p>
+    <p>Extract function name or namespaced of a call</p>
     
     </div>
 
-    <pre class="usage"><span class='fu'>call_name</span>(<span class='no'>call</span>)</pre>
+    <pre class="usage"><span class='fu'>call_name</span>(<span class='no'>call</span>)
+
+<span class='fu'>call_ns</span>(<span class='no'>call</span>)</pre>
     
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
@@ -164,13 +166,14 @@ change.</p>
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
     <pre class="examples"><div class='input'><span class='co'># Extract the function name from quoted calls:</span>
 <span class='fu'>call_name</span>(<span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/substitute'>quote</a></span>(<span class='fu'>foo</span>(<span class='no'>bar</span>)))</div><div class='output co'>#&gt; [1] "foo"</div><div class='input'><span class='fu'>call_name</span>(<span class='fu'><a href='quotation.html'>quo</a></span>(<span class='fu'>foo</span>(<span class='no'>bar</span>)))</div><div class='output co'>#&gt; [1] "foo"</div><div class='input'>
-<span class='co'># Or from a frame:</span>
-<span class='no'>foo</span> <span class='kw'>&lt;-</span> <span class='kw'>function</span>(<span class='no'>bar</span>) <span class='fu'>call_name</span>(<span class='fu'><a href='stack.html'>call_frame</a></span>())
-<span class='fu'>foo</span>(<span class='no'>bar</span>)</div><div class='output co'>#&gt; [1] "foo"</div><div class='input'>
 <span class='co'># Namespaced calls are correctly handled:</span>
 <span class='fu'>call_name</span>(~<span class='kw pkg'>base</span><span class='kw ns'>::</span><span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/matrix'>matrix</a></span>(<span class='no'>baz</span>))</div><div class='output co'>#&gt; [1] "matrix"</div><div class='input'>
 <span class='co'># Anonymous and subsetted functions return NULL:</span>
-<span class='fu'>call_name</span>(<span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/substitute'>quote</a></span>(<span class='no'>foo</span>$<span class='fu'><a href='https://www.rdocumentation.org/packages/grDevices/topics/plotmath'>bar</a></span>()))</div><div class='output co'>#&gt; NULL</div><div class='input'><span class='fu'>call_name</span>(<span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/substitute'>quote</a></span>(<span class='no'>foo</span><span class='kw'>[[</span><span class='no'>bar</span>]]()))</div><div class='output co'>#&gt; NULL</div><div class='input'><span class='fu'>call_name</span>(<span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/substitute'>quote</a></span>(<span class='fu'>foo</span>()()))</div><div class='output co'>#&gt; NULL</div></pre>
+<span class='fu'>call_name</span>(<span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/substitute'>quote</a></span>(<span class='no'>foo</span>$<span class='fu'><a href='https://www.rdocumentation.org/packages/grDevices/topics/plotmath'>bar</a></span>()))</div><div class='output co'>#&gt; NULL</div><div class='input'><span class='fu'>call_name</span>(<span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/substitute'>quote</a></span>(<span class='no'>foo</span><span class='kw'>[[</span><span class='no'>bar</span>]]()))</div><div class='output co'>#&gt; NULL</div><div class='input'><span class='fu'>call_name</span>(<span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/substitute'>quote</a></span>(<span class='fu'>foo</span>()()))</div><div class='output co'>#&gt; NULL</div><div class='input'>
+<span class='co'># Extract namespace of a call with call_ns():</span>
+<span class='fu'>call_ns</span>(<span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/substitute'>quote</a></span>(<span class='kw pkg'>base</span><span class='kw ns'>::</span><span class='fu'>bar</span>()))</div><div class='output co'>#&gt; [1] "base"</div><div class='input'>
+<span class='co'># If not namespaced, call_ns() returns NULL:</span>
+<span class='fu'>call_ns</span>(<span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/substitute'>quote</a></span>(<span class='fu'><a href='https://www.rdocumentation.org/packages/grDevices/topics/plotmath'>bar</a></span>()))</div><div class='output co'>#&gt; NULL</div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
     <h2>Contents</h2>
