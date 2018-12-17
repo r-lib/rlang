@@ -21,7 +21,7 @@ as_complex(x)
 
 as_character(x, encoding = NULL)
 
-as_string(x, encoding = NULL)
+as_string(x)
 
 as_list(x)
 }
