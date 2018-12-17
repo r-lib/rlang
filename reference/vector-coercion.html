@@ -161,8 +161,6 @@ functions: all attributes except names are removed.</p>
 
 <span class='fu'>as_character</span>(<span class='no'>x</span>, <span class='kw'>encoding</span> <span class='kw'>=</span> <span class='kw'>NULL</span>)
 
-<span class='fu'>as_string</span>(<span class='no'>x</span>, <span class='kw'>encoding</span> <span class='kw'>=</span> <span class='kw'>NULL</span>)
-
 <span class='fu'>as_list</span>(<span class='no'>x</span>)</pre>
     
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
@@ -194,7 +192,7 @@ conversion is performed.</p></td>
     <h2 class="hasAnchor" id="coercion-to-character-vectors"><a class="anchor" href="#coercion-to-character-vectors"></a>Coercion to character vectors</h2>
 
     
-    <p><code>as_character()</code> and <code>as_string()</code> have an optional <code>encoding</code>
+    <p><code>as_character()</code> and <code><a href='as_string.html'>as_string()</a></code> have an optional <code>encoding</code>
 argument to specify the encoding. R uses this information for
 internal handling of strings and character vectors. Note that this
 is only declarative, no encoding conversion is attempted. See
@@ -203,7 +201,7 @@ character vector and attempt encoding conversion.</p>
 <p>See also <code><a href='set_chr_encoding.html'>set_chr_encoding()</a></code> and <code><a href='mut_utf8_locale.html'>mut_utf8_locale()</a></code> for
 information about encodings and locales in R, and <code><a href='string.html'>string()</a></code> and
 <code><a href='vector-construction.html'>chr()</a></code> for other ways of creating strings and character vectors.</p>
-<p>Note that only <code>as_string()</code> can coerce symbols to a scalar
+<p>Note that only <code><a href='as_string.html'>as_string()</a></code> can coerce symbols to a scalar
 character vector. This makes the code more explicit and adds an
 extra type check.</p>
     

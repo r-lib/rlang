@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Set and get an expression — set_expr • rlang</title>
+<title>Cast symbol to string — as_string • rlang</title>
 
 <!-- jquery -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=" crossorigin="anonymous"></script>
@@ -30,15 +30,9 @@
 
 
 
-<meta property="og:title" content="Set and get an expression — set_expr" />
+<meta property="og:title" content="Cast symbol to string — as_string" />
 
-<meta property="og:description" content="These helpers are useful to make your function work generically
-with quosures and raw expressions. First call get_expr() to
-extract an expression. Once you're done processing the expression,
-call set_expr() on the original object to update the expression.
-You can return the result of set_expr(), either a formula or an
-expression depending on the input type. Note that set_expr() does
-not change its input, it creates a new object." />
+<meta property="og:description" content="as_string() converts symbols to character strings." />
 <meta name="twitter:card" content="summary" />
 
 
@@ -128,65 +122,42 @@ not change its input, it creates a new object." />
 <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-    <h1>Set and get an expression</h1>
-    <small class="dont-index">Source: <a href='https://github.com/r-lib/rlang/blob/master/R/expr.R'><code>R/expr.R</code></a></small>
-    <div class="hidden name"><code>set_expr.Rd</code></div>
+    <h1>Cast symbol to string</h1>
+    <small class="dont-index">Source: <a href='https://github.com/r-lib/rlang/blob/master/R/sym.R'><code>R/sym.R</code></a></small>
+    <div class="hidden name"><code>as_string.Rd</code></div>
     </div>
 
     <div class="ref-description">
     
-    <p>These helpers are useful to make your function work generically
-with quosures and raw expressions. First call <code>get_expr()</code> to
-extract an expression. Once you're done processing the expression,
-call <code>set_expr()</code> on the original object to update the expression.
-You can return the result of <code>set_expr()</code>, either a formula or an
-expression depending on the input type. Note that <code>set_expr()</code> does
-not change its input, it creates a new object.</p>
+    <p><code>as_string()</code> converts <a href='sym.html'>symbols</a> to character strings.</p>
     
     </div>
 
-    <pre class="usage"><span class='fu'>set_expr</span>(<span class='no'>x</span>, <span class='no'>value</span>)
-
-<span class='fu'>get_expr</span>(<span class='no'>x</span>, <span class='kw'>default</span> <span class='kw'>=</span> <span class='no'>x</span>)</pre>
+    <pre class="usage"><span class='fu'>as_string</span>(<span class='no'>x</span>)</pre>
     
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
     <colgroup><col class="name" /><col class="desc" /></colgroup>
     <tr>
       <th>x</th>
-      <td><p>An expression, closure, or one-sided formula. In addition,
-<code>set_expr()</code> accept frames.</p></td>
-    </tr>
-    <tr>
-      <th>value</th>
-      <td><p>An updated expression.</p></td>
-    </tr>
-    <tr>
-      <th>default</th>
-      <td><p>A default expression to return when <code>x</code> is not an
-expression wrapper. Defaults to <code>x</code> itself.</p></td>
+      <td><p>A string or symbol. If a string, the attributes are
+removed, if any.</p></td>
     </tr>
     </table>
     
     <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
 
-    <p>The updated original input for <code>set_expr()</code>. A raw
-expression for <code>get_expr()</code>.</p>
-    
-    <h2 class="hasAnchor" id="see-also"><a class="anchor" href="#see-also"></a>See also</h2>
-
-    <div class='dont-index'><p><code><a href='quosure.html'>quo_get_expr()</a></code> and <code><a href='quosure.html'>quo_set_expr()</a></code> for versions of
-<code>get_expr()</code> and <code>set_expr()</code> that only work on quosures.</p></div>
+    <p>A character vector of length 1.</p>
     
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><div class='input'><span class='no'>f</span> <span class='kw'>&lt;-</span> ~<span class='fu'>foo</span>(<span class='no'>bar</span>)
-<span class='no'>e</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/substitute'>quote</a></span>(<span class='fu'>foo</span>(<span class='no'>bar</span>))
-<span class='no'>frame</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/identity'>identity</a></span>(<span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/identity'>identity</a></span>(<span class='fu'><a href='stack.html'>ctxt_frame</a></span>()))</div><div class='output co'>#&gt; <span class='warning'>Warning: `ctxt_frame()` is soft-deprecated as of rlang 0.3.0.</span>
-#&gt; <span class='warning'>This warning is displayed once per session.</span></div><div class='input'>
-<span class='fu'>get_expr</span>(<span class='no'>f</span>)</div><div class='output co'>#&gt; foo(bar)</div><div class='input'><span class='fu'>get_expr</span>(<span class='no'>e</span>)</div><div class='output co'>#&gt; foo(bar)</div><div class='input'><span class='fu'>get_expr</span>(<span class='no'>frame</span>)</div><div class='output co'>#&gt; identity(ctxt_frame())</div><div class='input'>
-<span class='fu'>set_expr</span>(<span class='no'>f</span>, <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/substitute'>quote</a></span>(<span class='no'>baz</span>))</div><div class='output co'>#&gt; ~baz
-#&gt; &lt;environment: 0x8aa1a98&gt;</div><div class='input'><span class='fu'>set_expr</span>(<span class='no'>e</span>, <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/substitute'>quote</a></span>(<span class='no'>baz</span>))</div><div class='output co'>#&gt; baz</div></pre>
+    <pre class="examples"><div class='input'><span class='co'># Let's create some symbols:</span>
+<span class='no'>foo</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/substitute'>quote</a></span>(<span class='no'>foo</span>)
+<span class='no'>bar</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='sym.html'>sym</a></span>(<span class='st'>"bar"</span>)
+
+<span class='co'># as_string() converts symbols to strings:</span>
+<span class='no'>foo</span></div><div class='output co'>#&gt; foo</div><div class='input'><span class='fu'>as_string</span>(<span class='no'>foo</span>)</div><div class='output co'>#&gt; [1] "foo"</div><div class='input'>
+<span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/typeof'>typeof</a></span>(<span class='no'>bar</span>)</div><div class='output co'>#&gt; [1] "symbol"</div><div class='input'><span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/typeof'>typeof</a></span>(<span class='fu'>as_string</span>(<span class='no'>bar</span>))</div><div class='output co'>#&gt; [1] "character"</div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
     <h2>Contents</h2>
@@ -194,8 +165,6 @@ expression for <code>get_expr()</code>.</p>
       <li><a href="#arguments">Arguments</a></li>
       
       <li><a href="#value">Value</a></li>
-
-      <li><a href="#see-also">See also</a></li>
       
       <li><a href="#examples">Examples</a></li>
     </ul>
