@@ -220,20 +220,40 @@ normalise_parents <- function(parents) {
   parents
 }
 
-new_trace <- function(calls, parents, envs) {
-  stopifnot(is.list(calls), is.integer(parents), length(calls) == length(parents))
+new_trace <- function(calls, parents, envs, indices = NULL) {
+  indices <- indices %||% seq_along(calls)
+
+  n <- length(calls)
+  stopifnot(
+    is_list(calls),
+    is_integer(parents, n),
+    is_integer(indices, n)
+  )
 
   structure(
     list(
       calls = calls,
       parents = parents,
-      envs = envs
+      envs = envs,
+      indices = indices
     ),
     class = "rlang_trace"
   )
 }
 
 # Methods -----------------------------------------------------------------
+
+# For internal use only
+c.rlang_trace <- function(...) {
+  traces <- list(...)
+
+  calls <- flatten(map(traces, `[[`, "calls"))
+  parents <- flatten_int(map(traces, `[[`, "parents"))
+  envs <- flatten(map(traces, `[[`, "envs"))
+  indices <- flatten_int(map(traces, `[[`, "indices"))
+
+  new_trace(calls, parents, envs, indices)
+}
 
 #' @export
 format.rlang_trace <- function(x,
@@ -384,24 +404,15 @@ trace_subset <- function(x, i) {
     i <- setdiff(seq_len(n), abs(i))
   }
 
-  calls <- x$calls[i]
-  envs <- x$envs[i]
   parents <- match(as.character(x$parents[i]), as.character(i), nomatch = 0)
 
-  new_trace(calls, parents, envs)
+  new_trace(
+    calls = x$calls[i],
+    parents = parents,
+    envs = x$envs[i],
+    indices = x$indices[i]
+  )
 }
-
-# For internal use only
-c.rlang_trace <- function(...) {
-  traces <- list(...)
-
-  calls <- flatten(map(traces, `[[`, "calls"))
-  parents <- flatten_int(map(traces, `[[`, "parents"))
-  envs <- flatten(map(traces, `[[`, "envs"))
-
-  new_trace(calls, parents, envs)
-}
-
 
 # Subsets sibling nodes, at the level of the rightmost leaf by
 # default. Supports full vector subsetting semantics (negative values,
