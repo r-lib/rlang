@@ -442,12 +442,12 @@ new_data_mask <- function(bottom, top = bottom, parent = NULL) {
 }
 #' @export
 `[[.rlang_data_pronoun` <- function(x, i, ...) {
-  if (!is_string(i)) {
-    abort("Must subset the data pronoun with a string")
-  }
   data_pronoun_get(x, i)
 }
 data_pronoun_get <- function(x, nm) {
+  if (!is_string(nm)) {
+    abort("Must subset the data pronoun with a string")
+  }
   mask <- .subset2(x, 1)
   .Call(rlang_data_pronoun_get, mask, sym(nm))
 }
@@ -457,12 +457,35 @@ abort_data_pronoun <- function(nm) {
 }
 
 #' @export
+`$.rlang_ctxt_pronoun` <- function(x, nm) {
+  ctxt_pronoun_get(x, nm)
+}
+#' @export
+`[[.rlang_ctxt_pronoun` <- function(x, i, ...) {
+  ctxt_pronoun_get(x, i)
+}
+ctxt_pronoun_get <- function(x, nm) {
+  if (!is_string(nm)) {
+    abort("Must subset the context pronoun with a string")
+  }
+  eval_bare(sym(nm), x)
+}
+
+#' @export
 `$<-.rlang_data_pronoun` <- function(x, i, value) {
   abort("Can't modify the data pronoun")
 }
 #' @export
 `[[<-.rlang_data_pronoun` <- function(x, i, value) {
   abort("Can't modify the data pronoun")
+}
+#' @export
+`$<-.rlang_ctxt_pronoun` <- function(x, i, value) {
+  abort("Can't modify the context pronoun")
+}
+#' @export
+`[[<-.rlang_ctxt_pronoun` <- function(x, i, value) {
+  abort("Can't modify the context pronoun")
 }
 
 #' @export
@@ -486,6 +509,15 @@ length.rlang_data_pronoun <- function(x) {
     env <- env_parent(env)
   }
   env_length(env)
+}
+
+#' @export
+names.rlang_ctxt_pronoun <- function(x) {
+  abort("Can't take the `names()` of the context pronoun")
+}
+#' @export
+length.rlang_ctxt_pronoun <- function(x) {
+  abort("Can't take the `length()` of the context pronoun")
 }
 
 #' @export

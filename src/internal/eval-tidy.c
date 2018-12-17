@@ -38,15 +38,35 @@ static struct rlang_mask_info mask_info(sexp* mask) {
 
 
 static sexp* data_pronoun_class = NULL;
+static sexp* ctxt_pronoun_class = NULL;
+static sexp* data_mask_env_sym = NULL;
 
 static sexp* rlang_new_data_pronoun(sexp* mask) {
-  sexp* dict = KEEP(r_new_vector(r_type_list, 1));
+  sexp* pronoun = KEEP(r_new_vector(r_type_list, 1));
 
-  r_list_poke(dict, 0, mask);
-  r_poke_attribute(dict, r_class_sym, data_pronoun_class);
+  r_list_poke(pronoun, 0, mask);
+  r_poke_attribute(pronoun, r_class_sym, data_pronoun_class);
 
   FREE(1);
-  return dict;
+  return pronoun;
+}
+static sexp* rlang_new_ctxt_pronoun(sexp* top) {
+  sexp* pronoun = KEEP(r_new_environment(r_env_parent(top), 0));
+
+  r_poke_attribute(pronoun, r_class_sym, ctxt_pronoun_class);
+
+  FREE(1);
+  return pronoun;
+}
+
+void poke_ctxt_env(sexp* mask, sexp* env) {
+  sexp* ctxt_pronoun = r_env_find(mask, data_mask_env_sym);
+
+  if (ctxt_pronoun == r_unbound_sym) {
+    r_abort("Internal error: Can't find context pronoun in data mask");
+  }
+
+  r_env_poke_parent(ctxt_pronoun, env);
 }
 
 
@@ -95,7 +115,6 @@ sexp* rlang_as_data_pronoun(sexp* x) {
 }
 
 
-static sexp* data_mask_env_sym = NULL;
 static sexp* data_mask_top_env_sym = NULL;
 
 static void check_data_mask_input(sexp* env, const char* arg) {
@@ -160,12 +179,14 @@ sexp* rlang_new_data_mask(sexp* bottom, sexp* top) {
     check_data_mask_top(bottom, top);
   }
 
+  sexp* ctxt_pronoun = KEEP(rlang_new_ctxt_pronoun(top));
+
   r_env_poke(data_mask, r_tilde_sym, tilde_fn);
   r_env_poke(data_mask, data_mask_flag_sym, data_mask);
-  r_env_poke(data_mask, data_mask_env_sym, r_env_parent(top));
+  r_env_poke(data_mask, data_mask_env_sym, ctxt_pronoun);
   r_env_poke(data_mask, data_mask_top_env_sym, top);
 
-  FREE(1);
+  FREE(2);
   return data_mask;
 }
 
@@ -382,7 +403,7 @@ sexp* rlang_tilde_eval(sexp* tilde, sexp* current_frame, sexp* caller_frame) {
   case RLANG_MASK_DATA:
     top = KEEP_N(env_get_top_binding(info.mask), n_protect);
     // Update `.env` pronoun to current quosure env temporarily
-    r_env_poke(info.mask, data_mask_env_sym, quo_env);
+    poke_ctxt_env(info.mask, quo_env);
     break;
   case RLANG_MASK_QUOSURE:
     top = info.mask;
@@ -481,7 +502,7 @@ sexp* rlang_eval_tidy(sexp* expr, sexp* data, sexp* env) {
   // * Look-up in leaked environments would proceed from the data mask
   //   to the appropriate lexical environment (from quosures or from
   //   the `env` argument of eval_tidy()).
-  r_env_poke(mask, data_mask_env_sym, env);
+  poke_ctxt_env(mask, env);
   r_env_poke_parent(top, env);
 
   sexp* out = r_eval(expr, mask);
@@ -508,6 +529,9 @@ void rlang_init_eval_tidy() {
   data_pronoun_class = r_chr("rlang_data_pronoun");
   r_mark_precious(data_pronoun_class);
 
+  ctxt_pronoun_class = r_chr("rlang_ctxt_pronoun");
+  r_mark_precious(ctxt_pronoun_class);
+
   empty_names_chr = r_new_vector(r_type_character, 2);
   r_mark_precious(empty_names_chr);
   r_chr_poke(empty_names_chr, 0, r_string(""));
@@ -528,16 +552,19 @@ void rlang_init_eval_tidy() {
   mask_sym = r_sym("mask");
 
   restore_mask_fn = r_parse_eval(
-    "function() {                \n"
-    "  mask$.env <- `old`        \n"
-    "                            \n"
-    "  top <- `mask`$.top_env    \n"
-    "  if (is.null(top)) {       \n"
-    "    top <- `mask`           \n"
-    "  }                         \n"
-    "                            \n"
-    "  parent.env(top) <- `old`  \n"
-    "}                           \n",
+    "function() {                          \n"
+    "  ctxt_pronoun <- `mask`$.env         \n"
+    "  if (!is.null(ctxt_pronoun)) {       \n"
+    "    parent.env(ctxt_pronoun) <- `old` \n"
+    "  }                                   \n"
+    "                                      \n"
+    "  top <- `mask`$.top_env              \n"
+    "  if (is.null(top)) {                 \n"
+    "    top <- `mask`                     \n"
+    "  }                                   \n"
+    "                                      \n"
+    "  parent.env(top) <- `old`            \n"
+    "}                                     \n",
     r_base_env
   );
   r_mark_precious(restore_mask_fn);
