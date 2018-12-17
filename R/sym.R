@@ -48,6 +48,37 @@ is_symbol <- function(x, name = NULL) {
   as_string(x) %in% name
 }
 
+#' Cast symbol to string
+#'
+#' `as_string()` converts [symbols][sym] to character strings.
+#'
+#' @param x A string or symbol. If a string, the attributes are
+#'   removed, if any.
+#' @return A character vector of length 1.
+#'
+#' @examples
+#' # Let's create some symbols:
+#' foo <- quote(foo)
+#' bar <- sym("bar")
+#'
+#' # as_string() converts symbols to strings:
+#' foo
+#' as_string(foo)
+#'
+#' typeof(bar)
+#' typeof(as_string(bar))
+#' @export
+as_string <- function(x) {
+  coerce_type(x, "a string",
+    symbol = {
+      .Call(rlang_symbol_to_character, x)
+    },
+    string = {
+      attributes(x) <- NULL
+      x
+    }
+  )
+}
 
 namespace_sym <- quote(`::`)
 namespace2_sym <- quote(`:::`)

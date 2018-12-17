@@ -157,19 +157,6 @@ as_character <- function(x, encoding = NULL) {
 }
 #' @rdname vector-coercion
 #' @export
-as_string <- function(x) {
-  coerce_type(x, "a string",
-    symbol = {
-      .Call(rlang_symbol_to_character, x)
-    },
-    string = {
-      attributes(x) <- NULL
-      x
-    }
-  )
-}
-#' @rdname vector-coercion
-#' @export
 as_list <- function(x) {
   switch_type(x,
     environment = env_as_list(x),

@@ -7,7 +7,6 @@
 \alias{as_double}
 \alias{as_complex}
 \alias{as_character}
-\alias{as_string}
 \alias{as_list}
 \title{Coerce an object to a base type}
 \usage{
@@ -20,8 +19,6 @@ as_double(x)
 as_complex(x)
 
 as_character(x, encoding = NULL)
-
-as_string(x)
 
 as_list(x)
 }
