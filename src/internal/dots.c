@@ -107,7 +107,7 @@ static inline void mark_spliced_dots(sexp* x) {
   r_poke_attribute(x, rlang_spliced_flag, rlang_spliced_flag);
 }
 
-void signal_retired_splice() {
+void signal_retired_splice(sexp* env) {
   const char* msg =
     "Unquoting language objects with `!!!` is soft-deprecated as of rlang 0.3.0.\n"
     "Please use `!!` instead.\n"
@@ -118,11 +118,12 @@ void signal_retired_splice() {
     "  # Good:\n"
     "  dplyr::select(data, !!enquo(x))    # Unquote single quosure\n"
     "  dplyr::select(data, !!!enquos(x))  # Splice list of quosures\n";
-    r_signal_soft_deprecated(msg, msg, r_empty_env);
+    r_signal_soft_deprecated(msg, msg, env);
 }
 
-// Maintain parity with deep_big_bang_coerce() in expr-interp.c
-static sexp* dots_big_bang_coerce(sexp* x) {
+// Maintain parity with deep_big_bang_coerce() in expr-interp.c.
+// The `env` argument is only needed for the soft-deprecation warning.
+static sexp* dots_big_bang_coerce(sexp* x, sexp* env) {
   switch (r_typeof(x)) {
   case r_type_null:
   case r_type_pairlist:
@@ -151,7 +152,7 @@ static sexp* dots_big_bang_coerce(sexp* x) {
     }
     // else fallthrough
   case r_type_symbol:
-    signal_retired_splice();
+    signal_retired_splice(env);
     return r_new_list(x, NULL);
 
   default:
@@ -162,8 +163,8 @@ static sexp* dots_big_bang_coerce(sexp* x) {
   }
 }
 
-static sexp* dots_value_big_bang(sexp* x) {
-  x = KEEP(dots_big_bang_coerce(x));
+static sexp* dots_value_big_bang(sexp* x, sexp* env) {
+  x = KEEP(dots_big_bang_coerce(x, env));
   r_push_class(x, "spliced");
 
   FREE(1);
@@ -173,7 +174,7 @@ static sexp* dots_value_big_bang(sexp* x) {
 static sexp* dots_big_bang(struct dots_capture_info* capture_info,
                            sexp* expr, sexp* env, bool quosured) {
   sexp* value = KEEP(r_eval(expr, env));
-  value = KEEP(dots_big_bang_coerce(value));
+  value = KEEP(dots_big_bang_coerce(value, env));
   mark_spliced_dots(value);
 
   r_ssize n = r_length(value);
@@ -336,7 +337,7 @@ static sexp* dots_unquote(sexp* dots, struct dots_capture_info* capture_info) {
       if (expr == r_null) {
         expr = empty_spliced_list();
       } else {
-        expr = dots_value_big_bang(expr);
+        expr = dots_value_big_bang(expr, env);
         capture_info->count += 1;
       }
       FREE(1);

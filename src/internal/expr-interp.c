@@ -278,10 +278,11 @@ static sexp* bang_bang_expression(struct expansion_info info, sexp* env) {
 }
 
 // From dots.c
-void signal_retired_splice();
+void signal_retired_splice(sexp* env);
 
-// Maintain parity with dots_big_bang_coerce() in dots.c
-static sexp* deep_big_bang_coerce(sexp* x) {
+// Maintain parity with dots_big_bang_coerce() in dots.c.
+// The `env` argument is only needed for the soft-deprecation warning.
+static sexp* deep_big_bang_coerce(sexp* x, sexp* env) {
   switch (r_typeof(x)) {
   case r_type_null:
     return x;
@@ -314,7 +315,7 @@ static sexp* deep_big_bang_coerce(sexp* x) {
     }
     // else fallthrough
   case r_type_symbol: {
-    signal_retired_splice();
+    signal_retired_splice(env);
     return r_new_node(x, r_null);
   }
   default:
@@ -327,7 +328,7 @@ static sexp* deep_big_bang_coerce(sexp* x) {
 
 sexp* big_bang(sexp* operand, sexp* env, sexp* node, sexp* next) {
   sexp* value = KEEP(r_eval(operand, env));
-  value = deep_big_bang_coerce(value);
+  value = deep_big_bang_coerce(value, env);
 
   if (value == r_null) {
     r_node_poke_cdr(node, r_node_cdr(next));
