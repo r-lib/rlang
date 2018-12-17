@@ -465,6 +465,10 @@ test_that("can catch condition of specific classes", {
 
   expect_is(catch_cnd(stop("tilt")), "error")
   expect_error(catch_cnd(stop("tilt"), "foo"), "tilt")
+
+  classes <- c("foo", "bar")
+  expect_is(catch_cnd(signal("", "bar"), classes), "bar")
+  expect_is(catch_cnd(signal("", "foo"), classes), "foo")
 })
 
 

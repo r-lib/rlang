@@ -563,20 +563,20 @@ class(cnd_muffle) <- c("rlang_handler_calling", "rlang_handler", "function")
 #'
 #' @param expr Expression to be evaluated with a catching condition
 #'   handler.
-#' @param class The class of the condition to catch. By default, catch
-#'   any condition.
+#' @param classes A character vector of condition classes to catch. By
+#'   default, catches all conditions.
 #' @return A condition if any was signalled, `NULL` otherwise.
 #' @export
 #' @examples
 #' catch_cnd(10)
 #' catch_cnd(abort("an error"))
 #' catch_cnd(cnd_signal("my_condition", .msg = "a condition"))
-catch_cnd <- function(expr, class = "condition") {
-  stopifnot(is_string(class))
-  handler <- list2(!!class := identity)
+catch_cnd <- function(expr, classes = "condition") {
+  stopifnot(is_character(classes))
+  handlers <- rep_named(classes, list(identity))
 
   eval_bare(rlang::expr(
-    tryCatch(!!!handler, {
+    tryCatch(!!!handlers, {
       force(expr)
       return(NULL)
     })

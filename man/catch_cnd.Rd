@@ -4,14 +4,14 @@
 \alias{catch_cnd}
 \title{Catch a condition}
 \usage{
-catch_cnd(expr, class = "condition")
+catch_cnd(expr, classes = "condition")
 }
 \arguments{
 \item{expr}{Expression to be evaluated with a catching condition
 handler.}
 
-\item{class}{The class of the condition to catch. By default, catch
-any condition.}
+\item{classes}{A character vector of condition classes to catch. By
+default, catches all conditions.}
 }
 \value{
 A condition if any was signalled, \code{NULL} otherwise.

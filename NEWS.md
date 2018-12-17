@@ -13,7 +13,7 @@
   such as `` `/`(1) `` (#652). They are now deparsed and printed
   properly as well.
 
-* `catch_cnd()` gains a `class` argument to specify which class of
+* `catch_cnd()` gains a `classes` argument to specify which classes of
   condition to catch. It returns `NULL` if the expected condition
   could not be caught (#696).
 
