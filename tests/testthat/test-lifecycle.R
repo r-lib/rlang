@@ -22,3 +22,8 @@ test_that("can enable warnings and errors with `with_` helpers", {
   expect_error(with_lifecycle_errors(signal_soft_deprecated("foo")), "foo")
   expect_no_warning(with_lifecycle_warnings(with_lifecycle_silence(warn_deprecated("foo"))))
 })
+
+test_that("soft-deprecation warnings are issued when called from child of global env as well", {
+  fn <- function() signal_soft_deprecated("called from child of global env")
+  expect_warning(eval_bare(call2(fn), env(global_env())), "child of global env")
+})
