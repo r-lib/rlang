@@ -95,3 +95,9 @@ test_that("expressions are deparsed and printed", {
   expect_output(expr_print(1:2), "<int: 1L, 2L>")
   expect_identical(expr_deparse(1:2), "<int: 1L, 2L>")
 })
+
+test_that("imaginary numbers with real part are not syntactic", {
+  expect_true(is_syntactic_literal(0i))
+  expect_true(is_syntactic_literal(na_cpl))
+  expect_false(is_syntactic_literal(1 + 1i))
+})
