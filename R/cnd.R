@@ -826,12 +826,20 @@ signal_context_info <- function(nframe) {
   }
 
   if (is_reference(first, body(stop))) {
-    return(list("stop_condition", nframe))
+    if (is_reference(sys_body(nframe - 1), body(abort))) {
+      return(list("stop_rlang", nframe - 1))
+    } else {
+      return(list("stop_condition", nframe))
+    }
   }
 
   if (is_reference(first, body(signalCondition))) {
     if (from_withrestarts(nframe - 1) && is_reference(sys_body(nframe - 4), body(message))) {
-      return(list("message", nframe - 4))
+      if (is_reference(sys_body(nframe - 5), body(inform))) {
+        return(list("message_rlang", nframe - 5))
+      } else {
+        return(list("message", nframe - 4))
+      }
     } else {
       return(list("condition", nframe))
     }
@@ -846,7 +854,11 @@ signal_context_info <- function(nframe) {
         return(list("warning_native", nframe - 4))
       }
     } else if (is_reference(withrestarts_caller, body(warning))) {
-      return(list("warning_condition", nframe - 3))
+      if (is_reference(sys_body(nframe - 4), body(warn))) {
+        return(list("warning_rlang", nframe - 4))
+      } else {
+        return(list("warning_condition", nframe - 3))
+      }
     }
   }
 

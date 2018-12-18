@@ -523,13 +523,16 @@ test_that("with_abort() entraces conditions properly", {
   expect_abort_trace(base::stop, "")
   expect_abort_trace(base::stop, cnd("error"))
   expect_abort_trace(function(msg) errorcall(NULL, msg), "", "errorcall")
+  # expect_abort_trace(abort, "") # FIXME
 
   expect_abort_trace(base::warning, "", classes = "warning")
   expect_abort_trace(base::warning, cnd("warning"), classes = "warning")
   expect_abort_trace(function(msg) warningcall(NULL, msg), "", "warningcall", classes = "warning")
+  expect_abort_trace(warn, "", classes = "warning")
 
   expect_abort_trace(base::message, "", classes = "message")
   expect_abort_trace(base::message, cnd("message"), classes = "message")
+  expect_abort_trace(inform, "", classes = "message")
 
   expect_abort_trace(base::signalCondition, cnd("foo"), classes = "condition")
 })
@@ -551,13 +554,16 @@ test_that("signal context is detected", {
   expect_identical(signal_type(base::stop, ""), "stop_message")
   expect_identical(signal_type(base::stop, cnd("error")), "stop_condition")
   expect_identical(signal_type(function(msg) errorcall(NULL, msg), ""), "stop_native")
+  expect_identical(signal_type(abort, ""), "stop_rlang")
 
   expect_identical(signal_type(base::warning, ""), "warning_message")
   expect_identical(signal_type(base::warning, cnd("warning")), "warning_condition")
   expect_identical(signal_type(function(msg) warningcall(NULL, msg), ""), "warning_native")
+  expect_identical(signal_type(warn, ""), "warning_rlang")
 
   expect_identical(signal_type(base::message, ""), "message")
   expect_identical(signal_type(base::message, cnd("message")), "message")
+  expect_identical(signal_type(inform, ""), "message_rlang")
 
   expect_identical(signal_type(base::signalCondition, cnd("foo")), "condition")
 })
