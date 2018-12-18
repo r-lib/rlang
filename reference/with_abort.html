@@ -172,8 +172,8 @@ you should use <code><a href='https://www.rdocumentation.org/packages/base/topic
 #&gt; message: Base error
 #&gt; class:   `rlang_error`
 #&gt; backtrace:
-#&gt;  ─global::fn()
-#&gt;  ─base::stop("Base error")
+#&gt;  1. global::fn()
+#&gt;  2. base::stop("Base error")
 #&gt; Call `summary(rlang::last_error())` to see the full backtrace</div><div class='input'>
 <span class='co'># with_abort() is handy for rethrowing low level errors. The</span>
 <span class='co'># backtraces are then segmented between the low level and high</span>
@@ -193,39 +193,39 @@ you should use <code><a href='https://www.rdocumentation.org/packages/base/topic
 #&gt; message: High level error
 #&gt; class:   `rlang_error`
 #&gt; backtrace:
-#&gt;  ─base::try(high_level())
-#&gt;  ─global::high_level()
+#&gt;  1. base::try(high_level())
+#&gt;  6. global::high_level()
 #&gt; &lt;error: parent&gt;
 #&gt; message: Low level error
 #&gt; class:   `rlang_error`
 #&gt; backtrace:
-#&gt;  ─rlang::with_abort(low_level1())
-#&gt;  ─global::low_level1()
-#&gt;  ─global::low_level2()
-#&gt;  ─base::stop("Low level error")
+#&gt;  1. rlang::with_abort(low_level1())
+#&gt;  3. global::low_level1()
+#&gt;  4. global::low_level2()
+#&gt;  5. base::stop("Low level error")
 #&gt; Call `summary(rlang::last_error())` to see the full backtrace</div><div class='input'><span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/summary'>summary</a></span>(<span class='fu'><a href='last_error.html'>last_error</a></span>())</div><div class='output co'>#&gt; &lt;error&gt;
 #&gt; message: High level error
 #&gt; class:   `rlang_error`
 #&gt; fields:  `message`, `trace` and `parent`
 #&gt; backtrace:
-#&gt; █
-#&gt; ├─base::try(high_level())
-#&gt; │ └─base::tryCatch(...)
-#&gt; │   └─base:::tryCatchList(expr, classes, parentenv, handlers)
-#&gt; │     └─base:::tryCatchOne(expr, names, parentenv, handlers[[1L]])
-#&gt; │       └─base:::doTryCatch(return(expr), name, parentenv, handler)
-#&gt; └─global::high_level()
+#&gt;     █
+#&gt;  1. ├─base::try(high_level())
+#&gt;  2. │ └─base::tryCatch(...)
+#&gt;  3. │   └─base:::tryCatchList(expr, classes, parentenv, handlers)
+#&gt;  4. │     └─base:::tryCatchOne(expr, names, parentenv, handlers[[1L]])
+#&gt;  5. │       └─base:::doTryCatch(return(expr), name, parentenv, handler)
+#&gt;  6. └─global::high_level()
 #&gt; &lt;error: parent&gt;
 #&gt; message: Low level error
 #&gt; class:   `rlang_error`
 #&gt; fields:  `message`, `trace`, `parent` and `error`
 #&gt; backtrace:
-#&gt; █
-#&gt; ├─rlang::with_abort(low_level1())
-#&gt; │ └─base::withCallingHandlers(...) /home/travis/build/r-lib/rlang/R/cnd.R:865:2
-#&gt; └─global::low_level1()
-#&gt;   └─global::low_level2()
-#&gt;     └─base::stop("Low level error")</div><div class='input'>
+#&gt;     █
+#&gt;  1. ├─rlang::with_abort(low_level1())
+#&gt;  2. │ └─base::withCallingHandlers(...) /home/travis/build/r-lib/rlang/R/cnd.R:865:2
+#&gt;  3. └─global::low_level1()
+#&gt;  4.   └─global::low_level2()
+#&gt;  5.     └─base::stop("Low level error")</div><div class='input'>
 <span class='co'># Reset to default</span>
 <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/options'>options</a></span>(<span class='kw'>rlang_trace_top_env</span> <span class='kw'>=</span> <span class='kw'>NULL</span>)</div></pre>
   </div>

@@ -178,49 +178,49 @@ capture context.</p>
 
 <span class='co'># When no lazy evaluation is involved the backtrace is linear</span>
 <span class='co'># (i.e. every call has only one child)</span>
-<span class='fu'>f</span>()</div><div class='output co'>#&gt; █
-#&gt; └─global::f()
-#&gt;   └─global::g()
-#&gt;     └─global::h()</div><div class='input'>
+<span class='fu'>f</span>()</div><div class='output co'>#&gt;     █
+#&gt;  1. └─global::f()
+#&gt;  2.   └─global::g()
+#&gt;  3.     └─global::h()</div><div class='input'>
 <span class='co'># Lazy evaluation introduces a tree like structure</span>
-<span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/identity'>identity</a></span>(<span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/identity'>identity</a></span>(<span class='fu'>f</span>()))</div><div class='output co'>#&gt; █
-#&gt; ├─[ base::identity(...) ]
-#&gt; ├─[ base::identity(...) ]
-#&gt; └─global::f()
-#&gt;   └─global::g()
-#&gt;     └─global::h()</div><div class='input'><span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/identity'>identity</a></span>(<span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/try'>try</a></span>(<span class='fu'>f</span>()))</div><div class='output co'>#&gt; █
-#&gt; ├─[ base::identity(...) ]
-#&gt; ├─[ base::try(...) ] with 4 more calls
-#&gt; └─global::f()
-#&gt;   └─global::g()
-#&gt;     └─global::h()</div><div class='input'><span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/try'>try</a></span>(<span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/identity'>identity</a></span>(<span class='fu'>f</span>()))</div><div class='output co'>#&gt; █
-#&gt; ├─[ base::try(...) ] with 4 more calls
-#&gt; ├─[ base::identity(...) ]
-#&gt; └─global::f()
-#&gt;   └─global::g()
-#&gt;     └─global::h()</div><div class='input'>
+<span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/identity'>identity</a></span>(<span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/identity'>identity</a></span>(<span class='fu'>f</span>()))</div><div class='output co'>#&gt;     █
+#&gt;  1. ├─[ base::identity(...) ]
+#&gt;  2. ├─[ base::identity(...) ]
+#&gt;  3. └─global::f()
+#&gt;  4.   └─global::g()
+#&gt;  5.     └─global::h()</div><div class='input'><span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/identity'>identity</a></span>(<span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/try'>try</a></span>(<span class='fu'>f</span>()))</div><div class='output co'>#&gt;     █
+#&gt;  1. ├─[ base::identity(...) ]
+#&gt;  2. ├─[ base::try(...) ] with 4 more calls
+#&gt;  7. └─global::f()
+#&gt;  8.   └─global::g()
+#&gt;  9.     └─global::h()</div><div class='input'><span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/try'>try</a></span>(<span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/identity'>identity</a></span>(<span class='fu'>f</span>()))</div><div class='output co'>#&gt;     █
+#&gt;  1. ├─[ base::try(...) ] with 4 more calls
+#&gt;  6. ├─[ base::identity(...) ]
+#&gt;  7. └─global::f()
+#&gt;  8.   └─global::g()
+#&gt;  9.     └─global::h()</div><div class='input'>
 <span class='co'># When printing, you can request to simplify this tree to only show</span>
 <span class='co'># the direct sequence of calls that lead to `trace_back()`</span>
 <span class='no'>x</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/try'>try</a></span>(<span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/identity'>identity</a></span>(<span class='fu'>f</span>()))
-<span class='no'>x</span></div><div class='output co'>#&gt; █
-#&gt; ├─[ base::try(...) ] with 4 more calls
-#&gt; ├─[ base::identity(...) ]
-#&gt; └─global::f()
-#&gt;   └─global::g()
-#&gt;     └─global::h()</div><div class='input'><span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/print'>print</a></span>(<span class='no'>x</span>, <span class='kw'>simplify</span> <span class='kw'>=</span> <span class='st'>"branch"</span>)</div><div class='output co'>#&gt;  ─base::try(identity(f()))
-#&gt;  ─global::f()
-#&gt;  ─global::g()
-#&gt;  ─global::h()</div><div class='input'>
+<span class='no'>x</span></div><div class='output co'>#&gt;     █
+#&gt;  1. ├─[ base::try(...) ] with 4 more calls
+#&gt;  6. ├─[ base::identity(...) ]
+#&gt;  7. └─global::f()
+#&gt;  8.   └─global::g()
+#&gt;  9.     └─global::h()</div><div class='input'><span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/print'>print</a></span>(<span class='no'>x</span>, <span class='kw'>simplify</span> <span class='kw'>=</span> <span class='st'>"branch"</span>)</div><div class='output co'>#&gt;  1. base::try(identity(f()))
+#&gt;  7. global::f()
+#&gt;  8. global::g()
+#&gt;  9. global::h()</div><div class='input'>
 <span class='co'># With a little cunning you can also use it to capture the</span>
 <span class='co'># tree from within a base NSE function</span>
 <span class='no'>x</span> <span class='kw'>&lt;-</span> <span class='kw'>NULL</span>
-<span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/with'>with</a></span>(<span class='no'>mtcars</span>, {<span class='no'>x</span> <span class='kw'>&lt;&lt;-</span> <span class='fu'>f</span>(); <span class='fl'>10</span>})</div><div class='output co'>#&gt; [1] 10</div><div class='input'><span class='no'>x</span></div><div class='output co'>#&gt; █
-#&gt; ├─[ base::with(...) ]
-#&gt; └─base::with.default(...)
-#&gt;   └─[ base::eval(...) ] with 1 more call
-#&gt;     └─global::f()
-#&gt;       └─global::g()
-#&gt;         └─global::h()</div><div class='input'>
+<span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/with'>with</a></span>(<span class='no'>mtcars</span>, {<span class='no'>x</span> <span class='kw'>&lt;&lt;-</span> <span class='fu'>f</span>(); <span class='fl'>10</span>})</div><div class='output co'>#&gt; [1] 10</div><div class='input'><span class='no'>x</span></div><div class='output co'>#&gt;     █
+#&gt;  1. ├─[ base::with(...) ]
+#&gt;  2. └─base::with.default(...)
+#&gt;  3.   └─[ base::eval(...) ] with 1 more call
+#&gt;  5.     └─global::f()
+#&gt;  6.       └─global::g()
+#&gt;  7.         └─global::h()</div><div class='input'>
 
 <span class='co'># Restore default top env for next example</span>
 <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/options'>options</a></span>(<span class='kw'>rlang_trace_top_env</span> <span class='kw'>=</span> <span class='kw'>NULL</span>)
@@ -231,52 +231,52 @@ capture context.</p>
 <span class='no'>conn</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/textconnections'>textConnection</a></span>(<span class='st'>"summary(f())"</span>)
 <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/source'>source</a></span>(<span class='no'>conn</span>, <span class='kw'>echo</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>, <span class='kw'>local</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>)</div><div class='output co'>#&gt; 
 #&gt; &gt; summary(f())
-#&gt; █
-#&gt; ├─base::tryCatch(...)
-#&gt; │ └─base:::tryCatchList(expr, classes, parentenv, handlers)
-#&gt; │   ├─base:::tryCatchOne(...)
-#&gt; │   │ └─base:::doTryCatch(return(expr), name, parentenv, handler)
-#&gt; │   └─base:::tryCatchList(expr, names[-nh], parentenv, handlers[-nh])
-#&gt; │     └─base:::tryCatchOne(expr, names, parentenv, handlers[[1L]])
-#&gt; │       └─base:::doTryCatch(return(expr), name, parentenv, handler)
-#&gt; ├─base::withCallingHandlers(...)
-#&gt; ├─base::saveRDS(...)
-#&gt; ├─base::do.call(...)
-#&gt; ├─(function (what, args, quote = FALSE, envir = parent.frame()) ...
-#&gt; └─(function (..., crayon_enabled, crayon_colors, pkgdown_internet) ...
-#&gt;   └─pkgdown::build_site(...)
-#&gt;     └─pkgdown:::build_site_local(...)
-#&gt;       └─pkgdown::build_reference(...)
-#&gt;         └─purrr::map(...)
-#&gt;           └─pkgdown:::.f(.x[[i]], ...)
-#&gt;             └─pkgdown:::data_reference_topic(...)
-#&gt;               ├─pkgdown:::as_data(...)
-#&gt;               └─pkgdown:::as_data.tag_examples(...)
-#&gt;                 └─purrr::pmap_chr(...)
-#&gt;                   └─pkgdown:::.f(...)
-#&gt;                     ├─withr::with_options(...)
-#&gt;                     │ └─base::force(code)
-#&gt;                     └─evaluate::evaluate(code, env, new_device = TRUE)
-#&gt;                       └─evaluate:::evaluate_call(...)
-#&gt;                         ├─evaluate:::timing_fn(...)
-#&gt;                         ├─evaluate:::handle(...)
-#&gt;                         │ └─base::try(f, silent = TRUE)
-#&gt;                         │   └─base::tryCatch(...)
-#&gt;                         │     └─base:::tryCatchList(expr, classes, parentenv, handlers)
-#&gt;                         │       └─base:::tryCatchOne(expr, names, parentenv, handlers[[1L]])
-#&gt;                         │         └─base:::doTryCatch(return(expr), name, parentenv, handler)
-#&gt;                         ├─base::withCallingHandlers(...)
-#&gt;                         ├─base::withVisible(eval(expr, envir, enclos))
-#&gt;                         └─base::eval(expr, envir, enclos)
-#&gt;                           └─base::eval(expr, envir, enclos)
-#&gt;                             ├─base::source(conn, echo = TRUE, local = TRUE)
-#&gt;                             │ ├─base::withVisible(eval(ei, envir))
-#&gt;                             │ └─base::eval(ei, envir)
-#&gt;                             │   └─base::eval(ei, envir)
-#&gt;                             ├─base::summary(f())
-#&gt;                             └─global::f()
-#&gt;                               └─global::g()
-#&gt;                                 └─global::h()</div><div class='input'><span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/connections'>close</a></span>(<span class='no'>conn</span>)
+#&gt;      █
+#&gt;   1. ├─base::tryCatch(...)
+#&gt;   2. │ └─base:::tryCatchList(expr, classes, parentenv, handlers)
+#&gt;   3. │   ├─base:::tryCatchOne(...)
+#&gt;   4. │   │ └─base:::doTryCatch(return(expr), name, parentenv, handler)
+#&gt;   5. │   └─base:::tryCatchList(expr, names[-nh], parentenv, handlers[-nh])
+#&gt;   6. │     └─base:::tryCatchOne(expr, names, parentenv, handlers[[1L]])
+#&gt;   7. │       └─base:::doTryCatch(return(expr), name, parentenv, handler)
+#&gt;   8. ├─base::withCallingHandlers(...)
+#&gt;   9. ├─base::saveRDS(...)
+#&gt;  10. ├─base::do.call(...)
+#&gt;  11. ├─(function (what, args, quote = FALSE, envir = parent.frame()) ...
+#&gt;  12. └─(function (..., crayon_enabled, crayon_colors, pkgdown_internet) ...
+#&gt;  13.   └─pkgdown::build_site(...)
+#&gt;  14.     └─pkgdown:::build_site_local(...)
+#&gt;  15.       └─pkgdown::build_reference(...)
+#&gt;  16.         └─purrr::map(...)
+#&gt;  17.           └─pkgdown:::.f(.x[[i]], ...)
+#&gt;  18.             └─pkgdown:::data_reference_topic(...)
+#&gt;  19.               ├─pkgdown:::as_data(...)
+#&gt;  20.               └─pkgdown:::as_data.tag_examples(...)
+#&gt;  21.                 └─purrr::pmap_chr(...)
+#&gt;  22.                   └─pkgdown:::.f(...)
+#&gt;  23.                     ├─withr::with_options(...)
+#&gt;  24.                     │ └─base::force(code)
+#&gt;  25.                     └─evaluate::evaluate(code, env, new_device = TRUE)
+#&gt;  26.                       └─evaluate:::evaluate_call(...)
+#&gt;  27.                         ├─evaluate:::timing_fn(...)
+#&gt;  28.                         ├─evaluate:::handle(...)
+#&gt;  29.                         │ └─base::try(f, silent = TRUE)
+#&gt;  30.                         │   └─base::tryCatch(...)
+#&gt;  31.                         │     └─base:::tryCatchList(expr, classes, parentenv, handlers)
+#&gt;  32.                         │       └─base:::tryCatchOne(expr, names, parentenv, handlers[[1L]])
+#&gt;  33.                         │         └─base:::doTryCatch(return(expr), name, parentenv, handler)
+#&gt;  34.                         ├─base::withCallingHandlers(...)
+#&gt;  35.                         ├─base::withVisible(eval(expr, envir, enclos))
+#&gt;  36.                         └─base::eval(expr, envir, enclos)
+#&gt;  37.                           └─base::eval(expr, envir, enclos)
+#&gt;  38.                             ├─base::source(conn, echo = TRUE, local = TRUE)
+#&gt;  39.                             │ ├─base::withVisible(eval(ei, envir))
+#&gt;  40.                             │ └─base::eval(ei, envir)
+#&gt;  41.                             │   └─base::eval(ei, envir)
+#&gt;  42.                             ├─base::summary(f())
+#&gt;  43.                             └─global::f()
+#&gt;  44.                               └─global::g()
+#&gt;  45.                                 └─global::h()</div><div class='input'><span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/connections'>close</a></span>(<span class='no'>conn</span>)
 
 <span class='co'># To automatically strip this off, specify which frame should be</span>
 <span class='co'># the top of the backtrace. This will automatically trim off calls</span>
@@ -287,11 +287,11 @@ capture context.</p>
 <span class='no'>conn</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/textconnections'>textConnection</a></span>(<span class='st'>"summary(f())"</span>)
 <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/source'>source</a></span>(<span class='no'>conn</span>, <span class='kw'>echo</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>, <span class='kw'>local</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>)</div><div class='output co'>#&gt; 
 #&gt; &gt; summary(f())
-#&gt; █
-#&gt; ├─base::summary(f())
-#&gt; └─global::f()
-#&gt;   └─global::g()
-#&gt;     └─global::h()</div><div class='input'><span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/connections'>close</a></span>(<span class='no'>conn</span>)</div></pre>
+#&gt;     █
+#&gt;  1. ├─base::summary(f())
+#&gt;  2. └─global::f()
+#&gt;  3.   └─global::g()
+#&gt;  4.     └─global::h()</div><div class='input'><span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/connections'>close</a></span>(<span class='no'>conn</span>)</div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
     <h2>Contents</h2>

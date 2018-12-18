@@ -128,6 +128,7 @@
 <a href="#rlang-0-3-0-9000" class="anchor"></a>rlang 0.3.0.9000<small> Unreleased </small>
 </h1>
 <ul>
+<li><p>Calls in backtraces are now numbered according to their position in the call tree. The numbering is non-contiguous for simplified backtraces because of omitted call frames.</p></li>
 <li>
 <p>Subsetting an object from the <code>.env</code> pronoun now evaluates the corresponding symbol. This means you can now retrieve objects from the contextual environment in magrittr pipes.</p>
 <p>Note that following this change, and despite its name, <code>.env</code> is not really an environment but a special shortcut, just like <code>.data</code> is not really a data frame.</p>

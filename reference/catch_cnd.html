@@ -166,21 +166,21 @@ default, catches all conditions.</p></td>
 #&gt; message: an error
 #&gt; class:   `rlang_error`
 #&gt; backtrace:
-#&gt;  ─base::tryCatch(...)
-#&gt;  ─pkgdown::build_site(...)
-#&gt;  ─pkgdown:::build_site_local(...)
-#&gt;  ─pkgdown::build_reference(...)
-#&gt;  ─purrr::map(...)
-#&gt;  ─pkgdown:::.f(.x[[i]], ...)
-#&gt;  ─pkgdown:::data_reference_topic(...)
-#&gt;  ─pkgdown:::as_data.tag_examples(...)
-#&gt;  ─purrr::pmap_chr(...)
-#&gt;  ─pkgdown:::.f(...)
-#&gt;  ─evaluate::evaluate(code, env, new_device = TRUE)
-#&gt;  ─evaluate:::evaluate_call(...)
-#&gt;  ─[ base::eval(...) ] with 1 more call
-#&gt;  ─rlang::catch_cnd(abort("an error"))
-#&gt;  ─base::force(expr) /home/travis/build/r-lib/rlang/R/cnd.R:580:6
+#&gt;   1. base::tryCatch(...)
+#&gt;  13. pkgdown::build_site(...)
+#&gt;  14. pkgdown:::build_site_local(...)
+#&gt;  15. pkgdown::build_reference(...)
+#&gt;  16. purrr::map(...)
+#&gt;  17. pkgdown:::.f(.x[[i]], ...)
+#&gt;  18. pkgdown:::data_reference_topic(...)
+#&gt;  20. pkgdown:::as_data.tag_examples(...)
+#&gt;  21. purrr::pmap_chr(...)
+#&gt;  22. pkgdown:::.f(...)
+#&gt;  25. evaluate::evaluate(code, env, new_device = TRUE)
+#&gt;  26. evaluate:::evaluate_call(...)
+#&gt;  36. [ base::eval(...) ] with 1 more call
+#&gt;  38. rlang::catch_cnd(abort("an error"))
+#&gt;  44. base::force(expr) /home/travis/build/r-lib/rlang/R/cnd.R:580:6
 #&gt; Call `summary(rlang::last_error())` to see the full backtrace</div><div class='input'><span class='fu'>catch_cnd</span>(<span class='fu'><a href='cnd_signal.html'>cnd_signal</a></span>(<span class='st'>"my_condition"</span>, <span class='kw'>.msg</span> <span class='kw'>=</span> <span class='st'>"a condition"</span>))</div><div class='output co'>#&gt; &lt;simpleError in cnd_signal("my_condition", .msg = "a condition"): unused argument (.msg = "a condition")&gt;</div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
