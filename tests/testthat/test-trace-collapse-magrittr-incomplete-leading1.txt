@@ -1,10 +1,10 @@
 Full:
-█
-└─rlang:::T(NA)
+    █
+ 1. └─rlang:::T(NA)
 
 Collapsed:
-█
-└─rlang:::T(NA)
+    █
+ 1. └─rlang:::T(NA)
 
 Branch:
- ─rlang:::T(NA)
+ 1. rlang:::T(NA)

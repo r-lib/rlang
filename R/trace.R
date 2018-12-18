@@ -241,6 +241,11 @@ new_trace <- function(calls, parents, envs, indices = NULL) {
   )
 }
 
+trace_reset_indices <- function(trace) {
+  trace$indices <- seq_len(trace_length(trace))
+  trace
+}
+
 # Methods -----------------------------------------------------------------
 
 # For internal use only
@@ -262,6 +267,8 @@ format.rlang_trace <- function(x,
                                max_frames = NULL,
                                dir = getwd(),
                                srcrefs = NULL) {
+  x <- trace_reset_indices(x)
+
   switch(arg_match(simplify),
     none = trace_format(x, max_frames, dir, srcrefs),
     collapse = trace_format_collapse(x, max_frames, dir, srcrefs),
@@ -279,7 +286,7 @@ trace_format <- function(trace, max_frames, dir, srcrefs) {
   }
 
   tree <- trace_as_tree(trace, dir = dir, srcrefs = srcrefs)
-  cli_tree(tree)
+  cli_tree(tree, indices = trace$indices)
 }
 trace_format_collapse <- function(trace, max_frames, dir, srcrefs) {
   trace <- trace_simplify_collapse(trace)
@@ -291,7 +298,7 @@ trace_format_trail <- function(trace, max_frames, dir, srcrefs) {
   tree <- trace_as_tree(trace, dir = dir, srcrefs = srcrefs)
 
   branch <- tree[-1, ][["call"]]
-  cli_branch(branch, max_frames)
+  cli_branch(branch, max = max_frames, indices = trace$indices)
 }
 
 format_collapsed <- function(what, n) {
@@ -311,13 +318,18 @@ format_collapsed_trail <- function(what, n, style = NULL) {
   format_collapsed(what, n)
 }
 
-cli_branch <- function(lines, max = NULL, style = NULL) {
+cli_branch <- function(lines, max = NULL, style = NULL, indices = NULL) {
   if (!length(lines)) {
     return(chr())
   }
 
-  style <- style %||% cli_box_chars()
-  lines <- paste0(" ", style$h, lines)
+  if (length(indices)) {
+    indices <- pad_spaces(as.character(indices))
+    lines <- paste0(" ", indices, ". ", lines)
+  } else {
+    style <- style %||% cli_box_chars()
+    lines <- paste0(" ", style$h, lines)
+  }
 
   if (is_null(max)) {
     return(lines)

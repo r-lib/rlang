@@ -213,3 +213,14 @@ pluralise_along <- function(x, singular, plural) {
 pluralise_n <- function(n, singular, plural) {
   pluralise(n, singular, plural)
 }
+
+pad_spaces <- function(x, left = TRUE) {
+  widths <- nchar(x)
+  pads <- max(widths) - widths
+
+  if (left) {
+    paste0(spaces(pads), x)
+  } else {
+    paste0(x, spaces(pads))
+  }
+}

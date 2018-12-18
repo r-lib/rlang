@@ -3,59 +3,59 @@ Full:
 message: High-level message
 class:   `rlang_error`
 backtrace:
-█
-├─rlang::catch_cnd(a())
-│ ├─rlang::eval_bare(...)
-│ ├─base::tryCatch(...)
-│ │ └─base:::tryCatchList(expr, classes, parentenv, handlers)
-│ │   └─base:::tryCatchOne(expr, names, parentenv, handlers[[1L]])
-│ │     └─base:::doTryCatch(return(expr), name, parentenv, handler)
-│ └─base::force(expr)
-└─rlang:::a()
-  └─rlang:::b()
-    └─rlang:::c()
+     █
+  1. ├─rlang::catch_cnd(a())
+  2. │ ├─rlang::eval_bare(...)
+  3. │ ├─base::tryCatch(...)
+  4. │ │ └─base:::tryCatchList(expr, classes, parentenv, handlers)
+  5. │ │   └─base:::tryCatchOne(expr, names, parentenv, handlers[[1L]])
+  6. │ │     └─base:::doTryCatch(return(expr), name, parentenv, handler)
+  7. │ └─base::force(expr)
+  8. └─rlang:::a()
+  9.   └─rlang:::b()
+ 10.     └─rlang:::c()
 <error: parent>
 message: Low-level message
 class:   `rlang_error`
 backtrace:
-█
-└─rlang:::f()
-  └─rlang:::g()
-    └─rlang:::h()
+    █
+ 1. └─rlang:::f()
+ 2.   └─rlang:::g()
+ 3.     └─rlang:::h()
 
 Collapsed:
 <error>
 message: High-level message
 class:   `rlang_error`
 backtrace:
-█
-├─[ rlang::catch_cnd(...) ] with 6 more calls
-└─rlang:::a()
-  └─rlang:::b()
-    └─rlang:::c()
+     █
+  1. ├─[ rlang::catch_cnd(...) ] with 6 more calls
+  8. └─rlang:::a()
+  9.   └─rlang:::b()
+ 10.     └─rlang:::c()
 <error: parent>
 message: Low-level message
 class:   `rlang_error`
 backtrace:
-█
-└─rlang:::f()
-  └─rlang:::g()
-    └─rlang:::h()
+    █
+ 1. └─rlang:::f()
+ 2.   └─rlang:::g()
+ 3.     └─rlang:::h()
 
 Branch:
 <error>
 message: High-level message
 class:   `rlang_error`
 backtrace:
- ─rlang::catch_cnd(a())
- ─rlang:::a()
- ─rlang:::b()
- ─rlang:::c()
+  1. rlang::catch_cnd(a())
+  8. rlang:::a()
+  9. rlang:::b()
+ 10. rlang:::c()
 <error: parent>
 message: Low-level message
 class:   `rlang_error`
 backtrace:
- ─rlang:::f()
- ─rlang:::g()
- ─rlang:::h()
+ 1. rlang:::f()
+ 2. rlang:::g()
+ 3. rlang:::h()
 Call `summary(rlang::last_error())` to see the full backtrace

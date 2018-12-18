@@ -1,10 +1,10 @@
 Full:
-█
-└─(function() {...
+    █
+ 1. └─(function() {...
 
 Collapsed:
-█
-└─(function() {...
+    █
+ 1. └─(function() {...
 
 Branch:
 

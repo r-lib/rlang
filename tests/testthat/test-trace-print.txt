@@ -1,7 +1,7 @@
-█
-└─rlang:::i() testthat/test-trace.R:22:2
-  └─rlang:::j(i) testthat/test-trace.R:15:7
-    └─rlang:::k(i) testthat/test-trace.R:16:21
-      └─rlang:::l(i) testthat/test-trace.R:19:4
+    █
+ 1. └─rlang:::i() testthat/test-trace.R:22:2
+ 2.   └─rlang:::j(i) testthat/test-trace.R:15:7
+ 3.     └─rlang:::k(i) testthat/test-trace.R:16:21
+ 4.       └─rlang:::l(i) testthat/test-trace.R:19:4
 
 █

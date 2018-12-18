@@ -1,13 +1,13 @@
 Full:
-█
-├─rlang:::gen()
-└─rlang:::gen.default()
+    █
+ 1. ├─rlang:::gen()
+ 2. └─rlang:::gen.default()
 
 Collapsed:
-█
-├─[ rlang:::gen() ]
-└─rlang:::gen.default()
+    █
+ 1. ├─[ rlang:::gen() ]
+ 2. └─rlang:::gen.default()
 
 Branch:
- ─rlang:::gen()
- ─rlang:::gen.default()
+ 1. rlang:::gen()
+ 2. rlang:::gen.default()

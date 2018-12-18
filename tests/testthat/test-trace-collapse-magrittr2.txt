@@ -1,21 +1,21 @@
 Full:
-█
-└─f(NULL) %>% g(list(.)) %>% h(3, ., list(.))
-  ├─base::withVisible(eval(quote(`_fseq`(`_lhs`)), env, env))
-  └─base::eval(quote(`_fseq`(`_lhs`)), env, env)
-    └─base::eval(quote(`_fseq`(`_lhs`)), env, env)
-      └─rlang:::`_fseq`(`_lhs`)
-        └─magrittr::freduce(value, `_function_list`)
-          ├─base::withVisible(function_list[[k]](value))
-          └─function_list[[k]](value)
-            └─rlang:::h(3, ., list(.))
+    █
+ 1. └─f(NULL) %>% g(list(.)) %>% h(3, ., list(.))
+ 2.   ├─base::withVisible(eval(quote(`_fseq`(`_lhs`)), env, env))
+ 3.   └─base::eval(quote(`_fseq`(`_lhs`)), env, env)
+ 4.     └─base::eval(quote(`_fseq`(`_lhs`)), env, env)
+ 5.       └─rlang:::`_fseq`(`_lhs`)
+ 6.         └─magrittr::freduce(value, `_function_list`)
+ 7.           ├─base::withVisible(function_list[[k]](value))
+ 8.           └─function_list[[k]](value)
+ 9.             └─rlang:::h(3, ., list(.))
 
 Collapsed:
-█
-└─[ f(NULL) %>% g(list(.)) %>% h(3, ., list(.)) ] with 7 more calls
-  └─rlang:::h(3, ., list(.))
+    █
+ 1. └─[ f(NULL) %>% g(list(.)) %>% h(3, ., list(.)) ] with 7 more calls
+ 9.   └─rlang:::h(3, ., list(.))
 
 Branch:
- ─rlang:::f(NULL)
- ─rlang:::g(., list(.))
- ─rlang:::h(3, ., list(.))
+ 1. rlang:::f(NULL)
+ 9. rlang:::g(., list(.))
+ 1. rlang:::h(3, ., list(.))

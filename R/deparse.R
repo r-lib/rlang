@@ -43,8 +43,8 @@ line_push <- function(line, text,
   c(line, text)
 }
 
-spaces <- function(n) {
-  paste(rep(" ", n), collapse = "")
+spaces <- function(ns) {
+  map_chr(ns, function(n) paste(rep(" ", n), collapse = ""))
 }
 is_spaces <- function(str) {
   identical(str, spaces(nchar(str)))
