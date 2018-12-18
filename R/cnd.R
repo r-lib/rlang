@@ -771,9 +771,31 @@ format_onerror_backtrace <- function(trace) {
   )
 }
 
-add_backtrace <- function() {
-  trace <- trace_back()
-  trace <- trace_subset(trace, -trace_length(trace))
+#' Add backtrace from error handler
+#'
+#' Set the `error` global option to `quote(rlang::entrace())` to
+#' transform base errors to rlang errors. These enriched errors
+#' include a backtrace. The RProfile is a good place to set the
+#' handler.
+#'
+#' @inheritParams trace_back
+#' @param ... Unused. These dots are for future extensions.
+#'
+#' @examples
+#' if (FALSE) {  # Not run
+#'
+#' # Set the error handler in your RProfile like this:
+#' if (requireNamespace("rlang", quietly = TRUE)) {
+#'   options(error = quote(rlang::entrace()))
+#' }
+#'
+#' }
+#' @export
+entrace <- function(..., top = NULL, bottom = NULL) {
+  check_dots_empty(...)
+
+  bottom <- bottom %||% sys.frame(-1)
+  trace <- trace_back(top = top, bottom = bottom)
 
   stop_call <- sys.call(-1)
   stop_frame <- sys.frame(-1)
@@ -809,6 +831,13 @@ add_backtrace <- function() {
   }
 
   NULL
+}
+
+add_backtrace <- function() {
+  # Warnings don't go through when error is being handled
+  msg <- "Warning: `add_backtrace()` is now exported as `enframe()` as of rlang 0.3.1"
+  cat_line(msg, file = stderr())
+  entrace(bottom = sys.frame(-1))
 }
 
 #' Promote all errors to rlang errors
