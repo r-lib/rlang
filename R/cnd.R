@@ -826,25 +826,25 @@ class(entrace) <- calling_handler_class
 signal_context_info <- function(nframe) {
   first <- sys_body(nframe)
 
-  if (is_reference(first, body(.handleSimpleError))) {
-    if (is_reference(sys_body(nframe - 1), body(stop))) {
+  if (is_same_body(first, body(.handleSimpleError))) {
+    if (is_same_body(sys_body(nframe - 1), body(stop))) {
       return(list("stop_message", nframe - 2))
     } else {
       return(list("stop_native", nframe - 2))
     }
   }
 
-  if (is_reference(first, body(stop))) {
-    if (is_reference(sys_body(nframe - 1), body(abort))) {
+  if (is_same_body(first, body(stop))) {
+    if (is_same_body(sys_body(nframe - 1), body(abort))) {
       return(list("stop_rlang", nframe - 2))
     } else {
       return(list("stop_condition", nframe - 1))
     }
   }
 
-  if (is_reference(first, body(signalCondition))) {
-    if (from_withrestarts(nframe - 1) && is_reference(sys_body(nframe - 4), body(message))) {
-      if (is_reference(sys_body(nframe - 5), body(inform))) {
+  if (is_same_body(first, body(signalCondition))) {
+    if (from_withrestarts(nframe - 1) && is_same_body(sys_body(nframe - 4), body(message))) {
+      if (is_same_body(sys_body(nframe - 5), body(inform))) {
         return(list("message_rlang", nframe - 6))
       } else {
         return(list("message", nframe - 5))
@@ -856,14 +856,14 @@ signal_context_info <- function(nframe) {
 
   if (from_withrestarts(nframe)) {
     withrestarts_caller <- sys_body(nframe - 3)
-    if (is_reference(withrestarts_caller, body(.signalSimpleWarning))) {
-      if (is_reference(sys_body(nframe - 4), body(warning))) {
+    if (is_same_body(withrestarts_caller, body(.signalSimpleWarning))) {
+      if (is_same_body(sys_body(nframe - 4), body(warning))) {
         return(list("warning_message", nframe - 5))
       } else {
         return(list("warning_native", nframe - 5))
       }
-    } else if (is_reference(withrestarts_caller, body(warning))) {
-      if (is_reference(sys_body(nframe - 4), body(warn))) {
+    } else if (is_same_body(withrestarts_caller, body(warning))) {
+      if (is_same_body(sys_body(nframe - 4), body(warn))) {
         return(list("warning_rlang", nframe - 5))
       } else {
         return(list("warning_condition", nframe - 4))
@@ -876,7 +876,7 @@ signal_context_info <- function(nframe) {
 
 from_withrestarts <- function(nframe) {
   is_call(sys.call(nframe), "doWithOneRestart") &&
-    is_reference(sys_body(nframe - 2), body(withRestarts))
+    is_same_body(sys_body(nframe - 2), body(withRestarts))
 }
 sys_body <- function(n) {
   body(sys.function(n))

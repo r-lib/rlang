@@ -414,6 +414,9 @@ test_that("don't print message or backtrace fields if empty", {
 test_that("with_abort() promotes base errors to rlang errors", {
   skip_on_os("windows")
 
+  # !!! call is not deparsed properly
+  skip_if(getRversion() < "3.5")
+
   f <- function() g()
   g <- function() h()
   h <- function() stop("Low-level message")
