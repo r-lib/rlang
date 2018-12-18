@@ -1,6 +1,8 @@
 
 # rlang 0.3.0.9000
 
+* Backtrace objects now print in full by default.
+
 * Calls in backtraces are now numbered according to their position in
   the call tree. The numbering is non-contiguous for simplified
   backtraces because of omitted call frames.

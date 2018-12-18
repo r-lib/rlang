@@ -263,7 +263,7 @@ c.rlang_trace <- function(...) {
 #' @export
 format.rlang_trace <- function(x,
                                ...,
-                               simplify = c("collapse", "branch", "none"),
+                               simplify = c("none", "collapse", "branch"),
                                max_frames = NULL,
                                dir = getwd(),
                                srcrefs = NULL) {
@@ -380,7 +380,7 @@ cli_branch <- function(lines, max = NULL, style = NULL, indices = NULL) {
 #' @export
 print.rlang_trace <- function(x,
                               ...,
-                              simplify = c("collapse", "branch", "none"),
+                              simplify = c("none", "branch", "collapse"),
                               max_frames = NULL,
                               dir = getwd(),
                               srcrefs = NULL) {
