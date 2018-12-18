@@ -184,18 +184,26 @@ capture context.</p>
 #&gt;  3.     └─global::h()</div><div class='input'>
 <span class='co'># Lazy evaluation introduces a tree like structure</span>
 <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/identity'>identity</a></span>(<span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/identity'>identity</a></span>(<span class='fu'>f</span>()))</div><div class='output co'>#&gt;     █
-#&gt;  1. ├─[ base::identity(...) ]
-#&gt;  2. ├─[ base::identity(...) ]
+#&gt;  1. ├─base::identity(identity(f()))
+#&gt;  2. ├─base::identity(f())
 #&gt;  3. └─global::f()
 #&gt;  4.   └─global::g()
 #&gt;  5.     └─global::h()</div><div class='input'><span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/identity'>identity</a></span>(<span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/try'>try</a></span>(<span class='fu'>f</span>()))</div><div class='output co'>#&gt;     █
-#&gt;  1. ├─[ base::identity(...) ]
-#&gt;  2. ├─[ base::try(...) ] with 4 more calls
+#&gt;  1. ├─base::identity(try(f()))
+#&gt;  2. ├─base::try(f())
+#&gt;  3. │ └─base::tryCatch(...)
+#&gt;  4. │   └─base:::tryCatchList(expr, classes, parentenv, handlers)
+#&gt;  5. │     └─base:::tryCatchOne(expr, names, parentenv, handlers[[1L]])
+#&gt;  6. │       └─base:::doTryCatch(return(expr), name, parentenv, handler)
 #&gt;  7. └─global::f()
 #&gt;  8.   └─global::g()
 #&gt;  9.     └─global::h()</div><div class='input'><span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/try'>try</a></span>(<span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/identity'>identity</a></span>(<span class='fu'>f</span>()))</div><div class='output co'>#&gt;     █
-#&gt;  1. ├─[ base::try(...) ] with 4 more calls
-#&gt;  6. ├─[ base::identity(...) ]
+#&gt;  1. ├─base::try(identity(f()))
+#&gt;  2. │ └─base::tryCatch(...)
+#&gt;  3. │   └─base:::tryCatchList(expr, classes, parentenv, handlers)
+#&gt;  4. │     └─base:::tryCatchOne(expr, names, parentenv, handlers[[1L]])
+#&gt;  5. │       └─base:::doTryCatch(return(expr), name, parentenv, handler)
+#&gt;  6. ├─base::identity(f())
 #&gt;  7. └─global::f()
 #&gt;  8.   └─global::g()
 #&gt;  9.     └─global::h()</div><div class='input'>
@@ -203,8 +211,12 @@ capture context.</p>
 <span class='co'># the direct sequence of calls that lead to `trace_back()`</span>
 <span class='no'>x</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/try'>try</a></span>(<span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/identity'>identity</a></span>(<span class='fu'>f</span>()))
 <span class='no'>x</span></div><div class='output co'>#&gt;     █
-#&gt;  1. ├─[ base::try(...) ] with 4 more calls
-#&gt;  6. ├─[ base::identity(...) ]
+#&gt;  1. ├─base::try(identity(f()))
+#&gt;  2. │ └─base::tryCatch(...)
+#&gt;  3. │   └─base:::tryCatchList(expr, classes, parentenv, handlers)
+#&gt;  4. │     └─base:::tryCatchOne(expr, names, parentenv, handlers[[1L]])
+#&gt;  5. │       └─base:::doTryCatch(return(expr), name, parentenv, handler)
+#&gt;  6. ├─base::identity(f())
 #&gt;  7. └─global::f()
 #&gt;  8.   └─global::g()
 #&gt;  9.     └─global::h()</div><div class='input'><span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/print'>print</a></span>(<span class='no'>x</span>, <span class='kw'>simplify</span> <span class='kw'>=</span> <span class='st'>"branch"</span>)</div><div class='output co'>#&gt;  1. base::try(identity(f()))
@@ -215,12 +227,13 @@ capture context.</p>
 <span class='co'># tree from within a base NSE function</span>
 <span class='no'>x</span> <span class='kw'>&lt;-</span> <span class='kw'>NULL</span>
 <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/with'>with</a></span>(<span class='no'>mtcars</span>, {<span class='no'>x</span> <span class='kw'>&lt;&lt;-</span> <span class='fu'>f</span>(); <span class='fl'>10</span>})</div><div class='output co'>#&gt; [1] 10</div><div class='input'><span class='no'>x</span></div><div class='output co'>#&gt;     █
-#&gt;  1. ├─[ base::with(...) ]
+#&gt;  1. ├─base::with(...)
 #&gt;  2. └─base::with.default(...)
-#&gt;  3.   └─[ base::eval(...) ] with 1 more call
-#&gt;  5.     └─global::f()
-#&gt;  6.       └─global::g()
-#&gt;  7.         └─global::h()</div><div class='input'>
+#&gt;  3.   └─base::eval(substitute(expr), data, enclos = parent.frame())
+#&gt;  4.     └─base::eval(substitute(expr), data, enclos = parent.frame())
+#&gt;  5.       └─global::f()
+#&gt;  6.         └─global::g()
+#&gt;  7.           └─global::h()</div><div class='input'>
 
 <span class='co'># Restore default top env for next example</span>
 <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/options'>options</a></span>(<span class='kw'>rlang_trace_top_env</span> <span class='kw'>=</span> <span class='kw'>NULL</span>)
