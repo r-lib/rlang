@@ -32,8 +32,12 @@
 
 <meta property="og:title" content="Last <code>abort()</code> error — last_error" />
 
-<meta property="og:description" content="This returns the last error thrown with abort(). The error is
-printed with a backtrace." />
+<meta property="og:description" content="
+last_error() returns the last error thrown with abort(). The
+error is printed with a backtrace in simplified form.
+last_trace() is a shortcut to return the backtrace stored in
+the last error. This backtrace is printed in full form.
+" />
 <meta name="twitter:card" content="summary" />
 
 
@@ -130,12 +134,18 @@ printed with a backtrace." />
 
     <div class="ref-description">
     
-    <p>This returns the last error thrown with <code><a href='abort.html'>abort()</a></code>. The error is
-printed with a backtrace.</p>
+    <ul>
+<li><p><code>last_error()</code> returns the last error thrown with <code><a href='abort.html'>abort()</a></code>. The
+error is printed with a backtrace in simplified form.</p></li>
+<li><p><code>last_trace()</code> is a shortcut to return the backtrace stored in
+the last error. This backtrace is printed in full form.</p></li>
+</ul>
     
     </div>
 
-    <pre class="usage"><span class='fu'>last_error</span>()</pre>
+    <pre class="usage"><span class='fu'>last_error</span>()
+
+<span class='fu'>last_trace</span>()</pre>
         
 
   </div>

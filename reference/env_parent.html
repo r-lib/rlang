@@ -198,7 +198,7 @@ rlang 0.2.0 and renamed to <code>last</code>.</p>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
     <pre class="examples"><div class='input'><span class='co'># Get the parent environment with env_parent():</span>
-<span class='fu'>env_parent</span>(<span class='fu'><a href='search_envs.html'>global_env</a></span>())</div><div class='output co'>#&gt; &lt;environment: 0x692dce0&gt;
+<span class='fu'>env_parent</span>(<span class='fu'><a href='search_envs.html'>global_env</a></span>())</div><div class='output co'>#&gt; &lt;environment: 0x4f0dc60&gt;
 #&gt; attr(,"name")
 #&gt; [1] "devtools_shims"</div><div class='input'>
 <span class='co'># Or the tail environment with env_tail():</span>
@@ -206,7 +206,7 @@ rlang 0.2.0 and renamed to <code>last</code>.</p>
 <span class='co'># By default, env_parent() returns the parent environment of the</span>
 <span class='co'># current evaluation frame. If called at top-level (the global</span>
 <span class='co'># frame), the following two expressions are equivalent:</span>
-<span class='fu'>env_parent</span>()</div><div class='output co'>#&gt; &lt;environment: 0x8746a28&gt;</div><div class='input'><span class='fu'>env_parent</span>(<span class='fu'><a href='search_envs.html'>base_env</a></span>())</div><div class='output co'>#&gt; &lt;environment: R_EmptyEnv&gt;</div><div class='input'>
+<span class='fu'>env_parent</span>()</div><div class='output co'>#&gt; &lt;environment: 0x6c55a90&gt;</div><div class='input'><span class='fu'>env_parent</span>(<span class='fu'><a href='search_envs.html'>base_env</a></span>())</div><div class='output co'>#&gt; &lt;environment: R_EmptyEnv&gt;</div><div class='input'>
 <span class='co'># This default is more handy when called within a function. In this</span>
 <span class='co'># case, the enclosure environment of the function is returned</span>
 <span class='co'># (since it is the parent of the evaluation frame):</span>
