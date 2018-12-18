@@ -323,9 +323,12 @@ cli_branch <- function(lines, max = NULL, style = NULL, indices = NULL) {
     return(chr())
   }
 
-  if (length(indices)) {
+  numbered <- length(indices)
+  if (numbered) {
     indices <- pad_spaces(as.character(indices))
-    lines <- paste0(" ", indices, ". ", lines)
+    indices <- paste0(" ", indices, ". ")
+    padding <- nchar(indices[[1]])
+    lines <- paste0(indices, lines)
   } else {
     style <- style %||% cli_box_chars()
     lines <- paste0(" ", style$h, lines)
@@ -348,7 +351,11 @@ cli_branch <- function(lines, max = NULL, style = NULL, indices = NULL) {
   style <- style %||% cli_box_chars()
   n_collapsed <- n - max
 
-  collapsed_line <- format_collapsed_trail("...", n_collapsed, style = style)
+  if (numbered) {
+    collapsed_line <- paste0(spaces(padding), "...")
+  } else {
+    collapsed_line <- format_collapsed_trail("...", n_collapsed, style = style)
+  }
 
   if (max == 1L) {
     lines <- chr(
