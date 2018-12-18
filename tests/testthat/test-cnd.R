@@ -471,6 +471,69 @@ test_that("can catch condition of specific classes", {
   expect_is(catch_cnd(signal("", "foo"), classes), "foo")
 })
 
+test_that("with_abort() entraces conditions properly", {
+  catch_abort <- function(signaller, arg, classes = "error") {
+    f <- function() g()
+    g <- function() h()
+    h <- function() signaller(arg)
+
+    catch_cnd(with_abort(f(), classes = classes))
+  }
+
+  expect_abort_trace <- function(signaller,
+                                 arg,
+                                 native = NULL,
+                                 classes = "error") {
+    err <- catch_abort(signaller, arg, classes = classes)
+    expect_is(err, "rlang_error")
+
+    trace <- err$trace
+    n <- trace_length(err$trace)
+
+    if (is_null(native)) {
+      calls <- trace$calls[seq2(n - 3, n)]
+      expect_true(all(
+        is_call(calls[[1]], "f"),
+        is_call(calls[[2]], "g"),
+        is_call(calls[[3]], "h"),
+        is_call(calls[[4]], "signaller")
+      ))
+    } else {
+      calls <- trace$calls[seq2(n - 4, n)]
+      expect_true(all(
+        is_call(calls[[1]], "f"),
+        is_call(calls[[2]], "g"),
+        is_call(calls[[3]], "h"),
+        is_call(calls[[4]], "signaller"),
+        is_call(calls[[5]], native)
+      ))
+    }
+  }
+
+  scoped_options(
+    rlang_trace_top_env = current_env()
+  )
+
+  msg <- catch_abort(base::message, "")
+  expect_true(inherits_all(msg, c("message", "condition")))
+
+  err <- catch_abort(base::message, "", classes = "message")
+  expect_is(err, "rlang_error")
+
+  expect_abort_trace(base::stop, "")
+  expect_abort_trace(base::stop, cnd("error"))
+  expect_abort_trace(function(msg) errorcall(NULL, msg), "", "errorcall")
+
+  expect_abort_trace(base::warning, "", classes = "warning")
+  expect_abort_trace(base::warning, cnd("warning"), classes = "warning")
+  expect_abort_trace(function(msg) warningcall(NULL, msg), "", "warningcall", classes = "warning")
+
+  expect_abort_trace(base::message, "", classes = "message")
+  expect_abort_trace(base::message, cnd("message"), classes = "message")
+
+  expect_abort_trace(base::signalCondition, cnd("foo"), classes = "condition")
+})
+
 test_that("signal context is detected", {
   get_type <- function(cnd) {
     nframe <- sys.nframe() - 1

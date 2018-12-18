@@ -799,13 +799,17 @@ entrace <- function(cnd, ..., top = NULL, bottom = NULL) {
     return()
   }
 
-  bottom <- bottom %||% sys.frame(-1)
-  trace <- trace_back(bottom = bottom)
+  if (is_null(bottom)) {
+    nframe <- sys.nframe() - 1
+    info <- signal_context_info(nframe)
+    bottom <- sys.frame(info[[2]])
+  }
+  trace <- trace_back(top = top, bottom = bottom)
 
   if (missing(cnd)) {
     entrace_handle_top(trace)
   } else {
-    entrace_handle_cnd(trace, cnd)
+    abort(cnd$message %||% "", error = cnd, trace = trace)
   }
 }
 class(entrace) <- calling_handler_class
@@ -855,26 +859,6 @@ from_withrestarts <- function(nframe) {
 }
 sys_body <- function(n) {
   body(sys.function(n))
-}
-
-follow_parents <- function(parents, from = length(parents), to = 0) {
-  prev <- from
-  idx <- parents[[from]]
-
-  while (!idx %in% c(to, 0)) {
-    prev <- idx
-    idx <- parents[[idx]]
-  }
-
-  prev
-}
-
-entrace_handle_cnd <- function(trace, cnd) {
-  # Find second-to-last tree - last tree is handleSimpleError()
-  i <- length(trace_level(trace)) - 1L
-  trace <- trace_subset_across(trace, i)
-
-  abort(cnd$message %||% "", error = cnd, trace = trace)
 }
 
 entrace_handle_top <- function(trace) {
