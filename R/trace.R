@@ -102,6 +102,9 @@ trace_find_bottom <- function(bottom, frames) {
   if (is_environment(bottom)) {
     top <- detect_index(frames, is_reference, bottom)
     if (!top) {
+      if (is_reference(bottom, global_env())) {
+        return(int())
+      }
       abort("Can't find `bottom` on the call tree")
     }
 
