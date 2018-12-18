@@ -743,6 +743,9 @@ trace_simplify_collapse <- function(trace) {
 #'
 #' @export
 last_error <- function() {
+  if (is_null(last_error_env$cnd)) {
+    abort("Can't show last error because no error was recorded yet")
+  }
   last_error_env$cnd
 }
 
