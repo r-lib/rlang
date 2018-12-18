@@ -810,6 +810,65 @@ entrace <- function(cnd, ..., top = NULL, bottom = NULL) {
 }
 class(entrace) <- calling_handler_class
 
+signal_context_kind <- function(nframe) {
+  first <- sys_body(nframe)
+
+  if (is_reference(first, body(.handleSimpleError))) {
+    if (is_reference(sys_body(nframe - 1), body(stop))) {
+      return("stop_message")
+    } else {
+      return("stop_native")
+    }
+  }
+
+  if (is_reference(first, body(stop))) {
+    return("stop_condition")
+  }
+
+  if (is_reference(first, body(signalCondition))) {
+    if (from_withrestarts(nframe - 1) && is_reference(sys_body(nframe - 4), body(message))) {
+      return("message")
+    } else {
+      return("condition")
+    }
+  }
+
+  if (from_withrestarts(nframe)) {
+    withrestarts_caller <- sys_body(nframe - 3)
+    if (is_reference(withrestarts_caller, body(.signalSimpleWarning))) {
+      if (is_reference(sys_body(nframe - 4), body(warning))) {
+        return("warning_message")
+      } else {
+        return("warning_native")
+      }
+    } else if (is_reference(withrestarts_caller, body(warning))) {
+      return("warning_condition")
+    }
+  }
+
+  "unknown"
+}
+
+from_withrestarts <- function(nframe) {
+  is_call(sys.call(nframe), "doWithOneRestart") &&
+    is_reference(sys_body(nframe - 2), body(withRestarts))
+}
+sys_body <- function(n) {
+  body(sys.function(n))
+}
+
+follow_parents <- function(parents, from = length(parents), to = 0) {
+  prev <- from
+  idx <- parents[[from]]
+
+  while (!idx %in% c(to, 0)) {
+    prev <- idx
+    idx <- parents[[idx]]
+  }
+
+  prev
+}
+
 entrace_handle_cnd <- function(trace, cnd) {
   # Find second-to-last tree - last tree is handleSimpleError()
   i <- length(trace_level(trace)) - 1L

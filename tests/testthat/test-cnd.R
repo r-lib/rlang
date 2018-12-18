@@ -471,6 +471,34 @@ test_that("can catch condition of specific classes", {
   expect_is(catch_cnd(signal("", "foo"), classes), "foo")
 })
 
+test_that("signal context is detected", {
+  handler <- function(cnd) {
+    nframe <- sys.nframe() - 1
+    out <- signal_context_kind(nframe)
+    invokeRestart("out", out)
+  }
+  signal_type <- function(signaller, arg) {
+    f <- function() signaller(arg)
+    withRestarts(
+      out = identity,
+      withCallingHandlers(condition = handler, f())
+    )
+  }
+
+  expect_identical(signal_type(base::stop, ""), "stop_message")
+  expect_identical(signal_type(base::stop, cnd("error")), "stop_condition")
+  expect_identical(signal_type(function(msg) errorcall(NULL, msg), ""), "stop_native")
+
+  expect_identical(signal_type(base::warning, ""), "warning_message")
+  expect_identical(signal_type(base::warning, cnd("warning")), "warning_condition")
+  expect_identical(signal_type(function(msg) warningcall(NULL, msg), ""), "warning_native")
+
+  expect_identical(signal_type(base::message, ""), "message")
+  expect_identical(signal_type(base::message, cnd("message")), "message")
+
+  expect_identical(signal_type(base::signalCondition, cnd("foo")), "condition")
+})
+
 
 # Lifecycle ----------------------------------------------------------
 
