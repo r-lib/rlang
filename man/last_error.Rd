@@ -2,11 +2,18 @@
 % Please edit documentation in R/trace.R
 \name{last_error}
 \alias{last_error}
+\alias{last_trace}
 \title{Last \code{abort()} error}
 \usage{
 last_error()
+
+last_trace()
 }
 \description{
-This returns the last error thrown with \code{\link[=abort]{abort()}}. The error is
-printed with a backtrace.
+\itemize{
+\item \code{last_error()} returns the last error thrown with \code{\link[=abort]{abort()}}. The
+error is printed with a backtrace in simplified form.
+\item \code{last_trace()} is a shortcut to return the backtrace stored in
+the last error. This backtrace is printed in full form.
+}
 }

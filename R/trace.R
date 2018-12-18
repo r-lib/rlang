@@ -738,8 +738,13 @@ trace_simplify_collapse <- function(trace) {
 
 #' Last `abort()` error
 #'
-#' This returns the last error thrown with [abort()]. The error is
-#' printed with a backtrace.
+#' @description
+#'
+#' * `last_error()` returns the last error thrown with [abort()]. The
+#'   error is printed with a backtrace in simplified form.
+#'
+#' * `last_trace()` is a shortcut to return the backtrace stored in
+#'   the last error. This backtrace is printed in full form.
 #'
 #' @export
 last_error <- function() {
@@ -747,6 +752,11 @@ last_error <- function() {
     abort("Can't show last error because no error was recorded yet")
   }
   last_error_env$cnd
+}
+#' @rdname last_error
+#' @export
+last_trace <- function() {
+  last_error()$trace
 }
 
 
