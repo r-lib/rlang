@@ -328,7 +328,7 @@ cli_branch <- function(lines, max = NULL, style = NULL, indices = NULL) {
     indices <- pad_spaces(as.character(indices))
     indices <- paste0(" ", indices, ". ")
     padding <- nchar(indices[[1]])
-    lines <- paste0(indices, lines)
+    lines <- paste0(silver(indices), lines)
   } else {
     style <- style %||% cli_box_chars()
     lines <- paste0(" ", style$h, lines)

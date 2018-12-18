@@ -181,7 +181,7 @@ test_that("error is printed with backtrace", {
     conditionMessage(catch_cnd(f()))
   )
 
-  output <- strsplit(msg, "\n")[[1]]
+  output <- crayon::strip_style(strsplit(msg, "\n")[[1]])
   expected <- readLines(test_path("test-cnd-error.txt"))
   expect_identical(!!output, expected)
 })

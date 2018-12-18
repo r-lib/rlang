@@ -52,7 +52,7 @@ cli_tree <- function(data, root = data[[1]][[1]], style = NULL, indices = NULL) 
     root_padding <- spaces(nchar(indices[[1]]))
     indices <- c(root_padding, indices)
 
-    res <- paste0(indices, res)
+    res <- paste0(silver(indices), res)
   }
 
   res
