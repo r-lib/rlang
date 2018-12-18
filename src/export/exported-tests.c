@@ -14,7 +14,16 @@ sexp* rlang_test_nms_are_duplicated(sexp* nms, sexp* from_last) {
 // cnd.c
 
 sexp* rlang_test_r_warn(sexp* x) {
-  r_warn(CHAR(STRING_ELT(x, 0)));
+  r_warn(r_chr_get_c_string(x, 0));
+  return r_null;
+}
+
+sexp* rlang_test_Rf_warningcall(sexp* call, sexp* msg) {
+  Rf_warningcall(call, r_chr_get_c_string(msg, 0));
+  return r_null;
+}
+sexp* rlang_test_Rf_errorcall(sexp* call, sexp* msg) {
+  Rf_errorcall(call, r_chr_get_c_string(msg, 0));
   return r_null;
 }
 
