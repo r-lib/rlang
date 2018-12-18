@@ -810,26 +810,26 @@ entrace <- function(cnd, ..., top = NULL, bottom = NULL) {
 }
 class(entrace) <- calling_handler_class
 
-signal_context_kind <- function(nframe) {
+signal_context_info <- function(nframe) {
   first <- sys_body(nframe)
 
   if (is_reference(first, body(.handleSimpleError))) {
     if (is_reference(sys_body(nframe - 1), body(stop))) {
-      return("stop_message")
+      return(list("stop_message", nframe - 1))
     } else {
-      return("stop_native")
+      return(list("stop_native", nframe - 1))
     }
   }
 
   if (is_reference(first, body(stop))) {
-    return("stop_condition")
+    return(list("stop_condition", nframe))
   }
 
   if (is_reference(first, body(signalCondition))) {
     if (from_withrestarts(nframe - 1) && is_reference(sys_body(nframe - 4), body(message))) {
-      return("message")
+      return(list("message", nframe - 4))
     } else {
-      return("condition")
+      return(list("condition", nframe))
     }
   }
 
@@ -837,16 +837,16 @@ signal_context_kind <- function(nframe) {
     withrestarts_caller <- sys_body(nframe - 3)
     if (is_reference(withrestarts_caller, body(.signalSimpleWarning))) {
       if (is_reference(sys_body(nframe - 4), body(warning))) {
-        return("warning_message")
+        return(list("warning_message", nframe - 4))
       } else {
-        return("warning_native")
+        return(list("warning_native", nframe - 4))
       }
     } else if (is_reference(withrestarts_caller, body(warning))) {
-      return("warning_condition")
+      return(list("warning_condition", nframe - 3))
     }
   }
 
-  "unknown"
+  list("unknown", nframe)
 }
 
 from_withrestarts <- function(nframe) {

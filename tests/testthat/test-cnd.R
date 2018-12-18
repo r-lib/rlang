@@ -472,16 +472,16 @@ test_that("can catch condition of specific classes", {
 })
 
 test_that("signal context is detected", {
-  handler <- function(cnd) {
+  get_type <- function(cnd) {
     nframe <- sys.nframe() - 1
-    out <- signal_context_kind(nframe)
+    out <- signal_context_info(nframe)[[1]]
     invokeRestart("out", out)
   }
   signal_type <- function(signaller, arg) {
     f <- function() signaller(arg)
     withRestarts(
       out = identity,
-      withCallingHandlers(condition = handler, f())
+      withCallingHandlers(condition = get_type, f())
     )
   }
 
@@ -497,6 +497,36 @@ test_that("signal context is detected", {
   expect_identical(signal_type(base::message, cnd("message")), "message")
 
   expect_identical(signal_type(base::signalCondition, cnd("foo")), "condition")
+})
+
+test_that("bottom of signalling context is detected", {
+  scoped_options(error = NULL)
+
+  get_call <- function(cnd) {
+    nframe <- sys.nframe() - 1
+    info <- signal_context_info(nframe)
+    invokeRestart("out", sys.call(info[[2]]))
+  }
+  signal_call <- function(signaller, arg) {
+    f <- function() signaller(arg)
+    withRestarts(
+      out = identity,
+      withCallingHandlers(condition = get_call, f())
+    )
+  }
+
+  expect_equal(signal_call(base::stop, ""), quote(signaller(arg)))
+  expect_equal(signal_call(base::stop, cnd("error")), quote(signaller(arg)))
+  expect_equal(signal_call(function(msg) errorcall(NULL, msg), ""), quote(errorcall(NULL, msg)))
+
+  expect_equal(signal_call(base::warning, ""), quote(signaller(arg)))
+  expect_equal(signal_call(base::warning, cnd("warning")), quote(signaller(arg)))
+  expect_equal(signal_call(function(msg) warningcall(NULL, msg), ""), quote(warningcall(NULL, msg)))
+
+  expect_equal(signal_call(base::message, ""), quote(signaller(arg)))
+  expect_equal(signal_call(base::message, cnd("message")), quote(signaller(arg)))
+
+  expect_equal(signal_call(base::signalCondition, cnd("foo")), quote(signaller(arg)))
 })
 
 
