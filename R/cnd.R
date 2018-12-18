@@ -883,6 +883,11 @@ sys_body <- function(n) {
 }
 
 entrace_handle_top <- function(trace) {
+  # Happens with ctrl-c at top-level
+  if (!trace_length(trace)) {
+    return()
+  }
+
   stop_call <- sys.call(-2)
   stop_frame <- sys.frame(-2)
   cnd <- stop_frame$cond
