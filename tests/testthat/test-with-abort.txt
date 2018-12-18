@@ -16,7 +16,6 @@ backtrace:
  4. rlang:::f()
  5. rlang:::g()
  6. rlang:::h()
- 7. base::stop("Low-level message")
 Call `summary(rlang::last_error())` to see the full backtrace
 
 
@@ -51,4 +50,3 @@ backtrace:
  4. └─rlang:::f()
  5.   └─rlang:::g()
  6.     └─rlang:::h()
- 7.       └─base::stop("Low-level message")
