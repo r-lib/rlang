@@ -1,6 +1,34 @@
 
 # rlang 0.3.0.9000
 
+* New `entrace()` condition handler. Add this to your RProfile to
+  enable rlang backtraces for all errors, including warnings promoted
+  to errors:
+
+  ```r
+  if (requireNamespace("rlang", quietly = TRUE)) {
+    options(error = quote(rlang:::entrace()))
+  }
+  ```
+
+  This handler also works as a calling handler:
+
+  ```r
+  with_handlers(
+    error = calling(entrace),
+    foo(bar)
+  )
+  ```
+
+  However it's often more practical to use `with_abort()` in that case:
+
+  ```r
+  with_abort(foo(bar))
+  ```
+
+* `with_abort()` gains a `classes` argument to promote any kind of
+  condition to an rlang error.
+
 * New `last_trace()` shortcut to print the backtrace stored in the
   `last_error()`.
 

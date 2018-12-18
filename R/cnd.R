@@ -774,14 +774,23 @@ format_onerror_backtrace <- function(trace) {
 
 #' Add backtrace from error handler
 #'
+#' @description
+#'
 #' Set the `error` global option to `quote(rlang::entrace())` to
 #' transform base errors to rlang errors. These enriched errors
 #' include a backtrace. The RProfile is a good place to set the
 #' handler.
 #'
+#' `entrace()` also works as a [calling][calling] handler, though it
+#' is often more practical to use the higher-level function
+#' [with_abort()].
+#'
 #' @inheritParams trace_back
+#' @param cnd When `entrace()` is used as a calling handler, `cnd` is
+#'   the condition to handle.
 #' @param ... Unused. These dots are for future extensions.
 #'
+#' @seealso [with_abort()] to promote conditions to rlang errors.
 #' @examples
 #' if (FALSE) {  # Not run
 #'

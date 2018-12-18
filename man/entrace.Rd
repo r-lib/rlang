@@ -4,9 +4,12 @@
 \alias{entrace}
 \title{Add backtrace from error handler}
 \usage{
-entrace(..., top = NULL, bottom = NULL)
+entrace(cnd, ..., top = NULL, bottom = NULL)
 }
 \arguments{
+\item{cnd}{When \code{entrace()} is used as a calling handler, \code{cnd} is
+the condition to handle.}
+
 \item{...}{Unused. These dots are for future extensions.}
 
 \item{top}{The first frame environment to be included in the
@@ -32,6 +35,10 @@ Set the \code{error} global option to \code{quote(rlang::entrace())} to
 transform base errors to rlang errors. These enriched errors
 include a backtrace. The RProfile is a good place to set the
 handler.
+
+\code{entrace()} also works as a \link{calling} handler, though it
+is often more practical to use the higher-level function
+\code{\link[=with_abort]{with_abort()}}.
 }
 \examples{
 if (FALSE) {  # Not run
@@ -42,4 +49,7 @@ if (requireNamespace("rlang", quietly = TRUE)) {
 }
 
 }
+}
+\seealso{
+\code{\link[=with_abort]{with_abort()}} to promote conditions to rlang errors.
 }
