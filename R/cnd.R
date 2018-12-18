@@ -552,7 +552,8 @@ cnd_muffle <- function(cnd) {
 
   abort("Can't find a muffling restart")
 }
-class(cnd_muffle) <- c("rlang_handler_calling", "rlang_handler", "function")
+calling_handler_class <- c("rlang_handler_calling", "rlang_handler", "function")
+class(cnd_muffle) <- calling_handler_class
 
 #' Catch a condition
 #'
@@ -791,14 +792,35 @@ format_onerror_backtrace <- function(trace) {
 #'
 #' }
 #' @export
-entrace <- function(..., top = NULL, bottom = NULL) {
+entrace <- function(cnd, ..., top = NULL, bottom = NULL) {
   check_dots_empty(...)
 
-  bottom <- bottom %||% sys.frame(-1)
-  trace <- trace_back(top = top, bottom = bottom)
+  if (!missing(cnd) && inherits(cnd, "rlang_error")) {
+    return()
+  }
 
-  stop_call <- sys.call(-1)
-  stop_frame <- sys.frame(-1)
+  bottom <- bottom %||% sys.frame(-1)
+  trace <- trace_back(bottom = bottom)
+
+  if (missing(cnd)) {
+    entrace_handle_top(trace)
+  } else {
+    entrace_handle_cnd(trace, cnd)
+  }
+}
+class(entrace) <- calling_handler_class
+
+entrace_handle_cnd <- function(trace, cnd) {
+  # Find second-to-last tree - last tree is handleSimpleError()
+  i <- length(trace_level(trace)) - 1L
+  trace <- trace_subset_across(trace, i)
+
+  abort(cnd$message %||% "", error = cnd, trace = trace)
+}
+
+entrace_handle_top <- function(trace) {
+  stop_call <- sys.call(-2)
+  stop_frame <- sys.frame(-2)
   cnd <- stop_frame$cond
 
   # False for errors thrown from the C side
@@ -844,12 +866,14 @@ add_backtrace <- function() {
 #'
 #' @description
 #'
-#' `with_abort()` promotes all errors as if they were thrown with
+#' `with_abort()` promotes conditions as if they were thrown with
 #' [abort()]. These errors embed a [backtrace][trace_back]. They are
 #' particularly suitable to be set as *parent errors* (see `parent`
 #' argument of [abort()]).
 #'
 #' @param expr An expression run in a context where errors are
+#'   promoted to rlang errors.
+#' @param classes Character vector of condition classes that should be
 #'   promoted to rlang errors.
 #'
 #' @details
@@ -890,18 +914,7 @@ add_backtrace <- function() {
 #' # Reset to default
 #' options(rlang_trace_top_env = NULL)
 #' @export
-with_abort <- function(expr) {
-  withCallingHandlers(expr, error = function(err) {
-    if (inherits(err, "rlang_error")) {
-      return()
-    }
-
-    trace <- trace_back(bottom = 2)
-
-    # Find second-to-last tree - last tree is handleSimpleError()
-    i <- length(trace_level(trace)) - 1L
-    trace <- trace_subset_across(trace, i)
-
-    abort(err$message %||% "", error = err, trace = trace)
-  })
+with_abort <- function(expr, classes = "error") {
+  handlers <- rep_named(classes, list(entrace))
+  eval_bare(rlang::expr(withCallingHandlers(expr, !!!handlers)))
 }

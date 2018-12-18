@@ -13,10 +13,10 @@ message: Low-level message
 class:   `rlang_error`
 backtrace:
  1. rlang::with_abort(f())
- 3. rlang:::f()
- 4. rlang:::g()
- 5. rlang:::h()
- 6. base::stop("Low-level message")
+ 4. rlang:::f()
+ 5. rlang:::g()
+ 6. rlang:::h()
+ 7. base::stop("Low-level message")
 Call `summary(rlang::last_error())` to see the full backtrace
 
 
@@ -46,8 +46,9 @@ fields:  `message`, `trace`, `parent` and `error`
 backtrace:
     █
  1. ├─rlang::with_abort(f())
- 2. │ └─base::withCallingHandlers(...)
- 3. └─rlang:::f()
- 4.   └─rlang:::g()
- 5.     └─rlang:::h()
- 6.       └─base::stop("Low-level message")
+ 2. │ ├─rlang::eval_bare(rlang::expr(withCallingHandlers(expr, !!!handlers)))
+ 3. │ └─base::withCallingHandlers(...)
+ 4. └─rlang:::f()
+ 5.   └─rlang:::g()
+ 6.     └─rlang:::h()
+ 7.       └─base::stop("Low-level message")

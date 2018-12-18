@@ -4,14 +4,17 @@
 \alias{with_abort}
 \title{Promote all errors to rlang errors}
 \usage{
-with_abort(expr)
+with_abort(expr, classes = "error")
 }
 \arguments{
 \item{expr}{An expression run in a context where errors are
 promoted to rlang errors.}
+
+\item{classes}{Character vector of condition classes that should be
+promoted to rlang errors.}
 }
 \description{
-\code{with_abort()} promotes all errors as if they were thrown with
+\code{with_abort()} promotes conditions as if they were thrown with
 \code{\link[=abort]{abort()}}. These errors embed a \link[=trace_back]{backtrace}. They are
 particularly suitable to be set as \emph{parent errors} (see \code{parent}
 argument of \code{\link[=abort]{abort()}}).
