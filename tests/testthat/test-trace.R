@@ -99,7 +99,7 @@ test_that("cli_branch() handles edge case", {
 
   call <- paste0(" ", cli_style$h, "rlang:::f()")
   tree <- trace_as_tree(trace, srcrefs = FALSE)
-  expect_identical(cli_branch(tree$call[-1]), call)
+  expect_identical(cli_branch(tree$call[-1], trace$indices), call)
 })
 
 test_that("trace formatting picks up `rlang_trace_format_srcrefs`", {
@@ -135,13 +135,10 @@ test_that("collapsed formatting doesn't collapse single frame siblings", {
   trace <- f()
 
   full <- capture.output(print(trace, simplify = "none", srcrefs = FALSE))[[3]]
-  full <- substr(full, 5, nchar(full))
+  expect_match(full, "rlang::eval_bare(quote(g()))", fixed = TRUE)
 
   collapsed <- capture.output(print(trace, simplify = "collapse", srcrefs = FALSE))[[3]]
-  collapsed <- substr(collapsed, 5, nchar(collapsed))
-
-  expect_identical(full, "rlang::eval_bare(quote(g()))")
-  expect_identical(collapsed, "[ rlang::eval_bare(...) ]")
+  expect_match(collapsed, "[ rlang::eval_bare(...) ]", fixed = TRUE)
 })
 
 test_that("recursive frames are rewired to the global env", {

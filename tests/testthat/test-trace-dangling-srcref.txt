@@ -1,13 +1,13 @@
 Full:
-█
-└─rlang:::f(current_env())
-  └─rlang:::g(e)
+    █
+ 1. └─rlang:::f(current_env())
+ 2.   └─rlang:::g(e)
 
 Collapsed:
-█
-└─rlang:::f(current_env())
-  └─rlang:::g(e)
+    █
+ 1. └─rlang:::f(current_env())
+ 2.   └─rlang:::g(e)
 
 Branch:
- ─rlang:::f(current_env())
- ─rlang:::g(e)
+ 1. rlang:::f(current_env())
+ 2. rlang:::g(e)

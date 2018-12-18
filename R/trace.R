@@ -220,20 +220,45 @@ normalise_parents <- function(parents) {
   parents
 }
 
-new_trace <- function(calls, parents, envs) {
-  stopifnot(is.list(calls), is.integer(parents), length(calls) == length(parents))
+new_trace <- function(calls, parents, envs, indices = NULL) {
+  indices <- indices %||% seq_along(calls)
+
+  n <- length(calls)
+  stopifnot(
+    is_list(calls),
+    is_integer(parents, n),
+    is_integer(indices, n)
+  )
 
   structure(
     list(
       calls = calls,
       parents = parents,
-      envs = envs
+      envs = envs,
+      indices = indices
     ),
     class = "rlang_trace"
   )
 }
 
+trace_reset_indices <- function(trace) {
+  trace$indices <- seq_len(trace_length(trace))
+  trace
+}
+
 # Methods -----------------------------------------------------------------
+
+# For internal use only
+c.rlang_trace <- function(...) {
+  traces <- list(...)
+
+  calls <- flatten(map(traces, `[[`, "calls"))
+  parents <- flatten_int(map(traces, `[[`, "parents"))
+  envs <- flatten(map(traces, `[[`, "envs"))
+  indices <- flatten_int(map(traces, `[[`, "indices"))
+
+  new_trace(calls, parents, envs, indices)
+}
 
 #' @export
 format.rlang_trace <- function(x,
@@ -242,6 +267,8 @@ format.rlang_trace <- function(x,
                                max_frames = NULL,
                                dir = getwd(),
                                srcrefs = NULL) {
+  x <- trace_reset_indices(x)
+
   switch(arg_match(simplify),
     none = trace_format(x, max_frames, dir, srcrefs),
     collapse = trace_format_collapse(x, max_frames, dir, srcrefs),
@@ -259,7 +286,7 @@ trace_format <- function(trace, max_frames, dir, srcrefs) {
   }
 
   tree <- trace_as_tree(trace, dir = dir, srcrefs = srcrefs)
-  cli_tree(tree)
+  cli_tree(tree, indices = trace$indices)
 }
 trace_format_collapse <- function(trace, max_frames, dir, srcrefs) {
   trace <- trace_simplify_collapse(trace)
@@ -271,7 +298,7 @@ trace_format_trail <- function(trace, max_frames, dir, srcrefs) {
   tree <- trace_as_tree(trace, dir = dir, srcrefs = srcrefs)
 
   branch <- tree[-1, ][["call"]]
-  cli_branch(branch, max_frames)
+  cli_branch(branch, max = max_frames, indices = trace$indices)
 }
 
 format_collapsed <- function(what, n) {
@@ -291,13 +318,21 @@ format_collapsed_trail <- function(what, n, style = NULL) {
   format_collapsed(what, n)
 }
 
-cli_branch <- function(lines, max = NULL, style = NULL) {
+cli_branch <- function(lines, max = NULL, style = NULL, indices = NULL) {
   if (!length(lines)) {
     return(chr())
   }
 
-  style <- style %||% cli_box_chars()
-  lines <- paste0(" ", style$h, lines)
+  numbered <- length(indices)
+  if (numbered) {
+    indices <- pad_spaces(as.character(indices))
+    indices <- paste0(" ", indices, ". ")
+    padding <- nchar(indices[[1]])
+    lines <- paste0(silver(indices), lines)
+  } else {
+    style <- style %||% cli_box_chars()
+    lines <- paste0(" ", style$h, lines)
+  }
 
   if (is_null(max)) {
     return(lines)
@@ -316,7 +351,11 @@ cli_branch <- function(lines, max = NULL, style = NULL) {
   style <- style %||% cli_box_chars()
   n_collapsed <- n - max
 
-  collapsed_line <- format_collapsed_trail("...", n_collapsed, style = style)
+  if (numbered) {
+    collapsed_line <- paste0(spaces(padding), "...")
+  } else {
+    collapsed_line <- format_collapsed_trail("...", n_collapsed, style = style)
+  }
 
   if (max == 1L) {
     lines <- chr(
@@ -384,24 +423,15 @@ trace_subset <- function(x, i) {
     i <- setdiff(seq_len(n), abs(i))
   }
 
-  calls <- x$calls[i]
-  envs <- x$envs[i]
   parents <- match(as.character(x$parents[i]), as.character(i), nomatch = 0)
 
-  new_trace(calls, parents, envs)
+  new_trace(
+    calls = x$calls[i],
+    parents = parents,
+    envs = x$envs[i],
+    indices = x$indices[i]
+  )
 }
-
-# For internal use only
-c.rlang_trace <- function(...) {
-  traces <- list(...)
-
-  calls <- flatten(map(traces, `[[`, "calls"))
-  parents <- flatten_int(map(traces, `[[`, "parents"))
-  envs <- flatten(map(traces, `[[`, "envs"))
-
-  new_trace(calls, parents, envs)
-}
-
 
 # Subsets sibling nodes, at the level of the rightmost leaf by
 # default. Supports full vector subsetting semantics (negative values,

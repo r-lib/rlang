@@ -1,38 +1,38 @@
 Full:
-█
-└─rlang:::f()
-  └─rlang:::g() testthat/test-trace.R:45:20
-    ├─base::tryCatch(h(), foo = identity, bar = identity) testthat/test-trace.R:46:20
-    │ └─base:::tryCatchList(expr, classes, parentenv, handlers)
-    │   ├─base:::tryCatchOne(...)
-    │   │ └─base:::doTryCatch(return(expr), name, parentenv, handler)
-    │   └─base:::tryCatchList(expr, names[-nh], parentenv, handlers[-nh])
-    │     └─base:::tryCatchOne(expr, names, parentenv, handlers[[1L]])
-    │       └─base:::doTryCatch(return(expr), name, parentenv, handler)
-    └─rlang:::h()
-      ├─base::tryCatch(i(), baz = identity) testthat/test-trace.R:47:20
-      │ └─base:::tryCatchList(expr, classes, parentenv, handlers)
-      │   └─base:::tryCatchOne(expr, names, parentenv, handlers[[1L]])
-      │     └─base:::doTryCatch(return(expr), name, parentenv, handler)
-      └─rlang:::i()
-        ├─base::tryCatch(trace_back(e, bottom = 0)) testthat/test-trace.R:48:20
-        │ └─base:::tryCatchList(expr, classes, parentenv, handlers)
-        └─rlang::trace_back(e, bottom = 0)
+     █
+  1. └─rlang:::f()
+  2.   └─rlang:::g() testthat/test-trace.R:45:20
+  3.     ├─base::tryCatch(h(), foo = identity, bar = identity) testthat/test-trace.R:46:20
+  4.     │ └─base:::tryCatchList(expr, classes, parentenv, handlers)
+  5.     │   ├─base:::tryCatchOne(...)
+  6.     │   │ └─base:::doTryCatch(return(expr), name, parentenv, handler)
+  7.     │   └─base:::tryCatchList(expr, names[-nh], parentenv, handlers[-nh])
+  8.     │     └─base:::tryCatchOne(expr, names, parentenv, handlers[[1L]])
+  9.     │       └─base:::doTryCatch(return(expr), name, parentenv, handler)
+ 10.     └─rlang:::h()
+ 11.       ├─base::tryCatch(i(), baz = identity) testthat/test-trace.R:47:20
+ 12.       │ └─base:::tryCatchList(expr, classes, parentenv, handlers)
+ 13.       │   └─base:::tryCatchOne(expr, names, parentenv, handlers[[1L]])
+ 14.       │     └─base:::doTryCatch(return(expr), name, parentenv, handler)
+ 15.       └─rlang:::i()
+ 16.         ├─base::tryCatch(trace_back(e, bottom = 0)) testthat/test-trace.R:48:20
+ 17.         │ └─base:::tryCatchList(expr, classes, parentenv, handlers)
+ 18.         └─rlang::trace_back(e, bottom = 0)
 
 Collapsed:
-█
-└─rlang:::f()
-  └─rlang:::g() testthat/test-trace.R:45:20
-    ├─[ base::tryCatch(...) ] with 6 more calls testthat/test-trace.R:46:20
-    └─rlang:::h()
-      ├─[ base::tryCatch(...) ] with 3 more calls testthat/test-trace.R:47:20
-      └─rlang:::i()
-        ├─[ base::tryCatch(...) ] with 1 more call testthat/test-trace.R:48:20
-        └─rlang::trace_back(e, bottom = 0)
+     █
+  1. └─rlang:::f()
+  2.   └─rlang:::g() testthat/test-trace.R:45:20
+  3.     ├─[ base::tryCatch(...) ] with 6 more calls testthat/test-trace.R:46:20
+ 10.     └─rlang:::h()
+ 11.       ├─[ base::tryCatch(...) ] with 3 more calls testthat/test-trace.R:47:20
+ 15.       └─rlang:::i()
+ 16.         ├─[ base::tryCatch(...) ] with 1 more call testthat/test-trace.R:48:20
+ 18.         └─rlang::trace_back(e, bottom = 0)
 
 Branch:
- ─rlang:::f()
- ─rlang:::g() testthat/test-trace.R:45:20
- ─rlang:::h()
- ─rlang:::i()
- ─rlang::trace_back(e, bottom = 0)
+  1. rlang:::f()
+  2. rlang:::g() testthat/test-trace.R:45:20
+ 10. rlang:::h()
+ 15. rlang:::i()
+ 18. rlang::trace_back(e, bottom = 0)

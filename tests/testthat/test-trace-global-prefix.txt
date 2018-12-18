@@ -1,13 +1,13 @@
 Full:
-█
-└─rlang:::g(current_env())
-  └─global::f(e)
+    █
+ 1. └─rlang:::g(current_env())
+ 2.   └─global::f(e)
 
 Collapsed:
-█
-└─rlang:::g(current_env())
-  └─global::f(e)
+    █
+ 1. └─rlang:::g(current_env())
+ 2.   └─global::f(e)
 
 Branch:
- ─rlang:::g(current_env())
- ─global::f(e)
+ 1. rlang:::g(current_env())
+ 2. global::f(e)

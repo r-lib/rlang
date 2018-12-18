@@ -7,7 +7,7 @@
 # * is_utf8_output()
 # * is_latex_output()
 
-cli_tree <- function(data, root = data[[1]][[1]], style = NULL) {
+cli_tree <- function(data, root = data[[1]][[1]], style = NULL, indices = NULL) {
   style <- style %||% cli_box_chars()
 
   labels <- if (ncol(data) >= 3) data[[3]] else data[[1]]
@@ -40,7 +40,20 @@ cli_tree <- function(data, root = data[[1]][[1]], style = NULL) {
     }
   }
 
-  if (nrow(data)) pt(root)
+  if (nrow(data)) {
+    pt(root)
+  }
+
+  if (length(indices)) {
+    indices <- pad_spaces(as.character(indices))
+    indices <- paste0(" ", indices, ". ")
+
+    # The root isn't numbered
+    root_padding <- spaces(nchar(indices[[1]]))
+    indices <- c(root_padding, indices)
+
+    res <- paste0(silver(indices), res)
+  }
 
   res
 }

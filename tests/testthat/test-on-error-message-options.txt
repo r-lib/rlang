@@ -20,24 +20,24 @@ The error message
 
 The error message
 Backtrace:
- ─rlang::with_options(rlang__backtrace_on_error = "branch", msg())
- ─rlang:::msg()
- ─rlang:::f()
- ─rlang:::g()
- ─rlang:::h()
+  1. rlang::with_options(rlang__backtrace_on_error = "branch", msg())
+  2. rlang:::msg()
+ 12. rlang:::f()
+ 15. rlang:::g()
+ 16. rlang:::h()
 
 
 >>> Collapsed:
 
 The error message
 Backtrace:
-█
-├─[ rlang::with_options(...) ]
-└─rlang:::msg()
-  ├─[ base::cat(...) ]
-  ├─[ base::conditionMessage(...) ]
-  ├─[ rlang::catch_cnd(...) ] with 6 more calls
-  └─rlang:::f()
-    ├─[ base::tryCatch(...) ] with 1 more call
-    └─rlang:::g()
-      └─rlang:::h()
+     █
+  1. ├─[ rlang::with_options(...) ]
+  2. └─rlang:::msg()
+  3.   ├─[ base::cat(...) ]
+  4.   ├─[ base::conditionMessage(...) ]
+  5.   ├─[ rlang::catch_cnd(...) ] with 6 more calls
+ 12.   └─rlang:::f()
+ 13.     ├─[ base::tryCatch(...) ] with 1 more call
+ 15.     └─rlang:::g()
+ 16.       └─rlang:::h()

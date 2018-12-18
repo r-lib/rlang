@@ -1,10 +1,10 @@
 Full:
-█
-└─1L
+    █
+ 1. └─1L
 
 Collapsed:
-█
-└─1L
+    █
+ 1. └─1L
 
 Branch:
- ─1L
+ 1. 1L

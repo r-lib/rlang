@@ -4,19 +4,19 @@ print():
 message: High-level message
 class:   `rlang_error`
 backtrace:
- ─base::identity(catch_cnd(a()))
- ─rlang:::a()
- ─rlang:::b()
- ─rlang:::c()
+  1. base::identity(catch_cnd(a()))
+  9. rlang:::a()
+ 10. rlang:::b()
+ 11. rlang:::c()
 <error: parent>
 message: Low-level message
 class:   `rlang_error`
 backtrace:
- ─rlang::with_abort(f())
- ─rlang:::f()
- ─rlang:::g()
- ─rlang:::h()
- ─base::stop("Low-level message")
+ 1. rlang::with_abort(f())
+ 3. rlang:::f()
+ 4. rlang:::g()
+ 5. rlang:::h()
+ 6. base::stop("Low-level message")
 Call `summary(rlang::last_error())` to see the full backtrace
 
 
@@ -27,27 +27,27 @@ message: High-level message
 class:   `rlang_error`
 fields:  `message`, `trace` and `parent`
 backtrace:
-█
-├─base::identity(catch_cnd(a()))
-├─rlang::catch_cnd(a())
-│ ├─rlang::eval_bare(...)
-│ ├─base::tryCatch(...)
-│ │ └─base:::tryCatchList(expr, classes, parentenv, handlers)
-│ │   └─base:::tryCatchOne(expr, names, parentenv, handlers[[1L]])
-│ │     └─base:::doTryCatch(return(expr), name, parentenv, handler)
-│ └─base::force(expr)
-└─rlang:::a()
-  └─rlang:::b()
-    └─rlang:::c()
+     █
+  1. ├─base::identity(catch_cnd(a()))
+  2. ├─rlang::catch_cnd(a())
+  3. │ ├─rlang::eval_bare(...)
+  4. │ ├─base::tryCatch(...)
+  5. │ │ └─base:::tryCatchList(expr, classes, parentenv, handlers)
+  6. │ │   └─base:::tryCatchOne(expr, names, parentenv, handlers[[1L]])
+  7. │ │     └─base:::doTryCatch(return(expr), name, parentenv, handler)
+  8. │ └─base::force(expr)
+  9. └─rlang:::a()
+ 10.   └─rlang:::b()
+ 11.     └─rlang:::c()
 <error: parent>
 message: Low-level message
 class:   `rlang_error`
 fields:  `message`, `trace`, `parent` and `error`
 backtrace:
-█
-├─rlang::with_abort(f())
-│ └─base::withCallingHandlers(...)
-└─rlang:::f()
-  └─rlang:::g()
-    └─rlang:::h()
-      └─base::stop("Low-level message")
+    █
+ 1. ├─rlang::with_abort(f())
+ 2. │ └─base::withCallingHandlers(...)
+ 3. └─rlang:::f()
+ 4.   └─rlang:::g()
+ 5.     └─rlang:::h()
+ 6.       └─base::stop("Low-level message")

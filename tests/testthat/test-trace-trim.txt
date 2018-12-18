@@ -1,36 +1,36 @@
 No trimming:
-█
-└─rlang:::f(0)
-  ├─base::identity(identity(g(n)))
-  ├─base::identity(g(n))
-  └─rlang:::g(n)
-    ├─base::identity(identity(h(n)))
-    ├─base::identity(h(n))
-    └─rlang:::h(n)
-      ├─base::identity(identity(trace_back(e, bottom = n)))
-      ├─base::identity(trace_back(e, bottom = n))
-      └─rlang::trace_back(e, bottom = n)
+     █
+  1. └─rlang:::f(0)
+  2.   ├─base::identity(identity(g(n)))
+  3.   ├─base::identity(g(n))
+  4.   └─rlang:::g(n)
+  5.     ├─base::identity(identity(h(n)))
+  6.     ├─base::identity(h(n))
+  7.     └─rlang:::h(n)
+  8.       ├─base::identity(identity(trace_back(e, bottom = n)))
+  9.       ├─base::identity(trace_back(e, bottom = n))
+ 10.       └─rlang::trace_back(e, bottom = n)
 
 
 One layer (the default):
-█
-└─rlang:::f(1)
-  ├─base::identity(identity(g(n)))
-  ├─base::identity(g(n))
-  └─rlang:::g(n)
-    ├─base::identity(identity(h(n)))
-    ├─base::identity(h(n))
-    └─rlang:::h(n)
+    █
+ 1. └─rlang:::f(1)
+ 2.   ├─base::identity(identity(g(n)))
+ 3.   ├─base::identity(g(n))
+ 4.   └─rlang:::g(n)
+ 5.     ├─base::identity(identity(h(n)))
+ 6.     ├─base::identity(h(n))
+ 7.     └─rlang:::h(n)
 
 
 Two layers:
-█
-└─rlang:::f(2)
-  ├─base::identity(identity(g(n)))
-  ├─base::identity(g(n))
-  └─rlang:::g(n)
+    █
+ 1. └─rlang:::f(2)
+ 2.   ├─base::identity(identity(g(n)))
+ 3.   ├─base::identity(g(n))
+ 4.   └─rlang:::g(n)
 
 
 Three layers:
-█
-└─rlang:::f(3)
+    █
+ 1. └─rlang:::f(3)

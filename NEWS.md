@@ -1,6 +1,10 @@
 
 # rlang 0.3.0.9000
 
+* Calls in backtraces are now numbered according to their position in
+  the call tree. The numbering is non-contiguous for simplified
+  backtraces because of omitted call frames.
+
 * Subsetting an object from the `.env` pronoun now evaluates the
   corresponding symbol. This means you can now retrieve objects from
   the contextual environment in magrittr pipes.
