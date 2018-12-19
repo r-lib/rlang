@@ -570,8 +570,6 @@ test_that("signal context is detected", {
 })
 
 test_that("bottom of signalling context is detected", {
-  scoped_options(error = NULL)
-
   get_call <- function(cnd) {
     nframe <- sys.nframe() - 1
     info <- signal_context_info(nframe)
