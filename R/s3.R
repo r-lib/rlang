@@ -144,6 +144,52 @@ print.box <- function(x, ...) {
   print(unbox(x))
 }
 
+#' Box a final value for early termination
+#'
+#' @description
+#'
+#' A value boxed with `done()` signals to its caller that it
+#' should stop iterating. Use it to shortcircuit a loop.
+#'
+#' @param x For `done()`, a value to box. For `is_done_box()`, a
+#'   value to test.
+#' @return A [boxed][rlang::new_box] value.
+#'
+#' @examples
+#' done(3)
+#'
+#' x <- done(3)
+#' is_done_box(x)
+#' @export
+done <- function(x) {
+  new_box(
+    maybe_missing(x),
+    class = "rlang_box_done",
+    empty = missing(x)
+  )
+}
+#' @rdname done
+#' @param empty Whether the box is empty. If `NULL`, `is_done_box()`
+#'   returns `TRUE` for all done boxes. If `TRUE`, it returns `TRUE`
+#'   only for empty boxes. Otherwise it returns `TRUE` only for
+#'   non-empty boxes.
+#' @export
+is_done_box <- function(x, empty = NULL) {
+  if (!inherits(x, "rlang_box_done")) {
+    return(FALSE)
+  }
+
+  if (is_null(empty)) {
+    return(TRUE)
+  }
+
+  attr(x, "empty") == empty
+}
+#' @export
+print.rlang_box_done <- function(x, ...) {
+  cat_line("<done>")
+  print(unbox(x))
+}
 
 #' Create zap objects
 #'
