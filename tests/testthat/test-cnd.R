@@ -414,9 +414,6 @@ test_that("don't print message or backtrace fields if empty", {
 test_that("with_abort() promotes base errors to rlang errors", {
   skip_on_os("windows")
 
-  # !!! call is not deparsed properly
-  skip_if(getRversion() < "3.5")
-
   f <- function() g()
   g <- function() h()
   h <- function() stop("Low-level message")
@@ -524,7 +521,7 @@ test_that("with_abort() entraces conditions properly", {
   expect_abort_trace(base::stop, "")
   expect_abort_trace(base::stop, cnd("error"))
   expect_abort_trace(function(msg) errorcall(NULL, msg), "", "errorcall")
-  # expect_abort_trace(abort, "") # FIXME
+  expect_abort_trace(abort, "")
 
   expect_abort_trace(base::warning, "", classes = "warning")
   expect_abort_trace(base::warning, cnd("warning"), classes = "warning")
