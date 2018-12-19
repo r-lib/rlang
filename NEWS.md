@@ -7,7 +7,7 @@
 
   ```r
   if (requireNamespace("rlang", quietly = TRUE)) {
-    options(error = quote(rlang:::entrace()))
+    options(error = rlang::entrace)
   }
   ```
 

@@ -45,7 +45,7 @@ if (FALSE) {  # Not run
 
 # Set the error handler in your RProfile like this:
 if (requireNamespace("rlang", quietly = TRUE)) {
-  options(error = quote(rlang::entrace()))
+  options(error = rlang::entrace)
 }
 
 }
