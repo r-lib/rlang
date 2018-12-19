@@ -32,7 +32,7 @@
 
 <meta property="og:title" content="Promote all errors to rlang errors — with_abort" />
 
-<meta property="og:description" content="with_abort() promotes all errors as if they were thrown with
+<meta property="og:description" content="with_abort() promotes conditions as if they were thrown with
 abort(). These errors embed a backtrace. They are
 particularly suitable to be set as parent errors (see parent
 argument of abort())." />
@@ -132,14 +132,14 @@ argument of abort())." />
 
     <div class="ref-description">
     
-    <p><code>with_abort()</code> promotes all errors as if they were thrown with
+    <p><code>with_abort()</code> promotes conditions as if they were thrown with
 <code><a href='abort.html'>abort()</a></code>. These errors embed a <a href='trace_back.html'>backtrace</a>. They are
 particularly suitable to be set as <em>parent errors</em> (see <code>parent</code>
 argument of <code><a href='abort.html'>abort()</a></code>).</p>
     
     </div>
 
-    <pre class="usage"><span class='fu'>with_abort</span>(<span class='no'>expr</span>)</pre>
+    <pre class="usage"><span class='fu'>with_abort</span>(<span class='no'>expr</span>, <span class='kw'>classes</span> <span class='kw'>=</span> <span class='st'>"error"</span>)</pre>
     
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
@@ -147,6 +147,11 @@ argument of <code><a href='abort.html'>abort()</a></code>).</p>
     <tr>
       <th>expr</th>
       <td><p>An expression run in a context where errors are
+promoted to rlang errors.</p></td>
+    </tr>
+    <tr>
+      <th>classes</th>
+      <td><p>Character vector of condition classes that should be
 promoted to rlang errors.</p></td>
     </tr>
     </table>
@@ -172,8 +177,8 @@ you should use <code><a href='https://www.rdocumentation.org/packages/base/topic
 #&gt; message: Base error
 #&gt; class:   `rlang_error`
 #&gt; backtrace:
-#&gt;  1. global::fn()
-#&gt;  2. base::stop("Base error")
+#&gt;  1. base::try(with_abort(fn()))
+#&gt;  8. global::fn()
 #&gt; Call `summary(rlang::last_error())` to see the full backtrace</div><div class='input'>
 <span class='co'># with_abort() is handy for rethrowing low level errors. The</span>
 <span class='co'># backtraces are then segmented between the low level and high</span>
@@ -202,7 +207,6 @@ you should use <code><a href='https://www.rdocumentation.org/packages/base/topic
 #&gt;  1. rlang::with_abort(low_level1())
 #&gt;  3. global::low_level1()
 #&gt;  4. global::low_level2()
-#&gt;  5. base::stop("Low level error")
 #&gt; Call `summary(rlang::last_error())` to see the full backtrace</div><div class='input'><span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/summary'>summary</a></span>(<span class='fu'><a href='last_error.html'>last_error</a></span>())</div><div class='output co'>#&gt; &lt;error&gt;
 #&gt; message: High level error
 #&gt; class:   `rlang_error`
@@ -222,10 +226,9 @@ you should use <code><a href='https://www.rdocumentation.org/packages/base/topic
 #&gt; backtrace:
 #&gt;     █
 #&gt;  1. ├─rlang::with_abort(low_level1())
-#&gt;  2. │ └─base::withCallingHandlers(...) /home/travis/build/r-lib/rlang/R/cnd.R:865:2
+#&gt;  2. │ └─base::withCallingHandlers(...)
 #&gt;  3. └─global::low_level1()
-#&gt;  4.   └─global::low_level2()
-#&gt;  5.     └─base::stop("Low level error")</div><div class='input'>
+#&gt;  4.   └─global::low_level2()</div><div class='input'>
 <span class='co'># Reset to default</span>
 <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/options'>options</a></span>(<span class='kw'>rlang_trace_top_env</span> <span class='kw'>=</span> <span class='kw'>NULL</span>)</div></pre>
   </div>

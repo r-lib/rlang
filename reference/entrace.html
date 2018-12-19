@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Get the current or caller environment — caller_env • rlang</title>
+<title>Add backtrace from error handler — entrace • rlang</title>
 
 <!-- jquery -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=" crossorigin="anonymous"></script>
@@ -30,14 +30,15 @@
 
 
 
-<meta property="og:title" content="Get the current or caller environment — caller_env" />
+<meta property="og:title" content="Add backtrace from error handler — entrace" />
 
-<meta property="og:description" content="
-The current environment is the execution environment of the
-current function (the one currently being evaluated).
-The caller environment is the execution environment of the
-function that called the current function.
-" />
+<meta property="og:description" content="Set the error global option to quote(rlang::entrace()) to
+transform base errors to rlang errors. These enriched errors
+include a backtrace. The RProfile is a good place to set the
+handler.
+entrace() also works as a calling handler, though it
+is often more practical to use the higher-level function
+with_abort()." />
 <meta name="twitter:card" content="summary" />
 
 
@@ -127,65 +128,72 @@ function that called the current function.
 <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-    <h1>Get the current or caller environment</h1>
-    <small class="dont-index">Source: <a href='https://github.com/r-lib/rlang/blob/master/R/env-special.R'><code>R/env-special.R</code></a></small>
-    <div class="hidden name"><code>caller_env.Rd</code></div>
+    <h1>Add backtrace from error handler</h1>
+    <small class="dont-index">Source: <a href='https://github.com/r-lib/rlang/blob/master/R/cnd.R'><code>R/cnd.R</code></a></small>
+    <div class="hidden name"><code>entrace.Rd</code></div>
     </div>
 
     <div class="ref-description">
     
-    <ul>
-<li><p>The current environment is the execution environment of the
-current function (the one currently being evaluated).</p></li>
-<li><p>The caller environment is the execution environment of the
-function that called the current function.</p></li>
-</ul>
+    <p>Set the <code>error</code> global option to <code><a href='https://www.rdocumentation.org/packages/base/topics/substitute'>quote(rlang::entrace())</a></code> to
+transform base errors to rlang errors. These enriched errors
+include a backtrace. The RProfile is a good place to set the
+handler.</p>
+<p><code>entrace()</code> also works as a <a href='exiting.html'>calling</a> handler, though it
+is often more practical to use the higher-level function
+<code><a href='with_abort.html'>with_abort()</a></code>.</p>
     
     </div>
 
-    <pre class="usage"><span class='fu'>caller_env</span>(<span class='kw'>n</span> <span class='kw'>=</span> <span class='fl'>1</span>)
-
-<span class='fu'>current_env</span>()</pre>
+    <pre class="usage"><span class='fu'>entrace</span>(<span class='no'>cnd</span>, <span class='no'>...</span>, <span class='kw'>top</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>bottom</span> <span class='kw'>=</span> <span class='kw'>NULL</span>)</pre>
     
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
     <colgroup><col class="name" /><col class="desc" /></colgroup>
     <tr>
-      <th>n</th>
-      <td><p>Number of frames to go back.</p></td>
+      <th>cnd</th>
+      <td><p>When <code>entrace()</code> is used as a calling handler, <code>cnd</code> is
+the condition to handle.</p></td>
+    </tr>
+    <tr>
+      <th>...</th>
+      <td><p>Unused. These dots are for future extensions.</p></td>
+    </tr>
+    <tr>
+      <th>top</th>
+      <td><p>The first frame environment to be included in the
+backtrace. This becomes the top of the backtrace tree and
+represents the oldest call in the backtrace.</p>
+<p>This is needed in particular when you call <code><a href='trace_back.html'>trace_back()</a></code>
+indirectly or from a larger context, for example in tests or
+inside an RMarkdown document where you don't want all of the
+knitr evaluation mechanisms to appear in the backtrace.</p></td>
+    </tr>
+    <tr>
+      <th>bottom</th>
+      <td><p>The last frame environment to be included in the
+backtrace. This becomes the rightmost leaf of the backtrace tree
+and represents the youngest call in the backtrace.</p>
+<p>Set this when you would like to capture a backtrace without the
+capture context.</p>
+<p>Can also be an integer that will be passed to <code><a href='caller_env.html'>caller_env()</a></code>.</p></td>
     </tr>
     </table>
     
     <h2 class="hasAnchor" id="see-also"><a class="anchor" href="#see-also"></a>See also</h2>
 
-    <div class='dont-index'><p><code><a href='caller_frame.html'>caller_frame()</a></code> and <code><a href='stack.html'>current_frame()</a></code></p></div>
+    <div class='dont-index'><p><code><a href='with_abort.html'>with_abort()</a></code> to promote conditions to rlang errors.</p></div>
     
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><div class='input'><span class='co'># Let's create a function that returns its current environment and</span>
-<span class='co'># its caller environment:</span>
-<span class='no'>fn</span> <span class='kw'>&lt;-</span> <span class='kw'>function</span>() <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/list'>list</a></span>(<span class='kw'>current</span> <span class='kw'>=</span> <span class='fu'>current_env</span>(), <span class='kw'>caller</span> <span class='kw'>=</span> <span class='fu'>caller_env</span>())
+    <pre class="examples"><div class='input'><span class='kw'>if</span> (<span class='fl'>FALSE</span>) {  <span class='co'># Not run</span>
 
-<span class='co'># The current environment is an unique execution environment</span>
-<span class='co'># created when `fn()` was called. The caller environment is the</span>
-<span class='co'># global env because that's where we called `fn()`.</span>
-<span class='fu'>fn</span>()</div><div class='output co'>#&gt; $current
-#&gt; &lt;environment: 0x81215c8&gt;
-#&gt; 
-#&gt; $caller
-#&gt; &lt;environment: 0x95b7308&gt;
-#&gt; </div><div class='input'>
-<span class='co'># Let's call `fn()` again but this time within a function:</span>
-<span class='no'>g</span> <span class='kw'>&lt;-</span> <span class='kw'>function</span>() <span class='fu'>fn</span>()
+<span class='co'># Set the error handler in your RProfile like this:</span>
+<span class='kw'>if</span> (<span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/ns-load'>requireNamespace</a></span>(<span class='st'>"rlang"</span>, <span class='kw'>quietly</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>)) {
+  <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/options'>options</a></span>(<span class='kw'>error</span> <span class='kw'>=</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/substitute'>quote</a></span>(<span class='kw pkg'>rlang</span><span class='kw ns'>::</span><span class='fu'><a href='https://rlang.r-lib.org/reference/entrace.html'>entrace</a></span>()))
+}
 
-<span class='co'># Now the caller environment is also an unique execution environment.</span>
-<span class='co'># This is the exec env created by R for our call to g():</span>
-<span class='fu'>g</span>()</div><div class='output co'>#&gt; $current
-#&gt; &lt;environment: 0x6c6ea20&gt;
-#&gt; 
-#&gt; $caller
-#&gt; &lt;environment: 0x6c6e9b0&gt;
-#&gt; </div></pre>
+}</div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
     <h2>Contents</h2>
