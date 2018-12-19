@@ -74,6 +74,7 @@ inherits_only <- function(x, class) {
 #'   boxed value (in addition to `rlang_box`). For `is_box()`,
 #'   `as_box()` and `as_box_if()`, a class (or vector of classes) to
 #'   be passed to [inherits_all()].
+#' @param ... Additional attributes passed to [base::structure()].
 #' @export
 #' @examples
 #' boxed <- new_box(letters, "mybox")
@@ -97,8 +98,12 @@ inherits_only <- function(x, class) {
 #' # only for a subset of values:
 #' as_box_if(NULL, is_null, "null_box")
 #' as_box_if("foo", is_null, "null_box")
-new_box <- function(x, class = NULL) {
-  set_class(list(x), c(class, "rlang_box"))
+new_box <- function(.x, class = NULL, ...) {
+  structure(
+    list(.x),
+    class = c(class, "rlang_box"),
+    ...
+  )
 }
 #' @rdname box
 #' @export

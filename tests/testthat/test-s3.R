@@ -78,3 +78,8 @@ test_that("zap() creates a zap", {
   expect_is(zap(), "rlang_zap")
   expect_true(is_zap(zap()))
 })
+
+test_that("can pass additional attributes to boxes", {
+  box <- new_box(NA, "foo", bar = "baz")
+  expect_identical(box %@% bar, "baz")
+})

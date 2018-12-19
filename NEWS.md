@@ -1,6 +1,8 @@
 
 # rlang 0.3.0.9000
 
+* `new_box()` now accepts additional attributes passed to `structure()`.
+
 * `as_string()` now unwraps quosured symbols automatically.
 
   Note that `quo_name()` is *not* appropriate for transforming symbols

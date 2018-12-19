@@ -9,7 +9,7 @@
 \alias{unbox}
 \title{Box a value}
 \usage{
-new_box(x, class = NULL)
+new_box(.x, class = NULL, ...)
 
 is_box(x, class = NULL)
 
@@ -20,18 +20,20 @@ as_box_if(.x, .p, .class = NULL, ...)
 unbox(box)
 }
 \arguments{
-\item{x, .x}{An R object.}
-
 \item{class, .class}{For \code{new_box()}, an additional class for the
 boxed value (in addition to \code{rlang_box}). For \code{is_box()},
 \code{as_box()} and \code{as_box_if()}, a class (or vector of classes) to
 be passed to \code{\link[=inherits_all]{inherits_all()}}.}
 
+\item{...}{Additional attributes passed to \code{\link[base:structure]{base::structure()}}.}
+
+\item{x, .x}{An R object.}
+
 \item{.p}{A predicate function.}
 
-\item{...}{Arguments passed to \code{.p}.}
-
 \item{box}{A boxed value to unbox.}
+
+\item{...}{Arguments passed to \code{.p}.}
 }
 \description{
 \code{new_box()} is similar to \code{\link[base:I]{base::I()}} but it protects a value by
