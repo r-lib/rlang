@@ -706,7 +706,10 @@ call_name <- function(call) {
     call <- get_expr(call)
   }
 
-  if (!is_call(call) || is_call(call, c("::", ":::"))) {
+  # FIXME: Disabled for the 0.3.1 release
+  # if (!is_call(call) || is_call(call, c("::", ":::"))) {
+
+  if (!is_call(call)) {
     abort_call_input_type("call")
   }
 
