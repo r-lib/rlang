@@ -273,10 +273,12 @@ ensyms <- function(...,
     homonyms = .homonyms,
     check_assign = .check_assign
   )
-  if (!every(exprs, function(x) is_symbol(x) || is_string(x))) {
-    abort("Must supply symbols or strings as argument")
-  }
-  map(exprs, sym)
+  map(exprs, function(expr) {
+    if (is_quosure(expr)) {
+      expr <- quo_get_expr(expr)
+    }
+    sym(expr)
+  })
 }
 
 

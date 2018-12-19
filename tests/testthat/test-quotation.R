@@ -399,7 +399,7 @@ test_that("endots() supports `.ignore_empty`", {
 test_that("ensyms() captures multiple symbols", {
   fn <- function(arg, ...) ensyms(arg, ...)
   expect_identical(fn(foo, bar, baz), exprs(foo, bar, baz))
-  expect_error(fn(foo()), "Must supply symbols or strings")
+  expect_error(fn(foo()), "Only strings can be converted to symbols")
 })
 
 test_that("enquos() works with lexically scoped dots", {
@@ -496,4 +496,17 @@ test_that("supplying `!!!` with a name warns", {
   expect_no_warning_(quos(!!!1, 2, !!!NULL))
   expect_warning_(out <- quos(foo = !!!1, 2, bar = !!!NULL), "Only the operand's names are retained")
   expect_identical(out, quos(1, 2))
+})
+
+test_that("ensym() unwraps quosures", {
+  fn <- function(arg) ensym(arg)
+  expect_identical(fn(!!quo(foo)), quote(foo))
+  expect_identical(fn(!!quo("foo")), quote(foo))
+  expect_error(fn(!!quo(foo())), "Only strings can be converted to symbols")
+})
+
+test_that("ensyms() unwraps quosures", {
+  fn <- function(...) ensyms(...)
+  expect_identical(fn(!!!quos(foo, "bar")), exprs(foo, bar))
+  expect_error(fn(!!!quos(foo, bar())), "Only strings can be converted to symbols")
 })

@@ -3,7 +3,7 @@ context("sym")
 test_that("ensym() fails with calls", {
   capture_sym <- function(arg) ensym(arg)
   expect_identical(capture_sym(foo), quote(foo))
-  expect_error(capture_sym(foo(bar)), "Must supply a symbol")
+  expect_error(capture_sym(foo(bar)), "Only strings can be converted to symbols")
 })
 
 test_that("ensym() supports strings and symbols", {

@@ -42,6 +42,10 @@ sexp* rlang_enexpr(sexp* sym, sexp* frame) {
 sexp* rlang_ensym(sexp* sym, sexp* frame) {
   sexp* expr = capture(sym, frame, NULL);
 
+  if (rlang_is_quosure(expr)) {
+    expr = rlang_quo_get_expr(expr);
+  }
+
   switch (r_typeof(expr)) {
   case r_type_symbol:
     break;
@@ -54,7 +58,7 @@ sexp* rlang_ensym(sexp* sym, sexp* frame) {
     }
     // else fallthrough
   default:
-    r_abort("Must supply a symbol or a string as argument");
+    r_abort("Only strings can be converted to symbols");
   }
 
   return expr;
