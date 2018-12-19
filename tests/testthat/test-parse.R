@@ -6,10 +6,9 @@ test_that("parse_quo() etc return quosures", {
 })
 
 test_that("parse_quosure() and parse_quosures() are deprecated", {
-  with_verbose_retirement({
-    expect_warning(parse_quosure("foo"), "soft-deprecated")
-    expect_warning(parse_quosures("foo; bar"), "soft-deprecated")
-  })
+  scoped_lifecycle_warnings()
+  expect_warning(parse_quosure("foo"), "soft-deprecated")
+  expect_warning(parse_quosures("foo; bar"), "soft-deprecated")
 })
 
 test_that("temporary connections are closed", {

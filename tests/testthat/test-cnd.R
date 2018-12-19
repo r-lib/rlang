@@ -620,13 +620,13 @@ test_that("deprecated arguments of abort() etc still work", {
 })
 
 test_that("deprecated arguments of cnd_signal() still work", {
-  with_non_verbose_retirement({
-    observed <- catch_cnd(cnd_signal("foo"))
-    expected <- catch_cnd(signal("", "foo"))
-    expect_identical(observed, expected)
+  scoped_lifecycle_silence()
 
-    with_handlers(cnd_signal(cnd("foo"), .mufflable = TRUE),
-      foo = calling(function(cnd) expect_true(rst_exists("rlang_muffle")))
-    )
-  })
+  observed <- catch_cnd(cnd_signal("foo"))
+  expected <- catch_cnd(signal("", "foo"))
+  expect_identical(observed, expected)
+
+  with_handlers(cnd_signal(cnd("foo"), .mufflable = TRUE),
+    foo = calling(function(cnd) expect_true(rst_exists("rlang_muffle")))
+  )
 })

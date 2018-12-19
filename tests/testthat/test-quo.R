@@ -267,12 +267,12 @@ test_that("can concatenate quosure lists", {
 # Lifecycle ----------------------------------------------------------
 
 test_that("as_quosure() still provides default env", {
-  scoped_options(lifecycle_verbose_soft_deprecation = TRUE)
+  scoped_lifecycle_warnings()
   quo <- expect_warning(as_quosure(quote(foo)), "explicit environment")
   expect_reference(quo_get_env(quo), current_env())
 })
 
 test_that("can still concatenate quosure lists and non-quosures", {
-  scoped_silent_retirement()
+  scoped_lifecycle_silence()
   expect_identical(c(quos(foo), list(1)), named_list(quo(foo), 1))
 })

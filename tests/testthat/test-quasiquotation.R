@@ -167,14 +167,14 @@ test_that("quosures are not rewrapped", {
 })
 
 test_that("UQ() fails if called without argument", {
-  with_non_verbose_retirement({
-    quo <- quo(UQ(NULL))
-    expect_equal(quo, ~NULL)
+  scoped_lifecycle_silence()
 
-    quo <- tryCatch(quo(UQ()), error = identity)
-    expect_is(quo, "error")
-    expect_match(quo$message, "must be called with an argument")
-  })
+  quo <- quo(UQ(NULL))
+  expect_equal(quo, ~NULL)
+
+  quo <- tryCatch(quo(UQ()), error = identity)
+  expect_is(quo, "error")
+  expect_match(quo$message, "must be called with an argument")
 })
 
 
@@ -516,7 +516,7 @@ test_that("`.data[[` unquotes", {
 })
 
 test_that("it is still possible to unquote manually within `.data[[`", {
-  scoped_silent_retirement()
+  scoped_lifecycle_silence()
   foo <- "baz"
   expect_identical(expr(.data[[!!toupper(foo)]]), quote(.data[["BAZ"]]))
 })
@@ -563,7 +563,7 @@ test_that("UQE() is defunct", {
 })
 
 test_that("splicing language objects still works", {
-  scoped_silent_retirement()
+  scoped_lifecycle_silence()
 
   expect_identical_(exprs(!!!~foo), named_list(~foo))
   expect_identical_(exprs(!!!quote(foo(bar))), named_list(quote(foo(bar))))
