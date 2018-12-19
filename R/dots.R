@@ -436,3 +436,9 @@ homonym_enum <- function(nm, dups, nms) {
   dups[nms != nm] <- FALSE
   chr_enumerate(as.character(which(dups)), final = "and")
 }
+
+check_dots_empty <- function(...) {
+  if (nargs()) {
+    abort("These `...` must be empty")
+  }
+}

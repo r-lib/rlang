@@ -62,4 +62,11 @@ promise_value <- function(name) {
   .Call(rlang_promise_value, name, caller_env())
 }
 
+warningcall <- function(call, msg) {
+  .Call(rlang_test_Rf_warningcall, call, msg)
+}
+errorcall <- function(call, msg) {
+  .Call(rlang_test_Rf_errorcall, call, msg)
+}
+
 # nocov end

@@ -552,7 +552,8 @@ cnd_muffle <- function(cnd) {
 
   abort("Can't find a muffling restart")
 }
-class(cnd_muffle) <- c("rlang_handler_calling", "rlang_handler", "function")
+calling_handler_class <- c("rlang_handler_calling", "rlang_handler", "function")
+class(cnd_muffle) <- calling_handler_class
 
 #' Catch a condition
 #'
@@ -771,12 +772,124 @@ format_onerror_backtrace <- function(trace) {
   )
 }
 
-add_backtrace <- function() {
-  trace <- trace_back()
-  trace <- trace_subset(trace, -trace_length(trace))
+#' Add backtrace from error handler
+#'
+#' @description
+#'
+#' Set the `error` global option to `quote(rlang::entrace())` to
+#' transform base errors to rlang errors. These enriched errors
+#' include a backtrace. The RProfile is a good place to set the
+#' handler.
+#'
+#' `entrace()` also works as a [calling][calling] handler, though it
+#' is often more practical to use the higher-level function
+#' [with_abort()].
+#'
+#' @inheritParams trace_back
+#' @param cnd When `entrace()` is used as a calling handler, `cnd` is
+#'   the condition to handle.
+#' @param ... Unused. These dots are for future extensions.
+#'
+#' @seealso [with_abort()] to promote conditions to rlang errors.
+#' @examples
+#' if (FALSE) {  # Not run
+#'
+#' # Set the error handler in your RProfile like this:
+#' if (requireNamespace("rlang", quietly = TRUE)) {
+#'   options(error = quote(rlang::entrace()))
+#' }
+#'
+#' }
+#' @export
+entrace <- function(cnd, ..., top = NULL, bottom = NULL) {
+  check_dots_empty(...)
 
-  stop_call <- sys.call(-1)
-  stop_frame <- sys.frame(-1)
+  if (!missing(cnd) && inherits(cnd, "rlang_error")) {
+    return()
+  }
+
+  if (is_null(bottom)) {
+    nframe <- sys.nframe() - 1
+    info <- signal_context_info(nframe)
+    bottom <- sys.frame(info[[2]])
+  }
+  trace <- trace_back(top = top, bottom = bottom)
+
+  if (missing(cnd)) {
+    entrace_handle_top(trace)
+  } else {
+    abort(cnd$message %||% "", error = cnd, trace = trace)
+  }
+}
+class(entrace) <- calling_handler_class
+
+signal_context_info <- function(nframe) {
+  first <- sys_body(nframe)
+
+  if (is_same_body(first, body(.handleSimpleError))) {
+    if (is_same_body(sys_body(nframe - 1), body(stop))) {
+      return(list("stop_message", nframe - 2))
+    } else {
+      return(list("stop_native", nframe - 2))
+    }
+  }
+
+  if (is_same_body(first, body(stop))) {
+    if (is_same_body(sys_body(nframe - 1), body(abort))) {
+      return(list("stop_rlang", nframe - 2))
+    } else {
+      return(list("stop_condition", nframe - 1))
+    }
+  }
+
+  if (is_same_body(first, body(signalCondition))) {
+    if (from_withrestarts(nframe - 1) && is_same_body(sys_body(nframe - 4), body(message))) {
+      if (is_same_body(sys_body(nframe - 5), body(inform))) {
+        return(list("message_rlang", nframe - 6))
+      } else {
+        return(list("message", nframe - 5))
+      }
+    } else {
+      return(list("condition", nframe - 1))
+    }
+  }
+
+  if (from_withrestarts(nframe)) {
+    withrestarts_caller <- sys_body(nframe - 3)
+    if (is_same_body(withrestarts_caller, body(.signalSimpleWarning))) {
+      if (is_same_body(sys_body(nframe - 4), body(warning))) {
+        return(list("warning_message", nframe - 5))
+      } else {
+        return(list("warning_native", nframe - 5))
+      }
+    } else if (is_same_body(withrestarts_caller, body(warning))) {
+      if (is_same_body(sys_body(nframe - 4), body(warn))) {
+        return(list("warning_rlang", nframe - 5))
+      } else {
+        return(list("warning_condition", nframe - 4))
+      }
+    }
+  }
+
+  list("unknown", nframe)
+}
+
+from_withrestarts <- function(nframe) {
+  is_call(sys.call(nframe), "doWithOneRestart") &&
+    is_same_body(sys_body(nframe - 2), body(withRestarts))
+}
+sys_body <- function(n) {
+  body(sys.function(n))
+}
+
+entrace_handle_top <- function(trace) {
+  # Happens with ctrl-c at top-level
+  if (!trace_length(trace)) {
+    return()
+  }
+
+  stop_call <- sys.call(-2)
+  stop_frame <- sys.frame(-2)
   cnd <- stop_frame$cond
 
   # False for errors thrown from the C side
@@ -811,16 +924,25 @@ add_backtrace <- function() {
   NULL
 }
 
+add_backtrace <- function() {
+  # Warnings don't go through when error is being handled
+  msg <- "Warning: `add_backtrace()` is now exported as `enframe()` as of rlang 0.3.1"
+  cat_line(msg, file = stderr())
+  entrace(bottom = sys.frame(-1))
+}
+
 #' Promote all errors to rlang errors
 #'
 #' @description
 #'
-#' `with_abort()` promotes all errors as if they were thrown with
+#' `with_abort()` promotes conditions as if they were thrown with
 #' [abort()]. These errors embed a [backtrace][trace_back]. They are
 #' particularly suitable to be set as *parent errors* (see `parent`
 #' argument of [abort()]).
 #'
 #' @param expr An expression run in a context where errors are
+#'   promoted to rlang errors.
+#' @param classes Character vector of condition classes that should be
 #'   promoted to rlang errors.
 #'
 #' @details
@@ -861,18 +983,8 @@ add_backtrace <- function() {
 #' # Reset to default
 #' options(rlang_trace_top_env = NULL)
 #' @export
-with_abort <- function(expr) {
-  withCallingHandlers(expr, error = function(err) {
-    if (inherits(err, "rlang_error")) {
-      return()
-    }
-
-    trace <- trace_back(bottom = 2)
-
-    # Find second-to-last tree - last tree is handleSimpleError()
-    i <- length(trace_level(trace)) - 1L
-    trace <- trace_subset_across(trace, i)
-
-    abort(err$message %||% "", error = err, trace = trace)
-  })
+with_abort <- function(expr, classes = "error") {
+  handlers <- rep_named(classes, list(entrace))
+  handle_call <- rlang::expr(withCallingHandlers(expr, !!!handlers))
+  .Call(rlang_eval, handle_call, current_env())
 }

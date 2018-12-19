@@ -414,6 +414,9 @@ test_that("don't print message or backtrace fields if empty", {
 test_that("with_abort() promotes base errors to rlang errors", {
   skip_on_os("windows")
 
+  # !!! call is not deparsed properly
+  skip_if(getRversion() < "3.5")
+
   f <- function() g()
   g <- function() h()
   h <- function() stop("Low-level message")
@@ -469,6 +472,131 @@ test_that("can catch condition of specific classes", {
   classes <- c("foo", "bar")
   expect_is(catch_cnd(signal("", "bar"), classes), "bar")
   expect_is(catch_cnd(signal("", "foo"), classes), "foo")
+})
+
+test_that("with_abort() entraces conditions properly", {
+  catch_abort <- function(signaller, arg, classes = "error") {
+    f <- function() g()
+    g <- function() h()
+    h <- function() signaller(arg)
+
+    catch_cnd(with_abort(f(), classes = classes))
+  }
+
+  expect_abort_trace <- function(signaller,
+                                 arg,
+                                 native = NULL,
+                                 classes = "error") {
+    err <- catch_abort(signaller, arg, classes = classes)
+    expect_is(err, "rlang_error")
+
+    trace <- err$trace
+    n <- trace_length(err$trace)
+
+    if (is_null(native)) {
+      calls <- trace$calls[seq2(n - 2, n)]
+      expect_true(all(
+        is_call(calls[[1]], "f"),
+        is_call(calls[[2]], "g"),
+        is_call(calls[[3]], "h")
+      ))
+    } else {
+      calls <- trace$calls[seq2(n - 3, n)]
+      expect_true(all(
+        is_call(calls[[1]], "f"),
+        is_call(calls[[2]], "g"),
+        is_call(calls[[3]], "h"),
+        is_call(calls[[4]], "signaller")
+      ))
+    }
+  }
+
+  scoped_options(
+    rlang_trace_top_env = current_env()
+  )
+
+  msg <- catch_abort(base::message, "")
+  expect_true(inherits_all(msg, c("message", "condition")))
+
+  err <- catch_abort(base::message, "", classes = "message")
+  expect_is(err, "rlang_error")
+
+  expect_abort_trace(base::stop, "")
+  expect_abort_trace(base::stop, cnd("error"))
+  expect_abort_trace(function(msg) errorcall(NULL, msg), "", "errorcall")
+  # expect_abort_trace(abort, "") # FIXME
+
+  expect_abort_trace(base::warning, "", classes = "warning")
+  expect_abort_trace(base::warning, cnd("warning"), classes = "warning")
+  expect_abort_trace(function(msg) warningcall(NULL, msg), "", "warningcall", classes = "warning")
+  expect_abort_trace(warn, "", classes = "warning")
+
+  expect_abort_trace(base::message, "", classes = "message")
+  expect_abort_trace(base::message, cnd("message"), classes = "message")
+  expect_abort_trace(inform, "", classes = "message")
+
+  expect_abort_trace(base::signalCondition, cnd("foo"), classes = "condition")
+})
+
+test_that("signal context is detected", {
+  get_type <- function(cnd) {
+    nframe <- sys.nframe() - 1
+    out <- signal_context_info(nframe)[[1]]
+    invokeRestart("out", out)
+  }
+  signal_type <- function(signaller, arg) {
+    f <- function() signaller(arg)
+    withRestarts(
+      out = identity,
+      withCallingHandlers(condition = get_type, f())
+    )
+  }
+
+  expect_identical(signal_type(base::stop, ""), "stop_message")
+  expect_identical(signal_type(base::stop, cnd("error")), "stop_condition")
+  expect_identical(signal_type(function(msg) errorcall(NULL, msg), ""), "stop_native")
+  expect_identical(signal_type(abort, ""), "stop_rlang")
+
+  expect_identical(signal_type(base::warning, ""), "warning_message")
+  expect_identical(signal_type(base::warning, cnd("warning")), "warning_condition")
+  expect_identical(signal_type(function(msg) warningcall(NULL, msg), ""), "warning_native")
+  expect_identical(signal_type(warn, ""), "warning_rlang")
+
+  expect_identical(signal_type(base::message, ""), "message")
+  expect_identical(signal_type(base::message, cnd("message")), "message")
+  expect_identical(signal_type(inform, ""), "message_rlang")
+
+  expect_identical(signal_type(base::signalCondition, cnd("foo")), "condition")
+})
+
+test_that("bottom of signalling context is detected", {
+  scoped_options(error = NULL)
+
+  get_call <- function(cnd) {
+    nframe <- sys.nframe() - 1
+    info <- signal_context_info(nframe)
+    invokeRestart("out", sys.call(info[[2]]))
+  }
+  signal_call <- function(signaller, arg) {
+    f <- function() signaller(arg)
+    withRestarts(
+      out = identity,
+      withCallingHandlers(condition = get_call, f())
+    )
+  }
+
+  expect_equal(signal_call(base::stop, ""), quote(f()))
+  expect_equal(signal_call(base::stop, cnd("error")), quote(f()))
+  expect_equal(signal_call(function(msg) errorcall(NULL, msg), ""), quote(signaller(arg)))
+
+  expect_equal(signal_call(base::warning, ""), quote(f()))
+  expect_equal(signal_call(base::warning, cnd("warning")), quote(f()))
+  expect_equal(signal_call(function(msg) warningcall(NULL, msg), ""), quote(signaller(arg)))
+
+  expect_equal(signal_call(base::message, ""), quote(f()))
+  expect_equal(signal_call(base::message, cnd("message")), quote(f()))
+
+  expect_equal(signal_call(base::signalCondition, cnd("foo")), quote(f()))
 })
 
 
