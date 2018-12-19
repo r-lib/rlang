@@ -535,10 +535,10 @@ interrupt <- function() {
 #' # Note how execution of `fn()` continued normally after dealing
 #' # with that particular message.
 #'
-#' # Since cnd_muffle() is a calling handler itself, it can also be
-#' # passed to with_handlers() directly:
+#' # cnd_muffle() can also be passed to with_handlers() as a calling
+#' # handler:
 #' with_handlers(fn(),
-#'   my_particular_msg = cnd_muffle
+#'   my_particular_msg = calling(cnd_muffle)
 #' )
 cnd_muffle <- function(cnd) {
   switch(cnd_type(cnd),
@@ -552,8 +552,6 @@ cnd_muffle <- function(cnd) {
 
   abort("Can't find a muffling restart")
 }
-calling_handler_class <- c("rlang_handler_calling", "rlang_handler", "function")
-class(cnd_muffle) <- calling_handler_class
 
 #' Catch a condition
 #'
@@ -821,7 +819,6 @@ entrace <- function(cnd, ..., top = NULL, bottom = NULL) {
     abort(cnd$message %||% "", error = cnd, trace = trace)
   }
 }
-class(entrace) <- calling_handler_class
 
 signal_context_info <- function(nframe) {
   first <- sys_body(nframe)

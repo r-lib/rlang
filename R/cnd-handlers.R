@@ -80,9 +80,12 @@
 #' }
 #' with_handlers(fn2(), foo = calling(exiting_handler), foo = calling(other_handler))
 with_handlers <- function(.expr, ...) {
-  handlers <- map(list2(...), as_function)
+  handlers <- list2(...)
 
-  is_calling <- map_lgl(handlers, inherits, "rlang_handler_calling")
+  is_calling <- map_lgl(handlers, inherits, "rlang_box_calling_handler")
+  handlers <- map_if(handlers, is_calling, unbox)
+  handlers <- map(handlers, as_function)
+
   calling <- handlers[is_calling]
   exiting <- handlers[!is_calling]
 
@@ -130,6 +133,10 @@ with_handlers <- function(.expr, ...) {
 #'   formula describing a lambda function.
 #' @seealso [with_handlers()] for examples, [restarting()] for another
 #'   kind of calling handler.
+#'
+#' @section Life cycle: `exiting()` is in the questioning stage
+#'   because [with_handlers()] now treats handlers as exiting by
+#'   default.
 #' @export
 #' @examples
 #' # You can supply a function taking a condition as argument:
@@ -149,7 +156,7 @@ exiting <- function(handler) {
 #' @export
 calling <- function(handler) {
   handler <- as_function(handler)
-  structure(handler, class = c("rlang_handler_calling", "rlang_handler", "function"))
+  new_box(handler, "rlang_box_calling_handler")
 }
 
 #' Create a restarting handler
@@ -221,11 +228,5 @@ restarting <- function(.restart, ..., .fields = NULL) {
     do.call("rst_jump", c(list(.restart = .restart), rst_args))
   }
 
-  classes <- c(
-    "rlang_handler_restarting",
-    "rlang_handler_calling",
-    "rlang_handler",
-    "function"
-  )
-  structure(handler, class = classes)
+  calling(handler)
 }

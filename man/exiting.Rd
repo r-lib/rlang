@@ -42,6 +42,12 @@ condition (by jumping out of the frame), R will then jump out of
 the faulty evaluation frame to top-level, via the abort restart
 (see \code{\link[=rst_abort]{rst_abort()}}).
 }
+\section{Life cycle}{
+ \code{exiting()} is in the questioning stage
+because \code{\link[=with_handlers]{with_handlers()}} now treats handlers as exiting by
+default.
+}
+
 \examples{
 # You can supply a function taking a condition as argument:
 hnd <- exiting(function(c) cat("handled foo\\n"))

@@ -67,9 +67,9 @@ with_handlers(fn(),
 # Note how execution of `fn()` continued normally after dealing
 # with that particular message.
 
-# Since cnd_muffle() is a calling handler itself, it can also be
-# passed to with_handlers() directly:
+# cnd_muffle() can also be passed to with_handlers() as a calling
+# handler:
 with_handlers(fn(),
-  my_particular_msg = cnd_muffle
+  my_particular_msg = calling(cnd_muffle)
 )
 }

@@ -40,11 +40,11 @@ test_that("with_handlers() establishes inplace and exiting handlers", {
     foobar = calling(function(c) cat("foobar"))
   )
 
-  expect_equal(with_handlers(identity(letters), splice(handlers)), identity(letters))
-  expect_equal(with_handlers(stop(letters), splice(handlers)), "caught error")
-  expect_equal(with_handlers(message(letters), splice(handlers)), "caught message")
-  expect_warning(expect_equal(with_handlers({ warning("warn!"); letters }, splice(handlers)), identity(letters)), "warn!")
-  expect_output(expect_equal(with_handlers({ signal("", "foobar"); letters }, splice(handlers)), identity(letters)), "foobar")
+  expect_equal(with_handlers(identity(letters), !!!handlers), identity(letters))
+  expect_equal(with_handlers(stop(letters), !!!handlers), "caught error")
+  expect_equal(with_handlers(message(letters), !!!handlers), "caught message")
+  expect_warning(expect_equal(with_handlers({ warning("warn!"); letters }, !!!handlers), identity(letters)), "warn!")
+  expect_output(expect_equal(with_handlers({ signal("", "foobar"); letters }, !!!handlers), identity(letters)), "foobar")
 })
 
 test_that("bare functions are treated as exiting handlers", {
@@ -133,10 +133,10 @@ test_that("can signal interrupts with cnd_signal()", {
 
 test_that("can muffle conditions", {
   expect_no_message(
-    expect_identical(with_handlers({ message(""); "foo" }, message = cnd_muffle), "foo")
+    expect_identical(with_handlers({ message(""); "foo" }, message = calling(cnd_muffle)), "foo")
   )
   expect_no_warning(
-    expect_identical(with_handlers({ warning(""); "foo" }, warning = cnd_muffle), "foo")
+    expect_identical(with_handlers({ warning(""); "foo" }, warning = calling(cnd_muffle)), "foo")
   )
   cnd_expect_muffle <- calling(function(cnd) {
     expect_is(findRestart("rlang_muffle"), "restart")
@@ -448,14 +448,6 @@ test_that("base parent errors are printed with rlang method", {
   base_err <- simpleError("foo")
   rlang_err <- error_cnd("bar", message = "", parent = base_err)
   expect_known_output(print(rlang_err), test_path("test-cnd-error-print-base-parent.txt"))
-})
-
-test_that("handlers inherit from `function`", {
-  foo <- function(x) UseMethod("foo")
-  foo.function <- function(x) "dispatched!"
-  expect_identical(foo(cnd_muffle), "dispatched!")
-  expect_identical(foo(exiting(function() NULL)), "dispatched!")
-  expect_identical(foo(calling(function() NULL)), "dispatched!")
 })
 
 test_that("can catch condition of specific classes", {

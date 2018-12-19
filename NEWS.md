@@ -1,6 +1,8 @@
 
 # rlang 0.3.0.9000
 
+* `calling()` now boxes its argument.
+
 * New `done()` function to box a value. Done boxes are sentinels to
   indicate early termination of a loop or computation. For instance,
   it will be used in the purrr package to allow users to shortcircuit
