@@ -985,5 +985,6 @@ add_backtrace <- function() {
 #' @export
 with_abort <- function(expr, classes = "error") {
   handlers <- rep_named(classes, list(entrace))
-  eval_bare(rlang::expr(withCallingHandlers(expr, !!!handlers)))
+  handle_call <- rlang::expr(withCallingHandlers(expr, !!!handlers))
+  .Call(rlang_eval, handle_call, current_env())
 }
