@@ -52,8 +52,8 @@ is_symbol <- function(x, name = NULL) {
 #'
 #' `as_string()` converts [symbols][sym] to character strings.
 #'
-#' @param x A string or symbol. If a string, the attributes are
-#'   removed, if any.
+#' @param x A string or symbol, possibly wrapped in a [quosure][quosure].
+#'   If a string, the attributes are removed, if any.
 #' @return A character vector of length 1.
 #'
 #' @examples
@@ -67,8 +67,14 @@ is_symbol <- function(x, name = NULL) {
 #'
 #' typeof(bar)
 #' typeof(as_string(bar))
+#'
+#' # as_string() unwraps quosured symbols automatically:
+#' as_string(quo(foo))
 #' @export
 as_string <- function(x) {
+  if (is_quosure(x)) {
+    x <- quo_get_expr(x)
+  }
   coerce_type(x, "a string",
     symbol = {
       .Call(rlang_symbol_to_character, x)

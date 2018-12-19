@@ -1,6 +1,13 @@
 
 # rlang 0.3.0.9000
 
+* `as_string()` now unwraps quosured symbols automatically.
+
+  Note that `quo_name()` is *not* appropriate for transforming symbols
+  to strings. `quo_name()` is suitable for creating default labels,
+  not for deterministic conversions between symbol and string. Please
+  use `as_string()` instead.
+
 * New `entrace()` condition handler. Add this to your RProfile to
   enable rlang backtraces for all errors, including warnings promoted
   to errors:

@@ -7,8 +7,8 @@
 as_string(x)
 }
 \arguments{
-\item{x}{A string or symbol. If a string, the attributes are
-removed, if any.}
+\item{x}{A string or symbol, possibly wrapped in a \link{quosure}.
+If a string, the attributes are removed, if any.}
 }
 \value{
 A character vector of length 1.
@@ -27,4 +27,7 @@ as_string(foo)
 
 typeof(bar)
 typeof(as_string(bar))
+
+# as_string() unwraps quosured symbols automatically:
+as_string(quo(foo))
 }

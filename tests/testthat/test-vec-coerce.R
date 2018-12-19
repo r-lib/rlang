@@ -48,7 +48,3 @@ test_that("can convert strings (#138)", {
   expect_identical(as_character("a"), "a")
   expect_identical(as_list("a"), list("a"))
 })
-
-test_that("as_string(quo) produces informative error message", {
-  expect_error(as_string(quo(foo)), "a `quosure` object to a string")
-})
