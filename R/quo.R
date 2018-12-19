@@ -2,6 +2,11 @@
 #'
 #' @description
 #'
+#' A quosure is a type of [quoted expression][quotation] that includes
+#' a reference to the context where it was created. A quosure is thus
+#' guaranteed to evaluate in its original environment and can refer to
+#' local objects.
+#'
 #' You can access the quosure components (its expression and its
 #' environment) with:
 #'
@@ -11,14 +16,34 @@
 #' * `quo_get_expr()` and `quo_get_env()`. These getters only work
 #'   with quosures and throw an error with other types of input.
 #'
-#' Note that a quosure usually does not carry environments for
-#' [literal objects][is_syntactic_literal] like strings or
-#' numbers. [quo()] and [enquo()] only capture an environment for
-#' [symbolic expressions][is_symbolic].
-#'
 #' Test if an object is a quosure with `is_quosure()`. If you know an
 #' object is a quosure, use the `quo_` prefixed predicates to check
 #' its contents, `quo_is_missing()`, `quo_is_symbol()`, etc.
+#'
+#'
+#' @section Quosured constants:
+#'
+#' A quosure usually does not carry environments for [constant
+#' objects][is_syntactic_literal] like strings or numbers. [quo()] and
+#' [enquo()] only capture an environment for [symbolic
+#' expressions][is_symbolic]. For instance, all of these return the
+#' [empty environment][empty_env]:
+#'
+#' ```
+#' quo_get_env(quo("constant"))
+#' quo_get_env(quo(100))
+#' quo_get_env(quo(NA))
+#' ```
+#'
+#' On the other hand, quosures capture the environment of symbolic
+#' expressions, i.e. expressions whose meaning depends on the
+#' environment in which they are evaluated and what objects are
+#' defined there:
+#'
+#' ```
+#' quo_get_env(quo(some_object))
+#' quo_get_env(quo(some_function()))
+#' ```
 #'
 #'
 #' @section Empty quosures:

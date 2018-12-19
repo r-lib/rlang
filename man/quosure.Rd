@@ -60,6 +60,11 @@ has to match at least one of them, otherwise \code{is_call()} returns
 \item{env}{A new environment for the quosure.}
 }
 \description{
+A quosure is a type of \link[=quotation]{quoted expression} that includes
+a reference to the context where it was created. A quosure is thus
+guaranteed to evaluate in its original environment and can refer to
+local objects.
+
 You can access the quosure components (its expression and its
 environment) with:
 \itemize{
@@ -69,15 +74,28 @@ kinds of objects such as formulas.
 with quosures and throw an error with other types of input.
 }
 
-Note that a quosure usually does not carry environments for
-\link[=is_syntactic_literal]{literal objects} like strings or
-numbers. \code{\link[=quo]{quo()}} and \code{\link[=enquo]{enquo()}} only capture an environment for
-\link[=is_symbolic]{symbolic expressions}.
-
 Test if an object is a quosure with \code{is_quosure()}. If you know an
 object is a quosure, use the \code{quo_} prefixed predicates to check
 its contents, \code{quo_is_missing()}, \code{quo_is_symbol()}, etc.
 }
+\section{Quosured constants}{
+
+
+A quosure usually does not carry environments for \link[=is_syntactic_literal]{constant objects} like strings or numbers. \code{\link[=quo]{quo()}} and
+\code{\link[=enquo]{enquo()}} only capture an environment for \link[=is_symbolic]{symbolic expressions}. For instance, all of these return the
+\link[=empty_env]{empty environment}:\preformatted{quo_get_env(quo("constant"))
+quo_get_env(quo(100))
+quo_get_env(quo(NA))
+}
+
+On the other hand, quosures capture the environment of symbolic
+expressions, i.e. expressions whose meaning depends on the
+environment in which they are evaluated and what objects are
+defined there:\preformatted{quo_get_env(quo(some_object))
+quo_get_env(quo(some_function()))
+}
+}
+
 \section{Empty quosures}{
 
 
