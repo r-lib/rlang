@@ -50,7 +50,7 @@ test_that("types are friendly", {
 
 test_that("friendly_type_of() supports objects", {
   expect_identical(friendly_type_of(mtcars), "a `data.frame` object")
-  expect_identical(friendly_type_of(quo(1)), "a `quosure` object")
+  expect_identical(friendly_type_of(quo(1)), "a `quosure/formula` object")
 })
 
 test_that("is_integerish() heeds type requirement", {
