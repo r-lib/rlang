@@ -791,8 +791,31 @@ reserved_words <- c(
 #'
 #' @description
 #'
-#' `as_label()` transforms any R object into a single string that is
-#' suitable as default name:
+#' `as_label()` transforms R objects into a short, human-readable
+#' description. You can use labels to:
+#'
+#' * Display an object in a concise way, for example to labellise axes
+#'   in a graphical plot.
+#'
+#' * Give default names to columns in a data frame. In this case,
+#'   labelling is the first step before name repair.
+#'
+#' See also [as_string()] for transforming symbols back to a
+#' string. Unlike `as_label()`, `as_string()` is a well defined
+#' operation that guarantees the roundtrip symbol -> string ->
+#' symbol.
+#'
+#' In general, if you don't know for sure what kind of object you're
+#' dealing with (a call, a symbol, an unquoted constant), use
+#' `as_label()` and make no assumption about the resulting string. If
+#' you know you have a symbol and need the name of the object it
+#' refers to, use [as_string()]. For instance, use `as_label()` with
+#' objects captured with `enquo()` and `as_string()` with symbols
+#' captured with `ensym()`.
+#'
+#' @param x An object.
+#'
+#' @section Transformation to string:
 #'
 #' * Quosures are [squashed][quo_squash] before being labelled.
 #' * Symbols are transformed to string with `as_string()`.
@@ -801,19 +824,21 @@ reserved_words <- c(
 #' * Other constants are represented by their type, such as `<dbl>`
 #'   or `<data.frame>`.
 #'
-#' Please note that simple symbols should generally be transformed to
-#' strings with `as_string()`. Labelisation is not a well defined
-#' operation and no assumption should be made about how the label is
-#' created. On the other hand, `as_string()` only works with symbols
-#' and is a well defined, deterministic operation.
+#' Note that simple symbols should generally be transformed to strings
+#' with [as_string()]. Labelling is not a well defined operation and
+#' no assumption should be made about how the label is created. On the
+#' other hand, `as_string()` only works with symbols and is a well
+#' defined, deterministic operation.
 #'
-#' In other words, if you don't know for sure what kind of object
-#' you're dealing with, use `as_label()` and make no assumption about the
-#' resulting string. If you know the object is a symbol, use
-#' [as_string()].
+#' @examples
+#' # as_label() is useful with quoted expressions:
+#' as_label(expr(foo(bar)))
+#' as_label(expr(foobar))
 #'
-#' @param x Any R object.
-#'
+#' # It works with any R object. This is also useful for quoted
+#' # arguments because the user might unquote constant objects:
+#' as_label(1:3)
+#' as_label(base::list)
 #' @export
 as_label <- function(x) {
   x <- quo_squash(x)
