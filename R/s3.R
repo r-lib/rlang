@@ -70,10 +70,9 @@ inherits_only <- function(x, class) {
 #'
 #' @name box
 #' @param x,.x An R object.
-#' @param class,.class For `new_box()`, an additional class for the
-#'   boxed value (in addition to `rlang_box`). For `is_box()`,
-#'   `as_box()` and `as_box_if()`, a class (or vector of classes) to
-#'   be passed to [inherits_all()].
+#' @param class For `new_box()`, an additional class for the
+#'   boxed value (in addition to `rlang_box`). For `is_box()`, a class
+#'   or vector of classes passed to [inherits_all()].
 #' @param ... Additional attributes passed to [base::structure()].
 #' @export
 #' @examples
@@ -111,26 +110,6 @@ is_box <- function(x, class = NULL) {
   inherits_all(x, c(class, "rlang_box"))
 }
 #' @rdname box
-#' @export
-as_box <- function(x, class = NULL) {
-  if (is_box(x, class)) {
-    x
-  } else {
-    new_box(x, class)
-  }
-}
-#' @rdname box
-#' @param .p A predicate function.
-#' @param ... Arguments passed to `.p`.
-#' @export
-as_box_if <- function(.x, .p, .class = NULL, ...) {
-  if (is_box(.x, .class) || !.p(.x, ...)) {
-    .x
-  } else {
-    new_box(.x, .class)
-  }
-}
-#' @rdname box
 #' @param box A boxed value to unbox.
 #' @export
 unbox <- function(box) {
@@ -142,6 +121,41 @@ unbox <- function(box) {
 print.box <- function(x, ...) {
   cat_line("<box>")
   print(unbox(x))
+}
+
+#' Convert object to a box
+#'
+#' @description
+#'
+#' * `as_box()` boxes its input only if it is not already a box. The
+#'   class is also checked if supplied.
+#'
+#' * `as_box_if()` boxes its input only if it not already a box, or if
+#'   the predicate `.p` returns `TRUE`.
+#'
+#' @inheritParams box
+#' @param class,.class A box class. If the input is already a box of
+#'   that class, it is returned as is. If the input needs to be boxed,
+#'   `class` is passed to [new_box()].
+#'
+#' @export
+as_box <- function(x, class = NULL) {
+  if (is_box(x, class)) {
+    x
+  } else {
+    new_box(x, class)
+  }
+}
+#' @rdname as_box
+#' @param .p A predicate function.
+#' @param ... Arguments passed to `.p`.
+#' @export
+as_box_if <- function(.x, .p, .class = NULL, ...) {
+  if (is_box(.x, .class) || !.p(.x, ...)) {
+    .x
+  } else {
+    new_box(.x, .class)
+  }
 }
 
 #' Box a final value for early termination
