@@ -59,26 +59,6 @@ test_that("expr_name() with symbols, calls, and literals", {
   expect_error(expr_name(env()), "must quote")
 })
 
-test_that("label() with symbols, calls, and literals", {
-  expect_identical(label(quote(foo)), "foo")
-  expect_identical(label(quote(foo(bar))), "foo(bar)")
-  expect_identical(label(1L), "1L")
-  expect_identical(label("foo"), "\"foo\"")
-  expect_identical(label(function() NULL), "<fn>")
-  expect_identical(label(expr(function() { a; b })), "function() ...")
-  expect_identical(label(1:2), "<int>")
-  expect_identical(label(env()), "<env>")
-})
-
-test_that("label() supports special objects", {
-  expect_match(label(quote(foo := bar)), ":=")
-  expect_identical(label(quo(foo)), "foo")
-  expect_identical(label(quo(foo(!!quo(bar)))), "foo(bar)")
-  expect_identical(label(~foo), "~foo")
-  expect_identical(label(NULL), "NULL")
-})
-
-
 # --------------------------------------------------------------------
 
 test_that("get_expr() supports closures", {

@@ -393,6 +393,11 @@ quo_squash <- function(quo, warn = FALSE) {
 #'
 #' @description
 #'
+#' \Sexpr[results=rd, stage=render]{rlang:::lifecycle("questioning")}
+#'
+#' **Note:** You should now use [as_label()] instead of `quo_name()`. See
+#' life cycle section below.
+#'
 #' These functions take an arbitrary R object, typically an
 #' [expression][is_expression], and represent it as a string.
 #'
@@ -412,7 +417,22 @@ quo_squash <- function(quo, warn = FALSE) {
 #'
 #' @inheritParams quo_squash
 #' @inheritParams expr_label
-#' @export
+#'
+#' @section Life cycle:
+#'
+#' These functions are in the questioning life cycle stage.
+#'
+#' * [as_label()] and [as_string()] should be used instead of
+#'   `quo_name()`. `as_label()` transforms any R object to a string but
+#'   should only be used to create a default name. Labelisation is
+#'   not a well defined operation and no assumption should be made
+#'   about the label. On the other hand, `as_string()` only works with
+#'   symbols, but is a well defined and deterministic operation.
+#'
+#' * We don't have a good replacement for `quo_text()` yet. See
+#'   <https://github.com/r-lib/rlang/issues/636> to follow discussions
+#'   about a new deparsing API.
+#'
 #' @seealso [expr_label()], [f_label()]
 #' @examples
 #' # Quosures can contain nested quosures:
@@ -431,6 +451,7 @@ quo_squash <- function(quo, warn = FALSE) {
 #' # quo_name() is helpful when you need really short labels:
 #' quo_name(quo(sym))
 #' quo_name(quo(!! sym))
+#' @export
 quo_label <- function(quo) {
   expr_label(quo_squash(quo))
 }
