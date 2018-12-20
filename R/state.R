@@ -89,13 +89,58 @@ peek_option <- function(name) {
   getOption(name)
 }
 
-
-# Easier to test than `interactive()`
+#' Is R running interactively?
+#'
+#' @description
+#'
+#' Like [base::interactive()], `is_interactive()` returns `TRUE` when
+#' the function runs interactively and `FALSE` when it runs in batch
+#' mode. It also checks:
+#'
+#' * Whether knitr or an RStudio notebook is in progress.
+#'
+#' * The `rlang_interactive` global option. If set to a single `TRUE`
+#'   or `FALSE`, `is_interactive()` returns that value instead.  This
+#'   escape hatch is useful in unit tests or to manually turn on
+#'   interactive features in RMarkdown outputs.
+#'
+#' `with_interactive()` and `scoped_interactive()` set the global
+#' option conveniently.
+#'
+#' @export
 is_interactive <- function() {
-  opt <- peek_option("rlang_force_interactive")
+  opt <- peek_option("rlang_interactive")
   if (!is_null(opt)) {
-    return(is_true(opt))
+    if (!is_bool(opt)) {
+      abort("`rlang_interactive` must be a single `TRUE` of `FALSE`")
+    }
+    return(opt)
+  }
+
+  if (is_true(peek_option("knitr.in.progress"))) {
+    return(FALSE)
+  }
+  if (is_true(peek_option("rstudio.notebook.executing"))) {
+    return(FALSE)
   }
 
   interactive()
+}
+#' @rdname is_interactive
+#' @param frame The environment of a running function which defines
+#'   the scope of the temporary options. When the function returns,
+#'   the options are reset to their original values.
+#' @param value A single `TRUE` or `FALSE`. This overrides the return
+#'   value of `is_interactive()`.
+#' @export
+scoped_interactive <- function(value = TRUE, frame = caller_env()) {
+  scoped_options(rlang_interactive = value, .frame = frame)
+}
+#' @rdname is_interactive
+#' @param expr An expression to evaluate with interactivity set to
+#'   `value`.
+#' @export
+with_interactive <- function(expr, value = TRUE) {
+  scoped_interactive(value)
+  expr
 }
