@@ -128,6 +128,7 @@
 <a href="#rlang-0-3-0-9000" class="anchor"></a>rlang 0.3.0.9000<small> Unreleased </small>
 </h1>
 <ul>
+<li><p>New <code><a href="../reference/is_interactive.html">is_interactive()</a></code> function. It serves the same purpose as <code><a href="https://www.rdocumentation.org/packages/base/topics/interactive">base::interactive()</a></code> but also checks if knitr is in progress and provides an escape hatch. Use <code><a href="../reference/is_interactive.html">with_interactive()</a></code> and <code><a href="../reference/is_interactive.html">scoped_interactive()</a></code> to override the return value of <code><a href="../reference/is_interactive.html">is_interactive()</a></code>. This is useful in unit tests or to manually turn on interactive features in RMarkdown outputs</p></li>
 <li><p><code><a href="../reference/exiting.html">calling()</a></code> now boxes its argument.</p></li>
 <li><p>New <code><a href="../reference/done.html">done()</a></code> function to box a value. Done boxes are sentinels to indicate early termination of a loop or computation. For instance, it will be used in the purrr package to allow users to shortcircuit a reduction or accumulation.</p></li>
 <li><p><code><a href="../reference/box.html">new_box()</a></code> now accepts additional attributes passed to <code><a href="https://www.rdocumentation.org/packages/base/topics/structure">structure()</a></code>.</p></li>
