@@ -67,7 +67,7 @@ being called for that condition." />
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">rlang</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.3.0.9001</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.3.0.9002</span>
       </span>
     </div>
 
@@ -199,10 +199,10 @@ be called from a <a href='exiting.html'>calling</a> handler.</p></li>
 <span class='co'># Note how execution of `fn()` continued normally after dealing</span>
 <span class='co'># with that particular message.</span>
 
-<span class='co'># Since cnd_muffle() is a calling handler itself, it can also be</span>
-<span class='co'># passed to with_handlers() directly:</span>
+<span class='co'># cnd_muffle() can also be passed to with_handlers() as a calling</span>
+<span class='co'># handler:</span>
 <span class='fu'><a href='with_handlers.html'>with_handlers</a></span>(<span class='fu'>fn</span>(),
-  <span class='kw'>my_particular_msg</span> <span class='kw'>=</span> <span class='no'>cnd_muffle</span>
+  <span class='kw'>my_particular_msg</span> <span class='kw'>=</span> <span class='fu'><a href='exiting.html'>calling</a></span>(<span class='no'>cnd_muffle</span>)
 )</div><div class='output co'>#&gt; <span class='message'>On your guard!</span></div><div class='output co'>#&gt; [1] "foobar"</div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">

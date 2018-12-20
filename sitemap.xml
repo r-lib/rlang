@@ -16,6 +16,9 @@
     <loc>https://rlang.r-lib.org/reference/arg_match.html</loc>
   </url>
   <url>
+    <loc>https://rlang.r-lib.org/reference/as_box.html</loc>
+  </url>
+  <url>
     <loc>https://rlang.r-lib.org/reference/as_bytes.html</loc>
   </url>
   <url>
@@ -101,6 +104,9 @@
   </url>
   <url>
     <loc>https://rlang.r-lib.org/reference/dictionary.html</loc>
+  </url>
+  <url>
+    <loc>https://rlang.r-lib.org/reference/done.html</loc>
   </url>
   <url>
     <loc>https://rlang.r-lib.org/reference/dots_definitions.html</loc>

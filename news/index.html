@@ -60,7 +60,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">rlang</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.3.0.9001</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.3.0.9002</span>
       </span>
     </div>
 
@@ -128,10 +128,17 @@
 <a href="#rlang-0-3-0-9000" class="anchor"></a>rlang 0.3.0.9000<small> Unreleased </small>
 </h1>
 <ul>
+<li><p><code><a href="../reference/exiting.html">calling()</a></code> now boxes its argument.</p></li>
+<li><p>New <code><a href="../reference/done.html">done()</a></code> function to box a value. Done boxes are sentinels to indicate early termination of a loop or computation. For instance, it will be used in the purrr package to allow users to shortcircuit a reduction or accumulation.</p></li>
+<li><p><code><a href="../reference/box.html">new_box()</a></code> now accepts additional attributes passed to <code><a href="https://www.rdocumentation.org/packages/base/topics/structure">structure()</a></code>.</p></li>
+<li>
+<p><code><a href="../reference/as_string.html">as_string()</a></code> now unwraps quosured symbols automatically.</p>
+<p>Note that <code><a href="../reference/quo_label.html">quo_name()</a></code> is <em>not</em> appropriate for transforming symbols to strings. <code><a href="../reference/quo_label.html">quo_name()</a></code> is suitable for creating default labels, not for deterministic conversions between symbol and string. Please use <code><a href="../reference/as_string.html">as_string()</a></code> instead.</p>
+</li>
 <li>
 <p>New <code><a href="../reference/entrace.html">entrace()</a></code> condition handler. Add this to your RProfile to enable rlang backtraces for all errors, including warnings promoted to errors:</p>
 <div class="sourceCode" id="cb1"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb1-1" data-line-number="1"><span class="cf">if</span> (<span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/ns-load">requireNamespace</a></span>(<span class="st">"rlang"</span>, <span class="dt">quietly =</span> <span class="ot">TRUE</span>)) {</a>
-<a class="sourceLine" id="cb1-2" data-line-number="2">  <span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/options">options</a></span>(<span class="dt">error =</span> <span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/substitute">quote</a></span>(rlang<span class="op">:::</span><span class="kw"><a href="../reference/entrace.html">entrace</a></span>()))</a>
+<a class="sourceLine" id="cb1-2" data-line-number="2">  <span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/options">options</a></span>(<span class="dt">error =</span> rlang<span class="op">::</span>entrace)</a>
 <a class="sourceLine" id="cb1-3" data-line-number="3">}</a></code></pre></div>
 <p>This handler also works as a calling handler:</p>
 <div class="sourceCode" id="cb2"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb2-1" data-line-number="1"><span class="kw"><a href="../reference/with_handlers.html">with_handlers</a></span>(</a>
@@ -169,7 +176,6 @@
 <li><p><code><a href="../reference/exec.html">exec()</a></code> takes <code>.fn</code> as first argument instead of <code>f</code>, for consistency with other rlang functions.</p></li>
 <li><p>Fixed infinite loop with quosures created inside a data mask.</p></li>
 <li><p>Base errors set as <code>parent</code> of rlang errors are now printed correctly.</p></li>
-<li><p><code><a href="../reference/call_name.html">call_name()</a></code> now fails with namespaced objects. E.g. <code><a href="../reference/call_name.html">call_name(~foo::bar)</a></code> is an error while <code><a href="../reference/call_name.html">call_name(~foo::bar())</a></code> returns <code>bar</code>.</p></li>
 </ul>
 </div>
     <div id="rlang-0-3-0" class="section level1">

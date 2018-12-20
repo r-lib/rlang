@@ -63,7 +63,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">rlang</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.3.0.9001</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.3.0.9002</span>
       </span>
     </div>
 
@@ -140,8 +140,8 @@
     <colgroup><col class="name" /><col class="desc" /></colgroup>
     <tr>
       <th>x</th>
-      <td><p>A string or symbol. If a string, the attributes are
-removed, if any.</p></td>
+      <td><p>A string or symbol, possibly wrapped in a <a href='quosure.html'>quosure</a>.
+If a string, the attributes are removed, if any.</p></td>
     </tr>
     </table>
     
@@ -157,7 +157,9 @@ removed, if any.</p></td>
 
 <span class='co'># as_string() converts symbols to strings:</span>
 <span class='no'>foo</span></div><div class='output co'>#&gt; foo</div><div class='input'><span class='fu'>as_string</span>(<span class='no'>foo</span>)</div><div class='output co'>#&gt; [1] "foo"</div><div class='input'>
-<span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/typeof'>typeof</a></span>(<span class='no'>bar</span>)</div><div class='output co'>#&gt; [1] "symbol"</div><div class='input'><span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/typeof'>typeof</a></span>(<span class='fu'>as_string</span>(<span class='no'>bar</span>))</div><div class='output co'>#&gt; [1] "character"</div></pre>
+<span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/typeof'>typeof</a></span>(<span class='no'>bar</span>)</div><div class='output co'>#&gt; [1] "symbol"</div><div class='input'><span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/typeof'>typeof</a></span>(<span class='fu'>as_string</span>(<span class='no'>bar</span>))</div><div class='output co'>#&gt; [1] "character"</div><div class='input'>
+<span class='co'># as_string() unwraps quosured symbols automatically:</span>
+<span class='fu'>as_string</span>(<span class='fu'><a href='quotation.html'>quo</a></span>(<span class='no'>foo</span>))</div><div class='output co'>#&gt; [1] "foo"</div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
     <h2>Contents</h2>

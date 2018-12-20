@@ -32,7 +32,11 @@
 
 <meta property="og:title" content="Quosure getters, setters and testers — quosure" />
 
-<meta property="og:description" content="You can access the quosure components (its expression and its
+<meta property="og:description" content="A quosure is a type of quoted expression that includes
+a reference to the context where it was created. A quosure is thus
+guaranteed to evaluate in its original environment and can refer to
+local objects.
+You can access the quosure components (its expression and its
 environment) with:
 get_expr() and get_env(). These getters also support other
 kinds of objects such as formulas.
@@ -40,11 +44,7 @@ quo_get_expr() and quo_get_env(). These getters only work
 with quosures and throw an error with other types of input.
 " />
 
-<meta property="og:description" content="Note that a quosure usually does not carry environments for
-literal objects like strings or
-numbers. quo() and enquo() only capture an environment for
-symbolic expressions.
-Test if an object is a quosure with is_quosure(). If you know an
+<meta property="og:description" content="Test if an object is a quosure with is_quosure(). If you know an
 object is a quosure, use the quo_ prefixed predicates to check
 its contents, quo_is_missing(), quo_is_symbol(), etc." />
 <meta name="twitter:card" content="summary" />
@@ -77,7 +77,7 @@ its contents, quo_is_missing(), quo_is_symbol(), etc." />
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">rlang</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.3.0.9001</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.3.0.9002</span>
       </span>
     </div>
 
@@ -143,7 +143,11 @@ its contents, quo_is_missing(), quo_is_symbol(), etc." />
 
     <div class="ref-description">
     
-    <p>You can access the quosure components (its expression and its
+    <p>A quosure is a type of <a href='quotation.html'>quoted expression</a> that includes
+a reference to the context where it was created. A quosure is thus
+guaranteed to evaluate in its original environment and can refer to
+local objects.</p>
+<p>You can access the quosure components (its expression and its
 environment) with:</p><ul>
 <li><p><code><a href='set_expr.html'>get_expr()</a></code> and <code><a href='get_env.html'>get_env()</a></code>. These getters also support other
 kinds of objects such as formulas.</p></li>
@@ -151,11 +155,7 @@ kinds of objects such as formulas.</p></li>
 with quosures and throw an error with other types of input.</p></li>
 </ul>
 
-    <p>Note that a quosure usually does not carry environments for
-<a href='is_expression.html'>literal objects</a> like strings or
-numbers. <code><a href='quotation.html'>quo()</a></code> and <code><a href='quotation.html'>enquo()</a></code> only capture an environment for
-<a href='is_expression.html'>symbolic expressions</a>.</p>
-<p>Test if an object is a quosure with <code>is_quosure()</code>. If you know an
+    <p>Test if an object is a quosure with <code>is_quosure()</code>. If you know an
 object is a quosure, use the <code>quo_</code> prefixed predicates to check
 its contents, <code>quo_is_missing()</code>, <code>quo_is_symbol()</code>, etc.</p>
     
@@ -223,6 +223,22 @@ has to match at least one of them, otherwise <code><a href='is_call.html'>is_cal
     </tr>
     </table>
     
+    <h2 class="hasAnchor" id="quosured-constants"><a class="anchor" href="#quosured-constants"></a>Quosured constants</h2>
+
+    
+    <p>A quosure usually does not carry environments for <a href='is_expression.html'>constant objects</a> like strings or numbers. <code><a href='quotation.html'>quo()</a></code> and
+<code><a href='quotation.html'>enquo()</a></code> only capture an environment for <a href='is_expression.html'>symbolic expressions</a>. For instance, all of these return the
+<a href='empty_env.html'>empty environment</a>:</p><pre>quo_get_env(quo("constant"))
+quo_get_env(quo(100))
+quo_get_env(quo(NA))
+</pre>
+    <p>On the other hand, quosures capture the environment of symbolic
+expressions, i.e. expressions whose meaning depends on the
+environment in which they are evaluated and what objects are
+defined there:</p><pre>quo_get_env(quo(some_object))
+quo_get_env(quo(some_function()))
+</pre>
+    
     <h2 class="hasAnchor" id="empty-quosures"><a class="anchor" href="#empty-quosures"></a>Empty quosures</h2>
 
     
@@ -252,10 +268,10 @@ and <code><a href='as_quosure.html'>new_quosure()</a></code> for constructing qu
     <pre class="examples"><div class='input'><span class='no'>quo</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='quotation.html'>quo</a></span>(<span class='no'>my_quosure</span>)
 <span class='no'>quo</span></div><div class='output co'>#&gt; &lt;quosure&gt;
 #&gt; expr: ^my_quosure
-#&gt; env:  0x5625640</div><div class='input'>
+#&gt; env:  0x5843ef0</div><div class='input'>
 
 <span class='co'># Access and set the components of a quosure:</span>
-<span class='fu'>quo_get_expr</span>(<span class='no'>quo</span>)</div><div class='output co'>#&gt; my_quosure</div><div class='input'><span class='fu'>quo_get_env</span>(<span class='no'>quo</span>)</div><div class='output co'>#&gt; &lt;environment: 0x5625640&gt;</div><div class='input'>
+<span class='fu'>quo_get_expr</span>(<span class='no'>quo</span>)</div><div class='output co'>#&gt; my_quosure</div><div class='input'><span class='fu'>quo_get_env</span>(<span class='no'>quo</span>)</div><div class='output co'>#&gt; &lt;environment: 0x5843ef0&gt;</div><div class='input'>
 <span class='no'>quo</span> <span class='kw'>&lt;-</span> <span class='fu'>quo_set_expr</span>(<span class='no'>quo</span>, <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/substitute'>quote</a></span>(<span class='no'>baz</span>))
 <span class='no'>quo</span> <span class='kw'>&lt;-</span> <span class='fu'>quo_set_env</span>(<span class='no'>quo</span>, <span class='fu'><a href='empty_env.html'>empty_env</a></span>())
 <span class='no'>quo</span></div><div class='output co'>#&gt; &lt;quosure&gt;
@@ -281,6 +297,8 @@ and <code><a href='as_quosure.html'>new_quosure()</a></code> for constructing qu
     <ul class="nav nav-pills nav-stacked">
       <li><a href="#arguments">Arguments</a></li>
       
+      <li><a href="#quosured-constants">Quosured constants</a></li>
+
       <li><a href="#empty-quosures">Empty quosures</a></li>
 
       <li><a href="#life-cycle">Life cycle</a></li>

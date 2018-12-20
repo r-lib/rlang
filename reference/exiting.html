@@ -68,7 +68,7 @@ for with_handlers()." />
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">rlang</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.3.0.9001</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.3.0.9002</span>
       </span>
     </div>
 
@@ -179,6 +179,12 @@ condition (by jumping out of the frame), R will then jump out of
 the faulty evaluation frame to top-level, via the abort restart
 (see <code><a href='rst_abort.html'>rst_abort()</a></code>).</p>
     
+    <h2 class="hasAnchor" id="life-cycle"><a class="anchor" href="#life-cycle"></a>Life cycle</h2>
+
+    <p><code>exiting()</code> is in the questioning stage
+because <code><a href='with_handlers.html'>with_handlers()</a></code> now treats handlers as exiting by
+default.</p>
+    
     <h2 class="hasAnchor" id="see-also"><a class="anchor" href="#see-also"></a>See also</h2>
 
     <div class='dont-index'><p><code><a href='with_handlers.html'>with_handlers()</a></code> for examples, <code><a href='restarting.html'>restarting()</a></code> for another
@@ -201,6 +207,8 @@ kind of calling handler.</p></div>
       <li><a href="#arguments">Arguments</a></li>
       
       <li><a href="#details">Details</a></li>
+
+      <li><a href="#life-cycle">Life cycle</a></li>
 
       <li><a href="#see-also">See also</a></li>
       

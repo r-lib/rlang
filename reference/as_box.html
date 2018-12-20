@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Display backtrace on error — rlang__backtrace_on_error • rlang</title>
+<title>Convert object to a box — as_box • rlang</title>
 
 <!-- jquery -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=" crossorigin="anonymous"></script>
@@ -30,18 +30,13 @@
 
 
 
-<meta property="og:title" content="Display backtrace on error — rlang__backtrace_on_error" />
+<meta property="og:title" content="Convert object to a box — as_box" />
 
-<meta property="og:description" content="Errors thrown with abort() automatically save a backtrace that
-can be inspected by calling last_error(). Optionally, you can
-also display the backtrace alongside the error message by setting
-the experimental option rlang__backtrace_on_error to one of the
-following values:
-&quot;reminder&quot;: Display a reminder that the backtrace can be
-inspected by calling rlang::last_error().
-&quot;branch&quot;: Display a simplified backtrace.
-&quot;collapse&quot;: Display a collapsed backtrace tree.
-&quot;full&quot;: Display the full backtrace tree.
+<meta property="og:description" content="
+as_box() boxes its input only if it is not already a box. The
+class is also checked if supplied.
+as_box_if() boxes its input only if it not already a box, or if
+the predicate .p returns TRUE.
 " />
 <meta name="twitter:card" content="summary" />
 
@@ -132,61 +127,60 @@ inspected by calling rlang::last_error().
 <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-    <h1>Display backtrace on error</h1>
-    <small class="dont-index">Source: <a href='https://github.com/r-lib/rlang/blob/master/R/cnd.R'><code>R/cnd.R</code></a></small>
-    <div class="hidden name"><code>rlang__backtrace_on_error.Rd</code></div>
+    <h1>Convert object to a box</h1>
+    <small class="dont-index">Source: <a href='https://github.com/r-lib/rlang/blob/master/R/s3.R'><code>R/s3.R</code></a></small>
+    <div class="hidden name"><code>as_box.Rd</code></div>
     </div>
 
     <div class="ref-description">
     
-    <p>Errors thrown with <code><a href='abort.html'>abort()</a></code> automatically save a backtrace that
-can be inspected by calling <code><a href='last_error.html'>last_error()</a></code>. Optionally, you can
-also display the backtrace alongside the error message by setting
-the experimental option <code>rlang__backtrace_on_error</code> to one of the
-following values:</p><ul>
-<li><p><code>"reminder"</code>: Display a reminder that the backtrace can be
-inspected by calling <code><a href='last_error.html'>rlang::last_error()</a></code>.</p></li>
-<li><p><code>"branch"</code>: Display a simplified backtrace.</p></li>
-<li><p><code>"collapse"</code>: Display a collapsed backtrace tree.</p></li>
-<li><p><code>"full"</code>: Display the full backtrace tree.</p></li>
+    <ul>
+<li><p><code>as_box()</code> boxes its input only if it is not already a box. The
+class is also checked if supplied.</p></li>
+<li><p><code>as_box_if()</code> boxes its input only if it not already a box, or if
+the predicate <code>.p</code> returns <code>TRUE</code>.</p></li>
 </ul>
     
     </div>
 
-        
-    <h2 class="hasAnchor" id="promote-base-errors-to-rlang-errors"><a class="anchor" href="#promote-base-errors-to-rlang-errors"></a>Promote base errors to rlang errors</h2>
+    <pre class="usage"><span class='fu'>as_box</span>(<span class='no'>x</span>, <span class='kw'>class</span> <span class='kw'>=</span> <span class='kw'>NULL</span>)
 
+<span class='fu'>as_box_if</span>(<span class='no'>.x</span>, <span class='no'>.p</span>, <span class='kw'>.class</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='no'>...</span>)</pre>
     
-    <p>Call <code><a href='https://www.rdocumentation.org/packages/base/topics/options'>options(error = rlang:::add_backtrace)</a></code> to instrument base
-errors with rlang features. This handler does two things:</p><ul>
-<li><p>It saves the base error as an rlang object. This allows you to
-call <code><a href='last_error.html'>last_error()</a></code> to print the backtrace or inspect its data.</p></li>
-<li><p>It prints the backtrace for the current error according to the
-<code>rlang__backtrace_on_error</code> option.</p></li>
-</ul>
-    <p>This experimental handler is not exported because it is meant for
-interactive use only.</p>
+    <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
+    <table class="ref-arguments">
+    <colgroup><col class="name" /><col class="desc" /></colgroup>
+    <tr>
+      <th>x</th>
+      <td><p>An R object.</p></td>
+    </tr>
+    <tr>
+      <th>class, .class</th>
+      <td><p>A box class. If the input is already a box of
+that class, it is returned as is. If the input needs to be boxed,
+<code>class</code> is passed to <code><a href='box.html'>new_box()</a></code>.</p></td>
+    </tr>
+    <tr>
+      <th>.x</th>
+      <td><p>An R object.</p></td>
+    </tr>
+    <tr>
+      <th>.p</th>
+      <td><p>A predicate function.</p></td>
+    </tr>
+    <tr>
+      <th>...</th>
+      <td><p>Arguments passed to <code>.p</code>.</p></td>
+    </tr>
+    </table>
     
 
-    <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><div class='input'># Display a simplified backtrace on error for both base and rlang
-# errors:
-
-# options(
-#   rlang__backtrace_on_error = "branch",
-#   error = rlang:::add_backtrace
-# )
-# stop("foo")
-</div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
     <h2>Contents</h2>
     <ul class="nav nav-pills nav-stacked">
-      
-      <li><a href="#promote-base-errors-to-rlang-errors">Promote base errors to rlang errors</a></li>
-      
-      <li><a href="#examples">Examples</a></li>
-    </ul>
+      <li><a href="#arguments">Arguments</a></li>
+                </ul>
 
   </div>
 </div>
