@@ -151,6 +151,7 @@ as_box <- function(x, class = NULL) {
 #' @param ... Arguments passed to `.p`.
 #' @export
 as_box_if <- function(.x, .p, .class = NULL, ...) {
+  .p <- as_predicate(.p)
   if (is_box(.x, .class) || !.p(.x, ...)) {
     .x
   } else {

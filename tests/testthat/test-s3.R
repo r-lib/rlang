@@ -68,6 +68,8 @@ test_that("as_box_if() ensures boxed value if predicate returns TRUE", {
   expect_null(unbox(boxbox))
 
   expect_null(as_box_if(NULL, is_vector, "null_box"))
+
+  expect_error(as_box_if(NULL, ~ 10), "Predicate functions must return a single")
 })
 
 test_that("unboxing a non-boxed value is an error", {

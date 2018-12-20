@@ -164,6 +164,10 @@ is_string <- function(x, encoding = NULL) {
 #' @rdname scalar-type-predicates
 is_scalar_bytes <- is_scalar_raw
 
+is_bool <- function(x) {
+  is_logical(x, n = 1) && !is.na(x)
+}
+
 #' Bare type predicates
 #'
 #' These predicates check for a given type but only return `TRUE` for

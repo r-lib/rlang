@@ -678,3 +678,27 @@ print.fn <- function(x, ...) {
   x <- structure(x, srcref = srcref)
   print(x)
 }
+
+as_predicate <- function(.fn, ...) {
+  .fn <- as_function(.fn)
+
+  function(...) {
+    out <- .fn(...)
+
+    if (!is_bool(out)) {
+      abort(sprintf(
+        "Predicate functions must return a single `TRUE` or `FALSE`, not %s",
+        as_predicate_friendly_type_of(out)
+      ))
+    }
+
+    out
+  }
+}
+as_predicate_friendly_type_of <- function(x) {
+  if (is_na(x)) {
+    "a missing value"
+  } else {
+    friendly_type_of(x, length = TRUE)
+  }
+}
