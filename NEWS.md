@@ -1,6 +1,13 @@
 
 # rlang 0.3.0.9000
 
+* New `is_interactive()` function. It serves the same purpose as
+  `base::interactive()` but also checks if knitr is in progress and
+  provides an escape hatch. Use `with_interactive()` and
+  `scoped_interactive()` to override the return value of
+  `is_interactive()`. This is useful in unit tests or to manually turn
+  on interactive features in RMarkdown outputs
+
 * `calling()` now boxes its argument.
 
 * New `done()` function to box a value. Done boxes are sentinels to

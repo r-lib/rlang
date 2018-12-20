@@ -14,3 +14,13 @@ test_that("peek_options() returns a named list", {
   scoped_options(foo = "FOO", bar = "BAR")
   expect_identical(peek_options("foo", "bar"), list(foo = "FOO", bar = "BAR"))
 })
+
+test_that("is_interactive() can be overridden", {
+  expect_true(with_options(rlang_interactive = TRUE, is_interactive()))
+  expect_false(with_options(rlang_interactive = FALSE, is_interactive()))
+  expect_error(with_options(rlang_interactive = NA, is_interactive()), "must be a single")
+
+  scoped_interactive(FALSE)
+  expect_false(is_interactive())
+  expect_true(with_interactive(value = TRUE, is_interactive()))
+})
