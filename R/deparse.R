@@ -786,3 +786,60 @@ reserved_words <- c(
   "next",
   "break"
 )
+
+#' Create a default name for an R object
+#'
+#' @description
+#'
+#' `as_label()` transforms any R object into a single string that is
+#' suitable as default name:
+#'
+#' * Quosures are [squashed][quo_squash] before being labelled.
+#' * Symbols are transformed to string with `as_string()`.
+#' * Calls are abbreviated.
+#' * Numbers are represented as such.
+#' * Other constants are represented by their type, such as `<dbl>`
+#'   or `<data.frame>`.
+#'
+#' Please note that simple symbols should generally be transformed to
+#' strings with `as_string()`. Labelisation is not a well defined
+#' operation and no assumption should be made about how the label is
+#' created. On the other hand, `as_string()` only works with symbols
+#' and is a well defined, deterministic operation.
+#'
+#' In other words, if you don't know for sure what kind of object
+#' you're dealing with, use `as_label()` and make no assumption about the
+#' resulting string. If you know the object is a symbol, use
+#' [as_string()].
+#'
+#' @param x Any R object.
+#'
+#' @export
+as_label <- function(x) {
+  x <- quo_squash(x)
+
+  if (is_missing(x)) {
+    return("<empty>")
+  }
+
+  switch(typeof(x),
+    NULL = "NULL",
+    symbol = as_string(x),
+    language = {
+      if (is_data_pronoun(x)) {
+        data_pronoun_name(x) %||% "<unknown>"
+      } else {
+        name <- deparse_one(x)
+        name <- gsub("\n.*$", "...", name)
+        name
+      }
+    },
+    if (is_bare_atomic(x, n = 1)) {
+      name <- expr_text(x)
+      name <- gsub("\n.*$", "...", name)
+      name
+    } else {
+      paste0("<", rlang_type_sum(x), ">")
+    }
+  )
+}

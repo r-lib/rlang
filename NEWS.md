@@ -1,6 +1,20 @@
 
 # rlang 0.3.0.9000
 
+* New `as_label()` function. It should be used instead of `quo_name()`
+  to transform objects to a single string.
+
+  Note that symbols should generally be transformed to strings with
+  `as_string()`.  Labelisation is not a well defined operation and no
+  assumption should be made about the label. On the other hand,
+  `as_string()` only works with symbols and is a well defined,
+  deterministic operation.
+
+  In other words, if you don't know for sure what kind of object
+  you're dealing with, use `as_label()` and make no assumption about
+  the resulting string. If you know the object is a symbol, use
+  `as_string()`.
+
 * In non-interactive sessions, the full backtrace is now shown on
   error instead of the reminder to call `last_error()` (#708).
 
