@@ -28,7 +28,7 @@ Like \code{\link[base:interactive]{base::interactive()}}, \code{is_interactive()
 the function runs interactively and \code{FALSE} when it runs in batch
 mode. It also checks:
 \itemize{
-\item Whether knitr is in progress.
+\item Whether knitr or an RStudio notebook is in progress.
 \item The \code{rlang_interactive} global option. If set to a single \code{TRUE}
 or \code{FALSE}, \code{is_interactive()} returns that value instead.  This
 escape hatch is useful in unit tests or to manually turn on

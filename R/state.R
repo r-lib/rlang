@@ -97,7 +97,7 @@ peek_option <- function(name) {
 #' the function runs interactively and `FALSE` when it runs in batch
 #' mode. It also checks:
 #'
-#' * Whether knitr is in progress.
+#' * Whether knitr or an RStudio notebook is in progress.
 #'
 #' * The `rlang_interactive` global option. If set to a single `TRUE`
 #'   or `FALSE`, `is_interactive()` returns that value instead.  This
@@ -117,7 +117,10 @@ is_interactive <- function() {
     return(opt)
   }
 
-  if (!is_null(peek_option("knitr.in.progress"))) {
+  if (is_true(peek_option("knitr.in.progress"))) {
+    return(FALSE)
+  }
+  if (is_true(peek_option("rstudio.notebook.executing"))) {
     return(FALSE)
   }
 
