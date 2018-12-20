@@ -56,6 +56,8 @@
 #'
 #' @param .env An environment.
 #' @param ... Pairs of names and expressions, values or functions.
+#'   Pass [zap()] objects to remove bindings.
+#'
 #'   These dots support [tidy dots][tidy-dots] features.
 #' @return The input object `.env`, with its associated environment
 #'   modified in place, invisibly.

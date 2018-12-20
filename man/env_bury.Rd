@@ -10,6 +10,8 @@ env_bury(.env, ...)
 \item{.env}{An environment.}
 
 \item{...}{Pairs of names and expressions, values or functions.
+Pass \code{\link[=zap]{zap()}} objects to remove bindings.
+
 These dots support \link[=tidy-dots]{tidy dots} features.}
 }
 \value{
