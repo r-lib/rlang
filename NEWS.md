@@ -11,6 +11,9 @@
   * Give default names to columns in a data frame. In this case,
     labelling is the first step before name repair.
 
+  We expect `as_label()` to gain additional parameters in the future,
+  for example to control the maximum width of a label.
+
   See also [as_string()] for transforming symbols back to a
   string. Unlike `as_label()`, `as_string()` is a well defined
   operation that guarantees the roundtrip symbol -> string ->
