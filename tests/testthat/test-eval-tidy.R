@@ -430,6 +430,12 @@ test_that("subsetting `.env` evaluates", {
   expect_identical(eval_tidy(quote(.env[["cyl"]]), mtcars, env()), "foo")
 })
 
+test_that("mask inherits from `env` after evaluation", {
+  flag <- env(empty_env())
+  mask <- new_data_mask(env())
+  eval_tidy(NULL, mask, flag)
+  expect_true(env_inherits(mask, flag))
+})
 
 # Lifecycle ----------------------------------------------------------
 
