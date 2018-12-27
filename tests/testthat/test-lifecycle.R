@@ -27,3 +27,13 @@ test_that("soft-deprecation warnings are issued when called from child of global
   fn <- function() signal_soft_deprecated("called from child of global env")
   expect_warning(eval_bare(call2(fn), env(global_env())), "child of global env")
 })
+
+test_that("once-per-session note is not displayed on repeated warnings", {
+  wrn <- catch_cnd(warn_deprecated("foo", "once-per-session-note"))
+  expect_true(grepl("once per session", wrn$message))
+
+  scoped_options(lifecycle_repeat_warnings = TRUE)
+
+  wrn <- catch_cnd(warn_deprecated("foo", "once-per-session-no-note"))
+  expect_false(grepl("once per session", wrn$message))
+})
