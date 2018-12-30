@@ -36,9 +36,3 @@ test_that("must supply strings to sym()", {
   expect_error(sym(letters), "strings")
   expect_error(sym(1:2), "strings")
 })
-
-test_that("as_string() supports quosured symbols and strings", {
-  expect_identical(as_string(quo(foo)), "foo")
-  expect_identical(as_string(quo("foo")), "foo")
-  expect_error(as_string(quo(foo())), "Can't convert a call to a string")
-})
