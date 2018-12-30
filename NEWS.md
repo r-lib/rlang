@@ -1,47 +1,13 @@
 
 # rlang 0.3.0.9000
 
-* New `as_label()` function. It should be used instead of `quo_name()`
-  to transform objects and quoted expressions into a short,
-  human-readable description. You can use labels to:
+This patch release polishes the new backtrace feature introduced in
+rlang 0.3.0 and solves bugs for the upcoming release of purrr
+0.3.0. It also features `as_label()`, a better named replacement for
+`quo_name()`. Finally, a bunch of deparsing issues have been fixed.
 
-  * Display an object in a concise way, for example to labellise axes
-    in a graphical plot.
 
-  * Give default names to columns in a data frame. In this case,
-    labelling is the first step before name repair.
-
-  We expect `as_label()` to gain additional parameters in the future,
-  for example to control the maximum width of a label.
-
-  See also [as_string()] for transforming symbols back to a
-  string. Unlike `as_label()`, `as_string()` is a well defined
-  operation that guarantees the roundtrip symbol -> string ->
-  symbol.
-
-  In general, if you don't know for sure what kind of object you're
-  dealing with (a call, a symbol, an unquoted constant), use
-  `as_label()` and make no assumption about the resulting string. If
-  you know you have a symbol and need the name of the object it refers
-  to, use [as_string()]. For instance, use `as_label()` with objects
-  captured with `enquo()` and `as_string()` with symbols captured with
-  `ensym()`.
-
-* New `is_interactive()` function. It serves the same purpose as
-  `base::interactive()` but also checks if knitr is in progress and
-  provides an escape hatch. Use `with_interactive()` and
-  `scoped_interactive()` to override the return value of
-  `is_interactive()`. This is useful in unit tests or to manually turn
-  on interactive features in RMarkdown outputs
-
-* `calling()` now boxes its argument.
-
-* New `done()` function to box a value. Done boxes are sentinels to
-  indicate early termination of a loop or computation. For instance,
-  it will be used in the purrr package to allow users to shortcircuit
-  a reduction or accumulation.
-
-* `new_box()` now accepts additional attributes passed to `structure()`.
+## Backtrace fixes
 
 * New `entrace()` condition handler. Add this to your RProfile to
   enable rlang backtraces for all errors, including warnings promoted
@@ -80,36 +46,71 @@
   the call tree. The numbering is non-contiguous for simplified
   backtraces because of omitted call frames.
 
-* Subsetting an object from the `.env` pronoun now evaluates the
-  corresponding symbol. This means you can now retrieve objects from
-  the contextual environment in magrittr pipes.
+* `catch_cnd()` gains a `classes` argument to specify which classes of
+  condition to catch. It returns `NULL` if the expected condition
+  could not be caught (#696).
 
-  Note that following this change, and despite its name, `.env` is not
-  really an environment but a special shortcut, just like `.data` is
-  not really a data frame.
+
+## `as_label()`
+
+The new `as_label()` function should be used instead of `quo_name()`
+to transform objects and quoted expressions into a short
+human-readable description. You can use labels to:
+
+* Display an object in a concise way, for example to labellise axes
+  in a graphical plot.
+
+* Give default names to columns in a data frame. In this case,
+  labelling is the first step before name repair.
+
+We expect `as_label()` to gain additional parameters in the future,
+for example to control the maximum width of a label.
+
+See also [as_string()] for transforming symbols back to a
+string. Unlike `as_label()`, `as_string()` is a well defined
+operation that guarantees the roundtrip symbol -> string ->
+symbol.
+
+In general, if you don't know for sure what kind of object you're
+dealing with (a call, a symbol, an unquoted constant), use
+`as_label()` and make no assumption about the resulting string. If
+you know you have a symbol and need the name of the object it refers
+to, use [as_string()]. For instance, use `as_label()` with objects
+captured with `enquo()` and `as_string()` with symbols captured with
+`ensym()`.
+
+
+## Minor fixes and features
+
+* New `is_interactive()` function. It serves the same purpose as
+  `base::interactive()` but also checks if knitr is in progress and
+  provides an escape hatch. Use `with_interactive()` and
+  `scoped_interactive()` to override the return value of
+  `is_interactive()`. This is useful in unit tests or to manually turn
+  on interactive features in RMarkdown outputs
+
+* `calling()` now boxes its argument.
+
+* New `done()` function to box a value. Done boxes are sentinels to
+  indicate early termination of a loop or computation. For instance,
+  it will be used in the purrr package to allow users to shortcircuit
+  a reduction or accumulation.
+
+* `new_box()` now accepts additional attributes passed to `structure()`.
+
+* `as_string()` now unwraps quosured symbols automatically.
+
+  Note that `quo_name()` is *not* appropriate for transforming symbols
+  to strings. `quo_name()` is suitable for creating default labels,
+  not for deterministic conversions between symbol and string. Please
+  use `as_string()` instead.
 
 * Fixed a quotation bug with binary operators of zero or one argument
   such as `` `/`(1) `` (#652). They are now deparsed and printed
   properly as well.
 
-* `catch_cnd()` gains a `classes` argument to specify which classes of
-  condition to catch. It returns `NULL` if the expected condition
-  could not be caught (#696).
-
 * New `call_ns()` function to retrieve the namespace of a
   call. Returns `NULL` if the call is not namespaced.
-
-* New template file `R/lifecycle.R` containing functions and
-  documentation for lifecycle management: retirement warnings and
-  errors, and inclusion of lifecycle badges in documentation.
-
-* `exiting()` and `calling()` handlers now inherit from the `function`
-  class. Their subclasses are now prefixed with `"rlang_"`.
-
-  ```r
-  class(exiting(function(cnd) cnd))
-  #> [1] "rlang_handler_exiting" "rlang_handler"         "function"
-  ```
 
 * Top-level S3 objects are now deparsed properly.
 
