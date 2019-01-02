@@ -639,10 +639,10 @@ print.rlang_error <- function(x,
     print.rlang_error(x$parent, ..., child = x, simplify = simplify, fields = fields)
   }
 
-  # Recommend summary() for printing the full backtrace. Only do it
-  # after having printed all parent errors first.
+  # Recommend printing the full backtrace. Only do it after having
+  # printed all parent errors first.
   if (simplify == "branch" && is_null(x$parent) && !is_null(trace)) {
-    cat_line(silver("Call `summary(rlang::last_error())` to see the full backtrace"))
+    cat_line(silver("Call `rlang::last_trace()` to see the full backtrace"))
   }
 
   invisible(x)
