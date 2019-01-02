@@ -201,21 +201,23 @@ or complex expressions.</p>
 <span class='fu'>invoke</span>(<span class='no'>fn</span>, <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/list'>list</a></span>(<span class='no'>mtcars</span>))</div><div class='output co'>#&gt; [[1]]
 #&gt; tryCatch(withCallingHandlers({
 #&gt;     NULL
-#&gt;     saveRDS(do.call(do.call, c(readRDS("/tmp/RtmpMyYvaN/file3d1f24aeb05f"), 
-#&gt;         list(envir = .GlobalEnv)), envir = .GlobalEnv), file = "/tmp/RtmpMyYvaN/file3d1f40638199")
+#&gt;     saveRDS(do.call(do.call, c(readRDS("/tmp/RtmpDBH1y4/file65615737cdc4"), 
+#&gt;         list(envir = .GlobalEnv)), envir = .GlobalEnv), file = "/tmp/RtmpDBH1y4/file6561fc58d6b")
 #&gt;     flush(stdout())
 #&gt;     flush(stderr())
 #&gt;     NULL
 #&gt;     invisible()
 #&gt; }, error = function(e) {
-#&gt;     saveRDS(list("error", e), file = paste0("/tmp/RtmpMyYvaN/file3d1f40638199", 
+#&gt;     saveRDS(list("error", e), file = paste0("/tmp/RtmpDBH1y4/file6561fc58d6b", 
 #&gt;         ".error"))
 #&gt; }, interrupt = function(e) {
-#&gt;     saveRDS(list("error", e), file = paste0("/tmp/RtmpMyYvaN/file3d1f40638199", 
+#&gt;     saveRDS(list("error", e), file = paste0("/tmp/RtmpDBH1y4/file6561fc58d6b", 
 #&gt;         ".error"))
 #&gt; }, callr_message = function(e) {
-#&gt;     {
-#&gt;         msg &lt;- paste0("base64::", base64enc::base64encode(serialize(e, 
+#&gt;     try({
+#&gt;         if (is.null(e$code)) 
+#&gt;             e$code &lt;- "301"
+#&gt;         msg &lt;- paste0("base64::", processx::base64_encode(serialize(e, 
 #&gt;             NULL)))
 #&gt;         data &lt;- paste(e$code, msg, "\n")
 #&gt;         con &lt;- processx::conn_create_fd(3, close = FALSE)
@@ -225,10 +227,13 @@ or complex expressions.</p>
 #&gt;                 break
 #&gt;             Sys.sleep(0.1)
 #&gt;         }
-#&gt;     }
+#&gt;         if (!is.null(findRestart("muffleMessage"))) {
+#&gt;             invokeRestart("muffleMessage")
+#&gt;         }
+#&gt;     })
 #&gt; }), error = function(e) {
 #&gt;     NULL
-#&gt;     e
+#&gt;     try(stop(e))
 #&gt; }, interrupt = function(e) {
 #&gt;     NULL
 #&gt;     e
@@ -256,21 +261,23 @@ or complex expressions.</p>
 #&gt; [[8]]
 #&gt; withCallingHandlers({
 #&gt;     NULL
-#&gt;     saveRDS(do.call(do.call, c(readRDS("/tmp/RtmpMyYvaN/file3d1f24aeb05f"), 
-#&gt;         list(envir = .GlobalEnv)), envir = .GlobalEnv), file = "/tmp/RtmpMyYvaN/file3d1f40638199")
+#&gt;     saveRDS(do.call(do.call, c(readRDS("/tmp/RtmpDBH1y4/file65615737cdc4"), 
+#&gt;         list(envir = .GlobalEnv)), envir = .GlobalEnv), file = "/tmp/RtmpDBH1y4/file6561fc58d6b")
 #&gt;     flush(stdout())
 #&gt;     flush(stderr())
 #&gt;     NULL
 #&gt;     invisible()
 #&gt; }, error = function(e) {
-#&gt;     saveRDS(list("error", e), file = paste0("/tmp/RtmpMyYvaN/file3d1f40638199", 
+#&gt;     saveRDS(list("error", e), file = paste0("/tmp/RtmpDBH1y4/file6561fc58d6b", 
 #&gt;         ".error"))
 #&gt; }, interrupt = function(e) {
-#&gt;     saveRDS(list("error", e), file = paste0("/tmp/RtmpMyYvaN/file3d1f40638199", 
+#&gt;     saveRDS(list("error", e), file = paste0("/tmp/RtmpDBH1y4/file6561fc58d6b", 
 #&gt;         ".error"))
 #&gt; }, callr_message = function(e) {
-#&gt;     {
-#&gt;         msg &lt;- paste0("base64::", base64enc::base64encode(serialize(e, 
+#&gt;     try({
+#&gt;         if (is.null(e$code)) 
+#&gt;             e$code &lt;- "301"
+#&gt;         msg &lt;- paste0("base64::", processx::base64_encode(serialize(e, 
 #&gt;             NULL)))
 #&gt;         data &lt;- paste(e$code, msg, "\n")
 #&gt;         con &lt;- processx::conn_create_fd(3, close = FALSE)
@@ -280,15 +287,18 @@ or complex expressions.</p>
 #&gt;                 break
 #&gt;             Sys.sleep(0.1)
 #&gt;         }
-#&gt;     }
+#&gt;         if (!is.null(findRestart("muffleMessage"))) {
+#&gt;             invokeRestart("muffleMessage")
+#&gt;         }
+#&gt;     })
 #&gt; })
 #&gt; 
 #&gt; [[9]]
-#&gt; saveRDS(do.call(do.call, c(readRDS("/tmp/RtmpMyYvaN/file3d1f24aeb05f"), 
-#&gt;     list(envir = .GlobalEnv)), envir = .GlobalEnv), file = "/tmp/RtmpMyYvaN/file3d1f40638199")
+#&gt; saveRDS(do.call(do.call, c(readRDS("/tmp/RtmpDBH1y4/file65615737cdc4"), 
+#&gt;     list(envir = .GlobalEnv)), envir = .GlobalEnv), file = "/tmp/RtmpDBH1y4/file6561fc58d6b")
 #&gt; 
 #&gt; [[10]]
-#&gt; do.call(do.call, c(readRDS("/tmp/RtmpMyYvaN/file3d1f24aeb05f"), 
+#&gt; do.call(do.call, c(readRDS("/tmp/RtmpDBH1y4/file65615737cdc4"), 
 #&gt;     list(envir = .GlobalEnv)), envir = .GlobalEnv)
 #&gt; 
 #&gt; [[11]]
@@ -305,7 +315,7 @@ or complex expressions.</p>
 #&gt;         pkgdown.internet = pkgdown_internet)
 #&gt;     pkgdown::build_site(...)
 #&gt; }, list(pkg = ".", examples = TRUE, document = FALSE, run_dont_run = FALSE, 
-#&gt;     seed = 1014, lazy = FALSE, override = list(destination = "/tmp/RtmpMyYvaN/file3d1f4d29a7de"), 
+#&gt;     seed = 1014, lazy = FALSE, override = list(destination = "/tmp/RtmpDBH1y4/file6561365cef7e"), 
 #&gt;     preview = FALSE, new_process = FALSE, crayon_enabled = FALSE, 
 #&gt;     crayon_colors = 1, pkgdown_internet = TRUE), envir = &lt;environment&gt;)
 #&gt; 
@@ -316,7 +326,7 @@ or complex expressions.</p>
 #&gt;         pkgdown.internet = pkgdown_internet)
 #&gt;     pkgdown::build_site(...)
 #&gt; })(pkg = ".", examples = TRUE, document = FALSE, run_dont_run = FALSE, 
-#&gt;     seed = 1014, lazy = FALSE, override = list(destination = "/tmp/RtmpMyYvaN/file3d1f4d29a7de"), 
+#&gt;     seed = 1014, lazy = FALSE, override = list(destination = "/tmp/RtmpDBH1y4/file6561365cef7e"), 
 #&gt;     preview = FALSE, new_process = FALSE, crayon_enabled = FALSE, 
 #&gt;     crayon_colors = 1, pkgdown_internet = TRUE)
 #&gt; 
@@ -477,21 +487,23 @@ or complex expressions.</p>
 #&gt;     2, 4, 6, 8, 2))</div><div class='input'><span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/do.call'>do.call</a></span>(<span class='no'>fn</span>, <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/list'>list</a></span>(<span class='no'>mtcars</span>))</div><div class='output co'>#&gt; [[1]]
 #&gt; tryCatch(withCallingHandlers({
 #&gt;     NULL
-#&gt;     saveRDS(do.call(do.call, c(readRDS("/tmp/RtmpMyYvaN/file3d1f24aeb05f"), 
-#&gt;         list(envir = .GlobalEnv)), envir = .GlobalEnv), file = "/tmp/RtmpMyYvaN/file3d1f40638199")
+#&gt;     saveRDS(do.call(do.call, c(readRDS("/tmp/RtmpDBH1y4/file65615737cdc4"), 
+#&gt;         list(envir = .GlobalEnv)), envir = .GlobalEnv), file = "/tmp/RtmpDBH1y4/file6561fc58d6b")
 #&gt;     flush(stdout())
 #&gt;     flush(stderr())
 #&gt;     NULL
 #&gt;     invisible()
 #&gt; }, error = function(e) {
-#&gt;     saveRDS(list("error", e), file = paste0("/tmp/RtmpMyYvaN/file3d1f40638199", 
+#&gt;     saveRDS(list("error", e), file = paste0("/tmp/RtmpDBH1y4/file6561fc58d6b", 
 #&gt;         ".error"))
 #&gt; }, interrupt = function(e) {
-#&gt;     saveRDS(list("error", e), file = paste0("/tmp/RtmpMyYvaN/file3d1f40638199", 
+#&gt;     saveRDS(list("error", e), file = paste0("/tmp/RtmpDBH1y4/file6561fc58d6b", 
 #&gt;         ".error"))
 #&gt; }, callr_message = function(e) {
-#&gt;     {
-#&gt;         msg &lt;- paste0("base64::", base64enc::base64encode(serialize(e, 
+#&gt;     try({
+#&gt;         if (is.null(e$code)) 
+#&gt;             e$code &lt;- "301"
+#&gt;         msg &lt;- paste0("base64::", processx::base64_encode(serialize(e, 
 #&gt;             NULL)))
 #&gt;         data &lt;- paste(e$code, msg, "\n")
 #&gt;         con &lt;- processx::conn_create_fd(3, close = FALSE)
@@ -501,10 +513,13 @@ or complex expressions.</p>
 #&gt;                 break
 #&gt;             Sys.sleep(0.1)
 #&gt;         }
-#&gt;     }
+#&gt;         if (!is.null(findRestart("muffleMessage"))) {
+#&gt;             invokeRestart("muffleMessage")
+#&gt;         }
+#&gt;     })
 #&gt; }), error = function(e) {
 #&gt;     NULL
-#&gt;     e
+#&gt;     try(stop(e))
 #&gt; }, interrupt = function(e) {
 #&gt;     NULL
 #&gt;     e
@@ -532,21 +547,23 @@ or complex expressions.</p>
 #&gt; [[8]]
 #&gt; withCallingHandlers({
 #&gt;     NULL
-#&gt;     saveRDS(do.call(do.call, c(readRDS("/tmp/RtmpMyYvaN/file3d1f24aeb05f"), 
-#&gt;         list(envir = .GlobalEnv)), envir = .GlobalEnv), file = "/tmp/RtmpMyYvaN/file3d1f40638199")
+#&gt;     saveRDS(do.call(do.call, c(readRDS("/tmp/RtmpDBH1y4/file65615737cdc4"), 
+#&gt;         list(envir = .GlobalEnv)), envir = .GlobalEnv), file = "/tmp/RtmpDBH1y4/file6561fc58d6b")
 #&gt;     flush(stdout())
 #&gt;     flush(stderr())
 #&gt;     NULL
 #&gt;     invisible()
 #&gt; }, error = function(e) {
-#&gt;     saveRDS(list("error", e), file = paste0("/tmp/RtmpMyYvaN/file3d1f40638199", 
+#&gt;     saveRDS(list("error", e), file = paste0("/tmp/RtmpDBH1y4/file6561fc58d6b", 
 #&gt;         ".error"))
 #&gt; }, interrupt = function(e) {
-#&gt;     saveRDS(list("error", e), file = paste0("/tmp/RtmpMyYvaN/file3d1f40638199", 
+#&gt;     saveRDS(list("error", e), file = paste0("/tmp/RtmpDBH1y4/file6561fc58d6b", 
 #&gt;         ".error"))
 #&gt; }, callr_message = function(e) {
-#&gt;     {
-#&gt;         msg &lt;- paste0("base64::", base64enc::base64encode(serialize(e, 
+#&gt;     try({
+#&gt;         if (is.null(e$code)) 
+#&gt;             e$code &lt;- "301"
+#&gt;         msg &lt;- paste0("base64::", processx::base64_encode(serialize(e, 
 #&gt;             NULL)))
 #&gt;         data &lt;- paste(e$code, msg, "\n")
 #&gt;         con &lt;- processx::conn_create_fd(3, close = FALSE)
@@ -556,15 +573,18 @@ or complex expressions.</p>
 #&gt;                 break
 #&gt;             Sys.sleep(0.1)
 #&gt;         }
-#&gt;     }
+#&gt;         if (!is.null(findRestart("muffleMessage"))) {
+#&gt;             invokeRestart("muffleMessage")
+#&gt;         }
+#&gt;     })
 #&gt; })
 #&gt; 
 #&gt; [[9]]
-#&gt; saveRDS(do.call(do.call, c(readRDS("/tmp/RtmpMyYvaN/file3d1f24aeb05f"), 
-#&gt;     list(envir = .GlobalEnv)), envir = .GlobalEnv), file = "/tmp/RtmpMyYvaN/file3d1f40638199")
+#&gt; saveRDS(do.call(do.call, c(readRDS("/tmp/RtmpDBH1y4/file65615737cdc4"), 
+#&gt;     list(envir = .GlobalEnv)), envir = .GlobalEnv), file = "/tmp/RtmpDBH1y4/file6561fc58d6b")
 #&gt; 
 #&gt; [[10]]
-#&gt; do.call(do.call, c(readRDS("/tmp/RtmpMyYvaN/file3d1f24aeb05f"), 
+#&gt; do.call(do.call, c(readRDS("/tmp/RtmpDBH1y4/file65615737cdc4"), 
 #&gt;     list(envir = .GlobalEnv)), envir = .GlobalEnv)
 #&gt; 
 #&gt; [[11]]
@@ -581,7 +601,7 @@ or complex expressions.</p>
 #&gt;         pkgdown.internet = pkgdown_internet)
 #&gt;     pkgdown::build_site(...)
 #&gt; }, list(pkg = ".", examples = TRUE, document = FALSE, run_dont_run = FALSE, 
-#&gt;     seed = 1014, lazy = FALSE, override = list(destination = "/tmp/RtmpMyYvaN/file3d1f4d29a7de"), 
+#&gt;     seed = 1014, lazy = FALSE, override = list(destination = "/tmp/RtmpDBH1y4/file6561365cef7e"), 
 #&gt;     preview = FALSE, new_process = FALSE, crayon_enabled = FALSE, 
 #&gt;     crayon_colors = 1, pkgdown_internet = TRUE), envir = &lt;environment&gt;)
 #&gt; 
@@ -592,7 +612,7 @@ or complex expressions.</p>
 #&gt;         pkgdown.internet = pkgdown_internet)
 #&gt;     pkgdown::build_site(...)
 #&gt; })(pkg = ".", examples = TRUE, document = FALSE, run_dont_run = FALSE, 
-#&gt;     seed = 1014, lazy = FALSE, override = list(destination = "/tmp/RtmpMyYvaN/file3d1f4d29a7de"), 
+#&gt;     seed = 1014, lazy = FALSE, override = list(destination = "/tmp/RtmpDBH1y4/file6561365cef7e"), 
 #&gt;     preview = FALSE, new_process = FALSE, crayon_enabled = FALSE, 
 #&gt;     crayon_colors = 1, pkgdown_internet = TRUE)
 #&gt; 

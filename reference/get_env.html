@@ -202,9 +202,9 @@ these functions.</p></li>
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
     <pre class="examples"><div class='input'><span class='co'># Environment of closure functions:</span>
 <span class='no'>fn</span> <span class='kw'>&lt;-</span> <span class='kw'>function</span>() <span class='st'>"foo"</span>
-<span class='fu'>get_env</span>(<span class='no'>fn</span>)</div><div class='output co'>#&gt; &lt;environment: 0x8f1ef30&gt;</div><div class='input'>
+<span class='fu'>get_env</span>(<span class='no'>fn</span>)</div><div class='output co'>#&gt; &lt;environment: 0x9588048&gt;</div><div class='input'>
 <span class='co'># Or of quosures or formulas:</span>
-<span class='fu'>get_env</span>(~<span class='no'>foo</span>)</div><div class='output co'>#&gt; &lt;environment: 0x8f1ef30&gt;</div><div class='input'><span class='fu'>get_env</span>(<span class='fu'><a href='quotation.html'>quo</a></span>(<span class='no'>foo</span>))</div><div class='output co'>#&gt; &lt;environment: 0x8f1ef30&gt;</div><div class='input'>
+<span class='fu'>get_env</span>(~<span class='no'>foo</span>)</div><div class='output co'>#&gt; &lt;environment: 0x9588048&gt;</div><div class='input'><span class='fu'>get_env</span>(<span class='fu'><a href='quotation.html'>quo</a></span>(<span class='no'>foo</span>))</div><div class='output co'>#&gt; &lt;environment: 0x9588048&gt;</div><div class='input'>
 
 <span class='co'># Provide a default in case the object doesn't bundle an environment.</span>
 <span class='co'># Let's create an unevaluated formula:</span>
@@ -230,7 +230,7 @@ these functions.</p></li>
 <span class='co'># for fn has no effect on the original function:</span>
 <span class='no'>other_env</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='env.html'>child_env</a></span>(<span class='kw'>NULL</span>)
 <span class='fu'>set_env</span>(<span class='no'>fn</span>, <span class='no'>other_env</span>)</div><div class='output co'>#&gt; function() NULL
-#&gt; &lt;environment: 0x96e7ae8&gt;</div><div class='input'><span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/identical'>identical</a></span>(<span class='fu'>get_env</span>(<span class='no'>fn</span>), <span class='no'>other_env</span>)</div><div class='output co'>#&gt; [1] FALSE</div><div class='input'>
+#&gt; &lt;environment: 0x89e5bb8&gt;</div><div class='input'><span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/identical'>identical</a></span>(<span class='fu'>get_env</span>(<span class='no'>fn</span>), <span class='no'>other_env</span>)</div><div class='output co'>#&gt; [1] FALSE</div><div class='input'>
 <span class='co'># Since set_env() returns a new function with a different</span>
 <span class='co'># environment, you'll need to reassign the result:</span>
 <span class='no'>fn</span> <span class='kw'>&lt;-</span> <span class='fu'>set_env</span>(<span class='no'>fn</span>, <span class='no'>other_env</span>)
