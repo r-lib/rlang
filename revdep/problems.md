@@ -183,22 +183,6 @@ Version: 0.1.0
       All declared Imports should be used.
     ```
 
-# bench
-
-Version: 1.0.1
-
-## Newly broken
-
-*   checking examples ... WARNING
-    ```
-    Found the following significant warnings:
-    
-      Warning: Passing an environment as data mask is deprecated.
-    Deprecated functions may be defunct as soon as of the next release
-    of R.
-    See ?Deprecated.
-    ```
-
 # bigQueryR
 
 Version: 0.4.0
@@ -596,32 +580,6 @@ Version: 0.7.1.0
     Namespaces in Imports field not imported from:
       ‘rlang’ ‘tidyselect’
       All declared Imports should be used.
-    ```
-
-# cutpointr
-
-Version: 0.7.4
-
-## Newly broken
-
-*   checking tests ...
-    ```
-     ERROR
-    Running the tests in ‘tests/testthat.R’ failed.
-    Complete output:
-      > library(testthat)
-      > library(cutpointr)
-      > 
-      > test_check("cutpointr")
-      ── 1. Failure: Cutpointr returns a cutpointr without NAs and a certain Nr of row
-      `plot(opt_cut)` produced warnings.
-      
-      ══ testthat results  ═══════════════════════════════════════════════════════════
-      OK: 371 SKIPPED: 0 FAILED: 1
-      1. Failure: Cutpointr returns a cutpointr without NAs and a certain Nr of rows (@test-cutpointr.R#7) 
-      
-      Error: testthat unit tests failed
-      Execution halted
     ```
 
 # dabestr
@@ -2814,18 +2772,6 @@ Version: 4.8.0
 
 Version: 0.1.4
 
-## Newly broken
-
-*   checking examples ... WARNING
-    ```
-    Found the following significant warnings:
-    
-      Warning: Passing an environment as data mask is deprecated.
-    Deprecated functions may be defunct as soon as of the next release
-    of R.
-    See ?Deprecated.
-    ```
-
 ## In both
 
 *   checking tests ...
@@ -2841,7 +2787,7 @@ Version: 0.1.4
       tailr::can_loop_transform(llength) isn't true.
       
       ══ testthat results  ═══════════════════════════════════════════════════════════
-      OK: 169 SKIPPED: 0 FAILED: 1
+      OK: 168 SKIPPED: 0 FAILED: 1
       1. Failure: we can transform a function that contains a call to cases (@test-transforms.R#62) 
       
       Error: testthat unit tests failed
@@ -3707,34 +3653,6 @@ Version: 0.9.3
         java   1.9Mb
     ```
 
-# spdplyr
-
-Version: 0.1.3
-
-## Newly broken
-
-*   checking tests ...
-    ```
-     ERROR
-    Running the tests in ‘tests/testthat.R’ failed.
-    Last 13 lines of output:
-      
-          intersect, setdiff, setequal, union
-      
-      Loading required package: sp
-      > 
-      > test_check("spdplyr")
-      ── 1. Failure: group by and summarize is quiet (@test-adv-dplyr.R#13)  ─────────
-      `g <- wrld_simpl %>% group_by(REGION)` produced warnings.
-      
-      ══ testthat results  ═══════════════════════════════════════════════════════════
-      OK: 45 SKIPPED: 5 FAILED: 1
-      1. Failure: group by and summarize is quiet (@test-adv-dplyr.R#13) 
-      
-      Error: testthat unit tests failed
-      Execution halted
-    ```
-
 # sperrorest
 
 Version: 2.1.5
@@ -4022,18 +3940,6 @@ Version: 1.9
 
 Version: 1.0.3
 
-## Newly broken
-
-*   checking examples ... WARNING
-    ```
-    Found the following significant warnings:
-    
-      Warning: Passing an environment as data mask is deprecated.
-    Deprecated functions may be defunct as soon as of the next release
-    of R.
-    See ?Deprecated.
-    ```
-
 ## In both
 
 *   checking tests ...
@@ -4051,7 +3957,7 @@ Version: 1.0.3
              call. = FALSE)
       
       ══ testthat results  ═══════════════════════════════════════════════════════════
-      OK: 263 SKIPPED: 2 FAILED: 1
+      OK: 260 SKIPPED: 2 FAILED: 1
       1. Error: tidy_draws works with runjags (@test.tidy_draws.R#87) 
       
       Error: testthat unit tests failed
