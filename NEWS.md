@@ -1,6 +1,9 @@
 
 # rlang 0.3.0.9000
 
+* In non-interactive sessions, the full backtrace is now shown on
+  error instead of the reminder to call `last_error()` (#708).
+
 * New `is_interactive()` function. It serves the same purpose as
   `base::interactive()` but also checks if knitr is in progress and
   provides an escape hatch. Use `with_interactive()` and
