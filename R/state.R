@@ -112,6 +112,7 @@ is_interactive <- function() {
   opt <- peek_option("rlang_interactive")
   if (!is_null(opt)) {
     if (!is_bool(opt)) {
+      options(rlang_interactive = NULL)
       abort("`rlang_interactive` must be a single `TRUE` of `FALSE`")
     }
     return(opt)

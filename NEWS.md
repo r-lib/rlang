@@ -50,6 +50,9 @@ rlang 0.3.0 and solves bugs for the upcoming release of purrr
   condition to catch. It returns `NULL` if the expected condition
   could not be caught (#696).
 
+* In non-interactive sessions, the full backtrace is now shown on
+  error instead of the reminder to call `last_error()` (#708).
+
 
 ## `as_label()`
 
