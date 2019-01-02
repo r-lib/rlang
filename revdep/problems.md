@@ -1,342 +1,3 @@
-# abjutils
-
-Version: 0.2.1
-
-## In both
-
-*   checking dependencies in R code ... NOTE
-    ```
-    Namespaces in Imports field not imported from:
-      ‘httr’ ‘progress’
-      All declared Imports should be used.
-    ```
-
-# ActisoftR
-
-Version: 0.0.2
-
-## In both
-
-*   checking re-building of vignette outputs ... WARNING
-    ```
-    ...
-      no non-missing arguments to max; returning -Inf
-    Warning in min(sleep_time_adj, na.rm = T) :
-      no non-missing arguments to min; returning Inf
-    Warning in max(sleep_time_adj, na.rm = T) :
-      no non-missing arguments to max; returning -Inf
-    Warning in min(sleep_time_adj, na.rm = T) :
-      no non-missing arguments to min; returning Inf
-    Warning in max(sleep_time_adj, na.rm = T) :
-      no non-missing arguments to max; returning -Inf
-    Warning in min(sleep_time_adj, na.rm = T) :
-      no non-missing arguments to min; returning Inf
-    Warning in max(sleep_time_adj, na.rm = T) :
-      no non-missing arguments to max; returning -Inf
-    Warning in min(sleep_time_adj, na.rm = T) :
-      no non-missing arguments to min; returning Inf
-    pandoc-citeproc: when expecting a product (:*:), encountered Object instead
-    Error running filter /usr/local/bin/pandoc-citeproc:
-    Filter returned error status 1
-    Error: processing vignette 'ActisoftR.Rmd' failed with diagnostics:
-    pandoc document conversion failed with error 83
-    Execution halted
-    ```
-
-# adaptMT
-
-Version: 1.0.0
-
-## In both
-
-*   checking re-building of vignette outputs ... WARNING
-    ```
-    Error in re-building vignettes:
-      ...
-    pandoc-citeproc: when expecting a product (:*:), encountered Object instead
-    Error running filter /usr/local/bin/pandoc-citeproc:
-    Filter returned error status 1
-    Error: processing vignette 'adapt_demo.Rmd' failed with diagnostics:
-    pandoc document conversion failed with error 83
-    Execution halted
-    ```
-
-# adegenet
-
-Version: 2.1.1
-
-## In both
-
-*   checking installed package size ... NOTE
-    ```
-      installed size is  6.7Mb
-      sub-directories of 1Mb or more:
-        R       3.0Mb
-        data    1.3Mb
-        files   1.7Mb
-    ```
-
-# admixturegraph
-
-Version: 1.0.2
-
-## In both
-
-*   checking re-building of vignette outputs ... WARNING
-    ```
-    Error in re-building vignettes:
-      ...
-    Loading required package: optimbase
-    Loading required package: Matrix
-    Loading required package: optimsimplex
-    pandoc-citeproc: when expecting a product (:*:), encountered Object instead
-    Error running filter /usr/local/bin/pandoc-citeproc:
-    Filter returned error status 1
-    Error: processing vignette 'admixturegraph.Rmd' failed with diagnostics:
-    pandoc document conversion failed with error 83
-    Execution halted
-    ```
-
-*   checking installed package size ... NOTE
-    ```
-      installed size is  6.1Mb
-      sub-directories of 1Mb or more:
-        R      3.0Mb
-        data   2.0Mb
-    ```
-
-# ADPclust
-
-Version: 0.7
-
-## In both
-
-*   checking dependencies in R code ... NOTE
-    ```
-    Namespaces in Imports field not imported from:
-      ‘fields’ ‘knitr’
-      All declared Imports should be used.
-    ```
-
-# AeRobiology
-
-Version: 1.0.0
-
-## In both
-
-*   checking dependencies in R code ... NOTE
-    ```
-    Namespaces in Imports field not imported from:
-      ‘devtools’ ‘imager’
-      All declared Imports should be used.
-    ```
-
-# afex
-
-Version: 0.22-1
-
-## In both
-
-*   checking Rd cross-references ... NOTE
-    ```
-    Packages unavailable to check Rd xrefs: ‘ez’, ‘ascii’
-    ```
-
-# afmToolkit
-
-Version: 0.0.1
-
-## In both
-
-*   checking dependencies in R code ... NOTE
-    ```
-    Namespaces in Imports field not imported from:
-      ‘DBI’ ‘assertthat’ ‘tibble’
-      All declared Imports should be used.
-    ```
-
-# agridat
-
-Version: 1.16
-
-## In both
-
-*   checking re-building of vignette outputs ... WARNING
-    ```
-    ...
-    Loading required package: RColorBrewer
-    Loading required package: multcomp
-    Loading required package: mvtnorm
-    Loading required package: survival
-    Loading required package: TH.data
-    Loading required package: MASS
-    
-    Attaching package: 'TH.data'
-    
-    The following object is masked from 'package:MASS':
-    
-        geyser
-    
-    Loading required package: gridExtra
-    Loading required package: maps
-    pandoc-citeproc: when expecting a product (:*:), encountered Object instead
-    Error running filter /usr/local/bin/pandoc-citeproc:
-    Filter returned error status 1
-    Error: processing vignette 'agridat_examples.Rmd' failed with diagnostics:
-    pandoc document conversion failed with error 83
-    Execution halted
-    ```
-
-# ahpsurvey
-
-Version: 0.3.0
-
-## In both
-
-*   checking re-building of vignette outputs ... WARNING
-    ```
-    Error in re-building vignettes:
-      ...
-    pandoc-citeproc: when expecting a product (:*:), encountered Object instead
-    Error running filter /usr/local/bin/pandoc-citeproc:
-    Filter returned error status 1
-    Error: processing vignette 'my-vignette.Rmd' failed with diagnostics:
-    pandoc document conversion failed with error 83
-    Execution halted
-    ```
-
-*   checking dependencies in R code ... NOTE
-    ```
-    Namespaces in Imports field not imported from:
-      ‘knitr’ ‘tidyr’
-      All declared Imports should be used.
-    ```
-
-# aire.zmvm
-
-Version: 0.8.0
-
-## In both
-
-*   checking data for non-ASCII characters ... NOTE
-    ```
-      Note: found 52 marked UTF-8 strings
-    ```
-
-# airGR
-
-Version: 1.0.15.2
-
-## In both
-
-*   checking re-building of vignette outputs ... WARNING
-    ```
-    Error in re-building vignettes:
-      ...
-    pandoc-citeproc: when expecting a product (:*:), encountered Object instead
-    Error running filter /usr/local/bin/pandoc-citeproc:
-    Filter returned error status 1
-    Error: processing vignette 'V01_get_started.Rmd' failed with diagnostics:
-    pandoc document conversion failed with error 83
-    Execution halted
-    ```
-
-# airportr
-
-Version: 0.1.2
-
-## In both
-
-*   checking data for non-ASCII characters ... NOTE
-    ```
-      Note: found 676 marked UTF-8 strings
-    ```
-
-# alphavantager
-
-Version: 0.1.0
-
-## In both
-
-*   checking tests ...
-    ```
-     ERROR
-    Running the tests in ‘tests/testthat.R’ failed.
-    Last 13 lines of output:
-      > library(testthat)
-      > library(alphavantager)
-      > 
-      > test_check("alphavantager")
-      ── 1. Error: call Technical Indicators (@test_av_get.R#57)  ────────────────────
-      Thank you for using Alpha Vantage! Our standard API call frequency is 5 calls per minute and 500 calls per day. Please visit https://www.alphavantage.co/premium/ if you would like to target a higher API call frequency.. API parameters used: symbol=MSFT, function=SMA, interval=monthly, time_period=60, series_type=close, apikey=HIDDEN_FOR_YOUR_SAFETY
-      1: av_get(symbol, av_fun, interval = interval, time_period = time_period, series_type = series_type) at testthat/test_av_get.R:57
-      2: stop(content, call. = F) at /Users/lionel/Desktop/rlang/revdep/checks.noindex/alphavantager/new/alphavantager.Rcheck/00_pkg_src/alphavantager/R/av_get.R:103
-      
-      ══ testthat results  ═══════════════════════════════════════════════════════════
-      OK: 11 SKIPPED: 0 FAILED: 1
-      1. Error: call Technical Indicators (@test_av_get.R#57) 
-      
-      Error: testthat unit tests failed
-      Execution halted
-    ```
-
-*   checking dependencies in R code ... NOTE
-    ```
-    Namespace in Imports field not imported from: ‘devtools’
-      All declared Imports should be used.
-    ```
-
-# alternativeSplicingEvents.hg19
-
-Version: 1.0.1
-
-## In both
-
-*   checking extension type ... ERROR
-    ```
-    Extensions with Type ‘Annotation package’ cannot be checked.
-    ```
-
-# alternativeSplicingEvents.hg38
-
-Version: 1.0.1
-
-## In both
-
-*   R CMD check timed out
-    
-
-# ameco
-
-Version: 0.2.9
-
-## In both
-
-*   checking installed package size ... NOTE
-    ```
-      installed size is 16.2Mb
-      sub-directories of 1Mb or more:
-        data  16.1Mb
-    ```
-
-# amplican
-
-Version: 1.4.0
-
-## In both
-
-*   checking installed package size ... NOTE
-    ```
-      installed size is 15.3Mb
-      sub-directories of 1Mb or more:
-        doc  14.0Mb
-    ```
-
-*   checking Rd cross-references ... NOTE
-    ```
-    Package unavailable to check Rd xrefs: ‘CrispRVariants’
-    ```
-
 # AMR
 
 Version: 0.5.0
@@ -364,72 +25,6 @@ Version: 0.0.5.0
       All declared Imports should be used.
     ```
 
-# ANLP
-
-Version: 1.3
-
-## In both
-
-*   checking whether package ‘ANLP’ can be installed ... ERROR
-    ```
-    Installation failed.
-    See ‘/Users/lionel/Desktop/rlang/revdep/checks.noindex/ANLP/new/ANLP.Rcheck/00install.out’ for details.
-    ```
-
-## Installation
-
-### Devel
-
-```
-* installing *source* package ‘ANLP’ ...
-** package ‘ANLP’ successfully unpacked and MD5 sums checked
-** R
-** data
-*** moving datasets to lazyload DB
-** inst
-** byte-compile and prepare package for lazy loading
-Unable to find any JVMs matching version "(null)".
-No Java runtime present, try --request to install.
-Warning in system("/usr/libexec/java_home", intern = TRUE) :
-  running command '/usr/libexec/java_home' had status 1
-Error: package or namespace load failed for ‘qdap’:
- .onLoad failed in loadNamespace() for 'rJava', details:
-  call: dyn.load(file, DLLpath = DLLpath, ...)
-  error: unable to load shared object '/Users/lionel/Desktop/rlang/revdep/library.noindex/ANLP/rJava/libs/rJava.so':
-  dlopen(/Users/lionel/Desktop/rlang/revdep/library.noindex/ANLP/rJava/libs/rJava.so, 6): Library not loaded: /Library/Java/JavaVirtualMachines/jdk-9.jdk/Contents/Home/lib/server/libjvm.dylib
-  Referenced from: /Users/lionel/Desktop/rlang/revdep/library.noindex/ANLP/rJava/libs/rJava.so
-  Reason: image not found
-Error : package ‘qdap’ could not be loaded
-ERROR: lazy loading failed for package ‘ANLP’
-* removing ‘/Users/lionel/Desktop/rlang/revdep/checks.noindex/ANLP/new/ANLP.Rcheck/ANLP’
-
-```
-### CRAN
-
-```
-* installing *source* package ‘ANLP’ ...
-** package ‘ANLP’ successfully unpacked and MD5 sums checked
-** R
-** data
-*** moving datasets to lazyload DB
-** inst
-** byte-compile and prepare package for lazy loading
-Unable to find any JVMs matching version "(null)".
-No Java runtime present, try --request to install.
-Warning in system("/usr/libexec/java_home", intern = TRUE) :
-  running command '/usr/libexec/java_home' had status 1
-Error: package or namespace load failed for ‘qdap’:
- .onLoad failed in loadNamespace() for 'rJava', details:
-  call: dyn.load(file, DLLpath = DLLpath, ...)
-  error: unable to load shared object '/Users/lionel/Desktop/rlang/revdep/library.noindex/ANLP/rJava/libs/rJava.so':
-  dlopen(/Users/lionel/Desktop/rlang/revdep/library.noindex/ANLP/rJava/libs/rJava.so, 6): Library not loaded: /Library/Java/JavaVirtualMachines/jdk-9.jdk/Contents/Home/lib/server/libjvm.dylib
-  Referenced from: /Users/lionel/Desktop/rlang/revdep/library.noindex/ANLP/rJava/libs/rJava.so
-  Reason: image not found
-Error : package ‘qdap’ could not be loaded
-ERROR: lazy loading failed for package ‘ANLP’
-* removing ‘/Users/lionel/Desktop/rlang/revdep/checks.noindex/ANLP/old/ANLP.Rcheck/ANLP’
-
-```
 # anomalize
 
 Version: 0.1.1
@@ -441,82 +36,6 @@ Version: 0.1.1
       installed size is  5.5Mb
       sub-directories of 1Mb or more:
         help   4.7Mb
-    ```
-
-# anomalyDetection
-
-Version: 0.2.5
-
-## In both
-
-*   checking whether package ‘anomalyDetection’ can be installed ... ERROR
-    ```
-    Installation failed.
-    See ‘/Users/lionel/Desktop/rlang/revdep/checks.noindex/anomalyDetection/new/anomalyDetection.Rcheck/00install.out’ for details.
-    ```
-
-## Installation
-
-### Devel
-
-```
-* installing *source* package ‘anomalyDetection’ ...
-** package ‘anomalyDetection’ successfully unpacked and MD5 sums checked
-** libs
-clang++ -I"/Library/Frameworks/R.framework/Resources/include" -DNDEBUG  -I"/Users/lionel/Desktop/rlang/revdep/library.noindex/anomalyDetection/Rcpp/include" -I"/Users/lionel/Desktop/rlang/revdep/library.noindex/anomalyDetection/RcppArmadillo/include" -I/usr/local/include  -fopenmp  -fPIC  -mtune=core2 -O3 -c RcppExports.cpp -o RcppExports.o
-clang++ -I"/Library/Frameworks/R.framework/Resources/include" -DNDEBUG  -I"/Users/lionel/Desktop/rlang/revdep/library.noindex/anomalyDetection/Rcpp/include" -I"/Users/lionel/Desktop/rlang/revdep/library.noindex/anomalyDetection/RcppArmadillo/include" -I/usr/local/include  -fopenmp  -fPIC  -mtune=core2 -O3 -c bottlenecks.cpp -o bottlenecks.o
-clang: error: unsupported option '-fopenmp'clang: error: 
-unsupported option '-fopenmp'
-make: *** [bottlenecks.o] Error 1
-make: *** Waiting for unfinished jobs....
-make: *** [RcppExports.o] Error 1
-ERROR: compilation failed for package ‘anomalyDetection’
-* removing ‘/Users/lionel/Desktop/rlang/revdep/checks.noindex/anomalyDetection/new/anomalyDetection.Rcheck/anomalyDetection’
-
-```
-### CRAN
-
-```
-* installing *source* package ‘anomalyDetection’ ...
-** package ‘anomalyDetection’ successfully unpacked and MD5 sums checked
-** libs
-clang++ -I"/Library/Frameworks/R.framework/Resources/include" -DNDEBUG  -I"/Users/lionel/Desktop/rlang/revdep/library.noindex/anomalyDetection/Rcpp/include" -I"/Users/lionel/Desktop/rlang/revdep/library.noindex/anomalyDetection/RcppArmadillo/include" -I/usr/local/include  -fopenmp  -fPIC  -mtune=core2 -O3 -c RcppExports.cpp -o RcppExports.o
-clang++ -I"/Library/Frameworks/R.framework/Resources/include" -DNDEBUG  -I"/Users/lionel/Desktop/rlang/revdep/library.noindex/anomalyDetection/Rcpp/include" -I"/Users/lionel/Desktop/rlang/revdep/library.noindex/anomalyDetection/RcppArmadillo/include" -I/usr/local/include  -fopenmp  -fPIC  -mtune=core2 -O3 -c bottlenecks.cpp -o bottlenecks.o
-clang: error: unsupported option '-fopenmp'
-clang: error: unsupported option '-fopenmp'
-make: *** [bottlenecks.o] Error 1
-make: *** Waiting for unfinished jobs....
-make: *** [RcppExports.o] Error 1
-ERROR: compilation failed for package ‘anomalyDetection’
-* removing ‘/Users/lionel/Desktop/rlang/revdep/checks.noindex/anomalyDetection/old/anomalyDetection.Rcheck/anomalyDetection’
-
-```
-# anyflights
-
-Version: 0.1.0
-
-## In both
-
-*   checking dependencies in R code ... NOTE
-    ```
-    Namespace in Imports field not imported from: ‘tibble’
-      All declared Imports should be used.
-    ```
-
-# archivist
-
-Version: 2.3.1
-
-## In both
-
-*   checking package dependencies ... NOTE
-    ```
-    Package which this enhances but not available for checking: ‘archivist.github’
-    ```
-
-*   checking Rd cross-references ... NOTE
-    ```
-    Packages unavailable to check Rd xrefs: ‘rmarkdown’, ‘archivist.github’
     ```
 
 # arena2r
@@ -532,40 +51,6 @@ Version: 1.0.0
       All declared Imports should be used.
     ```
 
-# assertive.types
-
-Version: 0.0-3
-
-## In both
-
-*   checking Rd cross-references ... NOTE
-    ```
-    Package unavailable to check Rd xrefs: ‘pryr’
-    ```
-
-# auctestr
-
-Version: 1.0.0
-
-## In both
-
-*   checking dependencies in R code ... NOTE
-    ```
-    Namespace in Imports field not imported from: ‘tidyr’
-      All declared Imports should be used.
-    ```
-
-# augmentedRCBD
-
-Version: 0.1.0
-
-## In both
-
-*   checking Rd cross-references ... NOTE
-    ```
-    Package unavailable to check Rd xrefs: ‘agricolae’
-    ```
-
 # auk
 
 Version: 0.3.1
@@ -577,62 +62,23 @@ Version: 0.3.1
       Note: found 552 marked UTF-8 strings
     ```
 
-# autocogs
+# BaMORC
 
-Version: 0.1.1
-
-## Newly broken
-
-*   checking tests ...
-    ```
-     ERROR
-    Running the tests in ‘tests/testthat.R’ failed.
-    Complete output:
-      > library(testthat)
-      > library(autocogs)
-      > 
-      > test_check("autocogs")
-      ── 1. Failure: ggplot2 layers (@test-layers.R#20)  ─────────────────────────────
-      `{ ... }` produced warnings.
-      
-      ══ testthat results  ═══════════════════════════════════════════════════════════
-      OK: 249 SKIPPED: 0 FAILED: 1
-      1. Failure: ggplot2 layers (@test-layers.R#20) 
-      
-      Error: testthat unit tests failed
-      Execution halted
-    ```
+Version: 1.0
 
 ## In both
+
+*   checking installed package size ... NOTE
+    ```
+      installed size is  5.9Mb
+      sub-directories of 1Mb or more:
+        data   5.0Mb
+    ```
 
 *   checking dependencies in R code ... NOTE
     ```
     Namespaces in Imports field not imported from:
-      ‘MASS’ ‘broom’ ‘diptest’ ‘ggplot2’ ‘hexbin’ ‘moments’
-      All declared Imports should be used.
-    ```
-
-# BALCONY
-
-Version: 0.2.8
-
-## In both
-
-*   checking dependencies in R code ... NOTE
-    ```
-    Namespace in Imports field not imported from: ‘base’
-      All declared Imports should be used.
-    ```
-
-# BANEScarparkinglite
-
-Version: 0.1.2
-
-## In both
-
-*   checking dependencies in R code ... NOTE
-    ```
-    Namespace in Imports field not imported from: ‘zoo’
+      ‘devtools’ ‘docopt’
       All declared Imports should be used.
     ```
 
@@ -657,32 +103,6 @@ Version: 0.9.3
 *   checking dependencies in R code ... NOTE
     ```
     Namespace in Imports field not imported from: ‘ranger’
-      All declared Imports should be used.
-    ```
-
-# basecallQC
-
-Version: 1.6.0
-
-## In both
-
-*   checking installed package size ... NOTE
-    ```
-      installed size is  5.1Mb
-      sub-directories of 1Mb or more:
-        doc       1.8Mb
-        extdata   2.8Mb
-    ```
-
-# basictabler
-
-Version: 0.1.0
-
-## In both
-
-*   checking dependencies in R code ... NOTE
-    ```
-    Namespace in Imports field not imported from: ‘dplyr’
       All declared Imports should be used.
     ```
 
@@ -779,224 +199,16 @@ Version: 1.0.1
     See ?Deprecated.
     ```
 
-# BgeeDB
+# bigQueryR
 
-Version: 2.8.0
-
-## In both
-
-*   checking whether package ‘BgeeDB’ can be installed ... ERROR
-    ```
-    Installation failed.
-    See ‘/Users/lionel/Desktop/rlang/revdep/checks.noindex/BgeeDB/new/BgeeDB.Rcheck/00install.out’ for details.
-    ```
-
-## Installation
-
-### Devel
-
-```
-* installing *source* package ‘BgeeDB’ ...
-** R
-** data
-** inst
-** byte-compile and prepare package for lazy loading
-Error : package ‘GO.db’ required by ‘topGO’ could not be found
-ERROR: lazy loading failed for package ‘BgeeDB’
-* removing ‘/Users/lionel/Desktop/rlang/revdep/checks.noindex/BgeeDB/new/BgeeDB.Rcheck/BgeeDB’
-
-```
-### CRAN
-
-```
-* installing *source* package ‘BgeeDB’ ...
-** R
-** data
-** inst
-** byte-compile and prepare package for lazy loading
-Error : package ‘GO.db’ required by ‘topGO’ could not be found
-ERROR: lazy loading failed for package ‘BgeeDB’
-* removing ‘/Users/lionel/Desktop/rlang/revdep/checks.noindex/BgeeDB/old/BgeeDB.Rcheck/BgeeDB’
-
-```
-# bib2df
-
-Version: 1.0.1
+Version: 0.4.0
 
 ## In both
 
-*   checking tests ...
+*   checking Rd cross-references ... NOTE
     ```
-     ERROR
-    Running the tests in ‘tests/testthat.R’ failed.
-    Last 13 lines of output:
-      > library("testthat")
-      > library("bib2df")
-      > test_check("bib2df")
-      ── 1. Failure: bib2df() throws error messages (@tests.R#70)  ───────────────────
-      `bib2df("https://www.example.com/data/x.bib")` threw an error with unexpected message.
-      Expected match: "Invalid URL: File is not readable."
-      Actual message: "Could not resolve host: www.example.com"
-      
-      ══ testthat results  ═══════════════════════════════════════════════════════════
-      OK: 20 SKIPPED: 0 FAILED: 1
-      1. Failure: bib2df() throws error messages (@tests.R#70) 
-      
-      Error: testthat unit tests failed
-      Execution halted
+    Package unavailable to check Rd xrefs: ‘bigrquery’
     ```
-
-# billboard
-
-Version: 0.1.0
-
-## In both
-
-*   checking dependencies in R code ... NOTE
-    ```
-    Namespace in Imports field not imported from: ‘tibble’
-      All declared Imports should be used.
-    ```
-
-*   checking data for non-ASCII characters ... NOTE
-    ```
-      Note: found 660 marked UTF-8 strings
-    ```
-
-# binneR
-
-Version: 2.0.5
-
-## In both
-
-*   checking package dependencies ... NOTE
-    ```
-    Package suggested but not available for checking: ‘metaboData’
-    ```
-
-# biobroom
-
-Version: 1.14.0
-
-## In both
-
-*   checking re-building of vignette outputs ... WARNING
-    ```
-    ...
-    
-    The following object is masked from 'package:dplyr':
-    
-        count
-    
-    Loading required package: BiocParallel
-    
-    Attaching package: 'DelayedArray'
-    
-    The following objects are masked from 'package:matrixStats':
-    
-        colMaxs, colMins, colRanges, rowMaxs, rowMins, rowRanges
-    
-    The following objects are masked from 'package:base':
-    
-        aperm, apply
-    
-    Quitting from lines 136-141 (biobroom_vignette.Rmd) 
-    Error: processing vignette 'biobroom_vignette.Rmd' failed with diagnostics:
-    there is no package called 'airway'
-    Execution halted
-    ```
-
-*   checking package dependencies ... NOTE
-    ```
-    Package suggested but not available for checking: ‘airway’
-    ```
-
-*   checking dependencies in R code ... NOTE
-    ```
-    'library' or 'require' call to ‘DESeq2’ in package code.
-      Please use :: or requireNamespace() instead.
-      See section 'Suggested packages' in the 'Writing R Extensions' manual.
-    Missing or unexported object: ‘dplyr::tbl_dt’
-    ```
-
-*   checking R code for possible problems ... NOTE
-    ```
-    ...
-    tidy.qvalue: no visible binding for global variable ‘smoothed’
-      (/Users/lionel/Desktop/rlang/revdep/checks.noindex/biobroom/new/biobroom.Rcheck/00_pkg_src/biobroom/R/qvalue_tidiers.R:65-66)
-    tidy.qvalue: no visible binding for global variable ‘pi0’
-      (/Users/lionel/Desktop/rlang/revdep/checks.noindex/biobroom/new/biobroom.Rcheck/00_pkg_src/biobroom/R/qvalue_tidiers.R:65-66)
-    tidy.qvalue: no visible binding for global variable ‘lambda’
-      (/Users/lionel/Desktop/rlang/revdep/checks.noindex/biobroom/new/biobroom.Rcheck/00_pkg_src/biobroom/R/qvalue_tidiers.R:65-66)
-    tidy_matrix: no visible binding for global variable ‘value’
-      (/Users/lionel/Desktop/rlang/revdep/checks.noindex/biobroom/new/biobroom.Rcheck/00_pkg_src/biobroom/R/limma_tidiers.R:197-199)
-    tidy_matrix: no visible binding for global variable ‘gene’
-      (/Users/lionel/Desktop/rlang/revdep/checks.noindex/biobroom/new/biobroom.Rcheck/00_pkg_src/biobroom/R/limma_tidiers.R:197-199)
-    Undefined global functions or variables:
-      . DGEList calcNormFactors colData counts design end estimate
-      estimateSizeFactors exprs<- fData<- gene gr is lambda model.matrix
-      p.adjust pData pData<- pi0 protein rowRanges sample.id seqnames
-      setNames smoothed start tbl_dt term value voom voomWithQualityWeights
-    Consider adding
-      importFrom("methods", "is")
-      importFrom("stats", "end", "model.matrix", "p.adjust", "setNames",
-                 "start")
-    to your NAMESPACE file (and ensure that your DESCRIPTION Imports
-    field contains 'methods').
-    ```
-
-# BiocFileCache
-
-Version: 1.6.0
-
-## In both
-
-*   R CMD check timed out
-    
-
-# BiocPkgTools
-
-Version: 1.0.2
-
-## In both
-
-*   R CMD check timed out
-    
-
-*   checking R code for possible problems ... NOTE
-    ```
-    ...
-    process_data: no visible binding for global variable ‘biocViews’
-      (/Users/lionel/Desktop/rlang/revdep/checks.noindex/BiocPkgTools/new/BiocPkgTools.Rcheck/00_pkg_src/BiocPkgTools/R/getData.R:51-70)
-    process_data: no visible binding for global variable ‘Description’
-      (/Users/lionel/Desktop/rlang/revdep/checks.noindex/BiocPkgTools/new/BiocPkgTools.Rcheck/00_pkg_src/BiocPkgTools/R/getData.R:51-70)
-    process_data: no visible binding for global variable ‘downloads_month’
-      (/Users/lionel/Desktop/rlang/revdep/checks.noindex/BiocPkgTools/new/BiocPkgTools.Rcheck/00_pkg_src/BiocPkgTools/R/getData.R:51-70)
-    process_data: no visible binding for global variable ‘downloads_total’
-      (/Users/lionel/Desktop/rlang/revdep/checks.noindex/BiocPkgTools/new/BiocPkgTools.Rcheck/00_pkg_src/BiocPkgTools/R/getData.R:51-70)
-    summarise_dl_stats: no visible binding for global variable ‘Package’
-      (/Users/lionel/Desktop/rlang/revdep/checks.noindex/BiocPkgTools/new/BiocPkgTools.Rcheck/00_pkg_src/BiocPkgTools/R/getData.R:79-84)
-    summarise_dl_stats: no visible binding for global variable
-      ‘Nb_of_downloads’
-      (/Users/lionel/Desktop/rlang/revdep/checks.noindex/BiocPkgTools/new/BiocPkgTools.Rcheck/00_pkg_src/BiocPkgTools/R/getData.R:79-84)
-    Undefined global functions or variables:
-      Author Description License Nb_of_downloads Package V<- any_alnums
-      any_alphas any_blanks any_non_alnums any_of anything biocViews blank
-      capture digit downloads_month downloads_total except_any_of maybe
-      start tags
-    Consider adding
-      importFrom("stats", "start")
-    to your NAMESPACE file.
-    ```
-
-# biomartr
-
-Version: 0.8.0
-
-## In both
-
-*   R CMD check timed out
-    
 
 # biovizBase
 
@@ -1089,46 +301,6 @@ Version: 1.30.1
       pData phenoData start_location symbol to.x to.y varLabels xRleList
     ```
 
-# bisect
-
-Version: 0.9.0
-
-## In both
-
-*   checking re-building of vignette outputs ... WARNING
-    ```
-    Error in re-building vignettes:
-      ...
-    pandoc-citeproc: when expecting a product (:*:), encountered Object instead
-    Error running filter /usr/local/bin/pandoc-citeproc:
-    Filter returned error status 1
-    Error: processing vignette 'bisect_vignette.Rmd' failed with diagnostics:
-    pandoc document conversion failed with error 83
-    Execution halted
-    ```
-
-# blkbox
-
-Version: 1.0
-
-## In both
-
-*   checking package dependencies ... NOTE
-    ```
-    Package suggested but not available for checking: ‘bigrf’
-    ```
-
-*   checking dependencies in R code ... NOTE
-    ```
-    Unable to find any JVMs matching version "(null)".
-    No Java runtime present, try --request to install.
-    Namespaces in Imports field not imported from:
-      ‘glmnet’ ‘gtools’ ‘knitr’ ‘nnet’ ‘parallel’ ‘rJava’ ‘reshape’
-      ‘rmarkdown’ ‘shinyjs’
-      All declared Imports should be used.
-    Missing or unexported object: ‘xgboost::predict’
-    ```
-
 # blorr
 
 Version: 0.2.0
@@ -1140,322 +312,16 @@ Version: 0.2.0
     Package unavailable to check Rd xrefs: ‘lmtest’
     ```
 
-# blscrapeR
-
-Version: 3.1.2
-
-## In both
-
-*   checking examples ... ERROR
-    ```
-    Running examples in ‘blscrapeR-Ex.R’ failed
-    The error most likely occurred in:
-    
-    > ### Name: qcew_api
-    > ### Title: Request data from the Quarterly Census of Employment and Wages.
-    > ### Aliases: qcew_api
-    > ### Keywords: api bls cpi economics inflation unemployment
-    > 
-    > ### ** Examples
-    > 
-    > 
-    > # A request for the employment levels and wages for NIACS 5112: Software Publishers.
-    > dat <- qcew_api(year=2015, qtr="A", slice="area", sliceCode="US000")
-    Please set a numeric year.
-    Trying BLS servers...
-    URL caused a warning. Please check your parameters and try again: https://data.bls.gov/cew/data/api/2015/A/area/US000.csv
-    Error in qcew_api(year = 2015, qtr = "A", slice = "area", sliceCode = "US000") : 
-      object 'qcewDat' not found
-    Execution halted
-    ```
-
-*   checking tests ...
-    ```
-     ERROR
-    Running the tests in ‘tests/testthat.R’ failed.
-    Last 13 lines of output:
-      > library(testthat)
-      > library(blscrapeR)
-      > 
-      > test_check("blscrapeR")
-      ── 1. Error: (unknown) (@test_qcew_api.R#8)  ───────────────────────────────────
-      cannot open URL 'https://data.bls.gov/cew/data/api/2013/1/industry/5112.csv'
-      1: download.file(url, temp, quiet = TRUE) at testthat/test_qcew_api.R:8
-      
-      ══ testthat results  ═══════════════════════════════════════════════════════════
-      OK: 2 SKIPPED: 0 FAILED: 1
-      1. Error: (unknown) (@test_qcew_api.R#8) 
-      
-      Error: testthat unit tests failed
-      Execution halted
-    ```
-
-# bmlm
-
-Version: 1.3.9
-
-## In both
-
-*   checking for GNU extensions in Makefiles ... NOTE
-    ```
-    GNU make is a SystemRequirements.
-    ```
-
-# bodenmiller
-
-Version: 0.1
-
-## In both
-
-*   checking installed package size ... NOTE
-    ```
-      installed size is  8.9Mb
-      sub-directories of 1Mb or more:
-        data   8.7Mb
-    ```
-
-# bootnet
-
-Version: 1.1.0
-
-## In both
-
-*   checking dependencies in R code ... NOTE
-    ```
-    Namespace in Imports field not imported from: ‘psych’
-      All declared Imports should be used.
-    ```
-
-# bossMaps
-
-Version: 0.1.0
-
-## In both
-
-*   checking dependencies in R code ... NOTE
-    ```
-    Namespaces in Imports field not imported from:
-      ‘rgdal’ ‘tidyr’
-      All declared Imports should be used.
-    ```
-
-# bpbounds
+# bsplus
 
 Version: 0.1.1
 
 ## In both
 
-*   checking re-building of vignette outputs ... WARNING
-    ```
-    Error in re-building vignettes:
-      ...
-    pandoc-citeproc: when expecting a product (:*:), encountered Object instead
-    Error running filter /usr/local/bin/pandoc-citeproc:
-    Filter returned error status 1
-    Error: processing vignette 'bpbounds.Rmd' failed with diagnostics:
-    pandoc document conversion failed with error 83
-    Execution halted
-    ```
-
 *   checking dependencies in R code ... NOTE
     ```
     Namespace in Imports field not imported from: ‘methods’
       All declared Imports should be used.
-    ```
-
-# BradleyTerryScalable
-
-Version: 0.1.0
-
-## In both
-
-*   checking re-building of vignette outputs ... WARNING
-    ```
-    ...
-    
-    Attaching package: 'dplyr'
-    
-    The following objects are masked from 'package:igraph':
-    
-        as_data_frame, groups, union
-    
-    The following objects are masked from 'package:stats':
-    
-        filter, lag
-    
-    The following objects are masked from 'package:base':
-    
-        intersect, setdiff, setequal, union
-    
-    pandoc-citeproc: when expecting a product (:*:), encountered Object instead
-    Error running filter /usr/local/bin/pandoc-citeproc:
-    Filter returned error status 1
-    Error: processing vignette 'BradleyTerryScalable.Rmd' failed with diagnostics:
-    pandoc document conversion failed with error 83
-    Execution halted
-    ```
-
-# BrailleR
-
-Version: 0.29.1
-
-## In both
-
-*   checking re-building of vignette outputs ... WARNING
-    ```
-    Error in re-building vignettes:
-      ...
-    pandoc-citeproc: when expecting a product (:*:), encountered Object instead
-    Error running filter /usr/local/bin/pandoc-citeproc:
-    Filter returned error status 1
-    Error: processing vignette 'BrailleRHistory.rmd' failed with diagnostics:
-    pandoc document conversion failed with error 83
-    Execution halted
-    ```
-
-*   checking package dependencies ... NOTE
-    ```
-    Package suggested but not available for checking: ‘installr’
-    ```
-
-*   checking installed package size ... NOTE
-    ```
-      installed size is  5.6Mb
-      sub-directories of 1Mb or more:
-        R       2.0Mb
-        Sound   1.0Mb
-        doc     1.3Mb
-    ```
-
-# brazilmaps
-
-Version: 0.1.0
-
-## In both
-
-*   checking dependencies in R code ... NOTE
-    ```
-    Namespace in Imports field not imported from: ‘sp’
-      All declared Imports should be used.
-    ```
-
-*   checking Rd cross-references ... NOTE
-    ```
-    Package unavailable to check Rd xrefs: ‘ggthemes’
-    ```
-
-# breathtestcore
-
-Version: 0.4.6
-
-## In both
-
-*   checking Rd cross-references ... NOTE
-    ```
-    Package unavailable to check Rd xrefs: ‘breathteststan’
-    ```
-
-# breathteststan
-
-Version: 0.4.7
-
-## In both
-
-*   checking for GNU extensions in Makefiles ... NOTE
-    ```
-    GNU make is a SystemRequirements.
-    ```
-
-# broom.mixed
-
-Version: 0.2.3
-
-## In both
-
-*   checking package dependencies ... NOTE
-    ```
-    Package suggested but not available for checking: ‘glmmADMB’
-    ```
-
-# bsam
-
-Version: 1.1.2
-
-## In both
-
-*   checking whether package ‘bsam’ can be installed ... ERROR
-    ```
-    Installation failed.
-    See ‘/Users/lionel/Desktop/rlang/revdep/checks.noindex/bsam/new/bsam.Rcheck/00install.out’ for details.
-    ```
-
-## Installation
-
-### Devel
-
-```
-* installing *source* package ‘bsam’ ...
-** package ‘bsam’ successfully unpacked and MD5 sums checked
-** R
-** data
-*** moving datasets to lazyload DB
-** inst
-** byte-compile and prepare package for lazy loading
-Error: package or namespace load failed for ‘rjags’:
- .onLoad failed in loadNamespace() for 'rjags', details:
-  call: dyn.load(file, DLLpath = DLLpath, ...)
-  error: unable to load shared object '/Users/lionel/Desktop/rlang/revdep/library.noindex/bsam/rjags/libs/rjags.so':
-  dlopen(/Users/lionel/Desktop/rlang/revdep/library.noindex/bsam/rjags/libs/rjags.so, 10): Library not loaded: /usr/local/lib/libjags.4.dylib
-  Referenced from: /Users/lionel/Desktop/rlang/revdep/library.noindex/bsam/rjags/libs/rjags.so
-  Reason: image not found
-Error : package ‘rjags’ could not be loaded
-ERROR: lazy loading failed for package ‘bsam’
-* removing ‘/Users/lionel/Desktop/rlang/revdep/checks.noindex/bsam/new/bsam.Rcheck/bsam’
-
-```
-### CRAN
-
-```
-* installing *source* package ‘bsam’ ...
-** package ‘bsam’ successfully unpacked and MD5 sums checked
-** R
-** data
-*** moving datasets to lazyload DB
-** inst
-** byte-compile and prepare package for lazy loading
-Error: package or namespace load failed for ‘rjags’:
- .onLoad failed in loadNamespace() for 'rjags', details:
-  call: dyn.load(file, DLLpath = DLLpath, ...)
-  error: unable to load shared object '/Users/lionel/Desktop/rlang/revdep/library.noindex/bsam/rjags/libs/rjags.so':
-  dlopen(/Users/lionel/Desktop/rlang/revdep/library.noindex/bsam/rjags/libs/rjags.so, 10): Library not loaded: /usr/local/lib/libjags.4.dylib
-  Referenced from: /Users/lionel/Desktop/rlang/revdep/library.noindex/bsam/rjags/libs/rjags.so
-  Reason: image not found
-Error : package ‘rjags’ could not be loaded
-ERROR: lazy loading failed for package ‘bsam’
-* removing ‘/Users/lionel/Desktop/rlang/revdep/checks.noindex/bsam/old/bsam.Rcheck/bsam’
-
-```
-# BubbleTree
-
-Version: 2.12.0
-
-## In both
-
-*   checking installed package size ... NOTE
-    ```
-      installed size is 29.4Mb
-      sub-directories of 1Mb or more:
-        data  23.4Mb
-        doc    5.3Mb
-    ```
-
-*   checking R code for possible problems ... NOTE
-    ```
-    annoByOverlap,Annotate: no visible binding for global variable
-      'queryHits'
-      (/Users/lionel/Desktop/rlang/revdep/checks.noindex/BubbleTree/new/BubbleTree.Rcheck/00_pkg_src/BubbleTree/R/Annotate.R:107)
-    Undefined global functions or variables:
-      queryHits
     ```
 
 # c14bazAAR
@@ -1469,197 +335,16 @@ Version: 1.0.2
       Note: found 76 marked UTF-8 strings
     ```
 
-# caffsim
+# ccfa
 
-Version: 0.2.2
-
-## In both
-
-*   checking dependencies in R code ... NOTE
-    ```
-    Namespace in Imports field not imported from: ‘markdown’
-      All declared Imports should be used.
-    ```
-
-# capm
-
-Version: 0.13.9
-
-## In both
-
-*   checking data for non-ASCII characters ... NOTE
-    ```
-      Note: found 59 marked UTF-8 strings
-    ```
-
-# Cardinal
-
-Version: 2.0.2
-
-## In both
-
-*   checking installed package size ... NOTE
-    ```
-      installed size is  7.9Mb
-      sub-directories of 1Mb or more:
-        R     5.1Mb
-        doc   2.2Mb
-    ```
-
-# caret
-
-Version: 6.0-81
-
-## In both
-
-*   checking installed package size ... NOTE
-    ```
-      installed size is  9.4Mb
-      sub-directories of 1Mb or more:
-        R        4.1Mb
-        data     1.5Mb
-        models   2.4Mb
-    ```
-
-# cartools
-
-Version: 0.1.0
+Version: 1.1.0
 
 ## In both
 
 *   checking dependencies in R code ... NOTE
     ```
     Namespaces in Imports field not imported from:
-      ‘animation’ ‘devtools’ ‘gapminder’ ‘knitr’ ‘rlist’ ‘rmarkdown’
-      ‘roxygen2’ ‘sde’ ‘shiny’ ‘tidyverse’ ‘usethis’ ‘utils’
-      All declared Imports should be used.
-    ```
-
-# CaseBasedReasoning
-
-Version: 0.1
-
-## In both
-
-*   checking dependencies in R code ... NOTE
-    ```
-    Namespaces in Imports field not imported from:
-      ‘Rcpp’ ‘cowplot’ ‘dplyr’ ‘ranger’ ‘rms’ ‘survival’ ‘tidyverse’
-      All declared Imports should be used.
-    ```
-
-# CATALYST
-
-Version: 1.6.0
-
-## In both
-
-*   checking re-building of vignette outputs ... WARNING
-    ```
-    ...
-    singular fit
-    singular fit
-    singular fit
-    singular fit
-    singular fit
-    singular fit
-    singular fit
-    singular fit
-    singular fit
-    singular fit
-    singular fit
-    singular fit
-    singular fit
-    singular fit
-    singular fit
-    pandoc-citeproc: when expecting a product (:*:), encountered Object instead
-    Error running filter /usr/local/bin/pandoc-citeproc:
-    Filter returned error status 1
-    Error: processing vignette 'differential_analysis.Rmd' failed with diagnostics:
-    pandoc document conversion failed with error 83
-    Execution halted
-    ```
-
-*   checking for hidden files and directories ... NOTE
-    ```
-    Found the following hidden files and directories:
-      .travis.yml
-    These were most likely included in error. See section ‘Package
-    structure’ in the ‘Writing R Extensions’ manual.
-    ```
-
-*   checking installed package size ... NOTE
-    ```
-      installed size is 10.7Mb
-      sub-directories of 1Mb or more:
-        R      2.0Mb
-        data   3.1Mb
-        doc    5.2Mb
-    ```
-
-*   checking R code for possible problems ... NOTE
-    ```
-    plotClusterHeatmap,daFrame : <anonymous>: no visible global function
-      definition for ‘arrange’
-      (/Users/lionel/Desktop/rlang/revdep/checks.noindex/CATALYST/new/CATALYST.Rcheck/00_pkg_src/CATALYST/R/plotClusterHeatmap.R:190)
-    plotDiffHeatmap,matrix-SummarizedExperiment: no visible binding for
-      global variable ‘cluster_id’
-      (/Users/lionel/Desktop/rlang/revdep/checks.noindex/CATALYST/new/CATALYST.Rcheck/00_pkg_src/CATALYST/R/plotDiffHeatmap.R:166)
-    plotDiffHeatmap,matrix-SummarizedExperiment: no visible binding for
-      global variable ‘sample_id’
-      (/Users/lionel/Desktop/rlang/revdep/checks.noindex/CATALYST/new/CATALYST.Rcheck/00_pkg_src/CATALYST/R/plotDiffHeatmap.R:166)
-    Undefined global functions or variables:
-      arrange cluster_id sample_id
-    ```
-
-# catenary
-
-Version: 1.1.2
-
-## In both
-
-*   checking dependencies in R code ... NOTE
-    ```
-    Namespace in Imports field not imported from: ‘tidyverse’
-      All declared Imports should be used.
-    ```
-
-# CausalImpact
-
-Version: 1.2.3
-
-## In both
-
-*   checking R code for possible problems ... NOTE
-    ```
-    ConstructModel: warning in AddDynamicRegression(ss, formula, data =
-      data, sigma.mean.prior = sigma.mean.prior): partial argument match of
-      'sigma.mean.prior' to 'sigma.mean.prior.DEPRECATED'
-      (/Users/lionel/Desktop/rlang/revdep/checks.noindex/CausalImpact/new/CausalImpact.Rcheck/00_pkg_src/CausalImpact/R/impact_model.R:232-233)
-    ```
-
-# cdcfluview
-
-Version: 0.7.0
-
-## In both
-
-*   checking dependencies in R code ... NOTE
-    ```
-    Namespace in Imports field not imported from: ‘units’
-      All declared Imports should be used.
-    ```
-
-# CDECRetrieve
-
-Version: 0.1.2
-
-## In both
-
-*   checking dependencies in R code ... NOTE
-    ```
-    Namespaces in Imports field not imported from:
-      ‘lazyeval’ ‘purrr’ ‘roxygen2’
+      ‘doParallel’ ‘foreach’
       All declared Imports should be used.
     ```
 
@@ -1680,135 +365,6 @@ Version: 1.0.0
     structure’ in the ‘Writing R Extensions’ manual.
     ```
 
-# cellscape
-
-Version: 1.6.0
-
-## In both
-
-*   checking Rd \usage sections ... WARNING
-    ```
-    Duplicated \argument entries in documentation object 'dfs_tree':
-      ‘chrom_bounds’ ‘ncols’ ‘chrom_bounds’ ‘cnv_data’ ‘chrom_bounds’
-      ‘n_bp_per_pixel’ ‘mut_data’ ‘width’ ‘height’ ‘mutations’ ‘height’
-      ‘width’ ‘clonal_prev’ ‘tree_edges’ ‘alpha’ ‘clonal_prev’ ‘tree_edges’
-      ‘genotype_position’ ‘clone_colours’ ‘perturbations’ ‘mutations’
-      ‘tree_edges’ ‘clonal_prev’ ‘clonal_prev’ ‘tree_edges’ ‘clone_colours’
-      ‘mutations’
-    
-    Functions with \usage entries need to have the appropriate \alias
-    entries, and all their arguments documented.
-    The \usage entries must correspond to syntactically valid R code.
-    See chapter ‘Writing R documentation files’ in the ‘Writing R
-    Extensions’ manual.
-    ```
-
-*   checking re-building of vignette outputs ... WARNING
-    ```
-    Error in re-building vignettes:
-      ...
-    Quitting from lines 77-94 (cellscape_vignette.Rmd) 
-    Error: processing vignette 'cellscape_vignette.Rmd' failed with diagnostics:
-    there is no package called 'devtools'
-    Execution halted
-    ```
-
-*   checking dependencies in R code ... NOTE
-    ```
-    Namespace in Imports field not imported from: ‘plyr’
-      All declared Imports should be used.
-    ```
-
-*   checking R code for possible problems ... NOTE
-    ```
-    ...
-    getMutationsData: no visible binding for global variable
-      ‘show_warnings’
-      (/Users/lionel/Desktop/rlang/revdep/checks.noindex/cellscape/new/cellscape.Rcheck/00_pkg_src/cellscape/R/cellscape.R:1620-1624)
-    getTargetedHeatmapForEachSC: no visible binding for global variable
-      ‘single_cell_id’
-      (/Users/lionel/Desktop/rlang/revdep/checks.noindex/cellscape/new/cellscape.Rcheck/00_pkg_src/cellscape/R/cellscape.R:1156)
-    getTargetedHeatmapForEachSC: no visible binding for global variable
-      ‘chr’
-      (/Users/lionel/Desktop/rlang/revdep/checks.noindex/cellscape/new/cellscape.Rcheck/00_pkg_src/cellscape/R/cellscape.R:1156)
-    getTargetedHeatmapForEachSC: no visible binding for global variable
-      ‘coord’
-      (/Users/lionel/Desktop/rlang/revdep/checks.noindex/cellscape/new/cellscape.Rcheck/00_pkg_src/cellscape/R/cellscape.R:1156)
-    Undefined global functions or variables:
-      VAF chr chrom_index coef combn coord copy_number cumsum_values dist
-      genotype hclust lm melt mode_cnv n n_gt na.omit px px_width sc_id
-      setNames show_warnings single_cell_id site timepoint
-    Consider adding
-      importFrom("stats", "coef", "dist", "hclust", "lm", "na.omit",
-                 "setNames")
-      importFrom("utils", "combn")
-    to your NAMESPACE file.
-    ```
-
-*   checking for unstated dependencies in vignettes ... NOTE
-    ```
-    '::' or ':::' import not declared from: ‘BiocManager’
-    'library' or 'require' calls not declared from:
-      ‘BiocManager’ ‘devtools’
-    ```
-
-# CEMiTool
-
-Version: 1.6.10
-
-## In both
-
-*   checking whether package ‘CEMiTool’ can be installed ... ERROR
-    ```
-    Installation failed.
-    See ‘/Users/lionel/Desktop/rlang/revdep/checks.noindex/CEMiTool/new/CEMiTool.Rcheck/00install.out’ for details.
-    ```
-
-## Installation
-
-### Devel
-
-```
-* installing *source* package ‘CEMiTool’ ...
-** R
-** data
-*** moving datasets to lazyload DB
-** exec
-** inst
-** byte-compile and prepare package for lazy loading
-Error in loadNamespace(i, c(lib.loc, .libPaths()), versionCheck = vI[[i]]) : 
-  there is no package called ‘GO.db’
-ERROR: lazy loading failed for package ‘CEMiTool’
-* removing ‘/Users/lionel/Desktop/rlang/revdep/checks.noindex/CEMiTool/new/CEMiTool.Rcheck/CEMiTool’
-
-```
-### CRAN
-
-```
-* installing *source* package ‘CEMiTool’ ...
-** R
-** data
-*** moving datasets to lazyload DB
-** exec
-** inst
-** byte-compile and prepare package for lazy loading
-Error in loadNamespace(i, c(lib.loc, .libPaths()), versionCheck = vI[[i]]) : 
-  there is no package called ‘GO.db’
-ERROR: lazy loading failed for package ‘CEMiTool’
-* removing ‘/Users/lionel/Desktop/rlang/revdep/checks.noindex/CEMiTool/old/CEMiTool.Rcheck/CEMiTool’
-
-```
-# cepR
-
-Version: 0.1.0
-
-## In both
-
-*   checking data for non-ASCII characters ... NOTE
-    ```
-      Note: found 287 marked UTF-8 strings
-    ```
-
 # CGPfunctions
 
 Version: 0.4
@@ -1824,126 +380,6 @@ Version: 0.4
 *   checking Rd cross-references ... NOTE
     ```
     Packages unavailable to check Rd xrefs: ‘BSDA’, ‘janitor’
-    ```
-
-# childesr
-
-Version: 0.1.0
-
-## In both
-
-*   R CMD check timed out
-    
-
-*   checking dependencies in R code ... NOTE
-    ```
-    Namespace in Imports field not imported from: ‘dbplyr’
-      All declared Imports should be used.
-    ```
-
-# childsds
-
-Version: 0.6.7
-
-## In both
-
-*   checking dependencies in R code ... NOTE
-    ```
-    Namespace in Imports field not imported from: ‘gamlss.dist’
-      All declared Imports should be used.
-    ```
-
-*   checking data for non-ASCII characters ... NOTE
-    ```
-      Note: found 20 marked UTF-8 strings
-    ```
-
-# chorrrds
-
-Version: 0.1.7
-
-## In both
-
-*   checking installed package size ... NOTE
-    ```
-      installed size is  5.2Mb
-      sub-directories of 1Mb or more:
-        data   4.9Mb
-    ```
-
-*   checking data for non-ASCII characters ... NOTE
-    ```
-      Note: found 8008 marked UTF-8 strings
-    ```
-
-# chromer
-
-Version: 0.1
-
-## In both
-
-*   checking DESCRIPTION meta-information ... NOTE
-    ```
-    Malformed Description field: should contain one or more complete sentences.
-    ```
-
-*   checking R code for possible problems ... NOTE
-    ```
-    parse_counts: no visible global function definition for ‘na.omit’
-      (/Users/lionel/Desktop/rlang/revdep/checks.noindex/chromer/new/chromer.Rcheck/00_pkg_src/chromer/R/clean-data.R:77)
-    Undefined global functions or variables:
-      na.omit
-    Consider adding
-      importFrom("stats", "na.omit")
-    to your NAMESPACE file.
-    ```
-
-# cicero
-
-Version: 1.0.14
-
-## In both
-
-*   checking tests ...
-    ```
-     ERROR
-    Running the tests in ‘tests/testthat.R’ failed.
-    Last 13 lines of output:
-      [1] "Reading data file"
-      [1] "Generating feature data ranges"
-      [1] "Determining overlaps"
-      [1] "Assigning labels"
-      [1] "Merging to fData table"
-      ══ testthat results  ═══════════════════════════════════════════════════════════
-      OK: 281 SKIPPED: 0 FAILED: 5
-      1. Failure: plot_connections with coaccess_cutoff (@test-plotting.R#45) 
-      2. Failure: plot_connections with comparison_coaccess_cutoff (@test-plotting.R#212) 
-      3. Failure: plot_accessibility_in_pseudotime works (@test-plotting.R#487) 
-      4. Failure: plot_accessibility_in_pseudotime works (@test-plotting.R#492) 
-      5. Failure: plot_accessibility_in_pseudotime works (@test-plotting.R#498) 
-      
-      Error: testthat unit tests failed
-      Execution halted
-    ```
-
-*   R CMD check timed out
-    
-
-*   checking R code for possible problems ... NOTE
-    ```
-    aggregate_nearby_peaks: no visible binding for global variable 'val'
-      (/Users/lionel/Desktop/rlang/revdep/checks.noindex/cicero/new/cicero.Rcheck/00_pkg_src/cicero/R/aggregate.R:37)
-    assemble_connections: no visible binding for global variable 'value'
-      (/Users/lionel/Desktop/rlang/revdep/checks.noindex/cicero/new/cicero.Rcheck/00_pkg_src/cicero/R/runCicero.R:640-641)
-    find_overlapping_ccans: no visible binding for global variable 'CCAN'
-      (/Users/lionel/Desktop/rlang/revdep/checks.noindex/cicero/new/cicero.Rcheck/00_pkg_src/cicero/R/runCicero.R:919-922)
-    generate_windows: no visible binding for global variable 'V1'
-      (/Users/lionel/Desktop/rlang/revdep/checks.noindex/cicero/new/cicero.Rcheck/00_pkg_src/cicero/R/runCicero.R:663-667)
-    plot_accessibility_in_pseudotime: no visible binding for global
-      variable 'f_id'
-      (/Users/lionel/Desktop/rlang/revdep/checks.noindex/cicero/new/cicero.Rcheck/00_pkg_src/cicero/R/plotting.R:676-695)
-    Undefined global functions or variables:
-      CCAN V1 f_id val value
     ```
 
 # circumplex
@@ -2000,73 +436,6 @@ ERROR: compilation failed for package ‘circumplex’
 * removing ‘/Users/lionel/Desktop/rlang/revdep/checks.noindex/circumplex/old/circumplex.Rcheck/circumplex’
 
 ```
-# civis
-
-Version: 1.5.1
-
-## In both
-
-*   checking installed package size ... NOTE
-    ```
-      installed size is  6.2Mb
-      sub-directories of 1Mb or more:
-        R      3.2Mb
-        help   2.4Mb
-    ```
-
-# cleanNLP
-
-Version: 2.3.0
-
-## In both
-
-*   checking dependencies in R code ... NOTE
-    ```
-    Unable to find any JVMs matching version "(null)".
-    No Java runtime present, try --request to install.
-    ```
-
-# clustermq
-
-Version: 0.8.5
-
-## In both
-
-*   R CMD check timed out
-    
-
-*   checking dependencies in R code ... NOTE
-    ```
-    Namespaces in Imports field not imported from:
-      ‘R6’ ‘infuser’ ‘purrr’
-      All declared Imports should be used.
-    ```
-
-# CNVScope
-
-Version: 1.9.7
-
-## In both
-
-*   checking package dependencies ... ERROR
-    ```
-    Package required but not available: ‘BSgenome.Hsapiens.UCSC.hg19’
-    
-    See section ‘The DESCRIPTION file’ in the ‘Writing R Extensions’
-    manual.
-    ```
-
-# cocktailApp
-
-Version: 0.2.0
-
-## In both
-
-*   checking data for non-ASCII characters ... NOTE
-    ```
-      Note: found 14661 marked UTF-8 strings
-    ```
-
 # codebook
 
 Version: 0.7.5
@@ -2090,42 +459,6 @@ Version: 0.7.5
       Note: found 65 marked UTF-8 strings
     ```
 
-# codemetar
-
-Version: 0.1.6
-
-## Newly fixed
-
-*   checking tests ...
-    ```
-     ERROR
-    Running the tests in ‘tests/testthat.R’ failed.
-    Last 13 lines of output:
-      4: jsonlite::fromJSON(sprintf("https://sysreqs.r-hub.io/map/%s", curl::curl_escape(description)), 
-             simplifyVector = FALSE) at /Users/lionel/Desktop/rlang/revdep/checks.noindex/codemetar/old/codemetar.Rcheck/00_pkg_src/codemetar/R/parse_depends.R:85
-      5: parse_and_simplify(txt = txt, simplifyVector = simplifyVector, simplifyDataFrame = simplifyDataFrame, 
-             simplifyMatrix = simplifyMatrix, flatten = flatten, ...)
-      6: parseJSON(txt, bigint_as_char)
-      7: parse_con(txt, bigint_as_char)
-      8: open(con, "rb")
-      9: open.connection(con, "rb")
-      
-      ══ testthat results  ═══════════════════════════════════════════════════════════
-      OK: 77 SKIPPED: 10 FAILED: 1
-      1. Error: Test the various cases for dependencies (@test-parse_depends.R#25) 
-      
-      Error: testthat unit tests failed
-      Execution halted
-    ```
-
-## In both
-
-*   checking dependencies in R code ... NOTE
-    ```
-    Namespace in Imports field not imported from: ‘memoise’
-      All declared Imports should be used.
-    ```
-
 # codified
 
 Version: 0.2.0
@@ -2136,227 +469,6 @@ Version: 0.2.0
     ```
     Namespaces in Imports field not imported from:
       ‘methods’ ‘readr’
-      All declared Imports should be used.
-    ```
-
-# codyn
-
-Version: 2.0.0
-
-## In both
-
-*   checking re-building of vignette outputs ... WARNING
-    ```
-    Error in re-building vignettes:
-      ...
-    pandoc-citeproc: when expecting a product (:*:), encountered Object instead
-    Error running filter /usr/local/bin/pandoc-citeproc:
-    Filter returned error status 1
-    Error: processing vignette 'Community_Stability_Metrics.Rmd' failed with diagnostics:
-    pandoc document conversion failed with error 83
-    Execution halted
-    ```
-
-# cofeatureR
-
-Version: 1.1.1
-
-## In both
-
-*   checking dependencies in R code ... NOTE
-    ```
-    Namespace in Imports field not imported from: ‘tibble’
-      All declared Imports should be used.
-    ```
-
-# cogena
-
-Version: 1.16.0
-
-## In both
-
-*   checking whether package ‘cogena’ can be installed ... WARNING
-    ```
-    Found the following significant warnings:
-      Warning: replacing previous import ‘class::somgrid’ by ‘kohonen::somgrid’ when loading ‘cogena’
-    See ‘/Users/lionel/Desktop/rlang/revdep/checks.noindex/cogena/new/cogena.Rcheck/00install.out’ for details.
-    ```
-
-*   checking installed package size ... NOTE
-    ```
-      installed size is  6.6Mb
-      sub-directories of 1Mb or more:
-        doc       2.0Mb
-        extdata   3.1Mb
-    ```
-
-*   checking R code for possible problems ... NOTE
-    ```
-    ...
-    heatmapCluster,cogena: no visible global function definition for
-      ‘legend’
-      (/Users/lionel/Desktop/rlang/revdep/checks.noindex/cogena/new/cogena.Rcheck/00_pkg_src/cogena/R/heatmapCluster.R:156-158)
-    heatmapCluster,cogena: no visible global function definition for
-      ‘legend’
-      (/Users/lionel/Desktop/rlang/revdep/checks.noindex/cogena/new/cogena.Rcheck/00_pkg_src/cogena/R/heatmapCluster.R:160-162)
-    heatmapCluster,cogena: no visible global function definition for
-      ‘legend’
-      (/Users/lionel/Desktop/rlang/revdep/checks.noindex/cogena/new/cogena.Rcheck/00_pkg_src/cogena/R/heatmapCluster.R:164-165)
-    Undefined global functions or variables:
-      abline axis cor density dist hist image layout legend lines median
-      mtext order.dendrogram par plot.new rainbow rect reorder sd text
-      title topo.colors
-    Consider adding
-      importFrom("grDevices", "rainbow", "topo.colors")
-      importFrom("graphics", "abline", "axis", "hist", "image", "layout",
-                 "legend", "lines", "mtext", "par", "plot.new", "rect",
-                 "text", "title")
-      importFrom("stats", "cor", "density", "dist", "median",
-                 "order.dendrogram", "reorder", "sd")
-    to your NAMESPACE file.
-    ```
-
-*   checking Rd cross-references ... NOTE
-    ```
-    Package unavailable to check Rd xrefs: ‘clValid’
-    ```
-
-# CollapsABEL
-
-Version: 0.10.11
-
-## In both
-
-*   checking whether package ‘CollapsABEL’ can be installed ... ERROR
-    ```
-    Installation failed.
-    See ‘/Users/lionel/Desktop/rlang/revdep/checks.noindex/CollapsABEL/new/CollapsABEL.Rcheck/00install.out’ for details.
-    ```
-
-## Installation
-
-### Devel
-
-```
-* installing *source* package ‘CollapsABEL’ ...
-** package ‘CollapsABEL’ successfully unpacked and MD5 sums checked
-** R
-** byte-compile and prepare package for lazy loading
-Unable to find any JVMs matching version "(null)".
-No Java runtime present, try --request to install.
-Warning in system("/usr/libexec/java_home", intern = TRUE) :
-  running command '/usr/libexec/java_home' had status 1
-Error: package or namespace load failed for ‘rJava’:
- .onLoad failed in loadNamespace() for 'rJava', details:
-  call: dyn.load(file, DLLpath = DLLpath, ...)
-  error: unable to load shared object '/Users/lionel/Desktop/rlang/revdep/library.noindex/CollapsABEL/rJava/libs/rJava.so':
-  dlopen(/Users/lionel/Desktop/rlang/revdep/library.noindex/CollapsABEL/rJava/libs/rJava.so, 6): Library not loaded: /Library/Java/JavaVirtualMachines/jdk-9.jdk/Contents/Home/lib/server/libjvm.dylib
-  Referenced from: /Users/lionel/Desktop/rlang/revdep/library.noindex/CollapsABEL/rJava/libs/rJava.so
-  Reason: image not found
-Error : package ‘rJava’ could not be loaded
-ERROR: lazy loading failed for package ‘CollapsABEL’
-* removing ‘/Users/lionel/Desktop/rlang/revdep/checks.noindex/CollapsABEL/new/CollapsABEL.Rcheck/CollapsABEL’
-
-```
-### CRAN
-
-```
-* installing *source* package ‘CollapsABEL’ ...
-** package ‘CollapsABEL’ successfully unpacked and MD5 sums checked
-** R
-** byte-compile and prepare package for lazy loading
-Unable to find any JVMs matching version "(null)".
-No Java runtime present, try --request to install.
-Warning in system("/usr/libexec/java_home", intern = TRUE) :
-  running command '/usr/libexec/java_home' had status 1
-Error: package or namespace load failed for ‘rJava’:
- .onLoad failed in loadNamespace() for 'rJava', details:
-  call: dyn.load(file, DLLpath = DLLpath, ...)
-  error: unable to load shared object '/Users/lionel/Desktop/rlang/revdep/library.noindex/CollapsABEL/rJava/libs/rJava.so':
-  dlopen(/Users/lionel/Desktop/rlang/revdep/library.noindex/CollapsABEL/rJava/libs/rJava.so, 6): Library not loaded: /Library/Java/JavaVirtualMachines/jdk-9.jdk/Contents/Home/lib/server/libjvm.dylib
-  Referenced from: /Users/lionel/Desktop/rlang/revdep/library.noindex/CollapsABEL/rJava/libs/rJava.so
-  Reason: image not found
-Error : package ‘rJava’ could not be loaded
-ERROR: lazy loading failed for package ‘CollapsABEL’
-* removing ‘/Users/lionel/Desktop/rlang/revdep/checks.noindex/CollapsABEL/old/CollapsABEL.Rcheck/CollapsABEL’
-
-```
-# collapsibleTree
-
-Version: 0.1.7
-
-## In both
-
-*   checking package dependencies ... NOTE
-    ```
-    Packages which this enhances but not available for checking:
-      ‘knitr’ ‘shiny’
-    ```
-
-# colorednoise
-
-Version: 1.0.3
-
-## In both
-
-*   checking whether package ‘colorednoise’ can be installed ... ERROR
-    ```
-    Installation failed.
-    See ‘/Users/lionel/Desktop/rlang/revdep/checks.noindex/colorednoise/new/colorednoise.Rcheck/00install.out’ for details.
-    ```
-
-## Installation
-
-### Devel
-
-```
-* installing *source* package ‘colorednoise’ ...
-** package ‘colorednoise’ successfully unpacked and MD5 sums checked
-** libs
-clang++ -I"/Library/Frameworks/R.framework/Resources/include" -DNDEBUG  -I"/Users/lionel/Desktop/rlang/revdep/library.noindex/colorednoise/Rcpp/include" -I"/Users/lionel/Desktop/rlang/revdep/library.noindex/colorednoise/RcppArmadillo/include" -I/usr/local/include  -fopenmp -fPIC  -mtune=core2 -O3 -c RcppExports.cpp -o RcppExports.o
-clang++ -I"/Library/Frameworks/R.framework/Resources/include" -DNDEBUG  -I"/Users/lionel/Desktop/rlang/revdep/library.noindex/colorednoise/Rcpp/include" -I"/Users/lionel/Desktop/rlang/revdep/library.noindex/colorednoise/RcppArmadillo/include" -I/usr/local/include  -fopenmp -fPIC  -mtune=core2 -O3 -c noise.cpp -o noise.o
-clang++ -I"/Library/Frameworks/R.framework/Resources/include" -DNDEBUG  -I"/Users/lionel/Desktop/rlang/revdep/library.noindex/colorednoise/Rcpp/include" -I"/Users/lionel/Desktop/rlang/revdep/library.noindex/colorednoise/RcppArmadillo/include" -I/usr/local/include  -fopenmp -fPIC  -mtune=core2 -O3 -c simulation.cpp -o simulation.o
-clang: error: unsupported option '-fopenmp'
-clang: error: unsupported option '-fopenmp'
-clang: error: unsupported option '-fopenmp'
-make: *** [noise.o] Error 1
-make: *** Waiting for unfinished jobs....
-make: *** [simulation.o] Error 1
-make: *** [RcppExports.o] Error 1
-ERROR: compilation failed for package ‘colorednoise’
-* removing ‘/Users/lionel/Desktop/rlang/revdep/checks.noindex/colorednoise/new/colorednoise.Rcheck/colorednoise’
-
-```
-### CRAN
-
-```
-* installing *source* package ‘colorednoise’ ...
-** package ‘colorednoise’ successfully unpacked and MD5 sums checked
-** libs
-clang++ -I"/Library/Frameworks/R.framework/Resources/include" -DNDEBUG  -I"/Users/lionel/Desktop/rlang/revdep/library.noindex/colorednoise/Rcpp/include" -I"/Users/lionel/Desktop/rlang/revdep/library.noindex/colorednoise/RcppArmadillo/include" -I/usr/local/include  -fopenmp -fPIC  -mtune=core2 -O3 -c RcppExports.cpp -o RcppExports.o
-clang++ -I"/Library/Frameworks/R.framework/Resources/include" -DNDEBUG  -I"/Users/lionel/Desktop/rlang/revdep/library.noindex/colorednoise/Rcpp/include" -I"/Users/lionel/Desktop/rlang/revdep/library.noindex/colorednoise/RcppArmadillo/include" -I/usr/local/include  -fopenmp -fPIC  -mtune=core2 -O3 -c noise.cpp -o noise.o
-clang++ -I"/Library/Frameworks/R.framework/Resources/include" -DNDEBUG  -I"/Users/lionel/Desktop/rlang/revdep/library.noindex/colorednoise/Rcpp/include" -I"/Users/lionel/Desktop/rlang/revdep/library.noindex/colorednoise/RcppArmadillo/include" -I/usr/local/include  -fopenmp -fPIC  -mtune=core2 -O3 -c simulation.cpp -o simulation.o
-clang: error: unsupported option '-fopenmp'clang: error: 
-unsupported option '-fopenmp'clang: error: unsupported option '-fopenmp'
-
-make: *** [simulation.o] Error 1
-make: *** Waiting for unfinished jobs....
-make: *** [noise.o] Error 1
-make: *** [RcppExports.o] Error 1
-ERROR: compilation failed for package ‘colorednoise’
-* removing ‘/Users/lionel/Desktop/rlang/revdep/checks.noindex/colorednoise/old/colorednoise.Rcheck/colorednoise’
-
-```
-# compareDF
-
-Version: 1.7.0
-
-## In both
-
-*   checking dependencies in R code ... NOTE
-    ```
-    Namespaces in Imports field not imported from:
-      ‘magrittr’ ‘stringr’
       All declared Imports should be used.
     ```
 
@@ -2473,372 +585,6 @@ Version: 1.0.1
       All declared Imports should be used.
     ```
 
-# congressbr
-
-Version: 0.1.5
-
-## In both
-
-*   checking examples ... ERROR
-    ```
-    Running examples in ‘congressbr-Ex.R’ failed
-    The error most likely occurred in:
-    
-    > ### Name: cham_bill_info
-    > ### Title: Downloads details of a specific bill by providing type, number
-    > ###   and year
-    > ### Aliases: cham_bill_info
-    > 
-    > ### ** Examples
-    > 
-    > cham_bill_info(type = "PL", number = "3962", year = "2008")
-    Error in open.connection(x, "rb") : 
-      Recv failure: Connection reset by peer
-    Calls: cham_bill_info ... read_xml.character -> read_xml.connection -> open -> open.connection
-    Execution halted
-    ```
-
-*   checking re-building of vignette outputs ... WARNING
-    ```
-    Error in re-building vignettes:
-      ...
-    Quitting from lines 31-32 (chamber.Rmd) 
-    Error: processing vignette 'chamber.Rmd' failed with diagnostics:
-    Recv failure: Connection reset by peer
-    Execution halted
-    ```
-
-*   checking data for non-ASCII characters ... NOTE
-    ```
-      Note: found 1 marked UTF-8 string
-    ```
-
-# CoordinateCleaner
-
-Version: 2.0-3
-
-## In both
-
-*   R CMD check timed out
-    
-
-# countsimQC
-
-Version: 1.0.0
-
-## In both
-
-*   checking re-building of vignette outputs ... WARNING
-    ```
-    ...
-    Warning in stats::chisq.test(x = table(factor(x, levels = c(ds1, ds2))),  :
-      Chi-squared approximation may be incorrect
-    Warning in stats::chisq.test(x = table(factor(x, levels = c(ds1, ds2))),  :
-      Chi-squared approximation may be incorrect
-    Warning in stats::chisq.test(x = table(factor(x, levels = c(ds1, ds2))),  :
-      Chi-squared approximation may be incorrect
-    Warning in stats::chisq.test(x = table(factor(x, levels = c(ds1, ds2))),  :
-      Chi-squared approximation may be incorrect
-    Warning in stats::chisq.test(x = table(factor(x, levels = c(ds1, ds2))),  :
-      Chi-squared approximation may be incorrect
-    Warning in stats::chisq.test(x = table(factor(x, levels = c(ds1, ds2))),  :
-      Chi-squared approximation may be incorrect
-    Processing expression vs fraction zeros relationship.
-    Saving plots.
-    pandoc-citeproc: when expecting a product (:*:), encountered Object instead
-    Error running filter /usr/local/bin/pandoc-citeproc:
-    Filter returned error status 1
-    Quitting from lines 76-85 (countsimQC.Rmd) 
-    Error: processing vignette 'countsimQC.Rmd' failed with diagnostics:
-    pandoc document conversion failed with error 83
-    Execution halted
-    ```
-
-*   checking for hidden files and directories ... NOTE
-    ```
-    Found the following hidden files and directories:
-      .travis.yml
-    These were most likely included in error. See section ‘Package
-    structure’ in the ‘Writing R Extensions’ manual.
-    ```
-
-*   checking R code for possible problems ... NOTE
-    ```
-    makeDF: no visible binding for global variable ‘X1’
-      (/Users/lionel/Desktop/rlang/revdep/checks.noindex/countsimQC/new/countsimQC.Rcheck/00_pkg_src/countsimQC/R/makeDF.R:35-37)
-    makeDF: no visible binding for global variable ‘X2’
-      (/Users/lionel/Desktop/rlang/revdep/checks.noindex/countsimQC/new/countsimQC.Rcheck/00_pkg_src/countsimQC/R/makeDF.R:35-37)
-    makeDF : <anonymous>: no visible binding for global variable ‘dataset’
-      (/Users/lionel/Desktop/rlang/revdep/checks.noindex/countsimQC/new/countsimQC.Rcheck/00_pkg_src/countsimQC/R/makeDF.R:41-42)
-    Undefined global functions or variables:
-      X1 X2 dataset
-    ```
-
-# countyfloods
-
-Version: 0.1.0
-
-## In both
-
-*   checking dependencies in R code ... NOTE
-    ```
-    Namespace in Imports field not imported from: ‘maps’
-      All declared Imports should be used.
-    ```
-
-# countytimezones
-
-Version: 1.0.0
-
-## In both
-
-*   checking re-building of vignette outputs ... WARNING
-    ```
-    ...
-    The following objects are masked from 'package:stats':
-    
-        filter, lag
-    
-    The following objects are masked from 'package:base':
-    
-        intersect, setdiff, setequal, union
-    
-    
-    Attaching package: 'lubridate'
-    
-    The following object is masked from 'package:base':
-    
-        date
-    
-    pandoc-citeproc: when expecting a product (:*:), encountered Object instead
-    Error running filter /usr/local/bin/pandoc-citeproc:
-    Filter returned error status 1
-    Error: processing vignette 'countytimezones.Rmd' failed with diagnostics:
-    pandoc document conversion failed with error 83
-    Execution halted
-    ```
-
-# countyweather
-
-Version: 0.1.0
-
-## In both
-
-*   checking re-building of vignette outputs ... WARNING
-    ```
-    ...
-    The following objects are masked from 'package:stats':
-    
-        filter, lag
-    
-    The following objects are masked from 'package:base':
-    
-        intersect, setdiff, setequal, union
-    
-    
-    Attaching package: 'lubridate'
-    
-    The following object is masked from 'package:base':
-    
-        date
-    
-    pandoc-citeproc: when expecting a product (:*:), encountered Object instead
-    Error running filter /usr/local/bin/pandoc-citeproc:
-    Filter returned error status 1
-    Error: processing vignette 'countyweather.Rmd' failed with diagnostics:
-    pandoc document conversion failed with error 83
-    Execution halted
-    ```
-
-*   checking data for non-ASCII characters ... NOTE
-    ```
-      Note: found 1 marked UTF-8 string
-    ```
-
-# coveffectsplot
-
-Version: 0.0.1
-
-## In both
-
-*   checking dependencies in R code ... NOTE
-    ```
-    Namespaces in Imports field not imported from:
-      ‘colourpicker’ ‘dplyr’ ‘markdown’ ‘shinyjs’ ‘tidyr’
-      All declared Imports should be used.
-    ```
-
-# coxed
-
-Version: 0.2.0
-
-## In both
-
-*   checking Rd cross-references ... NOTE
-    ```
-    Package unavailable to check Rd xrefs: ‘mediation’
-    ```
-
-# CPAT
-
-Version: 0.1.0
-
-## In both
-
-*   checking dependencies in R code ... NOTE
-    ```
-    Namespaces in Imports field not imported from:
-      ‘Rdpack’ ‘grDevices’
-      All declared Imports should be used.
-    ```
-
-# CRANsearcher
-
-Version: 1.0.0
-
-## In both
-
-*   checking data for non-ASCII characters ... NOTE
-    ```
-      Note: found 11 marked Latin-1 strings
-      Note: found 57 marked UTF-8 strings
-    ```
-
-# crawl
-
-Version: 2.2.1
-
-## In both
-
-*   checking dependencies in R code ... NOTE
-    ```
-    Namespaces in Imports field not imported from:
-      ‘gdistance’ ‘raster’
-      All declared Imports should be used.
-    ```
-
-# CrossClustering
-
-Version: 4.0.3
-
-## In both
-
-*   checking dependencies in R code ... NOTE
-    ```
-    Namespace in Imports field not imported from: ‘glue’
-      All declared Imports should be used.
-    ```
-
-# crosswalkr
-
-Version: 0.2.2
-
-## In both
-
-*   checking dependencies in R code ... NOTE
-    ```
-    Namespace in Imports field not imported from: ‘dplyr’
-      All declared Imports should be used.
-    ```
-
-# crossword.r
-
-Version: 0.3.5
-
-## Newly broken
-
-*   checking tests ...
-    ```
-     ERROR
-    Running the tests in ‘tests/testthat.R’ failed.
-    Last 13 lines of output:
-      > test_check("crossword.r")
-      ── 1. Failure: things work in general (@test_general.R#11)  ────────────────────
-      `{ ... }` produced warnings.
-      
-      . . 1 2 3
-      . # # # #
-      1 # . B #
-      2 # A # #
-      3 # # # #
-      ══ testthat results  ═══════════════════════════════════════════════════════════
-      OK: 9 SKIPPED: 0 FAILED: 1
-      1. Failure: things work in general (@test_general.R#11) 
-      
-      Error: testthat unit tests failed
-      Execution halted
-    ```
-
-## In both
-
-*   checking dependencies in R code ... NOTE
-    ```
-    Namespaces in Imports field not imported from:
-      ‘dplyr’ ‘r6extended’
-      All declared Imports should be used.
-    ```
-
-# crsra
-
-Version: 0.2.3
-
-## In both
-
-*   checking data for non-ASCII characters ... NOTE
-    ```
-      Note: found 500 marked UTF-8 strings
-    ```
-
-# crypto
-
-Version: 1.1.0
-
-## In both
-
-*   checking dependencies in R code ... NOTE
-    ```
-    Namespace in Imports field not imported from: ‘keyring’
-      All declared Imports should be used.
-    ```
-
-# curatedMetagenomicData
-
-Version: 1.12.3
-
-## Newly broken
-
-*   checking whether package ‘curatedMetagenomicData’ can be installed ... WARNING
-    ```
-    Found the following significant warnings:
-      Warning: The `printer` argument is soft-deprecated as of rlang 0.3.0.
-    See ‘/Users/lionel/Desktop/rlang/revdep/checks.noindex/curatedMetagenomicData/new/curatedMetagenomicData.Rcheck/00install.out’ for details.
-    ```
-
-*   checking whether the namespace can be loaded with stated dependencies ... NOTE
-    ```
-    Warning: The `printer` argument is soft-deprecated as of rlang 0.3.0.
-    This warning is displayed once per session.
-    
-    A namespace must be able to be loaded with just the base namespace
-    loaded: otherwise if the namespace gets loaded by a saved object,
-    the session will be unable to start.
-    
-    Probably some imports need to be declared in the NAMESPACE file.
-    ```
-
-## In both
-
-*   R CMD check timed out
-    
-
-*   checking installed package size ... NOTE
-    ```
-      installed size is  6.1Mb
-      sub-directories of 1Mb or more:
-        doc    1.5Mb
-        help   2.7Mb
-    ```
-
 # customsteps
 
 Version: 0.7.1.0
@@ -2876,30 +622,6 @@ Version: 0.7.4
       
       Error: testthat unit tests failed
       Execution halted
-    ```
-
-# d3r
-
-Version: 0.8.4
-
-## In both
-
-*   checking package dependencies ... NOTE
-    ```
-    Packages which this enhances but not available for checking:
-      ‘igraph’ ‘partykit’ ‘treemap’ ‘V8’
-    ```
-
-# d3Tree
-
-Version: 0.2.0
-
-## In both
-
-*   checking dependencies in R code ... NOTE
-    ```
-    Namespace in Imports field not imported from: ‘magrittr’
-      All declared Imports should be used.
     ```
 
 # dabestr
@@ -2947,52 +669,57 @@ Version: 0.1.0
       All declared Imports should be used.
     ```
 
-# dalmatian
+# dartR
 
-Version: 0.3.0
+Version: 1.1.6
+
+## Newly broken
+
+*   checking examples ... ERROR
+    ```
+    ...
+        3 EmmacFitzAllig EmmacMDBCond EmmacMDBSanf EmmacRussEube 
+        4 EmmacBurdMist EmmacJohnWari EmmacRoss 
+        6 EmmacCoopEulb 
+        7 EmmacCoopCully 
+        16 EmmacCoopAvin 
+    
+      Data retained for the unknown individual and remaining candidate source populations ( 1 or less loci with private alleles)
+       EmmacBurnBara EmmacMaclGeor EmmacRichCasi EmmacTweeUki unknown 
+    
+    Completed gl.report.pa
+    
+    
+    
+    COMPUTING ASSIGNMENT BASED ON CONFIDENCE ENVELOPES
+    
+      Number of populations, including the unknown: 5 
+      Number of dimensions with substantial eigenvalues: 7 
+      Hard coded upper limit to dimensions: 8 
+      User specified dimensions to retain: Not specified
+        Dimension of confidence envelope set at 5 
+    Performing a PCoA, individuals as entities, SNP loci as attributes
+    ```
 
 ## In both
 
-*   checking re-building of vignette outputs ... WARNING
+*   checking dependencies in R code ... NOTE
     ```
-    Error in re-building vignettes:
-      ...
-    Warning in engine$weave(file, quiet = quiet, encoding = enc) :
-      The vignette engine knitr::rmarkdown is not available, because the rmarkdown package is not installed. Please install it.
-    Warning in engine$weave(file, quiet = quiet, encoding = enc) :
-      The vignette engine knitr::rmarkdown is not available, because the rmarkdown package is not installed. Please install it.
-    Warning in engine$weave(file, quiet = quiet, encoding = enc) :
-      The vignette engine knitr::rmarkdown is not available, because the rmarkdown package is not installed. Please install it.
-    Quitting from lines 36-71 (weights-1-simulate.Rmd) 
-    Error: processing vignette 'weights-1-simulate.Rmd' failed with diagnostics:
-    .onLoad failed in loadNamespace() for 'rjags', details:
-      call: dyn.load(file, DLLpath = DLLpath, ...)
-      error: unable to load shared object '/Users/lionel/Desktop/rlang/revdep/library.noindex/dalmatian/rjags/libs/rjags.so':
-      dlopen(/Users/lionel/Desktop/rlang/revdep/library.noindex/dalmatian/rjags/libs/rjags.so, 10): Library not loaded: /usr/local/lib/libjags.4.dylib
-      Referenced from: /Users/lionel/Desktop/rlang/revdep/library.noindex/dalmatian/rjags/libs/rjags.so
-      Reason: image not found
-    Execution halted
+    Namespaces in Imports field not imported from:
+      ‘plotly’ ‘rgl’
+      All declared Imports should be used.
     ```
 
-*   checking installed package size ... NOTE
-    ```
-      installed size is  5.1Mb
-      sub-directories of 1Mb or more:
-        Pied_Flycatchers_1   2.4Mb
-        Pied_Flycatchers_2   1.2Mb
-        doc                  1.1Mb
-    ```
+# DChIPRep
 
-# DAPAR
-
-Version: 1.14.3
+Version: 1.12.0
 
 ## In both
 
-*   checking whether package ‘DAPAR’ can be installed ... ERROR
+*   checking whether package ‘DChIPRep’ can be installed ... ERROR
     ```
     Installation failed.
-    See ‘/Users/lionel/Desktop/rlang/revdep/checks.noindex/DAPAR/new/DAPAR.Rcheck/00install.out’ for details.
+    See ‘/Users/lionel/Desktop/rlang/revdep/checks.noindex/DChIPRep/new/DChIPRep.Rcheck/00install.out’ for details.
     ```
 
 ## Installation
@@ -3000,123 +727,43 @@ Version: 1.14.3
 ### Devel
 
 ```
-* installing *source* package ‘DAPAR’ ...
+* installing *source* package ‘DChIPRep’ ...
 ** R
+** data
+*** moving datasets to lazyload DB
+Warning: namespace ‘DChIPRep’ is not available and has been replaced
+by .GlobalEnv when processing object ‘testData’
+Warning: namespace ‘DChIPRep’ is not available and has been replaced
+by .GlobalEnv when processing object ‘testData’
+** exec
 ** inst
 ** byte-compile and prepare package for lazy loading
-Warning in fun(libname, pkgname) :
-  mzR has been built against a different Rcpp version (0.12.19)
-than is installed on your system (1.0.0). This might lead to errors
-when loading mzR. If you encounter such issues, please send a report,
-including the output of sessionInfo() to the Bioc support forum at 
-https://support.bioconductor.org/. For details see also
-https://github.com/sneumann/mzR/wiki/mzR-Rcpp-compiler-linker-issue.
-Error in loadNamespace(j <- i[[1L]], c(lib.loc, .libPaths()), versionCheck = vI[[j]]) : 
-  there is no package called ‘DO.db’
-ERROR: lazy loading failed for package ‘DAPAR’
-* removing ‘/Users/lionel/Desktop/rlang/revdep/checks.noindex/DAPAR/new/DAPAR.Rcheck/DAPAR’
+Error in loadNamespace(i, c(lib.loc, .libPaths()), versionCheck = vI[[i]]) : 
+  there is no package called ‘GO.db’
+ERROR: lazy loading failed for package ‘DChIPRep’
+* removing ‘/Users/lionel/Desktop/rlang/revdep/checks.noindex/DChIPRep/new/DChIPRep.Rcheck/DChIPRep’
 
 ```
 ### CRAN
 
 ```
-* installing *source* package ‘DAPAR’ ...
+* installing *source* package ‘DChIPRep’ ...
 ** R
+** data
+*** moving datasets to lazyload DB
+Warning: namespace ‘DChIPRep’ is not available and has been replaced
+by .GlobalEnv when processing object ‘testData’
+Warning: namespace ‘DChIPRep’ is not available and has been replaced
+by .GlobalEnv when processing object ‘testData’
+** exec
 ** inst
 ** byte-compile and prepare package for lazy loading
-Warning in fun(libname, pkgname) :
-  mzR has been built against a different Rcpp version (0.12.19)
-than is installed on your system (1.0.0). This might lead to errors
-when loading mzR. If you encounter such issues, please send a report,
-including the output of sessionInfo() to the Bioc support forum at 
-https://support.bioconductor.org/. For details see also
-https://github.com/sneumann/mzR/wiki/mzR-Rcpp-compiler-linker-issue.
-Error in loadNamespace(j <- i[[1L]], c(lib.loc, .libPaths()), versionCheck = vI[[j]]) : 
-  there is no package called ‘DO.db’
-ERROR: lazy loading failed for package ‘DAPAR’
-* removing ‘/Users/lionel/Desktop/rlang/revdep/checks.noindex/DAPAR/old/DAPAR.Rcheck/DAPAR’
+Error in loadNamespace(i, c(lib.loc, .libPaths()), versionCheck = vI[[i]]) : 
+  there is no package called ‘GO.db’
+ERROR: lazy loading failed for package ‘DChIPRep’
+* removing ‘/Users/lionel/Desktop/rlang/revdep/checks.noindex/DChIPRep/old/DChIPRep.Rcheck/DChIPRep’
 
 ```
-# datadr
-
-Version: 0.8.6.1
-
-## In both
-
-*   checking package dependencies ... NOTE
-    ```
-    Package suggested but not available for checking: ‘Rhipe’
-    ```
-
-# datasus
-
-Version: 0.4.1
-
-## In both
-
-*   checking dependencies in R code ... NOTE
-    ```
-    Namespace in Imports field not imported from: ‘RCurl’
-      All declared Imports should be used.
-    ```
-
-# dbparser
-
-Version: 1.0.0
-
-## In both
-
-*   checking dependencies in R code ... NOTE
-    ```
-    Namespaces in Imports field not imported from:
-      ‘dplyr’ ‘ggplot2’
-      All declared Imports should be used.
-    ```
-
-# ddpcr
-
-Version: 1.9
-
-## Newly broken
-
-*   checking whether package ‘ddpcr’ can be installed ... WARNING
-    ```
-    Found the following significant warnings:
-      Warning: The `printer` argument is soft-deprecated as of rlang 0.3.0.
-    See ‘/Users/lionel/Desktop/rlang/revdep/checks.noindex/ddpcr/new/ddpcr.Rcheck/00install.out’ for details.
-    ```
-
-## In both
-
-*   checking tests ...
-    ```
-     ERROR
-    Running the tests in ‘tests/testthat.R’ failed.
-    Last 13 lines of output:
-      Incompatible type for column `FAM`: x integer, y numeric
-      
-      ── 2. Failure: reading v174 works (@test-v174.R#7)  ────────────────────────────
-      `expected_data` not equal to plate_data(plate).
-      Incompatible type for column `HEX`: x numeric, y integer
-      Incompatible type for column `FAM`: x numeric, y integer
-      Incompatible type for column `cluster`: x numeric, y integer
-      
-      ══ testthat results  ═══════════════════════════════════════════════════════════
-      OK: 268 SKIPPED: 0 FAILED: 2
-      1. Failure: get_filled_drops works (@test-pnpp_experiment-filled.R#22) 
-      2. Failure: reading v174 works (@test-v174.R#7) 
-      
-      Error: testthat unit tests failed
-      Execution halted
-    ```
-
-*   checking installed package size ... NOTE
-    ```
-      installed size is  5.3Mb
-      sub-directories of 1Mb or more:
-        sample_data   3.0Mb
-    ```
-
 # DeclareDesign
 
 Version: 0.12.0
@@ -3143,20 +790,6 @@ Version: 0.12.0
       
       Error: testthat unit tests failed
       Execution halted
-    ```
-
-# DeepBlueR
-
-Version: 1.8.0
-
-## In both
-
-*   R CMD check timed out
-    
-
-*   checking Rd files ... NOTE
-    ```
-    prepare_Rd: deepblue_enrich_regions_fast.Rd:35-38: Dropping empty section \examples
     ```
 
 # DEGreport
@@ -3206,120 +839,94 @@ Version: 1.18.0
     to your NAMESPACE file.
     ```
 
-# DeLorean
+# destiny
 
-Version: 1.5.0
+Version: 2.12.0
 
 ## In both
+
+*   checking running R code from vignettes ...
+    ```
+    ...
+      When tangling ‘Diffusion-Maps.ipynbmeta’:
+    Error: Either IPython 3+ or Jupyter has to be installed, but neither could be called.
+    Execution halted
+    when running code in ‘DPT.ipynbmeta’
+      ...
+    
+      When tangling ‘DPT.ipynbmeta’:
+    Error: Either IPython 3+ or Jupyter has to be installed, but neither could be called.
+    Execution halted
+    when running code in ‘Global-Sigma.ipynbmeta’
+      ...
+    
+      When tangling ‘Global-Sigma.ipynbmeta’:
+    Error: Either IPython 3+ or Jupyter has to be installed, but neither could be called.
+    Execution halted
+    when running code in ‘tidyverse.ipynbmeta’
+      ...
+    
+      When tangling ‘tidyverse.ipynbmeta’:
+    Error: Either IPython 3+ or Jupyter has to be installed, but neither could be called.
+    Execution halted
+    ```
+
+*   checking package dependencies ... NOTE
+    ```
+    Package which this enhances but not available for checking: ‘rgl’
+    ```
 
 *   checking installed package size ... NOTE
     ```
-      installed size is  7.8Mb
+      installed size is  6.5Mb
       sub-directories of 1Mb or more:
-        libs   4.9Mb
+        doc   3.8Mb
+        R     2.1Mb
     ```
 
-*   checking dependencies in R code ... NOTE
+*   checking DESCRIPTION meta-information ... NOTE
     ```
-    Namespace in Imports field not imported from: ‘lattice’
-      All declared Imports should be used.
-    ```
-
-*   checking for GNU extensions in Makefiles ... NOTE
-    ```
-    GNU make is a SystemRequirements.
+    Package listed in more than one of Depends, Imports, Suggests, Enhances:
+      ‘SingleCellExperiment’
+    A package should be listed in only one of these fields.
+    'LinkingTo' for ‘grDevices’ is unused as it has no 'include' directory
     ```
 
-# DEP
-
-Version: 1.4.0
-
-## In both
-
-*   checking installed package size ... NOTE
+*   checking Rd cross-references ... NOTE
     ```
-      installed size is  6.0Mb
-      sub-directories of 1Mb or more:
-        R      1.2Mb
-        data   1.4Mb
-        doc    3.1Mb
+    Package unavailable to check Rd xrefs: ‘rgl’
     ```
 
-# DepthProc
-
-Version: 2.0.4
-
-## In both
-
-*   checking whether package ‘DepthProc’ can be installed ... ERROR
+*   checking Rd \usage sections ... NOTE
     ```
-    Installation failed.
-    See ‘/Users/lionel/Desktop/rlang/revdep/checks.noindex/DepthProc/new/DepthProc.Rcheck/00install.out’ for details.
-    ```
-
-## Installation
-
-### Devel
-
-```
-* installing *source* package ‘DepthProc’ ...
-** package ‘DepthProc’ successfully unpacked and MD5 sums checked
-** libs
-clang++ -std=gnu++11 -std=c++11 -I"/Library/Frameworks/R.framework/Resources/include" -DNDEBUG  -I"/Users/lionel/Desktop/rlang/revdep/library.noindex/DepthProc/Rcpp/include" -I"/Users/lionel/Desktop/rlang/revdep/library.noindex/DepthProc/RcppArmadillo/include" -I/usr/local/include  -fopenmp -fPIC  -Wall -g -O2 -arch x86_64 -ftemplate-depth-256 -Wall -pedantic -c Depth.cpp -o Depth.o
-clang++ -std=gnu++11 -std=c++11 -I"/Library/Frameworks/R.framework/Resources/include" -DNDEBUG  -I"/Users/lionel/Desktop/rlang/revdep/library.noindex/DepthProc/Rcpp/include" -I"/Users/lionel/Desktop/rlang/revdep/library.noindex/DepthProc/RcppArmadillo/include" -I/usr/local/include  -fopenmp -fPIC  -Wall -g -O2 -arch x86_64 -ftemplate-depth-256 -Wall -pedantic -c LocationEstimators.cpp -o LocationEstimators.o
-clang++ -std=gnu++11 -std=c++11 -I"/Library/Frameworks/R.framework/Resources/include" -DNDEBUG  -I"/Users/lionel/Desktop/rlang/revdep/library.noindex/DepthProc/Rcpp/include" -I"/Users/lionel/Desktop/rlang/revdep/library.noindex/DepthProc/RcppArmadillo/include" -I/usr/local/include  -fopenmp -fPIC  -Wall -g -O2 -arch x86_64 -ftemplate-depth-256 -Wall -pedantic -c LocationScaleDepth.cpp -o LocationScaleDepth.o
-clang++ -std=gnu++11 -std=c++11 -I"/Library/Frameworks/R.framework/Resources/include" -DNDEBUG  -I"/Users/lionel/Desktop/rlang/revdep/library.noindex/DepthProc/Rcpp/include" -I"/Users/lionel/Desktop/rlang/revdep/library.noindex/DepthProc/RcppArmadillo/include" -I/usr/local/include  -fopenmp -fPIC  -Wall -g -O2 -arch x86_64 -ftemplate-depth-256 -Wall -pedantic -c LocationScaleDepthCPP.cpp -o LocationScaleDepthCPP.o
-clang: error: unsupported option '-fopenmp'
-clang: error: unsupported option '-fopenmp'
-clang: error: unsupported option '-fopenmp'
-make: *** [LocationScaleDepthCPP.o] Error 1
-make: *** Waiting for unfinished jobs....
-make: *** [LocationEstimators.o] Error 1
-make: *** [Depth.o] Error 1
-clang: error: unsupported option '-fopenmp'
-make: *** [LocationScaleDepth.o] Error 1
-ERROR: compilation failed for package ‘DepthProc’
-* removing ‘/Users/lionel/Desktop/rlang/revdep/checks.noindex/DepthProc/new/DepthProc.Rcheck/DepthProc’
-
-```
-### CRAN
-
-```
-* installing *source* package ‘DepthProc’ ...
-** package ‘DepthProc’ successfully unpacked and MD5 sums checked
-** libs
-clang++ -std=gnu++11 -std=c++11 -I"/Library/Frameworks/R.framework/Resources/include" -DNDEBUG  -I"/Users/lionel/Desktop/rlang/revdep/library.noindex/DepthProc/Rcpp/include" -I"/Users/lionel/Desktop/rlang/revdep/library.noindex/DepthProc/RcppArmadillo/include" -I/usr/local/include  -fopenmp -fPIC  -Wall -g -O2 -arch x86_64 -ftemplate-depth-256 -Wall -pedantic -c Depth.cpp -o Depth.o
-clang++ -std=gnu++11 -std=c++11 -I"/Library/Frameworks/R.framework/Resources/include" -DNDEBUG  -I"/Users/lionel/Desktop/rlang/revdep/library.noindex/DepthProc/Rcpp/include" -I"/Users/lionel/Desktop/rlang/revdep/library.noindex/DepthProc/RcppArmadillo/include" -I/usr/local/include  -fopenmp -fPIC  -Wall -g -O2 -arch x86_64 -ftemplate-depth-256 -Wall -pedantic -c LocationEstimators.cpp -o LocationEstimators.o
-clang++ -std=gnu++11 -std=c++11 -I"/Library/Frameworks/R.framework/Resources/include" -DNDEBUG  -I"/Users/lionel/Desktop/rlang/revdep/library.noindex/DepthProc/Rcpp/include" -I"/Users/lionel/Desktop/rlang/revdep/library.noindex/DepthProc/RcppArmadillo/include" -I/usr/local/include  -fopenmp -fPIC  -Wall -g -O2 -arch x86_64 -ftemplate-depth-256 -Wall -pedantic -c LocationScaleDepth.cpp -o LocationScaleDepth.o
-clang++ -std=gnu++11 -std=c++11 -I"/Library/Frameworks/R.framework/Resources/include" -DNDEBUG  -I"/Users/lionel/Desktop/rlang/revdep/library.noindex/DepthProc/Rcpp/include" -I"/Users/lionel/Desktop/rlang/revdep/library.noindex/DepthProc/RcppArmadillo/include" -I/usr/local/include  -fopenmp -fPIC  -Wall -g -O2 -arch x86_64 -ftemplate-depth-256 -Wall -pedantic -c LocationScaleDepthCPP.cpp -o LocationScaleDepthCPP.o
-clang: errorclang: clang: : errorclangerrorunsupported option '-fopenmp': 
-unsupported option '-fopenmp': 
-error: unsupported option '-fopenmp': unsupported option '-fopenmp'
-
-make: *** [LocationScaleDepth.o] Error 1
-make: *** Waiting for unfinished jobs....
-make: *** [LocationScaleDepthCPP.o] Error 1
-make: *** [LocationEstimators.o] Error 1
-make: *** [Depth.o] Error 1
-ERROR: compilation failed for package ‘DepthProc’
-* removing ‘/Users/lionel/Desktop/rlang/revdep/checks.noindex/DepthProc/old/DepthProc.Rcheck/DepthProc’
-
-```
-# DescriptiveStats.OBeu
-
-Version: 1.3.0
-
-## In both
-
-*   checking dependencies in R code ... NOTE
-    ```
-    Namespace in Imports field not imported from: ‘curl’
-      All declared Imports should be used.
+    S3 methods shown with full name in documentation object 'plot.DPT':
+      ‘plot.DPT’
+    
+    S3 methods shown with full name in documentation object 'plot.DiffusionMap':
+      ‘plot.DiffusionMap’
+    
+    The \usage entries for S3 methods should use the \method markup and
+    not their full name.
+    See chapter ‘Writing R documentation files’ in the ‘Writing R
+    Extensions’ manual.
     ```
 
-*   checking data for non-ASCII characters ... NOTE
+*   checking for unstated dependencies in vignettes ... NOTE
     ```
-      Note: found 5764 marked UTF-8 strings
+    '::' or ':::' imports not declared from:
+      ‘gridExtra’ ‘viridis’
+    'library' or 'require' calls not declared from:
+      ‘base64enc’ ‘forcats’ ‘IRdisplay’ ‘IRkernel’ ‘readxl’ ‘repr’
+      ‘tidyverse’
+    ```
+
+*   checking re-building of vignette outputs ... NOTE
+    ```
+    Error in re-building vignettes:
+      ...
+    Error: processing vignette 'Diffusion-Map-recap.ipynbmeta' failed with diagnostics:
+    Either IPython 3+ or Jupyter has to be installed, but neither could be called.
+    Execution halted
     ```
 
 # detrendr
@@ -3367,38 +974,6 @@ Version: 0.1.5
       See the note in ?`:::` about the use of this operator.
     ```
 
-# dggridR
-
-Version: 2.0.3
-
-## In both
-
-*   checking re-building of vignette outputs ... WARNING
-    ```
-    ...
-    Loading required package: dplyr
-    
-    Attaching package: 'dplyr'
-    
-    The following objects are masked from 'package:stats':
-    
-        filter, lag
-    
-    The following objects are masked from 'package:base':
-    
-        intersect, setdiff, setequal, union
-    
-    Warning: The `printer` argument is soft-deprecated as of rlang 0.3.0.
-    This warning is displayed once per session.
-    Regions defined for each Polygons
-    pandoc-citeproc: when expecting a product (:*:), encountered Object instead
-    Error running filter /usr/local/bin/pandoc-citeproc:
-    Filter returned error status 1
-    Error: processing vignette 'dggridR.Rmd' failed with diagnostics:
-    pandoc document conversion failed with error 83
-    Execution halted
-    ```
-
 # DiagrammeR
 
 Version: 1.0.0
@@ -3418,159 +993,59 @@ Version: 1.0.0
       Note: found 1 marked UTF-8 string
     ```
 
-# DiffBind
+# dimRed
 
-Version: 2.10.0
-
-## In both
-
-*   checking whether package ‘DiffBind’ can be installed ... ERROR
-    ```
-    Installation failed.
-    See ‘/Users/lionel/Desktop/rlang/revdep/checks.noindex/DiffBind/new/DiffBind.Rcheck/00install.out’ for details.
-    ```
-
-*   checking package dependencies ... NOTE
-    ```
-    Packages which this enhances but not available for checking:
-      ‘rgl’ ‘XLConnect’
-    ```
-
-## Installation
-
-### Devel
-
-```
-* installing *source* package ‘DiffBind’ ...
-** libs
-clang++ -I"/Library/Frameworks/R.framework/Resources/include" -DNDEBUG -D_USE_KNETFILE -DBGZF_CACHE -D_FILE_OFFSET_BITS=64 -D_LARGEFILE64_SOURCE -I"/Users/lionel/Desktop/rlang/revdep/library.noindex/DiffBind/Rsamtools/include" -I"/Users/lionel/Desktop/rlang/revdep/library.noindex/DiffBind/Rcpp/include" -I/usr/local/include   -fPIC  -mtune=core2 -O3 -c RcppExports.cpp -o RcppExports.o
-clang++ -I"/Library/Frameworks/R.framework/Resources/include" -DNDEBUG -D_USE_KNETFILE -DBGZF_CACHE -D_FILE_OFFSET_BITS=64 -D_LARGEFILE64_SOURCE -I"/Users/lionel/Desktop/rlang/revdep/library.noindex/DiffBind/Rsamtools/include" -I"/Users/lionel/Desktop/rlang/revdep/library.noindex/DiffBind/Rcpp/include" -I/usr/local/include   -fPIC  -mtune=core2 -O3 -c bamReader.cpp -o bamReader.o
-clang++ -I"/Library/Frameworks/R.framework/Resources/include" -DNDEBUG -D_USE_KNETFILE -DBGZF_CACHE -D_FILE_OFFSET_BITS=64 -D_LARGEFILE64_SOURCE -I"/Users/lionel/Desktop/rlang/revdep/library.noindex/DiffBind/Rsamtools/include" -I"/Users/lionel/Desktop/rlang/revdep/library.noindex/DiffBind/Rcpp/include" -I/usr/local/include   -fPIC  -mtune=core2 -O3 -c bedReader.cpp -o bedReader.o
-clang++ -I"/Library/Frameworks/R.framework/Resources/include" -DNDEBUG -D_USE_KNETFILE -DBGZF_CACHE -D_FILE_OFFSET_BITS=64 -D_LARGEFILE64_SOURCE -I"/Users/lionel/Desktop/rlang/revdep/library.noindex/DiffBind/Rsamtools/include" -I"/Users/lionel/Desktop/rlang/revdep/library.noindex/DiffBind/Rcpp/include" -I/usr/local/include   -fPIC  -mtune=core2 -O3 -c bitBucket.cpp -o bitBucket.o
-clang++ -I"/Library/Frameworks/R.framework/Resources/include" -DNDEBUG -D_USE_KNETFILE -DBGZF_CACHE -D_FILE_OFFSET_BITS=64 -D_LARGEFILE64_SOURCE -I"/Users/lionel/Desktop/rlang/revdep/library.noindex/DiffBind/Rsamtools/include" -I"/Users/lionel/Desktop/rlang/revdep/library.noindex/DiffBind/Rcpp/include" -I/usr/local/include   -fPIC  -mtune=core2 -O3 -c croi_func.cpp -o croi_func.o
-clang++ -I"/Library/Frameworks/R.framework/Resources/include" -DNDEBUG -D_USE_KNETFILE -DBGZF_CACHE -D_FILE_OFFSET_BITS=64 -D_LARGEFILE64_SOURCE -I"/Users/lionel/Desktop/rlang/revdep/library.noindex/DiffBind/Rsamtools/include" -I"/Users/lionel/Desktop/rlang/revdep/library.noindex/DiffBind/Rcpp/include" -I/usr/local/include   -fPIC  -mtune=core2 -O3 -c croi_main.cpp -o croi_main.o
-clang++ -I"/Library/Frameworks/R.framework/Resources/include" -DNDEBUG -D_USE_KNETFILE -DBGZF_CACHE -D_FILE_OFFSET_BITS=64 -D_LARGEFILE64_SOURCE -I"/Users/lionel/Desktop/rlang/revdep/library.noindex/DiffBind/Rsamtools/include" -I"/Users/lionel/Desktop/rlang/revdep/library.noindex/DiffBind/Rcpp/include" -I/usr/local/include   -fPIC  -mtune=core2 -O3 -c densitySet.cpp -o densitySet.o
-clang++ -I"/Library/Frameworks/R.framework/Resources/include" -DNDEBUG -D_USE_KNETFILE -DBGZF_CACHE -D_FILE_OFFSET_BITS=64 -D_LARGEFILE64_SOURCE -I"/Users/lionel/Desktop/rlang/revdep/library.noindex/DiffBind/Rsamtools/include" -I"/Users/lionel/Desktop/rlang/revdep/library.noindex/DiffBind/Rcpp/include" -I/usr/local/include   -fPIC  -mtune=core2 -O3 -c iBucket.cpp -o iBucket.o
-clang++ -I"/Library/Frameworks/R.framework/Resources/include" -DNDEBUG -D_USE_KNETFILE -DBGZF_CACHE -D_FILE_OFFSET_BITS=64 -D_LARGEFILE64_SOURCE -I"/Users/lionel/Desktop/rlang/revdep/library.noindex/DiffBind/Rsamtools/include" -I"/Users/lionel/Desktop/rlang/revdep/library.noindex/DiffBind/Rcpp/include" -I/usr/local/include   -fPIC  -mtune=core2 -O3 -c interval.cpp -o interval.o
-clang++ -I"/Library/Frameworks/R.framework/Resources/include" -DNDEBUG -D_USE_KNETFILE -DBGZF_CACHE -D_FILE_OFFSET_BITS=64 -D_LARGEFILE64_SOURCE -I"/Users/lionel/Desktop/rlang/revdep/library.noindex/DiffBind/Rsamtools/include" -I"/Users/lionel/Desktop/rlang/revdep/library.noindex/DiffBind/Rcpp/include" -I/usr/local/include   -fPIC  -mtune=core2 -O3 -c intervalDensity.cpp -o intervalDensity.o
-clang++ -I"/Library/Frameworks/R.framework/Resources/include" -DNDEBUG -D_USE_KNETFILE -DBGZF_CACHE -D_FILE_OFFSET_BITS=64 -D_LARGEFILE64_SOURCE -I"/Users/lionel/Desktop/rlang/revdep/library.noindex/DiffBind/Rsamtools/include" -I"/Users/lionel/Desktop/rlang/revdep/library.noindex/DiffBind/Rcpp/include" -I/usr/local/include   -fPIC  -mtune=core2 -O3 -c intervalNode.cpp -o intervalNode.o
-clang++ -I"/Library/Frameworks/R.framework/Resources/include" -DNDEBUG -D_USE_KNETFILE -DBGZF_CACHE -D_FILE_OFFSET_BITS=64 -D_LARGEFILE64_SOURCE -I"/Users/lionel/Desktop/rlang/revdep/library.noindex/DiffBind/Rsamtools/include" -I"/Users/lionel/Desktop/rlang/revdep/library.noindex/DiffBind/Rcpp/include" -I/usr/local/include   -fPIC  -mtune=core2 -O3 -c intervalSet.cpp -o intervalSet.o
-clang++ -I"/Library/Frameworks/R.framework/Resources/include" -DNDEBUG -D_USE_KNETFILE -DBGZF_CACHE -D_FILE_OFFSET_BITS=64 -D_LARGEFILE64_SOURCE -I"/Users/lionel/Desktop/rlang/revdep/library.noindex/DiffBind/Rsamtools/include" -I"/Users/lionel/Desktop/rlang/revdep/library.noindex/DiffBind/Rcpp/include" -I/usr/local/include   -fPIC  -mtune=core2 -O3 -c intervalTree.cpp -o intervalTree.o
-clang++ -I"/Library/Frameworks/R.framework/Resources/include" -DNDEBUG -D_USE_KNETFILE -DBGZF_CACHE -D_FILE_OFFSET_BITS=64 -D_LARGEFILE64_SOURCE -I"/Users/lionel/Desktop/rlang/revdep/library.noindex/DiffBind/Rsamtools/include" -I"/Users/lionel/Desktop/rlang/revdep/library.noindex/DiffBind/Rcpp/include" -I/usr/local/include   -fPIC  -mtune=core2 -O3 -c merge.cpp -o merge.o
-clang -I"/Library/Frameworks/R.framework/Resources/include" -DNDEBUG -D_USE_KNETFILE -DBGZF_CACHE -D_FILE_OFFSET_BITS=64 -D_LARGEFILE64_SOURCE -I"/Users/lionel/Desktop/rlang/revdep/library.noindex/DiffBind/Rsamtools/include" -I"/Users/lionel/Desktop/rlang/revdep/library.noindex/DiffBind/Rcpp/include" -I/usr/local/include   -fPIC  -mtune=core2  -O3 -c mergeOne.c -o mergeOne.o
-clang++ -I"/Library/Frameworks/R.framework/Resources/include" -DNDEBUG -D_USE_KNETFILE -DBGZF_CACHE -D_FILE_OFFSET_BITS=64 -D_LARGEFILE64_SOURCE -I"/Users/lionel/Desktop/rlang/revdep/library.noindex/DiffBind/Rsamtools/include" -I"/Users/lionel/Desktop/rlang/revdep/library.noindex/DiffBind/Rcpp/include" -I/usr/local/include   -fPIC  -mtune=core2 -O3 -c nodeGroup.cpp -o nodeGroup.o
-clang++ -I"/Library/Frameworks/R.framework/Resources/include" -DNDEBUG -D_USE_KNETFILE -DBGZF_CACHE -D_FILE_OFFSET_BITS=64 -D_LARGEFILE64_SOURCE -I"/Users/lionel/Desktop/rlang/revdep/library.noindex/DiffBind/Rsamtools/include" -I"/Users/lionel/Desktop/rlang/revdep/library.noindex/DiffBind/Rcpp/include" -I/usr/local/include   -fPIC  -mtune=core2 -O3 -c peakOrder.cpp -o peakOrder.o
-clang++ -I"/Library/Frameworks/R.framework/Resources/include" -DNDEBUG -D_USE_KNETFILE -DBGZF_CACHE -D_FILE_OFFSET_BITS=64 -D_LARGEFILE64_SOURCE -I"/Users/lionel/Desktop/rlang/revdep/library.noindex/DiffBind/Rsamtools/include" -I"/Users/lionel/Desktop/rlang/revdep/library.noindex/DiffBind/Rcpp/include" -I/usr/local/include   -fPIC  -mtune=core2 -O3 -c reader.cpp -o reader.o
-clang++ -I"/Library/Frameworks/R.framework/Resources/include" -DNDEBUG -D_USE_KNETFILE -DBGZF_CACHE -D_FILE_OFFSET_BITS=64 -D_LARGEFILE64_SOURCE -I"/Users/lionel/Desktop/rlang/revdep/library.noindex/DiffBind/Rsamtools/include" -I"/Users/lionel/Desktop/rlang/revdep/library.noindex/DiffBind/Rcpp/include" -I/usr/local/include   -fPIC  -mtune=core2 -O3 -c sequence.cpp -o sequence.o
-clang++ -I"/Library/Frameworks/R.framework/Resources/include" -DNDEBUG -D_USE_KNETFILE -DBGZF_CACHE -D_FILE_OFFSET_BITS=64 -D_LARGEFILE64_SOURCE -I"/Users/lionel/Desktop/rlang/revdep/library.noindex/DiffBind/Rsamtools/include" -I"/Users/lionel/Desktop/rlang/revdep/library.noindex/DiffBind/Rcpp/include" -I/usr/local/include   -fPIC  -mtune=core2 -O3 -c util.cpp -o util.o
-clang++ -dynamiclib -Wl,-headerpad_max_install_names -undefined dynamic_lookup -single_module -multiply_defined suppress -L/Library/Frameworks/R.framework/Resources/lib -L/usr/local/lib -o DiffBind.so RcppExports.o bamReader.o bedReader.o bitBucket.o croi_func.o croi_main.o densitySet.o iBucket.o interval.o intervalDensity.o intervalNode.o intervalSet.o intervalTree.o merge.o mergeOne.o nodeGroup.o peakOrder.o reader.o sequence.o util.o /Users/lionel/Desktop/rlang/revdep/library.noindex/DiffBind/Rsamtools/usrlib//libbam.a /Users/lionel/Desktop/rlang/revdep/library.noindex/DiffBind/Rsamtools/usrlib//libbcf.a /Users/lionel/Desktop/rlang/revdep/library.noindex/DiffBind/Rsamtools/usrlib//libtabix.a -lz -pthread -F/Library/Frameworks/R.framework/.. -framework R -Wl,-framework -Wl,CoreFoundation
-installing to /Users/lionel/Desktop/rlang/revdep/checks.noindex/DiffBind/new/DiffBind.Rcheck/DiffBind/libs
-** R
-** data
-** inst
-** byte-compile and prepare package for lazy loading
-Error in loadNamespace(j <- i[[1L]], c(lib.loc, .libPaths()), versionCheck = vI[[j]]) : 
-  there is no package called ‘GO.db’
-ERROR: lazy loading failed for package ‘DiffBind’
-* removing ‘/Users/lionel/Desktop/rlang/revdep/checks.noindex/DiffBind/new/DiffBind.Rcheck/DiffBind’
-
-```
-### CRAN
-
-```
-* installing *source* package ‘DiffBind’ ...
-** libs
-clang++ -I"/Library/Frameworks/R.framework/Resources/include" -DNDEBUG -D_USE_KNETFILE -DBGZF_CACHE -D_FILE_OFFSET_BITS=64 -D_LARGEFILE64_SOURCE -I"/Users/lionel/Desktop/rlang/revdep/library.noindex/DiffBind/Rsamtools/include" -I"/Users/lionel/Desktop/rlang/revdep/library.noindex/DiffBind/Rcpp/include" -I/usr/local/include   -fPIC  -mtune=core2 -O3 -c RcppExports.cpp -o RcppExports.o
-clang++ -I"/Library/Frameworks/R.framework/Resources/include" -DNDEBUG -D_USE_KNETFILE -DBGZF_CACHE -D_FILE_OFFSET_BITS=64 -D_LARGEFILE64_SOURCE -I"/Users/lionel/Desktop/rlang/revdep/library.noindex/DiffBind/Rsamtools/include" -I"/Users/lionel/Desktop/rlang/revdep/library.noindex/DiffBind/Rcpp/include" -I/usr/local/include   -fPIC  -mtune=core2 -O3 -c bamReader.cpp -o bamReader.o
-clang++ -I"/Library/Frameworks/R.framework/Resources/include" -DNDEBUG -D_USE_KNETFILE -DBGZF_CACHE -D_FILE_OFFSET_BITS=64 -D_LARGEFILE64_SOURCE -I"/Users/lionel/Desktop/rlang/revdep/library.noindex/DiffBind/Rsamtools/include" -I"/Users/lionel/Desktop/rlang/revdep/library.noindex/DiffBind/Rcpp/include" -I/usr/local/include   -fPIC  -mtune=core2 -O3 -c bedReader.cpp -o bedReader.o
-clang++ -I"/Library/Frameworks/R.framework/Resources/include" -DNDEBUG -D_USE_KNETFILE -DBGZF_CACHE -D_FILE_OFFSET_BITS=64 -D_LARGEFILE64_SOURCE -I"/Users/lionel/Desktop/rlang/revdep/library.noindex/DiffBind/Rsamtools/include" -I"/Users/lionel/Desktop/rlang/revdep/library.noindex/DiffBind/Rcpp/include" -I/usr/local/include   -fPIC  -mtune=core2 -O3 -c bitBucket.cpp -o bitBucket.o
-clang++ -I"/Library/Frameworks/R.framework/Resources/include" -DNDEBUG -D_USE_KNETFILE -DBGZF_CACHE -D_FILE_OFFSET_BITS=64 -D_LARGEFILE64_SOURCE -I"/Users/lionel/Desktop/rlang/revdep/library.noindex/DiffBind/Rsamtools/include" -I"/Users/lionel/Desktop/rlang/revdep/library.noindex/DiffBind/Rcpp/include" -I/usr/local/include   -fPIC  -mtune=core2 -O3 -c croi_func.cpp -o croi_func.o
-clang++ -I"/Library/Frameworks/R.framework/Resources/include" -DNDEBUG -D_USE_KNETFILE -DBGZF_CACHE -D_FILE_OFFSET_BITS=64 -D_LARGEFILE64_SOURCE -I"/Users/lionel/Desktop/rlang/revdep/library.noindex/DiffBind/Rsamtools/include" -I"/Users/lionel/Desktop/rlang/revdep/library.noindex/DiffBind/Rcpp/include" -I/usr/local/include   -fPIC  -mtune=core2 -O3 -c croi_main.cpp -o croi_main.o
-clang++ -I"/Library/Frameworks/R.framework/Resources/include" -DNDEBUG -D_USE_KNETFILE -DBGZF_CACHE -D_FILE_OFFSET_BITS=64 -D_LARGEFILE64_SOURCE -I"/Users/lionel/Desktop/rlang/revdep/library.noindex/DiffBind/Rsamtools/include" -I"/Users/lionel/Desktop/rlang/revdep/library.noindex/DiffBind/Rcpp/include" -I/usr/local/include   -fPIC  -mtune=core2 -O3 -c densitySet.cpp -o densitySet.o
-clang++ -I"/Library/Frameworks/R.framework/Resources/include" -DNDEBUG -D_USE_KNETFILE -DBGZF_CACHE -D_FILE_OFFSET_BITS=64 -D_LARGEFILE64_SOURCE -I"/Users/lionel/Desktop/rlang/revdep/library.noindex/DiffBind/Rsamtools/include" -I"/Users/lionel/Desktop/rlang/revdep/library.noindex/DiffBind/Rcpp/include" -I/usr/local/include   -fPIC  -mtune=core2 -O3 -c iBucket.cpp -o iBucket.o
-clang++ -I"/Library/Frameworks/R.framework/Resources/include" -DNDEBUG -D_USE_KNETFILE -DBGZF_CACHE -D_FILE_OFFSET_BITS=64 -D_LARGEFILE64_SOURCE -I"/Users/lionel/Desktop/rlang/revdep/library.noindex/DiffBind/Rsamtools/include" -I"/Users/lionel/Desktop/rlang/revdep/library.noindex/DiffBind/Rcpp/include" -I/usr/local/include   -fPIC  -mtune=core2 -O3 -c interval.cpp -o interval.o
-clang++ -I"/Library/Frameworks/R.framework/Resources/include" -DNDEBUG -D_USE_KNETFILE -DBGZF_CACHE -D_FILE_OFFSET_BITS=64 -D_LARGEFILE64_SOURCE -I"/Users/lionel/Desktop/rlang/revdep/library.noindex/DiffBind/Rsamtools/include" -I"/Users/lionel/Desktop/rlang/revdep/library.noindex/DiffBind/Rcpp/include" -I/usr/local/include   -fPIC  -mtune=core2 -O3 -c intervalDensity.cpp -o intervalDensity.o
-clang++ -I"/Library/Frameworks/R.framework/Resources/include" -DNDEBUG -D_USE_KNETFILE -DBGZF_CACHE -D_FILE_OFFSET_BITS=64 -D_LARGEFILE64_SOURCE -I"/Users/lionel/Desktop/rlang/revdep/library.noindex/DiffBind/Rsamtools/include" -I"/Users/lionel/Desktop/rlang/revdep/library.noindex/DiffBind/Rcpp/include" -I/usr/local/include   -fPIC  -mtune=core2 -O3 -c intervalNode.cpp -o intervalNode.o
-clang++ -I"/Library/Frameworks/R.framework/Resources/include" -DNDEBUG -D_USE_KNETFILE -DBGZF_CACHE -D_FILE_OFFSET_BITS=64 -D_LARGEFILE64_SOURCE -I"/Users/lionel/Desktop/rlang/revdep/library.noindex/DiffBind/Rsamtools/include" -I"/Users/lionel/Desktop/rlang/revdep/library.noindex/DiffBind/Rcpp/include" -I/usr/local/include   -fPIC  -mtune=core2 -O3 -c intervalSet.cpp -o intervalSet.o
-clang++ -I"/Library/Frameworks/R.framework/Resources/include" -DNDEBUG -D_USE_KNETFILE -DBGZF_CACHE -D_FILE_OFFSET_BITS=64 -D_LARGEFILE64_SOURCE -I"/Users/lionel/Desktop/rlang/revdep/library.noindex/DiffBind/Rsamtools/include" -I"/Users/lionel/Desktop/rlang/revdep/library.noindex/DiffBind/Rcpp/include" -I/usr/local/include   -fPIC  -mtune=core2 -O3 -c intervalTree.cpp -o intervalTree.o
-clang++ -I"/Library/Frameworks/R.framework/Resources/include" -DNDEBUG -D_USE_KNETFILE -DBGZF_CACHE -D_FILE_OFFSET_BITS=64 -D_LARGEFILE64_SOURCE -I"/Users/lionel/Desktop/rlang/revdep/library.noindex/DiffBind/Rsamtools/include" -I"/Users/lionel/Desktop/rlang/revdep/library.noindex/DiffBind/Rcpp/include" -I/usr/local/include   -fPIC  -mtune=core2 -O3 -c merge.cpp -o merge.o
-clang -I"/Library/Frameworks/R.framework/Resources/include" -DNDEBUG -D_USE_KNETFILE -DBGZF_CACHE -D_FILE_OFFSET_BITS=64 -D_LARGEFILE64_SOURCE -I"/Users/lionel/Desktop/rlang/revdep/library.noindex/DiffBind/Rsamtools/include" -I"/Users/lionel/Desktop/rlang/revdep/library.noindex/DiffBind/Rcpp/include" -I/usr/local/include   -fPIC  -mtune=core2  -O3 -c mergeOne.c -o mergeOne.o
-clang++ -I"/Library/Frameworks/R.framework/Resources/include" -DNDEBUG -D_USE_KNETFILE -DBGZF_CACHE -D_FILE_OFFSET_BITS=64 -D_LARGEFILE64_SOURCE -I"/Users/lionel/Desktop/rlang/revdep/library.noindex/DiffBind/Rsamtools/include" -I"/Users/lionel/Desktop/rlang/revdep/library.noindex/DiffBind/Rcpp/include" -I/usr/local/include   -fPIC  -mtune=core2 -O3 -c nodeGroup.cpp -o nodeGroup.o
-clang++ -I"/Library/Frameworks/R.framework/Resources/include" -DNDEBUG -D_USE_KNETFILE -DBGZF_CACHE -D_FILE_OFFSET_BITS=64 -D_LARGEFILE64_SOURCE -I"/Users/lionel/Desktop/rlang/revdep/library.noindex/DiffBind/Rsamtools/include" -I"/Users/lionel/Desktop/rlang/revdep/library.noindex/DiffBind/Rcpp/include" -I/usr/local/include   -fPIC  -mtune=core2 -O3 -c peakOrder.cpp -o peakOrder.o
-clang++ -I"/Library/Frameworks/R.framework/Resources/include" -DNDEBUG -D_USE_KNETFILE -DBGZF_CACHE -D_FILE_OFFSET_BITS=64 -D_LARGEFILE64_SOURCE -I"/Users/lionel/Desktop/rlang/revdep/library.noindex/DiffBind/Rsamtools/include" -I"/Users/lionel/Desktop/rlang/revdep/library.noindex/DiffBind/Rcpp/include" -I/usr/local/include   -fPIC  -mtune=core2 -O3 -c reader.cpp -o reader.o
-clang++ -I"/Library/Frameworks/R.framework/Resources/include" -DNDEBUG -D_USE_KNETFILE -DBGZF_CACHE -D_FILE_OFFSET_BITS=64 -D_LARGEFILE64_SOURCE -I"/Users/lionel/Desktop/rlang/revdep/library.noindex/DiffBind/Rsamtools/include" -I"/Users/lionel/Desktop/rlang/revdep/library.noindex/DiffBind/Rcpp/include" -I/usr/local/include   -fPIC  -mtune=core2 -O3 -c sequence.cpp -o sequence.o
-clang++ -I"/Library/Frameworks/R.framework/Resources/include" -DNDEBUG -D_USE_KNETFILE -DBGZF_CACHE -D_FILE_OFFSET_BITS=64 -D_LARGEFILE64_SOURCE -I"/Users/lionel/Desktop/rlang/revdep/library.noindex/DiffBind/Rsamtools/include" -I"/Users/lionel/Desktop/rlang/revdep/library.noindex/DiffBind/Rcpp/include" -I/usr/local/include   -fPIC  -mtune=core2 -O3 -c util.cpp -o util.o
-clang++ -dynamiclib -Wl,-headerpad_max_install_names -undefined dynamic_lookup -single_module -multiply_defined suppress -L/Library/Frameworks/R.framework/Resources/lib -L/usr/local/lib -o DiffBind.so RcppExports.o bamReader.o bedReader.o bitBucket.o croi_func.o croi_main.o densitySet.o iBucket.o interval.o intervalDensity.o intervalNode.o intervalSet.o intervalTree.o merge.o mergeOne.o nodeGroup.o peakOrder.o reader.o sequence.o util.o /Users/lionel/Desktop/rlang/revdep/library.noindex/DiffBind/Rsamtools/usrlib//libbam.a /Users/lionel/Desktop/rlang/revdep/library.noindex/DiffBind/Rsamtools/usrlib//libbcf.a /Users/lionel/Desktop/rlang/revdep/library.noindex/DiffBind/Rsamtools/usrlib//libtabix.a -lz -pthread -F/Library/Frameworks/R.framework/.. -framework R -Wl,-framework -Wl,CoreFoundation
-installing to /Users/lionel/Desktop/rlang/revdep/checks.noindex/DiffBind/old/DiffBind.Rcheck/DiffBind/libs
-** R
-** data
-** inst
-** byte-compile and prepare package for lazy loading
-Error in loadNamespace(j <- i[[1L]], c(lib.loc, .libPaths()), versionCheck = vI[[j]]) : 
-  there is no package called ‘GO.db’
-ERROR: lazy loading failed for package ‘DiffBind’
-* removing ‘/Users/lionel/Desktop/rlang/revdep/checks.noindex/DiffBind/old/DiffBind.Rcheck/DiffBind’
-
-```
-# diffcyt
-
-Version: 1.2.0
+Version: 0.2.2
 
 ## In both
 
-*   checking re-building of vignette outputs ... WARNING
+*   checking examples ... ERROR
     ```
-    Error in re-building vignettes:
-      ...
-    Quitting from lines 127-144 (diffcyt_workflow.Rmd) 
-    Error: processing vignette 'diffcyt_workflow.Rmd' failed with diagnostics:
-    there is no package called 'HDCytoData'
+    Running examples in ‘dimRed-Ex.R’ failed
+    The error most likely occurred in:
+    
+    > ### Name: PCA_L1-class
+    > ### Title: Principal Component Analysis with L1 error.
+    > ### Aliases: PCA_L1-class PCA_L1
+    > 
+    > ### ** Examples
+    > 
+    > dat <- loadDataSet("Iris")
+    > 
+    > ## using the S4 Class
+    > pca_l1 <- PCA_L1()
+    > emb <- pca_l1@fun(dat, pca_l1@stdpars)
+    Error in chckpkg("pcaL1") : 
+      require 'pcaL1' package, install it using install.packages('pcaL1')
+    Calls: <Anonymous> -> chckpkg
     Execution halted
     ```
 
+*   checking tests ...
+    ```
+     ERROR
+    Running the tests in ‘tests/testthat.R’ failed.
+    Last 13 lines of output:
+      
+      The following object is masked from 'package:stats':
+      
+          embed
+      
+      The following object is masked from 'package:base':
+      
+          as.data.frame
+      
+      > 
+      > test_check("dimRed", reporter = ListReporter)
+      2019-01-02 15:50:53.109210: I tensorflow/core/platform/cpu_feature_guard.cc:141] Your CPU supports instructions that this TensorFlow binary was not compiled to use: AVX2 FMA
+      Using TensorFlow backend.
+      Error: Test failures
+      Execution halted
+    ```
+
 *   checking package dependencies ... NOTE
     ```
-    Package suggested but not available for checking: ‘HDCytoData’
-    ```
-
-*   checking R code for possible problems ... NOTE
-    ```
-    ...
-      (/Users/lionel/Desktop/rlang/revdep/checks.noindex/diffcyt/new/diffcyt.Rcheck/00_pkg_src/diffcyt/R/calcMedians.R:133-136)
-    calcMediansByClusterMarker: no visible binding for global variable
-      ‘cluster_id’
-      (/Users/lionel/Desktop/rlang/revdep/checks.noindex/diffcyt/new/diffcyt.Rcheck/00_pkg_src/diffcyt/R/calcMediansByClusterMarker.R:123-126)
-    calcMediansByClusterMarker: no visible binding for global variable
-      ‘marker’
-      (/Users/lionel/Desktop/rlang/revdep/checks.noindex/diffcyt/new/diffcyt.Rcheck/00_pkg_src/diffcyt/R/calcMediansByClusterMarker.R:123-126)
-    calcMediansByClusterMarker: no visible binding for global variable
-      ‘value’
-      (/Users/lionel/Desktop/rlang/revdep/checks.noindex/diffcyt/new/diffcyt.Rcheck/00_pkg_src/diffcyt/R/calcMediansByClusterMarker.R:123-126)
-    calcMediansBySampleMarker: no visible binding for global variable
-      ‘sample_id’
-      (/Users/lionel/Desktop/rlang/revdep/checks.noindex/diffcyt/new/diffcyt.Rcheck/00_pkg_src/diffcyt/R/calcMediansBySampleMarker.R:119-122)
-    calcMediansBySampleMarker: no visible binding for global variable
-      ‘marker’
-      (/Users/lionel/Desktop/rlang/revdep/checks.noindex/diffcyt/new/diffcyt.Rcheck/00_pkg_src/diffcyt/R/calcMediansBySampleMarker.R:119-122)
-    calcMediansBySampleMarker: no visible binding for global variable
-      ‘value’
-      (/Users/lionel/Desktop/rlang/revdep/checks.noindex/diffcyt/new/diffcyt.Rcheck/00_pkg_src/diffcyt/R/calcMediansBySampleMarker.R:119-122)
-    Undefined global functions or variables:
-      cluster_id marker sample_id value
-    ```
-
-# diffloop
-
-Version: 1.10.0
-
-## In both
-
-*   checking for hidden files and directories ... NOTE
-    ```
-    Found the following hidden files and directories:
-      .travis.yml
-    These were most likely included in error. See section ‘Package
-    structure’ in the ‘Writing R Extensions’ manual.
+    Package suggested but not available for checking: ‘pcaL1’
     ```
 
 # DisImpact
@@ -3583,95 +1058,6 @@ Version: 0.0.3
     ```
     Namespace in Imports field not imported from: ‘magrittr’
       All declared Imports should be used.
-    ```
-
-# disto
-
-Version: 0.2.0
-
-## In both
-
-*   checking dependencies in R code ... NOTE
-    ```
-    Namespaces in Imports field not imported from:
-      ‘dplyr’ ‘proxy’
-      All declared Imports should be used.
-    ```
-
-# DiversityOccupancy
-
-Version: 1.0.6
-
-## In both
-
-*   checking whether package ‘DiversityOccupancy’ can be installed ... ERROR
-    ```
-    Installation failed.
-    See ‘/Users/lionel/Desktop/rlang/revdep/checks.noindex/DiversityOccupancy/new/DiversityOccupancy.Rcheck/00install.out’ for details.
-    ```
-
-## Installation
-
-### Devel
-
-```
-* installing *source* package ‘DiversityOccupancy’ ...
-** package ‘DiversityOccupancy’ successfully unpacked and MD5 sums checked
-** R
-** data
-*** moving datasets to lazyload DB
-** inst
-** byte-compile and prepare package for lazy loading
-Unable to find any JVMs matching version "(null)".
-No Java runtime present, try --request to install.
-Warning in system("/usr/libexec/java_home", intern = TRUE) :
-  running command '/usr/libexec/java_home' had status 1
-Error : .onLoad failed in loadNamespace() for 'rJava', details:
-  call: dyn.load(file, DLLpath = DLLpath, ...)
-  error: unable to load shared object '/Users/lionel/Desktop/rlang/revdep/library.noindex/DiversityOccupancy/rJava/libs/rJava.so':
-  dlopen(/Users/lionel/Desktop/rlang/revdep/library.noindex/DiversityOccupancy/rJava/libs/rJava.so, 6): Library not loaded: /Library/Java/JavaVirtualMachines/jdk-9.jdk/Contents/Home/lib/server/libjvm.dylib
-  Referenced from: /Users/lionel/Desktop/rlang/revdep/library.noindex/DiversityOccupancy/rJava/libs/rJava.so
-  Reason: image not found
-ERROR: lazy loading failed for package ‘DiversityOccupancy’
-* removing ‘/Users/lionel/Desktop/rlang/revdep/checks.noindex/DiversityOccupancy/new/DiversityOccupancy.Rcheck/DiversityOccupancy’
-
-```
-### CRAN
-
-```
-* installing *source* package ‘DiversityOccupancy’ ...
-** package ‘DiversityOccupancy’ successfully unpacked and MD5 sums checked
-** R
-** data
-*** moving datasets to lazyload DB
-** inst
-** byte-compile and prepare package for lazy loading
-Unable to find any JVMs matching version "(null)".
-No Java runtime present, try --request to install.
-Warning in system("/usr/libexec/java_home", intern = TRUE) :
-  running command '/usr/libexec/java_home' had status 1
-Error : .onLoad failed in loadNamespace() for 'rJava', details:
-  call: dyn.load(file, DLLpath = DLLpath, ...)
-  error: unable to load shared object '/Users/lionel/Desktop/rlang/revdep/library.noindex/DiversityOccupancy/rJava/libs/rJava.so':
-  dlopen(/Users/lionel/Desktop/rlang/revdep/library.noindex/DiversityOccupancy/rJava/libs/rJava.so, 6): Library not loaded: /Library/Java/JavaVirtualMachines/jdk-9.jdk/Contents/Home/lib/server/libjvm.dylib
-  Referenced from: /Users/lionel/Desktop/rlang/revdep/library.noindex/DiversityOccupancy/rJava/libs/rJava.so
-  Reason: image not found
-ERROR: lazy loading failed for package ‘DiversityOccupancy’
-* removing ‘/Users/lionel/Desktop/rlang/revdep/checks.noindex/DiversityOccupancy/old/DiversityOccupancy.Rcheck/DiversityOccupancy’
-
-```
-# DLMtool
-
-Version: 5.2.3
-
-## In both
-
-*   checking installed package size ... NOTE
-    ```
-      installed size is  9.4Mb
-      sub-directories of 1Mb or more:
-        R      6.0Mb
-        data   2.1Mb
     ```
 
 # dlookr
@@ -3692,6 +1078,43 @@ Version: 0.3.2
     Namespaces in Imports field not imported from:
       ‘dbplyr’ ‘randomForest’
       All declared Imports should be used.
+    ```
+
+# dodgr
+
+Version: 0.1.1
+
+## In both
+
+*   checking re-building of vignette outputs ... WARNING
+    ```
+    ...
+    1 of 1 page converted in 0.422531 seconds
+    
+    Attaching package: 'magrittr'
+    
+    The following objects are masked from 'package:testthat':
+    
+        equals, is_less_than, not
+    
+    processing of PostScript specials is disabled (Ghostscript not found)
+    pre-processing DVI file (format 2)
+    processing page 1
+      WARNING: 658 PostScript specials ignored. The resulting SVG might look wrong.
+      page size: 29.6887pt x 17.2154pt (10.4344mm x 6.05054mm)
+      page written to fig3-1.svg
+    1 of 1 page converted in 0.422384 seconds
+    pandoc-citeproc: when expecting a product (:*:), encountered Object instead
+    Error running filter /usr/local/bin/pandoc-citeproc:
+    Filter returned error status 1
+    Error: processing vignette 'dodgr.Rmd' failed with diagnostics:
+    pandoc document conversion failed with error 83
+    Execution halted
+    ```
+
+*   checking for GNU extensions in Makefiles ... NOTE
+    ```
+    GNU make is a SystemRequirements.
     ```
 
 # dotwhisker
@@ -3745,375 +1168,17 @@ Version: 0.7.8
       Note: found 4 marked UTF-8 strings
     ```
 
-# dplyr.teradata
-
-Version: 0.3.0
-
-## In both
-
-*   checking dependencies in R code ... NOTE
-    ```
-    Namespaces in Imports field not imported from:
-      ‘bit64’ ‘rstudioapi’
-      All declared Imports should be used.
-    ```
-
-# DSAIDE
-
-Version: 0.7.0
-
-## In both
-
-*   checking re-building of vignette outputs ... WARNING
-    ```
-    Error in re-building vignettes:
-      ...
-    pandoc-citeproc: when expecting a product (:*:), encountered Object instead
-    Error running filter /usr/local/bin/pandoc-citeproc:
-    Filter returned error status 1
-    Error: processing vignette 'DSAIDE.Rmd' failed with diagnostics:
-    pandoc document conversion failed with error 83
-    Execution halted
-    ```
-
-*   checking installed package size ... NOTE
-    ```
-      installed size is  5.4Mb
-      sub-directories of 1Mb or more:
-        media       2.2Mb
-        shinyapps   2.6Mb
-    ```
-
-*   checking dependencies in R code ... NOTE
-    ```
-    Namespaces in Imports field not imported from:
-      ‘knitr’ ‘rmarkdown’ ‘utils’
-      All declared Imports should be used.
-    ```
-
-# DSAIRM
-
-Version: 0.4.0
-
-## In both
-
-*   checking re-building of vignette outputs ... WARNING
-    ```
-    Error in re-building vignettes:
-      ...
-    Loading required package: shiny
-    Welcome to the DSAIRM package. Type dsairmmenu() to get started.
-    pandoc-citeproc: when expecting a product (:*:), encountered Object instead
-    Error running filter /usr/local/bin/pandoc-citeproc:
-    Filter returned error status 1
-    Error: processing vignette 'DSAIRM.Rmd' failed with diagnostics:
-    pandoc document conversion failed with error 83
-    Execution halted
-    ```
-
-*   checking dependencies in R code ... NOTE
-    ```
-    Namespaces in Imports field not imported from:
-      ‘knitr’ ‘rmarkdown’
-      All declared Imports should be used.
-    ```
-
-# dtwclust
-
-Version: 5.5.1
-
-## In both
-
-*   checking installed package size ... NOTE
-    ```
-      installed size is  5.7Mb
-      sub-directories of 1Mb or more:
-        R     2.0Mb
-        doc   2.5Mb
-    ```
-
-*   checking for GNU extensions in Makefiles ... NOTE
-    ```
-    GNU make is a SystemRequirements.
-    ```
-
-# duawranglr
-
-Version: 0.6.3
-
-## In both
-
-*   checking dependencies in R code ... NOTE
-    ```
-    Namespaces in Imports field not imported from:
-      ‘digest’ ‘dplyr’
-      All declared Imports should be used.
-    ```
-
-# DuoClustering2018
-
-Version: 1.0.0
-
-## In both
-
-*   R CMD check timed out
-    
-
-*   checking R code for possible problems ... NOTE
-    ```
-    ...
-      (/Users/lionel/Desktop/rlang/revdep/checks.noindex/DuoClustering2018/new/DuoClustering2018.Rcheck/00_pkg_src/DuoClustering2018/R/plot_timing.R:98-112)
-    plot_timing: no visible binding for global variable ‘norm.time’
-      (/Users/lionel/Desktop/rlang/revdep/checks.noindex/DuoClustering2018/new/DuoClustering2018.Rcheck/00_pkg_src/DuoClustering2018/R/plot_timing.R:98-112)
-    plot_timing: no visible binding for global variable ‘dataset’
-      (/Users/lionel/Desktop/rlang/revdep/checks.noindex/DuoClustering2018/new/DuoClustering2018.Rcheck/00_pkg_src/DuoClustering2018/R/plot_timing.R:115-128)
-    plot_timing: no visible binding for global variable ‘filtering’
-      (/Users/lionel/Desktop/rlang/revdep/checks.noindex/DuoClustering2018/new/DuoClustering2018.Rcheck/00_pkg_src/DuoClustering2018/R/plot_timing.R:115-128)
-    plot_timing: no visible binding for global variable ‘method’
-      (/Users/lionel/Desktop/rlang/revdep/checks.noindex/DuoClustering2018/new/DuoClustering2018.Rcheck/00_pkg_src/DuoClustering2018/R/plot_timing.R:115-128)
-    plot_timing: no visible binding for global variable ‘k’
-      (/Users/lionel/Desktop/rlang/revdep/checks.noindex/DuoClustering2018/new/DuoClustering2018.Rcheck/00_pkg_src/DuoClustering2018/R/plot_timing.R:115-128)
-    plot_timing: no visible binding for global variable ‘elapsed’
-      (/Users/lionel/Desktop/rlang/revdep/checks.noindex/DuoClustering2018/new/DuoClustering2018.Rcheck/00_pkg_src/DuoClustering2018/R/plot_timing.R:115-128)
-    plot_timing: no visible binding for global variable ‘medianelapsed’
-      (/Users/lionel/Desktop/rlang/revdep/checks.noindex/DuoClustering2018/new/DuoClustering2018.Rcheck/00_pkg_src/DuoClustering2018/R/plot_timing.R:115-128)
-    Undefined global functions or variables:
-      ARI ari.stab cell cluster data.wide dataset ds ds.norm elapsed
-      entropy est_k estnclust filtering k k_diff med.t medARI
-      median.elapsed median.stability medianARI medianelapsed method
-      norm.time run s s.norm s.true s.true.norm sce stability trueclass
-      truenclust
-    ```
-
-# dynfrail
-
-Version: 0.5.2
-
-## In both
-
-*   checking whether package ‘dynfrail’ can be installed ... ERROR
-    ```
-    Installation failed.
-    See ‘/Users/lionel/Desktop/rlang/revdep/checks.noindex/dynfrail/new/dynfrail.Rcheck/00install.out’ for details.
-    ```
-
-## Installation
-
-### Devel
-
-```
-* installing *source* package ‘dynfrail’ ...
-** package ‘dynfrail’ successfully unpacked and MD5 sums checked
-** libs
-clang++ -I"/Library/Frameworks/R.framework/Resources/include" -DNDEBUG  -I"/Users/lionel/Desktop/rlang/revdep/library.noindex/dynfrail/Rcpp/include" -I"/Users/lionel/Desktop/rlang/revdep/library.noindex/dynfrail/RcppArmadillo/include" -I/usr/local/include  -fopenmp  -fPIC  -mtune=core2 -O3 -c RcppExports.cpp -o RcppExports.o
-clang++ -I"/Library/Frameworks/R.framework/Resources/include" -DNDEBUG  -I"/Users/lionel/Desktop/rlang/revdep/library.noindex/dynfrail/Rcpp/include" -I"/Users/lionel/Desktop/rlang/revdep/library.noindex/dynfrail/RcppArmadillo/include" -I/usr/local/include  -fopenmp  -fPIC  -mtune=core2 -O3 -c estep_new.cpp -o estep_new.o
-clang: error: unsupported option '-fopenmp'clang: error: 
-unsupported option '-fopenmp'
-make: *** [estep_new.o] Error 1
-make: *** Waiting for unfinished jobs....
-make: *** [RcppExports.o] Error 1
-ERROR: compilation failed for package ‘dynfrail’
-* removing ‘/Users/lionel/Desktop/rlang/revdep/checks.noindex/dynfrail/new/dynfrail.Rcheck/dynfrail’
-
-```
-### CRAN
-
-```
-* installing *source* package ‘dynfrail’ ...
-** package ‘dynfrail’ successfully unpacked and MD5 sums checked
-** libs
-clang++ -I"/Library/Frameworks/R.framework/Resources/include" -DNDEBUG  -I"/Users/lionel/Desktop/rlang/revdep/library.noindex/dynfrail/Rcpp/include" -I"/Users/lionel/Desktop/rlang/revdep/library.noindex/dynfrail/RcppArmadillo/include" -I/usr/local/include  -fopenmp  -fPIC  -mtune=core2 -O3 -c RcppExports.cpp -o RcppExports.o
-clang++ -I"/Library/Frameworks/R.framework/Resources/include" -DNDEBUG  -I"/Users/lionel/Desktop/rlang/revdep/library.noindex/dynfrail/Rcpp/include" -I"/Users/lionel/Desktop/rlang/revdep/library.noindex/dynfrail/RcppArmadillo/include" -I/usr/local/include  -fopenmp  -fPIC  -mtune=core2 -O3 -c estep_new.cpp -o estep_new.o
-clang: error: unsupported option '-fopenmp'
-clang: error: unsupported option '-fopenmp'
-make: *** [RcppExports.o] Error 1
-make: *** Waiting for unfinished jobs....
-make: *** [estep_new.o] Error 1
-ERROR: compilation failed for package ‘dynfrail’
-* removing ‘/Users/lionel/Desktop/rlang/revdep/checks.noindex/dynfrail/old/dynfrail.Rcheck/dynfrail’
-
-```
-# dynutils
-
-Version: 1.0.0
-
-## In both
-
-*   checking dependencies in R code ... NOTE
-    ```
-    Namespaces in Imports field not imported from:
-      ‘Rcpp’ ‘processx’
-      All declared Imports should be used.
-    ```
-
-# easyformatr
-
-Version: 0.1.2
-
-## Newly broken
-
-*   checking whether package ‘easyformatr’ can be installed ... WARNING
-    ```
-    Found the following significant warnings:
-      Warning: The `printer` argument is soft-deprecated as of rlang 0.3.0.
-    See ‘/Users/lionel/Desktop/rlang/revdep/checks.noindex/easyformatr/new/easyformatr.Rcheck/00install.out’ for details.
-    ```
-
-# ecoengine
-
-Version: 1.11.0
-
-## In both
-
-*   checking dependencies in R code ... NOTE
-    ```
-    Namespace in Imports field not imported from: ‘magrittr’
-      All declared Imports should be used.
-    ```
-
-# econet
-
-Version: 0.1.81
-
-## In both
-
-*   checking dependencies in R code ... NOTE
-    ```
-    Namespace in Imports field not imported from: ‘tnet’
-      All declared Imports should be used.
-    ```
-
-# eda4treeR
-
-Version: 0.2.0
-
-## In both
-
-*   checking dependencies in R code ... NOTE
-    ```
-    Namespaces in Imports field not imported from:
-      ‘dae’ ‘dplyr’
-      All declared Imports should be used.
-    ```
-
-# EdSurvey
-
-Version: 2.2.2
-
-## In both
-
-*   checking installed package size ... NOTE
-    ```
-      installed size is  5.8Mb
-      sub-directories of 1Mb or more:
-        R   4.1Mb
-    ```
-
-# eechidna
-
-Version: 1.1
-
-## In both
-
-*   checking installed package size ... NOTE
-    ```
-      installed size is  6.9Mb
-      sub-directories of 1Mb or more:
-        data   5.4Mb
-        doc    1.2Mb
-    ```
-
-# eemR
-
-Version: 0.1.5
-
-## In both
-
-*   checking re-building of vignette outputs ... WARNING
-    ```
-    Error in re-building vignettes:
-      ...
-    
-    Attaching package: 'dplyr'
-    
-    The following objects are masked from 'package:stats':
-    
-        filter, lag
-    
-    The following objects are masked from 'package:base':
-    
-        intersect, setdiff, setequal, union
-    
-    pandoc-citeproc: when expecting a product (:*:), encountered Object instead
-    Error running filter /usr/local/bin/pandoc-citeproc:
-    Filter returned error status 1
-    Error: processing vignette 'introduction.Rmd' failed with diagnostics:
-    pandoc document conversion failed with error 83
-    Execution halted
-    ```
-
-# eesim
+# dplyrAssist
 
 Version: 0.1.0
 
 ## In both
 
-*   checking re-building of vignette outputs ... WARNING
+*   checking dependencies in R code ... NOTE
     ```
-    ...
-    
-        intersect, setdiff, setequal, union
-    
-    
-    Attaching package: 'gridExtra'
-    
-    The following object is masked from 'package:dplyr':
-    
-        combine
-    
-    This is dlnm 2.3.6. For details: help(dlnm) and vignette('dlnmOverview').
-    This function may take a minute or two to run, especially if you
-    are creating lots of replications (`n_reps`).
-    This function may take a minute or two to run, especially if you
-    are creating lots of replications (`n_reps`).
-    pandoc-citeproc: when expecting a product (:*:), encountered Object instead
-    Error running filter /usr/local/bin/pandoc-citeproc:
-    Filter returned error status 1
-    Error: processing vignette 'eesim.Rmd' failed with diagnostics:
-    pandoc document conversion failed with error 83
-    Execution halted
-    ```
-
-# EFDR
-
-Version: 0.1.1
-
-## In both
-
-*   checking R code for possible problems ... NOTE
-    ```
-    ...
-      (/Users/lionel/Desktop/rlang/revdep/checks.noindex/EFDR/new/EFDR.Rcheck/00_pkg_src/EFDR/R/EFDR_functions.R:686)
-    .relist.dwt: no visible global function definition for ‘as’
-      (/Users/lionel/Desktop/rlang/revdep/checks.noindex/EFDR/new/EFDR.Rcheck/00_pkg_src/EFDR/R/EFDR_functions.R:686)
-    .std.wav.coeff : <anonymous>: no visible global function definition for
-      ‘mad’
-      (/Users/lionel/Desktop/rlang/revdep/checks.noindex/EFDR/new/EFDR.Rcheck/00_pkg_src/EFDR/R/EFDR_functions.R:698)
-    regrid: no visible global function definition for ‘predict’
-      (/Users/lionel/Desktop/rlang/revdep/checks.noindex/EFDR/new/EFDR.Rcheck/00_pkg_src/EFDR/R/EFDR_functions.R:391-396)
-    regrid: no visible global function definition for ‘var’
-      (/Users/lionel/Desktop/rlang/revdep/checks.noindex/EFDR/new/EFDR.Rcheck/00_pkg_src/EFDR/R/EFDR_functions.R:406)
-    regrid: no visible global function definition for ‘medpolish’
-      (/Users/lionel/Desktop/rlang/revdep/checks.noindex/EFDR/new/EFDR.Rcheck/00_pkg_src/EFDR/R/EFDR_functions.R:427)
-    Undefined global functions or variables:
-      as mad medpolish pnorm predict relist rnorm var
-    Consider adding
-      importFrom("methods", "as")
-      importFrom("stats", "mad", "medpolish", "pnorm", "predict", "rnorm",
-                 "var")
-      importFrom("utils", "relist")
-    to your NAMESPACE file (and ensure that your DESCRIPTION Imports
-    field contains 'methods').
+    Namespaces in Imports field not imported from:
+      ‘tidyr’ ‘tidyverse’
+      All declared Imports should be used.
     ```
 
 # emuR
@@ -4150,108 +1215,51 @@ Version: 1.1.1
         extdata   1.5Mb
     ```
 
-# ENCODExplorer
+# enrichplot
 
-Version: 2.8.0
-
-## In both
-
-*   checking installed package size ... NOTE
-    ```
-      installed size is 74.0Mb
-      sub-directories of 1Mb or more:
-        data     24.1Mb
-        doc       1.5Mb
-        extdata  48.0Mb
-    ```
-
-*   checking R code for possible problems ... NOTE
-    ```
-    ...
-    step6_target: no visible binding for global variable ‘target’
-      (/Users/lionel/Desktop/rlang/revdep/checks.noindex/ENCODExplorer/new/ENCODExplorer.Rcheck/00_pkg_src/ENCODExplorer/R/prepare_data.R:354-355)
-    step7: no visible binding for global variable ‘organism’
-      (/Users/lionel/Desktop/rlang/revdep/checks.noindex/ENCODExplorer/new/ENCODExplorer.Rcheck/00_pkg_src/ENCODExplorer/R/prepare_data.R:424-425)
-    step8: no visible binding for global variable ‘investigated_as’
-      (/Users/lionel/Desktop/rlang/revdep/checks.noindex/ENCODExplorer/new/ENCODExplorer.Rcheck/00_pkg_src/ENCODExplorer/R/prepare_data.R:436-437)
-    step8: no visible binding for global variable ‘target’
-      (/Users/lionel/Desktop/rlang/revdep/checks.noindex/ENCODExplorer/new/ENCODExplorer.Rcheck/00_pkg_src/ENCODExplorer/R/prepare_data.R:439-440)
-    step9: no visible binding for global variable ‘organism’
-      (/Users/lionel/Desktop/rlang/revdep/checks.noindex/ENCODExplorer/new/ENCODExplorer.Rcheck/00_pkg_src/ENCODExplorer/R/prepare_data.R:449-450)
-    Undefined global functions or variables:
-      . accession antibody_caption antibody_characterization
-      antibody_target assay biological_replicate_number biosample_name
-      biosample_type col_name controls data date_released download.file
-      encode_df Experiment file_accession file_format href investigated_as
-      lab nucleic_acid_term organism platform project replicate_antibody
-      replicate_library server status submitted_by target
-      technical_replicate_number treatment ui value Value
-    Consider adding
-      importFrom("utils", "data", "download.file")
-    to your NAMESPACE file.
-    ```
-
-*   checking data for non-ASCII characters ... NOTE
-    ```
-      Note: found 771 marked UTF-8 strings
-    ```
-
-# epicontacts
-
-Version: 1.1.0
+Version: 1.2.0
 
 ## In both
 
-*   checking dependencies in R code ... NOTE
+*   checking whether package ‘enrichplot’ can be installed ... ERROR
     ```
-    Namespace in Imports field not imported from: ‘colorspace’
-      All declared Imports should be used.
-    ```
-
-# epiphy
-
-Version: 0.3.4
-
-## In both
-
-*   checking re-building of vignette outputs ... WARNING
-    ```
-    Error in re-building vignettes:
-      ...
-    pandoc-citeproc: when expecting a product (:*:), encountered Object instead
-    Error running filter /usr/local/bin/pandoc-citeproc:
-    Filter returned error status 1
-    Error: processing vignette 'defs-and-eqns.Rmd' failed with diagnostics:
-    pandoc document conversion failed with error 83
-    Execution halted
+    Installation failed.
+    See ‘/Users/lionel/Desktop/rlang/revdep/checks.noindex/enrichplot/new/enrichplot.Rcheck/00install.out’ for details.
     ```
 
-# EpiReport
-
-Version: 0.1.0
-
-## In both
-
-*   checking dependencies in R code ... NOTE
+*   checking package dependencies ... NOTE
     ```
-    Namespaces in Imports field not imported from:
-      ‘extrafont’ ‘graphics’ ‘knitr’ ‘rmarkdown’ ‘utils’
-      All declared Imports should be used.
+    Package suggested but not available for checking: ‘org.Hs.eg.db’
     ```
 
-# EpiSignalDetection
+## Installation
 
-Version: 0.1.1
+### Devel
 
-## In both
+```
+* installing *source* package ‘enrichplot’ ...
+** R
+** inst
+** byte-compile and prepare package for lazy loading
+Error in loadNamespace(j <- i[[1L]], c(lib.loc, .libPaths()), versionCheck = vI[[j]]) : 
+  there is no package called ‘GO.db’
+ERROR: lazy loading failed for package ‘enrichplot’
+* removing ‘/Users/lionel/Desktop/rlang/revdep/checks.noindex/enrichplot/new/enrichplot.Rcheck/enrichplot’
 
-*   checking dependencies in R code ... NOTE
-    ```
-    Namespaces in Imports field not imported from:
-      ‘DT’ ‘ggplot2’ ‘knitr’ ‘pander’
-      All declared Imports should be used.
-    ```
+```
+### CRAN
 
+```
+* installing *source* package ‘enrichplot’ ...
+** R
+** inst
+** byte-compile and prepare package for lazy loading
+Error in loadNamespace(j <- i[[1L]], c(lib.loc, .libPaths()), versionCheck = vI[[j]]) : 
+  there is no package called ‘GO.db’
+ERROR: lazy loading failed for package ‘enrichplot’
+* removing ‘/Users/lionel/Desktop/rlang/revdep/checks.noindex/enrichplot/old/enrichplot.Rcheck/enrichplot’
+
+```
 # epitable
 
 Version: 0.1.2
@@ -4262,19 +1270,6 @@ Version: 0.1.2
     ```
     Namespaces in Imports field not imported from:
       ‘magrittr’ ‘readr’
-      All declared Imports should be used.
-    ```
-
-# epos
-
-Version: 0.1.0
-
-## In both
-
-*   checking dependencies in R code ... NOTE
-    ```
-    Namespaces in Imports field not imported from:
-      ‘dplyr’ ‘testthat’ ‘tidyr’
       All declared Imports should be used.
     ```
 
@@ -4305,17 +1300,6 @@ Version: 3.9.4
     Packages unavailable to check Rd xrefs: ‘tergm’, ‘ergm.count’, ‘networkDynamic’
     ```
 
-# esc
-
-Version: 0.4.1
-
-## In both
-
-*   checking Rd cross-references ... NOTE
-    ```
-    Package unavailable to check Rd xrefs: ‘metafor’
-    ```
-
 # estimatr
 
 Version: 0.14
@@ -4332,224 +1316,15 @@ Version: 0.14
     Package unavailable to check Rd xrefs: ‘texreg’
     ```
 
-# EuPathDB
+# factoextra
 
-Version: 1.0.1
-
-## In both
-
-*   R CMD check timed out
-    
-
-*   checking dependencies in R code ... NOTE
-    ```
-    Package in Depends field not imported from: ‘GenomeInfoDbData’
-      These packages need to be imported from (in the NAMESPACE file)
-      for when this namespace is loaded but not attached.
-    ```
-
-# eurostat
-
-Version: 3.3.1
+Version: 1.0.5
 
 ## In both
 
-*   checking data for non-ASCII characters ... NOTE
+*   checking Rd cross-references ... NOTE
     ```
-      Note: found 595 marked UTF-8 strings
-    ```
-
-# EventStudy
-
-Version: 0.34
-
-## In both
-
-*   checking installed package size ... NOTE
-    ```
-      installed size is  7.1Mb
-      sub-directories of 1Mb or more:
-        doc   5.8Mb
-    ```
-
-*   checking dependencies in R code ... NOTE
-    ```
-    Namespaces in Imports field not imported from:
-      ‘curl’ ‘openxlsx’ ‘stringr’
-      All declared Imports should be used.
-    ```
-
-# factorMerger
-
-Version: 0.3.6
-
-## In both
-
-*   checking dependencies in R code ... NOTE
-    ```
-    Namespaces in Imports field not imported from:
-      ‘forcats’ ‘formula.tools’
-      All declared Imports should be used.
-    ```
-
-# fastLink
-
-Version: 0.5.0
-
-## In both
-
-*   checking whether package ‘fastLink’ can be installed ... ERROR
-    ```
-    Installation failed.
-    See ‘/Users/lionel/Desktop/rlang/revdep/checks.noindex/fastLink/new/fastLink.Rcheck/00install.out’ for details.
-    ```
-
-## Installation
-
-### Devel
-
-```
-* installing *source* package ‘fastLink’ ...
-** package ‘fastLink’ successfully unpacked and MD5 sums checked
-** libs
-clang++ -I"/Library/Frameworks/R.framework/Resources/include" -DNDEBUG  -I"/Users/lionel/Desktop/rlang/revdep/library.noindex/fastLink/RcppArmadillo/include" -I"/Users/lionel/Desktop/rlang/revdep/library.noindex/fastLink/Rcpp/include" -I"/Users/lionel/Desktop/rlang/revdep/library.noindex/fastLink/RcppEigen/include" -I/usr/local/include  -fopenmp  -fPIC  -mtune=core2 -O3 -c RcppExports.cpp -o RcppExports.o
-clang: error: unsupported option '-fopenmp'
-make: *** [RcppExports.o] Error 1
-ERROR: compilation failed for package ‘fastLink’
-* removing ‘/Users/lionel/Desktop/rlang/revdep/checks.noindex/fastLink/new/fastLink.Rcheck/fastLink’
-
-```
-### CRAN
-
-```
-* installing *source* package ‘fastLink’ ...
-** package ‘fastLink’ successfully unpacked and MD5 sums checked
-** libs
-clang++ -I"/Library/Frameworks/R.framework/Resources/include" -DNDEBUG  -I"/Users/lionel/Desktop/rlang/revdep/library.noindex/fastLink/RcppArmadillo/include" -I"/Users/lionel/Desktop/rlang/revdep/library.noindex/fastLink/Rcpp/include" -I"/Users/lionel/Desktop/rlang/revdep/library.noindex/fastLink/RcppEigen/include" -I/usr/local/include  -fopenmp  -fPIC  -mtune=core2 -O3 -c RcppExports.cpp -o RcppExports.o
-clang: error: unsupported option '-fopenmp'
-make: *** [RcppExports.o] Error 1
-ERROR: compilation failed for package ‘fastLink’
-* removing ‘/Users/lionel/Desktop/rlang/revdep/checks.noindex/fastLink/old/fastLink.Rcheck/fastLink’
-
-```
-# fastqcr
-
-Version: 0.1.1
-
-## In both
-
-*   checking examples ... ERROR
-    ```
-    ...
-      2  -- 1 columns 3 columns literal data
-      3  -- 1 columns 3 columns literal data
-      4  -- 1 columns 3 columns literal data
-      5  -- 1 columns 3 columns literal data
-    ... ... ......... ......... ............
-    See problems(...) for more details.
-    
-    Warning: 17 parsing failures.
-    row col  expected    actual         file
-      1  -- 2 columns 3 columns literal data
-      2  -- 2 columns 3 columns literal data
-      3  -- 2 columns 3 columns literal data
-      4  -- 2 columns 3 columns literal data
-      5  -- 2 columns 3 columns literal data
-    ... ... ......... ......... ............
-    See problems(...) for more details.
-    
-    Warning in function_list[[i]](value) : NAs introduced by coercion
-    Error in .f(.x[[i]], ...) : object 'module' not found
-    Calls: qc_aggregate ... <Anonymous> -> vars_select_eval -> map_if -> map -> .f
-    Execution halted
-    ```
-
-# fastR2
-
-Version: 1.2.1
-
-## In both
-
-*   checking installed package size ... NOTE
-    ```
-      installed size is  5.0Mb
-      sub-directories of 1Mb or more:
-        snippet   3.7Mb
-    ```
-
-# febr
-
-Version: 1.0.1
-
-## In both
-
-*   checking re-building of vignette outputs ... WARNING
-    ```
-    Error in re-building vignettes:
-      ...
-    pandoc-citeproc: when expecting a product (:*:), encountered Object instead
-    Error running filter /usr/local/bin/pandoc-citeproc:
-    Filter returned error status 1
-    Error: processing vignette 'febr.Rmd' failed with diagnostics:
-    pandoc document conversion failed with error 83
-    Execution halted
-    ```
-
-*   checking dependencies in R code ... NOTE
-    ```
-    Unable to find any JVMs matching version "(null)".
-    No Java runtime present, try --request to install.
-    Namespace in Imports field not imported from: ‘knitr’
-      All declared Imports should be used.
-    ```
-
-# fedregs
-
-Version: 0.1.0
-
-## In both
-
-*   checking tests ...
-    ```
-     ERROR
-    Running the tests in ‘tests/testthat.R’ failed.
-    Last 13 lines of output:
-      4. Error: We can go all the way (@test-fedregs.R#145) 
-      
-      Error: testthat unit tests failed
-      In addition: Warning messages:
-      1: In ...elt(i) :
-        closing unused connection 7 (https://www.gpo.gov/fdsys//bulkdata/CFR/2000/title-15)
-      2: In ...elt(i) :
-        closing unused connection 6 (https://www.gpo.gov/fdsys//bulkdata/CFR/1996/title-1)
-      3: In ...elt(i) :
-        closing unused connection 5 (https://www.gpo.gov/fdsys//bulkdata/CFR/2000/title-15)
-      4: In ...elt(i) :
-        closing unused connection 4 (https://www.gpo.gov/fdsys//bulkdata/CFR/1996/title-1)
-      5: In ...elt(i) :
-        closing unused connection 3 (https://www.gpo.gov/fdsys//bulkdata/CFR/1996/title-1)
-      Execution halted
-    ```
-
-# fiftystater
-
-Version: 1.0.1
-
-## In both
-
-*   checking re-building of vignette outputs ... WARNING
-    ```
-    Error in re-building vignettes:
-      ...
-    Quitting from lines 83-87 (fiftystater.Rmd) 
-    Error: processing vignette 'fiftystater.Rmd' failed with diagnostics:
-    there is no package called 'colorplaner'
-    Execution halted
-    ```
-
-*   checking package dependencies ... NOTE
-    ```
-    Package suggested but not available for checking: ‘colorplaner’
+    Package unavailable to check Rd xrefs: ‘NbClust’
     ```
 
 # filesstrings
@@ -4561,37 +1336,6 @@ Version: 3.0.0
 *   checking Rd cross-references ... NOTE
     ```
     Package unavailable to check Rd xrefs: ‘dplyr’
-    ```
-
-# FindMyFriends
-
-Version: 1.12.0
-
-## In both
-
-*   R CMD check timed out
-    
-
-*   checking for code/documentation mismatches ... WARNING
-    ```
-    Functions or methods with usage in documentation object 'pgVirtual-class' but not in code:
-      as
-    ```
-
-*   checking installed package size ... NOTE
-    ```
-      installed size is  6.0Mb
-      sub-directories of 1Mb or more:
-        doc       1.5Mb
-        extdata   1.8Mb
-        R         2.1Mb
-    ```
-
-*   checking dependencies in R code ... NOTE
-    ```
-    Unexported objects imported by ':::' calls:
-      ‘gtable:::insert.unit’ ‘gtable:::z_arrange_gtables’
-      See the note in ?`:::` about the use of this operator.
     ```
 
 # fingertipscharts
@@ -4609,18 +1353,6 @@ Version: 0.0.3
       All declared Imports should be used.
     ```
 
-# fingertipsR
-
-Version: 0.2.0
-
-## In both
-
-*   checking dependencies in R code ... NOTE
-    ```
-    Namespace in Imports field not imported from: ‘purrr’
-      All declared Imports should be used.
-    ```
-
 # fishtree
 
 Version: 0.1.0
@@ -4629,131 +1361,6 @@ Version: 0.1.0
 
 *   R CMD check timed out
     
-
-# fitteR
-
-Version: 0.1.0
-
-## In both
-
-*   checking package dependencies ... NOTE
-    ```
-    Package suggested but not available for checking: ‘ExtDist’
-    ```
-
-# flora
-
-Version: 0.3.0
-
-## In both
-
-*   checking installed package size ... NOTE
-    ```
-      installed size is  7.3Mb
-      sub-directories of 1Mb or more:
-        R   7.2Mb
-    ```
-
-# flowWorkspace
-
-Version: 3.30.1
-
-## In both
-
-*   checking Rd \usage sections ... WARNING
-    ```
-    Undocumented arguments in documentation object 'add,GatingSet,list-method'
-      ‘cluster_method_name’
-    
-    Undocumented arguments in documentation object 'plot_diff_tree'
-      ‘path’ ‘...’
-    
-    Functions with \usage entries need to have the appropriate \alias
-    entries, and all their arguments documented.
-    The \usage entries must correspond to syntactically valid R code.
-    See chapter ‘Writing R documentation files’ in the ‘Writing R
-    Extensions’ manual.
-    ```
-
-*   checking installed package size ... NOTE
-    ```
-      installed size is 34.1Mb
-      sub-directories of 1Mb or more:
-        doc    1.4Mb
-        lib   27.2Mb
-        libs   3.0Mb
-        R      2.0Mb
-    ```
-
-*   checking DESCRIPTION meta-information ... NOTE
-    ```
-    Malformed Title field: should not end in a period.
-    Versioned 'LinkingTo' values for
-      ‘BH’ ‘RProtoBufLib’ ‘cytolib’
-    are only usable in R >= 3.0.2
-    ```
-
-*   checking dependencies in R code ... NOTE
-    ```
-    Namespaces in Imports field not imported from:
-      ‘graphics’ ‘grDevices’ ‘RBGL’
-      All declared Imports should be used.
-    Unexported objects imported by ':::' calls:
-      ‘flowCore:::.estimateLogicle’ ‘flowCore:::checkClass’
-      ‘flowCore:::copyFlowSet’ ‘flowCore:::guid’
-      ‘flowCore:::logicle_transform’ ‘flowCore:::updateTransformKeywords’
-      ‘graph:::.makeEdgeKeys’ ‘lattice:::updateList’
-      ‘ncdfFlow:::.isValidSamples’ ‘stats:::.splinefun’
-      See the note in ?`:::` about the use of this operator.
-    There are ::: calls to the package's namespace in its code. A package
-      almost never needs to use ::: for its own objects:
-      ‘.cpp_setIndices’ ‘.getNodeInd’
-    ```
-
-*   checking R code for possible problems ... NOTE
-    ```
-    ...
-    show,flowJoWorkspace: no visible binding for global variable
-      ‘groupName’
-      (/Users/lionel/Desktop/rlang/revdep/checks.noindex/flowWorkspace/new/flowWorkspace.Rcheck/00_pkg_src/flowWorkspace/R/flowJoWorkspace_Methods.R:66)
-    transform,GatingSet: no visible global function definition for ‘is’
-      (/Users/lionel/Desktop/rlang/revdep/checks.noindex/flowWorkspace/new/flowWorkspace.Rcheck/00_pkg_src/flowWorkspace/R/GatingSet_Methods.R:2297-2302)
-    transform,GatingSet: no visible global function definition for ‘is’
-      (/Users/lionel/Desktop/rlang/revdep/checks.noindex/flowWorkspace/new/flowWorkspace.Rcheck/00_pkg_src/flowWorkspace/R/GatingSet_Methods.R:2304-2314)
-    transform,GatingSet : <anonymous>: no visible global function
-      definition for ‘is’
-      (/Users/lionel/Desktop/rlang/revdep/checks.noindex/flowWorkspace/new/flowWorkspace.Rcheck/00_pkg_src/flowWorkspace/R/GatingSet_Methods.R:2307-2308)
-    Undefined global functions or variables:
-      . .hasSlot as as.formula callNextMethod desc extends gray groupName
-      IQR is median new node old openCyto.count parallel sampleName
-      selectMethod slot validObject xml.count
-    Consider adding
-      importFrom("grDevices", "gray")
-      importFrom("methods", ".hasSlot", "as", "callNextMethod", "extends",
-                 "is", "new", "selectMethod", "slot", "validObject")
-      importFrom("stats", "as.formula", "IQR", "median")
-    to your NAMESPACE file (and ensure that your DESCRIPTION Imports
-    field contains 'methods').
-    ```
-
-*   checking for GNU extensions in Makefiles ... NOTE
-    ```
-    GNU make is a SystemRequirements.
-    ```
-
-*   checking compiled code ... NOTE
-    ```
-    File ‘flowWorkspace/libs/flowWorkspace.so’:
-      Found ‘__ZNSt3__14coutE’, possibly from ‘std::cout’ (C++)
-        Object: ‘R_GatingSet.o’
-    
-    Compiled code should not call entry points which might terminate R
-    nor write to stdout/stderr instead of to the console, nor use
-    Fortran I/O nor system RNGs.
-    
-    See ‘Writing portable packages’ in the ‘Writing R Extensions’
-    manual.
-    ```
 
 # fold
 
@@ -4780,6 +1387,75 @@ Version: 0.2.6
     Execution halted
     ```
 
+# FoldGO
+
+Version: 1.0.1
+
+## In both
+
+*   checking whether package ‘FoldGO’ can be installed ... ERROR
+    ```
+    Installation failed.
+    See ‘/Users/lionel/Desktop/rlang/revdep/checks.noindex/FoldGO/new/FoldGO.Rcheck/00install.out’ for details.
+    ```
+
+## Installation
+
+### Devel
+
+```
+* installing *source* package ‘FoldGO’ ...
+** R
+** data
+*** moving datasets to lazyload DB
+Warning: namespace ‘topGO’ is not available and has been replaced
+by .GlobalEnv when processing object ‘down_annotobj’
+Warning: namespace ‘topGO’ is not available and has been replaced
+by .GlobalEnv when processing object ‘down_annotobj’
+Warning: namespace ‘topGO’ is not available and has been replaced
+by .GlobalEnv when processing object ‘up_annotobj’
+Warning: namespace ‘topGO’ is not available and has been replaced
+by .GlobalEnv when processing object ‘up_annotobj’
+** inst
+** byte-compile and prepare package for lazy loading
+Error in loadNamespace(i, c(lib.loc, .libPaths()), versionCheck = vI[[i]]) : 
+  there is no package called ‘GO.db’
+ERROR: lazy loading failed for package ‘FoldGO’
+* removing ‘/Users/lionel/Desktop/rlang/revdep/checks.noindex/FoldGO/new/FoldGO.Rcheck/FoldGO’
+
+```
+### CRAN
+
+```
+* installing *source* package ‘FoldGO’ ...
+** R
+** data
+*** moving datasets to lazyload DB
+Warning: namespace ‘topGO’ is not available and has been replaced
+by .GlobalEnv when processing object ‘down_annotobj’
+Warning: namespace ‘topGO’ is not available and has been replaced
+by .GlobalEnv when processing object ‘down_annotobj’
+Warning: namespace ‘topGO’ is not available and has been replaced
+by .GlobalEnv when processing object ‘up_annotobj’
+Warning: namespace ‘topGO’ is not available and has been replaced
+by .GlobalEnv when processing object ‘up_annotobj’
+** inst
+** byte-compile and prepare package for lazy loading
+Error in loadNamespace(i, c(lib.loc, .libPaths()), versionCheck = vI[[i]]) : 
+  there is no package called ‘GO.db’
+ERROR: lazy loading failed for package ‘FoldGO’
+* removing ‘/Users/lionel/Desktop/rlang/revdep/checks.noindex/FoldGO/old/FoldGO.Rcheck/FoldGO’
+
+```
+# forecastHybrid
+
+Version: 4.1.16
+
+## Newly broken
+
+*   R CMD check timed out
+    
+
 # forestmangr
 
 Version: 0.9.0
@@ -4793,24 +1469,6 @@ Version: 0.9.0
       All declared Imports should be used.
     ```
 
-# fractional
-
-Version: 0.1.3
-
-## In both
-
-*   checking re-building of vignette outputs ... WARNING
-    ```
-    Error in re-building vignettes:
-      ...
-    pandoc-citeproc: when expecting a product (:*:), encountered Object instead
-    Error running filter /usr/local/bin/pandoc-citeproc:
-    Filter returned error status 1
-    Error: processing vignette 'Theory.Rmd' failed with diagnostics:
-    pandoc document conversion failed with error 83
-    Execution halted
-    ```
-
 # fredr
 
 Version: 1.0.0
@@ -4820,176 +1478,6 @@ Version: 1.0.0
 *   checking data for non-ASCII characters ... NOTE
     ```
       Note: found 1 marked UTF-8 string
-    ```
-
-# freqweights
-
-Version: 1.0.4
-
-## In both
-
-*   checking Rd cross-references ... NOTE
-    ```
-    Package unavailable to check Rd xrefs: ‘Hmisc’
-    ```
-
-# FRK
-
-Version: 0.2.2
-
-## In both
-
-*   checking package dependencies ... NOTE
-    ```
-    Packages suggested but not available for checking: ‘dggrids’ ‘INLA’
-    ```
-
-*   checking installed package size ... NOTE
-    ```
-      installed size is  9.4Mb
-      sub-directories of 1Mb or more:
-        data   5.1Mb
-        doc    2.1Mb
-        R      2.1Mb
-    ```
-
-# FSA
-
-Version: 0.8.22
-
-## In both
-
-*   checking Rd cross-references ... NOTE
-    ```
-    Packages unavailable to check Rd xrefs: ‘alr4’, ‘prettyR’, ‘RMark’, ‘PMCMR’, ‘pgirmess’, ‘agricolae’
-    ```
-
-# ftDK
-
-Version: 1.0
-
-## In both
-
-*   checking data for non-ASCII characters ... NOTE
-    ```
-      Note: found 39 marked UTF-8 strings
-    ```
-
-# furniture
-
-Version: 1.8.7
-
-## In both
-
-*   checking dependencies in R code ... NOTE
-    ```
-    Namespace in Imports field not imported from: ‘magrittr’
-      All declared Imports should be used.
-    ```
-
-# futureheatwaves
-
-Version: 1.0.3
-
-## In both
-
-*   checking re-building of vignette outputs ... WARNING
-    ```
-    Error in re-building vignettes:
-      ...
-    pandoc-citeproc: when expecting a product (:*:), encountered Object instead
-    Error running filter /usr/local/bin/pandoc-citeproc:
-    Filter returned error status 1
-    Error: processing vignette 'futureheatwaves.Rmd' failed with diagnostics:
-    pandoc document conversion failed with error 83
-    Execution halted
-    ```
-
-# gaiah
-
-Version: 0.0.2
-
-## In both
-
-*   checking dependencies in R code ... NOTE
-    ```
-    Namespaces in Imports field not imported from:
-      ‘ggplot2’ ‘maptools’ ‘rgeos’ ‘stringr’ ‘tidyr’
-      All declared Imports should be used.
-    ```
-
-# gastempt
-
-Version: 0.4.3
-
-## In both
-
-*   checking installed package size ... NOTE
-    ```
-      installed size is  7.7Mb
-      sub-directories of 1Mb or more:
-        libs   7.2Mb
-    ```
-
-*   checking dependencies in R code ... NOTE
-    ```
-    Namespaces in Imports field not imported from:
-      ‘methods’ ‘rstantools’
-      All declared Imports should be used.
-    ```
-
-*   checking for GNU extensions in Makefiles ... NOTE
-    ```
-    GNU make is a SystemRequirements.
-    ```
-
-# geex
-
-Version: 1.0.11
-
-## In both
-
-*   checking re-building of vignette outputs ... WARNING
-    ```
-    ...
-       -------------------- inline R code fragments -------------------- 
-        234:368 format(max(abs(comparison$geex$estimates - comparison$cls$estimates), abs(comparison$geex$vcov - comparison$cls$vcov)), digits = 2)
-       ----------------------------------------------------------------- 
-    
-    label: SB3_results (with options) 
-    List of 1
-     $ echo: logi FALSE
-    
-       ~~~~~~~~~~~~~~~~~~~~~~~~~ R code chunk ~~~~~~~~~~~~~~~~~~~~~~~~~~ 
-       comparison 
-       ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ 
-    ##------ Mon Dec 31 12:31:45 2018 ------##
-    
-      ordinary text without R code
-    
-    pandoc-citeproc: when expecting a product (:*:), encountered Object instead
-    Error running filter /usr/local/bin/pandoc-citeproc:
-    Filter returned error status 1
-    Error: processing vignette 'v00_geex_intro.Rmd' failed with diagnostics:
-    pandoc document conversion failed with error 83
-    Execution halted
-    ```
-
-*   checking dependencies in R code ... NOTE
-    ```
-    Namespace in Imports field not imported from: ‘rootSolve’
-      All declared Imports should be used.
-    ```
-
-# gender
-
-Version: 0.5.2
-
-## In both
-
-*   checking package dependencies ... NOTE
-    ```
-    Package suggested but not available for checking: ‘genderdata’
     ```
 
 # gestalt
@@ -5039,6 +1527,34 @@ Version: 0.1.5
       
       Error: testthat unit tests failed
       Execution halted
+    ```
+
+# GetTDData
+
+Version: 1.3.1
+
+## Newly broken
+
+*   checking re-building of vignette outputs ... WARNING
+    ```
+    Error in re-building vignettes:
+      ...
+    Quitting from lines 17-21 (gtdd-vignette_YieldCurve.Rmd) 
+    Error: processing vignette 'gtdd-vignette_YieldCurve.Rmd' failed with diagnostics:
+    failed to load HTTP resource
+    Execution halted
+    ```
+
+# gfer
+
+Version: 0.1.10
+
+## In both
+
+*   checking dependencies in R code ... NOTE
+    ```
+    Namespace in Imports field not imported from: ‘tidyr’
+      All declared Imports should be used.
     ```
 
 # GGally
@@ -5563,6 +2079,32 @@ Version: 0.4.2
       Note: found 52458 marked UTF-8 strings
     ```
 
+# linguisticsdown
+
+Version: 1.1.0
+
+## In both
+
+*   checking dependencies in R code ... NOTE
+    ```
+    Namespace in Imports field not imported from: ‘tidyr’
+      All declared Imports should be used.
+    ```
+
+# LipidMS
+
+Version: 1.0.0
+
+## In both
+
+*   checking installed package size ... NOTE
+    ```
+      installed size is  8.4Mb
+      sub-directories of 1Mb or more:
+        data   5.8Mb
+        R      2.0Mb
+    ```
+
 # listarrays
 
 Version: 0.1.0
@@ -5635,6 +2177,20 @@ Version: 1.0.9
       All declared Imports should be used.
     ```
 
+# mafs
+
+Version: 0.0.3
+
+## In both
+
+*   checking dependencies in R code ... NOTE
+    ```
+    Namespaces in Imports field not imported from:
+      ‘cmprsk’ ‘colorspace’ ‘etm’ ‘fracdiff’ ‘gtable’ ‘munsell’ ‘numDeriv’
+      ‘plyr’ ‘quadprog’ ‘Rcpp’ ‘scales’ ‘timeDate’ ‘tseries’ ‘zoo’
+      All declared Imports should be used.
+    ```
+
 # malariaAtlas
 
 Version: 0.0.3
@@ -5647,6 +2203,22 @@ Version: 0.0.3
       All declared Imports should be used.
     ```
 
+# MANOVA.RM
+
+Version: 0.3.1
+
+## In both
+
+*   checking package dependencies ... NOTE
+    ```
+    Package suggested but not available for checking: ‘RGtk2’
+    ```
+
+*   checking Rd cross-references ... NOTE
+    ```
+    Package unavailable to check Rd xrefs: ‘nparLD’
+    ```
+
 # markmyassignment
 
 Version: 0.8.1
@@ -5656,6 +2228,45 @@ Version: 0.8.1
 *   checking dependencies in R code ... NOTE
     ```
     Namespace in Imports field not imported from: ‘lazyeval’
+      All declared Imports should be used.
+    ```
+
+# memery
+
+Version: 0.5.0
+
+## In both
+
+*   checking dependencies in R code ... NOTE
+    ```
+    Namespaces in Imports field not imported from:
+      ‘colourpicker’ ‘shinyBS’ ‘shinycssloaders’
+      All declared Imports should be used.
+    ```
+
+# metagene
+
+Version: 2.14.0
+
+## In both
+
+*   checking package dependencies ... ERROR
+    ```
+    Package required but not available: ‘EnsDb.Hsapiens.v86’
+    
+    See section ‘The DESCRIPTION file’ in the ‘Writing R Extensions’
+    manual.
+    ```
+
+# miWQS
+
+Version: 0.0.9
+
+## In both
+
+*   checking dependencies in R code ... NOTE
+    ```
+    Namespace in Imports field not imported from: ‘graphics’
       All declared Imports should be used.
     ```
 
@@ -5684,6 +2295,30 @@ Version: 0.8.0
       All declared Imports should be used.
     ```
 
+# mlr
+
+Version: 2.13
+
+## In both
+
+*   checking installed package size ... NOTE
+    ```
+      installed size is  8.5Mb
+      sub-directories of 1Mb or more:
+        data   2.3Mb
+        R      5.1Mb
+    ```
+
+*   checking dependencies in R code ... NOTE
+    ```
+    Unable to find any JVMs matching version "(null)".
+    No Java runtime present, try --request to install.
+    Unable to find any JVMs matching version "(null)".
+    No Java runtime present, try --request to install.
+    Unable to find any JVMs matching version "(null)".
+    No Java runtime present, try --request to install.
+    ```
+
 # modelr
 
 Version: 0.1.2
@@ -5693,6 +2328,36 @@ Version: 0.1.2
 *   checking Rd cross-references ... NOTE
     ```
     Packages unavailable to check Rd xrefs: ‘lme4’, ‘rstanarm’
+    ```
+
+# moonBook
+
+Version: 0.2.3
+
+## In both
+
+*   checking dependencies in R code ... NOTE
+    ```
+    Namespace in Imports field not imported from: ‘purrr’
+      All declared Imports should be used.
+    ```
+
+# MortalityLaws
+
+Version: 1.7.0
+
+## In both
+
+*   checking re-building of vignette outputs ... WARNING
+    ```
+    Error in re-building vignettes:
+      ...
+    pandoc-citeproc: when expecting a product (:*:), encountered Object instead
+    Error running filter /usr/local/bin/pandoc-citeproc:
+    Filter returned error status 1
+    Error: processing vignette 'Installation.Rmd' failed with diagnostics:
+    pandoc document conversion failed with error 83
+    Execution halted
     ```
 
 # MPTmultiverse
@@ -5751,6 +2416,19 @@ Version: 6.2.1
         R   5.1Mb
     ```
 
+# MultiAssayExperiment
+
+Version: 1.8.1
+
+## In both
+
+*   checking dependencies in R code ... NOTE
+    ```
+    Unexported objects imported by ':::' calls:
+      ‘BiocGenerics:::replaceSlots’ ‘S4Vectors:::selectSome’
+      See the note in ?`:::` about the use of this operator.
+    ```
+
 # nandb
 
 Version: 2.0.0
@@ -5773,6 +2451,86 @@ Version: 0.3.0
 *   checking dependencies in R code ... NOTE
     ```
     Namespace in Imports field not imported from: ‘bookdown’
+      All declared Imports should be used.
+    ```
+
+# ndexr
+
+Version: 1.4.0
+
+## In both
+
+*   checking tests ...
+    ```
+     ERROR
+    Running the tests in ‘tests/testthat.R’ failed.
+    Last 13 lines of output:
+      [timeStamp]
+      2019-01-02 7:00:17,338
+      1: ndex_network_get_metadata(con, uuid) at testthat/test_04_network_aspects_and_metadata.r:39
+      2: ndex_rest_GET(ndexcon, route) at /Users/lionel/Desktop/rlang/revdep/checks.noindex/ndexr/new/ndexr.Rcheck/00_pkg_src/ndexr/R/ndex_networks_aspects_and_metadata.r:49
+      3: ndex_helper_httpResponseHandler(response, paste("GET: [", url, "]"), ndexcon$verbose) at /Users/lionel/Desktop/rlang/revdep/checks.noindex/ndexr/new/ndexr.Rcheck/00_pkg_src/ndexr/R/ndex_connect.r:204
+      4: stop(paste(description, "Some internal server error occurred (500):", "\n[errorCode]", 
+             error_content$errorCode, "\n[message]", error_content$message, "\n[stackTrace]", 
+             error_content$stackTrace, "\n[timeStamp]", error_content$timeStamp, "", sep = "\n")) at /Users/lionel/Desktop/rlang/revdep/checks.noindex/ndexr/new/ndexr.Rcheck/00_pkg_src/ndexr/R/ndex_helper.r:177
+      
+      ══ testthat results  ═══════════════════════════════════════════════════════════
+      OK: 140 SKIPPED: 0 FAILED: 1
+      1. Error: Get network meta-data (ndex_network_get_metadata) (@test_04_network_aspects_and_metadata.r#39) 
+      
+      Error: testthat unit tests failed
+      Execution halted
+    ```
+
+*   checking DESCRIPTION meta-information ... NOTE
+    ```
+    Deprecated license: BSD
+    ```
+
+*   checking dependencies in R code ... NOTE
+    ```
+    Package in Depends field not imported from: ‘igraph’
+      These packages need to be imported from (in the NAMESPACE file)
+      for when this namespace is loaded but not attached.
+    Unexported object imported by a ':::' call: ‘httr:::default_ua’
+      See the note in ?`:::` about the use of this operator.
+    ```
+
+*   checking R code for possible problems ... NOTE
+    ```
+    ...
+    rcx_toRCXgraph: no visible global function definition for ‘E’
+      (/Users/lionel/Desktop/rlang/revdep/checks.noindex/ndexr/new/ndexr.Rcheck/00_pkg_src/ndexr/R/ndex_RCXgraph.r:117)
+    rcx_toRCXgraph: no visible global function definition for ‘E<-’
+      (/Users/lionel/Desktop/rlang/revdep/checks.noindex/ndexr/new/ndexr.Rcheck/00_pkg_src/ndexr/R/ndex_RCXgraph.r:117)
+    rcxgraph_fromRCX: no visible global function definition for ‘V’
+      (/Users/lionel/Desktop/rlang/revdep/checks.noindex/ndexr/new/ndexr.Rcheck/00_pkg_src/ndexr/R/ndex_RCXgraph.r:116)
+    rcxgraph_fromRCX: no visible global function definition for ‘V<-’
+      (/Users/lionel/Desktop/rlang/revdep/checks.noindex/ndexr/new/ndexr.Rcheck/00_pkg_src/ndexr/R/ndex_RCXgraph.r:116)
+    rcxgraph_fromRCX: no visible global function definition for ‘E’
+      (/Users/lionel/Desktop/rlang/revdep/checks.noindex/ndexr/new/ndexr.Rcheck/00_pkg_src/ndexr/R/ndex_RCXgraph.r:117)
+    rcxgraph_fromRCX: no visible global function definition for ‘E<-’
+      (/Users/lionel/Desktop/rlang/revdep/checks.noindex/ndexr/new/ndexr.Rcheck/00_pkg_src/ndexr/R/ndex_RCXgraph.r:117)
+    rcxgraph_toRCX: no visible binding for global variable ‘po’
+      (/Users/lionel/Desktop/rlang/revdep/checks.noindex/ndexr/new/ndexr.Rcheck/00_pkg_src/ndexr/R/ndex_RCXgraph.r:268)
+    rcxgraph_toRCX: no visible binding for global variable ‘po’
+      (/Users/lionel/Desktop/rlang/revdep/checks.noindex/ndexr/new/ndexr.Rcheck/00_pkg_src/ndexr/R/ndex_RCXgraph.r:294)
+    Undefined global functions or variables:
+      E E<- packageVersion po tail V V<-
+    Consider adding
+      importFrom("utils", "packageVersion", "tail")
+    to your NAMESPACE file.
+    ```
+
+# NetworkChange
+
+Version: 0.4
+
+## In both
+
+*   checking dependencies in R code ... NOTE
+    ```
+    Namespace in Imports field not imported from: ‘plyr’
       All declared Imports should be used.
     ```
 
@@ -5801,6 +2559,20 @@ Version: 2.7.8
       All declared Imports should be used.
     ```
 
+# OMICsPCA
+
+Version: 1.0.0
+
+## In both
+
+*   checking package dependencies ... ERROR
+    ```
+    Package required but not available: ‘OMICsPCAdata’
+    
+    See section ‘The DESCRIPTION file’ in the ‘Writing R Extensions’
+    manual.
+    ```
+
 # openair
 
 Version: 2.6-1
@@ -5812,6 +2584,82 @@ Version: 2.6-1
       installed size is  5.1Mb
       sub-directories of 1Mb or more:
         R   3.0Mb
+    ```
+
+# openVA
+
+Version: 1.0.7
+
+## In both
+
+*   checking whether package ‘openVA’ can be installed ... ERROR
+    ```
+    Installation failed.
+    See ‘/Users/lionel/Desktop/rlang/revdep/checks.noindex/openVA/new/openVA.Rcheck/00install.out’ for details.
+    ```
+
+## Installation
+
+### Devel
+
+```
+* installing *source* package ‘openVA’ ...
+** package ‘openVA’ successfully unpacked and MD5 sums checked
+** R
+** inst
+** byte-compile and prepare package for lazy loading
+Unable to find any JVMs matching version "(null)".
+No Java runtime present, try --request to install.
+Warning in system("/usr/libexec/java_home", intern = TRUE) :
+  running command '/usr/libexec/java_home' had status 1
+Error : .onLoad failed in loadNamespace() for 'rJava', details:
+  call: dyn.load(file, DLLpath = DLLpath, ...)
+  error: unable to load shared object '/Users/lionel/Desktop/rlang/revdep/library.noindex/openVA/rJava/libs/rJava.so':
+  dlopen(/Users/lionel/Desktop/rlang/revdep/library.noindex/openVA/rJava/libs/rJava.so, 6): Library not loaded: /Library/Java/JavaVirtualMachines/jdk-9.jdk/Contents/Home/lib/server/libjvm.dylib
+  Referenced from: /Users/lionel/Desktop/rlang/revdep/library.noindex/openVA/rJava/libs/rJava.so
+  Reason: image not found
+ERROR: lazy loading failed for package ‘openVA’
+* removing ‘/Users/lionel/Desktop/rlang/revdep/checks.noindex/openVA/new/openVA.Rcheck/openVA’
+
+```
+### CRAN
+
+```
+* installing *source* package ‘openVA’ ...
+** package ‘openVA’ successfully unpacked and MD5 sums checked
+** R
+** inst
+** byte-compile and prepare package for lazy loading
+Unable to find any JVMs matching version "(null)".
+No Java runtime present, try --request to install.
+Warning in system("/usr/libexec/java_home", intern = TRUE) :
+  running command '/usr/libexec/java_home' had status 1
+Error : .onLoad failed in loadNamespace() for 'rJava', details:
+  call: dyn.load(file, DLLpath = DLLpath, ...)
+  error: unable to load shared object '/Users/lionel/Desktop/rlang/revdep/library.noindex/openVA/rJava/libs/rJava.so':
+  dlopen(/Users/lionel/Desktop/rlang/revdep/library.noindex/openVA/rJava/libs/rJava.so, 6): Library not loaded: /Library/Java/JavaVirtualMachines/jdk-9.jdk/Contents/Home/lib/server/libjvm.dylib
+  Referenced from: /Users/lionel/Desktop/rlang/revdep/library.noindex/openVA/rJava/libs/rJava.so
+  Reason: image not found
+ERROR: lazy loading failed for package ‘openVA’
+* removing ‘/Users/lionel/Desktop/rlang/revdep/checks.noindex/openVA/old/openVA.Rcheck/openVA’
+
+```
+# optiSel
+
+Version: 2.0.2
+
+## In both
+
+*   checking re-building of vignette outputs ... WARNING
+    ```
+    Error in re-building vignettes:
+      ...
+    pandoc-citeproc: when expecting a product (:*:), encountered Object instead
+    Error running filter /usr/local/bin/pandoc-citeproc:
+    Filter returned error status 1
+    Error: processing vignette 'ocs-vignette.Rmd' failed with diagnostics:
+    pandoc document conversion failed with error 83
+    Execution halted
     ```
 
 # paletteer
@@ -5837,6 +2685,22 @@ Version: 0.2.1
     ```
     Namespace in Imports field not imported from: ‘dplyr’
       All declared Imports should be used.
+    ```
+
+# pcaExplorer
+
+Version: 2.8.0
+
+## In both
+
+*   checking package dependencies ... ERROR
+    ```
+    Package required but not available: ‘GO.db’
+    
+    Packages suggested but not available for checking: ‘airway’ ‘org.Hs.eg.db’
+    
+    See section ‘The DESCRIPTION file’ in the ‘Writing R Extensions’
+    manual.
     ```
 
 # perturbatr
@@ -5870,6 +2734,20 @@ Version: 1.2.0
       installed size is  5.2Mb
       sub-directories of 1Mb or more:
         data   3.1Mb
+    ```
+
+# Pi
+
+Version: 1.10.0
+
+## In both
+
+*   checking package dependencies ... ERROR
+    ```
+    Package required but not available: ‘XGR’
+    
+    See section ‘The DESCRIPTION file’ in the ‘Writing R Extensions’
+    manual.
     ```
 
 # pivot
@@ -6158,6 +3036,29 @@ Version: 0.2.5
       Execution halted
     ```
 
+# qsort
+
+Version: 0.2.3
+
+## In both
+
+*   checking re-building of vignette outputs ... WARNING
+    ```
+    Error in re-building vignettes:
+      ...
+    pandoc-citeproc: when expecting a product (:*:), encountered Object instead
+    Error running filter /usr/local/bin/pandoc-citeproc:
+    Filter returned error status 1
+    Error: processing vignette 'qsort-vignette.Rmd' failed with diagnostics:
+    pandoc document conversion failed with error 83
+    Execution halted
+    ```
+
+*   checking data for non-ASCII characters ... NOTE
+    ```
+      Note: found 6 marked UTF-8 strings
+    ```
+
 # quickReg
 
 Version: 1.5.0
@@ -6326,6 +3227,58 @@ Version: 0.1.4
     Package unavailable to check Rd xrefs: ‘dimRed’
     ```
 
+# redcapAPI
+
+Version: 2.2
+
+## In both
+
+*   checking dependencies in R code ... NOTE
+    ```
+    Namespaces in Imports field not imported from:
+      ‘DBI’ ‘readr’
+      All declared Imports should be used.
+    ```
+
+# reinforcelearn
+
+Version: 0.1.0
+
+## In both
+
+*   checking re-building of vignette outputs ... WARNING
+    ```
+    ...
+    Episode 482 finished after 3 steps with a return of -3
+    Episode 483 finished after 1 steps with a return of -1
+    Episode 484 finished after 2 steps with a return of -2
+    Episode 485 finished after 2 steps with a return of -2
+    Episode 486 finished after 2 steps with a return of -2
+    Episode 487 finished after 1 steps with a return of -1
+    Episode 488 finished after 3 steps with a return of -3
+    Episode 489 finished after 3 steps with a return of -3
+    Episode 490 finished after 1 steps with a return of -1
+    Episode 491 finished after 1 steps with a return of -1
+    Episode 492 finished after 2 steps with a return of -2
+    Episode 493 finished after 5 steps with a return of -5
+    Episode 494 finished after 2 steps with a return of -2
+    Episode 495 finished after 2 steps with a return of -2
+    Episode 496 finished after 2 steps with a return of -2
+    pandoc-citeproc: when expecting a product (:*:), encountered Object instead
+    Error running filter /usr/local/bin/pandoc-citeproc:
+    Filter returned error status 1
+    Error: processing vignette 'agents.Rmd' failed with diagnostics:
+    pandoc document conversion failed with error 83
+    Execution halted
+    ```
+
+*   checking dependencies in R code ... NOTE
+    ```
+    Namespaces in Imports field not imported from:
+      ‘nnet’ ‘purrr’ ‘R6’
+      All declared Imports should be used.
+    ```
+
 # replyr
 
 Version: 0.9.8
@@ -6349,6 +3302,17 @@ Version: 0.2.1
       All declared Imports should be used.
     ```
 
+# repurrrsive
+
+Version: 0.1.0
+
+## In both
+
+*   checking data for non-ASCII characters ... NOTE
+    ```
+      Note: found 8 marked UTF-8 strings
+    ```
+
 # rfishbase
 
 Version: 3.0.0
@@ -6361,6 +3325,38 @@ Version: 3.0.0
 *   checking data for non-ASCII characters ... NOTE
     ```
       Note: found 44 marked UTF-8 strings
+    ```
+
+# rhierbaps
+
+Version: 1.1.0
+
+## In both
+
+*   checking re-building of vignette outputs ... WARNING
+    ```
+    ...
+      Failed to tidy R code in chunk 'unnamed-chunk-11'. Reason:
+    Error in loadNamespace(name) : there is no package called 'formatR'
+    
+    Warning in block_exec(params) :
+      Failed to tidy R code in chunk 'unnamed-chunk-12'. Reason:
+    Error in loadNamespace(name) : there is no package called 'formatR'
+    
+    Warning in block_exec(params) :
+      Failed to tidy R code in chunk 'unnamed-chunk-13'. Reason:
+    Error in loadNamespace(name) : there is no package called 'formatR'
+    
+    Warning in block_exec(params) :
+      Failed to tidy R code in chunk 'unnamed-chunk-14'. Reason:
+    Error in loadNamespace(name) : there is no package called 'formatR'
+    
+    pandoc-citeproc: when expecting a product (:*:), encountered Object instead
+    Error running filter /usr/local/bin/pandoc-citeproc:
+    Filter returned error status 1
+    Error: processing vignette 'introduction.Rmd' failed with diagnostics:
+    pandoc document conversion failed with error 83
+    Execution halted
     ```
 
 # rhmmer
@@ -6396,6 +3392,35 @@ Version: 0.4.1
 *   checking data for non-ASCII characters ... NOTE
     ```
       Note: found 31 marked UTF-8 strings
+    ```
+
+# rmsfuns
+
+Version: 0.0.0.2
+
+## In both
+
+*   checking dependencies in R code ... NOTE
+    ```
+    Missing or unexported object: ‘base::shell.exec’
+    ```
+
+# RPyGeo
+
+Version: 1.0.0
+
+## In both
+
+*   checking re-building of vignette outputs ... WARNING
+    ```
+    Error in re-building vignettes:
+      ...
+    pandoc-citeproc: when expecting a product (:*:), encountered Object instead
+    Error running filter /usr/local/bin/pandoc-citeproc:
+    Filter returned error status 1
+    Error: processing vignette 'RPyGeo.Rmd' failed with diagnostics:
+    pandoc document conversion failed with error 83
+    Execution halted
     ```
 
 # RSDA
@@ -6514,6 +3539,44 @@ ERROR: configuration failed for package ‘sdcTable’
 * removing ‘/Users/lionel/Desktop/rlang/revdep/checks.noindex/sdcTable/old/sdcTable.Rcheck/sdcTable’
 
 ```
+# sevenC
+
+Version: 1.2.0
+
+## In both
+
+*   checking re-building of vignette outputs ... WARNING
+    ```
+    ...
+        anyMissing, rowMedians
+    
+    Loading required package: BiocParallel
+    
+    Attaching package: 'DelayedArray'
+    
+    The following objects are masked from 'package:matrixStats':
+    
+        colMaxs, colMins, colRanges, rowMaxs, rowMins, rowRanges
+    
+    The following objects are masked from 'package:base':
+    
+        aperm, apply
+    
+    convert: profile 'icc': 'RGB ': RGB color space not permitted on grayscale PNG `sevenC_files/figure-html/unnamed-chunk-22-1.png' @ warning/png.c/MagickPNGWarningHandler/1656.
+    pandoc-citeproc: when expecting a product (:*:), encountered Object instead
+    Error running filter /usr/local/bin/pandoc-citeproc:
+    Filter returned error status 1
+    Error: processing vignette 'sevenC.Rmd' failed with diagnostics:
+    pandoc document conversion failed with error 83
+    Execution halted
+    ```
+
+*   checking dependencies in R code ... NOTE
+    ```
+    Unexported object imported by a ':::' call: ‘GenomicRanges:::get_out_of_bound_index’
+      See the note in ?`:::` about the use of this operator.
+    ```
+
 # sf
 
 Version: 0.7-2
@@ -6587,6 +3650,38 @@ Version: 0.4.0
     Execution halted
     ```
 
+# singscore
+
+Version: 1.2.2
+
+## In both
+
+*   checking re-building of vignette outputs ... WARNING
+    ```
+    ...
+    
+    Attaching package: 'XML'
+    
+    The following object is masked from 'package:tools':
+    
+        toHTML
+    
+    Loading required package: graph
+    
+    Attaching package: 'graph'
+    
+    The following object is masked from 'package:XML':
+    
+        addNode
+    
+    pandoc-citeproc: when expecting a product (:*:), encountered Object instead
+    Error running filter /usr/local/bin/pandoc-citeproc:
+    Filter returned error status 1
+    Error: processing vignette 'singscore.Rmd' failed with diagnostics:
+    pandoc document conversion failed with error 83
+    Execution halted
+    ```
+
 # sjstats
 
 Version: 0.17.2
@@ -6638,6 +3733,44 @@ Version: 0.1.3
       
       Error: testthat unit tests failed
       Execution halted
+    ```
+
+# sperrorest
+
+Version: 2.1.5
+
+## In both
+
+*   checking re-building of vignette outputs ... WARNING
+    ```
+    Error in re-building vignettes:
+      ...
+    pandoc-citeproc: when expecting a product (:*:), encountered Object instead
+    Error running filter /usr/local/bin/pandoc-citeproc:
+    Filter returned error status 1
+    Error: processing vignette 'spatial-modeling-use-case.Rmd' failed with diagnostics:
+    pandoc document conversion failed with error 83
+    Execution halted
+    ```
+
+# starmie
+
+Version: 0.1.2
+
+## In both
+
+*   checking installed package size ... NOTE
+    ```
+      installed size is  7.2Mb
+      sub-directories of 1Mb or more:
+        doc       1.1Mb
+        extdata   4.9Mb
+    ```
+
+*   checking dependencies in R code ... NOTE
+    ```
+    Namespace in Imports field not imported from: ‘MCMCpack’
+      All declared Imports should be used.
     ```
 
 # stars
@@ -6755,6 +3888,23 @@ Version: 0.3.16
     ```
     Namespace in Imports field not imported from: ‘rgeos’
       All declared Imports should be used.
+    ```
+
+# tableschema.r
+
+Version: 1.1.0
+
+## In both
+
+*   checking dependencies in R code ... NOTE
+    ```
+    Namespace in Imports field not imported from: ‘iterators’
+      All declared Imports should be used.
+    ```
+
+*   checking Rd cross-references ... NOTE
+    ```
+    Package unavailable to check Rd xrefs: ‘parsedate’
     ```
 
 # tabula
@@ -7082,6 +4232,114 @@ Version: 1.0.3
     manual.
     ```
 
+# tipr
+
+Version: 0.1.1
+
+## In both
+
+*   checking dependencies in R code ... NOTE
+    ```
+    Namespaces in Imports field not imported from:
+      ‘broom’ ‘tibble’
+      All declared Imports should be used.
+    ```
+
+# totalcensus
+
+Version: 0.5.1
+
+## In both
+
+*   checking installed package size ... NOTE
+    ```
+      installed size is  6.0Mb
+      sub-directories of 1Mb or more:
+        data   5.3Mb
+    ```
+
+*   checking data for non-ASCII characters ... NOTE
+    ```
+      Note: found 64 marked Latin-1 strings
+      Note: found 548 marked UTF-8 strings
+    ```
+
+# transcriptogramer
+
+Version: 1.4.1
+
+## In both
+
+*   checking whether package ‘transcriptogramer’ can be installed ... ERROR
+    ```
+    Installation failed.
+    See ‘/Users/lionel/Desktop/rlang/revdep/checks.noindex/transcriptogramer/new/transcriptogramer.Rcheck/00install.out’ for details.
+    ```
+
+## Installation
+
+### Devel
+
+```
+* installing *source* package ‘transcriptogramer’ ...
+** R
+** data
+*** moving datasets to lazyload DB
+** inst
+** byte-compile and prepare package for lazy loading
+Error in loadNamespace(i, c(lib.loc, .libPaths()), versionCheck = vI[[i]]) : 
+  there is no package called ‘GO.db’
+ERROR: lazy loading failed for package ‘transcriptogramer’
+* removing ‘/Users/lionel/Desktop/rlang/revdep/checks.noindex/transcriptogramer/new/transcriptogramer.Rcheck/transcriptogramer’
+
+```
+### CRAN
+
+```
+* installing *source* package ‘transcriptogramer’ ...
+** R
+** data
+*** moving datasets to lazyload DB
+** inst
+** byte-compile and prepare package for lazy loading
+Error in loadNamespace(i, c(lib.loc, .libPaths()), versionCheck = vI[[i]]) : 
+  there is no package called ‘GO.db’
+ERROR: lazy loading failed for package ‘transcriptogramer’
+* removing ‘/Users/lionel/Desktop/rlang/revdep/checks.noindex/transcriptogramer/old/transcriptogramer.Rcheck/transcriptogramer’
+
+```
+# translateSPSS2R
+
+Version: 1.0.0
+
+## In both
+
+*   checking R code for possible problems ... NOTE
+    ```
+    ...
+    xpssTtest: no visible global function definition for ‘t.test’
+      (/Users/lionel/Desktop/rlang/revdep/checks.noindex/translateSPSS2R/new/translateSPSS2R.Rcheck/00_pkg_src/translateSPSS2R/R/xpssTtest.R:617)
+    xpssTtest: no visible global function definition for ‘na.omit’
+      (/Users/lionel/Desktop/rlang/revdep/checks.noindex/translateSPSS2R/new/translateSPSS2R.Rcheck/00_pkg_src/translateSPSS2R/R/xpssTtest.R:627)
+    xpssTtest: no visible global function definition for ‘sd’
+      (/Users/lionel/Desktop/rlang/revdep/checks.noindex/translateSPSS2R/new/translateSPSS2R.Rcheck/00_pkg_src/translateSPSS2R/R/xpssTtest.R:628)
+    xpssTtest: no visible global function definition for ‘na.omit’
+      (/Users/lionel/Desktop/rlang/revdep/checks.noindex/translateSPSS2R/new/translateSPSS2R.Rcheck/00_pkg_src/translateSPSS2R/R/xpssTtest.R:628)
+    xpssTtest: no visible global function definition for ‘cor.test’
+      (/Users/lionel/Desktop/rlang/revdep/checks.noindex/translateSPSS2R/new/translateSPSS2R.Rcheck/00_pkg_src/translateSPSS2R/R/xpssTtest.R:631)
+    Undefined global functions or variables:
+      anova as.formula complete.cases cor.test density frequency
+      globalVariables head lines lm median na.omit quantile sd summary.lm
+      t.test tail title var
+    Consider adding
+      importFrom("graphics", "lines", "title")
+      importFrom("stats", "anova", "as.formula", "complete.cases",
+                 "cor.test", "density", "frequency", "lm", "median",
+                 "na.omit", "quantile", "sd", "summary.lm", "t.test", "var")
+      importFrom("utils", "globalVariables", "head", "tail")
+    to your NAMESPACE file.
+    ```
+
 # treeio
 
 Version: 1.6.1
@@ -7152,6 +4410,44 @@ Version: 0.1.0
       All declared Imports should be used.
     ```
 
+# valaddin
+
+Version: 0.1.2
+
+## In both
+
+*   checking dependencies in R code ... NOTE
+    ```
+    Namespace in Imports field not imported from: ‘purrr’
+      All declared Imports should be used.
+    ```
+
+# veccompare
+
+Version: 0.1.0
+
+## In both
+
+*   checking dependencies in R code ... NOTE
+    ```
+    Namespace in Imports field not imported from: ‘pander’
+      All declared Imports should be used.
+    ```
+
+# vidger
+
+Version: 1.2.0
+
+## In both
+
+*   checking installed package size ... NOTE
+    ```
+      installed size is 10.8Mb
+      sub-directories of 1Mb or more:
+        data   4.1Mb
+        doc    6.1Mb
+    ```
+
 # visdat
 
 Version: 0.5.2
@@ -7162,6 +4458,18 @@ Version: 0.5.2
     ```
     Namespaces in Imports field not imported from:
       ‘plotly’ ‘rlang’
+      All declared Imports should be used.
+    ```
+
+# voxel
+
+Version: 1.3.5
+
+## In both
+
+*   checking dependencies in R code ... NOTE
+    ```
+    Namespace in Imports field not imported from: ‘methods’
       All declared Imports should be used.
     ```
 
@@ -7177,6 +4485,17 @@ Version: 1.1.0
       sub-directories of 1Mb or more:
         data   3.1Mb
         doc    1.3Mb
+    ```
+
+# wbstats
+
+Version: 0.2
+
+## In both
+
+*   checking data for non-ASCII characters ... NOTE
+    ```
+      Note: found 1528 marked UTF-8 strings
     ```
 
 # weathercan
@@ -7242,6 +4561,30 @@ Version: 0.4.3
       Execution halted
     ```
 
+# ypr
+
+Version: 0.3.0
+
+## In both
+
+*   checking re-building of vignette outputs ... WARNING
+    ```
+    Error in re-building vignettes:
+      ...
+    pandoc-citeproc: when expecting a product (:*:), encountered Object instead
+    Error running filter /usr/local/bin/pandoc-citeproc:
+    Filter returned error status 1
+    Error: processing vignette 'ypr.Rmd' failed with diagnostics:
+    pandoc document conversion failed with error 83
+    Execution halted
+    ```
+
+*   checking dependencies in R code ... NOTE
+    ```
+    Namespace in Imports field not imported from: ‘graphics’
+      All declared Imports should be used.
+    ```
+
 # ZipRadius
 
 Version: 1.0.1
@@ -7252,6 +4595,18 @@ Version: 1.0.1
     ```
     Namespaces in Imports field not imported from:
       ‘ggplot2’ ‘testthat’
+      All declared Imports should be used.
+    ```
+
+# zscorer
+
+Version: 0.2.0
+
+## In both
+
+*   checking dependencies in R code ... NOTE
+    ```
+    Namespace in Imports field not imported from: ‘tidyr’
       All declared Imports should be used.
     ```
 
