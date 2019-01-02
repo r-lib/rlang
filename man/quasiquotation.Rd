@@ -89,7 +89,7 @@ Formally, \code{quo()} and \code{expr()} are quasiquote functions, \code{!!} is
 the unquote operator, and \code{!!!} is the unquote-splice operator.
 These terms have a rich history in Lisp languages, and live on in
 modern languages like
-\href{https://docs.julialang.org/en/stable/manual/metaprogramming/}{Julia}
+\href{https://docs.julialang.org/en/v1/manual/metaprogramming/}{Julia}
 and
 \href{https://docs.racket-lang.org/reference/quasiquote.html}{Racket}.
 }

@@ -83,7 +83,7 @@
 #' the unquote operator, and `!!!` is the unquote-splice operator.
 #' These terms have a rich history in Lisp languages, and live on in
 #' modern languages like
-#' [Julia](https://docs.julialang.org/en/stable/manual/metaprogramming/)
+#' [Julia](https://docs.julialang.org/en/v1/manual/metaprogramming/)
 #' and
 #' [Racket](https://docs.racket-lang.org/reference/quasiquote.html).
 #'
