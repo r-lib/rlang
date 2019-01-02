@@ -179,7 +179,7 @@ you should use <code><a href='https://www.rdocumentation.org/packages/base/topic
 #&gt; backtrace:
 #&gt;  1. base::try(with_abort(fn()))
 #&gt;  8. global::fn()
-#&gt; Call `summary(rlang::last_error())` to see the full backtrace</div><div class='input'>
+#&gt; Call `rlang::last_trace()` to see the full backtrace</div><div class='input'>
 <span class='co'># with_abort() is handy for rethrowing low level errors. The</span>
 <span class='co'># backtraces are then segmented between the low level and high</span>
 <span class='co'># level contexts.</span>
@@ -207,7 +207,7 @@ you should use <code><a href='https://www.rdocumentation.org/packages/base/topic
 #&gt;  1. rlang::with_abort(low_level1())
 #&gt;  3. global::low_level1()
 #&gt;  4. global::low_level2()
-#&gt; Call `summary(rlang::last_error())` to see the full backtrace</div><div class='input'><span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/summary'>summary</a></span>(<span class='fu'><a href='last_error.html'>last_error</a></span>())</div><div class='output co'>#&gt; &lt;error&gt;
+#&gt; Call `rlang::last_trace()` to see the full backtrace</div><div class='input'><span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/summary'>summary</a></span>(<span class='fu'><a href='last_error.html'>last_error</a></span>())</div><div class='output co'>#&gt; &lt;error&gt;
 #&gt; message: High level error
 #&gt; class:   `rlang_error`
 #&gt; fields:  `message`, `trace` and `parent`
