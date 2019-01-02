@@ -13,4 +13,4 @@ backtrace:
  1. rlang:::f()
  2. rlang:::g()
  3. rlang:::h()
-Call `summary(rlang::last_error())` to see the full backtrace
+Call `rlang::last_trace()` to see the full backtrace
