@@ -108,3 +108,12 @@ test_that("once-per-session note is not displayed on repeated warnings", {
   wrn <- catch_cnd(warn_deprecated("foo", "once-per-session-no-note"))
   expect_false(grepl("once per session", wrn$message))
 })
+
+test_that("inputs are type checked", {
+  expect_error(signal_soft_deprecated(1), "is_string")
+  expect_error(signal_soft_deprecated("foo", 1), "is_string")
+  expect_error(signal_soft_deprecated("foo", "bar", 1), "is_environment")
+  expect_error(warn_deprecated(1), "is_string")
+  expect_error(warn_deprecated("foo", 1), "is_string")
+  expect_error(stop_defunct(1), "is_string")
+})

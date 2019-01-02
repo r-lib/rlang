@@ -1,4 +1,4 @@
-# nocov start --- compat-lifecycle --- 2018-12-27 Thu
+# nocov start --- compat-lifecycle --- 2019-01-02 Wed 13:13
 
 # This file serves as a reference for currently unexported rlang
 # lifecycle functions. Please find the most recent version in rlang's
@@ -59,6 +59,12 @@
 NULL
 
 signal_soft_deprecated <- function(msg, id = msg, env = caller_env(2)) {
+  stopifnot(
+    rlang::is_string(msg),
+    rlang::is_string(id),
+    rlang::is_environment(env)
+  )
+
   if (rlang::is_true(rlang::peek_option("lifecycle_disable_warnings"))) {
     return(invisible(NULL))
   }
@@ -83,6 +89,11 @@ signal_soft_deprecated <- function(msg, id = msg, env = caller_env(2)) {
 }
 
 warn_deprecated <- function(msg, id = msg) {
+  stopifnot(
+    rlang::is_string(msg),
+    rlang::is_string(id)
+  )
+
   if (rlang::is_true(rlang::peek_option("lifecycle_disable_warnings"))) {
     return(invisible(NULL))
   }
@@ -112,6 +123,7 @@ warn_deprecated <- function(msg, id = msg) {
 deprecation_env <- new.env(parent = emptyenv())
 
 stop_defunct <- function(msg) {
+  stopifnot(rlang::is_string(msg))
   .Defunct(msg = msg)
 }
 
