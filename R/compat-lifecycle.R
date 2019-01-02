@@ -1,4 +1,4 @@
-# nocov start --- compat-lifecycle --- 2019-01-02 Wed 13:13
+# nocov start --- compat-lifecycle --- 2019-01-02 Wed 13:22
 
 # This file serves as a reference for currently unexported rlang
 # lifecycle functions. Please find the most recent version in rlang's
@@ -69,8 +69,20 @@ signal_soft_deprecated <- function(msg, id = msg, env = caller_env(2)) {
     return(invisible(NULL))
   }
 
+  env_inherits_global <- function(env) {
+    # `topenv(emptyenv())` returns the global env. Return `FALSE` in
+    # that case to allow passing the empty env when the
+    # soft-deprecation should not be promoted to deprecation based on
+    # the caller environment.
+    if (rlang::is_reference(env, emptyenv())) {
+      return(FALSE)
+    }
+
+    rlang::is_reference(topenv(env), rlang::global_env())
+  }
+
   if (rlang::is_true(rlang::peek_option("lifecycle_verbose_soft_deprecation")) ||
-      rlang::is_reference(topenv(env), rlang::global_env())) {
+      env_inherits_global(env)) {
     warn_deprecated(msg, id)
     return(invisible(NULL))
   }

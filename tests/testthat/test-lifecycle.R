@@ -46,3 +46,7 @@ test_that("inputs are type checked", {
   expect_error(warn_deprecated("foo", 1), "is_string")
   expect_error(stop_defunct(1), "is_string")
 })
+
+test_that("the topenv of the empty env is not the global env", {
+  expect_silent(signal_soft_deprecated("topenv empty env", env = empty_env()))
+})
