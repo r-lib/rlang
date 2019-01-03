@@ -889,6 +889,11 @@ as_label <- function(x) {
 #' [name-repairing](https://principles.tidyverse.org/names-attribute.html#minimal-unique-universal)
 #' features in the future.
 #'
+#' Note that `rlang::as_name()` is the _opposite_ of
+#' [base::as.name()]. If you're writing base R code, we recommend
+#' using [base::as.symbol()] which is an alias of `as.name()` that
+#' follows a more modern terminology (R types instead of S modes).
+#'
 #' @param x A string or symbol, possibly wrapped in a [quosure][quosure].
 #'   If a string, the attributes are removed, if any.
 #' @return A character vector of length 1.
