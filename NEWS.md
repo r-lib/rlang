@@ -3,8 +3,9 @@
 
 This patch release polishes the new backtrace feature introduced in
 rlang 0.3.0 and solves bugs for the upcoming release of purrr
-0.3.0. It also features `as_label()`, a better named replacement for
-`quo_name()`. Finally, a bunch of deparsing issues have been fixed.
+0.3.0. It also features `as_label()` and `as_name()` which are meant
+to replace `quo_name()` in the future. Finally, a bunch of deparsing
+issues have been fixed.
 
 
 ## Backtrace fixes
@@ -78,7 +79,7 @@ We expect `as_label()` to gain additional parameters in the future,
 for example to control the maximum width of a label. The way an object
 is labelled is thus subject to change.
 
-On the other hand, [as_name()] transforms symbols back to a string in
+On the other hand, `as_name()` transforms symbols back to a string in
 a well defined manner. Unlike `as_label()`, `as_name()` guarantees the
 roundtrip symbol -> string -> symbol.
 
@@ -86,7 +87,7 @@ In general, if you don't know for sure what kind of object you're
 dealing with (a call, a symbol, an unquoted constant), use
 `as_label()` and make no assumption about the resulting string. If you
 know you have a symbol and need the name of the object it refers to,
-use [as_name()]. For instance, use `as_label()` with objects captured
+use `as_name()`. For instance, use `as_label()` with objects captured
 with `enquo()` and `as_name()` with symbols captured with `ensym()`.
 
 Note that `quo_name()` will only be soft-deprecated at the next major
