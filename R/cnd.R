@@ -847,7 +847,7 @@ signal_context_info <- function(nframe) {
     if (is_same_body(sys_body(nframe - 1), body(stop))) {
       return(list("stop_message", nframe - 2))
     } else {
-      return(list("stop_native", nframe - 2))
+      return(list("stop_native", nframe - 1))
     }
   }
 
@@ -877,7 +877,7 @@ signal_context_info <- function(nframe) {
       if (is_same_body(sys_body(nframe - 4), body(warning))) {
         return(list("warning_message", nframe - 5))
       } else {
-        return(list("warning_native", nframe - 5))
+        return(list("warning_native", nframe - 4))
       }
     } else if (is_same_body(withrestarts_caller, body(warning))) {
       if (is_same_body(sys_body(nframe - 4), body(warn))) {
