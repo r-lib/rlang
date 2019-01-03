@@ -378,8 +378,9 @@ test_that("on_error option can be tweaked", {
       msg()
     )
 
-    cat_line("", "", "", ">>> Default (not interactive):", "")
+    cat_line("", "", "", ">>> Reminder (not interactive):", "")
     with_options(
+      rlang__backtrace_on_error = "reminder",
       rlang_interactive = FALSE,
       msg()
     )

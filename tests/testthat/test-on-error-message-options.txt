@@ -11,27 +11,9 @@ The error message
 Call `rlang::last_error()` to see a backtrace
 
 
->>> Default (not interactive):
+>>> Reminder (not interactive):
 
 The error message
-Backtrace:
-     █
-  1. ├─rlang::with_options(rlang_interactive = FALSE, msg())
-  2. └─rlang:::msg()
-  3.   ├─base::cat(conditionMessage(catch_cnd(f())))
-  4.   ├─base::conditionMessage(catch_cnd(f()))
-  5.   ├─rlang::catch_cnd(f())
-  6.   │ ├─rlang::eval_bare(...)
-  7.   │ ├─base::tryCatch(...)
-  8.   │ │ └─base:::tryCatchList(expr, classes, parentenv, handlers)
-  9.   │ │   └─base:::tryCatchOne(expr, names, parentenv, handlers[[1L]])
- 10.   │ │     └─base:::doTryCatch(return(expr), name, parentenv, handler)
- 11.   │ └─base::force(expr)
- 12.   └─rlang:::f()
- 13.     ├─base::tryCatch(g())
- 14.     │ └─base:::tryCatchList(expr, classes, parentenv, handlers)
- 15.     └─rlang:::g()
- 16.       └─rlang:::h()
 
 
 >>> Branch:

@@ -728,7 +728,7 @@ conditionMessage.rlang_error <- function(c) {
 NULL
 
 format_onerror_backtrace <- function(trace) {
-  show_trace <- show_trace_p()
+  show_trace <- peek_option("rlang__backtrace_on_error") %||% "reminder"
 
   if (!is_string(show_trace) || !show_trace %in% c("reminder", "branch", "collapse", "full")) {
     options(rlang__backtrace_on_error = NULL)
@@ -768,26 +768,6 @@ format_onerror_backtrace <- function(trace) {
     "Backtrace:",
     backtrace_lines
   )
-}
-
-show_trace_p <- function() {
-  opt <- peek_option("rlang__backtrace_on_error")
-  if (!is_null(opt)) {
-    return(opt)
-  }
-
-  # FIXME: parameterise `is_interactive()`?
-  interactive <- with_options(
-    knitr.in.progress = NULL,
-    rstudio.notebook.executing = NULL,
-    is_interactive()
-  )
-
-  if (interactive) {
-    "reminder"
-  } else {
-    "full"
-  }
 }
 
 #' Add backtrace from error handler
