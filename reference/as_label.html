@@ -40,7 +40,7 @@ Give default names to columns in a data frame. In this case,
 labelling is the first step before name repair.
 " />
 
-<meta property="og:description" content="See also as_string() for transforming symbols back to a
+<meta property="og:description" content="See also as_name() for transforming symbols back to a
 string. Unlike as_label(), as_string() is a well defined
 operation that guarantees the roundtrip symbol -&amp;gt; string -&amp;gt;
 symbol.
@@ -155,7 +155,7 @@ in a graphical plot.</p></li>
 labelling is the first step before name repair.</p></li>
 </ul>
 
-    <p>See also <code><a href='as_string.html'>as_string()</a></code> for transforming symbols back to a
+    <p>See also <code><a href='as_name.html'>as_name()</a></code> for transforming symbols back to a
 string. Unlike <code>as_label()</code>, <code><a href='as_string.html'>as_string()</a></code> is a well defined
 operation that guarantees the roundtrip symbol -&gt; string -&gt;
 symbol.</p>
@@ -192,10 +192,15 @@ captured with <code><a href='quotation.html'>ensym()</a></code>.</p>
 or <code>&lt;data.frame&gt;</code>.</p></li>
 </ul>
     <p>Note that simple symbols should generally be transformed to strings
-with <code><a href='as_string.html'>as_string()</a></code>. Labelling is not a well defined operation and
+with <code><a href='as_name.html'>as_name()</a></code>. Labelling is not a well defined operation and
 no assumption should be made about how the label is created. On the
-other hand, <code><a href='as_string.html'>as_string()</a></code> only works with symbols and is a well
+other hand, <code><a href='as_name.html'>as_name()</a></code> only works with symbols and is a well
 defined, deterministic operation.</p>
+    
+    <h2 class="hasAnchor" id="see-also"><a class="anchor" href="#see-also"></a>See also</h2>
+
+    <div class='dont-index'><p><code><a href='as_name.html'>as_name()</a></code> for transforming symbols back to a string
+deterministically.</p></div>
     
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
@@ -211,6 +216,8 @@ defined, deterministic operation.</p>
       <li><a href="#arguments">Arguments</a></li>
       
       <li><a href="#transformation-to-string">Transformation to string</a></li>
+
+      <li><a href="#see-also">See also</a></li>
       
       <li><a href="#examples">Examples</a></li>
     </ul>

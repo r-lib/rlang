@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Get the current or caller environment — caller_env • rlang</title>
+<title>Extract names from symbols — as_name • rlang</title>
 
 <!-- jquery -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=" crossorigin="anonymous"></script>
@@ -30,14 +30,24 @@
 
 
 
-<meta property="og:title" content="Get the current or caller environment — caller_env" />
+<meta property="og:title" content="Extract names from symbols — as_name" />
 
-<meta property="og:description" content="
-The current environment is the execution environment of the
-current function (the one currently being evaluated).
-The caller environment is the execution environment of the
-function that called the current function.
+<meta property="og:description" content="as_name() converts symbols to character strings. The
+conversion is deterministic. That is, the roundtrip symbol -&amp;gt; name
+-&amp;gt; symbol always gets the same result.
+Use as_name() when you need to transform a symbol to a string
+to refer to an object by its name.
+Use as_label() when you need to transform any kind of object to
+a string to represent that object with a short description.
 " />
+
+<meta property="og:description" content="Expect as_name() to gain
+name-repairing
+features in the future.
+Note that rlang::as_name() is the opposite of
+base::as.name(). If you're writing base R code, we recommend
+using base::as.symbol() which is an alias of as.name() that
+follows a more modern terminology (R types instead of S modes)." />
 <meta name="twitter:card" content="summary" />
 
 
@@ -127,71 +137,73 @@ function that called the current function.
 <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-    <h1>Get the current or caller environment</h1>
-    <small class="dont-index">Source: <a href='https://github.com/r-lib/rlang/blob/master/R/env-special.R'><code>R/env-special.R</code></a></small>
-    <div class="hidden name"><code>caller_env.Rd</code></div>
+    <h1>Extract names from symbols</h1>
+    <small class="dont-index">Source: <a href='https://github.com/r-lib/rlang/blob/master/R/deparse.R'><code>R/deparse.R</code></a></small>
+    <div class="hidden name"><code>as_name.Rd</code></div>
     </div>
 
     <div class="ref-description">
     
-    <ul>
-<li><p>The current environment is the execution environment of the
-current function (the one currently being evaluated).</p></li>
-<li><p>The caller environment is the execution environment of the
-function that called the current function.</p></li>
+    <p><code>as_name()</code> converts <a href='sym.html'>symbols</a> to character strings. The
+conversion is deterministic. That is, the roundtrip symbol -&gt; name
+-&gt; symbol always gets the same result.</p><ul>
+<li><p>Use <code>as_name()</code> when you need to transform a symbol to a string
+to <em>refer</em> to an object by its name.</p></li>
+<li><p>Use <code><a href='as_label.html'>as_label()</a></code> when you need to transform any kind of object to
+a string to <em>represent</em> that object with a short description.</p></li>
 </ul>
+
+    <p>Expect <code>as_name()</code> to gain
+<a href='https://principles.tidyverse.org/names-attribute.html#minimal-unique-universal'>name-repairing</a>
+features in the future.</p>
+<p>Note that <code>rlang::as_name()</code> is the <em>opposite</em> of
+<code><a href='https://www.rdocumentation.org/packages/base/topics/name'>base::as.name()</a></code>. If you're writing base R code, we recommend
+using <code><a href='https://www.rdocumentation.org/packages/base/topics/name'>base::as.symbol()</a></code> which is an alias of <code><a href='https://www.rdocumentation.org/packages/base/topics/name'>as.name()</a></code> that
+follows a more modern terminology (R types instead of S modes).</p>
     
     </div>
 
-    <pre class="usage"><span class='fu'>caller_env</span>(<span class='kw'>n</span> <span class='kw'>=</span> <span class='fl'>1</span>)
-
-<span class='fu'>current_env</span>()</pre>
+    <pre class="usage"><span class='fu'>as_name</span>(<span class='no'>x</span>)</pre>
     
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
     <colgroup><col class="name" /><col class="desc" /></colgroup>
     <tr>
-      <th>n</th>
-      <td><p>Number of frames to go back.</p></td>
+      <th>x</th>
+      <td><p>A string or symbol, possibly wrapped in a <a href='quosure.html'>quosure</a>.
+If a string, the attributes are removed, if any.</p></td>
     </tr>
     </table>
     
+    <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
+
+    <p>A character vector of length 1.</p>
+    
     <h2 class="hasAnchor" id="see-also"><a class="anchor" href="#see-also"></a>See also</h2>
 
-    <div class='dont-index'><p><code><a href='caller_frame.html'>caller_frame()</a></code> and <code><a href='stack.html'>current_frame()</a></code></p></div>
+    <div class='dont-index'><p><code><a href='as_label.html'>as_label()</a></code> for converting any object to a single string
+suitable as a label. <code><a href='as_string.html'>as_string()</a></code> for a lower-level version that
+doesn't unwrap quosures.</p></div>
     
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><div class='input'><span class='co'># Let's create a function that returns its current environment and</span>
-<span class='co'># its caller environment:</span>
-<span class='no'>fn</span> <span class='kw'>&lt;-</span> <span class='kw'>function</span>() <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/list'>list</a></span>(<span class='kw'>current</span> <span class='kw'>=</span> <span class='fu'>current_env</span>(), <span class='kw'>caller</span> <span class='kw'>=</span> <span class='fu'>caller_env</span>())
+    <pre class="examples"><div class='input'><span class='co'># Let's create some symbols:</span>
+<span class='no'>foo</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/substitute'>quote</a></span>(<span class='no'>foo</span>)
+<span class='no'>bar</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='sym.html'>sym</a></span>(<span class='st'>"bar"</span>)
 
-<span class='co'># The current environment is an unique execution environment</span>
-<span class='co'># created when `fn()` was called. The caller environment is the</span>
-<span class='co'># global env because that's where we called `fn()`.</span>
-<span class='fu'>fn</span>()</div><div class='output co'>#&gt; $current
-#&gt; &lt;environment: 0x8ddeba0&gt;
-#&gt; 
-#&gt; $caller
-#&gt; &lt;environment: 0x88c0ae0&gt;
-#&gt; </div><div class='input'>
-<span class='co'># Let's call `fn()` again but this time within a function:</span>
-<span class='no'>g</span> <span class='kw'>&lt;-</span> <span class='kw'>function</span>() <span class='fu'>fn</span>()
-
-<span class='co'># Now the caller environment is also an unique execution environment.</span>
-<span class='co'># This is the exec env created by R for our call to g():</span>
-<span class='fu'>g</span>()</div><div class='output co'>#&gt; $current
-#&gt; &lt;environment: 0x921c868&gt;
-#&gt; 
-#&gt; $caller
-#&gt; &lt;environment: 0x921c8d8&gt;
-#&gt; </div></pre>
+<span class='co'># as_name() converts symbols to strings:</span>
+<span class='no'>foo</span></div><div class='output co'>#&gt; foo</div><div class='input'><span class='fu'>as_name</span>(<span class='no'>foo</span>)</div><div class='output co'>#&gt; [1] "foo"</div><div class='input'>
+<span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/typeof'>typeof</a></span>(<span class='no'>bar</span>)</div><div class='output co'>#&gt; [1] "symbol"</div><div class='input'><span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/typeof'>typeof</a></span>(<span class='fu'>as_name</span>(<span class='no'>bar</span>))</div><div class='output co'>#&gt; [1] "character"</div><div class='input'>
+<span class='co'># as_name() unwraps quosured symbols automatically:</span>
+<span class='fu'>as_name</span>(<span class='fu'><a href='quotation.html'>quo</a></span>(<span class='no'>foo</span>))</div><div class='output co'>#&gt; [1] "foo"</div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
     <h2>Contents</h2>
     <ul class="nav nav-pills nav-stacked">
       <li><a href="#arguments">Arguments</a></li>
       
+      <li><a href="#value">Value</a></li>
+
       <li><a href="#see-also">See also</a></li>
       
       <li><a href="#examples">Examples</a></li>

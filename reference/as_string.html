@@ -149,6 +149,35 @@ removed, if any.</p></td>
 
     <p>A character vector of length 1.</p>
     
+    <h2 class="hasAnchor" id="unicode-tags"><a class="anchor" href="#unicode-tags"></a>Unicode tags</h2>
+
+    
+    <p>Unlike <code><a href='https://www.rdocumentation.org/packages/base/topics/name'>base::as.symbol()</a></code> and <code><a href='https://www.rdocumentation.org/packages/base/topics/name'>base::as.name()</a></code>, <code>as_string()</code>
+automatically transforms unicode tags such as <code>"&lt;U+5E78&gt;"</code> to the
+proper UTF-8 character. This is important on Windows because:</p><ul>
+<li><p>R on Windows has no UTF-8 support, and uses native encoding instead.</p></li>
+<li><p>The native encodings do not cover all Unicode characters. For
+example, Western encodings do not support CKJ characters.</p></li>
+<li><p>When a lossy UTF-8 -&gt; native transformation occurs, uncovered
+characters are transformed to an ASCII unicode tag like <code>"&lt;U+5E78&gt;"</code>.</p></li>
+<li><p>Symbols are always encoded in native. This means that
+transforming the column names of a data frame to symbols might be
+a lossy operation.</p></li>
+<li><p>This operation is very common in the tidyverse because of data
+masking APIs like dplyr where data frames are transformed to
+environments. While the names of a data frame are stored as a
+character vector, the bindings of environments are stored as
+symbols.</p></li>
+</ul>
+    <p>Because it reencodes the ASCII unicode tags to their UTF-8
+representation, the string -&gt; symbol -&gt; string roundtrip is
+more stable with <code>as_string()</code>.</p>
+    
+    <h2 class="hasAnchor" id="see-also"><a class="anchor" href="#see-also"></a>See also</h2>
+
+    <div class='dont-index'><p><code><a href='as_name.html'>as_name()</a></code> for a higher-level variant of <code>as_string()</code>
+that automatically unwraps quosures.</p></div>
+    
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
     <pre class="examples"><div class='input'><span class='co'># Let's create some symbols:</span>
@@ -165,6 +194,10 @@ removed, if any.</p></td>
       <li><a href="#arguments">Arguments</a></li>
       
       <li><a href="#value">Value</a></li>
+
+      <li><a href="#unicode-tags">Unicode tags</a></li>
+
+      <li><a href="#see-also">See also</a></li>
       
       <li><a href="#examples">Examples</a></li>
     </ul>
