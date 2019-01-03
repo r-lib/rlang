@@ -815,15 +815,17 @@ overscope_eval_next <- function(overscope, quo, env = base_env()) {
 #' @keywords internal
 #' @export
 as_dictionary <- function(x, lookup_msg = NULL, read_only = FALSE) {
-  stop_defunct(paste_line(
-    "`as_dictionary()` is defunct as of rlang 0.3.0.",
+  signal_soft_deprecated(paste_line(
+    "`as_dictionary()` is soft-deprecated as of rlang 0.3.0.",
     "Please use `as_data_pronoun()` instead"
   ))
+  as_data_pronoun(x)
 }
 #' @rdname dictionary
 #' @export
 is_dictionary <- function(x) {
-  stop_defunct("`is_dictionary()` is defunct as of rlang 0.3.0.")
+  stop_defunct("`is_dictionary()` is soft-deprecated as of rlang 0.3.0.")
+  inherits(x, "rlang_data_pronoun")
 }
 
 #' Test for or coerce to quosure-like objects
