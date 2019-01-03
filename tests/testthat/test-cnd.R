@@ -490,12 +490,13 @@ test_that("with_abort() entraces conditions properly", {
         is_call(calls[[3]], "h")
       ))
     } else {
-      calls <- trace$calls[seq2(n - 3, n)]
+      calls <- trace$calls[seq2(n - 4, n)]
       expect_true(all(
         is_call(calls[[1]], "f"),
         is_call(calls[[2]], "g"),
         is_call(calls[[3]], "h"),
-        is_call(calls[[4]], "signaller")
+        is_call(calls[[4]], "signaller"),
+        is_call(calls[[5]], native)
       ))
     }
   }
@@ -574,11 +575,11 @@ test_that("bottom of signalling context is detected", {
 
   expect_equal(signal_call(base::stop, ""), quote(f()))
   expect_equal(signal_call(base::stop, cnd("error")), quote(f()))
-  expect_equal(signal_call(function(msg) errorcall(NULL, msg), ""), quote(signaller(arg)))
+  expect_equal(signal_call(function(msg) errorcall(NULL, msg), ""), quote(errorcall(NULL, msg)))
 
   expect_equal(signal_call(base::warning, ""), quote(f()))
   expect_equal(signal_call(base::warning, cnd("warning")), quote(f()))
-  expect_equal(signal_call(function(msg) warningcall(NULL, msg), ""), quote(signaller(arg)))
+  expect_equal(signal_call(function(msg) warningcall(NULL, msg), ""), quote(warningcall(NULL, msg)))
 
   expect_equal(signal_call(base::message, ""), quote(f()))
   expect_equal(signal_call(base::message, cnd("message")), quote(f()))
