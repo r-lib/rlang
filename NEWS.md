@@ -89,6 +89,13 @@ know you have a symbol and need the name of the object it refers to,
 use [as_name()]. For instance, use `as_label()` with objects captured
 with `enquo()` and `as_name()` with symbols captured with `ensym()`.
 
+Note that `quo_name()` will only be soft-deprecated at the next major
+version of rlang (0.4.0). At this point, it will start issuing
+once-per-session warnings in scripts, but not in packages. It will
+then be deprecated in yet another major version, at which point it
+will issue once-per-session warnings in packages as well. You thus
+have plenty of time to change your code.
+
 
 ## Minor fixes and features
 
