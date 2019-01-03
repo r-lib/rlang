@@ -786,3 +786,85 @@ reserved_words <- c(
   "next",
   "break"
 )
+
+#' Create a default name for an R object
+#'
+#' @description
+#'
+#' `as_label()` transforms R objects into a short, human-readable
+#' description. You can use labels to:
+#'
+#' * Display an object in a concise way, for example to labellise axes
+#'   in a graphical plot.
+#'
+#' * Give default names to columns in a data frame. In this case,
+#'   labelling is the first step before name repair.
+#'
+#' See also [as_string()] for transforming symbols back to a
+#' string. Unlike `as_label()`, `as_string()` is a well defined
+#' operation that guarantees the roundtrip symbol -> string ->
+#' symbol.
+#'
+#' In general, if you don't know for sure what kind of object you're
+#' dealing with (a call, a symbol, an unquoted constant), use
+#' `as_label()` and make no assumption about the resulting string. If
+#' you know you have a symbol and need the name of the object it
+#' refers to, use [as_string()]. For instance, use `as_label()` with
+#' objects captured with `enquo()` and `as_string()` with symbols
+#' captured with `ensym()`.
+#'
+#' @param x An object.
+#'
+#' @section Transformation to string:
+#'
+#' * Quosures are [squashed][quo_squash] before being labelled.
+#' * Symbols are transformed to string with `as_string()`.
+#' * Calls are abbreviated.
+#' * Numbers are represented as such.
+#' * Other constants are represented by their type, such as `<dbl>`
+#'   or `<data.frame>`.
+#'
+#' Note that simple symbols should generally be transformed to strings
+#' with [as_string()]. Labelling is not a well defined operation and
+#' no assumption should be made about how the label is created. On the
+#' other hand, `as_string()` only works with symbols and is a well
+#' defined, deterministic operation.
+#'
+#' @examples
+#' # as_label() is useful with quoted expressions:
+#' as_label(expr(foo(bar)))
+#' as_label(expr(foobar))
+#'
+#' # It works with any R object. This is also useful for quoted
+#' # arguments because the user might unquote constant objects:
+#' as_label(1:3)
+#' as_label(base::list)
+#' @export
+as_label <- function(x) {
+  x <- quo_squash(x)
+
+  if (is_missing(x)) {
+    return("<empty>")
+  }
+
+  switch(typeof(x),
+    NULL = "NULL",
+    symbol = as_string(x),
+    language = {
+      if (is_data_pronoun(x)) {
+        data_pronoun_name(x) %||% "<unknown>"
+      } else {
+        name <- deparse_one(x)
+        name <- gsub("\n.*$", "...", name)
+        name
+      }
+    },
+    if (is_bare_atomic(x, n = 1)) {
+      name <- expr_text(x)
+      name <- gsub("\n.*$", "...", name)
+      name
+    } else {
+      paste0("<", rlang_type_sum(x), ">")
+    }
+  )
+}

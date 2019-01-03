@@ -20,6 +20,11 @@ quo_name(quo)
 \item{nlines}{Maximum number of lines to extract.}
 }
 \description{
+\Sexpr[results=rd, stage=render]{rlang:::lifecycle("questioning")}
+
+\strong{Note:} You should now use \code{\link[=as_label]{as_label()}} instead of \code{quo_name()}. See
+life cycle section below.
+
 These functions take an arbitrary R object, typically an
 \link[=is_expression]{expression}, and represent it as a string.
 \itemize{
@@ -37,6 +42,23 @@ of transforming symbols to strings, use \code{\link[=as_string]{as_string()}} in
 \code{quo_name()}. Unlike deparsing, the transformation between symbols
 and strings is non-lossy and well defined.
 }
+\section{Life cycle}{
+
+
+These functions are in the questioning life cycle stage.
+\itemize{
+\item \code{\link[=as_label]{as_label()}} and \code{\link[=as_string]{as_string()}} should be used instead of
+\code{quo_name()}. \code{as_label()} transforms any R object to a string but
+should only be used to create a default name. Labelisation is
+not a well defined operation and no assumption should be made
+about the label. On the other hand, \code{as_string()} only works with
+symbols, but is a well defined and deterministic operation.
+\item We don't have a good replacement for \code{quo_text()} yet. See
+\url{https://github.com/r-lib/rlang/issues/636} to follow discussions
+about a new deparsing API.
+}
+}
+
 \examples{
 # Quosures can contain nested quosures:
 quo <- quo(foo(!! quo(bar)))

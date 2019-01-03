@@ -794,7 +794,7 @@ trace_as_tree <- function(x, dir = getwd(), srcrefs = NULL) {
 # FIXME: Add something like call_deparse_line()
 trace_call_text <- function(call, collapse) {
   if (is_null(collapse)) {
-    return(label(call))
+    return(as_label(call))
   }
 
   if (is_call(call, "%>%")) {
@@ -803,7 +803,7 @@ trace_call_text <- function(call, collapse) {
     call <- call2(node_car(call), quote(...))
   }
 
-  text <- label(call)
+  text <- as_label(call)
   if (collapse > 0L) {
     n_collapsed_text <- sprintf(" ... +%d", collapse)
   } else {

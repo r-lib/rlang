@@ -1,6 +1,32 @@
 
 # rlang 0.3.0.9000
 
+* New `as_label()` function. It should be used instead of `quo_name()`
+  to transform objects and quoted expressions into a short,
+  human-readable description. You can use labels to:
+
+  * Display an object in a concise way, for example to labellise axes
+    in a graphical plot.
+
+  * Give default names to columns in a data frame. In this case,
+    labelling is the first step before name repair.
+
+  We expect `as_label()` to gain additional parameters in the future,
+  for example to control the maximum width of a label.
+
+  See also [as_string()] for transforming symbols back to a
+  string. Unlike `as_label()`, `as_string()` is a well defined
+  operation that guarantees the roundtrip symbol -> string ->
+  symbol.
+
+  In general, if you don't know for sure what kind of object you're
+  dealing with (a call, a symbol, an unquoted constant), use
+  `as_label()` and make no assumption about the resulting string. If
+  you know you have a symbol and need the name of the object it refers
+  to, use [as_string()]. For instance, use `as_label()` with objects
+  captured with `enquo()` and `as_string()` with symbols captured with
+  `ensym()`.
+
 * In non-interactive sessions, the full backtrace is now shown on
   error instead of the reminder to call `last_error()` (#708).
 

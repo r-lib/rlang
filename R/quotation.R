@@ -430,7 +430,7 @@ exprs_auto_name <- function(exprs, width = NULL, printer = NULL) {
 
   have_name <- have_name(exprs)
   if (any(!have_name)) {
-    nms <- map_chr(exprs[!have_name], label)
+    nms <- map_chr(exprs[!have_name], as_label)
     names(exprs)[!have_name] <- nms
   }
 

@@ -208,34 +208,6 @@ expr_name <- function(expr) {
     }
   )
 }
-label <- function(expr) {
-  expr <- quo_squash(expr)
-
-  if (is_missing(expr)) {
-    return("<empty>")
-  }
-
-  switch(typeof(expr),
-    NULL = "NULL",
-    symbol = as_string(expr),
-    language = {
-      if (is_data_pronoun(expr)) {
-        data_pronoun_name(expr) %||% "<unknown>"
-      } else {
-        name <- deparse_one(expr)
-        name <- gsub("\n.*$", "...", name)
-        name
-      }
-    },
-    if (is_bare_atomic(expr, n = 1)) {
-      name <- expr_text(expr)
-      name <- gsub("\n.*$", "...", name)
-      name
-    } else {
-      paste0("<", rlang_type_sum(expr), ">")
-    }
-  )
-}
 #' @rdname expr_label
 #' @export
 #' @param width Width of each line.
