@@ -32,7 +32,10 @@
 
 <meta property="og:title" content="Format quosures for printing or labelling — quo_label" />
 
-<meta property="og:description" content="These functions take an arbitrary R object, typically an
+<meta property="og:description" content="
+Note: You should now use as_label() instead of quo_name(). See
+life cycle section below.
+These functions take an arbitrary R object, typically an
 expression, and represent it as a string.
 quo_name() returns an abbreviated representation of the object
 as a single line string. It is suitable for default names.
@@ -143,7 +146,10 @@ and strings is non-lossy and well defined." />
 
     <div class="ref-description">
     
-    <p>These functions take an arbitrary R object, typically an
+    <p><a href='https://www.tidyverse.org/lifecycle/#questioning'><img src='figures/lifecycle-questioning.svg' alt='Questioning lifecycle'></a></p>
+<p><strong>Note:</strong> You should now use <code><a href='as_label.html'>as_label()</a></code> instead of <code>quo_name()</code>. See
+life cycle section below.</p>
+<p>These functions take an arbitrary R object, typically an
 <a href='is_expression.html'>expression</a>, and represent it as a string.</p><ul>
 <li><p><code>quo_name()</code> returns an abbreviated representation of the object
 as a single line string. It is suitable for default names.</p></li>
@@ -184,6 +190,21 @@ and strings is non-lossy and well defined.</p>
     </tr>
     </table>
     
+    <h2 class="hasAnchor" id="life-cycle"><a class="anchor" href="#life-cycle"></a>Life cycle</h2>
+
+    
+    <p>These functions are in the questioning life cycle stage.</p><ul>
+<li><p><code><a href='as_label.html'>as_label()</a></code> and <code><a href='as_string.html'>as_string()</a></code> should be used instead of
+<code>quo_name()</code>. <code><a href='as_label.html'>as_label()</a></code> transforms any R object to a string but
+should only be used to create a default name. Labelisation is
+not a well defined operation and no assumption should be made
+about the label. On the other hand, <code><a href='as_string.html'>as_string()</a></code> only works with
+symbols, but is a well defined and deterministic operation.</p></li>
+<li><p>We don't have a good replacement for <code>quo_text()</code> yet. See
+<a href='https://github.com/r-lib/rlang/issues/636'>https://github.com/r-lib/rlang/issues/636</a> to follow discussions
+about a new deparsing API.</p></li>
+</ul>
+    
     <h2 class="hasAnchor" id="see-also"><a class="anchor" href="#see-also"></a>See also</h2>
 
     <div class='dont-index'><p><code><a href='expr_label.html'>expr_label()</a></code>, <code><a href='f_text.html'>f_label()</a></code></p></div>
@@ -194,7 +215,7 @@ and strings is non-lossy and well defined.</p>
 <span class='no'>quo</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='quotation.html'>quo</a></span>(<span class='fu'>foo</span>(!! <span class='fu'><a href='quotation.html'>quo</a></span>(<span class='no'>bar</span>)))
 <span class='no'>quo</span></div><div class='output co'>#&gt; &lt;quosure&gt;
 #&gt; expr: ^foo(^bar)
-#&gt; env:  0x88e9370</div><div class='input'>
+#&gt; env:  0x7382cb0</div><div class='input'>
 <span class='co'># quo_squash() unwraps all quosures and returns a raw expression:</span>
 <span class='fu'><a href='quo_squash.html'>quo_squash</a></span>(<span class='no'>quo</span>)</div><div class='output co'>#&gt; foo(bar)</div><div class='input'>
 <span class='co'># This is used by quo_text() and quo_label():</span>
@@ -209,6 +230,8 @@ and strings is non-lossy and well defined.</p>
     <ul class="nav nav-pills nav-stacked">
       <li><a href="#arguments">Arguments</a></li>
       
+      <li><a href="#life-cycle">Life cycle</a></li>
+
       <li><a href="#see-also">See also</a></li>
       
       <li><a href="#examples">Examples</a></li>

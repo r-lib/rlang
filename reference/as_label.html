@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Convert to function or closure — as_function • rlang</title>
+<title>Create a default name for an R object — as_label • rlang</title>
 
 <!-- jquery -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=" crossorigin="anonymous"></script>
@@ -30,16 +30,27 @@
 
 
 
-<meta property="og:title" content="Convert to function or closure — as_function" />
+<meta property="og:title" content="Create a default name for an R object — as_label" />
 
-<meta property="og:description" content="
-as_function() transform objects to functions. It fetches
-functions by name if supplied a string or transforms formulas to
-function.
-as_closure() first passes its argument to as_function(). If
-the result is a primitive function, it regularises it to a proper
-closure (see is_function() about primitive functions).
+<meta property="og:description" content="as_label() transforms R objects into a short, human-readable
+description. You can use labels to:
+Display an object in a concise way, for example to labellise axes
+in a graphical plot.
+Give default names to columns in a data frame. In this case,
+labelling is the first step before name repair.
 " />
+
+<meta property="og:description" content="See also as_string() for transforming symbols back to a
+string. Unlike as_label(), as_string() is a well defined
+operation that guarantees the roundtrip symbol -&amp;gt; string -&amp;gt;
+symbol.
+In general, if you don't know for sure what kind of object you're
+dealing with (a call, a symbol, an unquoted constant), use
+as_label() and make no assumption about the resulting string. If
+you know you have a symbol and need the name of the object it
+refers to, use as_string(). For instance, use as_label() with
+objects captured with enquo() and as_string() with symbols
+captured with ensym()." />
 <meta name="twitter:card" content="summary" />
 
 
@@ -129,98 +140,78 @@ closure (see is_function() about primitive functions).
 <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-    <h1>Convert to function or closure</h1>
-    <small class="dont-index">Source: <a href='https://github.com/r-lib/rlang/blob/master/R/fn.R'><code>R/fn.R</code></a></small>
-    <div class="hidden name"><code>as_function.Rd</code></div>
+    <h1>Create a default name for an R object</h1>
+    <small class="dont-index">Source: <a href='https://github.com/r-lib/rlang/blob/master/R/deparse.R'><code>R/deparse.R</code></a></small>
+    <div class="hidden name"><code>as_label.Rd</code></div>
     </div>
 
     <div class="ref-description">
     
-    <p><a href='https://www.tidyverse.org/lifecycle/#stable'><img src='figures/lifecycle-stable.svg' alt='Stable lifecycle'></a></p><ul>
-<li><p><code>as_function()</code> transform objects to functions. It fetches
-functions by name if supplied a string or transforms formulas to
-function.</p></li>
-<li><p><code>as_closure()</code> first passes its argument to <code>as_function()</code>. If
-the result is a primitive function, it regularises it to a proper
-<a href='https://www.rdocumentation.org/packages/base/topics/function'>closure</a> (see <code><a href='is_function.html'>is_function()</a></code> about primitive functions).</p></li>
+    <p><code>as_label()</code> transforms R objects into a short, human-readable
+description. You can use labels to:</p><ul>
+<li><p>Display an object in a concise way, for example to labellise axes
+in a graphical plot.</p></li>
+<li><p>Give default names to columns in a data frame. In this case,
+labelling is the first step before name repair.</p></li>
 </ul>
+
+    <p>See also <code><a href='as_string.html'>as_string()</a></code> for transforming symbols back to a
+string. Unlike <code>as_label()</code>, <code><a href='as_string.html'>as_string()</a></code> is a well defined
+operation that guarantees the roundtrip symbol -&gt; string -&gt;
+symbol.</p>
+<p>In general, if you don't know for sure what kind of object you're
+dealing with (a call, a symbol, an unquoted constant), use
+<code>as_label()</code> and make no assumption about the resulting string. If
+you know you have a symbol and need the name of the object it
+refers to, use <code><a href='as_string.html'>as_string()</a></code>. For instance, use <code>as_label()</code> with
+objects captured with <code><a href='quotation.html'>enquo()</a></code> and <code><a href='as_string.html'>as_string()</a></code> with symbols
+captured with <code><a href='quotation.html'>ensym()</a></code>.</p>
     
     </div>
 
-    <pre class="usage"><span class='fu'>as_function</span>(<span class='no'>x</span>, <span class='kw'>env</span> <span class='kw'>=</span> <span class='fu'><a href='caller_env.html'>caller_env</a></span>())
-
-<span class='fu'>is_lambda</span>(<span class='no'>x</span>)
-
-<span class='fu'>as_closure</span>(<span class='no'>x</span>, <span class='kw'>env</span> <span class='kw'>=</span> <span class='fu'><a href='caller_env.html'>caller_env</a></span>())</pre>
+    <pre class="usage"><span class='fu'>as_label</span>(<span class='no'>x</span>)</pre>
     
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
     <colgroup><col class="name" /><col class="desc" /></colgroup>
     <tr>
       <th>x</th>
-      <td><p>A function or formula.</p>
-<p>If a <strong>function</strong>, it is used as is.</p>
-<p>If a <strong>formula</strong>, e.g. <code>~ .x + 2</code>, it is converted to a function
-with two arguments, <code>.x</code> or <code>.</code> and <code>.y</code>. This allows you to
-create very compact anonymous functions with up to two inputs.
-Functions created from formulas have a special class. Use
-<code>is_lambda()</code> to test for it.</p></td>
-    </tr>
-    <tr>
-      <th>env</th>
-      <td><p>Environment in which to fetch the function in case <code>x</code>
-is a string.</p></td>
+      <td><p>An object.</p></td>
     </tr>
     </table>
     
+    <h2 class="hasAnchor" id="transformation-to-string"><a class="anchor" href="#transformation-to-string"></a>Transformation to string</h2>
+
+    
+    <ul>
+<li><p>Quosures are <a href='quo_squash.html'>squashed</a> before being labelled.</p></li>
+<li><p>Symbols are transformed to string with <code><a href='as_string.html'>as_string()</a></code>.</p></li>
+<li><p>Calls are abbreviated.</p></li>
+<li><p>Numbers are represented as such.</p></li>
+<li><p>Other constants are represented by their type, such as <code>&lt;dbl&gt;</code>
+or <code>&lt;data.frame&gt;</code>.</p></li>
+</ul>
+    <p>Note that simple symbols should generally be transformed to strings
+with <code><a href='as_string.html'>as_string()</a></code>. Labelling is not a well defined operation and
+no assumption should be made about how the label is created. On the
+other hand, <code><a href='as_string.html'>as_string()</a></code> only works with symbols and is a well
+defined, deterministic operation.</p>
+    
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><div class='input'><span class='no'>f</span> <span class='kw'>&lt;-</span> <span class='fu'>as_function</span>(~ <span class='no'>.</span> + <span class='fl'>1</span>)
-<span class='fu'>f</span>(<span class='fl'>10</span>)</div><div class='output co'>#&gt; [1] 11</div><div class='input'>
-<span class='co'># Functions created from a formula have a special class:</span>
-<span class='fu'>is_lambda</span>(<span class='no'>f</span>)</div><div class='output co'>#&gt; [1] TRUE</div><div class='input'><span class='fu'>is_lambda</span>(<span class='fu'>as_function</span>(<span class='kw'>function</span>() <span class='st'>"foo"</span>))</div><div class='output co'>#&gt; [1] FALSE</div><div class='input'>
-<span class='co'># Primitive functions are regularised as closures</span>
-<span class='fu'>as_closure</span>(<span class='no'>list</span>)</div><div class='output co'>#&gt; function (...) 
-#&gt; .Primitive("list")(...)</div><div class='input'><span class='fu'>as_closure</span>(<span class='st'>"list"</span>)</div><div class='output co'>#&gt; function (...) 
-#&gt; .Primitive("list")(...)</div><div class='input'>
-<span class='co'># Operators have `.x` and `.y` as arguments, just like lambda</span>
-<span class='co'># functions created with the formula syntax:</span>
-<span class='fu'>as_closure</span>(<span class='no'>`+`</span>)</div><div class='output co'>#&gt; function (e1, e2, .x = e1, .y = e2) 
-#&gt; {
-#&gt;     if (missing(.x)) {
-#&gt;         if (missing(e1)) {
-#&gt;             abort("Must supply `e1` or `.x` to binary operator")
-#&gt;         }
-#&gt;         .x &lt;- e1
-#&gt;     }
-#&gt;     else if (!missing(e1)) {
-#&gt;         abort("Can't supply both `e1` and `.x` to binary operator")
-#&gt;     }
-#&gt;     if (missing(.y) &amp;&amp; !missing(e2)) {
-#&gt;         .y &lt;- e2
-#&gt;     }
-#&gt;     else if (!missing(e2)) {
-#&gt;         abort("Can't supply both `e2` and `.y` to binary operator")
-#&gt;     }
-#&gt;     if (missing(.y)) 
-#&gt;         .x
-#&gt;     else .x + .y
-#&gt; }
-#&gt; &lt;environment: 0x6ff09d8&gt;</div><div class='input'><span class='fu'>as_closure</span>(<span class='no'>`~`</span>)</div><div class='output co'>#&gt; function(.x, .y) {
-#&gt;       if (is_missing(substitute(.y))) {
-#&gt;         new_formula(NULL, substitute(.x), caller_env())
-#&gt;       } else {
-#&gt;         new_formula(substitute(.x), substitute(.y), caller_env())
-#&gt;       }
-#&gt;     }
-#&gt; &lt;bytecode: 0x8a5c8e8&gt;
-#&gt; &lt;environment: 0x7498d10&gt;</div></pre>
+    <pre class="examples"><div class='input'><span class='co'># as_label() is useful with quoted expressions:</span>
+<span class='fu'>as_label</span>(<span class='fu'><a href='quotation.html'>expr</a></span>(<span class='fu'>foo</span>(<span class='no'>bar</span>)))</div><div class='output co'>#&gt; [1] "foo(bar)"</div><div class='input'><span class='fu'>as_label</span>(<span class='fu'><a href='quotation.html'>expr</a></span>(<span class='no'>foobar</span>))</div><div class='output co'>#&gt; [1] "foobar"</div><div class='input'>
+<span class='co'># It works with any R object. This is also useful for quoted</span>
+<span class='co'># arguments because the user might unquote constant objects:</span>
+<span class='fu'>as_label</span>(<span class='fl'>1</span>:<span class='fl'>3</span>)</div><div class='output co'>#&gt; [1] "&lt;int&gt;"</div><div class='input'><span class='fu'>as_label</span>(<span class='kw pkg'>base</span><span class='kw ns'>::</span><span class='no'><a href='https://www.rdocumentation.org/packages/base/topics/list'>list</a></span>)</div><div class='output co'>#&gt; [1] "&lt;fn&gt;"</div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
     <h2>Contents</h2>
     <ul class="nav nav-pills nav-stacked">
       <li><a href="#arguments">Arguments</a></li>
-            
+      
+      <li><a href="#transformation-to-string">Transformation to string</a></li>
+      
       <li><a href="#examples">Examples</a></li>
     </ul>
 

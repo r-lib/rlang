@@ -128,6 +128,16 @@
 <a href="#rlang-0-3-0-9000" class="anchor"></a>rlang 0.3.0.9000<small> Unreleased </small>
 </h1>
 <ul>
+<li>
+<p>New <code><a href="../reference/as_label.html">as_label()</a></code> function. It should be used instead of <code><a href="../reference/quo_label.html">quo_name()</a></code> to transform objects and quoted expressions into a short, human-readable description. You can use labels to:</p>
+<ul>
+<li><p>Display an object in a concise way, for example to labellise axes in a graphical plot.</p></li>
+<li><p>Give default names to columns in a data frame. In this case, labelling is the first step before name repair.</p></li>
+</ul>
+<p>We expect <code><a href="../reference/as_label.html">as_label()</a></code> to gain additional parameters in the future, for example to control the maximum width of a label.</p>
+<p>See also [as_string()] for transforming symbols back to a string. Unlike <code><a href="../reference/as_label.html">as_label()</a></code>, <code><a href="../reference/as_string.html">as_string()</a></code> is a well defined operation that guarantees the roundtrip symbol -&gt; string -&gt; symbol.</p>
+<p>In general, if you don’t know for sure what kind of object you’re dealing with (a call, a symbol, an unquoted constant), use <code><a href="../reference/as_label.html">as_label()</a></code> and make no assumption about the resulting string. If you know you have a symbol and need the name of the object it refers to, use [as_string()]. For instance, use <code><a href="../reference/as_label.html">as_label()</a></code> with objects captured with <code><a href="../reference/quotation.html">enquo()</a></code> and <code><a href="../reference/as_string.html">as_string()</a></code> with symbols captured with <code><a href="../reference/quotation.html">ensym()</a></code>.</p>
+</li>
 <li><p>In non-interactive sessions, the full backtrace is now shown on error instead of the reminder to call <code><a href="../reference/last_error.html">last_error()</a></code> (<a href='https://github.com/r-lib/rlang/issues/708'>#708</a>).</p></li>
 <li><p>New <code><a href="../reference/is_interactive.html">is_interactive()</a></code> function. It serves the same purpose as <code><a href="https://www.rdocumentation.org/packages/base/topics/interactive">base::interactive()</a></code> but also checks if knitr is in progress and provides an escape hatch. Use <code><a href="../reference/is_interactive.html">with_interactive()</a></code> and <code><a href="../reference/is_interactive.html">scoped_interactive()</a></code> to override the return value of <code><a href="../reference/is_interactive.html">is_interactive()</a></code>. This is useful in unit tests or to manually turn on interactive features in RMarkdown outputs</p></li>
 <li><p><code><a href="../reference/exiting.html">calling()</a></code> now boxes its argument.</p></li>
