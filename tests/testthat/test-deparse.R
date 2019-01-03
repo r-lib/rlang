@@ -443,3 +443,9 @@ test_that("as_label() supports special objects", {
   expect_identical(as_label(~foo), "~foo")
   expect_identical(as_label(NULL), "NULL")
 })
+
+test_that("as_name() supports quosured symbols and strings", {
+   expect_identical(as_name(quo(foo)), "foo")
+   expect_identical(as_name(quo("foo")), "foo")
+   expect_error(as_name(quo(foo())), "Can't convert a call to a string")
+ })

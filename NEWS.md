@@ -51,11 +51,22 @@ rlang 0.3.0 and solves bugs for the upcoming release of purrr
   could not be caught (#696).
 
 
-## `as_label()`
+## `as_label()` and `as_name()`
 
-The new `as_label()` function should be used instead of `quo_name()`
-to transform objects and quoted expressions into a short
-human-readable description. You can use labels to:
+The new `as_label()` and `as_name()` functions should be used instead
+of `quo_name()` to transform objects and quoted expressions to a
+string. We have noticed that tidy eval users often use `quo_name()` to
+extract names from quosured symbols. This is not a good use for that
+function because the way `quo_name()` creates a string is not a well
+defined operation.
+
+For this reason, we are replacing `quo_name()` with two new functions
+that have more clearly defined purposes, and hopefully better names
+reflecting those purposes. Use `as_label()` to transform any object to
+a short human-readable description, and `as_name()` to extract names
+from (possibly quosured) symbols.
+
+Create labels with `as_label()` to:
 
 * Display an object in a concise way, for example to labellise axes
   in a graphical plot.
@@ -64,20 +75,26 @@ human-readable description. You can use labels to:
   labelling is the first step before name repair.
 
 We expect `as_label()` to gain additional parameters in the future,
-for example to control the maximum width of a label.
+for example to control the maximum width of a label. The way an object
+is labelled is thus subject to change.
 
-See also [as_string()] for transforming symbols back to a
-string. Unlike `as_label()`, `as_string()` is a well defined
-operation that guarantees the roundtrip symbol -> string ->
-symbol.
+On the other hand, [as_name()] transforms symbols back to a string in
+a well defined manner. Unlike `as_label()`, `as_name()` guarantees the
+roundtrip symbol -> string -> symbol.
 
 In general, if you don't know for sure what kind of object you're
 dealing with (a call, a symbol, an unquoted constant), use
-`as_label()` and make no assumption about the resulting string. If
-you know you have a symbol and need the name of the object it refers
-to, use [as_string()]. For instance, use `as_label()` with objects
-captured with `enquo()` and `as_string()` with symbols captured with
-`ensym()`.
+`as_label()` and make no assumption about the resulting string. If you
+know you have a symbol and need the name of the object it refers to,
+use [as_name()]. For instance, use `as_label()` with objects captured
+with `enquo()` and `as_name()` with symbols captured with `ensym()`.
+
+Note that `quo_name()` will only be soft-deprecated at the next major
+version of rlang (0.4.0). At this point, it will start issuing
+once-per-session warnings in scripts, but not in packages. It will
+then be deprecated in yet another major version, at which point it
+will issue once-per-session warnings in packages as well. You thus
+have plenty of time to change your code.
 
 
 ## Minor fixes and features

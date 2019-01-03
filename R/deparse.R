@@ -800,7 +800,7 @@ reserved_words <- c(
 #' * Give default names to columns in a data frame. In this case,
 #'   labelling is the first step before name repair.
 #'
-#' See also [as_string()] for transforming symbols back to a
+#' See also [as_name()] for transforming symbols back to a
 #' string. Unlike `as_label()`, `as_string()` is a well defined
 #' operation that guarantees the roundtrip symbol -> string ->
 #' symbol.
@@ -825,11 +825,13 @@ reserved_words <- c(
 #'   or `<data.frame>`.
 #'
 #' Note that simple symbols should generally be transformed to strings
-#' with [as_string()]. Labelling is not a well defined operation and
+#' with [as_name()]. Labelling is not a well defined operation and
 #' no assumption should be made about how the label is created. On the
-#' other hand, `as_string()` only works with symbols and is a well
+#' other hand, `as_name()` only works with symbols and is a well
 #' defined, deterministic operation.
 #'
+#' @seealso [as_name()] for transforming symbols back to a string
+#'   deterministically.
 #' @examples
 #' # as_label() is useful with quoted expressions:
 #' as_label(expr(foo(bar)))
@@ -867,4 +869,56 @@ as_label <- function(x) {
       paste0("<", rlang_type_sum(x), ">")
     }
   )
+}
+
+#' Extract names from symbols
+#'
+#' @description
+#'
+#' `as_name()` converts [symbols][sym] to character strings. The
+#' conversion is deterministic. That is, the roundtrip symbol -> name
+#' -> symbol always gets the same result.
+#'
+#' - Use `as_name()` when you need to transform a symbol to a string
+#'   to _refer_ to an object by its name.
+#'
+#' - Use [as_label()] when you need to transform any kind of object to
+#'   a string to _represent_ that object with a short description.
+#'
+#' Expect `as_name()` to gain
+#' [name-repairing](https://principles.tidyverse.org/names-attribute.html#minimal-unique-universal)
+#' features in the future.
+#'
+#' Note that `rlang::as_name()` is the _opposite_ of
+#' [base::as.name()]. If you're writing base R code, we recommend
+#' using [base::as.symbol()] which is an alias of `as.name()` that
+#' follows a more modern terminology (R types instead of S modes).
+#'
+#' @param x A string or symbol, possibly wrapped in a [quosure][quosure].
+#'   If a string, the attributes are removed, if any.
+#' @return A character vector of length 1.
+#'
+#' @seealso [as_label()] for converting any object to a single string
+#'   suitable as a label. [as_string()] for a lower-level version that
+#'   doesn't unwrap quosures.
+#' @examples
+#' # Let's create some symbols:
+#' foo <- quote(foo)
+#' bar <- sym("bar")
+#'
+#' # as_name() converts symbols to strings:
+#' foo
+#' as_name(foo)
+#'
+#' typeof(bar)
+#' typeof(as_name(bar))
+#'
+#' # as_name() unwraps quosured symbols automatically:
+#' as_name(quo(foo))
+#' @export
+as_name <- function(x) {
+  if (is_quosure(x)) {
+    x <- quo_get_expr(x)
+  }
+  as_string(x)
 }
