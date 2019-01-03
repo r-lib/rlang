@@ -395,8 +395,8 @@ quo_squash <- function(quo, warn = FALSE) {
 #'
 #' \Sexpr[results=rd, stage=render]{rlang:::lifecycle("questioning")}
 #'
-#' **Note:** You should now use [as_label()] instead of `quo_name()`. See
-#' life cycle section below.
+#' **Note:** You should now use [as_label()] or [as_name()] instead
+#' of `quo_name()`. See life cycle section below.
 #'
 #' These functions take an arbitrary R object, typically an
 #' [expression][is_expression], and represent it as a string.
@@ -422,12 +422,13 @@ quo_squash <- function(quo, warn = FALSE) {
 #'
 #' These functions are in the questioning life cycle stage.
 #'
-#' * [as_label()] and [as_string()] should be used instead of
-#'   `quo_name()`. `as_label()` transforms any R object to a string but
-#'   should only be used to create a default name. Labelisation is
+#' * [as_label()] and [as_name()] should be used instead of
+#'   `quo_name()`. `as_label()` transforms any R object to a string
+#'   but should only be used to create a default name. Labelisation is
 #'   not a well defined operation and no assumption should be made
-#'   about the label. On the other hand, `as_string()` only works with
-#'   symbols, but is a well defined and deterministic operation.
+#'   about the label. On the other hand, `as_name()` only works with
+#'   (possibly quosured) symbols, but is a well defined and
+#'   deterministic operation.
 #'
 #' * We don't have a good replacement for `quo_text()` yet. See
 #'   <https://github.com/r-lib/rlang/issues/636> to follow discussions
