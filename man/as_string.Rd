@@ -16,6 +16,33 @@ A character vector of length 1.
 \description{
 \code{as_string()} converts \link[=sym]{symbols} to character strings.
 }
+\section{Unicode tags}{
+
+
+Unlike \code{\link[base:as.symbol]{base::as.symbol()}} and \code{\link[base:as.name]{base::as.name()}}, \code{as_string()}
+automatically transforms unicode tags such as \code{"<U+5E78>"} to the
+proper UTF-8 character. This is important on Windows because:
+\itemize{
+\item R on Windows has no UTF-8 support, and uses native encoding instead.
+\item The native encodings do not cover all Unicode characters. For
+example, Western encodings do not support CKJ characters.
+\item When a lossy UTF-8 -> native transformation occurs, uncovered
+characters are transformed to an ASCII unicode tag like \code{"<U+5E78>"}.
+\item Symbols are always encoded in native. This means that
+transforming the column names of a data frame to symbols might be
+a lossy operation.
+\item This operation is very common in the tidyverse because of data
+masking APIs like dplyr where data frames are transformed to
+environments. While the names of a data frame are stored as a
+character vector, the bindings of environments are stored as
+symbols.
+}
+
+Because it reencodes the ASCII unicode tags to their UTF-8
+representation, the string -> symbol -> string roundtrip is
+more stable with \code{as_string()}.
+}
+
 \examples{
 # Let's create some symbols:
 foo <- quote(foo)
@@ -27,4 +54,8 @@ as_string(foo)
 
 typeof(bar)
 typeof(as_string(bar))
+}
+\seealso{
+\code{\link[=as_name]{as_name()}} for a higher-level variant of \code{as_string()}
+that automatically unwraps quosures.
 }
