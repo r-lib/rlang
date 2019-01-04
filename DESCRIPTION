@@ -25,5 +25,5 @@ Suggests:
 Encoding: UTF-8
 RoxygenNote: 6.1.1
 Roxygen: list(markdown = TRUE)
-URL: http://rlang.tidyverse.org, https://github.com/r-lib/rlang
+URL: http://rlang.r-lib.org, https://github.com/r-lib/rlang
 BugReports: https://github.com/r-lib/rlang/issues
