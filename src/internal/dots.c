@@ -440,6 +440,7 @@ static sexp* init_names(sexp* x) {
 sexp* capturedots(sexp* frame);
 
 sexp* dots_expand(sexp* dots, struct dots_capture_info* capture_info) {
+  int n_protect = 0;
   sexp* dots_names = r_vec_names(dots);
 
   sexp** dots_names_ptr = NULL;
@@ -447,12 +448,12 @@ sexp* dots_expand(sexp* dots, struct dots_capture_info* capture_info) {
     dots_names_ptr = r_chr_deref(dots_names);
   }
 
-  sexp* out = KEEP(r_new_vector(r_type_list, capture_info->count));
+  sexp* out = KEEP_N(r_new_vector(r_type_list, capture_info->count), n_protect);
 
   // Add default empty names unless dots are captured by values
   sexp* out_names = r_null;
   if (capture_info->type != DOTS_VALUE || dots_names != r_null) {
-    out_names = init_names(out);
+    out_names = KEEP_N(init_names(out), n_protect);
   }
 
   r_ssize n = r_length(dots);
@@ -506,7 +507,7 @@ sexp* dots_expand(sexp* dots, struct dots_capture_info* capture_info) {
 
   out = maybe_auto_name(out, capture_info->named);
 
-  FREE(1);
+  FREE(n_protect);
   return out;
 }
 
