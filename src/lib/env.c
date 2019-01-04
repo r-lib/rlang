@@ -141,7 +141,10 @@ sexp* rlang_env_unbind(sexp* env, sexp* names, sexp* inherits) {
 }
 
 sexp* r_env_unbind_all(sexp* env, const char** names, bool inherits) {
-  return r_env_unbind_names(env, r_new_character(names), inherits);
+  sexp* nms = KEEP(r_new_character(names));
+  sexp* out = r_env_unbind_names(env, nms, inherits);
+  FREE(1);
+  return out;
 }
 
 sexp* r_env_unbind(sexp* env, const char* name, bool inherits) {
