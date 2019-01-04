@@ -12,6 +12,11 @@
 0 errors | 0 warnings | 0 notes
 
 
+## Additional CRAN checks
+
+I have fixed the rchk issues reported on the CRAN page.
+
+
 ## Reverse dependencies
 
 I have run R CMD check on the 371 downstream dependencies. (Summary at https://github.com/r-lib/rlang/tree/rc-0.3.1/revdep).
