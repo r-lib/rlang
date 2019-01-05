@@ -108,6 +108,7 @@ extern sexp* rlang_is_data_mask(sexp*);
 extern sexp* rlang_data_pronoun_get(sexp*, sexp*);
 extern sexp* rlang_cnd_type(sexp*);
 extern sexp* rlang_env_inherits(sexp*, sexp*);
+extern sexp* rlang_eval_top(sexp*, sexp*);
 
 // Library initialisation defined below
 sexp* rlang_library_load();
@@ -250,6 +251,7 @@ static const r_callable r_callables[] = {
   {"rlang_is_raw",                      (r_fn_ptr) &rlang_is_raw, 2},
   {"rlang_cnd_type",                    (r_fn_ptr) &rlang_cnd_type, 1},
   {"rlang_env_inherits",                (r_fn_ptr) &rlang_env_inherits, 2},
+  {"rlang_eval_top",                    (r_fn_ptr) &rlang_eval_top, 2},
   {NULL, NULL, 0}
 };
 

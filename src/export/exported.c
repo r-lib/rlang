@@ -78,6 +78,17 @@ sexp* rlang_eval(sexp* expr, sexp* env) {
   return Rf_eval(expr, env);
 }
 
+sexp* rlang_eval_top(sexp* expr, sexp* env) {
+  int jumped = 0;
+  sexp* out = R_tryEval(expr, env, &jumped);
+
+  if (jumped) {
+    r_abort("Top level jump");
+  } else {
+    return out;
+  }
+}
+
 
 // formula.c
 
