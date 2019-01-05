@@ -456,62 +456,35 @@ test_that("with_abort() entraces conditions properly", {
 })
 
 test_that("signal context is detected", {
-  get_type <- function(cnd) {
+  get_info <- function(cnd) {
     nframe <- sys.nframe() - 1
-    out <- signal_context_info(nframe)[[1]]
-    invokeRestart("out", out)
+    out <- signal_context_info(nframe)
+    info <- list(out[[1]], sys.call(out[[2]]))
+    invokeRestart("out", info)
   }
-  signal_type <- function(signaller, arg) {
+  signal_info <- function(signaller, arg) {
     f <- function() signaller(arg)
     withRestarts(
       out = identity,
-      withCallingHandlers(condition = get_type, f())
+      withCallingHandlers(condition = get_info, f())
     )
   }
 
-  expect_identical(signal_type(base::stop, ""), "stop_message")
-  expect_identical(signal_type(base::stop, cnd("error")), "stop_condition")
-  expect_identical(signal_type(function(msg) errorcall(NULL, msg), ""), "stop_native")
-  expect_identical(signal_type(abort, ""), "stop_rlang")
+  expect_equal(signal_info(base::stop, ""), list("stop_message", quote(f())))
+  expect_equal(signal_info(base::stop, cnd("error")), list("stop_condition", quote(f())))
+  expect_equal(signal_info(function(msg) errorcall(NULL, msg), ""), list("stop_native", quote(errorcall(NULL, msg))))
+  expect_equal(signal_info(abort, "")[[1]], "stop_rlang")
 
-  expect_identical(signal_type(base::warning, ""), "warning_message")
-  expect_identical(signal_type(base::warning, cnd("warning")), "warning_condition")
-  expect_identical(signal_type(function(msg) warningcall(NULL, msg), ""), "warning_native")
-  expect_identical(signal_type(warn, ""), "warning_rlang")
+  expect_equal(signal_info(base::warning, ""), list("warning_message", quote(f())))
+  expect_equal(signal_info(base::warning, cnd("warning")), list("warning_condition", quote(f())))
+  expect_equal(signal_info(function(msg) warningcall(NULL, msg), ""), list("warning_native", quote(warningcall(NULL, msg))))
+  expect_equal(signal_info(warn, "")[[1]], "warning_rlang")
 
-  expect_identical(signal_type(base::message, ""), "message")
-  expect_identical(signal_type(base::message, cnd("message")), "message")
-  expect_identical(signal_type(inform, ""), "message_rlang")
+  expect_equal(signal_info(base::message, ""), list("message", quote(f())))
+  expect_equal(signal_info(base::message, cnd("message")), list("message", quote(f())))
+  expect_equal(signal_info(inform, "")[[1]], "message_rlang")
 
-  expect_identical(signal_type(base::signalCondition, cnd("foo")), "condition")
-})
-
-test_that("bottom of signalling context is detected", {
-  get_call <- function(cnd) {
-    nframe <- sys.nframe() - 1
-    info <- signal_context_info(nframe)
-    invokeRestart("out", sys.call(info[[2]]))
-  }
-  signal_call <- function(signaller, arg) {
-    f <- function() signaller(arg)
-    withRestarts(
-      out = identity,
-      withCallingHandlers(condition = get_call, f())
-    )
-  }
-
-  expect_equal(signal_call(base::stop, ""), quote(f()))
-  expect_equal(signal_call(base::stop, cnd("error")), quote(f()))
-  expect_equal(signal_call(function(msg) errorcall(NULL, msg), ""), quote(errorcall(NULL, msg)))
-
-  expect_equal(signal_call(base::warning, ""), quote(f()))
-  expect_equal(signal_call(base::warning, cnd("warning")), quote(f()))
-  expect_equal(signal_call(function(msg) warningcall(NULL, msg), ""), quote(warningcall(NULL, msg)))
-
-  expect_equal(signal_call(base::message, ""), quote(f()))
-  expect_equal(signal_call(base::message, cnd("message")), quote(f()))
-
-  expect_equal(signal_call(base::signalCondition, cnd("foo")), quote(f()))
+  expect_equal(signal_info(base::signalCondition, cnd("foo")), list("condition", quote(f())))
 })
 
 
