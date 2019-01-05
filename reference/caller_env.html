@@ -68,7 +68,7 @@ function that called the current function.
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">rlang</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.3.0.9002</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.3.1.9000</span>
       </span>
     </div>
 
@@ -170,10 +170,10 @@ function that called the current function.</p></li>
 <span class='co'># created when `fn()` was called. The caller environment is the</span>
 <span class='co'># global env because that's where we called `fn()`.</span>
 <span class='fu'>fn</span>()</div><div class='output co'>#&gt; $current
-#&gt; &lt;environment: 0x7a19710&gt;
+#&gt; &lt;environment: 0x74b2438&gt;
 #&gt; 
 #&gt; $caller
-#&gt; &lt;environment: 0x80b2e00&gt;
+#&gt; &lt;environment: 0x7982888&gt;
 #&gt; </div><div class='input'>
 <span class='co'># Let's call `fn()` again but this time within a function:</span>
 <span class='no'>g</span> <span class='kw'>&lt;-</span> <span class='kw'>function</span>() <span class='fu'>fn</span>()
@@ -181,10 +181,10 @@ function that called the current function.</p></li>
 <span class='co'># Now the caller environment is also an unique execution environment.</span>
 <span class='co'># This is the exec env created by R for our call to g():</span>
 <span class='fu'>g</span>()</div><div class='output co'>#&gt; $current
-#&gt; &lt;environment: 0x7b52018&gt;
+#&gt; &lt;environment: 0x6d27c60&gt;
 #&gt; 
 #&gt; $caller
-#&gt; &lt;environment: 0x7b52088&gt;
+#&gt; &lt;environment: 0x6d27cd0&gt;
 #&gt; </div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
