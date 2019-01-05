@@ -846,6 +846,8 @@ signal_context_info <- function(nframe) {
   if (is_same_body(first, body(.handleSimpleError))) {
     if (is_same_body(sys_body(nframe - 1), body(stop))) {
       return(list("stop_message", nframe - 2))
+    } else if (is_same_body(sys_body(nframe - 4), body(.signalSimpleWarning))) {
+      return(list("warning_promoted", nframe - 6))
     } else {
       return(list("stop_native", nframe - 1))
     }

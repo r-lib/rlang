@@ -1,4 +1,11 @@
 
+# rlang 0.3.1.9000
+
+* Fixed issue with backtraces of warnings promoted to error, and
+  entraced via `withCallingHandlers()`. The issue didn't affect
+  entracing via top level `options(error = rlang::entrace)` handling.
+
+
 # rlang 0.3.0.9000
 
 * New `as_label()` function. It should be used instead of `quo_name()`

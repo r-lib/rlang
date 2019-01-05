@@ -456,7 +456,7 @@ test_that("with_abort() entraces conditions properly", {
 })
 
 test_that("signal context is detected", {
-  get_info <- function(cnd) {
+  get_signal_info <- function(cnd) {
     nframe <- sys.nframe() - 1
     out <- signal_context_info(nframe)
     info <- list(out[[1]], sys.call(out[[2]]))
@@ -466,7 +466,7 @@ test_that("signal context is detected", {
     f <- function() signaller(arg)
     withRestarts(
       out = identity,
-      withCallingHandlers(condition = get_info, f())
+      withCallingHandlers(condition = get_signal_info, f())
     )
   }
 
@@ -485,6 +485,18 @@ test_that("signal context is detected", {
   expect_equal(signal_info(inform, "")[[1]], "message_rlang")
 
   expect_equal(signal_info(base::signalCondition, cnd("foo")), list("condition", quote(f())))
+
+  # Warnings won't be promoted if `condition` is handled. We need to
+  # handle `error` instead.
+  signal_info_error <- function(signaller, arg) {
+    f <- function() signaller(arg)
+    withRestarts(
+      out = identity,
+      withCallingHandlers(error = get_signal_info, f())
+    )
+  }
+  expr <- quote(with_options(warn = 2, signal_info_error(base::warning, "")))
+  expect_equal(eval_top(expr), list("warning_promoted", quote(f())))
 })
 
 
