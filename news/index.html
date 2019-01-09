@@ -128,29 +128,22 @@
 <a href="#rlang-0-3-1-9000" class="anchor"></a>rlang 0.3.1.9000<small> Unreleased </small>
 </h1>
 <ul>
-<li>Fixed issue with backtraces of warnings promoted to error, and entraced via <code><a href="https://www.rdocumentation.org/packages/base/topics/conditions">withCallingHandlers()</a></code>. The issue didn’t affect entracing via top level <code><a href="https://www.rdocumentation.org/packages/base/topics/options">options(error = rlang::entrace)</a></code> handling.</li>
+<li><p>Fixed issue with backtraces of warnings promoted to error, and entraced via <code><a href="https://www.rdocumentation.org/packages/base/topics/conditions">withCallingHandlers()</a></code>. The issue didn’t affect entracing via top level <code><a href="https://www.rdocumentation.org/packages/base/topics/options">options(error = rlang::entrace)</a></code> handling.</p></li>
+<li>
+<p>Subsetting an object from the <code>.env</code> pronoun now evaluates the corresponding symbol. This means you can now retrieve objects from the contextual environment in magrittr pipes.</p>
+<p>Note that following this change, and despite its name, <code>.env</code> is not really an environment but a special shortcut, just like <code>.data</code> is not really a data frame.</p>
+</li>
 </ul>
 </div>
-    <div id="rlang-0-3-0-9000" class="section level1">
+    <div id="rlang-0-3-1" class="section level1">
 <h1 class="page-header">
-<a href="#rlang-0-3-0-9000" class="anchor"></a>rlang 0.3.0.9000<small> Unreleased </small>
+<a href="#rlang-0-3-1" class="anchor"></a>rlang 0.3.1<small> 2019-01-08 </small>
 </h1>
+<p>This patch release polishes the new backtrace feature introduced in rlang 0.3.0 and solves bugs for the upcoming release of purrr 0.3.0. It also features <code><a href="../reference/as_label.html">as_label()</a></code> and <code><a href="../reference/as_name.html">as_name()</a></code> which are meant to replace <code><a href="../reference/quo_label.html">quo_name()</a></code> in the future. Finally, a bunch of deparsing issues have been fixed.</p>
+<div id="backtrace-fixes" class="section level2">
+<h2 class="hasAnchor">
+<a href="#backtrace-fixes" class="anchor"></a>Backtrace fixes</h2>
 <ul>
-<li>
-<p>New <code><a href="../reference/as_label.html">as_label()</a></code> function. It should be used instead of <code><a href="../reference/quo_label.html">quo_name()</a></code> to transform objects and quoted expressions into a short, human-readable description. You can use labels to:</p>
-<ul>
-<li><p>Display an object in a concise way, for example to labellise axes in a graphical plot.</p></li>
-<li><p>Give default names to columns in a data frame. In this case, labelling is the first step before name repair.</p></li>
-</ul>
-<p>We expect <code><a href="../reference/as_label.html">as_label()</a></code> to gain additional parameters in the future, for example to control the maximum width of a label.</p>
-<p>See also <code><a href="../reference/as_name.html">as_name()</a></code> for transforming symbols back to a string. Unlike <code><a href="../reference/as_label.html">as_label()</a></code>, <code><a href="../reference/as_name.html">as_name()</a></code> is a well defined operation that guarantees the roundtrip symbol -&gt; string -&gt; symbol.</p>
-<p>In general, if you don’t know for sure what kind of object you’re dealing with (a call, a symbol, an unquoted constant), use <code><a href="../reference/as_label.html">as_label()</a></code> and make no assumption about the resulting string. If you know you have a symbol and need the name of the object it refers to, use <code><a href="../reference/as_name.html">as_name()</a></code>. For instance, use <code><a href="../reference/as_label.html">as_label()</a></code> with objects captured with <code><a href="../reference/quotation.html">enquo()</a></code> and <code><a href="../reference/as_name.html">as_name()</a></code> with symbols captured with <code><a href="../reference/quotation.html">ensym()</a></code>.</p>
-</li>
-<li><p>In non-interactive sessions, the full backtrace is now shown on error instead of the reminder to call <code><a href="../reference/last_error.html">last_error()</a></code> (<a href='https://github.com/r-lib/rlang/issues/708'>#708</a>).</p></li>
-<li><p>New <code><a href="../reference/is_interactive.html">is_interactive()</a></code> function. It serves the same purpose as <code><a href="https://www.rdocumentation.org/packages/base/topics/interactive">base::interactive()</a></code> but also checks if knitr is in progress and provides an escape hatch. Use <code><a href="../reference/is_interactive.html">with_interactive()</a></code> and <code><a href="../reference/is_interactive.html">scoped_interactive()</a></code> to override the return value of <code><a href="../reference/is_interactive.html">is_interactive()</a></code>. This is useful in unit tests or to manually turn on interactive features in RMarkdown outputs</p></li>
-<li><p><code><a href="../reference/exiting.html">calling()</a></code> now boxes its argument.</p></li>
-<li><p>New <code><a href="../reference/done.html">done()</a></code> function to box a value. Done boxes are sentinels to indicate early termination of a loop or computation. For instance, it will be used in the purrr package to allow users to shortcircuit a reduction or accumulation.</p></li>
-<li><p><code><a href="../reference/box.html">new_box()</a></code> now accepts additional attributes passed to <code><a href="https://www.rdocumentation.org/packages/base/topics/structure">structure()</a></code>.</p></li>
 <li>
 <p>New <code><a href="../reference/entrace.html">entrace()</a></code> condition handler. Add this to your RProfile to enable rlang backtraces for all errors, including warnings promoted to errors:</p>
 <div class="sourceCode" id="cb1"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb1-1" data-line-number="1"><span class="cf">if</span> (<span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/ns-load">requireNamespace</a></span>(<span class="st">"rlang"</span>, <span class="dt">quietly =</span> <span class="ot">TRUE</span>)) {</a>
@@ -168,19 +161,35 @@
 <li><p>New <code><a href="../reference/last_error.html">last_trace()</a></code> shortcut to print the backtrace stored in the <code><a href="../reference/last_error.html">last_error()</a></code>.</p></li>
 <li><p>Backtrace objects now print in full by default.</p></li>
 <li><p>Calls in backtraces are now numbered according to their position in the call tree. The numbering is non-contiguous for simplified backtraces because of omitted call frames.</p></li>
-<li>
-<p>Subsetting an object from the <code>.env</code> pronoun now evaluates the corresponding symbol. This means you can now retrieve objects from the contextual environment in magrittr pipes.</p>
-<p>Note that following this change, and despite its name, <code>.env</code> is not really an environment but a special shortcut, just like <code>.data</code> is not really a data frame.</p>
-</li>
-<li><p>Fixed a quotation bug with binary operators of zero or one argument such as <code>`/`(1)</code> (<a href='https://github.com/r-lib/rlang/issues/652'>#652</a>). They are now deparsed and printed properly as well.</p></li>
 <li><p><code><a href="../reference/catch_cnd.html">catch_cnd()</a></code> gains a <code>classes</code> argument to specify which classes of condition to catch. It returns <code>NULL</code> if the expected condition could not be caught (<a href='https://github.com/r-lib/rlang/issues/696'>#696</a>).</p></li>
+</ul>
+</div>
+<div id="as_label-and-as_name" class="section level2">
+<h2 class="hasAnchor">
+<a href="#as_label-and-as_name" class="anchor"></a><code><a href="../reference/as_label.html">as_label()</a></code> and <code><a href="../reference/as_name.html">as_name()</a></code>
+</h2>
+<p>The new <code><a href="../reference/as_label.html">as_label()</a></code> and <code><a href="../reference/as_name.html">as_name()</a></code> functions should be used instead of <code><a href="../reference/quo_label.html">quo_name()</a></code> to transform objects and quoted expressions to a string. We have noticed that tidy eval users often use <code><a href="../reference/quo_label.html">quo_name()</a></code> to extract names from quosured symbols. This is not a good use for that function because the way <code><a href="../reference/quo_label.html">quo_name()</a></code> creates a string is not a well defined operation.</p>
+<p>For this reason, we are replacing <code><a href="../reference/quo_label.html">quo_name()</a></code> with two new functions that have more clearly defined purposes, and hopefully better names reflecting those purposes. Use <code><a href="../reference/as_label.html">as_label()</a></code> to transform any object to a short human-readable description, and <code><a href="../reference/as_name.html">as_name()</a></code> to extract names from (possibly quosured) symbols.</p>
+<p>Create labels with <code><a href="../reference/as_label.html">as_label()</a></code> to:</p>
+<ul>
+<li><p>Display an object in a concise way, for example to labellise axes in a graphical plot.</p></li>
+<li><p>Give default names to columns in a data frame. In this case, labelling is the first step before name repair.</p></li>
+</ul>
+<p>We expect <code><a href="../reference/as_label.html">as_label()</a></code> to gain additional parameters in the future, for example to control the maximum width of a label. The way an object is labelled is thus subject to change.</p>
+<p>On the other hand, <code><a href="../reference/as_name.html">as_name()</a></code> transforms symbols back to a string in a well defined manner. Unlike <code><a href="../reference/as_label.html">as_label()</a></code>, <code><a href="../reference/as_name.html">as_name()</a></code> guarantees the roundtrip symbol -&gt; string -&gt; symbol.</p>
+<p>In general, if you don’t know for sure what kind of object you’re dealing with (a call, a symbol, an unquoted constant), use <code><a href="../reference/as_label.html">as_label()</a></code> and make no assumption about the resulting string. If you know you have a symbol and need the name of the object it refers to, use <code><a href="../reference/as_name.html">as_name()</a></code>. For instance, use <code><a href="../reference/as_label.html">as_label()</a></code> with objects captured with <code><a href="../reference/quotation.html">enquo()</a></code> and <code><a href="../reference/as_name.html">as_name()</a></code> with symbols captured with <code><a href="../reference/quotation.html">ensym()</a></code>.</p>
+<p>Note that <code><a href="../reference/quo_label.html">quo_name()</a></code> will only be soft-deprecated at the next major version of rlang (0.4.0). At this point, it will start issuing once-per-session warnings in scripts, but not in packages. It will then be deprecated in yet another major version, at which point it will issue once-per-session warnings in packages as well. You thus have plenty of time to change your code.</p>
+</div>
+<div id="minor-fixes-and-features" class="section level2">
+<h2 class="hasAnchor">
+<a href="#minor-fixes-and-features" class="anchor"></a>Minor fixes and features</h2>
+<ul>
+<li><p>New <code><a href="../reference/is_interactive.html">is_interactive()</a></code> function. It serves the same purpose as <code><a href="https://www.rdocumentation.org/packages/base/topics/interactive">base::interactive()</a></code> but also checks if knitr is in progress and provides an escape hatch. Use <code><a href="../reference/is_interactive.html">with_interactive()</a></code> and <code><a href="../reference/is_interactive.html">scoped_interactive()</a></code> to override the return value of <code><a href="../reference/is_interactive.html">is_interactive()</a></code>. This is useful in unit tests or to manually turn on interactive features in RMarkdown outputs</p></li>
+<li><p><code><a href="../reference/exiting.html">calling()</a></code> now boxes its argument.</p></li>
+<li><p>New <code><a href="../reference/done.html">done()</a></code> function to box a value. Done boxes are sentinels to indicate early termination of a loop or computation. For instance, it will be used in the purrr package to allow users to shortcircuit a reduction or accumulation.</p></li>
+<li><p><code><a href="../reference/box.html">new_box()</a></code> now accepts additional attributes passed to <code><a href="https://www.rdocumentation.org/packages/base/topics/structure">structure()</a></code>.</p></li>
+<li><p>Fixed a quotation bug with binary operators of zero or one argument such as <code>`/`(1)</code> (<a href='https://github.com/r-lib/rlang/issues/652'>#652</a>). They are now deparsed and printed properly as well.</p></li>
 <li><p>New <code><a href="../reference/call_name.html">call_ns()</a></code> function to retrieve the namespace of a call. Returns <code>NULL</code> if the call is not namespaced.</p></li>
-<li><p>New template file <code>R/lifecycle.R</code> containing functions and documentation for lifecycle management: retirement warnings and errors, and inclusion of lifecycle badges in documentation.</p></li>
-<li>
-<p><code><a href="../reference/exiting.html">exiting()</a></code> and <code><a href="../reference/exiting.html">calling()</a></code> handlers now inherit from the <code>function</code> class. Their subclasses are now prefixed with <code>"rlang_"</code>.</p>
-<div class="sourceCode" id="cb4"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb4-1" data-line-number="1"><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/class">class</a></span>(<span class="kw"><a href="../reference/exiting.html">exiting</a></span>(<span class="cf">function</span>(cnd) cnd))</a>
-<a class="sourceLine" id="cb4-2" data-line-number="2"><span class="co">#&gt; [1] "rlang_handler_exiting" "rlang_handler"         "function"</span></a></code></pre></div>
-</li>
 <li><p>Top-level S3 objects are now deparsed properly.</p></li>
 <li><p>Empty <code>{</code> blocks are now deparsed on the same line.</p></li>
 <li><p>Fixed a deparsing issue with symbols containing non-ASCII characters (<a href='https://github.com/r-lib/rlang/issues/691'>#691</a>).</p></li>
@@ -193,6 +202,7 @@
 <li><p>Fixed infinite loop with quosures created inside a data mask.</p></li>
 <li><p>Base errors set as <code>parent</code> of rlang errors are now printed correctly.</p></li>
 </ul>
+</div>
 </div>
     <div id="rlang-0-3-0" class="section level1">
 <h1 class="page-header">
@@ -213,8 +223,8 @@
 <li><p><code><a href="../reference/quotation.html">exprs()</a></code> no longer flattens quosures. <code><a href="../reference/quotation.html">exprs(!!!quos(x, y))</a></code> is now equivalent to <code><a href="../reference/quotation.html">quos(x, y)</a></code>.</p></li>
 <li>
 <p>The sentinel for removing arguments in <code><a href="../reference/call_modify.html">call_modify()</a></code> has been changed from <code>NULL</code> to <code><a href="../reference/zap.html">zap()</a></code>. This breaking change is motivated by the ambiguity of <code>NULL</code> with valid argument values.</p>
-<div class="sourceCode" id="cb6"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb6-1" data-line-number="1"><span class="kw"><a href="../reference/call_modify.html">call_modify</a></span>(call, <span class="dt">arg =</span> <span class="ot">NULL</span>)  <span class="co"># Add `arg = NULL` to the call</span></a>
-<a class="sourceLine" id="cb6-2" data-line-number="2"><span class="kw"><a href="../reference/call_modify.html">call_modify</a></span>(call, <span class="dt">arg =</span> <span class="kw"><a href="../reference/zap.html">zap</a></span>()) <span class="co"># Remove the `arg` argument from the call</span></a></code></pre></div>
+<div class="sourceCode" id="cb5"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb5-1" data-line-number="1"><span class="kw"><a href="../reference/call_modify.html">call_modify</a></span>(call, <span class="dt">arg =</span> <span class="ot">NULL</span>)  <span class="co"># Add `arg = NULL` to the call</span></a>
+<a class="sourceLine" id="cb5-2" data-line-number="2"><span class="kw"><a href="../reference/call_modify.html">call_modify</a></span>(call, <span class="dt">arg =</span> <span class="kw"><a href="../reference/zap.html">zap</a></span>()) <span class="co"># Remove the `arg` argument from the call</span></a></code></pre></div>
 </li>
 <li><p>The <code>%@%</code> operator now quotes its input and supports S4 objects. This makes it directly equivalent to <code>@</code> except that it extracts attributes for non-S4 objects (<a href='https://github.com/r-lib/rlang/issues/207'>#207</a>).</p></li>
 <li><p>Taking the <code><a href="../reference/env_parent.html">env_parent()</a></code> of the empty environment is now an error.</p></li>
@@ -701,7 +711,7 @@ quo(call(`!!!`(var)))</a></code></pre>
       <h2>Contents</h2>
       <ul class="nav nav-pills nav-stacked">
         <li><a href="#rlang-0-3-1-9000">0.3.1.9000</a></li>
-        <li><a href="#rlang-0-3-0-9000">0.3.0.9000</a></li>
+        <li><a href="#rlang-0-3-1">0.3.1</a></li>
         <li><a href="#rlang-0-3-0">0.3.0</a></li>
         <li><a href="#rlang-0-2-2">0.2.2</a></li>
         <li><a href="#rlang-0-2-1">0.2.1</a></li>
