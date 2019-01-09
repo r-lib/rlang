@@ -116,13 +116,6 @@ have plenty of time to change your code.
 
 * `new_box()` now accepts additional attributes passed to `structure()`.
 
-* `as_string()` now unwraps quosured symbols automatically.
-
-  Note that `quo_name()` is *not* appropriate for transforming symbols
-  to strings. `quo_name()` is suitable for creating default labels,
-  not for deterministic conversions between symbol and string. Please
-  use `as_string()` instead.
-
 * Fixed a quotation bug with binary operators of zero or one argument
   such as `` `/`(1) `` (#652). They are now deparsed and printed
   properly as well.
