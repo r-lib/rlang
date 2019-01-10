@@ -92,6 +92,9 @@ frame." />
   <ul class="dropdown-menu" role="menu">
     <li class="dropdown-header">Release notes</li>
     <li>
+      <a href="https://www.tidyverse.org/articles/2019/01/rlang-0-3-1/">Version 0.3.1</a>
+    </li>
+    <li>
       <a href="https://www.tidyverse.org/articles/2018/10/rlang-0-3-0/">Version 0.3.0</a>
     </li>
     <li>
@@ -175,7 +178,7 @@ change.</p>
 #&gt;     .Internal(matrix(data, nrow, ncol, byrow, dimnames, missing(nrow), 
 #&gt;         missing(ncol)))
 #&gt; }
-#&gt; &lt;bytecode: 0x2b33188&gt;
+#&gt; &lt;bytecode: 0x228b188&gt;
 #&gt; &lt;environment: namespace:base&gt;</div><div class='input'><span class='fu'>call_fn</span>(<span class='fu'><a href='quotation.html'>quo</a></span>(<span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/matrix'>matrix</a></span>()))</div><div class='output co'>#&gt; function (data = NA, nrow = 1, ncol = 1, byrow = FALSE, dimnames = NULL) 
 #&gt; {
 #&gt;     if (is.object(data) || !is.atomic(data)) 
@@ -183,12 +186,12 @@ change.</p>
 #&gt;     .Internal(matrix(data, nrow, ncol, byrow, dimnames, missing(nrow), 
 #&gt;         missing(ncol)))
 #&gt; }
-#&gt; &lt;bytecode: 0x2b33188&gt;
+#&gt; &lt;bytecode: 0x228b188&gt;
 #&gt; &lt;environment: namespace:base&gt;</div><div class='input'>
 <span class='co'># Extract the calling function</span>
 <span class='no'>test</span> <span class='kw'>&lt;-</span> <span class='kw'>function</span>() <span class='fu'>call_fn</span>(<span class='fu'><a href='stack.html'>call_frame</a></span>())
 <span class='fu'>test</span>()</div><div class='output co'>#&gt; function() call_fn(call_frame())
-#&gt; &lt;environment: 0x5ed4598&gt;</div></pre>
+#&gt; &lt;environment: 0x54e2f60&gt;</div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
     <h2>Contents</h2>

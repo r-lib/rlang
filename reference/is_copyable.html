@@ -96,6 +96,9 @@ effects." />
   <ul class="dropdown-menu" role="menu">
     <li class="dropdown-header">Release notes</li>
     <li>
+      <a href="https://www.tidyverse.org/articles/2019/01/rlang-0-3-1/">Version 0.3.1</a>
+    </li>
+    <li>
       <a href="https://www.tidyverse.org/articles/2018/10/rlang-0-3-0/">Version 0.3.0</a>
     </li>
     <li>
@@ -161,9 +164,9 @@ effects.</p>
     <pre class="examples"><div class='input'><span class='co'># Let's add attributes with structure() to uncopyable types. Since</span>
 <span class='co'># they are not copied, the attributes are changed in place:</span>
 <span class='no'>env</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='env.html'>env</a></span>()
-<span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/structure'>structure</a></span>(<span class='no'>env</span>, <span class='kw'>foo</span> <span class='kw'>=</span> <span class='st'>"bar"</span>)</div><div class='output co'>#&gt; &lt;environment: 0xa3a73a8&gt;
+<span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/structure'>structure</a></span>(<span class='no'>env</span>, <span class='kw'>foo</span> <span class='kw'>=</span> <span class='st'>"bar"</span>)</div><div class='output co'>#&gt; &lt;environment: 0x8609808&gt;
 #&gt; attr(,"foo")
-#&gt; [1] "bar"</div><div class='input'><span class='no'>env</span></div><div class='output co'>#&gt; &lt;environment: 0xa3a73a8&gt;
+#&gt; [1] "bar"</div><div class='input'><span class='no'>env</span></div><div class='output co'>#&gt; &lt;environment: 0x8609808&gt;
 #&gt; attr(,"foo")
 #&gt; [1] "bar"</div><div class='input'>
 <span class='co'># These objects that can only be changed with side effect are not</span>
