@@ -652,6 +652,18 @@ quo_env_print <- function(env) {
 
 #' @export
 Ops.quosure <- function(e1, e2) {
+  if (identical(.Generic, "!")) {
+    abort(paste_line(
+      "Quosures can only be unquoted within a quasiquotation context.",
+      "",
+      "  # Bad:",
+      "  list(!!myquosure)",
+      "",
+      "  # Good:",
+      "  dplyr::mutate(data, !!myquosure)"
+    ))
+  }
+
   if (is_quosure(e1) && is_quosure(e2)) {
     bad <- c("myquosure1", "myquosure2")
     good <- c("!!myquosure1", "!!myquosure2")
