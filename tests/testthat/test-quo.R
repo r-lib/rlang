@@ -253,6 +253,9 @@ test_that("quosures fail with common operations (#478, tidyverse/dplyr#3476)", {
   expect_error(mean(q), "mean\\(!!myquosure\\)")
   expect_error(stats::median(q), "median\\(!!myquosure\\)")
   expect_error(stats::quantile(q), "quantile\\(!!myquosure\\)")
+
+  expect_error(-q, "-!!myquosure")
+  expect_error(-q, "+!!myquosure")
 })
 
 test_that("negating quosure fails with informative message", {

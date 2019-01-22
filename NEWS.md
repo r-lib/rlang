@@ -1,6 +1,8 @@
 
 # rlang 0.3.1.9000
 
+* Unary operators applied to quosures now give better error messages.
+
 * Fixed issue with backtraces of warnings promoted to error, and
   entraced via `withCallingHandlers()`. The issue didn't affect
   entracing via top level `options(error = rlang::entrace)` handling.
