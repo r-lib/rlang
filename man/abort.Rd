@@ -73,6 +73,7 @@ backtrace.
 \item \code{"branch"}: Display a simplified backtrace.
 \item \code{"collapse"}: Display a collapsed backtrace tree.
 \item \code{"full"}: Display a full backtrace tree.
+\item \code{"none"}: Display nothing.
 }
 }
 

@@ -269,7 +269,7 @@ cnd_call <- function(call) {
 #' * `"branch"`: Display a simplified backtrace.
 #' * `"collapse"`: Display a collapsed backtrace tree.
 #' * `"full"`: Display a full backtrace tree.
-#'
+#' * `"none"`: Display nothing.
 #'
 #' @section Mufflable conditions:
 #'
@@ -730,9 +730,13 @@ NULL
 format_onerror_backtrace <- function(trace) {
   show_trace <- show_trace_p()
 
-  if (!is_string(show_trace) || !show_trace %in% c("reminder", "branch", "collapse", "full")) {
+  if (!is_string(show_trace) || !show_trace %in% c("none", "reminder", "branch", "collapse", "full")) {
     options(rlang__backtrace_on_error = NULL)
     warn("Invalid `rlang__backtrace_on_error` option (resetting to `NULL`)")
+    return(NULL)
+  }
+
+  if (show_trace == "none") {
     return(NULL)
   }
 

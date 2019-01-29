@@ -1,6 +1,8 @@
 
 # rlang 0.3.1.9000
 
+* New "none" option for `rlang__backtrace_on_error`.
+
 * Unary operators applied to quosures now give better error messages.
 
 * Fixed issue with backtraces of warnings promoted to error, and
