@@ -467,7 +467,7 @@ as_closure <- function(x, env = caller_env()) {
         return(fn)
       }
 
-      fmls <- formals(.ArgsEnv[[fn_name]] %||% .GenericArgsEnv[[fn_name]])
+      fmls <- formals(args(fn_name))
       prim_call <- call2(x, !!!prim_args(fmls))
 
       # The closure wrapper should inherit from the global environment
