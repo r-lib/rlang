@@ -433,7 +433,7 @@ as_function <- function(x, env = caller_env()) {
       } else {
         args <- list(... = missing_arg(), .x = quote(..1), .y = quote(..2), . = quote(..1))
         fn <- new_function(args, f_rhs(x), f_env(x))
-        structure(fn, class = "rlang_lambda_function")
+        structure(fn, class = c("rlang_lambda_function", "function"))
       }
     },
     string = {
