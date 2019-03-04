@@ -17,6 +17,7 @@
   really an environment but a special shortcut, just like `.data` is
   not really a data frame.
 
+* The return object from `as_function()` now inherits from `"function"` (@richierocks, #735).
 
 # rlang 0.3.1
 
