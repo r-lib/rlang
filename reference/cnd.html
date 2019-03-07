@@ -209,7 +209,7 @@ and <code>message</code>. They are defunct as of rlang 0.3.0.</p>
 
 <span class='co'># Signalling an error condition aborts the current computation:</span>
 <span class='no'>err</span> <span class='kw'>&lt;-</span> <span class='fu'>error_cnd</span>(<span class='st'>"foo"</span>, <span class='kw'>message</span> <span class='kw'>=</span> <span class='st'>"I am an error"</span>)
-<span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/try'>try</a></span>(<span class='fu'><a href='cnd_signal.html'>cnd_signal</a></span>(<span class='no'>err</span>))</div></pre>
+<span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/try'>try</a></span>(<span class='fu'><a href='cnd_signal.html'>cnd_signal</a></span>(<span class='no'>err</span>))</div><div class='output co'>#&gt; Error : I am an error</div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
     <h2>Contents</h2>

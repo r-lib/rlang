@@ -175,8 +175,17 @@ you should use <code><a href='https://www.rdocumentation.org/packages/base/topic
 <span class='co'># with_abort() automatically casts simple errors thrown by stop()</span>
 <span class='co'># to rlang errors:</span>
 <span class='no'>fn</span> <span class='kw'>&lt;-</span> <span class='kw'>function</span>() <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/stop'>stop</a></span>(<span class='st'>"Base error"</span>)
-<span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/try'>try</a></span>(<span class='fu'>with_abort</span>(<span class='fu'>fn</span>()))
-<span class='fu'><a href='last_error.html'>last_error</a></span>()</div><div class='output co'>#&gt; &lt;error&gt;
+<span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/try'>try</a></span>(<span class='fu'>with_abort</span>(<span class='fu'>fn</span>()))</div><div class='output co'>#&gt; Error : Base error
+#&gt; Backtrace:
+#&gt;     █
+#&gt;  1. ├─base::try(with_abort(fn()))
+#&gt;  2. │ └─base::tryCatch(...)
+#&gt;  3. │   └─base:::tryCatchList(expr, classes, parentenv, handlers)
+#&gt;  4. │     └─base:::tryCatchOne(expr, names, parentenv, handlers[[1L]])
+#&gt;  5. │       └─base:::doTryCatch(return(expr), name, parentenv, handler)
+#&gt;  6. ├─rlang::with_abort(fn())
+#&gt;  7. │ └─base::withCallingHandlers(...)
+#&gt;  8. └─global::fn()</div><div class='input'><span class='fu'><a href='last_error.html'>last_error</a></span>()</div><div class='output co'>#&gt; &lt;error&gt;
 #&gt; message: Base error
 #&gt; class:   `rlang_error`
 #&gt; backtrace:
@@ -196,8 +205,26 @@ you should use <code><a href='https://www.rdocumentation.org/packages/base/topic
   )
 }
 
-<span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/try'>try</a></span>(<span class='fu'>high_level</span>())
-<span class='fu'><a href='last_error.html'>last_error</a></span>()</div><div class='output co'>#&gt; &lt;error&gt;
+<span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/try'>try</a></span>(<span class='fu'>high_level</span>())</div><div class='output co'>#&gt; Error : High level error
+#&gt; Parents:
+#&gt;  ─Low level error
+#&gt; Backtrace:
+#&gt;      █
+#&gt;   1. ├─base::try(high_level())
+#&gt;   2. │ └─base::tryCatch(...)
+#&gt;   3. │   └─base:::tryCatchList(expr, classes, parentenv, handlers)
+#&gt;   4. │     └─base:::tryCatchOne(expr, names, parentenv, handlers[[1L]])
+#&gt;   5. │       └─base:::doTryCatch(return(expr), name, parentenv, handler)
+#&gt;   6. └─global::high_level()
+#&gt;   7.   ├─rlang::with_handlers(...)
+#&gt;   8.   │ └─base::tryCatch(...) /home/travis/build/r-lib/rlang/R/cnd-handlers.R:100:2
+#&gt;   9.   │   └─base:::tryCatchList(expr, classes, parentenv, handlers)
+#&gt;  10.   │     └─base:::tryCatchOne(expr, names, parentenv, handlers[[1L]])
+#&gt;  11.   │       └─base:::doTryCatch(return(expr), name, parentenv, handler)
+#&gt;  12.   ├─rlang::with_abort(low_level1())
+#&gt;  13.   │ └─base::withCallingHandlers(...)
+#&gt;  14.   └─global::low_level1()
+#&gt;  15.     └─global::low_level2()</div><div class='input'><span class='fu'><a href='last_error.html'>last_error</a></span>()</div><div class='output co'>#&gt; &lt;error&gt;
 #&gt; message: High level error
 #&gt; class:   `rlang_error`
 #&gt; backtrace:

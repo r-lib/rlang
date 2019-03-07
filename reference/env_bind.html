@@ -252,13 +252,11 @@ functions.</p>
 <span class='no'>bar</span></div><div class='output co'>#&gt; [1] "BAR"</div><div class='input'>
 <span class='co'># You can remove bindings by supplying zap sentinels:</span>
 <span class='fu'>env_bind</span>(<span class='fu'><a href='caller_env.html'>current_env</a></span>(), <span class='kw'>foo</span> <span class='kw'>=</span> <span class='fu'><a href='zap.html'>zap</a></span>())
-<span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/try'>try</a></span>(<span class='no'>foo</span>)
-
+<span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/try'>try</a></span>(<span class='no'>foo</span>)</div><div class='output co'>#&gt; Error in try(foo) : object 'foo' not found</div><div class='input'>
 <span class='co'># Unquote-splice a named list of zaps</span>
 <span class='no'>zaps</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='rep_along.html'>rep_named</a></span>(<span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/c'>c</a></span>(<span class='st'>"foo"</span>, <span class='st'>"bar"</span>), <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/list'>list</a></span>(<span class='fu'><a href='zap.html'>zap</a></span>()))
 <span class='fu'>env_bind</span>(<span class='fu'><a href='caller_env.html'>current_env</a></span>(), !!!<span class='no'>zaps</span>)
-<span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/try'>try</a></span>(<span class='no'>bar</span>)
-
+<span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/try'>try</a></span>(<span class='no'>bar</span>)</div><div class='output co'>#&gt; Error in try(bar) : object 'bar' not found</div><div class='input'>
 <span class='co'># It is most useful to change other environments:</span>
 <span class='no'>my_env</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='env.html'>env</a></span>()
 <span class='fu'>env_bind</span>(<span class='no'>my_env</span>, <span class='kw'>foo</span> <span class='kw'>=</span> <span class='st'>"foo"</span>)
