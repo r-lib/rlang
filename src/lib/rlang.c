@@ -45,8 +45,9 @@ static sexp* shared_xy_env;
 static sexp* shared_xyz_env;
 
 // This *must* be called before making any calls to the functions
-// provided in the library
-void r_init_library() {
+// provided in the library. Register this function in your init file
+// and `.Call()` it from your `.onLoad()` hook.
+SEXP r_init_library() {
   r_init_library_sym();  // Needs to be first
 
   r_init_rlang_ns_env();
@@ -88,4 +89,7 @@ void r_init_library() {
       r_abort("Internal error: `r_ops_precedence` is not fully initialised");
     }
   }
+
+  // Return a SEXP so the init function can be called from R
+  return r_null;
 }

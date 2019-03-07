@@ -11,6 +11,7 @@ is_same_body <- NULL
     is_same_body <<- is_reference
   }
 
+  .Call(r_init_library)
   .Call(rlang_library_load)
 }
 .onUnload <- function(lib) {

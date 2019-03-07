@@ -132,6 +132,7 @@ extern sexp* rlang_test_Rf_warningcall(sexp*, sexp*);
 extern sexp* rlang_test_Rf_errorcall(sexp*, sexp*);
 
 static const r_callable r_callables[] = {
+  {"r_init_library",                    (r_fn_ptr) &r_init_library, 0},
   {"rlang_library_load",                (r_fn_ptr) &rlang_library_load, 0},
   {"rlang_library_unload",              (r_fn_ptr) &rlang_library_unload, 0},
   {"r_f_lhs",                           (r_fn_ptr) &r_f_lhs, 1},
@@ -289,7 +290,6 @@ void R_init_rlang(r_dll_info* dll) {
 void rlang_init_internal();
 
 sexp* rlang_library_load() {
-  r_init_library();
   rlang_init_internal();
   return r_null;
 }

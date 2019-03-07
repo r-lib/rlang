@@ -92,7 +92,7 @@ extern sexp* r_shared_false;
 #include "vec-lgl.h"
 #include "vec-list.h"
 
-void r_init_library();
+sexp* r_init_library();
 
 
 #endif
