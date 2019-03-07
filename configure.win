@@ -1,6 +1,0 @@
-#!/usr/bin/env sh
-
-rm -f src/config.h
-touch src/config.h
-
-exit 0

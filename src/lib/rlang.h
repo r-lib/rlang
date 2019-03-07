@@ -8,8 +8,6 @@
 #define R_NO_REMAP
 #include <Rinternals.h>
 
-#include "../config.h"
-
 typedef struct SEXPREC sexp;
 typedef Rbyte r_byte_t;
 typedef Rcomplex r_complex_t;

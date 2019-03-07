@@ -168,17 +168,17 @@ void r_cnd_signal(sexp* cnd) {
 }
 
 
-#ifdef RLANG_HAS_RINTERFACE_H
-#include <Rinterface.h>
-void r_interrupt() {
-  Rf_onintr();
-  r_abort("Internal error: Simulated interrupt not processed");
-}
-#else
+#ifdef _WIN32
 #include <Rembedded.h>
 void r_interrupt() {
   UserBreak = 1;
   R_CheckUserInterrupt();
+  r_abort("Internal error: Simulated interrupt not processed");
+}
+#else
+#include <Rinterface.h>
+void r_interrupt() {
+  Rf_onintr();
   r_abort("Internal error: Simulated interrupt not processed");
 }
 #endif

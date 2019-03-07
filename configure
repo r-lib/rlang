@@ -1,8 +1,0 @@
-#!/usr/bin/env sh
-
-rm -f src/config.h
-
-# Assume all Unix platforms have Rinterface.h
-echo '#define RLANG_HAS_RINTERFACE_H 1' >> src/config.h
-
-exit 0
