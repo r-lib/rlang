@@ -312,6 +312,11 @@ sexp* rlang_promise_value(sexp* x, sexp* env) {
   }
 }
 
+sexp* rlang_attrib(sexp* x) {
+  return ATTRIB(x);
+}
+
+
 // vec.h
 
 sexp* rlang_vec_coerce(sexp* x, sexp* type) {

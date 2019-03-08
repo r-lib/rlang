@@ -69,4 +69,8 @@ errorcall <- function(call, msg) {
   .Call(rlang_test_Rf_errorcall, call, msg)
 }
 
+sexp_attrib <- function(x) {
+  .Call(rlang_attrib, x)
+}
+
 # nocov end
