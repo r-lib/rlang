@@ -17,7 +17,7 @@ bool r_is_true(sexp* x) {
   }
 }
 
-r_ssize r_lgl_sum(sexp* lgl) {
+r_ssize r_lgl_sum(sexp* lgl, bool na_true) {
   if (r_typeof(lgl) != r_type_logical) {
     r_abort("Internal error: Excepted logical vector for sum");
   }
@@ -30,7 +30,11 @@ r_ssize r_lgl_sum(sexp* lgl) {
   for (r_ssize i = 0; i < n; ++i, ++ptr) {
     // This can't overflow since `sum` is necessarily smaller or equal
     // to the vector length expressed in `r_ssize`.
-    sum += *ptr;
+    if (na_true && *ptr) {
+      sum += 1;
+    } else if (*ptr == 1) {
+      sum += 1;
+    }
   }
 
   return sum;

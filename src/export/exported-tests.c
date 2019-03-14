@@ -35,6 +35,13 @@ sexp* rlang_test_base_ns_get(sexp* name) {
 }
 
 
+// vec-lgl.c
+
+sexp* rlang_test_lgl_sum(sexp* x, sexp* na_true) {
+  return r_int(r_lgl_sum(x, r_lgl_get(na_true, 0)));
+}
+
+
 // parse.c
 
 sexp* rlang_test_parse(sexp* str) {
