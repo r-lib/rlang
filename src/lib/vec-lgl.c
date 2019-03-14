@@ -39,3 +39,32 @@ r_ssize r_lgl_sum(sexp* lgl, bool na_true) {
 
   return sum;
 }
+
+sexp* r_lgl_which(sexp* x, bool na_propagate) {
+  if (r_typeof(x) != r_type_logical) {
+    r_abort("Internal error: Expected logical vector in `r_lgl_which()`");
+  }
+
+  r_ssize n = r_length(x);
+  int* data = r_lgl_deref(x);
+
+  r_ssize which_n = r_lgl_sum(x, na_propagate);
+  sexp* which = KEEP(r_new_vector(r_type_integer, which_n));
+  int* which_data = r_int_deref(which);
+
+  for (r_ssize i = 0; i < n; ++i, ++data) {
+    int elt = *data;
+
+    if (elt) {
+      if (na_propagate && elt == NA_LOGICAL) {
+        *which_data = NA_INTEGER;
+      } else {
+        *which_data = i + 1;
+      }
+      ++which_data;
+    }
+  }
+
+  FREE(1);
+  return which;
+}

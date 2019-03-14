@@ -19,6 +19,7 @@ static inline sexp* r_shared_lgl(bool x) {
 }
 
 r_ssize r_lgl_sum(sexp* lgl, bool na_true);
+sexp* r_lgl_which(sexp* x, bool na_propagate);
 
 
 #endif

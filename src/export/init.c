@@ -132,6 +132,7 @@ extern sexp* rlang_test_nms_are_duplicated(sexp*, sexp*);
 extern sexp* rlang_test_Rf_warningcall(sexp*, sexp*);
 extern sexp* rlang_test_Rf_errorcall(sexp*, sexp*);
 extern sexp* rlang_test_lgl_sum(sexp*, sexp*);
+extern sexp* rlang_test_lgl_which(sexp*, sexp*);
 
 static const r_callable r_callables[] = {
   {"r_init_library",                    (r_fn_ptr) &r_init_library, 0},
@@ -206,6 +207,7 @@ static const r_callable r_callables[] = {
   {"rlang_test_Rf_warningcall",         (r_fn_ptr) &rlang_test_Rf_warningcall, 2},
   {"rlang_test_Rf_errorcall",           (r_fn_ptr) &rlang_test_Rf_errorcall, 2},
   {"rlang_test_lgl_sum",                (r_fn_ptr) &rlang_test_lgl_sum, 2},
+  {"rlang_test_lgl_which",              (r_fn_ptr) &rlang_test_lgl_which, 2},
   {"rlang_r_string",                    (r_fn_ptr) &rlang_r_string, 1},
   {"rlang_exprs_interp",                (r_fn_ptr) &rlang_exprs_interp, 6},
   {"rlang_quos_interp",                 (r_fn_ptr) &rlang_quos_interp, 6},
