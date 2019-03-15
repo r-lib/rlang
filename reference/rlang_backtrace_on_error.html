@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Coerce object to quosure — as_quosure • rlang</title>
+<title>Display backtrace on error — rlang_backtrace_on_error • rlang</title>
 
 <!-- jquery -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=" crossorigin="anonymous"></script>
@@ -31,11 +31,19 @@
 
 
 
-<meta property="og:title" content="Coerce object to quosure — as_quosure" />
+<meta property="og:title" content="Display backtrace on error — rlang_backtrace_on_error" />
 
-<meta property="og:description" content="While new_quosure() wraps any R object (including expressions,
-formulas, or other quosures) into a quosure, as_quosure()
-converts formulas and quosures and does not double-wrap." />
+<meta property="og:description" content="Errors thrown with abort() automatically save a backtrace that
+can be inspected by calling last_error(). Optionally, you can
+also display the backtrace alongside the error message by setting
+the option rlang_backtrace_on_error to one of the following
+values:
+&quot;reminder&quot;: Display a reminder that the backtrace can be
+inspected by calling rlang::last_error().
+&quot;branch&quot;: Display a simplified backtrace.
+&quot;collapse&quot;: Display a collapsed backtrace tree.
+&quot;full&quot;: Display the full backtrace tree.
+" />
 <meta name="twitter:card" content="summary" />
 
 
@@ -128,88 +136,56 @@ converts formulas and quosures and does not double-wrap." />
 <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-    <h1>Coerce object to quosure</h1>
-    <small class="dont-index">Source: <a href='https://github.com/r-lib/rlang/blob/master/R/quo.R'><code>R/quo.R</code></a></small>
-    <div class="hidden name"><code>as_quosure.Rd</code></div>
+    <h1>Display backtrace on error</h1>
+    <small class="dont-index">Source: <a href='https://github.com/r-lib/rlang/blob/master/R/cnd.R'><code>R/cnd.R</code></a></small>
+    <div class="hidden name"><code>rlang_backtrace_on_error.Rd</code></div>
     </div>
 
     <div class="ref-description">
     
-    <p>While <code>new_quosure()</code> wraps any R object (including expressions,
-formulas, or other quosures) into a quosure, <code>as_quosure()</code>
-converts formulas and quosures and does not double-wrap.</p>
+    <p>Errors thrown with <code><a href='abort.html'>abort()</a></code> automatically save a backtrace that
+can be inspected by calling <code><a href='last_error.html'>last_error()</a></code>. Optionally, you can
+also display the backtrace alongside the error message by setting
+the option <code>rlang_backtrace_on_error</code> to one of the following
+values:</p><ul>
+<li><p><code>"reminder"</code>: Display a reminder that the backtrace can be
+inspected by calling <code><a href='last_error.html'>rlang::last_error()</a></code>.</p></li>
+<li><p><code>"branch"</code>: Display a simplified backtrace.</p></li>
+<li><p><code>"collapse"</code>: Display a collapsed backtrace tree.</p></li>
+<li><p><code>"full"</code>: Display the full backtrace tree.</p></li>
+</ul>
     
     </div>
 
-    <pre class="usage"><span class='fu'>as_quosure</span>(<span class='no'>x</span>, <span class='kw'>env</span> <span class='kw'>=</span> <span class='kw'>NULL</span>)
-
-<span class='fu'>new_quosure</span>(<span class='no'>expr</span>, <span class='kw'>env</span> <span class='kw'>=</span> <span class='fu'><a href='caller_env.html'>caller_env</a></span>())</pre>
-    
-    <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
-    <table class="ref-arguments">
-    <colgroup><col class="name" /><col class="desc" /></colgroup>
-    <tr>
-      <th>x</th>
-      <td><p>An object to convert. Either an <a href='is_expression.html'>expression</a> or a
-formula.</p></td>
-    </tr>
-    <tr>
-      <th>env</th>
-      <td><p>The environment in which the expression should be
-evaluated. Only used for symbols and calls. This should typically
-be the environment in which the expression was created.</p></td>
-    </tr>
-    <tr>
-      <th>expr</th>
-      <td><p>The expression wrapped by the quosure.</p></td>
-    </tr>
-    </table>
-    
-    <h2 class="hasAnchor" id="life-cycle"><a class="anchor" href="#life-cycle"></a>Life cycle</h2>
+        
+    <h2 class="hasAnchor" id="promote-base-errors-to-rlang-errors"><a class="anchor" href="#promote-base-errors-to-rlang-errors"></a>Promote base errors to rlang errors</h2>
 
     
-    <ul>
-<li><p><code>as_quosure()</code> now requires an explicit default environment for
-creating quosures from symbols and calls.</p></li>
-<li><p><code><a href='is_quosureish.html'>as_quosureish()</a></code> is deprecated as of rlang 0.2.0. This function
-assumes that quosures are formulas which is currently true but
-might not be in the future.</p></li>
+    <p>Call <code><a href='https://www.rdocumentation.org/packages/base/topics/options'>options(error = rlang::enframe)</a></code> to instrument base
+errors with rlang features. This handler does two things:</p><ul>
+<li><p>It saves the base error as an rlang object. This allows you to
+call <code><a href='last_error.html'>last_error()</a></code> to print the backtrace or inspect its data.</p></li>
+<li><p>It prints the backtrace for the current error according to the
+<code>rlang_backtrace_on_error</code> option.</p></li>
 </ul>
-    
-    <h2 class="hasAnchor" id="see-also"><a class="anchor" href="#see-also"></a>See also</h2>
-
-    <div class='dont-index'><p><code><a href='quotation.html'>quo()</a></code>, <code><a href='quosure.html'>is_quosure()</a></code></p></div>
     
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><div class='input'><span class='co'># as_quosure() converts expressions or any R object to a validly</span>
-<span class='co'># scoped quosure:</span>
-<span class='no'>env</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='env.html'>env</a></span>(<span class='kw'>var</span> <span class='kw'>=</span> <span class='st'>"thing"</span>)
-<span class='fu'>as_quosure</span>(<span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/substitute'>quote</a></span>(<span class='no'>var</span>), <span class='no'>env</span>)</div><div class='output co'>#&gt; &lt;quosure&gt;
-#&gt; expr: ^var
-#&gt; env:  0x4646c08</div><div class='input'>
+    <pre class="examples"><div class='input'># Display a simplified backtrace on error for both base and rlang
+# errors:
 
-<span class='co'># The environment is ignored for formulas:</span>
-<span class='fu'>as_quosure</span>(~<span class='no'>foo</span>, <span class='no'>env</span>)</div><div class='output co'>#&gt; &lt;quosure&gt;
-#&gt; expr: ^foo
-#&gt; env:  0x470c5a8</div><div class='input'><span class='fu'>as_quosure</span>(~<span class='no'>foo</span>)</div><div class='output co'>#&gt; &lt;quosure&gt;
-#&gt; expr: ^foo
-#&gt; env:  0x470c5a8</div><div class='input'>
-<span class='co'># However you must supply it for symbols and calls:</span>
-<span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/try'>try</a></span>(<span class='fu'>as_quosure</span>(<span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/substitute'>quote</a></span>(<span class='no'>var</span>)))</div><div class='output co'>#&gt; <span class='warning'>Warning: `as_quosure()` requires an explicit environment as of rlang 0.3.0.</span>
-#&gt; <span class='warning'>Please supply `env`.</span>
-#&gt; <span class='warning'>This warning is displayed once per session.</span></div><div class='output co'>#&gt; &lt;quosure&gt;
-#&gt; expr: ^var
-#&gt; env:  0x470c5a8</div></pre>
+# options(
+#   rlang_backtrace_on_error = "branch",
+#   error = rlang::enframe
+# )
+# stop("foo")
+</div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
     <h2>Contents</h2>
     <ul class="nav nav-pills nav-stacked">
-      <li><a href="#arguments">Arguments</a></li>
       
-      <li><a href="#life-cycle">Life cycle</a></li>
-
-      <li><a href="#see-also">See also</a></li>
+      <li><a href="#promote-base-errors-to-rlang-errors">Promote base errors to rlang errors</a></li>
       
       <li><a href="#examples">Examples</a></li>
     </ul>

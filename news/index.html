@@ -132,7 +132,8 @@
 <a href="#rlang-0-3-1-9000" class="anchor"></a>rlang 0.3.1.9000<small> Unreleased </small>
 </h1>
 <ul>
-<li><p>New “none” option for <code>rlang__backtrace_on_error</code>.</p></li>
+<li><p>The experimental option <code>rlang__backtrace_on_error</code> is no longer experimental and has been renamed to <code>rlang_backtrace_on_error</code>.</p></li>
+<li><p>New “none” option for <code>rlang_backtrace_on_error</code>.</p></li>
 <li><p>Unary operators applied to quosures now give better error messages.</p></li>
 <li><p>Fixed issue with backtraces of warnings promoted to error, and entraced via <code><a href="https://www.rdocumentation.org/packages/base/topics/conditions">withCallingHandlers()</a></code>. The issue didn’t affect entracing via top level <code><a href="https://www.rdocumentation.org/packages/base/topics/options">options(error = rlang::entrace)</a></code> handling.</p></li>
 <li>
