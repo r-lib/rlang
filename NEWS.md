@@ -1,5 +1,7 @@
 
-# rlang 0.3.1.9000
+# rlang 0.3.2
+
+* Fixed protection issue reported by rchk.
 
 * The experimental option `rlang__backtrace_on_error` is no longer
   experimental and has been renamed to `rlang_backtrace_on_error`.
