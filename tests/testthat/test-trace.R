@@ -2,7 +2,7 @@ context("trace.R")
 
 # These tests must come first because print method includes srcrefs
 test_that("tree printing only changes deliberately", {
-  skip_on_os("windows")
+  skip_unless_utf8()
 
   scoped_options(
     rlang_trace_format_srcrefs = TRUE,
@@ -29,7 +29,7 @@ test_that("tree printing only changes deliberately", {
 })
 
 test_that("can print tree with collapsed branches", {
-  skip_on_os("windows")
+  skip_unless_utf8()
 
   # Fake eval() call does not have same signature on old R
   skip_if(getRversion() < "3.4")
@@ -142,7 +142,7 @@ test_that("collapsed formatting doesn't collapse single frame siblings", {
 })
 
 test_that("recursive frames are rewired to the global env", {
-  skip_on_os("windows")
+  skip_unless_utf8()
 
   dir <- normalizePath(test_path(".."))
   e <- environment()
@@ -155,7 +155,7 @@ test_that("recursive frames are rewired to the global env", {
 })
 
 test_that("long backtrace branches are truncated", {
-  skip_on_os("windows")
+  skip_unless_utf8()
 
   e <- current_env()
   f <- function(n) {
@@ -182,7 +182,7 @@ test_that("long backtrace branches are truncated", {
 })
 
 test_that("eval() frames are collapsed", {
-  skip_on_os("windows")
+  skip_unless_utf8()
 
   # Fake eval() call does not have same signature on old R
   skip_if(getRversion() < "3.4")
@@ -202,7 +202,7 @@ test_that("eval() frames are collapsed", {
 })
 
 test_that("%>% frames are collapsed", {
-  skip_on_os("windows")
+  skip_unless_utf8()
   skip_if_not_installed("magrittr")
 
   # Fake eval() call does not have same signature on old R
@@ -226,7 +226,7 @@ test_that("%>% frames are collapsed", {
 })
 
 test_that("children of collapsed %>% frames have correct parent", {
-  skip_on_os("windows")
+  skip_unless_utf8()
   skip_if_not_installed("magrittr")
 
   # Fake eval() call does not have same signature on old R
@@ -246,7 +246,7 @@ test_that("children of collapsed %>% frames have correct parent", {
 })
 
 test_that("children of collapsed frames are rechained to correct parent", {
-  skip_on_os("windows")
+  skip_unless_utf8()
 
   # Fake eval() call does not have same signature on old R
   skip_if(getRversion() < "3.4")
@@ -287,7 +287,7 @@ test_that("pipe_collect_calls() collects calls", {
 })
 
 test_that("combinations of incomplete and leading pipes collapse properly", {
-  skip_on_os("windows")
+  skip_unless_utf8()
   skip_if_not_installed("magrittr")
 
   # Fake eval() call does not have same signature on old R
@@ -322,7 +322,7 @@ test_that("combinations of incomplete and leading pipes collapse properly", {
 })
 
 test_that("calls before and after pipe are preserved", {
-  skip_on_os("windows")
+  skip_unless_utf8()
   skip_if_not_installed("magrittr")
 
   # Fake eval() call does not have same signature on old R
@@ -347,7 +347,7 @@ test_that("calls before and after pipe are preserved", {
 })
 
 test_that("always keep very first frame as part of backtrace branch", {
-  skip_on_os("windows")
+  skip_unless_utf8()
 
   # Fake eval() call does not have same signature on old R
   skip_if(getRversion() < "3.4")
@@ -368,7 +368,7 @@ test_that("can take the str() of a trace (#615)", {
 })
 
 test_that("anonymous calls are stripped from backtraces", {
-  skip_on_os("windows")
+  skip_unless_utf8()
 
   e <- current_env()
   trace <- (function() {
@@ -382,7 +382,7 @@ test_that("anonymous calls are stripped from backtraces", {
 })
 
 test_that("collapsing of eval() frames detects when error occurs within eval()", {
-  skip_on_os("windows")
+  skip_unless_utf8()
 
   e <- NULL
   trace <- NULL
@@ -404,7 +404,7 @@ test_that("collapsing of eval() frames detects when error occurs within eval()",
 })
 
 test_that("can print degenerate backtraces", {
-  skip_on_os("windows")
+  skip_unless_utf8()
 
   trace_sym <- new_trace(list(quote(foo)), int(0), chr(""))
   expect_known_trace_output(trace_sym, file = "test-trace-degenerate-sym.txt")
@@ -417,7 +417,7 @@ test_that("can print degenerate backtraces", {
 })
 
 test_that("check for dangling promise in call CAR (#492)", {
-  skip_on_os("windows")
+  skip_unless_utf8()
 
   expect_known_trace_output(file = "test-trace-call-car-promise.txt", local({
     e <- current_env()
@@ -432,7 +432,7 @@ test_that("check for dangling promise in call CAR (#492)", {
 })
 
 test_that("dangling srcrefs are not printed", {
-  skip_on_os("windows")
+  skip_unless_utf8()
 
   from <- test_path("fixtures", "trace-srcref.R")
   to <- test_path("fixtures", "trace-srcref2.R")
@@ -451,7 +451,7 @@ test_that("dangling srcrefs are not printed", {
 })
 
 test_that("summary.rlang_trace() prints the full tree", {
-  skip_on_os("windows")
+  skip_unless_utf8()
 
   e <- current_env()
   f <- function() g()
@@ -462,7 +462,7 @@ test_that("summary.rlang_trace() prints the full tree", {
 })
 
 test_that("unexported functions have `:::` prefix", {
-  skip_on_os("windows")
+  skip_unless_utf8()
 
   # Should be installed as part of the C API tests
   skip_if_not_installed("rlanglibtest")
@@ -476,7 +476,7 @@ test_that("unexported functions have `:::` prefix", {
 })
 
 test_that("global functions have `global::` prefix", {
-  skip_on_os("windows")
+  skip_unless_utf8()
 
   f <- eval_bare(expr(function(e) rlang::trace_back(e)), global_env())
   g <- function(e) f(e)
@@ -486,7 +486,7 @@ test_that("global functions have `global::` prefix", {
 })
 
 test_that("can trim layers of backtraces", {
-  skip_on_os("windows")
+  skip_unless_utf8()
 
   e <- current_env()
   f <- function(n) identity(identity(g(n)))

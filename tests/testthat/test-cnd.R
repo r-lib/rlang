@@ -166,7 +166,7 @@ test_that("error_cnd() checks its fields", {
 })
 
 test_that("error is printed with backtrace", {
-  skip_on_os("windows")
+  skip_unless_utf8()
 
   f <- function() g()
   g <- function() h()
@@ -187,7 +187,7 @@ test_that("error is printed with backtrace", {
 })
 
 test_that("error is printed with parent backtrace", {
-  skip_on_os("windows")
+  skip_unless_utf8()
 
   f <- function() g()
   g <- function() h()
@@ -217,7 +217,7 @@ test_that("error is printed with parent backtrace", {
 })
 
 test_that("summary.rlang_error() prints full backtrace", {
-  skip_on_os("windows")
+  skip_unless_utf8()
 
   scoped_options(
     rlang_trace_top_env = current_env(),
@@ -279,7 +279,7 @@ test_that("Invalid on_error option resets itself", {
 })
 
 test_that("on_error option can be tweaked", {
-  skip_on_os("windows")
+  skip_unless_utf8()
 
   f <- function() tryCatch(g())
   g <- function() h()
@@ -339,7 +339,7 @@ test_that("don't print message or backtrace fields if empty", {
 })
 
 test_that("with_abort() promotes base errors to rlang errors", {
-  skip_on_os("windows")
+  skip_unless_utf8()
 
   f <- function() g()
   g <- function() h()
