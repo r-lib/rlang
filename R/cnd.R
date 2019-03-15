@@ -701,7 +701,7 @@ conditionMessage.rlang_error <- function(c) {
 #'
 #' @section Promote base errors to rlang errors:
 #'
-#' Call `options(error = rlang:::add_backtrace)` to instrument base
+#' Call `options(error = rlang::enframe)` to instrument base
 #' errors with rlang features. This handler does two things:
 #'
 #' * It saves the base error as an rlang object. This allows you to
@@ -709,9 +709,6 @@ conditionMessage.rlang_error <- function(c) {
 #'
 #' * It prints the backtrace for the current error according to the
 #'   [`rlang_backtrace_on_error`] option.
-#'
-#' This experimental handler is not exported because it is meant for
-#' interactive use only.
 #'
 #' @name rlang_backtrace_on_error
 #' @aliases add_backtrace
@@ -722,7 +719,7 @@ conditionMessage.rlang_error <- function(c) {
 #'
 #' # options(
 #' #   rlang_backtrace_on_error = "branch",
-#' #   error = rlang:::add_backtrace
+#' #   error = rlang::enframe
 #' # )
 #' # stop("foo")
 NULL
